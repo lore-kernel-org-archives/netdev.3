@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B74D07082D;
-	Sun, 12 Apr 2026 18:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22EFB363098;
+	Sun, 12 Apr 2026 18:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776016851; cv=none; b=eL+bNA+AMeFXDo+zxvxqAym0qrtiulLBPGeCb53s4UjYBuprXQOok8/Dz3GxcNElR7tRb3uELmNn/mI/I8upo6hh9kM8HHUVeUZHI3wEf95e3qFSjWzVBqAe7zhxvtwYVbhQiSUDhMDHabdUk1MaALRoyDqVeKe0O3a6DC/g2dI=
+	t=1776016853; cv=none; b=g7HDn+tW4cgjrqGwbqbCyYsK/PJOh+x6jTPMAP5yPRga5LNg9L9mdeWDuIqqNrxbfwkxaXsMj5G/MwSFv3UhFLrU3hN+2z/tubfjd9uYCbi2evZ913ebs8EElN9aYfroJoT2L+y9nixnj8+meJtbjAu1r+37ApZpHeGAFC1hto0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776016851; c=relaxed/simple;
-	bh=EQKOFUH1kajAAUiz5DlUKZbbWIzXjtIWhHdGTV1y9O8=;
+	s=arc-20240116; t=1776016853; c=relaxed/simple;
+	bh=FwdVfbbOGsqKSJ2PuYf5oEgTP0rXLNLZGxQ71dARoyk=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=uR91bYixNyZFCnd1i+vHH1Y3bUAm53Sem47ZAIVaRWrRIHnmvX5cX7B0kxNFiNm4Suht+jNu2k0UwrSXIPIFt6fFIx6/4m/drpfXCDLNsvUloQkFq3vzh91NHbCTM6DLjbzJmPFms7zVXG0l9TuotA6mjunbGwLaXIUOGw6LmEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bFadsqnu; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=GlKRye3oDozK4SZkQYJ/LAdTcWG/zyWQBZdV4nkHH54kuWBjMbnj+ofbsMdfHZZPJiP6cYNnw+4Ik4q58UYP7E6ETJjG0vHAB+rPCrUMhg2i2YIcRCl+szhs5Bsrkg8r+VAx2dQSoituqFD21F8MaonnxiwgJ9tiNbBP57nUynE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mWNweUuc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bFadsqnu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54414C19425;
-	Sun, 12 Apr 2026 18:00:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mWNweUuc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2818C19425;
+	Sun, 12 Apr 2026 18:00:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776016851;
-	bh=EQKOFUH1kajAAUiz5DlUKZbbWIzXjtIWhHdGTV1y9O8=;
+	s=k20201202; t=1776016852;
+	bh=FwdVfbbOGsqKSJ2PuYf5oEgTP0rXLNLZGxQ71dARoyk=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=bFadsqnuKpzcH7QW6fSADlIlKOe++wKza5nNeCrwZaBfm5RArLoH3Rcx/xOW8giwo
-	 XggiHM0u4ZP8oldRdyU2VVPdFJMwNR1IS2VjAgR3tYYt47RUg8NoEToKSVUfWKJk5O
-	 kvwBFzZGesZCL6vFLqKcJQ49bKw7lhjr9SvLjhZIyiz9RGTC62syBK3gx5rt31kMLu
-	 o1z/IkoUpX/JQ4gjPGiNMUE4uM5tRiQRyPrT+6PY3YKDfxqDmUsXwt/bMX7S0yFSM5
-	 CSex+QuKwlRwGWRJ9lhAPamYAoHlDl2ng1H/E5tcjq9kfLGlBoei35dSEBBrZN3vaF
-	 UCGCJ8xH7khBw==
+	b=mWNweUucs0t1RVbrYMRjin9dyaYvvfUW90YmC6kHh9IPagi4MM/+T2Fu2iG0CmWsO
+	 CBv8eyhQAISXs8cJ2now8rfRKWsnH2r7cYdsGSqLT/PTFdQG2D4K0kiIPxNS8Fs12j
+	 Ay951sfawkSUlAkafeoL4xurkaL06rtQQWrjH0qipCt12q2lMbJwZRhKgNAIwpnSaf
+	 WntCIDk0jBPFhIIQgYqdVx//pag8aH6RwRXIC+KnaFEE66fAFZE6IeA+D8QLhbZXmB
+	 mlOiTd+R5/hOFKFwpLdgwiYF5KM21xwqETCo0IilrNoeHgOj6xAbfgjIRfIn+/qUTG
+	 L8JfBpbWsvqaA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02D993809A8C;
-	Sun, 12 Apr 2026 18:00:25 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CC793809A8C;
+	Sun, 12 Apr 2026 18:00:26 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,58 +37,37 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 01/11] ipvs: show the current conn_tab size to
- users
+Subject: Re: [PATCH net-next] netkit: Don't emit scrub attribute for single
+ device
+ mode
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177601682380.3359939.9450580091619442068.git-patchwork-notify@kernel.org>
-Date: Sun, 12 Apr 2026 18:00:23 +0000
-References: <20260410112352.23599-2-fw@strlen.de>
-In-Reply-To: <20260410112352.23599-2-fw@strlen.de>
-To: Florian Westphal <fw@strlen.de>
-Cc: netdev@vger.kernel.org, pabeni@redhat.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, netfilter-devel@vger.kernel.org,
- pablo@netfilter.org
+ <177601682504.3359939.2160598201131721875.git-patchwork-notify@kernel.org>
+Date: Sun, 12 Apr 2026 18:00:25 +0000
+References: <20260410072334.548232-1-daniel@iogearbox.net>
+In-Reply-To: <20260410072334.548232-1-daniel@iogearbox.net>
+To: Daniel Borkmann <daniel@iogearbox.net>
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, kuba@kernel.org,
+ dw@davidwei.uk, pabeni@redhat.com, razor@blackwall.org
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
-by Florian Westphal <fw@strlen.de>:
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri, 10 Apr 2026 13:23:42 +0200 you wrote:
-> From: Julian Anastasov <ja@ssi.bg>
-> 
-> As conn_tab is per-net, better to show the current hash table size
-> to users instead of the ip_vs_conn_tab_size (max).
-> 
-> Signed-off-by: Julian Anastasov <ja@ssi.bg>
-> Signed-off-by: Florian Westphal <fw@strlen.de>
+On Fri, 10 Apr 2026 09:23:34 +0200 you wrote:
+> When userspace reads a single mode netkit device via RTM_GETLINK,
+> it receives IFLA_NETKIT_SCRUB=NETKIT_SCRUB_DEFAULT attribute from
+> netkit_fill_info(). If that attribute is echoed back to recreate
+> the device, the seen_scrub presence check in netkit_new_link()
+> causes creation to fail with -EOPNOTSUPP. Since it has no meaning
+> for single devices at this point, just don't dump it.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,01/11] ipvs: show the current conn_tab size to users
-    https://git.kernel.org/netdev/net-next/c/22e620fe8455
-  - [net-next,02/11] ipvs: add ip_vs_status info
-    https://git.kernel.org/netdev/net-next/c/9a9ccef907a7
-  - [net-next,03/11] ipvs: add conn_lfactor and svc_lfactor sysctl vars
-    https://git.kernel.org/netdev/net-next/c/8d7de5477e47
-  - [net-next,04/11] netfilter: x_physdev: reject empty or not-nul terminated device names
-    https://git.kernel.org/netdev/net-next/c/8df772afc9d0
-  - [net-next,05/11] netfilter: nfnetlink: prefer skb_mac_header helpers
-    https://git.kernel.org/netdev/net-next/c/74feb7d373b3
-  - [net-next,06/11] netfilter: xt_HL: add pr_fmt and checkentry validation
-    https://git.kernel.org/netdev/net-next/c/24bd5c2679ca
-  - [net-next,07/11] netfilter: xt_socket: enable defrag after all other checks
-    https://git.kernel.org/netdev/net-next/c/542be3fa5aff
-  - [net-next,08/11] netfilter: conntrack: remove UDP-Lite conntrack support
-    https://git.kernel.org/netdev/net-next/c/84dee05d9d61
-  - [net-next,09/11] netfilter: x_tables: Avoid a couple -Wflex-array-member-not-at-end warnings
-    https://git.kernel.org/netdev/net-next/c/f30e5a7291a8
-  - [net-next,10/11] netfilter: nft_fwd_netdev: check ttl/hl before forwarding
-    https://git.kernel.org/netdev/net-next/c/1dfd95bdf4d1
-  - [net-next,11/11] netfilter: require Ethernet MAC header before using eth_hdr()
-    https://git.kernel.org/netdev/net-next/c/62443dc21114
+  - [net-next] netkit: Don't emit scrub attribute for single device mode
+    https://git.kernel.org/netdev/net-next/c/e530b484b705
 
 You are awesome, thank you!
 -- 
