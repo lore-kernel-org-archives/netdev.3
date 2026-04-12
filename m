@@ -1,62 +1,141 @@
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
+Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D653E2BE7CD;
-	Sun, 12 Apr 2026 17:17:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3996A2236F0;
+	Sun, 12 Apr 2026 17:33:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776014246; cv=none; b=GgBb4RvgMN708aXM/3j/FjrFzLLj+0AdGryE0FYHGK/3xtVLlrf7J0D/c5SXXmCIvscs0r5/pf9xrPO+n8fylcihNwCFq/u4WOK5muW8Tv5jRox6W7DRtE+KJpcwKhM2XmjS/jVgsCdA76P/7Or+zgLiHw3FBimGyG/DZBXS6HI=
+	t=1776015197; cv=none; b=c8t64r+TZ9CuFfcNQziPWnkF4Z10TMTRZsdNKuZNoiyY311R9KFUeB7wU6yEm/kabI+2FRPIFqYx53UWpLoGNukWMGHjul+lKMTM1/708CVDND3fg3+3A8w/tNGjIFPzLfkKfpOQgnQugFIupM5vuNQdLS7VLTitK0sZwo2UQDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776014246; c=relaxed/simple;
-	bh=CzfTOj4mUNn2bmRFGl/gGFgp2GcpRDFPE4OAXwXXrJs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n0MDq3BKJWN+9nC0uJX5NwEmCKb5BaKnV72AKfKs6H9KnWZuTr026crufOg+6C6KyUgQA7CINbf2hk3X8It6GKTMVkbYLlBSd3RvTdeZxW6MCNfJf76G7vfokPoPkm9aAzIeHh0D9l95Q45qUG3pzDPKki4lTv2evmLnrKIgTG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
-Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
-	id C6D26602AB; Sun, 12 Apr 2026 19:17:22 +0200 (CEST)
-Date: Sun, 12 Apr 2026 19:17:22 +0200
-From: Florian Westphal <fw@strlen.de>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
+	s=arc-20240116; t=1776015197; c=relaxed/simple;
+	bh=V9g6OBu0qLH0nReguZFQzRQGSIDj5DPEDtLzn3ITa6M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UvcyQHNHbSmWLo193aVmL8Gza5/htRs8Dw5BIRcO33v3ZOZI788PKxhO/29ttqDO7ROCQgKBqyEqSoY9Xln5c3cqBMvBXHsW75a0xN5ruy/UZjhGvXvofGbvME0w2Lp6cfrThXUA1qSjGV7MB9gRvZg+PUxa1BUlqKaOEHJeU1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=OEumEEvg; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=uT7ARMcQ; arc=none smtp.client-ip=103.168.172.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="OEumEEvg";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="uT7ARMcQ"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 6DD53140004E;
+	Sun, 12 Apr 2026 13:33:14 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Sun, 12 Apr 2026 13:33:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:message-id:mime-version:reply-to
+	:subject:subject:to:to; s=fm1; t=1776015194; x=1776101594; bh=0E
+	hFMvCtGQZleGr+Fzi7/rhnRq5XhGgIsg+ff3G75pc=; b=OEumEEvgBKrpHtucFW
+	EFLa43zEI08k7xu5eZa00geyw29q2Jo5ouk7K5pZSgwSwGupbkN+oH8ajIddOijt
+	bJdwPWnqRwCKON72MV2w1VFue2b0xClBnE0+paLebaqrw74i/uNfJpQSeVvgGOiy
+	qhq0jDED4R02eavy3KZQYd0gg9F8eXM9ZXL5C+7dLuTHDYCIHm4KKL83GDD1d0Xi
+	u6HQ1Z/Lmw9yil9HX610lzzXUsTju3ql6UE5s2go9gyKFb0jP7Z861O5IZSxRI27
+	bA1N7c01zI3qa7uRzQngjqpbxN58E4t5H6+Rbi/hzxaMXRD6e1S4UsYqQkCNmniC
+	JZCg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1776015194; x=1776101594; bh=0EhFMvCtGQZleGr+Fzi7/rhnRq5X
+	hGgIsg+ff3G75pc=; b=uT7ARMcQfCXnbL84SAcXtI+ihNTCpedJT4qZkZl3PAOB
+	zMH5+uF5VjEaFHnULLfyx0kZnjQ6vbBFu4gkhKDRjdJh9QuTOzJvNob0qdiBZZlD
+	mnK9Vxu+FAcQvqJnSRiACzmEguYlbJNgx234oKBtsPySyQLsWuDfsUPJJsx7KWIs
+	U1k7K/TAZOeSrBHhz83N4VF56eObkS4iK16mY2n/nkyi7tt+Bocwqq0IiUtx9WC3
+	6ABCjqo+RTh18QFItKdmpcERP1jl+Xka52gsbiDpyNvBfJRyE9BtE0lWCyOMr28U
+	RVPBBC0I8Q91aosV/+8dj84Afx5j4ehKv9rA1wliOg==
+X-ME-Sender: <xms:WtfbaVcCagMRizILaLi5jW_BIYzp5cHw9ibE72famlplaz1LodqAwQ>
+    <xme:WtfbaRev6a7fJkTuiZHWcF5dYn6oE2kAKY3cpZLeZ3zBp2KwdgyCGujU5yxQvT_If
+    22PuKQlbMt7HGds9DefAwPInOF0D1y0ujvkquz8ss-8YDabxwycEQ>
+X-ME-Received: <xmr:WtfbaX16UL8SaFJuYzFIZS-8KrktwhFYjKcqeAHsAQCdfc2iqY_A5vgronfswHx4fDCRvqJ-tgAMeU5Id7-gWNFPCBbuFs06zPe3>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdefheelfecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefhvfevufffkffogggtgfesthekredtredtjeenucfhrhhomheppfhikhhlrghsucfu
+    npguvghrlhhunhguuceonhhikhhlrghsrdhsohguvghrlhhunhguodhrvghnvghsrghsse
+    hrrghgnhgrthgvtghhrdhsvgeqnecuggftrfgrthhtvghrnhephfeghfevgefhteduheff
+    hfejieelheekvdevffdutdelgedugeejueeffeevffdtnecuffhomhgrihhnpehkvghrnh
+    gvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhr
+    ohhmpehnihhklhgrshdrshhouggvrhhluhhnugesrhgrghhnrghtvggthhdrshgvpdhnsg
+    gprhgtphhtthhopeduuddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepphgruhhl
+    sehpsggrrhhkvghrrdguvghvpdhrtghpthhtoheprghnughrvgifodhnvghtuggvvheslh
+    hunhhnrdgthhdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhr
+    tghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomhdprhgtphhtthhopehkuh
+    gsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgrsggvnhhisehrvgguhhgrthdr
+    tghomhdprhgtphhtthhopeihohhshhhihhhirhhordhshhhimhhouggrrdhuhhesrhgvnh
+    gvshgrshdrtghomhdprhgtphhtthhopehgvggvrhhtsehlihhnuhigqdhmieekkhdrohhr
+    ghdprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:WtfbaR9IcQvLSiDKA0fDgB4KEqJZPWm8Wm7FDITK3CnKC94TVFTskw>
+    <xmx:WtfbaU6qZtQowaBkhNADLmiESrvOgcB6IqoqzZ9YmmmKm4d0GWgDVQ>
+    <xmx:WtfbaRsC0g1_2PcWtdXMYi2lemHk62yppdYlftk2V7A71VJ8Nvr2zg>
+    <xmx:Wtfbae1ghLNC72K_llBmxOm2ULoRkb0W2pv15XAFQgHt6nxZAjGYww>
+    <xmx:WtfbabrIte8Au1dfEfKEDMTXVbVMW0256H_teNaPmrCdLPUQ86FPgvmu>
+Feedback-ID: i80c9496c:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 12 Apr 2026 13:33:13 -0400 (EDT)
+From: =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
+To: Paul Barker <paul@pbarker.dev>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, netfilter-devel@vger.kernel.org,
-	pablo@netfilter.org
-Subject: Re: [PATCH net-next 00/11] netfilter: updates for net-next
-Message-ID: <advTosG9qZ_ZW355@strlen.de>
-References: <20260410112352.23599-1-fw@strlen.de>
- <20260412094049.7b01dd7b@kernel.org>
- <advOUl92VLlqaiCJ@strlen.de>
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	netdev@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org
+Cc: =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
+Subject: [PATCH net] net: ethernet: ravb: Do not check URAM suspension when WoL is active
+Date: Sun, 12 Apr 2026 19:32:13 +0200
+Message-ID: <20260412173213.3179426-1-niklas.soderlund+renesas@ragnatech.se>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <advOUl92VLlqaiCJ@strlen.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Florian Westphal <fw@strlen.de> wrote:
-> Jakub Kicinski <kuba@kernel.org> wrote:
-> https://sashiko.dev/#/patchset/20260410112352.23599-1-fw%40strlen.de
+When updating the driver to match latest datasheet to suspend access to
+URAM when suspending DMA transfers a corner-case was missed, URAM access
+will not be suspended if WoL is enabled. This lead to the error message
+(correctly) being triggered as URAM access is not suspended even tho
+it's requested as part of stopping DMA.
 
-Forgot to mention this:
+Avoid checking if URAM access is suspended and printing the error
+message if WoL is enabled when we suspend the system, as we know it will
+not be.
 
----------------
-AF_PACKET raw sockets or tun devices, the network_header might be
-uninitialized (~0U). In this state, skb_mac_header_len() will evaluate to
-a very large number, bypassing the ETH_HLEN check completely.
----------------
+Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Closes: https://lore.kernel.org/all/CAMuHMdWnjV%3DHGE1o08zLhUfTgOSene5fYx1J5GG10mB%2BToq8qg@mail.gmail.com/
+Fixes: 353d8e7989b6 ("net: ethernet: ravb: Suspend and resume the transmission flow")
+Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+---
+ drivers/net/ethernet/renesas/ravb_main.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-Really?  TIL.
+diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+index 1dbfadb2a881..5f88733094d0 100644
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -1108,9 +1108,12 @@ static int ravb_stop_dma(struct net_device *ndev)
+ 
+ 	/* Request for transmission suspension */
+ 	ravb_modify(ndev, CCC, CCC_DTSR, CCC_DTSR);
+-	error = ravb_wait(ndev, CSR, CSR_DTS, CSR_DTS);
+-	if (error)
+-		netdev_err(ndev, "failed to stop AXI BUS\n");
++	/* Access to URAM will not be suspended if WoL is enabled. */
++	if (!priv->wol_enabled) {
++		error = ravb_wait(ndev, CSR, CSR_DTS, CSR_DTS);
++		if (error)
++			netdev_err(ndev, "failed to stop AXI BUS\n");
++	}
+ 
+ 	/* Stop AVB-DMAC process */
+ 	return ravb_set_opmode(ndev, CCC_OPC_CONFIG);
+-- 
+2.53.0
 
----------------------
-Furthermore, skb_mac_header_len() only verifies the logical distance between
-header offsets, rather than ensuring the bytes are actually present in the
-physical linear buffer.
-
----------------
-
-Really?  Total news to me :-(
