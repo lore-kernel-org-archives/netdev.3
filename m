@@ -1,73 +1,45 @@
-Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E73C23AE87
-	for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 12:39:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C592F3A9D9E;
+	Mon, 13 Apr 2026 12:42:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776083990; cv=none; b=KzwmeCnRx+gKFdMj8wnx02559wpJFvRAaJilm8Un8QvKWq67SLr3NoiBOX3ja5FNUewWfqgpa0NiLdlsr2RU+jF7BuknYHKy/Mv6CEDX6iqda3GuxmhiBooyBtqIkXhj4pbhDoQAFP3gbytuPzqt5Q9KBCzsXpSfKPDIhE/a0F8=
+	t=1776084144; cv=none; b=qpgkK0IkNIZNrGc8WvcP/Tf3VRu4HqGJBJAwzv9Ptr4iiP+ZX2WE5etdjdiP8QqHXqnNpaOQTp1003QcUeEzDbdSob5BzrtH/dqsnzShvb6HAFiwpzQTfX93gci6xzbezkuaZOAsZK2Q3dyLqyYXiw4x944J4b7I+3gHcxacvN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776083990; c=relaxed/simple;
-	bh=Mb8ynuEVZ9jnH95PjLHoWPiHHqGpMrjofGz0L1SAq14=;
+	s=arc-20240116; t=1776084144; c=relaxed/simple;
+	bh=jE0Qgm0u+16Hck7IZ25n1n4PjSLQV9UclFHDQiaGkF8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y3OPGujrJ0gBkv0U3lmPLpb7JzSdHBJll7Ld+z2J4Qfhj94C4/No2nnOSdpsfYvz22zVu5iEr+tWp+fkXGN7WZrrEcNk3K5FaKGBtoqGLoY6TAMA4C88XRkqe9Q9gOoBmG7le4dL9RCbAK0t6xVjnafTN8WK5BzpvKjlycLGnK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FJu4U4hC; arc=none smtp.client-ip=74.125.82.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=uB6wjzYf01fx84dql1iwdUkBR3A84jWu5rWlY8t//6wb1eKJWerDvPbgzS/bIjwCxiQ2Ap0fJC1Q74dErXv8J7zHkI4DWYriu2N7iokqQq0W1EJc2mN9vhhwi81vgnPWnzJZAVAUKXa1RHlH/Oqvf5qtyw3kiqDQTJDmdHkp1og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qiIsM++W; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FJu4U4hC"
-Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-12c45281a06so1970382c88.1
-        for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 05:39:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776083988; x=1776688788; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Gjpp1vRzru8GZlAX0xmlAVC+tq/WF3FlyeoCkEJDGGc=;
-        b=FJu4U4hCO+LbYb5gV7/6gBuhdnxFhK6E7OlCmpzg4CZBg1uZ+S3GuLN3Matehj2z54
-         l/04aZ8teGllth6O1AeqcvNZsABDfKBbPKFL6gO4CAYo0CbF0qlo+IAZW4DTimGMzgj4
-         nCnYxc3A1cmgOphIcB71vcVUoWgqPNSsORhSgpDmvZI5KUq79Buuow1uPU/6TAmb7IHD
-         OEnrPDss3XMVO6wHNYq+yGbNIQYKxcnhm+Zv40BPUwHFZJlGJM0A+J97ADXRAnybiGjT
-         WqwNwoAkmpCnsDZUapZXG9qbbpj3H9Bh80ljEVRzVKs45Sf0p+Fya19oJ8DId3whKESH
-         3oVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776083988; x=1776688788;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Gjpp1vRzru8GZlAX0xmlAVC+tq/WF3FlyeoCkEJDGGc=;
-        b=lWV2uHBsUa17LPNzkqhj5XxcWzvXEd9CRjXlkv77aro2nF7Dwe79b2CMWRkBPuAMnX
-         E79oPpglwJpTFPMaQdQ4aUPvXuiFMtBPVa2vCDk04INjoqoXWTI74LaCzv0xQWyCuZGS
-         KjWkHvsIHdk+4AsjI5NLj4hYN0YahMJmI+VzEXF9L/oa4/eVuUhyWOF/9z8FFtmeBPr1
-         90iqkiEhnOjjQf/YTsjEU2c/RQJw3Z6Gnx4ntW2yctx9gmjVbbeIUiWw8Sz5RPcBzU97
-         CIVpj78QFwitaZkf3VEn/y5wXGHN8qFv30i4ERu46fYYPak9sijfvbkK4mXqCq9LBgwl
-         fqlQ==
-X-Gm-Message-State: AOJu0Yw0snJUIZdFs37BGeD9RVHWr6e8EQh3rrqmAfMB1/yKC9SVbgOq
-	OwC/BDr7D7oje/xZrpEFq4inVTyv7LzCa69GumvdmGC1FhQsBvtnbKSZ
-X-Gm-Gg: AeBDieuMu18deeHgw6Q+hT/hyMBWuQA4cROuvLMrRhSMeN0am1F4fAiItQeVLDm+QHS
-	UAyACsFgC/lyIBsvUbi4C7zUA7Vjhjc0lS1gT8hgw2jrGNk7wlo2okeuQAAlfnjdPHpgvGmmCyo
-	45tD+UcJdmHGSNOyYbeeeNekketqJBHA48oNlc5ngxbt7KA0faRonttsNgiB/impcuxYfArJBgG
-	30Ihs2T6DmpvNtHuMZsWqgrIU2zRU9jLC1DioquN1YykIS15R7xkqkvIyCOWphKCGgRlz6vOrW2
-	wNQecLBWx+8BV7K5w6WF1vGS4Q3upP9pICBE3kHIylHfbjzmu3MW0DjRNhHIBn3ey1q3G6oLhzW
-	7+oJDJrbn5QLkXMzdLTvh6KzAU83wf3N4UeUwt/M8rY1W9fU0bVQlv+jENLPzO32t7gzu3fJZkC
-	nKsh6mW0LEkLtJzYEDuj3+v9TxrrxfLuJj/QFGtw==
-X-Received: by 2002:a05:693c:3116:b0:2be:85d4:4a2a with SMTP id 5a478bee46e88-2d5870ac158mr7345736eec.1.1776083988319;
-        Mon, 13 Apr 2026 05:39:48 -0700 (PDT)
-Received: from t14s.localdomain ([177.37.143.168])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2d562db6ac8sm16168701eec.26.2026.04.13.05.39.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Apr 2026 05:39:47 -0700 (PDT)
-Received: by t14s.localdomain (Postfix, from userid 1000)
-	id 5286813FAC0B; Mon, 13 Apr 2026 09:39:45 -0300 (-03)
-Date: Mon, 13 Apr 2026 09:39:45 -0300
-From: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
-To: Xin Long <lucien.xin@gmail.com>
-Cc: network dev <netdev@vger.kernel.org>, linux-sctp@vger.kernel.org,
-	davem@davemloft.net, kuba@kernel.org,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Weiming Shi <bestswngs@gmail.com>
-Subject: Re: [PATCH net] sctp: disable BH before calling udp_tunnel_xmit_skb()
-Message-ID: <adzkEQ17BD546rXC@t14s.localdomain>
-References: <c874a8548221dcd56ff03c65ba75a74e6cf99119.1776017727.git.lucien.xin@gmail.com>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qiIsM++W"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2539BC2BCAF;
+	Mon, 13 Apr 2026 12:42:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1776084144;
+	bh=jE0Qgm0u+16Hck7IZ25n1n4PjSLQV9UclFHDQiaGkF8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qiIsM++WiMmo4wsKMS+ZSAS4JWnefmbuXMmkByfsSxlqZlawzFeO9GGGy5Da3/dBs
+	 9oGYmFK8/I9jyiwAUzXgmUY7zOOjou+RmFOq3GcGpkNdAQYSNL8bbPlM0w4U1pN23E
+	 KKj0VDM/kzt0p6w8lMX/6wB8GLb30XXggbMNRmaE=
+Date: Mon, 13 Apr 2026 14:24:43 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Oliver Neukum <oneukum@suse.com>
+Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Oliver Neukum <oliver@neukum.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	stable <stable@kernel.org>
+Subject: Re: [PATCH net] net: usb: cdc_ncm: reject negative chained NDP
+ offsets
+Message-ID: <2026041355-designate-spiritual-e785@gregkh>
+References: <2026041137-comfy-eaten-a1ed@gregkh>
+ <2a6963c8-4a87-4fed-b875-d46f3ce53e42@suse.com>
+ <2026041325-giggly-wrecking-e6ef@gregkh>
+ <198c1240-80a6-456c-8b12-25158c90c965@suse.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -76,49 +48,34 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c874a8548221dcd56ff03c65ba75a74e6cf99119.1776017727.git.lucien.xin@gmail.com>
+In-Reply-To: <198c1240-80a6-456c-8b12-25158c90c965@suse.com>
 
-On Sun, Apr 12, 2026 at 02:15:27PM -0400, Xin Long wrote:
-> udp_tunnel_xmit_skb() / udp_tunnel6_xmit_skb() are expected to run with
-> BH disabled.  After commit 6f1a9140ecda ("add xmit recursion limit to
-> tunnel xmit functions"), on the path:
+On Mon, Apr 13, 2026 at 02:11:50PM +0200, Oliver Neukum wrote:
+> On 13.04.26 12:43, Greg Kroah-Hartman wrote:
+> > On Mon, Apr 13, 2026 at 10:36:19AM +0200, Oliver Neukum wrote:
+> > > 
+> > > 
+> > > On 11.04.26 12:53, Greg Kroah-Hartman wrote:
+> > > > cdc_ncm_rx_fixup() reads dwNextNdpIndex from each NDP32 to chain to the
+> > > > next one.  The 32-bit value from the device is stored into the signed
+> > > > int ndpoffset so that means values with the high bit set become
+> > > 
+> > > Well, then isn't the problem rather that you should not store an
+> > > unsigned value in a signed variable?
+> > 
+> > No.  well, yes.  but no.
+> > 
+> > cdc_ncm_rx_verify_nth16() returns an int, and is negative if something
+> > went wrong, so we need it that way, and then we need to check it, like
+> > we properly do at the top of the loop, it's just that at the bottom of
+> > the loop we also need to do the same exact thing.
 > 
->   udp(6)_tunnel_xmit_skb() -> ip(6)tunnel_xmit()
-> 
-> dev_xmit_recursion_inc()/dec() must stay balanced on the same CPU.
-> 
-> Without local_bh_disable(), the context may move between CPUs, which can
-> break the inc/dec pairing. This may lead to incorrect recursion level
-> detection and cause packets to be dropped in ip(6)_tunnel_xmit() or
-> __dev_queue_xmit().
-> 
-> Fix it by disabling BH around both IPv4 and IPv6 SCTP UDP xmit paths.
-> 
-> In my testing, after enabling the SCTP over UDP:
-> 
->   # ip net exec ha sysctl -w net.sctp.udp_port=9899
->   # ip net exec ha sysctl -w net.sctp.encap_port=9899
->   # ip net exec hb sysctl -w net.sctp.udp_port=9899
->   # ip net exec hb sysctl -w net.sctp.encap_port=9899
-> 
->   # ip net exec ha iperf3 -s
-> 
-> - without this patch:
-> 
->   # ip net exec hb iperf3 -c 192.168.0.1 --sctp
->   [  5]   0.00-10.00  sec  37.2 MBytes  31.2 Mbits/sec  sender
->   [  5]   0.00-10.00  sec  37.1 MBytes  31.1 Mbits/sec  receiver
-> 
-> - with this patch:
-> 
->   # ip net exec hb iperf3 -c 192.168.0.1 --sctp
->   [  5]   0.00-10.00  sec  3.14 GBytes  2.69 Gbits/sec  sender
->   [  5]   0.00-10.00  sec  3.14 GBytes  2.69 Gbits/sec  receiver
-> 
-> Fixes: 6f1a9140ecda ("add xmit recursion limit to tunnel xmit functions")
-> Fixes: 046c052b475e ("sctp: enable udp tunneling socks")
-> Signed-off-by: Xin Long <lucien.xin@gmail.com>
+> Doesn't that suggest that cdc_ncm_rx_verify_nth16() is the problem?
+> To be precise, the way it indicates errors?
+> As this is an offset into a buffer and the header must be at the start
+> of the buffer, isn't 0 the natural indication of an error?
 
-Nice catch!
+Maybe?  I really don't know, sorry, parsing the cdc_ncm buffer is not
+something I looked too deeply into :)
 
-Acked-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+greg k-h
