@@ -1,68 +1,93 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4463F3E023A;
-	Mon, 13 Apr 2026 14:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079CD3E0222;
+	Mon, 13 Apr 2026 14:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776091576; cv=none; b=Edqn2UsobaymX/eR25cyjHC1nXgGakosh+JPodZHKqA3HlCOaZY05T17FCXl66j5Hmxo1F1hnMDMj+aBqz2+/QPcOaicG0K2iMjSnwZjdOLHkb/Fpceqgkt+SHT5JIqjFTlli0g+2kMFMNNKNHyh1/xlO9Zf5nYDWCZtmgginNo=
+	t=1776091600; cv=none; b=oI3Fx3CgnnAipF5XTt7BupM/9EyrP0SpbOF/JUHDCucq79RO2mf0dG4/ywQDOoFK5alMUbVyliEpkUUgdnJmq5Li9hB+6MD9vRACiynF/uYkPa16oF9rmZy5LzeqAApNywuoxJ1PerLlXdqEjuNd3WJipTruwqDj0dMPG19C48U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776091576; c=relaxed/simple;
-	bh=LX76nBcia05Wypmo3qmaTIFtWpzCvXEJ000jmQNoSI0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aBOIgqadv9q6fzojDh6SbgQGVmV48PjAeikYO38HDt6uehlcns1LYqU/CIbnpTE4T0pMDsSuo19fZbUR6sAX7W7C8+rLSXRkILf1Jyn0y2Gb3wSNhJVNeSgs+XiS5bPr2jbNSTB/wUPGwFVxvfRJh2N3dmi9Te1uBeWlS3pJk8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ctmBTqxv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776091600; c=relaxed/simple;
+	bh=bhACCNWwYGbbsioUZ9lwrnNsFznu/fKcqluHk8miblo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AUSH1vLUhznlBS0iReXz2dTqBFjdOXPiw8tLmrJg1XEH0cow18umecsy5ImyO0P9B8jN84dnXl3DykDdYbZfplrCKs2ZJ1XCYHx9dUYsp8hbYLnAUiWR62bcBskHiyONg5+7fhoqpf+FHv2cetVXHVtwQWo8gNT8kpyLEr8wLRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IQycd2Y3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ctmBTqxv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69D59C2BCAF;
-	Mon, 13 Apr 2026 14:46:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IQycd2Y3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E351C2BCAF;
+	Mon, 13 Apr 2026 14:46:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776091575;
-	bh=LX76nBcia05Wypmo3qmaTIFtWpzCvXEJ000jmQNoSI0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ctmBTqxvhL/I41q7h7vEd5mKgYRgzi7E5nWeenFaoubGHe6g30pwd281xsMdeCBS3
-	 mEltFdK109vL37BrqeTfmiZQg4iGB4X4f6YgMaVcNE9t/MLf6YRhEUEQPOEYET1eW6
-	 mVk2Nb9vIodVaSnJk4OXku+zWHQGyswW7kJyLuk0z/MzEy0ZLLI+HDIHyg2Qlw72fz
-	 BKZiq8/+ErYBA4eAT5sXrXFZ8H3vJKe8SlTdJCmY+/zI6VLfhQndHqoASR8I2EaDLF
-	 FDfHbE7ayvzvNu6sgLvCYzI1WruV/y2UvKiXhCBFbBiW2IY/08R2zIpPqV39E7HIpe
-	 R5+O2/KIgqioQ==
-Date: Mon, 13 Apr 2026 17:46:10 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Prathamesh Deshpande <prathameshdeshpande7@gmail.com>
-Cc: Carolina Jubran <cjubran@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
-	netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4] net/mlx5: Fix OOB access and stack information leak
- in PTP event handling
-Message-ID: <20260413144610.GJ21470@unreal>
-References: <20260412000418.8415-1-prathameshdeshpande7@gmail.com>
+	s=k20201202; t=1776091599;
+	bh=bhACCNWwYGbbsioUZ9lwrnNsFznu/fKcqluHk8miblo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=IQycd2Y3MOzE++hOSt40w85Jk5ozySGjdZeYUcuPg2afcoGAftYeQ3QsqHKr7jZi+
+	 V6l/EOLDK/DIUXhTtAGniEckjBQUOASnfRHTCuoKHJ0V9LsfzWNhGly5ax+yfM6St4
+	 7EY/Xz8XOd5ABoNq+GY5/1U0RpvA3ELODwj0Wj+b94O27e2yFRHaOVFnfEP0KCHaYn
+	 zpUiehOGzBHFUXvkHKcIDluzDJMUtnMyCc2+mQZOTcOkvGSPn/L5EqiFZ0Bd4R1cfq
+	 QwMhhAbuF5hhwrID9wfWs8YvCk1pKkTHGL3TwI1C5LZ71bYY82iUjC0n4YG3WV+W8u
+	 X/5wDSDkJv5Yg==
+Message-ID: <88046eb3-603c-4296-9a9f-616a6f37c610@kernel.org>
+Date: Mon, 13 Apr 2026 08:46:38 -0600
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260412000418.8415-1-prathameshdeshpande7@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v1 1/2] nexthop: fix IPv6 route referencing IPv4
+ nexthop
+Content-Language: en-US
+To: Jiayuan Chen <jiayuan.chen@linux.dev>, netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+References: <20260413114522.147784-1-jiayuan.chen@linux.dev>
+From: David Ahern <dsahern@kernel.org>
+In-Reply-To: <20260413114522.147784-1-jiayuan.chen@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sun, Apr 12, 2026 at 01:04:10AM +0100, Prathamesh Deshpande wrote:
-> In mlx5_pps_event(), several critical issues were identified:
+On 4/13/26 5:45 AM, Jiayuan Chen wrote:
+> syzbot reported a panic [1] [2].
 > 
-> 1. The 'pin' index from the hardware event was used without bounds
->    checking to index 'pin_config' and 'pps_info->start'. Check against
->    MAX_PIN_NUM to prevent out-of-bounds access.
+> When an IPv6 nexthop is replaced with an IPv4 nexthop, the has_v4 flag
+> of all groups containing this nexthop is not updated. This is because
+> nh_group_v4_update is only called when replacing AF_INET to AF_INET6,
+> but the reverse direction (AF_INET6 to AF_INET) is missed.
+> 
+> This allows a stale has_v4=false to bypass fib6_check_nexthop, causing
+> IPv6 routes to be attached to groups that effectively contain only AF_INET
+> members. Subsequent route lookups then call nexthop_fib6_nh() which
+> returns NULL for the AF_INET member, leading to a NULL pointer
+> dereference.
+> 
+> Fix by calling nh_group_v4_update whenever the family changes, not just
+> AF_INET to AF_INET6.
+> 
+> Reproducer:
+> 	# AF_INET6 blackhole
+> 	ip -6 nexthop add id 1 blackhole
+> 	# group with has_v4=false
+> 	ip nexthop add id 100 group 1
+> 	# replace with AF_INET (no -6), has_v4 stays false
+> 	ip nexthop replace id 1 blackhole
+> 	# pass stale has_v4 check
+> 	ip -6 route add 2001:db8::/64 nhid 100
+> 	# panic
+> 	ping -6 2001:db8::1
+> 
+> [1] https://syzkaller.appspot.com/bug?id=e17283eb2f8dcf3dd9b47fe6f67a95f71faadad0
+> [2] https://syzkaller.appspot.com/bug?id=8699b6ae54c9f35837d925686208402949e12ef3
+> Fixes: 7bf4796dd099 ("nexthops: add support for replace")
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+> ---
+>  net/ipv4/nexthop.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
 
-You were told more than once that this is impossible.
 
-<...>
+Reviewed-by: David Ahern <dsahern@kernel.org>
 
-> +	if (WARN_ON_ONCE(pin >= MAX_PIN_NUM))
-> +		return NOTIFY_OK;
-
-Let's not add useless checks in fast path.
-
-Thanks
