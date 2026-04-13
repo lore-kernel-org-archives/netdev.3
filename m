@@ -1,713 +1,393 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 949F13C1981
-	for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 14:23:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D55D86BFCE;
+	Mon, 13 Apr 2026 14:26:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776090199; cv=none; b=e0oGRBdbXebWmHK39jyiFbyRCn6cskB/Q+T07PlRi+mQdEYHd71OrE0sWzTlzf1scWbocywQJ+elJH5rW2L00KH2wjZa3r+47ll98mKMz5kNSYX+k49HChmDv5b1g5gajRcbvqCj+Qg8Pu3+lZKWaPT9TDk0+lEPu+feyPAHVMU=
+	t=1776090404; cv=none; b=bUJywonZY0ptnJlfLsoO/53BJhAZukhQMAwA3jYVuUxQsRQJfWuJ/3xVqJt9eVh+6e/psb6EPCOg+4Y8CVet2ylhUK1gQRpWgWQ6dmsb3b/IXR9y6uPdoryGlUqUgn59ac7w6aDCVJp6c78O1rK7G/vUvlrMwJG97n4scQqXIPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776090199; c=relaxed/simple;
-	bh=N4Kquu2QZ3tP4Y7YNlwlpZBCIDZnwM1rTYmzNTX0Q9k=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Ua5aBOw4CNx5qh8fnvC2ili+09bilk95NCubAIx3XlIyR5CcvjDSGkpK/t+Z5gJofNioB8CvEIMcE5rWV98FTZE7dS0pi8whLvbXHdPiEFrhrTOXZ6J+CJ43/UKLVIJ7JnPEroyllwmPaTu7hmUwyQ2YYMwfxK+Dpj8EdDs5GkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fQkkDCry; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ScfGEnFG; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1776090404; c=relaxed/simple;
+	bh=1MZND6bJkp684teTokHALQaNO0jbgoKDXwoMO9NTZKs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:Cc:
+	 In-Reply-To:Content-Type; b=oBQlcGhPk6LtEraFkQ5tIvnp+hhqjTeLxVTaY3Glt1cOFxd4m79O3uq4qiNwr/Fn2nwc5gPthowSngxzU4wIpdYRebZ8Cc0j/GomUxKprDOobMm6054kKup/BKFS+ah8XN1Koz4oS6otgLSBlF+iuqZTixRHsIK0WgolBULafWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FNPSBEqy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fQkkDCry";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ScfGEnFG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1776090196;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=h8kW148tZIBnE0BHlYXnvKtZNjlpSQHEay9afhi668g=;
-	b=fQkkDCrywiQWs8xzSgO2z3fjDHw+RUP315NIchdu4oyOAFh02EyKZPBI480EXKYHoIY+7P
-	QUq14ga4bTBefM1PoTGPs3vE+6KBtkDb/aeON84cE1bgxQBvoS+yUUcB1XcxqotXHP25ri
-	uBoDErfTMPP4PZ8xpWjZcH7hxA5hAxc=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-591-lffHE1J9OOe1D43MLqaQSA-1; Mon, 13 Apr 2026 10:23:13 -0400
-X-MC-Unique: lffHE1J9OOe1D43MLqaQSA-1
-X-Mimecast-MFC-AGG-ID: lffHE1J9OOe1D43MLqaQSA_1776090192
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-b9c1d5a149cso485658266b.0
-        for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 07:23:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1776090192; x=1776694992; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:references
-         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=h8kW148tZIBnE0BHlYXnvKtZNjlpSQHEay9afhi668g=;
-        b=ScfGEnFG8qeVj+RQzcLPEpLleAHR8Egi8LDh1P40YP4FKkqhI2uGVrWO1h6WzZS18e
-         2NuwP4f3BBKO1XJcY/2p2NS7a0hgYThrgrlj6NQ1rc50AFZ5REPWqlpEE3m6kAWL2cPm
-         MsJXu+4e5O1iSm/Opm50rkFi315/go3kXUpLBEXtnnhn42wzQCQD2fn8KhQtPDkPujlY
-         re9wOWpN+/20fXOH+ojmTM7hoYcW6Vr17p2JKwqnfggnfN+cWfj0ZDiCFSDvVADVsM1E
-         nWRxxdw4ejNrS2YSnUSs3RIHxedofPdFyJj0tgoGFCFc9u6sL3DmAyVG4fYL9mcsFKMi
-         JvHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776090192; x=1776694992;
-        h=content-transfer-encoding:mime-version:message-id:date:references
-         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=h8kW148tZIBnE0BHlYXnvKtZNjlpSQHEay9afhi668g=;
-        b=EbvYxaPorLwh7jnoGj4fmOfNGrFBo2hYEDArZ/VWAwhx6Z253/7Be6x+5BpzfrO/Nd
-         lwg0TfaSDSEgeHtmzgRWcmQjClDH0uZKvjCMOf0NsWBRwxQAaHtR1qyz88W5YwMOOcrN
-         83HpgTEed96Edp5Li2GJBwb8qJda7hNBl0VUfIMvJ2F7ujUyx0NcoC9ko0jMDnmkDoy5
-         IW221Az7MbKJXXxFV2mWrk6xbYi92FSwU3bWnY+0Oy4NbKbWYr7NQFls8uT8CgkQsAFx
-         WwsCqDgWWPncjTkNlq3VNOdHTSTuejixK194hYiK/ns7Xj1rm4foiVBeXYbbPqNHwOPw
-         gvWg==
-X-Forwarded-Encrypted: i=1; AFNElJ+pQkgWphxDjrd49ZknTqw3CwgMtvkAdZgeWiszKg+h2V+LCC/N7t5+B0DPUnryKRlOVOlhXkU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx37xVsPQCoserMGNnkCMZwKc7LdzHQDEmzumzDXxYM+VR02kX3
-	gPc1mzaomFU/VFkgJ4/RsbqXHatobxolNPAxz1Dgg6dUf3nIjzRWjRM22qM40RN4wfoaEeLmolD
-	YmH8A2ASzEUJRig7wduvanutUNHv692tbt3t4wt+sogZqj6YlDA/w461Syg==
-X-Gm-Gg: AeBDietInMNOFG/66IGoMI8uVssA0rCwAkOEDEsE2BCRBqdz8IJg2ykySlXFJM41U3M
-	KlC+uOqWj3mRFysVhUL3ut2hj6bUTw10rWUUubmjdS7B0/l2Nex8oVQQ8Sm6JoV1QVFLzxQGWlY
-	MGIxwMO8+5jc+XG0ciAMGzWXOSWAngzKItKy2r0w2K/RK9iyvgSydZGbpMvuJINgY+PYfHZsqgs
-	I25jlfZegbkoOR4ykb8UhjisXJclcyZP6S34eYxrSv4jWlllSLojnJWTnV7Si+qfKRXxtrp4Jrg
-	0bGGdy/W/gCOV7Yi/jQNhGZvWQ0cJOww3gWvUQlu8hLTjHDNWqFM+VS3828qT5TkFywFQ2qubXU
-	7qSbJ4Jy9UPAI5ufSr5+kLmYvAbVrS1mbzc3zfZMNJvCm1w==
-X-Received: by 2002:a17:907:6ea7:b0:b9d:61c7:2343 with SMTP id a640c23a62f3a-b9d724ec21cmr740314466b.10.1776090191831;
-        Mon, 13 Apr 2026 07:23:11 -0700 (PDT)
-X-Received: by 2002:a17:907:6ea7:b0:b9d:61c7:2343 with SMTP id a640c23a62f3a-b9d724ec21cmr740293866b.10.1776090185535;
-        Mon, 13 Apr 2026 07:23:05 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9d6e5c544asm317593766b.33.2026.04.13.07.23.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Apr 2026 07:23:04 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-	id 0E5DD6448F2; Mon, 13 Apr 2026 16:23:04 +0200 (CEST)
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko
- <jiri@resnulli.us>, netdev@vger.kernel.org, eric.dumazet@gmail.com
-Subject: Re: [PATCH v3 net-next 13/15] net/sched: sch_cake: annotate
- data-races in cake_dump_stats()
-In-Reply-To: <CANn89iJbFUm5NF1Q6WnB17Ufdg8PyFX4msJLVVs4PKRz6XW6yw@mail.gmail.com>
-References: <20260410182257.774311-1-edumazet@google.com>
- <20260410182257.774311-14-edumazet@google.com> <87se8zcbcy.fsf@toke.dk>
- <CANn89iJbFUm5NF1Q6WnB17Ufdg8PyFX4msJLVVs4PKRz6XW6yw@mail.gmail.com>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date: Mon, 13 Apr 2026 16:23:04 +0200
-Message-ID: <87jyubc52v.fsf@toke.dk>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FNPSBEqy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B06E2C2BCAF;
+	Mon, 13 Apr 2026 14:26:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776090404;
+	bh=1MZND6bJkp684teTokHALQaNO0jbgoKDXwoMO9NTZKs=;
+	h=Date:Subject:To:References:From:Cc:In-Reply-To:From;
+	b=FNPSBEqyYqKaCRHmKDA9mDB7zo9qwtnfL+qUdo83ZhUBNQpRMcLGP0+WnmlHlNZtn
+	 YeDji4KomZBx94yw+2BgdxCoYbIK9mSYwkWMDNT0cszgrbCAsXcWrcqb/Q5AhDk2r/
+	 uGdR4vM1yh7sNGreus03m2gyx3Zm//aN0afYpEsjy4nc9cOnnnIuwNhtvwXB2DXc/+
+	 kCE7luIvyqMQ0DY13PXyMI1L0QdOkjv0JrmIIAPfWWJ/qWtuXw4sDMDosXkl5G+1x0
+	 Rge8BgNRK1ihU/C6JbFRjJnfaWu9pWXljw75PcrB/DC0lYjHXI7kCV69297M/W8FRI
+	 2Xqjy70+mMilQ==
+Message-ID: <af57d470-b4b4-4bb1-a2d9-57a7930063b1@kernel.org>
+Date: Mon, 13 Apr 2026 16:26:38 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [syzbot] [mptcp?] possible deadlock in mptcp_pm_nl_set_flags
+Content-Language: fr
+To: syzbot <syzbot+dfa28bb6444d8f169cbb@syzkaller.appspotmail.com>
+References: <69d90c16.050a0220.adfb3.000a.GAE@google.com>
+From: Matthieu Baerts <matttbe@kernel.org>
+Cc: davem@davemloft.net, edumazet@google.com, geliang@kernel.org,
+ horms@kernel.org, kuba@kernel.org, linux-kernel@vger.kernel.org,
+ martineau@kernel.org, mptcp@lists.linux.dev, netdev@vger.kernel.org,
+ pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <69d90c16.050a0220.adfb3.000a.GAE@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Eric Dumazet <edumazet@google.com> writes:
+Hello,
 
-> On Mon, Apr 13, 2026 at 5:07=E2=80=AFAM Toke H=C3=B8iland-J=C3=B8rgensen =
-<toke@redhat.com> wrote:
->>
->> Eric Dumazet <edumazet@google.com> writes:
->>
->> > cake_dump_stats() and cake_dump_class_stats() run without qdisc
->> > spinlock being held.
->> >
->> > Add READ_ONCE()/WRITE_ONCE() annotations.
->> >
->> > Fixes: 046f6fd5daef ("sched: Add Common Applications Kept Enhanced (ca=
-ke) qdisc")
->> > Signed-off-by: Eric Dumazet <edumazet@google.com>
->> > Cc: "Toke H=C3=B8iland-J=C3=B8rgensen" <toke@toke.dk>
->> > ---
->> >  net/sched/sch_cake.c | 404 ++++++++++++++++++++++++-------------------
->> >  1 file changed, 225 insertions(+), 179 deletions(-)
->>
->> One of these diffstats is not like the others - thanks for tackling this=
- :)
->>
->> A few nits below:
->>
->> > diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
->> > index 32e672820c00a88c6d8fe77a6308405e016525ea..f523f0aa4d830e9d3ec4d4=
-3bb123e1dc4f8f289d 100644
->> > --- a/net/sched/sch_cake.c
->> > +++ b/net/sched/sch_cake.c
->> > @@ -399,14 +399,14 @@ static void cake_configure_rates(struct Qdisc *s=
-ch, u64 rate, bool rate_adjust);
->> >   * Here, invsqrt is a fixed point number (< 1.0), 32bit mantissa, aka=
- Q0.32
->> >   */
->> >
->> > -static void cobalt_newton_step(struct cobalt_vars *vars)
->> > +static void cobalt_newton_step(struct cobalt_vars *vars, u32 count)
->> >  {
->> >       u32 invsqrt, invsqrt2;
->> >       u64 val;
->> >
->> >       invsqrt =3D vars->rec_inv_sqrt;
->> >       invsqrt2 =3D ((u64)invsqrt * invsqrt) >> 32;
->> > -     val =3D (3LL << 32) - ((u64)vars->count * invsqrt2);
->> > +     val =3D (3LL << 32) - ((u64)count * invsqrt2);
->> >
->> >       val >>=3D 2; /* avoid overflow in following multiply */
->> >       val =3D (val * invsqrt) >> (32 - 2 + 1);
->> > @@ -414,12 +414,12 @@ static void cobalt_newton_step(struct cobalt_var=
-s *vars)
->> >       vars->rec_inv_sqrt =3D val;
->> >  }
->> >
->> > -static void cobalt_invsqrt(struct cobalt_vars *vars)
->> > +static void cobalt_invsqrt(struct cobalt_vars *vars, u32 count)
->> >  {
->> > -     if (vars->count < REC_INV_SQRT_CACHE)
->> > -             vars->rec_inv_sqrt =3D inv_sqrt_cache[vars->count];
->> > +     if (count < REC_INV_SQRT_CACHE)
->> > +             vars->rec_inv_sqrt =3D inv_sqrt_cache[count];
->> >       else
->> > -             cobalt_newton_step(vars);
->> > +             cobalt_newton_step(vars, count);
->> >  }
->> >
->> >  static void cobalt_vars_init(struct cobalt_vars *vars)
->> > @@ -449,16 +449,19 @@ static bool cobalt_queue_full(struct cobalt_vars=
- *vars,
->> >       bool up =3D false;
->> >
->> >       if (ktime_to_ns(ktime_sub(now, vars->blue_timer)) > p->target) {
->> > -             up =3D !vars->p_drop;
->> > -             vars->p_drop +=3D p->p_inc;
->> > -             if (vars->p_drop < p->p_inc)
->> > -                     vars->p_drop =3D ~0;
->> > -             vars->blue_timer =3D now;
->> > -     }
->> > -     vars->dropping =3D true;
->> > -     vars->drop_next =3D now;
->> > +             u32 p_drop =3D vars->p_drop;
->> > +
->> > +             up =3D !p_drop;
->> > +             p_drop +=3D p->p_inc;
->> > +             if (p_drop < p->p_inc)
->> > +                     p_drop =3D ~0;
->> > +             WRITE_ONCE(vars->p_drop, p_drop);
->> > +             WRITE_ONCE(vars->blue_timer, now);
->> > +     }
->> > +     WRITE_ONCE(vars->dropping, true);
->> > +     WRITE_ONCE(vars->drop_next, now);
->> >       if (!vars->count)
->> > -             vars->count =3D 1;
->> > +             WRITE_ONCE(vars->count, 1);
->> >
->> >       return up;
->> >  }
->> > @@ -474,21 +477,25 @@ static bool cobalt_queue_empty(struct cobalt_var=
-s *vars,
->> >
->> >       if (vars->p_drop &&
->> >           ktime_to_ns(ktime_sub(now, vars->blue_timer)) > p->target) {
->> > -             if (vars->p_drop < p->p_dec)
->> > -                     vars->p_drop =3D 0;
->> > +             u32 p_drop =3D vars->p_drop;
->> > +
->> > +             if (p_drop < p->p_dec)
->> > +                     p_drop =3D 0;
->> >               else
->> > -                     vars->p_drop -=3D p->p_dec;
->> > -             vars->blue_timer =3D now;
->> > -             down =3D !vars->p_drop;
->> > +                     p_drop -=3D p->p_dec;
->> > +             WRITE_ONCE(vars->p_drop, p_drop);
->> > +             WRITE_ONCE(vars->blue_timer, now);
->> > +             down =3D !p_drop;
->> >       }
->> > -     vars->dropping =3D false;
->> > +     WRITE_ONCE(vars->dropping, false);
->> >
->> >       if (vars->count && ktime_to_ns(ktime_sub(now, vars->drop_next)) =
->=3D 0) {
->> > -             vars->count--;
->> > -             cobalt_invsqrt(vars);
->> > -             vars->drop_next =3D cobalt_control(vars->drop_next,
->> > -                                              p->interval,
->> > -                                              vars->rec_inv_sqrt);
->> > +             WRITE_ONCE(vars->count, vars->count - 1);
->> > +             cobalt_invsqrt(vars, vars->count);
->> > +             WRITE_ONCE(vars->drop_next,
->> > +                        cobalt_control(vars->drop_next,
->> > +                                       p->interval,
->> > +                                       vars->rec_inv_sqrt));
->> >       }
->> >
->> >       return down;
->> > @@ -507,6 +514,7 @@ static enum qdisc_drop_reason cobalt_should_drop(s=
-truct cobalt_vars *vars,
->> >       bool next_due, over_target;
->> >       ktime_t schedule;
->> >       u64 sojourn;
->> > +     u32 count;
->> >
->> >  /* The 'schedule' variable records, in its sign, whether 'now' is bef=
-ore or
->> >   * after 'drop_next'.  This allows 'drop_next' to be updated before t=
-he next
->> > @@ -528,45 +536,50 @@ static enum qdisc_drop_reason cobalt_should_drop=
-(struct cobalt_vars *vars,
->> >       over_target =3D sojourn > p->target &&
->> >                     sojourn > p->mtu_time * bulk_flows * 2 &&
->> >                     sojourn > p->mtu_time * 4;
->> > -     next_due =3D vars->count && ktime_to_ns(schedule) >=3D 0;
->> > +     count =3D vars->count;
->> > +     next_due =3D count && ktime_to_ns(schedule) >=3D 0;
->> >
->> >       vars->ecn_marked =3D false;
->> >
->> >       if (over_target) {
->> >               if (!vars->dropping) {
->> > -                     vars->dropping =3D true;
->> > -                     vars->drop_next =3D cobalt_control(now,
->> > -                                                      p->interval,
->> > -                                                      vars->rec_inv_s=
-qrt);
->> > +                     WRITE_ONCE(vars->dropping, true);
->> > +                     WRITE_ONCE(vars->drop_next,
->> > +                                cobalt_control(now,
->> > +                                               p->interval,
->> > +                                               vars->rec_inv_sqrt));
->> >               }
->> > -             if (!vars->count)
->> > -                     vars->count =3D 1;
->> > +             if (!count)
->> > +                     count =3D 1;
->> >       } else if (vars->dropping) {
->> > -             vars->dropping =3D false;
->> > +             WRITE_ONCE(vars->dropping, false);
->> >       }
->> >
->> >       if (next_due && vars->dropping) {
->> >               /* Use ECN mark if possible, otherwise drop */
->> > -             if (!(vars->ecn_marked =3D INET_ECN_set_ce(skb)))
->> > +             vars->ecn_marked =3D INET_ECN_set_ce(skb);
->> > +             if (!vars->ecn_marked)
->> >                       reason =3D QDISC_DROP_CONGESTED;
->> >
->> > -             vars->count++;
->> > -             if (!vars->count)
->> > -                     vars->count--;
->> > -             cobalt_invsqrt(vars);
->> > -             vars->drop_next =3D cobalt_control(vars->drop_next,
->> > -                                              p->interval,
->> > -                                              vars->rec_inv_sqrt);
->> > +             count++;
->> > +             if (!count)
->> > +                     count--;
->> > +             cobalt_invsqrt(vars, count);
->> > +             WRITE_ONCE(vars->drop_next,
->> > +                        cobalt_control(vars->drop_next,
->> > +                                       p->interval,
->> > +                                       vars->rec_inv_sqrt));
->> >               schedule =3D ktime_sub(now, vars->drop_next);
->> >       } else {
->> >               while (next_due) {
->> > -                     vars->count--;
->> > -                     cobalt_invsqrt(vars);
->> > -                     vars->drop_next =3D cobalt_control(vars->drop_ne=
-xt,
->> > -                                                      p->interval,
->> > -                                                      vars->rec_inv_s=
-qrt);
->> > +                     count--;
->> > +                     cobalt_invsqrt(vars, count);
->> > +                     WRITE_ONCE(vars->drop_next,
->> > +                                cobalt_control(vars->drop_next,
->> > +                                               p->interval,
->> > +                                               vars->rec_inv_sqrt));
->> >                       schedule =3D ktime_sub(now, vars->drop_next);
->> > -                     next_due =3D vars->count && ktime_to_ns(schedule=
-) >=3D 0;
->> > +                     next_due =3D count && ktime_to_ns(schedule) >=3D=
- 0;
->> >               }
->> >       }
->> >
->> > @@ -575,11 +588,12 @@ static enum qdisc_drop_reason cobalt_should_drop=
-(struct cobalt_vars *vars,
->> >           get_random_u32() < vars->p_drop)
->> >               reason =3D QDISC_DROP_FLOOD_PROTECTION;
->> >
->> > +     WRITE_ONCE(vars->count, count);
->> >       /* Overload the drop_next field as an activity timeout */
->> > -     if (!vars->count)
->> > -             vars->drop_next =3D ktime_add_ns(now, p->interval);
->> > +     if (count)
->>
->> This seems to reverse the conditional?
->
-> Ah right, thanks !
->
->>
->> > +             WRITE_ONCE(vars->drop_next, ktime_add_ns(now, p->interva=
-l));
->> >       else if (ktime_to_ns(schedule) > 0 && reason =3D=3D QDISC_DROP_U=
-NSPEC)
->> > -             vars->drop_next =3D now;
->> > +             WRITE_ONCE(vars->drop_next, now);
->> >
->> >       return reason;
->> >  }
->> > @@ -813,7 +827,7 @@ static u32 cake_hash(struct cake_tin_data *q, cons=
-t struct sk_buff *skb,
->> >                    i++, k =3D (k + 1) % CAKE_SET_WAYS) {
->> >                       if (q->tags[outer_hash + k] =3D=3D flow_hash) {
->> >                               if (i)
->> > -                                     q->way_hits++;
->> > +                                     WRITE_ONCE(q->way_hits, q->way_h=
-its + 1);
->> >
->> >                               if (!q->flows[outer_hash + k].set) {
->> >                                       /* need to increment host refcnt=
-s */
->> > @@ -831,7 +845,7 @@ static u32 cake_hash(struct cake_tin_data *q, cons=
-t struct sk_buff *skb,
->> >               for (i =3D 0; i < CAKE_SET_WAYS;
->> >                        i++, k =3D (k + 1) % CAKE_SET_WAYS) {
->> >                       if (!q->flows[outer_hash + k].set) {
->> > -                             q->way_misses++;
->> > +                             WRITE_ONCE(q->way_misses, q->way_misses =
-+ 1);
->> >                               allocate_src =3D cake_dsrc(flow_mode);
->> >                               allocate_dst =3D cake_ddst(flow_mode);
->> >                               goto found;
->> > @@ -841,7 +855,7 @@ static u32 cake_hash(struct cake_tin_data *q, cons=
-t struct sk_buff *skb,
->> >               /* With no empty queues, default to the original
->> >                * queue, accept the collision, update the host tags.
->> >                */
->> > -             q->way_collisions++;
->> > +             WRITE_ONCE(q->way_collisions, q->way_collisions + 1);
->> >               allocate_src =3D cake_dsrc(flow_mode);
->> >               allocate_dst =3D cake_ddst(flow_mode);
->> >
->> > @@ -875,7 +889,8 @@ static u32 cake_hash(struct cake_tin_data *q, cons=
-t struct sk_buff *skb,
->> >                       q->flows[reduced_hash].srchost =3D srchost_idx;
->> >
->> >                       if (q->flows[reduced_hash].set =3D=3D CAKE_SET_B=
-ULK)
->> > -                             cake_inc_srchost_bulk_flow_count(q, &q->=
-flows[reduced_hash], flow_mode);
->> > +                             cake_inc_srchost_bulk_flow_count(q, &q->=
-flows[reduced_hash],
->> > +                                                              flow_mo=
-de);
->> >               }
->> >
->> >               if (allocate_dst) {
->> > @@ -899,7 +914,8 @@ static u32 cake_hash(struct cake_tin_data *q, cons=
-t struct sk_buff *skb,
->> >                       q->flows[reduced_hash].dsthost =3D dsthost_idx;
->> >
->> >                       if (q->flows[reduced_hash].set =3D=3D CAKE_SET_B=
-ULK)
->> > -                             cake_inc_dsthost_bulk_flow_count(q, &q->=
-flows[reduced_hash], flow_mode);
->> > +                             cake_inc_dsthost_bulk_flow_count(q, &q->=
-flows[reduced_hash],
->> > +                                                              flow_mo=
-de);
->> >               }
->> >       }
->> >
->> > @@ -1379,9 +1395,9 @@ static u32 cake_calc_overhead(struct cake_sched_=
-data *qd, u32 len, u32 off)
->> >               len -=3D off;
->> >
->> >       if (qd->max_netlen < len)
->> > -             qd->max_netlen =3D len;
->> > +             WRITE_ONCE(qd->max_netlen, len);
->> >       if (qd->min_netlen > len)
->> > -             qd->min_netlen =3D len;
->> > +             WRITE_ONCE(qd->min_netlen, len);
->> >
->> >       len +=3D q->rate_overhead;
->> >
->> > @@ -1401,9 +1417,9 @@ static u32 cake_calc_overhead(struct cake_sched_=
-data *qd, u32 len, u32 off)
->> >       }
->> >
->> >       if (qd->max_adjlen < len)
->> > -             qd->max_adjlen =3D len;
->> > +             WRITE_ONCE(qd->max_adjlen, len);
->> >       if (qd->min_adjlen > len)
->> > -             qd->min_adjlen =3D len;
->> > +             WRITE_ONCE(qd->min_adjlen, len);
->> >
->> >       return len;
->> >  }
->> > @@ -1416,7 +1432,7 @@ static u32 cake_overhead(struct cake_sched_data =
-*q, const struct sk_buff *skb)
->> >       u16 segs =3D qdisc_pkt_segs(skb);
->> >       u32 len =3D qdisc_pkt_len(skb);
->> >
->> > -     q->avg_netoff =3D cake_ewma(q->avg_netoff, off << 16, 8);
->> > +     WRITE_ONCE(q->avg_netoff, cake_ewma(q->avg_netoff, off << 16, 8)=
-);
->> >
->> >       if (segs =3D=3D 1)
->> >               return cake_calc_overhead(q, len, off);
->> > @@ -1590,16 +1606,17 @@ static unsigned int cake_drop(struct Qdisc *sc=
-h, struct sk_buff **to_free)
->> >       }
->> >
->> >       if (cobalt_queue_full(&flow->cvars, &b->cparams, now))
->> > -             b->unresponsive_flow_count++;
->> > +             WRITE_ONCE(b->unresponsive_flow_count,
->> > +                        b->unresponsive_flow_count + 1);
->> >
->> >       len =3D qdisc_pkt_len(skb);
->> >       q->buffer_used      -=3D skb->truesize;
->> > -     b->backlogs[idx]    -=3D len;
->> > -     b->tin_backlog      -=3D len;
->> > +     WRITE_ONCE(b->backlogs[idx], b->backlogs[idx] - len);
->> > +     WRITE_ONCE(b->tin_backlog, b->tin_backlog - len);
->> >       qstats_backlog_sub(sch, len);
->> >
->> > -     flow->dropped++;
->> > -     b->tin_dropped++;
->> > +     WRITE_ONCE(flow->dropped, flow->dropped + 1);
->> > +     WRITE_ONCE(b->tin_dropped, b->tin_dropped + 1);
->> >
->> >       if (q->config->rate_flags & CAKE_FLAG_INGRESS)
->> >               cake_advance_shaper(q, b, skb, now, true);
->> > @@ -1795,7 +1812,7 @@ static s32 cake_enqueue(struct sk_buff *skb, str=
-uct Qdisc *sch,
->> >       }
->> >
->> >       if (unlikely(len > b->max_skblen))
->> > -             b->max_skblen =3D len;
->> > +             WRITE_ONCE(b->max_skblen, len);
->> >
->> >       if (qdisc_pkt_segs(skb) > 1 && q->config->rate_flags & CAKE_FLAG=
-_SPLIT_GSO) {
->> >               struct sk_buff *segs, *nskb;
->> > @@ -1819,13 +1836,13 @@ static s32 cake_enqueue(struct sk_buff *skb, s=
-truct Qdisc *sch,
->> >                       numsegs++;
->> >                       slen +=3D segs->len;
->> >                       q->buffer_used +=3D segs->truesize;
->> > -                     b->packets++;
->>
->> Right above this hunk we do sch->q.qlen++; - does that need changing as
->> well?
->
-> This was changed to qdisc_qlen_inc() in a prior commit in this series.
-> ( net/sched: add qdisc_qlen_inc() and qdisc_qlen_dec() )
+On 10/04/2026 16:41, syzbot wrote:
+> Hello,
+> 
+> syzbot found the following issue on:
+> 
+> HEAD commit:    591cd656a1bf Linux 7.0-rc7
+> git tree:       upstream
+> console output: https://syzkaller.appspot.com/x/log.txt?x=1779ce06580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=5a3e5e8c17cc174e
+> dashboard link: https://syzkaller.appspot.com/bug?extid=dfa28bb6444d8f169cbb
+> compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+> 
+> Unfortunately, I don't have any reproducer for this issue yet.
+> 
+> Downloadable assets:
+> disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-591cd656.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/3e99d0e29df0/vmlinux-591cd656.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/5877fee0a056/bzImage-591cd656.xz
+> 
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+dfa28bb6444d8f169cbb@syzkaller.appspotmail.com
+> 
+> netlink: 8 bytes leftover after parsing attributes in process `syz.8.6915'.
+> netlink: 8 bytes leftover after parsing attributes in process `syz.8.6915'.
+> ======================================================
+> WARNING: possible circular locking dependency detected
+> syzkaller #0 Tainted: G             L     
+> ------------------------------------------------------
+> syz.8.6915/29783 is trying to acquire lock:
+> ffffffff8e9ab8a0 (fs_reclaim){+.+.}-{0:0}, at: might_alloc include/linux/sched/mm.h:317 [inline]
+> ffffffff8e9ab8a0 (fs_reclaim){+.+.}-{0:0}, at: slab_pre_alloc_hook mm/slub.c:4489 [inline]
+> ffffffff8e9ab8a0 (fs_reclaim){+.+.}-{0:0}, at: slab_alloc_node mm/slub.c:4843 [inline]
+> ffffffff8e9ab8a0 (fs_reclaim){+.+.}-{0:0}, at: kmem_cache_alloc_lru_noprof+0x51/0x6e0 mm/slub.c:4885
+> 
+> but task is already holding lock:
+> ffff888034761ae0 (sk_lock-AF_INET){+.+.}-{0:0}, at: lock_sock include/net/sock.h:1709 [inline]
+> ffff888034761ae0 (sk_lock-AF_INET){+.+.}-{0:0}, at: mptcp_pm_nl_set_flags_all net/mptcp/pm_kernel.c:1482 [inline]
+> ffff888034761ae0 (sk_lock-AF_INET){+.+.}-{0:0}, at: mptcp_pm_nl_set_flags+0x605/0xd30 net/mptcp/pm_kernel.c:1551
+> 
+> which lock already depends on the new lock.
+> 
+> 
+> the existing dependency chain (in reverse order) is:
+> 
+> -> #6 (sk_lock-AF_INET){+.+.}-{0:0}:
+>        lock_sock_nested+0x41/0xf0 net/core/sock.c:3780
+>        lock_sock include/net/sock.h:1709 [inline]
+>        inet_shutdown+0x67/0x410 net/ipv4/af_inet.c:919
+>        nbd_mark_nsock_dead+0xae/0x5c0 drivers/block/nbd.c:318
+>        recv_work+0x5fb/0x8c0 drivers/block/nbd.c:1021
+>        process_one_work+0xa23/0x19a0 kernel/workqueue.c:3276
+>        process_scheduled_works kernel/workqueue.c:3359 [inline]
+>        worker_thread+0x5ef/0xe50 kernel/workqueue.c:3440
+>        kthread+0x370/0x450 kernel/kthread.c:436
+>        ret_from_fork+0x754/0xd80 arch/x86/kernel/process.c:158
+>        ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+> 
+> -> #5 (&nsock->tx_lock){+.+.}-{4:4}:
+>        __mutex_lock_common kernel/locking/mutex.c:614 [inline]
+>        __mutex_lock+0x1a2/0x1b90 kernel/locking/mutex.c:776
+>        nbd_handle_cmd drivers/block/nbd.c:1143 [inline]
+>        nbd_queue_rq+0x428/0x1080 drivers/block/nbd.c:1207
+>        blk_mq_dispatch_rq_list+0x422/0x1e70 block/blk-mq.c:2148
+>        __blk_mq_do_dispatch_sched block/blk-mq-sched.c:168 [inline]
+>        blk_mq_do_dispatch_sched block/blk-mq-sched.c:182 [inline]
+>        __blk_mq_sched_dispatch_requests+0xcea/0x1620 block/blk-mq-sched.c:307
+>        blk_mq_sched_dispatch_requests+0xd7/0x1c0 block/blk-mq-sched.c:329
+>        blk_mq_run_hw_queue+0x23c/0x670 block/blk-mq.c:2386
+>        blk_mq_dispatch_list+0x51d/0x1360 block/blk-mq.c:2949
+>        blk_mq_flush_plug_list block/blk-mq.c:2997 [inline]
+>        blk_mq_flush_plug_list+0x130/0x600 block/blk-mq.c:2969
+>        __blk_flush_plug+0x2c4/0x4b0 block/blk-core.c:1230
+>        blk_finish_plug block/blk-core.c:1257 [inline]
+>        __submit_bio+0x584/0x6c0 block/blk-core.c:649
+>        __submit_bio_noacct_mq block/blk-core.c:722 [inline]
+>        submit_bio_noacct_nocheck+0x562/0xc10 block/blk-core.c:753
+>        submit_bio_noacct+0xd17/0x2010 block/blk-core.c:884
+>        blk_crypto_submit_bio include/linux/blk-crypto.h:203 [inline]
+>        submit_bh_wbc+0x59c/0x770 fs/buffer.c:2821
+>        submit_bh fs/buffer.c:2826 [inline]
+>        block_read_full_folio+0x4c8/0x8e0 fs/buffer.c:2458
+>        filemap_read_folio+0xfc/0x3b0 mm/filemap.c:2501
+>        do_read_cache_folio+0x2d7/0x6b0 mm/filemap.c:4101
+>        read_mapping_folio include/linux/pagemap.h:1017 [inline]
+>        read_part_sector+0xd1/0x370 block/partitions/core.c:723
+>        adfspart_check_ICS+0x93/0x910 block/partitions/acorn.c:360
+>        check_partition block/partitions/core.c:142 [inline]
+>        blk_add_partitions block/partitions/core.c:590 [inline]
+>        bdev_disk_changed+0x7f8/0xc80 block/partitions/core.c:694
+>        blkdev_get_whole+0x187/0x290 block/bdev.c:764
+>        bdev_open+0x2c7/0xe40 block/bdev.c:973
+>        blkdev_open+0x34e/0x4f0 block/fops.c:697
+>        do_dentry_open+0x6d8/0x1660 fs/open.c:949
+>        vfs_open+0x82/0x3f0 fs/open.c:1081
+>        do_open fs/namei.c:4677 [inline]
+>        path_openat+0x208c/0x31a0 fs/namei.c:4836
+>        do_file_open+0x20e/0x430 fs/namei.c:4865
+>        do_sys_openat2+0x10d/0x1e0 fs/open.c:1366
+>        do_sys_open fs/open.c:1372 [inline]
+>        __do_sys_openat fs/open.c:1388 [inline]
+>        __se_sys_openat fs/open.c:1383 [inline]
+>        __x64_sys_openat+0x12d/0x210 fs/open.c:1383
+>        do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+>        do_syscall_64+0x106/0xf80 arch/x86/entry/syscall_64.c:94
+>        entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> 
+> -> #4 (&cmd->lock){+.+.}-{4:4}:
+>        __mutex_lock_common kernel/locking/mutex.c:614 [inline]
+>        __mutex_lock+0x1a2/0x1b90 kernel/locking/mutex.c:776
+>        nbd_queue_rq+0xba/0x1080 drivers/block/nbd.c:1199
+>        blk_mq_dispatch_rq_list+0x422/0x1e70 block/blk-mq.c:2148
+>        __blk_mq_do_dispatch_sched block/blk-mq-sched.c:168 [inline]
+>        blk_mq_do_dispatch_sched block/blk-mq-sched.c:182 [inline]
+>        __blk_mq_sched_dispatch_requests+0xcea/0x1620 block/blk-mq-sched.c:307
+>        blk_mq_sched_dispatch_requests+0xd7/0x1c0 block/blk-mq-sched.c:329
+>        blk_mq_run_hw_queue+0x23c/0x670 block/blk-mq.c:2386
+>        blk_mq_dispatch_list+0x51d/0x1360 block/blk-mq.c:2949
+>        blk_mq_flush_plug_list block/blk-mq.c:2997 [inline]
+>        blk_mq_flush_plug_list+0x130/0x600 block/blk-mq.c:2969
+>        __blk_flush_plug+0x2c4/0x4b0 block/blk-core.c:1230
+>        blk_finish_plug block/blk-core.c:1257 [inline]
+>        __submit_bio+0x584/0x6c0 block/blk-core.c:649
+>        __submit_bio_noacct_mq block/blk-core.c:722 [inline]
+>        submit_bio_noacct_nocheck+0x562/0xc10 block/blk-core.c:753
+>        submit_bio_noacct+0xd17/0x2010 block/blk-core.c:884
+>        blk_crypto_submit_bio include/linux/blk-crypto.h:203 [inline]
+>        submit_bh_wbc+0x59c/0x770 fs/buffer.c:2821
+>        submit_bh fs/buffer.c:2826 [inline]
+>        block_read_full_folio+0x4c8/0x8e0 fs/buffer.c:2458
+>        filemap_read_folio+0xfc/0x3b0 mm/filemap.c:2501
+>        do_read_cache_folio+0x2d7/0x6b0 mm/filemap.c:4101
+>        read_mapping_folio include/linux/pagemap.h:1017 [inline]
+>        read_part_sector+0xd1/0x370 block/partitions/core.c:723
+>        adfspart_check_ICS+0x93/0x910 block/partitions/acorn.c:360
+>        check_partition block/partitions/core.c:142 [inline]
+>        blk_add_partitions block/partitions/core.c:590 [inline]
+>        bdev_disk_changed+0x7f8/0xc80 block/partitions/core.c:694
+>        blkdev_get_whole+0x187/0x290 block/bdev.c:764
+>        bdev_open+0x2c7/0xe40 block/bdev.c:973
+>        blkdev_open+0x34e/0x4f0 block/fops.c:697
+>        do_dentry_open+0x6d8/0x1660 fs/open.c:949
+>        vfs_open+0x82/0x3f0 fs/open.c:1081
+>        do_open fs/namei.c:4677 [inline]
+>        path_openat+0x208c/0x31a0 fs/namei.c:4836
+>        do_file_open+0x20e/0x430 fs/namei.c:4865
+>        do_sys_openat2+0x10d/0x1e0 fs/open.c:1366
+>        do_sys_open fs/open.c:1372 [inline]
+>        __do_sys_openat fs/open.c:1388 [inline]
+>        __se_sys_openat fs/open.c:1383 [inline]
+>        __x64_sys_openat+0x12d/0x210 fs/open.c:1383
+>        do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+>        do_syscall_64+0x106/0xf80 arch/x86/entry/syscall_64.c:94
+>        entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> 
+> -> #3 (set->srcu){.+.+}-{0:0}:
+>        srcu_lock_sync include/linux/srcu.h:199 [inline]
+>        __synchronize_srcu+0xa2/0x300 kernel/rcu/srcutree.c:1481
+>        blk_mq_wait_quiesce_done block/blk-mq.c:284 [inline]
+>        blk_mq_wait_quiesce_done block/blk-mq.c:281 [inline]
+>        blk_mq_quiesce_queue block/blk-mq.c:304 [inline]
+>        blk_mq_quiesce_queue+0x149/0x1c0 block/blk-mq.c:299
+>        elevator_switch+0x17b/0x7e0 block/elevator.c:576
+>        elevator_change+0x352/0x530 block/elevator.c:681
+>        elevator_set_default+0x29e/0x360 block/elevator.c:754
+>        blk_register_queue+0x412/0x590 block/blk-sysfs.c:946
+>        __add_disk+0x73f/0xe40 block/genhd.c:528
+>        add_disk_fwnode+0x118/0x5c0 block/genhd.c:597
+>        add_disk include/linux/blkdev.h:785 [inline]
+>        nbd_dev_add+0x77a/0xb10 drivers/block/nbd.c:1984
+>        nbd_init+0x291/0x2b0 drivers/block/nbd.c:2692
+>        do_one_initcall+0x11d/0x760 init/main.c:1382
+>        do_initcall_level init/main.c:1444 [inline]
+>        do_initcalls init/main.c:1460 [inline]
+>        do_basic_setup init/main.c:1479 [inline]
+>        kernel_init_freeable+0x6e5/0x7a0 init/main.c:1692
+>        kernel_init+0x1f/0x1e0 init/main.c:1582
+>        ret_from_fork+0x754/0xd80 arch/x86/kernel/process.c:158
+>        ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+> 
+> -> #2 (&q->elevator_lock){+.+.}-{4:4}:
+>        __mutex_lock_common kernel/locking/mutex.c:614 [inline]
+>        __mutex_lock+0x1a2/0x1b90 kernel/locking/mutex.c:776
+>        elevator_change+0x1bc/0x530 block/elevator.c:679
+>        elevator_set_none+0x92/0xf0 block/elevator.c:769
+>        blk_mq_elv_switch_none block/blk-mq.c:5110 [inline]
+>        __blk_mq_update_nr_hw_queues block/blk-mq.c:5155 [inline]
+>        blk_mq_update_nr_hw_queues+0x4c1/0x15f0 block/blk-mq.c:5220
+>        nbd_start_device+0x1a6/0xbd0 drivers/block/nbd.c:1489
+>        nbd_genl_connect+0xff2/0x1a40 drivers/block/nbd.c:2239
+>        genl_family_rcv_msg_doit+0x214/0x300 net/netlink/genetlink.c:1114
+>        genl_family_rcv_msg net/netlink/genetlink.c:1194 [inline]
+>        genl_rcv_msg+0x560/0x800 net/netlink/genetlink.c:1209
+>        netlink_rcv_skb+0x159/0x420 net/netlink/af_netlink.c:2550
+>        genl_rcv+0x28/0x40 net/netlink/genetlink.c:1218
+>        netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
+>        netlink_unicast+0x5aa/0x870 net/netlink/af_netlink.c:1344
+>        netlink_sendmsg+0x8b0/0xda0 net/netlink/af_netlink.c:1894
+>        sock_sendmsg_nosec net/socket.c:727 [inline]
+>        __sock_sendmsg net/socket.c:742 [inline]
+>        ____sys_sendmsg+0x9e1/0xb70 net/socket.c:2592
+>        ___sys_sendmsg+0x190/0x1e0 net/socket.c:2646
+>        __sys_sendmsg+0x170/0x220 net/socket.c:2678
+>        do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+>        do_syscall_64+0x106/0xf80 arch/x86/entry/syscall_64.c:94
+>        entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> 
+> -> #1 (&q->q_usage_counter(io)#51){++++}-{0:0}:
+>        blk_alloc_queue+0x610/0x790 block/blk-core.c:461
+>        blk_mq_alloc_queue+0x174/0x290 block/blk-mq.c:4429
+>        __blk_mq_alloc_disk+0x29/0x120 block/blk-mq.c:4476
+>        nbd_dev_add+0x492/0xb10 drivers/block/nbd.c:1954
+>        nbd_init+0x291/0x2b0 drivers/block/nbd.c:2692
+>        do_one_initcall+0x11d/0x760 init/main.c:1382
+>        do_initcall_level init/main.c:1444 [inline]
+>        do_initcalls init/main.c:1460 [inline]
+>        do_basic_setup init/main.c:1479 [inline]
+>        kernel_init_freeable+0x6e5/0x7a0 init/main.c:1692
+>        kernel_init+0x1f/0x1e0 init/main.c:1582
+>        ret_from_fork+0x754/0xd80 arch/x86/kernel/process.c:158
+>        ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+> 
+> -> #0 (fs_reclaim){+.+.}-{0:0}:
+>        check_prev_add kernel/locking/lockdep.c:3165 [inline]
+>        check_prevs_add kernel/locking/lockdep.c:3284 [inline]
+>        validate_chain kernel/locking/lockdep.c:3908 [inline]
+>        __lock_acquire+0x14b8/0x2630 kernel/locking/lockdep.c:5237
+>        lock_acquire kernel/locking/lockdep.c:5868 [inline]
+>        lock_acquire+0x1cf/0x380 kernel/locking/lockdep.c:5825
+>        __fs_reclaim_acquire mm/page_alloc.c:4348 [inline]
+>        fs_reclaim_acquire+0xc4/0x100 mm/page_alloc.c:4362
+>        might_alloc include/linux/sched/mm.h:317 [inline]
+>        slab_pre_alloc_hook mm/slub.c:4489 [inline]
+>        slab_alloc_node mm/slub.c:4843 [inline]
+>        kmem_cache_alloc_lru_noprof+0x51/0x6e0 mm/slub.c:4885
+>        sock_alloc_inode+0x25/0x1c0 net/socket.c:322
+>        alloc_inode+0x68/0x250 fs/inode.c:347
+>        new_inode_pseudo include/linux/fs.h:3003 [inline]
+>        sock_alloc+0x44/0x280 net/socket.c:637
+>        __sock_create+0xc2/0x860 net/socket.c:1569
+>        mptcp_subflow_create_socket+0xec/0xa30 net/mptcp/subflow.c:1790
+>        __mptcp_subflow_connect+0x3c6/0x1480 net/mptcp/subflow.c:1631
+>        mptcp_pm_create_subflow_or_signal_addr+0xc3e/0x18d0 net/mptcp/pm_kernel.c:416
+>        mptcp_pm_nl_fullmesh net/mptcp/pm_kernel.c:1460 [inline]
+>        mptcp_pm_nl_set_flags_all net/mptcp/pm_kernel.c:1487 [inline]
+>        mptcp_pm_nl_set_flags+0x814/0xd30 net/mptcp/pm_kernel.c:1551
+>        mptcp_pm_set_flags net/mptcp/pm_netlink.c:277 [inline]
+>        mptcp_pm_nl_set_flags_doit+0x1b0/0x290 net/mptcp/pm_netlink.c:282
+>        genl_family_rcv_msg_doit+0x214/0x300 net/netlink/genetlink.c:1114
+>        genl_family_rcv_msg net/netlink/genetlink.c:1194 [inline]
+>        genl_rcv_msg+0x560/0x800 net/netlink/genetlink.c:1209
+>        netlink_rcv_skb+0x159/0x420 net/netlink/af_netlink.c:2550
+>        genl_rcv+0x28/0x40 net/netlink/genetlink.c:1218
+>        netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
+>        netlink_unicast+0x5aa/0x870 net/netlink/af_netlink.c:1344
+>        netlink_sendmsg+0x8b0/0xda0 net/netlink/af_netlink.c:1894
+>        sock_sendmsg_nosec net/socket.c:727 [inline]
+>        __sock_sendmsg net/socket.c:742 [inline]
+>        ____sys_sendmsg+0x9e1/0xb70 net/socket.c:2592
+>        ___sys_sendmsg+0x190/0x1e0 net/socket.c:2646
+>        __sys_sendmsg+0x170/0x220 net/socket.c:2678
+>        do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+>        do_syscall_64+0x106/0xf80 arch/x86/entry/syscall_64.c:94
+>        entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> 
+> other info that might help us debug this:
+> 
+> Chain exists of:
+>   fs_reclaim --> &nsock->tx_lock --> sk_lock-AF_INET
+> 
+>  Possible unsafe locking scenario:
+> 
+>        CPU0                    CPU1
+>        ----                    ----
+>   lock(sk_lock-AF_INET);
+>                                lock(&nsock->tx_lock);
+>                                lock(sk_lock-AF_INET);
+>   lock(fs_reclaim);
+> 
+>  *** DEADLOCK ***
 
-Ah, right, missed that; sorry!
+Same here, if I'm not mistaken, it looks like this issue is also due to
+nbd introducing a lockdep dependency between reclaim and af_socket, and
+this is similar to a previous report:
 
->>
->> >               }
->> >
->> >               /* stats */
->> > -             b->bytes            +=3D slen;
->> > -             b->backlogs[idx]    +=3D slen;
->> > -             b->tin_backlog      +=3D slen;
->> > +             WRITE_ONCE(b->bytes, b->bytes + slen);
->> > +             WRITE_ONCE(b->packets, b->packets + numsegs);
->> > +             WRITE_ONCE(b->backlogs[idx], b->backlogs[idx] + slen);
->> > +             WRITE_ONCE(b->tin_backlog, b->tin_backlog + slen);
->> >               qstats_backlog_add(sch, slen);
->> >               q->avg_window_bytes +=3D slen;
->> >
->> > @@ -1843,10 +1860,10 @@ static s32 cake_enqueue(struct sk_buff *skb, s=
-truct Qdisc *sch,
->> >                       ack =3D cake_ack_filter(q, flow);
->> >
->> >               if (ack) {
->> > -                     b->ack_drops++;
->> > +                     WRITE_ONCE(b->ack_drops, b->ack_drops + 1);
->> >                       qdisc_qstats_drop(sch);
->> >                       ack_pkt_len =3D qdisc_pkt_len(ack);
->> > -                     b->bytes +=3D ack_pkt_len;
->> > +                     WRITE_ONCE(b->bytes, b->bytes + ack_pkt_len);
->> >                       q->buffer_used +=3D skb->truesize - ack->truesiz=
-e;
->> >                       if (q->config->rate_flags & CAKE_FLAG_INGRESS)
->> >                               cake_advance_shaper(q, b, ack, now, true=
-);
->> > @@ -1859,10 +1876,10 @@ static s32 cake_enqueue(struct sk_buff *skb, s=
-truct Qdisc *sch,
->> >               }
->> >
->> >               /* stats */
->> > -             b->packets++;
->> > -             b->bytes            +=3D len - ack_pkt_len;
->> > -             b->backlogs[idx]    +=3D len - ack_pkt_len;
->> > -             b->tin_backlog      +=3D len - ack_pkt_len;
->> > +             WRITE_ONCE(b->packets, b->packets + 1);
->> > +             WRITE_ONCE(b->bytes, b->bytes + len - ack_pkt_len);
->> > +             WRITE_ONCE(b->backlogs[idx], b->backlogs[idx] + len - ac=
-k_pkt_len);
->> > +             WRITE_ONCE(b->tin_backlog, b->tin_backlog + len - ack_pk=
-t_len);
->> >               qstats_backlog_add(sch, len - ack_pkt_len);
->> >               q->avg_window_bytes +=3D len - ack_pkt_len;
->> >       }
->> > @@ -1894,9 +1911,9 @@ static s32 cake_enqueue(struct sk_buff *skb, str=
-uct Qdisc *sch,
->> >                       u64 b =3D q->avg_window_bytes * (u64)NSEC_PER_SE=
-C;
->> >
->> >                       b =3D div64_u64(b, window_interval);
->> > -                     q->avg_peak_bandwidth =3D
->> > -                             cake_ewma(q->avg_peak_bandwidth, b,
->> > -                                       b > q->avg_peak_bandwidth ? 2 =
-: 8);
->> > +                     WRITE_ONCE(q->avg_peak_bandwidth,
->> > +                                cake_ewma(q->avg_peak_bandwidth, b,
->> > +                                          b > q->avg_peak_bandwidth ?=
- 2 : 8));
->> >                       q->avg_window_bytes =3D 0;
->> >                       q->avg_window_begin =3D now;
->> >
->> > @@ -1917,27 +1934,30 @@ static s32 cake_enqueue(struct sk_buff *skb, s=
-truct Qdisc *sch,
->> >               if (!flow->set) {
->> >                       list_add_tail(&flow->flowchain, &b->new_flows);
->> >               } else {
->> > -                     b->decaying_flow_count--;
->> > +                     WRITE_ONCE(b->decaying_flow_count,
->> > +                                b->decaying_flow_count - 1);
->> >                       list_move_tail(&flow->flowchain, &b->new_flows);
->> >               }
->> >               flow->set =3D CAKE_SET_SPARSE;
->> > -             b->sparse_flow_count++;
->> > +             WRITE_ONCE(b->sparse_flow_count,
->> > +                        b->sparse_flow_count + 1);
->> >
->> > -             flow->deficit =3D cake_get_flow_quantum(b, flow, q->conf=
-ig->flow_mode);
->> > +             WRITE_ONCE(flow->deficit,
->> > +                        cake_get_flow_quantum(b, flow, q->config->flo=
-w_mode));
->> >       } else if (flow->set =3D=3D CAKE_SET_SPARSE_WAIT) {
->> >               /* this flow was empty, accounted as a sparse flow, but =
-actually
->> >                * in the bulk rotation.
->> >                */
->> >               flow->set =3D CAKE_SET_BULK;
->> > -             b->sparse_flow_count--;
->> > -             b->bulk_flow_count++;
->> > +             WRITE_ONCE(b->sparse_flow_count, b->sparse_flow_count - =
-1);
->> > +             WRITE_ONCE(b->bulk_flow_count, b->bulk_flow_count + 1);
->> >
->> >               cake_inc_srchost_bulk_flow_count(b, flow, q->config->flo=
-w_mode);
->> >               cake_inc_dsthost_bulk_flow_count(b, flow, q->config->flo=
-w_mode);
->> >       }
->> >
->> >       if (q->buffer_used > q->buffer_max_used)
->> > -             q->buffer_max_used =3D q->buffer_used;
->> > +             WRITE_ONCE(q->buffer_max_used, q->buffer_used);
->> >
->> >       if (q->buffer_used <=3D q->buffer_limit)
->> >               return NET_XMIT_SUCCESS;
->> > @@ -1976,8 +1996,8 @@ static struct sk_buff *cake_dequeue_one(struct Q=
-disc *sch)
->> >       if (flow->head) {
->> >               skb =3D dequeue_head(flow);
->> >               len =3D qdisc_pkt_len(skb);
->> > -             b->backlogs[q->cur_flow] -=3D len;
->> > -             b->tin_backlog           -=3D len;
->> > +             WRITE_ONCE(b->backlogs[q->cur_flow], b->backlogs[q->cur_=
-flow] - len);
->> > +             WRITE_ONCE(b->tin_backlog, b->tin_backlog - len);
->> >               qstats_backlog_sub(sch, len);
->> >               q->buffer_used           -=3D skb->truesize;
->> >               qdisc_qlen_dec(sch);
->> > @@ -2042,7 +2062,7 @@ static struct sk_buff *cake_dequeue(struct Qdisc=
- *sch)
->> >
->> >               cake_configure_rates(sch, new_rate, true);
->> >               q->last_checked_active =3D now;
->> > -             q->active_queues =3D num_active_qs;
->> > +             WRITE_ONCE(q->active_queues, num_active_qs);
->> >       }
->> >
->> >  begin:
->> > @@ -2149,8 +2169,10 @@ static struct sk_buff *cake_dequeue(struct Qdis=
-c *sch)
->> >                */
->> >               if (flow->set =3D=3D CAKE_SET_SPARSE) {
->> >                       if (flow->head) {
->> > -                             b->sparse_flow_count--;
->> > -                             b->bulk_flow_count++;
->> > +                             WRITE_ONCE(b->sparse_flow_count,
->> > +                                        b->sparse_flow_count - 1);
->> > +                             WRITE_ONCE(b->bulk_flow_count,
->> > +                                        b->bulk_flow_count + 1);
->> >
->> >                               cake_inc_srchost_bulk_flow_count(b, flow=
-, q->config->flow_mode);
->> >                               cake_inc_dsthost_bulk_flow_count(b, flow=
-, q->config->flow_mode);
->> > @@ -2165,7 +2187,8 @@ static struct sk_buff *cake_dequeue(struct Qdisc=
- *sch)
->> >                       }
->> >               }
->> >
->> > -             flow->deficit +=3D cake_get_flow_quantum(b, flow, q->con=
-fig->flow_mode);
->> > +             WRITE_ONCE(flow->deficit,
->> > +                        flow->deficit + cake_get_flow_quantum(b, flow=
-, q->config->flow_mode));
->> >               list_move_tail(&flow->flowchain, &b->old_flows);
->> >
->> >               goto retry;
->> > @@ -2177,7 +2200,8 @@ static struct sk_buff *cake_dequeue(struct Qdisc=
- *sch)
->> >               if (!skb) {
->> >                       /* this queue was actually empty */
->> >                       if (cobalt_queue_empty(&flow->cvars, &b->cparams=
-, now))
->> > -                             b->unresponsive_flow_count--;
->> > +                             WRITE_ONCE(b->unresponsive_flow_count,
->> > +                                        b->unresponsive_flow_count - =
-1);
->> >
->> >                       if (flow->cvars.p_drop || flow->cvars.count ||
->> >                           ktime_before(now, flow->cvars.drop_next)) {
->> > @@ -2187,16 +2211,22 @@ static struct sk_buff *cake_dequeue(struct Qdi=
-sc *sch)
->> >                               list_move_tail(&flow->flowchain,
->> >                                              &b->decaying_flows);
->> >                               if (flow->set =3D=3D CAKE_SET_BULK) {
->> > -                                     b->bulk_flow_count--;
->> > +                                     WRITE_ONCE(b->bulk_flow_count,
->> > +                                                b->bulk_flow_count - =
-1);
->> >
->> > -                                     cake_dec_srchost_bulk_flow_count=
-(b, flow, q->config->flow_mode);
->> > -                                     cake_dec_dsthost_bulk_flow_count=
-(b, flow, q->config->flow_mode);
->> > +                                     cake_dec_srchost_bulk_flow_count=
-(b, flow,
->> > +                                                                     =
- q->config->flow_mode);
->> > +                                     cake_dec_dsthost_bulk_flow_count=
-(b, flow,
->> > +                                                                     =
- q->config->flow_mode);
->>
->> These seem like unnecessary whitespace changes?
->
-> Line length was 105 ... a bit over the recommended limit.
+#syz dup: [syzbot] [mptcp?] possible deadlock in mptcp_subflow_create_socket (2)
 
-Right, do realise that, but I personally find the one-liners more
-readable even if they are a bit long. Won't insist, though; it's just
-whitespace, after all :)
+If that's not correct, please induplicate it.
 
--Toke
+I'm not sure how MPTCP is being involved here, I guess it should not and
+a simple fix is to forbid it. But maybe this issue is not specific to
+MPTCP?
+
+Cheers,
+Matt
+-- 
+Sponsored by the NGI0 Core fund.
 
