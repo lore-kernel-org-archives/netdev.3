@@ -1,125 +1,77 @@
-Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69B7B31195B
-	for <netdev@vger.kernel.org>; Sun, 12 Apr 2026 23:29:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0679125D0;
+	Mon, 13 Apr 2026 00:05:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776036581; cv=none; b=eIglq7ONl2jUJAvrH0RU6Sd1IKdIz4f4P5tipNq2jWRPva+jcrF1MGp1K2mxhmp/84o9te4yIG6aalF3THASFgmAOXIPnIADvGb5VhESnOGWD2FAIlHVvDEDcxWOfpSjL/+zhIhQ4My47k12otvtHAfjFeUa8+rzelKJjht7wXA=
+	t=1776038710; cv=none; b=pNqHnEY+et2oYOslbW3jAKgg6pNIYyGcl6DzSGTMPQEX2jT09VKzTvzy9/HavIDH39/Rg6KQQPS4b556iupxg1qnEyCV9X4oYlUICyyZhwrRIxOFlLxglvlin+ICtxjbrWPb9pcHqQ3y6j2MKFU7+y0JYYZa1WoxEG8Qj/6GNYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776036581; c=relaxed/simple;
-	bh=/Gmm+QJmMLpcfxoQA/vznjcwHHNtb3xnIo3t5EfYKqU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DMrWXLUd09UNT7h+/DFV/bkcBqsaYc6kTJjPZPDQ7EDl/G6jaS/QNLODg+fuFH74mqzJbAe1WBv7x447SacQuHAFqG2RlEvT38H4Y8FKdkqBj2+sEJBW603Kdqyn3PQIaA++qYB2LVn4cunX8at2NTlVTsu3YBLqn/LJxHPwe9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lnstzwoK; arc=none smtp.client-ip=209.85.128.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1776038710; c=relaxed/simple;
+	bh=PftszzCsXv8DghYZfeatKx0V/bcSr8+BGM5mGPNx++Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SgQLi7MI+mT6FMcs3vbLMWrk+T0PEdvWadC98RdQIfTxes4U84xkHEjKIkhYFG/pvJbLhZ7EPzNu0C2oozNize0r8H8gPT4+PnlZV9Nj1UD2pI0mNsgIBf4WoPyWRgDBCljEL1xXzgWXnlUmCEGl+ed/U0bnOfajkIEkyn/C5AY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=irn0UrM4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lnstzwoK"
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-79a7109f568so42224747b3.1
-        for <netdev@vger.kernel.org>; Sun, 12 Apr 2026 16:29:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776036579; x=1776641379; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=avs6/SRQ7/UUlH54/dpdYzFVakPjFZI4AMLxPsHNsiE=;
-        b=lnstzwoK4EuVa/xJQyt3wyYsn/bW9ScljDoRkS6IwtAXZq7ffq4PFtEz4Ad99q0cNQ
-         8cq178MH6AUTa5H8dRWmRHAWPe8yPZu/gMXzrtnv0NX+6h8sP9DBPm+d/HJadcEQ7NyK
-         6Lc5o2PUkF0hCd0yucbHb7dA/FeN4h7ZQMLSmuA9162l6MeXSJPxos5bsWTPIEUVwa4Z
-         1ZPSEMIn9cnLjLoir4EA9gybxT89H+Rse6KUDryI+jscJClqRHsmLIjBjcfieOKtsePd
-         PYhEDSwzs3ti81v9EtQFFp8IAAtIYoE+YrH4ZUmEIdvnffv2az6AnDv1nvQZn72N5NJV
-         QqAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776036579; x=1776641379;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=avs6/SRQ7/UUlH54/dpdYzFVakPjFZI4AMLxPsHNsiE=;
-        b=E9PyDoR+kYdskGi0tHSLQE7f4yQhif6J4rURFidKmZax4iXsUvFwhZb89nbG2i4JHe
-         eJPz7lDrPuaVKuVZfdFeNMt2lJ3cEKFlG/eue3p6ItQfxPfwqEwlXKhshq1D44KMkSy1
-         QFeYMXbR68gk2rGl4WZOBn/TnEYO9ByMk1lxa4j8cZX2jKlEo3xWjiMTE6ZX8nwx/ewB
-         JmEiGbcGNZZgao4YbnofqG6HQxUalkI/GjAZLinRcgVkbQWMuIC3PhwHdka7+EmQgT0Z
-         SLkarV/cwjKcT5khGehaAMghEc1rj5ClCOw4BpVv3SscvnH/p9+fs0WdKtCyIkFQOSQE
-         MUkA==
-X-Gm-Message-State: AOJu0Yx+644TtALlmObQCNr8FHZJKKlQq6MRRTMm/oE//d6ZbA5x5a0o
-	J3URvfZcMNfCBDkLGQ7HeHKylRfdTpVaLwaW6K/e34F3fcHc5EOG7LvXq+zl/TwU6OM=
-X-Gm-Gg: AeBDiet75aQhBYa3X9vMlRXucSpk11ei13dsst01ZyKOnmHMkfYBoTgvrOABZHctH7o
-	wYtmXiY2I+UPlF++GAYKqXJN0XDnN08hWe4BGNx2nOUJuc2k+irq958wVYTYxxeFv38MEjFcq0M
-	hb1o2wmWH/NMqxXlTB5+KmeuYiW7yDTPDXk8LMQUbdgDT1kvVEDJevYgz3UgoPKcAPRo9pJrt/y
-	+E0pjvgbK8GPOZ00syMm43iNJmGwEyzHrTXv7Cfa8Zrp+63Apt0fR6fddnNwDX8xIGS2VrUeC63
-	iPBMAuY/laK/ErN4zdhslh2O1/l5Jm8KpETBYq1Wuw/3ezA35ZJc+pyzScLglMCOIafn6n0MOEl
-	vTsb78BSKsYAIcRAVikXGDQVQ8tGWPs50JZGSQMEI2wMwMq9PC9g9fNtAdruGb0eaOhh8FV54Qu
-	bC9wg=
-X-Received: by 2002:a05:690c:dc3:b0:79a:dabf:cbcc with SMTP id 00721157ae682-7af71e4fb5dmr119302067b3.44.1776036578988;
-        Sun, 12 Apr 2026 16:29:38 -0700 (PDT)
-Received: from devobuntu.lan ([2600:6c5c:6b00:ba4::23])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7af400ed949sm45337367b3.49.2026.04.12.16.29.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Apr 2026 16:29:37 -0700 (PDT)
-From: Matt Vollrath <tactii@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Matt Vollrath <tactii@gmail.com>,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	hkallweit1@gmail.com,
-	kuba@kernel.org,
-	andrew+netdev@lunn.ch,
-	nic_swsd@realtek.com
-Subject: [PATCH net-next v3] r8169: Use napi_schedule_irqoff()
-Date: Sun, 12 Apr 2026 19:29:14 -0400
-Message-ID: <20260412232914.31463-1-tactii@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="irn0UrM4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31BC2C19424;
+	Mon, 13 Apr 2026 00:05:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776038709;
+	bh=PftszzCsXv8DghYZfeatKx0V/bcSr8+BGM5mGPNx++Y=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=irn0UrM4WMGu0Kj6v2QeZkS5kBYwP/4eb6PUhv6c67If4QY8yeGfZvwad9TUIa/xc
+	 ybEPjmYqX936pQFu2WsYawZICUgC5J4sQd2Dd0PDtCFt/iap0bcuEQ2zhCMkv8Q7Os
+	 rpWIrCtr5jD93NYseISt0cq7IWZS9+NaQWGJGqmn4QyCPxsL6nmoPd49CTk0QUcNJa
+	 pKTiupdygcVEnXLtW6Zi/VwnZsn7oej4Gyg3CiUvlT7jf/1of1NRGtErPoeVFjqnHC
+	 suJNC4qs3kAWo34nIaPWyvIaLgLhWHt6aKwAh6s9bEBB9xZ0c6ZUvJiZO3aXV7jd/D
+	 KV91jscEpvyuQ==
+Date: Sun, 12 Apr 2026 17:05:08 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Thorsten Blum <thorsten.blum@linux.dev>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Tim Bird <tim.bird@sony.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 1/2] keys, dns: drop unused upayload->data
+ NUL terminator
+Message-ID: <20260412170508.1f33a371@kernel.org>
+In-Reply-To: <adwlFgKPdW4zDVb_@linux.dev>
+References: <20260409225703.158552-4-thorsten.blum@linux.dev>
+	<20260412141004.22c6686c@kernel.org>
+	<adwlFgKPdW4zDVb_@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-napi_schedule() masks hard interrupts while doing its work, which is
-redundant when called from an interrupt handler where hard interrupts
-are already masked. Use napi_schedule_irqoff() instead to bypass this
-redundant masking. This is an optimization.
+On Mon, 13 Apr 2026 01:04:54 +0200 Thorsten Blum wrote:
+> On Sun, Apr 12, 2026 at 02:10:04PM -0700, Jakub Kicinski wrote:
+> > On Fri, 10 Apr 2026 00:57:02 +0200 Thorsten Blum wrote:  
+> > > In dns_resolver_preparse(), do not NUL-terminate ->data and allocate one
+> > > byte less. The NUL terminator is never used and only ->datalen bytes are
+> > > accessed.  
+> > 
+> > I can't see where this is used at all.
+> > Please write better commit messages, there's no way this 1 byte
+> > is worth the amount of time I wasted trying to review this :/  
+> 
+> The point of patch 1/2 is not the removed NUL terminator itself, but to
+> prepare for patch 2/2, which adds __counted_by() and requires ->datalen
+> to match the number of elements in ->data.
+> 
+> Currently, that is not the case because ->data includes an extra NUL
+> despite never being used as a C string. Removing the unused terminator
+> makes the length match the allocation size and allows adding the
+> __counted_by() annotation.
+> 
+> I can fold this into the __counted_by() patch if you prefer.
 
-This is a partial reversion of a previous fix:
-Commit 2734a24e6e5d ("r8169: fix issue with forced threading in combination with shared interrupts")
-was applied in 2020 to work around an issue with forced threading.
-IRQ handlers were run without interrupts masked, and RX interrupts could
-be missed in the race, causing delays.
-
-This was fixed in 2021 by masking interrupts in forced thread context:
-Commit 81e2073c175b ("genirq: Disable interrupts for force threaded handlers")
-
-Compatibility with PREEMPT_RT also came in 2021:
-Commit 8380c81d5c4f ("net: Treat __napi_schedule_irqoff() as __napi_schedule() on PREEMPT_RT")
-
-Tested on a Lenovo RTL8168h/8111h.
-
-Signed-off-by: Matt Vollrath <tactii@gmail.com>
-Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
----
- drivers/net/ethernet/realtek/r8169_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index 791277e750ba..4c0ad0de3410 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -4873,7 +4873,7 @@ static irqreturn_t rtl8169_interrupt(int irq, void *dev_instance)
- 		phy_mac_interrupt(tp->phydev);
- 
- 	rtl_irq_disable(tp);
--	napi_schedule(&tp->napi);
-+	napi_schedule_irqoff(&tp->napi);
- out:
- 	rtl_ack_events(tp, status);
- 
--- 
-2.43.0
-
-Changes:
-v3:
-* Describe the history of this schedule call
-v2:
-* CC the maintainers, make the CI board green
-
+I understand that part, but I don't get where the data from which 
+the terminating character is removed, is used. Only other access
+I saw was freeing it, the rest of the callback seem to looking
+at the error, not the data..
