@@ -1,75 +1,50 @@
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03313AC0C4
-	for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 09:44:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47D983AC0DE;
+	Mon, 13 Apr 2026 09:45:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776073500; cv=none; b=uZ7KVTtZF4ZKsjFs73egCUgFnE9BSNyXxFo8U2kbTDmlWR9vCms5x3ErsATfy0cho8SSNeXJAhK7dqvqxhwi2XPGZxZMZ9nrLzohKUWWAcp1G9vkZQLFjJrO61e1A9cndIuRYP94bqEwOIyUR+WPCAq05fT4nm/95W4Qq29WtV8=
+	t=1776073503; cv=none; b=AUA/5MDT/gKhBFQYmbjwB3oCy8MiDtvn+6OxXpD8eXTOrtyTELGGfyyf7e6XmS1X2i+HacFXIi/PH1nHIWO0fBZTxrRJiVq57c0QNp7lmIOuEam4CfPOAMatuwz/Ss/YL3puf1KtmBm2JTJPe/4q4x/oZLKQYvWqn4HyE/3WsHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776073500; c=relaxed/simple;
-	bh=Nc909uFZwrvDpDkljFoOIFDI9jBrVfDU0iQ79B6kD3M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GifUE7J8pqoT9IsQ0uHFMsaklBC/Jt1qb8albRWKtpV4hTbtEtdbmCeyacIJiT43Bap3urpQhl7oxWB0+FzhfQogOiB+0mBQIwmSBTJ1Ck1FWmoh+5UjoGo48La+MIOtat7znQiV5xx06xthY9WcKU5Ei890tysMq+PdUevnbb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BmarTFv1; arc=none smtp.client-ip=209.85.215.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1776073503; c=relaxed/simple;
+	bh=aKDkzkaOTpDSvZmKMyWep/L7YNs9uy0phTomPHRATiI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HCc3tEgN/hAk+oUk3CAxvNCD7txugFXOQd3aGos7/wDLI7AcA1LGBUHtfxSAF6AvED5fl0GCXfiDoM6YwDnKwnOvElAbgNftOdNTab6TiT71dpWFYrfZw4MJ5uOz7d1RdJVxfq6+tEMEGFnvJ7dz1anyw9oKqjSowVLOqCwNQwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K04IvbyJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BmarTFv1"
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-c742d4df00cso1505938a12.1
-        for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 02:44:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776073497; x=1776678297; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=xnxXZAcBu9e0QRRC10glkhFgZL7i6Zh7Fpi2VeYiurs=;
-        b=BmarTFv12Lxvd/mxjUjmJh/J0F8fORi5TfsuYUq/VBZkt4BpcHhRBfPmGm14pU9OKX
-         O6i2WLxb1CzxRBky99xCA2qV+kWvlKXE8prJMzvGwogt5O/OYTsLcR3Q4ok0F/+UA14+
-         q92JXtUUJwzKxqk2sl3yMKz9hjBm2RLgCfbYmDbeji1TIGUS2SyuFtyqMDl1wQBxovDz
-         E4HG/HdEprTXcAIlRGBJIHrx2wPseIXLf9nf9nuLo1nygTNNVLGkK8+Wu7rNk+e1Sa/N
-         C+TiibLx6tiCSpzn3PvQyri+DcnCvtopOEucGXRCYzekuzD3+SSpkr+v9DMU4bd8xJu3
-         qzkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776073497; x=1776678297;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xnxXZAcBu9e0QRRC10glkhFgZL7i6Zh7Fpi2VeYiurs=;
-        b=HUgvKO3dMnHZ7I31OsmAl6SsnIRcXt6+FaTuwg/UbrOdSBMdxIxEwkA1yJfWHfOJJS
-         D0f8XMGic5SzNtEcHXRgFOiJptwQ475KKomuBKN8khzjfZ8mTHkUz0ZwjrlTa9xxZWVI
-         wIeQl6riQLxrZNG8UF6ojsQthmEPie/VELhWR0gsGW2HNDMbQHHL3e83ydhYNetWIRzv
-         nZKUVKlJCeihK+M/EMnqfdfSGMzDkqZtLX67sz71ql4GnNSHXSEXmgzfR8hjIffty1kt
-         yXOsmaf1zlcqw8pBETSP7Mefab5oWDh7ULAq+6hAF2wZI9Yp64yO9gG2BjQ5JISv8v8S
-         mJPg==
-X-Forwarded-Encrypted: i=1; AFNElJ/VnJXzmmg5ZwU5i8onUQG6mOS5yyrs8c0t3zALS5/5rKDbjCc+QrPHQR34rf2/aWjWnoYG+w4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQic6JSN1Bhd7yImXO/wRp4sJOi/4PiqUl5gbslvy09fnGkcEn
-	uLDLa2Kt/zXIQpwkzcDU2h1rzUMrJIo5vm8uh+Mkj0gzzkTsM7azTxyy
-X-Gm-Gg: AeBDiesekSdtAo+/qE7P3JnV9fjwKseRs9VRng9u6LKr9pIjGNXkHN9hKeWDs/QtxJ8
-	REK5uWYNtzQBt0ljCkp9xznxkOnKSj4FsfR6c9UqOSjq9CJntvMiDsiJpXeZKkAxg8UaMUzwonU
-	QLMNjjZ2BjzYXriDncbsgcdtbt6vd+qYgdbrYrJR3XrC2Xl66P5OIQVCKbti4dO442kiTTWkSPo
-	GH8CO7ZuCM86VCUrXhbFks5fMEgMhHI4NEAvVD8H1qmZ/SRL6nB8alToKjSv/B+Wt2waSOxaf+K
-	iBSZKWdo94/pAsM4zfT4wZcQeC+eVRpVb7RK/MZsPKZ5EBNyUCWsrt3OTLqyzsyl6B+HMiTREe0
-	07oKrNV45v5IwhG0qW09aH2DJ+pq+JTfJsKkPDF6lK4m54wzucQyDiJGyTDn0To7hnCooslF3VY
-	VPzQNgjAqT8FzLONspQubY8/bAiECDL+H6
-X-Received: by 2002:a05:6a20:12c5:b0:398:7daf:6d7e with SMTP id adf61e73a8af0-39fe4603847mr11679426637.17.1776073496997;
-        Mon, 13 Apr 2026 02:44:56 -0700 (PDT)
-Received: from localhost.localdomain ([117.186.117.206])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f0c36130csm10711799b3a.24.2026.04.13.02.44.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Apr 2026 02:44:56 -0700 (PDT)
-From: "Kito Xu (veritas501)" <hxzene@gmail.com>
-To: Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K04IvbyJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD70BC2BCAF;
+	Mon, 13 Apr 2026 09:44:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776073503;
+	bh=aKDkzkaOTpDSvZmKMyWep/L7YNs9uy0phTomPHRATiI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=K04IvbyJajZVrv9Qda7TJ4mlyLIqO/UJAaFXTJSCR08FXipTD6tizzlJGxOCqukVn
+	 AgDEmLeTMcJ/AzVYLQWdc/6gKyikqVR07Sftx+MhAU9wbf3epIULJQ23nDAog/h2v5
+	 bdVz8SbvWHqph3kKGg64ecRsHSLcX8UV+J/7ZhB2ilP8/iktw6k7iKhG8oqg0Ntjt2
+	 ce4NYZu7FaOXxafdXRI85k3QWxHnp/bxa5fyoY+ixqcOG7EAa7c4uZePxzPp4x4ViM
+	 5g0m/L5Ny9vvK2yW+j73NwIQz0a+EGozZCdT0BqAZVLpsH/KFUST4LwYX4VWD8jgL/
+	 BKP+cLrlArAJA==
+From: hawk@kernel.org
+To: netdev@vger.kernel.org
+Cc: kernel-team@cloudflare.com,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Chris Arges <carges@cloudflare.com>,
+	Mike Freemon <mfreemon@cloudflare.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-kselftest@vger.kernel.org,
+	=?UTF-8?q?Jonas=20K=C3=B6ppeler?= <j.koeppeler@tu-berlin.de>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	"Kito Xu (veritas501)" <hxzene@gmail.com>
-Subject: [PATCH] net: sched: teql: fix use-after-free in teql_master_xmit
-Date: Mon, 13 Apr 2026 17:44:47 +0800
-Message-ID: <20260413094448.2263828-1-hxzene@gmail.com>
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	bpf@vger.kernel.org
+Subject: [PATCH net-next v2 0/5] veth: add Byte Queue Limits (BQL) support
+Date: Mon, 13 Apr 2026 11:44:33 +0200
+Message-ID: <20260413094442.1376022-1-hawk@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -77,164 +52,158 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-teql_destroy() traverses the circular slave list to unlink a slave
-qdisc. It reads master->slaves as both the starting point and the
-do-while termination sentinel. However, the data-path writers
-teql_dequeue() and teql_master_xmit() concurrently modify
-master->slaves without holding RTNL, running in softirq or process
-context respectively. If master->slaves is overwritten to an
-already-visited node mid-traversal, the loop exits early without
-finding the target slave. The slave is never unlinked, but its memory
-is freed by call_rcu() -- leaving a dangling pointer in the circular
-list. The next teql_master_xmit() traversal dereferences freed memory.
+From: Jesper Dangaard Brouer <hawk@kernel.org>
 
-race condition:
+This series adds BQL (Byte Queue Limits) to the veth driver, reducing
+latency by dynamically limiting in-flight packets in the ptr_ring and
+moving buffering into the qdisc where AQM algorithms can act on it.
 
-  CPU 0 (teql_destroy, RTNL held)       CPU 1 (teql_dequeue, softirq)
-  -----------------------------------   -----------------------------
-  prev = master->slaves;  // = A
-  q = NEXT_SLAVE(A);      // = B
-  B == A? No.
-  prev = B;
-                                         /* slave C's queue drains */
-                                         skb == NULL ->
-                                         dat->m->slaves = C; /* write! */
+Problem:
+  veth's 256-entry ptr_ring acts as a "dark buffer" -- packets queued
+  there are invisible to the qdisc's AQM.  Under load, the ring fills
+  completely (DRV_XOFF backpressure), adding up to 256 packets of
+  unmanaged latency before the qdisc even sees congestion.
 
-  q = NEXT_SLAVE(B);      // = C
-  C == A? No.
-  prev = C;
-  /* check: (prev=C) != master->slaves(C)?
-     FALSE -> loop exits! */
-  /* A never unlinked, freed by call_rcu */
+Solution:
+  BQL (STACK_XOFF) dynamically limits in-flight packets, stopping the
+  queue before the ring fills.  This keeps the ring shallow and pushes
+  excess packets into the qdisc, where sojourn-based AQM can measure
+  and drop them.
 
-  CPU 0 (teql_master_xmit, later)
-  -----------------------------------
-  q = NEXT_SLAVE(C);      // = A (freed!)
-  slave = qdisc_dev(A);   // UAF!
+  Test setup: veth pair, UDP flood, 13000 iptables rules in consumer
+  namespace (slows NAPI-64 cycle to ~6-7ms), ping measures RTT under load.
 
-Fix this by saving master->slaves into a local `head` variable at the
-start of teql_destroy() and using it as a stable sentinel for the
-entire traversal. Also annotate all data-path accesses to
-master->slaves with READ_ONCE/WRITE_ONCE to prevent store-tearing and
-compiler-introduced re-reads.
+                   BQL off                    BQL on
+  fq_codel:  RTT ~22ms, 4% loss         RTT ~1.3ms, 0% loss
+  sfq:       RTT ~24ms, 0% loss         RTT ~1.5ms, 0% loss
 
-==================================================================
-BUG: KASAN: slab-use-after-free in teql_master_xmit+0xeae/0x14a0
-Read of size 8 at addr ffff888018074040 by task poc/162
+  BQL reduces ping RTT by ~17x for both qdiscs.  Consumer throughput
+  is unchanged (~10K pps) -- BQL adds no overhead.
 
-CPU: 2 UID: 0 PID: 162 Comm: poc Not tainted 7.0.0-rc7-next-20260410 #10 PREEMPTLAZY
-Call Trace:
- <TASK>
- dump_stack_lvl+0x64/0x80
- print_report+0xd0/0x5e0
- kasan_report+0xce/0x100
- teql_master_xmit+0xeae/0x14a0
- dev_hard_start_xmit+0xcd/0x5b0
- sch_direct_xmit+0x12e/0xac0
- __qdisc_run+0x3b1/0x1a70
- __dev_queue_xmit+0x2257/0x3100
- ip_finish_output2+0x615/0x19c0
- ip_output+0x158/0x2b0
- ip_send_skb+0x11b/0x160
- udp_send_skb+0x64b/0xd80
- udp_sendmsg+0x138c/0x1ec0
- __sys_sendto+0x331/0x3a0
- __x64_sys_sendto+0xe0/0x1c0
- do_syscall_64+0x64/0x680
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
+CoDel bug discovered during BQL development:
+  Our original motivation for BQL was fq_codel ping loss observed under
+  load (4-26% depending on NAPI cycle time).  Investigating this led us
+  to discover a bug in the CoDel implementation: codel_dequeue() does
+  not reset vars->first_above_time when a flow goes empty, contrary to
+  the reference algorithm.  This causes stale CoDel state to persist
+  across empty periods in fq_codel's per-flow queues, penalizing sparse
+  flows like ICMP ping.  A fix for this has been applied to the net tree:
+    https://git.kernel.org/netdev/net/c/815980fe6dbb
 
-The buggy address belongs to the object at ffff888018074000
- which belongs to the cache kmalloc-512 of size 512
-The buggy address is located 64 bytes inside of
- freed 512-byte region [ffff888018074000, ffff888018074200)
-==================================================================
+  BQL remains valuable independently: it reduces RTT by ~17x by moving
+  buffering from the dark ptr_ring into the qdisc.  Additionally, BQL
+  clears STACK_XOFF per-SKB as each packet completes, rather than
+  batch-waking after 64 packets (DRV_XOFF).  This keeps sojourn times
+  below fq_codel's target, preventing CoDel from entering dropping
+  state on non-congested flows in the first place.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Kito Xu (veritas501) <hxzene@gmail.com>
----
- net/sched/sch_teql.c | 24 ++++++++++++++----------
- 1 file changed, 14 insertions(+), 10 deletions(-)
+Key design decisions:
+  - Charge-under-lock in veth_xdp_rx(): The BQL charge must precede
+    the ptr_ring produce, because the NAPI consumer can run on another
+    CPU and complete the SKB immediately after it becomes visible.  To
+    avoid a pre-charge/undo pattern, the charge is done under the
+    ptr_ring producer_lock after confirming the ring is not full.  BQL
+    is only charged when produce is guaranteed to succeed, keeping
+    num_queued monotonically increasing.  HARD_TX_LOCK already
+    serializes dql_queued() (veth requires a qdisc for BQL); the
+    ptr_ring lock additionally would allow noqueue to work correctly.
 
-diff --git a/net/sched/sch_teql.c b/net/sched/sch_teql.c
-index ec4039a201a2..2e86397a5219 100644
---- a/net/sched/sch_teql.c
-+++ b/net/sched/sch_teql.c
-@@ -101,7 +101,7 @@ teql_dequeue(struct Qdisc *sch)
- 	if (skb == NULL) {
- 		struct net_device *m = qdisc_dev(q);
- 		if (m) {
--			dat->m->slaves = sch;
-+			WRITE_ONCE(dat->m->slaves, sch);
- 			netif_wake_queue(m);
- 		}
- 	} else {
-@@ -136,19 +136,23 @@ teql_destroy(struct Qdisc *sch)
- 	if (!master)
- 		return;
- 
--	prev = master->slaves;
-+	prev = READ_ONCE(master->slaves);
- 	if (prev) {
-+		struct Qdisc *head = prev;
-+
- 		do {
- 			q = NEXT_SLAVE(prev);
- 			if (q == sch) {
- 				NEXT_SLAVE(prev) = NEXT_SLAVE(q);
--				if (q == master->slaves) {
--					master->slaves = NEXT_SLAVE(q);
--					if (q == master->slaves) {
-+				if (q == head) {
-+					WRITE_ONCE(master->slaves,
-+						   NEXT_SLAVE(q));
-+					if (q == NEXT_SLAVE(q)) {
- 						struct netdev_queue *txq;
- 
- 						txq = netdev_get_tx_queue(master->dev, 0);
--						master->slaves = NULL;
-+						WRITE_ONCE(master->slaves,
-+							   NULL);
- 
- 						dev_reset_queue(master->dev,
- 								txq, NULL);
-@@ -158,7 +162,7 @@ teql_destroy(struct Qdisc *sch)
- 				break;
- 			}
- 
--		} while ((prev = q) != master->slaves);
-+		} while ((prev = q) != head);
- 	}
- }
- 
-@@ -285,7 +289,7 @@ static netdev_tx_t teql_master_xmit(struct sk_buff *skb, struct net_device *dev)
- 	int subq = skb_get_queue_mapping(skb);
- 	struct sk_buff *skb_res = NULL;
- 
--	start = master->slaves;
-+	start = READ_ONCE(master->slaves);
- 
- restart:
- 	nores = 0;
-@@ -317,7 +321,7 @@ static netdev_tx_t teql_master_xmit(struct sk_buff *skb, struct net_device *dev)
- 				    netdev_start_xmit(skb, slave, slave_txq, false) ==
- 				    NETDEV_TX_OK) {
- 					__netif_tx_unlock(slave_txq);
--					master->slaves = NEXT_SLAVE(q);
-+					WRITE_ONCE(master->slaves, NEXT_SLAVE(q));
- 					netif_wake_queue(dev);
- 					master->tx_packets++;
- 					master->tx_bytes += length;
-@@ -329,7 +333,7 @@ static netdev_tx_t teql_master_xmit(struct sk_buff *skb, struct net_device *dev)
- 				busy = 1;
- 			break;
- 		case 1:
--			master->slaves = NEXT_SLAVE(q);
-+			WRITE_ONCE(master->slaves, NEXT_SLAVE(q));
- 			return NETDEV_TX_OK;
- 		default:
- 			nores = 1;
+  - Per-SKB BQL tracking via pointer tag: A VETH_BQL_FLAG bit in the
+    ptr_ring pointer records whether each SKB was BQL-charged.  This is
+    necessary because the qdisc can be replaced live (noqueue->sfq or
+    vice versa) while SKBs are in-flight -- the completion side must
+    know the charge state that was decided at enqueue time.
+
+  - IFF_NO_QUEUE + BQL coexistence: A new dev->bql flag enables BQL
+    sysfs exposure for IFF_NO_QUEUE devices that opt in to DQL
+    accounting, without changing IFF_NO_QUEUE semantics.
+
+Background and acknowledgments:
+  Mike Freemon reported the veth dark buffer problem internally at
+  Cloudflare and showed that recompiling the kernel with a ptr_ring
+  size of 30 (down from 256) made fq_codel work dramatically better.
+  This was the primary motivation for a proper BQL solution that
+  achieves the same effect dynamically without a kernel rebuild.
+
+  Chris Arges wrote a reproducer for the dark buffer latency problem:
+    https://github.com/netoptimizer/veth-backpressure-performance-testing
+  This is where we first observed ping packets being dropped under
+  fq_codel, which became our secondary motivation for BQL.  In
+  production we switched to SFQ on veth devices as a workaround.
+
+  Jonas Koeppeler provided extensive testing and code review.
+  Together we discovered that the fq_codel ping loss was actually a
+  12-year-old CoDel bug (stale first_above_time in empty flows), not
+  caused by the dark buffer itself.  A fix has been applied to the net tree:
+    https://git.kernel.org/netdev/net/c/815980fe6dbb
+
+Patch overview:
+  1. net: add dev->bql flag to allow BQL sysfs for IFF_NO_QUEUE devices
+  2. veth: implement Byte Queue Limits (BQL) for latency reduction
+  3. veth: add tx_timeout watchdog as BQL safety net
+  4. net: sched: add timeout count to NETDEV WATCHDOG message
+  5. selftests: net: add veth BQL stress test
+
+Jesper Dangaard Brouer (5):
+  net: add dev->bql flag to allow BQL sysfs for IFF_NO_QUEUE devices
+  veth: implement Byte Queue Limits (BQL) for latency reduction
+  veth: add tx_timeout watchdog as BQL safety net
+  net: sched: add timeout count to NETDEV WATCHDOG message
+  selftests: net: add veth BQL stress test
+
+ .../networking/net_cachelines/net_device.rst  |   1 +
+ drivers/net/veth.c                            |  92 +-
+ include/linux/netdevice.h                     |   2 +
+ net/core/net-sysfs.c                          |   8 +-
+ net/sched/sch_generic.c                       |   8 +-
+ tools/testing/selftests/net/Makefile          |   3 +
+ tools/testing/selftests/net/config            |   1 +
+ tools/testing/selftests/net/napi_poll_hist.bt |  40 +
+ tools/testing/selftests/net/veth_bql_test.sh  | 821 ++++++++++++++++++
+ .../selftests/net/veth_bql_test_virtme.sh     | 124 +++
+ 10 files changed, 1084 insertions(+), 16 deletions(-)
+ create mode 100644 tools/testing/selftests/net/napi_poll_hist.bt
+ create mode 100755 tools/testing/selftests/net/veth_bql_test.sh
+ create mode 100755 tools/testing/selftests/net/veth_bql_test_virtme.sh
+
+V1: https://lore.kernel.org/all/20260324174719.1224337-1-hawk@kernel.org/
+
+Changes since V1:
+  - Patch 1 (dev->bql flag): add kdoc entry for @bql in struct net_device.
+  - Patch 2 (veth BQL): charge fixed VETH_BQL_UNIT (1) per packet instead
+    of skb->len.  veth has no link speed; the ptr_ring is packet-indexed.
+    Byte-based charging lets small packets sneak many entries into the ring.
+    Testing: min-size packet flood causes 3.7x ping RTT degradation with
+    skb->len vs no change with fixed-unit charging.
+  - Patch 3 (tx_timeout watchdog): fix race with peer NAPI: replace
+    netdev_tx_reset_queue() with clear_bit(STACK_XOFF) + netif_tx_wake_queue()
+    to avoid dql_reset() racing with concurrent dql_completed().
+  - Patch 5 (selftests): fix shellcheck warnings and infos:
+    - Quote variables passed to kill_process and exit.
+    - Declare and assign local variables separately (SC2155).
+    - Use read -r to avoid mangling backslashes (SC2162).
+    - Add shellcheck disable comments for intentional word splitting
+      (set -- $line, tc $qdisc $opts) and indirect invocation (trap).
+    - Make iptables-restore failure a hard FAIL instead of continuing.
+    - Add veth_bql_test.sh to TEST_PROGS in net/Makefile.
+    - Add veth_bql_test_virtme.sh to TEST_FILES (needs kernel build tree).
+    - Add napi_poll_hist.bt to TEST_FILES in net/Makefile.
+    - Add CONFIG_NET_SCH_SFQ=m to net/config (default qdisc is sfq).
+    - Reduce default test duration from 300s to 30s for kselftest CI.
+    - Fix virtme wrapper: empty args bug, check vmlinux instead of test path.
+  - Cover letter: update CoDel fix reference to merged commit in net tree.
+
+Cc: Chris Arges <carges@cloudflare.com>
+Cc: Mike Freemon <mfreemon@cloudflare.com>
+Cc: Toke Høiland-Jørgensen <toke@toke.dk>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: linux-kselftest@vger.kernel.org
+Cc: Jonas Köppeler <j.koeppeler@tu-berlin.de>
+Cc: kernel-team@cloudflare.com
+
 -- 
 2.43.0
 
