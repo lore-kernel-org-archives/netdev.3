@@ -1,43 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C024B38F627;
-	Mon, 13 Apr 2026 18:41:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E18AF3101A7
+	for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 18:45:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776105706; cv=none; b=fvrJ3txs+nhKUMLe5f1vo56U7XRbM1PgWr3lFmHvoX9uLl/YwFpbdTnAWLorJ6l78uLKd4w8rWvq4PQ0BmRf1fiVQ/9JqItwrjswFscI+XzdDccioTDOURZ4CYpHtdEflD/wPBEh1Xj4iFGgHhd7tJbwKPX2ng7v7/eb9EYPwt4=
+	t=1776105925; cv=none; b=lPW39AgVj0VvzmHHeuBTRKiq+M6FN4AgyzHP5NbqB8MxuxJJYCaHRjQuDqkfgeGFQO+S7pQqkGqNBFUhdRUqCKc5vQSCDoMzbRwAcRkJW9i8vX25pgNL93JglZsM/QDu9q7F0vZzymyaHRxXtKU1CyC6uYGn53mID0elKHuOstE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776105706; c=relaxed/simple;
-	bh=56haOpwU1zrLkJWy16IfK2PDvKJZWSvTlV7JggOvfK0=;
+	s=arc-20240116; t=1776105925; c=relaxed/simple;
+	bh=NAj9UH61tEKwfYR1yC5klDKMjuaRvkkasqyob3K/Qmc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ca1Fr4kbOl0gysf7IWAmNYSGG8oTu63n4mJCTwNuAHNSUqqStqOmFjo9Dhrt5HLHU+z0kr9xRNUzCKr1C8mU8EDtYtkzNzw59PcOirPS6fCRhe8N076cfujzFRtQz2j4EeW2HyAiUIfOs5sQZpVANb1WmVLqOTAuqy7bOnnFnIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NAc+X7Hx; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=vGOj/rWPsMcQ4d6x2mySRiFC5seUzi6i5ghayyJbgiaR809Iv1/p5pQHWwVgJMmb2WGKm1irABNaEXI0h2E7vI9KRvQTP8Dz4HfvjkBC6CwcthlcIroqYeu56Qsql7s59q9LnBNcmC6DKvchBOl6ABlJg+LT/2QFRp369W+7hlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Aa/en2xx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NAc+X7Hx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 004A8C2BCAF;
-	Mon, 13 Apr 2026 18:41:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Aa/en2xx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8920C2BCAF;
+	Mon, 13 Apr 2026 18:45:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776105706;
-	bh=56haOpwU1zrLkJWy16IfK2PDvKJZWSvTlV7JggOvfK0=;
+	s=k20201202; t=1776105924;
+	bh=NAj9UH61tEKwfYR1yC5klDKMjuaRvkkasqyob3K/Qmc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=NAc+X7HxO9n1Y9p6PgmSHRlnIvl/+s2SiWwrWSkiWIbspQSoGPALYrY3FHPRwwIUD
-	 wqwNof3IovgLGdx4usoA3rM8OVkeoMEtArwRS5slOc9Q13PZJGZMFOnXSYe8aoaHQA
-	 /HPhIXVB73fvXUXT6GDsrY8Mxcl2edlSBdFGYbWyeRexBFLFx9UPB/zrJgZjHfbhH+
-	 iMkj397HIiB2wEX3DksxqBbWz4VLS5EPhmC8zsRU/IVWBQFKT/cDqdUCJMFc5V6cK/
-	 YgtwP4jSGNbHyfBtHQKf9NjWd1ALCzMe+qTqnh92TF6go+h+abbTKKa6f6EhcGm0Sw
-	 MtfaWj0fYsqYA==
-Date: Mon, 13 Apr 2026 11:41:45 -0700
+	b=Aa/en2xx7HtzTiYK6w+WlhHXj0+o+Bvzwcrx23WN3ptX7q/vJ17Y9q/SgF6Uobj7/
+	 /JuM5NRiKGFNQlmXEJvjvnBfZgxkPbCSoEp/xJLrObHhyBz4+woE8quMrwoxqn1pOs
+	 FoCZrloyQxJ3+Uu9CF0IZeIQj6kTPTCk2E3N2F+vErzCBJ5XV91ydVrS08ILC8Pgpg
+	 8XXvZN42DP6IxCj2blbJ4ScUpIsFrC4KOP/QBz4b9ghX/GT4B0fwNKuYsC8MJGHmz0
+	 WMoLEsH2SBEp+1KPU8kyeqBeQaN+xZhOpX72YWp1zionEizhx1zLH6KOUHafJUMBGB
+	 PLIVJK9cWyXzQ==
+Date: Mon, 13 Apr 2026 11:45:22 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Michael Bommarito <michael.bommarito@gmail.com>
-Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, "Paolo Abeni" <pabeni@redhat.com>, "Simon
- Horman" <horms@kernel.org>, "Kees Cook" <kees@kernel.org>,
- stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] NFC: digital: bound SENSF response copy into
- nfc_target
-Message-ID: <20260413114145.24ad64a0@kernel.org>
-In-Reply-To: <20260413174715.197640-1-michael.bommarito@gmail.com>
-References: <20260413174715.197640-1-michael.bommarito@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Stanislav Fomichev <sdf.kernel@gmail.com>, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com
+Subject: Re: [PATCH net-next v7 00/15] net: sleepable ndo_set_rx_mode
+Message-ID: <20260413114522.3e8e1b6d@kernel.org>
+In-Reply-To: <20260413171131.550126-1-sdf@fomichev.me>
+References: <20260413171131.550126-1-sdf@fomichev.me>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,10 +44,14 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 13 Apr 2026 13:47:15 -0400 Michael Bommarito wrote:
-> Assisted-by: Claude:claude-opus-4-6
-> Assisted-by: Codex:gpt-5-4
+On Mon, 13 Apr 2026 10:11:16 -0700 Stanislav Fomichev wrote:
+> This series adds a new ndo_set_rx_mode_async callback that enables
+> drivers to handle address list updates in a sleepable context. The
+> current ndo_set_rx_mode is called under the netif_addr_lock spinlock
+> with BHs disabled, which prevents drivers from sleeping. This is
+> problematic for ops-locked drivers that need to sleep.
 
-Could you do some experimentation and figure out what we can do to the
-kernel to make the bots check the submission history? It's the 4th time
-we received this (incorrect) patch.
+A note to other reviewers - I asked Stanislav (off-list) to keep working
+on this even tho he's targeting net-next, because the patch set
+addresses a syzbot report. Chances of hitting the issue are low but
+this is a fix, really.
