@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 394C830EF6C;
-	Mon, 13 Apr 2026 23:50:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 751FC39F183;
+	Mon, 13 Apr 2026 23:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776124239; cv=none; b=bTJmXPWZ4YOf5vBaC1cC6BVH6Qrl2cYGGxcX3b7QgR48z/Rhb2X6nw73C4bigNGo0Lz0nIxGvOo+YJJT3Dkl+bp2zBcV7JHiN2uViPAOJEwqIEtUa3aWMFpjzgIxWVGI/WbMLrBTi/X5zgyLFdCApqUp26Bz4MXRhUPl5631uvk=
+	t=1776124240; cv=none; b=iyCgZP4P+9P0BZ4nkqaLpNT2sIrZTXHUWIq1z4zZiiVgwv5bhPLNSdpJa3tc5zbY6NtR67CTqvUhUxGLZn6eXre/SPM75JJMHTs2BdcTR7+O+/RdMDTB/YqGImkzm/Ac9YRgolOvm4767ZWSSocvm0oek8R6J6zPKLUoLPdj8oc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776124239; c=relaxed/simple;
-	bh=PpLyzf9ofDSy9QX3ziyfomujOjdmap2nWynqmeoKVTU=;
+	s=arc-20240116; t=1776124240; c=relaxed/simple;
+	bh=wfM0L/SSAk2/unLLqMDNKRbsQK3R2OHLCXzpKTenlnM=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=AwnQ7iegwI9jLCpDF9qPF3bLZ4KjBd4xKsyvFDzH5J0JLIPY7yBUdYAMTNZI1Or4MtIz/vNzzjF1OaZdV79xa+x/QKRg0CVfZz+b5gjk14LQV2D1D76j0JplM/vnRiwXlDc7GR34QlEDC4LxcMXfoFroT55R0NPgn/f+z4nm1GU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FUthv2sj; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=Edd108OVhnWZ0XVDy+LUmIXW92w6EdXV4Ebyp0ueKVFoAkR6gzaTUTt8yBTulpzUVgoi3G4iWZUbHYbUBaeoHGsD5j3IKRpLBuPSO2KdzMg11nKWBVAQEXnzhlsTUYra+PFhLr0xaKmyxjEg/E7D/sQsAOUqGZFjiaFcIrh+9no=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mbJ6loio; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FUthv2sj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7A37C2BCAF;
-	Mon, 13 Apr 2026 23:50:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mbJ6loio"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 545A6C2BCAF;
+	Mon, 13 Apr 2026 23:50:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776124238;
-	bh=PpLyzf9ofDSy9QX3ziyfomujOjdmap2nWynqmeoKVTU=;
+	s=k20201202; t=1776124240;
+	bh=wfM0L/SSAk2/unLLqMDNKRbsQK3R2OHLCXzpKTenlnM=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=FUthv2sjMobgzCOJaGkmlcPNfbG4yUskuFbsVEyu2XriO/kDta2FMxfSKf42kljWe
-	 aY1tKYG8R+aL+okpIWWhzkdWXXc2fTrmcFSIMWTHQHD6DJseCIK4TwK6eOEUK8qfsc
-	 BLq4VW3spwyIuv2mhzPUcgTiR4+e0Pi5Gu2GJIYd3PTuQwRwIs1dWsfalzSdS/PSDQ
-	 m0npmuEcYx4jArw9QlQ+bHZw1bLruCV9O/a2m/9Ju4Pski31mLfOXHs99AIRDI4BSn
-	 riZ7KvpUPubTC2cxW5vSWP1XPIkhNhXc6iuiGAHZ/GhH4mIchzhP/LAEa8yx/pZBpI
-	 RJLsS1faMOs7g==
+	b=mbJ6loioAqpEhCCHYOQDev2UNR701egfpv3sHdjBn2I/HgsBbJGE+cAu+w/JMLWXg
+	 eW9DzcJhDd7mPTSLvuIEAoNZU4VjeT1b54bul/pea4bj3ifWlj/3aNv20r/xIKrQ+t
+	 BS4LrzctNhlXfEfh9fzglTak+yWftnbVSLHTgNNr7XdhT2R8gxBO517woF6M/c5L4R
+	 tS0T8k0Qg7MuDQjQzJWbfbiJfu6LZ7212CgKTBoLQvz2of/Et/pzuxy3QFYRyRzKgV
+	 ZluMe/2LjbT8ZhzxC7G3y9RSNy4DRRBSUV+nrnsaEcpM8wBbCf6+AUQkFMID8RF8jp
+	 fUmf+zf45zJbQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FC753809A0B;
-	Mon, 13 Apr 2026 23:50:11 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9D7F3809A0B;
+	Mon, 13 Apr 2026 23:50:12 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,48 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net: phy: realtek: use LEDCR page number define on
- RTL8211F
+Subject: Re: [PATCH net-next v2 0/2] net: dsa: mxl862xx: add statistics
+ support
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177612421005.603926.8666412432128634594.git-patchwork-notify@kernel.org>
-Date: Mon, 13 Apr 2026 23:50:10 +0000
-References: <20260411105150.184577-1-olek2@wp.pl>
-In-Reply-To: <20260411105150.184577-1-olek2@wp.pl>
-To: Aleksander Jan Bajkowski <olek2@wp.pl>
-Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- daniel@makrotopia.org, vladimir.oltean@nxp.com, michael@fossekall.de,
- daniel.braunwarth@kuka.com, ih@simonwunderlich.de,
- rmk+kernel@armlinux.org.uk, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+ <177612421128.603926.12770250649892920484.git-patchwork-notify@kernel.org>
+Date: Mon, 13 Apr 2026 23:50:11 +0000
+References: <cover.1775951347.git.daniel@makrotopia.org>
+In-Reply-To: <cover.1775951347.git.daniel@makrotopia.org>
+To: Daniel Golle <daniel@makrotopia.org>
+Cc: andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ linux@armlinux.org.uk, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ frankwu@gmx.de, chad@monroe.io, cezary.wilmanski@adtran.com,
+ lxu@maxlinear.com, yweng@maxlinear.com, jverdu@maxlinear.com,
+ ajayaraman@maxlinear.com, john@phrozen.org
 
 Hello:
 
-This patch was applied to netdev/net-next.git (main)
+This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sat, 11 Apr 2026 12:51:45 +0200 you wrote:
-> Replace the magic number with an existing define for the LEDCR
-> register page number on the RTL8211F.
+On Sun, 12 Apr 2026 01:01:48 +0100 you wrote:
+> Add per-port RMON statistics support for the MxL862xx DSA driver,
+> covering hardware-specific ethtool -S counters, standard IEEE 802.3
+> MAC/ctrl/pause statistics, and rtnl_link_stats64 via polled 64-bit
+> accumulation.
 > 
-> Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
-> ---
->  drivers/net/phy/realtek/realtek_main.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
+> Changes since v1:
+>  * trim mxl862xx_mib[] to counters not covered elsewhere only
+>  * remove histogram counters (moved to .get_rmon_stats)
+>  * remove RMON error counters (moved to .get_rmon_stats)
+>  * remove counters already in .get_eth_mac_stats
+>  * remove counters already in .get_stats64
+>  * add mxl862xx_rmon_ranges[] and mxl862xx_get_rmon_stats()
+> 
+> [...]
 
 Here is the summary with links:
-  - net: phy: realtek: use LEDCR page number define on RTL8211F
-    https://git.kernel.org/netdev/net-next/c/43a2deae3661
+  - [net-next,v2,1/2] net: dsa: mxl862xx: add ethtool statistics support
+    https://git.kernel.org/netdev/net-next/c/e6295d124644
+  - [net-next,v2,2/2] net: dsa: mxl862xx: implement .get_stats64
+    https://git.kernel.org/netdev/net-next/c/a21d33a5265f
 
 You are awesome, thank you!
 -- 
