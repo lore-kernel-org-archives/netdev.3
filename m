@@ -1,81 +1,206 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C592F3A9D9E;
-	Mon, 13 Apr 2026 12:42:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678483C3BF7
+	for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 12:56:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776084144; cv=none; b=qpgkK0IkNIZNrGc8WvcP/Tf3VRu4HqGJBJAwzv9Ptr4iiP+ZX2WE5etdjdiP8QqHXqnNpaOQTp1003QcUeEzDbdSob5BzrtH/dqsnzShvb6HAFiwpzQTfX93gci6xzbezkuaZOAsZK2Q3dyLqyYXiw4x944J4b7I+3gHcxacvN4=
+	t=1776084970; cv=none; b=FLA725XxnctKF8JD5fgigwBZ7OmmWMWLCLPKf19DYAfBkI6HN7UnzA0gYjVYr/OiIH7FheUunLK2K1LHRKASftEAIHZnVHf0B+wkn2A98YQ8HigJHnNaK2wp+uDbt1x6+DOVs7Sf3umSjXjPR+nTaX6rbXBftIdNIFeClse8EJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776084144; c=relaxed/simple;
-	bh=jE0Qgm0u+16Hck7IZ25n1n4PjSLQV9UclFHDQiaGkF8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uB6wjzYf01fx84dql1iwdUkBR3A84jWu5rWlY8t//6wb1eKJWerDvPbgzS/bIjwCxiQ2Ap0fJC1Q74dErXv8J7zHkI4DWYriu2N7iokqQq0W1EJc2mN9vhhwi81vgnPWnzJZAVAUKXa1RHlH/Oqvf5qtyw3kiqDQTJDmdHkp1og=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qiIsM++W; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776084970; c=relaxed/simple;
+	bh=pKdlBBc/Zo/O/9zta+3GqZOpzw/wF/xhfIybxfLv6Dw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=h5EHibIFitCcOuPropmlDxolftf3EPmHBVsTilfg11zKm2znuplPYy3YDU36EPjv3tfN2FcYBBSmwxOtyDt1wQp6Br3VWwnOrckFn2eaQU1us/GAbIrjfgsbeC5b3WoorpxI88I7Daj11Ta8Fx3uIrVKKFfv8B9S7JyyrtbLw9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DKFTYdC1; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=DyhR4wmh; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qiIsM++W"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2539BC2BCAF;
-	Mon, 13 Apr 2026 12:42:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776084144;
-	bh=jE0Qgm0u+16Hck7IZ25n1n4PjSLQV9UclFHDQiaGkF8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qiIsM++WiMmo4wsKMS+ZSAS4JWnefmbuXMmkByfsSxlqZlawzFeO9GGGy5Da3/dBs
-	 9oGYmFK8/I9jyiwAUzXgmUY7zOOjou+RmFOq3GcGpkNdAQYSNL8bbPlM0w4U1pN23E
-	 KKj0VDM/kzt0p6w8lMX/6wB8GLb30XXggbMNRmaE=
-Date: Mon, 13 Apr 2026 14:24:43 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Oliver Neukum <oneukum@suse.com>
-Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Oliver Neukum <oliver@neukum.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	stable <stable@kernel.org>
-Subject: Re: [PATCH net] net: usb: cdc_ncm: reject negative chained NDP
- offsets
-Message-ID: <2026041355-designate-spiritual-e785@gregkh>
-References: <2026041137-comfy-eaten-a1ed@gregkh>
- <2a6963c8-4a87-4fed-b875-d46f3ce53e42@suse.com>
- <2026041325-giggly-wrecking-e6ef@gregkh>
- <198c1240-80a6-456c-8b12-25158c90c965@suse.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DKFTYdC1";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="DyhR4wmh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1776084966;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bQHnab1AqDhEpIxV325QbEK6nu+RxguHD8R3QEZxdfM=;
+	b=DKFTYdC14g9e+7MxwmwxYdBkhkwJ3yaHjcM2xoAJtxO298hfj1kPW6lK7A4AekGR1/CMr+
+	sKtWl/rAO8pWcR8IpD/7G4iapc2jQm+EQTtoCcT0BwngyRNuQo1LQaTqZpx3MJj/aiqNOc
+	B5hN0lVbI+QQmNUr3AoxlTu0klNvt1w=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-488-tIjkNz_7Ms6ZgybWJomSrg-1; Mon, 13 Apr 2026 08:56:05 -0400
+X-MC-Unique: tIjkNz_7Ms6ZgybWJomSrg-1
+X-Mimecast-MFC-AGG-ID: tIjkNz_7Ms6ZgybWJomSrg_1776084964
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-488e1757205so8043935e9.0
+        for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 05:56:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1776084964; x=1776689764; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=bQHnab1AqDhEpIxV325QbEK6nu+RxguHD8R3QEZxdfM=;
+        b=DyhR4wmhQlHNvgnEzZCOrlpIEnw28H5pg9Ycp5nejHRcbQ1rcN3fnGBLX/MFV6qI4q
+         W181vXZ+Lf+U9OC6MLTOBCFlhuueP0iBaO7pJOVz7XfiYeLC/JYcQJuuFlqP9RWhdHTS
+         YLoStWLEaKmcIWWNXAQ6Rnl3Pq5E870j4GvFL1ZJCzDkXEkJvCznX4EXAGIq9r3KbRdI
+         qSWbJUa3XyQQBKv1+T1MLXOAJhAYOjCLIU5G+aoaoJUnTy1Uiiyq6KbgKZXJX8xVyuka
+         dugT9DhBqug8xaZgzhdR6B7JZqR5EIZb+ChallcjNNr53auUDaGa9curCy2+M8tRVd0g
+         4Nbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776084964; x=1776689764;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bQHnab1AqDhEpIxV325QbEK6nu+RxguHD8R3QEZxdfM=;
+        b=adXI2IbUGsv2AOQ7q3fIUXyRH1tDu7Akb6jLp13N/3XhcHdh+bFzyT8XjC9+3vmblv
+         oY5U3HRXsZLlEV4aFwczfHoEusTM0o7AGVD6QcC8AhJp/AX6vF+ChEFiVZRBLZ0ybCnD
+         mC5R9k3xWs7dzf52FA7tjHOcswDA0CrezW/Sr9R6WB5Vy1hkCL+3bgmPE8GRVn0HpqZh
+         eqqTPUbCLsooGP1nlmKwVVL1ltOk/s/HFX6j1F+FpXtuOr960q8vbo0cWG4rTpg/1uGA
+         AJCLr0Sq/JeL1qY8Y7IiETU8r51xJhqloW9Lf5OGG+t4ct2i5kpgPov4F2xQR+Nde0lg
+         eraw==
+X-Forwarded-Encrypted: i=1; AFNElJ9XOcOn1jDoVwKhNFbquDT6tE9Yi9DQ3idrq9Pf9ZWvEvMRwegzY4P0ovZ0YDE3qWsEcEYdKaQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJ+FrZEW01YHL3l3FT+XJbRqWttLD3TP65zMxArV11S4E9D/w9
+	0E3TewFDIbONulec0u+9wdJqQiYb0H3+C+84kvc4p0aTK1g1SWIz013sTLDJsTNTOFr80BxgZpa
+	or3XOJcqRZ4jNtmqV9u1qeG8V8EvD0lBJVEskdhSG0+/9HinCXidgReTYiA==
+X-Gm-Gg: AeBDieu24B5Ae4LrQ2388ASsVBuleE8+t2b1C7cX/Eg1G/tlUycEaR6mfnt/w0gBpYp
+	SQjCydSwUabwKPOIcbPumMetQzS7oV9UXtoT50ntQYnB9CXtqi4zIRds0nWyx1JakYJxNLD3mR+
+	cIfplCFz94r1BJOFB1Zg4IKoRTfc79/T5NaVcHvz0QcrcnFqi3YUusbH8sdKfDPxJfRXANgQ0Xa
+	AyqxOQk/3eJB0rhTj5ZM5eI2iFE2WyqNQlXUEIVopLTMcPk157XcdqLKd++CnnEiTDmQnlni906
+	7xzya76xFoMhrB9LfS0m3qICnwT4XsTw4k3YNuO0ztJ2Atnl29JcpvF2DNvRy7Kz9jQG8yOxOlh
+	Hbe/xIHXC8M9+vIZFwwLpwV/IAoaYN9BK73catbcfZ+7FM7FhesjSpp81
+X-Received: by 2002:a05:600d:d:b0:485:2a85:e5ec with SMTP id 5b1f17b1804b1-488d67b8db8mr139359855e9.2.1776084963898;
+        Mon, 13 Apr 2026 05:56:03 -0700 (PDT)
+X-Received: by 2002:a05:600d:d:b0:485:2a85:e5ec with SMTP id 5b1f17b1804b1-488d67b8db8mr139359395e9.2.1776084963420;
+        Mon, 13 Apr 2026 05:56:03 -0700 (PDT)
+Received: from [192.168.88.32] ([216.128.11.125])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488d5b3d4dbsm293834175e9.14.2026.04.13.05.56.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 13 Apr 2026 05:56:02 -0700 (PDT)
+Message-ID: <b9ffa72d-ebe2-4fd1-b668-93620f206179@redhat.com>
+Date: Mon, 13 Apr 2026 14:56:00 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <198c1240-80a6-456c-8b12-25158c90c965@suse.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v11 net-next 5/7] octeontx2-af: npc: cn20k: add subbank
+ search order control
+To: Ratheesh Kannoth <rkannoth@marvell.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org
+Cc: sgoutham@marvell.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, donald.hunter@gmail.com,
+ horms@kernel.org, jiri@resnulli.us, chuck.lever@oracle.com,
+ matttbe@kernel.org, cjubran@nvidia.com, saeedm@nvidia.com, leon@kernel.org,
+ tariqt@nvidia.com, mbloch@nvidia.com, dtatulea@nvidia.com
+References: <20260409025055.1664053-1-rkannoth@marvell.com>
+ <20260409025055.1664053-6-rkannoth@marvell.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260409025055.1664053-6-rkannoth@marvell.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Apr 13, 2026 at 02:11:50PM +0200, Oliver Neukum wrote:
-> On 13.04.26 12:43, Greg Kroah-Hartman wrote:
-> > On Mon, Apr 13, 2026 at 10:36:19AM +0200, Oliver Neukum wrote:
-> > > 
-> > > 
-> > > On 11.04.26 12:53, Greg Kroah-Hartman wrote:
-> > > > cdc_ncm_rx_fixup() reads dwNextNdpIndex from each NDP32 to chain to the
-> > > > next one.  The 32-bit value from the device is stored into the signed
-> > > > int ndpoffset so that means values with the high bit set become
-> > > 
-> > > Well, then isn't the problem rather that you should not store an
-> > > unsigned value in a signed variable?
-> > 
-> > No.  well, yes.  but no.
-> > 
-> > cdc_ncm_rx_verify_nth16() returns an int, and is negative if something
-> > went wrong, so we need it that way, and then we need to check it, like
-> > we properly do at the top of the loop, it's just that at the bottom of
-> > the loop we also need to do the same exact thing.
+On 4/9/26 4:50 AM, Ratheesh Kannoth wrote:
+> CN20K NPC MCAM is split into 32 subbanks that are searched in a
+> predefined order during allocation. Lower-numbered subbanks have
+> higher priority than higher-numbered ones.
 > 
-> Doesn't that suggest that cdc_ncm_rx_verify_nth16() is the problem?
-> To be precise, the way it indicates errors?
-> As this is an offset into a buffer and the header must be at the start
-> of the buffer, isn't 0 the natural indication of an error?
+> Add a runtime devlink parameter "srch_order" (
+> DEVLINK_PARAM_TYPE_U32_ARRAY) to control the order in which
+> subbanks are searched during MCAM allocation.
+> 
+> Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+> ---
+>  .../ethernet/marvell/octeontx2/af/cn20k/npc.c | 91 +++++++++++++++++-
+>  .../ethernet/marvell/octeontx2/af/cn20k/npc.h |  2 +
+>  .../marvell/octeontx2/af/rvu_devlink.c        | 92 +++++++++++++++++--
+>  3 files changed, 173 insertions(+), 12 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
+> index e854b85ced9e..153765b3e504 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
+> +++ b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
+> @@ -3317,7 +3317,7 @@ rvu_mbox_handler_npc_cn20k_get_kex_cfg(struct rvu *rvu,
+>  	return 0;
+>  }
+>  
+> -static int *subbank_srch_order;
+> +static u32 *subbank_srch_order;
+>  
+>  static void npc_populate_restricted_idxs(int num_subbanks)
+>  {
+> @@ -3329,7 +3329,7 @@ static int npc_create_srch_order(int cnt)
+>  {
+>  	int val = 0;
+>  
+> -	subbank_srch_order = kcalloc(cnt, sizeof(int),
+> +	subbank_srch_order = kcalloc(cnt, sizeof(u32),
+>  				     GFP_KERNEL);
+>  	if (!subbank_srch_order)
+>  		return -ENOMEM;
+> @@ -3809,6 +3809,93 @@ static void npc_unlock_all_subbank(void)
+>  		mutex_unlock(&npc_priv.sb[i].lock);
+>  }
+>  
+> +int npc_cn20k_search_order_set(struct rvu *rvu,
+> +			       u64 arr[MAX_NUM_SUB_BANKS], int cnt)
+> +{
+> +	struct npc_mcam *mcam = &rvu->hw->mcam;
+> +	u32 fslots[MAX_NUM_SUB_BANKS][2];
+> +	u32 uslots[MAX_NUM_SUB_BANKS][2];
+> +	int fcnt = 0, ucnt = 0;
+> +	struct npc_subbank *sb;
+> +	int idx, val, rc = 0;
+> +
+> +	unsigned long index;
+> +	void *v;
+> +
+> +	if (cnt != npc_priv.num_subbanks) {
+> +		dev_err(rvu->dev, "Number of entries(%u) != %u\n",
+> +			cnt, npc_priv.num_subbanks);
+> +		return -EINVAL;
+> +	}
+> +
+> +	mutex_lock(&mcam->lock);
+> +	npc_lock_all_subbank();
+> +	restrict_valid = false;
+> +
+> +	for (int i = 0; i < cnt; i++)
+> +		subbank_srch_order[i] = (u32)arr[i];
+> +
+> +	xa_for_each(&npc_priv.xa_sb_used, index, v) {
+> +		val = xa_to_value(v);
+> +		uslots[ucnt][0] = index;
+> +		uslots[ucnt][1] = val;
+> +		xa_erase(&npc_priv.xa_sb_used, index);
+> +		ucnt++;
+> +	}
+> +
+> +	xa_for_each(&npc_priv.xa_sb_free, index, v) {
+> +		val = xa_to_value(v);
+> +		fslots[fcnt][0] = index;
+> +		fslots[fcnt][1] = val;
+> +		xa_erase(&npc_priv.xa_sb_free, index);
+> +		fcnt++;
+> +	}
+> +
+> +	/* xa_store() is done under lock. If xa_store fails
+> +	 * ,no rollback is planned as it might also fail.
 
-Maybe?  I really don't know, sorry, parsing the cdc_ncm buffer is not
-something I looked too deeply into :)
+Why do you need to go throuh erase and add loop? Why can't you directly
+xa_store() the new value? Note that xa_store() can fail due to memory
+pressure.
 
-greg k-h
+Avoiding the previous erase will prevent deallocation and re allocation
+and will avoid any reasonable xa_store() failure.
+
+AFAICS there are a few more items reported by sashiko, please have a look:
+
+https://sashiko.dev/#/patchset/20260409025055.1664053-1-rkannoth%40marvell.com
+
+/P
+
