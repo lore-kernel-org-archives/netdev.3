@@ -1,47 +1,93 @@
-Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1483B7770
-	for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 10:07:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.95.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3C5D2D8DA3
+	for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 10:30:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776074858; cv=none; b=oEpeG57yPJTjrCr+TzcTlK+dnGFpb4Vr3StH/+pMjymIzffOAhhIv4nPdPCVzLmgfQqPgRSRxbKkD2oy65rPXCzQBRiuRYoEvqDNH5LiWWwv1kMfQuAjWW9uqazS8Jtl8lyL9kA8VhnStQfxqL+d82JftkQuBLerpphKKnaFGXk=
+	t=1776076255; cv=none; b=ngquM6+dc5nrcLKg07JWWG/MSCJY4DO5SFcmwXz2v8GuqJjsRuae9BmTCunGy+FVZATkGQTr+LJRp9uCVwqBbXM1qRGMDmUO2UJ79eBqa/PvMOglsbOS51pIaYxS0BGMnwhl2xpcFo/2GN0YUqCbl/b38BfzNkvkEMmXQ56gHs8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776074858; c=relaxed/simple;
-	bh=jqlmsgW1ZXF9UwTaqAX0MQN18po3bOo3czPFfe39k1Y=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=eWbo9qyeVwFFaY1DuuSJ33vD5WrvaVi/aV+uToAp3ONOkNf6Y6RvYGHbz2y49YYgI7XjUKejv7kZrLmQBu1mIgXMUpqDdZa8ANI9u0QeG3Nke18RnJsuu7lwbVs5s1+3Tv+6VxO08tf7c2cPwME/TMFlum/udjD1BUKAiq51QV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk; spf=pass smtp.mailfrom=toke.dk; arc=none smtp.client-ip=45.145.95.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-Authentication-Results: mail.toke.dk; dkim=none
-To: phx <phx0fer@gmail.com>
-Cc: netdev@vger.kernel.org
-Subject: Re: [PATCH] net/sched: sch_cake: fix NAT destination port not being
- updated in cake_update_flowkeys
-In-Reply-To: <CAKvCo-yFnu3RBbiGkaVi-X5qX_hN1a-FYrBZfzB9UKz8k-PZtQ@mail.gmail.com>
-References: <20260413084715.70169-1-phx0fer@gmail.com>
- <874ilfdwoe.fsf@toke.dk>
- <CAKvCo-yFnu3RBbiGkaVi-X5qX_hN1a-FYrBZfzB9UKz8k-PZtQ@mail.gmail.com>
-Date: Mon, 13 Apr 2026 12:07:34 +0200
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87y0ircgwp.fsf@toke.dk>
+	s=arc-20240116; t=1776076255; c=relaxed/simple;
+	bh=ZZ5n5swHim3raXBjfjDTGvGtf3AkWA9HWolWBpnbGSI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DPRTOMxcQzRPET+167byGEypbjoHjEIjSW671zQ70Bvs8n82OdwgcCgPCEJGcvP6EeGf7Wd+vwh8q+A/fgXOmvmA2eWSDy3Ja8xklUfaTUybBOY/dpsJXSFH4iL2ou4VIUXeUiXX0jvvRe24H883gWVYYvwXVWtpfgpiA+geWpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hi3v3Cty; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hi3v3Cty"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 845FFC2BCB5;
+	Mon, 13 Apr 2026 10:30:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776076254;
+	bh=ZZ5n5swHim3raXBjfjDTGvGtf3AkWA9HWolWBpnbGSI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hi3v3CtyoEcPmYpmhDY4nfGSXYwTU80Qf8lFCGEC3mLRH9b6GWU38gKyBkhg6kqpx
+	 nGG0Dh+HoSB0FMn5SJR7dCmunvpBQneZ5bS4Vxk9NBGBsoH3T2mFnf3BuTHlKSk4j3
+	 C7WW3FToIAqDCGUawKdHmhZfEmwcBzJyAcPtoaWi9/5nUPdlSPtbpZM0Y7+eSTU5q7
+	 xcJUmGfzl6JSJVUMW4VWkaRqRGmkvpa556FTsUewU7VKH6UsVHvzXBFsf3+basZN8+
+	 p5FdC4hUxoR8MJISV/kJsxKOh7fnKqyvwqYVmlV/fHLhUoEJgrshLwF9ZMBYBhunCz
+	 9A2+7wgktv5GA==
+Date: Mon, 13 Apr 2026 11:30:50 +0100
+From: Simon Horman <horms@kernel.org>
+To: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Cc: intel-wired-lan@lists.osuosl.org, anthony.l.nguyen@intel.com,
+	netdev@vger.kernel.org, Paul Greenwalt <paul.greenwalt@intel.com>
+Subject: Re: [PATCH iwl-net v2 2/6] ixgbe: add bounds check for debugfs
+ register access
+Message-ID: <20260413103050.GL469338@kernel.org>
+References: <20260408131154.2661818-1-aleksandr.loktionov@intel.com>
+ <20260408131154.2661818-3-aleksandr.loktionov@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260408131154.2661818-3-aleksandr.loktionov@intel.com>
 
-phx <phx0fer@gmail.com> writes:
+On Wed, Apr 08, 2026 at 03:11:50PM +0200, Aleksandr Loktionov wrote:
+> From: Paul Greenwalt <paul.greenwalt@intel.com>
+> 
+> Prevent out-of-bounds MMIO accesses triggered through user-controlled
+> register offsets.  IXGBE_HFDR (0x15FE8) is the highest valid MMIO
+> register in the ixgbe register map; any offset beyond it would address
+> unmapped memory.
+> 
+> Add a defense-in-depth check at two levels:
+> 
+> 1. ixgbe_read_reg() -- the noinline register read accessor.  A
+>    WARN_ON_ONCE() guard here catches any future code path (including
+>    ioctl extensions) that might inadvertently pass an out-of-range
+>    offset without relying on higher layers to catch it first.
+>    ixgbe_write_reg() is a static inline called from the TX/RX hot path;
+>    adding WARN_ON_ONCE there would inline the check at every call site,
+>    so only the read path gets this guard.
+> 
+> 2. ixgbe_dbg_reg_ops_write() -- the debugfs 'reg_ops' interface is the
+>    only current path where a raw, user-supplied offset enters the driver.
+>    Gating it before invoking the register accessors provides a clean,
+>    user-visible failure (silent ignore with no kernel splat) for
+>    deliberately malformed debugfs writes.
+> 
+> Add a reg <= IXGBE_HFDR guard to both the read and write paths in
+> ixgbe_dbg_reg_ops_write(), and a WARN_ON_ONCE + early-return guard to
+> ixgbe_read_reg().
+> 
+> Fixes: 91fbd8f081e2 ("ixgbe: added reg_ops file to debugfs")
+> Signed-off-by: Paul Greenwalt <paul.greenwalt@intel.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+> ---
+> v1 -> v2:
+>  - Add Fixes: tag; reroute from iwl-next to iwl-net (security-relevant
+>    hardening for user-controllable out-of-bounds MMIO).
 
-> You're right, "vulnerability" is too strong - it's a correctness
-> bug, not a security issue. Thanks for picking it up.
+Thanks for the update.
 
-Cool. Could you please re-send with an updated commit message? Thanks!
+And sorry for not thinking to ask this earlier: this patch
+addresses possible overruns of the mapped address space if the
+supplied value for reg is too large. But do we also need a
+guard against underrun if the value for reg is too small?
 
--Toke
-
-pw-bot: cr
+...
