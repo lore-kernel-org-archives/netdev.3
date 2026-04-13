@@ -1,76 +1,152 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C4E839525E;
-	Mon, 13 Apr 2026 21:31:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77C8F3537C4;
+	Mon, 13 Apr 2026 21:31:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776115873; cv=none; b=Yp8CkKOW/UuKOsKZJCsIVYsOlxyFKA4N+r2KTh5aPKZzBeS6YFivZnp3v3JAi/4FBSD+VXojdtfESEQteMHQuoehRLANYOpJeBV/8llmVVV4Mr5nHNXqsdS0/2rOzv5pvQLNr2DkHxWoOMuoXLU+EoRseA1FP5tBvWjTXPw8Oy4=
+	t=1776115923; cv=none; b=jmfUIzBFBF/m44QDBSgQEclhwoTFmSiGOxJncsBHnZ5cKiLIvQCtSGXfsBJg3UBkea1Q6Jk/fzKzNZ/Hp42e+GtOblBBBSDkRDu8ouL0Tmz932VWx07RX1KxE0zuIsJ9AtWJuiHWjiJ2WwZrEjid+QIZ6vJj2QXViKGLhz02c6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776115873; c=relaxed/simple;
-	bh=wsKdTF8nfHymkiOpuDUjPKVHg8i8QZ6B4tycIu4oiJs=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=KNGgqWLmOn0t1NvHFV1FqcwgU+05kLeg3LaEqE4YdwOGZaiAQq1Jy+udUUacl7SMuvYgIMK6gVS0OSBH0cHXApjC7akdvFHbmR1Y2DXG6NnLnB8HtN7TTtDEfsq+NpiKlBMhgJ3vUcBhiIyGYEsJzT61uSnz2R2O18SoSLnE1mk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FATgJwyr; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FATgJwyr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 344E4C2BCAF;
-	Mon, 13 Apr 2026 21:31:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776115873;
-	bh=wsKdTF8nfHymkiOpuDUjPKVHg8i8QZ6B4tycIu4oiJs=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=FATgJwyrou+Ow95AQAxOX0IO9ITzI82SNIKQ/Gh3qXzZxXKfpeyWUcZq43ZzLwc3o
-	 6qqSZgxNT6vpz6/lJpVnVh2Y/srEt1VJ55T9sJHsOxrb87oqNVp+LOiBAuzBcm9pk0
-	 ixC22vzQKWqllX0Kw/ZivwDCAKTEO3Ry93NMYUsdmNNs/mlii9vjZIBBRKDy7mPEfO
-	 UDaAN/pkzfQMaVQnc0J4oykoLg+h5Vpm2PkSR2zYxclaA9f5+f5nZbJ2lxkd2g1Qph
-	 iqJgdz3gX25gdqpkhmNy7YXUM6gNFL5f+LjtS07JpJbmPWZ2CdVmbgNTzkUwTOc6Ex
-	 ChPSshP/WLGxg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9DF23809A0C;
-	Mon, 13 Apr 2026 21:30:45 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1776115923; c=relaxed/simple;
+	bh=MZoCFJEcd1rlZbihzaPj9mcGjtYih9+dFesBfopE024=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Hpt5Ztni4MaC+U8KaaeAz+3ySg+swcqQALZdlBXCO6j9LweH+Ldul/l4Kdh5bSoVcJqzht/39KrehZxHgavs7w5IZ/RyDBTsUKVLW/UmbSA79MPwn/va77MDsNDr7hFSm2dxiqIvMmj8a31Hh66pp/ylVYCGq3An9PVaxU5bkQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
+Received: from [192.168.0.192] (ip5f5af789.dynamic.kabel-deutschland.de [95.90.247.137])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: pmenzel)
+	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 05AB94C2C37F0B;
+	Mon, 13 Apr 2026 23:30:53 +0200 (CEST)
+Message-ID: <e539632b-9f02-436d-ac77-34e7673d8100@molgen.mpg.de>
+Date: Mon, 13 Apr 2026 23:30:52 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [GIT PULL] bluetooth-next 2026-04-13
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177611584454.554657.15751070808714863361.git-patchwork-notify@kernel.org>
-Date: Mon, 13 Apr 2026 21:30:44 +0000
-References: <20260413132247.320961-1-luiz.dentz@gmail.com>
-In-Reply-To: <20260413132247.320961-1-luiz.dentz@gmail.com>
-To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: davem@davemloft.net, kuba@kernel.org, linux-bluetooth@vger.kernel.org,
- netdev@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Intel-wired-lan] [PATCH iwl-net] ice: fix infinite recursion in
+ ice_cfg_tx_topo via ice_init_dev_hw
+To: Petr Oros <poros@redhat.com>
+Cc: netdev@vger.kernel.org,
+ Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+ Paul Greenwalt <paul.greenwalt@intel.com>,
+ Daniel Zahka <daniel.zahka@gmail.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Nikolay Aleksandrov <razor@blackwall.org>, Eric Dumazet
+ <edumazet@google.com>, linux-kernel@vger.kernel.org,
+ Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, Tony Nguyen
+ <anthony.l.nguyen@intel.com>, Dave Ertman <david.m.ertman@intel.com>,
+ jacob.e.keller@intel.com, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>,
+ intel-wired-lan@lists.osuosl.org
+References: <20260413191420.3524013-1-poros@redhat.com>
+Content-Language: en-US
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+In-Reply-To: <20260413191420.3524013-1-poros@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hello:
+Dear Petr,
 
-This pull request was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 13 Apr 2026 09:22:47 -0400 you wrote:
-> The following changes since commit 42f9b4c6ef19e71d2c7d9bfd3c5037d4fe434ad7:
+Thank you very much for your patch.
+
+Am 13.04.26 um 21:14 schrieb Petr Oros:
+> On certain E810 configurations where firmware supports Tx scheduler
+> topology switching (tx_sched_topo_comp_mode_en), ice_cfg_tx_topo()
+> may need to apply a new 5-layer or 9-layer topology from the DDP
+> package. If the AQ command to set the topology fails (e.g. due to
+> invalid DDP data or firmware limitations), the global configuration
+> lock must still be cleared via a CORER reset.
 > 
->   tools: ynl: tests: fix leading space on Makefile target (2026-04-09 20:41:40 -0700)
+> Commit 86aae43f21cf ("ice: don't leave device non-functional if Tx
+> scheduler config fails") correctly fixed this by refactoring
+> ice_cfg_tx_topo() to always trigger CORER after acquiring the global
+> lock and re-initialize hardware via ice_init_hw() afterwards.
 > 
-> are available in the Git repository at:
+> However, commit 8a37f9e2ff40 ("ice: move ice_deinit_dev() to the end
+> of deinit paths") later moved ice_init_dev_hw() into ice_init_hw(),
+> breaking the reinit path introduced by 86aae43f21cf. This creates an
+> infinite recursive call chain:
 > 
->   git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth-next.git tags/for-net-next-2026-04-13
+>    ice_init_hw()
+>      ice_init_dev_hw()
+>        ice_cfg_tx_topo()         # topology change needed
+>          ice_deinit_hw()
+>          ice_init_hw()           # reinit after CORER
+>            ice_init_dev_hw()     # recurse
+>              ice_cfg_tx_topo()
+>                ...               # stack overflow
 > 
-> [...]
+> Fix by moving ice_init_dev_hw() back out of ice_init_hw() and calling
+> it explicitly from ice_probe() and ice_devlink_reinit_up(). The third
+> caller, ice_cfg_tx_topo(), intentionally does not need ice_init_dev_hw()
+> during its reinit, it only needs the core HW reinitialization. This
+> breaks the recursion cleanly without adding flags or guards.
+> 
+> The deinit ordering changes from commit 8a37f9e2ff40 ("ice: move
+> ice_deinit_dev() to the end of deinit paths") which fixed slow rmmod
+> are preserved, only the init-side placement of ice_init_dev_hw() is
+> reverted.
+> 
+> Fixes: 8a37f9e2ff40 ("ice: move ice_deinit_dev() to the end of deinit paths")
+> Signed-off-by: Petr Oros <poros@redhat.com>
+> ---
+>   drivers/net/ethernet/intel/ice/devlink/devlink.c | 2 ++
+>   drivers/net/ethernet/intel/ice/ice_common.c      | 2 --
+>   drivers/net/ethernet/intel/ice/ice_main.c        | 2 ++
+>   3 files changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/intel/ice/devlink/devlink.c b/drivers/net/ethernet/intel/ice/devlink/devlink.c
+> index 6144cee8034d77..641d6e289d5ce6 100644
+> --- a/drivers/net/ethernet/intel/ice/devlink/devlink.c
+> +++ b/drivers/net/ethernet/intel/ice/devlink/devlink.c
+> @@ -1245,6 +1245,8 @@ static int ice_devlink_reinit_up(struct ice_pf *pf)
+>   		return err;
+>   	}
+>   
+> +	ice_init_dev_hw(pf);
+> +
+>   	/* load MSI-X values */
+>   	ice_set_min_max_msix(pf);
+>   
+> diff --git a/drivers/net/ethernet/intel/ice/ice_common.c b/drivers/net/ethernet/intel/ice/ice_common.c
+> index ce11fea122d03e..b617a6bff89134 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_common.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_common.c
+> @@ -1126,8 +1126,6 @@ int ice_init_hw(struct ice_hw *hw)
+>   	if (status)
+>   		goto err_unroll_fltr_mgmt_struct;
+>   
+> -	ice_init_dev_hw(hw->back);
+> -
+>   	mutex_init(&hw->tnl_lock);
+>   	ice_init_chk_recipe_reuse_support(hw);
+>   
+> diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+> index e2a5534819d194..a27be29f9bbbfc 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_main.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_main.c
+> @@ -5314,6 +5314,8 @@ ice_probe(struct pci_dev *pdev, const struct pci_device_id __always_unused *ent)
+>   		return err;
+>   	}
+>   
+> +	ice_init_dev_hw(pf);
+> +
+>   	adapter = ice_adapter_get(pdev);
+>   	if (IS_ERR(adapter)) {
+>   		err = PTR_ERR(adapter);
 
-Here is the summary with links:
-  - [GIT,PULL] bluetooth-next 2026-04-13
-    https://git.kernel.org/netdev/net-next/c/e9dc62f25ba6
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
 
 
+Kind regards,
+
+Paul
