@@ -1,69 +1,78 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 848071D61A3;
-	Mon, 13 Apr 2026 02:26:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11AD11A682A
+	for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 02:43:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776047185; cv=none; b=VpXXRpLamHJgUKa7ssfSt4ksfy1ZqbHMkz61C+HIVT1lgAntucy1v9MfBKTB8JsxqEvobdwLAAq570aNjhDewfoSLCpvCkWNeHlxMD8jFoJlZWUt9OP4jwbTRvjWyxoeawLfBhQLE2RZlwY2NLD17/PCTTrqJW3YrCOFkhKHPTw=
+	t=1776048225; cv=none; b=UrXcGvpHI5MgIEkz8xPHfwxGqDRjNyy7U0YK1UAzDpAj3GhLMSWdm/WuXfqEpNSTJUCvAknWd7GDftw2d5rD5hdErX5rMuWmajxKIK3VRWcS/bkc0avEzmSMZoKD8Olt+CPJPyKFcmmbq7WUwhcLk/Dl7uKc5PE70TV2XNYY2Nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776047185; c=relaxed/simple;
-	bh=cYFFXHwwvGuibt1PZzWRliLfIKEX30gWC7CvWsMh4B0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uuiVBF/HYG2h7daG4VdmFDTqJf+8lVZr6UsY8FouqMLT6+U/PbG+shamZ0OtmQqvo3YUVApM9PzmB+CMrxMOMsubVDQ+4vYgxcFFNVXEA841rVHb7e7ElN/bX6uaNrzNqelcv1TynH0bzSUe+XsG1/IrcgnvJi2NXMZ6ZTdUPFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GCWOMtms; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1776048225; c=relaxed/simple;
+	bh=fPlzSFSfzETLLb5TQfBBEcxKEV71pXKM+WrPpneZZTw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=GgDBHbJi8WuyY7fC6nrapxOPf1k6HiyrxIq2GZTNqw9/2BfhSpdvBr+aL9Fc10Zl3n0yTRcU6nh9qHSRcfkt++r8Lm9S+197Cv2cAGxO02y0bVMbQeAdq+prwTI0w1r7Cr8fBBxOJgfdrgWvqBGLoq6mt2HeTCcPwMZQD+kLw0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lXlrxA2l; arc=none smtp.client-ip=209.85.219.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GCWOMtms"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776047184; x=1807583184;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=cYFFXHwwvGuibt1PZzWRliLfIKEX30gWC7CvWsMh4B0=;
-  b=GCWOMtmslMQP2hkBy4gg3q0xbaKcvQnmLlOJEtFDQXDi0z1lSxCHd6Be
-   tPN/z6y+VUSsnQMBnAvNslL+lgI/yCbEEjWgd9p/IM0Qie7KdmoEbYqoH
-   qxDMTAJ4XfAbyvKLvZPgV2L5EN4M/qbL895BELPwaFY5MOLcuPPPbKhVR
-   W3RV+RU7FVVXanbEY9qrkJncYVyZC0RxW6LQjUYp/s3YXCXCzmcn1axsP
-   H5labKOuiBXjMJyjLcfx+si+5GZ75I+brubz4WBL26n/dzsvcbUlFLUws
-   mrdmDOri5DOmcQmPV62Wyr0Sx3k9AMMubA7q2pxTQaPUaO+CGx/gWgUVU
-   A==;
-X-CSE-ConnectionGUID: JF7aTiB8QSKmiwkL3NulPQ==
-X-CSE-MsgGUID: 3VrYx76ySf2MPpK0PmS9HQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11757"; a="76995060"
-X-IronPort-AV: E=Sophos;i="6.23,176,1770624000"; 
-   d="scan'208";a="76995060"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2026 19:26:23 -0700
-X-CSE-ConnectionGUID: jXtFVFBiTOGC3ltGX6nwmA==
-X-CSE-MsgGUID: XXTjSMEWRLGlIxVqUw5xug==
-X-ExtLoop1: 1
-Received: from unknown (HELO localhost.png.intel.com) ([10.107.255.31])
-  by fmviesa003.fm.intel.com with ESMTP; 12 Apr 2026 19:26:19 -0700
-From: KhaiWenTan <khai.wen.tan@linux.intel.com>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lXlrxA2l"
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-8aca4e14411so10832846d6.3
+        for <netdev@vger.kernel.org>; Sun, 12 Apr 2026 19:43:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776048223; x=1776653023; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NN1ZThU+Pitkel3yIJoVzzx8LIHrm/czHWWd6RHRo6g=;
+        b=lXlrxA2l7A3QN672hkuD8SQCt/xBqQ43TXsev2u9upu47IqnGvZXTS3WIR+ubwpfBp
+         KqtMCso9zZCD/InsVJfeoBtXNr/02OJN09G7xZhJf3cnxdgSP5aFdxYEieeiP2rVc/9K
+         FZZe0W6v7qirwA5H2A4eBBM3CqLugf+0PWqVoJrrcLYBgPD+22IgiKX64PF486zGE/JI
+         KLlEVQwZCM0347mOWqP33ApeWGyEeKcpKQ3MxQEqrEvZi/1IWl/nJw5LjbtuBRpLvQI0
+         lybWScWurePGK2x4G+g6naBy8p8sonCeZ1/gfoEc8CTqnyIKXByoWgd+gpZGXBAJTGxv
+         8SuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776048223; x=1776653023;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=NN1ZThU+Pitkel3yIJoVzzx8LIHrm/czHWWd6RHRo6g=;
+        b=IAfLgZAKR0rIyajApzG7/qnSRTlCtGmX+cCVpM9OhiXBTCfTrcjPCDe9IERKPww4eS
+         X0fSzk6fg0SlwJNq2bqRpLNznayXDRxagyczrw4f+SX+670d1OMsDyfDjaUJy3G0leSv
+         lLO+CscQ+Cvh5uyMCvFybJd3/J4yHnTUQeeRAz6GxR6x3D2Qe/WoTFWUi+/IIZ9ejIuS
+         wg0Y8uvhisHzf9iuVjF8OGIu76+muSqz8UX/A936uv1QORjsa/jey+WubvGLX4nh6ex2
+         Y/xiWJWn2RcX9yY+PacklVPBRP4D45dv/PEcoPp43XtezYRhWFruemtZ3DYGlTUzCQt3
+         o4/g==
+X-Gm-Message-State: AOJu0YzpNEI4soq4LpsFrw9ihMLrL4lg0tNQHRWmsGMywPAoFc5XQWOQ
+	9887c+sflNDu6Ts6b1C6Mnz0kagsyvSGRlCjO4IrlX3axAIsJlXrMi2zDwPsH/OOfFaZgg==
+X-Gm-Gg: AeBDieugEX3AUOwOCuOI/QtTR/8knAbqpb3e7CWW/OhNfHdPmV1TwZn5ebEpsarFPaj
+	21YIFNoqAMwRHLkqOWLADcar1njwG3dnZ+g1dO2ZPkkqpTf/ctkZDLBFTIOoz6lk3l5bxXbgwbZ
+	T/ysRdReFOUlVT6pVvPFkwNos6MAqAawFcQu+F01Zwwvxh/k2/IC4xvHFSZ0DIccO4rzwL0MAWX
+	1Rza9hLU6BQO37jt2Jfwm6+jWU3CdK0tR89PAdNuNROJxzyE5NQ3mvO52jtg4w2oFhOIYwZQv+G
+	C8Z+/U1OOu4UvgymhyzpCsVF11dTjpjFTFqDJF08fNpasic7YQKoLmpWu5LHt/pOiNzh53qXNtZ
+	5tw03ye4BoCFleXJdjqtaD5sHFpBesbHJPQIuwi9poyT38eJa48J3BzRutkSl5m52vMNRVNj79T
+	awkN4EuHoEBp8QX+dqi2qhlhmIqXz4xQQaGwSIBJFmpHqQ1tvIHpZHfiFNu7FuurTeruTHSLB19
+	6ppiYw40/wSFNN+AKbiD0kTzJgk
+X-Received: by 2002:a0c:f40b:0:b0:8a6:17d7:286f with SMTP id 6a1803df08f44-8ac8613a142mr195661396d6.10.1776048222897;
+        Sun, 12 Apr 2026 19:43:42 -0700 (PDT)
+Received: from TDC4045031631.e0cglfehwr0e5gttmepj3hi3hf.ux.internal.cloudapp.net ([20.63.37.123])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8acb25f5a09sm7359646d6.17.2026.04.12.19.43.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 12 Apr 2026 19:43:42 -0700 (PDT)
+From: Ashutosh Desai <ashutoshdesai993@gmail.com>
+To: netdev@vger.kernel.org
+Cc: kuba@kernel.org,
 	edumazet@google.com,
-	kuba@kernel.org,
+	davem@davemloft.net,
 	pabeni@redhat.com,
-	mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com,
-	rmk+kernel@armlinux.org.uk,
-	maxime.chevallier@bootlin.com,
-	ovidiu.panait.rb@renesas.com,
-	vladimir.oltean@nxp.com
-Cc: netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
+	horms@kernel.org,
 	linux-kernel@vger.kernel.org,
-	yoong.siang.song@intel.com,
-	hong.aun.looi@intel.com,
-	khai.wen.tan@intel.com,
-	KhaiWenTan <khai.wen.tan@linux.intel.com>
-Subject: [PATCH net,v2 1/1] net: stmmac: Update default_an_inband before passing value to phylink_config
-Date: Mon, 13 Apr 2026 10:03:39 +0800
-Message-ID: <20260413020339.68426-1-khai.wen.tan@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
+	Ashutosh Desai <ashutoshdesai993@gmail.com>
+Subject: [PATCH v3] nfc: hci: fix out-of-bounds read in HCP header parsing
+Date: Mon, 13 Apr 2026 02:43:29 +0000
+Message-Id: <20260413024329.3293075-1-ashutoshdesai993@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260413000627.3273477-1-ashutoshdesai993@gmail.com>
+References: <20260413000627.3273477-1-ashutoshdesai993@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -72,53 +81,57 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-get_interfaces() will update both the plat->phy_interfaces and
-mdio_bus_data->default_an_inband based on reading a SERDES register. As
-get_interfaces() will be called after default_an_inband had already been
-read, dwmac-intel regressed as a result with incorrect default_an_inband
-value in phylink_config.
+nfc_hci_recv_from_llc() and nci_hci_data_received_cb() cast skb->data
+to struct hcp_packet and read the message header byte without checking
+that enough data is present in the linear sk_buff area. A malicious NFC
+peer can send a 1-byte HCP frame that passes through the SHDLC layer
+and reaches these functions, causing an out-of-bounds heap read.
 
-Therefore, we moved the priv->plat->get_interfaces() to be executed first
-before assigning mdio_bus_data->default_an_inband to
-config->default_an_inband to ensure default_an_inband is in correct value.
+Fix this by adding pskb_may_pull() before each cast to ensure the full
+2-byte HCP header is pulled into the linear area before it is accessed.
 
-Fixes: d3836052fe09 ("net: stmmac: intel: convert speed_mode_2500() to get_interfaces()")
-Signed-off-by: KhaiWenTan <khai.wen.tan@linux.intel.com>
+Signed-off-by: Ashutosh Desai <ashutoshdesai993@gmail.com>
 ---
-v2:
-  - update commit message for better understanding (Russell King)
-  - corrected the blamed commit (Russell King)
-v1: https://patchwork.kernel.org/project/netdevbpf/patch/20260410020735.327590-1-khai.wen.tan@linux.intel.com/
----
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+v3: drop redundant pskb_may_pull checks from msg_rx_work functions,
+    remove incorrect Suggested-by tag
+v2: switch skb->len check to pskb_may_pull
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 13d3cac056be..c92054648a7e 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -1345,10 +1345,6 @@ static int stmmac_phylink_setup(struct stmmac_priv *priv)
- 	priv->tx_lpi_clk_stop = priv->plat->flags &
- 				STMMAC_FLAG_EN_TX_LPI_CLOCKGATING;
- 
--	mdio_bus_data = priv->plat->mdio_bus_data;
--	if (mdio_bus_data)
--		config->default_an_inband = mdio_bus_data->default_an_inband;
--
- 	/* Get the PHY interface modes (at the PHY end of the link) that
- 	 * are supported by the platform.
+ net/nfc/hci/core.c | 5 +++++
+ net/nfc/nci/hci.c  | 5 +++++
+ 2 files changed, 10 insertions(+)
+
+diff --git a/net/nfc/hci/core.c b/net/nfc/hci/core.c
+index 0d33c81a1..cd9cf6c94 100644
+--- a/net/nfc/hci/core.c
++++ b/net/nfc/hci/core.c
+@@ -904,6 +904,11 @@ static void nfc_hci_recv_from_llc(struct nfc_hci_dev *hdev, struct sk_buff *skb)
+ 	 * unblock waiting cmd context. Otherwise, enqueue to dispatch
+ 	 * in separate context where handler can also execute command.
  	 */
-@@ -1356,6 +1352,10 @@ static int stmmac_phylink_setup(struct stmmac_priv *priv)
- 		priv->plat->get_interfaces(priv, priv->plat->bsp_priv,
- 					   config->supported_interfaces);
- 
-+	mdio_bus_data = priv->plat->mdio_bus_data;
-+	if (mdio_bus_data)
-+		config->default_an_inband = mdio_bus_data->default_an_inband;
++	if (!pskb_may_pull(hcp_skb, NFC_HCI_HCP_HEADER_LEN)) {
++		kfree_skb(hcp_skb);
++		return;
++	}
 +
- 	/* Set the platform/firmware specified interface mode if the
- 	 * supported interfaces have not already been provided using
- 	 * phy_interface as a last resort.
+ 	packet = (struct hcp_packet *)hcp_skb->data;
+ 	type = HCP_MSG_GET_TYPE(packet->message.header);
+ 	if (type == NFC_HCI_HCP_RESPONSE) {
+diff --git a/net/nfc/nci/hci.c b/net/nfc/nci/hci.c
+index 40ae8e5a7..6e633da25 100644
+--- a/net/nfc/nci/hci.c
++++ b/net/nfc/nci/hci.c
+@@ -482,6 +482,11 @@ void nci_hci_data_received_cb(void *context,
+ 	 * unblock waiting cmd context. Otherwise, enqueue to dispatch
+ 	 * in separate context where handler can also execute command.
+ 	 */
++	if (!pskb_may_pull(hcp_skb, NCI_HCI_HCP_HEADER_LEN)) {
++		kfree_skb(hcp_skb);
++		return;
++	}
++
+ 	packet = (struct nci_hcp_packet *)hcp_skb->data;
+ 	type = NCI_HCP_MSG_GET_TYPE(packet->message.header);
+ 	if (type == NCI_HCI_HCP_RESPONSE) {
 -- 
-2.43.0
+2.34.1
 
