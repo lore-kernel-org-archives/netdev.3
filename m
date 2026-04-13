@@ -1,126 +1,124 @@
-Received: from sender4-of-o54.zoho.com (sender4-of-o54.zoho.com [136.143.188.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E3C1096F;
-	Mon, 13 Apr 2026 15:01:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776092471; cv=pass; b=FEq0CQPl4yRbF6oFNnG+l9WEhgDPJddfDfjqDM6i0PCIVur+L+kHA0NSicaGujQVvoaDoRW3LVO6vQeF+S+41jIE2EhvqrZynxB6N45tsNmB4Of2gdaREcJC3LnSVI5W78LiOY0Q9v/0JNUOBorZ7YDm41SRSe1PhfYCzA6UnyE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776092471; c=relaxed/simple;
-	bh=yF1EOuSGbovi/OWyqyF20KilJgjRSzqfAfH2CoDWyMs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EWvzZMuO2S2w/UdRgcCaKFeEfUV9XIugtl7MKq7pAOs36GiITdhcc5B0G7KmzJTVmzmEn1gx4pOlh14+K8wJD7BY0YjCPBhkOBiJXcp+uChbingG6kUsAVB+qvpot7B59hwRPXuK/np0D7r1YOZ+HHZv39tcJEHHFW9jggWBMY8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mpiricsoftware.com; spf=pass smtp.mailfrom=mpiricsoftware.com; dkim=pass (1024-bit key) header.d=mpiricsoftware.com header.i=shardul.b@mpiricsoftware.com header.b=tWPem7+r; arc=pass smtp.client-ip=136.143.188.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mpiricsoftware.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mpiricsoftware.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mpiricsoftware.com header.i=shardul.b@mpiricsoftware.com header.b="tWPem7+r"
-ARC-Seal: i=1; a=rsa-sha256; t=1776092436; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=HCp6CLPPNiSF3liA/4Omngty6B+ulEsF/QWqJxYRu//l1jXcaWZ9LC1YTCmjOUbnQJMG+uRfXf5A/On1ZjxSc6y2V8Fsbf2BNAbN8kcZWTiVqkNJgE4n4+2Lfdt9R/K4/BKV26E42jQLqjQmVWTVS/T+1hNCD3hf/UTV7XjhCbI=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1776092436; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=GuZMQ4obIZBfLwzT7dBWa+wWhBwlSjqniuDoLorhniA=; 
-	b=MALNYq6UMVrL7xvAfa4S10qJeShDwfzUqQ5AsieDixZ88vYxoH++3ZbjSLZDxaJH6S1Ob6hHkFowFHapAAXjxuvplb8P0rB9TVNLV0Qt5LG8WirWszTPRxLp9RowvH6k14zx9qFjB6K4pBeQIRpGt1nl1E/AA9l7dqrwA6fP+ek=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=mpiricsoftware.com;
-	spf=pass  smtp.mailfrom=shardul.b@mpiricsoftware.com;
-	dmarc=pass header.from=<shardul.b@mpiricsoftware.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1776092436;
-	s=mpiric; d=mpiricsoftware.com; i=shardul.b@mpiricsoftware.com;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Transfer-Encoding:Reply-To;
-	bh=GuZMQ4obIZBfLwzT7dBWa+wWhBwlSjqniuDoLorhniA=;
-	b=tWPem7+rKELSJXTTak1d3EXPm64tq4CR6L0Zd812NuRFVzaQ4a20fYi+zDA5TCVi
-	qMgCGK6eVNzkocaCR6aUBCzKhigMyYI42+Ai1wLk/jSF6DzhHCGh8UZaFtahiUlvwAh
-	D1mLVgTucRxliLj+/Cxh2FDxEmQJBmxtgVYjVTQI=
-Received: by mx.zohomail.com with SMTPS id 1776092434400296.8841184266247;
-	Mon, 13 Apr 2026 08:00:34 -0700 (PDT)
-From: Shardul Bankar <shardul.b@mpiricsoftware.com>
-To: Jason@zx2c4.com,
-	kuniyu@google.com
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	wireguard@lists.zx2c4.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	janak@mpiric.us,
-	kalpan.jani@mpiricsoftware.com,
-	shardulsb08@gmail.com,
-	Shardul Bankar <shardul.b@mpiricsoftware.com>,
-	syzbot+pFBD3bslSSshiJCd3rxy@syzkaller.appspotmail.com
-Subject: [PATCH] wireguard: device: use exit_rtnl callback instead of manual rtnl_lock in pre_exit
-Date: Mon, 13 Apr 2026 20:30:24 +0530
-Message-Id: <20260413150024.1003490-1-shardul.b@mpiricsoftware.com>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B97C3E0C76
+	for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 15:01:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776092474; cv=none; b=rwoIyqdgGFjWix1yOwXeEi3giFwpp0vAEUiBOlqqj3zCmECQ6zlt1uKheA3RMFR6Q1+NIFKEWp60yJNca+0+H6G96ikNhYxhs2kF77SJGHKPCQAoFHNBRNCIhMazzMbqFd0swkA7nZqyCqKvm01IrM5df4d65ImBb+3Kan+O0Pk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776092474; c=relaxed/simple;
+	bh=U8xAKrmSj+O0xYfqbpjlFvhugckixzVj+Gix8fSfjO0=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=IVR8YDgO30kMt8ZonbPSKv5ciQI/LrCBZxBggd235ERxPROq7X1Yu486PrgAS4O2LdZn42YlrPePhD09QgZ5EQOdUwPFrirMVDZ/S8KBV7NVKXp7VAm22PyMeqhdMJwrX2C/rXz/KgO+8NshYcrsPMRfija3jq7h5xKDbuFTBKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.216.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-35da86144daso5439584a91.3
+        for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 08:01:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776092473; x=1776697273;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=AlSroUvQLnPQy/vliop0r/9IQklxRKU38FSvvT0IkJU=;
+        b=ekIbic467O2+PQrKLQzyqqxaQkHstNcbqMXb93unvkHf2YbmP2KQfdP6w7n6LBYhPy
+         OktV18mkB5ONhTJOAk2ifiTidO9sYRDH3ebMXObzSdjcdheUtrTEoGeT81T2P1xSpfvq
+         mJY0gc38N/YLpIkxE0Apyb/DR+oiWNkSPhE5gEi20mDwlYs61bJcAmQJ7ziXovwDktuq
+         l9SE7kKCg8NmmKe3KqonfVe44WcRuZdRAmEfqwQ+7biTVtpRADwFfJIuHbdbKm66vy90
+         qVWlKuV4o0dF1du8Pin1BC2I4KWor91tC516XIhFYJgphArX5rt1HtrDmyI8alHt3QUT
+         WO1A==
+X-Forwarded-Encrypted: i=1; AFNElJ97OAo8RGNRqGHJi3pyPoyi311CYO1TPbTaD/nFJc3l+D/c2/YP7RFrXjGPA7NYKzBehP6WXxk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJSA5gJmRJErWYPOHSur2UJ9gZGI4GTZvcLkFkbZ6xsG/G8PrK
+	//mFqHm/GFnqimdxUGOPLGoVP2AkqZUTyGOgetLSxNiRGRYc948tv/ZB4ljgI2XexSaXbUnZzIx
+	8NQoUq+4niZ09DJeJ/S0bZnEzJw5Ds2ZxuLnnfb398kUS0uLihZoPcdYS7hY=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
+X-Received: by 2002:a17:90b:28c4:b0:35f:b69d:7292 with SMTP id
+ 98e67ed59e1d1-35fb69d7632mr3809862a91.15.1776092472566; Mon, 13 Apr 2026
+ 08:01:12 -0700 (PDT)
+Date: Mon, 13 Apr 2026 08:01:12 -0700
+In-Reply-To: <20260413150024.1003490-1-shardul.b@mpiricsoftware.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69dd0538.a00a0220.468cb.0049.GAE@google.com>
+Subject: Re: [PATCH] wireguard: device: use exit_rtnl callback instead of
+ manual rtnl_lock in pre_exit
+From: syzbot <syzbot@syzkaller.appspotmail.com>
+To: shardul.b@mpiricsoftware.com
+Cc: andrew@lunn.ch, davem@davemloft.net, edumazet@google.com, janak@mpiric.us, 
+	jason@zx2c4.com, kalpan.jani@mpiricsoftware.com, kuba@kernel.org, 
+	kuniyu@google.com, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	pabeni@redhat.com, shardul.b@mpiricsoftware.com, shardulsb08@gmail.com, 
+	wireguard@lists.zx2c4.com
+Content-Type: text/plain; charset="UTF-8"
 
-wg_netns_pre_exit() manually acquires rtnl_lock() inside the
-pernet .pre_exit callback.  This causes a hung task when another
-thread holds rtnl_mutex - the cleanup_net workqueue (or the
-setup_net failure rollback path) blocks indefinitely in
-wg_netns_pre_exit() waiting to acquire the lock.
+> wg_netns_pre_exit() manually acquires rtnl_lock() inside the
+> pernet .pre_exit callback.  This causes a hung task when another
+> thread holds rtnl_mutex - the cleanup_net workqueue (or the
+> setup_net failure rollback path) blocks indefinitely in
+> wg_netns_pre_exit() waiting to acquire the lock.
+>
+> Convert to .exit_rtnl, introduced in commit 7a60d91c690b ("net:
+> Add ->exit_rtnl() hook to struct pernet_operations."), where the
+> framework already holds RTNL and batches all callbacks under a
+> single rtnl_lock()/rtnl_unlock() pair, eliminating the contention
+> window.
+>
+> The rcu_assign_pointer(wg->creating_net, NULL) is safe to move
+> from .pre_exit to .exit_rtnl (which runs after synchronize_rcu())
+> because all RCU readers of creating_net either use maybe_get_net()
+> - which returns NULL for a dying namespace with zero refcount - or
+> access net->user_ns which remains valid throughout the entire
+> ops_undo_list sequence.
+>
+> Reported-by: syzbot+pFBD3bslSSshiJCd3rxy@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?id=cb64c22a492202ca929e18262fdb8cb89e635c70
+> Signed-off-by: Shardul Bankar <shardul.b@mpiricsoftware.com>
+> ---
+>  drivers/net/wireguard/device.c | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/net/wireguard/device.c b/drivers/net/wireguard/device.c
+> index 46a71ec36af8..eb854c5294a3 100644
+> --- a/drivers/net/wireguard/device.c
+> +++ b/drivers/net/wireguard/device.c
+> @@ -411,12 +411,11 @@ static struct rtnl_link_ops link_ops __read_mostly = {
+>  	.newlink		= wg_newlink,
+>  };
+>  
+> -static void wg_netns_pre_exit(struct net *net)
+> +static void wg_netns_exit_rtnl(struct net *net, struct list_head *dev_kill_list)
+>  {
+>  	struct wg_device *wg;
+>  	struct wg_peer *peer;
+>  
+> -	rtnl_lock();
+>  	list_for_each_entry(wg, &device_list, device_list) {
+>  		if (rcu_access_pointer(wg->creating_net) == net) {
+>  			pr_debug("%s: Creating namespace exiting\n", wg->dev->name);
+> @@ -429,11 +428,10 @@ static void wg_netns_pre_exit(struct net *net)
+>  			mutex_unlock(&wg->device_update_lock);
+>  		}
+>  	}
+> -	rtnl_unlock();
+>  }
+>  
+>  static struct pernet_operations pernet_ops = {
+> -	.pre_exit = wg_netns_pre_exit
+> +	.exit_rtnl = wg_netns_exit_rtnl
+>  };
+>  
+>  int __init wg_device_init(void)
+> -- 
+> 2.34.1
+>
 
-Convert to .exit_rtnl, introduced in commit 7a60d91c690b ("net:
-Add ->exit_rtnl() hook to struct pernet_operations."), where the
-framework already holds RTNL and batches all callbacks under a
-single rtnl_lock()/rtnl_unlock() pair, eliminating the contention
-window.
-
-The rcu_assign_pointer(wg->creating_net, NULL) is safe to move
-from .pre_exit to .exit_rtnl (which runs after synchronize_rcu())
-because all RCU readers of creating_net either use maybe_get_net()
-- which returns NULL for a dying namespace with zero refcount - or
-access net->user_ns which remains valid throughout the entire
-ops_undo_list sequence.
-
-Reported-by: syzbot+pFBD3bslSSshiJCd3rxy@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?id=cb64c22a492202ca929e18262fdb8cb89e635c70
-Signed-off-by: Shardul Bankar <shardul.b@mpiricsoftware.com>
----
- drivers/net/wireguard/device.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/wireguard/device.c b/drivers/net/wireguard/device.c
-index 46a71ec36af8..eb854c5294a3 100644
---- a/drivers/net/wireguard/device.c
-+++ b/drivers/net/wireguard/device.c
-@@ -411,12 +411,11 @@ static struct rtnl_link_ops link_ops __read_mostly = {
- 	.newlink		= wg_newlink,
- };
- 
--static void wg_netns_pre_exit(struct net *net)
-+static void wg_netns_exit_rtnl(struct net *net, struct list_head *dev_kill_list)
- {
- 	struct wg_device *wg;
- 	struct wg_peer *peer;
- 
--	rtnl_lock();
- 	list_for_each_entry(wg, &device_list, device_list) {
- 		if (rcu_access_pointer(wg->creating_net) == net) {
- 			pr_debug("%s: Creating namespace exiting\n", wg->dev->name);
-@@ -429,11 +428,10 @@ static void wg_netns_pre_exit(struct net *net)
- 			mutex_unlock(&wg->device_update_lock);
- 		}
- 	}
--	rtnl_unlock();
- }
- 
- static struct pernet_operations pernet_ops = {
--	.pre_exit = wg_netns_pre_exit
-+	.exit_rtnl = wg_netns_exit_rtnl
- };
- 
- int __init wg_device_init(void)
--- 
-2.34.1
+I see the command but can't find the corresponding bug.
+The email is sent to  syzbot+HASH@syzkaller.appspotmail.com address
+but the HASH does not correspond to any known bug.
+Please double check the address.
 
