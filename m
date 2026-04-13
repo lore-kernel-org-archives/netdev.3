@@ -1,96 +1,79 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793853D523E;
-	Mon, 13 Apr 2026 14:04:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E9563D75C3;
+	Mon, 13 Apr 2026 14:11:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776089053; cv=none; b=EZM8rTuMDsd/kMoBMh1nCTjaQ1whqNMJLAUWKed/TjbyIDpxZnlW+6mG+iN9M81NzIggnoSahQXbVZYbwbxW1XghEkd49lY97CDtltW9blb3gwDHnK+Pb5Zl317ADZ+/ezWFrE5XhdDqj/c0fwvfAUXZNtG5qm8MZ7m0XaYXWzU=
+	t=1776089491; cv=none; b=u0GK8DKUy0Zh0oD6dEUDsF/TMPK1MlIDaTsfmzN/lFoY6nr6+d/HhNhanpfoSVMLzxIRe+cA4Ze8plj/ovsEyCuGzZ63YIYya12bBnVbf8kn7N07bvqjcxmCqKeUeIjm2NurxBajG/yK3JE8dwJpzsXVIEKrCQH5EJdbEzRlixk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776089053; c=relaxed/simple;
-	bh=PZPocgNq/t+BoK9YO0g4NcHOvsEnwrcuzcTMgVzbDRc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lySxyctB2xFIXBFB4+OIAuG0ypwQZMERc/vAVEH7MYBWnvgyd9jIVAjDdnn/n1WSr3A/JMFA/jJ2v1oHxH/lDgFh/nVko6ULyG9JQZevYjLnNiCh4mh0by/K5NM4fZCuH1YWTn3vklAn+IBx443IAwy028HPwP/pKjTl+X2olqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sQ/rI1Uv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776089491; c=relaxed/simple;
+	bh=gFRvrKXlOfg+aEGi39wpVj9CoHvkfV4SW9XjwhO71Bg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NT9nx60rWuWtxgpXpgamRXf0KlMHUAU03D2goTzO+2aVFatTlN0NpSt9bDQk7kaaXhtSJNAlgqHcqcTE7zS/sqCY70DDgJFJC4iF+9E0Pvkqwa8U5WAUOUflkjHnhMN29t/v4YfQzqxxc+v/j7bRWMBbYtxcpQv8KaQSrXzQnSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vuz8JIgy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sQ/rI1Uv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9062CC2BCAF;
-	Mon, 13 Apr 2026 14:04:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vuz8JIgy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD6D9C2BCAF;
+	Mon, 13 Apr 2026 14:11:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776089052;
-	bh=PZPocgNq/t+BoK9YO0g4NcHOvsEnwrcuzcTMgVzbDRc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sQ/rI1UvHOQ+roW0A6IDSgDJ1b0pLaQvXe5zqkw+FVGVpWk8EG1wK8fGIagzv6Mim
-	 4O8BpTNUTZPrNHweOqewPuZft/QR4+jHezJ/glnRr/F91wRA6HcCOzM7ormX8x8lds
-	 dR9IPCfYKcSZNwExOtF+Y78WtWLmejYpNQ92Ya7SH8y2HcZL4Tf4TVsEw+uehCRszU
-	 lUy0lOI5KQVDIewL3zdcwlsxR2nJw6h0XZda++ue09kUXr6LITbszedrYV4YeMqXUi
-	 D1ylNUlHp0S5hV4a0Xk971C+ZxKs2YgRY1oIAkHAgxmQ7oEVUsrCPzOWi7WeIfzBL4
-	 E/Fmsl2sCLMMQ==
+	s=k20201202; t=1776089491;
+	bh=gFRvrKXlOfg+aEGi39wpVj9CoHvkfV4SW9XjwhO71Bg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Vuz8JIgyGFQs79J7jNYhLXjVTEJKcIy7q5fIMQvp69Rs6UAmh9zywB6sRRJyuSPZ2
+	 g+pdHQ203cM48BifuF+R1XKrQAour1unMgz1Hs9HNTMCQzb2M3F4CRrv4S2bN2AAfT
+	 29qhXHvawfyEttE99sA2TD0YgSFFuxY+c2+oUt2NwsZH5HNRQi85n8aohpaOvSd32v
+	 fM9Vygo51KBRkcEEhB8B9OMaZ7kqOmtJ3ZeRTprb2EqP88EMVtZe1TDG9WyHnoQiru
+	 RKdLCkyaoXwYB6kV24hu8LH8p1H1q0ApAoO5ee8ZbPe7R36iMv9CJbvNo5XyKF14mn
+	 aGz59T8PyA/0w==
+Date: Mon, 13 Apr 2026 15:11:26 +0100
 From: Simon Horman <horms@kernel.org>
-To: aleksandr.loktionov@intel.com
-Cc: 'Simon Horman' <horms@kernel.org>,
-	intel-wired-lan@lists.osuosl.org,
-	anthony.l.nguyen@intel.com,
-	netdev@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH iwl-net v2 6/6] ixgbe: fix integer overflow and wrong bit position in ixgbe_validate_rtr()
-Date: Mon, 13 Apr 2026 15:03:07 +0100
-Message-ID: <20260413140307.715409-1-horms@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408131154.2661818-7-aleksandr.loktionov@intel.com>
-References: <20260408131154.2661818-7-aleksandr.loktionov@intel.com>
+To: Matt Fleming <matt@readmodwrite.com>
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kernel-team@cloudflare.com,
+	Matt Fleming <mfleming@cloudflare.com>
+Subject: Re: [PATCH net] ice: Fix missing 1's complement negation in GCS raw
+ checksum
+Message-ID: <20260413141126.GR469338@kernel.org>
+References: <20260408190214.1287708-1-matt@readmodwrite.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260408190214.1287708-1-matt@readmodwrite.com>
 
-From: 'Simon Horman' <horms@kernel.org>
+On Wed, Apr 08, 2026 at 08:02:14PM +0100, Matt Fleming wrote:
+> From: Matt Fleming <mfleming@cloudflare.com>
+> 
+> Commit 905d1a220e8d ("ice: Add E830 checksum offload support") added
+> Generic Checksum (GCS) support for E830 NICs but omitted the 1's
+> complement negation (~) when converting the hardware raw_csum to
+> skb->csum for CHECKSUM_COMPLETE.
+> 
+> Without the negation, every CHECKSUM_COMPLETE packet fails the
+> fast-path validation in nf_ip_checksum() and falls through to software
+> checksumming via __skb_checksum_complete(), which triggers the
+> rate-limited "hw csum failure" warning. Packets are still accepted
+> (the software recheck passes) but hardware checksum offload is
+> effectively disabled and the warning floods dmesg on systems running
+> nf_conntrack on VLAN sub-interfaces.
+> 
+> Multiple other drivers (idpf, ehea, iwlwifi, cassini, sunhme, enetc)
+> also apply ~ for CHECKSUM_COMPLETE. The ice driver was the only in-tree
+> user of csum_unfold() for CHECKSUM_COMPLETE that omitted it.
+> 
+> Fixes: 905d1a220e8d ("ice: Add E830 checksum offload support")
+> Signed-off-by: Matt Fleming <mfleming@cloudflare.com>
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev
----
-ixgbe: fix integer overflow and wrong bit position in ixgbe_validate_rtr()
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-This commit fixes two bugs in ixgbe_validate_rtr() by masking the
-traffic-class field properly before assigning it to a u8, and correctly
-shifting the mask for clearing out-of-bounds entries.
-
-Cc: stable@vger.kernel.org
-
-> diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-> index 5ff462a848feb..8ebf717ce4017 100644
-> --- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-> +++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-> @@ -9782,11 +9782,12 @@ static void ixgbe_validate_rtr(struct ixgbe_adapter *adapter, u8 tc)
->  	rsave = reg;
->  
->  	for (i = 0; i < MAX_TRAFFIC_CLASS; i++) {
-> -		u8 up2tc = reg >> (i * IXGBE_RTRUP2TC_UP_SHIFT);
-> +		u8 up2tc = (reg >> (i * IXGBE_RTRUP2TC_UP_SHIFT)) &
-> +			   IXGBE_RTRUP2TC_UP_MASK;
->  
->  		/* If up2tc is out of bounds default to zero */
->  		if (up2tc > tc)
-
-This wasn't introduced by this patch, but is there a pre-existing off-by-one
-error in this bounds check?
-
-If tc represents the number of enabled traffic classes (e.g., 4), the valid TC
-indices would be 0 through tc - 1. If up2tc equals tc, it would be out of
-bounds, but the condition up2tc > tc will evaluate to false and the invalid
-mapping won't be cleared.
-
-Could this allow an invalid UP-to-TC mapping to persist in the hardware
-register, potentially causing received packets to be mis-steered to an
-uninitialized or non-existent traffic class queue?
-
-Should the condition be corrected to ensure up2tc is strictly less than tc
-when tc > 0?
-
-> -			reg &= ~(0x7 << IXGBE_RTRUP2TC_UP_SHIFT);
-> +			reg &= ~(IXGBE_RTRUP2TC_UP_MASK << (i * IXGBE_RTRUP2TC_UP_SHIFT));
->  	}
