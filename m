@@ -1,42 +1,56 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 379D13BD22E
-	for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 10:54:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E37943BE640
+	for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 10:57:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776077694; cv=none; b=RGuvQqzPl6FxY7R3G/lhvTjrJ7ZTTyO7QOohxOePvTSDlWLaTGsHn2hmXT9/RWlkkMfHkG/N6OARx2evaBTF/F8KLIZ5xT45VZ8PQaWvJnp6jWv22cQHCuRSfOtc3ZOCLh9mmaO85UnzkHHzYinF1hRY7AVCv8zuR/d9hXCR2bE=
+	t=1776077862; cv=none; b=VUYl6polBywvedJ8MFr8bkZDZehcSGnGQwR0mmnuQPH2n4D3G9ZcNACP6fjmugPvZSm76dSSNEFM8rQvXAHGuK95frjlNxGVD5sVqczN5ErcVlbeaHrLjn0ISc2iXC3bfh0frsc9UKs1Fj3ZK3TDCUxR21+95BTRgRszSJIvS9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776077694; c=relaxed/simple;
-	bh=nz5hxxicKyK9BXmV2TEjGdfMjMpJw2jsLLzARmCjv5I=;
+	s=arc-20240116; t=1776077862; c=relaxed/simple;
+	bh=9h8L9X1quD4VQ1UU57X66zsByMeBGf58uq+qu+vLtqw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s/CoapDGuhEAPLSC6YI7po9XyJ76uN1N++dAMIqiDQBINiRFlo0/UN40K3+8tcD9LpaRp8w6wbI3lVTrjUzmMtWJwu25Phw+va2Tr69NRsaG3SzhELsjUCeKPBwxA7P3FPgiqHoCD1Lyd4KUu5tY4sYXEom7bYkqQ1ij3R1w2ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y/30kM3r; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=o7WO7SBRm2F3h4EklEGGG9N/goOlE/ULxV+afZYthfWkcDN5ONzfsVFXUMbvG5ytp1SCic4GKPVBHVAIDYKCUbzrzT2+8hDNdozVYeRAo7OwX+GIkSS8U+hduRMK3MGgjwcvjlonSy7I7UeU/3F9AJySC1LY4bFTCU4t/bBnlSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HJch27px; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y/30kM3r"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 638EFC116C6;
-	Mon, 13 Apr 2026 10:54:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776077693;
-	bh=nz5hxxicKyK9BXmV2TEjGdfMjMpJw2jsLLzARmCjv5I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Y/30kM3r2N63GzzLiQlAttghWO10O6LvFF5HbwPtLczvbXdm/JViuh2Ap481ew5ra
-	 8liF+004dJPeIJ2Q3kKL6nhXxD/n7KSfFeefsJOV1qXbYFBa/4djNB2TaX3GE3XgY1
-	 z4yDt8Sh0RYEu/0i8C5X07PVb2ggRSCVxk+HI1EOnzddbi+LYaiMS/V5gaezCWjdZl
-	 cJD1ep3rO1IjOaqX4jrmRHoFQADEml09InnL4Le9p274txJGljZBVJgs5CVE7RnlLx
-	 e1mjozks+dVQFe1LE3L1f3aXiQvpD+gol5hZUcamwAlu9cDcyyo4HN8QdcRJp5tthd
-	 3wV15Xf/GmwdA==
-Date: Mon, 13 Apr 2026 11:54:50 +0100
-From: Simon Horman <horms@kernel.org>
-To: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Cc: intel-wired-lan@lists.osuosl.org, anthony.l.nguyen@intel.com,
-	netdev@vger.kernel.org,
-	Marcin Szycik <marcin.szycik@linux.intel.com>
-Subject: Re: [PATCH iwl-net v2 4/6] ixgbe: fix cls_u32 nexthdr path returning
- success when no entry installed
-Message-ID: <20260413105450.GN469338@kernel.org>
-References: <20260408131154.2661818-1-aleksandr.loktionov@intel.com>
- <20260408131154.2661818-5-aleksandr.loktionov@intel.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HJch27px"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1776077860;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=s3nEKPhqrBpSq06pH2ECOhPuLmQNF80viXQygSB2+44=;
+	b=HJch27pxSuAH/+AA6A1+RdzMSYqjNnTraAAAA+HQyQtd8q16i9i/eHq7xBR2pp82FO70K2
+	4Fcj8ya5T+7+V9NWvUY+IZ0475M/NjLieGF8UM+K6fmpvksRjmQjPqT12L+9ZRvot9ZxH3
+	WB/WpyHirPt6CTqXKiQDsFql6dVSb8g=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-301-Xg-Wws2BPUuZreFzhQTO-g-1; Mon,
+ 13 Apr 2026 06:57:36 -0400
+X-MC-Unique: Xg-Wws2BPUuZreFzhQTO-g-1
+X-Mimecast-MFC-AGG-ID: Xg-Wws2BPUuZreFzhQTO-g_1776077855
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9269B1956048;
+	Mon, 13 Apr 2026 10:57:35 +0000 (UTC)
+Received: from thinkpad (headnet01.pony-001.prod.iad2.dc.redhat.com [10.2.32.101])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 84CAA19560AB;
+	Mon, 13 Apr 2026 10:57:33 +0000 (UTC)
+Date: Mon, 13 Apr 2026 12:57:30 +0200
+From: Felix Maurer <fmaurer@redhat.com>
+To: luka.gejak@linux.dev
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, netdev@vger.kernel.org, horms@kernel.org
+Subject: Re: [PATCH net-next v6 1/2] net: hsr: require valid EOT supervision
+ TLV
+Message-ID: <adzMGvi7oMMY7L1Y@thinkpad>
+References: <20260413103449.169913-1-luka.gejak@linux.dev>
+ <20260413103449.169913-2-luka.gejak@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,28 +59,71 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260408131154.2661818-5-aleksandr.loktionov@intel.com>
+In-Reply-To: <20260413103449.169913-2-luka.gejak@linux.dev>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-On Wed, Apr 08, 2026 at 03:11:52PM +0200, Aleksandr Loktionov wrote:
-> ixgbe_configure_clsu32() returns 0 (success) after the nexthdr loop
-> even when ixgbe_clsu32_build_input() fails for every candidate entry
-> and no jump-table slot is actually programmed.  Callers that test the
-> return value would then falsely believe the filter was installed.
-> 
-> The variable 'err' already tracks the last ixgbe_clsu32_build_input()
-> return value; if the loop completes with a successful break, err is 0.
-> If all attempts failed, err holds the last failure code.  Change the
-> unconditional 'return 0' to 'return err' so errors are propagated
-> correctly.
-> 
-> Fixes: 1cdaaf5405ba ("ixgbe: Match on multiple headers for cls_u32 offloads")
-> Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Marcin Szycik <marcin.szycik@linux.intel.com>
+On Mon, Apr 13, 2026 at 12:34:48PM +0200, luka.gejak@linux.dev wrote:
+> From: Luka Gejak <luka.gejak@linux.dev>
+>
+> Supervision frames are only valid if terminated with a zero-length EOT
+> TLV. The current check fails to reject non-EOT entries as the terminal
+> TLV, potentially allowing malformed supervision traffic.
+>
+> Fix this by strictly requiring the terminal TLV to be HSR_TLV_EOT
+> with a length of zero, and properly linearizing the TLV header before
+> access.
+>
+> Assisted-by: Gemini:Gemini-3.1-flash
+> Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
+
+Please respect the netdev development process [1], net-next is currently
+closed. I'll leave it to the maintainers if a resubmission is required.
+
+Other than that:
+Reviewed-by: Felix Maurer <fmaurer@redhat.com>
+
+Thanks,
+   Felix
+
+
+[1]: https://docs.kernel.org/process/maintainer-netdev.html#git-trees-and-patch-flow
+
 > ---
-> v1 -> v2:
->  - Add Fixes: tag; reroute from iwl-next to iwl-net (false-success
->    return is a user-visible correctness bug, not a cleanup).
-
-Reviewed-by: Simon Horman <horms@kernel.org>
+>  net/hsr/hsr_forward.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
+> index 0aca859c88cb..0774981a65c1 100644
+> --- a/net/hsr/hsr_forward.c
+> +++ b/net/hsr/hsr_forward.c
+> @@ -84,7 +84,7 @@ static bool is_supervision_frame(struct hsr_priv *hsr, struct sk_buff *skb)
+>
+>  	/* Get next tlv */
+>  	total_length += hsr_sup_tag->tlv.HSR_TLV_length;
+> -	if (!pskb_may_pull(skb, total_length))
+> +	if (!pskb_may_pull(skb, total_length + sizeof(struct hsr_sup_tlv)))
+>  		return false;
+>  	skb_pull(skb, total_length);
+>  	hsr_sup_tlv = (struct hsr_sup_tlv *)skb->data;
+> @@ -100,7 +100,7 @@ static bool is_supervision_frame(struct hsr_priv *hsr, struct sk_buff *skb)
+>
+>  		/* make sure another tlv follows */
+>  		total_length += sizeof(struct hsr_sup_tlv) + hsr_sup_tlv->HSR_TLV_length;
+> -		if (!pskb_may_pull(skb, total_length))
+> +		if (!pskb_may_pull(skb, total_length + sizeof(struct hsr_sup_tlv)))
+>  			return false;
+>
+>  		/* get next tlv */
+> @@ -110,7 +110,7 @@ static bool is_supervision_frame(struct hsr_priv *hsr, struct sk_buff *skb)
+>  	}
+>
+>  	/* end of tlvs must follow at the end */
+> -	if (hsr_sup_tlv->HSR_TLV_type == HSR_TLV_EOT &&
+> +	if (hsr_sup_tlv->HSR_TLV_type != HSR_TLV_EOT ||
+>  	    hsr_sup_tlv->HSR_TLV_length != 0)
+>  		return false;
+>
+> --
+> 2.53.0
+>
 
