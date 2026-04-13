@@ -1,141 +1,47 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53B4D21D3D6;
-	Mon, 13 Apr 2026 10:01:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1483B7770
+	for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 10:07:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.95.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776074517; cv=none; b=Yrzv1WVEDJNO/pmwblf2aGu3zvrNwBebCqzA7PREn0/S0GHsPmUg1MvP5iWFsNJFQKfT6jw8fqtBiVNcnJE4Udi8GKRTxzRg2ybVvn30WO7cKqlXMb94LDR6Eu1SNFzGN9MLR/o7JxMfTEdNO+QW1JYonPSoJEoSarMTY+8aTyU=
+	t=1776074858; cv=none; b=oEpeG57yPJTjrCr+TzcTlK+dnGFpb4Vr3StH/+pMjymIzffOAhhIv4nPdPCVzLmgfQqPgRSRxbKkD2oy65rPXCzQBRiuRYoEvqDNH5LiWWwv1kMfQuAjWW9uqazS8Jtl8lyL9kA8VhnStQfxqL+d82JftkQuBLerpphKKnaFGXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776074517; c=relaxed/simple;
-	bh=mlzyEmNbjtIL7vKwRnpEy6oi+2Tn09KmOp9o8MEUcZg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GnehmNwgjPMo1Wxyr2wJvcKHKS4LLx+Wo6xeuQHDQ4KN2qiPtJGH+ivlzWp/MnQDYL7YEThK67AFDb3m8MKYa9xjlIanYQBUjJf6rlWbx/lZruaas04i1k0+25aiS1hoN5jSRcyaG3ytnfmNaDsb/wXdFDuOj+mrmlXI9Br2DTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CEQIE6k0; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CEQIE6k0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 926B5C116C6;
-	Mon, 13 Apr 2026 10:01:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776074517;
-	bh=mlzyEmNbjtIL7vKwRnpEy6oi+2Tn09KmOp9o8MEUcZg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CEQIE6k0EkCZR5gvUuRtGYRFHxBpBCUa0TuPqj77hqQrjQpnn6rBfnWHoQSbph/bT
-	 Fe9B/oOgXmRvwX+hiH5/hWAIYcDMNdMw79ZbZGOSTMtKIUvqhLT0R0/n6jPiz+O0wP
-	 W6KpUg4uQUk/Y2lnUKta40eTICc/PEDstDblrgFksvzKk99GaAmVm1wCBHteXSnAWr
-	 vB+VVor/EgXH1A/WtlIOe1Ts5XuCXa+acSf9oXu9ey5ZE0khuuLLTa22AfdJzlPcPd
-	 u9LhjZ+/zXvgbyeZqyXzvQnzLOJGnfd3b0lr15uLDAPgu+5x102R9LYktMfEHh/7ZA
-	 ELny7wvyWc3oQ==
-Date: Mon, 13 Apr 2026 13:01:52 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: fengchengwen <fengchengwen@huawei.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Bjorn Helgaas <bhelgaas@google.com>,
-	linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
-	netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	Keith Busch <kbusch@kernel.org>, Yochai Cohen <yochai@nvidia.com>,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Zhiping Zhang <zhipingz@meta.com>
-Subject: Re: [RFC] Proposal: Add sysfs interface for PCIe TPH Steering Tag
- retrieval and configuration
-Message-ID: <20260413100152.GG21470@unreal>
-References: <6ea4c4c2-774e-aa76-3665-918e2a24cc84@huawei.com>
+	s=arc-20240116; t=1776074858; c=relaxed/simple;
+	bh=jqlmsgW1ZXF9UwTaqAX0MQN18po3bOo3czPFfe39k1Y=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=eWbo9qyeVwFFaY1DuuSJ33vD5WrvaVi/aV+uToAp3ONOkNf6Y6RvYGHbz2y49YYgI7XjUKejv7kZrLmQBu1mIgXMUpqDdZa8ANI9u0QeG3Nke18RnJsuu7lwbVs5s1+3Tv+6VxO08tf7c2cPwME/TMFlum/udjD1BUKAiq51QV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk; spf=pass smtp.mailfrom=toke.dk; arc=none smtp.client-ip=45.145.95.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+Authentication-Results: mail.toke.dk; dkim=none
+To: phx <phx0fer@gmail.com>
+Cc: netdev@vger.kernel.org
+Subject: Re: [PATCH] net/sched: sch_cake: fix NAT destination port not being
+ updated in cake_update_flowkeys
+In-Reply-To: <CAKvCo-yFnu3RBbiGkaVi-X5qX_hN1a-FYrBZfzB9UKz8k-PZtQ@mail.gmail.com>
+References: <20260413084715.70169-1-phx0fer@gmail.com>
+ <874ilfdwoe.fsf@toke.dk>
+ <CAKvCo-yFnu3RBbiGkaVi-X5qX_hN1a-FYrBZfzB9UKz8k-PZtQ@mail.gmail.com>
+Date: Mon, 13 Apr 2026 12:07:34 +0200
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <87y0ircgwp.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <6ea4c4c2-774e-aa76-3665-918e2a24cc84@huawei.com>
+Content-Type: text/plain
 
-On Fri, Apr 10, 2026 at 10:30:52PM +0800, fengchengwen wrote:
-> Hi all,
-> 
-> I'm writing to propose adding a sysfs interface to expose and configure the
-> PCIe TPH
-> Steering Tag for PCIe devices, which is retrieved inside the kernel.
-> 
-> 
-> Background: The TPH Steering Tag is tightly coupled with both a PCIe device
-> (identified
-> by its BDF) and a CPU core. It can only be obtained in kernel mode. To allow
-> user-space
-> applications to fetch and set this value securely and conveniently, we need
-> a standard
-> kernel-to-user interface.
-> 
-> 
-> Proposed Solution: Add several sysfs attributes under each PCIe device's
-> sysfs directory:
-> 1. /sys/bus/pci/devices/<BDF>/tph_mode to query the TPH mode (interrupt or
-> device specific)
-> 2. /sys/bus/pci/devices/<BDF>/tph_enable to control the TPH feature
-> 3. /sys/bus/pci/devices/<BDF>/tph_st to support both read and write
-> operations, e.g.:
->    Read operation:
->      echo "cpu=3" > /sys/bus/pci/devices/0000:01:00.0/tph_st
->      cat /sys/bus/pci/devices/0000:01:00.0/tph_st
->    Write operation:
->      echo "index=10 st=123" > /sys/bus/pci/devices/0000:01:00.0/tph_st
-> 
-> 
-> The design strictly follows PCI subsystem sysfs standards and has the
-> following key properties:
-> 
-> 1. Dynamic Visibility: The sysfs attributes will only be present for PCIe
-> devices that
->    support TPH Steering Tag. Devices without TPH capability will not show
-> these nodes,
->    avoiding unnecessary user confusion.
-> 
-> 2. Permission Control: The attributes will use 0600 file permissions,
-> ensuring only
->    privileged root users can read or write them, which satisfies security
-> requirements
->    for hardware configuration interfaces.
-> 
-> 3. Standard Implementation Location: The interface will be implemented in
->    drivers/pci/pci-sysfs.c, the canonical location for all PCI device sysfs
-> attributes,
->    ensuring consistency and maintainability within the PCI subsystem.
-> 
-> 
-> Why sysfs instead of alternatives like VFIO-PCI ioctl:
-> 
-> - Universality: sysfs does not require binding the device to a special
-> driver such as
->   vfio-pci. It is available to any privileged user-space component,
-> including system
->   utilities, daemons, and monitoring tools.
-> 
-> - Simplicity: Both user-space usage (cat/echo) and kernel implementation are
->   straightforward, reducing code complexity and long-term maintenance cost.
-> 
-> - Design Alignment: TPH Steering Tag is a generic PCIe device feature, not
-> specific to
->   user-space drivers like DPDK or VFIO. Exposing it via sysfs matches the
-> kernel's
->   standard pattern for hardware capabilities.
-> 
-> 
-> I look forward to your comments about this design before submitting the
-> final patch.
+phx <phx0fer@gmail.com> writes:
 
-You need to explain more clearly why this write functionality is useful
-and necessary outside the VFIO/RDMA context:
-https://lore.kernel.org/all/20260324234615.3731237-1-zhipingz@meta.com/
+> You're right, "vulnerability" is too strong - it's a correctness
+> bug, not a security issue. Thanks for picking it up.
 
-AFAIK, for non-VFIO TPH callers, kernel has enough knowledge to set
-right ST values.
+Cool. Could you please re-send with an updated commit message? Thanks!
 
-There are several comments regarding the implementation, but those can wait
-until the rationale behind the proposal is fully clarified.
+-Toke
 
-Thanks
-
-> 
-> Best regards,
-> Chengwen Feng
-> 
+pw-bot: cr
