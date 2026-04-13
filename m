@@ -1,81 +1,78 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6545D30B533;
-	Mon, 13 Apr 2026 05:44:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D7222773E5;
+	Mon, 13 Apr 2026 05:47:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.133.224.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776059069; cv=none; b=u881qC4bs/5xxol+E5IIlWv6hGKRUiLXCJCbAK867F67wCoMPw86Hb60z1KBewMuJob2xOh0cDq7gX2Pebro/487gPpohnDXojbEKNDRdKl31tchrUsLB6RhA+DxNVLYTUq3cAJi2rU1VDreqLTg6qIJpUvc0J3mhVzczcpAQyQ=
+	t=1776059269; cv=none; b=QeSSnTQ5WCx2Uj3fQdKD5vClqnMl+kAXwHmoQSJ7Xs9dksD57pMKsWjzf8ew395QnU6gG7A8xHfQ/5HRlSo+Ooelzk2PAceFZkBb0WVjZnWcwVm+2JFeL9NF5PCSnBjDXXtyzGERfi8IpNVFQRf0vUsE4RLqWnt795LtRmapbk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776059069; c=relaxed/simple;
-	bh=zlDVuvJqXaiDKgXyxHwnnUhN6t7BWFG/My3/a+C3l7o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dCBeAM+szDe4j7iAp9MBKBWdgVWKRrxh3BgGQFdaZrR51+BQmEJDr7oQh0nAERAJ3bgWH9DEKymafZf2p0HK978NohjzBMeRuyftEbxF3hnFPReXVnMh4yCYvtJbfV6Vl9CFPGnT8v1JBByqFy5LaHxAmXib8wg4Apnq3ctZX60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h7NP7T/V; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h7NP7T/V"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59351C116C6;
-	Mon, 13 Apr 2026 05:44:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776059069;
-	bh=zlDVuvJqXaiDKgXyxHwnnUhN6t7BWFG/My3/a+C3l7o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=h7NP7T/VQHmB5D+9AsoIAYuMP+Iau7xJXFfw0xHuYdC/yRKxWCclR6GQlzJ1FU05W
-	 CgaoeuCLmDvM0wcE9Fkr+ZEgMaBT6eF1aP53lQDmma8F3JyZ6XZzxg2iU1BXs2Olau
-	 72hdAnO4O3jPvIlRfS4iraS56tBoidzty9zom1gjazmJl63NXsyLTcMtGO12jsmHzx
-	 2HMP5CwKtZyI6Y0kVULSWKa339UMP/ND269jXHT/S1cOPRcjb2zotSmNykWnLFg0oh
-	 SH62XnJ1XpkOGHMIYEwtu9RPU2Eg+GZUlEDTp04yOJ12dstziuf0k0J3Rsa7XJrCg5
-	 7LCV/rQZwHKQg==
-Date: Mon, 13 Apr 2026 11:14:21 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>, 
-	Richard Cochran <richardcochran@gmail.com>, mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	Vivek Pernamitta <vivek.pernamitta@oss.qualcomm.com>, Sivareddy Surasani <sivareddy.surasani@oss.qualcomm.com>, 
-	Vivek Pernamitta <quic_vpernami@quicinc.com>, Imran Shaik <imran.shaik@oss.qualcomm.com>, 
-	Taniya Das <taniya.das@oss.qualcomm.com>
-Subject: Re: [PATCH v2 0/6] bus: mhi: host: mhi_phc: Add support for PHC over
- MHI
-Message-ID: <j5gq447bj2adpa5qcnmd4psxta7zfp4wrdodwwu76olqehk35p@vqsxtut4ipxs>
-References: <20260411-tsc_timesync-v2-0-6f25f72987b3@oss.qualcomm.com>
- <20260412080951.723295fa@kernel.org>
+	s=arc-20240116; t=1776059269; c=relaxed/simple;
+	bh=YxepDZzylg7DLxJ1UuKV5wvO8y/p14MplYX7PzmcQ08=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=MWbOo9tARfrBcn9eCmjchtLcu1r1J5lRuBc0zX4vTTkBRHjrM005QWIXYzagKgVmbOA1+vcY/1KRpr+8fALLgx5V8fd5yZ9xvRcO92MT2JFxDdxJKKXegRxQ3RbBl/dgtmtyV2UHqPH0cPMUsH8IqkMp1AyutpAbh+2ZqvUfQSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk; spf=none smtp.mailfrom=orcam.me.uk; arc=none smtp.client-ip=78.133.224.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=orcam.me.uk
+Received: by angie.orcam.me.uk (Postfix, from userid 500)
+	id 2FA4892009C; Mon, 13 Apr 2026 07:47:45 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by angie.orcam.me.uk (Postfix) with ESMTP id 283D292009B;
+	Mon, 13 Apr 2026 06:47:45 +0100 (BST)
+Date: Mon, 13 Apr 2026 06:47:45 +0100 (BST)
+From: "Maciej W. Rozycki" <macro@orcam.me.uk>
+To: Thomas Gleixner <tglx@kernel.org>
+cc: LKML <linux-kernel@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+    x86@kernel.org, Lu Baolu <baolu.lu@linux.intel.com>, iommu@lists.linux.dev, 
+    Michael Grzeschik <m.grzeschik@pengutronix.de>, netdev@vger.kernel.org, 
+    linux-wireless@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>, 
+    linux-crypto@vger.kernel.org, Vlastimil Babka <vbabka@kernel.org>, 
+    linux-mm@kvack.org, David Woodhouse <dwmw2@infradead.org>, 
+    Bernie Thompson <bernie@plugable.com>, linux-fbdev@vger.kernel.org, 
+    Theodore Tso <tytso@mit.edu>, linux-ext4@vger.kernel.org, 
+    Andrew Morton <akpm@linux-foundation.org>, 
+    Uladzislau Rezki <urezki@gmail.com>, Marco Elver <elver@google.com>, 
+    Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com, 
+    Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
+    Thomas Sailer <t.sailer@alumni.ethz.ch>, linux-hams@vger.kernel.org, 
+    "Jason A. Donenfeld" <Jason@zx2c4.com>, 
+    Richard Henderson <richard.henderson@linaro.org>, 
+    linux-alpha@vger.kernel.org, Russell King <linux@armlinux.org.uk>, 
+    linux-arm-kernel@lists.infradead.org, 
+    Catalin Marinas <catalin.marinas@arm.com>, 
+    Huacai Chen <chenhuacai@kernel.org>, loongarch@lists.linux.dev, 
+    Geert Uytterhoeven <geert@linux-m68k.org>, linux-m68k@lists.linux-m68k.org, 
+    Dinh Nguyen <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>, 
+    linux-openrisc@vger.kernel.org, Helge Deller <deller@gmx.de>, 
+    linux-parisc@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>, 
+    linuxppc-dev@lists.ozlabs.org, Paul Walmsley <pjw@kernel.org>, 
+    linux-riscv@lists.infradead.org, Heiko Carstens <hca@linux.ibm.com>, 
+    linux-s390@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
+    sparclinux@vger.kernel.org
+Subject: Re: [patch 28/38] mips: Select ARCH_HAS_RANDOM_ENTROPY
+In-Reply-To: <20260410120319.462206386@kernel.org>
+Message-ID: <alpine.DEB.2.21.2604130638270.29980@angie.orcam.me.uk>
+References: <20260410120044.031381086@kernel.org> <20260410120319.462206386@kernel.org>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260412080951.723295fa@kernel.org>
+Content-Type: text/plain; charset=US-ASCII
 
-On Sun, Apr 12, 2026 at 08:09:51AM -0700, Jakub Kicinski wrote:
-> On Sat, 11 Apr 2026 13:42:00 +0530 Krishna Chaitanya Chundru wrote:
-> > - User space applications use the standard Linux PTP interface.
-> > - The PTP subsystem routes IOCTLs to the MHI PHC driver.
-> > - The MHI PHC driver communicates with the MHI core to fetch timestamps.
-> > - The MHI core interacts with the device to retrieve accurate time data.
+On Fri, 10 Apr 2026, Thomas Gleixner wrote:
 
-This is a misleading statement. Only the 'pci_generic' controller driver interacts
-with the device for querying timestamp. MHI bus just acts as a messenger.
+> The only solution for now is to uninline random_get_entropy().  Fix up all
+> other dependencies on the content of asm/timex.h in those files which
+> really depend on it.
 
-> 
-> Nack, stop adding functionality under the mhi "bus".
-> Bus is supposed to be an abstraction into which real drivers plug in.
+ Oh dear!  I'd yet have to fully evaluate the consequences, but offhand 
+this has clearly turned what compiles to a single CPU instruction on the 
+vast majority of MIPS platforms into an expensive function call, possibly 
+also changing the caller from a leaf to a nested function with all the 
+associated execution penalty.  Is there no other way?
 
-MHI bus is very similar to the PCI bus. Just like PCI capabilities, MHI also has
-capabilities to discover the supported functionalities including timesync. So
-for making use of the timesync feature, we need to add some hooks into the MHI
-bus layer, but the functionality is added to the separate driver,
-'drivers/bus/mhi/host/mhi_phc*'. This is also quite similar to how PCI(e)
-features like AER, hotplug are structured.
+ Cf. commit 06947aaaf9bf ("MIPS: Implement random_get_entropy with CP0 
+Random").
 
-In this series, timesync API definitions are added mistakenly to the core bus
-code, which should be moved to the mhi_phc driver instead.
-
-- Mani
-
--- 
-மணிவண்ணன் சதாசிவம்
+  Maciej
