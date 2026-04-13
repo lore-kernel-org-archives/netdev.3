@@ -1,55 +1,60 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-of-o54.zoho.com (sender4-of-o54.zoho.com [136.143.188.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E50B23B774B;
-	Mon, 13 Apr 2026 14:59:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776092392; cv=none; b=D0c8yZL3CssYhH0cmvTSK3zNT4x32qFztswh4UT/Ltjj6CMQOlK0uuRU8GuoB0bg2FgnRoldX4T3Z1n/GsYn3oUEV4YV9XQWkri//d/kdlM4Lp3JpJgkOUHZNJ+OV6BgMLwKO4/Zpcght19YIGKeW9gh6ZCnKGlWDJwe4g1thcM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776092392; c=relaxed/simple;
-	bh=ToPQhf+AU4et7lLAuA4KTwzfff0wXqHPucAzwkwJ6sY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kq5OBJh0dDDo5JYAlbhlIM8cWIAxzqsY6CTwogLshz52aUZjmZM/wbPT+XUVF2aEjrAbtfDStIWynb4BCb5ttrgFst+qttuXIr3hGxf1/V98ldfVgnv43Zsbjx0PPuWUxV89wyoN1309FUY6H8U33UIyjsyglqCodfysF1/KGYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TtW2TBS9; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E3C1096F;
+	Mon, 13 Apr 2026 15:01:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776092471; cv=pass; b=FEq0CQPl4yRbF6oFNnG+l9WEhgDPJddfDfjqDM6i0PCIVur+L+kHA0NSicaGujQVvoaDoRW3LVO6vQeF+S+41jIE2EhvqrZynxB6N45tsNmB4Of2gdaREcJC3LnSVI5W78LiOY0Q9v/0JNUOBorZ7YDm41SRSe1PhfYCzA6UnyE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776092471; c=relaxed/simple;
+	bh=yF1EOuSGbovi/OWyqyF20KilJgjRSzqfAfH2CoDWyMs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EWvzZMuO2S2w/UdRgcCaKFeEfUV9XIugtl7MKq7pAOs36GiITdhcc5B0G7KmzJTVmzmEn1gx4pOlh14+K8wJD7BY0YjCPBhkOBiJXcp+uChbingG6kUsAVB+qvpot7B59hwRPXuK/np0D7r1YOZ+HHZv39tcJEHHFW9jggWBMY8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mpiricsoftware.com; spf=pass smtp.mailfrom=mpiricsoftware.com; dkim=pass (1024-bit key) header.d=mpiricsoftware.com header.i=shardul.b@mpiricsoftware.com header.b=tWPem7+r; arc=pass smtp.client-ip=136.143.188.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mpiricsoftware.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mpiricsoftware.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TtW2TBS9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EAB6C2BCAF;
-	Mon, 13 Apr 2026 14:59:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776092391;
-	bh=ToPQhf+AU4et7lLAuA4KTwzfff0wXqHPucAzwkwJ6sY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TtW2TBS94vcUa9a4Ed7PcWrPV/FRaksQw2+2uT/VDXjTU7nqgp+KFWLTPRee+0gc5
-	 yvB4DOLk5RSddrYhq5YKFaGo4kGO4evnX4vGCfhrv6oe1ANV9EgFE6AQWFbm3ltNqT
-	 DabilfO/qj7VbMqv+W8TUF5tErjALJQHK4YRAuOvnhA84nSKkuo/fcBVMSI1srjBz1
-	 aGIV2+tIoq0GbZHnAALd64Wvj5n+Vat6IsDlxWFiYEmr2INVAkwbTYvN+PtBOLP2Gu
-	 f3nC/Ipd3gjo2civxcJrK0lYbr/IZLJJc4ipzTpiEJnbLf2IMo6q/ppcI27eKjL6aD
-	 keL1vs1jXFWOw==
-From: Simon Horman <horms@kernel.org>
-To: khai.wen.tan@linux.intel.com
-Cc: 'Simon Horman' <horms@kernel.org>,
-	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	andrew+netdev@lunn.ch,
+	dkim=pass (1024-bit key) header.d=mpiricsoftware.com header.i=shardul.b@mpiricsoftware.com header.b="tWPem7+r"
+ARC-Seal: i=1; a=rsa-sha256; t=1776092436; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=HCp6CLPPNiSF3liA/4Omngty6B+ulEsF/QWqJxYRu//l1jXcaWZ9LC1YTCmjOUbnQJMG+uRfXf5A/On1ZjxSc6y2V8Fsbf2BNAbN8kcZWTiVqkNJgE4n4+2Lfdt9R/K4/BKV26E42jQLqjQmVWTVS/T+1hNCD3hf/UTV7XjhCbI=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1776092436; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=GuZMQ4obIZBfLwzT7dBWa+wWhBwlSjqniuDoLorhniA=; 
+	b=MALNYq6UMVrL7xvAfa4S10qJeShDwfzUqQ5AsieDixZ88vYxoH++3ZbjSLZDxaJH6S1Ob6hHkFowFHapAAXjxuvplb8P0rB9TVNLV0Qt5LG8WirWszTPRxLp9RowvH6k14zx9qFjB6K4pBeQIRpGt1nl1E/AA9l7dqrwA6fP+ek=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=mpiricsoftware.com;
+	spf=pass  smtp.mailfrom=shardul.b@mpiricsoftware.com;
+	dmarc=pass header.from=<shardul.b@mpiricsoftware.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1776092436;
+	s=mpiric; d=mpiricsoftware.com; i=shardul.b@mpiricsoftware.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Transfer-Encoding:Reply-To;
+	bh=GuZMQ4obIZBfLwzT7dBWa+wWhBwlSjqniuDoLorhniA=;
+	b=tWPem7+rKELSJXTTak1d3EXPm64tq4CR6L0Zd812NuRFVzaQ4a20fYi+zDA5TCVi
+	qMgCGK6eVNzkocaCR6aUBCzKhigMyYI42+Ai1wLk/jSF6DzhHCGh8UZaFtahiUlvwAh
+	D1mLVgTucRxliLj+/Cxh2FDxEmQJBmxtgVYjVTQI=
+Received: by mx.zohomail.com with SMTPS id 1776092434400296.8841184266247;
+	Mon, 13 Apr 2026 08:00:34 -0700 (PDT)
+From: Shardul Bankar <shardul.b@mpiricsoftware.com>
+To: Jason@zx2c4.com,
+	kuniyu@google.com
+Cc: andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
-	intel-wired-lan@lists.osuosl.org,
+	wireguard@lists.zx2c4.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	faizal.abdul.rahim@intel.com,
-	hector.blanco.alcaine@intel.com,
-	hong.aun.looi@intel.com,
-	khai.wen.tan@intel.com,
-	faizal.abdul.rahim@linux.intel.com
-Subject: Re: [PATCH iwl-next 1/1] igc: add support for forcing link speed without autonegotiation
-Date: Mon, 13 Apr 2026 15:52:15 +0100
-Message-ID: <20260413145215.718532-1-horms@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260409072747.217836-1-khai.wen.tan@linux.intel.com>
-References: <20260409072747.217836-1-khai.wen.tan@linux.intel.com>
+	janak@mpiric.us,
+	kalpan.jani@mpiricsoftware.com,
+	shardulsb08@gmail.com,
+	Shardul Bankar <shardul.b@mpiricsoftware.com>,
+	syzbot+pFBD3bslSSshiJCd3rxy@syzkaller.appspotmail.com
+Subject: [PATCH] wireguard: device: use exit_rtnl callback instead of manual rtnl_lock in pre_exit
+Date: Mon, 13 Apr 2026 20:30:24 +0530
+Message-Id: <20260413150024.1003490-1-shardul.b@mpiricsoftware.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,82 +62,65 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
-From: 'Simon Horman' <horms@kernel.org>
+wg_netns_pre_exit() manually acquires rtnl_lock() inside the
+pernet .pre_exit callback.  This causes a hung task when another
+thread holds rtnl_mutex - the cleanup_net workqueue (or the
+setup_net failure rollback path) blocks indefinitely in
+wg_netns_pre_exit() waiting to acquire the lock.
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev
+Convert to .exit_rtnl, introduced in commit 7a60d91c690b ("net:
+Add ->exit_rtnl() hook to struct pernet_operations."), where the
+framework already holds RTNL and batches all callbacks under a
+single rtnl_lock()/rtnl_unlock() pair, eliminating the contention
+window.
+
+The rcu_assign_pointer(wg->creating_net, NULL) is safe to move
+from .pre_exit to .exit_rtnl (which runs after synchronize_rcu())
+because all RCU readers of creating_net either use maybe_get_net()
+- which returns NULL for a dying namespace with zero refcount - or
+access net->user_ns which remains valid throughout the entire
+ops_undo_list sequence.
+
+Reported-by: syzbot+pFBD3bslSSshiJCd3rxy@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?id=cb64c22a492202ca929e18262fdb8cb89e635c70
+Signed-off-by: Shardul Bankar <shardul.b@mpiricsoftware.com>
 ---
-igc: add support for forcing link speed without autonegotiation
+ drivers/net/wireguard/device.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-This commit allows forcing 10/100 Mb/s link speed and duplex settings via
-ethtool when autonegotiation is disabled. It configures the MAC CTRL and
-PHY registers to bypass autonegotiation and apply the requested settings.
+diff --git a/drivers/net/wireguard/device.c b/drivers/net/wireguard/device.c
+index 46a71ec36af8..eb854c5294a3 100644
+--- a/drivers/net/wireguard/device.c
++++ b/drivers/net/wireguard/device.c
+@@ -411,12 +411,11 @@ static struct rtnl_link_ops link_ops __read_mostly = {
+ 	.newlink		= wg_newlink,
+ };
+ 
+-static void wg_netns_pre_exit(struct net *net)
++static void wg_netns_exit_rtnl(struct net *net, struct list_head *dev_kill_list)
+ {
+ 	struct wg_device *wg;
+ 	struct wg_peer *peer;
+ 
+-	rtnl_lock();
+ 	list_for_each_entry(wg, &device_list, device_list) {
+ 		if (rcu_access_pointer(wg->creating_net) == net) {
+ 			pr_debug("%s: Creating namespace exiting\n", wg->dev->name);
+@@ -429,11 +428,10 @@ static void wg_netns_pre_exit(struct net *net)
+ 			mutex_unlock(&wg->device_update_lock);
+ 		}
+ 	}
+-	rtnl_unlock();
+ }
+ 
+ static struct pernet_operations pernet_ops = {
+-	.pre_exit = wg_netns_pre_exit
++	.exit_rtnl = wg_netns_exit_rtnl
+ };
+ 
+ int __init wg_device_init(void)
+-- 
+2.34.1
 
-> diff --git a/drivers/net/ethernet/intel/igc/igc_ethtool.c b/drivers/net/ethernet/intel/igc/igc_ethtool.c
-> index 0122009bedd03..e14771532dad8 100644
-> --- a/drivers/net/ethernet/intel/igc/igc_ethtool.c
-> +++ b/drivers/net/ethernet/intel/igc/igc_ethtool.c
-[ ... ]
-> +static int igc_handle_autoneg_disabled(struct net_device *netdev, u32 speed,
-> +				       u8 duplex)
-> +{
-> +	struct igc_adapter *adapter = netdev_priv(netdev);
-> +	struct igc_mac_info *mac = &adapter->hw.mac;
-> +	enum igc_forced_speed_duplex forced_speed_duplex;
->  
-> +	switch (speed) {
-> +	case SPEED_10:
-> +		forced_speed_duplex = (duplex == DUPLEX_FULL) ? IGC_FORCED_10F : IGC_FORCED_10H;
-> +		break;
-> +	case SPEED_100:
-> +		forced_speed_duplex = (duplex == DUPLEX_FULL) ? IGC_FORCED_100F : IGC_FORCED_100H;
-> +		break;
-
-Does forcing a half-duplex configuration here also require setting flow
-control to none (e.g., hw->fc.requested_mode = igc_fc_none)?
-
-> diff --git a/drivers/net/ethernet/intel/igc/igc_mac.c b/drivers/net/ethernet/intel/igc/igc_mac.c
-> index 7ac6637f8db73..16b0f2db06896 100644
-> --- a/drivers/net/ethernet/intel/igc/igc_mac.c
-> +++ b/drivers/net/ethernet/intel/igc/igc_mac.c
-> @@ -452,7 +452,7 @@ s32 igc_config_fc_after_link_up(struct igc_hw *hw)
->  	 * so we had to force link.  In this case, we need to force the
->  	 * configuration of the MAC to match the "fc" parameter.
->  	 */
-> -	if (mac->autoneg_failed)
-> +	if (mac->autoneg_failed || !mac->autoneg_enabled)
->  		ret_val = igc_force_mac_fc(hw);
-
-If mac->autoneg_enabled is false, igc_force_mac_fc() will configure the MAC
-using the existing hw->fc.current_mode. If current_mode defaults to full flow
-control, this will enable PAUSE frames.
-
-Since autonegotiation is disabled, the MII status check further down in this
-same function will fail and return early:
-
-drivers/net/ethernet/intel/igc/igc_mac.c:igc_config_fc_after_link_up() {
-    ...
-    if (!(mii_status_reg & MII_SR_AUTONEG_COMPLETE)) {
-        hw_dbg("Copper PHY and Auto Neg has not completed.\n");
-        goto out;
-    }
-    ...
-}
-
-This early return skips the half-duplex safety check at the end of
-igc_config_fc_after_link_up() which would normally clear the flow control
-settings:
-
-drivers/net/ethernet/intel/igc/igc_mac.c:igc_config_fc_after_link_up() {
-    ...
-    if (duplex == HALF_DUPLEX)
-        hw->fc.current_mode = igc_fc_none;
-
-    ret_val = igc_force_mac_fc(hw);
-    ...
-}
-
-Does this leave the MAC incorrectly configured to send and receive PAUSE
-frames on a half-duplex link, violating the IEEE 802.3 specification?
