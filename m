@@ -1,48 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A14C531B838;
-	Mon, 13 Apr 2026 13:33:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 653D93C9EF6
+	for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 13:39:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776087202; cv=none; b=RXuRrlc7neYNq/spJkTQEa9VMWa4YceCa37+RzWkKTTLQEB0fRhQtcP/QjxqJ/vg/e3uNAc1rLuWnE0SlZhgJ95aUJ0HNDD2diw6PbVHDp/f3bOUxw1HcoM8ODXEZyiw2ygvDqOi5a6I7YGryOoBwXQMhgc8yN5lF9IDGJSR7HI=
+	t=1776087582; cv=none; b=KkoMGo+dAnc0qygwo9MUHHIqFa0goVYSctOfbPN4EtvmH1CSY3wT+6Tm2Ey2u/1gKVh5t+T1CP69ZEQZAC6zOC+EgWs/s5o8OB8CrK9BGg6agZpOYmK7X/3H14HWO8wJ1SwHAcnADvWlSmu+HzVMUuHwzLP8JNiI+kKoLQH1ekg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776087202; c=relaxed/simple;
-	bh=RGoZ0kAv/HIA5tdh+NMoNMfUmNT/RqGCY7/2guxi8Jc=;
+	s=arc-20240116; t=1776087582; c=relaxed/simple;
+	bh=0X3mZWOmxnCPoruGCJnthAxCGMk/6xAlSVH+ODrnXMU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Mtb8qKK402FH++Qnn1yBsq830ILOdFWkFUzwUCbHy20gXcrji8vSiBzVscS5Ne89qIWYsa8hn5z5GD5j8z6EsqXFD96Jgw0nFUrTqOKoA4+NRbRIwm3tQVZm1UzVY24jPRURIjEXyzMvEbG8leJYT2GH2b50120bHgyaOdjaDPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IHDTvyRD; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=pfjl472pY4BHQNa5sSNA2KUnZ8JAHafPQQArz/Z5/ZgPdzvlXgbXkmssLmAv4XLrxsLmzljSwByJ1q4yuB38lJbVwY0sSIu7ti1mp+Q3g4BPD6ET43S4Cyc573fOioXnU9TcZjyxvJqnwrHBVsdWlgwAqwNepptlkxbUcRyZfZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PSCwuu5v; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IHDTvyRD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C7C8C2BCB1;
-	Mon, 13 Apr 2026 13:33:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776087202;
-	bh=RGoZ0kAv/HIA5tdh+NMoNMfUmNT/RqGCY7/2guxi8Jc=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PSCwuu5v"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15330C2BCAF;
+	Mon, 13 Apr 2026 13:39:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776087582;
+	bh=0X3mZWOmxnCPoruGCJnthAxCGMk/6xAlSVH+ODrnXMU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IHDTvyRDE3WSwBk1xO9U6TZmQvfdJH63ZqQRXS5xECfan33vXrUVzEHG90u2kV7Fn
-	 UylDAJIxPnJdQlMf+2JKWCEhBBy39FUZ9K0avT2ls5CZm3Ud4F/olNHgxFeOYUSWUW
-	 4stFN1G0CrnrpDYN+hrfNNUQcQLaD/E1a+LnwX3c=
-Date: Mon, 13 Apr 2026 14:55:06 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Thorsten Leemhuis <regressions@leemhuis.info>
-Cc: "He, Guocai (CN)" <Guocai.He.CN@windriver.com>,
-	"Berg, Johannes" <johannes.berg@intel.com>,
-	Friend <netdev@vger.kernel.org>,
-	Linux kernel regressions list <regressions@lists.linux.dev>,
-	"Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: commit 0c4f1c02d27a880b cause a deadlock issue
-Message-ID: <2026041330-groggy-ruse-5e27@gregkh>
-References: <CO6PR11MB5586A4475A5EEC47FC10398BCD53A@CO6PR11MB5586.namprd11.prod.outlook.com>
- <PH0PR11MB55934A1C9A8C35B1E751C247CD50A@PH0PR11MB5593.namprd11.prod.outlook.com>
- <14d65103-8809-4a1b-b115-bf5f8d7110ea@leemhuis.info>
- <CO6PR11MB5586DF3964BAB4E6131A86CDCD5EA@CO6PR11MB5586.namprd11.prod.outlook.com>
- <2026040331-evasion-walk-f572@gregkh>
- <DM3PPF63A6024A9C09C1B13E5DF46C0B72AA35EA@DM3PPF63A6024A9.namprd11.prod.outlook.com>
- <2026040349-chowtime-freeload-5ca4@gregkh>
- <DM3PPF63A6024A9E931C940F849C60FAF9EA35EA@DM3PPF63A6024A9.namprd11.prod.outlook.com>
- <58f6e74d-480e-4e0c-aa66-68dfc1de7421@leemhuis.info>
+	b=PSCwuu5v+KZUBwaW+KFZWQ8FGHtXNfvmLmhpOWwIbY4daYzEdpafJN/VzbSqZcCoL
+	 E76fubZyK5z/NGghsczaofX5rDQ0F3a/w5vMD92sJDRva95AqHrHG4PhMwMx8Xg/kg
+	 fYq51iYvhFGj2b8HxWDTyadgD7eO3aerOPMBmu/GawBCZ4TZzLLihHnnVbwIOo3Aa0
+	 dEG44rBsRx8KWLx8pzFiOQ2gH9jUZb5taiTZatbS7R8XZp6foHwfEEQQKGtKqmi5R9
+	 koC05GjLDhALLEbF769DkfwRo2wA03Gv6FmhHL/FeCcaQQjpglMdhJQvvoSK8MNFSr
+	 zVFWhKWBFWIlg==
+Date: Mon, 13 Apr 2026 14:39:38 +0100
+From: Simon Horman <horms@kernel.org>
+To: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Cc: intel-wired-lan@lists.osuosl.org, anthony.l.nguyen@intel.com,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH iwl-net v2 5/6] ixgbe: fix ITR value overflow in adaptive
+ interrupt throttling
+Message-ID: <20260413133938.GO469338@kernel.org>
+References: <20260408131154.2661818-1-aleksandr.loktionov@intel.com>
+ <20260408131154.2661818-6-aleksandr.loktionov@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,48 +44,84 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <58f6e74d-480e-4e0c-aa66-68dfc1de7421@leemhuis.info>
+In-Reply-To: <20260408131154.2661818-6-aleksandr.loktionov@intel.com>
 
-On Mon, Apr 13, 2026 at 01:58:56PM +0200, Thorsten Leemhuis wrote:
-> On 4/3/26 15:00, Korenblit, Miriam Rachel wrote:
-> >> From: Greg KH <gregkh@linuxfoundation.org>
-> >> On Fri, Apr 03, 2026 at 12:44:48PM +0000, Korenblit, Miriam Rachel wrote:
-> >>>> -----Original Message-----
-> >>>> From: Greg KH <gregkh@linuxfoundation.org>
-> >>>> On Fri, Apr 03, 2026 at 11:08:46AM +0000, He, Guocai (CN) wrote:
-> >>>>> No, The mainline have no this issue.
-> >>>>> The changes of 0c4f1c02d27a880b is not in mainline.
-> >>>>
-> >>>> That does not make sense, that commit is really commit e1696c8bd005
-> >>>> ("wifi: cfg80211: stop NAN and P2P in cfg80211_leave") which is in
-> >>>> all of the following releases:
-> >>>> 	5.10.252 5.15.202 6.1.165 6.6.128 6.12.75 6.18.14 6.19.4 7.0-rc1
-> >>>> confused,
-> >>> The change is indeed in mainline, but the locking situation in
-> >>> mainline is totally different (that mutex does not even exist there)
-> >>> Therefore, the issue is not supposed to happen in mainline.
-> >>
-> >> Ok, does that commit now need to be reverted from some of the stable branches?
-> >> If so, which ones?
-> > 
-> > From every version which is < 6.7.
+On Wed, Apr 08, 2026 at 03:11:53PM +0200, Aleksandr Loktionov wrote:
+> ixgbe_update_itr() packs a mode flag (IXGBE_ITR_ADAPTIVE_LATENCY,
+> bit 7) and a usecs delay (bits [6:0]) into an unsigned int, then
+> stores the combined value in ring_container->itr which is declared as
+> u8.  Values above 0xFF wrap on truncation, corrupting both the delay
+> and the mode flag on the next readback.
 > 
-> Greg, do you still have this in your todo mail queue somewhere? Just
-> wondering, as last weeks 6.6.y released afics lacked a revert of
-> e1696c8bd0056b ("wifi: cfg80211: stop NAN and P2P in cfg80211_leave") --
-> and I cannot spot one in your public stable queue either.
+> Separate the mode bits from the usecs sub-field; clamp only the usecs
+> portion to [0, IXGBE_ITR_ADAPTIVE_LATENCY - 1] (= 0x7F) using min_t()
+> so overflow cannot bleed into bit 7.
 > 
-> These are the commits that according to Miri need to be reverted if I
-> understood things right:
+> Fixes: b4ded8327fea ("ixgbe: Update adaptive ITR algorithm")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+> ---
+> v1 -> v2:
+>  - Add proper [N/M] numbering so patchwork tracks it as part of the set;
+>    no code change.
 > 
-> v6.6.128 (4d7a05da767e5c), v6.1.165 (0c4f1c02d27a88), v5.15.202
-> (31344ffecd7a34), v5.10.252 (d91240f24e831d)
+>  drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+> index 210c7b9..9f3ae21 100644
+> --- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+> +++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+> @@ -2889,8 +2889,9 @@ static void ixgbe_update_itr(struct ixgbe_q_vector *q_vector,
+>  	}
+>  
+>  clear_counts:
+> -	/* write back value */
+> -	ring_container->itr = itr;
+> +	ring_container->itr = (itr & IXGBE_ITR_ADAPTIVE_LATENCY) |
+> +		min_t(unsigned int, itr & ~IXGBE_ITR_ADAPTIVE_LATENCY,
+> +		      IXGBE_ITR_ADAPTIVE_LATENCY - 1);
 
-It is, yes, my queue is huge :(
+* It is not clear to me that the mode flag bit (IXGBE_ITR_ADAPTIVE_LATENCY)
+  is always set in itr when reaching this code. But with this patch that
+  bit will always be set in ring_container->itr.
 
-It's fastest if someone sends me the reverts and I can easily apply them
-that way.  Otherwise it takes me a bit to do each one manually :(
+* Perhaps no such case exists, but it's not clear to me how this handles a
+  case where the usec delay has overflowed into the mode flag bit.
 
-thanks,
+  As a hypothetical example, consider the case where the delay overflows to
+  exactly 0x80.  The resulting delay is 0 (both with and without this
+  patch).
 
-greg k-h
+  I would suggest an approach of keeping the delay and mode bits separate
+  during calculation - in separate local variables - and only combining
+  them when ring_container->itr is set.
+
+  This may turn out to be more verbose. But I expect it is easier to reason
+  with.
+
+* Looking over the code, it looks like the maximum allowed udelay is
+  IXGBE_ITR_ADAPTIVE_MAX_USECS (126) rather than
+  IXGBE_ITR_ADAPTIVE_LATENCY - 1 (127).
+
+* The calculation does not guard against delay values less
+  than IXGBE_ITR_ADAPTIVE_MIN_USECS. Which looking over the code seems
+  to be something that matters. (And which occurred in the hypothetical
+  example above).
+
+* As itr is an unsigned int, and IXGBE_ITR_ADAPTIVE_LATENCY - 1 is a
+  compile time constant, I expect that min() is sufficient.
+  IOW, I don't think min_t is needed here.
+
+* It looks like using FIELD_PREP is appropriate to construct
+  ring_container->itr. But that may be overkill if you end up with
+  something like:
+
+	ring_container->itr = mode | clamp(delay, IXGBE_ITR_ADAPTIVE_MAX_USECS,
+					   IXGBE_ITR_ADAPTIVE_MIN_USECS);
+
+>  
+>  	/* next update should occur within next jiffy */
+>  	ring_container->next_update = next_update + 1;
+> -- 
+> 2.52.0
