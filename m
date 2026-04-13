@@ -1,157 +1,89 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C5D82D8DA3
-	for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 10:31:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41C581A08A3
+	for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 10:35:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776076262; cv=none; b=n+wxUYR/iXF7E3M4HRogktgeCfiRSgjJq5htN/moa85659ft7es1N+dGTXjpxMit8eQVAG2nZN21f2hB6uat8BjkQq3vbrc2JnL1qTBxoKBuAe96e2Hsr+dPT3LLEQ34tAJcJx37ef9A9ppDJBXBYoVvXsFlhAUS2SVMtPjdUeI=
+	t=1776076521; cv=none; b=RYmVlQexzuPr8thy/EFVpTFeaox90fH5JQaJ58fS0iVmN8Md887j+DSAcvIOJUBnS9z6DWFIptrqRlA0gVfQgk26ZsDdMg0Hkk64hAuFDlR0Y8IQqtQUi53jwXDFTuQwtACdNYVg5A4EqLwQHn/dqMIW5pW8DC+wUHbwxlWbujs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776076262; c=relaxed/simple;
-	bh=fQ643Lv9J5G1foV+9PbsCurOJvsBQ+fx5gPlGfwiTfw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Bijk8db+Uvb3Xrki5cKfquLukQIBy/NWv9npaKeLpaLNM7nH8HJLl5b+XvrSMgDNFMcIzFfMtnPL4mAksdLeBZFmg+KnKj3gxO317p7SPhJabK4eVwimcqglo9XDD9VcQ0NXKU7LxK1N8WAsRSMs3K+0HPI4DudCr0GyWPkawpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GV2EzTCO; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=eJtTsRyd; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1776076521; c=relaxed/simple;
+	bh=MJMGlFoHmOgcTF0m9x8IW19F5KeEe1oKZKbG+3Z0pYc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qu7YPeTULE2AmkiIyu6qhNcjO6rjJ58B5O2yhKjGVlIr312zU3X1zfF51Z7EJyV6DEXJSU24pZjipjK6ehXNzsEEE+yL7GQnsjX6Wvm/JwbQ4qj5UCHITEVKEo8yZYZmMnGnbunmRlh8uPApOae4cnT97XJvB4EKNHl+yzvZwI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=cBGtahUB; arc=none smtp.client-ip=95.215.58.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GV2EzTCO";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="eJtTsRyd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1776076259;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="cBGtahUB"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776076517;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VeZdU2EOKDcewPx9OBUAInxEANs51PIGwZCoG7TPO40=;
-	b=GV2EzTCO8IYQnWzRbqGJgl2e1FqQscEkd5PtQecve806qRG+/qk4mqavp3AnVC8StBb1ST
-	80qstn+YgXy6Q225eUyyXfmYR5gyY3V+Uy8b8+h25qqdfvQY4Jcef2XG6TU3zeW5QzYI7B
-	r6i/WjVo2BCLUfG9qRuFMfBlI8MQxn4=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-653-FmKnIRF3Nj-QHMWYcD_m9g-1; Mon, 13 Apr 2026 06:30:58 -0400
-X-MC-Unique: FmKnIRF3Nj-QHMWYcD_m9g-1
-X-Mimecast-MFC-AGG-ID: FmKnIRF3Nj-QHMWYcD_m9g_1776076257
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-486fa07f2bbso20869755e9.2
-        for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 03:30:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1776076257; x=1776681057; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=VeZdU2EOKDcewPx9OBUAInxEANs51PIGwZCoG7TPO40=;
-        b=eJtTsRydLu5D/wKpUhH2bAAjMhyh2allhw2Tg4e4jkyOsN7+BNuRlb5FFAQWwYDNKn
-         8zS35aBQQ1jEI3Udc2bQMCfasq7Y1RBznymgEfIsprvP/sk1d2OByyucpjmYLiyZ1I7E
-         7u3VvHJopaZOikrjIiqOLtfP7C23dUZGEosVf+SWHxsJo+NTfEYwkuoEBVYVrwL0mC2B
-         qOm+mIED7lf6thwMA7p0JA6PYtLWaZWSTPGBRfi33/QyrtS+jeu+McUw0Xz02yFoDGD0
-         uV4o12+EpKnLbpxr8dlzjpYBBy1CVI/vuZ/Dwm1nDyAspe7YUMXyoVPD6Jsmlu/M610m
-         v1qw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776076257; x=1776681057;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VeZdU2EOKDcewPx9OBUAInxEANs51PIGwZCoG7TPO40=;
-        b=EEmZAhKqFsaYKsGBiIXtAOSIwH6yCknBHbHuv6OoNTBXNXUZ2HGAR5qy7bhXxQOY63
-         ag0U7vmKiYe9d50/4pgRe3w+CQK6o9zqJYZpBHCX1Derse5oBhikuMz4E/16l2Qj/hI0
-         BNHw+rPzypNXDGZp5Asu+L+Ah1fYt+iZZzWMCn3cXkACiyLHnVZ26eWOZZhslDSkUhbT
-         t9wjY45+n6B1yPpfQNCk/JNuQ8ns+k3xzOw6rL5jIzy9s4jBevZutmsg6Ui3CcCEdXpn
-         AE52AKfbiletvvjW6irBuF0QNBaRQPKPvVq23sTc6J7o6IOdXCMIdYQKAWuStKUwfafT
-         LUpw==
-X-Gm-Message-State: AOJu0YyReiksbSFor2vDZfZnpua4PCPloOvMDXuGTlESLqq5kpEgjsIt
-	QxVw422YqDB9vBR0HmLB/vrzd1utIxmJ1KwhYC63GKJNGDYTgtp9XKgL4VTA4o+CmgPBgRxvu1V
-	qwj8SrrL0s2BXYnqUnSHvG4uQlL1tGgZO0jEurWQRK1Ln8jTK2oAO6USNkA==
-X-Gm-Gg: AeBDievvFdHNgQy+d9CI5ZmO+RKQFOjaif1ypQkcMA/SE5UhAq3JR8rmsLTdDQFBUl3
-	3xlwkbnBdbI9qXn6iRQfVlR4yJ1+XCjulyyyjZd0w8aTRthc7uueePVla5vAvcdpqxrUyfrYSSd
-	uxB543I/lLcWI1Ed1kI/w4ZUMgN8x8AidIj5ZW68xleB4puzbevsdzwdo1GBKJkccIbGnKNJkuY
-	hkE4C5xhB/Ix6sgcrBniU8HP5R+dyUhtE/N1R5U4BUV9OWmv7lbZpZuvEVA/eGfcjdBlvNwoF5P
-	xZzMVkaSQACdIxKCyfPwxOXD/TMKqqHmY9wM1GQJ6ifRIzVkOMjxvRqYz7UizZLtfaZ84CZtyp8
-	qaBoUuED7FHc/fJFW6R32M3iUYzVEvWmuFKj9XMUk1RXdMNS1bdwy3TBmpMm3VngmFpsCtLU=
-X-Received: by 2002:a05:600c:a401:b0:485:3f1c:d8a1 with SMTP id 5b1f17b1804b1-488d6839be2mr137846915e9.9.1776076256840;
-        Mon, 13 Apr 2026 03:30:56 -0700 (PDT)
-X-Received: by 2002:a05:600c:a401:b0:485:3f1c:d8a1 with SMTP id 5b1f17b1804b1-488d6839be2mr137846655e9.9.1776076256355;
-        Mon, 13 Apr 2026 03:30:56 -0700 (PDT)
-Received: from sgarzare-redhat (host-87-16-204-83.retail.telecomitalia.it. [87.16.204.83])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488d5cf2e51sm185534185e9.1.2026.04.13.03.30.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Apr 2026 03:30:54 -0700 (PDT)
-Date: Mon, 13 Apr 2026 12:30:50 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Dudu Lu <phx0fer@gmail.com>
-Cc: netdev@vger.kernel.org, stefanha@redhat.com, mst@redhat.com, 
-	jasowang@redhat.com
-Subject: Re: [PATCH] vsock/virtio: fix accept queue count leak on transport
- mismatch in recv_listen
-Message-ID: <adyxVoDApCYpDcLL@sgarzare-redhat>
-References: <20260413085243.73200-1-phx0fer@gmail.com>
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=8oOYZXHA0JcJjaaCeyKcKCUwn5KT7rWJLc2/kdQ/QYU=;
+	b=cBGtahUB9JvQdavLXYLl6yKIP4zL7hs4t4zWLk115kphFJX+JPoZUB0HdZrwobVofwKn+/
+	8EeY9KcjsAjZruizN/Urfmz6mpXIL6NrpLHpEZD+whhsKyFiPMAh8eQgPqYQaq0VvlxfEs
+	SWfjh+CHKUyrDYaNGG4oFTsMbbeuKLY=
+From: luka.gejak@linux.dev
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: netdev@vger.kernel.org,
+	fmaurer@redhat.com,
+	horms@kernel.org,
+	Luka Gejak <luka.gejak@linux.dev>
+Subject: [PATCH net-next v6 0/2] net: hsr: strict supervision TLV validation
+Date: Mon, 13 Apr 2026 12:34:47 +0200
+Message-ID: <20260413103449.169913-1-luka.gejak@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260413085243.73200-1-phx0fer@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Mon, Apr 13, 2026 at 04:52:43PM +0800, Dudu Lu wrote:
->virtio_transport_recv_listen() calls sk_acceptq_added(sk) to increment
->the listener's accept queue counter before calling
->vsock_assign_transport(). When vsock_assign_transport() fails or selects
->a different transport than the one that received the packet, the error
->path returns without calling sk_acceptq_removed(sk), permanently
->incrementing sk_ack_backlog.
->
->A malicious VM peer can exploit this by sending repeated CONNECT
->requests that trigger the transport mismatch condition. Each such
->request permanently increments sk_ack_backlog. After approximately
->backlog+1 such requests (default backlog ~128), sk_acceptq_is_full()
->returns true, causing the listener to reject ALL new connections with
->-ENOMEM. The only recovery is closing and re-creating the listener
->socket.
->
->Compare with vmci_transport.c and hyperv_transport.c which correctly
->place sk_acceptq_added() AFTER the transport check, avoiding this
->issue entirely.
->
->Fix by moving sk_acceptq_added(sk) to after the transport validation
->check, matching the pattern used by the other transports.
+From: Luka Gejak <luka.gejak@linux.dev>
 
-The issue seems legitimate, but this patch doesn't do what you're 
-describing here.
+Changes in v6:
+ - Dropped capitalization comment changes per request of Jakub Kicinski
 
-Out of curiosity, how did you generate it?
+Changes in v5:
+ - Reverted TLV loop in Patch 1 to strict sequential parsing per IEC
+   62439-3.
+ - Retained pskb_may_pull() logic to ensure memory safety for TLV
+   headers.
+ - Dropped Reviewed-by from Patch 1 due to the logic evolving since
+   original review.
+ - Added Assisted-by tag for AI-aided translation and formatting to
+   both patches.
 
-Stefano
+Changes in v4:
+ - Split from a 4-patch series into 'net' and 'net-next' as requested.
+ - Implemented a TLV walker in Patch 1 to correctly handle extension
+   TLVs and avoid regressions on paged frames/non-linearized skbs.
+ - Corrected pskb_may_pull() logic to include the TLV header size.
 
+History of pre-separation series (v1-v3):
+Changes in v3:
+ - addressed Felix review feedback in the VLAN add unwind fix
+ - removed the superfluous empty line
 
->
->Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
->Signed-off-by: Dudu Lu <phx0fer@gmail.com>
->---
-> net/vmw_vsock/virtio_transport_common.c | 4 +++-
-> 1 file changed, 3 insertions(+), 1 deletion(-)
->
->diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
->index 8a9fb23c6e85..29e1d9833be4 100644
->--- a/net/vmw_vsock/virtio_transport_common.c
->+++ b/net/vmw_vsock/virtio_transport_common.c
->@@ -1,3 +1,4 @@
->+	sk_acceptq_added(sk);
-> // SPDX-License-Identifier: GPL-2.0-only
-> /*
->  * common code for virtio vsock
->@@ -1560,8 +1561,9 @@ virtio_transport_recv_listen(struct sock *sk, struct sk_buff *skb,
-> 		return -ENOMEM;
-> 	}
->
->-	sk_acceptq_added(sk);
->
->+
->+	sk_acceptq_added(sk);
-> 	lock_sock_nested(child, SINGLE_DEPTH_NESTING);
->
-> 	child->sk_state = TCP_ESTABLISHED;
->-- 
->2.39.3 (Apple Git-145)
->
+Changes in v2:
+ - picked up Reviewed-by tags on patches 1, 3 and 4
+ - changes in patch 2 per advice of Felix Maurer
+
+Luka Gejak (2):
+  net: hsr: require valid EOT supervision TLV
+  net: hsr: reject unresolved interlink ifindex
+
+ net/hsr/hsr_forward.c | 6 +++---
+ net/hsr/hsr_netlink.c | 7 ++++++-
+ 2 files changed, 9 insertions(+), 4 deletions(-)
+
+-- 
+2.53.0
 
