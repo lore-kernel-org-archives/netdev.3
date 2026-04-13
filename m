@@ -1,160 +1,191 @@
-Received: from flow-a4-smtp.messagingengine.com (flow-a4-smtp.messagingengine.com [103.168.172.139])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FD1F3537FA;
-	Mon, 13 Apr 2026 19:31:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B99383B6C03
+	for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 19:45:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776108701; cv=none; b=Wwv7ysAI3pZa7lDmJhUWwipeGdvAQG/VIJHrVKio0YixISKcp4kFNSwJuI+cF04dMmLnjN1bNEPjAkhySfUuWAhcnMaTFdQW1GsQGiGI9UDDxNJUYgMSU4d/m+xnPPgy4QL812kozcop5wedzTQxfknEW7TYLwA7uUfBdYGk1b0=
+	t=1776109505; cv=none; b=a2z6cnEDMDH8gN/OPRVc/BlYl0OhaFhi/7pqmEDQmBY5AulYeyGLjLKYzGkc7EoH+lk5WadNlpMRNy652jHnW0TjlUo9W/4ooQ4tRVr3rMEe+DeWTtlV/L2SQDhyoIz29d8Zg2TjXs3kERzygqQZjPU7U0s36q4jnCo+MvAR+4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776108701; c=relaxed/simple;
-	bh=WrrLF4ZuZDSSPdaipSZzrKXRH2qtrS74BAAAonCIRps=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=n7g1Yx5W6plpXKy+rkozQ6xEgTTaO1xCblNw3ix8fDOKnFfVL16O7SZh497soJj3f4zqp/zSWU+KxfR5iG2eT19N4YiEsFirX1mWgV9neXuPLaq+B1XzLfWKQzwRina3cMiqA4CdgmYDmme3QAv4sOaeHSA6ZSdvV11+Z0V8qUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=eBEb3+z4; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=fK2XbJ97; arc=none smtp.client-ip=103.168.172.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1776109505; c=relaxed/simple;
+	bh=thqndAWuNWDbtzFbujcgttAGQL0lw9yRIBW2NfbdAVg=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=iDglDNM4q5OAfRqJ6Uch/6VRKSYnEq3QfBqsYI6I09TQPYwtv9pr792K9cnBF3+sdzgADgTY2Z+NKTmKyVXWvajEWLake9K+W6Hg+px/+0bn2EbXE29cPAaGKWhdXKKRdxGxTO+hnc4aypJQjzA6bCODq/aHqViRzCL01hoAv0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b=fY9DRUcW; arc=none smtp.client-ip=74.125.82.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="eBEb3+z4";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="fK2XbJ97"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailflow.phl.internal (Postfix) with ESMTP id 9BAA81380415;
-	Mon, 13 Apr 2026 15:31:38 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-04.internal (MEProxy); Mon, 13 Apr 2026 15:31:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1776108698;
-	 x=1776115898; bh=oF7+4SGRAImH9WMGSId2dJm+4RdrBt2YGrt25aFUZUA=; b=
-	eBEb3+z4uCJ5XpVJfmMDtd+Hz4pTmn4rIKoszU8vf+435LUmCEc3EJdi4K0/oVv8
-	C+yjXVYuraejFdA/rcQOSN6Zfi5pNlS43GslApllsudgHnK44npvkIwaUHWVTtuh
-	Dw/4I/j/UNeqyr1LQlKmH5vdXZciz/2GPqFtFHFDNoaInKEsvm7hwh9DYdVnGoah
-	lMAIbVhEjH95sryDmrUzci3AfaiCDHHYDZH3oXJ/R4+VlvsfKJPopXWx0JE7CxaE
-	ognvTjwa06PAMT31z/DBGKMGBcoGUsjb6Y3k+6cm618rMbyQ7yCpT6T6pE5XH3Hf
-	w2SGXNdq7Abx7TrcOF+CrA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1776108698; x=
-	1776115898; bh=oF7+4SGRAImH9WMGSId2dJm+4RdrBt2YGrt25aFUZUA=; b=f
-	K2XbJ97Y0jsbU1s6LswXOEcaT2AuIJQsZKTCiqB2bsDjsavXFxXjXN24HUjqmHPV
-	30lUfZzPVJ0GZrRSLZsyTrPlhAwj+oOp7rzHIcW4Q+ggBxcGWjNT+roTWJQkS80p
-	muhmPfZao8pyrAslQS6xE9YgbnnrpBmxpEViK0VuBn5kyHZfCSLFSApLiy8hZEkj
-	X3o7U4xt3roWjYEf/0QsKGiNqeP3myXk/e3+BEa4KYIE59wmYsrhudiDwV46CB5d
-	E8K4OFv0fHuOdK14nnUUxfff3rCPKj8vJw3X7p6M4i0BpN1E8RSwySIEaUf5sCqK
-	alHtK1Rc5jgsKIF8k3s0A==
-X-ME-Sender: <xms:l0TdaRMQ1ovC5UjXw9wB_riUJbJZBZQ47VcEC4ozPMlWVwTWyL-hPg>
-    <xme:l0Tdaey9qAPkMkkSsq5ZowyLiVSaVZg3Aabqq1QUbhdAX-Y8VC29U600TE9HTIGWj
-    W-h6ka_l-N0bKYGG_W-3bzXlHGY0ZcjcSbZR_zuoL-6Ds0X7Q55CQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdefledtkecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefoggffhffvvefkjghfufgtgfesthhqredtredtjeenucfhrhhomhepfdetrhhnugcu
-    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
-    hnpedvhfdvkeeuudevfffftefgvdevfedvleehvddvgeejvdefhedtgeegveehfeeljeen
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
-    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopeegkedpmhhouggvpehsmhhtphhouhht
-    pdhrtghpthhtohepthdrshgrihhlvghrsegrlhhumhhnihdrvghthhiirdgthhdprhgtph
-    htthhopegtrghtrghlihhnrdhmrghrihhnrghssegrrhhmrdgtohhmpdhrtghpthhtohep
-    lhhinhhugiesrghrmhhlihhnuhigrdhorhhgrdhukhdprhgtphhtthhopegurghvvghmse
-    gurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepmhhpvgesvghllhgvrhhmrghnrdhi
-    ugdrrghupdhrtghpthhtoheprhihrggsihhnihhnrdgrrdgrsehgmhgrihhlrdgtohhmpd
-    hrtghpthhtohepuhhrvgiikhhisehgmhgrihhlrdgtohhmpdhrtghpthhtohepuggvlhhl
-    vghrsehgmhigrdguvgdprhgtphhtthhopehhvghrsggvrhhtsehgohhnughorhdrrghprg
-    hnrgdrohhrghdrrghu
-X-ME-Proxy: <xmx:l0TdaTelOssYXt15-FK9p6saYLM_nmrvIO6c-_F3ZyF6_xfZywmCYA>
-    <xmx:l0TdaUxOkh6ozfKMIVT4v_qdW_i5Tss0CLMqkf2F01TBmahdCnZo_w>
-    <xmx:l0TdaUWn-LdWx2_7oUHRu6zzNshE3wCLw-aFKzbUUXN26D6Q-_6vLw>
-    <xmx:l0TdacTwYVtUWJnf_Fdh14nt-sYvlNq7AaQbOTvOw2Uu221fQyzEjQ>
-    <xmx:mkTdaTH5uGiAlbaAI17-uSN6CKxYeQsdeWCm3ruscf_j0l2LK_Chakad>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 04818700069; Mon, 13 Apr 2026 15:31:35 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b="fY9DRUcW"
+Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-1273349c56bso6415027c88.0
+        for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 12:45:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=networkplumber-org.20251104.gappssmtp.com; s=20251104; t=1776109503; x=1776714303; darn=vger.kernel.org;
+        h=mime-version:message-id:subject:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=I9iCaOL7axlmjz//qObwCmkSPEx1IzA+Pab/RGQqX6s=;
+        b=fY9DRUcWHUI/nvel7XfJE3vNT58o3Lyb2APLKOHNUrmH4zHCwAJCIaWgrYNEqLrCMp
+         eBWcM+soOtdcc0yVwme4qPjElTWjgtPByPfUGAkojs6s13GYh2ur1odPSi4NnDhL+ESg
+         mWFG+R0aEaujxmfoFWyHO7pf3DGuYa89GX7HvsDxdsdoPlvnbhMPY7wCCHWO3nRAwmF2
+         LlE//m8w63yA+aRIiDQsuBWwJJIlcQ9YR9MB4HZtW+6ak/3FO4Ih77SP1bgBXPG0p+u1
+         0MGzJ194+9yEzwanEVWPb+K7/TkrJ+SlEnp4SVheI6iN6q4bTvqxVCrAua7QgXSnNVUm
+         BLIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776109503; x=1776714303;
+        h=mime-version:message-id:subject:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=I9iCaOL7axlmjz//qObwCmkSPEx1IzA+Pab/RGQqX6s=;
+        b=bXAMFwJlGU/zKW6F69u/vTFP/aLt2YCeFrsh88TLWdo1oy00ZwxcunhMfA0+uKflZU
+         FimLHA3bwq9drI52l1F9+HVtQ4EKN44lLjrdVdao9wGijsF0MMw1sJmEgg+fYSjtZKlb
+         z/Ug/SJR6iSiOctqOSYbbwQY9/76jTGQp69OGS3sq83d1f3QKX5GJkm6pftpYLIoYwrk
+         81az2wVM1Cj14g71Et/fQimrxaN6Nhp3110f+T1Cn3IFpFWz97rZMfyim9jBnRxXd1dk
+         w2Z/hl7gx8EmDrjN1+MDuL75VBSD7C5CJCy98g3H++E2BM2/WkB9tEvZ6e5Y7SuQDOVx
+         BISg==
+X-Gm-Message-State: AOJu0Yyj5xiAB7BK8cE9Vt6UrHh4Gffa8BF5P5T+3o/+eCIN2KpC3K9o
+	As80CvBURJ595olLFMx20V2Y0sFSFj3XKmG9Wl6ndRrloLp35hm/ZvCDlh89VZdjKr/lfj2c8YX
+	2aZFq
+X-Gm-Gg: AeBDieugYPKNR5oDo205Jh0hQY1RPxSxlfLVEz+GIqX+2Y4LDSz8OGAt5f2/L/pcY5F
+	sT4W6pAA70JkUpWoZZN9mtsdJtx5g6ObsNPT5PetWviUrL+GR21jgD3S8zpKxPf4Wms/mtyIWha
+	gN2YdKg0blIdg0utvc0bspGoU2ndCQGIoOzTr77p2AdgnHBCj1hOjhfI6OxOzdLVxd5KelviGz3
+	m/Ch1arYTyf78klPwyIiq9KIetzq7GCN320VgnPI8kUHEti85H/swx6ZtM+WtGUNERN7+cV9NUR
+	k6wIeXhDWQ9jYSWfaUyHDHRkWG6ShjDw2a3AD74da7vkzrGimhvQ0XpyNwJQQSiVdeDIbD1Cz9k
+	Uv1NvMltqSrbnomfiuMhe98O8W+sYAygWR910aGrFMrDONW/kZp8z08cZ5YNFhjyoeOt0XcGN46
+	SBF1kA7is4bDlxbMRP0iOZy30MhZ8kpVzEZgQQ6J9F63vPQQ==
+X-Received: by 2002:a05:693c:3007:b0:2da:a813:a60c with SMTP id 5a478bee46e88-2daa813a7b8mr1120117eec.20.1776109502464;
+        Mon, 13 Apr 2026 12:45:02 -0700 (PDT)
+Received: from phoenix.local ([104.202.41.210])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2d55faa571csm21145406eec.10.2026.04.13.12.45.01
+        for <netdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Apr 2026 12:45:02 -0700 (PDT)
+Date: Mon, 13 Apr 2026 12:44:59 -0700
+From: Stephen Hemminger <stephen@networkplumber.org>
+To: netdev@vger.kernel.org
+Subject: [ANNOUNCE] iproute2 7.0 release
+Message-ID: <20260413124459.1d6f40dd@phoenix.local>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AMdy4yCH1GcR
-Date: Mon, 13 Apr 2026 21:30:11 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "David Woodhouse" <dwmw2@infradead.org>,
- "Thomas Gleixner" <tglx@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-Cc: x86@kernel.org, "Baolu Lu" <baolu.lu@linux.intel.com>,
- iommu@lists.linux.dev, "Michael Grzeschik" <m.grzeschik@pengutronix.de>,
- Netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org,
- "Herbert Xu" <herbert@gondor.apana.org.au>, linux-crypto@vger.kernel.org,
- "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, linux-mm@kvack.org,
- "Bernie Thompson" <bernie@plugable.com>, linux-fbdev@vger.kernel.org,
- "Theodore Ts'o" <tytso@mit.edu>, linux-ext4@vger.kernel.org,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Uladzislau Rezki (Sony)" <urezki@gmail.com>,
- "Marco Elver" <elver@google.com>, "Dmitry Vyukov" <dvyukov@google.com>,
- kasan-dev@googlegroups.com, "Andrey Ryabinin" <ryabinin.a.a@gmail.com>,
- "Thomas Sailer" <t.sailer@alumni.ethz.ch>, linux-hams@vger.kernel.org,
- "Jason A . Donenfeld" <Jason@zx2c4.com>,
- "Richard Henderson" <richard.henderson@linaro.org>,
- linux-alpha@vger.kernel.org, "Russell King" <linux@armlinux.org.uk>,
- linux-arm-kernel@lists.infradead.org,
- "Catalin Marinas" <catalin.marinas@arm.com>,
- "Huacai Chen" <chenhuacai@kernel.org>, loongarch@lists.linux.dev,
- "Geert Uytterhoeven" <geert@linux-m68k.org>,
- linux-m68k@lists.linux-m68k.org, "Dinh Nguyen" <dinguyen@kernel.org>,
- "Jonas Bonn" <jonas@southpole.se>,
- "linux-openrisc@vger.kernel.org" <linux-openrisc@vger.kernel.org>,
- "Helge Deller" <deller@gmx.de>, linux-parisc@vger.kernel.org,
- "Michael Ellerman" <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
- "Paul Walmsley" <pjw@kernel.org>, linux-riscv@lists.infradead.org,
- "Heiko Carstens" <hca@linux.ibm.com>, linux-s390@vger.kernel.org,
- "David S . Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
-Message-Id: <07df88e5-208d-4aac-9668-a3b0c65ae529@app.fastmail.com>
-In-Reply-To: <7a48b636cb3146f4f7134c6d4fe42070ac2edb43.camel@infradead.org>
-References: <20260410120044.031381086@kernel.org>
- <20260410120318.592237447@kernel.org>
- <7a48b636cb3146f4f7134c6d4fe42070ac2edb43.camel@infradead.org>
-Subject: Re: [patch 15/38] ptp: ptp_vmclock: Replace get_cycles() usage
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/mixed; boundary="MP_/3O.dSbIBj8=mSZIhMuoiGhy"
+
+--MP_/3O.dSbIBj8=mSZIhMuoiGhy
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+This is the regular release of iproute2 corresponding to the 7.0 kernel.
+
+The main addition is `cake_mq` support for tc-cake, enabling CAKE on
+multiqueue devices. The `dpll` command gained mode setting and
+fractional frequency offset display in parts-per-trillion.
+
+Devlink now supports displaying and resetting parameters to defaults.
+
+The `ss` tool saw several cleanups: trailing whitespace in non-TTY
+output, suppressed netlink errors for unsupported protocols, and
+proper command name escaping.
+
+The JSON writer gained control characterescaping.
+
+Eric Biggers replaced the AF_ALG SHA-1 in legacy BPF with a
+userspace implementation.
+
+Chen Linxuan eliminated redundant mounts in
+`ip netns`, and leftover `/usr/lib/route2` references were removed.
+
+Matthieu Baerts added interface name display and colored output to
+MPTCP monitor.
+
+A large batch of man page fixes addressed grammar and
+style across `dcb`, `devlink`, `netshaper`, `tipc`, `vdpa`, `rdma`,
+and `ss`.
+
+Download:
+    https://www.kernel.org/pub/linux/utils/net/iproute2/iproute2-7.0.0.tar.gz
+
+Repository for current release:
+    https://github.com/shemminger/iproute2.git
+    git://git.kernel.org/pub/scm/network/iproute2/iproute2.git
+
+And future release (net-next):
+    git://git.kernel.org/pub/scm/network/iproute2/iproute2-next.git
+
+
+
+--MP_/3O.dSbIBj8=mSZIhMuoiGhy
+Content-Type: text/plain
 Content-Transfer-Encoding: quoted-printable
+Content-Disposition: attachment; filename=changes-iproute2-7.0.0.txt
 
-On Mon, Apr 13, 2026, at 17:33, David Woodhouse wrote:
-> On Fri, 2026-04-10 at 14:19 +0200, Thomas Gleixner wrote:
->
-> ... depend on TSC_RELIABLE=C2=B9, since if the guest doesn't believe t=
-hat it
-> is, then the guest shouldn't be trying to use it as the basis for
-> precise timing.
->
-> =C2=B9 (Or... one of the other zoo of TSC flags for the gradually redu=
-cing
-> brokenness over the years...)
+Andrea Claudi (1):
+      dpll: Fix missing notifications in monitor mode
 
-It looks like this is sufficiently handled in the caller:
+Chen Linxuan (1):
+      ip/netns: avoid redundant mounts
 
-static int vmclock_get_crosststamp(struct vmclock_state *st,
-                                   struct ptp_system_timestamp *sts,
-                                   struct system_counterval_t *system_co=
-unter,
-                                   struct timespec64 *tspec)
-{
-....
-#ifdef CONFIG_X86
-        /*
-         * We'd expect the hypervisor to know this and to report the clo=
-ck
-         * status as VMCLOCK_STATUS_UNRELIABLE. But be paranoid.
-         */
-        if (check_tsc_unstable())
-                return -EINVAL;
-#endif
+Daniel Schulte (1):
+      ss: Remove trailing whitespace when output is not a TTY
 
-With 486 and ELAN out of the way, Winchip6 seems to be the only
-one without X86_FEATURE_TSC, so I think the next logical step would
-be to turn off Winchip6 as well and remove all X86_FEATURE_TSC
-and CONFIG_X86_TSC checks.
+Daniel Zahka (2):
+      devlink: Pull the value printing logic out of pr_out_param_value()
+      devlink: support displaying and resetting to default params
 
-      Arnd
+David Ahern (2):
+      Update kernel headers
+      Update kernel headers
+
+Eric Biggers (1):
+      lib/bpf_legacy: Use userspace SHA-1 code instead of AF_ALG
+
+Ivan Vecera (1):
+      dpll: add support for fractional frequency offset in ppt
+
+Jonas K=C3=B6ppeler (1):
+      tc: cake: add cake_mq support
+
+Matthieu Baerts (NGI0) (2):
+      mptcp: monitor: also show iface name
+      mptcp: display addr & ifname in color
+
+Petr Oros (2):
+      dpll: add mode setting support
+      dpll: fix pin id-get type filter parsing
+
+Sergei Trofimovich (1):
+      include/json_print.h: add includes for `__u32` and `timeval` declarat=
+ions
+
+Stephen Hemminger (17):
+      uapi: update mptcp and rdma headers
+      utils: do not be restrictive about alternate network device names
+      dcb: fix grammar and style issues in man pages
+      devlink: fix grammar and style issues in man pages
+      fix grammar and style issues in man pages for stat related pages
+      netshaper: fix grammar and style issues in man page
+      tipc: fix grammar and style issues in man pages
+      vdpa: fix grammar, titles, and formatting in man pages
+      rdma: fix grammar, formatting, and style in man pages
+      ss: fix grammar, articles, and phrasing in man page
+      uapi: headers update from 7.0-rc0
+      ss: suppress netlink errors for unsupported protocols
+      remove leftover references to /usr/lib/route2
+      ss: escape characters in command name
+      json_writer: support control character escaping
+      json_writer: fix builtin test code
+      vv7.0.0
+
+Toke H=C3=B8iland-J=C3=B8rgensen (1):
+      man: Add cake_mq documentation to the tc-cake man page
+
+Vincent Mailhol (7):
+      iplink_can: print_usage: fix the text indentation
+      iplink_can: print_usage: change unit for minimum time quanta to mtq
+      iplink_can: print_usage: describe the CAN bittiming units
+      iplink_can: add RESTRICTED operation mode support
+      iplink_can: add initial CAN XL support
+      iplink_can: add CAN XL transceiver mode setting (TMS) support
+      iplink_can: add CAN XL TMS PWM configuration support
+
+
+--MP_/3O.dSbIBj8=mSZIhMuoiGhy--
