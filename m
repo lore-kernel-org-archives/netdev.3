@@ -1,92 +1,77 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABF7D358375;
-	Mon, 13 Apr 2026 21:21:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62B4536073E
+	for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 21:31:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776115287; cv=none; b=gD9rOcwIpdWORIxUyPm71YirpDEWw5zPVLHrwvT4qC50UK66A3V6nBeyxR6KMjrgRuur0mCv3cgNahM4fj4sumB3+L5re1oF4zOo1kCi12F4tywPAhTz500+yGotlu10NpgHXV9aQS7iKV/cYeBG9gocOIiRO/sIxDqaBIMQf+M=
+	t=1776115872; cv=none; b=D9wUCkzOUq7LRC4oEDYsCucL3/zmx/K2yRX592c4n3xSaBcVABq0rNphCc+pVFRiL0m50Ho9wFl+Y6ymS6yurXpoQ8tcm0/iVQl6h8cMO3I9zi0jDRvU4KLuPH+hud+0io0RyiRjor2br3X37RTLiUYOFMfNAq6FNrqvHhqs7JI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776115287; c=relaxed/simple;
-	bh=UkrbpQrONEPe4in/f01/Wr6ex9QhoOm6+Imr26aWJwg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XNEh2T7GS5uErlvq+zLt51Axop7lOr/XFP6+Av8oCOPvGtlQf8482o6avm9LoWbz9vWi4ZZYZ35OH+yjspAu1y9g81nOA8jF8vCLwox3ZMGcHwp9Ki43/qCVlZYvvcSyRcxfZ1T8leHPt/KkeuJRk+1dVOCS9scxyC9i0/2cfBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=yIneI1O/; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1776115872; c=relaxed/simple;
+	bh=kvamV9f6a8KhcBfJtdmljJQT/xbjsSiOp8rZvkxmH/4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=pjOlhz7Wl6shjLlRVKwEZhjjTTrqsEIZ13bHPk9aNood2pRx05F+7XF4bwTqbix5Yw0AO2eirIvS7OYQ7Z3Wnx3mySy4RoQEURuTXMf5dSpocndnEgRMwmJqxppLJm8c1ccriQY9WO/bXfrOOG/ue27lqIpa4n+I1LNp9H81Tac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q5RWv3Pj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="yIneI1O/"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=H798k1mLXDWXnV36MebiS4K88tqZg7CpUrBU2pwLPoM=; b=yIneI1O/3kMe+QauIaQ0Z8z1AQ
-	UDkUO87y2/fxs4VONEn9WL5k1hGoq2npIqsr4+r0oQbyJgv3Tp5iDHngBZ0epQO1jOMmI2CiPW6lm
-	gIFbAn/0yTH+E1l6vA44wxH6IWdnHBuHjCRZr3qcD3HVU7JN1ptqJxQiTfwsThH4O4WM=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wCOia-00FyAD-Aq; Mon, 13 Apr 2026 23:21:16 +0200
-Date: Mon, 13 Apr 2026 23:21:16 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: f6bvp <bernard.f6bvp@gmail.com>
-Cc: linux-hams@vger.kernel.org, netdev@vger.kernel.org, edumazet@google.com,
-	pabeni@redhat.com
-Subject: Re: [PATCH net-next 1/3] rose: fix race between loopback timer and
- module removal
-Message-ID: <8e76226b-c861-45f5-9d18-8affa0c80525@lunn.ch>
-References: <5a88b747-bb06-4ebd-99de-80ceb574cf22@free.fr>
- <20260413174238.112418-1-bernard.f6bvp@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q5RWv3Pj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F348DC2BCAF;
+	Mon, 13 Apr 2026 21:31:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776115872;
+	bh=kvamV9f6a8KhcBfJtdmljJQT/xbjsSiOp8rZvkxmH/4=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=q5RWv3PjGps7XqtxQ3crppVF6L1sFQooA1GAuAGu8b0zp2ogPlH/ZWzcT8cuBbfC3
+	 zfEfujAB2rE7J5a88aML4+gt5YonP7T0QsJd6fUGcIgxyVsp1d3ukBVKBse55iPjFK
+	 a33FBFMLMEs9+DQ/9t2jh0ndbUAGSCujo7VpHA/wmcywF001PK3miFjK8XyQdKMWrp
+	 OFI8Sl+N1dMVbD4gH4Hyz9rtlyTuyp9g80nc9fQ0CYRJcI3w6TQXETkJhBm+/PC8gh
+	 INy2rJofzJZKyzxwWawkioSf7U2qUINdPp93K0m1v3VCiopB2ddK3/g3wc5OF9H2JD
+	 XZjQ68aBwyqPw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CD423809A0C;
+	Mon, 13 Apr 2026 21:30:44 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260413174238.112418-1-bernard.f6bvp@gmail.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] mlx4: correct error reporting in
+ mlx4_master_process_vhcr()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177611584330.554657.9335261228353567936.git-patchwork-notify@kernel.org>
+Date: Mon, 13 Apr 2026 21:30:43 +0000
+References: <20260409092754.508880-1-alok.a.tiwari@oracle.com>
+In-Reply-To: <20260409092754.508880-1-alok.a.tiwari@oracle.com>
+To: Alok Tiwari <alok.a.tiwari@oracle.com>
+Cc: tariqt@nvidia.com, andrew+netdev@lunn.ch, kuba@kernel.org,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ horms@kernel.org, netdev@vger.kernel.org, alok.a.tiwarilinux@gmail.com
 
-On Mon, Apr 13, 2026 at 07:42:36PM +0200, f6bvp wrote:
-> rose_loopback_clear() used timer_delete() which returns immediately
-> without waiting for any running callback to complete.  If the timer
-> fired concurrently with module removal, rose_loopback_timer() would
-> access rose_loopback_neigh after it was freed, causing a use-after-free.
+Hello:
+
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Thu,  9 Apr 2026 02:27:47 -0700 you wrote:
+> mlx4_master_process_vhcr() logs vhcr->errno on failures, but this field
+> is never populated by the PF path. As a result, all failures are reported
+> with errno 0 and err print in status case which is misleading.
 > 
-> Three changes fix the race:
+> Use the actual return value (err) instead, translate it to FW status
+> before logging, and report both values.
 > 
-> 1. Add a loopback_stopping atomic flag.  rose_loopback_timer() checks
->    this at entry and mid-loop; when set it drains the queue and bails
->    out without re-arming the timer.
-> 
-> 2. Switch rose_loopback_clear() to timer_delete_sync() so it blocks
->    until any in-flight callback has returned.
-> 
-> 3. Wrap the timer body with rose_neigh_hold()/rose_neigh_put() so the
->    loopback neighbour cannot be freed while the callback is running.
-> 
-> Also fix a pre-existing bug: dev_put(dev) was only called on the
-> failure path of rose_rx_call_request(); it is now called unconditionally
-> so the device reference is always released.
+> [...]
 
-Hi Barnard
+Here is the summary with links:
+  - [net-next] mlx4: correct error reporting in mlx4_master_process_vhcr()
+    https://git.kernel.org/netdev/net-next/c/bc174d054986
 
-Thanks for the patches.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-A few process points.
 
-We prefer lots of small patches, with good commit messages, which are
-obviously correct. When i see a list like this, it makes me think the
-patch can be split up into smaller patches.
-
-When you have a patch series, please include a patch 0/X which
-explains the big picture.
-
-net-next is current closed for the merge window. You can post patches
-as RFC, but don't post anything expecting it to be merged.
-
-There is more information here:
-
-https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
-
-	Andrew
