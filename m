@@ -1,55 +1,71 @@
-Received: from mx9.kaspersky-labs.com (mx9.kaspersky-labs.com [195.122.169.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C243F37EFFE;
-	Mon, 13 Apr 2026 08:51:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.122.169.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29C513AB29F
+	for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 08:52:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776070312; cv=none; b=raTxihV84vcR13fBK//rkvXYv6wETWzhHegxsqiHMkOBpZrM2iJgyDCyAyZVgTMtyQhVkgFeTz7maJRYDVA3lj+XseJNaqXet+8lAoO17pRmWVWXCKZvbrdn5UnAg6b9c/wxT3qYJbSX/Trt5rOGiczSvyuRESkNmCTkBvAGsiA=
+	t=1776070371; cv=none; b=UWy8qvjeW6jGEHBQGeo6zxiGfu0OfM0pMlFQFuJTJCxfiL4/CyRN1Pi0jUvWxXSB3kfuitmOKWjl/g358K/MZFztMMlwEWaRWt002C7tgVKJLnFKsX5snEf7ly/A3WMmH6R4NQQ+wSqOiTG/sLfXpIkxw5kbMjTBCBLxhP6vgxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776070312; c=relaxed/simple;
-	bh=WzzuVQiM3vQq7Pu3MA9rG3D8KIzEfGSPLkZjzsLkU5o=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=uhEva6xmPCjowX+G7xzV6WFXr3A8U1UqDy5js9emcnugVZwivGXkDYFXM2Vpa8nlABoJFSD0eurEwYnBtZaflt8AJ6ctAhLVi7LOOAgcwDZmMVhymp/8DXdQF+LZh1YNw5uw2u6hsa7PisvT+hXtG7xWzo3WKww67Orr1C9sG0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com; spf=pass smtp.mailfrom=kaspersky.com; dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b=MMhIZ8WL; arc=none smtp.client-ip=195.122.169.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaspersky.com
+	s=arc-20240116; t=1776070371; c=relaxed/simple;
+	bh=ySz5P+wlPyhaY70PHhxQKxeSIVtjr1v2Fj/L2qYf7PM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gxZmauwzi7lqEguSPTJrLfky95sJmLpmCzmL6No9ExmMF0gaWC/NSN7LPRaiziTf01eDB87bkAmqWhTz7dtE3vTASauyo5BSf4Rk7WPM+Iqy15n4JzbauLOvVKBVZLjn/pEPStmjEtvijPTWvYc3vKDHpSXIp6kdfPoAs/6MC5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MLSziWvz; arc=none smtp.client-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b="MMhIZ8WL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kaspersky.com;
-	s=mail202505; t=1776070304;
-	bh=K+knYpaQC63S6yxb+K9P2BEcXIw8nVZezjjBAu4p/T8=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	b=MMhIZ8WLlN8+jzXPL+j4hKcYUHbgJwG6ltHkOw2HP8hiMWNPacPd2PRkuv6rPO5PB
-	 mzxBWm1ba5iVWoi8IOh1sUBXv1w8EFZvJoWdc3b1lxZQEGXgQ3kgJazFpZCY+V1KLO
-	 uMUvXnVZp5ooYOZWd/ImRdvcQLqcM7v/Zsp6v1FPnPKHhyBLRoM9KyZqq33rKMnujI
-	 VToUS5hkCRjEekRRMx6Ydg6E+EEEaRhw9K9dlxiTviOsRe7ZVbuBi2ZSEmHa094Yjc
-	 Qih4CsEE1x5cVuJNbzIvOueR0RRX3AsX7rILf0qBISjcC6S1TS0edk0i+1UaEhH/Ji
-	 sseAfRI10ttew==
-Received: from relay9.kaspersky-labs.com (localhost [127.0.0.1])
-	by relay9.kaspersky-labs.com (Postfix) with ESMTP id 4C9398A0705;
-	Mon, 13 Apr 2026 11:51:44 +0300 (MSK)
-Received: from mail-hq2.kaspersky.com (unknown [91.103.66.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(Client CN "mail-hq2.kaspersky.com", Issuer "Kaspersky MailRelays CA G3" (verified OK))
-	by mailhub9.kaspersky-labs.com (Postfix) with ESMTPS id 906158A0620;
-	Mon, 13 Apr 2026 11:51:43 +0300 (MSK)
-Received: from chesnokov.avp.ru (10.16.105.7) by HQMAILSRV2.avp.ru
- (10.64.57.52) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Mon, 13 Apr
- 2026 11:51:42 +0300
-From: <Alexander.Chesnokov@kaspersky.com>
-To: <olteanv@gmail.com>
-CC: <lvc-project@linuxtesting.org>, <Oleg.Kazakov@kaspersky.com>,
-	<Pavel.Zhigulin@kaspersky.com>, Alexander Chesnokov
-	<Alexander.Chesnokov@kaspersky.com>, <stable@vger.kernel.org>, Andrew Lunn
-	<andrew@lunn.ch>, Florian Fainelli <f.fainelli@gmail.com>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	<linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
-Subject: [PATCH] net: dsa: sja1105: fix division by zero in sja1105_tas_set_runtime_params()
-Date: Mon, 13 Apr 2026 11:51:32 +0300
-Message-ID: <20260413085140.33138-1-Alexander.Chesnokov@kaspersky.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MLSziWvz"
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-358e3cc5e7eso2203846a91.0
+        for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 01:52:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776070369; x=1776675169; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ElSs4wMb13GJejBcayUV7/ht9SI5xZcrBryD/SoMfc8=;
+        b=MLSziWvzjFqeluU0g7d2UoBYYKs1EcZGtcjGFMBgDTqBxZSNbRJmn5O9ruf5lkvt7V
+         oL3g/uTxBfb+Ul9fn2i7RaTSTPL7j91Vsbrvp97aBlv+kNZhzmCAy5jTjsEjS3xK5gIm
+         yMl7m6Vf7VA8dvJnqcFmHSqwdy2Zxe0FJ3YfMy0l92rvphRY4xjs6SdvU+wJeXZvCVbd
+         wEXjo2EPAoveaOquGWsFGEpaNokwqvmsirpSkhNxfqpyNwkR9Mx7JCDDxEI2im+BWMVV
+         02cKlobeFmIchg8puCRlRrAvN4dMrwAy8pvUVoGKZGlqmVhqIf4znO9lgIwKdq9ei5gf
+         aU0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776070369; x=1776675169;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ElSs4wMb13GJejBcayUV7/ht9SI5xZcrBryD/SoMfc8=;
+        b=L1ojK1pyl5+FPVOJCNGQcrOO3ahl7Ykvzy1zi2bqbrlxLC/niWjfo58lLhFCz2DTTu
+         CIxdoNTayZydf6LuHIgWSBzKua7zL4e1ngmGjcm5wdEFKWr7sBuMKiqUFHiGXsbtZ/lB
+         czhYhK727i/1gY1F86lyPgZ17jfHkZHQoSFrrmOB8dPe/eq0X9rSfpW1k8XeTKb/dH0R
+         M30OQ6VhYzjtMyuXOcdv6bca87qZkFONR8hgpSDvVLAHcBkZgYdRR5HMgIV2jioiJDPH
+         olmBZtj1AiX20GfP7UKvuoLCF7K/0kATm4PPd1/eyGW27s/RoFOkWWgmp3oYoLZfC2uj
+         k02Q==
+X-Gm-Message-State: AOJu0YxSCkTssF/ysw+ABDR06V7o96+9BvNOoe0mGL31aNQc64X8B0uI
+	8N5SgKptaWdqyPIhDDog6ZNeUOB4hA9qZCXzoWd7FMay3ZyFqzGI05SJ+7GvWw==
+X-Gm-Gg: AeBDies7NQTARGUCNiDb1+fD+BwvFVQRCO4bwbwh2SfQghCtP2Nru2+csQOkUgCZQH9
+	nS+ZEnFXLGOe7kYEPILK9tC8ztaKGi90Qmi+ka0TF9Tn/30HlprPlOZu2uVdOagC9N6x+ZsFz1G
+	kP05d4h4VYwSLF6S0d4vBqqH/nGgX/TaaWN3oUChaCUaUlF+O+uzZjJSlZgTbG53fR+Z3cnOFf1
+	zKa8mNccVSZSut5G/RPCJhZQB18QgY/Y6bE7ETxSeN6wQ4hru7CQ32OT/IEvacSSJJHoo31KIH3
+	HLA6KSEnCz7+ExMmbu7jJJHZtNYjohyjLlHyvqaDqQaJZMayIiUgeqMKRY7YZhZb9eNhW81HcBX
+	Bdt1SDel78385nT+g7laByio6kGhz9lYGzhDmBwNNGDsNYGUTDUcFtUcS8SObPacvKXkvFWq+5k
+	7+R7X80R7Q0cM39nRWx+7xol+8Z5hLJMBC47r+I4G3XC5bythQK9LfntUU4r6WxAIj
+X-Received: by 2002:a17:90b:3e50:b0:35a:189b:43db with SMTP id 98e67ed59e1d1-35e4278b915mr12556353a91.4.1776070369278;
+        Mon, 13 Apr 2026 01:52:49 -0700 (PDT)
+Received: from gmail.com (69-172-89-235.static.imsbiz.com. [69.172.89.235])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35fb87d0361sm1120992a91.0.2026.04.13.01.52.46
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 13 Apr 2026 01:52:48 -0700 (PDT)
+From: Dudu Lu <phx0fer@gmail.com>
+To: netdev@vger.kernel.org
+Cc: stefanha@redhat.com,
+	sgarzare@redhat.com,
+	mst@redhat.com,
+	jasowang@redhat.com,
+	Dudu Lu <phx0fer@gmail.com>
+Subject: [PATCH] vsock/virtio: fix accept queue count leak on transport mismatch in recv_listen
+Date: Mon, 13 Apr 2026 16:52:43 +0800
+Message-Id: <20260413085243.73200-1-phx0fer@gmail.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-145)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,85 +73,55 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: HQMAILSRV4.avp.ru (10.64.57.54) To HQMAILSRV2.avp.ru
- (10.64.57.52)
-X-KSE-ServerInfo: HQMAILSRV2.avp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 04/13/2026 08:39:29
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 202220 [Apr 13 2026]
-X-KSE-AntiSpam-Info: Version: 6.1.1.22
-X-KSE-AntiSpam-Info: Envelope from: Alexander.Chesnokov@kaspersky.com
-X-KSE-AntiSpam-Info: LuaCore: 98 0.3.98
- ca9d2f3beca9ca2a85e178af9d8e97d5fa2c38a3
-X-KSE-AntiSpam-Info: {Tracking_cluster_exceptions}
-X-KSE-AntiSpam-Info: {Tracking_real_kaspersky_domains}
-X-KSE-AntiSpam-Info: {Tracking_black_eng_exceptions}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: chesnokov.avp.ru:7.1.1,5.0.1;127.0.0.199:7.1.2;kaspersky.com:7.1.1,5.0.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1
-X-KSE-AntiSpam-Info: {Tracking_white_helo}
-X-KSE-AntiSpam-Info: FromAlignment: s
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 04/13/2026 08:42:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 4/13/2026 6:00:00 AM
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
-X-KSMG-AntiPhishing: NotDetected
-X-KSMG-AntiSpam-Interceptor-Info: not scanned
-X-KSMG-AntiSpam-Status: not scanned, disabled by settings
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2026/04/13 06:49:00 #28394185
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 52
 
-From: Alexander Chesnokov <Alexander.Chesnokov@kaspersky.com>
+virtio_transport_recv_listen() calls sk_acceptq_added(sk) to increment
+the listener's accept queue counter before calling
+vsock_assign_transport(). When vsock_assign_transport() fails or selects
+a different transport than the one that received the packet, the error
+path returns without calling sk_acceptq_removed(sk), permanently
+incrementing sk_ack_backlog.
 
-If taprio offload is configured such that none of the ports' base_time
-is less than S64_MAX (the initial value of earliest_base_time), then
-its_cycle_time remains zero and is passed to future_base_time() as
-cycle_time, causing division by zero in div_s64().
+A malicious VM peer can exploit this by sending repeated CONNECT
+requests that trigger the transport mismatch condition. Each such
+request permanently increments sk_ack_backlog. After approximately
+backlog+1 such requests (default backlog ~128), sk_acceptq_is_full()
+returns true, causing the listener to reject ALL new connections with
+-ENOMEM. The only recovery is closing and re-creating the listener
+socket.
 
-Add a check for its_cycle_time being zero before calling
-future_base_time() and return -EINVAL.
+Compare with vmci_transport.c and hyperv_transport.c which correctly
+place sk_acceptq_added() AFTER the transport check, avoiding this
+issue entirely.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Fix by moving sk_acceptq_added(sk) to after the transport validation
+check, matching the pattern used by the other transports.
 
-Fixes: 86db36a347b4 ("net: dsa: sja1105: Implement state machine for TAS with PTP clock source")
-Cc: stable@vger.kernel.org
-
-Signed-off-by: Alexander Chesnokov <Alexander.Chesnokov@kaspersky.com>
+Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
+Signed-off-by: Dudu Lu <phx0fer@gmail.com>
 ---
- drivers/net/dsa/sja1105/sja1105_tas.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/vmw_vsock/virtio_transport_common.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/sja1105/sja1105_tas.c b/drivers/net/dsa/sja1105/sja1105_tas.c
-index e6153848a950..ce4b544a2b9c 100644
---- a/drivers/net/dsa/sja1105/sja1105_tas.c
-+++ b/drivers/net/dsa/sja1105/sja1105_tas.c
-@@ -62,6 +62,9 @@ static int sja1105_tas_set_runtime_params(struct sja1105_private *priv)
- 	if (!tas_data->enabled)
- 		return 0;
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+index 8a9fb23c6e85..29e1d9833be4 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -1,3 +1,4 @@
++	sk_acceptq_added(sk);
+ // SPDX-License-Identifier: GPL-2.0-only
+ /*
+  * common code for virtio vsock
+@@ -1560,8 +1561,9 @@ virtio_transport_recv_listen(struct sock *sk, struct sk_buff *skb,
+ 		return -ENOMEM;
+ 	}
  
-+	if (!its_cycle_time)
-+		return -EINVAL;
+-	sk_acceptq_added(sk);
+ 
 +
- 	/* Roll the earliest base time over until it is in a comparable
- 	 * time base with the latest, then compare their deltas.
- 	 * We want to enforce that all ports' base times are within
++	sk_acceptq_added(sk);
+ 	lock_sock_nested(child, SINGLE_DEPTH_NESTING);
+ 
+ 	child->sk_state = TCP_ESTABLISHED;
 -- 
-2.43.0
+2.39.3 (Apple Git-145)
 
