@@ -1,68 +1,70 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E01A3ACA65
-	for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 08:49:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D80B33815DB
+	for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 08:51:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776070174; cv=none; b=fq41uGGVyEclpEFj0DPYTPBe/CROQUgpIyw9tc6VSjUNsv5afPmzM3372KIXPqToDB80CCBOFUM0e2rurNgHQwNCMqyz0/BGf6ZOeNtDsCds1SqMZcvFalm/2C+2PQZCkLgr/OHDq6ZXUKYOmHpY3SiA6oxffGkl27b1kJu/WOE=
+	t=1776070305; cv=none; b=UIr70yNpZIqUcgxYaukX42e+wQpItPp8cP6Lc+tmwzRi3cfnUXcchsTPH27rYwTOkCrTqPxpBRbFV25KIwPY4XR1+EPOr5pixlFPAuyLoQkxAmrCuCVe9WTORZCQVbkSAKNaQYe+Lzn6EAV/SxG2bPdzbjzckLmO41cyuc5Hax0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776070174; c=relaxed/simple;
-	bh=Kv9Y+AAtzFUduQXM83v963cOrcT7AChkyXDgQBfBHvM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=pbvyvhOuDGukQji0H1d/+VhpeUfag886iofBRUP80UuvVUa12aFkNUDY99Z89qMZdSG/erdRwmNnDBBSqgk6xarUTTP6ceYSKmL0NAfqs9XnUqoUmSATee1Iw0cy8I6GHNEaLwLvXl8Bdm1zxJIizKkHXItPEjKEfO18zVvHBsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WItbWtdU; arc=none smtp.client-ip=209.85.216.47
+	s=arc-20240116; t=1776070305; c=relaxed/simple;
+	bh=oEhqvsj8LZIzS+H6HZIm5cMpADVbGj819fda8YGrF5A=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=Mt4yc7/Q8+FyS052f0Ldsj/j3HekAS007BtT86NCmk0SF1dvJv1Ttu77ln2QtIANhN1OX4iKnIvh3yaciZV4l9RRkHzByAU92QD3sK5Eta0hjBhB1qQBWn4szZAuGKMjVQd503rHWyMcJ2rGOK6BXdOk1gHBfeXHw9DFviGI9AM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=STNOPt8F; arc=none smtp.client-ip=209.85.216.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WItbWtdU"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-35d9f68d011so2615482a91.2
-        for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 01:49:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="STNOPt8F"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-35da8d037a5so1963137a91.0
+        for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 01:51:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776070173; x=1776674973; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1776070303; x=1776675103; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=B2Tnbg4hjUyqOZ6150LLcBtXjpvaynTEDyStTg+VbFM=;
-        b=WItbWtdUZ5kMj8+0UfWfdRhbxIeRraObIcTCm14xKyenFo+6ay0ShTkraT1628oaSZ
-         skngQidJ51JzEKARR18zMKJI0F80ohERhIJvfRM1hBXbZ6+fY32RSYQh/90DZsoGADDs
-         DT7BTI8+9waOj6zunnz9aOAyRdWE4hfJOd4Z+pu4hHxCuR85PTiUQEEQKZlNZuhD6Q7C
-         URlAAYu+Nm+JwTXGm3bGs6bYmq4oV6BVewHitHNJQYw4vFTTw1WAWCNiP8A/zFd07hmH
-         4Tf5w8WQKQfYTg6guyip2BMbJQ5FLzEvBWVZIFuCCTzwEIdSDG0etFfIrb5Iwbxy/zQj
-         Idbw==
+        bh=u09n0AIpPYwujUPPnPEh5iEGhVUVRAozHgm92824yT0=;
+        b=STNOPt8FOX7mKq0lvrK8NOofF12upNo82E0hi47hEuPrnPDO9BrwYcDGKMycNj+GPw
+         5LbP+sjSwgUshy2HVuxjNYUawz+Msg68ovYaMHs32/KDeEZAnWCPMLgypwpJNjNJOg20
+         44/+LWsd5Kho/baN/tWzRqxiO1gDWr9pAWRpITwFTfxHpdJ/Z6EaHlPkbwGKQBmhkNkg
+         yIQXtHfWG0V8cA78b+UPwE+AMN7MDmV0Qgxg2mpXE7eShPSbXHhgmO9FjCk0vVgCD9uF
+         LRydfH2OtX+SsY4Ng09tSdVGLbCBxmtnLGxtNUIBF5bkXP/o+OGlFyU6q7579Xvwd6F7
+         3Xtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776070173; x=1776674973;
+        d=1e100.net; s=20251104; t=1776070303; x=1776675103;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=B2Tnbg4hjUyqOZ6150LLcBtXjpvaynTEDyStTg+VbFM=;
-        b=QzOck4WdXoqHPD1TBy5q3Yg0MgChWC58VJG4AEh/JikrL91iuwxCNu4/Af9DN9eYkq
-         2OQGirCbXwguX3LwYbrKQZbZ556LuAyVtXEVt+0gCxPYHv18XC0jPrEmFwVlLnhP/Xj1
-         CP5oOM9i9bzCdKNasxzDHeFHPFR8VoKzk2T8F/nm4N9eXnhIYtrFUDxt7mfi54dIgL5x
-         MqeJbWj6jBv0SuiihxYVWWVShVEbGXrnsQOsPdCrW6igtpQOKBb1oUavQO0eTFsOjNA+
-         11xAU6pHjy48d8YTYxzzsfJoRsxf1cco4memAFPaZXOR4mxF9asZidH019/1LFDvh+vX
-         J4dQ==
-X-Gm-Message-State: AOJu0Yy1nMz/Tcu4+RZUm+x8oQv9NCwnnW9gv3ZKCZmTlkwrb2iDpqzK
-	jz3WRIMTzldRRCExRUI8O/UIg+quaImHKSbcWPrMy64przmwIxwbSNdeKxFg8A==
-X-Gm-Gg: AeBDiesSL2wc5QlJRfBSpVDM7cSay5VPf/hLlmFA8OSA9lmhboI46ffFYD/IIO35cNj
-	K0YH0yVoPT8dbCQLCwvCvseUvvj8xbgvmori7yulhINEXFi+JLyOzNZVJspWdYLsNsj7E4ZKAzF
-	KrXRoN7hz/M5CVqUljIO1ND4SkBZKtgyOLYEjR3PMCHSe1yjee9MbcLPao1Nirk6kZRQ8WPF0QC
-	dObTxVCq8T/K4gdwYfyk2pd5S5x3ryuQMLdb9WnP6Q7j17wAR/U8m/y0i4lyxfMs814vDxFYJ2N
-	R92R7Q9JK90ChEmLmcYpZFM/DpiqD05pBrpjvERLJ1shO2jwDQtK3lq2y0SUfWTiyy8aJNOUa+v
-	z5LODufoLsw1KZ1VV+2EM0pAZz3zz6rCBeiBAsV5IBYbS4wpqLl7SY9KorlG5uXCRUwcySAwCTk
-	yH19E1mz0bQz19k0X8rq9FtHQsqgqCHaH0HydbFSPs7RDStDD84/BldPc8m11A0NEW
-X-Received: by 2002:a17:90b:5185:b0:35a:18b1:c245 with SMTP id 98e67ed59e1d1-35e4250f241mr12676059a91.3.1776070172722;
-        Mon, 13 Apr 2026 01:49:32 -0700 (PDT)
+        bh=u09n0AIpPYwujUPPnPEh5iEGhVUVRAozHgm92824yT0=;
+        b=MKhIispfrYnKYdqfv29GY4sG8Is7PZr1HA9jG1ukwLo+ZmR3s+UcSt+OHCDAI4vlnl
+         0YKiggEmDLfrOY3nypTAvkNNX+SM9ZvL/WYOLbesNgbWef9C4i3k72m+lGTsPeKPhCJO
+         FsXTUHKVwyKWiOJKgX2U2P9g7zWi7sct9KkKUg+ZzeXcpi/VWbE4XQA2UsyidIp3IzJl
+         JccNdARlZ25qyuq/xzfYKYvd4HHeaGlH30wlFRxovmVrRzmorPnQ5cGfT6Z20xcssa0/
+         puE0EmLxk4fK3SISN/auT6eZ/KH/6Zst2MneTUeO64Cg6OIfEgIiWV0toCFM6BeRzpkM
+         3gQA==
+X-Gm-Message-State: AOJu0YzZwWMvCXNE6q/lYZzcWEA/ngUrQdFg8UAIGdW2LgZbhb2RAWYt
+	uij0wXFJlcQmuWVMwWcn4ZLSACoBA92AB8YycK/13Z/7Ds8MjwWez10S600nzw==
+X-Gm-Gg: AeBDiesYaF0LUtw7EgHRALbajtLLk2GPvHRBsjYsPHJ32AwDRYPZm27fikgcSn1MRaK
+	LnyABfQpZ3A6iTEeL+WobUeRlGmGkGuv601V9yqglgBUFqR9501m/ugShlJDoVMeQraclTnxthK
+	WGJE9b63f6b0ivYqurBqpaaP277A60Pj7M5VUHmZqCvz34IFCo5Fzflh0I+Lfo6Z7Pb/KKyc0XC
+	soWhPl/R9HEEfdFC04t05FLDVsd6UQbcLmP0vQOvaYWQDcxQfWjWm9W00tT4uiNeqyhZU6LD5Z4
+	uZOR2bpMtRTIklU2GmPM36E8IKqUyZSeduhOBGcwa+EsoG7Go4YXFW2Er63o11xfCgLRddKTNgv
+	inq9WS2b7tiB2dpzOxd5lc3ZQW8rKDTAXheMbP4qcYwh3rDPSXh3u0m6oMS1S/pRJ4zWF+iXwrj
+	zF07CLOsxw9TfaQXz6xxOxSG9u5+E1ZeWX3nXDfY1oQ4dQmZc7YM5I8ApJ/N4jUNhrdu9h588VF
+	ps=
+X-Received: by 2002:a17:90b:17c4:b0:35d:9c43:57fe with SMTP id 98e67ed59e1d1-35e4280cc70mr12776644a91.13.1776070303046;
+        Mon, 13 Apr 2026 01:51:43 -0700 (PDT)
 Received: from gmail.com (69-172-89-235.static.imsbiz.com. [69.172.89.235])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35e4e2dbf47sm8084388a91.0.2026.04.13.01.49.30
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b461d599a1sm18181825ad.0.2026.04.13.01.51.41
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 13 Apr 2026 01:49:32 -0700 (PDT)
+        Mon, 13 Apr 2026 01:51:42 -0700 (PDT)
 From: Dudu Lu <phx0fer@gmail.com>
 To: netdev@vger.kernel.org
-Cc: jhs@mojatatu.com,
-	jiri@resnulli.us,
+Cc: steffen.klassert@secunet.com,
+	herbert@gondor.apana.org.au,
+	davem@davemloft.net,
 	Dudu Lu <phx0fer@gmail.com>
-Subject: [PATCH] net/sched: act_mirred: fix wrong device for mac_header_xmit check in tcf_blockcast_redir
-Date: Mon, 13 Apr 2026 16:49:27 +0800
-Message-Id: <20260413084927.71353-1-phx0fer@gmail.com>
+Subject: [PATCH] xfrm: iptfs: fix deadlock in iptfs_destroy_state
+Date: Mon, 13 Apr 2026 16:51:38 +0800
+Message-Id: <20260413085138.72623-1-phx0fer@gmail.com>
 X-Mailer: git-send-email 2.39.3 (Apple Git-145)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -73,45 +75,54 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-In tcf_blockcast_redir(), when iterating block ports to redirect
-packets to multiple devices, the mac_header_xmit flag is queried
-from the wrong device. The loop sends to dev_prev but queries
-dev_is_mac_header_xmit(dev) — which is the NEXT device in the
-iteration, not the one being sent to.
+iptfs_destroy_state() acquires x->lock (spin_lock_bh) and then calls
+hrtimer_cancel(&xtfs->iptfs_timer). The timer callback
+iptfs_delay_timer() also acquires x->lock (spin_lock). If the timer
+fires on another CPU during destroy, hrtimer_cancel() waits for the
+callback to complete, but the callback is blocked trying to acquire
+the same lock — a classic ABBA deadlock.
 
-This causes tcf_mirred_to_dev() to make incorrect decisions about
-whether to push or pull the MAC header. When the block contains
-mixed device types (e.g., an ethernet veth and a tunnel device),
-intermediate devices get the wrong mac_header_xmit flag, leading to
-skb header corruption. In the worst case, skb_push_rcsum with an
-incorrect mac_len can exhaust headroom and panic.
+The same pattern exists for drop_timer: destroy holds drop_lock and
+calls hrtimer_cancel(&xtfs->drop_timer), while iptfs_drop_timer()
+also acquires drop_lock.
 
-The last device in the loop is handled correctly (line 365-366 uses
-dev_is_mac_header_xmit(dev_prev)), confirming this is a copy-paste
-oversight for the intermediate devices.
+Fix by cancelling the timers before acquiring the locks. The timer
+callbacks check for state validity, so a late cancel is safe. The
+queue splice is still done under the lock for consistency.
 
-Fix by using dev_prev instead of dev for the mac_header_xmit query,
-consistent with the device actually being sent to.
-
-Fixes: 42f39036cda8 ("net/sched: act_mirred: Allow mirred to block")
+Fixes: 4b3faf610cc6 ("xfrm: iptfs: add new iptfs xfrm mode impl")
 Signed-off-by: Dudu Lu <phx0fer@gmail.com>
 ---
- net/sched/act_mirred.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/xfrm/xfrm_iptfs.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/sched/act_mirred.c b/net/sched/act_mirred.c
-index 05e0b14b5773..2c5a7a321a94 100644
---- a/net/sched/act_mirred.c
-+++ b/net/sched/act_mirred.c
-@@ -354,7 +354,7 @@ static int tcf_blockcast_redir(struct sk_buff *skb, struct tcf_mirred *m,
- 			goto assign_prev;
+diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
+index 97bc979e55ba..11291b87158c 100644
+--- a/net/xfrm/xfrm_iptfs.c
++++ b/net/xfrm/xfrm_iptfs.c
+@@ -2708,8 +2708,10 @@ static void iptfs_destroy_state(struct xfrm_state *x)
+ 	if (!xtfs)
+ 		return;
  
- 		tcf_mirred_to_dev(skb, m, dev_prev,
--				  dev_is_mac_header_xmit(dev),
-+				  dev_is_mac_header_xmit(dev_prev),
- 				  mirred_eaction, retval);
- assign_prev:
- 		dev_prev = dev;
+-	spin_lock_bh(&xtfs->x->lock);
+ 	hrtimer_cancel(&xtfs->iptfs_timer);
++	hrtimer_cancel(&xtfs->drop_timer);
++
++	spin_lock_bh(&xtfs->x->lock);
+ 	__skb_queue_head_init(&list);
+ 	skb_queue_splice_init(&xtfs->queue, &list);
+ 	spin_unlock_bh(&xtfs->x->lock);
+@@ -2717,9 +2719,7 @@ static void iptfs_destroy_state(struct xfrm_state *x)
+ 	while ((skb = __skb_dequeue(&list)))
+ 		kfree_skb(skb);
+ 
+-	spin_lock_bh(&xtfs->drop_lock);
+-	hrtimer_cancel(&xtfs->drop_timer);
+-	spin_unlock_bh(&xtfs->drop_lock);
++	/* drop_timer already cancelled above */
+ 
+ 	if (xtfs->ra_newskb)
+ 		kfree_skb(xtfs->ra_newskb);
 -- 
 2.39.3 (Apple Git-145)
 
