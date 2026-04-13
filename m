@@ -1,113 +1,98 @@
-Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC1E631B838;
-	Mon, 13 Apr 2026 13:33:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A14C531B838;
+	Mon, 13 Apr 2026 13:33:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776087184; cv=none; b=eIHkCQmzpHLdb99CscY8ngQBAaDn7kj5YsH9qyf/UxiajapTFyWw1Q5ZCyMSMK+ZxAeHZQkmxoO1wiL+yk1AYI0ce5JncRRmxJJjupI6CFPQewfitMhRb+ZRRhqBwiYfRV0Fe8ENkQ3qeAZV/T2vveQiG6myMRdXfTbpCq7q2pk=
+	t=1776087202; cv=none; b=RXuRrlc7neYNq/spJkTQEa9VMWa4YceCa37+RzWkKTTLQEB0fRhQtcP/QjxqJ/vg/e3uNAc1rLuWnE0SlZhgJ95aUJ0HNDD2diw6PbVHDp/f3bOUxw1HcoM8ODXEZyiw2ygvDqOi5a6I7YGryOoBwXQMhgc8yN5lF9IDGJSR7HI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776087184; c=relaxed/simple;
-	bh=lEN7FS8hoH1Af1Lmfb67tYn9dMmzAUGba/gIsKWqTDU=;
+	s=arc-20240116; t=1776087202; c=relaxed/simple;
+	bh=RGoZ0kAv/HIA5tdh+NMoNMfUmNT/RqGCY7/2guxi8Jc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=huHtBL9d5MhxIIXf3T8oUkz3bNF5gAsssOV7M1s8ihFxYuI2d5UM9MQWx/9X5PFZpQMYNZu7amwtnIX8REDzVVIusF4Jhva65lpkO33RZ/bA7BTykk4ZsJ2YVrjPkfljC26tgauCeMKsVVDSbaPWoGWU2QNet3HdgLitO/M4Obs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=NGEQokCj; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=t7d7tP+O; arc=none smtp.client-ip=202.12.124.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	 Content-Type:Content-Disposition:In-Reply-To; b=Mtb8qKK402FH++Qnn1yBsq830ILOdFWkFUzwUCbHy20gXcrji8vSiBzVscS5Ne89qIWYsa8hn5z5GD5j8z6EsqXFD96Jgw0nFUrTqOKoA4+NRbRIwm3tQVZm1UzVY24jPRURIjEXyzMvEbG8leJYT2GH2b50120bHgyaOdjaDPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IHDTvyRD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="NGEQokCj";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="t7d7tP+O"
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 1F0387A0169;
-	Mon, 13 Apr 2026 09:33:00 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Mon, 13 Apr 2026 09:33:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1776087179; x=
-	1776173579; bh=gDbFF2INaQD7WCbZwTYhO/FEDwIaFi5St2SIcCMYG3s=; b=N
-	GEQokCjqk+syLwOEcHiMQ/thpaQqpi5zFBv2RMZ4MH31pTEogjFckBLXRZ8VNPlV
-	tIzTmLMDxtx5R2F8LOw02Qu9DTr+BrGz8SEQ1SfQvG/PzIo01q9RrD1Ba0XYZ7Wo
-	8sY/C9CQcSa5lqL0KZNxghHW/QBdjC7NHC7v785ooJgA8eOtpybYAzQZn6X8Tc+J
-	xGpWwtdydPw9NrTlyZb1GkkO+/dRwwwHNZwlN5fvaBkHf4shGppai2tIs5H4UDk0
-	+Q8Efew/MTsm8QLSVejLagsm09mtbLVZ1yVG95cAdXvAObK+SXXaYyM9RzuDyqnF
-	DV7WkGF4JUyxNah5tsZrA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1776087179; x=1776173579; bh=gDbFF2INaQD7WCbZwTYhO/FEDwIaFi5St2S
-	IcCMYG3s=; b=t7d7tP+ONSvRk3lDiBEAh8t75fJxgQlaIj29SrpJqpKjlQX1p1X
-	9VQoim3ryBpygmZtGeEdlqpFdwKx+VoikpEkJnP9SPQbYwqueFa4XlqyQo6Ksdjf
-	er9BLeveeljQqdRV8P5guH94lPVZRVj0k0Iv7oDDnq4wHtZimD8LQZ/UbVWtYEBr
-	4WuuVcu7iLQbi8TQ6r4nbEZWRul+LzyFqQ/Hkq8Zjoq9yiWpVWMXBxPnHuZSfkK3
-	AuvL2ExxElExhiZdHWFvyn3bTmXPsp8VRxPGINTOGRE38kAjsDjIjH+bu5fWMOrp
-	B7FAAVzYGQqjwY7Vd0XJqvSL4m2+k/qySug==
-X-ME-Sender: <xms:ivDcabMawxCAq8ryN9rlENnt3zKa2yHHfLL_Ex0aN-fiiLM2fcgXTg>
-    <xme:ivDcacfPgKk4toneojb347q7fGlg7LoZO9jlFU6oRm9r2cjjsOXUyiNrXDft2amhb
-    VqLANd9aO1x7dWqTum2N2h7ex8EHlslp1RCSHRLRpau49dkfHsT>
-X-ME-Received: <xmr:ivDcaYRM45zz9uASqFrqdFyljybxrYJ71PTZTH7xHjfruYQ_GXan4jNzZjHw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdefkeefiecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdertddttdejnecuhfhrohhmpefurggsrhhinhgr
-    ucffuhgsrhhotggruceoshgusehquhgvrghshihsnhgrihhlrdhnvghtqeenucggtffrrg
-    htthgvrhhnpeeuhffhfffgfffhfeeuiedugedtfefhkeegteehgeehieffgfeuvdeuffef
-    gfduffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    hsugesqhhuvggrshihshhnrghilhdrnhgvthdpnhgspghrtghpthhtohepuddvpdhmohgu
-    vgepshhmthhpohhuthdprhgtphhtthhopehkrghrthhikhgvhiegtdeisehgmhgrihhlrd
-    gtohhmpdhrtghpthhtohepshhtvghffhgvnhdrkhhlrghsshgvrhhtsehsvggtuhhnvght
-    rdgtohhmpdhrtghpthhtohephhgvrhgsvghrthesghhonhguohhrrdgrphgrnhgrrdhorh
-    hgrdgruhdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghp
-    thhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomhdprhgtphhtthhopehkuhgsrg
-    eskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgrsggvnhhisehrvgguhhgrthdrtgho
-    mhdprhgtphhtthhopehhohhrmhhssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlvg
-    honheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:ivDcaSd44BKCvf2yl7XZsTrT3LC7Jcv6hdY7-iMEANiBSQDcFOgFsw>
-    <xmx:ivDcaZsVaMXGEQ0OoDd0W8w5DhbzZzknrWLtmp0WK71A1HdQE7EtTA>
-    <xmx:ivDcaWJoZIM_n6NP52ylBdTFoxommVulMMm_HPnl14ywgEeo2abfKQ>
-    <xmx:ivDcaVbLVyVPVEEC-GnPisE7E7ypJKctjuUnXivfAugp8Z1yKC_Wvw>
-    <xmx:i_DcaZ5XKbkVyk1MNfJawhuBqO6bJgUFry4_wejbcmXh9rJK-MZVUTcW>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 13 Apr 2026 09:32:57 -0400 (EDT)
-Date: Mon, 13 Apr 2026 15:32:56 +0200
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Deepanshu Kartikey <kartikey406@gmail.com>
-Cc: steffen.klassert@secunet.com, herbert@gondor.apana.org.au,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, horms@kernel.org, leon@kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	syzbot+901d48e0b95aed4a2548@syzkaller.appspotmail.com
-Subject: Re: [PATCH] xfrm: fix memory leak in xfrm_add_policy()
-Message-ID: <adzwiKOPptwbNp7Y@krikkit>
-References: <20260412020809.35465-1-kartikey406@gmail.com>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IHDTvyRD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C7C8C2BCB1;
+	Mon, 13 Apr 2026 13:33:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1776087202;
+	bh=RGoZ0kAv/HIA5tdh+NMoNMfUmNT/RqGCY7/2guxi8Jc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IHDTvyRDE3WSwBk1xO9U6TZmQvfdJH63ZqQRXS5xECfan33vXrUVzEHG90u2kV7Fn
+	 UylDAJIxPnJdQlMf+2JKWCEhBBy39FUZ9K0avT2ls5CZm3Ud4F/olNHgxFeOYUSWUW
+	 4stFN1G0CrnrpDYN+hrfNNUQcQLaD/E1a+LnwX3c=
+Date: Mon, 13 Apr 2026 14:55:06 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Thorsten Leemhuis <regressions@leemhuis.info>
+Cc: "He, Guocai (CN)" <Guocai.He.CN@windriver.com>,
+	"Berg, Johannes" <johannes.berg@intel.com>,
+	Friend <netdev@vger.kernel.org>,
+	Linux kernel regressions list <regressions@lists.linux.dev>,
+	"Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: commit 0c4f1c02d27a880b cause a deadlock issue
+Message-ID: <2026041330-groggy-ruse-5e27@gregkh>
+References: <CO6PR11MB5586A4475A5EEC47FC10398BCD53A@CO6PR11MB5586.namprd11.prod.outlook.com>
+ <PH0PR11MB55934A1C9A8C35B1E751C247CD50A@PH0PR11MB5593.namprd11.prod.outlook.com>
+ <14d65103-8809-4a1b-b115-bf5f8d7110ea@leemhuis.info>
+ <CO6PR11MB5586DF3964BAB4E6131A86CDCD5EA@CO6PR11MB5586.namprd11.prod.outlook.com>
+ <2026040331-evasion-walk-f572@gregkh>
+ <DM3PPF63A6024A9C09C1B13E5DF46C0B72AA35EA@DM3PPF63A6024A9.namprd11.prod.outlook.com>
+ <2026040349-chowtime-freeload-5ca4@gregkh>
+ <DM3PPF63A6024A9E931C940F849C60FAF9EA35EA@DM3PPF63A6024A9.namprd11.prod.outlook.com>
+ <58f6e74d-480e-4e0c-aa66-68dfc1de7421@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260412020809.35465-1-kartikey406@gmail.com>
+In-Reply-To: <58f6e74d-480e-4e0c-aa66-68dfc1de7421@leemhuis.info>
 
-2026-04-12, 07:38:09 +0530, Deepanshu Kartikey wrote:
-> When xfrm_policy_insert() fails, the error path performs manual
-> cleanup by calling xfrm_dev_policy_free(), security_xfrm_policy_free()
-> and kfree() directly. This is incorrect because xfrm_policy_destroy()
-> already handles all of these, causing a memory leak detected by
-> kmemleak.
+On Mon, Apr 13, 2026 at 01:58:56PM +0200, Thorsten Leemhuis wrote:
+> On 4/3/26 15:00, Korenblit, Miriam Rachel wrote:
+> >> From: Greg KH <gregkh@linuxfoundation.org>
+> >> On Fri, Apr 03, 2026 at 12:44:48PM +0000, Korenblit, Miriam Rachel wrote:
+> >>>> -----Original Message-----
+> >>>> From: Greg KH <gregkh@linuxfoundation.org>
+> >>>> On Fri, Apr 03, 2026 at 11:08:46AM +0000, He, Guocai (CN) wrote:
+> >>>>> No, The mainline have no this issue.
+> >>>>> The changes of 0c4f1c02d27a880b is not in mainline.
+> >>>>
+> >>>> That does not make sense, that commit is really commit e1696c8bd005
+> >>>> ("wifi: cfg80211: stop NAN and P2P in cfg80211_leave") which is in
+> >>>> all of the following releases:
+> >>>> 	5.10.252 5.15.202 6.1.165 6.6.128 6.12.75 6.18.14 6.19.4 7.0-rc1
+> >>>> confused,
+> >>> The change is indeed in mainline, but the locking situation in
+> >>> mainline is totally different (that mutex does not even exist there)
+> >>> Therefore, the issue is not supposed to happen in mainline.
+> >>
+> >> Ok, does that commit now need to be reverted from some of the stable branches?
+> >> If so, which ones?
+> > 
+> > From every version which is < 6.7.
+> 
+> Greg, do you still have this in your todo mail queue somewhere? Just
+> wondering, as last weeks 6.6.y released afics lacked a revert of
+> e1696c8bd0056b ("wifi: cfg80211: stop NAN and P2P in cfg80211_leave") --
+> and I cannot spot one in your public stable queue either.
+> 
+> These are the commits that according to Miri need to be reverted if I
+> understood things right:
+> 
+> v6.6.128 (4d7a05da767e5c), v6.1.165 (0c4f1c02d27a88), v5.15.202
+> (31344ffecd7a34), v5.10.252 (d91240f24e831d)
 
-What is missing in the current code? "we have a better way to do this"
-is not a bugfix, it's a clean up. The kmemleak report says that we're
-leaking the xfrm_policy struct on this codepath, which doesn't make
-sense, that's covered by the existing kfree(xp).
+It is, yes, my queue is huge :(
 
-Also, please use "PATCH ipsec" for fixes to net/xfrm and the rest of
-the IPsec implementation.
+It's fastest if someone sends me the reverts and I can easily apply them
+that way.  Otherwise it takes me a bit to do each one manually :(
 
--- 
-Sabrina
+thanks,
+
+greg k-h
