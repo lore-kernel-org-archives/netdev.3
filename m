@@ -1,114 +1,97 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4DCC238C3B
-	for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 09:01:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA9C3B19C1;
+	Mon, 13 Apr 2026 09:01:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776070870; cv=none; b=AmI1CfoVHWkrdSnFcrbFrK3ddHatTWtIQnNSJDm9HRNU9+44c/H+HuZULLqnB8dek8LimrgLySS76dX95ybZAHbwGbbC2WFE5uiouuJtDq8L8Tv0Oi5LBzgPetePQ7cSYwlUi6H2m8/X9E8Nlp8P8mBFt4wMfCndfAMjG457Gms=
+	t=1776070883; cv=none; b=r4n1gDKNCiJFHJFwPMAQEekbZmYXnm+GBTEKdCEqy5VzqpAX+gbupFgun2YK0cUD9rT25etRzsV9YVAaUbOOIPEgvN9uKGP4NJIk4LmVSBzHg/nxlfKcDV7ypU2z+pj8YZTdLaODQB/JJtKetjrtb0wp82qxN523VvK1on/K7Rk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776070870; c=relaxed/simple;
-	bh=H3wjpyVBf0LnbYw6e4AyjTR7SDoBlaWMgxTIXA488tM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lpXWYl8yZSMxc5I/u4aJVkTyMxgyTnyyJcQdoyQfKVSaRAPkERMzyGujzoEdp9h6Q2PVHR/BPAKF6Fyq22ixwNpijUWXEXm8/I8MLWMPAbqGR9vKZb7hJw2+ks7b+d+WTxYEqEQPWbdNyQBwH9Sa8QR+NoQVGCmLhYQvph1AAiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MG6E+B00; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1776070883; c=relaxed/simple;
+	bh=eCNCtevYEOlPtIptnPSP7ZQ9h2nwal4iPtHtMoAwGU8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kXspRf07wkmG4P7MKffKr0uoeXHlBXe8LJIsk4zSw9yyw3QJ65SGcCJhhO+3LbMniBRKS4V+eMrehdU3fUroYHobNh/T+eUcVT1NU8I7C8+YcU3bTmR/D0KxzlJmptuWwP4jBtX1Gpo3I9IbXXvAEqsqiaJC5ozHdXdg6xiInOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=ngA2INhY; arc=none smtp.client-ip=115.124.30.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MG6E+B00"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2b4583f0a1aso5964815ad.3
-        for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 02:01:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776070868; x=1776675668; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=E735hNPylWe+HKqfvVBJBLQM6RKjN3VOCvnHORms67U=;
-        b=MG6E+B0074k1NQLHgZCxs10HKUQD+/0nvLgUKqMo3wkjnSR4zNU+zB+/fjclnT6IGt
-         XCd/7HfZUssC8o7j1TS3jJXYtLdCAqvIePF4CdvqKwLAW9IsgNSkHFUpb9rDWMjplB7M
-         /fDVmm4MMNepAPOQ4ntNXqa/nbN1pTTjHqfVAR2rDil6MXHqvyRBNAGgkSV6iukiGgMU
-         ECuNTBO4qD2Ezzo/THHskMkCpct9TvCrnIGJg6B8mJ+UdUJ2QJBuRBjACuFdBvvhe+Uj
-         7jcVpa6bL9WKjxgagLinDpRSLKpEq+c/G3Zw/dB6Qirjmc3oU+u4ZJVOyqFuT7yXKo4c
-         WJMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776070868; x=1776675668;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=E735hNPylWe+HKqfvVBJBLQM6RKjN3VOCvnHORms67U=;
-        b=Sf/IFjO4aaxwa8VQ/fsAN3tpQ/S8HC7MsF3fPjVl1LiYSP1GQ9NPzvzf0cj3FseaCG
-         0U/0ACvk5XkkJ16bALevE6HxV7JjggLsPhhwMTCoTclHKvEyH7PfqXEXcy0xntduL1MV
-         HjptrvU7qQxBLrBIGtmqFDGtTHVQzpylVlJa6ZhOK2rJOTVQcpVUlekZ9BBEO6kzD3Ni
-         mbnxRFbJkJchyg6otJg2o+iddY1LztmxZUQY3egElyK5bRJa8OIdiEduBRS310I6Xjic
-         oL1adPRmzsC0SGBptiveqevHvfocU+xrI/fgqYcbT79WPT16qvt6UYf3egq0YPgEHzVY
-         1Oqg==
-X-Gm-Message-State: AOJu0YwyQD3aZ4MIhQgtKeGT6s1GyR99qSOIoIr4jNg4ywWe08OTQI90
-	YQT5asBeGYSBOAmc6Awde+NSACWXx3rbI4rFpKETFdzOyxV6uXmdZG/IR/e4mA==
-X-Gm-Gg: AeBDieusa86kFEq/T0w+AU4egV7UafFhzAcxW6f5LnKpGNu5tSUiVidOj+yK2mlFSyu
-	ZdTnXu4zMqTCdhFo96Sc48NM93hSP3G7YuokoOSS2/3UhAJ26DmYXxRgMy2WcydN+dEb5uuHB4L
-	tAbjvRDMrxSp1lacWZxHlz/YRmKDGHqhbgF08jcn2bX3+2imcuI0h0LeinfRhhYvES3vIO2RgJF
-	OM4tjOmRsdjQWXq4HfOX+XnoY8PLS+ncI5/IrI+NqYtBQakBuJxD1hVQ46y6AEMqtHiLDehV3Ev
-	n3a2PLCi+mmDghtblahAEMRpdfZL6ESVK++J4CX2DpCYYkX38BQZ+QlR9uqC0n50TsxtM/qpRKl
-	joVrCe5e3/rbacHkf4zoyiiY1xxqarbYq9YNgmkpPixVUDNj+Xeb+qT8L6Sr7PggprDopOeRRZW
-	oCiXbW+7BaCMhZs1Td1Zz0QGtUUedAfZlXLk+qASse1DVccUOj9F4KkZ/XmDMLIg78
-X-Received: by 2002:a17:903:2b05:b0:2b0:7225:d2c0 with SMTP id d9443c01a7336-2b2d5a4e995mr117629545ad.30.1776070867822;
-        Mon, 13 Apr 2026 02:01:07 -0700 (PDT)
-Received: from gmail.com (69-172-89-235.static.imsbiz.com. [69.172.89.235])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2d4db008esm103055705ad.16.2026.04.13.02.01.05
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 13 Apr 2026 02:01:07 -0700 (PDT)
-From: Dudu Lu <phx0fer@gmail.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	Dudu Lu <phx0fer@gmail.com>
-Subject: [PATCH] nfc: nci: Add skb length validation in nci_core_init_rsp_packet
-Date: Mon, 13 Apr 2026 17:01:02 +0800
-Message-Id: <20260413090102.77980-1-phx0fer@gmail.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-145)
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="ngA2INhY"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1776070862; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=Vak/yNZkX1L19eiRMLdMkGIWdQKJS64W1r1PP0NrJzo=;
+	b=ngA2INhYVkGP3c2GcU5ibOYpJvvqANAvqKQoFVa+TdvngIjfN2wbxeaWKRzU1NY9jF+LFwDN/81TThQDRlAIemx+8H4FEtTsFUy/CCI24V1xE4F0YfW9ttWla8gGE76oijd7OXnpdNJowi3wc774YVr7y2ZskJZiAP3GyQ/UK7g=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R551e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=guwen@linux.alibaba.com;NM=1;PH=DS;RN=34;SR=0;TI=SMTPD_---0X0ubecx_1776070848;
+Received: from 30.221.146.26(mailfrom:guwen@linux.alibaba.com fp:SMTPD_---0X0ubecx_1776070848 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 13 Apr 2026 17:00:59 +0800
+Message-ID: <ebf19246-91af-4887-b2aa-d9007921f7b2@linux.alibaba.com>
+Date: Mon, 13 Apr 2026 17:00:48 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] MAINTAINERS: update PTP maintainer entries after
+ directory split
+To: Jakub Kicinski <kuba@kernel.org>, David Woodhouse <dwmw2@infradead.org>
+Cc: tglx@kernel.org, richardcochran@gmail.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org, jstultz@google.com,
+ anna-maria@linutronix.de, frederic@kernel.org, daniel.lezcano@kernel.org,
+ sboyd@kernel.org, vladimir.oltean@nxp.com, wei.fang@nxp.com,
+ xiaoning.wang@nxp.com, jonathan.lemon@gmail.com, vadim.fedorenko@linux.dev,
+ yangbo.lu@nxp.com, svens@linux.ibm.com, nick.shi@broadcom.com,
+ ajay.kaher@broadcom.com, alexey.makhalov@broadcom.com,
+ bcm-kernel-feedback-list@broadcom.com, linux-fpga@vger.kernel.org,
+ imx@lists.linux.dev, linux-s390@vger.kernel.org, dust.li@linux.alibaba.com,
+ xuanzhuo@linux.alibaba.com, mani@kernel.org, imran.shaik@oss.qualcomm.com,
+ taniya.das@oss.qualcomm.com
+References: <20260407104802.34429-1-guwen@linux.alibaba.com>
+ <20260407104802.34429-3-guwen@linux.alibaba.com>
+ <20260412084704.743482ad@kernel.org>
+ <4B889ED5-D1F6-401D-B753-89AE2037F316@infradead.org>
+ <20260412095301.4fe1fe65@kernel.org>
+From: Wen Gu <guwen@linux.alibaba.com>
+In-Reply-To: <20260412095301.4fe1fe65@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-nci_core_init_rsp_packet_v1() and nci_core_init_rsp_packet_v2() cast
-skb->data to response structures and dereference fields without first
-checking that skb->len is large enough. A malicious or malformed NFCC
-can send a short response packet, causing an out-of-bounds read.
 
-Add minimum length checks at the start of both functions. For v1, check
-that at least sizeof(nci_core_init_rsp_1) bytes are available before
-accessing rsp_1 fields, and validate the dynamic offset before accessing
-rsp_2. For v2, check that at least sizeof(nci_core_init_rsp_nci_ver2)
-bytes are available.
 
-Signed-off-by: Dudu Lu <phx0fer@gmail.com>
----
- net/nfc/nci/rsp.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+On 2026/4/13 00:53, Jakub Kicinski wrote:
+> On Sun, 12 Apr 2026 17:32:22 +0100 David Woodhouse wrote:
+>> On 12 April 2026 16:47:04 BST, Jakub Kicinski <kuba@kernel.org> wrote:
+>>> On Tue,  7 Apr 2026 18:48:02 +0800 Wen Gu wrote:
+>>>> +PTP EMULATED CLOCK SUPPORT
+>>>> +M:	David Woodhouse <dwmw2@infradead.org>
+>>>> +M:	Wen Gu <guwen@linux.alibaba.com>
+>>>> +M:	Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+>>>> +L:	linux-kernel@vger.kernel.org
+>>>> +S:	Maintained
+>>>> +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git timers/core
+>>>
+>>> Hi David,
+>>>
+>>> Do you have a tree to route the patches thru? Or do you really have
+>>> access to the tip tree?
+>>
+>> I do not have access to the tip tree. I can make a shared tree on
+>> git.infradead.org if the other two maintainers would like to send me
+>> a SSH pubkey and preferred username...
+> 
+> Honestly I'd love for you to be the only M here, and the other two
+> to be reviewers. Xuan Zhuo is currently at v40 trying to upstream
+> an Ethernet driver. Some growth needed there to become a subsystem
+> maintainer IMO.
 
-diff --git a/net/nfc/nci/rsp.c b/net/nfc/nci/rsp.c
-index 9eeb862825c5..01972c806b45 100644
---- a/net/nfc/nci/rsp.c
-+++ b/net/nfc/nci/rsp.c
-@@ -1,3 +1,14 @@
-+	if (skb->len < sizeof(*rsp)) {
-+		pr_err("short NCI_CORE_INIT_RSP v2 packet\n");
-+		return NCI_STATUS_SYNTAX_ERROR;
-+	}
-+	if (skb->len < 6 + rsp_1->num_supported_rf_interfaces +
-+			sizeof(*rsp_2)) {
-+		pr_err("short NCI_CORE_INIT_RSP v1 packet\n");
-+		return NCI_STATUS_SYNTAX_ERROR;
-+	}
-+	if (skb->len < sizeof(*rsp_1))
-+		return NCI_STATUS_SYNTAX_ERROR;
- // SPDX-License-Identifier: GPL-2.0-only
- /*
-  *  The NFC Controller Interface is the communication protocol between an
--- 
-2.39.3 (Apple Git-145)
+Hi Jakub, David,
 
+That works for us. We can act as reviewers.
+
+If David sets up a new tree, I will update the MAINTAINERS entry
+accordingly in v3.
+
+Thanks.
