@@ -1,139 +1,136 @@
-Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43E3B3603F7
-	for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 18:24:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B426936165C;
+	Mon, 13 Apr 2026 18:29:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776104690; cv=none; b=VVnqLB1W2SO6xKxjknWzxtTe9cVSM6TyGKG1Twwp8T/27sOjcZDyracXy6si90SBeeoklAxQFvCNnckGbBEVHdQTvwkUHvFya4V9sHC5QBtV4XDQfYG9l7fsoHn1zPHZlIzfEFnz8/5oUtLa6Vz+NViMAbSUwGbVxEAAZaAhUiY=
+	t=1776104945; cv=none; b=F8cuRtwYcpWlU5//r06NcUUmrj5zNlAeaRzKJYmdMDoxL3AqxXX5Bmn5wdw1UVejW7hgc2GTWChW/s/nbG2wDEfp82XV5S0Ec1ebY0Xwc/74q3ypTCoWK83qShXJ3tbQnp3gi5eJtcS4mEK4wTxfshV+muvmsZq86MqjzNiaJ+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776104690; c=relaxed/simple;
-	bh=WX+GbDCQnemIbX75B+YiYyahJQmX7jQXWaQHRJtE22g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JbW/snanW6Qkw9S9qvdB0UwSnpCtpFyYCBxxXJC34Ow6KCdPXwSaeQa0HkVxzeo74ARcOntCDSediylDKKkEUhOGl3aU/58h/5xoWma2oKysCArDU2wHboF9LFTdFT99zh9/1mwIzilh2Bj+lGqPqSPH1vOnTHj1lJWstDmu+AE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oerwcTa9; arc=none smtp.client-ip=209.85.219.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1776104945; c=relaxed/simple;
+	bh=qyLxzf8Ns2Ft5golu4A1kMhZlxoBRSzZkWlrr38IOZg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=aCmTgnWCdVIJ6DBEHifG1OHL9QfnX8194s5WlYQM949gqg/7VHhkqeltffURxSAPBK737cXtTwnpMp1rkcHNxE2ss5mSNAXcXVwQE/Mx6ar7EErCqdT4FX7sffXAf92G2gtAj/GxhHFLZK+m313K6wQiDhrwgdTF8lSX0JM5b1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=cZBSYs58; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oerwcTa9"
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-8a032383008so52919886d6.1
-        for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 11:24:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776104688; x=1776709488; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=pwuEhADy0804om/OdHEIRZ/J1D9Tqo21sy7eI3dqC5M=;
-        b=oerwcTa9ieG1OFUB7FyjG6puCmp+rUhPWSY2P9RJIR80DQy4olguP0QSFpzGjw3yEW
-         4s3l9w6/psQwdzXLeIZNv8On2mSK89g03NK5htrp7tqYPfVYEb6ntBGAsHFJyaJOrCXI
-         fSxwSqosGzTs+qbDrTb5MFqgYPNmCdIAz4lB1Va6Jzzrju7g/t5Hu5fCcNkNMGwNApa2
-         LsvviMh0nUduvQakttLcIviqYmBjkXwuJMnC+s57pr0qE6y1itXEuk7TPs55iFAyOQqT
-         ivKjBXK6eD3KO1pK/tUKiddiTgXsplHTX0iEU4OCDRM6011FkiSLw6kzts3d6XmYwKA8
-         hXEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776104688; x=1776709488;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pwuEhADy0804om/OdHEIRZ/J1D9Tqo21sy7eI3dqC5M=;
-        b=C83BAixh5l+2KcJ8g4JdfVQEpdXnqvQs6YnPYg8Kj9CQOKg7vZI2P2Opfr5VHQ2md9
-         fC9ox1AT6sshyUJ0jVqqy/voNrQXxPGNsGn8eURV77hDcmi4uGSC+tu5x1D/VVxTfKPD
-         LKhXL4nmeS6l5IFtretMby5J6//fUQvLuPSF/680Pf9N5ogDOVU0jxuypGJ7un0lBj79
-         5+HRx8suxmyd8tcZIxupZZpfNQYMew2fOR6mCqdWNkmk1QsPdteCjcvQ7pJV8qXW8f0X
-         z0YZdf64mO8qbApiz+Lc96M7P4ahJqJrG6yzO1cP1OqjidHwdVUKUHs+ExD8HNAQ7yD/
-         958Q==
-X-Forwarded-Encrypted: i=1; AFNElJ8yQTnEvWDYVedFok8NzUDz9H6YB9wfJ+U+O/iBgwAVxxaRG1dTCqGj76buppixj24msUrvZ4U=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7BB+yg6cXrNttIPNDGVsWyDQqbPYaDCp7Q/T0TPl8hjddiJlI
-	7CWeplMCPTI8UWSV9JXcxjoJUKuF9EZHsqwpGHGSQcHg6AN3qgXKkuEu
-X-Gm-Gg: AeBDievnyJAvT7fHgGjtQHMRgotXUgjXtXzgXzMaB3rSOmYi8sB+sQxniaGTLFZBays
-	HQ/epDquDB8uI/1LZ0ZxOZu889x13iyTZSeRfef0c3hyXYkleOfh92oYhnoSMrSiq8lt0r0eNTc
-	6S8qavAOaqegjCe2pydRWl5Q3cG/k4HdxJBvAE9pgpaZLNwkroNzwQEzE9QIn37ZfOhVg6fwl1a
-	uZ0A4Va7H1GMu7A+EISv78zkCtzgkE1vmZKBhYw5HZg0EFRmKZPps+mkWzwzgTbPM6UWBstDryl
-	OdoitJKWgsmKaluYT14rHZwHpTpNMPVLVBvNuEK0kzngLAHZ9eN5IAWmOx1dVa9A7xAO9fE7ytD
-	dwl0mzdZtdyiYi67TJTr5aSIL3pJm/vk7oFZ8WteU3QsOnMxpfKRcgxFdcgLms4/A4GjclG5HKy
-	gAb/tvPomyZDVEZyQmrV/eY5Ao883kqPn7aMA+3GC1V4h7ED84+OK0WZLsRoqsF8UcnfiHteEYp
-	z9QCMT2nZSpp8l0aEje
-X-Received: by 2002:a05:6214:4c8f:b0:89c:6451:67ac with SMTP id 6a1803df08f44-8ac8617fc04mr206413246d6.12.1776104687285;
-        Mon, 13 Apr 2026 11:24:47 -0700 (PDT)
-Received: from server0 (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ac84a47a0dsm103210326d6.22.2026.04.13.11.24.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Apr 2026 11:24:46 -0700 (PDT)
-From: Michael Bommarito <michael.bommarito@gmail.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: "Tony Nguyen" <anthony.l.nguyen@intel.com>,
-	"Przemek Kitszel" <przemyslaw.kitszel@intel.com>,
-	"Andrew Lunn" <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	"Eric Dumazet" <edumazet@google.com>,
-	"Jakub Kicinski" <kuba@kernel.org>,
-	"Paolo Abeni" <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Michael Bommarito <michael.bommarito@gmail.com>
-Subject: [PATCH net] ixgbevf: fix use-after-free in VEPA multicast source pruning
-Date: Mon, 13 Apr 2026 14:24:27 -0400
-Message-ID: <20260413182427.298513-1-michael.bommarito@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="cZBSYs58"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 29DF34E42977;
+	Mon, 13 Apr 2026 18:29:02 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id E99BB5FFB9;
+	Mon, 13 Apr 2026 18:29:01 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DE28C104504C2;
+	Mon, 13 Apr 2026 20:28:55 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1776104939; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=J6w/vm8RhE1QibuAbeZrZpu+mbFZf/j6v7Old22bTNI=;
+	b=cZBSYs587EC2pPG0T0zWnt6Rm3YWgLoLQHo/fERZmvyCcXnMbHG6UHv4UW2EhRe6AcwwK4
+	rLJqLN0QcpxJ+eU2wnigOQQIs5tEOULYPsd1eLcu1LilosOrM1UCnTdfl+hYwGPMfNEMV/
+	/5Ph0br4h41uQYEnh8/FBrJsTvpWOM11sOt/QM2ZTP7geak6StbyhdakN5Z/m5BxbpCjin
+	o8OFL6dggWmiW+3fP5D/aD3dYrcXLqeqZdzncuDbmqmu9QPwy6ZHA14bp/bp5laVHfSfBf
+	7xNDlnmSlRRrNNIRvXgvQWAu27n6dhrzs7GZ2IUSyjAbZY1p1dja0IfA16reIg==
+From: =?utf-8?q?Alexis_Lothor=C3=A9_=28eBPF_Foundation=29?= <alexis.lothore@bootlin.com>
+Date: Mon, 13 Apr 2026 20:28:41 +0200
+Subject: [PATCH RFC bpf-next 1/8] kasan: expose generic kasan helpers
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+Message-Id: <20260413-kasan-v1-1-1a5831230821@bootlin.com>
+References: <20260413-kasan-v1-0-1a5831230821@bootlin.com>
+In-Reply-To: <20260413-kasan-v1-0-1a5831230821@bootlin.com>
+To: Alexei Starovoitov <ast@kernel.org>, 
+ Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+ Martin KaFai Lau <martin.lau@linux.dev>, 
+ Eduard Zingerman <eddyz87@gmail.com>, 
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>, 
+ Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
+ John Fastabend <john.fastabend@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, 
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+ Shuah Khan <shuah@kernel.org>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
+ Alexander Potapenko <glider@google.com>, 
+ Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, 
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: ebpf@linuxfoundation.org, 
+ Bastien Curutchet <bastien.curutchet@bootlin.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Xu Kuohai <xukuohai@huawei.com>, bpf@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, kasan-dev@googlegroups.com, 
+ linux-mm@kvack.org, 
+ =?utf-8?q?Alexis_Lothor=C3=A9_=28eBPF_Foundation=29?= <alexis.lothore@bootlin.com>
+X-Mailer: b4 0.15.1
+X-Last-TLS-Session-Version: TLSv1.3
 
-ixgbevf_clean_rx_irq() prunes frames whose source MAC matches the VF's
-own address (VEPA multicast workaround) by freeing the skb and
-continuing to the next descriptor:
+In order to prepare KASAN helpers to be called from the eBPF subsystem
+(to add KASAN instrumentation at runtime when JITing eBPF programs),
+expose the __asan_{load,store}X functions in linux/kasan.h
 
-    dev_kfree_skb_irq(skb);
-    continue;
-
-The skb pointer is declared outside the while loop and persists across
-iterations.  Because the continue skips the "skb = NULL" reset at the
-bottom of the loop, the next iteration enters the "else if (skb)" path
-and calls ixgbevf_add_rx_frag() on the freed skb, dereferencing
-skb_shinfo(skb)->nr_frags — a use-after-free in NAPI softirq context.
-
-The sibling driver iavf already handles this correctly by nulling the
-pointer before continuing.  Apply the same pattern here.
-
-I do not have ixgbevf hardware; the bug was found by static analysis
-(scan_drop_continue_loops.py + semgrep drop_continue_in_loop, multi-tool
-corroboration with the highest score in the scan).  The UAF was confirmed
-under KASAN by loading a test module that reproduces the exact code
-pattern (alloc skb, kfree_skb, then read skb_shinfo(skb)->nr_frags):
-
-  BUG: KASAN: slab-use-after-free in ixgbevf_uaf_test_init+0x100/0x1000
-  Read of size 8 at addr 000000006163ae78 by task insmod/30
-  freed 208-byte region [000000006163adc0, 000000006163ae90)
-
-QEMU emulates igb (82576) but not ixgbe (82599), and the igbvf VF
-driver does not include the VEPA source pruning path, so a full
-end-to-end reproduction with emulated hardware was not possible.
-
-Fixes: bad17234ba70 ("ixgbevf: Change receive model to use double buffered page based receives")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-6
-Assisted-by: Codex:gpt-5-4
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Alexis Lothoré (eBPF Foundation) <alexis.lothore@bootlin.com>
 ---
- drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/kasan.h | 13 +++++++++++++
+ mm/kasan/kasan.h      | 10 ----------
+ 2 files changed, 13 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c b/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
-index 42f89a179a3f..4ba3be961ab6 100644
---- a/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
-+++ b/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
-@@ -1221,6 +1221,7 @@ static int ixgbevf_clean_rx_irq(struct ixgbevf_q_vector *q_vector,
- 		    ether_addr_equal(rx_ring->netdev->dev_addr,
- 				     eth_hdr(skb)->h_source)) {
- 			dev_kfree_skb_irq(skb);
-+			skb = NULL;
- 			continue;
- 		}
+diff --git a/include/linux/kasan.h b/include/linux/kasan.h
+index 338a1921a50a..6f580d4a39e4 100644
+--- a/include/linux/kasan.h
++++ b/include/linux/kasan.h
+@@ -710,4 +710,17 @@ void kasan_non_canonical_hook(unsigned long addr);
+ static inline void kasan_non_canonical_hook(unsigned long addr) { }
+ #endif /* CONFIG_KASAN_GENERIC || CONFIG_KASAN_SW_TAGS */
  
++#ifdef CONFIG_KASAN_GENERIC
++void __asan_load1(void *p);
++void __asan_store1(void *p);
++void __asan_load2(void *p);
++void __asan_store2(void *p);
++void __asan_load4(void *p);
++void __asan_store4(void *p);
++void __asan_load8(void *p);
++void __asan_store8(void *p);
++void __asan_load16(void *p);
++void __asan_store16(void *p);
++#endif /* CONFIG_KASAN_GENERIC */
++
+ #endif /* LINUX_KASAN_H */
+diff --git a/mm/kasan/kasan.h b/mm/kasan/kasan.h
+index fc9169a54766..3bfce8eb3135 100644
+--- a/mm/kasan/kasan.h
++++ b/mm/kasan/kasan.h
+@@ -594,16 +594,6 @@ void __asan_handle_no_return(void);
+ void __asan_alloca_poison(void *, ssize_t size);
+ void __asan_allocas_unpoison(void *stack_top, ssize_t stack_bottom);
+ 
+-void __asan_load1(void *);
+-void __asan_store1(void *);
+-void __asan_load2(void *);
+-void __asan_store2(void *);
+-void __asan_load4(void *);
+-void __asan_store4(void *);
+-void __asan_load8(void *);
+-void __asan_store8(void *);
+-void __asan_load16(void *);
+-void __asan_store16(void *);
+ void __asan_loadN(void *, ssize_t size);
+ void __asan_storeN(void *, ssize_t size);
+ 
+
 -- 
 2.53.0
 
