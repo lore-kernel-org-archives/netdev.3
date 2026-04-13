@@ -1,60 +1,42 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95E1231D371
-	for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 20:53:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABF7D358375;
+	Mon, 13 Apr 2026 21:21:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776113616; cv=none; b=FKCeXI6mfEqQ3tde4ZnEWxHTyKl/1iMyfVxAPkS4otv6vsF5K7ccWSn2vw0g1VS97Uio0ySCptfjaBX0wyLlS8stUN/WBGQzHNmvfKZwucuE8/qglDLhdAATjGR1b4C8mvn4R9Ywt5eoCmOJwakkmGRAgh97Is0P2uIiE3C9tuc=
+	t=1776115287; cv=none; b=gD9rOcwIpdWORIxUyPm71YirpDEWw5zPVLHrwvT4qC50UK66A3V6nBeyxR6KMjrgRuur0mCv3cgNahM4fj4sumB3+L5re1oF4zOo1kCi12F4tywPAhTz500+yGotlu10NpgHXV9aQS7iKV/cYeBG9gocOIiRO/sIxDqaBIMQf+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776113616; c=relaxed/simple;
-	bh=mrnp5U+qkgS6IeTytFeIArR9p9jIXNB8qozKiNEM8ao=;
+	s=arc-20240116; t=1776115287; c=relaxed/simple;
+	bh=UkrbpQrONEPe4in/f01/Wr6ex9QhoOm6+Imr26aWJwg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r+xmFfMcNeXdJxMeFk0Z2pVLG09OpGw9s9hgm4TDMwQU0szHchlQIXmgByAq8abcRAwzvfe+4iiC3eGee2E7nol3HfRVSF7/am/+p4C1MlV+oR+gOkkoAGtPB/WrIZjF66m3AydkVEa4WxlFUVC0KA2HHtXlA0ZEHfPEhmT2rI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=vLWsNw4y; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	 Content-Type:Content-Disposition:In-Reply-To; b=XNEh2T7GS5uErlvq+zLt51Axop7lOr/XFP6+Av8oCOPvGtlQf8482o6avm9LoWbz9vWi4ZZYZ35OH+yjspAu1y9g81nOA8jF8vCLwox3ZMGcHwp9Ki43/qCVlZYvvcSyRcxfZ1T8leHPt/KkeuJRk+1dVOCS9scxyC9i0/2cfBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=yIneI1O/; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="vLWsNw4y"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=febWsFLvFO+nAC4i5QRuslLmXizl8UntFXY3PRXCccU=; b=vLWsNw4yrSnVL1MyPNtoLBeJFR
-	dNR1laIW1YaEn2WBnyNmf050CEl866x6FEXs64r4omokFKkPqFSLhS9XApeQqB+CXZSCs4QMbVOyv
-	6YDi5enkOTlVv4lXcbKJlJv3DaVER7PRFLmXYwm/LDi/APsSJESZPwiwNEHo45HKMVwqjFuFTaoWw
-	oN6ujWepqt3v+uu+iWXv9BdWI6SdCqdnRx8oSll0jQC9XYbjIY8QQLnik+1jh0+PLJdzQWCHafwV/
-	x6YRZ1oiQiNIx9YPyrQ5k8bCpUvzgnE15mXP/mGL5+WvmrvMJxGzXGlCIkuLpylrIFB0XlDVyXoT4
-	kJmu9mFg==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:47442)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1wCOHe-000000000Hi-3rdM;
-	Mon, 13 Apr 2026 21:53:26 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1wCOHc-000000000XQ-0jdz;
-	Mon, 13 Apr 2026 21:53:24 +0100
-Date: Mon, 13 Apr 2026 21:53:23 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Andrew Lunn <andrew@lunn.ch>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>, Sam Edwards <cfsworks@gmail.com>
-Subject: Re: [PATCH net-next] net: stmmac: enable RPS and RBU interrupts
-Message-ID: <ad1XwxZ5WxbG1IL0@shell.armlinux.org.uk>
-References: <E1wBBaR-0000000GZHR-1dbM@rmk-PC.armlinux.org.uk>
- <20260413110222.49fc3759@kernel.org>
- <ad06yiZZbLC9k3jY@shell.armlinux.org.uk>
- <20260413135018.59fbd3a1@kernel.org>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="yIneI1O/"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=H798k1mLXDWXnV36MebiS4K88tqZg7CpUrBU2pwLPoM=; b=yIneI1O/3kMe+QauIaQ0Z8z1AQ
+	UDkUO87y2/fxs4VONEn9WL5k1hGoq2npIqsr4+r0oQbyJgv3Tp5iDHngBZ0epQO1jOMmI2CiPW6lm
+	gIFbAn/0yTH+E1l6vA44wxH6IWdnHBuHjCRZr3qcD3HVU7JN1ptqJxQiTfwsThH4O4WM=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wCOia-00FyAD-Aq; Mon, 13 Apr 2026 23:21:16 +0200
+Date: Mon, 13 Apr 2026 23:21:16 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: f6bvp <bernard.f6bvp@gmail.com>
+Cc: linux-hams@vger.kernel.org, netdev@vger.kernel.org, edumazet@google.com,
+	pabeni@redhat.com
+Subject: Re: [PATCH net-next 1/3] rose: fix race between loopback timer and
+ module removal
+Message-ID: <8e76226b-c861-45f5-9d18-8affa0c80525@lunn.ch>
+References: <5a88b747-bb06-4ebd-99de-80ceb574cf22@free.fr>
+ <20260413174238.112418-1-bernard.f6bvp@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,35 +45,48 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260413135018.59fbd3a1@kernel.org>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+In-Reply-To: <20260413174238.112418-1-bernard.f6bvp@gmail.com>
 
-On Mon, Apr 13, 2026 at 01:50:18PM -0700, Jakub Kicinski wrote:
-> On Mon, 13 Apr 2026 19:49:46 +0100 Russell King (Oracle) wrote:
-> > > Firing interrupts when Rx fill ring runs dry (which IIUC this patches
-> > > dies?) is not a good idea.  
-> > 
-> > Well, I'm thinking that at least on some platforms, such as the Jetson
-> > Xavier NX, unless a different solution can be found, we need the RBU
-> > interrupt to fire off a reset of the stmmac IP when this happens to
-> > reduce the PAUSE frame flood on the network.
-> > 
-> > If we can't do that, then I think stmmac on these platforms needs to be
-> > marked with CONFIG_BROKEN because right now there doesn't seem to be any
-> > other viable solution.
-> > 
-> > My intention with this patch is merely to start collecting the already
-> > existing statistics so other users can start seeing whether they are
-> > hitting the same or similar problem. If we're not prepared to do that,
-> > then we should delete the useless statistics from ethtool -S, but I
-> > suspect they're now part of the UAPI, even though without this patch
-> > they will remain stedfastly stuck at zero.
+On Mon, Apr 13, 2026 at 07:42:36PM +0200, f6bvp wrote:
+> rose_loopback_clear() used timer_delete() which returns immediately
+> without waiting for any running callback to complete.  If the timer
+> fired concurrently with module removal, rose_loopback_timer() would
+> access rose_loopback_neigh after it was freed, causing a use-after-free.
 > 
-> Understood, thanks for the extra context. And the statistic we are
-> talking about is rx_buf_unav_irq ?
+> Three changes fix the race:
+> 
+> 1. Add a loopback_stopping atomic flag.  rose_loopback_timer() checks
+>    this at entry and mid-loop; when set it drains the queue and bails
+>    out without re-arming the timer.
+> 
+> 2. Switch rose_loopback_clear() to timer_delete_sync() so it blocks
+>    until any in-flight callback has returned.
+> 
+> 3. Wrap the timer body with rose_neigh_hold()/rose_neigh_put() so the
+>    loopback neighbour cannot be freed while the callback is running.
+> 
+> Also fix a pre-existing bug: dev_put(dev) was only called on the
+> failure path of rose_rx_call_request(); it is now called unconditionally
+> so the device reference is always released.
 
-Yes, correct.
+Hi Barnard
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Thanks for the patches.
+
+A few process points.
+
+We prefer lots of small patches, with good commit messages, which are
+obviously correct. When i see a list like this, it makes me think the
+patch can be split up into smaller patches.
+
+When you have a patch series, please include a patch 0/X which
+explains the big picture.
+
+net-next is current closed for the merge window. You can post patches
+as RFC, but don't post anything expecting it to be merged.
+
+There is more information here:
+
+https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
+
+	Andrew
