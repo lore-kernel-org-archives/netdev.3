@@ -1,116 +1,110 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD7F93C3C12
-	for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 12:11:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [52.229.168.213])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FBE82248A0
+	for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 12:30:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.229.168.213
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776082321; cv=none; b=ad21Z9isjkR/4gHTM8Sl7+1Tkf9foQdWA3sAC2aoBOsffGXUUOwnxUACUSVX0oK/f/jvZHouupTa3TZc+z9LqABTGAEwgCp6yZsjX2ZDqcXrCSReVp1Vv2VuXSO/1JHT519EHWX6wnzgcj4jYp7LciT+tBW67bzedBGlJswjLgM=
+	t=1776083416; cv=none; b=p5HJCSoJXrWCFAMcuqnOUbgEUzZsIb/TZPxlDQzMiSNldRc4skxLNA+noHOQeHd68rNQS3zUcT6tcTDIccN7NxKmChiIZzY0oZBx4CiSPNzu8yM+kKMbzgi1VMR+C6/whz+ezKmibBYauYfjWS2dkJDedqv24GYFFDe7w+2BUcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776082321; c=relaxed/simple;
-	bh=BOMkJNZe7ziU198TlUPDD8T7GrSLx2ZHdq3BCysj9to=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rJwVxpCCcwIPL1zjlFBW3T/AkwxAK35suTMicHivXvua8ln+hLWK9J7y2YPEv4pmzUQXhsqJTGpqpE+CEYx7AnLx5QOFNp55uQIm7x+sb29+et485KfESFSVvdW95d4+W8gEuAO9oUDIlOelS/YGhVcZlLEYe6xzvWHxeExqnrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=KoMOad7U; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="KoMOad7U"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-488a8ca4aadso50936385e9.3
-        for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 05:11:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1776082317; x=1776687117; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1d0Zke0oSY75WUereA/hlkl+rDQeWUvM6YTyJyDqC4o=;
-        b=KoMOad7UUU4ksFlEhIMiH26sEjv2oNaAiS3Fo49rFc3jENaHgF+5eg3m2ZHm8Cl+T2
-         jYO7IkzAEGLU3Xn3y5tSeqPLLbYfxVETDfBKtaaqOhC/RAe2HP9l8SEqRGMxGAE7ozZp
-         PrB9drUJZChI6M+0rW5sOMWMwypjTp0v+NUQ+IZR60R95uVwyGxqDZ1JNCU99XDAC3VD
-         bPftYsPjwb5jiCAtK/ivefPQFN1AO7twNB+PKvCkw71BkNXMeUY64jOqJeTvTzQJ+B5U
-         IeRtl6T41OY+GSJYvcxSMBm4u74gaXj+jrKPvWjHnEhQkvWO3fI4By1TlguIa+x6jRm2
-         FJlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776082317; x=1776687117;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1d0Zke0oSY75WUereA/hlkl+rDQeWUvM6YTyJyDqC4o=;
-        b=S8zuHAhp/z7kBXg4KhqRnR8isy1CipLRvTlTeAHAcdBqMwJ5h2pK+E0z881MEfbsCI
-         VbLL9Y3eGp51YDxeO4QmtNy7cr7TcvmYLQ9PwgEBNbWpE5PX/3wngdjCLluFZlzXkKrv
-         btI0PfDE6psMTL92a4o5c+mKQaB88fOcmd4kSvY3i2S89MzdlS+BR4Gsm5aYHC4KS5a5
-         /UXdcjiHV31eYDHmUfTtgwI1c+dKa0NxwwCPZlotwqQSmAnb3EqdQKG3ypWqSBhLIDKi
-         CzNLF3CamcaZgwCxD9RilpgVymbqRo1AyD8bBrkb3pCOAdn/uNE5TBjojP9BLRewq0Js
-         4p+Q==
-X-Forwarded-Encrypted: i=1; AFNElJ/JLIq/pDekLdW5AekpsgU6IgkmivSUVfXS/aasfaPupgMVv34c7WPYZHhSfZWhMNggU1kZqs4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzL5nZrpXHpeZaESCvdRdJPTHO7bSGkFuLP8iv9T272s3W98JPk
-	DGPfqlWHoeI78cCyg0l9M+YOetmTk0es6KlzTDr1IjvclHVy5KEaGLJjccD+bwAedEw=
-X-Gm-Gg: AeBDietU1T8lWHsw7agzS6/pjP5ZzLRD2jK/+147DfMn+0IhvkZB2juy9hB+jdcfkLB
-	Zb6+plBtbPX3RchDGHIxEcdgHCP3zLfo3J71EmH7YpgXFvCPYARwdH04RUFnQCAYDL26X/O/5ar
-	VN1KjwCO5fKSnsj8/Iv7ojXxAR7lyUeWv8Q/jbZhTdK1bUwUpx9MD8OiL3R7kX5U29FjIc4HHlp
-	DYNtPwE7/d6yGKQVRZFxYXHH17+Vvk7F9PfwOzkmwitdwBFCGvoYSYd9PcIrVJUkbncV1nc69Yj
-	+g2QK8OWeq1txy26I1gr8cwvVoMx4dPDvJ7Y8DpvrfsY/2lr7Z3PlY/Fx0XAcaGogCm99NSd7zP
-	W2rDk4L1rkin/fZAPuPa2tuh/tFcPQo6w6OuceznM4CIz3I/jdljoJ5vzMnL136Fm72HTgNQOCK
-	P47mblXLY9/G+a3l0N4ScO+fJZoJ5uX1hN+iTphF5Zlzgz2Xq6qXXjZt0Zc/lujxv3cA==
-X-Received: by 2002:a05:600d:1c:b0:487:2439:b7be with SMTP id 5b1f17b1804b1-488d67bf6ebmr141736955e9.6.1776082317203;
-        Mon, 13 Apr 2026 05:11:57 -0700 (PDT)
-Received: from ?IPV6:2001:a61:1301:4901:4040:13bc:108d:8118? ([2001:a61:1301:4901:4040:13bc:108d:8118])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488d531f229sm386966275e9.3.2026.04.13.05.11.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 Apr 2026 05:11:56 -0700 (PDT)
-Message-ID: <198c1240-80a6-456c-8b12-25158c90c965@suse.com>
-Date: Mon, 13 Apr 2026 14:11:50 +0200
+	s=arc-20240116; t=1776083416; c=relaxed/simple;
+	bh=sYQ3S67awRQU/gUkuqGYiHbD3EU0qlqgekRw/OTYGmw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IRCQm3ET57FJYCNQPNwkXPP+0tiBw9gQ3wymSOlC1ayaOdv5luw87aQwB3NPk5zzvob8YSwjn9/huXiztn9L36aQbztYdmX0EMKUpFSsZsTq5YTQzuKYO7l9P0bMNj52p/C0VIR9xmUL1k94S7j5vConWzG7SJjjf9uhtl+H8t8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn; spf=pass smtp.mailfrom=lzu.edu.cn; arc=none smtp.client-ip=52.229.168.213
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lzu.edu.cn
+Received: from enjou-Legion-Y7000P-2019.coin-barley.ts.net (unknown [172.23.56.36])
+	by app1 (Coremail) with SMTP id ygmowABHwAC+4dxpxSvAAA--.46461S2;
+	Mon, 13 Apr 2026 20:29:51 +0800 (CST)
+From: Ren Wei <n05ec@lzu.edu.cn>
+To: netdev@vger.kernel.org
+Cc: kuniyu@google.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	rao.shoaib@oracle.com,
+	yifanwucs@gmail.com,
+	tomapufckgml@gmail.com,
+	yuantan098@gmail.com,
+	bird@lzu.edu.cn,
+	enjou1224z@gmail.com,
+	wangjiexun2025@gmail.com,
+	n05ec@lzu.edu.cn
+Subject: [PATCH net v2 1/1] af_unix: Reject SIOCATMARK on non-stream sockets
+Date: Mon, 13 Apr 2026 20:29:15 +0800
+Message-ID: <20260413122916.1479959-1-n05ec@lzu.edu.cn>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: usb: cdc_ncm: reject negative chained NDP
- offsets
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Oliver Neukum <oneukum@suse.com>
-Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Oliver Neukum <oliver@neukum.org>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- stable <stable@kernel.org>
-References: <2026041137-comfy-eaten-a1ed@gregkh>
- <2a6963c8-4a87-4fed-b875-d46f3ce53e42@suse.com>
- <2026041325-giggly-wrecking-e6ef@gregkh>
-Content-Language: en-US
-From: Oliver Neukum <oneukum@suse.com>
-In-Reply-To: <2026041325-giggly-wrecking-e6ef@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:ygmowABHwAC+4dxpxSvAAA--.46461S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7AF1fAw18Gw43Gw45ZFyxZrb_yoW8Ar45pa
+	yak3WUtrZ0yr4Iv395tryFkr45JFs7JFWxK39rGa4rZF4qgw43Jas0gF1DZr1kJFWUCFWr
+	ArnF9Fs0vw4DZrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBj1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
+	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
+	IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2
+	jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52
+	x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWU
+	GwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI4
+	8JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kK
+	e7AKxVWUtVW8ZwCY02Avz4vE-syl42xK82IYc2Ij64vIr41l42xK82IY6x8ErcxFaVAv8V
+	W8GwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480
+	Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7
+	IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k2
+	6cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxV
+	AFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUd-B_UUUUU=
+X-CM-SenderInfo: zqqvvuo6o23hxhgxhubq/1tbiAQwQCWncrd8H+wAAsv
 
-On 13.04.26 12:43, Greg Kroah-Hartman wrote:
-> On Mon, Apr 13, 2026 at 10:36:19AM +0200, Oliver Neukum wrote:
->>
->>
->> On 11.04.26 12:53, Greg Kroah-Hartman wrote:
->>> cdc_ncm_rx_fixup() reads dwNextNdpIndex from each NDP32 to chain to the
->>> next one.  The 32-bit value from the device is stored into the signed
->>> int ndpoffset so that means values with the high bit set become
->>
->> Well, then isn't the problem rather that you should not store an
->> unsigned value in a signed variable?
-> 
-> No.  well, yes.  but no.
-> 
-> cdc_ncm_rx_verify_nth16() returns an int, and is negative if something
-> went wrong, so we need it that way, and then we need to check it, like
-> we properly do at the top of the loop, it's just that at the bottom of
-> the loop we also need to do the same exact thing.
+From: Jiexun Wang <wangjiexun2025@gmail.com>
 
-Doesn't that suggest that cdc_ncm_rx_verify_nth16() is the problem?
-To be precise, the way it indicates errors?
-As this is an offset into a buffer and the header must be at the start
-of the buffer, isn't 0 the natural indication of an error?
+SIOCATMARK reports whether the receive queue is at the urgent mark for
+MSG_OOB.
 
-	Regards
-		Oliver
-  
+In AF_UNIX, MSG_OOB is supported only for SOCK_STREAM sockets.
+SOCK_DGRAM and SOCK_SEQPACKET reject MSG_OOB in sendmsg() and recvmsg(),
+so they should not support SIOCATMARK either.
+
+Return -EOPNOTSUPP for non-stream sockets before checking the receive
+queue.
+
+Fixes: 314001f0bf92 ("af_unix: Add OOB support")
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Ren Wei <enjou1224z@gmail.com>
+Signed-off-by: Jiexun Wang <wangjiexun2025@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+---
+Changes in v2:
+- Rework the fix based on maintainer feedback.
+- Drop the receive-queue locking approach and reject SIOCATMARK on
+  non-stream sockets instead, since it is only meaningful for MSG_OOB.
+- V1 link: https://lore.kernel.org/netdev/f6cbbc8da90e95584847b5ceb60aae830d1631c2.1775731983.git.wangjiexun2025@gmail.com/
+
+ net/unix/af_unix.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index b23c33df8b46..09d43b4813b1 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -3300,6 +3300,9 @@ static int unix_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
+ 			struct sk_buff *skb;
+ 			int answ = 0;
+ 
++			if (sk->sk_type != SOCK_STREAM)
++				return -EOPNOTSUPP;
++
+ 			mutex_lock(&u->iolock);
+ 
+ 			skb = skb_peek(&sk->sk_receive_queue);
+-- 
+2.34.1
+
