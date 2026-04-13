@@ -1,78 +1,138 @@
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28ADF3DEFE1;
-	Mon, 13 Apr 2026 14:32:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B55563DEAC5
+	for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 14:34:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776090768; cv=none; b=SM+5MxPPBGB7wpKRPf66oMJWNyXgJA/UwK/9hSLwXWbz5TJEzGEAPzGCn63o6kO2DuXYBKk+Oh1Ni9evaMsMZnXq9iqPyJmprbUrkICgGiYjS8U12uA4XhKnZLV6qf9Y2Cdh29wVj7qCEryHzlzGsiXtEovWxuPtsAn1meyU4Jw=
+	t=1776090881; cv=none; b=DoD2mBm80a8kx0+M6ZancqPUzC6WNecX1DPSimrlqUKn7WXBn+06+U5vFhA0iCyoch7GMcMAtA9oVmpjkhT/rEzT+gBeEWU1RWzgW3CcM/urJescU1iMDle4XV6qGsxuNbup0iC2/MPVEVFYCkAwag6ONvYX6JyOH7ks7rRUjt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776090768; c=relaxed/simple;
-	bh=P+vBb7u7tqmeMcpkdLnZeJuPiZ3o1V7thVIcm9v5nqk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dWKQa7zthaLAwWfDRmJSUKDjzJt4WrHWNInqQU95nezgsj4wOlzQFtNKVI0EDnNPNK6teg2/4BZtt5EKO4pj+gPAmQ1u0HeEXfxPvGY0MJpk+ltEwq3FNk3xr/PRUQ05TtfpRX6BfdebUCGZ3BnKiTvlLgbx7SSS6zvBa4X79Pw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
-Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
-	id 5AB086066A; Mon, 13 Apr 2026 16:23:36 +0200 (CEST)
-Date: Mon, 13 Apr 2026 16:23:31 +0200
-From: Florian Westphal <fw@strlen.de>
-To: Xin Long <lucien.xin@gmail.com>
-Cc: network dev <netdev@vger.kernel.org>, linux-sctp@vger.kernel.org,
-	davem@davemloft.net, kuba@kernel.org,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Yi Chen <yiche@redhat.com>
-Subject: Re: [PATCH net 1/2] netfilter: skip recording stale or retransmitted
- INIT
-Message-ID: <adz8Y6c-59hlc4xw@strlen.de>
-References: <cover.1775847557.git.lucien.xin@gmail.com>
- <6e09f9a8d1f13f3ce691c696d3dd7b2a2e6c6184.1775847557.git.lucien.xin@gmail.com>
- <adqsEmki7ppz9T1g@strlen.de>
- <CADvbK_f1Cvqx0_-J1jGaT865eWiW2ZHsJT8EkN6kr21j88Y9kQ@mail.gmail.com>
+	s=arc-20240116; t=1776090881; c=relaxed/simple;
+	bh=x1ifNN1rcjcfnsQCTrP/kpfGUY+peyLroDHGkro91+M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PpwA4Gx8UxBUYIPPsR5dvqfWE05E2p6Pqt3JbOAZEdzF/KF/PNbV0C9Fi9QmxPOnkdOQ+gYEZJh1XcDb8OYMfM85If2u6Y35m2lc63CWKlr1zAW0tZj6v/zJrCpXnRcGD9CbQdnW0Xtn7OC2WrfXhgnc40lipLINjL2rE/sl01E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HBHxkyDe; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=mU890H6B; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HBHxkyDe";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="mU890H6B"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1776090878;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vgI4zgdDV6NmMPo5aAmiFT+6Ssq8rA+mnVDfSWSrmkU=;
+	b=HBHxkyDeZi0c1dpma6W1FIZ/ePLSre0zDaAVjHdVZT3F59bDVSiVNd4O5lxJlcGAR7r853
+	W0I9jQ3OdGEKiA7m+asalvTgqxpmEUuOMcZNW+zH8G5Gf1Q2bMjTHTRyjUUgIKTOjHO5BE
+	ROZgjjtyxRwmxW9v558claFbSiWWQL4=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-605-KuZn1V3JNji6hjefI_jVnw-1; Mon, 13 Apr 2026 10:34:35 -0400
+X-MC-Unique: KuZn1V3JNji6hjefI_jVnw-1
+X-Mimecast-MFC-AGG-ID: KuZn1V3JNji6hjefI_jVnw_1776090874
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-43d00dd913cso4871439f8f.1
+        for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 07:34:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1776090874; x=1776695674; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vgI4zgdDV6NmMPo5aAmiFT+6Ssq8rA+mnVDfSWSrmkU=;
+        b=mU890H6Bv43ALbYBcZlWJUDdlsBBb5zgCyY2S8h+oPIkN6SaQYZGxp3tNXFELfjOw8
+         i9gnW7WJuOm8+4fpZlJXmPodjNyGb586AV0fX/8wLUUGG4XYHHhikgeXRuJutRXyDJoB
+         YxgDnfnbHB78+eDjZbx1XJ56lPjF3X7RI79MPLGnzk62IvRnKrK9gGY51fUc4AKscfmV
+         HjxaikWKdSwj4jzgq3zFe4SXC6bc9bIgQ/1HYA8kYUvpFxq1GyFp2oPq7fflY9lDFIWU
+         EhGLB1oXg0P+uuMCMZ9GP2ElkovlD7GTiG3vvgD5M064NBIQ+vq/Cc+Ii+Cm6Q2O5HP2
+         Erow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776090874; x=1776695674;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vgI4zgdDV6NmMPo5aAmiFT+6Ssq8rA+mnVDfSWSrmkU=;
+        b=G5Mt9T8ns/FwKxGNPmGXnxFrf45Db65posr6pvisKdOiNFRYydXvOeYRdGzClFKTJv
+         FUhxxddz5YcyyyFOnA/GnwtsE4obKPhUYedlNbtCwtVCWqYdP3Ml5HQmny/x+RuWcyvd
+         FJbKyP8g47PeI/bZ99VXdVG3n4M1Kx8qgK+MBwl9zyt02Sc1YF8jzV1RlcL/BEMblIPb
+         f1AyFJ5wrnkE2UHK/f28GcG1ieY5dAw+cBCdL/LdawBDxdSapyx1E2QG3nO3ficx2ENx
+         C0xke6yltrjjLWCCPoGiaYFAbQJndab1lGJMWhkkpvISzJVJrWuTqY3OlZkX6SoT/VIb
+         pkxQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+EDE/KbZ0SrQCg8FeRQczaA5JDxTwvuJkWYwFE807MAK9F/HdzPU9ZHa8iVRawDjoltyJiUCc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxqmenielEAa0MwmS+RBjNlH6Wio3x41dJ6QR0T2EtpwOSosiNa
+	pw513WXTfIiNh4PfmZZcz4wzXFVYPWP4IbatMnjLZGbpoNHEcRwPt7cR+TRBhEa+oGXTFLwJI7S
+	DRPoqR/70HZJeZwU8r8babk3jtPe+8QgcUdgy0iRX3b9tB20f1sNAflb4cRgxn7CtaA==
+X-Gm-Gg: AeBDiesVO4yhB50cBcHkJrSYsat/wDecN2fNxs1iWyfheeu4CjWetOnriCjnjA8mgPm
+	tv8PRHgQqzSkXN4VgiwVODEYjmonNBymhonI5ndkIgLyQy+FkaRxa5NkM4gubhyxfOronNdLWyW
+	zcEmQNVCDotpp9fI8u/kDifzGENTcf6nMdkyEVRlorhn5cn9I9rZMRlhVsb+WBaHoW7feS8S+YW
+	rHYbmH1mfZJDZXsOsJwybA1nrn8WemqvSGLR1Dgh6yPOkJ5gX7HxeDdErmRAD7ovE9H7g0ALyt1
+	adgMK7QSItERqJ4Rj+zuYV79M1hUkj8yLhptjUp/zqzStyd13KVjYFp9G6yhBMTuIRaGkm1/lgE
+	3Bd8z1PPu3DzoXYJOnEAe4xjYBR64dDKytc1EkDscKlevmI08qVSY5/wr
+X-Received: by 2002:a05:6000:24c2:b0:43c:f90b:5668 with SMTP id ffacd0b85a97d-43d642a7a6dmr19361064f8f.23.1776090874200;
+        Mon, 13 Apr 2026 07:34:34 -0700 (PDT)
+X-Received: by 2002:a05:6000:24c2:b0:43c:f90b:5668 with SMTP id ffacd0b85a97d-43d642a7a6dmr19361017f8f.23.1776090873609;
+        Mon, 13 Apr 2026 07:34:33 -0700 (PDT)
+Received: from [192.168.88.32] ([216.128.11.125])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d7cf533b7sm4165626f8f.18.2026.04.13.07.34.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 13 Apr 2026 07:34:33 -0700 (PDT)
+Message-ID: <8cba369d-0e63-45cf-9727-d505828afcab@redhat.com>
+Date: Mon, 13 Apr 2026 16:34:31 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [GIT PULL] bluetooth-next 2026-04-13
+To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: davem@davemloft.net, kuba@kernel.org, linux-bluetooth@vger.kernel.org,
+ netdev@vger.kernel.org
+References: <20260413132247.320961-1-luiz.dentz@gmail.com>
+ <580f7972-56d5-4968-9dcc-32adc31e0673@redhat.com>
+ <CABBYNZK5mMbuzvjAquy49vSk0pLRnk_s8oqEut1se4DToURn9A@mail.gmail.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <CABBYNZK5mMbuzvjAquy49vSk0pLRnk_s8oqEut1se4DToURn9A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CADvbK_f1Cvqx0_-J1jGaT865eWiW2ZHsJT8EkN6kr21j88Y9kQ@mail.gmail.com>
 
-Xin Long <lucien.xin@gmail.com> wrote:
-> On Sat, Apr 11, 2026 at 4:16 PM Florian Westphal <fw@strlen.de> wrote:
-> > Xin Long <lucien.xin@gmail.com> wrote:
-> >
-> > > diff --git a/net/netfilter/nf_conntrack_proto_sctp.c b/net/netfilter/nf_conntrack_proto_sctp.c
-> > > index 645d2c43ebf7..7e10fa65cbdd 100644
-> > > --- a/net/netfilter/nf_conntrack_proto_sctp.c
-> > > +++ b/net/netfilter/nf_conntrack_proto_sctp.c
-> > > @@ -466,9 +466,13 @@ int nf_conntrack_sctp_packet(struct nf_conn *ct,
-> > >                       if (!ih)
-> > >                               goto out_unlock;
-> > >
-> > > -                     if (ct->proto.sctp.init[dir] && ct->proto.sctp.init[!dir])
-> > > -                             ct->proto.sctp.init[!dir] = 0;
-> > > -                     ct->proto.sctp.init[dir] = 1;
-> > > +                     /* Do not record INIT matching peer vtag (stale or retransmitted INIT). */
-> > > +                     if (old_state == SCTP_CONNTRACK_NONE ||
-> > > +                         ct->proto.sctp.vtag[!dir] != ih->init_tag) {
-> >
-> > Should    ct->proto.sctp.vtag[!dir] == ih->init_tag case also
-> > set ignore = true?
+On 4/13/26 4:11 PM, Luiz Augusto von Dentz wrote:
+> On Mon, Apr 13, 2026 at 9:41 AM Paolo Abeni <pabeni@redhat.com> wrote:
+>> On 4/13/26 3:22 PM, Luiz Augusto von Dentz wrote:
+>>> The following changes since commit 42f9b4c6ef19e71d2c7d9bfd3c5037d4fe434ad7:
+>>>
+>>>   tools: ynl: tests: fix leading space on Makefile target (2026-04-09 20:41:40 -0700)
+>>>
+>>> are available in the Git repository at:
+>>>
+>>>   git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth-next.git tags/for-net-next-2026-04-13
+>>>
+>>> for you to fetch changes up to c347ca17d62a32c25564fee0ca3a2a7bc2d5fd6f:
+>>>
+>>>   Bluetooth: hci_qca: Fix missing wakeup during SSR memdump handling (2026-04-13 09:19:42 -0400)
+>>>
+>>> ----------------------------------------------------------------
+>>> bluetooth-next pull request for net-next:
+>>
+>> Net-next is closed for the merge window. I guess Jakub could still
+>> consider merging this, but unless you want it very, very badly, I hope
+>> it can just be postponed, as the PW queue is already long.
 > 
-> It should for a stale INIT, but not for a retransmitted one. At this point,
-> though, we don't reliably distinguish between the two.
+> This update includes quite a few new hardware supports. This is a
+> resend because the last one was dropped due to an invalid 'Fixes' tag.
 > 
-> Also, as this patch only aims to prevent updating ct->proto.sctp.init[]
-> (introduced in 8e56b063c865) in this scenario, it’s safer to avoid
-> changing other behavior.
+>  Btw, I don't know why the entire PR needs to be dropped if only a few
+> items have invalid tags? Can't we just dropped those?
 
-Alright. I'm fine with this going in via net directly:
+That's the problem with PR: AFAIK we can just pull whatever the
+submitter published. To do any edit, including dropping patches, we must
+not do a git pull, and instead applying the patches individually
+(meaning they will get the net maintainer SoB, too, which in turn will
+make little sense).
 
-Acked-by: Florian Westphal <fw@strlen.de>
+/P
 
