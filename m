@@ -1,105 +1,88 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 280353AE6E6
-	for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 08:58:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DC6C3AB29F;
+	Mon, 13 Apr 2026 09:01:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776070739; cv=none; b=d1xkd8msycFasHTIpZoqb1JfS7X1nW56xQR4oh+ar8K7NNqJlb8oZwzLEUu6AeKrvfpx6kBDwi4UPjr8mGYX9mGjaQVB6ZMDQEIYIzShsMl230oGVZtSgg252Q49ijK+rQlfDRaZ5c2y9/wrfRbSWclrc3AyAImRx2yI3gDcCng=
+	t=1776070869; cv=none; b=sz8or/idaWNXS0ZdAI5vWWdJvimix8yif1vkPpD7F4ERQkjLY70T7L7FNW2KsTYCQIRJ7W0DrWqK1caziNzZvnfU3ZFU3XK0I1tkcXed+E076WiOp8fHPFGYOSdtPXrANXRSucDHV1fntpNaZ6t2yAYJxQYjCTupPDZLv5bZT2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776070739; c=relaxed/simple;
-	bh=VEt8Tir2cp1JOzuV9/MbAWkqPlobq1TC6ZmpPL9KeQw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nfyzjq7/JWlDP9qu8HhbzSbTkeKkvtwirG/hOTZ7O9XxaGsM+Dzh5+odKlf2ZL32ndZqsVo9DUa++nhwNOc56dwCoFHtbed2wfiMPe075BVKE3kcsQfHvVVULONTqhnWrkwEg0RwnHBKSzt36PgCUz/BYJGIWiIoClT3XjUq2cY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qyl6q5fC; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1776070869; c=relaxed/simple;
+	bh=NmWTXdFZa2PXaXxihxiBwP6/fcqhMPMR8Odd5UUj3qI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pogm6Dfb4hUByDnqPXpZyHDFnFKFNSi6VrhjpQH4WlgmrMIYXn5GzHNty6rZNKOHDT8LBJgXxDBoz9+wMojxmdok9I81MwuPv2nz5QmkBVJtmrU0/8QcC2MEITRQaqBA2LjfdECNZjtleXn2UiDBu9yegOwk/YnV+/KkNFvalUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bfyW73rE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qyl6q5fC"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2b2494440f3so13840465ad.2
-        for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 01:58:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776070737; x=1776675537; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=nKznZJFJgXR/beDDRo8kmPw1zF8lRhV4z+PdjdUnuao=;
-        b=Qyl6q5fCDfLvPV7ItNIZ/BerA9WtgXx04jQXIX7FA3SrRjzheKmY00P69m+iBf2zEO
-         +X1mYk/ze9AK4eOmiYGvpYc68MCWatdxbreKicQfRhTPXDYjohuquPE7o+ZalEjlcahj
-         LDgtrQBfOlw30lgStDUB1GA2dsFODp5n5GP/5foGLG3Ac6OJSDSE6azPJEX8e+8LX3eU
-         JHZIhgnsGhG8kFddwT0SHs7PMB/wh5xWppDqxGWZBV0JS/V+aW4Opn30xV48vo4cTEtA
-         NCEMTdJCvMx/41dNiMVy+TCtXjAW1CrlHpLYKhYKFJau+HnNlV8ndqckbQx4pPRz9Jcm
-         Wc8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776070737; x=1776675537;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nKznZJFJgXR/beDDRo8kmPw1zF8lRhV4z+PdjdUnuao=;
-        b=LIAFuOem8yXSkTgkztQ9mLU3wMdDzp6UQj2EOFOg7gKlkwVeX3zcR1709jofuNRNj4
-         TKeCXr4CcyhCnabGgITEbcQyVW2ua1aca79zLIa1RyzCpkhEWSTfJ0MS5r63wSrNdtfD
-         f4esrmWk5zBkal4S3iTUWeuwZrMwEBIm4dELoYoMhtgk948xEHMLHidHcCu41t4dyKdS
-         NkNe+sMR3U0mNG+2h3684OJZmcM/MDuoH6IQNL2YBO7ZiKsMw/VCBE13i0k6JxQPGQKQ
-         qpdV3tWVTsJDUvGDSdvTmhWXimjYL+gDKd15SYVN4S8YCeMrBPh7z5yc3KVXdO2PVhL6
-         XlNw==
-X-Gm-Message-State: AOJu0YwkOn1VChZecRwcCTKfN0/QMGUngZbbADXackUDIzdluRSH6h1j
-	9D0KG1uk1OYJNWV2qXmUUSWBbGp9oNtzjM752YifauM907zCUF2mXrFNlQuGfg==
-X-Gm-Gg: AeBDieuB+NMLvC/qO/bFYUFLEkWGvxEPjKX359pHb5eXCyXkIn2fH3tvwAzRRjBp2Dq
-	uSdbBTDM2CGMcIItPI6h2NVVB6tRpbZgGEFDwaDGx/3cMFdAG80cN04/QQJzHbTLGnab3VDM4lP
-	GOrxreK3G+aUKtVN9R+dno/gK1aJ/afR3sA0Cy97PnvJ62kN+kgPTxM10YOu908NQvWzSHV8Ora
-	l5T8vIhC3BHKtJFJnLLiyZ1aI92jpdognSelKbnl5ynMq6c48hX4CHuAVuQc6h4uwgXmeddzoNb
-	gJgj4ZXFaHn+CQKpHIEjDeTnArz2MFsEziVBM2jLK/sTx6zzA+7tePhtcn+enjLoIJFYvBLS+sL
-	EYFQLr+kA8VjEQCclBreuxwQPi10geJ9mHCKE/sa4rJ++FnWOB5x8ku+5+/jAVa1arwfrXgSn/m
-	7WOb4dD97NHuS41vaZ36z3ZhxGs7o3GiEyazw20Fi+I+1bCIYhxCeeqxtv/bPj2g93
-X-Received: by 2002:a17:903:3c44:b0:2b2:ec46:dfed with SMTP id d9443c01a7336-2b2ec46e10fmr52014855ad.31.1776070737248;
-        Mon, 13 Apr 2026 01:58:57 -0700 (PDT)
-Received: from gmail.com (69-172-89-235.static.imsbiz.com. [69.172.89.235])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2d4dabc08sm112126695ad.5.2026.04.13.01.58.55
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 13 Apr 2026 01:58:56 -0700 (PDT)
-From: Dudu Lu <phx0fer@gmail.com>
-To: netdev@vger.kernel.org
-Cc: jmaloy@redhat.com,
-	Dudu Lu <phx0fer@gmail.com>
-Subject: [PATCH] tipc: Ensure NUL-termination of remote algorithm name
-Date: Mon, 13 Apr 2026 16:58:52 +0800
-Message-Id: <20260413085852.76786-1-phx0fer@gmail.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-145)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bfyW73rE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57513C116C6;
+	Mon, 13 Apr 2026 09:00:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776070868;
+	bh=NmWTXdFZa2PXaXxihxiBwP6/fcqhMPMR8Odd5UUj3qI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=bfyW73rEx6WunGZVvr1kdbuQhIZW0auQdr185ZFOdqezYfVI8EqIl4RV+jZMHErnf
+	 HHqywW91vp7CVLzZ8tl9LuEsJL2nKmijW0OQ98WRnNBsFsW1LYo4ZFpZLLA1RAeRqi
+	 fLF9xsDW37jcs+y2EAiBEgZnfjWYwDz/hvRsB2Ow2oVioAmoaeXLVkxbmWKx3ILDyy
+	 OFKArZB3La00uc7rhVgunFkOn3bZFgPE1fuUov3rdMuNp+wqIMsO2YWxMIl1vusQFL
+	 bBAU79v+8ddAl2Ytb2JX6K5ckn/0H32ur+wYUjKyGCCdFu1O+cEC54vJcUyB4ZJ+rF
+	 y0fFboG7dTA8g==
+Message-ID: <67c579d4-4e7e-4b3a-a2b9-7ba669664bdf@kernel.org>
+Date: Mon, 13 Apr 2026 11:00:57 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [patch 14/38] slub: Use prandom instead of get_cycles()
+Content-Language: en-US
+To: Thomas Gleixner <tglx@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+Cc: linux-mm@kvack.org, Arnd Bergmann <arnd@arndb.de>, x86@kernel.org,
+ Lu Baolu <baolu.lu@linux.intel.com>, iommu@lists.linux.dev,
+ Michael Grzeschik <m.grzeschik@pengutronix.de>, netdev@vger.kernel.org,
+ linux-wireless@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>,
+ linux-crypto@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>,
+ Bernie Thompson <bernie@plugable.com>, linux-fbdev@vger.kernel.org,
+ Theodore Tso <tytso@mit.edu>, linux-ext4@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Uladzislau Rezki <urezki@gmail.com>, Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
+ Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+ Thomas Sailer <t.sailer@alumni.ethz.ch>, linux-hams@vger.kernel.org,
+ "Jason A. Donenfeld" <Jason@zx2c4.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ linux-alpha@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
+ linux-arm-kernel@lists.infradead.org,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Huacai Chen <chenhuacai@kernel.org>, loongarch@lists.linux.dev,
+ Geert Uytterhoeven <geert@linux-m68k.org>, linux-m68k@lists.linux-m68k.org,
+ Dinh Nguyen <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>,
+ linux-openrisc@vger.kernel.org, Helge Deller <deller@gmx.de>,
+ linux-parisc@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
+ linuxppc-dev@lists.ozlabs.org, Paul Walmsley <pjw@kernel.org>,
+ linux-riscv@lists.infradead.org, Heiko Carstens <hca@linux.ibm.com>,
+ linux-s390@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+ sparclinux@vger.kernel.org, "Harry Yoo (Oracle)" <harry@kernel.org>,
+ Hao Li <hao.li@linux.dev>
+References: <20260410120044.031381086@kernel.org>
+ <20260410120318.525653921@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <20260410120318.525653921@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-In tipc_crypto_key_rcv(), the algorithm name is copied from the incoming
-message using memcpy with a fixed size of TIPC_AEAD_ALG_NAME (32 bytes).
-If the remote peer sends a name that fills all 32 bytes without a NUL
-terminator, the alg_name field will not be NUL-terminated. This string
-is later passed to crypto_alloc_aead() which expects a NUL-terminated
-string, potentially causing an out-of-bounds read when the crypto
-subsystem searches for the algorithm by name.
+On 4/10/26 14:19, Thomas Gleixner wrote:
+> The decision whether to scan remote nodes is based on a 'random' number
+> retrieved via get_cycles(). get_cycles() is about to be removed.
+> 
+> There is already prandom state in the code, so use that instead.
+> 
+> Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+> Cc: Vlastimil Babka <vbabka@kernel.org>
+> Cc: linux-mm@kvack.org
 
-Fix by explicitly NUL-terminating the last byte of alg_name after the
-memcpy.
+LGTM.
 
-Fixes: 1ef6f7c9390f ("tipc: add automatic session key exchange")
-Signed-off-by: Dudu Lu <phx0fer@gmail.com>
----
- net/tipc/crypto.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/net/tipc/crypto.c b/net/tipc/crypto.c
-index d3046a39ff72..ac072356bf0c 100644
---- a/net/tipc/crypto.c
-+++ b/net/tipc/crypto.c
-@@ -2325,6 +2325,7 @@ static bool tipc_crypto_key_rcv(struct tipc_crypto *rx, struct tipc_msg *hdr)
- 	/* Copy key from msg data */
- 	skey->keylen = keylen;
- 	memcpy(skey->alg_name, data, TIPC_AEAD_ALG_NAME);
-+	skey->alg_name[TIPC_AEAD_ALG_NAME - 1] = '\0';
- 	memcpy(skey->key, data + TIPC_AEAD_ALG_NAME + sizeof(__be32),
- 	       skey->keylen);
- 
--- 
-2.39.3 (Apple Git-145)
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
