@@ -1,93 +1,143 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from flow-b2-smtp.messagingengine.com (flow-b2-smtp.messagingengine.com [202.12.124.137])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079CD3E0222;
-	Mon, 13 Apr 2026 14:46:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88BED3BF688;
+	Mon, 13 Apr 2026 14:47:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.137
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776091600; cv=none; b=oI3Fx3CgnnAipF5XTt7BupM/9EyrP0SpbOF/JUHDCucq79RO2mf0dG4/ywQDOoFK5alMUbVyliEpkUUgdnJmq5Li9hB+6MD9vRACiynF/uYkPa16oF9rmZy5LzeqAApNywuoxJ1PerLlXdqEjuNd3WJipTruwqDj0dMPG19C48U=
+	t=1776091635; cv=none; b=IV5gPyOMinZ2CXSgjRAdLPQRuWeCXwJdmRd6kTY4KzvqS30jFtXifbTRo4PsTK0mWVE/W9HiTVUvTYjxuEbK5JKEB4AEluUiW9SPQX5ac9ufoQNKpz28r1FU8ztem4wgqiuoUTDEn4xyTVcCE3SKtxXGdOQhuOTIke45AiorL/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776091600; c=relaxed/simple;
-	bh=bhACCNWwYGbbsioUZ9lwrnNsFznu/fKcqluHk8miblo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AUSH1vLUhznlBS0iReXz2dTqBFjdOXPiw8tLmrJg1XEH0cow18umecsy5ImyO0P9B8jN84dnXl3DykDdYbZfplrCKs2ZJ1XCYHx9dUYsp8hbYLnAUiWR62bcBskHiyONg5+7fhoqpf+FHv2cetVXHVtwQWo8gNT8kpyLEr8wLRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IQycd2Y3; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776091635; c=relaxed/simple;
+	bh=ccx1+jkkLB7Tf4UGJS5J97TEDRY8WsVnf6JE5Wy3IZo=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=dzVw22tDkQboZ3gEAfdstCdCEEhIZbEisdw6bbGJHiGngy8cC4Igbu5kb0yJJ+1NBn7HQypJzyV9JF54uE870tywC8K9LJmTq1hriulGcxemLtCU1NrHuzpG9rgLceyHGV2yMHlrk+DaAM3bhYYwwk9efYPBUF577G7uoc5TPYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=LmjozJUZ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=P0Pt1FmZ; arc=none smtp.client-ip=202.12.124.137
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IQycd2Y3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E351C2BCAF;
-	Mon, 13 Apr 2026 14:46:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776091599;
-	bh=bhACCNWwYGbbsioUZ9lwrnNsFznu/fKcqluHk8miblo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=IQycd2Y3MOzE++hOSt40w85Jk5ozySGjdZeYUcuPg2afcoGAftYeQ3QsqHKr7jZi+
-	 V6l/EOLDK/DIUXhTtAGniEckjBQUOASnfRHTCuoKHJ0V9LsfzWNhGly5ax+yfM6St4
-	 7EY/Xz8XOd5ABoNq+GY5/1U0RpvA3ELODwj0Wj+b94O27e2yFRHaOVFnfEP0KCHaYn
-	 zpUiehOGzBHFUXvkHKcIDluzDJMUtnMyCc2+mQZOTcOkvGSPn/L5EqiFZ0Bd4R1cfq
-	 QwMhhAbuF5hhwrID9wfWs8YvCk1pKkTHGL3TwI1C5LZ71bYY82iUjC0n4YG3WV+W8u
-	 X/5wDSDkJv5Yg==
-Message-ID: <88046eb3-603c-4296-9a9f-616a6f37c610@kernel.org>
-Date: Mon, 13 Apr 2026 08:46:38 -0600
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="LmjozJUZ";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="P0Pt1FmZ"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailflow.stl.internal (Postfix) with ESMTP id 9D38D1300479;
+	Mon, 13 Apr 2026 10:47:12 -0400 (EDT)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-04.internal (MEProxy); Mon, 13 Apr 2026 10:47:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1776091632;
+	 x=1776098832; bh=W8U2X4bSWSk5VTnZUgN69eu5y1WQZmUIaZ0lY5fFNYs=; b=
+	LmjozJUZ3Jo4aDvRnxjNH6xr8327RRDJ6AyS2k2jkDl2R8fkH9iYi8hT1huSnuvC
+	fDXAO9TCtk28z5Z0YRzjvQVLbECztWiZU5NNtbQMRNzTIEQrOcdJnQGPD479uwHR
+	1Q8ok3Usz/sph0Zc33WNDHZ2vRiLAUdkasmWlryN5Yu1+0d+T5ZkgPdaZcIJ9UoD
+	LUtaK6rfdZx/q8xdekwLUdfJgdU2tYY2BZBNb9nIAqnbcU5rOmuWMelD9Mi0vAHq
+	QCAxCp3Z9MPSmP03naZuWjoQXnxN4zfhCwznV9CiO4R52VmIdP6Rcnf+zUDjPDtN
+	UXIkYMXlY1W1R8FqtfdOMw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1776091632; x=
+	1776098832; bh=W8U2X4bSWSk5VTnZUgN69eu5y1WQZmUIaZ0lY5fFNYs=; b=P
+	0Pt1FmZA3nT0gW/fGFJhGWUXdXBIcnOnTz8lnGNEggRDBNRkkIRZZ0rbNBev1XVe
+	zzRDGJ8xdI8n86dT020680Fi59i8OYpo55O8jaokE2rcHortABYU2ULGblyCdcE3
+	N7NLqkhP0h69s0MdHh8xGt/qaV3yIfjS2nWfiqQJrucaxHGogEVfeVOAY1wEf+xi
+	uch3DjI8PEGZovPDIghE3cw7CjHIO63YZV2H2BcC52PGMn1wht6rI8JJJxiiCxXU
+	UkCntruu9nNGBjU41kcYr9A+IW1YiAyNflF4aBilp4WdS700qNhK6R4AGl4ZTHZ/
+	zTr464QHWbqiGWfEZOjQw==
+X-ME-Sender: <xms:8AHdaV4EBY4AfwcF1maxWFQ-UReN_owOou9m4dD7NbRoLveor065LQ>
+    <xme:8AHdadsjRmCe9WprTyyNQkCK8SO45WF8KHRoafxkQdvsEV90LRX-MaXp0aVyJYDZ6
+    EmCfA1Y7H0u_e3mR0Jcw_jjFYyaDaWXBKlPB5CHolc71f6zGRLy>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdefkeehudcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
+    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
+    hnpefhtdfhvddtfeehudekteeggffghfejgeegteefgffgvedugeduveelvdekhfdvieen
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
+    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopeegkedpmhhouggvpehsmhhtphhouhht
+    pdhrtghpthhtohepthdrshgrihhlvghrsegrlhhumhhnihdrvghthhiirdgthhdprhgtph
+    htthhopegtrghtrghlihhnrdhmrghrihhnrghssegrrhhmrdgtohhmpdhrtghpthhtohep
+    lhhinhhugiesrghrmhhlihhnuhigrdhorhhgrdhukhdprhgtphhtthhopegurghvvghmse
+    gurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepmhhpvgesvghllhgvrhhmrghnrdhi
+    ugdrrghupdhrtghpthhtoheprhihrggsihhnihhnrdgrrdgrsehgmhgrihhlrdgtohhmpd
+    hrtghpthhtohepuhhrvgiikhhisehgmhgrihhlrdgtohhmpdhrtghpthhtohepuggvlhhl
+    vghrsehgmhigrdguvgdprhgtphhtthhopehhvghrsggvrhhtsehgohhnughorhdrrghprg
+    hnrgdrohhrghdrrghu
+X-ME-Proxy: <xmx:8AHdaaT0cMKbTafw58cG7wQ0Qv82m8qZTRYyny1dj-38kCZwa83j9Q>
+    <xmx:8AHdaeqogwjtF2ldxXkdqczEsPcfDM_1nEYFfwCk0UufLkJUoruyNA>
+    <xmx:8AHdaYOz_3J7HsqPIEODLkY5cvhuJsZCBlh7QMGV8E4tu7K29uhBUw>
+    <xmx:8AHdabApMPQo1X_BPzpLf70mTWvAAr9UgFJYBxC3fw_K7vhbYwNivw>
+    <xmx:8AHdaZoXgvLSsnx7srnkGqW8Du6l-JaiK78sBGKrQgfs5kgyjB9M2EbT>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id E812C700065; Mon, 13 Apr 2026 10:47:11 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v1 1/2] nexthop: fix IPv6 route referencing IPv4
- nexthop
-Content-Language: en-US
-To: Jiayuan Chen <jiayuan.chen@linux.dev>, netdev@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-References: <20260413114522.147784-1-jiayuan.chen@linux.dev>
-From: David Ahern <dsahern@kernel.org>
-In-Reply-To: <20260413114522.147784-1-jiayuan.chen@linux.dev>
-Content-Type: text/plain; charset=UTF-8
+X-ThreadId: A4mZ2Su1YSkV
+Date: Mon, 13 Apr 2026 16:46:30 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Thomas Gleixner" <tglx@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+Cc: "Theodore Ts'o" <tytso@mit.edu>, linux-ext4@vger.kernel.org,
+ x86@kernel.org, "Baolu Lu" <baolu.lu@linux.intel.com>,
+ iommu@lists.linux.dev, "Michael Grzeschik" <m.grzeschik@pengutronix.de>,
+ Netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org,
+ "Herbert Xu" <herbert@gondor.apana.org.au>, linux-crypto@vger.kernel.org,
+ "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, linux-mm@kvack.org,
+ "David Woodhouse" <dwmw2@infradead.org>,
+ "Bernie Thompson" <bernie@plugable.com>, linux-fbdev@vger.kernel.org,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+ "Marco Elver" <elver@google.com>, "Dmitry Vyukov" <dvyukov@google.com>,
+ kasan-dev@googlegroups.com, "Andrey Ryabinin" <ryabinin.a.a@gmail.com>,
+ "Thomas Sailer" <t.sailer@alumni.ethz.ch>, linux-hams@vger.kernel.org,
+ "Jason A . Donenfeld" <Jason@zx2c4.com>,
+ "Richard Henderson" <richard.henderson@linaro.org>,
+ linux-alpha@vger.kernel.org, "Russell King" <linux@armlinux.org.uk>,
+ linux-arm-kernel@lists.infradead.org,
+ "Catalin Marinas" <catalin.marinas@arm.com>,
+ "Huacai Chen" <chenhuacai@kernel.org>, loongarch@lists.linux.dev,
+ "Geert Uytterhoeven" <geert@linux-m68k.org>,
+ linux-m68k@lists.linux-m68k.org, "Dinh Nguyen" <dinguyen@kernel.org>,
+ "Jonas Bonn" <jonas@southpole.se>,
+ "linux-openrisc@vger.kernel.org" <linux-openrisc@vger.kernel.org>,
+ "Helge Deller" <deller@gmx.de>, linux-parisc@vger.kernel.org,
+ "Michael Ellerman" <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
+ "Paul Walmsley" <pjw@kernel.org>, linux-riscv@lists.infradead.org,
+ "Heiko Carstens" <hca@linux.ibm.com>, linux-s390@vger.kernel.org,
+ "David S . Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
+Message-Id: <90a889aa-f204-4ea8-8642-6752aa1955d8@app.fastmail.com>
+In-Reply-To: <20260410120318.727211419@kernel.org>
+References: <20260410120044.031381086@kernel.org>
+ <20260410120318.727211419@kernel.org>
+Subject: Re: [patch 17/38] ext4: Replace get_cycles() usage with ktime_get()
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 
-On 4/13/26 5:45 AM, Jiayuan Chen wrote:
-> syzbot reported a panic [1] [2].
-> 
-> When an IPv6 nexthop is replaced with an IPv4 nexthop, the has_v4 flag
-> of all groups containing this nexthop is not updated. This is because
-> nh_group_v4_update is only called when replacing AF_INET to AF_INET6,
-> but the reverse direction (AF_INET6 to AF_INET) is missed.
-> 
-> This allows a stale has_v4=false to bypass fib6_check_nexthop, causing
-> IPv6 routes to be attached to groups that effectively contain only AF_INET
-> members. Subsequent route lookups then call nexthop_fib6_nh() which
-> returns NULL for the AF_INET member, leading to a NULL pointer
-> dereference.
-> 
-> Fix by calling nh_group_v4_update whenever the family changes, not just
-> AF_INET to AF_INET6.
-> 
-> Reproducer:
-> 	# AF_INET6 blackhole
-> 	ip -6 nexthop add id 1 blackhole
-> 	# group with has_v4=false
-> 	ip nexthop add id 100 group 1
-> 	# replace with AF_INET (no -6), has_v4 stays false
-> 	ip nexthop replace id 1 blackhole
-> 	# pass stale has_v4 check
-> 	ip -6 route add 2001:db8::/64 nhid 100
-> 	# panic
-> 	ping -6 2001:db8::1
-> 
-> [1] https://syzkaller.appspot.com/bug?id=e17283eb2f8dcf3dd9b47fe6f67a95f71faadad0
-> [2] https://syzkaller.appspot.com/bug?id=8699b6ae54c9f35837d925686208402949e12ef3
-> Fixes: 7bf4796dd099 ("nexthops: add support for replace")
-> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-> ---
->  net/ipv4/nexthop.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
+On Fri, Apr 10, 2026, at 14:19, Thomas Gleixner wrote:
+> get_cycles() is not guaranteed to be functional on all systems/platforms
+> and the values returned are unitless and not easy to map to something
+> useful.
+>
+> Use ktime_get() instead, which provides nanosecond timestamps and is
+> functional everywhere.
+>
+> This is part of a larger effort to limit get_cycles() usage to low level
+> architecture code.
+>
+> Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+> Cc: "Theodore Ts'o" <tytso@mit.edu>
+> Cc: linux-ext4@vger.kernel.org
 
+I think this is technically an ABI chance, since the time
+difference gets exported through procfs, but the new version
+is clearly the right thing to do since it replaces a hardware
+specific value with a portable one.
 
-Reviewed-by: David Ahern <dsahern@kernel.org>
-
+       Arnd
