@@ -1,78 +1,82 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86DD616A956
-	for <netdev@vger.kernel.org>; Tue, 14 Apr 2026 18:47:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF59FF9E8
+	for <netdev@vger.kernel.org>; Tue, 14 Apr 2026 18:50:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776192438; cv=none; b=qMwe1CL2Dnx0NgQHJbYrvMpFwCQRmy22GsDjahRnFNYm6tyZPdwGsthsBVuQdR4pt26TgGQabE07zSusPsyhnkPdLVoWY5doeqAzkR6+4EM4WLaOIAJEarmsX2CSFcM001eVkBRf6/FSAOqX3MQmV2wEgSmswlpvOJxiX9ZVacI=
+	t=1776192640; cv=none; b=kxPeDhjvTo/+LTwVpBb3sLv/sVL6tGn8Hq2+0y3HqtqsUJVty1yKqZodgMVepRmCYtIshfKkSJQSo4QMq/9AeL1G/UM/U4pzZU/EWFjUsmLZNP6UAHJyTRfKDx5M76jAgbon0tIrE+pKEnv44zoW9rWC+aXNz3pJ64o6ipE/hE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776192438; c=relaxed/simple;
-	bh=Sku0h7Ch3Fs5+1PMTzIUyOHsNqy1OrGS78QCzj/btJM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PRDOh+FtID1//Tm1Igl7glSaLMz+QVkyrqzs5w+Zs8/wEmCAZftCqrKT9+IiwpFdv6ZeZqNk8XI//7P0UL8qylxPucePhjWuiJZXGfBwNjRpqHlRLaGu/WX67XlZSV8KjfRTFm2vbKkJvNail2fZu6KC0qLxyblDWvfpfbQKcnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1wCimx-0007vF-Cb; Tue, 14 Apr 2026 20:47:07 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1wCimw-005O0b-1Y;
-	Tue, 14 Apr 2026 20:47:06 +0200
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1wCimw-00000009bqN-1Wo5;
-	Tue, 14 Apr 2026 20:47:06 +0200
-Date: Tue, 14 Apr 2026 20:47:06 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Kory Maincent <kory.maincent@bootlin.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Carlo Szelinsky <github@szelinsky.de>,
-	thomas.petazzoni@bootlin.com, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH net] net: pse-pd: fix out-of-bounds bitmap access in
- pse_isr() on 32-bit
-Message-ID: <ad6LqkKrXwNJfN0B@pengutronix.de>
-References: <20260414151331.745552-1-kory.maincent@bootlin.com>
+	s=arc-20240116; t=1776192640; c=relaxed/simple;
+	bh=pr48Yq7zbmFQvMBw6bWL5BvdnLTeMbUdF4SaEW0N5Yg=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Eb0O9Tl+fD1SFUleUGIj2cm2+rhouj/ci3H4/r8MP39hmhB3FQ+bfWm6vfJS7yefpMW7r+2nh14R8oH1HHrhAYhVgU0CDuOJjk/j4r6dlhIV5cTbAbYpC8Q06lHdS92zzws01Az0RbJOqEA4XHN7b3nRPb2ws2DCem8wRz2kccg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BkYRvONg; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BkYRvONg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68758C19425;
+	Tue, 14 Apr 2026 18:50:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776192640;
+	bh=pr48Yq7zbmFQvMBw6bWL5BvdnLTeMbUdF4SaEW0N5Yg=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=BkYRvONgQZAWN3IQMDTZMjqIN29Zf7Uhv18Sz0vFkop+q5+/Y0SADMqBmsJVUDT6f
+	 lGoI2QndRyPV8qEhQVl629VjBDCzdWVo53ysgIl6i2xUkfcfX09bnSoISk39DVsXwb
+	 eJFnwNqypTMGoaynO+csqrtfymEr5PnjrctbGn1K3XtD/5DYBl+u6trsrsAFwkmqx+
+	 I97j0daiNrYJZhy1nTjT+lYzCMsq50V7QGEWiLRsHUEwBOIz6U3kATw4M5eoJJBh4v
+	 W4Qiv0SYuW90kAZ24LKpSJEKaGKEIEdkhoiNazkq1R2HqF1n0JxRvVzvSpkZs7xh6z
+	 Mh8Boomwr3Q6w==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02C0B3809A0A;
+	Tue, 14 Apr 2026 18:50:12 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260414151331.745552-1-kory.maincent@bootlin.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next 0/4] WireGuard fixes for 7.1-rc1
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177619261080.1424819.15082422216238767602.git-patchwork-notify@kernel.org>
+Date: Tue, 14 Apr 2026 18:50:10 +0000
+References: <20260414153944.2742252-1-Jason@zx2c4.com>
+In-Reply-To: <20260414153944.2742252-1-Jason@zx2c4.com>
+To: Jason A. Donenfeld <Jason@zx2c4.com>
+Cc: netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com
 
-Hi Kory,
+Hello:
 
-On Tue, Apr 14, 2026 at 05:13:30PM +0200, Kory Maincent wrote:
-> @@ -1340,6 +1341,11 @@ int devm_pse_irq_helper(struct pse_controller_dev *pcdev, int irq,
->  	if (!h->notifs)
->  		return -ENOMEM;
->  
-> +	h->notifs_mask = devm_kcalloc(dev, BITS_TO_LONGS(pcdev->nr_lines),
-> +				      sizeof(*h->notifs_mask), GFP_KERNEL);
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-May be better devm_bitmap_zalloc() instead of devm_kcalloc()?
+On Tue, 14 Apr 2026 17:39:40 +0200 you wrote:
+> Hi Jakub,
+> 
+> Please find 4 simple patches attached:
+> 
+> 1) Asbjørn's YNL sample, finally merged. Sorry for the wait on this one.
+> 
+> 2) A simplification to use kfree_rcu instead of call_rcu, since
+>    kfree_rcu now works with kmem caches.
+> 
+> [...]
 
+Here is the summary with links:
+  - [net-next,1/4] wireguard: allowedips: Use kfree_rcu() instead of call_rcu()
+    https://git.kernel.org/netdev/net-next/c/e5549aecdd24
+  - [net-next,2/4] tools: ynl: add sample for wireguard
+    https://git.kernel.org/netdev/net-next/c/121f416756d6
+  - [net-next,3/4] wireguard: allowedips: remove redundant space
+    https://git.kernel.org/netdev/net-next/c/f364db381c9d
+  - [net-next,4/4] wireguard: device: use exit_rtnl callback instead of manual rtnl_lock in pre_exit
+    https://git.kernel.org/netdev/net-next/c/60a25ef8dacb
+
+You are awesome, thank you!
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
