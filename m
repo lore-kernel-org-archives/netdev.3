@@ -1,178 +1,114 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA1A3E5EE2
-	for <netdev@vger.kernel.org>; Tue, 14 Apr 2026 14:38:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776177532; cv=pass; b=uOP8mPYa4n6dRepSLiXngnl6/tRjRs6FDTES+XpeZqm3ufFa0lHN+kCPqRH7HYIx5+Few/j6eHgSxv5XXSwc/posxn+5dw9ThrT/DaX1Q6Vc5tJ/HG55zmndQoPVAyxiWUxNCCwkHK0q3uoKVFpnoScYzOmsDWCu3FVDC6CXTGI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776177532; c=relaxed/simple;
-	bh=ZvMerGqSJAlyqgeddQ6lYem489w5ZSqqOzbNiQRZjn0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Xh00nazqrYFpLZpAzfuq8eLjwlJw1spm/xF1qHaKmV0Iky/kxGQPzygUGp5yDR2moUaZFCbAgh1jaFEu2Xdf1imQ1xyZXFYJ7Af8WWEsw7YAJ19JKO8EKWN97yIjEm0/7L62y/iiHmgccKmjBgO7aj+05DYnp8BETdge+miEhVk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Mrx6BKQa; arc=pass smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B35340DFC3;
+	Tue, 14 Apr 2026 14:52:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776178343; cv=none; b=nm9qJGME+kATbvinlvBlvi+26JixREGgYp7sQ3YPeVTxKv6aAOnP20XTt49lPYEGDrGTywB1UWT6bTQXsCSV+p1umup/7QLAf6e6I0A+H+y4W7qL+VPV9lyXIP8+iL0PHif+A1KCkPB9j8nR2xCF/oYN0NyRfJ67QErUCMXmgPQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776178343; c=relaxed/simple;
+	bh=FyNFq22OhHv2Uq0gQRgQgJmKXPxe1cwbacldtyh4gSk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KVOab8DNel3AY016WJaNvGz/Qd61AaAr1VUcApbJ1y4WmHpotYW8X+wN0QOUX7t8PapaS1mL3EQVCgeVH+2EDidTBdW+5P4Grjx9B4egkese9mqt7ReTYKq73uREsuwMxmcseDMVi9XrdpOfCXfKoWbaXWbZiv9Ue8sR8eCsrGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=wUDOimQ/; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=yS2FBc3b; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mrx6BKQa"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-43d7605ec91so2120577f8f.3
-        for <netdev@vger.kernel.org>; Tue, 14 Apr 2026 07:38:51 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776177530; cv=none;
-        d=google.com; s=arc-20240605;
-        b=IJ+CmbE993SrQyz6LuAefWLSLiSu0zrrSxkXEAxfRvwjIFz2VHs/ydYf/HdOKzLTeO
-         GxflTdvJta3aItw2ODiX3+1/0eISkLaMGYvtFX51G419bqrnoqxwb41kTw1qpx7aln5b
-         WktjfYw1JbcrHGUJIJmENvkGhIftlX1lTIQuUuL8OUIIv8/HXtRDj2EGFfMftdpWfMnc
-         /m95bcsVk1ipi/JCGxdGSb6tL7KRp6Ig117Nccqcb5VVv6vTvZDZtgKVp7P4tYaQ4Gkv
-         wsQzxOHxfd8kv7xE19U3Z3tLZByo1f/8fNgazupG2QjhApCLydE1pLscNWFhR1U9TZ0b
-         hb8g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=t3FcHIl3IgssSn4hNhLSe6L719nynY/t+2SO5yRqP3Y=;
-        fh=ofqli7oCwCDYCkbDG84MVmViAPBuYh3s3Tp/6NMfZwc=;
-        b=Nnay9LgKCQl5YgJLYP3kEItsWBhKo/aRSAUw1VJeeJ/QzTaWuP2y0vRshke2px9EsZ
-         T9TqiKQUa6y1FcooMiX33t6th66VJw4KuBxGCoQvCRi3/uEyNpiS/hLQKUAtQpPA0O32
-         5OgrJxNxobsEJ+RGIZwjBmQHKnM+dmUKJTLyjsExo3ckGRIZVaFO0AMrJELL3Vf+etEv
-         VdBg8ycl1xbJiYCxC8auePAWuJeBn5tRltkre1X9E356Re/1vdmE/tlEk3IvncoSV4MG
-         35YYyViyNx0n9Th3R++a0XFfAmcinCG+1er5nc7hhrafgQukJ2twYJ5Llm3HDQu9W7Ti
-         qrTw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776177530; x=1776782330; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=t3FcHIl3IgssSn4hNhLSe6L719nynY/t+2SO5yRqP3Y=;
-        b=Mrx6BKQac/mEAyn4HtM7CA/4zoqjbafFfoOa3S5jeSGGwGbKSXmN2jivtA8VEYQJYw
-         z9Ue1GdunUm5I9i9avQeEKnEvBc9lc/FhuMxJp7/ZaQMxjtywG7YwF2oSRuLLMwb7E+Q
-         zEAZ/EfdfvZEgvZz3KWjh4FUtdtb1XMKRwb4tOeMnvom+tZUDs2JlSK3l6Z5Zu/z05i3
-         0JNubg6yJ+UDiJcZbtNBmu2meWIPmgYH9GfLO4PRhBw2JJ5SFiOd8ZeTigvYHothvHa2
-         EEFEeDrnwNaSOp9YHhdwpZ2oqRrZA+wWzkBUBa6q0ME48njcpfFcQG9Ckl2I1im5Wxm4
-         /JYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776177530; x=1776782330;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=t3FcHIl3IgssSn4hNhLSe6L719nynY/t+2SO5yRqP3Y=;
-        b=bM4T4OLOeX7gJcUHl+dyPJ16/dq7w2f+VX7/50henn/MLmaiCZzFcCghf8TKL/y3Gv
-         1iVdObHo9vLh0twLx0KGpHD2FpfYJuZIw2opXIJyHH5cW0293FtkayLj8Qmqv/JUW/kF
-         wF6LOw4xNDkoMM6csQRS86iUp6LOXZYf2pEEQdTCXteaajSiNNmshhGUEnPtcqhcU30U
-         eDF47Z2fo48pO+/lzoElDMMoW4EDArZaJ22LBTdb426oqltnxaK/OXgUchDjKQhS8b7w
-         1t89Bc5rXo2nWPI/fXyKfxZxAEMKfULo1e4IB9wA3VE0XPnmUVdPPNr9E3NfeACobth7
-         yRMA==
-X-Forwarded-Encrypted: i=1; AFNElJ8Ub9INChlRtcXOf483H/N/ejMrDCtb/GnMEnH1gBgHjO7gmxPJ7hT6XjIWFEojRXemW1W9wa0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyDtPgW8wT2FfAEy8M5y/pdcILUuEqFJMyHOwdZTtSBEBF9uIVk
-	AJE1AolD38J26/lKehymqi3QsczdHDNxmHqvthYFQLkv7wjXbUP0HLKyEZC8sG31qPRvVXGpn2R
-	XiHdPihbpCkQ+RH43+cfbKaa5GeYi3S4=
-X-Gm-Gg: AeBDies6LyKKRdtoyuhyc03mIFdOhNjwDA5OLCadEiX2wMwkyO/ymGgj0SRVYnyFBFh
-	frh4836KPxy91UVPgc8ABiXn/pdeMQ8KQQbo4j5R2w2KquQSs10RmUSttPQzYtdjXNQfeT0dfFa
-	P/69QVngiiJGJUx9RsgdvLfDG6dRv0cOAnCwb5f1JLQjTdZBhzeLJdJC5D0lZO3nOlBcqs1pjmN
-	gpsDk09kzN904FId3O8L9e4HWw/OZ5UNx+KJU59YmVoHKqVAIA5GurUHVA65G1X4TWF6CQPyLNM
-	5uAD1M37jrEh1ScjC7lCO9zaTjTtfp3VodofQFLzIXlmAL4Eh8m7DVmmO7yAJOW3xlb+jPtrNct
-	aACAT1qsDOHuAtBolnUKkQpDZEg==
-X-Received: by 2002:a5d:5d85:0:b0:43d:73de:abd2 with SMTP id
- ffacd0b85a97d-43d73dead51mr14691281f8f.26.1776177529609; Tue, 14 Apr 2026
- 07:38:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="wUDOimQ/";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="yS2FBc3b"
+Date: Tue, 14 Apr 2026 16:52:18 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1776178340;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NczqJSvb7D2JbBqpsIRK9tRIb6npKGXPUg4+M7x7Etk=;
+	b=wUDOimQ/Td2fFgAKxasB+wTs+OR5mDYfLShmZBjc3LIylaAXN58ptt5EkpJ+wJhoIG+IBX
+	SlvmOU5N0V0znagYmJIUx3gx6bCoiBeQ3OteLoQbcfpM9WtLCKSEpR/IjJab0qdIHoKq7v
+	wLTP4W6VJbxtIKMsGa0TKY58Bc0hwW0E3/UpLRBJGOD6qtkuShzrH+kXKpD41Seu2FE7SY
+	9e6YmXd3qQwbhRgB0dei/PHOzvyeQKbGsbVOUw79Udokw5Bz81oa7Qsrs9agHNrRMqGYo8
+	avTn2zVayeiG84RChKuusNIBJOu/2fKcAFWzQrYZM+vgUPcLVC0sHt3npP+A2g==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1776178340;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NczqJSvb7D2JbBqpsIRK9tRIb6npKGXPUg4+M7x7Etk=;
+	b=yS2FBc3b5vQKhGu0Kx1Mc7bxKNIGUPMh2r0tl7DJN9LkKzFvJtYeu9DPtNb+CufcPojT2K
+	n4PZFg86YsRoW1Cg==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Marek Vasut <marex@nabladev.com>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Nicolai Buchwitz <nb@tipi-net.de>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Ronald Wahl <ronald.wahl@raritan.com>,
+	Yicong Hui <yiconghui@gmail.com>, linux-kernel@vger.kernel.org
+Subject: Re: [net,PATCH v3 1/2] net: ks8851: Reinstate disabling of BHs
+ around IRQ handler
+Message-ID: <20260414145218.lsNpdAJI@linutronix.de>
+References: <20260414103327.113500-1-marex@nabladev.com>
+ <20260414125753.Im6GAIHn@linutronix.de>
+ <2fcfb84f-69f6-493e-94d6-95d85d8000f6@nabladev.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260413-kasan-v1-0-1a5831230821@bootlin.com> <20260413-kasan-v1-3-1a5831230821@bootlin.com>
- <CA+fCnZf-o8tiv_tX9YB5eBUGx17OpztKZsEB6Awjw3WAqBAiUw@mail.gmail.com> <DHSWSSYRPUVC.2W3G3OU27L3HG@bootlin.com>
-In-Reply-To: <DHSWSSYRPUVC.2W3G3OU27L3HG@bootlin.com>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Tue, 14 Apr 2026 07:38:38 -0700
-X-Gm-Features: AQROBzAAc3g7dGJeHc3HZECQFqFuOBrJ_YiWzr60z_aqmL-sqKG6l_qunoKkETU
-Message-ID: <CAADnVQLj=UosnsC-4V2+mN92Fe0-kW++U+m-O9c93kk6BwiXgw@mail.gmail.com>
-Subject: Re: [PATCH RFC bpf-next 3/8] bpf: add BPF_JIT_KASAN for KASAN
- instrumentation of JITed programs
-To: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
-	Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
-	John Fastabend <john.fastabend@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
-	David Ahern <dsahern@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, X86 ML <x86@kernel.org>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Shuah Khan <shuah@kernel.org>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko <glider@google.com>, 
-	Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, ebpf@linuxfoundation.org, 
-	Bastien Curutchet <bastien.curutchet@bootlin.com>, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xu Kuohai <xukuohai@huawei.com>, 
-	bpf <bpf@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
-	Network Development <netdev@vger.kernel.org>, 
-	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
-	kasan-dev <kasan-dev@googlegroups.com>, linux-mm <linux-mm@kvack.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <2fcfb84f-69f6-493e-94d6-95d85d8000f6@nabladev.com>
 
-On Tue, Apr 14, 2026 at 6:24=E2=80=AFAM Alexis Lothor=C3=A9
-<alexis.lothore@bootlin.com> wrote:
->
-> On Tue Apr 14, 2026 at 12:20 AM CEST, Andrey Konovalov wrote:
-> > On Mon, Apr 13, 2026 at 8:29=E2=80=AFPM Alexis Lothor=C3=A9 (eBPF Found=
-ation)
-> > <alexis.lothore@bootlin.com> wrote:
-> >>
-> >> Add a new Kconfig option CONFIG_BPF_JIT_KASAN that automatically enabl=
-es
-> >> KASAN (Kernel Address Sanitizer) memory access checks for JIT-compiled
-> >> BPF programs, when both KASAN and JIT compiler are enabled. When
-> >> enabled, the JIT compiler will emit shadow memory checks before memory
-> >> loads and stores to detect use-after-free, out-of-bounds, and other
-> >> memory safety bugs at runtime. The option is gated behind
-> >> HAVE_EBPF_JIT_KASAN, as it needs proper arch-specific implementation.
-> >>
-> >> Signed-off-by: Alexis Lothor=C3=A9 (eBPF Foundation) <alexis.lothore@b=
-ootlin.com>
-> >> ---
-> >>  kernel/bpf/Kconfig | 9 +++++++++
-> >>  1 file changed, 9 insertions(+)
-> >>
-> >> diff --git a/kernel/bpf/Kconfig b/kernel/bpf/Kconfig
-> >> index eb3de35734f0..28392adb3d7e 100644
-> >> --- a/kernel/bpf/Kconfig
-> >> +++ b/kernel/bpf/Kconfig
-> >> @@ -17,6 +17,10 @@ config HAVE_CBPF_JIT
-> >>  config HAVE_EBPF_JIT
-> >>         bool
-> >>
-> >> +# KASAN support for JIT compiler
-> >> +config HAVE_EBPF_JIT_KASAN
-> >> +       bool
-> >> +
-> >>  # Used by archs to tell that they want the BPF JIT compiler enabled b=
-y
-> >>  # default for kernels that were compiled with BPF JIT support.
-> >>  config ARCH_WANT_DEFAULT_BPF_JIT
-> >> @@ -101,4 +105,9 @@ config BPF_LSM
-> >>
-> >>           If you are unsure how to answer this question, answer N.
-> >>
-> >> +config BPF_JIT_KASAN
-> >> +       bool
-> >> +       depends on HAVE_EBPF_JIT_KASAN
-> >> +       default y if BPF_JIT && KASAN_GENERIC
-> >
-> > Should this be "depends on KASAN && KASAN_GENERIC"?
->
-> Meaning, making it an explicit user-selectable option ?
->
-> If so, the current design choice is voluntary and based on the feedback
-> received on the original RFC, where I have been suggested to
-> automatically enable the KASAN instrumentation in BPF programs if KASAN
-> support is enabled in the kernel ([1]). But if a user-selectable toggle
-> is eventually a better solution, I'm fine with changing it.
+On 2026-04-14 16:20:46 [+0200], Marek Vasut wrote:
+> > This is what happens since commit 0913ec336a6c0 ("net: ks8851: Fix
+> > deadlock with the SPI chip variant"). Before that commit the softirq
+> > execution will be picked up by netdev_alloc_skb_ip_align() and requires
+> > PREEMPT_RT and a RX packet in #1 to trigger the deadlock.
+> 
+> Do you want me to add this into the V4 commit message ?
 
-Let's not add more config knobs.
-Even this patch looks redundant.
-Inside JIT do instrumentation when KASAN_GENERIC is set.
+The description does not match the code since the commit mentioned
+above.
+
+> > > Fix the problem by disabling BH around critical sections, including the
+> > > IRQ handler, thus preventing the net_tx_action() softirq from triggering
+> > > during these critical sections. The net_tx_action() softirq is triggered
+> > > at the end of the IRQ handler, once all the other IRQ handler actions have
+> > > been completed.
+> > > 
+> > >   __schedule from schedule_rtlock+0x1c/0x34
+> > >   schedule_rtlock from rtlock_slowlock_locked+0x548/0x904
+> > >   rtlock_slowlock_locked from rt_spin_lock+0x60/0x9c
+> > >   rt_spin_lock from ks8851_start_xmit_par+0x74/0x1a8
+> > >   ks8851_start_xmit_par from netdev_start_xmit+0x20/0x44
+> > >   netdev_start_xmit from dev_hard_start_xmit+0xd0/0x188
+> > >   dev_hard_start_xmit from sch_direct_xmit+0xb8/0x25c
+> > >   sch_direct_xmit from __qdisc_run+0x1f8/0x4ec
+> > >   __qdisc_run from qdisc_run+0x1c/0x28
+> > >   qdisc_run from net_tx_action+0x1f0/0x268
+> > >   net_tx_action from handle_softirqs+0x1a4/0x270
+> > >   handle_softirqs from __local_bh_enable_ip+0xcc/0xe0
+> > >   __local_bh_enable_ip from __alloc_skb+0xd8/0x128
+> > >   __alloc_skb from __netdev_alloc_skb+0x3c/0x19c
+> > >   __netdev_alloc_skb from ks8851_irq+0x388/0x4d4
+> > >   ks8851_irq from irq_thread_fn+0x24/0x64
+> > >   irq_thread_fn from irq_thread+0x178/0x28c
+> > >   irq_thread from kthread+0x12c/0x138
+> > >   kthread from ret_from_fork+0x14/0x28
+> > 
+> > The backtrace here and the description is based on an older kernel.
+> > However
+> I actually did update the backtrace in V3 with the one from current next
+> 20260413 .
+
+That would be from yesterday and the change is merged since v6.10. But
+why is the softirq starting from __netdev_alloc_skb() instead of
+spin_unlock_bh(&ks->statelock)? After that unlock, the softirq must be
+processed and __netdev_alloc_skb() _could_ observe pending softirqs but
+not from ks8851.
+
+Sebastian
