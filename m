@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5B2C224AFA;
-	Tue, 14 Apr 2026 00:56:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 309DF242925;
+	Tue, 14 Apr 2026 00:56:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776128214; cv=none; b=qi5U9NEPJSQlIYfiSPciG+2XYzPRDFbl1ruz2lC9TH7lxQX+lSdF5x2bft0b1BvwLzqCQEi4S9aH48++yFkg/3r6IuHp15qRG/LpqslZ++tPoST7U4pnOm1+MiWFLBcgZ/YuygyqaH/HJ4xXvREsPIqQYhzxQCiVihMVsDxQ69c=
+	t=1776128217; cv=none; b=Rdh7wFI8YAVTkpMCR+LsPd+PHjZijIMIjjeoIr6x18ZT/PucnGu7dLsCgPspWVswYpNOZgx/IzhFXKG+tN3TVlw/tqy8nEMmXNElk2SobpKrdkh6Qs2E5IJ7S7WyDMszD3sPptf1t9TpWezVLMS+7K7bKPSuGP09FaDwyFWtY7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776128214; c=relaxed/simple;
-	bh=DNLfsvu9KCmf+MBO9XVh5jPegBiClGepZ0kdvYbaXyU=;
+	s=arc-20240116; t=1776128217; c=relaxed/simple;
+	bh=XP8FQWYIKKkg3CtjlVkf45FV3FMUgqEestMU94C2yrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R7dHQDK3B0KP1pFlfhFow9Be8YYwUOSrwhUTBNRBFteixwBRUHrYY7JV5LZrazd/ooKTVmDYD6DSKWBfEXUw/5gM2I2M0g6Hb3SvEVcPuHVziWi22zQC+nnGiCVgq/Xx4xKV73No5OZ/NuOV7/W6DW54MWUx30V0j3WN4NKIoAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tz5Zyjfb; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=tw37L0E24PAypCVZrqguTobRtJC0TWvtXiFPJa/7A55lr/ivSd8SeSkWIuZ9BBxX66PU7qyr6nd16TLzWbz1UnL8BB/jM2uvaJ588IlnAmMQ6ztXlVr/nNEDMT7X6SXWwJQVW9N5zR97xTYPYq0hWDDl47lsdEbA6kjmy3DEvlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hTcf+G+r; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tz5Zyjfb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 620E4C2BCAF;
-	Tue, 14 Apr 2026 00:56:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hTcf+G+r"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB788C2BCAF;
+	Tue, 14 Apr 2026 00:56:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776128214;
-	bh=DNLfsvu9KCmf+MBO9XVh5jPegBiClGepZ0kdvYbaXyU=;
+	s=k20201202; t=1776128217;
+	bh=XP8FQWYIKKkg3CtjlVkf45FV3FMUgqEestMU94C2yrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tz5ZyjfbTsLbJYqe/R6ZnJT8pXLmg2dB/KKuHOucUptteq80caAZ5da7sa0jpd2jb
-	 la+GIYTCfTkMJHqEyy01QeYg1tOMGYSZzQ3oGVAby/Jv6Egj40ZwXxDJfhpHFXaLXV
-	 BbD1a3IAJr4ppay9x4A0gyB13Xyf7+59FexjE8JfVUXKwp3m91KWizEF46Zgs7hFwR
-	 Hny/qy6jCJYa9WS2/jr8tipCHo8O3tGCa2RyblNYdkDXTiSxDuyTbvM8jdlJG19clL
-	 /Z9BcOiuhJhb3jQ5jV9a/KwLpwySwgFKqBmDakIZMAPl7G9ECimYMVIAKTfviVRgpK
-	 Pl5SzIJQOSRvg==
+	b=hTcf+G+rBSA4Ial1rFJRY6ViAWtI2u+FmIOiQPokVTlQN0WJfhJI82HdHiIs4Oel+
+	 dPkJP7tmVKhwh7rnDdGND6I/+Z0HfPceIzUISwK+e6ExSVYhp4FABvNHsCAAmAatZv
+	 JhNLIiY+v9uOo+6CoEEuBdI/d6ZTq9JXWUq+VT5jikh1HeiF9MDHnH9Fv5JnmBZFrw
+	 K28OwQut9hNhG4k3+87koWNDmZkA5sZO46XASaEbBAVApj4e2xuNhBGdk/erNwz/DI
+	 rC5UYBO2FkxtxsWrDk0lWFJIwksq2uiTCIkmKT3wWZCoI0Yle3eXzbbHmGjocB7p3+
+	 OF6Sj8de59lmQ==
 From: Jakub Kicinski <kuba@kernel.org>
 To: theo.lebrun@bootlin.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -48,12 +48,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	maxime.chevallier@bootlin.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 12/14] net: macb: re-read ISR inside IRQ handler locked section
-Date: Mon, 13 Apr 2026 17:52:44 -0700
-Message-ID: <20260414005244.3758889-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next v2 13/14] net: macb: use context swapping in .set_ringparam()
+Date: Mon, 13 Apr 2026 17:56:54 -0700
+Message-ID: <20260414005654.3766959-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260410-macb-context-v2-12-af39f71d40b6@bootlin.com>
-References: <20260410-macb-context-v2-12-af39f71d40b6@bootlin.com>
+In-Reply-To: <20260410-macb-context-v2-13-af39f71d40b6@bootlin.com>
+References: <20260410-macb-context-v2-13-af39f71d40b6@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -65,53 +65,99 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-net: macb: re-read ISR inside IRQ handler locked section
+net: macb: use context swapping in .set_ringparam()
 
-This commit adds a second read of the ISR register inside the lock in
-macb_interrupt() to handle a race condition where the status might have
-been updated by concurrent hardware resets.
+This patch modifies the ethtool set_ringparam implementation to use a
+context swapping mechanism. Instead of closing and reopening the interface,
+it allocates new buffers, stops the interface temporarily, swaps the active
+context, and then frees the old one.
 
 > diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-> index 2633234012bae..3deab87c565b5 100644
+> index 3deab87c565b5..d1536cb1e40bb 100644
 > --- a/drivers/net/ethernet/cadence/macb_main.c
 > +++ b/drivers/net/ethernet/cadence/macb_main.c
-> @@ -2190,6 +2190,13 @@ static irqreturn_t macb_interrupt(int irq, void *dev_id)
->  
->  	spin_lock(&bp->lock);
->  
-> +	/* `status` stack variable might be stalled => re-read it */
-> +	status = queue_readl(queue, ISR);
+> @@ -3081,6 +3081,89 @@ static void macb_configure_dma(struct macb *bp)
+[ ... ]
+> +static void macb_context_swap_start(struct macb *bp)
+> +{
+[ ... ]
+> +	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
+> +		napi_disable(&queue->napi_rx);
+> +		napi_disable(&queue->napi_tx);
 
-Will this second read discard interrupt events on older MACB variants that
-use clear-on-read for the ISR?
+This isn't a regression from this patch, but does calling napi_disable()
+unconditionally crash on EMAC devices?
 
-If the hardware does not have the MACB_CAPS_ISR_CLEAR_ON_WRITE capability,
-the first queue_readl call before the lock already cleared the active bits.
+EMAC devices appear to not initialize NAPI, which leaves the NAPI struct
+zero-initialized (n->dev is NULL), potentially causing a NULL pointer
+dereference in napi_disable(). Additionally, does this path also blindly
+call bp->macbgem_ops.mog_init_rings() which is NULL on EMAC?
 
-Overwriting the local status variable here sets it to 0, which permanently
-drops the initially captured Rx/Tx completions and stalls the network
-interface.
-
-> +	if (unlikely(!status)) {
-> +		spin_unlock(&bp->lock);
-> +		return IRQ_NONE;
-
-If the function reaches this point, the initial status read before the lock
-was non-zero, meaning the device legitimately asserted the interrupt.
-
-If a concurrent operation cleared the hardware state while this thread
-waited for the lock, will returning IRQ_NONE falsely flag this as a
-spurious interrupt?
-
-Since the interrupt was actually raised by the device, doing this repeatedly
-can cause the core IRQ subsystem to permanently disable the IRQ line.
-
-Could this return IRQ_HANDLED instead?
-
+> +		netdev_tx_reset_queue(netdev_get_tx_queue(bp->netdev, q));
+> +		cancel_work_sync(&queue->tx_error_task);
 > +	}
+[ ... ]
+> +static void macb_context_swap_end(struct macb *bp,
+> +				  struct macb_context *new_ctx)
+> +{
+[ ... ]
+> +	/* Swap contexts & give buffer pointers to HW. */
 > +
->  	while (status) {
->  		/* close possible race with dev_close */
->  		if (unlikely(!netif_running(netdev))) {
--- 
-pw-bot: cr
+> +	old_ctx = bp->ctx;
+> +	bp->ctx = new_ctx;
+> +	macb_init_buffers(bp);
+
+Since the new context swap doesn't call phylink_stop(), could a concurrent
+macb_mac_link_up() execution set the RE and TE bits in NCR during the window
+where bp->lock is dropped?
+
+If so, macb_init_buffers() would write new DMA ring base addresses to RBQP
+and TBQP while the MAC is actively enabled, which violates hardware
+specifications and could cause DMA corruption.
+
+[ ... ]
+> +	if (!(bp->caps & MACB_CAPS_MACB_IS_EMAC)) {
+> +		for (q = 0, queue = bp->queues; q < bp->num_queues;
+> +		     ++q, ++queue) {
+> +			queue_writel(queue, IER,
+> +				     bp->rx_intr_mask |
+> +				     MACB_TX_INT_FLAGS |
+> +				     MACB_BIT(HRESP));
+> +		}
+> +	}
+
+Hardware interrupts are disabled unconditionally for all devices in
+macb_context_swap_start() by writing -1 to IDR.
+
+Will this explicit check prevent EMAC devices from having their interrupts
+re-enabled?
+
+Since EMAC devices do not use NAPI and rely on hardware interrupts, leaving
+them masked might silently halt all network traffic after a ring parameter
+change.
+
+> +
+> +	ctrl = macb_readl(bp, NCR);
+> +	macb_writel(bp, NCR, ctrl | MACB_BIT(RE) | MACB_BIT(TE));
+
+Can this unprotected read-modify-write of the NCR register race with phylink
+state changes?
+
+If an asynchronous phylink callback like macb_mac_config() modifies NCR
+while holding bp->lock, this unlocked write could overwrite and drop those
+concurrent updates.
+
+> +
+> +	netif_tx_start_all_queues(bp->netdev);
+> +
+> +	/* Free old context. */
+> +
+> +	macb_free_consistent(old_ctx);
+
+This isn't a regression from this patch, but does this context swap leak
+pending TX packets and their DMA mappings?
+
+When freeing the old context, macb_free_consistent() appears to only free
+the pointer array. If it doesn't iterate from txq->tail to txq->head to
+unmap the active DMA mappings and free the sk_buff structs, repeatedly
+modifying ring parameters could cause a memory and DMA mapping leak.
