@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCF5D1EB5E3;
-	Tue, 14 Apr 2026 00:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC27DC8E6;
+	Tue, 14 Apr 2026 00:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776127643; cv=none; b=FXen11h8qG40UwJu+gvFBthzZbBh2xjrKKIxGvTH+TcsOHTtrHCey95HJT/Xkh5aXkT+B73TdJF7IgFicc6d5a9b0zQ3ddoMOqyfpY9NS1aCEou8uPBiYe51SsFZRFtN1GspDGVZJRaQC1HULbIVeqzfzW4Qo3Ad+lfpnjFTRGs=
+	t=1776127849; cv=none; b=n+ejKwDncN3G+SeWsRV7/14QhvRpJDPYR1iU8FmBkM+0J5brYIwGJpj9LWEsju1bQvRf6w5ll2KIfk3XA9cM2hN0KxraI9O7+HqC8Cazly3RDCsxKEzXyon00cRQKGyc9qF0CjSAXjLBe8KEFeZRiESzgy/ftOYeSHTxzkepQ+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776127643; c=relaxed/simple;
-	bh=h0YnwdiV+EzKzA/fSvXQ3caa96S6lMOPGWgi2nVSHRQ=;
+	s=arc-20240116; t=1776127849; c=relaxed/simple;
+	bh=IWxyKhckWY7+sHOpuC6y6ZfK3FkZsU1LMf8Fxaa1QmE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ufV8GZSuglaW5eT/cjIL5TRo+14JqNJsjkfmbNko+PRkiiPQeFE8C8LcyFkvj2HAi7uG17hU7frqKs352iWCKlaPcB8Pe91Wnb6VDrrj2rGmAvktSofTUZBxyDUTp2FmzPsDTzQzk0IXupH6FTvrTul8aAorbCEkLhj+Brl91S4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SjQFzd8j; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=FN4ExtVac9EsaLMv2GNN0PyCW3soIK/GPgfwO3UfZitOwYCqwziE3Sp60SR1djMEkFfm7ldhNsEnDMSfitJ21IGKb/TvK09qtFswlhU+NKJglYfi2kN+10oAhFBE0e+WU8UjEMSzEEEBaz25rZ9mv9IARXuQlKZVwiGOtSu8a34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ouL92XBh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SjQFzd8j"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A3C7C2BCAF;
-	Tue, 14 Apr 2026 00:47:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ouL92XBh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E98F6C2BCAF;
+	Tue, 14 Apr 2026 00:50:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776127643;
-	bh=h0YnwdiV+EzKzA/fSvXQ3caa96S6lMOPGWgi2nVSHRQ=;
+	s=k20201202; t=1776127849;
+	bh=IWxyKhckWY7+sHOpuC6y6ZfK3FkZsU1LMf8Fxaa1QmE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=SjQFzd8ji4pMzM7Cu0Orv9Ksnj2KxrAFCesnzuKySm/lKwvgRioCgiHMOP/4R7uzu
-	 1v+m3qZyqFN0vq+ASftWyO+9hhJXl1Lyc3uFSpihT9gvKaWBoWC+ZI9E86BjJfF9nv
-	 RgLIbGVlhGwqNaSmt+flRd84ARSjeHaYmKVpiFwD0zdl+yYCqHCyFqpeS+rhYt/tTi
-	 boVkqfVzx7mflUFZPSLs8k5SH24t/GsJ+034Uc8nY72ASxsAXilqZsyBfAxJ11MKgd
-	 jRiMAu30eCvdR9NqP+L+vQUXWs9BAbhlkH4RBie6ljhm++43pURBtkV2MN4sDf9kJQ
-	 63khLth9LHDlQ==
-Date: Mon, 13 Apr 2026 17:47:16 -0700
+	b=ouL92XBh6xR9+rttBQM7DmCDNIE9xNaX0NItFv70QWqZmcmwxarYqtDBYFXXIc6sA
+	 hAaKFYu3JQoaiYy6PMSnIkH2KzNZ+cM7PCYPyDULRmfiC2Ubvs+duX+R41mLvhnHtj
+	 29MUk//kSzdNQDNpPVxqGy96RDWFvzgq7aTqKB7zgsIluINpjZzhy1wdXc21oYK1qf
+	 IbHe7yoWAXH2HLLK/FNCbWdWq4ASDWDOosTY6gUb8T/FoE3s3zzi/heNbDr3jTDMcZ
+	 Le/HQMMg4cyZvc/GuG/6Anou6SQDbkehT17sosO1m53w/ywViRPkL3dsvkebdoHeYX
+	 99e3Ey75gcjLw==
+Date: Mon, 13 Apr 2026 17:50:40 -0700
 From: Jakub Kicinski <kuba@kernel.org>
 To: =?UTF-8?B?VGjDqW8=?= Lebrun <theo.lebrun@bootlin.com>
 Cc: Nicolas Ferre <nicolas.ferre@microchip.com>, Claudiu Beznea
@@ -41,12 +41,12 @@ Cc: Nicolas Ferre <nicolas.ferre@microchip.com>, Claudiu Beznea
  Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Maxime Chevallier
  <maxime.chevallier@bootlin.com>, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 09/14] net: macb: change caps helpers
- signatures
-Message-ID: <20260413174716.39915c92@kernel.org>
-In-Reply-To: <20260410-macb-context-v2-9-af39f71d40b6@bootlin.com>
+Subject: Re: [PATCH net-next v2 13/14] net: macb: use context swapping in
+ .set_ringparam()
+Message-ID: <20260413175040.352378c5@kernel.org>
+In-Reply-To: <20260410-macb-context-v2-13-af39f71d40b6@bootlin.com>
 References: <20260410-macb-context-v2-0-af39f71d40b6@bootlin.com>
-	<20260410-macb-context-v2-9-af39f71d40b6@bootlin.com>
+	<20260410-macb-context-v2-13-af39f71d40b6@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,13 +56,68 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, 10 Apr 2026 21:51:57 +0200 Th=C3=A9o Lebrun wrote:
-> For parallel MACB context to start become a reality, many functions will
-> soon not have access to `struct macb *bp`. Those will still have access
-> to caps through ctx->info->caps.
+On Fri, 10 Apr 2026 21:52:01 +0200 Th=C3=A9o Lebrun wrote:
+> ethtool_ops.set_ringparam() is implemented using the primitive close /
+> update ring size / reopen sequence. Under memory pressure this does not
+> fly: we free our buffers at close and cannot reallocate new ones at
+> open. Also, it triggers a slow PHY reinit.
 >=20
-> Change all caps helpers signatures, from taking `struct macb *bp` to
-> taking `u32 caps`.
+> Instead, exploit the new context mechanism and improve our sequence to:
+>  - allocate a new context (including buffers) first
+>  - if it fails, early return without any impact to the interface
+>  - stop interface
+>  - update global state (bp, netdev, etc)
+>  - pass buffer pointers to the hardware
+>  - start interface
+>  - free old context.
+>=20
+> The HW disable sequence is inspired by macb_reset_hw() but avoids
+> (1) setting NCR bit CLRSTAT and (2) clearing register PBUFRXCUT.
+>=20
+> The HW re-enable sequence is inspired by macb_mac_link_up(), skipping
+> over register writes which would be redundant (because values have not
+> changed).
+>=20
+> The generic context swapping parts are isolated into helper functions
+> macb_context_swap_start|end(), reusable by other operations (change_mtu,
+> set_channels, etc).
 
-Subjectively I feel like this is a slight loss of type safety.
-Someone may pass the wrong u32 and compiler will not help?
+> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ether=
+net/cadence/macb_main.c
+> index 81beb67b206a..340ae7d881c6 100644
+> --- a/drivers/net/ethernet/cadence/macb_main.c
+> +++ b/drivers/net/ethernet/cadence/macb_main.c
+> @@ -3081,6 +3081,89 @@ static void macb_configure_dma(struct macb *bp)
+>  	}
+>  }
+> =20
+> +static void macb_context_swap_start(struct macb *bp)
+> +{
+> +	struct macb_queue *queue;
+> +	unsigned long flags;
+> +	unsigned int q;
+> +	u32 ctrl;
+> +
+> +	/* Disable software Tx, disable HW Tx/Rx and disable NAPI. */
+> +
+> +	netif_tx_disable(bp->netdev);
+
+AFAIR netif_tx_disable() just stops all the queues, if the NAPIs and
+whatever else may wake queues is still running the queues may get
+restarted right away.
+
+> +	spin_lock_irqsave(&bp->lock, flags);
+> +
+> +	ctrl =3D macb_readl(bp, NCR);
+> +	macb_writel(bp, NCR, ctrl & ~(MACB_BIT(RE) | MACB_BIT(TE)));
+> +
+> +	macb_writel(bp, TSR, -1);
+> +	macb_writel(bp, RSR, -1);
+> +
+> +	for (q =3D 0, queue =3D bp->queues; q < bp->num_queues; ++q, ++queue) {
+> +		queue_writel(queue, IDR, -1);
+> +		queue_readl(queue, ISR);
+> +		if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
+> +			queue_writel(queue, ISR, -1);
+> +	}
+> +
