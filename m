@@ -1,116 +1,162 @@
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E123E92A1
-	for <netdev@vger.kernel.org>; Tue, 14 Apr 2026 15:11:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19E66256C61;
+	Tue, 14 Apr 2026 15:11:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776179489; cv=none; b=TNGcQ14SWytcyIFDQ0EeFjGIUrHrbzYCtzGh7jKSwoeJHnpzKyzUPAzH+ncdLXpZea+VRFTITIqI7GMn+BrYBux7r8JxjtRfajzxuLXLahiBqw5WwKl4uTuiBjT4WEBzeeSYKUSRpw7LrNP3/BcsyO09YD2xX/KVLR2Z1fADLck=
+	t=1776179505; cv=none; b=RauuJlunW/cJdGDrcS5HQjVm7of0ZHjjTi8qc4W/CYk/rNhpm1t4MlVoG7NawnQUUkG6pSHuwYMstErRZvFxqIPlWyLaMC95nTD73D6zn+4h1XDANjTuyQvMorRDTvfsq8xbYn9RSFNalK75+ZCSrR3PzWQx3Xhk7yF3xwN/3oA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776179489; c=relaxed/simple;
-	bh=wtmKouu1J13QOKEWpC/Rhgp+PUitDlJyO7jIdqkEIVo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gsTfZhP5UNsnsSLpRj6TpzYZmvy5ZE5lyn5Y5w4HFZdFGxfM591T9NU0kFJ+FYjn99J4nlOG3Ts1PX5AfNBHNA2HOVpDzUgMa7GQF017CvO7NltKBMTV2mwwtnAUxSmsSck2dJ6xVqviwI3LCTeU2B76MvFZtnzSSEfmcMrAGAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=LOR05mK+; arc=none smtp.client-ip=209.85.219.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1776179505; c=relaxed/simple;
+	bh=tp2zXVzdAJ5XOEiTCsRkb3jbGLsEwShzGi5kuermpAc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=gIXO1vhtEZziqhJZBb1wurncAixIbtsSEE4mXLpAlYlR/FhCZ+aT39gYXUVKBgVLfeTD5QD3oYDDeMbWLkrylHNKLo3HHBcP96/gDuzBfCS/ye+vmFEpi7MomNz+qs8f7fvSyzZhW1NHi8eL7Jd0kaYR/T0xSZekndX2iQXFFdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=evp0a+zh; arc=none smtp.client-ip=185.226.149.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="LOR05mK+"
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-8acb550db18so19085076d6.3
-        for <netdev@vger.kernel.org>; Tue, 14 Apr 2026 08:11:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1776179487; x=1776784287; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KYWxsN8NcBk0hkmTwyrJ9dFetqgCC/fPQOeOuZaqCQI=;
-        b=LOR05mK+HpHUZy18w4Dk7mDIMTVt2CqGJv6K1mBA55KO1uywBz8h8IBKBzhn4aHAO9
-         vH0NS+fuTcuiKi0VoxchkLiUtLN6rj7dqxajvrCuQyW0IdXx5NElXiYa4YWn5DDd/BtR
-         WFgWMEErubR+eerVtOWit7waU1BfplQlQbeI0ukBBX1Hfp8klPZxXlCJOs/B4824tYD6
-         vOMiryVGnE37XdbdYE5g3wxBwhLNymPEJbmA6ALYM/d6B+I5HUMss6Fc9WF0N1a3VH7u
-         OcXMJI2BDU4/8aMgg7lU7yp0PYDLaJwX/fP8wrU46jXXqbpXimJy41RSnyg/4SlBtXPv
-         9LPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776179487; x=1776784287;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KYWxsN8NcBk0hkmTwyrJ9dFetqgCC/fPQOeOuZaqCQI=;
-        b=UVix86njmC4wUvhpLHdaU3l0aR+TS/LNlGCltZHaA280Mqy6gzC4mCO3l9dvNA1XTb
-         DScHO/jyelPXawbUIcImmeZ1iSE55i9EjJ7vA5PdI3I+yRhRsvsbBySAo7aiuXors05J
-         jjcDrIJZK7aNbFqf1r835d6ISncxSplGiiy7cK9v9TjNulCkdLgmZf3ziHi/Xa3vS77L
-         ovTx1yxKR/BfJ6OF036RPFRW0UiMSkfK2ue2aWwYtPdfKPRe9fmgNSITQKZnvqHuX11u
-         SfeoZE4mpriR/uhy/eSjQnQoj5KA/O9TlnRuOExpiJOM1onB2UAJDutVAPmOBaQ1Ivmn
-         pV/Q==
-X-Forwarded-Encrypted: i=1; AFNElJ+LHjF4Ucl3Rzypau/O2esFGX06fgfRpPkApeWaalgNXkFkoagfcnOmdTpZYPebX8BfA0jqTYg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwvwDuARCUfex6yC/p/zLhsQhXRo2zV0GgktqhDiDOhus1JX4O7
-	Kj7RUsJrVfjK07304WyIXERdnBliEd5tz9N/ukkjh5EDXKC4OdUDqNTwAoO099MA/Yg=
-X-Gm-Gg: AeBDiev+x6Lla2z14Bd8JylJbz7KUrafdpMsxdt4e5K2e0kIwDwbN4RWybmzrMnETWe
-	LnW0yvJPdTmcbzHqD4DvRhcdAcqPdRTuQA9dWg9CkigcDtHc4ZS9WuD58VWkIBT37Z/2LfDwIWw
-	9GULXylqnEC1LnjW5MNykONbInrnV9jWzWvDhcd8VRu6HQ7In2XwfANK+DAUYEBfkDCN/AedoFU
-	2in3crDOVoAt8oFsAah8Bf8qJnLhXtmD7LRaKFsRcQh9DBtoXhy92/aeRdSO6Np0BsRVhkQRrd0
-	ta3pYJWJSRRK45D0h3gTgQTioQZ3L/NPWXgkIVopejDndKauc8lUele84sQ4paIhOy9RbqqRtqA
-	8ZF6bht+ZaLBE5Tds9MyKzgLGJoXd3CyWYIODvX65x336UBM6lAVMgJskWkMSaLpwKMwpPrF+MU
-	8zZ8RBj11pxnHBs0fJauNKa27FDQCuFUz9Gu36J7eapvxaWz/BlHsBLLH1AsoT0TPPNK3PKpTeQ
-	bcLFg==
-X-Received: by 2002:a05:6214:4a01:b0:89c:8709:d238 with SMTP id 6a1803df08f44-8ac862b51e2mr284214856d6.40.1776179487026;
-        Tue, 14 Apr 2026 08:11:27 -0700 (PDT)
-Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ac849e35afsm159006516d6.3.2026.04.14.08.11.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Apr 2026 08:11:26 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wCfQD-0000000BNfx-2aVf;
-	Tue, 14 Apr 2026 12:11:25 -0300
-Date: Tue, 14 Apr 2026 12:11:25 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: fengchengwen <fengchengwen@huawei.com>
-Cc: Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
-	netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	Keith Busch <kbusch@kernel.org>, Yochai Cohen <yochai@nvidia.com>,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Zhiping Zhang <zhipingz@meta.com>
-Subject: Re: [RFC] Proposal: Add sysfs interface for PCIe TPH Steering Tag
- retrieval and configuration
-Message-ID: <20260414151125.GF2577880@ziepe.ca>
-References: <6ea4c4c2-774e-aa76-3665-918e2a24cc84@huawei.com>
- <20260413100152.GG21470@unreal>
- <c3a6c6ca-3b71-476c-947a-5f2393d046bd@huawei.com>
- <20260413191930.GP21470@unreal>
- <b95ced54-339f-4859-b3eb-8bf261393ffc@huawei.com>
- <20260414085723.GR21470@unreal>
- <84bf119e-fa8c-4c97-9197-3377b7e2b250@huawei.com>
- <20260414103547.GA361495@unreal>
- <11eaea26-ec10-264a-db1e-951f6b46078d@huawei.com>
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="evp0a+zh"
+Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
+	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1wCeWL-00FB5b-Nm; Tue, 14 Apr 2026 16:13:41 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector1; h=Cc:To:In-Reply-To:References:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
+	bh=mJIuV1hFcG0AqFmXjuVmJdTq5oqD37Hr+RkhyPIT/fw=; b=evp0a+zhKZ19/tsYUtmJ1rGgiq
+	i0W3zfkwG/OaN3LhGGjEC4UXYU4KDsxr9TrXWuP6GuLHX36a4GwBGeb4xusowreSSKEvqZWt9KofG
+	D5I+ZPzmEzU3n6XWZo1ZLaW4TcC8IwLcCzCkxOYsbUB9TwM9Jg8Nuw5Jz1QiavTCuYELdwwG98sCs
+	QJ1mQCVpJEmZWT+Dg4X7VnOobXBI6YYJPcDIQ0bmbgoiwBAnPAuw5kc83nXfQW4YYLWRfj87AYNNg
+	A6JboP87w8dYhJHKqf0DsyQS5BD0Abs/P6MllJ7qFjzVwLrJhPJWHdjLe2rdy2cjx4RxKxIHmIe4T
+	Sd4d7rrg==;
+Received: from [10.9.9.72] (helo=submission01.runbox)
+	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1wCeWL-0000Ul-FU; Tue, 14 Apr 2026 16:13:41 +0200
+Received: by submission01.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.93)
+	id 1wCeWB-00DhbX-F5; Tue, 14 Apr 2026 16:13:31 +0200
+From: Michal Luczaj <mhal@rbox.co>
+Date: Tue, 14 Apr 2026 16:13:16 +0200
+Subject: [PATCH bpf v4 2/5] bpf, sockmap: Fix af_unix iter deadlock
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <11eaea26-ec10-264a-db1e-951f6b46078d@huawei.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260414-unix-proto-update-null-ptr-deref-v4-2-2af6fe97918e@rbox.co>
+References: <20260414-unix-proto-update-null-ptr-deref-v4-0-2af6fe97918e@rbox.co>
+In-Reply-To: <20260414-unix-proto-update-null-ptr-deref-v4-0-2af6fe97918e@rbox.co>
+To: John Fastabend <john.fastabend@gmail.com>, 
+ Jakub Sitnicki <jakub@cloudflare.com>, Eric Dumazet <edumazet@google.com>, 
+ Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+ Willem de Bruijn <willemb@google.com>, 
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+ Simon Horman <horms@kernel.org>, Yonghong Song <yhs@fb.com>, 
+ Andrii Nakryiko <andrii@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
+ Daniel Borkmann <daniel@iogearbox.net>, 
+ Martin KaFai Lau <martin.lau@linux.dev>, 
+ Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+ Yonghong Song <yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>, 
+ Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
+ Jiri Olsa <jolsa@kernel.org>, Shuah Khan <shuah@kernel.org>, 
+ Cong Wang <cong.wang@bytedance.com>
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ Michal Luczaj <mhal@rbox.co>, Jiayuan Chen <jiayuan.chen@linux.dev>
+X-Mailer: b4 0.15.2
 
-On Tue, Apr 14, 2026 at 10:46:00PM +0800, fengchengwen wrote:
->    We have a real platform requirement:
-> 
->      * 1. Devices in TPH Device-Specific Mode with no standard ST table
->      * 2. Steering Tags must be obtained from ACPI _DSM (kernel-only)
->      * 3. Devices are fully managed by userspace drivers (VFIO/UIO)
->      * 4. Userspace must program STs into vendor-specific registers
+bpf_iter_unix_seq_show() may deadlock when lock_sock_fast() takes the fast
+path and the iter prog attempts to update a sockmap. Which ends up spinning
+at sock_map_update_elem()'s bh_lock_sock():
 
-No, this is nonsenscial too.
+WARNING: possible recursive locking detected
+test_progs/1393 is trying to acquire lock:
+ffff88811ec25f58 (slock-AF_UNIX){+...}-{3:3}, at: sock_map_update_elem+0xdb/0x1f0
 
-If you want to control the steering tags for MMIO BAR memory exposed
-by VFIO then the DMABUF mechanism Keith & co has been working on is
-the correct approach.
+but task is already holding lock:
+ffff88811ec25f58 (slock-AF_UNIX){+...}-{3:3}, at: __lock_sock_fast+0x37/0xe0
 
-If the VFIO user needs to control steering tags for the device it is
-directly controling then it must do that through VFIO ioctls.
+other info that might help us debug this:
+ Possible unsafe locking scenario:
 
-Nobody messes around with other devices under the covers of the
-operating kernel driver. Stop proposing that.
+       CPU0
+       ----
+  lock(slock-AF_UNIX);
+  lock(slock-AF_UNIX);
 
-Jason
+ *** DEADLOCK ***
+
+ May be due to missing lock nesting notation
+
+4 locks held by test_progs/1393:
+ #0: ffff88814b59c790 (&p->lock){+.+.}-{4:4}, at: bpf_seq_read+0x59/0x10d0
+ #1: ffff88811ec25fd8 (sk_lock-AF_UNIX){+.+.}-{0:0}, at: bpf_seq_read+0x42c/0x10d0
+ #2: ffff88811ec25f58 (slock-AF_UNIX){+...}-{3:3}, at: __lock_sock_fast+0x37/0xe0
+ #3: ffffffff85a6a7c0 (rcu_read_lock){....}-{1:3}, at: bpf_iter_run_prog+0x51d/0xb00
+
+Call Trace:
+ dump_stack_lvl+0x5d/0x80
+ print_deadlock_bug.cold+0xc0/0xce
+ __lock_acquire+0x130f/0x2590
+ lock_acquire+0x14e/0x2b0
+ _raw_spin_lock+0x30/0x40
+ sock_map_update_elem+0xdb/0x1f0
+ bpf_prog_2d0075e5d9b721cd_dump_unix+0x55/0x4f4
+ bpf_iter_run_prog+0x5b9/0xb00
+ bpf_iter_unix_seq_show+0x1f7/0x2e0
+ bpf_seq_read+0x42c/0x10d0
+ vfs_read+0x171/0xb20
+ ksys_read+0xff/0x200
+ do_syscall_64+0x6b/0x3a0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Suggested-by: Kuniyuki Iwashima <kuniyu@google.com>
+Suggested-by: Martin KaFai Lau <martin.lau@linux.dev>
+Fixes: 2c860a43dd77 ("bpf: af_unix: Implement BPF iterator for UNIX domain socket.")
+Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+---
+ net/unix/af_unix.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index b23c33df8b46..590a30d3b2f7 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -3731,15 +3731,14 @@ static int bpf_iter_unix_seq_show(struct seq_file *seq, void *v)
+ 	struct bpf_prog *prog;
+ 	struct sock *sk = v;
+ 	uid_t uid;
+-	bool slow;
+ 	int ret;
+ 
+ 	if (v == SEQ_START_TOKEN)
+ 		return 0;
+ 
+-	slow = lock_sock_fast(sk);
++	lock_sock(sk);
+ 
+-	if (unlikely(sk_unhashed(sk))) {
++	if (unlikely(sock_flag(sk, SOCK_DEAD))) {
+ 		ret = SEQ_SKIP;
+ 		goto unlock;
+ 	}
+@@ -3749,7 +3748,7 @@ static int bpf_iter_unix_seq_show(struct seq_file *seq, void *v)
+ 	prog = bpf_iter_get_info(&meta, false);
+ 	ret = unix_prog_seq_show(prog, &meta, v, uid);
+ unlock:
+-	unlock_sock_fast(sk, slow);
++	release_sock(sk);
+ 	return ret;
+ }
+ 
+
+-- 
+2.53.0
+
