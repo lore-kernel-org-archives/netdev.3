@@ -1,185 +1,317 @@
-Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 319B3883F;
-	Tue, 14 Apr 2026 03:38:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.166.238
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776137937; cv=fail; b=RASWt+1SXc19lKOeyPM+SHPtNG5ezJinb/N85aK0G655rLSqMJjigRjD9wZEtdkuomujoepz63TT65FvibjoBgzy+ranB3dK9FnZWsIQ7I9boZSOAjHxmkqyNBqx+IBhUGTFZkeVX9+CMJ3evuSZ3MsxJyR2p/xWsAweXVDFOUc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776137937; c=relaxed/simple;
-	bh=6n9ADFzz5P0RsEx2E5CL4XYxBP/UEcEP90iLTXhePY8=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=KV3Q6s+DMOdBEIwbXJKXc6petAdxiOfVgpBrMCYg1xMYvzB/qXktyZNo82fml6fX1M391Tnt9n5lXxHZKZKs8e8JboPAtO+9o2OnFDUeiGta7YFTZyBD+Bxwo93qL2j5WePi9Dr6ADO8VlNqKHVgCjQQb1bDb8DVXuGztj0uedE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b=Dz+eVvwJ; arc=fail smtp.client-ip=205.220.166.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C072EFDAF;
+	Tue, 14 Apr 2026 03:46:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776138413; cv=none; b=B+zpjsxkcfyKrCw26IOA5/5rQBgnayINtnMucsS6O4RR6knFQhj5bDKMoLeSbnr6q568fQnC/HFUmopIKwAmq8p8yidvyZ5w9b4DpgT0AU6arNyZR8VaNdZ6MY1uZc0kTuB8ddyklXyLzAQ9AePZh5Sg3PkoZelnUXvtidpPAis=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776138413; c=relaxed/simple;
+	bh=h+8tYZnDNut7N+qjHrTNV6ZQ1BZ4tm0AsavZ8FV5pjw=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=c7E65SXg814AkXkiZRzci7POQBH6WioYwPWIBLzEzg0AsylJwk18l5KKCuGFoP72HlodHfU1Zeb9M0VXm39WSzJyvfrhtN6I2PQOYo+0n/UYqzkLRe4RXiDpjRSpsLuYEuvdI4wuEnDRNUv7KD+bY3CcgIdeo6nipyrjzlB8oZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=lEs12Y/Y; arc=none smtp.client-ip=67.231.148.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b="Dz+eVvwJ"
-Received: from pps.filterd (m0250810.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63E1U2tC3723448;
-	Mon, 13 Apr 2026 20:20:33 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com;
-	 h=cc:content-transfer-encoding:content-type:date:from
-	:message-id:mime-version:subject:to; s=PPS06212021; bh=9YRiMffHo
-	51Nt0aFTBN6Sqm9U+t5t3yTvvR+etIAEL8=; b=Dz+eVvwJ8WHm0EJdDKHLQZkXZ
-	h+3ebC3B7QjiZMD7tepPg53GLNV1bQvF7e+L0rR+oiM/8pch4WX1wpSOjduAOtk3
-	FzDbPZFSoQwE78EmUdLU8VI0pscDeIGPd82r2vT+mrOtdLzU1NFPJs1h3vaeJ3B1
-	K5BT9sUAaeG/HVENIKQ0oy6RapeEPgDzwuODef5tvsiXIIt/bBYB7JqHbAVUMGwd
-	w7ztgl0ysNmB9uTLoOBg0MevizTReB1OfM5jm9V8idoBttWYEcGMzVNgGogiyOuK
-	IpXRdalNnvPMKP2wWr/Rtv4Wk015h54ay1CzObAAH+hibkyk+D4J04ng5z+kw==
-Received: from ch4pr04cu002.outbound.protection.outlook.com (mail-northcentralusazon11013014.outbound.protection.outlook.com [40.107.201.14])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 4dh86m87tv-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 13 Apr 2026 20:20:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lMKTmzdqbS2o0aIQ2zmF5I7kSjAWCRRYMTC6JC5TTjdf/uKk131vmJUJYvPOn+Z5NiytoqdOKB8oBG+O4wsBLHp+XJhy2WLqjTy1mBsUlMus6vbe5RiDtwOPKXWhR4GOltdxIhkgW0bgcTh0z93mXrDqqyoG21Si12lt1cipxXvJORoV/gP8g+07v5MohRu4sw3IzCahqp9K+zKBLmOzIsyCYgQsRALv/R/SDngIXUH8YAkhdzr75wvy8KhhSjUQ3yrxRVYOYzBg/yG9hAw/zHy8e9XyOI/XK7Jt5LruppcEsVhDpLhblvO+njQejulSJOwhILcAQIisjNabH7AL8Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9YRiMffHo51Nt0aFTBN6Sqm9U+t5t3yTvvR+etIAEL8=;
- b=ZHHTf+P0sGRlMP+jggSpO886SL6CDEvr1Ju/zbucybmW3kbj/Hv+AFDID0zox9AI1TY+uQU94CkbsidNkp2veYVStaba6KNsnAJpjLFo7joA5pesADAy3L83490ANzyWe0S9gjxAX7YFu5WdoA3olk9NcO5YwXe7yVg1522lMePpGBNXp8r1Mn4I7IDW+01F+zhRnMWygNP/o97SrTh0i8OM3NzrDy9XWRzzHeNisrlFneAWCt75j1c4N67SqHr5UQkNBksfie/v1+gWZyg7FCzhbz+Fn2/b6LldEn2pR+sDOW5mLcnPJHXrq7Dr5HzDXxkA/jWSyfqll8zDy2kaNA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=windriver.com; dmarc=pass action=none
- header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
-Received: from CO6PR11MB5586.namprd11.prod.outlook.com (2603:10b6:5:35d::21)
- by CY5PR11MB6440.namprd11.prod.outlook.com (2603:10b6:930:33::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.20; Tue, 14 Apr
- 2026 03:20:29 +0000
-Received: from CO6PR11MB5586.namprd11.prod.outlook.com
- ([fe80::89ea:ecfa:c345:3fc6]) by CO6PR11MB5586.namprd11.prod.outlook.com
- ([fe80::89ea:ecfa:c345:3fc6%4]) with mapi id 15.20.9818.017; Tue, 14 Apr 2026
- 03:20:28 +0000
-From: guocai.he.cn@windriver.com
-To: gregkh@linuxfoundation.org
-Cc: stable@vger.kernel.org, johannes.berg@intel.com, netdev@vger.kernel.org,
-        regressions@lists.linux.dev, miriam.rachel.korenblit@intel.com,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 5.15.y] Revert "wifi: cfg80211: stop NAN and P2P in cfg80211_leave"
-Date: Tue, 14 Apr 2026 11:20:06 +0800
-Message-Id: <20260414032006.2887625-1-guocai.he.cn@windriver.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SGAP274CA0004.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b6::16)
- To PH0PR11MB5593.namprd11.prod.outlook.com (2603:10b6:510:e0::15)
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="lEs12Y/Y"
+Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63DL7lus1628427;
+	Mon, 13 Apr 2026 20:46:35 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pfpt0220; bh=YiWf24idfLOna0cEbxoX+AYgB
+	F1BS4mOvgW6ikn7h3g=; b=lEs12Y/Y8KuYm36DSYCd0FkR2ncwV+4tdoCCTmzP7
+	FgVH55RbnQ0Od5s5+gnnoDgrNVz4nrMBJT1FLpzBE2d9wy+N9vAIhPNTF7lxYkw6
+	CMFP/3eP29kJXEGIwAvzyEoXjm9xJk0B7tQaqR88s4d1zasS31A7E2IIrbasPXe/
+	CbW1McULEjqDgnLwHp3wzoBFD6gcQmCkVxd0nPcYfJSHZ+bsmarRYD/Ux3zdPg5G
+	3F0/Iwpj2MIWWCIz78QzdmiJs0Ssida/o2DcA4Fs7FFOOQAxiHU3Cj9rRX080ikh
+	8OEoYGECYgkB+QgXZR4R9qhhWKxXGb5Wmi45uKcBNGCYw==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4dh84qrrpf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 13 Apr 2026 20:46:34 -0700 (PDT)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Mon, 13 Apr 2026 20:46:34 -0700
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Mon, 13 Apr 2026 20:46:33 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Mon, 13 Apr 2026 20:46:33 -0700
+Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with SMTP id 181F33F703F;
+	Mon, 13 Apr 2026 20:46:26 -0700 (PDT)
+Date: Tue, 14 Apr 2026 09:16:25 +0530
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: Paolo Abeni <pabeni@redhat.com>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-rdma@vger.kernel.org>, <sgoutham@marvell.com>,
+        <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <donald.hunter@gmail.com>, <horms@kernel.org>,
+        <jiri@resnulli.us>, <chuck.lever@oracle.com>, <matttbe@kernel.org>,
+        <cjubran@nvidia.com>, <saeedm@nvidia.com>, <leon@kernel.org>,
+        <tariqt@nvidia.com>, <mbloch@nvidia.com>, <dtatulea@nvidia.com>
+Subject: Re: [PATCH v11 net-next 5/7] octeontx2-af: npc: cn20k: add subbank
+ search order control
+Message-ID: <ad24kZnhUXkysNKF@rkannoth-OptiPlex-7090>
+References: <20260409025055.1664053-1-rkannoth@marvell.com>
+ <20260409025055.1664053-6-rkannoth@marvell.com>
+ <b9ffa72d-ebe2-4fd1-b668-93620f206179@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO6PR11MB5586:EE_|CY5PR11MB6440:EE_
-X-MS-Office365-Filtering-Correlation-Id: df152830-9934-48fe-6208-08de99d4c6b6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|52116014|38350700014|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	nmVxMSp0MTaGwhKb3J74vte6Mb8fZ4OL53jqVAHPyAo8Qnr3KHgEUqVpj4UwjHAVqV/ZVJkdmrLCRljSWkHO9mPHMTyAdtMkpJ1VEwHQ1Y7HY0UxUeGurDraReh6LtkCS73viDLlLo/e03JaA5/Yz1F5Ldy+ewlZRQtI2ZlZgRDl4FdXy5ULekaVazgHwjfPPJ1ww5h6n+eiGUUSm9M6TKJC9vTFQU6xbvoFlajtzrvF5nii4lYoOKPtIL/YMeI52nQKkIcN8Cw3pWL5wTNl1ibni7ofX8ltGQrnLVtKD8wT1v6jggbE/Mtm3XF/RGOw3GpHm+Ysy+EROXvIvrEN0bI6mKIm+rBc19yAA53VcC/T9BoUWrrFwAx9ZwM6Mxwx/+r7Hbi2a9XkM6TThLbBjVYZbjy2nWFH17LMeBxclixrNi5JG3rrO1kE/5Rq5RbOOzQiZGUOxQT5j8FHaPbRpKNkPGnkcXahKaEnQtYyMZ1cntpwF7VTzpMbgBRdRCbSyzvtno4yHqZRLUNfCPBSbXfWUgTFrUTSaxdMIDMU+GAIpmBFAwIgcMkNK9ylbU5LepD++kX2pjN1CqPXBjZmucLotOFMFP/ACAVrgHBatg5a6XM2gz+REoC35sF9Ms7ig4m6JPFSzKgM+nbZiMmwO5xCehQNwvc9HwIJ2hEYIo+KjX6ywi8PWeTiMW7BFY7tHLya5KJy+SSAM7odN4afzZZ5OJ7bLpWySQbKyCg5+TfL1b9gG0tw+efgu6xde4paDRDzz3lrHn8GxJw0fCqUt3NKFHHtOziZ19Teyui3KLA=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO6PR11MB5586.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(52116014)(38350700014)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?RDpSRUnPvFB3acu/B1lL2SrjKpVnOI/GGUUVbF/Nun1pkWAb4vGida06bVaw?=
- =?us-ascii?Q?0ZV1QF2lbwRSLZr+du0DpbL3Ug3/CWDSCvblrxC+PR7bAlxLG39oYTJYwn6J?=
- =?us-ascii?Q?FssMBiZrKXe0ZNNK4BnX6IYVObFSRpGGUKFYoZz+uBsRu4uQDcgB0lOhs8FU?=
- =?us-ascii?Q?WroHj1Xjs9lZLCQmdz7pXvqw5UT5kuVUt1H+QQmOQ6XF6gYdjDu4TibkxspM?=
- =?us-ascii?Q?+hZdMNuU7gSNmV2JzhKTZXkFjlKAKdtj/TuyBfQO0RPiPgMo6SD7lGkn3s+6?=
- =?us-ascii?Q?MVB92lkKo0CWncqhflIz3Y2EBWSyU4Ye519cUuW3Lwvaf52SE6d2bSGCswqW?=
- =?us-ascii?Q?5rKlrdQZgA43kCJi4qZ3t6Y64ksKr0JU7KGd8Lv5kLqQIIOtsrRK5PAVMErY?=
- =?us-ascii?Q?i5uERZlmPyuoJduyDcVzzg3RVfV84GqLkHBRp8fgaHns450F5Rsp3+V3LbFy?=
- =?us-ascii?Q?/Ozr8lVEaplggMWUsaJ+f1V5SL8S2WXLoCGuJ37kFSUuJ29LwDZ4G4eDY54a?=
- =?us-ascii?Q?RUMLIy9IqLMhRiHBrUuahpu2ipMclm/fdyseWZh+zPn2qb/W1Kpy8GRuAitm?=
- =?us-ascii?Q?nbuHoH2M+pv0oo/uiwmuqhDcyfdoZiIKOCP6be+wF0IOYsyGhqSZvHahS+cG?=
- =?us-ascii?Q?gj7agsAf2eY/rfHVGA2fSvcxUyIIZIPLZth6rJhocABGGNw0aPt5gUOUG7hf?=
- =?us-ascii?Q?ZHobJhX49UJy/aOIWNKuuYLrZHoxncGbXXfZOa+4dnMeZsGLRcUoxqViFh7w?=
- =?us-ascii?Q?pavZBkoEu2MbDwqSE0FmmKtLKMX/02XMAo5I+HHoSjhE+wEjSsTksPPa9u9E?=
- =?us-ascii?Q?YRexsCFEVpmspHxXRhTuRRWDTsaEqQD+AfMrtkPTaTJD5MWgBzjXn7UlOZWn?=
- =?us-ascii?Q?gT5omTeM6C9reqbh+8K+qzxsvNlO1benk0TYj5qogD0kHaCJaJh9ss2qDH/j?=
- =?us-ascii?Q?QehEeomiZd+ltA3qND1T39/U2T+1oWss/lPllWInHhcBN1Fb//iN6/Y6NynG?=
- =?us-ascii?Q?YJ2ytgj3X3FdFlViAnDu86A8OUxo42tGpuiJ9bh3rH8DQF6EJTzIJSgRiGg7?=
- =?us-ascii?Q?Xv8Xe5KRhxyXRIX0/YXk1O0jq+C39IjDinBMd01icr/li7Z7P2LA09T4wrfG?=
- =?us-ascii?Q?NiP7kVKqOHU4G0CYVbKuKe2tWNd2l1dvR4WfNe0Y19P+NjfTabBVL0PwBuxn?=
- =?us-ascii?Q?TlozpZNa3kWI1MqeJCH+pAntwVgPakmCbeGHCGv2fPguWV19siTcvXTByXas?=
- =?us-ascii?Q?g3P2Y8u9qJnBEhe7cwVajHcdP4D780PAts2ForFH+eAJIlOSNLvWQUSoxWpc?=
- =?us-ascii?Q?UH5YQ8WbMKvDXAZTLLKGhlaoYHkIglSS8x+wngyTPaoqMETAQtreaRiwRuqT?=
- =?us-ascii?Q?ENYCjjesGWvf/kmEKoMgABI0NUVEw8aSMvYH/UA2sBWrQItea8SdEyBxGbyv?=
- =?us-ascii?Q?DJVLodpUeOvoLOR9EftaLKZh+tv3rfsq9LbNa44Q4T978TbrJoILFH0kuHvl?=
- =?us-ascii?Q?q1WYhTMIPAdTU4mPElQJR3gJ+1rnz7bnkGZ3JbG+UsA9lY66nygRZ9U2MREY?=
- =?us-ascii?Q?67XeAk0B8cuE1DQpAkj4sGm8tIhHTJZki34qb9sVbNpBhT4o5vrO8mEgh4gR?=
- =?us-ascii?Q?q3bhFid5vTODzyTnfNKAeQkBx8IVHqAbztBBwhTw9bfoPwY/XbzuNYOMu7iT?=
- =?us-ascii?Q?gu84ca02V44nQM1o1PVo4ZVznUv0ulH1R2Nh3E8UZFTpIhJtCtoaQut2MSNy?=
- =?us-ascii?Q?8JUeT1nQ7xhnVXxZ8vHfIyUwAEac3rA=3D?=
-X-Exchange-RoutingPolicyChecked:
-	g+AbT9Df//GTDDdKjxAmP4VeIb7agxI4p+xpAsfNTioUnIwdO/Ely0mC7Cm59S3fsOie8Kn31fDlBIVg5AdQEXp5dWwIcQM/8kDstuMBIP5w5vjcnLn5teEm+aOiqSPm3xSI3PgJBFKvOYtftTHvbybqDwPyy01bWJDwWH3JbERjF8lVnP780h5Bw1o11tAO7v3fISR4KWZm39Mm0I9l1Ff3FflKnQGNAnafjlxlJgVBr6RQXjaYgr7Cv0W7rI8P89KPqehe6UBS5HMnYUhsryMgt/ZxAuBy9yh9Hp615C3BtD40LGLjy0Nydon4mBekg+lfiT1mRvO2Lq3k3BhNsA==
-X-OriginatorOrg: windriver.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: df152830-9934-48fe-6208-08de99d4c6b6
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5593.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Apr 2026 03:20:28.8871
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MgT+SdMqCbWJRPDX4xgv1Lhyig4VHot9StiO2TDOH4VYNN9NlCWN8CfLxWV4qAORcdiRgmHljgVhdETZ1z6LHeDBmiXBGA9WDsgu+GkP47A=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR11MB6440
-X-Authority-Analysis: v=2.4 cv=Q5riJY2a c=1 sm=1 tr=0 ts=69ddb280 cx=c_pps
- a=qO1H+kaF9sbjJIkK6g+tnw==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
- a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
- a=xqWC_Br6kY4A:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=bi6dqmuHe4P4UrxVR6um:22 a=HK-ge7EqtdluswH-FwHe:22 a=t7CeM3EgAAAA:8
- a=y-J10uEhvVOKljhdnB8A:9 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-GUID: Ibap8DFinM-IFRAjtYxxEqDqLo0YUrWn
-X-Proofpoint-ORIG-GUID: Ibap8DFinM-IFRAjtYxxEqDqLo0YUrWn
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE0MDAyOSBTYWx0ZWRfXzWxV6KAHBU36
- 7TOXRINdpz9bawWooiFXAiQORdVDNAoNKei928uNl2jhsAcQtfovSqFyJh5KhJrcLDMPKpldiQx
- qryNc/ErZOPJd3rJmGc2UN9qYbplQdjtbOR7iT82eWM1ohQH7AdA65E+TRiw2zmaYBcGl9ayy0+
- FOCCC3rG0Ms6NvQvNpE8dKSr+Fl0NiGD3YuKayigpXIKJQb5pU2mVFhNIdEbDMtZJTcFirDRL2F
- MEEczM3cnc1QcOXWiKPjrHRPMzvvzxW6EFejqQhMgNnSC0zq7JGWpDahfloGxKNLSxmXVyQsYYx
- odz/n+DJ2BQzQpLgzpjE20ytK10gNy+9iUYSzP5lDcPlJXQMi82WKqRkyFso1l7UqSnPHxzDNLK
- 8TV3gmS0AVkLE+UiHQIj3e7uNLYXKjD8/OMZby6/b8d0ap2As1fHpvm/v03pJOvVOzi9cUOYdwD
- Qv8uA34hX7bcLHw33tQ==
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <b9ffa72d-ebe2-4fd1-b668-93620f206179@redhat.com>
+X-Proofpoint-ORIG-GUID: orukX0zeH64LpU1d97G3ejZgOW0NItZH
+X-Proofpoint-GUID: orukX0zeH64LpU1d97G3ejZgOW0NItZH
+X-Authority-Analysis: v=2.4 cv=arqCzyZV c=1 sm=1 tr=0 ts=69ddb89a cx=c_pps
+ a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
+ a=kj9zAlcOel0A:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=l0iWHRpgs5sLHlkKQ1IR:22 a=EAYMVhzMl8SCOHhVQcBL:22 a=c92rfblmAAAA:8
+ a=M5GUcnROAAAA:8 a=20KFwNOVAAAA:8 a=f7ZYTRpxgPyUO7SbQ74A:9 a=CjuIK1q_8ugA:10
+ a=GvGzcOZaWPEFPQC_NcjD:22 a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE0MDAzMiBTYWx0ZWRfX2dHgW4gWTWlP
+ F9oSOU9aFOwtRZ8D9tsqF8dPO8PR3nEbQMFIQV/+luW4ZrAhnwBGd2LeL7esO2Q6frI+YN/8LRW
+ qnIRV7q78yJFRo6oP5TafZMqOQP0GspNGKHc0zNuYj7Z4Mgdcoqk7qt1ROuIttUnZUH1AulJK2t
+ Cwq0ceAgeupvln7oKhopOqAZ3t7WG0TeU/rlUiJEbp6tvQdhO/fgNZfVTTi70AJlZvJVstABvER
+ mPWveEzBRFDBQgc5EPlmp2+82yTkpkEcBDdY2S6B09qJP8NSz4yMwSpY+JntL0frjLhaLxR3dvq
+ 1vI3Mmd5rBJUhNhj9OucHostK+SI/xRU6nZfxd2ALOcqSlI1RKRT43lE0KHUQ0qKryrbfjPvno/
+ 2mLzhQ2lad8XdsrfGXj3B2CQ6jiZD+O4rbPvsMSfXs4mw7sGh9Tt1fdQBNxMYsYsXYXX8+kzqxl
+ BSncZbX3byRG9W7fLIA==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-04-13_03,2026-04-13_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 suspectscore=0 spamscore=0 lowpriorityscore=0
- clxscore=1015 impostorscore=0 adultscore=0 malwarescore=0 bulkscore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604070000
- definitions=main-2604140029
 
-From: Guocai He <guocai.he.cn@windriver.com>
+On 2026-04-13 at 18:26:00, Paolo Abeni (pabeni@redhat.com) wrote:
+> > +	xa_for_each(&npc_priv.xa_sb_free, index, v) {
+> > +		val = xa_to_value(v);
+> > +		fslots[fcnt][0] = index;
+> > +		fslots[fcnt][1] = val;
+> > +		xa_erase(&npc_priv.xa_sb_free, index);
+> > +		fcnt++;
+> > +	}
+> > +
+> > +	/* xa_store() is done under lock. If xa_store fails
+> > +	 * ,no rollback is planned as it might also fail.
+>
+> Why do you need to go throuh erase and add loop? Why can't you directly
+> xa_store() the new value? Note that xa_store() can fail due to memory
+> pressure.
+>
+> Avoiding the previous erase will prevent deallocation and re allocation
+> and will avoid any reasonable xa_store() failure.
+ACK.
 
-This reverts commit 31344ffecd7a34335ce2b52e8c205bce3cbfca4b which is commit
-e1696c8bd0056bc1a5f7766f58ac333adc203e8a upstream.
+>
+> AFAICS there are a few more items reported by sashiko, please have a look:
+>
+> https://sashiko.dev/#/patchset/20260409025055.1664053-1-rkannoth%40marvell.com
+>
+> /P
+>
 
-The reverted patch introduced a deadlock. The locking situation in mainline is
-totally different, so it is incorrect to directly backport the commit from mainline.
+Patch 1: [PATCH v11 net-next 1/7] octeontx2-af: npc: cn20k: debugfs enhancements
 
-Signed-off-by: Guocai He <guocai.he.cn@windriver.com>
----
- net/wireless/core.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+>"+static u64 dstats[MAX_NUM_BANKS][MAX_SUBBANK_DEPTH * MAX_NUM_SUB_BANKS] = {};
+>Is it safe to use a static global array here? If multiple RVU AF devices exist
+>in the system, it looks like they might share this array and overwrite each
+>other's hardware statistics."
+There is only one single rvu AF device in the system. Ignore the comment.
+as it is false positive.
 
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index 22e6fd12f201..58b91e9647c2 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -1300,10 +1300,8 @@ void __cfg80211_leave(struct cfg80211_registered_device *rdev,
- 		__cfg80211_leave_ocb(rdev, dev);
- 		break;
- 	case NL80211_IFTYPE_P2P_DEVICE:
--		cfg80211_stop_p2p_device(rdev, wdev);
--		break;
- 	case NL80211_IFTYPE_NAN:
--		cfg80211_stop_nan(rdev, wdev);
-+		/* cannot happen, has no netdev */
- 		break;
- 	case NL80211_IFTYPE_AP_VLAN:
- 	case NL80211_IFTYPE_MONITOR:
--- 
-2.34.1
+>"Also, since there are no locks, could concurrent reads of the debugfs file by
+>multiple threads cause a data race and corrupt the stored statistics?"
+ACK. added a mutex lock.
 
+>"Since en_map is added to the global npc_priv structure, is it ever explicitly
+>cleared during device initialization?"
+npc_priv is defined as static. So all fields are set to 0, by default.
+Anyway, added bitmap clear to get rid of this AI review warning.
+
+>"Does updating dstats inline during the seq_file show callback break the
+>statistics if the buffer overflows?"
+ACK. Used seq open with size() API to set required size of buffer at the start.
+Added a check to see if there is a buffer over flow by counting buffers wrote into
+seq_file. dstats are "delta stats", and used for debugging.
+
+>"Does updating dstats inline during the seq_file show callback break the
+>statistics if the buffer overflows?Does updating dstats inline during the seq_file show callback break the
+>statistics if the buffer overflows?"
+ACK.
+
+>"When seq_read detects the overflow, it allocates a larger buffer and calls
+>this show callback again from the beginning. During the retry,
+>stats == dstats[bank][idx] will evaluate to true because the array was
+>already updated, which skips all the previously overflowing entries."
+ACK.
+
+>"This isn't a bug, but using the ternary operator for its void side-effects
+>is generally avoided in the kernel. Could this be written using an if/else
+>block, or the assign_bit() macro instead?"
+ACK.
+
+>"Since en_map is added to the global npc_priv structure, is it ever explicitly
+>cleared during device initialization?
+>If the PCI device is unbound and rebound via sysfs, could en_map retain bits
+>from the previous lifecycle and cause the new mismatch debugfs file to falsely
+>report old enabled rules as mismatched?"
+ACK. Reset bitmap to zero on deinit.
+
+Patch 2: [PATCH v11 net-next 2/7] net/mlx5e: heap-allocate devlink param values
+
+>Could we avoid the dynamic allocation entirely? Instead of storing all four
+>values at once, could a single union devlink_param_value be declared inside
+>the loop, populated, and immediately assigned to the respective config field?
+>This would reduce the stack usage to a single union, avoiding both the frame
+>size warning and the new memory allocation failure path."
+ACK.
+
+Patch 3: [PATCH v11 net-next 3/7] devlink: Change function syntax.
+
+>"The commit message notes that exported APIs will be updated to pass the
+>unions by pointer. Is this incomplete? Exported APIs like
+>devl_param_driverinit_value_set and the validate callback in struct
+>devlink_param still appear to take the union by value, which might continue
+>to push the large structure onto the stack during validation."
+ACK.
+
+>"This isn't a bug, but it looks like an automated search and replace
+>accidentally modified the word "values" in this comment."
+ACK.
+
+Patch 5: [PATCH v11 net-next 5/7] octeontx2-af: npc: cn20k: add subbank search order control
+
+>Does this code overflow uslots[]?
+>Looking at npc_priv_init(), num_subbanks is populated directly from the
+>hardware register NPC_AF_CONST2. While it ensures the value is a power of 2,
+>there doesn't seem to be a check that restricts it to MAX_NUM_SUB_BANKS.
+>If the hardware reports a value larger than 32, ucnt could exceed the
+>bounds of the stack-allocated uslots array.
+ACK.
+
+>Can this approach cause a permanent leak of the erased subbanks?
+>If any xa_store() call fails, the function jumps to fail_used and returns
+>without rolling back the state. Since the subbanks were already erased from
+>the xarray into the local stack arrays, failing to re-insert them leaves the
+>hardware allocator state partially empty and corrupts it for the lifetime of
+>the system.
+>Would it be safer to pre-allocate with xa_reserve(), or build new xarrays and
+>swap them in on success?
+Used xa_store without xa_erase. If xa_store fails due to memory pressure, error is
+unrecoverable as this error can happen in between (for loop).
+
+[PATCH v11 net-next 6/7] octeontx2-af: npc: cn20k: dynamically allocate and free default MCAM entries
+
+>"The NIX_LF_DONT_FREE_DFT_IDXS flag is read directly from the mailbox message
+>structure. Since mailbox messages can be initiated by Virtual Functions, what
+>prevents an unprivileged VF from repeatedly allocating and freeing LFs with
+>this flag set to exhaust the hardware MCAM entries?"
+rvu_mbox_handler_nix_lf_alloc() ---> npc_cn20k_dft_rules_alloc(). npc_cn20k_dft_rules_alloc() will alloc default entries if and only if it is not already there. So if
+VF calls alloc and free LF without setting the flag, the default entries wont be allocated or freed.
+
+>Are the values in ptr[] virtual or physical MCAM indices? It appears that
+>npc_cn20k_dft_rules_idx_get() retrieves virtual indices, but they are used
+>here as direct indices into mcam->entry2pfvf_map and passed to
+>npc_mcam_clear_bit(). Since those structures are sized for physical indices,
+>could this cause an out-of-bounds memory corruption or an integer underflow?
+default entries are allways allocated by setting "ref_entry" field in struct npc_mcam_alloc_entry_req. Then, rvu_mbox_handler_npc_mcam_alloc_entry() wont return a virtual
+mcam index.
+
+>If xa_erase() fails above and returns NULL, ptr[i] is not cleared and the
+>code falls through to the free_rules label. Will this result in
+>unconditionally calling npc_cn20k_idx_free() on the stale index, potentially
+>causing a double-free?
+ACK.
+
+>Furthermore, if a VF manually frees its default MCAM rules via the
+>NPC_MCAM_FREE_ENTRY mailbox command before this NIX LF teardown occurs,
+>npc_cn20k_idx_free() will be called during that manual free. Since the manual
+>free does not remove the index from xa_pf2dfl_rmap, could this teardown path
+>fetch the same index and attempt to free it again?
+default mcam rules are allocated in rvu_mbox_handler_nix_lf_alloc(). Not thru
+NPC_MCAM_FREE_ENTRY. if it does intentionally, then it is a violation. we have dev_err() there, and need to debug at User point.
+
+>Does the caller of this function properly handle negative error codes?
+>For example, in npc_enadis_default_mce_entry() and
+>npc_enadis_default_entries(), the returned index is passed directly to
+>npc_enable_mcam_entry() and nix_update_mce_list() without checking for a
+>negative value. This could lead to a WARN(1) in npc_enable_mcam_entry() or an
+>out-of-bounds write in nix_update_mce_list().
+We intentionally did the change to find out the flow which pass wrong mcam index.
+So we need a splat using WARN(1)
+
+>Here, index is a physical index from the bitmap iteration, but the values
+>returned into dft_idxs[] by npc_cn20k_dft_rules_idx_get() are virtual
+>indices. Will this comparison always fail, causing default rules to be
+>erroneously physically freed?
+No. default indexes are not virtual. This is ensured during allocation itself.
+
+>Additionally, if the NIX LF is freed with NIX_LF_DONT_FREE_DFT_IDXS to
+>preserve default rules, the ownership mapping is cleared here.
+ACK.
+
+>Upon
+>re-allocation, npc_cn20k_dft_rules_alloc() will detect the rules in
+>xa_pf2dfl_rmap but won't restore the ownership in entry2pfvf_map, meaning
+>subsequent operations on these rules will fail verification.
+ACK.
+
+>Does this make the firmware layout dependent on the internal size of
+>ikpu_action_entries?
+Yes.
+>If future kernel versions add new packet kinds and increase the size of
+>this array, older firmware files will fail this bounds check and be rejected.
+struct npc_kpu_profile_fwdata does not have a field to indicate the size of ikpu_action_entries.
+We can't modify the structure as it would break backward compatability on old fw.
+
+>ill this trigger a compiler warning or build failure on strict builds?
+>The min() macro performs strict type checking, and fw_kpu->entries appears
+>to be a signed int, while rvu->hw->npc_kpu_entries is an unsigned u16.
+ACK.
+
+>Could a negative value in fw_kpu->entries cause an integer underflow here?
+>If fw_kpu->entries is read from untrusted firmware as a negative value, the
+>offset calculation can underflow the size_t offset variable.
+>This would bypass the subsequent bounds check because the wrapped offset
+>plus hdr_sz wraps again to a small positive value.
+>On the next iteration, calculating fw_kpu = fw->data + offset could result
+>in an out-of-bounds memory read.
+Addded check to return on invalid value.
+
+>Does modifying profile->kpu here corrupt the global default profile state?
+>Earlier in the flow, profile->kpu is initialized to point to the global
+>static array npc_kpu_profiles. Allocating device-managed memory into
+>profile->kpu[kpu].cam2 overwrites this global state with device-specific
+>pointers.
+>When the device is unbound and the memory is freed, could this leave dangling
+>pointers in the global array for other RVU devices in the system? The same
+>applies to the legacy firmware parsing path where cam[entry] is overwritten.
+
+>We are not using profile->kpu after unbind and memory is freed. During reinit, these
+>fields are intialized again. So there is no issue with it.
+>
+>Could this printk formatter read past the end of the profile name?
+>The name array in the firmware header is 32 bytes. If a user provides a
+>firmware file with exactly 32 non-null characters, the string will lack a
+>null terminator.
+>Printing this with %s can leak adjacent heap memory contents into the kernel
+>log. Using %.32s would ensure the read stays within bounds.
+ACK.
+
+>Do these fields require an endianness conversion before use?
+>The 16-bit values like dp0, dp1, and dp2 are read directly from the firmware
+>blob.
+>If the firmware payload uses little-endian byte order, applying these
+>directly to hardware registers could result in misprogramming on big-endian
+>architectures. Would it be safer to use le16_to_cpu() here?
+s/w is validated only for little endian as HW is little endian. if big endian required,
+we will provide seperate firmware for the same.
