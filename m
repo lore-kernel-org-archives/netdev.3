@@ -1,143 +1,60 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 624702641C6;
-	Tue, 14 Apr 2026 15:38:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678AF2641C6;
+	Tue, 14 Apr 2026 15:39:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776181098; cv=none; b=nhzYqXwQkhgFuRPuNCqZ9kk4RZNNVWEELPvi/ANArY6bBNKrLEf3S2X3k72w1EP+/LZJUM8YUTmI7liEg3QhA9yxo9WKELm4yyXt3tprdZMsLPI4L0imETkgC4Vl8kGEXp6EALetNmAawz2nweqnOwHfjez3CThdEMENFdWU4fA=
+	t=1776181168; cv=none; b=XM4ESSHNky6Ov036UxDpPh+3ioANFnDv46kHv6UqoRzNYKtHjceeGRQJbZHSQiL91eh7lDM2DX5x2aELQnw4e7IS/JwM8dsCD9mXKO2rr8r8nzgQ0Dg2ZbRTWCTgg7kIPzSd3FUWE68Tz8QfU+kObAo5su2PHENI90bv+EhYjxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776181098; c=relaxed/simple;
-	bh=9ClUBers0F1nwVFvE4NaICAbcqCkYAjwIb7tRc8M2k0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rGh+c+7h4XLTsjp0bv0qe23cPpiSKtwWWetC7lqm7d4zeC4toI2FInYUjFClIucJ/rEOWOCqNOKJGLOiCDt8CgslkJO2RNbDnLzZyPQ33VoeWoln4iL7inAmeu6XAiDr7JlvkfWXzZ8TKZ5ptpu/mIhgGv9zufGONhiKmRGpVqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sy6+ttcO; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776181168; c=relaxed/simple;
+	bh=rvfCg0/c2jStKBs1lu0aHeajXcAaG62j7ArPVl5a5Ek=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tRThCwPqpfoiqLhAlXyxgRogp3QRpkV5n6eMTO0vvPpZeuq6QIOvA77PmZIf7dcjhBEj/JrcGu2USHEYEqlQXhr1DHy5Mdk8d0y4g4edt2oXQnkJKtGPqH2KcilDnpiob9VhyK/aQp9Thjx+TNcW5WlKXj8NSgsj+GEwOMey0R4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fg60qm48; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sy6+ttcO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAE95C19425;
-	Tue, 14 Apr 2026 15:38:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fg60qm48"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 485B7C19425;
+	Tue, 14 Apr 2026 15:39:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776181098;
-	bh=9ClUBers0F1nwVFvE4NaICAbcqCkYAjwIb7tRc8M2k0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sy6+ttcOLT6Piefv4Vi77kILsS7C2i8vlCLnBr0zrHRhckGrB0RNuhkBWc1eauIQA
-	 PEsJKuZ0OlSsKcfFOsO8Xv45skfhOqPMAmRMwVOrZswZUKleDr8vw3uweNdiAB5Zbj
-	 Sa/DFeipXNsZqHYRmQfHpgw0DyT1GEf1fX75bVios2zSwqaUMyJQwukDp/wRwHqKmf
-	 acS7KY626tq+vQndDPwlcxuPYTO/RfwQGdB8ne0BGjdQul+UXcNAEKj7ZiZqS7jdnr
-	 TeIUJXOFr/dZXfgrA4VXDOway5Ovx/FyTDa5IMLXtFwJRtirNj55Vmy4/TpBS0ZkME
-	 RpRAwGfQoAXIQ==
-From: Simon Horman <horms@kernel.org>
-To: ernis@linux.microsoft.com
-Cc: 'Simon Horman' <horms@kernel.org>,
-	kys@microsoft.com,
-	haiyangz@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	longli@microsoft.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	ssengar@linux.microsoft.com,
-	dipayanroy@linux.microsoft.com,
-	gargaditya@linux.microsoft.com,
-	shirazsaleem@microsoft.com,
-	kees@kernel.org,
-	kotaranov@microsoft.com,
-	leon@kernel.org,
-	shacharr@microsoft.com,
-	stephen@networkplumber.org,
-	linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2 3/4] net: mana: Don't overwrite port probe error with add_adev result
-Date: Tue, 14 Apr 2026 16:35:03 +0100
-Message-ID: <20260414153503.769476-1-horms@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413050843.605789-4-ernis@linux.microsoft.com>
-References: <20260413050843.605789-4-ernis@linux.microsoft.com>
+	s=k20201202; t=1776181168;
+	bh=rvfCg0/c2jStKBs1lu0aHeajXcAaG62j7ArPVl5a5Ek=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Fg60qm48jFOg5TYDgoqonpDyXxVnc4ix+NtsuXD/dIstBdZrOcY0vR2tqmI9zqcOL
+	 bbMCXKX8aRlAKNvw0KRcenNRwd6w/alLkhN/NgPBP0oykQK9PyAtny3Ua8OYlas7xS
+	 6rgHbBa/uTlHeceIBu1M6UPrnsN5oiqzRflA0s89tgN7cltiGWx3ryarQSRpXhU9ic
+	 CYpFiOYNzTptlROx93gczU7rdog0mCnItWO+kyLskDXSEoMntwx8SYxhM7YID1cQYX
+	 cCj9lYnvoR+tu8kEto7tQxoS7TVqsnGVF4eMImutjekxykS0SDA2p2+e5RcctdDevJ
+	 8p2Ra1lKWC6ZA==
+Date: Tue, 14 Apr 2026 08:39:26 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Biju <biju.das.au@gmail.com>, Heiner Kallweit <hkallweit1@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Biju Das
+ <biju.das.jz@bp.renesas.com>, Russell King <linux@armlinux.org.uk>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Geert Uytterhoeven
+ <geert+renesas@glider.be>, Prabhakar Mahadev Lad
+ <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+ linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH net-next v3 0/5] net: phy: Fix phy_init_hw() placement
+ and update locking
+Message-ID: <20260414083926.6928260a@kernel.org>
+In-Reply-To: <20260412140032.122841-1-biju.das.jz@bp.renesas.com>
+References: <20260412140032.122841-1-biju.das.jz@bp.renesas.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: 'Simon Horman' <horms@kernel.org>
+On Sun, 12 Apr 2026 15:00:22 +0100 Biju wrote:
+> This series fixes two related issues in the PHY subsystem: incorrect
+> placement of phy_init_hw() in the resume path, and drop/update locking
+> in several PHY drivers.
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev
----
-net: mana: Don't overwrite port probe error with add_adev result
-
-This commit ensures that if mana_probe_port() or mana_attach() fails, the
-error is not overwritten by the result of add_adev(). By preserving the
-error, it triggers mana_remove() cleanup instead of leaving ports partially
-initialized.
-
-> diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-> index 9d095a6fb56c7..4d42cbfb3f15b 100644
-> --- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-> +++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-> @@ -3634,10 +3634,9 @@ int mana_probe(struct gdma_dev *gd, bool resuming)
->  	if (!resuming) {
->  		for (i = 0; i < ac->num_ports; i++) {
->  			err = mana_probe_port(ac, i, &ac->ports[i]);
-> -			/* we log the port for which the probe failed and stop
-> -			 * probes for subsequent ports.
-> -			 * Note that we keep running ports, for which the probes
-> -			 * were successful, unless add_adev fails too
-> +			/* Log the port for which the probe failed, stop probing
-> +			 * subsequent ports, and skip add_adev.
-> +			 * Already-probed ports remain functional.
->  			 */
-
-Are these comments accurate regarding ports remaining functional?
-
-Since this patch preserves the error code, execution falls through to the end
-of mana_probe() where it checks if err is set and calls mana_remove().
-mana_remove() will iterate over the successfully allocated ports, completely
-detach them, unregister their net_devices, and destroy event queues.
-
-It appears no ports remain functional because the device is completely torn
-down.
-
-[ ... ]
-
-> @@ -3651,10 +3650,9 @@ int mana_probe(struct gdma_dev *gd, bool resuming)
->  			enable_work(&apc->queue_reset_work);
->  			err = mana_attach(ac->ports[i]);
->  			rtnl_unlock();
-> -			/* we log the port for which the attach failed and stop
-> -			 * attach for subsequent ports
-> -			 * Note that we keep running ports, for which the attach
-> -			 * were successful, unless add_adev fails too
-> +			/* Log the port for which the attach failed, stop
-> +			 * attaching subsequent ports, and skip add_adev.
-> +			 * Already-attached ports remain functional.
->  			 */
->  			if (err) {
->  				dev_err(dev, "Attach Failed for port %d\n", i);
-> @@ -3663,7 +3661,8 @@ int mana_probe(struct gdma_dev *gd, bool resuming)
-
-Does propagating this error during PM resume introduce a NULL pointer
-dereference?
-
-If PM resume fails here (resuming == true), the preserved error code causes
-mana_probe() to call mana_remove(), which tears down the device and sets
-gd->gdma_context = NULL.
-
-However, a failed resume callback does not automatically unbind the driver.
-When the device is eventually unbound later, mana_remove() is invoked again:
-
-drivers/net/ethernet/microsoft/mana/mana_en.c:mana_remove() {
-    struct gdma_context *gc = gd->gdma_context;
-    struct device *dev = gc->dev;
-    ...
-}
-
-In the second invocation, gd->gdma_context is NULL, meaning gc is NULL,
-which could lead to a kernel panic when dereferencing gc->dev.
+Hi Andrew, IIUC this should be applied for 7.1 but we're waiting 
+for Russell (who is AFK/busy) to review. Did I get that right?
