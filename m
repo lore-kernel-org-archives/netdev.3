@@ -1,118 +1,169 @@
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E979818872A
-	for <netdev@vger.kernel.org>; Tue, 14 Apr 2026 02:12:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.178
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776132764; cv=pass; b=PiuF+cBdUXvXcMGuJjGgBJL69sapq3MQiiCnqGJGl+sTKpSoM/1OJediVfBdcgfTdNM13u9u3PFzGGeyDuUFav3xXLsv/HOZp2TAVV6bNM70RNJgDYr5e96AMui0qnEPN1JnVxUWI4ALijAPyUxskBkhiq9RHy8pdS5piH5oqQE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776132764; c=relaxed/simple;
-	bh=uQhJnqXW39QNnTn2yfuaqysKB1o+I1UlAWVvzizO5X4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KQarF/j+wyZit/It2D/meBlrt4AV+VmmCDLxcGmOhO6EvIZWKgk1YcOxVHFl59QKORR89ZZBPmQyH0cxOlOcvvIPDqv9Lo/WZiLRyv3m1oAdKrPRWMgBfNyDJaXBhqqk6EeXXZ5mup/+aIDaWvOiJ5/HMMD+r7B9q69xwWdF+r0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nv+84OCX; arc=pass smtp.client-ip=209.85.128.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B992283C87
+	for <netdev@vger.kernel.org>; Tue, 14 Apr 2026 02:14:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.185
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776132853; cv=none; b=VflQtJBzbAioifAFH6w3sufur5MXZCjaksd1ydh/vdCdIFDpzt8nz6LY3zsD4NO5ThnyTl3XGWEToNkobn9n7pKRkFgRtT1EjBlTDYFz2AySSZbJ8R2vrxrnuD5ptuIyfns//lGnH/BOMNmJB0PqnNdjoi97GVCAbvot1XgOj1Y=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776132853; c=relaxed/simple;
+	bh=723IGzpIiYRTW1HKqyAyT8h2Yx8UuC2XxwBYyg+HGus=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=WmFnMD/CorntPfDjP3Gv3SRceB2fEQzIgT0AQt3LdxvHkiR17ukTkiIxjN4EYf4WWZphA297vVIR2lO8IRFUYtPfD5Fp4yGwnacQH2atPwQhRNF7pu36fWyGSksG4RoKHaWDcIIAWn/ilg8hiSO4HZQz53r17UXdmgyD6MjiC2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=tYcgF+jI; arc=none smtp.client-ip=91.218.175.185
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nv+84OCX"
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-7947cf097c1so44209907b3.2
-        for <netdev@vger.kernel.org>; Mon, 13 Apr 2026 19:12:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776132762; cv=none;
-        d=google.com; s=arc-20240605;
-        b=WgxHj+kgpyt4JNsBt1aO3IszgB6QxRwvfXOZNVQk+1DQ+JZBiYCWdSuF6sP3/Fjip1
-         /BgSg8McVi1UPhoOCGHCXyPK/VPL9J+WpHgN44zkLT4djMIIXs58OFEDHjKpqM9cQ/I9
-         gGxpX6gWC6acZPJ22VnPKIr6HC7aBqU2sKlrEvCrIF8rROsYAxyI1hjW5OUJuqbvmL+U
-         Gq/ryut5g6/xbiZ9UGK0F/gt1k0XdYqtT5n2pzdCIF70am90AQcOgaxmZJDid8FK0aBn
-         241ApxQ8FEopEzvrB4HzZe7f2FZXbPp6PspyPVvbY5R99u/AZ7SQtkkK/IDZEtWWFSQl
-         nP2Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=8Z7N2pD1e6icI9qoA/6v3VO3cO5yRoS+4/iiWELpFd4=;
-        fh=TSWa/m4kyCfsdUwon4c13LRion5NGfQjRewQrze1UNk=;
-        b=fbT1Zklm965FnaHcUIHj+Og2QpOKeShLLeyZiwAMfWL6dJK81pXrRYGkzlRlaIkeZu
-         R+rTFMIV61KsnXc44oT4ok0eLa5krqiiCgMoV5BUuATVLSlMdQdDPBGoFjOUAo2RmymU
-         V+z0GUHTNTT/RlPjnM3if3t06De0vpuZljA31ofDdwuHZ5Jel/O/GcQ7UIgq2k1UcdV4
-         VGKonNWogR0uYW/DQcyVqhwFcHDq3bwdS86gLmJIT5UhSQ3t7idckLudJ9/BmuCrPzJB
-         YEjIs528j+wkmIsQuDld+0clQaDuhG59EhUlqr1c4HOdr7YOEtv5mjbM7HxQBpBaR8sn
-         7KzQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776132762; x=1776737562; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8Z7N2pD1e6icI9qoA/6v3VO3cO5yRoS+4/iiWELpFd4=;
-        b=nv+84OCXNJiG4BA0KxTnzITCOufooEwxA3jSBexF/vDkW11vG0fK851erkPd6uQUol
-         GYlIZBUtbRWxMXzQpqNAPPiNuGWDL4Dk/MSHejQpyK6bf70byZz1LSJG2PgdqLTQp0q5
-         0ppUhGAe4mcSXOJQgD+4zE+f1mfF8iloPckE170E52RBceCyDoMAVPo/i8r+N9MMtYYd
-         kyPueO7eLH49X5J/06/HL6xjlz/zy5z2lDeVL5fyOSio47efDG99F6hqX5j0SYwbdmtd
-         Otw6AyIcTL0pHgBMTPI63gRSWcsPwsSO0ykxU12btgT/O2TEkEscX7kMmv7nTGaNdpP2
-         CGTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776132762; x=1776737562;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=8Z7N2pD1e6icI9qoA/6v3VO3cO5yRoS+4/iiWELpFd4=;
-        b=m0iWrs9bNM4m+Z438bSF4lw0XHZ+5In8Hp9nrFDmnuRdvmUUEo3Hc98tkO+dgBlfXT
-         b6rpO8ckQ0tDb7x2Exko0bqqLj8+dihRL2AIXwUwlzPoOzEhd4slIEtUbJ/Exe6QiLfB
-         rDInlLNM13ZzA5QmfNdyqEMu/1oL3PvzK15xlZIq4Douv8yMmTEip3961rUdAfKLc9FX
-         oqofxXVoPc5zLyqtMQ+nfp/682L9CecOipUgpYUpS2DASHlUS3GnovN8NsvA//tWPUkx
-         L1HFzGU3aFFThmTBC8hMMfKchKoZSNIMkEC5BMh7ZEIDabAVwPINWxcZ/8ZJ4Ulh0wNU
-         Yrzw==
-X-Forwarded-Encrypted: i=1; AFNElJ+JiR2jRhJcv1uAh/gpj+5CXD4uBZy0KDaUnQ0HIzU31PHtTYIIjOnX0cwXgE77AKtH1azeX+M=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy1Lm0jXOwaXUFwCRTuPGmvEcu0FDEejqBbWWNkDpd1U20GSilr
-	8Oq2XcAS2Nu2eVnnPJetZTKxcM3BvAFGaI92S6BaO09NbUm9u6Auqh+Yw6L0CNPUlKdYLG4OlFs
-	gkyWWZMtdebh4SYrZz7VeCb+Yu7qFxy0=
-X-Gm-Gg: AeBDievfrAkhp+rRh9jX54HWK9zoRrKZSvgQe5jsdNxgQdjH8aXG4XNFwFP8GGqz/Zn
-	blHplT14/NjbupGhDW9dqPBBHIUTUA0JMEgb+QXk2GjYRyXWPEpb1HZOOtnomPB0P7/RgsgbJEX
-	QRSJQt4HxKzZoS64yD9RbQOly3qNlOc7jTPMa5u3mRGQIGqkwAQIg01oztOrnV3zAVsWtzOsEFI
-	CnDpZsPMNtXXFzCUzqgpWsi5iuOKFekTzMxXP9lUU645oh8aBjK8tco/HQ9OncEcbED40LOYPA8
-	dPcUTCl5wCYyMfzrNeyzhofs/cnPGVaw5QXxSft5KFgMXhnbKSGCYdtE1yZB6TfjbW/RZUx0+kP
-	bddIYikY=
-X-Received: by 2002:a05:690c:388:b0:79c:bb82:612a with SMTP id
- 00721157ae682-7af6fcef9a1mr176673497b3.17.1776132762043; Mon, 13 Apr 2026
- 19:12:42 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="tYcgF+jI"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776132850;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4Wbmy/a9gqKJwNpYShcTiMCxp21HIntu0hhOBpqeZJw=;
+	b=tYcgF+jIwU/OfWlrR+lhZjYoCfL60SrUYHBMMoo/EB1hlt4p7CrTxB90vhG1DpQMqRXMBt
+	WiPUsFpMPgzTb7X67kcRhewSdrXPrWSBFnfXYLj5HhuQvsQAJE6NcUjN9dNqP1r0OZ1Zzu
+	mKYboVeKEoINrJ+BeCyRvUhiAtJZYqE=
+From: Qingfang Deng <qingfang.deng@linux.dev>
+To: linux-ppp@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Qingfang Deng <qingfang.deng@linux.dev>,
+	Breno Leitao <leitao@debian.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Kees Cook <kees@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Guillaume Nault <gnault@redhat.com>,
+	Eric Woudstra <ericwouds@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Sam Protsenko <semen.protsenko@linaro.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Paul Mackerras <paulus@ozlabs.org>,
+	Jaco Kroon <jaco@uls.co.za>,
+	James Carlson <carlsonj@workingcode.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Marcin Szycik <marcin.szycik@linux.intel.com>
+Subject: [PATCH net v5 2/2] pppoe: drop PFC frames
+Date: Tue, 14 Apr 2026 10:13:49 +0800
+Message-ID: <20260414021353.23471-2-qingfang.deng@linux.dev>
+In-Reply-To: <20260414021353.23471-1-qingfang.deng@linux.dev>
+References: <20260414021353.23471-1-qingfang.deng@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260412020809.35465-1-kartikey406@gmail.com> <adzwiKOPptwbNp7Y@krikkit>
- <CADhLXY5a7QCdp7NXC07fma905O8YJ4jPcbbdK0=kFgD3d2AF-A@mail.gmail.com> <adz_CeDItDjznfWo@krikkit>
-In-Reply-To: <adz_CeDItDjznfWo@krikkit>
-From: Deepanshu Kartikey <kartikey406@gmail.com>
-Date: Tue, 14 Apr 2026 07:42:27 +0530
-X-Gm-Features: AQROBzBazy_jkwLewCfLFniWoEnnFgMIhd8gNrC5p6sZXhTMQffMEeAwRm__L2k
-Message-ID: <CADhLXY43xGjy5L9qaTKzzvikRJxpef6rxekXHEce2umVuaRksQ@mail.gmail.com>
-Subject: Re: [PATCH] xfrm: fix memory leak in xfrm_add_policy()
-To: Sabrina Dubroca <sd@queasysnail.net>
-Cc: steffen.klassert@secunet.com, herbert@gondor.apana.org.au, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	horms@kernel.org, leon@kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, 
-	syzbot+901d48e0b95aed4a2548@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Mon, Apr 13, 2026 at 8:04=E2=80=AFPM Sabrina Dubroca <sd@queasysnail.net=
-> wrote:
->
-> Ok. Then you should wait 2 weeks until the merge window is over:
-> https://lore.kernel.org/netdev/20260412142250.131bf997@kernel.org/
->
-> and use "[PATCH ipsec-next]" as prefix for the cleanup patch (+ drop
-> the syzbot references).
->
+RFC 2516 Section 7 states that Protocol Field Compression (PFC) is NOT
+RECOMMENDED for PPPoE. In practice, pppd does not support negotiating
+PFC for PPPoE sessions, and the current PPPoE driver assumes an
+uncompressed (2-byte) protocol field. However, the generic PPP layer
+function ppp_input() is not aware of the negotiation result, and still
+accepts PFC frames.
 
-Hi Sabrina,
+If a peer with a broken implementation or an attacker sends a frame with
+a compressed (1-byte) protocol field, the subsequent PPP payload is
+shifted by one byte. This causes the network header to be 4-byte
+misaligned, which may trigger unaligned access exceptions on some
+architectures.
 
-Thanks for the guidance.  I have submitted patch v3.
+To reduce the attack surface, drop PPPoE PFC frames. Introduce
+ppp_skb_is_compressed_proto() helper function to be used in both
+ppp_generic.c and pppoe.c to avoid open-coding.
 
-Thanks
+Fixes: 7fb1b8ca8fa1 ("ppp: Move PFC decompression to PPP generic layer")
+Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
+Reviewed-by: Simon Horman <horms@kernel.org>
+---
+Changes in v5: add Reviewed-by tag from Simon
+ Link to v4: https://lore.kernel.org/netdev/20260410033627.93786-2-qingfang.deng@linux.dev/
 
-Deepanshu
+ drivers/net/ppp/ppp_generic.c |  2 +-
+ drivers/net/ppp/pppoe.c       |  8 +++++++-
+ include/linux/ppp_defs.h      | 16 ++++++++++++++++
+ 3 files changed, 24 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
+index b097d1b38ac9..853da966ad46 100644
+--- a/drivers/net/ppp/ppp_generic.c
++++ b/drivers/net/ppp/ppp_generic.c
+@@ -2242,7 +2242,7 @@ ppp_do_recv(struct ppp *ppp, struct sk_buff *skb, struct channel *pch)
+  */
+ static void __ppp_decompress_proto(struct sk_buff *skb)
+ {
+-	if (skb->data[0] & 0x01)
++	if (ppp_skb_is_compressed_proto(skb))
+ 		*(u8 *)skb_push(skb, 1) = 0x00;
+ }
+ 
+diff --git a/drivers/net/ppp/pppoe.c b/drivers/net/ppp/pppoe.c
+index d546a7af0d54..bdd61c504a1c 100644
+--- a/drivers/net/ppp/pppoe.c
++++ b/drivers/net/ppp/pppoe.c
+@@ -393,7 +393,7 @@ static int pppoe_rcv(struct sk_buff *skb, struct net_device *dev,
+ 	if (skb_mac_header_len(skb) < ETH_HLEN)
+ 		goto drop;
+ 
+-	if (!pskb_may_pull(skb, sizeof(struct pppoe_hdr)))
++	if (!pskb_may_pull(skb, PPPOE_SES_HLEN))
+ 		goto drop;
+ 
+ 	ph = pppoe_hdr(skb);
+@@ -403,6 +403,12 @@ static int pppoe_rcv(struct sk_buff *skb, struct net_device *dev,
+ 	if (skb->len < len)
+ 		goto drop;
+ 
++	/* skb->data points to the PPP protocol header after skb_pull_rcsum.
++	 * Drop PFC frames.
++	 */
++	if (ppp_skb_is_compressed_proto(skb))
++		goto drop;
++
+ 	if (pskb_trim_rcsum(skb, len))
+ 		goto drop;
+ 
+diff --git a/include/linux/ppp_defs.h b/include/linux/ppp_defs.h
+index b7e57fdbd413..b1d1f46d7d3b 100644
+--- a/include/linux/ppp_defs.h
++++ b/include/linux/ppp_defs.h
+@@ -8,6 +8,7 @@
+ #define _PPP_DEFS_H_
+ 
+ #include <linux/crc-ccitt.h>
++#include <linux/skbuff.h>
+ #include <uapi/linux/ppp_defs.h>
+ 
+ #define PPP_FCS(fcs, c) crc_ccitt_byte(fcs, c)
+@@ -25,4 +26,19 @@ static inline bool ppp_proto_is_valid(u16 proto)
+ 	return !!((proto & 0x0101) == 0x0001);
+ }
+ 
++/**
++ * ppp_skb_is_compressed_proto - checks if PPP protocol in a skb is compressed
++ * @skb: skb to check
++ *
++ * Check if the PPP protocol field is compressed (the least significant
++ * bit of the most significant octet is 1). skb->data must point to the PPP
++ * protocol header.
++ *
++ * Return: Whether the PPP protocol field is compressed.
++ */
++static inline bool ppp_skb_is_compressed_proto(const struct sk_buff *skb)
++{
++	return unlikely(skb->data[0] & 0x01);
++}
++
+ #endif /* _PPP_DEFS_H_ */
+-- 
+2.43.0
+
