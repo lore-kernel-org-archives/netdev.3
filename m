@@ -1,66 +1,68 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692E13E5594
-	for <netdev@vger.kernel.org>; Tue, 14 Apr 2026 11:59:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B5C43E5EE4
+	for <netdev@vger.kernel.org>; Tue, 14 Apr 2026 12:01:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776167972; cv=none; b=eNU+vAXlqV1ZZNBiCktrCOcLmSN5SSkXfc1YIbBIB3Izka2ED5VShhQZndDMKrJczyoYvCALou4oD4+ctkr+Jv215edZXleTHWqm7aoErZYLLjHQCQXyYYLJVPEbQw5HHy6W8rsbaI2UHex0U9ImRe/LiMU8PzdFZ4QZ0qtQMxU=
+	t=1776168065; cv=none; b=XdZil/GiU6kxtdihyKA115PV+GDIMmBIXywAfAiefasUfD8vWxuCk19n6+2nZkpL5/My2cYwAIW8dfPzZ334+pqfvxrLJbhEfPCTI9N0mL7pwaBnTkTyYBbdt84nTyhfHGiefu+8+Cd+XtAaFMCIhDSHQkJvFtGWKr0+Wc8fg1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776167972; c=relaxed/simple;
-	bh=IFeWrn/hnERBZvCI5pSNoznkYIvTh3rTkyNxR0Ex1zo=;
+	s=arc-20240116; t=1776168065; c=relaxed/simple;
+	bh=HXU24dwSM6A1AxV04g/pB5XxRZxXiy1LoONcd+loM3Y=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ois0lwn3T/KcT/ISEOcsm44lgGNx1F59imaNeECFUHfAiLH5G4vDxZ2/DfOiuiogzzlcdQTm15WvBJYkAJIqCnzsIE8qbcuXLbsopjwk3tu7bN0AUHFeFXRoK4f5HxWISblgc3+UfkWwraKqUXzrix3Aejeao5dtsLEcjkzpePI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YrBreI+0; arc=none smtp.client-ip=209.85.128.41
+	 In-Reply-To:Content-Type; b=bH5TIeL7RmQ/AW8UGf9LO/A6vtwKEEOL3T0BhtTSBecZdm20nKxe14lESCv08SJUoJXn344xr+iMVUrt32FTb3Wa7FD+ujXjPOXFDyMY/SlD8ARGUZ+7zkPDQhkwSxfIhrZxRTlSAj7R7MYSySwFnImCv+afCITPVsXZ9RUcAUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iHnPXdgh; arc=none smtp.client-ip=209.85.208.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YrBreI+0"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-488ab2db91aso85925255e9.3
-        for <netdev@vger.kernel.org>; Tue, 14 Apr 2026 04:59:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iHnPXdgh"
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-670f6ae9c7dso3748985a12.2
+        for <netdev@vger.kernel.org>; Tue, 14 Apr 2026 05:01:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776167966; x=1776772766; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
+        d=gmail.com; s=20251104; t=1776168060; x=1776772860; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=cI6YDCMVOjwF3n4rp10xh1cUi74T8qWohjAF2esDvLY=;
-        b=YrBreI+0mmV9/BKYli7tUMA44+vzFT5m2v6o+NFrcYUay3D9z5Qu6zWsgBgOrLBYN7
-         Q5tLCTiNBQrIdlyoZ3KAo8X4jOGFF0wjHARixSBPW4hF6mfhpWOyO4LwucuH1yeLJ9Nf
-         qS8puTrCXmm+fZRQoNRXhjfwID1PDB04aNtQDp1Wpf15vChECYQ4K8AigTMplH7tRTEa
-         xEIEUfvOSN33zTvGiiDdyqO8fTOtbTftguZARABJ/DLuIVnIOH6uO6jAGnS64x7Zvdw4
-         q5/8fCxX8UITQZbON6nmDCedVB2kb0Isz7Kp7pceK5hBX5vtVu97evQNMVv1GMkXYr7z
-         nKlQ==
+        bh=2d7SDP4tYVNHF5RjK6Z4XWLo0StG4PwjgZJsw7TAjok=;
+        b=iHnPXdghhNhZxQbXGPpMQAy/WghyKP2lAqDKIiIHKVP2ztJFDYMq53D48MDqEdRDO7
+         6ViTDklUvBoUzzELRjXzMFeGMW8aH2tAUofR8+0D2flzvi0k0sDcF21Jla/JfFWLMGtC
+         N19iii2ppBH+JXZsnOC1V/mfn/ZV0kgJPE0lBmm9z1tbJDqzqZ8DCML/yT1YGNrfYDpj
+         cXQbZx8uP+MydG2v+QhdZ0+p3ACbAJcEwok93FL5OHndXiDkxBE9dzLDMbjzE46wgv2J
+         anz+RbGttUpBQ21ZTv3zNiRyhk5CMV1NfSOpV8Hka03hd+MF61Kg1gT5bqQItvRRFtRv
+         2MIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776167966; x=1776772766;
-        h=content-transfer-encoding:in-reply-to:from:content-language
+        d=1e100.net; s=20251104; t=1776168060; x=1776772860;
+        h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=cI6YDCMVOjwF3n4rp10xh1cUi74T8qWohjAF2esDvLY=;
-        b=kHKJEnb08wqmeOVAqsHzqfOtsgFbEWP+u2wtfMZdZwfHjI1T7aG493fnbyyLj26Kiu
-         h6DEO/xQ9CNqM6Uv3V4IX6KVbjjtHDGoY918KIJFPmryErseVbOCcHDK0M+S1cDN0J8I
-         wPafZPvWlbI8yuWpivg7EcHLH02vEjYVL5ypgbsE9uYZOC9GMV8rSIZTIMdE0FMmzQfT
-         z4sdo97mtspWRjLyFWGAsoxf/HpQkQOQ1y2iuD5n3i5d757JS7vmjvTKAogGH9AkatFU
-         qHAt6uLeqyKVbNzk4Lz6/Fv38GbTHf+tIOm8HQ8IfTlt/x3WAxEV+QvfBpyYM6ldCNRF
-         qa2g==
-X-Gm-Message-State: AOJu0YyWdqqDHwj2LRB68tBbJ+HNBnl5/4lc3SCfqfG4UYB6f6EGluhK
-	OWXXkP3OTq5vPU72W0F9p287P6udsFIFJQVxa1938n2AfFEaeXVY9e7F
-X-Gm-Gg: AeBDiev+BVDzzyPyAOysSM5yu9QSsy2d1G36CD2Kzlcuiox6USXw6g2gxn30C1jjnfG
-	BENe983krhMneKh3kF+NqgXp0WcKRlbecLQbgncOKlqKkW0oZnxUGu5K+9SF8mVf43MbEhBzi8K
-	MwgoBpHATsfw/gtZMpopcHp0pt8htaVnCbyznF5i+dycAIP+dUxarD6739J5XQc4Am0HhTGboCs
-	GaEM8W2Plln0GnqOEGoCwmitVuCO47K1KPHUCWRdxAcEqqqHld+FINsNTlfN9yZKi22DCdRz4RQ
-	eLjq3KoLzzdr8ayHDYqTcOktkmbqDkUfzCB+I8BD2s1RKIlJUjYAtUB7Hv/7Eysp9Obf+PQTwbn
-	NY7T1i16D0xxlMOnIPVnxS5CNSFlGk2SOg+gbRtHvCoGdz2qVwYcsLzeppYQfzvDV4Z+EBrzoFg
-	QT/GBQbVEx7MnGyB8JV8K/5vffCReT6z0JK0v8cKU+dFZAwbZRABFHlgiPItLacmazr8VARRGja
-	Ocw1NsuMNfpJ0dY1/4O
-X-Received: by 2002:a05:600c:8591:b0:486:fab9:a578 with SMTP id 5b1f17b1804b1-488d67eca69mr181512605e9.11.1776167965806;
-        Tue, 14 Apr 2026 04:59:25 -0700 (PDT)
-Received: from [10.1.4.108] (cust-east-par-46-193-119-166.cust.wifirst.net. [46.193.119.166])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488ee019e44sm79184615e9.15.2026.04.14.04.59.24
+        bh=2d7SDP4tYVNHF5RjK6Z4XWLo0StG4PwjgZJsw7TAjok=;
+        b=TSbOOndTbmNjysHoaUfD88msRkfiK9/uAHmKVYCueJAjB+DfOvw8x2/Gz+qH8UrvB0
+         /3ULqQ+EO7qKsIWZz8pZS7f/TzisrXRcm1V7pTvqCEqTsTu0pOXl3Pf3Eug9rHj8MB70
+         gQtdGdYDFwDvImH5YMBw5QwDCtKgXbdiwyTXQhOvpg0POI+Nloll9pcVJ/btucqOw/pJ
+         ufF/l0zK08TY18KR0rM5MOY76WfuHQTyoFyawNoCerUQ/9SUT+Txwfo6YWVK4gLVzk6u
+         NXkhYDFxQzMmNlrwN+RuL1bSBfVUpnqMDvq7ayQvTUciVihyh2gKx73DLsEOY7l1gqmo
+         zU4A==
+X-Forwarded-Encrypted: i=1; AFNElJ+1dl2DZba4TpHuXjwRV5h/YU/rCgGld3m1GiR/qo2XugJQSZo0Zdl4e0rIQDV80Vwqje0TYXQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxFEGOCroXVI23PlaqfstxyVEIMM4Jd/N5qug1TbMjshTwq4TU+
+	nqqGSRiKUKCvvv/43Urj2nY9YQ1B5D7wUfUW5rvP7u8p0ogIm1KzEt7x
+X-Gm-Gg: AeBDiev/sVxphxKHi/zhfhae9TG88HCZUID4MYm7UJrFuIR7MrdPqdoxqSq+S1Bq7gV
+	lPdzqX52De2SMpALpIAhL/eNefPkJf62Znfvd8Eq/Aztw0BpljTHyzpNzZkfTMcjUngn0oB2c7p
+	aqVbRRGNR6zf2MWKUhwcDErIiaSEeVlpfOvtdQ9O/hgUHbt+g1r57q3dRAp29pHSsFyfUAioHXe
+	piRyqvtXxxqfdca+DDUmwv9eLmn5zZtROFgExCP+fI9ZgXXsJMKzxLCFFq2xG+x6BiFwNPj3QgC
+	HH1qLUoTwh9x6+sw6XXSvHNeC1D3fKOqe0Ibp2xtnPhDa3/XV3+TgNpdt9czUvGFVB/DVCZUDrB
+	KsooKtTzX9Gbn6v+GlGzVnQnoblz2pCCgukkm/TsFdWtrQ1IMSRXICZcMHOH/ruCAl5Y6VmlyhE
+	rxp3xGbYEjRfLi3QPrRYYTpEbVEx1f4PRAVeLEpY6CGwsbVXEjCDTNzQt9IsaAddJVtOGBXx9we
+	Y3bDn93dGNsJ6wywwepYD4+1LP9Lg2wLppngdUTpplNsrnz3xK+E5uUcJ7zMckWYn1FqVmwpJj9
+	99JSLhmr4rGxQbYoN02xKVlWXCeUzXlbTw==
+X-Received: by 2002:a05:6402:1cc5:b0:66d:d0c1:f87b with SMTP id 4fb4d7f45d1cf-67079508c00mr8427873a12.10.1776168059477;
+        Tue, 14 Apr 2026 05:00:59 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:20d:1300:1b1c:4449:176a:89ea? (2001-1c00-020d-1300-1b1c-4449-176a-89ea.cable.dynamic.v6.ziggo.nl. [2001:1c00:20d:1300:1b1c:4449:176a:89ea])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-671a15577f9sm967915a12.17.2026.04.14.05.00.58
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 Apr 2026 04:59:25 -0700 (PDT)
-Message-ID: <4f009fa6-5fe1-4ba9-bacb-1bd8de820a98@gmail.com>
-Date: Tue, 14 Apr 2026 13:59:17 +0200
+        Tue, 14 Apr 2026 05:00:59 -0700 (PDT)
+Message-ID: <0f0f217e-a32b-4c9a-ab65-1cac5c86c76f@gmail.com>
+Date: Tue, 14 Apr 2026 14:00:57 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -68,75 +70,96 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/3] net: dsa: microchip: implement KSZ87xx Module 3
- low-loss cable errata
-To: Marek Vasut <marex@nabladev.com>, Woojung Huh
- <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com,
- Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
+Subject: Re: [PATCH v2 nf] netfilter: nf_flow_table_ip: Introduce
+ nf_flow_vlan_push()
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Marek Vasut <marex@denx.de>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Simon Horman <horms@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>,
- Russell King <linux@armlinux.org.uk>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Fidelio Lawson <fidelio.lawson@exotec.com>
-References: <20260414-ksz87xx_errata_low_loss_connections-v3-0-0e3838ca98c9@exotec.com>
- <20260414-ksz87xx_errata_low_loss_connections-v3-1-0e3838ca98c9@exotec.com>
- <ea90a671-70be-4d89-b842-1e54d687336f@nabladev.com>
+ Simon Horman <horms@kernel.org>, netfilter-devel@vger.kernel.org,
+ netdev@vger.kernel.org
+References: <20260414112120.248744-1-ericwouds@gmail.com>
+ <ad4nQzsbeF1S53zt@chamomile>
+From: Eric Woudstra <ericwouds@gmail.com>
 Content-Language: en-US
-From: Fidelio LAWSON <lawson.fidelio@gmail.com>
-In-Reply-To: <ea90a671-70be-4d89-b842-1e54d687336f@nabladev.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <ad4nQzsbeF1S53zt@chamomile>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 4/14/26 13:05, Marek Vasut wrote:
-> On 4/14/26 11:12 AM, Fidelio Lawson wrote:
->> Implement the "Module 3: Equalizer fix for short cables" erratum from
->> Microchip document DS80000687C for KSZ87xx switches.
->>
->> The issue affects short or low-loss cable links (e.g. CAT5e/CAT6),
->> where the PHY receiver equalizer may amplify high-amplitude signals
->> excessively, resulting in internal distortion and link establishment
->> failures.
->>
->> KSZ87xx devices require a workaround for the Module 3 low-loss cable
->> condition, controlled through the switch TABLE_LINK_MD_V indirect
->> registers.
->>
->> The affected registers are part of the switch address space and are not
->> directly accessible from the PHY driver. To keep the PHY-facing API
->> clean and avoid leaking switch-specific details, model this errata
->> control as vendor-specific Clause 22 PHY registers.
->>
->> A vendor-specific Clause 22 PHY register is introduced as a mode
->> selector in PHY_REG_LOW_LOSS_CTRL, and ksz8_r_phy() / ksz8_w_phy()
->> translate accesses to these bits into the appropriate indirect
->> TABLE_LINK_MD_V accesses.
->>
->> The control register defines the following modes:
->> 0: disabled (default behavior)
->> 1: EQ training workaround
->> 2: LPF 90 MHz
->> 3: LPF 62 MHz
->> 4: LPF 55 MHz
->> 5: LPF 44 MHz
-> I may not fully understand this, but aren't the EQ and LPF settings 
-> orthogonal ?
-You are right that EQ training and LPF bandwidth control
-are orthogonal from a hardware point of view.
 
-In this case, the interface is intentionally modeled after the erratum
-guidance rather than exposing all possible combinations. Microchip
-documents the workarounds as alternative solutions:
 
-"If work around 1 does not solve the short cable issue in a CAT-5E or 
-CAT-6 application, change the work around 1 register (0x3C) to its 
-default value (0x0A), and use the following settings"
-from: 
-https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/ProductDocuments/Errata/KSZ87xx-Errata-DS80000687C.pdf
+On 4/14/26 1:38 PM, Pablo Neira Ayuso wrote:
+> On Tue, Apr 14, 2026 at 01:21:20PM +0200, Eric Woudstra wrote:
+>> Calling skb_reset_mac_header() before calling skb_vlan_push() does
+>> remove the error:
+>>
+>> "skb_vlan_push got skb with skb->data not at mac header (offset 18)"
+>>
+>> But the inner vlan tag is still not inserted correctly.
+>>
+>> skb_vlan_push() uses __vlan_insert_inner_tag() to insert the tag
+>> at offset ETH_HLEN. But the inner tag should only be pushed, without
+>> offset, similar to nf_flow_pppoe_push().
+> 
+> It is doubled-tagged-vlan that is broken, right? I observed this once
+> but I have been burdened into a few things.
 
-If you’d prefer exposing these as orthogonal controls, I can revise the
-interface in the next iteration.
+That is correct, both q-in-q and q-in-ad (that may not be the correct
+terms, but I think it is clear).
 
+>> Fixes: c653d5a78f34 ("netfilter: flowtable: inline vlan encapsulation in xmit path")
+>> Fixes: a3aca98aec9a ("netfilter: nf_flow_table_ip: reset mac header before vlan push")
+>> Signed-off-by: Eric Woudstra <ericwouds@gmail.com>
+>>
+>> ---
+>>
+>>  net/netfilter/nf_flow_table_ip.c | 25 ++++++++++++++++++++++---
+>>  1 file changed, 22 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/net/netfilter/nf_flow_table_ip.c b/net/netfilter/nf_flow_table_ip.c
+>> index fd56d663cb5b..0086f8a1a0d6 100644
+>> --- a/net/netfilter/nf_flow_table_ip.c
+>> +++ b/net/netfilter/nf_flow_table_ip.c
+>> @@ -544,6 +544,26 @@ static int nf_flow_offload_forward(struct nf_flowtable_ctx *ctx,
+>>  	return 1;
+>>  }
+>>  
+>> +static int nf_flow_vlan_push(struct sk_buff *skb, __be16 proto, u16 id)
+>> +{
+>> +	if (skb_vlan_tag_present(skb)) {
+>> +		struct vlan_hdr *vhdr;
+>> +
+>> +		if (skb_cow_head(skb, VLAN_HLEN))
+>> +			return -1;
+>> +
+>> +		__skb_push(skb, VLAN_HLEN);
+>> +		skb_reset_network_header(skb);
+>> +		vhdr = (struct vlan_hdr *)(skb->data);
+>> +		vhdr->h_vlan_TCI = htons(id);
+>> +		vhdr->h_vlan_encapsulated_proto = skb->protocol;
+>> +		skb->protocol = proto;
+>> +	} else {
+>> +		__vlan_hwaccel_put_tag(skb, proto, id);
+>> +	}
+>> +	return 0;
+>> +}
+>> +
+>>  static int nf_flow_pppoe_push(struct sk_buff *skb, u16 id)
+>>  {
+>>  	int data_len = skb->len + sizeof(__be16);
+>> @@ -738,9 +758,8 @@ static int nf_flow_encap_push(struct sk_buff *skb,
+>>  		switch (tuple->encap[i].proto) {
+>>  		case htons(ETH_P_8021Q):
+>>  		case htons(ETH_P_8021AD):
+>> -			skb_reset_mac_header(skb);
+>> -			if (skb_vlan_push(skb, tuple->encap[i].proto,
+>> -					  tuple->encap[i].id) < 0)
+>> +			if (nf_flow_vlan_push(skb, tuple->encap[i].proto,
+>> +					      tuple->encap[i].id) < 0)
+>>  				return -1;
+>>  			break;
+>>  		case htons(ETH_P_PPP_SES):
+>> -- 
+>> 2.53.0
+>>
 
