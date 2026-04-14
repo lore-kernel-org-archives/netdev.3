@@ -1,140 +1,184 @@
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B32B430E84B;
-	Tue, 14 Apr 2026 02:14:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776132857; cv=none; b=GYYtYSzeNSoDqNxrR3DXYX0CDsQuBQGRD0YZjAKpy7xHLqltEA0STaDjnmOA/8g1Yd5Xa6gC4W/Ce/p3Y7oih0UTLOtV5Ki3i71n1qbcZAokkRnMrJhyAJgaN5BiiHGG3UaKLPMAHjGzcHD9HoWt0gLJ3XZyFF/rUTKil3O6y5c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776132857; c=relaxed/simple;
-	bh=15hvOEUVolfqLY/3GRmuKMMK8IGZvy6zYa6C4vGqAC0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cqUN9XNXFFgzjqpGjBSiJB0BmgYkAW+CY5kFnh17z3irQW9xMQo53gPhV1oYvy441HEx3t1QC03X4r6Ng5IxPr0DwL4qIA456YMOGGWMdqy2U0ilgTlUJZlvVXuX1z1vdW2t56l4gR5CbyCULYYzCl2LViT4mZENib4YrLnatm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=JdDe3pl9; arc=none smtp.client-ip=91.218.175.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB4032773CA;
+	Tue, 14 Apr 2026 02:17:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.178.238
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776133023; cv=fail; b=Dy6e5+oEzhieH6Wu0HK7aIHoQIUe4qvYylyJnihGWrd/TpvZb7RzXu5Gpj6ZO7gIncWUJl1lDHZaRVRGoLW6lhxtjFe2Nz7cNdf/qW5s8rGVA+4+5md2RFpzaVQsJE5TVtuUJMbo2SE+RVl59pDT+yviTlfE9/3iAjbOEgpisrw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776133023; c=relaxed/simple;
+	bh=jXvHvf43mmGvUVu+Mj+x+NGdLn+SXDOHvN7sdXP+wLI=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=RB9qnLDvQtYho0xvzZ6UIR8cRQZjkduolsZBYTSH1iQb0xh2vQdJwEzF4tcjHdYe47L7Xwr7MH/wDr5uAgBE5vd2v77GU1J+KpMShjv+h3oNK1WKvYv7gvfQtFH/7DRQ6ZtUQkEk7QRfxOm051XsZ0HPIs8WQT4FvFsmKsPd0B0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b=VhzIJ7rC; arc=fail smtp.client-ip=205.220.178.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="JdDe3pl9"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776132843;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=VU7wHNF/ZTF16Bs6j/dZXcxIbUnQ1DSNxe0KY2TrNZk=;
-	b=JdDe3pl9ds/WG8fwb0SXIVZurb48gX4bq8sgV/lNXHO7MxvU/aPqRPTYv5LA7OfQtSPvC3
-	Ymz3a8VvwPFUu+2eHB/QMQgzdY8svlCBT4MAlmaFUifVe4/XxpvzFMFH3R+by2djWcGkcY
-	fx7PW9FBk9UuKB7fq0QU0XuRN0/juBE=
-From: Qingfang Deng <qingfang.deng@linux.dev>
-To: linux-ppp@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Qingfang Deng <qingfang.deng@linux.dev>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Guillaume Nault <gnault@redhat.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Paul Mackerras <paulus@ozlabs.org>,
-	Jaco Kroon <jaco@uls.co.za>,
-	James Carlson <carlsonj@workingcode.com>,
-	Marcin Szycik <marcin.szycik@linux.intel.com>
-Subject: [PATCH net v5 1/2] flow_dissector: do not dissect PPPoE PFC frames
-Date: Tue, 14 Apr 2026 10:13:48 +0800
-Message-ID: <20260414021353.23471-1-qingfang.deng@linux.dev>
+	dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b="VhzIJ7rC"
+Received: from pps.filterd (m0250812.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63E1UEGx1450648;
+	Tue, 14 Apr 2026 02:16:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com;
+	 h=cc:content-transfer-encoding:content-type:date:from
+	:message-id:mime-version:subject:to; s=PPS06212021; bh=XS66cJ5pW
+	8Q20UlpxXIaDGf1KIZo6JLzX4ajRf5PhfM=; b=VhzIJ7rCgVPnu8NA3gUT6g0uo
+	SnuudsNsZ0qDU4NGmcMFmkGwOmUmOMXm5Hx6y1MUSt1J4IJ146xI36BC0oxjeMCv
+	QvxQTthaOPXr5qntiwW4vXrIwKMrf+cbN7qyeiHu9qlAwO/A7cc5+Z/nKbDQMxnh
+	0AOIWFxoacUDA9k9A42+DpAw0vDjJ9hlWd5oAeBW5VuLb++UOJLxckLJV17fMm2G
+	bTkW0onAosKQo1b6NAXhJLWeQAw1qPrT0ItRLldJCuJkrsxrRB00K27evRJHXVYT
+	HizKZ88Zj3nhz4mK4p6mQQCaDG6+fcbhfXau5hz1wT712IV/fgbSM2pPqVrqA==
+Received: from sj2pr03cu001.outbound.protection.outlook.com (mail-westusazon11012005.outbound.protection.outlook.com [52.101.43.5])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 4dh877g6yx-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 14 Apr 2026 02:16:58 +0000 (GMT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=A3LaPFPg3SOfI5p8bS/UA1VmEJyqux3NbQirwLgIB9E/O1wtPdtrLew/C+fRAsEgKOrwxJzwPMYJ3dbjvF5t+/5T1uOpFaBQD6pRHv88FxRSa+v3C7DeET22cERoppGDqvic868K4c4lfU5TpNTm+Q3b9P1MWvPONBpHf28/sIXcoeQmWkpE1M4yRLvUs++4dOEh6X6bSkouMbHtlVv2dzeJOwway7Ic70XnHSIMoFGYAuwlhAnUA5W7zIVhidoCGSBgk1+aiLpsDP0odkMmbjaMDuErsD49mWCo12+TET+cyc+5SoLu4acrIpuVQwO7uuWR+BMwaG1Qt86UUNZ+Hg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XS66cJ5pW8Q20UlpxXIaDGf1KIZo6JLzX4ajRf5PhfM=;
+ b=ZrYnezufu6kqSQq0c1mEGM6OPNSnDhcMXeD+vbrbgKwjIZhUXNpggCHr/qSVuVJlB8MBN67F+QBtTd4i+Uvuv9LPLc236wwQJGY+XE54wQNr3oMvYa3Gfj3OVcfqsGoca33hHrf5h8KvxXD7qAtYTHJe2VlmvvNFUmVqyWglvkzdtgilOLIobsBkMgTmaQFuq0M3vSR6g/hp7Q2JuCeSnj2LCvpv6YT0gNl5m3QLlnXfBFLSud3jWuMW2lkBRSEwX9B9Z2ciJARjJ//4xVSgwF0/mE7pmUykn9+3fK5Et4cMWjNQznzYiQuCP6DZshYCZ0UEahozzJU9hcNuXjzsRA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=windriver.com; dmarc=pass action=none
+ header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
+Received: from CO6PR11MB5586.namprd11.prod.outlook.com (2603:10b6:5:35d::21)
+ by CH3PR11MB8210.namprd11.prod.outlook.com (2603:10b6:610:163::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.20; Tue, 14 Apr
+ 2026 02:16:54 +0000
+Received: from CO6PR11MB5586.namprd11.prod.outlook.com
+ ([fe80::89ea:ecfa:c345:3fc6]) by CO6PR11MB5586.namprd11.prod.outlook.com
+ ([fe80::89ea:ecfa:c345:3fc6%4]) with mapi id 15.20.9818.017; Tue, 14 Apr 2026
+ 02:16:54 +0000
+From: guocai.he.cn@windriver.com
+To: stable@vger.kernel.org
+Cc: gregkh@linuxfoundation.org, johannes.berg@intel.com,
+        netdev@vger.kernel.org, regressions@lists.linux.dev,
+        miriam.rachel.korenblit@intel.com
+Subject: [PATCH 6.1.y] Revert "wifi: cfg80211: stop NAN and P2P in cfg80211_leave"
+Date: Tue, 14 Apr 2026 10:16:33 +0800
+Message-Id: <20260414021633.2765982-1-guocai.he.cn@windriver.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SL2P216CA0117.KORP216.PROD.OUTLOOK.COM (2603:1096:101::14)
+ To PH0PR11MB5593.namprd11.prod.outlook.com (2603:10b6:510:e0::15)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO6PR11MB5586:EE_|CH3PR11MB8210:EE_
+X-MS-Office365-Filtering-Correlation-Id: 81f7cc87-1ebd-4fa9-c605-08de99cbe4fc
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|366016|1800799024|52116014|38350700014|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	mQRzCe5VNBdB738JUxX6kewgIDQFhxwdqufOZ65JNoI6NBMxM9D/lMkbuW0xhK1yeR4nsmfug6MTnOiYt40HOD9khklaS0Xh1RHGY142lilzlfr37tq1nS2OhHOAM+jwSxpvIx6/RWgAAF5WCpp/T9a5cjL8kxglt/dgpI1W2YinMx9u5696IfPyDdZw3ZhFwVyNpnkxfFmIHRun1ZIJWGYCCzBe05DD9ZJAgNgCFi+yU+vCsXE0pqV2X9lMQdgH2fnwYVF2sWCEFRFoADbctkdROxEfcwjW4yV6hQHTJARajTKzGK6fJ0nkaQBbXcHVTjZ8yIVVB16Y47k/dK7KmOvj49491vXX29u3PVg8ZpikRc59LTZluBSYmMdu1T668l1P5qY94OUdg8/tTLymM+fuGi0XD9ObJq39bl1vRV0cvUrb/udTX1T5JbNvKO2R+GxZei7YoyzXTXUborg0Wx3EqYumQ+OnYaEocMCdf+Nt+wGd/8glleFxY2ifFwUDLP4zyfdmZSt+zabZwEI0ORhvZ6+iGB7a7cE96L/tyQ6kEb4c2xhOKxBXPSBgOvctx795BJbmgcPqtN+oJQfsbD0qa9OCEiFY/wgltdv3nRMPy2zjTOBwOZo9bXZ4XCw7wTmrReb3eI8ZNp4hh3c0tKiTDE3PnuQzy0lttzz4uhzW3xj4Ug6ysgQputov5JQ2HbHmR0a7EgoLrb04r0VxB2y343Wpy+cTFpXqqCGQdUvLmZ82kDMLWtwIhvZNeJa66kMVIQPEq8hpMbrDyqzOg9p0q3Fm40Xe2Wj1s+qrewE=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO6PR11MB5586.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(52116014)(38350700014)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?bzGTBA59DfxScTMSsdqXwsovSxepAvqIx/0wNjEsdAx64XOzTJMf+2y8KOlT?=
+ =?us-ascii?Q?lLeo1MyWWkRcZwHRLSLQmKALoHEvCC+7XV2I4NnJ7ZygfOT8tzIQFilYaE2a?=
+ =?us-ascii?Q?dWkvA/5rMznrChmAWvqg3D6MR/CH8N1N+KvkxfworTGosXoKWi7gq86lpkD1?=
+ =?us-ascii?Q?hUyWKwmVIXdE8JOYZToh96qDqIYaBoegpDjQDIfmfHs+mR+83ERrnAGrc4nQ?=
+ =?us-ascii?Q?dSTp/duJGQO8Fmj+NOcw//vM6v3xntWC7OTUs5V0i9Y34BIdI8Slihpb/uv/?=
+ =?us-ascii?Q?uHcafZjqF78vilDyHM0oSoEpWZmizIBxTbuMIwAGm4JW4Tki64u92NiAFwlS?=
+ =?us-ascii?Q?7HMr6HdxMj1Cx1mHkJheonmuSFv3kPBFv0QoGUPhC90J9vc8mAwp3xhr0buB?=
+ =?us-ascii?Q?l/VdG6zBxfo6NiVTLrrytHoiU8VinZlPINpGpyEdL/6Xt/6OpPFR5MOTIgsM?=
+ =?us-ascii?Q?ICR3cXfRXx9kN5mfKGIfI8+FE+cG/NnSQ/AcT5dp2y4NpWQzY8dMA8v0Faj2?=
+ =?us-ascii?Q?CjdA/7Q05ehfO1WFgUcxGZnYXPYXLHluN0Xo3G71i7Rnm9j+uBZ0cmaMAzog?=
+ =?us-ascii?Q?l7TUbeDXPldDkNVzuNNPaPm6grYxJjK5p2f7zDa5ZMkw0QV6iVxXmVACBlAo?=
+ =?us-ascii?Q?s/BpUl+b2aRzB4GXnny3VglQUhlbbsPSvc6OTWOkb2sarqcuSF9eedTdWrTH?=
+ =?us-ascii?Q?4htiHNIbG8KAXVQjUCqXPzXD0PKExopmRlLftpMpvU0wSywPduMyhaxzUaia?=
+ =?us-ascii?Q?xMoorHD0e5Bzd55keaVRJfCCPtPzT1XifYYlub45kxyFopmJsIlLo2JerCwD?=
+ =?us-ascii?Q?+B82fMDqCQWVm1hxTXGiLZMtSC4ubzLmxbXA8abxCkWSAJ5JP91+AUiw2fQU?=
+ =?us-ascii?Q?DS8Q2QeYMuXV3XHTnYfO9RUJUAHISuYRpU/nW3q9IgQux7yCQbG0bWCyE8hw?=
+ =?us-ascii?Q?7cW3XHQxi1Nn8KBQwdnWTdvy3XcM8ope2CfoQ3zreYBzAG1YeTb/F3ImNMiP?=
+ =?us-ascii?Q?60Mr4uMi9oNY4iy8glv9+X+rAJsyA1j8e4va1zV/uY2QDQ1hhO8gqtq+ioW4?=
+ =?us-ascii?Q?o8PsYYjaJuyCsL79czdbSGqm9/PzyBj+GJvGu/H7Q/6P0/la8J9aSwQrSd9Y?=
+ =?us-ascii?Q?v8l4swiFlJhJejxtzoSKa9ptPdY5uveX3jnn6qSdl/Kj0ciC2l9ffwOX0yER?=
+ =?us-ascii?Q?k4ck6unMmUn8qjACqL6XOFGUxJf95D2t4pt1DU23lPhu8LJDdzqnQOIYKYiq?=
+ =?us-ascii?Q?lDINqOrDsoLlOlnyYbhGz/Fn6/w6KpHuA+AeVHjYpyjhDso1jLVv6J1RmylJ?=
+ =?us-ascii?Q?YQDQ2Ct9fQ006EikmvddYz7gugkmpuNv1PzVFRL9I3N0rkdNxF5ZasYY4bTi?=
+ =?us-ascii?Q?8fIP24wUaAYW+NlKwdsGdoA9Uiwkbmg/3cKUz1Y2wEm/nNB8nkSJi4cHZjD8?=
+ =?us-ascii?Q?sS4pe+f+N5o7Dq49gD+LERsRoSUP/ZFyfCu07Byh0VkzkDCWlilhVYFIIWc/?=
+ =?us-ascii?Q?VCIIha6LMn/gokYRJtT0q3l38kDGCK7zm5Dv+NRvmv2bkejp1IsvGVGdVfq0?=
+ =?us-ascii?Q?Mmds7nNTv6GHeBKFLCioR5WiSL7hvV0KDuUdxm49E6Fjo1ypxVcSwF28j4rT?=
+ =?us-ascii?Q?YrfIGzRTycNCoBp2LiG2gPYb+vnbCKAk+BiC/2d0V6hAZXYmHSx4DG7v5Bhc?=
+ =?us-ascii?Q?xaeYTcqbcwaLhN/ZNfewf+czOmmJQvkRdc7vl1yIJ/ugIhkiYX31nieArLAs?=
+ =?us-ascii?Q?jZ5LhSqzu2iNoWexR/Lk2C44Obp41BY=3D?=
+X-Exchange-RoutingPolicyChecked:
+	P/O8yhNAlSVBLCLTaso0OZ0AYKFFJ2lLlnuZvqtGubMjl+nZ9ifVPHVgIz9AYDShhKJ/RfqeN8Qe0nrMxx6+/yexF8SRq/B8lE/Emiv6cdQeCmqf5Knw0KmotmPn2Ng3UKX2IJoRR65WIvAE10UVE4wPQ7WVjwIrRGwvBFclbTP+d86Sa0cnJI8b6gx0XFa8WOLtidn7BObviVxSbn1ji+BgMJBNOvoqfXLucJ2lUwN6+Tc75eGqh3+pugmtFJPnZoZgwgy5DpG9CzXop0w3nvZCcKaBc+E9QUSloEQZtS0T0CY8DCKCkmXS+E7zW8KZCkDMZE74pThnbK5Zxwenhw==
+X-OriginatorOrg: windriver.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 81f7cc87-1ebd-4fa9-c605-08de99cbe4fc
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5593.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Apr 2026 02:16:54.1576
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: FxDU/CBIAMlFNFNCL601QsssCB3ME1DgunBaC5SHZwdC78tGvieNkovn+Nfu1U/qxerdPl2sM+WgUH7iJHpW90aaOoi9pfq8sbc5hMuCows=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB8210
+X-Proofpoint-ORIG-GUID: t5cGY6wbmGmv6UVMuOqUBQzmvoIVPGfX
+X-Authority-Analysis: v=2.4 cv=ZtHd7d7G c=1 sm=1 tr=0 ts=69dda39a cx=c_pps
+ a=Zi+2/POLpdgQ9anv5Nu4tw==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
+ a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
+ a=xqWC_Br6kY4A:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=bi6dqmuHe4P4UrxVR6um:22 a=fTW__CHxibyLmBMfj2wP:22 a=t7CeM3EgAAAA:8
+ a=y-J10uEhvVOKljhdnB8A:9 a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-GUID: t5cGY6wbmGmv6UVMuOqUBQzmvoIVPGfX
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE0MDAxOCBTYWx0ZWRfX7E/NBb7ZKp5d
+ q9UYbnCoO4O2PgDwfcZkCDs3T6OsTSykhjIHW6CghSFE1jV4BCSoqCoj3KfbiSi9mU4GsTILSFM
+ XCzfxYG1cmVrPt9rwZ5ZUIgJvbFottWekDfWhMzzI0BPGG6/545eIUg76fyR9K0JZFl/pT46XJn
+ q7Va1zm2CFP3ByuU3gixb1XsfebBqMmsqaVCV61sSAums2bNnRT0Gq0jCGnqHMyltvH6ARrGylH
+ mATfC5tL2PoMpNSgvdzqDWCQdF/lkwT4/S6iPiOMMJjeb9ogv2vdVb7l6U/EaffEyTR2jO3aYtp
+ 9CUm3tlLe3ZCECG1ed4VQMGwKHyc9eSYEls1w4555lgcTQ8CaHM9Aqg/lmGuChtYBJX7dLTG3Fy
+ QRWtqyEJmD9xXgBCw6dOYa3eeXuREQ8SNHZgeb1ydJdhJhxnebNm5mddS37dF6P+ByIhH/liMh1
+ pPs+wa+Y/xu/7HLSh4g==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-13_03,2026-04-13_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 clxscore=1015 malwarescore=0 impostorscore=0 adultscore=0
+ suspectscore=0 bulkscore=0 priorityscore=1501 spamscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604140018
 
-RFC 2516 Section 7 states that Protocol Field Compression (PFC) is NOT
-RECOMMENDED for PPPoE. In practice, pppd does not support negotiating
-PFC for PPPoE sessions, and the flow dissector driver has assumed an
-uncompressed frame until the blamed commit.
+From: Guocai He <guocai.he.cn@windriver.com>
 
-During the review process of that commit [1], support for PFC is
-suggested. However, having a compressed (1-byte) protocol field means
-the subsequent PPP payload is shifted by one byte, causing 4-byte
-misalignment for the network header and an unaligned access exception
-on some architectures.
+This reverts commit 0c4f1c02d27a880b10b58c63f574f13bed4f711d which is commit 
+e1696c8bd0056bc1a5f7766f58ac333adc203e8a upstream.
 
-The exception can be reproduced by sending a PPPoE PFC frame to an
-ethernet interface of a MIPS board, with RPS enabled, even if no PPPoE
-session is active on that interface:
+The reverted patch introduced a deadlock. The locking situation in mainline is 
+totally different, so it is incorrect to directly backport the commit from mainline.
 
-$ 0   : 00000000 80c40000 00000000 85144817
-$ 4   : 00000008 00000100 80a75758 81dc9bb8
-$ 8   : 00000010 8087ae2c 0000003d 00000000
-$12   : 000000e0 00000039 00000000 00000000
-$16   : 85043240 80a75758 81dc9bb8 00006488
-$20   : 0000002f 00000007 85144810 80a70000
-$24   : 81d1bda0 00000000
-$28   : 81dc8000 81dc9aa8 00000000 805ead08
-Hi    : 00009d51
-Lo    : 2163358a
-epc   : 805e91f0 __skb_flow_dissect+0x1b0/0x1b50
-ra    : 805ead08 __skb_get_hash_net+0x74/0x12c
-Status: 11000403        KERNEL EXL IE
-Cause : 40800010 (ExcCode 04)
-BadVA : 85144817
-PrId  : 0001992f (MIPS 1004Kc)
-Call Trace:
-[<805e91f0>] __skb_flow_dissect+0x1b0/0x1b50
-[<805ead08>] __skb_get_hash_net+0x74/0x12c
-[<805ef330>] get_rps_cpu+0x1b8/0x3fc
-[<805fca70>] netif_receive_skb_list_internal+0x324/0x364
-[<805fd120>] napi_complete_done+0x68/0x2a4
-[<8058de5c>] mtk_napi_rx+0x228/0xfec
-[<805fd398>] __napi_poll+0x3c/0x1c4
-[<805fd754>] napi_threaded_poll_loop+0x234/0x29c
-[<805fd848>] napi_threaded_poll+0x8c/0xb0
-[<80053544>] kthread+0x104/0x12c
-[<80002bd8>] ret_from_kernel_thread+0x14/0x1c
-
-Code: 02d51821  1060045b  00000000 <8c640000> 3084000f  2c820005  144001a2  00042080  8e220000
-
-To reduce the attack surface and maintain performance, do not process
-PPPoE PFC frames.
-
-[1] https://patch.msgid.link/20220630231016.GA392@debian.home
-Fixes: 46126db9c861 ("flow_dissector: Add PPPoE dissectors")
-Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
+Signed-off-by: Guocai He <guocai.he.cn@windriver.com>
 ---
-Changes in v5: drop byte-swap change
- Link to v4: https://lore.kernel.org/netdev/20260410033627.93786-1-qingfang.deng@linux.dev/
+ net/wireless/core.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
- net/core/flow_dissector.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
-
-diff --git a/net/core/flow_dissector.c b/net/core/flow_dissector.c
-index 1b61bb25ba0e..f9aaba554128 100644
---- a/net/core/flow_dissector.c
-+++ b/net/core/flow_dissector.c
-@@ -1374,16 +1374,8 @@ bool __skb_flow_dissect(const struct net *net,
- 			break;
- 		}
- 
--		/* least significant bit of the most significant octet
--		 * indicates if protocol field was compressed
--		 */
- 		ppp_proto = ntohs(hdr->proto);
--		if (ppp_proto & 0x0100) {
--			ppp_proto = ppp_proto >> 8;
--			nhoff += PPPOE_SES_HLEN - 1;
--		} else {
--			nhoff += PPPOE_SES_HLEN;
--		}
-+		nhoff += PPPOE_SES_HLEN;
- 
- 		if (ppp_proto == PPP_IP) {
- 			proto = htons(ETH_P_IP);
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index e75326932c32..2a6a8bdfa724 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -1328,10 +1328,8 @@ void __cfg80211_leave(struct cfg80211_registered_device *rdev,
+ 		__cfg80211_leave_ocb(rdev, dev);
+ 		break;
+ 	case NL80211_IFTYPE_P2P_DEVICE:
+-		cfg80211_stop_p2p_device(rdev, wdev);
+-		break;
+ 	case NL80211_IFTYPE_NAN:
+-		cfg80211_stop_nan(rdev, wdev);
++		/* cannot happen, has no netdev */
+ 		break;
+ 	case NL80211_IFTYPE_AP_VLAN:
+ 	case NL80211_IFTYPE_MONITOR:
 -- 
-2.43.0
+2.34.1
 
