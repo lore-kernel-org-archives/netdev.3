@@ -1,109 +1,122 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A82BD3E0C4E
-	for <netdev@vger.kernel.org>; Tue, 14 Apr 2026 17:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7A23ED10F;
+	Tue, 14 Apr 2026 17:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776186994; cv=none; b=KfsqwDLeKr7Vn8aJbT24WT1LJkXlM4R4Ka8vSem3kRKolgCasWNrjMEmsJJRQvn2eCSlPEyzfdmEpATUQF4BEf1Hk1bXD+iB+Hec7Y1shYlhtkkFMxPeYO9wXgGsgjfVTu973rP1IzCEuZjr+CHmHaLVqY80FhgLlsYyVMn4Q8M=
+	t=1776187021; cv=none; b=WU71H2WGiKes49f6/fQEYULLjVHDW8zwfYoXkRF79xYYs8CFHOHrcHGG6oa4uokRYCGZaB2uI999s1Z3lbehILevrZhhKRYXMwsARkiUgkOmEPBtYLpVjeIxz2SD/YA4nqiAvB3/PZA2DXbQNSthAgvKfpXpEd8aESCYDRgypnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776186994; c=relaxed/simple;
-	bh=YglCd9xnuRc5fVSgrwjKGLYx/Zqhu1YuloxrREYHN98=;
+	s=arc-20240116; t=1776187021; c=relaxed/simple;
+	bh=f0qKwArB0ojtq47vAFre2SyA24zWTDVmi8aWOSYs8CY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fSOfceTy0Lbc3x8m/TjKFDV41EWBkBmdPLgcyMzdZziO+deG1i1IcirNjpgnuw0gFjhEaQPjXa80bphvEjz2DztTHPSwwTorHNnSkR+z9+yLqj2DA+Oe9Z127fJ0uN1VQhHIvVDe63EdjUV1oWjHvGZmQfgU6xoYLDBuWYsOWC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OqJi3uzP; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=RIAClUjo7t9qWxhrkqVbuMOHVWSJFvVGotcCcorjX5+3a9mWhCgMtMZ5cguFAFKghu3f2pvIDjTrljObLamiL0RDI+UZo6VAXlRTLUp3w/yzQ+h0oDlr0aGKZWvsH8QArQl1qbdB4u7m6Ln9BHluzCGTE7RFMjpRORNXvsatZSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IcgOp+nS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OqJi3uzP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 433ACC19425;
-	Tue, 14 Apr 2026 17:16:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IcgOp+nS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E65FC19425;
+	Tue, 14 Apr 2026 17:16:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776186994;
-	bh=YglCd9xnuRc5fVSgrwjKGLYx/Zqhu1YuloxrREYHN98=;
+	s=k20201202; t=1776187020;
+	bh=f0qKwArB0ojtq47vAFre2SyA24zWTDVmi8aWOSYs8CY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OqJi3uzPfg8O/OIubAf/jG0KpIY5PG8BorLO55teIT3h8Ol1Wm9gA8o2dub7pdIiz
-	 kKW2f9iZugbrw7OumA1v01sV16LJsEBkhevAZ6X8NCtgbdB9pCRL+YajrcSiVTuAxi
-	 xB2A+0TVCW8J7/XFAaeEMizpQiUoTQZ28fShibOPArFq5feMVCp7RPTtFIB7FvyJk7
-	 GStBouimnx8nG5q67mQV5LpSCAIl8OlvmK0cal9jx7uFRVBVcG255g8asQWr+ba3W6
-	 EuINzZocNLYJVFqHId80Gtq+YJI24BMThCu5TPK3W89Vads5nlgQ/ryW2EGfKzSHHK
-	 wNG6Xr47OioLQ==
-Date: Tue, 14 Apr 2026 18:16:30 +0100
+	b=IcgOp+nSypTlAwKAW3t+oXiN7jUamE+Pah5A2Y5NPlT7DYlQMDI8EE7resb0GNz60
+	 9wrpGFczkrp1P+H7OPNxPkgaqmtqKNOsv9SEQq4CTasODJCYFCNEM0p15kRsweObE6
+	 moJGrdxWrHH/nzuDc0K2VQoGWQ0nUltoy3pHnVrRhzggh6BHR3csv3lswBxqbiaxfS
+	 aKOD+309XbuKlrPETi1ezWvvR6ZZ3022AWaZsV3PFJbHDCKB8w91dUX3sL6vkIwQlp
+	 ZXzfUCIYvON10o4lhJyP39f5/BHwgjS1lL03R2NinPci/XKDuAOybMCQdZTLaliBqe
+	 VewaVD2FOpG9w==
+Date: Tue, 14 Apr 2026 18:16:55 +0100
 From: Simon Horman <horms@kernel.org>
-To: Jacob Keller <jacob.e.keller@intel.com>
-Cc: Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	intel-wired-lan@lists.osuosl.org, anthony.l.nguyen@intel.com,
-	netdev@vger.kernel.org, Paul Greenwalt <paul.greenwalt@intel.com>
-Subject: Re: [Intel-wired-lan] [PATCH iwl-net v2 2/6] ixgbe: add bounds check
- for debugfs register access
-Message-ID: <20260414171630.GA772670@horms.kernel.org>
-References: <20260408131154.2661818-1-aleksandr.loktionov@intel.com>
- <20260408131154.2661818-3-aleksandr.loktionov@intel.com>
- <20260413103050.GL469338@kernel.org>
- <dda1f0f3-f57b-418a-93e6-2cdaa1d2ef35@intel.com>
+To: "D. Wythe" <alibuda@linux.alibaba.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Dust Li <dust.li@linux.alibaba.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Sidraya Jayagond <sidraya@linux.ibm.com>,
+	Wenjia Zhang <wenjia@linux.ibm.com>,
+	Mahanta Jambigi <mjambigi@linux.ibm.com>,
+	Tony Lu <tonylu@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>, linux-kernel@vger.kernel.org,
+	linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
+	netdev@vger.kernel.org, oliver.yang@linux.alibaba.com,
+	pasic@linux.ibm.com
+Subject: Re: [PATCH net-next v2] net/smc: cap allocation order for SMC-R
+ physically contiguous buffers
+Message-ID: <20260414171655.GB772670@horms.kernel.org>
+References: <20260407124337.88128-1-alibuda@linux.alibaba.com>
+ <20260410151631.GY469338@kernel.org>
+ <20260414021054.GA111420@j66a10360.sqa.eu95>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <dda1f0f3-f57b-418a-93e6-2cdaa1d2ef35@intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260414021054.GA111420@j66a10360.sqa.eu95>
 
-On Mon, Apr 13, 2026 at 06:00:28PM -0700, Jacob Keller wrote:
-> On 4/13/2026 3:30 AM, Simon Horman wrote:
-> > On Wed, Apr 08, 2026 at 03:11:50PM +0200, Aleksandr Loktionov wrote:
-> >> From: Paul Greenwalt <paul.greenwalt@intel.com>
-> >>
-> >> Prevent out-of-bounds MMIO accesses triggered through user-controlled
-> >> register offsets.  IXGBE_HFDR (0x15FE8) is the highest valid MMIO
-> >> register in the ixgbe register map; any offset beyond it would address
-> >> unmapped memory.
-> >>
-> >> Add a defense-in-depth check at two levels:
-> >>
-> >> 1. ixgbe_read_reg() -- the noinline register read accessor.  A
-> >>    WARN_ON_ONCE() guard here catches any future code path (including
-> >>    ioctl extensions) that might inadvertently pass an out-of-range
-> >>    offset without relying on higher layers to catch it first.
-> >>    ixgbe_write_reg() is a static inline called from the TX/RX hot path;
-> >>    adding WARN_ON_ONCE there would inline the check at every call site,
-> >>    so only the read path gets this guard.
-> >>
-> >> 2. ixgbe_dbg_reg_ops_write() -- the debugfs 'reg_ops' interface is the
-> >>    only current path where a raw, user-supplied offset enters the driver.
-> >>    Gating it before invoking the register accessors provides a clean,
-> >>    user-visible failure (silent ignore with no kernel splat) for
-> >>    deliberately malformed debugfs writes.
-> >>
-> >> Add a reg <= IXGBE_HFDR guard to both the read and write paths in
-> >> ixgbe_dbg_reg_ops_write(), and a WARN_ON_ONCE + early-return guard to
-> >> ixgbe_read_reg().
-> >>
-> >> Fixes: 91fbd8f081e2 ("ixgbe: added reg_ops file to debugfs")
-> >> Signed-off-by: Paul Greenwalt <paul.greenwalt@intel.com>
-> >> Cc: stable@vger.kernel.org
-> >> Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-> >> ---
-> >> v1 -> v2:
-> >>  - Add Fixes: tag; reroute from iwl-next to iwl-net (security-relevant
-> >>    hardening for user-controllable out-of-bounds MMIO).
+On Tue, Apr 14, 2026 at 10:10:54AM +0800, D. Wythe wrote:
+> On Fri, Apr 10, 2026 at 04:16:31PM +0100, Simon Horman wrote:
+> > On Tue, Apr 07, 2026 at 08:43:37PM +0800, D. Wythe wrote:
+> > > The alloc_pages() cannot satisfy requests exceeding MAX_PAGE_ORDER,
+> > > and attempting such allocations will lead to guaranteed failures
+> > > and potential kernel warnings.
+> > > 
+> > > For SMCR_PHYS_CONT_BUFS, cap the allocation order to MAX_PAGE_ORDER.
+> > > This ensures the attempts to allocate the largest possible physically
+> > > contiguous chunk succeed, instead of failing with an invalid order.
+> > > This also avoids redundant "try-fail-degrade" cycles in
+> > > __smc_buf_create().
+> > > 
+> > > For SMCR_MIXED_BUFS, no cap is needed: if the order exceeds
+> > > MAX_PAGE_ORDER, alloc_pages() will silently fail (__GFP_NOWARN)
+> > > and automatically fall back to virtual memory.
+> > > 
+> > > Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
+> > > Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
+> > > ---
+> > > Changes v1 -> v2:
+> > > https://lore.kernel.org/netdev/20260312082154.36971-1-alibuda@linux.alibaba.com/
+> > > 
+> > > - Move the bufsize cap from smcr_new_buf_create() up to
+> > >   __smc_buf_create(), which is simpler and avoids touching
+> > >   the allocation logic itself.
 > > 
-> > Thanks for the update.
+> > The nit below notwithstanding, this looks good to me.
 > > 
-> > And sorry for not thinking to ask this earlier: this patch
-> > addresses possible overruns of the mapped address space if the
-> > supplied value for reg is too large. But do we also need a
-> > guard against underrun if the value for reg is too small?
+> > Reviewed-by: Simon Horman <horms@kernel.org>
 > > 
+> > > ---
+> > >  net/smc/smc_core.c | 4 ++++
+> > >  1 file changed, 4 insertions(+)
+> > > 
+> > > diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
+> > > index e2d083daeb7e..cdd881746e21 100644
+> > > --- a/net/smc/smc_core.c
+> > > +++ b/net/smc/smc_core.c
+> > > @@ -2440,6 +2440,10 @@ static int __smc_buf_create(struct smc_sock *smc, bool is_smcd, bool is_rmb)
+> > >  		/* use socket send buffer size (w/o overhead) as start value */
+> > >  		bufsize = smc->sk.sk_sndbuf / 2;
+> > >  
+> > > +	/* limit bufsize for physically contiguous buffers */
+> > > +	if (!is_smcd && lgr->buf_type == SMCR_PHYS_CONT_BUFS)
+> > > +		bufsize = min_t(int, bufsize, (PAGE_SIZE << MAX_PAGE_ORDER));
+> > 
+> > nit: I think min() is sufficient here, and the inner parentheses are
+> >      unnecessary
 > 
-> I don't think so. This is bounds checking a register offset which is an
-> unsigned 32-bit value and begins at 0, so the map goes from 0 to
-> IXGBE_HFDR. Since the value is unsigned, if it does underflow somehow it
-> would then get caught by the check for IXGBE_HFDR right?
+> Hi Simon,
+> 
+> I think min_t is required here because min() triggers a signedness
+> error:
+> 
+> ././include/linux/compiler_types.h:706:38: error: call to
+> ‘__compiletime_assert_950’ declared with attribute error: min(bufsize,
+> ((1UL) << 12) << 10) signedness error
+> 
+> The inner parentheses can be removed, though.
 
-If the entire range from 0 to IXGBE_HFDR is mapped,
-and it's ok for reg to have any value in that range,
-then I agree there is no problem here.
-
-Reviewed-by: Simon Horman <horms@kernel.org>
-
+Ack, thanks for checking.
