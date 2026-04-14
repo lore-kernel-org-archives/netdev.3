@@ -1,128 +1,135 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90C803AE71E
-	for <netdev@vger.kernel.org>; Tue, 14 Apr 2026 13:29:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1C4825B2F4;
+	Tue, 14 Apr 2026 13:43:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776173382; cv=none; b=IGSCrgPt2e0E2+8VmWl6PcNyngYO5mR6BUk6botmsxIU5yzK5d7wr6tKlA6rsnwonhVYy+VUXWnpIzJ1nP/2dSkpvFTnLoHEOKaREQfJnQvUl4OHDXgHk24w2vhu8ZCCAAa4WsGitjIN8BBZBvQ3aZySzeSXsA49D9xEI/Oa9so=
+	t=1776174237; cv=none; b=Ra3RXL+1JkVc7V2G51P/tAV7XYf+cC6y5tEjRwJeOuJjcNPNxNVPG4M7+gTiCZjrcYZ3OTST2szHZtRXPc6Gh1imuA17GO5Pb59gSNKyYqJzascUFNeSuJLI+IfulFidNTDgSchv6PgkQOpYdIkrOJS9or64h+IChhMuI7askvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776173382; c=relaxed/simple;
-	bh=zsM9dsmbiVIJiMJTT1sM6WsEpvpqK7LiJCBq22uxOaI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l6ykiSMPHQ0jgLw9sHsGY2end6GPfvRfShlVYNtYvg5QSaHRn2Kij9wW9Q9ogfyGYx3DQNSRvXDZpFNrq8qPtxcIhG86lX15KcUsmjKGRUyY2l/U1yHtlP3udZBbkF9/amC9uMgISK5p2AXmjx1G7QBFcOjoWtMmKrCCJWnRxsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NalWhCba; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776174237; c=relaxed/simple;
+	bh=7Qsjc8sieTy2NunPo1IUnobN9kKlNcjdypUZQ9CE4Zc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:From:To:
+	 References:In-Reply-To; b=g/GdwK/+9o4RfTLE6v/OasI8T6bqinevbmT59eIF5AYkRSEur9ON6lEi42Axw3z09s5c6D10psYUEOUnpknwrWaXAEHNo9U6rYOKYphsPClUyLs2ET8UV9VrW6zDgGSEeQhgkFkkR/fwG1YGoglia2FV0uxnvihcX9agGxOx8So=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=S6AAfSv+; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NalWhCba"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F12FAC19425;
-	Tue, 14 Apr 2026 13:29:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776173382;
-	bh=zsM9dsmbiVIJiMJTT1sM6WsEpvpqK7LiJCBq22uxOaI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NalWhCbatjG5CCe9zEOfzvQ6CwSNVjaRgaJsc9Tm711uhDIGZcyTZn4II5KkvFpS3
-	 2H+1X/8DetWwTUR3wC9hoyAdqqaXOdDFbEYGom73iFMgbOlHgx8OirRDvqpa0Ss0S2
-	 gqnteCD1SICL7mKDIBfXBJ5lZ1twHnbJ8NB1PmNsIHHtbdOL5GXCa+8I6RcInEez27
-	 +Er8RcY1CXmxYEIZRXWBrYR/Mtgfn8DMXQb2SRuTuoBUq7Uz1JaApKgQ3Oln6ZDO+y
-	 MjAapKJHTh7BFE2/6K558x7kZRDW81nOSeMn4T0bhke9oXpuI0KnHZduvV0p4e3c5Y
-	 XSSlReAnvMArw==
-From: Simon Horman <horms@kernel.org>
-To: aleksandr.loktionov@intel.com
-Cc: Simon Horman <horms@kernel.org>,
-	anthony.l.nguyen@intel.com,
-	marcin.szycik@linux.intel.com,
-	intel-wired-lan@lists.osuosl.org,
-	jacob.e.keller@intel.com,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH iwl-next v2 7/8] ixgbe: use GFP_KERNEL in ixgbe_fcoe_ddp_setup()
-Date: Tue, 14 Apr 2026 14:29:35 +0100
-Message-ID: <20260414132935.757593-1-horms@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260408131216.2662245-8-aleksandr.loktionov@intel.com>
-References: <20260408131216.2662245-8-aleksandr.loktionov@intel.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="S6AAfSv+"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 1406BC5AAAC;
+	Tue, 14 Apr 2026 13:44:31 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id E416660410;
+	Tue, 14 Apr 2026 13:43:53 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 450DD10450118;
+	Tue, 14 Apr 2026 15:43:42 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1776174232; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=fBYaHCpG8hC1NEAoLKhT2eDDnp5ePCFis5i2nukgCY4=;
+	b=S6AAfSv+oUeOvIrxD+z5bbdfpbvEOB21uXEtXvB4AqMh4FY8aCuyB3wHwx9r7WuVdHJYL+
+	rD0/08M7IBbmkTkrkT4y4rKcwWyqFckHbY0d9PtwNrkx7DaSk7KT0vztBafKaTOmUOws5w
+	qAGaNH/SCsFaeSpXq+U1fXnRnSb6RTAFiP4wAme1fA2E/ecJefwxeRaUPgj3ZmXhRt7wxY
+	aas0aDmqQnMSQ8xEcyHooL1//5S5S9RSul/ZsJlUWSIBozq2b3PI6l6xl3ldUHUduj47SE
+	koioV9P/g0ItanZHdEow/RtOOTONKeljDR3QB5PLNB90x26lfEpu4eQqk7yUEg==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 14 Apr 2026 15:43:42 +0200
+Message-Id: <DHSX7PABLUSN.1VYMRZ02DFZEL@bootlin.com>
+Subject: Re: [PATCH RFC bpf-next 8/8] selftests/bpf: add tests to validate
+ KASAN on JIT programs
+Cc: "Alexei Starovoitov" <ast@kernel.org>, "Daniel Borkmann"
+ <daniel@iogearbox.net>, "Andrii Nakryiko" <andrii@kernel.org>, "Martin
+ KaFai Lau" <martin.lau@linux.dev>, "Eduard Zingerman" <eddyz87@gmail.com>,
+ "Kumar Kartikeya Dwivedi" <memxor@gmail.com>, "Song Liu" <song@kernel.org>,
+ "Yonghong Song" <yonghong.song@linux.dev>, "Jiri Olsa" <jolsa@kernel.org>,
+ "John Fastabend" <john.fastabend@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, "David Ahern" <dsahern@kernel.org>, "Thomas
+ Gleixner" <tglx@kernel.org>, "Ingo Molnar" <mingo@redhat.com>, "Borislav
+ Petkov" <bp@alien8.de>, "Dave Hansen" <dave.hansen@linux.intel.com>,
+ <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, "Shuah Khan"
+ <shuah@kernel.org>, "Maxime Coquelin" <mcoquelin.stm32@gmail.com>,
+ "Alexandre Torgue" <alexandre.torgue@foss.st.com>, "Andrey Ryabinin"
+ <ryabinin.a.a@gmail.com>, "Alexander Potapenko" <glider@google.com>,
+ "Dmitry Vyukov" <dvyukov@google.com>, "Vincenzo Frascino"
+ <vincenzo.frascino@arm.com>, "Andrew Morton" <akpm@linux-foundation.org>,
+ <ebpf@linuxfoundation.org>, "Bastien Curutchet"
+ <bastien.curutchet@bootlin.com>, "Thomas Petazzoni"
+ <thomas.petazzoni@bootlin.com>, "Xu Kuohai" <xukuohai@huawei.com>,
+ <bpf@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <netdev@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+ <linux-stm32@st-md-mailman.stormreply.com>,
+ <linux-arm-kernel@lists.infradead.org>, <kasan-dev@googlegroups.com>,
+ <linux-mm@kvack.org>
+From: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+To: "Andrey Konovalov" <andreyknvl@gmail.com>,
+ =?utf-8?b?QWxleGlzIExvdGhvcsOpIChlQlBGIEZvdW5kYXRpb24p?=
+ <alexis.lothore@bootlin.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260413-kasan-v1-0-1a5831230821@bootlin.com>
+ <20260413-kasan-v1-8-1a5831230821@bootlin.com>
+ <CA+fCnZekgcEgsZnRrOB=+HoG=neRg=oLTt2jStyrPJ6mYf2ctQ@mail.gmail.com>
+In-Reply-To: <CA+fCnZekgcEgsZnRrOB=+HoG=neRg=oLTt2jStyrPJ6mYf2ctQ@mail.gmail.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-
-For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
----
-ixgbe: use GFP_KERNEL in ixgbe_fcoe_ddp_setup()
-
-This commit restructures ixgbe_fcoe_ddp_setup() to use GFP_KERNEL
-instead of GFP_ATOMIC by splitting get_cpu()/put_cpu() usage into two
-narrow critical sections, moving DMA mapping and pool allocation between
-them where preemption is enabled.
-
-> diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_fcoe.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_fcoe.c
-> index 011fda9c6193..e338ff0e6522 100644
-> --- a/drivers/net/ethernet/intel/ixgbe/ixgbe_fcoe.c
-> +++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_fcoe.c
-
-[ ... ]
-
-> @@ -179,29 +180,43 @@ static int ixgbe_fcoe_ddp_setup(struct net_device *netdev, u16 xid,
->  		return 0;
->  	}
+On Tue Apr 14, 2026 at 12:20 AM CEST, Andrey Konovalov wrote:
+> On Mon, Apr 13, 2026 at 8:29=E2=80=AFPM Alexis Lothor=C3=A9 (eBPF Foundat=
+ion)
+> <alexis.lothore@bootlin.com> wrote:
+>>
+>> Add a basic KASAN test runner that loads and test-run programs that can
+>> trigger memory management bugs. The test captures kernel logs and ensure
+>> that the expected KASAN splat is emitted by searching for the
+>> corresponding first lines in the report.
+>>
+>> This version implements two faulty programs triggering either a
+>> user-after-free, or an out-of-bounds memory usage. The bugs are
+>> triggered thanks to some dedicated kfuncs in bpf_testmod.c, but two
+>> different techniques are used, as some cases can be quite hard to
+>> trigger in a pure "black box" approach:
+>> - for reads, we can make the used kfuncs return some faulty pointers
+>>   that ebpf programs will manipulate, they will generate legitimate
+>>   kasan reports as a consequence
+>> - applying the same trick for faulty writes is harder, as ebpf programs
+>>   can't write kernel data freely. So ebpf programs can call another
+>>   specific testing kfunc that will alter the shadow memory matching the
+>>   passed memory (eg: a map). When the program will try to write to the
+>>   corresponding memory, it will trigger a report as well.
+>>
+>> Signed-off-by: Alexis Lothor=C3=A9 (eBPF Foundation) <alexis.lothore@boo=
+tlin.com>
+>> ---
+>> The way of bringing kasan_poison into bpf_testmod is definitely not
+>> ideal.  But I would like to validate the testing approach (triggering
+>> real faulty accesses, which is hard on some cases, VS manually poisoning
+>> BPF-manipulated memory) before eventually making clean bridges between
+>> KASAN APIs and bpf_testmod.c, if the latter approach is the valid one.
 >
-> +	/* Pin to current CPU only to read the per-CPU pool pointer; drop
-> +	 * the pin before any allocations that may sleep under direct reclaim.
-> +	 */
->  	ddp_pool = per_cpu_ptr(fcoe->ddp_pool, get_cpu());
->  	if (!ddp_pool->pool) {
->  		e_warn(drv, "xid=0x%x no ddp pool for fcoe\n", xid);
-> -		goto out_noddp;
-> +		put_cpu();
-> +		return 0;
->  	}
-> +	pool = ddp_pool->pool;
-> +	put_cpu();
->
->  	/* setup dma from scsi command sgl */
->  	dmacount = dma_map_sg(&adapter->pdev->dev, sgl, sgc, DMA_FROM_DEVICE);
->  	if (dmacount == 0) {
->  		e_err(drv, "xid 0x%x DMA map error\n", xid);
-> -		goto out_noddp;
-> +		return 0;
->  	}
->
-> -	/* alloc the udl from per cpu ddp pool */
-> -	ddp->udl = dma_pool_alloc(ddp_pool->pool, GFP_ATOMIC, &ddp->udp);
-> +	/* Allocate from per-CPU pool; GFP_KERNEL is safe: preemption is
-> +	 * re-enabled after the put_cpu() above.  Per-CPU DMA pools are only
-> +	 * destroyed under RTNL during interface teardown, so the saved pool
-> +	 * pointer remains valid.
-> +	 */
-> +	ddp->udl = dma_pool_alloc(pool, GFP_KERNEL, &ddp->udp);
+> Would it make sense to put these tests into KASAN KUnit tests in
+> mm/kasan/kasan_test_c.c? I assume there is a kernel API to JIT BPF
+> programs from the kernel itself?
 
-Is this safe given the calling context?
+Possibly indeed, but I think one important use case will be the
+possibility to run those tests in BPF CI ([1]), and this depends on
+those tests being integrated in the test_progs framework
+(tools/testing/selftests/bpf)
 
-Looking at the call path from the FCoE stack:
+[1] https://github.com/kernel-patches/bpf/pulls
 
-fc_exch_seq_send()
-  fc_exch_alloc()
-    fc_exch_em_alloc()
-      spin_lock_bh(&pool->lock)
-      # allocate exchange
-      # set ep->ex_lock = held
-      return with ep->ex_lock still held
-  fc_fcp_ddp_setup()
-    lport->tt.ddp_setup()
-      .ndo_fcoe_ddp_setup() == ixgbe_fcoe_ddp_get()
-        ixgbe_fcoe_ddp_setup()  # <-- we are here
-  # ... continues with ep->ex_lock held
-  spin_unlock_bh(&ep->ex_lock)
+> There, you can just call kasan_poison(), some tests already do this.
+> And you can also extend the KASAN KUnit test framework to find out
+> whether the bad access is a read or write, if you want to check this.
 
-fc_exch_em_alloc() acquires ep->ex_lock (a spinlock) and returns with
-it held. The lock remains held through fc_fcp_ddp_setup() and into
-ixgbe_fcoe_ddp_setup(). Additionally, spin_lock_bh() disables bottom
-halves.
+Alexis
+--=20
+Alexis Lothor=C3=A9, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
-Can GFP_KERNEL be used while holding ep->ex_lock with BH disabled, or
-does this require GFP_ATOMIC?
