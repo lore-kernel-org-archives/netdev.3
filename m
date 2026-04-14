@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB862D5940
-	for <netdev@vger.kernel.org>; Tue, 14 Apr 2026 00:00:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5554186A;
+	Tue, 14 Apr 2026 00:10:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776124838; cv=none; b=B1lT0VP63CLxky0QsAFpO4/xRGU/MrKdjaDiPSGJZ4+UyVbsH0BgjiZUk7IHnNWtwsp5Dc9LeYIoy7Jm1WJRe8iC5nEBRJJnZMq6SuOu4EKME3yH/uMF9pdne54OHBjtWvychrGYnZoX2S/1HbaCN0mG2lD/xQOW5ima4S/NJRA=
+	t=1776125435; cv=none; b=T4qwOnDU/MdZknLoN4JxhfdLbZ93g4qacsdBIXq18AoH44snUgWQ15iYwLeOfEJHlXUew22TDVYRqn0agEiTIMx+9qgUiVPxk3kWq9HMe3dFhcygicAFiQ8ynefrqoUryeMntZtImRtA+3yJ8GffiMAP21Myab2MT1NeKkyWDD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776124838; c=relaxed/simple;
-	bh=uUXgRgZxekROlhnbfJX/9FLXh2pbw88Xdl9zxwLhSsY=;
+	s=arc-20240116; t=1776125435; c=relaxed/simple;
+	bh=odzBk0d1cxJ7qIPUl9GfrbC9f6IsJQUZWUHQdvegsP8=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=U42O96k+15Ri+7pcey9Oq9f8lT9rEOHYis5yAFROm8MvzpU+zL/vs9rVXi3TZYwRUTwNyJ1kpHwwgCCiC9z/9zArhxFEt3M6ZBu+r/Dlgnvu+dtZeeVq3pHN+MPtLCRm60D68n0ZQ/l94AWL50Ln/bc9xDEpYOtD/J4RUokLJfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DLa77Cep; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=umOevmIga7QJKbgpKp2cTeR4tXSp2hTBMvdYytbsPsMJ166ZEFcnr6Pra08Zoa8/IX0EFYKBH6Bh6RR9QSXh338OrM3K/MVFi+XCADAGRXJ8CuDW2eQYNaKi6OnW3nzIrub3O8rhqoyztCwbZnr0Ck0HOcmuvPnXVv7cfRQShlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nmUIj45N; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DLa77Cep"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E7C2C2BCAF;
-	Tue, 14 Apr 2026 00:00:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nmUIj45N"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F00FC2BCAF;
+	Tue, 14 Apr 2026 00:10:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776124838;
-	bh=uUXgRgZxekROlhnbfJX/9FLXh2pbw88Xdl9zxwLhSsY=;
+	s=k20201202; t=1776125435;
+	bh=odzBk0d1cxJ7qIPUl9GfrbC9f6IsJQUZWUHQdvegsP8=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=DLa77CepKtp8eyhPqkxd1dmQZdPm/oF9MOyJ5N1D0f8deK+YUf+SJJkxsXWQikyDs
-	 YWzcQfUQ1KxRT9qarQ0Z5sOt+XelZx0O6hLDg1PqQST4TNBfhzstT8Q2M7Zyui1UTa
-	 T9pgL7VYAiBH+/Ei5kY48aDNid2R5GjJTaPDXHrRQYEiEQFY21uc87WHZFqaLx/NLc
-	 miWNTNp1Dmw/TPuY+DOdr/Bk9UVl05GVTLX4hNjLvgIYBSY7ylFcwGgLJSrFOGapAN
-	 B9GsSUMDCyrbl+0Wv4THFUEri5HZdj6c9/tr+cSAbNrvj+n+Iy1Duqvk5BNziOprYs
-	 fnKgayXDOqydA==
+	b=nmUIj45NP2n2mJmArsMEHrHgVmgYujiiLpYLiMUDoHtU2kUClUzRhHd7juLnxdl+/
+	 HTLGrLxROYmRrDAMdbl/Cdf3Il5WaFaKsg8keFdhVHGPduaKDZwloqiW4p6fiA/jjh
+	 pSObihhh+L2tBso5rm2/9O0s4xO9bvy+4nDgSyUHBx7VGE1AyagDZG7TBUByyNGmCx
+	 g8UqTs3euIpe7qaETI2hpAY0/LBvZQDKFEtZ8p2ghHipFb72oMgUpjrWZUM4HB6zU7
+	 qrhANMtsyknHvXQs9Z+JYeJYPivITXH44NyK3n66G5LzHk/y2Ds7lvoWeo2UofY5Bo
+	 JIilWWqLfAjvA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CEC83809A0B;
-	Tue, 14 Apr 2026 00:00:10 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9EB33809A0B;
+	Tue, 14 Apr 2026 00:10:07 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,44 +37,39 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 0/3] net: airoha: Preliminary series to support
- multiple net_devices connected to the same GDM port
+Subject: Re: [PATCH net] sctp: disable BH before calling udp_tunnel_xmit_skb()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177612480929.606407.7600477899196250547.git-patchwork-notify@kernel.org>
-Date: Tue, 14 Apr 2026 00:00:09 +0000
+ <177612540655.609150.13642676010473271907.git-patchwork-notify@kernel.org>
+Date: Tue, 14 Apr 2026 00:10:06 +0000
 References: 
- <20260412-airoha-multi-serdes-preliminary-patch-v1-0-08d5b670ca8f@kernel.org>
+ <c874a8548221dcd56ff03c65ba75a74e6cf99119.1776017727.git.lucien.xin@gmail.com>
 In-Reply-To: 
- <20260412-airoha-multi-serdes-preliminary-patch-v1-0-08d5b670ca8f@kernel.org>
-To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
- xuegang.lu@airoha.com
+ <c874a8548221dcd56ff03c65ba75a74e6cf99119.1776017727.git.lucien.xin@gmail.com>
+To: Xin Long <lucien.xin@gmail.com>
+Cc: netdev@vger.kernel.org, linux-sctp@vger.kernel.org, davem@davemloft.net,
+ kuba@kernel.org, edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
+ marcelo.leitner@gmail.com, bestswngs@gmail.com
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sun, 12 Apr 2026 19:13:11 +0200 you wrote:
-> EN7581 or AN7583 SoCs support connecting multiple external SerDes (e.g.
-> Ethernet or USB SerDes) to GDM3 or GDM4 ports via a hw arbiter that
-> manages the traffic in a TDM manner.
-> This series introduces some preliminary changes necessary to introduce
-> support for multiple net_devices connected to the same Frame Engine (FE)
-> GDM port (GDM3 or GDM4).
+On Sun, 12 Apr 2026 14:15:27 -0400 you wrote:
+> udp_tunnel_xmit_skb() / udp_tunnel6_xmit_skb() are expected to run with
+> BH disabled.  After commit 6f1a9140ecda ("add xmit recursion limit to
+> tunnel xmit functions"), on the path:
+> 
+>   udp(6)_tunnel_xmit_skb() -> ip(6)tunnel_xmit()
+> 
+> dev_xmit_recursion_inc()/dec() must stay balanced on the same CPU.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,1/3] net: airoha: Rely on net_device pointer in airoha_dev_setup_tc_block signature
-    https://git.kernel.org/netdev/net-next/c/360d745a5319
-  - [net-next,2/3] net: airoha: Rely on net_device pointer in HTB callbacks
-    https://git.kernel.org/netdev/net-next/c/8baf4bf72ef9
-  - [net-next,3/3] net: airoha: Rely on net_device pointer in ETS callbacks
-    https://git.kernel.org/netdev/net-next/c/ae32f80018f0
+  - [net] sctp: disable BH before calling udp_tunnel_xmit_skb()
+    https://git.kernel.org/netdev/net/c/2cd7e6971fc2
 
 You are awesome, thank you!
 -- 
