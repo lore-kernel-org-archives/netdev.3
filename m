@@ -1,149 +1,67 @@
-Received: from mail-oo1-f77.google.com (mail-oo1-f77.google.com [209.85.161.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF4E53D566C
-	for <netdev@vger.kernel.org>; Tue, 14 Apr 2026 10:30:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91D9B3D7D7B;
+	Tue, 14 Apr 2026 10:30:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776162636; cv=none; b=XeYgmW3sgrIBVXB9XVGcRJjlgiylc5bgEE+K5Av7NyQIzczOcbhKcjKe0khGtGVOZvAUEP8KUToXN3zpnhp0FbleNyNmbt/p8u+bnrE1BwVrO9GLyHPSFkJJ7BhYCS0tL2fydLXcJ8yBKRZbkuy2bVc5Ot0sAxvP54YPOLs6bMg=
+	t=1776162653; cv=none; b=RBbxK8MePVXkY6TuWI03rxnwN2wHViArPS1cP0CV1LJP2+Ndx7u8ycJoRfvCpr+cfG1qN3DUA8l7xYaGuneVzaAhRlzAoIR7NEww72Mtqo3f1wHPZqNCQ8/FunjD32PaimfCgoKJkeMw4m+aGa3PIPZUrIqfXOa8KzLqjjEB3AI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776162636; c=relaxed/simple;
-	bh=FCSBefH/oTmdgHdyyArq8Sd+rdXE9JmhilR3WYZJjdE=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=HWuLSPO4sBwqFK1FZD1izTCw5VJ16hgGqvQAVtplhP5dyLynM3G2w632A9FFNQxy412m0+T0y66phqQA0BkJYGd9sicbBaGirOZbc7pynNt42f7icrV0O1dWIKFeStctXsXLcW8MEYjJARUDIkPvKK+X0n6ZS3lU/VED+SFsAqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f77.google.com with SMTP id 006d021491bc7-6853c2438b9so10258510eaf.3
-        for <netdev@vger.kernel.org>; Tue, 14 Apr 2026 03:30:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776162627; x=1776767427;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=H9YZZSGezJHiuJUYElsZmyJ9oq+8X/IHgJLyoXz58+k=;
-        b=cVtcBRID9u5I+SsEMJMJyHCMdjd9zlbDCvDDxnFqIAxyvtihHwpDGpuP1UgpBkR2Fk
-         a5ptoL4tbp3ENd18fP+xn5gDmJT3h/znw9AGVCwQ+eBDzEnzhacsXxIrYwYCsgTmZglc
-         jocdiyqch4hHq5b8VJK+mqnzxOvxBNFrFq17RrhAOusLn0A+RMM8BvpLXAyaFZIZtAOg
-         l78Bavcz7AXuMPQqDdIqDIgFkRHwjnmkDKmV8Lv45NVDVPLQTDiVQxUZu6o+aTV8RXjB
-         pcXxfCdrhbvCItr/Z3K0WBYyArkZBP67zbWoj9W6Y9BuuNOBoti8JgM35oFhpG3tUL5h
-         znYQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8J4dxj/6PhJbQYs1/dgIGOeW5jZcXbPwQ+6Rj4HYbGhdufem2Tlp5hNtqPAxczcjvtufrFS6c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxxJ/scHON8JY5cZEIVp6B/080Gk45TImz53dVgO+T9/h6D/to+
-	cRIt2nfHFXIVlAJDG3jdL7OCb3r2b3lBo/JWbU56NbuVdSZoeTf2Dm+PIrxZr932AvZhISIGiKa
-	y8xcko6lbg/cYROMraAgDd3MDXf28QnfUW1E63nrsmbCYHr6HdFjf93Uso4Y=
+	s=arc-20240116; t=1776162653; c=relaxed/simple;
+	bh=DT8tSptY3vgegLkhzSOyIhktRHD3jI5dM91CZuVfD3I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RuacnxRyt1mjBmY0pVvr8YIBIqdcz7C+3Omr/zQBtzTOvKNyS4wuYHFJ3YQDG+xeBV8ryDlXcn+51bm7iB4vdVoaUuZmVcz7Non/6CAZcJjPoJyyK0CPuUHTKcu72QprCZjYRjqqk9Jz8ZCplDlfEgpL+pLeJCXLa1G6n/hprkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F5E0C19425;
+	Tue, 14 Apr 2026 10:30:49 +0000 (UTC)
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+To: Charles Perry <charles.perry@microchip.com>,
+	Conor Dooley <conor@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH] net: mdio: MDIO_PIC64HPSC should depend on ARCH_MICROCHIP
+Date: Tue, 14 Apr 2026 12:30:47 +0200
+Message-ID: <980c57efa5843733ef95459c3283aebade56f142.1776162544.git.geert+renesas@glider.be>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:16a5:b0:682:7662:ccfa with SMTP id
- 006d021491bc7-691bfecef49mr821814eaf.49.1776162627631; Tue, 14 Apr 2026
- 03:30:27 -0700 (PDT)
-Date: Tue, 14 Apr 2026 03:30:27 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69de1743.a00a0220.475f0.0040.GAE@google.com>
-Subject: [syzbot] [lvs?] BUG: sleeping function called from invalid context in ip_vs_conn_expire
-From: syzbot <syzbot+504e778ddaecd36fdd17@syzkaller.appspotmail.com>
-To: coreteam@netfilter.org, davem@davemloft.net, edumazet@google.com, 
-	fw@strlen.de, horms@verge.net.au, ja@ssi.bg, kuba@kernel.org, 
-	linux-kernel@vger.kernel.org, lvs-devel@vger.kernel.org, 
-	netdev@vger.kernel.org, netfilter-devel@vger.kernel.org, pabeni@redhat.com, 
-	pablo@netfilter.org, phil@nwl.cc, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hello,
+The PIC64-HPSC/HX MDIO interface is only present on Microchip
+PIC64-HPSC/HX SoCs.  Hence add a dependency on ARCH_MICROCHIP, to
+prevent asking the user about this driver when configuring a kernel
+without Microchip SoC support.
 
-syzbot found the following issue on:
-
-HEAD commit:    1c7cc4904160 Add linux-next specific files for 20260413
-git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=10327cd2580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=56c2b36de3316f1b
-dashboard link: https://syzkaller.appspot.com/bug?extid=504e778ddaecd36fdd17
-compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-
-Unfortunately, I don't have any reproducer for this issue yet.
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/91a765b703da/disk-1c7cc490.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/da75a3061146/vmlinux-1c7cc490.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/d55367ced048/bzImage-1c7cc490.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+504e778ddaecd36fdd17@syzkaller.appspotmail.com
-
-BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
-in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 16, name: ktimers/0
-preempt_count: 2, expected: 0
-RCU nest depth: 3, expected: 3
-8 locks held by ktimers/0/16:
- #0: ffffffff8de5f260 (local_bh){.+.+}-{1:3}, at: __local_bh_disable_ip+0x3c/0x420 kernel/softirq.c:163
- #1: ffffffff8dfc80c0 (rcu_read_lock){....}-{1:3}, at: __local_bh_disable_ip+0x3c/0x420 kernel/softirq.c:163
- #2: ffff8880b8826360 (&base->expiry_lock){+...}-{3:3}, at: spin_lock include/linux/spinlock_rt.h:45 [inline]
- #2: ffff8880b8826360 (&base->expiry_lock){+...}-{3:3}, at: timer_base_lock_expiry kernel/time/timer.c:1502 [inline]
- #2: ffff8880b8826360 (&base->expiry_lock){+...}-{3:3}, at: __run_timer_base+0x120/0x9f0 kernel/time/timer.c:2384
- #3: ffffffff8dfc80c0 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:300 [inline]
- #3: ffffffff8dfc80c0 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:838 [inline]
- #3: ffffffff8dfc80c0 (rcu_read_lock){....}-{1:3}, at: __rt_spin_lock kernel/locking/spinlock_rt.c:50 [inline]
- #3: ffffffff8dfc80c0 (rcu_read_lock){....}-{1:3}, at: rt_spin_lock+0x1e0/0x400 kernel/locking/spinlock_rt.c:57
- #4: ffffc90000157a80 ((&cp->timer)){+...}-{0:0}, at: call_timer_fn+0xd4/0x5e0 kernel/time/timer.c:1745
- #5: ffffffff8dfc80c0 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:300 [inline]
- #5: ffffffff8dfc80c0 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:838 [inline]
- #5: ffffffff8dfc80c0 (rcu_read_lock){....}-{1:3}, at: ip_vs_conn_unlink net/netfilter/ipvs/ip_vs_conn.c:315 [inline]
- #5: ffffffff8dfc80c0 (rcu_read_lock){....}-{1:3}, at: ip_vs_conn_expire+0x257/0x2390 net/netfilter/ipvs/ip_vs_conn.c:1260
- #6: ffffffff8de5f260 (local_bh){.+.+}-{1:3}, at: __local_bh_disable_ip+0x3c/0x420 kernel/softirq.c:163
- #7: ffff888068d4c3f0 (&cp->lock#2){+...}-{3:3}, at: spin_lock include/linux/spinlock_rt.h:45 [inline]
- #7: ffff888068d4c3f0 (&cp->lock#2){+...}-{3:3}, at: ip_vs_conn_unlink net/netfilter/ipvs/ip_vs_conn.c:324 [inline]
- #7: ffff888068d4c3f0 (&cp->lock#2){+...}-{3:3}, at: ip_vs_conn_expire+0xd4a/0x2390 net/netfilter/ipvs/ip_vs_conn.c:1260
-Preemption disabled at:
-[<ffffffff898a6358>] bit_spin_lock include/linux/bit_spinlock.h:38 [inline]
-[<ffffffff898a6358>] hlist_bl_lock+0x18/0x110 include/linux/list_bl.h:149
-CPU: 0 UID: 0 PID: 16 Comm: ktimers/0 Tainted: G        W    L      syzkaller #0 PREEMPT_{RT,(full)} 
-Tainted: [W]=WARN, [L]=SOFTLOCKUP
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/18/2026
-Call Trace:
- <TASK>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- __might_resched+0x329/0x480 kernel/sched/core.c:9162
- __rt_spin_lock kernel/locking/spinlock_rt.c:48 [inline]
- rt_spin_lock+0xc2/0x400 kernel/locking/spinlock_rt.c:57
- spin_lock include/linux/spinlock_rt.h:45 [inline]
- ip_vs_conn_unlink net/netfilter/ipvs/ip_vs_conn.c:324 [inline]
- ip_vs_conn_expire+0xd4a/0x2390 net/netfilter/ipvs/ip_vs_conn.c:1260
- call_timer_fn+0x192/0x5e0 kernel/time/timer.c:1748
- expire_timers kernel/time/timer.c:1799 [inline]
- __run_timers kernel/time/timer.c:2374 [inline]
- __run_timer_base+0x6a3/0x9f0 kernel/time/timer.c:2386
- run_timer_base kernel/time/timer.c:2395 [inline]
- run_timer_softirq+0xb7/0x170 kernel/time/timer.c:2405
- handle_softirqs+0x1de/0x6d0 kernel/softirq.c:622
- __do_softirq kernel/softirq.c:656 [inline]
- run_ktimerd+0x69/0x100 kernel/softirq.c:1151
- smpboot_thread_fn+0x541/0xa50 kernel/smpboot.c:160
- kthread+0x388/0x470 kernel/kthread.c:436
- ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-
-
+Fixes: f76aef980206e7c6 ("net: mdio: add a driver for PIC64-HPSC/HX MDIO controller")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ drivers/net/mdio/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/drivers/net/mdio/Kconfig b/drivers/net/mdio/Kconfig
+index 516b0d05e16ebba3..c71132f33f8472e6 100644
+--- a/drivers/net/mdio/Kconfig
++++ b/drivers/net/mdio/Kconfig
+@@ -147,6 +147,7 @@ config MDIO_OCTEON
+ 
+ config MDIO_PIC64HPSC
+ 	tristate "PIC64-HPSC/HX MDIO interface support"
++	depends on ARCH_MICROCHIP || COMPILE_TEST
+ 	depends on HAS_IOMEM && OF_MDIO
+ 	help
+ 	  This driver supports the MDIO interface found on the PIC64-HPSC/HX
+-- 
+2.43.0
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
