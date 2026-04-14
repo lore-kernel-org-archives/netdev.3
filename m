@@ -1,273 +1,153 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1104437105A;
-	Tue, 14 Apr 2026 07:08:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D79370D41
+	for <netdev@vger.kernel.org>; Tue, 14 Apr 2026 07:13:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776150510; cv=none; b=mGKcUM6TvthVk6i9z1QmLLevGUvPxJpx+FcjL8jm9YT8wXrWOTAn6myYBj8PaXpJQv6+P3CkDZEflprlhlT6//R33GARTYaVm8JMHeQ4ZMjGLMNQyF15Rq8MuPRkAe45VeJKgf5sHDClK6pZNos57acTKPikFt45DzQz1TfqpEE=
+	t=1776150809; cv=none; b=tIH4eN9fvuFR8QOpa9lQUlbZbrDu2tYRE5JOucIpdInhyxziUCPv0x6h5HFBZjbl+xUdVnO0zTMzlU9CmxuRKoYqRxZ9+NfhQ3QerGYvpva1C2lpyBprDarxH8MeMiaAXTF4nZY2jvi9CXCACWFuy65GNodcNWHycXHUp0uUJl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776150510; c=relaxed/simple;
-	bh=/5skwiH0gY1oo5ieSmlZoXl/fkBIevmFUlNqtPJTLYQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bfpE0TnT399DmHjXerXlZOAheCge9J0yckQ2vIfPbRz2iTgFP5Ykw0rEaQmyZYvqj5KgUZUbsYjIMJO9H03e9VBMVYNd1YIhR3HtT5PB2DrMPTaqwMeX9G2aUoj8LfBVoFINQJxgfF+lYNNRR8JCJYgSVmDtlx65r6WNxQzrtl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X9Zqw883; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1776150809; c=relaxed/simple;
+	bh=fsj9+YvgQO0AmxG3mtdBbsBPIhzpZ+Jh/dtK/CY/D0I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NUnHsAGYAxgct4kWP2dULs9GstdwCmUdOlq59C05M/diFpwY7w8zQkEqmxz+5CM0lBh39JKSe89vI2MTJEKVvk0rafpsss7WFxYk1e/xDdRvusYDtcFH+S61H3ke7AymbMg5u5bN8jL0bgfapuYC3NF0lKEbJuUQnrIZoPrZhd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mfCdmRFD; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X9Zqw883"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776150509; x=1807686509;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=/5skwiH0gY1oo5ieSmlZoXl/fkBIevmFUlNqtPJTLYQ=;
-  b=X9Zqw883afLHSZh5WW8T+TCUHQ2tJN4DN2/nhPLeebwlrqYNsdIN7n1z
-   Tn6xzsilMBYx+7s5xF7rhXLJvRlhvrtWeY5rUrdJSb6dpeSeqORc6Zt4n
-   GAJaHYWNI0xafUmZKUIMxiFGovKUdneN4x1MDIYYm9JWxZA0BjrBCcRSS
-   42+h+qNkKRIYSam1P8RGZj2ZBqsGQH+uPYlJpwOckw4TE5Ugj4CEUOzq4
-   sFL8Ebj4jf5R5adOhg/HG3qK4zq8FYftuc6rjX8ARRFV+74xf2iycAPYy
-   /GoGXLjz/u2o2VZ92X4ntIRGlyw9AfjNNYLaN28blALF6BKhevWkpQmYu
-   Q==;
-X-CSE-ConnectionGUID: 1DqyMwXeT1mvwN60ivhVOg==
-X-CSE-MsgGUID: GbewHZsgR2GH1YKuT8pk5g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11758"; a="76980649"
-X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
-   d="scan'208";a="76980649"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2026 00:07:54 -0700
-X-CSE-ConnectionGUID: wf/gjug8TzOgiJchL76yQQ==
-X-CSE-MsgGUID: oraOJ9/jS3OmjTimA9Yr/g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
-   d="scan'208";a="228974882"
-Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2026 00:07:52 -0700
-Date: Tue, 14 Apr 2026 00:07:52 -0700
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: x86@kernel.org, Jon Kohler <jon@nutanix.com>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	David Kaplan <david.kaplan@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Laight <david.laight.linux@gmail.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	David Ahern <dsahern@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	Asit Mallick <asit.k.mallick@intel.com>,
-	Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org,
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: [PATCH v10 10/12] x86/vmscape: Deploy BHB clearing mitigation
-Message-ID: <20260414-vmscape-bhb-v10-10-efa924abae5f@linux.intel.com>
-X-Mailer: b4 0.16-dev
-References: <20260414-vmscape-bhb-v10-0-efa924abae5f@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mfCdmRFD"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-35e563b0ee7so1058194a91.1
+        for <netdev@vger.kernel.org>; Tue, 14 Apr 2026 00:13:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776150807; x=1776755607; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=d79HgUISkhtoo22RFafauYvd4MagEF+p+1C/yzkS9eY=;
+        b=mfCdmRFDXAtW8CHQWQjk8quttQWWIq8+2ZI1DS5mY5XB34qOM0WowkO/pi1faUq4c0
+         sBNk0S+D0K0U/HCWsvc98azOZ9UfzoC2lZdqIH+SMURN2YcrM5jrNwQNz6n1V1+Tj1+3
+         1GuVW4OAm7234jtCn4hPj8bn1thM3ogUl1AHaFGuFMtE89JgrupyCTrGFP/kBwyQUcqL
+         +TyFDNTMTyT64S+vH10PM/lPH0Vxu9XwT30vxkOhLnYvjX/xUtDucrbJK5vngGhxYVYG
+         nG4FcbBt/qdOrYZHoKJFSA6eRsg+zBb8DY0qaGLASq5hh+BCQgdESvHO1pgmBE5aNTQc
+         J+fg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776150807; x=1776755607;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=d79HgUISkhtoo22RFafauYvd4MagEF+p+1C/yzkS9eY=;
+        b=qKy6f5BlWKLGVw27cA9HnR1S7JtTCjx7C6JwvFjmkQeRk/oMv7F7x3CvsugIGuU7/F
+         N173bWkkGGdA1tZRsGLQ+m73IIuKGtj5E+JIsIbG/CPufzxittiPG4x7/RsJTCIk9sYx
+         NTj2t20eOVQrR4DkEzGD5oOZfy43SHJvUUjI0s+IU/qyU6s8tVmPaZK1KdDOD/pUXFXF
+         wxYYOgMhVjCe4BeybdB6eRAfFCKOdahQV3PJJw0/tJbmspk2QrIxhw4rTUnj2BgjAXqa
+         oyXLrxUV7HHnKxJKX2bP5sFUipt4b+tJNKpCD7px4SEPIKV6cLQZvDx8mw+D1TM04408
+         lgRA==
+X-Gm-Message-State: AOJu0YxTa60MU/uMD6xd6pf+f0mKkd7LxmiMU5MCWbcYwXz4HTDVyclX
+	DRu8h4c8vve4FtQYTa2xaA/WhLKIrnFV7ISvx7KpR4/4qs6e5DHyqfu1FrfRjw==
+X-Gm-Gg: AeBDietGytING+4wybkTgUt7sOirIC7FAt/Hq6kv+VWnMUgaMRt4kUA5+maAzIyCH9V
+	3A8ynH7De7B+rPrkGzXGR4Ed4926BfsbGEHAfSHkk+z37DlQXj31aOZPJzlLHH0n1tgkZIKwWyo
+	CsXC2OsxnFheM5I4crb1vvbvMmddA7rdlMcT+qIPW6qelTLx0rdiZN2w2a/Q9L9JWNAK1VFK5k3
+	e4j5aD3vrX6znpiib606ik3icXCHdNHPnOtjPDT20TEvgizSoSNaHb3pULhqlMUyTdTQyLB/OoC
+	/gpgVlHREnSkiQqdhrIw33SpeRZ7N+kadJ/MwMnIcmKrJx88MkIZ3ynaF+B/28brhTJsXi+did+
+	3J/+EqfFIbu88lXZ7Wj76bzG+ALCesUlUw4RKw5CVaNy1tenjmHOweMnGI9dIU2iuRJ4LwNGbDv
+	2MV1pWZjnKC65RCoebGTNxX1JfMQKeoxpvQj15HGzkxzHREJDApIXv231DbOht/hbz8Xpo2MIbW
+	ZHKORkQeXGM7cem
+X-Received: by 2002:a17:90b:4c0e:b0:35f:b931:d1c0 with SMTP id 98e67ed59e1d1-35fb931d34emr5043694a91.6.1776150807333;
+        Tue, 14 Apr 2026 00:13:27 -0700 (PDT)
+Received: from localhost.localdomain ([103.129.135.34])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35fc6eac856sm1120134a91.17.2026.04.14.00.13.25
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 14 Apr 2026 00:13:27 -0700 (PDT)
+From: Shuvam Pandey <shuvampandey1@gmail.com>
+To: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Subject: [PATCH] mISDN: socket: drop device references acquired by get_mdevice()
+Date: Tue, 14 Apr 2026 12:58:22 +0545
+Message-ID: <20260414071322.30851-1-shuvampandey1@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260414-vmscape-bhb-v10-0-efa924abae5f@linux.intel.com>
+Content-Transfer-Encoding: 8bit
 
-IBPB mitigation for VMSCAPE is an overkill on CPUs that are only affected
-by the BHI variant of VMSCAPE. On such CPUs, eIBRS already provides
-indirect branch isolation between guest and host userspace. However, branch
-history from guest may also influence the indirect branches in host
-userspace.
+get_mdevice() wraps class_find_device(), which returns a device with a
+reference held.
 
-To mitigate the BHI aspect, use the BHB clearing sequence. Since now, IBPB
-is not the only mitigation for VMSCAPE, update the documentation to reflect
-that =auto could select either IBPB or BHB clear mitigation based on the
-CPU.
+socket.c leaks those references in two places. IMGETDEVINFO and
+IMSETDEVNAME never drop the temporary lookup reference, and the
+references stored in _pms(sk)->dev by base_sock_bind() and
+data_sock_bind() are never released when the socket is closed.
 
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Tested-by: Jon Kohler <jon@nutanix.com>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Drop the temporary references after the ioctl completes, and release the
+stored device reference from the base and data socket release paths.
+
+Fixes: b36b654a7e82 ("mISDN: Create /sys/class/mISDN")
+Cc: stable@vger.kernel.org
+Signed-off-by: Shuvam Pandey <shuvampandey1@gmail.com>
 ---
- Documentation/admin-guide/hw-vuln/vmscape.rst   | 11 ++++++++-
- Documentation/admin-guide/kernel-parameters.txt |  4 +++-
- arch/x86/include/asm/entry-common.h             |  4 ++++
- arch/x86/include/asm/nospec-branch.h            |  2 ++
- arch/x86/kernel/cpu/bugs.c                      | 30 +++++++++++++++++++------
- 5 files changed, 42 insertions(+), 9 deletions(-)
+ drivers/isdn/mISDN/socket.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/admin-guide/hw-vuln/vmscape.rst b/Documentation/admin-guide/hw-vuln/vmscape.rst
-index d9b9a2b6c114..7c40cf70ad7a 100644
---- a/Documentation/admin-guide/hw-vuln/vmscape.rst
-+++ b/Documentation/admin-guide/hw-vuln/vmscape.rst
-@@ -86,6 +86,10 @@ The possible values in this file are:
-    run a potentially malicious guest and issues an IBPB before the first
-    exit to userspace after VM-exit.
+diff --git a/drivers/isdn/mISDN/socket.c b/drivers/isdn/mISDN/socket.c
+index 77b900db1ca..9209ee68f9c 100644
+--- a/drivers/isdn/mISDN/socket.c
++++ b/drivers/isdn/mISDN/socket.c
+@@ -266,6 +266,11 @@ data_sock_release(struct socket *sock)
  
-+ * 'Mitigation: Clear BHB before exit to userspace':
+ 	lock_sock(sk);
+ 
++	if (_pms(sk)->dev) {
++		put_device(&_pms(sk)->dev->dev);
++		_pms(sk)->dev = NULL;
++	}
 +
-+   As above, conditional BHB clearing mitigation is enabled.
-+
-  * 'Mitigation: IBPB on VMEXIT':
+ 	sock_orphan(sk);
+ 	skb_queue_purge(&sk->sk_receive_queue);
  
-    IBPB is issued on every VM-exit. This occurs when other mitigations like
-@@ -102,9 +106,14 @@ The mitigation can be controlled via the ``vmscape=`` command line parameter:
- 
-  * ``vmscape=ibpb``:
- 
--   Enable conditional IBPB mitigation (default when CONFIG_MITIGATION_VMSCAPE=y).
-+   Enable conditional IBPB mitigation.
- 
-  * ``vmscape=force``:
- 
-    Force vulnerability detection and mitigation even on processors that are
-    not known to be affected.
-+
-+ * ``vmscape=auto``:
-+
-+   Choose the mitigation based on the VMSCAPE variant the CPU is affected by.
-+   (default when CONFIG_MITIGATION_VMSCAPE=y)
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 03a550630644..3853c7109419 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -8378,9 +8378,11 @@ Kernel parameters
- 
- 			off		- disable the mitigation
- 			ibpb		- use Indirect Branch Prediction Barrier
--					  (IBPB) mitigation (default)
-+					  (IBPB) mitigation
- 			force		- force vulnerability detection even on
- 					  unaffected processors
-+			auto		- (default) use IBPB or BHB clear
-+					  mitigation based on CPU
- 
- 	vsyscall=	[X86-64,EARLY]
- 			Controls the behavior of vsyscalls (i.e. calls to
-diff --git a/arch/x86/include/asm/entry-common.h b/arch/x86/include/asm/entry-common.h
-index 783e7cb50cae..13db31472f3a 100644
---- a/arch/x86/include/asm/entry-common.h
-+++ b/arch/x86/include/asm/entry-common.h
-@@ -96,6 +96,10 @@ static inline void arch_exit_to_user_mode_prepare(struct pt_regs *regs,
- 	choose_random_kstack_offset(rdtsc());
- 
- 	if (unlikely(this_cpu_read(x86_predictor_flush_exit_to_user))) {
-+		/*
-+		 * Since the mitigation is for userspace, an explicit
-+		 * speculation barrier is not required after flush.
-+		 */
- 		static_call_cond(vmscape_predictor_flush)();
- 		this_cpu_write(x86_predictor_flush_exit_to_user, false);
- 	}
-diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
-index 066fd8095200..38478383139b 100644
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -390,6 +390,8 @@ extern void write_ibpb(void);
- 
- #ifdef CONFIG_X86_64
- extern void clear_bhb_loop_nofence(void);
-+#else
-+static inline void clear_bhb_loop_nofence(void) {}
- #endif
- 
- extern void (*x86_return_thunk)(void);
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index bfc0e41697f6..1082ed1fb2e6 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -61,9 +61,8 @@ DEFINE_PER_CPU(u64, x86_spec_ctrl_current);
- EXPORT_PER_CPU_SYMBOL_GPL(x86_spec_ctrl_current);
- 
- /*
-- * Set when the CPU has run a potentially malicious guest. An IBPB will
-- * be needed to before running userspace. That IBPB will flush the branch
-- * predictor content.
-+ * Set when the CPU has run a potentially malicious guest. Indicates that a
-+ * branch predictor flush is needed before running userspace.
-  */
- DEFINE_PER_CPU(bool, x86_predictor_flush_exit_to_user);
- EXPORT_PER_CPU_SYMBOL_GPL(x86_predictor_flush_exit_to_user);
-@@ -3061,13 +3060,15 @@ enum vmscape_mitigations {
- 	VMSCAPE_MITIGATION_AUTO,
- 	VMSCAPE_MITIGATION_IBPB_EXIT_TO_USER,
- 	VMSCAPE_MITIGATION_IBPB_ON_VMEXIT,
-+	VMSCAPE_MITIGATION_BHB_CLEAR_EXIT_TO_USER,
- };
- 
- static const char * const vmscape_strings[] = {
--	[VMSCAPE_MITIGATION_NONE]		= "Vulnerable",
-+	[VMSCAPE_MITIGATION_NONE]			= "Vulnerable",
- 	/* [VMSCAPE_MITIGATION_AUTO] */
--	[VMSCAPE_MITIGATION_IBPB_EXIT_TO_USER]	= "Mitigation: IBPB before exit to userspace",
--	[VMSCAPE_MITIGATION_IBPB_ON_VMEXIT]	= "Mitigation: IBPB on VMEXIT",
-+	[VMSCAPE_MITIGATION_IBPB_EXIT_TO_USER]		= "Mitigation: IBPB before exit to userspace",
-+	[VMSCAPE_MITIGATION_IBPB_ON_VMEXIT]		= "Mitigation: IBPB on VMEXIT",
-+	[VMSCAPE_MITIGATION_BHB_CLEAR_EXIT_TO_USER]	= "Mitigation: Clear BHB before exit to userspace",
- };
- 
- static enum vmscape_mitigations vmscape_mitigation __ro_after_init =
-@@ -3085,6 +3086,8 @@ static int __init vmscape_parse_cmdline(char *str)
- 	} else if (!strcmp(str, "force")) {
- 		setup_force_cpu_bug(X86_BUG_VMSCAPE);
- 		vmscape_mitigation = VMSCAPE_MITIGATION_AUTO;
-+	} else if (!strcmp(str, "auto")) {
-+		vmscape_mitigation = VMSCAPE_MITIGATION_AUTO;
- 	} else {
- 		pr_err("Ignoring unknown vmscape=%s option.\n", str);
- 	}
-@@ -3114,7 +3117,17 @@ static void __init vmscape_select_mitigation(void)
+@@ -387,6 +392,7 @@ data_sock_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
+ 			strscpy(di.name, dev_name(&dev->dev), sizeof(di.name));
+ 			if (copy_to_user((void __user *)arg, &di, sizeof(di)))
+ 				err = -EFAULT;
++			put_device(&dev->dev);
+ 		} else
+ 			err = -ENODEV;
  		break;
+@@ -623,6 +629,11 @@ base_sock_release(struct socket *sock)
+ 	if (!sk)
+ 		return 0;
  
- 	case VMSCAPE_MITIGATION_AUTO:
--		if (boot_cpu_has(X86_FEATURE_IBPB))
-+		/*
-+		 * CPUs with BHI_CTRL(ADL and newer) can avoid the IBPB and use
-+		 * BHB clear sequence. These CPUs are only vulnerable to the BHI
-+		 * variant of the VMSCAPE attack, and thus they do not require a
-+		 * full predictor flush.
-+		 *
-+		 * Note, in 32-bit mode BHB clear sequence is not supported.
-+		 */
-+		if (boot_cpu_has(X86_FEATURE_BHI_CTRL) && IS_ENABLED(CONFIG_X86_64))
-+			vmscape_mitigation = VMSCAPE_MITIGATION_BHB_CLEAR_EXIT_TO_USER;
-+		else if (boot_cpu_has(X86_FEATURE_IBPB))
- 			vmscape_mitigation = VMSCAPE_MITIGATION_IBPB_EXIT_TO_USER;
- 		else
- 			vmscape_mitigation = VMSCAPE_MITIGATION_NONE;
-@@ -3141,6 +3154,8 @@ static void __init vmscape_apply_mitigation(void)
- {
- 	if (vmscape_mitigation == VMSCAPE_MITIGATION_IBPB_EXIT_TO_USER)
- 		static_call_update(vmscape_predictor_flush, write_ibpb);
-+	else if (vmscape_mitigation == VMSCAPE_MITIGATION_BHB_CLEAR_EXIT_TO_USER)
-+		static_call_update(vmscape_predictor_flush, clear_bhb_loop_nofence);
- }
- 
- #undef pr_fmt
-@@ -3232,6 +3247,7 @@ void cpu_bugs_smt_update(void)
++	if (_pms(sk)->dev) {
++		put_device(&_pms(sk)->dev->dev);
++		_pms(sk)->dev = NULL;
++	}
++
+ 	mISDN_sock_unlink(&base_sockets, sk);
+ 	sock_orphan(sk);
+ 	sock_put(sk);
+@@ -670,6 +681,7 @@ base_sock_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
+ 			strscpy(di.name, dev_name(&dev->dev), sizeof(di.name));
+ 			if (copy_to_user((void __user *)arg, &di, sizeof(di)))
+ 				err = -EFAULT;
++			put_device(&dev->dev);
+ 		} else
+ 			err = -ENODEV;
  		break;
- 	case VMSCAPE_MITIGATION_IBPB_ON_VMEXIT:
- 	case VMSCAPE_MITIGATION_IBPB_EXIT_TO_USER:
-+	case VMSCAPE_MITIGATION_BHB_CLEAR_EXIT_TO_USER:
- 		/*
- 		 * Hypervisors can be attacked across-threads, warn for SMT when
- 		 * STIBP is not already enabled system-wide.
-
+@@ -683,10 +695,12 @@ base_sock_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
+ 		}
+ 		dn.name[sizeof(dn.name) - 1] = '\0';
+ 		dev = get_mdevice(dn.id);
+-		if (dev)
++		if (dev) {
+ 			err = device_rename(&dev->dev, dn.name);
+-		else
++			put_device(&dev->dev);
++		} else {
+ 			err = -ENODEV;
++		}
+ 	}
+ 	break;
+ 	default:
 -- 
-2.34.1
-
+2.50.1 (Apple Git-155)
 
