@@ -1,162 +1,68 @@
-Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
+Received: from mailout2.hostsharing.net (mailout2.hostsharing.net [83.223.78.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19E66256C61;
-	Tue, 14 Apr 2026 15:11:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 491E23E9580;
+	Tue, 14 Apr 2026 15:13:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776179505; cv=none; b=RauuJlunW/cJdGDrcS5HQjVm7of0ZHjjTi8qc4W/CYk/rNhpm1t4MlVoG7NawnQUUkG6pSHuwYMstErRZvFxqIPlWyLaMC95nTD73D6zn+4h1XDANjTuyQvMorRDTvfsq8xbYn9RSFNalK75+ZCSrR3PzWQx3Xhk7yF3xwN/3oA=
+	t=1776179621; cv=none; b=ar+6RoMMfne6Jq/mxP249oPH75HXWWviHHLviQPf3cWUgSWxIS72zxIISmibtfq4Qxl56J2llwTaF3ZKt11FbMqUPh9CxYF97Dpbw2zmJpylT8ezyMuV3ubugCnOba6RF/zYvgxLVdirr5TXf1EzgYps/TZT99inyCQmXydQlJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776179505; c=relaxed/simple;
-	bh=tp2zXVzdAJ5XOEiTCsRkb3jbGLsEwShzGi5kuermpAc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=gIXO1vhtEZziqhJZBb1wurncAixIbtsSEE4mXLpAlYlR/FhCZ+aT39gYXUVKBgVLfeTD5QD3oYDDeMbWLkrylHNKLo3HHBcP96/gDuzBfCS/ye+vmFEpi7MomNz+qs8f7fvSyzZhW1NHi8eL7Jd0kaYR/T0xSZekndX2iQXFFdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=evp0a+zh; arc=none smtp.client-ip=185.226.149.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="evp0a+zh"
-Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
-	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1wCeWL-00FB5b-Nm; Tue, 14 Apr 2026 16:13:41 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector1; h=Cc:To:In-Reply-To:References:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
-	bh=mJIuV1hFcG0AqFmXjuVmJdTq5oqD37Hr+RkhyPIT/fw=; b=evp0a+zhKZ19/tsYUtmJ1rGgiq
-	i0W3zfkwG/OaN3LhGGjEC4UXYU4KDsxr9TrXWuP6GuLHX36a4GwBGeb4xusowreSSKEvqZWt9KofG
-	D5I+ZPzmEzU3n6XWZo1ZLaW4TcC8IwLcCzCkxOYsbUB9TwM9Jg8Nuw5Jz1QiavTCuYELdwwG98sCs
-	QJ1mQCVpJEmZWT+Dg4X7VnOobXBI6YYJPcDIQ0bmbgoiwBAnPAuw5kc83nXfQW4YYLWRfj87AYNNg
-	A6JboP87w8dYhJHKqf0DsyQS5BD0Abs/P6MllJ7qFjzVwLrJhPJWHdjLe2rdy2cjx4RxKxIHmIe4T
-	Sd4d7rrg==;
-Received: from [10.9.9.72] (helo=submission01.runbox)
-	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1wCeWL-0000Ul-FU; Tue, 14 Apr 2026 16:13:41 +0200
-Received: by submission01.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.93)
-	id 1wCeWB-00DhbX-F5; Tue, 14 Apr 2026 16:13:31 +0200
-From: Michal Luczaj <mhal@rbox.co>
-Date: Tue, 14 Apr 2026 16:13:16 +0200
-Subject: [PATCH bpf v4 2/5] bpf, sockmap: Fix af_unix iter deadlock
+	s=arc-20240116; t=1776179621; c=relaxed/simple;
+	bh=SxMcvDSO1WH57hVUH3MEAHeEedBtt6pHuvvrisfSZ9Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oVl1nUIsMwQZQwh6uTv/jc2CRR44kHVLHPW91wA/10v/3yszCztDznJhHcbarYLrar+WxQalo1c0hwC/EaOIpk5wEiU5kvxUbrybsF/JHz/7D2GRP2qWOoGbh/4+IeK19pxhNkjp0SmFKImD6p3twF2XS34VRRwZNBCN+NmaJe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=83.223.78.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature ECDSA (secp384r1) server-digest SHA384
+	 client-signature ECDSA (secp384r1) client-digest SHA384)
+	(Client CN "*.hostsharing.net", Issuer "GlobalSign GCC R6 AlphaSSL CA 2025" (verified OK))
+	by mailout2.hostsharing.net (Postfix) with ESMTPS id 8EB0410586;
+	Tue, 14 Apr 2026 17:13:36 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 6E6506034192; Tue, 14 Apr 2026 17:13:36 +0200 (CEST)
+Date: Tue, 14 Apr 2026 17:13:36 +0200
+From: Lukas Wunner <lukas@wunner.de>
+To: Emil Tantilov <emil.s.tantilov@intel.com>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+	przemyslaw.kitszel@intel.com, jay.bhat@intel.com,
+	ivan.d.barrera@intel.com, aleksandr.loktionov@intel.com,
+	larysa.zaremba@intel.com, anthony.l.nguyen@intel.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, aleksander.lobakin@intel.com,
+	linux-pci@vger.kernel.org, madhu.chittim@intel.com,
+	decot@google.com, willemb@google.com, sheenamo@google.com
+Subject: Re: [PATCH iwl-next v2 2/2] idpf: implement pci error handlers
+Message-ID: <ad5ZoDCuSsPW0lKo@wunner.de>
+References: <20260414031631.2107-1-emil.s.tantilov@intel.com>
+ <20260414031631.2107-3-emil.s.tantilov@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260414-unix-proto-update-null-ptr-deref-v4-2-2af6fe97918e@rbox.co>
-References: <20260414-unix-proto-update-null-ptr-deref-v4-0-2af6fe97918e@rbox.co>
-In-Reply-To: <20260414-unix-proto-update-null-ptr-deref-v4-0-2af6fe97918e@rbox.co>
-To: John Fastabend <john.fastabend@gmail.com>, 
- Jakub Sitnicki <jakub@cloudflare.com>, Eric Dumazet <edumazet@google.com>, 
- Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>, 
- Willem de Bruijn <willemb@google.com>, 
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
- Simon Horman <horms@kernel.org>, Yonghong Song <yhs@fb.com>, 
- Andrii Nakryiko <andrii@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
- Daniel Borkmann <daniel@iogearbox.net>, 
- Martin KaFai Lau <martin.lau@linux.dev>, 
- Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
- Yonghong Song <yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>, 
- Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
- Jiri Olsa <jolsa@kernel.org>, Shuah Khan <shuah@kernel.org>, 
- Cong Wang <cong.wang@bytedance.com>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- Michal Luczaj <mhal@rbox.co>, Jiayuan Chen <jiayuan.chen@linux.dev>
-X-Mailer: b4 0.15.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260414031631.2107-3-emil.s.tantilov@intel.com>
 
-bpf_iter_unix_seq_show() may deadlock when lock_sock_fast() takes the fast
-path and the iter prog attempts to update a sockmap. Which ends up spinning
-at sock_map_update_elem()'s bh_lock_sock():
+On Mon, Apr 13, 2026 at 08:16:31PM -0700, Emil Tantilov wrote:
+> +static pci_ers_result_t
+> +idpf_pci_err_slot_reset(struct pci_dev *pdev)
+> +{
+> +	struct idpf_adapter *adapter = pci_get_drvdata(pdev);
+> +
+> +	pci_restore_state(pdev);
+> +	pci_set_master(pdev);
+> +	pci_wake_from_d3(pdev, false);
+> +	if (readl(adapter->reset_reg.rstat) != 0xFFFFFFFF)
+> +		return PCI_ERS_RESULT_RECOVERED;
 
-WARNING: possible recursive locking detected
-test_progs/1393 is trying to acquire lock:
-ffff88811ec25f58 (slock-AF_UNIX){+...}-{3:3}, at: sock_map_update_elem+0xdb/0x1f0
+FWIW, there's a PCI_POSSIBLE_ERROR() helper that you may find useful
+to check for an "all ones" MMIO read.
 
-but task is already holding lock:
-ffff88811ec25f58 (slock-AF_UNIX){+...}-{3:3}, at: __lock_sock_fast+0x37/0xe0
+Thanks,
 
-other info that might help us debug this:
- Possible unsafe locking scenario:
-
-       CPU0
-       ----
-  lock(slock-AF_UNIX);
-  lock(slock-AF_UNIX);
-
- *** DEADLOCK ***
-
- May be due to missing lock nesting notation
-
-4 locks held by test_progs/1393:
- #0: ffff88814b59c790 (&p->lock){+.+.}-{4:4}, at: bpf_seq_read+0x59/0x10d0
- #1: ffff88811ec25fd8 (sk_lock-AF_UNIX){+.+.}-{0:0}, at: bpf_seq_read+0x42c/0x10d0
- #2: ffff88811ec25f58 (slock-AF_UNIX){+...}-{3:3}, at: __lock_sock_fast+0x37/0xe0
- #3: ffffffff85a6a7c0 (rcu_read_lock){....}-{1:3}, at: bpf_iter_run_prog+0x51d/0xb00
-
-Call Trace:
- dump_stack_lvl+0x5d/0x80
- print_deadlock_bug.cold+0xc0/0xce
- __lock_acquire+0x130f/0x2590
- lock_acquire+0x14e/0x2b0
- _raw_spin_lock+0x30/0x40
- sock_map_update_elem+0xdb/0x1f0
- bpf_prog_2d0075e5d9b721cd_dump_unix+0x55/0x4f4
- bpf_iter_run_prog+0x5b9/0xb00
- bpf_iter_unix_seq_show+0x1f7/0x2e0
- bpf_seq_read+0x42c/0x10d0
- vfs_read+0x171/0xb20
- ksys_read+0xff/0x200
- do_syscall_64+0x6b/0x3a0
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Suggested-by: Kuniyuki Iwashima <kuniyu@google.com>
-Suggested-by: Martin KaFai Lau <martin.lau@linux.dev>
-Fixes: 2c860a43dd77 ("bpf: af_unix: Implement BPF iterator for UNIX domain socket.")
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
----
- net/unix/af_unix.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
-
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index b23c33df8b46..590a30d3b2f7 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -3731,15 +3731,14 @@ static int bpf_iter_unix_seq_show(struct seq_file *seq, void *v)
- 	struct bpf_prog *prog;
- 	struct sock *sk = v;
- 	uid_t uid;
--	bool slow;
- 	int ret;
- 
- 	if (v == SEQ_START_TOKEN)
- 		return 0;
- 
--	slow = lock_sock_fast(sk);
-+	lock_sock(sk);
- 
--	if (unlikely(sk_unhashed(sk))) {
-+	if (unlikely(sock_flag(sk, SOCK_DEAD))) {
- 		ret = SEQ_SKIP;
- 		goto unlock;
- 	}
-@@ -3749,7 +3748,7 @@ static int bpf_iter_unix_seq_show(struct seq_file *seq, void *v)
- 	prog = bpf_iter_get_info(&meta, false);
- 	ret = unix_prog_seq_show(prog, &meta, v, uid);
- unlock:
--	unlock_sock_fast(sk, slow);
-+	release_sock(sk);
- 	return ret;
- }
- 
-
--- 
-2.53.0
-
+Lukas
