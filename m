@@ -1,84 +1,81 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23A0A3D8901
-	for <netdev@vger.kernel.org>; Tue, 14 Apr 2026 11:10:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FFD620DE3;
+	Tue, 14 Apr 2026 11:14:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776165035; cv=none; b=j78cEp5Tnshwk09LZB+cP97PtErqtrlqf51Pvx6FZmru84eEhuZXhTPY+O6VPe5DR8qQDpVak+IVj0SZxSGMRXnI/SZzVUR9HB3F6PsbUYu+6cuZiAeMOrMUN38Kfb96H1aU+exxOS0vqbvv2jALOAd/bzcji3x/dnE8Hm/7Cpc=
+	t=1776165255; cv=none; b=F73oiXm30CFlLiTWSs/uCGl3SvfwKfsfxWCNLJJfe7pDyMnObjDEHO3oxGK+i9Qfd427dUbQ8JORtvz+FvnvjXYXLoriXHSPQxhGDhgyKlq88ncbeP9AwCvfOIQt6XQv/IbNzqn4Qmcrl0rE0N9qVPsp4ul1woPIZVGASD0wDvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776165035; c=relaxed/simple;
-	bh=H8SgpNPWiVfJfsnOu70c7RZ2c9BK48LxjUKKlE0afgo=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=YhboYUIqYlqEs8qDZA1285/JuedcYnsVhZpTu/+/KqOA9FekecsulHYMUA3eSjpFBmoAi6kYt3BBFJzL25SUOWG7hb0Y5s7JaKC+jHzOZg7NS9zSGSVcSj+X+rPian0+dKL1jaljexZYkBnNSg21usxZqdk4XOvMmHPUvjRv0nE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ndcyXoIk; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ndcyXoIk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB44EC19425;
-	Tue, 14 Apr 2026 11:10:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776165034;
-	bh=H8SgpNPWiVfJfsnOu70c7RZ2c9BK48LxjUKKlE0afgo=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=ndcyXoIkvODXfFWV3+Pb++Eh1X1PJC1WdKGY2PFggdoNQ62J1wnNKX3WQ4mTni+bx
-	 LWoMksC2ChxBQscir0wbBmmIsiTC4u0ucAtMnkzxuPnJGFlpahMgS8DzUYpCOfbN1/
-	 fNuBphFw0V+HQ/sZaz3uyQvH3N0wp9obF3x5geUuealwzq5+BTKnZWrpiPd1/6X7Wy
-	 7Zz2PSKGlVLPpOQ2rkocswy4/gy6fElliMPMj+xBuUpug+MoUbSfOt9Bh+n93xqOlf
-	 EiL7R37Mp+TnwXz7iEfgWkfrSuMCQ7sQR8oVEb2nhNVfwCGMa+A2nWAS6Agf1QM0vv
-	 yOZH6wjyo0Hmg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9D9A3808205;
-	Tue, 14 Apr 2026 11:10:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1776165255; c=relaxed/simple;
+	bh=09uiMZRs7r7SYhGOfTyq/qJWTKsO/uLe3Dd56LS2Js4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R4JfR/CtQII0adH0ULXIUO8fj9KR6TMpdUe//GDwDSdBbOAZmJtYjCreTTR1tQV8FVnkF9JbjhOEFDZmiJyVGoyX9b8xFMoRAntENea5uUehAR20jcv11G2biNfiFygQhDIsV3WOUn5rdm7grhobEUBG+mhIEnadQYGnyQN3MqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
+Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
+	id E1E2360490; Tue, 14 Apr 2026 13:14:11 +0200 (CEST)
+Date: Tue, 14 Apr 2026 13:14:11 +0200
+From: Florian Westphal <fw@strlen.de>
+To: "Kito Xu (veritas501)" <hxzene@gmail.com>
+Cc: pablo@netfilter.org, coreteam@netfilter.org, davem@davemloft.net,
+	edumazet@google.com, ffmancera@riseup.net, horms@kernel.org,
+	kuba@kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, netfilter-devel@vger.kernel.org,
+	pabeni@redhat.com, phil@nwl.cc
+Subject: Re: [PATCH v2] netfilter: nfnetlink_osf: fix null-ptr-deref in
+ nf_osf_ttl
+Message-ID: <ad4hg4Wm90sVb1OB@strlen.de>
+References: <20260414074556.2512750-1-hxzene@gmail.com>
+ <20260414104900.2617863-1-hxzene@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH 1/1] net: strparser: fix skb_head leak in
- strp_abort_strp()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177616500555.830755.5928809017900797018.git-patchwork-notify@kernel.org>
-Date: Tue, 14 Apr 2026 11:10:05 +0000
-References: 
- <ade3857a9404999ce9a1c27ec523efc896072678.1775482694.git.rakukuip@gmail.com>
-In-Reply-To: 
- <ade3857a9404999ce9a1c27ec523efc896072678.1775482694.git.rakukuip@gmail.com>
-To: Ren Wei <n05ec@lzu.edu.cn>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- nate.karstens@garmin.com, sd@queasysnail.net, linux@treblig.org,
- Julia.Lawall@inria.fr, tom@herbertland.com, yifanwucs@gmail.com,
- tomapufckgml@gmail.com, yuantan098@gmail.com, bird@lzu.edu.cn,
- rakukuip@gmail.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260414104900.2617863-1-hxzene@gmail.com>
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Sat, 11 Apr 2026 23:10:10 +0800 you wrote:
-> From: Luxiao Xu <rakukuip@gmail.com>
+Kito Xu (veritas501) <hxzene@gmail.com> wrote:
+> nf_osf_ttl() calls __in_dev_get_rcu(skb->dev) and passes the result
+> to in_dev_for_each_ifa_rcu() without checking for NULL. When the
+> receiving device has no IPv4 configuration (ip_ptr is NULL),
+> __in_dev_get_rcu() returns NULL and in_dev_for_each_ifa_rcu()
+> dereferences it unconditionally, causing a kernel crash.
 > 
-> When the stream parser is aborted, for example after a message assembly timeout,
-> it can still hold a reference to a partially assembled message in
-> strp->skb_head.
+> This can happen when a packet arrives on a device that has had its
+> IPv4 configuration removed (e.g., MTU set below IPV4_MIN_MTU causing
+> inetdev_destroy) or on a device that was never assigned an IPv4
+> address, while an xt_osf or nft_osf rule with TTL_LESS mode is
+> active and the packet TTL exceeds the fingerprint TTL.
 > 
-> That skb is not released in strp_abort_strp(), which leaks the partially
-> assembled message and can be triggered repeatedly to exhaust memory.
+> Add a NULL check for in_dev before using it. When in_dev is NULL,
+> return 0 (no match) since source-address locality cannot be
+> determined without IPv4 addresses on the device.
 > 
-> [...]
+> KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
+> RIP: 0010:nf_osf_match_one+0x204/0xa70
+> Call Trace:
+>  <IRQ>
+>  nf_osf_match+0x2f8/0x780
+>  xt_osf_match_packet+0x11c/0x1f0
+>  ipt_do_table+0x7fe/0x12b0
+>  nf_hook_slow+0xac/0x1e0
+>  ip_rcv+0x123/0x370
+>  __netif_receive_skb_one_core+0x166/0x1b0
+>  process_backlog+0x197/0x590
+>  __napi_poll+0xa1/0x540
+>  net_rx_action+0x401/0xd80
+>  handle_softirqs+0x19f/0x610
+>  </IRQ>
+> 
+> Fixes: a218dc82f0b5 ("netfilter: nft_osf: Add ttl option support")
+> Suggested-by: Pablo Neira Ayuso <pablo@netfilter.org>
+> Signed-off-by: Kito Xu (veritas501) <hxzene@gmail.com>
 
-Here is the summary with links:
-  - [1/1] net: strparser: fix skb_head leak in strp_abort_strp()
-    https://git.kernel.org/netdev/net/c/fe72340daaf1
+The other __in_dev_get_rcu() callers in netfilter check return value, so:
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Reviewed-by: Florian Westphal <fw@strlen.de>
