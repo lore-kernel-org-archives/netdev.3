@@ -1,123 +1,241 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC27DC8E6;
-	Tue, 14 Apr 2026 00:50:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776127849; cv=none; b=n+ejKwDncN3G+SeWsRV7/14QhvRpJDPYR1iU8FmBkM+0J5brYIwGJpj9LWEsju1bQvRf6w5ll2KIfk3XA9cM2hN0KxraI9O7+HqC8Cazly3RDCsxKEzXyon00cRQKGyc9qF0CjSAXjLBe8KEFeZRiESzgy/ftOYeSHTxzkepQ+g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776127849; c=relaxed/simple;
-	bh=IWxyKhckWY7+sHOpuC6y6ZfK3FkZsU1LMf8Fxaa1QmE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FN4ExtVac9EsaLMv2GNN0PyCW3soIK/GPgfwO3UfZitOwYCqwziE3Sp60SR1djMEkFfm7ldhNsEnDMSfitJ21IGKb/TvK09qtFswlhU+NKJglYfi2kN+10oAhFBE0e+WU8UjEMSzEEEBaz25rZ9mv9IARXuQlKZVwiGOtSu8a34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ouL92XBh; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0782224AFA
+	for <netdev@vger.kernel.org>; Tue, 14 Apr 2026 00:56:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776128213; cv=fail; b=M8B7ZJuaHFQtAdUEZhU6x2x5l1+zv1jA93JnnhQW9Os1lhpm4adtoy3nmOLioNpwGvVmj4hwdm88wNnxlNHm1CT9KPjvtXel0oYXoTn3n50YoVfqJ+ilKkbmKSVs1ULi65pHNKXI0wArZ+dc/8fLlYdTeHP8SDvoBKbL5EjfuPQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776128213; c=relaxed/simple;
+	bh=IxvSXHlszfChJIEYOmY6d/XU4AZprPJg8ZtEQAl3dpY=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=aYIIK9Xl8ry+YuwTl03w8WmAWgpgWkLamLOdxIPWw7O6VJ8tH6xj6TNKiUaepSaTFMDJGxmdwfHlFKolhXuEeYpnKYF5JMjEBOY4jT4a51jzg7G6UBR8D+OZ0vkUPVjh5jm5aXzQLy2kRnE4+We+w+4oj8I57RwGjPHNvxXEg1o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aflS2YB5; arc=fail smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ouL92XBh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E98F6C2BCAF;
-	Tue, 14 Apr 2026 00:50:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776127849;
-	bh=IWxyKhckWY7+sHOpuC6y6ZfK3FkZsU1LMf8Fxaa1QmE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ouL92XBh6xR9+rttBQM7DmCDNIE9xNaX0NItFv70QWqZmcmwxarYqtDBYFXXIc6sA
-	 hAaKFYu3JQoaiYy6PMSnIkH2KzNZ+cM7PCYPyDULRmfiC2Ubvs+duX+R41mLvhnHtj
-	 29MUk//kSzdNQDNpPVxqGy96RDWFvzgq7aTqKB7zgsIluINpjZzhy1wdXc21oYK1qf
-	 IbHe7yoWAXH2HLLK/FNCbWdWq4ASDWDOosTY6gUb8T/FoE3s3zzi/heNbDr3jTDMcZ
-	 Le/HQMMg4cyZvc/GuG/6Anou6SQDbkehT17sosO1m53w/ywViRPkL3dsvkebdoHeYX
-	 99e3Ey75gcjLw==
-Date: Mon, 13 Apr 2026 17:50:40 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: =?UTF-8?B?VGjDqW8=?= Lebrun <theo.lebrun@bootlin.com>
-Cc: Nicolas Ferre <nicolas.ferre@microchip.com>, Claudiu Beznea
- <claudiu.beznea@tuxon.dev>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>,
- Russell King <linux@armlinux.org.uk>, Paolo Valerio <pvalerio@redhat.com>,
- Conor Dooley <conor@kernel.org>, Nicolai Buchwitz <nb@tipi-net.de>,
- Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>, Gregory CLEMENT
- <gregory.clement@bootlin.com>, =?UTF-8?B?QmVub8OudA==?= Monin
- <benoit.monin@bootlin.com>, Tawfik Bayouk <tawfik.bayouk@mobileye.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Maxime Chevallier
- <maxime.chevallier@bootlin.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 13/14] net: macb: use context swapping in
- .set_ringparam()
-Message-ID: <20260413175040.352378c5@kernel.org>
-In-Reply-To: <20260410-macb-context-v2-13-af39f71d40b6@bootlin.com>
-References: <20260410-macb-context-v2-0-af39f71d40b6@bootlin.com>
-	<20260410-macb-context-v2-13-af39f71d40b6@bootlin.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aflS2YB5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776128212; x=1807664212;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=IxvSXHlszfChJIEYOmY6d/XU4AZprPJg8ZtEQAl3dpY=;
+  b=aflS2YB515qtgGCOcF5JTf5xH1KxaeRKlKg7ES83AkSL+8OTuCMRHKH9
+   Uc3FPhqETTcPdRP5HXrF6xerKV+qt78Xx92DEVczxYhA4GF2Rg8fI80CZ
+   0IMml3zm1AsD0GsrEduAxp+/PKhTZumaxsv7JIU1WsPemoANmfuESirbu
+   5US9KFQL2wJ97zFlpjWDYgSSUhyD3WMm5wrzSTj2R4KFGcd9uk6gR/26P
+   TR/vQJt6TKnFQWziqQuN+T++qp4FeJkVjozDYtpfyYIPo1hnzGnuWqx0e
+   /I5YKZVaj50E9zJhGV9MZuJnpp0a9QfVKaH02I7x9bigjIQfL4PnXaZn1
+   g==;
+X-CSE-ConnectionGUID: KpadwrBwReGmc7gEVUpqGg==
+X-CSE-MsgGUID: h1GhKhO9Q7WGr8JmWMfpVw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11758"; a="88521393"
+X-IronPort-AV: E=Sophos;i="6.23,178,1770624000"; 
+   d="scan'208";a="88521393"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2026 17:56:51 -0700
+X-CSE-ConnectionGUID: 9qIkfx7USWaRhxn1sdCpjg==
+X-CSE-MsgGUID: bfQ9j23ORraP8vanfU8nLQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,178,1770624000"; 
+   d="scan'208";a="229879396"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2026 17:56:51 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 13 Apr 2026 17:56:50 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Mon, 13 Apr 2026 17:56:50 -0700
+Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.29) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 13 Apr 2026 17:56:50 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=i4+PqmCQqKsKFUjwCsHaQdGtCHp8Zb/o2V41QumuhHO3Lri1yKR+TX8Z7tcT50UWe2qB9cPBDO/lyXGNqGx+qj42oehK8aZ9/kKQb0NKdzL0Ydad+qkIr5QM5ING6qFA66sa52xIQ+wsTC3L+tSLu+YkqeoxVJLyWK0RJdYC8k+1aEc7trX9E/d6xlBfgo3I1/mNbVWJpGUG2PvPVEFzItcgeGKUBP5KrwcZDVGRo60Is01Zg/lYNS6tFOT66w5lMvTkK3X9fS0kQe6RoMhDRw0SQLur0rbxLirs8rEub/jn9vEQVYrsBz+36XYSgAtCFzezmLbUYVrZDZDSjXbtsA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vDFfSxrQH1I/PxxoiPaIgzvTBoNY8H7q7H6LmfPNTKg=;
+ b=h3MYqudCVaWRiFk+A71lGhY1ry8rMlsPTuHsECkKR+wkGk8suqjzkQ0nLgu4OPyOw1UXA86iZdAnl3x8hP1EPriGs7snpd9Q8mf/h1fnSob+UUuHEmybwbu++RWSBIYLaTrEUHLAX8BOlhvUsvrjy/gPt7RWGT6U1RR8yWgbm8DAB7AyiextjyU7QZOFmNQVn+NAuyviL56b3zxWZj4VHxZyhOA1U/xsFVmOqK4wU2V8bJQsDBP+sCgbp/TqhNEjuk5fw14cyKkLwYacu5KSabQ+gDzvO24IKxrAvlrBwNIM1muaHcHw8rISIwz/+wSTs8egN4dXQJEV0JkdxrU8tg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB7579.namprd11.prod.outlook.com (2603:10b6:8:14d::5) by
+ SA2PR11MB4842.namprd11.prod.outlook.com (2603:10b6:806:f8::17) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9745.41; Tue, 14 Apr 2026 00:56:48 +0000
+Received: from DS0PR11MB7579.namprd11.prod.outlook.com
+ ([fe80::4199:4cb5:cf88:e79e]) by DS0PR11MB7579.namprd11.prod.outlook.com
+ ([fe80::4199:4cb5:cf88:e79e%5]) with mapi id 15.20.9818.014; Tue, 14 Apr 2026
+ 00:56:48 +0000
+Message-ID: <704b3b28-cd38-4672-975a-52a36250e793@intel.com>
+Date: Mon, 13 Apr 2026 17:56:45 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Intel-wired-lan] [PATCH iwl-net v2 1/6] ixgbe: fix SWFW
+ semaphore timeout for X550 family
+To: Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	<intel-wired-lan@lists.osuosl.org>, <anthony.l.nguyen@intel.com>
+CC: <netdev@vger.kernel.org>
+References: <20260408131154.2661818-1-aleksandr.loktionov@intel.com>
+ <20260408131154.2661818-2-aleksandr.loktionov@intel.com>
+Content-Language: en-US
+From: Jacob Keller <jacob.e.keller@intel.com>
+In-Reply-To: <20260408131154.2661818-2-aleksandr.loktionov@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MW4PR02CA0030.namprd02.prod.outlook.com
+ (2603:10b6:303:16d::18) To DS0PR11MB7579.namprd11.prod.outlook.com
+ (2603:10b6:8:14d::5)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7579:EE_|SA2PR11MB4842:EE_
+X-MS-Office365-Filtering-Correlation-Id: aef0b9ec-3260-4aae-5f42-08de99c0b4e0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|22082099003|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info: Na33OKEZXt9ID32vhDbkM+in2yPIIPB2ToLfgdfYqKz24JWUTIqa9jym95B/eL7m+TcSiogON+vrzfbuz8mux2Vxq6TlwYGSNU2uwAwicGPlj4ytBP3zfRvTojAO0EGYwkBKEN3sofinlCot93lwvLJW2ZkyfCS/9uzxCUuT5osA/WldJVJmVcX59L801qujZNQQD9pMSlmafaeyvYhC1WzE7BErwRaWwqEudnFX8pScSP36sZish/RUkwf+ZJ/EPE6U0UH9S79TlshaQQ08XxuGcRl+ZjYLV1TOYF2KWgJSrqPmziaquMd+RUWrmRI2vu7ArqzX68kxOpANEtE5cKuzhnj3Oq87SnfN1dwheS0KKZVLBREIVqUQeDuiEqeUlY3wYloajfH+p1qijtv5Y7sa5rP8IfDszGbANodUlFwmMzEPRVMJHLcUmTNNMGEgm2vkmVIlTxB3i4ySv6zCfzFNIxWyucb8d5tew5aPlSUMl10hI6tL4CZ1wq3IM5fcOEI2TWIFhKklhmd/84Sy37PpNxRlSxGUn+LAQADpeiEjJ4PkQKFc1BggqAIBFDN6FHKxoQjbI3xvyg3HR9HDH7+prW32J0NVkjyw+xDvwsyOUfUAcimI9TPtajypk0kzxalsiLYkxkqMRUyW+/79ha7W6wdEVfMlj1jXOO70+mWOmIYBwe0HwHUM2o/aUxq2TrZ42+0OAbYuqKNCghp0fl7sPLJcr2IO1DkZhLywaVQ=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7579.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Nkw5RjZOclVhaks2N21QYmwzZDNJMlh0dlp0OUV0R0VvQ1BvcWdMWklwWEdH?=
+ =?utf-8?B?U1dRcldTc1VTRFN4NDZwNHRqYzlxdXBoWjU1TUM3UDJpUVpBZzZSWWoyTjJN?=
+ =?utf-8?B?Vm8xd2FCeVlhcXJtc3NCNStJa0ZrRXJKaUZ0eXMweDFIdGtlWEJ6YjI2OFB5?=
+ =?utf-8?B?SS9USXFodHBlcWpHN1VHZkpRWG9ZZzg3ZFpFc2gvRGRVNUh0dEo4TW9rczhB?=
+ =?utf-8?B?blMzU0lDNE9NdGtrUVFvR1NKSlBxczhtVTQyRy9yaGtWaHZuMDQydmpPM2Rq?=
+ =?utf-8?B?Z1VudWVHM2FwU29HVXB4UjJCS3pyQ1l5a1hsSXRIK3l1RWovL0s5VThlRjRx?=
+ =?utf-8?B?VVdmZmpDcUMrY0xlQUNpbjd1b1dwanBUQVRmTi9FRVVkWmdTTS9hbkVVcVhy?=
+ =?utf-8?B?Nkp3Z2JDaWorczdESk81TGNpTlRtak1UK3JINkdBRWoxM0o1SWRrdFY1cXpP?=
+ =?utf-8?B?RGgrdWZhVy8xYjdYWElCZmFEcm85Tlk0TzFLVlNWMkJ0UjRTeGJwVHA5dWJp?=
+ =?utf-8?B?MGt4ZUc3STE4UnNUdWxLb05zNkdaSHhSajhIdXp0YkZrTjM0eXIxb3ozZ1Az?=
+ =?utf-8?B?SHBQZ2RkT0x1VjNDYmhzZVlwdGJFT0Z2c00wMU40TGJwQmluZVk1Q2syMTl1?=
+ =?utf-8?B?OHd3RVVTYThvc3JURW5wVVlka2dMUExFdWcvaFl6YmNYTjhaalEyMGF5Tkhs?=
+ =?utf-8?B?REh6MGpiUlhuK29EcTd3M1VBTWtZN3BCM3BOMVZ6b1BocVNNdXFmeXc0b21a?=
+ =?utf-8?B?SEFDZWRqQ0F2TW1WSjRDdVd5c2ROVGQwWkxqMlMzMEFjYWlRYlMycmcvUnFF?=
+ =?utf-8?B?RUNSRWxsMU1ETVZSZ2pDQzZBaFAzcFRRdzRER1FhSDE4b01ZRHd0dE42dHFz?=
+ =?utf-8?B?TTUzaUYvRmM1TXlvM3NVWG1WdnRwYTRjUnRsRXMzZDBFSG10RkdBbmJMdWt2?=
+ =?utf-8?B?RnN0SUdZalpaaWxBT0p5cXJLOG5UbTZUVnFINUZSRXVSM0FYLzdqNzNuTmIr?=
+ =?utf-8?B?R0cyZEh5dm9qZ1dVUjBFZWdVaGgvcGRVd3cwMFFOZE1qSUNRQ1ljdkpMb050?=
+ =?utf-8?B?dkE2MkNwOStjSWROZXJPak1IeXFDM0RLemRhbkl6RTlBTlppTjl1MVBsTG43?=
+ =?utf-8?B?amhOSzd6aWt5TU53VERSRGMwZDlVMFQ3K1lMM05lTmlKNFpNTGdkcUtnUEJF?=
+ =?utf-8?B?aE1jYUYySElJUFVONktPL3orTGl0QmxkbStLYUIwSDA0MTFyc1lFNUNCWTBE?=
+ =?utf-8?B?WHJQSUY1WjRXNWd4UmpEemppeVhDbTRvSmdtc3NyMDhmSG9yTDBEVDRLNHc2?=
+ =?utf-8?B?MGc2UGo5YVd2RDJ3b2FvQkh3bURaL0JGMSsyRnZaaytScTB1VFM1aVdzcjQ4?=
+ =?utf-8?B?bktmTXB4cjQ0dHhsd1dva0RFS3c1RURHMEhQL0xpNnlMcUQzRUZ0L0ZWcG85?=
+ =?utf-8?B?bHp4ZWFBQ1BWcUpxSFRqczFKRFh4aE9BRWY5aXRDanRBRldBR0tqZzJrUFRq?=
+ =?utf-8?B?UGZjeFhTZXpmZDkzQzNvWkxUOXYrcjd6VUNqMFJpYkk0WC9UZVNtYU4yeHA2?=
+ =?utf-8?B?RVJQcDFMc2hlOWJaNFRja1hzY1hiNVpuNExUVlFhTnFwUXlzUWQrQkF2MFhW?=
+ =?utf-8?B?aTdOMSt4d2J2bU82L0ZXMzlycExVclY1OUYrYkxyMldVQnpVM0ZTL2o1c0dH?=
+ =?utf-8?B?SDNtUVhBWUp4cnpGKy9NV200UmNsK0dyZ1ZxQUE5Q3Bhd2VIR0l3N0tLYXhV?=
+ =?utf-8?B?d2U3WFAyS1VpVHBFTEVRejJFb2VlTW4wQjBFZnJBY2kxc3p3MDkyMlB6NUl0?=
+ =?utf-8?B?Z2pJTlRsc3g0cmZBcm5VT2YrYXdvRmY0bE1rQ2Vwb3oxaVE1RlgrKzRLN1pm?=
+ =?utf-8?B?UitCM2lvcktwbkpwZSsrdHVsQmlPRUFhSFZzV2lNdmJjUVE0NTh1UnFMVFI4?=
+ =?utf-8?B?dmdtbXRMS0IyUzZ4djRyUEdDN2t6TzlETGVnK3JDbnlxWEc1cDNrZndtak9T?=
+ =?utf-8?B?MXczbzFDUFVXMXR5SEZGbE02RlkxR2FVa3lqcUhiUmhFVGpYRnp1SkZBWUJo?=
+ =?utf-8?B?K3VsM2hQajVQcFpCckZDUkNWdTVqSnAzQ3YzcGl4UkFEZVpFZVpPSVhUK2pt?=
+ =?utf-8?B?VnYvWU8rcmE4anBqaDFlRU01Yzg1TlRiZFVWR3NRdTNoSXU0K01LVkZ1SW51?=
+ =?utf-8?B?eWRIYURNREFweEtBZjBmUHlrOFdlRWVsdE1EbDBKSDE0TVFJanBlbFpYVFFM?=
+ =?utf-8?B?bnlFQStBYTZuT25iTkRJZTE3azgveEtSKyt5ZDAzWmVaNkVDWGF1eVJLRkU5?=
+ =?utf-8?B?eCtzUnNwVGt4VzhldXNjbWtXeGdEYkltQlJVSlg3ME5xczUwSEk2QT09?=
+X-Exchange-RoutingPolicyChecked: NtCWXX1dpovncrvtU2X2vELINNVdcNtXNeb0Gxr+Q3NazUzdXkj+eir4Yee0d2TYZ179pQC+qCP1OXzW27+7vfp5JTtIRSAW9t4I9bPmgsFnuL3ae7ckdPRHA/semHd+ZCEAlaOtkZESiZbZsM14RaaC9vA2myScQik7ZQUw4YEawVk+ba3l3n/pSNXAfi7HAeLDBNLL+U7ezO/vKyNhgYWDmdNo5IRG/wWCt6NqngjE0+XKO1K5opSFvvYUfPOoq7vvqkMHygxJQGhUBNSINQolwjv1yYoXdaTAr93zo9jUZT1bEL0zFYmeGCFEzh1gn0hcJqvYMUh8Zu1hLeQEuw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: aef0b9ec-3260-4aae-5f42-08de99c0b4e0
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7579.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Apr 2026 00:56:48.2380
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: CGB6HI465HJBLr8xAtHWL6jxANcHyamIZMqn2FsJaaa8quUeit54DZuH1/XisDWZ0D7K/T1eywdXmxwHMXgQeopEoojySa5YmKJlYOr7U5o=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB4842
+X-OriginatorOrg: intel.com
 
-On Fri, 10 Apr 2026 21:52:01 +0200 Th=C3=A9o Lebrun wrote:
-> ethtool_ops.set_ringparam() is implemented using the primitive close /
-> update ring size / reopen sequence. Under memory pressure this does not
-> fly: we free our buffers at close and cannot reallocate new ones at
-> open. Also, it triggers a slow PHY reinit.
->=20
-> Instead, exploit the new context mechanism and improve our sequence to:
->  - allocate a new context (including buffers) first
->  - if it fails, early return without any impact to the interface
->  - stop interface
->  - update global state (bp, netdev, etc)
->  - pass buffer pointers to the hardware
->  - start interface
->  - free old context.
->=20
-> The HW disable sequence is inspired by macb_reset_hw() but avoids
-> (1) setting NCR bit CLRSTAT and (2) clearing register PBUFRXCUT.
->=20
-> The HW re-enable sequence is inspired by macb_mac_link_up(), skipping
-> over register writes which would be redundant (because values have not
-> changed).
->=20
-> The generic context swapping parts are isolated into helper functions
-> macb_context_swap_start|end(), reusable by other operations (change_mtu,
-> set_channels, etc).
+On 4/8/2026 6:11 AM, Aleksandr Loktionov wrote:
+> According to FW documentation, the most time-consuming FW operation is
+> Shadow RAM (SR) dump which takes up to 3.2 seconds.  For X550 family
+> devices the module-update FW command can take over 4.5 s.  The default
+> semaphore loop runs 200 iterations with a 5 ms sleep each, giving a
+> maximum wait of 1 s -- not "200 ms" as previously stated in error.
+> This is insufficient for X550 family FW update operations and causes
+> spurious EBUSY failures.
+> 
+> Extend the SW/FW semaphore timeout from 1 s to 5 s (1000 iterations x
+> 5 ms) for all three X550 variants: ixgbe_mac_X550, ixgbe_mac_X550EM_x,
+> and ixgbe_mac_x550em_a.  All three share the same FW and exhibit the
+> same worst-case latency.  Use three explicit mac.type comparisons rather
+> than a range check so future MAC additions are not inadvertently
+> captured.
+> 
+> The timeout variable is set immediately before the loop so the intent
+> is clear, with an inline comment stating the resulting maximum delay.
+> 
+> Suggested-by: Soumen Karmakar <soumen.karmakar@intel.com>
+> Cc: stable@vger.kernel.org
+> Suggested-by: Marta Plantykow <marta.a.plantykow@intel.com>
+> Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+> ---
+> v1 -> v2:
+>  - Squash with 0015 (X550EM extension); fix commit message ("200ms" was
+>    wrong, actual default is 1 s); replace >= / <= range check with three
+>    explicit mac.type == comparisons per Tony Nguyen.
+> 
+>  drivers/net/ethernet/intel/ixgbe/ixgbe_x540.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_x540.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_x540.c
+> index e67e2fe..a3c8f51 100644
+> --- a/drivers/net/ethernet/intel/ixgbe/ixgbe_x540.c
+> +++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_x540.c
+> @@ -577,6 +577,15 @@ int ixgbe_acquire_swfw_sync_X540(struct ixgbe_hw *hw, u32 mask)
+>  
+>  	swmask |= swi2c_mask;
+>  	fwmask |= swi2c_mask << 2;
+> +	/* Extend to 5 s (1000 x 5 ms) for X550 family; default is 1 s
+> +	 * (200 x 5 ms).  FW SR-dump takes up to 3.2 s; module-update up
+> +	 * to 4.5 s.
+> +	 */
+> +	if (hw->mac.type == ixgbe_mac_X550 ||
+> +	    hw->mac.type == ixgbe_mac_X550EM_x ||
+> +	    hw->mac.type == ixgbe_mac_x550em_a)
+> +		timeout = 1000;
+> +
 
-> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ether=
-net/cadence/macb_main.c
-> index 81beb67b206a..340ae7d881c6 100644
-> --- a/drivers/net/ethernet/cadence/macb_main.c
-> +++ b/drivers/net/ethernet/cadence/macb_main.c
-> @@ -3081,6 +3081,89 @@ static void macb_configure_dma(struct macb *bp)
->  	}
->  }
-> =20
-> +static void macb_context_swap_start(struct macb *bp)
-> +{
-> +	struct macb_queue *queue;
-> +	unsigned long flags;
-> +	unsigned int q;
-> +	u32 ctrl;
-> +
-> +	/* Disable software Tx, disable HW Tx/Rx and disable NAPI. */
-> +
-> +	netif_tx_disable(bp->netdev);
+Typically, I would request and prefer if we would refactor timeout loops
+like this to use read_poll_timeout() instead of open coding the loop
+like we do here. The current loop is somewhat complicated so I can
+understand it might be tricky to refactor.
 
-AFAIR netif_tx_disable() just stops all the queues, if the NAPIs and
-whatever else may wake queues is still running the queues may get
-restarted right away.
+The issue with open coded loops like this is that usleep_range has
+variable length waiting time, so we sleep for anywhere between 5 and 6
+milliseconds in this case. This makes the total amount of time waiting
+cap at 6 seconds and not the expected 5, with the actual amount of time
+waiting being variable based on when the usleep_range wakes up.
 
-> +	spin_lock_irqsave(&bp->lock, flags);
-> +
-> +	ctrl =3D macb_readl(bp, NCR);
-> +	macb_writel(bp, NCR, ctrl & ~(MACB_BIT(RE) | MACB_BIT(TE)));
-> +
-> +	macb_writel(bp, TSR, -1);
-> +	macb_writel(bp, RSR, -1);
-> +
-> +	for (q =3D 0, queue =3D bp->queues; q < bp->num_queues; ++q, ++queue) {
-> +		queue_writel(queue, IDR, -1);
-> +		queue_readl(queue, ISR);
-> +		if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
-> +			queue_writel(queue, ISR, -1);
-> +	}
-> +
+Perhaps this specific loop is a bit more complicated and not worth the
+effort to refactor to read_poll_timeout, but its something I've been
+trying to get us to cleanup (both inside Intel drivers and in other
+places in the kernel) when modifying such open-coded timeout loops.
+
+Since this loop body is a bit more complicated (it has to take and
+release the semaphore to check the condition) I can accept it doesn't
+make sense to modify it here for net.
+
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+
+Thanks,
+Jake
+
+>  	for (i = 0; i < timeout; i++) {
+>  		/* SW NVM semaphore bit is used for access to all
+>  		 * SW_FW_SYNC bits (not just NVM)
+
