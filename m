@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED4B7198E91;
-	Tue, 14 Apr 2026 00:21:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 350E4175A61;
+	Tue, 14 Apr 2026 00:21:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776126105; cv=none; b=LaKYLi1TRx/biajW7nJrqsuv9wJjQNtEipSiXtVPs+F3znHCa4A7t4Y4sfSvZ5o9EjVCYzt4bjmML3aFS4Xb4Z+9wjgPoKLhpqvk6q0sYW1nlceiUHgCdPJdXqwX82cm0rZENXKbY6yDjEAYNCFREhfm2rfzN22IP2XrxUYxFr8=
+	t=1776126110; cv=none; b=Z02XpiVxdG87MetqOw+iULPhnPe64FuE+z623dVVpRQwkSMqGE+aX/al1D+lq6rS/Lk5qcwQngzV+xbG/E/BW4s041XL5U2IgJjLOrTErc//teIRG2p9WXufYomZ6QcqxmSUk8VglCksUPIJ5y2ItSlxjmElKMYdHa8HS2pQUZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776126105; c=relaxed/simple;
-	bh=tgpexcGJxojFj1jsjKX9GvXbFRVwgWeAiHvWhfxxnsU=;
+	s=arc-20240116; t=1776126110; c=relaxed/simple;
+	bh=6caI8vNZc/462NGOfNaRR6Uk12AEWf33yErq3u5QKAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FCDCgiXBkcWJxrXtIlM1Itzjo5t+HK5T18l1touqQlNHhKtDEmh5ZHpR0Fk+eSLxpVCXaIF7K3SUzWgb8rwelTMcobxCUsXIL+QfvRxiDmrAOz34Uw/Su9CdjcPx04crltkfFo5VzucyLBocpu7TQIcBISXQDQ8dL4nNT9Fy6l4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tSTarZRc; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=LEAfLojW0AWCnA1NI+LvebPX2DnAvwb0uSTkMgH90bKemWIZDWxfXuFOXSWi0S8ylZ1Gabbvrz3OQrbZFqDwGigfWESLeQsZX+W/aqik9M8jjQqOwEYR6XP/mSyPeOeVRJ0m0HCLdiVK7HxYR8jGr+dO6w9clp4xRQfTLQH1joI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TNUEmmTJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tSTarZRc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FE82C2BCAF;
-	Tue, 14 Apr 2026 00:21:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TNUEmmTJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E252CC2BCB4;
+	Tue, 14 Apr 2026 00:21:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776126104;
-	bh=tgpexcGJxojFj1jsjKX9GvXbFRVwgWeAiHvWhfxxnsU=;
+	s=k20201202; t=1776126110;
+	bh=6caI8vNZc/462NGOfNaRR6Uk12AEWf33yErq3u5QKAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tSTarZRcrheL7jbmi/VOV23tAua95U0x534hLdQM8VXc2qz93HkvlwjLfV1Nq4w1a
-	 VdshbBhDv5YY/xmTR76dqzxZBIOCsWAcjai1EksLGwvFhadZpRriIyuSUiu+F0tGbw
-	 Ei7E5YLR2lUUUCpV4RtsSTK9Ag+f8XSjIIKxs+25M7whatDO+Jn1Q7P11nwuEbu3WX
-	 i93Y9bx5bNkaC94G+nRtesh2+Ffnzm6dke0mqN/fcELIDPEC7q19cIbr1bc0ObYn+2
-	 B1Q8LpaRwUoiAKXjDaMpE+qxX4Nls/5eehgVLwoDfYeSsGXIEjBeNV23JnoK3WyDIG
-	 pmGfKMP58PwXA==
+	b=TNUEmmTJJ4msaRUCxV3wGpXJoKzm34mybZtOHcO0K7rb75Eb2d1bOnsvNOgVVJu/t
+	 Ns9NhXHl+L/NocQaEXQvJS/jrBg+aVlFPAX0ikcG2M+3ygMOor0xHmfvAqGWEMZdMf
+	 ClDwdfYTC4IOghy/GPhYEJJxwpzlGaZ3JW81qOgy7PQ4HbuuNODENSM5HWMRGpY5wO
+	 Mt8yQDmNBlxfeJyvM/sEZi0acopYyVJtai+FheRRoRG2ZoJpn2Waz0Qu7T3tobjxUY
+	 POnG/upfGs/JhX8HpPcnwLgEaIesd6DbMb+Rfrwp/yRRax09wu4POkBcNNd8EO9zwQ
+	 4Hll3tHqo+ppw==
 From: Jakub Kicinski <kuba@kernel.org>
 To: devnull+satishkh.cisco.com@kernel.org
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -37,12 +37,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	20260401-enic-sriov-v2-prep-v4-0-d5834b2ef1b9@cisco.com,
 	satishkh@cisco.com
-Subject: Re: [PATCH net-next v4 04/10] enic: add admin CQ service with MSI-X interrupt and NAPI polling
-Date: Mon, 13 Apr 2026 17:21:33 -0700
-Message-ID: <20260414002133.3734391-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next v4 05/10] enic: define MBOX message types and header structures
+Date: Mon, 13 Apr 2026 17:21:44 -0700
+Message-ID: <20260414002144.3734510-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260411-enic-sriov-v2-admin-channel-v2-v4-4-f052326c2a57@cisco.com>
-References: <20260411-enic-sriov-v2-admin-channel-v2-v4-4-f052326c2a57@cisco.com>
+In-Reply-To: <20260411-enic-sriov-v2-admin-channel-v2-v4-5-f052326c2a57@cisco.com>
+References: <20260411-enic-sriov-v2-admin-channel-v2-v4-5-f052326c2a57@cisco.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,184 +54,52 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-enic: add admin CQ service with MSI-X interrupt and NAPI polling
+enic: define MBOX message types and header structures
 
-Add completion queue service for the admin channel WQ and RQ, driven
-by an MSI-X interrupt and NAPI polling.
+This commit defines the mailbox protocol used for PF-VF communication over
+the admin channel. It introduces the request/reply message types and the
+structures representing the message headers and payloads.
 
-> diff --git a/drivers/net/ethernet/cisco/enic/enic_admin.c b/drivers/net/ethernet/cisco/enic/enic_admin.c
-> index a8fcd5f116d17..345d194c6eebe 100644
-> --- a/drivers/net/ethernet/cisco/enic/enic_admin.c
-> +++ b/drivers/net/ethernet/cisco/enic/enic_admin.c
-[ ... ]
-> @@ -83,6 +85,207 @@ static void enic_admin_rq_drain(struct enic *enic)
->  	vnic_rq_clean(&enic->admin_rq, enic_admin_rq_buf_clean);
->  }
->  
-[ ... ]
-> +unsigned int enic_admin_rq_cq_service(struct enic *enic, unsigned int budget)
-> +{
-> +	struct vnic_cq *cq = &enic->admin_cq[1];
-> +	struct vnic_rq *rq = &enic->admin_rq;
-> +	struct vnic_rq_buf *buf;
-> +	unsigned int work = 0;
-> +	void *desc;
+> --- /dev/null
+> +++ b/drivers/net/ethernet/cisco/enic/enic_mbox.h
+> @@ -0,0 +1,75 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/* Copyright 2025 Cisco Systems, Inc.  All rights reserved. */
 > +
-> +	desc = vnic_cq_to_clean(cq);
-> +	while (work < budget &&
-> +	       enic_admin_cq_color(desc, cq->ring.desc_size) !=
-> +	       cq->last_color) {
-> +		/* Ensure CQ descriptor fields are read after
-> +		 * the color/valid check.
-> +		 */
-> +		rmb();
-> +		buf = rq->to_clean;
-> +
-> +		dma_sync_single_for_cpu(&enic->pdev->dev,
-> +					buf->dma_addr, buf->len,
-> +					DMA_FROM_DEVICE);
-> +
-> +		enic_admin_msg_enqueue(enic, buf->os_buf, buf->len);
+> +#ifndef _ENIC_MBOX_H_
+> +#define _ENIC_MBOX_H_
 
-Does this code expose uninitialized kernel heap memory?
-
-The driver reads the completion queue descriptor but does not decode it to
-determine the actual number of bytes written by the hardware. Instead, it
-passes the full buf->len (2048 bytes) to enic_admin_msg_enqueue().
-
-Since enic_admin_rq_post_one() allocates the receive buffers using kmalloc()
-without __GFP_ZERO, passing the full 2048 bytes copies uninitialized kernel
-memory following the actual packet payload.
-
-> +
-> +		enic_admin_rq_buf_clean(rq, rq->to_clean);
-> +		rq->to_clean = rq->to_clean->next;
-> +		rq->ring.desc_avail++;
-> +
-> +		vnic_cq_inc_to_clean(cq);
-> +		work++;
-> +		desc = vnic_cq_to_clean(cq);
-> +	}
-> +
-> +	enic_admin_rq_fill(enic, GFP_ATOMIC);
-
-Can this lead to a permanent receive queue stall?
-
-Every processed receive buffer is unconditionally unmapped and freed via
-enic_admin_rq_buf_clean() above. If enic_admin_rq_fill() fails due to memory
-pressure, it silently returns an error and no replacement buffers are posted.
-
-Because the original buffers were destroyed rather than recycled, and there
-is no deferred retry mechanism, the descriptors are permanently lost. Repeated
-transient failures will empty the RQ and permanently deadlock the admin channel.
+This isn't a bug, but should this header include <linux/types.h> and
+<linux/bits.h>? It uses fixed-width types like __le16, __le32, u8 and the
+BIT() macro. Without these includes, it might cause compilation errors if
+included in an isolated context.
 
 [ ... ]
-> @@ -128,23 +331,8 @@ static int enic_admin_alloc_resources(struct enic *enic)
->  	if (err)
->  		goto free_cq0;
->  
-> -	/* PFs have dedicated SRIOV_INTR resources for admin channel.
-> -	 * VFs lack SRIOV_INTR; use a regular INTR_CTRL slot instead.
-> -	 */
-> -	if (vnic_dev_get_res_count(enic->vdev, RES_TYPE_SRIOV_INTR) >= 1)
-> -		err = vnic_intr_alloc_with_type(enic->vdev,
-> -						&enic->admin_intr, 0,
-> -						RES_TYPE_SRIOV_INTR);
-> -	else
-> -		err = vnic_intr_alloc(enic->vdev, &enic->admin_intr,
-> -				      enic->intr_count);
-> -	if (err)
-> -		goto free_cq1;
-> -
->  	return 0;
 
-Will this removal break the admin channel on Physical Functions (PFs)?
-
-Because PFs frequently have all their standard INTR_CTRL slots consumed by
-regular networking queues, they rely on the dedicated SRIOV_INTR slot for
-the admin channel.
-
-Removing this fallback means enic_admin_setup_intr() might fail its bounds
-check or vnic_intr_alloc() might fail, breaking initialization.
+> +struct enic_mbox_generic_reply {
+> +	__le16 ret_major;
+> +	__le16 ret_minor;
+> +};
 
 [ ... ]
-> @@ -165,10 +353,32 @@ static void enic_admin_free_resources(struct enic *enic)
->  
->  static void enic_admin_init_resources(struct enic *enic)
->  {
-> +	unsigned int intr_offset = enic->admin_intr_index;
-> +
->  	vnic_wq_init(&enic->admin_wq, 0, 0, 0);
->  	vnic_rq_init(&enic->admin_rq, 1, 0, 0);
-> -	vnic_cq_init(&enic->admin_cq[0], 0, 1, 0, 0, 1, 0, 1, 0, 0, 0);
-> -	vnic_cq_init(&enic->admin_cq[1], 0, 1, 0, 0, 1, 0, 1, 0, 0, 0);
-> +	vnic_cq_init(&enic->admin_cq[0],
-> +		     0 /* flow_control_enable */,
-> +		     1 /* color_enable */,
-> +		     0 /* cq_head */,
-> +		     0 /* cq_tail */,
-> +		     1 /* cq_tail_color */,
-> +		     1 /* interrupt_enable */,
 
-Could setting interrupt_enable to 1 on the transmit completion queue (admin_cq[0])
-cause an interrupt storm?
+> +struct enic_mbox_vf_capability_reply_msg {
+> +	struct enic_mbox_generic_reply reply;
+> +	__le32 version;
+> +	__le32 reserved[32];
+> +};
 
-When a transmit completion occurs, it asserts the admin MSI-X interrupt and
-schedules the NAPI poll routine (enic_admin_napi_poll). However, the NAPI
-poll routine only services the receive queue (admin_cq[1]) and never clears
-the event for admin_cq[0].
+Does this structure introduce misaligned memory accesses by violating
+structure alignment inheritance rules?
 
-Since NAPI unmasks the interrupt upon completion, the uncleared transmit
-completion would immediately re-trigger the interrupt.
+struct enic_mbox_generic_reply consists only of __le16 fields, giving it
+a natural 2-byte alignment. struct enic_mbox_vf_capability_reply_msg
+embeds this reply struct and subsequently adds __le32 version and
+__le32 reserved[32], which require 4-byte alignment.
 
-[ ... ]
-> @@ -187,12 +397,24 @@ int enic_admin_channel_open(struct enic *enic)
->  		return err;
->  	}
->  
-> +	err = enic_admin_setup_intr(enic);
-> +	if (err) {
-> +		netdev_err(enic->netdev,
-> +			   "Admin channel requires MSI-X, SR-IOV unavailable: %d\n",
-> +			   err);
-> +		goto free_resources;
-> +	}
-> +
-> +	spin_lock_init(&enic->admin_msg_lock);
-> +	INIT_LIST_HEAD(&enic->admin_msg_list);
-> +	INIT_WORK(&enic->admin_msg_work, enic_admin_msg_work_handler);
+If the outer structure is cast from a buffer that only guarantees the inner
+structure's 2-byte alignment, the 4-byte aligned fields could cause
+misaligned memory accesses.
 
-Can a race condition occur here?
-
-enic_admin_setup_intr() calls request_irq(), which registers the interrupt
-handler and enables the IRQ line. If an interrupt fires immediately upon
-registration, the ISR will schedule NAPI, which calls enic_admin_rq_cq_service().
-
-NAPI would then attempt to acquire the uninitialized spinlock, modify the
-uninitialized list, and schedule the uninitialized workqueue. Should the data
-structures be initialized before requesting the interrupt?
-
-[ ... ]
->  	return 0;
->  
->  disable_queues:
-> +	enic_admin_teardown_intr(enic);
->  	vnic_wq_disable(&enic->admin_wq);
->  	vnic_rq_disable(&enic->admin_rq);
->  	enic_admin_qp_type_set(enic, 0);
->  	enic_admin_rq_drain(enic);
-> +free_resources:
->  	enic_admin_free_resources(enic);
->  	return err;
->  }
-
-Does the disable_queues error path leak queued messages?
-
-If initialization fails after enic_admin_setup_intr() is called (for example,
-during enic_admin_rq_fill()), the code branches to disable_queues. By this time,
-the MSI-X interrupt and NAPI have been enabled.
-
-If an interrupt fired and scheduled NAPI, messages could be added to
-admin_msg_list and admin_msg_work could be scheduled. The error path does not
-call cancel_work_sync(&enic->admin_msg_work) or enic_admin_msg_drain(enic),
-which are required to stop the deferred work.
+Should the wider 32-bit fields be split into smaller __le16 fields to
+strictly preserve the inherited 2-byte alignment?
