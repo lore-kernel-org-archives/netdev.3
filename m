@@ -1,42 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F9772F1FFC
-	for <netdev@vger.kernel.org>; Wed, 15 Apr 2026 13:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBCB03CF056
+	for <netdev@vger.kernel.org>; Wed, 15 Apr 2026 13:53:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776260806; cv=none; b=Yxi4EBqike7MUKkoHbVOn1lQE01UXQ1inf4CyoH3jgHpaOfMLu+gwv6H58Un5mAdVlXfKhhtX0jm5UoZb799N3F60Kw/NEa4tAyvl8s794Hq3WweUQRL8VUhBWW3V+AxlG7Ww79RpXXDOK6oraOj9mnO3qrMlrz4RDoaOV2dv/Q=
+	t=1776261198; cv=none; b=GLliivGzTdNiKiTy9PbxosIHvfWu14mm1emrG8732yw0Ui4NZyFuqBX0awWwrQOvibVtve5kuXcZzs3twwuCHknJOPp1ck6MiGVEcHNBdcjIzU0lxZa8NLkg6VpxsAtCQGmkgwtlonCa0e9sa9RHXcJlxBcPn2pmDN5pDeKQEd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776260806; c=relaxed/simple;
-	bh=hUX+08o1UGhyqMZxAK7BKsm8gMlYpj2DYuE3FXFWmiU=;
+	s=arc-20240116; t=1776261198; c=relaxed/simple;
+	bh=RCRSadFhOAVPdCR4RHEUrMdSFUtCXm2C/VxKppUJ1dM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X+2+XN97sLG6y1C5ImdsSPbv1drZUaPKn6XPU74BleVDI9xy2cVMOJYUVoFTZkWx+AxbC7dFSo+gCwkXOSfRmnLpSxf6B8lj2yej1NMV7yBBg/4oEsAi8PhZZI9QjXijCaxg8jjcD+s+rWD7W8ms3x7hv74yBJ2r0vTgPjvlydA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mm74+F2b; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=ji+g89144rKNl8jM7G6MtuHnnBVGaZyAKvXmn0i1rth3ULBrbyBWdwzpvvY0vSq06DovoVVUI/KhWthIHC9DpEJ0e0lPd468TBskFlTtrS72nzvh6DztH4jheih3ry5ApaWt7ja510zBKv8ToiYON19cEK19Pme9g7bRAeuhtV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lR6N8cDO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mm74+F2b"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA725C19424;
-	Wed, 15 Apr 2026 13:46:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lR6N8cDO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 771BCC19424;
+	Wed, 15 Apr 2026 13:53:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776260805;
-	bh=hUX+08o1UGhyqMZxAK7BKsm8gMlYpj2DYuE3FXFWmiU=;
+	s=k20201202; t=1776261198;
+	bh=RCRSadFhOAVPdCR4RHEUrMdSFUtCXm2C/VxKppUJ1dM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Mm74+F2bxyVi1iMSesfUj0I41WtcnfisuF5oIYTOP13t9S1w0+qUJoSFt8ywZMLpZ
-	 X/mN5Xj1ITnFmBE0EjG3IfA/zwiamEt+kLZjbIc/DdZfeF/Csrul2Z7ypZiR4xR2DQ
-	 9KEoyyS0TlL7p7K58PcaNmwaHq0aKK2EP/3DxSYrVjvEZKZja7+q3pGnaHo2jK9C5/
-	 ymFiYr+bZg+861hBsnWh5iR9HVOexTQA8Fprh76cgyZmPMA2sosB5Wcr9Ie2xAZRcz
-	 2FyplORTjonOkQDRXohxIcO9LeNNBKUnn+o7+dFN95QabobrfxDBdAShGAhYB2rz+N
-	 qevYxHM4n/h7w==
-Date: Wed, 15 Apr 2026 14:46:42 +0100
+	b=lR6N8cDOLY8BNji8pLn5aJnDiu0FUqYZcSoBwLclSgUQIKBUeCqG4+l8b9AVwSfxu
+	 VyF39jGBl3fkwI4E+zZ2dm1XLv3wU6+esDspW4Hbh7AmndYCWB7CmRVRbGGFzJ7Qs/
+	 OwBoPtaCLvAZDe3fcQLyX6KmXGyFNJtSDNSaAgwFmC6/QWCfLZmuHnk/LT4q3WFa8+
+	 9RXWt0CdYuUv45esrtyb4GQtqSZD2+dYW77PrWXrgIkBs6O6WaJZMOH9yXbl0164O+
+	 RhBy0NxeCzR/HoXCmCv9M+MFOJc2qc92Oc7Gu3G8LSc9m9dIMuqqpspk7OLLLMG8+p
+	 Apm0VmFgQMQvA==
+Date: Wed, 15 Apr 2026 14:53:15 +0100
 From: Simon Horman <horms@kernel.org>
 To: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 Cc: intel-wired-lan@lists.osuosl.org, anthony.l.nguyen@intel.com,
-	netdev@vger.kernel.org,
-	Avinash Dayanand <avinash.dayanand@intel.com>
-Subject: Re: [PATCH iwl-net 4/5] iavf: fix TC boundary check in
- iavf_handle_tclass
-Message-ID: <20260415134642.GJ772670@horms.kernel.org>
+	netdev@vger.kernel.org, Kiran Patil <kiran.patil@intel.com>
+Subject: Re: [PATCH iwl-net 5/5] iavf: return 0 when TC flower filter not
+ found after qdisc teardown
+Message-ID: <20260415135315.GK772670@horms.kernel.org>
 References: <20260413073035.4082204-1-aleksandr.loktionov@intel.com>
- <20260413073035.4082204-5-aleksandr.loktionov@intel.com>
+ <20260413073035.4082204-6-aleksandr.loktionov@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,95 +44,30 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260413073035.4082204-5-aleksandr.loktionov@intel.com>
+In-Reply-To: <20260413073035.4082204-6-aleksandr.loktionov@intel.com>
 
-On Mon, Apr 13, 2026 at 09:30:34AM +0200, Aleksandr Loktionov wrote:
-> From: Avinash Dayanand <avinash.dayanand@intel.com>
+On Mon, Apr 13, 2026 at 09:30:35AM +0200, Aleksandr Loktionov wrote:
+> From: Kiran Patil <kiran.patil@intel.com>
 > 
-> The condition `tc < adapter->num_tc` admits any tc value equal to or
-> greater than num_tc, bypassing the destination-port validation and
-> allowing traffic to be steered to a non-existent traffic class. Change
-> the comparison to `tc > adapter->num_tc` to correctly reject
-> out-of-range TC values.
+> When an egress qdisc is destroyed, the driver proactively deletes all
+> associated cloud filters to prevent stale hardware state, decrementing
+> num_cloud_filters to zero in the process.
+> 
+> The kernel netdev layer is unaware of this implicit cleanup and may
+> still try to delete the same filters individually. If the filter is
+> not found in the driver's list and num_cloud_filters is already zero,
+> return 0 instead of -EINVAL to avoid confusing upper layers that
+> believe the filter is still offloaded in hardware.
 > 
 > Fixes: 0075fa0fadd0 ("i40evf: Add support to apply cloud filters")
-> Signed-off-by: Avinash Dayanand <avinash.dayanand@intel.com>
+> Signed-off-by: Kiran Patil <kiran.patil@intel.com>
 > Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 
-I am a bit confused by this logic.
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-With this patch applied:
+Sashiko has some comments on this function - which do not
+seem related to the logic this patch touches.
 
-1) For tc <= adapter->num_tc, which I assume is valid TCs (other than 0,
-   in which case the function returns earlier), the filter destination port
-   is skipped.
+I'd encourage you to take a look at some point as a follow-up activity.
 
-   But the failure path for that checks logs:
-   "Specify destination port to redirect to traffic class other than TC0\n"
-
-   This does not seem consistent.
-
-2) For tc > adapter->num_tc, which I assume is invalid TCs,
-   the function will eventually assign fields of filter->f and succeed
-   if filter has a valid destination port.
-
-   This doesn't seem to be in keeping with the patch description.
-
-3) The above two points aside, is there an out by 1 condition in
-   the condition tc > adapter->num_tc. It seems to imply
-   that tc == adapter->num_tc is a valid tc. But I suspect that
-   is not hte case.
-
-In short, I'm wondering if the function should look something like this
-(completely untested):
-
-/**
- * iavf_handle_tclass - Forward to a traffic class on the device
- * @adapter: board private structure
- * @tc: traffic class index on the device
- * @filter: pointer to cloud filter structure
- */
-static int iavf_handle_tclass(struct iavf_adapter *adapter, u32 tc,
-			      struct iavf_cloud_filter *filter)
-{
-		if (tc == 0)
-			return 0;
-
-		if (tc >= adapter->num_tc) {
-			// dev_err(...);
-			return -EINVAL;
-		}
-
-		if (!filter->f.data.tcp_spec.dst_port) {
-			dev_err(&adapter->pdev->dev,
-				"Specify destination port to redirect to traffic class other than TC0\n");
-			return -EINVAL;
-		}
-
-		/* redirect to a traffic class on the same device */
-		filter->f.action = VIRTCHNL_ACTION_TC_REDIRECT;
-		filter->f.action_meta = tc;
-
-		return 0;
-}
-
-> ---
->  drivers/net/ethernet/intel/iavf/iavf_main.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-> index ab5f5adc..5e4035b 100644
-> --- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-> +++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-> @@ -4062,7 +4062,7 @@ static int iavf_handle_tclass(struct iavf_adapter *adapter, u32 tc,
->  {
->  	if (tc == 0)
->  		return 0;
-> -	if (tc < adapter->num_tc) {
-> +	if (tc > adapter->num_tc) {
->  		if (!filter->f.data.tcp_spec.dst_port) {
->  			dev_err(&adapter->pdev->dev,
->  				"Specify destination port to redirect to traffic class other than TC0\n");
-> -- 
-> 2.52.0
-> 
+...
