@@ -1,39 +1,40 @@
-Received: from CHN02-SH0-obe.outbound.protection.partner.outlook.cn (mail-sh0chn02on2124.outbound.protection.partner.outlook.cn [139.219.146.124])
+Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2132.outbound.protection.partner.outlook.cn [139.219.17.132])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36F3A1EB5E3;
-	Wed, 15 Apr 2026 09:42:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.146.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C716133F5A6;
+	Wed, 15 Apr 2026 09:42:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.132
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776246157; cv=fail; b=WmMM0cukTjcuI0T9pIRlysE1sK2k2ll8NPIABrgTxmXAek9MyvNRht0DBfnuiVtmLGRDaUcpj8p95uNIPyEQgHmzgn8QUjs2cGR2jM/jraHopYJVYOOz4mR5KvRtmkxs0hYmXSU1j/+5PfSz5lB/HLCV6jhCdlUXNvfOn7HBE6s=
+	t=1776246165; cv=fail; b=rOHInBuDwMfXKqQs01rZh4sMcVrUEx1w6H3CLPQforys/BG6wGN9rEEuMsoFTlLPDQs8mKhPaptWd0AuC9fdJ85RhTUFV6ewXForvSUYZNqgbkYYCM30b2zVxZOnu9N0k2nO7l5aS1NdlsVfwq2oftiizG6OQMfPOUgGZSE93Ic=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776246157; c=relaxed/simple;
-	bh=7teZr2ID/gEH6zkNmrhQGn3ykqv6MT75r9A3EV6f/Hg=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=ILlcr/lofkd7x+rxIPEum1Iw+2jOemZWD04sOqP2A0mQtSBirFc/nZf+VuS3U4Boy0ZimyakgjsIx9MWCuL2xPCndUjBUGSXPxCxCMmPvEUCTF1x1L+Gt/k6X+wMBbmwTQWb40Gd8jQUlFvqJLmD5D01cZVhD2CFhK+RXSqGszg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.146.124
+	s=arc-20240116; t=1776246165; c=relaxed/simple;
+	bh=TqXKbqiEIWMSA1+Q2bHLGknW8AHp+Fq5L2cWuNWyAhY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=cANCsEzTlhiwakiwmkYunLrwTkbXGrgilMqemtVSyzfMprSpGTAXnXUGQfJglcwxzv1wD2E1fM09Nmv2tP7vevOLMMs602sHwoDiCQEz3tCdwRrBcLmfXeum6E3EYD4Ap+ILiM63da4WleB54qRnMnXHxPTqHT8Up0m81+WbLNA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.17.132
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RyqwHa0zm7rRTjxpndWeTXOmHdWXZON2pdJOdJ/oHHQLy4piRvp1ok/geFuKS4RkzRuF8bmBlRe6tAm1EqoZPjykHnIQRd4se0dPQ9obcelkAjHMDCNlsYDmy15Fglxac/4HhPBxQDwbOe/FmvhVKzWRq5V/UF1pzrfdCX0puE74xxOAjpOwwso21eO97oWJ0ZpPua7JQdYY10lYYRTd+9kXr9/GfH6sMiZOGSFe0g64r4EtiAjXw7AiyfZ8ZmjSVjYOWCK2OCX63S2GdfjwvkKVRELL+4sMXibFICaiXTFuze4pA/TWLeTI3WOiNKbpyEIoQ55NtQJr834m/Q/kiA==
+ b=XpxWdGAI/0GnWIRxTKIqUOr3tUSdqIAzX4PZ9U6Ul8sXs0dQRHvP576UMimFk3LpZTGBmls49D6794wGOOkmrlBjOxnbYpUliAUZ6JiNUqWBzKAYKGfLzBUhmfGAj+6JtoFDDj7kTLx8iZdivIxcpOspuPopL6q22ILSeDd/FKNCY5T9yLBaggn0fkDyUt0ivOuYvJXdpMPsyX5tlkMx5M6K7zPY2V9PRGS/SxJKFYiLS7dcorm9qqea4qHgFHqv3Qi7J2MlGg/I/2xc1s7TLzhLXmSCvtWXlF0TAtAGiYRdhSsHPHE0Qw9xHzBh/VaSQqIjfKwXm+zJdqt6y6kbgQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=u47rJJuamFlm8IdCq6WlcT3WzK0cy5q1YoAqAMdL1bQ=;
- b=fGSdaeONyYqobi/v2sdzZkcl5WUVos1FAebnsYyZwNwS4bbmzj+cCfpkfxNBGcaRdftJMG5/93f3cYJsRVfwwbhBG3NieHcYaViptsNNL171g4WVtJkKPezuqoKBFqtO6y/SZyofq987kseFnhdQmBTkabPxwlML44Tb+sOAfLF7GK7/Li1ew4rrPmJtCjGlV0EG6GjTqU+BxPwh6LVBgJQ3hyjhPuHq/U81BOC4wwPLPecwk0OL8vlW/lO+57TyCXcg4vfnFuv7O675LySU7XYd62UG2NocPf3hflZVfq5QgLSNY8YGWCxkGPOhgFykhUo4sNxtnDw0R5V78axwkw==
+ bh=MNnQdNZv+BbQn8xmmhojXzUhpJE70gYXDAb9tCPxQ0w=;
+ b=R6n6gthKTLyhn7WMXLzBQWWoPE/P/dbIzNjCewoFQwFqKtoOp03/BKb3HtTuWQYdkJqSEyGkPjt81EjRw4NwM8IaYf8iqLdVFexJKfQrk5UD2GzCLuYFE1LtG+pHVI64nLyULhHbduPVT3MS8jrDOvUmS0e6DmVb0fIh0YThIB211zQdKfzX6q4FzBtzuhx1juivZBwCgVCjz/z6Bf70pUolebC1lVyUFSos2xYm+MK/8Y4JQIW9lxQeFQi74Xc3x3zNBGxiSVEhZTxIljNjSeCULQyEEvB0/u25sJfCmRMkDwU7TkEuczfai4HCy9eQI7LKc0O6vMLZ8XLt5FrKdA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=starfivetech.com; dmarc=pass action=none
  header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=starfivetech.com;
 Received: from BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c211:18::12) by BJXPR01MB0712.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c211:18::14) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.42; Wed, 15 Apr
- 2026 09:27:03 +0000
+ (2406:e500:c211:18::12) by BJXPR01MB0583.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c211:16::12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.48; Wed, 15 Apr
+ 2026 09:27:05 +0000
 Received: from BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn
  ([fe80::e2de:92aa:4c1c:a829]) by
  BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn ([fe80::e2de:92aa:4c1c:a829%6])
- with mapi id 15.20.9769.046; Wed, 15 Apr 2026 09:27:03 +0000
+ with mapi id 15.20.9769.046; Wed, 15 Apr 2026 09:27:05 +0000
 From: Minda Chen <minda.chen@starfivetech.com>
 To: Frank <Frank.Sae@motor-comm.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -45,10 +46,12 @@ To: Frank <Frank.Sae@motor-comm.com>,
 	netdev@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
 	Minda Chen <minda.chen@starfivetech.com>
-Subject: [net-next v1 0/3] Add motorcomm 8531s set ds func and 8522 driver
-Date: Wed, 15 Apr 2026 17:26:51 +0800
-Message-Id: <20260415092654.64907-1-minda.chen@starfivetech.com>
+Subject: [net-next v1 3/3] net: phy: motorcomm: Add YT8522 100M RMII PHY support
+Date: Wed, 15 Apr 2026 17:26:54 +0800
+Message-Id: <20260415092654.64907-4-minda.chen@starfivetech.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20260415092654.64907-1-minda.chen@starfivetech.com>
+References: <20260415092654.64907-1-minda.chen@starfivetech.com>
 Content-Type: text/plain
 X-ClientProxiedBy: SH0PR01CA0007.CHNPR01.prod.partner.outlook.cn
  (2406:e500:c311:5::19) To BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn
@@ -60,83 +63,161 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BJXPR01MB0855:EE_|BJXPR01MB0712:EE_
-X-MS-Office365-Filtering-Correlation-Id: c025a0c2-f70e-45d9-ab59-08de9ad12708
+X-MS-TrafficTypeDiagnostic: BJXPR01MB0855:EE_|BJXPR01MB0583:EE_
+X-MS-Office365-Filtering-Correlation-Id: f25c74df-1302-4f2b-ea2f-08de9ad128a1
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam:
- BCL:0;ARA:13230040|52116014|376014|366016|1800799024|56012099003|18002099003|38350700014;
+ BCL:0;ARA:13230040|366016|52116014|1800799024|376014|38350700014|56012099003|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
- Zutzjhx8D/N5+7BHdg2AEq5aV3ubbK0Oi55b0Jhqx0PZ/FXtIAJse488t/V1QVNVtx8szQ1ZkqD+5LC6jOwQU35CzOjOHP3nIfg143hsH79trwrwKYcG07tlneJZmAzIOvPIRpsEu5aNQLnRAavqlDE+YHZJlOlCFf/DkFqA3u5mCiHDCJLMFinL42spNP4ajqRpUPN28YIwreTiu36hHBxt2Jfhjg6Gogh6IjSAkUMCsn2cyQjiQgI5vWdTz/rmZe4xxekAEnhqyqeruywa47htnrwtNNOWXblX1dxsons7FTmfV2G13czzUAbzc9p5lqR8lZuob4i3WfKJL0shiKq8FUBCYJhPbJGUAITOkWMeg1I2WmLnnBzHP0AUYWJLYaMB+sozDWaxaf0keLhalPtFrEdiXtDgo42AHiiByqwskjq9I+tyjaUm1jRL/NjgCMS0SBaM6OomC5f9KEP3vTK/sSxQJKVPr7yVmJBvg4h2Vzsbl6KTd25L3ZixEYWSb3ZKsIZzDCD7qh26knNlg3oThuNa7NBgzgo7SAU8XalM80Yv9riB2JHA9kMe/y4tYEyrednSOhntx6RtHjTD+Q==
+ 1mD5/Ht2KhdquRZp0SeuuTRut7i+bTz1YGTrG+4uR5tCOmMiyvSVkyVB2T7ry9I6EX3xUWEQQWpRX3ZnoGx8sflYIh/98CF3Fu7BlADWSxFOQi1uFVPVyVQGBAUS1L1INbn0KkAqK+WW+II3pgH9IgyNRbfZ/nd7Jnki1DqlO5+HtUNpUFNNuW6xPFGNt8XPWunCtvQV35GG8of9bJMvMTqEOuXYeQrq6EvyBq4VsOCLKqhPWz2QjsUvxNZ6u9VQVwOFcvWL4kjPP4ywoaqIWdEkc0QL6u5KzX9Dz6eZtv83Sh3gv4prbymryTPSY1MbrJ/nhWTzsHqinhu6BLA9GDWI8evAfBWL5ivPtxeQEb7lg7PpHAw3zNVyLFP17a9OlVG4eaiaUK+hgXXS+CEVzO5bd1Zfh0KrUWrEbH8aD49bWohE3p/eO1cpbD+Q5TqjNjc7mxoYE2wuXjbDzwLy9jgmfYht5T5FHjYI1+4pS7EIFAz60xcoHz+Umccs7m6ijFZILKw7whlLjIbfHiY5zIh4tLQMXnpXHrCzmOjsk8KJ6sqrJBKR79CbVQrhZfXfUicWNk2f3HnXa5OMIwJkqw==
 X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(366016)(1800799024)(56012099003)(18002099003)(38350700014);DIR:OUT;SFP:1102;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(1800799024)(376014)(38350700014)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?2+5AYtBNkiaftlV60UdBKDEfunGfVdEjnAL1eKZwQrO1823z7KEsLNqahTIM?=
- =?us-ascii?Q?RfvffpuAo7J0Vk+GcTQ7YhgF+YnkxrZivD681NoRtKKeMWtMuqj5MV6lMA8m?=
- =?us-ascii?Q?nN7BGy+CX4tLrkEvUkoKVsIBQDaNVYJfwvMtp1zdOFw8bDRFwiSJg3MupjPp?=
- =?us-ascii?Q?hxSLpyReGbdxkTrUOeMeyPg0DC4NKJpEl0TGgYV0/2j1LyX6cU4SZjEX0UdJ?=
- =?us-ascii?Q?g1x4coRrBNvo65spvmk9t+d49owF43pwrVFrr3dLUT2Vp2rY1tZ7xMDNBpK7?=
- =?us-ascii?Q?lNoSRWuqaLqWEOGxFfO1x1kqUHemGK2x/ZMPZO5UEq0NIj1UW2Dt+Xa3tnoR?=
- =?us-ascii?Q?DGHNqmdlWnFM+rtJG3qKfeY+yrbwnHJH3HSQYvbueYzeutTOVFwpZwIdvVoo?=
- =?us-ascii?Q?vDxIvulJ63FhikAz0Yos81z0uRgWNO34IptmD1X9VnU4o1UxmLBHdw1KTUW4?=
- =?us-ascii?Q?Em4NhJ/J2ojEP+1KL72LzbgQT0XfeIxCr6SjLTNW8quxQj5oUt6ixoXHcXz3?=
- =?us-ascii?Q?1LX6gEZDtRSW5EcUaXTe/2Od1WnW66CiOyAsf0ZlUZ045Rw9zA/UnD4cecXp?=
- =?us-ascii?Q?DMR9tvrNx964LqtGYiHEPqS7cJlrgXL/ubID9XnPvq6ESDEl59+Y1xOF0VP3?=
- =?us-ascii?Q?Xd1eNBnwOVS2i8NH0wu3a/tPPQ7nJp593MOyLE1S4fC5iQPMRxT/lwmJzhIm?=
- =?us-ascii?Q?UAu34WsUFo/CfYz7ZMp11/CxvEfSf63tl+UyNXC9MWI+dSOIwimZDt+4MLvS?=
- =?us-ascii?Q?XA7VjhyUOfAMemg9En1SMMm2Pzf8+DdCKVhBajgkFRaAXMNA2g+OsubjHF7B?=
- =?us-ascii?Q?uzShYWpR3q0vBky3oo3ofR2l51McqwemZeHvFseCfOIIgdXKtjGJcAPbcnXo?=
- =?us-ascii?Q?6jWACEz+Fq10LfSDiYKT2EyoEKn4ujoquRHmYWpKOrtchsmpkJpyn1dY5ILQ?=
- =?us-ascii?Q?v8PG26HXmdmA/Vks0es0NGFGRN26oiDXQlMPRxkai7PMTMtFD+34jpE0cvDF?=
- =?us-ascii?Q?H/R4zTU+6DNiqstqHk/kfqjc/1Nr18mpDzeTPniZY27FGevSTj6X3P7RwTOu?=
- =?us-ascii?Q?xLTISQs1FAvJe7ewFKLGhLtCzLRYWW5Iz4J/HVOm1B4YVLS/wII6dPlo5wTX?=
- =?us-ascii?Q?5OUZuR20Pc+GYgdO0XKfQsI0XkgMJgmes86A6U76uKYHH0Jn6HpUDfQbBO2/?=
- =?us-ascii?Q?Xq6iQ25YdQypC7mE6Tq4k16A/Z6GO0iQyltwXag5sfYAkkGqubBhqzrpBbDM?=
- =?us-ascii?Q?meOOyvicjWUBRhPqRTD75QBlIF5R9Y7DM1xUS9ayywgNg6+3ti7qoDRlG8U0?=
- =?us-ascii?Q?o3VZDCbBV2kynjXtOaD1SXYNf9lJfzWj36GJSsQbHxZqLhWaUGsR4zTOd6B+?=
- =?us-ascii?Q?dl2P411GeTgBjZddGjFXzRKzwm5evl2VloCLgei1bm7xNZmw52gJfHHr81Ca?=
- =?us-ascii?Q?OOVMF14R/AjVCQauA96VFB9Gssi4Z5dN6T2mppkeVN8PCzMaivynkV4iFcgp?=
- =?us-ascii?Q?zGi9qoyUeVNzRgvsrsjCXXkhpr9RhinenKkMWowSuTbxEW03wQixGk5apM1E?=
- =?us-ascii?Q?/ujEaOWPKM/Z2xauWdbHaaoEeZmXjhRVvzRq9yvtPrACh58yDRziISydRI5R?=
- =?us-ascii?Q?Hl/hLti2VuHIs2kogaoMJz4lKHldvVFBThnLw8RThr0Sb8ecBuoJb1hv6BOD?=
- =?us-ascii?Q?MXOz5bBFEma2XrmwlYg9O5vgkRrVvAPr9ynIHXWY8nwNbg+KmA4sTjtW+tiO?=
- =?us-ascii?Q?RyqVYHWJYpNpvZhyF3TOYP5Z9sCXIk4=3D?=
+ =?us-ascii?Q?c3gbAcqo0DLHdEXg+sxzRDnlK0G9Yc1vKYGMLfwU2Lj4BuZ2anEUB9MWfzIr?=
+ =?us-ascii?Q?eHM9upUB0c5uMRbMg7NrOzsFDlw5bObRaccdtky3bwPUIVHuN1KOE5BXYmxs?=
+ =?us-ascii?Q?y7oLS8Dp3GGp1mZfYFGndktvqZliCzefe9AGUkbdX7lMj09PXT0gZ9CmfG8E?=
+ =?us-ascii?Q?7CJMiaDai5OayCHPZbjfFGnmYv57wFHEtvj4UbAYIzp6WJEV05aXAUHjwbz5?=
+ =?us-ascii?Q?t/m/NZPhAYPuPxiis7d1UXU5XJqtQ4VPZyjLbwIMLNSttOrTXiYofax4F6X+?=
+ =?us-ascii?Q?Xq3JpJTx+FVcPeIIsvpkUEV1YhG1AvLMmuT0OGdVi85vxXoJ/UzfEBsrC1Em?=
+ =?us-ascii?Q?uh0J2QWcsqVzFyo8zE6AaMxoN8H2pXr++dUlIq6CHXc3zE5BCzp1Pn9zlagG?=
+ =?us-ascii?Q?CDxdRgnFAlVY57ooxY6YG41gjmWQWpYKA8jqPkae9SQq3Q8sTIbNN3oUXR70?=
+ =?us-ascii?Q?31VQ13T4uLezO0DNavqNIe9g9iqSQfJKPEHall4/tNwdFlR/rkbvsoCi1W5u?=
+ =?us-ascii?Q?oUBxBqcDWGL9i8OmFFbYxjwc34b4CE4Yc4IZI0sWunwvE+kFrP601lWFynnY?=
+ =?us-ascii?Q?QU+Oef00/fjrgBgqb+iqELrEEaKYBureJ9/AXuu9cAxcVykZy7O0Qp/76BwJ?=
+ =?us-ascii?Q?gjA+7GUd+QFfXJ9QH3xrYA8IJzknI86r1kBcn3NZeAMwewmbNEn77USOB8Es?=
+ =?us-ascii?Q?GmXJ3mN23vw1PNTutHaDJ5sGMMxrvKxgICtJlk9LggaqpSjpdqytxgCMgAZE?=
+ =?us-ascii?Q?2I3meTNjBiil0Sj3JNOrJmNnfEa9WUvMnokX3RwkuPvGwWG2Tkxk0ChFd0oo?=
+ =?us-ascii?Q?6KoviVXNsFhTp4+U+wkyd19Qi11F9eYjU9it1A48GUcj3+dlZVr5O9TXjVkF?=
+ =?us-ascii?Q?HBN2eZ/7Oz/IR/lQ/TIX9miyn311yJZKRYwf1mDcueHR8Ha/bo4qfg8bIHTj?=
+ =?us-ascii?Q?3RJmf8Kx0MrF2orIdTlTjc4a9n6bamOs7c+JFJN3EEU/logIPPTtJwBWxUte?=
+ =?us-ascii?Q?h6qW+DLqGNjMEZ1TZurW3K1xhO/4+PX0W2bOsj0X8fI1Aj36wJnGSD2GlSOn?=
+ =?us-ascii?Q?ONxSc0AiweX6T+2rBc6zJ2YUImj3hdKbiCA2AIvxehuf6Z55cLyMsXohHOzn?=
+ =?us-ascii?Q?JVDFLAffM/rM/v35P9o9vxibbf235KAm+1cvLPDLQQtS/w0GWPxvh0yq4Kx7?=
+ =?us-ascii?Q?yg7FkAeyTR4uwU//5lVELwDwjnDxkqJ/UMjOW5HCTV06n056FgejEXSBykdE?=
+ =?us-ascii?Q?NoYRnCwJWHnkG9ET059rVC03j7nUyH3USadOhG7Wz00sKidWt/eJugPFIYkl?=
+ =?us-ascii?Q?BhGVVAnswJYfwEqSjDhz9G3OBwJ3WMQjAmLZKyIcxoqLFva1s57MVnZSVRks?=
+ =?us-ascii?Q?skPIPVdjiJzK2l1F7UXGVFP8ZrxDPwimEaWymWsOvMz69YMkI7/QQiuDMOFP?=
+ =?us-ascii?Q?inxYuojAcp6YZlcKr5PYRUWRKdtfcDpCNBGciMezpE/hLaXyRvQyt/no+hf1?=
+ =?us-ascii?Q?L3AP+/IPJLpMZcE9xTqC6NoH50yuh2lK4rqaYSVMpjbw/Dkhxu4kzBgkSDZK?=
+ =?us-ascii?Q?plRtl/pJ1ylQ4w9KZQw5n+QhbBg3qWf5g27zAj4FJc95DfEAjUVCAXJw+0oY?=
+ =?us-ascii?Q?tm6Bc0ouj4/FE8cxsqtvctOQgkFwQkKpo3+JlB7lOJHI/Owm/YVrjFFkHiEz?=
+ =?us-ascii?Q?aB/jWolCkQ86/i8lem3wVtjFtFb5/vi9UpdXM6PgBCrX08Ixp+zEwp+dL54b?=
+ =?us-ascii?Q?9RhfMpR6slQnlop7EYP+palJGd+pwC8=3D?=
 X-OriginatorOrg: starfivetech.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c025a0c2-f70e-45d9-ab59-08de9ad12708
+X-MS-Exchange-CrossTenant-Network-Message-Id: f25c74df-1302-4f2b-ea2f-08de9ad128a1
 X-MS-Exchange-CrossTenant-AuthSource: BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Apr 2026 09:27:02.8745
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Apr 2026 09:27:05.4928
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yZuTu2ngXl1cnYsOaGsWJACefT+CDGBFYsanQeKkn18xJCadCt+AYe3ucAV0u/YkmYJE3IFHm7I9S98wGbDnjQE5YrLl16h3hc2mhv1wRwo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BJXPR01MB0712
+X-MS-Exchange-CrossTenant-UserPrincipalName: U6sn1Ehrxk/l/1AT/uakQz+1mqGi23iCCb+gZKgZWCz0wQfbDA3cf8/i9iGMxt+Anc8vYejG+fe7fRXENKeArp3Tq07Nt6C70s3N8sw7edU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BJXPR01MB0583
 
-This patch is for Starfive JHB100 EVB board. JHB100  contain
-1 RGMII/RMII and 1 RMII synopsys GMAC cores. In the EVB board, RGMII
-interface connect with YT8531s Ethernet PHY. RMII interface connect
-with YT8522 ethernet PHY. So patch 1-2 is for RGMII interface
-patch 3 is RMII is for RMII interface.
+Add YT8522 100M RMII ethernet PHY base driver support, including
+PHY ID and base config init function.
 
-JHB100 is a Starfive new RISC-V SoC for datacenter BMC (BaseBoard
-Managent Controller). Similar with Aspeed 27x0.
+Signed-off-by: Minda Chen <minda.chen@starfivetech.com>
+---
+ drivers/net/phy/motorcomm.c | 49 ++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 48 insertions(+), 1 deletion(-)
 
-The JHB100 minimal system upstream is in progress:
-https://patchwork.kernel.org/project/linux-riscv/cover/20260403054945.467700-1-changhuang.liang@starfivetech.com/
-
-The patch base in V7.0-rc5
-
-Minda Chen (3):
-  net: phy: motorcomm: Add yt8531_set_ds() mdio_locked bool parameter
-  net: motorcomm: phy: set drive strength in 8531s RGMII case
-  net: phy: motorcomm: Add YT8522 100M RMII PHY support
-
- drivers/net/phy/motorcomm.c | 105 ++++++++++++++++++++++++++++++------
- 1 file changed, 88 insertions(+), 17 deletions(-)
-
-
-base-commit: c369299895a591d96745d6492d4888259b004a9e
+diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
+index f3129419f7c9..86396424b042 100644
+--- a/drivers/net/phy/motorcomm.c
++++ b/drivers/net/phy/motorcomm.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0+
+ /*
+- * Motorcomm 8511/8521/8531/8531S/8821 PHY driver.
++ * Motorcomm 8511/8521/8522/8531/8531S/8821 PHY driver.
+  *
+  * Author: Peter Geis <pgwipeout@gmail.com>
+  * Author: Frank <Frank.Sae@motor-comm.com>
+@@ -14,6 +14,7 @@
+ 
+ #define PHY_ID_YT8511		0x0000010a
+ #define PHY_ID_YT8521		0x0000011a
++#define PHY_ID_YT8522		0x4f51e928
+ #define PHY_ID_YT8531		0x4f51e91b
+ #define PHY_ID_YT8531S		0x4f51e91a
+ #define PHY_ID_YT8821		0x4f51ea19
+@@ -227,6 +228,13 @@
+ #define YT8521_LED_100_ON_EN			BIT(5)
+ #define YT8521_LED_10_ON_EN			BIT(4)
+ 
++#define YT8522_EXTREG_SLEEP_CONTROL		0x2027
++#define YT8522_EN_SLEEP_SW			15
++
++#define YT8522_EXTENDED_COMBO_CTRL		0x4000
++#define YT8522_RXDV_SEL				BIT(4)
++#define YT8522_RMII_EN				BIT(1)
++
+ #define YTPHY_MISC_CONFIG_REG			0xA006
+ #define YTPHY_MCR_FIBER_SPEED_MASK		BIT(0)
+ #define YTPHY_MCR_FIBER_1000BX			(0x1 << 0)
+@@ -1857,6 +1865,36 @@ static int yt8531_config_init(struct phy_device *phydev)
+ 	return 0;
+ }
+ 
++static int yt8522_config_init(struct phy_device *phydev)
++{
++	struct device_node *node = phydev->mdio.dev.of_node;
++	int ret, val;
++
++	val = ytphy_read_ext_with_lock(phydev, YT8522_EXTENDED_COMBO_CTRL);
++	if (val < 0)
++		return val;
++
++	if (val & YT8522_RMII_EN) {
++		val |= YT8522_RXDV_SEL;
++		ret = ytphy_write_ext_with_lock(phydev,
++						YT8522_EXTENDED_COMBO_CTRL,
++						val);
++		if (ret < 0)
++			return ret;
++	}
++
++	if (of_property_read_bool(node, "motorcomm,auto-sleep-disabled")) {
++		/* disable auto sleep */
++		ret = ytphy_modify_ext_with_lock(phydev,
++						 YT8522_EXTREG_SLEEP_CONTROL,
++						 YT8522_EN_SLEEP_SW, 0);
++		if (ret < 0)
++			return ret;
++	}
++
++	return 0;
++}
++
+ /**
+  * yt8531_link_change_notify() - Adjust the tx clock direction according to
+  * the current speed and dts config.
+@@ -3066,6 +3104,14 @@ static struct phy_driver motorcomm_phy_drvs[] = {
+ 		.led_hw_control_set = yt8521_led_hw_control_set,
+ 		.led_hw_control_get = yt8521_led_hw_control_get,
+ 	},
++	{
++		PHY_ID_MATCH_EXACT(PHY_ID_YT8522),
++		.name		= "YT8522 100 Megabit Ethernet",
++		.config_aneg	= genphy_config_aneg,
++		.config_init	= yt8522_config_init,
++		.suspend	= genphy_suspend,
++		.resume		= genphy_resume,
++	},
+ 	{
+ 		PHY_ID_MATCH_EXACT(PHY_ID_YT8531),
+ 		.name		= "YT8531 Gigabit Ethernet",
+@@ -3126,6 +3172,7 @@ MODULE_LICENSE("GPL");
+ static const struct mdio_device_id __maybe_unused motorcomm_tbl[] = {
+ 	{ PHY_ID_MATCH_EXACT(PHY_ID_YT8511) },
+ 	{ PHY_ID_MATCH_EXACT(PHY_ID_YT8521) },
++	{ PHY_ID_MATCH_EXACT(PHY_ID_YT8522) },
+ 	{ PHY_ID_MATCH_EXACT(PHY_ID_YT8531) },
+ 	{ PHY_ID_MATCH_EXACT(PHY_ID_YT8531S) },
+ 	{ PHY_ID_MATCH_EXACT(PHY_ID_YT8821) },
 -- 
 2.17.1
 
