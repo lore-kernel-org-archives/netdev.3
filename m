@@ -1,143 +1,145 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2111.outbound.protection.partner.outlook.cn [139.219.17.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3100C346FAB
-	for <netdev@vger.kernel.org>; Wed, 15 Apr 2026 10:42:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776249754; cv=none; b=jmkoRiCHIE6eX6oN9SbKy2TVdmkKk8Y9wmZLeZuTeq/ltUZbF5lkwdHaZguL1IJYGbryyLLeno3CtTvqdFFAYOQsyxDXAPAqPrIrlpN7xTU1fH54h+bL16FxtmruQq84iwOuhuWeyxXUZMQ6/4sreage8BjdotmBTAJwqrVdJvo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776249754; c=relaxed/simple;
-	bh=Z8ZM7RZK8ybTCU1uHBOlcPD8CQy1Evp7Q8nKaT8TGXk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MiYW4rMmrYRrg8lJ/e+d1+EiJYCRLtuXQS22lFf27nqpJW6U3FOU7mIa1HT494yykwLtF1rHLSJmksUEAMOQlg+1Rp+1pv4Vw+RlB+xck69WG9+gUmaEfpzWCZx7ifFOFyD69SBo5cFrBsuHkjW5CyYRfh/yUlxOLMNA7yHPMks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Lnsnk7QF; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=tIxeoYOU; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Lnsnk7QF";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="tIxeoYOU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1776249752;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=S5Es++6jZY8aKLtLSfo9uIdq7eeB6041SLW/QpiJsjA=;
-	b=Lnsnk7QFBGhRQXgCG+fyIZw3Xt1yf7rx4SDn3TB7M/15phOVXiMd3LoJ2JQ/6N4SbmK8qr
-	34WATitmCnTrBm4xv2JV069fIE2ebzHiWzarNLjo0Uzd2CREPEwIKgKJ+kHA9AS0o6VLry
-	ZjjAR+q61QV9HVkMRsPOR5li+0HyZvQ=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-687-J4dwooAWNC-NVJXMJO1Z1A-1; Wed, 15 Apr 2026 06:42:26 -0400
-X-MC-Unique: J4dwooAWNC-NVJXMJO1Z1A-1
-X-Mimecast-MFC-AGG-ID: J4dwooAWNC-NVJXMJO1Z1A_1776249745
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-43ea7a5da42so865938f8f.1
-        for <netdev@vger.kernel.org>; Wed, 15 Apr 2026 03:42:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1776249745; x=1776854545; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=S5Es++6jZY8aKLtLSfo9uIdq7eeB6041SLW/QpiJsjA=;
-        b=tIxeoYOUhjh5hS2B/6UiVEHcrrTiTSWMcsLl7mu3qH9NM+UnaWS2E7H88n0qi0c7Aj
-         nJi37mXKvWlFFkwKeyPGiRFDDWoLtuj27h9JILICuwzrWANZch+6uz4VzIkbiu3iOgTS
-         FskOI+nZ/vPdJMqT1rdPk0J+exy2uqJsM4qxvJkwRQqPBBzqI11RzDG+swjlW4sj4GSA
-         dEPuP9DiAD1sUvk01fQ8ZvQWUS41UbhGgAMn2Kds4HNyHoKCyNtTR42QSx7QCgAr4iKI
-         h2ObSRAfd+3UZa+KjSSrgAH78WrLrkvGHsCZquOjmtsGalBOg7lT8cssSD3+z4saGd+s
-         okIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776249745; x=1776854545;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=S5Es++6jZY8aKLtLSfo9uIdq7eeB6041SLW/QpiJsjA=;
-        b=iV/QGI80adZ3E2ZzTnFm7j8w3vjrcKow3KO8o80LB7kS/IwHGsx4Vrfu/PB3hBD72T
-         jQ2NzeSeOUtARYEaoSL41l7lY+GKCmelsUYTbq+zBPCWQrXKXMUswzMO3X+p05qTl/1O
-         rwTUCExMvlxjZWCYN/Kdxp/M8JQxpkM3Ll6EyVlHK84kL5eJCFDuxuiMt5pJuDlB/Z61
-         Y0gplPVlfx3qTM6gcTfxF+O/RU/b1uDfgW+hfjqJONPllan0e9VifpdIYcnHe1QAvvdw
-         HV8qhCpUXoYNoCjfB5P+AdGA8ZODdsN/eujyTh09wsjDgznFSXanTNTQfF20v4cio1H4
-         VTMA==
-X-Forwarded-Encrypted: i=1; AFNElJ8NQQiEJYmXJheEtVfah57qgEFtNMgHUkd2kcB3h2pPxr/ltw/l35mbqzmtrOu5dHgmZ/JfZE8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwwQa/mFWy8i3MHHrEPyY0G0LMWGSdCWuJVf3rfrOhNj6154Ofv
-	i2HQ1wiOFZrqTm2qdC62YOvKqgq6CtjjOc7TfsR3GLT1KFFy9yLz43q45NwZqQ6uX8knT+L6LkV
-	a1qal6OS/cdHT0zB7k7zqGDbqIMDYUD04/dfPqA7r5sp8P4D1gxJA3X5afA==
-X-Gm-Gg: AeBDiev5v3afulJvJ7HmeIJKKShYxj1K2cuz98iIWvIumY3ekl0t5GfIlBIPGtVnn69
-	Y7EeyCOmMYC2+fbpIYXbJDCvDLvCEaBMJD4DbjQZZfE55Jmf2aQNRbE/THHUyEAUclQkXJATpDw
-	tf5Tx5ztfFAYtInFgngTDtLiMO9f/6lI4XJ+YeVzUqio+tLToxwoBfb6LtLc1fEA5VPDrVpaH1f
-	Es5jYQDFZDxGY3RKQpo0W2yW29+e+AvWiZ4WIbSOh4aicnei3o/flciwi1oVIpA+IP29rYwibDv
-	fPha213vUJQjJ57OruwX6PSAafHGo2MbtD/ejAZUFzd7kLIHOtCkEl1aIxmXub+L2u+2SAy98kA
-	CO7h6QCQEXo0WTAwE5dx8ORi0WoRH9/robahdwPPBPf07IP2VAe8w+saUJsbVqzcffjXaFKuLHh
-	iXcio/HQ==
-X-Received: by 2002:a05:600c:34cd:b0:487:575:5e1 with SMTP id 5b1f17b1804b1-488d68c2cb4mr269862015e9.24.1776249744835;
-        Wed, 15 Apr 2026 03:42:24 -0700 (PDT)
-X-Received: by 2002:a05:600c:34cd:b0:487:575:5e1 with SMTP id 5b1f17b1804b1-488d68c2cb4mr269861615e9.24.1776249744366;
-        Wed, 15 Apr 2026 03:42:24 -0700 (PDT)
-Received: from sgarzare-redhat (host-87-16-204-83.retail.telecomitalia.it. [87.16.204.83])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43ead3d5fd6sm4397440f8f.24.2026.04.15.03.42.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Apr 2026 03:42:23 -0700 (PDT)
-Date: Wed, 15 Apr 2026 12:42:16 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Michal Luczaj <mhal@rbox.co>
-Cc: Norbert Szetei <norbert@doyensec.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	virtualization@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 net] vsock: fix buffer size clamping order
-Message-ID: <ad9q6r6ZBHIH7k4f@sgarzare-redhat>
-References: <180118C5-8BCF-4A63-A305-4EE53A34AB9C@doyensec.com>
- <e965ff22-37b2-406d-b885-e2736e84c0f3@rbox.co>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380B8332906;
+	Wed, 15 Apr 2026 10:59:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.111
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776250766; cv=fail; b=rh09oelrHLlyklM+azN2EzhIjt6/MZ5C/V9/TMJjXWkx0BmrQEWRsW9fHPvAnPJvGThlrlppB4FNYU34BjgZ5Lkdz28Kpzhirt1Ohwd5ETh8JqlPgV58AFfTLzcl0YI1N4VyoKP22zlrKaDx2O1QaJ5RoncLq3oewRXFOdktthk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776250766; c=relaxed/simple;
+	bh=I630mwmQRw+jz5/IdyyA+bthpejTyh59tAsYQUWg8dY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=laiMC6AdZwoPvITa7ICajnT3BF9l6daINQZGZrLGkWiFD3nd0Vae7UZYlYfXOPtjC8OySTHzMgTMB4eyNUXT5naWa4uzb2gL2PYsIYf5GSGuD4OeyWxM79hFMKHnxE/xm1RPuiPIMPdeDY8JIPfL11W7e5G2NlTwmQfu/E7R+NE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.17.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=MBzof3rXvVZnv3rWP8Ou1xX5xSKYDDlEWHRJNM/PtLn12kkvW3rYv4jYzhIArHfi24wZd8uzfXXwPDgudTQOYM+mWj4MA2KGQIlH2Ev8iCOpSnYX2JW8II13FvIzE1HoeQYiB+mGS8nC4bOUPooyAV4UExSfe9+kroT1BOGyzraxUkmT6qui2+hZmSJNttlllRkvmZMEyJ7N2/sNT0v/sbEXiyg/e+Mgs3caEO2ERuHUhmKAx4GtpmiMeWa2sD1g8sfTC8Eo1bqCdHkkm3U9NNXbFgS6qyBSSSD+YRvHe+fSeleiorQzOQEackUCHxKhq7AIRNj66IeENx87v76uRg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UfxgmE1CfmPuGqOvG/ZAmhwhtvrIHaSECC86hptxXRM=;
+ b=J/+8JPywFMv3cy0qE6uS37oqs1FR/ZKzaCDL8FDQgQgCwmq5eipHNjQyNXmH0N+j9H6QriEOAa2OPHyZrLGfi6VeIYKe1Pxt1vm1Gm3BCjXeU1f7f4L0ob40XLlywZvKNakhPuskTiPk6aJKc0lq9vIxk3hL1jB/uva72Cg7T/P1+zQOlqwJL818lDSAfVLm+bwfAKbFp2hwrDJrXK7YU2trz8UkplzNjYbJmTc6wuTP42hKYsU/gdux7InmHLWg0NSxUuCmYuJrzpP5k1oNzLG/VnTycbQAfITJODvJhH/+t5GIwt+k7aTAFoAF5O31PybbM3yS9IBFx7xHeSMxyg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=starfivetech.com; dmarc=pass action=none
+ header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=starfivetech.com;
+Received: from BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c211:18::12) by BJXPR01MB0712.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c211:18::14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.42; Wed, 15 Apr
+ 2026 09:27:04 +0000
+Received: from BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn
+ ([fe80::e2de:92aa:4c1c:a829]) by
+ BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn ([fe80::e2de:92aa:4c1c:a829%6])
+ with mapi id 15.20.9769.046; Wed, 15 Apr 2026 09:27:04 +0000
+From: Minda Chen <minda.chen@starfivetech.com>
+To: Frank <Frank.Sae@motor-comm.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Minda Chen <minda.chen@starfivetech.com>
+Subject: [net-next v1 2/3] net: motorcomm: phy: set drive strength in 8531s RGMII case
+Date: Wed, 15 Apr 2026 17:26:53 +0800
+Message-Id: <20260415092654.64907-3-minda.chen@starfivetech.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20260415092654.64907-1-minda.chen@starfivetech.com>
+References: <20260415092654.64907-1-minda.chen@starfivetech.com>
+Content-Type: text/plain
+X-ClientProxiedBy: SH0PR01CA0007.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c311:5::19) To BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c211:18::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <e965ff22-37b2-406d-b885-e2736e84c0f3@rbox.co>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BJXPR01MB0855:EE_|BJXPR01MB0712:EE_
+X-MS-Office365-Filtering-Correlation-Id: c36e9388-25a5-402e-6e1b-08de9ad12823
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|52116014|376014|366016|1800799024|56012099003|18002099003|22082099003|38350700014;
+X-Microsoft-Antispam-Message-Info:
+ Lzp+stKst23ojN9hx/YMRFvrth7NcASeoDUqvUTBtEa0NgnV2bJgJrl7tT0KIN0PUEijNG4NvJcgIUQ7nVIBBKtOjUVnq7TVCS2hwdqNE57kAOCj7jxlm2ptka2/XbM+c9IwBMohtUlwOgTT6tAs/Ij9ne3VezJenq5lX/sROAwZ43GvZYpU19s+gIDJj+UXVVlk2iUCWZ1RmB2+mp+4UPVSn0gaA4na0TTzRKNO/i0yoKy9CFhZ9Yxc6flXWZdFtoyIM6g1RLhSVOua1qr/syn0B6daur5rI6i8u/nPz7SrNlUQYFDgtN6xhTy6PEHESC1bQ6HkW5+yo9EiZEmWCXjZac90mYL7M505T34CLHVTPYWoVnfm5ab1BZA38/JZtScrdFn5S3XD0YKA3W8lj0aYjm45untN61I/bYiKvERMdL+umbFurrrb/cRZucG7BfqJSuc3CZY19/SmCZjK3AjmvH9/rmWIni9atPT6Br+L7+llAOGhFABP+ORQHEugaScDHTLgxsKjlmy/7F/3j2WM/Krbf00QuuxNFvg7YSJ9zIbNSju2XscXCtCoZpYeKfDx0oORUxFEzwbIlkAckA==
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(366016)(1800799024)(56012099003)(18002099003)(22082099003)(38350700014);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?edlQ8OFE9h3Q5dj7SNJxrpmhaBRla3njYOwwWjfY8EbJrRGwoh5xC3HBvzcy?=
+ =?us-ascii?Q?tRWvSzFIVz5NN/NT/FiMBsGnUNwsFL+94wv9t8VpaEgKJj/crJLw/y1ID/w/?=
+ =?us-ascii?Q?pV8IaiqNBUBOUkRRiIJGKvRLpmv5uyPRKDFI6MNpmELdCDzYCtLdJjqPqx2R?=
+ =?us-ascii?Q?3i9JCEuNpi88W6hHiN328Gdu79Ie3WWuotQaWLmCklNfLb1cK5vmiv5jJlqz?=
+ =?us-ascii?Q?iXQkndN79T5eO+7aNyIOLvUvNUHqPJYNfx7TgE1cCJQS/l6O8T68cWAZfxzo?=
+ =?us-ascii?Q?9rqSdeb1A2p53kceVMUro1UMo3j8f94/vFM/1r7FwU4UIgQpFPEVa+P3FVGH?=
+ =?us-ascii?Q?1Pjiyckp6hZlKds5UK09CvmlP8BtReAhDzcvqJkWbFrl5FUKkFBsT52eIgbt?=
+ =?us-ascii?Q?ZIRSi1WWDH6Q9h3nncXaID8rdK8p9fdFB7gVh5ACKt7Sr7w+Zt5FJJEJ0Shi?=
+ =?us-ascii?Q?oz5XNm3fCIARO5s+7MRIugoSUd7jWCI4fx5eL3TrbzXYREyB82OHxuqBtOET?=
+ =?us-ascii?Q?yIpKCDzR3YjFox6Bxd3u6kzB7H21xCf1n7OaYIBp4+xZ5Pgfjnok//3POlc6?=
+ =?us-ascii?Q?+9+z8F0dKNXPvSb/iZsfdGcCzypqaXu3zT0KTTFNa5amG93KKYTcvpwGVQAF?=
+ =?us-ascii?Q?x+Xau1XW48Wbkv4h/P67eqgHOkc0lrByMBY8Gih3+7WErB8ajkigtI344uMT?=
+ =?us-ascii?Q?NSjhWnoIYfIuxZPN8WwPxYvCy0Lt1DddM7X1aIuq3kAJ79B+0Fsr38g8xF3d?=
+ =?us-ascii?Q?rbBbjma/ViiHDpMjX/CgqTwXP4gPpQaslN1mJ72EWmgt6AOvNdCAyq13hVVL?=
+ =?us-ascii?Q?lmdg441fTJ0d58M4DMqkJsDbUhWTlYHBlfhHER529oChc5D3i7Za9rgtMrKd?=
+ =?us-ascii?Q?u90BlLZ/kp/IUeOqiUEhRZfJp/Q032RanNW5EXwDbT4bck5ipPMn/HwWJye3?=
+ =?us-ascii?Q?+IrnAjlKihzlcy5eru3myut2rXsYNHuGVDhqzqohWWpu35PrrOEpbKigFJpn?=
+ =?us-ascii?Q?Pa2Mq1dN6jdEYfnp0h4i4E2ssoBpkqGiKvYA9gReA7Mvwd/dVI5VxXlruvDB?=
+ =?us-ascii?Q?UbN6Gl3mdLHtW7LaRX3XY9TUV9Z+Nt95s+FZYNrky0wm1ot+kzInQirWz0+o?=
+ =?us-ascii?Q?l8Zt1tA9RsCG8PNp1TfcyqOy744d35g2e9O1aDqYNhsjUVdIgjmNbFg9Bqsb?=
+ =?us-ascii?Q?O9IEGMphXvzwxP7nd+8SKZ6eLeyZbxCBeeC/eBD2aGsm9n5vhFwDTVImCy8b?=
+ =?us-ascii?Q?ou5N6HxEjMBoUH62fTNv3j30wAZbaj8ohJVCCX5Ten2dSYHbFiQ/N60ZMFpP?=
+ =?us-ascii?Q?fI6krpza0fVLJXydgmjlpssQtGK8gSDEgYJcFbuhtjEZn/jClasJFigb7jit?=
+ =?us-ascii?Q?/9N1PW2+0h73M3v7vELiqGvtCTVjaf89ZdyGfB2gbZ12oYoPaJDPw/VDfVWv?=
+ =?us-ascii?Q?ZF6X43WxW9mTRiISVDirpWduqLOf6IANXB+A3dPBh0UIecV3+L8zjwsqFjYv?=
+ =?us-ascii?Q?ET5taFshgL20tNSLv0xw+MLzdv0sofCxEr5Em6bqwW+M9NC7fg3g5zw4LEbN?=
+ =?us-ascii?Q?KINe4BrRTPv5Tz0aOnUpGmhcmB/as2OWHE+Zk+HIJm6uJ350Fa+/ccFoYtkp?=
+ =?us-ascii?Q?1vk9wdQIXq4mYiDBucKRoTQRmxrfmugqSa3yFRglhBKYKGKKYOJrJw4HLCvy?=
+ =?us-ascii?Q?16c9EkTmKSLYskaisDf7Y9oGeTbTLYoYKKMJBVZpIKqk6fE07ECQqzwkbysk?=
+ =?us-ascii?Q?nh6ISpuUQBdhrKLdePf+f1DuooGk6Uc=3D?=
+X-OriginatorOrg: starfivetech.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c36e9388-25a5-402e-6e1b-08de9ad12823
+X-MS-Exchange-CrossTenant-AuthSource: BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Apr 2026 09:27:04.6865
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: SA/kP0MKNy07iyZp+OASUhZli3fGHPeyIJdamWFhf8Y2otoKFNZtY2cvXNQqk1W/EMl8d68TxDHZC/hhqR7gx0kSBlZGlrwD52vTK2keSWk=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BJXPR01MB0712
 
-On Tue, Apr 14, 2026 at 04:22:04PM +0200, Michal Luczaj wrote:
->On 4/9/26 18:34, Norbert Szetei wrote:
->> In vsock_update_buffer_size(), the buffer size was being clamped to the
->> maximum first, and then to the minimum. If a user sets a minimum buffer
->> size larger than the maximum, the minimum check overrides the maximum
->> check, inverting the constraint.
->>
->> This breaks the intended socket memory boundaries by allowing the
->> vsk->buffer_size to grow beyond the configured vsk->buffer_max_size.
->>
->> Fix this by checking the minimum first, and then the maximum. This
->> ensures the buffer size never exceeds the buffer_max_size.
->
->Something may be missing. After adding another ioctl to your reproducer, I
->still see crashes.
->
->     SYSCHK(setsockopt(fd, AF_VSOCK, SO_VM_SOCKETS_BUFFER_MIN_SIZE, &min,
->                       sizeof(min)));
->+    SYSCHK(setsockopt(fd, AF_VSOCK, SO_VM_SOCKETS_BUFFER_MAX_SIZE, &min,
->+                      sizeof(min)));
-> }
->
->[*] Setting buffer_min_size to 0x400000000.
->[socket][0] sending...
->
->refcount_t: saturated; leaking memory.
->WARNING: lib/refcount.c:22 at refcount_warn_saturate+0x7d/0xb0, CPU#2:
->a.out/1478
->...
->refcount_t: underflow; use-after-free.
->WARNING: lib/refcount.c:28 at refcount_warn_saturate+0x50/0xb0, CPU#12:
->kworker/12:0/80
->Workqueue: vsock-loopback vsock_loopback_work
->...
->
+Set RXD and RX CLK pin drive strength while in 8531s RGMII
+case.
 
-yeah, I pointed out the same during the bug discussion 
-(https://lore.kernel.org/netdev/acuKUpZQq6z1DY_n@sgarzare-redhat/) and 
-suggested to add a sysctl or reuse net.core.wmem_max/rmem_max
-(https://lore.kernel.org/netdev/adYKERRYwzMIhZAl@sgarzare-redhat/)
+Signed-off-by: Minda Chen <minda.chen@starfivetech.com>
+---
+ drivers/net/phy/motorcomm.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Thanks,
-Stefano
+diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
+index 35aff1519b4b..f3129419f7c9 100644
+--- a/drivers/net/phy/motorcomm.c
++++ b/drivers/net/phy/motorcomm.c
+@@ -1714,6 +1714,11 @@ static int yt8521_config_init(struct phy_device *phydev)
+ 		if (ret < 0)
+ 			goto err_restore_page;
+ 	}
++
++	if (phydev->drv->phy_id == PHY_ID_YT8531S &&
++	    phydev->interface != PHY_INTERFACE_MODE_SGMII)
++		ret = yt8531_set_ds(phydev, true);
++
+ err_restore_page:
+ 	return phy_restore_page(phydev, old_page, ret);
+ }
+-- 
+2.17.1
 
