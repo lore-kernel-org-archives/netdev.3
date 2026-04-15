@@ -1,43 +1,63 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B699E34C989;
-	Wed, 15 Apr 2026 13:37:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16D6633F378;
+	Wed, 15 Apr 2026 13:38:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776260270; cv=none; b=j4X/iZd0kIV9fPG5U0CWLI28ylkfA9uq9sKg1WATwnLqcm32lk3dJsk4gqtShRSxhSJLe7PJXQyoBijtzlXG4EppAwrtVeM0mf+wKgl17+YS9igATtr7ttnAxdZQynSsrXmPmKefBEvZOw8ojG2zuBk3gAH6Tf1YpcF3ez8PJrg=
+	t=1776260303; cv=none; b=Td2AJpZulapfEaAB4tSqOZgh9UTvDD6zIHcphaDXtmuvIZcn6gxNbELbs4vuyNjaCDImKrJax/4LK/cUehFgJ4KUVjkaNQcfWZO+q94rPYu+ogp3wI/w7BAPt2NOhIfFzehpB2gspWc8ajtaXYWMfoZWs/VoQiVQjXUL39Hhcuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776260270; c=relaxed/simple;
-	bh=TTq1/2iu9U2NyPWRiYcRGwi7n925POt46l1FYsfSwXk=;
+	s=arc-20240116; t=1776260303; c=relaxed/simple;
+	bh=bZqt6vLbbY7wV9vBAY98g6ZXIP63PameKJz0SxWrAgE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HkZBCN9NMo94euX2pLfeZna4PLOZhDT6v5jfKiCK9yT+VhZyGnd+SbRMAEB2rh4rCtgzSXpaqzsLSbHj5WuyU86DeLOhIGevbMdWjlxU7qIKvK9GQ6PH+f6FB18j3WG2Bshm4apuit/6U99WYnOUmugXhCFusiFtr9kRhYf3xcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Qb6hDTY7; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=Lpxcgi81Ranpq8UfmwcGEtmN6bmSKjPRjcbpWTkPxRv6X6nVzeVpcbX0+rvvQJtAbiQaHy23tK3PbYAzcwlTs3wJF59zfempf8r+bG1wfqjwKX6iQT6/+31sZQTyglO+YCZgy5aVOnU4ZcpHuqCA2A5AmEUtBEx4KU+kHJijX7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CH2Yq5fs; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Qb6hDTY7"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=fZHq9OE8S/jsDBJ+ay5ON3v07vYuClAf4uEDhBAa/eM=; b=Qb6hDTY7Ix7r0HVhMKqmFMCjdq
-	GLfQWFboYV3OtFfwIssu2liZIF8anWX9Z4ZJTHNgKVPcPuJrx8o3qH8mqMGhb2emhBCcatTJKVB+H
-	ShzT3HWNfx9MJCnbhPICUaac17s8SxxiZwCmffB9H/ytXG/zebJs2H/InHYWi5cNxSNk=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wD0Qu-00GApB-Lr; Wed, 15 Apr 2026 15:37:32 +0200
-Date: Wed, 15 Apr 2026 15:37:32 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: "chunzhi.lin" <linchunzhi0@gmail.com>
-Cc: Frank.Sae@motor-comm.com, hkallweit1@gmail.com, linux@armlinux.org.uk,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, chunzhi.lin@sophgo.com
-Subject: Re: [PATCH net] net: phy: motorcomm: use device properties for
- firmware tuning
-Message-ID: <2c7a87b1-4ec6-4b4b-aec3-42f9e90bc133@lunn.ch>
-References: <20260415131452.3492671-1-linchunzhi0@gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CH2Yq5fs"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776260302; x=1807796302;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=bZqt6vLbbY7wV9vBAY98g6ZXIP63PameKJz0SxWrAgE=;
+  b=CH2Yq5fsUJgqAQPn8f85HRgtahDvOd267S7cyImXNI9EDQNciOdmcfBw
+   EkagcSnZDImaB77joJw66BlGb9srssHvDx9ckASd7CjCjI8NNwNjRSBtk
+   kVvC8wfIaGg4w3P8jvtgZVa/779JEltQYcAJ4cTTil4z00CGHM7TrEjPD
+   hMuXoONiYZny4XnROK6Z7XyzND7FpK7ksL1+7cwMl6u0Tk7hJkbJXnMpr
+   EessYY7i14GyB9WxF1AJ/S56qojdABpONU+gmAJKyTQnpSCqKfqfRDBEQ
+   LH0c3ifTRteRVugb4XTfuArTkRw9i3rDgiSk6VURFy212y7mHakaFRvvb
+   Q==;
+X-CSE-ConnectionGUID: Hh/xPqGRS/iEPQyfvchGIg==
+X-CSE-MsgGUID: yYuoigTnSpqQQHI1+xzU7A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11759"; a="88615723"
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
+   d="scan'208";a="88615723"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2026 06:38:22 -0700
+X-CSE-ConnectionGUID: rK1wKLmkSD+RjgV8lrGs2A==
+X-CSE-MsgGUID: /u+gW7pHSaqh7UMzNKJWwQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
+   d="scan'208";a="235367890"
+Received: from igk-lkp-server01.igk.intel.com (HELO bdf09bfdbd5f) ([10.211.93.152])
+  by fmviesa005.fm.intel.com with ESMTP; 15 Apr 2026 06:38:20 -0700
+Received: from kbuild by bdf09bfdbd5f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wD0Rd-000000000kz-2PTm;
+	Wed, 15 Apr 2026 13:38:17 +0000
+Date: Wed, 15 Apr 2026 15:37:31 +0200
+From: kernel test robot <lkp@intel.com>
+To: Pavitra Jha <jhapavitra98@gmail.com>, pabeni@redhat.com
+Cc: oe-kbuild-all@lists.linux.dev, w@1wt.eu,
+	chandrashekar.devegowda@intel.com, linux-wwan@lists.linux.dev,
+	netdev@vger.kernel.org, stable@vger.kernel.org,
+	Pavitra Jha <jhapavitra98@gmail.com>
+Subject: Re: [PATCH v2] net: wwan: t7xx: validate port_count against message
+ length in t7xx_port_enum_msg_handler
+Message-ID: <202604151531.ClMVCCxv-lkp@intel.com>
+References: <20260414153201.1633720-1-jhapavitra98@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,39 +66,36 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260415131452.3492671-1-linchunzhi0@gmail.com>
+In-Reply-To: <20260414153201.1633720-1-jhapavitra98@gmail.com>
 
-On Wed, Apr 15, 2026 at 09:14:52PM +0800, chunzhi.lin wrote:
-> The Motorcomm PHY driver reads optional firmware properties via
-> of_property_read_*() from phydev->mdio.dev.of_node. This works for
-> Device Tree based systems, but causes ACPI platforms to ignore the same
-> properties when they are supplied through _DSD.
-> 
-> As a result, ACPI-described Motorcomm PHY devices fall back to default
-> settings instead of applying firmware-provided tuning such as
-> rx/tx internal delay, drive strength, clock output frequency, and
-> optional boolean controls like auto-sleep-disabled,
-> keep-pll-enabled, and tx clock inversion.
-> 
-> Switch these lookups to device_property_read_*() so the driver uses the
-> generic firmware node interface and can consume the same property names
-> from either Device Tree or ACPI.
-> 
-> This keeps the existing DT behavior unchanged while allowing ACPI
-> platforms to honor PHY configuration from firmware.
+Hi Pavitra,
 
-Please document the new ACPI binding in
-Documentation/firmware-guide/acpi/dsd and Cc: the ACPI list so they
-can review the binding, same as a DT binding would be reviewed.
+kernel test robot noticed the following build warnings:
 
-The Subject line is wrong. This patch is for net-next. Please read
+[auto build test WARNING on net/main]
+[also build test WARNING on net-next/main linus/master v7.0 next-20260415]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
+url:    https://github.com/intel-lab-lkp/linux/commits/Pavitra-Jha/net-wwan-t7xx-validate-port_count-against-message-length-in-t7xx_port_enum_msg_handler/20260415-014321
+base:   net/main
+patch link:    https://lore.kernel.org/r/20260414153201.1633720-1-jhapavitra98%40gmail.com
+patch subject: [PATCH v2] net: wwan: t7xx: validate port_count against message length in t7xx_port_enum_msg_handler
+config: x86_64-rhel-9.4 (https://download.01.org/0day-ci/archive/20260415/202604151531.ClMVCCxv-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260415/202604151531.ClMVCCxv-lkp@intel.com/reproduce)
 
-and since the merge window is open at the moment, you will need to
-wait two weeks before resubmitting.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202604151531.ClMVCCxv-lkp@intel.com/
 
-    Andrew
+All warnings (new ones prefixed by >>):
 
----
-pw-bot: cr
+>> Warning: drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c:127 function parameter 'msg_len' not described in 't7xx_port_enum_msg_handler'
+>> Warning: drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c:127 function parameter 'msg_len' not described in 't7xx_port_enum_msg_handler'
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
