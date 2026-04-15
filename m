@@ -1,191 +1,153 @@
-Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB952882DE
-	for <netdev@vger.kernel.org>; Wed, 15 Apr 2026 01:48:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED9F157487
+	for <netdev@vger.kernel.org>; Wed, 15 Apr 2026 02:12:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.43
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776217691; cv=pass; b=VZvgUmRZ9mujfDHpbD9iy5gm+J8SCPrhQQFEavmAfCx2tgurchl8UPTF9FbDocoUqHFedzFf0Yz0jwl437NcEJWCtKsZ7uyPRxJ65Y6ZAd0QBiUcuCbKSG/xGX1de+R7l2xgkbloj8Rg00N81dMW/bk62YdzZd0yqBOcqoUFnHo=
+	t=1776219170; cv=pass; b=a3qmY76e3E2VEgt/G6ZYCUE5k2x9PdsWlH7Z6a7P5njMe+o2RxJchNmfHHe8+IcIHEuM64fnigALsHCptrWSA5E709vPla00JXgCMBLFOwiBEshwEHhOBZPxE3VQJpH03/n2G5/154OGAQkebvO+fTUukgR6G7guwe7pNgJAE8Q=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776217691; c=relaxed/simple;
-	bh=0RbwgasN3GJughcy4kp4J1oBaADm4wlXCXi8OGgl3cg=;
+	s=arc-20240116; t=1776219170; c=relaxed/simple;
+	bh=aBV/+MFplyMX182F7OgLwYJLUvM+93jxAF1jhxn3A/M=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KkCXTXMc+bPABbRJSzvsTzrWnPYliNYaf+RsX/9O7UY1vwmsLGksGo7TQ0mRhPNDtGIbEwU/jDOWL7e9W7wG6lIwXg/xs0QRMzOs8Pdb/aSLtS1CIOeFpay0zTb2S7d8ERm1Fo8PlYVeJ6mX1M+cfbLboNtZdcNKNSK2EBRUQTY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XYukfGTh; arc=pass smtp.client-ip=74.125.224.50
+	 To:Cc:Content-Type; b=QlI3XsOAtr3v+uksyKdTahXysnY36p3eHmI2r6KJQ3Xyqsd17XcNvtakiLNaq6mJsl9YXvBo142DV4Ze6kbeszNG+cSWwwQNZxSEyq9bS537MDpH/O/8T+crVOv7gK0ARb3kqh49I2k8FwrMOtEP10i+RKMyJ0V6pBsHQQebYeU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SK/77lxp; arc=pass smtp.client-ip=209.85.128.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XYukfGTh"
-Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-6501d32b04bso5916998d50.2
-        for <netdev@vger.kernel.org>; Tue, 14 Apr 2026 18:48:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776217689; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SK/77lxp"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-488ab2db91aso96342635e9.3
+        for <netdev@vger.kernel.org>; Tue, 14 Apr 2026 19:12:48 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776219167; cv=none;
         d=google.com; s=arc-20240605;
-        b=cMRxoM3p18kZKsEbFgdv6j8bHSjdUTCK451EGiVUtgFPJfKdfeCdrp2+WXvf/XsR6A
-         gR4esOBbS8X0nyKYsmsnlewjYJX0BzehEZ0hHSYTrgGktNyOoIo14YEO08jrDYj471pt
-         ok6QXdZcFaX/NTBV2m7kpxb8EiDMQZjZAv3nu3WFxr9GtTHSzc+ShSeo3hyCsz2LL0rF
-         vcZt1QhkKdepQ3LfzJ6/Wh8r/k8Iq4SWUFUD77IafhFNGggtlQZ+SHmT3y9Q26kL0tMa
-         x+82hYbjc952F68r1ythmcJ12WCGhjBVcKcsmK26mX5S+lqlvgY5FS+1tIUhLu5Ya2d3
-         fHsQ==
+        b=WfgIw/kHPk6gczlQadUcoZ7WAzqnZqxMsscIx2sBPOHWWZULARSxgezP5tawKOWc7s
+         HZhV7P/tiX/bNf5LP4SJZx7i9ALt4Mk71IyjtqnQ9h0aUVBBN+HJ8UnpEYubAtL7VEq3
+         Tsbnc1CuqofLX41h7p6JHw4ESaMinxUweJnZGMOI8UjYO2nzPiP2NTxrBAnmLZZP0cY6
+         IrxBwKjRZC/OTSpkKRi/XI4+dXgK2mQaOiRlLP7xXTdoAqaCtt6REC8SBQv8r8h1QXBQ
+         heoyoSZZZ8mCjKL9fvcV1B67svNyg2VAFd+Quw3gAf/7rd0D450UExfcTIQKOI2Pqr2P
+         4SpA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=37f+UWexUmjb2nKwNdsKiYaV71EelvYBwijtZJ1ZH4I=;
-        fh=+YRh3ue77jEZxyb10eitAn+pjIQ6EBq7XnyT0l1KlRA=;
-        b=Zs4I5YphekIiICuVVX5CvSxtznSOdh5K6R2VnJbWAYUki/38kN+PfaTcys1BUcn5bL
-         CqzpJFE19XbAkb+nvKwHyTeWJADtBVj3EUV7GiWXeHO+QjdJGgh4D4lHSmBjqQ2efhyS
-         U5XdCPs540SKzhOOmynru9gqxJYJsQclGPwZ14elYxiPCHl2Zhf0bOB5FAU7abkZLalU
-         1iU6OjdALTo6/75zCf5RjqYwgRBc/6qPXBdBUbpmfvQ9LkymkjziaRsRQp5VCPQ0pzdR
-         CiOHcYeCvz9PJAMcKW1W7gKcX4opIjXQQ1oY0uHsHr0NqfnngNBI9YtvPYiuNsGtPq6c
-         T9+A==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=aBV/+MFplyMX182F7OgLwYJLUvM+93jxAF1jhxn3A/M=;
+        fh=WLLaJgo06f/sNHD5RIA5RiJmzp4baJTv6oQntwZw11U=;
+        b=ZLc+TZnUxz0yrQMgfcB7BgEt9rkA53Jj5moVsARRRsvTthpj3jjN77av13IUbZwtxU
+         f+dEuEvNm4AQXjT4T2BW9Z9gWBdgLFy5xe/bxlMoh7dJlfqWNMUajZtqa6feVC6bDzTW
+         rD3bDiLgqZ1HMwbkT60iPaYIySQ5BJ28ZcUkuO9mP5tPu8awSVN/uNMHjDl5AO5MlJo4
+         Uwcg3RTQ1pXMzti9oF5zbRejjBDGSnykRym5mzm0Gmh7p/1OMi9hLNHYIb+ibqSBI1s+
+         EAf50E/3UUyqY89LJKbtOY+9AP0wsClt0Ek8W+HImPgRcOH1jWaD2UeneCjBCmDJD2SI
+         l6EQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776217689; x=1776822489; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=37f+UWexUmjb2nKwNdsKiYaV71EelvYBwijtZJ1ZH4I=;
-        b=XYukfGThwNMgWkOboyuO7SNwewy4WFNubrYWynukiMbLFq5kwEVvRZJsIh8UwDDkYA
-         PUxvZpkb/Nn8DryCZrNkeBjuRzUTPHYh+upvTpYUzQQpt5rVJzUHMs/aiBsnwCPnMBKH
-         0PZXQt5JGO4v8OgAkx+evLc98iKJs+joylvJztSGfRJjJWI5vdOQ7pxlkHi36WZX+QZe
-         fILBGFiFvJDTQUoSVqpdO3O4oEK7f32mAMDIC/nyDYYbgnhJpaTiyUu/HRSylivE9Jjg
-         fKHdm6QhySsdIENyz2RAI+3EXbqKQk0EqSrzI491SpNQbhwqyiNpwf4FGQUeMULIFllO
-         jL1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776217689; x=1776822489;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1776219167; x=1776823967; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=37f+UWexUmjb2nKwNdsKiYaV71EelvYBwijtZJ1ZH4I=;
-        b=swCBvCWBV1o9wnbciGUknSey2dI+EGBPHXSxGRFBTMX45sry8ztY9pms7+DAO5LpMu
-         1LQWTE2ARtY1FW1Tju3fY5eO9FnuGdYWhBASDmBlYbh293mYsQI0zAbE8msaSOTMZhPE
-         PCjFrT8knMIl1f1eWdKdV6+/ghFnEUY2/yNKHPHh6Wh4ekvO2J4FiFePBoIMlRdy+KYW
-         GvNAwr39InkBnkLJoYQtylgMgomIMxOnEwXN8lYXQIBBNUv+SyZT92NMYk0HxO219vJC
-         c3apsdTlMsrzyuLMgyZsWoakEY+Kil514h4cm0RSA3uguywGBS1CK1GKLvYgRs3ehNvo
-         K12Q==
-X-Forwarded-Encrypted: i=1; AFNElJ+NIw//zv20erMp7iJyNK7h5gah2foqTswBcGIEJGdmhu7a2N86NPmalIxjLLP8KpQkyptHaME=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxaNF0Tujot0xuZiXOU5v6jrD7wh4fIfXHkpD/Mjl6DcvieuRmD
-	/tdIqv7zNuklyXwKhk8288UE+U4fVgPWz6GquLhXSOtR0qq65Dn7NofKHpGDUT1IkBhIdtU7ZcQ
-	Sf9ATBYYrAbc/c6tsTe7MnCAueAijatw=
-X-Gm-Gg: AeBDievF5fDigzk5IOiCkKUbmqE6CaeemLHyZhumVWk4DwWVmhOAElJMM8k+cg+Q37W
-	z9hqueqqijwQKb6Iw7jxGe6OtQl3fxaKAYPexJUbJ3gkDTFwFvAJ66O9spGRm3BBeRLu3+0j+KG
-	r/lX9ZyaycGEcQbxOh1hTTstQXRJzQTpRhBeu3Plv0/7DwGnfuaUSux5X+jeFq+mNN5HeK71Hj9
-	x64/0VXCBwEH+JKalWfqBU/vVJyp5gZuAlBu7h1pN3vPwKRSbP7f7U3aQiCs0FbwivBr3B2lus6
-	m2g74+3VNNqXxLdEGb7zGBvSmHbNjU0=
-X-Received: by 2002:a05:690e:c4e:b0:651:c203:4c47 with SMTP id
- 956f58d0204a3-651c203521emr12060568d50.35.1776217689415; Tue, 14 Apr 2026
- 18:48:09 -0700 (PDT)
+        bh=aBV/+MFplyMX182F7OgLwYJLUvM+93jxAF1jhxn3A/M=;
+        b=SK/77lxp651qEf449XSnw13Z63odiq4KBAc1f8wa6SyPOdP6SLF4F6IQSEUL4zbxBc
+         fRBDoyPpRDfvMeoWxLWNBwYsChOkIYjigwptukvTJKsYsb/OxWvH7dnIXWqnvd7r0WDv
+         Z2S16tW1+22gV9OUlob96QWgmb0xYwI6KXhZIaZ0q6jy1DorkMmBq6SSIesIjCF12FHc
+         PRkx/J20cholQpQWN8IgN07/oDiQDjLGVzibbhHe7jeLHb8ABxpIjxXHHJb4RqCCXqOx
+         gx02YLY8AkuRhNUHy6gi3+cFnB9KAfMD9diPIat5nSKIFlswPcoJYqmBqaRc82sOgpIT
+         Xnpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776219167; x=1776823967;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=aBV/+MFplyMX182F7OgLwYJLUvM+93jxAF1jhxn3A/M=;
+        b=nEmENCjYafxSxHyXTgNBxb8ZSsU3uJoN1OIPIyZnRhmFyRAfyXnNEmQf2ZoL19i/iY
+         202PLLrj5zuw+Ac5e6KT0vWBoOBVMoXAy8Zz1bLaohcpvHbD95a/OjfZFzays/M8EUj3
+         +YWxI4OqbktsGIju1WVoE5UZAJ5g3gOY8gYHHHQh9+aBIM0cCijM3MVrY9x+o9vf9GNZ
+         bTGh4I+4la6ljex5oFiJU5ChMgr8k19YFzXmfCPaocULP48gZHONSQG4WgrFN5UjZMdU
+         A8voItWW1GY/OLlWZkIuSUi7RAz+Et0sbyGi8bmRZcu5SUogTrodh19zjOQ3wic310W1
+         Uvag==
+X-Forwarded-Encrypted: i=1; AFNElJ93m770XcQc4iukF9cKxhmap/9TWWq9JIOivakorug3DToo6Zeg1MkGEPezbnZtWX2ld66tetY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyT4VXcPOsqQZD8TeZpcDzklUCIPDs33xtojlQxEe7NxZxIYjrL
+	qVJplMVeQX9L1r6EUz+X9/QlQ7YOl4LfxJKclF15KvgelZ4RkdOIsffa44Et/3BswUyB00RYjBs
+	bwASDdMHqnUNs+D6mO2Uro+KdkdjRTF0=
+X-Gm-Gg: AeBDieu28FVnn1HX0adwAXX/bs1znwb3Zsy4I+MSWOFJllo7juwI8eJAlV4olkIyLSR
+	3xH9D1GR6q6j0He0B/B+3RVoEg9PvMx53QJh2kOthK3RFtarYvq3WN1vou8QdaE/CAmgVbu2jta
+	EdGUVas0h7bQA98DRq2lsgKcZ44YtBYyZ0XanrouGw+l+1+2vHeCtJv11DxAlYmubAZlWOw2orv
+	AISx5fGW86vdG5C5Ss4/C/CkZmT/Hcrrm1tV5Pz2r09Vk71VqihSchtnswSWjm04CZaqEUQddoS
+	xbn52SeHPHOpKAtEcJ/VVz/MBWC9
+X-Received: by 2002:a05:600c:4f83:b0:488:7ff5:2c67 with SMTP id
+ 5b1f17b1804b1-488d67f0aa2mr242704755e9.12.1776219166427; Tue, 14 Apr 2026
+ 19:12:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260413112030.2694563-1-lgs201920130244@gmail.com> <5da15f31-e9af-4f8d-82fd-eac29a6d98f6@intel.com>
-In-Reply-To: <5da15f31-e9af-4f8d-82fd-eac29a6d98f6@intel.com>
-From: Guangshuo Li <lgs201920130244@gmail.com>
-Date: Wed, 15 Apr 2026 09:47:50 +0800
-X-Gm-Features: AQROBzCCUNU9uahs4IXfUesDYaPErWVj8Mz6N5ygwqO9C1cJWWLC0UM8TIXIpcE
-Message-ID: <CANUHTR8uNVWR48xs90s+MtGQ6J-1j5R0+64MKVGin0cf-FjRWA@mail.gmail.com>
-Subject: Re: [Intel-wired-lan] [PATCH v2] dpf: fix UAF and double free in
- idpf_plug_vport_aux_dev() error path
-To: Jacob Keller <jacob.e.keller@intel.com>
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>, 
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+References: <E1wBBaR-0000000GZHR-1dbM@rmk-PC.armlinux.org.uk>
+ <20260413110222.49fc3759@kernel.org> <ad06yiZZbLC9k3jY@shell.armlinux.org.uk>
+ <CAH5Ym4i7VV53hQGY3AjAUW3B8g_ffgmw69kPhPrk2CmcRbguuQ@mail.gmail.com>
+ <ad5LlXzeQ8j14Mjg@shell.armlinux.org.uk> <ad7nsUQvksJF7JFK@shell.armlinux.org.uk>
+In-Reply-To: <ad7nsUQvksJF7JFK@shell.armlinux.org.uk>
+From: Sam Edwards <cfsworks@gmail.com>
+Date: Tue, 14 Apr 2026 19:12:34 -0700
+X-Gm-Features: AQROBzCDcuqEllTQUrqo3wn50XlYGqYnBRK7Hkwk8UIZegBM5SM6IflWL3J01U4
+Message-ID: <CAH5Ym4jA8w9=UxMT4vKJpnXkuDHtkFtMcg4u2sy_0S+8wgy-9w@mail.gmail.com>
+Subject: Re: [PATCH net-next] net: stmmac: enable RPS and RBU interrupts
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
 	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Joshua Hay <joshua.a.hay@intel.com>, 
-	Tatyana Nikolova <tatyana.e.nikolova@intel.com>, Madhu Chittim <madhu.chittim@intel.com>, 
-	intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	stable@vger.kernel.org
+	"moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, 
+	linux-stm32@st-md-mailman.stormreply.com, 
+	Linux Network Development Mailing List <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Jacob,
+On Tue, Apr 14, 2026 at 6:19=E2=80=AFPM Russell King (Oracle)
+<linux@armlinux.org.uk> wrote:
+> Okay, just a quick note to say that nvidia's 5.10.216-tegra kernel
+> survives iperf3 -c -R to the imx6.
 
-Thanks for reviewing.
+Hi Russell,
 
-On Wed, 15 Apr 2026 at 05:03, Jacob Keller <jacob.e.keller@intel.com> wrote:
->
->
-> This doesn't look right. The commit message analysis seems to match this
-> fix from Greg KH:
->
-> https://lore.kernel.org/intel-wired-lan/2026041432-tapestry-condition-22ff@gregkh/
->
-> But the changes do not make any sense to me. It looks like a poorly done
-> AI-generated "fix" which is not correct. Greg's version does look like
-> it properly resolves this.
->
-> > v2:
-> >   - note that the issue was identified by my static analysis tool
-> >   - and confirmed by manual review
-> >
->
-> What even is this change log?? I see that version was sent and everyone
-> else was sane enough to just silently reject or ignore the v1...
->
-> >  drivers/net/ethernet/intel/idpf/idpf_idc.c | 6 +++++-
-> >  1 file changed, 5 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/net/ethernet/intel/idpf/idpf_idc.c b/drivers/net/ethernet/intel/idpf/idpf_idc.c
-> > index 6dad0593f7f2..2a18907643fc 100644
-> > --- a/drivers/net/ethernet/intel/idpf/idpf_idc.c
-> > +++ b/drivers/net/ethernet/intel/idpf/idpf_idc.c
-> > @@ -59,6 +59,7 @@ static int idpf_plug_vport_aux_dev(struct iidc_rdma_core_dev_info *cdev_info,
-> >       char name[IDPF_IDC_MAX_ADEV_NAME_LEN];
-> >       struct auxiliary_device *adev;
-> >       int ret;
-> > +     int adev_id;
-> >
->
-> You create a local variable here...
->
-> >       iadev = kzalloc(sizeof(*iadev), GFP_KERNEL);
-> >       if (!iadev)
-> > @@ -74,11 +75,14 @@ static int idpf_plug_vport_aux_dev(struct iidc_rdma_core_dev_info *cdev_info,
-> >               goto err_ida_alloc;
-> >       }
-> >       adev->id = ret;
-> > +     adev->id = adev_id;
->
-> adev_is is never initialized, so you assign a random garbage
-> uninitialized value. This is obviously wrong and will lead to worse
-> errors than the failed cleanup.
->
-> I'm rejecting this patch in favor of the clearly appropriate fix from Greg.
->
-> >       adev->dev.release = idpf_vport_adev_release;
-> >       adev->dev.parent = &cdev_info->pdev->dev;
-> >       sprintf(name, "%04x.rdma.vdev", cdev_info->pdev->vendor);
-> >       adev->name = name;
-> >
-> > +     /* iadev is owned by the auxiliary device */
-> > +     iadev = NULL;>          ret = auxiliary_device_init(adev);
-> >       if (ret)
-> >               goto err_aux_dev_init;
-> > @@ -92,7 +96,7 @@ static int idpf_plug_vport_aux_dev(struct iidc_rdma_core_dev_info *cdev_info,
-> >  err_aux_dev_add:
-> >       auxiliary_device_uninit(adev);
-> >  err_aux_dev_init:
-> > -     ida_free(&idpf_idc_ida, adev->id);
-> > +     ida_free(&idpf_idc_ida, adev_id);
-> >  err_ida_alloc:
-> >       vdev_info->adev = NULL;
-> >       kfree(iadev);
->
+Aw, you beat me to it! I was about to report that 5.10.104-tegra is
+unaffected. And my iperf3 server is a multi-GbE amd64 machine.
 
-You are right that the v2 patch as sent is incomplete. That was my
-mistake when preparing/sending v2: it accidentally dropped the adev_id
-= ret; assignment, which made that version incorrect.
+> Dumping the registers and comparing, and then forcing the RQS and TQS
+> values to 0x23 (+1 =3D 36, *256 =3D 9216 bytes) and 0x8f (+1 =3D 144,
+> *256 =3D 36864 ytes) respectively seems to solve the problem. Under
+> net-next, these both end up being 0xff (+1 =3D 256, *256 =3D 65536 bytes.=
+)
+> Suspiciously, 36 * 4 =3D 144, and I also see that this kernel programs
+> all four of the MTL receive operation mode registers, but only the
+> first MTL transmit operation mode register. However, DMA channels 1-3
+> aren't initialised.
 
-For reference, the original v1 patch is here:
+Wow, great! I wonder if the problem is that the MTL FIFOs are smaller
+than that, so when the DMA suffers a momentary hiccup, the FIFOs are
+allowed to overflow, putting the hardware in a bad state.
 
-https://lkml.org/lkml/2026/3/21/421
+Though I suspect this is only half of the problem: do you still see
+RBUs? Everything you've shared so far suggests the DMA failures are
+_not_ because the rx ring is drying up. My gut's telling me the DMA
+unit is encountering an AXI error, triggering RBU plus some kind of
+recovery behavior, and the recovery takes the DMA offline long enough
+for the FIFO to overflow (without triggering RPS because the RQS
+threshold is unreachable).
 
-In v1, adev_id was assigned from ret before use, so I believe that
-particular uninitialized-variable issue was introduced in the v2
-posting.
+It seems that the problem happens less frequently on my test setup
+when I boot with iommu.passthrough=3D1 but that could be my imagination.
+But if the hardware remains stable with RQS and TQS set correctly, I
+don't feel an urgent need to dig deeper. :)
 
-Sorry for the confusion caused by the broken v2 posting.
+> Looking back at 5.10, I don't see any code that would account for these
+> values being programmed for TQS and RQS, it looks like the calculations
+> are basically the same as we have today.
 
-Thanks,
-Guangshuo
+Note that Nvidia have their own "nvethernet" driver for their vendor
+kernel, which appears to pick the FIFO sizes from hardcoded tables in
+its eqos_configure_mtl_queue() [1] function.
+
+Cheers,
+Sam
+
+[1] https://github.com/proski/nvethernet/blob/main/nvethernetrm/osi/core/eq=
+os_core.c#L263
