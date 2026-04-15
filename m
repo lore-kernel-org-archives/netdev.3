@@ -1,82 +1,149 @@
-Received: from zebra.wilibox.com (zebra.wilibox.com [62.77.155.212])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76D6E3914EE;
-	Wed, 15 Apr 2026 06:45:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.77.155.212
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBA1B7261C;
+	Wed, 15 Apr 2026 06:48:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776235506; cv=none; b=CW4dIRNnhEJAKWvK6nn6+B3e2gFIjS2vnB8H9c/ZZb0KsW3A/gTcdq+I/P26/kNkj+ypyh9N61OD9rfj54T+9Mt6Ji2t5hjrSL+JDckz7LVOgILHxn8lelbq7rj7rtwf1Bf9KSs3A+cy0IjelAIDnuMBDcfL62iKnlPc1Pf5Ixo=
+	t=1776235688; cv=none; b=VC0HeiIeyPbFiMPlht12nkmj1sOzpLciXiWZzrfVe3CdzIDzMfGMaDd4M9L7dXoPu3Xn17ZUfQcJCs35e/vkLuPElTADpam7hW9ZdfalSZYuAhmiQqdJ7c/HhXIdK+9QX8sAGO4oLasX4Xd8bYeefuH1BEsNhE7tRPAWAVjp08w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776235506; c=relaxed/simple;
-	bh=7WTEyNFffV6w+pCAcVJLy3VQLEuiEkAU9UhKwjIbB94=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DLuPGNeKGsXau4HWHWBTfTUZl9+tnSyAixRkJSGf9iYqss/8kYvEESPOs8F1TFhdXT6BETGDs9PV1+kKxGEGWKvR1MuG8zzp4nUTLf4gHHp6jxzWWNrxjh/jWzm+W6URz7+uPumG5unN9tL/AnpjG4XewupqQAGQNaXV5VvT3mA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=iconn-networks.com; spf=pass smtp.mailfrom=iconn-networks.com; dkim=pass (2048-bit key) header.d=iconn-networks.com header.i=@iconn-networks.com header.b=LQ8vHv9z; arc=none smtp.client-ip=62.77.155.212
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=iconn-networks.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iconn-networks.com
+	s=arc-20240116; t=1776235688; c=relaxed/simple;
+	bh=uO1fFgRaYkEaX03uIGSllbIp0KmN4e8uhrxbiL7j6JA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=b0DifANz9TAza/g0YGWlyJzT5cmj1b9jAXrEuvQudqCfl5mh8pMN2VV1x2+/jiRPgx0WazlQLhgh7ibkcQI/dZwKq6QLErIeBGUQOPa+o9gTiX1e30B7xxARW4oG5XxFubH77edrD36djPekrUkEd9FvBvlIzw0rcZJWWysSLkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wn6Hr/rv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iconn-networks.com header.i=@iconn-networks.com header.b="LQ8vHv9z"
-Received: from debian (unknown [81.7.79.211])
-	(Authenticated sender: ernestas.k@iconn-networks.com)
-	by zebra.wilibox.com (Postfix) with ESMTPSA id 3F08616B45F;
-	Wed, 15 Apr 2026 09:35:39 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iconn-networks.com;
-	s=default; t=1776234939;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=L05OlKW4YM2KyYAU8naVj9tMRq09rF1jmo/4V29Em5Y=;
-	b=LQ8vHv9zseyWnC4CdOgzlUazV2Q2265npKJ4RnBdQswExJAbJDFl9yo9hen6MaTLmjc2Gk
-	B9HjzLZwi0V/PD58Fk4tjay++VR5fC3F/xtfqzmyCl9CVSQCvYe/ZXGUhEH3VbdI0AUEce
-	M0lmBgp/eMu3pMuEtS4qeKc0UXiRaYfBvmJe1Ke0UMzvqWwJtZZRr3IZIvZkoPpDkquQdy
-	ooHUQaz9iEP9AajI1XXEeyacBwFPYAfUCnyz+IVh+F8CiGSFLvJ+9lGBaKKwDWWJR8YY+Q
-	5lsjlBL/1JwvxjXGRf81H8U1zzGXN8PdS6tf/mSAKcNJS6M9K30J71khSxVlpQ==
-Authentication-Results: zebra.wilibox.com;
-	auth=pass smtp.auth=ernestas.k@iconn-networks.com smtp.mailfrom=ernestas.k@iconn-networks.com
-From: Ernestas Kulik <ernestas.k@iconn-networks.com>
-To: netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Ernestas Kulik <ernestas.k@iconn-networks.com>
-Subject: [PATCH] llc: Return -EINPROGRESS from llc_ui_connect()
-Date: Wed, 15 Apr 2026 09:34:57 +0300
-Message-ID: <20260415063457.1008868-1-ernestas.k@iconn-networks.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wn6Hr/rv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E1D1C19424;
+	Wed, 15 Apr 2026 06:47:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776235687;
+	bh=uO1fFgRaYkEaX03uIGSllbIp0KmN4e8uhrxbiL7j6JA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Wn6Hr/rv7RQ0mjmBpBGnHzSLGoawtRWrJKf8Yulby+TTpp7z1W2m+/e3q+cBeZYn8
+	 9EULstKmB1P1aIGBA/hM7NfdL90zPADnWSMrSZUOJgfBI2Y0gYKo15ZH/8SN+3BCpi
+	 LFdpD3kIOkfmc5kLWHOPn/7qJv2G9rdoWFZcqmWwEJGa7DK0r7DBeorJlYNCKX5hcM
+	 Q22Qw/tg/rR1esDPVyaYxqkxnFQnTVF5/bVWUROMriQiIMAWyo9xVZRAIqfM9NCvMV
+	 JvPvhMbjPkTiWVz5ZUzK2DMWWd8bbim3aFcilo4uxvNCEcTYhNnaiu0tF2t4jRv/Q5
+	 DezCa9n7clYBA==
+Message-ID: <9c33afea-7a64-456e-aa2f-bdcf7459b567@kernel.org>
+Date: Wed, 15 Apr 2026 08:47:55 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [patch 33/38] powerpc: Select ARCH_HAS_RANDOM_ENTROPY
+To: Thomas Gleixner <tglx@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
+ Arnd Bergmann <arnd@arndb.de>, x86@kernel.org,
+ Lu Baolu <baolu.lu@linux.intel.com>, iommu@lists.linux.dev,
+ Michael Grzeschik <m.grzeschik@pengutronix.de>, netdev@vger.kernel.org,
+ linux-wireless@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>,
+ linux-crypto@vger.kernel.org, Vlastimil Babka <vbabka@kernel.org>,
+ linux-mm@kvack.org, David Woodhouse <dwmw2@infradead.org>,
+ Bernie Thompson <bernie@plugable.com>, linux-fbdev@vger.kernel.org,
+ Theodore Tso <tytso@mit.edu>, linux-ext4@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Uladzislau Rezki <urezki@gmail.com>, Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
+ Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+ Thomas Sailer <t.sailer@alumni.ethz.ch>, linux-hams@vger.kernel.org,
+ "Jason A. Donenfeld" <Jason@zx2c4.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ linux-alpha@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
+ linux-arm-kernel@lists.infradead.org,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Huacai Chen <chenhuacai@kernel.org>, loongarch@lists.linux.dev,
+ Geert Uytterhoeven <geert@linux-m68k.org>, linux-m68k@lists.linux-m68k.org,
+ Dinh Nguyen <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>,
+ linux-openrisc@vger.kernel.org, Helge Deller <deller@gmx.de>,
+ linux-parisc@vger.kernel.org, Paul Walmsley <pjw@kernel.org>,
+ linux-riscv@lists.infradead.org, Heiko Carstens <hca@linux.ibm.com>,
+ linux-s390@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+ sparclinux@vger.kernel.org
+References: <20260410120044.031381086@kernel.org>
+ <20260410120319.789114053@kernel.org>
+Content-Language: fr-FR
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <20260410120319.789114053@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Given a zero sk_sndtimeo, llc_ui_connect() skips waiting for state
-change and returns 0, confusing userspace applications that will assume
-the socket is connected, making e.g. getpeername() calls error out.
 
-Set rc to -EINPROGRESS before considering blocking, akin to AF_INET
-sockets.
 
-Signed-off-by: Ernestas Kulik <ernestas.k@iconn-networks.com>
----
- net/llc/af_llc.c | 2 ++
- 1 file changed, 2 insertions(+)
+Le 10/04/2026 à 14:21, Thomas Gleixner a écrit :
+> The only remaining usage of get_cycles() is to provide random_get_entropy().
+> 
+> Switch powerpc over to the new scheme of selecting ARCH_HAS_RANDOM_ENTROPY
+> and providing random_get_entropy() in asm/random.h.
+> 
+> Remove asm/timex.h as it has no functionality anymore.
+> 
+> Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: linuxppc-dev@lists.ozlabs.org
 
-diff --git a/net/llc/af_llc.c b/net/llc/af_llc.c
-index 59d593bb5d18..9317d092ba84 100644
---- a/net/llc/af_llc.c
-+++ b/net/llc/af_llc.c
-@@ -515,10 +515,12 @@ static int llc_ui_connect(struct socket *sock, struct sockaddr_unsized *uaddr,
- 		sock->state  = SS_UNCONNECTED;
- 		sk->sk_state = TCP_CLOSE;
- 		goto out;
- 	}
- 
-+	rc = -EINPROGRESS;
-+
- 	if (sk->sk_state == TCP_SYN_SENT) {
- 		const long timeo = sock_sndtimeo(sk, flags & O_NONBLOCK);
- 
- 		if (!timeo || !llc_ui_wait_for_conn(sk, timeo))
- 			goto out;
--- 
-2.53.0
+Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+
+> ---
+>   arch/powerpc/Kconfig              |    1 +
+>   arch/powerpc/include/asm/random.h |   13 +++++++++++++
+>   arch/powerpc/include/asm/timex.h  |   21 ---------------------
+>   3 files changed, 14 insertions(+), 21 deletions(-)
+> 
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -150,6 +150,7 @@ config PPC
+>   	select ARCH_HAS_PREEMPT_LAZY
+>   	select ARCH_HAS_PTDUMP
+>   	select ARCH_HAS_PTE_SPECIAL
+> +	select ARCH_HAS_RANDOM_ENTROPY
+>   	select ARCH_HAS_SCALED_CPUTIME		if VIRT_CPU_ACCOUNTING_NATIVE && PPC_BOOK3S_64
+>   	select ARCH_HAS_SET_MEMORY
+>   	select ARCH_HAS_STRICT_KERNEL_RWX	if (PPC_BOOK3S || PPC_8xx) && !HIBERNATION
+> --- /dev/null
+> +++ b/arch/powerpc/include/asm/random.h
+> @@ -0,0 +1,13 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef _ASM_POWERPC_RANDOM_H
+> +#define _ASM_POWERPC_RANDOM_H
+> +
+> +#include <asm/cputable.h>
+> +#include <asm/vdso/timebase.h>
+> +
+> +static inline unsigned long random_get_entropy(void)
+> +{
+> +	return mftb();
+> +}
+> +
+> +#endif	/* _ASM_POWERPC_RANDOM_H */
+> --- a/arch/powerpc/include/asm/timex.h
+> +++ b/arch/powerpc/include/asm/timex.h
+> @@ -1,21 +0,0 @@
+> -/* SPDX-License-Identifier: GPL-2.0 */
+> -#ifndef _ASM_POWERPC_TIMEX_H
+> -#define _ASM_POWERPC_TIMEX_H
+> -
+> -#ifdef __KERNEL__
+> -
+> -/*
+> - * PowerPC architecture timex specifications
+> - */
+> -
+> -#include <asm/cputable.h>
+> -#include <asm/vdso/timebase.h>
+> -
+> -ostatic inline cycles_t get_cycles(void)
+> -{
+> -	return mftb();
+> -}
+> -#define get_cycles get_cycles
+> -
+> -#endif	/* __KERNEL__ */
+> -#endif	/* _ASM_POWERPC_TIMEX_H */
+> 
+> 
 
