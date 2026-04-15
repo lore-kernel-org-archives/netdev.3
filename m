@@ -1,23 +1,23 @@
-Received: from out28-53.mail.aliyun.com (out28-53.mail.aliyun.com [115.124.28.53])
+Received: from out28-3.mail.aliyun.com (out28-3.mail.aliyun.com [115.124.28.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3457A318BA7;
-	Wed, 15 Apr 2026 03:42:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF28322749;
+	Wed, 15 Apr 2026 03:42:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776224533; cv=none; b=KkOfbVEunC8ANIk36GvMT0phvLtWNCYPW3q2viDCCZUyXy9SO4tZjTmdUeLOjjCxffyiddjfCRR7wWvWrTzBSSBAX2Y1Tsnst/VC3ywVfOwaR2Jo99/yGQ6lE+zRxnFwln7ZzKrL8YQxC9AkXjZvXmbwnmH0n6VXPB1TAvqsquA=
+	t=1776224537; cv=none; b=I6+egu0ppLNfJX0KdZQCVAAc+VU8bqMycIDauaN4t+UtRafOyPRV5RclQHgDncN8lEjFq6XlB38kH6ndqnmroeEkee7TH+6+Y4B03QgYFQjmUPoEqjg7+wnJ0P8hytdkmI+D+Biro7VKE82jQ8y5m9ZrIyya9DHL9Nm/TRhM0MM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776224533; c=relaxed/simple;
-	bh=EFyaoycQFP3+uHDaV2cRsoT7A9ERSWcRdD1TsT6PeWg=;
+	s=arc-20240116; t=1776224537; c=relaxed/simple;
+	bh=6aaIqr+0nvXiTiV84QSoCKsqFQHGAok9kuAGuRlUssE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UdSZP3qj6tuyPrUVJll+uN5D2DsxWof0APkDNkHjil9rSKCU5azlIVSNSipKQk8DlBjrZfdFc42zz1Uq/m4W0NJsu9j6qQmouOSxyx4fmTmidi4FOw12zV+GHEod4M3WjGi9Mdb8V738O2gP38CQeOvvH1NL303ghZBgkYt0hTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com; spf=pass smtp.mailfrom=nebula-matrix.com; arc=none smtp.client-ip=115.124.28.53
+	 MIME-Version; b=UuS/VU3E4I8r0545dqYK8SYNdC2Y79Py1zWf9GlU3VYnS7YIo2byvWZzKHnYz8sr+44oguCblyuQdsNQmVnwyI+wx6tSjfTfbDV2B/L2LcKbcjqkq0dKZCLsEFLw6JJNwT09I25e/I0sBqFowDjRAuIJWjWlrrzL5A5nb6hPX1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com; spf=pass smtp.mailfrom=nebula-matrix.com; arc=none smtp.client-ip=115.124.28.3
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebula-matrix.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.06725912|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.0663011-0.00124657-0.932452;FP=14300982830378278594|1|1|1|0|-1|-1|-1;HT=maildocker-contentspam033032053168;MF=illusion.wang@nebula-matrix.com;NM=1;PH=DS;RN=19;RT=19;SR=0;TI=SMTPD_---.hCMsA4F_1776224202;
-Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.hCMsA4F_1776224202 cluster:ay29)
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.06712908|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.00656462-0.000511196-0.992924;FP=14588705234302426642|1|1|1|0|-1|-1|-1;HT=maildocker-contentspam033045220102;MF=illusion.wang@nebula-matrix.com;NM=1;PH=DS;RN=19;RT=19;SR=0;TI=SMTPD_---.hCMsAAv_1776224207;
+Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.hCMsAAv_1776224207 cluster:ay29)
           by smtp.aliyun-inc.com;
-          Wed, 15 Apr 2026 11:36:43 +0800
+          Wed, 15 Apr 2026 11:36:48 +0800
 From: "illusion.wang" <illusion.wang@nebula-matrix.com>
 To: dimon.zhao@nebula-matrix.com,
 	illusion.wang@nebula-matrix.com,
@@ -38,9 +38,9 @@ Cc: andrew+netdev@lunn.ch,
 	skhan@linuxfoundation.org,
 	hkallweit1@gmail.com,
 	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v12 net-next 06/11] net/nebula-matrix: add common resource implementation
-Date: Wed, 15 Apr 2026 11:35:58 +0800
-Message-ID: <20260415033608.2438-7-illusion.wang@nebula-matrix.com>
+Subject: [PATCH v12 net-next 10/11] net/nebula-matrix: add common/ctrl dev init/reinit operation
+Date: Wed, 15 Apr 2026 11:36:02 +0800
+Message-ID: <20260415033608.2438-11-illusion.wang@nebula-matrix.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260415033608.2438-1-illusion.wang@nebula-matrix.com>
 References: <20260415033608.2438-1-illusion.wang@nebula-matrix.com>
@@ -50,588 +50,258 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-The Resource layer processes the entries/data of various modules within
-the processing chip to accomplish specific entry management operations,
-this describes the module business capabilities of the chip and the data
-it manages.
-The resource layer comprises the following sub-modules: common, 
-interrupt, and vsi(txrx,queue not contained this time)
-
-This patch provides the common part, including the conversion
-relationships among vsi_id, func_id, eth_id, and pf_id. These
-relationships may be utilized in the upper layer or the resource layer.
+Common Device Setup: nbl_dev_setup_common_dev configures mailbox queues,
+registers cleanup tasks, and MSI-X interrupt counter initialization.
+Control Device Setup (optional): nbl_dev_setup_ctrl_dev initializes
+the chip and configures all channel queues.
 
 Signed-off-by: illusion.wang <illusion.wang@nebula-matrix.com>
 ---
- .../net/ethernet/nebula-matrix/nbl/Makefile   |   1 +
- .../nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c  |  55 ++++++
- .../nbl_hw_leonis/nbl_resource_leonis.c       | 158 ++++++++++++++++++
- .../nebula-matrix/nbl/nbl_hw/nbl_resource.c   | 118 +++++++++++++
- .../nebula-matrix/nbl/nbl_hw/nbl_resource.h   |  52 ++++++
- .../nbl/nbl_include/nbl_def_common.h          |  15 ++
- .../nbl/nbl_include/nbl_def_resource.h        |  15 ++
- .../nbl/nbl_include/nbl_include.h             |   8 +
- 8 files changed, 422 insertions(+)
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.c
+ .../nebula-matrix/nbl/nbl_core/nbl_dev.c      | 170 ++++++++++++++++++
+ .../nebula-matrix/nbl/nbl_core/nbl_dev.h      |  31 ++++
+ 2 files changed, 201 insertions(+)
 
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/Makefile b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
-index c9bc060732e7..b03c20f9988e 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/Makefile
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
-@@ -8,6 +8,7 @@ nbl-objs +=       nbl_common/nbl_common.o \
- 				nbl_hw/nbl_hw_leonis/nbl_hw_leonis.o \
- 				nbl_hw/nbl_hw_leonis/nbl_resource_leonis.o \
- 				nbl_hw/nbl_hw_leonis/nbl_hw_leonis_regs.o \
-+				nbl_hw/nbl_resource.o \
- 				nbl_core/nbl_dispatch.o \
- 				nbl_core/nbl_dev.o \
- 				nbl_main.o
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
-index 83a4dc584f48..4ef0d5989a76 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
-@@ -9,6 +9,18 @@
- #include <linux/spinlock.h>
- #include "nbl_hw_leonis.h"
- 
-+static void nbl_hw_read_mbx_regs(struct nbl_hw_mgt *hw_mgt, u64 reg,
-+				 u32 *data, u32 len)
-+{
-+	u32 i;
-+
-+	if (len % 4)
-+		return;
-+
-+	for (i = 0; i < len / 4; i++)
-+		data[i] = nbl_mbx_rd32(hw_mgt, reg + i * sizeof(u32));
-+}
-+
- static void nbl_hw_write_mbx_regs(struct nbl_hw_mgt *hw_mgt, u64 reg,
- 				  const u32 *data, u32 len)
- {
-@@ -130,6 +142,14 @@ static u32 nbl_hw_get_host_pf_mask(struct nbl_hw_mgt *hw_mgt)
- 	return data;
- }
- 
-+static u32 nbl_hw_get_real_bus(struct nbl_hw_mgt *hw_mgt)
-+{
-+	u32 data;
-+
-+	data = nbl_hw_rd32(hw_mgt, NBL_PCIE_HOST_TL_CFG_BUSDEV);
-+	return data >> 5;
-+}
-+
- static void nbl_hw_cfg_mailbox_qinfo(struct nbl_hw_mgt *hw_mgt, u16 func_id,
- 				     u16 bus, u16 devid, u16 function)
- {
-@@ -144,6 +164,36 @@ static void nbl_hw_cfg_mailbox_qinfo(struct nbl_hw_mgt *hw_mgt, u16 func_id,
- 		       (u32 *)&mb_qinfo_map, sizeof(mb_qinfo_map));
- }
- 
-+static void nbl_hw_get_board_info(struct nbl_hw_mgt *hw_mgt,
-+				  struct nbl_board_port_info *board_info)
-+{
-+	union nbl_fw_board_cfg_dw3 dw3 = { .info = { 0 } };
-+
-+	nbl_hw_read_mbx_regs(hw_mgt, NBL_FW_BOARD_DW3_OFFSET, (u32 *)&dw3,
-+			     sizeof(dw3));
-+	board_info->eth_num = dw3.info.port_num;
-+	board_info->eth_speed = dw3.info.port_speed;
-+	board_info->p4_version = dw3.info.p4_version;
-+}
-+
-+static u32 nbl_hw_get_fw_eth_num(struct nbl_hw_mgt *hw_mgt)
-+{
-+	union nbl_fw_board_cfg_dw3 dw3 = { .info = { 0 } };
-+
-+	nbl_hw_read_mbx_regs(hw_mgt, NBL_FW_BOARD_DW3_OFFSET, (u32 *)&dw3,
-+			     sizeof(dw3));
-+	return dw3.info.port_num;
-+}
-+
-+static u32 nbl_hw_get_fw_eth_map(struct nbl_hw_mgt *hw_mgt)
-+{
-+	union nbl_fw_board_cfg_dw6 dw6 = { .info = { 0 } };
-+
-+	nbl_hw_read_mbx_regs(hw_mgt, NBL_FW_BOARD_DW6_OFFSET, (u32 *)&dw6,
-+			     sizeof(dw6));
-+	return dw6.info.eth_bitmap;
-+}
-+
- static struct nbl_hw_ops hw_ops = {
- 	.update_mailbox_queue_tail_ptr = nbl_hw_update_mailbox_queue_tail_ptr,
- 	.config_mailbox_rxq = nbl_hw_config_mailbox_rxq,
-@@ -151,8 +201,13 @@ static struct nbl_hw_ops hw_ops = {
- 	.stop_mailbox_rxq = nbl_hw_stop_mailbox_rxq,
- 	.stop_mailbox_txq = nbl_hw_stop_mailbox_txq,
- 	.get_host_pf_mask = nbl_hw_get_host_pf_mask,
-+	.get_real_bus = nbl_hw_get_real_bus,
-+
- 	.cfg_mailbox_qinfo = nbl_hw_cfg_mailbox_qinfo,
- 
-+	.get_fw_eth_num = nbl_hw_get_fw_eth_num,
-+	.get_fw_eth_map = nbl_hw_get_fw_eth_map,
-+	.get_board_info = nbl_hw_get_board_info,
- };
- 
- /* Structure starts here, adding an op should not modify anything below */
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c
-index ffac1d59bf32..ff7f4a9a392c 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c
-@@ -4,9 +4,12 @@
-  */
- #include <linux/device.h>
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
+index 5deb21e35f8e..f10bb9460774 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
+@@ -6,6 +6,157 @@
  #include <linux/pci.h>
-+#include <linux/bits.h>
- #include "nbl_resource_leonis.h"
+ #include "nbl_dev.h"
  
- static struct nbl_resource_ops res_ops = {
-+	.get_vsi_id = nbl_res_func_id_to_vsi_id,
-+	.get_eth_id = nbl_res_get_eth_id,
- };
- 
- static struct nbl_resource_mgt *
-@@ -45,8 +48,163 @@ nbl_res_setup_ops(struct device *dev, struct nbl_resource_mgt *res_mgt)
- 	return res_ops_tbl;
- }
- 
-+static int nbl_res_ctrl_dev_setup_eth_info(struct nbl_resource_mgt *res_mgt)
++static void nbl_dev_init_msix_cnt(struct nbl_dev_mgt *dev_mgt)
 +{
-+	struct nbl_hw_ops *hw_ops = res_mgt->hw_ops_tbl->ops;
-+	struct device *dev = res_mgt->common->dev;
-+	struct nbl_eth_info *eth_info;
-+	u32 eth_bitmap, eth_id;
-+	u32 eth_num = 0;
-+	int i;
++	struct nbl_dev_common *dev_common = dev_mgt->common_dev;
++	struct nbl_msix_info *msix_info = &dev_common->msix_info;
 +
-+	eth_info = devm_kzalloc(dev, sizeof(*eth_info), GFP_KERNEL);
-+	if (!eth_info)
-+		return -ENOMEM;
-+
-+	res_mgt->resource_info->eth_info = eth_info;
-+
-+	eth_info->eth_num =
-+		(u8)hw_ops->get_fw_eth_num(res_mgt->hw_ops_tbl->priv);
-+	eth_bitmap = hw_ops->get_fw_eth_map(res_mgt->hw_ops_tbl->priv);
-+	/* for 2 eth port board, the eth_id is 0, 2 */
-+	for (i = 0; i < NBL_MAX_ETHERNET; i++) {
-+		if ((1 << i) & eth_bitmap) {
-+			set_bit(i, eth_info->eth_bitmap);
-+			eth_info->eth_id[eth_num] = i;
-+			eth_info->logic_eth_id[i] = eth_num;
-+			eth_num++;
-+		}
-+	}
-+
-+	for (i = 0; i < res_mgt->resource_info->max_pf; i++) {
-+		/* Map PF index i to eth_id from eth_info->eth_id[i]
-+		 * if i < eth_num, otherwise map to eth_id 0
-+		 */
-+		if (i < eth_num) {
-+			eth_id = eth_info->eth_id[i];
-+			eth_info->pf_bitmap[eth_id] |= BIT(i);
-+		} else {
-+			eth_info->pf_bitmap[0] |= BIT(i);
-+		}
-+	}
-+
-+	return 0;
++	msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].num = 1;
 +}
 +
-+static int nbl_res_ctrl_dev_sriov_info_init(struct nbl_resource_mgt *res_mgt)
++/* ----------  Channel config  ---------- */
++static int nbl_dev_setup_chan_qinfo(struct nbl_dev_mgt *dev_mgt, u8 chan_type)
 +{
-+	struct nbl_hw_ops *hw_ops = res_mgt->hw_ops_tbl->ops;
-+	struct nbl_hw_mgt *p = res_mgt->hw_ops_tbl->priv;
-+	struct nbl_common_info *common = res_mgt->common;
-+	struct nbl_sriov_info *sriov_info;
-+	struct device *dev = common->dev;
-+	u16 func_id, function;
++	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
++	struct nbl_channel_mgt *priv = dev_mgt->chan_ops_tbl->priv;
++	struct device *dev = dev_mgt->common->dev;
++	int ret;
 +
-+	sriov_info = devm_kcalloc(dev, res_mgt->resource_info->max_pf,
-+				  sizeof(*sriov_info), GFP_KERNEL);
-+	if (!sriov_info)
-+		return -ENOMEM;
++	if (!chan_ops->check_queue_exist(priv, chan_type))
++		return 0;
 +
-+	res_mgt->resource_info->sriov_info = sriov_info;
-+	common->hw_bus = (u8)hw_ops->get_real_bus(p);
-+	for (func_id = 0; func_id < res_mgt->resource_info->max_pf; func_id++) {
-+		sriov_info = res_mgt->resource_info->sriov_info + func_id;
-+		function = common->function + func_id;
-+		sriov_info->bdf = PCI_DEVID(common->hw_bus,
-+					    PCI_DEVFN(common->devid, function));
-+	}
++	ret = chan_ops->cfg_chan_qinfo_map_table(priv, chan_type);
++	if (ret)
++		dev_err(dev, "setup chan:%d, qinfo map table failed\n",
++			chan_type);
 +
-+	return 0;
++	return ret;
 +}
 +
-+static int nbl_res_ctrl_dev_vsi_info_init(struct nbl_resource_mgt *res_mgt)
++static int nbl_dev_setup_chan_queue(struct nbl_dev_mgt *dev_mgt, u8 chan_type)
 +{
-+	struct nbl_eth_info *eth_info = res_mgt->resource_info->eth_info;
-+	struct nbl_common_info *common = res_mgt->common;
-+	struct device *dev = common->dev;
-+	struct nbl_vsi_info *vsi_info;
-+	int i;
-+
-+	vsi_info = devm_kcalloc(dev, res_mgt->resource_info->max_pf,
-+				sizeof(*vsi_info), GFP_KERNEL);
-+	if (!vsi_info)
-+		return -ENOMEM;
-+
-+	res_mgt->resource_info->vsi_info = vsi_info;
-+	/*
-+	 * case 1 two port(2pf)
-+	 * pf0,pf1(NBL_VSI_SERV_PF_DATA_TYPE) vsi is 0,512
-+
-+	 * case 2 four port(4pf)
-+	 * pf0,pf1,pf2,pf3(NBL_VSI_SERV_PF_DATA_TYPE) vsi is 0,256,512,768
-+
-+	 */
-+
-+	vsi_info->num = eth_info->eth_num;
-+	for (i = 0; i < vsi_info->num; i++) {
-+		vsi_info->serv_info[i][NBL_VSI_SERV_PF_DATA_TYPE].base_id =
-+			i * NBL_VSI_ID_GAP(vsi_info->num);
-+		vsi_info->serv_info[i][NBL_VSI_SERV_PF_DATA_TYPE].num = 1;
-+	}
-+
-+	return 0;
-+}
-+
-+static int nbl_res_init_pf_num(struct nbl_resource_mgt *res_mgt)
-+{
-+	struct nbl_hw_ops *hw_ops = res_mgt->hw_ops_tbl->ops;
-+	u32 pf_num = 0;
-+	u32 pf_mask;
-+	int i;
-+
-+	pf_mask = hw_ops->get_host_pf_mask(res_mgt->hw_ops_tbl->priv);
-+	for (i = 0; i < NBL_MAX_PF; i++) {
-+		if (!(pf_mask & (1 << i)))
-+			pf_num++;
-+		else
-+			break;
-+	}
-+
-+	res_mgt->resource_info->max_pf = pf_num;
-+
-+	if (!pf_num)
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+
-+static void nbl_res_init_board_info(struct nbl_resource_mgt *res_mgt)
-+{
-+	struct nbl_hw_ops *hw_ops = res_mgt->hw_ops_tbl->ops;
-+
-+	hw_ops->get_board_info(res_mgt->hw_ops_tbl->priv,
-+			       &res_mgt->resource_info->board_info);
-+}
-+
- static int nbl_res_start(struct nbl_resource_mgt *res_mgt)
- {
-+	struct nbl_common_info *common = res_mgt->common;
++	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
++	struct nbl_channel_mgt *priv = dev_mgt->chan_ops_tbl->priv;
 +	int ret = 0;
 +
-+	if (common->has_ctrl) {
-+		nbl_res_init_board_info(res_mgt);
++	if (chan_ops->check_queue_exist(priv, chan_type))
++		ret = chan_ops->setup_queue(priv, chan_type);
 +
-+		ret = nbl_res_init_pf_num(res_mgt);
-+		if (ret)
-+			return ret;
-+
-+		ret = nbl_res_ctrl_dev_sriov_info_init(res_mgt);
-+		if (ret)
-+			return ret;
-+
-+		ret = nbl_res_ctrl_dev_setup_eth_info(res_mgt);
-+		if (ret)
-+			return ret;
-+
-+		ret = nbl_res_ctrl_dev_vsi_info_init(res_mgt);
-+		if (ret)
-+			return ret;
-+	}
- 	return 0;
- }
- 
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.c
-new file mode 100644
-index 000000000000..563f00b5bfb4
---- /dev/null
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.c
-@@ -0,0 +1,118 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (c) 2025 Nebula Matrix Limited.
-+ */
-+
-+#include <linux/pci.h>
-+#include "nbl_resource.h"
-+
-+u16 nbl_res_pfid_to_vsi_id(struct nbl_resource_mgt *res_mgt, int pfid, u16 type)
-+{
-+	struct nbl_vsi_info *vsi_info = res_mgt->resource_info->vsi_info;
-+	enum nbl_vsi_serv_type dst_type = NBL_VSI_SERV_PF_DATA_TYPE;
-+	struct nbl_common_info *common = res_mgt->common;
-+	struct device *dev = res_mgt->common->dev;
-+	u16 vsi_id = U16_MAX;
-+	u32 diff;
-+
-+	diff = nbl_common_pf_id_subtraction_mgtpf_id(common, pfid);
-+	if (diff == U32_MAX)
-+		return vsi_id;
-+
-+	if (diff < vsi_info->num) {
-+		nbl_res_pf_dev_vsi_type_to_hw_vsi_type(type, &dst_type);
-+		vsi_id = vsi_info->serv_info[diff][dst_type].base_id;
-+	}
-+	if (vsi_id == U16_MAX)
-+		dev_err(dev, "convert pfid %d to vsi_id failed!\n", pfid);
-+	return vsi_id;
++	return ret;
 +}
 +
-+u16 nbl_res_func_id_to_vsi_id(struct nbl_resource_mgt *res_mgt, u16 func_id,
-+			      u16 type)
++static int nbl_dev_remove_chan_queue(struct nbl_dev_mgt *dev_mgt, u8 chan_type)
 +{
-+	int pfid = func_id;
++	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
++	struct nbl_channel_mgt *priv = dev_mgt->chan_ops_tbl->priv;
++	int ret = 0;
 +
-+	return nbl_res_pfid_to_vsi_id(res_mgt, pfid, type);
++	if (chan_ops->check_queue_exist(priv, chan_type))
++		ret = chan_ops->teardown_queue(priv, chan_type);
++
++	return ret;
 +}
 +
-+int nbl_res_vsi_id_to_pf_id(struct nbl_resource_mgt *res_mgt, u16 vsi_id)
++static void nbl_dev_register_chan_task(struct nbl_dev_mgt *dev_mgt,
++				       u8 chan_type, struct work_struct *task)
 +{
-+	struct nbl_vsi_info *vsi_info = res_mgt->resource_info->vsi_info;
-+	struct nbl_common_info *common = res_mgt->common;
-+	bool vsi_find = false;
-+	int pf_id = -1; /* -1 indicates not found */
-+	int i, j;
++	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
 +
-+	for (i = 0; i < vsi_info->num; i++) {
-+		for (j = 0; j < NBL_VSI_SERV_MAX_TYPE; j++)
-+			if (vsi_id >= vsi_info->serv_info[i][j].base_id &&
-+			    (vsi_id < vsi_info->serv_info[i][j].base_id +
-+					      vsi_info->serv_info[i][j].num)) {
-+				vsi_find = true;
-+				break;
-+			}
-+
-+		if (vsi_find)
-+			break;
-+	}
-+
-+	if (vsi_find) {
-+		if (j == NBL_VSI_SERV_PF_DATA_TYPE)
-+			pf_id = i + common->mgt_pf;
-+	}
-+
-+	return pf_id;
++	if (chan_ops->check_queue_exist(dev_mgt->chan_ops_tbl->priv, chan_type))
++		chan_ops->register_chan_task(dev_mgt->chan_ops_tbl->priv,
++					     chan_type, task);
 +}
 +
-+int nbl_res_func_id_to_bdf(struct nbl_resource_mgt *res_mgt, u16 func_id,
-+			   u8 *bus, u8 *dev, u8 *function)
++/* ----------  Tasks config  ---------- */
++static void nbl_dev_clean_mailbox_task(struct work_struct *work)
 +{
-+	struct nbl_common_info *common = res_mgt->common;
-+	struct nbl_sriov_info *sriov_info;
-+	int pfid = func_id;
-+	u8 pf_bus, devfn;
-+	u32 diff;
++	struct nbl_dev_common *common_dev =
++		container_of(work, struct nbl_dev_common, clean_mbx_task);
++	struct nbl_dev_mgt *dev_mgt = common_dev->dev_mgt;
++	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
 +
-+	diff = nbl_common_pf_id_subtraction_mgtpf_id(common, pfid);
-+	if (diff == U32_MAX)
-+		return U32_MAX;
-+	sriov_info = res_mgt->resource_info->sriov_info + diff;
-+	pf_bus = PCI_BUS_NUM(sriov_info->bdf);
-+	devfn = sriov_info->bdf & 0xff;
-+	*bus = pf_bus;
-+	*dev = PCI_SLOT(devfn);
-+	*function = PCI_FUNC(devfn);
++	chan_ops->clean_queue_subtask(dev_mgt->chan_ops_tbl->priv,
++				      NBL_CHAN_TYPE_MAILBOX);
++}
++
++/* ----------  Dev init process  ---------- */
++static int nbl_dev_setup_common_dev(struct nbl_adapter *adapter)
++{
++	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
++	struct nbl_dispatch_ops *disp_ops = dev_mgt->disp_ops_tbl->ops;
++	struct nbl_dispatch_mgt *priv = dev_mgt->disp_ops_tbl->priv;
++	struct nbl_common_info *common = dev_mgt->common;
++	struct nbl_dev_common *common_dev;
++	int ret;
++
++	common_dev = devm_kzalloc(&adapter->pdev->dev, sizeof(*common_dev),
++				  GFP_KERNEL);
++	if (!common_dev)
++		return -ENOMEM;
++	common_dev->dev_mgt = dev_mgt;
++
++	ret = nbl_dev_setup_chan_queue(dev_mgt, NBL_CHAN_TYPE_MAILBOX);
++	if (ret)
++		return ret;
++
++	INIT_WORK(&common_dev->clean_mbx_task, nbl_dev_clean_mailbox_task);
++	common->vsi_id = disp_ops->get_vsi_id(priv, NBL_VSI_DATA);
++	disp_ops->get_eth_id(priv, common->vsi_id, &common->eth_mode,
++			     &common->eth_id, &common->logic_eth_id);
++
++	nbl_dev_register_chan_task(dev_mgt, NBL_CHAN_TYPE_MAILBOX,
++				   &common_dev->clean_mbx_task);
++
++	dev_mgt->common_dev = common_dev;
++	nbl_dev_init_msix_cnt(dev_mgt);
 +
 +	return 0;
 +}
 +
-+void nbl_res_get_eth_id(struct nbl_resource_mgt *res_mgt, u16 vsi_id,
-+			u8 *eth_mode, u8 *eth_id, u8 *logic_eth_id)
++static void nbl_dev_remove_common_dev(struct nbl_adapter *adapter)
 +{
-+	struct nbl_eth_info *eth_info = res_mgt->resource_info->eth_info;
-+	int pf_id = nbl_res_vsi_id_to_pf_id(res_mgt, vsi_id);
-+	struct device *dev = res_mgt->common->dev;
++	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
++	struct nbl_dev_common *common_dev = dev_mgt->common_dev;
 +
-+	*eth_mode = eth_info->eth_num;
-+	if (pf_id < eth_info->eth_num && pf_id >= 0) {
-+		*eth_id = eth_info->eth_id[pf_id];
-+		*logic_eth_id = pf_id;
-+	} else {
-+		/*
-+		 * Fallback to eth_id[0] if pf_id is out of range.
-+		 * This is a safety measure to prevent crashes, but callers
-+		 * should validate pf_id beforehand if possible.
-+		 */
-+		dev_warn(dev, "pf_id %d invalid\n", pf_id);
-+		*eth_id = eth_info->eth_id[0];
-+		*logic_eth_id = 0;
++	if (!common_dev)
++		return;
++
++	nbl_dev_register_chan_task(dev_mgt, NBL_CHAN_TYPE_MAILBOX, NULL);
++	cancel_work_sync(&common_dev->clean_mbx_task);
++	nbl_dev_remove_chan_queue(dev_mgt, NBL_CHAN_TYPE_MAILBOX);
++}
++
++static int nbl_dev_setup_ctrl_dev(struct nbl_adapter *adapter)
++{
++	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
++	struct nbl_dispatch_ops *disp_ops = dev_mgt->disp_ops_tbl->ops;
++	int i, ret;
++
++	ret = disp_ops->init_chip_module(dev_mgt->disp_ops_tbl->priv);
++	if (ret)
++		goto chip_init_fail;
++
++	for (i = 0; i < NBL_CHAN_TYPE_MAX; i++) {
++		ret = nbl_dev_setup_chan_qinfo(dev_mgt, i);
++		if (ret)
++			goto setup_chan_q_fail;
 +	}
++
++	return 0;
++setup_chan_q_fail:
++	disp_ops->deinit_chip_module(dev_mgt->disp_ops_tbl->priv);
++chip_init_fail:
++	return ret;
 +}
 +
-+void nbl_res_pf_dev_vsi_type_to_hw_vsi_type(u16 src_type,
-+					    enum nbl_vsi_serv_type *dst_type)
++static void nbl_dev_remove_ctrl_dev(struct nbl_adapter *adapter)
 +{
-+	if (src_type == NBL_VSI_DATA)
-+		*dst_type = NBL_VSI_SERV_PF_DATA_TYPE;
++	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
++	struct nbl_dispatch_ops *disp_ops = dev_mgt->disp_ops_tbl->ops;
++
++	disp_ops->deinit_chip_module(dev_mgt->disp_ops_tbl->priv);
 +}
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.h
-index e08b6237da32..51b5b958cde8 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.h
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.h
-@@ -16,7 +16,48 @@
++
+ static struct nbl_dev_mgt *nbl_dev_setup_dev_mgt(struct nbl_common_info *common)
+ {
+ 	struct nbl_dev_mgt *dev_mgt;
+@@ -38,11 +189,30 @@ int nbl_dev_init(struct nbl_adapter *adapter)
+ 	dev_mgt->chan_ops_tbl = chan_ops_tbl;
+ 	adapter->core.dev_mgt = dev_mgt;
+ 
++	ret = nbl_dev_setup_common_dev(adapter);
++	if (ret)
++		return ret;
++
++	if (common->has_ctrl) {
++		ret = nbl_dev_setup_ctrl_dev(adapter);
++		if (ret)
++			goto setup_ctrl_dev_fail;
++	}
++
+ 	return 0;
++
++setup_ctrl_dev_fail:
++	nbl_dev_remove_common_dev(adapter);
++	return ret;
+ }
+ 
+ void nbl_dev_remove(struct nbl_adapter *adapter)
+ {
++	struct nbl_common_info *common = &adapter->common;
++
++	if (common->has_ctrl)
++		nbl_dev_remove_ctrl_dev(adapter);
++	nbl_dev_remove_common_dev(adapter);
+ }
+ 
+ /* ----------  Dev start process  ---------- */
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.h
+index 9b71092b99a0..b51c8a4424c5 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.h
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.h
+@@ -18,10 +18,41 @@
  #include "../nbl_include/nbl_def_common.h"
  #include "../nbl_core.h"
  
-+struct nbl_resource_mgt;
++#define NBL_STRING_NAME_LEN			32
 +
-+/* --------- INFO ---------- */
-+struct nbl_sriov_info {
-+	unsigned int bdf;
++enum nbl_msix_serv_type {
++	/* virtio_dev has a config vector_id, and the vector_id need is 0 */
++	NBL_MSIX_VIRTIO_TYPE = 0,
++	NBL_MSIX_NET_TYPE,
++	NBL_MSIX_MAILBOX_TYPE,
++	NBL_MSIX_TYPE_MAX
 +};
 +
-+struct nbl_eth_info {
-+	DECLARE_BITMAP(eth_bitmap, NBL_MAX_ETHERNET);
-+	u8 pf_bitmap[NBL_MAX_ETHERNET];
-+	u8 eth_num;
-+	u8 resv[3];
-+	u8 eth_id[NBL_MAX_PF];
-+	u8 logic_eth_id[NBL_MAX_PF];
-+};
-+
-+enum nbl_vsi_serv_type {
-+	NBL_VSI_SERV_PF_DATA_TYPE,
-+	NBL_VSI_SERV_MAX_TYPE,
-+};
-+
-+struct nbl_vsi_serv_info {
-+	u16 base_id;
++struct nbl_msix_serv_info {
++	char irq_name[NBL_STRING_NAME_LEN];
 +	u16 num;
++	u16 base_vector_id;
++	/* true: hw report msix, hw need to mask actively */
++	bool hw_self_mask_en;
 +};
 +
-+struct nbl_vsi_info {
-+	u16 num;
-+	struct nbl_vsi_serv_info serv_info[NBL_MAX_ETHERNET]
-+					  [NBL_VSI_SERV_MAX_TYPE];
++struct nbl_msix_info {
++	struct nbl_msix_serv_info serv_info[NBL_MSIX_TYPE_MAX];
 +};
 +
- struct nbl_resource_info {
-+	/* ctrl-dev owned pfs */
-+	DECLARE_BITMAP(func_bitmap, NBL_MAX_FUNC);
-+	struct nbl_sriov_info *sriov_info;
-+	struct nbl_eth_info *eth_info;
-+	struct nbl_vsi_info *vsi_info;
-+	u32 base_qid;
-+	u32 max_vf_num;
-+	u8 max_pf;
-+	struct nbl_board_port_info board_info;
++struct nbl_dev_common {
++	struct nbl_dev_mgt *dev_mgt;
++	struct nbl_msix_info msix_info;
++	char mailbox_name[NBL_STRING_NAME_LEN];
++	/* for ctrl-dev/net-dev mailbox recv msg */
++	struct work_struct clean_mbx_task;
++};
++
+ struct nbl_dev_mgt {
+ 	struct nbl_common_info *common;
+ 	struct nbl_dispatch_ops_tbl *disp_ops_tbl;
+ 	struct nbl_channel_ops_tbl *chan_ops_tbl;
++	struct nbl_dev_common *common_dev;
  };
  
- struct nbl_resource_mgt {
-@@ -27,4 +68,15 @@ struct nbl_resource_mgt {
- 	struct nbl_interrupt_mgt *intr_mgt;
- };
- 
-+int nbl_res_vsi_id_to_pf_id(struct nbl_resource_mgt *res_mgt, u16 vsi_id);
-+u16 nbl_res_pfid_to_vsi_id(struct nbl_resource_mgt *res_mgt, int pfid,
-+			   u16 type);
-+u16 nbl_res_func_id_to_vsi_id(struct nbl_resource_mgt *res_mgt, u16 func_id,
-+			      u16 type);
-+int nbl_res_func_id_to_bdf(struct nbl_resource_mgt *res_mgt, u16 func_id,
-+			   u8 *bus, u8 *dev, u8 *function);
-+void nbl_res_get_eth_id(struct nbl_resource_mgt *res_mgt, u16 vsi_id,
-+			u8 *eth_mode, u8 *eth_id, u8 *logic_eth_id);
-+void nbl_res_pf_dev_vsi_type_to_hw_vsi_type(u16 src_type,
-+					    enum nbl_vsi_serv_type *dst_type);
  #endif
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_common.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_common.h
-index 5c532247c852..04ffc1918a46 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_common.h
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_common.h
-@@ -12,6 +12,21 @@
- #include "nbl_include.h"
- 
- struct nbl_hash_tbl_mgt;
-+#define NBL_TWO_ETHERNET_PORT			2
-+#define NBL_FOUR_ETHERNET_PORT			4
-+#define NBL_DEFAULT_VSI_ID_GAP			1024
-+#define NBL_TWO_ETHERNET_VSI_ID_GAP		512
-+#define NBL_FOUR_ETHERNET_VSI_ID_GAP		256
-+
-+#define NBL_VSI_ID_GAP(m)					\
-+	({							\
-+		typeof(m) _m = (m);				\
-+		_m == NBL_FOUR_ETHERNET_PORT ?			\
-+			NBL_FOUR_ETHERNET_VSI_ID_GAP :		\
-+			(_m == NBL_TWO_ETHERNET_PORT ?		\
-+				 NBL_TWO_ETHERNET_VSI_ID_GAP :	\
-+				 NBL_DEFAULT_VSI_ID_GAP);	\
-+	})
- 
- struct nbl_common_info {
- 	struct pci_dev *pdev;
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_resource.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_resource.h
-index d55934af5a9a..15422eb4a218 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_resource.h
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_resource.h
-@@ -6,10 +6,25 @@
- #ifndef _NBL_DEF_RESOURCE_H_
- #define _NBL_DEF_RESOURCE_H_
- 
-+#include <linux/types.h>
-+
- struct nbl_resource_mgt;
- struct nbl_adapter;
- 
- struct nbl_resource_ops {
-+	int (*init_chip_module)(struct nbl_resource_mgt *res_mgt);
-+	void (*deinit_chip_module)(struct nbl_resource_mgt *res_mgt);
-+
-+	int (*configure_msix_map)(struct nbl_resource_mgt *res_mgt, u16 func_id,
-+				  u16 num_net_msix, u16 num_others_msix,
-+				  bool net_msix_mask_en);
-+	int (*destroy_msix_map)(struct nbl_resource_mgt *res_mgt, u16 func_id);
-+	int (*enable_mailbox_irq)(struct nbl_resource_mgt *res_mgt, u16 func_id,
-+				  u16 vector_id, bool enable_msix);
-+	u16 (*get_vsi_id)(struct nbl_resource_mgt *res_mgt, u16 func_id,
-+			  u16 type);
-+	void (*get_eth_id)(struct nbl_resource_mgt *res_mgt, u16 vsi_id,
-+			   u8 *eth_mode, u8 *eth_id, u8 *logic_eth_id);
- };
- 
- struct nbl_resource_ops_tbl {
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
-index a01c32f57d84..6a0bf5e8ca32 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
-@@ -17,11 +17,19 @@
- 		((_id) == (max) ? 0 : (_id) + 1);	\
- 	})
- 
-+#define NBL_MAX_FUNC					520
-+#define NBL_MAX_ETHERNET				4
-+
- enum nbl_product_type {
- 	NBL_LEONIS_TYPE,
- 	NBL_PRODUCT_MAX,
- };
- 
-+enum {
-+	NBL_VSI_DATA = 0,
-+	NBL_VSI_MAX,
-+};
-+
- struct nbl_func_caps {
- 	u32 has_ctrl:1;
- 	u32 has_net:1;
 -- 
 2.47.3
 
