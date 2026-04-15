@@ -1,249 +1,77 @@
-Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2134.outbound.protection.partner.outlook.cn [139.219.17.134])
+Received: from mail-m3271.qiye.163.com (mail-m3271.qiye.163.com [220.197.32.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D69FB3264FB;
-	Wed, 15 Apr 2026 09:59:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.134
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776247201; cv=fail; b=SGGZSdOMyOhYy+7kYg77bFzLtzLemEQ29i2n3/OnKfi2HMkMS/49LJ06pIydUZBFKPk+LDaXa+QXkS4KnjxCD2dQOYtO2PanvudPi4Yug4pB0wVns2ZHgNBuaNi8lKbsXIvMqQ1XwuglZDnZsprSARcnMXGDPujjb2X6csO6Dfc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776247201; c=relaxed/simple;
-	bh=hjvpZx14lmrmdb4egOeL4Gb3pbpO5h/5vdaQelMWoY4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Ds+X1Znw3XP55FPxb+IQjyb7mj3M54rMF1oCwP187T9m9y1b8aimhXd+bSKFpSRNvlb9v140mHCB07pOUzwcLIZpO8unvJ2Yf6HnrzgVzFQfQFJ5KygTpwziD0j60W3xQm4SiMpzViT9i8XcZ5lkX/9LDdTCY3uf5FvzrnjVK+4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.17.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=cfXcJyKz/x9UtjVrB3+QWfHkOe1L8NczFeqOhKaDmh3u/bN5ubMIEtjEUH8s9iDsqn/zjUwlVwyi2kh0XhjheypN/JMdG2bb1m67ImmwoOV9ovwy/hHlUIEm1VBKQ11VTVsh3LNWS8slKkokgCq8BupCfBjeqs2OIG1h635G5ZR8oO4CZeGuagrYKGlZGO4Jjb3TKId4LGQigl5dmpagKnephEuGHFu1E1HHJqW8c1ikxwUtNwbakkBGF5+DsNv6kM3r6DnEhLd7sZAWfaCM4sQvuuNCqP2hdjmvfdPfmnWEq4K6XXq3BR1TXovVrIf0PoXlW0Pb8PamvVTn/FDkGg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=u0rXpvBsVqQ+SZ7NHimeR2PT2bOi23yN2GKLZ5bCzHA=;
- b=cdSfG7y2/Psfp6iTowboqIaFwb9YupbCKOrmbLQxxVXZcHzHfBNGm9VSWWe1Sh17MEjrsn8oYsYzkPxeMoBXxWh3/MPBugOc+dcBquHvdD10fqVN1dsNVtUxwjiDoKjLatlPgSb/X75Mr2D7JtyLnFVlV30XMn/+/H95uXVi8KwibbC676CJUoltMlK/otDNXxVCUuqyMstfYgrTVwyyg7pFZXMT3Et9jnzz71q4wMQvQPrcdLBJPs35qnDi3aVGskaVZg4nfgTagdoUHlBe30UAEqg/W2jvL3NHz7oY75lpkSwc1LR6TIClwbLLgMwqehnGNRTwbuXKSL+mtwF4fw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=starfivetech.com; dmarc=pass action=none
- header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=starfivetech.com;
-Received: from BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c211:18::12) by BJXPR01MB0712.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c211:18::14) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.42; Wed, 15 Apr
- 2026 09:27:04 +0000
-Received: from BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn
- ([fe80::e2de:92aa:4c1c:a829]) by
- BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn ([fe80::e2de:92aa:4c1c:a829%6])
- with mapi id 15.20.9769.046; Wed, 15 Apr 2026 09:27:03 +0000
-From: Minda Chen <minda.chen@starfivetech.com>
-To: Frank <Frank.Sae@motor-comm.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Minda Chen <minda.chen@starfivetech.com>
-Subject: [net-next v1 1/3] net: phy: motorcomm: Add yt8531_set_ds() mdio_locked bool parameter
-Date: Wed, 15 Apr 2026 17:26:52 +0800
-Message-Id: <20260415092654.64907-2-minda.chen@starfivetech.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20260415092654.64907-1-minda.chen@starfivetech.com>
-References: <20260415092654.64907-1-minda.chen@starfivetech.com>
-Content-Type: text/plain
-X-ClientProxiedBy: SH0PR01CA0007.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c311:5::19) To BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c211:18::12)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE00833B6D0;
+	Wed, 15 Apr 2026 10:00:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.71
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776247212; cv=none; b=hG490IdPUeraG5nupTwNH8mk0qmQvgwqabfpaaJikbs9lHTi6a7Z2TucnDY/8CNvOZWI934uBkj1tWZL7V4NZl3EZMcWbJlNijFM9g6Ocs0KP5Bls+oB+1KObckTbctw8aLZYBXB4pezysHd73j6AKiH+oRhOjS9dAcb2zn4nR0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776247212; c=relaxed/simple;
+	bh=O6IvF4GwgYA4+wYZIFFKHdwmCG9gbbqj+oKdjbBxl0c=;
+	h=Content-Type:Message-ID:To:Cc:Subject:MIME-Version:From:Date; b=BWl70gWem884kH7ZnykkdgRRrdLKTY7JVPqBRmbmVGWfIgK/BPvQ0OF/g4MMkT1mbY0MIvivsAeW6VJAuFtZG4ikSSdNvwfAeMt0NXIU37q301haChfBXB5eeozLM++5rCZezDAOQNvJev2K1WALdZ/p+Id+lKDKgTp+ceNKxPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ruc.edu.cn; spf=pass smtp.mailfrom=ruc.edu.cn; dkim=pass (1024-bit key) header.d=ruc.edu.cn header.i=@ruc.edu.cn header.b=OQpLPh3z; arc=none smtp.client-ip=220.197.32.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ruc.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ruc.edu.cn
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ruc.edu.cn header.i=@ruc.edu.cn header.b="OQpLPh3z"
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+Message-ID: <AFkAcAA-KLHz8L2oAyS3qqrb.1.1776247198201.Hmail.2023000929@ruc.edu.cn>
+To: andrew@lunn.ch, hkallweit1@gmail.com, fujita.tomonori@gmail.com
+Cc: linux@armlinux.org.uk, tmgross@umich.edu, ojeda@kernel.org, 
+	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: =?UTF-8?B?cnVzdDogbmV0OiBwaHk6IGludGVudCBmb3IgTUFFMDYyMUEgKG91dC1vZi10cmVlIEMgLT4gUnVzdCksIHJlcXVlc3QgZm9yIHRhcmdldCBndWlkYW5jZQ==?=
+X-Priority: 3
+X-Mailer: HMail Webmail Server V2.0 Copyright (c) 2016-163.com web
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BJXPR01MB0855:EE_|BJXPR01MB0712:EE_
-X-MS-Office365-Filtering-Correlation-Id: b0869619-3fcc-4c78-a676-08de9ad127a7
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|52116014|376014|366016|1800799024|56012099003|18002099003|22082099003|38350700014;
-X-Microsoft-Antispam-Message-Info:
- TvdO2+Z4V2DH1lP4FAQY3OqGh5fGXEiE3mCTuN8fP2wV/dRN7UG38u0SRRoG9alsy5r56nI9cakgHnUG2zCFzBhkRGkm9vBxx9qH5xmVFO9+TEiqotFm6hoCdV/IdBRsxhNvG3DAgk7mncRRIRpfivNe9Cp+96BEBAcnNNtM0G6HBK3/DOfwIyslenGIY9rIxk1KfjAWGODbR4K5mI0Sd290DGlHfi7YxdVzkggJxCBvLA+yd5Btr8UsGOyDBchzzJY0g3Qdo4EZlLHcTXV4R2l/aGuI+2e5eBaFknrqRfZ6VO3ggPpayQsk+BLMN59kKdQulfLfzzw/OKuVMmdLTemqUYe8BWm9PfoqiHc+zyoKoYfOlTzuafL1McrEqUejeJpRK9jaq1WWHSnri8a5L9Fmbinzv+o+uJDZ/I21tq2M7iaNnnt+px1bM9wh5whPgRfYJJiF3nyj8ocUOj3onCLDTzh4vkcTzR4uL4BWodO1UfSiJ94x46seUfK7jWhjX2gTFgWlvg4YrQoICxMAberKbv2PW8YFhIeg+1jfE8ipopKCK7f+ZQIMW6HZ8FkerO5xJa7E2AAdy/w/Tj1NC/1KbhAyGHZqsZRKaGIiyzQ=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(366016)(1800799024)(56012099003)(18002099003)(22082099003)(38350700014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?2Xhy2tOTr6jVEnYLCUfAGO3KId1XAAmkAeStE55Z8haVI630XTp+7o3lQD+H?=
- =?us-ascii?Q?51cFMRJJ45gKH8d43ooR0S5S/00nv7CjsWDOZylO2iqZSNzHnsFAk2mtY462?=
- =?us-ascii?Q?X2OCDDC+mKP2hzffg87q0fD0vdFD4URKuaJ1O6edmwvQzg/u6s7WVeGQs3wu?=
- =?us-ascii?Q?ZwKqXjf34MD9KNwx//WsCmTlBiwXeCLBMzj4UYoev3rPIpdpAt1dIhJzJBFf?=
- =?us-ascii?Q?P6vMO+B6Bg91f2YPp9DgovKZHJ6jy6OhGcbQC3bxKDqcQxnt38BSmncUFVAU?=
- =?us-ascii?Q?b+WAsmIyfos4y0V8KmBNVMD5gK9bMgR7STMi1Rz7AzQ9DTHP6D3d/zp239S8?=
- =?us-ascii?Q?rC6GtXb/UhR1tTuJhoOIA3+kr9iqHI+0sVZATDsWuGSsuNOHjNeck7Htse9h?=
- =?us-ascii?Q?5B8C6EqYwUpbWLIgEvYPpOb1O8vMTGls8rzIZJDYmFJ2E0jlzy74dmzFufsK?=
- =?us-ascii?Q?UyQ3HsKB6XrdY12RVh1x1utlFeUcqPN9Z6WHPWLghyTZKNmAOGqQdAkyxSqt?=
- =?us-ascii?Q?gIDhO8xZWPbQiy9G3TByC+pYK0VtS+CU4P6f5wig0A1q/gMilk2qdKrims9A?=
- =?us-ascii?Q?Pkss6QibQOeQGTZOQfm87MxknhgHoWMnm6f9Tvguf8EPW6fPRCsVZMowda8i?=
- =?us-ascii?Q?G2W0s9XMQD/w0fhfgNoLSEOK1/zgtXxRl23ZL9AkEqeza+6w3MnYd99mf+Mb?=
- =?us-ascii?Q?XwthbkN0Pcf30EDint2NQCdiwXrY8O3fyagWQ7oWenlTmGxjoKsWS8STRPCw?=
- =?us-ascii?Q?8xPz3XiB1Ywqb0+skKNey1CTNL6F22JyFRu5MFLLZTkNxf7FfPPCzAnAPQOf?=
- =?us-ascii?Q?u1RxbN4ecJqg8oLkuMMFeJigGhiQMBR5g+2Aro0DYQxr8WlCawNBSMcG9Kv7?=
- =?us-ascii?Q?7RtVj9ef7wbrbEfzEEwPstXghvXuVl6PIysQY9r04aGg0n9IUbpYlrJ2Uugb?=
- =?us-ascii?Q?7DP9HIa0s76LZLSLknVk6XhrlIvCTA3IafubeHCUKfrAJT+QAxmAJdFMT+kl?=
- =?us-ascii?Q?n580GovgREQuNlfinT5l42Jd+FBBBxHmeCoGRX6wTk+2kd58RWRFxjKfuNeu?=
- =?us-ascii?Q?LUs4aeI87cJIOuFqFajdpkrF8qKdnUbX4Rd7ogc/u2O9JVSl7AuXFDcG2hBQ?=
- =?us-ascii?Q?K+1jkpKAhbbx4KZwvH5G72kUlqyZdkZSyPqFpMvVUUvompJcupVGwV6gQxwg?=
- =?us-ascii?Q?9M/zrqRRUdeMBYyOrxDKYcp5UojJdXBYdo5FLZbBe8RTQw+wnNV50x8KEd5+?=
- =?us-ascii?Q?UMhD7xhDxRLLTzpT/p3s+IBo85LItMe01rwCySAVqz9lwJXPeDIwD/Gjg84h?=
- =?us-ascii?Q?wsND4qhMZ+MZ8Bc4NgGeHTPcSUQ57cATaEt+zx4ka84WtAxwj5CgCStWMhQ+?=
- =?us-ascii?Q?KNhGy+SZXVeJOLYL2f5pgEoCgsb3vt+YXu9F9pZzjH7MSt+PaXBP27wQygct?=
- =?us-ascii?Q?0qIbVViLH9/p7+7pr2EEnCAJmT0hhrTv9CHc6gk4TZ7TQfTQJpfSlGUg0Uai?=
- =?us-ascii?Q?kgTT0sioQ5txZFAJP+u4P/yAYLWplUaz7F+O4MfXPumQCoVlWAaJE1tYgfuw?=
- =?us-ascii?Q?880gjprNZfVL1KyU5DjmtZ7t0sMue+3kBnsUtCct6nUhBUq7J6J+XnfBYmrJ?=
- =?us-ascii?Q?+8vXlFK5h8mWuWChKiMG30nVP7p9iVhsqFx5ZgAO8b7AUV/Y9FLn4QV8SYp6?=
- =?us-ascii?Q?vmDQWUXk95EzciJ8pwXn3JgNl3+x+AeWewoe+yi1DUmtVkm0bBuVys/r9h4q?=
- =?us-ascii?Q?5+buytcD8hTqtRcObhal/jzdVA5wHDQ=3D?=
-X-OriginatorOrg: starfivetech.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b0869619-3fcc-4c78-a676-08de9ad127a7
-X-MS-Exchange-CrossTenant-AuthSource: BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Apr 2026 09:27:03.8556
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6P2YXAg95qM5Ki/gN0MNXPwGhJYlJzUJVnePe4zaaZFf7vzrwizzOxwQ6t5QRTeOdCuG4wjNacEmDDtAJsdSv/3kUpTc8lcKKggVp1OiH/I=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BJXPR01MB0712
+Received: from 2023000929@ruc.edu.cn( [43.207.144.59] ) by ajax-webmail ( [127.0.0.1] ) ; Wed, 15 Apr 2026 17:59:58 +0800 (GMT+08:00)
+From: wenzhaoliao <wenzhaoliao@ruc.edu.cn>
+Date: Wed, 15 Apr 2026 17:59:58 +0800 (GMT+08:00)
+X-HM-Tid: 0a9d9094db9f09bdkunm82eff6e44396
+X-HM-MType: 1
+X-HM-NTES-SC: AL0_4z5B86Wr4Tz9jdMF+bhXMf2U5gprSpllrVBCJYClE3duRf49djg1aYGfsM
+	uZDiMwIZbJJzEITi5UpU1qCUKJBAcnLOrwmhWBBKk+LmmRmQaEx1IEpHrbZMNjdVF3W8j9rAe932
+	Nl8EjSkm0izNSNpUuWxVBaR/AKTYFMShDXN+Q=
+X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVkaGUxIVkxCQx5NSU9OTx5LHlYVFAkWGhdVEwETFh
+	oSFyQUDg9ZV1kYEgtZQVlPSFVJS0xVSk9PVU5CWVdZFhoPEhUdFFlBWUtVS1VLVUtZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=OQpLPh3zKEOMUgVDKIlypldlJkN/dIICu8DrkQjmDilhHfcZ9R/RfBXyGI77NmeQI4F6EPLxRqeRXNnYjuj+puWgt97pBwKD34ynB0e8LemEZxljyodCcFsM1iR2d0fIfR3sC4PA7wJc9IHSHkaXuRGhI/39TSG/L/2Eu3xcG0Y=; c=relaxed/relaxed; s=default; d=ruc.edu.cn; v=1;
+	bh=O6IvF4GwgYA4+wYZIFFKHdwmCG9gbbqj+oKdjbBxl0c=;
+	h=date:mime-version:subject:message-id:from;
 
-yt8531_set_ds() default set register with mdio lock and only called
-with YT8531 PHY. But new type YT8531s support RGMII and has the same
-pin strength setting with YT8531, YT8531s need to call yt8531_set_ds()
-setting pin drive strength. But Its config init function
-yt8521_config_init() already get the mdio lock with phy_select_page().
-
-Need to add ytphy API without lock in yt8531_set_ds() and a new
-bool parameter for YT8531s RGMII case.
-
-Signed-off-by: Minda Chen <minda.chen@starfivetech.com>
----
- drivers/net/phy/motorcomm.c | 51 +++++++++++++++++++++++++------------
- 1 file changed, 35 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
-index 4d62f7b36212..35aff1519b4b 100644
---- a/drivers/net/phy/motorcomm.c
-+++ b/drivers/net/phy/motorcomm.c
-@@ -970,22 +970,26 @@ static const struct ytphy_ldo_vol_map yt8531_ldo_vol[] = {
- 	{.vol = YT8531_LDO_VOL_3V3, .ds = 7, .cur = 6140},
- };
- 
--static u32 yt8531_get_ldo_vol(struct phy_device *phydev)
-+static u32 yt8531_get_ldo_vol(struct phy_device *phydev, bool mdio_locked)
- {
- 	u32 val;
- 
--	val = ytphy_read_ext_with_lock(phydev, YT8521_CHIP_CONFIG_REG);
-+	if (mdio_locked)
-+		val = ytphy_read_ext(phydev, YT8521_CHIP_CONFIG_REG);
-+	else
-+		val = ytphy_read_ext_with_lock(phydev, YT8521_CHIP_CONFIG_REG);
-+
- 	val = FIELD_GET(YT8531_RGMII_LDO_VOL_MASK, val);
- 
- 	return val <= YT8531_LDO_VOL_1V8 ? val : YT8531_LDO_VOL_1V8;
- }
- 
--static int yt8531_get_ds_map(struct phy_device *phydev, u32 cur)
-+static int yt8531_get_ds_map(struct phy_device *phydev, u32 cur, bool mdio_locked)
- {
- 	u32 vol;
- 	int i;
- 
--	vol = yt8531_get_ldo_vol(phydev);
-+	vol = yt8531_get_ldo_vol(phydev, mdio_locked);
- 	for (i = 0; i < ARRAY_SIZE(yt8531_ldo_vol); i++) {
- 		if (yt8531_ldo_vol[i].vol == vol && yt8531_ldo_vol[i].cur == cur)
- 			return yt8531_ldo_vol[i].ds;
-@@ -994,7 +998,7 @@ static int yt8531_get_ds_map(struct phy_device *phydev, u32 cur)
- 	return -EINVAL;
- }
- 
--static int yt8531_set_ds(struct phy_device *phydev)
-+static int yt8531_set_ds(struct phy_device *phydev, bool mdio_locked)
- {
- 	struct device_node *node = phydev->mdio.dev.of_node;
- 	u32 ds_field_low, ds_field_hi, val;
-@@ -1002,7 +1006,7 @@ static int yt8531_set_ds(struct phy_device *phydev)
- 
- 	/* set rgmii rx clk driver strength */
- 	if (!of_property_read_u32(node, "motorcomm,rx-clk-drv-microamp", &val)) {
--		ds = yt8531_get_ds_map(phydev, val);
-+		ds = yt8531_get_ds_map(phydev, val, mdio_locked);
- 		if (ds < 0)
- 			return dev_err_probe(&phydev->mdio.dev, ds,
- 					     "No matching current value was found.\n");
-@@ -1010,16 +1014,23 @@ static int yt8531_set_ds(struct phy_device *phydev)
- 		ds = YT8531_RGMII_RX_DS_DEFAULT;
- 	}
- 
--	ret = ytphy_modify_ext_with_lock(phydev,
--					 YTPHY_PAD_DRIVE_STRENGTH_REG,
--					 YT8531_RGMII_RXC_DS_MASK,
--					 FIELD_PREP(YT8531_RGMII_RXC_DS_MASK, ds));
-+	if (mdio_locked)
-+		ret = ytphy_modify_ext(phydev,
-+				       YTPHY_PAD_DRIVE_STRENGTH_REG,
-+				       YT8531_RGMII_RXC_DS_MASK,
-+				       FIELD_PREP(YT8531_RGMII_RXC_DS_MASK, ds));
-+	else
-+		ret = ytphy_modify_ext_with_lock(phydev,
-+						 YTPHY_PAD_DRIVE_STRENGTH_REG,
-+						 YT8531_RGMII_RXC_DS_MASK,
-+						 FIELD_PREP(YT8531_RGMII_RXC_DS_MASK, ds));
-+
- 	if (ret < 0)
- 		return ret;
- 
- 	/* set rgmii rx data driver strength */
- 	if (!of_property_read_u32(node, "motorcomm,rx-data-drv-microamp", &val)) {
--		ds = yt8531_get_ds_map(phydev, val);
-+		ds = yt8531_get_ds_map(phydev, val, mdio_locked);
- 		if (ds < 0)
- 			return dev_err_probe(&phydev->mdio.dev, ds,
- 					     "No matching current value was found.\n");
-@@ -1033,10 +1044,18 @@ static int yt8531_set_ds(struct phy_device *phydev)
- 	ds_field_low = FIELD_GET(GENMASK(1, 0), ds);
- 	ds_field_low = FIELD_PREP(YT8531_RGMII_RXD_DS_LOW_MASK, ds_field_low);
- 
--	ret = ytphy_modify_ext_with_lock(phydev,
--					 YTPHY_PAD_DRIVE_STRENGTH_REG,
--					 YT8531_RGMII_RXD_DS_LOW_MASK | YT8531_RGMII_RXD_DS_HI_MASK,
--					 ds_field_low | ds_field_hi);
-+	if (mdio_locked)
-+		ret = ytphy_modify_ext(phydev,
-+				       YTPHY_PAD_DRIVE_STRENGTH_REG,
-+				       YT8531_RGMII_RXD_DS_LOW_MASK | YT8531_RGMII_RXD_DS_HI_MASK,
-+				       ds_field_low | ds_field_hi);
-+	else
-+		ret = ytphy_modify_ext_with_lock(phydev,
-+						 YTPHY_PAD_DRIVE_STRENGTH_REG,
-+						 YT8531_RGMII_RXD_DS_LOW_MASK |
-+						 YT8531_RGMII_RXD_DS_HI_MASK,
-+						 ds_field_low | ds_field_hi);
-+
- 	if (ret < 0)
- 		return ret;
- 
-@@ -1826,7 +1845,7 @@ static int yt8531_config_init(struct phy_device *phydev)
- 			return ret;
- 	}
- 
--	ret = yt8531_set_ds(phydev);
-+	ret = yt8531_set_ds(phydev, false);
- 	if (ret < 0)
- 		return ret;
- 
--- 
-2.17.1
-
+CkhlbGxvIFBIWSBhbmQgUnVzdCBtYWludGFpbmVycywKCgpJIGFtIGEgUGhEIHN0dWRlbnQgd29y
+a2luZyBvbiBhIEMtdG8tUnVzdCBtaWdyYXRpb24gdG9vbCBmb3Igc3lzdGVtcyBjb2RlLgpXZSB3
+b3VsZCBsaWtlIHRvIHZhbGlkYXRlIGl0IGluIExpbnV4IHdpdGggb25lIGNvbmNyZXRlIFBIWSB0
+YXJnZXQgYW5kIHdvdWxkCmxpa2UgdG8gY29uZmlybSBkaXJlY3Rpb24gYmVmb3JlIHBvc3Rpbmcg
+YSBsYXJnZXIgUkZDIHNlcmllcy4KCgpTY29wZSBvZiB0aGlzIGludGVudDoKLSBJbml0aWFsIHRh
+cmdldDogTUFFMDYyMUEgKGN1cnJlbnRseSBvdXQtb2YtdHJlZSBDIGRyaXZlcikuCi0gV2UgZG8g
+Tk9UIGludGVuZCB0byBzdWJtaXQgYSBkdXBsaWNhdGUgUnVzdCByZXdyaXRlIG9mIGFuIGV4aXN0
+aW5nIGluLXRyZWUgQyBQSFkgZHJpdmVyLgotIEdvYWw6IGV2YWx1YXRlIGEgc2VtaS1hdXRvbWF0
+aWMgYWJzdHJhY3Rpb24gY29tcGxldGlvbiB3b3JrZmxvdzoKwqAgcmV1c2UgZXhpc3RpbmcgUnVz
+dCBQSFkgYWJzdHJhY3Rpb25zIHdoZXJlIHBvc3NpYmxlLCBhbmQgYWRkIG9ubHkgbWluaW1hbCBt
+aXNzaW5nIGFic3RyYWN0aW9ucy4KCgpQbGFubmVkIGRlbGl2ZXJhYmxlczoKLSBBIGdhcCBhbmFs
+eXNpcyBiZXR3ZWVuIE1BRTA2MjFBIEMgY2FsbGJhY2tzIGFuZCBjdXJyZW50IHJ1c3Qva2VybmVs
+L25ldC9waHkucnMgY292ZXJhZ2UuCi0gQSBzbWFsbCBSRkMgcGF0Y2ggc2VyaWVzIHdpdGggbWlu
+aW1hbCBhYnN0cmFjdGlvbiBhZGRpdGlvbnMgKGlmIG5lZWRlZCkuCi0gQSBNQUUwNjIxQSBSdXN0
+IGRyaXZlciBwcm90b3R5cGUgb24gdG9wIG9mIHRob3NlIGFic3RyYWN0aW9ucyBmb3IgbGludXgt
+bmV4dC9ydXN0LW5leHQgZXZhbHVhdGlvbi4KCgpRdWFsaXR5IGFuZCBwcm9jZXNzIGNvbW1pdG1l
+bnRzOgotIEZ1bGwgaHVtYW4gcmV2aWV3IGJ5IHN1Ym1pdHRlcnM7IHdlIGNhbiBleHBsYWluIGFs
+bCBzdWJtaXR0ZWQgY29kZS4KLSBUcmFuc3BhcmVudCBkaXNjbG9zdXJlIG9mIHRvb2wgYXNzaXN0
+YW5jZSBpbiBjb3ZlciBsZXR0ZXJzL2NoYW5nZWxvZ3MuCi0gSGFyZHdhcmUtYmFja2VkIHRlc3Qg
+cmVzdWx0cyBhbmQgZXhwbGljaXQgbGltaXRhdGlvbnMgaW4gZWFjaCBwb3N0aW5nLgoKClF1ZXN0
+aW9uczoKMS4gSXMgTUFFMDYyMUEgYW4gYWNjZXB0YWJsZSBmaXJzdCB0YXJnZXQgZm9yIHRoaXMg
+ZGlyZWN0aW9uPwoyLiBJZiBNQUUwNjIxQSBpcyBub3Qgc3VpdGFibGUsIGNvdWxkIHlvdSByZWNv
+bW1lbmQgb25lIG9yIHR3byBiZXR0ZXIgb3V0LW9mLXRyZWUgUEhZIGRyaXZlcnMgZm9yIGEgZmly
+c3QgUnVzdCBzdWJtaXNzaW9uPwozLiBGb3IgcmV2aWV3IGZsb3csIGRvIHlvdSBwcmVmZXI6CsKg
+IMKgKGEpIGFic3RyYWN0aW9ucy1maXJzdCBSRkMsIHRoZW4gZHJpdmVyLCBvcgrCoCDCoChiKSBt
+aW5pbWFsIGFic3RyYWN0aW9ucyArIGNvbmNyZXRlIGRyaXZlciBpbiBvbmUgUkZDIHNlcmllcz8K
+CgpJZiB0aGVyZSBhcmUgbm8gb2JqZWN0aW9ucywgd2UgcGxhbiB0byBwb3N0IGFuIFJGQyAwL04g
+aW4gYWJvdXQgMiB3ZWVrcy4KCgpUaGFua3MgZm9yIHlvdXIgZ3VpZGFuY2UuCgoKQmVzdCByZWdh
+cmRzLApMaWFvIFdlbnpoYW8KUmVubWluIFVuaXZlcnNpdHkgb2YgQ2hpbmEKCg==
