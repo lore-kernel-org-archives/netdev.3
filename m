@@ -1,285 +1,405 @@
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out28-221.mail.aliyun.com (out28-221.mail.aliyun.com [115.124.28.221])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6351E8332
-	for <netdev@vger.kernel.org>; Wed, 15 Apr 2026 03:36:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B982E78F3A;
+	Wed, 15 Apr 2026 03:36:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.221
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776224202; cv=none; b=Ml7YK0+1zM3pFvlE+85wcU8A7NHKm1g3o8eGZYilE+uFOD79vgAN5wv5cJoj3awEjZO09cvb5nscjrXmikAFLRiRIuDZWgtavtziKWiezAyzpdw5YvT2hj0fYk22PMfxrglF5sTcZM7DVJIvsyaKg1mstOiDA6Qo/g8dRpuycC0=
+	t=1776224204; cv=none; b=YEBJOtR2cO36t2ddGX3xo+enHHnralP2mmTxDquO1fHOs/GitRZLskeFh5BoYErGAuXqwCrZyy51zDLR7L0jnqHUkmeZjlEQ1PERgcboCvI00u62yIlywsE+Fw5ObmmoYaA8A0QGTZIc1YRx8Qsmz8giQaNwbzWt00QrfldEty8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776224202; c=relaxed/simple;
-	bh=C/B1iyGzAeco8mG6XbmyXE51qKv69U4KUwCwz/s2yqs=;
-	h=Message-ID:MIME-Version:Date:Subject:From:To:Cc; b=rlHFZRrfGJ6T5d1v+Gn1wlH2PiC21da5u9md7whPOD0h0BPbM7EA/ZhMuv+ENClvZCaV4VVoasreazcgZwma2957hGMj7DM8gzGTnvviu5EaG1dQjYR66kykd2yFYF+2gQsSQHA3fJ33PEns9FFMWi3Gur9riOgQZ8W2gvoKPJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JXBdgfGi; arc=none smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JXBdgfGi"
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-c794baca11dso950864a12.3
-        for <netdev@vger.kernel.org>; Tue, 14 Apr 2026 20:36:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776224200; x=1776829000; darn=vger.kernel.org;
-        h=resent-message-id:resent-subject:resent-to:resent-from:resent-date
-         :cc:to:from:subject:date:mime-version:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=4ZLYidU8KdyVrc/NNKWv09N00LRazE5EQKYln5mJeJc=;
-        b=JXBdgfGi0fAKE/4deKhGlWEyxY3af0MthNe9LtfV10IBwpM8gUwJPL4NeZiBZhHmiW
-         TX/CVCZikcaXuai8HxL0gi3uIu/AB5wPU9SPgc3VdcIUpvimGjVxNQ/0GyGw0bJGmywf
-         029Sb+Bbq+RYGK8FFVFUMPiD2SdKoIorolBUPFPUZ3ZGvou8lBAWaIVoPw++cvMZPrTq
-         v1W4wG917dWDCpbuPjmlcGAD1tJelUcVoB1VJwEGJYyOlRkUj6eKdJNdXgU8mXeufVK5
-         plCMjHzKWYbP614Tp8LkEnBLR1ZEPzn1CBHJX7pIwsPAEeqI/8kNYBhXMr9CkTVrQA4Y
-         lHbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776224200; x=1776829000;
-        h=resent-message-id:resent-subject:resent-to:resent-from:resent-date
-         :cc:to:from:subject:date:mime-version:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4ZLYidU8KdyVrc/NNKWv09N00LRazE5EQKYln5mJeJc=;
-        b=VUpaEIWm9sUa5E+HW6Y2b80WTICrA8XuVMGCUMKGWy+EsB38cnmrcwcNy4UyrCXd9A
-         LdToXtchUy/awWX5LrKA6wBvLxrbckjt1U61ltQipG83W6lqO8iV7NfflM+3/sU1ekfs
-         AobAFsjQrAor27DqUmnSB1L3SJao9OwpFPRYo5x1tH1WFLCrbXvSwSMFjBrJOl8YFQAY
-         GoaJpzJjpNmUaswsxBZZF2UBzftk+G331BiuE1WNwX/3lqmpgzznNy5RsHapcUpyWJnd
-         R8uqJKvqSSKMO5fgpxoHElvV4a2MPFqL7nc3LrIDLg4oECW1hdCByptbUD1rWdZej/q1
-         f2Qg==
-X-Forwarded-Encrypted: i=1; AFNElJ/g/qFv0KAYbhC22s3Ne2Yh+zeHudGJrud2gzXFXe1cZ4wd2/ySY2zMaYyBS8diDEtMAXek3r8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQouuKXoKlzHjk3Q/DbYeOJgNS87aZnnjiBrGPMRHoOTerndLT
-	Rl79WxTPh427/hpzte6nIFIZtdYujfJaWF26unqRSMa/haMOmWEgNS9NTmXfsQ==
-X-Gm-Gg: AeBDievsCkY0bjg6BumMEdWhas/dfu82HvZ88AIkmenIfH2VL3kglS3YN3BhMDA1DBj
-	Kst/VIiO0kUSuGZQJEmJ7kpG10UW5MjFSL9R0zPhAwzI7/AuDIaBEubTL0ftHEqUa2UrH1wYS45
-	x3LwW1GsxylJG9MhGA4Kbpd1Sd6jzcf/HAdenLLPUbudXrozPTZuGYpHfmChh+LVZuVxgViRAz3
-	7DZCJkYt0kcAJ5wNHIfoZqs4cx7MvvsD+UXwqBjwlKCCl9WsaFeVUW0Qv5CSIZCiUOg1IsYeU+u
-	J0Lo0mcWe5mzq8GFT24Vl88pafqaEd4J2cfCMPQOopidxvhR9YVqgj5a3qvWClxo+6M3DxqyXWM
-	p3aU3+eFQ3yXDbFtzEfzsSU2HGDEv4H7TtcULp3um4qM9eCIMSaYtdnV8yBwmMPXhVhx2nSldkx
-	vZMsH5YBkFB7CUJY3T8bc+HKcny5Rt2/7x4BH5bK7QhfW2APWeVFHXzyegj/lr0g==
-X-Received: by 2002:a05:6a21:3384:b0:39f:3ca8:a331 with SMTP id adf61e73a8af0-39fe3d0e147mr22603896637.16.1776224199868;
-        Tue, 14 Apr 2026 20:36:39 -0700 (PDT)
-Received: from smtp.rather.puzzling.org ([122.199.47.107])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7957eeaabesm306595a12.10.2026.04.14.20.36.38
-        for <netdev@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Apr 2026 20:36:39 -0700 (PDT)
-Message-ID: <69df07c7.630a0220.281396.60d8@mx.google.com>
-Received: from dirac.rather.puzzling.org (dirac.rather.puzzling.org [192.168.1.17])
-	by smtp.rather.puzzling.org (Postfix) with ESMTPS id 79E0D20261
-	for <netdev@vger.kernel.org>; Wed, 15 Apr 2026 13:36:35 +1000 (AEST)
-Received: by dirac.rather.puzzling.org (Postfix, from userid 738)
-	id 0DDEE20840; Wed, 15 Apr 2026 13:36:35 +1000 (AEST)
-Received: from localhost (localhost [127.0.0.1])
-	by dirac.rather.puzzling.org (Postfix) with ESMTP id 02DC6207C5
-	for <netdev@vger.kernel.org>; Wed, 15 Apr 2026 13:36:35 +1000 (AEST)
-X-Return-Path: <tim.w.connors@gmail.com>
-X-Delivered-To: tconnors@rather.puzzling.org
-X-Received: by smtp.rather.puzzling.org (Postfix, from userid 738)
-	id A2E3420219; Tue, 14 Apr 2026 00:01:38 +1000 (AEST)
-X-Received: from imap.gmail.com [172.253.118.108]
-	by smtp.rather.puzzling.org with IMAP (fetchmail-6.4.37 polling imap.gmail.com account tim.w.connors@gmail.com folder INBOX)
-	for <tconnors@localhost> (single-drop); Tue, 14 Apr 2026 00:01:37 +1000 (AEST)
+	s=arc-20240116; t=1776224204; c=relaxed/simple;
+	bh=+fNaMJuvnk+Spk+dAlZgyfoDX4NuSzkaubuFiPJfUuA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=n0u2Y35Ya+ml0SZRKFyVNTUli73N+aRyk1+p8uK6xxbc5+5l21ErZUBFQf9oLwfYd3f+fO3XzLQdvg89o6yhNeq9Zh3auOCkWCjmhUFEOjSvEwQjTEIPA5RhCRr6iQ9+eYbvbFwtmWXcINAxhU42Y96/IJ3E8md9LIX+Mbb0wFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com; spf=pass smtp.mailfrom=nebula-matrix.com; arc=none smtp.client-ip=115.124.28.221
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebula-matrix.com
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.06713098|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0221906-0.00311292-0.974696;FP=16597484786084748978|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037071049;MF=illusion.wang@nebula-matrix.com;NM=1;PH=DS;RN=19;RT=19;SR=0;TI=SMTPD_---.hCMs9x4_1776224195;
+Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.hCMs9x4_1776224195 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Wed, 15 Apr 2026 11:36:36 +0800
+From: "illusion.wang" <illusion.wang@nebula-matrix.com>
+To: dimon.zhao@nebula-matrix.com,
+	illusion.wang@nebula-matrix.com,
+	alvin.wang@nebula-matrix.com,
+	sam.chen@nebula-matrix.com,
+	netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch,
+	corbet@lwn.net,
+	kuba@kernel.org,
+	linux-doc@vger.kernel.org,
+	lorenzo@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	vadim.fedorenko@linux.dev,
+	lukas.bulwahn@redhat.com,
+	edumazet@google.com,
+	enelsonmoore@gmail.com,
+	skhan@linuxfoundation.org,
+	hkallweit1@gmail.com,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH v12 net-next 01/11] net/nebula-matrix: add minimum nbl build framework
+Date: Wed, 15 Apr 2026 11:35:53 +0800
+Message-ID: <20260415033608.2438-2-illusion.wang@nebula-matrix.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260415033608.2438-1-illusion.wang@nebula-matrix.com>
+References: <20260415033608.2438-1-illusion.wang@nebula-matrix.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Tue, 14 Apr 2026 00:01:29 +1000
-Subject: Re: RE: [Intel-wired-lan] Bug#1104670: linux-image-6.12.25-amd64:
- system does not shut down - GHES: Fatal hardware error
-From: Tim Connors <tim.w.connors@gmail.com>
-To: 1104670@bugs.debian.org
-Cc: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>, "Hutchings, Ben"
- <ben@decadent.org.uk>, "intel-wired-lan@lists.osuosl.org"
- <intel-wired-lan@lists.osuosl.org>, linux-pci <linux-pci@vger.kernel.org>,
- Pavan Chebbi <pavan.chebbi@broadcom.com>, Michael Chan <mchan@broadcom.com>,
- Laurent Bonnaud <L.Bonnaud@laposte.net>, "netdev@vger.kernel.org"
- <netdev@vger.kernel.org>
-ReSent-Date: Wed, 15 Apr 2026 13:36:29 +1000 (AEST)
-ReSent-From: Tim Connors <tconnors@rather.puzzling.org>
-ReSent-To: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-ReSent-Subject: Re: RE: [Intel-wired-lan] Bug#1104670: linux-image-6.12.25-amd64:
- system does not shut down - GHES: Fatal hardware error
-ReSent-Message-ID: <ab0f452b-ba91-e165-21c0-3964ee6de636@rather.puzzling.org>
+Content-Transfer-Encoding: 8bit
 
-On Mon, 14 Jul 2025 09:21:25 +0000 "Loktionov, Aleksandr" <
-aleksandr.loktionov@intel.com> wrote:
-> > On Sun, 2025-05-04 at 13:45 +0200, Laurent Bonnaud wrote:
-> > [...]
-> > >   - Previously the kernel would output an error in
-> > /var/lib/systemd/pstore/ but would shutdown anyway.
-> > >
-> > >   - Now, with kernel 6.1.135-1, the shutdown is blocked as with
-> > 6.12.x kernels (see below).
-> > > <30>[  961.098671] systemd-shutdown[1]: Rebooting.
-> > > <6>[  961.098743] kvm: exiting hardware virtualization <6>[
-> > > 961.361878] megaraid_sas 0000:17:00.0: megasas_disable_intr_fusion
-> > is
-> > > called outbound_intr_mask:0x40000009 <6>[  961.414526] ACPI: PM:
-> > > Preparing to enter system sleep state S5 <0>[  963.828210]
-> > > {1}[Hardware Error]: Hardware error from APEI Generic Hardware Error
-> > > Source: 5 <0>[  963.828213] {1}[Hardware Error]: event severity:
-> > fatal <0>[  963.828214] {1}[Hardware Error]:  Error 0, type: fatal
-> > > <0>[  963.828216] {1}[Hardware Error]:   section_type: PCIe error
-> > > <0>[  963.828216] {1}[Hardware Error]:   port_type: 0, PCIe end
-> > point
-> > > <0>[  963.828217] {1}[Hardware Error]:   version: 3.0
-> > > <0>[  963.828218] {1}[Hardware Error]:   command: 0x0002, status:
-> > 0x0010
-> > > <0>[  963.828220] {1}[Hardware Error]:   device_id: 0000:01:00.1
-> > > <0>[  963.828221] {1}[Hardware Error]:   slot: 6
->>> <0>[  963.828222] {1}[Hardware Error]:   secondary_bus: 0x00
->>> <0>[  963.828223] {1}[Hardware Error]:   vendor_id: 0x8086,
->> device_id: 0x1563
->>> <0>[  963.828224] {1}[Hardware Error]:   class_code: 020000
->>> <0>[  963.828225] {1}[Hardware Error]:   aer_uncor_status:
->> 0x00100000, aer_uncor_mask: 0x00018000
->>> <0>[  963.828226] {1}[Hardware Error]:   aer_uncor_severity:
->> 0x000ef010
->>> <0>[  963.828227] {1}[Hardware Error]:   TLP Header: 40000001
->> 0000000f 90028090 00000000
->> [...]
->>
->> It seems that this is a known bug in the BIOS of several Dell
->> PowerEdge models including (in this case) the R540.
+1.Add nbl min build infrastructure for nbl driver.
 
-Yup, R730XD here.
+2.Add PCI driver skeleton with empty stubs for nbl driver.
 
->> A workaround was added to the tg3 driver
->> <https://git.kernel.org/linus/e0efe83ed325277bb70f9435d4d9fc70bebdcca8
->>
->> and a similar change was proposed (but not accepted) in the i40e
->> driver <https://lore.kernel.org/all/20241227035459.90602-1-
->> yue.zhao@shopee.com/>.
->> On tihis system the erorr log points to a deivce handled by the ixgbe
->> driver, and no workaround has been implemented for that.
->>
->> Since this issue seems to affect multiple different NIC vendors and
->> drivers, would it make more sense to implement this workaround as a
->> PCI quirk?
+Signed-off-by: illusion.wang <illusion.wang@nebula-matrix.com>
+---
+ .../device_drivers/ethernet/index.rst         |   1 +
+ .../ethernet/nebula-matrix/nbl.rst            |  27 +++++
+ MAINTAINERS                                   |  10 ++
+ drivers/net/ethernet/Kconfig                  |   1 +
+ drivers/net/ethernet/Makefile                 |   1 +
+ drivers/net/ethernet/nebula-matrix/Kconfig    |  34 ++++++
+ drivers/net/ethernet/nebula-matrix/Makefile   |   6 +
+ .../net/ethernet/nebula-matrix/nbl/Makefile   |   6 +
+ .../net/ethernet/nebula-matrix/nbl/nbl_core.h |  16 +++
+ .../nbl/nbl_include/nbl_include.h             |  21 ++++
+ .../net/ethernet/nebula-matrix/nbl/nbl_main.c | 113 ++++++++++++++++++
+ 11 files changed, 236 insertions(+)
+ create mode 100644 Documentation/networking/device_drivers/ethernet/nebula-matrix/nbl.rst
+ create mode 100644 drivers/net/ethernet/nebula-matrix/Kconfig
+ create mode 100644 drivers/net/ethernet/nebula-matrix/Makefile
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/Makefile
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
 
-It's not just network devices either.
-
-<5>[965917.449277] sd 4:0:0:0: [sda] Synchronizing SCSI cache
-<6>[965917.614364] [drm] PCIE GART of 256M enabled (table at
-0x000000F47FF80000).
-<6>[965917.820364] [drm] UVD and UVD ENC initialized successfully.
-<6>[965917.921559] [drm] VCE initialized successfully.
-<6>[965917.926574] amdgpu 0000:04:00.0: [drm] Cannot find any crtc or sizes
-<6>[965917.934684] amdgpu 0000:04:00.0: [drm] Cannot find any crtc or sizes
-<0>[965919.725575] {1}[Hardware Error]: Hardware error from APEI Generic
-Hardware Error Source: 3
-<0>[965919.725582] {1}[Hardware Error]: event severity: fatal
-<0>[965919.725587] {1}[Hardware Error]:  Error 0, type: fatal
-<0>[965919.725591] {1}[Hardware Error]:   section_type: PCIe error
-<0>[965919.725595] {1}[Hardware Error]:   port_type: 1, legacy PCI end point
-<0>[965919.725598] {1}[Hardware Error]:   version: 1.16
-<0>[965919.725602] {1}[Hardware Error]:   command: 0x0407, status: 0x0010
-<0>[965919.725607] {1}[Hardware Error]:   device_id: 0000:04:00.1
-<0>[965919.725611] {1}[Hardware Error]:   slot: 0
-<0>[965919.725614] {1}[Hardware Error]:   secondary_bus: 0x00
-<0>[965919.725617] {1}[Hardware Error]:   vendor_id: 0x1002, device_id:
-0xaae0
-<0>[965919.725622] {1}[Hardware Error]:   class_code: 040300
-<0>[965919.725625] {1}[Hardware Error]:   aer_cor_status: 0x00002000,
-aer_cor_mask: 0x000031c0
-<0>[965919.725630] {1}[Hardware Error]:   aer_uncor_status: 0x00100000,
-aer_uncor_mask: 0x00010000
-<0>[965919.725635] {1}[Hardware Error]:   aer_uncor_severity: 0x004e7030
-<0>[965919.725638] {1}[Hardware Error]:   TLP Header: 40008001 00000a0f
-96a121a0 00000000
-<0>[965919.725646] GHES: Fatal hardware error but panic disabled
-<0>[965919.725650] Kernel panic - not syncing: GHES: Fatal hardware error
-<4>[965919.725662] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Tainted: P
-  O       6.14.11-5-bpo12-pve #1
-<4>[965919.725676] Tainted: [P]=PROPRIETARY_MODULE, [O]=OOT_MODULE
-<4>[965919.725689] Hardware name: Dell Inc. PowerEdge R730xd/072T6D, BIOS
-2.19.0 12/12/2023
-<4>[965919.725694] Call Trace:
-<4>[965919.725700]  <NMI>
-<4>[965919.725706]  dump_stack_lvl+0x27/0xa0
-<4>[965919.725722]  dump_stack+0x10/0x20
-<4>[965919.725729]  panic+0x358/0x3b0
-<4>[965919.725742]  __ghes_panic+0x60/0x80
-<4>[965919.725756]  ghes_notify_nmi+0x1d5/0x380
-<4>[965919.725768]  nmi_handle.part.0+0x58/0x160
-<4>[965919.725781]  default_do_nmi+0x131/0x170
-<4>[965919.725792]  exc_nmi+0x1c4/0x290
-<4>[965919.725799]  end_repeat_nmi+0xf/0x53
-<4>[965919.725816] RIP: 0010:intel_idle+0x51/0x90
-<4>[965919.725824] Code: 2d 80 ca 2b 00 eb 52 cc cc cc 48 89 f0 0f 1f 00 31
-d2 48 89 d1 0f 01 c8 48 8b 06 a8 08 75 0b b9 01 00 00 00 4c 89 c0 0f 01 c9
-<f0> 80 66 02 df f0 83 44 24 fc 00 48 8b 06 a8 08 74 0b 65 81 25 ea
-<4>[965919.725830] RSP: 0018:ffffffff8ec03db0 EFLAGS: 00000046
-<4>[965919.725837] RAX: 0000000000000020 RBX: ffff8aa2ffa44680 RCX:
-0000000000000001
-<4>[965919.725841] RDX: 0000000000000000 RSI: ffffffff8ec107c0 RDI:
-0000000000000004
-<4>[965919.725849] RBP: ffffffff8ec03df0 R08: 0000000000000020 R09:
-0000000000000000
-<4>[965919.725854] R10: 0000000000000000 R11: 0000000000000000 R12:
-0000000000000004
-<4>[965919.725857] R13: ffffffff8ee86960 R14: ffffffff8ee86b18 R15:
-0000000000000004
-<4>[965919.725866]  ? intel_idle+0x51/0x90
-<4>[965919.725873]  ? intel_idle+0x51/0x90
-<4>[965919.725879]  </NMI>
-<4>[965919.725882]  <TASK>
-<4>[965919.725884]  ? cpuidle_enter_state+0x85/0x450
-<4>[965919.725895]  cpuidle_enter+0x2e/0x50
-<4>[965919.725908]  call_cpuidle+0x22/0x60
-<4>[965919.725918]  do_idle+0x1de/0x240
-<4>[965919.725925]  cpu_startup_entry+0x29/0x30
-<4>[965919.725930]  rest_init+0xd0/0xd0
-<4>[965919.725934]  start_kernel+0x779/0xb60
-<4>[965919.725941]  ? load_ucode_intel_bsp+0x43/0xa0
-<4>[965919.725952]  x86_64_start_reservations+0x18/0x30
-<4>[965919.725961]  x86_64_start_kernel+0xbf/0x110
-<4>[965919.725968]  common_startup_64+0x13e/0x141
-<4>[965919.725980]  </TASK>
-<0>[965919.726136] Kernel Offset: 0xb600000 from 0xffffffff81000000
-(relocation range: 0xffffffff80000000-0xffffffffbfffffff)
-
-
-04:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI]
-Lexa PRO [Radeon 540/540X/550/550X / RX 540X/550/550X] (rev c7) (prog-if 00
-[VGA controller])
-        Subsystem: Advanced Micro Devices, Inc. [AMD/ATI] Lexa PRO [Radeon
-540/540X/550/550X / RX 540X/550/550X]
-        Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr-
-Stepping- SERR- FastB2B- DisINTx+
-        Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort-
-<TAbort- <MAbort- >SERR- <PERR- INTx-
-        Latency: 0
-        Interrupt: pin A routed to IRQ 174
-        NUMA node: 0
-        IOMMU group: 29
-        Region 0: Memory at 38000000000 (64-bit, prefetchable) [size=2G]
-        Region 2: Memory at 38080000000 (64-bit, prefetchable) [size=2M]
-        Region 4: I/O ports at 2000 [size=256]
-        Region 5: Memory at 96a00000 (32-bit, non-prefetchable) [size=256K]
-        Expansion ROM at 96a60000 [disabled] [size=128K]
-        Capabilities: <access denied>
-        Kernel driver in use: amdgpu
-        Kernel modules: amdgpu
-
-04:00.1 Audio device: Advanced Micro Devices, Inc. [AMD/ATI] Baffin HDMI/DP
-Audio [Radeon RX 550 640SP / RX 560/560X]
-        Subsystem: Advanced Micro Devices, Inc. [AMD/ATI] Baffin HDMI/DP
-Audio [Radeon RX 550 640SP / RX 560/560X]
-        Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr-
-Stepping- SERR- FastB2B- DisINTx+
-        Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort-
-<TAbort- <MAbort- >SERR- <PERR- INTx-
-        Latency: 0
-        Interrupt: pin B routed to IRQ 172
-        NUMA node: 0
-        IOMMU group: 30
-        Region 0: Memory at 96a40000 (64-bit, non-prefetchable) [size=16K]
-        Capabilities: <access denied>
-        Kernel driver in use: snd_hda_intel
-        Kernel modules: snd_hda_intel
-
-Was completely idle and unused all boot session, and reboot was routine
-after patching. kernel 6.14.11-5-bpo12 from proxmox backports (so ubuntu
-backports, essentially).
-
-> I support the idea of PCI workaround, but who will implement it ?
-
+diff --git a/Documentation/networking/device_drivers/ethernet/index.rst b/Documentation/networking/device_drivers/ethernet/index.rst
+index 5f3f06111911..14868fabc1c6 100644
+--- a/Documentation/networking/device_drivers/ethernet/index.rst
++++ b/Documentation/networking/device_drivers/ethernet/index.rst
+@@ -48,6 +48,7 @@ Contents:
+    meta/fbnic
+    microsoft/netvsc
+    mucse/rnpgbe
++   nebula-matrix/nbl
+    netronome/nfp
+    pensando/ionic
+    pensando/ionic_rdma
+diff --git a/Documentation/networking/device_drivers/ethernet/nebula-matrix/nbl.rst b/Documentation/networking/device_drivers/ethernet/nebula-matrix/nbl.rst
+new file mode 100644
+index 000000000000..10feb5f37c04
+--- /dev/null
++++ b/Documentation/networking/device_drivers/ethernet/nebula-matrix/nbl.rst
+@@ -0,0 +1,27 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++=====================================================
++Linux Base Driver for Nebula-matrix M18000-NIC family
++=====================================================
++
++Overview:
++=========
++M18000-NIC is a series of network interface cards for the Data Center Area.
++
++The driver supports link-speed 100GbE/25GE/10GE.
++
++M18000-NIC devices support MSI-X interrupt vector for each Tx/Rx queue and
++interrupt moderation.
++
++M18000-NIC devices support also various offload features such as checksum offload,
++Receive-Side Scaling(RSS).
++
++Support
++=======
++
++For more information about M18000-NIC, please visit the following URL:
++https://www.nebula-matrix.com/
++
++If an issue is identified with the released source code on the supported kernel
++with a supported adapter, email the specific information related to the issue to
++open@nebula-matrix.com.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 65902b97f5df..82bb78fd7676 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -18216,6 +18216,16 @@ F:	Documentation/devicetree/bindings/hwmon/nuvoton,nct7363.yaml
+ F:	Documentation/hwmon/nct7363.rst
+ F:	drivers/hwmon/nct7363.c
+ 
++NEBULA-MATRIX ETHERNET DRIVER (nebula-matrix)
++M:	Illusion Wang <illusion.wang@nebula-matrix.com>
++M:	Dimon Zhao <dimon.zhao@nebula-matrix.com>
++M:	Alvin Wang <alvin.wang@nebula-matrix.com>
++M:	Sam Chen <sam.chen@nebula-matrix.com>
++L:	netdev@vger.kernel.org
++S:	Maintained
++F:	Documentation/networking/device_drivers/ethernet/nebula-matrix/
++F:	drivers/net/ethernet/nebula-matrix/
++
+ NETCONSOLE
+ M:	Breno Leitao <leitao@debian.org>
+ S:	Maintained
+diff --git a/drivers/net/ethernet/Kconfig b/drivers/net/ethernet/Kconfig
+index bdc29d143160..def67e8a35a9 100644
+--- a/drivers/net/ethernet/Kconfig
++++ b/drivers/net/ethernet/Kconfig
+@@ -130,6 +130,7 @@ config FEALNX
+ 
+ source "drivers/net/ethernet/ni/Kconfig"
+ source "drivers/net/ethernet/natsemi/Kconfig"
++source "drivers/net/ethernet/nebula-matrix/Kconfig"
+ source "drivers/net/ethernet/netronome/Kconfig"
+ source "drivers/net/ethernet/8390/Kconfig"
+ source "drivers/net/ethernet/nvidia/Kconfig"
+diff --git a/drivers/net/ethernet/Makefile b/drivers/net/ethernet/Makefile
+index 6bffb60ba644..44ce1cbba2ef 100644
+--- a/drivers/net/ethernet/Makefile
++++ b/drivers/net/ethernet/Makefile
+@@ -67,6 +67,7 @@ obj-$(CONFIG_NET_VENDOR_MUCSE) += mucse/
+ obj-$(CONFIG_NET_VENDOR_MYRI) += myricom/
+ obj-$(CONFIG_FEALNX) += fealnx.o
+ obj-$(CONFIG_NET_VENDOR_NATSEMI) += natsemi/
++obj-$(CONFIG_NET_VENDOR_NEBULA_MATRIX) += nebula-matrix/
+ obj-$(CONFIG_NET_VENDOR_NETRONOME) += netronome/
+ obj-$(CONFIG_NET_VENDOR_NI) += ni/
+ obj-$(CONFIG_NET_VENDOR_NVIDIA) += nvidia/
+diff --git a/drivers/net/ethernet/nebula-matrix/Kconfig b/drivers/net/ethernet/nebula-matrix/Kconfig
+new file mode 100644
+index 000000000000..9c8b4cf13b48
+--- /dev/null
++++ b/drivers/net/ethernet/nebula-matrix/Kconfig
+@@ -0,0 +1,34 @@
++# SPDX-License-Identifier: GPL-2.0
++#
++# Nebula-matrix network device configuration
++#
++
++config NET_VENDOR_NEBULA_MATRIX
++	bool "Nebula-matrix devices"
++	default y
++	help
++	  If you have a network (Ethernet) card belonging to this class, say Y.
++	  Note that the answer to this question doesn't directly affect the
++	  kernel: saying N will just cause the configurator to skip all
++	  the questions about Nebula-matrix cards. If you say Y, you will be asked
++	  for your specific card in the following questions.
++
++if NET_VENDOR_NEBULA_MATRIX
++
++config NBL
++	tristate "Nebula-matrix Ethernet Controller m18110/m18000 support"
++	depends on PCI && (64BIT || COMPILE_TEST)
++	help
++	  This driver supports Nebula-matrix Ethernet Controller m18110/m18000
++	  Family of devices.  For more information about this product, go to
++	  the product description with smart NIC:
++
++	  <http://www.nebula-matrix.com>
++
++	  More specific information on configuring the driver is in
++	  <file:Documentation/networking/device_drivers/ethernet/nebula-matrix/nbl.rst>.
++
++	  To compile this driver as a module, choose M here. The module
++	  will be called nbl.
++
++endif # NET_VENDOR_NEBULA_MATRIX
+diff --git a/drivers/net/ethernet/nebula-matrix/Makefile b/drivers/net/ethernet/nebula-matrix/Makefile
+new file mode 100644
+index 000000000000..42cdf2db8f0c
+--- /dev/null
++++ b/drivers/net/ethernet/nebula-matrix/Makefile
+@@ -0,0 +1,6 @@
++# SPDX-License-Identifier: GPL-2.0
++#
++# Makefile for the Nebula-matrix network device drivers.
++#
++
++obj-$(CONFIG_NBL) += nbl/
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/Makefile b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
+new file mode 100644
+index 000000000000..b90fba239401
+--- /dev/null
++++ b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
+@@ -0,0 +1,6 @@
++# SPDX-License-Identifier: GPL-2.0
++# Copyright (c) 2025 Nebula Matrix Limited.
++
++obj-$(CONFIG_NBL) := nbl.o
++
++nbl-objs +=      nbl_main.o
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
+new file mode 100644
+index 000000000000..c525114297b4
+--- /dev/null
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
+@@ -0,0 +1,16 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Copyright (c) 2025 Nebula Matrix Limited.
++ */
++
++#ifndef _NBL_CORE_H_
++#define _NBL_CORE_H_
++
++enum {
++	NBL_CAP_HAS_CTRL_BIT,
++	NBL_CAP_HAS_NET_BIT,
++	NBL_CAP_IS_NIC_BIT,
++	NBL_CAP_IS_LEONIS_BIT,
++};
++
++#endif
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
+new file mode 100644
+index 000000000000..1046e6517b15
+--- /dev/null
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
+@@ -0,0 +1,21 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Copyright (c) 2025 Nebula Matrix Limited.
++ */
++
++#ifndef _NBL_INCLUDE_H_
++#define _NBL_INCLUDE_H_
++
++#include <linux/types.h>
++
++/*  ------  Basic definitions  -------  */
++#define NBL_DRIVER_NAME					"nbl"
++
++struct nbl_func_caps {
++	u32 has_ctrl:1;
++	u32 has_net:1;
++	u32 is_nic:1;
++	u32 rsv:29;
++};
++
++#endif
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
+new file mode 100644
+index 000000000000..10c3536b327b
+--- /dev/null
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
+@@ -0,0 +1,113 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (c) 2025 Nebula Matrix Limited.
++ */
++
++#include <linux/device.h>
++#include <linux/pci.h>
++#include <linux/module.h>
++#include "nbl_include/nbl_include.h"
++#include "nbl_core.h"
++
++static int nbl_probe(struct pci_dev *pdev,
++		     const struct pci_device_id *id)
++{
++	return 0;
++}
++
++static void nbl_remove(struct pci_dev *pdev)
++{
++}
++
++/*
++ * PCI Device IDs for Leonis/NBL Network Controllers
++ *
++ * Vendor ID: 0x1F0F
++ * SNIC v3r1 product Device IDs range: 0x3403-0x3412
++ */
++#define NBL_VENDOR_ID				0x1F0F
++
++#define NBL_DEVICE_ID_M18110			0x3403
++#define NBL_DEVICE_ID_M18110_LX			0x3404
++#define NBL_DEVICE_ID_M18110_BASE_T		0x3405
++#define NBL_DEVICE_ID_M18110_LX_BASE_T		0x3406
++#define NBL_DEVICE_ID_M18110_OCP		0x3407
++#define NBL_DEVICE_ID_M18110_LX_OCP		0x3408
++#define NBL_DEVICE_ID_M18110_BASE_T_OCP		0x3409
++#define NBL_DEVICE_ID_M18110_LX_BASE_T_OCP	0x340a
++#define NBL_DEVICE_ID_M18000			0x340b
++#define NBL_DEVICE_ID_M18000_LX			0x340c
++#define NBL_DEVICE_ID_M18000_BASE_T		0x340d
++#define NBL_DEVICE_ID_M18000_LX_BASE_T		0x340e
++#define NBL_DEVICE_ID_M18000_OCP		0x340f
++#define NBL_DEVICE_ID_M18000_LX_OCP		0x3410
++#define NBL_DEVICE_ID_M18000_BASE_T_OCP		0x3411
++#define NBL_DEVICE_ID_M18000_LX_BASE_T_OCP	0x3412
++
++static const struct pci_device_id nbl_id_table[] = {
++	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18110),
++	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) | BIT(NBL_CAP_IS_NIC_BIT) |
++			 BIT(NBL_CAP_IS_LEONIS_BIT) },
++	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18110_LX),
++	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) | BIT(NBL_CAP_IS_NIC_BIT) |
++			 BIT(NBL_CAP_IS_LEONIS_BIT) },
++	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18110_BASE_T),
++	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) | BIT(NBL_CAP_IS_NIC_BIT) |
++			 BIT(NBL_CAP_IS_LEONIS_BIT) },
++	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18110_LX_BASE_T),
++	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) | BIT(NBL_CAP_IS_NIC_BIT) |
++			 BIT(NBL_CAP_IS_LEONIS_BIT) },
++	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18110_OCP),
++	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) | BIT(NBL_CAP_IS_NIC_BIT) |
++			 BIT(NBL_CAP_IS_LEONIS_BIT) },
++	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18110_LX_OCP),
++	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) | BIT(NBL_CAP_IS_NIC_BIT) |
++			 BIT(NBL_CAP_IS_LEONIS_BIT) },
++	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18110_BASE_T_OCP),
++	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) | BIT(NBL_CAP_IS_NIC_BIT) |
++			 BIT(NBL_CAP_IS_LEONIS_BIT) },
++	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18110_LX_BASE_T_OCP),
++	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) | BIT(NBL_CAP_IS_NIC_BIT) |
++			 BIT(NBL_CAP_IS_LEONIS_BIT) },
++	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18000),
++	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) | BIT(NBL_CAP_IS_NIC_BIT) |
++			 BIT(NBL_CAP_IS_LEONIS_BIT) },
++	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18000_LX),
++	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) | BIT(NBL_CAP_IS_NIC_BIT) |
++			 BIT(NBL_CAP_IS_LEONIS_BIT) },
++	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18000_BASE_T),
++	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) | BIT(NBL_CAP_IS_NIC_BIT) |
++			 BIT(NBL_CAP_IS_LEONIS_BIT) },
++	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18000_LX_BASE_T),
++	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) | BIT(NBL_CAP_IS_NIC_BIT) |
++			 BIT(NBL_CAP_IS_LEONIS_BIT) },
++	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18000_OCP),
++	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) | BIT(NBL_CAP_IS_NIC_BIT) |
++			 BIT(NBL_CAP_IS_LEONIS_BIT) },
++	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18000_LX_OCP),
++	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) | BIT(NBL_CAP_IS_NIC_BIT) |
++			 BIT(NBL_CAP_IS_LEONIS_BIT) },
++	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18000_BASE_T_OCP),
++	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) | BIT(NBL_CAP_IS_NIC_BIT) |
++			 BIT(NBL_CAP_IS_LEONIS_BIT) },
++	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18000_LX_BASE_T_OCP),
++	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) | BIT(NBL_CAP_IS_NIC_BIT) |
++			 BIT(NBL_CAP_IS_LEONIS_BIT) },
++	/* required as sentinel */
++	{
++		0,
++	}
++};
++MODULE_DEVICE_TABLE(pci, nbl_id_table);
++
++static struct pci_driver nbl_driver = {
++	.name = NBL_DRIVER_NAME,
++	.id_table = nbl_id_table,
++	.probe = nbl_probe,
++	.remove = nbl_remove,
++};
++
++module_pci_driver(nbl_driver);
++
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("Nebula Matrix Network Driver");
+-- 
+2.47.3
 
