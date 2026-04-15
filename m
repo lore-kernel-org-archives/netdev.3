@@ -1,52 +1,52 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C965D37FF73
-	for <netdev@vger.kernel.org>; Wed, 15 Apr 2026 05:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC0B381B0A;
+	Wed, 15 Apr 2026 05:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776232171; cv=none; b=NAt4dxMFz1+hk1hZrvBiJ1/QuEb+wjiZkL29BzEk+lGZZGaJ4/kfmcRnBW+eMeq0p/xSoQU51TsXijl1Ce90kyym1w5qb2bkiGL62TxZN8jKwDGKaRYN0L48OHPv26N8XOlsWa9s1oS3P/22jSaV/3Q2YfXK6BlmQizZ6c1rMyQ=
+	t=1776232173; cv=none; b=hX1sQHKkFuGyvolbRdGA6MNpjhnDXKHGS9ClpYPPMcRVe67nyuTayMUkwT6+0KodAQx+dtfoqlXnygFnPL0XIW4QhOyEV5vPkf2g6PpCOKUG4UENuE3+4IdAXlH87CqokDlM1Kvn9mJtIR1hliD+GYqwSJSCtwrdQC3Rgsg6Xpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776232171; c=relaxed/simple;
-	bh=AdZXHfu+4asmztMM4u8YFksO2/GkQuJV3L1vNVvGBDA=;
+	s=arc-20240116; t=1776232173; c=relaxed/simple;
+	bh=POWdV/FGd+2c1wJaDInNscdlnBwu8jGvqNlYX4vI5oQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=GIDKmn4ysawIPLDOWjPVaLgo9uaGY1dVESX/aQ/7gBSIkCwa+Y/H/s/K3no5U0A3G1AcKMkXZ8zESxeEhWF1yM6GKgWjFNhsZpfcntvGbJUkVZJL7QzLW5ZyIhnp8PnsBMJ4fXlIYh3FVePGyMcBjcZBLku5+xgNGfbZ1z21Fco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Az4Jbw/z; arc=none smtp.client-ip=198.175.65.19
+	 In-Reply-To:To:Cc; b=XLd40/0A645N0Pm6EP0+Baj0RAmETdFLaDMbbS52ZRkLQVuhHdEiG8si0R+FEEaAIXyDKy7jz8nVa3DtEeWX7PkHl1UgMtWxdsgBuzJZBbXqmMsLYQnI/KNCLmpqOPGLQThrV0xqOC64rpeK0w+2UQ/8lXL2unkEbKqbMWHfaaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hZscOL1a; arc=none smtp.client-ip=198.175.65.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Az4Jbw/z"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hZscOL1a"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776232170; x=1807768170;
+  t=1776232171; x=1807768171;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=AdZXHfu+4asmztMM4u8YFksO2/GkQuJV3L1vNVvGBDA=;
-  b=Az4Jbw/ziTQ/NE2A3BpsC2Kk692S7prYArUbZiB3P3oF0ttkG0c2OidA
-   PZ3cMe0dB/ggWNUB7r33wTvR32juZM6mV9dMgF2raBaeqUl4iHkFuWfJX
-   HwV9IkewO0aSjRDOvyfoprrji2W/+b4vTyU+FeVaW04uGR1Rubeq062wQ
-   iAxLUB9fIW4y1LlS4gn3+VtrApOvOHzfRpe/N1gFfOSynLTQZaKPaVbQs
-   0gbF9za21THI4yRfqHC+OO9p2PRJxud6a8zql+wSCqG55iRkxwgIFNhxk
-   yj41fH8dS0MzUYg548zZxrn7j+55WnLdObm1+9zrhkBHhiipefgVr5DcC
+  bh=POWdV/FGd+2c1wJaDInNscdlnBwu8jGvqNlYX4vI5oQ=;
+  b=hZscOL1a14xhaHrU+aVTJoLTUwMwd/A+1n7wpqu4QCUcGDgmBUBiC4bG
+   7Ae523Sh9c5h2R3CKC5EvtHkX87lNkmXKgm/dGJJUTP088mxVs56Wpq/4
+   q7nwA5S39NPzY7OLqhcRTPVDlDTnv08pfHeYbSzLAy6gXKWt2LTKHSUto
+   jE5raV3xpXH+ofN5Iuc3S8ZtowECoqUISTwStIUe7N7dljiq0cGbYrGDM
+   CboEOHnt/fPZ0hxbN6X/0a5AGW+sleDZFZkL5/DpZ9e47otfelFiDCm+s
+   +sfLJk2klz9WloHR4dK+WDJO1mkKtIkoYP3mWsjb50lqqigoSCyL241BD
    g==;
-X-CSE-ConnectionGUID: vZO8l6VkSJaRTn8sUynSAA==
-X-CSE-MsgGUID: exPVPCetRwudpfHoYv3wCg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11759"; a="77105952"
+X-CSE-ConnectionGUID: ctS+nSgtR1i8VyJgrBPPMA==
+X-CSE-MsgGUID: 3X0rxFzBTyOi7gDpxdZTTw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11759"; a="77105973"
 X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
-   d="scan'208";a="77105952"
+   d="scan'208";a="77105973"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
   by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2026 22:49:26 -0700
-X-CSE-ConnectionGUID: sRz8vOuIST6+p3HKoH08kA==
-X-CSE-MsgGUID: +KQSJ1Z/QK+78sHiWc3tfw==
+X-CSE-ConnectionGUID: Ix7SE42AQU2Vfwmo03lhkg==
+X-CSE-MsgGUID: IEUi2YyKRBKiKkKCsEzwoQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
-   d="scan'208";a="253714810"
+   d="scan'208";a="253714820"
 Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.109]) ([10.166.28.109])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2026 22:49:25 -0700
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2026 22:49:26 -0700
 From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Tue, 14 Apr 2026 22:48:02 -0700
-Subject: [PATCH net 07/13] ice: fix race condition in TX timestamp ring
- cleanup
+Date: Tue, 14 Apr 2026 22:48:05 -0700
+Subject: [PATCH net 10/13] i40e: fix napi_enable/disable skipping ringless
+ q_vectors
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,231 +55,147 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260414-iwl-net-submission-2026-04-14-v1-7-852f38e7da39@intel.com>
+Message-Id: <20260414-iwl-net-submission-2026-04-14-v1-10-852f38e7da39@intel.com>
 References: <20260414-iwl-net-submission-2026-04-14-v1-0-852f38e7da39@intel.com>
 In-Reply-To: <20260414-iwl-net-submission-2026-04-14-v1-0-852f38e7da39@intel.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
 Cc: netdev@vger.kernel.org, Jacob Keller <jacob.e.keller@intel.com>, 
- Keita Morisaki <kmta1236@gmail.com>, 
- Aleksandr Loktionov <aleksandr.loktionov@intel.com>, 
- Rinitha S <sx.rinitha@intel.com>
+ Aleksandr Loktionov <aleksandr.loktionov@intel.com>, stable@vger.kernel.org, 
+ Sunitha Mekala <sunithax.d.mekala@intel.com>
 X-Mailer: b4 0.16-dev-ea14f
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7988;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5242;
  i=jacob.e.keller@intel.com; h=from:subject:message-id;
- bh=EMsF9bWqwtctdlTZ2F2bh9tYybdclf20gdCpol2p0NE=;
- b=owGbwMvMwCWWNS3WLp9f4wXjabUkhsz7ao/ajsie1WDakSC3eabdrDjpgCP3DFOsWvfsKuG6L
- r77h4dKRykLgxgXg6yYIouCQ8jK68YTwrTeOMvBzGFlAhnCwMUpABNZ94SRYXfez2zF+8XaK3dr
- TXeoYAlcc85qmtPSSab7F4rtbN+wppjhrzhv7GzvvRWKhldv7b0ZePBu2llb7ds5X29vcUsuEd9
- eywEA
+ bh=8pzCpKcT3fQx3sB5nwBof8I9mY09WCz1hR9rA/VKP2I=;
+ b=owGbwMvMwCWWNS3WLp9f4wXjabUkhsz7ao/mJwUzCx06mdSqlsR44Jfsx289Gu9O+riWpYccv
+ 3U0dfPzjlIWBjEuBlkxRRYFh5CV140nhGm9cZaDmcPKBDKEgYtTACYia8XIcLf8btuVhR/mWMjX
+ OP7mqrGvTT2jz3qLva8xsGTvxGybFQx/5fbkn0vTTXxhdkVfO/30cmWjdXa9X882z7xTYnf8l6g
+ HEwA=
 X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
  fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
 
-From: Keita Morisaki <kmta1236@gmail.com>
+From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 
-Fix a race condition between ice_free_tx_tstamp_ring() and ice_tx_map()
-that can cause a NULL pointer dereference.
+After ethtool -L reduces the queue count, i40e_napi_disable_all() sets
+NAPI_STATE_SCHED on all q_vectors, then i40e_vsi_map_rings_to_vectors()
+clears ring pointers on the excess ones.  i40e_napi_enable_all() skips
+those with:
 
-ice_free_tx_tstamp_ring currently clears the ICE_TX_FLAGS_TXTIME flag
-after NULLing the tstamp_ring. This could allow a concurrent ice_tx_map
-call on another CPU to dereference the tstamp_ring, which could lead to
-a NULL pointer dereference.
+	if (q_vector->rx.ring || q_vector->tx.ring)
+		napi_enable(&q_vector->napi);
 
-  CPU A:ice_free_tx_tstamp_ring() | CPU B:ice_tx_map()
-  --------------------------------|---------------------------------
-  tx_ring->tstamp_ring = NULL     |
-                                  | ice_is_txtime_cfg() -> true
-                                  | tstamp_ring = tx_ring->tstamp_ring
-                                  | tstamp_ring->count  // NULL deref!
-  flags &= ~ICE_TX_FLAGS_TXTIME   |
+leaving them on dev->napi_list with NAPI_STATE_SCHED permanently set.
 
-Fix by:
-1. Reordering ice_free_tx_tstamp_ring() to clear the flag before
-   NULLing the pointer, with smp_wmb() to ensure proper ordering.
-2. Adding smp_rmb() in ice_tx_map() after the flag check to order the
-   flag read before the pointer read, using READ_ONCE() for the
-   pointer, and adding a NULL check as a safety net.
-3. Converting tx_ring->flags from u8 to DECLARE_BITMAP() and using
-   atomic bitops (set_bit(), clear_bit(), test_bit()) for all flag
-   operations throughout the driver:
-   - ICE_TX_RING_FLAGS_XDP
-   - ICE_TX_RING_FLAGS_VLAN_L2TAG1
-   - ICE_TX_RING_FLAGS_VLAN_L2TAG2
-   - ICE_TX_RING_FLAGS_TXTIME
+Writing to /sys/class/net/<iface>/threaded calls napi_stop_kthread()
+on every entry in dev->napi_list.  The function loops on msleep(20)
+waiting for NAPI_STATE_SCHED to clear -- which never happens for the
+stale q_vectors.  The task hangs in D state forever; a concurrent write
+deadlocks on dev->lock held by the first.
 
-Fixes: ccde82e909467 ("ice: add E830 Earliest TxTime First Offload support")
-Signed-off-by: Keita Morisaki <kmta1236@gmail.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Rinitha S <sx.rinitha@intel.com>
+Commit 13a8cd191a2b ("i40e: Do not enable NAPI on q_vectors that have no
+rings") added the guard to prevent a divide-by-zero in i40e_napi_poll()
+when epoll busy-poll iterated all device NAPIs (4.x era). Since
+7adc3d57fe2b ("net: Introduce preferred busy-polling"), from v5.11,
+napi_busy_loop() polls by napi_id keyed to the socket, so ringless
+q_vectors are never selected.  i40e_msix_clean_rings() also independently
+avoids scheduling NAPI for them.  The guard is safe to remove.
+
+Add an early return in i40e_napi_poll() for num_ringpairs == 0 so the
+function is self-defending against a NULL tx.ring dereference at the
+WB_ON_ITR check, should the NAPI ever fire through an unexpected path.
+
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Closes: https://lore.kernel.org/intel-wired-lan/20260316133100.6054a11f@kernel.org/
+Fixes: 13a8cd191a2b ("i40e: Do not enable NAPI on q_vectors that have no rings")
+Cc: stable@vger.kernel.org
+Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com>
 Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice.h         |  4 ++--
- drivers/net/ethernet/intel/ice/ice_txrx.h    | 16 ++++++++++------
- drivers/net/ethernet/intel/ice/ice_dcb_lib.c |  2 +-
- drivers/net/ethernet/intel/ice/ice_lib.c     |  4 ++--
- drivers/net/ethernet/intel/ice/ice_txrx.c    | 23 ++++++++++++++++-------
- 5 files changed, 31 insertions(+), 18 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_main.c | 28 ++++++++++++++++------------
+ drivers/net/ethernet/intel/i40e/i40e_txrx.c | 10 ++++++++++
+ 2 files changed, 26 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
-index eb3a48330cc1..725b130dd3a2 100644
---- a/drivers/net/ethernet/intel/ice/ice.h
-+++ b/drivers/net/ethernet/intel/ice/ice.h
-@@ -753,7 +753,7 @@ static inline bool ice_is_xdp_ena_vsi(struct ice_vsi *vsi)
- 
- static inline void ice_set_ring_xdp(struct ice_tx_ring *ring)
- {
--	ring->flags |= ICE_TX_FLAGS_RING_XDP;
-+	set_bit(ICE_TX_RING_FLAGS_XDP, ring->flags);
- }
- 
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index 028bd500603a..b4ca8485f4b5 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -5182,6 +5182,14 @@ static void i40e_clear_interrupt_scheme(struct i40e_pf *pf)
  /**
-@@ -778,7 +778,7 @@ static inline bool ice_is_txtime_ena(const struct ice_tx_ring *ring)
-  */
- static inline bool ice_is_txtime_cfg(const struct ice_tx_ring *ring)
+  * i40e_napi_enable_all - Enable NAPI for all q_vectors in the VSI
+  * @vsi: the VSI being configured
++ *
++ * Enable NAPI on every q_vector that is registered with the netdev,
++ * regardless of whether it currently has rings assigned.  After a queue-
++ * count reduction (e.g. ethtool -L combined 1) the excess q_vectors lose
++ * their ring pointers inside i40e_vsi_map_rings_to_vectors but remain on
++ * dev->napi_list.  Leaving them in the napi_disable()-ed state
++ * (NAPI_STATE_SCHED set) causes napi_set_threaded() to spin forever on
++ * msleep(20) waiting for that bit to clear.
+  **/
+ static void i40e_napi_enable_all(struct i40e_vsi *vsi)
  {
--	return !!(ring->flags & ICE_TX_FLAGS_TXTIME);
-+	return test_bit(ICE_TX_RING_FLAGS_TXTIME, ring->flags);
- }
- 
- /**
-diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.h b/drivers/net/ethernet/intel/ice/ice_txrx.h
-index b6547e1b7c42..5e517f219379 100644
---- a/drivers/net/ethernet/intel/ice/ice_txrx.h
-+++ b/drivers/net/ethernet/intel/ice/ice_txrx.h
-@@ -212,6 +212,14 @@ enum ice_rx_dtype {
- 	ICE_RX_DTYPE_SPLIT_ALWAYS	= 2,
- };
- 
-+enum ice_tx_ring_flags {
-+	ICE_TX_RING_FLAGS_XDP,
-+	ICE_TX_RING_FLAGS_VLAN_L2TAG1,
-+	ICE_TX_RING_FLAGS_VLAN_L2TAG2,
-+	ICE_TX_RING_FLAGS_TXTIME,
-+	ICE_TX_RING_FLAGS_NBITS,
-+};
-+
- struct ice_pkt_ctx {
- 	u64 cached_phctime;
- 	__be16 vlan_proto;
-@@ -352,11 +360,7 @@ struct ice_tx_ring {
- 	u16 count;			/* Number of descriptors */
- 	u16 q_index;			/* Queue number of ring */
- 
--	u8 flags;
--#define ICE_TX_FLAGS_RING_XDP		BIT(0)
--#define ICE_TX_FLAGS_RING_VLAN_L2TAG1	BIT(1)
--#define ICE_TX_FLAGS_RING_VLAN_L2TAG2	BIT(2)
--#define ICE_TX_FLAGS_TXTIME		BIT(3)
-+	DECLARE_BITMAP(flags, ICE_TX_RING_FLAGS_NBITS);
- 
- 	struct xsk_buff_pool *xsk_pool;
- 
-@@ -398,7 +402,7 @@ static inline bool ice_ring_ch_enabled(struct ice_tx_ring *ring)
- 
- static inline bool ice_ring_is_xdp(struct ice_tx_ring *ring)
- {
--	return !!(ring->flags & ICE_TX_FLAGS_RING_XDP);
-+	return test_bit(ICE_TX_RING_FLAGS_XDP, ring->flags);
- }
- 
- enum ice_container_type {
-diff --git a/drivers/net/ethernet/intel/ice/ice_dcb_lib.c b/drivers/net/ethernet/intel/ice/ice_dcb_lib.c
-index bd77f1c001ee..16aa25535152 100644
---- a/drivers/net/ethernet/intel/ice/ice_dcb_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_dcb_lib.c
-@@ -943,7 +943,7 @@ ice_tx_prepare_vlan_flags_dcb(struct ice_tx_ring *tx_ring,
- 		/* if this is not already set it means a VLAN 0 + priority needs
- 		 * to be offloaded
- 		 */
--		if (tx_ring->flags & ICE_TX_FLAGS_RING_VLAN_L2TAG2)
-+		if (test_bit(ICE_TX_RING_FLAGS_VLAN_L2TAG2, tx_ring->flags))
- 			first->tx_flags |= ICE_TX_FLAGS_HW_OUTER_SINGLE_VLAN;
- 		else
- 			first->tx_flags |= ICE_TX_FLAGS_HW_VLAN;
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-index 689c6025ea82..837b71b7b2b7 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -1412,9 +1412,9 @@ static int ice_vsi_alloc_rings(struct ice_vsi *vsi)
- 		ring->count = vsi->num_tx_desc;
- 		ring->txq_teid = ICE_INVAL_TEID;
- 		if (dvm_ena)
--			ring->flags |= ICE_TX_FLAGS_RING_VLAN_L2TAG2;
-+			set_bit(ICE_TX_RING_FLAGS_VLAN_L2TAG2, ring->flags);
- 		else
--			ring->flags |= ICE_TX_FLAGS_RING_VLAN_L2TAG1;
-+			set_bit(ICE_TX_RING_FLAGS_VLAN_L2TAG1, ring->flags);
- 		WRITE_ONCE(vsi->tx_rings[i], ring);
- 	}
- 
-diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
-index 7be9c062949b..4ca1a0602307 100644
---- a/drivers/net/ethernet/intel/ice/ice_txrx.c
-+++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
-@@ -190,9 +190,10 @@ void ice_free_tstamp_ring(struct ice_tx_ring *tx_ring)
- void ice_free_tx_tstamp_ring(struct ice_tx_ring *tx_ring)
- {
- 	ice_free_tstamp_ring(tx_ring);
-+	clear_bit(ICE_TX_RING_FLAGS_TXTIME, tx_ring->flags);
-+	smp_wmb();	/* order flag clear before pointer NULL */
- 	kfree_rcu(tx_ring->tstamp_ring, rcu);
--	tx_ring->tstamp_ring = NULL;
--	tx_ring->flags &= ~ICE_TX_FLAGS_TXTIME;
-+	WRITE_ONCE(tx_ring->tstamp_ring, NULL);
- }
- 
- /**
-@@ -405,7 +406,7 @@ static int ice_alloc_tstamp_ring(struct ice_tx_ring *tx_ring)
- 	tx_ring->tstamp_ring = tstamp_ring;
- 	tstamp_ring->desc = NULL;
- 	tstamp_ring->count = ice_calc_ts_ring_count(tx_ring);
--	tx_ring->flags |= ICE_TX_FLAGS_TXTIME;
-+	set_bit(ICE_TX_RING_FLAGS_TXTIME, tx_ring->flags);
- 	return 0;
- }
- 
-@@ -1521,13 +1522,20 @@ ice_tx_map(struct ice_tx_ring *tx_ring, struct ice_tx_buf *first,
+@@ -5190,17 +5198,17 @@ static void i40e_napi_enable_all(struct i40e_vsi *vsi)
+ 	if (!vsi->netdev)
  		return;
  
- 	if (ice_is_txtime_cfg(tx_ring)) {
--		struct ice_tstamp_ring *tstamp_ring = tx_ring->tstamp_ring;
--		u32 tstamp_count = tstamp_ring->count;
--		u32 j = tstamp_ring->next_to_use;
-+		struct ice_tstamp_ring *tstamp_ring;
-+		u32 tstamp_count, j;
- 		struct ice_ts_desc *ts_desc;
- 		struct timespec64 ts;
- 		u32 tstamp;
+-	for (q_idx = 0; q_idx < vsi->num_q_vectors; q_idx++) {
+-		struct i40e_q_vector *q_vector = vsi->q_vectors[q_idx];
+-
+-		if (q_vector->rx.ring || q_vector->tx.ring)
+-			napi_enable(&q_vector->napi);
+-	}
++	for (q_idx = 0; q_idx < vsi->num_q_vectors; q_idx++)
++		napi_enable(&vsi->q_vectors[q_idx]->napi);
+ }
  
-+		smp_rmb();	/* order flag read before pointer read */
-+		tstamp_ring = READ_ONCE(tx_ring->tstamp_ring);
-+		if (unlikely(!tstamp_ring))
-+			goto ring_kick;
-+
-+		tstamp_count = tstamp_ring->count;
-+		j = tstamp_ring->next_to_use;
-+
- 		ts = ktime_to_timespec64(first->skb->tstamp);
- 		tstamp = ts.tv_nsec >> ICE_TXTIME_CTX_RESOLUTION_128NS;
+ /**
+  * i40e_napi_disable_all - Disable NAPI for all q_vectors in the VSI
+  * @vsi: the VSI being configured
++ *
++ * Mirror of i40e_napi_enable_all: operate on every registered q_vector so
++ * enable/disable calls are always balanced, even when some q_vectors carry
++ * no rings (as happens after a queue-count reduction).
+  **/
+ static void i40e_napi_disable_all(struct i40e_vsi *vsi)
+ {
+@@ -5209,12 +5217,8 @@ static void i40e_napi_disable_all(struct i40e_vsi *vsi)
+ 	if (!vsi->netdev)
+ 		return;
  
-@@ -1555,6 +1563,7 @@ ice_tx_map(struct ice_tx_ring *tx_ring, struct ice_tx_buf *first,
- 		tstamp_ring->next_to_use = j;
- 		writel_relaxed(j, tstamp_ring->tail);
- 	} else {
-+ring_kick:
- 		writel_relaxed(i, tx_ring->tail);
+-	for (q_idx = 0; q_idx < vsi->num_q_vectors; q_idx++) {
+-		struct i40e_q_vector *q_vector = vsi->q_vectors[q_idx];
+-
+-		if (q_vector->rx.ring || q_vector->tx.ring)
+-			napi_disable(&q_vector->napi);
+-	}
++	for (q_idx = 0; q_idx < vsi->num_q_vectors; q_idx++)
++		napi_disable(&vsi->q_vectors[q_idx]->napi);
+ }
+ 
+ /**
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx.c b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
+index 894f2d06d39d..3123459208d3 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_txrx.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
+@@ -2760,6 +2760,16 @@ int i40e_napi_poll(struct napi_struct *napi, int budget)
+ 		return 0;
  	}
- 	return;
-@@ -1814,7 +1823,7 @@ ice_tx_prepare_vlan_flags(struct ice_tx_ring *tx_ring, struct ice_tx_buf *first)
+ 
++	/* A q_vector can have its ring pointers cleared after a queue-count
++	 * reduction (ethtool -L combined N) while napi_enable() was already
++	 * called on it.  Complete immediately so the poll loop exits cleanly
++	 * and we never dereference the NULL ring pointer below.
++	 */
++	if (unlikely(!q_vector->num_ringpairs)) {
++		napi_complete_done(napi, 0);
++		return 0;
++	}
++
+ 	/* Since the actual Tx work is minimal, we can give the Tx a larger
+ 	 * budget and be more aggressive about cleaning up the Tx descriptors.
  	 */
- 	if (skb_vlan_tag_present(skb)) {
- 		first->vid = skb_vlan_tag_get(skb);
--		if (tx_ring->flags & ICE_TX_FLAGS_RING_VLAN_L2TAG2)
-+		if (test_bit(ICE_TX_RING_FLAGS_VLAN_L2TAG2, tx_ring->flags))
- 			first->tx_flags |= ICE_TX_FLAGS_HW_OUTER_SINGLE_VLAN;
- 		else
- 			first->tx_flags |= ICE_TX_FLAGS_HW_VLAN;
 
 -- 
 2.53.0.1066.g1eceb487f285
