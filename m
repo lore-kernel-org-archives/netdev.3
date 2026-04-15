@@ -1,101 +1,186 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16D6633F378;
-	Wed, 15 Apr 2026 13:38:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776260303; cv=none; b=Td2AJpZulapfEaAB4tSqOZgh9UTvDD6zIHcphaDXtmuvIZcn6gxNbELbs4vuyNjaCDImKrJax/4LK/cUehFgJ4KUVjkaNQcfWZO+q94rPYu+ogp3wI/w7BAPt2NOhIfFzehpB2gspWc8ajtaXYWMfoZWs/VoQiVQjXUL39Hhcuk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776260303; c=relaxed/simple;
-	bh=bZqt6vLbbY7wV9vBAY98g6ZXIP63PameKJz0SxWrAgE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Lpxcgi81Ranpq8UfmwcGEtmN6bmSKjPRjcbpWTkPxRv6X6nVzeVpcbX0+rvvQJtAbiQaHy23tK3PbYAzcwlTs3wJF59zfempf8r+bG1wfqjwKX6iQT6/+31sZQTyglO+YCZgy5aVOnU4ZcpHuqCA2A5AmEUtBEx4KU+kHJijX7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CH2Yq5fs; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BBEE39447C
+	for <netdev@vger.kernel.org>; Wed, 15 Apr 2026 13:41:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.182
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776260473; cv=pass; b=Kxl2zogYep43KEu8MhVuykWgIj2f5N904GfFem+2WbR4f4uHOWuGSnX3a9ZoN6XQMjihSC1Z8BIdvJum0ajZgwutuGUIaxQWblsWFnihtazyesPIpGXxzElhQKr121LD/EQ4tW0HVhJdTE1Ww71lls/KFuEjLRZX5jpXYjabVn0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776260473; c=relaxed/simple;
+	bh=BLIHgBZrnkQ7vw6Rj0TsGleAI+lWa3AKZNr9AJhe5eY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dpjlpJ/05KKyQj2LhxZFl88oJiH76sS1iMDkCnXWpI9o0h2oNlTnqJVFltP5RdhUAYjKbivkRUicmyAAAFN97CqmZGb0BebNrCSzYkbyiMIJubwugrbAqsysZdQ9wAX+7Uj9/rFpUDfHvHa8DNGyrwSYjtUU3Bvb4WNV5jXg7kQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hI+L4OmU; arc=pass smtp.client-ip=209.85.215.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CH2Yq5fs"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776260302; x=1807796302;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=bZqt6vLbbY7wV9vBAY98g6ZXIP63PameKJz0SxWrAgE=;
-  b=CH2Yq5fsUJgqAQPn8f85HRgtahDvOd267S7cyImXNI9EDQNciOdmcfBw
-   EkagcSnZDImaB77joJw66BlGb9srssHvDx9ckASd7CjCjI8NNwNjRSBtk
-   kVvC8wfIaGg4w3P8jvtgZVa/779JEltQYcAJ4cTTil4z00CGHM7TrEjPD
-   hMuXoONiYZny4XnROK6Z7XyzND7FpK7ksL1+7cwMl6u0Tk7hJkbJXnMpr
-   EessYY7i14GyB9WxF1AJ/S56qojdABpONU+gmAJKyTQnpSCqKfqfRDBEQ
-   LH0c3ifTRteRVugb4XTfuArTkRw9i3rDgiSk6VURFy212y7mHakaFRvvb
-   Q==;
-X-CSE-ConnectionGUID: Hh/xPqGRS/iEPQyfvchGIg==
-X-CSE-MsgGUID: yYuoigTnSpqQQHI1+xzU7A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11759"; a="88615723"
-X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
-   d="scan'208";a="88615723"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2026 06:38:22 -0700
-X-CSE-ConnectionGUID: rK1wKLmkSD+RjgV8lrGs2A==
-X-CSE-MsgGUID: /u+gW7pHSaqh7UMzNKJWwQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
-   d="scan'208";a="235367890"
-Received: from igk-lkp-server01.igk.intel.com (HELO bdf09bfdbd5f) ([10.211.93.152])
-  by fmviesa005.fm.intel.com with ESMTP; 15 Apr 2026 06:38:20 -0700
-Received: from kbuild by bdf09bfdbd5f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wD0Rd-000000000kz-2PTm;
-	Wed, 15 Apr 2026 13:38:17 +0000
-Date: Wed, 15 Apr 2026 15:37:31 +0200
-From: kernel test robot <lkp@intel.com>
-To: Pavitra Jha <jhapavitra98@gmail.com>, pabeni@redhat.com
-Cc: oe-kbuild-all@lists.linux.dev, w@1wt.eu,
-	chandrashekar.devegowda@intel.com, linux-wwan@lists.linux.dev,
-	netdev@vger.kernel.org, stable@vger.kernel.org,
-	Pavitra Jha <jhapavitra98@gmail.com>
-Subject: Re: [PATCH v2] net: wwan: t7xx: validate port_count against message
- length in t7xx_port_enum_msg_handler
-Message-ID: <202604151531.ClMVCCxv-lkp@intel.com>
-References: <20260414153201.1633720-1-jhapavitra98@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hI+L4OmU"
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-c76c067bc51so2467735a12.0
+        for <netdev@vger.kernel.org>; Wed, 15 Apr 2026 06:41:11 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776260471; cv=none;
+        d=google.com; s=arc-20240605;
+        b=C8V+7oN2Y7J6YBrRyN8tGcMlHfc2VHrVYFuFhp1oWXEvwXbVGDjz7pTdDtPdii99FR
+         X3J3Ee3qd2t9WVTRNOsPzVK06Mn8CbVPbVPtSX8a2tLihHWvtkl2h40ET1+tGYquRjb+
+         HyMbRjkBxWzOhY5vCQo+hICyu8C/7VtfJtW/cxLB+v2iQVWXYme+k95GCdFzp2UAX+10
+         dqn0l2e3Rona5dOeuGpphcSltQQ6J+PjOHhbB8ySl24iV1SUXGa4DLEqd1ZWvVAH/i8c
+         SHZexCOvI20y1Dobx6/PdPIUvkxhwE1wqBviG/zNfj3plfa3kGfVnhCIiYtNug5HeR0q
+         BgLg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=b37utcN63T9QhNWGfa0CC2MuTaxghEDJSSo4dDLN3Xg=;
+        fh=bhv36aVKuylAtPfwKnCMhrPpKQdE1pnkFtMbXniTM7g=;
+        b=N+x1iGSHIpNekzAh8vWeJdJSxv1eZtsumtE4uIhNNK0vwazqvXqPPOATbLrjlMZtmm
+         5tXXPmYpnj1cSDG75DA6To0ye1to7JPhL0yWIJm94uQEfLWQsSgCMzO/1llv5O32J2cf
+         Wz1on56pvc84V2D3tX2sCQEcU0MMDBCmqB1+yUwtoF/91K9zkbD36BFUmbXlX++9DgUt
+         1BNEqjFqwf+filtiJ2gDT2cXUhcYPskdx8BcRezdHZgCP17IToMsWY7wuKgD9CZB2tQS
+         MsM8Fe08sZ/QCfXfc24KIYnjpGkgVDKppLjh2RgxULSqecK32YAlQZH7JAkjjcl62Bp5
+         uY4A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776260471; x=1776865271; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=b37utcN63T9QhNWGfa0CC2MuTaxghEDJSSo4dDLN3Xg=;
+        b=hI+L4OmUNm1djuAdz2ITB1URLDMGX8x7WAyy9MTVQYmdubhmstD6z14NjIo1ZvQKGt
+         U0QIc2sQgSCvFs3+Z4e+P2Qb+TRkU9Df3uQ8ItgnxO5d/xUi3K/XZzGOy3rjW9wfuOGs
+         nw0WkkErpRst6T1QlDIsqrTIVAJdjirzUKvbQL8L62TXo4NL+ZlOp6mvFzH/Y6khUxKa
+         Yjjxwbscci6U5svC81EHNlqiFXOsKKjMfCxu6r6/U+zVxXmGMvVNOfww+oS4AVrn4doH
+         6BvJEwFtTgh9PsnK+y0AfAwC+j6MZp8p3GVtiPMYGGRwHrQ9pu8jnKigjUmWiIVsmT5o
+         fE4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776260471; x=1776865271;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=b37utcN63T9QhNWGfa0CC2MuTaxghEDJSSo4dDLN3Xg=;
+        b=iAjk0OT5UHHZbk4SU06VWE+bUp3UCaq+HzYr/iT1v6+oJQlxNB6EC8sxrn140c3iNh
+         Mlshbx1R0iKkI4Tdz8giNyyzJaxcr2xJLYduu1KX+Zvd0CR+M99LzCllJRwuZikng9od
+         NcBU45Tz7x7IAOHAY/I26Y5T9Dlo0O6klDjPc1HcbxD/FXdnIg+XOhHEI4QAyi09flWl
+         ndEAlFhVcBtv+Zkm/nKgDQF3KZp5WQe7ExQEd5fUAABUeeLlqHNatgip171fTU/msTKC
+         rYEhLtXTBGt3bZZxGCxp1I9tYsRftsQJMe3gm6/5+3H7onm/HNnfeUYIvnujwqjXCWS1
+         B5AA==
+X-Forwarded-Encrypted: i=1; AFNElJ/6rL8wzEd+ucr7wriUaxWiJFpql0HbrDZNEZFEsPNxGjjzLnD2jnFkS/Yd69UFyT7fsOWu7aU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzlTDUbyfczf0IsfSjw09eRVOvmLcJkNUGPLgamUIL5SSjIS60y
+	toNam9rq/B5Xd1MBdRp9lX0ol/M4PKJpfI2Rp0Yz9/YXYUvBjrusdZeTH+/JX16yiZIiid9LzaY
+	qE30ykU10hb6HQL4SleP3a4WPnwrNXno=
+X-Gm-Gg: AeBDiesmTi6ykbwehk51DaUCDFqHo9u1M6zW75t1vHMd7xY6eEKsWbcldQASbKJsLRb
+	dx/jG+MWMG+f1htYE8SZNBVUBBECa5PbIYVu0+/a+EwdSUlt7OYsM9UsYEzjrPTnBHNj5kWKh7z
+	MSFM9KOSOeyEGKyHBzBCuZsY7yXpN8AnGbtn3Ose485Dk7yMUEyujAi4FqsN8a/AFM6iYQTNXas
+	ou8ENUfLe5fZRq+qQ/Ypfq+u93r8tLXUi9F0A5m+TYrVGrA65Sobo7ilsXWa50sP5fRlumGvArx
+	Gq+GnBz0d1Lo2tCiFR1fClb5tPT4qjoMgtOFd5RFsTNOhsfNyN7y8rITskfAOF/t3xREF6S90dN
+	qjvblp84WEF8gBx+S8g==
+X-Received: by 2002:a05:6a20:3d1c:b0:398:9379:d056 with SMTP id
+ adf61e73a8af0-39fe3cf754cmr23718037637.16.1776260470759; Wed, 15 Apr 2026
+ 06:41:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260414153201.1633720-1-jhapavitra98@gmail.com>
+References: <7e897c44.4cb35.19d8f29411c.Coremail.xudongjie25@mails.ucas.ac.cn>
+In-Reply-To: <7e897c44.4cb35.19d8f29411c.Coremail.xudongjie25@mails.ucas.ac.cn>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Wed, 15 Apr 2026 09:40:59 -0400
+X-Gm-Features: AQROBzA_GcgXLsh9-gX0CcNjHPxv4CVKZtECXb_27tAljyeG-5HqqNCAANfBvnU
+Message-ID: <CADvbK_dbiS2Y9nQ5878QZvN-KPs+ZeeX5e2hQsJRyXb=a11MQQ@mail.gmail.com>
+Subject: Re: [BUG] KASAN: slab-use-after-free in sctp_addto_chunk
+To: =?UTF-8?B?6K645Lic5rSB?= <xudongjie25@mails.ucas.ac.cn>
+Cc: marcelo.leitner@gmail.com, linux-sctp@vger.kernel.org, 
+	netdev@vger.kernel.org, zhaoruilin22@mails.ucas.ac.cn
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Pavitra,
+On Tue, Apr 14, 2026 at 11:23=E2=80=AFPM =E8=AE=B8=E4=B8=9C=E6=B4=81 <xudon=
+gjie25@mails.ucas.ac.cn> wrote:
+>
+> Hi,
+>
+> While running fuzzing tests on 6.19.0-rc5, we hit a slab-use-after-free i=
+n the SCTP module. The crash occurs in skb_put_data() when processing an in=
+coming chunk and appending data via sctp_addto_chunk().
+>
+> Looking at the trace and the code, it seems to be an skb reallocation iss=
+ue. In sctp_sf_beat_8_3(), a pointer to the payload is extracted from the i=
+ncoming chunk's skb. Later, a pull operation (e.g., pskb_pull) might trigge=
+r pskb_expand_head(), which frees the original skb->head and reallocates a =
+larger one. However, the previously extracted payload pointer becomes dangl=
+ing but is still passed down to sctp_make_heartbeat_ack(), eventually being=
+ read by memcpy() in skb_put_data().
+>
+Hi, Dongjie,
 
-kernel test robot noticed the following build warnings:
+Normally this shouldn't happen, as all incoming skbs must have already
+been linearized in sctp_rcv() before coming to  sctp_sf_beat_8_3().
+For a linearized skb, pskb_pull() will not trigger the skb
+reallocation, but only reduce skb->len and advance skb->data.
 
-[auto build test WARNING on net/main]
-[also build test WARNING on net-next/main linus/master v7.0 next-20260415]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Do you have a reproducer to trigger this issue? We need to check how a
+non-linearized skb arrives in sctp_sf_beat_8_3().
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Pavitra-Jha/net-wwan-t7xx-validate-port_count-against-message-length-in-t7xx_port_enum_msg_handler/20260415-014321
-base:   net/main
-patch link:    https://lore.kernel.org/r/20260414153201.1633720-1-jhapavitra98%40gmail.com
-patch subject: [PATCH v2] net: wwan: t7xx: validate port_count against message length in t7xx_port_enum_msg_handler
-config: x86_64-rhel-9.4 (https://download.01.org/0day-ci/archive/20260415/202604151531.ClMVCCxv-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260415/202604151531.ClMVCCxv-lkp@intel.com/reproduce)
+Thanks.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202604151531.ClMVCCxv-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> Warning: drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c:127 function parameter 'msg_len' not described in 't7xx_port_enum_msg_handler'
->> Warning: drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c:127 function parameter 'msg_len' not described in 't7xx_port_enum_msg_handler'
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> It seems we need to either ensure pull operations are completed before ta=
+king the payload pointer, or recalculate the pointer immediately after the =
+pull.
+>
+> We haven't prepared a patch for this yet, but we are glad to help test an=
+y proposed fixes.
+>
+> Crash log, call trace, and machine info are as follows:
+>
+> [Machine Info]
+> QEMU emulator version 6.2.0
+> CPU: Intel(R) Xeon(R) Gold 5218 CPU @ 2.30GHz (4 cores)
+> Kernel Version: 6.19.0-rc5-00042-g944aacb68baf
+>
+> [Crash Report & Call Trace]
+> BUG: KASAN: slab-use-after-free in skb_put_data include/linux/skbuff.h:28=
+00 [inline]
+> BUG: KASAN: slab-use-after-free in sctp_addto_chunk+0xfa/0x2a0 net/sctp/s=
+m_make_chunk.c:1535
+> Read of size 56 at addr ffff88804878bb68 by task syz.6.114/15386
+>
+> CPU: 3 UID: 0 PID: 15386 Comm: syz.6.114 Not tainted 6.19.0-rc5-00042-g94=
+4aacb68baf #1 PREEMPT(full)
+> Call Trace:
+> <TASK>
+> __dump_stack lib/dump_stack.c:94 [inline]
+> dump_stack_lvl+0x116/0x1b0 lib/dump_stack.c:120
+> print_address_description mm/kasan/report.c:378 [inline]
+> print_report+0xca/0x5f0 mm/kasan/report.c:482
+> kasan_report+0xca/0x100 mm/kasan/report.c:595
+> check_region_inline mm/kasan/generic.c:194 [inline]
+> kasan_check_range+0x39/0x1c0 mm/kasan/generic.c:200
+> __asan_memcpy+0x24/0x60 mm/kasan/shadow.c:105
+> skb_put_data include/linux/skbuff.h:2800 [inline]
+> sctp_addto_chunk+0xfa/0x2a0 net/sctp/sm_make_chunk.c:1535
+> sctp_make_heartbeat_ack+0x54/0x110 net/sctp/sm_make_chunk.c:1198
+> sctp_sf_beat_8_3+0x4f6/0x7a0 net/sctp/sm_statefuns.c:1201
+> sctp_do_sm+0x172/0x5520 net/sctp/sm_sideeffect.c:1172
+> sctp_assoc_bh_rcv+0x38a/0x6c0 net/sctp/associola.c:1034
+> sctp_inq_push+0x1dc/0x270 net/sctp/inqueue.c:88
+> sctp_backlog_rcv+0x167/0x5a0 net/sctp/input.c:331
+> sk_backlog_rcv include/net/sock.h:1177 [inline]
+> __release_sock+0x397/0x430 net/core/sock.c:3213
+> release_sock+0x5a/0x220 net/core/sock.c:3795
+> ...
+> </TASK>
+>
+> Freed by task 15386: kasan_save_stack+0x24/0x50 mm/kasan/common.c:57 kasa=
+n_save_track+0x14/0x30 mm/kasan/common.c:78 kasan_save_free_info+0x3b/0x60 =
+mm/kasan/generic.c:584 poison_slab_object mm/kasan/common.c:253 [inline] __=
+kasan_slab_free+0x61/0x80 mm/kasan/common.c:285 kasan_slab_free include/lin=
+ux/kasan.h:235 [inline] slab_free mm/slub.c:6670 [inline] kmem_cache_free+0=
+x15f/0x780 mm/slub.c:6781 skb_kfree_head net/core/skbuff.c:1066 [inline] sk=
+b_free_head+0x1b7/0x210 net/core/skbuff.c:1080 pskb_expand_head+0x3b1/0xf80=
+ net/core/skbuff.c:2314 skb_might_realloc+0xb1/0xd0 net/core/skb_fault_inje=
+ction.c:33 pskb_may_pull_reason include/linux/skbuff.h:2850 [inline] pskb_p=
+ull include/linux/skbuff.h:2871 [inline] sctp_sf_beat_8_3+0x419/0x7a0 net/s=
+ctp/sm_statefuns.c:1198 ...
+> Xu Dongjie
+> University of Chinese Academy of Sciences
