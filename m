@@ -1,111 +1,87 @@
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040203314B9
-	for <netdev@vger.kernel.org>; Wed, 15 Apr 2026 09:16:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1622336885;
+	Wed, 15 Apr 2026 09:27:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776244601; cv=none; b=XplI3wTjtUmRwSBRQI+Ee1zJCGjmz8i+Zsu6QvXd+HFbwMYusc35J6p8wyL78cndOU7LDZDXz56jDPRM7QiPFZl/dyfrzPmkkW5I9tbcyA0CnZ9rSLrSj7Sf3F470oOzR4IWC2iSfaJzWzwy9Tf9osmSdLOU9mdAE+SyPWiNQHk=
+	t=1776245277; cv=none; b=FAyzdrRAmQIdr2eG2a+xiO7h5OVePAov3vD7KChmxd6kP76uqEp8c4OUIBp0BXZelZxhGts1rtLTzyQLvIuxj5S1njtzvkWYDbDM7wQdKsMHUFvmKETVXrsAUET4Tl6ZXfDAQOjPcbBwPby5GW9J675aVuLnEM62inQEEy0DsZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776244601; c=relaxed/simple;
-	bh=j4lFk/+qPXA6eEIINMAlpfhUyBqIoNeTBMMGZLESU/4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WTy2beZbhcB8spvsaMDGDl6RHf/617dB5eP+bjoQYqQ40tNRDP9bL+cCclj9crqdlfzM5eCvEMkiqtXP2nULoSJinHDc++YV9+hOLmtJ9NSxBMxqJjDF58myVJqUc2FLkeX5z58wA7MGAaYpd9SFf5WsX9mZFzyQjpJCdVJO2jM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=WPd509RE; arc=none smtp.client-ip=95.215.58.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1776245277; c=relaxed/simple;
+	bh=dBNjQpcGVzZmyySbeD6As/Vlll3k5aPtVy+af3LGChw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S8G8ZRqmCagE4q8HyMMl2sjSXdyQjXJElvrmed0BZszI7JIogp/f8/k/OwWbVKfQQS+hEGSSr5x9UcZw1PZ1RPHkOmu0EE6JXbzek+pej3ZsylICCNzenQpmaMxANp62iEl9O9Yz++hxc5BQmZD8sPbowon3k+1lApxqBsKTjkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=f4mFmVei; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="WPd509RE"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776244588;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=jm2OTrB1IC4L+3C9wJ4DJw6F0AdGiQYFZiRAbNrcD70=;
-	b=WPd509RE6lp2b+OTbhpEbapnpR6N34LbMIueBdCgb89IWwy8E36ChS4JYQznXoYCxzK5P9
-	CX/JFhBZhiopRUiFRhRodcYoKPgpsYrWClgOxKD9zJpsGwL8SbVJKGd/dl1SXhGD6z1Ldb
-	ZlIyXqUpwHGiNqSneD9lsRycMMMhHMc=
-From: Qingfang Deng <qingfang.deng@linux.dev>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Qingfang Deng <qingfang.deng@linux.dev>,
-	Kees Cook <kees@kernel.org>,
-	Guillaume Nault <gnault@redhat.com>,
-	Eric Woudstra <ericwouds@gmail.com>,
-	netdev@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="f4mFmVei"
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 5D21060177;
+	Wed, 15 Apr 2026 11:27:46 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1776245266;
+	bh=I52o/2B0lRR/NgWzkPZzO+TvuXHI3Zo6Deb7BqjgfZo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=f4mFmVein2DchFlYoWmmu6Ajn4aQHXOijnksTtIGAmLl6MmO2JfkRM0Dfs35/HhKB
+	 3GzOtwKIf4AYT3pVEC/Umesu85K5+nAnBM3PCM2fMam7LRQ36Zjr8ebINsw37qpZpi
+	 r4vs5cXrxjl3QX+DKbI1l0u35Go9CwtsvaM2s8sQ4GAsA1XWXohYIN7bcHz0RfHWDe
+	 1uUU33lBS8kkr/bs8Uq/oZZllXFzkh4U7e27Nm+0qQsHorlle1hbknGNK0IaWds3RN
+	 +sH/Pn7RCAb8F2/AzrZ2kuP0VJHGRSOvkrg9dVRpIx3JF52Co+NO6MHzHG9NhbFCfH
+	 Zf16+wgOW0Hsg==
+Date: Wed, 15 Apr 2026 11:27:43 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Florian Westphal <fw@strlen.de>
+Cc: "Kito Xu (veritas501)" <hxzene@gmail.com>, phil@nwl.cc,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, jengelh@medozas.de,
+	kaber@trash.net, netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org, netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Cc: Paul Mackerras <paulus@ozlabs.org>,
-	linux-ppp@vger.kernel.org,
-	Jaco Kroon <jaco@uls.co.za>,
-	James Carlson <carlsonj@workingcode.com>,
-	Dianne Skoll <dianne@skoll.ca>,
-	Denys Fedoryshchenko <nuclearcat@nuclearcat.com>
-Subject: [RFC PATCH net-next] pppoe: drop getsockname() syscall
-Date: Wed, 15 Apr 2026 17:16:12 +0800
-Message-ID: <20260415091614.266198-1-qingfang.deng@linux.dev>
+Subject: Re: [PATCH] netfilter: xt_realm: fix null-ptr-deref in realm_mt()
+Message-ID: <ad9aDziQEBR0h3U8@chamomile>
+References: <20260415034343.107920-1-hxzene@gmail.com>
+ <ad9UF5Cr12YGJnbi@strlen.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ad9UF5Cr12YGJnbi@strlen.de>
 
-The getsockname syscall is not used by pppd. It also has two flaws:
-1. It does not hold the socket lock, so if the struct is being changed
-   in pppoe_connect() simultaneously, it may see partial updates.
-2. If the lower network device is renamed, this operation still returns
-   the original name.
+On Wed, Apr 15, 2026 at 11:02:15AM +0200, Florian Westphal wrote:
+> Kito Xu (veritas501) <hxzene@gmail.com> wrote:
+> > realm_mt() unconditionally dereferences skb_dst(skb) without a NULL
+> > check. The xt_realm match registers with .family = NFPROTO_UNSPEC,
+> > making it available to all netfilter protocol families. Through the
+> > nftables compat layer (nft_compat), an unprivileged user inside a
+> > user/net namespace can load this match into a bridge-family chain.
+> 
+> I do not think this bug is related to nft_compat.
+> You can also use ebtables setsockopt api to request xt_realm, no?
+> 
+> > Fixes: ab4f21e6fb1c ("netfilter: xtables: use NFPROTO_UNSPEC in more extensions")
+> 
+> Looks correct.  Alternatively we could revert the xt_realm.c change.
+> But I don't have a strong opinion here, patch looks correct.
 
-Given it is unused and buggy, remove the syscall.
+Maybe partial revert makes sense, since in ab4f21e6fb1c:
 
-Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
----
-Note: sent as RFC, since net-next is closed.
+- xt_MARK: OK
+- xt_NOTRACK: OK
+- xt_comment: OK
+- xt_mac: There is a better way to do this in bridge.
+- xt_owner, no sockets in bridge.
+- xt_physdev, which makes no sense in bridge, this is for br_netfilter
+  only.
+- xt_realm (as already mentioned).
 
- drivers/net/ppp/pppoe.c | 18 +-----------------
- 1 file changed, 1 insertion(+), 17 deletions(-)
+That is, a partial revert of this patch for:
 
-diff --git a/drivers/net/ppp/pppoe.c b/drivers/net/ppp/pppoe.c
-index d546a7af0d54..0d64a16715e2 100644
---- a/drivers/net/ppp/pppoe.c
-+++ b/drivers/net/ppp/pppoe.c
-@@ -688,22 +688,6 @@ static int pppoe_connect(struct socket *sock, struct sockaddr_unsized *uservaddr
- 	goto end;
- }
- 
--static int pppoe_getname(struct socket *sock, struct sockaddr *uaddr,
--		  int peer)
--{
--	int len = sizeof(struct sockaddr_pppox);
--	struct sockaddr_pppox sp;
--
--	sp.sa_family	= AF_PPPOX;
--	sp.sa_protocol	= PX_PROTO_OE;
--	memcpy(&sp.sa_addr.pppoe, &pppox_sk(sock->sk)->pppoe_pa,
--	       sizeof(struct pppoe_addr));
--
--	memcpy(uaddr, &sp, len);
--
--	return len;
--}
--
- static int pppoe_ioctl(struct socket *sock, unsigned int cmd,
- 		unsigned long arg)
- {
-@@ -1049,7 +1033,7 @@ static const struct proto_ops pppoe_ops = {
- 	.connect	= pppoe_connect,
- 	.socketpair	= sock_no_socketpair,
- 	.accept		= sock_no_accept,
--	.getname	= pppoe_getname,
-+	.getname	= sock_no_getname,
- 	.poll		= datagram_poll,
- 	.listen		= sock_no_listen,
- 	.shutdown	= sock_no_shutdown,
--- 
-2.43.0
-
+- xt_mac
+- xt_owner
+- xt_physdev
+- xt_realm
