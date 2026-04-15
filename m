@@ -1,145 +1,103 @@
-Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2111.outbound.protection.partner.outlook.cn [139.219.17.111])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380B8332906;
-	Wed, 15 Apr 2026 10:59:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.111
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776250766; cv=fail; b=rh09oelrHLlyklM+azN2EzhIjt6/MZ5C/V9/TMJjXWkx0BmrQEWRsW9fHPvAnPJvGThlrlppB4FNYU34BjgZ5Lkdz28Kpzhirt1Ohwd5ETh8JqlPgV58AFfTLzcl0YI1N4VyoKP22zlrKaDx2O1QaJ5RoncLq3oewRXFOdktthk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776250766; c=relaxed/simple;
-	bh=I630mwmQRw+jz5/IdyyA+bthpejTyh59tAsYQUWg8dY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=laiMC6AdZwoPvITa7ICajnT3BF9l6daINQZGZrLGkWiFD3nd0Vae7UZYlYfXOPtjC8OySTHzMgTMB4eyNUXT5naWa4uzb2gL2PYsIYf5GSGuD4OeyWxM79hFMKHnxE/xm1RPuiPIMPdeDY8JIPfL11W7e5G2NlTwmQfu/E7R+NE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.17.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=MBzof3rXvVZnv3rWP8Ou1xX5xSKYDDlEWHRJNM/PtLn12kkvW3rYv4jYzhIArHfi24wZd8uzfXXwPDgudTQOYM+mWj4MA2KGQIlH2Ev8iCOpSnYX2JW8II13FvIzE1HoeQYiB+mGS8nC4bOUPooyAV4UExSfe9+kroT1BOGyzraxUkmT6qui2+hZmSJNttlllRkvmZMEyJ7N2/sNT0v/sbEXiyg/e+Mgs3caEO2ERuHUhmKAx4GtpmiMeWa2sD1g8sfTC8Eo1bqCdHkkm3U9NNXbFgS6qyBSSSD+YRvHe+fSeleiorQzOQEackUCHxKhq7AIRNj66IeENx87v76uRg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UfxgmE1CfmPuGqOvG/ZAmhwhtvrIHaSECC86hptxXRM=;
- b=J/+8JPywFMv3cy0qE6uS37oqs1FR/ZKzaCDL8FDQgQgCwmq5eipHNjQyNXmH0N+j9H6QriEOAa2OPHyZrLGfi6VeIYKe1Pxt1vm1Gm3BCjXeU1f7f4L0ob40XLlywZvKNakhPuskTiPk6aJKc0lq9vIxk3hL1jB/uva72Cg7T/P1+zQOlqwJL818lDSAfVLm+bwfAKbFp2hwrDJrXK7YU2trz8UkplzNjYbJmTc6wuTP42hKYsU/gdux7InmHLWg0NSxUuCmYuJrzpP5k1oNzLG/VnTycbQAfITJODvJhH/+t5GIwt+k7aTAFoAF5O31PybbM3yS9IBFx7xHeSMxyg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=starfivetech.com; dmarc=pass action=none
- header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=starfivetech.com;
-Received: from BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c211:18::12) by BJXPR01MB0712.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c211:18::14) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.42; Wed, 15 Apr
- 2026 09:27:04 +0000
-Received: from BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn
- ([fe80::e2de:92aa:4c1c:a829]) by
- BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn ([fe80::e2de:92aa:4c1c:a829%6])
- with mapi id 15.20.9769.046; Wed, 15 Apr 2026 09:27:04 +0000
-From: Minda Chen <minda.chen@starfivetech.com>
-To: Frank <Frank.Sae@motor-comm.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Minda Chen <minda.chen@starfivetech.com>
-Subject: [net-next v1 2/3] net: motorcomm: phy: set drive strength in 8531s RGMII case
-Date: Wed, 15 Apr 2026 17:26:53 +0800
-Message-Id: <20260415092654.64907-3-minda.chen@starfivetech.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20260415092654.64907-1-minda.chen@starfivetech.com>
-References: <20260415092654.64907-1-minda.chen@starfivetech.com>
-Content-Type: text/plain
-X-ClientProxiedBy: SH0PR01CA0007.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c311:5::19) To BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c211:18::12)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8F41DDC37;
+	Wed, 15 Apr 2026 11:10:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776251402; cv=none; b=sHB8LTsJyduQHuhnBEQMLuF9047pXT0zie/kHwXJ1hqpN5F6NyoFSJFZPc4MyTzbEUIIEoqBpwSStVPNRNylu2tP7DjgZCAWAqRBpqBQt1ubFowi36lBeV74kwqqtq/h2nWQo70XP8IzzSO/hOymyt58xA9fOFcYevXus0X9U4Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776251402; c=relaxed/simple;
+	bh=zYISl4YymA6/eZuqTpBh/rfh+fOUzsz13rpCC8OY6V8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sy43weZoV6g5AxrEk44Ww2BTcKMDeYO/gUKbXQ9WJIicojXnd3esT3w9BA9709FTXs0e+SaOrJ6JYyHycyWPuSfkoBhGPopD/GxF5nHL/Jp/26P5LA68/PDkcSZfHsj6wa3xB66JPfwNVSE79y2crYHTG/uQampEHWs6m2AVGbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hqcd++Kc; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hqcd++Kc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776251401; x=1807787401;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=zYISl4YymA6/eZuqTpBh/rfh+fOUzsz13rpCC8OY6V8=;
+  b=hqcd++KcA7zhwP5ztzfeHt6lzZmdwWZwx/ebRVMKkvkk1u/7tRI81Jcn
+   FaV7SODX4CWFyp4XqNh8t25MqYu773HWQ7+8vu4RemWd/ehdQNszWx7JR
+   lW8IlxqCVZC7tyI2DHgrMq/TK7drK944TqOxQfFCI5uMqs+wClW5FFvxa
+   AMTNPX6T2Dw5gCfPjNcbs/YOfkaHzXD8s8E9zFgBrLO5zMExOEkmXx8Ll
+   18ZS1Na69H5EwlrexO1pYLwRmwsgeOX9Biip9KAl7Lp9GxEOssjer67qq
+   KBhojTKPEW9HLG/Uhjr2dvuH6Bx1BWMCXM9m+RfUER2IrunNpsfwglT3t
+   g==;
+X-CSE-ConnectionGUID: ZX6wt3OPQjK63f9ZD0VUmw==
+X-CSE-MsgGUID: L36afjqwQ5OWp/+NkZTLLw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11759"; a="76256665"
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
+   d="scan'208";a="76256665"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2026 04:10:00 -0700
+X-CSE-ConnectionGUID: QrNsoN+gSWKbOlpE4G79ZA==
+X-CSE-MsgGUID: lD75H1XmRnuQeEwDr7YlWA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
+   d="scan'208";a="234425047"
+Received: from lkp-server01.sh.intel.com (HELO 7f3b36e5d6a5) ([10.239.97.150])
+  by orviesa003.jf.intel.com with ESMTP; 15 Apr 2026 04:09:57 -0700
+Received: from kbuild by 7f3b36e5d6a5 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wCy82-000000000QT-3cBT;
+	Wed, 15 Apr 2026 11:09:54 +0000
+Date: Wed, 15 Apr 2026 19:09:45 +0800
+From: kernel test robot <lkp@intel.com>
+To: Pavitra Jha <jhapavitra98@gmail.com>, pabeni@redhat.com
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, w@1wt.eu,
+	chandrashekar.devegowda@intel.com, linux-wwan@lists.linux.dev,
+	netdev@vger.kernel.org, stable@vger.kernel.org,
+	Pavitra Jha <jhapavitra98@gmail.com>
+Subject: Re: [PATCH v2] net: wwan: t7xx: validate port_count against message
+ length in t7xx_port_enum_msg_handler
+Message-ID: <202604151900.1tnLdQi7-lkp@intel.com>
+References: <20260414153201.1633720-1-jhapavitra98@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BJXPR01MB0855:EE_|BJXPR01MB0712:EE_
-X-MS-Office365-Filtering-Correlation-Id: c36e9388-25a5-402e-6e1b-08de9ad12823
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|52116014|376014|366016|1800799024|56012099003|18002099003|22082099003|38350700014;
-X-Microsoft-Antispam-Message-Info:
- Lzp+stKst23ojN9hx/YMRFvrth7NcASeoDUqvUTBtEa0NgnV2bJgJrl7tT0KIN0PUEijNG4NvJcgIUQ7nVIBBKtOjUVnq7TVCS2hwdqNE57kAOCj7jxlm2ptka2/XbM+c9IwBMohtUlwOgTT6tAs/Ij9ne3VezJenq5lX/sROAwZ43GvZYpU19s+gIDJj+UXVVlk2iUCWZ1RmB2+mp+4UPVSn0gaA4na0TTzRKNO/i0yoKy9CFhZ9Yxc6flXWZdFtoyIM6g1RLhSVOua1qr/syn0B6daur5rI6i8u/nPz7SrNlUQYFDgtN6xhTy6PEHESC1bQ6HkW5+yo9EiZEmWCXjZac90mYL7M505T34CLHVTPYWoVnfm5ab1BZA38/JZtScrdFn5S3XD0YKA3W8lj0aYjm45untN61I/bYiKvERMdL+umbFurrrb/cRZucG7BfqJSuc3CZY19/SmCZjK3AjmvH9/rmWIni9atPT6Br+L7+llAOGhFABP+ORQHEugaScDHTLgxsKjlmy/7F/3j2WM/Krbf00QuuxNFvg7YSJ9zIbNSju2XscXCtCoZpYeKfDx0oORUxFEzwbIlkAckA==
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(366016)(1800799024)(56012099003)(18002099003)(22082099003)(38350700014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?edlQ8OFE9h3Q5dj7SNJxrpmhaBRla3njYOwwWjfY8EbJrRGwoh5xC3HBvzcy?=
- =?us-ascii?Q?tRWvSzFIVz5NN/NT/FiMBsGnUNwsFL+94wv9t8VpaEgKJj/crJLw/y1ID/w/?=
- =?us-ascii?Q?pV8IaiqNBUBOUkRRiIJGKvRLpmv5uyPRKDFI6MNpmELdCDzYCtLdJjqPqx2R?=
- =?us-ascii?Q?3i9JCEuNpi88W6hHiN328Gdu79Ie3WWuotQaWLmCklNfLb1cK5vmiv5jJlqz?=
- =?us-ascii?Q?iXQkndN79T5eO+7aNyIOLvUvNUHqPJYNfx7TgE1cCJQS/l6O8T68cWAZfxzo?=
- =?us-ascii?Q?9rqSdeb1A2p53kceVMUro1UMo3j8f94/vFM/1r7FwU4UIgQpFPEVa+P3FVGH?=
- =?us-ascii?Q?1Pjiyckp6hZlKds5UK09CvmlP8BtReAhDzcvqJkWbFrl5FUKkFBsT52eIgbt?=
- =?us-ascii?Q?ZIRSi1WWDH6Q9h3nncXaID8rdK8p9fdFB7gVh5ACKt7Sr7w+Zt5FJJEJ0Shi?=
- =?us-ascii?Q?oz5XNm3fCIARO5s+7MRIugoSUd7jWCI4fx5eL3TrbzXYREyB82OHxuqBtOET?=
- =?us-ascii?Q?yIpKCDzR3YjFox6Bxd3u6kzB7H21xCf1n7OaYIBp4+xZ5Pgfjnok//3POlc6?=
- =?us-ascii?Q?+9+z8F0dKNXPvSb/iZsfdGcCzypqaXu3zT0KTTFNa5amG93KKYTcvpwGVQAF?=
- =?us-ascii?Q?x+Xau1XW48Wbkv4h/P67eqgHOkc0lrByMBY8Gih3+7WErB8ajkigtI344uMT?=
- =?us-ascii?Q?NSjhWnoIYfIuxZPN8WwPxYvCy0Lt1DddM7X1aIuq3kAJ79B+0Fsr38g8xF3d?=
- =?us-ascii?Q?rbBbjma/ViiHDpMjX/CgqTwXP4gPpQaslN1mJ72EWmgt6AOvNdCAyq13hVVL?=
- =?us-ascii?Q?lmdg441fTJ0d58M4DMqkJsDbUhWTlYHBlfhHER529oChc5D3i7Za9rgtMrKd?=
- =?us-ascii?Q?u90BlLZ/kp/IUeOqiUEhRZfJp/Q032RanNW5EXwDbT4bck5ipPMn/HwWJye3?=
- =?us-ascii?Q?+IrnAjlKihzlcy5eru3myut2rXsYNHuGVDhqzqohWWpu35PrrOEpbKigFJpn?=
- =?us-ascii?Q?Pa2Mq1dN6jdEYfnp0h4i4E2ssoBpkqGiKvYA9gReA7Mvwd/dVI5VxXlruvDB?=
- =?us-ascii?Q?UbN6Gl3mdLHtW7LaRX3XY9TUV9Z+Nt95s+FZYNrky0wm1ot+kzInQirWz0+o?=
- =?us-ascii?Q?l8Zt1tA9RsCG8PNp1TfcyqOy744d35g2e9O1aDqYNhsjUVdIgjmNbFg9Bqsb?=
- =?us-ascii?Q?O9IEGMphXvzwxP7nd+8SKZ6eLeyZbxCBeeC/eBD2aGsm9n5vhFwDTVImCy8b?=
- =?us-ascii?Q?ou5N6HxEjMBoUH62fTNv3j30wAZbaj8ohJVCCX5Ten2dSYHbFiQ/N60ZMFpP?=
- =?us-ascii?Q?fI6krpza0fVLJXydgmjlpssQtGK8gSDEgYJcFbuhtjEZn/jClasJFigb7jit?=
- =?us-ascii?Q?/9N1PW2+0h73M3v7vELiqGvtCTVjaf89ZdyGfB2gbZ12oYoPaJDPw/VDfVWv?=
- =?us-ascii?Q?ZF6X43WxW9mTRiISVDirpWduqLOf6IANXB+A3dPBh0UIecV3+L8zjwsqFjYv?=
- =?us-ascii?Q?ET5taFshgL20tNSLv0xw+MLzdv0sofCxEr5Em6bqwW+M9NC7fg3g5zw4LEbN?=
- =?us-ascii?Q?KINe4BrRTPv5Tz0aOnUpGmhcmB/as2OWHE+Zk+HIJm6uJ350Fa+/ccFoYtkp?=
- =?us-ascii?Q?1vk9wdQIXq4mYiDBucKRoTQRmxrfmugqSa3yFRglhBKYKGKKYOJrJw4HLCvy?=
- =?us-ascii?Q?16c9EkTmKSLYskaisDf7Y9oGeTbTLYoYKKMJBVZpIKqk6fE07ECQqzwkbysk?=
- =?us-ascii?Q?nh6ISpuUQBdhrKLdePf+f1DuooGk6Uc=3D?=
-X-OriginatorOrg: starfivetech.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c36e9388-25a5-402e-6e1b-08de9ad12823
-X-MS-Exchange-CrossTenant-AuthSource: BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Apr 2026 09:27:04.6865
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SA/kP0MKNy07iyZp+OASUhZli3fGHPeyIJdamWFhf8Y2otoKFNZtY2cvXNQqk1W/EMl8d68TxDHZC/hhqR7gx0kSBlZGlrwD52vTK2keSWk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BJXPR01MB0712
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260414153201.1633720-1-jhapavitra98@gmail.com>
 
-Set RXD and RX CLK pin drive strength while in 8531s RGMII
-case.
+Hi Pavitra,
 
-Signed-off-by: Minda Chen <minda.chen@starfivetech.com>
----
- drivers/net/phy/motorcomm.c | 5 +++++
- 1 file changed, 5 insertions(+)
+kernel test robot noticed the following build warnings:
 
-diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
-index 35aff1519b4b..f3129419f7c9 100644
---- a/drivers/net/phy/motorcomm.c
-+++ b/drivers/net/phy/motorcomm.c
-@@ -1714,6 +1714,11 @@ static int yt8521_config_init(struct phy_device *phydev)
- 		if (ret < 0)
- 			goto err_restore_page;
- 	}
-+
-+	if (phydev->drv->phy_id == PHY_ID_YT8531S &&
-+	    phydev->interface != PHY_INTERFACE_MODE_SGMII)
-+		ret = yt8531_set_ds(phydev, true);
-+
- err_restore_page:
- 	return phy_restore_page(phydev, old_page, ret);
- }
+[auto build test WARNING on net/main]
+[also build test WARNING on net-next/main linus/master v7.0 next-20260414]
+[cannot apply to horms-ipvs/master]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Pavitra-Jha/net-wwan-t7xx-validate-port_count-against-message-length-in-t7xx_port_enum_msg_handler/20260415-014321
+base:   net/main
+patch link:    https://lore.kernel.org/r/20260414153201.1633720-1-jhapavitra98%40gmail.com
+patch subject: [PATCH v2] net: wwan: t7xx: validate port_count against message length in t7xx_port_enum_msg_handler
+config: loongarch-randconfig-002-20260415 (https://download.01.org/0day-ci/archive/20260415/202604151900.1tnLdQi7-lkp@intel.com/config)
+compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 5bac06718f502014fade905512f1d26d578a18f3)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260415/202604151900.1tnLdQi7-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202604151900.1tnLdQi7-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> Warning: drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c:127 function parameter 'msg_len' not described in 't7xx_port_enum_msg_handler'
+>> Warning: drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c:127 function parameter 'msg_len' not described in 't7xx_port_enum_msg_handler'
+
 -- 
-2.17.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
