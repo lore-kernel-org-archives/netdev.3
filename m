@@ -1,118 +1,73 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1F153BB9EB;
-	Wed, 15 Apr 2026 14:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC8F3CC9EB
+	for <netdev@vger.kernel.org>; Wed, 15 Apr 2026 14:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776262784; cv=none; b=cr3uQXNO2pVR52gS8kKfnFBEhP8/spt7XjMxX5/1YHXx1+A22RcpyPWBSoNAyePOlTQ9el+DVNl98E5VeOYiXldtu5X6mWVDv+sfYCpuFqwiQhmxeIqbHO9J2ELPa+5/MoLKWzwrTcHu08qrCq/cZqyebFuigPqMpiKSTEhTvpI=
+	t=1776263253; cv=none; b=brbl0ThP0D8qLhpgb8zxC5A9tc07JB0NW92iV3MLqSGegPIPCE/9INtExFmcQsAfbjz9GTLU+V9K3jtjibWAxrOBQINw+iBkfFhha+42T50szLpBwQW0k16pbfnmd7ieDUNLjgSME+DqeM1QPHZdAXqWnRpkKrbNAYvr3Iy3nT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776262784; c=relaxed/simple;
-	bh=4GDlMJEm4uVtqtram785F36PyRUfMCvFYewp0lcHc8o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jDx+51oSsl/7X2vbA0ErpL9BNoHjGTCcw1Jj2YOw9xLeV4mhlTHMU2Kxyl8SzrJy7VsaXVMkfjvz/3BO2KgijXGRctZGBMzaqBXmnHHJ3eTyzzcWvdJ0aXi4GzZnrKZsEUxJoDTXbzo2SczIyremySjl6GUw0FsGPqAixP7CJf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UydNJhxI; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776263253; c=relaxed/simple;
+	bh=oOIzZsC9lz45sjHKDaOFTn54Y2WN2iyBVliEwttc3p4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mS34rnPQehOuReIQ8Mvl4pLsJvGUYhmX/0S/g779fvdUNdJFxKhmyqEP38X5V1H3mLpVM7eWUcq1fuBvt4ZDVlzkJCz/BL4+OqWoh7omvB9vr23TP/mb2PuSJMbG27disPRe/zS5Qlmk/eVpIhRDbZuZSj7PD9RRKyZwXs66qhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kFmQ67eu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UydNJhxI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CE62C19424;
-	Wed, 15 Apr 2026 14:19:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kFmQ67eu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99F04C2BCB4;
+	Wed, 15 Apr 2026 14:27:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776262784;
-	bh=4GDlMJEm4uVtqtram785F36PyRUfMCvFYewp0lcHc8o=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UydNJhxIRJG9BJgltJg71m5M4dy/9nd9xl5tI0PlbHQ/gDR5h7w+Xa4ZmvKPG2Mj5
-	 FGd+gudalqE2TgVn2T8WukPXMV2J1HuilVDxIhVLDWIyiPrBlGBA7HGzz0TTLPlU0q
-	 snciT6pPnPcQfpYF7r6P9Fk/1DWo24gvhw+1YPfifNED6etuLY7VpN6FJ6MHA4bWQu
-	 TIz2nNbOU2WBu8t2T+hhFR2j6HjjpQwYA/arTS5EroyPpQGWuHSFAOW9SF5fhnuAt5
-	 BD4Os/SbKn9Ng2FMuxvwtSHPrj9bYUMb6LtVUSaPpSWQd7Df28aL//CGqVnIuLFou6
-	 4tF6EsMBlZDcA==
+	s=k20201202; t=1776263252;
+	bh=oOIzZsC9lz45sjHKDaOFTn54Y2WN2iyBVliEwttc3p4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kFmQ67euydmOkj2SIqtOssQwxgGbwoLtM0v6UOvzw+h7J+cjZPVTrALSlYiaJ4qIx
+	 MGdgG9SReiBeXp1OBLTAhdc5HfRT6PrQGMc06wkQxWlIv+LsjNmazUsd8IcmqvYTBn
+	 v6YVRkA9A4MOzjljdA9pIb1Uuopx2PyMF5AmJ5GfFhhGQwsX8UjaW68rk6RilusnJc
+	 fAfxn4YMJn7JdKpOWBo/CIGJmWoM0ML9ayRilcT5lOTiRFqqAjbXHNup103PA//cQD
+	 o3A0W1pLIXa1WdSMH1qmSicsjthCZPWNLDjQ3+vHiKGOs04HDdMgrTvcdGEiLsw2us
+	 BU8LWuEoCmHdQ==
+Date: Wed, 15 Apr 2026 15:27:29 +0100
 From: Simon Horman <horms@kernel.org>
-To: hxzene@gmail.com
-Cc: 'Simon Horman' <horms@kernel.org>,
-	jhs@mojatatu.com,
-	jiri@resnulli.us,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	victor@mojatatu.com,
-	pctammela@mojatatu.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net/sched: act_mirred: Fix blockcast recursion bypass leading to stack overflow
-Date: Wed, 15 Apr 2026 15:19:31 +0100
-Message-ID: <20260415141931.808383-1-horms@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413082027.2244884-1-hxzene@gmail.com>
-References: <20260413082027.2244884-1-hxzene@gmail.com>
+To: Dudu Lu <phx0fer@gmail.com>
+Cc: netdev@vger.kernel.org, jhs@mojatatu.com, jiri@resnulli.us
+Subject: Re: [PATCH] net/sched: act_mirred: fix wrong device for
+ mac_header_xmit check in tcf_blockcast_redir
+Message-ID: <20260415142729.GL772670@horms.kernel.org>
+References: <20260413084927.71353-1-phx0fer@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260413084927.71353-1-phx0fer@gmail.com>
 
-From: 'Simon Horman' <horms@kernel.org>
+On Mon, Apr 13, 2026 at 04:49:27PM +0800, Dudu Lu wrote:
+> In tcf_blockcast_redir(), when iterating block ports to redirect
+> packets to multiple devices, the mac_header_xmit flag is queried
+> from the wrong device. The loop sends to dev_prev but queries
+> dev_is_mac_header_xmit(dev) — which is the NEXT device in the
+> iteration, not the one being sent to.
+> 
+> This causes tcf_mirred_to_dev() to make incorrect decisions about
+> whether to push or pull the MAC header. When the block contains
+> mixed device types (e.g., an ethernet veth and a tunnel device),
+> intermediate devices get the wrong mac_header_xmit flag, leading to
+> skb header corruption. In the worst case, skb_push_rcsum with an
+> incorrect mac_len can exhaust headroom and panic.
+> 
+> The last device in the loop is handled correctly (line 365-366 uses
+> dev_is_mac_header_xmit(dev_prev)), confirming this is a copy-paste
+> oversight for the intermediate devices.
+> 
+> Fix by using dev_prev instead of dev for the mac_header_xmit query,
+> consistent with the device actually being sent to.
+> 
+> Fixes: 42f39036cda8 ("net/sched: act_mirred: Allow mirred to block")
+> Signed-off-by: Dudu Lu <phx0fer@gmail.com>
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev
----
-net/sched: act_mirred: Fix blockcast recursion bypass leading to stack overflow
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-This patch fixes a stack overflow bug where mirred blockcast actions would
-bypass the recursion limit check because the recursion counter was not
-incremented for blockcast actions.
-
-> diff --git a/net/sched/act_mirred.c b/net/sched/act_mirred.c
-> index 05e0b14b57731..5928fcf3e6514 100644
-> --- a/net/sched/act_mirred.c
-> +++ b/net/sched/act_mirred.c
-> @@ -444,8 +444,12 @@ TC_INDIRECT_SCOPE int tcf_mirred_act(struct sk_buff *skb,
->  	tcf_action_update_bstats(&m->common, skb);
->  
->  	blockid = READ_ONCE(m->tcfm_blockid);
-> -	if (blockid)
-> -		return tcf_blockcast(skb, m, blockid, res, retval);
-> +	if (blockid) {
-> +		xmit->sched_mirred_nest++;
-
-Could this leave a stale pointer in sched_mirred_dev since netdev_xmit is
-persistent per-CPU (or per-task in PREEMPT_RT) memory?
-
-If a nested mirred action later iterates over sched_mirred_dev up to the new
-nesting depth to detect routing loops, could it match a stale pointer from
-whatever unrelated packet previously reached this nesting level?
-
-This might cause a false-positive loop detection and incorrectly drop a valid
-packet. Should we set xmit->sched_mirred_dev[xmit->sched_mirred_nest] = NULL
-before incrementing the counter?
-
-> +		retval = tcf_blockcast(skb, m, blockid, res, retval);
-
-This isn't a regression introduced by this patch, but it exists in the early
-error returns of tcf_mirred_act() (e.g., when the target device is gone, or a
-routing loop is detected) and in tcf_blockcast() (e.g., when
-xa_empty(&block->ports) is true).
-
-In these error paths, the functions simply return retval. For mirred redirect
-actions, retval is initialized to m->tcf_action, which is typically
-TC_ACT_STOLEN.
-
-When TC_ACT_STOLEN is returned, the TC framework assumes the action has taken
-ownership of the packet and will not free the sk_buff. Since the code does
-not free the sk_buff before returning in these error paths, does this leak
-the sk_buff?
-
-Could an unprivileged user inside a network namespace trigger this
-intentionally by creating a routing loop with mirred redirect rules, leading
-to continuous sk_buff leaks and system memory exhaustion?
-
-Should these error paths ensure the sk_buff is freed or force the return value
-to TC_ACT_SHOT if the action is a redirect, mirroring the existing behavior in
-tcf_mirred_to_dev()?
-
-> +		xmit->sched_mirred_nest--;
-> +		return retval;
-> +	}
