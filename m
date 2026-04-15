@@ -1,147 +1,126 @@
-Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com [74.125.224.51])
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3275231E832
-	for <netdev@vger.kernel.org>; Wed, 15 Apr 2026 06:33:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776234811; cv=pass; b=F+uY2Vsej1eIoNARcK7gVMFzuDRErIPFKRj/seEEOQj3IhFdZpeIrVxJUECnvPe9V1dbW3RkAngLmQOlykh9aoc4b280VQRFfy3Jqsu4hCF0XqPltKpEwemwPSNBNCVhqrYBmjPvA4DJWjis/7VZK5ax5LfXD7Ix0A6a45NikCs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776234811; c=relaxed/simple;
-	bh=I/YGk6diE6DwfvFh1WTj1ikmEooEeeXvUwgqkLXnYMI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HyAhMQu4lP6v/KiKrY0qv0KmekED/O09rbCN7pH+aahkzvronoEPDgWLq3QOnXwEyncfeGMSFsz1/IP6EvR03teNK2NjtTznCb0cHo1QG2tfhsOPET9CyQk0pSkKMo/U37kZUJS0y2jeH1OqeU+Ds5JriAqJ9KAIE/k0H7BdcEs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fk5F4vRg; arc=pass smtp.client-ip=74.125.224.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF9EB38F624
+	for <netdev@vger.kernel.org>; Wed, 15 Apr 2026 06:37:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776235036; cv=none; b=Tb7S7FmawG4dKFrTffXy2vz+u6/1De9v8bHqn+KhmU7j/Qsz1Ed6s3o2O3pOiP8WnMvB7hpR4VbIHhrTsjdqeay8+iOGuTk5Tu8Ab5ldM0TTQe/GYrL9Z379Jv/dv79IIfUE+lJvmk9GPeT/tEDpypjWhhugzUowazGISLA/1a0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776235036; c=relaxed/simple;
+	bh=yJ9CzZdh0ITtrg/Qg4Whi7FTsOhB5NFwZmHZHk5gvDQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XyRSVEiaG/I9UOVErPXWU9qw/ysYZhyRFvyGOfY5RnyNtwlNBx4UjNd5N1eiaeK9j60SxPrvzraW1sK/D9wTC9MV/6T/wAknTwCd0/Vlke3o+q/Xrf31FrlBt4i4pt6ZUvV+O5R4f3IDc/Bv7irZkeSBgB8mnV4xSKlb+CPQ5Sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LzME5p3c; arc=none smtp.client-ip=209.85.160.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fk5F4vRg"
-Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-651bf695701so1627261d50.2
-        for <netdev@vger.kernel.org>; Tue, 14 Apr 2026 23:33:30 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776234809; cv=none;
-        d=google.com; s=arc-20240605;
-        b=QB+VJCHHyOWsTngP3sXOFG4HXJ2WCMNCSH2T5j/79zgo10bcVM3qGXtH7yN3h2D/cN
-         O64GL5q0nH64IOXxZshE3mW6sC1j6edA4FK8G48P8dtw7pbYA1bQpFP1szmZ0ERJWm4p
-         Kw+PYS1d07Y6jYzzD6/o0CRlFsu3MM8h8W2aX3cghotaxvUVHi28oCaTLMQ9Zj6CzBqT
-         cSBZeje37Wy4PvwGIQ1fPVtyJIqb3tKPEQKB1L4n5nPnA3ZFbeR+5p368L0+E0T+K9Zr
-         P4kP26975jhKMEZzQ5eqbALgrcssfxBsOtm8zuJS3/IAMkO/jmxNsmU7nabsTUrrhne3
-         Fddw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=I/YGk6diE6DwfvFh1WTj1ikmEooEeeXvUwgqkLXnYMI=;
-        fh=RTqyz2JYNhts63klL/McMY4q2yT/5/ml+4AQyMJkwvc=;
-        b=adz5hEVNF+FWgur3tG157XvX6mP2kKtFRRWmp76AuN/oTxEfrMufRCs78b6X0bcxUb
-         8mpv0YEJewrMoxxOYr3ahNN6UJn2bxy0KmT3nyOQ5uPA6YsCiWFdqXSZPPYZglWrSTs7
-         HkZ6AgRB2bdZlTBYgTLJOSx2mTnnLymeW5rj8iDrt3lYgp+9Ft1hdVcod5vmHVSabfC1
-         zOciD7farIqrrJESibyT2EL4Lml5dcKvckEqeoHUjjhqqgoZwdU08RlMHqJOUT5cwVfJ
-         4ztAxeMYENdOdDICooDvuCWS8EbpHNSVz0ElI/auZtJ7nGqcrPGBMGl8vcGWTkWRGxE/
-         0EOg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LzME5p3c"
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-506a6cf8242so48843991cf.1
+        for <netdev@vger.kernel.org>; Tue, 14 Apr 2026 23:37:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776234809; x=1776839609; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=I/YGk6diE6DwfvFh1WTj1ikmEooEeeXvUwgqkLXnYMI=;
-        b=fk5F4vRgR3d32bKCoF0SveC9QkfCfs1LzXWLm/nAV+3/BcZ0m50sq+fVw7fKdwTLBT
-         0XFDFENood4KmYUO+zkrYaov3OraNS6jPAkQOHu0RMkbz7kzbzfut3BXrau+lTOWNSaG
-         55TXeb747lknnXfq0GWOdB8QoNDrog+7wSK6gn1mJKbCTvgOMhYqn1sjBTmeERTKnYk9
-         2TRWukZW63APaLDnceFyKHgQR3g2YZuiSdcUiIFfQSkgGYSjAHx1chLo18LqYIFuUPxl
-         EaLwoISicmXSfxV4L37cbjHUQZyQC5TbpZNkx949hPtW1EHRx1gZBlnaSRSjEIv31fr6
-         LPJw==
+        d=gmail.com; s=20251104; t=1776235034; x=1776839834; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=rrC9vNrM6E6rzZeBaqxVv48Wut0j5e/JM27h9uWS1lQ=;
+        b=LzME5p3cZ//ZOSu7QCVtD6m3PnoYyPtXmpsibWdgflbxsNBCfy2GRVPZNtdXHqqI09
+         9wjUKpf+PObtTmjsiMfPiWuoVqIMwf/xCf3ghGfEYCmF5/4dUhH1ojyedtqPzaGptyU/
+         pyA3mkEhLMSfpIBlkbt7FGp3+Kejsix0vVXOKilLFDxmvBjbY46Ujf48/4d2XkoZo6fQ
+         Fr2qiob10hzpVyUmkek0gYKDiMo/tVcEsKSlNeZYB1un9G+Rjb/g8id3kFkjZWWtP2Td
+         z2Q1xN9aZtsTMMWHpVDYBnZ+uYfehu5FMFAyOpfEDUgPSJxBPfQTpJbFOcq19HFTI7jK
+         o8KQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776234809; x=1776839609;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1776235034; x=1776839834;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=I/YGk6diE6DwfvFh1WTj1ikmEooEeeXvUwgqkLXnYMI=;
-        b=h+wsckqjhJ/q+qB9RQfCLkjWPB+ocl56qqCGQbiCTgpVgIVPhXVtoNQvi/z5DN263c
-         ro7pAHkeRc68UkwVLvEaB30Uw3zEJXMvxjEKFU2sFTngWtObTyQ+kcGXKR3JE9XJz2Z1
-         mBfCMf6ltV+K0ynA3uV2xE4BXNOdhUTOvQOHouYDuCO/QDNO7ZcbpB+qEcluLWT44YZh
-         zes1LasPyB6TSoBuPRycufTC/RearQtoHYjfEiEo7rheNrUws2l2KkrtYeA5Du0bO0Zn
-         FCpzAabgtYDrBgKvkbVGkPQsfHi7vAcQ7275Di8G1vOS5wVNI2km6Waw1KH8NYKGp0Ku
-         yzCQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/fcccVKH+yt2EkH6YjKFIRGIbGWpawkkY4mpxwmNHBMADN0BpYDEB6s6SGTgz01ZWLLa04mrU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzSG8jB+Sx6KgCegWYonD5K8xj4+JAYbqCZCFUKgJ3YZbVpP0rI
-	726nFnIW98LcnTc0h87AiXe2wkBz6ITkviJATnTZNSJOLppZBsme612z2V65dWT9cg5YOsXnaZ6
-	WFRb8MO4QUMPRc0npWoYJk20tFneMA58=
-X-Gm-Gg: AeBDieuebnw7QmC86THnUvwA61QubOdpqIzKYJE3I5DGxWLeKben5t7YGDyjbXRE3+4
-	Ln2lSf9Ec//oi2sjbcIJjJ9q6UE/10heGibvwFLzXaPZiUebLnS94xIlVy6LHzMSsxzdfhVzveX
-	YrvKFZWrn1gghFc60sctkaTMRjJKNFRDx4qRZoeaGbokVJAgSbVXCiNpncCdvCZqdh0oTJo/muX
-	BKcusVMT4sld8n6fd0Rpbq7R7KWFuyl7FYJ/KHdjpJOm8cSVjKRUVR39LMea8tzLNPh5pS+RhRF
-	5Y7PuaJIxOjugFDgngf1/3yLmJca
-X-Received: by 2002:a05:690e:14ca:b0:652:ddea:11f1 with SMTP id
- 956f58d0204a3-652ddea24a2mr2317961d50.30.1776234809273; Tue, 14 Apr 2026
- 23:33:29 -0700 (PDT)
+        bh=rrC9vNrM6E6rzZeBaqxVv48Wut0j5e/JM27h9uWS1lQ=;
+        b=h9ObW+f7Of9WksJh1A4FPQNdKYpG4Yr6wBSfJspVx39m3ZfOQTMy9h2pBISMIFCj1k
+         p7nX2H3bVz3adB+4xqVZ2n7Rq6DylmGVRJZYeTg8em31/6Cg3139iXdo0Gz0SgGkYFYK
+         DzvBpBfm5nOeekDvTJhQSu3t9XWWLE6ajqPWLl2ro54UKG1TJDOmH1oXSjzUUTYUP9Um
+         boneOG3sc0sshqkWWZSeGwN/8IRl8XU35uRihHs3/wV1L22zg6evOlyJeF0aUWBKDjag
+         8IPNg0ozaO6yIYHcuALErslNxVNagB9IXd/ixXG4QXoKeERKsBMfgBKDzdF6JV4r2zlC
+         CWGQ==
+X-Gm-Message-State: AOJu0Yxhd5Amnemd6F2OdI/QaX8b5JdrIptuGZMd82xzksspiV8C98jF
+	gAi31CVvBbamM4bUeXWW+6iuAbnACV32ls0DfZ08+mqtH0TegBB/KYsa+gNz5q5U9KQYiA==
+X-Gm-Gg: AeBDietLxV9d305gyHJQMJICVy3Mm4iFuV8vqt/zxuVuNwZhH2kiW8mJpQMMlJ+M9f8
+	n4lou03voSpo6Ek40TclhvdfSem9EJDxSsqk9SUazFwzTMkZzOU8If7KxjkYv+TC9CHRslzwkWQ
+	DsCKVbG0e1CVedup2M7nhrNnJIXDO+x0Pi08TEkokDp6b8uKl//c9EaKguKoCkyXVwHPoqNn7I2
+	rfD6Q4syIPP9PmziUNmrUC471iucrYti9Hl13HiMuZmXpE2Mye0IXGz4WtCLhd3guF6IXPNGzuj
+	86UD9a4+nawDWQcciYkLjKlJTX9B3F1PAZiCGr7omLCVgjoMWku8PtIbSD1W+vxmfNi0vUq57hU
+	mtuoBR3thse903zZ4TJ+YOf6nvv8ZCTkS2GqzJ6Xx4lzpufKoZEyVb1ic7FnMjF6tXyOTdkrEG7
+	UJPMLtLxNhy2Qv+9OlqTCm0qS/6wcccpuyS9lVfjbof1PHJXr1M4AMSNkzopxyLwrNkRtVxFY8Y
+	E97zzTaPr8JhTEaSRmOjQI+Z7uAUJP8YJQVwYA=
+X-Received: by 2002:a05:622a:134c:b0:50d:82ca:7c9c with SMTP id d75a77b69052e-50dd5adaf18mr314133561cf.14.1776235033794;
+        Tue, 14 Apr 2026 23:37:13 -0700 (PDT)
+Received: from TDC4045031631.e0cglfehwr0e5gttmepj3hi3hf.ux.internal.cloudapp.net ([20.63.37.123])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50e1afebd48sm6222121cf.26.2026.04.14.23.37.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Apr 2026 23:37:13 -0700 (PDT)
+From: Ashutosh Desai <ashutoshdesai993@gmail.com>
+To: netdev@vger.kernel.org
+Cc: linux-hams@vger.kernel.org,
+	jreuter@yaina.de,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ashutosh Desai <ashutoshdesai993@gmail.com>
+Subject: [PATCH v3 net] ax25: fix OOB read after address header strip in ax25_rcv()
+Date: Wed, 15 Apr 2026 06:36:54 +0000
+Message-Id: <20260415063654.3831353-1-ashutoshdesai993@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260413112030.2694563-1-lgs201920130244@gmail.com>
- <5da15f31-e9af-4f8d-82fd-eac29a6d98f6@intel.com> <CANUHTR8uNVWR48xs90s+MtGQ6J-1j5R0+64MKVGin0cf-FjRWA@mail.gmail.com>
- <143881d9-02d5-42be-bf77-9fe9e8353c06@intel.com>
-In-Reply-To: <143881d9-02d5-42be-bf77-9fe9e8353c06@intel.com>
-From: Guangshuo Li <lgs201920130244@gmail.com>
-Date: Wed, 15 Apr 2026 14:33:16 +0800
-X-Gm-Features: AQROBzB0J22GUf7_6jCosTMhAtK8yiANwxMUFPDIVG2xrZyTeQWs76gB0isBNRQ
-Message-ID: <CANUHTR_ecExv+7JzJ9G0H7kTnPfOWr+epyvJ=qxGF=SvdCU9BQ@mail.gmail.com>
-Subject: Re: [Intel-wired-lan] [PATCH v2] dpf: fix UAF and double free in
- idpf_plug_vport_aux_dev() error path
-To: Jacob Keller <jacob.e.keller@intel.com>
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>, 
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Joshua Hay <joshua.a.hay@intel.com>, 
-	Tatyana Nikolova <tatyana.e.nikolova@intel.com>, Madhu Chittim <madhu.chittim@intel.com>, 
-	intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hi Jacob,
+A remote station can send a crafted KISS frame that is just long enough
+to pass ax25_addr_parse() (minimum 14 address bytes) but carries no
+control or PID bytes. After ax25_kiss_rcv() strips the KISS framing
+byte and ax25_rcv() strips the address header with skb_pull(), skb->len
+drops to zero. The subsequent reads of skb->data[0] (control byte) and
+skb->data[1] (PID byte) are then out of bounds, which can crash the
+kernel or leak heap memory to a remote attacker.
 
-Thanks for reviewing.
+Use pskb_may_pull(skb, 2) after the skb_pull() to ensure both bytes
+are in the linear area before reading them. Discard malformed frames
+that carry no control/PID pair.
 
-On Wed, 15 Apr 2026 at 13:37, Jacob Keller <jacob.e.keller@intel.com> wrote:
->
-> No problem. I had missed the other version, which explains my confusion.
-> Still, to my eyes, the fix looks to be an equivalent fix as one
-> submitted by GregKH:
->
-> https://lore.kernel.org/intel-wired-lan/2026041116-retail-bagginess-250f@gregkh/
->
-> Do you agree this is effectively a different fix for the same problem?
-> Or is there really two different double-free issues here that both need
-> patching? I haven't been able to fully convince my self either way, but
-> I am leaning on this being one problem, and I think Gregs solution feels
-> simpler to understand.
->
-> Thanks,
-> Jake
->
-> >
-> > Thanks,
-> > Guangshuo
->
-Yes, I agree Greg's patch addresses the same underlying issue.
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ashutosh Desai <ashutoshdesai993@gmail.com>
+---
+V2 -> V3: remove incorrect Suggested-by; add symptom, Fixes, Cc stable
+V1 -> V2: use pskb_may_pull(skb, 2) instead of skb->len < 2
 
-For the other path in `idpf_plug_core_aux_dev()`, I had also
-previously sent a fix, for reference:
+v2: https://lore.kernel.org/netdev/20260409152400.2219716-1-ashutoshdesai993@gmail.com/
+v1: https://lore.kernel.org/netdev/20260409012235.2049389-1-ashutoshdesai993@gmail.com/
 
-v1:
-https://lkml.org/lkml/2026/3/18/1822
+ net/ax25/ax25_in.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-v2:
-https://lkml.org/lkml/2026/3/19/1285
+diff --git a/net/ax25/ax25_in.c b/net/ax25/ax25_in.c
+index d75b3e9ed93d..6a71dea876a1 100644
+--- a/net/ax25/ax25_in.c
++++ b/net/ax25/ax25_in.c
+@@ -217,6 +217,11 @@ static int ax25_rcv(struct sk_buff *skb, struct net_device *dev,
+ 	 */
+ 	skb_pull(skb, ax25_addr_size(&dp));
+ 
++	if (!pskb_may_pull(skb, 2)) {
++		kfree_skb(skb);
++		return 0;
++	}
++
+ 	/* For our port addresses ? */
+ 	if (ax25cmp(&dest, dev_addr) == 0 && dp.lastrepeat + 1 == dp.ndigi)
+ 		mine = 1;
+-- 
+2.34.1
 
-The v2 for the core path was posted after discussion on the list and
-incorporated the feedback I received there.
-
-So my understanding is that Greg's patch covers the same class of
-issue in both places, while I had sent them as separate fixes.
-
-Thanks,
-Guangshuo
