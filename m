@@ -1,106 +1,91 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f201.google.com (mail-qk1-f201.google.com [209.85.222.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C66935C197
-	for <netdev@vger.kernel.org>; Wed, 15 Apr 2026 12:59:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD01A331230
+	for <netdev@vger.kernel.org>; Wed, 15 Apr 2026 13:03:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776257985; cv=none; b=uaJv41mtpMfbn4u0edfgu1EUUcklo5CEnA8D+LS1YJ031tvTj+iHlGiu3EVjBpMx66gtP2dmuEMXnvO9MCDFZ+Ph/fR+eL4cgjPxHOB6M3HA3vHvoXnWRuk3GinVUOR2fFCdTUTNC+sDoVBdq64i1ind/xmoOHZ0jpufu7NWN9U=
+	t=1776258192; cv=none; b=U76dg//m07+6/VQ3Gi66XhnX531BgKtW3yNqil2JlIdWWrCBAfGfsJyLLiNI3EpeLUW5O970BqxSulOqTibD1o2uSCpK9HUnAMeSf6Hb7IrYITozccFQ8t6tFL99npoHnHHsP72ppV7/DMpjXqzJnCpNeHm570Elk6BW+Nunup0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776257985; c=relaxed/simple;
-	bh=QI8hvSFR4MG7toHeGfU6mUaxTYPzK5OvM+q+8pgdxDM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JYQu9/KvUlPB39nR3y31G6tO9D//8tcX7HIW7Z1EjbcFZVxxKThX8MSQr76bXSOT3jjVwX6Hn84jMjI/J7LFExdhiweWrK8Mp3Y1FgJnCqZCt3BgCTcdJ1UcjWZtezofkQNgM9XQnR1ESdUOWEBL1hi+lrIiGOJ9j8udCVXvSuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=aFyriBXu; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1776258192; c=relaxed/simple;
+	bh=eqfb9Gzz9lqc50VPMtKGLmCy4FdMWzNDV9Bhj815oU8=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=lyeI6+NNRwNjlTznyUQffpX0jogf8EFnbjnvGo1w6O7ubAs0mKw+bk0ddIT53qWehcGyRnYat+Bu2ilR/1k9htT9gg6VuhIcD6joVsFbsNIJRB78H10s0KieKqOAuZzz44YRwG8RLzTr+Q7UZAKlcfFxW1SviXcR5qO4RdJS8qA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NJgDAehg; arc=none smtp.client-ip=209.85.222.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="aFyriBXu"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=k1puqjkx70xR77cxDwbqQolTS/KLwYlYFTOWLOqnzlM=; b=aFyriBXuIy8LHVTejW1TUXwLSI
-	SOGtjKg/MRydcxHRxyQwoWq1ZMD5bmH+zHEXuwt9s/TgJKEIQvXYmU/CVhy/JjHCom2U4e8bU6qLo
-	87W1gK0L3wGZJMrRowFSZIdUb+E5XAcib8X4LG7+rupk+ph3+nYjveF29ZNvTl7ss6iIIRG/g6FZK
-	mcPmRJ4JcBkbfPOt09h5TjV0eVBiQPuuQ3xMWChxR/IXz3YuKsLinJOie1NfDpQDAxDgIo7K1PSuK
-	TL5zcIE/On68zsFvm6Mc7BgNzAyjhZay+pKmXU5Qcc3uqdKZTDhOF93nE+/MPpFU6TeMtUwXoDDkv
-	m8g+Ib8A==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:59050)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1wCzqA-0000000026f-2wkF;
-	Wed, 15 Apr 2026 13:59:34 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1wCzq8-000000002EM-3sFk;
-	Wed, 15 Apr 2026 13:59:32 +0100
-Date: Wed, 15 Apr 2026 13:59:32 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH net-next 5/6] net: stmmac: move PHY handling out of
- __stmmac_open()/release()
-Message-ID: <ad-LtOBrKREM1tCk@shell.armlinux.org.uk>
-References: <aNKDqqI7aLsuDD52@shell.armlinux.org.uk>
- <E1v11A3-0000000774G-3PKY@rmk-PC.armlinux.org.uk>
- <8409022.LvFx2qVVIh@steina-w>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NJgDAehg"
+Received: by mail-qk1-f201.google.com with SMTP id af79cd13be357-8d65190e52fso1389339285a.1
+        for <netdev@vger.kernel.org>; Wed, 15 Apr 2026 06:03:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1776258189; x=1776862989; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=kma409GvMsddkfqfQhZor4T3arEwdjnxzgLRxyA+Zbc=;
+        b=NJgDAehgI8Kxn1oylEYh+fkuyEaUQ07088DuSuWD1oZmMHaFTNZW2w0HTFB4bPxstq
+         kDIYmDNsfFyJf1wLjgXz4+zKrD7P6tapR5QnGEwWp7mO8bN0EbBgRYCPQ1YDXTru2HyI
+         XMiZ2QHMpJcfjcicLWbMGS0yRoJ4uOdIf0Ez6O+hD1De1Ihbc1QVPDIUMuIseLOqIF41
+         biclmsTjxVRl+IS3QUOWNuwT33TRnwWD1YGZT2905/PTlL0vbxnJbU9o413fSfbiwbWP
+         L2UCiZP07qONvgbwp+mO4i810hi2/0yRZNMkyw20fkSi7g/IvXmLS+nm9eb/JWH5Iin+
+         Yb3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776258189; x=1776862989;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=kma409GvMsddkfqfQhZor4T3arEwdjnxzgLRxyA+Zbc=;
+        b=fsYV+7Ty2WtwwqMZ/8gANR5IDaSlJ63Pueg7YzhX5uPdUFtAkC329wLftf8t0RFm0I
+         2U6LkvWVWwiwpe+KBfmf+qVjgf/r8ciwODk6Xh2KchztcLfWfJpkkBO3Z30mg/DwH/pe
+         VbSi0HDxbbHlHJdgWMd7CjfTmBNjzeLMUFc+3dtUa8kodTEH0u5STwDkzcU+cotA2A/n
+         3EIsk0QMJoL56bEhGz0Vrpc3+Z6pzaYAixI42QEFu7ZZJ1QyckXhiFnZtdW52hgjBndF
+         MRnVX09deRAZWD0LBjFMt24UkLCB2nqUXyrL07auV2aSOgpmY72IP+M5lkmjM989UMC8
+         lP6Q==
+X-Forwarded-Encrypted: i=1; AFNElJ+10g3gE/P8ACdB1fXC2BS8gVz1bodTwS52wRw+dt7oIO20u+SW0ydrpqd2gU6J9Z9dM0R6zP8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxs0wKe4RFxHZ90fVy1hLFtuihLax9kwChtc0ugFqtJ6tRh01qz
+	AeL2+GkvAPAsfDLKvclpETCa4wXTjJ64CLJfZ9d9uysq/TFO+gnJiLvjN7A6j1oCHDPUzdF+a9B
+	y/8sAZ2F2Hp1mEw==
+X-Received: from qkgg16.prod.google.com ([2002:a05:620a:4e90:b0:8cd:863a:1c50])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:2995:b0:8d5:8815:ffae with SMTP id af79cd13be357-8ddcfca7a9emr3153198985a.56.1776258189159;
+ Wed, 15 Apr 2026 06:03:09 -0700 (PDT)
+Date: Wed, 15 Apr 2026 13:03:07 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8409022.LvFx2qVVIh@steina-w>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.rc1.513.gad8abe7a5a-goog
+Message-ID: <20260415130307.1016393-1-edumazet@google.com>
+Subject: [PATCH iproute2] ss: force a flush in monitor mode
+From: Eric Dumazet <edumazet@google.com>
+To: David Ahern <dsahern@kernel.org>, Stephen Hemminger <stephen@networkplumber.org>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Apr 15, 2026 at 08:08:40AM +0200, Alexander Stein wrote:
-> Hi,
-> 
-> Am Dienstag, 23. September 2025, 13:26:19 CEST schrieb Russell King (Oracle):
-> > Move the PHY attachment/detachment from the network driver out of
-> > __stmmac_open() and __stmmac_release() into stmmac_open() and
-> > stmmac_release() where these actions will only happen when the
-> > interface is administratively brought up or down. It does not make
-> > sense to detach and re-attach the PHY during a change of MTU.
-> 
-> Sorry for coming up now. But I recently noticed this commit breaks changing
-> the MTU on i.MX8MP. Once I simply change the MTU I run into some DMA error:
-> $ ip link set dev end1 mtu 1400
-> imx-dwmac 30bf0000.ethernet end1: Register MEM_TYPE_PAGE_POOL RxQ-0
-> imx-dwmac 30bf0000.ethernet end1: Register MEM_TYPE_PAGE_POOL RxQ-1
-> imx-dwmac 30bf0000.ethernet end1: Register MEM_TYPE_PAGE_POOL RxQ-2
-> imx-dwmac 30bf0000.ethernet end1: Register MEM_TYPE_PAGE_POOL RxQ-3
-> imx-dwmac 30bf0000.ethernet end1: Register MEM_TYPE_PAGE_POOL RxQ-4
-> imx-dwmac 30bf0000.ethernet end1: Link is Down
-> imx-dwmac 30bf0000.ethernet end1: Failed to reset the dma
-> imx-dwmac 30bf0000.ethernet end1: stmmac_hw_setup: DMA engine initialization failed
+Call fflush() from generic_show_sock() in order to work
+with pipes and redirects.
 
-This basically means that a clock is missing. Please provide more
-information:
+After this patch, "ss -E &>log_file" works as expected.
 
-- what kernel version are you using?
-- has EEE been negotiated?
-- does the problem persist when EEE is disabled?
-- which PHY is attached to stmmac?
-- which PHY interface mode is being used to connect the PHY to stmmac?
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+---
+ misc/ss.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Thanks.
-
+diff --git a/misc/ss.c b/misc/ss.c
+index 1ea804ad549e23f767633e07efdd9adf1277af18..39b109276ffa83f12d1e1e9f8f2cf58c25737b4b 100644
+--- a/misc/ss.c
++++ b/misc/ss.c
+@@ -5534,6 +5534,7 @@ static int generic_show_sock(struct nlmsghdr *nlh, void *arg)
+ 
+ 	render();
+ 
++	fflush(stdout);
+ 	return ret;
+ }
+ 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.54.0.rc1.513.gad8abe7a5a-goog
+
