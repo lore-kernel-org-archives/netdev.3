@@ -1,72 +1,74 @@
-Received: from mail-oo1-f66.google.com (mail-oo1-f66.google.com [209.85.161.66])
+Received: from mail-ot1-f65.google.com (mail-ot1-f65.google.com [209.85.210.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A839A34AB17
-	for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 18:57:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C679D20C029
+	for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 18:57:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776365850; cv=none; b=GRlNy7XwZf6TWkLT9C9fpJVKGbt3UZ/9/H+haeFT9M+Qr81apgududd7WgvoS7RcbdvexgnQQNoV2rT/9pQfXNHo+au9YQbiTeAx4FvrVRSI3uYrLku7AIMXI8G2/MP1QlZgt/NjGd9wYOB0Xx/zXMCcR5EInNOteIwyBaWXkqM=
+	t=1776365851; cv=none; b=pBEx/+CEUvWjqaZNTBxoKWEWw4aB3gJhJ/k/hkvYS48IlW0RPqIWDh8AE1VKFLB36B3yxpn6NjJ0URtEl1SSuoIKAGEOeqGiOC2oJ+dpOLOaQN/4JBSVAFcxAn9IxRYFk7fVWpxWm67yYM5YAV96dRIONfg8TM+jZ62TY+TzocA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776365850; c=relaxed/simple;
-	bh=DblTuTiiUScWKwjSM8y2bGCj9IwmvdkqVpvGEE/EQi8=;
+	s=arc-20240116; t=1776365851; c=relaxed/simple;
+	bh=ErwOnT0JgTTw7vhCQZp+f8jltSpFdP+zGg2SkB2ZJU8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ja7u0iai3NnC3YSr28zMXLPyiKZniG3udRmgzuD+G/AYOgWBWyYPcgnyfFYo38sBl6JCOrQj0N16h6H1UPwelzHv2d1oyEpW5s5ebkh+Z/tiItdJSP8fgy1jBPryImCH4iA8oK4cYrDIPwYoVQL24YIMoIFMaZxmJGVX1rrLS+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iqwYknuS; arc=none smtp.client-ip=209.85.161.66
+	 MIME-Version; b=g6QKgysfTGSc4vYURkbyYEMq6Z2UxIu39udM26yEh98Zo1JjkGKKil+l5WjZAk+CXrsbRdtMARUvQIkbxSMHYMOHhfXevkso9e9TRVTxE1csReXvTY2Pymun7vyQ0OB5Pu/K3FdrevIsuQdyz/xx0/Z4LNsH2zcgPqvU1cDR3Zg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WjMSWclM; arc=none smtp.client-ip=209.85.210.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iqwYknuS"
-Received: by mail-oo1-f66.google.com with SMTP id 006d021491bc7-67c250805ccso2900881eaf.1
-        for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 11:57:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WjMSWclM"
+Received: by mail-ot1-f65.google.com with SMTP id 46e09a7af769-7dc35728a57so5285091a34.0
+        for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 11:57:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776365845; x=1776970645; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1776365848; x=1776970648; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Fl9PJQRW1at9+hyIvljSyrZjl0s2ic+yWjg5140FMUY=;
-        b=iqwYknuS4Kpl9G+c8eMZ99bp33yU/9Cuz4oryN4duDnlxAG6R78poU/zWoF/rQ3jQs
-         CfwBnwDJCzhhZIKHkRmZygF7JWotAGLtGo9C6pWPjGrrZ4/uMssmdwRFjEUrZzIgL/8f
-         1kBcpeQJv0Py+/UROkDTLuUJ7+KzT0DxNwLYELynjOqEKqOr/XD54HMF5FSrH8Ml8NjZ
-         6Jwq1s2bxygmobsycid2HlZNrfFt5Nlub73KkYtOYP4bxZprqjO8ceLcYx5Y0tCTW8Rx
-         1ipURJiWw4fGXCEDtfqnIVo6mo8GNpMDnFxrqDORAy8/DyHRnIPMcSBYqHweJzOSOTdU
-         nVQA==
+        bh=Hi026evQFCdtftLRIl+IFDB1TLnlqPPKmYddAHJGBWk=;
+        b=WjMSWclMkPRC6tBlIUF7ILhoWx/QVqr50/TZ4hZRk/p0UVUlAA0y15epFhT0n2Ulyf
+         TvQSyhNui1Teu58yW0IG1OqDS0f1KA4pb96ymxxU0EfsbjO3ITluoNYhANn6zJ7CbfEn
+         BCc2vgaazFTGj7GosEqHOEQof9pTKEpGstHBZ2nH1YRo9QLhV85pKqxantlkcadAukKH
+         buzWmZ1SQyVc7/4NVvG1eeq0DGwp799SqIerbpXpLc7NGSjcnKp+hn02LX2rJzXaLiWi
+         XZnu29mYXx7Pyubzz0Up1jQc4+78XZYL0rYT8cc/2tT4zW6/6Iv7PMyB9R7iP8yMOIfe
+         CkYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776365845; x=1776970645;
+        d=1e100.net; s=20251104; t=1776365848; x=1776970648;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=Fl9PJQRW1at9+hyIvljSyrZjl0s2ic+yWjg5140FMUY=;
-        b=I0Aaugbi+h7yB2USxqnjT9S+VEz593EppAY5hliaOq91Ci+iWAlW5IZj2BjbxBgr1z
-         yJDK+QzLThQjyxU78WhgxVvT62nQimqt1u9vm7SuuBbleCGSCijxP/v45VHrFNzQvYlX
-         AQXt1XSDVumh7cNR9KMl52A8D05LbP9wznaZ9uj7kMYOk6R5Ay7c9uccRhwVJ6FYVebE
-         qZg2MZwqUCV1Z20tDPPqZaBXmCN2bGJf2RTlrSxd+wDUNL/resKxxW/JPzaqkcSokkZh
-         FM2oCMT5Ugod9mXzgeQASg5r9ieZyB1XfkEsO/p2K0nj1Gwywsd9ZjZr/bKFMSSrxI6n
-         2aag==
-X-Gm-Message-State: AOJu0Yw9ieBJwO9F3RSOFQWkVpUJUhvzciIFRUODuQ4jsgxmw7IHP9Mb
-	sGT2uOpi9dlkAgQQq4Iq8n2XOFE7cXKXvkwYjxIBvjEwIfyRHuohDzGN5x7M/XRB
-X-Gm-Gg: AeBDiesxJ++9yMx63nOnzSqh4kp9qHe0oHIh720NtNzyHESnowfVhACUHJz5Bkj42p0
-	WLfS/95p2JFnlD9p3cCBE5MrNwuv2qpwyMHDi9desrGN60/A3vU5jz8MC+mcAtMvVxWieYZpmRd
-	Kx5j/UyDs5MhkmZBNlGyNk1AZNzlH1YabQAnuI+6uFfqWTyFBdRIitBFnL1Z/HHTUL2SW1nItPv
-	L+hmnQGTpspnP7LPck/YHyYHQK99LUEKgrbxjLfp0cNMuBL0K8GfBN4jxz/BhqCLtidUaHXuUzC
-	ftEA+xqWGxfaw74P0S0aRkMUbWBKE1cW/XubE1aSrd4GvJ72OgaZd7hkTaZbZe0TchOHLoaD59F
-	3uA8YRm42Oi7Dtn5NxEpdtjvOYL3RXzg/LMhc6ZlIk7D2MsFISkItEfKjoTlzW/4v5Upq9xB/fh
-	J9KFOiNHIp1resY6otsoPrH3QRCcrn
-X-Received: by 2002:a4a:e908:0:b0:688:2348:2953 with SMTP id 006d021491bc7-69461a93873mr227312eaf.20.1776365845613;
-        Thu, 16 Apr 2026 11:57:25 -0700 (PDT)
-Received: from localhost ([2a03:2880:12ff:70::])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-69460421421sm458775eaf.11.2026.04.16.11.57.25
+        bh=Hi026evQFCdtftLRIl+IFDB1TLnlqPPKmYddAHJGBWk=;
+        b=UIH0RiuI/rDeQTR+6vTIlKRU1aelbhc7msTTVAuX1gm7jIOEbs0tQC+MzQwSl4VqGe
+         3voP6+jBv2T7ym5TmWsh2NYyrp6RITIBgX80BbLkGHvUEIV7tbeDLNCsz2xI1QAp6Ve7
+         v0uKDgnVfNDwu/wO5CSXa6RkQQiU2WcPJDcr19UmjbdmOi6eFRC4ySeO1ypOApos09q8
+         8RhenjXTHtbm2keIEDbcJcg89baYTFhY/+BsMp0qPREsWdcUFNhqo7xgrTEAQ05gbk4P
+         L9D/Vpi5Ukv0mTaavix+bPoRxZzo1+V8Cf1fz2SouVT35Fl4Q3AwGGLOKgm8PDuJXNmV
+         eywg==
+X-Gm-Message-State: AOJu0YxliCi/jzzFU6KqtCk63dqYN2Te0YW9QDnmEwbxMJxqceZurIby
+	A2Xhfuyn6S+7VzLrg0l0rlkiJWf7rlNl1XeG290SMF4DSrM1Wxnpi0ES0pB7jEDb
+X-Gm-Gg: AeBDieso7w38AXGoAjIddjc4IW8ABdmT8eP0gquT0EY6cSdzGhsj8eDTC2pfUaG728i
+	4rwq56h8KjmuhZza8IynqyWUst+PGZsWzjZ3mjKvjRbRP9ggD1fL8N5wMsX+qfDoZ+QPuEh/rP7
+	92YtHqaaptL9mg/PPNlClpRG5Nuh9CW1Jjf/5DVtEv0gIHym34YUHwU/nZUp91NiixyboKpdx65
+	f3jjCUOtrtDqFuCvElfgZeccSZk/CUcz7x3skZLyIcCPkens8gNmevtWZPoM0xTS1RTPYwW2tLt
+	j8P1xa8P0ukOBCy8uP1L2FsaRmp4s74uQrzorvi6oG2MoKjWRyq/k5vn4Bl+6j2+qu0bkzTkie6
+	VTBFUW0+0gMXbLDqrrwnuUPnT5m9ur3PeSDUPjC64BdldV1uGoh29DFoVdNfSSZQ4FK9Sjc84KG
+	w79pRjtvhAbhYfcK2E7G3bGISZuvzI
+X-Received: by 2002:a05:6830:67f4:b0:7d7:cd20:fc86 with SMTP id 46e09a7af769-7dc9272d923mr345102a34.25.1776365848621;
+        Thu, 16 Apr 2026 11:57:28 -0700 (PDT)
+Received: from localhost ([2a03:2880:12ff:40::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7dc90c90896sm504965a34.25.2026.04.16.11.57.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Apr 2026 11:57:25 -0700 (PDT)
+        Thu, 16 Apr 2026 11:57:28 -0700 (PDT)
 From: Stanislav Fomichev <sdf.kernel@gmail.com>
 X-Google-Original-From: Stanislav Fomichev <sdf@fomichev.me>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
-	pabeni@redhat.com
-Subject: [PATCH net v8 12/15] netkit: convert to ndo_set_rx_mode_async
-Date: Thu, 16 Apr 2026 11:57:09 -0700
-Message-ID: <20260416185712.2155425-13-sdf@fomichev.me>
+	pabeni@redhat.com,
+	Jiri Pirko <jiri@resnulli.us>,
+	Jay Vosburgh <jv@jvosburgh.net>
+Subject: [PATCH net v8 15/15] selftests: net: use ip commands instead of teamd in team rx_mode test
+Date: Thu, 16 Apr 2026 11:57:12 -0700
+Message-ID: <20260416185712.2155425-16-sdf@fomichev.me>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260416185712.2155425-1-sdf@fomichev.me>
 References: <20260416185712.2155425-1-sdf@fomichev.me>
@@ -78,39 +80,65 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Convert netkit driver from ndo_set_rx_mode to ndo_set_rx_mode_async.
-The netkit driver's set_multicast_list is a no-op, presumably
-for the same reason as the one in dummy? (fake multicast ability)
+Replace teamd daemon usage with ip link commands for team device
+setup. teamd -d daemonizes and returns to the shell before port
+addition completes, creating a race: the test may create the macvlan
+(and check for its address on a slave) before teamd has finished
+adding ports. This makes the test inherently dependent on scheduling
+timing.
 
+Using ip commands makes port addition synchronous, removing the race
+and making the test deterministic.
+
+Cc: Jiri Pirko <jiri@resnulli.us>
+Cc: Jay Vosburgh <jv@jvosburgh.net>
 Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
 ---
- drivers/net/netkit.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ .../selftests/drivers/net/bonding/lag_lib.sh    | 17 +++--------------
+ .../drivers/net/team/dev_addr_lists.sh          |  2 --
+ 2 files changed, 3 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/netkit.c b/drivers/net/netkit.c
-index 7b56a7ad7a49..5e2eecc3165d 100644
---- a/drivers/net/netkit.c
-+++ b/drivers/net/netkit.c
-@@ -186,7 +186,9 @@ static int netkit_get_iflink(const struct net_device *dev)
- 	return iflink;
+diff --git a/tools/testing/selftests/drivers/net/bonding/lag_lib.sh b/tools/testing/selftests/drivers/net/bonding/lag_lib.sh
+index bf9bcd1b5ec0..f2e43b6c4c81 100644
+--- a/tools/testing/selftests/drivers/net/bonding/lag_lib.sh
++++ b/tools/testing/selftests/drivers/net/bonding/lag_lib.sh
+@@ -23,20 +23,9 @@ test_LAG_cleanup()
+ 		ip link set dev dummy2 master "$name"
+ 	elif [ "$driver" = "team" ]; then
+ 		name="team0"
+-		teamd -d -c '
+-			{
+-				"device": "'"$name"'",
+-				"runner": {
+-					"name": "'"$mode"'"
+-				},
+-				"ports": {
+-					"dummy1":
+-						{},
+-					"dummy2":
+-						{}
+-				}
+-			}
+-		'
++		ip link add "$name" type team
++		ip link set dev dummy1 master "$name"
++		ip link set dev dummy2 master "$name"
+ 		ip link set dev "$name" up
+ 	else
+ 		check_err 1
+diff --git a/tools/testing/selftests/drivers/net/team/dev_addr_lists.sh b/tools/testing/selftests/drivers/net/team/dev_addr_lists.sh
+index b1ec7755b783..26469f3be022 100755
+--- a/tools/testing/selftests/drivers/net/team/dev_addr_lists.sh
++++ b/tools/testing/selftests/drivers/net/team/dev_addr_lists.sh
+@@ -42,8 +42,6 @@ team_cleanup()
  }
  
--static void netkit_set_multicast(struct net_device *dev)
-+static void netkit_set_multicast(struct net_device *dev,
-+				 struct netdev_hw_addr_list *uc,
-+				 struct netdev_hw_addr_list *mc)
- {
- 	/* Nothing to do, we receive whatever gets pushed to us! */
- }
-@@ -330,7 +332,7 @@ static const struct net_device_ops netkit_netdev_ops = {
- 	.ndo_open		= netkit_open,
- 	.ndo_stop		= netkit_close,
- 	.ndo_start_xmit		= netkit_xmit,
--	.ndo_set_rx_mode	= netkit_set_multicast,
-+	.ndo_set_rx_mode_async	= netkit_set_multicast,
- 	.ndo_set_rx_headroom	= netkit_set_headroom,
- 	.ndo_set_mac_address	= netkit_set_macaddr,
- 	.ndo_get_iflink		= netkit_get_iflink,
+ 
+-require_command teamd
+-
+ trap cleanup EXIT
+ 
+ tests_run
 -- 
 2.52.0
 
