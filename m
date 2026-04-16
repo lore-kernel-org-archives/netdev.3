@@ -1,165 +1,521 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8627237B00E;
-	Thu, 16 Apr 2026 05:48:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 300533793CD
+	for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 05:51:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776318512; cv=none; b=Nw6lpvAAhbIWEjHmximlYp5Qgw3SUL7/HUt5OtH9mj1yBd0z/J4qNGWQnuU7hzeCxbXZ939icKUJusTFPl0mL0lP2NE305zeFsvTH5Q5ZqZLDGdn8VdLg9rVEtUna+0Li127SFsBR6DYYkR3N9831esKGhXevk26WuleWMIhDlY=
+	t=1776318714; cv=none; b=JdKoY/aZrUuH6J91+a1a6id9Qb3UPn4UTtxpdeHSvtahy3aL9KxelnXiIXM5HYvcvRL6ChzwAVifRvu6SKKPzpZGUfsjGNKdhTNcKo60iF+HwA/ipSk6kTkQwh3b8fTQlGZwDBIo18ns4CtUWbfG0wdozAT/8Rwe0U+TpvkBasg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776318512; c=relaxed/simple;
-	bh=ugpOcOMYSeUGIn4LleLR8Bj5Y3rMnrlnSG2Z8WaO4tI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OLQjFy7FPrxxfgZHAO8RBQuiIvD8IKmvWqiiDXtK9QIptIpuvkPzye5voumIE8ZPPHGh7M7/hyCP2v03HDeFtTOEBUPa12vKLmBiiizpTlo9/iVAdliYtb4NQ9Tl78fPQclVLyzvq8HHcSDTK2ZjuE+TkXg84d5pjGbEn9Nr/mc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=PDoX8ZuI; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1776318714; c=relaxed/simple;
+	bh=xC5OuL/bVVgPXD7TUtKYjCWk4/nqbFucL75V4cDJdTM=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=W59AgKR7x4Em01ptThYYnH9sQb2vWSjGdapNhfzaViLO4T8u/VSyO33xyi18YArEhYDaxVms3yka82JlHV4A2uTaCp9NyWIraJw4J5STW/oLyhC9IqG96nZ5G0bzyLD6UyZH0sUs9sU7znx1kzv3QECMuvWL3xd3eHw+Yxgdxk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=KoxUPzIH; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="PDoX8ZuI"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2194AA3859;
-	Thu, 16 Apr 2026 07:48:25 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1776318505; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=W8R209rXo9+La5obZzGBZqCQtqGPKUNyLbvCnMdYIuk=;
-	b=PDoX8ZuI33xjez/VhPBEQOoZ2QmcrSjK8R/R0hTXMRAVJjBpJhuX6ZoYyWWqJJZT/Sz+FJ
-	gc0b8VCOpueLnL2lUPAJgZShrH5R4KySYqVw5xaS3S4M6YrhDBLwvXnPGWPeM8bT32zyuo
-	hpib9t+0ZjwODy0lpWS2uPQMaeYQCn7GNvQ/DNZlMeAR1Rs2LRrPwdq2XDP6pDqUuMGLSo
-	wGn7+49sw9Wql6DyPuDPnSdU8Na0QnSkUV8b6SeZ3gPGErhWCXheON/rI5OQkneXzCfcpU
-	5XLSUDNVbMUhphfSgI66lhBUKtPkHE1gkVPLusNb2/EWAWXI9cTCt/VpH+bKhQ==
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: netdev@vger.kernel.org
-Cc: Justin Chen <justin.chen@broadcom.com>,
-	Simon Horman <horms@kernel.org>,
-	Mohsin Bashir <mohsin.bashr@gmail.com>,
-	Doug Berger <opendmb@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Nicolai Buchwitz <nb@tipi-net.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org
-Subject: [PATCH net-next v7 6/7] net: bcmgenet: add XDP statistics counters
-Date: Thu, 16 Apr 2026 07:47:38 +0200
-Message-ID: <20260416054743.1289191-7-nb@tipi-net.de>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260416054743.1289191-1-nb@tipi-net.de>
-References: <20260416054743.1289191-1-nb@tipi-net.de>
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="KoxUPzIH"
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id 02F352082B;
+	Thu, 16 Apr 2026 07:51:49 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id wTAExfV50ATW; Thu, 16 Apr 2026 07:51:47 +0200 (CEST)
+Received: from EXCH-02.secunet.de (rl2.secunet.de [10.32.0.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id 51F82207FC;
+	Thu, 16 Apr 2026 07:51:47 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 51F82207FC
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1776318707;
+	bh=nV4yyLECC5svVloibHiXGOLDvJVycNAoQGvq/jtoSCY=;
+	h=Date:From:To:CC:Subject:Reply-To:References:In-Reply-To:From;
+	b=KoxUPzIHQyt8CsAzgpdVJRhWvcWGRQtcRRAkJ4bERYjMGOc51we2GHRxLlBTgkoZC
+	 hegygndiF6vIEBllVSP4eo+ZWt7bPRkAAsLMMJD8u8GZtjKnNrC/bs/f1oBygztUWs
+	 wey2owsewf/O8Q/JojfGxIgfl+m+ydGyYpQjxL+4086aawmkPmdVzhq6y4spNT3XdE
+	 2+0oo98+Z4fgxcGb7nTT5JelqpMLstcp50CTM1acO6Jl5JENqMsLPqwPAMPur+YEh2
+	 b5y1cUgkeV+abWIC3FtdN2DemZidMSNteWJkltxKnCKAB/jIw/PgJ+ApOmKlxxD6Km
+	 plQIzl/fqXryw==
+Received: from moon.secunet.de (172.18.149.1) by EXCH-02.secunet.de
+ (10.32.0.172) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 16 Apr
+ 2026 07:51:46 +0200
+Date: Thu, 16 Apr 2026 07:51:40 +0200
+From: Antony Antony <antony.antony@secunet.com>
+To: Yan Yan <evitayan@google.com>
+CC: <antony.antony@secunet.com>, Aakash Kumar Shankarappa
+	<saakashkumar@marvell.com>, Nathan Harold <nharold@google.com>, Tobias
+ Brunner <tobias@strongswan.org>, Steffen Klassert
+	<steffen.klassert@secunet.com>, "paul@nohats.ca" <paul@nohats.ca>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, Herbert Xu
+	<herbert@gondor.apana.org.au>, "David S . Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, "horms@kernel.org"
+	<horms@kernel.org>, "akamluddin@marvell.com" <akamluddin@marvell.com>,
+	"greg@kroah.com" <greg@kroah.com>
+Subject: Re: [EXTERNAL] Re: [REGRESSION] Discussion on "xfrm: Duplicate SPI
+ Handling"
+Message-ID: <aeB47HqELuB6uV3v@moon.secunet.de>
+Reply-To: <antony.antony@secunet.com>
+References: <CADHa2dBN+_9H-_L19Rg3vfvzC1N5FzG+rzW9Pff8pyM3KL9Ocw@mail.gmail.com>
+ <fcc761de-f677-4fc9-969b-47c2b56f54be@strongswan.org>
+ <CADHa2dBzJBF6po_qDcn97C15U05EZOzuY-opGW1uc3WAYTPx_g@mail.gmail.com>
+ <7b4667b9-c4f2-4c56-a0ea-6e9bdc8b5241@strongswan.org>
+ <CADhJOfbv8A+2X7xwtoEpLUV1D1vesMjj=nSYc--iOHF6R+VKLw@mail.gmail.com>
+ <CADHa2dBA=MpBz3_j2kbLr-wb2nsmnYBhyhWb6pjWekEzurBr9w@mail.gmail.com>
+ <acqqpAHmKnduKxRp@moon.secunet.de>
+ <BL1PPF236BDCF3E1BDA74118AE2A6ECFAFFDA52A@BL1PPF236BDCF3E.namprd18.prod.outlook.com>
+ <acumPxrIVJYlQUsg@moon.secunet.de>
+ <CADHa2dA+Yq_K2A=Pk131yYYOX3Btncbp4Q+9UoTu_7egLPJhQg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+In-Reply-To: <CADHa2dA+Yq_K2A=Pk131yYYOX3Btncbp4Q+9UoTu_7egLPJhQg@mail.gmail.com>
+Precedence: first-class
+Priority: normal
+Organization: secunet
+X-ClientProxiedBy: EXCH-01.secunet.de (10.32.0.171) To EXCH-02.secunet.de
+ (10.32.0.172)
 
-Expose per-action XDP counters via ethtool -S: xdp_pass, xdp_drop,
-xdp_tx, xdp_tx_err, xdp_redirect, and xdp_redirect_err.
 
-These use the existing soft MIB infrastructure and are incremented in
-bcmgenet_run_xdp() alongside the existing driver statistics.
+On Wed, Apr 08, 2026 at 15:49:00 -0700, Yan Yan wrote:
+>    Hi Antony,
+>    The patch looks good to me, and I verified that it fixes the
+>    regression.
 
-Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
----
- drivers/net/ethernet/broadcom/genet/bcmgenet.c | 15 +++++++++++++++
- drivers/net/ethernet/broadcom/genet/bcmgenet.h |  6 ++++++
- 2 files changed, 21 insertions(+)
+I rebased the patch to ipsec and sent as RFC ipsec. I am sending it as
+Fix, instead of ipsec-next.
 
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index f94e9e287fe9..e74494be7a23 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -1169,6 +1169,13 @@ static const struct bcmgenet_stats bcmgenet_gstrings_stats[] = {
- 	STAT_GENET_SOFT_MIB("tx_realloc_tsb", mib.tx_realloc_tsb),
- 	STAT_GENET_SOFT_MIB("tx_realloc_tsb_failed",
- 			    mib.tx_realloc_tsb_failed),
-+	/* XDP counters */
-+	STAT_GENET_SOFT_MIB("xdp_pass", mib.xdp_pass),
-+	STAT_GENET_SOFT_MIB("xdp_drop", mib.xdp_drop),
-+	STAT_GENET_SOFT_MIB("xdp_tx", mib.xdp_tx),
-+	STAT_GENET_SOFT_MIB("xdp_tx_err", mib.xdp_tx_err),
-+	STAT_GENET_SOFT_MIB("xdp_redirect", mib.xdp_redirect),
-+	STAT_GENET_SOFT_MIB("xdp_redirect_err", mib.xdp_redirect_err),
- 	/* Per TX queues */
- 	STAT_GENET_Q(0),
- 	STAT_GENET_Q(1),
-@@ -2426,6 +2433,7 @@ static unsigned int bcmgenet_run_xdp(struct bcmgenet_rx_ring *ring,
- 
- 	switch (act) {
- 	case XDP_PASS:
-+		priv->mib.xdp_pass++;
- 		return XDP_PASS;
- 	case XDP_TX:
- 		/* Prepend a zeroed TSB (Transmit Status Block).  The GENET
-@@ -2438,6 +2446,7 @@ static unsigned int bcmgenet_run_xdp(struct bcmgenet_rx_ring *ring,
- 		    sizeof(struct status_64) + sizeof(struct xdp_frame)) {
- 			page_pool_put_full_page(ring->page_pool, rx_page,
- 						true);
-+			priv->mib.xdp_tx_err++;
- 			return XDP_DROP;
- 		}
- 		xdp->data -= sizeof(struct status_64);
-@@ -2457,19 +2466,24 @@ static unsigned int bcmgenet_run_xdp(struct bcmgenet_rx_ring *ring,
- 						      xdpf, false))) {
- 			spin_unlock(&tx_ring->lock);
- 			xdp_return_frame_rx_napi(xdpf);
-+			priv->mib.xdp_tx_err++;
- 			return XDP_DROP;
- 		}
- 		bcmgenet_xdp_ring_doorbell(priv, tx_ring);
- 		spin_unlock(&tx_ring->lock);
-+		priv->mib.xdp_tx++;
- 		return XDP_TX;
- 	case XDP_REDIRECT:
- 		if (unlikely(xdp_do_redirect(priv->dev, xdp, prog))) {
-+			priv->mib.xdp_redirect_err++;
- 			page_pool_put_full_page(ring->page_pool, rx_page,
- 						true);
- 			return XDP_DROP;
- 		}
-+		priv->mib.xdp_redirect++;
- 		return XDP_REDIRECT;
- 	case XDP_DROP:
-+		priv->mib.xdp_drop++;
- 		page_pool_put_full_page(ring->page_pool, rx_page, true);
- 		return XDP_DROP;
- 	default:
-@@ -2477,6 +2491,7 @@ static unsigned int bcmgenet_run_xdp(struct bcmgenet_rx_ring *ring,
- 		fallthrough;
- 	case XDP_ABORTED:
- 		trace_xdp_exception(priv->dev, prog, act);
-+		priv->mib.xdp_drop++;
- 		page_pool_put_full_page(ring->page_pool, rx_page, true);
- 		return XDP_ABORTED;
- 	}
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.h b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-index 8966d32efe2f..c4e85c185702 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-@@ -156,6 +156,12 @@ struct bcmgenet_mib_counters {
- 	u32	tx_dma_failed;
- 	u32	tx_realloc_tsb;
- 	u32	tx_realloc_tsb_failed;
-+	u32	xdp_pass;
-+	u32	xdp_drop;
-+	u32	xdp_tx;
-+	u32	xdp_tx_err;
-+	u32	xdp_redirect;
-+	u32	xdp_redirect_err;
- };
- 
- struct bcmgenet_tx_stats64 {
--- 
-2.51.0
+I could not test it easily both.  
+Aakash and Yan would you like to test it and may be send tag, that may motivate Steffen to accept it instead of waiting for me to test it.
 
+regards,
+-antony
+
+> 
+>    On Tue, Mar 31, 2026 at 3:47 AM Antony Antony
+>    <[1]antony.antony@secunet.com> wrote:
+> 
+>      Hi,
+>      I have tweaked the patch a bit more, uniqueness is only when
+>      x->dir == XFRM_SA_DIR_IN. See the attached patch.
+>      I have added tags Fixes:
+>      and
+>      Reported-by: Yan Yan <[2]evitayan@google.com>
+>      Yan, are you ok with this?
+>      So fart I don't have any tests for this, so more tags welcome:)
+>      regards,
+>      -antony
+>      PS: recent libreswan is setting direction. Thta should not be
+>      problem.
+>      On Mon, Mar 30, 2026 at 20:34:07 +0000, Aakash Kumar Shankarappa
+>      wrote:
+>      >    Hi Antony,
+>      >
+>      >    Thanks for the patch. Yes the x->dir based gating approach
+>      looks good
+>      >    to me and it works for Marvell.
+>      >
+>      >    Also this seems like the right direction. It preserves backward
+>      >    compatibility for existing users, while still allowing strict
+>      RFC 4301
+>      >    complaint SPI uniqueness as an opt-in feature. Anybody who
+>      wants the
+>      >    stricter behaviour can upgrade to Strongswan 6.0.0+ and
+>      leverage
+>      >    XFRM_SA_DIR_IN.
+>      >
+>      >    Thanks, Aakash
+>      >
+>      >    From: Antony Antony <[3]antony.antony@secunet.com>
+>      >    Date: Monday, 30 March 2026 at 10:24 PM
+>      >    To: Yan Yan <[4]evitayan@google.com>
+>      >    Cc: Nathan Harold <[5]nharold@google.com>, Tobias Brunner
+>      >    <[6]tobias@strongswan.org>, [7]antony.antony@secunet.com
+>      >    <[8]antony.antony@secunet.com>, Steffen Klassert
+>      >    <[9]steffen.klassert@secunet.com>, [10]paul@nohats.ca
+>      <[11]paul@nohats.ca>,
+>      >    [12]netdev@vger.kernel.org <[13]netdev@vger.kernel.org>,
+>      Herbert Xu
+>      >    <[14]herbert@gondor.apana.org.au>, David S . Miller
+>      <[15]davem@davemloft.net>,
+>      >    Eric Dumazet <[16]edumazet@google.com>, Jakub Kicinski
+>      <[17]kuba@kernel.org>,
+>      >    [18]pabeni@redhat.com <[19]pabeni@redhat.com>,
+>      [20]horms@kernel.org
+>      >    <[21]horms@kernel.org>, Aakash Kumar Shankarappa
+>      >    <[22]saakashkumar@marvell.com>, [23]akamluddin@marvell.com
+>      >    <[24]akamluddin@marvell.com>, [25]greg@kroah.com
+>      <[26]greg@kroah.com>
+>      >    Subject: [EXTERNAL] Re: [REGRESSION] Discussion on "xfrm:
+>      Duplicate SPI
+>      >    Handling"
+>      >    Prioritize security for external emails:
+>      >    Confirm sender and content safety before clicking links or
+>      opening
+>      >    attachments
+>      >    [1]Report Suspicious
+>      >
+>      >
+>      >    Hi, I looked into this. I feel a simple solution is use x->dir
+>      as
+>      >    Nathan proposed. When dir is not set we get pre commit
+>      94f39804d891
+>      >    ("xfrm: Duplicate SPI Handling") behaviour. When XFRM_SA_DIR is
+>      set
+>      >    alloc_spi() returns per direction unique spi. Another benfit
+>      is, this
+>      >    would also keep PF_KEY use case as it was before that comit.
+>      Here is
+>      >    simple RFC patch attached. How does this look? strongswan
+>      6.0.0, from
+>      >    Dec 2024, sets x->dir. Aakash would this work for for marvell?
+>      regads,
+>      >    -antony On Fri, Mar 27, 2026 at 17:05:13 -0700, Yan Yan wrote:
+>      > Hi
+>      >    all, > I wanted to send a friendly ping to see if we are
+>      aligning on
+>      >    making > the strict global SPI uniqueness requirement optional,
+>      perhaps
+>      >    via a > toggle or by leveraging the XFRM_SA_DIR attribute as
+>      previously
+>      >    > discussed. > Are there any other questions or concerns
+>      regarding this
+>      >    approach, or > anything else we should clarify to ensure
+>      backward
+>      >    compatibility while > meeting the needs of modern standards? >
+>      Best, >
+>      >    Yan > > On Tue, Feb 24, 2026 at 3:53 PM Nathan Harold
+>      >    <[1][27]nharold@google.com> > wrote: > > > That should still be
+>      allowed
+>      >    when using the intended APIs (i.e. > ALLOCSPI > > for the
+>      inbound and
+>      >    NEWSA for the outbound SA). ALLOCSPI might > enforce > > a
+>      unique SPI
+>      >    without considering the address, as that's intended > for > >
+>      local,
+>      >    inbound SAs, where the kernel has full control (looking at >
+>      the > >
+>      >    the patch, it's certainly not ideal, as it goes through all >
+>      installed
+>      >    > > SAs to find a duplicate and it prevents an inbound SPI that
+>      >
+>      >    matches an > > existing outbound SPI - I guess that could be
+>      resolved
+>      >    by using > separate > > tables for in- and outbound SAs). But
+>      that must
+>      >    not prevent > installing > > outbound SAs with the same SPI to
+>      another
+>      >    peer using NEWSA, which > still > > uses a hash that includes
+>      the
+>      >    destination address (that must > always be > > the case because
+>      peers
+>      >    are free to allocate whatever SPI they > want). > Agreed that
+>      there are
+>      >    some unfortunate limitations with the current > patch. Keying
+>      off the
+>      >    inclusion of XFRM_SA_DIR would resolve the > issue > you noted
+>      >    (conflating inbound and outbound SPIs) and function as an >
+>      opt-in for
+>      >    this enforcement. Whatever the mechanism though, the new >
+>      behavior
+>      >    should be opt-in rather than opt-out in order to maintain >
+>      backwards
+>      >    compatibility. > > In my opinion, you are using the API
+>      incorrectly...
+>      >    I also > > don't think there are any benefits in that
+>      "consistent
+>      >    larval > lifecycle" > > (if you found any, please let us know).
+>      > The
+>      >    Android architecture is multi-tenant and allows userspace apps
+>      > to >
+>      >    establish SAs. At the time we designed it, this felt like the >
+>      >    cleanest > way to facilitate leak-free resource management
+>      because the
+>      >    chain of > associations between kernel resources could be
+>      symmetrical
+>      >    (and > managing them was already quite complicated). Mea culpa
+>      >    (Nathan). > But, > correctly or not, it has/had worked for many
+>      years.
+>      >    > > By the way, are you using the min/max option for inbound
+>      SAs as >
+>      >    well, > > with an SPI generated in userland? That would seem
+>      like a >
+>      >    violation of > > the intention of the API as well (i.e. letting
+>      the
+>      >    kernel control > the > > local SPIs). > We provide following
+>      two
+>      >    Android APIs for app developers: >
+>      >
+>      [2][2][28]https://urldefense.proofpoint.com/v2/url?u=https-3A__devel
+>      oper.an
+>      >
+>      droid.com_reference_android_net_IpSecManager-23&d=DwIDaQ&c=nKjWec2b6
+>      R0m
+>      >
+>      OyPaz7xtfQ&r=r6Wzn5LnVsk7Tgc5x4l_c04I_Hr_8TYqFn-YFi_gjqI&m=JsnNMKKyp
+>      JWI
+>      >
+>      SL5BbGkfA2yD1_H51rd5M6YO4NG3WpRdteRwP5OdfTJFNEK0Xiec&s=9txNFXC-wFiRF
+>      V_Q
+>      >    JlIQLW2AWSbERIOWcGHJfuQP2ZA&e= >
+>      >    allocateSecurityParameterIndex(java.net.InetAddress) >
+>      >
+>      [3][3][29]https://urldefense.proofpoint.com/v2/url?u=https-3A__devel
+>      oper.an
+>      >
+>      droid.com_reference_android_net_IpSecManager-23&d=DwIDaQ&c=nKjWec2b6
+>      R0m
+>      >
+>      OyPaz7xtfQ&r=r6Wzn5LnVsk7Tgc5x4l_c04I_Hr_8TYqFn-YFi_gjqI&m=JsnNMKKyp
+>      JWI
+>      >
+>      SL5BbGkfA2yD1_H51rd5M6YO4NG3WpRdteRwP5OdfTJFNEK0Xiec&s=9txNFXC-wFiRF
+>      V_Q
+>      >    JlIQLW2AWSbERIOWcGHJfuQP2ZA&e= >
+>      >    allocateSecurityParameterIndex(java.net.InetAddress,%20int) >
+>      Indeed,
+>      >    allocateSecurityParameterIndex is direction-agnostic; both >
+>      overloads
+>      >    are implemented internally by including the min and max >
+>      values in
+>      >    ALLOCSPI. For the variant where app developers provide a >
+>      specific SPI
+>      >    (which is also useful in testing), Android simply sets > both
+>      the min
+>      >    and max parameters to that exact value. Our > understanding >
+>      of
+>      >    #xfrm_alloc_spi is that min/max are required for ALLOCSPI, and
+>      >
+>      >    otherwise ENOENT will be returned. > Note that we also use the
+>      DADDR as
+>      >    a mandatory part of the tuple > because of the issue mentioned
+>      above:
+>      >    SPIs are only unique in > conjunction with a DADDR, regardless
+>      of
+>      >    direction, and accordingly, > that’s how Android is expecting
+>      the
+>      >    uniqueness requirement be > enforced. In this way, 5 duplicate
+>      SPIs can
+>      >    be used on 5 unique IP > addresses on the same machine;
+>      therefore, a
+>      >    strict "SPI only" > interpretation for ALLOCSPI (or SPI
+>      handling in
+>      >    general) is curious. > We feel that ALLOCSPI should really
+>      enforce the
+>      >    same uniqueness > requirements as the SAD. > Best, > Nathan and
+>      Yan >
+>      >    -Nathan > On Wed, Feb 18, 2026 at 12:42 AM Tobias Brunner >
+>      >    <[4][30]tobias@strongswan.org> wrote: > > > > Hi Yan, > > > > >
+>      For every
+>      >    inbound SA, we allocate SPIs before negotiation. For > > >
+>      outbound
+>      >    SAs, we allocate SPIs once requested by the peer. We > only > >
+>      >
+>      >    require the (SPI, destination address) combo to be unique.
+>      Thus, > we >
+>      >    > > may have an inbound and outbound SA sharing an SPI with >
+>      different
+>      >    > > > destinations, or multiple outbound SAs to different peers
+>      >
+>      >    sharing an > > > SPI. > > > > That should still be allowed when
+>      using
+>      >    the intended APIs (i.e. > ALLOCSPI > > for the inbound and
+>      NEWSA for
+>      >    the outbound SA). ALLOCSPI might > enforce > > a unique SPI
+>      without
+>      >    considering the address, as that's intended > for > > local,
+>      inbound
+>      >    SAs, where the kernel has full control (looking at > the > >
+>      the patch,
+>      >    it's certainly not ideal, as it goes through all > installed >
+>      > SAs to
+>      >    find a duplicate and it prevents an inbound SPI that > matches
+>      an > >
+>      >    existing outbound SPI - I guess that could be resolved by using
+>      >
+>      >    separate > > tables for in- and outbound SAs). But that must
+>      not
+>      >    prevent > installing > > outbound SAs with the same SPI to
+>      another peer
+>      >    using NEWSA, which > still > > uses a hash that includes the
+>      >    destination address (that must > always be > > the case because
+>      peers
+>      >    are free to allocate whatever SPI they > want). > > > > >> If
+>      so, why
+>      >    would you use ALLOCSPI and not just install the > outbound SA?
+>      Is it to
+>      >    avoid differences for in- and outbound SAs > (ALLOCSPI+UPDSA
+>      vs.
+>      >    NEWSA)?" > > > > > > Exactly—it is primarily for code symmetry.
+>      By
+>      >    using ALLOCSPI + > UPDSA > > > for both directions, we maintain
+>      a
+>      >    consistent larval lifecycle > and > > > make it easier to
+>      maintain. > >
+>      >    > > In my opinion, you are using the API incorrectly. ALLOCSPI
+>      is >
+>      >    intended > > to allocate a free local SPI for an inbound SA.
+>      That is,
+>      >    reserve > it > > before and while the details of the SA are
+>      negotiated
+>      >    with the > peer > > using IKE. This step isn't necessary for
+>      outbound
+>      >    SAs and forcing > such > > an allocation, after all the details
+>      are
+>      >    known, to the responder's > SPI > > (which I assume you do via
+>      min/max
+>      >    option) doesn't feel right. I > also > > don't think there are
+>      any
+>      >    benefits in that "consistent larval > lifecycle" > > (if you
+>      found any,
+>      >    please let us know). And the difference > between > > UPDSA and
+>      NEWSA
+>      >    is the nlmsg_type (there are some attributes that > are > >
+>      different
+>      >    for in- and outbound SAs, especially if you set the > direction
+>      > > in
+>      >    newer kernels, but that's the case regardless of the message >
+>      type). >
+>      >    > > > By the way, are you using the min/max option for inbound
+>      SAs as >
+>      >    well, > > with an SPI generated in userland? That would seem
+>      like a >
+>      >    violation of > > the intention of the API as well (i.e. letting
+>      the
+>      >    kernel control > the > > local SPIs). > > > > As the XFRM API
+>      basically
+>      >    mirrors PF_KEYv2 here, you can find more > about > > the two
+>      ways to
+>      >    install SAs in RFC 2367 (SADB_GETSPI/UPDATE vs. > SADB_ADD). >
+>      > > >
+>      >    Regards, > > Tobias > > > > -- > > -- > Best, > Yan > >
+>      References > >
+>      >    1. mailto:[31]nharold@google.com > 2.
+>      >
+>      [4][32]https://urldefense.proofpoint.com/v2/url?u=https-3A__develope
+>      r.andro
+>      >
+>      id.com_reference_android_net_IpSecManager-23allocateSecurityParamete
+>      rIn
+>      >
+>      dex-28java.net.InetAddress-29&d=DwIDaQ&c=nKjWec2b6R0mOyPaz7xtfQ&r=r6
+>      Wzn
+>      >
+>      5LnVsk7Tgc5x4l_c04I_Hr_8TYqFn-YFi_gjqI&m=JsnNMKKypJWISL5BbGkfA2yD1_H
+>      51r
+>      >
+>      d5M6YO4NG3WpRdteRwP5OdfTJFNEK0Xiec&s=UtpwkuoswT-6aK0he6dSS-0dvZfIcRj
+>      bfj
+>      >    _Eu4A-c6E&e= > 3.
+>      >
+>      [5][33]https://urldefense.proofpoint.com/v2/url?u=https-3A__develope
+>      r.andro
+>      >
+>      id.com_reference_android_net_IpSecManager-23allocateSecurityParamete
+>      rIn
+>      >
+>      dex-28java.net.InetAddress&d=DwIDaQ&c=nKjWec2b6R0mOyPaz7xtfQ&r=r6Wzn
+>      5Ln
+>      >
+>      Vsk7Tgc5x4l_c04I_Hr_8TYqFn-YFi_gjqI&m=JsnNMKKypJWISL5BbGkfA2yD1_H51r
+>      d5M
+>      >
+>      6YO4NG3WpRdteRwP5OdfTJFNEK0Xiec&s=fVmYoLIpyuMX3AtAkU7ejR1dno_8QtnhCK
+>      LMD
+>      >    4BmURc&e=, int) > 4. mailto:[34]tobias@strongswan.org
+>      >
+>      > References
+>      >
+>      >    Visible links:
+>      >    1.
+>      [35]https://us-phishalarm-ewt.proofpoint.com/EWT/v1/CRVmXkqW!tG3Tv5d
+>      8inv1_6DXc1X1B4ctthRq2qCkR8nIF_n_SOJiXQ-SqG_LUk--J5LZEwV9jGdXABQriDr
+>      uLYnPEg$
+>      >    2.
+>      [36]https://urldefense.proofpoint.com/v2/url?u=https-3A__developer.a
+>      ndroid.com_reference_android_net_IpSecManager-23&d=DwIDaQ&c=nKjWec2b
+>      6R0mOyPaz7xtfQ&r=r6Wzn5LnVsk7Tgc5x4l_c04I_Hr_8TYqFn-YFi_gjqI&m=JsnNM
+>      KKypJWISL5BbGkfA2yD1_H51rd5M6YO4NG3WpRdteRwP5OdfTJFNEK0Xiec&s=9txNFX
+>      C-wFiRFV_QJlIQLW2AWSbERIOWcGHJfuQP2ZA&e=
+>      >    3.
+>      [37]https://urldefense.proofpoint.com/v2/url?u=https-3A__developer.a
+>      ndroid.com_reference_android_net_IpSecManager-23&d=DwIDaQ&c=nKjWec2b
+>      6R0mOyPaz7xtfQ&r=r6Wzn5LnVsk7Tgc5x4l_c04I_Hr_8TYqFn-YFi_gjqI&m=JsnNM
+>      KKypJWISL5BbGkfA2yD1_H51rd5M6YO4NG3WpRdteRwP5OdfTJFNEK0Xiec&s=9txNFX
+>      C-wFiRFV_QJlIQLW2AWSbERIOWcGHJfuQP2ZA&e=
+>      >    4.
+>      [38]https://urldefense.proofpoint.com/v2/url?u=https-3A__developer.a
+>      ndroid.com_reference_android_net_IpSecManager-23allocateSecurityPara
+>      meterIndex-28java.net.InetAddress-29&d=DwIDaQ&c=nKjWec2b6R0mOyPaz7xt
+>      fQ&r=r6Wzn5LnVsk7Tgc5x4l_c04I_Hr_8TYqFn-YFi_gjqI&m=JsnNMKKypJWISL5Bb
+>      GkfA2yD1_H51rd5M6YO4NG3WpRdteRwP5OdfTJFNEK0Xiec&s=UtpwkuoswT-6aK0he6
+>      dSS-0dvZfIcRjbfj_Eu4A-c6E&e=
+>      >    5.
+>      [39]https://urldefense.proofpoint.com/v2/url?u=https-3A__developer.a
+>      ndroid.com_reference_android_net_IpSecManager-23allocateSecurityPara
+>      meterIndex-28java.net.InetAddress&d=DwIDaQ&c=nKjWec2b6R0mOyPaz7xtfQ&
+>      r=r6Wzn5LnVsk7Tgc5x4l_c04I_Hr_8TYqFn-YFi_gjqI&m=JsnNMKKypJWISL5BbGkf
+>      A2yD1_H51rd5M6YO4NG3WpRdteRwP5OdfTJFNEK0Xiec&s=fVmYoLIpyuMX3AtAkU7ej
+>      R1dno_8QtnhCKLMD4BmURc&e=
+>      >
+>      >    Hidden links:
+>      >    7. [40]https://aka.ms/GetOutlookForMac
+> 
+>    --
+> 
+>    --
+>    Best,
+>    Yan
+> 
+> References
+> 
+>    1. mailto:antony.antony@secunet.com
+>    2. mailto:evitayan@google.com
+>    3. mailto:antony.antony@secunet.com
+>    4. mailto:evitayan@google.com
+>    5. mailto:nharold@google.com
+>    6. mailto:tobias@strongswan.org
+>    7. mailto:antony.antony@secunet.com
+>    8. mailto:antony.antony@secunet.com
+>    9. mailto:steffen.klassert@secunet.com
+>   10. mailto:paul@nohats.ca
+>   11. mailto:paul@nohats.ca
+>   12. mailto:netdev@vger.kernel.org
+>   13. mailto:netdev@vger.kernel.org
+>   14. mailto:herbert@gondor.apana.org.au
+>   15. mailto:davem@davemloft.net
+>   16. mailto:edumazet@google.com
+>   17. mailto:kuba@kernel.org
+>   18. mailto:pabeni@redhat.com
+>   19. mailto:pabeni@redhat.com
+>   20. mailto:horms@kernel.org
+>   21. mailto:horms@kernel.org
+>   22. mailto:saakashkumar@marvell.com
+>   23. mailto:akamluddin@marvell.com
+>   24. mailto:akamluddin@marvell.com
+>   25. mailto:greg@kroah.com
+>   26. mailto:greg@kroah.com
+>   27. mailto:nharold@google.com
+>   28. https://urldefense.proofpoint.com/v2/url?u=https-3A__developer.an
+>   29. https://urldefense.proofpoint.com/v2/url?u=https-3A__developer.an
+>   30. mailto:tobias@strongswan.org
+>   31. mailto:nharold@google.com
+>   32. https://urldefense.proofpoint.com/v2/url?u=https-3A__developer.andro
+>   33. https://urldefense.proofpoint.com/v2/url?u=https-3A__developer.andro
+>   34. mailto:tobias@strongswan.org
+>   35. https://us-phishalarm-ewt.proofpoint.com/EWT/v1/CRVmXkqW!tG3Tv5d8inv1_6DXc1X1B4ctthRq2qCkR8nIF_n_SOJiXQ-SqG_LUk--J5LZEwV9jGdXABQriDruLYnPEg$
+>   36. https://urldefense.proofpoint.com/v2/url?u=https-3A__developer.android.com_reference_android_net_IpSecManager-23&d=DwIDaQ&c=nKjWec2b6R0mOyPaz7xtfQ&r=r6Wzn5LnVsk7Tgc5x4l_c04I_Hr_8TYqFn-YFi_gjqI&m=JsnNMKKypJWISL5BbGkfA2yD1_H51rd5M6YO4NG3WpRdteRwP5OdfTJFNEK0Xiec&s=9txNFXC-wFiRFV_QJlIQLW2AWSbERIOWcGHJfuQP2ZA&e=
+>   37. https://urldefense.proofpoint.com/v2/url?u=https-3A__developer.android.com_reference_android_net_IpSecManager-23&d=DwIDaQ&c=nKjWec2b6R0mOyPaz7xtfQ&r=r6Wzn5LnVsk7Tgc5x4l_c04I_Hr_8TYqFn-YFi_gjqI&m=JsnNMKKypJWISL5BbGkfA2yD1_H51rd5M6YO4NG3WpRdteRwP5OdfTJFNEK0Xiec&s=9txNFXC-wFiRFV_QJlIQLW2AWSbERIOWcGHJfuQP2ZA&e=
+>   38. https://urldefense.proofpoint.com/v2/url?u=https-3A__developer.android.com_reference_android_net_IpSecManager-23allocateSecurityParameterIndex-28java.net.InetAddress-29&d=DwIDaQ&c=nKjWec2b6R0mOyPaz7xtfQ&r=r6Wzn5LnVsk7Tgc5x4l_c04I_Hr_8TYqFn-YFi_gjqI&m=JsnNMKKypJWISL5BbGkfA2yD1_H51rd5M6YO4NG3WpRdteRwP5OdfTJFNEK0Xiec&s=UtpwkuoswT-6aK0he6dSS-0dvZfIcRjbfj_Eu4A-c6E&e=
+>   39. https://urldefense.proofpoint.com/v2/url?u=https-3A__developer.android.com_reference_android_net_IpSecManager-23allocateSecurityParameterIndex-28java.net.InetAddress&d=DwIDaQ&c=nKjWec2b6R0mOyPaz7xtfQ&r=r6Wzn5LnVsk7Tgc5x4l_c04I_Hr_8TYqFn-YFi_gjqI&m=JsnNMKKypJWISL5BbGkfA2yD1_H51rd5M6YO4NG3WpRdteRwP5OdfTJFNEK0Xiec&s=fVmYoLIpyuMX3AtAkU7ejR1dno_8QtnhCKLMD4BmURc&e=
+>   40. https://aka.ms/GetOutlookForMac
