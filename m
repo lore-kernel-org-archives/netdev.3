@@ -1,54 +1,54 @@
 Received: from mail-qt1-f202.google.com (mail-qt1-f202.google.com [209.85.160.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C913EDAA6
-	for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 20:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B7D13ED5D6
+	for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 20:03:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776369822; cv=none; b=IHB/N7QFiclG5+BxtbFeXU4+CNNRdgSp6rQV2Gz2ECulY/+EmW17ctrd9XeYaXKwqnxlkhV0ItPcxF/Ax6Mgj551ECd72Q2UvvRWobsyQ11wtt7CzCuK4jZ6g4E6HBHdBvQ7uJM2VnRK5h/LFSUiyftdCTzbcpalUcyxtGOf9ZE=
+	t=1776369818; cv=none; b=gpgD8U5Hax5MwPGdki1YTvsOO4mD7EhaNHiYpyFmuY1NCgVMac4yX//e97EqJa1SsFzTuJOZDSgz2e4g9FhIC1AU/TkBnylDtwTJFfYp8KtZK2+unMU8Fah5WUlKjx/q1JOqiu8GXwPnkVOiSk43aAZ+01tE/WYS7TAETnZfq0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776369822; c=relaxed/simple;
-	bh=XPmAGSEeZUh1EjLYLnMeAuukfbPF+q6AYmVVF1F71J4=;
+	s=arc-20240116; t=1776369818; c=relaxed/simple;
+	bh=1deaCbjq1+IHzRUZDdwtpewDJ07l66FtHsRDxG0YFoQ=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=nzL4m2hD6OJKQnD9jFoc4Qy1z3wTldzPomOQIFrHrz8kqbTpS702lDGJw3K1G8a/eBWYn+pLkeawm/Y+/7gY4EPSKCveVULJv0NCcmLvYcvtOrvo/W/NlTTwHPHbkve8n+qv+AawLpCYcrdDy7P7Lbh4ORNNEAo1Wke4HEzberY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=izfOEg3+; arc=none smtp.client-ip=209.85.160.202
+	 To:Cc:Content-Type; b=J0Tdj0OKyKEN8HTL7P1yjfs0UPNuzblK/wzb/yMkJZlB3secsWaMRNA47GtiwdzjxKVlKq08Ek6T1qfmcVXfOr2S8l7eM/YTEHExiDUPLwzgA6LdEbqzg8VgCE/FctPa+KGA3CtPULi1VET44SYklSxemEfOYj1OppkLJwkzxvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nbN09bNK; arc=none smtp.client-ip=209.85.160.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="izfOEg3+"
-Received: by mail-qt1-f202.google.com with SMTP id d75a77b69052e-50b44f7b7bbso207158241cf.3
-        for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 13:03:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nbN09bNK"
+Received: by mail-qt1-f202.google.com with SMTP id d75a77b69052e-50d58bed44aso249933191cf.3
+        for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 13:03:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776369813; x=1776974613; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1776369809; x=1776974609; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=sC/+P+6taySYYe69fekd8CwtYmWxhDMPMtkyGyQKF3s=;
-        b=izfOEg3+tSWJO/iclIJ+pvs+EGYpmebj4oAoVlgUTshpPf5pwM6o3061DnkWQ6e+dZ
-         FgF7oSTTDDXz0NHzYxnV5dGXSVh2bW/HB1Hq6/Wd1lIq/eLP3b9gqjB0ROE/TWTRrrkF
-         2i/QjZOOohJJ6NwQA+PMa1w8DcnyGPHD9aYQqogTy99CGuXeppMJaW6AFJzs1D1aJ95d
-         rREixRCY29iKCV6xE2xhw2904tD8o1UrUXlaJoJg7Cs0yO27LOeED6g4LtqZESUgV68d
-         HNITULXjr4W+AnfieurkPyNed0JJY9qn3pzNZXwNvUhnBiP8ocOvFY+BxWlu9T9daPMp
-         t0OA==
+        bh=BOJkF8JIJu9h7IWPIZgcERoTnXs8TYUkNj1H8eXXKX8=;
+        b=nbN09bNKI0FjsoLxw8NcwewDI0qnHIYY4h6XW/QYgxmU/aDj6qJyan0cgcimmjH8pf
+         U9t7pqUzlLaGlPpRZK7DPaLTxYeIBXmEZZVN2hMJnm0leUiHdMsW6OWQ5u+PhnRJqfJy
+         rFxqmGtKCDmdIvSn+h0NZTNvwF7QV99IYVbyFACmWq27dHw6DEqAAQgcAr5NLuXMzkoy
+         beQL3lXGOrhHDJc+qyyMHlluR6m4C1PfJw/+xSXZ8tyTYThh5ak8oT3AHc/XodDExU+B
+         0AMDIE5/ye5X+4r9k57G9F/ON/r+CWbXqWQ5AjgY0vgQe056BTRmEbgC6Qq5rxuWgU7D
+         75DQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776369813; x=1776974613;
+        d=1e100.net; s=20251104; t=1776369809; x=1776974609;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=sC/+P+6taySYYe69fekd8CwtYmWxhDMPMtkyGyQKF3s=;
-        b=cUVuGiPDEdS7Ix9a8cdNmT0AiyJwupbpV1X4JdW2iV5M8VRHyZKT2Qvy1TdhYNqMS4
-         jl70AIcIl3e2LQ18Pg8SWPmLEZ+aintA9PQU8cZvSxqnyPlDgjNjiGN3ZqOVMpJeDYRv
-         qXcAC2u+EZBuyS5ffl48x/dflBgyO3ElLq0kWr8fNCc0yEA3RBJSpPxCeBkLd96JpSv/
-         Bamul1vjS1d55gu+La/u+dnH8iM85fKfiYQ6QMzFyaihqcqHxnKl/zoYUVeIY9GdXFe+
-         MB3B95t/iFjcn8aLbdQFKKqMgiNBSP+1wusxGWSsO+yrPl9lVFXpneZma/EBl0ZooEI2
-         f6Dw==
-X-Forwarded-Encrypted: i=1; AFNElJ9jG+VfGkZyWxpeKB2AhcaOsUddQgmXiXagFKKp7Pr7/TMJPN3er7ezPqG/Z3wMpJWQhsHRjsE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwL0bzrN684yJ9GYgzGnhzMH8V0SQqXNZYhJIsi8OUzXKwvX2qD
-	f1+h313JzOI59m+pgSF7ZBfXDpOUPzIDRVSCF8wWg9ywP/in11lVGqEebm7xsX0+hDed75k/eFM
-	47aJRktmp8rWlDw==
-X-Received: from qtbne27.prod.google.com ([2002:a05:622a:831b:b0:50b:b811:abb5])
+        bh=BOJkF8JIJu9h7IWPIZgcERoTnXs8TYUkNj1H8eXXKX8=;
+        b=tQpsYwU/SjEBOyex1xJUwnnBmKBS2NmhN+M0qViqG0FThRkr5MYzTfCDZosKOWq+0k
+         0d48m/axomlWVT0h7AzijR3LZb5bsacYx6jUbn/sN1o3EeGH4XzfsNKX1f1EPPOsb9kE
+         ori94hAEauMGaXC28m/8p4MB5VKtEgOC92oDEvyjs2KzOIHObUnIeL9pE/MHyY6zT/TI
+         0KF7oTO7MCVsxJKtZ+Vy/2t4O1io0FiReRl8keVNLBRzw+uBb56XGjP+/UEBvhZjxxyL
+         1hTK8GBqYza3VL8NFHXoXCQ+K9b9dAnCsjb4r9JZrFEUOOgwV7bwWeNfoJuXJ+A8Ai2P
+         l+aA==
+X-Forwarded-Encrypted: i=1; AFNElJ/WicEtKXA972E9MAIAhtFCP1opXpvgKI2qvzVD6NFdnB6vJB9NIQNwFVromp37Y4T9wHPIv2c=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0bSWMD08p4fz9UHOq32cxr8X8aa39IZflg7Trj5CsE55b5As+
+	Gn3oBYSks3iCHBr4CxlzWX/eBo6ielr+HNdqYyy8Ulk5ihFRWmNQL3bis1CpywOxIFYel9w9KTq
+	hS8KqkhHQgDFfKw==
+X-Received: from qtbfj20.prod.google.com ([2002:a05:622a:5514:b0:50b:8994:98e0])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:622a:a13:b0:50d:db76:55cd with SMTP id d75a77b69052e-50e34a815d9mr8301311cf.52.1776369812691;
- Thu, 16 Apr 2026 13:03:32 -0700 (PDT)
-Date: Thu, 16 Apr 2026 20:03:12 +0000
+ 2002:a05:622a:5512:b0:50d:6b4e:ea3c with SMTP id d75a77b69052e-50e3492f18bmr10729381cf.4.1776369809281;
+ Thu, 16 Apr 2026 13:03:29 -0700 (PDT)
+Date: Thu, 16 Apr 2026 20:03:10 +0000
 In-Reply-To: <20260416200319.3608680-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -58,8 +58,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260416200319.3608680-1-edumazet@google.com>
 X-Mailer: git-send-email 2.54.0.rc1.513.gad8abe7a5a-goog
-Message-ID: <20260416200319.3608680-8-edumazet@google.com>
-Subject: [PATCH net 07/14] tcp: annotate data-races around tp->bytes_sent
+Message-ID: <20260416200319.3608680-6-edumazet@google.com>
+Subject: [PATCH net 05/14] tcp: annotate data-races around tp->delivered and tp->delivered_ce
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>
@@ -71,40 +71,81 @@ Content-Type: text/plain; charset="UTF-8"
 tcp_get_timestamping_opt_stats() intentionally runs lockless, we must
 add READ_ONCE() and WRITE_ONCE() annotations to keep KCSAN happy.
 
-Fixes: ba113c3aa79a ("tcp: add data bytes sent stats")
+Fixes: feb5f2ec6464 ("tcp: export packets delivery info")
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
- net/ipv4/tcp.c        | 2 +-
- net/ipv4/tcp_output.c | 3 ++-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ include/net/tcp_ecn.h | 2 +-
+ net/ipv4/tcp.c        | 4 ++--
+ net/ipv4/tcp_input.c  | 8 ++++----
+ 3 files changed, 7 insertions(+), 7 deletions(-)
 
+diff --git a/include/net/tcp_ecn.h b/include/net/tcp_ecn.h
+index e9a933641636e11902a84a595672cd56a551f305..865d5c5a7718dbc7d6db1963261889fd44625bdc 100644
+--- a/include/net/tcp_ecn.h
++++ b/include/net/tcp_ecn.h
+@@ -181,7 +181,7 @@ static inline void tcp_accecn_third_ack(struct sock *sk,
+ 		    tcp_accecn_validate_syn_feedback(sk, ace, sent_ect)) {
+ 			if ((tcp_accecn_extract_syn_ect(ace) == INET_ECN_CE) &&
+ 			    !tp->delivered_ce)
+-				tp->delivered_ce++;
++				WRITE_ONCE(tp->delivered_ce, 1);
+ 		}
+ 		break;
+ 	}
 diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 729936d13a5c6d9c39edc880636e01cf0973688e..f999b86851cdcc2a9b9ce379397e55293871c00a 100644
+index 802a9ea05211f8eab30b6f937a459a270476974d..0aabd02d44967dae3e569702f76037beb45e5de8 100644
 --- a/net/ipv4/tcp.c
 +++ b/net/ipv4/tcp.c
-@@ -4461,7 +4461,7 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
- 			  READ_ONCE(tp->write_seq) - READ_ONCE(tp->snd_una)));
- 	nla_put_u8(stats, TCP_NLA_CA_STATE, inet_csk(sk)->icsk_ca_state);
+@@ -4453,8 +4453,8 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
+ 		   READ_ONCE(inet_csk(sk)->icsk_retransmits));
+ 	nla_put_u8(stats, TCP_NLA_DELIVERY_RATE_APP_LMT, data_race(!!tp->rate_app_limited));
+ 	nla_put_u32(stats, TCP_NLA_SND_SSTHRESH, READ_ONCE(tp->snd_ssthresh));
+-	nla_put_u32(stats, TCP_NLA_DELIVERED, tp->delivered);
+-	nla_put_u32(stats, TCP_NLA_DELIVERED_CE, tp->delivered_ce);
++	nla_put_u32(stats, TCP_NLA_DELIVERED, READ_ONCE(tp->delivered));
++	nla_put_u32(stats, TCP_NLA_DELIVERED_CE, READ_ONCE(tp->delivered_ce));
  
--	nla_put_u64_64bit(stats, TCP_NLA_BYTES_SENT, tp->bytes_sent,
-+	nla_put_u64_64bit(stats, TCP_NLA_BYTES_SENT, READ_ONCE(tp->bytes_sent),
- 			  TCP_NLA_PAD);
- 	nla_put_u64_64bit(stats, TCP_NLA_BYTES_RETRANS, tp->bytes_retrans,
- 			  TCP_NLA_PAD);
-diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index 9f83c7e4acabc64f0a45e4879c326694a306b368..87af4731df87ea5f310d39b1392cb995d4fa8f78 100644
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -1690,7 +1690,8 @@ static int __tcp_transmit_skb(struct sock *sk, struct sk_buff *skb,
- 		tcp_event_data_sent(tp, sk);
- 		WRITE_ONCE(tp->data_segs_out,
- 			   tp->data_segs_out + tcp_skb_pcount(skb));
--		tp->bytes_sent += skb->len - tcp_header_size;
-+		WRITE_ONCE(tp->bytes_sent,
-+			   tp->bytes_sent + skb->len - tcp_header_size);
+ 	nla_put_u32(stats, TCP_NLA_SNDQ_SIZE, tp->write_seq - tp->snd_una);
+ 	nla_put_u8(stats, TCP_NLA_CA_STATE, inet_csk(sk)->icsk_ca_state);
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index c6361447535f0a2b72eccb6fede4618471e38ae5..63ff89210a72fbf5710279c41010d3f6e734e522 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -476,14 +476,14 @@ static bool tcp_accecn_process_option(struct tcp_sock *tp,
+ 
+ static void tcp_count_delivered_ce(struct tcp_sock *tp, u32 ecn_count)
+ {
+-	tp->delivered_ce += ecn_count;
++	WRITE_ONCE(tp->delivered_ce, tp->delivered_ce + ecn_count);
+ }
+ 
+ /* Updates the delivered and delivered_ce counts */
+ static void tcp_count_delivered(struct tcp_sock *tp, u32 delivered,
+ 				bool ece_ack)
+ {
+-	tp->delivered += delivered;
++	WRITE_ONCE(tp->delivered, tp->delivered + delivered);
+ 	if (tcp_ecn_mode_rfc3168(tp) && ece_ack)
+ 		tcp_count_delivered_ce(tp, delivered);
+ }
+@@ -6779,7 +6779,7 @@ static bool tcp_rcv_fastopen_synack(struct sock *sk, struct sk_buff *synack,
+ 		NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPFASTOPENACTIVE);
+ 		/* SYN-data is counted as two separate packets in tcp_ack() */
+ 		if (tp->delivered > 1)
+-			--tp->delivered;
++			WRITE_ONCE(tp->delivered, tp->delivered - 1);
  	}
  
- 	if (after(tcb->end_seq, tp->snd_nxt) || tcb->seq == tcb->end_seq)
+ 	tcp_fastopen_add_skb(sk, synack);
+@@ -7212,7 +7212,7 @@ tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb)
+ 	SKB_DR_SET(reason, NOT_SPECIFIED);
+ 	switch (sk->sk_state) {
+ 	case TCP_SYN_RECV:
+-		tp->delivered++; /* SYN-ACK delivery isn't tracked in tcp_ack */
++		WRITE_ONCE(tp->delivered, tp->delivered + 1); /* SYN-ACK delivery isn't tracked in tcp_ack */
+ 		if (!tp->srtt_us)
+ 			tcp_synack_rtt_meas(sk, req);
+ 
 -- 
 2.54.0.rc1.513.gad8abe7a5a-goog
 
