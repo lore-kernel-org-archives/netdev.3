@@ -1,225 +1,166 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0721B391859
-	for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 10:27:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15D3D3A4F59
+	for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 10:30:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776335268; cv=none; b=CvHGIhdYn9uQ6oSp/vLjprHVgbJId/8sV3cW8oyq2zJOQSZrTEYtPhNw+vtWCEB8qh7qaJoo89mVnyr48Vkk0SKgvAGDW5pZd2N6myelZhGLXy1XjqZpF7g469PyryLB2F2h4q9Hlr/OKo3fgrXFNK8JAopCphX0z/uU74j5law=
+	t=1776335443; cv=none; b=Flk6yYoXbvHnZgKWzF7RiUsz+TcGaXHAVlJluiVkXwRS2h6+8irUAsqSJPTA31g65iFS+QIukq+4bZ/0UAKOW0S612VpJNkj7aYgs2sQZLTaZlyzFDIiFa91SjKyxllyiuwLarofH86I6/sRlr6LvppTtuULWR0bgQCgG3EFMCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776335268; c=relaxed/simple;
-	bh=eVMfaS9Htr2NWHGAP5A6Gykmh2FgdSVZeiEjlkQqUTE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DiVAVv2ReffKlJCfkcRMBA7mgmmx9pnyolCCq4UmDcuTGTWDHmyO6yNnts2i/v2W7k0O6MtgbGUOP5QoZxSks0t52B3FivgR8EB364BOeQ7IfcgykitDybZN8ApWgzDKKvacanmzycDP8BPqZlquAB5kvcsgot4wEpDIt2sT1Xs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XGSnr5KA; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1776335443; c=relaxed/simple;
+	bh=NPcDG1Ottrtk5BiLjOdCbSSnt84O39ClqPxApC6Xue0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=KGMiMHmp5vpKGzBxG6F7VPHZlXJlKLqCaULiqV7DoutbuuHM//Xk38Ljx7/oeAzkOuTz3CvgGcZmPJ30zeR6GR6+AjOgxiqBy/g7H+RFRiTsgddZRazsthBRFcmBQxte9cbouvdred1V7R/LOtsmU8Um8ArrAyJtC1dsoG0Q5p0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=axKAaQ/c; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XGSnr5KA"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-35691a231a7so4984863a91.3
-        for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 03:27:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776335266; x=1776940066; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=UPEANDp2uS/rJVgdIpcE1PpwteF+KYA4VRqUQwVyjdI=;
-        b=XGSnr5KAnSTyGIwZD0DRbo9aaiSNloKA/DewRAA90WHu9CoTf88LPZQvNJTrNqD2aL
-         W5uyGvEnyBtxmRevbHXDSAXdk+b4AmtM5cTdPq5CB86wbHNkI6erSCd4oMGqN8CK2S0x
-         ef1uOQwYPMUDq23cN8ivjTtvLK0KMH8JDGlqMX7MeLWns/wGcYcEJJA8X2SlON1OqlXI
-         11EQZDuW6+1j6V9MYeQVSRZuRciifHQM+QDDOWHBPnxsvSUWKUpV6Jrm5C6D0oFchyvF
-         QEyaucNXYujTEMP0luVAULlF96Z/ugLhxv2P/H/y4EDhZzsCxeOS5Gu3arUAeinZoTTb
-         XV3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776335266; x=1776940066;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UPEANDp2uS/rJVgdIpcE1PpwteF+KYA4VRqUQwVyjdI=;
-        b=WLecjOA2k3SC86lZkkjhF7qYJVtg+xzxUBQVf9tf8FTcc0UWsGyLoYuH7ik8sFhXd/
-         qwmjLiAHQfsgrEMRgcN7VZU07jHDRXXgu0GiSjfMbp79XHLEEfaqVC+cXT9XKn6czyuN
-         vscQ2zocaJjcoY6IGqQ7gTm3wf/XC45cIjTcOZdMQMvv7fkElU3hgmps/2U41bKMZW1n
-         qsnnvyyLwhFK5L/iKhPVt3dATQguBpyXTHn2u3YD0kXoZ4HqzmrOV2OXLQdhEFOQO2pU
-         azR97zYVFL8363oWjvmL274VPyzSw5qnMFJRFF5c0o3etfntbXPL2xIvPYFKB+s6gujc
-         MR+A==
-X-Forwarded-Encrypted: i=1; AFNElJ91VDr+OVFq7u0O7HvZRZNk8Wdn/Ab+keyc6UkxD8piJQ0vHHBJxRLbv6jzWRtXsL8RNNFN2go=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy1g1/Qfi9QZ7zd1Ta71/Vfu/xlwkzTnWi4t8MQ+oAzyNeUVUmZ
-	djTdtxwCsKjXpnr06f7Zs7bbtE5ZgC5JRpoTepMV42sCKMUMis9xLX9u
-X-Gm-Gg: AeBDiet/Oq04tCaobbn8kAdoeuaJ458alN/Xh9/CtzutMwukBL5BHMOlCjJJYlbm239
-	cEWszg5n8XJ2KVvcuFjV3SulIHdUrnMkJCo61DFMGcE34qNJ8fjI8awI6SDMrVk8oYcb7yw5sun
-	/hm2V+S7rHjnDTLGUd7m0rv6yTvM0uGyYDXqHhfXSIMWkWZ4Q0CRub+mEDUg23T76YPlRWy7VyL
-	6CjfIFlqovfLkZge4ndV1IFySJgM6UE+ImnvcKrvtMIKdAirqpp9MOEwpmhEJxiNSLy/cNSAzd9
-	vGRYREVuK9/s1Yc75UvWXEfje/wFHlp1P0BNSKSfVBK+jszHe+TLBXzaY7b5Ph1uGjqR6CTXLkw
-	mgok903/3udr41erg2m26YsKmlwcFqIpibrHbmPgdoLEguflBwLXZxNT7/eaQxKWi0UcliiFlG3
-	XEhZtPS8y/V6GZoY7EWuSV+HKbrNccb+SEKP7f+MWffA/3edOEXmdOBFZEIgDr7plCB1yOc+NgZ
-	NdS8Q8EpIRp
-X-Received: by 2002:a17:90b:3d0e:b0:35f:c5cd:cc5 with SMTP id 98e67ed59e1d1-35fc5cd0f11mr10611198a91.24.1776335266245;
-        Thu, 16 Apr 2026 03:27:46 -0700 (PDT)
-Received: from SLSGDTSWING002.tail0ac356.ts.net ([129.126.109.177])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35fce809648sm1918941a91.1.2026.04.16.03.27.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Apr 2026 03:27:45 -0700 (PDT)
-From: Weiming Shi <bestswngs@gmail.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	Weiming Shi <bestswngs@gmail.com>
-Subject: [PATCH net] slip: bound decode() reads against the compressed packet length
-Date: Thu, 16 Apr 2026 18:01:51 +0800
-Message-ID: <20260416100147.531855-5-bestswngs@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="axKAaQ/c"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14229C2BCAF;
+	Thu, 16 Apr 2026 10:30:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776335442;
+	bh=NPcDG1Ottrtk5BiLjOdCbSSnt84O39ClqPxApC6Xue0=;
+	h=From:Date:Subject:To:Cc:From;
+	b=axKAaQ/cj+oRnXUPg2U9dgZZO6H568/ZDENKG0RSgGEwGz+otgjG8DEeyc37bD370
+	 YHZGJ+ZsLvNeAilM/hP+EDvmDR1H9Lzfpfm7BMNqlmf56GCJAOLEHj3lMPI+DDBv7/
+	 0uQqU1AQIOzYgzOv7lTR5SI0DbJru4RTODwrOMDaYHelOY2sImomAzsVBnSOPmUkWr
+	 yyy47t/pSfJ8ihdKOrABSvRHIuhfKG7JH0nVtgdhUd7FdJEsb44A75EwUzQpeZXCXv
+	 y3xR95gB5AHBtU0sDq9tI5Xp9iw0Jnga77xVWoamJUgkRy3RyFZ9hUfPQ/HuaKQ0un
+	 3qHUANfOHEesA==
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+Date: Thu, 16 Apr 2026 12:30:12 +0200
+Subject: [PATCH net v2] net: airoha: Fix possible TX queue stall in
+ airoha_qdma_tx_napi_poll()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260416-airoha-txq-potential-stall-v2-1-42c732074540@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/33NzQ6CMBAE4Fche3ZNf/jTk+9hOFRYYWPTYtsQD
+ OHdbfDucWaSbzaIFJgiXIsNAi0c2bsc1KmAfjJuJOQhZ1BC1aIUDRoOfjKY1jfOPpFLbCzGZKx
+ FM1Sqr7S4lNRCBuZAT14P/A6OEnS5nDgmHz7H4SKP6WdL/c9eJEpsWi10rR+yKvXtRcGRPfswQ
+ rfv+xeYqI5cygAAAA==
+X-Change-ID: 20260407-airoha-txq-potential-stall-ad52c53094e8
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, 
+ linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
+X-Mailer: b4 0.14.3
 
-slhc_uncompress() parses a VJ-compressed TCP header by advancing a
-pointer through the packet via decode() and pull16(). Neither helper
-bounds-checks against isize, and decode() masks its return with
-& 0xffff so it can never return the -1 that callers test for -- those
-error paths are dead code.
+Since multiple net_device TX queues can share the same hw QDMA TX queue,
+there is no guarantee we have inflight packets queued in hw belonging to a
+net_device TX queue stopped in the xmit path because hw QDMA TX queue
+can be full. In this corner case the net_device TX queue will never be
+re-activated. In order to avoid any potential net_device TX queue stall,
+we need to wake all the net_device TX queues feeding the same hw QDMA TX
+queue in airoha_qdma_tx_napi_poll routine.
 
-A short compressed frame whose change byte requests optional fields
-lets decode() read past the end of the packet. The over-read bytes
-are folded into the cached cstate and reflected into subsequent
-reconstructed packets.
-
-Make decode() and pull16() take the packet end pointer and return -1
-when exhausted. Add a bounds check before the TCP-checksum read.
-The existing == -1 tests now do what they were always meant to.
-
-Fixes: b5451d783ade ("slip: Move the SLIP drivers")
-Reported-by: Simon Horman <horms@kernel.org>
-Closes: https://lore.kernel.org/netdev/20260414134126.758795-2-horms@kernel.org/
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Fixes: 23020f0493270 ("net: airoha: Introduce ethernet support for EN7581 SoC")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/slip/slhc.c | 43 ++++++++++++++++++++++++-----------------
- 1 file changed, 25 insertions(+), 18 deletions(-)
+Changes in v2:
+- Add txq_stopped parameter to avoid any possible corner cases where the
+  netdev queue stalls.
+- Link to v1: https://lore.kernel.org/r/20260413-airoha-txq-potential-stall-v1-1-7830363b1543@kernel.org
+---
+ drivers/net/ethernet/airoha/airoha_eth.c | 37 +++++++++++++++++++++++++++-----
+ drivers/net/ethernet/airoha/airoha_eth.h |  1 +
+ 2 files changed, 33 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/slip/slhc.c b/drivers/net/slip/slhc.c
-index e3c785da3eef3..d1c0523085d3a 100644
---- a/drivers/net/slip/slhc.c
-+++ b/drivers/net/slip/slhc.c
-@@ -80,9 +80,9 @@
- #include <linux/unaligned.h>
- 
- static unsigned char *encode(unsigned char *cp, unsigned short n);
--static long decode(unsigned char **cpp);
-+static long decode(unsigned char **cpp, const unsigned char *end);
- static unsigned char * put16(unsigned char *cp, unsigned short x);
--static unsigned short pull16(unsigned char **cpp);
-+static long pull16(unsigned char **cpp, const unsigned char *end);
- 
- /* Allocate compression data structure
-  *	slots must be in range 0 to 255 (zero meaning no compression)
-@@ -190,30 +190,34 @@ encode(unsigned char *cp, unsigned short n)
- 	return cp;
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+index e1ab15f1ee7d..19f67c7dd8e1 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.c
++++ b/drivers/net/ethernet/airoha/airoha_eth.c
+@@ -843,6 +843,21 @@ static int airoha_qdma_init_rx(struct airoha_qdma *qdma)
+ 	return 0;
  }
  
--/* Pull a 16-bit integer in host order from buffer in network byte order */
--static unsigned short
--pull16(unsigned char **cpp)
-+/* Pull a 16-bit integer in host order from buffer in network byte order.
-+ * Returns -1 if the buffer is exhausted, otherwise the 16-bit value.
-+ */
-+static long
-+pull16(unsigned char **cpp, const unsigned char *end)
++static void airoha_qdma_wake_netdev_txqs(struct airoha_queue *q)
++{
++	struct airoha_qdma *qdma = q->qdma;
++	struct airoha_eth *eth = qdma->eth;
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(eth->ports); i++) {
++		struct airoha_gdm_port *port = eth->ports[i];
++
++		if (port && port->qdma == qdma)
++			netif_tx_wake_all_queues(port->dev);
++	}
++	q->txq_stopped = false;
++}
++
+ static int airoha_qdma_tx_napi_poll(struct napi_struct *napi, int budget)
  {
--	short rval;
-+	long rval;
+ 	struct airoha_tx_irq_queue *irq_q;
+@@ -919,12 +934,21 @@ static int airoha_qdma_tx_napi_poll(struct napi_struct *napi, int budget)
  
-+	if (*cpp + 2 > end)
-+		return -1;
- 	rval = *(*cpp)++;
- 	rval <<= 8;
- 	rval |= *(*cpp)++;
- 	return rval;
- }
- 
--/* Decode a number */
-+/* Decode a number. Returns -1 if the buffer is exhausted. */
- static long
--decode(unsigned char **cpp)
-+decode(unsigned char **cpp, const unsigned char *end)
- {
- 	int x;
- 
-+	if (*cpp >= end)
-+		return -1;
- 	x = *(*cpp)++;
--	if(x == 0){
--		return pull16(cpp) & 0xffff;	/* pull16 returns -1 on error */
--	} else {
--		return x & 0xff;		/* -1 if PULLCHAR returned error */
--	}
-+	if (x == 0)
-+		return pull16(cpp, end);
-+	return x & 0xff;
- }
- 
- /*
-@@ -499,6 +503,7 @@ slhc_uncompress(struct slcompress *comp, unsigned char *icp, int isize)
- 	struct cstate *cs;
- 	int len, hdrlen;
- 	unsigned char *cp = icp;
-+	const unsigned char *end = icp + isize;
- 
- 	/* We've got a compressed packet; read the change byte */
- 	comp->sls_i_compressed++;
-@@ -534,6 +539,8 @@ slhc_uncompress(struct slcompress *comp, unsigned char *icp, int isize)
- 	thp = &cs->cs_tcp;
- 	ip = &cs->cs_ip;
- 
-+	if (cp + 2 > end)
-+		goto bad;
- 	thp->check = *(__sum16 *)cp;
- 	cp += 2;
- 
-@@ -564,26 +571,26 @@ slhc_uncompress(struct slcompress *comp, unsigned char *icp, int isize)
- 	default:
- 		if(changes & NEW_U){
- 			thp->urg = 1;
--			if((x = decode(&cp)) == -1) {
-+			if((x = decode(&cp, end)) == -1) {
- 				goto bad;
- 			}
- 			thp->urg_ptr = htons(x);
- 		} else
- 			thp->urg = 0;
- 		if(changes & NEW_W){
--			if((x = decode(&cp)) == -1) {
-+			if((x = decode(&cp, end)) == -1) {
- 				goto bad;
- 			}
- 			thp->window = htons( ntohs(thp->window) + x);
+ 			txq = netdev_get_tx_queue(skb->dev, queue);
+ 			netdev_tx_completed_queue(txq, 1, skb->len);
+-			if (netif_tx_queue_stopped(txq) &&
+-			    q->ndesc - q->queued >= q->free_thr)
+-				netif_tx_wake_queue(txq);
+-
+ 			dev_kfree_skb_any(skb);
  		}
- 		if(changes & NEW_A){
--			if((x = decode(&cp)) == -1) {
-+			if((x = decode(&cp, end)) == -1) {
- 				goto bad;
- 			}
- 			thp->ack_seq = htonl( ntohl(thp->ack_seq) + x);
- 		}
- 		if(changes & NEW_S){
--			if((x = decode(&cp)) == -1) {
-+			if((x = decode(&cp, end)) == -1) {
- 				goto bad;
- 			}
- 			thp->seq = htonl( ntohl(thp->seq) + x);
-@@ -591,7 +598,7 @@ slhc_uncompress(struct slcompress *comp, unsigned char *icp, int isize)
- 		break;
++
++		if (q->txq_stopped && q->ndesc - q->queued >= q->free_thr) {
++			/* Since multiple net_device TX queues can share the
++			 * same hw QDMA TX queue, there is no guarantee we have
++			 * inflight packets queued in hw belonging to a
++			 * net_device TX queue stopped in the xmit path.
++			 * In order to avoid any potential net_device TX queue
++			 * stall, we need to wake all the net_device TX queues
++			 * feeding the same hw QDMA TX queue.
++			 */
++			airoha_qdma_wake_netdev_txqs(q);
++		}
++
+ unlock:
+ 		spin_unlock_bh(&q->lock);
  	}
- 	if(changes & NEW_I){
--		if((x = decode(&cp)) == -1) {
-+		if((x = decode(&cp, end)) == -1) {
- 			goto bad;
- 		}
- 		ip->id = htons (ntohs (ip->id) + x);
+@@ -1984,6 +2008,7 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff *skb,
+ 	if (q->queued + nr_frags >= q->ndesc) {
+ 		/* not enough space in the queue */
+ 		netif_tx_stop_queue(txq);
++		q->txq_stopped = true;
+ 		spin_unlock_bh(&q->lock);
+ 		return NETDEV_TX_BUSY;
+ 	}
+@@ -2039,8 +2064,10 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff *skb,
+ 				TX_RING_CPU_IDX_MASK,
+ 				FIELD_PREP(TX_RING_CPU_IDX_MASK, index));
+ 
+-	if (q->ndesc - q->queued < q->free_thr)
++	if (q->ndesc - q->queued < q->free_thr) {
+ 		netif_tx_stop_queue(txq);
++		q->txq_stopped = true;
++	}
+ 
+ 	spin_unlock_bh(&q->lock);
+ 
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
+index 95e557638617..87b328cfefb0 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.h
++++ b/drivers/net/ethernet/airoha/airoha_eth.h
+@@ -193,6 +193,7 @@ struct airoha_queue {
+ 	int ndesc;
+ 	int free_thr;
+ 	int buf_size;
++	bool txq_stopped;
+ 
+ 	struct napi_struct napi;
+ 	struct page_pool *page_pool;
+
+---
+base-commit: 1f5ffc672165ff851063a5fd044b727ab2517ae3
+change-id: 20260407-airoha-txq-potential-stall-ad52c53094e8
+
+Best regards,
 -- 
-2.43.0
+Lorenzo Bianconi <lorenzo@kernel.org>
 
