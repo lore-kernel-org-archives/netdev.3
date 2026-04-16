@@ -1,86 +1,143 @@
-Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
+Received: from mx0b-00190b01.pphosted.com (mx0b-00190b01.pphosted.com [67.231.157.127])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76C93803E4;
-	Thu, 16 Apr 2026 08:54:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06327395D93;
+	Thu, 16 Apr 2026 08:55:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.157.127
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776329701; cv=none; b=n+vqypitbriEmSSD5fwDbuaN76oQbwbqGEx0BHnNvXEoS5D4XtleYXqMjmW30kpa924BL0W9tId2QSQRyVSQRoN7Fb0OlI8La6/CfULYCLq3aVyTSjwUY8kdF9eIHlb9iYDzjw/aYXdDq8cbHiXisk7fSdzezHbJzjBq+lNBm6A=
+	t=1776329724; cv=none; b=F90GlsYfjdUSDwwEjqNk45+b2DOS4KHienAIjOJpcTjAh879eEjLxX77LVl4NXzv3uOM2gPt5sRfmXT3cUMyz3yzAweqBTUdW+AgppxpF3yT61VAEebOZEpxv65LdYjR//ZDivCgdjpSyEMei9+B2Q2hb/WWREP/7v644tkrI+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776329701; c=relaxed/simple;
-	bh=9IobvFpQbS8xVL4t/3Nn3NBNUu395pAwqYcnMxHAGNg=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=O/1GlA9aamQnb8GbiGUodeniDPz3lYfQZdoWLk6dEuxM1h8MVEyT0WgNdFhZ78Ed0QFfyzJKetgdDY2wNZAqwu9zhc96Sbj+hE+Rr+s2fBewYepMWdEiR6GdBMK5JR6bgScN4xTiJaiT95rKcdFHoabExNmyb0KnhmQDLtrjG7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b=NkKIkdKV; arc=none smtp.client-ip=129.217.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
+	s=arc-20240116; t=1776329724; c=relaxed/simple;
+	bh=XFWP+yYv7Op8pTwYC7BBgS2sMG2E6wOzSttnqri0ltA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=ow0WmlWz5ffFi7t+TwRAZ/TaV9FLl69iV+7G0SegGlYdt7mAwjuwCY629IHH35fY7QW1d03IVMFyuT/zvrTRqlRYAIQZWLm1LbeHL3TxuagWcmEmh+g7LTNFuM0k4uAFbZF2SwQrTEagHlMNtC8dgUwLtAUZWc1GNNaw/pQVZNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=akamai.com; spf=fail smtp.mailfrom=akamai.com; dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b=PLUF1LxV; arc=none smtp.client-ip=67.231.157.127
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=akamai.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=akamai.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b="NkKIkdKV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tu-dortmund.de;
-	s=unimail; t=1776329687;
-	bh=9IobvFpQbS8xVL4t/3Nn3NBNUu395pAwqYcnMxHAGNg=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To;
-	b=NkKIkdKVZ4fi31ItM8Tvf11CiXJry9lcn8AW+qVRkgp8lSukkUZMgkG1/DIDVZLDj
-	 FQscoDR2J+LiRYJm7BWOAT1RzL42rfLD6X1ETF+8Iv49qFV0KfMkXi0+AXCT2pAHPs
-	 o9DpEaDWZNF7HhNxKdLnbqYEptjrZ/MrEMEOoFUY=
-Received: from [129.217.186.105] ([129.217.186.105])
-	(authenticated bits=0)
-	by unimail.uni-dortmund.de (8.18.2/8.18.2) with ESMTPSA id 63G8skqo025371
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 16 Apr 2026 10:54:46 +0200 (CEST)
-Message-ID: <73033bfc-4da3-4057-9480-bd977a66ecef@tu-dortmund.de>
-Date: Thu, 16 Apr 2026 10:54:45 +0200
+	dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b="PLUF1LxV"
+Received: from pps.filterd (m0122330.ppops.net [127.0.0.1])
+	by mx0b-00190b01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63G3ZGPw2829465;
+	Thu, 16 Apr 2026 08:55:20 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=akamai.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=jan2016.eng; bh=QXb7xAciK
+	CGZeYHiKlYr17f4TzTjwyCF6FQFa6X5U9k=; b=PLUF1LxVDlXHGTg0hpawJZe/Z
+	HcqN0Z6Aj6Ju/EqbAx1q/osWegnWlqZgGcF8HB6TLKSH0jKCD/YiArwEOju0w3Xz
+	eqSSaJ9uQ75L3Htvx05jwkVqXkLVQ2wHZuhGmJ2isp+oEmiY20J709E/r4XaB+0s
+	4QFLSz7Wr2tB3LQDokkH6D5CLR+0Ccy62YV1ir3DlNbYnxG9bQMNZcr807/pBxf1
+	7Tns+pRXro6yEAI3IFOwwQ5BNGiCOWOoMiM4hsHyd7dh9catwPzWWMPWvPRRfRkz
+	afUp3HsKGdZXXop8YZxPlLblomfj3LGUsrnqtATDrP9CvRgQX2oZe3Hv03TFQ==
+Received: from prod-mail-ppoint2 (prod-mail-ppoint2.akamai.com [184.51.33.19])
+	by mx0b-00190b01.pphosted.com (PPS) with ESMTPS id 4dfeh40r5v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 16 Apr 2026 08:55:19 +0100 (BST)
+Received: from pps.filterd (prod-mail-ppoint2.akamai.com [127.0.0.1])
+	by prod-mail-ppoint2.akamai.com (8.18.1.7/8.18.1.7) with ESMTP id 63G7feul025213;
+	Thu, 16 Apr 2026 03:55:19 -0400
+Received: from prod-mail-relay02.akamai.com ([172.27.118.35])
+	by prod-mail-ppoint2.akamai.com (PPS) with ESMTP id 4dj2v8e09n-1;
+	Thu, 16 Apr 2026 03:55:19 -0400 (EDT)
+Received: from muc-lhvdhd.munich.corp.akamai.com (muc-lhvdhd.munich.corp.akamai.com [172.29.0.147])
+	by prod-mail-relay02.akamai.com (Postfix) with ESMTP id 7AB928D;
+	Thu, 16 Apr 2026 07:55:17 +0000 (UTC)
+From: Nick Hudson <nhudson@akamai.com>
+To: bpf@vger.kernel.org, netdev@vger.kernel.org,
+        Willem de Bruijn <willemb@google.com>,
+        Martin KaFai Lau <martin.lau@linux.dev>
+Cc: Nick Hudson <nhudson@akamai.com>, Max Tottenham <mtottenh@akamai.com>,
+        Anna Glasgall <aglasgal@akamai.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Eduard Zingerman <eddyz87@gmail.com>,
+        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH bpf-next v4 1/6] bpf: name the enum for BPF_FUNC_skb_adjust_room flags
+Date: Thu, 16 Apr 2026 08:55:09 +0100
+Message-Id: <20260416075514.927101-2-nhudson@akamai.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260416075514.927101-1-nhudson@akamai.com>
+References: <20260416075514.927101-1-nhudson@akamai.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v8 4/4] tun/tap & vhost-net: avoid ptr_ring
- tail-drop when a qdisc is present
-From: Simon Schippers <simon.schippers@tu-dortmund.de>
-To: Jason Wang <jasowang@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
-Cc: willemdebruijn.kernel@gmail.com, andrew+netdev@lunn.ch,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, mst@redhat.com, eperezma@redhat.com,
-        leiyang@redhat.com, stephen@networkplumber.org, jon@nutanix.com,
-        tim.gebauer@tu-dortmund.de, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        virtualization@lists.linux.dev
-References: <20260312130639.138988-1-simon.schippers@tu-dortmund.de>
- <20260312130639.138988-5-simon.schippers@tu-dortmund.de>
- <CACGkMEtN9XgYPGHQg4TEWEsa_UcMbcnzO=VaTFT=0Tn4BayMDw@mail.gmail.com>
- <0908392d-6314-4141-b908-6c9a880ba0a4@tu-dortmund.de>
- <cda710f8-033a-4772-b5ce-a2cfddf42bea@tu-dortmund.de>
- <CACGkMEuLqxnz=GtdKp3-u0egkGT_eZUgBBwvvtHcgAYpLJv-UA@mail.gmail.com>
- <3d3274b4-f274-4cf9-9d0f-989d05148604@tu-dortmund.de>
- <CACGkMEsUag4zNZG+aYipHv_PirbKb_rs7DzSOr-NF8ckhUaJOQ@mail.gmail.com>
- <b9d84d88-46d5-4fd3-a5b2-d914f54766f6@tu-dortmund.de>
-Content-Language: en-US
-In-Reply-To: <b9d84d88-46d5-4fd3-a5b2-d914f54766f6@tu-dortmund.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-16_02,2026-04-13_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
+ spamscore=0 mlxscore=0 suspectscore=0 malwarescore=0 mlxlogscore=724
+ lowpriorityscore=0 phishscore=0 adultscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2604070000 definitions=main-2604160071
+X-Proofpoint-ORIG-GUID: CQ48Qe7-IQzfR44_BBvC_sbi20Iug-6G
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE2MDA3MyBTYWx0ZWRfX39Ar2rlKfQ/H
+ jcQPiPD6/UjeuzmYPCGTfV1WgasqY4xSnxuJLASFl2cCufV+XADZGIk7aXqDBFM5UPF/IQBz8Oz
+ oVnkH/jyu02b4KGl1fv62OROPgvGxKVeNtjRULaoGFh/3N8WWFbM2+3+I2GUe4Fn4J/9L51qOuE
+ XQ1jHzNuZBi1a91AOnWzGprrk9sPrnVCtLu1fBWOkxTNO1qWOyhDfB0rXh9wr04fmX/wv76QB1v
+ vtQoHC2GPp9cM8gYuheNETM0xb/i7V0rzXY+9zEjYA1ITTUmIYY5cR5kWgDoTNzC5sMFWcIBdRj
+ BS5eObfxFwxIegl2ELCPS6X79YhwLoGJ0HM4GJJfhUq+cb4BCdrFPpG7jffPfoBFQh7BZ2efITX
+ Zd7Y/PMjglysCzZRchhmrUqzZEwtQ2n8Yg3FZ1AXbPiEibJ6x5lMuC2TTTTDUuN2PCWKhY6yMQY
+ Pl5mnwkKuGFL3AEkBvA==
+X-Authority-Analysis: v=2.4 cv=GfonWwXL c=1 sm=1 tr=0 ts=69e095e7 cx=c_pps
+ a=BpD+HMUBsFIkYY1OQe22Yw==:117 a=BpD+HMUBsFIkYY1OQe22Yw==:17
+ a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=Ifg-1AOnLHOf1gn6spyb:22
+ a=4xFXqd-_BHBjZVyr95gr:22 a=X7Ea-ya5AAAA:8 a=1XWaLZrsAAAA:8
+ a=TMHggaePV_XZxh6C_gsA:9
+X-Proofpoint-GUID: CQ48Qe7-IQzfR44_BBvC_sbi20Iug-6G
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-16_02,2026-04-13_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
+ impostorscore=0 lowpriorityscore=0 bulkscore=0 malwarescore=0 clxscore=1015
+ spamscore=0 adultscore=0 phishscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604160073
 
-To summarize the discussion from my POV:
+The existing anonymous enum for BPF_FUNC_skb_adjust_room flags is
+named to enum bpf_adj_room_flags to enable CO-RE (Compile Once -
+Run Everywhere) lookups in BPF programs.
 
-Open point: __ptr_ring_zero_tail() is only called after
-            consuming ring.batch elements.
-1) Consumer wakes up the producer but the slot is not cleaned.
---> I disagree, the consumer only wakes after consuming ring.size/2.
-    Then __ptr_ring_zero_tail() was called at least once.
-2) Producer is woken up but see the ring is full, so it need to
-   drop the packet.
---> I disagree, because then NETDEV_TX_BUSY is returned. This is
-    noticeable as qdisc requeue and only happens very rarely.
+Co-developed-by: Max Tottenham <mtottenh@akamai.com>
+Signed-off-by: Max Tottenham <mtottenh@akamai.com>
+Co-developed-by: Anna Glasgall <aglasgal@akamai.com>
+Signed-off-by: Anna Glasgall <aglasgal@akamai.com>
+Signed-off-by: Nick Hudson <nhudson@akamai.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+---
+ include/uapi/linux/bpf.h       | 2 +-
+ tools/include/uapi/linux/bpf.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Points I will address:
-- Minor nit on patch 2 by MST.
-- Rebase patch 3 because of commit d748047
-  ("ptr_ring: disable KCSAN warnings").
-- Document the pair of the smp_mb__after_atomic() in tun_net_xmit
-  with tun_ring_consume().
-- Use 1 ptr_ring spinlock instead of 2 (currently used for consume
-  and empty check), not sure how to implement it pretty rn.
-- Run pktgen benchmarks with pg_set SHARED.
+diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
+index 552bc5d9afbd..c021ed8d7b44 100644
+--- a/include/uapi/linux/bpf.h
++++ b/include/uapi/linux/bpf.h
+@@ -6211,7 +6211,7 @@ enum {
+ };
+ 
+ /* BPF_FUNC_skb_adjust_room flags. */
+-enum {
++enum bpf_adj_room_flags {
+ 	BPF_F_ADJ_ROOM_FIXED_GSO	= (1ULL << 0),
+ 	BPF_F_ADJ_ROOM_ENCAP_L3_IPV4	= (1ULL << 1),
+ 	BPF_F_ADJ_ROOM_ENCAP_L3_IPV6	= (1ULL << 2),
+diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
+index 677be9a47347..ca35ed622ed5 100644
+--- a/tools/include/uapi/linux/bpf.h
++++ b/tools/include/uapi/linux/bpf.h
+@@ -6211,7 +6211,7 @@ enum {
+ };
+ 
+ /* BPF_FUNC_skb_adjust_room flags. */
+-enum {
++enum bpf_adj_room_flags {
+ 	BPF_F_ADJ_ROOM_FIXED_GSO	= (1ULL << 0),
+ 	BPF_F_ADJ_ROOM_ENCAP_L3_IPV4	= (1ULL << 1),
+ 	BPF_F_ADJ_ROOM_ENCAP_L3_IPV6	= (1ULL << 2),
+-- 
+2.34.1
 
