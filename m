@@ -1,82 +1,156 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D251EF091
-	for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 09:40:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 684B939DBCB
+	for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 10:09:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776332437; cv=none; b=u7WEYyo+7Ge7Yv6C+lCbd/T1ABcRMo8W7FD9/5cZ0mlKprYVI055Cy7ukG8aPYi+SpJqX0WRwKE2oYg71jEBT6QM139ELTz3VwgktcnHoj6W83R4keAg9BZ1ONRBaHgbk3H9CQEP9FoIr1XT8A5yKlKa8UeyOFJ1Dc+ACJOq/Pw=
+	t=1776334196; cv=none; b=pN5EwOfLeurdeFY+LzgBZ7c6A8N6UrFSo/bFeLnq/zMnTmsjVlX0JCMrMjrHCCoIY9Rwfvx7v3yInp0z2DcybTy8OihYT8Q+pddaSvpD5HcWl1oA4IgB+HUjepd17o4Tl2cZsz3zhy7Xgeye0Kr/Omq2PC7czeC/N+VW7aEVHuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776332437; c=relaxed/simple;
-	bh=4cm7N4+2KetiOTDMzw3C8XcqQyKC6SnW0eiww7y1F/0=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=nCR1djIkPvRucK6Z4dY8Xs97kEO4BsdDT3Pt7a6CFF7TeBjhE1J+kCIYw7QfDjMFTG4JB15v43asgc2CM11KfN8MQ9SMmTB5rDDY0hyl5cEiBYE9olRxdh5tDZcIA5DDY8LSoo1e2nNXQB/tKtrS6IlfH2IdRKOERN5qv/DsyLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QGp4wFNy; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776334196; c=relaxed/simple;
+	bh=z6kd+nKQicYvDY3CUkmgWTERBKk+ndyaPYBRpyWXIEY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=o9X9+CL+m1vQy8NiHXAj4gi7pNdR6i/VftV0WMftRbDTwaWH6BRgVCwFbwJabjCqmz7q7QyrC59pLab7LLtw3mzLGaok2l5grd2Z7X9CAtKnX3IKY0DpkEVAyZZBY0YbRQJuIG+wxW/d6ox92YORg4/vmkWjEIa2R0r6DGOXyKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FKRSjiLv; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=c359IVp7; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QGp4wFNy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02BF4C2BCAF;
-	Thu, 16 Apr 2026 09:40:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776332437;
-	bh=4cm7N4+2KetiOTDMzw3C8XcqQyKC6SnW0eiww7y1F/0=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=QGp4wFNyqA98U2Xp7kM/O6Z8Jfvt/PEHi8hPJ2Cxrapj1jzuQosESQBvDGHwQcIKg
-	 rdjooxaKDZQkAYUQETUl+zirgToXceeuCLmmH/9iYoW5aHKlf+ZEPLnnmT/GPm7Q67
-	 OVoKsnn4kapS6bl0gfzYavvJbAYb2MLi49bR21mJllzHCywr31cMhH6XZQFYB4UwmS
-	 GbqhKXspnyjrW+/vh4yGhg1Rl2EiXGHPzAmj1UKFQfBwa2TsGkajOrgW3dGl8eZwL4
-	 N4qX0vPlB85lA4YMnWc3LqIg98QO+iPz0gsnnsNXZDzqH1Jgi05RNr9FHiEN1dDVHZ
-	 bG3E5mpOOPWDw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02C54380A979;
-	Thu, 16 Apr 2026 09:40:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FKRSjiLv";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="c359IVp7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1776334194;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1cV7q2j+uSEe+DAeD9qB2jVzt4SquMZBCuxmlDEB6Vg=;
+	b=FKRSjiLvn2Ln+4VffUmQl0XDxeSIxlGOeo1nI+lTTswG3MAQ/5cfNxrPftOjPpq9fRqz/y
+	lF3HwGfGaiqwbCLNbqMvF0ninGDRo5Dzg5XJA90En6Y1cSSsvo7d0zmM5OQtr9fEymx08U
+	qjhsvWEy1x6ob1763lW0Wo67khvRTV4=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-152-gZKdrRQLPaqe0NACwP87bA-1; Thu, 16 Apr 2026 06:09:51 -0400
+X-MC-Unique: gZKdrRQLPaqe0NACwP87bA-1
+X-Mimecast-MFC-AGG-ID: gZKdrRQLPaqe0NACwP87bA_1776334191
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-488c2cc0cbaso45248285e9.3
+        for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 03:09:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1776334190; x=1776938990; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1cV7q2j+uSEe+DAeD9qB2jVzt4SquMZBCuxmlDEB6Vg=;
+        b=c359IVp7gA11Oc3qzyHXzpH0x5bGs0Ht9uRRvmb0cgeXb1kqbpOd+oPzanNhmTpO1d
+         vdXBrCuAwrSg6Oca8GjQRpgx3rOE/T2F5ycH5E6jyTGKKQjgl72mJAKS1ntS9RDoAePy
+         k2hRL+zjH//o/KKyZD6zCYbPpv655LtvEkB+oXa1AccvFk1UDeymiLjOM1ve81vaOdNF
+         AKELMCSh/VGDzkI2a/qdg9onZpYOWlB/mVW7+1JHJwmw4usLt5x/YT9hgGbd4a2gKO2W
+         OjWfMtdu4oDWX0bt/y3IS0eKalJ32o48pb4NBEj06GsyroI4cVtspk7SQWVH98tojLHu
+         bPXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776334190; x=1776938990;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1cV7q2j+uSEe+DAeD9qB2jVzt4SquMZBCuxmlDEB6Vg=;
+        b=ajoZfBxTZbMsQ25rJ4H14TiBKzOoK1yOm3hi04Oi3GCBv+PrLwz5bvzfWCf++J3sP0
+         uFRJfbvL/RJHvA93iT7X089hhvPdyYWPzuhjr0E/FiAerJV96VMX0vuVhjmH8/gJMVml
+         T/IcLOaF7F5D5Znwco7+f/5/c21TElrjW3cjacJ+/0wxDY6hzKTm4YRlNKZ/4YzqM6ZC
+         O1bsTlSEBeFf6qEEMNnlPw++jjg9PbRQ+xSEj2fjQaviIXfcr4KE2Lz4nhsfkTEJqJNF
+         x8mc4KT7CwWKPMToTrRFQO9QIq7dyO2i7EeIBV/E4RlBVqwEv22FI5MIY/wKTgVfHEGo
+         Pmdg==
+X-Forwarded-Encrypted: i=1; AFNElJ+oNEKMhHj8nirY+mToQQTHCV21YKB+Y5wqIFU9HlVqjV61s6rIJK1s5g35G32BdLiMjUB7o8k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzfYi3sl7K/r/j8natrGDIuyqqaA7NySh8enfFeUnymyRqcE1mO
+	JvEneARX6gsd9pK1eRlzPKyiK8MuPZAd/0y5qAvVI0iZoPhHMOlVGX+hrIeSMNG+OxCzuHKRG4K
+	VwaEHxYRF5xEdmN10GQ2ON6gw8z9PotWKt9IFE8cUhLAJ14W3uKSeszZTKg==
+X-Gm-Gg: AeBDieuCOqT49swJD06hnFlhhHl4Sc5iDi7fwXTsEk9yx0ODn+BsJZmR5T5aoUQTdTq
+	1g5dTALwTl3xqKcCtqk5o0/raQ7zyLxvttyOjq9RIIgD3NH7c9mrgJtYWNsDpKI9zSx8MO39GBM
+	xjlJoQf2nMyXRaLNo4qqcjGIH1qNKM3mhFH9Yol2ZKldBFLsEt/LD5QPjnyIeJxbA+2trSoZUOA
+	cvgq2dNNxomw9JhnTtEJEPYkNMBj+xkDFUNoiEQiLRGceYioGWJtyJ+DY7UDCrCAAwSNdolaMXg
+	9dTo8i75pr7Q3cdxIEiItrBsU7TQP6YcL4K9sVy/XCljaNSRQhSLXm91Wbq2ZwWdU3AvaCTTdkH
+	Io5gtLB0N2+ry0B67Ww+xpXJhol2eHhuz99G+ZWpeFaYCP5nThGwG95JEnWzNqDNVKuU=
+X-Received: by 2002:a05:600c:3b24:b0:488:aa33:dcbd with SMTP id 5b1f17b1804b1-488d687a645mr349028125e9.26.1776334190392;
+        Thu, 16 Apr 2026 03:09:50 -0700 (PDT)
+X-Received: by 2002:a05:600c:3b24:b0:488:aa33:dcbd with SMTP id 5b1f17b1804b1-488d687a645mr349027665e9.26.1776334189852;
+        Thu, 16 Apr 2026 03:09:49 -0700 (PDT)
+Received: from [192.168.88.32] ([150.228.93.122])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488f5813665sm43475935e9.2.2026.04.16.03.09.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 16 Apr 2026 03:09:49 -0700 (PDT)
+Message-ID: <d49d5804-96b8-4e84-b693-b51a7e1cca15@redhat.com>
+Date: Thu, 16 Apr 2026 12:09:47 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net/sched: act_mirred: fix wrong device for
- mac_header_xmit
- check in tcf_blockcast_redir
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177633240555.2710724.8790736448507828329.git-patchwork-notify@kernel.org>
-Date: Thu, 16 Apr 2026 09:40:05 +0000
-References: <20260413084927.71353-1-phx0fer@gmail.com>
-In-Reply-To: <20260413084927.71353-1-phx0fer@gmail.com>
-To: Dudu Lu <phx0fer@gmail.com>
-Cc: netdev@vger.kernel.org, jhs@mojatatu.com, jiri@resnulli.us
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net: dsa: sja1105: fix division by zero in
+ sja1105_tas_set_runtime_params()
+To: Alexander.Chesnokov@kaspersky.com, olteanv@gmail.com
+Cc: lvc-project@linuxtesting.org, Oleg.Kazakov@kaspersky.com,
+ Pavel.Zhigulin@kaspersky.com, stable@vger.kernel.org,
+ Andrew Lunn <andrew@lunn.ch>, Florian Fainelli <f.fainelli@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org
+References: <20260413085140.33138-1-Alexander.Chesnokov@kaspersky.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260413085140.33138-1-Alexander.Chesnokov@kaspersky.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Mon, 13 Apr 2026 16:49:27 +0800 you wrote:
-> In tcf_blockcast_redir(), when iterating block ports to redirect
-> packets to multiple devices, the mac_header_xmit flag is queried
-> from the wrong device. The loop sends to dev_prev but queries
-> dev_is_mac_header_xmit(dev) — which is the NEXT device in the
-> iteration, not the one being sent to.
+On 4/13/26 10:51 AM, Alexander.Chesnokov@kaspersky.com wrote:
+> From: Alexander Chesnokov <Alexander.Chesnokov@kaspersky.com>
 > 
-> This causes tcf_mirred_to_dev() to make incorrect decisions about
-> whether to push or pull the MAC header. When the block contains
-> mixed device types (e.g., an ethernet veth and a tunnel device),
-> intermediate devices get the wrong mac_header_xmit flag, leading to
-> skb header corruption. In the worst case, skb_push_rcsum with an
-> incorrect mac_len can exhaust headroom and panic.
+> If taprio offload is configured such that none of the ports' base_time
+> is less than S64_MAX (the initial value of earliest_base_time), then
+> its_cycle_time remains zero and is passed to future_base_time() as
+> cycle_time, causing division by zero in div_s64().
 > 
-> [...]
+> Add a check for its_cycle_time being zero before calling
+> future_base_time() and return -EINVAL.
+> 
+> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> 
+> Fixes: 86db36a347b4 ("net: dsa: sja1105: Implement state machine for TAS with PTP clock source")
+> Cc: stable@vger.kernel.org
+> 
 
-Here is the summary with links:
-  - net/sched: act_mirred: fix wrong device for mac_header_xmit check in tcf_blockcast_redir
-    https://git.kernel.org/netdev/net/c/4510d140524c
+No empty lines in the tag area.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+> Signed-off-by: Alexander Chesnokov <Alexander.Chesnokov@kaspersky.com>
+> ---
+>  drivers/net/dsa/sja1105/sja1105_tas.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/net/dsa/sja1105/sja1105_tas.c b/drivers/net/dsa/sja1105/sja1105_tas.c
+> index e6153848a950..ce4b544a2b9c 100644
+> --- a/drivers/net/dsa/sja1105/sja1105_tas.c
+> +++ b/drivers/net/dsa/sja1105/sja1105_tas.c
+> @@ -62,6 +62,9 @@ static int sja1105_tas_set_runtime_params(struct sja1105_private *priv)
+>  	if (!tas_data->enabled)
+>  		return 0;
+>  
+> +	if (!its_cycle_time)
+> +		return -EINVAL;
 
+Sashiko says:
+
+Is this division by zero reachable without this check?
+When all ports have base_time == S64_MAX, earliest_base_time and
+latest_base_time are both S64_MAX. When future_base_time(S64_MAX, 0,
+S64_MAX) is called, it returns early because base_time >= now (S64_MAX
+>= S64_MAX), avoiding the division.
+Could this new error path cause an actual division by zero later?
+When returning -EINVAL here, tas_data->enabled is already set to true,
+but tas_data->max_cycle_time is left uninitialized (0).
+If sja1105_tas_state_machine() runs later, it will pass this
+max_cycle_time as the cycle_time argument to future_base_time(). Since 0
+>= now + 1s is false, it proceeds to call div_s64() with a zero divisor.
+
+/P
 
