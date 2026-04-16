@@ -1,94 +1,64 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8ED93CEBB7;
-	Thu, 16 Apr 2026 13:15:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86FDA1922F5;
+	Thu, 16 Apr 2026 13:20:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776345319; cv=none; b=CtjgqATuS2KMWoUtYEgQxrcRMqi8rYQWfqjx7du0GEYUs9mTMt4AcyV5mPX0DX/5rttJB0kAGFA6HgbXjMka9OvMog1XtXH23W4i/S3iLwqDlIeSru5KT3UB1Zk7Pvg6RxNhDb+Gb5vZCvUvLPozW+8OX+JNfJTrHtRaRmYtWF4=
+	t=1776345613; cv=none; b=iatIJznRYd2n2dbMjt4jN9vW2S5dTR1lPFpSsQl5NadQ+dbdfDTXsIPmwpIjzeMdFD7qHzCQ3emhYuH/TtXrt3YbSNdv9+rQmVwDCGwhF+lc0WMVN4lFdJlyEkGltXhqkcmtlKJL3Rahs5DQvt1fIoQUxgZ33R5oUkrAIqrhRws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776345319; c=relaxed/simple;
-	bh=2efQzCiXJ2Wli7t6Ka/6/L85zMRoJKZJe6aw1Fet5zM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dqOgdRFn7LYzmYby7u8RwTEiENDPwVbDSE46GqnscZZgUeFvNXK9zx4pZeRFYhZHsjMGTE1+x6FONPzLi0Djcu+WQJqlWXtUwFRpmtvr2QzpH06d43JhBWC0cPpnrlsX7CVi9jq4389bmQWg66bZjRlK+4JWDhDgfAuCA9HceMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=fyQd5E7A; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	s=arc-20240116; t=1776345613; c=relaxed/simple;
+	bh=E7eGyefqW133ukX7BbFEmtGfErOk/FmhqY5MWm9KLN4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Tc92OgF37O0vUj8Ub9/fKEZLhbrKn26MnltSdCLdJUmURYK9hiiDJDlHCoURVI72pKnIZxL449RX3A9iiXAdVU1Cil8mGWsMziGGyb+OJTTgcYgXx/xLmD9pIJQw+8CwRAMRRtWP9g2pOQuBlB2zPnRaIkmMJApq+za6JcJLLGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EE955X1J; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="fyQd5E7A"
-Received: from localhost.localdomain (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with ESMTPSA id C3D3960262;
-	Thu, 16 Apr 2026 15:15:15 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1776345316;
-	bh=7UGc+WvpSbrw5BeuDggd8MZE8BV2R6UfQGJ2bjLPyRI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fyQd5E7A0pF/xC+Ck6UCpFefucdrp0sIxMZijVAk+AFRy7aPj5rXQYHSJtKqS2Q2D
-	 AL3ejfBhtdO8Sn/BDPdjgxkgJ296Rj/Z7aS7wRMfbSuzFh94f0CRpmFCYKJLsNQuNF
-	 og9ADkcQmgl4VQuj60Oue3rvAsLqgjf4xM+Rg560SadGGqHV9BjdqtMQCySAyPApvN
-	 Z6tTOCSu9mVTNT4BekoabGlp3SD2PhwCbk++c5qXQWXZNaul5KL3DlHcoBuNDb0Ent
-	 iEQYrt0tbdp5MczIOBUtugBy73MUwnkPCBqcuqsTmYcVdvf44iTDSKXA4RjzrhEgBZ
-	 TT3cqFY46Stiw==
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: netfilter-devel@vger.kernel.org
-Cc: davem@davemloft.net,
-	netdev@vger.kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	fw@strlen.de,
-	horms@kernel.org
-Subject: [PATCH net 11/11] netfilter: nf_tables: join hook list via splice_list_rcu() in commit phase
-Date: Thu, 16 Apr 2026 15:14:53 +0200
-Message-ID: <20260416131453.308611-12-pablo@netfilter.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260416131453.308611-1-pablo@netfilter.org>
-References: <20260416131453.308611-1-pablo@netfilter.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EE955X1J"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC4AAC2BCAF;
+	Thu, 16 Apr 2026 13:20:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776345613;
+	bh=E7eGyefqW133ukX7BbFEmtGfErOk/FmhqY5MWm9KLN4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EE955X1JKX9779kze5sp+z4VPaiXETLF7oHsOPXG5HpyT3Ru4sBTbdsYTGSyVvau0
+	 +oDRWn0GLXS+GC1LLpFL84DZUsxWt//juIbWJRLTDtaXU6cbXtu+x4l6QUOqkAlGBI
+	 HBhBCilAw2R65AJ5KTSyGjX2zJ6uOagZVC3r0P6ErtU20Mz26T8ZUfLhT01QKKUnsc
+	 WQNFDTbmIFm/b0iiyonMKt2j7CogfalHS3oTcd/MudNc/G3pR6fNgyLliiY/bWTfeY
+	 1k2oRoH++0k0uv+lNz1qpclXBXC7TWrz6QiA3bZwE5IbQM5BhSevyRIx3qTOaVNch/
+	 fmCdBjukZS8cQ==
+Date: Thu, 16 Apr 2026 14:20:08 +0100
+From: Simon Horman <horms@kernel.org>
+To: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Charles Perry <charles.perry@microchip.com>,
+	Conor Dooley <conor@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net: mdio: MDIO_PIC64HPSC should depend on ARCH_MICROCHIP
+Message-ID: <20260416132008.GS772670@horms.kernel.org>
+References: <980c57efa5843733ef95459c3283aebade56f142.1776162544.git.geert+renesas@glider.be>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <980c57efa5843733ef95459c3283aebade56f142.1776162544.git.geert+renesas@glider.be>
 
-Publish new hooks in the list into the basechain/flowtable using
-splice_list_rcu() to ensure netlink dump list traversal via rcu is safe
-while concurrent ruleset update is going on.
+On Tue, Apr 14, 2026 at 12:30:47PM +0200, Geert Uytterhoeven wrote:
+> The PIC64-HPSC/HX MDIO interface is only present on Microchip
+> PIC64-HPSC/HX SoCs.  Hence add a dependency on ARCH_MICROCHIP, to
+> prevent asking the user about this driver when configuring a kernel
+> without Microchip SoC support.
+> 
+> Fixes: f76aef980206e7c6 ("net: mdio: add a driver for PIC64-HPSC/HX MDIO controller")
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-Fixes: 78d9f48f7f44 ("netfilter: nf_tables: add devices to existing flowtable")
-Fixes: b9703ed44ffb ("netfilter: nf_tables: support for adding new devices to an existing netdev chain")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
----
- net/netfilter/nf_tables_api.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 090d4d688a33..8c0706d6d887 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -10904,8 +10904,8 @@ static int nf_tables_commit(struct net *net, struct sk_buff *skb)
- 				nft_chain_commit_update(nft_trans_container_chain(trans));
- 				nf_tables_chain_notify(&ctx, NFT_MSG_NEWCHAIN,
- 						       &nft_trans_chain_hooks(trans));
--				list_splice(&nft_trans_chain_hooks(trans),
--					    &nft_trans_basechain(trans)->hook_list);
-+				list_splice_rcu(&nft_trans_chain_hooks(trans),
-+						&nft_trans_basechain(trans)->hook_list);
- 				/* trans destroyed after rcu grace period */
- 			} else {
- 				nft_chain_commit_drop_policy(nft_trans_container_chain(trans));
-@@ -11034,8 +11034,8 @@ static int nf_tables_commit(struct net *net, struct sk_buff *skb)
- 							   nft_trans_flowtable(trans),
- 							   &nft_trans_flowtable_hooks(trans),
- 							   NFT_MSG_NEWFLOWTABLE);
--				list_splice(&nft_trans_flowtable_hooks(trans),
--					    &nft_trans_flowtable(trans)->hook_list);
-+				list_splice_rcu(&nft_trans_flowtable_hooks(trans),
-+						&nft_trans_flowtable(trans)->hook_list);
- 			} else {
- 				nft_clear(net, nft_trans_flowtable(trans));
- 				nf_tables_flowtable_notify(&ctx,
--- 
-2.47.3
+Reviewed-by: Simon Horman <horms@kernel.org>
 
