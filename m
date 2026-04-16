@@ -1,219 +1,156 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mx0a-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 862E32F8BC3;
-	Thu, 16 Apr 2026 03:54:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.9
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776311689; cv=fail; b=uoK/mwuVVVd65xj7f6lZR04mK1V0sGVRZB/kYjukJ+LJhcNbs9nZQHljI52kUB39XLCF9aqp2MmkaVgJ1JUWk4gC//yFpapo6tu/ZoRw5VFsUFDcMqFOE8i55M2MN+AjszC4kwBEqA/qhV7GGFZqkz9OIK6p9U0sGhxyhGQuI0s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776311689; c=relaxed/simple;
-	bh=KCp48touOvhhGtj5zVSmtk7NdOtWp88H+43G2Rey8zs=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=GoOrT+FFklW+3FPgboC2lhTwmm3pM5AkUwJUQOfiUDkkINqdNCvsiwKhBk/eTs3oNahrpBQalw7rZhoRdNg9jNb4tSBpNbETyVS5eh+qU3EWywcM/EuKxunyZYPQWr02Q5ynBell1ezuwGasbYHqRpoDr7+AQK8V+goACU03hSk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YuP+c+uD; arc=fail smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A47F2DF13A;
+	Thu, 16 Apr 2026 03:55:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776311734; cv=none; b=j70ZDv7UvAvDgP8fcSLOlvsscjRodYq+MdMFyBi9di6wAA7voPn6njMxJ/KyIiShhNIcXZRZia+cTt16iLThYGtefgWCOhVIcuOnmhMc6k0cXYV6MfhJx5lVvOZniMquavl/ybCjenKPSuNA3JXGvGKQj8d2b2N5zbhIZmmTkhE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776311734; c=relaxed/simple;
+	bh=rQrs8lLPk7fTA2mg+4gyQpXuS/QFkHUdLLfDb2MIflg=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mIxHfCYT5i9nBisaz3HDStmivQeOLTM9iUZ3+LSTI3jfUY/CCI6+2mj74Xxx2c8magiw7EzOLIs+wTO8wMy+un5hFGQkD6vgYRGm0A58iClGdPGDTb9Er6IeKHN7ckv3V8prebtD12HrMFB6mr7fNMo2yEnlIT2qJmiGW8RZyUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=bblGHbj9; arc=none smtp.client-ip=67.231.148.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YuP+c+uD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776311688; x=1807847688;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=KCp48touOvhhGtj5zVSmtk7NdOtWp88H+43G2Rey8zs=;
-  b=YuP+c+uDXn17TDfu92qdUuHO0egpvUuYANTkELQUpH89YOBoRflreFFw
-   nScUh8wnOkLfViilcNwN4JEjREJlCt/a8eE1IFeNVa3ax5cX1uFfIbtkt
-   j85Zfzme/DCWZtrOPyF2XOZ5rq/McOd1ZPcJ5o+qQEZE/UlxL+/wQlwYG
-   iBeGxBLZzHVj35Hvldz9J/3wWNl8Lmb9C9/RZfnq2lMvh2A3kQZGnmeOZ
-   QvEk3tp4TpcadeqJ2zUuCvtsJNz9BlBwDxnwNIta0cGeyYoo64YRD0z4c
-   C4t8ChukD6+A4pgNqXIqSXnevIHHrcmbY0swdNDjeZ7qbNWwPr/1+1fBo
-   w==;
-X-CSE-ConnectionGUID: 6W9uiykaR5GdMNLyDbh7LQ==
-X-CSE-MsgGUID: MUvmVZ0ZT+SigTRwxDY2bA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11760"; a="88000366"
-X-IronPort-AV: E=Sophos;i="6.23,181,1770624000"; 
-   d="scan'208";a="88000366"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2026 20:54:48 -0700
-X-CSE-ConnectionGUID: CM49DsgjQy608mUD4eMC7w==
-X-CSE-MsgGUID: sGyPi4GxTU60T93MmVojQA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,181,1770624000"; 
-   d="scan'208";a="227456665"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2026 20:54:48 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="bblGHbj9"
+Received: from pps.filterd (m0431384.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63FNT44u066774;
+	Wed, 15 Apr 2026 20:55:11 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=0
+	J26ByA48pTyYzUFPE0k9D22JfJYQgTDr3R5J/ygeGA=; b=bblGHbj9h0iJ/rNkR
+	f1iJvPn8xZMKdYPuFrwWQlzPF/7dNWTWXJknh3n4mvNeW+Vegd5leFLAFhxvQgm4
+	y61DWULT2W6on9zcTwHyoPrw9lB07jkCSLv6Y5jFxkNl1a17szbrxuIMs6vLomcD
+	ItYXpkkDZBRJ8/4VYtcXRj/qleD1HYEp++bcGqWD12Y98QEwhPdo9WZIHFEbGyAQ
+	HQ+xcyDXz6px6vSGzwH5h+ceUlO2StAbX7gKXbchkYS7NzWeHGIsicaHaSGlDm0r
+	fPpa3YB16bNmU1i2wjNT7NW06sD3nkQel2WLDaokhWSQr5gzhBgMBxEFHMT2A2l+
+	3KSSQ==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4djmcugdvr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 15 Apr 2026 20:55:11 -0700 (PDT)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 15 Apr 2026 20:54:47 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Wed, 15 Apr 2026 20:54:47 -0700
-Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.35) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 15 Apr 2026 20:54:47 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CNLDpwbLBPVEsrf9pSjGc8BrdjkJ0T/NOB6EVn6YyoUR0lbCuU1VimU3SH5WzYk2J62YSgQTrz9dCMvv9Or7AO52OwAfsch+nF8xCubatQBz83L/wD8yLRxUgijlx2QdKZHblS6hSHlMdsx96VV44v5NOAhH40djB3oup4isBJri0djN36MaoneHtBZh8v3UqMpdupQyF274JJZxpR8zvFPoKULvnxuofOVvqyv7dLDoiSeyN1owxPwkfhOfp5QpSmm/Q9IJxpHD+sdGzOvA/i0ODYL6wwlqao4lhRaJDQXZJAC9JV1JVzSGvpTY8oR2zQggEbPDsn0SIM+3Y/L+fA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VboUehOG6hLjjyR6LOY5VWBmDR1aTtjjLHHt+JrSJus=;
- b=ESiJpUAT50Yk1raEmIkfJEb7v45oJe1GUTnQKHY3ISOWGn98OCz81KBchRo5WUpTIh1ykEp6/bjskUPYexaFw49BvKjYN3ee4ku8QBqTXu1inIX5HpmSKDQ6V7UeyKLAjG34ZJVINiebyJDX4giGb/Hyw3oXV/xL5isxdOX1miFa2tTkTX1nBXRBYIgtT21UYvd5DH5mLvGFArVW3jDwpjf6eXvdaoJgxBBqmvkHr/LV9avQQUmf2K4GUilDNSkxEhJ+/JAL7cCxIGzB145IA5636MtxnlTIUPiiigX4D23x/peTu1Wt8V8eA2ZAoXFCWD42f7z1aLnoxV9ypyuqUw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from MN6PR11MB8102.namprd11.prod.outlook.com (2603:10b6:208:46d::9)
- by SA1PR11MB8809.namprd11.prod.outlook.com (2603:10b6:806:46a::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.20; Thu, 16 Apr
- 2026 03:54:44 +0000
-Received: from MN6PR11MB8102.namprd11.prod.outlook.com
- ([fe80::8d98:e538:8d7:6311]) by MN6PR11MB8102.namprd11.prod.outlook.com
- ([fe80::8d98:e538:8d7:6311%5]) with mapi id 15.20.9818.017; Thu, 16 Apr 2026
- 03:54:44 +0000
-Message-ID: <b2735cbf-34ac-4ad8-b524-2aa0f57511f8@intel.com>
-Date: Thu, 16 Apr 2026 05:54:38 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 2/2] bnge: remove unsupported backing store type
-To: Vikas Gupta <vikas.gupta@broadcom.com>, <dharmender.garg@broadcom.com>
-CC: <netdev@vger.kernel.org>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <andrew+netdev@lunn.ch>,
-	<horms@kernel.org>, <linux-kernel@vger.kernel.org>,
-	<vsrama-krishna.nemani@broadcom.com>, <bhargava.marreddy@broadcom.com>,
-	<rajashekar.hudumula@broadcom.com>, <ajit.khaparde@broadcom.com>,
-	<rahul-rg.gupta@broadcom.com>
-References: <20260415151621.1104956-1-vikas.gupta@broadcom.com>
- <20260415151621.1104956-3-vikas.gupta@broadcom.com>
-From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Content-Language: en-US
-In-Reply-To: <20260415151621.1104956-3-vikas.gupta@broadcom.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: DUZPR01CA0010.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:3c3::12) To MN6PR11MB8102.namprd11.prod.outlook.com
- (2603:10b6:208:46d::9)
+ 15.2.1544.25; Wed, 15 Apr 2026 20:55:10 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Wed, 15 Apr 2026 20:55:10 -0700
+Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with ESMTP id BBF403F7079;
+	Wed, 15 Apr 2026 20:55:06 -0700 (PDT)
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC: <sgoutham@marvell.com>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <andrew+netdev@lunn.ch>,
+        <dan.carpenter@linaro.org>, Ratheesh Kannoth <rkannoth@marvell.com>,
+        "Dan
+ Carpenter" <error27@gmail.com>
+Subject: [PATCH net 1/3] octeontx2-af: npc: cn20k: Handle npc_mcam_idx_2_key_type() failures
+Date: Thu, 16 Apr 2026 09:23:50 +0530
+Message-ID: <20260416035352.333808-2-rkannoth@marvell.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260416035352.333808-1-rkannoth@marvell.com>
+References: <20260416035352.333808-1-rkannoth@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN6PR11MB8102:EE_|SA1PR11MB8809:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0d2cbca0-25fe-4706-bf51-08de9b6be4e7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info: R9EcRAazrhUcWDE0ozvawfx4x7vnSlClGo0lenSnj+bFjB+co17QjaaOZjdv9kZVOKTwBUmIhoPattck+djduX2vjfz1L24/olx4fwQ9bxKpKpTmPjGpSJa9mKmg9klbAJtVDWyGZj/w3v3MCc3xm61dzrW8gJkyu9ZKU2BqvBVM6Gjb8F2zjiY4CtDNuKGq+FhSFSAjIZ4tY3R5GQlvQnu+yF7NnnKlx147FEQi7X2W/2FUokQtzJobYgNoCzzG/nGIR+8iR1CjO5oK0xac56XCwwigsdhQtCnj96JrVxzVgKqknB1A1XqGlu4X0+rlWqqz4YuTRslrKRANHmt7/7HwVFh2vBCpyfWXxmh7YY2bQUzY61FwKrhTugctn+Fgb906WQBunmgqTG4F5EViMZ8vWigHlt2jvfdmZnSMx6JMb0Dn8xhOLWn6sMBZyNr+wKSSohQBEBOX2wk3e/RRV5zho1xTvEdBrhP7I9pmB+9Ezh6QQ5Pb9OAu/DZFM82X1vY8Vgf7epYPzqQwm6DP4gesZuoQ22jpg4nCCUvXU33+IfMDdowWSBFT9xz0OGfK6whyHi4FXMMt5Mncqr5b5FnXdsZPU/7pjCERinh9muXvvh5HAM9F5aLvS8yicE4srsVb+zLkeLSU28trPsAuV3q88hRjR8OPg9y4X7VYy3V89bDY9r9NzMAH7NRTNMoOgtxG9Lyr0OTQY/mR+wStgupJwH/0WO6aSJBiX7+gu0c=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN6PR11MB8102.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WGNCcUZSdVlaTHFPall3Q1psK1NCN09OZWQ0TURGdHNaUVdFVDcyYWllcmRS?=
- =?utf-8?B?UTVSa3o3d0xqNGhVT01LY0M0OWo1c0F4NWo4NGRRVjM4ZVMvMUJiY3VTbXpK?=
- =?utf-8?B?Q3d2Q0h3YmxySFpqa2lBdmtLUnlrZG1DVC81eUM3bnQ4UGxhby80bDFHcjlm?=
- =?utf-8?B?dFdDdDE0S1MxQnhMQmlyQjlWbzlHcmdvelp0aDZpNDZTMm9sN2IrV0VEdkFH?=
- =?utf-8?B?SzFra2NLQ1JnVjNra0NLR2QzZm9RdzI4UFhnWHZQSDNkOTNVVXYxRFlhTGk5?=
- =?utf-8?B?TmMxYnQycXBBZkk2dGpsWlVPUmw5enhreTA0ZzhISWNyam5oVURxWUxYUWIx?=
- =?utf-8?B?UEVYanZQZFRhTkdrNFh6T21sSjJuWmltSTRIZE5SRU9lMmJYYnpvMDhHSE9y?=
- =?utf-8?B?ejFyNXE2eXc2WmlCOUd4YWU4N0dGcERCRmNRVjg5UWFBUzFNUlJnbmxHT0RV?=
- =?utf-8?B?RzA4a1JzQW55czZ3MUUwZ2xlVy9VNnF0dHBwVDZPUUtHenQ5RDhMcHRmbkFy?=
- =?utf-8?B?Ym5FaWxVSEhHeVZ6Y0FPNXJMaE5sMENleVZjL3RVWWlFcE54VTU1d2w3bFFi?=
- =?utf-8?B?SlY5bFZmVmNjVmwxY2Q5QVNTbXlnNkI2QVZMZ205M3U5NGFmZklaeGJ0OTVu?=
- =?utf-8?B?aCtadGlCS09uTzh4VEQwTjNPdm5aNkRXdUlULzZiV3R3ZE5rTldSRDM1S3NO?=
- =?utf-8?B?dzJTSkFNYnZYYTZzN3NucGQ5N2Y3WGFicE1GZlltQkNoMWhCZ29iMlFwNVNC?=
- =?utf-8?B?ZU5QOWVJN0kzVGYwaEUyU0xIdkU1d2MrVEEzdWU2eTlWSjMwTmIveFA1Zi9O?=
- =?utf-8?B?Y3ZTd3U1L3Q5QnZyVmxYT2VITHdDdWl0U0dsQVZTYnkzZWY3NnpFdWdlempQ?=
- =?utf-8?B?YnNBcWN6ODNSbGZHWGVQNEZWbGw4VGJMKytpWWpTb0FxTmtwVzMxaXE2UWxq?=
- =?utf-8?B?Yit2YTZPL1pNMFgrNllyckdGdmY0cE43OUpEdXJGSXJ1c255RWJpa1htV1Q3?=
- =?utf-8?B?MUJPd3pndElMdytWYXA2VGFJWFVUQjlmYUFmemVJNDlrWEtSV1UvUHNoVE1G?=
- =?utf-8?B?N2t0b1IyWklSN2xqZUJMd3lLeXB2d29vNWN2Y0h6VC9MTGFpWkVoUkp5RkNS?=
- =?utf-8?B?eHIrdlUvaUlBNmNKVlZDc0szWUhmOEtvS3pJVER3MW9xUWMwSVkvamZ3aEZt?=
- =?utf-8?B?TFNVYVVRaXE0aWxWTmZDNjVJNWhxRm50WHNNK1RScDEvMGlFU1dUUmg5YW5F?=
- =?utf-8?B?dWljeGIycFR5emZEM01zZjF4a2lIOEtQNCtSYjA3c01hS0YyVWJZZzA4THJl?=
- =?utf-8?B?eHRCdGVlajFuL0p4VjZQeDFISDUzK3AwWCtYQ3dOeVZNeUpWN2I0UklxZisw?=
- =?utf-8?B?dlN5YzJUVU01enpBRDV3SU42cEJnYkdHRTZCcm0wb1hjajFFc0lPZUo4bVpQ?=
- =?utf-8?B?ZGZPZXpaZ3Rha2xoSDFWT1FJYkU1a1huRHRNSXNxZ3FqOE03Ym03enFkdTUv?=
- =?utf-8?B?YmwzMVVpSjIzNkVMWjBNRGs2aktTMG1hSU0ySFpHdi9OVkp0VU5zMzBIcGRD?=
- =?utf-8?B?YVhXNE1pL3RPc01FdklkWG1vdTM5bnp3OGFPRXppWU9hSkRBTWVyeTh2TmdD?=
- =?utf-8?B?azVldkFnRFY0N01JT1lxZ3NNNExOQk9iTXFxdStvaDJJQWJQWU9yRkwzVEFJ?=
- =?utf-8?B?eHNuS29aUXluS1htNG9QcFZOYTFJZ0FVb3RkZ3d2U0dRL1IxRERaaG1sdkFw?=
- =?utf-8?B?em8xbUlYZHJ6S2NpeG1tYjUrUDdZdU1GSVgvTGZ5RE1Edi9ZZkpIMFBlSzc4?=
- =?utf-8?B?anVNZWFLY3BVWG5YQTlXU1lQT1dKdFZ2RWpXaVhjZGprU2tGdmNLOW9LRFhW?=
- =?utf-8?B?UUt6bjRucGZ2S0FvRGY2TlppRzFzYjk2Z2VCT0NaelBBZUJVOW5aYnY5Vzda?=
- =?utf-8?B?WmZWSXIwbkJhTkwyT056VFB6VG9iMmljdG52N1R5Ym5ieVdqb21HMjJPOGxY?=
- =?utf-8?B?K1hPdGE5OUZlcjRLcC9nMEZSQytqSXVxQTlXUVFqT1B5V2poYkFIN3NXbzJa?=
- =?utf-8?B?NU9NczBvL1NzRERWbjB3MkNwai8wK3YyZGxEVjRGZmNIWE5yOTl2WEhRSTNh?=
- =?utf-8?B?VzFZNXVnZ0UwTCtuVzRHL0ROUGtJYldvTXpVSkZKMCtrWGlkM01EMlp5ZTdr?=
- =?utf-8?B?OHJwSCtXNmtlMjRyTmJabUZqbW1BRFllbmlXcStGR2RsQ0pLdldMeis2WXFt?=
- =?utf-8?B?R2NCcFlHbXEya0M2ajRxVGVPdCsyMEpsNVNURzA1aVJRMG5GY2Y4Y3pSNGVz?=
- =?utf-8?B?Yzd3ZkVMbFQxRFd0UGh5QmFuS2luQW5ET1FMejBBSE9TcFNBOStremdUVkpo?=
- =?utf-8?Q?QP88JevMr5SgnE9Q=3D?=
-X-Exchange-RoutingPolicyChecked: Id0TuQvS//TrHF4Dipg8mWMmxFvpcAaBOGEJG4l5HxLR8/xXSGAN9Mty+VAyTqGKIvRGOsPtF9olSaI9kZBK80acs8Kp5YyAV7nHj610ceqtqTDBeKMMTkvu3g8HMQOJsKpSUF2yIXNYFWgsxnGcBIr5UuDKJQ0mOYJXjTKowCu3XRUzuZb5nAKuIlTTT8HXkWyhj3b2lMXstnnWt0TShjn8OP/hBrilx5KVCHaIyR52J9M7jgDRzTM3pbGcr3veeUdMe77WCIl2Pc0Zm4gDvpqsNslyO0wRQg+vC/SAcxvGL4zBfY/It6rTJaLDlMpqMvBBBNDAHu7H+sxPtfiJfA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0d2cbca0-25fe-4706-bf51-08de9b6be4e7
-X-MS-Exchange-CrossTenant-AuthSource: MN6PR11MB8102.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Apr 2026 03:54:43.9943
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Zv6FY2N8Zonx5CPXbT+ZljgclNAQoDVmCPSntqtZyJKJZymPZshnhkU65zfDZjzPD4tyQLhVQj5VpvGybfqRil70vZD0RG49UUZl/mLkW3A=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB8809
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE2MDAzMyBTYWx0ZWRfXyi+SB8lyRlNx
+ wWJ0sOOcVY17ntGI30eMUrVdOGTiGZPowRWxF6pbh/nmk7bluaZEK8AwnZdJBsQCJSjs2IL1uez
+ fq6a9LfWKasRL6p/cKh3t1kyxz/qpdx8izgqyC795Ls/JP5AVI/HPtRHKdR1/Skk56KxIH7I4Cv
+ dNmP+paEte9N4FLrTe6QZvNYfYru3RMXII6x1nb+G3Prhe2lecO5vJ3XrEWdM4tdS5nzGUxCh6M
+ HhKj01Hb7thIYvhTWH+KQsxkfkBKzozDc5CR4oUBxD4JLCSyZ+OEA+RtNPEpU0XhYi1aCqfQRCw
+ 9fdWeOxxT5p6fEFNOsZeUOxQQ44+NbVT0SsplolDIYAkL7JJ1plVAG1s5424DkSIZLVwTo3iwW+
+ 9uejvWxsBhu4P0LHFvh1cbusR66Jx64BhQD8RSmh8KgH4XT7VVHYGLALzd/LZxYjtOXI0sug+T+
+ Yn8ZiVJpC4zNkwDbIeQ==
+X-Proofpoint-GUID: dkIffXavJSnnh24SJBn5p7iPLvREwjZD
+X-Proofpoint-ORIG-GUID: dkIffXavJSnnh24SJBn5p7iPLvREwjZD
+X-Authority-Analysis: v=2.4 cv=F4hnsKhN c=1 sm=1 tr=0 ts=69e05d9f cx=c_pps
+ a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
+ a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
+ a=TtqV-g6YmW1Jfm2GSLaY:22 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=M5GUcnROAAAA:8
+ a=uyHcWPyfkJeEmAZy9ZsA:9 a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-16_01,2026-04-13_04,2025-10-01_01
 
-On 4/15/26 17:16, Vikas Gupta wrote:
-> The backing store type, BNGE_CTX_MRAV, is not applicable in Thor Ultra
-> devices. Remove it from the backing store configuration, as the firmware
+npc_mcam_idx_2_key_type() can fail; ignoring its return value left
+kw_type unchecked in MCAM enable, configure, copy, and read paths.
+Return early on error so we do not program or interpret MCAM state
+with an invalid key type.
 
-I guess the removed code was needed for previous devices, what is the
-impact for them?
+CC: Dan Carpenter <error27@gmail.com>
+Fixes: 6d1e70282f76 ("octeontx2-af: npc: cn20k: Use common APIs")
+Link: https://lore.kernel.org/netdev/adiQJvuKlEhq2ILx@stanley.mountain/
+Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+---
+ .../ethernet/marvell/octeontx2/af/cn20k/npc.c | 20 ++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-> will not populate entities in this backing store type, due to which the
-> driver load fails.
-> 
-> Fixes: 29c5b358f385 ("bng_en: Add backing store support")
-> Signed-off-by: Vikas Gupta <vikas.gupta@broadcom.com>
-> Reviewed-by: Dharmender Garg <dharmender.garg@broadcom.com>
-> ---
->   drivers/net/ethernet/broadcom/bnge/bnge_rmem.c | 16 ----------------
->   1 file changed, 16 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_rmem.c b/drivers/net/ethernet/broadcom/bnge/bnge_rmem.c
-> index 94f15e08a88c..b066ee887a09 100644
-> --- a/drivers/net/ethernet/broadcom/bnge/bnge_rmem.c
-> +++ b/drivers/net/ethernet/broadcom/bnge/bnge_rmem.c
-> @@ -324,7 +324,6 @@ int bnge_alloc_ctx_mem(struct bnge_dev *bd)
->   	u32 l2_qps, qp1_qps, max_qps;
->   	u32 ena, entries_sp, entries;
->   	u32 srqs, max_srqs, min;
-> -	u32 num_mr, num_ah;
->   	u32 extra_srqs = 0;
->   	u32 extra_qps = 0;
->   	u32 fast_qpmd_qps;
-> @@ -390,21 +389,6 @@ int bnge_alloc_ctx_mem(struct bnge_dev *bd)
->   	if (!bnge_is_roce_en(bd))
->   		goto skip_rdma;
->   
-> -	ctxm = &ctx->ctx_arr[BNGE_CTX_MRAV];
-> -	/* 128K extra is needed to accommodate static AH context
-> -	 * allocation by f/w.
-> -	 */
-> -	num_mr = min_t(u32, ctxm->max_entries / 2, 1024 * 256);
-> -	num_ah = min_t(u32, num_mr, 1024 * 128);
-> -	ctxm->split_entry_cnt = BNGE_CTX_MRAV_AV_SPLIT_ENTRY + 1;
-> -	if (!ctxm->mrav_av_entries || ctxm->mrav_av_entries > num_ah)
-> -		ctxm->mrav_av_entries = num_ah;
-> -
-> -	rc = bnge_setup_ctxm_pg_tbls(bd, ctxm, num_mr + num_ah, 2);
-> -	if (rc)
-> -		return rc;
-> -	ena |= FUNC_BACKING_STORE_CFG_REQ_ENABLES_MRAV;
-> -
->   	ctxm = &ctx->ctx_arr[BNGE_CTX_TIM];
->   	rc = bnge_setup_ctxm_pg_tbls(bd, ctxm, l2_qps + qp1_qps + extra_qps, 1);
->   	if (rc)
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
+index 7291fdb89b03..2fcd0ee2b1e1 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
+@@ -808,7 +808,9 @@ npc_cn20k_enable_mcam_entry(struct rvu *rvu, int blkaddr,
+ 	u64 cfg, hw_prio;
+ 	u8 kw_type;
+ 
+-	npc_mcam_idx_2_key_type(rvu, index, &kw_type);
++	if (npc_mcam_idx_2_key_type(rvu, index, &kw_type))
++		return;
++
+ 	if (kw_type == NPC_MCAM_KEY_X2) {
+ 		cfg = rvu_read64(rvu, blkaddr,
+ 				 NPC_AF_CN20K_MCAMEX_BANKX_CFG_EXT(mcam_idx,
+@@ -1052,10 +1054,12 @@ void npc_cn20k_config_mcam_entry(struct rvu *rvu, int blkaddr, int index,
+ 	int kw = 0;
+ 	u8 kw_type;
+ 
++	if (npc_mcam_idx_2_key_type(rvu, index, &kw_type))
++		return;
++
+ 	/* Disable before mcam entry update */
+ 	npc_cn20k_enable_mcam_entry(rvu, blkaddr, index, false);
+ 
+-	npc_mcam_idx_2_key_type(rvu, index, &kw_type);
+ 	/* CAM1 takes the comparison value and
+ 	 * CAM0 specifies match for a bit in key being '0' or '1' or 'dontcare'.
+ 	 * CAM1<n> = 0 & CAM0<n> = 1 => match if key<n> = 0
+@@ -1132,8 +1136,13 @@ void npc_cn20k_copy_mcam_entry(struct rvu *rvu, int blkaddr, u16 src, u16 dest)
+ 
+ 	dbank = npc_get_bank(mcam, dest);
+ 	sbank = npc_get_bank(mcam, src);
+-	npc_mcam_idx_2_key_type(rvu, src, &src_kwtype);
+-	npc_mcam_idx_2_key_type(rvu, dest, &dest_kwtype);
++
++	if (npc_mcam_idx_2_key_type(rvu, src, &src_kwtype))
++		return;
++
++	if (npc_mcam_idx_2_key_type(rvu, dest, &dest_kwtype))
++		return;
++
+ 	if (src_kwtype != dest_kwtype)
+ 		return;
+ 
+@@ -1188,7 +1197,8 @@ void npc_cn20k_read_mcam_entry(struct rvu *rvu, int blkaddr, u16 index,
+ 	int kw = 0, bank;
+ 	u8 kw_type;
+ 
+-	npc_mcam_idx_2_key_type(rvu, index, &kw_type);
++	if (npc_mcam_idx_2_key_type(rvu, index, &kw_type))
++		return;
+ 
+ 	bank = npc_get_bank(mcam, index);
+ 	index &= (mcam->banksize - 1);
+-- 
+2.43.0
 
