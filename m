@@ -1,177 +1,189 @@
-Received: from mx0a-00190b01.pphosted.com (mx0a-00190b01.pphosted.com [67.231.149.131])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B5C637267E;
-	Thu, 16 Apr 2026 07:55:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.149.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB7CF353EDF
+	for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 08:01:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776326157; cv=none; b=f1jgwT8eDH+6Cy3HkRkMa26GaYo27kFZKnAeHl3daI7Wszv+UrHj0uPDI8uPalJ1wqib0HHENGU+LOd76aKoBL5hyN3mzLGGrNDODSOK4o0LegKAur8K8+xk+2Qvt68YytBzi81P4cfZyoY+FVIpJqGVa2KXbv9koPtOpRLcYeM=
+	t=1776326500; cv=none; b=fwavVfPDypT7YX4E3QHxVfqVuzCTEZJFF2lbBCFNhZkR57SM75SItGaYcPBR7qppViJHdR/unwHRS60upYXEu33FDTEx8GwbW7OEblvsMnw8Q4PYP/u9ZTJzqNpt+qCz1BvNJDjIhsXut9GaRjGLPH9pJk90ZkTiIxIui3miFTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776326157; c=relaxed/simple;
-	bh=wj0B9XnoeiSjT9OUedGk3dbAhADULSpsOmZbdeVYZsM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=CMkDdqpKorYv5ggeUhlG+LMNoXDkL5QtL4Nllgiz6J9ar3JHmIjfk4217fWmmyh62lRGBOB1704NlAG66qWYj1LjVpXBwrXgnw3S+//tbWMLKKQJ+kZCv98QhaLFj6F+ZxRzcoAV2RiTuC6oynvrzC0pcWhNvVRXfa3UggsuNZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=akamai.com; spf=fail smtp.mailfrom=akamai.com; dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b=dMp9ET5t; arc=none smtp.client-ip=67.231.149.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=akamai.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=akamai.com
+	s=arc-20240116; t=1776326500; c=relaxed/simple;
+	bh=5yvnpLTxHCKJVtz8CQefSzlZnNjWR14hwtHDqTEvQUg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=b/wZ7e48uEEoa84GUc1ghNtGvXNhgE3ez3LE92e2BoFSNwnyFj8bFRHMRtJuLWq9rl9jy8n4qIsDhBfanTl+lCmG94HXT9U/qLqsF43TlFohdHmQ285cESIBGvFeR7PZG2SeoWGfLB5IhfUb/w3YGhDAELW3pyi4PcaMxvpKsgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Q2E4FVla; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=DZN6sfC1; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b="dMp9ET5t"
-Received: from pps.filterd (m0122333.ppops.net [127.0.0.1])
-	by mx0a-00190b01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63G68NSg3779255;
-	Thu, 16 Apr 2026 08:55:29 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=akamai.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=jan2016.eng; bh=Of40J5Wnw
-	9aBuZ0K80eVPgv5rPioXRjQOLCpWmNfeok=; b=dMp9ET5tzwM7IMV6oM+2SQJdC
-	FxNE201EgB9irvYMsySjhtisR+r7qvDWRK/FwgqJRGODntWVBBjs1gEMfbzj8hJV
-	5zLJm1hJu1qZdtNfaXbVdlTY3zLGdPWdRGkZrIzxBSmei1f8X5SCMJ6rjbG9NQkE
-	QiZvcB9+H6V/0xuVpgtCQ21ONmPvlsD/M6+WVMV+EPc00dLAMT4brv/OzYrYWPu8
-	fpkpPrKUxZNPo3F1ep7UHksoJjiwSavElD7ZVg1MpVhkbqMabbVQTXtBHuSS0feG
-	6xnk7Ldivojv+BsG64kICqpcLHOMMi0ryYfs+e7VUklEk7wsYDIy5VwzUXPkg==
-Received: from prod-mail-ppoint6 (prod-mail-ppoint6.akamai.com [184.51.33.61])
-	by mx0a-00190b01.pphosted.com (PPS) with ESMTPS id 4dfegxnmtm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 Apr 2026 08:55:29 +0100 (BST)
-Received: from pps.filterd (prod-mail-ppoint6.akamai.com [127.0.0.1])
-	by prod-mail-ppoint6.akamai.com (8.18.1.7/8.18.1.7) with ESMTP id 63G7QZWZ006738;
-	Thu, 16 Apr 2026 03:55:27 -0400
-Received: from prod-mail-relay02.akamai.com ([172.27.118.35])
-	by prod-mail-ppoint6.akamai.com (PPS) with ESMTP id 4dj2yvx0tq-1;
-	Thu, 16 Apr 2026 03:55:27 -0400 (EDT)
-Received: from muc-lhvdhd.munich.corp.akamai.com (muc-lhvdhd.munich.corp.akamai.com [172.29.0.147])
-	by prod-mail-relay02.akamai.com (Postfix) with ESMTP id A46D68D;
-	Thu, 16 Apr 2026 07:55:25 +0000 (UTC)
-From: Nick Hudson <nhudson@akamai.com>
-To: bpf@vger.kernel.org, netdev@vger.kernel.org,
-        Willem de Bruijn <willemb@google.com>,
-        Martin KaFai Lau <martin.lau@linux.dev>
-Cc: Nick Hudson <nhudson@akamai.com>, Max Tottenham <mtottenh@akamai.com>,
-        Anna Glasgall <aglasgal@akamai.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Eduard Zingerman <eddyz87@gmail.com>,
-        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org
-Subject: [PATCH bpf-next v4 5/6] bpf: clear decap tunnel GSO state in skb_adjust_room
-Date: Thu, 16 Apr 2026 08:55:13 +0100
-Message-Id: <20260416075514.927101-6-nhudson@akamai.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260416075514.927101-1-nhudson@akamai.com>
-References: <20260416075514.927101-1-nhudson@akamai.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Q2E4FVla";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="DZN6sfC1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1776326497;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9O/Vxwir5fKfF5VwzqgOOmsR7+bDzw+TUfOwKU+jYcM=;
+	b=Q2E4FVla+MR3ubGlYQec72KIKlGriJ6zspltrsW4JPO7MYyIb/2jsMVXNvsu1nC4f2crKR
+	eTk5+lhiHHRzf1oe4g0WOjlOJoRHGxs2T+3YurImjYlpuPOUudIW4camogcOZrdUVT2mcu
+	4uM15454k4p6DV6Gq7NYYpihfC2xVQU=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-617-p-KSgL7XOISRTTC9-rXqXQ-1; Thu, 16 Apr 2026 04:01:35 -0400
+X-MC-Unique: p-KSgL7XOISRTTC9-rXqXQ-1
+X-Mimecast-MFC-AGG-ID: p-KSgL7XOISRTTC9-rXqXQ_1776326495
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4839fc4cef6so3244515e9.0
+        for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 01:01:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1776326494; x=1776931294; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9O/Vxwir5fKfF5VwzqgOOmsR7+bDzw+TUfOwKU+jYcM=;
+        b=DZN6sfC1QKa2tkLfVht4kzy3YPBQdzlOLs2F13ErO3KFIIqZQhBsrA4s6uR0/FCip+
+         6Dz1XPEI+9eWpXDZ63K1GvTPhrcS0puK1NYguiSMrfqQQNAY/1HxQW9ldBSSjsdBpvB0
+         f1v9F4OxwZ92BkgboV+YAVPjEGKAr94VYgsZZaCFeJTjCvGYCHbiWTZv61FhpKrFdLuY
+         dzqk8UXd3Ku8N7bNozJosc++w558CzZTzPcofxN2x7yqDd3MsPC2DwWlq3rfwAtRMztX
+         cgkphJsIQ7ESBRGqyZUTeT0PTsFBbeUzMBc8qe+kSFGT8BMgAfp92T2sGcUh3HNoFoED
+         0S5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776326494; x=1776931294;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9O/Vxwir5fKfF5VwzqgOOmsR7+bDzw+TUfOwKU+jYcM=;
+        b=AWi6ZdA0djrSm6bG27lYWEWon0yLlaghkXNxJm0ecPSTaSzg5UXx97q+fRnCSNOWPz
+         tOfEw25fCC8BZ7/+g+CDK9FBXEnBsQXI/7ag1QbWEq9PMLsfmVTaENgOuLwwiFmzdTm9
+         0vZcoq/+liNJtL+kcXGnd/b9+QQN+s4jgoETd0UreQD+LiQSJ+vKqSRAOXJv/8LEvWjH
+         HK1hYYkD5qvzJqG5m6u7RSmSmN51VmXQ6lPcvJQP+iCqW+L5OPmqrVNKHG7J0gCQw4LQ
+         dl5WuuWL3/xGsVwzgjKotxrKRTC2a7YzE7d2H7uqTDcUGjLoVq1x1guKOfnjlV/Sxzx0
+         q3dw==
+X-Forwarded-Encrypted: i=1; AFNElJ+F8D+FP5Yw4QDiHTuHCF71LAzfmLzvQSExkKUL7zCCxKmbT1cwO+9q5olKEO1ZgaVIyEpsOEk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw8CfmT0AOHSf9iWKVOjZueAN/L7buFWnOv7u/jfmX+CBzcvD9r
+	HrZORwmV54CACNtz1DOl1xbFN3WItp/NX+DYOWx+Qr/BFsvdOemBkgOjKzVXxE1b0N820WXvlc4
+	Ud6mBjjQ6UVbMP90q1Ae3dXMabHDSx7rNsxJ3Gpl5/1tZxZJXI9YgR70Yig==
+X-Gm-Gg: AeBDietEleECnw2p/trc7VY7DR2diyKx+geyI2Pt1seCCrvz2bFZjo7Dq3KVaw1ZePs
+	Ru1UOky+fKn2L0Cq5lO21xfEZ9dkkagBuWk+gxJ12Eevg8ilStTzN6m3nV5yyEWCf4/UqAc+pF7
+	N3sWeqZlganMd9KxkgAWFGk4OMiPsWin6ssv/Dd/xkOp8X7v+VYhO81eEpDrWnudzkj/lB/ov/P
+	mFSzeAuImghDrufY+D1Zl1GemHcDDU4RMhrPF+gcSVxJ7w2YVtQezkhzxBiGxSBAsGWbt2ZsOox
+	XPYSez4aBO3lMCp+dZd3aYF0NC7rlDFcQQTq/rNQBIEMZvqg0aFJ71skr+Yqss+9MRh6Zw60RB1
+	uioQcCLKciJR18/z/zY6/UZj3Q8IDo6AivpH7qXUrVln6b3G032D9EMd+K91fD1jMhqs=
+X-Received: by 2002:a05:600c:a40e:b0:46e:59bd:f7e2 with SMTP id 5b1f17b1804b1-488f480c2c5mr28631285e9.11.1776326494310;
+        Thu, 16 Apr 2026 01:01:34 -0700 (PDT)
+X-Received: by 2002:a05:600c:a40e:b0:46e:59bd:f7e2 with SMTP id 5b1f17b1804b1-488f480c2c5mr28630685e9.11.1776326493617;
+        Thu, 16 Apr 2026 01:01:33 -0700 (PDT)
+Received: from [192.168.88.32] ([150.228.93.122])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488f5813970sm32612855e9.1.2026.04.16.01.01.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 16 Apr 2026 01:01:33 -0700 (PDT)
+Message-ID: <4bce5b04-1871-4e2a-8030-11d674b6b299@redhat.com>
+Date: Thu, 16 Apr 2026 10:01:31 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v12 net-next 00/11] nbl driver for Nebulamatrix NICs
+To: "illusion.wang" <illusion.wang@nebula-matrix.com>, netdev@vger.kernel.org
+Cc: open list <linux-kernel@vger.kernel.org>
+References: <20260415033608.2438-1-illusion.wang@nebula-matrix.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260415033608.2438-1-illusion.wang@nebula-matrix.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-16_02,2026-04-13_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
- mlxlogscore=999 adultscore=0 bulkscore=0 suspectscore=0 phishscore=0
- lowpriorityscore=0 malwarescore=0 spamscore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.19.0-2604070000 definitions=main-2604160069
-X-Authority-Analysis: v=2.4 cv=fKsJG5ae c=1 sm=1 tr=0 ts=69e095f1 cx=c_pps
- a=WPLAOKU3JHlOa4eSsQmUFQ==:117 a=WPLAOKU3JHlOa4eSsQmUFQ==:17
- a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=Ifg-1AOnLHOf1gn6spyb:22
- a=5uIk5skAYop0meUMGpPt:22 a=X7Ea-ya5AAAA:8 a=1wbUKRMHqSFGxWi5NAsA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE2MDA3MyBTYWx0ZWRfX98veyOSdwgzJ
- lenq9o1ehXTiReRM72WyH0rb2uItgmRgVgM4gO9munbDEjhyF3kUFt3heLwI1u4BEgi7XdF2euU
- RQ9aEAA5BUmxMacXEDQOWUpdrpIhwy3imFwpXkm0ZsID0cZLNch1WJ60+MyhF0o34hTWPCUUbvV
- hiAjTDeVfbDCfxG7TM/XrgqM4N3xCVvEVSHYU/RcNFfm6ydgLZJp9CASVihpLvijcadl066XL9D
- oyyViQS6t5hRW5KFk2aHVHXnSp5QEHNKIpzMY4GdEAfagC3uMuFxx5Olr4vDaHCBeUNvwZV9FeU
- kxwJSM+ceO9RBN9ZIZdCKFgWQ2u3oq+fipw6B5Ve3vLvTm2xYSWQLV9vhG8KdyefluFKXqSzkNe
- U6n4BRYN2sH1WKIT/ZfPdKpA79mbnG+dfAYLh6OSnRPwZ9L3SaqxZJSyJYhnZZcLnKbs9tzemS7
- KC+qIOObdoxi7jMT4Gw==
-X-Proofpoint-GUID: TcZDaEQA-wgYGMQX3wOHrxGvP0UjW0-N
-X-Proofpoint-ORIG-GUID: TcZDaEQA-wgYGMQX3wOHrxGvP0UjW0-N
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-16_02,2026-04-13_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
- phishscore=0 clxscore=1015 suspectscore=0 malwarescore=0 impostorscore=0
- bulkscore=0 lowpriorityscore=0 spamscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604160073
 
-On shrink in bpf_skb_adjust_room(), clear tunnel-specific GSO flags
-according to the decapsulation flags:
+On 4/15/26 10:29 AM, illusion.wang wrote:
+> This patch series represents the first phase. We plan to integrate it in
+> two phases: the first phase covers mailbox and chip configuration,
+> while the second phase involves net dev configuration.
+> Together, they will provide basic PF-based Ethernet port transmission and
+> reception capabilities.
+> 
+> After that, we will consider other features, such as ethtool support,
+> flow management, adminq messaging, VF support, debugfs support, etc.
+> 
+> changes v11->v12
+> Link to v10:https://lore.kernel.org/netdev/20260408093739.56001-1-illusion.wang@nebula-matrix.com/
+> AI review issues
+> changes v10->v11
+> Link to v10:https://lore.kernel.org/netdev/20260401022318.28550-1-illusion.wang@nebula-matrix.com/
+> 1.Issues found by Mohsin
+> 2.AI review issues
+> changes v9->v10
+> Link to v9:https://lore.kernel.org/netdev/20260325040048.2313-1-illusion.wang@nebula-matrix.com/
+> 1.Issues found by Jakub
+> 2.AI review issue
+> changes v8->v9
+> Link to v8:https://lore.kernel.org/netdev/20260317034533.5600-1-illusion.wang@nebula-matrix.com/
+> 1.Issues found by Jakub
+> 2.AI review issue
+> Changes v7→v8
+> Link to v7:https://lore.kernel.org/netdev/20260310120959.22015-1-illusion.wang@nebula-matrix.com/
+> 1.Issues found by Paolo
+> Changes v6->v7
+> Link to v6:https://lore.kernel.org/netdev/20260306033451.5196-1-illusion.wang@nebula-matrix.com/
+> 1.Issue found by Jakub
+> 2.AI review issue
+> Changes v5->v6
+> Link to V5:https://lore.kernel.org/netdev/20260226073840.3222-1-illusion.wang@nebula-matrix.com/
+> 1.put all standard linux includes files the .c file which needs it & others
+> --Andrew
+> 2.AI review issue
+> Changes v4->v5
+> Link to V4:https://lore.kernel.org/netdev/20260206021608.85381-1-illusion.wang@nebula-matrix.com/
+> 1.change nbl_core to nbl & change ** pointers to *pointers & others
+> --Andrew
+> 2.AI review issue
+> Changes v3->v4
+> Link to v3: https://lore.kernel.org/netdev/20260123011804.31263-1-illusion.wang@nebula-matrix.com
+> 1.cut down to part of a mini driver(mailbox and chip init)
+> --Jakub Kicinski Simon Horman(some sort of staged approached)
+> 2.modify issues found by ai.
+> 3. Reverse Christmas tree/nbl_err/devm_kfree/remove some macros/
+> void type to real type/others
+> --Andrew Lunn
+> 4.change deprecated pci_enable_msix_range to pci_alloc_irq_vectors
+> 5.delete service layer
+> 6.the style of kconfig---Randy Dunlap
+> 7.add to Documentation/networking/device_drivers/ethernet/index.rst
+> --Simon Horman
+> Changes v2 →v3
+> Link to v2: https://lore.kernel.org/netdev/20260109100146.63569-1-illusion.wang@nebula-matrix.com/
+> 1.cut down to a mini driver:
+>     delete vf support
+>     use promisc mode to cut down flow management
+>     drop patch15 in v2
+>     delete adminq msg
+>     delete abnormal handling
+>     delete some unimportant interfaces
+> 2.modify issues found by ai review
+> Changes v1->v2
+> Link to v1: https://lore.kernel.org/netdev/20251223035113.31122-1-illusion.wang@nebula-matrix.com/
+> 1.Format Issues and Compilation Issues
+> - Paolo Abeni
+> 2.add sysfs patch and drop coexisting patch
+> - Andrew Lunn
+> 3.delete some unimportant ndo operations
+> 4.add machine generated headers patch
+> 5.Modify the issues found in patch1-2 and apply the same fixes to other
+> patches
+> 6.modify issues found by nipa
 
-- BPF_F_ADJ_ROOM_DECAP_L4_UDP clears SKB_GSO_UDP_TUNNEL{,_CSUM}
-- BPF_F_ADJ_ROOM_DECAP_L4_GRE clears SKB_GSO_GRE{,_CSUM}
-- BPF_F_ADJ_ROOM_DECAP_IPXIP4 clears SKB_GSO_IPXIP4
-- BPF_F_ADJ_ROOM_DECAP_IPXIP6 clears SKB_GSO_IPXIP6
+## Form letter - net-next-closed
 
-When all tunnel-related GSO bits are cleared, also clear
-skb->encapsulation.
+We have already submitted our pull request with net-next material for
+v7.1, and therefore net-next is closed for new drivers, features, code
+refactoring and optimizations. We are currently accepting bug fixes only.
 
-Handle the ESP inside a UDP tunnel case where encapsulation should remain
-set.
+Please repost when net-next reopens after Apr 26th.
 
-If UDP decap is performed, clear encap_hdr_csum and remcsum_offload.
+RFC patches sent for review only are obviously welcome at any time.
 
-Co-developed-by: Max Tottenham <mtottenh@akamai.com>
-Signed-off-by: Max Tottenham <mtottenh@akamai.com>
-Co-developed-by: Anna Glasgall <aglasgal@akamai.com>
-Signed-off-by: Anna Glasgall <aglasgal@akamai.com>
-Signed-off-by: Nick Hudson <nhudson@akamai.com>
----
- net/core/filter.c | 38 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 38 insertions(+)
-
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 7f8d43420afb..e113ae2f3f14 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -3667,6 +3667,44 @@ static int bpf_skb_net_shrink(struct sk_buff *skb, u32 off, u32 len_diff,
- 		if (!(flags & BPF_F_ADJ_ROOM_FIXED_GSO))
- 			skb_increase_gso_size(shinfo, len_diff);
- 
-+		/* Selective GSO flag clearing based on decap type.
-+		 * Only clear the flags for the tunnel layer being removed.
-+		 */
-+		if ((flags & BPF_F_ADJ_ROOM_DECAP_L4_UDP) &&
-+		    (shinfo->gso_type & (SKB_GSO_UDP_TUNNEL |
-+					 SKB_GSO_UDP_TUNNEL_CSUM)))
-+			shinfo->gso_type &= ~(SKB_GSO_UDP_TUNNEL |
-+					      SKB_GSO_UDP_TUNNEL_CSUM);
-+		if ((flags & BPF_F_ADJ_ROOM_DECAP_L4_GRE) &&
-+		    (shinfo->gso_type & (SKB_GSO_GRE | SKB_GSO_GRE_CSUM)))
-+			shinfo->gso_type &= ~(SKB_GSO_GRE |
-+					      SKB_GSO_GRE_CSUM);
-+		if ((flags & BPF_F_ADJ_ROOM_DECAP_IPXIP4) &&
-+		    (shinfo->gso_type & SKB_GSO_IPXIP4))
-+			shinfo->gso_type &= ~SKB_GSO_IPXIP4;
-+		if ((flags & BPF_F_ADJ_ROOM_DECAP_IPXIP6) &&
-+		    (shinfo->gso_type & SKB_GSO_IPXIP6))
-+			shinfo->gso_type &= ~SKB_GSO_IPXIP6;
-+
-+		/* Clear encapsulation flag only when no tunnel GSO flags remain */
-+		if (flags & (BPF_F_ADJ_ROOM_DECAP_L4_MASK |
-+			     BPF_F_ADJ_ROOM_DECAP_IPXIP_MASK)) {
-+			if (!(shinfo->gso_type & (SKB_GSO_UDP_TUNNEL |
-+						  SKB_GSO_UDP_TUNNEL_CSUM |
-+						  SKB_GSO_GRE |
-+						  SKB_GSO_GRE_CSUM |
-+						  SKB_GSO_IPXIP4 |
-+						  SKB_GSO_IPXIP6 |
-+						  SKB_GSO_ESP)))
-+				if (skb->encapsulation)
-+					skb->encapsulation = 0;
-+
-+			if (flags & BPF_F_ADJ_ROOM_DECAP_L4_UDP) {
-+				skb->encap_hdr_csum = 0;
-+				skb->remcsum_offload = 0;
-+			}
-+		}
-+
- 		/* Header must be checked, and gso_segs recomputed. */
- 		shinfo->gso_type |= SKB_GSO_DODGY;
- 		shinfo->gso_segs = 0;
--- 
-2.34.1
+See:
+https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#development-cycle
 
