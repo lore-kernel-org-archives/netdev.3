@@ -1,280 +1,139 @@
-Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f201.google.com (mail-qt1-f201.google.com [209.85.160.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90AB53E274B
-	for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 19:56:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEFAB370D7D
+	for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 20:03:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776369409; cv=none; b=D8hmuj3/VQRnQphFB4R5Sx895rbGssQxfn3boM2aOoVOm8hC42Ti7IC1PSz6HEQzaL6Z1apYJJvZEuhkOPBOx1WcRmxNqGqvmwS+Uf14/0FqCMi2pJbA+Be/EkTA5w/8duq0J/3GQRUcWwXKcYBpgwS0l2mNdcNYoO3nT7a14nU=
+	t=1776369810; cv=none; b=rqRka1VcwZk8nr06AgmNmQ1fdJ5JK4veIbxZT1Czt95G3wUvU8H/1FqdXnLtSTSpDePshHsbHavtg4RsT4MHutvrVVh/btQnza67gQS9DBszJAjVPYBrUWeiixc55vpjbM0IPSnUZ4tkKm57t7yaS6W1pwPnlSM/PrTxWOjHsic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776369409; c=relaxed/simple;
-	bh=CT/lVEJqV14A+kt0RProyLPsC6QpyGP6J17r+ozUCAU=;
-	h=From:To:cc:Subject:In-reply-to:References:MIME-Version:
-	 Content-Type:Date:Message-ID; b=MpCDA13z72/hkL09dgYifP3C5CfznDG8Xz9v5uZQZLrFDN4ITnGyDgvMsWKormJDN6yeQSu69dTWf25vz0FxPxB+XralnXrIZTVVckC8OtGpVtWvhrxdSw8vhwKgkAwjLMT7AlZf2BpkWbMGpcSMbFLGNmz4FyMkddyt6yHbJXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jvosburgh.net; spf=pass smtp.mailfrom=jvosburgh.net; dkim=pass (2048-bit key) header.d=jvosburgh.net header.i=@jvosburgh.net header.b=LsUdcEG1; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=DzzWH2rJ; arc=none smtp.client-ip=103.168.172.145
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jvosburgh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jvosburgh.net
+	s=arc-20240116; t=1776369810; c=relaxed/simple;
+	bh=OtMKJsjRaeBmhdy8H3KMRkLIGb5stJx60a6ehmDjUPk=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=kx2gVBdpIuwyj5ThdScr91PPF9OmDI0syFquzphsTAqrvwv5vnpUfpi7sy0LIGX9xeTCP0rbKV1/mTvjwS8Fr5DhyNAaYA9TcJrK2mwqQFT0yL1F+Pvdq7aqW1rZq/9Y/7GH/T70pyRGBnX9zrcRYJaESCoZ7igByXFTwMJ4HDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Nexnkos6; arc=none smtp.client-ip=209.85.160.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jvosburgh.net header.i=@jvosburgh.net header.b="LsUdcEG1";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="DzzWH2rJ"
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfout.phl.internal (Postfix) with ESMTP id 52797EC0143;
-	Thu, 16 Apr 2026 15:56:39 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Thu, 16 Apr 2026 15:56:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jvosburgh.net;
-	 h=cc:cc:content-transfer-encoding:content-type:content-type
-	:date:date:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=fm3;
-	 t=1776369399; x=1776455799; bh=VDtMnB9tptIxx4RbJsZIoN6QMak4Srdd
-	SgjDd7eQ9Cw=; b=LsUdcEG13AEfXSh0yuEmIC8qsE75FnZEOOHlf5Ln9rJfJyPy
-	fEEa8wO0HbocEg5rCmCbig8LWJo5B4BueNx7Dr7TGte58ylJuE4q/1EK9f6Erq8O
-	PlMKMpVeXzgQjdXomecTewZuyghHH35eSYIrQI3WJK/97w67Mh8C848uN4w3fE3Y
-	GBdNLxGZCwy4JxgH9GfDLeOsxai9oXj+GUTLg0u289b0bZgMGFhevknKsk+C8ukG
-	BeAHwPlPM4L/fUoDJwWOSRIc0wuJABX5rXq11APV1zOjYVzcNsaG3wUimAaoEzSW
-	mM6HV75tNy1vjOsjOSRkkE7wNG2fpoIOje2HVA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1776369399; x=
-	1776455799; bh=VDtMnB9tptIxx4RbJsZIoN6QMak4SrddSgjDd7eQ9Cw=; b=D
-	zzWH2rJlm56uUqT1nJadWC0S9uS20Apd7yFSQmXvPuhGEKSfQHdckzzKH51DwPrY
-	c6MC+IyQXX/F4hVxHk5p2Kkdvo2NaT2ajXvciimuWuwRaHOacA0mzn9Alm8gyc5T
-	fAOqJYQR1QZtWV/RChLIRE47YqhJVpZouh2iGpIGteEScldMpI4otLdyAIWowYU+
-	WJBhv5k8TIBE+ej/LOKKZgvztZmb/1hXSYh6NOooRkbrKroeuz8qbvV4BGKksqjP
-	Nh5fRIF+xI1zTBDfTRwGbu/d0dr7PFzrGzUFhe9hd6LF3LNVDFKO60Mts90WfNmg
-	Ql+5aQC8yiMvpkjxiypfw==
-X-ME-Sender: <xms:9j7haUSwl2GQI9Ka7pZJrU6gkTnZ4wn3muWlfnDAS3Xjj_R7FWzkFA>
-    <xme:9j7haeULb8T61oZwVDb6ldKpwlx3tO7mvaWCZBG0zDvdxrqK7IeZE7AWJ1LNgcoss
-    _jDqYt-FDnGEhpmrGj7rgJS6fcpIo-tuD6mHbnrHFNzpwgKOEC5ow>
-X-ME-Received: <xmr:9j7haWQHumiQ3pxUrjMPUUfZYqQ11zDlvyVdHFGobjT8SpeMKyrdaBs0wFINCOEPRaSKxw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdegjeeltdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefhvfevufgjfhfogggtgfffkfesthhqredtredtjeenucfhrhhomheplfgrhicuggho
-    shgsuhhrghhhuceojhhvsehjvhhoshgsuhhrghhhrdhnvghtqeenucggtffrrghtthgvrh
-    hnpeetlefgkefhkeduteekffeghefhgefgkedvvddviedtgfefveeuteetgeetjefgveen
-    ucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenuc
-    frrghrrghmpehmrghilhhfrhhomhepjhhvsehjvhhoshgsuhhrghhhrdhnvghtpdhnsggp
-    rhgtphhtthhopedutddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheplhhouhhish
-    drshgtrghlsggvrhhtseeifihinhgurdgtohhmpdhrtghpthhtohepvgguuhhmrgiivght
-    sehgohhoghhlvgdrtghomhdprhgtphhtthhopehmrghhvghshhgssehgohhoghhlvgdrtg
-    homhdprhgtphhtthhopegrnhguhiesghhrvgihhhhouhhsvgdrnhgvthdprhgtphhtthho
-    pehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghnughrvgifodhnvghtug
-    gvvheslhhunhhnrdgthhdprhgtphhtthhopehfsghlsehrvgguhhgrthdrtghomhdprhgt
-    phhtthhopehprggsvghnihesrhgvughhrghtrdgtohhmpdhrtghpthhtohepnhgvthguvg
-    hvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:9j7hae3-fXL3ZgjwQ_QWD5aNSJ6chz3HC9UR1aDcKdK11yqqe6MdGQ>
-    <xmx:9j7haedQSNfrO3kirliXfbz-gg4J8D-3niXeuy7aI7uwILtdOjtaQw>
-    <xmx:9j7haeNzcGL2Due9o4C7ep3dRL9-4Y7tY3_AZQi8-yJ21X2EgJMd1w>
-    <xmx:9j7haaWyAzUQNCWBL1B9Y5GBU8RkED53KoSUbk6TDNPfxCh-B2CFwA>
-    <xmx:9z7haQaFkWsw_5GGrf1GqYYdb1iMkWDTN5AL9oW6kaPwB6IwzLq9pXFo>
-Feedback-ID: i53714940:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 16 Apr 2026 15:56:38 -0400 (EDT)
-Received: by famine.localdomain (Postfix, from userid 1000)
-	id 45B4F9FB64; Thu, 16 Apr 2026 12:56:37 -0700 (PDT)
-Received: from famine (localhost [127.0.0.1])
-	by famine.localdomain (Postfix) with ESMTP id 4353B9FB3D;
-	Thu, 16 Apr 2026 12:56:37 -0700 (PDT)
-From: Jay Vosburgh <jv@jvosburgh.net>
-To: Louis Scalbert <louis.scalbert@6wind.com>
-cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, edumazet@google.com,
-    kuba@kernel.org, pabeni@redhat.com, fbl@redhat.com,
-    andy@greyhouse.net, shemminger@vyatta.com, maheshb@google.com
-Subject: Re: [PATCH net v3 2/5] bonding: 3ad: fix carrier when no valid slaves
-In-reply-to: <CAJ5u_OdK8kw5+7ZV0WwQHZOF5w+8rHXwgvsB5CDm5Ha0oSd0cA@mail.gmail.com>
-References: <20260408152353.276204-1-louis.scalbert@6wind.com> <20260408152353.276204-3-louis.scalbert@6wind.com> <707939.1776099707@famine> <CAJ5u_OdK8kw5+7ZV0WwQHZOF5w+8rHXwgvsB5CDm5Ha0oSd0cA@mail.gmail.com>
-Comments: In-reply-to Louis Scalbert <louis.scalbert@6wind.com>
-   message dated "Wed, 15 Apr 2026 19:53:50 +0200."
-X-Mailer: MH-E 8.6+git; nmh 1.8+dev; Emacs 29.3
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Nexnkos6"
+Received: by mail-qt1-f201.google.com with SMTP id d75a77b69052e-50d5d1c2289so158450481cf.2
+        for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 13:03:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1776369803; x=1776974603; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=9cV7hJFwn48CKJv93KYCZeqcPsftB9nfuekaA47HvrM=;
+        b=Nexnkos6wQmo82tFzIUeRQR1ScowHETHgxVfIuPmCnjb7OmuoP9rCAwXQyZFUdk1Lz
+         zppfzRIR3L9e7JnKQ59eh1gQ/wVy+mRf+60MmrNCgAi2/hYQYwoBULfs0qb4JnkC74Jn
+         iFQqOT5G5NwKse6doRdG+DAh10//JmnJBWhfbns0FVfQaAk9XftJVvjxaL4tZ0zoU1KA
+         CoUChbU/V7YQM3g596ACsKu2UrjWN0pIbg30KJv8WGAZOUwTEf8k/s+ZaRdbHpHMtwCT
+         VCkCIcBMV6qjiUIcbEcl9kNS4slSAd6TKq51tyi3dEEDZGBXeuJPnznYRy2NvZnBEZZX
+         pz+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776369803; x=1776974603;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9cV7hJFwn48CKJv93KYCZeqcPsftB9nfuekaA47HvrM=;
+        b=bqYqXy08SCahF9uKRSv+mcz+r7zsci4tLubC8Gjtd+qmtX1XJLANi4n5bZd77ABkM+
+         YXcrXstrAKGymVDTvFy8GNvLLHkUeguvg3F+f4hsrTxLJwPiC3GRkFKrnr3mGErz3lK0
+         zWHPT943oGaGIQcA21/CW8LNV6L1bwr7W84fgjuZJ10v5m6cwZ9Q/2sv2HERloSpcVBu
+         JoVKNmeYwORTiMiTlglkgQrT9Jb1NO2SFBkQziBc6Uggm153/QT0MRc3rpXRxVm9QDVZ
+         QThSIih+ZfiVz/cSG6wFtrS8enranxXgWvfKRND4clq7uIBtfIS6hGuwrVxPYtrl+1IY
+         2zNA==
+X-Forwarded-Encrypted: i=1; AFNElJ+cH/v9MtsHrgUhMFH5uoYKUPXkE0VTaZX/AwEakOjZ/6SYAtuSOTtPcmNBQDfvNMUXAU24QMI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyGNR/zhNOMi6F5J2VojBid7YogDXbqImkblzE7bnGb+NhTEdFs
+	ra7X8F74w0t+sElka8Ya9rHkYha54xwgAfh5/U/7Ne6PW1CMneeSw8axHbl4TvCom77GgA+gPwx
+	qFzKXCz5acNXKyw==
+X-Received: from qthd6.prod.google.com ([2002:ac8:606:0:b0:50d:b85d:f307])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:ac8:7d8a:0:b0:50b:4e60:93b7 with SMTP id d75a77b69052e-50e34a3018cmr8274201cf.43.1776369802583;
+ Thu, 16 Apr 2026 13:03:22 -0700 (PDT)
+Date: Thu, 16 Apr 2026 20:03:06 +0000
+In-Reply-To: <20260416200319.3608680-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 16 Apr 2026 12:56:37 -0700
-Message-ID: <874193.1776369397@famine>
+Mime-Version: 1.0
+References: <20260416200319.3608680-1-edumazet@google.com>
+X-Mailer: git-send-email 2.54.0.rc1.513.gad8abe7a5a-goog
+Message-ID: <20260416200319.3608680-2-edumazet@google.com>
+Subject: [PATCH net 01/14] tcp: annotate data-races in tcp_get_info_chrono_stats()
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Louis Scalbert <louis.scalbert@6wind.com> wrote:
+tcp_get_timestamping_opt_stats() does not own the socket lock,
+this is intentional.
 
->Hello Jay,
->
->Thank you very much for this detailed review.
->
->Le lun. 13 avr. 2026 =C3=A0 19:01, Jay Vosburgh <jv@jvosburgh.net> a =C3=
-=A9crit :
->>
->> Louis Scalbert <louis.scalbert@6wind.com> wrote:
->>
->> >Apply the "lacp_fallback" configuration from the previous commit.
->> >
->> >"lacp_fallback" mode "strict" asserts that the bonding master carrier
->> >only when at least 'min_links' slaves are in the collecting/distributing
->> >state (or collecting only if the coupled_control default behavior is
->> >disabled).
->> >
->> >Fixes: 655f8919d549 ("bonding: add min links parameter to 802.3ad")
->> >Signed-off-by: Louis Scalbert <louis.scalbert@6wind.com>
->> >---
->> > drivers/net/bonding/bond_3ad.c     | 26 ++++++++++++++++++++++++--
->> > drivers/net/bonding/bond_options.c |  1 +
->> > 2 files changed, 25 insertions(+), 2 deletions(-)
->> >
->> >diff --git a/drivers/net/bonding/bond_3ad.c b/drivers/net/bonding/bond_=
-3ad.c
->> >index af7f74cfdc08..b79a76296966 100644
->> >--- a/drivers/net/bonding/bond_3ad.c
->> >+++ b/drivers/net/bonding/bond_3ad.c
->> >@@ -745,6 +745,22 @@ static void __set_agg_ports_ready(struct aggregato=
-r *aggregator, int val)
->> >       }
->> > }
->> >
->> >+static int __agg_valid_ports(struct aggregator *agg)
->> >+{
->> >+      struct port *port;
->> >+      int valid =3D 0;
->> >+
->> >+      for (port =3D agg->lag_ports; port;
->> >+           port =3D port->next_port_in_aggregator) {
->> >+              if (port->actor_oper_port_state & LACP_STATE_COLLECTING =
-&&
->> >+                  (!port->slave->bond->params.coupled_control ||
->> >+                   port->actor_oper_port_state & LACP_STATE_DISTRIBUTI=
-NG))
->> >+                      valid++;
->>
->>         Do we need to test coupled_control?  I.e., can the test be
->
->With coupled_control enabled (default), the actor allows traffic from
->the partner only when it reaches both the COLLECTING and DISTRIBUTING
->states, i.e., in the AD_MUX_COLLECTING_DISTRIBUTING Mux state.
->
->With coupled_control disabled, the actor allows traffic from the
->partner as soon as it reaches the COLLECTING state, regardless of the
->DISTRIBUTING flag. In this case, COLLECTING is set in the
->AD_MUX_COLLECTING state, while DISTRIBUTING is only set later in the
->AD_MUX_DISTRIBUTING state.
->
->From the perspective of upper-layer processes, a carrier up state
->indicates that the link is fully operational and capable of both
->collecting and distributing traffic. These processes are not aware of
->the distinction between COLLECTING and COLLECTING & DISTRIBUTING
->states.
+It calls tcp_get_info_chrono_stats() while other threads could
+change chrono fields in tcp_chrono_set().
 
-	Ok, so to the upper layers, carrier up means "can both send and
-receive," however...
+I do not think we need coherent TCP socket state snapshot
+in tcp_get_timestamping_opt_stats(), I chose to only
+add annotations to keep KCSAN happy.
 
->>
->>                 if ((port->actor_oper_port_state & LACP_STATE_COLLECTING=
-) &&
->>                     (port->actor_oper_port_state & LACP_STATE_DISTRIBUTI=
-NG))
->>
->
->If we want to allow collection to start without waiting for
->distribution to be enabled, then the carrier must be asserted as soon
->as the COLLECTING state is reached.
->In that case, this test would not be valid.
-
-	...here, are you saying that the bond should transition to
-carrier up as soon as it's able to receive, even if it cannot yet send?
-Won't that break the upper layers that expect carrier up to mean that
-they can transmit?
-
-	My presumption in suggesting the test logic is that carrier up
-is the first meaning, that the interface can both send and receive, and
-therefore has both _COLLECTING and _DISTRIBUTING.
-
-	-J
-
->In practice, I can only test for LACP_STATE_COLLECTING, because
->LACP_STATE_DISTRIBUTING is always set together with
->LACP_STATE_COLLECTING.
->
->>         To my reading, ad_mux_machine will set _COLLECTING and
->> _DISTRIBUTING appropriately regardless of the coupled_control selection.
->
->I don't agree. See:
->https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/dr=
-ivers/net/bonding/bond_3ad.c?id=3Dv7.0#n1090
->https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/dr=
-ivers/net/bonding/bond_3ad.c?id=3Dv7.0#n1202
->
->> >+      }
->> >+
->> >+      return valid;
->> >+}
->> >+
->> > static int __agg_active_ports(struct aggregator *agg)
->> > {
->> >       struct port *port;
->> >@@ -2120,6 +2136,7 @@ static void ad_enable_collecting_distributing(str=
-uct port *port,
->> >                         port->actor_port_number,
->> >                         port->aggregator->aggregator_identifier);
->> >               __enable_port(port);
->> >+              bond_3ad_set_carrier(port->slave->bond);
->> >               /* Slave array needs update */
->> >               *update_slave_arr =3D true;
->> >               /* Should notify peers if possible */
->> >@@ -2141,6 +2158,7 @@ static void ad_disable_collecting_distributing(st=
-ruct port *port,
->> >                         port->actor_port_number,
->> >                         port->aggregator->aggregator_identifier);
->> >               __disable_port(port);
->> >+              bond_3ad_set_carrier(port->slave->bond);
->> >               /* Slave array needs an update */
->> >               *update_slave_arr =3D true;
->> >       }
->> >@@ -2819,8 +2837,12 @@ int bond_3ad_set_carrier(struct bonding *bond)
->> >       }
->> >       active =3D __get_active_agg(&(SLAVE_AD_INFO(first_slave)->aggreg=
-ator));
->> >       if (active) {
->> >-              /* are enough slaves available to consider link up? */
->> >-              if (__agg_active_ports(active) < bond->params.min_links)=
- {
->> >+              /* are enough slaves in collecting (and distributing) st=
-ate to consider
->> >+               * link up?
->> >+               */
->> >+              if ((bond->params.lacp_fallback ? __agg_valid_ports(acti=
-ve)
->> >+                                      : __agg_active_ports(active)) <
->> >+                  bond->params.min_links) {
->>
->>         I think the original comment is better; if the new option is
->> off, it doesn't require collecting / distributing state.
->>
->>         -J
->>
->> >                       if (netif_carrier_ok(bond->dev)) {
->> >                               netif_carrier_off(bond->dev);
->> >                               goto out;
->> >diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/b=
-ond_options.c
->> >index b672b8a881bb..d64a5d2f80b6 100644
->> >--- a/drivers/net/bonding/bond_options.c
->> >+++ b/drivers/net/bonding/bond_options.c
->> >@@ -1706,6 +1706,7 @@ static int bond_option_lacp_fallback_set(struct b=
-onding *bond,
->> >       netdev_dbg(bond->dev, "Setting LACP fallback to %s (%llu)\n",
->> >                  newval->string, newval->value);
->> >       bond->params.lacp_fallback =3D newval->value;
->> >+      bond_3ad_set_carrier(bond);
->> >
->> >       return 0;
->> > }
->> >--
->> >2.39.2
-
+Fixes: 1c885808e456 ("tcp: SOF_TIMESTAMPING_OPT_STATS option for SO_TIMESTAMPING")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
-	-Jay Vosburgh, jv@jvosburgh.net
+ include/net/tcp.h | 10 +++++++---
+ net/ipv4/tcp.c    | 14 ++++++++++----
+ 2 files changed, 17 insertions(+), 7 deletions(-)
+
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index dfa52ceefd23b7a25ed725e3a7fde3bd7e442e4e..674af493882c802ebe03e0cac6e40b7c704aa0de 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -2208,10 +2208,14 @@ static inline void tcp_chrono_set(struct tcp_sock *tp, const enum tcp_chrono new
+ 	const u32 now = tcp_jiffies32;
+ 	enum tcp_chrono old = tp->chrono_type;
+ 
++	/* Following WRITE_ONCE()s pair with READ_ONCE()s in
++	 * tcp_get_info_chrono_stats().
++	 */
+ 	if (old > TCP_CHRONO_UNSPEC)
+-		tp->chrono_stat[old - 1] += now - tp->chrono_start;
+-	tp->chrono_start = now;
+-	tp->chrono_type = new;
++		WRITE_ONCE(tp->chrono_stat[old - 1],
++			   tp->chrono_stat[old - 1] + now - tp->chrono_start);
++	WRITE_ONCE(tp->chrono_start, now);
++	WRITE_ONCE(tp->chrono_type, new);
+ }
+ 
+ static inline void tcp_chrono_start(struct sock *sk, const enum tcp_chrono type)
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 1a494d18c5fd130c2a7bb4c425eda8e4ddcdf612..7b7812cb710f6e05a83615811eefd0cf8a845cab 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -4191,12 +4191,18 @@ static void tcp_get_info_chrono_stats(const struct tcp_sock *tp,
+ 				      struct tcp_info *info)
+ {
+ 	u64 stats[__TCP_CHRONO_MAX], total = 0;
+-	enum tcp_chrono i;
++	enum tcp_chrono i, cur;
+ 
++	/* Following READ_ONCE()s pair with WRITE_ONCE()s in tcp_chrono_set().
++	 * This is because socket lock might not be owned by us at this point.
++	 * This is best effort, tcp_get_timestamping_opt_stats() can
++	 * see wrong values. A real fix would be too costly for TCP fast path.
++	 */
++	cur = READ_ONCE(tp->chrono_type);
+ 	for (i = TCP_CHRONO_BUSY; i < __TCP_CHRONO_MAX; ++i) {
+-		stats[i] = tp->chrono_stat[i - 1];
+-		if (i == tp->chrono_type)
+-			stats[i] += tcp_jiffies32 - tp->chrono_start;
++		stats[i] = READ_ONCE(tp->chrono_stat[i - 1]);
++		if (i == cur)
++			stats[i] += tcp_jiffies32 - READ_ONCE(tp->chrono_start);
+ 		stats[i] *= USEC_PER_SEC / HZ;
+ 		total += stats[i];
+ 	}
+-- 
+2.54.0.rc1.513.gad8abe7a5a-goog
 
