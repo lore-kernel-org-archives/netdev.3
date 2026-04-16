@@ -1,32 +1,32 @@
 Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F9C5311963;
-	Thu, 16 Apr 2026 05:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E931B3009F6;
+	Thu, 16 Apr 2026 05:48:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776318508; cv=none; b=VudxKF3zz21vg7LTiG8JIa2waXsWXEgjTvRtgKAaJhg4JAGbQNI8XHv2peoOaZgh+KYnSLM4F3PUZUdTJlGYIG9U0VLMQ/qr7oQ1jIiW4vLIbqGKhgQhKVETqjvjY9923tRoAv/h+l36GlG0k3x0ma4T6D0Aw3GReZVaqG2lQHE=
+	t=1776318508; cv=none; b=A5cCc6ZeAb175s36NRamGE/WIQxn30nl6dOVfHjawyRXYOURpANO6b87NIlFv4eCddREqNAD0bsSklhIXVU3bGezLcXHpCufiOh0K/uhxg9x9JmY/ZNhZpKnhiYm4YIeWfE8oDzBj8U4WsmfRycocN3fhCu6vPRIIF/PuOCHaPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1776318508; c=relaxed/simple;
-	bh=PbbEimL/v4Gcc42VMvJHq2SkKdXc57VhGv57c37hQkk=;
+	bh=zMJ72mILIdds/u6IDjqQ1XWkA1jtvH+pPPl+W2eI2jc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kBmgcAYvH9wkzqdKdJyyk5JyCnD/2YwX2z/6NMbB+grdRoBr/mb2egASMsI0OTRNoLcSzkg/2x5XxMKtb6Yd92xzd/abk1RBqA5q8/ufgFhsAFfsRaxG6TZfRmUiKwUziu4wcUrcrimBJOVQyyHfwR9j3I5aCjGTVxP4FhjRGzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=f3YBr5Jm; arc=none smtp.client-ip=194.13.80.246
+	 MIME-Version; b=Orw6y6ykIQxRxd3tCPLcEt7SU7JWV+eCeNHfr9AfDIUaNTwbHmLYMYlw/Ql7xOhE9MzFN83THfVfZXBKfSkJHbeNq1GHMnXPtuTPmibAud/z3ap6c0rgw+Xlt+ur2iqBP7NsCQ20n+/SSisFdjPpyg1mphkh3n0bJfmjo3v8PIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=A67beRpa; arc=none smtp.client-ip=194.13.80.246
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="f3YBr5Jm"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7712EA384D;
-	Thu, 16 Apr 2026 07:48:17 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="A67beRpa"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A880BA3857;
+	Thu, 16 Apr 2026 07:48:22 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1776318498; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1776318503; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=TmUEkzI8DpWgMiys9l/pvqpRY9AK1NUiJXNn64EZRUA=;
-	b=f3YBr5JmDj/eUHe4XTVhoTYt7LIqbHYwSBDduh2LWnIB+CB5eWcarFIlbiFGSkk58qvOCD
-	Cz4IxQxgIhlAU42UDWWUXPHNxj4y/jehv12pu7MaSmALgBqbFOyFeysWtbfelSZTK/VYhh
-	e0AdseLx7R/8Us+TtmVGW5YHwRk9A0fDIz7FH9pXfDSqTRx+Ddg2OS7hQVvdN7O1G8a+IK
-	LYpnzqsGDQeJfHqf3hHsqbwktbF4M3K8eGP3yurMabp5XaoAGOAY4P3k2YsCdDg0pJELg1
-	solYy7QfdiJdWaOsGwvQfn8b57wSCMW4n8ALJs6vacS0C723Am8br1RBhVRQmQ==
+	bh=3GxkBrbj8ZWAk/rQGzdQ2MvFCrffzjfXMWUKFY58cZk=;
+	b=A67beRpaFKqmC7uJpwIgOrIakJxklLAZDQPCxZjppeBUf+PDIRD0pTvKEpEJDwqbzDwtI8
+	WRO47ffLqm1+5hpSl0GhmvqHZm9K2aKkL4LNS7EICnduMavghjvl4SMA1rgK0r5KZfy2Dw
+	RQcIjqD9vlsJbQg2yoVFKVpZUPZ11DoYJ/ENwYY0Wr5/0hAH2dvOJROrdoOrgWDFscP3xu
+	gGdATBMg4lUPbJm0Gp7LlYGlGvGqVpF6BZcgHfXR8p0mxVRpVjzfMhF8cuIOsT0nFgih/r
+	e2mO7Q/IqCFqIhLOgMrDHJgpFEHTZ05A4EupgMqQPnpAt59lSHxtiuVAb+uopA==
 From: Nicolai Buchwitz <nb@tipi-net.de>
 To: netdev@vger.kernel.org
 Cc: Justin Chen <justin.chen@broadcom.com>,
@@ -41,16 +41,16 @@ Cc: Justin Chen <justin.chen@broadcom.com>,
 	Nicolai Buchwitz <nb@tipi-net.de>,
 	"David S. Miller" <davem@davemloft.net>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Vikas Gupta <vikas.gupta@broadcom.com>,
-	Rajashekar Hudumula <rajashekar.hudumula@broadcom.com>,
-	Bhargava Marreddy <bhargava.marreddy@broadcom.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Eric Biggers <ebiggers@google.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v7 1/7] net: bcmgenet: convert RX path to page_pool
-Date: Thu, 16 Apr 2026 07:47:33 +0200
-Message-ID: <20260416054743.1289191-2-nb@tipi-net.de>
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org
+Subject: [PATCH net-next v7 4/7] net: bcmgenet: add XDP_TX support
+Date: Thu, 16 Apr 2026 07:47:36 +0200
+Message-ID: <20260416054743.1289191-5-nb@tipi-net.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260416054743.1289191-1-nb@tipi-net.de>
 References: <20260416054743.1289191-1-nb@tipi-net.de>
@@ -63,442 +63,431 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Replace the per-packet __netdev_alloc_skb() + dma_map_single() in the
-RX path with page_pool, which provides efficient page recycling and
-DMA mapping management. This is a prerequisite for XDP support (which
-requires stable page-backed buffers rather than SKB linear data).
+Implement XDP_TX using ring 16 (DESC_INDEX), the hardware default
+descriptor ring, dedicated to XDP TX for isolation from SKB TX queues.
 
-Key changes:
-- Create a page_pool per RX ring (PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV)
-- bcmgenet_rx_refill() allocates pages via page_pool_alloc_pages()
-- bcmgenet_desc_rx() builds SKBs from pages via napi_build_skb() with
-  skb_mark_for_recycle() for automatic page_pool return
-- Buffer layout reserves XDP_PACKET_HEADROOM (256 bytes) before the HW
-  RSB (64 bytes) + alignment pad (2 bytes) for future XDP headroom
+Ring 16 gets 32 BDs carved from ring 0's allocation. TX completion is
+piggybacked on RX NAPI poll since ring 16's INTRL2_1 bit collides with
+RX ring 0, similar to how bnxt, ice, and other XDP drivers handle TX
+completion within the RX poll path.
+
+The GENET MAC has TBUF_64B_EN set globally, requiring every TX buffer
+to start with a 64-byte struct status_64 (TSB). For local XDP_TX, the
+TSB is prepended by backing xdp->data into the RSB area (unused after
+BPF execution) and zeroing it. For foreign frames redirected from other
+devices, the TSB is written into the xdp_frame headroom.
+
+The page_pool DMA direction is changed from DMA_FROM_DEVICE to
+DMA_BIDIRECTIONAL to allow TX reuse of the existing DMA mapping.
 
 Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 ---
- drivers/net/ethernet/broadcom/Kconfig         |   1 +
- .../net/ethernet/broadcom/genet/bcmgenet.c    | 217 +++++++++++-------
- .../net/ethernet/broadcom/genet/bcmgenet.h    |   4 +
- 3 files changed, 143 insertions(+), 79 deletions(-)
+ .../net/ethernet/broadcom/genet/bcmgenet.c    | 224 ++++++++++++++++--
+ .../net/ethernet/broadcom/genet/bcmgenet.h    |   3 +
+ 2 files changed, 205 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/Kconfig b/drivers/net/ethernet/broadcom/Kconfig
-index dd164acafd01..a6c388dacba6 100644
---- a/drivers/net/ethernet/broadcom/Kconfig
-+++ b/drivers/net/ethernet/broadcom/Kconfig
-@@ -78,6 +78,7 @@ config BCMGENET
- 	select BCM7XXX_PHY
- 	select MDIO_BCM_UNIMAC
- 	select DIMLIB
-+	select PAGE_POOL
- 	select BROADCOM_PHY if ARCH_BCM2835
- 	help
- 	  This driver supports the built-in Ethernet MACs found in the
 diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index 482a31e7b72b..94732414b48b 100644
+index b09e5c3c3543..3f3682e39267 100644
 --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
 +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -52,6 +52,13 @@
+@@ -48,8 +48,10 @@
+ 
+ #define GENET_Q0_RX_BD_CNT	\
+ 	(TOTAL_DESC - priv->hw_params->rx_queues * priv->hw_params->rx_bds_per_q)
++#define GENET_Q16_TX_BD_CNT	32
+ #define GENET_Q0_TX_BD_CNT	\
+-	(TOTAL_DESC - priv->hw_params->tx_queues * priv->hw_params->tx_bds_per_q)
++	(TOTAL_DESC - priv->hw_params->tx_queues * priv->hw_params->tx_bds_per_q \
++	 - GENET_Q16_TX_BD_CNT)
+ 
  #define RX_BUF_LENGTH		2048
  #define SKB_ALIGNMENT		32
+@@ -1892,6 +1894,14 @@ static struct sk_buff *bcmgenet_free_tx_cb(struct device *dev,
+ 		if (cb == GENET_CB(skb)->last_cb)
+ 			return skb;
  
-+/* Page pool RX buffer layout:
-+ * XDP_PACKET_HEADROOM | RSB(64) + pad(2) | frame data | skb_shared_info
-+ * The HW writes the 64B RSB + 2B alignment padding before the frame.
-+ */
-+#define GENET_RSB_PAD		(sizeof(struct status_64) + 2)
-+#define GENET_RX_HEADROOM	(XDP_PACKET_HEADROOM + GENET_RSB_PAD)
++	} else if (cb->xdpf) {
++		if (cb->xdp_dma_map)
++			dma_unmap_single(dev, dma_unmap_addr(cb, dma_addr),
++					 dma_unmap_len(cb, dma_len),
++					 DMA_TO_DEVICE);
++		dma_unmap_addr_set(cb, dma_addr, 0);
++		xdp_return_frame(cb->xdpf);
++		cb->xdpf = NULL;
+ 	} else if (dma_unmap_addr(cb, dma_addr)) {
+ 		dma_unmap_page(dev,
+ 			       dma_unmap_addr(cb, dma_addr),
+@@ -1924,10 +1934,16 @@ static unsigned int __bcmgenet_tx_reclaim(struct net_device *dev,
+ 	unsigned int pkts_compl = 0;
+ 	unsigned int txbds_ready;
+ 	unsigned int c_index;
++	struct enet_cb *tx_cb;
+ 	struct sk_buff *skb;
+ 
+-	/* Clear status before servicing to reduce spurious interrupts */
+-	bcmgenet_intrl2_1_writel(priv, (1 << ring->index), INTRL2_CPU_CLEAR);
++	/* Clear status before servicing to reduce spurious interrupts.
++	 * Ring DESC_INDEX (XDP TX) has no interrupt; skip the clear to
++	 * avoid clobbering RX ring 0's bit at the same position.
++	 */
++	if (ring->index != DESC_INDEX)
++		bcmgenet_intrl2_1_writel(priv, BIT(ring->index),
++					 INTRL2_CPU_CLEAR);
+ 
+ 	/* Compute how many buffers are transmitted since last xmit call */
+ 	c_index = bcmgenet_tdma_ring_readl(priv, ring->index, TDMA_CONS_INDEX)
+@@ -1940,8 +1956,15 @@ static unsigned int __bcmgenet_tx_reclaim(struct net_device *dev,
+ 
+ 	/* Reclaim transmitted buffers */
+ 	while (txbds_processed < txbds_ready) {
+-		skb = bcmgenet_free_tx_cb(&priv->pdev->dev,
+-					  &priv->tx_cbs[ring->clean_ptr]);
++		tx_cb = &priv->tx_cbs[ring->clean_ptr];
++		if (tx_cb->xdpf) {
++			pkts_compl++;
++			bytes_compl += tx_cb->xdp_dma_map
++				? tx_cb->xdpf->len
++				: tx_cb->xdpf->len -
++				  sizeof(struct status_64);
++		}
++		skb = bcmgenet_free_tx_cb(&priv->pdev->dev, tx_cb);
+ 		if (skb) {
+ 			pkts_compl++;
+ 			bytes_compl += GENET_CB(skb)->bytes_sent;
+@@ -1963,8 +1986,11 @@ static unsigned int __bcmgenet_tx_reclaim(struct net_device *dev,
+ 	u64_stats_add(&stats->bytes, bytes_compl);
+ 	u64_stats_update_end(&stats->syncp);
+ 
+-	netdev_tx_completed_queue(netdev_get_tx_queue(dev, ring->index),
+-				  pkts_compl, bytes_compl);
++	/* Ring DESC_INDEX (XDP TX) has no netdev TX queue; skip BQL */
++	if (ring->index != DESC_INDEX)
++		netdev_tx_completed_queue(netdev_get_tx_queue(dev,
++							      ring->index),
++					  pkts_compl, bytes_compl);
+ 
+ 	return txbds_processed;
+ }
+@@ -2041,6 +2067,9 @@ static void bcmgenet_tx_reclaim_all(struct net_device *dev)
+ 	do {
+ 		bcmgenet_tx_reclaim(dev, &priv->tx_rings[i++], true);
+ 	} while (i <= priv->hw_params->tx_queues && netif_is_multiqueue(dev));
 +
- /* Tx/Rx DMA register offset, skip 256 descriptors */
- #define WORDS_PER_BD(p)		(p->hw_params->words_per_bd)
- #define DMA_DESC_SIZE		(WORDS_PER_BD(priv) * sizeof(u32))
-@@ -1895,21 +1902,13 @@ static struct sk_buff *bcmgenet_free_tx_cb(struct device *dev,
++	/* Also reclaim XDP TX ring */
++	bcmgenet_tx_reclaim(dev, &priv->xdp_tx_ring, true);
  }
  
- /* Simple helper to free a receive control block's resources */
--static struct sk_buff *bcmgenet_free_rx_cb(struct device *dev,
--					   struct enet_cb *cb)
-+static void bcmgenet_free_rx_cb(struct enet_cb *cb,
-+				struct page_pool *pool)
+ /* Reallocate the SKB to put enough headroom in front of it and insert
+@@ -2297,11 +2326,96 @@ static struct sk_buff *bcmgenet_xdp_build_skb(struct bcmgenet_rx_ring *ring,
+ 	return skb;
+ }
+ 
++static bool bcmgenet_xdp_xmit_frame(struct bcmgenet_priv *priv,
++				     struct xdp_frame *xdpf, bool dma_map)
++{
++	struct bcmgenet_tx_ring *ring = &priv->xdp_tx_ring;
++	struct device *kdev = &priv->pdev->dev;
++	struct enet_cb *tx_cb_ptr;
++	dma_addr_t mapping;
++	unsigned int dma_len;
++	u32 len_stat;
++
++	spin_lock(&ring->lock);
++
++	if (ring->free_bds < 1) {
++		spin_unlock(&ring->lock);
++		return false;
++	}
++
++	tx_cb_ptr = bcmgenet_get_txcb(priv, ring);
++
++	if (dma_map) {
++		void *tsb_start;
++
++		/* The GENET MAC has TBUF_64B_EN set globally, so hardware
++		 * expects a 64-byte TSB prefix on every TX buffer.  For
++		 * redirected frames (ndo_xdp_xmit) we prepend a zeroed TSB
++		 * using the frame's headroom.
++		 */
++		if (unlikely(xdpf->headroom < sizeof(struct status_64))) {
++			bcmgenet_put_txcb(priv, ring);
++			spin_unlock(&ring->lock);
++			return false;
++		}
++
++		tsb_start = xdpf->data - sizeof(struct status_64);
++		memset(tsb_start, 0, sizeof(struct status_64));
++
++		dma_len = xdpf->len + sizeof(struct status_64);
++		mapping = dma_map_single(kdev, tsb_start, dma_len,
++					 DMA_TO_DEVICE);
++		if (dma_mapping_error(kdev, mapping)) {
++			tx_cb_ptr->skb = NULL;
++			tx_cb_ptr->xdpf = NULL;
++			bcmgenet_put_txcb(priv, ring);
++			spin_unlock(&ring->lock);
++			return false;
++		}
++	} else {
++		struct page *page = virt_to_page(xdpf->data);
++
++		/* For local XDP_TX the caller already prepended the TSB
++		 * into xdpf->data/len, so dma_len == xdpf->len.
++		 */
++		dma_len = xdpf->len;
++		mapping = page_pool_get_dma_addr(page) +
++			  sizeof(*xdpf) + xdpf->headroom;
++		dma_sync_single_for_device(kdev, mapping, dma_len,
++					   DMA_BIDIRECTIONAL);
++	}
++
++	dma_unmap_addr_set(tx_cb_ptr, dma_addr, mapping);
++	dma_unmap_len_set(tx_cb_ptr, dma_len, dma_len);
++	tx_cb_ptr->skb = NULL;
++	tx_cb_ptr->xdpf = xdpf;
++	tx_cb_ptr->xdp_dma_map = dma_map;
++
++	len_stat = (dma_len << DMA_BUFLENGTH_SHIFT) |
++		   (priv->hw_params->qtag_mask << DMA_TX_QTAG_SHIFT) |
++		   DMA_TX_APPEND_CRC | DMA_SOP | DMA_EOP;
++
++	dmadesc_set(priv, tx_cb_ptr->bd_addr, mapping, len_stat);
++
++	ring->free_bds--;
++	ring->prod_index++;
++	ring->prod_index &= DMA_P_INDEX_MASK;
++
++	bcmgenet_tdma_ring_writel(priv, ring->index, ring->prod_index,
++				  TDMA_PROD_INDEX);
++
++	spin_unlock(&ring->lock);
++
++	return true;
++}
++
+ static unsigned int bcmgenet_run_xdp(struct bcmgenet_rx_ring *ring,
+ 				     struct bpf_prog *prog,
+ 				     struct xdp_buff *xdp,
+ 				     struct page *rx_page)
  {
--	struct sk_buff *skb;
--
--	skb = cb->skb;
--	cb->skb = NULL;
--
--	if (dma_unmap_addr(cb, dma_addr)) {
--		dma_unmap_single(dev, dma_unmap_addr(cb, dma_addr),
--				 dma_unmap_len(cb, dma_len), DMA_FROM_DEVICE);
--		dma_unmap_addr_set(cb, dma_addr, 0);
-+	if (cb->rx_page) {
-+		page_pool_put_full_page(pool, cb->rx_page, false);
-+		cb->rx_page = NULL;
- 	}
--
--	return skb;
- }
- 
- /* Unlocked version of the reclaim routine */
-@@ -2248,46 +2247,30 @@ static netdev_tx_t bcmgenet_xmit(struct sk_buff *skb, struct net_device *dev)
- 	goto out;
- }
- 
--static struct sk_buff *bcmgenet_rx_refill(struct bcmgenet_priv *priv,
--					  struct enet_cb *cb)
-+static int bcmgenet_rx_refill(struct bcmgenet_rx_ring *ring,
-+			      struct enet_cb *cb)
- {
--	struct device *kdev = &priv->pdev->dev;
--	struct sk_buff *skb;
--	struct sk_buff *rx_skb;
 +	struct bcmgenet_priv *priv = ring->priv;
- 	dma_addr_t mapping;
-+	struct page *page;
++	struct xdp_frame *xdpf;
+ 	unsigned int act;
  
--	/* Allocate a new Rx skb */
--	skb = __netdev_alloc_skb(priv->dev, priv->rx_buf_len + SKB_ALIGNMENT,
--				 GFP_ATOMIC | __GFP_NOWARN);
--	if (!skb) {
-+	page = page_pool_alloc_pages(ring->page_pool,
-+				     GFP_ATOMIC);
-+	if (!page) {
- 		priv->mib.alloc_rx_buff_failed++;
- 		netif_err(priv, rx_err, priv->dev,
--			  "%s: Rx skb allocation failed\n", __func__);
--		return NULL;
--	}
--
--	/* DMA-map the new Rx skb */
--	mapping = dma_map_single(kdev, skb->data, priv->rx_buf_len,
--				 DMA_FROM_DEVICE);
--	if (dma_mapping_error(kdev, mapping)) {
--		priv->mib.rx_dma_failed++;
--		dev_kfree_skb_any(skb);
--		netif_err(priv, rx_err, priv->dev,
--			  "%s: Rx skb DMA mapping failed\n", __func__);
--		return NULL;
-+			  "%s: Rx page allocation failed\n", __func__);
-+		return -ENOMEM;
- 	}
- 
--	/* Grab the current Rx skb from the ring and DMA-unmap it */
--	rx_skb = bcmgenet_free_rx_cb(kdev, cb);
-+	/* page_pool handles DMA mapping via PP_FLAG_DMA_MAP */
-+	mapping = page_pool_get_dma_addr(page) + XDP_PACKET_HEADROOM;
- 
--	/* Put the new Rx skb on the ring */
--	cb->skb = skb;
--	dma_unmap_addr_set(cb, dma_addr, mapping);
--	dma_unmap_len_set(cb, dma_len, priv->rx_buf_len);
-+	cb->rx_page = page;
-+	cb->rx_page_offset = XDP_PACKET_HEADROOM;
- 	dmadesc_set_addr(priv, cb->bd_addr, mapping);
- 
--	/* Return the current Rx skb to caller */
--	return rx_skb;
-+	return 0;
- }
- 
- /* bcmgenet_desc_rx - descriptor based rx process.
-@@ -2339,25 +2322,28 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 	while ((rxpktprocessed < rxpkttoprocess) &&
- 	       (rxpktprocessed < budget)) {
- 		struct status_64 *status;
-+		struct page *rx_page;
-+		unsigned int rx_off;
- 		__be16 rx_csum;
-+		void *hard_start;
- 
- 		cb = &priv->rx_cbs[ring->read_ptr];
--		skb = bcmgenet_rx_refill(priv, cb);
- 
--		if (unlikely(!skb)) {
-+		/* Save the received page before refilling */
-+		rx_page = cb->rx_page;
-+		rx_off = cb->rx_page_offset;
-+
-+		if (bcmgenet_rx_refill(ring, cb)) {
- 			BCMGENET_STATS64_INC(stats, dropped);
- 			goto next;
- 		}
- 
--		status = (struct status_64 *)skb->data;
-+		page_pool_dma_sync_for_cpu(ring->page_pool, rx_page, 0,
-+					   RX_BUF_LENGTH);
-+
-+		hard_start = page_address(rx_page) + rx_off;
-+		status = (struct status_64 *)hard_start;
- 		dma_length_status = status->length_status;
--		if (dev->features & NETIF_F_RXCSUM) {
--			rx_csum = (__force __be16)(status->rx_csum & 0xffff);
--			if (rx_csum) {
--				skb->csum = (__force __wsum)ntohs(rx_csum);
--				skb->ip_summed = CHECKSUM_COMPLETE;
--			}
--		}
- 
- 		/* DMA flags and length are still valid no matter how
- 		 * we got the Receive Status Vector (64B RSB or register)
-@@ -2373,7 +2359,8 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 		if (unlikely(len > RX_BUF_LENGTH)) {
- 			netif_err(priv, rx_status, dev, "oversized packet\n");
- 			BCMGENET_STATS64_INC(stats, length_errors);
--			dev_kfree_skb_any(skb);
-+			page_pool_put_full_page(ring->page_pool, rx_page,
-+						true);
- 			goto next;
- 		}
- 
-@@ -2381,7 +2368,8 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 			netif_err(priv, rx_status, dev,
- 				  "dropping fragmented packet!\n");
- 			BCMGENET_STATS64_INC(stats, fragmented_errors);
--			dev_kfree_skb_any(skb);
-+			page_pool_put_full_page(ring->page_pool, rx_page,
-+						true);
- 			goto next;
- 		}
- 
-@@ -2409,24 +2397,47 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 						DMA_RX_RXER)) == DMA_RX_RXER)
- 				u64_stats_inc(&stats->errors);
- 			u64_stats_update_end(&stats->syncp);
--			dev_kfree_skb_any(skb);
-+			page_pool_put_full_page(ring->page_pool, rx_page,
-+						true);
- 			goto next;
- 		} /* error packet */
- 
--		skb_put(skb, len);
-+		/* Build SKB from the page - data starts at hard_start,
-+		 * frame begins after RSB(64) + pad(2) = 66 bytes.
+ 	if (!prog)
+@@ -2312,14 +2426,42 @@ static unsigned int bcmgenet_run_xdp(struct bcmgenet_rx_ring *ring,
+ 	switch (act) {
+ 	case XDP_PASS:
+ 		return XDP_PASS;
++	case XDP_TX:
++		/* Prepend a zeroed TSB (Transmit Status Block).  The GENET
++		 * MAC has TBUF_64B_EN set globally, so hardware expects every
++		 * TX buffer to begin with a 64-byte struct status_64.  Back
++		 * up xdp->data into the RSB area (which is no longer needed
++		 * after the BPF program ran) and zero it.
 +		 */
-+		skb = napi_build_skb(hard_start, PAGE_SIZE - XDP_PACKET_HEADROOM);
-+		if (unlikely(!skb)) {
-+			BCMGENET_STATS64_INC(stats, dropped);
++		if (xdp->data - xdp->data_hard_start <
++		    sizeof(struct status_64) + sizeof(struct xdp_frame)) {
 +			page_pool_put_full_page(ring->page_pool, rx_page,
 +						true);
-+			goto next;
++			return XDP_DROP;
 +		}
- 
--		/* remove RSB and hardware 2bytes added for IP alignment */
--		skb_pull(skb, 66);
--		len -= 66;
-+		skb_mark_for_recycle(skb);
++		xdp->data -= sizeof(struct status_64);
++		xdp->data_meta -= sizeof(struct status_64);
++		memset(xdp->data, 0, sizeof(struct status_64));
 +
-+		/* Reserve the RSB + pad, then set the data length */
-+		skb_reserve(skb, GENET_RSB_PAD);
-+		__skb_put(skb, len - GENET_RSB_PAD);
- 
- 		if (priv->crc_fwd_en) {
--			skb_trim(skb, len - ETH_FCS_LEN);
--			len -= ETH_FCS_LEN;
-+			skb_trim(skb, skb->len - ETH_FCS_LEN);
- 		}
- 
-+		/* Set up checksum offload */
-+		if (dev->features & NETIF_F_RXCSUM) {
-+			rx_csum = (__force __be16)(status->rx_csum & 0xffff);
-+			if (rx_csum) {
-+				skb->csum = (__force __wsum)ntohs(rx_csum);
-+				skb->ip_summed = CHECKSUM_COMPLETE;
-+			}
++		xdpf = xdp_convert_buff_to_frame(xdp);
++		if (unlikely(!xdpf)) {
++			page_pool_put_full_page(ring->page_pool, rx_page,
++						true);
++			return XDP_DROP;
 +		}
-+
-+		len = skb->len;
- 		bytes_processed += len;
- 
--		/*Finish setting up the received SKB and send it to the kernel*/
-+		/* Finish setting up the received SKB and send it to the
-+		 * kernel.
-+		 */
- 		skb->protocol = eth_type_trans(skb, priv->dev);
- 
- 		u64_stats_update_begin(&stats->syncp);
-@@ -2495,12 +2506,11 @@ static void bcmgenet_dim_work(struct work_struct *work)
- 	dim->state = DIM_START_MEASURE;
- }
- 
--/* Assign skb to RX DMA descriptor. */
-+/* Assign page_pool pages to RX DMA descriptors. */
- static int bcmgenet_alloc_rx_buffers(struct bcmgenet_priv *priv,
- 				     struct bcmgenet_rx_ring *ring)
- {
- 	struct enet_cb *cb;
--	struct sk_buff *skb;
- 	int i;
- 
- 	netif_dbg(priv, hw, priv->dev, "%s\n", __func__);
-@@ -2508,10 +2518,7 @@ static int bcmgenet_alloc_rx_buffers(struct bcmgenet_priv *priv,
- 	/* loop here for each buffer needing assign */
- 	for (i = 0; i < ring->size; i++) {
- 		cb = ring->cbs + i;
--		skb = bcmgenet_rx_refill(priv, cb);
--		if (skb)
--			dev_consume_skb_any(skb);
--		if (!cb->skb)
-+		if (bcmgenet_rx_refill(ring, cb))
- 			return -ENOMEM;
++		if (unlikely(!bcmgenet_xdp_xmit_frame(priv, xdpf, false))) {
++			xdp_return_frame_rx_napi(xdpf);
++			return XDP_DROP;
++		}
++		return XDP_TX;
+ 	case XDP_DROP:
+ 		page_pool_put_full_page(ring->page_pool, rx_page, true);
+ 		return XDP_DROP;
+ 	default:
+-		bpf_warn_invalid_xdp_action(ring->priv->dev, prog, act);
++		bpf_warn_invalid_xdp_action(priv->dev, prog, act);
+ 		fallthrough;
+ 	case XDP_ABORTED:
+-		trace_xdp_exception(ring->priv->dev, prog, act);
++		trace_xdp_exception(priv->dev, prog, act);
+ 		page_pool_put_full_page(ring->page_pool, rx_page, true);
+ 		return XDP_ABORTED;
  	}
- 
-@@ -2520,16 +2527,18 @@ static int bcmgenet_alloc_rx_buffers(struct bcmgenet_priv *priv,
- 
- static void bcmgenet_free_rx_buffers(struct bcmgenet_priv *priv)
+@@ -2537,9 +2679,15 @@ static int bcmgenet_rx_poll(struct napi_struct *napi, int budget)
  {
--	struct sk_buff *skb;
-+	struct bcmgenet_rx_ring *ring;
- 	struct enet_cb *cb;
--	int i;
-+	int q, i;
+ 	struct bcmgenet_rx_ring *ring = container_of(napi,
+ 			struct bcmgenet_rx_ring, napi);
++	struct bcmgenet_priv *priv = ring->priv;
+ 	struct dim_sample dim_sample = {};
+ 	unsigned int work_done;
  
--	for (i = 0; i < priv->num_rx_bds; i++) {
--		cb = &priv->rx_cbs[i];
--
--		skb = bcmgenet_free_rx_cb(&priv->pdev->dev, cb);
--		if (skb)
--			dev_consume_skb_any(skb);
-+	for (q = 0; q <= priv->hw_params->rx_queues; q++) {
-+		ring = &priv->rx_rings[q];
-+		if (!ring->page_pool)
-+			continue;
-+		for (i = 0; i < ring->size; i++) {
-+			cb = ring->cbs + i;
-+			bcmgenet_free_rx_cb(cb, ring->page_pool);
-+		}
- 	}
- }
++	/* Reclaim completed XDP TX frames (ring 16 has no interrupt) */
++	if (priv->xdp_tx_ring.free_bds < priv->xdp_tx_ring.size)
++		bcmgenet_tx_reclaim(priv->dev,
++				    &priv->xdp_tx_ring, false);
++
+ 	work_done = bcmgenet_desc_rx(ring, budget);
  
-@@ -2747,6 +2756,31 @@ static void bcmgenet_init_tx_ring(struct bcmgenet_priv *priv,
- 	netif_napi_add_tx(priv->dev, &ring->napi, bcmgenet_tx_poll);
- }
+ 	if (work_done < budget && napi_complete_done(napi, work_done))
+@@ -2770,10 +2918,11 @@ static void bcmgenet_init_rx_coalesce(struct bcmgenet_rx_ring *ring)
  
-+static int bcmgenet_rx_ring_create_pool(struct bcmgenet_priv *priv,
-+					struct bcmgenet_rx_ring *ring)
-+{
-+	struct page_pool_params pp_params = {
-+		.order = 0,
-+		.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV,
-+		.pool_size = ring->size,
-+		.nid = NUMA_NO_NODE,
-+		.dev = &priv->pdev->dev,
-+		.dma_dir = DMA_FROM_DEVICE,
-+		.offset = XDP_PACKET_HEADROOM,
-+		.max_len = RX_BUF_LENGTH,
-+	};
-+	int err;
-+
-+	ring->page_pool = page_pool_create(&pp_params);
-+	if (IS_ERR(ring->page_pool)) {
-+		err = PTR_ERR(ring->page_pool);
-+		ring->page_pool = NULL;
-+		return err;
-+	}
-+
-+	return 0;
-+}
-+
- /* Initialize a RDMA ring */
- static int bcmgenet_init_rx_ring(struct bcmgenet_priv *priv,
- 				 unsigned int index, unsigned int size,
-@@ -2754,7 +2788,7 @@ static int bcmgenet_init_rx_ring(struct bcmgenet_priv *priv,
+ /* Initialize a Tx ring along with corresponding hardware registers */
+ static void bcmgenet_init_tx_ring(struct bcmgenet_priv *priv,
++				  struct bcmgenet_tx_ring *ring,
+ 				  unsigned int index, unsigned int size,
+-				  unsigned int start_ptr, unsigned int end_ptr)
++				  unsigned int start_ptr,
++				  unsigned int end_ptr)
  {
- 	struct bcmgenet_rx_ring *ring = &priv->rx_rings[index];
+-	struct bcmgenet_tx_ring *ring = &priv->tx_rings[index];
  	u32 words_per_bd = WORDS_PER_BD(priv);
--	int ret;
-+	int ret, i;
+ 	u32 flow_period_val = 0;
  
- 	ring->priv = priv;
- 	ring->index = index;
-@@ -2765,10 +2799,19 @@ static int bcmgenet_init_rx_ring(struct bcmgenet_priv *priv,
- 	ring->cb_ptr = start_ptr;
- 	ring->end_ptr = end_ptr - 1;
+@@ -2814,8 +2963,11 @@ static void bcmgenet_init_tx_ring(struct bcmgenet_priv *priv,
+ 	bcmgenet_tdma_ring_writel(priv, index, end_ptr * words_per_bd - 1,
+ 				  DMA_END_ADDR);
  
--	ret = bcmgenet_alloc_rx_buffers(priv, ring);
-+	ret = bcmgenet_rx_ring_create_pool(priv, ring);
- 	if (ret)
- 		return ret;
- 
-+	ret = bcmgenet_alloc_rx_buffers(priv, ring);
-+	if (ret) {
-+		for (i = 0; i < ring->size; i++)
-+			bcmgenet_free_rx_cb(ring->cbs + i, ring->page_pool);
-+		page_pool_destroy(ring->page_pool);
-+		ring->page_pool = NULL;
-+		return ret;
-+	}
-+
- 	bcmgenet_init_dim(ring, bcmgenet_dim_work);
- 	bcmgenet_init_rx_coalesce(ring);
- 
-@@ -2961,6 +3004,20 @@ static void bcmgenet_fini_rx_napi(struct bcmgenet_priv *priv)
- 	}
+-	/* Initialize Tx NAPI */
+-	netif_napi_add_tx(priv->dev, &ring->napi, bcmgenet_tx_poll);
++	/* Initialize Tx NAPI for priority queues only; ring DESC_INDEX
++	 * (XDP TX) has its completions handled inline in RX NAPI.
++	 */
++	if (index != DESC_INDEX)
++		netif_napi_add_tx(priv->dev, &ring->napi, bcmgenet_tx_poll);
  }
  
-+static void bcmgenet_destroy_rx_page_pools(struct bcmgenet_priv *priv)
-+{
-+	struct bcmgenet_rx_ring *ring;
-+	unsigned int i;
-+
-+	for (i = 0; i <= priv->hw_params->rx_queues; ++i) {
-+		ring = &priv->rx_rings[i];
-+		if (ring->page_pool) {
-+			page_pool_destroy(ring->page_pool);
-+			ring->page_pool = NULL;
-+		}
-+	}
-+}
-+
- /* Initialize Rx queues
+ static int bcmgenet_rx_ring_create_pool(struct bcmgenet_priv *priv,
+@@ -2827,7 +2979,7 @@ static int bcmgenet_rx_ring_create_pool(struct bcmgenet_priv *priv,
+ 		.pool_size = ring->size,
+ 		.nid = NUMA_NO_NODE,
+ 		.dev = &priv->pdev->dev,
+-		.dma_dir = DMA_FROM_DEVICE,
++		.dma_dir = DMA_BIDIRECTIONAL,
+ 		.offset = XDP_PACKET_HEADROOM,
+ 		.max_len = RX_BUF_LENGTH,
+ 	};
+@@ -2961,6 +3113,7 @@ static int bcmgenet_tdma_disable(struct bcmgenet_priv *priv)
+ 
+ 	reg = bcmgenet_tdma_readl(priv, DMA_CTRL);
+ 	mask = (1 << (priv->hw_params->tx_queues + 1)) - 1;
++	mask |= BIT(DESC_INDEX);
+ 	mask = (mask << DMA_RING_BUF_EN_SHIFT) | DMA_EN;
+ 	reg &= ~mask;
+ 	bcmgenet_tdma_writel(priv, reg, DMA_CTRL);
+@@ -3006,14 +3159,18 @@ static int bcmgenet_rdma_disable(struct bcmgenet_priv *priv)
+  * with queue 1 being the highest priority queue.
   *
-  * Queues 0-15 are priority queues. Hardware Filtering Block (HFB) can be
-@@ -3032,6 +3089,7 @@ static void bcmgenet_fini_dma(struct bcmgenet_priv *priv)
+  * Queue 0 is the default Tx queue with
+- * GENET_Q0_TX_BD_CNT = 256 - 4 * 32 = 128 descriptors.
++ * GENET_Q0_TX_BD_CNT = 256 - 4 * 32 - 32 = 96 descriptors.
++ *
++ * Ring 16 (DESC_INDEX) is used for XDP TX with
++ * GENET_Q16_TX_BD_CNT = 32 descriptors.
+  *
+  * The transmit control block pool is then partitioned as follows:
+- * - Tx queue 0 uses tx_cbs[0..127]
+- * - Tx queue 1 uses tx_cbs[128..159]
+- * - Tx queue 2 uses tx_cbs[160..191]
+- * - Tx queue 3 uses tx_cbs[192..223]
+- * - Tx queue 4 uses tx_cbs[224..255]
++ * - Tx queue 0 uses tx_cbs[0..95]
++ * - Tx queue 1 uses tx_cbs[96..127]
++ * - Tx queue 2 uses tx_cbs[128..159]
++ * - Tx queue 3 uses tx_cbs[160..191]
++ * - Tx queue 4 uses tx_cbs[192..223]
++ * - Tx queue 16 uses tx_cbs[224..255]
+  */
+ static void bcmgenet_init_tx_queues(struct net_device *dev)
+ {
+@@ -3026,7 +3183,8 @@ static void bcmgenet_init_tx_queues(struct net_device *dev)
+ 
+ 	/* Initialize Tx priority queues */
+ 	for (i = 0; i <= priv->hw_params->tx_queues; i++) {
+-		bcmgenet_init_tx_ring(priv, i, end - start, start, end);
++		bcmgenet_init_tx_ring(priv, &priv->tx_rings[i],
++				      i, end - start, start, end);
+ 		start = end;
+ 		end += priv->hw_params->tx_bds_per_q;
+ 		dma_priority[DMA_PRIO_REG_INDEX(i)] |=
+@@ -3034,13 +3192,19 @@ static void bcmgenet_init_tx_queues(struct net_device *dev)
+ 			<< DMA_PRIO_REG_SHIFT(i);
  	}
  
- 	bcmgenet_free_rx_buffers(priv);
-+	bcmgenet_destroy_rx_page_pools(priv);
- 	kfree(priv->rx_cbs);
- 	kfree(priv->tx_cbs);
- }
-@@ -3108,6 +3166,7 @@ static int bcmgenet_init_dma(struct bcmgenet_priv *priv, bool flush_rx)
- 	if (ret) {
- 		netdev_err(priv->dev, "failed to initialize Rx queues\n");
- 		bcmgenet_free_rx_buffers(priv);
-+		bcmgenet_destroy_rx_page_pools(priv);
- 		kfree(priv->rx_cbs);
- 		kfree(priv->tx_cbs);
- 		return ret;
++	/* Initialize ring 16 (descriptor ring) for XDP TX */
++	bcmgenet_init_tx_ring(priv, &priv->xdp_tx_ring,
++			      DESC_INDEX, GENET_Q16_TX_BD_CNT,
++			      TOTAL_DESC - GENET_Q16_TX_BD_CNT, TOTAL_DESC);
++
+ 	/* Set Tx queue priorities */
+ 	bcmgenet_tdma_writel(priv, dma_priority[0], DMA_PRIORITY_0);
+ 	bcmgenet_tdma_writel(priv, dma_priority[1], DMA_PRIORITY_1);
+ 	bcmgenet_tdma_writel(priv, dma_priority[2], DMA_PRIORITY_2);
+ 
+-	/* Configure Tx queues as descriptor rings */
++	/* Configure Tx queues as descriptor rings, including ring 16 */
+ 	ring_mask = (1 << (priv->hw_params->tx_queues + 1)) - 1;
++	ring_mask |= BIT(DESC_INDEX);
+ 	bcmgenet_tdma_writel(priv, ring_mask, DMA_RING_CFG);
+ 
+ 	/* Enable Tx rings */
+@@ -3754,6 +3918,21 @@ static void bcmgenet_get_stats64(struct net_device *dev,
+ 		stats->tx_dropped += tx_dropped;
+ 	}
+ 
++	/* Include XDP TX ring (DESC_INDEX) stats */
++	tx_stats = &priv->xdp_tx_ring.stats64;
++	do {
++		start = u64_stats_fetch_begin(&tx_stats->syncp);
++		tx_bytes = u64_stats_read(&tx_stats->bytes);
++		tx_packets = u64_stats_read(&tx_stats->packets);
++		tx_errors = u64_stats_read(&tx_stats->errors);
++		tx_dropped = u64_stats_read(&tx_stats->dropped);
++	} while (u64_stats_fetch_retry(&tx_stats->syncp, start));
++
++	stats->tx_bytes += tx_bytes;
++	stats->tx_packets += tx_packets;
++	stats->tx_errors += tx_errors;
++	stats->tx_dropped += tx_dropped;
++
+ 	for (q = 0; q <= priv->hw_params->rx_queues; q++) {
+ 		rx_stats = &priv->rx_rings[q].stats64;
+ 		do {
+@@ -4257,6 +4436,7 @@ static int bcmgenet_probe(struct platform_device *pdev)
+ 		u64_stats_init(&priv->rx_rings[i].stats64.syncp);
+ 	for (i = 0; i <= priv->hw_params->tx_queues; i++)
+ 		u64_stats_init(&priv->tx_rings[i].stats64.syncp);
++	u64_stats_init(&priv->xdp_tx_ring.stats64.syncp);
+ 
+ 	/* libphy will determine the link state */
+ 	netif_carrier_off(dev);
 diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.h b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-index 9e4110c7fdf6..11a0ec563a89 100644
+index 1459473ac1b0..8966d32efe2f 100644
 --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.h
 +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-@@ -15,6 +15,7 @@
- #include <linux/phy.h>
- #include <linux/dim.h>
- #include <linux/ethtool.h>
-+#include <net/page_pool/helpers.h>
- 
- #include "../unimac.h"
- 
-@@ -469,6 +470,8 @@ struct bcmgenet_rx_stats64 {
+@@ -472,6 +472,8 @@ struct bcmgenet_rx_stats64 {
  
  struct enet_cb {
  	struct sk_buff      *skb;
-+	struct page         *rx_page;
-+	unsigned int        rx_page_offset;
++	struct xdp_frame    *xdpf;
++	bool                xdp_dma_map;
+ 	struct page         *rx_page;
+ 	unsigned int        rx_page_offset;
  	void __iomem *bd_addr;
- 	DEFINE_DMA_UNMAP_ADDR(dma_addr);
- 	DEFINE_DMA_UNMAP_LEN(dma_len);
-@@ -575,6 +578,7 @@ struct bcmgenet_rx_ring {
- 	struct bcmgenet_net_dim dim;
- 	u32		rx_max_coalesced_frames;
- 	u32		rx_coalesce_usecs;
-+	struct page_pool *page_pool;
- 	struct bcmgenet_priv *priv;
- };
+@@ -611,6 +613,7 @@ struct bcmgenet_priv {
+ 	unsigned int num_tx_bds;
  
+ 	struct bcmgenet_tx_ring tx_rings[GENET_MAX_MQ_CNT + 1];
++	struct bcmgenet_tx_ring xdp_tx_ring;
+ 
+ 	/* receive variables */
+ 	void __iomem *rx_bds;
 -- 
 2.51.0
 
