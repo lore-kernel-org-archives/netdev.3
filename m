@@ -1,54 +1,54 @@
-Received: from mail-qt1-f202.google.com (mail-qt1-f202.google.com [209.85.160.202])
+Received: from mail-vs1-f73.google.com (mail-vs1-f73.google.com [209.85.217.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44A0B34B1B4
-	for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 20:03:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EF07370D49
+	for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 20:03:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776369822; cv=none; b=gEihcEww01BdKWc8zi8Ac2pldg8WY4BBj365IAUJQJrmT98C7eM7N+cwT5FTVmIvT5HHsKNUn5nocRrB5mDLeDZiDZrbVpGxIL34lyIKz7hUo9GK6RbJJVa9lj8ZCCScy+ve4EOfZwX5Qah+xykuxNdkRkwA5gE9EXHMq7rOnRY=
+	t=1776369819; cv=none; b=Ript4EtQuu2hKxmf56FBj1Xm/UntjIPAfLas51dFYIfIwpxDg3m/6H99f9s9EVifUzhUX3T0+hD1eZBsSB7naiGAFIEJiNXr6pGP6LXHuaUkksd/Hd799c7yZn6/YV/CzzaWMi2RUZD7+LOof1VlLUizCbFL3Kslqmyys8x8eRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776369822; c=relaxed/simple;
-	bh=tcBDLZDz/jJ3rNjcbJoLq378+bS/oyRDX/5C8epBmDk=;
+	s=arc-20240116; t=1776369819; c=relaxed/simple;
+	bh=YBnn/IPLU7tel366Kd/6VblmyKuwLEWu7jYPAXZ7/X8=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=l2pAb67dBKdJa8bl6wC+PwusNJ7tW0mXgDmz9KEYW7R+4mPP4QjSJDd5rlPeZMp0Tl6kQlks7D7Ac24X6IzYHbBRSgd69Vh1leYLrLQyK+DkCvQyy+zNcR/1VposASvJcgqEYLx8s5hqFmv99ThMa3DVba0Qh89dlXmxEGMCRg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Z6/myJhj; arc=none smtp.client-ip=209.85.160.202
+	 To:Cc:Content-Type; b=YYstLNMZV8wE15jlhPnrYjvxPQJyd//179Hi/8uGJuuG6kKXvzDT1Vi4C3oBDY6WPE8jwpSYBxWjooXYs1YZYdgeruWe34UtGHzrEu06k9n4mFRuxlLzMAImiMDhO0cwhK3R89kDw4K5kBZu4aFIzgGmyRcZP7+iRkL2YcVU+9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Lq/+3EMy; arc=none smtp.client-ip=209.85.217.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Z6/myJhj"
-Received: by mail-qt1-f202.google.com with SMTP id d75a77b69052e-50b31cff27fso44404981cf.3
-        for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 13:03:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Lq/+3EMy"
+Received: by mail-vs1-f73.google.com with SMTP id ada2fe7eead31-605e5d95cccso7517900137.3
+        for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 13:03:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776369814; x=1776974614; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1776369811; x=1776974611; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=YujhcABrMa8DOVlTldRHe2QbFeXpp02Lv4hICUzYcMs=;
-        b=Z6/myJhj2w1ufbf6uFaqmLfPYn5N0lXF+OiMnDAJDtX+eoh76CRxDGZSMtlNMdtnH9
-         MS/Be8MICma6EhMhf7/oV/VIKKStorA7yDgRHSJeaEwU5cU05a/Uf6Phe424Z66lLkd1
-         Ta8dHT+osN+0JE9miicEgmFaKEqTuH8bLAxNAnjv8YpLdWQZ0Q/gt122bJpVaOn24bcN
-         yvh9UJblShnpcgCtWU2cFNbNtshfmflL9mrRnHc37o6VkbC+cCreZ0lxj9AI2Jy7OTM0
-         wNm2dDEL5a3zq+0Xnb4pmsbQmhFSEndVjDuQ00O3y0PH8qJjH90q6+GEvK0ZYS5wqowo
-         /Ulg==
+        bh=3VXz1sAO7uTut8xfy3XcwQg3ytiBsNZ4KD0JOUg7B+s=;
+        b=Lq/+3EMy0W9kG6o7vVJ/BvVIN9GHoTko0iYM2VspYCqnHH9CgDYJsfTylQ05gjkQj3
+         +oTaRiKNLmPURRxQ53It/p80s8OJvIki6fZyYDGN8Oqz86LDohGQUeAugT1kFIHJitwQ
+         GpOMAhFwTsfDlIwmSj29Rfa0eCDgk3QVuH1mkwjifKmo0Loc1osYEpFYqbQQdc0VEkKq
+         oDsHTDolJ24hKlm0VVjQRRQ2Rdlx7vqHgx5fRK5waqmDVEqhFS11Bdlefa8vw++YERkA
+         9h6gsioqcmyUdbKA5ZJAfCLIpBSuIz2+jzlXArd2OnPG85a/EMpr8b3rh+GEiEdR2xKB
+         Pdcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776369814; x=1776974614;
+        d=1e100.net; s=20251104; t=1776369811; x=1776974611;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YujhcABrMa8DOVlTldRHe2QbFeXpp02Lv4hICUzYcMs=;
-        b=HSZ+eoDzdqq611NNZnpgQxzthTj7vCMMThdQl6rfH6WSHZ8QE9+CoTvYOXLwPGxi0H
-         ghmUDQ4mtgkK9qSIjigKoDmssN953Tfym2oF3ynBtvzTwsSUVF8hQ2Jg52tn1yxGK9w5
-         jrifSnt6HG83Xt7NhI9+w1veVoOILkpunhoLJWuKN5ISJksdIvjUzw0f8bwPnv63YAf/
-         y4GTYsudCeVh7n9gmQKdGWnYWU9DOjWr1yYlyOafyaHwBj0T389YTUjAmuS4neRpNbAp
-         1wcTs49gaF1l2VKaHenDoLG4uNAPpKi2cyqR0LOWZpRNvNinynrSJabn4SKkH9a6byq7
-         M2TQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9RuWoLwbPHNOJnfNLCHB+8Zioe1o8UOUW5ylWENhniqkJw7Drrl+cHx8Ap9eUpLmR8ZeZgjn8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNXjpM+OXhhPHvk4zK5F69DdT3CETREgL7fW/qUFbzw7tTlkgO
-	eMM1YW4L3LXYOEYyqebz28U1hRFblFp/7fdNWyMNIQRnUgMSSJAL4Az4EHkLMsu1n3v3289uUaO
-	6Znc65cR8BqY9Mw==
-X-Received: from qtbih7.prod.google.com ([2002:a05:622a:6a87:b0:50b:b3f4:b4ce])
+        bh=3VXz1sAO7uTut8xfy3XcwQg3ytiBsNZ4KD0JOUg7B+s=;
+        b=AlIg3GqEvnp6K63NkGmvhMgEA2JU5KPpnMqeD71MHlPAdkIHkEvgjBhJE22hkXhFwR
+         3c1aRWipI9UNaxYvIX4z3npbL03GoCP/B9p1ee23nnuNxiQDMVAgLbHS8BjUHMwajjlU
+         zd03itJ9T2iQzzktnHcS0mHzFa8no2zbQyCW037787oosS/t7a441mD8/smLTHiZ2YtU
+         pCSA3kK0h5HyLPQCPGUVFRlGNKUxb2PhWmJOdMIg2cyvXZsWfLG2mUH/uQS7M2uWNcF5
+         8kWuziW3BLWWUZgNLarkIyPv0RrU1LBxtJCNZTdBhAMdjG5s6zkoIXJWj/T7c5xTlz77
+         mv5w==
+X-Forwarded-Encrypted: i=1; AFNElJ/rgXHSDAscEJpKhQXftaBC/QBWHVOpVlbz1P3imZWIFQ86fepCH8Oz9jhabfQGmMsd5vY4tZc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxupLedmUB0AfQYbllq5cicR2NFVa5CqE0SApR66XGcG5bgT4T6
+	NyhwigIosKzClS0KlyPJu2OljVw/S8IHTh9S29yGkj8/YFQq++EJ2RTn+4MloOJZn2kiPiSrhOm
+	gCg/dWbKsZl2Bzw==
+X-Received: from qvboe9.prod.google.com ([2002:a05:6214:4309:b0:8ac:a22e:36d3])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:622a:2c4:b0:50d:69cb:d603 with SMTP id d75a77b69052e-50e34a262e0mr9594511cf.47.1776369814072;
- Thu, 16 Apr 2026 13:03:34 -0700 (PDT)
-Date: Thu, 16 Apr 2026 20:03:13 +0000
+ 2002:a05:6102:6444:b0:5ff:cb2c:a04c with SMTP id ada2fe7eead31-616cadc88eemr396440137.1.1776369810885;
+ Thu, 16 Apr 2026 13:03:30 -0700 (PDT)
+Date: Thu, 16 Apr 2026 20:03:11 +0000
 In-Reply-To: <20260416200319.3608680-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -58,8 +58,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260416200319.3608680-1-edumazet@google.com>
 X-Mailer: git-send-email 2.54.0.rc1.513.gad8abe7a5a-goog
-Message-ID: <20260416200319.3608680-9-edumazet@google.com>
-Subject: [PATCH net 08/14] tcp: annotate data-races around tp->bytes_retrans
+Message-ID: <20260416200319.3608680-7-edumazet@google.com>
+Subject: [PATCH net 06/14] tcp: add data-race annotations for TCP_NLA_SNDQ_SIZE
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>
@@ -71,41 +71,64 @@ Content-Type: text/plain; charset="UTF-8"
 tcp_get_timestamping_opt_stats() intentionally runs lockless, we must
 add READ_ONCE() and WRITE_ONCE() annotations to keep KCSAN happy.
 
-Fixes: fb31c9b9f6c8 ("tcp: add data bytes retransmitted stats")
+Fixes: 87ecc95d81d9 ("tcp: add send queue size stat in SCM_TIMESTAMPING_OPT_STATS")
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
- net/ipv4/tcp.c        | 4 ++--
+ net/ipv4/tcp.c        | 4 +++-
+ net/ipv4/tcp_input.c  | 4 ++--
  net/ipv4/tcp_output.c | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ 3 files changed, 6 insertions(+), 4 deletions(-)
 
 diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index f999b86851cdcc2a9b9ce379397e55293871c00a..8c84639dc54bb8d8aa6f3eeb2b7c1fea16ebfcb5 100644
+index 0aabd02d44967dae3e569702f76037beb45e5de8..729936d13a5c6d9c39edc880636e01cf0973688e 100644
 --- a/net/ipv4/tcp.c
 +++ b/net/ipv4/tcp.c
-@@ -4463,8 +4463,8 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
+@@ -4456,7 +4456,9 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
+ 	nla_put_u32(stats, TCP_NLA_DELIVERED, READ_ONCE(tp->delivered));
+ 	nla_put_u32(stats, TCP_NLA_DELIVERED_CE, READ_ONCE(tp->delivered_ce));
  
- 	nla_put_u64_64bit(stats, TCP_NLA_BYTES_SENT, READ_ONCE(tp->bytes_sent),
- 			  TCP_NLA_PAD);
--	nla_put_u64_64bit(stats, TCP_NLA_BYTES_RETRANS, tp->bytes_retrans,
--			  TCP_NLA_PAD);
-+	nla_put_u64_64bit(stats, TCP_NLA_BYTES_RETRANS,
-+			  READ_ONCE(tp->bytes_retrans), TCP_NLA_PAD);
- 	nla_put_u32(stats, TCP_NLA_DSACK_DUPS, tp->dsack_dups);
- 	nla_put_u32(stats, TCP_NLA_REORD_SEEN, tp->reord_seen);
- 	nla_put_u32(stats, TCP_NLA_SRTT, tp->srtt_us >> 3);
+-	nla_put_u32(stats, TCP_NLA_SNDQ_SIZE, tp->write_seq - tp->snd_una);
++	nla_put_u32(stats, TCP_NLA_SNDQ_SIZE,
++		    max_t(int, 0,
++			  READ_ONCE(tp->write_seq) - READ_ONCE(tp->snd_una)));
+ 	nla_put_u8(stats, TCP_NLA_CA_STATE, inet_csk(sk)->icsk_ca_state);
+ 
+ 	nla_put_u64_64bit(stats, TCP_NLA_BYTES_SENT, tp->bytes_sent,
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 63ff89210a72fbf5710279c41010d3f6e734e522..edb5013873e0c4a9ba2f8a81a43eff5fb6e7a47b 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -3912,7 +3912,7 @@ static void tcp_snd_una_update(struct tcp_sock *tp, u32 ack)
+ 	sock_owned_by_me((struct sock *)tp);
+ 	tp->bytes_acked += delta;
+ 	tcp_snd_sne_update(tp, ack);
+-	tp->snd_una = ack;
++	WRITE_ONCE(tp->snd_una, ack);
+ }
+ 
+ static void tcp_rcv_sne_update(struct tcp_sock *tp, u32 seq)
+@@ -7240,7 +7240,7 @@ tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb)
+ 		if (sk->sk_socket)
+ 			sk_wake_async(sk, SOCK_WAKE_IO, POLL_OUT);
+ 
+-		tp->snd_una = TCP_SKB_CB(skb)->ack_seq;
++		WRITE_ONCE(tp->snd_una, TCP_SKB_CB(skb)->ack_seq);
+ 		tp->snd_wnd = ntohs(th->window) << tp->rx_opt.snd_wscale;
+ 		tcp_init_wl(tp, TCP_SKB_CB(skb)->seq);
+ 
 diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index 87af4731df87ea5f310d39b1392cb995d4fa8f78..f9d8755705f762fe4da3064d2b1bfce4828ec0c1 100644
+index 2663505a0dd7a0eae69f6a91250b4a0b6f357f7d..9f83c7e4acabc64f0a45e4879c326694a306b368 100644
 --- a/net/ipv4/tcp_output.c
 +++ b/net/ipv4/tcp_output.c
-@@ -3645,7 +3645,7 @@ int __tcp_retransmit_skb(struct sock *sk, struct sk_buff *skb, int segs)
- 	if (TCP_SKB_CB(skb)->tcp_flags & TCPHDR_SYN)
- 		__NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPSYNRETRANS);
- 	WRITE_ONCE(tp->total_retrans, tp->total_retrans + segs);
--	tp->bytes_retrans += skb->len;
-+	WRITE_ONCE(tp->bytes_retrans, tp->bytes_retrans + skb->len);
- 
- 	/* make sure skb->data is aligned on arches that require it
- 	 * and check if ack-trimming & collapsing extended the headroom
+@@ -4153,7 +4153,7 @@ static void tcp_connect_init(struct sock *sk)
+ 	tp->snd_wnd = 0;
+ 	tcp_init_wl(tp, 0);
+ 	tcp_write_queue_purge(sk);
+-	tp->snd_una = tp->write_seq;
++	WRITE_ONCE(tp->snd_una, tp->write_seq);
+ 	tp->snd_sml = tp->write_seq;
+ 	tp->snd_up = tp->write_seq;
+ 	WRITE_ONCE(tp->snd_nxt, tp->write_seq);
 -- 
 2.54.0.rc1.513.gad8abe7a5a-goog
 
