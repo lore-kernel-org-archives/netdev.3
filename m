@@ -1,140 +1,86 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE6B337F8AF
-	for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 08:54:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76C93803E4;
+	Thu, 16 Apr 2026 08:54:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776329684; cv=none; b=hJQyxS6g4kRAHyrzYdWrtkcEvmsu8nHBXv2o7CWBhvbClmxao+wuEObGAcqxrpSdcqHLlOuK6LuThLDiWOmOdZHbywxYPd7HUxPGZDaeM4SFto+wa7VtgytReXseG22WvCyLjSepkLiJU0kSQOcGgmPDPcl0u5EWTDvAPvz7V5g=
+	t=1776329701; cv=none; b=n+vqypitbriEmSSD5fwDbuaN76oQbwbqGEx0BHnNvXEoS5D4XtleYXqMjmW30kpa924BL0W9tId2QSQRyVSQRoN7Fb0OlI8La6/CfULYCLq3aVyTSjwUY8kdF9eIHlb9iYDzjw/aYXdDq8cbHiXisk7fSdzezHbJzjBq+lNBm6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776329684; c=relaxed/simple;
-	bh=0hVzSIPn5uhdApZ9JnNwNiVK8zLuZNEwYIshEeNqQz4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=ocFsFkKvnqVwlLo9nB61yhgIv8F9pOZIOGzliegVCKTz7Mav5K3Kc/CQcwEKuo1GzWhp+FF9AeB5p19U3etQK0Qo4fFWmvg6cmDbmSbIW0U85etmVVJ2DNIZalRn9SMI7uTfe2RPn0jMBZiI4nVjZbzpSYXEKLQeBUk+xcsh39M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Ac9tj3u6; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1776329701; c=relaxed/simple;
+	bh=9IobvFpQbS8xVL4t/3Nn3NBNUu395pAwqYcnMxHAGNg=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=O/1GlA9aamQnb8GbiGUodeniDPz3lYfQZdoWLk6dEuxM1h8MVEyT0WgNdFhZ78Ed0QFfyzJKetgdDY2wNZAqwu9zhc96Sbj+hE+Rr+s2fBewYepMWdEiR6GdBMK5JR6bgScN4xTiJaiT95rKcdFHoabExNmyb0KnhmQDLtrjG7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b=NkKIkdKV; arc=none smtp.client-ip=129.217.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Ac9tj3u6"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 4B3D44E42A18;
-	Thu, 16 Apr 2026 08:54:41 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 1EDB15FDEB;
-	Thu, 16 Apr 2026 08:54:41 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6CCE91045A148;
-	Thu, 16 Apr 2026 10:54:34 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1776329679; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=V7sHlpP9WcCyxAkpUsYbIS6sNVJZx8gGVQEfMic61Ww=;
-	b=Ac9tj3u67O81GBitqbRpO4/czlpyeNmWG14W+lOOnITLRYDIyzBs6Jz0CoT+fdGTNsLujb
-	l5BawobAtwc9uZPduJsut7I3A7ICSxhN4pHFBq4Zytn2gtc9jwwPlLhPBQaOUZaQlto0nZ
-	BfsPyMiifLtnH0KTlyiLjvrpFNDropmPEybERCUlrG/9RBhf++gNCCtQ+H27lH/zLq98eJ
-	AU3xS7WYcpLKieYJ/9oBgzHwMAq/VTs3g9D+kuRbeJyqZTkKONOe74wpZF6t0Dxkl7t95N
-	Los2i0smkzXzsqpXUVhyx1qHXP3sHMvKT1JRMo9uccYQ0cCQg7nG/6R8F82sbg==
+	dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b="NkKIkdKV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tu-dortmund.de;
+	s=unimail; t=1776329687;
+	bh=9IobvFpQbS8xVL4t/3Nn3NBNUu395pAwqYcnMxHAGNg=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To;
+	b=NkKIkdKVZ4fi31ItM8Tvf11CiXJry9lcn8AW+qVRkgp8lSukkUZMgkG1/DIDVZLDj
+	 FQscoDR2J+LiRYJm7BWOAT1RzL42rfLD6X1ETF+8Iv49qFV0KfMkXi0+AXCT2pAHPs
+	 o9DpEaDWZNF7HhNxKdLnbqYEptjrZ/MrEMEOoFUY=
+Received: from [129.217.186.105] ([129.217.186.105])
+	(authenticated bits=0)
+	by unimail.uni-dortmund.de (8.18.2/8.18.2) with ESMTPSA id 63G8skqo025371
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Thu, 16 Apr 2026 10:54:46 +0200 (CEST)
+Message-ID: <73033bfc-4da3-4057-9480-bd977a66ecef@tu-dortmund.de>
+Date: Thu, 16 Apr 2026 10:54:45 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v8 4/4] tun/tap & vhost-net: avoid ptr_ring
+ tail-drop when a qdisc is present
+From: Simon Schippers <simon.schippers@tu-dortmund.de>
+To: Jason Wang <jasowang@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
+Cc: willemdebruijn.kernel@gmail.com, andrew+netdev@lunn.ch,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, mst@redhat.com, eperezma@redhat.com,
+        leiyang@redhat.com, stephen@networkplumber.org, jon@nutanix.com,
+        tim.gebauer@tu-dortmund.de, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        virtualization@lists.linux.dev
+References: <20260312130639.138988-1-simon.schippers@tu-dortmund.de>
+ <20260312130639.138988-5-simon.schippers@tu-dortmund.de>
+ <CACGkMEtN9XgYPGHQg4TEWEsa_UcMbcnzO=VaTFT=0Tn4BayMDw@mail.gmail.com>
+ <0908392d-6314-4141-b908-6c9a880ba0a4@tu-dortmund.de>
+ <cda710f8-033a-4772-b5ce-a2cfddf42bea@tu-dortmund.de>
+ <CACGkMEuLqxnz=GtdKp3-u0egkGT_eZUgBBwvvtHcgAYpLJv-UA@mail.gmail.com>
+ <3d3274b4-f274-4cf9-9d0f-989d05148604@tu-dortmund.de>
+ <CACGkMEsUag4zNZG+aYipHv_PirbKb_rs7DzSOr-NF8ckhUaJOQ@mail.gmail.com>
+ <b9d84d88-46d5-4fd3-a5b2-d914f54766f6@tu-dortmund.de>
+Content-Language: en-US
+In-Reply-To: <b9d84d88-46d5-4fd3-a5b2-d914f54766f6@tu-dortmund.de>
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 16 Apr 2026 10:54:33 +0200
-Message-Id: <DHUGBENEI5AU.1XI2OO09FCELT@bootlin.com>
-To: "Jakub Kicinski" <kuba@kernel.org>
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Subject: Re: [PATCH net-next v2 13/14] net: macb: use context swapping in
- .set_ringparam()
-Cc: "Nicolas Ferre" <nicolas.ferre@microchip.com>, "Claudiu Beznea"
- <claudiu.beznea@tuxon.dev>, "Andrew Lunn" <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>,
- "Paolo Abeni" <pabeni@redhat.com>, "Richard Cochran"
- <richardcochran@gmail.com>, "Russell King" <linux@armlinux.org.uk>, "Paolo
- Valerio" <pvalerio@redhat.com>, "Conor Dooley" <conor@kernel.org>, "Nicolai
- Buchwitz" <nb@tipi-net.de>, "Vladimir Kondratiev"
- <vladimir.kondratiev@mobileye.com>, "Gregory CLEMENT"
- <gregory.clement@bootlin.com>, =?utf-8?q?Beno=C3=AEt_Monin?=
- <benoit.monin@bootlin.com>, "Tawfik Bayouk" <tawfik.bayouk@mobileye.com>,
- "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>, "Maxime Chevallier"
- <maxime.chevallier@bootlin.com>, <netdev@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260410-macb-context-v2-0-af39f71d40b6@bootlin.com>
- <20260410-macb-context-v2-13-af39f71d40b6@bootlin.com>
- <20260413175040.352378c5@kernel.org>
-In-Reply-To: <20260413175040.352378c5@kernel.org>
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 7bit
 
-Hello Jakub,
+To summarize the discussion from my POV:
 
-On Tue Apr 14, 2026 at 2:50 AM CEST, Jakub Kicinski wrote:
-> On Fri, 10 Apr 2026 21:52:01 +0200 Th=C3=A9o Lebrun wrote:
->> ethtool_ops.set_ringparam() is implemented using the primitive close /
->> update ring size / reopen sequence. Under memory pressure this does not
->> fly: we free our buffers at close and cannot reallocate new ones at
->> open. Also, it triggers a slow PHY reinit.
->>=20
->> Instead, exploit the new context mechanism and improve our sequence to:
->>  - allocate a new context (including buffers) first
->>  - if it fails, early return without any impact to the interface
->>  - stop interface
->>  - update global state (bp, netdev, etc)
->>  - pass buffer pointers to the hardware
->>  - start interface
->>  - free old context.
->>=20
->> The HW disable sequence is inspired by macb_reset_hw() but avoids
->> (1) setting NCR bit CLRSTAT and (2) clearing register PBUFRXCUT.
->>=20
->> The HW re-enable sequence is inspired by macb_mac_link_up(), skipping
->> over register writes which would be redundant (because values have not
->> changed).
->>=20
->> The generic context swapping parts are isolated into helper functions
->> macb_context_swap_start|end(), reusable by other operations (change_mtu,
->> set_channels, etc).
->
->> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethe=
-rnet/cadence/macb_main.c
->> index 81beb67b206a..340ae7d881c6 100644
->> --- a/drivers/net/ethernet/cadence/macb_main.c
->> +++ b/drivers/net/ethernet/cadence/macb_main.c
->> @@ -3081,6 +3081,89 @@ static void macb_configure_dma(struct macb *bp)
->>  	}
->>  }
->> =20
->> +static void macb_context_swap_start(struct macb *bp)
->> +{
->> +	struct macb_queue *queue;
->> +	unsigned long flags;
->> +	unsigned int q;
->> +	u32 ctrl;
->> +
->> +	/* Disable software Tx, disable HW Tx/Rx and disable NAPI. */
->> +
->> +	netif_tx_disable(bp->netdev);
->
-> AFAIR netif_tx_disable() just stops all the queues, if the NAPIs and
-> whatever else may wake queues is still running the queues may get
-> restarted right away.
+Open point: __ptr_ring_zero_tail() is only called after
+            consuming ring.batch elements.
+1) Consumer wakes up the producer but the slot is not cleaned.
+--> I disagree, the consumer only wakes after consuming ring.size/2.
+    Then __ptr_ring_zero_tail() was called at least once.
+2) Producer is woken up but see the ring is full, so it need to
+   drop the packet.
+--> I disagree, because then NETDEV_TX_BUSY is returned. This is
+    noticeable as qdisc requeue and only happens very rarely.
 
-Your memory appears correct (unsurprisingly). Ordering was wrong, it
-must be (1) NAPI disabling followed by (2) disabling of Tx queues.
-
-The tx queue wakeup is possible in NAPI poll function through this call
-stack: netif_wake_subqueue() <- macb_tx_complete() <- macb_tx_poll().
-
-There is also macb_tx_error_task() that disables Tx queues at start and
-re-enables them at the end. Meaning we need to disable Tx queues after
-we disabled queue->tx_error_task. (Note that tx_error_task probably
-races with NAPI, but that is outside our scope.)
-
-Thanks,
-
---
-Th=C3=A9o Lebrun, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Points I will address:
+- Minor nit on patch 2 by MST.
+- Rebase patch 3 because of commit d748047
+  ("ptr_ring: disable KCSAN warnings").
+- Document the pair of the smp_mb__after_atomic() in tun_net_xmit
+  with tun_ring_consume().
+- Use 1 ptr_ring spinlock instead of 2 (currently used for consume
+  and empty check), not sure how to implement it pretty rn.
+- Run pktgen benchmarks with pg_set SHARED.
 
