@@ -1,54 +1,54 @@
-Received: from mail-qk1-f201.google.com (mail-qk1-f201.google.com [209.85.222.201])
+Received: from mail-qt1-f202.google.com (mail-qt1-f202.google.com [209.85.160.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B51CC3E1D1F
-	for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 20:03:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44A0B34B1B4
+	for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 20:03:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776369816; cv=none; b=m6/fNMi7I99IcBqYP9SC/QvdZl9ztqOLN+Gzu7HbfNJ6V1f4YcQ0G6nw5dr2hPauUnPbsDOBgiOVzET+B/5UPnQKQzg/RUN6h5M05jtND02LkqSpb4XABwLvKGsaYcemH8IfRNVHtlkpfffpHo4kN6gOqF7RHJMp3mdO0fK4O80=
+	t=1776369822; cv=none; b=gEihcEww01BdKWc8zi8Ac2pldg8WY4BBj365IAUJQJrmT98C7eM7N+cwT5FTVmIvT5HHsKNUn5nocRrB5mDLeDZiDZrbVpGxIL34lyIKz7hUo9GK6RbJJVa9lj8ZCCScy+ve4EOfZwX5Qah+xykuxNdkRkwA5gE9EXHMq7rOnRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776369816; c=relaxed/simple;
-	bh=cwq2iya90vysSzJUz/ny/lP7bPREp3m/3U94t+JlMvo=;
+	s=arc-20240116; t=1776369822; c=relaxed/simple;
+	bh=tcBDLZDz/jJ3rNjcbJoLq378+bS/oyRDX/5C8epBmDk=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Jy6jgZ0o2TbCbJ7avcnf+ddK6i1iXFAtTvCuvchm3A4nWvG8brGQKW5U7Ly8mHSi2zEz+sOCZ8Dd//rgl1FnFJqlu1O7W9h4lJPkEYIYReD4m7u3NrO293NA8Heq0hVgDCbt5zCrSon80ftYSHwqcWv/CeMIKcui8Qn3/jNdhk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sSI1Ur9L; arc=none smtp.client-ip=209.85.222.201
+	 To:Cc:Content-Type; b=l2pAb67dBKdJa8bl6wC+PwusNJ7tW0mXgDmz9KEYW7R+4mPP4QjSJDd5rlPeZMp0Tl6kQlks7D7Ac24X6IzYHbBRSgd69Vh1leYLrLQyK+DkCvQyy+zNcR/1VposASvJcgqEYLx8s5hqFmv99ThMa3DVba0Qh89dlXmxEGMCRg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Z6/myJhj; arc=none smtp.client-ip=209.85.160.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sSI1Ur9L"
-Received: by mail-qk1-f201.google.com with SMTP id af79cd13be357-8d3bb62cd2bso2383267285a.1
-        for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 13:03:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Z6/myJhj"
+Received: by mail-qt1-f202.google.com with SMTP id d75a77b69052e-50b31cff27fso44404981cf.3
+        for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 13:03:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776369806; x=1776974606; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1776369814; x=1776974614; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KW4Y9Ecb+eenvHSDbZzqj4qxRM8FLxAcpJFzlq3TDN0=;
-        b=sSI1Ur9L07mcWH/xB14igRlp4xvmDZcdtinO3kF/cmzXmlUK+owAzD4WembWotQmfl
-         WM4Be4qyGrYgV8GX1yCdtiooTdcVgVScl+tN1nn6OIALyRn3/nAz2+XMXqj1NIyMowNv
-         mC7DMu3lMyQIabgUrIwtD6hyTZJSpDDsjho7I+3aSNwLqsuyyFqJTZBif10AB0G4ET+8
-         8RD5Kj1ZV3X/RLAPO71oORooTSi/T9qXhsXkaQPDcLs2+f25ZXUS1LNQ6jjXAqGDPg4h
-         dkkvvFIpS4mh5hSS0DgPXlMXQKTtoLBqhMQw2JUSwM2Qph8waBt30e5lMZvCXS5EZf1z
-         BkXA==
+        bh=YujhcABrMa8DOVlTldRHe2QbFeXpp02Lv4hICUzYcMs=;
+        b=Z6/myJhj2w1ufbf6uFaqmLfPYn5N0lXF+OiMnDAJDtX+eoh76CRxDGZSMtlNMdtnH9
+         MS/Be8MICma6EhMhf7/oV/VIKKStorA7yDgRHSJeaEwU5cU05a/Uf6Phe424Z66lLkd1
+         Ta8dHT+osN+0JE9miicEgmFaKEqTuH8bLAxNAnjv8YpLdWQZ0Q/gt122bJpVaOn24bcN
+         yvh9UJblShnpcgCtWU2cFNbNtshfmflL9mrRnHc37o6VkbC+cCreZ0lxj9AI2Jy7OTM0
+         wNm2dDEL5a3zq+0Xnb4pmsbQmhFSEndVjDuQ00O3y0PH8qJjH90q6+GEvK0ZYS5wqowo
+         /Ulg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776369806; x=1776974606;
+        d=1e100.net; s=20251104; t=1776369814; x=1776974614;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KW4Y9Ecb+eenvHSDbZzqj4qxRM8FLxAcpJFzlq3TDN0=;
-        b=lcTwAWV1oRooABffapQMYR1SPr3r9qd99xxzYNU9gExqss1LSixFPSC7m87qNNao4K
-         DgtxEakYwZP9Mp06Uzrls5719on9DngzJlK16Pcs+BEcrzkIdyBb70AJlNve8D2egZDn
-         13ewsACnVs+rPusaRkIJ9nR0P0q+FjpkWW4rqDMwlRx3XWqzaU7NqjbZP/QeGXNss5At
-         vWOch+/SD6G+LtgO78eysVSPdLGpG6TSFaJHDX/D1OGo1EjCpO7V6mL8+2i7auV8+MHC
-         I52i5fJaHtw3OBtygwlKMmhL8qQ8ImCUZEKaz5oupNOD9kJ3GO/PQHPqYNB5V+Kfoxat
-         6s5w==
-X-Forwarded-Encrypted: i=1; AFNElJ/30mQkOhpnHchhiE4J5OCGeMehE9edm99J4vMzqfXFmnUTtqIV0Wyf8aJ2BbE6aFndYMp3EW4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzNp1OQuTPizbTcqzTsXvl2JwY10+SXmJT8wMui7nrKI5LORbEi
-	DUWAaEhu7uvfSL6UNHGzlHZDkL0wWnXGrmq3kk608Q9941cECkX/I+zJzJiMJ9gva9eRm/2HwRI
-	yCd9YnSaVNOzs3g==
-X-Received: from qkau28-n1.prod.google.com ([2002:a05:620a:a1dc:10b0:8cd:90d8:e2b6])
+        bh=YujhcABrMa8DOVlTldRHe2QbFeXpp02Lv4hICUzYcMs=;
+        b=HSZ+eoDzdqq611NNZnpgQxzthTj7vCMMThdQl6rfH6WSHZ8QE9+CoTvYOXLwPGxi0H
+         ghmUDQ4mtgkK9qSIjigKoDmssN953Tfym2oF3ynBtvzTwsSUVF8hQ2Jg52tn1yxGK9w5
+         jrifSnt6HG83Xt7NhI9+w1veVoOILkpunhoLJWuKN5ISJksdIvjUzw0f8bwPnv63YAf/
+         y4GTYsudCeVh7n9gmQKdGWnYWU9DOjWr1yYlyOafyaHwBj0T389YTUjAmuS4neRpNbAp
+         1wcTs49gaF1l2VKaHenDoLG4uNAPpKi2cyqR0LOWZpRNvNinynrSJabn4SKkH9a6byq7
+         M2TQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9RuWoLwbPHNOJnfNLCHB+8Zioe1o8UOUW5ylWENhniqkJw7Drrl+cHx8Ap9eUpLmR8ZeZgjn8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxNXjpM+OXhhPHvk4zK5F69DdT3CETREgL7fW/qUFbzw7tTlkgO
+	eMM1YW4L3LXYOEYyqebz28U1hRFblFp/7fdNWyMNIQRnUgMSSJAL4Az4EHkLMsu1n3v3289uUaO
+	6Znc65cR8BqY9Mw==
+X-Received: from qtbih7.prod.google.com ([2002:a05:622a:6a87:b0:50b:b3f4:b4ce])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:269a:b0:8cd:9707:630e with SMTP id af79cd13be357-8e749371156mr136982585a.19.1776369805940;
- Thu, 16 Apr 2026 13:03:25 -0700 (PDT)
-Date: Thu, 16 Apr 2026 20:03:08 +0000
+ 2002:a05:622a:2c4:b0:50d:69cb:d603 with SMTP id d75a77b69052e-50e34a262e0mr9594511cf.47.1776369814072;
+ Thu, 16 Apr 2026 13:03:34 -0700 (PDT)
+Date: Thu, 16 Apr 2026 20:03:13 +0000
 In-Reply-To: <20260416200319.3608680-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -58,9 +58,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260416200319.3608680-1-edumazet@google.com>
 X-Mailer: git-send-email 2.54.0.rc1.513.gad8abe7a5a-goog
-Message-ID: <20260416200319.3608680-4-edumazet@google.com>
-Subject: [PATCH net 03/14] tcp: add data-races annotations around
- tp->reordering, tp->snd_cwnd
+Message-ID: <20260416200319.3608680-9-edumazet@google.com>
+Subject: [PATCH net 08/14] tcp: annotate data-races around tp->bytes_retrans
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>
@@ -70,104 +69,43 @@ Cc: Simon Horman <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>,
 Content-Type: text/plain; charset="UTF-8"
 
 tcp_get_timestamping_opt_stats() intentionally runs lockless, we must
-add READ_ONCE(), WRITE_ONCE() data_race() annotations to keep KCSAN happy.
+add READ_ONCE() and WRITE_ONCE() annotations to keep KCSAN happy.
 
-Fixes: bb7c19f96012 ("tcp: add related fields into SCM_TIMESTAMPING_OPT_STATS")
+Fixes: fb31c9b9f6c8 ("tcp: add data bytes retransmitted stats")
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
- include/net/tcp.h      |  2 +-
- net/ipv4/tcp.c         |  8 ++++----
- net/ipv4/tcp_input.c   | 14 ++++++++------
- net/ipv4/tcp_metrics.c |  2 +-
- 4 files changed, 14 insertions(+), 12 deletions(-)
+ net/ipv4/tcp.c        | 4 ++--
+ net/ipv4/tcp_output.c | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index 674af493882c802ebe03e0cac6e40b7c704aa0de..ecbadcb3a7446cb18c245e670ba49ff574dfaff7 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -1513,7 +1513,7 @@ static inline u32 tcp_snd_cwnd(const struct tcp_sock *tp)
- static inline void tcp_snd_cwnd_set(struct tcp_sock *tp, u32 val)
- {
- 	WARN_ON_ONCE((int)val <= 0);
--	tp->snd_cwnd = val;
-+	WRITE_ONCE(tp->snd_cwnd, val);
- }
- 
- static inline bool tcp_in_slow_start(const struct tcp_sock *tp)
 diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index e39e0734d958f39aa83a33f5c608ce3b94232fb1..24ba80d244b1fb69102b587b568cebe7b78dff9d 100644
+index f999b86851cdcc2a9b9ce379397e55293871c00a..8c84639dc54bb8d8aa6f3eeb2b7c1fea16ebfcb5 100644
 --- a/net/ipv4/tcp.c
 +++ b/net/ipv4/tcp.c
-@@ -4445,13 +4445,13 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
- 	rate64 = tcp_compute_delivery_rate(tp);
- 	nla_put_u64_64bit(stats, TCP_NLA_DELIVERY_RATE, rate64, TCP_NLA_PAD);
+@@ -4463,8 +4463,8 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
  
--	nla_put_u32(stats, TCP_NLA_SND_CWND, tcp_snd_cwnd(tp));
--	nla_put_u32(stats, TCP_NLA_REORDERING, tp->reordering);
--	nla_put_u32(stats, TCP_NLA_MIN_RTT, tcp_min_rtt(tp));
-+	nla_put_u32(stats, TCP_NLA_SND_CWND, READ_ONCE(tp->snd_cwnd));
-+	nla_put_u32(stats, TCP_NLA_REORDERING, READ_ONCE(tp->reordering));
-+	nla_put_u32(stats, TCP_NLA_MIN_RTT, data_race(tcp_min_rtt(tp)));
+ 	nla_put_u64_64bit(stats, TCP_NLA_BYTES_SENT, READ_ONCE(tp->bytes_sent),
+ 			  TCP_NLA_PAD);
+-	nla_put_u64_64bit(stats, TCP_NLA_BYTES_RETRANS, tp->bytes_retrans,
+-			  TCP_NLA_PAD);
++	nla_put_u64_64bit(stats, TCP_NLA_BYTES_RETRANS,
++			  READ_ONCE(tp->bytes_retrans), TCP_NLA_PAD);
+ 	nla_put_u32(stats, TCP_NLA_DSACK_DUPS, tp->dsack_dups);
+ 	nla_put_u32(stats, TCP_NLA_REORD_SEEN, tp->reord_seen);
+ 	nla_put_u32(stats, TCP_NLA_SRTT, tp->srtt_us >> 3);
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index 87af4731df87ea5f310d39b1392cb995d4fa8f78..f9d8755705f762fe4da3064d2b1bfce4828ec0c1 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -3645,7 +3645,7 @@ int __tcp_retransmit_skb(struct sock *sk, struct sk_buff *skb, int segs)
+ 	if (TCP_SKB_CB(skb)->tcp_flags & TCPHDR_SYN)
+ 		__NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPSYNRETRANS);
+ 	WRITE_ONCE(tp->total_retrans, tp->total_retrans + segs);
+-	tp->bytes_retrans += skb->len;
++	WRITE_ONCE(tp->bytes_retrans, tp->bytes_retrans + skb->len);
  
- 	nla_put_u8(stats, TCP_NLA_RECUR_RETRANS,
- 		   READ_ONCE(inet_csk(sk)->icsk_retransmits));
--	nla_put_u8(stats, TCP_NLA_DELIVERY_RATE_APP_LMT, !!tp->rate_app_limited);
-+	nla_put_u8(stats, TCP_NLA_DELIVERY_RATE_APP_LMT, data_race(!!tp->rate_app_limited));
- 	nla_put_u32(stats, TCP_NLA_SND_SSTHRESH, tp->snd_ssthresh);
- 	nla_put_u32(stats, TCP_NLA_DELIVERED, tp->delivered);
- 	nla_put_u32(stats, TCP_NLA_DELIVERED_CE, tp->delivered_ce);
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 021f745747c59d8b9e200c5954af7807a4d08866..6bb6bf049a35ac91fd53e3e66691f64fc4c93648 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -1293,8 +1293,9 @@ static void tcp_check_sack_reordering(struct sock *sk, const u32 low_seq,
- 			 tp->sacked_out,
- 			 tp->undo_marker ? tp->undo_retrans : 0);
- #endif
--		tp->reordering = min_t(u32, (metric + mss - 1) / mss,
--				       READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_max_reordering));
-+		WRITE_ONCE(tp->reordering,
-+			   min_t(u32, (metric + mss - 1) / mss,
-+				 READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_max_reordering)));
- 	}
- 
- 	/* This exciting event is worth to be remembered. 8) */
-@@ -2439,8 +2440,9 @@ static void tcp_check_reno_reordering(struct sock *sk, const int addend)
- 	if (!tcp_limit_reno_sacked(tp))
- 		return;
- 
--	tp->reordering = min_t(u32, tp->packets_out + addend,
--			       READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_max_reordering));
-+	WRITE_ONCE(tp->reordering,
-+		   min_t(u32, tp->packets_out + addend,
-+			 READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_max_reordering)));
- 	tp->reord_seen++;
- 	NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPRENOREORDER);
- }
-@@ -2579,8 +2581,8 @@ void tcp_enter_loss(struct sock *sk)
- 	reordering = READ_ONCE(net->ipv4.sysctl_tcp_reordering);
- 	if (icsk->icsk_ca_state <= TCP_CA_Disorder &&
- 	    tp->sacked_out >= reordering)
--		tp->reordering = min_t(unsigned int, tp->reordering,
--				       reordering);
-+		WRITE_ONCE(tp->reordering,
-+			   min_t(unsigned int, tp->reordering, reordering));
- 
- 	tcp_set_ca_state(sk, TCP_CA_Loss);
- 	tp->high_seq = tp->snd_nxt;
-diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
-index 06b1d5d3b6df7b8fa3fc631b8662160c8729a9df..7a9d6d9006f651e91054d3369b47758a6c35253b 100644
---- a/net/ipv4/tcp_metrics.c
-+++ b/net/ipv4/tcp_metrics.c
-@@ -496,7 +496,7 @@ void tcp_init_metrics(struct sock *sk)
- 	}
- 	val = tcp_metric_get(tm, TCP_METRIC_REORDERING);
- 	if (val && tp->reordering != val)
--		tp->reordering = val;
-+		WRITE_ONCE(tp->reordering, val);
- 
- 	crtt = tcp_metric_get(tm, TCP_METRIC_RTT);
- 	rcu_read_unlock();
+ 	/* make sure skb->data is aligned on arches that require it
+ 	 * and check if ack-trimming & collapsing extended the headroom
 -- 
 2.54.0.rc1.513.gad8abe7a5a-goog
 
