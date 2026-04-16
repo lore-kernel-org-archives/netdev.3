@@ -1,167 +1,105 @@
-Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E1D319CD03
-	for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 02:17:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776305821; cv=pass; b=UjMIzmAYAR2sMRMtBARMAPRXhe8tYpaENHmGProUf+1WzgCmeaVUo5p3IstyN9WSnNKxxpQT/tRKpxyfsmbA6wE6s/DJot6n8rU4DujSWd/DbGi2pM02VQGIuBNrJFiVwejdqtYRem/GaJTsz08TIWUTjQNn5XSEAAEu4M18BJM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776305821; c=relaxed/simple;
-	bh=wQiqqhufJb3tgxCD7PXkpOY37pzGWg0bq19XBLHfrVQ=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=FOwVNzmULJg24nrSobYf05ojwGPDz1m1535vKOZUoFCAFvk/6ehJlVM7QCBCjjOoEXkgSvTM3Jj4yO3DBcIcKoBDeHOoLLILOPaXXqFnb+san8xyZk8aevvczk2zek6ppITGzvCDLNOhwjvHQXMNVhslcV90CQz2GHxzDx4LGUM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CNjV2Sdn; arc=pass smtp.client-ip=209.85.160.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 648811A6805;
+	Thu, 16 Apr 2026 02:18:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776305914; cv=none; b=T5tU5onYsoigs+/T9rIIgLfyvlNoqsxb6l6TbC3G2tLi3HnlddTYgaU2oI04BbHpb2e+DnxvKnlfnf9YQnUn9VRcvjS4Eok22h+82YcJ9pnzSy2XgW7zI/Iy+GIpID8DFXEhPraKhJdLU81jvu2UZupbPCM0QPOTXvb7TONWYK8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776305914; c=relaxed/simple;
+	bh=Hd+1dN5IevHoWoTVdLczDqxYv7KnWEcwalHmW5qnm94=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=O7IyCQmscOIloXZuG0ovaX/Q9D5yVC9O2HrU+J5IF5D7hJkpO8H7YnQ1BtUKCkZybbUJVagEcB58JrTSQerJVfmd2dhO9WDXIp9BAePmo9pV3xyiEY9QN2OVOOJpPyll0IB1gj46zUmtXnN3Xv+7M8vWjxEjlGw0ndRYgGlt+PY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Osu8rI3a; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CNjV2Sdn"
-Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-40ea36b56b7so5603111fac.3
-        for <netdev@vger.kernel.org>; Wed, 15 Apr 2026 19:17:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776305819; cv=none;
-        d=google.com; s=arc-20240605;
-        b=OVb3hnrczOtjXz9rkTfTdiMkCItXeHRdGP0LiOaDThGNMlLH5nzB25LFbDU71C2T8R
-         zzaZ7WHNoOVihuloVHR+gXsNtRKlP2yNPR13huLV4ns0RWAqYG5BDgB0QiSJ4IExnLfB
-         A1s91az62V/Pv63ppbw5SrDabKCVt6XBvtKu+Wgi0ssGsEM+HoPl6yNJ24tIgDGXMVJo
-         KUN+LiF4gEY2aHxdMvXVFpyFiVdR/6jE7GkrKVS65B5RYQqztv/mQWTv1nmRHb3ZrX+G
-         kbF4uFilNKEVsbDDgmNNczE6yn16N01oDWFC2L0ukwvLIT63T19MwznWOc+VWh9hXlZ+
-         KqaA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:dkim-signature;
-        bh=9vkatUbRivgvsdjHxZsjduzTdH/QUeQrYtw+cmD2zlY=;
-        fh=15yzLquNou/xpxXy1Qr5JJdBq44U5DhN6eBpnoqbD5I=;
-        b=Vn7oXyjhmwANcx21Cwu6fr55pp5qwpI447RcWCNHlbR8PK8G3BiWAzW7lW8cunfdos
-         r0asnK9j4MJeuVmSeMW4/jKcmNeXzlVWQoB1kOWldB0B82/PjJuvXhb5f8ptM1bMKAAQ
-         yl4OrqlUR3ek6DdGQ6V1F6ZBkijG6VxNnX5Tps8K/taCdMeiyd96QvXePbMp17qKzTxS
-         RDY1+SDsPR/QNRb9QDnGDU9f7mOL1kSBdMkJNjwfYsASu7mT48KhzxCyXQaqe2W8fPri
-         u4BcMnu0G0Uw6r7G4l1sRguJKRqD6R0Auqb3xHTqUuNyYJZQInDjzM/3iG8ntIALEzoM
-         FH3w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776305819; x=1776910619; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=9vkatUbRivgvsdjHxZsjduzTdH/QUeQrYtw+cmD2zlY=;
-        b=CNjV2SdnWRicGal81q+BFRSAh+lYHteGGGT48BvzsJlt4srFyI5BhWr98TCeWYs/0r
-         bBOgKbJtbiUjcY/g0j7c71IFFEhKcKV7ag2QsYn+aCHFXzryMu7w73OgBb8Vux6DTLI8
-         e4XvCUPN8DLTXqqZgC93nYTRUg0ncScstoRi/C+fT39WrVo0au/3dc4FGQGGV2dutdjd
-         nfhqZ33jQmLT33eU+KMc+4fgB6s5VvAnHN+X0tj2AflM/8rmT91ZOMgKAScf0x5xBjO3
-         w4X4q4TRz/mVpKG5HRsAQt2Fm1GH1Gvz0MRUzeucMuNiqfFlHQyhd/Zye657yCZAH/oJ
-         AWpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776305819; x=1776910619;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9vkatUbRivgvsdjHxZsjduzTdH/QUeQrYtw+cmD2zlY=;
-        b=Gf+5c1nH5NJHlVOlyCZ2NMjMaKJtNqTAAtV6Nocqmjeam4bxI1+S5kN8PHLlgqHoty
-         sFIyifJleLdQLHU2VeG3+ya22SbeJyIxmOEbKxSVczQZ4EzbssLFnWZgkF/Jef4V/2iT
-         9+v4eJPrz2Gcf769ihuYo87oF+0UmrnHM1N6FITE0FqW2fHAJRuXx3ZdJveU7488IDHS
-         8caTCvpuxCyneFHBOoWkF+hHv3l0lnlZO+iB3UyvexClMsoEyXttafMKnWKVzpisd30z
-         fZHSvobDBgIEMVy+5xBEbx3XrmzBwozUPpKSLGgd7vdqWSWVgGzxaEesR3MSTWfP3fFv
-         U3Bw==
-X-Forwarded-Encrypted: i=1; AFNElJ/34yAXgCdytOZyr9KYasZdJ3VzCqoAncfCZaaCJ8RZh3uIk/mO48pBV+KMdGIgETlpl9bIg7g=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx1Xqa9nVa0sWbfSxH+5HyZNqI2/KiNooT+8TOgg6WtGvXxqzMT
-	2ZezcHQDo/KB8yhSkn+FhTJZoOosugJr8SC1I4dyEQeinrFEZwwYXoIXM2VI4QZbo8E1PBhJiA7
-	5eTj00OtnK1EXFK56k3bvVql8fPzJGdw=
-X-Gm-Gg: AeBDiesxIO4KlcBM6eAB03nymNrSzqDtE8btvq5uoyFvNeKcaV2pQBW8uxL3e3G/VCR
-	2HHpl7QF2L87Q8v6DZtGwbDBqdhpkXVLQJFtkEgcFlJc2J8YX6g5gJG1ttFrgeAmb3jQzUUlcWR
-	qqCnA7elDXKfyK3hDy9Ggw5QLf+0JnNfuxr50wTUepl8L5ewrXtM4dpZ32CwSZNVOljSRx1DwRw
-	P3TisV3NpXXrX0cSo908sVzU8knr0enJCVfwKlziQeNpHAtDaO4fvL72RbsSAtpX8d91n1WHbc3
-	jm7glw==
-X-Received: by 2002:a05:6870:420f:b0:417:5105:a735 with SMTP id
- 586e51a60fabf-423e11118ecmr13498590fac.33.1776305819281; Wed, 15 Apr 2026
- 19:16:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Osu8rI3a"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776305912; x=1807841912;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Hd+1dN5IevHoWoTVdLczDqxYv7KnWEcwalHmW5qnm94=;
+  b=Osu8rI3aZZX2Z8wdgdVaphn66pCUxOlzqlilA9mjTadnd4LOttDy8Dbx
+   ca2p4GMuXDPhB/n2ArY7hV5HpopWID49hI8hbgwFRtdHfNaKH1Y7bFAq8
+   53TrBNaBfgpF0o6vcZn092GHMjq0lzhOBJJqZO6jZU6rrtTGJ73AgUBaR
+   wK+nj9FiRSTeNVM/k7PeSNJSsU0zawjNKiolmqmvz4bEwtQSx/0WfK3UR
+   jfXfPgdKmm4ykxhfy0/N6jGxe5vgqmlgmnfUYD3CdN3J/kuoTGhd/+7SR
+   9N2D03tS4+CBKF5qnt0cuMPDtDnhBsjFHFnvzRL0aAuhMDuqLay1pJ2f5
+   w==;
+X-CSE-ConnectionGUID: rWV5HKF0QiCGG9ZrDSGFSg==
+X-CSE-MsgGUID: 2iG6qyEES+yOgTbSlaSE4A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11760"; a="81168775"
+X-IronPort-AV: E=Sophos;i="6.23,181,1770624000"; 
+   d="scan'208";a="81168775"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2026 19:18:31 -0700
+X-CSE-ConnectionGUID: 3CyJPPd4TjKHQSu86COnsA==
+X-CSE-MsgGUID: MDa1h4/FT0ShD6TrkLAXIg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,181,1770624000"; 
+   d="scan'208";a="227442166"
+Received: from unknown (HELO localhost.png.intel.com) ([10.107.255.61])
+  by fmviesa007.fm.intel.com with ESMTP; 15 Apr 2026 19:18:05 -0700
+From: KhaiWenTan <khai.wen.tan@linux.intel.com>
+To: anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	faizal.abdul.rahim@intel.com,
+	hong.aun.looi@intel.com,
+	khai.wen.tan@intel.com,
+	Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
+Subject: [PATCH iwl-next v2 0/3] igc: add support for forcing link speed without autonegotiation
+Date: Thu, 16 Apr 2026 09:55:17 +0800
+Message-ID: <20260416015520.6090-1-khai.wen.tan@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Hiker Cl <clhiker365@gmail.com>
-Date: Thu, 16 Apr 2026 10:16:46 +0800
-X-Gm-Features: AQROBzBYX4zd6BdxBIcwUa7EyBGQ0SzGZ4lXbLy4c9ax8OzRHuVydFZsHlg57oI
-Message-ID: <CAGM=xGABGeeGVU7hy_mRr_rp377dBzVVAOpkLnuYKb8XyEs7Hg@mail.gmail.com>
-Subject: NULL pointer dereference in map_kptr_match_type when storing scalar
- values into kptr slots
-To: bpf@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi BPF maintainers,
+From: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
 
-I'm reporting a bug I encountered in the BPF subsystem on Linux kernel
-version 7.0.0-g1f5ffc672165.
+This series adds support for forcing 10/100 Mb/s link speed via ethtool
+when autonegotiation is disabled on the igc driver.
 
-### Summary
-A NULL pointer dereference vulnerability was discovered in the eBPF
-verifier. A local user can trigger this by loading a BPF program that
-attempts to store a scalar value (non-pointer) into a map slot
-designated as a kptr (kernel pointer). This leads to an immediate
-kernel crash (DoS).
-### Environment
-- Kernel version: 7.0.0-rc6 (Commit: 71b500afd2f7 from bpf-next tree),
-7.0.0-g1f5ffc672165 (Commit: 1f5ffc672165 from linux tree)
-- Architecture: x86_64
-- Config: BPF_SYSCALL=3Dy, DEBUG_INFO_BTF=3Dy
+Changes in v2:
+- Simon Horman's review comment: when forcing half-duplex, set
+  hw->fc.requested_mode = igc_fc_none, since half-duplex cannot support
+  flow control per IEEE 802.3.
+- Split the original single patch into three patches for clarity:
+  patches 1 and 2 are preparatory cleanups; patch 3 carries the
+  functional change.
 
-### Steps to Reproduce =EF=BC=88poc.c)
-#include "vmlinux.h"
-#include <bpf/bpf_helpers.h>
-/* BTF type tags for kptrs */
-#ifndef __kptr_untrusted
-#define __kptr_untrusted __attribute__((btf_type_tag("kptr_untrusted")))
-#endif
-struct map_value {
-struct task_struct __kptr_untrusted *ptr;
-};
-struct {
-__uint(type, BPF_MAP_TYPE_LRU_HASH);
-__uint(max_entries, 1);
-__type(key, int);
-__type(value, struct map_value);
-} crashing_map SEC(".maps");
-SEC("kprobe/htab_map_get_next_key")
-int trigger_crash(struct pt_regs *ctx)
-{
-int key =3D 0;
-u64 *val =3D bpf_map_lookup_elem(&crashing_map, &key);
-if (val) {
-/*
-* Trigger: Store a scalar (non-pointer) into a slot
-* designated as a kptr. The verifier's map_kptr_match_type
-* fails to handle the NULL reg->btf for scalars.
-*/
-*val =3D 0xdeadbeef;
-}
-return 0;
-}
-char LICENSE[] SEC("license") =3D "GPL";
+v1 at:
+https://patchwork.ozlabs.org/project/intel-wired-lan/patch/20260409072747.217836-1-khai.wen.tan@linux.intel.com/
 
-### Kernel Log Extract
-[   91.277247][ T7627] Oops: general protection fault, probably for
-non-canonical address 0xdffffc0000I
-[   91.279715][ T7627] KASAN: null-ptr-deref in range
-[0x00000000000000e8-0x00000000000000ef]
-[   91.280906][ T7627] CPU: 0 UID: 0 PID: 7627 Comm: bpftool Not
-tainted 7.0.0-g1f5ffc672165 #5 PREEMPT(full)
-[   91.282421][ T7627] Hardware name: QEMU Standard PC (i440FX + PIIX,
-1996), BIOS 1.15.0-1 04/01/2014
-[   91.283556][ T7627] RIP: 0010:btf_is_kernel+0x2a/0x50
-...
+Faizal Rahim (3):
+  igc: remove unused autoneg_failed field
+  igc: move autoneg-enabled settings into igc_handle_autoneg_enabled()
+  igc: add support for forcing link speed without autonegotiation
 
-### Actual Results
-The kernel crashes during the verification phase. The verifier calls
-`map_kptr_match_type`, which subsequently calls
-`btf_is_kernel(reg->btf)`. Since the source register is a scalar,
-`reg->btf` is NULL, leading to a NULL pointer dereference.
+ drivers/net/ethernet/intel/igc/igc_base.c    |  35 +++-
+ drivers/net/ethernet/intel/igc/igc_defines.h |   9 +-
+ drivers/net/ethernet/intel/igc/igc_ethtool.c | 203 +++++++++++++------
+ drivers/net/ethernet/intel/igc/igc_hw.h      |  10 +-
+ drivers/net/ethernet/intel/igc/igc_mac.c     |  16 +-
+ drivers/net/ethernet/intel/igc/igc_main.c    |   2 +-
+ drivers/net/ethernet/intel/igc/igc_phy.c     |  65 +++++-
+ drivers/net/ethernet/intel/igc/igc_phy.h     |   1 +
+ 8 files changed, 251 insertions(+), 90 deletions(-)
 
-Detailed info including reproducible BPF program and kernel logs have
-been filed on Bugzilla:
+--
+2.43.0
 
-  https://bugzilla.kernel.org/show_bug.cgi?id=3D221372
-
-Please let me know if you need more information or if I can help test a pat=
-ch.
