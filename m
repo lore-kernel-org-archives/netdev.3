@@ -1,71 +1,82 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02DF8243376;
-	Thu, 16 Apr 2026 02:18:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA76D86341
+	for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 02:49:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776305924; cv=none; b=JadC2Yhc3yDANcxrtzQZK6vt/U0CIrnpT+lRQI9oSy0cQvxIDtbTCRKdEPbf6BQ+f67w7baNWZRCB7BdGjD53u1Xg9dCz+0ymoM6j2R+hwVIrXuRyxijqK30px84AS96lZifUXiCAmoi/L4c+pkUDx1aPYi9m7dJAmL2a0Dy5/c=
+	t=1776307754; cv=none; b=q0yT68RpxALsGKIuObg7J85DPDpz6jHKBJEYeH8CREdw+xJMV+hqWVBxHualMrAfmBRTudr9l0TwCTWojyrf8rNg/0QCQy7G/Hk9wQIty6VNHXk7w/EznseZLIv7wIbyPhBko1KCQmMIv3OvIhecWp93aGOGfZsyoQ6LdlZQUhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776305924; c=relaxed/simple;
-	bh=PkQbF9vBCNjOV+o+TToXri+Rgc8i9KGytnmeSXd+4Fw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k8sUineWcooWHHHzU5YBgu4koXVez32yLHsOkDaQYLOx1NBLtHS3Y8kc/S/3lV8zc2LEbxD4ARx0AmoXgHAL/XtJyp2Qk/mmsofYqXz12FDnE3MMBFNUnXeFdDt5RSofCqgE2OOBWTTUd7PX1F4Z+kSWROc+g5BThB+3kAh+C3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=em22+sXh; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1776307754; c=relaxed/simple;
+	bh=p6PLJdKN7MUAvD8bHf/FMx/ZtqSeqi0mwJQcT39uGew=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aVBYCDJY46sCuT91gtuPyfij6M4QxC9v+QtEiMSA64XJfq/2z8Lpqw/lNFXw9CF2ALkZhFQ2tFL1eP2CbUQTuUxPYThh2wQBOFji3QAK0MAQ5lk8FEv/W3vWN7BElv8SybQgrcY9RVFHZJSZP47L3yovwnOwIHCfGh2OQOm9Ae4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wx6WLghb; arc=none smtp.client-ip=74.125.82.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="em22+sXh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776305923; x=1807841923;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=PkQbF9vBCNjOV+o+TToXri+Rgc8i9KGytnmeSXd+4Fw=;
-  b=em22+sXhF9+xoSQuJhHjhL5f5FVyy9Q3ff/C8dHj0Z/k+bsPBYn6m8rC
-   zwbOZR4Xw20R/RUoeX3nlNbfVoZ4tAi15Hy5A7kKMgK2aanUpiVf9N8B7
-   89fL1XruzjMBp4kjcFF6OhH71pCHIWZNDgOkX+dxPSgHvkyx2/x5fxR5M
-   Xi8+SBqPJVJ1rlqV6S4mZ1ESuYkWpV7wl8Hko6BqLE1Iv3X4emGchXLLk
-   kUcnKqCRbrZLS6Xy2ptbT9VIquMdhmb0gov9P/2W+wqMYM/iNx328RKpW
-   QaiBdxQShMjRTj5dwxdtfucazzgn8JcTEyP+tZkXzGInOdq1GNEeCYb1Q
-   g==;
-X-CSE-ConnectionGUID: thz0hKlUQh+DU9R4Cc3fIg==
-X-CSE-MsgGUID: yRlm6fHdTNaWACz6LPXPUQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11760"; a="81177744"
-X-IronPort-AV: E=Sophos;i="6.23,181,1770624000"; 
-   d="scan'208";a="81177744"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2026 19:18:42 -0700
-X-CSE-ConnectionGUID: ZxDNM8zsT2uetWaJ4+Y3Xg==
-X-CSE-MsgGUID: m35bUk02SLijlNesmhVboA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,181,1770624000"; 
-   d="scan'208";a="227442212"
-Received: from unknown (HELO localhost.png.intel.com) ([10.107.255.61])
-  by fmviesa007.fm.intel.com with ESMTP; 15 Apr 2026 19:18:38 -0700
-From: KhaiWenTan <khai.wen.tan@linux.intel.com>
-To: anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: intel-wired-lan@lists.osuosl.org,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wx6WLghb"
+Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-2d9916deb14so6119241eec.0
+        for <netdev@vger.kernel.org>; Wed, 15 Apr 2026 19:49:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776307752; x=1776912552; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=X0dSZtRvfdiC9Z6UENOGRIm8HsjE/DxYzuK7m+Xz0Kc=;
+        b=Wx6WLghb35FEN/TB9hx08jfOAHXuVuu3Ad4QjbNCIYdkKrynEAzDNNHAj34tIMtdpq
+         uoEa4UebI7CHMkudWCbJlWPUjlhNhZ89X4LBd3nFk6b1pkBr8FvsjGo+tRB+oaami8zg
+         /fHEqe8HFPWzlyI/fuj7/eunqWN4KjiJSR2ss/SYbrDWRaUf+0g/RUQ5dWpVybk9VfU6
+         4h4VseqVuOXUh3DRLVusGEU+gnKbeZAVXYZ/VJI1VEtjhYO0tdnvguTm7moRaHCvDElq
+         nwPHmUjSzNAGycDcbKZmBBVdMy93tswLgGN2UOQ/yLL/x7SZORtvMyUZp38yAPUJgCmB
+         qoKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776307752; x=1776912552;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=X0dSZtRvfdiC9Z6UENOGRIm8HsjE/DxYzuK7m+Xz0Kc=;
+        b=esJHl/MSiCFqqiZ50Koldo9ca+hA6738a9DXCkIqQPz/lDX72x7xBLjQgWy2BFlcMY
+         HszvW5onfKg+q+zH7fDcVeNq2buppJUNvhQsP8k8CS89PrKI5ZRoPQpFNpX6ksHCIuxG
+         LU0JUqYq6QvMDNsiRKV4pPWpbDMVtMlipRjLB5q1+qxwOIpUO/pZH3HfwfFgtg/LVF3b
+         N1DK2rwZx6VhLm+Vfn81pir3qtVgQlKtE7tFfyi0ZXz3UHkyW/6xVIuNTgD9ERXKF4Jf
+         3fxW3EfvLSDmDfD6yt2qjFlhs+wZQhDoYReBjh4IiIGucSBoPxIJcYwitreYi4ktrZRM
+         li8A==
+X-Forwarded-Encrypted: i=1; AFNElJ//FSeaT/z5m1T9KyeeH1TmKzxk1qAB3rwDaGUMQIoDppZZ5/VZAbrHHqgKrMtFQa3ajwuqTZw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwX9c9EBwF0SEKc7nZxneN9EXopttUAs6FabTBjgP++4QtUIIwd
+	q2SfmK8Tr7bTRD4xmBmIJiVhWq1Yec5N2c0N89dPqaamPLOyvSUtM9GI
+X-Gm-Gg: AeBDiev2hCGHLSAgddpRls+svzbtnUb/NK2U3hnycrINHrkUFpJQTDeph8EQ2Zm7Mvi
+	rbeJ5OTIompZ15bkX2Cp2FyDMqnrOkuFHQhwEhh9Ldb32dDF8YiIhb/XOc4ChoN1iuXWXDK2dx2
+	7VJTjxPEMUII87Lzi+6LjHJTt3SZuCKcQ9PvLKBqkmSqlf7u7FPKaldFnO/f2hIb+X0WdjPvA1M
+	sRzueuhxeG6AkczgzJYllLuPlGhAy4nWw2xVwFSLDHDgFmzUDCITJNwRmeKIaERQIYzyDkwL3+g
+	quPmkB75jE2W+t6uPE+DG2aEO6abcBN2KGfqF27dAITtwXHzEhEUl1mn2L6lcmqVjBKmybODqcN
+	QNr7vtJ3R5NB0y9ZqXQacwKtfeDssidOOOHc+ljH3AlP/ngtNteva9fnh3/rkcH2Az4EdlA+VWt
+	tznDlVgeVZq2/DgjVaprNq8lwqOwwB8xvZnDLMua06NB0tyqMmkNh0rPZJaU69hNFKMycVNu8jJ
+	Qjg1EFOCQ==
+X-Received: by 2002:a05:7301:1003:b0:2c5:50fe:c795 with SMTP id 5a478bee46e88-2d58a788298mr15531877eec.29.1776307751678;
+        Wed, 15 Apr 2026 19:49:11 -0700 (PDT)
+Received: from 6cb30d4270db.tailc0aff1.ts.net ([206.206.192.132])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2de8f569f4bsm5266419eec.21.2026.04.15.19.49.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Apr 2026 19:49:11 -0700 (PDT)
+From: Weiming Shi <bestswngs@gmail.com>
+To: Aaron Conole <aconole@redhat.com>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	Pravin B Shelar <pshelar@nicira.com>,
+	Thomas Graf <tgraf@redhat.com>,
+	Alex Wang <alexw@nicira.com>,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	faizal.abdul.rahim@intel.com,
-	hong.aun.looi@intel.com,
-	khai.wen.tan@intel.com,
-	Faizal Rahim <faizal.abdul.rahim@linux.intel.com>,
-	Looi,
-	KhaiWenTan <khai.wen.tan@linux.intel.com>
-Subject: [PATCH iwl-next v2 3/3] igc: add support for forcing link speed without autonegotiation
-Date: Thu, 16 Apr 2026 09:55:20 +0800
-Message-ID: <20260416015520.6090-4-khai.wen.tan@linux.intel.com>
+	dev@openvswitch.org,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>
+Subject: [PATCH net v5] openvswitch: cap upcall PID array size and pre-size vport replies
+Date: Wed, 15 Apr 2026 19:46:54 -0700
+Message-ID: <20260416024653.153456-2-bestswngs@gmail.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260416015520.6090-1-khai.wen.tan@linux.intel.com>
-References: <20260416015520.6090-1-khai.wen.tan@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -74,442 +85,138 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
+The vport netlink reply helpers allocate a fixed-size skb with
+nlmsg_new(NLMSG_DEFAULT_SIZE, ...) but serialize the full upcall PID
+array via ovs_vport_get_upcall_portids().  Since
+ovs_vport_set_upcall_portids() accepts any non-zero multiple of
+sizeof(u32) with no upper bound, a CAP_NET_ADMIN user can install a PID
+array large enough to overflow the reply buffer, causing nla_put() to
+fail with -EMSGSIZE and hitting BUG_ON(err < 0).  On systems with
+unprivileged user namespaces enabled (e.g., Ubuntu default), this is
+reachable via unshare -Urn since OVS vport mutation operations use
+GENL_UNS_ADMIN_PERM.
 
-Allow users to force 10/100 Mb/s link speed and duplex via ethtool
-when autonegotiation is disabled. Previously, the driver rejected
-these requests with "Force mode currently not supported.".
+ kernel BUG at net/openvswitch/datapath.c:2414!
+ Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+ CPU: 1 UID: 0 PID: 65 Comm: poc Not tainted 7.0.0-rc7-00195-geb216e422044 #1
+ RIP: 0010:ovs_vport_cmd_set+0x34c/0x400
+ Call Trace:
+  <TASK>
+  genl_family_rcv_msg_doit (net/netlink/genetlink.c:1116)
+  genl_rcv_msg (net/netlink/genetlink.c:1194)
+  netlink_rcv_skb (net/netlink/af_netlink.c:2550)
+  genl_rcv (net/netlink/genetlink.c:1219)
+  netlink_unicast (net/netlink/af_netlink.c:1344)
+  netlink_sendmsg (net/netlink/af_netlink.c:1894)
+  __sys_sendto (net/socket.c:2206)
+  __x64_sys_sendto (net/socket.c:2209)
+  do_syscall_64 (arch/x86/entry/syscall_64.c:63)
+  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+  </TASK>
+ Kernel panic - not syncing: Fatal exception
 
-Forcing at 1000 Mb/s and 2500 Mb/s is not supported.
+Reject attempts to set more PIDs than nr_cpu_ids in
+ovs_vport_set_upcall_portids(), and pre-compute the worst-case reply
+size in ovs_vport_cmd_msg_size() based on that bound, similar to the
+existing ovs_dp_cmd_msg_size().  nr_cpu_ids matches the cap already
+used by the per-CPU dispatch configuration on the datapath side
+(ovs_dp_cmd_fill_info() serialises at most nr_cpu_ids PIDs), so the
+two sides stay consistent.
 
-Reviewed-by: Looi, Hong Aun <hong.aun.looi@intel.com>
-Signed-off-by: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
-Signed-off-by: KhaiWenTan <khai.wen.tan@linux.intel.com>
+Fixes: 5cd667b0a456 ("openvswitch: Allow each vport to have an array of 'port_id's.")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Assisted-by: Claude:claude-opus-4-6
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
 ---
- drivers/net/ethernet/intel/igc/igc_base.c    |  35 ++++-
- drivers/net/ethernet/intel/igc/igc_defines.h |   9 +-
- drivers/net/ethernet/intel/igc/igc_ethtool.c | 131 +++++++++++++------
- drivers/net/ethernet/intel/igc/igc_hw.h      |   9 ++
- drivers/net/ethernet/intel/igc/igc_mac.c     |  10 ++
- drivers/net/ethernet/intel/igc/igc_main.c    |   2 +-
- drivers/net/ethernet/intel/igc/igc_phy.c     |  65 ++++++++-
- drivers/net/ethernet/intel/igc/igc_phy.h     |   1 +
- 8 files changed, 211 insertions(+), 51 deletions(-)
+v5 (per Ilya):
+- Add blank lines before multi-line comment blocks in
+  ovs_vport_cmd_msg_size() for readability.
+- Drop parenthetical from the OVS_VPORT_ATTR_UPCALL_PID comment.
+- Add lore links for previous versions.
+v4: https://lore.kernel.org/netdev/20260415125121.110874-2-bestswngs@gmail.com
+- Use nr_cpu_ids instead of num_possible_cpus() for consistency with
+  the per-CPU dispatch on the datapath side.
+- Annotate ovs_vport_cmd_msg_size() per-attribute; split nested sums.
+v3: https://lore.kernel.org/netdev/20260413035514.2113886-3-bestswngs@gmail.com
+- Cap at num_possible_cpus(); add ovs_vport_cmd_msg_size(); keep
+  BUG_ON(); fix Fixes tag.
+v2: https://lore.kernel.org/netdev/20260411141448.1479933-3-bestswngs@gmail.com
+- Dynamically size reply skb; drop WARN_ON_ONCE, return plain errors.
+v1: https://lore.kernel.org/netdev/20260411055915.1224902-2-bestswngs@gmail.com
+---
+ net/openvswitch/datapath.c | 35 +++++++++++++++++++++++++++++++++--
+ net/openvswitch/vport.c    |  3 +++
+ 2 files changed, 36 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_base.c b/drivers/net/ethernet/intel/igc/igc_base.c
-index 1613b562d17c..ab9120a3127f 100644
---- a/drivers/net/ethernet/intel/igc/igc_base.c
-+++ b/drivers/net/ethernet/intel/igc/igc_base.c
-@@ -114,11 +114,35 @@ static s32 igc_setup_copper_link_base(struct igc_hw *hw)
- 	u32 ctrl;
-
- 	ctrl = rd32(IGC_CTRL);
--	ctrl |= IGC_CTRL_SLU;
--	ctrl &= ~(IGC_CTRL_FRCSPD | IGC_CTRL_FRCDPX);
--	wr32(IGC_CTRL, ctrl);
--
--	ret_val = igc_setup_copper_link(hw);
-+	ctrl &= ~(IGC_CTRL_FRCSPD | IGC_CTRL_FRCDPX |
-+		  IGC_CTRL_SPEED_MASK | IGC_CTRL_FD);
-+
-+	if (hw->mac.autoneg_enabled) {
-+		ctrl |= IGC_CTRL_SLU;
-+		wr32(IGC_CTRL, ctrl);
-+		ret_val = igc_setup_copper_link(hw);
-+	} else {
-+		ctrl |= IGC_CTRL_SLU | IGC_CTRL_FRCSPD | IGC_CTRL_FRCDPX;
-+
-+		switch (hw->mac.forced_speed_duplex) {
-+		case IGC_FORCED_10H:
-+			ctrl |= IGC_CTRL_SPEED_10;
-+			break;
-+		case IGC_FORCED_10F:
-+			ctrl |= IGC_CTRL_SPEED_10 | IGC_CTRL_FD;
-+			break;
-+		case IGC_FORCED_100H:
-+			ctrl |= IGC_CTRL_SPEED_100;
-+			break;
-+		case IGC_FORCED_100F:
-+			ctrl |= IGC_CTRL_SPEED_100 | IGC_CTRL_FD;
-+			break;
-+		default:
-+			return -IGC_ERR_CONFIG;
-+		}
-+		wr32(IGC_CTRL, ctrl);
-+		ret_val = igc_setup_copper_link(hw);
-+	}
-
- 	return ret_val;
+diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
+index e209099218b4..bbbde50fc649 100644
+--- a/net/openvswitch/datapath.c
++++ b/net/openvswitch/datapath.c
+@@ -2184,9 +2184,40 @@ static int ovs_vport_cmd_fill_info(struct vport *vport, struct sk_buff *skb,
+ 	return err;
  }
-@@ -443,6 +467,7 @@ static const struct igc_phy_operations igc_phy_ops_base = {
- 	.reset			= igc_phy_hw_reset,
- 	.read_reg		= igc_read_phy_reg_gpy,
- 	.write_reg		= igc_write_phy_reg_gpy,
-+	.force_speed_duplex	= igc_force_speed_duplex,
- };
-
- const struct igc_info igc_base_info = {
-diff --git a/drivers/net/ethernet/intel/igc/igc_defines.h b/drivers/net/ethernet/intel/igc/igc_defines.h
-index 9482ab11f050..3f504751c2d9 100644
---- a/drivers/net/ethernet/intel/igc/igc_defines.h
-+++ b/drivers/net/ethernet/intel/igc/igc_defines.h
-@@ -129,10 +129,13 @@
- #define IGC_ERR_SWFW_SYNC		13
-
- /* Device Control */
-+#define IGC_CTRL_FD		BIT(0)  /* Full Duplex */
- #define IGC_CTRL_RST		0x04000000  /* Global reset */
--
- #define IGC_CTRL_PHY_RST	0x80000000  /* PHY Reset */
- #define IGC_CTRL_SLU		0x00000040  /* Set link up (Force Link) */
-+#define IGC_CTRL_SPEED_MASK	GENMASK(10, 8)
-+#define IGC_CTRL_SPEED_10	FIELD_PREP(IGC_CTRL_SPEED_MASK, 0)
-+#define IGC_CTRL_SPEED_100	FIELD_PREP(IGC_CTRL_SPEED_MASK, 1)
- #define IGC_CTRL_FRCSPD		0x00000800  /* Force Speed */
- #define IGC_CTRL_FRCDPX		0x00001000  /* Force Duplex */
- #define IGC_CTRL_VME		0x40000000  /* IEEE VLAN mode enable */
-@@ -673,6 +676,10 @@
- #define IGC_GEN_POLL_TIMEOUT	1920
-
- /* PHY Control Register */
-+#define MII_CR_SPEED_MASK	(BIT(6) | BIT(13))
-+#define MII_CR_SPEED_10		0x0000	/* SSM=0, SSL=0: 10 Mb/s */
-+#define MII_CR_SPEED_100	BIT(13)	/* SSM=0, SSL=1: 100 Mb/s */
-+#define MII_CR_DUPLEX_EN	BIT(8)	/* 0 = Half Duplex, 1 = Full Duplex */
- #define MII_CR_RESTART_AUTO_NEG	0x0200  /* Restart auto negotiation */
- #define MII_CR_POWER_DOWN	0x0800  /* Power down */
- #define MII_CR_AUTO_NEG_EN	0x1000  /* Auto Neg Enable */
-diff --git a/drivers/net/ethernet/intel/igc/igc_ethtool.c b/drivers/net/ethernet/intel/igc/igc_ethtool.c
-index cfcbf2fdad6e..5bd37d1be168 100644
---- a/drivers/net/ethernet/intel/igc/igc_ethtool.c
-+++ b/drivers/net/ethernet/intel/igc/igc_ethtool.c
-@@ -1914,44 +1914,58 @@ static int igc_ethtool_get_link_ksettings(struct net_device *netdev,
- 	ethtool_link_ksettings_add_link_mode(cmd, supported, TP);
- 	ethtool_link_ksettings_add_link_mode(cmd, advertising, TP);
-
--	/* advertising link modes */
--	if (hw->phy.autoneg_advertised & ADVERTISE_10_HALF)
--		ethtool_link_ksettings_add_link_mode(cmd, advertising, 10baseT_Half);
--	if (hw->phy.autoneg_advertised & ADVERTISE_10_FULL)
--		ethtool_link_ksettings_add_link_mode(cmd, advertising, 10baseT_Full);
--	if (hw->phy.autoneg_advertised & ADVERTISE_100_HALF)
--		ethtool_link_ksettings_add_link_mode(cmd, advertising, 100baseT_Half);
--	if (hw->phy.autoneg_advertised & ADVERTISE_100_FULL)
--		ethtool_link_ksettings_add_link_mode(cmd, advertising, 100baseT_Full);
--	if (hw->phy.autoneg_advertised & ADVERTISE_1000_FULL)
--		ethtool_link_ksettings_add_link_mode(cmd, advertising, 1000baseT_Full);
--	if (hw->phy.autoneg_advertised & ADVERTISE_2500_FULL)
--		ethtool_link_ksettings_add_link_mode(cmd, advertising, 2500baseT_Full);
--
- 	/* set autoneg settings */
- 	ethtool_link_ksettings_add_link_mode(cmd, supported, Autoneg);
--	ethtool_link_ksettings_add_link_mode(cmd, advertising, Autoneg);
-+	if (hw->mac.autoneg_enabled) {
-+		ethtool_link_ksettings_add_link_mode(cmd, advertising, Autoneg);
-+		cmd->base.autoneg = AUTONEG_ENABLE;
-+
-+		/* advertising link modes only apply when autoneg is on */
-+		if (hw->phy.autoneg_advertised & ADVERTISE_10_HALF)
-+			ethtool_link_ksettings_add_link_mode(cmd, advertising,
-+							     10baseT_Half);
-+		if (hw->phy.autoneg_advertised & ADVERTISE_10_FULL)
-+			ethtool_link_ksettings_add_link_mode(cmd, advertising,
-+							     10baseT_Full);
-+		if (hw->phy.autoneg_advertised & ADVERTISE_100_HALF)
-+			ethtool_link_ksettings_add_link_mode(cmd, advertising,
-+							     100baseT_Half);
-+		if (hw->phy.autoneg_advertised & ADVERTISE_100_FULL)
-+			ethtool_link_ksettings_add_link_mode(cmd, advertising,
-+							     100baseT_Full);
-+		if (hw->phy.autoneg_advertised & ADVERTISE_1000_FULL)
-+			ethtool_link_ksettings_add_link_mode(cmd, advertising,
-+							     1000baseT_Full);
-+		if (hw->phy.autoneg_advertised & ADVERTISE_2500_FULL)
-+			ethtool_link_ksettings_add_link_mode(cmd, advertising,
-+							     2500baseT_Full);
-+
-+		/* Set pause flow control advertising */
-+		switch (hw->fc.requested_mode) {
-+		case igc_fc_full:
-+			ethtool_link_ksettings_add_link_mode(cmd, advertising,
-+							     Pause);
-+			break;
-+		case igc_fc_rx_pause:
-+			ethtool_link_ksettings_add_link_mode(cmd, advertising,
-+							     Pause);
-+			ethtool_link_ksettings_add_link_mode(cmd, advertising,
-+							     Asym_Pause);
-+			break;
-+		case igc_fc_tx_pause:
-+			ethtool_link_ksettings_add_link_mode(cmd, advertising,
-+							     Asym_Pause);
-+			break;
-+		default:
-+			break;
-+		}
-+	} else {
-+		cmd->base.autoneg = AUTONEG_DISABLE;
-+	}
-
--	/* Set pause flow control settings */
-+	/* Pause is always supported */
- 	ethtool_link_ksettings_add_link_mode(cmd, supported, Pause);
-
--	switch (hw->fc.requested_mode) {
--	case igc_fc_full:
--		ethtool_link_ksettings_add_link_mode(cmd, advertising, Pause);
--		break;
--	case igc_fc_rx_pause:
--		ethtool_link_ksettings_add_link_mode(cmd, advertising, Pause);
--		ethtool_link_ksettings_add_link_mode(cmd, advertising,
--						     Asym_Pause);
--		break;
--	case igc_fc_tx_pause:
--		ethtool_link_ksettings_add_link_mode(cmd, advertising,
--						     Asym_Pause);
--		break;
--	default:
--		break;
--	}
--
- 	status = pm_runtime_suspended(&adapter->pdev->dev) ?
- 		 0 : rd32(IGC_STATUS);
-
-@@ -1983,7 +1997,6 @@ static int igc_ethtool_get_link_ksettings(struct net_device *netdev,
- 		cmd->base.duplex = DUPLEX_UNKNOWN;
- 	}
- 	cmd->base.speed = speed;
--	cmd->base.autoneg = AUTONEG_ENABLE;
-
- 	/* MDI-X => 2; MDI =>1; Invalid =>0 */
- 	if (hw->phy.media_type == igc_media_type_copper)
-@@ -2000,6 +2013,41 @@ static int igc_ethtool_get_link_ksettings(struct net_device *netdev,
- 	return 0;
- }
-
-+/**
-+ * igc_handle_autoneg_disabled - Configure forced speed/duplex settings
-+ * @adapter: private driver structure
-+ * @speed: requested speed (must be SPEED_10 or SPEED_100)
-+ * @duplex: requested duplex
-+ *
-+ * Records forced speed/duplex when autoneg is disabled.
-+ * Caller must validate speed before calling this function.
-+ */
-+static void igc_handle_autoneg_disabled(struct igc_adapter *adapter, u32 speed,
-+					u8 duplex)
+ 
++static size_t ovs_vport_cmd_msg_size(void)
 +{
-+	struct igc_mac_info *mac = &adapter->hw.mac;
++	size_t msgsize = NLMSG_ALIGN(sizeof(struct ovs_header));
 +
-+	switch (speed) {
-+	case SPEED_10:
-+		mac->forced_speed_duplex = (duplex == DUPLEX_FULL) ?
-+			IGC_FORCED_10F : IGC_FORCED_10H;
-+		break;
-+	case SPEED_100:
-+		mac->forced_speed_duplex = (duplex == DUPLEX_FULL) ?
-+			IGC_FORCED_100F : IGC_FORCED_100H;
-+		break;
-+	default:
-+		WARN_ONCE(1, "Unsupported speed %u\n", speed);
-+		return;
-+	}
++	msgsize += nla_total_size(sizeof(u32)); /* OVS_VPORT_ATTR_PORT_NO */
++	msgsize += nla_total_size(sizeof(u32)); /* OVS_VPORT_ATTR_TYPE */
++	msgsize += nla_total_size(IFNAMSIZ);    /* OVS_VPORT_ATTR_NAME */
++	msgsize += nla_total_size(sizeof(u32)); /* OVS_VPORT_ATTR_IFINDEX */
++	msgsize += nla_total_size(sizeof(s32)); /* OVS_VPORT_ATTR_NETNSID */
 +
-+	mac->autoneg_enabled = false;
++	/* OVS_VPORT_ATTR_STATS */
++	msgsize += nla_total_size_64bit(sizeof(struct ovs_vport_stats));
 +
-+	/* Half-duplex cannot support flow control per IEEE 802.3 */
-+	if (duplex == DUPLEX_HALF)
-+		adapter->hw.fc.requested_mode = igc_fc_none;
-+}
-+
- /**
-  * igc_handle_autoneg_enabled - Configure autonegotiation advertisement
-  * @adapter: private driver structure
-@@ -2038,6 +2086,7 @@ static void igc_handle_autoneg_enabled(struct igc_adapter *adapter,
- 						  10baseT_Half))
- 		advertised |= ADVERTISE_10_HALF;
-
-+	hw->mac.autoneg_enabled = true;
- 	hw->phy.autoneg_advertised = advertised;
- 	if (adapter->fc_autoneg)
- 		hw->fc.requested_mode = igc_fc_default;
-@@ -2071,14 +2120,20 @@ igc_ethtool_set_link_ksettings(struct net_device *netdev,
- 		}
- 	}
-
-+	if (cmd->base.autoneg == AUTONEG_DISABLE &&
-+	    cmd->base.speed != SPEED_10 && cmd->base.speed != SPEED_100) {
-+		netdev_info(dev, "Unsupported speed for forced link\n");
-+		return -EINVAL;
-+	}
-+
- 	while (test_and_set_bit(__IGC_RESETTING, &adapter->state))
- 		usleep_range(1000, 2000);
-
--	if (cmd->base.autoneg == AUTONEG_ENABLE) {
-+	if (cmd->base.autoneg == AUTONEG_ENABLE)
- 		igc_handle_autoneg_enabled(adapter, cmd);
--	} else {
--		netdev_info(dev, "Force mode currently not supported\n");
--	}
-+	else
-+		igc_handle_autoneg_disabled(adapter, cmd->base.speed,
-+					    cmd->base.duplex);
-
- 	/* MDI-X => 2; MDI => 1; Auto => 3 */
- 	if (cmd->base.eth_tp_mdix_ctrl) {
-diff --git a/drivers/net/ethernet/intel/igc/igc_hw.h b/drivers/net/ethernet/intel/igc/igc_hw.h
-index 86ab8f566f44..62aaee55668a 100644
---- a/drivers/net/ethernet/intel/igc/igc_hw.h
-+++ b/drivers/net/ethernet/intel/igc/igc_hw.h
-@@ -73,6 +73,13 @@ struct igc_info {
-
- extern const struct igc_info igc_base_info;
-
-+enum igc_forced_speed_duplex {
-+	IGC_FORCED_10H,
-+	IGC_FORCED_10F,
-+	IGC_FORCED_100H,
-+	IGC_FORCED_100F,
-+};
-+
- struct igc_mac_info {
- 	struct igc_mac_operations ops;
-
-@@ -93,6 +100,8 @@ struct igc_mac_info {
- 	bool arc_subsystem_valid;
-
- 	bool get_link_status;
-+	bool autoneg_enabled;
-+	enum igc_forced_speed_duplex forced_speed_duplex;
- };
-
- struct igc_nvm_operations {
-diff --git a/drivers/net/ethernet/intel/igc/igc_mac.c b/drivers/net/ethernet/intel/igc/igc_mac.c
-index 142beb9ae557..8bbb6d5581c7 100644
---- a/drivers/net/ethernet/intel/igc/igc_mac.c
-+++ b/drivers/net/ethernet/intel/igc/igc_mac.c
-@@ -446,6 +446,16 @@ s32 igc_config_fc_after_link_up(struct igc_hw *hw)
- 	u16 speed, duplex;
- 	s32 ret_val = 0;
-
-+	/* When autoneg is disabled, force the MAC flow control settings
-+	 * to match the "fc" parameter.
++	/* OVS_VPORT_ATTR_UPCALL_STATS(OVS_VPORT_UPCALL_ATTR_SUCCESS +
++	 *                             OVS_VPORT_UPCALL_ATTR_FAIL)
 +	 */
-+	if (!hw->mac.autoneg_enabled) {
-+		ret_val = igc_force_mac_fc(hw);
-+		if (ret_val)
-+			hw_dbg("Error forcing flow control settings\n");
-+		goto out;
-+	}
++	msgsize += nla_total_size(nla_total_size_64bit(sizeof(u64)) +
++				  nla_total_size_64bit(sizeof(u64)));
 +
- 	/* In auto-neg, we need to check and see if Auto-Neg has completed,
- 	 * and if so, how the PHY and link partner has flow control
- 	 * configured.
-diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-index 72bc5128d8b8..437e1d1ef1e4 100644
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -7298,7 +7298,7 @@ static int igc_probe(struct pci_dev *pdev,
- 	/* Initialize link properties that are user-changeable */
- 	adapter->fc_autoneg = true;
- 	hw->phy.autoneg_advertised = 0xaf;
--
-+	hw->mac.autoneg_enabled = true;
- 	hw->fc.requested_mode = igc_fc_default;
- 	hw->fc.current_mode = igc_fc_default;
-
-diff --git a/drivers/net/ethernet/intel/igc/igc_phy.c b/drivers/net/ethernet/intel/igc/igc_phy.c
-index 6c4d204aecfa..4cf737fb3b21 100644
---- a/drivers/net/ethernet/intel/igc/igc_phy.c
-+++ b/drivers/net/ethernet/intel/igc/igc_phy.c
-@@ -494,12 +494,20 @@ s32 igc_setup_copper_link(struct igc_hw *hw)
- 	s32 ret_val = 0;
- 	bool link;
-
--	/* Setup autoneg and flow control advertisement and perform
--	 * autonegotiation.
--	 */
--	ret_val = igc_copper_link_autoneg(hw);
--	if (ret_val)
--		goto out;
-+	if (hw->mac.autoneg_enabled) {
-+		/* Setup autoneg and flow control advertisement and perform
-+		 * autonegotiation.
-+		 */
-+		ret_val = igc_copper_link_autoneg(hw);
-+		if (ret_val)
-+			goto out;
-+	} else {
-+		ret_val = hw->phy.ops.force_speed_duplex(hw);
-+		if (ret_val) {
-+			hw_dbg("Error Forcing Speed/Duplex\n");
-+			goto out;
-+		}
-+	}
-
- 	/* Check link status. Wait up to 100 microseconds for link to become
- 	 * valid.
-@@ -778,3 +786,48 @@ u16 igc_read_phy_fw_version(struct igc_hw *hw)
-
- 	return gphy_version;
- }
++	/* OVS_VPORT_ATTR_UPCALL_PID */
++	msgsize += nla_total_size(nr_cpu_ids * sizeof(u32));
 +
-+/**
-+ * igc_force_speed_duplex - Force PHY speed and duplex settings
-+ * @hw: pointer to the HW structure
-+ *
-+ * Programs the GPY PHY control register to disable autonegotiation
-+ * and force the speed/duplex indicated by hw->mac.forced_speed_duplex.
-+ */
-+s32 igc_force_speed_duplex(struct igc_hw *hw)
-+{
-+	struct igc_phy_info *phy = &hw->phy;
-+	u16 phy_ctrl;
-+	s32 ret_val;
++	/* OVS_VPORT_ATTR_OPTIONS(OVS_TUNNEL_ATTR_DST_PORT +
++	 *                        OVS_TUNNEL_ATTR_EXTENSION(OVS_VXLAN_EXT_GBP))
++	 */
++	msgsize += nla_total_size(nla_total_size(sizeof(u16)) +
++				  nla_total_size(nla_total_size(0)));
 +
-+	ret_val = phy->ops.read_reg(hw, PHY_CONTROL, &phy_ctrl);
-+	if (ret_val)
-+		return ret_val;
-+
-+	phy_ctrl &= ~(MII_CR_SPEED_MASK | MII_CR_DUPLEX_EN |
-+		      MII_CR_AUTO_NEG_EN | MII_CR_RESTART_AUTO_NEG);
-+
-+	switch (hw->mac.forced_speed_duplex) {
-+	case IGC_FORCED_10H:
-+		phy_ctrl |= MII_CR_SPEED_10;
-+		break;
-+	case IGC_FORCED_10F:
-+		phy_ctrl |= MII_CR_SPEED_10 | MII_CR_DUPLEX_EN;
-+		break;
-+	case IGC_FORCED_100H:
-+		phy_ctrl |= MII_CR_SPEED_100;
-+		break;
-+	case IGC_FORCED_100F:
-+		phy_ctrl |= MII_CR_SPEED_100 | MII_CR_DUPLEX_EN;
-+		break;
-+	default:
-+		return -IGC_ERR_CONFIG;
-+	}
-+
-+	ret_val = phy->ops.write_reg(hw, PHY_CONTROL, phy_ctrl);
-+	if (ret_val)
-+		return ret_val;
-+
-+	hw->mac.get_link_status = true;
-+	return 0;
++	return msgsize;
 +}
-diff --git a/drivers/net/ethernet/intel/igc/igc_phy.h b/drivers/net/ethernet/intel/igc/igc_phy.h
-index 832a7e359f18..d37a89174826 100644
---- a/drivers/net/ethernet/intel/igc/igc_phy.h
-+++ b/drivers/net/ethernet/intel/igc/igc_phy.h
-@@ -18,5 +18,6 @@ void igc_power_down_phy_copper(struct igc_hw *hw);
- s32 igc_write_phy_reg_gpy(struct igc_hw *hw, u32 offset, u16 data);
- s32 igc_read_phy_reg_gpy(struct igc_hw *hw, u32 offset, u16 *data);
- u16 igc_read_phy_fw_version(struct igc_hw *hw);
-+s32 igc_force_speed_duplex(struct igc_hw *hw);
-
- #endif
---
++
+ static struct sk_buff *ovs_vport_cmd_alloc_info(void)
+ {
+-	return nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
++	return genlmsg_new(ovs_vport_cmd_msg_size(), GFP_KERNEL);
+ }
+ 
+ /* Called with ovs_mutex, only via ovs_dp_notify_wq(). */
+@@ -2196,7 +2227,7 @@ struct sk_buff *ovs_vport_cmd_build_info(struct vport *vport, struct net *net,
+ 	struct sk_buff *skb;
+ 	int retval;
+ 
+-	skb = nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
++	skb = ovs_vport_cmd_alloc_info();
+ 	if (!skb)
+ 		return ERR_PTR(-ENOMEM);
+ 
+diff --git a/net/openvswitch/vport.c b/net/openvswitch/vport.c
+index 23f629e94a36..56b2e2d1a749 100644
+--- a/net/openvswitch/vport.c
++++ b/net/openvswitch/vport.c
+@@ -406,6 +406,9 @@ int ovs_vport_set_upcall_portids(struct vport *vport, const struct nlattr *ids)
+ 	if (!nla_len(ids) || nla_len(ids) % sizeof(u32))
+ 		return -EINVAL;
+ 
++	if (nla_len(ids) / sizeof(u32) > nr_cpu_ids)
++		return -EINVAL;
++
+ 	old = ovsl_dereference(vport->upcall_portids);
+ 
+ 	vport_portids = kmalloc(sizeof(*vport_portids) + nla_len(ids),
+-- 
 2.43.0
 
