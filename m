@@ -1,54 +1,54 @@
-Received: from mail-qt1-f202.google.com (mail-qt1-f202.google.com [209.85.160.202])
+Received: from mail-qv1-f74.google.com (mail-qv1-f74.google.com [209.85.219.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B7D13ED5D6
-	for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 20:03:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC1483EE1C4
+	for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 20:03:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776369818; cv=none; b=gpgD8U5Hax5MwPGdki1YTvsOO4mD7EhaNHiYpyFmuY1NCgVMac4yX//e97EqJa1SsFzTuJOZDSgz2e4g9FhIC1AU/TkBnylDtwTJFfYp8KtZK2+unMU8Fah5WUlKjx/q1JOqiu8GXwPnkVOiSk43aAZ+01tE/WYS7TAETnZfq0w=
+	t=1776369828; cv=none; b=eumGwYrrMR87nSOAAYoIkuwWDvOemO4YUw0uSftlYiwMGAJ6TnaLfaoDSO/2YYfJE8yEE/UwcGuafgXBsVajye7Y8PuKs0vv6TB1rxpAEwqKviBxC7t7sTrHpIjkOLYAx0jSHtRh+msnun8/tvSX9Qfx47VVJL1fYbKdFC/aSk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776369818; c=relaxed/simple;
-	bh=1deaCbjq1+IHzRUZDdwtpewDJ07l66FtHsRDxG0YFoQ=;
+	s=arc-20240116; t=1776369828; c=relaxed/simple;
+	bh=1Osa78z8beoQsyw+7Hpybvgcc5b4Pfo5wG8YAodjJUE=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=J0Tdj0OKyKEN8HTL7P1yjfs0UPNuzblK/wzb/yMkJZlB3secsWaMRNA47GtiwdzjxKVlKq08Ek6T1qfmcVXfOr2S8l7eM/YTEHExiDUPLwzgA6LdEbqzg8VgCE/FctPa+KGA3CtPULi1VET44SYklSxemEfOYj1OppkLJwkzxvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nbN09bNK; arc=none smtp.client-ip=209.85.160.202
+	 To:Cc:Content-Type; b=RxuGPN7Z0XI/w8BHbEd2zJipYHYdcAkUfXXTTMdAia3fwi6OMnp0kAE0JV86hsmlRiI7vYQNMVGyFltvMm/Vf9ux6Cgf6HAZIOXpuT6gtB1F/zZt8vVgGsC7mqmTBcKNfLIT+H4a6BT2QULU+6GyaGToxvEbCODu7gUJZlwHMBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CBqOaA29; arc=none smtp.client-ip=209.85.219.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nbN09bNK"
-Received: by mail-qt1-f202.google.com with SMTP id d75a77b69052e-50d58bed44aso249933191cf.3
-        for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 13:03:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CBqOaA29"
+Received: by mail-qv1-f74.google.com with SMTP id 6a1803df08f44-8aca14d1faaso232455196d6.3
+        for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 13:03:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776369809; x=1776974609; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1776369820; x=1776974620; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BOJkF8JIJu9h7IWPIZgcERoTnXs8TYUkNj1H8eXXKX8=;
-        b=nbN09bNKI0FjsoLxw8NcwewDI0qnHIYY4h6XW/QYgxmU/aDj6qJyan0cgcimmjH8pf
-         U9t7pqUzlLaGlPpRZK7DPaLTxYeIBXmEZZVN2hMJnm0leUiHdMsW6OWQ5u+PhnRJqfJy
-         rFxqmGtKCDmdIvSn+h0NZTNvwF7QV99IYVbyFACmWq27dHw6DEqAAQgcAr5NLuXMzkoy
-         beQL3lXGOrhHDJc+qyyMHlluR6m4C1PfJw/+xSXZ8tyTYThh5ak8oT3AHc/XodDExU+B
-         0AMDIE5/ye5X+4r9k57G9F/ON/r+CWbXqWQ5AjgY0vgQe056BTRmEbgC6Qq5rxuWgU7D
-         75DQ==
+        bh=9Q2afE6Fn/ifzlLkUaAnaj6+fC8s92hkMorveeINNKw=;
+        b=CBqOaA2968aFfzslspZoUXksLEuno6g6QUy8Y8hdG0qTK33+NwoHRZB6T+KFbih4J9
+         7JYUgQYxKMg/9/qoeBIQx2wxOp2/mbdOjgFoSSJKMLl8km/VKCK0JiISy/r3Ma2FvqTR
+         q+r+WmCwSRktlP6VucskiMdjRoXAo2LxdxGlZe6NLWU4x3KGyRYqmpjfuRI8Dd0JUnXO
+         l+ILUTU6ErJmic7yWLw4SXcxrK7RziXCjJgHX8A2/yhA539GFvs1l63pmEDFdXA9cIYH
+         SUalbVmXEqPiOEd+se0hm1YQZS8c2+fRTZj0Bk0PqauAwNqcFIn3VsGqUdiDal86TMg/
+         dzTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776369809; x=1776974609;
+        d=1e100.net; s=20251104; t=1776369820; x=1776974620;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BOJkF8JIJu9h7IWPIZgcERoTnXs8TYUkNj1H8eXXKX8=;
-        b=tQpsYwU/SjEBOyex1xJUwnnBmKBS2NmhN+M0qViqG0FThRkr5MYzTfCDZosKOWq+0k
-         0d48m/axomlWVT0h7AzijR3LZb5bsacYx6jUbn/sN1o3EeGH4XzfsNKX1f1EPPOsb9kE
-         ori94hAEauMGaXC28m/8p4MB5VKtEgOC92oDEvyjs2KzOIHObUnIeL9pE/MHyY6zT/TI
-         0KF7oTO7MCVsxJKtZ+Vy/2t4O1io0FiReRl8keVNLBRzw+uBb56XGjP+/UEBvhZjxxyL
-         1hTK8GBqYza3VL8NFHXoXCQ+K9b9dAnCsjb4r9JZrFEUOOgwV7bwWeNfoJuXJ+A8Ai2P
-         l+aA==
-X-Forwarded-Encrypted: i=1; AFNElJ/WicEtKXA972E9MAIAhtFCP1opXpvgKI2qvzVD6NFdnB6vJB9NIQNwFVromp37Y4T9wHPIv2c=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0bSWMD08p4fz9UHOq32cxr8X8aa39IZflg7Trj5CsE55b5As+
-	Gn3oBYSks3iCHBr4CxlzWX/eBo6ielr+HNdqYyy8Ulk5ihFRWmNQL3bis1CpywOxIFYel9w9KTq
-	hS8KqkhHQgDFfKw==
-X-Received: from qtbfj20.prod.google.com ([2002:a05:622a:5514:b0:50b:8994:98e0])
+        bh=9Q2afE6Fn/ifzlLkUaAnaj6+fC8s92hkMorveeINNKw=;
+        b=qILKkgOwTzriaOmYWa1MYdyWXUzkpJsz+Ay86BGW5FfHqJycuyvBntkSB8hRx8JGOW
+         Ds0U+6ikE35vWJ7K5k7IWiVXt8Hw0B1hZwHQxsA8RYHBdoq0YIP6FzxbbLunqc9EJFQ2
+         8jBpwh+aLedMl71OY5oGnMTlw8tYDf1XdpqllagDwrTvybg6yBZ3kTzYagy0ugDJnWjn
+         SI0F4I7fjmH+Vg9sAFZpDp1Fs1eC71WeA3PlGtFH0U3BKp9q+/o9VdfHEctF9P5XmqVe
+         oXEHwaqOdCFgyVD8n+PIA33+BO9ePvjD5yWoqENRZDMEUGyFpOBzUpTcI18HBv7EglAD
+         2b0w==
+X-Forwarded-Encrypted: i=1; AFNElJ8ui2gixTkrot2rxrve1eeBjowrrAffH4rxfcYM5CflLlXOCfW2JZA8zi+6OcyK0LSOTZm8PZE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyuZSulLrDj729lAbacOzcyUiUiYf3hdyxGOYL+61MQ0iwnRGE3
+	lLIszmyjXVXZoYH7JPqTIjN5dLKGMIOd3fzN1sNq+wOOcWZEoohDumFOvvH/Y9QhnqCJTv+HOUd
+	Sy0tXb5WZYc9pow==
+X-Received: from qvbob13.prod.google.com ([2002:a05:6214:2f8d:b0:89c:7af8:4227])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:622a:5512:b0:50d:6b4e:ea3c with SMTP id d75a77b69052e-50e3492f18bmr10729381cf.4.1776369809281;
- Thu, 16 Apr 2026 13:03:29 -0700 (PDT)
-Date: Thu, 16 Apr 2026 20:03:10 +0000
+ 2002:a05:6214:5904:b0:8a5:104b:e388 with SMTP id 6a1803df08f44-8b025e742famr12474916d6.28.1776369819978;
+ Thu, 16 Apr 2026 13:03:39 -0700 (PDT)
+Date: Thu, 16 Apr 2026 20:03:17 +0000
 In-Reply-To: <20260416200319.3608680-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -58,8 +58,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260416200319.3608680-1-edumazet@google.com>
 X-Mailer: git-send-email 2.54.0.rc1.513.gad8abe7a5a-goog
-Message-ID: <20260416200319.3608680-6-edumazet@google.com>
-Subject: [PATCH net 05/14] tcp: annotate data-races around tp->delivered and tp->delivered_ce
+Message-ID: <20260416200319.3608680-13-edumazet@google.com>
+Subject: [PATCH net 12/14] tcp: annotate data-races around tp->timeout_rehash
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>
@@ -71,80 +71,39 @@ Content-Type: text/plain; charset="UTF-8"
 tcp_get_timestamping_opt_stats() intentionally runs lockless, we must
 add READ_ONCE() and WRITE_ONCE() annotations to keep KCSAN happy.
 
-Fixes: feb5f2ec6464 ("tcp: export packets delivery info")
+Fixes: 32efcc06d2a1 ("tcp: export count for rehash attempts")
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
- include/net/tcp_ecn.h | 2 +-
- net/ipv4/tcp.c        | 4 ++--
- net/ipv4/tcp_input.c  | 8 ++++----
- 3 files changed, 7 insertions(+), 7 deletions(-)
+ net/ipv4/tcp.c       | 3 ++-
+ net/ipv4/tcp_timer.c | 2 +-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/tcp_ecn.h b/include/net/tcp_ecn.h
-index e9a933641636e11902a84a595672cd56a551f305..865d5c5a7718dbc7d6db1963261889fd44625bdc 100644
---- a/include/net/tcp_ecn.h
-+++ b/include/net/tcp_ecn.h
-@@ -181,7 +181,7 @@ static inline void tcp_accecn_third_ack(struct sock *sk,
- 		    tcp_accecn_validate_syn_feedback(sk, ace, sent_ect)) {
- 			if ((tcp_accecn_extract_syn_ect(ace) == INET_ECN_CE) &&
- 			    !tp->delivered_ce)
--				tp->delivered_ce++;
-+				WRITE_ONCE(tp->delivered_ce, 1);
- 		}
- 		break;
- 	}
 diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 802a9ea05211f8eab30b6f937a459a270476974d..0aabd02d44967dae3e569702f76037beb45e5de8 100644
+index 541bd0d2d8c4ed24934fd047dd46e532b30021be..192e95b71ce9868980a809184be83398d8740427 100644
 --- a/net/ipv4/tcp.c
 +++ b/net/ipv4/tcp.c
-@@ -4453,8 +4453,8 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
- 		   READ_ONCE(inet_csk(sk)->icsk_retransmits));
- 	nla_put_u8(stats, TCP_NLA_DELIVERY_RATE_APP_LMT, data_race(!!tp->rate_app_limited));
- 	nla_put_u32(stats, TCP_NLA_SND_SSTHRESH, READ_ONCE(tp->snd_ssthresh));
--	nla_put_u32(stats, TCP_NLA_DELIVERED, tp->delivered);
--	nla_put_u32(stats, TCP_NLA_DELIVERED_CE, tp->delivered_ce);
-+	nla_put_u32(stats, TCP_NLA_DELIVERED, READ_ONCE(tp->delivered));
-+	nla_put_u32(stats, TCP_NLA_DELIVERED_CE, READ_ONCE(tp->delivered_ce));
- 
- 	nla_put_u32(stats, TCP_NLA_SNDQ_SIZE, tp->write_seq - tp->snd_una);
- 	nla_put_u8(stats, TCP_NLA_CA_STATE, inet_csk(sk)->icsk_ca_state);
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index c6361447535f0a2b72eccb6fede4618471e38ae5..63ff89210a72fbf5710279c41010d3f6e734e522 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -476,14 +476,14 @@ static bool tcp_accecn_process_option(struct tcp_sock *tp,
- 
- static void tcp_count_delivered_ce(struct tcp_sock *tp, u32 ecn_count)
- {
--	tp->delivered_ce += ecn_count;
-+	WRITE_ONCE(tp->delivered_ce, tp->delivered_ce + ecn_count);
- }
- 
- /* Updates the delivered and delivered_ce counts */
- static void tcp_count_delivered(struct tcp_sock *tp, u32 delivered,
- 				bool ece_ack)
- {
--	tp->delivered += delivered;
-+	WRITE_ONCE(tp->delivered, tp->delivered + delivered);
- 	if (tcp_ecn_mode_rfc3168(tp) && ece_ack)
- 		tcp_count_delivered_ce(tp, delivered);
- }
-@@ -6779,7 +6779,7 @@ static bool tcp_rcv_fastopen_synack(struct sock *sk, struct sk_buff *synack,
- 		NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPFASTOPENACTIVE);
- 		/* SYN-data is counted as two separate packets in tcp_ack() */
- 		if (tp->delivered > 1)
--			--tp->delivered;
-+			WRITE_ONCE(tp->delivered, tp->delivered - 1);
+@@ -4469,7 +4469,8 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
+ 	nla_put_u32(stats, TCP_NLA_DSACK_DUPS, READ_ONCE(tp->dsack_dups));
+ 	nla_put_u32(stats, TCP_NLA_REORD_SEEN, READ_ONCE(tp->reord_seen));
+ 	nla_put_u32(stats, TCP_NLA_SRTT, READ_ONCE(tp->srtt_us) >> 3);
+-	nla_put_u16(stats, TCP_NLA_TIMEOUT_REHASH, tp->timeout_rehash);
++	nla_put_u16(stats, TCP_NLA_TIMEOUT_REHASH,
++		    READ_ONCE(tp->timeout_rehash));
+ 	nla_put_u32(stats, TCP_NLA_BYTES_NOTSENT,
+ 		    max_t(int, 0, tp->write_seq - tp->snd_nxt));
+ 	nla_put_u64_64bit(stats, TCP_NLA_EDT, orig_skb->skb_mstamp_ns,
+diff --git a/net/ipv4/tcp_timer.c b/net/ipv4/tcp_timer.c
+index ea99988795e7e87412eef2768c4471e90c3e873e..8d791a954cd6ced52380226f205c66224b8f8bbd 100644
+--- a/net/ipv4/tcp_timer.c
++++ b/net/ipv4/tcp_timer.c
+@@ -297,7 +297,7 @@ static int tcp_write_timeout(struct sock *sk)
  	}
  
- 	tcp_fastopen_add_skb(sk, synack);
-@@ -7212,7 +7212,7 @@ tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb)
- 	SKB_DR_SET(reason, NOT_SPECIFIED);
- 	switch (sk->sk_state) {
- 	case TCP_SYN_RECV:
--		tp->delivered++; /* SYN-ACK delivery isn't tracked in tcp_ack */
-+		WRITE_ONCE(tp->delivered, tp->delivered + 1); /* SYN-ACK delivery isn't tracked in tcp_ack */
- 		if (!tp->srtt_us)
- 			tcp_synack_rtt_meas(sk, req);
+ 	if (sk_rethink_txhash(sk)) {
+-		tp->timeout_rehash++;
++		WRITE_ONCE(tp->timeout_rehash, tp->timeout_rehash + 1);
+ 		__NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPTIMEOUTREHASH);
+ 	}
  
 -- 
 2.54.0.rc1.513.gad8abe7a5a-goog
