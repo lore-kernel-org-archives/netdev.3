@@ -1,135 +1,99 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A834632
-	for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 00:03:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60DF31A6805;
+	Thu, 16 Apr 2026 00:30:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776297801; cv=none; b=Qw7k0pj6DQSTQppX7AItnjsFiWfIW5gliQK/XAlsKH+kQiV6u2DQg+HMSkLaLA4tyL7sLjjqzJeOz1MGtkB/QUJYijQW0/0b9GLX8xGe9/oy5vNameXTTCoygbGN9F6OSOlz0LzivMfd8I7P1LcJYNhOOLRhQB0C2NJrLsYYnMA=
+	t=1776299446; cv=none; b=Cpud+2nHukp33Z84gJw1fSUBxEwMm1+BegtrBOnGMgtNM1YgbKkbnOHUnc2NNsxshb589/VI32d38rXPzyBo9Sqyr87zeIrz3d510CsKoW48AotqDuUgDVPOVACjOEb3IfaKVOL6M9aOdEBtYZO8qcrFYVpivTyUEIiEp8v4JQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776297801; c=relaxed/simple;
-	bh=VZHq/4IIYmMZT8B+cwiT+YdTMMHSfWNwYesSsotBDKw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r3ttj5rXDJMBoq6K73jHMhxTGOFh70j3a9r2oy7Ch7HNgNILoekMWPvQ2sksnc03f19KouGjn1BYLG7V9m0ttPXCujEfCLRUZixtTem8ZV6hlcwzSLfuoNqk/zDNrf4N08+1PbAiW1Lm2fn05uihIQS2JJ3V68IBwxPycmsntYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=K147q+Ak; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1776299446; c=relaxed/simple;
+	bh=8hdB6viDEMIXDVmOzuuRHuVAjFMysD7iScx0KyZBz4g=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=rB8/RiNsINatG8aVQ1ELwU7WX2UZ3R+ZHEsO7GX2AMfYBui35Kgewpls34YxinV5seQH8yfFrgkLLQhb2bjK4N47fCEwvLsOJActM0TVxEXEF+hZLjk9jpdBsF69dFAamJad28tP3OnwQieevsl8vDoRsgijTEHBQuhcMz4qXU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IXqGhRxh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="K147q+Ak"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=b1XEqYLz+VFVxVLLY5sh99l0d3isS+L35SSH4/U236E=; b=K147q+AkNu7v6MOBFr/Kx4ZCS/
-	T0csGRKPmVl/FJDc2YFb2Bzm5v5cwtje9EpZ6KgxOUb2amWuMMo0wFreTVxnU9hsCKzKZb8RoaQHl
-	brC5TGP5MX2BvqHZZbg0QvpD/1swD/EJRWAX42+71zg6jBg1xF4SJQXJbyRXn3kAnIFt1JH+uCXpc
-	9v1IJV3rorGpFxGr8ACW0UEYa0ON60Wya88Na71bjBSjJsSzSDVSulraB1IHGeRO1fSdrFIsbSJPj
-	fIH6YoeI2nxlJ8Jq5a5ex2QOji0i6GP8TDSCVBqVReHYCT7BbDB7H9x04siYBRQdMsk7X7FYrgbbp
-	2bzSa/2g==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:55132)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1wDACE-000000002d7-1Y8c;
-	Thu, 16 Apr 2026 01:03:03 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1wDACA-000000002fX-2zo6;
-	Thu, 16 Apr 2026 01:02:58 +0100
-Date: Thu, 16 Apr 2026 01:02:57 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Sam Edwards <cfsworks@gmail.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	"moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Linux Network Development Mailing List <netdev@vger.kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH net-next] net: stmmac: enable RPS and RBU interrupts
-Message-ID: <aeAnMTU6iiPPE0_W@shell.armlinux.org.uk>
-References: <20260413110222.49fc3759@kernel.org>
- <ad06yiZZbLC9k3jY@shell.armlinux.org.uk>
- <CAH5Ym4i7VV53hQGY3AjAUW3B8g_ffgmw69kPhPrk2CmcRbguuQ@mail.gmail.com>
- <ad5LlXzeQ8j14Mjg@shell.armlinux.org.uk>
- <ad7nsUQvksJF7JFK@shell.armlinux.org.uk>
- <CAH5Ym4jA8w9=UxMT4vKJpnXkuDHtkFtMcg4u2sy_0S+8wgy-9w@mail.gmail.com>
- <ad-ID2WaPgPJqdsa@shell.armlinux.org.uk>
- <CAH5Ym4jKdzDeYwCfkMLmUz0FsiD2vFwfuAvqFE=uvMtPmakeMQ@mail.gmail.com>
- <ad_o4aDP0UBY_8i4@shell.armlinux.org.uk>
- <CAH5Ym4j3GePEMEMmg1Z27gYfQ0N8Sc1BMW1rnvNZ4aLQ+cfFyQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IXqGhRxh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D89E9C19424;
+	Thu, 16 Apr 2026 00:30:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776299445;
+	bh=8hdB6viDEMIXDVmOzuuRHuVAjFMysD7iScx0KyZBz4g=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=IXqGhRxhTM5WD/LJvpHMQqA4sgum8mSVOrXSXxiSfXdrNhD50Pjb939jdVpJ74A5g
+	 d9oERdEYIsQEntckzwwJ2soI7OPdosgwv7n3/4tIwLIBPSGd3GFz118YskPSjRE7wP
+	 Oxb91Yzpmxz1uhBcepA5FGTh5ttSa+liL7S2eFEi3dupdjjzalSDsTMZdlI6UsKQ/6
+	 nNbYbbNWLo+AX9wlU1qHDKlHofl9YEdpZwOkuFst36N97nGN95N7xjNbC354Y2/4B5
+	 DF/3+MpuiTUyJexfGMYFaGs5T2tceq1MPvLHoUvdO/TuG6RRNdaDF8eexwQUD+gUOM
+	 /r8JdYxO+51og==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FD24380A964;
+	Thu, 16 Apr 2026 00:30:16 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH5Ym4j3GePEMEMmg1Z27gYfQ0N8Sc1BMW1rnvNZ4aLQ+cfFyQ@mail.gmail.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Subject: Re: [PATCH bpf v4 0/5] bpf, sockmap: Fix af_unix null-ptr-deref in
+ proto update
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177629941504.2543974.17636062196868674829.git-patchwork-notify@kernel.org>
+Date: Thu, 16 Apr 2026 00:30:15 +0000
+References: 
+ <20260414-unix-proto-update-null-ptr-deref-v4-0-2af6fe97918e@rbox.co>
+In-Reply-To: 
+ <20260414-unix-proto-update-null-ptr-deref-v4-0-2af6fe97918e@rbox.co>
+To: Michal Luczaj <mhal@rbox.co>
+Cc: john.fastabend@gmail.com, jakub@cloudflare.com, edumazet@google.com,
+ kuniyu@google.com, pabeni@redhat.com, willemb@google.com,
+ davem@davemloft.net, kuba@kernel.org, horms@kernel.org, yhs@fb.com,
+ andrii@kernel.org, ast@kernel.org, daniel@iogearbox.net,
+ martin.lau@linux.dev, eddyz87@gmail.com, song@kernel.org,
+ yonghong.song@linux.dev, kpsingh@kernel.org, sdf@fomichev.me,
+ haoluo@google.com, jolsa@kernel.org, shuah@kernel.org,
+ cong.wang@bytedance.com, netdev@vger.kernel.org, bpf@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ jiayuan.chen@linux.dev, yimingqian591@gmail.com
 
-On Wed, Apr 15, 2026 at 01:50:53PM -0700, Sam Edwards wrote:
-> On Wed, Apr 15, 2026 at 12:37 PM Russell King (Oracle)
-> <linux@armlinux.org.uk> wrote:
-> >
-> > It's not a question about how I define RBU - this is defined by Synopsys
-> > and I'm using it *exactly* that way as stated in the documentation.
-> >
-> > "This bit indicates that the host owns the Next Descriptor in the
-> > Receive List and the DMA cannot acquire it. The Receive Process is
-> > suspended. ... This bit is set only when the previous Receive
-> > Descriptor is owned by the DMA."
-> >
-> > In other words, DMA has processed the previous receive descriptor which
-> > _was_ owned by the hardware, written back to clear the OWN bit, and
-> > then fetches the next descriptor and finds that the OWN bit is also
-> > clear.
+Hello:
+
+This series was applied to bpf/bpf.git (master)
+by Martin KaFai Lau <martin.lau@kernel.org>:
+
+On Tue, 14 Apr 2026 16:13:14 +0200 you wrote:
+> Updating sockmap/sockhash using a unix sock races unix_stream_connect():
+> when sock_map_sk_state_allowed() passes (sk_state == TCP_ESTABLISHED),
+> unix_peer(sk) in unix_stream_bpf_update_proto() may still return NULL.
 > 
-> I'm only trying to leave open the possibility that the Synopsys
-> technical writer and the hardware implementation team weren't
-> communicating clearly. We already have a situation where RPS isn't
-> behaving as documented (even if that's likely just hardware
-> misconfiguration), so while I'm currently pretty sure RBU carries no
-> other (actual) meaning than "DMA caught up to OWN=0," I'm only about
-> 75% confident.
+> Signed-off-by: Michal Luczaj <mhal@rbox.co>
+> ---
+> Changes in v4:
+> - Circle back to v1 approach
+> - More details in commit messages [Martin]
+> - Make unix iter take the state lock [Kaniyuki]
+> - Link to v3: https://lore.kernel.org/r/20260306-unix-proto-update-null-ptr-deref-v3-0-2f0c7410c523@rbox.co
+> 
+> [...]
 
-It doesn't make sense for RPS to be set though. RPS is "Receive Process
-Stopped" and it's documented as being raised when the receive process
-enters the stopped state.
+Here is the summary with links:
+  - [bpf,v4,1/5] bpf, sockmap: Annotate af_unix sock::sk_state data-races
+    https://git.kernel.org/bpf/bpf/c/a25566084e39
+  - [bpf,v4,2/5] bpf, sockmap: Fix af_unix iter deadlock
+    https://git.kernel.org/bpf/bpf/c/4d328dd69538
+  - [bpf,v4,3/5] selftests/bpf: Extend bpf_iter_unix to attempt deadlocking
+    https://git.kernel.org/bpf/bpf/c/997b8483d44c
+  - [bpf,v4,4/5] bpf, sockmap: Fix af_unix null-ptr-deref in proto update
+    https://git.kernel.org/bpf/bpf/c/dca38b7734d2
+  - [bpf,v4,5/5] bpf, sockmap: Take state lock for af_unix iter
+    https://git.kernel.org/bpf/bpf/c/64c2f93fc325
 
-If we look at the DMA Debug Status 0 register at 0x100c, then this
-gives us a four bit bitfield for channels 0, 1 and 2. Further channels
-are in 0x1010. I've added code to dump these when RBU occurs:
-
-dwc-eth-dwmac 2490000.ethernet eth0: debug status: 0x00006400 0x00000000
-
-bits 11:8 are RPS0, which indiciates that the DMA channel 0 receive
-process state is "Suspended (Rx Descriptor Unavailable)". If this were
-0, then it would be "Stopped (Reset or Stop Receive Command issued)".
-
-So, RPS isn't being raised because the process state isn't entering
-the stopped state, which makes sense - because we haven't issued a
-stop command, nor have we caused a reset, and the documented recovery
-from this condition is to merely advance the tail pointer, rather than
-issuing a command to re-start the receive process.
-
-When this is done (because stmmac_rx() continues to periodically run
-because of NAPI) RPS0 does change back to 3 "Running (Waiting for Rx
-packet)" but it seems that although there are packets waiting to be
-written out, that never happens (the Queue 0 Receive Debug register
-indicates that there are packets in the receive queue, the receive
-queue fill level is above the flow control activate threshold, and
-the MAC itself hammers the network with pause frames as a result.)
-
-Thus, I think that the fact that RPS isn't being signalled is entirely
-reasonable and consistent with the available documentation.
-
+You are awesome, thank you!
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
