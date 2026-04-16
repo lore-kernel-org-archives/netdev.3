@@ -1,115 +1,476 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD6E230EF7D;
-	Thu, 16 Apr 2026 03:55:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776311737; cv=none; b=g1Tc+ZmN0cXB6CZkJx/7t0vcA1t6I9tb3Sa0HdyGDuHF0aKopENxBEHXEbWmDJcG1lrHqMCCoCRNj2tqn/DiNpNofIHCn+f+oa7TplLuOH3L9mKJp1U7piYRUNLJbRvBU8F5NBziTmGvLHi4ankC0XEKXkx9KhgMjbGIgOPNdE8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776311737; c=relaxed/simple;
-	bh=pqimf3NDcu8MKTJUALvHFCZn88kDi6+MlZ16MDoICG0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BTqDwqkVnP8in7kNkm46RsAAjqCf32MexwVJ9cuD7uxUjQC2N0AAo2WmIVqVQ2lC4B/Nqj/wyzPB4SUWrmf2x9GHXO16Pkz82RQgPZJCEZKnnXumowe3o5UMWMZw69I8+MIsrhoDPl4bJoewyoZPFvDXgHi4g0icr137gxzzeNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=eof64qwL; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30B1C27AC4C
+	for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 03:55:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776311752; cv=pass; b=sNL+n+18TXgpkU9s9XvaTm/zA+ZehwjVCXp2KXAq+DzZ49BA1P9JIulAHJnDS1Yh0mUwMzSjUclziGPSz7aKDLY1yeLUCfB+vjE30tElraezuzsXon9OZvEEwjtnAIYejGVLKfGmUmgRrJrv9eZuf7rHNzjNy1eDmIsk70TvB7c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776311752; c=relaxed/simple;
+	bh=OcYN5IGXghYWFoAIchFWJw3FkppmQylxuBo9OALWQYA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GOrqjQtuNMaN2f9DFkmCK4LB1K38f0Jxu22BR6aZDiwTRHRBlLsqmXYTK1/PriBJVK06b/Km8ZCxJvHrvzxS3ZzHWbL2/dL30/gdZ5DhYrcrIRg3HLuTBGUPS/iyvo4mpMCyJ4o6wUC8o/IWVeIjgPZLsfq5VpFEReXrHDMoIIE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DfkKJwKw; arc=pass smtp.client-ip=209.85.160.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="eof64qwL"
-Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63FLclaF3278469;
-	Wed, 15 Apr 2026 20:55:20 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=6
-	Pf98AgeLQwARDEu+E4vD3tnol9QnT2Zmed0+plww80=; b=eof64qwL1hgIggPJ7
-	QNNcCHCoNo6wtCoBjUrxhodgmGrRrJQQDGdmmb5owr7MwqrDQe2HqRXza9iuzybX
-	3AAx6jIh9PqECww38cXyAzfaXiC4FeRRs7/u8/EbNgGEvH402NOx72i9828yhsUz
-	8WsCW0ewCPGoSmFguVnlwD8ik1vor4OjhBtVnMKa/M2TLcyFyCTYRBeYfxfsxM8L
-	4QKYkF59n0VvRIzFDtO5XLbPK6hut8nAoIPAirNR2AmW6nKRb0ThfZ5i1gl5PMB0
-	njx1aY93rUPk9weniE/0nWY0vfm0QA2nlKYi/YNvaP/XgM+IcbBCf4nY58H6sRDh
-	To73g==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4djjr6gmre-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 Apr 2026 20:55:20 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Wed, 15 Apr 2026 20:55:19 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Wed, 15 Apr 2026 20:55:19 -0700
-Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with ESMTP id 423A03F707E;
-	Wed, 15 Apr 2026 20:55:14 -0700 (PDT)
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: <sgoutham@marvell.com>, <davem@davemloft.net>, <edumazet@google.com>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <andrew+netdev@lunn.ch>,
-        <dan.carpenter@linaro.org>, Ratheesh Kannoth <rkannoth@marvell.com>,
-        "Dan
- Carpenter" <error27@gmail.com>
-Subject: [PATCH net 3/3] octeontx2-af: npc: cn20k: Return error when defrag rollback free fails
-Date: Thu, 16 Apr 2026 09:23:52 +0530
-Message-ID: <20260416035352.333808-4-rkannoth@marvell.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260416035352.333808-1-rkannoth@marvell.com>
-References: <20260416035352.333808-1-rkannoth@marvell.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DfkKJwKw"
+Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-40947c81b31so343181fac.1
+        for <netdev@vger.kernel.org>; Wed, 15 Apr 2026 20:55:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776311750; cv=none;
+        d=google.com; s=arc-20240605;
+        b=dwBVem+VNmVxmEIHAo0MVEtsC2dVPcD+b0H74sPriBJ4oCBKK8v47MgmWPjzNlztdA
+         6dHWCPFLiOcTfoDO9w87NxFSuhbohtFWj7aHI810MjXx0T5xH8wpHfVhfB/gK6P8OOjC
+         E0Bea8MdUKZX6knOZ4BhEpB4HX2rgrN+CEQDSmmmJVHYoIih3d93G6EBof30zwbEgulD
+         rZCaTeBaiEM7kTEnNwSPfWyrKZkZaLQ4WIKqpucb1CvSFAGgpMytRS0qR2nnZlDK3n2K
+         zQHrGgQpbSCDbUM6mOUVCFR2H/QML2CPvB5U8E6h//88ZijDDJFaEUZnmH3msdZeTVGy
+         m7Fg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=UnflnbGtuYVuzyIj7FT4Da3iZhZDEzJCKiZl3ehn6uI=;
+        fh=h8JSi214CggotktuzEst9ijuHrMAI0LoQ4aepkxzokU=;
+        b=DyOULXUoYTZNt6r9oN5G1hXorSeN1CtY8wjcFbHr1OrB5JdRtJJ64B2LG2mMlKAHkB
+         ZdhmZiE3XTyZ98YVTG+IjXdQPE7s7sRlV5lQLCvmLnvId36qirOscdxBqTzfkGnbUTVl
+         8WLBnOoE+aAO/Nh0ZZGiwwbkB6c9n6XTsSHFS4gM+e58GegOTViAKThD1plRDlEo76W2
+         BsG1PHARArMqLw/kgx5Kfn28Jxw001TRhEQKDWZIxT3RejKuZ6gJ5jZMX2cy7se3jJCn
+         0/2O+Cnx+l62wJbs/2jJljNw/M6QsOJ8n5KtiJffzCKq5SE1U2ksauFojLVZYDBhNCF+
+         aitg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776311750; x=1776916550; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UnflnbGtuYVuzyIj7FT4Da3iZhZDEzJCKiZl3ehn6uI=;
+        b=DfkKJwKwqACQ1YjW8Gz2+zv+g4F0oHeHcqjIyvWxqoPtoMHx/mfdbnRRR3Qk9DvVw3
+         0VJq3zVl8bHGOJVwgDiI7gcXICKpZA7yxOMRHebSDlgom2LUZ3KmBvtr9ksSRXbdUOnN
+         z6glMLXsyBJzM1ocAscYDLWd8xbA/ypfgCFjc/vpMcoR/O3mj/VaQ5YyCtRkGfOdSNQC
+         ahe4afRZgSbvtf1rcEO8DfZakcrqHk196p61bpE1Ozoy6Lbdugdy/1whYACvWp/ylH3S
+         43ll0u6xNG4Kn2l2q69lME/KgxAtjF4xeHH6F3cX+km0j6GD0G4/E+ZyoWaRstG2cutf
+         agCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776311750; x=1776916550;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=UnflnbGtuYVuzyIj7FT4Da3iZhZDEzJCKiZl3ehn6uI=;
+        b=SCEI7td/+r884LtoikjKn0bsLmlZ4JUOVkrXtXmzBkfyMaDsdbk95Jr/OZUokgjNKy
+         OoUhB1Wbe8yFLVLYygyJX90K8+QXa7hFJCwuaad67iuDGUVSAD6WG3xiSV7AMytiagpj
+         V+3A9Rs/Y9tmFBt9WiepLFRpbV/3tsxaczd9/hArxC/baFEcbLqseM8xuitzEWxsadfk
+         HDcOB+K9lb+LEfgUJWU5tqKkdUXR8W7ygsvZVqWtod+3eFLj9qE63rysF+KgpCYxmlNC
+         23RZKCRiiMtrSvGGiTA2N8Hv/MUnOEcWAQ0+C0d/y2o4aKOYaTQPsi5uZyZs3UosaPT3
+         +/ig==
+X-Gm-Message-State: AOJu0YyDRVJJV14xcA8gNdc9t7X9dAiB1W50EwUuSPzMFR6ftgjv4DV+
+	rDbeqazcLl4uZpaOYViWlUbtd+4RdS9Ig7GTh0vbpzMB+9zOXlsYvcxAADjPt4sJ/BS7eDs+ZmC
+	c2TT3k58q+CYJyAT9LHA4zHSxi8t0MKo=
+X-Gm-Gg: AeBDiesFBPqxAhPiiGwEauVzOaJmRh9k8YUIGIO7efhBrAGWMb/sWnT0dhuwoOS2T98
+	ZPfTlt4o9rhXWY/o+L8uha+S685azTmMZ0XXd58tTubdZhG9P+IcjJ88vcr081VZg+8XQLCzijr
+	xi+E6JLHunhnp5AcOWAjdDxxSbyFtHsrCNWZFcvZz3m39EXKoufxCrS6SloeCdkMvWMhNfcjABr
+	dD6+eNxuNcfyYcmnuXFPwEaFMB2ctM4TSm2LlQ8jSFWha+Y081RNmUXSLVfx4T1jEwHdJMk9c5w
+	fiL5luEKmalARlub
+X-Received: by 2002:a05:6808:bc2:b0:46e:df55:240f with SMTP id
+ 5614622812f47-479890b9538mr286612b6e.7.1776311749765; Wed, 15 Apr 2026
+ 20:55:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE2MDAzMyBTYWx0ZWRfX+XAkFHAxNr2C
- wKwia8xiaq5HPhy9/Om5JnWbIfeDBUOX5LUkalaWDr3g1T86d2YTnQzjSQygBsL7CgIpN4yHoG/
- hn7edZrbTDadqWgoyGb2B46Ej+LWJ22vRTCtUQfW4I4C0B1GwSMUnhnRj5jEjJhNIl7AK1hCcWr
- zuqELs6oXR4HX9nuGMtYSPJQgBYL0JExMYjuWnl+JU+vWvsx2PCcCOTJgfvH+u8rau7aiiG6qv5
- JaMn+ev/xJAEjHNegpxVWmLMGzN9Ufqp+r49H1ZVLfsERIfmHM0p+duL/X3NE+nFoQwM+GmK9eZ
- pOuZ1mB6dI8ju6yaYa++UIj2z6ayP1atBJYhRI/tHLIRpYbaAuAa48sSgejFZQovoIvV6UezB4V
- Y7zXcyXyWpJA8Wea17ZuAYsoD72AIInb/2AXDu3FnRPQPoG77rEHVcdzpYy8RhfcIAlez9lhEB2
- 8OnbjJAECVTPUwsnySw==
-X-Proofpoint-ORIG-GUID: oGrzF7P7vvpBl2cfJbMvDUEzgGudtwq5
-X-Authority-Analysis: v=2.4 cv=ALcTSjp/ c=1 sm=1 tr=0 ts=69e05da8 cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=qit2iCtTFQkLgVSMPQTB:22 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=M5GUcnROAAAA:8
- a=LAwRvmMFHPUKmpe1hlIA:9 a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-GUID: oGrzF7P7vvpBl2cfJbMvDUEzgGudtwq5
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-16_01,2026-04-13_04,2025-10-01_01
+References: <20260408231415.522691-1-weibunny.kernel@gmail.com>
+ <20260408231415.522691-3-weibunny.kernel@gmail.com> <bc8ef831-a4ea-4d85-ab7c-a287c9b80e61@redhat.com>
+In-Reply-To: <bc8ef831-a4ea-4d85-ab7c-a287c9b80e61@redhat.com>
+From: Wei Wang <weibunny.kernel@gmail.com>
+Date: Wed, 15 Apr 2026 20:55:38 -0700
+X-Gm-Features: AQROBzDI51ysVVr5tP_HvjmVXjXbnScXYJu5Za1jfWmMoEA3M8rM4efnTQiEEoo
+Message-ID: <CAGqc4nVZA+XSPbeO5_0OUvXzG1TMtqScrzNaUpuK0rVnR2ZFng@mail.gmail.com>
+Subject: Re: [PATCH v11 net-next 2/5] psp: add new netlink cmd for dev-assoc
+ and dev-disassoc
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, 
+	Daniel Zahka <daniel.zahka@gmail.com>, Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+	David Wei <dw@davidwei.uk>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Simon Horman <horms@kernel.org>, Wei Wang <weibunny@fb.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-In npc_defrag_alloc_free_slots(), the fail_free_alloc rollback loop frees
-previously allocated MCAM entries after a partial allocation failure.  If
-__npc_subbank_free() fails, we break out of the loop but rc was still zero
-from the successful npc_mcam_idx_2_subbank_idx() lookup, so the function
-incorrectly returned success.  Set rc to -EFAULT so the failure is visible
-to callers.
+On Mon, Apr 13, 2026 at 3:37=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wro=
+te:
+>
+>
+>
+> On 4/9/26 1:14 AM, Wei Wang wrote:
+> > From: Wei Wang <weibunny@fb.com>
+> >
+> > The main purpose of this cmd is to be able to associate a
+> > non-psp-capable device (e.g. veth or netkit) with a psp device.
+> > One use case is if we create a pair of veth/netkit, and assign 1 end
+> > inside a netns, while leaving the other end within the default netns,
+> > with a real PSP device, e.g. netdevsim or a physical PSP-capable NIC.
+> > With this command, we could associate the veth/netkit inside the netns
+> > with PSP device, so the virtual device could act as PSP-capable device
+> > to initiate PSP connections, and performs PSP encryption/decryption on
+> > the real PSP device.
+> >
+> > Signed-off-by: Wei Wang <weibunny@fb.com>
+> > Reviewed-by: Daniel Zahka <daniel.zahka@gmail.com>
+> > ---
+> >  Documentation/netlink/specs/psp.yaml |  67 +++++-
+> >  include/net/psp/types.h              |  15 ++
+> >  include/uapi/linux/psp.h             |  13 ++
+> >  net/psp/psp-nl-gen.c                 |  32 +++
+> >  net/psp/psp-nl-gen.h                 |   2 +
+> >  net/psp/psp_main.c                   |  20 ++
+> >  net/psp/psp_nl.c                     | 325 ++++++++++++++++++++++++++-
+> >  7 files changed, 462 insertions(+), 12 deletions(-)
+> >
+> > diff --git a/Documentation/netlink/specs/psp.yaml b/Documentation/netli=
+nk/specs/psp.yaml
+> > index c54e1202cbe0..3d1b7223e084 100644
+> > --- a/Documentation/netlink/specs/psp.yaml
+> > +++ b/Documentation/netlink/specs/psp.yaml
+> > @@ -13,6 +13,17 @@ definitions:
+> >                hdr0-aes-gmac-128, hdr0-aes-gmac-256]
+> >
+> >  attribute-sets:
+> > +  -
+> > +    name: assoc-dev-info
+> > +    attributes:
+> > +      -
+> > +        name: ifindex
+> > +        doc: ifindex of an associated network device.
+> > +        type: u32
+> > +      -
+> > +        name: nsid
+> > +        doc: Network namespace ID of the associated device.
+> > +        type: s32
+> >    -
+> >      name: dev
+> >      attributes:
+> > @@ -24,7 +35,9 @@ attribute-sets:
+> >            min: 1
+> >        -
+> >          name: ifindex
+> > -        doc: ifindex of the main netdevice linked to the PSP device.
+> > +        doc: |
+> > +          ifindex of the main netdevice linked to the PSP device,
+> > +          or the ifindex to associate with the PSP device.
+> >          type: u32
+> >        -
+> >          name: psp-versions-cap
+> > @@ -38,6 +51,28 @@ attribute-sets:
+> >          type: u32
+> >          enum: version
+> >          enum-as-flags: true
+> > +      -
+> > +        name: assoc-list
+> > +        doc: List of associated virtual devices.
+> > +        type: nest
+> > +        nested-attributes: assoc-dev-info
+> > +        multi-attr: true
+> > +      -
+> > +        name: nsid
+> > +        doc: |
+> > +          Network namespace ID for the device to associate/disassociat=
+e.
+> > +          Optional for dev-assoc and dev-disassoc; if not present, the
+> > +          device is looked up in the caller's network namespace.
+> > +        type: s32
+> > +      -
+> > +        name: by-association
+> > +        doc: |
+> > +          Flag indicating the PSP device is an associated device from =
+a
+> > +          different network namespace.
+> > +          Present when in associated namespace, absent when in primary=
+/host
+> > +          namespace.
+> > +        type: flag
+> > +
+> >    -
+> >      name: assoc
+> >      attributes:
+> > @@ -170,6 +205,8 @@ operations:
+> >              - ifindex
+> >              - psp-versions-cap
+> >              - psp-versions-ena
+> > +            - assoc-list
+> > +            - by-association
+> >          pre: psp-device-get-locked
+> >          post: psp-device-unlock
+> >        dump:
+> > @@ -279,6 +316,34 @@ operations:
+> >          post: psp-device-unlock
+> >        dump:
+> >          reply: *stats-all
+> > +    -
+> > +      name: dev-assoc
+> > +      doc: Associate a network device with a PSP device.
+> > +      attribute-set: dev
+> > +      do:
+> > +        request:
+> > +          attributes:
+> > +            - id
+> > +            - ifindex
+> > +            - nsid
+> > +        reply:
+> > +          attributes: []
+> > +        pre: psp-device-get-locked
+> > +        post: psp-device-unlock
+> > +    -
+> > +      name: dev-disassoc
+> > +      doc: Disassociate a network device from a PSP device.
+> > +      attribute-set: dev
+> > +      do:
+> > +        request:
+> > +          attributes:
+> > +            - id
+> > +            - ifindex
+> > +            - nsid
+> > +        reply:
+> > +          attributes: []
+> > +        pre: psp-device-get-locked
+> > +        post: psp-device-unlock
+> >
+> >  mcast-groups:
+> >    list:
+> > diff --git a/include/net/psp/types.h b/include/net/psp/types.h
+> > index 25a9096d4e7d..4bd432ed107a 100644
+> > --- a/include/net/psp/types.h
+> > +++ b/include/net/psp/types.h
+> > @@ -5,6 +5,7 @@
+> >
+> >  #include <linux/mutex.h>
+> >  #include <linux/refcount.h>
+> > +#include <net/net_trackers.h>
+> >
+> >  struct netlink_ext_ack;
+> >
+> > @@ -43,9 +44,22 @@ struct psp_dev_config {
+> >       u32 versions;
+> >  };
+> >
+> > +/**
+> > + * struct psp_assoc_dev - wrapper for associated net_device
+> > + * @dev_list: list node for psp_dev::assoc_dev_list
+> > + * @assoc_dev: the associated net_device
+> > + * @dev_tracker: tracker for the net_device reference
+> > + */
+> > +struct psp_assoc_dev {
+> > +     struct list_head dev_list;
+> > +     struct net_device *assoc_dev;
+> > +     netdevice_tracker dev_tracker;
+> > +};
+> > +
+> >  /**
+> >   * struct psp_dev - PSP device struct
+> >   * @main_netdev: original netdevice of this PSP device
+> > + * @assoc_dev_list: list of psp_assoc_dev entries associated with this=
+ PSP device
+> >   * @ops:     driver callbacks
+> >   * @caps:    device capabilities
+> >   * @drv_priv:        driver priv pointer
+> > @@ -67,6 +81,7 @@ struct psp_dev_config {
+> >   */
+> >  struct psp_dev {
+> >       struct net_device *main_netdev;
+> > +     struct list_head assoc_dev_list;
+> >
+> >       struct psp_dev_ops *ops;
+> >       struct psp_dev_caps *caps;
+> > diff --git a/include/uapi/linux/psp.h b/include/uapi/linux/psp.h
+> > index a3a336488dc3..1c8899cd4da5 100644
+> > --- a/include/uapi/linux/psp.h
+> > +++ b/include/uapi/linux/psp.h
+> > @@ -17,11 +17,22 @@ enum psp_version {
+> >       PSP_VERSION_HDR0_AES_GMAC_256,
+> >  };
+> >
+> > +enum {
+> > +     PSP_A_ASSOC_DEV_INFO_IFINDEX =3D 1,
+> > +     PSP_A_ASSOC_DEV_INFO_NSID,
+> > +
+> > +     __PSP_A_ASSOC_DEV_INFO_MAX,
+> > +     PSP_A_ASSOC_DEV_INFO_MAX =3D (__PSP_A_ASSOC_DEV_INFO_MAX - 1)
+> > +};
+> > +
+> >  enum {
+> >       PSP_A_DEV_ID =3D 1,
+> >       PSP_A_DEV_IFINDEX,
+> >       PSP_A_DEV_PSP_VERSIONS_CAP,
+> >       PSP_A_DEV_PSP_VERSIONS_ENA,
+> > +     PSP_A_DEV_ASSOC_LIST,
+> > +     PSP_A_DEV_NSID,
+> > +     PSP_A_DEV_BY_ASSOCIATION,
+> >
+> >       __PSP_A_DEV_MAX,
+> >       PSP_A_DEV_MAX =3D (__PSP_A_DEV_MAX - 1)
+> > @@ -74,6 +85,8 @@ enum {
+> >       PSP_CMD_RX_ASSOC,
+> >       PSP_CMD_TX_ASSOC,
+> >       PSP_CMD_GET_STATS,
+> > +     PSP_CMD_DEV_ASSOC,
+> > +     PSP_CMD_DEV_DISASSOC,
+> >
+> >       __PSP_CMD_MAX,
+> >       PSP_CMD_MAX =3D (__PSP_CMD_MAX - 1)
+> > diff --git a/net/psp/psp-nl-gen.c b/net/psp/psp-nl-gen.c
+> > index 1f5e73e7ccc1..114299c64423 100644
+> > --- a/net/psp/psp-nl-gen.c
+> > +++ b/net/psp/psp-nl-gen.c
+> > @@ -53,6 +53,20 @@ static const struct nla_policy psp_get_stats_nl_poli=
+cy[PSP_A_STATS_DEV_ID + 1] =3D
+> >       [PSP_A_STATS_DEV_ID] =3D NLA_POLICY_MIN(NLA_U32, 1),
+> >  };
+> >
+> > +/* PSP_CMD_DEV_ASSOC - do */
+> > +static const struct nla_policy psp_dev_assoc_nl_policy[PSP_A_DEV_NSID =
++ 1] =3D {
+> > +     [PSP_A_DEV_ID] =3D NLA_POLICY_MIN(NLA_U32, 1),
+> > +     [PSP_A_DEV_IFINDEX] =3D { .type =3D NLA_U32, },
+> > +     [PSP_A_DEV_NSID] =3D { .type =3D NLA_S32, },
+> > +};
+> > +
+> > +/* PSP_CMD_DEV_DISASSOC - do */
+> > +static const struct nla_policy psp_dev_disassoc_nl_policy[PSP_A_DEV_NS=
+ID + 1] =3D {
+> > +     [PSP_A_DEV_ID] =3D NLA_POLICY_MIN(NLA_U32, 1),
+> > +     [PSP_A_DEV_IFINDEX] =3D { .type =3D NLA_U32, },
+> > +     [PSP_A_DEV_NSID] =3D { .type =3D NLA_S32, },
+> > +};
+> > +
+> >  /* Ops table for psp */
+> >  static const struct genl_split_ops psp_nl_ops[] =3D {
+> >       {
+> > @@ -119,6 +133,24 @@ static const struct genl_split_ops psp_nl_ops[] =
+=3D {
+> >               .dumpit =3D psp_nl_get_stats_dumpit,
+> >               .flags  =3D GENL_CMD_CAP_DUMP,
+> >       },
+> > +     {
+> > +             .cmd            =3D PSP_CMD_DEV_ASSOC,
+> > +             .pre_doit       =3D psp_device_get_locked,
+> > +             .doit           =3D psp_nl_dev_assoc_doit,
+> > +             .post_doit      =3D psp_device_unlock,
+> > +             .policy         =3D psp_dev_assoc_nl_policy,
+> > +             .maxattr        =3D PSP_A_DEV_NSID,
+> > +             .flags          =3D GENL_CMD_CAP_DO,
+> > +     },
+> > +     {
+> > +             .cmd            =3D PSP_CMD_DEV_DISASSOC,
+> > +             .pre_doit       =3D psp_device_get_locked,
+> > +             .doit           =3D psp_nl_dev_disassoc_doit,
+> > +             .post_doit      =3D psp_device_unlock,
+> > +             .policy         =3D psp_dev_disassoc_nl_policy,
+> > +             .maxattr        =3D PSP_A_DEV_NSID,
+> > +             .flags          =3D GENL_CMD_CAP_DO,
+>
+> Sashiko notes that the above allows deleteing an associations bypassing
+> the netns boundaries. Do you need ADMIN_PERM flag or exlicit checks in
+> the doit cb?
 
-CC: Dan Carpenter <error27@gmail.com>
-Link: https://lore.kernel.org/netdev/adjNJEpILRZATB2N@stanley.mountain/
-Fixes: 645c6e3c1999 ("octeontx2-af: npc: cn20k: virtual index support")
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
----
- drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c | 1 +
- 1 file changed, 1 insertion(+)
+I think the concern is if we are calling this from an assoc_dev's
+netns, it should not allow it to delete any assoc_dev from other
+assoc_dev's netns. Right?
+I will add a check to only allow deletion of assoc_dev from its own
+netns.  (except main_dev's netns).
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
-index 2fcd0ee2b1e1..df192729ac1d 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
-@@ -3541,6 +3541,7 @@ static int npc_defrag_alloc_free_slots(struct rvu *rvu,
- 			dev_err(rvu->dev,
- 				"%s: Error to free mcam idx=%u\n",
- 				__func__, save[i]);
-+			rc = -EFAULT;
- 			break;
- 		}
- 	}
--- 
-2.43.0
+>
+> > @@ -292,6 +455,145 @@ int psp_nl_key_rotate_doit(struct sk_buff *skb, s=
+truct genl_info *info)
+> >       return err;
+> >  }
+> >
+> > +int psp_nl_dev_assoc_doit(struct sk_buff *skb, struct genl_info *info)
+> > +{
+> > +     struct psp_dev *psd =3D info->user_ptr[0];
+> > +     struct psp_assoc_dev *psp_assoc_dev;
+> > +     struct net_device *assoc_dev;
+> > +     struct sk_buff *rsp;
+> > +     u32 assoc_ifindex;
+> > +     struct net *net;
+> > +     int nsid, err;
+> > +
+> > +     if (GENL_REQ_ATTR_CHECK(info, PSP_A_DEV_IFINDEX))
+> > +             return -EINVAL;
+> > +
+> > +     if (info->attrs[PSP_A_DEV_NSID]) {
+> > +             nsid =3D nla_get_s32(info->attrs[PSP_A_DEV_NSID]);
+> > +
+> > +             net =3D get_net_ns_by_id(genl_info_net(info), nsid);
+> > +             if (!net) {
+> > +                     NL_SET_BAD_ATTR(info->extack,
+> > +                                     info->attrs[PSP_A_DEV_NSID]);
+> > +                     return -EINVAL;
+> > +             }
+> > +     } else {
+> > +             net =3D get_net(genl_info_net(info));
+> > +     }
+>
+> psp_nl_dev_disassoc_doit() has the same code; perhaps it would be worthy
+> move it in a common helper, called via pre_doit()? It should also
+> simplify the cleanup paths.
+>
 
+Ack.
+
+> > +
+> > +     psp_assoc_dev =3D kzalloc(sizeof(*psp_assoc_dev), GFP_KERNEL);
+> > +     if (!psp_assoc_dev) {
+> > +             err =3D -ENOMEM;
+> > +             goto alloc_err;
+> > +     }
+> > +
+> > +     assoc_ifindex =3D nla_get_u32(info->attrs[PSP_A_DEV_IFINDEX]);
+> > +     assoc_dev =3D netdev_get_by_index(net, assoc_ifindex,
+> > +                                     &psp_assoc_dev->dev_tracker,
+> > +                                     GFP_KERNEL);
+> > +     if (!assoc_dev) {
+> > +             NL_SET_BAD_ATTR(info->extack, info->attrs[PSP_A_DEV_IFIND=
+EX]);
+> > +             err =3D -ENODEV;
+> > +             goto assoc_dev_err;
+> > +     }
+> > +
+> > +     /* Check if device is already associated with a PSP device */
+> > +     if (cmpxchg(&assoc_dev->psp_dev, NULL, RCU_INITIALIZER(psd))) {
+> > +             NL_SET_ERR_MSG(info->extack,
+> > +                            "Device already associated with a PSP devi=
+ce");
+> > +             err =3D -EBUSY;
+> > +             goto cmpxchg_err;
+> > +     }
+> > +
+> > +     psp_assoc_dev->assoc_dev =3D assoc_dev;
+> > +     rsp =3D psp_nl_reply_new(info);
+> > +     if (!rsp) {
+> > +             err =3D -ENOMEM;
+> > +             goto rsp_err;
+> > +     }
+> > +
+> > +     list_add_tail(&psp_assoc_dev->dev_list, &psd->assoc_dev_list);
+>
+> Sashiko says:
+>
+> ---
+> list_add_tail(&psp_assoc_dev->dev_list, &psd->assoc_dev_list);
+> There doesn't seem to be a limit on the number of devices that can be
+> associated with a single PSP device.
+> If a user repeatedly associates devices, could the generated netlink mess=
+age
+> in psp_nl_dev_fill() exceed the maximum allowed size (GENLMSG_DEFAULT_SIZ=
+E),
+> causing it to fail with -EMSGSIZE and permanently break PSP_CMD_DEV_GET
+> and management notifications for the device?
+> --
+
+Ack. Will enforce a max allowed number on the assoc_dev_list to fit
+into GENLMSG_DEFAULT_SIZE.
+
+>
+> /P
+>
