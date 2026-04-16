@@ -1,138 +1,169 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D99EA3A6B63
-	for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 10:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 667C439023D
+	for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 11:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776336726; cv=none; b=B1f1gJ3lcYiIgCqVLfgXj/bvA/ccZ9XdOS7MwSciBzey509I4lw7KMhC0Is0yoTCrK4Eu+VX8KeWJBYuyK5GM1wjJjp2nn+cnZ6dVg4o7r7o0GqgxUX4NaVZlDyZt065fFEiQW0wJ1yl4n8boMggwCzIcVdc8s/q0ODbW8tlFfM=
+	t=1776337230; cv=none; b=FxZF+RfaFzwhjhRcRcDXUIYEVLYnSidx2R6kEU2UdEzJNDJEXAkTwNJhjn1Wnxj73HusKU+jHOPk8VwvXzOWHrZ04kRzBg/E0zIVEQ518HoummUbaMWHL2MgRYDQcfsProqPZJKecOj4PUBP8BNdTcz4TEdUSxa/7LmYR+Lcnu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776336726; c=relaxed/simple;
-	bh=EixB+VBYELB9QZou2WcR2YRGdtQyBm7qn3tnBBWJdDY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=olbq4wNo29Ay1CkPIK5hz7r5XGIFThwo2Rp+V/7NkBtmse9INMdYEfKf5AV35YaD0hv3VrDneopoUV8rtQ4oswFtXKYFZrEqUHwEoP0thOZys2/NM9lKUQQvw1G/5ONpCPTQCJuH1sPQKDgpB5hO30W/T7IO23WL5z0B/ZhNZhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OXTiiG+l; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=YJCV6YH8; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1776337230; c=relaxed/simple;
+	bh=uvgls/AWo0ZB2eaUcYzcRFg7uIPxau3CKDqtTkrxZGU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fonA5I9UHM/R+22Y4JLz700kEW3rdVzOSJ351G1X5H+N8rodLknVjVndKcPrCqprYoiBonRT0dppR9eHxZlPzBQNxfI3g3Sxjo8DnoDFrbMQO+fLW7Mp5GD5UZ+HN1js4EPHHrTMyeXgigq2YvVXNAtBGER65FV0AF9ww2Av8ns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aQnboQpr; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ux7x48BZ; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OXTiiG+l";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="YJCV6YH8"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aQnboQpr";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ux7x48BZ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1776336724;
+	s=mimecast20190719; t=1776337227;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=RWWOQAJEN/95l4X8m42iXJycRGuqxRmfK0Cq2b139G8=;
-	b=OXTiiG+l99NyvBV50lHidVRCDyDsMQa0AFkSgkbJVMHcqgkOjxM2Jc7IdHJn0ibT7XYl6g
-	t1z0UD1IOyrQKZfSOgoWYSX//aG5awgliIxBLeo4s11Yj3STvAYe0CPRBcWO93o7nemQCi
-	6RnGD0/7WfebMvRuG9fVDwMz6vvuYvU=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=immR39HEnQITIkEYEn8WgdgXgd+QOcertjMezwfG0S0=;
+	b=aQnboQprpKuFAwtXajdg4LKozsGu8B3fhyKS8eExHHa7d45DIsvTOYrsuB1Y7MkokOGxTG
+	GS8uSGwgVhzIXbAPm3quRj5bt/IrIwYJVmhcL7YFz2N5oOL4QcFd2m1sxEOgDhve4CDAAB
+	j+L7jiegiQAT6Xj4mYhbE3Ot5X+CXCA=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-609-WA9iABgDP8uttgF51jgxag-1; Thu, 16 Apr 2026 06:52:00 -0400
-X-MC-Unique: WA9iABgDP8uttgF51jgxag-1
-X-Mimecast-MFC-AGG-ID: WA9iABgDP8uttgF51jgxag_1776336720
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-43d1dea12aaso5758349f8f.1
-        for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 03:52:00 -0700 (PDT)
+ us-mta-269-ICW0nYPOO9C3geQw7fNb0A-1; Thu, 16 Apr 2026 07:00:26 -0400
+X-MC-Unique: ICW0nYPOO9C3geQw7fNb0A-1
+X-Mimecast-MFC-AGG-ID: ICW0nYPOO9C3geQw7fNb0A_1776337225
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4837bfcfe0dso71629725e9.1
+        for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 04:00:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1776336719; x=1776941519; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=RWWOQAJEN/95l4X8m42iXJycRGuqxRmfK0Cq2b139G8=;
-        b=YJCV6YH8KDAOF/LgNXM5zZEOM2M7B/vyyNQMVv/YYHuZkXmk+uj+mT28cljJ2xz3Te
-         I9zJZ6dKdbfNRkZgHxy8UBHsHlJAjseoz+t+BfoIdTnLfhlNeX/nEplu4hzyt9eXueiR
-         K5+u7qpLKzxJ1LglBxA4qnDSqIJ99z/jjQBGv5Eek9Ns+WUPwhV5WJ2Pgd1mWjSSzdG6
-         UElY11WIU2bm+og2DeWSWzgboOevGZsjaZLoQpRhcA/1lNglJQMpLul/KxsYeMJ2YQN5
-         VlqoP4UI9++fVVrn3WhsAR7l5lTufOC5t1wT9kFg6QlnLcj6CIIYRiomgrZqMCxcABSD
-         969A==
+        d=redhat.com; s=google; t=1776337225; x=1776942025; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=immR39HEnQITIkEYEn8WgdgXgd+QOcertjMezwfG0S0=;
+        b=Ux7x48BZTWIjqrRtHBsxTAqmskx8Q/yX1Iu8qtii+WrTmQWV3Q4Oj5xaZbWWXhkPQV
+         5pzAjkelCEzpqgKnoSl2d7wQl0wNCSRtzsUiC7QwBkC1HfXxl70+OOfvlaTP6+zsRwxg
+         7YRGrO3Vuzg4JX7jd4UpMiMODPegom7b8avFT6BXf02nK/jzTFEhZeM2eMB4rxHF8Ch4
+         9bOj23SrNkwKBCbb8kz5SopNG1IyHWPUpBWdvllIVpLBHiNVhr47Tp0QFveYM0GjWmdQ
+         mZ6jRUjjIvXxr+vqBRhETLOi3mHxW5LRZtNGWNxppH5YksA6QOjdEDnTVNbIbyyg0JEp
+         aF3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776336719; x=1776941519;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RWWOQAJEN/95l4X8m42iXJycRGuqxRmfK0Cq2b139G8=;
-        b=N3z991HspLME2e7WOMjGDsROjNEi5fA08Uta9JNp+qyjV61ZA55NlZ43o25xPUWKLm
-         arm/jOlKyYLTpFFh9/M4PQGRsocyaHHa6KykxjN9uWFYEiPVNzyxvPPxXDFjF+Fujw4f
-         I7UXsa96EPjqk+a5ZXc4enpU0FeiFsCqNJQZk3b+dY3EQkV9eKB3XH/rJa6EQuS+nfvr
-         c4Z289EN46X6fo800uSb/hYlwdRSmF46xpZI1jZIiFKB/ilbTU+aGLYqUc5t3SE+wxhT
-         o/rI9u038hkEGZ27TCjzfKmUfiaSMCBYCWFy+Ir9x9THOdVvh32FXemGxAKcTXkq/4Fh
-         FF+w==
-X-Forwarded-Encrypted: i=1; AFNElJ8Sw5RYZezoehRF/aUJipBiB/9hBc1Sz+zx79caetV7kx3BQ9zPcSS4Q/vBFvOE7fZ5TWUR1fo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxLpATcoshTmQhkRxzaBaxMrLav2bsNp0PqeoLsEb+9D1g/bRX6
-	zhBgP9vMk6vBjm3FkaJ1f6iCqFEu+PgDWla5U0FTnfNOZyLmKf+JKY6yt5lLA5B6TFhT6Z9dOiJ
-	bP/O04Jv9pFIQay82ByZpY/ksGz11hkZ6JsgRJcVI2C9+4J4WnA/Kcn+NsA==
-X-Gm-Gg: AeBDiesPuKm+nddfhYX+TFaNqNk8vN2ktHhF9QcwtUBPVauIc01Khj+plKwQSFFtMfr
-	z2CB3crYwtTwT+A7VK1WEqQDOYOzZ2AgJpAcVa7zBPt0Go1Mf6FPE2uMAXuJ5gj1RcLJBt4/SWd
-	Bzk6lOWyXrV2gQW1MOMf+Bn/NPcE3qxL2gDDbuGN/AoW4UbhNDGtXb8mhVRbZe403JrHgZYjrcR
-	8qn0wZxaf//NeeV5wmkOnEyZheznuv/0Yt7as04r2MY1GcUjW1q2w3JS+oWjGIK58NkBe0E/ZUW
-	HJWtv+UFFt+3mmp7kTi9/Z2U5pid0vbBmxcO+RDHm1u3NNiXlXa+KP6fIHKk3/Q+XxPLHV4ghw2
-	41aKmNJLJTVT+5WAhNHDkqe0ZRATgmUlR9FiyljdzFOo=
-X-Received: by 2002:a05:600c:c08b:b0:488:bc6a:528d with SMTP id 5b1f17b1804b1-488d68867a0mr252350585e9.22.1776336719543;
-        Thu, 16 Apr 2026 03:51:59 -0700 (PDT)
-X-Received: by 2002:a05:600c:c08b:b0:488:bc6a:528d with SMTP id 5b1f17b1804b1-488d68867a0mr252350285e9.22.1776336718976;
-        Thu, 16 Apr 2026 03:51:58 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-25-21.inter.net.il. [80.230.25.21])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488f5818d70sm73936565e9.4.2026.04.16.03.51.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Apr 2026 03:51:58 -0700 (PDT)
-Date: Thu, 16 Apr 2026 06:51:54 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Simon Schippers <simon.schippers@tu-dortmund.de>
-Cc: Jason Wang <jasowang@redhat.com>, willemdebruijn.kernel@gmail.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, eperezma@redhat.com,
-	leiyang@redhat.com, stephen@networkplumber.org, jon@nutanix.com,
-	tim.gebauer@tu-dortmund.de, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	virtualization@lists.linux.dev
-Subject: Re: [PATCH net-next v8 4/4] tun/tap & vhost-net: avoid ptr_ring
- tail-drop when a qdisc is present
-Message-ID: <20260416065132-mutt-send-email-mst@kernel.org>
-References: <20260312130639.138988-1-simon.schippers@tu-dortmund.de>
- <20260312130639.138988-5-simon.schippers@tu-dortmund.de>
- <CACGkMEtN9XgYPGHQg4TEWEsa_UcMbcnzO=VaTFT=0Tn4BayMDw@mail.gmail.com>
- <0908392d-6314-4141-b908-6c9a880ba0a4@tu-dortmund.de>
- <cda710f8-033a-4772-b5ce-a2cfddf42bea@tu-dortmund.de>
- <CACGkMEuLqxnz=GtdKp3-u0egkGT_eZUgBBwvvtHcgAYpLJv-UA@mail.gmail.com>
- <3d3274b4-f274-4cf9-9d0f-989d05148604@tu-dortmund.de>
- <CACGkMEsUag4zNZG+aYipHv_PirbKb_rs7DzSOr-NF8ckhUaJOQ@mail.gmail.com>
- <b9d84d88-46d5-4fd3-a5b2-d914f54766f6@tu-dortmund.de>
- <73033bfc-4da3-4057-9480-bd977a66ecef@tu-dortmund.de>
+        d=1e100.net; s=20251104; t=1776337225; x=1776942025;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=immR39HEnQITIkEYEn8WgdgXgd+QOcertjMezwfG0S0=;
+        b=gFWG4A8zd8w7XdDh+chG5VXrHyoJO2VBlDmgX8Q1cIe3F8FhrbFbgqJnU7wBN9r0my
+         P3niFwxiprycGZu7/g9I9PwmuWfv3AxHrurwTf7ALSFQybpq8ls81hIR2dQ9sfXJxkDg
+         bDqX88qRLzHhxUv2bSQdR+EU3a5i9EGZz7KK+ebj7d6DCB+hYZBFaHHR6zPj7pCywqPY
+         ktLLOg2cnSapzbONJwwmJ4vdM1NXPWZvE98pXm8A+hNWZZ3ZXMDd3wZFLebXn7H2O+uX
+         fW6lPPyG+sAjJTqLL+2uj3kNjIcbST0vma1p77UwLYcOP7nbPNvG5K6H6UujGfihvkJA
+         rcmQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+fCIoazBdeCJLqeLBQEjxHhcwm/4icAQRe/fbGpgDSwStObvgNUYJewuHKyLywD4ZH8Nn2UR4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQR8qkgI52H09SxNJLeZFcZGZgxCqTPka8wctKrN0CEkqDg6RL
+	+LQrAPxSPyA9sqcncFYNhoJ6nlUQrkFoRPArcbEy3r657hWKdW+ggt87geL5KhPFH87V9UROMYp
+	qLbCkKTraAJfa/DgbnSL+c3oOC+UCElJHNGMzQaYM9KovauGUvk8Egseylw==
+X-Gm-Gg: AeBDiesnsc1cbH7bhbT7reYN/2d9K5afKZv+I69GZdbUZaE+Zidj9R8pqPfoQCGkrrn
+	hBdX/IPCVp2VohFsWx1pxbg6OP89VeTZFlnJKqh9OIJAR+/OEz4d+vkEm9D6jiD8z/w3e0d5y9S
+	GOeHRWyFogNGGi6k2H2/hJsKA0Vnu3WMqBE5Z8Pgkid6RvvwwATOP7snK0E/qhaMWkVt86lLcMf
+	BR0YIsaFUF8/V1633KcBXA50+vtvAstt78Y4LC82pU5+AZSek1iBwa0mOpbq9Du+6MtWfywORrA
+	9GTu038C8uIGFMjGU6sc3rOaEvyDMhKv+rVdbEiuiJCKTzEpgD68XoRs2pqPb1aaLP1IO6Igm3S
+	3OEbAsUDw3SSo9ayR5F++BpC89UgQUJZuqTDlhAyqki9yyiR8cU2tMaecJ1qln9k3x60=
+X-Received: by 2002:a05:600c:871a:b0:488:c683:be89 with SMTP id 5b1f17b1804b1-488d67f0b8fmr367583005e9.9.1776337224931;
+        Thu, 16 Apr 2026 04:00:24 -0700 (PDT)
+X-Received: by 2002:a05:600c:871a:b0:488:c683:be89 with SMTP id 5b1f17b1804b1-488d67f0b8fmr367581755e9.9.1776337223973;
+        Thu, 16 Apr 2026 04:00:23 -0700 (PDT)
+Received: from [192.168.88.32] ([150.228.93.122])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488f5821115sm46483195e9.8.2026.04.16.04.00.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 16 Apr 2026 04:00:23 -0700 (PDT)
+Message-ID: <77503dd8-d882-4079-9dc8-f0cab89c0a7b@redhat.com>
+Date: Thu, 16 Apr 2026 13:00:21 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <73033bfc-4da3-4057-9480-bd977a66ecef@tu-dortmund.de>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net V2 1/3] net/mlx5: SD: Serialize init/cleanup
+To: Tariq Toukan <tariqt@nvidia.com>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>
+Cc: Saeed Mahameed <saeedm@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
+ Leon Romanovsky <leon@kernel.org>, Shay Drory <shayd@nvidia.com>,
+ Simon Horman <horms@kernel.org>, Kees Cook <kees@kernel.org>,
+ Parav Pandit <parav@nvidia.com>, Patrisious Haddad <phaddad@nvidia.com>,
+ Gal Pressman <gal@nvidia.com>, netdev@vger.kernel.org,
+ linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Dragos Tatulea <dtatulea@nvidia.com>
+References: <20260413105323.186411-1-tariqt@nvidia.com>
+ <20260413105323.186411-2-tariqt@nvidia.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260413105323.186411-2-tariqt@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Apr 16, 2026 at 10:54:45AM +0200, Simon Schippers wrote:
-> To summarize the discussion from my POV:
-> 
-> Open point: __ptr_ring_zero_tail() is only called after
->             consuming ring.batch elements.
-> 1) Consumer wakes up the producer but the slot is not cleaned.
-> --> I disagree, the consumer only wakes after consuming ring.size/2.
->     Then __ptr_ring_zero_tail() was called at least once.
-> 2) Producer is woken up but see the ring is full, so it need to
->    drop the packet.
-> --> I disagree, because then NETDEV_TX_BUSY is returned. This is
->     noticeable as qdisc requeue and only happens very rarely.
-> 
-> Points I will address:
-> - Minor nit on patch 2 by MST.
-> - Rebase patch 3 because of commit d748047
->   ("ptr_ring: disable KCSAN warnings").
-> - Document the pair of the smp_mb__after_atomic() in tun_net_xmit
->   with tun_ring_consume().
-> - Use 1 ptr_ring spinlock instead of 2 (currently used for consume
->   and empty check), not sure how to implement it pretty rn.
-> - Run pktgen benchmarks with pg_set SHARED.
+On 4/13/26 12:53 PM, Tariq Toukan wrote:
+> @@ -491,23 +508,35 @@ void mlx5_sd_cleanup(struct mlx5_core_dev *dev)
+>  {
+>  	struct mlx5_sd *sd = mlx5_get_sd(dev);
+>  	struct mlx5_core_dev *primary, *pos;
+> +	struct mlx5_sd *primary_sd = NULL;
+>  	int i;
+>  
+>  	if (!sd)
+>  		return;
+>  
+> +	mlx5_devcom_comp_lock(sd->devcom);
+>  	if (!mlx5_devcom_comp_is_ready(sd->devcom))
+> -		goto out;
+> +		goto out_unlock;
+>  
+>  	primary = mlx5_sd_get_primary(dev);
+> +	primary_sd = mlx5_get_sd(primary);
+> +
+> +	if (primary_sd->state != MLX5_SD_STATE_UP)
+> +		goto out_unlock;
+> +
+>  	mlx5_sd_for_each_secondary(i, primary, pos)
+>  		sd_cmd_unset_secondary(pos);
+>  	sd_cmd_unset_primary(primary);
+>  	debugfs_remove_recursive(sd->dfs);
+>  
+>  	sd_info(primary, "group id %#x, uncombined\n", sd->group_id);
+> -out:
+> +	primary_sd->state = MLX5_SD_STATE_DESTROYING;
+> +out_unlock:
+> +	mlx5_devcom_comp_unlock(sd->devcom);
+>  	sd_unregister(dev);
+> +	if (primary_sd)
+> +		/* devcom isn't ready, reset the state */
+> +		primary_sd->state = MLX5_SD_STATE_DOWN;
 
-Thanks! The plan makes sense to me.
+Sashiko says:
 
--- 
-MST
+---
+Since primary_sd is only populated if devcom is ready, this condition will
+never trigger when devcom isn't ready, contrary to the comment. Instead,
+it triggers on the normal path after devcom is ready, immediately
+overwriting
+MLX5_SD_STATE_DESTROYING with MLX5_SD_STATE_DOWN outside the lock.
+Could this allow concurrent mlx5_sd_init() calls to see the down state and
+attempt hardware re-initialization while the group is still being torn down?
+Also, can this race and cause a use-after-free regression?
+During a concurrent Socket-Direct group teardown, the primary PF and
+secondary
+PF can execute mlx5_sd_cleanup() in parallel.
+If the primary PF completes its cleanup first, it will call
+sd_cleanup(primary)
+which calls kfree() on the sd structure, freeing the primary_sd memory.
+If the secondary PF is preempted just after releasing the devcom lock,
+it will resume, evaluate its local non-NULL primary_sd pointer, and
+locklessly
+write to primary_sd->state. Does this dereference the freed memory of the
+primary PF?
+---
 
