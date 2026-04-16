@@ -1,196 +1,383 @@
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF77264614
-	for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 15:24:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.170
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776353044; cv=pass; b=EB4TiZkzoksYETK/5tBpml+qhzI3sgNh/RTOuSOVp1SAHfpVcHUsIJYADT31ic+KdcQV77N9Fggtyw3Q2Rr76Af0DevBUWn8MtIw70WcnayH+kF2nL562i1bgzqtx5KMvfmHqeGQ5s5sJzTebHWKCW01tPmR6D3snRwfPZ503AA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776353044; c=relaxed/simple;
-	bh=U52NaOQKzIQpvFnuwyftfzqzX7X55EDlwl+M7r6fR9Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aBdtvYd8pRW2POC7MzeUu2wBTKmQiuk/OvAbRxNrdMi437leaMzpyb0i3NG1aFdbji0e9kJZOwvdBotJZtLBKZU24NRpnTIRXhoPwJWpNiJnni+m7jHKgpBskeuPY0peRkivS6u7AHrIu/OHldBy0ySDOOYAVALAw9Oa0pio1fY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20251104.gappssmtp.com header.i=@mojatatu-com.20251104.gappssmtp.com header.b=FRXbDfQR; arc=pass smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E842E2852
+	for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 15:24:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776353087; cv=none; b=WhUaEfvnGhq8t/Ni42rx2zOd8BJI1CRSPC3nX9R1CuUN20F1nCk9DZ0Sl8n6PQBiS8C4B1Umeck2dov1Fm4zs6caLOrtun/X0kfiObAjXBh969FgJQ8D57/LNGOVu3/8lWLnOJLfDj16rS+QvoWZp5F7jT2ivXDBX6oWhH9spOw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776353087; c=relaxed/simple;
+	bh=4DeLBmD1OSKMnPIdsxTE7sOiplVTnV+dW0Mi0n77Jag=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=owuWPQcIgX3VoOxu7vRbWA8Ma/H3PiMjlpTcscTNHn5iiERBjnVSrYyogblRcx5UwhZ8gLCGwdxrqaMZVmlYgwX9/ThjEB+3b9hCYtS6HdHYjoJpXKDFBBU4TYWJL3XCe1R9HyMxiVzGIpWBA318Y2iwf/rqCB+A4PHGlxqbcM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G3GI0mFX; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mojatatu-com.20251104.gappssmtp.com header.i=@mojatatu-com.20251104.gappssmtp.com header.b="FRXbDfQR"
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-82f206f2b54so2340383b3a.0
-        for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 08:24:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776353042; cv=none;
-        d=google.com; s=arc-20240605;
-        b=dqfup4QPUoeZw8bomSQlttVOI9/RT9d7db0XdHla1ibnZLNXsifxVCtH3/Wh+WCbBm
-         uQbQU+AGQXa91gqmFow7gjjXTSgJbfovOWIL2aqCxoCECMy511CjlbXOxAZEjtyDmCgW
-         tv2sbg+p+k/mM5EpzO9ZTbIGDeQH59TFJ3EtsQIUA2aGDW/hH7/HjPscDfhcW8gwmwi8
-         gCJ4XtpBfvBXAEfxGXLMNv1t8mN39bjvdf3gJEWt2N1CstWPOfasrbLbNbatAKYk8VOG
-         +ZB5SzqHByPvZtt2XowjV/VTTR6+vhd4OCVrVTO8RWcvXNzY1cIvJml6KrxY8E/6zRZt
-         y+sQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=QlmMSGcub4gRsEzR0kt1jLplgPMUnhz1kWFWpi1RFSY=;
-        fh=XN4St5FOnN+qK+EsHAwCJvkqcZ8mi3HjwNzoCXsbOy0=;
-        b=EkD5t4SKVmmG7laV1Z4ROSBELfoP8InigME2/SzUMTJa9UMhvvZQKweRvOfjPlBGFg
-         a1AxkRCHwjS6oik338ZBEjEXQlJjuGcFkuNKaBaMHqJ5BU9CtQrkUmAF48N4KtktjoKJ
-         lRl4no7Umj8vHjoGW32wD9G68Py/vOewaK368Oqm/9op97Jnmn7vSKyDwQ7T5KbXxYQ7
-         wB2YWIR6v7e7bWgRg0xcHQk9kd5qRIT34NozI0QZoleRuwaEnw8YYo6GaGxxeJ8sPU2v
-         Zd88NRMm+QPE137DteSEGqo47qS+vhBOcF66rooK1/SKd9K3noEog14rXEK9LZuccs9i
-         zijA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G3GI0mFX"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-823c56765fdso4533923b3a.1
+        for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 08:24:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20251104.gappssmtp.com; s=20251104; t=1776353042; x=1776957842; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QlmMSGcub4gRsEzR0kt1jLplgPMUnhz1kWFWpi1RFSY=;
-        b=FRXbDfQR4/wEb9GWbj/EPWHqSU0Jq7Mr005bPjf7wUGDDsFG/cqPkoriQR9ADXrSzq
-         gD/Y30SCtYqdxymiv0vX0FSvZZ1U/4/smpsEAvXjQWeLeDInPYW5/XanPp6FHhi9B37L
-         pxwgfZhLQsLc1hsm7KdV9gqqrHVy5As3MP1+zBtuwp+G0DcomYexE173sQZ95K4fbGWs
-         T7EOcGqtWgUMldjL1sdE7h7JGHEWqu21DEhbh4DipEEyx/6ZbFj44To4h/d8Up5w9j46
-         /taRI2lTNZ11JiC4F5O0DB7sqo34+XvWbqrF33FAlhyxsbewN6TGlwwauaVzEGLJYDHn
-         w7lA==
+        d=gmail.com; s=20251104; t=1776353085; x=1776957885; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=H+34z2zcygJjLXaoojeshR97PIrdaKevh+94pYFmkcE=;
+        b=G3GI0mFXEU0cXUysoXGJl5SBUg5exPfMxqQSBmoAbMMTXz9ZXSaSofmm6bbNbeSAJQ
+         jtNmUIWppupHKS02hj7hYZBDqLhR+KUuZ53IOgsnDtAuvnCRp8FdcU0KRQZT4onLrmoA
+         TxCnnTD2dDsoMwfG82McrzRzXXjAvgtOoazZNnW3Me/yCXMaX8kCXmTzRuw3/6t4GTHR
+         HTNqNfgpdnNGFS6LlyyVfMfvfgsLgENo660mHtZOEp4ovdj0lruiFGaGnx6NyzQNHbpl
+         b2F581IECgltJagusP+id6L31M+6jZqMr5ngo2YWrZzA2kp11mJrp/qsqHcgTTYpYme4
+         dIbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776353042; x=1776957842;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=QlmMSGcub4gRsEzR0kt1jLplgPMUnhz1kWFWpi1RFSY=;
-        b=s3dtt0AuLNBRs+QDhXwj8a2sCohEPQppY5iqGka/4YQ04So+9FhCoutzxeghuh5GPt
-         QmwAerexlVxm9EwznIE9TffK0vozkZz/rQi3ZPV+KwUMDwh+6RZS9gLDyyjBLU4OcZ8L
-         TQ4wfHyDpTiZGwVo8nQiZdsjgIyzya8GYafmMKJarkaNL+8ebgQwEorhWg8t22KoOcEl
-         GHuwc8yFrxe983d8rvjmYtpcTOYoBk92jhe3/+lEnCJF2qtVUWxkmb0hWvDYPkECpS82
-         HR0zUCzDqqkZajaPyn8Dljpk6mM8jwnv0uyF3kiLjnpZGnSrfOWNZkrB/2SAjjPZzIOn
-         578A==
-X-Forwarded-Encrypted: i=1; AFNElJ89gP4FaZlFD9R3Xj/pWJWQG0doipO7fSHWt22qI0Gb5kb7CmbwHDug01AOj4uN+J7poRtIfZY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwX2G3/pb10AC50FamQgRN/6cRKyuGDbwCNCCJTjImxHJrrAAn2
-	00fsAD84JpZwMxxAPw4DWEGYnMhM8NrkHtemEsnUaa1HLLzIobDrXqD06aqnMefp+BBaChyAUvU
-	kD10YPsfBeUREMaNumM9YoU1A/MCA4Akp54f+vx4H
-X-Gm-Gg: AeBDiesitET+Gabq6P1vN937M2VQmnvwSSYzYQG0rmVxLmc2Mq6+7LQZk6OvoUxRiAC
-	nLVsKoTJ1zKAk99w1+YTGFM1KvfczXFSfQXgHyqSA/b+D6XpT9ADFRo1J9yRhEB6cwhmPVMLf1a
-	Gu7eDXb6pmuHG1cNM59ygiK+TpLC542aFEGPJkyMcWe9M2KpUrXwemLc+tTNsb8E38p/SAureJd
-	DrseQQzERvobpD0tgf0r6p/U8VRjMoITWThIyocuVC/loGbNM9V5INY9LOXvsb+1+YFH3L+rYri
-	tUBlWGfYjRf347jBQMA=
-X-Received: by 2002:a05:6a00:4293:b0:82c:7eb1:4d61 with SMTP id
- d2e1a72fcca58-82f0c298d87mr26612801b3a.32.1776353041876; Thu, 16 Apr 2026
- 08:24:01 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1776353085; x=1776957885;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=H+34z2zcygJjLXaoojeshR97PIrdaKevh+94pYFmkcE=;
+        b=J9A2GVDDWIc9NZe/NhgNr3deyI3Jk1JKWAuayaVv0xtG+S0u8PUIWMOCfwb5NsXg7c
+         qXIrp7mfnESlzD57j8Mlfn5Bd3ZqM3nQ3RASAz8DhPNeY0neuIAhzyGDHaeHDEx1LjB+
+         h+e3KottwNxmXzeYMGohGYf7DEp/5jyp63058MniP7t4PuigUKpe59MOogOsggLQjPtu
+         CddkmMXnBxXR27iy1LiMmadignyvE+UwPUEjv7d9fbua5A4hqncGq4iwFjI4fcwKX8la
+         6Gtlj/V+ej3jmPdwQayjz7mSdjvWBGslEgaaPJ+ghkvv5j0Um9LcmsX7x+m3RnHYBfP3
+         sTRA==
+X-Forwarded-Encrypted: i=1; AFNElJ9Y2nKH8FDcnNrFch75Ubyhr0F2E8ZOxIAaGAWjRKEudJKaQQEWHpZDVIZggdUIl9BWe12ylFg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx309nNww3H5ldNizCbwjASStvd2OBo1C9fQaXTKx+yDHLk4+uQ
+	533/0r6lYicPVnDzi1vEbvSByeCF4NVUYcfWUkk0sbvoJGzdHl44MJsY
+X-Gm-Gg: AeBDiesn/6aiBhuqQ+KoOaEJzsjK7VSPbtKGG6VcycCKkyGqZQj51TxOyZ2bgznMCpK
+	hbMEQc0h9m5lyqGgggkxWvKbGcuvgK+nG++HTcGcaEIMYBT3ogDc4s6s9yCB0qguurmNjKpMVc1
+	VP7Labgfd+fAsbnnnj9PqhtOcn3xfD1oCiz3nl4rFKnd36/lzpdmJMOVt4ORYxm/ppvaunDdQ2R
+	B29POlMxPr7BeGxw9v+xc8QmCH5kagvHBt/6uJfCVNMwQEpI5GA/Fcw3emhPcOPRKqIR14GpzZm
+	JNqarorfrHYZZIl1En7Dbsa1ksB+np9e2bYTmI0FIHDEUBW/7NrokpPdYy/OcqFZ3SQs7e6I88q
+	kkN+egOt65Yakc8jJBTDkaU7XxU2fKvSlZpzPXCs6QbWZza2lRPNRgUMcD4EUw9FHExW5Wl7Yj/
+	PKXEVfCzfs4AiPTm8JBijqvD2G9UcngCadju3U1MqJVlcEzFeUhwqWnsKilMQMTDhJQtm+efjq3
+	zs+Z1IIYiE0hI/lhN/6Ag==
+X-Received: by 2002:a05:6a00:bd8a:b0:82a:5d55:5807 with SMTP id d2e1a72fcca58-82f0c1c8bbdmr25895974b3a.6.1776353084917;
+        Thu, 16 Apr 2026 08:24:44 -0700 (PDT)
+Received: from [192.168.0.5] (124-218-201-66.cm.dynamic.apol.com.tw. [124.218.201.66])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f67085562sm6075675b3a.24.2026.04.16.08.24.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 16 Apr 2026 08:24:44 -0700 (PDT)
+Message-ID: <b44c8f7c-edd6-4d82-ad7d-df8ea907d682@gmail.com>
+Date: Thu, 16 Apr 2026 23:24:38 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260413082027.2244884-1-hxzene@gmail.com> <20260415141931.808383-1-horms@kernel.org>
-In-Reply-To: <20260415141931.808383-1-horms@kernel.org>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Thu, 16 Apr 2026 11:23:50 -0400
-X-Gm-Features: AQROBzAoYN_pQSmU0S7wggClue8YCVZcBNFzYwWYioiHKnrRUV89OYXAWAbMKVw
-Message-ID: <CAM0EoMkchMeE8cyycJ7qqKOQz_Y8y7AsdVp1pUUFXa2+NRbviw@mail.gmail.com>
-Subject: Re: [PATCH] net/sched: act_mirred: Fix blockcast recursion bypass
- leading to stack overflow
-To: Simon Horman <horms@kernel.org>
-Cc: hxzene@gmail.com, jiri@resnulli.us, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, victor@mojatatu.com, 
-	pctammela@mojatatu.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Stephen Hemminger <stephen@networkplumber.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] net: phy: air_en8811h: add AN8811HB MCU
+ assert/deassert support
+From: "Lucien.Jheng" <lucienzx159@gmail.com>
+To: Eric Woudstra <ericwouds@gmail.com>, andrew@lunn.ch,
+ hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, bjorn@mork.no
+Cc: frank-w@public-files.de, daniel@makrotopia.org, lucien.jheng@airoha.com
+References: <20260326153518.8387-1-lucienzx159@gmail.com>
+ <edeee8e5-0de3-48ea-aeb5-cc705fdcd469@gmail.com>
+ <5de3f9ca-ffe7-40ca-93a7-fb7e8e513ec2@gmail.com>
+Content-Language: en-US
+In-Reply-To: <5de3f9ca-ffe7-40ca-93a7-fb7e8e513ec2@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed, Apr 15, 2026 at 10:19=E2=80=AFAM Simon Horman <horms@kernel.org> wr=
-ote:
->
-> From: 'Simon Horman' <horms@kernel.org>
->
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> Full review at: https://sashiko.dev
-> ---
-> net/sched: act_mirred: Fix blockcast recursion bypass leading to stack ov=
-erflow
->
-> This patch fixes a stack overflow bug where mirred blockcast actions woul=
-d
-> bypass the recursion limit check because the recursion counter was not
-> incremented for blockcast actions.
->
-> > diff --git a/net/sched/act_mirred.c b/net/sched/act_mirred.c
-> > index 05e0b14b57731..5928fcf3e6514 100644
-> > --- a/net/sched/act_mirred.c
-> > +++ b/net/sched/act_mirred.c
-> > @@ -444,8 +444,12 @@ TC_INDIRECT_SCOPE int tcf_mirred_act(struct sk_buf=
-f *skb,
-> >       tcf_action_update_bstats(&m->common, skb);
-> >
-> >       blockid =3D READ_ONCE(m->tcfm_blockid);
-> > -     if (blockid)
-> > -             return tcf_blockcast(skb, m, blockid, res, retval);
-> > +     if (blockid) {
-> > +             xmit->sched_mirred_nest++;
->
-> Could this leave a stale pointer in sched_mirred_dev since netdev_xmit is
-> persistent per-CPU (or per-task in PREEMPT_RT) memory?
->
-> If a nested mirred action later iterates over sched_mirred_dev up to the =
-new
-> nesting depth to detect routing loops, could it match a stale pointer fro=
-m
-> whatever unrelated packet previously reached this nesting level?
->
-> This might cause a false-positive loop detection and incorrectly drop a v=
-alid
-> packet. Should we set xmit->sched_mirred_dev[xmit->sched_mirred_nest] =3D=
- NULL
-> before incrementing the counter?
->
-> > +             retval =3D tcf_blockcast(skb, m, blockid, res, retval);
->
-> This isn't a regression introduced by this patch, but it exists in the ea=
-rly
-> error returns of tcf_mirred_act() (e.g., when the target device is gone, =
-or a
-> routing loop is detected) and in tcf_blockcast() (e.g., when
-> xa_empty(&block->ports) is true).
->
-> In these error paths, the functions simply return retval. For mirred redi=
-rect
-> actions, retval is initialized to m->tcf_action, which is typically
-> TC_ACT_STOLEN.
->
-> When TC_ACT_STOLEN is returned, the TC framework assumes the action has t=
-aken
-> ownership of the packet and will not free the sk_buff. Since the code doe=
-s
-> not free the sk_buff before returning in these error paths, does this lea=
-k
-> the sk_buff?
->
-> Could an unprivileged user inside a network namespace trigger this
-> intentionally by creating a routing loop with mirred redirect rules, lead=
-ing
-> to continuous sk_buff leaks and system memory exhaustion?
->
-> Should these error paths ensure the sk_buff is freed or force the return =
-value
-> to TC_ACT_SHOT if the action is a redirect, mirroring the existing behavi=
-or in
-> tcf_mirred_to_dev()?
->
-> > +             xmit->sched_mirred_nest--;
-> > +             return retval;
-> > +     }
+Hi Eric
 
-There's a dependency with the skb bits patch[1] with this one.
-Stephen, I will take this set and consider what Sashiko is saying here
-[2]. I just became aware of this - but it seems to have some merit.
-I will also review this patch and sashiko's input from that
-perspective. If it merits it, I will resend the set incorporating this
-fix and Sashiko's suggestions.
+Lucien.Jheng 於 2026/3/29 下午 01:04 寫道:
+>
+> Eric Woudstra 於 2026/3/27 下午 12:41 寫道:
+>>
+>> On 3/26/26 4:35 PM, Lucien.Jheng wrote:
+>>> AN8811HB needs a MCU soft-reset cycle before firmware loading begins.
+>>> Assert the MCU (hold it in reset) and immediately deassert (release)
+>>> via a dedicated PBUS register pair (0x5cf9f8 / 0x5cf9fc), accessed
+>>> through the PHY-addr+8 MDIO bus node rather than the BUCKPBUS indirect
+>>> path.  This clears the MCU state before the firmware loading sequence
+>>> starts.
+>>>
+>>> Add __air_pbus_reg_write() as a low-level helper for this access, then
+>>> implement an8811hb_mcu_assert() / _deassert() on top of it. Wire both
+>>> into an8811hb_load_firmware() and en8811h_restart_mcu() so every
+>>> firmware load or MCU restart on AN8811HB correctly sequences the reset
+>>> control registers.
+>>>
+>>> Fixes: 0a55766b7711 ("net: phy: air_en8811h: add Airoha AN8811HB 
+>>> support")
+>>> Signed-off-by: Lucien Jheng <lucienzx159@gmail.com>
+>>> ---
+>>> Changes in v2:
+>>> - Rewrite commit message: The previous wording was ambiguous,
+>>>    as it suggested the MCU remains asserted during the entire
+>>>    firmware loading process, rather than a quick reset cycle
+>>>    before it starts.
+>>>    Clarify that assert and deassert is an immediate soft-reset
+>>>    cycle to clear MCU state before firmware loading begins.
+>>> - Add Fixes: 0a55766b7711 ("net: phy: air_en8811h: add Airoha AN8811HB
+>>>    support").
+>>> - Change phydev_info() to phydev_dbg() in an8811hb_mcu_assert() and
+>>>    an8811hb_mcu_deassert() to avoid noise during normal boot.
+>>>
+>>>   drivers/net/phy/air_en8811h.c | 105 
+>>> ++++++++++++++++++++++++++++++++++
+>>>   1 file changed, 105 insertions(+)
+>>>
+>>> diff --git a/drivers/net/phy/air_en8811h.c 
+>>> b/drivers/net/phy/air_en8811h.c
+>>> index 29ae73e65caa..01fce1b93618 100644
+>>> --- a/drivers/net/phy/air_en8811h.c
+>>> +++ b/drivers/net/phy/air_en8811h.c
+>>> @@ -170,6 +170,16 @@
+>>>   #define   AN8811HB_CLK_DRV_CKO_LDPWD        BIT(13)
+>>>   #define   AN8811HB_CLK_DRV_CKO_LPPWD        BIT(14)
+>>>
+>>> +#define AN8811HB_MCU_SW_RST        0x5cf9f8
+>>> +#define   AN8811HB_MCU_SW_RST_HOLD        BIT(16)
+>>> +#define   AN8811HB_MCU_SW_RST_RUN        (BIT(16) | BIT(0))
+>>> +#define AN8811HB_MCU_SW_START        0x5cf9fc
+>>> +#define   AN8811HB_MCU_SW_START_EN        BIT(16)
+>>> +
+>>> +/* MII register constants for PBUS access (PHY addr + 8) */
+>>> +#define AIR_PBUS_ADDR_HIGH        0x1c
+>>> +#define AIR_PBUS_DATA_HIGH        0x10
+>>> +
+>>>   /* Led definitions */
+>>>   #define EN8811H_LED_COUNT    3
+>>>
+>>> @@ -254,6 +264,36 @@ static int air_phy_write_page(struct phy_device 
+>>> *phydev, int page)
+>>>       return __phy_write(phydev, AIR_EXT_PAGE_ACCESS, page);
+>>>   }
+>>>
+>>> +static int __air_pbus_reg_write(struct phy_device *phydev,
+>>> +                u32 pbus_reg, u32 pbus_data)
+>>> +{
+>>> +    struct mii_bus *bus = phydev->mdio.bus;
+>>> +    int pbus_addr = phydev->mdio.addr + 8;
+>>> +    int ret;
+>>> +
+>>> +    ret = __mdiobus_write(bus, pbus_addr, AIR_EXT_PAGE_ACCESS,
+>>> +                  upper_16_bits(pbus_reg));
+>>> +    if (ret < 0)
+>>> +        return ret;
+>>> +
+>>> +    ret = __mdiobus_write(bus, pbus_addr, AIR_PBUS_ADDR_HIGH,
+>>> +                  (pbus_reg & GENMASK(15, 6)) >> 6);
+>>> +    if (ret < 0)
+>>> +        return ret;
+>>> +
+>>> +    ret = __mdiobus_write(bus, pbus_addr, (pbus_reg & GENMASK(5, 
+>>> 2)) >> 2,
+>>> +                  lower_16_bits(pbus_data));
+>>> +    if (ret < 0)
+>>> +        return ret;
+>>> +
+>>> +    ret = __mdiobus_write(bus, pbus_addr, AIR_PBUS_DATA_HIGH,
+>>> +                  upper_16_bits(pbus_data));
+>>> +    if (ret < 0)
+>>> +        return ret;
+>>> +
+>>> +    return 0;
+>>> +}
+>>> +
+>> Maybe you can use mutex_lock() and mutex_unlock() here also, like so:
 
-cheers,
-jamal
+After checking, I decided not to implement mutex_lock in pbus_read/write.
 
-[1]https://lore.kernel.org/netdev/20260326181701.308275-1-stephen@networkpl=
-umber.org/
-[2] https://sashiko.dev/#/patchset/20260326181701.308275-1-stephen%40networ=
-kplumber.org
+This is because these functions are only used within 
+an8811hb_mcu_assert/deassert.
+
+Since these sequences cannot be interrupted, a mutex lock is not required.
+
+Thanks
+
+>>
+>> static int __air_pbus_reg_write(struct mdio_device *mdio, u32 
+>> pbus_address,
+>>                 u32 pbus_data)
+>> {
+>>     int ret;
+>>
+>>     ret = __mdiobus_write(mdio->bus, mdio->addr, AIR_EXT_PAGE_ACCESS,
+>>                   (u16)(pbus_address >> 6));
+>>     if (ret < 0)
+>>         return ret;
+>>
+>>     ret = __mdiobus_write(mdio->bus, mdio->addr, (pbus_address >> 2) 
+>> & 0xf,
+>>                   (u16)pbus_data);
+>>     if (ret < 0)
+>>         return ret;
+>>
+>>     ret = __mdiobus_write(mdio->bus, mdio->addr, AIR_PBUS_DATA_HIGH,
+>>                   (u16)(pbus_data >> 16));
+>>     if (ret < 0)
+>>         return ret;
+>>
+>>     return 0;
+>> }
+>>
+>> static int air_pbus_reg_write(struct mdio_device *mdio, u32 
+>> pbus_address,
+>>                   u32 pbus_data)
+>> {
+>>     int ret;
+>>
+>>     mutex_lock(&mdio->bus->mdio_lock);
+>>
+>>     ret = __air_pbus_reg_write(mdio, pbus_address, pbus_data);
+>>     if (ret < 0)
+>>         dev_err(&mdio->dev, "%s 0x%08x failed: %d\n", __func__,
+>>             pbus_address, ret);
+>>
+>>     mutex_unlock(&mdio->bus->mdio_lock);
+>>
+>>     return ret;
+>> }
+>>
+>> static int __air_pbus_reg_read(struct mdio_device *mdio, u32 
+>> pbus_address,
+>>                    u32 *pbus_data)
+>> {
+>>     int ret, pbus_data_low;
+>>
+>>     ret = __mdiobus_write(mdio->bus, mdio->addr, AIR_EXT_PAGE_ACCESS,
+>>                   (u16)(pbus_address >> 6));
+>>     if (ret < 0)
+>>         return ret;
+>>
+>>     ret = __mdiobus_read(mdio->bus, mdio->addr, (pbus_address >> 2) & 
+>> 0xf);
+>>     if (ret < 0)
+>>         return ret;
+>>     pbus_data_low = ret;
+>>
+>>     ret = __mdiobus_read(mdio->bus, mdio->addr, AIR_PBUS_DATA_HIGH);
+>>     if (ret < 0)
+>>         return ret;
+>>
+>>     *pbus_data = (ret << 16) + pbus_data_low;
+>>
+>>     return 0;
+>> }
+>>
+>> static int air_pbus_reg_read(struct mdio_device *mdio, u32 pbus_address,
+>>                  u32 *pbus_data)
+>> {
+>>     int ret;
+>>
+>>     mutex_lock(&mdio->bus->mdio_lock);
+>>
+>>     ret = __air_pbus_reg_read(mdio, pbus_address, pbus_data);
+>>     if (ret < 0)
+>>         dev_err(&mdio->dev, "%s 0x%08x failed: %d\n", __func__,
+>>             pbus_address, ret);
+>>
+>>     mutex_unlock(&mdio->bus->mdio_lock);
+>>
+>>     return ret;
+>> }
+>>
+>> With:
+>>
+>> #define AIR_PBUS_DATA_HIGH        0x10
+>>
+> Thank you for your feedback.
+>
+> I should add mutex_lock() and mutex_unlock() to protect these operations.
+>
+> I will include this in the next version.
+>
+>>>   static int __air_buckpbus_reg_write(struct phy_device *phydev,
+>>>                       u32 pbus_address, u32 pbus_data)
+>>>   {
+>>> @@ -570,10 +610,65 @@ static int an8811hb_load_file(struct 
+>>> phy_device *phydev, const char *name,
+>>>       return ret;
+>>>   }
+>>>
+>>> +static int an8811hb_mcu_assert(struct phy_device *phydev)
+>>> +{
+>>> +    int ret;
+>>> +
+>>> +    phy_lock_mdio_bus(phydev);
+>>> +
+>>> +    ret = __air_pbus_reg_write(phydev, AN8811HB_MCU_SW_RST,
+>>> +                   AN8811HB_MCU_SW_RST_HOLD);
+>>> +    if (ret < 0)
+>>> +        goto unlock;
+>>> +
+>>> +    ret = __air_pbus_reg_write(phydev, AN8811HB_MCU_SW_START, 0);
+>>> +    if (ret < 0)
+>>> +        goto unlock;
+>>> +
+>>> +    msleep(50);
+>>> +    phydev_dbg(phydev, "MCU asserted\n");
+>>> +
+>>> +unlock:
+>>> +    phy_unlock_mdio_bus(phydev);
+>>> +    return ret;
+>>> +}
+>>> +
+>>> +static int an8811hb_mcu_deassert(struct phy_device *phydev)
+>>> +{
+>>> +    int ret;
+>>> +
+>>> +    phy_lock_mdio_bus(phydev);
+>>> +
+>>> +    ret = __air_pbus_reg_write(phydev, AN8811HB_MCU_SW_START,
+>>> +                   AN8811HB_MCU_SW_START_EN);
+>>> +    if (ret < 0)
+>>> +        goto unlock;
+>>> +
+>>> +    ret = __air_pbus_reg_write(phydev, AN8811HB_MCU_SW_RST,
+>>> +                   AN8811HB_MCU_SW_RST_RUN);
+>>> +    if (ret < 0)
+>>> +        goto unlock;
+>>> +
+>>> +    msleep(50);
+>>> +    phydev_dbg(phydev, "MCU deasserted\n");
+>>> +
+>>> +unlock:
+>>> +    phy_unlock_mdio_bus(phydev);
+>>> +    return ret;
+>>> +}
+>>> +
+>>>   static int an8811hb_load_firmware(struct phy_device *phydev)
+>>>   {
+>>>       int ret;
+>>>
+>>> +    ret = an8811hb_mcu_assert(phydev);
+>>> +    if (ret < 0)
+>>> +        return ret;
+>>> +
+>>> +    ret = an8811hb_mcu_deassert(phydev);
+>>> +    if (ret < 0)
+>>> +        return ret;
+>>> +
+>>>       ret = air_buckpbus_reg_write(phydev, EN8811H_FW_CTRL_1,
+>>>                        EN8811H_FW_CTRL_1_START);
+>>>       if (ret < 0)
+>>> @@ -662,6 +757,16 @@ static int en8811h_restart_mcu(struct 
+>>> phy_device *phydev)
+>>>   {
+>>>       int ret;
+>>>
+>>> +    if (phy_id_compare_model(phydev->phy_id, AN8811HB_PHY_ID)) {
+>>> +        ret = an8811hb_mcu_assert(phydev);
+>>> +        if (ret < 0)
+>>> +            return ret;
+>>> +
+>>> +        ret = an8811hb_mcu_deassert(phydev);
+>>> +        if (ret < 0)
+>>> +            return ret;
+>>> +    }
+>>> +
+>>>       ret = air_buckpbus_reg_write(phydev, EN8811H_FW_CTRL_1,
+>>>                        EN8811H_FW_CTRL_1_START);
+>>>       if (ret < 0)
+>>> -- 
+>>> 2.34.1
+>>>
