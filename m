@@ -1,76 +1,72 @@
-Received: from mail-oi1-f195.google.com (mail-oi1-f195.google.com [209.85.167.195])
+Received: from mail-oo1-f66.google.com (mail-oo1-f66.google.com [209.85.161.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C7834B1A7
-	for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 18:57:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A839A34AB17
+	for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 18:57:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776365847; cv=none; b=FNB2DSUB2p9VIPzeforNEJestFUD78piqujK1OHkIAJIW02UErJUoX70QYphoYRzbXMZX1jVfzCiEa1mPyiszn2ewRil9ZG9JPhjn3dAWa0uoDDIHUxn/tT8yvVnGhC+mP42yqO5jVzrf1vimwoHd6eslWYiN0FwflSj2fu/Z+g=
+	t=1776365850; cv=none; b=GRlNy7XwZf6TWkLT9C9fpJVKGbt3UZ/9/H+haeFT9M+Qr81apgududd7WgvoS7RcbdvexgnQQNoV2rT/9pQfXNHo+au9YQbiTeAx4FvrVRSI3uYrLku7AIMXI8G2/MP1QlZgt/NjGd9wYOB0Xx/zXMCcR5EInNOteIwyBaWXkqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776365847; c=relaxed/simple;
-	bh=QM6XRGhl6N+mte+R6vM4U2ZMaw3HKN/ovnwEQ9lH1Po=;
+	s=arc-20240116; t=1776365850; c=relaxed/simple;
+	bh=DblTuTiiUScWKwjSM8y2bGCj9IwmvdkqVpvGEE/EQi8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GnoWLayX3/+k9Ua9u0FhxtTW/3ja+/dBGWSwSqpF6t+Y5bGkhO9B3Owyfs/q0Riq+0ECIXDAauJaixxsQdkTUgua5GptbCXPbSTjApkwI2CpOTOYmDnRQ2DAtegQOPA7W7VrG+0U55ajF0pduoNRiO2BsJZSJDcKlvqNLdP+c3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gVn5ahsd; arc=none smtp.client-ip=209.85.167.195
+	 MIME-Version; b=ja7u0iai3NnC3YSr28zMXLPyiKZniG3udRmgzuD+G/AYOgWBWyYPcgnyfFYo38sBl6JCOrQj0N16h6H1UPwelzHv2d1oyEpW5s5ebkh+Z/tiItdJSP8fgy1jBPryImCH4iA8oK4cYrDIPwYoVQL24YIMoIFMaZxmJGVX1rrLS+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iqwYknuS; arc=none smtp.client-ip=209.85.161.66
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gVn5ahsd"
-Received: by mail-oi1-f195.google.com with SMTP id 5614622812f47-47952229648so2975680b6e.1
-        for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 11:57:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iqwYknuS"
+Received: by mail-oo1-f66.google.com with SMTP id 006d021491bc7-67c250805ccso2900881eaf.1
+        for <netdev@vger.kernel.org>; Thu, 16 Apr 2026 11:57:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776365840; x=1776970640; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1776365845; x=1776970645; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=whWddRCyCR5wEGJdNdwJQV1THwun3P9N8M7OWoJE9Bs=;
-        b=gVn5ahsd1qIP3RuDr9V35GTDgGk+pJZqeJtT6kDWg3OQQz7qSe+4F9+rAZPAYlBEcR
-         CVF0evvK6XIoarD3JVRZS6cNEF2FBAGxFrWaKnPYWWcBo71azJ9VonESxzjJE7TsGkCA
-         6xxRNq7vOnjIYQWL3bjdpxfli6g19yEMW7puf9FPjNDgaL4iF3vAjwSzAL0Ya97z7GWk
-         qrEMhZdbhzNS7ZbYlxArcxQFQV40D6ZKSuXpFrTGoJ/XqbowEm48Qf3XZvIFP1QdHyNo
-         M+UOs4QqIilal/Fndr/l5AjtVbp2M4WiWu5IkzQLdak1JZebncse/6rgPbwnBqjDBycS
-         ACBw==
+        bh=Fl9PJQRW1at9+hyIvljSyrZjl0s2ic+yWjg5140FMUY=;
+        b=iqwYknuS4Kpl9G+c8eMZ99bp33yU/9Cuz4oryN4duDnlxAG6R78poU/zWoF/rQ3jQs
+         CfwBnwDJCzhhZIKHkRmZygF7JWotAGLtGo9C6pWPjGrrZ4/uMssmdwRFjEUrZzIgL/8f
+         1kBcpeQJv0Py+/UROkDTLuUJ7+KzT0DxNwLYELynjOqEKqOr/XD54HMF5FSrH8Ml8NjZ
+         6Jwq1s2bxygmobsycid2HlZNrfFt5Nlub73KkYtOYP4bxZprqjO8ceLcYx5Y0tCTW8Rx
+         1ipURJiWw4fGXCEDtfqnIVo6mo8GNpMDnFxrqDORAy8/DyHRnIPMcSBYqHweJzOSOTdU
+         nVQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776365840; x=1776970640;
+        d=1e100.net; s=20251104; t=1776365845; x=1776970645;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=whWddRCyCR5wEGJdNdwJQV1THwun3P9N8M7OWoJE9Bs=;
-        b=gYPKrrxIyCMSEhc5hO7kPONngMVEBo+fHgwUatAE2AdMb2d1PjYjLVFZVK42yQVE5D
-         JK5oHIpD96Y5t/M3zo+w7JDdOZsyKwtW4h5qkPSGEhtjbs3mCn124cGOFw710ELb/JJ3
-         yEq7XfOHruRKb6eWvt6G6VmfNp70YhgygqLCVBpianTDzHCTnIEsQohjLF+tN+FRWvMN
-         XTfHzD0Bfqv56vP4wUrg950hUi+2/Gq98xUJSgA9q9B1b3ctQ906cCcoaIy06uaTvL3V
-         4DrVXAMGcXgNS8DmvO439hkER7pRqCsN/fjNWpg0PnSj/gA3e1NKeEVhTqOPIp7xut7x
-         PNiw==
-X-Gm-Message-State: AOJu0YwHRnbj70LzUlyBLDmN4k73wbzFHRChh8+1dnpyjTOm/6ZnqXiL
-	36KljCH6Mb6swPAsx9zQgkKhi0LlC9x8SCeG9ZrDwAUyyf8nDk9Ank3b8AFlONEu
-X-Gm-Gg: AeBDies1ZbHzC6Q+vWheeBOEtukFeKw1BzMMAzhbQvSlMqPTcd7RbtRE7FfqVxY0hOe
-	ZGeWVQQ8oCIFm+S5T0W60mpVOvC/K5ve06Z0bPqBuN84A1KjQpEPRCkfKzcDrmgAvWkaU3YqZ4H
-	xuaFCeKXNQ+2DdKrIWAbl3V3rD1OWDUfTQyXiteeWWFBfFREC6Y0duMLc5FzCR9jm0cyYzVgUj1
-	MuO1v8CSZq72/AKZBDy/9DdU044iWMmCx8yl5FTodU/l51SGjlCEd5fuNTp90CpXxZH5A22Cbpa
-	Ha91TyMX8AJKSvYSl9Xt4oR91tZzV49n27OcGhivzMyJgeh3kmxMMR6fnYb+jtnlxM35AXcyyjx
-	mR9aY4mhJKRPjgymXxoWIqwChPG3Om4SVt2qEM6hH/8I6r5nIDH7+iOuCGOJAPc1XUSHTqOgF+6
-	frUOF2HjJb0pNeUQ3Yz1mdOyci0ZQ=
-X-Received: by 2002:a05:6808:3196:b0:467:880:743b with SMTP id 5614622812f47-4799a27f8a9mr88391b6e.22.1776365840015;
-        Thu, 16 Apr 2026 11:57:20 -0700 (PDT)
-Received: from localhost ([2a03:2880:12ff:5::])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-47997f931desm473654b6e.13.2026.04.16.11.57.19
+        bh=Fl9PJQRW1at9+hyIvljSyrZjl0s2ic+yWjg5140FMUY=;
+        b=I0Aaugbi+h7yB2USxqnjT9S+VEz593EppAY5hliaOq91Ci+iWAlW5IZj2BjbxBgr1z
+         yJDK+QzLThQjyxU78WhgxVvT62nQimqt1u9vm7SuuBbleCGSCijxP/v45VHrFNzQvYlX
+         AQXt1XSDVumh7cNR9KMl52A8D05LbP9wznaZ9uj7kMYOk6R5Ay7c9uccRhwVJ6FYVebE
+         qZg2MZwqUCV1Z20tDPPqZaBXmCN2bGJf2RTlrSxd+wDUNL/resKxxW/JPzaqkcSokkZh
+         FM2oCMT5Ugod9mXzgeQASg5r9ieZyB1XfkEsO/p2K0nj1Gwywsd9ZjZr/bKFMSSrxI6n
+         2aag==
+X-Gm-Message-State: AOJu0Yw9ieBJwO9F3RSOFQWkVpUJUhvzciIFRUODuQ4jsgxmw7IHP9Mb
+	sGT2uOpi9dlkAgQQq4Iq8n2XOFE7cXKXvkwYjxIBvjEwIfyRHuohDzGN5x7M/XRB
+X-Gm-Gg: AeBDiesxJ++9yMx63nOnzSqh4kp9qHe0oHIh720NtNzyHESnowfVhACUHJz5Bkj42p0
+	WLfS/95p2JFnlD9p3cCBE5MrNwuv2qpwyMHDi9desrGN60/A3vU5jz8MC+mcAtMvVxWieYZpmRd
+	Kx5j/UyDs5MhkmZBNlGyNk1AZNzlH1YabQAnuI+6uFfqWTyFBdRIitBFnL1Z/HHTUL2SW1nItPv
+	L+hmnQGTpspnP7LPck/YHyYHQK99LUEKgrbxjLfp0cNMuBL0K8GfBN4jxz/BhqCLtidUaHXuUzC
+	ftEA+xqWGxfaw74P0S0aRkMUbWBKE1cW/XubE1aSrd4GvJ72OgaZd7hkTaZbZe0TchOHLoaD59F
+	3uA8YRm42Oi7Dtn5NxEpdtjvOYL3RXzg/LMhc6ZlIk7D2MsFISkItEfKjoTlzW/4v5Upq9xB/fh
+	J9KFOiNHIp1resY6otsoPrH3QRCcrn
+X-Received: by 2002:a4a:e908:0:b0:688:2348:2953 with SMTP id 006d021491bc7-69461a93873mr227312eaf.20.1776365845613;
+        Thu, 16 Apr 2026 11:57:25 -0700 (PDT)
+Received: from localhost ([2a03:2880:12ff:70::])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-69460421421sm458775eaf.11.2026.04.16.11.57.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Apr 2026 11:57:19 -0700 (PDT)
+        Thu, 16 Apr 2026 11:57:25 -0700 (PDT)
 From: Stanislav Fomichev <sdf.kernel@gmail.com>
 X-Google-Original-From: Stanislav Fomichev <sdf@fomichev.me>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
-	pabeni@redhat.com,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Subject: [PATCH net v8 06/15] mlx5: convert to ndo_set_rx_mode_async
-Date: Thu, 16 Apr 2026 11:57:03 -0700
-Message-ID: <20260416185712.2155425-7-sdf@fomichev.me>
+	pabeni@redhat.com
+Subject: [PATCH net v8 12/15] netkit: convert to ndo_set_rx_mode_async
+Date: Thu, 16 Apr 2026 11:57:09 -0700
+Message-ID: <20260416185712.2155425-13-sdf@fomichev.me>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260416185712.2155425-1-sdf@fomichev.me>
 References: <20260416185712.2155425-1-sdf@fomichev.me>
@@ -82,169 +78,39 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Convert mlx5 from ndo_set_rx_mode to ndo_set_rx_mode_async. The
-driver's mlx5e_set_rx_mode now receives uc/mc snapshots and calls
-mlx5e_fs_set_rx_mode_work directly instead of queueing work.
+Convert netkit driver from ndo_set_rx_mode to ndo_set_rx_mode_async.
+The netkit driver's set_multicast_list is a no-op, presumably
+for the same reason as the one in dummy? (fake multicast ability)
 
-mlx5e_sync_netdev_addr and mlx5e_handle_netdev_addr now take
-explicit uc/mc list parameters and iterate with
-netdev_hw_addr_list_for_each instead of netdev_for_each_{uc,mc}_addr.
-
-Fallback to netdev's uc/mc in a few places and grab addr lock.
-
-Cc: Saeed Mahameed <saeedm@nvidia.com>
-Cc: Tariq Toukan <tariqt@nvidia.com>
-Cc: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
 ---
- .../net/ethernet/mellanox/mlx5/core/en/fs.h   |  5 ++-
- .../net/ethernet/mellanox/mlx5/core/en_fs.c   | 32 ++++++++++++-------
- .../net/ethernet/mellanox/mlx5/core/en_main.c | 13 +++++---
- 3 files changed, 34 insertions(+), 16 deletions(-)
+ drivers/net/netkit.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/fs.h b/drivers/net/ethernet/mellanox/mlx5/core/en/fs.h
-index c3408b3f7010..091b80a67189 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/fs.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/fs.h
-@@ -201,7 +201,10 @@ int mlx5e_add_vlan_trap(struct mlx5e_flow_steering *fs, int  trap_id, int tir_nu
- void mlx5e_remove_vlan_trap(struct mlx5e_flow_steering *fs);
- int mlx5e_add_mac_trap(struct mlx5e_flow_steering *fs, int  trap_id, int tir_num);
- void mlx5e_remove_mac_trap(struct mlx5e_flow_steering *fs);
--void mlx5e_fs_set_rx_mode_work(struct mlx5e_flow_steering *fs, struct net_device *netdev);
-+void mlx5e_fs_set_rx_mode_work(struct mlx5e_flow_steering *fs,
-+			       struct net_device *netdev,
-+			       struct netdev_hw_addr_list *uc,
-+			       struct netdev_hw_addr_list *mc);
- int mlx5e_fs_vlan_rx_add_vid(struct mlx5e_flow_steering *fs,
- 			     struct net_device *netdev,
- 			     __be16 proto, u16 vid);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_fs.c b/drivers/net/ethernet/mellanox/mlx5/core/en_fs.c
-index fdfe9d1cfe21..12492c4a5d41 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_fs.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_fs.c
-@@ -609,20 +609,26 @@ static void mlx5e_execute_l2_action(struct mlx5e_flow_steering *fs,
+diff --git a/drivers/net/netkit.c b/drivers/net/netkit.c
+index 7b56a7ad7a49..5e2eecc3165d 100644
+--- a/drivers/net/netkit.c
++++ b/drivers/net/netkit.c
+@@ -186,7 +186,9 @@ static int netkit_get_iflink(const struct net_device *dev)
+ 	return iflink;
  }
  
- static void mlx5e_sync_netdev_addr(struct mlx5e_flow_steering *fs,
--				   struct net_device *netdev)
-+				   struct net_device *netdev,
-+				   struct netdev_hw_addr_list *uc,
-+				   struct netdev_hw_addr_list *mc)
+-static void netkit_set_multicast(struct net_device *dev)
++static void netkit_set_multicast(struct net_device *dev,
++				 struct netdev_hw_addr_list *uc,
++				 struct netdev_hw_addr_list *mc)
  {
- 	struct netdev_hw_addr *ha;
- 
--	netif_addr_lock_bh(netdev);
-+	if (!uc || !mc) {
-+		netif_addr_lock_bh(netdev);
-+		mlx5e_sync_netdev_addr(fs, netdev, &netdev->uc, &netdev->mc);
-+		netif_addr_unlock_bh(netdev);
-+		return;
-+	}
- 
- 	mlx5e_add_l2_to_hash(fs->l2.netdev_uc, netdev->dev_addr);
--	netdev_for_each_uc_addr(ha, netdev)
-+
-+	netdev_hw_addr_list_for_each(ha, uc)
- 		mlx5e_add_l2_to_hash(fs->l2.netdev_uc, ha->addr);
- 
--	netdev_for_each_mc_addr(ha, netdev)
-+	netdev_hw_addr_list_for_each(ha, mc)
- 		mlx5e_add_l2_to_hash(fs->l2.netdev_mc, ha->addr);
--
--	netif_addr_unlock_bh(netdev);
+ 	/* Nothing to do, we receive whatever gets pushed to us! */
  }
- 
- static void mlx5e_fill_addr_array(struct mlx5e_flow_steering *fs, int list_type,
-@@ -724,7 +730,9 @@ static void mlx5e_apply_netdev_addr(struct mlx5e_flow_steering *fs)
- }
- 
- static void mlx5e_handle_netdev_addr(struct mlx5e_flow_steering *fs,
--				     struct net_device *netdev)
-+				     struct net_device *netdev,
-+				     struct netdev_hw_addr_list *uc,
-+				     struct netdev_hw_addr_list *mc)
- {
- 	struct mlx5e_l2_hash_node *hn;
- 	struct hlist_node *tmp;
-@@ -736,7 +744,7 @@ static void mlx5e_handle_netdev_addr(struct mlx5e_flow_steering *fs,
- 		hn->action = MLX5E_ACTION_DEL;
- 
- 	if (fs->state_destroy)
--		mlx5e_sync_netdev_addr(fs, netdev);
-+		mlx5e_sync_netdev_addr(fs, netdev, uc, mc);
- 
- 	mlx5e_apply_netdev_addr(fs);
- }
-@@ -820,13 +828,15 @@ static void mlx5e_destroy_promisc_table(struct mlx5e_flow_steering *fs)
- }
- 
- void mlx5e_fs_set_rx_mode_work(struct mlx5e_flow_steering *fs,
--			       struct net_device *netdev)
-+			       struct net_device *netdev,
-+			       struct netdev_hw_addr_list *uc,
-+			       struct netdev_hw_addr_list *mc)
- {
- 	struct mlx5e_priv *priv = netdev_priv(netdev);
- 	struct mlx5e_l2_table *ea = &fs->l2;
- 
- 	if (mlx5e_is_uplink_rep(priv)) {
--		mlx5e_handle_netdev_addr(fs, netdev);
-+		mlx5e_handle_netdev_addr(fs, netdev, uc, mc);
- 		goto update_vport_context;
- 	}
- 
-@@ -856,7 +866,7 @@ void mlx5e_fs_set_rx_mode_work(struct mlx5e_flow_steering *fs,
- 	if (enable_broadcast)
- 		mlx5e_add_l2_flow_rule(fs, &ea->broadcast, MLX5E_FULLMATCH);
- 
--	mlx5e_handle_netdev_addr(fs, netdev);
-+	mlx5e_handle_netdev_addr(fs, netdev, uc, mc);
- 
- 	if (disable_broadcast)
- 		mlx5e_del_l2_flow_rule(fs, &ea->broadcast);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index 6c4eeb88588c..5a46870c4b74 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -4145,11 +4145,13 @@ static void mlx5e_nic_set_rx_mode(struct mlx5e_priv *priv)
- 	queue_work(priv->wq, &priv->set_rx_mode_work);
- }
- 
--static void mlx5e_set_rx_mode(struct net_device *dev)
-+static void mlx5e_set_rx_mode(struct net_device *dev,
-+			      struct netdev_hw_addr_list *uc,
-+			      struct netdev_hw_addr_list *mc)
- {
- 	struct mlx5e_priv *priv = netdev_priv(dev);
- 
--	mlx5e_nic_set_rx_mode(priv);
-+	mlx5e_fs_set_rx_mode_work(priv->fs, dev, uc, mc);
- }
- 
- static int mlx5e_set_mac(struct net_device *netdev, void *addr)
-@@ -5324,7 +5326,7 @@ const struct net_device_ops mlx5e_netdev_ops = {
- 	.ndo_setup_tc            = mlx5e_setup_tc,
- 	.ndo_select_queue        = mlx5e_select_queue,
- 	.ndo_get_stats64         = mlx5e_get_stats,
--	.ndo_set_rx_mode         = mlx5e_set_rx_mode,
-+	.ndo_set_rx_mode_async   = mlx5e_set_rx_mode,
- 	.ndo_set_mac_address     = mlx5e_set_mac,
- 	.ndo_vlan_rx_add_vid     = mlx5e_vlan_rx_add_vid,
- 	.ndo_vlan_rx_kill_vid    = mlx5e_vlan_rx_kill_vid,
-@@ -6309,8 +6311,11 @@ void mlx5e_set_rx_mode_work(struct work_struct *work)
- {
- 	struct mlx5e_priv *priv = container_of(work, struct mlx5e_priv,
- 					       set_rx_mode_work);
-+	struct net_device *dev = priv->netdev;
- 
--	return mlx5e_fs_set_rx_mode_work(priv->fs, priv->netdev);
-+	netdev_lock_ops(dev);
-+	mlx5e_fs_set_rx_mode_work(priv->fs, dev, NULL, NULL);
-+	netdev_unlock_ops(dev);
- }
- 
- /* mlx5e generic netdev management API (move to en_common.c) */
+@@ -330,7 +332,7 @@ static const struct net_device_ops netkit_netdev_ops = {
+ 	.ndo_open		= netkit_open,
+ 	.ndo_stop		= netkit_close,
+ 	.ndo_start_xmit		= netkit_xmit,
+-	.ndo_set_rx_mode	= netkit_set_multicast,
++	.ndo_set_rx_mode_async	= netkit_set_multicast,
+ 	.ndo_set_rx_headroom	= netkit_set_headroom,
+ 	.ndo_set_mac_address	= netkit_set_macaddr,
+ 	.ndo_get_iflink		= netkit_get_iflink,
 -- 
 2.52.0
 
