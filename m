@@ -1,147 +1,182 @@
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2100.outbound.protection.partner.outlook.cn [139.219.17.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE45D18D636
-	for <netdev@vger.kernel.org>; Fri, 17 Apr 2026 03:08:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776395306; cv=none; b=KZtMwzxhDnlRKpQZGVssZjV9y5omVino8txR0yBB9GbKnYzqKJjltlNc7JeTBHjfmiS8d3TjOCEIEb8HJDB+jVHXufYS6iyO9tHe28oqGz6yzPl88ymaT1Ivs/6sDgI55Dq3UG96oMKnDx4X6X2ehAxiy0yPhLZSJk8d6G0z5xo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776395306; c=relaxed/simple;
-	bh=qPlTbEZw35AsBE/G7ZHRttLjCnYveS+K3cvQbHTG8xk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nUKNz5FuCi0S/yTjQgj2SMdQwwGUD1mOvnqsHY4OKrMHIVI2cR8HpkjSywEXg9SowxCBEQnhtkMINYwD2SY7g6XeQVcqsDdzxv7SQfI3ElQOJ6gDTbjWxCQ0nToQMC1Y3KLMrIUqClpG6ehJwKrAezD1iV/6i0KIxxJOaZp/KYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=FJimC2q6; arc=none smtp.client-ip=91.218.175.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="FJimC2q6"
-Message-ID: <d3560ae4d662400e64b1cc72b84e3836b7bc371a.camel@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776395302;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7RBHgDM72E4FFRUPPk/y4OrCekuqa2O/ftWhf5CuOtM=;
-	b=FJimC2q6T7NSgxyJH739fNQrfVEGxPCogVc/rCWcdC3Z5b7MkYez+QRdKhbMXJTr3pPEhk
-	VGy9xapTeyEHv3OKImdvFDakF8dLrX2x5yxYlCOTMlOBhud8DUA9fuwcVZh1PvhzmBJxc1
-	+mAso4Ufu3IYv8aB0QJeeQWU8Ezqs98=
-Subject: Re: [PATCH bpf v2 2/2] selftests/bpf: Test TCP_NODELAY in TCP hdr
- opt callbacks
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: KaFai Wan <kafai.wan@linux.dev>
-To: Martin KaFai Lau <martin.lau@linux.dev>
-Cc: daniel@iogearbox.net, john.fastabend@gmail.com, sdf@fomichev.me, 
- ast@kernel.org, andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com, 
- song@kernel.org, yonghong.song@linux.dev, jolsa@kernel.org,
- davem@davemloft.net,  edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org,  shuah@kernel.org,
- jiayuan.chen@linux.dev, bpf@vger.kernel.org,  netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org,  linux-kselftest@vger.kernel.org
-Date: Fri, 17 Apr 2026 11:07:50 +0800
-In-Reply-To: <2026416184330.-HAW.martin.lau@linux.dev>
-References: <20260416112308.1820332-1-kafai.wan@linux.dev>
-	 <20260416112308.1820332-3-kafai.wan@linux.dev>
-	 <2026416184330.-HAW.martin.lau@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC78E2DC792;
+	Fri, 17 Apr 2026 03:19:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.100
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776395965; cv=fail; b=UPezYmEINYnGSnHrsn4gipHpC20+y+NInI8jLnaaknskTzGlzumnilP3Litq+TafAeR3ZKt70BANmPdh4LILQeeqvo7dfGMm8ANg+swfX9F2JvMNyFc4F8qEBsph5FJ0RpkEHTQ4z8NXCPrYQ1Dfqdidkbd7gw91N4zNJoIDWEw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776395965; c=relaxed/simple;
+	bh=9jl8s+UqaPNoyEEaDSPAHaAxNuCu/To5W/kPbf3IMtE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=McITN5o6URcLByT0HfmwAUfYCxrLNC40kbMX77tHYrwjGFoxPHdMi1UBTmZUhPr+m8kynR0IncTBr7zH8b+WRTYEafCAnUlDsN8MG8e/WA63fv58PzGGzvT4V0pFv6XQhhkJa1kzBDpHm0C0BjaHOSbggNOcf+zfMJb4pjfJGO4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.17.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=oOTC43Yf+cqaER6DfQUPyVrZV+Tkn+VkbY1/aeJw392YI410i4F2pHD6Ah6fClUCbJjyD6z6PJjKCfrHblcvOWb2SQP9hQgQjHpmVT5bGmt74NAOy2FZlIm6BnZFgVt9QpMET2lBg1ADS4ZJpl4/gXe29uPmQyZoZNxcG36s4eBmTZ36dA19N0xu4a54bOObjT7I+legUF6SlXkuxza4zDPaAea9lPqFja/qhqygyot2WcEhfshEreKpgLLsfV+rfDKN1YtZlg3H+/P2RnNcCRJ4+GTYGclZzzmsA2Bunq3t9Q02dXkMlVzC5k6Qipfe6FyLESE2cC+JJh4sbbBPAg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=WMpd0pcMLeW+7GQ5AjZJ5urZydn4OmYU/Qq3HvGwXCs=;
+ b=HmUYS4JRN7Eqyblo12JMoCuhqAGIMh9h3Wu31Vgc1UlQd3e9QlVWv6KwRfT00MY+Zan43HlNAt15MN7z+vuvgZTp1J+5DpF+bCKK19DwD9DnbXJRoz2D/vD5A2KBRPwZ1B92irfeSQnzFEoE9gINpVTpbKGGWKIpBJy8c3hMRyD0hyTpWjjfvQbu0A96fXEjIyqktpa1Fmk/iW+H/aDLDhTX2ITbE3DZEZt8615kQtRbGHZuJN8U4Z+ORhBEmETchRfflLhjB82O4eqZ3qwkPEt6kQ7j5Kjpubfo+hlNmxWxKaMOK8e5ozn1kPSJ8yVzxV1HssxTBZrsbVBh94et+Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=starfivetech.com; dmarc=pass action=none
+ header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=starfivetech.com;
+Received: from BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c211:18::12) by BJXPR01MB0517.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c211:14::14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.48; Fri, 17 Apr
+ 2026 02:45:33 +0000
+Received: from BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn
+ ([fe80::e2de:92aa:4c1c:a829]) by
+ BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn ([fe80::e2de:92aa:4c1c:a829%6])
+ with mapi id 15.20.9769.046; Fri, 17 Apr 2026 02:45:33 +0000
+From: Minda Chen <minda.chen@starfivetech.com>
+To: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Emil Renner Berthing <emil.renner.berthing@canonical.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor@kernel.org>,
+	netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	devicetree@vger.kernel.org,
+	Minda Chen <minda.chen@starfivetech.com>
+Subject: [net-next v2 1/5] dt-bindings: net: starfive,jh7110-dwmac: Remove JH8100
+Date: Fri, 17 Apr 2026 10:45:19 +0800
+Message-Id: <20260417024523.107786-2-minda.chen@starfivetech.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20260417024523.107786-1-minda.chen@starfivetech.com>
+References: <20260417024523.107786-1-minda.chen@starfivetech.com>
+Content-Type: text/plain
+X-ClientProxiedBy: ZQ0PR01CA0036.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c550:2::20) To BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c211:18::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Migadu-Flow: FLOW_OUT
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BJXPR01MB0855:EE_|BJXPR01MB0517:EE_
+X-MS-Office365-Filtering-Correlation-Id: 83bd8599-7c31-4dc9-32d3-08de9c2b6532
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|366016|1800799024|376014|7416014|52116014|921020|56012099003|22082099003|18002099003|38350700014;
+X-Microsoft-Antispam-Message-Info:
+ 37Lrd9T+Lv1rcJjpVosu9Hg475fQT7rfr+jupqfctcf5xK9y8Z8hPsPX8rfwmByCblyt7Sm7qikpKokUyiZ5OZwuEo6nlvqcOULUxcRya0kaGL5xdKnznrU5xSLpkOQGiISOOtFEDDcAeVVmuuUylgsP1hKvnFln9HlSs9RNnSHmjkteOU/A2xtGIdogIHvG4lUO0IxszOtVTCiFfIri15Rys4xWUmt6UexJJ1DoD+ladtTy1gdk779Kx4bH4T2Eh7Nxw4jEfce9nYF7cXzY3H9SYfQJ19gpqVtmcjoWfDssVswuyhXQxFQrBhvy29FpPEp+/X+HlrlRuIBBNsLvPSJt372VRuUMza4OcEd82HnwBIHpCxCQj6bGmvV6OUj3T53zVs+y6KngXMlQfzg8cyiP+qJoDI/mFqyRl/nCdOrsGvJOoue3No/WodnUIpizPEhxrfZDRS6nMmvDr+FUvMeg1D6t5xPLYcSz/+X/oAnm5xHIaysEjzTIOQXFfkYWeCByAfbIR5av6TJKIwAj4NRLL9H1LBFqMXwakr9bWw6vPnzrjTpQlgoYw8WY0jpI/F6e12L1iSN8ccNmzWOyUt8OugB8Oa3rm7vZkU8oSRc=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(52116014)(921020)(56012099003)(22082099003)(18002099003)(38350700014);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?NrizoNoTCDehHmmM9XBI+tG60PaO05lrusI8NF/l5YIyFNsZ0mxtV8YDMOqB?=
+ =?us-ascii?Q?z5KxLBqHgqyYlSBADDFjs6oc6a+r/3KY3YioRRYFCaPdXL3KrwsPE7fHCw4C?=
+ =?us-ascii?Q?bHQy77Be6xJ1ivdurUffg6lf8dauSYF+y1vdjLqYByXrEg653gfDhUaaCcjE?=
+ =?us-ascii?Q?Or01dxuG3zPsZ7HS0zVR02h2UZHPhBIh5VUpZFdeDd8dvX8fr+HPQdmbCBuB?=
+ =?us-ascii?Q?58xouVPns49dhptdwc0NPHfhJNHFh4A7lRvklx1uG6Oh1ilrNjKgpGEV1wSa?=
+ =?us-ascii?Q?Mh2iT5HAlpe7BN9IGlOeROetP66Ft+9MIh8Oh7S4W+XaC6W3QnVwAntq+psY?=
+ =?us-ascii?Q?9ejSgBiJmZ/ROkQuY0diFjMiBIfShWbnns9zO0ssWQvgSnKw7hs9TKJ2XxhQ?=
+ =?us-ascii?Q?lgo8BpcM4IZT7ltpQjMqJHuBOV2+p357JrUql5HFSoH9wh9j9y3rUAkqxWrU?=
+ =?us-ascii?Q?+8lSR3Rit2m+Dp99ETGL1utDCL0rKJpYQd0txVsctZLb0ugXTmEv93cNm+zQ?=
+ =?us-ascii?Q?cAF2sef839h6Ic211I1cGcjE/fE5DzElod4O8PHCWNw7bHBuBlLStvdgQXT4?=
+ =?us-ascii?Q?Hp4YuanyJyAs5/wI2PNoVYLpjANpkFcgDD6gwHh9cxBm1vjip6ORmfVhOk1U?=
+ =?us-ascii?Q?FHinkpE9gdnRnUaLatuFq92ecorgO7IM+VW0n0rqttdzXjCJlQAwJ1oKV2KK?=
+ =?us-ascii?Q?oF3NvTtRP8hLInBcXs0iIeNrY7Yo5zg693D7YLBWQk2b0TUCPD++lyX66U+B?=
+ =?us-ascii?Q?/5rkBpXuBC1hnetpR3hZiBFeZjS7FhYpa4+GVv85CHHPNTwa2DiUYRSPAdsj?=
+ =?us-ascii?Q?9v0ZLIXMxc9htCagds92CuW7CuxGdNFJvUkYtoj7FnayVpLRZoww04rDXcft?=
+ =?us-ascii?Q?4mnJF9SH/a8xQFyxdggyJ8VsKBlFcjPJZmvzilveddq843dNPASf8s/lXl7Y?=
+ =?us-ascii?Q?hvAyFzIDhl7gZj980rwPyOmHZqBpkMcxSzVYVwdkEt3qc5L5HZHeyyEaOO1C?=
+ =?us-ascii?Q?oxXj7+NRVgKxi7BD590W9kABShw4Bd95sxEtXj75Vx50OyI4eAmJtxLys9pR?=
+ =?us-ascii?Q?dmRYFWfEGUQ9va5aXpuXNcgJKV+qCKm9krMBhL+RQkbu9Mk/SGGQFvctF6ar?=
+ =?us-ascii?Q?e4uv5iMtnDcBADNQlEhQWhhNSrm9kHtIsuSuykIrhkytZE74KlMokeYb3ggV?=
+ =?us-ascii?Q?WDtXKtonGI31ifJtnoVR/qJocXeNmxOyCGkHsKkyI7S5F6bRCBL6NNX9aHCs?=
+ =?us-ascii?Q?Eb6nUzXZfL5COjPlzFOe1eHYS85fsIAWCc/707G5fy34u1s+SPsOLmCipV7I?=
+ =?us-ascii?Q?zgWrX8Mu0IiOeQR2IYHldJ/GgcjdumFkLMUxwriQNZcWJnHlw5pcJxChs6us?=
+ =?us-ascii?Q?kQCcudc/9fwP8Zs/XylZnN2LnenA8gdHzfOD7hkPW0tojledUzwfB+aSqSRv?=
+ =?us-ascii?Q?VHGwEHY6Rz2jzaJe4mwtaQPMO7Pmx/znSypK7GzrH1G2LXUZClSOixnrgGyd?=
+ =?us-ascii?Q?PeMgc1ZWJWsb+MOIHPdFMl3Nv/OPvMGX11ZKnO1PqaOiLqkwp+WypF4FwIju?=
+ =?us-ascii?Q?S50WsDe4wpDYJ8fDy6e99mnyhiK7sG/20c4aWZG9O7bTA4oNXEbwBQYQoM4K?=
+ =?us-ascii?Q?bf0Jbg4qNy2FsXGEgTo4GHA3OxK5C8aPsXJHEWtNyUxmaOjLM7n5SFT4pRUU?=
+ =?us-ascii?Q?eEmiNm9/Zeqa1lRgy0vxhTYQ6n+eVBm92QBwNm18dVbdIn0cp4ri4w1R63ii?=
+ =?us-ascii?Q?bhziGqPPFw0uemaVNxz5wp7yeg1MqVA=3D?=
+X-OriginatorOrg: starfivetech.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 83bd8599-7c31-4dc9-32d3-08de9c2b6532
+X-MS-Exchange-CrossTenant-AuthSource: BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Apr 2026 02:45:32.9518
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2mvK1jJVAWEBeEt5w43tMXrDFSwJZ2kfpQpNI1TF0pD2TEor/FxT766Go1WxbAgailY/BrSe1V9YtM6Q/aMPxCSpTITa9MQVGcXmWGQHOqQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BJXPR01MB0517
 
-On Thu, 2026-04-16 at 12:06 -0700, Martin KaFai Lau wrote:
-> On Thu, Apr 16, 2026 at 07:23:08PM +0800, KaFai Wan wrote:
-> > index 56685fc03c7e..2d738c0c4259 100644
-> > --- a/tools/testing/selftests/bpf/prog_tests/tcp_hdr_options.c
-> > +++ b/tools/testing/selftests/bpf/prog_tests/tcp_hdr_options.c
-> > @@ -513,6 +513,59 @@ static void misc(void)
-> > =C2=A0	bpf_link__destroy(link);
-> > =C2=A0}
-> > =C2=A0
-> > +static void hdr_sockopt(void)
-> > +{
-> > +	const char send_msg[] =3D "MISC!!!";
-> > +	char recv_msg[sizeof(send_msg)];
-> > +	const unsigned int nr_data =3D 2;
-> > +	struct bpf_link *link;
-> > +	struct sk_fds sk_fds;
-> > +	int i, ret, true_val =3D 1;
-> > +
-> > +	lport_linum_map_fd =3D bpf_map__fd(misc_skel->maps.lport_linum_map);
-> > +
-> > +	link =3D bpf_program__attach_cgroup(misc_skel->progs.misc_hdr_sockopt=
-, cg_fd);
-> > +	if (!ASSERT_OK_PTR(link, "attach_cgroup(misc_hdr_sockopt)"))
-> > +		return;
-> > +
-> > +	if (sk_fds_connect(&sk_fds, false)) {
-> > +		bpf_link__destroy(link);
-> > +		return;
-> > +	}
-> > +
-> > +	ret =3D setsockopt(sk_fds.active_fd, SOL_TCP, TCP_NODELAY, &true_val,=
- sizeof(true_val));
-> > +	if (!ASSERT_OK(ret, "setsockopt(TCP_NODELAY) active"))
-> > +		goto check_linum;
-> > +
-> > +	ret =3D setsockopt(sk_fds.passive_fd, SOL_TCP, TCP_NODELAY, &true_val=
-, sizeof(true_val));
->=20
-> Why are these two setsockopt(TCP_NODELAY) calls needed?
->=20
-> Instead of creating a new "void hdr_sockopt(void)", can the test be done =
-in the
-> existing "void misc(void)" by doing bpf_setsockopt(TCP_NODELAY) in the
-> misc_estab() bpf prog?
+Remove JH8100 dt-bindings because do not support it now.
+StarFive have stopped JH8100 developing and will release it
+outside.
 
-Oh, I see.=C2=A0I meant to test on both active and passive side. We can onl=
-y test on active side in the
-existing "void misc(void)".
->=20
-> The PASSIVE_ESTABLISHED_CB can do the bpf_setsockopt(TCP_NODELAY, 0)
-> if it wants to keep the same expectation on Nagle. The
-> BPF_SOCK_OPS_HDR_OPT_LEN_CB and BPF_SOCK_OPS_WRITE_HDR_OPT_CB
-> can do bpf_setsockopt(TCP_NODELAY, 1) to test recursion and
-> the error return value.
->=20
-> > =C2=A0void test_tcp_hdr_options(void)
-> > diff --git a/tools/testing/selftests/bpf/progs/test_misc_tcp_hdr_option=
-s.c
-> > b/tools/testing/selftests/bpf/progs/test_misc_tcp_hdr_options.c
-> > index d487153a839d..a8cf7c4e7ed2 100644
-> > --- a/tools/testing/selftests/bpf/progs/test_misc_tcp_hdr_options.c
-> > +++ b/tools/testing/selftests/bpf/progs/test_misc_tcp_hdr_options.c
-> > @@ -28,6 +28,12 @@ unsigned int nr_data =3D 0;
-> > =C2=A0unsigned int nr_syn =3D 0;
-> > =C2=A0unsigned int nr_fin =3D 0;
-> > =C2=A0unsigned int nr_hwtstamp =3D 0;
-> > +unsigned int nr_hdr_sockopt_estab =3D 0;
-> > +unsigned int nr_hdr_sockopt_estab_err =3D 0;
-> > +unsigned int nr_hdr_sockopt_len =3D 0;
-> > +unsigned int nr_hdr_sockopt_len_err =3D 0;
-> > +unsigned int nr_hdr_sockopt_write =3D 0;
-> > +unsigned int nr_hdr_sockopt_write_err =3D 0;
->=20
-> nr_hdr_sockopt_estab, nr_hdr_sockopt_len, and nr_hdr_sockopt_write
-> are unnecessary. These tests have already been covered in some ways.
+Signed-off-by: Minda Chen <minda.chen@starfivetech.com>
+---
+ .../bindings/net/starfive,jh7110-dwmac.yaml   | 28 ++++---------------
+ 1 file changed, 5 insertions(+), 23 deletions(-)
 
-yes, they are unnecessary in existing misc_estab()
->=20
-> Mostly a nit. The new counters are used in both connections. Note the
-> existing nr_xxx is exclusively used in either active or passive,
-> so there is no parallel counting in practice.
->=20
-> Instead of counting, just use a bool nodelay_est_ok,
-> nodelay_hdr_len_err, nodelay_write_err and assert them
-> to be true in userspace.
+diff --git a/Documentation/devicetree/bindings/net/starfive,jh7110-dwmac.yaml b/Documentation/devicetree/bindings/net/starfive,jh7110-dwmac.yaml
+index 313a15331661..0d1962980f57 100644
+--- a/Documentation/devicetree/bindings/net/starfive,jh7110-dwmac.yaml
++++ b/Documentation/devicetree/bindings/net/starfive,jh7110-dwmac.yaml
+@@ -30,10 +30,6 @@ properties:
+       - items:
+           - const: starfive,jh7110-dwmac
+           - const: snps,dwmac-5.20
+-      - items:
+-          - const: starfive,jh8100-dwmac
+-          - const: starfive,jh7110-dwmac
+-          - const: snps,dwmac-5.20
+ 
+   reg:
+     maxItems: 1
+@@ -120,25 +116,11 @@ allOf:
+           minItems: 3
+           maxItems: 3
+ 
+-      if:
+-        properties:
+-          compatible:
+-            contains:
+-              const: starfive,jh8100-dwmac
+-      then:
+-        properties:
+-          resets:
+-            maxItems: 1
+-
+-          reset-names:
+-            const: stmmaceth
+-      else:
+-        properties:
+-          resets:
+-            minItems: 2
+-
+-          reset-names:
+-            minItems: 2
++        resets:
++          minItems: 2
++
++        reset-names:
++          minItems: 2
+ 
+ unevaluatedProperties: false
+ 
+-- 
+2.17.1
 
-indeed. will fix these in next version.
-
---=20
-Thanks,
-KaFai
