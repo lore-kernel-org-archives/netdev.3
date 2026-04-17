@@ -1,170 +1,154 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2A5E26ED45;
-	Fri, 17 Apr 2026 00:54:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE6CBA21;
+	Fri, 17 Apr 2026 01:04:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776387279; cv=none; b=KHKfdASppoWpup9PYM5rDlT3YumIaZjG0YkEGPu1FoSA7vVEcWgOrq5YcrkWAEstqHiqEqBdsmLvlk4gLdv6OFSRHvER3Od4xLOY6j672lL3mRzsy4kdIZ9bZ7Bn8nQCYvwOXbeV5Xrcb73c6y8tP8Wm8WyRAD3CXsuBmp5SCQ8=
+	t=1776387894; cv=none; b=qjcU7m5VtddKgNxj+BBayCbjo5nYGVocjGXQNacYae31v+wPortJH+jKYkjQ5suLdhdh1beZudm3QXXOXxrIRUk6dM3NReusnCdAOU9n0ms7eXnPcVlFryDKelNijXqrx+dbVXKCQ9iXA8BsZn9tCvHur1snHJr0dpfzPVbtNso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776387279; c=relaxed/simple;
-	bh=d3DTf2B3KIUeGsyUCVNb0eXOyOe0Afw+3XyYV8iudyQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=cYBg+V7ZBLZYD2b8sMaknQmT9Y16nSam4fcjDcYPnOk/R+0bwzK7DFvvRsHz7KKLK5VxGFGY3BnFCGJqHfyw1o03wQIyqg7/arbJSdc0Dq9I92BcMMNyiGhdjC1f5b7PHAHRbDJqGCKrZIhoGeR23dRWADEzgIhmETfrl0AMdqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jPZ+ufO1; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1776387894; c=relaxed/simple;
+	bh=uef/MQUFdwKWAzdRkfr82aSqXlQWMKmwRMGsFqVycJg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GjemQJUxtZDsYHZnw0DGcpbX2ncyio0N0vOtCxDQIlygf/pdgulzSKn1qYtdaNZrK/ovqRg2q15Yj6fqGfrRbQ8/TtZHtXMkoDImgBwQND+yO7oQ4QH5KmFQqvf3rIdEXc2PdbVgke7fe7nlWtahjI7P0MSuOLMijvsQSQJz1pI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AFsF5Vjn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jPZ+ufO1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776387278; x=1807923278;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=d3DTf2B3KIUeGsyUCVNb0eXOyOe0Afw+3XyYV8iudyQ=;
-  b=jPZ+ufO1dpcImjAtPZrEa2IO+at+GzezxxEVK4xy7auqOqhfhLTNSmN7
-   scZ869e5+h/ukAD+Ty9Snajs1EumqC59VsWaTmEMTeLPMgJ7TpUsEhZ40
-   QUTlJ834035nAOaPIEsae9WCpDfkUYnEcNzfIYb/f60r4DOkpDLzlUogi
-   lOB85MsBm1A1uQCsqi9NqDfKaDOSRjCg5KcMOTYOO9BJIVOh8WIzSxAZX
-   F6KTS0NF9jicvl/L33omcZmRLb/NDL0zPmVP+aD5vKmTOUgufPz5oZkwf
-   KCDhLTeJumoqEhbozjXoyIskBvGqOf2PWwO9pKanPWJrF9rX2vIP1pPuI
-   w==;
-X-CSE-ConnectionGUID: hiq6jaOJSoy7vSyam99E1Q==
-X-CSE-MsgGUID: UJfdxtf+S8m5J7CYKjQDSA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11761"; a="81000586"
-X-IronPort-AV: E=Sophos;i="6.23,183,1770624000"; 
-   d="scan'208";a="81000586"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2026 17:54:32 -0700
-X-CSE-ConnectionGUID: 6EG8BZeZSQ2ubx0f9QSGxg==
-X-CSE-MsgGUID: 6LD1MH6qQkGb0QNdHQpcng==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,183,1770624000"; 
-   d="scan'208";a="226539891"
-Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.109]) ([10.166.28.109])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2026 17:54:30 -0700
-From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Thu, 16 Apr 2026 17:53:35 -0700
-Subject: [PATCH net v2 11/12] idpf: fix xdp crash in soft reset error path
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AFsF5Vjn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DBE1C2BCB5;
+	Fri, 17 Apr 2026 01:04:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776387894;
+	bh=uef/MQUFdwKWAzdRkfr82aSqXlQWMKmwRMGsFqVycJg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=AFsF5VjnZpZMwUuZwG42cFUA/ApcxrnvS78EoSawtPVB7vXB5OsYtsPsoUBfsD+LZ
+	 4uvvqsFfa2V3CzfrIbE2d8UJs6sfgrhZuRBAMy7COZrKaDpmonM/krI3wBjkPB2zvj
+	 zmn/HQwr3IAc7vF+cehDG6tAHms7HikId8JNssgu8i+8Wv6UIxugG8+u3aof/hPWxL
+	 I4aOpVHJj1TAS354NCkazF+crkhVATK4607FwT2H/K4cZ69qq5DQsDWS/tWBybL2x1
+	 MtSqd3nUy1kvPw8p4/PWTngj2r7iAmATpWRDhYTItdG3iQDqSoca7Mmk4KhMLMGISk
+	 r7pinxcjTwhKw==
+Date: Thu, 16 Apr 2026 18:04:47 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: "Kubalewski, Arkadiusz" <arkadiusz.kubalewski@intel.com>
+Cc: "Vecera, Ivan" <ivecera@redhat.com>, "vadim.fedorenko@linux.dev"
+ <vadim.fedorenko@linux.dev>, "edumazet@google.com" <edumazet@google.com>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "richardcochran@gmail.com" <richardcochran@gmail.com>,
+ "donald.hunter@gmail.com" <donald.hunter@gmail.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "davem@davemloft.net" <davem@davemloft.net>,
+ "Prathosh.Satish@microchip.com" <Prathosh.Satish@microchip.com>,
+ "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+ "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+ "horms@kernel.org" <horms@kernel.org>, "Kitszel, Przemyslaw"
+ <przemyslaw.kitszel@intel.com>, "Nguyen, Anthony L"
+ <anthony.l.nguyen@intel.com>, "pabeni@redhat.com" <pabeni@redhat.com>,
+ "jiri@resnulli.us" <jiri@resnulli.us>
+Subject: Re: [Intel-wired-lan] [PATCH v5 net-next 0/8] dpll/ice: Add TXC
+ DPLL type and full TX reference clock control for E825
+Message-ID: <20260416180447.1a3c5c87@kernel.org>
+In-Reply-To: <IA0PR11MB7378FF7BF4EA32C1F89372C19B232@IA0PR11MB7378.namprd11.prod.outlook.com>
+References: <20260402230626.3826719-1-grzegorz.nitka@intel.com>
+	<20260406192312.0f7a2760@kernel.org>
+	<IA1PR11MB621925C1718B838147404DC492582@IA1PR11MB6219.namprd11.prod.outlook.com>
+	<20260409181041.395a0c37@kernel.org>
+	<IA1PR11MB62194BF52262FCEB7FD5E76D92592@IA1PR11MB6219.namprd11.prod.outlook.com>
+	<20260410133812.4cf9b090@kernel.org>
+	<IA0PR11MB737882B384AE7279EBCD05C79B242@IA0PR11MB7378.namprd11.prod.outlook.com>
+	<20260414145835.07fbe355@kernel.org>
+	<IA0PR11MB737842E2098D0952A8BA1FE29B222@IA0PR11MB7378.namprd11.prod.outlook.com>
+	<20260416082751.04782987@kernel.org>
+	<IA0PR11MB7378FF7BF4EA32C1F89372C19B232@IA0PR11MB7378.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260416-iwl-net-submission-2026-04-14-v2-11-686c33c9828d@intel.com>
-References: <20260416-iwl-net-submission-2026-04-14-v2-0-686c33c9828d@intel.com>
-In-Reply-To: <20260416-iwl-net-submission-2026-04-14-v2-0-686c33c9828d@intel.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, Jacob Keller <jacob.e.keller@intel.com>, 
- Emil Tantilov <emil.s.tantilov@intel.com>, stable@vger.kernel.org, 
- Aleksandr Loktionov <aleksandr.loktionov@intel.com>, 
- Patryk Holda <patryk.holda@intel.com>
-X-Mailer: b4 0.16-dev-ea14f
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3631;
- i=jacob.e.keller@intel.com; h=from:subject:message-id;
- bh=3zpMmZta/kwFomkNUDrroXhAQzE+15KxTGyGKM3+q8M=;
- b=owGbwMvMwCWWNS3WLp9f4wXjabUkhsyHLYf1s6qvrf3f+feP6Kn/6er/Hk4/mXCLd3mTvrTT6
- 2ydWwbzOkpZGMS4GGTFFFkUHEJWXjeeEKb1xlkOZg4rE8gQBi5OAZhI1W6G/8XTVW5NWRpw4tOb
- OzbfSnZOmxd3wOiIhMLOfd3f9h0t/K7NyPBe5rtkTtKPSHnDa6GGK0NiFi76vG5KclSHYt/el7X
- y79kA
-X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
- fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
 
-From: Emil Tantilov <emil.s.tantilov@intel.com>
+On Thu, 16 Apr 2026 18:26:11 +0000 Kubalewski, Arkadiusz wrote:
+> >> This HW doesn't use EEC DPLL signal to feed MAC clock, as DPLL is
+> >> external from NIC point of view. Only 2 signals from such external DPLL
+> >> device are used by NIC:
+> >> - synce (a single source for all those TXC per-port DPLL device)
+> >> - time_ref (a source for the TS_PLL - which drives PTP timer)  
+> >
+> >No bypass? The PLL is actually in the loop? oof, this is beyond
+> >my understanding of clocks and signals :S
+>
+> TBH, I am not entirely sure what do you mean with MAC PLL into bypass
+> mode, but the HW description I have provided is still true, the MAC is
+> not fed with any DPLL provided signal here. Only port tx clocks PLLs and
+> a timer PLL can use those.
 
-NULL pointer dereference is reported in cases where idpf_vport_open()
-fails during soft reset:
+The ASIC PLL IPs I managed to find had a bypass mode where the reference
+/ input frequency still goes thru the dividers but the PLL circuit is
+bypassed. I assumed that if we want to distribute a syntonized clock
+across the network we would want as few PLL circuits in the paths as
+possible and we'd use bypass (which would be relevant here since for
+the target use case we wouldn't engage the PLL of the TXC). But this 
+is 100% guesswork so I'm probably speaking gibberish.
 
-./xdpsock -i <inf> -q -r -N
+> >> Well, 'floating' MUX type pin not connected to any dpll would require a
+> >> lot of additional implementations, just to allow source selection, as we
+> >> have tried it already.
+> >>
+> >> Wouldn't more generic name cause a DPLL purpose problem?  
+> >
+> >The old proposal in netdev family was to to have source selection
+> >without creating a real mux. Not saying I'm dead set on that direction.
+> 
+> Yes, correct, it kept the list of dpll pins valid for source selection of
+> tx clock within the netdev and control over it through RT netlink.
+> That solution was rather simple but you requested to hack into dpll so we
+> did here.
+> 
+> IMHO this is cleanest and simplest solution we could find to keep it
+> within DPLL subsystem.
+> 
+> >> We still want to make sure that given DPLL device would serve the role
+> >> of source selection for particular port where a source pin should be an
+> >> output either on EEC dpll or some external signal generator but somehow
+> >> related to SyncE or similar solutions.  
+> >
+> >Right, but adding a new "type" per location of the PLL (especially if
+> >we lean into covering any ASIC PLL) may not scale, and opens us up to
+> >"vendor X calls it Y" and "in design A clock is fed by pll type X and
+> >in design B by type Y".
+> 
+> I was thinking that this is more like a purpose specific DPLL device, if
+> someone would want something similar we would have to review it, right?
 
-[ 3179.186687] idpf 0000:83:00.0: Failed to initialize queue ids for vport 0: -12
-[ 3179.276739] BUG: kernel NULL pointer dereference, address: 0000000000000010
-[ 3179.277636] #PF: supervisor read access in kernel mode
-[ 3179.278470] #PF: error_code(0x0000) - not-present page
-[ 3179.279285] PGD 0
-[ 3179.280083] Oops: Oops: 0000 [#1] SMP NOPTI
-...
-[ 3179.283997] Workqueue: events xp_release_deferred
-[ 3179.284770] RIP: 0010:idpf_find_rxq_vec+0x17/0x30 [idpf]
-...
-[ 3179.291937] Call Trace:
-[ 3179.292392]  <TASK>
-[ 3179.292843]  idpf_qp_switch+0x25/0x820 [idpf]
-[ 3179.293325]  idpf_xsk_pool_setup+0x7c/0x520 [idpf]
-[ 3179.293803]  idpf_xdp+0x59/0x240 [idpf]
-[ 3179.294275]  xp_disable_drv_zc+0x62/0xb0
-[ 3179.294743]  xp_clear_dev+0x40/0xb0
-[ 3179.295198]  xp_release_deferred+0x1f/0xa0
-[ 3179.295648]  process_one_work+0x226/0x730
-[ 3179.296106]  worker_thread+0x19e/0x340
-[ 3179.296557]  ? __pfx_worker_thread+0x10/0x10
-[ 3179.297009]  kthread+0xf4/0x130
-[ 3179.297459]  ? __pfx_kthread+0x10/0x10
-[ 3179.297910]  ret_from_fork+0x32c/0x410
-[ 3179.298361]  ? __pfx_kthread+0x10/0x10
-[ 3179.298702]  ret_from_fork_asm+0x1a/0x30
+We would if it was a Ethernet MAC PLL, but if someone wanted to expose
+whether some random PLL in their ASIC locks - are we adding a new type
+for each one of those?
 
-Fix the error handling of the soft reset in idpf_xdp_setup_prog() by
-restoring the vport->xdp_prog to the old value. This avoids referencing
-the orphaned prog that was copied to vport->xdp_prog in the soft reset
-and prevents subsequent false positive by idpf_xdp_enabled().
+> >IIUC you do provide "linking" of the pins? netdev will have the MAC pin
+> >assigned. Is the pin that connects the PLLs also annotated so that user
+> >knows what's on the "other side"? Maybe the topology would be clear
+> >enough from just that, and we don't have to add a TXC type.
+> >Call the PLL "integrated" or something generic. User should be able to
+> >trace the path of the signals?  
+> 
+> It depends, TX clock has one of external pins connected to external DPLL,
+> but second is a board-level pin with ability to provide some external
+> clock signal, the user would have to determine that purpose just based
+> on the topology of one of the pins, which seems a bit problematic?
+> I.e. if at some point there would be HW with only external non-DPLL
+> connected pins?
 
-Update the restart check in idpf_xsk_pool_setup() to use IDPF_VPORT_UP bit
-instead of netif_running(). The idpf_vport_stop/start() calls will not
-update the __LINK_STATE_START bit, making this test a false positive
-should the soft reset fail.
+Not sure I follow, TBH. To me the function of the "MAC PLL" is fairly
+obvious from the fact that it has a pin exposed via rtnetlink. So it's
+obviously a DPLL which can drive the Tx clock?
 
-Fixes: 3d57b2c00f09 ("idpf: add XSk pool initialization")
-Cc: stable@vger.kernel.org
-Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Patryk Holda <patryk.holda@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
----
- drivers/net/ethernet/intel/idpf/xdp.c | 1 +
- drivers/net/ethernet/intel/idpf/xsk.c | 4 +++-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+It's the function / relation / linking to the EEC DPLL that may not 
+be obvious. But user can see how the pins connect they can get some
+LLM to draw a diagram of a live system.. et voila :)
 
-diff --git a/drivers/net/ethernet/intel/idpf/xdp.c b/drivers/net/ethernet/intel/idpf/xdp.c
-index cbccd4546768..18a6e7062863 100644
---- a/drivers/net/ethernet/intel/idpf/xdp.c
-+++ b/drivers/net/ethernet/intel/idpf/xdp.c
-@@ -488,6 +488,7 @@ static int idpf_xdp_setup_prog(struct idpf_vport *vport,
- 				   "Could not reopen the vport after XDP setup");
- 
- 		cfg->user_config.xdp_prog = old;
-+		vport->xdp_prog = old;
- 		old = prog;
- 	}
- 
-diff --git a/drivers/net/ethernet/intel/idpf/xsk.c b/drivers/net/ethernet/intel/idpf/xsk.c
-index d95d3efdfd36..3d8c430efd2b 100644
---- a/drivers/net/ethernet/intel/idpf/xsk.c
-+++ b/drivers/net/ethernet/intel/idpf/xsk.c
-@@ -553,6 +553,7 @@ int idpf_xskrq_poll(struct idpf_rx_queue *rxq, u32 budget)
- 
- int idpf_xsk_pool_setup(struct idpf_vport *vport, struct netdev_bpf *bpf)
- {
-+	const struct idpf_netdev_priv *np = netdev_priv(vport->netdev);
- 	struct xsk_buff_pool *pool = bpf->xsk.pool;
- 	u32 qid = bpf->xsk.queue_id;
- 	bool restart;
-@@ -568,7 +569,8 @@ int idpf_xsk_pool_setup(struct idpf_vport *vport, struct netdev_bpf *bpf)
- 		return -EINVAL;
- 	}
- 
--	restart = idpf_xdp_enabled(vport) && netif_running(vport->netdev);
-+	restart = idpf_xdp_enabled(vport) &&
-+		  test_bit(IDPF_VPORT_UP, np->state);
- 	if (!restart)
- 		goto pool;
- 
+> I mean 'generic' type is something we could do, but as already mentioned,
+> thought that we want a DPLL types specified/designed for some particular
+> functions/tasks. 
 
--- 
-2.54.0.rc2.531.gaf818d63126a
-
+I feel like we often get labels wrong the first time around, so if we
+can defer adding them until later that'd make me happy..
