@@ -1,67 +1,66 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33EBC39FCB5
-	for <netdev@vger.kernel.org>; Fri, 17 Apr 2026 17:49:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC84A30EF7C
+	for <netdev@vger.kernel.org>; Fri, 17 Apr 2026 17:49:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776448183; cv=none; b=NescH8czVHD+/xrMQ/djbsd34+HRAiMZ22JyxhLWtNnbkFCroNrs3ej6GlgUaX6U8kbYxiHN3Arn44cbgZ9Z8c5/vUCdEF+YLRSxOc0wdyLqeIbmFJJf1YwdneoA2zj66/uUaaw7uuVC0Q0Pstd0tN4TRxXBxc25ThF2Sji2B18=
+	t=1776448189; cv=none; b=hObCDToMcENDc1stXuDFBEQ+Ypg0g0JxkemSz+q+mOr0I869G2d5HkI6G3pU4BOboGEsyY8zAbhk4a9AxSEys7i6kEP0Jrq2SIacucyjnSWFRL8zYA/nrQfjrv+nGR98PfXwr/Wjl1fnEtgtNammGkEoLKJUChkdszJt7x50P8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776448183; c=relaxed/simple;
-	bh=tAdlcRQThT0aO8/5Zua1LK1/+0KDjbglhVfgvGDjUeg=;
-	h=Message-ID:In-Reply-To:References:From:Date:Subject:To:Cc; b=udHln1c/IuqsqpGy736XvyeuAFXJ8tItOpYMu6SKhVgY/GEDAQjwmjmj6KASd1MNyS0F2eC2K8+hFXE+t544AMcJrRXwiXFuSVX5eBTnOj/w2Gm6eaAFNyufLRgadMt+SZAVbX7OU9zEeD2/6tY6Ti4fIVJPkje/B8mIofFddhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZiUcdxqs; arc=none smtp.client-ip=209.85.215.179
+	s=arc-20240116; t=1776448189; c=relaxed/simple;
+	bh=dxnH0f5C5Vn18aTsHsoy3uUPp2cDYyJJW1cVCZr+sro=;
+	h=Message-ID:In-Reply-To:References:From:Date:Subject:To:Cc; b=XFExupwrpASVD6Fv+7RMpbGlsNcrspRJfR/YMRXDW0INLTWNZEyMJYnFea9ApaCQVPXjgK0hemEx85h4q2tmmFZQuuDShMKGg6MrSIQEsFTD4e/xk50+Zd/8tfQEjUeRlMrYXrT/vEVxWrnXmslEbogkoJFhwHNz38paVubgq+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sb7gL7dB; arc=none smtp.client-ip=209.85.210.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZiUcdxqs"
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-c795f096fa5so422976a12.3
-        for <netdev@vger.kernel.org>; Fri, 17 Apr 2026 10:49:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sb7gL7dB"
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-82f431c0ab6so485113b3a.0
+        for <netdev@vger.kernel.org>; Fri, 17 Apr 2026 10:49:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776448174; x=1777052974; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1776448176; x=1777052976; darn=vger.kernel.org;
         h=cc:to:subject:date:from:references:in-reply-to:message-id:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=uwVV6/549C9ObZhSY3TGmlcvB54RDFmpSsT82OUItwc=;
-        b=ZiUcdxqsbvXxo+p3Si0Rjwt8b2q+ZpxqKW9knUZ7Humiy+PwDVNdmzvTCjuR3BPpE7
-         is3zA8dB5jip+P4u4mJLxnLIQf3lGnGevzdENFtg0tzPDCbYo59bYl15MFnxKC0K3m0D
-         bXkPi0wE4hd6YCESu+HsLyfhHEVL7T9WeKy0Bt5LL1hCtOPscEEk1QFkdZXKspVIwacf
-         UmpJxMQU0hTXeauNoceYAiU8dyWuSurnsvnMmuQ5B7ZNcqjWkuNmJ+7xlsM7Qb4zFuCi
-         l9eNyksRqgz+cmE1ihEglVsOFNzCTd1sD7JWOxNh36FaTca7k0zeoYlE6c+CCifmqVc8
-         fuhA==
+        bh=B/7hfAHCRrvVYNg45OT8U1RufNMowjZzViktq3xYVPo=;
+        b=sb7gL7dBJnUW4Xlud/oagSHBKUQLFXZ8OxpAN6mSvVNijq588pQBqpk9r+HodKNSiK
+         P0avMcvzkzGTac4jcDbA+GrHubIuW6KdE7bJmS7S8Ace6Pw6TlZOWEebhIXsT1o39FMw
+         g4K9e9ab8BlbG7h4SyyzIquaOtl/xt32SWYIzgfYXOipCTsS4Bbfg/JareZYpXOUYoKh
+         bKgO9cIlNMaKqbGXgHoIckIWx3Pe6SLxm0eBONVW/MO7intpK9j/gHmmfuvRiGTHFN67
+         MD6IIlodiF7G2sRCZankcaGfrPnTBJkf1s4DBoIB9pK8pSSIcYQWAeVHI3qZZvrezdg0
+         4GbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776448174; x=1777052974;
+        d=1e100.net; s=20251104; t=1776448176; x=1777052976;
         h=cc:to:subject:date:from:references:in-reply-to:message-id:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uwVV6/549C9ObZhSY3TGmlcvB54RDFmpSsT82OUItwc=;
-        b=AT/PjgSb+htsLU+wEc+p0GEpEL5dueQQD/8vI4tNTP3/mDuemWIssV/YAeO0P/w5m6
-         H5sYPx1WwOBlgjHvPfa0/tL2A2qRe2UjGRfLMfAv0gY4FeEXTRl6b9UtyBBfupbwvQI3
-         LP/1BaZr+xhY0aVDvtuvDlmaD3A4XmO09ekkR/1agzso0Y7GiAA1Mq1ZEBFfVVUJVzHN
-         XwTAS2zinXFEd5pR577ZuSJ/mg5ZRQqqdMMMNas3qQaL7gUHuus85IEohs87rdvheF8+
-         sAKdeKuBzKsfLfiKA6uoVlNk9bi+8ZXR4OZnWD9V9xzu0mM0Xf219DUC/ZdNSe/PE1SJ
-         F81Q==
-X-Gm-Message-State: AOJu0Yyrn1oL2zadCaRnCO65DIpWjLxBdqmWIQr6tJjMkSpP6DJsbSzR
-	p8ceiuNw4uItYX+EAvfJEQ6ZUKPfzuxWShfkCjLUJVxzD0+hUgs7SECBqIcJsw==
-X-Gm-Gg: AeBDies1KBzFZv2eaC6UOiqbVAXMHWlAOjJCJrWccVyu2oLccKTSXyCvXmkZhsJ+CKP
-	SRNp8w5Xmw6KIEIQlXOLSXVHBc+1JH1pRVctzLmXySFYmy+XHdi9VVG6fYY2B6qU5C36eKf0sNw
-	2plY4u0ZOqPlyi9RUgHJ1RJjSxSw2PgYt2YeTMXYajnrr0DQZPwAx+Z0LaLmivlPOelbGZU0kbm
-	/P9ybH0CqS42Y3Kr1i7MEdI2LE6uN/GsK6FCVoL+O9aEoyxvHE0BU1G1gCheBOZilj+5cTau1rx
-	7Hqg5P2N/+t7epwxGtn//ey+q6AXrQsGCP+JdRej5poQH9EhGVP8ECdR8He1yIVndPvGD/hilt+
-	xtol7gNqDDl0XrpVshV2pgHpzUZaRTHtgyEnd6b4+3NyRNw7DJE4kPhmXR3els4mQdnRB/ZjywQ
-	gzXGHuQ+Z6cXzuNjEhFwJ8DvC9ZbHYXcQJ+tXdCIIsDdzsFAzpjfTDCfTetTkAwX9fcrUYf11cg
-	Gfp1vcoM2ABk4DN+E6S/UOsrss=
-X-Received: by 2002:a05:6a20:3949:b0:394:3001:8b59 with SMTP id adf61e73a8af0-3a08d8fb8bamr4540797637.53.1776448173940;
-        Fri, 17 Apr 2026 10:49:33 -0700 (PDT)
+        bh=B/7hfAHCRrvVYNg45OT8U1RufNMowjZzViktq3xYVPo=;
+        b=L5XPYQK62IWShgbCI1zKwQwP3X0g4CfI6jCEwmYufGpTtPjl7QkJ8kYig4ZjR/A3G3
+         Lqz2p0D+Q31eet7i+x+0T977W4vjXqmEWPxuFwfTavpGZDnug4vD5bQP9x9yU+MY1wlN
+         E32t125wvA7e0PEOSJzemYMaMw+mBjwCs3ajVpGh0vuDq+EsndaYOPFQc6IUTaksWsfF
+         Z4TXF7VnX4UU5vuclHsxCkSUbc/cTi5PWT2GS/KgfaHYixrSpq1/BOYH1zOTxqSPW1Rk
+         tG6HvVrv46UFBdmAEIjPdDtK8oAlgdk8uRDpbhL8mw4VYeI7sQR5FSFNnpUP7LiJI8/s
+         Ug4g==
+X-Gm-Message-State: AOJu0YxzSgkKWnAAfRsIQN07UkKeM95/b35NoAFuM7qF8vfqkHEe3Rci
+	rOiZDvYH3ua4OpK+uCLpztD2G7bQLrRiUfW/fCvFwT5ecdVpCMWbTSWVjCF2Nw==
+X-Gm-Gg: AeBDievVqGNDuwlvctXJUIEO25iEHNQPzDDGuKAq5Nitpzi3N1815X3uKb6r5y2u8qN
+	VomuaEpsxWiI7+Sx/hFCsFrOqzuYJ7A627ui2e8IPQX+2SeP3jR2vLkMNOCyQezspoBZ0slamHE
+	xby9us80KC1I3giG3yiW7mTGHsncPeKf7uH3XKtMkBRGfLJI+BbZzK4BKVFP0+GLrhuus1FuvSk
+	SUCQgwUwXjxXGlDr8emQHsHQmZ68DxG99MH3j3JBkpSdlttP+R66/dqNwWmklopyI5T5cyyYd98
+	nos3i8wbTWfmIskS7osx5bUa2/jFdQDHVKull955t4cNXhKzQwGQM+fcWbIfDKXv1E+HX+GpAau
+	VgdPeVOBT+VKTYHTaT+3WaXviK3eI3x2mEJ6rudogfLm2jAf7d4ciw9nUz6F6nl58AeP/6SDYyH
+	V6dErIzWvnXh1G4UnaxiLHC+8WGj+r9RgXzZew6OMlxspWHmzhy0nTL2JSTjKckFPE2jWK/NQWf
+	QbrG/vNS6fgEqlyWjekpS35iCw=
+X-Received: by 2002:a05:6a00:3028:b0:82f:6640:7229 with SMTP id d2e1a72fcca58-82f8c91c9femr4140755b3a.23.1776448176202;
+        Fri, 17 Apr 2026 10:49:36 -0700 (PDT)
 Received: from Shuvs-MacBook-Air.local ([43.245.86.86])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8ec23b19sm2949913b3a.59.2026.04.17.10.49.32
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8ec23b19sm2949913b3a.59.2026.04.17.10.49.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Apr 2026 10:49:33 -0700 (PDT)
-Message-ID: <2325518b6d24b62e50629473e1cee5563f21a15c.1776446840.git.shuvampandey1@gmail.com>
+        Fri, 17 Apr 2026 10:49:35 -0700 (PDT)
+Message-ID: <4216b149341fb2f38449e33bd7a14fa76b87aec9.1776446840.git.shuvampandey1@gmail.com>
 In-Reply-To: <cover.1776446840.git.shuvampandey1@gmail.com>
 References: <cover.1776446840.git.shuvampandey1@gmail.com>
 From: Shuvam Pandey <shuvampandey1@gmail.com>
 Date: Fri, 17 Apr 2026 23:34:25 +0545
-Subject: [PATCH v2 2/3] mISDN: socket: drop temporary references from
- get_mdevice()
+Subject: [PATCH v2 3/3] mISDN: cache stable device names outside the kobject
 To: netdev@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org, Simon Horman <horms@kernel.org>
 Precedence: bulk
@@ -70,97 +69,296 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 
-IMGETDEVINFO and IMSETDEVNAME only use get_mdevice() for a temporary
-lookup, but neither path drops the reference returned by
-class_find_device().
+mISDN prints and exports device names from several paths that are not tied
+to the kobject rename internals. device_rename() replaces the kobject name
+string, so reading it directly leaves mISDN dependent on that storage
+remaining stable while those paths run.
 
-Drop the temporary reference once the ioctl finishes. Serialize the name
-read and rename paths with device_lock() while doing so, and reject
-lookups that raced with unregister after device_del().
+Keep an mISDN-owned copy of the device name, update it on registration and
+successful rename, and use that cached name from the socket, sysfs, stack,
+and debug paths.
 
-Fixes: b36b654a7e82 ("mISDN: Create /sys/class/mISDN")
-Cc: stable@vger.kernel.org
 Assisted-by: Codex:GPT-5.3-Codex
 Signed-off-by: Shuvam Pandey <shuvampandey1@gmail.com>
 ---
- drivers/isdn/mISDN/socket.c | 31 ++++++++++++++++++++++++++++---
- 1 file changed, 28 insertions(+), 3 deletions(-)
+ drivers/isdn/mISDN/core.c   | 18 +++++++++++++-----
+ drivers/isdn/mISDN/layer1.c |  2 +-
+ drivers/isdn/mISDN/socket.c | 12 ++++++++----
+ drivers/isdn/mISDN/stack.c  | 36 ++++++++++++++++++------------------
+ drivers/isdn/mISDN/tei.c    |  2 +-
+ include/linux/mISDNif.h     |  1 +
+ 6 files changed, 42 insertions(+), 29 deletions(-)
 
+diff --git a/drivers/isdn/mISDN/core.c b/drivers/isdn/mISDN/core.c
+index 4e2be8f03119b..d89c9e54cb5fa 100644
+--- a/drivers/isdn/mISDN/core.c
++++ b/drivers/isdn/mISDN/core.c
+@@ -89,8 +89,15 @@ static DEVICE_ATTR_RO(protocol);
+ static ssize_t name_show(struct device *dev,
+ 			 struct device_attribute *attr, char *buf)
+ {
+-	strcpy(buf, dev_name(dev));
+-	return strlen(buf);
++	struct mISDNdevice *mdev = dev_to_mISDN(dev);
++	ssize_t len;
++
++	if (!mdev)
++		return -ENODEV;
++	device_lock(dev);
++	len = sysfs_emit(buf, "%s", mdev->name);
++	device_unlock(dev);
++	return len;
+ }
+ static DEVICE_ATTR_RO(name);
+ 
+@@ -227,9 +234,10 @@ mISDN_register_device(struct mISDNdevice *dev,
+ 		dev_set_name(&dev->dev, "%s", name);
+ 	else
+ 		dev_set_name(&dev->dev, "mISDN%d", dev->id);
++	strscpy(dev->name, dev_name(&dev->dev), sizeof(dev->name));
+ 	if (debug & DEBUG_CORE)
+ 		printk(KERN_DEBUG "mISDN_register %s %d\n",
+-		       dev_name(&dev->dev), dev->id);
++		       dev->name, dev->id);
+ 	dev->dev.class = &mISDN_class;
+ 
+ 	err = create_stack(dev);
+@@ -258,7 +266,7 @@ void
+ mISDN_unregister_device(struct mISDNdevice *dev) {
+ 	if (debug & DEBUG_CORE)
+ 		printk(KERN_DEBUG "mISDN_unregister %s %d\n",
+-		       dev_name(&dev->dev), dev->id);
++		       dev->name, dev->id);
+ 	/* sysfs_remove_link(&dev->dev.kobj, "device"); */
+ 	/*
+ 	 * Remove the device from sysfs before taking dev->mutex so bind-side
+@@ -358,7 +366,7 @@ const char *mISDNDevName4ch(struct mISDNchannel *ch)
+ 		return msg_no_stack;
+ 	if (!ch->st->dev)
+ 		return msg_no_stackdev;
+-	return dev_name(&ch->st->dev->dev);
++	return ch->st->dev->name;
+ };
+ EXPORT_SYMBOL(mISDNDevName4ch);
+ 
+diff --git a/drivers/isdn/mISDN/layer1.c b/drivers/isdn/mISDN/layer1.c
+index 3fbc170acf9ab..c5a2e9119e868 100644
+--- a/drivers/isdn/mISDN/layer1.c
++++ b/drivers/isdn/mISDN/layer1.c
+@@ -100,7 +100,7 @@ l1m_debug(struct FsmInst *fi, char *fmt, ...)
+ 	vaf.fmt = fmt;
+ 	vaf.va = &va;
+ 
+-	printk(KERN_DEBUG "%s: %pV\n", dev_name(&l1->dch->dev.dev), &vaf);
++	printk(KERN_DEBUG "%s: %pV\n", l1->dch->dev.name, &vaf);
+ 
+ 	va_end(va);
+ }
 diff --git a/drivers/isdn/mISDN/socket.c b/drivers/isdn/mISDN/socket.c
-index bf3ad0a2a42bc..42cda5b8bbe16 100644
+index 42cda5b8bbe16..bce71ae5eb7d4 100644
 --- a/drivers/isdn/mISDN/socket.c
 +++ b/drivers/isdn/mISDN/socket.c
-@@ -484,6 +484,13 @@ data_sock_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
- 		if (dev) {
- 			struct mISDN_devinfo di;
- 
-+			device_lock(&dev->dev);
-+			if (!device_is_registered(&dev->dev)) {
-+				device_unlock(&dev->dev);
-+				put_device(&dev->dev);
-+				err = -ENODEV;
-+				break;
-+			}
- 			memset(&di, 0, sizeof(di));
- 			di.id = dev->id;
- 			di.Dprotocols = dev->Dprotocols;
-@@ -493,8 +500,10 @@ data_sock_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
+@@ -499,7 +499,7 @@ data_sock_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
+ 			memcpy(di.channelmap, dev->channelmap,
  			       sizeof(di.channelmap));
  			di.nrbchan = dev->nrbchan;
- 			strscpy(di.name, dev_name(&dev->dev), sizeof(di.name));
-+			device_unlock(&dev->dev);
+-			strscpy(di.name, dev_name(&dev->dev), sizeof(di.name));
++			strscpy(di.name, dev->name, sizeof(di.name));
+ 			device_unlock(&dev->dev);
  			if (copy_to_user((void __user *)arg, &di, sizeof(di)))
  				err = -EFAULT;
-+			put_device(&dev->dev);
- 		} else
- 			err = -ENODEV;
- 		break;
-@@ -802,6 +811,13 @@ base_sock_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
- 		if (dev) {
- 			struct mISDN_devinfo di;
- 
-+			device_lock(&dev->dev);
-+			if (!device_is_registered(&dev->dev)) {
-+				device_unlock(&dev->dev);
-+				put_device(&dev->dev);
-+				err = -ENODEV;
-+				break;
-+			}
- 			memset(&di, 0, sizeof(di));
- 			di.id = dev->id;
- 			di.Dprotocols = dev->Dprotocols;
-@@ -811,8 +827,10 @@ base_sock_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
+@@ -826,7 +826,7 @@ base_sock_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
+ 			memcpy(di.channelmap, dev->channelmap,
  			       sizeof(di.channelmap));
  			di.nrbchan = dev->nrbchan;
- 			strscpy(di.name, dev_name(&dev->dev), sizeof(di.name));
-+			device_unlock(&dev->dev);
+-			strscpy(di.name, dev_name(&dev->dev), sizeof(di.name));
++			strscpy(di.name, dev->name, sizeof(di.name));
+ 			device_unlock(&dev->dev);
  			if (copy_to_user((void __user *)arg, &di, sizeof(di)))
  				err = -EFAULT;
-+			put_device(&dev->dev);
- 		} else
- 			err = -ENODEV;
- 		break;
-@@ -826,10 +844,17 @@ base_sock_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
- 		}
- 		dn.name[sizeof(dn.name) - 1] = '\0';
+@@ -846,10 +846,14 @@ base_sock_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
  		dev = get_mdevice(dn.id);
--		if (dev)
--			err = device_rename(&dev->dev, dn.name);
--		else
-+		if (dev) {
-+			device_lock(&dev->dev);
-+			if (!device_is_registered(&dev->dev))
-+				err = -ENODEV;
-+			else
-+				err = device_rename(&dev->dev, dn.name);
-+			device_unlock(&dev->dev);
-+			put_device(&dev->dev);
-+		} else {
- 			err = -ENODEV;
-+		}
+ 		if (dev) {
+ 			device_lock(&dev->dev);
+-			if (!device_is_registered(&dev->dev))
++			if (!device_is_registered(&dev->dev)) {
+ 				err = -ENODEV;
+-			else
++			} else {
+ 				err = device_rename(&dev->dev, dn.name);
++				if (!err)
++					strscpy(dev->name, dev_name(&dev->dev),
++						sizeof(dev->name));
++			}
+ 			device_unlock(&dev->dev);
+ 			put_device(&dev->dev);
+ 		} else {
+diff --git a/drivers/isdn/mISDN/stack.c b/drivers/isdn/mISDN/stack.c
+index 4e96684af0aac..9b39ddb4a0944 100644
+--- a/drivers/isdn/mISDN/stack.c
++++ b/drivers/isdn/mISDN/stack.c
+@@ -165,7 +165,7 @@ send_msg_to_layer(struct mISDNstack *st, struct sk_buff *skb)
+ 		else
+ 			printk(KERN_WARNING
+ 			       "%s: dev(%s) prim(%x) id(%x) no channel\n",
+-			       __func__, dev_name(&st->dev->dev), hh->prim,
++			       __func__, st->dev->name, hh->prim,
+ 			       hh->id);
+ 	} else if (lm == 0x8) {
+ 		WARN_ON(lm == 0x8);
+@@ -175,12 +175,12 @@ send_msg_to_layer(struct mISDNstack *st, struct sk_buff *skb)
+ 		else
+ 			printk(KERN_WARNING
+ 			       "%s: dev(%s) prim(%x) id(%x) no channel\n",
+-			       __func__, dev_name(&st->dev->dev), hh->prim,
++			       __func__, st->dev->name, hh->prim,
+ 			       hh->id);
+ 	} else {
+ 		/* broadcast not handled yet */
+ 		printk(KERN_WARNING "%s: dev(%s) prim %x not delivered\n",
+-		       __func__, dev_name(&st->dev->dev), hh->prim);
++		       __func__, st->dev->name, hh->prim);
  	}
- 	break;
- 	default:
+ 	return -ESRCH;
+ }
+@@ -202,7 +202,7 @@ mISDNStackd(void *data)
+ 	sigfillset(&current->blocked);
+ 	if (*debug & DEBUG_MSG_THREAD)
+ 		printk(KERN_DEBUG "mISDNStackd %s started\n",
+-		       dev_name(&st->dev->dev));
++		       st->dev->name);
+ 
+ 	if (st->notify != NULL) {
+ 		complete(st->notify);
+@@ -238,7 +238,7 @@ mISDNStackd(void *data)
+ 					printk(KERN_DEBUG
+ 					       "%s: %s prim(%x) id(%x) "
+ 					       "send call(%d)\n",
+-					       __func__, dev_name(&st->dev->dev),
++					       __func__, st->dev->name,
+ 					       mISDN_HEAD_PRIM(skb),
+ 					       mISDN_HEAD_ID(skb), err);
+ 				dev_kfree_skb(skb);
+@@ -281,7 +281,7 @@ mISDNStackd(void *data)
+ 						     mISDN_STACK_ACTION_MASK));
+ 		if (*debug & DEBUG_MSG_THREAD)
+ 			printk(KERN_DEBUG "%s: %s wake status %08lx\n",
+-			       __func__, dev_name(&st->dev->dev), st->status);
++			       __func__, st->dev->name, st->status);
+ 		test_and_set_bit(mISDN_STACK_ACTIVE, &st->status);
+ 
+ 		test_and_clear_bit(mISDN_STACK_WAKEUP, &st->status);
+@@ -296,17 +296,17 @@ mISDNStackd(void *data)
+ #ifdef MISDN_MSG_STATS
+ 	printk(KERN_DEBUG "mISDNStackd daemon for %s proceed %d "
+ 	       "msg %d sleep %d stopped\n",
+-	       dev_name(&st->dev->dev), st->msg_cnt, st->sleep_cnt,
++	       st->dev->name, st->msg_cnt, st->sleep_cnt,
+ 	       st->stopped_cnt);
+ 	task_cputime(st->thread, &utime, &stime);
+ 	printk(KERN_DEBUG
+ 	       "mISDNStackd daemon for %s utime(%llu) stime(%llu)\n",
+-	       dev_name(&st->dev->dev), utime, stime);
++	       st->dev->name, utime, stime);
+ 	printk(KERN_DEBUG
+ 	       "mISDNStackd daemon for %s nvcsw(%ld) nivcsw(%ld)\n",
+-	       dev_name(&st->dev->dev), st->thread->nvcsw, st->thread->nivcsw);
++	       st->dev->name, st->thread->nvcsw, st->thread->nivcsw);
+ 	printk(KERN_DEBUG "mISDNStackd daemon for %s killed now\n",
+-	       dev_name(&st->dev->dev));
++	       st->dev->name);
+ #endif
+ 	test_and_set_bit(mISDN_STACK_KILLED, &st->status);
+ 	test_and_clear_bit(mISDN_STACK_RUNNING, &st->status);
+@@ -397,15 +397,15 @@ create_stack(struct mISDNdevice *dev)
+ 	newst->own.recv = mISDN_queue_message;
+ 	if (*debug & DEBUG_CORE_FUNC)
+ 		printk(KERN_DEBUG "%s: st(%s)\n", __func__,
+-		       dev_name(&newst->dev->dev));
++		       newst->dev->name);
+ 	newst->notify = &done;
+ 	newst->thread = kthread_run(mISDNStackd, (void *)newst, "mISDN_%s",
+-				    dev_name(&newst->dev->dev));
++				    newst->dev->name);
+ 	if (IS_ERR(newst->thread)) {
+ 		err = PTR_ERR(newst->thread);
+ 		printk(KERN_ERR
+ 		       "mISDN:cannot create kernel thread for %s (%d)\n",
+-		       dev_name(&newst->dev->dev), err);
++		       newst->dev->name, err);
+ 		delete_teimanager(dev->teimgr);
+ 		kfree(newst);
+ 	} else
+@@ -424,7 +424,7 @@ connect_layer1(struct mISDNdevice *dev, struct mISDNchannel *ch,
+ 
+ 	if (*debug &  DEBUG_CORE_FUNC)
+ 		printk(KERN_DEBUG "%s: %s proto(%x) adr(%d %d %d %d)\n",
+-		       __func__, dev_name(&dev->dev), protocol, adr->dev,
++		       __func__, dev->name, protocol, adr->dev,
+ 		       adr->channel, adr->sapi, adr->tei);
+ 	switch (protocol) {
+ 	case ISDN_P_NT_S0:
+@@ -461,7 +461,7 @@ connect_Bstack(struct mISDNdevice *dev, struct mISDNchannel *ch,
+ 
+ 	if (*debug &  DEBUG_CORE_FUNC)
+ 		printk(KERN_DEBUG "%s: %s proto(%x) adr(%d %d %d %d)\n",
+-		       __func__, dev_name(&dev->dev), protocol,
++		       __func__, dev->name, protocol,
+ 		       adr->dev, adr->channel, adr->sapi,
+ 		       adr->tei);
+ 	ch->st = dev->D.st;
+@@ -517,7 +517,7 @@ create_l2entity(struct mISDNdevice *dev, struct mISDNchannel *ch,
+ 
+ 	if (*debug &  DEBUG_CORE_FUNC)
+ 		printk(KERN_DEBUG "%s: %s proto(%x) adr(%d %d %d %d)\n",
+-		       __func__, dev_name(&dev->dev), protocol,
++		       __func__, dev->name, protocol,
+ 		       adr->dev, adr->channel, adr->sapi,
+ 		       adr->tei);
+ 	rq.protocol = ISDN_P_TE_S0;
+@@ -570,7 +570,7 @@ delete_channel(struct mISDNchannel *ch)
+ 	}
+ 	if (*debug & DEBUG_CORE_FUNC)
+ 		printk(KERN_DEBUG "%s: st(%s) protocol(%x)\n", __func__,
+-		       dev_name(&ch->st->dev->dev), ch->protocol);
++		       ch->st->dev->name, ch->protocol);
+ 	if (ch->protocol >= ISDN_P_B_START) {
+ 		if (ch->peer) {
+ 			ch->peer->ctrl(ch->peer, CLOSE_CHANNEL, NULL);
+@@ -623,7 +623,7 @@ delete_stack(struct mISDNdevice *dev)
+ 
+ 	if (*debug & DEBUG_CORE_FUNC)
+ 		printk(KERN_DEBUG "%s: st(%s)\n", __func__,
+-		       dev_name(&st->dev->dev));
++		       st->dev->name);
+ 	if (dev->teimgr)
+ 		delete_teimanager(dev->teimgr);
+ 	if (st->thread) {
+diff --git a/drivers/isdn/mISDN/tei.c b/drivers/isdn/mISDN/tei.c
+index 2bad3083be901..876c1194920ef 100644
+--- a/drivers/isdn/mISDN/tei.c
++++ b/drivers/isdn/mISDN/tei.c
+@@ -990,7 +990,7 @@ create_teimgr(struct manager *mgr, struct channel_req *crq)
+ 
+ 	if (*debug & DEBUG_L2_TEI)
+ 		printk(KERN_DEBUG "%s: %s proto(%x) adr(%d %d %d %d)\n",
+-		       __func__, dev_name(&mgr->ch.st->dev->dev),
++		       __func__, mgr->ch.st->dev->name,
+ 		       crq->protocol, crq->adr.dev, crq->adr.channel,
+ 		       crq->adr.sapi, crq->adr.tei);
+ 	if (crq->adr.tei > GROUP_TEI)
+diff --git a/include/linux/mISDNif.h b/include/linux/mISDNif.h
+index ce26d70c1ebfb..79f6d8f218b13 100644
+--- a/include/linux/mISDNif.h
++++ b/include/linux/mISDNif.h
+@@ -497,6 +497,7 @@ struct mISDNdevice {
+ 	u_int			Bprotocols;
+ 	u_int			nrbchan;
+ 	u_char			channelmap[MISDN_CHMAP_SIZE];
++	char			name[MISDN_MAX_IDLEN];
+ 	struct list_head	bchannels;
+ 	struct mISDNchannel	*teimgr;
+ 	struct completion	released;
 -- 
 2.50.1 (Apple Git-155)
 
