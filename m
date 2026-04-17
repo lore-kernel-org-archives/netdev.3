@@ -1,51 +1,51 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD20D23183B
-	for <netdev@vger.kernel.org>; Fri, 17 Apr 2026 00:54:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3D623E330
+	for <netdev@vger.kernel.org>; Fri, 17 Apr 2026 00:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776387273; cv=none; b=OMQ3ka0t/sFAa/PvLn0q37tL+MgUc7mkzuIaifUn/t+3oyMflpfYOocmJUWS4QfR4lRFKzdFbXmbSmZbOJtgHbVvkdR9XzyrjaeDMmsiEZrE6DPknhpS+nHJlizUqcJX/q4D5bcppfxU62j8Qdq/CZ8515secp0iqrB118d1kyo=
+	t=1776387275; cv=none; b=DLrH4IIWpmY379+Gsf8AZFJ3EZK2ynBXkA1D1GXE1HfKsA+Db+BsYoleH0G9ewTXoEt2vYv+Ga7eZ2cxizCYww7hPxXi9fx5o9whz+BbTmB4eJQbPbYQ9FZNJOkH9GHBg31+ovFi8PUnvghRPQ5WC8260SgHvgraZCCYAZFToOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776387273; c=relaxed/simple;
-	bh=PqTxSDBORdWWiJS8F2YZ2eLGNM5H85zzBcZ8cJUiZG4=;
+	s=arc-20240116; t=1776387275; c=relaxed/simple;
+	bh=Bcv7/ir0GCZt0wD7Zki1Jp4DDfJ83vSxiNFdLOZiE6E=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=k1/HW82LRnZqER2SrTbDu8bXmd2qB/Y+NxLt9p3P+i+C+l7R02xMHJgRpy5TKEyRjxYyZ0V2Q+m4nGGeasKnbWfD49xl7SY06b/EvYpPwmJvv5w+e+l4e22ESjVhY6s2bzYF/2vzHoQHkgpN49uRSGxo+LN2LCVvU7wMbTs98Dc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Iurct1bB; arc=none smtp.client-ip=198.175.65.15
+	 In-Reply-To:To:Cc; b=OCop+/QaATHRPNJUfbxBIfuySml4uARfnzrN9EjFSMHQ18ZjcRjpaE+PWcSHuWdtaJrNGjq1VKxgG97tZMRN5z0qEuegPHML5k4yYKlx4X1sx7zvXPFozB381p0/AmDMDO3MK7y6Gh/fTJFjJF45LtxYfidf7YhcoEIcPmzIyqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jPC+E9Lx; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Iurct1bB"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jPC+E9Lx"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776387273; x=1807923273;
+  t=1776387274; x=1807923274;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=PqTxSDBORdWWiJS8F2YZ2eLGNM5H85zzBcZ8cJUiZG4=;
-  b=Iurct1bB9hPzdCBMmZgY4if7g+vjczmlRzDEOYv4L6SE/1wJ1HXPmiPo
-   9INgIRujmVCMdLuS6EPe9FDEViXDRyoCul0W2S9p9rOVsGuWDWSBYYtDj
-   m28pdEpYazblRWXhl1BRdRwSVRVP2uQNO954P253pNGeUkbFqEXaTEHbX
-   jFXwMcJopF/50matiuWjGuTJm6cLukLu+IA29LNsEdeYcAuxEs08Az3PM
-   +R8u1eNgufdf44v5WP8BfV6l6mIlXP4TXypyhsXxOvjpjOPq8nSVL8Szh
-   Sn49NnvL0cn6l4CNpbaJ7jfUqsjvRrkBuoUOC4Z4AHJ/K3kqTimSAENTL
-   w==;
-X-CSE-ConnectionGUID: fIQKAkuVRBOq2SLJK0gaLw==
-X-CSE-MsgGUID: 7/nandY2QQ+48Y1ESsVRVA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11761"; a="81000535"
+  bh=Bcv7/ir0GCZt0wD7Zki1Jp4DDfJ83vSxiNFdLOZiE6E=;
+  b=jPC+E9LxilsWbVqXzL0WlA7NcdVQA0QFemqvP4JkC2cglP/HYsVwWYqk
+   kY9f55YYLAzWSu2ts/8GCJPGdsWQ7DBgM6OzdMTihcB0bl9DLxc8o5VHR
+   UWjFfr36S4Pwc3n9094ZYkm9Uf22YtNeWC8vokhUuPgNnfYNDeN31e6z7
+   eXrGgMFs0Pj3F8QavOuZCzeSFYDwuI5vgim3dKJ8MxpUGvBFwcrI0Gw0r
+   B7jT5xZ146l4TBH45yrXUa9H8XJgSxc4BIcJLPXCif/qiVIyTvuo/sy2w
+   vq8b/CEmZbPFtUwrh76aA0FsE20mXNpfSqMGCL3TJQVHEo6I5PQc2N1he
+   g==;
+X-CSE-ConnectionGUID: BOnZuJeYSHSc0e5VLApUUA==
+X-CSE-MsgGUID: CeIhN+sSTd+InHBWKteXZw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11761"; a="81000547"
 X-IronPort-AV: E=Sophos;i="6.23,183,1770624000"; 
-   d="scan'208";a="81000535"
+   d="scan'208";a="81000547"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2026 17:54:30 -0700
-X-CSE-ConnectionGUID: vsvUwsHTS1uIeSDxclsOFA==
-X-CSE-MsgGUID: eWCNVYaLSfquD+5O338CKA==
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2026 17:54:31 -0700
+X-CSE-ConnectionGUID: YvYBhtV2R8eFUQQbsjwPbQ==
+X-CSE-MsgGUID: 5LYdQbz3T4aGeS3bJQzorA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,183,1770624000"; 
-   d="scan'208";a="226539866"
+   d="scan'208";a="226539872"
 Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.109]) ([10.166.28.109])
   by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2026 17:54:29 -0700
 From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Thu, 16 Apr 2026 17:53:28 -0700
-Subject: [PATCH net v2 04/12] ice: fix double-free of tx_buf skb
+Date: Thu, 16 Apr 2026 17:53:30 -0700
+Subject: [PATCH net v2 06/12] ice: fix ICE_AQ_LINK_SPEED_M for 200G
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,88 +54,62 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260416-iwl-net-submission-2026-04-14-v2-4-686c33c9828d@intel.com>
+Message-Id: <20260416-iwl-net-submission-2026-04-14-v2-6-686c33c9828d@intel.com>
 References: <20260416-iwl-net-submission-2026-04-14-v2-0-686c33c9828d@intel.com>
 In-Reply-To: <20260416-iwl-net-submission-2026-04-14-v2-0-686c33c9828d@intel.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
 Cc: netdev@vger.kernel.org, Jacob Keller <jacob.e.keller@intel.com>, 
- Michal Schmidt <mschmidt@redhat.com>
+ Paul Greenwalt <paul.greenwalt@intel.com>, 
+ Aleksandr Loktionov <aleksandr.loktionov@intel.com>, 
+ Simon Horman <horms@kernel.org>, 
+ Sunitha Mekala <sunithax.d.mekala@intel.com>
 X-Mailer: b4 0.16-dev-ea14f
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2649;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1616;
  i=jacob.e.keller@intel.com; h=from:subject:message-id;
- bh=YY3POxhFf7FQAw32R6+tn/opjIONU6ASN8H1kjNqte8=;
- b=owGbwMvMwCWWNS3WLp9f4wXjabUkhsyHLQfXHaw47JbMJPboUJCQ6Y/reZNeb9U6JiA172P8v
- AffGWP+dZSyMIhxMciKKbIoOISsvG48IUzrjbMczBxWJpAhDFycAjCRxH+MDBvqwucf1Zrapcu4
- KKfn3FqdjzN0knXur3lwTrNcMdHpbhbDb5aVXybHT/ywUtXhc/DWOWd8zti1x8udy2wVd745a78
- NAxsA
+ bh=M0cDCZcRxbVo44tEhLnhncJkUODz2Vx43MIkYz50d3Q=;
+ b=owGbwMvMwCWWNS3WLp9f4wXjabUkhsyHLYdqeAJCbvEkaM90+nh9wb5c9+1LO38tNip5dSDSy
+ vpk8uWZHaUsDGJcDLJiiiwKDiErrxtPCNN64ywHM4eVCWQIAxenAExk5UmG//6MtxlUZi2e6ikd
+ o19ar3nouJbmnNdJTYYbuEo4ctbs/M/wT4vxoGZc7Hx1X1btNKPzuyrrn3gVpG2ovb5a7d/WD3w
+ WvAA=
 X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
  fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
 
-From: Michal Schmidt <mschmidt@redhat.com>
+From: Paul Greenwalt <paul.greenwalt@intel.com>
 
-If ice_tso() or ice_tx_csum() fail, the error path in
-ice_xmit_frame_ring() frees the skb, but the 'first' tx_buf still points
-to it and is marked as valid (ICE_TX_BUF_SKB).
-'next_to_use' remains unchanged, so the potential problem will
-likely fix itself when the next packet is transmitted and the tx_buf
-gets overwritten. But if there is no next packet and the interface is
-brought down instead, ice_clean_tx_ring() -> ice_unmap_and_free_tx_buf()
-will find the tx_buf and free the skb for the second time.
+When setting PHY configuration during driver initialization, 200G link
+speed is not being advertised even when the PHY is capable. This is
+because the get PHY capabilities link speed response is being masked by
+ICE_AQ_LINK_SPEED_M, which does not include the 200G link speed bit.
 
-The fix is to reset the tx_buf type to ICE_TX_BUF_EMPTY in the error
-path, so that ice_unmap_and_free_tx_buf().
-Move the initialization of 'first' up, to ensure it's already valid in
-case we hit the linearization error path.
+ICE_AQ_LINK_SPEED_200GB is defined as BIT(11), but the mask 0x7FF only
+covers bits 0-10. Fix ICE_AQ_LINK_SPEED_M to use GENMASK(11, 0) so
+that it covers all defined link speed bits including 200G.
 
-The bug was spotted by AI while I had it looking for something else.
-It also proposed an initial version of the patch.
-
-I reproduced the bug and tested the fix by adding code to inject
-failures, on a build with KASAN.
-
-I looked for similar bugs in related Intel drivers and did not find any.
-
-Fixes: d76a60ba7afb ("ice: Add support for VLANs and offloads")
-Assisted-by: Claude:claude-4.6-opus-high Cursor
-Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
+Fixes: 24407a01e57c ("ice: Add 200G speed/phy type use")
+Signed-off-by: Paul Greenwalt <paul.greenwalt@intel.com>
+Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com>
 Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_txrx.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_adminq_cmd.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
-index a2cd4cf37734..7be9c062949b 100644
---- a/drivers/net/ethernet/intel/ice/ice_txrx.c
-+++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
-@@ -2158,6 +2158,9 @@ ice_xmit_frame_ring(struct sk_buff *skb, struct ice_tx_ring *tx_ring)
- 
- 	ice_trace(xmit_frame_ring, tx_ring, skb);
- 
-+	/* record the location of the first descriptor for this packet */
-+	first = &tx_ring->tx_buf[tx_ring->next_to_use];
-+
- 	count = ice_xmit_desc_count(skb);
- 	if (ice_chk_linearize(skb, count)) {
- 		if (__skb_linearize(skb))
-@@ -2183,8 +2186,6 @@ ice_xmit_frame_ring(struct sk_buff *skb, struct ice_tx_ring *tx_ring)
- 
- 	offload.tx_ring = tx_ring;
- 
--	/* record the location of the first descriptor for this packet */
--	first = &tx_ring->tx_buf[tx_ring->next_to_use];
- 	first->skb = skb;
- 	first->type = ICE_TX_BUF_SKB;
- 	first->bytecount = max_t(unsigned int, skb->len, ETH_ZLEN);
-@@ -2249,6 +2250,7 @@ ice_xmit_frame_ring(struct sk_buff *skb, struct ice_tx_ring *tx_ring)
- out_drop:
- 	ice_trace(xmit_frame_ring_drop, tx_ring, skb);
- 	dev_kfree_skb_any(skb);
-+	first->type = ICE_TX_BUF_EMPTY;
- 	return NETDEV_TX_OK;
- }
- 
+diff --git a/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h b/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h
+index 859e9c66f3e7..3cbb1b0582e3 100644
+--- a/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h
++++ b/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h
+@@ -1252,7 +1252,7 @@ struct ice_aqc_get_link_status_data {
+ #define ICE_AQ_LINK_PWR_QSFP_CLASS_3	2
+ #define ICE_AQ_LINK_PWR_QSFP_CLASS_4	3
+ 	__le16 link_speed;
+-#define ICE_AQ_LINK_SPEED_M		0x7FF
++#define ICE_AQ_LINK_SPEED_M		GENMASK(11, 0)
+ #define ICE_AQ_LINK_SPEED_10MB		BIT(0)
+ #define ICE_AQ_LINK_SPEED_100MB		BIT(1)
+ #define ICE_AQ_LINK_SPEED_1000MB	BIT(2)
 
 -- 
 2.54.0.rc2.531.gaf818d63126a
