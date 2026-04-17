@@ -1,110 +1,109 @@
-Received: from mx.post.pl (mx.post.pl [89.161.251.167])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 621123CE497
-	for <netdev@vger.kernel.org>; Fri, 17 Apr 2026 19:58:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.161.251.167
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D959C1A6817
+	for <netdev@vger.kernel.org>; Fri, 17 Apr 2026 20:01:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776455925; cv=none; b=ZoC3IuLcAXz7u7lLhTx4wH3L5TSqDUmnYVtPLxR8vJmRpZU5nbPYyZRBGfcMCi+nfc35LVaAM9CeOFrG4a6RNehr9mRTPSe/nTrLUiT7UbuE3TQ26UixGqO2aL07gr14zSnsW8aDUHjtqd58U/LNSiVxi5LkHfcJVjVY6/TBz+s=
+	t=1776456078; cv=none; b=b95Ybg80N2l9gWzy2TlyljqVcJnR9fi5dlgVFL0fzLxcE0IURddp6CKm8bQFHBha7JDlxugeHdM0LDFiNE3/uveDeOxsxqKx8Oeh1YjRI9wlcm3w5rPTGmaAoTvh4TIY8k/L4GTpjDEyjZ8IEWOcxDHd6xRrlNUPnh5huZzIt/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776455925; c=relaxed/simple;
-	bh=H/iI76JkhAImR+TSgSrZwFHNhVlwHzll3YW26I2BFeI=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Lv7eMYIx4VYtNW2GZhnkFt9k+78WPRh1LpR9KDoLeWVuWNN45MJalYTdPO5o1unkRkBy1WAsYzfLWuaXhNzsD3Kefxptzdhal4fQ8I5DPxcfiYplHqpu36few8JrikPUu9DAk+0yi/VuZa4TZe6wwuB8xYDqr/chH6kC8psxYeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=post.pl; spf=pass smtp.mailfrom=post.pl; dkim=pass (1024-bit key) header.d=post.pl header.i=@post.pl header.b=UoyOEifw; arc=none smtp.client-ip=89.161.251.167
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=post.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=post.pl
+	s=arc-20240116; t=1776456078; c=relaxed/simple;
+	bh=ZXBv+p3Nk6vB1R22OjPwrXH48JjQ/4baNDrQdAuiJVI=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=FSaFaBcSbA2RxuXs9QcySi86lQf2cqobSUCEbTqa88HuB2RKtTcPJbulKqsb2h+LWv6fCDVi+oIpfurhx8BCTw1WqD1va8iZ1zCn8oUT7JQr+OtV6CSJJZYJpd4jhRMxgRh2VnYseyttrmHdh7kDLaGTQQz0kSr9uYntaduAVy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LObDetON; arc=none smtp.client-ip=74.125.224.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=post.pl header.i=@post.pl header.b="UoyOEifw"
-Received: from localhost (79.184.237.149.ipv4.supernova.orange.pl [79.184.237.149])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx.post.pl (Postfix) with UTF8SMTPSA id 496FF3AAFD;
-	Fri, 17 Apr 2026 17:23:34 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=post.pl; s=dkim;
-	t=1776439414; bh=H/iI76JkhAImR+TSgSrZwFHNhVlwHzll3YW26I2BFeI=;
-	h=From:Subject:Date;
-	b=UoyOEifwb8UsrJnqjW7AUNGYHHmGmAyNT0/dG4oZXdf5BtBUnbQo4RC4i6k8Mk+8C
-	 PDbV61hqY/403Oikr1GyxGwmJDYiALGi6im23AhVQZbyq5u6ItxuV/D0ZHvwtkK7vh
-	 eI5hBm9LzDBoMffIM3/nNtCly7P60dNfzW11AFVg=
-From: =?utf-8?Q?=C5=81ukasz_Stelmach?= <steelman@post.pl>
-To: netdev@vger.kernel.org
-Subject: [BUG] some temporary IPv6 address don't get regenerated
-X-Hashcash: 1:24:260417:netdev@vger.kernel.org::av+vsVVC0X3nSM0a:0Mdun
-Date: Fri, 17 Apr 2026 17:23:33 +0200
-Message-ID: <87340td30q.fsf%steelman@post.pl>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LObDetON"
+Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-6501d242e3fso1250512d50.0
+        for <netdev@vger.kernel.org>; Fri, 17 Apr 2026 13:01:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776456076; x=1777060876; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iczVd63vbqFWvqoqzA31fRG6WoDSsjwf0MmS0a+EFGM=;
+        b=LObDetONbCBk5Kwe0bieiSeIX41UVvHPO/mQCmdzZ8Jd8Ep2Hn6wcmxxLgJfBA5DNi
+         Vkk+9LG6lz7Y+4LPbb9LVxdKVoMfLjEc9ZCrkwUn6QhC8FabZXG7ngUuwCWzXyatqenu
+         XMXUL3PKQNcePzkSJArnZBW2xSlwtTf8rsLuZrwHhVJuBo+QFkX64m9LtNcTRq6K0Gx3
+         X7aziAi9esG8+nQRMGBKlgITz90Yj7DKnzNDDSd8witQyTsCZ17VsUV/9HUAFQle+l9L
+         nai/xiU+wbQo/APkh34fzs3T856Ja6LJ9KsY170ybBI04n17dHMRfQZqGEeCSAkEPm+1
+         ck6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776456076; x=1777060876;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=iczVd63vbqFWvqoqzA31fRG6WoDSsjwf0MmS0a+EFGM=;
+        b=BlpnmzF8l80T0TSyoO54EV9LN+EQhjqzrIZO+Ur9GMu8APSyPgGz5Y6fAdiaEvwPOZ
+         13H9xIziK/6Sr3htdmz8WfmZ/cz2p1aoZee3xMS7APSP7PNZn12ODokuMb94kKhJJjZR
+         DsfgphWvdWUivaSsnOsFp7M64JZUpw0nd+Z73px0UJlRzx2v58dY5Q+XQlfOOLinKwI1
+         2D4iwm9qLtkqSlARYrMCP+uiDYvU/hieGhm1Sz/nljxHpLA6CVbF15Z52P+mpoWEfABp
+         RT0JRKLXGjOTSO0CIARCmXD6ryTaEwCuNH11I6KtP/ntBnFaCad3QBOyG1JvZw5ZyXpU
+         4ptg==
+X-Forwarded-Encrypted: i=1; AFNElJ/RrEhzryU6e2FH+vWZsa/8Jl/DhDm5+Rm7xWnKkh8HNQe+DCtWCFswDVxtmZ09vQAs1+bkDNc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwbXbK/pb5EYvZJY2fOG3pIz8qvc58ENxEJ1xIBjO5aob0pT5Vb
+	6uwYX2hTcSbXezanWv56r44gdqaipJPFaLc4j/5yleXZjKD59Nh72yJ0
+X-Gm-Gg: AeBDiesCWNpI8SkLYFH8B9C0dDVpuSo5vdvw/NM+OFdKfuGOslLSWmK7wT7fNPvKWw8
+	f8VTscKn2Uq+Vyko5dmZzcL2Vz+BTOY++hrZoqUZHq+xeZ+K3EOlwQJkzfz7M5rZQCy0vpwIIic
+	Y3evmTGWHbtMMsBPHDorLBuYNp7fo1WlNaCtr3TEiJ8WFL7VsSYn527GYKUYNRHub9m6sAC2odF
+	AJp2p0Kl9OCUBmh6p9eFtVIQsJB1PJ3PHdGa/NdaMyZwHkyYMngc0V1ry12YvDrckQEmlSa/DCv
+	18gxjIXvdH+TRCSJD17ysLQbko2Xz0xfYP+aCPqk3NBKCia3mbcZcXsA+6jvmz2+5r8kf6AgOLw
+	0ZcvWxSx5OLaMjmrkn99s9B0/sJMYEQfsalSaGTozSqm+bZGtKYLo1V2m39HLdfxexfzy3/Dskj
+	y/QoV6CHAkBYO8OAiaY/efxaO4F8oy/PG/avsAW2swAASXsbNIZpsxwBtPj6n07IA1eSRSbFqoZ
+	asV2aI7bctX6+cZa8VKqI68nw==
+X-Received: by 2002:a05:690e:4812:b0:650:1bf0:ca64 with SMTP id 956f58d0204a3-653107bd0camr2931418d50.8.1776456074067;
+        Fri, 17 Apr 2026 13:01:14 -0700 (PDT)
+Received: from gmail.com (172.165.85.34.bc.googleusercontent.com. [34.85.165.172])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-65314b63174sm1219116d50.6.2026.04.17.13.01.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Apr 2026 13:01:12 -0700 (PDT)
+Date: Fri, 17 Apr 2026 16:01:12 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Zero Mark <patzilla007@gmail.com>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: security@kernel.org, 
+ "David S . Miller" <davem@davemloft.net>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Eric Dumazet <edumazet@google.com>, 
+ netdev@vger.kernel.org, 
+ Zero Mark <patzilla007@gmail.com>
+Message-ID: <willemdebruijn.kernel.1e149a5a1914c@gmail.com>
+In-Reply-To: <20260417133610.88158-1-patzilla007@gmail.com>
+References: <willemdebruijn.kernel.1683671b10e8@gmail.com>
+ <20260417133610.88158-1-patzilla007@gmail.com>
+Subject: Re: [PATCH net] net/packet: fix TOCTOU race on mmap'd vnet_hdr in
+ tpacket_snd()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-CLIENT-IP: 79.184.237.149
-X-CLIENT-HOSTNAME: 79.184.237.149.ipv4.supernova.orange.pl
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: dmFkZTFyHUTBW7Yz1Q4VXsmIvNxEYgAC0gi5NqUn/Ju9THrCuwumkhCOJg3oJZBp+iSMxTFDXVxZRdtsb35tT9OdOAz4EEsC0Do2nstZw4j0Ri9IdWrTgi5Gwv3Em4y5/h5yQQx8S63ZbnMbKRyQS+2VkNfmcDfaDigVoYDvX9wLaNmh0B1bQV6bHdAbhO4iDfkLRH6cQZQrdrag0WnBFvlxz+PUm1EgKUSFuNEk95uSL01mc43Au/gZo9CJKUj4hBYYHyZytt314x7Zi6XBFSMj5x3maVTNkAxNnkatsczq0VvZ+TrHKLhmLqtoPyGhJPgdzhZNpXQ28jxzs8EfLtOuEC4hWBsxLWa/lx3EhzFJlJrd9PXIjMtP/5yv+uq1oktGi1An0cSEitpa52HmO1AL+N/vQpbL70OMDzjH2nM5zxg3thv3pG6uGnzKHuKgO4GgYpsHV6uxnjDkrSjV4YTN6xxDCWlwK9giz8H8GDTk4x/Aks8ktuSbbR/+GnZp01lJnDKut35ceQuXr9BwodY3NU3QfyBbkFM0cySNWCCinyL/xoREj95kIHuZSeOjuYM+/7zbuQnJ5nIjP8pf7QosiPI4TqgXrWJ/mgRZQKSiGEuVNGaVkyWOBOK7JZOjRc4+3JWuX59cuzQS+1tLtgF2MfUSCv2XWnNOG90wQYR/G/Jolw
-X-DCC--Metrics: mail02.home.net.pl 1024; Body=2 Fuz1=2 Fuz2=2
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-Hi,
+Zero Mark wrote:
+> In tpacket_snd(), when PACKET_VNET_HDR is enabled, vnet_hdr points
+> directly into the mmap'd TX ring buffer shared with userspace. The
+> kernel validates the header via __packet_snd_vnet_parse() but then
+> re-reads all fields later in virtio_net_hdr_to_skb(). A concurrent
+> userspace thread can modify the vnet_hdr fields between validation
+> and use, bypassing all safety checks.
+> 
+> The non-TPACKET path (packet_snd()) already correctly copies vnet_hdr
+> to a stack-local variable. All other vnet_hdr consumers in the kernel
+> (tun.c, tap.c, virtio_net.c) also use stack copies. The TPACKET TX
+> path is the only caller of virtio_net_hdr_to_skb() that reads directly
+> from user-controlled shared memory.
+> 
+> Fix this by copying vnet_hdr from the mmap'd ring buffer to a
+> stack-local variable before validation and use, consistent with the
+> approach used in packet_snd() and all other callers.
+> 
+> Fixes: 1d036d25e560 ("packet: tpacket_snd gso and checksum offload")
+> Signed-off-by: Zero Mark <patzilla007@gmail.com>
 
-Apparently, something in addrconf.c can go wrong and a temporary
-addresses may not get regenerated leaving users who wish to use them
-with only the stable ones. Below, 2a01:110f:4321:1002:abcc:78d7:2055:94ec
-while still valid is not preferred anymore. Even if it's not the only
-global temporary address it is the only usable to contact hosts on the
-Internet because the other temporary addresses are ULA.
-
-Neither received RAs nor adding and removing an address manually (one
-with a different prefix unrelated to these below) which as far as I
-understand, should trigger address maintenance code.
-
-I noticed this phenomenon once or twice before. It seems to be very
-rare, yet quite undesirable I'd say. What might have triggered it today
-is a reboot of my router and (possible?) change in lifetime values it
-announced.
-
-Even stranger is that there is a preferred fd89:: (ULA), but not 2a01::.
-
-accept_ra as well as use_tempaddr are set to 2.
-
-Of course, this ma be get fixed by a suspend/resume (no, it may not) or
-manual ifdown/ifup (of course it helped), but nevertheless I thought it
-was worth reporting.
-
---8<---------------cut here---------------start------------->8---
-107: bond0: <BROADCAST,MULTICAST,MASTER,UP,LOWER_UP> mtu 1500 qdisc noqueue=
- state UP group default qlen 1000
-    link/ether b8:ca:3a:d4:1e:97 brd ff:ff:ff:ff:ff:ff
-    inet 192.168.2.122/24 brd 192.168.2.255 scope global dynamic bond0
-       valid_lft 165585sec preferred_lft 165585sec
-
-    inet6 fd89:82bb:420:2:cab3:d2d6:aeeb:e250/64 scope global temporary dyn=
-amic=20
-       valid_lft 597079sec preferred_lft 78177sec
-
-    inet6 2a01:110f:4321:1002:abcc:78d7:2055:94ec/64 scope global temporary=
- deprecated dynamic=20
-       valid_lft 60815sec preferred_lft 0sec
-
-    inet6 2a01:110f:4321:1002:abac:3aff:fed4:beef/64 scope global dynamic m=
-ngtmpaddr proto kernel_ra=20
-       valid_lft 60815sec preferred_lft 60815sec
-
-    inet6 fd89:82bb:420:2:24bf:fe8f:5c9c:c753/64 scope global temporary dep=
-recated dynamic=20
-       valid_lft 511186sec preferred_lft 0sec
-
-    inet6 fd89:82bb:420:2:abac:3aff:fed4:beef/64 scope global dynamic mngtm=
-paddr proto kernel_ra=20
-       valid_lft 2591805sec preferred_lft 604605sec
-
-    inet6 fe80::abac:3aff:fed4:beef/64 scope link proto kernel_ll=20
-       valid_lft forever preferred_lft forever
---8<---------------cut here---------------end--------------->8---
-
---=20
-Kind regards,
-=C5=81ukasz Stelmach
+Reviewed-by: Willem de Bruijn <willemb@google.com>
