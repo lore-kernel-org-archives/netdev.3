@@ -1,173 +1,513 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011054.outbound.protection.outlook.com [52.101.65.54])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B9330DD1C;
-	Fri, 17 Apr 2026 15:26:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776439618; cv=fail; b=BLnLJBJcgOF+vO9awN5VwFzVV0jSbg1TSpXci2oLCSAWMSQOSgXi3LoohrmAn2YAbY20gYyzLjBUvnMatCtwsBLiBf4xuil9/9bn2Pox6O3PWphoG5i5Ezxnfqoga5BtvZOmopEIqnIubTSpWO+GsdnDE0ebG5oWA3PolcTc8KI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776439618; c=relaxed/simple;
-	bh=G1/lLhYPiAv7wq52r9/D5m5lQbFGPYeovYBKTWZixMY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZNkU/dRz+ZpH2f71qUBr2ctaHQ3hae+jnh/B47P1gfvKGUAoP3XbwEKtbsMIwsek2+/6I2WUYPbqTxn0VZNR3He/039N3y0GTQR39y+558+jaJPY53QPI02K00imBk0r11jJ+2R1iz67Ok29iw1LTVIXwv6dyq2cKXHFLQIYXKQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia-bell-labs.com; spf=fail smtp.mailfrom=nokia-bell-labs.com; dkim=pass (2048-bit key) header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.b=nMzqSndH; arc=fail smtp.client-ip=52.101.65.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia-bell-labs.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nokia-bell-labs.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E74B330DECC;
+	Fri, 17 Apr 2026 15:33:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776440009; cv=none; b=JZm39Atv32RrqLZ3gJvS7/cnm5bhE1Jf+2KSopfQf4KlNdIcK45RgKHAHCtYyTe7yjj8vulvvfa3EGo8tj1rx2SM/1ZocxBiv/WU4xTMDQi4EHTyqjQZGlO3pzef15N3LL0l75IbODIiPiUX1qq0K73F5F7YQL4M1J21Z2Xxtgg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776440009; c=relaxed/simple;
+	bh=cXahZvoQY63eY+fpT/3mv95sqvl8AvXOq/2il9bWyNY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ZHtLSYIg0P4wtiksWDjtEwiGxwGEr603IkhfJYUrnWswjY9oKUemHQoh48uU8qxrKtxNVkcj2fxgV6s/eP+XgJdkjRK3NTxJvg4wte7KI0XnA7SjdVHeco7IBGXnxg8IjQAnBBZ83NqsgeOPRVGZUSXgMZo29CfnwEEYJJ/Jajk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=bzJEfHTe; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.b="nMzqSndH"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=m3tcX7xdiHou6dlak1v+0V8bsT2+R24iluBca1ueqdwMVsFQvBrfYmjwkIV/su4J5/3gcmz1qkkJcqvHwkpvHl00ab7KvkfB5TzAd60P2RCu5DYumWHKXkZLCRobYCteR6oKXFPDmRA8IDssnddM/F841ERUtzCrMP+9kEvAaT+FiM+2gDSEYFxb0XPioCeoip5D5KudlKeQlme7tO0B2IVTBXHwoETtoQF1qGiiq3VHVqEfJRodHYjYlyCxPslXmNoYEBfwu3XCXXB3KgZ8TeRL7Iyewh+iFr4ZXKzf1b2PpL51Go/Djp+ribxh8measEqyl9Uw4dDqGcBznCKs2Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GYgXmEqRTPvqKDJbEA6o0acCJvwRCQe/Vsg90fycM+w=;
- b=WPU31ptcHQyZGqDRE0rV+Hb+K5CzhfDyNOQoqmy3Ft/M/QYdMwuU4TlpcP1vehvVgKQVIsPMgdK9kMO+T5q36ksg9O3+H9NIA/LyI24z/r8J607pPYJp1+kgCjtclyAaoxo5I6WTQ6JBNx9mn4gHvAxjqSPxfaCFKrHDQttwbFH5ybIWZBabFKQTJM0m4U45SiHEeC5AUPLMUiVZup8te7iwD3ZfCSCuOS21dmzaHz2+x//A0khhOGvtX984rXKvKqvDu1flO+3HtSK5xcA5P2fPDyzG7Dlh9NOWX/eHJEYaVjKhGfQa4Y3gEaH6M4j9KzCnHCyhqg7F+IsWcYNLcw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 131.228.2.241) smtp.rcpttodomain=apple.com smtp.mailfrom=nokia-bell-labs.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none
- header.from=nokia-bell-labs.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nokia-bell-labs.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GYgXmEqRTPvqKDJbEA6o0acCJvwRCQe/Vsg90fycM+w=;
- b=nMzqSndHQw8TIVZ1gigh96dBDutS9+Lg4g24ATAOsrAsEydVcwIwsVyxJPW58PtOQndRts+6EcNVOB+KdFE366rqI2TnzawKthFhxZ/ZP+Zqu1a4mBoyf/PPyiKgOgWC8DcPsoNhM4EMkHLqttCzzGzW5j3UnnTl/5UyLVKO+ddqdNO4P1/T58xMOGf9AqyjGi8Ic3oo8HIJQ2x3a4xyf6uKzZt3wlG1FpMMg9//8V2vwkBPbA1PH8+3OVu8V9NawVlPRI0GRZzdQow0NlyYLkzVxsd+6Y4DXivXeQc2/5UPVYSTx3OdmebbNDa6ICxt2gFXuDpswG9DiA483hbUUQ==
-Received: from DU7P194CA0026.EURP194.PROD.OUTLOOK.COM (2603:10a6:10:553::23)
- by AM9PR07MB7698.eurprd07.prod.outlook.com (2603:10a6:20b:2c4::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.48; Fri, 17 Apr
- 2026 15:26:51 +0000
-Received: from DU6PEPF0000B61E.eurprd02.prod.outlook.com
- (2603:10a6:10:553:cafe::1d) by DU7P194CA0026.outlook.office365.com
- (2603:10a6:10:553::23) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9769.52 via Frontend Transport; Fri,
- 17 Apr 2026 15:26:51 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 131.228.2.241)
- smtp.mailfrom=nokia-bell-labs.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nokia-bell-labs.com;
-Received-SPF: Pass (protection.outlook.com: domain of nokia-bell-labs.com
- designates 131.228.2.241 as permitted sender)
- receiver=protection.outlook.com; client-ip=131.228.2.241;
- helo=fihe3nok0734.emea.nsn-net.net; pr=C
-Received: from fihe3nok0734.emea.nsn-net.net (131.228.2.241) by
- DU6PEPF0000B61E.mail.protection.outlook.com (10.167.8.133) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9769.17
- via Frontend Transport; Fri, 17 Apr 2026 15:26:51 +0000
-Received: from sarah.nbl.nsn-rdnet.net (sarah.nbl.nsn-rdnet.net [10.0.73.150])
-	by fihe3nok0734.emea.nsn-net.net (Postfix) with ESMTP id A4689200E9;
-	Fri, 17 Apr 2026 18:26:49 +0300 (EEST)
-From: chia-yu.chang@nokia-bell-labs.com
-To: linyunsheng@huawei.com,
-	andrew+netdev@lunn.ch,
-	parav@nvidia.com,
-	jasowang@redhat.com,
-	mst@redhat.com,
-	shenjian15@huawei.com,
-	salil.mehta@huawei.com,
-	shaojijie@huawei.com,
-	saeedm@nvidia.com,
-	tariqt@nvidia.com,
-	mbloch@nvidia.com,
-	leonro@nvidia.com,
-	linux-rdma@vger.kernel.org,
-	netdev@vger.kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	ij@kernel.org,
-	ncardwell@google.com,
-	koen.de_schepper@nokia-bell-labs.com,
-	g.white@cablelabs.com,
-	ingemar.s.johansson@ericsson.com,
-	mirja.kuehlewind@ericsson.com,
-	cheshire@apple.com,
-	rs.ietf@gmx.at,
-	Jason_Livingood@comcast.com,
-	vidhi_goel@apple.com
-Cc: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
-Subject: [PATCH v4 net 2/3] net: mlx5e: fix CWR handling in drivers to preserve ACE signal
-Date: Fri, 17 Apr 2026 17:26:41 +0200
-Message-Id: <20260417152642.71674-3-chia-yu.chang@nokia-bell-labs.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260417152642.71674-1-chia-yu.chang@nokia-bell-labs.com>
-References: <20260417152642.71674-1-chia-yu.chang@nokia-bell-labs.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="bzJEfHTe"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 5576D1A1C4F;
+	Fri, 17 Apr 2026 15:33:24 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 2200060497;
+	Fri, 17 Apr 2026 15:33:24 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3D01710460A83;
+	Fri, 17 Apr 2026 17:33:17 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1776440002; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=vj0Ysw/pxotSNLIjpwlRhU+Y2RgZz0tvFbaQFbbU3ug=;
+	b=bzJEfHTez8KbQi34QdKgrb/Q1oZECaX9yAaK07Z4rNR0j3vWb+s40S1aHHpSUgWRdBqe3V
+	I2yYtzwJ82eGX0wAfgPm2ZU0CYx8KaqBsM41MqagEnqLNd2ZJ6xDIsp7pHlPLU8od4N4R+
+	IuHXL8sZwDmjJxnNbiVjS0Vrl28ixAReJ0Irlg57FVLBXhz/zuFNhICA6hNAUA+UKfS4VV
+	Kh8WPhigWA5g07SYTmUs97Ko7Ux+oO1vUO424qvpQIafcioH54x2ojK0kgc+z96x/mCGk+
+	UwU9+sxSATU0LK37+tug1X01+zAS1Dx6ruLxMaPx2HBRhQk2JLh5x5xpLBz78g==
+From: =?utf-8?q?Alexis_Lothor=C3=A9_=28eBPF_Foundation=29?= <alexis.lothore@bootlin.com>
+Date: Fri, 17 Apr 2026 17:33:02 +0200
+Subject: [PATCH bpf-next] selftests/bpf: drop xdping tool
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU6PEPF0000B61E:EE_|AM9PR07MB7698:EE_
-Content-Type: text/plain
-X-MS-Office365-Filtering-Correlation-Id: 4cd634fc-8fff-4762-4c39-08de9c95bf98
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|376014|36860700016|1800799024|7416014|921020|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	CB+5iIl2cFRYOEgXtt2i/QUAkuGZMGhfpsPjsBEI9b5ojmLLFjMnM3GuM7QzLnZsvjhB4Gv/iQyyftqNGevuQ7jSFlV5VnkmgvoHSZWxW3L/gZS3ftdO+06nz4EfAuMr5XYe/QUNkkxt75st+s91kqlzOPrd6SgE5UvOVktpdnvLeW1XFISldDinMfgewni2knecAtiR5anHoGyHgLQpi+tIid/fyAngfnAyLq9mIvZo7UlxPzLHh8oh/Ahw6eVshkTTljf4vo2x/t6fCj8hyHehHduNIc9sKTGqgTTyb1trLVGWaJbaN5DMKG6KA5bDBC5QYEm2UMlLU403eav8MKrBnPxmiECyx5wK/OYTqJt58GHk5uq3RfogAoMno9XxpKP76TsvqJbMquS9zILYml+aLt+sOibqqULvaKJRr8mZ7Fe5x0kUpmcdoEYb8hoTbmg4owdSN+wiagX28xttjIB5O/Al0pfB+4lPIE5jTU7qZdnBeNb+0dK/EeFSk6+sX2uQ7dqa8WGy6YApWh8GB4P+7teIQF5Lq3T/4IXq9fP/icOoJoq9AEXQMcfd6+GGB8h0UEoLJK0cwjEjPBOiZ70xTtBJiamBqbXIDl2HyeSH5u0hWzRxFA63SwRTsgCM3Stl3qc6gepT/0kzucqKX1Mv4zFDnBJqLObMe6gdqjOUgTMAiomByPKyQzrnaS6k+gDWgPufcEBMDR6+98TIJwewSyVG7DHwkrs3pKDLAu1KT9VEg1NqbiAiXpuEjZXQY4REUXDtX+FKCSg8i62ZgctKcgxnK4rUvooSwwvv//3Eoxnzq1Y0yZO0RoMmJYxi
-X-Forefront-Antispam-Report:
-	CIP:131.228.2.241;CTRY:FI;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:fihe3nok0734.emea.nsn-net.net;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(36860700016)(1800799024)(7416014)(921020)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	deRA9hmENVgOoEGFT+I6MnG74lLnYp3wgg2hzE5NCeYqslVUeEL6LGOl+wqUIAB+oM39SIDLQEdaxCPIRiz5hLTdxgNAk/NhDC8Ul5bi4rrLIZj3P4ZdnTZRpzCHaMfRhcXQvo96P0BUgcz9p1tOt119Ki1j/8QL7vFclv+NHKHcTDl90pYyciqTD8JBFdnfRdP4QhVwaQHCA6KrQWUNsRY/AH1vMJ/4rkkwKRKZpo0gMaeocriFA123CxYgsMLVIj3emqBlLgcDiRVULX0ZlBiZg0Pcb4y8qFjZJl7UP2JhBKLnWOoo+lRYpctt0RHBKntuoz61ACnBVCNjw7fHBfAT8F46diiDsPu7QspDMbHkTpfQOjr4GtbrlVVRq00aUq8mW5CXnZWq9ErXepGkf1lDuKwqfrx+g4qsJ2KXDT/dnq5vtxua7ZbFueUg+WLR
-X-OriginatorOrg: nokia-bell-labs.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Apr 2026 15:26:51.0581
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4cd634fc-8fff-4762-4c39-08de9c95bf98
-X-MS-Exchange-CrossTenant-Id: 5d471751-9675-428d-917b-70f44f9630b0
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=5d471751-9675-428d-917b-70f44f9630b0;Ip=[131.228.2.241];Helo=[fihe3nok0734.emea.nsn-net.net]
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: TreatMessagesAsInternal-DU6PEPF0000B61E.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR07MB7698
+Message-Id: <20260417-xdping-v1-1-9b0ce0e7adf8@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMSwqEMBAFryJvbUDj+L2KuNDY0XYRQ+IMAfHuE
+ 3VZVFEnPDkmjy454ejHnncTIU8TqHU0CwmeI0Nmsso+eS3CbNksolSSdDlWRdO2iLF1pDk8ox6
+ T1cJQODC8xn+njdRxf3Bdf8FAm5F0AAAA
+X-Change-ID: 20260417-xdping-5c2ef5a63899
+To: Andrii Nakryiko <andrii@kernel.org>, 
+ Eduard Zingerman <eddyz87@gmail.com>, Alexei Starovoitov <ast@kernel.org>, 
+ Daniel Borkmann <daniel@iogearbox.net>, 
+ Martin KaFai Lau <martin.lau@linux.dev>, 
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>, 
+ Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
+ Shuah Khan <shuah@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+ Jakub Kicinski <kuba@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>, 
+ John Fastabend <john.fastabend@gmail.com>, 
+ Stanislav Fomichev <sdf@fomichev.me>
+Cc: ebpf@linuxfoundation.org, 
+ Bastien Curutchet <bastien.curutchet@bootlin.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, netdev@vger.kernel.org, 
+ Alan Maguire <alan.maguire@oracle.com>, 
+ =?utf-8?q?Alexis_Lothor=C3=A9_=28eBPF_Foundation=29?= <alexis.lothore@bootlin.com>
+X-Mailer: b4 0.15.2
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+As part of a larger cleanup effort in the bpf selftests directory,
+tests and scripts are either being converted to the test_progs framework
+(so they are executed automatically in bpf CI), or removed if not
+relevant for such integration.
 
-Currently, mlx5 Rx paths use the SKB_GSO_TCP_ECN flag when a TCP segment
-with the CWR flag set. This is wrong because SKB_GSO_TCP_ECN is only
-valid for RFC3168 ECN on Tx, and using it on Rx allows RFC3168 ECN
-offload to clear the CWR flag. As a result, incoming TCP segments
-may lose their ACE signal integrity required for AccECN (RFC9768),
-especially when the packet is forwarded and later re-segmented by GSO.
+The test_xdping.sh script (with the associated xdping.c) acts as a RTT
+measurement tool, by attaching two small xdp programs to two interfaces.
+Converting this test to test_progs may not make much sense:
+- RTT measurement does not really fit in the scope of a functional test,
+  this is rather about measuring some performance level.
+- there are other existing tests in test_progs that actively validate
+  XDP features like program attachment, return value processing, packet
+  modification, etc
 
-Fix this by setting SKB_GSO_TCP_ACCECN for any Rx segment with the CWR
-flag set. SKB_GSO_TCP_ACCECN ensures that RFC3168 ECN offload will
-not clear the CWR flag, therefore preserving the ACE signal.
+Drop test_xdping.sh and the corresponding xdping.c userspace part. Keep
+the ebpf part (xdping_kern.c), as it is used by another test integrated
+in test_progs (btf_dump)
 
-Fixes: 92552d3abd329 ("net/mlx5e: HW_GRO cqe handler implementation")
-Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+Signed-off-by: Alexis Lothoré (eBPF Foundation) <alexis.lothore@bootlin.com>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_rx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/bpf/.gitignore     |   1 -
+ tools/testing/selftests/bpf/Makefile       |   3 -
+ tools/testing/selftests/bpf/test_xdping.sh | 103 ------------
+ tools/testing/selftests/bpf/xdping.c       | 254 -----------------------------
+ 4 files changed, 361 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-index 5b60aa47c75b..9b1c80079532 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-@@ -1180,7 +1180,7 @@ static void mlx5e_shampo_update_ipv4_tcp_hdr(struct mlx5e_rq *rq, struct iphdr *
- 	skb->csum_offset = offsetof(struct tcphdr, check);
+diff --git a/tools/testing/selftests/bpf/.gitignore b/tools/testing/selftests/bpf/.gitignore
+index bfdc5518ecc8..986a6389186b 100644
+--- a/tools/testing/selftests/bpf/.gitignore
++++ b/tools/testing/selftests/bpf/.gitignore
+@@ -21,7 +21,6 @@ test_lirc_mode2_user
+ flow_dissector_load
+ test_tcpnotify_user
+ test_libbpf
+-xdping
+ test_cpp
+ *.d
+ *.subskel.h
+diff --git a/tools/testing/selftests/bpf/Makefile b/tools/testing/selftests/bpf/Makefile
+index 78e60040811e..00a986a7d088 100644
+--- a/tools/testing/selftests/bpf/Makefile
++++ b/tools/testing/selftests/bpf/Makefile
+@@ -111,7 +111,6 @@ TEST_FILES = xsk_prereqs.sh $(wildcard progs/btf_dump_test_case_*.c)
+ # Order correspond to 'make run_tests' order
+ TEST_PROGS := test_kmod.sh \
+ 	test_lirc_mode2.sh \
+-	test_xdping.sh \
+ 	test_bpftool_build.sh \
+ 	test_doc_build.sh \
+ 	test_xsk.sh \
+@@ -134,7 +133,6 @@ TEST_GEN_PROGS_EXTENDED = \
+ 	xdp_features \
+ 	xdp_hw_metadata \
+ 	xdp_synproxy \
+-	xdping \
+ 	xskxceiver
  
- 	if (tcp->cwr)
--		skb_shinfo(skb)->gso_type |= SKB_GSO_TCP_ECN;
-+		skb_shinfo(skb)->gso_type |= SKB_GSO_TCP_ACCECN;
- }
- 
- static void mlx5e_shampo_update_ipv6_tcp_hdr(struct mlx5e_rq *rq, struct ipv6hdr *ipv6,
-@@ -1201,7 +1201,7 @@ static void mlx5e_shampo_update_ipv6_tcp_hdr(struct mlx5e_rq *rq, struct ipv6hdr
- 	skb->csum_offset = offsetof(struct tcphdr, check);
- 
- 	if (tcp->cwr)
--		skb_shinfo(skb)->gso_type |= SKB_GSO_TCP_ECN;
-+		skb_shinfo(skb)->gso_type |= SKB_GSO_TCP_ACCECN;
- }
- 
- static void mlx5e_shampo_update_hdr(struct mlx5e_rq *rq, struct mlx5_cqe64 *cqe, bool match)
--- 
-2.34.1
+ TEST_GEN_FILES += $(TEST_KMODS) liburandom_read.so urandom_read sign-file uprobe_multi
+@@ -320,7 +318,6 @@ $(OUTPUT)/test_tcpnotify_user: $(CGROUP_HELPERS) $(TESTING_HELPERS) $(TRACE_HELP
+ $(OUTPUT)/test_sock_fields: $(CGROUP_HELPERS) $(TESTING_HELPERS)
+ $(OUTPUT)/test_tag: $(TESTING_HELPERS)
+ $(OUTPUT)/test_lirc_mode2_user: $(TESTING_HELPERS)
+-$(OUTPUT)/xdping: $(TESTING_HELPERS)
+ $(OUTPUT)/flow_dissector_load: $(TESTING_HELPERS)
+ $(OUTPUT)/test_maps: $(TESTING_HELPERS)
+ $(OUTPUT)/test_verifier: $(TESTING_HELPERS) $(CAP_HELPERS) $(UNPRIV_HELPERS)
+diff --git a/tools/testing/selftests/bpf/test_xdping.sh b/tools/testing/selftests/bpf/test_xdping.sh
+deleted file mode 100755
+index c3d82e0a7378..000000000000
+--- a/tools/testing/selftests/bpf/test_xdping.sh
++++ /dev/null
+@@ -1,103 +0,0 @@
+-#!/bin/bash
+-# SPDX-License-Identifier: GPL-2.0
+-
+-# xdping tests
+-#   Here we setup and teardown configuration required to run
+-#   xdping, exercising its options.
+-#
+-#   Setup is similar to test_tunnel tests but without the tunnel.
+-#
+-# Topology:
+-# ---------
+-#     root namespace   |     tc_ns0 namespace
+-#                      |
+-#      ----------      |     ----------
+-#      |  veth1  | --------- |  veth0  |
+-#      ----------    peer    ----------
+-#
+-# Device Configuration
+-# --------------------
+-# Root namespace with BPF
+-# Device names and addresses:
+-#	veth1 IP: 10.1.1.200
+-#	xdp added to veth1, xdpings originate from here.
+-#
+-# Namespace tc_ns0 with BPF
+-# Device names and addresses:
+-#       veth0 IPv4: 10.1.1.100
+-#	For some tests xdping run in server mode here.
+-#
+-
+-readonly TARGET_IP="10.1.1.100"
+-readonly TARGET_NS="xdp_ns0"
+-
+-readonly LOCAL_IP="10.1.1.200"
+-
+-setup()
+-{
+-	ip netns add $TARGET_NS
+-	ip link add veth0 type veth peer name veth1
+-	ip link set veth0 netns $TARGET_NS
+-	ip netns exec $TARGET_NS ip addr add ${TARGET_IP}/24 dev veth0
+-	ip addr add ${LOCAL_IP}/24 dev veth1
+-	ip netns exec $TARGET_NS ip link set veth0 up
+-	ip link set veth1 up
+-}
+-
+-cleanup()
+-{
+-	set +e
+-	ip netns delete $TARGET_NS 2>/dev/null
+-	ip link del veth1 2>/dev/null
+-	if [[ $server_pid -ne 0 ]]; then
+-		kill -TERM $server_pid
+-	fi
+-}
+-
+-test()
+-{
+-	client_args="$1"
+-	server_args="$2"
+-
+-	echo "Test client args '$client_args'; server args '$server_args'"
+-
+-	server_pid=0
+-	if [[ -n "$server_args" ]]; then
+-		ip netns exec $TARGET_NS ./xdping $server_args &
+-		server_pid=$!
+-		sleep 10
+-	fi
+-	./xdping $client_args $TARGET_IP
+-
+-	if [[ $server_pid -ne 0 ]]; then
+-		kill -TERM $server_pid
+-		server_pid=0
+-	fi
+-
+-	echo "Test client args '$client_args'; server args '$server_args': PASS"
+-}
+-
+-set -e
+-
+-server_pid=0
+-
+-trap cleanup EXIT
+-
+-setup
+-
+-for server_args in "" "-I veth0 -s -S" ; do
+-	# client in skb mode
+-	client_args="-I veth1 -S"
+-	test "$client_args" "$server_args"
+-
+-	# client with count of 10 RTT measurements.
+-	client_args="-I veth1 -S -c 10"
+-	test "$client_args" "$server_args"
+-done
+-
+-# Test drv mode
+-test "-I veth1 -N" "-I veth0 -s -N"
+-test "-I veth1 -N -c 10" "-I veth0 -s -N"
+-
+-echo "OK. All tests passed"
+-exit 0
+diff --git a/tools/testing/selftests/bpf/xdping.c b/tools/testing/selftests/bpf/xdping.c
+deleted file mode 100644
+index 9ed8c796645d..000000000000
+--- a/tools/testing/selftests/bpf/xdping.c
++++ /dev/null
+@@ -1,254 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-/* Copyright (c) 2019, Oracle and/or its affiliates. All rights reserved. */
+-
+-#include <linux/bpf.h>
+-#include <linux/if_link.h>
+-#include <arpa/inet.h>
+-#include <assert.h>
+-#include <errno.h>
+-#include <signal.h>
+-#include <stdio.h>
+-#include <stdlib.h>
+-#include <string.h>
+-#include <unistd.h>
+-#include <libgen.h>
+-#include <net/if.h>
+-#include <sys/types.h>
+-#include <sys/socket.h>
+-#include <netdb.h>
+-
+-#include "bpf/bpf.h"
+-#include "bpf/libbpf.h"
+-
+-#include "xdping.h"
+-#include "testing_helpers.h"
+-
+-static int ifindex;
+-static __u32 xdp_flags = XDP_FLAGS_UPDATE_IF_NOEXIST;
+-
+-static void cleanup(int sig)
+-{
+-	bpf_xdp_detach(ifindex, xdp_flags, NULL);
+-	if (sig)
+-		exit(1);
+-}
+-
+-static int get_stats(int fd, __u16 count, __u32 raddr)
+-{
+-	struct pinginfo pinginfo = { 0 };
+-	char inaddrbuf[INET_ADDRSTRLEN];
+-	struct in_addr inaddr;
+-	__u16 i;
+-
+-	inaddr.s_addr = raddr;
+-
+-	printf("\nXDP RTT data:\n");
+-
+-	if (bpf_map_lookup_elem(fd, &raddr, &pinginfo)) {
+-		perror("bpf_map_lookup elem");
+-		return 1;
+-	}
+-
+-	for (i = 0; i < count; i++) {
+-		if (pinginfo.times[i] == 0)
+-			break;
+-
+-		printf("64 bytes from %s: icmp_seq=%d ttl=64 time=%#.5f ms\n",
+-		       inet_ntop(AF_INET, &inaddr, inaddrbuf,
+-				 sizeof(inaddrbuf)),
+-		       count + i + 1,
+-		       (double)pinginfo.times[i]/1000000);
+-	}
+-
+-	if (i < count) {
+-		fprintf(stderr, "Expected %d samples, got %d.\n", count, i);
+-		return 1;
+-	}
+-
+-	bpf_map_delete_elem(fd, &raddr);
+-
+-	return 0;
+-}
+-
+-static void show_usage(const char *prog)
+-{
+-	fprintf(stderr,
+-		"usage: %s [OPTS] -I interface destination\n\n"
+-		"OPTS:\n"
+-		"    -c count		Stop after sending count requests\n"
+-		"			(default %d, max %d)\n"
+-		"    -I interface	interface name\n"
+-		"    -N			Run in driver mode\n"
+-		"    -s			Server mode\n"
+-		"    -S			Run in skb mode\n",
+-		prog, XDPING_DEFAULT_COUNT, XDPING_MAX_COUNT);
+-}
+-
+-int main(int argc, char **argv)
+-{
+-	__u32 mode_flags = XDP_FLAGS_DRV_MODE | XDP_FLAGS_SKB_MODE;
+-	struct addrinfo *a, hints = { .ai_family = AF_INET };
+-	__u16 count = XDPING_DEFAULT_COUNT;
+-	struct pinginfo pinginfo = { 0 };
+-	const char *optstr = "c:I:NsS";
+-	struct bpf_program *main_prog;
+-	int prog_fd = -1, map_fd = -1;
+-	struct sockaddr_in rin;
+-	struct bpf_object *obj;
+-	struct bpf_map *map;
+-	char *ifname = NULL;
+-	char filename[256];
+-	int opt, ret = 1;
+-	__u32 raddr = 0;
+-	int server = 0;
+-	char cmd[256];
+-
+-	while ((opt = getopt(argc, argv, optstr)) != -1) {
+-		switch (opt) {
+-		case 'c':
+-			count = atoi(optarg);
+-			if (count < 1 || count > XDPING_MAX_COUNT) {
+-				fprintf(stderr,
+-					"min count is 1, max count is %d\n",
+-					XDPING_MAX_COUNT);
+-				return 1;
+-			}
+-			break;
+-		case 'I':
+-			ifname = optarg;
+-			ifindex = if_nametoindex(ifname);
+-			if (!ifindex) {
+-				fprintf(stderr, "Could not get interface %s\n",
+-					ifname);
+-				return 1;
+-			}
+-			break;
+-		case 'N':
+-			xdp_flags |= XDP_FLAGS_DRV_MODE;
+-			break;
+-		case 's':
+-			/* use server program */
+-			server = 1;
+-			break;
+-		case 'S':
+-			xdp_flags |= XDP_FLAGS_SKB_MODE;
+-			break;
+-		default:
+-			show_usage(basename(argv[0]));
+-			return 1;
+-		}
+-	}
+-
+-	if (!ifname) {
+-		show_usage(basename(argv[0]));
+-		return 1;
+-	}
+-	if (!server && optind == argc) {
+-		show_usage(basename(argv[0]));
+-		return 1;
+-	}
+-
+-	if ((xdp_flags & mode_flags) == mode_flags) {
+-		fprintf(stderr, "-N or -S can be specified, not both.\n");
+-		show_usage(basename(argv[0]));
+-		return 1;
+-	}
+-
+-	if (!server) {
+-		/* Only supports IPv4; see hints initialization above. */
+-		if (getaddrinfo(argv[optind], NULL, &hints, &a) || !a) {
+-			fprintf(stderr, "Could not resolve %s\n", argv[optind]);
+-			return 1;
+-		}
+-		memcpy(&rin, a->ai_addr, sizeof(rin));
+-		raddr = rin.sin_addr.s_addr;
+-		freeaddrinfo(a);
+-	}
+-
+-	/* Use libbpf 1.0 API mode */
+-	libbpf_set_strict_mode(LIBBPF_STRICT_ALL);
+-
+-	snprintf(filename, sizeof(filename), "%s_kern.bpf.o", argv[0]);
+-
+-	if (bpf_prog_test_load(filename, BPF_PROG_TYPE_XDP, &obj, &prog_fd)) {
+-		fprintf(stderr, "load of %s failed\n", filename);
+-		return 1;
+-	}
+-
+-	main_prog = bpf_object__find_program_by_name(obj,
+-						     server ? "xdping_server" : "xdping_client");
+-	if (main_prog)
+-		prog_fd = bpf_program__fd(main_prog);
+-	if (!main_prog || prog_fd < 0) {
+-		fprintf(stderr, "could not find xdping program");
+-		return 1;
+-	}
+-
+-	map = bpf_object__next_map(obj, NULL);
+-	if (map)
+-		map_fd = bpf_map__fd(map);
+-	if (!map || map_fd < 0) {
+-		fprintf(stderr, "Could not find ping map");
+-		goto done;
+-	}
+-
+-	signal(SIGINT, cleanup);
+-	signal(SIGTERM, cleanup);
+-
+-	printf("Setting up XDP for %s, please wait...\n", ifname);
+-
+-	printf("XDP setup disrupts network connectivity, hit Ctrl+C to quit\n");
+-
+-	if (bpf_xdp_attach(ifindex, prog_fd, xdp_flags, NULL) < 0) {
+-		fprintf(stderr, "Link set xdp fd failed for %s\n", ifname);
+-		goto done;
+-	}
+-
+-	if (server) {
+-		close(prog_fd);
+-		close(map_fd);
+-		printf("Running server on %s; press Ctrl+C to exit...\n",
+-		       ifname);
+-		do { } while (1);
+-	}
+-
+-	/* Start xdping-ing from last regular ping reply, e.g. for a count
+-	 * of 10 ICMP requests, we start xdping-ing using reply with seq number
+-	 * 10.  The reason the last "real" ping RTT is much higher is that
+-	 * the ping program sees the ICMP reply associated with the last
+-	 * XDP-generated packet, so ping doesn't get a reply until XDP is done.
+-	 */
+-	pinginfo.seq = htons(count);
+-	pinginfo.count = count;
+-
+-	if (bpf_map_update_elem(map_fd, &raddr, &pinginfo, BPF_ANY)) {
+-		fprintf(stderr, "could not communicate with BPF map: %s\n",
+-			strerror(errno));
+-		cleanup(0);
+-		goto done;
+-	}
+-
+-	/* We need to wait for XDP setup to complete. */
+-	sleep(10);
+-
+-	snprintf(cmd, sizeof(cmd), "ping -c %d -I %s %s",
+-		 count, ifname, argv[optind]);
+-
+-	printf("\nNormal ping RTT data\n");
+-	printf("[Ignore final RTT; it is distorted by XDP using the reply]\n");
+-
+-	ret = system(cmd);
+-
+-	if (!ret)
+-		ret = get_stats(map_fd, count, raddr);
+-
+-	cleanup(0);
+-
+-done:
+-	if (prog_fd > 0)
+-		close(prog_fd);
+-	if (map_fd > 0)
+-		close(map_fd);
+-
+-	return ret;
+-}
+
+---
+base-commit: b7fb68124aa80db90394236a9a4a6add12f4425d
+change-id: 20260417-xdping-5c2ef5a63899
+
+Best regards,
+--  
+Alexis Lothoré (eBPF Foundation) <alexis.lothore@bootlin.com>
 
