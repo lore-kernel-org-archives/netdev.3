@@ -1,52 +1,52 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0155E23183B
-	for <netdev@vger.kernel.org>; Fri, 17 Apr 2026 00:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 553F1259C80
+	for <netdev@vger.kernel.org>; Fri, 17 Apr 2026 00:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776387277; cv=none; b=ZY4vON2DDP9sWvD6KN3z14WPQ2yLE4JjOCXnRJY2jo6emE8fNd7D7LfhOvBHNma3Vnd6sjrX5CMwGGXOpAFha6U1TFZ+MAB1cIjPb7yJk6SnE2butJzt63dy61fZTL7Otxxlbeb1iQfM2JX4Cy3QDkMoFOnmvK3lXzPeKZRDYmo=
+	t=1776387278; cv=none; b=HBkc5uJhnbFzLABhcTFVCDiDiig8TvtjtuDZ3KCCjBwRgSPDUIARs2ufHr2rAGnNDVWE4UVAaXA17/XF8hhGb7/hWeq2KnjJnJ5SxYtQBoy2ELAZnCp5OOhWlXlu+P5X9SXETPnKXU+C+3Jm8+jSMTmC7QOrk/LPdgwuiCNfH7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776387277; c=relaxed/simple;
-	bh=Yk+xwsbR7g+z83jicg9eFXVP4Q1sEUpOYzEHIpwLX0E=;
+	s=arc-20240116; t=1776387278; c=relaxed/simple;
+	bh=7nbI3Z3OuV1GlQk2HFTVmWNSfUO3aW9Qru/iFkgJy0w=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=BYF6QpN2aARTO+Yppo6DRhrztxBYmxwCRLgGBOJZlZyn4jFHdlC76kxDOgKRXDxlAmxyWOjWXvE3ylMQmHoYoYcHtqyv2VY3eSH1OJhA2EvnfPnvRobT4c3B5324NJVztpRxRL1bKVEa0hcZ1Wnf2oNUXo6FWFJjDb5Sk7i062U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=C/a7xBsT; arc=none smtp.client-ip=198.175.65.15
+	 In-Reply-To:To:Cc; b=PlBJIBtKYvY7ySPOP+d8HsfgFoTDwX25UgP/QZEWboOcpUcHIFwKasFv2IBYeZl5/Y/9uGlzBsu7kKV92WQ4O/Wlx8U75/Yr7qtvGXsWpWMYWRin2FRSCJ+3PPC0UgqYFN6R7EnhckStABQLQXCsYBQSrhq55vCIiRQnmmxCV5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NvIogpkX; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="C/a7xBsT"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NvIogpkX"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776387276; x=1807923276;
+  t=1776387277; x=1807923277;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=Yk+xwsbR7g+z83jicg9eFXVP4Q1sEUpOYzEHIpwLX0E=;
-  b=C/a7xBsTiCKvnkkX8ejd6cRD+TkCEuP5wUxi2K8Fx+4+1Te5ektKuEr+
-   BIJHBSzQcDpab3MnPWKtpb1jX6lI49hWXd2W8sK3pSReom6VBbS2xxjGO
-   1E21HH1Ov+dqL1wSgDShUzlB7f3STYfmVibvC/Jnq80P1E/+1dqAcjjWM
-   K60v1pvD3Vv7f8kkKZ9EjJxmW76FtFJLSDa6pKc3aPK7bDvdAQ/+7RMqe
-   HbXQKtRn50sKzcXiGVhrHn5U+vwKFNN3VNeTxseX6f/hqjXieAflxM3In
-   UTme0upHdPCy45XaT8oEBSL2SFkxdLCcBKVoxzUNxqDZHFiK/pQtm9/0X
-   g==;
-X-CSE-ConnectionGUID: SRY33CZBSwWRWUD611/W/A==
-X-CSE-MsgGUID: 1R0c5aDDRY+2Z466DLXCsg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11761"; a="81000569"
+  bh=7nbI3Z3OuV1GlQk2HFTVmWNSfUO3aW9Qru/iFkgJy0w=;
+  b=NvIogpkXCIAeROK7bC4gCZBQyxKzD7VSzOvqpGZXMpXRKmca7bWSfsOw
+   Xb8tpXM016ZTFcUyw3CnqTcmHa0CFeZ1m8cRSiIkrk/99y2MhGpnLIO+X
+   Bs56nN6Bw/gksLAoSSEnzLBhr8JFLrvd7xhJwxvTpHEwIlE73Y0YcFNaE
+   0wOdrFZD8uwAWof0AxPxlDTKgY1Ci/SglriQqFuRPZ3mrwAJ2518O3Vrb
+   h0LQwtcHjTUMY/d2mjc591mfWIBBaJaEwnoljJDvWPmCG1PwxFuVUnH87
+   iHZm/HsAVd/A0S3+77KDo+6ZrZ6H40lN6wgPrrto4m2osCzL0qKbOznT2
+   A==;
+X-CSE-ConnectionGUID: O7yRygJgTxG+Z2qEBEQuqg==
+X-CSE-MsgGUID: a13OX4Q3So2I44vJ1XzO8Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11761"; a="81000583"
 X-IronPort-AV: E=Sophos;i="6.23,183,1770624000"; 
-   d="scan'208";a="81000569"
+   d="scan'208";a="81000583"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
   by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2026 17:54:32 -0700
-X-CSE-ConnectionGUID: jrp/y5hHSQqL9grsnyP/ag==
-X-CSE-MsgGUID: jnqpyzBRR/q5qBDGArvmEw==
+X-CSE-ConnectionGUID: H4KoaoXTTXyKiErrhGpOfA==
+X-CSE-MsgGUID: l8U6qjJlS0KxSeQkMbix7g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,183,1770624000"; 
-   d="scan'208";a="226539879"
+   d="scan'208";a="226539886"
 Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.109]) ([10.166.28.109])
   by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2026 17:54:30 -0700
 From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Thu, 16 Apr 2026 17:53:32 -0700
-Subject: [PATCH net v2 08/12] ice: fix potential NULL pointer deref in
- error path of ice_set_ringparam()
+Date: Thu, 16 Apr 2026 17:53:34 -0700
+Subject: [PATCH net v2 10/12] iavf: fix wrong VLAN mask for legacy Rx
+ descriptors L2TAG2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,66 +55,101 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260416-iwl-net-submission-2026-04-14-v2-8-686c33c9828d@intel.com>
+Message-Id: <20260416-iwl-net-submission-2026-04-14-v2-10-686c33c9828d@intel.com>
 References: <20260416-iwl-net-submission-2026-04-14-v2-0-686c33c9828d@intel.com>
 In-Reply-To: <20260416-iwl-net-submission-2026-04-14-v2-0-686c33c9828d@intel.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
 Cc: netdev@vger.kernel.org, Jacob Keller <jacob.e.keller@intel.com>, 
- Kohei Enju <kohei@enjuk.jp>, Paul Greenwalt <paul.greenwalt@intel.com>, 
- Rinitha S <sx.rinitha@intel.com>
+ Petr Oros <poros@redhat.com>, 
+ Aleksandr Loktionov <aleksandr.loktionov@intel.com>, 
+ Paul Menzel <pmenzel@molgen.mpg.de>, 
+ Rafal Romanowski <rafal.romanowski@intel.com>
 X-Mailer: b4 0.16-dev-ea14f
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1679;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3448;
  i=jacob.e.keller@intel.com; h=from:subject:message-id;
- bh=B38rD2o57ID3hQ9n6rDNKePBSCdTt3WGeaHWI99EIug=;
- b=owGbwMvMwCWWNS3WLp9f4wXjabUkhsyHLYfm8NzU3Ne1wF3s8PLO4KL/Sj99Fjy2KW/n2t909
- khYdtGbjlIWBjEuBlkxRRYFh5CV140nhGm9cZaDmcPKBDKEgYtTACYyoZ7hD8/i7WK/rf8tFBK7
- P6Fa5n/IxGnMVza9n1Gar/Xzrp0+RzQjw6KjzV4CaSLzDtz+YaDS7XDC5cezxM6lPfHz/k8uYrl
- uygwA
+ bh=sljQYx/DTKk4J1LOP9TeTx4KxGQQeN3wXxgCJTyaS28=;
+ b=owGbwMvMwCWWNS3WLp9f4wXjabUkhsyHLYfDZvt/WL97V/WcXtd6RXfHM3HXlZW9XR/0eaxrN
+ inekLGuo5SFQYyLQVZMkUXBIWTldeMJYVpvnOVg5rAygQxh4OIUgIl0tjL891OWCfXx2BpkJ6fz
+ gTlXTrIs8cz9yqWzXiR/P7VsxZ+5wowM1283bDieJWp54eNrL9mo1lqtrVOWfv3wJ+jcsVt7Yn9
+ f4gYA
 X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
  fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
 
-From: Kohei Enju <kohei@enjuk.jp>
+From: Petr Oros <poros@redhat.com>
 
-ice_set_ringparam nullifies tstamp_ring of temporary tx_rings, without
-clearing ICE_TX_RING_FLAGS_TXTIME bit.
-When ICE_TX_RING_FLAGS_TXTIME is set and the subsequent
-ice_setup_tx_ring() call fails, a NULL pointer dereference could happen
-in the unwinding sequence:
+The IAVF_RXD_LEGACY_L2TAG2_M mask was incorrectly defined as
+GENMASK_ULL(63, 32), extracting 32 bits from qw2 instead of the
+16-bit VLAN tag. In the legacy Rx descriptor layout, the 2nd L2TAG2
+(VLAN tag) occupies bits 63:48 of qw2, not 63:32.
 
-ice_clean_tx_ring()
--> ice_is_txtime_cfg() == true (ICE_TX_RING_FLAGS_TXTIME is set)
--> ice_free_tx_tstamp_ring()
-  -> ice_free_tstamp_ring()
-    -> tstamp_ring->desc (NULL deref)
+The oversized mask causes FIELD_GET to return a 32-bit value where the
+actual VLAN tag sits in bits 31:16. When this value is passed to
+iavf_receive_skb() as a u16 parameter, it gets truncated to the lower
+16 bits (which contain the 1st L2TAG2, typically zero). As a result,
+__vlan_hwaccel_put_tag() is never called and software VLAN interfaces
+on VFs receive no traffic.
 
-Clear ICE_TX_RING_FLAGS_TXTIME bit to avoid the potential issue.
+This affects VFs behind ice PF (VIRTCHNL VLAN v2) when the PF
+advertises VLAN stripping into L2TAG2_2 and legacy descriptors are
+used.
 
-Note that this potential issue is found by manual code review.
-Compile test only since unfortunately I don't have E830 devices.
+The flex descriptor path already uses the correct mask
+(IAVF_RXD_FLEX_L2TAG2_2_M = GENMASK_ULL(63, 48)).
 
-Fixes: ccde82e90946 ("ice: add E830 Earliest TxTime First Offload support")
-Signed-off-by: Kohei Enju <kohei@enjuk.jp>
-Reviewed-by: Paul Greenwalt <paul.greenwalt@intel.com>
-Tested-by: Rinitha S <sx.rinitha@intel.com>
+Reproducer:
+ 1. Create 2 VFs on ice PF (echo 2 > sriov_numvfs)
+ 2. Disable spoofchk on both VFs
+ 3. Move each VF into a separate network namespace
+ 4. On each VF: create VLAN interface (e.g. vlan 198), assign IP,
+    bring up
+ 5. Set rx-vlan-offload OFF on both VFs
+ 6. Ping between VLAN interfaces -> expect PASS
+    (VLAN tag stays in packet data, kernel matches in-band)
+ 7. Set rx-vlan-offload ON on both VFs
+ 8. Ping between VLAN interfaces -> expect FAIL if bug present
+    (HW strips VLAN tag into descriptor L2TAG2 field, wrong mask
+    extracts bits 47:32 instead of 63:48, truncated to u16 -> zero,
+    __vlan_hwaccel_put_tag() never called, packet delivered to parent
+    interface, not VLAN interface)
+
+The reproducer requires legacy Rx descriptors. On modern ice + iavf
+with full PTP support, flex descriptors are always negotiated and the
+buggy legacy path is never reached. Flex descriptors require all of:
+ - CONFIG_PTP_1588_CLOCK enabled
+ - VIRTCHNL_VF_OFFLOAD_RX_FLEX_DESC granted by PF
+ - PTP capabilities negotiated (VIRTCHNL_VF_CAP_PTP)
+ - VIRTCHNL_1588_PTP_CAP_RX_TSTAMP supported
+ - VIRTCHNL_RXDID_2_FLEX_SQ_NIC present in DDP profile
+
+If any condition is not met, iavf_select_rx_desc_format() falls back
+to legacy descriptors (RXDID=1) and the wrong L2TAG2 mask is hit.
+
+Fixes: 2dc8e7c36d80 ("iavf: refactor iavf_clean_rx_irq to support legacy and flex descriptors")
+Signed-off-by: Petr Oros <poros@redhat.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
 Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_ethtool.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/intel/iavf/iavf_type.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-index e6a20af6f63d..f28416a707d7 100644
---- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-@@ -3290,6 +3290,7 @@ ice_set_ringparam(struct net_device *netdev, struct ethtool_ringparam *ring,
- 		tx_rings[i].desc = NULL;
- 		tx_rings[i].tx_buf = NULL;
- 		tx_rings[i].tstamp_ring = NULL;
-+		clear_bit(ICE_TX_RING_FLAGS_TXTIME, tx_rings[i].flags);
- 		tx_rings[i].tx_tstamps = &pf->ptp.port.tx;
- 		err = ice_setup_tx_ring(&tx_rings[i]);
- 		if (err) {
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_type.h b/drivers/net/ethernet/intel/iavf/iavf_type.h
+index 1d8cf29cb65a..5bb1de1cfd33 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_type.h
++++ b/drivers/net/ethernet/intel/iavf/iavf_type.h
+@@ -277,7 +277,7 @@ struct iavf_rx_desc {
+ /* L2 Tag 2 Presence */
+ #define IAVF_RXD_LEGACY_L2TAG2P_M		BIT(0)
+ /* Stripped S-TAG VLAN from the receive packet */
+-#define IAVF_RXD_LEGACY_L2TAG2_M		GENMASK_ULL(63, 32)
++#define IAVF_RXD_LEGACY_L2TAG2_M		GENMASK_ULL(63, 48)
+ /* Stripped S-TAG VLAN from the receive packet */
+ #define IAVF_RXD_FLEX_L2TAG2_2_M		GENMASK_ULL(63, 48)
+ /* The packet is a UDP tunneled packet */
 
 -- 
 2.54.0.rc2.531.gaf818d63126a
