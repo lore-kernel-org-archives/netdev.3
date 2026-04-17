@@ -1,131 +1,326 @@
-Received: from ixit.cz (ixit.cz [185.100.197.86])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f77.google.com (mail-oo1-f77.google.com [209.85.161.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C263C358388
-	for <netdev@vger.kernel.org>; Fri, 17 Apr 2026 13:32:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 442A5375AA1
+	for <netdev@vger.kernel.org>; Fri, 17 Apr 2026 13:36:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776432777; cv=none; b=AYnQWRSpF4hat0E8xd03BTNVN6QOAxjvsQm9NZc61QA6j2EvYalG4Sni8+P+PPtDkWo7VnG+W4yQqlkKcItDC5gl/saoq8DnKkhCnvQfHhYHT4tSZCf5d5SzLIjjkivm8N0uxg3ggLNjlLszM5Azyghr4c3OnW5gn8uI7WYbCc8=
+	t=1776432990; cv=none; b=FL53/FsZu9WLQUQUxU+Sv4FJglDjrA/bJX4PoOIXICKQ3+D/XnKySCU8Lfm4BDu1bvYW3QQw4nG80Ood6PA6/5QYDLQW7WWQZSI9TNR8qFD+vdGJ1xty+gV7TBoe1WWv7f4PYNsbk+hNy5SRxf+3oDkGqaOb7kuh1vlI244zxXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776432777; c=relaxed/simple;
-	bh=Q3j0StUsDshMT52GRH33fV1J3GfINAZPP7VmDmu+NCU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=scjHtFagRiCXAb0/iBVbUMb4O2yuyYRmRBJsOP+MFnGbWIdRbBZyF7QifzY0XmhSG4wUmIHDmETKM8zNoU7tu0bTMVLk5bCAO1ih+dNkibGJpQ2IpWaILvOyBcdZH8Wsw+jKMvsQszGUyf/bbJS+3WzuiFb97GRzldeUHvwtxA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=dUvwKJeT; arc=none smtp.client-ip=185.100.197.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="dUvwKJeT"
-Received: from [10.65.3.135] (unknown [87.58.112.183])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 9B403534128F;
-	Fri, 17 Apr 2026 15:32:49 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1776432770;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=UX3lXlxJv8wPtZp+mZzJl0W3CJQc7YoN0yKX0aGKEmk=;
-	b=dUvwKJeTyux1yQ0Zo/uSpzswmzPvgIK5W2i3iX7w/RVOHCLdcE7kinzARUhHOgKm5GZNbD
-	eV54TmL28lk095E6rRc2BRed1ZyI0gwLXkFDVvSk20mre4eqLHOyt+yRAcg/DRqlunsMhP
-	Ivvx6Sv7juzKTKzdGcGL922abNglDks=
-Message-ID: <316ae06b-ed7f-4fa6-9b91-fa45f088dc43@ixit.cz>
-Date: Fri, 17 Apr 2026 15:32:48 +0200
+	s=arc-20240116; t=1776432990; c=relaxed/simple;
+	bh=mYRwj+f0dSCvG27DPAHmZw2TkqgtqjxgsW1C7+qpAqg=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=r7gq0H6wpd9k7N06i6bMh3msgJsCkP9l1xb2QQ5mwIEJPm835jwmRV6GNxLygMB0i17fDeBgP3dYOPgIW6YoE2pkbG3kpjZcUGusTsxOYuahrE7om/qrjAfxlfmFBnj6HnLC1E0xYpeYgRQ/p/I32P5L0z87E6w2y3OZ0cSuqKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f77.google.com with SMTP id 006d021491bc7-67a1e063795so3402816eaf.1
+        for <netdev@vger.kernel.org>; Fri, 17 Apr 2026 06:36:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776432987; x=1777037787;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8r8RQcT+lHsJ9VyQYtdTFQmXzQ7eSInwRbXM7y4+8og=;
+        b=AE5EsL7E7zpodF3auk4bDQ+puvJkVMAEyGbXpOZngqIZEn3s5QFO8vLKBEZH3IzRoU
+         ULiUDRCh73Usf7myDJFMdyenvIE6/2FasvIJGe5Ije1fGs/VcisS/IWQjtH7lVVIVyq3
+         e3T0h91XlRGGqthKh+jlAuNqyKueBR2IerXbOpFvok7SP9YP1+nVtjTF78n7lD/nM2Uq
+         8QVpgJ+Tx2+K8nPYyKJ1YnLBF+iGqqQVm62XzJl4X+VySJGoAwvm10lqfBPtATTJWwse
+         wF3RjE4eQX8x4Rq9rys3mWzqtcRcGw811whxAcoCzjGERDrYAZv8DBK0txhWzd7zTRPe
+         9KFg==
+X-Forwarded-Encrypted: i=1; AFNElJ9B9sEGamaOJTwoD6nLMAVROMSxJp+h7Xic9Pz72OcC/u/xLFHKOvQoB3SOVahGcjr/r2NK4K0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzbsRtwGf3Wwem1cB4FOQd217mzOw4OZtXgq/EBMSMVkdaUkPE5
+	7rEYtMlST6ycJtpRVAujHxlpTfLT0IaZX0//aDqqLnq6DFSkHeAAzUesj91MRI0KlNu8lgPwxGr
+	W703IVk8pRGeX6y5JFoY3oPhtn88tslItYR5xzFuJm4K1TEwqiykiPGGexWY=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Path forward for NFC in the kernel
-To: Krzysztof Kozlowski <krzk@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Michael Thalmeier <michael.thalmeier@hale.at>,
- Raymond Hackley <raymondhackley@protonmail.com>,
- Michael Walle <michael@walle.cc>, Bongsu Jeon <bongsu.jeon@samsung.com>,
- Mark Greer <mgreer@animalcreek.com>
-Cc: netdev@vger.kernel.org, oe-linux-nfc@lists.linux.dev
-References: <20260416101041.4c533306@kernel.org>
- <9c4a4acf-b4f1-4e84-93bf-cdf080cb9970@kernel.org>
-Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <9c4a4acf-b4f1-4e84-93bf-cdf080cb9970@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-Received: by 2002:a4a:c897:0:b0:686:f60b:dde8 with SMTP id
+ 006d021491bc7-694637d78f4mr970678eaf.24.1776432987265; Fri, 17 Apr 2026
+ 06:36:27 -0700 (PDT)
+Date: Fri, 17 Apr 2026 06:36:27 -0700
+In-Reply-To: <68b016f0.a00a0220.1337b0.0004.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69e2375b.050a0220.1de265.0024.GAE@google.com>
+Subject: Re: [syzbot] [block?] INFO: task hung in queue_limits_commit_update_frozen
+From: syzbot <syzbot+f272bbfbf8498ddadea5@syzkaller.appspotmail.com>
+To: axboe@kernel.dk, linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On 17/04/2026 09:18, Krzysztof Kozlowski wrote:
-> On 16/04/2026 19:10, Jakub Kicinski wrote:
->> Hi folks!
->>
->> We are struggling to keep up with the number of security reports and AI
->> generated patches in the kernel. NFC is infamous for being a huge CVE
->> magnet. We need someone to step up as a maintainer, create an NFC tree
->> and handle all the incoming submissions. Send us (or Linus if you
->> prefer) periodic PRs, like WiFi, Bluetooth etc. do. If that does not
->> happen I'm afraid we'll have to move the NFC code out of the tree,
->> put it up on GH or some such, and let it accumulate CVEs there..
->>
->> I'm planning to send a PR to Linus to shed the unmaintained code early
->> next week. We need to have a maintainer established by then.
-> 
-> +Cc David Heidelberg recently trying to use Linux NFC stack,
-> 
-+Cc oe-linux-nfc@lists.linux.dev
+syzbot has found a reproducer for the following issue on:
 
-For now we had NFC related discussion in our sdm845-next channel, but I brought 
-Matrix channel [1] for the kernel, neard, user-space discussion, so people can 
-share and interact in real-time (the chat content is public without needing to 
-join the room).
+HEAD commit:    1f5ffc672165 Fix mismerge of the arm64 / timer-core interr..
+git tree:       net-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=162a24ce580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=95729ed00549063a
+dashboard link: https://syzkaller.appspot.com/bug?extid=f272bbfbf8498ddadea5
+compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=113e41ba580000
 
-David
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/6b552538b97f/disk-1f5ffc67.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/724a3a1d69d7/vmlinux-1f5ffc67.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/ea684969e2c2/bzImage-1f5ffc67.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+f272bbfbf8498ddadea5@syzkaller.appspotmail.com
+
+INFO: task syz.0.17:6086 blocked for more than 143 seconds.
+      Not tainted syzkaller #0
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+task:syz.0.17        state:D stack:25416 pid:6086  tgid:6086  ppid:5943   task_flags:0x480140 flags:0x00080002
+Call Trace:
+ <TASK>
+ context_switch kernel/sched/core.c:5382 [inline]
+ __schedule+0x17b4/0x5680 kernel/sched/core.c:7183
+ __schedule_loop kernel/sched/core.c:7262 [inline]
+ schedule+0x164/0x360 kernel/sched/core.c:7277
+ blk_mq_freeze_queue_wait+0x101/0x180 block/blk-mq.c:191
+ blk_mq_freeze_queue include/linux/blk-mq.h:956 [inline]
+ queue_limits_commit_update_frozen+0x55/0xd0 block/blk-settings.c:590
+ nbd_set_size+0x454/0x680 drivers/block/nbd.c:374
+ nbd_genl_size_set drivers/block/nbd.c:2069 [inline]
+ nbd_genl_reconfigure+0x7f5/0x1ea0 drivers/block/nbd.c:2373
+ genl_family_rcv_msg_doit+0x22a/0x330 net/netlink/genetlink.c:1114
+ genl_family_rcv_msg net/netlink/genetlink.c:1194 [inline]
+ genl_rcv_msg+0x61c/0x7a0 net/netlink/genetlink.c:1209
+ netlink_rcv_skb+0x232/0x4b0 net/netlink/af_netlink.c:2550
+ genl_rcv+0x28/0x40 net/netlink/genetlink.c:1218
+ netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
+ netlink_unicast+0x75c/0x8e0 net/netlink/af_netlink.c:1344
+ netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1894
+ sock_sendmsg_nosec net/socket.c:787 [inline]
+ __sock_sendmsg net/socket.c:802 [inline]
+ ____sys_sendmsg+0x972/0x9f0 net/socket.c:2698
+ ___sys_sendmsg+0x2a5/0x360 net/socket.c:2752
+ __sys_sendmsg net/socket.c:2784 [inline]
+ __do_sys_sendmsg net/socket.c:2789 [inline]
+ __se_sys_sendmsg net/socket.c:2787 [inline]
+ __x64_sys_sendmsg+0x1bd/0x2a0 net/socket.c:2787
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x15f/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f197e79c819
+RSP: 002b:00007ffdd46f8ca8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00007f197ea15fa0 RCX: 00007f197e79c819
+RDX: 0000000000000000 RSI: 0000200000000100 RDI: 0000000000000004
+RBP: 00007f197e832c91 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f197ea15fac R14: 00007f197ea15fa0 R15: 00007f197ea15fa0
+ </TASK>
+INFO: task syz.3.27:6088 blocked for more than 143 seconds.
+      Not tainted syzkaller #0
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+task:syz.3.27        state:D stack:27336 pid:6088  tgid:6088  ppid:5948   task_flags:0x400140 flags:0x00080002
+Call Trace:
+ <TASK>
+ context_switch kernel/sched/core.c:5382 [inline]
+ __schedule+0x17b4/0x5680 kernel/sched/core.c:7183
+ __schedule_loop kernel/sched/core.c:7262 [inline]
+ schedule+0x164/0x360 kernel/sched/core.c:7277
+ schedule_preempt_disabled+0x13/0x30 kernel/sched/core.c:7334
+ __mutex_lock_common kernel/locking/mutex.c:712 [inline]
+ __mutex_lock+0x7f5/0x1550 kernel/locking/mutex.c:806
+ genl_lock net/netlink/genetlink.c:35 [inline]
+ genl_op_lock net/netlink/genetlink.c:60 [inline]
+ genl_rcv_msg+0x10b/0x7a0 net/netlink/genetlink.c:1208
+ netlink_rcv_skb+0x232/0x4b0 net/netlink/af_netlink.c:2550
+ genl_rcv+0x28/0x40 net/netlink/genetlink.c:1218
+ netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
+ netlink_unicast+0x75c/0x8e0 net/netlink/af_netlink.c:1344
+ netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1894
+ sock_sendmsg_nosec net/socket.c:787 [inline]
+ __sock_sendmsg net/socket.c:802 [inline]
+ __sys_sendto+0x672/0x710 net/socket.c:2265
+ __do_sys_sendto net/socket.c:2272 [inline]
+ __se_sys_sendto net/socket.c:2268 [inline]
+ __x64_sys_sendto+0xde/0x100 net/socket.c:2268
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x15f/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f3f2135d04e
+RSP: 002b:00007ffeeed0eab8 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 00005555561e6500 RCX: 00007f3f2135d04e
+RDX: 000000000000001c RSI: 00007ffeeed0ec30 RDI: 0000000000000003
+RBP: 0000000000000000 R08: 00007ffeeed0eb34 R09: 000000000000000c
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000003
+R13: 00007ffeeed0eb88 R14: 00007ffeeed0ec30 R15: 0000000000000000
+ </TASK>
+
+Showing all locks held in the system:
+4 locks held by kworker/u8:1/13:
+1 lock held by khungtaskd/30:
+ #0: ffffffff8e95d020 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:300 [inline]
+ #0: ffffffff8e95d020 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:838 [inline]
+ #0: ffffffff8e95d020 (rcu_read_lock){....}-{1:3}, at: debug_show_all_locks+0x2e/0x180 kernel/locking/lockdep.c:6775
+2 locks held by getty/5579:
+ #0: ffff888035f540a0 (&tty->ldisc_sem){++++}-{0:0}, at: tty_ldisc_ref_wait+0x25/0x70 drivers/tty/tty_ldisc.c:243
+ #1: ffffc9000322b2e8 (&ldata->atomic_read_lock){+.+.}-{4:4}, at: n_tty_read+0x45c/0x13a0 drivers/tty/n_tty.c:2211
+1 lock held by udevd/5842:
+ #0: ffff8880268fb350 (&disk->open_mutex){+.+.}-{4:4}, at: bdev_open+0xe0/0xd30 block/bdev.c:953
+1 lock held by udevd/5879:
+ #0: ffff8880268ff350 (&disk->open_mutex){+.+.}-{4:4}, at: bdev_open+0xe0/0xd30 block/bdev.c:953
+1 lock held by udevd/5880:
+ #0: ffff8880269d3350 (&disk->open_mutex){+.+.}-{4:4}, at: bdev_open+0xe0/0xd30 block/bdev.c:953
+2 locks held by syz-executor/5944:
+ #0: ffffffff8fe3ddc8 (cb_lock){++++}-{4:4}, at: genl_rcv+0x19/0x40 net/netlink/genetlink.c:1217
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_lock net/netlink/genetlink.c:35 [inline]
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_op_lock net/netlink/genetlink.c:60 [inline]
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_rcv_msg+0x10b/0x7a0 net/netlink/genetlink.c:1208
+2 locks held by syz-executor/5946:
+ #0: ffffffff8fe3ddc8 (cb_lock){++++}-{4:4}, at: genl_rcv+0x19/0x40 net/netlink/genetlink.c:1217
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_lock net/netlink/genetlink.c:35 [inline]
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_op_lock net/netlink/genetlink.c:60 [inline]
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_rcv_msg+0x10b/0x7a0 net/netlink/genetlink.c:1208
+2 locks held by kworker/u9:4/5954:
+ #0: ffff888026b15140 ((wq_completion)nbd6-recv){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3263 [inline]
+ #0: ffff888026b15140 ((wq_completion)nbd6-recv){+.+.}-{0:0}, at: process_scheduled_works+0xa35/0x1860 kernel/workqueue.c:3371
+ #1: ffffc900047d7c40 ((work_completion)(&args->work)){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3264 [inline]
+ #1: ffffc900047d7c40 ((work_completion)(&args->work)){+.+.}-{0:0}, at: process_scheduled_works+0xa70/0x1860 kernel/workqueue.c:3371
+2 locks held by syz-executor/5957:
+ #0: ffffffff8fe3ddc8 (cb_lock){++++}-{4:4}, at: genl_rcv+0x19/0x40 net/netlink/genetlink.c:1217
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_lock net/netlink/genetlink.c:35 [inline]
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_op_lock net/netlink/genetlink.c:60 [inline]
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_rcv_msg+0x10b/0x7a0 net/netlink/genetlink.c:1208
+1 lock held by udevd/5959:
+ #0: ffff88802684f350 (&disk->open_mutex){+.+.}-{4:4}, at: bdev_open+0xe0/0xd30 block/bdev.c:953
+1 lock held by udevd/6082:
+ #0: ffff888026a97350 (&disk->open_mutex){+.+.}-{4:4}, at: bdev_open+0xe0/0xd30 block/bdev.c:953
+1 lock held by udevd/6085:
+ #0: ffff888026a93350 (&disk->open_mutex){+.+.}-{4:4}, at: bdev_open+0xe0/0xd30 block/bdev.c:953
+6 locks held by syz.0.17/6086:
+ #0: ffffffff8fe3ddc8 (cb_lock){++++}-{4:4}, at: genl_rcv+0x19/0x40 net/netlink/genetlink.c:1217
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_lock net/netlink/genetlink.c:35 [inline]
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_op_lock net/netlink/genetlink.c:60 [inline]
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_rcv_msg+0x10b/0x7a0 net/netlink/genetlink.c:1208
+ #2: ffff888026893a60 (&nbd->config_lock){+.+.}-{4:4}, at: nbd_genl_reconfigure+0x4c1/0x1ea0 drivers/block/nbd.c:2364
+ #3: ffff8880268cc7c8 (&q->limits_lock){+.+.}-{4:4}, at: queue_limits_start_update include/linux/blkdev.h:1097 [inline]
+ #3: ffff8880268cc7c8 (&q->limits_lock){+.+.}-{4:4}, at: nbd_set_size+0x263/0x680 drivers/block/nbd.c:354
+ #4: ffff8880268cc190 (&q->q_usage_counter(io)#49){++++}-{0:0}, at: blk_mq_freeze_queue include/linux/blk-mq.h:956 [inline]
+ #4: ffff8880268cc190 (&q->q_usage_counter(io)#49){++++}-{0:0}, at: queue_limits_commit_update_frozen+0x55/0xd0 block/blk-settings.c:590
+ #5: ffff8880268cc1c8 (&q->q_usage_counter(queue)#33){+.+.}-{0:0}, at: blk_mq_freeze_queue include/linux/blk-mq.h:956 [inline]
+ #5: ffff8880268cc1c8 (&q->q_usage_counter(queue)#33){+.+.}-{0:0}, at: queue_limits_commit_update_frozen+0x55/0xd0 block/blk-settings.c:590
+2 locks held by syz.3.27/6088:
+ #0: ffffffff8fe3ddc8 (cb_lock){++++}-{4:4}, at: genl_rcv+0x19/0x40 net/netlink/genetlink.c:1217
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_lock net/netlink/genetlink.c:35 [inline]
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_op_lock net/netlink/genetlink.c:60 [inline]
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_rcv_msg+0x10b/0x7a0 net/netlink/genetlink.c:1208
+2 locks held by syz-executor/6097:
+ #0: ffffffff8fe3ddc8 (cb_lock){++++}-{4:4}, at: genl_rcv+0x19/0x40 net/netlink/genetlink.c:1217
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_lock net/netlink/genetlink.c:35 [inline]
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_op_lock net/netlink/genetlink.c:60 [inline]
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_rcv_msg+0x10b/0x7a0 net/netlink/genetlink.c:1208
+2 locks held by syz-executor/6099:
+ #0: ffffffff8fe3ddc8 (cb_lock){++++}-{4:4}, at: genl_rcv+0x19/0x40 net/netlink/genetlink.c:1217
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_lock net/netlink/genetlink.c:35 [inline]
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_op_lock net/netlink/genetlink.c:60 [inline]
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_rcv_msg+0x10b/0x7a0 net/netlink/genetlink.c:1208
+2 locks held by syz-executor/6119:
+ #0: ffffffff8fe3ddc8 (cb_lock){++++}-{4:4}, at: genl_rcv+0x19/0x40 net/netlink/genetlink.c:1217
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_lock net/netlink/genetlink.c:35 [inline]
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_op_lock net/netlink/genetlink.c:60 [inline]
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_rcv_msg+0x10b/0x7a0 net/netlink/genetlink.c:1208
+2 locks held by syz-executor/6120:
+ #0: ffffffff8fe3ddc8 (cb_lock){++++}-{4:4}, at: genl_rcv+0x19/0x40 net/netlink/genetlink.c:1217
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_lock net/netlink/genetlink.c:35 [inline]
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_op_lock net/netlink/genetlink.c:60 [inline]
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_rcv_msg+0x10b/0x7a0 net/netlink/genetlink.c:1208
+2 locks held by syz-executor/6136:
+ #0: ffffffff8fe3ddc8 (cb_lock){++++}-{4:4}, at: genl_rcv+0x19/0x40 net/netlink/genetlink.c:1217
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_lock net/netlink/genetlink.c:35 [inline]
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_op_lock net/netlink/genetlink.c:60 [inline]
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_rcv_msg+0x10b/0x7a0 net/netlink/genetlink.c:1208
+2 locks held by syz-executor/6146:
+ #0: ffffffff8fe3ddc8 (cb_lock){++++}-{4:4}, at: genl_rcv+0x19/0x40 net/netlink/genetlink.c:1217
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_lock net/netlink/genetlink.c:35 [inline]
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_op_lock net/netlink/genetlink.c:60 [inline]
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_rcv_msg+0x10b/0x7a0 net/netlink/genetlink.c:1208
+2 locks held by syz-executor/6148:
+ #0: ffffffff8fe3ddc8 (cb_lock){++++}-{4:4}, at: genl_rcv+0x19/0x40 net/netlink/genetlink.c:1217
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_lock net/netlink/genetlink.c:35 [inline]
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_op_lock net/netlink/genetlink.c:60 [inline]
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_rcv_msg+0x10b/0x7a0 net/netlink/genetlink.c:1208
+2 locks held by syz-executor/6171:
+ #0: ffffffff8fe3ddc8 (cb_lock){++++}-{4:4}, at: genl_rcv+0x19/0x40 net/netlink/genetlink.c:1217
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_lock net/netlink/genetlink.c:35 [inline]
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_op_lock net/netlink/genetlink.c:60 [inline]
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_rcv_msg+0x10b/0x7a0 net/netlink/genetlink.c:1208
+2 locks held by syz-executor/6172:
+ #0: ffffffff8fe3ddc8 (cb_lock){++++}-{4:4}, at: genl_rcv+0x19/0x40 net/netlink/genetlink.c:1217
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_lock net/netlink/genetlink.c:35 [inline]
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_op_lock net/netlink/genetlink.c:60 [inline]
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_rcv_msg+0x10b/0x7a0 net/netlink/genetlink.c:1208
+2 locks held by syz-executor/6188:
+ #0: ffffffff8fe3ddc8 (cb_lock){++++}-{4:4}, at: genl_rcv+0x19/0x40 net/netlink/genetlink.c:1217
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_lock net/netlink/genetlink.c:35 [inline]
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_op_lock net/netlink/genetlink.c:60 [inline]
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_rcv_msg+0x10b/0x7a0 net/netlink/genetlink.c:1208
+2 locks held by syz-executor/6201:
+ #0: ffffffff8fe3ddc8 (cb_lock){++++}-{4:4}, at: genl_rcv+0x19/0x40 net/netlink/genetlink.c:1217
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_lock net/netlink/genetlink.c:35 [inline]
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_op_lock net/netlink/genetlink.c:60 [inline]
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_rcv_msg+0x10b/0x7a0 net/netlink/genetlink.c:1208
+2 locks held by syz-executor/6203:
+ #0: ffffffff8fe3ddc8 (cb_lock){++++}-{4:4}, at: genl_rcv+0x19/0x40 net/netlink/genetlink.c:1217
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_lock net/netlink/genetlink.c:35 [inline]
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_op_lock net/netlink/genetlink.c:60 [inline]
+ #1: ffffffff8fe3dc00 (genl_mutex){+.+.}-{4:4}, at: genl_rcv_msg+0x10b/0x7a0 net/netlink/genetlink.c:1208
+
+=============================================
+
+NMI backtrace for cpu 1
+CPU: 1 UID: 0 PID: 30 Comm: khungtaskd Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/18/2026
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ nmi_cpu_backtrace+0x274/0x2d0 lib/nmi_backtrace.c:113
+ nmi_trigger_cpumask_backtrace+0x17a/0x300 lib/nmi_backtrace.c:62
+ trigger_all_cpu_backtrace include/linux/nmi.h:161 [inline]
+ __sys_info lib/sys_info.c:157 [inline]
+ sys_info+0x135/0x170 lib/sys_info.c:165
+ check_hung_uninterruptible_tasks kernel/hung_task.c:346 [inline]
+ watchdog+0xfaa/0x1000 kernel/hung_task.c:515
+ kthread+0x388/0x470 kernel/kthread.c:436
+ ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+Sending NMI from CPU 1 to CPUs 0:
+NMI backtrace for cpu 0
+CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/18/2026
+RIP: 0010:pv_native_safe_halt+0xf/0x20 arch/x86/kernel/paravirt.c:63
+Code: 5b 74 02 e9 c3 f6 02 00 cc cc cc 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 66 90 0f 00 2d e3 4d 16 00 fb f4 <c3> cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc 90 90 90 90 90
+RSP: 0018:ffffffff8e607dc0 EFLAGS: 00000242
+RAX: 000000000016be61 RBX: ffffffff819a67ea RCX: 0000000080000001
+RDX: 0000000000000001 RSI: ffffffff8dfb65fa RDI: ffffffff8c27f000
+RBP: ffffffff8e607eb0 R08: ffff8880b86339db R09: 1ffff110170c673b
+R10: dffffc0000000000 R11: ffffed10170c673c R12: 0000000000000000
+R13: 1ffffffff1cd25d8 R14: 0000000000000000 R15: 1ffffffff1cd25d8
+FS:  0000000000000000(0000) GS:ffff888125245000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000055bbb9380660 CR3: 0000000074fb4000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ arch_safe_halt arch/x86/kernel/process.c:766 [inline]
+ default_idle+0x9/0x20 arch/x86/kernel/process.c:767
+ default_idle_call+0x72/0xb0 kernel/sched/idle.c:122
+ cpuidle_idle_call kernel/sched/idle.c:199 [inline]
+ do_idle+0x36a/0x5f0 kernel/sched/idle.c:352
+ cpu_startup_entry+0x43/0x60 kernel/sched/idle.c:451
+ rest_init+0x2de/0x300 init/main.c:762
+ start_kernel+0x38a/0x3e0 init/main.c:1220
+ x86_64_start_reservations+0x24/0x30 arch/x86/kernel/head64.c:310
+ x86_64_start_kernel+0x143/0x1c0 arch/x86/kernel/head64.c:291
+ common_startup_64+0x13e/0x147
+ </TASK>
 
 
-[1] https://matrix.to/#/#linux-nfc:ixit.cz
-
-...
+---
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
