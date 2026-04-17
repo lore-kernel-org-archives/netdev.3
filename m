@@ -1,103 +1,187 @@
-Received: from www2881.sakura.ne.jp (www2881.sakura.ne.jp [49.212.198.91])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3456E350D74
-	for <netdev@vger.kernel.org>; Fri, 17 Apr 2026 16:21:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.198.91
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F210350D7D
+	for <netdev@vger.kernel.org>; Fri, 17 Apr 2026 16:21:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776442905; cv=none; b=dNAn4rgWYTdm+VD+2x11iKDNrWC8z4UlsqAk5QiiYiHi9cJ/avP/zy4MCho4IBT9fnaWGD6Fb4+z70EN6jZwkjvdISygD05jfRXAi9Cw/W2ZKVGw5RIA70+EkSeL6vV9bTzVGksGLlkRwCgXTa2VWTn3ftggqG98uh9sY7dlizY=
+	t=1776442916; cv=none; b=D2DOQX+CB6RzPqE7lPByF8ROEpulSzm3WRJMbtwgtsW0iVqWyXljZ0KKV3052c3oQRWWVYu5fJtenm7q2PPlfGeP5InfsVmc0gwUnN3tGkmDiYUkkFgK6GIEq2LJR2HjlsJr5qAp6C3GmKhGNI5/ifvSLJnt8l19aO4X0QNPqmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776442905; c=relaxed/simple;
-	bh=LahCPMaNW4+EJMQUur8o6yJaL/QVwiKBq9Lz/a9CeHI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D2vCJUKIc5SO0AeUr+t3t0M0luXyUxd+FL2OTzp+Ybku5rQjfBierhIfbuBWCXzCpm8CID7gkiwpNi/cLcQA3pqg1n5DoNVLgGPrBSNMN3kRpXmn5m7MZhaNCRnaaNZtg12DKZCCUshGgBJHjV35hAXL9khdbDMHmZmAI2j4zqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enjuk.jp; spf=pass smtp.mailfrom=enjuk.jp; dkim=pass (2048-bit key) header.d=enjuk.jp header.i=@enjuk.jp header.b=Y+Mx2vPY; arc=none smtp.client-ip=49.212.198.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enjuk.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=enjuk.jp
+	s=arc-20240116; t=1776442916; c=relaxed/simple;
+	bh=hS+9/c0wkyuDAsKloIIceu/S6QTx+mwr25Zziy7MZOA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jWyiqwfWwus4gbbTD/Pn9R8wBGr4/GIq+tgRUrzq2drD7Dk2D86BlBnw4nXR7MNTkVOM8v046+qF0cvgu1Sy257f/gmMNm26BwjrumzVmwpv+mVuebgVkZNgrIfo99BvciyuWvEyiar6D7gvacKj8yv16zOsU/of0ilVq13xOiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=TDUO9Koh; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=LZeRX3OI; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ZN23vV+i; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=aZb2fu9A; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=enjuk.jp header.i=@enjuk.jp header.b="Y+Mx2vPY"
-Received: from x1 (232.154.13.160.dy.iij4u.or.jp [160.13.154.232])
-	(authenticated bits=0)
-	by www2881.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 63HGKjCb019556
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Sat, 18 Apr 2026 01:20:46 +0900 (JST)
-	(envelope-from kohei@enjuk.jp)
-DKIM-Signature: a=rsa-sha256; bh=aucRIRNpULh5tCJF/CYGnKrKwCbL4hITukOd5aDy3lE=;
-        c=relaxed/relaxed; d=enjuk.jp;
-        h=From:Message-ID:To:Subject:Date;
-        s=rs20251215; t=1776442846; v=1;
-        b=Y+Mx2vPYR6FTXpkb33ZpRugexom9CWm7BDSsBqR+SdVVyW9OlWjqxIONLeAEuAv4
-         jL5h5XmSGXtHWES+olWwYkinXRchl2oZ4eyaLDebPL8fvRVF1voyFVbQuYnr8Sn6
-         49VNsX5CPrUgwMSJcI2wJmY8AljkpL8kvQKveUE2VVjqsWlu5b4e1bWGe59Um8Us
-         mSQ1T81rroaqUMtzK8xEsX/PNSwTibmHJpMYTf+C3guA82TLK7MLBjGfMUENfni1
-         41mE8tLFyXK49VCmhH42iI8n3jIC8FPBdb+HGzee4xuqSSuqnFRSQIaICnbn2sNL
-         QqTi5nSlwq6PdR7lpE27Ww==
-Date: Sat, 18 Apr 2026 01:20:44 +0900
-From: Kohei Enju <kohei@enjuk.jp>
-To: Simon Horman <horms@kernel.org>
-Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Faizal Rahim <faizal.abdul.rahim@linux.intel.com>,
-        kohei.enju@gmail.com, stable@vger.kernel.org
-Subject: Re: [Intel-wired-lan] [PATCH iwl-net v2] igc: fix potential skb leak
- in igc_fpe_xmit_smd_frame()
-Message-ID: <aeJdUhe7_x1ZKFzX@x1>
-References: <20260415025226.114115-1-kohei@enjuk.jp>
- <20260417115122.GA31784@horms.kernel.org>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="TDUO9Koh";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="LZeRX3OI";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ZN23vV+i";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="aZb2fu9A"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 2D3B85BD6A;
+	Fri, 17 Apr 2026 16:21:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1776442909; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QRgpWyM7ORPv84VXfXpsGgufMh6mX8Pkm5cLRpDYg5A=;
+	b=TDUO9KohXAuFprlLyGR518y4nVbUcscrr4HMCcMzDauSYYEcyy69yHxkj3cnSJikgjVDz6
+	Xh7PhfPbGfDPIz4F297cbv19HZZasyyyXZ4+Bl1aneF5oEdUAAGoMHoga5HSoj0ovOXzwN
+	TTUFOCNuoc9VhuP69bealO/hGsBLxfY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1776442909;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QRgpWyM7ORPv84VXfXpsGgufMh6mX8Pkm5cLRpDYg5A=;
+	b=LZeRX3OIlAWHCWy61BrWt3otkh/R3y9tUH7zmtMc3LwfIxRPJWmYZKN4iW4txRjRqs2nCY
+	d+l9wJ2zU6cO7lBQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1776442905; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QRgpWyM7ORPv84VXfXpsGgufMh6mX8Pkm5cLRpDYg5A=;
+	b=ZN23vV+iwzefUsQNBhtwWyRBEr94g6muDEdOofwYqUZaXJAHo+3XwCfUo23l2AcgPBb0cH
+	U1g827cPCUQJWunjfwaYVX80eL9U7Z8h17wU0rYR/q8Ilx0y8fVeOCrRnKOHTqsgWCIl4u
+	ow0dix8uzVoxnIFoi2wAxZcR5YiGC/E=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1776442905;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QRgpWyM7ORPv84VXfXpsGgufMh6mX8Pkm5cLRpDYg5A=;
+	b=aZb2fu9A2MaDqWMhx4AhcQK9Eu/nZp7eUKODHI0kqC+cJEAeg4vZav2ZG5dGGZLQiBoPIv
+	OR0iVfWI1+s2LZBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AA224593AE;
+	Fri, 17 Apr 2026 16:21:44 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id cGLFJhhe4mlAFQAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Fri, 17 Apr 2026 16:21:44 +0000
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+To: netfilter-devel@vger.kernel.org
+Cc: netdev@vger.kernel.org,
+	coreteam@netfilter.org,
+	pablo@netfilter.org,
+	fw@strlen.de,
+	phil@nwl.cc,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	"Kito Xu (veritas501)" <hxzene@gmail.com>
+Subject: [PATCH 2/2 nf] netfilter: nfnetlink_osf: fix potential NULL dereference in ttl check
+Date: Fri, 17 Apr 2026 18:20:57 +0200
+Message-ID: <20260417162057.3732-2-fmancera@suse.de>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260417162057.3732-1-fmancera@suse.de>
+References: <20260417162057.3732-1-fmancera@suse.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260417115122.GA31784@horms.kernel.org>
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-6.80 / 50.00];
+	REPLY(-4.00)[];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_COUNT_TWO(0.00)[2];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,netfilter.org,strlen.de,nwl.cc,suse.de,gmail.com];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid,suse.de:email];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com]
+X-Spam-Flag: NO
+X-Spam-Score: -6.80
+X-Spam-Level: 
 
-On 04/17 12:51, Simon Horman wrote:
-> On Wed, Apr 15, 2026 at 02:52:18AM +0000, Kohei Enju wrote:
-> > When igc_fpe_init_tx_descriptor() fails, no one takes care of an
-> > allocated skb, leaking it. [1]
-> > Use dev_kfree_skb_any() on failure.
-> > 
-> > Tested on an I226 adapter with the following command, while injecting
-> > faults in igc_fpe_init_tx_descriptor() to trigger the error path.
-> >  # ethtool --set-mm $DEV verify-enabled on tx-enabled on pmac-enabled on
-> > 
-> > [1]
-> > unreferenced object 0xffff888113c6cdc0 (size 224):
-> > ...
-> >   backtrace (crc be3d3fda):
-> >     kmem_cache_alloc_node_noprof+0x3b1/0x410
-> >     __alloc_skb+0xde/0x830
-> >     igc_fpe_xmit_smd_frame.isra.0+0xad/0x1b0
-> >     igc_fpe_send_mpacket+0x37/0x90
-> >     ethtool_mmsv_verify_timer+0x15e/0x300
-> > 
-> > Cc: stable@vger.kernel.org
-> > Fixes: 5422570c0010 ("igc: add support for frame preemption verification")
-> > Signed-off-by: Kohei Enju <kohei@enjuk.jp>
-> > ---
-> > Changes:
-> >   v2:
-> >     - change to idiomatic style with goto (Simon)
-> >     - add Cc to stable (Alex)
-> >     - add reprodunction steps (Alex)
-> >   v1: https://lore.kernel.org/all/20260329145122.126040-1-kohei@enjuk.jp/
-> 
-> Thanks for the update.
-> 
-> Reviewed-by: Simon Horman <horms@kernel.org>
-> 
-> Sashiko has comments about a potential existing bug in the same code path.
-> I'd appreciate it if, as a follow-up, you could look over that.
+The nf_osf_ttl() function accessed skb->dev to perform a local interface
+address lookup without verifying that the device pointer was valid.
 
-Thanks for the heads-up. I'll look into it.
+Additionally, the implementation utilized an in_dev_for_each_ifa_rcu
+loop to match the packet source address against local interface
+addresses. It assumed that packets from the same subnet should not see a
+decrement on the initial TTL. A packet might appear it is from the same
+subnet but it actually isn't especially in modern environments with
+containers and virtual switching.
 
-> 
-> Thanks!
+Remove the device dereference and interface loop. Replace the logic with
+a switch statement that evaluates the TTL according to the ttl_check.
+
+Fixes: 11eeef41d5f6 ("netfilter: passive OS fingerprint xtables match")
+Reported-by: Kito Xu (veritas501) <hxzene@gmail.com>
+Closes: https://lore.kernel.org/netfilter-devel/20260414074556.2512750-1-hxzene@gmail.com/
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+---
+Note: if some help is needed during the backport I can assist.
+---
+ net/netfilter/nfnetlink_osf.c | 22 +++++++---------------
+ 1 file changed, 7 insertions(+), 15 deletions(-)
+
+diff --git a/net/netfilter/nfnetlink_osf.c b/net/netfilter/nfnetlink_osf.c
+index f58267986453..f0d1e596e146 100644
+--- a/net/netfilter/nfnetlink_osf.c
++++ b/net/netfilter/nfnetlink_osf.c
+@@ -31,26 +31,18 @@ EXPORT_SYMBOL_GPL(nf_osf_fingers);
+ static inline int nf_osf_ttl(const struct sk_buff *skb,
+ 			     int ttl_check, unsigned char f_ttl)
+ {
+-	struct in_device *in_dev = __in_dev_get_rcu(skb->dev);
+ 	const struct iphdr *ip = ip_hdr(skb);
+-	const struct in_ifaddr *ifa;
+-	int ret = 0;
+ 
+-	if (ttl_check == NF_OSF_TTL_TRUE)
++	switch (ttl_check) {
++	case NF_OSF_TTL_TRUE:
+ 		return ip->ttl == f_ttl;
+-	if (ttl_check == NF_OSF_TTL_NOCHECK)
+-		return 1;
+-	else if (ip->ttl <= f_ttl)
++		break;
++	case NF_OSF_TTL_NOCHECK:
+ 		return 1;
+-
+-	in_dev_for_each_ifa_rcu(ifa, in_dev) {
+-		if (inet_ifa_match(ip->saddr, ifa)) {
+-			ret = (ip->ttl == f_ttl);
+-			break;
+-		}
++	case NF_OSF_TTL_LESS:
++	default:
++		return ip->ttl <= f_ttl;
+ 	}
+-
+-	return ret;
+ }
+ 
+ struct nf_osf_hdr_ctx {
+-- 
+2.53.0
+
