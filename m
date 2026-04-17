@@ -1,78 +1,48 @@
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC73A384250
-	for <netdev@vger.kernel.org>; Fri, 17 Apr 2026 13:36:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3561718871F;
+	Fri, 17 Apr 2026 13:43:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776433020; cv=none; b=se9vzj0j9kTmLHouucJJF7nyr2KAyfI4Zax5dr3tVhvCJpiirOad9sPD5CSp/niErIoIhgI+c29lS7teXlBn7bNPSNO7/It4XiwJFs9pgPEbiiD4m6awUmIVw2m1G4bI27LNOzALZlUYn4HLZSCSjhEjKXsfmJ+PBL1DAMMOFIw=
+	t=1776433440; cv=none; b=M9W0lPsL9Eetl0dbyjLD1KRlphKLsIOqYynRQtWTrVfsd2ziutdKyntWkzOp9ff6MniHNTTWSaWJUVzhV443ciLnsKAk355e6SSgc1ypjQmndAkWlXkoGUQ+tdx+TtEvob1LcjpBZJ0tj0COjDHe4PRANIK4ykNyxJRs9bPl0p4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776433020; c=relaxed/simple;
-	bh=o6nRsoHRbabeUEx5FRlO1E1P9PR4iGXFvxod9XNvcs4=;
+	s=arc-20240116; t=1776433440; c=relaxed/simple;
+	bh=4lXh4kXUKkj47sLf2DEw+88AaNmaDmKw2CaaikE0xlU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J0h2sGWC5tbEkwAwmms/SokjpS09jK0uDvcujGCGdogZEyUjsW84LWRg/wVV9dx8GNM6lbCyYLVv6t/oR7nCGZ3OuK0zaY4pFf9rAGvvpnCh2R0bdNKdADUmGNgPL+r4b0Kq7nO68DS7uB0EkJKSxMRJv/lu/cr170HfkUG7oFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bnK1R9Tu; arc=none smtp.client-ip=209.85.222.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 MIME-Version; b=EFzI4LqVElrzn4iwCAMlcMZ86SnYdSAh4FdSsmtR4DiCDwf4oD8wk1xDOzhK9H8PLQ2fHPP8Rn2+vRGUF1J0ci6qtlrJi5xf0hGugH+hpBSD/lSTSXTlSrv5+6bvL8GtML1BhpKm1wcyTufwPcO/tIKqn1IQpHJIw90ipAJvbdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gIvhAJLj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bnK1R9Tu"
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-8c70b5594f4so76201285a.1
-        for <netdev@vger.kernel.org>; Fri, 17 Apr 2026 06:36:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776433018; x=1777037818; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qN1Vl2vCUK3z1yjVhJuVnrXRp0s++5jKB8Kqq1WFb3A=;
-        b=bnK1R9Tu3Y0PCx9TRvY6GNO4jAlF7YmIEWfmrvOpT0Pu/p4UVVvFMcFg0IyhL2nJq1
-         cg3LBbDmOCw3ZFx1nFJOZsibq8qHtj2JUXKuRBHTee6g/lwsgHzzyRjo3TColWJt9tmP
-         XW0siS5TksbdgAO8u+12t1hX7LpafHOnvCwcqEWHJJ0Xu9M3U8bgnqcNM22v0jzWe6f5
-         BbfCfJfsynD6ucOCCPrNJ97aVVL0Cxng+HqUhDHREf73TG2VIh090Fni7z+nui0DTVwR
-         s8cKl1TqmOHwg18/GiRpDw5f6n8Tv1cxXZuwKCwbTG8uDhJ7RTWVxpeonKETEZXbHg7f
-         qrvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776433018; x=1777037818;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=qN1Vl2vCUK3z1yjVhJuVnrXRp0s++5jKB8Kqq1WFb3A=;
-        b=IamI+6t9kNuNRKDrvduRBTtkebMl76Q6XwzAM8ks4PZHd82mspzlxmMzwo9PcRnJv6
-         h+sSw3zWUz2ELO+5oGvH4ZWkIr9WZV1GsWcoj4Mt/X+/kCY9ksoK6HUM4rySOe53NFQm
-         k0e47erH83i6orDV3KQ8h44VkGlWvE6I+SRJi+wGfGqdFbazGDzRNttKOZ7C/8vdpsWt
-         oiZo+xahyKY1tK00JUUwskVzbsUmCG+bd5SSesyhR8QIpeMt14zWnKqiePBBVqQggzY1
-         ptgx7cF7iRi2zDZkQ+XkHXi3QQ69iRNdAwDrdN6+tvmefBg0vkGZDIJMLMHqd9Y5s607
-         FmYw==
-X-Forwarded-Encrypted: i=1; AFNElJ8paZb+BIHU3GPPCjESucg7vgsgwGkvZvqbpNdcQUR8N4TXGk/3i0WrInZEVv++BVwy1lBsBfo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLR+EnT4vns6eCyQoB5zj5SaqULdKJSHQDfPxj8S/Iv/8j5pS1
-	mNJ/Ml7kxkHIgOSVLAnj/NABrlHZwx/aaF82qNM0UZxK2XW0fNAkidKICYZk/tJG1xI=
-X-Gm-Gg: AeBDiets2n15JnSOB28zHQon6OsdVP1VLv9U2ULXy04jo7u2nNOR7Esg3sje0lhJ5Ev
-	hkQPvhUQQoIejOyso8/7TIgR6mUSe6pobstmBY4+JvfCCPkiHG5C9UHY7jUqTHbRy9ZT5VQ66W5
-	UTX6W1JWIctt22SK5DjAuHSdiwR6ghaREOHEdkaiHgPTxVXn/zaW9gDBLZb1WJMEb5h1dumvzBB
-	rwjyffutXtK61IfNS1ZA17Rp/heP93qa1pP8kcvVymclw5TblmiMmHk8PheMBlPS3wb9Sp4oyMb
-	8RuQeInKOjvfEGPTWEPVCKqcpNAogpDpEz2faSx3n4LVlFQV1IcZ4n3LMz4J56H4LdRnDhFnWna
-	TXajDzTzErh7fTyu69MdzJqAo2WfN+U0Ecm8mXaNk/uIgbS6dxiLG8nBWd+kdfqgqdbwjhkNnpE
-	xw8sMByDOmFCHalCzgiGkN44Z+XM3Z0NP9UK3YCyqfWb2z2ZdAGkFF16MO1sw9SgJIRSYAmCYbK
-	QldLLE=
-X-Received: by 2002:a05:620a:4690:b0:8d5:8815:ffbf with SMTP id af79cd13be357-8e789874c59mr324492085a.2.1776433017630;
-        Fri, 17 Apr 2026 06:36:57 -0700 (PDT)
-Received: from localhost.localdomain ([104.128.58.21])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8e7d93c2fffsm106948785a.36.2026.04.17.06.36.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Apr 2026 06:36:57 -0700 (PDT)
-From: Zero Mark <patzilla007@gmail.com>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: security@kernel.org,
-	"David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gIvhAJLj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AC87C19425;
+	Fri, 17 Apr 2026 13:43:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776433439;
+	bh=4lXh4kXUKkj47sLf2DEw+88AaNmaDmKw2CaaikE0xlU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=gIvhAJLjbR6ewsxrayhObK/DcB+fg4A/uMhiLt7Pw+Y1sU3z5kDF+NSOIUeFGFT8Q
+	 T7qlXcEZHHyYz6Eqz2FEgscAi3i3B1zFV+6jWVtDX+4o9MPRj78kA+JUwv72MiJ1Dn
+	 uythP1KldckBtJlXKZilc4INxhSFXNmNkGt6TXRsDSBnwR9aoVJgnt/hLsUOv7RIiv
+	 Vmd5xWD9lX/KpMUXPXovFth1j8va7/PDRDveYREoRHCoYfqw2nXx5LC7U9FCbfCZ9j
+	 7CkED1pexKQ/OOQF193Pyb3mvBI5VVtQAX0IXXuyyQ/KHxl8PQtFjPSbG8CtmKqytl
+	 1ze9c6AV8qsGg==
+From: Simon Horman <horms@kernel.org>
+To: snowwlake@icloud.com
+Cc: Simon Horman <horms@kernel.org>,
+	kuba@kernel.org,
 	netdev@vger.kernel.org,
-	Zero Mark <patzilla007@gmail.com>
-Subject: [PATCH net] net/packet: fix TOCTOU race on mmap'd vnet_hdr in tpacket_snd()
-Date: Fri, 17 Apr 2026 21:36:10 +0800
-Message-ID: <20260417133610.88158-1-patzilla007@gmail.com>
+	pabeni@redhat.com,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	framemain@outlook.com,
+	edumazet@google.com,
+	davem@davemloft.net
+Subject: Re: [PATCH net v3 3/4] nfc: llcp: fix TLV parsing OOB in nfc_llcp_recv_snl
+Date: Fri, 17 Apr 2026 14:43:22 +0100
+Message-ID: <20260417134321.190842-2-horms@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <willemdebruijn.kernel.1683671b10e8@gmail.com>
-References: <willemdebruijn.kernel.1683671b10e8@gmail.com>
+In-Reply-To: <20260414233534.55973-4-snowwlake@icloud.com>
+References: <20260414233534.55973-4-snowwlake@icloud.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -81,84 +51,130 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In tpacket_snd(), when PACKET_VNET_HDR is enabled, vnet_hdr points
-directly into the mmap'd TX ring buffer shared with userspace. The
-kernel validates the header via __packet_snd_vnet_parse() but then
-re-reads all fields later in virtio_net_hdr_to_skb(). A concurrent
-userspace thread can modify the vnet_hdr fields between validation
-and use, bypassing all safety checks.
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
 
-The non-TPACKET path (packet_snd()) already correctly copies vnet_hdr
-to a stack-local variable. All other vnet_hdr consumers in the kernel
-(tun.c, tap.c, virtio_net.c) also use stack copies. The TPACKET TX
-path is the only caller of virtio_net_hdr_to_skb() that reads directly
-from user-controlled shared memory.
-
-Fix this by copying vnet_hdr from the mmap'd ring buffer to a
-stack-local variable before validation and use, consistent with the
-approach used in packet_snd() and all other callers.
-
-Fixes: 1d036d25e560 ("packet: tpacket_snd gso and checksum offload")
-Signed-off-by: Zero Mark <patzilla007@gmail.com>
+For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
 ---
- net/packet/af_packet.c | 21 +++++++++++++--------
- 1 file changed, 13 insertions(+), 8 deletions(-)
+nfc: llcp: fix TLV parsing OOB in nfc_llcp_recv_snl
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index 4b043241fd56..8e6f3a734ba0 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -2718,7 +2718,8 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
- {
- 	struct sk_buff *skb = NULL;
- 	struct net_device *dev;
--	struct virtio_net_hdr *vnet_hdr = NULL;
-+	struct virtio_net_hdr vnet_hdr;
-+	bool has_vnet_hdr = false;
- 	struct sockcm_cookie sockc;
- 	__be16 proto;
- 	int err, reserve = 0;
-@@ -2819,16 +2820,20 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
- 		hlen = LL_RESERVED_SPACE(dev);
- 		tlen = dev->needed_tailroom;
- 		if (vnet_hdr_sz) {
--			vnet_hdr = data;
- 			data += vnet_hdr_sz;
- 			tp_len -= vnet_hdr_sz;
--			if (tp_len < 0 ||
--			    __packet_snd_vnet_parse(vnet_hdr, tp_len)) {
-+			if (tp_len < 0) {
-+				tp_len = -EINVAL;
-+				goto tpacket_error;
-+			}
-+			memcpy(&vnet_hdr, data - vnet_hdr_sz, sizeof(vnet_hdr));
-+			if (__packet_snd_vnet_parse(&vnet_hdr, tp_len)) {
- 				tp_len = -EINVAL;
- 				goto tpacket_error;
- 			}
- 			copylen = __virtio16_to_cpu(vio_le(),
--						    vnet_hdr->hdr_len);
-+						    vnet_hdr.hdr_len);
-+			has_vnet_hdr = true;
- 		}
- 		copylen = max_t(int, copylen, dev->hard_header_len);
- 		skb = sock_alloc_send_skb(&po->sk,
-@@ -2865,12 +2870,12 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
- 			}
- 		}
- 
--		if (vnet_hdr_sz) {
--			if (virtio_net_hdr_to_skb(skb, vnet_hdr, vio_le())) {
-+		if (has_vnet_hdr) {
-+			if (virtio_net_hdr_to_skb(skb, &vnet_hdr, vio_le())) {
- 				tp_len = -EINVAL;
- 				goto tpacket_error;
- 			}
--			virtio_net_hdr_set_proto(skb, vnet_hdr);
-+			virtio_net_hdr_set_proto(skb, &vnet_hdr);
- 		}
- 
- 		skb->destructor = tpacket_destruct_skb;
--- 
-2.53.0
+This commit fixes multiple out-of-bounds read vulnerabilities in the
+nfc_llcp_recv_snl() function when handling Service Name Lookup PDUs from
+hostile NFC peers.
 
+> nfc: llcp: fix TLV parsing OOB in nfc_llcp_recv_snl
+>
+> nfc_llcp_recv_snl() has four problems when handling a hostile peer:
+>
+>  1. nfc_llcp_dsap()/nfc_llcp_ssap() dereference skb->data[0..1] without
+>     verifying skb->len; a 0- or 1-byte frame leads to an OOB read.
+>     Additionally tlv_len = skb->len - LLCP_HEADER_SIZE wraps when
+>     skb->len < 2, causing the following loop to run far past the
+>     buffer.
+>
+>  2. The per-iteration loop guard `offset < tlv_len` only proves one
+>     byte is available, but the body reads tlv[0] and tlv[1].
+>
+>  3. The peer-supplied `length` field is used to advance `tlv` without
+>     being checked against the remaining array space.
+>
+>  4. The SDREQ handler previously only required length >= 1 but reads
+>     both tid (tlv[2]) and the first byte of service_name (tlv[3], via
+>     the pr_debug("%.16s") print and the service_name_len = length - 1
+>     string usage), so length >= 2 is required.
+>
+> Fix: reject frames smaller than LLCP_HEADER_SIZE up front; add TLV
+> header and TLV value guards at the top of each iteration; bump the
+> SDREQ minimum length to 2.
+>
+> Reachable from any NFC peer within ~4 cm once an LLCP link is up.
+>
+> Fixes: 7a06f0ee2823 ("NFC: llcp: Service Name Lookup implementation")
+
+The Fixes: tag references commit 7a06f0ee2823, but this commit does
+not exist in the repository. The vulnerable TLV parsing was actually
+introduced in commit 19cfe5843e86 ("NFC: Initial SNL support") from
+October 5, 2012, which added nfc_llcp_recv_snl() with the bounds
+checking issues.
+
+Should the Fixes: tag be:
+
+    Fixes: 19cfe5843e86 ("NFC: Initial SNL support")
+
+> diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
+> index db5bc6a878dd..8e7b8d2347d6 100644
+> --- a/net/nfc/llcp_core.c
+> +++ b/net/nfc/llcp_core.c
+> @@ -1284,6 +1284,11 @@ static void nfc_llcp_recv_snl(struct nfc_llcp_local *local,
+>  	size_t sdres_tlvs_len;
+>  	HLIST_HEAD(nl_sdres_list);
+>
+> +	if (skb->len < LLCP_HEADER_SIZE) {
+> +		pr_err("Malformed SNL PDU\n");
+> +		return;
+> +	}
+> +
+>  	dsap = nfc_llcp_dsap(skb);
+>  	ssap = nfc_llcp_ssap(skb);
+>
+> @@ -1300,11 +1305,17 @@ static void nfc_llcp_recv_snl(struct nfc_llcp_local *local,
+>  	sdres_tlvs_len = 0;
+>
+>  	while (offset < tlv_len) {
+> +		if (tlv_len - offset < 2)
+> +			break;
+>  		type = tlv[0];
+>  		length = tlv[1];
+> +		if (tlv_len - offset - 2 < length)
+> +			break;
+>
+>  		switch (type) {
+>  		case LLCP_TLV_SDREQ:
+> +			if (length < 2)
+> +				break;
+>  			tid = tlv[2];
+>  			service_name = (char *) &tlv[3];
+>  			service_name_len = length - 1;
+>
+>  			pr_debug("Looking for %.16s\n", service_name);
+
+The new length check ensures length >= 2 to protect tlv[2] and tlv[3]
+accesses. However, pr_debug with %.16s can read up to 16 bytes from
+service_name (starting at &tlv[3]), not just one byte as stated in the
+commit message.
+
+When length==2 (the minimum), only tlv[3] is validated, but pr_debug
+may read through tlv[18] while searching for a null terminator. If a
+hostile peer sends a SDREQ with length=2 near the end of the buffer,
+pr_debug could read beyond the validated region into skb tail room.
+
+This only occurs when DEBUG is enabled (development kernels), so it's
+less critical than the production OOB reads being fixed. However, should
+the debug code use bounded printing to match the security-focused nature
+of this patch?
+
+    pr_debug("Looking for %.*s\n", (int)service_name_len, service_name);
+
+[ ... ]
+
+> @@ -1363,6 +1374,8 @@ static void nfc_llcp_recv_snl(struct nfc_llcp_local *local,
+>  		break;
+>
+>  	case LLCP_TLV_SDRES:
+
+In v2 of this patch, Paolo Abeni noted that SDRES also needs a length
+check for accessing tlv[2] and tlv[3]. While v2 included this check,
+it was removed in v3 and is missing from the current version.
+
+SDREQ now has the length < 2 protection (added above), but SDRES still
+lacks validation. Looking at the SDRES handler later in the function:
+
+net/nfc/llcp_core.c:nfc_llcp_recv_snl() {
+    case LLCP_TLV_SDRES:
+        dsap = tlv[2];     /* reads tlv[2] without validation */
+        ...
+        ssap = tlv[3];     /* reads tlv[3] without validation */
+}
+
+Should SDRES also have the length >= 2 check before accessing tlv[2]
+and tlv[3]?
