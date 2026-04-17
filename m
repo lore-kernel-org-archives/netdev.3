@@ -1,63 +1,63 @@
-Received: from mail-ed1-f100.google.com (mail-ed1-f100.google.com [209.85.208.100])
+Received: from mail-wr1-f97.google.com (mail-wr1-f97.google.com [209.85.221.97])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 424202D7DC6
-	for <netdev@vger.kernel.org>; Fri, 17 Apr 2026 14:05:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1779A22CBE6
+	for <netdev@vger.kernel.org>; Fri, 17 Apr 2026 14:07:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776434711; cv=none; b=Ua939uorhZUPBO2ACxlKJm9alScMsi1g3xoBDQK3Bo5Ta5h3d3wGhw/rfUSzT/TFHTb33tsOgW//xEvUGFU3yPEC8UubTeBYq1OlaBriHhVOAvhfsmjal7+QzW2UE2Dj6kMnQlS0q+339YPYODUzFnYiIGXKnGNfeThGttq8LFo=
+	t=1776434869; cv=none; b=hEyO4MTs6fHBAdPcQlsv4x+Kd8eifkHqObPtPWOL7kMi5mBkj84UGYZoPwJVY6Y6NJ3szKKOIk0dywVJUgIwkeSS54ZsTYBIRxM2k7NQ3cXYdpzb5f8tqw0s2bFBnFgsLlK0aLGQfB0vvgmCwwYBHrKTl5ulsCQcEZRJTsuTLeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776434711; c=relaxed/simple;
-	bh=8gf2bXFYik4CReIzMQ4zAC5OXHtzgCN5M+F0QoG0zKQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sAnl+vkAiLNEKa8cGOEX9L7R+cqSEByduzo/K+di9r32KVG40AdvUTaZcXSi6bCX/yKtYSXgBHtmRxG+5HlSyp9xzByt+PppeSfzfzg0/dRjFm/AMza9VpWvfO0p/LCJ+E84Uv+96lsY/XvfXHfUZrM6iRM6UFTNLYMmTLP1/ag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=HDzJXT8v; arc=none smtp.client-ip=209.85.208.100
+	s=arc-20240116; t=1776434869; c=relaxed/simple;
+	bh=3vQJdcHfusmEwZFYonB6GQJ2LSIInNi3PNld/dWvuNE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Cgs3mkGd806oXf/JOjQ0372xhUGmvgiq2jbQZtvzFK0muNBl9U141SywrjR/MksS3zSvVtwWHQwbxZZFGny6l0kf9ecBln8aeNsuSFFUtyjMsobOxcaqymccVuTHsBTOkSkC3KV3/gdrSzunaISQwuclJtfGRTyDG0cfKsLpfe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=VwbfYp2P; arc=none smtp.client-ip=209.85.221.97
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="HDzJXT8v"
-Received: by mail-ed1-f100.google.com with SMTP id 4fb4d7f45d1cf-671dad7cac8so1116857a12.0
-        for <netdev@vger.kernel.org>; Fri, 17 Apr 2026 07:05:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="VwbfYp2P"
+Received: by mail-wr1-f97.google.com with SMTP id ffacd0b85a97d-43cf8d550bdso702496f8f.0
+        for <netdev@vger.kernel.org>; Fri, 17 Apr 2026 07:07:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=6wind.com; s=google; t=1776434709; x=1777039509; darn=vger.kernel.org;
+        d=6wind.com; s=google; t=1776434866; x=1777039666; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=jdlhv0+MMf+afk0WQf+9d4l/m6rjbKwKx66KpbNgDuc=;
-        b=HDzJXT8vbGbAYTBU68qakuKp+LSeSwiwCoGohjn3h0crH4zSW1LCT9QEp8MkOR7+d7
-         cJeTKujfAwirlzVnQ9Lf3L23xwzZZQa19xFaFO0fWtd1ukkgTXpJ+YSS8IzOyzBShQQx
-         OKaFKCBE0w64uA26igcV300OLrPk0mq+0vdU3Woc6YkW9j25OX4mOtJMqDS2h8P41vNO
-         lr1T127uYxQAykK/V/g4TIf14l+FUhuLtd9TMK602u7WdMY1lvK1KY6pGj99Om+x39Rh
-         tk9Lbpqk75eblbfNYXPKQhW0AzY8Z+ixS1yclXda/lpquPfDj+5pFL/8OpzjXeMluey/
-         xSLA==
+        bh=s5MH/1iHqV8r8YEtFLFSgeqxDRAgy9f8KKojlnNFJyI=;
+        b=VwbfYp2PfOPxaa4jFNKDEshFYVUF/R3zrsloh8J9bgPFoA8RWKYuUPlw+9ilehsTYU
+         6vSzUr1KdEY6rOhlkF7kBFG9Xx56rLvhNG1EWzlTKLzYNr3nyRR79YctfrLg6UFh/eHX
+         DZ9z+bLpXp2ipNXIs5I5kDO6UFJdUsO0mRQB14w5yWbFOwLfDgEuQ8sT1ZLQHcUd33OI
+         vCmWRzWpIkGZFQAdpLfO5yPtYV2KbKkzVFNzrgGCsisFUa2HSqPeye2NA1qqNClHx/nN
+         4uAYRxbMgdaT/A1zn4HzMaDnnEYHJF6lQCobfEihjiJ7DKWS6Dvtl5vSi4XfCpzCFV6e
+         3jIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776434709; x=1777039509;
+        d=1e100.net; s=20251104; t=1776434866; x=1777039666;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=jdlhv0+MMf+afk0WQf+9d4l/m6rjbKwKx66KpbNgDuc=;
-        b=AdrfV8Jw7wfKs2DKhafNSJAgu97cRDJK10dOKsbFZZJoLcDuMGgrBWbxS3bZc46qXP
-         XJk44IYd53/IV1yhcmcN4O1tPmh3zHePKKyanqsWcbGMpSUihuWQOOUe0w6FX9YT+aXw
-         yaSkqD+kY+uy8mKo0iyGArG4PKozDEQP/RjjD//voTonJQv/cteO4fP/ZAAbI52MWDg4
-         5pM+G+SlpNMpTZvbgZeL+6NIZcIeusLtZUWiKxyxfvYMwQ/RK5EJsytuUa00PDJCFBKC
-         nqcekSuwSGv10upVW/CT+mksx0s6a6n0SGDFEH20fwFOXYOFbcN2D4addPrWnbOqZAb/
-         9fpw==
-X-Gm-Message-State: AOJu0YwLA8n8W3gimseTfFbo9EOi9cmEYjHzpkuyWGhqc67zCua3HzMq
-	vOU//4WR6KN96OrGeUl3g3hQuO1PoUTRRTh0zMiAEBCy0mss6c6FttkgI6aNK/UWes3epQzpEKZ
-	YxNBBXPXu9qMEiJ4ISsLQcT7NhGkKSkc3P/n3
-X-Gm-Gg: AeBDietOn3vAdUntZdZS+f7Fbt+KCMY2y96c/pQA6xGn4PNnrtBK6NGM+ki+yErIfVi
-	41LHLeVJoE8owFxDcMjUAmRqIqczFiIn9icU/744E1xRh53H2QqvGJUh8i0OpzCJ3BaY3DCbns3
-	gN3Z9h+oXsP41qrP+syr4CaweXloW5u5Zcd8kTc3ykOGi4/jpy3Ru8YfJqzCqM7yiIFN19fM5Rh
-	0uOQUZSiR6aaVp4RoCfu4gjurS7o1xXR2DDbVursxK3AG6o2BbOJpa0EMXn2nx26cgs7iuEgfjC
-	3wj/ZnY2MrMT3RztYeNih6M/8JKR63D+3hf0DMDj2ihiPdnVm6kqNyNCd0U6PnxbfXMGpJSSGEC
-	b9ckDuGIRayzJbNH4551GORmzJ+zjO5p8ZU96Tq0VHg9G4YCyPzx8xgUUpUuN21k=
-X-Received: by 2002:a17:907:c9a7:b0:b9f:1812:a496 with SMTP id a640c23a62f3a-ba41ac02cdcmr119862266b.36.1776434707293;
-        Fri, 17 Apr 2026 07:05:07 -0700 (PDT)
+        bh=s5MH/1iHqV8r8YEtFLFSgeqxDRAgy9f8KKojlnNFJyI=;
+        b=U4AYdU+/xz84vAzi3jlaFBUg2RkXJd9Ppib/Cnu9N/3C6nIGr89PlabIy9A2Y0bM72
+         9AAhApaqLUrx/wM7leMkEyAimC+i+Aj72IAnpUqGYDfeMU41KNRshS+y/3f4qRHl7J7a
+         KY9HRnh/NNVkOy76ngLVREmYnO0QgXGz8JhFq7yytzonGsuHhAlCs22KKbB/BAQvoZYs
+         kpbBKIEIebIMRwoUMGB49ocYkCG5H3BVANjmnyDOJGIQ/qfBS/ZCzOEpHGjvStQt5yyQ
+         pOzTlurMLskV+1OBTW7bjpPQv9D8SZAsTIczDBnQZJqU7k36Lz+PyYrKCSGari7funiV
+         utKw==
+X-Gm-Message-State: AOJu0YzqhqTqg91KUUaVFdVq32SKMAmoZg7tDhUIusGZAahXsdF8a/65
+	EbekfiklSZtfuog8ECOgBxrtwv7tR+qNaSjhN/d9z6yTKrj+UlgEix/eexURb5No+xc1PuWE2/a
+	mUL07bTz/il7Rqehqpg0QBxZFCUtFWqEiBSCm
+X-Gm-Gg: AeBDiesqXU2RB9Mv5XFepwCX+PApMo2/TgpERdd2eRg9r2CjfSepAa74Kld2Yvq/D+D
+	2ymivuSiCxNvy4M75w8F75EjKcLgUgdNtkmqDmDi5mMw/2znd3Q37SkCoemapKry/AONKNAES6T
+	VRl/qZgOJqUfvWjijxes3Z1sIXQaajN4hfP5w5KFlROuja9pkceD643MwsAb/RAHdT6n+2PKjSd
+	6N3OnGrlNyiNFONewKbCP+Cg6bN/vKoKhmj9n88KaqWBnvYK22/PPaxC1A2Sol7/mWw7SF4P1HI
+	XV8odkOSVx+PCKRa9exRj6sJpFIjUupvXxLH2fZxX37YHyu0T8IaN1sfeqdlaOr+oTTBG3VaUpW
+	UaQWCV0FHUkdHJBFFWa9JMkdYYUVgJYfO37dlCO0izoKB2mCLdEhAYRL46HrcKzE=
+X-Received: by 2002:a05:6000:4201:b0:43f:e7fa:a6f1 with SMTP id ffacd0b85a97d-43fe7faa7admr2131754f8f.24.1776434866424;
+        Fri, 17 Apr 2026 07:07:46 -0700 (PDT)
 Received: from smtpservice.6wind.com ([185.13.181.2])
-        by smtp-relay.gmail.com with ESMTP id a640c23a62f3a-ba454e2813fsm13434166b.76.2026.04.17.07.05.07;
-        Fri, 17 Apr 2026 07:05:07 -0700 (PDT)
+        by smtp-relay.gmail.com with ESMTP id ffacd0b85a97d-43fe4e26294sm112610f8f.19.2026.04.17.07.07.46;
+        Fri, 17 Apr 2026 07:07:46 -0700 (PDT)
 X-Relaying-Domain: 6wind.com
 Received: from stryper.dev.6wind.com (stryper.dev.6wind.com [10.17.2.5])
-	by smtpservice.6wind.com (Postfix) with ESMTP id 1CD351364D;
-	Fri, 17 Apr 2026 16:05:07 +0200 (CEST)
+	by smtpservice.6wind.com (Postfix) with ESMTP id 4B39B13655;
+	Fri, 17 Apr 2026 16:07:46 +0200 (CEST)
 From: Louis Scalbert <louis.scalbert@6wind.com>
 To: netdev@vger.kernel.org
 Cc: stephen@networkplumber.org,
@@ -71,9 +71,9 @@ Cc: stephen@networkplumber.org,
 	shemminger@vyatta.com,
 	maheshb@google.com,
 	Louis Scalbert <louis.scalbert@6wind.com>
-Subject: [PATCH net v4 0/4] bonding: 3ad: fix carrier state with no usable slaves
-Date: Fri, 17 Apr 2026 16:05:01 +0200
-Message-Id: <20260417140505.3860237-1-louis.scalbert@6wind.com>
+Subject: [RFC PATCH iproute2 v2] ip/bond: add lacp_strict support
+Date: Fri, 17 Apr 2026 16:07:45 +0200
+Message-Id: <20260417140745.3861041-1-louis.scalbert@6wind.com>
 X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -83,106 +83,106 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi everyone,
+lacp_strict defines the behavior of a LACP bonding interface
+when no slaves are in Collecting_Distributing state while at least
+'min_links' slaves have carrier.
 
-This series addresses a blackholing issue and a subsequent link-flapping
-issue in the 802.3ad bonding driver when dealing with inactive slaves
-and the `min_links` parameter.
+In the default (off) mode, the bonding master remains up and a
+single slave is selected for TX/RX, while traffic received on other
+slaves is dropped. This preserves the existing behavior.
 
-When an 802.3ad (LACP) bonding interface has no slaves in the
-collecting/distributing state, the bonding master still reports
-carrier as up as long as at least 'min_links' slaves have carrier.
+In lacp_strict mode, the bonding master reports carrier down in this
+situation.
 
-In this situation, only one slave is effectively used for TX/RX,
-while traffic received on other slaves is dropped. Upper-layer
-daemons therefore consider the interface operational, even though
-traffic may be blackholed if the lack of LACP negotiation means
-the partner is not ready to deal with traffic.
+Signed-off-by: Louis Scalbert <louis.scalbert@6wind.com>
+---
+ include/uapi/linux/if_link.h |  1 +
+ ip/iplink_bond.c             | 25 +++++++++++++++++++++++++
+ 2 files changed, 26 insertions(+)
 
-This patchset introduces an optional behavior, widely adopted across
-the industry, to address this issue. It consists of bringing the
-bonding master interface down to signal to upper-layer processes
-that it is not usable.
-
-This patchset depends on the following iproute2 change:
-ip/bond: add lacp_strict support
-
-Patch 1 introduces the lacp_strict configuration knob, which is
-applied in the subsequent patch. The default (off) mode preserves
-the existing behavior, while the strict mode (on) is intended to force
-the bonding master carrier down in this situation.
-
-Patch 2 addresses the core issue when lacp_strict is set to strict.
-It ensures that carrier is asserted only when at least 'min_links'
-slaves are in the Collecting/Distributing state.
-
-Patch 3 fixes a side effect of the second patch. Tightening the carrier 
-logic exposes a state persistence bug: when a physical link goes down, 
-the LACP collecting/distributing flags remain set. When the link returns, 
-the interface briefly hallucinates that it is ready, bounces the carrier 
-up, and then drops it again once LACP renegotiation starts. Fix by
-resetting Collecting and Distributing state as soon as the link goes
-down.
-
-Patch 4 adds a test for bonding lacp_strict both modes.
-
-Changelog:
-
-v3 -> v4
-  - Rename the configuration knob to lacp_strict on/off instead of
-    lacp_fallback legacy/strict.
-  - Patch 1: change the command documentation accordingly and wrap
-    text at approximately 75 columns.
-  - Use "usable" wording instead "valid" for LACP Collecting /
-    Distributing state in code and commit log.
-  - Patch 2: test collecting and distributing state regardless of
-    coupled_control
-  - Patch 3: Reworked because removing the SELECTED flag was not
-    compliant with 802.1AX. Instead, to transition to the WAITING state
-    on port disabled, except when already in the DETACHED state.
-    And remove Collecting and Distributing state in WAITING state.
-  - Patch 4 is removed. It was a fix for patch 3 but it is no more
-    needed since patch 3 was reworked.
-  Link: https://lore.kernel.org/netdev/20260408152353.276204-1-louis.scalbert@6wind.com/
-
-v2 -> v3
-  - Add an initial patch introducing the lacp_fallback configuration
-    knob (no behavior change yet).
-  - Patch 2 (was patch 1 in v2): apply the new behavior only when
-    lacp_fallback is set to strict, and re-evaluate the bonding
-    master carrier when the setting changes.
-  Link: https://lore.kernel.org/netdev/20260325134439.3048615-1-louis.scalbert@6wind.com/
-
-v1 -> v2
-  - Patch 1: split a comment line that exceeded 80 characters.
-  - Move the change from patch 2 in __agg_ports_are_ready() into a third
-    patch, as it is actually a side effect of the fix introduced in
-    patch 2.
-  - Patch 2: Expand the commit message and add a code comment describing
-    the change in ad_port_selection_logic().
-  - Patch 3: Check the READY_N flag only on ports in the WAITING state,
-    rather than on all enabled ports. This more closely matches 802.3ad.
-  Link: https://lore.kernel.org/netdev/20260316131838.3257889-1-louis.scalbert@6wind.com/
-
-Louis Scalbert (4):
-  bonding: 3ad: add lacp_strict configuration knob
-  bonding: 3ad: fix carrier when no valid slaves
-  bonding: 3ad: fix mux port state on oper down
-  selftests: bonding: add test for lacp_strict mode
-
- Documentation/networking/bonding.rst          |  23 ++
- drivers/net/bonding/bond_3ad.c                |  28 +-
- drivers/net/bonding/bond_main.c               |   1 +
- drivers/net/bonding/bond_netlink.c            |  16 +
- drivers/net/bonding/bond_options.c            |  27 ++
- include/net/bond_options.h                    |   1 +
- include/net/bonding.h                         |   1 +
- include/uapi/linux/if_link.h                  |   1 +
- .../selftests/drivers/net/bonding/Makefile    |   1 +
- .../drivers/net/bonding/bond_lacp_strict.sh   | 299 ++++++++++++++++++
- 10 files changed, 397 insertions(+), 1 deletion(-)
- create mode 100755 tools/testing/selftests/drivers/net/bonding/bond_lacp_strict.sh
-
+diff --git a/include/uapi/linux/if_link.h b/include/uapi/linux/if_link.h
+index 2037afbc..fadcb57b 100644
+--- a/include/uapi/linux/if_link.h
++++ b/include/uapi/linux/if_link.h
+@@ -1537,6 +1537,7 @@ enum {
+ 	IFLA_BOND_NS_IP6_TARGET,
+ 	IFLA_BOND_COUPLED_CONTROL,
+ 	IFLA_BOND_BROADCAST_NEIGH,
++	IFLA_BOND_LACP_STRICT,
+ 	__IFLA_BOND_MAX,
+ };
+ 
+diff --git a/ip/iplink_bond.c b/ip/iplink_bond.c
+index 714fe7bd..7ee29175 100644
+--- a/ip/iplink_bond.c
++++ b/ip/iplink_bond.c
+@@ -87,6 +87,12 @@ static const char *lacp_rate_tbl[] = {
+ 	NULL,
+ };
+ 
++static const char *lacp_strict_tbl[] = {
++	"off",
++	"on",
++	NULL,
++};
++
+ static const char *ad_select_tbl[] = {
+ 	"stable",
+ 	"bandwidth",
+@@ -155,6 +161,7 @@ static void print_explain(FILE *f)
+ 		"                [ ad_user_port_key PORTKEY ]\n"
+ 		"                [ ad_actor_sys_prio SYSPRIO ]\n"
+ 		"                [ ad_actor_system LLADDR ]\n"
++		"                [ lacp_strict LACP_STRICT ]\n"
+ 		"                [ arp_missed_max MISSED_MAX ]\n"
+ 		"\n"
+ 		"BONDMODE := balance-rr|active-backup|balance-xor|broadcast|802.3ad|balance-tlb|balance-alb\n"
+@@ -168,6 +175,7 @@ static void print_explain(FILE *f)
+ 		"AD_SELECT := stable|bandwidth|count\n"
+ 		"COUPLED_CONTROL := off|on\n"
+ 		"BROADCAST_NEIGHBOR := off|on\n"
++		"LACP_STRICT := off|on\n"
+ 	);
+ }
+ 
+@@ -188,6 +196,7 @@ static int bond_parse_opt(struct link_util *lu, int argc, char **argv,
+ 	__u32 packets_per_slave;
+ 	__u8 missed_max;
+ 	__u8 broadcast_neighbor;
++	__u8 lacp_strict;
+ 	unsigned int ifindex;
+ 	int ret;
+ 
+@@ -417,6 +426,13 @@ static int bond_parse_opt(struct link_util *lu, int argc, char **argv,
+ 				return -1;
+ 			addattr_l(n, 1024, IFLA_BOND_AD_ACTOR_SYSTEM,
+ 				  abuf, len);
++		} else if (matches(*argv, "lacp_strict") == 0) {
++			NEXT_ARG();
++			if (get_index(lacp_strict_tbl, *argv) < 0)
++				invarg("invalid lacp_strict", *argv);
++
++			lacp_strict = get_index(lacp_strict_tbl, *argv);
++			addattr8(n, 1024, IFLA_BOND_LACP_STRICT, lacp_strict);
+ 		} else if (matches(*argv, "tlb_dynamic_lb") == 0) {
+ 			NEXT_ARG();
+ 			if (get_u8(&tlb_dynamic_lb, *argv, 0)) {
+@@ -642,6 +658,15 @@ static void bond_print_opt(struct link_util *lu, FILE *f, struct rtattr *tb[])
+ 			   "all_slaves_active %u ",
+ 			   rta_getattr_u8(tb[IFLA_BOND_ALL_SLAVES_ACTIVE]));
+ 
++	if (tb[IFLA_BOND_LACP_STRICT]) {
++		const char *lacp_strict = get_name(lacp_strict_tbl,
++						 rta_getattr_u8(tb[IFLA_BOND_LACP_STRICT]));
++		print_string(PRINT_ANY,
++			     "lacp_strict",
++			     "lacp_strict %s ",
++			     lacp_strict);
++	}
++
+ 	if (tb[IFLA_BOND_MIN_LINKS])
+ 		print_uint(PRINT_ANY,
+ 			   "min_links",
 -- 
 2.39.2
 
