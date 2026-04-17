@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E5BD2F5A12;
-	Fri, 17 Apr 2026 02:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16586306B37;
+	Fri, 17 Apr 2026 02:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776393651; cv=none; b=f8KwL9iMoLImYYMc7XbTSZXS9N2CS8MQWjv2/JOYsuU3xe0kkYw9W0pHBxJdej4OrdJ8bUGZG8M03AK25Z3UOes4sn4cavpFqsnxsCdF2yHFZ3mPUgPUUnFvAV/oncFTZSXN+iqgG7mEs3OcO7J3mxXaDLJVu+JjnqwfPn3fLsQ=
+	t=1776393652; cv=none; b=lcsm5rffj9Z2YgLiClMl5TPVnaOiM2NTzIpaSYx+Wzq2vYKxAPB8YPFbhdakmF9zBYDHNSouPU8u4zTDR29NLoEC4RrfGYnpimHFmcM3YQhF76eMp0AvtysYQIFTqwWWW4chuIuq60myHg2DZ13pYWwib/1vnPQH3zTKsWcOjPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776393651; c=relaxed/simple;
-	bh=RE8pXUNFnXrfp8k86oykmMdq+NuDocEHXqwp95teTlA=;
+	s=arc-20240116; t=1776393652; c=relaxed/simple;
+	bh=kffito/ls8Hc9Kh2cCr8+omLT/wvGSLzVyFGXK9VvBE=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=AbJ0V7JK257jGqOmnuWUlc7dAf7PHNdPZCXSCKCTK3nqjiuiT4YOrL4yHSxcL+N+HJKTQbuPObrJAqUU3EQNj1LH52kpkhS1gjTLFPA907k8ZdT63ogfC4EAPHQqcj+82f8mVuFFuR73xt3jMm1mcRPTAHg0NVVSMZKmYOqBG48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nziXgXAE; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=e5OhkVfDxEmWHXR9TusOPZlPE7mBAlmZe9SEFQnfg7BVRmSKRuxsrUu9UMVtw6HT/UUwYmpIQWSS6gwoZds0okaSg45J0xVOANbHwhyvnXIjnA3QeYmIawzaeCFD309VC0z3y+cSoDMJLU8K6081OA5EKFGZ1vxxSaaBMhGMlAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k297crOu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nziXgXAE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8597C2BCB3;
-	Fri, 17 Apr 2026 02:40:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k297crOu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA9B5C2BCAF;
+	Fri, 17 Apr 2026 02:40:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776393650;
-	bh=RE8pXUNFnXrfp8k86oykmMdq+NuDocEHXqwp95teTlA=;
+	s=k20201202; t=1776393652;
+	bh=kffito/ls8Hc9Kh2cCr8+omLT/wvGSLzVyFGXK9VvBE=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=nziXgXAEDrvVDkLZpvE+XxCZTTZKH/M0cgCTyVUSO2ln2j+DlzcbyJsIwyuZpEsDG
-	 vcgOQCkJO2fjQFNwe5nJ1v/9IAxyVfVAfW4M9mu2CiDbNdVUDR4T+dZwoE/H70UgNG
-	 mYC7Zy6zrfRPTI0J+S65v+riyW9x20dQKieQc4KgHT2t1BUOjmfSG/ibHXyuciyc9+
-	 peqUsTXW95O8TlCI783Pmcvmgh6OHrgpE6u/kkCz/vpfAA7c5fOpxX07BCI/8d5/TF
-	 pLH1TcwabVr46cyJb2FzLu75ShiMqGTXUjgSdulYkca5q/GJwwuA1cWX6NvjxgoBUi
-	 hvPtDEWqVDNAA==
+	b=k297crOuxcE5Y0y03Ai9pnJcVPliSpZIm8E8ddIz+uw+ubMcZf1IgGyDtfKQ5njx0
+	 2mT9VxPYILB/XwM21PDWMu04TBCpRCntQMI9BtiGLtze6BGzfRg+Dq4lc/WCi/4URz
+	 CNAXmEOpElCtCeOkqt1vYbmrmFZcKb9Ujx4oOuYmUzi2/8QlKmvVnjUJtF4iBxg2GU
+	 HlqBwj9htEDAHmZ48dWSfdlkGzvFUQOeekyqVZ+AEpPSrYOC4nwydjCUqC9BQRPQm7
+	 muJKOZWyCjY3fLQubJugxAqZH5GveKO5y5dtcvk/B9v/PUODx+JjLq1qrmBnjMrnXM
+	 5k1tngsabNVMQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02CE6380AA76;
-	Fri, 17 Apr 2026 02:40:20 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FC01380AA76;
+	Fri, 17 Apr 2026 02:40:21 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,45 +37,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 net 0/2] net: enetc: fix command BD ring issues
+Subject: Re: [PATCH net] selftests: net: add missing CMAC to tcp_ao config
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177639361854.3490984.12957233652551599024.git-patchwork-notify@kernel.org>
-Date: Fri, 17 Apr 2026 02:40:18 +0000
-References: <20260415060833.2303846-1-wei.fang@nxp.com>
-In-Reply-To: <20260415060833.2303846-1-wei.fang@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, chleroy@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+ <177639362004.3490984.2914709149470297319.git-patchwork-notify@kernel.org>
+Date: Fri, 17 Apr 2026 02:40:20 +0000
+References: <20260416010439.1053587-1-kuba@kernel.org>
+In-Reply-To: <20260416010439.1053587-1-kuba@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, shuah@kernel.org,
+ fw@strlen.de, antonio@openvpn.net, matttbe@kernel.org, phil@nwl.cc,
+ linux-kselftest@vger.kernel.org
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 15 Apr 2026 14:08:31 +0800 you wrote:
-> Currently, the implementation of command BD ring has two issues, one is
-> that the driver may obtain wrong consumer index of the ring, because the
-> driver does not mask out the SBE bit of the CIR value, so a wrong index
-> will be obtained when a SBE error ouccrs. The other one is that the DMA
-> buffer may be used after free. If netc_xmit_ntmp_cmd() times out and
-> returns an error, the pending command is not explicitly aborted, while
-> ntmp_free_data_mem() unconditionally frees the DMA buffer. If the buffer
-> has already been reallocated elsewhere, this may lead to silent memory
-> corruption. Because the hardware eventually processes the pending command
-> and perform a DMA write of the response to the physical address of the
-> freed buffer. So this patch set is to fix these two issues.
+On Wed, 15 Apr 2026 18:04:39 -0700 you wrote:
+> Recent changes to crypto and wifi made CMAC no longer
+> selected by default on x86 and tcp_ao needs it.
+> Add the missing config.
+> 
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+> CC: shuah@kernel.org
+> CC: fw@strlen.de
+> CC: antonio@openvpn.net
+> CC: matttbe@kernel.org
+> CC: phil@nwl.cc
+> CC: linux-kselftest@vger.kernel.org
 > 
 > [...]
 
 Here is the summary with links:
-  - [v2,net,1/2] net: enetc: correct the command BD ring consumer index
-    https://git.kernel.org/netdev/net/c/759a32900b6f
-  - [v2,net,2/2] net: enetc: fix NTMP DMA use-after-free issue
-    https://git.kernel.org/netdev/net/c/3cade698881e
+  - [net] selftests: net: add missing CMAC to tcp_ao config
+    https://git.kernel.org/netdev/net/c/82c21069028c
 
 You are awesome, thank you!
 -- 
