@@ -1,64 +1,62 @@
-Received: from mail-ej1-f100.google.com (mail-ej1-f100.google.com [209.85.218.100])
+Received: from mail-ed1-f100.google.com (mail-ed1-f100.google.com [209.85.208.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2124432AADE
-	for <netdev@vger.kernel.org>; Fri, 17 Apr 2026 14:05:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 424202D7DC6
+	for <netdev@vger.kernel.org>; Fri, 17 Apr 2026 14:05:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776434711; cv=none; b=HRENe2gf2Fl6CdiKwuKzevPMt0YS8fgBC2/NSaRChZwyHAs7PMcbIMKableR1rY3Zw1w6wketTqFmy1RO122+7+KUsFTHJ5TOLiy2P6+LY2ksR7+gcTcO0oPFfZjVjF3Oyytsyhk0ThCAt7QkvYolEf9WJoEqmVu4Qa4LwTkynA=
+	t=1776434711; cv=none; b=Ua939uorhZUPBO2ACxlKJm9alScMsi1g3xoBDQK3Bo5Ta5h3d3wGhw/rfUSzT/TFHTb33tsOgW//xEvUGFU3yPEC8UubTeBYq1OlaBriHhVOAvhfsmjal7+QzW2UE2Dj6kMnQlS0q+339YPYODUzFnYiIGXKnGNfeThGttq8LFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1776434711; c=relaxed/simple;
-	bh=yh0OrZzWAlIPWv5o3va9W/qhxUusMuFRFsSEW7wKPNc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qFxeb8XiQROzjqaBlCLj6P24nFVYQDHv1HkNYLMJLxUYrLMP4+75unypgTLfTV+VP+jKTWNqYMCokpjsfMJoyjJvjzwsONWQz6KqCTyGjNGxRzq3HioQqMH17lT+abE6r/YyD5th8I/qrV6xlrWLGLf7twDbYhzrVd4amEaU4zU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=fdvZqWUC; arc=none smtp.client-ip=209.85.218.100
+	bh=8gf2bXFYik4CReIzMQ4zAC5OXHtzgCN5M+F0QoG0zKQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sAnl+vkAiLNEKa8cGOEX9L7R+cqSEByduzo/K+di9r32KVG40AdvUTaZcXSi6bCX/yKtYSXgBHtmRxG+5HlSyp9xzByt+PppeSfzfzg0/dRjFm/AMza9VpWvfO0p/LCJ+E84Uv+96lsY/XvfXHfUZrM6iRM6UFTNLYMmTLP1/ag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=HDzJXT8v; arc=none smtp.client-ip=209.85.208.100
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="fdvZqWUC"
-Received: by mail-ej1-f100.google.com with SMTP id a640c23a62f3a-b9c603ec2dfso103588066b.1
-        for <netdev@vger.kernel.org>; Fri, 17 Apr 2026 07:05:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="HDzJXT8v"
+Received: by mail-ed1-f100.google.com with SMTP id 4fb4d7f45d1cf-671dad7cac8so1116857a12.0
+        for <netdev@vger.kernel.org>; Fri, 17 Apr 2026 07:05:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=6wind.com; s=google; t=1776434707; x=1777039507; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QmyeYZnaYawcjxcGUJxFoiDCk62gW76hdmXLKmPV6bM=;
-        b=fdvZqWUCyCmHikTC75Mw8szid30PfgwrOobhKA1j81bVYsp97nRW+IkhFAatbiT84j
-         4dcyB4cm1SGD/XZ3/L5OeXqJyh0SYVa8rGqS9or8MocqmOxw2D7VUHZWWLoR4G9RRjoA
-         Oqcs4mdyBGh/T0GBssu7BXfE0ecgOyCfpnCwZj3i8agvvwy56zbcQ65STmUioKbRuZJu
-         hLV4TStNCAO4RPtw3Kr9Fr6R2mqU/BR9S1det6uH5oYkX4hvbkfkWEj84+mgZuetrxAT
-         6vrV31og0oLJblbIjX28F4zkPB3JRHt5fA7yDj5Alf3Mm6lyNK8ndQEERkrvQKxVj1xI
-         kEpA==
+        d=6wind.com; s=google; t=1776434709; x=1777039509; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=jdlhv0+MMf+afk0WQf+9d4l/m6rjbKwKx66KpbNgDuc=;
+        b=HDzJXT8vbGbAYTBU68qakuKp+LSeSwiwCoGohjn3h0crH4zSW1LCT9QEp8MkOR7+d7
+         cJeTKujfAwirlzVnQ9Lf3L23xwzZZQa19xFaFO0fWtd1ukkgTXpJ+YSS8IzOyzBShQQx
+         OKaFKCBE0w64uA26igcV300OLrPk0mq+0vdU3Woc6YkW9j25OX4mOtJMqDS2h8P41vNO
+         lr1T127uYxQAykK/V/g4TIf14l+FUhuLtd9TMK602u7WdMY1lvK1KY6pGj99Om+x39Rh
+         tk9Lbpqk75eblbfNYXPKQhW0AzY8Z+ixS1yclXda/lpquPfDj+5pFL/8OpzjXeMluey/
+         xSLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776434707; x=1777039507;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=QmyeYZnaYawcjxcGUJxFoiDCk62gW76hdmXLKmPV6bM=;
-        b=lmERAv+q9VQi16Sbzv8ShKzkO7jDCt0xBD+wFdzW1gKAk4aenXbDQ3jRnKBR2EYgUB
-         jbfuziDhKCx+I7I5IBOqCQ1w9qOMQOjYWIawN0CE7xVKaN2FfqYbf++fe7K1jPNBhqyj
-         /F9wwwNzLIZdCpiIfTaOgPN/g4WfaUNW2sZltbZeQ4j7pOIRQoYzKCt4sKGWbDDgPjGz
-         XPqm+KR8gSUgLwiLDDWHGtkKH4YPxG83NUcop0TGYJ/Ki85L5q59kPpQlpLfDzZJwmB9
-         gIa6uPtYViVaNMB6It8HjISVSeO2bcVA0+AzSRcMaKT7inCHTqlNwkAtcCws2ZL+LQGG
-         Xh3A==
-X-Gm-Message-State: AOJu0YwahyFuOJRayggct8Jtjm6Lvy2mlcc4L2UEcWoENPX9bY5e3DJ1
-	TwK9N2KNSI5tqmXpIObqZyz9FCxMKS8NLJ0T1s+Q3TNRgQWK6YSed56WhoDqneqjR6yw49MlD9y
-	nNz/eCwxq6Wgk+IJcgWSteDGGbrlt1oU0s/1R
-X-Gm-Gg: AeBDievF9adtPdGxE83QYTeZHod2EfO92whZpUACk8tsF419EO69UBek+vlR55eKruk
-	3TuCJ41CdmNftV98aHEs2/7peVgAE4kFbWMhbu8hbOf29wvGjbZ/LR3phYxAHptP42eSYpjCKUA
-	c/P9RU4aM1OIjDj8nynPY2GBMuZjawUzXXKcz4Qy0qUwbCWUbaIqZkRj/wQ8WasezxwlXCI5A65
-	cOsLoeoZZPtyxFZyHyN9MnhzbSP06fA8M1vNENIFgB2hcEWFVjRjP9lk3q+HlUQNykisspVtioi
-	CfeSqnKSo/v8T2lOhIXFy00w5eHnXAM1lcXq3nIuYF6hWhAqUz6h9ry9uSBhdCyjt81rz+48Yq6
-	bEPNCmRbfNmZL3tLzFPnfhBbpJqmXdGo2UXoi/cudNghXmuEszBZ+3vi33bfIYTQ=
-X-Received: by 2002:a17:907:934c:b0:b99:d2d9:da47 with SMTP id a640c23a62f3a-ba41828cb23mr158535466b.2.1776434707339;
+        d=1e100.net; s=20251104; t=1776434709; x=1777039509;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jdlhv0+MMf+afk0WQf+9d4l/m6rjbKwKx66KpbNgDuc=;
+        b=AdrfV8Jw7wfKs2DKhafNSJAgu97cRDJK10dOKsbFZZJoLcDuMGgrBWbxS3bZc46qXP
+         XJk44IYd53/IV1yhcmcN4O1tPmh3zHePKKyanqsWcbGMpSUihuWQOOUe0w6FX9YT+aXw
+         yaSkqD+kY+uy8mKo0iyGArG4PKozDEQP/RjjD//voTonJQv/cteO4fP/ZAAbI52MWDg4
+         5pM+G+SlpNMpTZvbgZeL+6NIZcIeusLtZUWiKxyxfvYMwQ/RK5EJsytuUa00PDJCFBKC
+         nqcekSuwSGv10upVW/CT+mksx0s6a6n0SGDFEH20fwFOXYOFbcN2D4addPrWnbOqZAb/
+         9fpw==
+X-Gm-Message-State: AOJu0YwLA8n8W3gimseTfFbo9EOi9cmEYjHzpkuyWGhqc67zCua3HzMq
+	vOU//4WR6KN96OrGeUl3g3hQuO1PoUTRRTh0zMiAEBCy0mss6c6FttkgI6aNK/UWes3epQzpEKZ
+	YxNBBXPXu9qMEiJ4ISsLQcT7NhGkKSkc3P/n3
+X-Gm-Gg: AeBDietOn3vAdUntZdZS+f7Fbt+KCMY2y96c/pQA6xGn4PNnrtBK6NGM+ki+yErIfVi
+	41LHLeVJoE8owFxDcMjUAmRqIqczFiIn9icU/744E1xRh53H2QqvGJUh8i0OpzCJ3BaY3DCbns3
+	gN3Z9h+oXsP41qrP+syr4CaweXloW5u5Zcd8kTc3ykOGi4/jpy3Ru8YfJqzCqM7yiIFN19fM5Rh
+	0uOQUZSiR6aaVp4RoCfu4gjurS7o1xXR2DDbVursxK3AG6o2BbOJpa0EMXn2nx26cgs7iuEgfjC
+	3wj/ZnY2MrMT3RztYeNih6M/8JKR63D+3hf0DMDj2ihiPdnVm6kqNyNCd0U6PnxbfXMGpJSSGEC
+	b9ckDuGIRayzJbNH4551GORmzJ+zjO5p8ZU96Tq0VHg9G4YCyPzx8xgUUpUuN21k=
+X-Received: by 2002:a17:907:c9a7:b0:b9f:1812:a496 with SMTP id a640c23a62f3a-ba41ac02cdcmr119862266b.36.1776434707293;
         Fri, 17 Apr 2026 07:05:07 -0700 (PDT)
 Received: from smtpservice.6wind.com ([185.13.181.2])
-        by smtp-relay.gmail.com with ESMTP id a640c23a62f3a-ba454e2813fsm13434266b.76.2026.04.17.07.05.07;
+        by smtp-relay.gmail.com with ESMTP id a640c23a62f3a-ba454e2813fsm13434166b.76.2026.04.17.07.05.07;
         Fri, 17 Apr 2026 07:05:07 -0700 (PDT)
 X-Relaying-Domain: 6wind.com
 Received: from stryper.dev.6wind.com (stryper.dev.6wind.com [10.17.2.5])
-	by smtpservice.6wind.com (Postfix) with ESMTP id 2B5841364F;
+	by smtpservice.6wind.com (Postfix) with ESMTP id 1CD351364D;
 	Fri, 17 Apr 2026 16:05:07 +0200 (CEST)
 From: Louis Scalbert <louis.scalbert@6wind.com>
 To: netdev@vger.kernel.org
@@ -73,12 +71,10 @@ Cc: stephen@networkplumber.org,
 	shemminger@vyatta.com,
 	maheshb@google.com,
 	Louis Scalbert <louis.scalbert@6wind.com>
-Subject: [PATCH net v4 2/4] bonding: 3ad: fix carrier when no usable slaves
-Date: Fri, 17 Apr 2026 16:05:03 +0200
-Message-Id: <20260417140505.3860237-3-louis.scalbert@6wind.com>
+Subject: [PATCH net v4 0/4] bonding: 3ad: fix carrier state with no usable slaves
+Date: Fri, 17 Apr 2026 16:05:01 +0200
+Message-Id: <20260417140505.3860237-1-louis.scalbert@6wind.com>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20260417140505.3860237-1-louis.scalbert@6wind.com>
-References: <20260417140505.3860237-1-louis.scalbert@6wind.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -87,84 +83,106 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Apply the "lacp_strict" configuration from the previous commit.
+Hi everyone,
 
-"lacp_strict" mode "on" asserts that the bonding master carrier is up
-only when at least 'min_links' slaves are in the Collecting_Distributing
-state.
+This series addresses a blackholing issue and a subsequent link-flapping
+issue in the 802.3ad bonding driver when dealing with inactive slaves
+and the `min_links` parameter.
 
-Fixes: 655f8919d549 ("bonding: add min links parameter to 802.3ad")
-Signed-off-by: Louis Scalbert <louis.scalbert@6wind.com>
----
- drivers/net/bonding/bond_3ad.c     | 21 ++++++++++++++++++++-
- drivers/net/bonding/bond_options.c |  1 +
- 2 files changed, 21 insertions(+), 1 deletion(-)
+When an 802.3ad (LACP) bonding interface has no slaves in the
+collecting/distributing state, the bonding master still reports
+carrier as up as long as at least 'min_links' slaves have carrier.
 
-diff --git a/drivers/net/bonding/bond_3ad.c b/drivers/net/bonding/bond_3ad.c
-index af7f74cfdc08..9cf064243d58 100644
---- a/drivers/net/bonding/bond_3ad.c
-+++ b/drivers/net/bonding/bond_3ad.c
-@@ -745,6 +745,21 @@ static void __set_agg_ports_ready(struct aggregator *aggregator, int val)
- 	}
- }
- 
-+static int __agg_usable_ports(struct aggregator *agg)
-+{
-+	struct port *port;
-+	int valid = 0;
-+
-+	for (port = agg->lag_ports; port;
-+	     port = port->next_port_in_aggregator) {
-+		if (port->actor_oper_port_state & LACP_STATE_COLLECTING &&
-+		    port->actor_oper_port_state & LACP_STATE_DISTRIBUTING)
-+			valid++;
-+	}
-+
-+	return valid;
-+}
-+
- static int __agg_active_ports(struct aggregator *agg)
- {
- 	struct port *port;
-@@ -2120,6 +2135,7 @@ static void ad_enable_collecting_distributing(struct port *port,
- 			  port->actor_port_number,
- 			  port->aggregator->aggregator_identifier);
- 		__enable_port(port);
-+		bond_3ad_set_carrier(port->slave->bond);
- 		/* Slave array needs update */
- 		*update_slave_arr = true;
- 		/* Should notify peers if possible */
-@@ -2141,6 +2157,7 @@ static void ad_disable_collecting_distributing(struct port *port,
- 			  port->actor_port_number,
- 			  port->aggregator->aggregator_identifier);
- 		__disable_port(port);
-+		bond_3ad_set_carrier(port->slave->bond);
- 		/* Slave array needs an update */
- 		*update_slave_arr = true;
- 	}
-@@ -2820,7 +2837,9 @@ int bond_3ad_set_carrier(struct bonding *bond)
- 	active = __get_active_agg(&(SLAVE_AD_INFO(first_slave)->aggregator));
- 	if (active) {
- 		/* are enough slaves available to consider link up? */
--		if (__agg_active_ports(active) < bond->params.min_links) {
-+		if ((bond->params.lacp_strict ? __agg_usable_ports(active)
-+					: __agg_active_ports(active)) <
-+		    bond->params.min_links) {
- 			if (netif_carrier_ok(bond->dev)) {
- 				netif_carrier_off(bond->dev);
- 				goto out;
-diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
-index d358b831df77..94b7b0851f16 100644
---- a/drivers/net/bonding/bond_options.c
-+++ b/drivers/net/bonding/bond_options.c
-@@ -1706,6 +1706,7 @@ static int bond_option_lacp_strict_set(struct bonding *bond,
- 	netdev_dbg(bond->dev, "Setting LACP fallback to %s (%llu)\n",
- 		   newval->string, newval->value);
- 	bond->params.lacp_strict = newval->value;
-+	bond_3ad_set_carrier(bond);
- 
- 	return 0;
- }
+In this situation, only one slave is effectively used for TX/RX,
+while traffic received on other slaves is dropped. Upper-layer
+daemons therefore consider the interface operational, even though
+traffic may be blackholed if the lack of LACP negotiation means
+the partner is not ready to deal with traffic.
+
+This patchset introduces an optional behavior, widely adopted across
+the industry, to address this issue. It consists of bringing the
+bonding master interface down to signal to upper-layer processes
+that it is not usable.
+
+This patchset depends on the following iproute2 change:
+ip/bond: add lacp_strict support
+
+Patch 1 introduces the lacp_strict configuration knob, which is
+applied in the subsequent patch. The default (off) mode preserves
+the existing behavior, while the strict mode (on) is intended to force
+the bonding master carrier down in this situation.
+
+Patch 2 addresses the core issue when lacp_strict is set to strict.
+It ensures that carrier is asserted only when at least 'min_links'
+slaves are in the Collecting/Distributing state.
+
+Patch 3 fixes a side effect of the second patch. Tightening the carrier 
+logic exposes a state persistence bug: when a physical link goes down, 
+the LACP collecting/distributing flags remain set. When the link returns, 
+the interface briefly hallucinates that it is ready, bounces the carrier 
+up, and then drops it again once LACP renegotiation starts. Fix by
+resetting Collecting and Distributing state as soon as the link goes
+down.
+
+Patch 4 adds a test for bonding lacp_strict both modes.
+
+Changelog:
+
+v3 -> v4
+  - Rename the configuration knob to lacp_strict on/off instead of
+    lacp_fallback legacy/strict.
+  - Patch 1: change the command documentation accordingly and wrap
+    text at approximately 75 columns.
+  - Use "usable" wording instead "valid" for LACP Collecting /
+    Distributing state in code and commit log.
+  - Patch 2: test collecting and distributing state regardless of
+    coupled_control
+  - Patch 3: Reworked because removing the SELECTED flag was not
+    compliant with 802.1AX. Instead, to transition to the WAITING state
+    on port disabled, except when already in the DETACHED state.
+    And remove Collecting and Distributing state in WAITING state.
+  - Patch 4 is removed. It was a fix for patch 3 but it is no more
+    needed since patch 3 was reworked.
+  Link: https://lore.kernel.org/netdev/20260408152353.276204-1-louis.scalbert@6wind.com/
+
+v2 -> v3
+  - Add an initial patch introducing the lacp_fallback configuration
+    knob (no behavior change yet).
+  - Patch 2 (was patch 1 in v2): apply the new behavior only when
+    lacp_fallback is set to strict, and re-evaluate the bonding
+    master carrier when the setting changes.
+  Link: https://lore.kernel.org/netdev/20260325134439.3048615-1-louis.scalbert@6wind.com/
+
+v1 -> v2
+  - Patch 1: split a comment line that exceeded 80 characters.
+  - Move the change from patch 2 in __agg_ports_are_ready() into a third
+    patch, as it is actually a side effect of the fix introduced in
+    patch 2.
+  - Patch 2: Expand the commit message and add a code comment describing
+    the change in ad_port_selection_logic().
+  - Patch 3: Check the READY_N flag only on ports in the WAITING state,
+    rather than on all enabled ports. This more closely matches 802.3ad.
+  Link: https://lore.kernel.org/netdev/20260316131838.3257889-1-louis.scalbert@6wind.com/
+
+Louis Scalbert (4):
+  bonding: 3ad: add lacp_strict configuration knob
+  bonding: 3ad: fix carrier when no valid slaves
+  bonding: 3ad: fix mux port state on oper down
+  selftests: bonding: add test for lacp_strict mode
+
+ Documentation/networking/bonding.rst          |  23 ++
+ drivers/net/bonding/bond_3ad.c                |  28 +-
+ drivers/net/bonding/bond_main.c               |   1 +
+ drivers/net/bonding/bond_netlink.c            |  16 +
+ drivers/net/bonding/bond_options.c            |  27 ++
+ include/net/bond_options.h                    |   1 +
+ include/net/bonding.h                         |   1 +
+ include/uapi/linux/if_link.h                  |   1 +
+ .../selftests/drivers/net/bonding/Makefile    |   1 +
+ .../drivers/net/bonding/bond_lacp_strict.sh   | 299 ++++++++++++++++++
+ 10 files changed, 397 insertions(+), 1 deletion(-)
+ create mode 100755 tools/testing/selftests/drivers/net/bonding/bond_lacp_strict.sh
+
 -- 
 2.39.2
 
