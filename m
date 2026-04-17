@@ -1,25 +1,26 @@
 Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2122.outbound.protection.partner.outlook.cn [139.219.17.122])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D8B12E1F0E;
-	Fri, 17 Apr 2026 02:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 681F62E974D;
+	Fri, 17 Apr 2026 02:45:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.122
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776393945; cv=fail; b=mosrzSINLG5FOKcE5+CCmqDb+b3DOQ1XTrrBdx74wYRqQfBXvTys7HLc3EYeoIPltRU2dd+AI0dduexNy8VylLrw+cbtMmOi2v1CyC7koAPHzDroPp8Liu7qzknJj+qnZX36JfB1/6VIOCfuquxYFOdrah+6weKcJdA6d+57mak=
+	t=1776393948; cv=fail; b=h88fmVUBKH01FZBc8BZQKc+yRmX5hTfJq6oeAh4kB5lEJgL+r60jlB26dZhLb4AsVjjqDtXGq0fvL5I94W09g8h4qPDtaGKYTiUQAMCOw1x0QF/08iuQKEpycT7GS7sgRSKF0fWatpZNIt8VCeQDpAfBELlveR6KryxQhK9gL9c=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776393945; c=relaxed/simple;
-	bh=NyjLV19G4YQvvOPwV3x8TmP5XaI+Lw7S8lHprIgKxvU=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=F9vdK8KMitsVr1fHeQAL9Dn7+VxSUDkbnl/gWhPdaTRAiFR/O7QixbUGO56aifcBkA0MGX9vJln/53w6TnnaqynSuR/R/qb3mLuobiir2T4825quPUWZFlgWjt3GhouRcFZOtPReCvZWhuWCGKxLSrHFQxply2dPJmXlTd82Mq4=
+	s=arc-20240116; t=1776393948; c=relaxed/simple;
+	bh=ggjKTF7N9fsgOOiS7qxcDAifh9tB2C0qx2GJeBMV5vg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ZiLA0DW92gyd51aZedC54szxzS4qZDhvKghjPQbFBKgXSov7GkmPndciw4Jg77s9Z/BhHSwSUMx47f8ku4Ca9dAKXltE0CSq4rnMqljmsfhtq9XOsAs1AfyL5XIfw2XTHeo7MK4/Z5qPh7hSWynor3SlvN6L0Q8l1Ec+GjP8BsM=
 ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.17.122
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=l5of0svGxnkX9xQ2qq5HLRBnr3RFHk2T1uCeML39uqSs0lMy6bHMdC/dHpLtXaru4IoZc5Hn8fOPslsBmVLBZ4MNq5+mlQc8gpnNjl/uAJvF92yIQV2L2zY2A3Z8LrX5jMtPYRMpTYZOZ7uNBKjkhmIaKwSK3froZVRQke/lTI5Laj6hqYvic5QnoguuTUDjTsTaGuTH4JSIucISJzZ1Bhv6EUbm5VWxefLscXPFE+JYknwBooWP/sJ3F6y283Z5B71To2bFsKRMGSMMF/UI0V0V920y1U67ac7ldIpvZ8TN+Jcui1SudXE/uZHu7eIsQuzwGafeYXWJpZPluubSmw==
+ b=nVaLNUsZzLQQcuOx4oLdYivX+1JXkecwdYJn+zIcpaHp1seZD7/h5Rty0/4M4OQbXuRV61GLyyV7CFjkUXWLCCBsduxfGrWBjDgE6h54YQUJ/HXebJaLxIZmTtBE7bkf/5l3DZ97fbzQgjVwh+zd9VGKmSu8cFx5J0RRxLzIGdMRCF7NqivZwZg/NLGUIt7Um82upLKFMFAjdv0+PRRjLqwj//j3Wji6qYcjgVEheLa8M9qvbtPgxescGdgLQFpBrxg3S54H98f+uwQ3nXcJs/uxjL8vFyBBsXeftgsuhluVLXgEhYlJiKc5d5eadmsFuqpOrbJqdXGWuLzInFpJXg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eBS+dVk8fjPlFaPGiBV3bi2ohi1pudGFfBYThY4spvA=;
- b=ez1xc6W8EYDtK4XpQEijfbsrelAD+uheLDq3zq3fkUsbfu40VH5ahPD05Z7D+H3wcejK56h//hcR3lBvMAyhDw77Pxt5e58Zkeu+vpgV1drqadLCSHX+MzWoKUQs1WvPxvPVYFa98cFTftnf85v6m5lzlpFgthw8Rvw7cAuuO4FY/sLtArNrCn80UHXzcnPTBkxDAAiEE6xOtZsdJ9caoSlwQ6WYBdzc/qvTQBrMnkWh1E+oycd96JUuwt3kAq3HjWUiDNmsGiyvKjIyR/FzpvL6C6YSZkxZnYFznVKSksIvmz4v5hfgsKrP+7Iin9gu5Y/7lI94K9ktl5EsAb/SSA==
+ bh=coqlAB+uNol3k5Z0v3akqjmQJM/eqv4ACGEOiujkLKY=;
+ b=QsCY6vI15FSukePg+4YMfPFrvfZMvqSwwJ+TrPcTaQOP6EZyNK/tCmSEcpVYOJSbjil7UrvvCq54mX9+GhjKdm9x0A+RsoOYwCHvdhb0eoUOY5LgUVPCS/YiRM/EYO6sKwO6vgua1lXq9F86U8PLqR8MWE95WKAA9r71/IbsokYCU2yIPqT3XNngrORaoYEL/1jTPBZk6+jAWt+V7+36/Tn/+CiiNtIS6DGptSjeXZ4ofWai7MIVqG1sFO+kjyD3s8lNHS9h7AKa6QGfcgcEwJc1il21momRFdlry4/35F7xfhHc38KFcYe3kFDRSO8uBusDFXAmgnslajuHQpwtBQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=starfivetech.com; dmarc=pass action=none
  header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
@@ -29,11 +30,11 @@ Received: from BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn
  (2406:e500:c211:18::12) by BJXPR01MB0517.CHNPR01.prod.partner.outlook.cn
  (2406:e500:c211:14::14) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.48; Fri, 17 Apr
- 2026 02:45:32 +0000
+ 2026 02:45:34 +0000
 Received: from BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn
  ([fe80::e2de:92aa:4c1c:a829]) by
  BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn ([fe80::e2de:92aa:4c1c:a829%6])
- with mapi id 15.20.9769.046; Fri, 17 Apr 2026 02:45:31 +0000
+ with mapi id 15.20.9769.046; Fri, 17 Apr 2026 02:45:34 +0000
 From: Minda Chen <minda.chen@starfivetech.com>
 To: Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -51,10 +52,12 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-stm32@st-md-mailman.stormreply.com,
 	devicetree@vger.kernel.org,
 	Minda Chen <minda.chen@starfivetech.com>
-Subject: [net-next v2 0/5] Add StarFive JHB100 soc SGMII GMAC support
-Date: Fri, 17 Apr 2026 10:45:18 +0800
-Message-Id: <20260417024523.107786-1-minda.chen@starfivetech.com>
+Subject: [net-next v2 2/5] dt-bindings: net: starfive,jh7110-dwmac: Add JHB100 support
+Date: Fri, 17 Apr 2026 10:45:20 +0800
+Message-Id: <20260417024523.107786-3-minda.chen@starfivetech.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20260417024523.107786-1-minda.chen@starfivetech.com>
+References: <20260417024523.107786-1-minda.chen@starfivetech.com>
 Content-Type: text/plain
 X-ClientProxiedBy: ZQ0PR01CA0036.CHNPR01.prod.partner.outlook.cn
  (2406:e500:c550:2::20) To BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn
@@ -67,98 +70,145 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: BJXPR01MB0855:EE_|BJXPR01MB0517:EE_
-X-MS-Office365-Filtering-Correlation-Id: 081fd850-ce8b-4d7a-d2f1-08de9c2b647e
+X-MS-Office365-Filtering-Correlation-Id: 0c6dec3b-322e-4196-64ce-08de9c2b65e7
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|52116014|921020|56012099003|18002099003|38350700014;
+	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|52116014|921020|56012099003|22082099003|18002099003|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	GyvhqVQxVUpxbqiEmEk+qKfQEbHgHfwP6kPhTlJPMD/O+jnya17a9htcEUGI8MtWXYdxXf5ERZZqxWUv24OZu5w48W6BaXFbRK19aDsrAQi3BfKA/rKCxKh4PMAP0LbQQ4dig1CjWucJW7t9ek/1k1kF/zvCc8dwp7RfaSlhsBFZHoEsTcII/O0SSuOXiGU3yAmGmYV6UAuxNpzDu8rsiLXuXTl7avjr0s3y49B28FkRrHUhAvnveTUErFtEHiJmp/vnsTpnk6r2FVh7O8c6NrWkIlViuDYxpfiq6k0cY5aC52WN7nEPFxNoXZFQDeSdsL+mTdn8hc9crZtq3pwnakN4xN2K4xc4AKkiA36gpDVkDtaVqUwwzW2z+A3gqmpgkpaTUcLItKQ/dkwQIQLq6v4/fgi8QcocEGfOtifpxgfkWSozswvtrC7ra6oL3/Z67ORbWCo3hVGHlnJxVHE+ME8gWvV4WSyuMA5k7EuwTJ8z88tCtcipMrOiT/t4qXDnaOkAjgF3xh5g4TjiOzoTOHbhR7ZHfM4FEm4FH+Q79o35rpL+EelnI0V/9wOh6Ay9eNUu07zbw41I9t7+ntWUtNe7Fx01Ol4OJbXil8RV8WU=
+	1Gzmw+cm+uxmy7n9RfGoh/YVDW6eAOYFXamLmL75Om/HT52JS9MxjlU2nAN5oynAqA9PKNUiEMXpkpaxVrJFR2760CyPQ7lan3x0F3oGLixmafJC3Eu8Upje+D1H9zV2EM/WW2mZ00n8TEr1i34ySV/qq/t9VDBx2qxW5y9UIK20qALduTy5X9HVCTG2Xq/W6DEhc2/4uat7APpi7b4jeetK303E8bzaIGWTMjFKvXLkfmrNRzoTvNvbcu6qTmrxm8jg+dlKr42vEOWC0mpBgFHfGzxf0C2ptlP7ndqIH0Hudh1nroxMmTOeR8V8IAYzfyOuv8EfKAppQqRRxhtk7DXmB4CTdhcyHiqc4BRZPQiDLdOYftScf697v5fuq9+e9vJWwfwv+qHvsugUQMCtAVLS6ZFL3/1F1nPdCb7RrKSsPzVUioNz18bQHp392onq8fjoSxhIkU5wiY3ms0BDzUCDLdG0TZNFA8OeiKr6Trf4fhGh34kyexs/iXCOQzAHrRwZGBhVWG9rGijsDL7/OxHRavO4nb53j1JV1urOf1g0RYoz5GVRREvlgMfzlSr+/nt7YxTYPlZXOVcNktukqAMlq1HBzLR/qY8BjvkrkKc=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(52116014)(921020)(56012099003)(18002099003)(38350700014);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(52116014)(921020)(56012099003)(22082099003)(18002099003)(38350700014);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?F63uixmKcd4K+QLiNWLdhhxy8OMo/ZTl2NJjg44OxrLX+Ek7hUHVnSvuBS3P?=
- =?us-ascii?Q?LIJW9rVAFCtWF0muBD7ipk0EbiNCd14DFX6SHocyyYoEODpUdUFlNq0ivjc5?=
- =?us-ascii?Q?7Xg2H0gm71zHkExIF1ouojYVHVHMNID/shUWswZPvE9RsdV7OR5raOtslwmU?=
- =?us-ascii?Q?TYdMYsMVUdEA5V3ueSb/2UBn0SxvHhDZeU0H9MEkrsgi9z8lWatD6iag57GN?=
- =?us-ascii?Q?aIOiV9imlG07TvcvAbzBmZ1atJbyawfD/oJFghbKyrsuedLio9PSsqhdYbs1?=
- =?us-ascii?Q?wBBXcKQr+EROGIZ2MWrsrw8/pjoWewiaq8k6vc6LYwzzGXbZoj0pVLE10nqc?=
- =?us-ascii?Q?sKokS3tQL9m3dwroEPXwMQ8t7dFzSv0i/NUEVtM1hevmuI6FdNBCUJA0E7FZ?=
- =?us-ascii?Q?Spb0XFJfAOoEOs9vcYwsRSh/Zqd5QCnibRlJglKfaPZZ1QMlwXU3bUq1mqsP?=
- =?us-ascii?Q?YdPjtyQqe3cc0X71iCK6fsNcRYXHuCsyRiBxOWpQcqhbbLZwu0tXvpBXADOb?=
- =?us-ascii?Q?DoObOe6VJlhlvyPktDvJ7BxygCp53YprRyC/ei6XHdoCypfl63IuA9LoOE/f?=
- =?us-ascii?Q?XMO75bsOt4rryEKeafcq5ideryWhn3SVXqTtlHrXjno9ZEDD1m7P+sPSjfy8?=
- =?us-ascii?Q?KUhi3I0j+LU7+7KsD1BCxZuQBFhc+bYvDVQe7O+dX8pPLZjX+VPewvOEy87g?=
- =?us-ascii?Q?BFKgn/yfFQ17NDQMPvgTVHd7/Hgrt+CgyUpQhqZPJBTH/5BPe5K2qRvCI6h4?=
- =?us-ascii?Q?DvJph14fQyLxBo+IGnetbXd2ME+6xwBF6g1K4nhkvpwlzzUae4RM3WkqGqiT?=
- =?us-ascii?Q?nOouDA06vVw0+lpyf/OHRBsAxzqo8Sbv/JtQ1eudGx/CDg40PD8T2uisNBf9?=
- =?us-ascii?Q?nSrx7Jb29ieZ3Hcd3+mgDt5oclQxWMHKQG46eLSQXzebM553V3rcRZeK+6UW?=
- =?us-ascii?Q?98Tskr62yc7a7IdOQVvqonnyfj67nIRA5GzcX4m24KPJmHZtNriAXp8xRhei?=
- =?us-ascii?Q?LvltjsBQ46ZoVjbkGsfa+8m7LeFwlDvr7Nufc//RDT4m/7eDvxOkKev8tw5y?=
- =?us-ascii?Q?7KwIIC+7kwQTVW5oLQbiJwwFxumIY9qJtTj9ih3MQFyr1V62sxP/US3UzUwb?=
- =?us-ascii?Q?qN4Lk2uOGrChyEBa7j1tZgKVWPImUlpIHwxplOCYO7hYqmhBZf4gMgnuBHmI?=
- =?us-ascii?Q?VJ3vwRwKG0fWvPkBBxoSJ2V4tTOz5z8V7FnoRoHs3tiFbntcu09q4TKcY3mD?=
- =?us-ascii?Q?2wwrY18kv+/Pb1NgUWFo/Dr7E+fvIOcSUjZKzv3pCW12yRH2UdSBRRlDlfxy?=
- =?us-ascii?Q?FeEEYOx5YIjIcy/3pKAuM40pmBmTSNSZpvGQH6ZDuZEr93D4VI/ifGhpWS92?=
- =?us-ascii?Q?7vrcJnr4bumixWvaqQzIKyGL407SlN8G1MntCC6R7Y13q2DsVzVE2+CzNb/c?=
- =?us-ascii?Q?sEIi6LrHKpoKqt6iO91GL/8dsJnLMWfJuHGbGFFBepLOzI5h+Dfe59uKcAvw?=
- =?us-ascii?Q?CHRaATKLc/R3msRUqknKbzmA5c2ZSyrVLkBZJH3M4DFBDtlsns4gQB40Z6Uq?=
- =?us-ascii?Q?OH/OHD/J8FixokA0ppuG9K0bBSv9BMqU5eYAWjIlbpmDH9aNS+3YITLLIitm?=
- =?us-ascii?Q?qtUySYU2Qfum9a8UuvTxzRwPkzxdI3iMn05a5NR2ELgi0O15wpAtSjxHj3l6?=
- =?us-ascii?Q?2Kprk0z5LjcuWFTGNbmFhp9QHuLj4Uf4B0M9C60INfxPPEQtunc1gPbqDF5h?=
- =?us-ascii?Q?refai86e9k8wzDmOXe6SrbSmjTWM+iM=3D?=
+	=?us-ascii?Q?ymp+L2fmmTaNP5/X2CLmoDeDjRw+8eNCUw5UsBdBw4RWpSzyNt48pmm8K9SW?=
+ =?us-ascii?Q?74TAeOM3b4hLw8yrr/wOBu0tm1yzqV+geIW7oBMLA8VNgtqW6aj8m6169PVY?=
+ =?us-ascii?Q?iZYStRDIEjw1VwiTs3kOOiaEjs8q4JoSBCiCi7yiU90cWjLI4IZu/DBlm6tT?=
+ =?us-ascii?Q?UDsy/G67uPFFTFQpolEOOO9TQ87hK22rIxWok/YJl9gxkG26UFMgdb6u7QbM?=
+ =?us-ascii?Q?vjPw3oXSHjYjV87YrBMQd9YWLm9orjHWIi2f0QromfNKBjTC5BV4FzcQ/a7+?=
+ =?us-ascii?Q?GKT3hJ+5YZ8zx0ww8/vLvN+3y5Q17A4J/LqgVL1b2zyJQxG2l//skTrZAjHi?=
+ =?us-ascii?Q?q+wbjHwxvVoQA3HEr0dC+Sdra/3gRzzy7f3VrwYpMqYp15lR7QDrYVrU4cdf?=
+ =?us-ascii?Q?YOl2vQnHjTPAkbEoT4QiH0KJYBPn4Jxz+6bahEFBv54fI6LtjYijbHNY0fvt?=
+ =?us-ascii?Q?Fd37PbEgGV5xmR3/m2m/mJCUku+1X5jfJ4bhn5G1hTGplMVP1SI3RXzC28IB?=
+ =?us-ascii?Q?1C4G++U1LXqCt7wgq0MAsEarm8hzYhzpBqGcjxYjFovFa4LmbcIK3UiNUm0W?=
+ =?us-ascii?Q?WTTS1Dz3oms6IV1LDWFobTuAr2T61Cbjw60/bRixMSXVpOI/oquNEV+CSrhj?=
+ =?us-ascii?Q?d1GcWh8ONBEtfAoEjcuKsfzRtZmtkuhdP+Up47T7lJCQKk7ePL/hWDKEDVl8?=
+ =?us-ascii?Q?A0FmEsTqzXonkap02nO0/t4NCD6zIXbwfGSrWgKHvS6rIX3+O2idO+HVICxS?=
+ =?us-ascii?Q?RwvBi7skJr1rE49NdGVJ8WQAsfKF/2urzxCzt84EQTH+0ULDcYXNIc5IdfyV?=
+ =?us-ascii?Q?vsTSk9YYkVtsjleiQ8DTOHWVpSO3b4jqxjhOT6mvvrybXaHD5PAOczZAkP4m?=
+ =?us-ascii?Q?495Zw03unoj0tu+OMAp1Tkb30K64nbdOe7VFH+fsbnWjN18uA52wNFsiIqdx?=
+ =?us-ascii?Q?dX03vTY3dFa5seltvZwIaS+E+ifhnCV4y2cFkSnyYJfjT5NmpFLAWghFlfmr?=
+ =?us-ascii?Q?zROXZfDjIaF5Yfh/eHgfMGezu0vP8YdOTZK+6PeRgAF4sPEl55WJHnsXyCgu?=
+ =?us-ascii?Q?fgwIa2gTeX/d4HBItbiSTcMA3c7OAxhWFSa9+om/EWz539EIJFCXPTog0dGl?=
+ =?us-ascii?Q?CUrvcW3XbmIKCtxxkOLGbOg0hrYYrF8c3iW5YOL18WGcPDLAekFfs5p8rT4i?=
+ =?us-ascii?Q?70r8H6lsZo+0CRSa9F0rGb2Sre5WGvyqdpo+B4S614g8UQmoWcTD/P1qhRsT?=
+ =?us-ascii?Q?u/Lk51w++Etcxe/pdHLvdjW1aBoDq8L3wxOQjSzJ5wSniJK/Ae5HfvWzQH/Z?=
+ =?us-ascii?Q?84utps6RI+7QyxaTtvX3+YfDlbTyXawX/3ZogpIoawOsj/HWSZioIeObtdZ2?=
+ =?us-ascii?Q?ut7zZn9ItRJUvn/s8m6Z9s4MPwwzYHWwHaI3N28Ufezic732ZgwpObzPv6hj?=
+ =?us-ascii?Q?Ji0HXmjBBnHxjtNQ3rYFlbljHAZ38tahAMRHNljpJL3yPKjgUkj06B1ExnpG?=
+ =?us-ascii?Q?pikMOUb0Qj5pIhtc5b+uM/4LL0uRgDzS68SQI5p3bFFT73Oia6Pj3CcN3ylk?=
+ =?us-ascii?Q?kp1YLHEl+EGJsTHlmqzOyU+XVvCz2FpJU4thKAklFX+FhRPdlhdZG6812v0A?=
+ =?us-ascii?Q?OQsts289evKv/yw79f2Reyl3MbPyfQ2dXzWYDO1dm9P54ksbZ2DLZnwMyuYU?=
+ =?us-ascii?Q?6xEj59HPD2/idPMlqqwS0/Sgut1hGbGRWKGLuklSdOwKFs80D+EveyKLuAU+?=
+ =?us-ascii?Q?XXCBwLkI5wKUjwoE6vg/fyrrt812QPQ=3D?=
 X-OriginatorOrg: starfivetech.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 081fd850-ce8b-4d7a-d2f1-08de9c2b647e
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0c6dec3b-322e-4196-64ce-08de9c2b65e7
 X-MS-Exchange-CrossTenant-AuthSource: BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Apr 2026 02:45:31.8247
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Apr 2026 02:45:34.1510
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: J3W+9+Ouo1VfDgL7HrESAEUHODl11xJXdIG6DMMHw1ryg6QD+gUEaHziUZKvUv/ktSCY8FK831vAjcoBeHPc7203lLSvRlV7uukgOqm/2Pc=
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1b//S8jfdLFg1xJfieIWWHOWeGO+YueKyluPH/4hjakh7VBPg86mFFDYe6LdFJR+pMPRMn2Ih6gHhnwNOmQXii2HgYWPAr+tM6CKqzTQnkU=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: BJXPR01MB0517
 
-JHB100 is a Starfive new RISC-V SoC for datacenter BMC (BaseBoard
-Managent Controller). Similar with Aspeed 27x0.
+Add StarFive JHB100 dwmac support and compatible.
+The JHB100 dwmac shares the same driver code as the JH7110 dwmac,
+which contains 2 SGMII interfaces, 1 RGMII/RMII interface and
+1 RMII interface.
+JHB100 dwmac has only one reset signal and one main interrupt
+line.
 
-The JHB100 minimal system upstream is in progress:
-https://patchwork.kernel.org/project/linux-riscv/cover/20260403054945.467700-1-changhuang.liang@starfivetech.com/
+Please refer to below:
 
-JHB100 GMAC still using designware GMAC core like JH7100 and JH7110,
-and contains 2 SGMII interfaces, 1 RGMII/RMII interface, 1 RMII
-interface. In JH7100/JH7110 dwmac-starfive.c have supported RGMII/RMII
-interface. So require to add SGMII support to dwmac-starfive.c for JHB100.
+JHB100: reset-names = "stmmaceth";
 
-SGMII serdes PHY has been intergrated in JHB100 and do not have driver
-setting.
+Example usage of JHB100 in the device tree:
 
-In JHB100 EVB board, SGMII connect with motorcomm YT8531s external PHY
-and support RJ45 ethernet port.
+gmac0: ethernet@11b80000 {
+        compatible = "starfive,jhb100-dwmac",
+                     "snps,dwmac-5.20";
+        interrupts = <225>;
+        interrupt-names = "macirq";
+        ...
+};
 
-The patch base in 7.0-rc5
-
-changes
-v2:
-1. patch1 Add the remove reason
-2. patch2 rename rx clock to sgmii_rx
-3. patch4 confirm sgmii rx clock exist, or will probe error
-   sgmii will not call starfive_dwmac_set_mode() 
-
-Minda Chen (5):
-  dt-bindings: net: starfive,jh7110-dwmac: Remove JH8100
-  dt-bindings: net: starfive,jh7110-dwmac: Add JHB100 support
-  dt-bindings: net: starfive,jh7110-dwmac: Add JHB100 sgmii rx clk
-  net: stmmac: starfive: Add JHB100 SGMII interface
-  net: stmmac: starfive: Add STMMAC_FLAG_SPH_DISABLE flag
-
+Signed-off-by: Minda Chen <minda.chen@starfivetech.com>
+---
  .../devicetree/bindings/net/snps,dwmac.yaml   |  1 +
- .../bindings/net/starfive,jh7110-dwmac.yaml   | 89 +++++++++++++------
- .../ethernet/stmicro/stmmac/dwmac-starfive.c  | 56 +++++++++---
- 3 files changed, 106 insertions(+), 40 deletions(-)
+ .../bindings/net/starfive,jh7110-dwmac.yaml   | 23 +++++++++++++++++++
+ 2 files changed, 24 insertions(+)
 
-
-base-commit: c369299895a591d96745d6492d4888259b004a9e
+diff --git a/Documentation/devicetree/bindings/net/snps,dwmac.yaml b/Documentation/devicetree/bindings/net/snps,dwmac.yaml
+index 38bc34dc4f09..85cd3252e8b1 100644
+--- a/Documentation/devicetree/bindings/net/snps,dwmac.yaml
++++ b/Documentation/devicetree/bindings/net/snps,dwmac.yaml
+@@ -115,6 +115,7 @@ properties:
+         - sophgo,sg2044-dwmac
+         - starfive,jh7100-dwmac
+         - starfive,jh7110-dwmac
++        - starfive,jhb100-dwmac
+         - tesla,fsd-ethqos
+         - thead,th1520-gmac
+ 
+diff --git a/Documentation/devicetree/bindings/net/starfive,jh7110-dwmac.yaml b/Documentation/devicetree/bindings/net/starfive,jh7110-dwmac.yaml
+index 0d1962980f57..edc246a71ce3 100644
+--- a/Documentation/devicetree/bindings/net/starfive,jh7110-dwmac.yaml
++++ b/Documentation/devicetree/bindings/net/starfive,jh7110-dwmac.yaml
+@@ -18,6 +18,7 @@ select:
+         enum:
+           - starfive,jh7100-dwmac
+           - starfive,jh7110-dwmac
++          - starfive,jhb100-dwmac
+   required:
+     - compatible
+ 
+@@ -30,6 +31,9 @@ properties:
+       - items:
+           - const: starfive,jh7110-dwmac
+           - const: snps,dwmac-5.20
++      - items:
++          - const: starfive,jhb100-dwmac
++          - const: snps,dwmac-5.20
+ 
+   reg:
+     maxItems: 1
+@@ -122,6 +126,25 @@ allOf:
+         reset-names:
+           minItems: 2
+ 
++  - if:
++      properties:
++        compatible:
++          contains:
++            const: starfive,jhb100-dwmac
++    then:
++      properties:
++        interrupts:
++          maxItems: 1
++
++        interrupt-names:
++          const: macirq
++
++        resets:
++          maxItems: 1
++
++        reset-names:
++          const: stmmaceth
++
+ unevaluatedProperties: false
+ 
+ examples:
 -- 
 2.17.1
 
