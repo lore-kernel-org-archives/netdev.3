@@ -1,52 +1,51 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 553F1259C80
-	for <netdev@vger.kernel.org>; Fri, 17 Apr 2026 00:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4098B26B95B
+	for <netdev@vger.kernel.org>; Fri, 17 Apr 2026 00:54:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776387278; cv=none; b=HBkc5uJhnbFzLABhcTFVCDiDiig8TvtjtuDZ3KCCjBwRgSPDUIARs2ufHr2rAGnNDVWE4UVAaXA17/XF8hhGb7/hWeq2KnjJnJ5SxYtQBoy2ELAZnCp5OOhWlXlu+P5X9SXETPnKXU+C+3Jm8+jSMTmC7QOrk/LPdgwuiCNfH7w=
+	t=1776387278; cv=none; b=BBG3qqa5SIXyD0oNh9YkyOecn6OhFLhvUJ1X75qAhW+qOJM7hD9bFp09wc54DGdAHg3Ck26zfVRM+31VqzX4vu+OfNR+BosjW5+twX+nkKmKNajaQt7bJs02RHcuY2J8nGiLBP6z7tia0sY6NQYmC7KV+6jg1lvHqMQikjMCCnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1776387278; c=relaxed/simple;
-	bh=7nbI3Z3OuV1GlQk2HFTVmWNSfUO3aW9Qru/iFkgJy0w=;
+	bh=wcF8E4ALSAG2ZBa2kVoWBfAPIRI7e/jEZSirmnyxVMo=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=PlBJIBtKYvY7ySPOP+d8HsfgFoTDwX25UgP/QZEWboOcpUcHIFwKasFv2IBYeZl5/Y/9uGlzBsu7kKV92WQ4O/Wlx8U75/Yr7qtvGXsWpWMYWRin2FRSCJ+3PPC0UgqYFN6R7EnhckStABQLQXCsYBQSrhq55vCIiRQnmmxCV5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NvIogpkX; arc=none smtp.client-ip=198.175.65.15
+	 In-Reply-To:To:Cc; b=WUQr2jOuYzAIRhrnNPnYavPXMNy85QybEAIKTjhjGbqkV72kcNKFsy4IPdsCeQ7EnkK2P42KT/Uf5B3zT2S2hMGDbnmRX0ft0BZ3Z9gw6cMqj3o35/nKHf3maAGmq7njg+/4jiFZ30J7QGC6NBW/RAZp1WpeZP6o7wsbRUHzJhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oAVbRIij; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NvIogpkX"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oAVbRIij"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776387277; x=1807923277;
+  t=1776387278; x=1807923278;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=7nbI3Z3OuV1GlQk2HFTVmWNSfUO3aW9Qru/iFkgJy0w=;
-  b=NvIogpkXCIAeROK7bC4gCZBQyxKzD7VSzOvqpGZXMpXRKmca7bWSfsOw
-   Xb8tpXM016ZTFcUyw3CnqTcmHa0CFeZ1m8cRSiIkrk/99y2MhGpnLIO+X
-   Bs56nN6Bw/gksLAoSSEnzLBhr8JFLrvd7xhJwxvTpHEwIlE73Y0YcFNaE
-   0wOdrFZD8uwAWof0AxPxlDTKgY1Ci/SglriQqFuRPZ3mrwAJ2518O3Vrb
-   h0LQwtcHjTUMY/d2mjc591mfWIBBaJaEwnoljJDvWPmCG1PwxFuVUnH87
-   iHZm/HsAVd/A0S3+77KDo+6ZrZ6H40lN6wgPrrto4m2osCzL0qKbOznT2
-   A==;
-X-CSE-ConnectionGUID: O7yRygJgTxG+Z2qEBEQuqg==
-X-CSE-MsgGUID: a13OX4Q3So2I44vJ1XzO8Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11761"; a="81000583"
+  bh=wcF8E4ALSAG2ZBa2kVoWBfAPIRI7e/jEZSirmnyxVMo=;
+  b=oAVbRIijbrIiA0S28NvzaWoLryQpFeUl+NXbJrL84qF3okw1bj8JJpjr
+   qxtrFfzWqfoCo1v0jx0HD3KNM6Nc+Ke2d8NhEshUBAApuE5v+VPQta0FX
+   Kbr6LKd2bbkxGW27VS6jCErMi97Q+btUJL4btfYFDVlSG2krsNN/eCCNR
+   xCup0gS2cYWj3a3Qjgo0bieOtn3r4nRKpDjGAE5YGrC2+dZk+nTc27F/y
+   L2yFzkE48rSg4t9+PBfdwRUrvWaMXTPn2SEsCy70pgcPJ7N7Xpoy/NnK5
+   YUR/OhazXI8whdRq+h5hmYFo6YV+iX8ShoG0fpjnUBT8MRAGbEGBKvWXq
+   g==;
+X-CSE-ConnectionGUID: NR2hei0jSXiX11Q/3QhURg==
+X-CSE-MsgGUID: eAfoBJhyTw+bNbZrZH3wGA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11761"; a="81000588"
 X-IronPort-AV: E=Sophos;i="6.23,183,1770624000"; 
-   d="scan'208";a="81000583"
+   d="scan'208";a="81000588"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
   by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2026 17:54:32 -0700
-X-CSE-ConnectionGUID: H4KoaoXTTXyKiErrhGpOfA==
-X-CSE-MsgGUID: l8U6qjJlS0KxSeQkMbix7g==
+X-CSE-ConnectionGUID: eUisYfYIQqKLfLB3JMs9Ow==
+X-CSE-MsgGUID: qlDO8SHiS7yiqXiO1baUzA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,183,1770624000"; 
-   d="scan'208";a="226539886"
+   d="scan'208";a="226539894"
 Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.109]) ([10.166.28.109])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2026 17:54:30 -0700
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2026 17:54:31 -0700
 From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Thu, 16 Apr 2026 17:53:34 -0700
-Subject: [PATCH net v2 10/12] iavf: fix wrong VLAN mask for legacy Rx
- descriptors L2TAG2
+Date: Thu, 16 Apr 2026 17:53:36 -0700
+Subject: [PATCH net v2 12/12] e1000e: Unroll PTP in probe error handling
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,101 +54,53 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260416-iwl-net-submission-2026-04-14-v2-10-686c33c9828d@intel.com>
+Message-Id: <20260416-iwl-net-submission-2026-04-14-v2-12-686c33c9828d@intel.com>
 References: <20260416-iwl-net-submission-2026-04-14-v2-0-686c33c9828d@intel.com>
 In-Reply-To: <20260416-iwl-net-submission-2026-04-14-v2-0-686c33c9828d@intel.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
 Cc: netdev@vger.kernel.org, Jacob Keller <jacob.e.keller@intel.com>, 
- Petr Oros <poros@redhat.com>, 
- Aleksandr Loktionov <aleksandr.loktionov@intel.com>, 
- Paul Menzel <pmenzel@molgen.mpg.de>, 
- Rafal Romanowski <rafal.romanowski@intel.com>
+ Matt Vollrath <tactii@gmail.com>, Avigail Dahan <avigailx.dahan@intel.com>
 X-Mailer: b4 0.16-dev-ea14f
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3448;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1192;
  i=jacob.e.keller@intel.com; h=from:subject:message-id;
- bh=sljQYx/DTKk4J1LOP9TeTx4KxGQQeN3wXxgCJTyaS28=;
- b=owGbwMvMwCWWNS3WLp9f4wXjabUkhsyHLYfDZvt/WL97V/WcXtd6RXfHM3HXlZW9XR/0eaxrN
- inekLGuo5SFQYyLQVZMkUXBIWTldeMJYVpvnOVg5rAygQxh4OIUgIl0tjL891OWCfXx2BpkJ6fz
- gTlXTrIs8cz9yqWzXiR/P7VsxZ+5wowM1283bDieJWp54eNrL9mo1lqtrVOWfv3wJ+jcsVt7Yn9
- f4gYA
+ bh=6pEF7CplN7uNtVpJNw7hFn3TsXDcvPXHuvtqM6k3aUc=;
+ b=owGbwMvMwCWWNS3WLp9f4wXjabUkhsyHLYeP7Hn8p32lymMXpjcfZIteZ6x66HZbage/cxnjP
+ C2jLyEvO0pZGMS4GGTFFFkUHEJWXjeeEKb1xlkOZg4rE8gQBi5OAZiIkyYjwwb/P1/UJFOPbezX
+ CDiSnbAjxUKVyV3rvCjvepb25RWW8xgZLpheLzK+sqdcqdJHffe1u/zHohxfvP1VWS/xc1G/rA8
+ XCwA=
 X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
  fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
 
-From: Petr Oros <poros@redhat.com>
+From: Matt Vollrath <tactii@gmail.com>
 
-The IAVF_RXD_LEGACY_L2TAG2_M mask was incorrectly defined as
-GENMASK_ULL(63, 32), extracting 32 bits from qw2 instead of the
-16-bit VLAN tag. In the legacy Rx descriptor layout, the 2nd L2TAG2
-(VLAN tag) occupies bits 63:48 of qw2, not 63:32.
+If probe fails after registering the PTP clock and its delayed work,
+these resources must be released.
 
-The oversized mask causes FIELD_GET to return a 32-bit value where the
-actual VLAN tag sits in bits 31:16. When this value is passed to
-iavf_receive_skb() as a u16 parameter, it gets truncated to the lower
-16 bits (which contain the 1st L2TAG2, typically zero). As a result,
-__vlan_hwaccel_put_tag() is never called and software VLAN interfaces
-on VFs receive no traffic.
+This was not an issue until a 2016 fix moved the e1000e_ptp_init() call
+before the jump to err_register.
 
-This affects VFs behind ice PF (VIRTCHNL VLAN v2) when the PF
-advertises VLAN stripping into L2TAG2_2 and legacy descriptors are
-used.
-
-The flex descriptor path already uses the correct mask
-(IAVF_RXD_FLEX_L2TAG2_2_M = GENMASK_ULL(63, 48)).
-
-Reproducer:
- 1. Create 2 VFs on ice PF (echo 2 > sriov_numvfs)
- 2. Disable spoofchk on both VFs
- 3. Move each VF into a separate network namespace
- 4. On each VF: create VLAN interface (e.g. vlan 198), assign IP,
-    bring up
- 5. Set rx-vlan-offload OFF on both VFs
- 6. Ping between VLAN interfaces -> expect PASS
-    (VLAN tag stays in packet data, kernel matches in-band)
- 7. Set rx-vlan-offload ON on both VFs
- 8. Ping between VLAN interfaces -> expect FAIL if bug present
-    (HW strips VLAN tag into descriptor L2TAG2 field, wrong mask
-    extracts bits 47:32 instead of 63:48, truncated to u16 -> zero,
-    __vlan_hwaccel_put_tag() never called, packet delivered to parent
-    interface, not VLAN interface)
-
-The reproducer requires legacy Rx descriptors. On modern ice + iavf
-with full PTP support, flex descriptors are always negotiated and the
-buggy legacy path is never reached. Flex descriptors require all of:
- - CONFIG_PTP_1588_CLOCK enabled
- - VIRTCHNL_VF_OFFLOAD_RX_FLEX_DESC granted by PF
- - PTP capabilities negotiated (VIRTCHNL_VF_CAP_PTP)
- - VIRTCHNL_1588_PTP_CAP_RX_TSTAMP supported
- - VIRTCHNL_RXDID_2_FLEX_SQ_NIC present in DDP profile
-
-If any condition is not met, iavf_select_rx_desc_format() falls back
-to legacy descriptors (RXDID=1) and the wrong L2TAG2 mask is hit.
-
-Fixes: 2dc8e7c36d80 ("iavf: refactor iavf_clean_rx_irq to support legacy and flex descriptors")
-Signed-off-by: Petr Oros <poros@redhat.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Fixes: aa524b66c5ef ("e1000e: don't modify SYSTIM registers during SIOCSHWTSTAMP ioctl")
+Signed-off-by: Matt Vollrath <tactii@gmail.com>
+Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
 Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
- drivers/net/ethernet/intel/iavf/iavf_type.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/e1000e/netdev.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_type.h b/drivers/net/ethernet/intel/iavf/iavf_type.h
-index 1d8cf29cb65a..5bb1de1cfd33 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_type.h
-+++ b/drivers/net/ethernet/intel/iavf/iavf_type.h
-@@ -277,7 +277,7 @@ struct iavf_rx_desc {
- /* L2 Tag 2 Presence */
- #define IAVF_RXD_LEGACY_L2TAG2P_M		BIT(0)
- /* Stripped S-TAG VLAN from the receive packet */
--#define IAVF_RXD_LEGACY_L2TAG2_M		GENMASK_ULL(63, 32)
-+#define IAVF_RXD_LEGACY_L2TAG2_M		GENMASK_ULL(63, 48)
- /* Stripped S-TAG VLAN from the receive packet */
- #define IAVF_RXD_FLEX_L2TAG2_2_M		GENMASK_ULL(63, 48)
- /* The packet is a UDP tunneled packet */
+diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
+index 9befdacd6730..7ce0cc8ab8f4 100644
+--- a/drivers/net/ethernet/intel/e1000e/netdev.c
++++ b/drivers/net/ethernet/intel/e1000e/netdev.c
+@@ -7706,6 +7706,7 @@ static int e1000_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ err_register:
+ 	if (!(adapter->flags & FLAG_HAS_AMT))
+ 		e1000e_release_hw_control(adapter);
++	e1000e_ptp_remove(adapter);
+ err_eeprom:
+ 	if (hw->phy.ops.check_reset_block && !hw->phy.ops.check_reset_block(hw))
+ 		e1000_phy_hw_reset(&adapter->hw);
 
 -- 
 2.54.0.rc2.531.gaf818d63126a
