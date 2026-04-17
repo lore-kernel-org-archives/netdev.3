@@ -1,226 +1,158 @@
-Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D58A0361666
-	for <netdev@vger.kernel.org>; Fri, 17 Apr 2026 08:47:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E69D35F5F2
+	for <netdev@vger.kernel.org>; Fri, 17 Apr 2026 09:03:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776415664; cv=none; b=XkhDW8EDKIOCYjrP5JMysoJg+0EfXTUj6X9N9exPR9ITcKBzP3CEAT2GKV4v65dTUScgfNXP0DR543j3gFx0X9YjlWtRzjs87QRSt6L388+8ZkgNdHeerMowGg5Q1nORTPTKPWfRPhhnEPEZUiYqLdLH+jD9uUe8caa0rkbuuaw=
+	t=1776416612; cv=none; b=F2hLJgxy+k1E6z31Y2Tz3p7XVYykXHOGxU491DmnY8p9bKkcPJxWOA6yelJFubTrbUIgipOXeDxDaiYYEJ95I20VN+sx/bTeRlmogyWV9+8Fd2D9Gp8Kl4QWBz+cD7nTq4Ic9cqW6TxoCD+6MLUDxIi20bCYy4raow9d0u6LApQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776415664; c=relaxed/simple;
-	bh=G0jxgV4V8fkhVDwQ+UxtAai/zhuTzQeL/SXMGfKSEbo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m6WtsISYeZaxIIvlHBZs4Yu+TCBcc7o1NlbtUUuI6K2jYUDZIgErNVmZLJmwZ7TdceLkwUvaETl0FGKnPyPnSZZyMUSr3V/yWm9fqC32L7nmLSrv29fYUB0VH4yNNdWBg9wdfh2jpZp60tS5YNqBxcggV6F43ff6/EdlaatvPKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=Yxg6prFE; arc=none smtp.client-ip=188.40.3.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1776416612; c=relaxed/simple;
+	bh=tI09vVk4zDbd6e0CUDiQV36XUhz4ozf8KmS3qXsASLg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=V+LY+TzM/HCXvDI4W2eWT+S5+8CXkbp1bn0OoehUJsH1Lh5knGce4xZfdcliRo5gLStxf+2Zu/snYKnAWs1TuBIoDVV5lkOjHr8SUEC4q50gQu+b2NZK7qf5lyMYR5lVhZQAy98jhVkzCp1hYaHIvA9OBJt8ilIDgNq5m/tsCr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=YtgOMOb6; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="Yxg6prFE"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=ew.tq-group.com; s=default2602; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=l58XSNH8R/mwB60BqCvoOIYMvGSIH31wM+Rks1CFbpc=; b=Yxg6prFE+rhlPUeg5StCJV+gQM
-	mTb7z1pMiSEwSlRHUUkv/yzPxIDjbUf65/dR9QpFvSa/3p5U991X4shATrwkuGb5gTxL0x7nCHuqZ
-	qNFn7LW5usVSeTlSW26q7KOc4yjxfg/O6UXCUNiK9xJY8s8PifSM06UMHECY3TEbS6SXHy/NqoXQW
-	rOZ6YLh58nMyw743cdgcQayPEv0sei9cdhl07OXbqYB7VOXYhd3BxE9d7CidC/ZE+EE5sLUDZu652
-	+5lDKnKX6TDqnLOhDa3mNnMFTSsphmlhOTZf1gkqyYo5X4JSdHUS5YCxpTiVEVFn+fXluhz2ZtaX1
-	9ZIx+6Dg==;
-Received: from sslproxy03.your-server.de ([88.198.220.132])
-	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1wDerM-000PCr-0s;
-	Fri, 17 Apr 2026 10:47:32 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy03.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1wDerL-0006uB-1S;
-	Fri, 17 Apr 2026 10:47:31 +0200
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- linux-arm-kernel@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
- Paolo Abeni <pabeni@redhat.com>
-Subject:
- Re: [PATCH net-next 5/6] net: stmmac: move PHY handling out of
- __stmmac_open()/release()
-Date: Fri, 17 Apr 2026 10:47:30 +0200
-Message-ID: <13939918.O9o76ZdvQC@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <680c384c-135f-44cd-a2cd-7e4fd0ec4bf7@bootlin.com>
-References:
- <aNKDqqI7aLsuDD52@shell.armlinux.org.uk>
- <aeDSTIS9-TDSihbX@shell.armlinux.org.uk>
- <680c384c-135f-44cd-a2cd-7e4fd0ec4bf7@bootlin.com>
+	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="YtgOMOb6"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-43d7213b6ebso270159f8f.3
+        for <netdev@vger.kernel.org>; Fri, 17 Apr 2026 02:03:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=openvpn.net; s=google; t=1776416608; x=1777021408; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=c+3SXDNKP2Af/Yl7LUpMg9kvHs9dI3gKze2VfcR6oZk=;
+        b=YtgOMOb6GxAktLoDzeccgRCO3Y7H6h2/y+Uvxxh9Ogw2EHYzP6H2+2BXxnN/cmvJDU
+         jSHLnuwp2P4swGfs0j9sot7ea8ac7eMkKLZ3BFZF0q83Nkck3CbiJHuf21Xcrg3+DUMU
+         z4dob5b55lzskhFWhKGrbH+jE9h02z4zV/roMEeNW24MCQDMhjXISKnvm6qBSoBOCWxx
+         Vt1D4l7O+8yI0c+W9Pge6uUp3zDMT8Z2U62Qy/BCcAFqa03LA0l+8aDPudGH9oU4ttJS
+         ER31KdIX0CFtu6gYZVGUNdivlFTKAARSEzOjapebg9OSMccleq683q7Xm6LOI7DwLlE5
+         8z9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776416608; x=1777021408;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=c+3SXDNKP2Af/Yl7LUpMg9kvHs9dI3gKze2VfcR6oZk=;
+        b=B9z/oyVQ9whQVZeJwYGB/TJsCdB1S63oA/mrUm6D4ekQHSUOwVVTsclAZ7CGHtmNVA
+         yb+t4qK7JRikwx0TQrVYSHuwovDyrxtFw/j7djyr8gMlyfLVsYBeAgVOXaxZ3bczc4hq
+         vFhyeGNU4fn7qVoBjc7WKIUXDFl0muHbv+Ph5BZubBHibNCgQsjJpFyWQzamRbYLcydI
+         eCLlU/tPLY1DK+cLPd4vkHc54q9qZ7C8lOy11WO0AG0XviUBT2ncpDwUJltwoFMqoXjM
+         otDLE6yDfDYktF+aVndeNmuOC5cAgtdG9j5Qy37giQGxyaFtd4/cTvNjwvqXl95VDHQG
+         iEjg==
+X-Gm-Message-State: AOJu0YwV6WqYwow68+RjPbdXiNh/UvF8v7uxQ4dZpbw8lW/gkHXaPwn3
+	w/9fFNxWUnokpk+tEW60zUhEtFSMPATsKKv/zyob6iTlNCOZ8TDpoax1t2l3qE4Jx5Y6TeLqkTY
+	tTqVBE8hOhawzLYrKDPEqLJvVOjUxgOdL70Rxqy1x4NY+ZaebVrvZ2XKP6bJQ6VlS
+X-Gm-Gg: AeBDieusNKb9/k6Yx5POvDygdw9wRs0sxu5uSsn6kv+uF+n/nxgcBq9JEngU+HGheKh
+	Le73NDWSp3mS1NKgKtc6+xYmTiTfAURnzjURp8tq7xhnSe3eqdLaGUwjjxOQLcvEhNJomeQVaz8
+	gvWRxUnJL0h8TWlMN0x7M0GVgOQqhdp/W7vzwxpjSvmyCnxcI2nwkWUckn78uhNO23Y3pw2jYSB
+	zQCpzzmtOsA88MXSWBdig/P+B+nW4nDhUujOrpN3WJXBIywl0MEEH4oQbiv4/jTDlvGiXEdY4Vw
+	PJswTc0ogIH1v38EkiS+kIR/6KHUzB+YmqfK1XYZU14a4yDTp60WDbp9/2u6cC4duSeFMXD9fOB
+	6Q/7Yipz3y3jHB0CmiNH4LZWNjIVmnTyqftMfDPeBpPyGGi7aid4D5YNhkhFKAHBvV2YiPLEEXc
+	TrNJ/toL7ury9b0mNNGQmAgXXo2HdUGGNQXfRBglBZjn0lYO8=
+X-Received: by 2002:a05:6000:110a:b0:43f:e452:f137 with SMTP id ffacd0b85a97d-43fe452f182mr1821273f8f.2.1776416608342;
+        Fri, 17 Apr 2026 02:03:28 -0700 (PDT)
+Received: from inifinity.mandelbit.com ([2001:67c:2fbc:1:7524:fc82:dee5:4129])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43fe4e591cesm4120151f8f.36.2026.04.17.02.03.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Apr 2026 02:03:27 -0700 (PDT)
+From: Antonio Quartulli <antonio@openvpn.net>
+To: netdev@vger.kernel.org
+Cc: ralf@mandelbit.com,
+	shuah@kernel.org,
+	horms@kernel.org,
+	Antonio Quartulli <antonio@openvpn.net>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>
+Subject: [PATCH net 0/6] pull request: fixes for ovpn 2026-04-17
+Date: Fri, 17 Apr 2026 11:02:59 +0200
+Message-ID: <20260417090305.2775723-1-antonio@openvpn.net>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Virus-Scanned: Clear (ClamAV 1.4.3/27974/Fri Apr 17 08:24:08 2026)
+Content-Transfer-Encoding: 8bit
 
-Am Freitag, 17. April 2026, 09:11:59 CEST schrieb Maxime Chevallier:
-> Hi,
->=20
-> On 16/04/2026 14:13, Russell King (Oracle) wrote:
-> > On Thu, Apr 16, 2026 at 02:02:53PM +0200, Alexander Stein wrote:
-> >> Hi Russel,
-> >>
-> >> Am Donnerstag, 16. April 2026, 12:49:25 CEST schrieb Russell King (Ora=
-cle):
-> >>> On Thu, Apr 16, 2026 at 08:20:13AM +0200, Alexander Stein wrote:
-> >>>> Am Mittwoch, 15. April 2026, 14:59:32 CEST schrieb Russell King (Ora=
-cle):
-> >>>>> On Wed, Apr 15, 2026 at 08:08:40AM +0200, Alexander Stein wrote:
-> >>>>>> Hi,
-> >>>>>>
-> >>>>>> Am Dienstag, 23. September 2025, 13:26:19 CEST schrieb Russell Kin=
-g (Oracle):
-> >>>>>>> Move the PHY attachment/detachment from the network driver out of
-> >>>>>>> __stmmac_open() and __stmmac_release() into stmmac_open() and
-> >>>>>>> stmmac_release() where these actions will only happen when the
-> >>>>>>> interface is administratively brought up or down. It does not make
-> >>>>>>> sense to detach and re-attach the PHY during a change of MTU.
-> >>>>>>
-> >>>>>> Sorry for coming up now. But I recently noticed this commit breaks=
- changing
-> >>>>>> the MTU on i.MX8MP. Once I simply change the MTU I run into some D=
-MA error:
-> >>>>>> $ ip link set dev end1 mtu 1400
-> >>>>>> imx-dwmac 30bf0000.ethernet end1: Register MEM_TYPE_PAGE_POOL RxQ-0
-> >>>>>> imx-dwmac 30bf0000.ethernet end1: Register MEM_TYPE_PAGE_POOL RxQ-1
-> >>>>>> imx-dwmac 30bf0000.ethernet end1: Register MEM_TYPE_PAGE_POOL RxQ-2
-> >>>>>> imx-dwmac 30bf0000.ethernet end1: Register MEM_TYPE_PAGE_POOL RxQ-3
-> >>>>>> imx-dwmac 30bf0000.ethernet end1: Register MEM_TYPE_PAGE_POOL RxQ-4
-> >>>>>> imx-dwmac 30bf0000.ethernet end1: Link is Down
-> >>>>>> imx-dwmac 30bf0000.ethernet end1: Failed to reset the dma
-> >>>>>> imx-dwmac 30bf0000.ethernet end1: stmmac_hw_setup: DMA engine init=
-ialization failed
-> >>>>>
-> >>>>> This basically means that a clock is missing. Please provide more
-> >>>>> information:
-> >>>>>
-> >>>>> - what kernel version are you using?
-> >>>>
-> >>>> Currently I am using v6.18.22.
-> >>>> $ ethtool -i end1
-> >>>> driver: st_gmac
-> >>>> version: 6.18.22
-> >>>> firmware-version:=20
-> >>>> expansion-rom-version:=20
-> >>>> bus-info: 30bf0000.ethernet
-> >>>> supports-statistics: yes
-> >>>> supports-test: no
-> >>>> supports-eeprom-access: no
-> >>>> supports-register-dump: yes
-> >>>> supports-priv-flags: no
-> >>>>
-> >>>>> - has EEE been negotiated?
-> >>>>
-> >>>> No. It is marked as not supported
-> >>>>
-> >>>> $ ethtool --show-eee end1
-> >>>> EEE settings for end1:
-> >>>>         EEE status: not supported
-> >>>>
-> >>>>> - does the problem persist when EEE is disabled?
-> >>>>
-> >>>> As EEE is not supported the problem occurs even with EEE disabled.
-> >>>>
-> >>>>> - which PHY is attached to stmmac?
-> >>>>
-> >>>> It is a TI DP83867.
-> >>>>
-> >>>> imx-dwmac 30bf0000.ethernet eth1: PHY [stmmac-1:03] driver [TI DP838=
-67] (irq=3D136)
-> >>>>
-> >>>>> - which PHY interface mode is being used to connect the PHY to stmm=
-ac?
-> >>>>
-> >>>> For this interface
-> >>>>> phy-mode =3D "rgmii-id";
-> >>>> is set.
-> >>>>
-> >>>> In case it is helpful. My platform is arch/arm64/boot/dts/freescale/=
-imx8mp-tqma8mpql-mba8mpxl.dts
-> >>>> Thanks for assisting. If there a further questions, don't hesitate t=
-o ask.
-> >>>
-> >>> Thanks.
-> >>>
-> >>> So, as best I can determine at the moment, we end up with the followi=
-ng
-> >>> sequence:
-> >>>
-> >>> stmmac_change_mtu()
-> >>>  __stmmac_release()
-> >>>   phylink_stop()
-> >>>    phy_stop()
-> >>>     phy->state =3D PHY_HALTED
-> >>>     _phy_state_machine() returns PHY_STATE_WORK_SUSPEND
-> >>>     _phy_state_machine_post_work()
-> >>>      phy_suspend()
-> >>>       genphy_suspend()
-> >>>        phy_set_bits(phydev, MII_BMCR, BMCR_PDOWN)
-> >>>
-> >>> With the DP83867, this causes most of the PHY to be powered down, thus
-> >>> stopping the clocks, and this causes the stmmac reset to time out.
-> >>>
-> >>> Prior to this commit, we would have called phylink_disconnect_phy()
-> >>> immediately after phylink_stop(), but I can see nothing that would
-> >>> be affected by this change there (since that also calls
-> >>> phy_suspend(), but as the PHY is already suspended, this becomes a
-> >>> no-op.)
-> >>>
-> >>> However, __stmmac_open() would have called stmmac_init_phy(), which
-> >>> would reattach the PHY. This would have called phy_init_hw(),=20
-> >>> resetting the PHY, and phy_resume() which would ensure that the
-> >>> PDOWN bit is clear - thus clocks would be running.
-> >>>
-> >>> As a hack, please can you try calling phylink_prepare_resume()
-> >>> between the __stmmac_release() and __stmmac_open() in
-> >>> stmmac_change_mtu(). This should resume the PHY, thus restoring the
-> >>> clocks necessary for stmmac to reset.
-> >>
-> >> I tried the following patch. This works as you suspected.
-> >=20
-> > Brilliant, thanks for proving the theory why it broke.
-> >=20
-> > I'll have a think about the best way to solve this, because
-> > phylink_prepare_resume() is supposed to be paired with phylink_resume()
-> > and that isn't the case here.
-> >=20
-> > Please bear with me as my availability for looking at the kernel is
-> > very unpredictable at present (family health issues.)
->=20
-> FWIW I am able to reproduce this with imx8mp + ksz9131
->=20
-> I can give this a try as Russell isn't available.
+Hi Jakub,
 
-Thanks for conforming this for another PHY. What I'm wondering right now:
-Why is the PHY stopped in the first place? We are just changing the MTU, no?
-This has no effect on the PHY itself. "all" we need to do is reconfiguring
-the DMA. I have a proof of concept running, but it needs more cleanup due
-to code duplication.
+This is a respin of the PR I originally sent against net-next + an extra
+fix (patch 6).
 
-Best regards
-Alexander
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
+Please note that this patch:
+https://lore.kernel.org/all/20260225010833.11301-1-liuhangbin@gmail.com/
+broke the selftests entirely due to the switch from sh to bash.
+
+There are new commits in the kselftest tree which take care of this:
+https://lore.kernel.org/all/20260416-selftest-fix-readlink-e-v1-0-94e4cabbdec4@kernel.org/
+but they are not in net yet, therefore you won't be able to test/run
+our kselftests for now.
+
+This being said...
+
+TCP tests are still failing every now and then.
+It seems that sometimes a single ping over a TCP tunnel is lost,
+thus making the selftest fail.
+
+We believe this is a bug in ovpn which we are currently hunting down.
+So it's nothing wrong about the tests (they are actually doing their
+job!).
+
+Test hangs you reported on slow kernels are fixed.
+
+See the tag content for a more detailed summary.
+Please pull or let me know of any issue!
+
+Thanks a lot,
+	Antonio
 
 
+The following changes since commit 82c21069028c5db3463f851ae8ac9cc2e38a3827:
+
+  selftests: net: add missing CMAC to tcp_ao config (2026-04-16 19:35:43 -0700)
+
+are available in the Git repository at:
+
+  https://github.com/OpenVPN/ovpn-net-next.git tags/ovpn-net-20260417
+
+for you to fetch changes up to 6c9b1dc218fea8b15893953f5299b209f11fa0a8:
+
+  selftests: ovpn: serialize YNL listener startup (2026-04-17 10:54:04 +0200)
+
+----------------------------------------------------------------
+This batch includes only fixes to the selftest harness:
+* switch to TAP test orchestration
+* parse slurped notifications as returned by jq -s
+* add ovpn_ prefix to helpers and global variables to avoid clashes
+* fail test in case of netlink notification mismatch
+* add missing kernel config dependencies
+* add delay when launching multiple ynl/cli.py listeners
+
+----------------------------------------------------------------
+Ralf Lici (6):
+      selftests: ovpn: add nftables config dependencies for test-mark
+      selftests: ovpn: fail notification check on mismatch
+      selftests: ovpn: flatten slurped notification JSON before filtering
+      selftests: ovpn: add prefix to helpers and shared variables
+      selftests: ovpn: align command flow with TAP
+      selftests: ovpn: serialize YNL listener startup
+
+ tools/testing/selftests/net/ovpn/common.sh         | 355 ++++++++++++----
+ tools/testing/selftests/net/ovpn/config            |   3 +
+ .../testing/selftests/net/ovpn/test-chachapoly.sh  |   2 +-
+ .../selftests/net/ovpn/test-close-socket-tcp.sh    |   2 +-
+ .../selftests/net/ovpn/test-close-socket.sh        |  90 +++--
+ tools/testing/selftests/net/ovpn/test-float.sh     |   2 +-
+ tools/testing/selftests/net/ovpn/test-mark.sh      | 237 +++++++----
+ .../selftests/net/ovpn/test-symmetric-id-float.sh  |   4 +-
+ .../selftests/net/ovpn/test-symmetric-id-tcp.sh    |   4 +-
+ .../selftests/net/ovpn/test-symmetric-id.sh        |   2 +-
+ tools/testing/selftests/net/ovpn/test-tcp.sh       |   2 +-
+ tools/testing/selftests/net/ovpn/test.sh           | 449 ++++++++++++++-------
+ 12 files changed, 803 insertions(+), 349 deletions(-)
