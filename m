@@ -1,84 +1,138 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF68B142E83
-	for <netdev@vger.kernel.org>; Sat, 18 Apr 2026 18:54:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799CB238150;
+	Sat, 18 Apr 2026 19:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776538493; cv=none; b=PZ3PpbdXO68rIhTVJ5zeYaIR+EWsC+UKdeytCMSyzUG0xuSeNpl/MMJPON0wBcZ9jNyT/IjEGS3xNi5+a22rqoEtCO18U8k6gcVuAxxLhgy/7eIqQp5fnftbwR5rOnxQng1z5pn1FQTtVOxI8CFP3CNN14dsdidRm5f1Cr22ohg=
+	t=1776538846; cv=none; b=OPM5piZU1OgOVdjLsQOBwTnlINAJQdKJSGag1DoOkuZ+4nhNGkylnEr3yyAI3F/4hx+0ucBWsgX2+4Po9eBuBzwUqSusoI0/MEpzXZVW5uu4KYrkiRVdmZ3EVM0zLCxNWZFsX5ROywd8IVHcAJd5oUo4/4NDzwrOdx37KpTCrv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776538493; c=relaxed/simple;
-	bh=d84VBshpGjPS4zFx072tG7gIypnac+O3gwkWHAURGB4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eYSw0XR1ogAmqoaf1A16Vm3KZo9fnvEXjT03iQJeCvNRNdKF++MU3h5k/7PBDMAedUEgyrQ1WGDdD1ismeTsXmOmNMQlQEQ/vpmtAewL4aisPF2a0wF6EBLHW/aviWBqQfxFHWFP0kBTI75N61ITkDZU8IDjeWTGxtV/eSmSfD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MpsHpZEI; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776538846; c=relaxed/simple;
+	bh=ZArGxMxvgYerGYzwBIhcXeSFpQKPLxziiu+4LOWVfj4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=nXjYc44s6i8FfdKHaHa9PBPCIeANIxM4ajmvwYMf13SlfJLwDBMjk/5sW0Gc5vvJNFmnv95dhi1DqU/Qq0eEc1qadCgsqevB9Gl8hXJAp3149PCJXeMv6PeQ050ST/WqyQzaXkC3YYF1PiyVMHcK6pAhvCTccPjpkfWfIp1xkX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qovQVO+C; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MpsHpZEI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E51CFC19424;
-	Sat, 18 Apr 2026 18:54:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qovQVO+C"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA30FC19424;
+	Sat, 18 Apr 2026 19:00:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776538493;
-	bh=d84VBshpGjPS4zFx072tG7gIypnac+O3gwkWHAURGB4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=MpsHpZEIIBXe2ah4SUTtKaa7eYuZL2qAzuwJzhXMS7wWvRefgH1M7glbTbK/JT6EO
-	 6U82eU490s//q9zLuNkssP44EIMUnZbG0clwrymQB/8OzJzuHLBQymN5V2v1NEe1ma
-	 szolOV8LlXlHN/aXkiqZUqlGX8Y/OIiPCS5Ppr1bFggNFvzjmX0iy/yaLErARuGZpX
-	 k/jqqi3N5rVfLygyvnSEuBmLchrzN0iIF0TDhZn2CBwG46zInsS2NlRx7Jy25oE3WV
-	 zTvOP98vZ4JSwYH5bvrj0etunv0PR7UaObwnTmEU1VuL8056FqmmhqxaM9Ry5swfMi
-	 OtTGVbllAC6sg==
-Date: Sat, 18 Apr 2026 11:54:52 -0700
+	s=k20201202; t=1776538846;
+	bh=ZArGxMxvgYerGYzwBIhcXeSFpQKPLxziiu+4LOWVfj4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=qovQVO+Cx7IysAYGxHLGre7O4fpGrARq7KUmVyhz+XDPvuRpS7OaXrw7i85/hAZ9W
+	 8DGmA8FN04yoh6lDO7L1x1tn04TrWZMK0DHr1gpBoFknfj4dXSeAYGdtJ4DYK7TRjA
+	 naKDShd8yMFP8IUtzMwD0SXdZcE7jr2qcFsqy7Tl8ol618LR/g6iExagOjvBRoTozg
+	 6UjpTjefHifaEqxpNcfA0hQDDhjEgMNl0qxM54NUeT6WBN4npyeGg3wuqHSWUDT7hh
+	 Y6LYDRkAy+o/KMS/kEWxUi6iIAw7b4nLuG/MLvGYmWzlVAS7UP6iYeMoJPGBphQotl
+	 00Zdjbh2NCKBw==
 From: Jakub Kicinski <kuba@kernel.org>
-To: Antonio Quartulli <antonio@openvpn.net>
-Cc: netdev@vger.kernel.org, ralf@mandelbit.com, shuah@kernel.org,
- horms@kernel.org, Sabrina Dubroca <sd@queasysnail.net>, Paolo Abeni
- <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>
-Subject: Re: [PATCH net 0/6] pull request: fixes for ovpn 2026-04-17
-Message-ID: <20260418115452.3d2a0a47@kernel.org>
-In-Reply-To: <20260417090305.2775723-1-antonio@openvpn.net>
-References: <20260417090305.2775723-1-antonio@openvpn.net>
+To: jacob.e.keller@intel.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	emil.s.tantilov@intel.com,
+	stable@vger.kernel.org,
+	aleksandr.loktionov@intel.com,
+	patryk.holda@intel.com
+Subject: Re: [PATCH net v2 11/12] idpf: fix xdp crash in soft reset error path
+Date: Sat, 18 Apr 2026 12:00:20 -0700
+Message-ID: <20260418190019.194263-2-kuba@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260416-iwl-net-submission-2026-04-14-v2-11-686c33c9828d@intel.com>
+References: <20260416-iwl-net-submission-2026-04-14-v2-11-686c33c9828d@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Fri, 17 Apr 2026 11:02:59 +0200 Antonio Quartulli wrote:
-> This is a respin of the PR I originally sent against net-next + an extra
-> fix (patch 6).
-> 
-> Please note that this patch:
-> https://lore.kernel.org/all/20260225010833.11301-1-liuhangbin@gmail.com/
-> broke the selftests entirely due to the switch from sh to bash.
-> 
-> There are new commits in the kselftest tree which take care of this:
-> https://lore.kernel.org/all/20260416-selftest-fix-readlink-e-v1-0-94e4cabbdec4@kernel.org/
-> but they are not in net yet, therefore you won't be able to test/run
-> our kselftests for now.
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
 
-It does work for us, FWIW, maybe because we run tests with make
-run_tests. There were some entirely unnecessary changes to ktap 
-output which broke our systems but we patched around them :/
+Jakub: I'll drop this patch and apply the rest.
+---
+idpf: fix xdp crash in soft reset error path
 
-> TCP tests are still failing every now and then.
-> It seems that sometimes a single ping over a TCP tunnel is lost,
-> thus making the selftest fail.
+This commit fixes a NULL pointer dereference in idpf_vport_open() when
+soft reset fails by restoring vport->xdp_prog to the old value. It also
+updates the restart check to use IDPF_VPORT_UP instead of netif_running().
 
-They seem to fail for us around 50% of the time on debug kernel
-builds. What's your repro rate?
+Cc: stable@vger.kernel.org
 
-> We believe this is a bug in ovpn which we are currently hunting down.
-> So it's nothing wrong about the tests (they are actually doing their
-> job!).
+> diff --git a/drivers/net/ethernet/intel/idpf/xdp.c b/drivers/net/ethernet/intel/idpf/xdp.c
+> --- a/drivers/net/ethernet/intel/idpf/xdp.c
+> +++ b/drivers/net/ethernet/intel/idpf/xdp.c
+> @@ -488,6 +488,7 @@ static int idpf_xdp_setup_prog(struct idpf_vport *vport,
+>  				   "Could not reopen the vport after XDP setup");
+>  
+>  		cfg->user_config.xdp_prog = old;
+> +		vport->xdp_prog = old;
 
-FWIW one of today's runs hit this:
+Does this also need to roll back vport->num_xdp_txq?
 
-https://netdev-ctrl.bots.linux.dev/logs/vmksft/net-extra-dbg/results/608740/3-test-symmetric-id-tcp-sh/stderr
-decoded:
-https://netdev-ctrl.bots.linux.dev/logs/vmksft/net-extra-dbg/results/608740/vm-crash-thr0-0
+Because idpf_initiate_soft_reset() overwrites the vport struct with the new
+queue configuration before failing, vport->num_xdp_txq might remain > 0
+while vport->xdp_prog is restored to NULL.
 
-In any case - test_mark.sh looks good now, so I'll take it out of 
-the ignored list. Thanks! 2 more to go? :)
+When the interface is brought up, idpf_xdpsqs_get() evaluates
+idpf_xdp_enabled(vport) as false and returns early without allocating the
+NAPI timers (xdpsq->timer).
+
+Could another interface redirect XDP frames via ndo_xdp_xmit, bypassing the
+check because vport->num_xdp_txq > 0, and cause a NULL pointer dereference
+in libeth_xdpsq_queue_timer() during idpf_xdp_tx_finalize()?
+
+>  		old = prog;
+>  	}
+
+Is this old = prog assignment leading to a double-put of the BPF program?
+
+If idpf_initiate_soft_reset() fails, this error path drops a reference to
+the newly provided prog when it calls bpf_prog_put(old) right after this
+block.
+
+Since the function returns an error code to the core network stack, won't
+dev_xdp_install() in net/core/dev.c also explicitly call bpf_prog_put(prog)
+assuming ownership of the error cleanup?
+
+Could this underflow the reference count and cause a use-after-free?
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/intel/idpf/xsk.c b/drivers/net/ethernet/intel/idpf/xsk.c
+> --- a/drivers/net/ethernet/intel/idpf/xsk.c
+> +++ b/drivers/net/ethernet/intel/idpf/xsk.c
+> @@ -568,7 +569,8 @@ int idpf_xsk_pool_setup(struct idpf_vport *vport, struct netdev_bpf *bpf)
+>  		return -EINVAL;
+>  	}
+>  
+> -	restart = idpf_xdp_enabled(vport) && netif_running(vport->netdev);
+> +	restart = idpf_xdp_enabled(vport) &&
+> +		  test_bit(IDPF_VPORT_UP, np->state);
+>  	if (!restart)
+>  		goto pool;
+
+Does this function leave the queue pair permanently disabled if the pool
+setup fails?
+
+If restart is true, the queue pair is disabled via:
+    idpf_qp_switch(vport, qid, false);
+
+If the subsequent call to libeth_xsk_setup_pool() fails, the function
+returns early:
+
+    ret = libeth_xsk_setup_pool(vport->netdev, qid, pool);
+    if (ret) {
+        ...
+        return ret;
+    }
+
+Does this early return bypass the idpf_qp_switch(vport, qid, true) call
+expected later, causing a permanent partial loss of connectivity until the
+interface is manually restarted?
