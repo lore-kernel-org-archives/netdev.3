@@ -1,81 +1,67 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 642D827B35F
-	for <netdev@vger.kernel.org>; Sat, 18 Apr 2026 09:52:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C2C35CB6B
+	for <netdev@vger.kernel.org>; Sat, 18 Apr 2026 10:59:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776505923; cv=none; b=CrLeibqcS6cBApR14N7ezRzBOmnXmZqYL3J4WrXJY25RnltOkjhga2uGaXBwnGvY5i0qwhb6xKsJK2x3VpGPkth/y6Z2CfgvubkDkEAslJQyr9KKgy9w+AvF61Rz0EJF7tJV7fpFvH8xk1VFaWedU+DD9luDVo6gi3fs+cD0KpU=
+	t=1776509947; cv=none; b=IVd+cAYk/os5vF8aJecZ9wXJiH9fVLXIT2Mdk1pGsSO4xejrkFvbIOkD20+eYPZHnz54qTAmhQ/FuF466kXc+AIH8Ivy7YWtbc/LBuF2zNTyL36uLbmj0EwiTlHyS4kEK0LBh5QOCJN5xtT1+mvZhDsL5kdwyoGMfbtHWmT0d0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776505923; c=relaxed/simple;
-	bh=d8tp5GGO1O+eSZR4pglWOiyM0laQq+gQxbmqEwYX054=;
+	s=arc-20240116; t=1776509947; c=relaxed/simple;
+	bh=GEfn2cvUXCZYu8R3K/hHuva9mqWVpe6oUwR+lZao2Gw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YTG+HztjgPrRHNWXc/12EIGOvu82Amfc4pqEImUy0QULbZEg4TZYkS0n8rXFQpGyHl8VCoshGoY+5A2p0ozoKku/Ta62GS/KOdN88ZZ64HGT8gVnpwzk5kaIX3w+lKSffqayoHr513ZzzTfrWM/Dcp5yJ5FpKLntDKgOsbDOVPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Wxex1cU2; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Nt0/AstE; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Wxex1cU2; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Nt0/AstE; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	 In-Reply-To:Content-Type; b=BeaDxWMrV3Lz91b013LS6ExXhkg8RLzrOMnJ3F/nHWdR6U3x2N4T+PCZKyo4cU/Y2bN25HowTyTk7xCKMb5ZZFcIt3Le2og5EyzfrStBiyK6GBaujWawFRZXcCq0pYf1ekGkYE7hpthfU0MuAYs0k9k1oMk+Yn/hGHLodHFE3jU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gsytzas8; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Wxex1cU2";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Nt0/AstE";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Wxex1cU2";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Nt0/AstE"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 036746A88C;
-	Sat, 18 Apr 2026 09:51:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1776505913; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ILc91nbKpIqZKXRZGp9ayAf2yse+/ezIxRKf0IYsI0s=;
-	b=Wxex1cU2Ul9b09b6+BXthUADuTanrKLEXfQQI9jH7RAcM94xMNatdXZ13pxbQQ1N4cxIL4
-	FTyQCx304OWrgj1CLLBLZRWZdFLU9miG23icGLUCGE1TwHtqv+5y+BMfda9ZvKqeE85nLe
-	yyr2mJDs9wlt8iYYQ2vdG9yxoNjlySI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1776505913;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ILc91nbKpIqZKXRZGp9ayAf2yse+/ezIxRKf0IYsI0s=;
-	b=Nt0/AstEZyM8Si7jl5EzgFYCb0x4uNQxiTYx1W96jXcxX2mWltAr9DBmyswVJ1fwUlp0WK
-	M44RZ3m3M3w8B9BA==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Wxex1cU2;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="Nt0/AstE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1776505913; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ILc91nbKpIqZKXRZGp9ayAf2yse+/ezIxRKf0IYsI0s=;
-	b=Wxex1cU2Ul9b09b6+BXthUADuTanrKLEXfQQI9jH7RAcM94xMNatdXZ13pxbQQ1N4cxIL4
-	FTyQCx304OWrgj1CLLBLZRWZdFLU9miG23icGLUCGE1TwHtqv+5y+BMfda9ZvKqeE85nLe
-	yyr2mJDs9wlt8iYYQ2vdG9yxoNjlySI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1776505913;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ILc91nbKpIqZKXRZGp9ayAf2yse+/ezIxRKf0IYsI0s=;
-	b=Nt0/AstEZyM8Si7jl5EzgFYCb0x4uNQxiTYx1W96jXcxX2mWltAr9DBmyswVJ1fwUlp0WK
-	M44RZ3m3M3w8B9BA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 967D8593A3;
-	Sat, 18 Apr 2026 09:51:52 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id BLVbIThU42mDegAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Sat, 18 Apr 2026 09:51:52 +0000
-Message-ID: <5e162147-d182-4119-82bd-b56f0e76a44e@suse.de>
-Date: Sat, 18 Apr 2026 11:51:44 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gsytzas8"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4838c15e3cbso13844265e9.3
+        for <netdev@vger.kernel.org>; Sat, 18 Apr 2026 03:59:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776509944; x=1777114744; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vnBuFIUCfikb5ub/f9rRSioO6vPlb9VFmQqFga+l/6Y=;
+        b=gsytzas85Am8f+juTKEPhjE/xOwLHKMssq46OGtn9GxMCl2smuDYgipttJV7W5ugvd
+         FonhKvFIxbiK1xH3N4GRYW5uXrNb1RhuWgncZn63PUBbAFTOAZmI11Ld0lZFYPuGj4L8
+         W5pkcd9u7pcEtOsTWYNy17mAV04Z9JjJ6Ye/w++WCxzd4S7HUfoxaO5ry0JfvJlhyB0I
+         D3hFUZX0prsf4nMkxzeCOAxrFzSTHDD/q2pCr0R55XquMSuJ6/E9a3dx+otSx9CuK0wp
+         xkctcS/b/nH8kYO9xWIu+aaqXFj6zZKwpWT2NJWnVmQ1WR2dRJAq8WwWWlxmsKfpTjna
+         cT7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776509944; x=1777114744;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vnBuFIUCfikb5ub/f9rRSioO6vPlb9VFmQqFga+l/6Y=;
+        b=Jd5khyQesYO6ntaoQD0LiAGBwzPYAtfPtz8benIR9Mn8SXeaEzFfki8rh7LBxWI/q/
+         keKouqYqDpYByOwJ90mATCh20kV0pIpM+vsF03bYuQISb3UPVvlB6RHcf1LwUy7dyO64
+         32SAQ6a5TwRkvjlRgFZBLq22YwwCGzkvST4BqZrM7o4NYCN5EDKGV4YXlq3oWvVG2eIj
+         yb+R80ncHSomrV6lsx8UGFLmaCkbErhrh/xQvdpBkb7faw1SSemFPlZGJ6Or49d1e58E
+         ehk68zmjExX9I5nhn9o7EvU+0yHz7/7LM/hq3L+RDUjCyC+s8IEA79HTqoSGwFyCWj5+
+         JOnQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9p1tEvT5WW+yuCZWZhEYipZl3kff+FNr7d/OwJFE8kbO8R65lp+hF1sMc1Ua7b+OXKxCWRb9I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwqphOGmSHzoDkbZuCF4H6x+OGs8wnB6+c/tJG0/0nRPah0qRRT
+	5hFxhXZzVBQMLJIMUdQNLJL+s4R2H54OwtK7HZYJxSrzDadksNnCvkGv
+X-Gm-Gg: AeBDieuVPaw63tFYPiGgiq2uQKR5sOCUhqrmJMOW4D+SKbKyVzKbm4+n6o6j7hIEvap
+	bhtQI0m5Hy/yyBPK4+qy+K2hB7zoeaDons6HfN2ODNh7pnidlq8e5t0mebYwLRobhE/LQOZoTLo
+	ZO/XI1AKbA3g74AEMRHsQYJCNn2CbZavwo7vxf709mNRFQtZPMnIdS7UArtjjNsL8LX3V4Oza0o
+	NWtgJ1oGOD5bgHLzUXzoPgfgn8zKZQN+DzMOrKwkvZmira6eso+Ijp205Pj82edc1jxEf9J7mH2
+	d8qIrAoEK3JQlNiI3J4950LuXgZQ8cMQJkQoBlEuVDEj89HrczR2FfSccii95SD35/4RjmGM2Rz
+	r95tR41Ir8tpKkf2V0UIhTx+nCIgmETXCm7n3syuolhYGwd6yZtoZtRl4xP/diI9Qtu13ZZlDMt
+	0ueZgUfpjbsHyOE440cum93eLupa3KnOd6mybt9HGgGPUmYkgelHunw3Lw+3EAfrzIoOAJPIGwV
+	gbNyvuwr1rnelzR
+X-Received: by 2002:a05:600c:a413:b0:485:419c:4eba with SMTP id 5b1f17b1804b1-488fb73d229mr67979495e9.1.1776509943863;
+        Sat, 18 Apr 2026 03:59:03 -0700 (PDT)
+Received: from ?IPV6:2a02:a03f:a75e:9a00:5273:4380:96ab:9087? ([2a02:a03f:a75e:9a00:5273:4380:96ab:9087])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43fe4e3a341sm13236059f8f.24.2026.04.18.03.59.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 18 Apr 2026 03:59:03 -0700 (PDT)
+Message-ID: <acee197f-1821-4304-8759-a02ac1d5c808@gmail.com>
+Date: Sat, 18 Apr 2026 12:59:02 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,109 +69,83 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4 nf] netfilter: nft_exthdr: skip SCTP chunk evaluation
- for non-first fragments
-To: Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: netfilter-devel@vger.kernel.org, netdev@vger.kernel.org,
- coreteam@netfilter.org, fw@strlen.de, phil@nwl.cc
-References: <20260417183433.4739-1-fmancera@suse.de>
- <aeM3gmXM43beA3ot@chamomile>
+Subject: Re: [PATCH net] ipv6: Apply max_dst_opts_cnt to
+ ip6_tnl_parse_tlv_enc_lim
+To: Daniel Borkmann <daniel@iogearbox.net>, kuba@kernel.org
+Cc: edumazet@google.com, dsahern@kernel.org, tom@herbertland.com,
+ willemdebruijn.kernel@gmail.com, idosch@nvidia.com, pabeni@redhat.com,
+ netdev@vger.kernel.org
+References: <20260417220358.693101-1-daniel@iogearbox.net>
 Content-Language: en-US
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-In-Reply-To: <aeM3gmXM43beA3ot@chamomile>
+From: Justin Iurman <justin.iurman@gmail.com>
+In-Reply-To: <20260417220358.693101-1-daniel@iogearbox.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,suse.de:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Queue-Id: 036746A88C
-X-Spam-Flag: NO
-X-Spam-Score: -4.51
-X-Spam-Level: 
 
-On 4/18/26 9:49 AM, Pablo Neira Ayuso wrote:
-> Hi Fernando,
+On 4/18/26 00:03, Daniel Borkmann wrote:
+> Commit 47d3d7ac656a ("ipv6: Implement limits on Hop-by-Hop and
+> Destination options") added net.ipv6.max_{hbh,dst}_opts_{cnt,len}
+> and applied them in ip6_parse_tlv(), the generic TLV walker
+> invoked from ipv6_destopt_rcv() and ipv6_parse_hopopts().
 > 
-> On Fri, Apr 17, 2026 at 08:34:30PM +0200, Fernando Fernandez Mancera wrote:
->> The SCTP chunk matching logic in nft_exthdr relies on SCTP common header
->> being present at the transport header offset. For fragmented packets at
->> IP level, only the first fragment would match this condition.
->>
->> The nft_exthdr could be used in a PREROUTING chain with a priority lower
->> than -400. This would bypass defragmentation. In addition, it can be use
->> in stateless environments so it should work on a environment where
->> defragmentation is not being performed at all.
+> ip6_tnl_parse_tlv_enc_lim() does not go through ip6_parse_tlv();
+> it has its own hand-rolled TLV scanner inside its NEXTHDR_DEST
+> branch which looks for IPV6_TLV_TNL_ENCAP_LIMIT. That inner
+> loop is bounded only by optlen, which can be up to 2048 bytes.
+> Stuffing the Destination Options header with 2046 Pad1 (type=0)
+> entries advances the scanner a single byte at a time, yielding
+> ~2000 TLV iterations per extension header.
 > 
-> Yes, and stateless filtering is still a valid configuration, ie.
-> nf_conntrack is not loaded.
+> Reuse max_dst_opts_cnt to bound the TLV iterations, matching
+> the semantics from 47d3d7ac656a.
 > 
->> Add a check for pkt->fragoff to ensure exthdr SCTP only evaluates
->> unfragmented packets or the first fragment in the stream.
+> Fixes: 47d3d7ac656a ("ipv6: Implement limits on Hop-by-Hop and Destination options")
+> Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+> ---
+>   net/ipv6/ip6_tunnel.c | 5 +++++
+>   1 file changed, 5 insertions(+)
 > 
-> I would suggest to squash the three small patches to check for
-> pkt->fragoff in one patch. The three expressions have been already
-> around for a while (backporting the combo patch that makes the same
-> logical change should be easy) and it is basically the same logical
-> change.
-> 
+> diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
+> index 907c6a2af331..0ab76f93c136 100644
+> --- a/net/ipv6/ip6_tunnel.c
+> +++ b/net/ipv6/ip6_tunnel.c
+> @@ -430,11 +430,16 @@ __u16 ip6_tnl_parse_tlv_enc_lim(struct sk_buff *skb, __u8 *raw)
+>   				break;
+>   		}
+>   		if (nexthdr == NEXTHDR_DEST) {
+> +			int tlv_max = READ_ONCE(init_net.ipv6.sysctl.max_dst_opts_cnt);
+> +			int tlv_cnt = 0;
+>   			u16 i = 2;
+>   
+>   			while (1) {
+>   				struct ipv6_tlv_tnl_enc_lim *tel;
+>   
+> +				if (unlikely(tlv_cnt++ >= tlv_max))
+> +					break;
+> +
+>   				/* No more room for encapsulation limit */
+>   				if (i + sizeof(*tel) > optlen)
+>   					break;
 
-Hi Pablo,
+Good point on reusing max_dst_opts_cnt in ip6_tnl_parse_tlv_enc_lim(), 
+but this patch is not ready yet.
 
-Thanks for the review! I am not sure about squashing them as they all 
-have different blamed commits. I find accurate fixes tag quite useful 
-when handling backports and I guess others do too (also for stable 
-kernels). Is that convincing?
+We need to be careful: max_dst_opts_cnt can be negative. If this is the 
+case, ip6_tnl_parse_tlv_enc_lim() would probably return 0, which is not 
+what we want here. From the doc:
 
-Anyway, not a big deal if there is a strong preference I will squash them.
+max_dst_opts_number - INTEGER
+         Maximum number of non-padding TLVs allowed in a Destination
+         options extension header. If this value is less than zero
+         then unknown options are disallowed and the number of known
+         TLVs allowed is the absolute value of this number.
 
-Thanks,
-Fernando.
+         Default: 8
 
-> Thanks!
-> 
->> Fixes: 133dc203d77d ("netfilter: nft_exthdr: Support SCTP chunks")
->> Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
->> ---
->>   net/netfilter/nft_exthdr.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/net/netfilter/nft_exthdr.c b/net/netfilter/nft_exthdr.c
->> index 7eedf4e3ae9c..8eb708bb8cff 100644
->> --- a/net/netfilter/nft_exthdr.c
->> +++ b/net/netfilter/nft_exthdr.c
->> @@ -376,7 +376,7 @@ static void nft_exthdr_sctp_eval(const struct nft_expr *expr,
->>   	const struct sctp_chunkhdr *sch;
->>   	struct sctp_chunkhdr _sch;
->>   
->> -	if (pkt->tprot != IPPROTO_SCTP)
->> +	if (pkt->tprot != IPPROTO_SCTP || pkt->fragoff)
->>   		goto err;
->>   
->>   	do {
->> -- 
->> 2.53.0
->>
+Since ip6_tnl_parse_tlv_enc_lim() does not check for specific option 
+types (e.g., Pad1, PadN, you-name-it) and does not differentiate known 
+from unknown options during parsing, I would simply use the absolute 
+value of max_dst_opts_cnt by default.
 
+Also, I wouldn't use unlikely() because it could harm us more than it 
+helps in this specific context (consistent with ip6_parse_tlv()).
