@@ -1,232 +1,110 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A08035C1BD
-	for <netdev@vger.kernel.org>; Sat, 18 Apr 2026 22:37:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCFDD28B7DB;
+	Sat, 18 Apr 2026 23:05:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776551861; cv=none; b=oldSTIEH0UGB64L/R2fGP3SLeogZgTJFR1RsRoT3Ltp2xtd7Q1AB6wb8YJIL5FkNPukn6Cq8+8o7CeQlS/x/mEbKYiL/9Zt8eOANrCzm5U0Trema7lhfsiFmNSPjjc3PhdssCj75rDnw0F6FSIApQaFgroIEmBhWmUjJr8Kr0+k=
+	t=1776553544; cv=none; b=rJ2nZZTF0Xm/mnnQrtMSkPhrJt6isVsW6SmiaInSCfut+mx5fM7bq/4s5R1ZIGsFMvaSC+9Jegs6HVcDHoA6TgEltelucw+iFn8Au+mMwRHPqibld/tM/QduRkIFknB+xmT+dY1+8aK665/ad9+20dHPqxQJIMio/sO6Ik0p2OY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776551861; c=relaxed/simple;
-	bh=q8GTTSTDWQVwJSglC5lud168I/awSIg1vjHACFAXyjA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YzSrbpNjcHYHrLZWu+n2MZJ60oPOg+Nw4zw+f+oXKi3eWSEjj7bFvMD9imcxZ6AKhhPvEKAyXXcANh+NlfHz48yHgBIpoK9Wl6Ex3+yuvdEQRXSlo9rLb1Wp/Dk2bfm8nylwzNoMghDZq1xTwh9FpCmjrL6vhCFL7isdkdP3vbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fgRqYLnD; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fgRqYLnD"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4852b81c73aso15921625e9.3
-        for <netdev@vger.kernel.org>; Sat, 18 Apr 2026 15:37:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776551857; x=1777156657; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RTdnULj81eGG7Oisgea77vWusJQ8j5guInO38oE50FI=;
-        b=fgRqYLnDDRZ6qQc162YmQrVa6bce4/WsiJghSCf0yxfMZU+qGl+s0vfD3bohPxKTdB
-         VFgClhPcIf3LHFiISg9QeVA48s3Zf2LDchC5pHOJ0F02VpKlNjbf2gPWAsj088AsA1Y3
-         L5YlJ+18r9ywGaG5fJxw7gYzCDHMU4F3nYsh7c/a6mmfhLIbePHhqC0WXvDCptdRcTcf
-         lN9gNnexNqnX7cz5vnUdUqyCnnfzvpGlvpm687KUGTYfSW5sBMWOBI28a1qtfeVvlqOe
-         velVR1hnqO+yuzjUzZ97FAfLzXbI3h/hmZp9rSBpg49RRuYnX0nZgVQpYDgpsgtYXrdD
-         6euw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776551857; x=1777156657;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=RTdnULj81eGG7Oisgea77vWusJQ8j5guInO38oE50FI=;
-        b=Nisw2WrvZ3fc4u/spryOi3B91vQshvs71UXY5Pai23sHGIkbG+REijdPq50ww+ojdD
-         tActrJzfpkGFtjMfApeJU86qtuccct9ZKM8tJuAEGSNDpqLC6ZUyzmb7p71MgQAdi5SG
-         0R1fm8IKs/5bYppHC7oauUgCiYoKegeciZJmBSMQa3d1/SzS/jf3dUwBtsCw0ElMADpX
-         AetbuNFILm1DCgYDBNxxiFpBMUdB8YcHQ8y0zbQO/umAmumvnIi/QgaDDGsSOCpMd/ag
-         bNUHn+V9fxXOTmRw0BUgLK04W1TnyTB+wSToq9IGWs9KQurwD03tzN9YAgiO/8gxB3hX
-         5Biw==
-X-Forwarded-Encrypted: i=1; AFNElJ8g94NagDvVitKDzzyu5nbHoDOUa4LB5QCkDOFt0EK1bk2SKNuVO5/jLOpG7QrSoHwU3hAXK6s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwfoAcvhVuiWLEPPn5KLEwLPJ6wmXHNxK0QT8rzK5d4irik4kck
-	zcXEgNstGTTqgP9upsciR85WDrFFuFZQ1wp79tC+pGC472BuUWC9Clmz
-X-Gm-Gg: AeBDiesAfksC5BMX7efvjqqFrcswXb3kGdBRKUUC+YMWaSzoz0m6yC6AURNJCj9vNAE
-	AWcACfX5rnuE4jud5MM6kUwhCyGqv4WBInyMxbOv+ly58mm9Aocbb7zGnpSIONUs6v4qRLCOyMR
-	gPj61hef6oxPaD7s4Nta/mPu+UcecytBoedDOiuYC4bLHx7YbTplWmw3M5NPQpgzUdrhgXRc+5n
-	chr0OCdBk28uncnTyJsm4lTspjyCw4ErOO0clUjUtSEU+1iLUIVTbeS7jz+LSoxuPvu7W9Y3RKU
-	m+iFfS0NFRKnQiBSpot8Q7Hm/0Vkv2iNJ1tueB19bLTmVNTSZUh7h63/sH8IDe0Bb+6UvDpHzgt
-	CWTi+kuHaLQvba5fSwDpDAeACJ5oXGqJ2gyKsyzYG7Mh8ioUe/c2QiZHC84xB3BfoWTHzspN1AN
-	XyK/Pk92RrSdj1f4Tgo0/lLky34FkgAbL0G1iZrBLxJeZRnGku8ozoRiJ4htGKrokmKqQ9WcGbB
-	7epZ++J2TEVEBqc
-X-Received: by 2002:a05:600c:1c1c:b0:486:f4d2:eac6 with SMTP id 5b1f17b1804b1-488fb74dcf3mr118579515e9.13.1776551857149;
-        Sat, 18 Apr 2026 15:37:37 -0700 (PDT)
-Received: from ?IPV6:2a02:a03f:a75e:9a00:5273:4380:96ab:9087? ([2a02:a03f:a75e:9a00:5273:4380:96ab:9087])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488fc13938fsm242024365e9.10.2026.04.18.15.37.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 18 Apr 2026 15:37:36 -0700 (PDT)
-Message-ID: <8fdf517b-6217-4df6-8adf-0c79ce8d3be8@gmail.com>
-Date: Sun, 19 Apr 2026 00:37:35 +0200
+	s=arc-20240116; t=1776553544; c=relaxed/simple;
+	bh=3gjC89xnGxxB+QjjXVBM8oQx83vQETJQ/FYuJTiiO18=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=omedgi07McyVfk0Q+HIWV+a9F1cd3qJu6h1d+99LDTkvzyGAdp2ZKYAzvyloj0L64td14PgbyMpkj4DU6VD9t1hdCBW64ag9nhpwGjMA8es9OTkMrbz+pZFgxEwpGyopHjBQZSU+YPADKsreNjSfgpLC1k3ctAVN9G2Olws6H7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
+Received: from omf17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3A610E4C26;
+	Sat, 18 Apr 2026 23:05:34 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf17.hostedemail.com (Postfix) with ESMTPA id D63C017;
+	Sat, 18 Apr 2026 23:05:02 +0000 (UTC)
+Date: Sat, 18 Apr 2026 19:04:56 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: "Vineeth Pillai (Google)" <vineeth@bitbyteword.org>
+Cc: Peter Zijlstra <peterz@infradead.org>, Dmitry Ilvokhin <d@ilvokhin.com>,
+ Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, Ingo Molnar <mingo@redhat.com>, Jens
+ Axboe <axboe@kernel.dk>, io-uring@vger.kernel.org, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov
+ <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Marcelo Ricardo
+ Leitner <marcelo.leitner@gmail.com>, Xin Long <lucien.xin@gmail.com>, Jon
+ Maloy <jmaloy@redhat.com>, Aaron Conole <aconole@redhat.com>, Eelco
+ Chaudron <echaudro@redhat.com>, Ilya Maximets <i.maximets@ovn.org>,
+ netdev@vger.kernel.org, bpf@vger.kernel.org, linux-sctp@vger.kernel.org,
+ tipc-discussion@lists.sourceforge.net, dev@openvswitch.org, Jiri Pirko
+ <jiri@resnulli.us>, Oded Gabbay <ogabbay@kernel.org>, Koby Elbaz
+ <koby.elbaz@intel.com>, dri-devel@lists.freedesktop.org, "Rafael J.
+ Wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>,
+ "Gautham R. Shenoy" <gautham.shenoy@amd.com>, Huang Rui
+ <ray.huang@amd.com>, Mario Limonciello <mario.limonciello@amd.com>, Len
+ Brown <lenb@kernel.org>, Srinivas Pandruvada
+ <srinivas.pandruvada@linux.intel.com>, linux-pm@vger.kernel.org, MyungJoo
+ Ham <myungjoo.ham@samsung.com>, Kyungmin Park <kyungmin.park@samsung.com>,
+ Chanwoo Choi <cw00.choi@samsung.com>, Christian =?UTF-8?B?S8O2bmln?=
+ <christian.koenig@amd.com>, Sumit Semwal <sumit.semwal@linaro.org>,
+ linaro-mm-sig@lists.linaro.org, Eddie James <eajames@linux.ibm.com>, Andrew
+ Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
+ linux-fsi@lists.ozlabs.org, David Airlie <airlied@gmail.com>, Simona Vetter
+ <simona@ffwll.ch>, Alex Deucher <alexander.deucher@amd.com>, Danilo
+ Krummrich <dakr@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
+ Philipp Stanner <phasta@kernel.org>, Harry Wentland
+ <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>,
+ amd-gfx@lists.freedesktop.org, Jiri Kosina <jikos@kernel.org>, Benjamin
+ Tissoires <bentiss@kernel.org>, linux-input@vger.kernel.org, Wolfram Sang
+ <wsa+renesas@sang-engineering.com>, linux-i2c@vger.kernel.org, Mark Brown
+ <broonie@kernel.org>, Michael Hennerich <michael.hennerich@analog.com>,
+ Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, linux-spi@vger.kernel.org,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, "Martin K.
+ Petersen" <martin.petersen@oracle.com>, linux-scsi@vger.kernel.org, Chris
+ Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
+ linux-btrfs@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, Andrew
+ Morton <akpm@linux-foundation.org>, SeongJae Park <sj@kernel.org>,
+ linux-mm@kvack.org, Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, x86@kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 00/19] tracepoint: Avoid double static_branch
+ evaluation at guarded call sites
+Message-ID: <20260418190456.631df6f3@fedora>
+In-Reply-To: <20260323160052.17528-1-vineeth@bitbyteword.org>
+References: <20260323160052.17528-1-vineeth@bitbyteword.org>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] ipv6: Apply max_dst_opts_cnt to
- ip6_tnl_parse_tlv_enc_lim
-To: Daniel Borkmann <daniel@iogearbox.net>, kuba@kernel.org
-Cc: edumazet@google.com, dsahern@kernel.org, tom@herbertland.com,
- willemdebruijn.kernel@gmail.com, idosch@nvidia.com, pabeni@redhat.com,
- netdev@vger.kernel.org
-References: <20260418121538.706095-1-daniel@iogearbox.net>
- <7c715640-5c20-4226-9c31-d2c5eef551db@gmail.com>
- <d8d60970-6f73-4b9d-8808-76f4f8023100@iogearbox.net>
-Content-Language: en-US
-From: Justin Iurman <justin.iurman@gmail.com>
-In-Reply-To: <d8d60970-6f73-4b9d-8808-76f4f8023100@iogearbox.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 14j39sducs3tg3aey13ys76m4wq4pf1a
+X-Rspamd-Server: rspamout02
+X-Rspamd-Queue-Id: D63C017
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX18uI1/Yo7/rI1+CwnTJAuzOiDhDTcHCmFM=
+X-HE-Tag: 1776553502-227936
+X-HE-Meta: U2FsdGVkX19V5aRBuQVgNrwFYqJny3DiV29cPCLORtmFjnJgNsHv2iodpq+DK7eFwvzFvhgzZ+I=
 
-On 4/19/26 00:19, Daniel Borkmann wrote:
-> On 4/18/26 2:40 PM, Justin Iurman wrote:
->> On 4/18/26 14:15, Daniel Borkmann wrote:
->>> Commit 47d3d7ac656a ("ipv6: Implement limits on Hop-by-Hop and
->>> Destination options") added net.ipv6.max_{hbh,dst}_opts_{cnt,len}
->>> and applied them in ip6_parse_tlv(), the generic TLV walker
->>> invoked from ipv6_destopt_rcv() and ipv6_parse_hopopts().
->>>
->>> ip6_tnl_parse_tlv_enc_lim() does not go through ip6_parse_tlv();
->>> it has its own hand-rolled TLV scanner inside its NEXTHDR_DEST
->>> branch which looks for IPV6_TLV_TNL_ENCAP_LIMIT. That inner
->>> loop is bounded only by optlen, which can be up to 2048 bytes.
->>> Stuffing the Destination Options header with 2046 Pad1 (type=0)
->>> entries advances the scanner a single byte at a time, yielding
->>> ~2000 TLV iterations per extension header.
->>>
->>> Reuse max_dst_opts_cnt to bound the TLV iterations, matching
->>> the semantics from 47d3d7ac656a.
->>>
->>> Fixes: 47d3d7ac656a ("ipv6: Implement limits on Hop-by-Hop and 
->>> Destination options")
->>> Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
->>> ---
->>>   v1->v2:
->>>     - Remove unlikely (Justin)
->>>     - Use abs() given max_dst_opts_cnt's negative meaning (Justin)
->>>
->>>   net/ipv6/ip6_tunnel.c | 5 +++++
->>>   1 file changed, 5 insertions(+)
->>>
->>> diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
->>> index 907c6a2af331..0f50b7fcb24e 100644
->>> --- a/net/ipv6/ip6_tunnel.c
->>> +++ b/net/ipv6/ip6_tunnel.c
->>> @@ -430,11 +430,16 @@ __u16 ip6_tnl_parse_tlv_enc_lim(struct sk_buff 
->>> *skb, __u8 *raw)
->>>                   break;
->>>           }
->>>           if (nexthdr == NEXTHDR_DEST) {
->>> +            int tlv_max = 
->>> abs(READ_ONCE(init_net.ipv6.sysctl.max_dst_opts_cnt));
->>> +            int tlv_cnt = 0;
->>>               u16 i = 2;
->>>               while (1) {
->>>                   struct ipv6_tlv_tnl_enc_lim *tel;
->>> +                if (tlv_cnt++ >= tlv_max)
->>> +                    break;
->>> +
->>>                   /* No more room for encapsulation limit */
->>>                   if (i + sizeof(*tel) > optlen)
->>>                       break;
->>
->> Thanks for v2, Daniel.
->>
->> I'm still wondering: should we align the above parsing behavior with 
->> the one in ip6_parse_tlv() to keep things consistent? That is: don't 
->> increment tlv_cnt for Pad1/PadN, make sure we don't exceed 8 bytes per 
->> padding (consecutive Pad1's, or a PadN), and we could also check that 
->> a PadN payload is only made of zeroes. Open question...
-> 
-> Hm, so it would be sth like the below on top of this one, I'd wish we 
-> wouldn't
-> have to open code another ip6_parse_tlv().
-> 
-> Have you seen such cases with the encap limit in the wild (vs encap 
-> limit as
-> first tlv) where a stack places leading Pad1/PadN before encap limit 
-> which the
-> v2 patch wouldn't catch?
+On Mon, 23 Mar 2026 12:00:19 -0400
+"Vineeth Pillai (Google)" <vineeth@bitbyteword.org> wrote:
 
-Nope. But if it happens, users would be confused as max_dst_opts_cnt 
-would not have the same meaning in two different code paths. OTOH, I 
-agree that such situation would look suspicious. I guess it's fine to 
-keep your patch as is and to not over-complicate things unnecessarily.
+>   if (trace_foo_enabled() && cond)
+>       trace_call__foo(args);   /* calls __do_trace_foo() directly */
 
->   net/ipv6/ip6_tunnel.c | 42 +++++++++++++++++++++++++++++++-----------
->   1 file changed, 31 insertions(+), 11 deletions(-)
-> 
-> diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-> index 0f50b7fcb24e..1fa42a1cd97c 100644
-> --- a/net/ipv6/ip6_tunnel.c
-> +++ b/net/ipv6/ip6_tunnel.c
-> @@ -432,28 +432,48 @@ __u16 ip6_tnl_parse_tlv_enc_lim(struct sk_buff 
-> *skb, __u8 *raw)
->           if (nexthdr == NEXTHDR_DEST) {
->               int tlv_max = 
-> abs(READ_ONCE(init_net.ipv6.sysctl.max_dst_opts_cnt));
->               int tlv_cnt = 0;
-> +            int padlen = 0;
->               u16 i = 2;
-> 
-> -            while (1) {
-> -                struct ipv6_tlv_tnl_enc_lim *tel;
-> +            while (i < optlen) {
-> +                struct ipv6_tlv_tnl_enc_lim *tel =
-> +                    (struct ipv6_tlv_tnl_enc_lim *)(skb->data + off + i);
-> +                int tel_len;
-> 
-> -                if (tlv_cnt++ >= tlv_max)
-> +                if (tel->type == IPV6_TLV_PAD1) {
-> +                    if (++padlen > 7)
-> +                        break;
-> +                    i++;
-> +                    continue;
-> +                }
-> +
-> +                if (i + 2 > optlen)
-> +                    break;
-> +                tel_len = tel->length + 2;
-> +                if (i + tel_len > optlen)
->                       break;
-> 
-> -                /* No more room for encapsulation limit */
-> -                if (i + sizeof(*tel) > optlen)
-> +                if (tel->type == IPV6_TLV_PADN) {
-> +                    padlen += tel_len;
-> +                    if (padlen > 7)
-> +                        break;
-> +                    if (memchr_inv((u8 *)tel + 2, 0,
-> +                               tel->length))
-> +                        break;
-> +                    i += tel_len;
-> +                    continue;
-> +                }
-> +                padlen = 0;
-> +
-> +                if (tlv_cnt++ >= tlv_max)
->                       break;
-> 
-> -                tel = (struct ipv6_tlv_tnl_enc_lim *)(skb->data + off + 
-> i);
->                   /* return index of option if found and valid */
->                   if (tel->type == IPV6_TLV_TNL_ENCAP_LIMIT &&
->                       tel->length == 1)
->                       return i + off - nhoff;
-> -                /* else jump to next option */
-> -                if (tel->type)
-> -                    i += tel->length + 2;
-> -                else
-> -                    i++;
-> +
-> +                i += tel_len;
->               }
->           }
->           nexthdr = hdr->nexthdr;
+Hi Vineeth,
 
+Could you rebase this series on top of 7.1-rc1 when it comes out?
+Several of these patches were accepted already. Obviously drop those.
+They were the patches that added the feature, and any where the
+maintainer acked the patch.
+
+Now that the feature has been accepted, if you post the patch series
+again after 7.1-rc1 with all the patches that haven't been accepted
+yet, then the maintainers can simply take them directly. As the feature
+is now accepted, there's no dependency on it, and they don't need to go
+through the tracing tree.
+
+Thanks,
+
+-- Steve
