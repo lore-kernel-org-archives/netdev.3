@@ -1,82 +1,79 @@
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B91529E110
-	for <netdev@vger.kernel.org>; Sat, 18 Apr 2026 03:20:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F3882236EE
+	for <netdev@vger.kernel.org>; Sat, 18 Apr 2026 04:17:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776482454; cv=none; b=bQqrD23taZqjRuE38j7v274LPG+wZbZW32v+BNW75r9xqDHQvcUxbrflujh6tw5D1fleTPwodfDiicM7TKqhHWWmWX4ek5CmWdXIgWmMVtkUrVgFm+rNVgBIoWRxHBPUeqC9FNpS2FuoJIO43doVTj9jdMQu1lQa/wxMPIPpsxs=
+	t=1776485842; cv=none; b=p1f+IyUWMLMqqKEuUAs9UpvZrT7kXWGicAZZglZW9S/KKKA84LqR85I5ixOyfks1CbG1/+Ro0hvWVxdSJD6+FNBLw/PoJDBztQYHKPNpq645LtK70WeI4kAu4c3dgiAnckqyQRqQlYkxp7APdaJjGuo3DQ9f+0SDe32S8zrBcyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776482454; c=relaxed/simple;
-	bh=iSQeicGfHcT12F+PCiqevYyDMfIu47Wx4dh4JyJvmk8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GkcE6WaNQ2C28Hzlo96h96NAbG1vydaWb2cDV1qmRk7OKwVuiIO3zcQXP0pnSr7/FRtbHTUNTBGfA1YhPbYPoVbBau7ya9XnkNqQ3viPpnQpOWXKn5HbTNvwmD8dLBw8oR0igWWtJIdJ4ApV0OObbdSgjr3b1Xzkj7+bsIo9AO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b=R2WJ9MMQ; arc=none smtp.client-ip=209.85.210.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
+	s=arc-20240116; t=1776485842; c=relaxed/simple;
+	bh=lWu4lifEBC+paMWkBtn1n5QMc+5bw0cgiGP7ZcJVeJo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P5xgLi8AKbnf5mHG+OEYefY+Qjx7Q9Ekh7rnHM6Q2yw5vReGvMx5K9o8h4auSQRa4F9jKJ0jhfcUsrpfnAW8YLrvqGhy+P/nwKbJSbl/qNkcQT5udDcLrXvpxfetBReaz3heyFFMJBRf55hiFLWLwZGlD5gPBBJ1L/9mIu+IF/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QhLFWnEy; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b="R2WJ9MMQ"
-Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-7d7fdb922a5so1209696a34.3
-        for <netdev@vger.kernel.org>; Fri, 17 Apr 2026 20:20:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QhLFWnEy"
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-82f1f6103afso628031b3a.1
+        for <netdev@vger.kernel.org>; Fri, 17 Apr 2026 21:17:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20251104.gappssmtp.com; s=20251104; t=1776482440; x=1777087240; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=t0RtOKpwKkJAZRKtprSGgHKvMJmG6LxXXrPMdSSL/fI=;
-        b=R2WJ9MMQaaFG5RwV8KvJi5vE0eqe4xO8mLMQxICUL7YdwLtID5Inrql1/kyQp6//Rk
-         P0+Bn4Zjo6W0fe1QveSAzqVqMb69U9JQjZoyWQx5+9H3AG8/qmoD6iDLUA6rwRkoBAx/
-         ls29KL+/t/p0QrbUWli3ULsOOaFaWjk8D7QEZuyUflxopEjhRDbb2aBKO4TxL0Zdl82n
-         L7RaOp8V5/d58KL/aRJ5VpICXGCjkz1jfQp4yEaRnR8V7RVvjwfZ4kebDQDKVWDcAS+r
-         D0wPwXwTwa7L9Xu9CVISUw+WHJ+UrI1ciOPsNUUbPnTSrTPjMcS0d70nqVcGXzTvKCGu
-         kGqA==
+        d=gmail.com; s=20251104; t=1776485840; x=1777090640; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y3YeiL1Jj/muMdy1IqA7Xewdi0uB6Hzewvx0oWM/aKg=;
+        b=QhLFWnEysR5NKXZ5QlgmR6qCCj6tDpUooqPy87McO5vei51N36ti6XdrFD7CzQvOmU
+         U+gJgqQA8XgjDE6RvjRqd2WCOUO26j8Qc/QC3Wh3vUvoqa4S5n1b4b388/iMF2SEgVhI
+         wX3E6WiUYYVUefzM1/9+FZk7ucqGx2dMd2HirSNoVi/2SeeUNOOlgHQwFPfCdsSTAICb
+         8N56S26Dmkog26z+alV54yFWxNgySn29lJS4H8oU7GZk8FS4y0urprk5N7vdz3m0GWYD
+         M6JEus+SV8VtYeF15eySECDbry0GyTrBCrDONOGa4FnYMZMVK4WgIR55pBPDIS9e/Zib
+         ZDIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776482440; x=1777087240;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=t0RtOKpwKkJAZRKtprSGgHKvMJmG6LxXXrPMdSSL/fI=;
-        b=pFsCTzJF2jKIlixrmw52wKFMCGWjgmIvaU89a0WfYwFvPQiVL3wpqTVi9rAQtWp9Af
-         vBuqfUnFGNi9In14u1ouLah824zDfeeBkRTOgUaJnlXujFOvJeIlUA9EcGzQBk2bTFcY
-         DJP6V4pSMk0urQhOQ+mviLUWtdwy+MuinEkWew2EmNmd46XzY6GXIiokTdjyXPme/3r1
-         P9MWlxcfX8mY+SRpEXiJ4mNeQk3/3iWo6I4a3Vf4wGjPrqW4ZoDxoJRuI7rzmq1YhJT/
-         TJcaL/BWBr9QfK3dm7Mb46uxW0qnl2K+3Ogiuik0CDK0rVhoMBICcFUeZq+66hgw8sY2
-         wVag==
-X-Gm-Message-State: AOJu0YzcuuYfjng2GA2UYSyTG+ZYXQVqgPTZTJq3xY1N4xQWOmp4gWME
-	xQ96WIAJPs/fFX+6Aq++0aUsncl9Z9588YdsOmr56fZ4CaRel/2W4HmHJqpZi4jkS3xEEjJWWzb
-	CWoMD
-X-Gm-Gg: AeBDievVPds4U7okTnzXm0GGFmdYXFwhqd3XdID2oFfDQkb0AjlvphL9No8eaERtIKt
-	h3YMlAn9uwHv8z7DzhVpDJounqdj+KNPjKkEOeqJ+iiZohCIMYl/EuIITuS5WYe9+10vRK2ZioY
-	pYQ66U5w+cwaquhqa64Iu0GbLSfmM18OkAeFJt3Sibu1sAtCNqI+JBCu+0GGbzfmrCgNYr+Mrvz
-	CBaLCi0T/fDlfFHwA0R0l1CxPSN2a4YWcxtslW+FbM7+TlMHtckfg+xTq9HCLNCmXSETkmkZ0So
-	9c6p/ZgDbyten1Vj7/ZvUryGESDswdGzzk2jjMl3Upqpr8cb6MtdIMkEPcxfUTDZ6hvoYw8Cffd
-	WOf0Se0Yk6JgopZ4ie2LWjiQqWVO0B6HdPdSODVkUCv3Gq0C2ydA2PRLrfN8jIfsxRPfDMF/2wJ
-	xldeT3kI/1p1K//3QsVuFmkMjdSVA0sz5hM3rBUofRDIk=
-X-Received: by 2002:a05:6830:82eb:b0:7d1:9da9:c6c with SMTP id 46e09a7af769-7dc951ca7d6mr3520693a34.17.1776482440097;
-        Fri, 17 Apr 2026 20:20:40 -0700 (PDT)
-Received: from phoenix.lan ([104.202.41.210])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7dca7b6b5bdsm276902a34.5.2026.04.17.20.20.38
+        d=1e100.net; s=20251104; t=1776485840; x=1777090640;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Y3YeiL1Jj/muMdy1IqA7Xewdi0uB6Hzewvx0oWM/aKg=;
+        b=OAM7h0cUbwf8dtTk2WOskuT2aOKvko9g4dqMBsqYNfEDJHmBuUchgHhqwMKucgDMOZ
+         ox09kSi/C6g92/+A5VTMrlmZwSGIJQIAVxCRaKRZwEGBGphRbiingIumGWC+TyF4abCf
+         PGMV2ZCXgzlK/BRa0cBubScmNv6RMOL1YexVcDuurFR8XvaUHoI9QEaayTurk+Wub7y+
+         bBGCiE0OwAFfIhkg+wz4qN/nfeP/EfBZeNq3lLe6+hRcwsibIph83EAMngGTb9gokDTo
+         Tm0YZ1u8UVvaeUXE+mnE/sMz4lJOJ6s41ubPdQek0qQUBQQnsF/35AAusQ04Nzj64ITH
+         b37w==
+X-Gm-Message-State: AOJu0YyJqT0i7MILZeFwZE38jVIZzr81C49vN3GTd7ZofL41RMxn/DM2
+	VfRIWt4p9nRqLy1JXHpe3Cxe0NGazIBxDoo73mOo15NK4qxuiRO66uatOjM+/jxj8MO353BC
+X-Gm-Gg: AeBDiesQSzX93PgsMCJl9IVkZw9v7N817Vc6HYQBDkpUDbiSuVydBub+M7gx6JE2c33
+	Sn+NwShWpnz9hL4xkkK25wbYS8sI/GxQ29PE2Mla2BViVz3rtUIXpaK+kDJlvK7Kxa5lmwI+5zu
+	VExbdXya2c3dIefoPEOho7dvQZxZjeSMVaVPy4JPFuhd7TJ3CyAWULpwCKKt9nerwG1ccYSQ0l9
+	hsiZQ7e4xblOsv8p+5qF3ScDy58VpLPHmF5norVNeTonCQWcPVMiDk8sp2ksFn6+NqPWWU6YnL3
+	g4Bf/R0TOMNZAZX2Lib9Uqv85tu3RJBho5MKM6FTcapogSjX3HSMwguORqc4jiD4+Za5rzI/sJ9
+	Zf1pbiHXUxhKhktESnXpCw1eMjbRQxvhu2BclfICVQv0Ob2NOs7Uem0TqIw+qH01NxruD6P40Lk
+	4hVWxWRFe0c5Jlt1cp2FRdWJZupZsvk2G022mL7I9byvgSlc1tzeMwrCi/nQ7MNg==
+X-Received: by 2002:a05:6a00:2307:b0:82a:6b97:34a7 with SMTP id d2e1a72fcca58-82f8c941403mr6183189b3a.39.1776485839874;
+        Fri, 17 Apr 2026 21:17:19 -0700 (PDT)
+Received: from DESKTOP-MUHC17F.tail07b66e.ts.net ([188.253.121.151])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8e981992sm4356787b3a.7.2026.04.17.21.17.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Apr 2026 20:20:39 -0700 (PDT)
-From: Stephen Hemminger <stephen@networkplumber.org>
+        Fri, 17 Apr 2026 21:17:19 -0700 (PDT)
+From: Zhenzhong Wu <jt26wzz@gmail.com>
 To: netdev@vger.kernel.org
-Cc: jiri@resnulli.us,
-	jhs@mojatatu.com,
+Cc: edumazet@google.com,
+	ncardwell@google.com,
+	kuniyu@google.com,
+	davem@davemloft.net,
+	dsahern@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
 	horms@kernel.org,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Yousuk Seung <ysseung@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net v8 5/6] net/sched: netem: fix slot delay calculation overflow
-Date: Fri, 17 Apr 2026 20:19:43 -0700
-Message-ID: <20260418032027.900913-6-stephen@networkplumber.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260418032027.900913-1-stephen@networkplumber.org>
-References: <20260418032027.900913-1-stephen@networkplumber.org>
+	shuah@kernel.org,
+	tamird@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	Zhenzhong Wu <jt26wzz@gmail.com>
+Subject: [PATCH net 0/2] tcp: fix listener wakeup after reuseport migration
+Date: Sat, 18 Apr 2026 12:16:31 +0800
+Message-ID: <20260418041633.691435-1-jt26wzz@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -85,42 +82,84 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-get_slot_next() computes a random delay between min_delay and
-max_delay using:
+Hi,
 
-  get_random_u32() * (max_delay - min_delay) >> 32
+this small series fixes a missing wakeup after listener migration in
+the SO_REUSEPORT close path and adds regression selftests.
 
-This overflows signed 64-bit arithmetic when the delay range exceeds
-approximately 2.1 seconds (2^31 nanoseconds), producing a negative
-result that effectively disables slot-based pacing. This is a
-realistic configuration for WAN emulation (e.g., slot 1s 5s).
+The issue shows up when a fully established child has already been
+queued on listener A, userspace has not accepted it yet, and
+listener A is then closed. The kernel migrates that child to
+listener B in the same SO_REUSEPORT group via
+inet_csk_reqsk_queue_add(), but the target listener's waiters are
+not notified.
 
-Use mul_u64_u32_shr() which handles the widening multiply without
-overflow.
+As a result, a nonblocking accept() still succeeds because it checks
+the accept queue directly, but waiters that sleep for listener
+readiness can remain asleep until another connection generates a
+wakeup. This affects poll()/epoll_wait()-based waiters, and can also
+leave a blocking accept() asleep after migration even though the
+child is already in the target listener's accept queue.
 
-Fixes: 0a9fe5c375b5 ("netem: slotting with non-uniform distribution")
-Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
----
- net/sched/sch_netem.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+The fix is to notify the target listener after a successful
+inet_csk_reqsk_queue_add() in inet_csk_listen_stop().
 
-diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
-index 640b51be807a..475c14b3dbdb 100644
---- a/net/sched/sch_netem.c
-+++ b/net/sched/sch_netem.c
-@@ -659,9 +659,8 @@ static void get_slot_next(struct netem_sched_data *q, u64 now)
- 
- 	if (!q->slot_dist)
- 		next_delay = q->slot_config.min_delay +
--				(get_random_u32() *
--				 (q->slot_config.max_delay -
--				  q->slot_config.min_delay) >> 32);
-+			mul_u64_u32_shr(q->slot_config.max_delay - q->slot_config.min_delay,
-+					get_random_u32(), 32);
- 	else
- 		next_delay = tabledist(q->slot_config.dist_delay,
- 				       (s32)(q->slot_config.dist_jitter),
+I also checked the half-open migration path in
+reqsk_timer_handler(). That path does not need an extra wakeup here
+because the listener becomes readable only after the final ACK
+completes the handshake, and tcp_child_process() already wakes the
+parent listener at that point.
+
+The series adds selftests under tools/testing/selftests/net/ that
+reproduce the regression for both IPv4 and IPv6. They cover both
+epoll-based waiters and a blocking accept() waiter.
+
+Patch 1 contains only the runtime fix so it can stand on its own and
+be considered for stable backporting. Patch 2 adds the selftest
+coverage.
+
+Testing:
+
+On an unpatched host kernel:
+
+  unshare -Ur sh -c \
+    './tools/testing/selftests/net/reuseport_migrate_epoll'
+  unshare -Ur sh -c \
+    './tools/testing/selftests/net/reuseport_migrate_accept'
+
+The epoll selftest fails for both IPv4 and IPv6 with:
+
+  accept queue was populated, but epoll_wait() timed out
+
+The blocking accept selftest fails for both IPv4 and IPv6, for example
+with:
+
+  blocking accept() completed only in cleanup
+
+On a patched kernel booted under QEMU with a minimal initramfs, both
+selftests pass:
+
+  ok 1 ipv4 epoll wake after reuseport migration
+  ok 2 ipv6 epoll wake after reuseport migration
+  reuseport_migrate_epoll_RC=0
+
+  ok 1 ipv4 blocking accept wake after reuseport migration
+  ok 2 ipv6 blocking accept wake after reuseport migration
+  reuseport_migrate_accept_RC=0
+
+Zhenzhong Wu (2):
+  tcp: call sk_data_ready() after listener migration
+  selftests: net: add reuseport migration wakeup regression tests
+
+ net/ipv4/inet_connection_sock.c               |   1 +
+ tools/testing/selftests/net/Makefile          |   3 +
+ .../selftests/net/reuseport_migrate_accept.c  | 533 ++++++++++++++++++
+ .../selftests/net/reuseport_migrate_epoll.c   | 353 ++++++++++++
+ 4 files changed, 890 insertions(+)
+ create mode 100644 tools/testing/selftests/net/reuseport_migrate_accept.c
+ create mode 100644 tools/testing/selftests/net/reuseport_migrate_epoll.c
+
+
+base-commit: 52bcb57a4e8a0865a76c587c2451906342ae1b2d
 -- 
-2.53.0
-
+2.43.0
