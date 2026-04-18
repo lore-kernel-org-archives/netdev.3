@@ -1,41 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 664791F5437
-	for <netdev@vger.kernel.org>; Sat, 18 Apr 2026 12:26:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C353612EC
+	for <netdev@vger.kernel.org>; Sat, 18 Apr 2026 12:28:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776515181; cv=none; b=EOmemJQNx58Gr5zE5x18q/1L0QErPUK767AZ8mkqDDM7zMfZfiD7pGNCod394VYXsKeKO0Mr4eViLVonzLm3YVbzencjEfVeXeRtImexpSeBa+89C5yzGKFI4VJneOoz+GdmhDVvAS9qs3XUEAPsJrVBj6TybZOnlTDYHBqBmx4=
+	t=1776515328; cv=none; b=GRjUa6O6PNYPLgxMhMV1HU1FASrEE1eiq1LEEIibIr+51crO6567p8m10TMEI3g09CPOrwSbzdQ/hDgu7f0tgs5TuayIHXzZ7VPNw2pjTsm4EaVaNFbjzEXG7UCk6qLkK9/18zPLvhpzkIxEBrWkBQ6u03B2tUylui+BtMAo7Lc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776515181; c=relaxed/simple;
-	bh=HWqdLCoCTZqiCrLr9u4qrUUcnDgqwBoxhU21yZ6mtlI=;
+	s=arc-20240116; t=1776515328; c=relaxed/simple;
+	bh=rCG4Rh/heETZ9U5/libATa8KrgxSzbUI5XQZax8lu+w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gBpe3FnTfetsjtg0z5844fGR4wNG4zTIhtX3/ZKzL9J8fpgGxLit5ylRESN1s8NYKoobgxCOGDJooj/EGlv/FrrBCnXE/yH6aPhGN9rfP21umHpWc1566xlPbPzH1G/FhbfoHLcoNX431l+Cu4ZXPQwOhrlH8zKq5cEB3pjc0AE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ozWhwrOF; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=uf/lxyxMDYxdDfFRgGw3d5Kq5mec4rfja1doMUfmGKKab3BrsMQ/r+EQRwRt9oO8p74MqOzfoUDfVMWhL6ecsD8XXfALsefQ1EcAQLiIvXboXKaco/29LhuZ6BXH9IsVpPafb8/9t9sVEA2IUptNSmz+I1/22G/kJJ17nil/4h0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k0NaPH65; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ozWhwrOF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91DDEC19424;
-	Sat, 18 Apr 2026 12:26:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k0NaPH65"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8945C19424;
+	Sat, 18 Apr 2026 12:28:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776515180;
-	bh=HWqdLCoCTZqiCrLr9u4qrUUcnDgqwBoxhU21yZ6mtlI=;
+	s=k20201202; t=1776515328;
+	bh=rCG4Rh/heETZ9U5/libATa8KrgxSzbUI5XQZax8lu+w=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ozWhwrOFH1J0gopSPh/j36j8gnog6t9LlP644uOsvC6YNbcK6BddYXLvld5NLJabP
-	 17R7bcOzeoBodoNVESMX7cDZV+j+/uyvU6CLCR8k6LQ+riyH17PUFzjK2lvpfPcrDb
-	 jdnJjvIkxij5xc0dFqo4Weyv0g/IbbfmrJ2u3AOF4Xor39+1KYm/AF0JwY2GdffUXU
-	 Zje7Tt4Z1GNUXdK0CWdeUdXIsppS5QOZ3Ybvbr1fDx5IxcD0JByjP2/ZwRymbuqS/V
-	 Kx/+imAe95ENuVisPa5DqwHimzd33gQ8iuq1/mX/+hUSs+/mwWiVh/+kthBqnUdCIz
-	 UKesces87sREA==
-Date: Sat, 18 Apr 2026 13:26:16 +0100
+	b=k0NaPH65AwtUCCw3BS6vhQ3tyaMHgvpdM07vZb3PdDWcmO2/ztvJuAI3PNnUHX6Xz
+	 dqpZFHTBXg6LUSyMedWfb78jN3McatGLnev0Eg805z+aG4h37YJQkuHtpiUK15g75D
+	 uzpY0tz/HgZar2/YTl3zBqvaG6AXRZFnIWFZNk4V/4tleQ6ICGcwSdp4InkJzW7B6X
+	 sTdAqbbhUO4boWjJb50Ft75W8h8/P2dS36k1frywkcVOQfv76LTEgcYQNDdaHwUdUy
+	 8lpuw3EYKNyR+Nn/LtTgU/Y9r1uNio/z9RctEhBJlTnaJlQxHccsvE45SwFPHAUGFG
+	 MdMXQHgTvV67w==
+Date: Sat, 18 Apr 2026 13:28:44 +0100
 From: Simon Horman <horms@kernel.org>
 To: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 Cc: intel-wired-lan@lists.osuosl.org, anthony.l.nguyen@intel.com,
 	netdev@vger.kernel.org
-Subject: Re: [PATCH iwl-net v3 5/6] ixgbe: fix ITR value overflow in adaptive
- interrupt throttling
-Message-ID: <20260418122616.GC280379@horms.kernel.org>
+Subject: Re: [PATCH iwl-net v3 3/6] ixgbe: call ixgbe_setup_fc() before
+ fc_enable() after NVM update
+Message-ID: <20260418122844.GD280379@horms.kernel.org>
 References: <20260415142841.3222399-1-aleksandr.loktionov@intel.com>
- <20260415142841.3222399-6-aleksandr.loktionov@intel.com>
+ <20260415142841.3222399-4-aleksandr.loktionov@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -44,37 +44,48 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260415142841.3222399-6-aleksandr.loktionov@intel.com>
+In-Reply-To: <20260415142841.3222399-4-aleksandr.loktionov@intel.com>
 
-On Wed, Apr 15, 2026 at 04:28:40PM +0200, Aleksandr Loktionov wrote:
-> ixgbe_update_itr() packs a mode flag (IXGBE_ITR_ADAPTIVE_LATENCY,
-> bit 7) and a usecs delay (bits [6:0]) into an unsigned int, then
-> stores the combined value in ring_container->itr which is declared as
-> u8.  Values above 0xFF wrap on truncation, corrupting both the delay
-> and the mode flag on the next readback.
+On Wed, Apr 15, 2026 at 04:28:38PM +0200, Aleksandr Loktionov wrote:
+> During an NVM update the PHY reset clears the Technology Ability Field
+> (IEEE 802.3 clause 37 register 7.10) back to hardware defaults.  When
+> the driver subsequently calls only hw->mac.ops.fc_enable() the SRRCTL
+> register is recalculated from stale autonegotiated capability bits,
+> which the MDD (Malicious Driver Detect) logic treats as an invalid
+> change and halts traffic on the PF.
 > 
-> Keep the mode bit (IXGBE_ITR_ADAPTIVE_LATENCY) and the usec delay as
-> separate operands in the final store expression.  Clamp only the usecs
-> portion to [IXGBE_ITR_ADAPTIVE_MIN_USECS, IXGBE_ITR_ADAPTIVE_MAX_USECS]
-> using clamp_val() so that:
->  - overflow cannot bleed into the mode bit (bit 7),
->  - the delay cannot exceed 126 us (IXGBE_ITR_ADAPTIVE_MAX_USECS),
->  - the delay cannot drop below 10 us (IXGBE_ITR_ADAPTIVE_MIN_USECS).
+> Fix by calling ixgbe_setup_fc() immediately before fc_enable() in
+> ixgbe_watchdog_update_link() so that flow-control autoneg and the PHY
+> registers are re-programmed in the correct order after any reset.
 > 
-> Fixes: b4ded8327fea ("ixgbe: Update adaptive ITR algorithm")
+> Skip setup_fc() on backplane links: on 82599 backplane interfaces
+> setup_fc() resolves to prot_autoc_write() ->
+> ixgbe_reset_pipeline_82599() which toggles IXGBE_AUTOC_AN_RESTART.
+> Calling it unconditionally on link-up creates an infinite link-flap
+> loop because each AN-restart triggers another link-up event.  Guard
+> with a get_media_type() check and skip setup_fc() when the media type
+> is ixgbe_media_type_backplane; fc_enable() is still called.
+> 
+> Also handle the failure path: if setup_fc() returns an error its output
+> is invalid and calling fc_enable() on the unchanged hardware state would
+> repeat the exact MDD-triggering condition the fix is meant to prevent.
+> Skip fc_enable() in that case while still calling
+> ixgbe_set_rx_drop_en() which configures the independent RX-drop
+> behaviour.
+> 
+> Fixes: 93c52dd0033b ("ixgbe: Merge watchdog functionality into service task")
+> Suggested-by: Radoslaw Tyl <radoslawx.tyl@intel.com>
 > Cc: stable@vger.kernel.org
 > Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 > ---
 > v2 -> v3:
->  - Use clamp_val() instead of min_t() to also guard the lower bound
->    (IXGBE_ITR_ADAPTIVE_MIN_USECS); keep mode and delay as separate
->    operands until final store; use IXGBE_ITR_ADAPTIVE_MAX_USECS (126)
->    as upper bound instead of IXGBE_ITR_ADAPTIVE_LATENCY - 1 (127)
->    (Simon Horman).
-
-FTR: I think the code would be easier to reason with if
-mode and delay were kept separate during earlier calculation
-of itr. But I also think that can be handled as a follow-up.
-as this patch does improve things.
+>  - Skip setup_fc() for ixgbe_media_type_backplane: unconditional call on
+>    82599 backplane links triggers prot_autoc_write() ->
+>    ixgbe_reset_pipeline_82599() -> IXGBE_AUTOC_AN_RESTART, causing an
+>    infinite link-flap loop (Simon Horman).
 
 Reviewed-by: Simon Horman <horms@kernel.org>
+
+(Unsurprisingly) Sashiko has a number of things to say about this patchset.
+But I believe they can all be analysed as part of follow-up work: no need
+to block progress of this patchset IMHO.
