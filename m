@@ -1,85 +1,66 @@
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 378491547C0;
-	Sat, 18 Apr 2026 16:46:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2D62D0C8F
+	for <netdev@vger.kernel.org>; Sat, 18 Apr 2026 16:49:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776530818; cv=none; b=GnhiN77PM7C5pFVjLUrxERz7m0upknaid8HtoZdo+zaF7zN9KEkgQN2+oocA1z+rbi/jSNLQYGELgbhiYsSHxddufkiW7VOjC15cOT40K3zSEZfiwuHQHg1N/B2nyZBBMC0DuWvHbsnwt1hTZrrWLymI+vgwhlioJvBUEXmmziU=
+	t=1776530949; cv=none; b=KVRSCbcVEjYGTQlORflYaoQ5W9+P++rRkyuseP4eJjQeOFVdoh42RI4sP/qtsHAbRzpbRqOhrH6MVVI9sooTgwMa+d0DVkNZ2fluD6eB5nYtJGfQ6xM/LO5u9/WnN7TZ/ZFbv+dKSQEeZF8bHYHGFlU4jqGAN2mDvShN7fNe3LI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776530818; c=relaxed/simple;
-	bh=79g8Cj0aVvxyvk8Zpsm1NfOTZskgvZcrJiNve829PM0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XG/puPEZonEJMrN3FmotVXaYse28fLQjODVPxSIh5wwCdJoYW8e7hkoQn2UPWSACY5wsg3Z15N2x2E43O1SB85KciJl8+nuuMOkLAK0dKr9/VJ4ycEQjunwrXwUPlnHUOk73uwDdTNRkUwXaNVleymvz0sP2Pdbai5qu18ETjpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=Cgqvm8Fj; arc=none smtp.client-ip=178.251.229.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+	s=arc-20240116; t=1776530949; c=relaxed/simple;
+	bh=zsFhT7C4RRvso6WDxH6i2cC6oqq51ld3WwQr2d/gdDQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hIHchBMmLYBbJ686BKeVfxCmj4fbJbjVO13pgqkbU02igOlnPDR1olcTcf9lRBxPgIhO2sgFpSYD7Xiaa+yCYUtZrHC4xCxh0/XsPYCNAxi997ldF8Ix+r/1zvumb13nWRwcPgNK4D6b76QMDRmGyciYCQQOkhpbNDEd4vqPWL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eolK7He/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="Cgqvm8Fj"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D11B31143A3;
-	Sat, 18 Apr 2026 18:46:44 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1776530807;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=jwxsjqC6odbloW4RnZUq7a7489g9YY4pbiBKr6i/Ls4=;
-	b=Cgqvm8Fj4anJr5bp47idXk4Lz9yQ3o5gIgyoLoav2L2hhUvyYqzLZy9SlJ1OmyYO+svfdO
-	xD7OQyb5jC0klVf4qw6eT9sigJa3lesqJHSlhjLK7J1bcZ7yBNT2ZLH6x/XUjD+VrAu431
-	R0lhBQ7/+I8dSKhmDPb3pml/aDRBVcjYcXPBhew8+49hb/ldb7wBpYlbKVfMuernFgLneR
-	3VI9gLj5heKhAItCecOIi+GkKXWIXZN3ChG2js/Mr9KbGCzuVzhEHoymmSuQb6rhGyCqP6
-	R6PaoWTrCvirYF3OeL5lMOX0U9ick9zMNkuG+fhlR8DXnwzo9WneYemxFyBSaw==
-Message-ID: <c75c4b73-b7e9-4403-94a1-d4967ec7a299@nabladev.com>
-Date: Sat, 18 Apr 2026 18:46:44 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eolK7He/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 919EAC19424;
+	Sat, 18 Apr 2026 16:49:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776530948;
+	bh=zsFhT7C4RRvso6WDxH6i2cC6oqq51ld3WwQr2d/gdDQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=eolK7He/mx32ySTLNNqZ+OVK1eShLGdL3TMgsCS1HxMF/BNAGz8nDiiDNXj9k9kiO
+	 Ag1D2wdiGMmFh/manYoNAvItagA8zjBXQnO5SW7nj1bV1/sw74IKO++bo6rZDQqc+O
+	 FErhvtjjVvrKsRuUDOHfiuLg+t7oixrxuwV/HKv2boTehVelMOyAOFP6rw2e8t8hTL
+	 eO4iRpNktpQzEDgq9YcxSDCxD1nw54Ingt8epBN8dpvUjSeoVPo+fcRKBSFbVhN1zF
+	 Unz2bZ8ojcRJqskLwKm/wvD8OCGifdnn0acons9evLGLXqnX3MLlZYRLZU8rBPelL6
+	 2WU1qJmm5Vp4w==
+Date: Sat, 18 Apr 2026 09:49:07 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Juanlu Herrero <juanlu@fastmail.com>
+Cc: dw@davidwei.uk, netdev@vger.kernel.org
+Subject: Re: [PATCH v2 0/6] selftests: net: multithread + rss_multiqueue
+ support for iou-zcrx
+Message-ID: <20260418094907.3cde57ca@kernel.org>
+In-Reply-To: <cover.1776444379.git.juanlu@fastmail.com>
+References: <20260408163816.2760-1-juanlu@fastmail.com>
+	<cover.1776444379.git.juanlu@fastmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [net,PATCH v3 1/2] net: ks8851: Reinstate disabling of BHs around
- IRQ handler
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org,
- "David S. Miller" <davem@davemloft.net>, Andrew Lunn
- <andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Nicolai Buchwitz <nb@tipi-net.de>,
- Paolo Abeni <pabeni@redhat.com>, Ronald Wahl <ronald.wahl@raritan.com>,
- Yicong Hui <yiconghui@gmail.com>, linux-kernel@vger.kernel.org
-References: <20260414103327.113500-1-marex@nabladev.com>
- <20260414125753.Im6GAIHn@linutronix.de>
- <2fcfb84f-69f6-493e-94d6-95d85d8000f6@nabladev.com>
- <20260414145218.lsNpdAJI@linutronix.de>
- <7734527a-d08b-49fa-b258-c37c5ae2da55@nabladev.com>
- <20260416062159.fPxqc52X@linutronix.de>
- <afe7ed2c-4434-4394-9d87-a4bdf5a15ec1@nabladev.com>
- <20260416104818._EDbo9hA@linutronix.de>
-Content-Language: en-US
-From: Marek Vasut <marex@nabladev.com>
-In-Reply-To: <20260416104818._EDbo9hA@linutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-On 4/16/26 12:48 PM, Sebastian Andrzej Siewior wrote:
-> On 2026-04-16 11:26:00 [+0200], Marek Vasut wrote:
->>> memory allocation. Therefore I am saying this backtrace is from an older
->>> kernel.
->>
->> I actually did update the backtrace in V3 with the one from next 20260413
->> that contained b44596ffe1b4 ("ARM: Allow to enable RT") from
->> stable-rt/v6.12-rt-rebase branch [1] .
->>
->> I think I misunderstood the usage of "softirq is raised" vs. "softirq is
->> invoked" above . Is it possible that there was an already raised softirq
->> before the threaded IRQ handler was invoked, and __netdev_alloc_skb() is
->> what invoked that softirq ?
-> 
-> It is not impossible. Something needs to netif_wake_queue() and
-> ks8851_irq() must only report IRQ_RXI (not IRQ_TXI). Then it can happen.
-> But usually the driver "stops" the queue if it can't process any new
-> packets and resumes it once a packet has been sent so it has room again.
-This driver .start_xmit is very simple, if there is space in the 6 kiB 
-TX FIFO, then the packet is written into it, otherwise the .start_xmit 
-returns NETDEV_TX_BUSY . There does not seem to be any 
-netif_{start,stop,wake}_queue() in the .start_xmit path.
+On Fri, 17 Apr 2026 09:49:46 -0700 Juanlu Herrero wrote:
+> Add multithread support to the iou-zcrx selftest, plus a new
+> rss_multiqueue Python variant that exercises multi-queue zero-copy
+> receive on a single listening socket with NAPI-ID-based dispatch.
+
+## Form letter - net-next-closed
+
+We have already submitted our pull request with net-next material for v7.1,
+and therefore net-next is closed for new drivers, features, code refactoring
+and optimizations. We are currently accepting bug fixes only.
+
+Please repost when net-next reopens after Apr 27th.
+
+RFC patches sent for review only are obviously welcome at any time.
+
+See: https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#development-cycle
+-- 
+pw-bot: defer
+pv-bot: closed
