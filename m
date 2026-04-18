@@ -1,240 +1,253 @@
-Received: from pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.162.73.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A504070836;
-	Sat, 18 Apr 2026 00:19:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=35.162.73.231
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8143C244675
+	for <netdev@vger.kernel.org>; Sat, 18 Apr 2026 00:44:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776471599; cv=fail; b=MAHkEZtq+I83VyT5QirBdA5vcLQoBK/DKDYYtzsBTbeijYqrX5iK9VVXZU+RST3cYHRoELW3KqSUADl6AEZmrICGyi40OddK31G3s2O1G4VBNUKXc5rzlTdX61XK9sIZJ3+YKoWNXykwssXXRN+Ab4r7g8hwnJkiIW6g73wzHuA=
+	t=1776473091; cv=pass; b=uv996+dtHcLy+lolzLXD2FHzOg1OZhJcQ42JLYAZGiBzd8cjBlz8uWqf3oOSFLPodtc6E8SCKelleuv9aV9WUz9uf808jShlCtUXl0zPmVU89lBUQJhY0gxQNkfOzioh0guDe4KBP/3Sqyys/hZXoqVvIUt3bxNmbtSU+l7fVdw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776471599; c=relaxed/simple;
-	bh=fl4PQkF1/RfUC+l/365gzdbjiJv6u1jGogHrqFJ962M=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=G9cAYeeWqBtxPvqophMhLtF+hhlVSfCRkAnfYDSltAMJzwdg8XPTJtJjWgXDr0YnbnAovQDE8ZpmSjTAlX9WhNKi5UiLiKoDCvwH8J4t6QBUKHDivFTGKFY/9kk7CDFz5QVcaeGiTlgQsZhOnvsri+OZPgtN/StOZglucXGpkGQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=Iy46NOOM; arc=fail smtp.client-ip=35.162.73.231
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+	s=arc-20240116; t=1776473091; c=relaxed/simple;
+	bh=QtkZKVzlWbC0y57YLALEats22IogWAhXWdiSPYN8m1I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oaWaNEZtey9aZaQNh2t7w2iglO4sP0BREwyOgFzIUg/srI2GnuZYvNpC33BIBqRXYw87QfS4zrxU9oEwUvmEyTv5qMRrVS5IvGmRzEXQgfcjwjwz5LrmXDQ6t57ed0fOMB6Qyh9O17oFNhACEuIn2nX3U35V4cUK5jcQ7PgncPU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZsVBjDgM; arc=pass smtp.client-ip=74.125.82.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="Iy46NOOM"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZsVBjDgM"
+Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-12c7212836bso2759462c88.0
+        for <netdev@vger.kernel.org>; Fri, 17 Apr 2026 17:44:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776473090; cv=none;
+        d=google.com; s=arc-20240605;
+        b=fE0ugn3vBxr9t8kELn5EU0ABt8g5qZ/W5/ZTTe8tDeQAE9TTbGWsATN9FRsOXx0P+R
+         AdbKVBfAF6Uf792xiQoRqUygANMx070Rr9prSIq7wl6rVm+lmz6TBn5J5rE1N+2JZnil
+         6sqLL5CZC2NHxGNKNlqF7oUElBGfmRb6tvgThwtoiga2tm3yL9jf5Ag82dttV5iUvN9Q
+         7EwxiRa2kBWoZiE+8ak/84WDYfglqol/17Cm9TdJcRGt7pEMdLJ15AharcMH/jlT1JFU
+         ENB6JN/58Ixj7Ng5mVZjHH86fNE0oNBfeD2n6kkY+bJYo9vG+sY5d0vpDgo7Z/hSZsLl
+         4VYw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=a0ywBDu1FJbk3C613F7iWgUPaLx2nZ37sXJ0DuoHjXk=;
+        fh=uivMYV1YCJiHoiqp8mU5ymvvwiFMbCvwnUBsN/Pz9AE=;
+        b=ZIIwCNkeIYNJ191iVlCAFhmlJMGvkEJAXi/B1ULmCAMrA84MThM008reRHamc+J0nT
+         TdqZnyC/hJ4A6khddu2sFNyqlPB4VAdQbWZxNHo9Fe5IKKPsU+xT37aQ3bA6IfUdVTi4
+         +oDEPHeyGy/ESemnKTJ02NjGu8n8NU5bOgMRQcx0/kKKw9w+rUqU2s0MaADy4VQKrAs3
+         EgpHrTdjG6vaNx1xJLjK9JdE+cRV/8pPJ/d8lNdhybrdelxkbBDQfCB/7lpR4Khil6E4
+         yBmvDkIYyR2yRgqVSqXrFFksv1nPkwOnMiAsTuzpMUS+UwIGe4MYc7XrJLUK4BYGCIIf
+         qjyQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1776471598; x=1808007598;
-  h=from:to:cc:subject:date:message-id:content-id:
-   content-transfer-encoding:mime-version;
-  bh=fl4PQkF1/RfUC+l/365gzdbjiJv6u1jGogHrqFJ962M=;
-  b=Iy46NOOMi4o6GA910F3ahCba7p9E9776uQeA7B4L7DP6XuA9sndsnxTu
-   Efa1/+NbT/UOZX2UgFtzaU1JnD1qMrPh3E4mAL0g8J/1eDPrav68/+iGK
-   hOurP9/j/J/AQNBCrjl+BOKzT098jVdHqN3g40HlA/HKWlJ+I376E+zKR
-   oHmnSKDVzm6OSiOcK6088nmZ18CU+dHr7ocels33wJwLyziW5UueUtAM2
-   WUJx5FwnbZbQlyPIzEXVQtDq07O7MI6B4Pz9+IMMHFk6+dBVT82B/mmWi
-   0ap5haIiXToT8SnhVJFBjInNLthpu3E/3XZokvIum/BQDiT/ZBckoIXLB
-   w==;
-X-CSE-ConnectionGUID: rUi5Y2waSgKEsU+mLeRnLQ==
-X-CSE-MsgGUID: FcYAbB3jREWE+xE7Mf6aXw==
-X-IronPort-AV: E=Sophos;i="6.23,185,1770595200"; 
-   d="scan'208";a="17401436"
-Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
-  by internal-pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Apr 2026 00:19:58 +0000
-Received: from EX19MTAUWA001.ant.amazon.com [205.251.233.236:14376]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.17.68:2525] with esmtp (Farcaster)
- id 26a8f95b-7ba2-46f9-bb01-1d4c329ff515; Sat, 18 Apr 2026 00:19:58 +0000 (UTC)
-X-Farcaster-Flow-ID: 26a8f95b-7ba2-46f9-bb01-1d4c329ff515
-Received: from EX19EXOUWC001.ant.amazon.com (10.250.64.135) by
- EX19MTAUWA001.ant.amazon.com (10.250.64.218) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Sat, 18 Apr 2026 00:19:57 +0000
-Received: from CH4PR07CU001.outbound.protection.outlook.com (10.250.64.168) by
- EX19EXOUWC001.ant.amazon.com (10.250.64.135) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37
- via Frontend Transport; Sat, 18 Apr 2026 00:19:57 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NMcSAFZXxFe05s+aklwk6qZh89aLVdRKKQVlSMHVaorm1p2Esqq3U4z8JulvzDpTvLcLzqtn6khkr9XLnpCg3tOBlq8vNprECzSZf1+e486IT6XOxyTqyF25HP8Fi9sY2Wgrf9n7pJ68ChBv6dioK3PYqnWamkIdKpiFMCm5lXyFfdQhyPFV/f2WR7czplrmstEsIwQHPEU+gTEZbxQ+yq9zH8wwCNaGEf0nxsRneSIshUKdBxOdcU27yK6g7NKK2RIZr/UNOZxo/rmPQ/GiMysa43yR37ceJVYOMGL5e6bnOhqZQKFoPuGbnca9HJbl/pRHYxQcyqvDXrQu4+HXJA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fl4PQkF1/RfUC+l/365gzdbjiJv6u1jGogHrqFJ962M=;
- b=VNAJ/wmKOZ9EMuqCXrPEBdoz6quUfCOfp+DERPCLRCc/UN/r+n0ILL+PcuyvRXU/WLC7kK35gsNSN4YIxDEYMwempciNqVqsj0s0W+yyGk7eyynTLb8Gi7zh1tCn7K5AwbPsr7C7cTP7qmRz8Ni9mFCKfsPB7AcNB24bcxfnVN8gtxQR5oezRZ64240poEebe+f3X1yJTt1bPEK7/rKP+kr4o4LL7g4EqaA32sCPMr5fhZbggcQiXg1KPqkux4Ya3mtULk6cc5msKcjIpJdaXQkzn3orJQn5hOH/pkMX9IglW5en9VmWrfAavBWgwcyhD8rksGCriHpuM6C15A+v8w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amazon.com; dmarc=pass action=none header.from=amazon.com;
- dkim=pass header.d=amazon.com; arc=none
-Received: from SA1PR18MB4728.namprd18.prod.outlook.com (2603:10b6:806:1db::15)
- by MW3PR18MB3676.namprd18.prod.outlook.com (2603:10b6:303:2c::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.25; Sat, 18 Apr
- 2026 00:19:55 +0000
-Received: from SA1PR18MB4728.namprd18.prod.outlook.com
- ([fe80::3fa5:9d2e:e6a6:67d5]) by SA1PR18MB4728.namprd18.prod.outlook.com
- ([fe80::3fa5:9d2e:e6a6:67d5%6]) with mapi id 15.20.9818.023; Sat, 18 Apr 2026
- 00:19:55 +0000
-From: "Ahmed, Aaron" <aarnahmd@amazon.com>
-To: "stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-CC: "ncardwell@google.com" <ncardwell@google.com>, "edumazet@google.com"
-	<edumazet@google.com>, "kuniyu@google.com" <kuniyu@google.com>
-Subject: [BUG] net: tcp: SO_LINGER with l_linger=0 leaks memory when closing
- sockets with pending send data
-Thread-Topic: [BUG] net: tcp: SO_LINGER with l_linger=0 leaks memory when
- closing sockets with pending send data
-Thread-Index: AQHczskVAbHrfsqWm0ylDOIzc6Zy8A==
-Date: Sat, 18 Apr 2026 00:19:55 +0000
-Message-ID: <48BADABE-4DFB-4DAD-8248-E94D8F5238D2@amazon.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels: MSIP_Label_19e68092-05df-4271-8e3e-b2a4c82ba797_Enabled=true;MSIP_Label_19e68092-05df-4271-8e3e-b2a4c82ba797_SetDate=2026-04-17T22:06:42Z;MSIP_Label_19e68092-05df-4271-8e3e-b2a4c82ba797_ContentBits=0;MSIP_Label_19e68092-05df-4271-8e3e-b2a4c82ba797_Enabled=true;MSIP_Label_19e68092-05df-4271-8e3e-b2a4c82ba797_Tag=50,
- 3, 0,
- 1;MSIP_Label_19e68092-05df-4271-8e3e-b2a4c82ba797_Name=Confidential;MSIP_Label_19e68092-05df-4271-8e3e-b2a4c82ba797_ActionId=424c9079-8b3d-46cb-a0ce-76e1467bb5cd;MSIP_Label_19e68092-05df-4271-8e3e-b2a4c82ba797_SiteId=5280104a-472d-4538-9ccf-1e1d0efe8b1b;MSIP_Label_19e68092-05df-4271-8e3e-b2a4c82ba797_Method=Standard;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amazon.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SA1PR18MB4728:EE_|MW3PR18MB3676:EE_
-x-ms-office365-filtering-correlation-id: 95912064-a032-4bd9-026b-08de9ce037a1
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|376014|1800799024|18002099003|56012099003|38070700021;
-x-microsoft-antispam-message-info: v4Kro2QjY5ZXUbUaADFKyXQShuEUZb5vAn06rxbm+s3j1/oc7fcXQnhIfsGRhXXe48NKpbHtpwF8ZgQxXGdXolafujB8PkeQwoXK8lCiiOUcvM3H5JxRS/YER5Vz9u87aqvl47qqyz88Hl6xGLqhLu8DjcwPFgRe3YZK/b9BEay6ZTP4Bw+UNaV8Rs4KgQMgbFF7Nxl2dhPFVV+AdFIwrCM5OjziRmeiOCU1sBxR+Cdf+Y8Gg0lVYsZTLYFEQkmZ4b3LimAAgFW0I0b8IdsxHi1iqGZy85FOIftdFI3Az0LxciRzSo4RtYQOHADc4ZH7QFf7LZbW67vXm/40faiD9vYvb/Q5P2QJfs884vaPnk/YZfQeHbyIttq0sSZ463t3GHnN0cy8pIGLRXOuoJ0RNomiSkZerXitvYWvKsaeUgWM/wg3EW5WDOhWcstvLGcjlWCjqSqplVtvVAfoksxqCVGf6teLHaB+PSB/W5NRPIYMcBPXIq9xQc2YAY1by5lXWC4MVi2u2fYZDC2+CpOZVJxy95TxNaGjOiI5M5CzGBa0uA6kZJ1uPnoWiXQgwQN8EwIkzyCgSXZ2Tng+MTq8HtoNygpB1IN59pqMuWzEZdHQ7YiiTPdY6FdZGsk3kZHC75v0WN+iaa2FiGenk/S1HZ6XFmyrXYjQsNjqiioQt2gCDcaoO+8qQ28CHn8IQT6GeZLdnT8IGnwFSGK34pKIEocDx2cks3MoJ67YkxkSgrYfdtKilJChZL3zzvpwAaAsg8HelC0TD+qCOmszKrTEq5Ei5Ix1h5D62CnKlHqJT6w=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR18MB4728.namprd18.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(18002099003)(56012099003)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?dXVrdlFtbHhzb3VBTEhpY055M1FhWWZkU0hma1IyWEdnakVlQllHZHhObG1K?=
- =?utf-8?B?ZFhnZUl5ZkVLZGE4aUhFQmdEbUVCQ3pyRDFpYy9JVkgrS3ViSWJ3Z3lUdStt?=
- =?utf-8?B?NXF5Q0VGS3Z0R1F0YjdBSCt0OEwxUmJtTGp0OVY5RUNvN2Q3U000V1lXclpu?=
- =?utf-8?B?RjF2TGs4UU1seXgzUnpSM2dzUVIwMlEzNytTQmxzYVAvRlI3bWZLSlczU2hG?=
- =?utf-8?B?MW4wRyttOGVFTFNqeCtHREtWa1VmWVhiM0VCcjg3VGErSDRsdU5GemtSU2d0?=
- =?utf-8?B?c1p4WmtCajFhQ2U2UTB0R1dsQ1ErekFMZlgrSU0vbktjSXEwQlhWWURta2Jz?=
- =?utf-8?B?WXdKWXp6UDU4b3ZBYzRPTjgrd3ptNnMrT2I3cmFRT1lPTllSM0lpLy9QSUZr?=
- =?utf-8?B?Vzd4aDNjOGlXRVBKd3dWSllqV0RBcFBqdER2NFlteXJMaGZSOHVjU2V0MFRv?=
- =?utf-8?B?TjVnRmFuZEdQWUdBTDBjQzYwQS85NG01T0RWbG1hSklYQlpkYnZ2OHZTWTR2?=
- =?utf-8?B?QnJ0RXBoLzRnNlJ3TjBRc1MwbFNwTE4yWWtmSmVVMXFZWURwZ29ocjJiK1gw?=
- =?utf-8?B?MzM3L1FHS0s5UnA3anpWWjVja3NoaTVzNmVtdVNENnRscDdBaWV3dTZjSTZL?=
- =?utf-8?B?dlhOL3Z6Tk15WnREd1hWYlZQZHo2M2FtNDVsQnIyWTVrd3lVamdQSFViQXFv?=
- =?utf-8?B?UHZVbyt4UFVPK1Z4QlVxY0hud3p2ZHprMVFNV204amJuWFNkVFZJS1FWZnVZ?=
- =?utf-8?B?UFVKQi9xcG0wSy8reGpJRkZpVmJEUm5HS20veG1ZSHJIbEp2SVk1WlFyVmdV?=
- =?utf-8?B?UnhhRmVCZytSVHdvOTl1eGIxSzBBR0gyTjNiYUNGU2VyQ0xvaVJKV1lTVXNY?=
- =?utf-8?B?VkUvMjl4SmN2cFB5TnFaVVZYTlc1aUZSQmlReW1kaERETFNQaXBhTDFwbDE3?=
- =?utf-8?B?eFk3UG9rN3dsNXFZMWRZRTBKZXlnVU80Sk4xa0p1VFdHVmtiNExzUDE5VHM1?=
- =?utf-8?B?bVBnSmlDS2ZmazdSYnA1RzJsYUl4KzA3bjFFbzBaQUJtNm1USjBMYXJkcndW?=
- =?utf-8?B?bE05WU5hd20vdFdPelM5anlNa2dvY2kzakhZMlMzZmlTU1VLL2k5dnk5dCtr?=
- =?utf-8?B?VW1FbUExTHZ5UmJFU1NDZGVyY0FhclYyWExHYnkwZGRHaDhpM0psdUxMdVVk?=
- =?utf-8?B?UUtzU3h0SzVSTm1WVjJhRTkyV0p1bnpBUWVVYXFhclZRQmtlS0R0MThJL3BB?=
- =?utf-8?B?VkFDVy95UmRXZEgvUTEzVXFlYmlKRDFodEUwb0M0ekovWU5ncHF4Y0xUdjNr?=
- =?utf-8?B?SE9mVTRzdkF5NWtSY2dwb0lmK0xvVUo4TWhvSWhZWnBZcjNkaHpCNjRGT3lX?=
- =?utf-8?B?QTN0NmN2VGo5c1RJVEdQVS9MUjhFNlR1VW5QMWhlQi9KQXRobURHdlhTQXEr?=
- =?utf-8?B?VkpQOFZLZWVkY01PMGpZNVUrOHJod1MvMEpzYkZTaEsxNngzMGozNHZzQWsz?=
- =?utf-8?B?TGtKbDZwS3EvL0F3SkpuNWZ5V1lYUHd6ZWovL3g2K0l1cDFRY1ZIVXJMOVkw?=
- =?utf-8?B?U3RISGozTU1hTlF4SmR5WTNjNWRwQVVJNFA1bG1BTEErY05zK1VyNGExK3JN?=
- =?utf-8?B?bW01SDVHMVN3Y1lFdE5GNkZyZG1CUVFBRFVFbnlVSll1bWdhS2RjcEExeDhl?=
- =?utf-8?B?cVBENllHYlFUWG5IenlqWUNnbkEvVlVPdnE3UXJ2WXlDNEJuUnBDQzc3UXhD?=
- =?utf-8?B?aDdIa0lrZS9ubEszczlEVXlQMEFOOXRhRDMyVmpUcVdPcjBxY3FwZTFkcUJX?=
- =?utf-8?B?NTlOZU1IQ0ViN0pZSXFiZ3RCMnBWWFZKMlBDcHVZQzJDSlUwSVJITU5ZTXN5?=
- =?utf-8?B?WFNCVTRUK2MydnZITVlxNWNhTUdrdW1EaXdyWE9LY0lqZlhDNTV5dlovV0hI?=
- =?utf-8?B?bmdoVTBoN2RRVDFPVlFKbkEzYWIxVmRXQ2ZiQ2tyTXorUWhZeVlNZG5OY2ZG?=
- =?utf-8?B?RVVTU2JLcU5STzZYVFpYblloUzVaU3ZZRTZQdTh5a2FydWZLUW95T1VOcVN5?=
- =?utf-8?B?VGdUNE5Td01wam9QYXVEZ3NWYUw3Z2hxdWNzNUtING5oblZnZ01ZQTNpdy83?=
- =?utf-8?B?bzRQUlUvS0RjMVd0Mm4vdThEK25LeGtHRWhYVzZDWnp2Y3JpTi9INmg4aGVD?=
- =?utf-8?B?Q3UwSzVjaHZNZUlKR1JsamJoVWdzVzFsSTFZT3kyRDNHOWpTWGJTNG5GNEZ5?=
- =?utf-8?B?M0h6SU1KVlFTNWlFQ2NJMEJSbzgxbXQ5SWtVMUZyc0ZQSjFqUXUxSjlDYXZB?=
- =?utf-8?B?ZnpNcVJvNFNQdWJKOHJEekNrcGxldkpXVVRZbm45b3Y0bStEQjF5UT09?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <68E96A8BBAA8DA4D8B4596EC01595DBB@namprd18.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        d=google.com; s=20251104; t=1776473090; x=1777077890; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=a0ywBDu1FJbk3C613F7iWgUPaLx2nZ37sXJ0DuoHjXk=;
+        b=ZsVBjDgMJCim2fcT/ZFyFFHoAktdahXayPcmASCRkx9KieLmxVORaWnhxn1ojLSor3
+         3A+JWYRbQrhnCFLr0lMACoxG3mcMfJYsGotUvNtdYNpgTSdMRJPfavDkrni4FnuKVq1I
+         qZIZMlWV1HdYHULFz8G9923ez3pH1xPba8tnO9Z/uA2YlbjoDE6APHynhJftGqdoh8g7
+         6LijC5nzvw4chaoDqSR+U27GgIBZnNaK6ot7tzjc8HERz4G0eB/u1MU9hf9SjPRjrfxx
+         T+gY4h/f0W1ASlYLVtT1tqVbnmONqEYEqo/lzZdX4RJ7jILedplC3fTJ2UTIBljkdWEa
+         5cBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776473090; x=1777077890;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=a0ywBDu1FJbk3C613F7iWgUPaLx2nZ37sXJ0DuoHjXk=;
+        b=kmcjISn4swJQ9O04t108GU/umgK/ErYJqo+Z48sLnf3rMfuLbKboyrPT7tnFrxXpdj
+         jDuUWz3ahAGg6uxt6TMMDIotJsNw1qaR1mo9tzNay5kjcWwpKG5T9v6mECdOEBtniTpY
+         2TOBQjzFD+Tu1WJVc8CX8J4z8gYPcGCQUXuY2naPa/ZhafKUMdJGK9bV/K6/B5RH4FwD
+         M2IuC3/eYwosnyVrzDT8+CPPOzrNm0z2YeM7pQzwqhJJzI4x2TwZswoBnqgr3pkvNUly
+         RyG3yrKihWJU+hFzV2pwICKDHsTJytoKAqI5ioDDtHd+T1a+7+uPh6f8ld3Q+YuDL4Iq
+         biQQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+LIWATw1WrvydVk9M0hYjuXt89KJTMVtAXMpkkxLoDR6RlRasNmYs6cnJyWLv/MIJjO992YdI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQZqVtBZhZ/Xc6kdACseLHwNvSYFnXru1zmO7+SeEVDCueT8NN
+	IpSRpyvpHQyxE7RJgRPGhFn74apuTA7xLeIFnzOd2n3jLsMGFQOVjP5J8lORx0zPno0jN70zOms
+	K/R7oS1ArkgUNBdbBww2hvgkHEod80C/S1N8TTT0O
+X-Gm-Gg: AeBDiev2MeDl7+HvrLl0VEyE0yXatW/Rj1PjDK9IHyaLBp1SfTT2/mDi7U+k9ipdL7D
+	rLCH2oPRWM9lhdIW2U68ZAq/aNXK0jyDM0H0ai7+POtHDI9GIMovq/Rov5mB+sxfSPB2sBmlCUd
+	1+NIA7mQQEdcmQ80GcqN3byOD1Va5IrwcW0UzSZ2jbhOjkf1KvuNKD6H7SnTDjYpolM03FnMBrX
+	chcviJ10uhodHQuC8vUyqqbivx9Lk8sxYAcQHPCbobPXXNUDu7im4Ep2mg0i6xW7k3jJm3kb8xE
+	x0oN6yNoLFvFZ/YLvAFEBsRJEEVWcmW556ksKMIV8dxwC3ArCeimN4x1FvW9ChK16HAJ+GArnSU
+	s8pGiEFslagU3F8PzRQTCcAorVaDi3zMXrCjr55mNwiv9uXLW8DGeHgOvedjoFpjyDnIPNTLSYA
+	==
+X-Received: by 2002:a05:7022:eac8:b0:128:d386:4bbb with SMTP id
+ a92af1059eb24-12c73f759d9mr2765683c88.13.1776473088895; Fri, 17 Apr 2026
+ 17:44:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: tcTXmSt0vksBhUpIV18emvUaU7DR0yYdAmykdqmxOlwiX8Kk0aHiNywp6p+UxXPoMspDIoFn+GPw2HsglCNPC4R03INrwFnksCyEo/+VPg5//V9Jhy8uUa8YyYW4B9QbIc5/eyzdYprtWC21Pq4FFBKlk59PU3IJYDlPFdY6AEUHM6xxgOnSZJ1pQNbiI5zQX+GH0EilGSUZO0QZEyGJi8j8EGsm2ErgFk0XokXYAXjZe/DOmvd/iwmAv6UzRERl5tFyjN+HmFP2sVqYPB63EC/7LwdRj5HDPKBHD58eBu1E7fcFYNX+A0BnSMLHCApbQ/HcXYwoLkNdXR02bmhf6g==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR18MB4728.namprd18.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 95912064-a032-4bd9-026b-08de9ce037a1
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Apr 2026 00:19:55.2503
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 5280104a-472d-4538-9ccf-1e1d0efe8b1b
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: p3Cj220GVPTAwtKQYC8gaxC/jvORL2QZBmxac5dtwpbA/99KCXPvh0CETCKxunJxwVsic7LB+ZAudbVSESsm8A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR18MB3676
-X-OriginatorOrg: amazon.com
+References: <48BADABE-4DFB-4DAD-8248-E94D8F5238D2@amazon.com>
+In-Reply-To: <48BADABE-4DFB-4DAD-8248-E94D8F5238D2@amazon.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Fri, 17 Apr 2026 17:44:37 -0700
+X-Gm-Features: AQROBzBTrpaT_3MkHnlTRUTVuaFD829JUv0CkBtSfX3vhctL64YmC-K6VQWJpNA
+Message-ID: <CAAVpQUCfMsWBpPpywbwBLRCdHUqWqFBoDK=17dwDkG6T0dQxzw@mail.gmail.com>
+Subject: Re: [BUG] net: tcp: SO_LINGER with l_linger=0 leaks memory when
+ closing sockets with pending send data
+To: "Ahmed, Aaron" <aarnahmd@amazon.com>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>, 
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, "ncardwell@google.com" <ncardwell@google.com>, 
+	"edumazet@google.com" <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-SGksDQoNCldlIGhhdmUgaWRlbnRpZmllZCBhIFRDUCBtZW1vcnkgbGVhayBpc3N1ZSBvbiBBbWF6
-b24gTGludXggd2l0aCBrZXJuZWwgdmVyc2lvbnMgNS4xNS4xNjggdGhyb3VnaCA2LjE4LjIwIHRo
-YXQgb2NjdXJzIHdoZW4gY2xvc2luZyBzb2NrZXRzIHdpdGggU09fTElOR0VSIHNldCB0byBsX29u
-b2ZmPTEsIGxfbGluZ2VyPTAsIG9uIHNlcnZlcnMgaGFuZGxpbmcgbWFueSBwZXJzaXN0ZW50IGNv
-bm5lY3Rpb25zIHdpdGggZnVsbCB3cml0ZSBidWZmZXJzLg0KDQpPdmVydmlldzoNCg0KVGhlIGlz
-c3VlIHdhcyBkaXNjb3ZlcmVkIG9uIGEgcHVibGljLWZhY2luZyBub24tYmxvY2tpbmcgVENQIHNl
-cnZlciB0aGF0IG1haW50YWlucyBtYW55IHBlcnNpc3RlbnQgY29ubmVjdGlvbnMgYW5kIHN0cmVh
-bXMgZGF0YSB0byBjbGllbnRzLiBXaGVuIGEgY2xpZW50IGNhbm5vdCByZWFkIGZhc3QgZW5vdWdo
-LCB0aGUgVENQIHdyaXRlIHNvY2tldCBidWZmZXIgb24gdGhlIHNlcnZlciBzaWRlIGZpbGxzIHVw
-IGFuZCBzZW5kKCkgcmV0dXJucyBFQUdBSU4uIEF0IHRoYXQgcG9pbnQsIHRoZSBzZXJ2ZXIgYXBw
-bGljYXRpb24gZGlzY29ubmVjdHMgdGhlIHNsb3cgY2xpZW50IGJ5IHNldHRpbmcgU09fTElOR0VS
-IHRvIGxfb25vZmY9MSwgbF9saW5nZXI9MCBhbmQgY2FsbGluZyBjbG9zZSgpLiBUaGlzIGlzIGlu
-dGVuZGVkIHRvIGltbWVkaWF0ZWx5IHJlc2V0IHRoZSBjb25uZWN0aW9uIGFuZCByZWxlYXNlIGFs
-bCBhc3NvY2lhdGVkIGtlcm5lbCByZXNvdXJjZXMuIEhvd2V2ZXIsIHdoaWxlIHRoZSBzb2NrZXQg
-ZGlzYXBwZWFycyBmcm9tIG5ldHN0YXQgYW5kIHNvY2tzdGF0IChUQ1AgaW51c2UgZHJvcHMpLCB0
-aGUgd3JpdGUgYnVmZmVyIG1lbW9yeSBpcyBub3QgcHJvcGVybHkgcmVjbGFpbWVkLiAvcHJvYy9u
-ZXQvc29ja3N0YXQgc2hvd3MgVENQIG1lbSBwYWdlcyBhY2N1bXVsYXRpbmcgd2l0aCBubyBvd25p
-bmcgc29ja2V0cywgY2F1c2luZyB0aGUgbGVha2VkIG1lbW9yeSB0byBncm93IHBhc3QgdGhlIHRj
-cF9tZW0gbGltaXRzLiBTZXR0aW5nIFNPX0xJTkdFUiB0byBsX29ub2ZmPTEsIGxfbGluZ2VyPTEg
-aW5zdGVhZCBkb2VzIG5vdCBsZWFrLiBXaXRoIGxfbGluZ2VyPTEsIHRoZSBjb25uZWN0aW9uIGdv
-ZXMgdGhyb3VnaCBGSU5fV0FJVDEg4oaSIEZJTl9XQUlUMiDihpIgQ0xPU0UgKGNvbmZpcm1lZCB3
-aXRoIEJQRiB0Y3BzdGF0ZXMpLCBhbmQgYWxsIG1lbW9yeSBpcyBmcmVlZCBwcm9wZXJseS4gV2l0
-aCBsX2xpbmdlcj0wLCB0aGUgY29ubmVjdGlvbiB0cmFuc2l0aW9ucyBkaXJlY3RseSBmcm9tIEVT
-VEFCTElTSEVEIOKGkiBDTE9TRSB2aWEgUlNULCBieXBhc3NpbmcgdGhlIEZJTiBzdGF0ZXMgZW50
-aXJlbHkuDQoNClJlcHJvZHVjZXI6DQpgYGANCi8qIHRjcF9saW5nZXJfbWVtbGVhay5jIC0gU09f
-TElOR0VSKDApIFRDUCBtZW1vcnkgbGVhayByZXByb2R1Y2VyDQogKg0KICogQnVpbGQ6ICBnY2Mg
-LU8yIC1vIHRjcF9saW5nZXJfbWVtbGVhayB0Y3BfbGluZ2VyX21lbWxlYWsuYw0KICogUnVuOiAg
-ICBzdWRvIHN5c2N0bCAtdyBuZXQuY29yZS53bWVtX21heD00MTk0MzA0DQogKiAgICAgICAgIHN1
-ZG8gc3lzY3RsIC13IG5ldC5pcHY0LnRjcF9ybWVtPSI0MDk2IDgxOTIgMTYzODQiDQogKiAgICAg
-ICAgIC4vdGNwX2xpbmdlcl9tZW1sZWFrDQogKi8NCiNpbmNsdWRlIDxzdGRpby5oPg0KI2luY2x1
-ZGUgPHN0ZGxpYi5oPg0KI2luY2x1ZGUgPHN0cmluZy5oPg0KI2luY2x1ZGUgPHVuaXN0ZC5oPg0K
-I2luY2x1ZGUgPGVycm5vLmg+DQojaW5jbHVkZSA8ZmNudGwuaD4NCiNpbmNsdWRlIDxzaWduYWwu
-aD4NCiNpbmNsdWRlIDxzeXMvc29ja2V0Lmg+DQojaW5jbHVkZSA8c3lzL3dhaXQuaD4NCiNpbmNs
-dWRlIDxuZXRpbmV0L2luLmg+DQoJDQojZGVmaW5lIE5VTV9DT05OUyA1MDAwDQojZGVmaW5lIFBP
-UlQgICAgICA2NjY2DQoNCnN0YXRpYyB2b2lkIHByaW50X21lbShjb25zdCBjaGFyICpsYWJlbCkg
-ew0KICAgIEZJTEUgKmY7DQogICAgY2hhciBsaW5lWzI1Nl07DQogICAgZiA9IGZvcGVuKCIvcHJv
-Yy9tZW1pbmZvIiwgInIiKTsNCiAgICB3aGlsZSAoZmdldHMobGluZSwgc2l6ZW9mKGxpbmUpLCBm
-KSkNCiAgICAgICAgaWYgKHN0cm5jbXAobGluZSwgIk1lbUF2YWlsYWJsZToiLCAxMykgPT0gMCkN
-CiAgICAgICAgICAgIHByaW50ZigiJXM6ICVzIiwgbGFiZWwsIGxpbmUpOw0KICAgIGZjbG9zZShm
-KTsNCiAgICBmID0gZm9wZW4oIi9wcm9jL25ldC9zb2Nrc3RhdCIsICJyIik7DQogICAgd2hpbGUg
-KGZnZXRzKGxpbmUsIHNpemVvZihsaW5lKSwgZikpDQogICAgICAgIGlmIChzdHJuY21wKGxpbmUs
-ICJUQ1A6IiwgNCkgPT0gMCkNCiAgICAgICAgICAgIHByaW50ZigiJXM6ICVzIiwgbGFiZWwsIGxp
-bmUpOw0KICAgIGZjbG9zZShmKTsNCn0NCg0KaW50IG1haW4odm9pZCkgew0KICAgIHN0cnVjdCBz
-b2NrYWRkcl9pbiBhZGRyID0gew0KICAgICAgICAuc2luX2ZhbWlseSA9IEFGX0lORVQsDQogICAg
-ICAgIC5zaW5fcG9ydCA9IGh0b25zKFBPUlQpLA0KICAgICAgICAuc2luX2FkZHIuc19hZGRyID0g
-aHRvbmwoSU5BRERSX0xPT1BCQUNLKQ0KICAgIH07DQogICAgaW50IG9wdCA9IDE7DQogICAgc2ln
-bmFsKFNJR1BJUEUsIFNJR19JR04pOw0KDQogICAgaW50IGxzbiA9IHNvY2tldChBRl9JTkVULCBT
-T0NLX1NUUkVBTSwgMCk7DQogICAgc2V0c29ja29wdChsc24sIFNPTF9TT0NLRVQsIFNPX1JFVVNF
-QUREUiwgJm9wdCwgc2l6ZW9mKG9wdCkpOw0KICAgIGJpbmQobHNuLCAoc3RydWN0IHNvY2thZGRy
-ICopJmFkZHIsIHNpemVvZihhZGRyKSk7DQogICAgbGlzdGVuKGxzbiwgTlVNX0NPTk5TKTsNCg0K
-ICAgIC8qIEZvcmsgY2xpZW50OiBjb25uZWN0IE4gdGltZXMsIG5ldmVyIHJlYWQgKi8NCiAgICBw
-aWRfdCBjaGlsZCA9IGZvcmsoKTsNCiAgICBpZiAoY2hpbGQgPT0gMCkgew0KICAgICAgICBpbnQg
-ZmRzW05VTV9DT05OU107DQogICAgICAgIGZvciAoaW50IGkgPSAwOyBpIDwgTlVNX0NPTk5TOyBp
-KyspIHsNCiAgICAgICAgICAgIGZkc1tpXSA9IHNvY2tldChBRl9JTkVULCBTT0NLX1NUUkVBTSwg
-MCk7DQogICAgICAgICAgICBjb25uZWN0KGZkc1tpXSwgKHN0cnVjdCBzb2NrYWRkciAqKSZhZGRy
-LCBzaXplb2YoYWRkcikpOw0KICAgICAgICB9DQogICAgICAgIHBhdXNlKCk7IC8qIHNpdCBmb3Jl
-dmVyLCBuZXZlciByZWFkICovDQogICAgICAgIF9leGl0KDApOw0KICAgIH0NCg0KICAgIC8qIEFj
-Y2VwdCBhbGwgY29ubmVjdGlvbnMgKi8NCiAgICBpbnQgY2xpZW50c1tOVU1fQ09OTlNdOw0KICAg
-IGZvciAoaW50IGkgPSAwOyBpIDwgTlVNX0NPTk5TOyBpKyspDQogICAgICAgIGNsaWVudHNbaV0g
-PSBhY2NlcHQobHNuLCBOVUxMLCBOVUxMKTsNCg0KICAgIC8qIEZyZWV6ZSBjbGllbnQgc28gaXQg
-c3RvcHMgcmVhZGluZyAqLw0KICAgIGtpbGwoY2hpbGQsIFNJR1NUT1ApOw0KICAgIHByaW50Zigi
-PT09ICVkIGNvbm5lY3Rpb25zIGVzdGFibGlzaGVkLCBjbGllbnQgZnJvemVuID09PVxuIiwgTlVN
-X0NPTk5TKTsNCiAgICBwcmludF9tZW0oIkJFRk9SRSIpOw0KDQogICAgLyogRmlsbCBidWZmZXJz
-IGFuZCBjbG9zZSB3aXRoIFNPX0xJTkdFUigxLDApICovDQogICAgY2hhciBidWZbMjA0OF07DQog
-ICAgbWVtc2V0KGJ1ZiwgJ0EnLCBzaXplb2YoYnVmKSk7DQogICAgZm9yIChpbnQgaSA9IDA7IGkg
-PCBOVU1fQ09OTlM7IGkrKykgew0KICAgICAgICBpbnQgZmxhZ3MgPSBmY250bChjbGllbnRzW2ld
-LCBGX0dFVEZMLCAwKTsNCiAgICAgICAgZmNudGwoY2xpZW50c1tpXSwgRl9TRVRGTCwgZmxhZ3Mg
-fCBPX05PTkJMT0NLKTsNCiAgICAgICAgd2hpbGUgKHNlbmQoY2xpZW50c1tpXSwgYnVmLCBzaXpl
-b2YoYnVmKSwgTVNHX05PU0lHTkFMKSA+IDApOw0KICAgICAgICBzdHJ1Y3QgbGluZ2VyIGxnID0g
-eyAubF9vbm9mZiA9IDEsIC5sX2xpbmdlciA9IDAgfTsNCiAgICAgICAgc2V0c29ja29wdChjbGll
-bnRzW2ldLCBTT0xfU09DS0VULCBTT19MSU5HRVIsICZsZywgc2l6ZW9mKGxnKSk7DQogICAgICAg
-IGNsb3NlKGNsaWVudHNbaV0pOw0KICAgIH0NCg0KICAgIHNsZWVwKDIpOw0KICAgIHByaW50Zigi
-XG49PT0gQWxsIHNvY2tldHMgY2xvc2VkIHdpdGggU09fTElOR0VSKDEsMCkgPT09XG4iKTsNCiAg
-ICBwcmludF9tZW0oIkFGVEVSIik7DQogICAga2lsbChjaGlsZCwgU0lHS0lMTCk7DQogICAgd2Fp
-dHBpZChjaGlsZCwgTlVMTCwgMCk7DQogICAgY2xvc2UobHNuKTsNCiAgICByZXR1cm4gMDsNCn0N
-CmBgYA0KT3V0cHV0IChUZXN0ZWQgb24gNi4xOC4yMCk6DQpgYGANCj09PSA1MDAwIGNvbm5lY3Rp
-b25zIGVzdGFibGlzaGVkLCBjbGllbnQgZnJvemVuID09PQ0KQkVGT1JFOiBNZW1BdmFpbGFibGU6
-IMKgIDk1NDkxMjg4IGtCDQpCRUZPUkU6IFRDUDogaW51c2UgMTAwMDUgb3JwaGFuIDAgdHcgNSBh
-bGxvYyAxMDAwNiBtZW0gMA0KDQo9PT0gQWxsIHNvY2tldHMgY2xvc2VkIHdpdGggU09fTElOR0VS
-KDEsMCkgPT09DQpBRlRFUjogTWVtQXZhaWxhYmxlOiDCoCA5NTMyMTgwMCBrQg0KQUZURVI6IFRD
-UDogaW51c2UgNSBvcnBoYW4gMCB0dyA1IGFsbG9jIDUwMDYgbWVtIDgzMDANCmBgYA0KDQpUaGFu
-a3MsDQpBYXJvbiBBaG1lZA0KDQoNCg==
+Hi Aaron :)
+
+Thanks for the report.
+
+On Fri, Apr 17, 2026 at 5:20=E2=80=AFPM Ahmed, Aaron <aarnahmd@amazon.com> =
+wrote:
+>
+> Hi,
+>
+> We have identified a TCP memory leak issue on Amazon Linux with kernel ve=
+rsions 5.15.168 through 6.18.20 that occurs when closing sockets with SO_LI=
+NGER set to l_onoff=3D1, l_linger=3D0, on servers handling many persistent =
+connections with full write buffers.
+>
+> Overview:
+>
+> The issue was discovered on a public-facing non-blocking TCP server that =
+maintains many persistent connections and streams data to clients. When a c=
+lient cannot read fast enough, the TCP write socket buffer on the server si=
+de fills up and send() returns EAGAIN. At that point, the server applicatio=
+n disconnects the slow client by setting SO_LINGER to l_onoff=3D1, l_linger=
+=3D0 and calling close(). This is intended to immediately reset the connect=
+ion and release all associated kernel resources. However, while the socket =
+disappears from netstat and sockstat (TCP inuse drops), the write buffer me=
+mory is not properly reclaimed. /proc/net/sockstat shows TCP mem pages accu=
+mulating with no owning sockets, causing the leaked memory to grow past the=
+ tcp_mem limits. Setting SO_LINGER to l_onoff=3D1, l_linger=3D1 instead doe=
+s not leak. With l_linger=3D1, the connection goes through FIN_WAIT1 =E2=86=
+=92 FIN_WAIT2 =E2=86=92 CLOSE (confirmed with BPF tcpstates), and all memor=
+y is freed properly. With l_linger=3D0, the connection transitions directly=
+ from ESTABLISHED =E2=86=92 CLOSE via RST, bypassing the FIN states entirel=
+y.
+>
+> Reproducer:
+> ```
+> /* tcp_linger_memleak.c - SO_LINGER(0) TCP memory leak reproducer
+>  *
+>  * Build:  gcc -O2 -o tcp_linger_memleak tcp_linger_memleak.c
+>  * Run:    sudo sysctl -w net.core.wmem_max=3D4194304
+>  *         sudo sysctl -w net.ipv4.tcp_rmem=3D"4096 8192 16384"
+>  *         ./tcp_linger_memleak
+>  */
+> #include <stdio.h>
+> #include <stdlib.h>
+> #include <string.h>
+> #include <unistd.h>
+> #include <errno.h>
+> #include <fcntl.h>
+> #include <signal.h>
+> #include <sys/socket.h>
+> #include <sys/wait.h>
+> #include <netinet/in.h>
+>
+> #define NUM_CONNS 5000
+> #define PORT      6666
+>
+> static void print_mem(const char *label) {
+>     FILE *f;
+>     char line[256];
+>     f =3D fopen("/proc/meminfo", "r");
+>     while (fgets(line, sizeof(line), f))
+>         if (strncmp(line, "MemAvailable:", 13) =3D=3D 0)
+>             printf("%s: %s", label, line);
+>     fclose(f);
+>     f =3D fopen("/proc/net/sockstat", "r");
+>     while (fgets(line, sizeof(line), f))
+>         if (strncmp(line, "TCP:", 4) =3D=3D 0)
+>             printf("%s: %s", label, line);
+>     fclose(f);
+> }
+>
+> int main(void) {
+>     struct sockaddr_in addr =3D {
+>         .sin_family =3D AF_INET,
+>         .sin_port =3D htons(PORT),
+>         .sin_addr.s_addr =3D htonl(INADDR_LOOPBACK)
+>     };
+>     int opt =3D 1;
+>     signal(SIGPIPE, SIG_IGN);
+>
+>     int lsn =3D socket(AF_INET, SOCK_STREAM, 0);
+>     setsockopt(lsn, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
+>     bind(lsn, (struct sockaddr *)&addr, sizeof(addr));
+>     listen(lsn, NUM_CONNS);
+>
+>     /* Fork client: connect N times, never read */
+>     pid_t child =3D fork();
+>     if (child =3D=3D 0) {
+>         int fds[NUM_CONNS];
+>         for (int i =3D 0; i < NUM_CONNS; i++) {
+>             fds[i] =3D socket(AF_INET, SOCK_STREAM, 0);
+>             connect(fds[i], (struct sockaddr *)&addr, sizeof(addr));
+>         }
+>         pause(); /* sit forever, never read */
+>         _exit(0);
+>     }
+>
+>     /* Accept all connections */
+>     int clients[NUM_CONNS];
+>     for (int i =3D 0; i < NUM_CONNS; i++)
+>         clients[i] =3D accept(lsn, NULL, NULL);
+>
+>     /* Freeze client so it stops reading */
+>     kill(child, SIGSTOP);
+>     printf("=3D=3D=3D %d connections established, client frozen =3D=3D=3D=
+\n", NUM_CONNS);
+>     print_mem("BEFORE");
+>
+>     /* Fill buffers and close with SO_LINGER(1,0) */
+>     char buf[2048];
+>     memset(buf, 'A', sizeof(buf));
+>     for (int i =3D 0; i < NUM_CONNS; i++) {
+>         int flags =3D fcntl(clients[i], F_GETFL, 0);
+>         fcntl(clients[i], F_SETFL, flags | O_NONBLOCK);
+>         while (send(clients[i], buf, sizeof(buf), MSG_NOSIGNAL) > 0);
+>         struct linger lg =3D { .l_onoff =3D 1, .l_linger =3D 0 };
+>         setsockopt(clients[i], SOL_SOCKET, SO_LINGER, &lg, sizeof(lg));
+>         close(clients[i]);
+>     }
+>
+>     sleep(2);
+>     printf("\n=3D=3D=3D All sockets closed with SO_LINGER(1,0) =3D=3D=3D\=
+n");
+>     print_mem("AFTER");
+>     kill(child, SIGKILL);
+>     waitpid(child, NULL, 0);
+>     close(lsn);
+>     return 0;
+> }
+> ```
+> Output (Tested on 6.18.20):
+> ```
+> =3D=3D=3D 5000 connections established, client frozen =3D=3D=3D
+> BEFORE: MemAvailable:   95491288 kB
+> BEFORE: TCP: inuse 10005 orphan 0 tw 5 alloc 10006 mem 0
+>
+> =3D=3D=3D All sockets closed with SO_LINGER(1,0) =3D=3D=3D
+> AFTER: MemAvailable:   95321800 kB
+> AFTER: TCP: inuse 5 orphan 0 tw 5 alloc 5006 mem 8300
+> ```
+
+Unfortunately, it dies immediately on my end.
+
+=3D=3D=3D 5000 connections established, client frozen =3D=3D=3D
+Segmentation fault         (core dumped) ./linux/tcp_linger
+
+
+Did you see actual memory leak with kmemleak or is it
+just the tcp_mem counter that is really leaked ?
+
+# echo clear > /sys/kernel/debug/kmemleak
+~ run repro ~
+# echo scan > /sys/kernel/debug/kmemleak
