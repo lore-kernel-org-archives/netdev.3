@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7482113C918;
-	Sat, 18 Apr 2026 19:10:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC34C288C08;
+	Sat, 18 Apr 2026 19:20:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776539453; cv=none; b=l24OD5krh1unx3Hn7TwM9wYsof2eLATV/Mz7F10Xv9UGGx9NYzFNYWXDP8nOCZAcDCvrgR6iJSXww4w/Kh6CQGTvbqyw1way3QnDzN6jIay2MEfsyhPl19eqn04q7ITuxC1ET4qlKM9bVaEN83Wh2GGPE02uG3le5Sx5ZADWWFA=
+	t=1776540043; cv=none; b=Jo0rsXhiOBpVL/EihY0JYhqVb4WNWyT1ThdVFBTphiprPWfGxlMk3PuKwm43m/OzZHZrm5eco4X0VaJdIJFFqslZkwdxzFHwuWB7NGhWPhbEEHzLecg818/cAOhdtQLyaO3WjFoaN+/+i/8LvtT3iv3Obt4M/EPQY0/zkdDTUIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776539453; c=relaxed/simple;
-	bh=Sj5+wnQtM7E3xt0RnneBSPmJDWwVxa0EjawWxitKEM8=;
+	s=arc-20240116; t=1776540043; c=relaxed/simple;
+	bh=UbeGQ2EKoKQRoI8Lm+Eh5U17hxg/zOzKLypavlI1rpk=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=m1l/rFjy/A7gpzEWsIOF25Vy6hCPQWcDDzBYjNOxf87/DcKA/Fy3fTHpiLUyhMMKJEckvSqmvhGBLLRjFHfGswr8N5oW20zu2LTmK1/hCN3QaLzXdk4jRJbMmXZbaWhRqOyX/3pUa9t9y2lHTiWEOWR7B+VXz2P13Ne6AkKQFkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IOdHL59l; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=ndUegCHns+k2A3WlXIqBZQikSIvZlscYorNv3S1YZvyQAjk5LIktL3ZI2zYCgW1IAmB+oGJYAag6F9v6ZqWrgxeKXi5U+QMQygX0m75r/DYQYr9wG7vqq0nabuJkQoGvED+wJO1U1mWtaPH9DUIlk9d0Qu8NNA/DZS9K5IEw7Hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mlqMu6ya; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IOdHL59l"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11DDCC19424;
-	Sat, 18 Apr 2026 19:10:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mlqMu6ya"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97D49C19424;
+	Sat, 18 Apr 2026 19:20:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776539453;
-	bh=Sj5+wnQtM7E3xt0RnneBSPmJDWwVxa0EjawWxitKEM8=;
+	s=k20201202; t=1776540043;
+	bh=UbeGQ2EKoKQRoI8Lm+Eh5U17hxg/zOzKLypavlI1rpk=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=IOdHL59lxtRAHMWVAPQCap8c8LhP0xmgFDTC1UlfDakZmeRVdzsPN7UbqxqNOzxnK
-	 3O8qjr3UDqFIhmu6CqjB9wxmXzptRv8TwzIjSSAKhlNwXXaoYU9QyIeNqsr1xqhCQn
-	 Tn1PI+D6/7GQtsNHqSOxcbZeQ9uB4c460EIT/iW+5VFpH/gJOtrdfxBEGeYf6SxhfH
-	 bMk130GiIoNzuhSuBXmC8K24etXPJDmuFetEY8eskDmbJYNZ4W8YmdpozlW7a7V/vy
-	 gGpFvM5lnZkWhaKPwt1jktFL3Rzeu3SL3S5IpSf139bdxpXIJcH8NRz7DXd3lDM8Lu
-	 TiYQQ+P+CReYw==
+	b=mlqMu6ya/kfYV4LRwvEIMUSrlK1koiW616/PxJde2iFMldxevwDFbx8M5tHu9/f9Y
+	 VMJTdm1tdjRGj8YwD9c7Iuj/KKmJNNGKU1gh1n4Q1QGqwIAAikE4LLYl3kfwftIY10
+	 xfZpjJCKghJU3V2R2oXaSzbDao7M0hQDmgxUdo9uVbYilJOG/SZ6Q+jUY/Gib+tuDm
+	 KIo1sFvJAFNz1LNdXGm73f5glqqPPssNSQJ0faijEoNJwPKUiec2lBMvLTzJp3jm0A
+	 2IXte0kt6r7mPPlXp+b0fELC02F753nNZQ7nE0zFChTxVmZXfBOX7xW2SytyvfukR/
+	 A+HWVcdddKPuw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BA0FF380CEDD;
-	Sat, 18 Apr 2026 19:10:20 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FE5C380CEDD;
+	Sat, 18 Apr 2026 19:20:11 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,67 +37,49 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2 00/12] Intel Wired LAN Driver Updates 2026-04-14
- (ice, i40e, iavf, idpf, e1000e)
+Subject: Re: [net,PATCH v4 1/2] net: ks8851: Reinstate disabling of BHs around
+ IRQ
+ handler
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177653941955.506354.7945438888789009201.git-patchwork-notify@kernel.org>
-Date: Sat, 18 Apr 2026 19:10:19 +0000
-References: 
- <20260416-iwl-net-submission-2026-04-14-v2-0-686c33c9828d@intel.com>
-In-Reply-To: 
- <20260416-iwl-net-submission-2026-04-14-v2-0-686c33c9828d@intel.com>
-To: Jacob Keller <jacob.e.keller@intel.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- grzegorz.nitka@intel.com, aleksandr.loktionov@intel.com, horms@kernel.org,
- sx.rinitha@intel.com, zoltan.fodor@intel.com, sunithax.d.mekala@intel.com,
- lgs201920130244@gmail.com, stable@vger.kernel.org, mschmidt@redhat.com,
- paul.greenwalt@intel.com, przemyslaw.kitszel@intel.com, kmta1236@gmail.com,
- kohei@enjuk.jp, poros@redhat.com, pmenzel@molgen.mpg.de,
- rafal.romanowski@intel.com, emil.s.tantilov@intel.com,
- patryk.holda@intel.com, tactii@gmail.com, avigailx.dahan@intel.com
+ <177654001005.508728.14647463220081065342.git-patchwork-notify@kernel.org>
+Date: Sat, 18 Apr 2026 19:20:10 +0000
+References: <20260415231020.455298-1-marex@nabladev.com>
+In-Reply-To: <20260415231020.455298-1-marex@nabladev.com>
+To: Marek Vasut <marex@nabladev.com>
+Cc: netdev@vger.kernel.org, bigeasy@linutronix.de, stable@vger.kernel.org,
+ davem@davemloft.net, andrew+netdev@lunn.ch, edumazet@google.com,
+ kuba@kernel.org, nb@tipi-net.de, pabeni@redhat.com, ronald.wahl@raritan.com,
+ yiconghui@gmail.com, linux-kernel@vger.kernel.org
 
 Hello:
 
 This series was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 16 Apr 2026 17:53:24 -0700 you wrote:
-> Grzegorz updates the logic for adjusting the PTP hardware clock on E830,
-> fixing a bug that prevented adjustments below S32_MAX/MIN nanoseconds.
+On Thu, 16 Apr 2026 01:09:44 +0200 you wrote:
+> If the driver executes ks8851_irq() AND a TX packet has been sent, then
+> the driver enables TX queue via netif_wake_queue() which schedules TX
+> softirq to queue packets for this device.
 > 
-> Grzegorz and Zoli update the PCS latency settings for E825 devices at 10GbE
-> and 25GbE, improving the accuracy of timestamps based on data from
-> production hardware.
+> If CONFIG_PREEMPT_RT=y is set AND a packet has also been received by
+> the MAC, then ks8851_rx_pkts() calls netdev_alloc_skb_ip_align() to
+> allocate SKBs for the received packets. If netdev_alloc_skb_ip_align()
+> is called with BH enabled, then local_bh_enable() at the end of
+> netdev_alloc_skb_ip_align() will trigger the pending softirq processing,
+> which may ultimately call the .xmit callback ks8851_start_xmit_par().
+> The ks8851_start_xmit_par() will try to lock struct ks8851_net_par
+> .lock spinlock, which is already locked by ks8851_irq() from which
+> ks8851_start_xmit_par() was called. This leads to a deadlock, which
+> is reported by the kernel, including a trace listed below.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2,01/12] ice: fix 'adjust' timer programming for E830 devices
-    https://git.kernel.org/netdev/net/c/885c5e57924d
-  - [net,v2,02/12] ice: update PCS latency settings for E825 10G/25Gb modes
-    https://git.kernel.org/netdev/net/c/05567e405273
-  - [net,v2,03/12] ice: fix double free in ice_sf_eth_activate() error path
-    https://git.kernel.org/netdev/net/c/9aab1c3d7299
-  - [net,v2,04/12] ice: fix double-free of tx_buf skb
-    https://git.kernel.org/netdev/net/c/1a303baa715e
-  - [net,v2,05/12] ice: fix PHY config on media change with link-down-on-close
-    https://git.kernel.org/netdev/net/c/55e74f9ea7fe
-  - [net,v2,06/12] ice: fix ICE_AQ_LINK_SPEED_M for 200G
-    https://git.kernel.org/netdev/net/c/4a3a940059e9
-  - [net,v2,07/12] ice: fix race condition in TX timestamp ring cleanup
-    https://git.kernel.org/netdev/net/c/7c72ec18c2a4
-  - [net,v2,08/12] ice: fix potential NULL pointer deref in error path of ice_set_ringparam()
-    https://git.kernel.org/netdev/net/c/fa28351f970f
-  - [net,v2,09/12] i40e: don't advertise IFF_SUPP_NOFCS
-    https://git.kernel.org/netdev/net/c/a24162f18825
-  - [net,v2,10/12] iavf: fix wrong VLAN mask for legacy Rx descriptors L2TAG2
-    https://git.kernel.org/netdev/net/c/496d9f91062f
-  - [net,v2,11/12] idpf: fix xdp crash in soft reset error path
-    (no matching commit)
-  - [net,v2,12/12] e1000e: Unroll PTP in probe error handling
-    https://git.kernel.org/netdev/net/c/aa3f7fe40935
+  - [net,v4,1/2] net: ks8851: Reinstate disabling of BHs around IRQ handler
+    https://git.kernel.org/netdev/net/c/5c9fcac3c872
+  - [net,v4,2/2] net: ks8851: Avoid excess softirq scheduling
+    https://git.kernel.org/netdev/net/c/22230e68b2cf
 
 You are awesome, thank you!
 -- 
