@@ -1,72 +1,85 @@
-Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.32])
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 122CF282F30;
-	Sat, 18 Apr 2026 16:33:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 378491547C0;
+	Sat, 18 Apr 2026 16:46:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776529999; cv=none; b=A/LKuQhFKBLZLoNxMQqrk+1B1z9w1SpeA24Qa77Cgz6dI5tthN4anb9vrqiJZpNEE4TIaEM31nlvqy2KIH8l7ekNTpIZk+24yqgl3we4c2VD4ghlCP9lZOn7Q5N4zDP3QNDGXCNZbVrNIiYORpkstFWlnzRIQd/pEe0iLGoA0lE=
+	t=1776530818; cv=none; b=GnhiN77PM7C5pFVjLUrxERz7m0upknaid8HtoZdo+zaF7zN9KEkgQN2+oocA1z+rbi/jSNLQYGELgbhiYsSHxddufkiW7VOjC15cOT40K3zSEZfiwuHQHg1N/B2nyZBBMC0DuWvHbsnwt1hTZrrWLymI+vgwhlioJvBUEXmmziU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776529999; c=relaxed/simple;
-	bh=RxtbJPFmePB3AI5A99iJ/FCP4n2fPOmkN+DLYenzYqM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Y4r1GT9TeKV5WHx73W/nUtll8sgD7o463Mso3d/nMkXGZUE32uRrX9cQ2h/T2fs9KEc0CTQRpM6290Anf6XDqIyKM4I/gsLo94NF1A7fR6MDTAJ2rTlg2X/q2iODvGx4NlAkEiLJ5KMbXpuVW41MnZ8ld4jXiT1mWOel8nGAvJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; arc=none smtp.client-ip=160.80.4.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
-Received: from localhost.localdomain ([160.80.103.126])
-	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 63IGT3oi010419;
-	Sat, 18 Apr 2026 18:29:08 +0200
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
-To: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, horms@kernel.org
-Cc: anton.makarov11235@gmail.com, stefano.salsano@uniroma2.it,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Andrea Mayer <andrea.mayer@uniroma2.it>, stable@vger.kernel.org
-Subject: [PATCH net] seg6: fix seg6 lwtunnel output redirect for L2 reduced encap mode
-Date: Sat, 18 Apr 2026 18:28:38 +0200
-Message-Id: <20260418162838.31979-1-andrea.mayer@uniroma2.it>
-X-Mailer: git-send-email 2.20.1
+	s=arc-20240116; t=1776530818; c=relaxed/simple;
+	bh=79g8Cj0aVvxyvk8Zpsm1NfOTZskgvZcrJiNve829PM0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XG/puPEZonEJMrN3FmotVXaYse28fLQjODVPxSIh5wwCdJoYW8e7hkoQn2UPWSACY5wsg3Z15N2x2E43O1SB85KciJl8+nuuMOkLAK0dKr9/VJ4ycEQjunwrXwUPlnHUOk73uwDdTNRkUwXaNVleymvz0sP2Pdbai5qu18ETjpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=Cgqvm8Fj; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="Cgqvm8Fj"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D11B31143A3;
+	Sat, 18 Apr 2026 18:46:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1776530807;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=jwxsjqC6odbloW4RnZUq7a7489g9YY4pbiBKr6i/Ls4=;
+	b=Cgqvm8Fj4anJr5bp47idXk4Lz9yQ3o5gIgyoLoav2L2hhUvyYqzLZy9SlJ1OmyYO+svfdO
+	xD7OQyb5jC0klVf4qw6eT9sigJa3lesqJHSlhjLK7J1bcZ7yBNT2ZLH6x/XUjD+VrAu431
+	R0lhBQ7/+I8dSKhmDPb3pml/aDRBVcjYcXPBhew8+49hb/ldb7wBpYlbKVfMuernFgLneR
+	3VI9gLj5heKhAItCecOIi+GkKXWIXZN3ChG2js/Mr9KbGCzuVzhEHoymmSuQb6rhGyCqP6
+	R6PaoWTrCvirYF3OeL5lMOX0U9ick9zMNkuG+fhlR8DXnwzo9WneYemxFyBSaw==
+Message-ID: <c75c4b73-b7e9-4403-94a1-d4967ec7a299@nabladev.com>
+Date: Sat, 18 Apr 2026 18:46:44 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
-X-Virus-Status: Clean
+User-Agent: Mozilla Thunderbird
+Subject: Re: [net,PATCH v3 1/2] net: ks8851: Reinstate disabling of BHs around
+ IRQ handler
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org,
+ "David S. Miller" <davem@davemloft.net>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Nicolai Buchwitz <nb@tipi-net.de>,
+ Paolo Abeni <pabeni@redhat.com>, Ronald Wahl <ronald.wahl@raritan.com>,
+ Yicong Hui <yiconghui@gmail.com>, linux-kernel@vger.kernel.org
+References: <20260414103327.113500-1-marex@nabladev.com>
+ <20260414125753.Im6GAIHn@linutronix.de>
+ <2fcfb84f-69f6-493e-94d6-95d85d8000f6@nabladev.com>
+ <20260414145218.lsNpdAJI@linutronix.de>
+ <7734527a-d08b-49fa-b258-c37c5ae2da55@nabladev.com>
+ <20260416062159.fPxqc52X@linutronix.de>
+ <afe7ed2c-4434-4394-9d87-a4bdf5a15ec1@nabladev.com>
+ <20260416104818._EDbo9hA@linutronix.de>
+Content-Language: en-US
+From: Marek Vasut <marex@nabladev.com>
+In-Reply-To: <20260416104818._EDbo9hA@linutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-When SEG6_IPTUN_MODE_L2ENCAP_RED (L2ENCAP_RED) was introduced, the
-condition in seg6_build_state() that excludes L2 encap modes from
-setting LWTUNNEL_STATE_OUTPUT_REDIRECT was not updated to account for
-the new mode.
-As a consequence, L2ENCAP_RED routes incorrectly trigger seg6_output()
-on the output path, where the packet is silently dropped because
-skb_mac_header_was_set() fails on L3 packets.
-
-Extend the check to also exclude L2ENCAP_RED, consistent with L2ENCAP.
-
-Fixes: 13f0296be8ec ("seg6: add support for SRv6 H.L2Encaps.Red behavior")
-Cc: stable@vger.kernel.org
-Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
----
- net/ipv6/seg6_iptunnel.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
-index 97b50d9b1365..9b64343ebad6 100644
---- a/net/ipv6/seg6_iptunnel.c
-+++ b/net/ipv6/seg6_iptunnel.c
-@@ -746,7 +746,8 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
- 	newts->type = LWTUNNEL_ENCAP_SEG6;
- 	newts->flags |= LWTUNNEL_STATE_INPUT_REDIRECT;
- 
--	if (tuninfo->mode != SEG6_IPTUN_MODE_L2ENCAP)
-+	if (tuninfo->mode != SEG6_IPTUN_MODE_L2ENCAP &&
-+	    tuninfo->mode != SEG6_IPTUN_MODE_L2ENCAP_RED)
- 		newts->flags |= LWTUNNEL_STATE_OUTPUT_REDIRECT;
- 
- 	newts->headroom = seg6_lwt_headroom(tuninfo);
--- 
-2.20.1
-
+On 4/16/26 12:48 PM, Sebastian Andrzej Siewior wrote:
+> On 2026-04-16 11:26:00 [+0200], Marek Vasut wrote:
+>>> memory allocation. Therefore I am saying this backtrace is from an older
+>>> kernel.
+>>
+>> I actually did update the backtrace in V3 with the one from next 20260413
+>> that contained b44596ffe1b4 ("ARM: Allow to enable RT") from
+>> stable-rt/v6.12-rt-rebase branch [1] .
+>>
+>> I think I misunderstood the usage of "softirq is raised" vs. "softirq is
+>> invoked" above . Is it possible that there was an already raised softirq
+>> before the threaded IRQ handler was invoked, and __netdev_alloc_skb() is
+>> what invoked that softirq ?
+> 
+> It is not impossible. Something needs to netif_wake_queue() and
+> ks8851_irq() must only report IRQ_RXI (not IRQ_TXI). Then it can happen.
+> But usually the driver "stops" the queue if it can't process any new
+> packets and resumes it once a packet has been sent so it has room again.
+This driver .start_xmit is very simple, if there is space in the 6 kiB 
+TX FIFO, then the packet is written into it, otherwise the .start_xmit 
+returns NETDEV_TX_BUSY . There does not seem to be any 
+netif_{start,stop,wake}_queue() in the .start_xmit path.
