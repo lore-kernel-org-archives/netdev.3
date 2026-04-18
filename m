@@ -1,43 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D4E2F49FD;
-	Sat, 18 Apr 2026 16:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F7B2B9B7;
+	Sat, 18 Apr 2026 16:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776529218; cv=none; b=biETIoqba/kPTyu03C7sZTSFCIage71yBdOYKLQmyeO2Jxh/mMpQzzO0DS0nqY/BN1D/7ZzXwtyvvcws27gYb9BlIvzmRgIToOmAbOiiKqsHv8SMsxvkLu/kX++jhsjQlkrNBBmlJqQwgTU1ALh1aUpIECHWltS0fXd8D6Lw8jw=
+	t=1776529829; cv=none; b=YaoVJox0ar74XSA50Ex1YuOMWRaPe1I+hsehCEmN9WjTSov/zT5RDFk5zndE0Dz/hwGpzg8SeJGdp0xPmuCGRp072C/C7ks9+xhmWY9M04H8tKTWdRLNxZTIL57QezG2xIjIi6jMZxcaBlQMQIiN65q9u1MaRZn2iEM+zps4ibQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776529218; c=relaxed/simple;
-	bh=EIjYDe0xPJOFXSYpMHjH8yUdClaex8bha0Dj2cNb544=;
+	s=arc-20240116; t=1776529829; c=relaxed/simple;
+	bh=W7O5PbCRUz8QfAQcbD7i1/n5mpJXzGzl/oLb9BuD2R0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IkB+KV/VfqpVDwW+A2NYTQeKOkj4GfRyHIViwYjn6r6++yKlUxBloqKDovvh/2NDq6uHjQ0cB39p9OpyWiSM9IKvxwhtwYOSS6EAcUyw0ypMjKWOHX1uhdiycuKKGobR0m0JPYQFygonwiCbXrxFnGBGW8XQsNokGwSSKUwrJ/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lIzdnpOG; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=ojjHcpV6Rm263waozz7JeCSIoIfkgGdCwv51l/OdxO8aQV6Bf2n+vuuiKnZekVV9g7yrJ0B45OqmJB16EOT7CHFyP9Fbpmr72J1nByw0kBlDvk3P25nyVQqZ3SMITUsc1s4yCxoqzJ2ayzpWsl9paitlQl2l7HMYFHFiIhWOnw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f7uKLCcL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lIzdnpOG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E837FC19424;
-	Sat, 18 Apr 2026 16:20:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f7uKLCcL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DB49C19424;
+	Sat, 18 Apr 2026 16:30:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776529218;
-	bh=EIjYDe0xPJOFXSYpMHjH8yUdClaex8bha0Dj2cNb544=;
+	s=k20201202; t=1776529828;
+	bh=W7O5PbCRUz8QfAQcbD7i1/n5mpJXzGzl/oLb9BuD2R0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lIzdnpOGm2Ko7fW6FUbzkT6YLm15XlLNsSeh/q/ZIpkhoQNlf52+nwKu7CkIrGnJb
-	 iyWFVp8glbERWuZWGAGlPxN1YMaPXpdY/TgyHJOK9fm9SfjiqGnOWrmeKG6iozvLrQ
-	 Lmj8ZjCeyWRRoTcuJoYzfPRvmK8UxWgG1ogCwJ4sUFyjeIyJ7rgssK/a2VX855QRx/
-	 l1t08SpxXR6pp0hQGv/A691k71brDcTn7Pt0+nFKOwS6Az/1NZ1yyjOex7hCl/A4wj
-	 z8i6ZytfheJpxLPBUkBtbZ/Nu9rAtdpn1BmCJjAW666Dc4uVrRi7AhZ4CCKblvOL4Q
-	 hX6ZVlNcz4qTg==
-Date: Sat, 18 Apr 2026 17:20:13 +0100
+	b=f7uKLCcLQyAozXCkFH7fmEXV0/WF0tdYSM4YsWyNuAEEH06HnzBAK3vocI6kBwnPf
+	 r4IR15jdd229vxnCMkTPCcHYVXmIaTog8x6cp9sFSO8oFEF+5S8wSC9/VGWNwj82WV
+	 nWqxBbqZ0LQ68D6xshLVhC/CEcoEhhCNOFQUZfk7OEJNtpmslVVWB69ksA1SnSUyS8
+	 rVApZk5AcCyT1qVGO8DnKPvVSEulsUomHDffCMtFpuftkKhnnMz3jj+DtO+7HPno4X
+	 GQs4H4//WlajW7Y7MxZX0PeyZ9owo7tCmNO1kHjvPYkK8jDKTnxB3QkIVXDj6ynYYV
+	 MCL6+X8cXKtkA==
+Date: Sat, 18 Apr 2026 17:30:24 +0100
 From: Simon Horman <horms@kernel.org>
-To: Ratheesh Kannoth <rkannoth@marvell.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	sgoutham@marvell.com, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch,
-	dan.carpenter@linaro.org, Dan Carpenter <error27@gmail.com>
-Subject: Re: [PATCH net 2/3] octeontx2-af: npc: cn20k: Drop
- debugfs_create_file() error checks in init
-Message-ID: <20260418162013.GG280379@horms.kernel.org>
-References: <20260416035352.333808-1-rkannoth@marvell.com>
- <20260416035352.333808-3-rkannoth@marvell.com>
+To: Ashutosh Desai <ashutoshdesai993@gmail.com>
+Cc: netdev@vger.kernel.org, kuba@kernel.org, edumazet@google.com,
+	davem@davemloft.net, pabeni@redhat.com, stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 net] nfc: hci: fix out-of-bounds read in HCP header
+ parsing
+Message-ID: <20260418163024.GH280379@horms.kernel.org>
+References: <20260416051522.4154698-1-ashutoshdesai993@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,22 +44,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260416035352.333808-3-rkannoth@marvell.com>
+In-Reply-To: <20260416051522.4154698-1-ashutoshdesai993@gmail.com>
 
-On Thu, Apr 16, 2026 at 09:23:51AM +0530, Ratheesh Kannoth wrote:
-> debugfs is not intended to be checked for allocation failures the way
-> other kernel APIs are: callers should not fail probe or subsystem init
-> because a debugfs node could not be created, including when debugfs is
-> disabled in Kconfig.  Replacing NULL checks with IS_ERR() checks is
-> similarly wrong for optional debugfs.
+On Thu, Apr 16, 2026 at 05:15:22AM +0000, Ashutosh Desai wrote:
+> nfc_hci_recv_from_llc() and nci_hci_data_received_cb() cast skb->data
+> to struct hcp_packet and read the message header byte without checking
+> that enough data is present in the linear sk_buff area. A malicious NFC
+> peer can send a 1-byte HCP frame that passes through the SHDLC layer
+> and reaches these functions, causing an out-of-bounds heap read.
 > 
-> Remove dentry checks and -EFAULT returns from npc_cn20k_debugfs_init().
-> https://staticthinking.wordpress.com/2023/07/24/debugfs-functions-are-not-supposed-to-be-checked/
+> Fix this by adding pskb_may_pull() before each cast to ensure the full
+> 2-byte HCP header is pulled into the linear area before it is accessed.
 > 
-> CC: Dan Carpenter <error27@gmail.com>
-> Link: https://lore.kernel.org/netdev/adjNGPWKMOk3KgWL@stanley.mountain/
-> Fixes: 528530dff56b ("octeontx2-af: npc: cn20k: add debugfs support")
-> Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+> Fixes: 8b8d2e08bf0d ("NFC: HCI support")
+> Fixes: 11f54f228643 ("NFC: nci: Add HCI over NCI protocol support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ashutosh Desai <ashutoshdesai993@gmail.com>
+> ---
+> V4 -> V5: fix whitespace damage
+> V3 -> V4: add Fixes tags
+> V2 -> V3: drop redundant checks from nfc_hci_msg_rx_work/nci_hci_msg_rx_work;
+>           remove incorrect Suggested-by tag
+> V1 -> V2: use pskb_may_pull() instead of skb->len check
+> 
+> v4: https://lore.kernel.org/netdev/177614425081.3600288.2536320552978506086@gmail.com/
+> v3: https://lore.kernel.org/netdev/20260413024329.3293075-1-ashutoshdesai993@gmail.com/
+> v2: https://lore.kernel.org/netdev/20260409150825.2217133-1-ashutoshdesai993@gmail.com/
+> v1: https://lore.kernel.org/netdev/20260408223113.2009304-1-ashutoshdesai993@gmail.com/
+> 
+>  net/nfc/hci/core.c | 5 +++++
+>  net/nfc/nci/hci.c  | 5 +++++
+>  2 files changed, 10 insertions(+)
 
 Reviewed-by: Simon Horman <horms@kernel.org>
+
+Review of this patch at Sashiko.dev flags a number of related problems in
+this code. I believe none of them introduced by this patch. And that
+they can all be treated as area for possible follow-up.
 
