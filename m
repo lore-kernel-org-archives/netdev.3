@@ -1,84 +1,106 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sonic310-24.consmr.mail.ne1.yahoo.com (sonic310-24.consmr.mail.ne1.yahoo.com [66.163.186.205])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA2002E719B
-	for <netdev@vger.kernel.org>; Sun, 19 Apr 2026 20:12:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D651D86DC
+	for <netdev@vger.kernel.org>; Sun, 19 Apr 2026 20:31:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.186.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776629530; cv=none; b=GsPMjPTfc2iZI8PLX/ilL27Xs/Ej7JARks2iM/KWtA52xE4aalFISS8UDFd9CPfDcBNwGZgsTI8sisctkMipyGICvq1bI52AVYqM6S4HZQorhQOWPrXNn5MTXhpU73fIbPhfPqD/Mi8B52IBhopuaQ88sjAuE+pxSLdNtWfhG04=
+	t=1776630720; cv=none; b=LAhj58B1yUhanl/Pc8x5CIquRTREkXXdDelEzeqTfiPl8z3oAPIxo4f9vmgbvWnC4j3pyFMJx1qov5pC9QmxR+PVcdUGDC9Vh5pQCTHCg6MhwjTnduEkxXj+h1h7sn9di4tXQjWuF0/zTem9aOMuQFUQlVCe1anGQ7NEtCcxCG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776629530; c=relaxed/simple;
-	bh=OAMdrPYK5OV+e4A3PfNzbz835UpVFOyL7nAyo4Bzd74=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UGnIakv0sODo5kzwGSJSOvAicjjzDMQQaAG90m1lX++OeoAm8Ykv0kuyVl8yVdc9nPXKTfvB8b5bgXetA/eqh2rvQJHALKdUMyb1ZfzNYoV8EK3Ontb6oXQ5iUTjET0xYk4l5DUl6R3Ghn0NFjGv/NnoZLKkIjzCLvHI+hj3QyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nRo/2AVm; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776630720; c=relaxed/simple;
+	bh=Jx2VwIRlLkTnogfoJs6usTI0xVAZFxC6T8CEvlXZSqk=;
+	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type:
+	 References; b=tmtJ1kv+DvYqL1XOsDkYeWOZR7SvNcFDe6B/kJ9lAtW2frMJhCChgGpjhtR9QECN0aXjNlcl3/oMB4uSjN6CEjKID3cJGvxiE/TM2bBMtKMRjy5RpG0K4/flZbDUqIHj2ETTRVzg9Tv87xc/OjpnzfT46EzaaQHQ2cZVkQAKfLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=jWQI6Vwo; arc=none smtp.client-ip=66.163.186.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nRo/2AVm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72990C2BCC7
-	for <netdev@vger.kernel.org>; Sun, 19 Apr 2026 20:12:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776629530;
-	bh=OAMdrPYK5OV+e4A3PfNzbz835UpVFOyL7nAyo4Bzd74=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=nRo/2AVmwPolgfGOXy14+dpwclEBZBvgGgT7MAlxO4NavhyOo6dvn/Yyr6+ck2ttf
-	 n6tfKCYZsdPagG10cjsD4+wIpQ81qjBsW2K3vrg9Vh3Z/xXgmq1FPST6cu1jb17Y6U
-	 AjpsVYfkQ9m97aSleN94z6n3qkmkjG6gOZApPZW1riD04Ir6G/5IydEVvB8N1xXbDV
-	 NaadMP2ZhoguQrKLYgHnbH2ExeU6tUSdmT51OhnAXTZW7Ypuuj+4KIAhVwdHXN9V+n
-	 UwA3rnoMwSfQOlixeu++vJL8/3D3Ia8ovddPw0Hne0bOh21wrqB3zzPPQ7tEQplSAp
-	 9M/UjwbSsrGWw==
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5a0faa0d15cso2269604e87.0
-        for <netdev@vger.kernel.org>; Sun, 19 Apr 2026 13:12:10 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+sNiOsbCm8LeA2H66i74xmPe0kxyLpfLKNkSc/1kKT3gumUKkGTvtl6DKh0JJXeDgIXO1da10=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwfVVIXwxkRPRaSyC7vudYhqgYueb35wPOStlTzvm+ieTP02fco
-	Xme1bkssXxGD3SxQxtmmhiyM+WUIaNxkzjedDDdXuh3DiLfGfcUOJP5ChUzgBRputCwGII4aOCl
-	IEQnVLYiZbOwMnj4Er7lykV1AhRS12n0=
-X-Received: by 2002:a05:6512:3c9d:b0:5a3:fd83:13f7 with SMTP id
- 2adb3069b0e04-5a4172ba690mr3178772e87.6.1776629528998; Sun, 19 Apr 2026
- 13:12:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="jWQI6Vwo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1776630718; bh=C6P01coV17raI675X3Tjs6EKGGKw8wcIYoqXJRLzz+Y=; h=Date:To:From:Subject:References:From:Subject:Reply-To; b=jWQI6VwoiorSQSoHCnURX6DGx6yijZu76zbE+rqrUYnanNO87QRM6u8XdwWvHSev8elGf2VIU4WbdCwhkjjCVzS2sqmQVwV9JVb1K7el/PXTA83uIaqSUey8QrnNgr1hCH8LBm4nTD4YuEY1U3dVhpkalYGfiMov/BEdrDwO/anD6w9w04+EowqoFrDmCj4nOxwyZfrx50yjzUCVs8bnMVRSdgVR9bQWu+azR2Gw0hz0+18vAdB1Ge5tRiiF60fSNT3HA7Np9INEGd0x1YOqIMy7JYLc46y59ohA0OOHFZz/OAr9hZjfgn1GD/41Tz9jP6yhdXX+9+kt10oV1k7OTA==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1776630718; bh=SYNbPQkiqrWwW7fS6OnsoxIQYJpqDhtnNR0DmqHFulc=; h=X-Sonic-MF:Date:To:From:Subject:From:Subject; b=trEv3j/4AEmR3nnwNhDbhXra2MI5Zqnj9ZIh4Rn8bl4tX02KGdF6OTn01f3Wmz0CBPwmXWYgrcZxxo4mvXeu0nDmgmDzaDzkEc2cK7rajUsVK8HTPCGuzU1CoWOuSIm1d176Dg7q/D+VZE6EwuCkSS4OZNSNPyknjksveMCtL06Y1fi+ZUgibv85P71+J9cVuOra9H9el2HDqtGiMNfqh4cZQEyVFxTB6d849Bq0DW/3EoT+hucyAKd99xIv/R/poZriiHO0bqxexFOZPiF316OiF5YzliMJkBSQhfhpoIpDDLBwxXWzy/TZYar9BpESZDaPq+z+lWN7SRh4bIOGlA==
+X-YMail-OSG: f1KolfcVM1nr94iZDWkjQmrURG4O8UQlqjUhnYtrSUdflz2XFx6r2pK4sR5.Il9
+ E7yOjIdcwjLDJ.kBCSr8doA8avXuSAtVM3FAfXj1KMxecgwYE3AD4i0WbthQ38Vq6huYTvW2FJ0p
+ Oy7I1AYuHTrvl6JXKiBZ459waK0b0f52wXEh_2dnnZ5M5Q.Zp5zZoy0zrcP2NdgHcp5OSBKCfGJP
+ H1RZyZ46x1ryHfKjG6gT7ETHFeTlj0tbM0LL6nE0gc4BqUMWwBd6jFMKR5x_u6ptrrBzE1Y3lnrO
+ wCekc1mYGr870D7h5BLYR1Czpw9.32u992L3WLwoP38ICSzAXo2UIDovhnV_xVUz9htIyh_P3ixn
+ X1MnoqBcofpRit_F3b_P5uEw56MAK.dDMj684xZEZ15l.y._cbeqM6X6bGma.Pf.B0p6kXs3kYwe
+ wI4dYhtr8iLn4_3s.qLk0KV2HBRqrq.JYHJSyv7iT8tyDhJr115yTij7Bf.IRQ29HLEjs0v5tk6u
+ ieSyMzYWHNY2MDokD3JI3wAIAl0u.U_kgIoUgJyOiOXj1ZnHuQjNDXRYqU8sj9ASg0jmZjkC_isU
+ 24UL72IdccKzCgiltj3lN5phFEJjTxfN1VPEmo7So9Sh_Fd2vQ.NEs3MXtF87dtTAqp7d93Mki2v
+ DeyO7QO_54f0Gx0tyJ5FF1reLKR5it2tWSiu7ZBV_1TlXTjYPDDnAH3fTRBp6TeD8S0Dc_M23yn4
+ sNdDTSs11zh79CEOQQM7VDGy2a1gSK6C784LZEUPTxCYvUxM4dRHWNJL8bNlNfN9EZKxas_slatd
+ TG0nRrpAOLrzzn0xOUXzNphpebdY2eWS.vVNqiK.px1RlWVBXCnuGTdzwnl9keS9YB8b2fsEd5u4
+ oKHceBX_63XcSPXQZgZ4GIeGhaUZQNG.LcTW5LMzPTlmPJpSDKMQNKxJuZ60hbww21s7iZiOoZFY
+ 9VYQ1V1oUCwf7H3nOtpK.9FWA39LIt4C4vF5eRJ2bsgOEvBCxKfOWspq00eZQuDES3o1kpwxBkwW
+ DLkdqOAXiUfLUt0DN.3ljtOJ7WPOKQ9YRUA2aG7uUz45fskbevhFRBKVE20tP.deVuuxpcSgWJOo
+ tjrlPW1AKDJKE3_pTtjBRQX4NZji4XAa9CMrj9XQPWwQz.Vjx2ehNVjBm_vywDC1ft5aCU6l8_Qv
+ xUcu1hJ1JL9mLbxWLRz9RpNmLqkG_RFWcGiouq9BQnfk.9i0l_p1gQl.bguuAxb29p8nDPJebxWy
+ TqHIKTtLVKkw15JKrKo.tls2vSB8THIFpgjFWMv0oLwTsNV.o4Q8s25E39m.cRq6BJ3hzqdnBAsE
+ NusKRdj2.V.T1cqkm6R_4LTDGTz9NP6ZoGTB5LDmgnY1SB7pxAp0KQuVBMBaD8OjAsZ9Erh758Sf
+ Fm_34lq4omGCvNf_oFqHrUpxYEgipydz59DjaiYMFWSSMCijsQiE9Il5KUquORPwxpTc6rhF0TXW
+ _rk2CTlyJAfLXnV9q_jRWc.zjem7c.3HpEAe5SDvDm6kR0MeO_h7po6oFzeH3yBeopjGUokHkgwH
+ 1jm03mHqAuT7.x4cql0BFKqMXct8Wj0vHzmPISGl3HY0usvd4ltJdK.L7XARFeXlfGmHnNdKM2kW
+ ZVX1uLNBEmGhsdP9Al5lDTCzbonLIgqylv53GZjOWeXFRyN2oAK0Q1uqgC_IJWtnDTPLenT7l3bi
+ U5bUC76ZoXik8X7jSCyv0h9LU6dv7xZw4XBYloRSXKuHKG3vg3xGyzpv8J.QzGqpyf8BRIKExdzr
+ 8CI6xtcDmRSArRB0CKNMLLkPtXM7kZSwHK.pIvNAHdDFlCmYqAC7VvPL2VGhvpW.HUg74m8ab8aR
+ IaexkPUufa.loX__8pGYoqTl8OWxXRD3kJ9sQk0FqODlEHDfW7lyDwbsZsbAjLJfgx5FtDxLuTkh
+ mxkC04sm2ZMLdIrAEwTKflo48tRz9Nnjo8f.vq9drkhGXAVPre3_v4JzawJd4M8bP77AXIEcxuPD
+ 7dUUw5q7z3tpqBHi2.hn_ID31iVQqYOX_4F6G.3Gx8pFSSIION5r9sYtmzUi5cCPQipqij_no7Al
+ B5QwJpgqN9Iwpd6hg237ZT2Bc8V_2oAfvH_yjgbOc0iJvSJw..baZYu9HApt.ihLRyH6Lw6fcLSO
+ .wpWiIuHiMAKBUzrBK.F3rxQeG5YaxzasGdrFmMOuwoDCfa_wTxHI9_OjbjV0KG2tLqV3Y2SFYlz
+ nIbIjOI7sreA1hy7pHWhFCB9FQfBwkus8fWNuQf4Tm84AZYLl57CnCdLuSyqtwTA7Wrpvlbc9v0R
+ HM4ttDrMEBA--
+X-Sonic-MF: <namiltd@yahoo.com>
+X-Sonic-ID: 39802d2e-324e-486c-b7ce-139a897358d5
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic310.consmr.mail.ne1.yahoo.com with HTTP; Sun, 19 Apr 2026 20:31:58 +0000
+Received: by hermes--production-ir2-bbcfb4457-sdst2 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 637eb63aae13c21f297f7071f341247a;
+          Sun, 19 Apr 2026 19:37:11 +0000 (UTC)
+Message-ID: <400a6387-a444-4576-af6d-26be5410bce3@yahoo.com>
+Date: Sun, 19 Apr 2026 21:37:07 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260417173621.368914-1-ynorov@nvidia.com> <20260417173621.368914-5-ynorov@nvidia.com>
-In-Reply-To: <20260417173621.368914-5-ynorov@nvidia.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Sun, 19 Apr 2026 22:11:57 +0200
-X-Gmail-Original-Message-ID: <CAD++jLmeFP4CHf+PZdR4gWW7ZFiN9LDNeXADQXcM0e5eJOO_rw@mail.gmail.com>
-X-Gm-Features: AQROBzA9qeeVj2Ps3N0YEWnbfhWwJYO6GUSEavstda-gTisTP6p1HIZ-NbjdBrk
-Message-ID: <CAD++jLmeFP4CHf+PZdR4gWW7ZFiN9LDNeXADQXcM0e5eJOO_rw@mail.gmail.com>
-Subject: Re: [PATCH 4/9] iio: magnetometer: yas530: switch to using FIELD_GET_SIGNED()
-To: Yury Norov <ynorov@nvidia.com>
-Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Ping-Ke Shih <pkshih@realtek.com>, 
-	Richard Cochran <richardcochran@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Yury Norov <yury.norov@gmail.com>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Hans de Goede <hansg@kernel.org>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Salah Triki <salah.triki@gmail.com>, 
-	Achim Gratz <Achim.Gratz@stromeko.de>, Ben Collins <bcollins@watter.com>, 
-	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-rtc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Content-Language: pl
+To: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+Subject: [PATCH v2] net: dsa: realtek: rtl8365mb: fix mode mask calculation
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+References: <400a6387-a444-4576-af6d-26be5410bce3.ref@yahoo.com>
+X-Mailer: WebService/1.1.25559 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-On Fri, Apr 17, 2026 at 7:36=E2=80=AFPM Yury Norov <ynorov@nvidia.com> wrot=
-e:
+The RTL8365MB_DIGITAL_INTERFACE_SELECT_MODE_MASK macro was shifting
+the 4-bit mask (0xF) by only (_extint % 2) bits instead of
+(_extint % 2) * 4. This caused the mask to overlap with the adjacent
+nibble when configuring odd-numbered external interfaces, selecting
+the wrong bits entirely.
 
-> Switch from sign_extend32(FIELD_GET()) to the dedicated
-> FIELD_GET_SIGNED() and don't calculate the fields length explicitly.
->
-> Signed-off-by: Yury Norov <ynorov@nvidia.com>
+Align the shift calculation with the existing ...MODE_OFFSET macro.
 
-Very nice,
-Reviewed-by: Linus Walleij <linusw@kernel.org>
+Fixes: 4af2950c50c8 ("net: dsa: realtek-smi: add rtl8365mb subdriver for RTL8365MB-VC")
+Signed-off-by: Abdulkader Alrezej <alrazj.abdulkader@gmail.com>
+Signed-off-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+Reviewed-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
+---
+ drivers/net/dsa/realtek/rtl8365mb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Yours,
-Linus Walleij
+diff --git a/drivers/net/dsa/realtek/rtl8365mb.c b/drivers/net/dsa/realtek/rtl8365mb.c
+index ad7044b295ec..b85c99216648 100644
+--- a/drivers/net/dsa/realtek/rtl8365mb.c
++++ b/drivers/net/dsa/realtek/rtl8365mb.c
+@@ -216,7 +216,7 @@
+ 		 (_extint) == 2 ? RTL8365MB_DIGITAL_INTERFACE_SELECT_REG1 : \
+ 		 0x0)
+ #define   RTL8365MB_DIGITAL_INTERFACE_SELECT_MODE_MASK(_extint) \
+-		(0xF << (((_extint) % 2)))
++		(0xF << (((_extint) % 2) * 4))
+ #define   RTL8365MB_DIGITAL_INTERFACE_SELECT_MODE_OFFSET(_extint) \
+ 		(((_extint) % 2) * 4)
+ 
+-- 
+2.53.0
