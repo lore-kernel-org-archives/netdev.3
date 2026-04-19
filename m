@@ -1,216 +1,102 @@
-Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99772227B8E
-	for <netdev@vger.kernel.org>; Sun, 19 Apr 2026 09:52:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.169
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [13.75.44.102])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72D8029CE1
+	for <netdev@vger.kernel.org>; Sun, 19 Apr 2026 10:24:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.75.44.102
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776592329; cv=none; b=haUYIBG3nmfAZ3VTu1OELoIHohD02hhbxrdZ6YHRgkFejYHHH5fdCzTkhO/V8Iti5fgPJMW2kQQJlSXkb0dLasWnZKpKo5Pg9Ftoj1jHAU78l59V2K//xH251ozVBnYqf6lpqzpgGluQa02kxpPb8bWZfRa5nwBfeM/NeMs60J8=
+	t=1776594269; cv=none; b=CWFLxprLn/CivHea6oViprar6l1r2EeoexfAiL7lOQDh6oA9W6p7NUUVoHcYAQI9URDB12Z6kH3M0cSyuOKb1e8w72L7eULc5kdhiJQ4hQWedak77NxNJma5bv/1GQoTa/9FRxcOjVRw/EGw1giOnzeRaFCrd6JgJ37wpcuj/qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776592329; c=relaxed/simple;
-	bh=x5IouHTJtW3DfdyihFAOCdEe97drV7RtXJLrh8Dbmq8=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=fvAm4wXODQZtBSuqNZLuk418exSesaFTi0Dl5lnT+CKCmtAGtrkSvIAeNh4sgNePcRMoiGZxigY3DRNZSUgw7PjnE603pBNh92IezOk50XQqb6OLiLVT2pBnCSYy3cnKrBeb10qF2joXP94z9nDS3BMwx28W9mK/DAWLd6zdmlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HY65m+fa; arc=none smtp.client-ip=74.125.82.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HY65m+fa"
-Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-2d832f2f44cso2310399eec.0
-        for <netdev@vger.kernel.org>; Sun, 19 Apr 2026 02:52:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776592328; x=1777197128; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:to:subject:cc
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xNbDpXxBmda7i9Siqc5i89PbvpK5U76PasTjM+CK90c=;
-        b=HY65m+fav+FT95aJFcWjAYVEG+fbdk4/PC+ArfN3gjYNopgedG+N3A6jpHUkgP4yW0
-         F5vjuyfV5eCwsRYYDlWH5jD42hijtW48dEasC+r6Y/QwHRzxkzC5KXmnG8HmdFLPMTw0
-         zkX7vlWPLgfkQibSYPbOcvNFmrobcMNm59fh6lxCIQyUZIPHJKwbqyxyRbl7rjIdoMAE
-         ZdblAUR1eBiw93PimYM3YlMAnT3VE/EnReBo+BNbpiHqCtq/Ov29JiSC8CBpxV1HUjZl
-         EvWHpUS3wBp+mEyN2wd6SHTY01HNFHAb+riSWaEQERaM57FMUb0UIpqbGk6TFn3XRKoF
-         nidg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776592328; x=1777197128;
-        h=content-transfer-encoding:in-reply-to:from:references:to:subject:cc
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=xNbDpXxBmda7i9Siqc5i89PbvpK5U76PasTjM+CK90c=;
-        b=JjxbOWVvnjJfBbkcI4klL6I6KcEPUZFUSFO3U7sJ01uYPP1gkzKAhEh+akV7Oruau+
-         kbEkS4FlD1XLiYnJMA7XzfDHsG2iNJMqvmqnlUHduwtRlB5bxPuGsXJU1PUrJS81RC5/
-         z+ebxX9X4U7WAahXlhqJJI/2vRMv8mSXVYltf+LDZuZQdNLyWZImt+p4jzE+KcRv9JLx
-         XYypJWRAqiOSYtYx8uoQnmsv1gFvdF/Lnxc0ulSQIgoCSmMPyF10fM6ve9Mm+w+rNuMK
-         6f67TnQf23CAybKpzyVI1Y5ngQkgFiOxrwJRb//phl8kxEi4ADw2PFFjW3e9EsDXzem5
-         Iu8Q==
-X-Forwarded-Encrypted: i=1; AFNElJ+pPF+7g5eNE7rDDiEb9O+dKV3qu7c5mXwbp9OYQHv0ceVv7ZjhfBmGBI+34tOPBvEVZFIdws8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzKs6qZp0E4CqoLQYaR191yFXw461l80iZ00Gz/0C/ngtQ3jJ+o
-	RyU2alb6E6L6m9/4fMaIzdU/SBZFR0QomUyRS9Suq/0C5H5m4ZMrC45w
-X-Gm-Gg: AeBDiesZ9VGp5Vcpkv6KgnJnyWNWVkGQ19S3Ra9296JQGECcA3Hx5r3zVUV/oa7ZSwx
-	obYDWMCFG5glg9LjuH+tsM3EocfwWBuq1V3F8jtVPE7b2lb1LtiQTCibyY5+UBY/5IXhF2T5zcB
-	V47+osRW4jmRSmtg8TYIGIiquHTg0ZlAfB0cHlMo6Ntj/PMk/Csi3tFzyGywTOxwm8d5gPmRlCL
-	7HV8wNKkq+kc3Wp1pvwIiY33qXnu/Vp5CzNRB6eJuPE5Ee7XmiPl2nAk6BvAqXZTGWr8uJrF1WU
-	gpkOXKs6YXSo8Lwu9jnclvmcM0vlsDfztXP/q+E7eHFK8lMHokW9JifgGq8/bd7kAfFKFiGKIyf
-	w26hsW0x8UtyIKFQquMCHa1kDwy9YWUGqOmHSGJz+Xv7Zq4/Bp1/Gjh6WDaWMp9rHESBbzkV/an
-	duyuV7BVgQ2M5Vj7OUrrWKC3CGK1hXTlkFs1ZRvBBbjmL2R9w=
-X-Received: by 2002:a05:7022:12b:b0:128:d2f2:5cf8 with SMTP id a92af1059eb24-12c73fa8d16mr4469503c88.34.1776592327435;
-        Sun, 19 Apr 2026 02:52:07 -0700 (PDT)
-Received: from [10.0.0.2] ([169.235.25.186])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12c749c422csm9967262c88.3.2026.04.19.02.52.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 19 Apr 2026 02:52:07 -0700 (PDT)
-Message-ID: <05a19f8d-360e-41d1-bc8a-0b4caab3d354@gmail.com>
-Date: Sun, 19 Apr 2026 02:51:50 -0700
+	s=arc-20240116; t=1776594269; c=relaxed/simple;
+	bh=YecCN+xue2Gtd+Nty6a5i8wKbx0WJGAs2E08rRQ6D6c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=S32+drySDDNzeQgdbZ6VKKDu7iJ9Kwwxxx7k0yrHWH7MtDXZDfYxFxSPsLEHLldNQaahM9Abugz0UESQOZpRVsqTleQySOWk4IXuWS5lWwqweKNRhK8prBHa49DiKHvYIru3l3bieky488wThmHApA2CYKIorJdwCHOfUAIhhnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn; spf=pass smtp.mailfrom=lzu.edu.cn; arc=none smtp.client-ip=13.75.44.102
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lzu.edu.cn
+Received: from enjou-Legion-Y7000P-2019.coin-barley.ts.net (unknown [172.23.56.36])
+	by app1 (Coremail) with SMTP id ygmowAC3MAFJreRpjzXUAA--.51207S3;
+	Sun, 19 Apr 2026 18:24:11 +0800 (CST)
+From: Ren Wei <n05ec@lzu.edu.cn>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	dsahern@kernel.org,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	andreas.a.roeseler@gmail.com,
+	yuantan098@gmail.com,
+	yifanwucs@gmail.com,
+	tomapufckgml@gmail.com,
+	bird@lzu.edu.cn,
+	caoruide123@gmail.com,
+	n05ec@lzu.edu.cn
+Subject: [PATCH net 1/1] ipv4: icmp: validate reply type before using icmp_pointers
+Date: Sun, 19 Apr 2026 18:19:18 +0800
+Message-ID: <efb2c33f544ece7727704608fc577525b415ae26.1776563662.git.caoruide123@gmail.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <cover.1776563662.git.caoruide123@gmail.com>
+References: <cover.1776563662.git.caoruide123@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: yuantan098@gmail.com, Ren Wei <n05ec@lzu.edu.cn>, netdev@vger.kernel.org,
- mptcp@lists.linux.dev, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, ncardwell@google.com,
- dsahern@kernel.org, martineau@kernel.org, geliang@kernel.org,
- daniel@iogearbox.net, kafai@fb.com, yifanwucs@gmail.com,
- tomapufckgml@gmail.com, bird@lzu.edu.cn, caoruide123@gmail.com,
- enjou1224z@gmail.com
-Subject: Re: [PATCH net 1/1] mptcp: hold subflow request owners when cloning
- reqsk
-To: Kuniyuki Iwashima <kuniyu@google.com>,
- Matthieu Baerts <matttbe@kernel.org>
-References: <cover.1776149210.git.caoruide123@gmail.com>
- <86e2514b533bf4d55d4aa2fdbf1404022e8c9430.1776149210.git.caoruide123@gmail.com>
- <5f06a4e8-0b49-4119-94f9-3a8a1e430e0d@kernel.org>
- <CAAVpQUDzh-dGsQpBCZjN3rUsoDc2QjzWh-o5yVWoBWDQNXbjmQ@mail.gmail.com>
-From: Yuan Tan <yuantan098@gmail.com>
-In-Reply-To: <CAAVpQUDzh-dGsQpBCZjN3rUsoDc2QjzWh-o5yVWoBWDQNXbjmQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:ygmowAC3MAFJreRpjzXUAA--.51207S3
+X-Coremail-Antispam: 1UD129KBjvJXoW7uFWkJF4kGr4kAr15JFWrZrb_yoW8GFyfpF
+	ZxWr95Kr98tr9xt3WvyFy8tr4UWF4DWryDGw4UK3WDu3Z3Jr4xZFyFq39xWr1qka1Skr4Y
+	vF1qv3WDt39xZ37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUB01xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
+	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
+	IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1l84ACjcxK6I8E
+	87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c
+	8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_
+	Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwI
+	xGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAa
+	w2AFwI0_Jw0_GFylc2xSY4AK6svPMxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY2
+	0_Gr4l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8G
+	jcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2I
+	x0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK
+	8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I
+	0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUonmRUUUUU
+X-CM-SenderInfo: zqqvvuo6o23hxhgxhubq/1tbiAQACCWnkluAA4wAAsS
 
+From: Ruide Cao <caoruide123@gmail.com>
 
-On 4/16/2026 11:48 AM, Kuniyuki Iwashima wrote:
-> On Thu, Apr 16, 2026 at 10:45 AM Matthieu Baerts <matttbe@kernel.org> wrote:
->> Hi Ren,
->>
->> On 15/04/2026 11:31, Ren Wei wrote:
->>> From: Ruide Cao <caoruide123@gmail.com>
->>>
->>> TCP request migration clones pending request sockets with
->>> inet_reqsk_clone(). For MPTCP MP_JOIN requests this raw-copies
->>> subflow_req->msk, but the cloned request does not take a new reference.
->>>
->>> Both the original and the cloned request can later drop the same msk in
->>> subflow_req_destructor(), and a migrated request may keep a dangling msk
->>> pointer after the original owner has already been released.
->>>
->>> Add a request_sock clone callback and let MPTCP grab a reference for cloned
->>> subflow requests that carry an msk. This keeps ownership balanced across
->>> both successful migrations and failed clone/insert paths without changing
->>> other protocols.
->> Thank you for this patch!
->>
->> Indeed, it looks like this path has not been covered by the MPTCP test
->> suite so far.
->>
->> By chance, do you have any simpler reproducer using packetdrill? (the
->> MPTCP fork)
->>
->>   https://github.com/multipath-tcp/packetdrill
->>
->> Also, I see Sashiko is pointing to a potential issue with MP_CAPABLE and
->> the token, also only visible with net.ipv4.tcp_migrate_req=1:
->>
->> https://sashiko.dev/#/patchset/86e2514b533bf4d55d4aa2fdbf1404022e8c9430.1776149210.git.caoruide123%40gmail.com
->>
->> Are you also looking at that?
->>
->>> Fixes: c905dee62232 ("tcp: Migrate TCP_NEW_SYN_RECV requests at retransmitting SYN+ACKs.")
->>> Cc: stable@kernel.org
->>> Reported-by: Yuan Tan <yuantan098@gmail.com>
->>> Reported-by: Yifan Wu <yifanwucs@gmail.com>
->>> Reported-by: Juefei Pu <tomapufckgml@gmail.com>
->>> Reported-by: Xin Liu <bird@lzu.edu.cn>
->>> Signed-off-by: Ruide Cao <caoruide123@gmail.com>
->>> Tested-by: Ren Wei <enjou1224z@gmail.com>
->>> Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
->>> ---
->>>  include/net/request_sock.h      |  2 ++
->>>  net/ipv4/inet_connection_sock.c |  3 +++
->>>  net/mptcp/subflow.c             | 13 +++++++++++++
->>>  3 files changed, 18 insertions(+)
->>>
->>> diff --git a/include/net/request_sock.h b/include/net/request_sock.h
->>> index 5a9c826a7092..560e464c400f 100644
->>> --- a/include/net/request_sock.h
->>> +++ b/include/net/request_sock.h
->>> @@ -36,6 +36,8 @@ struct request_sock_ops {
->>>                                     struct sk_buff *skb,
->>>                                     enum sk_rst_reason reason);
->>>       void            (*destructor)(struct request_sock *req);
->>> +     void            (*init_clone)(const struct request_sock *req,
->>> +                                   struct request_sock *new_req);
->> @TCP/INET maintainers: are you OK with this new function pointer?
->>
->> Currently, MPTCP is the only user, and "req" is not used, see below.
->>
->>>  };
->>>
->>>  struct saved_syn {
->>> diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
->>> index e961936b6be7..140a9e96ad58 100644
->>> --- a/net/ipv4/inet_connection_sock.c
->>> +++ b/net/ipv4/inet_connection_sock.c
->>> @@ -954,6 +954,9 @@ static struct request_sock *inet_reqsk_clone(struct request_sock *req,
->>>       if (sk->sk_protocol == IPPROTO_TCP && tcp_rsk(nreq)->tfo_listener)
->>>               rcu_assign_pointer(tcp_sk(nreq->sk)->fastopen_rsk, nreq);
->> (Maybe TCP with fastopen could be this other user to call
->> rcu_assign_pointer()? (net-next material))
->>
->>> +     if (req->rsk_ops->init_clone)
->>> +             req->rsk_ops->init_clone(req, nreq);
-> I think a simple direct call is better.
->
-> #ifdef CONFIG_MPTCP
->     if (tcp_rsk(req)->is_mptcp)
->         mptcp_reqsk_clone(nreq);
-> #endif
->
- Thank you very much for your suggestion. We will use this approach in
-the next version of the patch. Would you like us to add your
-Suggested-by tag?
+Extended echo replies use ICMP_EXT_ECHOREPLY as the outbound reply type.
+That value is outside the range covered by icmp_pointers[], which only
+describes the traditional ICMP types up to NR_ICMP_TYPES.
 
+Avoid consulting icmp_pointers[] for reply types outside that range and
+keep the existing behavior for normal ICMP replies unchanged.
 
->>> +
->>>       return nreq;
->>>  }
->>>
->>> diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
->>> index 4ff5863aa9fd..5f4069647822 100644
->>> --- a/net/mptcp/subflow.c
->>> +++ b/net/mptcp/subflow.c
->>> @@ -47,6 +47,17 @@ static void subflow_req_destructor(struct request_sock *req)
->>>       mptcp_token_destroy_request(req);
->>>  }
->>>
->>> +static void subflow_req_clone(const struct request_sock *req,
->>> +                           struct request_sock *new_req)
->>> +{
->>> +     struct mptcp_subflow_request_sock *subflow_req = mptcp_subflow_rsk(new_req);
->>> +
->>> +     (void)req;
->>
->> Note: if 'req' is not used, and MPTCP is currently the only user of this
->> new init_clone() callback, perhaps enough to pass only 'new_req' for the
->> moment? 'req' can be added later if other users need it, no?
->>
->> With only init_close(nreq) in a v2, or if TCP maintainers prefer to keep
->> it, feel free to add:
->>
->> Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
->>
->>
->> Cheers,
->> Matt
->> --
->> Sponsored by the NGI0 Core fund.
->>
+Fixes: d329ea5bd884 ("icmp: add response to RFC 8335 PROBE messages")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Ruide Cao <caoruide123@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+---
+ net/ipv4/icmp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
+index 4e2a6c70dcd8..d8036663f035 100644
+--- a/net/ipv4/icmp.c
++++ b/net/ipv4/icmp.c
+@@ -373,7 +373,8 @@ static int icmp_glue_bits(void *from, char *to, int offset, int len, int odd,
+ 				      to, len);
+ 
+ 	skb->csum = csum_block_add(skb->csum, csum, odd);
+-	if (icmp_pointers[icmp_param->data.icmph.type].error)
++	if (icmp_param->data.icmph.type <= NR_ICMP_TYPES &&
++	    icmp_pointers[icmp_param->data.icmph.type].error)
+ 		nf_ct_attach(skb, icmp_param->skb);
+ 	return 0;
+ }
+-- 
+2.34.1
+
