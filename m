@@ -1,35 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D594C386C1B
-	for <netdev@vger.kernel.org>; Mon, 20 Apr 2026 08:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8302F3859F7
+	for <netdev@vger.kernel.org>; Mon, 20 Apr 2026 08:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776672488; cv=none; b=WRNGmQwSw81Oxfx5Bd8DyWQ+C0U67bK6pSSKwiFNMX1yQFiurJ66Qmq7zYPSg0KowIRqzMd3XqFSn619SabLpitlKifIGD5DU6/9+5oiXg/nm0OVelzQhsNi7OzLEcRrc06bqY7O8FTEJi/3cazgdQzQNv+dayz4N23FVbEGn0s=
+	t=1776672491; cv=none; b=Y0JwNNq+Tsd5oogUnDFU072t4vnfU6Kr2yVdXV9Sk/xpYDhmXhpcf2yX+EJ1oHSDVrX5retiN4QCCrxd5GTpL2BzmAW4K7Cw3qfe4iEW0HK+HLjxe/f7hVJHYSWfw9jYJAMr1/llJkK0vd/prFhSK1nzAzv55w1ZiHzs/k3owyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776672488; c=relaxed/simple;
-	bh=iJfYHjbtQcWXulEhPUnNrNVT7wdpLyZo8wc0yxlsesk=;
+	s=arc-20240116; t=1776672491; c=relaxed/simple;
+	bh=topljgtv1QUKQr9gAQktFewd+50qP9U7HbRk/au7sXo=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=DG53oWIrZcOq2WmP5J3vWNkIkjsAbpieLad0Qf47ANfisoR5BgNXXU93u52K65iyD9lmtH21v3F9nsq5VI/kYfChaX80g27P+7BQVf/d69RCFyt9O+TzIh2kBnLkAKrIpe/RgZ/yB0EWLs7lO0pb+ttEODYEGUWDNx6L23tCLOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e+9urV6K; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=RsmmQZBR42URMs9d/B38tHggDacnOH0Q1TmCax6DSjpiUxp37DPDb9Xo1nEgb9wYB0JrJ9gUSXvycAcjUY22l46VZUQdP7ZB0nCat/r63VlUAU/S/IGWRmPCVd5XzOne5IQsE8NFTG3oWbP5vBXO9Jf1eEmwgdZMEj+yh9w9e4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u5cAo5JV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e+9urV6K"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20CADC2BCB3;
-	Mon, 20 Apr 2026 08:08:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u5cAo5JV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2935C19425;
+	Mon, 20 Apr 2026 08:08:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776672488;
-	bh=iJfYHjbtQcWXulEhPUnNrNVT7wdpLyZo8wc0yxlsesk=;
+	s=k20201202; t=1776672491;
+	bh=topljgtv1QUKQr9gAQktFewd+50qP9U7HbRk/au7sXo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=e+9urV6K58ahpj9nD4gByGJBfQ2yw6edYmFol3cpas1UUf/+DDiIyXWyXqxNpydt1
-	 yuJz8wOQZfrtejlLFgX2wClYdI9997yMSMZRu7QaAEhH7ZHub6Tim87qKTnOX5CD1o
-	 S6iQNIcGHpyH0eK30Dqjw+jUJMjobksb8pbGOpf0hup8Li35T0OMG9nlZlmR5x4OXL
-	 HkgfKNQC2nfAWuNVL45bmC3hZwJ7AAqw5pPyxDG/cEFZH11ZI+gXRJHFforF92dKOw
-	 9STnhtATXXqRFVg9xJmS11ExPXqKHvWazwF5qIuizQP9ITG++4zLaw4HRxDd6MfsGF
-	 Tsl8BjwBwkUTQ==
+	b=u5cAo5JVB95nnlODY/NPvD2OYvMLUFT7sL5+TooWNY+BZsw0wTX96X7xBqPBLSA90
+	 zWFUxnh23MeUU0IpAnede5IgnX4g4EXgbL3/hDB1TF8Rd0GIwgq/6MPgrCWl00fyR0
+	 5kOIcWerO7WtvCR23zKw3GrTsJ++ZkZP3flm0vT5iKNzUy+7xK6T0JP/OuQRkxVycJ
+	 wVOcffyYoW4/38LYWCWzsw5Mfuqf25oPy8Fh51+rIaOslIA+XmmCBpme2O2C/seZ7h
+	 4wWmdU5wwebXnLaX13TJNJb52H1/wteBGSEqBKlqmipLqEpyOOSg9WN3yd3LvQ2bwC
+	 qLONGq4BOnMWw==
 From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Mon, 20 Apr 2026 10:07:47 +0200
-Subject: [PATCH net v2 1/2] net: airoha: Move ndesc initialization at end
- of airoha_qdma_init_rx_queue()
+Date: Mon, 20 Apr 2026 10:07:48 +0200
+Subject: [PATCH net v2 2/2] net: airoha: Add size check for TX NAPIs in
+ airoha_qdma_cleanup()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -38,7 +38,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260420-airoha_qdma_init_rx_queue-fix-v2-1-d99347e5c18d@kernel.org>
+Message-Id: <20260420-airoha_qdma_init_rx_queue-fix-v2-2-d99347e5c18d@kernel.org>
 References: <20260420-airoha_qdma_init_rx_queue-fix-v2-0-d99347e5c18d@kernel.org>
 In-Reply-To: <20260420-airoha_qdma_init_rx_queue-fix-v2-0-d99347e5c18d@kernel.org>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -49,61 +49,57 @@ Cc: Simon Horman <horms@kernel.org>, linux-arm-kernel@lists.infradead.org,
  linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
 X-Mailer: b4 0.14.3
 
-If queue entry or DMA descriptor list allocation fails in
-airoha_qdma_init_rx_queue routine, airoha_qdma_cleanup() will trigger a
-NULL pointer dereference running netif_napi_del() for RX queue NAPIs
-since netif_napi_add() has never been executed to this particular RX NAPI.
-The issue is due to the early ndesc initialization in
-airoha_qdma_init_rx_queue() since airoha_qdma_cleanup() relies on ndesc
-value to check if the queue is properly initialized. Fix the issue moving
-ndesc initialization at end of airoha_qdma_init_tx routine.
-Move page_pool allocation after descriptor list allocation in order to
-avoid memory leaks if desc allocation fails.
+If airoha_qdma_init routine fails before airoha_qdma_tx_irq_init() runs
+successfully for all TX NAPIs, airoha_qdma_cleanup() will
+unconditionally runs netif_napi_del() on TX NAPIs, triggering a NULL
+pointer dereference. Fix the issue relying on q_tx_irq size value to
+check if the TX NAPIs is properly initialized in airoha_qdma_cleanup().
+Moreover, run netif_napi_add_tx() just if irq_q queue is properly
+allocated.
 
 Fixes: 23020f049327 ("net: airoha: Introduce ethernet support for EN7581 SoC")
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/ethernet/airoha/airoha_eth.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/airoha/airoha_eth.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-index e1ab15f1ee7d..fc79c456743c 100644
+index fc79c456743c..fd8c4f817d85 100644
 --- a/drivers/net/ethernet/airoha/airoha_eth.c
 +++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -745,14 +745,18 @@ static int airoha_qdma_init_rx_queue(struct airoha_queue *q,
+@@ -996,8 +996,6 @@ static int airoha_qdma_tx_irq_init(struct airoha_tx_irq_queue *irq_q,
+ 	struct airoha_eth *eth = qdma->eth;
  	dma_addr_t dma_addr;
  
- 	q->buf_size = PAGE_SIZE / 2;
--	q->ndesc = ndesc;
- 	q->qdma = qdma;
+-	netif_napi_add_tx(eth->napi_dev, &irq_q->napi,
+-			  airoha_qdma_tx_napi_poll);
+ 	irq_q->q = dmam_alloc_coherent(eth->dev, size * sizeof(u32),
+ 				       &dma_addr, GFP_KERNEL);
+ 	if (!irq_q->q)
+@@ -1007,6 +1005,9 @@ static int airoha_qdma_tx_irq_init(struct airoha_tx_irq_queue *irq_q,
+ 	irq_q->size = size;
+ 	irq_q->qdma = qdma;
  
--	q->entry = devm_kzalloc(eth->dev, q->ndesc * sizeof(*q->entry),
-+	q->entry = devm_kzalloc(eth->dev, ndesc * sizeof(*q->entry),
- 				GFP_KERNEL);
- 	if (!q->entry)
- 		return -ENOMEM;
- 
-+	q->desc = dmam_alloc_coherent(eth->dev, ndesc * sizeof(*q->desc),
-+				      &dma_addr, GFP_KERNEL);
-+	if (!q->desc)
-+		return -ENOMEM;
++	netif_napi_add_tx(eth->napi_dev, &irq_q->napi,
++			  airoha_qdma_tx_napi_poll);
 +
- 	q->page_pool = page_pool_create(&pp_params);
- 	if (IS_ERR(q->page_pool)) {
- 		int err = PTR_ERR(q->page_pool);
-@@ -761,11 +765,7 @@ static int airoha_qdma_init_rx_queue(struct airoha_queue *q,
- 		return err;
+ 	airoha_qdma_wr(qdma, REG_TX_IRQ_BASE(id), dma_addr);
+ 	airoha_qdma_rmw(qdma, REG_TX_IRQ_CFG(id), TX_IRQ_DEPTH_MASK,
+ 			FIELD_PREP(TX_IRQ_DEPTH_MASK, size));
+@@ -1398,8 +1399,12 @@ static void airoha_qdma_cleanup(struct airoha_qdma *qdma)
+ 		}
  	}
  
--	q->desc = dmam_alloc_coherent(eth->dev, q->ndesc * sizeof(*q->desc),
--				      &dma_addr, GFP_KERNEL);
--	if (!q->desc)
--		return -ENOMEM;
--
-+	q->ndesc = ndesc;
- 	netif_napi_add(eth->napi_dev, &q->napi, airoha_qdma_rx_napi_poll);
+-	for (i = 0; i < ARRAY_SIZE(qdma->q_tx_irq); i++)
++	for (i = 0; i < ARRAY_SIZE(qdma->q_tx_irq); i++) {
++		if (!qdma->q_tx_irq[i].size)
++			continue;
++
+ 		netif_napi_del(&qdma->q_tx_irq[i].napi);
++	}
  
- 	airoha_qdma_wr(qdma, REG_RX_RING_BASE(qid), dma_addr);
+ 	for (i = 0; i < ARRAY_SIZE(qdma->q_tx); i++) {
+ 		if (!qdma->q_tx[i].ndesc)
 
 -- 
 2.53.0
