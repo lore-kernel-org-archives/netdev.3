@@ -1,205 +1,177 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB43C3D16E8;
-	Mon, 20 Apr 2026 13:18:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE51E3A1A5F
+	for <netdev@vger.kernel.org>; Mon, 20 Apr 2026 13:21:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776691086; cv=none; b=U8W3u+6is5DZgj98Ze9rzqksZaJSGQ2Us8OXGKHIH7mhz9P8IlymlUTD4VAcmGHzBaEUNlVuZBQYhiQdbQ5Jdwhj2atQNbhgfLRzyrRfBaCNcvq8xXW6v5bhW16DKUn9J6obPkZNYHCYq7l53d+SdxtJhpt3J+CXSzdSY1Ivwew=
+	t=1776691262; cv=none; b=eYjAiJbY5ZJYXvIlkU3xkk5STTFD4efN2/eDtwmmL1okowvvsdwwDm/IesFtkgr2A48tGYbFfmMFaJgSzjxwrqzo9GqphFoOXchBq8vOAMXwLNPneE5llcT8lNG85amUQNZwbZj6HbYPby7QOHq5UKlh896dC6/HnKfpx4iJeiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776691086; c=relaxed/simple;
-	bh=E9cH7PuQ2b5BSKlFNo0n1LqxRO0ZWNDze2FOxEKZVDo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P6m62F8DbbiYUixObV/ftKNMTp8OKtr9XuN9DFhQP5F/55dHdgbYyKWOy8LXBp6AuewDp4M3wR3/QAIZMu/FlM+IhrQ8WZjeOOYQsVTbOHaAqfQhY2jrNJbmUBObC8YcVx1PxW3czUZEu0J50zvN20kDvhsMoTjA3f9a16zXya4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eLMiVTtQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776691262; c=relaxed/simple;
+	bh=oRz4R1uy7BvYcGv9q3SW450IGK8oQQE9HdAqw2IRtxk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Gb9bu577kXvToGxZUjktsDHNZiWWZ4rT1k5zAFCdqgMveT8ruJ8R9Sf5sNyFuurPYNpq6GeHewc880l2CPcbiae30S8lNXmpqRG9+20fK0MDq18YJpZSQQnUGVX21oyi14v8SiyaFCLfy1A2rtI47w+rODoU8UiPOFAe52RoiWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aVcmeEr5; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=fF4+aoQ9; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eLMiVTtQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FABDC2BCB6;
-	Mon, 20 Apr 2026 13:18:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776691086;
-	bh=E9cH7PuQ2b5BSKlFNo0n1LqxRO0ZWNDze2FOxEKZVDo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eLMiVTtQmJ11L/b0fSZshHTKo8HXHVMZTmA9zNQTsRay4MzrmFmyuMw8NzpnDl9ug
-	 2m2av9Q75PTrLSmsg5lXfpAqt6NIYKiF6QHPApJShfmaxXKkoZIge88HBkKDE5e/LZ
-	 eiYHpbDCZ0ZyluMeQfim0X4cYunTPyfGYpbOOaGxcfvNLbniFI/UZhoN7iObDC6ZoR
-	 CblrPPDPHhcGtDkxIpq42mYIhODDVvKP7oN3aNABwU7rkfOD+xp+MctPZ9wyX15HTo
-	 HXOakphyD582Bk3tx4rAuIqSnarmr15FyV6UjXr0iU9iOlO6CmFH9w7Tk/+Wy3su2r
-	 XP5p+kwP0VtFw==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Cen Zhang <zzzccc427@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	marcel@holtmann.org,
-	johan.hedberg@gmail.com,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	linux-bluetooth@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18] Bluetooth: hci_sync: annotate data-races around hdev->req_status
-Date: Mon, 20 Apr 2026 09:09:11 -0400
-Message-ID: <20260420131539.986432-85-sashal@kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aVcmeEr5";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="fF4+aoQ9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1776691259;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ZNw8VU2wHUCMW8yOpvKsEhvAEIS86OBEtLoYfE3AKWY=;
+	b=aVcmeEr5dkPGzG+90vVVOTyb8QbM508qn1ikfML0VvgARuznIsFTeGzDzbS0CKcRiHkkX0
+	FgGUF6156RWuzaY3GRrq1gjzsuTAMV4mjExauK0E7e2xJQKRXzupCj3QhQuDzUCQ7Rftwf
+	0nEhyE8x2RSraKmcSTQK+mtebL7kPh0=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-201-mnRA86KbM7al5TF_gvLRGA-1; Mon, 20 Apr 2026 09:20:58 -0400
+X-MC-Unique: mnRA86KbM7al5TF_gvLRGA-1
+X-Mimecast-MFC-AGG-ID: mnRA86KbM7al5TF_gvLRGA_1776691257
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-4411a1f9601so862847f8f.0
+        for <netdev@vger.kernel.org>; Mon, 20 Apr 2026 06:20:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1776691256; x=1777296056; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZNw8VU2wHUCMW8yOpvKsEhvAEIS86OBEtLoYfE3AKWY=;
+        b=fF4+aoQ9ORE+8pfPTrY9kG7rar5FYNikC4i9K7e0v9tPpt2C5FwkWfyCfPEEpAy/pv
+         CnqLM1jYEgwYtHevuEjNDYqSqAodtWChyk5m61n7ozsaDQHwZ+kDnFi7Ef8eJ8sgYdGg
+         z8M+U5LvhAsDLB7uPTBuwO+t1vLECvG33ptkZ0XDMXvIOEug+vGqCRf75K2pDkJQUHnZ
+         Fizh2cBJkn4MB/iuOw9ZZXvWmKYZzrknCW81lUBhtDusJTfH5bvvQCvincWxjPpmCJwp
+         FfjxKXmroSm1EPN9FnI4BOBNRlmKkX9PemriunFoGlTJ7F7LTHhQ5Z4aD+WeImQehbPa
+         d4Sw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776691256; x=1777296056;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZNw8VU2wHUCMW8yOpvKsEhvAEIS86OBEtLoYfE3AKWY=;
+        b=b/jBj01B7VnO6YIAi6sPlj2Ow2TQYDvO5o0XRs0CzdatR/cKU45BdGVcgN0VRtMrLx
+         rf6Iby45+PSfmh+zW1DGcUAt2EM+tcUPemmVBdxW1yhj7FGo0wYdvSNF5CaRYLO+4mSN
+         XSSkaP8jE3CRU4gyeHZTkj4GWBhOWNandKIts7L+2a8J8bt73JqjvxxEGcSpaJc9d0xW
+         z2kxWJT/JiVu13JjF2VdyBactB6GrvQD3YGBXBIiLAg19xVlGUAeFfjTjfujTBQZk4QO
+         92Qrrc+YRKZxQ9nHw7oYtx8hwZ4w0nH9bsHzPdN4/8WeK9yuXVHVVRo8+SiKqgcJ1CjK
+         nrzQ==
+X-Gm-Message-State: AOJu0YyLJG748TMC489luGNKDxR4wyKMKBxLfZW1VDujNzu8KURA8Xyw
+	aiX4nw5Q7aDv+7QRta1FNr5DHuMyjaGe8E+jvTMqQCxvPZdE0iQTH3wpmkFH4YFvfX6xbLoqXyH
+	xFEi2VWYcY4ChrMiczLfFTtZHtmVqFEVxCogocndfn1AzIMCV1eJVAraV7gqTtjeFySQcfPwfoB
+	cUJgz5f2Buv6HFSUAb2MGsVbbdjZo6KVvhyrJGV33w9w==
+X-Gm-Gg: AeBDieu269EFgSJAk6B8OlW8atdH5Nngl6Ximz/6MnaGYSl7Mx7amYM0xTl/JEg+v26
+	t5uFHVyO4WxzEObDfp3Hve5T0XIpPINo8LKgZFw7TatIj4nTpPdg+nZ7wy7rc9SeeM41lmnAwYu
+	UXKKlYZtYtmSmgvKkiQ9gtR0++/WfctdMwIwybr1tbX0PIGwGovCfhoGRmAG3nDkKFX7BFBNEI9
+	fxUGRwezt5zKNlO/STjBfTgcEO08sUHeWybmQOOrPXT5wrWEmeRDCI7UMKnkusRqS1bQkjei0cZ
+	QafM6uW1SKlbkPi7y6VQd7ETNow7Wd38s5hd7vIrqyiUUVmej44f/3vga2qcdX6pf/gxgGrVCYw
+	Coax3dYxFNDUViFsAj1n2d3QXv6EnSJCGEyRPSAx/dDTKQFMeA20qXTlUUzXvxxtQl4SyUr+6Cc
+	msQJrebkdS
+X-Received: by 2002:a5d:5e01:0:b0:43d:c95c:5e75 with SMTP id ffacd0b85a97d-43fe3dbec67mr19818847f8f.4.1776691255962;
+        Mon, 20 Apr 2026 06:20:55 -0700 (PDT)
+X-Received: by 2002:a5d:5e01:0:b0:43d:c95c:5e75 with SMTP id ffacd0b85a97d-43fe3dbec67mr19818744f8f.4.1776691255247;
+        Mon, 20 Apr 2026 06:20:55 -0700 (PDT)
+Received: from stex1.redhat.corp (host-87-16-204-83.retail.telecomitalia.it. [87.16.204.83])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43fe4cb1405sm28294807f8f.4.2026.04.20.06.20.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Apr 2026 06:20:53 -0700 (PDT)
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: netdev@vger.kernel.org
+Cc: Eric Dumazet <edumazet@google.com>,
+	Simon Horman <horms@kernel.org>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	kvm@vger.kernel.org,
+	Arseniy Krasnov <avkrasnov@salutedevices.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	virtualization@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	Yiming Qian <yimingqian591@gmail.com>
+Subject: [PATCH net] vsock/virtio: fix MSG_ZEROCOPY pinned-pages accounting
+Date: Mon, 20 Apr 2026 15:20:51 +0200
+Message-ID: <20260420132051.217589-1-sgarzare@redhat.com>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420131539.986432-1-sashal@kernel.org>
-References: <20260420131539.986432-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.18.23
 Content-Transfer-Encoding: 8bit
 
-From: Cen Zhang <zzzccc427@gmail.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-[ Upstream commit b6807cfc195ef99e1ac37b2e1e60df40295daa8c ]
+virtio_transport_init_zcopy_skb() uses iter->count as the size argument
+for msg_zerocopy_realloc(), which in turn passes it to
+mm_account_pinned_pages() for RLIMIT_MEMLOCK accounting. However, this
+function is called after virtio_transport_fill_skb() has already consumed
+the iterator via __zerocopy_sg_from_iter(), so on the last skb, iter->count
+will be 0, skipping the RLIMIT_MEMLOCK enforcement.
 
-__hci_cmd_sync_sk() sets hdev->req_status under hdev->req_lock:
+Pass pkt_len (the total bytes being sent) as an explicit parameter to
+virtio_transport_init_zcopy_skb() instead of reading the already-consumed
+iter->count.
 
-    hdev->req_status = HCI_REQ_PEND;
+This matches TCP and UDP, which both call msg_zerocopy_realloc() with
+the original message size.
 
-However, several other functions read or write hdev->req_status without
-holding any lock:
-
-  - hci_send_cmd_sync() reads req_status in hci_cmd_work (workqueue)
-  - hci_cmd_sync_complete() reads/writes from HCI event completion
-  - hci_cmd_sync_cancel() / hci_cmd_sync_cancel_sync() read/write
-  - hci_abort_conn() reads in connection abort path
-
-Since __hci_cmd_sync_sk() runs on hdev->req_workqueue while
-hci_send_cmd_sync() runs on hdev->workqueue, these are different
-workqueues that can execute concurrently on different CPUs. The plain
-C accesses constitute a data race.
-
-Add READ_ONCE()/WRITE_ONCE() annotations on all concurrent accesses
-to hdev->req_status to prevent potential compiler optimizations that
-could affect correctness (e.g., load fusing in the wait_event
-condition or store reordering).
-
-Signed-off-by: Cen Zhang <zzzccc427@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 581512a6dc93 ("vsock/virtio: MSG_ZEROCOPY flag support")
+Reported-by: Yiming Qian <yimingqian591@gmail.com>
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
 ---
+ net/vmw_vsock/virtio_transport_common.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-LLM Generated explanations, may be completely bogus:
-
-Error: Failed to generate final synthesis
-
- net/bluetooth/hci_conn.c |  2 +-
- net/bluetooth/hci_core.c |  2 +-
- net/bluetooth/hci_sync.c | 20 ++++++++++----------
- 3 files changed, 12 insertions(+), 12 deletions(-)
-
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index 24b71ec8897ff..71a24be2a6d67 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -2967,7 +2967,7 @@ int hci_abort_conn(struct hci_conn *conn, u8 reason)
- 	 * hci_connect_le serializes the connection attempts so only one
- 	 * connection can be in BT_CONNECT at time.
- 	 */
--	if (conn->state == BT_CONNECT && hdev->req_status == HCI_REQ_PEND) {
-+	if (conn->state == BT_CONNECT && READ_ONCE(hdev->req_status) == HCI_REQ_PEND) {
- 		switch (hci_skb_event(hdev->sent_cmd)) {
- 		case HCI_EV_CONN_COMPLETE:
- 		case HCI_EV_LE_CONN_COMPLETE:
-diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
-index 8ccec73dce45c..0f86b81b39730 100644
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -4125,7 +4125,7 @@ static int hci_send_cmd_sync(struct hci_dev *hdev, struct sk_buff *skb)
- 		kfree_skb(skb);
- 	}
- 
--	if (hdev->req_status == HCI_REQ_PEND &&
-+	if (READ_ONCE(hdev->req_status) == HCI_REQ_PEND &&
- 	    !hci_dev_test_and_set_flag(hdev, HCI_CMD_PENDING)) {
- 		kfree_skb(hdev->req_skb);
- 		hdev->req_skb = skb_clone(hdev->sent_cmd, GFP_KERNEL);
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index 9a7bd4a4b14c4..f498ab28f1aa0 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -25,11 +25,11 @@ static void hci_cmd_sync_complete(struct hci_dev *hdev, u8 result, u16 opcode,
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+index 0742091beae7..416d533f493d 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -73,6 +73,7 @@ static bool virtio_transport_can_zcopy(const struct virtio_transport *t_ops,
+ static int virtio_transport_init_zcopy_skb(struct vsock_sock *vsk,
+ 					   struct sk_buff *skb,
+ 					   struct msghdr *msg,
++					   size_t pkt_len,
+ 					   bool zerocopy)
  {
- 	bt_dev_dbg(hdev, "result 0x%2.2x", result);
+ 	struct ubuf_info *uarg;
+@@ -81,12 +82,10 @@ static int virtio_transport_init_zcopy_skb(struct vsock_sock *vsk,
+ 		uarg = msg->msg_ubuf;
+ 		net_zcopy_get(uarg);
+ 	} else {
+-		struct iov_iter *iter = &msg->msg_iter;
+ 		struct ubuf_info_msgzc *uarg_zc;
  
--	if (hdev->req_status != HCI_REQ_PEND)
-+	if (READ_ONCE(hdev->req_status) != HCI_REQ_PEND)
- 		return;
+ 		uarg = msg_zerocopy_realloc(sk_vsock(vsk),
+-					    iter->count,
+-					    NULL, false);
++					    pkt_len, NULL, false);
+ 		if (!uarg)
+ 			return -1;
  
- 	hdev->req_result = result;
--	hdev->req_status = HCI_REQ_DONE;
-+	WRITE_ONCE(hdev->req_status, HCI_REQ_DONE);
- 
- 	/* Free the request command so it is not used as response */
- 	kfree_skb(hdev->req_skb);
-@@ -167,20 +167,20 @@ struct sk_buff *__hci_cmd_sync_sk(struct hci_dev *hdev, u16 opcode, u32 plen,
- 
- 	hci_cmd_sync_add(&req, opcode, plen, param, event, sk);
- 
--	hdev->req_status = HCI_REQ_PEND;
-+	WRITE_ONCE(hdev->req_status, HCI_REQ_PEND);
- 
- 	err = hci_req_sync_run(&req);
- 	if (err < 0)
- 		return ERR_PTR(err);
- 
- 	err = wait_event_interruptible_timeout(hdev->req_wait_q,
--					       hdev->req_status != HCI_REQ_PEND,
-+					       READ_ONCE(hdev->req_status) != HCI_REQ_PEND,
- 					       timeout);
- 
- 	if (err == -ERESTARTSYS)
- 		return ERR_PTR(-EINTR);
- 
--	switch (hdev->req_status) {
-+	switch (READ_ONCE(hdev->req_status)) {
- 	case HCI_REQ_DONE:
- 		err = -bt_to_errno(hdev->req_result);
- 		break;
-@@ -194,7 +194,7 @@ struct sk_buff *__hci_cmd_sync_sk(struct hci_dev *hdev, u16 opcode, u32 plen,
- 		break;
- 	}
- 
--	hdev->req_status = 0;
-+	WRITE_ONCE(hdev->req_status, 0);
- 	hdev->req_result = 0;
- 	skb = hdev->req_rsp;
- 	hdev->req_rsp = NULL;
-@@ -665,9 +665,9 @@ void hci_cmd_sync_cancel(struct hci_dev *hdev, int err)
- {
- 	bt_dev_dbg(hdev, "err 0x%2.2x", err);
- 
--	if (hdev->req_status == HCI_REQ_PEND) {
-+	if (READ_ONCE(hdev->req_status) == HCI_REQ_PEND) {
- 		hdev->req_result = err;
--		hdev->req_status = HCI_REQ_CANCELED;
-+		WRITE_ONCE(hdev->req_status, HCI_REQ_CANCELED);
- 
- 		queue_work(hdev->workqueue, &hdev->cmd_sync_cancel_work);
- 	}
-@@ -683,12 +683,12 @@ void hci_cmd_sync_cancel_sync(struct hci_dev *hdev, int err)
- {
- 	bt_dev_dbg(hdev, "err 0x%2.2x", err);
- 
--	if (hdev->req_status == HCI_REQ_PEND) {
-+	if (READ_ONCE(hdev->req_status) == HCI_REQ_PEND) {
- 		/* req_result is __u32 so error must be positive to be properly
- 		 * propagated.
+@@ -398,11 +397,17 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+ 		 * each iteration. If this is last skb for this buffer
+ 		 * and MSG_ZEROCOPY mode is in use - we must allocate
+ 		 * completion for the current syscall.
++		 *
++		 * Pass pkt_len because msg iter is already consumed
++		 * by virtio_transport_fill_skb(), so iter->count
++		 * can not be used for RLIMIT_MEMLOCK pinned-pages
++		 * accounting done by msg_zerocopy_realloc().
  		 */
- 		hdev->req_result = err < 0 ? -err : err;
--		hdev->req_status = HCI_REQ_CANCELED;
-+		WRITE_ONCE(hdev->req_status, HCI_REQ_CANCELED);
- 
- 		wake_up_interruptible(&hdev->req_wait_q);
- 	}
+ 		if (info->msg && info->msg->msg_flags & MSG_ZEROCOPY &&
+ 		    skb_len == rest_len && info->op == VIRTIO_VSOCK_OP_RW) {
+ 			if (virtio_transport_init_zcopy_skb(vsk, skb,
+ 							    info->msg,
++							    pkt_len,
+ 							    can_zcopy)) {
+ 				kfree_skb(skb);
+ 				ret = -ENOMEM;
 -- 
 2.53.0
 
