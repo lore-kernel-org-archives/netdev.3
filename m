@@ -1,35 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4ED3859F9
-	for <netdev@vger.kernel.org>; Mon, 20 Apr 2026 08:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D594C386C1B
+	for <netdev@vger.kernel.org>; Mon, 20 Apr 2026 08:08:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776672486; cv=none; b=EIODYSoED3TiKC4J9Or7zw531ULXNqO9d2L0ChYcBmUPX2B3kRThRB0UKgc+eGt60RsyNqOuMk2l6vzGnKrd+gwYQY2vt4tFOf2GzXg6FKXf/Wur2EvFUOspWeGwiLnxt7dWS4DuT1WClcg/mog6eTwUnc43BpQLnQrcrwxOn3g=
+	t=1776672488; cv=none; b=WRNGmQwSw81Oxfx5Bd8DyWQ+C0U67bK6pSSKwiFNMX1yQFiurJ66Qmq7zYPSg0KowIRqzMd3XqFSn619SabLpitlKifIGD5DU6/9+5oiXg/nm0OVelzQhsNi7OzLEcRrc06bqY7O8FTEJi/3cazgdQzQNv+dayz4N23FVbEGn0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776672486; c=relaxed/simple;
-	bh=0MlFO6P0m8/NK/SYcNlmOcWF1m2ZQhsuX9z7XL/3XC0=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=e8Pedi4hbeUMA/ka4Un4lg9ICN5NUHqNLNj+zNndR04G4DZy700JXjaM4+QZuryR17QJiG9xaNiGK2U4I6utMRMe6XEeASLdrN/pfp3uKJ4PmVsRpHFRdI/c84xgNegHBZHf3degwnQnUJoH1bYSBAru8riy9+Bg2m5v8ma9BSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZlMNJzI7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776672488; c=relaxed/simple;
+	bh=iJfYHjbtQcWXulEhPUnNrNVT7wdpLyZo8wc0yxlsesk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=DG53oWIrZcOq2WmP5J3vWNkIkjsAbpieLad0Qf47ANfisoR5BgNXXU93u52K65iyD9lmtH21v3F9nsq5VI/kYfChaX80g27P+7BQVf/d69RCFyt9O+TzIh2kBnLkAKrIpe/RgZ/yB0EWLs7lO0pb+ttEODYEGUWDNx6L23tCLOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e+9urV6K; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZlMNJzI7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EC22C19425;
-	Mon, 20 Apr 2026 08:08:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e+9urV6K"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20CADC2BCB3;
+	Mon, 20 Apr 2026 08:08:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776672485;
-	bh=0MlFO6P0m8/NK/SYcNlmOcWF1m2ZQhsuX9z7XL/3XC0=;
-	h=From:Subject:Date:To:Cc:From;
-	b=ZlMNJzI7t0Y0qGiYo1CDXuQmn4Z9R5ZnKzV1cF3a8WLcnF6jN9IUeymCJEf26bo9f
-	 54Zl2NwTEWKJhqVq2ZITZPoTi2M8Ji84oEjt3MXZjPKtUH0FYA1ANzz4dNa7JDYsBC
-	 hpPCbiaTotKQH82YNRxEn+6kc3gtXfqkpsAb+v1ssf2GihHIHAlDmTftjwRVpLVvMB
-	 Mr35MGZV39COFzv57XODIZkzVeWj+EIaMQEVCoonpkGJueu7ORqjbguxmyFIAM0WW4
-	 xZEk/U1A3gznpIApYsWDaZ6Ew0gduJBWnyJUer+dG8tnLbNuL728dCGaVu+zvT6oa3
-	 t8ZXtjaSBDLUw==
+	s=k20201202; t=1776672488;
+	bh=iJfYHjbtQcWXulEhPUnNrNVT7wdpLyZo8wc0yxlsesk=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=e+9urV6K58ahpj9nD4gByGJBfQ2yw6edYmFol3cpas1UUf/+DDiIyXWyXqxNpydt1
+	 yuJz8wOQZfrtejlLFgX2wClYdI9997yMSMZRu7QaAEhH7ZHub6Tim87qKTnOX5CD1o
+	 S6iQNIcGHpyH0eK30Dqjw+jUJMjobksb8pbGOpf0hup8Li35T0OMG9nlZlmR5x4OXL
+	 HkgfKNQC2nfAWuNVL45bmC3hZwJ7AAqw5pPyxDG/cEFZH11ZI+gXRJHFforF92dKOw
+	 9STnhtATXXqRFVg9xJmS11ExPXqKHvWazwF5qIuizQP9ITG++4zLaw4HRxDd6MfsGF
+	 Tsl8BjwBwkUTQ==
 From: Lorenzo Bianconi <lorenzo@kernel.org>
-Subject: [PATCH net v2 0/2] net: airoha: Fix NULL pointer derefrences in
- airoha_qdma_cleanup()
-Date: Mon, 20 Apr 2026 10:07:46 +0200
-Message-Id: <20260420-airoha_qdma_init_rx_queue-fix-v2-0-d99347e5c18d@kernel.org>
+Date: Mon, 20 Apr 2026 10:07:47 +0200
+Subject: [PATCH net v2 1/2] net: airoha: Move ndesc initialization at end
+ of airoha_qdma_init_rx_queue()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -38,11 +38,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/42NWw6CMBBFt0Lm2xpKeIhf7sOQZrADTNRWpkAwh
- L3bsAI/z7nJuRsEEqYA12QDoYUDexchOyXwGND1pNhGhizNyjTXlUIWP6AZ7RsNO56MrGacaSb
- V8arauu3QYqHLSkNsfISiPvp3cDRBE+XAYfLyPT4XfUx/5hetUmXbusOC8vJCxe1J4uh19tJDs
- +/7D/h0LCLQAAAA
-X-Change-ID: 20260417-airoha_qdma_init_rx_queue-fix-b9bfada51671
+Message-Id: <20260420-airoha_qdma_init_rx_queue-fix-v2-1-d99347e5c18d@kernel.org>
+References: <20260420-airoha_qdma_init_rx_queue-fix-v2-0-d99347e5c18d@kernel.org>
+In-Reply-To: <20260420-airoha_qdma_init_rx_queue-fix-v2-0-d99347e5c18d@kernel.org>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
@@ -51,29 +49,62 @@ Cc: Simon Horman <horms@kernel.org>, linux-arm-kernel@lists.infradead.org,
  linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
 X-Mailer: b4 0.14.3
 
-Fix two possible NULL pointer derefrences in airoha_qdma_cleanup routine
-if airoha_qdma_init() fails.
+If queue entry or DMA descriptor list allocation fails in
+airoha_qdma_init_rx_queue routine, airoha_qdma_cleanup() will trigger a
+NULL pointer dereference running netif_napi_del() for RX queue NAPIs
+since netif_napi_add() has never been executed to this particular RX NAPI.
+The issue is due to the early ndesc initialization in
+airoha_qdma_init_rx_queue() since airoha_qdma_cleanup() relies on ndesc
+value to check if the queue is properly initialized. Fix the issue moving
+ndesc initialization at end of airoha_qdma_init_tx routine.
+Move page_pool allocation after descriptor list allocation in order to
+avoid memory leaks if desc allocation fails.
 
+Fixes: 23020f049327 ("net: airoha: Introduce ethernet support for EN7581 SoC")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
-Changes in v2:
-- Move page_pool allocation after desc list allocation in
-  airoha_qdma_init_rx_queue()
-- Move netif_napi_add_tx() after irq desc queue allocation in
-  airoha_qdma_tx_irq_init()
-- Link to v1: https://lore.kernel.org/r/20260417-airoha_qdma_init_rx_queue-fix-v1-0-db9fa5e468e5@kernel.org
+ drivers/net/ethernet/airoha/airoha_eth.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
----
-Lorenzo Bianconi (2):
-      net: airoha: Move ndesc initialization at end of airoha_qdma_init_rx_queue()
-      net: airoha: Add size check for TX NAPIs in airoha_qdma_cleanup()
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+index e1ab15f1ee7d..fc79c456743c 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.c
++++ b/drivers/net/ethernet/airoha/airoha_eth.c
+@@ -745,14 +745,18 @@ static int airoha_qdma_init_rx_queue(struct airoha_queue *q,
+ 	dma_addr_t dma_addr;
+ 
+ 	q->buf_size = PAGE_SIZE / 2;
+-	q->ndesc = ndesc;
+ 	q->qdma = qdma;
+ 
+-	q->entry = devm_kzalloc(eth->dev, q->ndesc * sizeof(*q->entry),
++	q->entry = devm_kzalloc(eth->dev, ndesc * sizeof(*q->entry),
+ 				GFP_KERNEL);
+ 	if (!q->entry)
+ 		return -ENOMEM;
+ 
++	q->desc = dmam_alloc_coherent(eth->dev, ndesc * sizeof(*q->desc),
++				      &dma_addr, GFP_KERNEL);
++	if (!q->desc)
++		return -ENOMEM;
++
+ 	q->page_pool = page_pool_create(&pp_params);
+ 	if (IS_ERR(q->page_pool)) {
+ 		int err = PTR_ERR(q->page_pool);
+@@ -761,11 +765,7 @@ static int airoha_qdma_init_rx_queue(struct airoha_queue *q,
+ 		return err;
+ 	}
+ 
+-	q->desc = dmam_alloc_coherent(eth->dev, q->ndesc * sizeof(*q->desc),
+-				      &dma_addr, GFP_KERNEL);
+-	if (!q->desc)
+-		return -ENOMEM;
+-
++	q->ndesc = ndesc;
+ 	netif_napi_add(eth->napi_dev, &q->napi, airoha_qdma_rx_napi_poll);
+ 
+ 	airoha_qdma_wr(qdma, REG_RX_RING_BASE(qid), dma_addr);
 
- drivers/net/ethernet/airoha/airoha_eth.c | 25 +++++++++++++++----------
- 1 file changed, 15 insertions(+), 10 deletions(-)
----
-base-commit: 0cf004ffb61cd32d140531c3a84afe975f9fc7ea
-change-id: 20260417-airoha_qdma_init_rx_queue-fix-b9bfada51671
-
-Best regards,
 -- 
-Lorenzo Bianconi <lorenzo@kernel.org>
+2.53.0
 
