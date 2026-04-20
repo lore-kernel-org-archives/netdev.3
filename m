@@ -1,121 +1,106 @@
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 070A93D16E4
-	for <netdev@vger.kernel.org>; Mon, 20 Apr 2026 13:39:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.181
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776692347; cv=pass; b=OjMwy9MTbQ2MhqHGzTgCwyEKRwFpgEg28sBU1l+g7SbRGFqOHAcPMsZyqQ7qYyQNYEUEHcDP6JAtbo92krXP5jtvsmKq5wXgXWz2uECSKdSJE6cbSYRSZ2o12/rvJd+ca2T7J3HDeXLQ+/QWOx6N+CPxnOlN44MglmXGEe/WUo8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776692347; c=relaxed/simple;
-	bh=/K9UOf5uqT2sQnqLd2oKoclnHJwSG4aPabyxOCos+4w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HT2AJRlX9TMJ0KQOU6HuadmvM4pRPaHPxvYEalAIsyPH0iEcX2NufUPT9+kE+8mbz9szAJ4w8fOdCsIulOQhRevgOhVgESYiC3iqiGNvqXCYdP0MKLGjB/yaqd2bu8zy+/VpoNEC1Lbe+jfNr31gWSD3nlE9GbPIDtrsRCwKrks=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M6gO40bB; arc=pass smtp.client-ip=209.85.208.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF06D3D75AB;
+	Mon, 20 Apr 2026 13:39:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776692373; cv=none; b=ZQYAfJMORLJyEyS0AueC4mnpvj62zP2wGUq5owxnyyvOMmWG4SVlwJm0yQ1cnCj12m1T+ghkoy+y0nERUjbVzeAfWl1jrh0WVzt8ThlIKbnG2+ocJ39j55dn96mGcHk9T2JfK8EEHLU26T/kKZ1ol/TeDd/81/3JAXbxTWqDcZ0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776692373; c=relaxed/simple;
+	bh=QV3/kRtnuqUUDprxbWR5pkNW+yWztIYB+VtpAMRuffE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WcBHUi4WDYg9qBm59Lt7CmWJGPlJvGDa4jFgulCdClI7IkMNhoN+ACoIdR+hDvCnZM5oLzaBR1aS0ebo+j2Hra4ZzsHgoO0Ieno5Xz/irJPOdUY6QtBzvvhtdPfdyAWpcwJlcrE+F9hI/q7izO2nvA7KvIUUeO/evFn8UmriGVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rUQr//4x; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M6gO40bB"
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-38e7d984096so32529251fa.2
-        for <netdev@vger.kernel.org>; Mon, 20 Apr 2026 06:39:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776692344; cv=none;
-        d=google.com; s=arc-20240605;
-        b=GE7+mtEtiHb7svVY1soRjO0IhIlCCJvh5nLVKeP5TNgdNdf0NxwNcikd8NeZr50lyD
-         /nQbiL7FitvlHpf+C0FbF/Z3QwR+nldFsNnMNBFDnIBvIMasPfJ+5NCxoUxsN7yck8Gd
-         sYYVVivvHlPh4LxhrmYRoo4lzKG1TVVn3JJpHwTaNWaMS1Lq95SbbEDUUXRb8Z25FCQR
-         9nXL8HPGV0H6696tIjTvtnB4MDW4E/br2HdARkJ9mHOLaiDWmCd+PFY3sXGw04glyYL3
-         CW17F3QGYJ+5L9FKOc/J7ej85NVcDgQQJc3ebb/6QZz7u6ajXghuyZzsb4mgo/O8wQyj
-         Fk0g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=G8DASL1EiWTXednHDBiz8AtRSsNePlCWQ5TEGU5yhf0=;
-        fh=dl/VDu+1D+6DrwWgRvv1G9ljrItkkNi6HVrZRrXak/w=;
-        b=Xa8TLFmmV+INQKuKmwnKxkV6lkTTod5qk8VzdhPy3sJ7BEobYpfcporflpszzPeYJa
-         pasTu5UjSfoUpNqag6XAhTMelAo3dWqIdHV+qXr82U4nAKbTauxxH1RVBEgMCp84vAPF
-         E1AmXZ87vhiFAM5jvDd/YITXS4PcKu96PvmKbiChUYrw+8SFEeZpjRO9UmOmVoG/+0BB
-         cJ337LlZv0G4eyfIHkgiYASEgKU4rBnMGCRdbXmwjv/MYuK5KRYV8E9/4k4xBcHyMIxp
-         v1pZz42eUso6044bBJZehbel/EVP87vNyvB2qkJH1NKqLzTh3Y288EY01UpWK9EGwd+N
-         /LxA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776692344; x=1777297144; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=G8DASL1EiWTXednHDBiz8AtRSsNePlCWQ5TEGU5yhf0=;
-        b=M6gO40bB9Yu14z9hBzVzmDeUAxkuDY8H3OhMvcv9NRGIWhphybdIno5XKNstnMMVa8
-         EHCGGoSsU0yyU+2PXbYGBKnG3GOq3x0D2As/UVmAgFFgnNqlBOXV3Iwn52XrwNgqhqSI
-         SZWuSA9Qts5+TWU68iEjV0UeYBhoawpbiEeBgRKOEt7HUpJrBhIbBXyiP8gShJZb8MQu
-         IN1TR0QVZux3Lpu5QgmECV+jun7/eW+V4fxQigKZp2kY8yWRDEjK/l+0rIoomsMrTMCa
-         hdSTqI25HTs2MXAHzldpoYwy6kKEbqXyMlhVXsC4G6XhzaPZvEvvXFII3gcelDfzJhA8
-         zmJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776692344; x=1777297144;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=G8DASL1EiWTXednHDBiz8AtRSsNePlCWQ5TEGU5yhf0=;
-        b=N8fgRJjp4XTvWyD2qA42YYrY5INJpv3AptCxGnSVXnIJvm5A8u/lDWBIx2R+N+EVv2
-         PpeBPYurA94APevbdORbenp1VwTmKVLl8HRCRvgW5V0gvbh5tbdUnBg7gX6/n4oWizEg
-         WBnRVaeUlp6j0RGZ0fiEVWElsj1CwE7kSJ/rVeJo5t6zI7v60GalhABukZYvBlV5dxSG
-         9QuZw72DQrONCeymvQr31zdLcZTOM/WhqqOyIIeaeoUkHOywC+Y6AqfmXCGBGNBd2B7x
-         tnes7+kPTSDPbc2s3XYmmlbHppe0SjlOunFCPI+Z48q2gR1QSes+SWZD0u8EFtlUQzRz
-         4gag==
-X-Forwarded-Encrypted: i=1; AFNElJ/RJ6Z21YqgYWn5A2TRR3yLySbBiwQdfL+C9hqjUv8N6bLKKfoejJjwVcm11fy2i7woLfu2xV8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyOBTeMhosqLbduzDsBBOhPfbKg0e+x2W3L4tY+mI8PepM4bsT1
-	OVNd7iPaY3+O64BGlJvxBdsgUO+iuhZnR5GNG8hTZPvd0hXnaAQY2/9E0NDVgur4r2tkc9n/zWi
-	QZ9V2Y1ho08+W2kahMKTTyQC68ze+r88=
-X-Gm-Gg: AeBDietPO2ifbmJjnfZKQEg/oFYSj8VENpQ51HKmZWswJCAy+h9DGoC4jNK5JwR+/35
-	IWdKv9q7NXE6XDY5VPDnrcngWtCKV9MlpZV8Hs47AOaeRJkG38NtIoHfVgqvh+E2ohjgjQpRHMU
-	3MYhso8bYs3P0FxpiK95wMNGWZl2ZTbjfrPPL0Jxy490ZzJ6A6CpORSC25PwcoYPx0g6TORKtcc
-	f3PUXbl2SYnQ2b5g7jpiZktBDxN2547Q6uRfM7GonojeaBrXN+L67TEj/gqPCAogJz3UqYKvwea
-	5pYBVctqgyXbd6TZ
-X-Received: by 2002:a05:651c:4208:b0:38e:7ed2:b63 with SMTP id
- 38308e7fff4ca-38ec7acfd31mr36038541fa.22.1776692343742; Mon, 20 Apr 2026
- 06:39:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rUQr//4x"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E39AC19425;
+	Mon, 20 Apr 2026 13:39:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776692372;
+	bh=QV3/kRtnuqUUDprxbWR5pkNW+yWztIYB+VtpAMRuffE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rUQr//4xkxx3D3yKvPfqTimlbnn7kNSAHnCzfaA+MVn7i9x6JhtUGCIjUw+HuWcmt
+	 h6aAvjvD0mPG/N0e+PzQhtGppPOt1KmckMqNEY0BeyGZlcRD+G0sR54cBx8bWgFHTB
+	 Gawo27UIsUnhcFc1F0hDdyNHTzAbvEMI2wHTasyUALFhkJvHOEZk5pMi54TRLGu80O
+	 jTZEk0Fh5YgOdFwJZO+kBBXlMwD8aAhY7jog5Um60tHiHROvLj20imQ6ihSEfBZmP6
+	 ahYRbbtDPMuwsPmYCnZFdDf/ne3NQZECgijAQQPgP4qEBrR8zBU/9G/uebmMcmQ+HA
+	 bvtEWK4t6yU1Q==
+Date: Mon, 20 Apr 2026 08:39:30 -0500
+From: Rob Herring <robh@kernel.org>
+To: Minda Chen <minda.chen@starfivetech.com>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Emil Renner Berthing <emil.renner.berthing@canonical.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	devicetree@vger.kernel.org
+Subject: Re: [net-next v2 3/5] dt-bindings: net: starfive,jh7110-dwmac: Add
+ JHB100 sgmii rx clk
+Message-ID: <20260420133930.GA2322456-robh@kernel.org>
+References: <20260417024523.107786-1-minda.chen@starfivetech.com>
+ <20260417024523.107786-4-minda.chen@starfivetech.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <0f9e9d4e-8083-4297-91d3-10d0f614c87c@redhat.com>
- <20260408125333.38489-1-xiaoguai0992@gmail.com> <20260412135743.GK469338@kernel.org>
- <255224dc-0a55-4a0c-95f3-b84d4c6b3897@redhat.com> <20260414112951.GD469338@kernel.org>
- <CAKvcANPEa91paujTQjpW2hZhpXEhwfOjjy6CsN=OJ32iXYXdTA@mail.gmail.com> <85ec14af-bdd5-45ea-8c06-ebd769499bd1@app.fastmail.com>
-In-Reply-To: <85ec14af-bdd5-45ea-8c06-ebd769499bd1@app.fastmail.com>
-From: Kangzheng Gu <xiaoguai0992@gmail.com>
-Date: Mon, 20 Apr 2026 21:38:50 +0800
-X-Gm-Features: AQROBzBrhMAvRHsvT_Uh3_bh_6PBMT7vbMlO9R2BKmmLDZimLRkGEVK80HjiNtE
-Message-ID: <CAKvcANNyS=itNKW6LBAHb+iOV7v7fNt=rsbuLug8_cgfS85Eng@mail.gmail.com>
-Subject: Re: [PATCH v5] net: caif: fix stack out-of-bounds write in cfctrl_link_setup()
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Simon Horman <horms@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Thorsten Blum <thorsten.blum@linux.dev>, sjur.brandeland@stericsson.com, 
-	Netdev <netdev@vger.kernel.org>, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260417024523.107786-4-minda.chen@starfivetech.com>
 
-Ok, I would like to wait. I am just researching for security.
+On Fri, Apr 17, 2026 at 10:45:21AM +0800, Minda Chen wrote:
+> JHB100 SGMII interface tx/rx mac clock is split and require to
+> set clock rate in 10M/100M/1000M speed. So dts need to add a
+> new rx clock in code, dts and dt binding doc.
+> 
+> Signed-off-by: Minda Chen <minda.chen@starfivetech.com>
+> ---
+>  .../bindings/net/starfive,jh7110-dwmac.yaml   | 42 ++++++++++++++++---
+>  1 file changed, 36 insertions(+), 6 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/net/starfive,jh7110-dwmac.yaml b/Documentation/devicetree/bindings/net/starfive,jh7110-dwmac.yaml
+> index edc246a71ce3..3802cdbf1848 100644
+> --- a/Documentation/devicetree/bindings/net/starfive,jh7110-dwmac.yaml
+> +++ b/Documentation/devicetree/bindings/net/starfive,jh7110-dwmac.yaml
+> @@ -39,20 +39,26 @@ properties:
+>      maxItems: 1
+>  
+>    clocks:
+> +    minItems: 5
+>      items:
+>        - description: GMAC main clock
+>        - description: GMAC AHB clock
+>        - description: PTP clock
+>        - description: TX clock
+>        - description: GTX clock
+> +      - description: SGMII RX clock
+>  
+>    clock-names:
+> -    items:
+> -      - const: stmmaceth
+> -      - const: pclk
+> -      - const: ptp_ref
+> -      - const: tx
+> -      - const: gtx
+> +    minItems: 5
+> +    maxItems: 6
+> +    contains:
+> +      enum:
+> +       - stmmaceth
+> +       - pclk
+> +       - ptp_ref
+> +       - tx
+> +       - gtx
+> +       - sgmii_rx
 
-Arnd Bergmann <arnd@arndb.de> =E4=BA=8E2026=E5=B9=B44=E6=9C=8820=E6=97=A5=
-=E5=91=A8=E4=B8=80 16:14=E5=86=99=E9=81=93=EF=BC=9A
->
-> On Mon, Apr 20, 2026, at 10:09, Kangzheng Gu wrote:
-> > Thanks for all of your advice, I am preparing a new version of patch no=
-w.
->
-> If you are actively using CAIF, please chime in at
->
-> https://lore.kernel.org/all/20260416182829.1440262-1-kuba@kernel.org/
->
-> If you are not actually using CAIF, maybe wait a little bit before
-> spending more time on it because the patches may no longer
-> apply if it gets removed due to lack of users.
->
->      Arnd
+No, this allows any of the above strings plus any other random strings.
+
+Rob
