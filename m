@@ -1,123 +1,175 @@
-Received: from mail-ot1-f65.google.com (mail-ot1-f65.google.com [209.85.210.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5602B3C2768
-	for <netdev@vger.kernel.org>; Mon, 20 Apr 2026 19:34:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.65
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776713678; cv=none; b=FFPaPIOawy2nv3Q8oQMGv8G22mN71kIck3p7ZgEsU2ZHXZw2I9AWnBFysl5glIwU3BPEE3fe7wW0QOzAwCKrsAGyu1odxq/8Na+wDzqGDK9zr59avbvyGgcpm2GHWiu5ekKli8coFW7Ig5+qZ3POb9iWNbRfLSuOjkhqLv1Xdik=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776713678; c=relaxed/simple;
-	bh=JSsKbyP1KNpH3VgRE1/5fzA0f6PCalqc1PPHjq93CEE=;
-	h=Date:Message-ID:From:To:Cc:In-Reply-To:Subject:Content-Type; b=M9gZx9MUrs1Kri6CVRs0ezQKZsrVfEWuyPqmD73HjY/Bh7I0RcytsFrqGkyWnC4WBdIwGf6OE36WMjQY1EghECGNFouA7mAFgby9+BxRtantM9KcZX6arqdvLDY+9zFCIlEppolsr8QePxJD6fUoZoNRA4Bmvty5FfoZtOTSRXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VKoNcu/4; arc=none smtp.client-ip=209.85.210.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1053F279798;
+	Mon, 20 Apr 2026 19:41:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776714102; cv=fail; b=gY36UvXer2xGv0yuhIctgmfb3anyXVzVbA5I2PS5Pol8700FwCvv6F5Fh1bl6Ua9rlAR5vlWbIO17H3SoJ498dzX5REnfrO6h21kZEkb8KMuwrbcihIsCx+qbdFM5EpUKMX3aSCn75Cu4Pg4mS8VO4rSebNGKCVU4WKdXNgm364=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776714102; c=relaxed/simple;
+	bh=6nvNkvieYrZr8wgfnH9xzJVHjaJi0fcwXamsdzvETPk=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=dboUCnzvBQNGwKXu9Ecd8ylaQ0UHuZnEdSi22cdWjn6pytivhotw52caQAVMurdTJQpK9f6LG+fsaIA8zlvPFRIAKjDrMMhRnwcFDQdaMxFFFpmEvTJAgi5fras+xQZsuLwFI+iUPRGrCv0Zb6bKZVf5zQWPrMzVBRJ3xP8xWwQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ktQ3apqc; arc=fail smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VKoNcu/4"
-Received: by mail-ot1-f65.google.com with SMTP id 46e09a7af769-7dcd17e19b6so369942a34.1
-        for <netdev@vger.kernel.org>; Mon, 20 Apr 2026 12:34:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776713674; x=1777318474; darn=vger.kernel.org;
-        h=subject:in-reply-to:cc:to:from:message-id:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=/N6MVvai13qDwjLjyRX2yoaXM7uyr51YiE4c9y/nXV0=;
-        b=VKoNcu/4jsmvBtOmsntBF9EbRwgMMuhysTUj+lIB7jcHEbbiWGsWIXwt+lMEbHKXoq
-         +RD/Ah6RPZi+9WBueZW15HclScJXfEw6pIvxMGE3qZ1mNvQ0SRlbJBEyHXwi82glzeas
-         N3N0wzd/FC4k6INEAG1Tju91lGJEOHx23LnOn9vcgksxfmz5T0lOoA5gAuyW1HG3lF89
-         8GGmdYAjY/4u/bKsJ9HjqWbSE8i11rdN5XM0ZEc1fXuTMAZPFnfTzDTCPfNJoZbTKSK4
-         56YeHqreEFj4a9Q8Aps8OrlanfvKWKNGizj42lGtcxK7DRCXway//dO2DyebsqB9h22A
-         iwag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776713674; x=1777318474;
-        h=subject:in-reply-to:cc:to:from:message-id:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/N6MVvai13qDwjLjyRX2yoaXM7uyr51YiE4c9y/nXV0=;
-        b=FmdjVNSv5oRHaN1m4WycTxoV7jlU75rVWMqs/SKRWtE71+4Azf+Nx9ZpeyigkYkpl3
-         8qHjnq1f9bTtwfxnpAklwDx6fOmWEM3m46ug4PzhKXnJORfJbGd7jg0JsOTKTit9cOLA
-         9lQAJDNUjD7ZlEAdn2WlolyI61qwTsx42RQQNx+j+ExH2efaWEpasIDOOpYlUwwLfrx7
-         1yKg6ccZGhVx49hPh+AhTdJJB3f4UyY/ooRr7YHH5bJxh9ybUhZdbzin2JDk1Xw9bbEs
-         9JGZih7wl3XQ1N9U3nk0jAq3vWakX4s7KsUCR3uK2ol/i7fBoueb17XUynP02fGRNRY+
-         BWBw==
-X-Forwarded-Encrypted: i=1; AFNElJ89lF0zYeuVRBWlOn7C7EgQnyDBUkNciHEX4ru0zaMjT12Mmz9d1vm1e7LO/4tPAoe8hauK+XU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwnVlWVX33tUSPyhuNKceBT+c5iTZep7xfrTpn0noIGsir3mBCO
-	Qo4kDpY4r4+VNEeUfxavQzwbOI44Uqo6SFPwXOi44x1vYraDFks5aZN8U0NJ0g6k
-X-Gm-Gg: AeBDietZ7gv2HidTWfiuYLTSji91Ktvt/v0iCBQRzZycb91cb4GjsbZjf7R4DmlDqzZ
-	KzsxYIaNHtKK41d46NuVj4o3Tx07lWpcShtqV8vJKNqcVRZRp3oKvGhc8z0imwusu3xrHoW7fIX
-	rXvQAzMlIaKiur32Ra+SGEkeMqxIH3vBXN4UAb341Th936ENafu01pOJEiTFBem1xRwlrQyEpUe
-	R/PlA/oQ3s9VWHRgzkJ1KJn7yXV6z4ls8dXB2Yn7iav+ns/CXTNqdL8GZrxszcsx5qHtPFwfejR
-	SOV/AFKVwSRLbhSSDZoFQ6T9XZYI9Frp1QmCeofTz2CMf22ZWgIqpaPOTtpy2o3LLXMcYjAgjWD
-	EzSbNrXQnJMW3NGd87hUa2o64qbX6I/caTU2DpykiMFOgLLzhGFd5yW9tjcgwSnOBa3yhswQwSH
-	Mdn8ngmgVMrN7oOBkVyLTENsJLQlW4
-X-Received: by 2002:a05:6830:6af8:b0:7d7:da02:1aa4 with SMTP id 46e09a7af769-7dc94fac1d6mr8621768a34.1.1776713674272;
-        Mon, 20 Apr 2026 12:34:34 -0700 (PDT)
-Received: from localhost ([2a03:2880:12ff:71::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7dc97518b58sm9283895a34.7.2026.04.20.12.34.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Apr 2026 12:34:33 -0700 (PDT)
-Date: Mon, 20 Apr 2026 12:34:32 -0700
-Message-ID: <eef5d62d475b0aeb93f6f84585f36972.sdf.kernel@gmail.com>
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
-To: Jason Xing <kerneljasonxing@gmail.com>
-Cc: bpf@vger.kernel.org, netdev@vger.kernel.org,
- Jason Xing <kernelxing@tencent.com>
-In-Reply-To: <20260420082805.14844-4-kerneljasonxing@gmail.com>
-Subject: Re: [PATCH net v2 3/8] xsk: fix use-after-free of xs->skb in
- xsk_build_skb() free_err path
-Content-Type: text/plain
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ktQ3apqc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776714102; x=1808250102;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=6nvNkvieYrZr8wgfnH9xzJVHjaJi0fcwXamsdzvETPk=;
+  b=ktQ3apqcPmSAwIkmJuRJcRKBOUWBZMk86AyFcbxwAP16cC0WG8qG7Roz
+   gj8Gbn3b9uIwwD9Tq9BzBYWAIagEgF81UmiUD4H/uJebES9twHWhW7jnJ
+   l29F2Tlrr5T/UaMEI2Yr5IYLRh/Q33IaFwfhXys67KB5jSSOxRkUQyhMs
+   5Ko2MXzWBWzu4UE/6LUYUkVuCTxFik2dt/DIN76olhhpcowllqY0SAnM2
+   brn39z7YXn04zyVvxmQR9UzFJMm7ZeR9/CAE3vuHOgn+pV3kfctTbLGuj
+   BXgR38VOOODcq9WlrefcK3X0jAge4hkuxfDDtaUVPMvssoaO+lRS7lGwn
+   w==;
+X-CSE-ConnectionGUID: CmHXbakQQOCPHqCKP6ikRw==
+X-CSE-MsgGUID: pNkfrGp4QauTezBvXLqueA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11762"; a="89109687"
+X-IronPort-AV: E=Sophos;i="6.23,190,1770624000"; 
+   d="scan'208";a="89109687"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Apr 2026 12:41:41 -0700
+X-CSE-ConnectionGUID: Z3pAIluaQHOaTMR/bIrXiQ==
+X-CSE-MsgGUID: sF99clViSRKw0fMxhzPuEA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,190,1770624000"; 
+   d="scan'208";a="255070644"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Apr 2026 12:41:39 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 20 Apr 2026 12:41:38 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Mon, 20 Apr 2026 12:41:38 -0700
+Received: from MW6PR02CU001.outbound.protection.outlook.com (52.101.48.11) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 20 Apr 2026 12:41:37 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AJkQ2PfIzzQKMjUOZ4YQevlOBhKUM0ANbtPOhK9AZ2nv1NUegl+LallV99ubzS+8usgbZSNE3doBfwUmLxmK3gjug76hi512s3LBrUe2xwDEg1QiUo25n9xXBzccCUC3V0Ox+mKgEglb1Aab+r5n2Q6wUyo/4aysdf9GBO4gz6R95ynN8DOw+PRDqKk0ooOGTTksHvEzGgAx4fPsRy68kzl+PsDI+uAEfAzu/IxRApwNWOF9AFVccmQDYCcV5Vv2RilDEnDF7+57OrcYNIv1Eu9SnaONfnzH8Nv3wskzsGEVis6raGDtNlvZ0tHmO8sOx9EVie9BL/g0rxKOo3KUiA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=p1kJNKus0xb2RQQ9Qs+5EgtQQw0q217mfOWw4r/sJIY=;
+ b=EbVrcXzWd+I9gSYrEhkWtw9Ol0l6mzBX2rPwP7zfHx34hBFE05rHTtCfGWNyj1aCBDt/KyINQpHIkNIpWhgohG0rmLbJ9l0v/9mqRshWfiOuNQ1yaIljcLk4VS2Tpbe9z+lPhNh823PSrBBnTDZi4yUOtVrrf9ukz4wFvn75zeehl5KX7aEhfWX1d9ge2o1/8YljJdm69plA3T2k87lmO3AWZ+sm1RSSxymXh4teAcFxOJxt+8H4kv+KmeprjJBvopdYjX2s/tWZkTOTl6hA8FTUgq1195HRlzkCj5JtqwoZJdKy8/ginoJri6J3N0DTtmNuX0PzTe6MPPpft1r4Qw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB7579.namprd11.prod.outlook.com (2603:10b6:8:14d::5) by
+ DS7PR11MB9499.namprd11.prod.outlook.com (2603:10b6:8:268::15) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9846.12; Mon, 20 Apr 2026 19:41:35 +0000
+Received: from DS0PR11MB7579.namprd11.prod.outlook.com
+ ([fe80::4199:4cb5:cf88:e79e]) by DS0PR11MB7579.namprd11.prod.outlook.com
+ ([fe80::4199:4cb5:cf88:e79e%5]) with mapi id 15.20.9846.014; Mon, 20 Apr 2026
+ 19:41:35 +0000
+Message-ID: <3626058b-1fe2-4472-99e6-b5fced88fcfe@intel.com>
+Date: Mon, 20 Apr 2026 12:41:32 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2 11/12] idpf: fix xdp crash in soft reset error path
+To: Jakub Kicinski <kuba@kernel.org>
+CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+	<pabeni@redhat.com>, <netdev@vger.kernel.org>, <emil.s.tantilov@intel.com>,
+	<stable@vger.kernel.org>, <aleksandr.loktionov@intel.com>,
+	<patryk.holda@intel.com>
+References: <20260416-iwl-net-submission-2026-04-14-v2-11-686c33c9828d@intel.com>
+ <20260418190019.194263-2-kuba@kernel.org>
+Content-Language: en-US
+From: Jacob Keller <jacob.e.keller@intel.com>
+In-Reply-To: <20260418190019.194263-2-kuba@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MW4PR04CA0318.namprd04.prod.outlook.com
+ (2603:10b6:303:82::23) To DS0PR11MB7579.namprd11.prod.outlook.com
+ (2603:10b6:8:14d::5)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7579:EE_|DS7PR11MB9499:EE_
+X-MS-Office365-Filtering-Correlation-Id: 327bfb18-cdda-4658-f819-08de9f14d499
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info: NqFDo4WSo5IAv/+MOE3dd4IutkcaoE4HDfVGD09VTHaD65eYRizTWCTZKD/sXDyqvnpl9eaYq0oQGQxmwSYSJqozYO5jg4WrAWo5/mArekUr0RtXIyx95/dFVTjYlYnYa9/GxAPmKj8GrZHkJVVjB9iMMwJqV/kCXhO427cUYCniV6KuAmYByixiKRonl8F/QhZsVC9WFg3SlbarXzD0oB812IK0FmICiIU6ZwqmEzo2FvsTfm+09bNhpDfhirLggVC1D4dm8214bE44AAXTfwFpz1+E92uFiAX/Sidvb9AlCI1oDT1U130YhZuLy0JEAVMmv/8/ygsuqjPFqCU6gtQkASMXdu7RBkOYGYnVG9PD5N/NWHEXg0xoZPSSHUBtLRwDDuGc6DF2rAHV0pckLI/SXCNrjiGnR2lU7n9da01l+5EosymuGPR8Fr9TsCIGIczC46uLcfPLLSAa+guO1ohwr7W+ZyllCgRTR/MWD3J9cqXtb4gIH7HGL2VKrvYsxW8h1UvBawJXSY2pti1r1YMsnix/E0MaQKkFLJJ73qkao/u5C8zS1Mag/6Fy9WKTowLqwv3frJLCTTPtsmeoDmKPKa/v16K8wq7+2tSrJt9K//XGlevH7Bikjy6iqQm9LTEFKYFQMDIJgMDKq1HbGV4uIo2fDZrhAN4mf+iO8PcYruzva0Q1q4CDNEhEnVgQUwbB0guuXYi+EkgKsvhWrGu7iFzWT3Vc6y4fhuWykD4=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7579.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SC81dkgwaUJETVV2bzU4NXJqZzRJZW1xNDJSV29SOWdPNE1GTWFrMUJGUzV5?=
+ =?utf-8?B?eVRFZGJWY0NPT3hXT0tBKzE5OVJBVUJCYUhlOXpKQjFST2dzYkVWbjJPWFdK?=
+ =?utf-8?B?NUNYWktub2s4ZC9udkc2d0ZEc2Y5STZFNThKL3ZyS0NEQVJMY3YxMHJGTTIy?=
+ =?utf-8?B?M3lpSGhIdldkTUJodys1TExVeWwzWkpDM2h2M3VLZERiZGlsMzdEQTZSUDc3?=
+ =?utf-8?B?ZVhtOWcyYUlNdWErckN3TEIvblI5RUhIVSthWkQvdWRMeGxlMjhHVXN1Nkpq?=
+ =?utf-8?B?M1A4Yks5dFVXMFFVRWZveHRlWG52anVzY3QzQjUrT3BFVkFYdkdxQ3ZzMFpl?=
+ =?utf-8?B?SkFEWUR6Y1pKbHdFRWxsMHBmVGZUWkFtZHVRbVFJRE1IRExGeE1RME02RGpM?=
+ =?utf-8?B?TEJuQUlpbTl1Mmw5M3BSWDU5UFcxMlJYdTZkOWFIQ0YxcUcxNEJ4WTRqNUR4?=
+ =?utf-8?B?UkhQNVNUMjlSUlk0OVJLeUNZS2xFZ2FWeUNNTVJuMDFBSGpuY2s5cE55MmhQ?=
+ =?utf-8?B?aVZDNjFwQmpFNXFIekp5TjRaV2FYWVZaQTRIWnpZQmJDV09TQmY3OXZBeVJ3?=
+ =?utf-8?B?WCtQeW02YTQzVVNXTmhTN0dyTGp1QXNqemFQekNYTG5KNlBkcXZIbzlhZER0?=
+ =?utf-8?B?RWNVTlBVQlExRVpPa0RIMjYydlpObkl1ZmRhdlpCamFxMTBkdVlZSmVJNm9j?=
+ =?utf-8?B?TzM1amVJWmkrWVA5eThmVGFLNHZsaHVjQmFlVU5wNm9JOHRaSjdHMGlOOWo2?=
+ =?utf-8?B?bnYrOWhoak1kVnpMSU5TdVhsbjJYK2FLd0NPczBrWExWSzh3VFRPRi9hNitv?=
+ =?utf-8?B?RmJhdjZYeW5ZQStFWUIwUGpFZXgweWpTcTlTeTZpMUhzVkk3b1RsUjJjUWtu?=
+ =?utf-8?B?WXdqQWlDS1A3akJrcllhZmNnd3JKQSt3bno0L1R4NGVFY0ZYdHN0bDlqOHFv?=
+ =?utf-8?B?SUhNb0JtYk1WQmJwRjhRVk00MzA0dGFqVy9YNnhwMENrd20rT1FIL2NRTCtC?=
+ =?utf-8?B?TndXWnFlZEJqMlNJSU5EcHdxRkpxei85NUk5RWRlZ1FQYlhtOVVXTlAxbFZ2?=
+ =?utf-8?B?ZVQzUS9CZ3JWMTdjcW1sYlpsbDUzZXlCQkI1NlRneHNYRk1nRHR6dFZxalBZ?=
+ =?utf-8?B?bjh2YUpMQktOVVg0MW9DeEpmWFZEYTQ2U0FhKzdhanNTOElBQXR1VzEwb0N1?=
+ =?utf-8?B?WjFJZXdoZU9CTWZ2bE1HQnNocENaQmpHWTVWOGtrN2pCRVFXRkFMcExKMkYw?=
+ =?utf-8?B?akFRbkxBRUFWRXNhVkNvL2FRbUdBbG5wbDNTZ1IzM1JheEFjdStpNDlNc0Rn?=
+ =?utf-8?B?WVpQWU9vUmM5d2Y1bVZtZ0R4NjRSNUNRNzFLbnlUbGxibVVxTWVyR084RnFH?=
+ =?utf-8?B?cGs4RlNDUkw1T21xWHJYT0F6KzRPSDhCTVFzMXl0eWpNRExsWW9CNlpPTjJh?=
+ =?utf-8?B?T2lZR1puRGxpVWFLcU9TdVk0ZFQrVDFKdFVsS2lNaG40ZVBpdzB5VW56TUQ3?=
+ =?utf-8?B?cFlPS0pNT0MzNzNIWE5aUmg3RVNMVnllbjR0ekw1UXBWK1QzcUFqUXFYTW95?=
+ =?utf-8?B?NFVhbFBCRDFvWlpQR1NuSGtEcEEyVmVJN0ljekhodFdDYkZVb2VBSktCMEhv?=
+ =?utf-8?B?VGtId05yQWVxVFg3Q0paU2NrMHg2REcxemVQa1JnZkFUYW9LbjY1WTlYd2pu?=
+ =?utf-8?B?SjNPRDU4VGIrMnh3UnhYdWR4N2NjZEg3ZlVUbGlPZkVMRXA1WG02VzNoRHFE?=
+ =?utf-8?B?S014T3g4bnNRcFRlRHUxQUZjNWtvRFhLWWx2cEkzcXJDU2VXc3dOakI4UE9V?=
+ =?utf-8?B?Mnd3dXhoMmFhOGU4SGxOS3pWd1k0eW5lMGRUOEZoQkFUeFU4WUpVWWYzdW4r?=
+ =?utf-8?B?dG1QVFZON2Q1MW5rQmV4bHBML2w4SW1JSWs3NVVqS0R3UTBqNjdVMzBHN3ZH?=
+ =?utf-8?B?SHVuc295NkNTdi9Ec2VvUzA2TDBNR2ZqTGdabjhZUnNudkpkQXV3M2k0T2xV?=
+ =?utf-8?B?MWtZczNtangzUDQ3dStKODM5RDl0VDN6dFREakVXUWdrNEVMaGswcm5EVDZQ?=
+ =?utf-8?B?RCs0N09jTkU2RzlHNm1lV3lINFM3eWtZQUVFWXZsNmh5cDlSMGVYaU80TGpI?=
+ =?utf-8?B?L2Q2dG9wVnBuYXpjK2c4bUJ5cVZSdWpYckZLa0F5ZlgzVG1yZ2FzSmVVZTBT?=
+ =?utf-8?B?VTA5eXo2T0lVY3V6S0VZOEVoRmNHVjIvdkQwKy9MamlMbFhmTGhzWi9KYlJG?=
+ =?utf-8?B?SGZtY2RkcHpwK2loN0VwMjlPcVArSnZyNDlIM2lIdVlkeDF4dmh0NzdOaWJL?=
+ =?utf-8?B?R1cwOFRDUm9iMmZ2ZFNJYUp3U3BaVlF6OXNkY1dRb3FzdTBIUWdvZz09?=
+X-Exchange-RoutingPolicyChecked: KwYbbzNW5f+yLJiSaiGju66TuSCLqCLyqLSWESvrNL9011utX7C03XL0NW8H+Bgx5EiF06DKIFNdKYdakK+7vMgEC+jKmQ0/gS53BuSnBsk0Ni85E+iItZEmGlERlGSGYgs+QOQEuzK6cNE/Cmf45oB5UtifBhr1cNrNmkb91CgdU0XDbrMeOaYAgvNHsnkviFMqVVvVa6cCBTi+caDTDa6Ip5vaw/9Xjc1+ib4NbPqMq6Mtg9d9AmhUSLYDJ2auJxmRLjpDaZpQXf1RDqSytkYt0d7QKhJD+TjUOYUHL8V0IGj/4xip688I87FU5IE+lSfKHlicNbOPERPnIyiDhw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 327bfb18-cdda-4658-f819-08de9f14d499
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7579.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Apr 2026 19:41:35.0655
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: N+3ownEeMiNvQUe2ZenC88XI8DSvueCPGB8TlMSKNsgJ4Bb2onT1ytzPPFI+6IiNKRLHt3D8TdO6IuvHkNGyFbrKDYJ/Ikt9evEcd68HtLU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB9499
+X-OriginatorOrg: intel.com
 
-> From: Jason Xing <kernelxing@tencent.com>
+On 4/18/2026 12:00 PM, Jakub Kicinski wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
 > 
-> When xsk_build_skb() processes multi-buffer packets in copy mode, the
-> first descriptor stores data into the skb linear area without adding
-> any frags, so nr_frags stays at 0. The caller then sets xs->skb = skb
-> to accumulate subsequent descriptors.
-> 
-> If a continuation descriptor fails (e.g. alloc_page returns NULL with
-> -EAGAIN), we jump to free_err where the condition:
-> 
->   if (skb && !skb_shinfo(skb)->nr_frags)
->       kfree_skb(skb);
-> 
-> evaluates to true because nr_frags is still 0 (the first descriptor
-> used the linear area, not frags). This frees the skb while xs->skb
-> still points to it, creating a dangling pointer. On the next transmit
-> attempt or socket close, xs->skb is dereferenced, causing a
-> use-after-free or double-free.
-> 
-> Fix by adding a !xs->skb check to the condition, ensuring we only free
-> skbs that were freshly allocated in this call (xs->skb is NULL) and
-> never free an in-progress multi-buffer skb that the caller still
-> references.
-> 
-> Closes: https://lore.kernel.org/all/20260415082654.21026-4-kerneljasonxing@gmail.com/
-> Fixes: 6b9c129c2f93 ("xsk: remove @first_frag from xsk_build_skb()")
-> Signed-off-by: Jason Xing <kernelxing@tencent.com>
-> ---
->  net/xdp/xsk.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-> index 6521604f8d42..4fdd1a45a9bd 100644
-> --- a/net/xdp/xsk.c
-> +++ b/net/xdp/xsk.c
-> @@ -889,7 +889,7 @@ static struct sk_buff *xsk_build_skb(struct xdp_sock *xs,
->  	return skb;
->  
->  free_err:
-> -	if (skb && !skb_shinfo(skb)->nr_frags)
-> +	if (skb && !xs->skb && !skb_shinfo(skb)->nr_frags)
->  		kfree_skb(skb);
->  
->  	if (err == -EOVERFLOW) {
-> -- 
-> 2.41.3
+> Jakub: I'll drop this patch and apply the rest.
 
-Now "!skb_shinfo(skb)->nr_frags" feels redundant? It's either
-"skb && !xs->skb" and we own the kfree. or "xs->skb != NULL" and we
-want xsk_drop_skb? Or am I missing something?
+Thanks. Emil is on vacation, so I don't know if we'll get any response
+for this fix for a bit. I'll forward this to others on the team and see
+what they think.
+
+Regards,
+Jake
