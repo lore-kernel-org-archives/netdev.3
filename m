@@ -1,47 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E89343B583D;
-	Mon, 20 Apr 2026 13:16:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE7643C2769;
+	Mon, 20 Apr 2026 13:17:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776691016; cv=none; b=eaALLex/4ZG1W08Yub2rDaK813MrCAbGKWioV2y5WOZFrwYCG6evLRZQtT7kLNgcJWY6x8r1rxgDg5DnmBIMJaF/JkgUsb+ReoPEJIyiROsLk1o+nkpiKtY3ouq9XXUEh/S+ACflqCJC/FOGyQYxGj3Klhz341azLkSJ/43R4+M=
+	t=1776691049; cv=none; b=GQhLg5K5pDE2Trnf5kFMCsPTXSc7Nq7LRuMTrRLD2zwVr1ObB7bElqlscEARSsAMreh6oMyhFSwSPZz9xISIDAbfTaxDHLkOK7M1wUFz8obD9EtTwiuaIb0GH4N2tlJUaBLen6eBrJxxOPNW6BLA1BuLtIHAtn7Wxl5u0ED00jw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776691016; c=relaxed/simple;
-	bh=ZwMWE+j/Jpj1EWtkg4A1r8lGLJtnijJkTwl2FFZm2WY=;
+	s=arc-20240116; t=1776691049; c=relaxed/simple;
+	bh=9aPVkcRuTSgqcTqdXSJQNUbhuhgr30ISjyLMfNdWJGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lvqtDF/yjWFKCX3W9lgRoEkGQ8eCdNe02rJMKnQCS6n4DYARGMS68B56a9/AWtC3JnA9yxKqov091YAHgkhaLQvoRHSdEK5btxFvzTYkB7YGtrmFn+AmHjFcSHLvxNcpHUR19rLaXnx4POj7n8EyuStqi9CdmZQRxm2ImUfAiTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fRdXlrNH; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=J4B8wZqkuR69hkJhPsZYI84X953c7tnLidjhezkoNdq3UPMblAVVlxrgm0OttQJObYs2GRGTU0vWVsUfhMwFnWytBave+fDI5Gf5qq2vLsX1S4Ny2FEVXonicZd5N68xfhU3FQQqy0OA0s0zg0CpEYZjBhXjcw/vWY0xeDZ0SV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LTqLF4vV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fRdXlrNH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1527C19425;
-	Mon, 20 Apr 2026 13:16:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LTqLF4vV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AD75C2BCB6;
+	Mon, 20 Apr 2026 13:17:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776691015;
-	bh=ZwMWE+j/Jpj1EWtkg4A1r8lGLJtnijJkTwl2FFZm2WY=;
+	s=k20201202; t=1776691049;
+	bh=9aPVkcRuTSgqcTqdXSJQNUbhuhgr30ISjyLMfNdWJGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fRdXlrNHjfYIbgl03pTbi2A5jVSbcAmn5K5noXBypMcXBp1OdQTUDHjv/dzEcYH7E
-	 qHjGjnh3796R1VYx38YRBkKMEMpKCW7Fvo9pCfldzjYNOz2PM0b2iLJtqkxA1SYfvn
-	 meQsUvZauCW59PNOyRbQLL4nRe8WFRAIyBqBhB9D3f2/oRT0dnKniNEJUZslsKk+By
-	 GpzfRdu1DYbzOJLNHqyv553fvOHYsjnROQQy071xgk5obmZjlmRVncpgWteuZGFAFY
-	 FbwHsgtQJZ0JwAOFe/NLcACsdk9fbsrEf9hXHzRTG2eZIDE5wP2LGxIniyAE8NUJQp
-	 pe6APUuAh5prg==
+	b=LTqLF4vV3/Sne7oYCJWMEG6rfbDUDxx81+X7XczzK5acB16PJOxXj7KI3ngX/2Eqh
+	 PRlTlsRQppYZzv4o0UNC/9ugIwe3oloIiiuOzSOjm87MFgs78B0Oxxaw5snTcEoPvt
+	 8LRL+AYNOO3vql9B3PVZ6cXAubt0atv2VaNgRqUBFcB7dUylrEOXRsgTKFhzGbv4VW
+	 k6sN2hMZ7biEERBwEmj66cFkcb8nVUgnGuQ3miH5wdaCGF8xNSoZNtKtD8G+geT6WK
+	 yReR2BER6bKHaHTkGIxg0HD0Hqyf3gIRgQ0MEkj4Ook+oVAEOfUgYHpSL3pM7WLEta
+	 nmMYUUgFGiZTw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Qingfang Deng <dqfext@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+Cc: Florian Westphal <fw@strlen.de>,
+	Scott Mitchell <scott.k.mitch1@gmail.com>,
 	Sasha Levin <sashal@kernel.org>,
-	andrew+netdev@lunn.ch,
+	pablo@netfilter.org,
 	davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
-	linux-ppp@vger.kernel.org,
+	pabeni@redhat.com,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 7.0-5.10] ppp: disconnect channel before nullifying pch->chan
-Date: Mon, 20 Apr 2026 09:08:30 -0400
-Message-ID: <20260420131539.986432-44-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18] netfilter: nfnetlink_queue: make hash table per queue
+Date: Mon, 20 Apr 2026 09:08:50 -0400
+Message-ID: <20260420131539.986432-64-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260420131539.986432-1-sashal@kernel.org>
 References: <20260420131539.986432-1-sashal@kernel.org>
@@ -53,367 +55,320 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 7.0
+X-stable-base: Linux 6.18.23
 Content-Transfer-Encoding: 8bit
 
-From: Qingfang Deng <dqfext@gmail.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 6a196e83a1a7e50be93482d1cd4305641f1a9fb1 ]
+[ Upstream commit 936206e3f6ff411581e615e930263d6f8b78df9d ]
 
-In ppp_unregister_channel(), pch->chan is set to NULL before calling
-ppp_disconnect_channel(), which removes the channel from ppp->channels
-list using list_del_rcu() + synchronize_net(). This creates an
-intermediate state where the channel is still connected (on the list)
-but already unregistered (pch->chan == NULL).
+Sharing a global hash table among all queues is tempting, but
+it can cause crash:
 
-Call ppp_disconnect_channel() before setting pch->chan to NULL. After
-the synchronize_net(), no new reader on the transmit path will hold a
-reference to the channel from the list.
+BUG: KASAN: slab-use-after-free in nfqnl_recv_verdict+0x11ac/0x15e0 [nfnetlink_queue]
+[..]
+ nfqnl_recv_verdict+0x11ac/0x15e0 [nfnetlink_queue]
+ nfnetlink_rcv_msg+0x46a/0x930
+ kmem_cache_alloc_node_noprof+0x11e/0x450
 
-This eliminates the problematic state, and prepares for removing the
-pch->chan NULL checks from the transmit path in a subsequent patch.
+struct nf_queue_entry is freed via kfree, but parallel cpu can still
+encounter such an nf_queue_entry when walking the list.
 
-Signed-off-by: Qingfang Deng <dqfext@gmail.com>
-Link: https://patch.msgid.link/20260312093732.277254-1-dqfext@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Alternative fix is to free the nf_queue_entry via kfree_rcu() instead,
+but as we have to alloc/free for each skb this will cause more mem
+pressure.
+
+Cc: Scott Mitchell <scott.k.mitch1@gmail.com>
+Fixes: e19079adcd26 ("netfilter: nfnetlink_queue: optimize verdict lookup with hash table")
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Now I have all the information needed. Let me compile the complete
-analysis.
-
----
-
-## Phase 1: Commit Message Forensics
-
-### Step 1.1: Subject Line
-- **Subsystem**: `ppp` (PPP networking subsystem)
-- **Action verb**: "disconnect" / implied "fix" - reorder operations to
-  eliminate a race
-- **Summary**: Reorder `ppp_disconnect_channel()` and `pch->chan = NULL`
-  to eliminate a problematic intermediate state
-
-### Step 1.2: Tags
-- **Signed-off-by**: Qingfang Deng (author, active PPP contributor with
-  9+ commits to the subsystem)
-- **Link**:
-  `https://patch.msgid.link/20260312093732.277254-1-dqfext@gmail.com`
-  (the `-1-` suggests a single patch, not a series)
-- **Signed-off-by**: Paolo Abeni (netdev co-maintainer, merge authority)
-- No Fixes: tag (expected - that's why it's under review)
-- No Reported-by (no explicit crash report)
-
-### Step 1.3: Body Analysis
-The commit describes a concrete race condition: `pch->chan` is set to
-NULL before `ppp_disconnect_channel()` removes the channel from
-`ppp->channels`. This creates an intermediate state where the channel is
-still on the list but already has `pch->chan == NULL`. The fix reorders
-the operations: disconnect first (remove from list), then NULL-ify.
-
-### Step 1.4: Hidden Bug Fix Detection
-The phrase "This eliminates the problematic state" clearly describes
-fixing a race condition. The mention of "prepares for removing the
-pch->chan NULL checks from the transmit path in a subsequent patch"
-suggests a follow-up cleanup, but the reordering itself has standalone
-correctness value.
-
-**Record**: This IS a race condition fix, disguised slightly by the
-preparatory framing.
-
----
-
-## Phase 2: Diff Analysis
-
-### Step 2.1: Inventory
-- **1 file changed**: `drivers/net/ppp/ppp_generic.c`
-- **Net change**: 0 lines added, 0 removed - purely a reorder of one
-  line
-- **Function modified**: `ppp_unregister_channel()`
-- **Scope**: single-file, single-function, surgical
-
-### Step 2.2: Code Flow Change
-**Before**: In `ppp_unregister_channel()`:
-1. `down_write(&pch->chan_sem)` + `spin_lock_bh(&pch->downl)` +
-   `WRITE_ONCE(pch->chan, NULL)` + unlock
-2. `ppp_disconnect_channel(pch)` - removes from `ppp->channels` via
-   `list_del_rcu()` + `synchronize_net()`
-
-**After**:
-1. `ppp_disconnect_channel(pch)` - removes from list first
-2. `down_write(&pch->chan_sem)` + `spin_lock_bh(&pch->downl)` +
-   `WRITE_ONCE(pch->chan, NULL)` + unlock
-
-### Step 2.3: Bug Mechanism - RACE CONDITION / NULL POINTER DEREFERENCE
-
-The race occurs in `ppp_mp_explode()` (multilink transmit path):
-
-```1977:2001:drivers/net/ppp/ppp_generic.c
-list_for_each_entry(pch, &ppp->channels, clist) {
-    if (pch->chan) {          // Read #1 - no downl lock held
-        pch->avail = 1;
-        navail++;
-        pch->speed = pch->chan->speed;  // Read #2 - TOCTOU: pch->chan
-can be NULL here!
-    }
-```
-
-**Race scenario**:
-1. CPU A (`ppp_mp_explode`, under `ppp_xmit_lock`): reads `pch->chan !=
-   NULL` at line 1978
-2. CPU B (`ppp_unregister_channel`): does `WRITE_ONCE(pch->chan, NULL)`
-   under `downl` (NOT under `ppp_xmit_lock`)
-3. CPU A: dereferences `pch->chan->speed` at line 1981 - **NULL pointer
-   dereference / kernel oops**
-
-The channel is still on `ppp->channels` (hasn't been disconnected yet),
-so `ppp_mp_explode` finds it while iterating.
-
-With the fix, `ppp_disconnect_channel()` removes the channel from the
-list (under `ppp_lock`, which includes `ppp_xmit_lock`) FIRST. After it
-returns, no transmit code iterating `ppp->channels` will see this
-channel. Then setting `pch->chan = NULL` is safe.
-
-### Step 2.4: Fix Quality
-- Obviously correct - eliminates the problematic state entirely
-- Minimal/surgical - one line moved
-- No regression risk - the semantic operations are the same, just
-  reordered
-- No API changes, no locking changes, no new features
-
----
-
-## Phase 3: Git History Investigation
-
-### Step 3.1: Blame
-From git blame, the buggy code ordering dates back to `^1da177e4c3f41`
-(Linus Torvalds, 2005-04-16) - the initial kernel tree import. The
-`WRITE_ONCE` was added by `0417adf367a0af` (August 2025), but the
-fundamental ordering issue exists since v2.6.12.
-
-### Step 3.2: No Fixes: tag (expected)
-
-### Step 3.3: Related Changes
-The same author (Qingfang Deng) previously fixed a related race in
-`0417adf367a0af` ("ppp: fix race conditions in ppp_fill_forward_path"),
-which explicitly documented: "pch->chan can be NULL. When
-ppp_unregister_channel() is called, pch->chan is set to NULL before pch
-is removed from ppp->channels." That commit added workarounds (NULL
-checks, RCU). This commit fixes the **root cause**.
-
-### Step 3.4: Author
-Qingfang Deng has 9+ PPP commits, including critical race fixes and
-performance improvements. They are a de facto domain expert for this
-code.
-
-### Step 3.5: Dependencies
-The diff references `WRITE_ONCE(pch->chan, NULL)` which was introduced
-by `0417adf367a0af`. That commit has `Fixes: f6efc675c9dd` and was
-likely already auto-selected for stable. For trees without that commit,
-a trivial context adjustment (`pch->chan = NULL` instead of
-`WRITE_ONCE`) would be needed. The reordering logic works correctly
-regardless.
-
----
-
-## Phase 4: Mailing List Research
-
-### Step 4.1-4.2
-Lore is currently blocked by Anubis anti-bot protection. b4 dig could
-not find this specific commit by message-id (the commit doesn't exist in
-this tree). However, the patch was accepted and merged by Paolo Abeni,
-netdev co-maintainer, which provides strong confidence in correctness.
-
-### Step 4.3-4.5
-The earlier commit `0417adf367a0af` explicitly documents the bug that
-this commit fixes at the root: "pch->chan can be NULL. When
-ppp_unregister_channel() is called, pch->chan is set to NULL before pch
-is removed from ppp->channels." This was a known problem.
-
----
-
-## Phase 5: Code Semantic Analysis
-
-### Step 5.1-5.4: Call Path Tracing
-The vulnerable function `ppp_mp_explode()` is called from:
-- `ppp_push()` -> `ppp_send_frame()` -> `__ppp_xmit_process()` ->
-  `ppp_xmit_process()`
-
-This is the **hot transmit path** for PPP multilink, triggered every
-time a packet is sent on a multilink PPP connection. The race triggers
-when a channel is unregistered while multilink transmission is active -
-a common scenario during PPP session teardown or link failure.
-
-`ppp_fill_forward_path()` (already patched with NULL checks by
-`0417adf367a0af`) is also affected but has workarounds. This commit
-fixes the root cause for all paths.
-
-### Step 5.5: Similar Patterns
-The same TOCTOU pattern (check `pch->chan`, then dereference) also
-appears at:
-- Line 1978/1981: `ppp_mp_explode()` - **vulnerable** (no `downl` lock)
-- Line 1912-1914: `ppp_push()` - **safe** (holds `pch->downl`)
-- Line 2059-2060: `ppp_mp_explode()` phase 2 - **safe** (holds
-  `pch->downl`)
-- Line 2185-2189: `__ppp_channel_push()` - **safe** (holds `pch->downl`)
-
----
-
-## Phase 6: Stable Tree Analysis
-
-### Step 6.1: Buggy Code in Stable
-The buggy ordering exists since v2.6.12 (the very first git commit). It
-is present in ALL active stable trees.
-
-### Step 6.2: Backport Complications
-For 7.0.y: applies cleanly (code matches exactly).
-For older trees without `0417adf367a0af`: trivial context change needed
-(`pch->chan = NULL` vs `WRITE_ONCE(pch->chan, NULL)`), and
-`list_del_rcu`/`synchronize_net()` may not be present in
-`ppp_disconnect_channel()`. However, the reordering is still correct for
-the transmit path because `ppp_disconnect_channel()` takes `ppp_lock()`
-(which includes `ppp_xmit_lock`), ensuring mutual exclusion with
-transmit path iteration.
-
-### Step 6.3: Related Fixes
-`0417adf367a0af` added workarounds (NULL checks) for the same underlying
-issue. This commit fixes the root cause.
-
----
-
-## Phase 7: Subsystem Context
-
-### Step 7.1: PPP networking - **IMPORTANT** subsystem
-PPP is used by DSL/dial-up connections, VPN tunnels, and
-embedded/routing devices. Multilink PPP aggregates multiple physical
-links, common in WAN/enterprise networking.
-
-### Step 7.2: Actively maintained by the author (9+ commits), merged by
-netdev maintainers.
-
----
-
-## Phase 8: Impact and Risk Assessment
-
-### Step 8.1: Affected Users
-Users running PPP with multilink (`SC_MULTILINK` flag set). This
-includes enterprise WAN, embedded networking, and PPPoE configurations.
-
-### Step 8.2: Trigger Conditions
-- Multilink PPP transmitting while a channel is being unregistered
-- Happens during link failure, session teardown, or module unload
-- A timing-dependent race, but the window exists every time a channel is
-  unregistered during active multilink transmission
-
-### Step 8.3: Failure Mode
-**NULL pointer dereference** at `pch->chan->speed` -> kernel oops/crash.
-Severity: **HIGH** (kernel crash, potential data loss from interrupted
-operations).
-
-### Step 8.4: Risk-Benefit Ratio
-- **Benefit**: HIGH - prevents kernel crash in PPP multilink transmit
-  path
-- **Risk**: VERY LOW - moving one line, no semantic change, obviously
-  correct
-- **Ratio**: Strongly favorable
-
----
-
-## Phase 9: Final Synthesis
-
-### Step 9.1: Evidence
-**FOR backporting**:
-- Fixes a real NULL pointer dereference race condition
-- The race exists since v2.6.12 (all stable trees affected)
-- Extremely small change (1 line moved)
-- Obviously correct - eliminates invalid intermediate state
-- Author is a domain expert (9+ PPP commits)
-- Accepted by netdev co-maintainer
-- The same root cause was already documented by the earlier fix
-  (0417adf367a0af)
-- PPP multilink is a commonly used feature
-
-**AGAINST backporting**:
-- No crash report or syzbot reproduction (theoretical race, but
-  realistic trigger)
-- Commit message mentions "prepares for" a subsequent patch (partially
-  preparatory)
-- No Fixes: tag (expected)
-
-### Step 9.2: Stable Rules Checklist
-1. Obviously correct and tested? **YES** - merged by Paolo Abeni
-2. Fixes a real bug? **YES** - NULL deref race in multilink transmit
-3. Important issue? **YES** - kernel crash (NULL pointer deref)
-4. Small and contained? **YES** - 1 line moved in 1 function
-5. No new features/APIs? **YES** - pure reorder
-6. Applies to stable? **YES** - cleanly to 7.0.y
-
-### Step 9.3: Exception Categories
-Not an exception category - this is a standard race condition fix.
-
----
-
-## Verification
-
-- [Phase 1] Parsed tags: Signed-off-by author (Qingfang Deng) +
-  maintainer (Paolo Abeni), Link to patch
-- [Phase 2] Diff analysis: 1 line moved in `ppp_unregister_channel()`,
-  reordering `ppp_disconnect_channel()` before `WRITE_ONCE(pch->chan,
-  NULL)`
-- [Phase 2] Verified TOCTOU in `ppp_mp_explode()` lines 1978/1981: reads
-  `pch->chan` without `downl` lock
-- [Phase 3] git blame: buggy ordering from `^1da177e4c3f41` (Linus
-  Torvalds, 2005) - present in all stable trees
-- [Phase 3] Related commit `0417adf367a0af` explicitly documents this
-  same race condition as known bug
-- [Phase 3] Author has 9 commits to drivers/net/ppp/ - domain expert
-- [Phase 4] Lore blocked by Anubis; could not verify mailing list
-  discussion directly
-- [Phase 5] Traced call chain: `ppp_xmit_process` ->
-  `__ppp_xmit_process` -> `ppp_push` -> `ppp_mp_explode` - hot transmit
-  path under `ppp_xmit_lock`
-- [Phase 5] Verified `ppp_disconnect_channel()` takes `ppp_lock()`
-  (includes `ppp_xmit_lock`) - mutual exclusion with transmit path
-- [Phase 5] Verified `WRITE_ONCE(pch->chan, NULL)` is under
-  `chan_sem+downl` only, NOT `ppp_xmit_lock` - confirms race window
-- [Phase 6] Code exists in all active stable trees since v2.6.12
-- [Phase 6] Patch applies cleanly to 7.0.y; older trees need trivial
-  context adjustment
-- [Phase 8] Failure mode: NULL pointer dereference -> kernel oops,
-  severity HIGH
-- UNVERIFIED: Could not access lore.kernel.org to verify if stable was
-  requested by a reviewer
-
-The fix is a minimal, obviously correct reordering that eliminates a
-real NULL pointer dereference race condition in the PPP multilink
-transmit path. The bug has existed since the original kernel tree and
-affects all stable trees. The risk is negligible (one line moved) and
-the benefit is preventing a kernel crash.
-
-**YES**
-
- drivers/net/ppp/ppp_generic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
-index e9b41777be809..7cd936bc6a7ea 100644
---- a/drivers/net/ppp/ppp_generic.c
-+++ b/drivers/net/ppp/ppp_generic.c
-@@ -3023,12 +3023,12 @@ ppp_unregister_channel(struct ppp_channel *chan)
- 	 * This ensures that we have returned from any calls into
- 	 * the channel's start_xmit or ioctl routine before we proceed.
- 	 */
-+	ppp_disconnect_channel(pch);
- 	down_write(&pch->chan_sem);
- 	spin_lock_bh(&pch->downl);
- 	WRITE_ONCE(pch->chan, NULL);
- 	spin_unlock_bh(&pch->downl);
- 	up_write(&pch->chan_sem);
--	ppp_disconnect_channel(pch);
+Error: Failed to generate final synthesis
+
+ include/net/netfilter/nf_queue.h |   1 -
+ net/netfilter/nfnetlink_queue.c  | 139 +++++++++++--------------------
+ 2 files changed, 49 insertions(+), 91 deletions(-)
+
+diff --git a/include/net/netfilter/nf_queue.h b/include/net/netfilter/nf_queue.h
+index 45eb26b2e95b3..d17035d14d96c 100644
+--- a/include/net/netfilter/nf_queue.h
++++ b/include/net/netfilter/nf_queue.h
+@@ -23,7 +23,6 @@ struct nf_queue_entry {
+ 	struct nf_hook_state	state;
+ 	bool			nf_ct_is_unconfirmed;
+ 	u16			size; /* sizeof(entry) + saved route keys */
+-	u16			queue_num;
  
- 	pn = ppp_pernet(pch->chan_net);
- 	spin_lock_bh(&pn->all_channels_lock);
+ 	/* extra space to store route keys */
+ };
+diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
+index a39d3b989063c..fe5942535245d 100644
+--- a/net/netfilter/nfnetlink_queue.c
++++ b/net/netfilter/nfnetlink_queue.c
+@@ -49,8 +49,8 @@
+ #endif
+ 
+ #define NFQNL_QMAX_DEFAULT 1024
+-#define NFQNL_HASH_MIN     1024
+-#define NFQNL_HASH_MAX     1048576
++#define NFQNL_HASH_MIN     8
++#define NFQNL_HASH_MAX     32768
+ 
+ /* We're using struct nlattr which has 16bit nla_len. Note that nla_len
+  * includes the header length. Thus, the maximum packet length that we
+@@ -60,29 +60,10 @@
+  */
+ #define NFQNL_MAX_COPY_RANGE (0xffff - NLA_HDRLEN)
+ 
+-/* Composite key for packet lookup: (net, queue_num, packet_id) */
+-struct nfqnl_packet_key {
+-	possible_net_t net;
+-	u32 packet_id;
+-	u16 queue_num;
+-} __aligned(sizeof(u32));  /* jhash2 requires 32-bit alignment */
+-
+-/* Global rhashtable - one for entire system, all netns */
+-static struct rhashtable nfqnl_packet_map __read_mostly;
+-
+-/* Helper to initialize composite key */
+-static inline void nfqnl_init_key(struct nfqnl_packet_key *key,
+-				  struct net *net, u32 packet_id, u16 queue_num)
+-{
+-	memset(key, 0, sizeof(*key));
+-	write_pnet(&key->net, net);
+-	key->packet_id = packet_id;
+-	key->queue_num = queue_num;
+-}
+-
+ struct nfqnl_instance {
+ 	struct hlist_node hlist;		/* global list of queues */
+-	struct rcu_head rcu;
++	struct rhashtable nfqnl_packet_map;
++	struct rcu_work	rwork;
+ 
+ 	u32 peer_portid;
+ 	unsigned int queue_maxlen;
+@@ -106,6 +87,7 @@ struct nfqnl_instance {
+ 
+ typedef int (*nfqnl_cmpfn)(struct nf_queue_entry *, unsigned long);
+ 
++static struct workqueue_struct *nfq_cleanup_wq __read_mostly;
+ static unsigned int nfnl_queue_net_id __read_mostly;
+ 
+ #define INSTANCE_BUCKETS	16
+@@ -124,34 +106,10 @@ static inline u_int8_t instance_hashfn(u_int16_t queue_num)
+ 	return ((queue_num >> 8) ^ queue_num) % INSTANCE_BUCKETS;
+ }
+ 
+-/* Extract composite key from nf_queue_entry for hashing */
+-static u32 nfqnl_packet_obj_hashfn(const void *data, u32 len, u32 seed)
+-{
+-	const struct nf_queue_entry *entry = data;
+-	struct nfqnl_packet_key key;
+-
+-	nfqnl_init_key(&key, entry->state.net, entry->id, entry->queue_num);
+-
+-	return jhash2((u32 *)&key, sizeof(key) / sizeof(u32), seed);
+-}
+-
+-/* Compare stack-allocated key against entry */
+-static int nfqnl_packet_obj_cmpfn(struct rhashtable_compare_arg *arg,
+-				  const void *obj)
+-{
+-	const struct nfqnl_packet_key *key = arg->key;
+-	const struct nf_queue_entry *entry = obj;
+-
+-	return !net_eq(entry->state.net, read_pnet(&key->net)) ||
+-	       entry->queue_num != key->queue_num ||
+-	       entry->id != key->packet_id;
+-}
+-
+ static const struct rhashtable_params nfqnl_rhashtable_params = {
+ 	.head_offset = offsetof(struct nf_queue_entry, hash_node),
+-	.key_len = sizeof(struct nfqnl_packet_key),
+-	.obj_hashfn = nfqnl_packet_obj_hashfn,
+-	.obj_cmpfn = nfqnl_packet_obj_cmpfn,
++	.key_offset = offsetof(struct nf_queue_entry, id),
++	.key_len = sizeof(u32),
+ 	.automatic_shrinking = true,
+ 	.min_size = NFQNL_HASH_MIN,
+ 	.max_size = NFQNL_HASH_MAX,
+@@ -190,6 +148,10 @@ instance_create(struct nfnl_queue_net *q, u_int16_t queue_num, u32 portid)
+ 	spin_lock_init(&inst->lock);
+ 	INIT_LIST_HEAD(&inst->queue_list);
+ 
++	err = rhashtable_init(&inst->nfqnl_packet_map, &nfqnl_rhashtable_params);
++	if (err < 0)
++		goto out_free;
++
+ 	spin_lock(&q->instances_lock);
+ 	if (instance_lookup(q, queue_num)) {
+ 		err = -EEXIST;
+@@ -210,6 +172,8 @@ instance_create(struct nfnl_queue_net *q, u_int16_t queue_num, u32 portid)
+ 
+ out_unlock:
+ 	spin_unlock(&q->instances_lock);
++	rhashtable_destroy(&inst->nfqnl_packet_map);
++out_free:
+ 	kfree(inst);
+ 	return ERR_PTR(err);
+ }
+@@ -217,15 +181,18 @@ instance_create(struct nfnl_queue_net *q, u_int16_t queue_num, u32 portid)
+ static void nfqnl_flush(struct nfqnl_instance *queue, nfqnl_cmpfn cmpfn,
+ 			unsigned long data);
+ 
+-static void
+-instance_destroy_rcu(struct rcu_head *head)
++static void instance_destroy_work(struct work_struct *work)
+ {
+-	struct nfqnl_instance *inst = container_of(head, struct nfqnl_instance,
+-						   rcu);
++	struct nfqnl_instance *inst;
+ 
++	inst = container_of(to_rcu_work(work), struct nfqnl_instance,
++			    rwork);
+ 	rcu_read_lock();
+ 	nfqnl_flush(inst, NULL, 0);
+ 	rcu_read_unlock();
++
++	rhashtable_destroy(&inst->nfqnl_packet_map);
++
+ 	kfree(inst);
+ 	module_put(THIS_MODULE);
+ }
+@@ -234,7 +201,9 @@ static void
+ __instance_destroy(struct nfqnl_instance *inst)
+ {
+ 	hlist_del_rcu(&inst->hlist);
+-	call_rcu(&inst->rcu, instance_destroy_rcu);
++
++	INIT_RCU_WORK(&inst->rwork, instance_destroy_work);
++	queue_rcu_work(nfq_cleanup_wq, &inst->rwork);
+ }
+ 
+ static void
+@@ -250,9 +219,7 @@ __enqueue_entry(struct nfqnl_instance *queue, struct nf_queue_entry *entry)
+ {
+ 	int err;
+ 
+-	entry->queue_num = queue->queue_num;
+-
+-	err = rhashtable_insert_fast(&nfqnl_packet_map, &entry->hash_node,
++	err = rhashtable_insert_fast(&queue->nfqnl_packet_map, &entry->hash_node,
+ 				     nfqnl_rhashtable_params);
+ 	if (unlikely(err))
+ 		return err;
+@@ -266,23 +233,19 @@ __enqueue_entry(struct nfqnl_instance *queue, struct nf_queue_entry *entry)
+ static void
+ __dequeue_entry(struct nfqnl_instance *queue, struct nf_queue_entry *entry)
+ {
+-	rhashtable_remove_fast(&nfqnl_packet_map, &entry->hash_node,
++	rhashtable_remove_fast(&queue->nfqnl_packet_map, &entry->hash_node,
+ 			       nfqnl_rhashtable_params);
+ 	list_del(&entry->list);
+ 	queue->queue_total--;
+ }
+ 
+ static struct nf_queue_entry *
+-find_dequeue_entry(struct nfqnl_instance *queue, unsigned int id,
+-		   struct net *net)
++find_dequeue_entry(struct nfqnl_instance *queue, unsigned int id)
+ {
+-	struct nfqnl_packet_key key;
+ 	struct nf_queue_entry *entry;
+ 
+-	nfqnl_init_key(&key, net, id, queue->queue_num);
+-
+ 	spin_lock_bh(&queue->lock);
+-	entry = rhashtable_lookup_fast(&nfqnl_packet_map, &key,
++	entry = rhashtable_lookup_fast(&queue->nfqnl_packet_map, &id,
+ 				       nfqnl_rhashtable_params);
+ 
+ 	if (entry)
+@@ -1531,7 +1494,7 @@ static int nfqnl_recv_verdict(struct sk_buff *skb, const struct nfnl_info *info,
+ 
+ 	verdict = ntohl(vhdr->verdict);
+ 
+-	entry = find_dequeue_entry(queue, ntohl(vhdr->id), info->net);
++	entry = find_dequeue_entry(queue, ntohl(vhdr->id));
+ 	if (entry == NULL)
+ 		return -ENOENT;
+ 
+@@ -1880,40 +1843,38 @@ static int __init nfnetlink_queue_init(void)
+ {
+ 	int status;
+ 
+-	status = rhashtable_init(&nfqnl_packet_map, &nfqnl_rhashtable_params);
+-	if (status < 0)
+-		return status;
++	nfq_cleanup_wq = alloc_ordered_workqueue("nfq_workqueue", 0);
++	if (!nfq_cleanup_wq)
++		return -ENOMEM;
+ 
+ 	status = register_pernet_subsys(&nfnl_queue_net_ops);
+-	if (status < 0) {
+-		pr_err("failed to register pernet ops\n");
+-		goto cleanup_rhashtable;
+-	}
++	if (status < 0)
++		goto cleanup_pernet_subsys;
+ 
+-	netlink_register_notifier(&nfqnl_rtnl_notifier);
+-	status = nfnetlink_subsys_register(&nfqnl_subsys);
+-	if (status < 0) {
+-		pr_err("failed to create netlink socket\n");
+-		goto cleanup_netlink_notifier;
+-	}
++	status = netlink_register_notifier(&nfqnl_rtnl_notifier);
++	if (status < 0)
++	       goto cleanup_rtnl_notifier;
+ 
+ 	status = register_netdevice_notifier(&nfqnl_dev_notifier);
+-	if (status < 0) {
+-		pr_err("failed to register netdevice notifier\n");
+-		goto cleanup_netlink_subsys;
+-	}
++	if (status < 0)
++		goto cleanup_dev_notifier;
++
++	status = nfnetlink_subsys_register(&nfqnl_subsys);
++	if (status < 0)
++		goto cleanup_nfqnl_subsys;
+ 
+ 	nf_register_queue_handler(&nfqh);
+ 
+ 	return status;
+ 
+-cleanup_netlink_subsys:
+-	nfnetlink_subsys_unregister(&nfqnl_subsys);
+-cleanup_netlink_notifier:
++cleanup_nfqnl_subsys:
++	unregister_netdevice_notifier(&nfqnl_dev_notifier);
++cleanup_dev_notifier:
+ 	netlink_unregister_notifier(&nfqnl_rtnl_notifier);
++cleanup_rtnl_notifier:
+ 	unregister_pernet_subsys(&nfnl_queue_net_ops);
+-cleanup_rhashtable:
+-	rhashtable_destroy(&nfqnl_packet_map);
++cleanup_pernet_subsys:
++	destroy_workqueue(nfq_cleanup_wq);
+ 	return status;
+ }
+ 
+@@ -1924,9 +1885,7 @@ static void __exit nfnetlink_queue_fini(void)
+ 	nfnetlink_subsys_unregister(&nfqnl_subsys);
+ 	netlink_unregister_notifier(&nfqnl_rtnl_notifier);
+ 	unregister_pernet_subsys(&nfnl_queue_net_ops);
+-
+-	rhashtable_destroy(&nfqnl_packet_map);
+-
++	destroy_workqueue(nfq_cleanup_wq);
+ 	rcu_barrier(); /* Wait for completion of call_rcu()'s */
+ }
+ 
 -- 
 2.53.0
 
