@@ -1,90 +1,101 @@
-Received: from mail.amicon.ru (unknown [77.108.111.100])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D50B32D0CC;
-	Mon, 20 Apr 2026 14:56:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=77.108.111.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30D3D342CA2
+	for <netdev@vger.kernel.org>; Mon, 20 Apr 2026 14:59:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776696972; cv=none; b=Y8skR3CTXbowEkrfClTYA5pNvDjUaCSTq6p3T2epu8enBt0RvJcQg1Yxkgh7b65jPey8Z8GLtBG/0zx0Yp3oj5EFwhwcUj+iZiYtFZSpldf5pbN5+B5/NYk5LKLCjJGittFSpOA8jowWlg/W0F30Nnshf/SePA1VhaNyqgxwUgk=
+	t=1776697156; cv=none; b=nsTF42L+BcTwAibbfcBFvrEYHWq5BrzXwDCiM5K/VZSBsJi34hefXmmSpeO7UEqPwetyamwspnFtd61I6c2z/SoC/GPUMfVTsE3x7pNZDjx4sDPLAGOgC30vwnqv14+HebK8lfY0KEuEmDcwlO4TmRmcf4KYb2OcOnum/QVi0ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776696972; c=relaxed/simple;
-	bh=W3Ademaxen8c5af2e5ytDiNGEPnepJMp1zk69Ol564E=;
-	h=Content-Type:From:To:CC:Subject:Date:Message-ID:MIME-Version; b=SKTG90Sb2FssGEHjCWWDCApYzZtuRE/5w/bA7gE9cx/Kv1Mh12niMNRJPO5uO4MZPO4ak5nzRAOkKAv0XmtF3KotuIcik+3CpK1AhvJrbT4KoDE3Y3ZLd7T1ZnqHTbxlL7uhwH0G8nJX5JqL7LW2FmxooveCAKkG4eoUsTr9th8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amicon.ru; spf=pass smtp.mailfrom=amicon.ru; dkim=pass (2048-bit key) header.d=amicon.ru header.i=@amicon.ru header.b=KQJX//ou; arc=none smtp.client-ip=77.108.111.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amicon.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amicon.ru
+	s=arc-20240116; t=1776697156; c=relaxed/simple;
+	bh=Y+Oe87Y+zq0e3lz5Kxtmiy1IL3ue+vz7+oEmEOdW/ag=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jK52Jtwna5Y1KgN3KiaHkwKTAoctXseueKwX3PqgsgwANNzrrHYSNNJJ/iOPIsyM/ytku7wYy9T7MTkwlsE6CTQpuF5nMI7A8St189w72AcClKOzaD3yEBIQCij3f4T1cRVEMropbLQ61ZAD27oMOvq/PdwflkBLxi7eXuU9SAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Q+fDmffd; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amicon.ru header.i=@amicon.ru header.b="KQJX//ou"
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-DKIM-Signature: v=1; a=rsa-sha256; d=amicon.ru; s=mail; c=simple/simple;
-	t=1776696058; h=from:subject:to:date:message-id;
-	bh=W3Ademaxen8c5af2e5ytDiNGEPnepJMp1zk69Ol564E=;
-	b=KQJX//ouTYPJwVUbewhzHpFEQEjY6gRvu5XJUMBawMfpr9/3qTdo4IGALb593JfeXBxWUhNz+wB
-	9PbhIRKg6I6H9O1Sb1VUSJoRzkuDDTybcYiqZgRzsBgGl9xcXxXvQxtAWCLudU5ZJdWm+XhQQOBQQ
-	PShU88H8t64dwLFYWhJ40WCrkAQ9a5CbVzYIDuu3MvINdk9IZIOX+en8O8/VbtH8F/9ub7CKl6GbA
-	Ur3eEKaTuYr/g00eWQGQ8CCArMSg2Twonky1o8gPPZljGoJjBYpwjd/SKoRfR9Xv8X0MrE2J7ddvx
-	KZclQrrcuRcCoouPIIEYzKtb/+0jFQVHgA6w==
-Received: from example.com (172.16.2.46) by mail.amicon.lan (192.168.0.59)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.27; Mon, 20 Apr
- 2026 17:40:57 +0300
-From: Agalakov Daniil <ade@amicon.ru>
-To: Jian Shen <shenjian15@huawei.com>
-CC: Agalakov Daniil <ade@amicon.ru>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<lvc-project@linuxtesting.org>, Roman Razov <rrv@amicon.ru>
-Subject: [PATCH net-next] net: hns: use u32 for register offset in RCB TX coalescing
-Date: Mon, 20 Apr 2026 17:40:19 +0300
-Message-ID: <20260420144047.2846673-1-ade@amicon.ru>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Q+fDmffd"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1776697154;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=gHUlnJZiu3wn1UaLU2mhPT1/9a82z63/7+nsN1lzlyo=;
+	b=Q+fDmffdRy2WDjWu3Pi1bG6TPwNBjX7R9KYRBx/ObsQ7Q/kXq0cAieBaNT/FpaxxJsobFm
+	pWrUrd/xaKO/+N6suA9OsCY2nq5g/BbNMKgDvL2m1/PQeipZFWRvLC8rdEq2CndH3h8cjf
+	wfxagIRiu7GbaSsQC0XNLTIbYOhRk00=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-696-FVz965EOPDasHEmWto0xEQ-1; Mon,
+ 20 Apr 2026 10:59:11 -0400
+X-MC-Unique: FVz965EOPDasHEmWto0xEQ-1
+X-Mimecast-MFC-AGG-ID: FVz965EOPDasHEmWto0xEQ_1776697148
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 33F17195609F;
+	Mon, 20 Apr 2026 14:59:08 +0000 (UTC)
+Received: from warthog.procyon.org.com (unknown [10.44.48.17])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4EB1F1800347;
+	Mon, 20 Apr 2026 14:59:04 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: netdev@vger.kernel.org
+Cc: David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net 0/4] rxrpc: Miscellaneous fixes
+Date: Mon, 20 Apr 2026 15:58:53 +0100
+Message-ID: <20260420145900.1223732-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ClientProxiedBy: mail.amicon.lan (192.168.0.59) To mail.amicon.lan
- (192.168.0.59)
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-The local variable reg in hns_rcb_get_tx_coalesced_frames() and
-hns_rcb_set_tx_coalesced_frames() holds a register offset passed to
-dsaf_read_dev()/dsaf_write_dev(). Register offsets on this hardware
-are 32-bit values; using u64 was misleading.
+Here are some fixes for rxrpc, as found by Sashiko[1]:
 
-Change the type to u32, consistent with the hardware.
+ (1) Fix leaks in rxkad_verify_response().
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+ (2) Fix lack of unsharing of RESPONSE packets.
 
-Signed-off-by: Agalakov Daniil <ade@amicon.ru>
----
- drivers/net/ethernet/hisilicon/hns/hns_dsaf_rcb.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ (3) Fix integer overflow in RxGK ticket length check.
 
-diff --git a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_rcb.c b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_rcb.c
-index 635b3a95dd82..3c4e4e8ca140 100644
---- a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_rcb.c
-+++ b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_rcb.c
-@@ -563,7 +563,7 @@ u32 hns_rcb_get_rx_coalesced_frames(
- u32 hns_rcb_get_tx_coalesced_frames(
- 	struct rcb_common_cb *rcb_common, u32 port_idx)
- {
--	u64 reg;
-+	u32 reg;
- 
- 	reg = RCB_CFG_PKTLINE_REG + (port_idx + HNS_RCB_TX_PKTLINE_OFFSET) * 4;
- 	return dsaf_read_dev(rcb_common, reg);
-@@ -634,7 +634,7 @@ int hns_rcb_set_tx_coalesced_frames(
- {
- 	u32 old_waterline =
- 		hns_rcb_get_tx_coalesced_frames(rcb_common, port_idx);
--	u64 reg;
-+	u32 reg;
- 
- 	if (coalesced_frames == old_waterline)
- 		return 0;
--- 
-2.51.0
+ (4) Fix handling of rxkad-encrypted packets with crypto-misaligned
+     lengths.
+
+David
+
+The patches can be found here also:
+
+	http://git.kernel.org/cgit/linux/kernel/git/dhowells/linux-fs.git/log/?h=rxrpc-fixes
+
+Link: https://sashiko.dev/#/patchset/20260408121252.2249051-1-dhowells%40redhat.com [1]
+
+David Howells (4):
+  rxrpc: Fix memory leaks in rxkad_verify_response()
+  rxrpc: Fix conn-level packet handling to unshare RESPONSE packets
+  rxgk: Fix potential integer overflow in length check
+  rxrpc: Fix rxkad crypto unalignment handling
+
+ include/linux/key.h          |   2 +
+ include/trace/events/rxrpc.h |   1 +
+ net/rxrpc/ar-internal.h      |   2 +-
+ net/rxrpc/conn_event.c       |  12 ++-
+ net/rxrpc/io_thread.c        |  15 +---
+ net/rxrpc/rxgk_app.c         |   2 +-
+ net/rxrpc/rxgk_common.h      |   1 +
+ net/rxrpc/rxkad.c            | 142 +++++++++++++----------------------
+ net/rxrpc/skbuff.c           |  26 ++++++-
+ 9 files changed, 94 insertions(+), 109 deletions(-)
 
