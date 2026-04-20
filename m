@@ -1,137 +1,256 @@
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C660A40DFDB
-	for <netdev@vger.kernel.org>; Mon, 20 Apr 2026 02:24:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776651887; cv=pass; b=tp0UPxx64Zf8Kj/uieSqAC/hMsZiRLCpxHlFAZPfqleVKrUSuP459arBuWF8AeEVoATg6G82I+hY7u6QvDSHETjMszI6D58UDIVEIwy0OVzstcaFps0+H2woJxQL31gsPwpJm4BQer2GxtDxVYTjwRA9SJUZpaFDeAWLbiPrCvk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776651887; c=relaxed/simple;
-	bh=+/OZNPz0g85UpTrciHl8vuB76dwrC4RJyHbllPrqc7Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=R76P4oa7GhKD3cGDD5rN/9ezAwlfReQOR1uM/v0TEw3hVX/JY32b9Z/SV2wPOEv5ZA+PbntdQ+ODdUSQhpQWcEcrXvgmfCWw315PjPaN4cMt0ICHmrSN+62zbJ39lGEDbZsXyZrWw+6rb/fupd02Wlt8CTwkN7frvIPObeW+ZIc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=o/fcdclG; arc=pass smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6235F375F67;
+	Mon, 20 Apr 2026 02:27:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776652038; cv=none; b=fEQM5S4BMg80tD6ejfOMMfLx5X/zVxz0N88ICrEhc72rFGjkVhUwmcSZiNP3g4Z+R51pZLuSwRMVoR/dfiKSBJupUb8De0c78zkZdxxO5z622dd3WerzgoyIBObKLyXE/yT1Fl7WVKWy2lTL0K2nn6rX9Jv7nAxJPlbGLhtJpEc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776652038; c=relaxed/simple;
+	bh=ITFfxWVYZShfg8ObCYl+/A7sDctvchvGVKnsu2Q0ZLU=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=Gv2ejwE8Op1pVdr6ONsXyI0Z9V+AmHg6DPXJnZM8gJuP5vYmk3AADkiOgnmpfybVZ/adtzwLlI7gd1VBkxou9u39j6C2drD5/+4iH3P6uGY1k5XNpXR494DVhySCpfh55PwLzdYOxyVEfYPQxp0FQoJ6LQhF9SbpklQpJu1jDGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q/f2q8Yr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="o/fcdclG"
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-671c24f23b1so3855661a12.0
-        for <netdev@vger.kernel.org>; Sun, 19 Apr 2026 19:24:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776651884; cv=none;
-        d=google.com; s=arc-20240605;
-        b=i8xG8b2JSI4HwjYwQOUnEZ23prndrhhggmWcQfk7fs1P2/j7oUn6OqbVPCK8eun8ic
-         LkupTHie4VcrL0Az0yN17x9wwhXAf/WqVefsHWxWGWwgsJ+cch4xralz7qE30/wP2nKX
-         5uvPPt/tONqSBPbbEuDnilj9YHyI3DyUrGvh3kzbqNd4H9RIHi0zAnNEmETNmY9meq7Z
-         h61Bmm3xtDm+SZ7eL9bn3LZaq8cIY7pGu+Y6QUgnUX5vW5y6KHGw240B5lB6G57gBW4U
-         fSaP0C/jhA7tfxit5rMsSva8hazWgNYz8EPLQB16DfrMOTf5WexP+KYSp0uNok2cbt9k
-         g0Jw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=+/OZNPz0g85UpTrciHl8vuB76dwrC4RJyHbllPrqc7Q=;
-        fh=4qdo6KEopMsl3yB5WtxT+1oteIWUzs9Bje9oo+CWVEE=;
-        b=iqfAJHH2siSgSEOefhLUW5hojbnhjAKuADG2X+z5x9twUJH2VQcO4yQY/XaFH15kGf
-         ZNDQaTs8GTxWYE4LSxrcReqPjGSYtbGllyta7Vj/v5cFd5Qh2THmJd2gTLy42OiJzn8B
-         Iz9MlAdegX51XwtTML6baELM+lpFWFYkYshE0ilBhKEuY1Y1v4VBwxXDf74iFKHK92D4
-         cET3P7O1OipTR9VDA0LoY4XgfcLXG0nKp5LK2/1mVmEZMYJfptgwo9DYaHQyAM6mu7PE
-         o5Ba5hvDsl4h+03z+xacGmNAGTDXyNtwfjzAmJpM2Frizp/CXwhgRHeSJJlBdXw8c5v5
-         iH1g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776651884; x=1777256684; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=+/OZNPz0g85UpTrciHl8vuB76dwrC4RJyHbllPrqc7Q=;
-        b=o/fcdclGj8K2rc2ZKy5A+7sYnt2jSWxbc4g96ieFWQISL8pdEFBzsEIg4KcuOcN6wW
-         B3DXjWx55O96j3+udvf+Dkvk4yQ6AZXcXsVXNS5tNq3Sk4mNhDF+Y2wr/lx/xHaviZpV
-         K0UJkZZolLExTrUX/8KBH74WfXI3HaPO98Ie0TsFIre9xDPkK/w8zTmA8AMZBKBoUpv6
-         jNdbUEjBKDF9WrmuAgKMf2koE75GENnL8ZcZsaLl+KYnU4gRjITt1B1YNpMgp5UjQTGf
-         sHH0YJZzb4tLPVL89mnMXyJhGG/O7UxYNMK+hd7Zx9H9MUBNP9K9gH2pVa3ibd9bo5jq
-         8zVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776651884; x=1777256684;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+/OZNPz0g85UpTrciHl8vuB76dwrC4RJyHbllPrqc7Q=;
-        b=aWE0jh7MVBpACyzU6DNIAROdXUCuuPKWjAZeW0R7hvawLDChpEsFiHaGZOBj52nfr0
-         NPaAwNs4NBeAdRK+ZfqVXl3p9okx5laSXk2Fr5ggCDAz3Xnd0YtylJFAffhl51x6EknG
-         zjSTNYW0sY5E0GkDTT2D+9Fku+3Tmd7p/j+P9MofVyiKwNumWxrvF/AuSAR2AdKJMipE
-         rHwP9Ff/Bj/vBYc8WETnuSJccQkBEXR4QHFCHqPh8IHPchXNaRr7OhyOhMPme/5q4leA
-         +7ffhgzqcvxdkVp9/XOMhBwspOTpZp6KiRYYsnNK6M6G1p8/EKranlaxku0WJjbOcueY
-         QUDg==
-X-Gm-Message-State: AOJu0YzfM7oNBHI97FNvLTXNGBrWYm6un1LqHfE02bwyQMEw2XRzK8Q5
-	wFRbhIBt2AEf7RxZQDkaIQLoR4aUXuVnvue4rkLI013pBwH/q1dgYOfqs5U/2MEsq1KuxD1uMzi
-	Ovw8XNSG4BtPzENH33ZDYj7R+N4mep+arBP96
-X-Gm-Gg: AeBDiet6cU+HQBrBWStYsexROlOv2gvLVx0wMTABIunqsSPidvFGyhY6/MgzCEy1/DQ
-	AHcHaxMViNlpPUMrEDDjca5GdEOBfKLLce/JA4ewUt1DiodKIz3pWohdZ1/ZrGmqTfAJFLFgbpn
-	/7evEW8wlxNfuq6TGdB5BUrLh+pn3g8gPDdEX0brm9aSfUV2lO4S2gxRs7Hx96kdQ+2AY8tOXdG
-	FbuniSOaD4ngQjjFBHZPMOhfybHCfFQwD3xYZT4d4hu3IlKrXXQz2j2djRv7zAGxqSw9ZuA8frQ
-	OvhVQfyYfQlpU046A/JruQWHZoMrP1tA2KNDnWXV6ahoz30ggRngPouKyZVMAaM=
-X-Received: by 2002:a05:6402:3203:b0:674:83b3:3c8e with SMTP id
- 4fb4d7f45d1cf-67483b33e1cmr1892932a12.28.1776651883920; Sun, 19 Apr 2026
- 19:24:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q/f2q8Yr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39F54C2BCAF;
+	Mon, 20 Apr 2026 02:27:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776652038;
+	bh=ITFfxWVYZShfg8ObCYl+/A7sDctvchvGVKnsu2Q0ZLU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=q/f2q8YrNja2t4MOJ3XZm+daEZl1FcXY4nfOVvtrtjvqt5MbZxWUYOT3wirQo6FaB
+	 lOqgywkLPOjS1VIVUdoCXgyBgeqdQRzNwaylQtig4w+yS3qEz3gmO+SVZmZJKlQIS1
+	 5YnVfgyEXKpTOb6PrQd5kn+uZtfBKDFQ/8OCcifN8EDAPaZwjDRm8Zr0mh3XQALHBh
+	 Up6SdMQEWfpLr4yC73WCFbktXDXdQ7dXOqJfGS3V/MWdgRmzjD+Y1d8LwFkLfl9Ev0
+	 jN9uHYhQzEihNOM9Uulk+1xe1nQar6NN7XIMU3fvu8QzHpDFat9SPtxyteXUC9ijgd
+	 FqU1Wkd4FKflw==
+Date: Mon, 20 Apr 2026 11:27:07 +0900
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+To: Petr Mladek <pmladek@suse.com>
+Cc: Petr Pavlu <petr.pavlu@suse.com>, Song Chen <chensong_2000@189.cn>,
+ rafael@kernel.org, lenb@kernel.org, mturquette@baylibre.com,
+ sboyd@kernel.org, viresh.kumar@linaro.org, agk@redhat.com,
+ snitzer@kernel.org, mpatocka@redhat.com, bmarzins@redhat.com,
+ song@kernel.org, yukuai@fnnas.com, linan122@huawei.com,
+ jason.wessel@windriver.com, danielt@kernel.org, dianders@chromium.org,
+ horms@kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, paulmck@kernel.org,
+ frederic@kernel.org, mcgrof@kernel.org, da.gomez@kernel.org,
+ samitolvanen@google.com, atomlin@atomlin.com, jpoimboe@kernel.org,
+ jikos@kernel.org, mbenes@suse.cz, joe.lawrence@redhat.com,
+ rostedt@goodmis.org, mhiramat@kernel.org, mark.rutland@arm.com,
+ mathieu.desnoyers@efficios.com, linux-modules@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-clk@vger.kernel.org,
+ linux-pm@vger.kernel.org, live-patching@vger.kernel.org,
+ dm-devel@lists.linux.dev, linux-raid@vger.kernel.org,
+ kgdb-bugreport@lists.sourceforge.net, netdev@vger.kernel.org
+Subject: Re: [RFC PATCH 2/2] kernel/module: Decouple klp and ftrace from
+ load_module
+Message-Id: <20260420112707.aa3627ca9f975eeaf7d8ea0e@kernel.org>
+In-Reply-To: <aeD2_FrFL6E3dbAC@pathway.suse.cz>
+References: <20260413080701.180976-1-chensong_2000@189.cn>
+	<1191caf5-6a61-4622-a15e-854d3701f4fc@suse.com>
+	<a35f5f94-7d5a-4347-974b-b270c89ef241@189.cn>
+	<1db425bf-58a9-4768-8c38-3ae25d7662a5@suse.com>
+	<aeD2_FrFL6E3dbAC@pathway.suse.cz>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <400a6387-a444-4576-af6d-26be5410bce3.ref@yahoo.com> <400a6387-a444-4576-af6d-26be5410bce3@yahoo.com>
-In-Reply-To: <400a6387-a444-4576-af6d-26be5410bce3@yahoo.com>
-From: Luiz Angelo Daros de Luca <luizluca@gmail.com>
-Date: Sun, 19 Apr 2026 23:24:30 -0300
-X-Gm-Features: AQROBzD_k39L0lLIJuFna5FadoazF99NwMp8V_QJS2cXOYHq3NXBBwdUNl_JERM
-Message-ID: <CAJq09z61zkAB3V6TzmxvWeTxR8acZdY=fb-gLaHtjXB41HLdnA@mail.gmail.com>
-Subject: Re: [PATCH v2] net: dsa: realtek: rtl8365mb: fix mode mask calculation
-To: Mieczyslaw Nalewaj <namiltd@yahoo.com>, =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alvin@pqrs.dk>
-Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-> The RTL8365MB_DIGITAL_INTERFACE_SELECT_MODE_MASK macro was shifting
-> the 4-bit mask (0xF) by only (_extint % 2) bits instead of
-> (_extint % 2) * 4. This caused the mask to overlap with the adjacent
-> nibble when configuring odd-numbered external interfaces, selecting
-> the wrong bits entirely.
->
-> Align the shift calculation with the existing ...MODE_OFFSET macro.
->
-> Fixes: 4af2950c50c8 ("net: dsa: realtek-smi: add rtl8365mb subdriver for RTL8365MB-VC")
-> Signed-off-by: Abdulkader Alrezej <alrazj.abdulkader@gmail.com>
-> Signed-off-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-> Reviewed-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
+On Thu, 16 Apr 2026 16:49:32 +0200
+Petr Mladek <pmladek@suse.com> wrote:
 
-This bug specifically affected ext1 (Port 6) for all digital interface
-modes except DISABLED (0x0) and RGMII (0x1).
+> On Thu 2026-04-16 13:18:30, Petr Pavlu wrote:
+> > On 4/15/26 8:43 AM, Song Chen wrote:
+> > > On 4/14/26 22:33, Petr Pavlu wrote:
+> > >> On 4/13/26 10:07 AM, chensong_2000@189.cn wrote:
+> > >>> diff --git a/include/linux/module.h b/include/linux/module.h
+> > >>> index 14f391b186c6..0bdd56f9defd 100644
+> > >>> --- a/include/linux/module.h
+> > >>> +++ b/include/linux/module.h
+> > >>> @@ -308,6 +308,14 @@ enum module_state {
+> > >>>       MODULE_STATE_COMING,    /* Full formed, running module_init. */
+> > >>>       MODULE_STATE_GOING,    /* Going away. */
+> > >>>       MODULE_STATE_UNFORMED,    /* Still setting it up. */
+> > >>> +    MODULE_STATE_FORMED,
+> > >>
+> > >> I don't see a reason to add a new module state. Why is it necessary and
+> > >> how does it fit with the existing states?
+> > >>
+> > > because once notifier fails in state MODULE_STATE_UNFORMED (now only ftrace has someting to do in this state), notifier chain will roll back by calling blocking_notifier_call_chain_robust, i'm afraid MODULE_STATE_GOING is going to jeopardise the notifers which don't handle it appropriately, like:
+> > > 
+> > > case MODULE_STATE_COMING:
+> > >      kmalloc();
+> > > case MODULE_STATE_GOING:
+> > >      kfree();
+> > 
+> > My understanding is that the current module "state machine" operates as
+> > follows. Transitions marked with an asterisk (*) are announced via the
+> > module notifier.
+> > 
+> > ---> UNFORMED --*> COMING --*> LIVE --*> GOING -.
+> >         ^            |                     ^    |
+> >         |            '---------------------*    |
+> >         '---------------------------------------'
+> > 
+> > The new code aims to replace the current ftrace_module_init() call in
+> > load_module(). To achieve this, it adds a notification for the UNFORMED
+> > state (only when loading a module) and introduces a new FORMED state for
+> > rollback. FORMED is purely a fake state because it never appears in
+> > module::state. The new structure is as follows:
+> > 
+> >         ,--*> (FORMED)
+> >         |
+> > --*> UNFORMED --*> COMING --*> LIVE --*> GOING -.
+> >         ^            |                     ^    |
+> >         |            '---------------------*    |
+> >         '---------------------------------------'
+> > 
+> > I'm afraid this is quite complex and inconsistent. Unless it can be kept
+> > simple, we would be just replacing one special handling with a different
+> > complexity, which is not worth it.
+> 
+> > >>
+> > >>> +    if (err)
+> > >>> +        goto ddebug_cleanup;
+> > >>>         /* Finally it's fully formed, ready to start executing. */
+> > >>>       err = complete_formation(mod, info);
+> > >>> -    if (err)
+> > >>> +    if (err) {
+> > >>> +        blocking_notifier_call_chain_reverse(&module_notify_list,
+> > >>> +                MODULE_STATE_FORMED, mod);
+> > >>>           goto ddebug_cleanup;
+> > >>> +    }
+> > >>>   -    err = prepare_coming_module(mod);
+> > >>> +    err = prepare_module_state_transaction(mod,
+> > >>> +                MODULE_STATE_COMING, MODULE_STATE_GOING);
+> > >>>       if (err)
+> > >>>           goto bug_cleanup;
+> > >>>   @@ -3522,7 +3519,6 @@ static int load_module(struct load_info *info, const char __user *uargs,
+> > >>>       destroy_params(mod->kp, mod->num_kp);
+> > >>>       blocking_notifier_call_chain(&module_notify_list,
+> > >>>                        MODULE_STATE_GOING, mod);
+> > >>
+> > >> My understanding is that all notifier chains for MODULE_STATE_GOING
+> > >> should be reversed.
+> > > yes, all, from lowest priority notifier to highest.
+> > > I will resend patch 1 which was failed due to my proxy setting.
+> > 
+> > What I meant here is that the call:
+> > 
+> > blocking_notifier_call_chain(&module_notify_list, MODULE_STATE_GOING, mod);
+> > 
+> > should be replaced with:
+> > 
+> > blocking_notifier_call_chain_reverse(&module_notify_list, MODULE_STATE_GOING, mod);
+> > 
+> > > 
+> > >>
+> > >>> -    klp_module_going(mod);
+> > >>>    bug_cleanup:
+> > >>>       mod->state = MODULE_STATE_GOING;
+> > >>>       /* module_bug_cleanup needs module_mutex protection */
+> > >>
+> > >> The patch removes the klp_module_going() cleanup call in load_module().
+> > >> Similarly, the ftrace_release_mod() call under the ddebug_cleanup label
+> > >> should be removed and appropriately replaced with a cleanup via
+> > >> a notifier.
+> > >>
+> > >     err = prepare_module_state_transaction(mod,
+> > >                 MODULE_STATE_UNFORMED, MODULE_STATE_FORMED);
+> > >     if (err)
+> > >         goto ddebug_cleanup;
+> > > 
+> > > ftrace will be cleanup in blocking_notifier_call_chain_robust rolling back.
+> > > 
+> > >     err = prepare_module_state_transaction(mod,
+> > >                 MODULE_STATE_COMING, MODULE_STATE_GOING);
+> > > 
+> > > each notifier including ftrace and klp will be cleanup in blocking_notifier_call_chain_robust rolling back.
+> > > 
+> > > if all notifiers are successful in MODULE_STATE_COMING, they all will be clean up in
+> > >  coming_cleanup:
+> > >     mod->state = MODULE_STATE_GOING;
+> > >     destroy_params(mod->kp, mod->num_kp);
+> > >     blocking_notifier_call_chain(&module_notify_list,
+> > >                      MODULE_STATE_GOING, mod);
+> > > 
+> > > if  something wrong underneath.
+> > 
+> > My point is that the patch leaves a call to ftrace_release_mod() in
+> > load_module(), which I expected to be handled via a notifier.
+> 
+> I think that I have got it. The ftrace code needs two notifiers when
+> the module is being loaded and two when it is going.
+> 
+> This is why Sond added the new state. But I think that we would
+> need two new states to call:
+> 
+>     + ftrace_module_init() in MODULE_STATE_UNFORMED
+>     + ftrace_module_enable() in MODULE_STATE_FORMED
+> 
+> and
+> 
+>     + ftrace_free_mem() in MODULE_STATE_PRE_GOING
+>     + ftrace_free_mem() in MODULE_STATE_GOING
+> 
+> 
+> By using the ascii art:
+> 
+>  -*> UNFORMED -*> FORMED -> COMING -*> LIVE -*> PRE_GOING -*> GOING -.
+>               |          |         |                ^           ^    ^
+>               |          |         '----------------'           |    |
+>               |          '--------------------------------------'    |
+>               '------------------------------------------------------'
+> 
+> 
+> But I think that this is not worth it.
 
-The error caused the mask for ext1 to overlap with the adjacent nibble
-of ext0. Since ext0 is currently unused by all supported devices in
-this family, the incorrect mask was zeroing bits that were already
-expected to be zero, masking the failure.
+Agree.
 
-However, for ext1, the incorrect shift left the effective mask with
-only a single bit (bit 4) instead of the full 4-bit nibble (bits 4-7).
-This meant the driver could only successfully write values 0x0 or 0x1.
-Any mode requiring bits [7:5] (such as MII, RMII, or HSGMII) would
-have been effectively written as 0x0 or 0x1, breaking those
-configurations.
+If this needs to be ordered so strictly, why we will use a "single"
+module notifier chain for this complex situation?
 
-The original chip for this driver, RTL8365MB-VC, does utilize ext1,
-but as the driver currently only implements RGMII mode, the hardware
-result remained coincidentally correct:
+I think the notifier call chain is just for notice a single signal,
+instead of sending several different signals, especially if there is
+any dependency among the callbacks.
 
-Before patch: (0x0001 << 4) & 0x001E = 0x0010
-After patch: (0x0001 << 4) & 0x00F0 = 0x0010
+If notification callbacks need to be ordered, they are currently
+sorted by representing priority numerically, but this is quite
+fragile for updating. It has to look up other registered priorities
+and adjust the order among dependencies each time. For this reason,
+this mechanism is not suitable for global ordering. (It's like line
+numbers in BASIC.)
+It is probably only useful for representing dependencies between
+two components maintained by the same maintainer.
 
-Tests on my device, TP-Link Archer C5v4, show no problem before and no
-regressions, as ext1/port6 is not connected on that specific hardware.
+I'm against a general-purpose system that makes everything modular.
+It unnecessarily complicates things. If there are processes that
+require strict ordering, especially processes that must be performed
+before each stage as part of the framework, they should be called
+directly from the framework, not via notification callbacks.
 
-Backporting note: There is no strict need to backport this fix to
-stable trees, as only the RGMII mode was actually implemented and it
-happened to work despite the logical error.
+This makes it simpler and more robust to maintain.
 
-Regards,
+Only the framework's end users should utilize notification callbacks.
 
-Luiz
+Thank you,
+
+
+> 
+> Best Regards,
+> Petr
+> 
+
+
+-- 
+Masami Hiramatsu (Google) <mhiramat@kernel.org>
