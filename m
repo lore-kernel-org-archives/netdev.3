@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A624421E091;
-	Mon, 20 Apr 2026 22:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3A02274FD0;
+	Mon, 20 Apr 2026 22:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776722423; cv=none; b=fYQSprKpAN2is5EjJKYzVNmFlXC/Vipr8CjTdTczSaWIFFgZ0Bq13miISkP4M+NHmzhLdpExpC3ZhHnegn10UsQ9Vbym4NhIlcY3A0yoGsTuvs7hRLA2Ck6kwghYKLUpV0sWaS0iaBXcthUeE3MHbrZFxLzjI7+25IsPCV2n3UU=
+	t=1776722426; cv=none; b=iFAdQisl5ZEcYdzA6udSoiNYONtd+blP9wNnWbL3LZGYUNHVtfTD3tOZlzlK5AqijdGMmiHFdB4B6V5A9VssL17YSJEwyuP8RCEmuhWF1V1PKAGd7gnD+myY5cg54+D20hgzVG3EuzWl724kh0lfUtXOSgbHz8NndKspQVvqDNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776722423; c=relaxed/simple;
-	bh=Z7I1XCZV4GXOlQXyoOCyHcUya2+3HNpV4yUL9YrhXEI=;
+	s=arc-20240116; t=1776722426; c=relaxed/simple;
+	bh=oHaDKe4pfNjvvj0Ijcm+SiMZhGHTBipXa16iV4hH07A=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=PXtwitKFHI97PTA1T322x4AXST7PuyifnX2vU+CleMfHVEY4zwWQEreQ+/yOoGIoygw8eulSuws84KArZHie54XmmJjmTOq9QrdfDbRRWfLF11QZktLMkJAUQgucZW+9OYMLC/CHoA8nwS19b72ow2rgYLuUIQV3xS0aJ0FT1JU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ms/qCc2R; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=cbwqzgpqnhmBb27pq9XFfs8MnLDv08gN3qjInApLRZeoAqJIksYJZ/fju2BlrPis7Blb0z3fburfbmTpxK72CdgZxQKAVzjNb7XsCG/CRSDOu0eTHoSHZwKxtegD+G4JiCM4OqcEMkbE8kX9DrhVWkF/bqHi1cKk9V/cAN0WThY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=btajVv++; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ms/qCc2R"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2731C19425;
-	Mon, 20 Apr 2026 22:00:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="btajVv++"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F16EC19425;
+	Mon, 20 Apr 2026 22:00:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776722421;
-	bh=Z7I1XCZV4GXOlQXyoOCyHcUya2+3HNpV4yUL9YrhXEI=;
+	s=k20201202; t=1776722424;
+	bh=oHaDKe4pfNjvvj0Ijcm+SiMZhGHTBipXa16iV4hH07A=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Ms/qCc2RG7aJ8gJesEiFg/9AUKS4zPcLrZHJY5LWnTXVifgu92kxGaBPZN7xOshbq
-	 YAeEpk0i0nnmyAnzHmo7y6qOsj3ukMMJXjg9ogmRYNU67TGfBETIgHJS9jm48e/zq9
-	 wOKLu7FVfDj2ymvMzQ1FnDVzf1FPH+jrNFwtEZYZgpsoPrs+v/QzxWU7PalNwSN3Fr
-	 VmWJKS6QgNwc1ZHuxGol18PfJwO3vr77xissGuQhQ5XUVVRVWvVbL+cygHtmMplE/r
-	 Fq0jOFsVPo7dnb2XMIt0U0c6TQraT1HMP1LuSB3l7DLIZPhvpeZ/8XN3Zw+P9C+I7P
-	 Ws7ftcLRBie+g==
+	b=btajVv+++pG+ETuXRzn+QGDbq7nIFEpnj9ABNytobsxXw1oKVzcy067+pVpIHP6Nw
+	 MBgIfpkOy56Vxc7NOJJtOvs3FoAWYrejOrOp9sdAF4dHNutloI25bABavL/4BVz9XS
+	 xgd3E/Kgcj4BaqdE8ukKY3da7mUGVwq1/vpWCvEkL+aIpixCCPsDdCwvipQ4/7FpX3
+	 XoAjXpCJ4k9sF/is+IggicpwmdsB2eX3qRPL6E6uy2e9P5y7mqgOhuivoImg9ry3Wv
+	 M41in2i92Xif5OGpzcBWcoC81o0QCkd+y1i6UMorA0GTX6YIklqpemVpH1ZSTdW4jd
+	 Z+pzo2vkBupGg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FE2C3930022;
-	Mon, 20 Apr 2026 21:59:47 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 0313D3930022;
+	Mon, 20 Apr 2026 21:59:50 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,41 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] hv_sock: Report EOF instead of -EIO for FIN
+Subject: Re: [PATCH net v1] net/mlx5: Fix HCA caps leak on notifier init
+ failure
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177672238581.1802062.15838493180057695674.git-patchwork-notify@kernel.org>
-Date: Mon, 20 Apr 2026 21:59:45 +0000
-References: <20260416191433.840637-1-decui@microsoft.com>
-In-Reply-To: <20260416191433.840637-1-decui@microsoft.com>
-To: Dexuan Cui <decui@microsoft.com>
-Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
- longli@microsoft.com, sgarzare@redhat.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- niuxuewei.nxw@antgroup.com, linux-hyperv@vger.kernel.org,
- virtualization@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Ben.Hillis@microsoft.com, levymitchell0@gmail.com
+ <177672238865.1802062.5421654335000570916.git-patchwork-notify@kernel.org>
+Date: Mon, 20 Apr 2026 21:59:48 +0000
+References: <20260415005022.34764-1-prathameshdeshpande7@gmail.com>
+In-Reply-To: <20260415005022.34764-1-prathameshdeshpande7@gmail.com>
+To: Prathamesh Deshpande <prathameshdeshpande7@gmail.com>
+Cc: saeedm@nvidia.com, leon@kernel.org, cjubran@nvidia.com, cratiu@nvidia.com,
+ tariqt@nvidia.com, kuba@kernel.org, netdev@vger.kernel.org,
+ linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 16 Apr 2026 12:14:33 -0700 you wrote:
-> Commit f0c5827d07cb unluckily causes a regression for the FIN packet,
-> and the final read syscall gets an error rather than 0.
+On Wed, 15 Apr 2026 01:49:37 +0100 you wrote:
+> mlx5_mdev_init() allocates HCA caps via mlx5_hca_caps_alloc() before
+> calling mlx5_notifiers_init(). If notifier initialization fails, the
+> error path jumps to err_hca_caps and skips mlx5_hca_caps_free(), leaking
+> allocated caps.
 > 
-> Ideally, we would want to fix hvs_channel_readable_payload() so that it
-> could return 0 in the FIN scenario, but it's not good for the hv_sock
-> driver to use the VMBus ringbuffer's cached priv_read_index, which is
-> internal data in the VMBus driver.
+> Add a dedicated unwind label for notifier-init failure that frees HCA
+> caps before continuing the existing cleanup sequence.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2] hv_sock: Report EOF instead of -EIO for FIN
-    https://git.kernel.org/netdev/net/c/f63152958994
+  - [net,v1] net/mlx5: Fix HCA caps leak on notifier init failure
+    https://git.kernel.org/netdev/net/c/d03fc81a5795
 
 You are awesome, thank you!
 -- 
