@@ -1,112 +1,80 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F6E313B7AE;
-	Mon, 20 Apr 2026 05:44:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8557113C9C4;
+	Mon, 20 Apr 2026 05:51:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776663882; cv=none; b=itBzLN4UA/uBT5ZEVXFWZ1BWKXjcW+LeOp/uw8XkqVqaw9zSi1wfXhuxRbr8mQJ/NK0s0v+OK9s3OptlVUBRYLRpJBfWmM/Y2RfnjRt09JcCP14I7zRKrHjHkgYzE7VWub0uF5R8Ck1vTGyhL10KOIMZh8qckgqSKA4t+USVX1Y=
+	t=1776664276; cv=none; b=qAHfarpKSPW4mewekYYrPry1dQOnBxLqWOdZU3c5YBfnX8HgJBaQb54uCOwhiwXdtPNXPEsQF8Z0/gBpmMz2eAke9SssbeKOR5h8sNtSFwya32u99Bi/rNq5grROuPqY+YvrzVe1G8Z0zoB6uqcw16f6SYtc/2InJi3cFck4188=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776663882; c=relaxed/simple;
-	bh=xkmJx488oioqlVuBsBzqvzkV5ymXtO1NzGZYZJ9TN6o=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=ZOf2AHNvTYhH75yx6IzlP41EowrBuL0iesKY9r0GX810FMQijZmkXZ54maJYbuULFSkbcdMqVszox6WLFzLFOs3lYT+mva6xnjU+g+4D3VfhTqTZSq+qoLQJJbhNQZOFhp61tCmaRLFVR1rgOfoNhK6mYESh/q/jd1ECQFWwPnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q5kXwHUL; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776664276; c=relaxed/simple;
+	bh=mM7nrILypJTY/P85KRkTSJEidfXBiMKGe3fl6hBpgDo=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Z2bhApxKqfO7r69nLC6Ir3iG6jBCA1vC8F+Z1bET8B9AEqqjzy4gU3D251w25i8r/RKRC1Hula/wZTjkl1+FIsMk0DP8yzqD2/2uGtqujhl2jA8j8u/bLx79HEEmMbUflRbHsSgn3I2i24blpISncYXnWYTIocYr1kFJoVo2vT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=RUr0v7VJ; arc=none smtp.client-ip=203.29.241.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q5kXwHUL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D37CCC19425;
-	Mon, 20 Apr 2026 05:44:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776663881;
-	bh=xkmJx488oioqlVuBsBzqvzkV5ymXtO1NzGZYZJ9TN6o=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Q5kXwHULe0trWEeW3PwHiwxYGtKmrwmWyVHVaGSkUoY3z3Mo0/bAik7KYgBHhgIq7
-	 quTUXQCdK5BfLEChkYI14e5JXsFGCpWvmTE+wW1Bz6AinJmPQYkeV1Gojt53OvGMap
-	 qTj3Ncjit17pKYlm0HroYdtdqlFVmo0KZ/K8H2PIGK1QEykw6Ib4z5u8zWI6gjicEN
-	 rrkIeFBWlAj3n5GwnrGD7tJr/aS9NJ/j1Gjd4rRDlXUsAZ4XUaf46iG7dq7K0UOWpD
-	 qs5bnkYdCRwClUqH1xONKowKxlWBpz19Lx3F7K4JDdkwljBS2HiPwqM0j8LXwF7Ws+
-	 U8TrOa5Lke3nw==
-Date: Mon, 20 Apr 2026 14:44:29 +0900
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To: chensong_2000@189.cn
-Cc: rafael@kernel.org, lenb@kernel.org, mturquette@baylibre.com,
- sboyd@kernel.org, viresh.kumar@linaro.org, agk@redhat.com,
- snitzer@kernel.org, mpatocka@redhat.com, bmarzins@redhat.com,
- song@kernel.org, yukuai@fnnas.com, linan122@huawei.com,
- jason.wessel@windriver.com, danielt@kernel.org, dianders@chromium.org,
- horms@kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, paulmck@kernel.org,
- frederic@kernel.org, mcgrof@kernel.org, petr.pavlu@suse.com,
- da.gomez@kernel.org, samitolvanen@google.com, atomlin@atomlin.com,
- jpoimboe@kernel.org, jikos@kernel.org, mbenes@suse.cz, pmladek@suse.com,
- joe.lawrence@redhat.com, rostedt@goodmis.org, mark.rutland@arm.com,
- mathieu.desnoyers@efficios.com, linux-modules@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-clk@vger.kernel.org,
- linux-pm@vger.kernel.org, live-patching@vger.kernel.org,
- dm-devel@lists.linux.dev, linux-raid@vger.kernel.org,
- kgdb-bugreport@lists.sourceforge.net, netdev@vger.kernel.org
-Subject: Re: [RFC PATCH 1/2] kernel/notifier: replace single-linked list
- with double-linked list for reverse traversal
-Message-Id: <20260420144429.57b45f2beece690bceea96ec@kernel.org>
-In-Reply-To: <20260415070137.17860-1-chensong_2000@189.cn>
-References: <20260415070137.17860-1-chensong_2000@189.cn>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="RUr0v7VJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=codeconstruct.com.au; s=2022a; t=1776663668;
+	bh=mM7nrILypJTY/P85KRkTSJEidfXBiMKGe3fl6hBpgDo=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=RUr0v7VJXDXoYgkx7NeicB35aKbqQvj9LNIyZvRG9rXeOvSsxd69YogVaEt5ZhDuU
+	 xs0WftUvmsDUMFDDtfHiR0FSbgtzRXHUM5LtAOXvKyouqdSU4o92GMnVbALnOq29Pa
+	 e3DsTrQKpYipTlsoiS/8fkLqk4RurZ0/8Tl220/o6Oj9DMJcwsnAXufnGhuHnjbGNY
+	 RCgA5TSbuULu/Kq++em+gb+xu80thZcR440tb0zQZCtGdMD1iRl0Q6If/t67VHdMbd
+	 +oSLU/ntWeg629g9DXlFc4Y8P/x5kiaUTK7YTw05SorAVHCH1+QAdpAOh6rbbMCQ+x
+	 kb0M+R25trwIQ==
+Received: from [192.168.72.167] (210-10-213-150.per.static-ipl.aapt.com.au [210.10.213.150])
+	by mail.codeconstruct.com.au (Postfix) with ESMTPSA id 9FC4260C8D;
+	Mon, 20 Apr 2026 13:41:07 +0800 (AWST)
+Message-ID: <28119a94e183d695389f51282d48580adc7703b4.camel@codeconstruct.com.au>
+Subject: Re: [PATCH net] net: mctp: fix don't require received header
+ reserved bits to be zero
+From: Jeremy Kerr <jk@codeconstruct.com.au>
+To: wit_yuan <yuanzhaoming901030@126.com>
+Cc: yuanzm2@lenovo.com, matt@codeconstruct.com.au, davem@davemloft.net, 
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org,  linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Date: Mon, 20 Apr 2026 13:41:07 +0800
+In-Reply-To: <20260417141340.5306-1-yuanzhaoming901030@126.com>
+References: <20260417141340.5306-1-yuanzhaoming901030@126.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4-2+deb12u1 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
 
-Hi Song,
+Hi,
 
-On Wed, 15 Apr 2026 15:01:37 +0800
-chensong_2000@189.cn wrote:
+> From the MCTP Base specification (DSP0236 v1.2.1), the first byte of
+> the MCTP header contains a 4 bit reserved field, and 4 bit version.
+>=20
+> On our current receive path, we require those 4 reserved bits to be
+> zero, but the 9500-8i card is non-conformant, and may set these
+> reserved bits.
+>=20
+> DSP0236 states that the reserved bits must be written as zero, and
+> ignored when read. While the device might not conform to the former,
+> we should accept these message to conform to the latter.
+>=20
+> Relax our check on the MCTP version byte to allow non-zero bits in the
+> reserved field.
+>=20
+> Fixes: 889b7da23abf ("mctp: Add initial routing framework")
+> Signed-off-by: Yuan Zhaoming <yuanzm2@lenovo.com>
 
-> From: Song Chen <chensong_2000@189.cn>
-> 
-> The current notifier chain implementation uses a single-linked list
-> (struct notifier_block *next), which only supports forward traversal
-> in priority order. This makes it difficult to handle cleanup/teardown
-> scenarios that require notifiers to be called in reverse priority order.
+Looks good, thanks for the contribution!
 
-What about introducing a new notification callback API that allows you
-to describe dependencies between callback functions?
+Acked-by: Jeremy Kerr <jk@codeconstruct.com.au>
 
-For example, when registering a callback, you could register a string
-as an ID and specify whether to call it before or after that ID,
-or you could register a comparison function that is called when adding
-to a list. (I prefer @name and @depends fields so that it can be easily
-maintained.)
+Cheers,
 
-This would allow for better dependency building when adding to the list.
 
-> 
-> A concrete example is the ordering dependency between ftrace and
-> livepatch during module load/unload. see the detail here [1].
-
-If this only concerns notification callback issues with the ftrace
-and livepatch modules, it's far more robust to simply call the
-necessary processing directly when the modules load and unload,
-rather than registering notification callbacks externally.
-
-There are fprobe, kprobe and its trace-events, all of them are using
-ftrace as its fundation layer. In this case, I always needs to
-consider callback order when a module is unloaded.
-
-If ftrace is working as a part of module callbacks, it will conflict
-with fprobe/kprobe module callback. Of course we can reorder it with
-modifying its priority. But this is ugly, because when we introduce
-a new other feature which depends on another layer, we need to
-reorder the callback's priority number on the list.
-
-Based on the above, I don't think this can be resolved simply by
-changing the list of notification callbacks to a bidirectional list.
-
-Thank you,
-
--- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Jeremy
