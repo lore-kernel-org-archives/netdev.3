@@ -1,34 +1,34 @@
-Received: from n169-113.mail.139.com (n169-113.mail.139.com [120.232.169.113])
+Received: from n169-114.mail.139.com (n169-114.mail.139.com [120.232.169.114])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83C4A35A381;
-	Mon, 20 Apr 2026 05:43:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.113
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FEC613B7AE;
+	Mon, 20 Apr 2026 05:43:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.114
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776663818; cv=none; b=h1WwrfpRSJcqUkRctt9xkjLufEZWoFOdT8AgvIyrDv+WXsU3I8WXqTLwwxKEUcfofghEFatUxjEwxDivxbaNQCNxfIbK+uiGNwBZF9l6nX9Ze4lzxQEj5QA2h72gEn7uRBzR76IEdxeGYm0YMIbSALrZUapc23cpNMDBHKZfsGY=
+	t=1776663827; cv=none; b=TrZk2X/BqucRAMBrONLOhkJIrAd06eX8jVo/7fPZwrLDeGfVUqoDKtTO1GiOgZom4cxMoyhrkZBs7ZBMgY4lLVoT9roCKSY4LOjWnsgR21p1q+PWsahH0ScypDWv6NJNGSVH5lMlvUcSgHshGMAuNAc6xQuN6/ijkuPiYiwUBd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776663818; c=relaxed/simple;
-	bh=5IquD4tkjav+yz6CV8S9fLdCQgwSnSz1y85Sh16Wtyw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Eyk9roZP72ebm1ZV1/IFtNMeC1P9a7TuaCeTSIC6W46A2mIcFAKE2hAga79ft8s8qPiu+015JYTX9tuKDfmlP1zKLng5et53IkDBroTkbl4Wx4i35mBMLYzFErEh/ber5r89iVZ7XBZ7uKvCP69wSmfijLqlUrJd6q5bJuCuiHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=GPajPADq; arc=none smtp.client-ip=120.232.169.113
+	s=arc-20240116; t=1776663827; c=relaxed/simple;
+	bh=aVbyG8hmO8QBPDCIqF+eHjjGxHVD+FBHnipkxql8DTs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Mky0fs3pbEOponQBbVLnMrEUyryRBCpLWs9cTCW8Htv4RwoxyEJryVk/PKMw1V2pJalH+Mo7uJOX8hogfKwhP0BM6hktoVGRAo9jWqA/cy1R2s2go8DXUUOg5KZ3AoamcyS4SxrLZPBOYEb1FO828wSqdZijY8qQvN8X52CbiIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=l3fY/9in; arc=none smtp.client-ip=120.232.169.114
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="GPajPADq"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="l3fY/9in"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=139.com; s=dkim; l=0;
 	h=from:subject:message-id:to:cc:mime-version;
 	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=GPajPADqQXtPCs5vOa+qhpdRa9wpTx9tiKDThGbCR4SGEvxTvOXb1YEK5I0kJP0alhSjzl1I33Fe9
-	 YX/xouBHU6pRu+mLPCTo3ZGCKXJMhu+OjOI0lTPGcmdE/+eLwTpi0UdnFT7HC0o0mE28ILjzwKZivy
-	 xQ+Wm2PDBo2KVAtU=
+	b=l3fY/9intQESJ8HYLdyducwbcyPvpWMNwvDy82/38IllAETzA9WC9PIaLG21X5Oo8aH/EyfslaZad
+	 Kyd1ZKmkNz9NZNsb3vVjdBB47kz1hzXVpNGpGdiRleLEhPTcFXBxZeAD5sZqSCfE+zAU/n2ep+8Tnz
+	 7YYlubN+byeUZbZI=
 X-RM-TagInfo: emlType=0                                       
 X-RM-SPAM:                                                                                        
 X-RM-SPAM-FLAG:00000000
 Received:from NTT-kernel-dev (unknown[60.247.85.88])
-	by rmsmtp-lg-appmail-32-12046 (RichMail) with SMTP id 2f0e69e5bcf8d81-01da7;
-	Mon, 20 Apr 2026 13:43:24 +0800 (CST)
-X-RM-TRANSID:2f0e69e5bcf8d81-01da7
+	by rmsmtp-lg-appmail-45-12076 (RichMail) with SMTP id 2f2c69e5bd04763-057d4;
+	Mon, 20 Apr 2026 13:43:35 +0800 (CST)
+X-RM-TRANSID:2f2c69e5bd04763-057d4
 From: Li hongliang <1468888505@139.com>
 To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org,
@@ -44,9 +44,9 @@ Cc: patches@lists.linux.dev,
 	david.lebrun@uclouvain.be,
 	netdev@vger.kernel.org,
 	andrea.mayer@uniroma2.it
-Subject: [PATCH 5.15.y] ipv6: add NULL checks for idev in SRv6 paths
-Date: Mon, 20 Apr 2026 13:43:21 +0800
-Message-Id: <20260420054321.3043814-1-1468888505@139.com>
+Subject: [PATCH 5.10.y] ipv6: add NULL checks for idev in SRv6 paths
+Date: Mon, 20 Apr 2026 13:43:34 +0800
+Message-Id: <20260420054334.3043858-1-1468888505@139.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -80,10 +80,10 @@ Signed-off-by: Li hongliang <1468888505@139.com>
  2 files changed, 6 insertions(+)
 
 diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
-index 10772dab66bb..3d249c10e3e9 100644
+index cdad9019c77c..dfa0fb3d6c35 100644
 --- a/net/ipv6/exthdrs.c
 +++ b/net/ipv6/exthdrs.c
-@@ -373,6 +373,10 @@ static int ipv6_srh_rcv(struct sk_buff *skb)
+@@ -361,6 +361,10 @@ static int ipv6_srh_rcv(struct sk_buff *skb)
  	hdr = (struct ipv6_sr_hdr *)skb_transport_header(skb);
  
  	idev = __in6_dev_get(skb->dev);
@@ -95,10 +95,10 @@ index 10772dab66bb..3d249c10e3e9 100644
  	accept_seg6 = net->ipv6.devconf_all->seg6_enabled;
  	if (accept_seg6 > idev->cnf.seg6_enabled)
 diff --git a/net/ipv6/seg6_hmac.c b/net/ipv6/seg6_hmac.c
-index 7e3a85769932..68acff337e41 100644
+index f82fcd8908e1..b52985c867c2 100644
 --- a/net/ipv6/seg6_hmac.c
 +++ b/net/ipv6/seg6_hmac.c
-@@ -244,6 +244,8 @@ bool seg6_hmac_validate_skb(struct sk_buff *skb)
+@@ -245,6 +245,8 @@ bool seg6_hmac_validate_skb(struct sk_buff *skb)
  	struct inet6_dev *idev;
  
  	idev = __in6_dev_get(skb->dev);
