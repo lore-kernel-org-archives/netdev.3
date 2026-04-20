@@ -1,49 +1,86 @@
-Received: from www2881.sakura.ne.jp (www2881.sakura.ne.jp [49.212.198.91])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6400F38A70B
-	for <netdev@vger.kernel.org>; Mon, 20 Apr 2026 10:55:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.198.91
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82A4239B494
+	for <netdev@vger.kernel.org>; Mon, 20 Apr 2026 10:58:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776682509; cv=none; b=f0NbsNagP99qrt0XGxSlahVNMZi5ZDD5Nux8lLK8nQcgXTOgLhUUz81qii9I/gsIBGsA43JjiFRC/a7P56rYMKVUEQffM4I0Euu7xULCO6MtO9BKEBbMKXZHgW04wC4OfK0WJ8qnrITqZAZOiu+6wZrap7axHP6Vrc/txWdhsI0=
+	t=1776682714; cv=none; b=WwsrO+xGj46qpJLxABsvW3BfJRCzlmuauPDK5r/UOAic0sgv7MLzYEouY4ehcrUNB7x/XW0AkzCCRhv6iz6acGxh+b4SgLfE/A2I6u9+8gRVcViTlT6JfmpDiOaHxAWbszJSAZ+3dUjiD3FfHPFOsgdbZ11aW7F70l7actcQYWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776682509; c=relaxed/simple;
-	bh=Ih75MiT1nxkV58aMIhTrWoWOIGCJAoBgD4qTv6PZrOs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ISv994k7ZzVYdLbHMNckVv85Se+7um33ICvXWPKMcMKBoSzDqeus5kWpQ0qfPWgu/QQrQyEk2hjACkZVhfw/kgGk6i3VW4zYt32WasrcUlT/n0pr0rAWgXyLNfLC/GMmMDHr1Z98ctVMSekl3BaCfF6YS9hFeR9JkbPVxMWFPwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enjuk.jp; spf=pass smtp.mailfrom=enjuk.jp; dkim=pass (2048-bit key) header.d=enjuk.jp header.i=@enjuk.jp header.b=BiLYxVBY; arc=none smtp.client-ip=49.212.198.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enjuk.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=enjuk.jp
+	s=arc-20240116; t=1776682714; c=relaxed/simple;
+	bh=Z/RqQZ5y6bft4hMqHDaUqfOlQhmbzjC0l1HNhO7nBss=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=fkZeews/aDJsSDNokhaco43uwXCqYg2h8n+RtHofYOzs5T57+pwEkp3twWnhzeZ9H4lJf1pyLIzU3OvGBRb8ZqKrkyZa4FQ2OADKu9TeIriZVtQGu4mWBb96U7VjTiEGjhcOGNHx1IZNTLaMZmnM78CGhuPa4f7CRah4ReUsffQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jJJVPpqu; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=enjuk.jp header.i=@enjuk.jp header.b="BiLYxVBY"
-Received: from ms-a2 (232.154.13.160.dy.iij4u.or.jp [160.13.154.232])
-	(authenticated bits=0)
-	by www2881.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 63KAsTEk075988
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Mon, 20 Apr 2026 19:54:29 +0900 (JST)
-	(envelope-from kohei@enjuk.jp)
-DKIM-Signature: a=rsa-sha256; bh=pYioUKZnt9VYwWs6DWfDt4Pc9NsWt3Uf7y1Z3Z+cTps=;
-        c=relaxed/relaxed; d=enjuk.jp;
-        h=From:Message-ID:To:Subject:Date;
-        s=rs20251215; t=1776682469; v=1;
-        b=BiLYxVBYfTWboC+uMIy3jXTNSudIeQ+XHWkYkPzmfviXqvZqt1gvmuPfW8VMKTtt
-         ukPLJSP5qB0hkeQafKtgmMKCIE8ESafRo9SpYCU/wltk2bxGPPcV1vw9deV4vNTJ
-         ncTnwS5SLvlpCPLWQqipygikmGPv/IGSBsInUfFlWJCSIjMSBdQHJuI99MeIrzZ5
-         sRdFapX3/CQAP/Su9y4XZE2cmjn6Je+1hd2D62oLG1V3ZT3zJ/OJg9Ur9FMkq85e
-         z7Vua7ixIGAR775LFUIHmalvf8ZPuCseaXJQGkv+8K3Gn4bKvWImWfOfa9e7LgM6
-         SrtN87bWG/Uz8TZp8soaeg==
-From: Kohei Enju <kohei@enjuk.jp>
-To: netdev@vger.kernel.org, linux-trace-kernel@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Kohei Enju <kohei@enjuk.jp>
-Subject: [PATCH net v1] net: validate skb->napi_id in RX tracepoints
-Date: Mon, 20 Apr 2026 10:54:23 +0000
-Message-ID: <20260420105427.162816-1-kohei@enjuk.jp>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jJJVPpqu"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4896c22fcbaso4312395e9.0
+        for <netdev@vger.kernel.org>; Mon, 20 Apr 2026 03:58:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776682711; x=1777287511; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vQOWKei7Kltdv3X+USCnxklQ74uXe3yFxWu8Qz5lwVU=;
+        b=jJJVPpqucET7sdp+zik/1K0WCBhkX0wEZkUdBUuIhuqyC5EMcg0CDVmcl25VK7gDaZ
+         ekaE/8XtEQ7PtvT6fNB1YhcLyopAE2DIaoDakL2TBpwagHQU0IoZ42GBFlIy2SvX5Tj0
+         LSa6jEKVo0Qp7j8tuiVkWRM3mEtPziw0bfqSewkE/6BSklBnRVy1EqEs6Th0g7mK/U5R
+         geyzL1CpPkSl3WjSSN+8sl2Ru/YNCpzNvlwvZSie9q7+ZX/vUykDOOOktNAn+/Y2ZxXW
+         +SI7WZMitSlWlYpEB0yRz2c5t9YjyvJBAgJ9JLn+AB3x+q27Z7oj+Y8OONR9np3Of2YY
+         IxPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776682711; x=1777287511;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=vQOWKei7Kltdv3X+USCnxklQ74uXe3yFxWu8Qz5lwVU=;
+        b=sgAwWZ7qYnY+EXA5UAx3j9qSUKlOxloEMBcjElI3RJMJm9Rral4H1XcdSIWuNPTWz/
+         RA/7ZLG0agroP5LRNoZ8ud1WWAcJ8Z9qMV3bBqSL4LcY/sEXYOQIM0Iby3uQ7PV4EJSD
+         xFIXyxebxlZkypbEu51oncg67s81A04q6QrUkYh29UTWH5ZgUDASXz5Uy2KvT/X5aSPi
+         3Rn0mcmpZCOZm3nycUxk5BV1vYT7Ye8sOrKwvNVFIkGWm+T/Mn9PWrOZ2YLcuhiXi9I3
+         JcS6BTJdiFv5h5ozORXdVG+vXGYfeZe2pi5Zk846koo1R1KxpDM9Txvee9KtEB1PCZ0g
+         k+iQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/F07PASFST6uhYeeEKItcydQqfwtV86b9Qh/Ga8eXK86zvY/AZ0w1KhCHC+pZ/2VZlxkKGPdk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOcUp0OD7zkAlI9D3bGj3qGG4vLaD/ND0bxzvr288ZXdKudChx
+	zQFiOVJzD2kV1O1S17EE25sg52u0jBUoOHj+lKWufLWh8tlolXmnhPno
+X-Gm-Gg: AeBDiesL2BKIsXaPoVWUFzRbtCbquOBBEaWykzoeSIaHUrT4TEgf+HdquBe75FXbrXn
+	uiYkybHdw7axe8jPo0Qbq0fVaCPipdoo5n7rCuyEFoJ4lXo1k+I/HNL/IwNhEbc7YmC7pL4FxDT
+	vSNe+18Y7wFxi6DspmSpo9yvwC3ZAXFGJaGXAdY5orXaMBHAbdl3SMmdHabenqU88VkwEuQEfLL
+	gw1/Yl4BUnE1vYWFJQZcDmharCWwO0aR/dy0gx3Fl2SHUjmiier3Ef4AlzRAUX5SYIvAn98VIWr
+	0NIJ/Nmpl3AsNzv7tSeDRLivkowUKTpE9vD8HqWMuThTvRmf3mCf4lQlDpnHBMYEMpQ4hP2gIsF
+	Oxq2hH+L32SJ64lHUGnlTPZrrR/buP8nEAGfsz7x8Ze8+qeY5EjwVbM1koyYM7qSVlpf9/nV/xC
+	rOx2Erl8iPi3GGdA6cvNB14HJTD/74WS+21zq/0g==
+X-Received: by 2002:a05:600c:12d4:b0:489:1f04:96c3 with SMTP id 5b1f17b1804b1-4891f049763mr20239635e9.2.1776682710673;
+        Mon, 20 Apr 2026 03:58:30 -0700 (PDT)
+Received: from mtardy-friendly-lvh-runner.local ([2600:1900:4010:1a8::])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-488fc1cfbf2sm290929495e9.15.2026.04.20.03.58.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Apr 2026 03:58:30 -0700 (PDT)
+From: Mahe Tardy <mahe.tardy@gmail.com>
+To: mahe.tardy@gmail.com
+Cc: alexei.starovoitov@gmail.com,
+	andrii@kernel.org,
+	ast@kernel.org,
+	bpf@vger.kernel.org,
+	coreteam@netfilter.org,
+	daniel@iogearbox.net,
+	fw@strlen.de,
+	john.fastabend@gmail.com,
+	lkp@intel.com,
+	martin.lau@linux.dev,
+	netdev@vger.kernel.org,
+	netfilter-devel@vger.kernel.org,
+	oe-kbuild-all@lists.linux.dev,
+	pablo@netfilter.org
+Subject: [PATCH bpf-next v4 1/6] net: move netfilter nf_reject_fill_skb_dst to core ipv4
+Date: Mon, 20 Apr 2026 10:58:11 +0000
+Message-Id: <20260420105816.72168-2-mahe.tardy@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260420105816.72168-1-mahe.tardy@gmail.com>
+References: <aI0MkNvWlE4FXMV8@gmail.com>
+ <20260420105816.72168-1-mahe.tardy@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,47 +89,103 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Since commit 2bd82484bb4c ("xps: fix xps for stacked devices"),
-skb->napi_id shares storage with sender_cpu. RX tracepoints using
-net_dev_rx_verbose_template read skb->napi_id directly and can therefore
-report sender_cpu values as if they were NAPI IDs.
+Move and rename nf_reject_fill_skb_dst from
+ipv4/netfilter/nf_reject_ipv4 to ip_route_reply_fetch_dst in
+ipv4/route.c so that it can be reused in the following patches by BPF
+kfuncs.
 
-For example, on the loopback path this can report 1 as napi_id, where 1
-comes from raw_smp_processor_id() + 1 in the XPS path:
+Netfilter uses nf_ip_route that is almost a transparent wrapper around
+ip_route_output_key so this patch inlines it.
 
-  # bpftrace -e 'tracepoint:net:netif_rx_entry{ print(args->napi_id); }'
-  # taskset -c 0 ping -c 1 ::1
-
-Report only valid NAPI IDs in these tracepoints and use 0 otherwise.
-
-Fixes: 2bd82484bb4c ("xps: fix xps for stacked devices")
-Signed-off-by: Kohei Enju <kohei@enjuk.jp>
+Signed-off-by: Mahe Tardy <mahe.tardy@gmail.com>
 ---
- include/trace/events/net.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ include/net/route.h                 |  1 +
+ net/ipv4/netfilter/nf_reject_ipv4.c | 19 ++-----------------
+ net/ipv4/route.c                    | 15 +++++++++++++++
+ 3 files changed, 18 insertions(+), 17 deletions(-)
 
-diff --git a/include/trace/events/net.h b/include/trace/events/net.h
-index fdd9ad474ce3..dbc2c5598e35 100644
---- a/include/trace/events/net.h
-+++ b/include/trace/events/net.h
-@@ -10,6 +10,7 @@
- #include <linux/if_vlan.h>
- #include <linux/ip.h>
- #include <linux/tracepoint.h>
-+#include <net/busy_poll.h>
- 
- TRACE_EVENT(net_dev_start_xmit,
- 
-@@ -208,7 +209,8 @@ DECLARE_EVENT_CLASS(net_dev_rx_verbose_template,
- 	TP_fast_assign(
- 		__assign_str(name);
- #ifdef CONFIG_NET_RX_BUSY_POLL
--		__entry->napi_id = skb->napi_id;
-+		__entry->napi_id = napi_id_valid(skb->napi_id) ?
-+				   skb->napi_id : 0;
- #else
- 		__entry->napi_id = 0;
- #endif
--- 
-2.51.0
+diff --git a/include/net/route.h b/include/net/route.h
+index f90106f383c5..ec2466fd0bec 100644
+--- a/include/net/route.h
++++ b/include/net/route.h
+@@ -173,6 +173,7 @@ struct rtable *ip_route_output_flow(struct net *, struct flowi4 *flp,
+ 				    const struct sock *sk);
+ struct dst_entry *ipv4_blackhole_route(struct net *net,
+ 				       struct dst_entry *dst_orig);
++int ip_route_reply_fetch_dst(struct sk_buff *skb);
+
+ static inline struct rtable *ip_route_output_key(struct net *net, struct flowi4 *flp)
+ {
+diff --git a/net/ipv4/netfilter/nf_reject_ipv4.c b/net/ipv4/netfilter/nf_reject_ipv4.c
+index fecf6621f679..2290451ed122 100644
+--- a/net/ipv4/netfilter/nf_reject_ipv4.c
++++ b/net/ipv4/netfilter/nf_reject_ipv4.c
+@@ -252,21 +252,6 @@ static void nf_reject_ip_tcphdr_put(struct sk_buff *nskb, const struct sk_buff *
+ 	nskb->csum_offset = offsetof(struct tcphdr, check);
+ }
+
+-static int nf_reject_fill_skb_dst(struct sk_buff *skb_in)
+-{
+-	struct dst_entry *dst = NULL;
+-	struct flowi fl;
+-
+-	memset(&fl, 0, sizeof(struct flowi));
+-	fl.u.ip4.daddr = ip_hdr(skb_in)->saddr;
+-	nf_ip_route(dev_net(skb_in->dev), &dst, &fl, false);
+-	if (!dst)
+-		return -1;
+-
+-	skb_dst_set(skb_in, dst);
+-	return 0;
+-}
+-
+ /* Send RST reply */
+ void nf_send_reset(struct net *net, struct sock *sk, struct sk_buff *oldskb,
+ 		   int hook)
+@@ -279,7 +264,7 @@ void nf_send_reset(struct net *net, struct sock *sk, struct sk_buff *oldskb,
+ 	if (!oth)
+ 		return;
+
+-	if (!skb_dst(oldskb) && nf_reject_fill_skb_dst(oldskb) < 0)
++	if (!skb_dst(oldskb) && ip_route_reply_fetch_dst(oldskb) < 0)
+ 		return;
+
+ 	if (skb_rtable(oldskb)->rt_flags & (RTCF_BROADCAST | RTCF_MULTICAST))
+@@ -352,7 +337,7 @@ void nf_send_unreach(struct sk_buff *skb_in, int code, int hook)
+ 	if (iph->frag_off & htons(IP_OFFSET))
+ 		return;
+
+-	if (!skb_dst(skb_in) && nf_reject_fill_skb_dst(skb_in) < 0)
++	if (!skb_dst(skb_in) && ip_route_reply_fetch_dst(skb_in) < 0)
+ 		return;
+
+ 	if (skb_csum_unnecessary(skb_in) ||
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index bc1296f0ea69..7091ef936073 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -2945,6 +2945,21 @@ struct rtable *ip_route_output_flow(struct net *net, struct flowi4 *flp4,
+ }
+ EXPORT_SYMBOL_GPL(ip_route_output_flow);
+
++int ip_route_reply_fetch_dst(struct sk_buff *skb)
++{
++	struct rtable *rt;
++	struct flowi4 fl4 = {
++		.daddr = ip_hdr(skb)->saddr
++	};
++
++	rt = ip_route_output_key(dev_net(skb->dev), &fl4);
++	if (IS_ERR(rt))
++		return PTR_ERR(rt);
++	skb_dst_set(skb, &rt->dst);
++	return 0;
++}
++EXPORT_SYMBOL_GPL(ip_route_reply_fetch_dst);
++
+ /* called with rcu_read_lock held */
+ static int rt_fill_info(struct net *net, __be32 dst, __be32 src,
+ 			struct rtable *rt, u32 table_id, dscp_t dscp,
+--
+2.34.1
 
