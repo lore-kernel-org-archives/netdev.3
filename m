@@ -1,34 +1,34 @@
 Received: from n169-111.mail.139.com (n169-111.mail.139.com [120.232.169.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6906F2C21EE;
-	Mon, 20 Apr 2026 05:42:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2153B2E2DDD;
+	Mon, 20 Apr 2026 05:43:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776663784; cv=none; b=LMiQ9ZERv9cLNNPA0LPdFJSnW0SxTwxEqoDZVcT5Nsk2WGXcVyTon9Rw3AH2rTNSZRAl2EPrzKBHKYuo+hOu8ClPXywQUdh0l+MKv3kJr1qJgaEI+0w5p8m+3P/cQG0D5+VayAbXxSC7a0jfi7nOP9UY1WXAVVl2imxYzY0rslw=
+	t=1776663785; cv=none; b=ahahfuKXnzCpT8hwoPHaY8BFgSpozfaGm8VynlKocbGNtbJEWV0jsa6t7ftWMeiVVZnYfxqigbAhioWL5c5B6qmqJ98KJQBoatTV3U6EEI87dFCm7Lsh3HwBC6zqd9FGGfgS+X+PR75QBK/KM1JlImDer9B0psp0ly53yQt31/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776663784; c=relaxed/simple;
-	bh=S+E4YfUt/nhC2VFntQ2C78zHJ8wfTR9NhfWnmKNpeAg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tgmVgg5VCs9JC2M0eUuR1xxwG8xlhZRIVdubHYuxkUJAl0yHr5Gp/zZ5UPSlRvxp34/E85UB65yloWWZngPsgZge0Lii0+9SiP9EEwg3vvuDO1+KnMSHwie3KQwR6xzN3LKt2m05HMe81hJ6rQDvISiCLJxiBuzzmv5FcRTAhAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=wcE323tj; arc=none smtp.client-ip=120.232.169.111
+	s=arc-20240116; t=1776663785; c=relaxed/simple;
+	bh=9kZiWNVHMmotTn9/tPAFXCLC52Qw7BX78Q8iiuoY4j8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=QA15BN4XkPZgggjDDj9NqtRVUfTm6YTFBDXlIe59BySRCm68dYIQvE6rLIdPQjmhkaODupQX+ockAPc5BHN46bPMsBYqWanlYrRzPhYRa9uajPsuKV8pcB6u+1rF5crQfnKFnDDk3uHYBCvumCm6KfLEZ/rOBz+kt8UJKS37SqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=WMUlJkNB; arc=none smtp.client-ip=120.232.169.111
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="wcE323tj"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="WMUlJkNB"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=139.com; s=dkim; l=0;
 	h=from:subject:message-id:to:cc:mime-version;
 	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=wcE323tjCg0o+l2pUqmE5+17J8YYZ4NMghjwfioX91O25udDh5X+ELqaauaZIv32qU2L0rn6Lm9aZ
-	 DrTIu8MTgIJaOnRjOll5FpAPGLkc+/JkiP5qc2VwH3sTKNxWxwxuOqXHiz4Ta0RaTrYcLhQJQBoMJa
-	 0D7k8m/j7cbCw4a4=
+	b=WMUlJkNBteOhUrZe+3h/Fm0OimPwlJJI7mzW7nmFxn4A1VlXAz7m1JYPczNFzdyARRPrimbLMeUq/
+	 9XQ0iHzoHHE2LYv1akrkne80lu0cj/d2A/YkXBMt6r4n5DP5frPIRPedquxCOD5LqaWVirZmsQ1swF
+	 Yg/eDGRFa0ee92ek=
 X-RM-TagInfo: emlType=0                                       
 X-RM-SPAM:                                                                                        
 X-RM-SPAM-FLAG:00000000
 Received:from NTT-kernel-dev (unknown[60.247.85.88])
-	by rmsmtp-lg-appmail-16-12015 (RichMail) with SMTP id 2eef69e5bccfaa0-01ac1;
-	Mon, 20 Apr 2026 13:42:43 +0800 (CST)
-X-RM-TRANSID:2eef69e5bccfaa0-01ac1
+	by rmsmtp-lg-appmail-15-12004 (RichMail) with SMTP id 2ee469e5bcde7d7-02815;
+	Mon, 20 Apr 2026 13:42:59 +0800 (CST)
+X-RM-TRANSID:2ee469e5bcde7d7-02815
 From: Li hongliang <1468888505@139.com>
 To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org,
@@ -44,9 +44,9 @@ Cc: patches@lists.linux.dev,
 	david.lebrun@uclouvain.be,
 	netdev@vger.kernel.org,
 	andrea.mayer@uniroma2.it
-Subject: [PATCH 6.12.y] ipv6: add NULL checks for idev in SRv6 paths
-Date: Mon, 20 Apr 2026 13:42:41 +0800
-Message-Id: <20260420054241.3043646-1-1468888505@139.com>
+Subject: [PATCH 6.6.y] ipv6: add NULL checks for idev in SRv6 paths
+Date: Mon, 20 Apr 2026 13:42:58 +0800
+Message-Id: <20260420054258.3043714-1-1468888505@139.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -80,10 +80,10 @@ Signed-off-by: Li hongliang <1468888505@139.com>
  2 files changed, 6 insertions(+)
 
 diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
-index 1a627c24e4c3..8a30dd83cf0b 100644
+index 676284b6efe8..a8790163e8b6 100644
 --- a/net/ipv6/exthdrs.c
 +++ b/net/ipv6/exthdrs.c
-@@ -379,6 +379,10 @@ static int ipv6_srh_rcv(struct sk_buff *skb)
+@@ -378,6 +378,10 @@ static int ipv6_srh_rcv(struct sk_buff *skb)
  	hdr = (struct ipv6_sr_hdr *)skb_transport_header(skb);
  
  	idev = __in6_dev_get(skb->dev);
@@ -92,14 +92,14 @@ index 1a627c24e4c3..8a30dd83cf0b 100644
 +		return -1;
 +	}
  
- 	accept_seg6 = min(READ_ONCE(net->ipv6.devconf_all->seg6_enabled),
- 			  READ_ONCE(idev->cnf.seg6_enabled));
+ 	accept_seg6 = net->ipv6.devconf_all->seg6_enabled;
+ 	if (accept_seg6 > idev->cnf.seg6_enabled)
 diff --git a/net/ipv6/seg6_hmac.c b/net/ipv6/seg6_hmac.c
-index 5d21a74c1165..214d137d545e 100644
+index 6e15a65faecc..bf97bf5ac138 100644
 --- a/net/ipv6/seg6_hmac.c
 +++ b/net/ipv6/seg6_hmac.c
-@@ -245,6 +245,8 @@ bool seg6_hmac_validate_skb(struct sk_buff *skb)
- 	int require_hmac;
+@@ -244,6 +244,8 @@ bool seg6_hmac_validate_skb(struct sk_buff *skb)
+ 	struct inet6_dev *idev;
  
  	idev = __in6_dev_get(skb->dev);
 +	if (!idev)
