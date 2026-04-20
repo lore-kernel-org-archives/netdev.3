@@ -1,132 +1,138 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4912E34DB59;
-	Mon, 20 Apr 2026 16:19:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2196233DEFE
+	for <netdev@vger.kernel.org>; Mon, 20 Apr 2026 16:24:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701987; cv=none; b=oNCEmqVSAGIWZ7OljN4l7tVVQT/2s6Lf9I/V7xKWE3aefIpiZGXIIZfBHXN+SBpisWqL8fM7HzdifZA11SQUXbl8Z9stq/95ja8uSQb4SJdb670ZFvFuK6A63GklrmW3r2DiF/8eu0+Xpc1sD0dW838zDOkJxuadNP7x6a+QfHM=
+	t=1776702291; cv=none; b=AsaeMhGOHzVO3xNmrfr1FZsqmpbZ51s0Q+EnevL40X8A6etperuJfBIqRf+c4qlu3xGWEW3yuKdfW+Tx0E5vn7JuxBeyPFYIxxLx15puQRbKD7IrBYBb7GMYhKU3IXoAU5g+2RBrjcSfLf7QiP7k4xoO+wTWOulOUs88MDZJyB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701987; c=relaxed/simple;
-	bh=K5hYUkvpx0JvIf4K9J3AgSbV6rLHDnsmtS5j96WoZks=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=tjtYFttH1eCnyQl/FEsHhBDrhZY1y7J6Q3QikSO9cTP2F6nyfcn6KIQIgzQANdCPq7xSXbXgsjWBGxJT+Y+zQbbN69ya67ANoez8Sbq48Hs+dIlKYdpiFYLjMBxm3ANH18epCGbCd7CiiINZCkaJZskPswUWFL5vJHq1rLeyWEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fF9138Jv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776702291; c=relaxed/simple;
+	bh=SCUAHsTfk//sPwYyZpAY2IDbHPbtNBdBbxKcnzsf4LE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TaNSdsUg65rN795BepJPEI0So9b8mPVPcq0684Ad12e452W3DK02HyfVFPHOGGRZA66Uxj9qw0GQYLA2MxIugCd4JZbGjBxCs+MGYLK6B3IRN/yHX6o9DPyWI3uqlRlLit3YZbTHMFsVZTz/VycKLuCCpNz/nH68bCgYVHsFExQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IatpSvzN; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fF9138Jv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBBC1C2BCB4;
-	Mon, 20 Apr 2026 16:19:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776701986;
-	bh=K5hYUkvpx0JvIf4K9J3AgSbV6rLHDnsmtS5j96WoZks=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=fF9138JvlQgjW/+EOzNdAgyhvTukxN1y++UiqAUENJ+Op6nOJFjHBEBLU4zfwvUV9
-	 OhqjrkjMBM8PghKqcz2or1TNGvKewvgaNGb18Zbg33xOnrwcK/w0iwSA+nBU2PD6Rs
-	 234OzaqRJQPgC0/XuMcbThuxa+UtEo+h0HbEBniKkhIIC9bA5hbPbA2YKezFOoNoIS
-	 3H3zBxwD2ve//1MOih3iOgRbyfXi8vaz68y7DF+QJk8Gqz69RisK1TGdRs5iVL2dbK
-	 cfJ63b67xvUqn+vPsYSuRr/qdzkYaOb18xCDzXrDjK8wEiKFeggsh39b1Z6fzjfy32
-	 uJpz2m0Lj9leQ==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Mon, 20 Apr 2026 18:19:24 +0200
-Subject: [PATCH net 2/2] selftests: mptcp: add a check for sndbuf of S/C
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IatpSvzN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1776702289;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+ONUEBsaSjlb643VNLT8SxeI2rJ7DFKrz+q+1kB/Dzw=;
+	b=IatpSvzNhYbH24JNwFoMWcbPQfJNbtX03G0x9bOD/QDlWMlmYQ/7rtmTNHxKNM3JrgwYt4
+	Zwf2+2Onw4Jsz5FARLD7gjWu121YDwOCgtQp5hQfgQUIFs5HtA089yHu6XhJrZIgpc7cYh
+	5TZsW0DGcCmZbB+wpfMNqdlM3OzsQJg=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-570-9VaBhAjGNZWvm9vTTJu7hw-1; Mon,
+ 20 Apr 2026 12:24:45 -0400
+X-MC-Unique: 9VaBhAjGNZWvm9vTTJu7hw-1
+X-Mimecast-MFC-AGG-ID: 9VaBhAjGNZWvm9vTTJu7hw_1776702283
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DBF701944F0E;
+	Mon, 20 Apr 2026 16:24:37 +0000 (UTC)
+Received: from [10.44.32.172] (unknown [10.44.32.172])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 56A0A1800351;
+	Mon, 20 Apr 2026 16:24:35 +0000 (UTC)
+Message-ID: <fda7883e-b502-44dc-97b3-af658a035d0b@redhat.com>
+Date: Mon, 20 Apr 2026 18:24:34 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260420-net-mptcp-sync-sndbuf-accept-v1-2-e3523e3aeb44@kernel.org>
-References: <20260420-net-mptcp-sync-sndbuf-accept-v1-0-e3523e3aeb44@kernel.org>
-In-Reply-To: <20260420-net-mptcp-sync-sndbuf-accept-v1-0-e3523e3aeb44@kernel.org>
-To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
- linux-kernel@vger.kernel.org, "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, 
- Gang Yan <yangang@kylinos.cn>, Shuah Khan <shuah@kernel.org>, 
- linux-kselftest@vger.kernel.org
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2113; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=JuWXrIR8z0Kdry9exlX5cPLEP3UA7EoY3hwK/Q5Akok=;
- b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDKfBUlrHgiMqarw1p1+aZnSxYUhMf/kTnv11XSFhZ/5e
- 2Gpm01/RykLgxgXg6yYIot0W2T+zOdVvCVefhYwc1iZQIYwcHEKwETstjMyNH9Qami6GqFnva+h
- mkM0uDQpYsb9nVafnwpe73yxJzXeiOGfYUqhp1SZz2K+6YuFfQpz8hkVLPqKctbu6briXJrh8Jg
- HAA==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+User-Agent: Mozilla Thunderbird
+Subject: Re: Question/proposal for DPLL NCO (DCO) mode
+To: Jiri Pirko <jiri@resnulli.us>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>, Jakub Kicinski <kuba@kernel.org>
+References: <21cce17b-9a79-41b5-8363-faee2378aa37@redhat.com>
+ <3rgm35qzwvzdrubvtdrccl3sb5cx2ufiy7b5wnjun223bosi45@2bnbfrlqnsbk>
+Content-Language: en-US
+From: Ivan Vecera <ivecera@redhat.com>
+In-Reply-To: <3rgm35qzwvzdrubvtdrccl3sb5cx2ufiy7b5wnjun223bosi45@2bnbfrlqnsbk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-From: Gang Yan <yangang@kylinos.cn>
 
-Add a new chk_sndbuf() helper to diag.sh that extracts the sndbuf
-(the 'tb' field from 'ss -m' skmem output) for both server and
-client MPTCP sockets, and verifies they are equal.
 
-Without the previous patch, it will fail:
+On 4/20/26 3:43 PM, Jiri Pirko wrote:
+> Mon, Apr 20, 2026 at 01:42:29PM +0200, ivecera@redhat.com wrote:
+>> Hi all,
+>>
+>> I am currently working on adding PTP clock support (PHC) to the ZL3073x
+>> driver, and I would like to discuss an architectural addition to the
+>> DPLL subsystem enum dpll_mode before sending the formal patch series.
+>>
+>> To support IEEE 1588 PTP, the hardware DPLL must be decoupled from
+>> tracking physical reference pins. Instead, its output frequency needs to
+>> be continuously steered by a software PTP stack (e.g., linuxptp) using
+>> the .adjfine() callback. In the industry, this specific hardware state
+>> is widely known as NCO (Numerically Controlled Oscillator) or DCO
+>> (Digitally Controlled Oscillator) mode.
+>>
+>> Currently, the DPLL subsystem defines two modes in enum dpll_mode:
+>>
+>> MANUAL: The user explicitly selects a physical input pin to track.
+>>
+>> AUTOMATIC: The hardware automatically selects the best physical input pin
+>> based on priorities.
+>>
+>> Neither of these accurately represents the NCO/DCO state, where physical
+>> pins are ignored, and the loop is fully software-steered.
+> 
+> The manual/automatic mode is defining strategy/behaviour about how the
+> input pins are selected.
+> 
+> <header_quote>
+>   * enum dpll_mode - working modes a dpll can support, differentiates if and how
+>   *   dpll selects one of its inputs to syntonize with it
+> </header_quote>
+> 
+> You don't want to change the strategy. You just
+> don't want that/don't care. Why it make sense to add a mode then?
 
-'''
-07 ....chk sndbuf server/client    [FAIL] sndbuf S=20480 != C=2630656
-'''
+It depends on the perspective. NCO is a selection strategy where the
+DPLL does not lock onto an input reference (select nothing); instead,
+its frequency is software-driven.
 
-Signed-off-by: Gang Yan <yangang@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
-To: Shuah Khan <shuah@kernel.org>
-Cc: linux-kselftest@vger.kernel.org
----
- tools/testing/selftests/net/mptcp/diag.sh | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+Btw. we’ve included DPLL_MODE_DETACHED in the documentation, which could
+describe this use case.
 
-diff --git a/tools/testing/selftests/net/mptcp/diag.sh b/tools/testing/selftests/net/mptcp/diag.sh
-index d847ff1737c3..27cbda68144e 100755
---- a/tools/testing/selftests/net/mptcp/diag.sh
-+++ b/tools/testing/selftests/net/mptcp/diag.sh
-@@ -322,6 +322,33 @@ wait_connected()
- 	done
- }
- 
-+chk_sndbuf()
-+{
-+	local server_sndbuf client_sndbuf msg
-+	local port=${1}
-+
-+	msg="....chk sndbuf server/client"
-+	server_sndbuf=$(ss -N "${ns}" -inmHM "sport" "${port}" | \
-+			sed -n 's/.*tb\([0-9]\+\).*/\1/p')
-+	client_sndbuf=$(ss -N "${ns}" -inmHM "dport" "${port}" | \
-+			sed -n 's/.*tb\([0-9]\+\).*/\1/p')
-+
-+	mptcp_lib_print_title "${msg}"
-+	if [ -z "${server_sndbuf}" ] || [ -z "${client_sndbuf}" ]; then
-+		mptcp_lib_pr_fail "sndbuf S=${server_sndbuf} C=${client_sndbuf}"
-+		mptcp_lib_result_fail "${msg}"
-+		ret=${KSFT_FAIL}
-+	elif [ "${server_sndbuf}" != "${client_sndbuf}" ]; then
-+		mptcp_lib_pr_fail "sndbuf S=${server_sndbuf} != C=${client_sndbuf}"
-+		mptcp_lib_result_fail "${msg}"
-+		ret=${KSFT_FAIL}
-+	else
-+		mptcp_lib_pr_ok
-+		mptcp_lib_result_pass "${msg}"
-+	fi
-+}
-+
-+
- trap cleanup EXIT
- mptcp_lib_ns_init ns
- 
-@@ -341,6 +368,7 @@ echo "b" | \
- 				127.0.0.1 >/dev/null &
- wait_connected $ns 10000
- chk_msk_nr 2 "after MPC handshake"
-+chk_sndbuf 10000
- chk_last_time_info 10000
- chk_msk_remote_key_nr 2 "....chk remote_key"
- chk_msk_fallback_nr 0 "....chk no fallback"
+But...
 
--- 
-2.53.0
+> I was thinking exposing this over STATUS. We have:
+> UNLOCKED (free running)
+> LOCKED
+> LOCKED_HO_ACQ
+> HOLDOVER
+> 
+> So something maybe like SW_STEERED? But:
+> 
+> The problem is you need to do selection. Perhaps we can have a
+> "magic pin" to select for this :S ? We have pin of type
+> DPLL_PIN_TYPE_INT_OSCILLATOR already. Perhaps we can have
+> DPLL_PIN_TYPE_INT_NCO/NDO? It's a source.
+> 
+> Makes sense?
+
+Yes, this makes sense from a selection standpoint, and I have to say I
+like the idea. It also has an additional benefit: if we have an NCO pin
+type, that pin's frequency can be used to configure the delta frequency
+offset of the DPLL device itself.
+
+I’ll proceed this way. Thanks for the advice!
+
+Ivan
 
