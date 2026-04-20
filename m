@@ -1,271 +1,90 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from mail.amicon.ru (unknown [77.108.111.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 781CC2F90E0;
-	Mon, 20 Apr 2026 14:52:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.18
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776696727; cv=fail; b=Z+/rOynscxb2CCUAHgBJ7KGF6w5fz0s1X5rcHQwy8VWVFTFDclTBbrWf0EYwirRuzDsT4X08ssicCmCKBy7u5qYA2XOyxMVaGl0NoV1ncus7Pb8B1UpqjBuBPxXCBcGE913/KblmZbOgefvPqqAsTDHZfTpvAR+pGwapMv0LS+c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776696727; c=relaxed/simple;
-	bh=6juJb//tlYegVjc5qRPVi++5li4PHb38QoJ1VFdjp5k=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=gihXH+2+RSkVNPo0mJNN3pL1XZpTOldYLwY/aN0W0d72RlSIU1/RT/2Zk1uLAs1gd3hYukm4ANHRrU6w/EL/+M6xuGOVI49IX+onI5As+5EN/m37nIly1/Kbkg50KkIVgfulTsAKM5qL471tliL7SQG2rOVCybaNs1B6ATvDCnY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RSRxMaFL; arc=fail smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D50B32D0CC;
+	Mon, 20 Apr 2026 14:56:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=77.108.111.100
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776696972; cv=none; b=Y8skR3CTXbowEkrfClTYA5pNvDjUaCSTq6p3T2epu8enBt0RvJcQg1Yxkgh7b65jPey8Z8GLtBG/0zx0Yp3oj5EFwhwcUj+iZiYtFZSpldf5pbN5+B5/NYk5LKLCjJGittFSpOA8jowWlg/W0F30Nnshf/SePA1VhaNyqgxwUgk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776696972; c=relaxed/simple;
+	bh=W3Ademaxen8c5af2e5ytDiNGEPnepJMp1zk69Ol564E=;
+	h=Content-Type:From:To:CC:Subject:Date:Message-ID:MIME-Version; b=SKTG90Sb2FssGEHjCWWDCApYzZtuRE/5w/bA7gE9cx/Kv1Mh12niMNRJPO5uO4MZPO4ak5nzRAOkKAv0XmtF3KotuIcik+3CpK1AhvJrbT4KoDE3Y3ZLd7T1ZnqHTbxlL7uhwH0G8nJX5JqL7LW2FmxooveCAKkG4eoUsTr9th8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amicon.ru; spf=pass smtp.mailfrom=amicon.ru; dkim=pass (2048-bit key) header.d=amicon.ru header.i=@amicon.ru header.b=KQJX//ou; arc=none smtp.client-ip=77.108.111.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amicon.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amicon.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RSRxMaFL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776696726; x=1808232726;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=6juJb//tlYegVjc5qRPVi++5li4PHb38QoJ1VFdjp5k=;
-  b=RSRxMaFL1QXwg80h1trg9hTa+rvNhaMho37i3XUbd5Vs+dcrXA8UJIOv
-   Zvaep3ofkfEuX+6xv85ciyjWlpTge+2/pSMVWkhzblTpIdq6rUnW04fC0
-   BqW8f8mOGX6/lgqgequsPI1aPpfNAgR/bHZYK6ToUMip2ClFU2F/XQDQ8
-   mybEJgEhcNWDbzFIHdQmdAl5j8/zrxkKjLeDRc2deA8Zpr9KFBZwaAfw3
-   M9SmdUZhY7pR1tQZStp9ThNs91JVxL/CtGdQ0ePt0uQlwukp9lb2/+s79
-   +MtG9Ejdo+qbhuwEuEn+uVfjuTI5uDzz53gVppBNGfM1zo4zcD268mHdH
-   Q==;
-X-CSE-ConnectionGUID: +Ojq95o7RnK0Gv2vtDk9Tg==
-X-CSE-MsgGUID: qIWvc6UdSyGUu6i8c524bA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11762"; a="77627083"
-X-IronPort-AV: E=Sophos;i="6.23,190,1770624000"; 
-   d="scan'208";a="77627083"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Apr 2026 07:52:05 -0700
-X-CSE-ConnectionGUID: xNOtLvjET/S2PN4/E6wKRA==
-X-CSE-MsgGUID: rTD/UrNpSMSdQi1yshhFew==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,190,1770624000"; 
-   d="scan'208";a="235741286"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Apr 2026 07:52:04 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 20 Apr 2026 07:52:04 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Mon, 20 Apr 2026 07:52:04 -0700
-Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.14) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 20 Apr 2026 07:52:04 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iJsdxKERjuybmHc4q+qERBwgDNLQTp0CetWuIEvcNK0bfHqL5AUeLfrBKI2OZNw41/sMMefD0dTsguIWe/grn9s1AAQ+fP9krhnne5n+T+xWodtrUwuq78gzMAwBO2gQlZf6QJr1wLCNI+euUOelDTF6wXKVTv/6kWml1GHiCxn0IC0anclV5IoYhHNdkPNI7SDNQW/QdrpynPSyqteLMwHrk5FBOJeotlRnwy5WFtalfXLJFmYJWbse/YjxTlDXDa+40eTghM71V5kLW55xQgqJiCo4m1R+zM3Ji1VgWltwonJvt3k0iZPBWo5KSs6+PBg9VCyCsfcQf5CLjpMVZw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6juJb//tlYegVjc5qRPVi++5li4PHb38QoJ1VFdjp5k=;
- b=dE5czfHsFaauxutPZoas2Dypi/RDkIvF4EFIHoy1qYLCunBsEuCS0JkNo72YQ+x8i4oHwbhrB6jcOcTo2oIBiM/lMZTnJYhLzy+/rBnYdrhj/OIHhpim9otHxn9q7ERVoYpazQDHJimlIu9M4a+ymoVnL+VC0hWb+6GQUmH0ZiXjdFRqhG9RZtjmGsVEze71wAp+OdfZXYfPnwLWS6opsckABTCHKySQvAOsoxKELbLVvxG9z4HSTNlp6ASvQVmrsqSBHEPm1sZuOaGwpMrlKGMNJUYvgGbx1k/GsJPswzYhjozQuoGqUZJJ5140VvlNkfhIT0cNqTaEVGFlcmgtlw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA0PR11MB7378.namprd11.prod.outlook.com (2603:10b6:208:432::8)
- by CH3PR11MB8314.namprd11.prod.outlook.com (2603:10b6:610:170::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.15; Mon, 20 Apr
- 2026 14:52:00 +0000
-Received: from IA0PR11MB7378.namprd11.prod.outlook.com
- ([fe80::7b0c:7df:21b8:dbbf]) by IA0PR11MB7378.namprd11.prod.outlook.com
- ([fe80::7b0c:7df:21b8:dbbf%3]) with mapi id 15.20.9846.014; Mon, 20 Apr 2026
- 14:52:00 +0000
-From: "Kubalewski, Arkadiusz" <arkadiusz.kubalewski@intel.com>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: "Vecera, Ivan" <ivecera@redhat.com>, "vadim.fedorenko@linux.dev"
-	<vadim.fedorenko@linux.dev>, "edumazet@google.com" <edumazet@google.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, "richardcochran@gmail.com"
-	<richardcochran@gmail.com>, "donald.hunter@gmail.com"
-	<donald.hunter@gmail.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "davem@davemloft.net" <davem@davemloft.net>,
-	"Prathosh.Satish@microchip.com" <Prathosh.Satish@microchip.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-	"horms@kernel.org" <horms@kernel.org>, "Kitszel, Przemyslaw"
-	<przemyslaw.kitszel@intel.com>, "Nguyen, Anthony L"
-	<anthony.l.nguyen@intel.com>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"jiri@resnulli.us" <jiri@resnulli.us>
-Subject: RE: [Intel-wired-lan] [PATCH v5 net-next 0/8] dpll/ice: Add TXC DPLL
- type and full TX reference clock control for E825
-Thread-Topic: [Intel-wired-lan] [PATCH v5 net-next 0/8] dpll/ice: Add TXC DPLL
- type and full TX reference clock control for E825
-Thread-Index: AQHcwvXix3hjxSFB2EyUhfJETBJtn7XS5QsAgAO7FYCAAOemgIAA3aQAgABojwCAA9gqAIACh5+AgADpDdCAAc5xgIAACEIQgACY8ICAAJvRkIACKjWAgALVaDA=
-Date: Mon, 20 Apr 2026 14:52:00 +0000
-Message-ID: <IA0PR11MB7378CD18633287980620A9869B2F2@IA0PR11MB7378.namprd11.prod.outlook.com>
-References: <20260402230626.3826719-1-grzegorz.nitka@intel.com>
-	<20260406192312.0f7a2760@kernel.org>
-	<IA1PR11MB621925C1718B838147404DC492582@IA1PR11MB6219.namprd11.prod.outlook.com>
-	<20260409181041.395a0c37@kernel.org>
-	<IA1PR11MB62194BF52262FCEB7FD5E76D92592@IA1PR11MB6219.namprd11.prod.outlook.com>
-	<20260410133812.4cf9b090@kernel.org>
-	<IA0PR11MB737882B384AE7279EBCD05C79B242@IA0PR11MB7378.namprd11.prod.outlook.com>
-	<20260414145835.07fbe355@kernel.org>
-	<IA0PR11MB737842E2098D0952A8BA1FE29B222@IA0PR11MB7378.namprd11.prod.outlook.com>
-	<20260416082751.04782987@kernel.org>
-	<IA0PR11MB7378FF7BF4EA32C1F89372C19B232@IA0PR11MB7378.namprd11.prod.outlook.com>
-	<20260416180447.1a3c5c87@kernel.org>
-	<IA0PR11MB7378CF62D86454916AE8F9D79B202@IA0PR11MB7378.namprd11.prod.outlook.com>
- <20260418122603.06d12715@kernel.org>
-In-Reply-To: <20260418122603.06d12715@kernel.org>
-Accept-Language: en-US, pl-PL
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA0PR11MB7378:EE_|CH3PR11MB8314:EE_
-x-ms-office365-filtering-correlation-id: b97261f7-29f3-41a4-cd46-08de9eec60c6
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024|38070700021|56012099003|22082099003|18002099003;
-x-microsoft-antispam-message-info: 4eIz0TuK3mqPYDsnODLPE98bDakLvI0ZUcpiX53h84P74z4hRk1Osoa46QZUkJI6NpSH04I6ILz5Cz8/4M8/qjzAFApk6OUBkY6dtpH2JTs3QeNmoStE568XHdX0nvCMczOfaRyDcNkP4jiJ63tj1ztIDdXsJebR24ox0PI192pfQgJ/t1rla1gRItx6Rn8XEm52J5sbBG76vdkEh+/W6tzEHxrU4b31+ksDmcv7w5cxUNe8gSImlT6gbrZkxrXLsxVj4tuAePxlHgz1Ug4P8/IYcA9I2gOdle22xJhZGF5HL8pCesi6yiggrFYPy5Y3RQCiFGgPR6nyjPhEPEZ6XqUhrVdPjRP4WBOJfaugPrhM0RWDmGqIwELrZjc1wDkI+Vimj7UqtBcuvCEg+8c7GBmfUDwsqMJVerycpNsWn808HXtpEjfuHCC2wtx4WNKGh+VrgcYmtAKEPvUDbZmBpbNFqYiWhNvCnR2VWXotGR6GJTf0TqT7ZDjeCENW50j6HTOdSrMtFZCGvdpRI6B7gUuQ6pIBLyO3qNqDaDNLQrkI9PnvVOUWzIDtqZ952fs55ZU6K20VDgdyITBKCudrdKXToxr8jfr7FPkA+f8INYNk9F9/ubrI8uHla85fhbutlqzhC0XDdVp74CVDuZ8cm/5uoWnVqkcTDXNx8nTw7aiLRJ1c75MctMpNZa0803GUVpOMWVnSawkwkS4Aqc0cVq661LWVn/aUSVL+zOPZGNwlE7NBGLwo+5P+flc65u/nKfR9DnkBTrwhGZcmfTUr61cjD8mfQyWTeq2IXisweGM=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR11MB7378.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(38070700021)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?jH6j6dgP81zTh/VlMjeTwpJt03p6E+22XVoK3eQakjluFJdBjVfLp8MbY8+Z?=
- =?us-ascii?Q?RQQW7HugL5yZwXP4fKL2E/eiTjiHoQAFhBGeI9NA/Fcg4878bMWWG0cfJrp8?=
- =?us-ascii?Q?1B12+cQmOJrrQ1zdcM/j8JzNJL3Ed73kaI07KL6dXASpsDkwGFi5lVo7wn+Y?=
- =?us-ascii?Q?cXE+lZINr9HMZToSv/Gh0zE6msH/C4+fRlYhTgz0QO//nU4b2Q36RJ29FmjH?=
- =?us-ascii?Q?/jc0CWXIy0hqczQ4XBT/ZtNepg/QKCJeWrB2rWNbyP4/cjxgvS1y1uZvclgn?=
- =?us-ascii?Q?PuY80gOnUCg/o/a6GKcUT+lkWLaC3O6KSpE8IIB9gfoT5q6Oo/gfRg9NkvQI?=
- =?us-ascii?Q?p8nD8dkJwNZpt+DxY5YLAfr/gBhg1YmRHtuTx07FVUPuw6h+tPxKvrStDnFV?=
- =?us-ascii?Q?NdgMwgpJb53jtRA7xQGr62mLUFBURd10w8OdtaHTFeTbGjEv4Nxmd4hrFlGl?=
- =?us-ascii?Q?DBrk44pG1ChfHD3SMiEGL19Kovn0nuvdXaWYYYnkd+IEvezNoDp4KWFaLlJI?=
- =?us-ascii?Q?tuq9tTTfftoyZKKeYFQSedXOAX/2FuECk+/T2SXHAsF8VBCo4L36DhCCxvIB?=
- =?us-ascii?Q?dP81Zlxw4nMHSlhTrS/h9BXTRUQ5CIRmRlBo/RsSF3WnFmEyXkRlyjlxDPdw?=
- =?us-ascii?Q?w0MSZMOvJXOxy4KA9teWwzLwp7YfR73XA0DeRVMdll6idFVLoldfXkvod1o/?=
- =?us-ascii?Q?0JZh7XnI1LIibJmhjMgTdo+KHTA1ozKtMIMwy7Tkkmjjvzi/YysgiSvZWpB5?=
- =?us-ascii?Q?NlDwhMJR8vOmOYVobaVhYU/Re8FKnfOAwizFuEppFJFvGZRvILAo4y7f288T?=
- =?us-ascii?Q?1zv+ShnsoVNjtiPVxmA3QU2L2ta+ykdRheRC4pdeJknjiOfYgFaRV/WHbdly?=
- =?us-ascii?Q?LGIVsuheyvkI2ynsTe92ayAy+srjE0x0VPT8T1h/Ros0Ip6MfuRE6AKOswsc?=
- =?us-ascii?Q?csKRQKq3xXUK/TkAPtyJzFy8/uJUBEM78OdcDjkLM9lzF6cJH7CS0/yARRrH?=
- =?us-ascii?Q?cSFg7TETZ2jSu+PHp6XvipOH3lZaZLSYWR646L+URbe0OpFefCN5KqqY0D4e?=
- =?us-ascii?Q?SaJ3xVVmrQFFzy2Qac5QfBqdkQCK8x7aWqKTCedVtC6YQjOHdmLCxjGa/0j4?=
- =?us-ascii?Q?MKYhgQEDxNYlNn4mJz3tDU3ebAd1J1/TztvX+ag3YAbr6ClYJ/DSLtNon6tO?=
- =?us-ascii?Q?vCmTAjAeqZWv+yZpHbgxIbDTMwCI8O0vl87D4nPkZfkCJnnjDtRMhux6RxOO?=
- =?us-ascii?Q?dAxJWfHnHuBoklNFDMTm4rqtjTLsvHiOHdZyHBR9gzWK6P6Z6/hG0voksNY1?=
- =?us-ascii?Q?UdSUCzshI7vQ5A2gam/HP+4L4kQ8Go6LBHyjMxkY7oZ6ts8P74Rtwv4RvVKA?=
- =?us-ascii?Q?CrdfO98clmuXUofUkCBJFGqvyRmsdrp2vuF6my3p1OhUrkwoNJsRmSMc1fSl?=
- =?us-ascii?Q?fPcACcuZDpFnYzrTmUnbHQJ775PLXXufctDxqLfdzlAluOAH4ZfXnVkRI6L/?=
- =?us-ascii?Q?b1Rb5ilEAYtqiTrfPi8oqByqLH3VgnQ40EhjbrgWAXQBVY7NPK4Qs6v19WIp?=
- =?us-ascii?Q?Wos08HQbDEUHjMUU3p0TUV5KP0hnXSWFkBrLKkAxQ6R7oQiBRUBON7q59fqI?=
- =?us-ascii?Q?56yVzBAWtx3kw3T1fC47X6ouIAC3pIc26/PMcsItDMBcvj0mFKjqlHGO3HyK?=
- =?us-ascii?Q?SBIHFjb6i28ml0V43+okcPMEI71lRRLkh9A2fqr7klE1REtm6b1+h2gTNKpr?=
- =?us-ascii?Q?CwBZ7aA2b0qAUtxAd0dYc+l+wDIlnMI=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=amicon.ru header.i=@amicon.ru header.b="KQJX//ou"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+DKIM-Signature: v=1; a=rsa-sha256; d=amicon.ru; s=mail; c=simple/simple;
+	t=1776696058; h=from:subject:to:date:message-id;
+	bh=W3Ademaxen8c5af2e5ytDiNGEPnepJMp1zk69Ol564E=;
+	b=KQJX//ouTYPJwVUbewhzHpFEQEjY6gRvu5XJUMBawMfpr9/3qTdo4IGALb593JfeXBxWUhNz+wB
+	9PbhIRKg6I6H9O1Sb1VUSJoRzkuDDTybcYiqZgRzsBgGl9xcXxXvQxtAWCLudU5ZJdWm+XhQQOBQQ
+	PShU88H8t64dwLFYWhJ40WCrkAQ9a5CbVzYIDuu3MvINdk9IZIOX+en8O8/VbtH8F/9ub7CKl6GbA
+	Ur3eEKaTuYr/g00eWQGQ8CCArMSg2Twonky1o8gPPZljGoJjBYpwjd/SKoRfR9Xv8X0MrE2J7ddvx
+	KZclQrrcuRcCoouPIIEYzKtb/+0jFQVHgA6w==
+Received: from example.com (172.16.2.46) by mail.amicon.lan (192.168.0.59)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.27; Mon, 20 Apr
+ 2026 17:40:57 +0300
+From: Agalakov Daniil <ade@amicon.ru>
+To: Jian Shen <shenjian15@huawei.com>
+CC: Agalakov Daniil <ade@amicon.ru>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<lvc-project@linuxtesting.org>, Roman Razov <rrv@amicon.ru>
+Subject: [PATCH net-next] net: hns: use u32 for register offset in RCB TX coalescing
+Date: Mon, 20 Apr 2026 17:40:19 +0300
+Message-ID: <20260420144047.2846673-1-ade@amicon.ru>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: iltLFXyYyqBm/aXJwuDUCM+rxqJkcvsfT6aUq2zbcqiiSqnBG4cPW3HLxZc2DkESr/nkusJZfvAcZhjNlmTit5kjy+m4GB5Fq7DF535BT0IAEmGpGNWLHWmelMh0GrOSKfRlhDDRgXlbd8493c2K2OiKQHpvK9U9FxCX/BU8S24zDg8h+uxP9llEy7l4vj0bH7M8m5KGmk1rhuYGxmuUn4c/4FkSgsU9l6ePk5cf877JbgVEVpvPfQ2+zCprfPqFQWGxebI7L1hk1ACl4/BVJDdImQyQojkH+PoHZgjPHhN62tzuiDDwrbewAUcen4VbJOpPFARM30nkttfamC+/aQ==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR11MB7378.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b97261f7-29f3-41a4-cd46-08de9eec60c6
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Apr 2026 14:52:00.5790
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Kl50i/MR8WyehaC1qdoh8wk6O5NB7d1+6rglX1SvGaF7TuUGz0LssRTZ30JIB6nxiHbbGTgS5wl7lYhRpQ7cNksnj9TXRBCntgFj6Zzxcgo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB8314
-X-OriginatorOrg: intel.com
+X-ClientProxiedBy: mail.amicon.lan (192.168.0.59) To mail.amicon.lan
+ (192.168.0.59)
 
->From: Jakub Kicinski <kuba@kernel.org>
->Sent: Saturday, April 18, 2026 9:26 PM
->
->On Fri, 17 Apr 2026 12:22:05 +0000 Kubalewski, Arkadiusz wrote:
->> >> I was thinking that this is more like a purpose specific DPLL device,
->> >> if
->> >> someone would want something similar we would have to review it,
->> >> right?
->> >
->> >We would if it was a Ethernet MAC PLL, but if someone wanted to expose
->> >whether some random PLL in their ASIC locks - are we adding a new type
->> >for each one of those?
->>
->> Yes, that was the implicit intention within those patches, if other
->> purpose
->> specific PLL would have to be present for whatever HW design and user
->> control over it would be required, then that would be the easiest to
->> maintain in the long term? Multiple types and each have own
->> function/purpose.
->>
->> It would be good as long as there is one PLL for a function per board,
->> once
->> there could be multiple ones for single function, we would have to add
->> some
->> enumeration (labels, etc.)
->
->Defer on adding identifiers. User knows which driver and bus device
->spawned the pll and more importantly what the pin topology is.
->Naming in the kernel is rarely a good idea.
+The local variable reg in hns_rcb_get_tx_coalesced_frames() and
+hns_rcb_set_tx_coalesced_frames() holds a register offset passed to
+dsaf_read_dev()/dsaf_write_dev(). Register offsets on this hardware
+are 32-bit values; using u64 was misleading.
 
-Sure.
+Change the type to u32, consistent with the hardware.
 
->
->> >> It depends, TX clock has one of external pins connected to external
->> >> DPLL,
->> >> but second is a board-level pin with ability to provide some external
->> >> clock signal, the user would have to determine that purpose just
->> >> based
->> >> on the topology of one of the pins, which seems a bit problematic?
->> >> I.e. if at some point there would be HW with only external non-DPLL
->> >> connected pins?
->> >
->> >Not sure I follow, TBH. To me the function of the "MAC PLL" is fairly
->> >obvious from the fact that it has a pin exposed via rtnetlink. So it's
->> >obviously a DPLL which can drive the Tx clock?
->>
->> I am lost a bit now too. You mean clock recovery pin? And EEC type dpll?
->> In this solution the 'MAC'/EEC is external and it doesn't drive TX
->> clocks
->> directly.
->
->MAC =3D=3D "tspll" =3D=3D TXC in this series. On Grzegorz's diagram the ne=
-w PLL
->was in the MAC, which makes sense since it's a pll in the same ASIC as
->the MAC.
->
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-We wanted the TSPLL from the picture to be PPS type as it drives the PHC
-timer within the MAC.
+Signed-off-by: Agalakov Daniil <ade@amicon.ru>
+---
+ drivers/net/ethernet/hisilicon/hns/hns_dsaf_rcb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
->I'm saying that the function of that pll is obvious since its pin will
->plug into the netdev / rtnetlink.
->
+diff --git a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_rcb.c b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_rcb.c
+index 635b3a95dd82..3c4e4e8ca140 100644
+--- a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_rcb.c
++++ b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_rcb.c
+@@ -563,7 +563,7 @@ u32 hns_rcb_get_rx_coalesced_frames(
+ u32 hns_rcb_get_tx_coalesced_frames(
+ 	struct rcb_common_cb *rcb_common, u32 port_idx)
+ {
+-	u64 reg;
++	u32 reg;
+ 
+ 	reg = RCB_CFG_PKTLINE_REG + (port_idx + HNS_RCB_TX_PKTLINE_OFFSET) * 4;
+ 	return dsaf_read_dev(rcb_common, reg);
+@@ -634,7 +634,7 @@ int hns_rcb_set_tx_coalesced_frames(
+ {
+ 	u32 old_waterline =
+ 		hns_rcb_get_tx_coalesced_frames(rcb_common, port_idx);
+-	u64 reg;
++	u32 reg;
+ 
+ 	if (coalesced_frames == old_waterline)
+ 		return 0;
+-- 
+2.51.0
 
-Yeah I got it, just saying it will work for now :)
-
->> >It's the function / relation / linking to the EEC DPLL that may not
->> >be obvious. But user can see how the pins connect they can get some
->> >LLM to draw a diagram of a live system.. et voila :)
->>
->> Yes, correct it would work for this particular HW, but adding a variant
->> without a external EEC-connected pin in the picture would be problematic
->> to understand 'generic' dpll purpose, pointing to the labels later.
->
->The function of the "MAC/tspll" is still obvious. The clarity of the
->external PLL is not helped by naming the "MAC/tspll".
->
->> Just to make it clear. I believe that generic type dpll could be used in
->> any HW and for any purpose, so after all each such usage could possibly
->> introduce entropy and confusion on the user side.
->>
->> But if you are fine with that, then sure, we can live with generic
->> purpose dpll.
->
->Considering all the imperfect options - generic / unnamed type would be
->my preference.
-
-Ok, sounds good.
-
-Thank you!
-Arkadiusz
