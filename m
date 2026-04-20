@@ -1,46 +1,44 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E39D817A2FB;
-	Mon, 20 Apr 2026 12:45:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35442BD11;
+	Mon, 20 Apr 2026 12:46:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776689160; cv=none; b=bVAKwnt0lPQXK7BZSzFsfxbNdkthrLS+2LMUT/jdL/kfMF0Eq7MTdEGnfjogMgisA0aHbYbQaXSQBZkN8Z4/A4x4aCXRLx1lnBnhi4QEEnQJMYvd8D3H3RVFyyDWsSe4uiYGlz0GYhkLqO/1hYhQpffJFAF0OKk4YGdfoS2XAt8=
+	t=1776689184; cv=none; b=sUeWMRI5eZK+HEf2we6tL2OQK3K5p/vgTUTfuGrmJ+dJ1RNOiWQrVppQ4MSuabMwxWXVQyXj5CsqNDxWiPbur8Qtv+LLIBmajmwxV26tcYhXuZtpzeLEi58QZfkPe/pjTztGg3S+aMw7PrZzJ03xjEwdLPrMBXE8A4iEvzQZ2Hk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776689160; c=relaxed/simple;
-	bh=ywHV4rlRaf7U22QwGcL0cv9WCEeu8hfRgjLetPcwOdg=;
+	s=arc-20240116; t=1776689184; c=relaxed/simple;
+	bh=lxLsQbD1Kkcqnni8iApsDF5XQ1ROw/fxT+GNDupZLHQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RVI5oftEKwftIRxI9S9RDG6YDCZed4xBrKpA1W5rBT5WsrpQHK/X4urN2igTBBppUYHXvrf1rU41Y9iHJZkjG9fJRrhcpucGhBtDaa2HKiIibUjSatJ8ggfwsg3a0Euwe5tQZFq5PFqcY/s8JzqLYFfgzF6A65m5jSo4B4NjR9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=jsDaoCTM; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=I9uZmc4MeroNC1WSlRnmm7b2284L93O6lCF2ejJryP02Y3Kv/NHV8nlEP1cBYwjRY+P/MgvIE8RpH6eiDFXI22B0QT3PoW6fwXymV7CllYP0fByg43WUxlfyYciqyLFR12GweQ4pRCAJbXxevLFkSwtgVXICuhQt9ZBV5V22XFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=K6JyBKmb; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="jsDaoCTM"
-Received: by linux.microsoft.com (Postfix, from userid 1173)
-	id 1F67620B7128; Mon, 20 Apr 2026 05:45:59 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 1F67620B7128
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1776689159;
-	bh=AVIapsQ3c6XvHpmFS/7qSeroIV9NWzTdm3s+C72vh38=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jsDaoCTMDll3UiCGmzAPjBOUQGLx9fLklBhL0M6rrHlDE+cd4G1q1IvFCHyGa/eJG
-	 D0BwB8klVfuuEqaun+qzZvQ38NxI+Smu5XZmWX/I9r8TikRwXICxdB1pv1MumGu5WT
-	 neFOBsAxxS5cpSNvJP3264XMUu8UZMzxq4CXwaTA=
-Date: Mon, 20 Apr 2026 05:45:59 -0700
-From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-To: Simon Horman <horms@kernel.org>
-Cc: haiyangz@microsoft.com, davem@davemloft.net, longli@microsoft.com,
-	ssengar@linux.microsoft.com, linux-kernel@vger.kernel.org,
-	kuba@kernel.org, kotaranov@microsoft.com,
-	stephen@networkplumber.org, andrew+netdev@lunn.ch,
-	kys@microsoft.com, wei.liu@kernel.org, shirazsaleem@microsoft.com,
-	kees@kernel.org, pabeni@redhat.com, linux-hyperv@vger.kernel.org,
-	edumazet@google.com, decui@microsoft.com, leon@kernel.org,
-	gargaditya@linux.microsoft.com, dipayanroy@linux.microsoft.com,
-	netdev@vger.kernel.org, shacharr@microsoft.com
-Subject: Re: [PATCH net v3 3/5] net: mana: Guard mana_remove against double
- invocation
-Message-ID: <aeYgBzvX1O1rvIMn@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-References: <20260415080944.732901-4-ernis@linux.microsoft.com>
- <20260417140953.218832-1-horms@kernel.org>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="K6JyBKmb"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=YXGOIIpEbeAk9/rcVFwREHyAE3XJQCKE4U994tpVsvY=; b=K6JyBKmbIdPE0Krs32QLqKQbE9
+	ApS739uceETfRGR4ZfABaxibC7ypUUnHsmeViXxjpfhRkJHmUMSYMFSEsRVM+jiZ1lFL3uB/kADeR
+	Ljmvcu3hLFIGeHyu5VhPde+w3GCNrop41C6oWqVRdhw17wQTnMvlR8IryUZVxfUk08k4=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wEo0p-00GjzM-CI; Mon, 20 Apr 2026 14:46:03 +0200
+Date: Mon, 20 Apr 2026 14:46:03 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: =?utf-8?B?546L5piO54Wc?= <25181214217@stu.xidian.edu.cn>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, tglx@kernel.org,
+	mingo@kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: Re: [PATCH] net: hamachi: fix divide by zero in hamachi_init_one
+Message-ID: <ea469046-79dd-4a6e-905e-ea2251ff303b@lunn.ch>
+References: <20260418121804.149171-1-25181214217@stu.xidian.edu.cn>
+ <e1d937ec-d909-4553-9f1e-c89f9b556d6a@lunn.ch>
+ <2543c18f.5194.19da8c3b8d1.Coremail.25181214217@stu.xidian.edu.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,59 +47,52 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260417140953.218832-1-horms@kernel.org>
+In-Reply-To: <2543c18f.5194.19da8c3b8d1.Coremail.25181214217@stu.xidian.edu.cn>
 
-On Fri, Apr 17, 2026 at 03:09:53PM +0100, Simon Horman wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> 
-> For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
-> ---
-> net: mana: Guard mana_remove against double invocation
-> 
-> If PM resume fails (e.g., mana_attach() returns an error), mana_probe()
-> calls mana_remove(), which tears down the device and sets
-> gd->gdma_context = NULL and gd->driver_data = NULL. However, a failed
-> resume callback does not automatically unbind the driver. When the device
-> is eventually unbound, mana_remove() is invoked a second time. Without a
-> NULL check, it dereferences gc->dev with gc == NULL, causing a kernel
-> panic. Add an early return if gdma_context or driver_data is NULL so the
-> second invocation is harmless.
-> 
-> > Fixes: ca9c54d2d6a5 ("net: mana: Add a driver for Microsoft Azure Network Adapter (MANA)")
-> 
-> The Fixes: tag points to ca9c54d2d6a5, which introduced mana_remove()
-> without NULL checks. However, the exploitable double invocation scenario
-> was actually introduced by commit 635096a86edb ("net: mana: Support
-> hibernation and kexec"), which added suspend/resume support and made
-> mana_probe() call mana_remove() on error.
-> 
-> Should the Fixes: tag be:
-> 
-> Fixes: 635096a86edb ("net: mana: Support hibernation and kexec")
-> 
-> > diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-> > index 9d095a6fb56c..2ab7c89e2fed 100644
-> > --- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-> > +++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-> > @@ -3685,11 +3685,16 @@ void mana_remove(struct gdma_dev *gd, bool suspending)
-> >  	struct gdma_context *gc = gd->gdma_context;
-> >  	struct mana_context *ac = gd->driver_data;
-> >  	struct mana_port_context *apc;
-> > -	struct device *dev = gc->dev;
-> > +	struct device *dev;
-> >  	struct net_device *ndev;
-> >  	int err;
-> >  	int i;
-> >
-> > +	if (!gc || !ac)
-> > +		return;
-> > +
-> > +	dev = gc->dev;
-> > +
-> >  	disable_work_sync(&ac->link_change_work);
-> >  	cancel_delayed_work_sync(&ac->gf_stats_work);
-Thankyou for the correction, Simon.
-I'll make this change in the next version.
+So what is your security model here? How did i get the hacked card
+into the machine? If i have physical access, isn't it already too
+late?
 
-- Vennela
+As far as i can see, this devices does not load firmware. Even if it
+did load firmware from /lib/firmware, i need root to put a hacked
+version there.
+
+The PacketEngine Hamachi was in use around year 2000. It needs a PCI
+slot. Not PCIe but PCI. Do they even exist any more? Both the card and
+a machine with a PCI slot?
+
+Maybe, rather than fix this /0, you should look around and see if you
+can find any indication this hardware is still in use, and if not,
+submit a patch removing the whole driver?
+
+> +++ b/drivers/net/ethernet/packetengines/hamachi.c
+> @@ -745,6 +745,14 @@ static int hamachi_init_one(struct pci_dev *pdev,
+>  		   dev->name, chip_tbl[chip_id].name, readl(ioaddr + ChipRev),
+>  		   ioaddr, dev->dev_addr, irq);
+>  	i = readb(ioaddr + PCIClkMeas);
+> +
+> +	if ((i & 0x80) && !(i & 0x7f)) {
+> +		dev_err(&pdev->dev, "Invalid PCIClkMeas value (0x%02x), hardware untrusted.\n", i);
+> +		unregister_netdev(dev);
+> +		ret = -EIO;
+> +		goto err_out_unmap_rx;
+> +	}
+> +
+>  	printk(KERN_INFO "%s:  %d-bit %d Mhz PCI bus (%d), Virtual Jumpers "
+>  		   "%2.2x, LPA %4.4x.\n",
+>  		   dev->name, readw(ioaddr + MiscStatus) & 1 ? 64 : 32,
+
+If you do decide it is worth keeping the driver, please add another
+label at the end of the function, and do the unregister_netdev there.
+
+Could i also suggest you consider more likely scenarios. It is much
+easier to produce a hacked USB dongle than a PCI card. Users plug in
+USB dongles without thinking, where as few users plug in a PCI
+card. You are more likely to fix security problems which affect real
+systems if you look at USB devices. I would also suggest that / 0 is
+not that important. But can you trigger a buffer overrun?
+
+    Andrew
+
+---
+pw-bot: cr
