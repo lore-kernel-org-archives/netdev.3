@@ -1,63 +1,64 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 624D139FCAD
-	for <netdev@vger.kernel.org>; Mon, 20 Apr 2026 13:07:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51513A1692
+	for <netdev@vger.kernel.org>; Mon, 20 Apr 2026 13:08:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776690450; cv=none; b=WpizltNU0WyqPINJfORNKTU4FtKel8oU1QXJFsAlmAYax7Sfn46QOVaelVXGh8BOVfRMaU3Ic5WJHeuIUfaa56wD1ECdcYQEUJshyg4zenNDKzdj6n26pPv/tAd8xt60XaR1BsfBEsHGyyL1r5inGIaXv/layAaWT20kOGd0Lsw=
+	t=1776690520; cv=none; b=h7I66IwcZNA2HQdRxxiXEbM92beoVAvZDpmgVqz26jlph6PCWq6xv6N4XVHy6Oz6GlZUc9i9LYes8APSZeN8qQgF0jmV5vpzJQ08DgDUYjEWzzbCTLxXPUbY4Q6L/EDoH2cvpFJWRKXJsSkKtHmofI+VVQ80nXL+x64C8k62JO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776690450; c=relaxed/simple;
-	bh=JLX0QIE+ZaB7zS+4hzCYPPCnUIvUgu+mL5VLldlw4/E=;
+	s=arc-20240116; t=1776690520; c=relaxed/simple;
+	bh=WfdVss5pRtKxRJBglQrxBTFvd3jpqaaHpT5PTY30qcU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XYG8lQ+MbNgMRG+h6IXtrtBNstrKWk8kLCGSSkWnXQT4Vwvw83JUzi9JMGyKd+JUrf6nRAH8H2IbKnF+vTYmuZQJ3mOreHKTgqrHPm+HKOaaSd2UGfJJZRDb87ukqFPL5leWPdrlJ+1si6OxMhGuBn3ysn7aZNGDwcXDcQhc/QM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZmsK9UBN; arc=none smtp.client-ip=209.85.221.46
+	 Content-Type:Content-Disposition:In-Reply-To; b=SYaX4Z/5O55IleJztmnOXIfoQSF03vmcx1g75UOv4wsBQ0L2c52ZyMPbGJSQo5BzHc7oVZt+AJA2zo4gOeRmZB/nvQ4dVl6ZoZcHQ7463bqIzTVWbtNhDCoGAzI+b1667f5S4FvgSwdJimDoyJJjiZw8VexbWjbLUm5o4PCerTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OGltjTc6; arc=none smtp.client-ip=209.85.128.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZmsK9UBN"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-43fe8bda8e9so1463543f8f.1
-        for <netdev@vger.kernel.org>; Mon, 20 Apr 2026 06:07:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OGltjTc6"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-488b0e1b870so46859465e9.2
+        for <netdev@vger.kernel.org>; Mon, 20 Apr 2026 06:08:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776690445; x=1777295245; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1776690517; x=1777295317; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/Ag56mmJk7Zmpm+f5Y09lyaEBE2YSArv7z93rWOQIdM=;
-        b=ZmsK9UBNEhonMgwHlY7RquBbKesfSJLglYPS0BN5a/HFrZzYxe+8PuUh4/t3/GwDeG
-         U2qXfV2DGAdQ5k+/6c6Cybp+rK8OKQWgXh5BjCPE2zIJ5JvEaIkXBjnovWB07due+OX6
-         NQLsFmQeK3JRKi1Ok6+GqM5H+45fahWB82mdzIEliC2MwqpOzttmvim3XoG7yuzvsc4o
-         WKCR28PLeNN0Jwvh/wW/L0/x9jY3C3bOFmhToRREM1MP0hoE0GMO1uGjH2E7RGmLn87T
-         H2SbmU7TH30b1nFfPyu/IgVr2MD32U7aycsE8+aMVCUDxgfiIY9FCWyiWIDzAh+XmG3N
-         iowg==
+        bh=2wEN4jEMCOiQ0Wb/rEfzmY335o62y1i/d8QKlDPNvdc=;
+        b=OGltjTc6So0lhKLVhds0TswoCWFDJLk1RyqcSpCHjngiDSXfD5qOTHXrYL2PTTDpO4
+         v83z+cMlwjEC0txBbh1a2dPjxP8+QpQBw1ra0IcEEaVFjav8uooyRRDJ4kIl8ifz5mZ+
+         0iNp9vcdp2fR9/OHUfh9qEWcj6f7224FKwuHzEjC/xCOLwHlLOca3Asl1iH9YJYWVHg5
+         3fKqSRVvq8ri7c7pvk/zUHTlAfggOHqjCUVBjTqUh0gO2Hinc4TAZ78PrSL0tG//FHFm
+         dmnkWl/uHG9tVclZ2rrwN4bGj9SDXe/mNO0Rv6nDsxLy9yoNA1IJfHCpSTeACMyxlcC/
+         haxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776690445; x=1777295245;
+        d=1e100.net; s=20251104; t=1776690517; x=1777295317;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=/Ag56mmJk7Zmpm+f5Y09lyaEBE2YSArv7z93rWOQIdM=;
-        b=bK6dPRbtKwhyzHyrzfdJAzjLtzozrhP70JTCC2k/OLu6TILH0tLk+NhjwC3I92JKuU
-         k4AekujjYB8Y5MU6Mja+wwKT+DU+c4qOmgqgnzg3EVos7ra7cI4pds6uwvCAyA23646D
-         MTp1HOqmEIglDy441Sld4cVRvsWo4oZaoURfD6koDn+kBnqyyykg5bKqmGG0d796NRt3
-         /GpYDlwj4yXxA8Rw3JC7eEfpJjRFZQtu7rdlcqYNKxvTUEklm+HhB/Pf/KajUUYfVt+m
-         tPC6JiAhH26NkSw3KrRYftWPoY9l8+UPeaOwX/oGX0EyYhKpx4nG1193idkAiVWZOQF/
-         vm0A==
-X-Forwarded-Encrypted: i=1; AFNElJ8uivkE7FjZfbEFBDV+nXfh5mPj/LAuwZUH7qwUL83V0QWlnLnyCy/aa5B8Vl4esDl8wqyMyXg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxv0corskmQMyTlr+1vhAyzUFadujDTdTAfaE+n9RP8OCC4pBSe
-	BSWFv4uYp/CeDyHZa25yCqdeDQpTINv6Od7TXYJr86yuiliBfyOBxX8F
-X-Gm-Gg: AeBDiesiRVxUFFD+7gq6TH9tkNbSctk1RlW2Z9ghP4r5EnVTL/0yq63rGWKtoMhyr5L
-	wKU3zk9eT97C5iC4WrCgyZdL1w0IOhK0e/qTHXvntCS9et1VFg1I1B3j/Tj3wLvumX99zQiwQbv
-	YNyD4cRV/hYGLBIZyFx1RBhdf2n43yQuXR6CifidMNbL52GFuakhkIYwCGWYOKse12sRos+lwu3
-	EeIQv5QCOOeo3Rz18PiX7LW+AZPmWaOoKNAV20J8mT7kRTnPct2WF/YLatI4g/J41HoPbQD/oV4
-	sY89aYn105sQzgvSWRnCHLEDbgz1dla7vU6VilrdM1+xogCSeedYknxASJ/s94NWujYFzhqJxOn
-	qcxkZtfoRekgo21wGNRAOcYbrpgVXu5eK6EpukcDVvECNpDDozXod7ND/8CTE/RxS/CHY7p+fKC
-	XH2V1FnnU+dMaFfeuf+ZZmBxlfAc3/veD1gt6prZAQ5CvwavGRYya+3Ho4n0MqBloibw==
-X-Received: by 2002:a05:6000:4203:b0:43d:242:b9bb with SMTP id ffacd0b85a97d-43fe3dc5c80mr20542019f8f.18.1776690445002;
-        Mon, 20 Apr 2026 06:07:25 -0700 (PDT)
+        bh=2wEN4jEMCOiQ0Wb/rEfzmY335o62y1i/d8QKlDPNvdc=;
+        b=MuejAdge7hq/rHLgDxDA48AbPl75krK+k/5g9/RUBYPsaB1p0dwg8Mep1CDK4izTqw
+         6crR97ZQfKw35tibG3WnT4CFJA6IrtrG9bqr2egopX3eDNWZENfjry6JaZS5xUIiyFDY
+         kxzfiJPVCcKWqN/kkVZNt9evyMhCHvxHVIH16SYZkpMOqi3T1zfpoL0jyQDgS0wWFJ7d
+         hg36lXsHruL/MTc80KtlVod+kHxYS8GCjGLCXHlf0TVaYdp8GQ4VsEDMJTMXbfaU+nDQ
+         lvZ9yjmeQH32aWvjeovdOigztjAU11M/glnf0RGctzaR74AAshU9zpxxbC8wcxrm02Pe
+         x9/w==
+X-Forwarded-Encrypted: i=1; AFNElJ8b3OljhzK+eWOrvXPIeDAnjV9YaTccgHaZ2wH2s4CCNUL6DoMiEnSx2zKqZjkszd/D5g5oRlo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyVKS2mUtpNZ7ILHpEhAW3duhTc89IHbl9zVzIDsdP2KCtGo5pj
+	rHl7huBFVVp6SCblBnWm5/NFP8DwdXmXAP7if7tyWBL0rtmUuzj6qEQC
+X-Gm-Gg: AeBDietyF6g53jfO0vi5aMcdS1AzwLck2k2UrPZPeak11dWDF8HNGDGMDij4IqFAWuy
+	NY5xryQybYlxCWP9ZPYw/asHGWdLV90pDjkDU4XxHsXu1zSE5BVZxkKVoAgH2+Zqp81dS8lcht3
+	vkaZp+BbgXa41MwtZd8kp06UfXpAmE6TDytfTm54+s7xm5YtxDAxKKbPoOIrI/wsPopxkIm6XA0
+	xbTUBdMOdtHg5OWqmce/f6+Y5BU/CeAt4/74mqOjw6ll2KeHaxcrxFCE/M6g5TcztlfU95yU3nA
+	jl1RcIcKK4m5BjpoMELZjzbHF70QV8RoRsMxvQ2j6KUbbgrQJPyFc6gmpk4soShvjrnwRumGk2N
+	3Jlu3yD7MzRUtJuhCiuHQJ28qDgb+RA0nnNgt5wi+59OGtRzSkhZWfcNBre95jJyJkhjp+E2Fo+
+	dx+kzCmpBJRabjnRcf0phio5uPsITImU/8HFS2L7YOiraafaWCHhFvlc35kB9cw2Kci3Ph1dMBZ
+	4Fq
+X-Received: by 2002:a05:600c:c09c:b0:48a:5363:8cac with SMTP id 5b1f17b1804b1-48a53638e07mr5220075e9.22.1776690517192;
+        Mon, 20 Apr 2026 06:08:37 -0700 (PDT)
 Received: from gmail.com (deskosmtp.auranext.com. [195.134.167.217])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43fe4e4d525sm28070324f8f.31.2026.04.20.06.07.24
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a52583fe7sm21505945e9.13.2026.04.20.06.08.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Apr 2026 06:07:24 -0700 (PDT)
-Date: Mon, 20 Apr 2026 15:07:22 +0200
+        Mon, 20 Apr 2026 06:08:36 -0700 (PDT)
+Date: Mon, 20 Apr 2026 15:08:35 +0200
 From: Mahe Tardy <mahe.tardy@gmail.com>
 To: bot+bpf-ci@kernel.org
 Cc: alexei.starovoitov@gmail.com, andrii@kernel.org, ast@kernel.org,
@@ -67,10 +68,11 @@ Cc: alexei.starovoitov@gmail.com, andrii@kernel.org, ast@kernel.org,
 	netfilter-devel@vger.kernel.org, oe-kbuild-all@lists.linux.dev,
 	pablo@netfilter.org, martin.lau@kernel.org, eddyz87@gmail.com,
 	yonghong.song@linux.dev, clm@meta.com, ihor.solodrai@linux.dev
-Subject: Re: [PATCH bpf-next v4 3/6] bpf: add bpf_icmp_send_unreach kfunc
-Message-ID: <aeYlCswvGdTHiAFp@gmail.com>
-References: <20260420105816.72168-4-mahe.tardy@gmail.com>
- <c706a726c2e82dfc6162f96d7c04313301c24d1a4e36af5c421fda7a1c01b1a1@mail.kernel.org>
+Subject: Re: [PATCH bpf-next v4 4/6] selftests/bpf: add icmp_send_unreach
+ kfunc tests
+Message-ID: <aeYlU9r1ZyQ7rcgs@gmail.com>
+References: <20260420105816.72168-5-mahe.tardy@gmail.com>
+ <4cfe307cc6b1197fc7bb3a11e79382764ac1d269a42eb4e4ffec9e991e6868e6@mail.kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,70 +81,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c706a726c2e82dfc6162f96d7c04313301c24d1a4e36af5c421fda7a1c01b1a1@mail.kernel.org>
+In-Reply-To: <4cfe307cc6b1197fc7bb3a11e79382764ac1d269a42eb4e4ffec9e991e6868e6@mail.kernel.org>
 
-On Mon, Apr 20, 2026 at 11:36:15AM +0000, bot+bpf-ci@kernel.org wrote:
-> > diff --git a/net/core/filter.c b/net/core/filter.c
-> > --- a/net/core/filter.c
-> > +++ b/net/core/filter.c
-> 
-> [ ... ]
-> 
-> > +#if IS_ENABLED(CONFIG_IPV6)
-> > +	case htons(ETH_P_IPV6):
-> > +		if (code < 0 || code > ICMPV6_REJECT_ROUTE)
-> > +			return -EINVAL;
+On Mon, Apr 20, 2026 at 11:36:13AM +0000, bot+bpf-ci@kernel.org wrote:
+> > diff --git a/tools/testing/selftests/bpf/prog_tests/icmp_send_unreach_kfunc.c b/tools/testing/selftests/bpf/prog_tests/icmp_send_unreach_kfunc.c
+> > new file mode 100644
+> > index 000000000000..24d5e01cfe80
+> > --- /dev/null
+> > +++ b/tools/testing/selftests/bpf/prog_tests/icmp_send_unreach_kfunc.c
+> > @@ -0,0 +1,136 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +#include <test_progs.h>
+> > +#include <network_helpers.h>
+> > +#include <linux/errqueue.h>
+> > +#include "icmp_send_unreach.skel.h"
 > > +
-> > +		nskb = skb_clone(skb, GFP_ATOMIC);
-> > +		if (!nskb)
-> > +			return -ENOMEM;
+> > +#define TIMEOUT_MS 1000
+> > +#define SRV_PORT 54321
 > > +
-> > +		if (!skb_dst(nskb) && ip6_route_reply_fetch_dst(nskb) < 0) {
-> > +			kfree_skb(nskb);
-> > +			return -EHOSTUNREACH;
-> > +		}
+> > +#define ICMP_DEST_UNREACH 3
+> > +
+> > +#define ICMP_FRAG_NEEDED 4
+> > +#define NR_ICMP_UNREACH 15
 > 
-> Is the route lookup needed here? Looking at icmpv6_send() in
-> net/ipv6/icmp.c, it fills fl6.{daddr,saddr} and passes them to
-> icmpv6_route_lookup() which performs its own route lookup. The function
-> doesn't appear to use skb_dst() from the original skb:
-> 
-> icmpv6_send() {
->     ...
->     fl6.daddr = hdr->saddr;
->     fl6.saddr = saddr;
->     ...
->     dst = icmpv6_route_lookup(net, skb, sk, &fl6);
->     ...
-> }
-> 
-> The same applies to the IPv4 path with icmp_send(). Additionally, at
-> cgroup/egress the skb->_skb_refdst should already be set, and the same
-> should be true for cgroup/ingress for inet proto.
-> 
-> Does the kfunc work without ip_route_reply_fetch_dst() and
-> ip6_route_reply_fetch_dst()? If so, can these calls be removed?
-> 
-> Reference: Martin KaFai Lau's comment in v3 review
-> https://lore.kernel.org/bpf/df4b0996-3e88-4ea4-983b-82866455a6fc@linux.dev/
+> Jordan Rife previously suggested in v3 that these ICMP constants should be
+> imported from <linux/icmp.h> rather than redefined here. Would it be cleaner
+> to include the header and avoid the redefinitions?
 
-Same reply as https://lore.kernel.org/bpf/aeYkdKm7B4NQ3BDo@gmail.com/,
-too bad the LLM can't access the cover letter.
+Yes it would be cleaner, but looks like I can't do it simply, maybe
+there's a solution, see the answer from the cover-letter:
+
+to Jordan: I couldn't include <linux/icmp.h> because of redefines from
+<network_helpers.h>.
 
 > 
-> > +
-> > +		*in_progress = true;
-> > +		icmpv6_send(nskb, ICMPV6_DEST_UNREACH, code, 0);
-> > +		*in_progress = false;
-> > +		kfree_skb(nskb);
-> > +		break;
-> > +#endif
-> > +	default:
-> > +		return -EPROTONOSUPPORT;
-> > +	}
-> > +
-> > +	return 0;
-> > +}
+> Reference: https://lore.kernel.org/bpf/usz5bhydsiejr37owgt3zypckzh7fa7ygmhsyaaiprsljx7iy5@ipopnr5n4ds7/
 > 
 > [ ... ]
 > 
