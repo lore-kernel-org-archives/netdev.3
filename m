@@ -1,38 +1,42 @@
-Received: from zg8tmja2lje4os4yms4ymjma.icoremail.net (zg8tmja2lje4os4yms4ymjma.icoremail.net [206.189.21.223])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 784B637F8B3
-	for <netdev@vger.kernel.org>; Mon, 20 Apr 2026 03:24:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.21.223
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF04B35C185;
+	Mon, 20 Apr 2026 03:25:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776655474; cv=none; b=A2Z4q4T86iaKq2gD3fW2i/i59mhF81iEwZyD9pgITpAcLsyNJv7v+fTXKeHuZ54AdpdD74Gi9PBK4r+Ies1jyQDbLIuSVbDp/cgIlUYr5ugl0BMdhqersYb2mPUbiNk145YjX4Rh2NTGltu/ESdYMI8F4QEoGVEOMy4GB/quIHs=
+	t=1776655524; cv=none; b=NfRzBotACsQSc++4If0u/vazVRMxAH0zXqMFdtjRpxtdpeez3Z7dE97QCK6qzbq2jfrSdnKmRxOgBKhGUzVJ0NGW60X++o+ovYw+T8WpiT5tEiX7JKFGLismg+N4uBp4cNksgJ/m54HBQ1T9SB8mI938LbHWvSrbmpSs6yFKIUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776655474; c=relaxed/simple;
-	bh=M+x1mxnL9HD/lIcPdVtrSaBErT3UKjLwCKziPJuBHOY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ghP/1SNLjdUeEoat5GIiViSZnblvMnYqiC03i3KadVGURPdl0/FcMafQdprs8t3tfgX4WzdlMRRAaZWm5Stux2BR4OHwZPqYBOyywAFovHz/SLlHY5IqEV5/SauNXGcMR86SqZZ130nAzlfIrUihu6a65DX4HsCtURTGI8YlQJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn; spf=pass smtp.mailfrom=lzu.edu.cn; arc=none smtp.client-ip=206.189.21.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lzu.edu.cn
-Received: from enjou-Legion-Y7000P-2019.coin-barley.ts.net (unknown [172.23.56.36])
-	by app1 (Coremail) with SMTP id ygmowACnHwBXnOVpn7DVAA--.49940S2;
-	Mon, 20 Apr 2026 11:24:08 +0800 (CST)
-From: Ren Wei <n05ec@lzu.edu.cn>
-To: netdev@vger.kernel.org,
-	horms@kernel.org,
-	edumazet@google.com
-Cc: andrew+netdev@lunn.ch,
+	s=arc-20240116; t=1776655524; c=relaxed/simple;
+	bh=o6WC5778xZWcRTJECjjLQorMrFwgvz0nLDUSBYqAmIU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=NAwHVFyqvsFFBivZh0jkGj1q6UzInxN/QI9tz5PRmG/Aiuz7tqKNUbgzr/x/h1svdEd271Ke5YXCn3ZyD5aPDX0QtFysT2k+xesCF600XBaN6CVvh0lRsWCJMgi/uPDq1aAO1Cr5ti1v7s+BSb1p8pyL4sZFT6Xjx3+056Sjrh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from ubuntu.. (unknown [202.112.113.208])
+	by APP-05 (Coremail) with SMTP id zQCowADndwt9nOVpj2cbDg--.31217S2;
+	Mon, 20 Apr 2026 11:24:54 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: vz@mleia.com
+Cc: alexandre.belloni@bootlin.com,
+	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
+	edumazet@google.com,
 	kuba@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	make24@iscas.ac.cn,
+	netdev@vger.kernel.org,
 	pabeni@redhat.com,
-	kees@kernel.org,
-	yuantan098@gmail.com,
-	ylong030@ucr.edu,
-	n05ec@lzu.edu.cn,
-	yifanwucs@gmail.com,
-	tomapufckgml@gmail.com,
-	bird@lzu.edu.cn
-Subject: [PATCH net v2 1/2] 8021q: use RCU for egress QoS mappings
-Date: Mon, 20 Apr 2026 11:18:45 +0800
-Message-ID: <9136768189f8c6d3f824f476c62d2fa1111688e8.1776647968.git.yuantan098@gmail.com>
-X-Mailer: git-send-email 2.51.0
+	piotr.wojtaszczyk@timesys.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] net: lpc_eth: Fix a possible memory leak in lpc_mii_probe()
+Date: Mon, 20 Apr 2026 11:24:45 +0800
+Message-ID: <20260420032445.2209758-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <60dea9e5-9890-49ab-b806-713c388d6e08@mleia.com>
+References: <60dea9e5-9890-49ab-b806-713c388d6e08@mleia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,251 +44,169 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:ygmowACnHwBXnOVpn7DVAA--.49940S2
-X-Coremail-Antispam: 1UD129KBjvJXoW3AFy8ZF43Ww4UZF47CryDJrb_yoW3CF1xpF
-	WIqFy5Xr4kJFnaqws7JF1Utr4Yv3ykJay2kr9xG3s5Cw15tr9I9F4UuasF9rn0vrWDGr13
-	tw43uF48Crs0grDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBY1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
-	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
-	IY67AKxVWDJVCq3wA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2
-	z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcV
-	Aq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j
-	6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64
-	vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0E
-	n4kS14v26r1q6r43MxkIecxEwVCm-wCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6c
-	x26r48MxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCj
-	r7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6x
-	IIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAI
-	w20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x
-	0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbGQ6JUUUUU==
-X-CM-SenderInfo: zqqvvuo6o23hxhgxhubq/1tbiAQ0CCWnkluAEVgAHsp
+X-CM-TRANSID:zQCowADndwt9nOVpj2cbDg--.31217S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxtF15Cr43Xr48Ar17urWDCFg_yoW7Zr47p3
+	yUGa4SkFykGr17Gw4vv3WUAryYvw42yw1rWFyjya45Wrn0qryfAry8trWY9r95CFZ7J3W0
+	vryakFZ3ZaykXaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUB214x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
+	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r
+	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
+	648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2
+	Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s02
+	6x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0x
+	vE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE
+	42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6x
+	kF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUOmhFUUUUU
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-From: Longxuan Yu <ylong030@ucr.edu>
+>Hello Ma Ke.
+>
+>On 4/1/26 16:18, Ma Ke wrote:
+>> On 3/30/26 13:04, Vladimir Zapolskiy wrote:
+>>> On 3/30/26 11:16, Ma Ke wrote:
+>>>> lpc_mii_probe() calls of_phy_find_device() to obtain a phy_device
+>>>> pointer. of_phy_find_device() increments the refcount of the device.
+>>>> The current implementation does not decrement the refcount after using
+>>>> the pointer, which leads to a memory leak.
+>>>
+>>> this is correct, there is an actual detected bug.
+>>>
+>>>>
+>>>> Add phy_device_free() to balance the refcount.
+>>>
+>>> But this does not sound right, you shoud use of_node_put(pldat->phy_node).
+>>>
+>>>>
+>>>> Found by code review.
+>>>>
+>>>> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+>>>> Cc: stable@vger.kernel.org
+>>>> Fixes: 3503bf024b3e ("net: lpc_eth: parse phy nodes from device tree")
+>>>> ---
+>>>>    drivers/net/ethernet/nxp/lpc_eth.c | 11 ++++++-----
+>>>>    1 file changed, 6 insertions(+), 5 deletions(-)
+>>>>
+>>>> diff --git a/drivers/net/ethernet/nxp/lpc_eth.c b/drivers/net/ethernet/nxp/lpc_eth.c
+>>>> index 8b9a3e3bba30..8ce7c9bb6dd6 100644
+>>>> --- a/drivers/net/ethernet/nxp/lpc_eth.c
+>>>> +++ b/drivers/net/ethernet/nxp/lpc_eth.c
+>>>> @@ -751,7 +751,7 @@ static void lpc_handle_link_change(struct net_device *ndev)
+>>>>    static int lpc_mii_probe(struct net_device *ndev)
+>>>>    {
+>>>>    	struct netdata_local *pldat = netdev_priv(ndev);
+>>>> -	struct phy_device *phydev;
+>>>> +	struct phy_device *phydev, *phydev_tmp;
+>>>>    
+>>>>    	/* Attach to the PHY */
+>>>>    	if (lpc_phy_interface_mode(&pldat->pdev->dev) == PHY_INTERFACE_MODE_MII)
+>>>> @@ -760,17 +760,18 @@ static int lpc_mii_probe(struct net_device *ndev)
+>>>>    		netdev_info(ndev, "using RMII interface\n");
+>>>>    
+>>>>    	if (pldat->phy_node)
+>>>> -		phydev =  of_phy_find_device(pldat->phy_node);
+>>>> +		phydev_tmp =  of_phy_find_device(pldat->phy_node);
+>>>>    	else
+>>>> -		phydev = phy_find_first(pldat->mii_bus);
+>>>> -	if (!phydev) {
+>>>> +		phydev_tmp = phy_find_first(pldat->mii_bus);
+>>>> +	if (!phydev_tmp) {
+>>>
+>>> I didn't get it, why the new phydev_tmp is needed above, please
+>>> restore the original code above.
+>>>
+>>>>    		netdev_err(ndev, "no PHY found\n");
+>>>>    		return -ENODEV;
+>>>>    	}
+>>>>    
+>>>> -	phydev = phy_connect(ndev, phydev_name(phydev),
+>>>> +	phydev = phy_connect(ndev, phydev_name(phydev_tmp),
+>>>>    			     &lpc_handle_link_change,
+>>>>    			     lpc_phy_interface_mode(&pldat->pdev->dev));
+>>>> +	phy_device_free(phydev_tmp);
+>>>
+>>> This is plainly wrong and has to be dropped or changed to
+>>>
+>>> 	if (pldat->phy_node)
+>>> 		of_node_put(pldat->phy_node);
+>>>
+>>>>    	if (IS_ERR(phydev)) {
+>>>>    		netdev_err(ndev, "Could not attach to PHY\n");
+>>>>    		return PTR_ERR(phydev);
+>>>
+>>> Is it AI generated fix or what?.. The change looks bad, it introduces
+>>> more severe issues than it fixes.
+>>>
+>>> If you think you cannot create a proper change, let me know.
+>>>
+>> Thank you very much for your detailed review and guidance.
+>> 
+>> Now I think your point probably is: you are saying that the real leak
+>> is not from of_phy_find_device(), but from the device node
+>
+>I was pretty indelicate in my comment, let's split the change into parts.
+>
+>1) I still do not understand, why phydev_tmp is introduced, please explain
+>or remove this part of the change;
+>
+>2) phydev = of_phy_find_device() requires phy_device_free(phydev), but
+>I do not see why phy_find_first() requires it, while it was added in your
+>change.
+>
+>Let's start from resolving these two points.
+>
+>> pldat->phy_node which was obtained earlier (probably by
+>> of_parse_phandle()) and never freed by of_node_put(). And you suggest
+>> to add of_node_put(pldat->phy_node) instead of my wrong
+>> phy_device_free().
+>> 
+>> However, I am still a little confused. In lpc_mii_probe(),
+>> of_phy_find_device() is called. From my understanding, this function
+>> increases the reference count of the device. To balance it, I thought
+>> phy_device_free() (which calls put_device()) should be used.
+>> 
+>> Could you please kindly advise the correct patch? I will follow your
+>> guidance and submit a proper fix.
+>> 
+>> I apologize again for my previous wrong patch. Thank you very much for
+>> your help.
+>
+> -- 
+> Best wishes,
+> Vladimir
+Hello Vladimir,
 
-The TX fast path and reporting paths walk egress QoS mappings without
-RTNL. Convert the mapping lists to RCU-protected pointers, use RCU
-reader annotations in readers, and defer freeing mapping nodes with an
-embedded rcu_head.
+Thank you for the detailed explanation and for pointing out my mistakes.
 
-This prepares the egress QoS mapping code for safe removal of mapping
-nodes in a follow-up change while preserving the current behavior.
+> 1) I still do not understand, why phydev_tmp is introduced, please explain
+> or remove this part of the change;
 
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Longxuan Yu <ylong030@ucr.edu>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
----
+I added phydev_tmp because I thought I needed to keep the original 
+phy_device pointer for releasing after phy_connect(). But as you 
+implied, it's perhaps unnecessary and only makes the code less 
+readable. I will drop this change completely in the next version.
 
-changes in v2:
-- split the original single patch into RCU preparation and bug-fix patches
-- embed an rcu_head in mapping nodes and use kfree_rcu(pm, rcu)
-- keep the existing tombstone-skipping check in vlan_fill_info() so this
-patch preserves behavior
-- use rcu_dereference_rtnl() for netlink dump traversal
-- In patch 1, sample pm->vlan_qos once with READ_ONCE() in vlan_fill_info()
-  and reuse the local value, so the RCU preparatory change does not mix a
-  plain load for the tombstone check with a separate READ_ONCE() for the
-  exported value
-- v1 Link:
-https://lore.kernel.org/all/b877895cd02d35254b5c05d3c40abbf130cd87eb.1776039122.git.ylong030@ucr.edu/
+> 2) phydev = of_phy_find_device() requires phy_device_free(phydev), but
+> I do not see why phy_find_first() requires it, while it was added in your
+> change.
 
-Besides, we still think Fixes should point to 1da177e4c3f4, not
-b020cb488586, because the underlying bug already exists in 1da177e4c3f4:
-clearing an egress QoS mapping leaves the mapping node in the hash instead
-of deleting it. Commit b020cb488586 only added nr_egress_mappings
-accounting for that pre-existing behavior; it did not introduce the bug
-itself.
+You are absolutely right. I mistakenly assumed that both functions 
+return a reference-counted pointer. phy_find_first() does not 
+increment the refcount, so calling phy_device_free() on it is wrong 
+and dangerous. My patch introduced a new bug there.
 
- include/linux/if_vlan.h  | 25 ++++++++++++++++---------
- net/8021q/vlan_dev.c     | 31 ++++++++++++++++---------------
- net/8021q/vlan_netlink.c | 10 ++++++----
- net/8021q/vlanproc.c     | 12 ++++++++----
- 4 files changed, 46 insertions(+), 32 deletions(-)
+Now I understand that only the of_phy_find_device() branch needs a 
+corresponding put_device(). I will prepare a corrected patch that only
+releases the reference in that specific path (including on the error 
+path after phy_connect() failure). I will also look at the phy_node 
+reference leak you hinted at.
 
-diff --git a/include/linux/if_vlan.h b/include/linux/if_vlan.h
-index e6272f9c5e42..20cc16ea4e5a 100644
---- a/include/linux/if_vlan.h
-+++ b/include/linux/if_vlan.h
-@@ -147,11 +147,13 @@ extern __be16 vlan_dev_vlan_proto(const struct net_device *dev);
-  *	@priority: skb priority
-  *	@vlan_qos: vlan priority: (skb->priority << 13) & 0xE000
-  *	@next: pointer to next struct
-+ *	@rcu: used for deferred freeing of mapping nodes
-  */
- struct vlan_priority_tci_mapping {
- 	u32					priority;
- 	u16					vlan_qos;
--	struct vlan_priority_tci_mapping	*next;
-+	struct vlan_priority_tci_mapping __rcu	*next;
-+	struct rcu_head			rcu;
- };
- 
- struct proc_dir_entry;
-@@ -177,7 +179,7 @@ struct vlan_dev_priv {
- 	unsigned int				nr_ingress_mappings;
- 	u32					ingress_priority_map[8];
- 	unsigned int				nr_egress_mappings;
--	struct vlan_priority_tci_mapping	*egress_priority_map[16];
-+	struct vlan_priority_tci_mapping __rcu	*egress_priority_map[16];
- 
- 	__be16					vlan_proto;
- 	u16					vlan_id;
-@@ -209,19 +211,24 @@ static inline u16
- vlan_dev_get_egress_qos_mask(struct net_device *dev, u32 skprio)
- {
- 	struct vlan_priority_tci_mapping *mp;
-+	u16 vlan_qos = 0;
- 
--	smp_rmb(); /* coupled with smp_wmb() in vlan_dev_set_egress_priority() */
-+	rcu_read_lock();
- 
--	mp = vlan_dev_priv(dev)->egress_priority_map[(skprio & 0xF)];
-+	mp = rcu_dereference(vlan_dev_priv(dev)->egress_priority_map[skprio & 0xF]);
- 	while (mp) {
- 		if (mp->priority == skprio) {
--			return mp->vlan_qos; /* This should already be shifted
--					      * to mask correctly with the
--					      * VLAN's TCI */
-+			vlan_qos = READ_ONCE(mp->vlan_qos);
-+			break;
- 		}
--		mp = mp->next;
-+		mp = rcu_dereference(mp->next);
- 	}
--	return 0;
-+	rcu_read_unlock();
-+
-+	/* This should already be shifted to mask correctly with
-+	 * the VLAN's TCI.
-+	 */
-+	return vlan_qos;
- }
- 
- extern bool vlan_do_receive(struct sk_buff **skb);
-diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
-index c40f7d5c4fca..a5340932b657 100644
---- a/net/8021q/vlan_dev.c
-+++ b/net/8021q/vlan_dev.c
-@@ -172,39 +172,34 @@ int vlan_dev_set_egress_priority(const struct net_device *dev,
- 				 u32 skb_prio, u16 vlan_prio)
- {
- 	struct vlan_dev_priv *vlan = vlan_dev_priv(dev);
--	struct vlan_priority_tci_mapping *mp = NULL;
-+	struct vlan_priority_tci_mapping *mp;
- 	struct vlan_priority_tci_mapping *np;
-+	u32 bucket = skb_prio & 0xF;
- 	u32 vlan_qos = (vlan_prio << VLAN_PRIO_SHIFT) & VLAN_PRIO_MASK;
- 
- 	/* See if a priority mapping exists.. */
--	mp = vlan->egress_priority_map[skb_prio & 0xF];
-+	mp = rtnl_dereference(vlan->egress_priority_map[bucket]);
- 	while (mp) {
- 		if (mp->priority == skb_prio) {
- 			if (mp->vlan_qos && !vlan_qos)
- 				vlan->nr_egress_mappings--;
- 			else if (!mp->vlan_qos && vlan_qos)
- 				vlan->nr_egress_mappings++;
--			mp->vlan_qos = vlan_qos;
-+			WRITE_ONCE(mp->vlan_qos, vlan_qos);
- 			return 0;
- 		}
--		mp = mp->next;
-+		mp = rtnl_dereference(mp->next);
- 	}
- 
- 	/* Create a new mapping then. */
--	mp = vlan->egress_priority_map[skb_prio & 0xF];
- 	np = kmalloc_obj(struct vlan_priority_tci_mapping);
- 	if (!np)
- 		return -ENOBUFS;
- 
--	np->next = mp;
- 	np->priority = skb_prio;
- 	np->vlan_qos = vlan_qos;
--	/* Before inserting this element in hash table, make sure all its fields
--	 * are committed to memory.
--	 * coupled with smp_rmb() in vlan_dev_get_egress_qos_mask()
--	 */
--	smp_wmb();
--	vlan->egress_priority_map[skb_prio & 0xF] = np;
-+	RCU_INIT_POINTER(np->next, rtnl_dereference(vlan->egress_priority_map[bucket]));
-+	rcu_assign_pointer(vlan->egress_priority_map[bucket], np);
- 	if (vlan_qos)
- 		vlan->nr_egress_mappings++;
- 	return 0;
-@@ -604,11 +599,17 @@ void vlan_dev_free_egress_priority(const struct net_device *dev)
- 	int i;
- 
- 	for (i = 0; i < ARRAY_SIZE(vlan->egress_priority_map); i++) {
--		while ((pm = vlan->egress_priority_map[i]) != NULL) {
--			vlan->egress_priority_map[i] = pm->next;
--			kfree(pm);
-+		pm = rtnl_dereference(vlan->egress_priority_map[i]);
-+		RCU_INIT_POINTER(vlan->egress_priority_map[i], NULL);
-+		while (pm) {
-+			struct vlan_priority_tci_mapping *next;
-+
-+			next = rtnl_dereference(pm->next);
-+			kfree_rcu(pm, rcu);
-+			pm = next;
- 		}
- 	}
-+	vlan->nr_egress_mappings = 0;
- }
- 
- static void vlan_dev_uninit(struct net_device *dev)
-diff --git a/net/8021q/vlan_netlink.c b/net/8021q/vlan_netlink.c
-index a000b1ef0520..a5b16833e2ce 100644
---- a/net/8021q/vlan_netlink.c
-+++ b/net/8021q/vlan_netlink.c
-@@ -260,13 +260,15 @@ static int vlan_fill_info(struct sk_buff *skb, const struct net_device *dev)
- 			goto nla_put_failure;
- 
- 		for (i = 0; i < ARRAY_SIZE(vlan->egress_priority_map); i++) {
--			for (pm = vlan->egress_priority_map[i]; pm;
--			     pm = pm->next) {
--				if (!pm->vlan_qos)
-+			for (pm = rcu_dereference_rtnl(vlan->egress_priority_map[i]); pm;
-+			     pm = rcu_dereference_rtnl(pm->next)) {
-+				u16 vlan_qos = READ_ONCE(pm->vlan_qos);
-+
-+				if (!vlan_qos)
- 					continue;
- 
- 				m.from = pm->priority;
--				m.to   = (pm->vlan_qos >> 13) & 0x7;
-+				m.to   = (vlan_qos >> 13) & 0x7;
- 				if (nla_put(skb, IFLA_VLAN_QOS_MAPPING,
- 					    sizeof(m), &m))
- 					goto nla_put_failure;
-diff --git a/net/8021q/vlanproc.c b/net/8021q/vlanproc.c
-index fa67374bda49..0e424e0895b7 100644
---- a/net/8021q/vlanproc.c
-+++ b/net/8021q/vlanproc.c
-@@ -262,15 +262,19 @@ static int vlandev_seq_show(struct seq_file *seq, void *offset)
- 		   vlan->ingress_priority_map[7]);
- 
- 	seq_printf(seq, " EGRESS priority mappings: ");
-+	rcu_read_lock();
- 	for (i = 0; i < 16; i++) {
--		const struct vlan_priority_tci_mapping *mp
--			= vlan->egress_priority_map[i];
-+		const struct vlan_priority_tci_mapping *mp =
-+			rcu_dereference(vlan->egress_priority_map[i]);
- 		while (mp) {
-+			u16 vlan_qos = READ_ONCE(mp->vlan_qos);
-+
- 			seq_printf(seq, "%u:%d ",
--				   mp->priority, ((mp->vlan_qos >> 13) & 0x7));
--			mp = mp->next;
-+				   mp->priority, ((vlan_qos >> 13) & 0x7));
-+			mp = rcu_dereference(mp->next);
- 		}
- 	}
-+	rcu_read_unlock();
- 	seq_puts(seq, "\n");
- 
- 	return 0;
--- 
-2.43.0
+Thank you again for your guidance. I will send a v2 after fixing it 
+properly.
+
+Best regards,
+Ma Ke
 
