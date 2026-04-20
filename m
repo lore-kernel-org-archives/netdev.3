@@ -1,125 +1,159 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from mx0b-00190b01.pphosted.com (mx0b-00190b01.pphosted.com [67.231.157.127])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4787F2F260F;
-	Mon, 20 Apr 2026 10:34:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E46FB214204;
+	Mon, 20 Apr 2026 10:41:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.157.127
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776681275; cv=none; b=hxEqvo/JTHFVF7IsZK8LAvJb9bsd9EtEaFQX06OhvC5Da88SV6+KhihX6w9rxDlJc/K4gDoBxFGebyeFvYGxMDIqz/We8pH9nWzOOpNug9DujuG6qjhzdg/vtm+vhjmRqEPU+oFUth4WQQuYIQC3JonGFc22d877UihMflp2yLU=
+	t=1776681666; cv=none; b=ia1ya0mE+ubTLwGkyXCrY6B5s0M2UpC8+17vgkiWbrdf/dsmKvnJ2tQRaJnOmokEii7RKF1kaLIW0NYK++5mKA3QkelgtU7WQHYWnLwC1eai+1CUnx9IJS1Qe1Ms97Eb+vFuRqju+yy1d8MfuCBQV9/VP4KElu2A0+eIpWBvUus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776681275; c=relaxed/simple;
-	bh=Ix8P7RnF0Rfhthxt4kOBqZyLHhMN56JNwg+Whyvbb2M=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=bqaDs7mqxqRxMyu70iXaGHNOAxnCngow1c0rJfQvQyUBmsZ+rkdZFJGe8BczA6vSDpXYLWfrcvwOpqYN91dg6fNXxODfFRTVHq++xmSjZ9Q7bj0lzTGsEFqU0FBGJa6ljCwccDKHD16mb6QM1j5xhLi4jMjqA5ooFntqbrTrws8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=qaDmmnMp; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
+	s=arc-20240116; t=1776681666; c=relaxed/simple;
+	bh=Pf677KovmnUk65KEriz0KIpiNlnDgtwneJAk/RSS+7c=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JG5yV15zPO2EXHe1DUeuSvJR7MD5srRay2SA0DrF+pUd+k2HN89SrJKmVIeGClXzU0pFkTBNkphaAnDnjXNozqQhbFIu3bcEFEWtbYWRjyHaw7oH0X463vI/Wpp6baKUOOhQLuAo3PkLMp6rjEdsrEnfikXyAMHjOyAGZgSy7bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=akamai.com; spf=pass smtp.mailfrom=akamai.com; dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b=nGdM8Fcc; arc=none smtp.client-ip=67.231.157.127
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=akamai.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=akamai.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="qaDmmnMp"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
-	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
-	bh=sSyq707cDYongcfhhlIcwCv7VZwPwVTCVWAelVSlF2g=; b=qaDmmnMpCBiLtph6bMABgKqdZt
-	XeeIgYSGHihFmxiSZrpm5tvC+CcL7n66dY98iVzr0KcLWY/3qo3a0vv75iNTOZVejoyanRR6HTHze
-	hn3vGQw83gtsnbT8f7VRXGa0Yb0JO5t5aOdS6aS/gI0VZ30JalR8QPQqdfxeVcD1x9uV3B81aeNe1
-	LK/SdN3Rx1J8LTa7SGG9E/+R+v9C7Hbx+HTxm8IvFHTcdvWXX1KtPshidl74mNy97lWdgD3w4TVzw
-	Fyx1uQjV+tuB1Tnuve4mQIqNhPl/rzVpJSIDmD25lfQ0KYtzWVrNZvgSUWldv0F2bOYARuLBIXLtN
-	Rm4ySZwg==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wElxS-0001Sp-1A;
-	Mon, 20 Apr 2026 10:34:26 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Mon, 20 Apr 2026 03:18:36 -0700
-Subject: [PATCH net] netconsole: avoid out-of-bounds access on empty string
- in trim_newline()
+	dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b="nGdM8Fcc"
+Received: from pps.filterd (m0122330.ppops.net [127.0.0.1])
+	by mx0b-00190b01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63K9fMe43923168;
+	Mon, 20 Apr 2026 11:40:54 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=akamai.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=jan2016.eng; bh=WRwFF0ak/kYmOvxu8pvV8fXOqllXynyOp
+	w9YqXc5VjU=; b=nGdM8FccvIJ6v9RStvTCMXQwV1wySOWOCN/jZIl5ne5ylrxv9
+	FbmFA+fH5ZR/Lo8e36MG3e1HtdSHVvGGsgnZ1GSwIJcbRrPwyc20kePfLoVI5Jiw
+	GpNhXJnVO2PO7SGIlh3+WBzYvmWIQhUG4DAifree+BO809CLkedi3tzWWHPSD0zo
+	G5lt31C/ZB/gjaRNyRIdD0RxdSkWGh+7L7qHjiTRbzz51Os1Mz4d0XTZvXUVajlW
+	wYKHsV+IGzGtddfep3McAdygLgj0EogzA/305yT/Aqj6nhirhdL5HMoktGOyzCUY
+	m6T/UcdBcaJNHRR3LjcyLgXuw7Ib8OuH/icEg==
+Received: from prod-mail-ppoint6 (prod-mail-ppoint6.akamai.com [184.51.33.61])
+	by mx0b-00190b01.pphosted.com (PPS) with ESMTPS id 4dm1ktcgt5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 20 Apr 2026 11:40:54 +0100 (BST)
+Received: from pps.filterd (prod-mail-ppoint6.akamai.com [127.0.0.1])
+	by prod-mail-ppoint6.akamai.com (8.18.1.7/8.18.1.7) with ESMTP id 63KAQhM3031228;
+	Mon, 20 Apr 2026 06:40:54 -0400
+Received: from prod-mail-relay02.akamai.com ([172.27.118.35])
+	by prod-mail-ppoint6.akamai.com (PPS) with ESMTP id 4dm59tqd1q-1;
+	Mon, 20 Apr 2026 06:40:53 -0400 (EDT)
+Received: from muc-lhvdhd.munich.corp.akamai.com (muc-lhvdhd.munich.corp.akamai.com [172.29.0.147])
+	by prod-mail-relay02.akamai.com (Postfix) with ESMTP id D1ED78A;
+	Mon, 20 Apr 2026 10:40:52 +0000 (UTC)
+From: Nick Hudson <nhudson@akamai.com>
+To: bpf@vger.kernel.org, netdev@vger.kernel.org,
+        Willem de Bruijn <willemb@google.com>,
+        Martin KaFai Lau <martin.lau@linux.dev>
+Cc: Nick Hudson <nhudson@akamai.com>, Max Tottenham <mtottenh@akamai.com>,
+        Anna Glasgall <aglasgal@akamai.com>
+Subject: [PATCH bpf-next v5 0/6] bpf: decap flags and GSO state updates
+Date: Mon, 20 Apr 2026 11:40:45 +0100
+Message-Id: <20260420104051.1528843-1-nhudson@akamai.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260420-netcons_trim_newline-v1-1-dc35889aeedf@debian.org>
-X-B4-Tracking: v=1; b=H4sIAHv95WkC/yXMQQrCMBAF0KuEv24gpiVoriJSbPzVEZ1KErVQe
- ndRt2/xFhRmYUE0CzJfUmRSRLNpDNLlqGdaOSEaeOeD67yzypomLX3Ncu+V75sobRvGwNQOu61
- 3aAwemaPMv3YPZcXhj+U5XJnqN8S6fgDn09WxfQAAAA==
-X-Change-ID: 20260420-netcons_trim_newline-36f6ec3b9820
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Matthew Wood <thepacketgeek@gmail.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- kernel-team@meta.com, stable@vger.kernel.org, 
- Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.16-dev-453a6
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1792; i=leitao@debian.org;
- h=from:subject:message-id; bh=Ix8P7RnF0Rfhthxt4kOBqZyLHhMN56JNwg+Whyvbb2M=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBp5gEtYvbwBxczeM8ah4vitJErTLdkEfq5YVYQI
- nSI9NF9ZvuJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaeYBLQAKCRA1o5Of/Hh3
- bSL5D/0WjjJt67VmSp16xhSyQgB0xJRmAu3KIvJPFilkspfyRsL1uDD6JopHm2QZE0NDX5FO5LW
- YO5i9djcvpAKsyEk5Ml26u9pK3c5ibEqe8yN4U57cW/TnbzxvvVCc5pMb+pUDgHhqhsmfnMlncW
- b9OMCMpkLF6b84GufiVgU9ILODIbC8u5MFTN+NQdamBtbV3OHJM3boCQY6NBkBKteyqOj09Nuc4
- VuofA+tLqvEsZ7ZSGSJAipEFBjxuYJWA/KhEFXJb0xyoGfT9eqjQjXpA3hlXz3xzLcVTKZuL1YE
- RvoQ8k3AJd7fidPLHXX9qXswdIP6rw8Oi6TaPQk/vj7QMy2ajVTtyU0eEe8nm0hDZ7J6fEoC008
- LMT8z2viLRCtluRkSeD6RCxaK4PyNH03RfEDY9HxRBlw9Re6H48gDG0GOmJQ1knX1TJAHMoByqc
- AauTNDvZwPsaXeKb7rKB6PaFYyey6qC1xKA6ZmWXQg7o0xKugbWJ4ijaula/c371j0heo0lK/J0
- ZVyhbHdFJE3l5IeN/T+ULag2mJ98BixKlVf+7V24/Z3d5btDmCeK78dpIgshlj+xxZ7RNrMoE9y
- GhYymvNjeDx4aKNxraMqD8fIezfUcw5qtkbw/lw58b+dnkZfxjVScpdVvyoX2ksePWLgjcuUjE/
- oXZ5sKXb3mQdZYw==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-20_02,2026-04-17_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
+ suspectscore=0 mlxscore=0 mlxlogscore=940 phishscore=0 lowpriorityscore=0
+ adultscore=0 bulkscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2604070000 definitions=main-2604200101
+X-Proofpoint-ORIG-GUID: MAsql27h9d6O5u7AoM0sQIHf7vhJbvDO
+X-Authority-Analysis: v=2.4 cv=Eaj4hvmC c=1 sm=1 tr=0 ts=69e602b6 cx=c_pps
+ a=WPLAOKU3JHlOa4eSsQmUFQ==:117 a=WPLAOKU3JHlOa4eSsQmUFQ==:17
+ a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=Ifg-1AOnLHOf1gn6spyb:22
+ a=4xFXqd-_BHBjZVyr95gr:22 a=X7Ea-ya5AAAA:8 a=1oy85zK9C34BhurvvrYA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIwMDEwMyBTYWx0ZWRfXzc6zodESEFdH
+ Xh9IxmcIa5B0Xyk/qSmCfazyFXO4HVhnVjzQY9+LrVc6kPXfBzIaPJ9lFp2yJd9SU1eUeSnpD5t
+ mXDDJNMT80+fqNdvREEb74Mle7zKPUae+XZybbqz1ONWzuPlatr+cmPozWvhSeu0uEklHl+us9Y
+ blDARmWazlJMFWTxEPB16eY1RbyHNDNqR9t1ukhrOAyQvpovKpy1uNCmPGVzRWasRm0cSGTNk8m
+ jkyR9JSKK3fu7F4Eq5LjQuGVQ8XAY0K5oQF9J+tPMDTKNb2/7O2z4sBY4MKiZMyS7Zk2b9lobZN
+ 3aX0cbbNKsVESi4saBOrDaT1Sv3bQySYSelONDKpeI/dV1ioUgOZN6zJ981hgZi/8oDTYyfXnpx
+ zeb7envKQG0Hw7MaByvEGaB0F7657TsKD6JlDqzTtlW7FS04oJ5p6B+0Nk7XYFFPwCAIkkwQCoM
+ Df+AeEdsyn4xehnoKjg==
+X-Proofpoint-GUID: MAsql27h9d6O5u7AoM0sQIHf7vhJbvDO
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-20_02,2026-04-17_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
+ phishscore=0 lowpriorityscore=0 spamscore=0 priorityscore=1501 clxscore=1015
+ adultscore=0 malwarescore=0 bulkscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604170000 definitions=main-2604200103
 
-trim_newline() unconditionally dereferences s[len - 1] after computing
-len = strnlen(s, maxlen). When the string is empty, len is 0 and the
-expression underflows to s[(size_t)-1], reading (and potentially
-writing) one byte before the buffer.
 
-The two callers feed trim_newline() with the result of strscpy() from
-configfs store callbacks (dev_name_store, userdatum_value_store).
-configfs guarantees count >= 1 reaches the callback, but the byte
-itself can be NUL: a userspace write(fd, "\0", 1) leaves the
-destination empty after strscpy() and triggers the underflow. The OOB
-write only fires if the adjacent byte happens to be '\n', so this is
-not a security issue, but the access is undefined behaviour either way.
+This series extends bpf_skb_adjust_room() with decapsulation-specific
+flags and tunnel GSO state updates for decap use cases.
 
-This pattern is commonly flagged by LLM-based code reviewers. While it
-is not a security fix, the underlying access is undefined behaviour and
-the change is small and self-contained, so it is a reasonable candidate
-for the stable trees.
+Motivation
+----------
 
-Guard the dereference on a non-zero length.
+When BPF decapsulates tunneled packets, skb GSO state needs to be
+updated to match the removed tunnel layer. This includes clearing the
+corresponding tunnel GSO type bits and resetting encapsulation state
+once no tunnel GSO flags remain.
 
-Fixes: ae001dc67907 ("net: netconsole: move newline trimming to function")
-Cc: stable@vger.kernel.org
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- drivers/net/netconsole.c | 2 ++
- 1 file changed, 2 insertions(+)
+Series Overview
+---------------
 
-diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
-index 3c9acd6e49e86..205384dab89a6 100644
---- a/drivers/net/netconsole.c
-+++ b/drivers/net/netconsole.c
-@@ -497,6 +497,8 @@ static void trim_newline(char *s, size_t maxlen)
- 	size_t len;
- 
- 	len = strnlen(s, maxlen);
-+	if (!len)
-+		return;
- 	if (s[len - 1] == '\n')
- 		s[len - 1] = '\0';
- }
+- Name the adjust_room flag enum for CO-RE lookups.
+- Refactor adjust_room helper masks for maintainable validation logic.
+- Add new DECAP flags to UAPI.
+- Add guard rails for incompatible/invalid decap flag combinations.
+- Implement decap GSO flag clearing.
+- Add selftests to validate decap GSO state transitions.
 
----
-base-commit: c7275b05bc428c7373d97aa2da02d3a7fa6b9f66
-change-id: 20260420-netcons_trim_newline-36f6ec3b9820
+Changes v4 -> v5:
+- Patch 5: Remove explicit clearing of encap_hdr_csum and
+  remcsum_offload on UDP decap, per review feedback.
+- Patch 6: Remove SKB_GSO_TUNNEL_REMCSUM from SKB_GSO_UDP_TUNNEL_MASK
+  in selftests, and minor test improvements.
 
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
+Changes v3 -> v4:
+- Patch 5: drop SKB_GSO_TUNNEL_REMCSUM handling from this series.
+- Patch 5: clear encap_hdr_csum and remcsum_offload directly on UDP
+  decap.
+
+Changes v2 -> v3:
+- Add a new selftests patch to validate decap GSO state behavior.
+- Reorder the series so helper-mask refactoring precedes UAPI DECAP
+  flag additions.
+- Refresh patch 2 and patch 3 split to keep refactoring
+  behavior-neutral.
+- Patch 5: add decap tunnel GSO-state checks in "bpf: clear decap
+  tunnel GSO state in skb_adjust_room" (per Gemini/sashiko).
+
+Changes v1 -> v2:
+- Patch 3: decap flag acceptance intentionally remains L3-only while
+  adding helper masks.
+- Patch 4: decap with L4/IPXIP support enabled with guard rails.
+
+Co-developed-by: Max Tottenham <mtottenh@akamai.com>
+Signed-off-by: Max Tottenham <mtottenh@akamai.com>
+Co-developed-by: Anna Glasgall <aglasgal@akamai.com>
+Signed-off-by: Anna Glasgall <aglasgal@akamai.com>
+Signed-off-by: Nick Hudson <nhudson@akamai.com>
+
+Nick Hudson (6):
+  bpf: name the enum for BPF_FUNC_skb_adjust_room flags
+  bpf: refactor masks for ADJ_ROOM flags and encap validation
+  bpf: add BPF_F_ADJ_ROOM_DECAP_* flags for tunnel decapsulation
+  bpf: allow new DECAP flags and add guard rails
+  bpf: clear decap tunnel GSO state in skb_adjust_room
+  selftests/bpf: tc_tunnel validate decap GSO state
+
+ include/uapi/linux/bpf.h                      |  36 +++++-
+ net/core/filter.c                             | 118 +++++++++++++++---
+ tools/include/uapi/linux/bpf.h                |  36 +++++-
+ .../selftests/bpf/progs/test_tc_tunnel.c      |  58 +++++++++
+ 4 files changed, 225 insertions(+), 23 deletions(-)
+
+-- 
+2.34.1
 
