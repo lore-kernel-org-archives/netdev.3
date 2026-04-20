@@ -1,146 +1,136 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E26F3A1A5F;
-	Mon, 20 Apr 2026 14:27:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C4693164A9;
+	Mon, 20 Apr 2026 14:33:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776695257; cv=none; b=FNab4GkmlWuc2ZG72qRz6G4+SZAQsBBQEJSmojBpacUB11vWHJkNvHHi7w/HLCxs0hOsELwPmF7ZtVlxD+d2odKE+fuWLV8VQq5a7RcxIpB3jG3wQPHvcXpmckNyAGQfuaLB8xAui9AUJDGduavvb/l9OEp8eWcO3U/Zd9LhiJk=
+	t=1776695595; cv=none; b=iOeHE7Os6z4rsc6MzG+a06bhyMl45WK4jnPF1LTMYdAzBCDsBma/LSauhC2x9MEGbjveyH2v8aPdttujRKfja9UG7CFZDlghWzGW3nRoveR9vFsOCq9aqsM2/O7txPI+aJBuMrOgbiO/t37kRIi6EFRUUbTa/HaQV9VVqW8P3iI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776695257; c=relaxed/simple;
-	bh=7iZB9lVR4tjlUQWISf4C9RaUtnMV6A5tolEZjLKPmq0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Subject:Cc:
-	 References:In-Reply-To; b=MusF8iwW64mgnR/q0PuO72hAW3Q32MsJkOWybXfMxHvzTZ4lHctawTF3BdRO5Whykz5riDgFd8/z5MFkiiDKaLg/qTPModZdPX25iOy0Ab6d22JsJNqiZwodo8v1zq85egH/k6uWtIEsWLoiQguTd7294v81oHnib3JqzFn9Zuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=cQx3iAWh; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1776695595; c=relaxed/simple;
+	bh=Z5XTYjYgGenFg75ZyCZB4mCqlpyiPknAusvMdqsuk9I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=olIKXjwA1G9jb/jL8TFhFpdO4xor3vviBI6c95OIh45g1Oms3uCFOkrgSnOdRcg2kiXAUfRRhBHZUjXKbmBLXjhOLCQeNATuynIh0/8NhNeTmYwFjDyB57z7LYxqPBeBHcnI4ZDYglXimLaBZQ4TzRm0pGlOUYXKjTTIG+4gWtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OrFpoQwx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="cQx3iAWh"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 7518B4E42A74;
-	Mon, 20 Apr 2026 14:27:33 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 4520E5FFA5;
-	Mon, 20 Apr 2026 14:27:33 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D76FA104609E1;
-	Mon, 20 Apr 2026 16:27:19 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1776695251; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=7iZB9lVR4tjlUQWISf4C9RaUtnMV6A5tolEZjLKPmq0=;
-	b=cQx3iAWhs/KPT6ZKsayEJ77QUJ33XBAG/t0wnqcTpu3msayl+KXgWefDzyP6FHZbfakEkZ
-	mUR9idudII95auF9BStFdEyg/ZfrWZJCELMf6aEJ9nJnKcF3lYW4yWiIbwvmeXqGWTpGmf
-	6EF//PlEz9TgQjwnfV7Im08Tdi8PN2MJhTmQrHK3ZcYqVN+h4i1NR1PcJfySN2cwnhClDq
-	928UAmnD/sIgSbP085aDV8aYk/2N8juRaUClIP5Mya/PjkZy+fiJZcnNXxg9mz4R2m4w41
-	IRTL6ZhZmOioqx+JmCYgjuunP3yDG68/rxphRxpBvUN8z7Kr2df9dCBqhog1xw==
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OrFpoQwx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A837DC19425;
+	Mon, 20 Apr 2026 14:33:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776695595;
+	bh=Z5XTYjYgGenFg75ZyCZB4mCqlpyiPknAusvMdqsuk9I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OrFpoQwxrGxXc87vT9/MofZJzk0odrk6+hRF48jYiECjZPba9IcrFdrx26vjMKuwd
+	 V+i6NGhB4wCFJzgsw6QWHn6NyEegbJWc2bV0O/iyPskdyJQQPGESoUkx6z0HcO7lSB
+	 bdJZOT8SMjK+VxslhnOXTbEaz9nUEMfXRtphWO40n+uFs3klOn8WanGY1bWZ51Y6sl
+	 yps8mkBiSmYbAwbEug0Tclp4mb8/HaK9yKdW2SI0AjlxqVm6YIFV4SOhXcM+jEy9W1
+	 79NMX7hoNCL88ZJD9AdcptE30qfx5rxv84nVpLOhVu1uX4nuDVrvqodCx7t6b41oLS
+	 8TuzQP5an0EHg==
+Date: Mon, 20 Apr 2026 15:33:09 +0100
+From: Lee Jones <lee@kernel.org>
+To: Tung Quang Nguyen <tung.quang.nguyen@est.tech>
+Cc: Jon Maloy <jmaloy@redhat.com>, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"tipc-discussion@lists.sourceforge.net" <tipc-discussion@lists.sourceforge.net>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/1] tipc: fix double-free in tipc_buf_append()
+Message-ID: <20260420143309.GD3202366@google.com>
+References: <20260420130524.3527420-1-lee@kernel.org>
+ <GV1P189MB19886E03BDD0F407B757E5ABC62F2@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 20 Apr 2026 16:27:19 +0200
-Message-Id: <DHY1WD3EUHEE.2R8PQXVKW6FO4@bootlin.com>
-From: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-To: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>, "Andrey Konovalov"
- <andreyknvl@gmail.com>
-Subject: Re: [PATCH RFC bpf-next 1/8] kasan: expose generic kasan helpers
-Cc: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>, "Alexei
- Starovoitov" <ast@kernel.org>, "Daniel Borkmann" <daniel@iogearbox.net>,
- "Andrii Nakryiko" <andrii@kernel.org>, "Martin KaFai Lau"
- <martin.lau@linux.dev>, "Eduard Zingerman" <eddyz87@gmail.com>, "Kumar
- Kartikeya Dwivedi" <memxor@gmail.com>, "Song Liu" <song@kernel.org>,
- "Yonghong Song" <yonghong.song@linux.dev>, "Jiri Olsa" <jolsa@kernel.org>,
- "John Fastabend" <john.fastabend@gmail.com>, "David S. Miller"
- <davem@davemloft.net>, "David Ahern" <dsahern@kernel.org>, "Thomas
- Gleixner" <tglx@kernel.org>, "Ingo Molnar" <mingo@redhat.com>, "Borislav
- Petkov" <bp@alien8.de>, "Dave Hansen" <dave.hansen@linux.intel.com>, "X86
- ML" <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, "Shuah Khan"
- <shuah@kernel.org>, "Maxime Coquelin" <mcoquelin.stm32@gmail.com>,
- "Alexandre Torgue" <alexandre.torgue@foss.st.com>, "Andrey Ryabinin"
- <ryabinin.a.a@gmail.com>, "Alexander Potapenko" <glider@google.com>,
- "Dmitry Vyukov" <dvyukov@google.com>, "Vincenzo Frascino"
- <vincenzo.frascino@arm.com>, "Andrew Morton" <akpm@linux-foundation.org>,
- <ebpf@linuxfoundation.org>, "Bastien Curutchet"
- <bastien.curutchet@bootlin.com>, "Thomas Petazzoni"
- <thomas.petazzoni@bootlin.com>, "Xu Kuohai" <xukuohai@huawei.com>, "bpf"
- <bpf@vger.kernel.org>, "LKML" <linux-kernel@vger.kernel.org>, "Network
- Development" <netdev@vger.kernel.org>, "open list:KERNEL SELFTEST
- FRAMEWORK" <linux-kselftest@vger.kernel.org>,
- <linux-stm32@st-md-mailman.stormreply.com>, "linux-arm-kernel"
- <linux-arm-kernel@lists.infradead.org>, "kasan-dev"
- <kasan-dev@googlegroups.com>, "linux-mm" <linux-mm@kvack.org>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260413-kasan-v1-0-1a5831230821@bootlin.com>
- <20260413-kasan-v1-1-1a5831230821@bootlin.com>
- <CA+fCnZfubV6LgRjO3NQvhrG2Q5o0ftkFFupLWVYS50XDnmCaog@mail.gmail.com>
- <DHSWK17EZUDP.GIJ6BX2NFR6U@bootlin.com>
- <CAADnVQLJ=fJ7t1i2+_RYqU1gqYqiLP9Zrwo4vdZsgzjK_yzJTQ@mail.gmail.com>
- <CA+fCnZd31GzdpEqR8VhfK4JtUKyyRMgbBoAbeGACJgm7WvB6Vw@mail.gmail.com>
- <CAADnVQKv5y+gq=TnOAEXSqgBRpmHNjwqCfxpLaw5XkcbQ+23bg@mail.gmail.com>
- <CA+fCnZe-b0Qqbo5gGv3HN20twquQETDfYYkE1r9tPr9zUFbW9Q@mail.gmail.com>
- <CAADnVQKuptG_opA12O=Xb9_+cHf3f=ycAZdfUp17P2HBYQzdsg@mail.gmail.com>
-In-Reply-To: <CAADnVQKuptG_opA12O=Xb9_+cHf3f=ycAZdfUp17P2HBYQzdsg@mail.gmail.com>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <GV1P189MB19886E03BDD0F407B757E5ABC62F2@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM>
 
-On Mon Apr 20, 2026 at 12:51 AM CEST, Alexei Starovoitov wrote:
-> On Sun, Apr 19, 2026 at 2:49=E2=80=AFPM Andrey Konovalov <andreyknvl@gmai=
-l.com> wrote:
->>
->> On Tue, Apr 14, 2026 at 5:58=E2=80=AFPM Alexei Starovoitov
->> <alexei.starovoitov@gmail.com> wrote:
->> >
->> > I think we're talking past each other.
->> > We're not interested in KASAN_SW_TAGS or KASAN_HW_TAGS.
->> > We're not going to modify arm64 JIT at all.
->> >
->> > This is purely KASAN_GENRIC and only on x86-64.
->> > JIT will emit exactly what compilers emit for generic
->> > which is __asan_load/store. This is as stable ABI as it can get
->> > and we don't want to deviate from it.
->>
->> OK, I supposed that's fair. You did throw me off point with your
->> performance comment. But if you decide to add SW_TAGS support at some
->> point, I think this discussion needs to be revisited.
->>
->> But please add a comment saying that those functions are only exposed
->> for BPF JIT and they are not supposed to be used by other parts of the
->> kernel. And in case you do end up adding a new config option, guard
->> the public declarations by a corresponding ifdef.
->
-> I feel concerns of misuse are overblown.
-> Being in include/linux/kasan.h doesn't make them free-for-all
-> all of a sudden, but if you prefer we can just copy paste:
-> +void __asan_load1(void *p);
-> +void __asan_store1(void *p);
-> into bpf_jit_comp.c
+On Mon, 20 Apr 2026, Tung Quang Nguyen wrote:
 
-That's actually what I initially went with when working on this, but it
-did look a bit fragile, and suspected that I would rather be asked to expor=
-t
-them properly through a dedicated header. I'm fine with putting back the
-manual declarations in jit comp, though.
+> Subject: [PATCH 1/1] tipc: fix double-free in tipc_buf_append()
+> >
+> >The tipc_msg_validate() function can potentially reallocate the skb it is
+> >validating, freeing the old one.  In tipc_buf_append(), it was being called with a
+> >pointer to a local variable which was a copy of the caller's skb pointer.
+> >
+> >If the skb was reallocated and validation subsequently failed, the error
+> >handling path would free the original skb pointer, which had already been
+> >freed, leading to double-free.
+> >
+> >Fix this by passing the caller's skb pointer-pointer directly to
+> >tipc_msg_validate(), ensuring any modification is reflected correctly.
+> >The local skb pointer is then updated from the (possibly modified) caller's
+> >pointer.
+> >
+> >Fixes: d618d09a68e4 ("tipc: enforce valid ratio between skb truesize and
+> >contents")
+> >Assisted-by: Gemini:gemini-3.1-pro-preview
+> >Signed-off-by: Lee Jones <lee@kernel.org>
+> >---
+> > net/tipc/msg.c | 3 ++-
+> > 1 file changed, 2 insertions(+), 1 deletion(-)
+> >
+> >diff --git a/net/tipc/msg.c b/net/tipc/msg.c index 76284fc538eb..9f4f612ee027
+> >100644
+> >--- a/net/tipc/msg.c
+> >+++ b/net/tipc/msg.c
+> >@@ -177,8 +177,9 @@ int tipc_buf_append(struct sk_buff **headbuf, struct
+> >sk_buff **buf)
+> >
+> > 	if (fragid == LAST_FRAGMENT) {
+> > 		TIPC_SKB_CB(head)->validated = 0;
+> >-		if (unlikely(!tipc_msg_validate(&head)))
+> >+		if (unlikely(!tipc_msg_validate(headbuf)))
+> > 			goto err;
+> >+		head = *headbuf;
+> This is a known issue and was reported via https://patchwork.kernel.org/project/netdevbpf/patch/20260330205313.2433372-1-nicholas@carlini.com/
+> The author did not respond to my comment.
+> Can you improve the fix by applying my patch?
 
->
->> > The goal here is to find bugs in the verifier.
->> > If something got past it, that shouldn't have,
->> > kasan generic on x86-64 is enough.
->>
->> FWIW, I suspect HW_TAGS KASAN already just works with JITed BPF code.
->
-> Ohh. Good point. Looks like modern arm64 cpus in public clouds
-> don't have that enabled, so one would need pixel phone to
-> catch verifier bugs via hw_tags.
-> So we still need this x86-specific jit kasan.
-> I guess eventually it can be removed when hw_tags support is widespread.
+I'd be happy to make any required changes.
 
+However, is this approach superior to simply passing a reference?
 
+v1 appears to be simpler, easier to read and avoids the explanation.
 
+> diff --git a/net/tipc/msg.c b/net/tipc/msg.c
+> index 76284fc538eb..01a693559589 100644
+> --- a/net/tipc/msg.c
+> +++ b/net/tipc/msg.c
+> @@ -177,8 +177,19 @@ int tipc_buf_append(struct sk_buff **headbuf, struct sk_buff **buf)
+>  
+>         if (fragid == LAST_FRAGMENT) {
+>                 TIPC_SKB_CB(head)->validated = 0;
+> -               if (unlikely(!tipc_msg_validate(&head)))
+> +               if (unlikely(!tipc_msg_validate(&head))) {
+> +                       /* reassembled skb has been freed in
+> +                        * tipc_msg_validate() because of invalid truesize.
+> +                        * head now points to newly-allocated reassembled skb
+> +                        * while *headbuf points to freed reassembled skb.
+> +                        * So, correct *headbuf for freeing newly-allocated
+> +                        * reassembled skb later.
+> +                        */
+> +                       if (head != *headbuf)
+> +                               *headbuf = head;
+> +
+>                         goto err;
+> +               }
+>                 *buf = head;
+>                 TIPC_SKB_CB(head)->tail = NULL;
+>                 *headbuf = NULL;
+> > 		*buf = head;
+> > 		TIPC_SKB_CB(head)->tail = NULL;
+> > 		*headbuf = NULL;
+> >--
+> >2.54.0.rc1.513.gad8abe7a5a-goog
+> >
+> 
 
---=20
-Alexis Lothor=C3=A9, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+-- 
+Lee Jones [李琼斯]
