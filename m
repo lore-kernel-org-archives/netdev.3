@@ -1,75 +1,55 @@
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D38A73806BE
-	for <netdev@vger.kernel.org>; Mon, 20 Apr 2026 17:09:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83050379980
+	for <netdev@vger.kernel.org>; Mon, 20 Apr 2026 17:11:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776704984; cv=none; b=lhPhavu3ZDxn8btlQcNswHSredwVxqNvyf3ud/vDriMJn+D+pdF98XxbP29tInB2yfl10Rq/V38ZdyMPaT9vmBSonmT3QqmIyWg4ItKN8VQ3bJ2S5anx0vCJyKMSpMxSeZmzBU6XCso3IZJL2+mRKMQjPB4Setfxgpfhz3g9SPA=
+	t=1776705067; cv=none; b=lIy+1ue4aknpyKwxGOj0+1BgybhbrqCojzoRb5ZoelHLpo8n9lD6YB36uhoZ1QeXXcWpjlJlS4qRtjylgJnCL4kC7hMIaprxKFHmop3XfqfMOtYpvcIsUw6A49YQWQjo3y1KMUQHS471+DNWM29Wt1RtmgKGFGF3OB+4KLDE3TE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776704984; c=relaxed/simple;
-	bh=LUFhttCt6qq2eWwycDWvN0ipZrq6FSIlPoPYrMs4hRU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BZDn5H5Q5KgOIlP8VMi3McKogwa82ppWPKI23pUQaFjcXXLZ/0QKPlU8rnHUJN38y4K2FEQXdp3BcyJ/HuAum6Rq2q0TBXQqwlh0XkBeCmi9kRf2en+iO93wnVROPtURp3nF+SqiXn/1IUvys02M1jm58z7p8Rb0f73TVnQ1zRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=jtrtsOvW; arc=none smtp.client-ip=91.218.175.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1776705067; c=relaxed/simple;
+	bh=hnLqiUuA8Wfe7PvAAwrdR7vJUTOt1Rmp26QJzmYBlG0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=aDvd4aa0JvJEGx5xSBtObUN2O+ewweFjvsoOm3vrAEsqdjlcjcCr7KNG1y5a8vuAhcUNdACfKIqC/n3w4TNHkAcHgVJlbHX59NzAtCDmqGJkkwEHxSc5O37eOxhm4nCX3AKiWaGLDtL8eKPcSYDHBsGzgTXyGcbtcThtWYNIXtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EUhZT+Cg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="jtrtsOvW"
-Date: Mon, 20 Apr 2026 10:09:16 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776704967;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OWgmLMt7/TMrBm86Ew6P18FFPWPU3UwIA+bIKdihQo0=;
-	b=jtrtsOvWrdt0C55JuXEg9NM9xf0uMiN1Wlr83eo+8gIcDs5bL7Y7Oq0S/8ilLMbKr0o1qv
-	Rd1qVh0bMPrIxIPBnvZMJ7pIKCdD/+sw/xcElt2O105f3AnthA1tK5yF92+Ov/plG01zqj
-	SwavRzIw/SRsBPYVtlNcPUOqr6aTrFI=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Martin KaFai Lau <martin.lau@linux.dev>
-To: KaFai Wan <kafai.wan@linux.dev>
-Cc: daniel@iogearbox.net, john.fastabend@gmail.com, sdf@fomichev.me, 
-	ast@kernel.org, andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com, 
-	song@kernel.org, yonghong.song@linux.dev, jolsa@kernel.org, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	shuah@kernel.org, jiayuan.chen@linux.dev, bpf@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH bpf v3 2/2] selftests/bpf: Test TCP_NODELAY in TCP hdr
- opt callbacks
-Message-ID: <202642017513.aNTV.martin.lau@linux.dev>
-References: <20260417092035.2299913-1-kafai.wan@linux.dev>
- <20260417092035.2299913-3-kafai.wan@linux.dev>
- <2026417162132.9MRI.martin.lau@linux.dev>
- <9b3e7c118f5b9105b92f53b66034c1b7884c1372.camel@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EUhZT+Cg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFB29C19425;
+	Mon, 20 Apr 2026 17:11:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776705067;
+	bh=hnLqiUuA8Wfe7PvAAwrdR7vJUTOt1Rmp26QJzmYBlG0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=EUhZT+CgOr9e2W4NrjQqMKkHAUpW/SNn4Uzz8+depaMM6EDGE0auQe2L3od6Hii54
+	 Duf9+WBadn9+/AK4gV1qvZcBEYktzItp/mt2sCAcUy1KJReEqFWZJsTHSxZZNxh8Du
+	 WM+fjWtp8+uYcTdsqmFtNAOgf/ExT/f0tTztgLW4lRiVIyT7JX4L2uiihGCVSxum9N
+	 7cqO3qms331rIR/h54UFeJsyJbKXLegdJbskPVQIRkAAQeJJQJLv7xjY+KIF1mXfTw
+	 dMsAdutGpsXP5QxSX6BanWKji8lfFCdsTflBndHzGQlqgTIDvJPDH8hKwU0lLbiP+j
+	 tnUq2C7n8fWWQ==
+Date: Mon, 20 Apr 2026 10:11:05 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Shuvam Pandey <shuvampandey1@gmail.com>
+Cc: netdev@vger.kernel.org
+Subject: Re: [PATCH v2 0/3] mISDN: fix socket/device lifetime and naming
+ races
+Message-ID: <20260420101105.1c5f9fcc@kernel.org>
+In-Reply-To: <CANAAWHJKfRVO++ZdXYAKSaTH8JCBi_Xeu4DE-Ldaa6zu2Kub6A@mail.gmail.com>
+References: <20260414071322.30851-1-shuvampandey1@gmail.com>
+	<cover.1776446840.git.shuvampandey1@gmail.com>
+	<CANAAWHJKfRVO++ZdXYAKSaTH8JCBi_Xeu4DE-Ldaa6zu2Kub6A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <9b3e7c118f5b9105b92f53b66034c1b7884c1372.camel@linux.dev>
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Apr 18, 2026 at 10:19:47AM +0800, KaFai Wan wrote:
-> > > +	ret = setsockopt(sk_fds.active_fd, SOL_TCP, TCP_NODELAY, &true_val, sizeof(true_val));
-> > 
-> > Same comment as in v2. Why this setsockopt is needed?
-> 
-> Sorry I miss this. It's from the review of v1, my first version would break the syscall setsockopt
-> and other CB besides HDR_OPT_LEN/WRITE_HDR_OPT. So in the test I check setsockopt() and
-> bpf_setsockopt() in PASSIVE_ESTABLISHED_CB to make sure patch#1 would not break user space and other
-> CB.
+On Sun, 19 Apr 2026 06:09:03 +0545 Shuvam Pandey wrote:
+> Please ignore v2 for now. I=E2=80=99m reworking the series and will send a
+> corrected v3.
 
-ic. Yep, remove it since v3 is not changing the syscall setsockopt.
-
-> 
-> > The setsockopt in userspace is unnecessary. 
-> 
-> Is bpf_setsockopt() in PASSIVE_ESTABLISHED_CB also unnecessary? I'll respin if they are unnecessary.
-
-This one is fine. It checks if the bpf_setsockopt is not affectred in other CB.
+Please hold off until Thursday, I'm intending to delete ISDN from the
+tree. Please resend if the code still exists in Linus's tree at that
+point.
