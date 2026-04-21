@@ -1,134 +1,143 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6AB937FF49;
-	Tue, 21 Apr 2026 11:49:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E403353EF7
+	for <netdev@vger.kernel.org>; Tue, 21 Apr 2026 11:50:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776772196; cv=none; b=j386PO8BIBHd74eXQ59zY/n9L62uSkyyvvUlC4bsNvrSza3KIY7bDrW/pHe2og1PkTbTYcK234D0Ge6suWoyLaU8c4nqKdEJf4GSd8Wr+wlJhvOC1xmk2jRLuUXZIXt1/G5e7j5qyHzt3yDLz96ykwd70uH91kbP/6B/iNp4Vy0=
+	t=1776772256; cv=none; b=fcijDxzxb4LLlOidukZu5bADqYQA1C3/KW4YByPJ80cqvivj8AW19ehU7vE1hd0gtG1QulNRMjJ/3YH/0P0tTZln6511JE67asg5NT2wxe41Y7NAB0EMolz6nG46j1kirafUC82SHzvrVUerDOvGZWLggCLIGJbS69IaaoLpRAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776772196; c=relaxed/simple;
-	bh=uuRDbH7KRxOKKZlcf1KF1ZvZpDGq5h2ULvk6YWb9YpA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oX2Jy8r2d3y9XaOTMW3elwQN9C/RssGwF7pmCfKymvRN2L2z2ZRWBLMQPVG3dCo46wl0I71hpNLjJYvHuVZzyIBAbu1fl88Vf83Pz0Z83JOfO3gVmNeNSRKur5uJZZ2KbIc3HsrQ4poAekcjAwl+oErI9ey25sRA0h1fn8SzahY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E0t9BphM; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1776772256; c=relaxed/simple;
+	bh=e9b8RBrfW+lTefYIZ1ahNWqlMpdaZ7PH/7L4D03Bsss=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 References; b=SChcnf6286kbc2Ne69zM6f0XlXdYPzkt+4OwxF7VFsPda+oZWMVxYpjwqx7wU0P33DmpaXchy5FB0XEiIp6byX+zTpJoDMSRcj7KyXKmBR+x96a/WR2eiU6sG2lvqL6GDAgMoVdUalBc2Pd+qIEDRsBmgz8b5xw4h9uencoGmpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=OXRIxigN; arc=none smtp.client-ip=210.118.77.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E0t9BphM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776772194; x=1808308194;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=uuRDbH7KRxOKKZlcf1KF1ZvZpDGq5h2ULvk6YWb9YpA=;
-  b=E0t9BphMD8FUqCw9mK3xlD9RxmbRezLoXvNKvUINq7ZlZMhffzGJMOkV
-   OA/dqwZEw6dg5GPRzxjNGWu3HWcrHYZq46p/LCxVszMTdBF6cXO+H3LHh
-   eQOLJUt6sVqzvnylnshd1IvbAwNXlfsZwLMzS13L8ZNC9o0Cdvt9jecA1
-   /sY6tqrgViTymCAIbp8yyT9s+d6VhJqF3rhnhzax9NThfdzIxl/qifSNU
-   CUaVAaoN+wTvTfba14Mn4C/JRraKQ5hFAES/Q492trHwOf/pSlMP3nQs+
-   hB6+yU0d+AngJT361qiAKO1QTkmpo44dRxlblw6biqqB6TgRbirKXUa4t
-   A==;
-X-CSE-ConnectionGUID: HqOYzKmGQV+cC+gBgd55NA==
-X-CSE-MsgGUID: k8xRjuQMQiKZov8hkqmg2w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11762"; a="81570450"
-X-IronPort-AV: E=Sophos;i="6.23,191,1770624000"; 
-   d="scan'208";a="81570450"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2026 04:49:53 -0700
-X-CSE-ConnectionGUID: ddKaYSOzS0qlHzI1zxETiw==
-X-CSE-MsgGUID: i5VMa8ZhS4+kSj9vA0U/YA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,191,1770624000"; 
-   d="scan'208";a="270102600"
-Received: from lkp-server01.sh.intel.com (HELO 7e48d0ff8e22) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 21 Apr 2026 04:49:50 -0700
-Received: from kbuild by 7e48d0ff8e22 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wF9bw-000000003Sa-1KoJ;
-	Tue, 21 Apr 2026 11:49:48 +0000
-Date: Tue, 21 Apr 2026 19:48:50 +0800
-From: kernel test robot <lkp@intel.com>
-To: Marino Dzalto <marino.dzalto@gmail.com>, pablo@netfilter.org,
-	fw@strlen.de
-Cc: oe-kbuild-all@lists.linux.dev, netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Marino Dzalto <marino.dzalto@gmail.com>
-Subject: Re: [PATCH] netfilter: xt_HL: add pr_fmt, default case and NULL
- checks
-Message-ID: <202604211905.6ZPE3dFs-lkp@intel.com>
-References: <20260403193929.89449-1-marino.dzalto@gmail.com>
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="OXRIxigN"
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260421115052euoutp021dcec36fe1e04ae86b7739aa1a79377b~oXPMsNcc33202332023euoutp02L
+	for <netdev@vger.kernel.org>; Tue, 21 Apr 2026 11:50:52 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260421115052euoutp021dcec36fe1e04ae86b7739aa1a79377b~oXPMsNcc33202332023euoutp02L
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1776772252;
+	bh=Wdm3kV4WDvCDxi2Q1eh8TQdGmwSJyWv03shz+xr93NA=;
+	h=From:To:Cc:Subject:Date:References:From;
+	b=OXRIxigNRGwkHnJiEZ1USlGtyC22qjDAtNpf+a0Ge/z/2SbHAFLKXO3BdBaS2e703
+	 YTpSTUwAlx93ngfJ+caYX8rDuOVftYXVl3wRjJMThlON7ULwiDGahtVcDJHx77wCeW
+	 vICmQnjG9MlVkJym6OCqB9HE3SEvJ8eDZ2HngkZM=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20260421115052eucas1p103281c5b25719a44c0875d6b0860bfa6~oXPMWi_xc0669206692eucas1p1S;
+	Tue, 21 Apr 2026 11:50:52 +0000 (GMT)
+Received: from AMDC4843.eu.corp.samsungelectronics.net (unknown
+	[106.120.77.61]) by eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20260421115051eusmtip10861a4b8207300cfdc8286dec4615f9e~oXPL4eC_W1849318493eusmtip1l;
+	Tue, 21 Apr 2026 11:50:51 +0000 (GMT)
+From: Jakub Raczynski <j.raczynski@samsung.com>
+To: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, kuba@kernel.org, davem@davemloft.net,
+	andrew+netdev@lunn.ch, kernel-janitors@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com, Jakub Raczynski
+	<j.raczynski@samsung.com>
+Subject: [PATCH] net/stmmac: Fix typos: 'tx_undeflow_irq' ->
+ 'tx_underflow_irq'
+Date: Tue, 21 Apr 2026 13:50:09 +0200
+Message-Id: <20260421115008.2690541-1-j.raczynski@samsung.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260403193929.89449-1-marino.dzalto@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20260421115052eucas1p103281c5b25719a44c0875d6b0860bfa6
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20260421115052eucas1p103281c5b25719a44c0875d6b0860bfa6
+X-EPHeader: CA
+X-CMS-RootMailID: 20260421115052eucas1p103281c5b25719a44c0875d6b0860bfa6
+References: <CGME20260421115052eucas1p103281c5b25719a44c0875d6b0860bfa6@eucas1p1.samsung.com>
 
-Hi Marino,
+All references to tx_underflow_irq are misspelled as 'undeflow'. Fix them.
 
-kernel test robot noticed the following build errors:
+Signed-off-by: Jakub Raczynski <j.raczynski@samsung.com>
+---
+ drivers/net/ethernet/stmicro/stmmac/common.h         | 2 +-
+ drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c | 2 +-
+ drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c    | 2 +-
+ drivers/net/ethernet/stmicro/stmmac/dwmac_lib.c      | 2 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c | 2 +-
+ 5 files changed, 5 insertions(+), 5 deletions(-)
 
-[auto build test ERROR on netfilter-nf/main]
-[also build test ERROR on nf-next/master horms-ipvs/master linus/master v7.0 next-20260420]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Marino-Dzalto/netfilter-xt_HL-add-pr_fmt-default-case-and-NULL-checks/20260420-185652
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf.git main
-patch link:    https://lore.kernel.org/r/20260403193929.89449-1-marino.dzalto%40gmail.com
-patch subject: [PATCH] netfilter: xt_HL: add pr_fmt, default case and NULL checks
-config: m68k-allmodconfig (https://download.01.org/0day-ci/archive/20260421/202604211905.6ZPE3dFs-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 15.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260421/202604211905.6ZPE3dFs-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202604211905.6ZPE3dFs-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   net/netfilter/xt_hl.c: In function 'ttl_mt':
->> net/netfilter/xt_hl.c:34:13: error: assignment of read-only variable 'ttl'
-      34 |         ttl = ip_hdr(skb)->ttl;
-         |             ^
-
-
-vim +/ttl +34 net/netfilter/xt_hl.c
-
-    25	
-    26	static bool ttl_mt(const struct sk_buff *skb, struct xt_action_param *par)
-    27	{
-    28		const struct ipt_ttl_info *info = par->matchinfo;
-    29		const u8 ttl;
-    30	
-    31		if (!skb)
-    32			return false;
-    33	
-  > 34		ttl = ip_hdr(skb)->ttl;
-    35	
-    36		switch (info->mode) {
-    37		case IPT_TTL_EQ:
-    38			return ttl == info->ttl;
-    39		case IPT_TTL_NE:
-    40			return ttl != info->ttl;
-    41		case IPT_TTL_LT:
-    42			return ttl < info->ttl;
-    43		case IPT_TTL_GT:
-    44			return ttl > info->ttl;
-    45		default:
-    46			pr_warn("Unknown TTL match mode: %d\n", info->mode);
-    47			return false;
-    48		}
-    49	}
-    50	
-
+diff --git a/drivers/net/ethernet/stmicro/stmmac/common.h b/drivers/net/ethernet/stmicro/stmmac/common.h
+index d26e8a063022..e7da9964854d 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/common.h
++++ b/drivers/net/ethernet/stmicro/stmmac/common.h
+@@ -147,7 +147,7 @@ struct stmmac_extra_stats {
+ 	unsigned long rx_vlan;
+ 	unsigned long rx_split_hdr_pkt_n;
+ 	/* Tx/Rx IRQ error info */
+-	unsigned long tx_undeflow_irq;
++	unsigned long tx_underflow_irq;
+ 	unsigned long tx_process_stopped_irq;
+ 	unsigned long tx_jabber_irq;
+ 	unsigned long rx_overflow_irq;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+index 815213223583..068c21f37c29 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+@@ -247,7 +247,7 @@ static int loongson_dwmac_dma_interrupt(struct stmmac_priv *priv,
+ 	if (unlikely(abnor_intr_status)) {
+ 		if (unlikely(intr_status & DMA_STATUS_UNF)) {
+ 			ret = tx_hard_error_bump_tc;
+-			x->tx_undeflow_irq++;
++			x->tx_underflow_irq++;
+ 		}
+ 		if (unlikely(intr_status & DMA_STATUS_TJT))
+ 			x->tx_jabber_irq++;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
+index c01b86fd64da..a73720811791 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
+@@ -459,7 +459,7 @@ static int sun8i_dwmac_dma_interrupt(struct stmmac_priv *priv,
+ 
+ 	if (v & EMAC_TX_UNDERFLOW_INT) {
+ 		ret |= tx_hard_error;
+-		x->tx_undeflow_irq++;
++		x->tx_underflow_irq++;
+ 	}
+ 
+ 	if (v & EMAC_TX_EARLY_INT)
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac_lib.c b/drivers/net/ethernet/stmicro/stmmac/dwmac_lib.c
+index a0383f9486c2..79fe50ad33d1 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac_lib.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac_lib.c
+@@ -182,7 +182,7 @@ int dwmac_dma_interrupt(struct stmmac_priv *priv, void __iomem *ioaddr,
+ 	if (unlikely(intr_status & DMA_STATUS_AIS)) {
+ 		if (unlikely(intr_status & DMA_STATUS_UNF)) {
+ 			ret = tx_hard_error_bump_tc;
+-			x->tx_undeflow_irq++;
++			x->tx_underflow_irq++;
+ 		}
+ 		if (unlikely(intr_status & DMA_STATUS_TJT))
+ 			x->tx_jabber_irq++;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+index c1e26965d9b5..df092fb354ed 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+@@ -78,7 +78,7 @@ static const struct stmmac_stats stmmac_gstrings_stats[] = {
+ 	STMMAC_STAT(rx_vlan),
+ 	STMMAC_STAT(rx_split_hdr_pkt_n),
+ 	/* Tx/Rx IRQ error info */
+-	STMMAC_STAT(tx_undeflow_irq),
++	STMMAC_STAT(tx_underflow_irq),
+ 	STMMAC_STAT(tx_process_stopped_irq),
+ 	STMMAC_STAT(tx_jabber_irq),
+ 	STMMAC_STAT(rx_overflow_irq),
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.34.1
+
