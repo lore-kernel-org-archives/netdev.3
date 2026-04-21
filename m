@@ -1,137 +1,158 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f53.google.com (mail-yx1-f53.google.com [74.125.224.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE8462ED17B;
-	Tue, 21 Apr 2026 16:24:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776788666; cv=none; b=TkLsRzateJqTWDgoTWtt1jnU3MZxU0Fjt3RC2yj2wLFogIuUV5NyyVyxjgqJ26OkcykcVVXX9Hcu9/3JTGAJ0C4VwyqdWw0MQUuGaZ7F3Ov+JTEs4oUffOPXEjPcNnKqfQCp8ygmnSnWUzgIiiG8g/DL9QZ6Wc6SfkVelvE0l08=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776788666; c=relaxed/simple;
-	bh=nQunemQjmq7J3pbxI2AqF1xIeNDWFBx1/5BRlXisaCw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PfAwvU8iiIGlzlKLalJfnPl+6kxvZXBUT9X1JuqVtW/rdAMSFa5exbBrOgX9xejW53iSwH3G+zMr1s1v1a0xYLjtRI4O4OWlM5wWexsjpO8Zxs+m/p5sZOPQz93dixFAaWSAWQOZayvIJRt04IRXnJ9ItTZm0aKSAbzaELQ1s9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LXsfyIGB; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513FC17A305
+	for <netdev@vger.kernel.org>; Tue, 21 Apr 2026 16:29:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776788957; cv=pass; b=YSnMLpNeKkZX/mUaED4OvFJ5DjTwm8THd9y7D/qo/nadNpYfRjWEoh0ikc+FYNYVcVvhDKfShb0OmYWGcUZM5E/CyrHlEKXyHgD2Xfl5s054UL1V8WncazqSQ0f2oajbF6yWy7PLHK2NAPyuaIWxa2Di+tu4S69Z898P6APPqH4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776788957; c=relaxed/simple;
+	bh=nCF+1un+lGenxIgZVRGeii/JzzuN9IQd1W11H+yrdes=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jOtPhXh0DjoEIxQK61/6/ep6ttrkfcTb4XxiU0iF4FQoLBWUrBhnlb3miCPjR9NkOv02l4kSfO+u958DI5HPUsn0k6O/6gI4hHXAbFPk8w6vBuiGQZCqK6uqG7wOsDaobWlp23IPIHGV3SrsBiCuOTN+1xML0waGLm79WbDl1io=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=phoXAwmz; arc=pass smtp.client-ip=74.125.224.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LXsfyIGB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776788665; x=1808324665;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=nQunemQjmq7J3pbxI2AqF1xIeNDWFBx1/5BRlXisaCw=;
-  b=LXsfyIGBOeBxu0oFodWD/AuMLAGytfgVd24jLAr2kztEYbMgdR1C3N4w
-   kS79zwBW4DAg32Ce7t4tfoFu4u9EX7vdBunS5Rfc7eMDNzozqr2AaRcjB
-   3gUeFlbI9Rv1M2HbGyasXdGnygZEemsUYrqTvHS81331Pcm6yACP6CBBl
-   XTmLtRn1MW2j4PO0TYa1BfhHjAmGBOeyhovx43m5QQ7meg0xLCmlA2yaS
-   BI0dXEKxhHReWKBT+ENKDVjGhTSqMebqO5btJ0yjBHNVSXZAJowpagEqB
-   l1/7enSsseJD4i6vpP6J3JtlPlpeA2RviwbwokUhc9IaHswoIchAbAUjk
-   A==;
-X-CSE-ConnectionGUID: k5qnTxCuT4WG0bbUze8DZw==
-X-CSE-MsgGUID: 2/CH0A2sSQ+VMG6HBMr5fQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11763"; a="88427201"
-X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
-   d="scan'208";a="88427201"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2026 09:24:24 -0700
-X-CSE-ConnectionGUID: owCl++O5Q26diS7PURbSEQ==
-X-CSE-MsgGUID: QxmqOUo2RwujnCUiyc/PeQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
-   d="scan'208";a="237059148"
-Received: from lkp-server01.sh.intel.com (HELO 7e48d0ff8e22) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 21 Apr 2026 09:24:22 -0700
-Received: from kbuild by 7e48d0ff8e22 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wFDtb-000000003ki-34Tq;
-	Tue, 21 Apr 2026 16:24:19 +0000
-Date: Wed, 22 Apr 2026 00:24:07 +0800
-From: kernel test robot <lkp@intel.com>
-To: Marino Dzalto <marino.dzalto@gmail.com>, pablo@netfilter.org,
-	fw@strlen.de
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Marino Dzalto <marino.dzalto@gmail.com>
-Subject: Re: [PATCH] netfilter: xt_HL: add pr_fmt, default case and NULL
- checks
-Message-ID: <202604220024.iITt6Hv8-lkp@intel.com>
-References: <20260403193929.89449-1-marino.dzalto@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="phoXAwmz"
+Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-651b4d09141so5906093d50.1
+        for <netdev@vger.kernel.org>; Tue, 21 Apr 2026 09:29:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776788955; cv=none;
+        d=google.com; s=arc-20240605;
+        b=g4Y7pqbV+Edq1oWBVxDd8Pbxo5PggLLhY/2s64+u4nOaVKPHRG6bU3zkfP0pKWdNUD
+         S9f64DL7Zm2BxZL7YnUzgAlQ/u9rgRCF7In8NPlcV8mBFdgufmDjTFPVLK6nDoPhrijH
+         CF+x82PY4WG1HCk8T71Lhp1eykDbOeAxUh3ppaxetxyH3LtAZQsX5RjFx0LMpZcpjPWe
+         +EoGLHuVzTMUqdho3R/C24IpvCoKnQiw26GdAugBI88NkAxn/jEFXnnFccpnLARRsQ21
+         qnVEhgHU2km0XbTKaUe8ZNvYH22/YvrLJGwMq/4LFfIf4LFWLZIr32VW6VxOJ7VVdgnD
+         gKew==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=xaRQcetDxlzLKskdLR137Weekycfdm7Q7GRuYQIPPqU=;
+        fh=Xg0OVk85tnf0jC6dwCKNcY8nXP97BqTlk9DffLqO/b8=;
+        b=cP3PT3UKoLsiF8D9IBVHNWdvFM0+050d1tfARZnElgKlGRaZdCUSN/41+sBR/Uhzjn
+         bKfHzKsLdNRCNKBnVBpMeKEKOSpXF+9y+0ZsppYGlcHR1BHx74iOGFawYELu2Dh6Z/VC
+         sRvoGdgy9xTjsCA7zghwa6CzUBDiIuwNhZqkLFqgJYJBYPq0WyNC9Vpk8YQCjNmckQYi
+         /h1pEPAe5AF1ljxX1pvbeARPikQopvU8n5H6dpYk8Vb2Xwv485YBAU/xcimzSltKXvrC
+         s0t7iUuA5rEZbSdYIYoLYuw4TLceEs0f1BWnRloqrGzmeURSj7vUs6XN9+GY8Sm7HFDV
+         C+oA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776788955; x=1777393755; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xaRQcetDxlzLKskdLR137Weekycfdm7Q7GRuYQIPPqU=;
+        b=phoXAwmzYg6qvzarMt49/30aRAa4xLFI836iLr664Z8XCH+KdN5T/3elpa3E86qk97
+         MVWjUPx/ccPgBGUewsHw+EOZ/xkSftAtaXqiZiwH4Q/gxhitT7O37WrVgEGekZJiThNC
+         BdXVz5WO571o2SvWz0NBaqWjkcViXVOwFIrt3ozAGbiosIlM15uKTW/YWEODYEO69hR9
+         WOz7ei+gxidWdtNbF+EfuU4MQSYHq05XmSYmrp65dLtL7uRskO8G27XUCvUQHmofGLAZ
+         f9cXpj6Jh4m6ySL3vQbBMIsLaA9PcszH8MODTr5rzBKuhK8hIhoirTveBK0qPBlNtI5c
+         XLmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776788955; x=1777393755;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=xaRQcetDxlzLKskdLR137Weekycfdm7Q7GRuYQIPPqU=;
+        b=ir5jFxTDM0+6S1c74M9KQbJU93NCcZbDovopXpZ9SJw/e44yazSWy6oJilQURjHCmc
+         +dpojh/8xdE5wm+zkp9yZD+5AcI/WNabXYV/Oev23V1w55jPf8Z8V9rc3fO2dMVzpy/7
+         hXjSpNkTnR9Rm1ZXXMAtOsPRQ8Psc8h68l4nG6XDeYEmCfzfsnhhQuX7+zIAbux9RYg+
+         go7NVEKmcuUKh86Qq34bGs3DogKGyeZN0KYrFr1NUVOl98Yn6YeJJQlDYAYpoyq49cvl
+         tmKQ/GqCA0zW1osZmX6hdna3ql7q4BnF9rvTnJTEn4CZ4gIQU9ICIE8fBtAXA08JNhRU
+         25mQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8cyd+4wbNhPXDhwDOU+7dzKMxG3LV747ApSThflfkI2asaLykSdb5R6ROF4ah9T1T/zkK989I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzYKyHoeF7A9dUaZoRG88d+a1VprGGq2VQfef+wi6fLNaLWr7rj
+	3MUuWqVSiJ31ukENo4s8lFiVhEkpuHmKGBv/887P6MQOel/Emb480pw/UWxYcr3tqujZAyJ4lNh
+	AXT+8YXo2AHphgQ0FwOnauWYTe0d6hxk=
+X-Gm-Gg: AeBDieuQTC+aODXLNhtrnCWG5USZ1LA2WhXAWDfGluOWSfheix6xpQl1rSB7uumVKUy
+	ZZIxoMwm1M2guc+fkGfKINOPEjplPpKSgBzfusrmUOC4R/oxNz7lIUABDLuUlJGuhMiUan3HnTk
+	/37j2GTc8znkFp2GOBMCE1P3DzBh/cnm6WBB/0FaNUV4wjSVT6SYbfSfUyd926mCcmjq7cksbeQ
+	u3B5XjOaySh6fapwNBLbBNzU4OOFBoI0zIscrh61xC/wGyejAozWSySbX52HKA7/zDuPQCgAcy4
+	E/peygpNy7RHosGWiMS/F7w0
+X-Received: by 2002:a05:690e:1914:b0:651:c41c:80ce with SMTP id
+ 956f58d0204a3-653119894a8mr14903838d50.16.1776788955294; Tue, 21 Apr 2026
+ 09:29:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260403193929.89449-1-marino.dzalto@gmail.com>
+References: <20260421155024.997077-2-bestswngs@gmail.com> <cc500964d83d95307126b05cc7557309b498bafce0c514fa3f1656dd6413ce71@mail.kernel.org>
+In-Reply-To: <cc500964d83d95307126b05cc7557309b498bafce0c514fa3f1656dd6413ce71@mail.kernel.org>
+From: Amery Hung <ameryhung@gmail.com>
+Date: Tue, 21 Apr 2026 09:29:03 -0700
+X-Gm-Features: AQROBzC0QupDF4QkVKXKjJ8cS1W-C8_sxM8tSkEEgO-pFajTN62MPAl8x7WV48Q
+Message-ID: <CAMB2axO5rZP2bzj5X9uDsVZshXoxEXLZt64P0CuEvwGficHfBg@mail.gmail.com>
+Subject: Re: [PATCH bpf v2] bpf: Fix NULL pointer dereference in
+ bpf_sk_storage_clone and diag paths
+To: bot+bpf-ci@kernel.org
+Cc: bestswngs@gmail.com, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, martin.lau@kernel.org, 
+	ast@kernel.org, leon.hwang@linux.dev, kees@kernel.org, wangfushuai@baidu.com, 
+	menglong8.dong@gmail.com, netdev@vger.kernel.org, bpf@vger.kernel.org, 
+	xmei5@asu.edu, andrii@kernel.org, daniel@iogearbox.net, eddyz87@gmail.com, 
+	yonghong.song@linux.dev, clm@meta.com, ihor.solodrai@linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Marino,
+On Tue, Apr 21, 2026 at 9:24=E2=80=AFAM <bot+bpf-ci@kernel.org> wrote:
+>
+> > diff --git a/net/core/bpf_sk_storage.c b/net/core/bpf_sk_storage.c
+> > index 14eb7812bda4..b2cd2b0292cb 100644
+> > --- a/net/core/bpf_sk_storage.c
+> > +++ b/net/core/bpf_sk_storage.c
+>
+> [ ... ]
+>
+> > @@ -596,6 +596,8 @@ static int bpf_sk_storage_diag_put_all(struct sock =
+*sk, struct sk_buff *skb,
+> >       saved_len =3D skb->len;
+> >       hlist_for_each_entry_rcu(selem, &sk_storage->list, snode) {
+> >               smap =3D rcu_dereference(SDATA(selem)->smap);
+> > +             if (!smap)
+> > +                     continue;
+> >               diag_size +=3D nla_value_size(smap->map.value_size);
+> >
+> >               if (nla_stgs && diag_get(SDATA(selem), skb))
+>
+> Martin KaFai Lau pointed out in the v1 review that the NULL check for
+> smap doesn't fully address the race condition. The issue is that
+> diag_get() will re-dereference sdata->smap independently:
+>
+> net/core/bpf_sk_storage.c:diag_get() {
+>     ...
+>     smap =3D rcu_dereference(sdata->smap);
+>     ...
+> }
+>
+> Between the NULL check above and the call to diag_get(), smap could
+> become NULL again, leading to the same race condition.
+>
+> Martin suggested passing smap as a parameter to diag_get() to avoid
+> the second dereference. This would ensure diag_get() uses the same
+> smap pointer that was already checked.
+>
+> Could the fix be updated to pass smap to diag_get() as Martin
+> suggested?
+>
+> Reference: https://lore.kernel.org/bpf/2026420182243.zAiN.martin.lau@linu=
+x.dev/
+>
 
-kernel test robot noticed the following build errors:
+CI is right. Please pass smap to diag_get() as Martin suggested. It
+will be the caller's responsibility to do rcu_dereference() and
+null-check it. Note that there are more than one caller to diag_get().
 
-[auto build test ERROR on netfilter-nf/main]
-[also build test ERROR on linus/master v7.0 next-20260420]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Marino-Dzalto/netfilter-xt_HL-add-pr_fmt-default-case-and-NULL-checks/20260420-185652
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf.git main
-patch link:    https://lore.kernel.org/r/20260403193929.89449-1-marino.dzalto%40gmail.com
-patch subject: [PATCH] netfilter: xt_HL: add pr_fmt, default case and NULL checks
-config: s390-allmodconfig (https://download.01.org/0day-ci/archive/20260422/202604220024.iITt6Hv8-lkp@intel.com/config)
-compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260422/202604220024.iITt6Hv8-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202604220024.iITt6Hv8-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> net/netfilter/xt_hl.c:34:6: error: cannot assign to variable 'ttl' with const-qualified type 'const u8' (aka 'const unsigned char')
-      34 |         ttl = ip_hdr(skb)->ttl;
-         |         ~~~ ^
-   net/netfilter/xt_hl.c:29:11: note: variable 'ttl' declared const here
-      29 |         const u8 ttl;
-         |         ~~~~~~~~~^~~
-   1 error generated.
-
-
-vim +34 net/netfilter/xt_hl.c
-
-    25	
-    26	static bool ttl_mt(const struct sk_buff *skb, struct xt_action_param *par)
-    27	{
-    28		const struct ipt_ttl_info *info = par->matchinfo;
-    29		const u8 ttl;
-    30	
-    31		if (!skb)
-    32			return false;
-    33	
-  > 34		ttl = ip_hdr(skb)->ttl;
-    35	
-    36		switch (info->mode) {
-    37		case IPT_TTL_EQ:
-    38			return ttl == info->ttl;
-    39		case IPT_TTL_NE:
-    40			return ttl != info->ttl;
-    41		case IPT_TTL_LT:
-    42			return ttl < info->ttl;
-    43		case IPT_TTL_GT:
-    44			return ttl > info->ttl;
-    45		default:
-    46			pr_warn("Unknown TTL match mode: %d\n", info->mode);
-    47			return false;
-    48		}
-    49	}
-    50	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+>
+> ---
+> AI reviewed your patch. Please fix the bug or email reply why it's not a =
+bug.
+> See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/READM=
+E.md
+>
+> CI run summary: https://github.com/kernel-patches/bpf/actions/runs/247325=
+81685
