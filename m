@@ -1,98 +1,181 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F309C35DA5B;
-	Tue, 21 Apr 2026 18:43:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3983A26ACC
+	for <netdev@vger.kernel.org>; Tue, 21 Apr 2026 19:03:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776797031; cv=none; b=RmlUIEqpTy3KlzM6lnsQnH1ELZvyXzKSH3VdOAFLenWugglmrrKitEmYgr7z40wSesXX8pFzsEMd6JLJHSQFgH/LAV6/tWFk1gOe1Gy3GZEZP3lfpotxDVzLNN8wVBoD3wImYYswiHszVZE2ghbMNxr0AToeljJ/o3KSc2Kkm2E=
+	t=1776798185; cv=none; b=GnTNCGROgliGVCOBuQdmh8Cre/zBjAJsi0jRtusk8JVIfocbTXU6Fzgl28rG8b4JWLCsA6kOMe1w5kBAQ5LeF8qL/2LmcRiwy2hZwhDpqwXy1aWq2IOPP7wiS36Q4iym6K3GwSP7NzTeJz58gUlRjCkPGa9oKu8DDq1dVtP7o5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776797031; c=relaxed/simple;
-	bh=D9bO5NnHt3R2eni60hYUUr/AeT3qN1GRnjRSK4y+ECo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=NlEHqPaeA0yfzoWEwTYovb++l4+f2bHaqGK3A3fuCJkHn2KorX0GntUdD0gZ7OQB+BG87rM5otYU248RyHL8LY8Lq/KVyftpLzUT7NALAClSYU1VxJkBu/7TQQmmr0IjkyxiO6XFfrnygtopJp//NVfwjW7Ksq6xwI923I4OCn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RpF/xhOX; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RpF/xhOX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9561AC2BCB0;
-	Tue, 21 Apr 2026 18:43:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776797030;
-	bh=D9bO5NnHt3R2eni60hYUUr/AeT3qN1GRnjRSK4y+ECo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=RpF/xhOXQwrMYmPF95ZzDOkYwTBWNJp3iUkcjfRBYB0LpyWrCCiuRDfKlFhymW1UQ
-	 6TOuSdalH39Zxv7ZQj0G0IyHHEgaA/YF+XUbmu7gfNazbz8YnPHY3GE4rs8+AUGipz
-	 aZirw4DaFoD6FMOWa06+XaDAkxRD9fx2FVaQ6XHO9mmSsiBXmsXBk9QH8hJPm+qaiP
-	 rcq+F6yumdX2DEEQaNL6n35fcf+nS7eRqb69WDhQlRGqa/I7egYe3Ll2In972DbiZJ
-	 eK2SF/BUcL85XKXUV9XBduFzTZV0k2a6OoYEIAJtmijoekrx9p1hnQP9Pxv9D1wIeb
-	 yIxK0DMJuV7aA==
-From: Thomas Gleixner <tglx@kernel.org>
-To: Waiman Long <longman@redhat.com>, Tejun Heo <tj@kernel.org>, Johannes
- Weiner <hannes@cmpxchg.org>, Michal =?utf-8?Q?Koutn=C3=BD?=
- <mkoutny@suse.com>, Jonathan
- Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, Catalin
- Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, "K. Y.
- Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>,
- Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, Long Li
- <longli@microsoft.com>, Guenter Roeck <linux@roeck-us.net>, Frederic
- Weisbecker <frederic@kernel.org>, "Paul E. McKenney" <paulmck@kernel.org>,
- Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, Joel Fernandes
- <joelagnelf@nvidia.com>, Josh Triplett <josh@joshtriplett.org>, Boqun Feng
- <boqun@kernel.org>, Uladzislau Rezki <urezki@gmail.com>, Steven Rostedt
- <rostedt@goodmis.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>,
- Anna-Maria Behnsen <anna-maria@linutronix.de>, Ingo Molnar
- <mingo@kernel.org>, Chen Ridong <chenridong@huaweicloud.com>, Peter
- Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann
- <dietmar.eggemann@arm.com>, Ben Segall <bsegall@google.com>, Mel Gorman
- <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, K Prateek
- Nayak <kprateek.nayak@amd.com>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-Cc: cgroups@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-hyperv@vger.kernel.org, linux-hwmon@vger.kernel.org,
- rcu@vger.kernel.org, netdev@vger.kernel.org,
- linux-kselftest@vger.kernel.org, Costa Shulyupin <cshulyup@redhat.com>,
- Qiliang Yuan <realwujing@gmail.com>
-Subject: Re: [PATCH 18/23] cpu/hotplug: Add a new cpuhp_offline_cb() API
-In-Reply-To: <4a0ede3e-6e87-414f-a3a3-dd15c32f25ef@redhat.com>
-References: <20260421030351.281436-1-longman@redhat.com>
- <20260421030351.281436-19-longman@redhat.com> <87o6jcb84w.ffs@tglx>
- <4a0ede3e-6e87-414f-a3a3-dd15c32f25ef@redhat.com>
-Date: Tue, 21 Apr 2026 20:43:46 +0200
-Message-ID: <87340ob1ct.ffs@tglx>
+	s=arc-20240116; t=1776798185; c=relaxed/simple;
+	bh=+szDRLzHiZIAqHJDTu3m/bEvTHMAIpDC/Vn7BRp3Pls=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=SB20GuRKf6ageEnr/qYa5d9+1Sr3PcdeE+3R6rNaUC3fPConLdImm8NucsCjH8P65LL2Bz4iJF67kit046Mjz/1mZ+8a5sy3mYoEDv3gXa5E7B7IXp4ItgBu/XqW8iE5j9ZvgtlbxBaaWlsrwnoPOi33qPUpcYELHqkH8lQFQRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-467e226743eso6605889b6e.0
+        for <netdev@vger.kernel.org>; Tue, 21 Apr 2026 12:03:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776798183; x=1777402983;
+        h=content-transfer-encoding:to:from:subject:message-id:in-reply-to
+         :date:mime-version:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tG8mTfwfBFzvMp4QCKORmlTF3aYuTNF94d68znk7hg8=;
+        b=EzgaxBbSmjQNR6+2o5zpdvfLmIYE10nQCaAJ+aQQrAYTcOn5lbo1+zJbS/Y5fs0d6C
+         f6rVsVl36yMuiamS2MWkH+f85gOKf9qP41ZC/RfNpPHBJWMmHcH9XHMv/KparuKDsAdT
+         oCrbOE2qXk4Z0GVY2DNIxd3QAV31WICCRsUHrKKCSjrmMma+kjwJ967w3oXDXqEEGskq
+         or9uXq4Jw6fZoVFbdl3WT13hzHkYS7Eh/NHdhag5CYktHkZ4cP+PA7uao0b4908kpTm+
+         Wm8bhBXFHVqTq7APCxQjS/qO2X2x9nM+13ySKuVjL0Nvdo0w04Rz2FkvASQiW8cINcDN
+         b/cg==
+X-Forwarded-Encrypted: i=1; AFNElJ+cO9yioHb7e4g/XAAwP+8bhCsFuAZ2z9gpUW8jIjQWALoU2sKTboMv2DBC6n0k5SH5uhnQ6kE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywp9zEK4QXWM5DUZhFAVeidKl3D5YHzehUfRd7sTretA0S/UOB9
+	VhNuu6rWBRZyMPbI2IovmzBSCaOWsiuWwxYiiFB7Bz5qAOU9MKRqU/6NbTKf10HIR4cvYGtQGci
+	VsU1HL6ZADhAHqcAnXbOJJyX5CXGHlUDux/Up03b76pNN/7nPeWpSUXJgUbI=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-Received: by 2002:a05:6808:159d:b0:46a:d9fc:1423 with SMTP id
+ 5614622812f47-4799ca4b7f1mr10611990b6e.33.1776798183245; Tue, 21 Apr 2026
+ 12:03:03 -0700 (PDT)
+Date: Tue, 21 Apr 2026 12:03:03 -0700
+In-Reply-To: <aeerTzpq8B-WTKeC@x1>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69e7c9e7.a00a0220.17a17.001c.GAE@google.com>
+Subject: Re: [syzbot] [kvm?] [net?] [virt?] BUG: sleeping function called from
+ invalid context in vhost_get_avail_idx
+From: syzbot <syzbot+6985cb8e543ea90ba8ee@syzkaller.appspotmail.com>
+To: jasowang@redhat.com, kohei@enjuk.jp, linux-kernel@vger.kernel.org, 
+	mst@redhat.com, netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 21 2026 at 13:29, Waiman Long wrote:
-> On 4/21/26 12:17 PM, Thomas Gleixner wrote:
-> Thanks for the great suggestions. I will certainly look into that.
->
-> We actually have a cpu_active_mask that will be cleared early in 
-> sched_cpu_deactivate(). In the CPUHP_AP_SCHED_WAIT_EMPTY state, the CPU 
-> will still have online bit set but the active bit will be cleared. Or we 
-> could add another cpumask that can be used to indicate CPUs that have 
-> reached CPUHP_AP_SCHED_WAIT_EMPTY or below if necessary.
+Hello,
 
-Right. Active mask is immediately cleared when a CPU goes down so that
-the scheduler does not enqueue new tasks on it. But you can't use it for
-interrupts because on CPU up the mask must be up to date when
-irq_affinity_online_cpu() is invoked. The tick has the same constraints.
+syzbot tried to test the proposed patch but the build/boot failed:
 
-So for interrupts this should be handled in CPUHP_AP_IRQ_AFFINITY_ONLINE
-both in the existing up and the new down callback. That can be a
-interrupt core local CPU mask which is updated on the callbacks with the
-sparse_irq_lock held.
+failed to copy syz-execprog to VM: scp failed: failed to run ["scp" "-P" "3=
+6338" "-F" "/dev/null" "-o" "UserKnownHostsFile=3D/dev/null" "-o" "Identiti=
+esOnly=3Dyes" "-o" "BatchMode=3Dyes" "-o" "StrictHostKeyChecking=3Dno" "-o"=
+ "ConnectTimeout=3D10" "-v" "/syzkaller/jobs/linux/gopath/src/github.com/go=
+ogle/syzkaller/bin/linux_amd64/syz-execprog" "root@localhost:/syz-execprog"=
+]: exit status 1
 
-Same for the tick handover magic.
 
-Thanks,
 
-        tglx
+syzkaller build log:
+go env (err=3D<nil>)
+AR=3D'ar'
+CC=3D'gcc'
+CGO_CFLAGS=3D'-O2 -g'
+CGO_CPPFLAGS=3D''
+CGO_CXXFLAGS=3D'-O2 -g'
+CGO_ENABLED=3D'1'
+CGO_FFLAGS=3D'-O2 -g'
+CGO_LDFLAGS=3D'-O2 -g'
+CXX=3D'g++'
+GCCGO=3D'gccgo'
+GO111MODULE=3D'auto'
+GOAMD64=3D'v1'
+GOARCH=3D'amd64'
+GOAUTH=3D'netrc'
+GOBIN=3D''
+GOCACHE=3D'/syzkaller/.cache/go-build'
+GOCACHEPROG=3D''
+GODEBUG=3D''
+GOENV=3D'/syzkaller/.config/go/env'
+GOEXE=3D''
+GOEXPERIMENT=3D''
+GOFIPS140=3D'off'
+GOFLAGS=3D''
+GOGCCFLAGS=3D'-fPIC -m64 -pthread -Wl,--no-gc-sections -fmessage-length=3D0=
+ -ffile-prefix-map=3D/tmp/go-build4123752491=3D/tmp/go-build -gno-record-gc=
+c-switches'
+GOHOSTARCH=3D'amd64'
+GOHOSTOS=3D'linux'
+GOINSECURE=3D''
+GOMOD=3D'/syzkaller/jobs/linux/gopath/src/github.com/google/syzkaller/go.mo=
+d'
+GOMODCACHE=3D'/syzkaller/jobs/linux/gopath/pkg/mod'
+GONOPROXY=3D''
+GONOSUMDB=3D''
+GOOS=3D'linux'
+GOPATH=3D'/syzkaller/jobs/linux/gopath'
+GOPRIVATE=3D''
+GOPROXY=3D'https://proxy.golang.org,direct'
+GOROOT=3D'/usr/local/go'
+GOSUMDB=3D'sum.golang.org'
+GOTELEMETRY=3D'local'
+GOTELEMETRYDIR=3D'/syzkaller/.config/go/telemetry'
+GOTMPDIR=3D''
+GOTOOLCHAIN=3D'auto'
+GOTOOLDIR=3D'/usr/local/go/pkg/tool/linux_amd64'
+GOVCS=3D''
+GOVERSION=3D'go1.26.0'
+GOWORK=3D''
+PKG_CONFIG=3D'pkg-config'
+
+git status (err=3D<nil>)
+HEAD detached at 5be7a9deb87
+nothing to commit, working tree clean
+
+
+tput: No value for $TERM and no -T specified
+tput: No value for $TERM and no -T specified
+Makefile:31: run command via tools/syz-env for best compatibility, see:
+Makefile:32: https://github.com/google/syzkaller/blob/master/docs/contribut=
+ing.md#using-syz-env
+go list -f '{{.Stale}}' -ldflags=3D"-s -w -X github.com/google/syzkaller/pr=
+og.GitRevision=3D5be7a9deb87612d05fcc86125226d72bc2297875 -X github.com/goo=
+gle/syzkaller/prog.gitRevisionDate=3D20260417-202028"  ./sys/syz-sysgen | g=
+rep -q false || go install -ldflags=3D"-s -w -X github.com/google/syzkaller=
+/prog.GitRevision=3D5be7a9deb87612d05fcc86125226d72bc2297875 -X github.com/=
+google/syzkaller/prog.gitRevisionDate=3D20260417-202028"  ./sys/syz-sysgen
+make .descriptions
+tput: No value for $TERM and no -T specified
+tput: No value for $TERM and no -T specified
+Makefile:31: run command via tools/syz-env for best compatibility, see:
+Makefile:32: https://github.com/google/syzkaller/blob/master/docs/contribut=
+ing.md#using-syz-env
+bin/syz-sysgen
+touch .descriptions
+GOOS=3Dlinux GOARCH=3Damd64 go build -ldflags=3D"-s -w -X github.com/google=
+/syzkaller/prog.GitRevision=3D5be7a9deb87612d05fcc86125226d72bc2297875 -X g=
+ithub.com/google/syzkaller/prog.gitRevisionDate=3D20260417-202028"  -o ./bi=
+n/linux_amd64/syz-execprog github.com/google/syzkaller/tools/syz-execprog
+mkdir -p ./bin/linux_amd64
+g++ -o ./bin/linux_amd64/syz-executor executor/executor.cc \
+	-m64 -O2 -pthread -Wall -Werror -Wparentheses -Wunused-const-variable -Wfr=
+ame-larger-than=3D16384 -Wno-stringop-overflow -Wno-array-bounds -Wno-forma=
+t-overflow -Wno-unused-but-set-variable -Wno-unused-command-line-argument -=
+static-pie -std=3Dc++17 -I. -Iexecutor/_include   -DGOOS_linux=3D1 -DGOARCH=
+_amd64=3D1 \
+	-DHOSTGOOS_linux=3D1 -DGIT_REVISION=3D\"5be7a9deb87612d05fcc86125226d72bc2=
+297875\"
+/usr/bin/ld: /tmp/ccUDlBPa.o: in function `Connection::Connect(char const*,=
+ char const*)':
+executor.cc:(.text._ZN10Connection7ConnectEPKcS1_[_ZN10Connection7ConnectEP=
+KcS1_]+0x386): warning: Using 'gethostbyname' in statically linked applicat=
+ions requires at runtime the shared libraries from the glibc version used f=
+or linking
+./tools/check-syzos.sh 2>/dev/null
+
+
+
+Tested on:
+
+commit:         4ee64205 Merge tag 'clk-for-linus' of git://git.kernel..
+git tree:       upstream
+kernel config:  https://syzkaller.appspot.com/x/.config?x=3D95ee3fe1c5a8ab5=
+7
+dashboard link: https://syzkaller.appspot.com/bug?extid=3D6985cb8e543ea90ba=
+8ee
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Deb=
+ian) 2.44
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=3D122eb4ce5800=
+00
+
