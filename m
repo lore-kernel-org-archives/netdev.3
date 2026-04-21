@@ -1,121 +1,129 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38FBF3D8116;
-	Tue, 21 Apr 2026 14:25:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4863D3CFF46
+	for <netdev@vger.kernel.org>; Tue, 21 Apr 2026 14:26:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776781544; cv=none; b=FMTpLdyehUD6Pq4gbD1UNHzRDgrYppElAyRc4K1W5lBSHWkJDyeoR4QkedmhYjbXOKZzULIlXoI8+TfS4XcM0h8pEbnlTABWcOqUNU0Xu6B2dJ80pDEWRe0Log3qOrhOr4thKxiHqDxABq0Et+9Ro/FETg8P61ac1HzlZ3hfiJc=
+	t=1776781563; cv=none; b=Y27Vgwq+uNxy5QuckC1cE5jO87q+YVLP0j8HAu6aSEIxMYHOmflc3NSfrmtpOhcdNVGRxvfUAvB3xRR8MWzndO6UTOMYY/MUTFL7Y2wKUeZ1VZoU+0wr4yKhuzMHpc0SKzZw+95qwdG/WzPPmjik5RVEfdq36g984m49YbjefL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776781544; c=relaxed/simple;
-	bh=YSxGlcQS3U1Wutb2J/VUv/2OSR9GifsEC+73SgTBQOI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UuGpHPbNbIGvVRjm/8Tn8gzZ7Z2vmQnUHJZ7/Qf1Q2A6gZUf3NFxu64lvFK1XzgLLGAt3w9DVKE+AnVTLq4tdj/KebJOlOpd51GY5Up+Z/QyvdxNqMG4jUr5No8/cyAT5tgzjHYfoex7K2P+L9HrNr2KkP7xGIcQsHSWgtFBHxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dmlrW0kq; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776781563; c=relaxed/simple;
+	bh=SG9TyVz2FKGn4It97z8qxSOz48ceXBCGCNeEx9UkI/8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AfT4aV055/X4/QNQZIr1YoLIkPvZWox+KDx5/C5Y37MbEd58aejOqcBEMTnx+sTqtAzWB2ZmMHwQf0TiPzlvCsGtDDxe4gTjEPeN0wh4JqQ9RWb00SdcrYDMcx267tFsC5zQCboAZ6jg3YFO3O1sixSwhCgM1XYpgoTdGBG5bTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Uc6aM+Mw; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dmlrW0kq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EE4FC2BCB0;
-	Tue, 21 Apr 2026 14:25:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776781543;
-	bh=YSxGlcQS3U1Wutb2J/VUv/2OSR9GifsEC+73SgTBQOI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dmlrW0kq2qwKedKZVYa/gk4R47bz9FuApozdzY47ikUR4EG5WBsqR24nn+3QlPz22
-	 MYX/GbhHpcG+YBHmFTKqWS6WJJtrcdaEzkJPs8iuZF+Lo+8M/m1UKrv97flgD1CG7g
-	 rVb8rrdru4bu50nPP9VcbZ+pIRDwHQX2umDcpn8Sxuk9MSk6pUwSBHMWOpp5GxiHOr
-	 FCPiYhUwVHzKTHJ6LGghGgZMwNX/r1XXYxUgeWgqUipoHBHQAgkfFh7StLmmi6gZlj
-	 G7CtG8nCmlScNlKdxDodyFPBQKBjUpw71v8nTW+aIm/NuOy/53ZMNuW0CFVgW4ZedC
-	 +L9uL7HlJnMxA==
-Date: Tue, 21 Apr 2026 15:25:32 +0100
-From: Simon Horman <horms@kernel.org>
-To: Andrea Mayer <andrea.mayer@uniroma2.it>
-Cc: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, bigeasy@linutronix.de,
-	clrkwllms@kernel.org, rostedt@goodmis.org,
-	david.lebrun@uclouvain.be, alex.aring@gmail.com,
-	stefano.salsano@uniroma2.it, netdev@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net] net: ipv6: fix NOREF dst use in seg6 and rpl
- lwtunnels
-Message-ID: <20260421142532.GD651125@horms.kernel.org>
-References: <20260421094735.20997-1-andrea.mayer@uniroma2.it>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Uc6aM+Mw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1776781561;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cpQv2nmOkTVoNtTsiQ2DrTic771j3rKCjuGbBpejCvU=;
+	b=Uc6aM+Mw+M1bAILK/qr82kXCzxBjMNWcY/4CsHjmBo5t3Z4MRBHeseqJGral8sQFwL4rfi
+	r+EOz7hdz7xwqgGxIAuHOKBo5h9sH0UUDHhCGv46GYvi6cDFS5m2mmb6b7RjMkddNL3MLT
+	KWozQBrbqa/diQFkhtRZkz8fCMJMFIM=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-453-xs3N2oRYOFOjpa-3JwwkQg-1; Tue,
+ 21 Apr 2026 10:25:58 -0400
+X-MC-Unique: xs3N2oRYOFOjpa-3JwwkQg-1
+X-Mimecast-MFC-AGG-ID: xs3N2oRYOFOjpa-3JwwkQg_1776781553
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 248D51956054;
+	Tue, 21 Apr 2026 14:25:52 +0000 (UTC)
+Received: from [10.22.81.187] (unknown [10.22.81.187])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2506C180047F;
+	Tue, 21 Apr 2026 14:25:44 +0000 (UTC)
+Message-ID: <0281dde0-e00f-4f38-a15a-3ade02ecbb59@redhat.com>
+Date: Tue, 21 Apr 2026 10:25:43 -0400
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260421094735.20997-1-andrea.mayer@uniroma2.it>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 10/23] cpu: Use RCU to protect access of HK_TYPE_TIMER
+ cpumask
+To: Thomas Gleixner <tglx@kernel.org>, Tejun Heo <tj@kernel.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?=
+ <mkoutny@suse.com>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ "K. Y. Srinivasan" <kys@microsoft.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>,
+ Guenter Roeck <linux@roeck-us.net>, Frederic Weisbecker
+ <frederic@kernel.org>, "Paul E. McKenney" <paulmck@kernel.org>,
+ Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+ Joel Fernandes <joelagnelf@nvidia.com>, Josh Triplett
+ <josh@joshtriplett.org>, Boqun Feng <boqun@kernel.org>,
+ Uladzislau Rezki <urezki@gmail.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>,
+ Anna-Maria Behnsen <anna-maria@linutronix.de>, Ingo Molnar
+ <mingo@kernel.org>, Chen Ridong <chenridong@huaweicloud.com>,
+ Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>, Ben Segall
+ <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+ Valentin Schneider <vschneid@redhat.com>,
+ K Prateek Nayak <kprateek.nayak@amd.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>
+Cc: cgroups@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-hyperv@vger.kernel.org, linux-hwmon@vger.kernel.org,
+ rcu@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, Costa Shulyupin <cshulyup@redhat.com>,
+ Qiliang Yuan <realwujing@gmail.com>
+References: <20260421030351.281436-1-longman@redhat.com>
+ <20260421030351.281436-11-longman@redhat.com> <87wly0bsh5.ffs@tglx>
+Content-Language: en-US
+From: Waiman Long <longman@redhat.com>
+In-Reply-To: <87wly0bsh5.ffs@tglx>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-On Tue, Apr 21, 2026 at 11:47:35AM +0200, Andrea Mayer wrote:
-> seg6_input_core() and rpl_input() call ip6_route_input() which sets a
-> NOREF dst on the skb, then pass it to dst_cache_set_ip6() invoking
-> dst_hold() unconditionally.
-> On PREEMPT_RT, ksoftirqd is preemptible and a higher-priority task can
-> release the underlying pcpu_rt between the lookup and the caching
-> through a concurrent FIB lookup on a shared nexthop.
-> Simplified race sequence:
-> 
->   ksoftirqd/X                       higher-prio task (same CPU X)
->   -----------                       --------------------------------
->   seg6_input_core(,skb)/rpl_input(skb)
->     dst_cache_get()
->       -> miss
->     ip6_route_input(skb)
->       -> ip6_pol_route(,skb,flags)
->          [RT6_LOOKUP_F_DST_NOREF in flags]
->         -> FIB lookup resolves fib6_nh
->            [nhid=N route]
->         -> rt6_make_pcpu_route()
->            [creates pcpu_rt, refcount=1]
->              pcpu_rt->sernum = fib6_sernum
->              [fib6_sernum=W]
->            -> cmpxchg(fib6_nh.rt6i_pcpu,
->                       NULL, pcpu_rt)
->               [slot was empty, store succeeds]
->       -> skb_dst_set_noref(skb, dst)
->          [dst is pcpu_rt, refcount still 1]
-> 
->                                     rt_genid_bump_ipv6()
->                                       -> bumps fib6_sernum
->                                          [fib6_sernum from W to Z]
->                                     ip6_route_output()
->                                       -> ip6_pol_route()
->                                         -> FIB lookup resolves fib6_nh
->                                            [nhid=N]
->                                         -> rt6_get_pcpu_route()
->                                              pcpu_rt->sernum != fib6_sernum
->                                              [W <> Z, stale]
->                                           -> prev = xchg(rt6i_pcpu, NULL)
->                                           -> dst_release(prev)
->                                              [prev is pcpu_rt,
->                                               refcount 1->0, dead]
-> 
->     dst = skb_dst(skb)
->     [dst is the dead pcpu_rt]
->     dst_cache_set_ip6(dst)
->       -> dst_hold() on dead dst
->       -> WARN / use-after-free
-> 
-> For the race to occur, ksoftirqd must be preemptible (PREEMPT_RT without
-> PREEMPT_RT_NEEDS_BH_LOCK) and a concurrent task must be able to release
-> the pcpu_rt. Shared nexthop objects provide such a path, as two routes
-> pointing to the same nhid share the same fib6_nh and its rt6i_pcpu
-> entry.
-> 
-> Fix seg6_input_core() and rpl_input() by calling skb_dst_force() after
-> ip6_route_input() to force the NOREF dst into a refcounted one before
-> caching.
-> The output path is not affected as ip6_route_output() already returns a
-> refcounted dst.
-> 
-> Fixes: af4a2209b134 ("ipv6: sr: use dst_cache in seg6_input")
-> Fixes: a7a29f9c361f ("net: ipv6: add rpl sr tunnel")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+On 4/21/26 4:57 AM, Thomas Gleixner wrote:
+> On Mon, Apr 20 2026 at 23:03, Waiman Long wrote:
+>> As HK_TYPE_TIMER cpumask is going to be changeable at run time, use
+>> RCU to protect access to the cpumask.
+>>
+>> Signed-off-by: Waiman Long <longman@redhat.com>
+>> ---
+>>   kernel/cpu.c | 2 ++
+>>   1 file changed, 2 insertions(+)
+>>
+>> diff --git a/kernel/cpu.c b/kernel/cpu.c
+>> index bc4f7a9ba64e..0d02b5d7a7ba 100644
+>> --- a/kernel/cpu.c
+>> +++ b/kernel/cpu.c
+>> @@ -1890,6 +1890,8 @@ int freeze_secondary_cpus(int primary)
+>>   	cpu_maps_update_begin();
+>>   	if (primary == -1) {
+>>   		primary = cpumask_first(cpu_online_mask);
+>> +
+>> +		guard(rcu)();
+>>   		if (!housekeeping_cpu(primary, HK_TYPE_TIMER))
+>>   			primary = housekeeping_any_cpu(HK_TYPE_TIMER);
+> housekeeping_cpu() and housekeeping_any_cpu() can operate on two
+> different CPU masks once the runtime update is enabled.
+>
+> Seriously?
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Good point, will fix that in the next version.
+
+Cheers,
+Longman
 
