@@ -1,67 +1,40 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from serv108.segi.ulg.ac.be (serv108.segi.ulg.ac.be [139.165.32.111])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DE132DCBE3
-	for <netdev@vger.kernel.org>; Tue, 21 Apr 2026 17:59:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD0E62DCBE3;
+	Tue, 21 Apr 2026 17:59:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.165.32.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776794342; cv=none; b=CEJCWoBTQBcbtDhysRUL0ypmnth6C3sp89w7FCxyub5Bw1bJy0hROgA//tGr+YGZ8KHCcCg/9U4Sd1LMGijx6cKLxhVckItumySU6qrxSA5xeb3BfG38AJGaKQaTO1QtlqoVtKjV51rUquxHbbSzKMiq/NiW0M6NfVwM9os4ngY=
+	t=1776794376; cv=none; b=W9758NBr/o/lzVJemq/vWT+JxDxjdhLeYGuyAPoTR0B2x7e7HiwlI1EwDqpu+aZ7hl31iRpGzQsoGi4WhJF6o79lNYQiASXRR2THG53AvTUwUou6Nll8z4A4vlSkHkx0B/PnnEciJ/ZnxjJJe1dH7rreDW/v+Q4tiT9MSwofV1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776794342; c=relaxed/simple;
-	bh=UNWzQoiJLHZsycgSGADwufVDpldfq3IAxUjRrKn9GJg=;
+	s=arc-20240116; t=1776794376; c=relaxed/simple;
+	bh=dbKpdaGeOsDRsaYMe+qivHZwiee1Wrgke4iiIwsWuX4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CBtCe3Vh8g752cKqz62nnCxlErvAZt6JEggPTZcxClJ+WSxeTIRgDR0+OhreOY94RYKDp900oEuBMpi0psqZLctQNcQ/IAjx5fjIi1mlEKol7PVofIWFE+whG5H0hzzeJi3pjarknPqoPlLSQcfUftfGJE6vCFeP5n6WjS9PT1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kywc/0DQ; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 In-Reply-To:Content-Type; b=SXr9KRY4bJ7n9TCeyiqrp3cnPLuICyDO5qkHU1L7mdvef8bksyuarFVhgyu+pwyy7NxERn8KmoDotAV8J0dl2+kkr5CZLb5ZOD9LV5WNqB+1q9u5LiM8JShhn82uY2cApByzqPTBCnMwlJR38uT7ENKQdQnmncTT1n8SEWq18RI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uliege.be; spf=pass smtp.mailfrom=uliege.be; dkim=pass (2048-bit key) header.d=uliege.be header.i=@uliege.be header.b=uMDVrEqL; arc=none smtp.client-ip=139.165.32.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uliege.be
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uliege.be
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kywc/0DQ"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4893940bb5eso14432635e9.3
-        for <netdev@vger.kernel.org>; Tue, 21 Apr 2026 10:59:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776794340; x=1777399140; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vlQuH9I8d8JGzpXuro5Nk2tmErbsbCQw/sXQZA/3BQc=;
-        b=kywc/0DQIDli2z5hBKxQMHAFgK0HdLvpD1ZsQGeOs/+ucadM4/LyOwtmKJ/ONXlJnN
-         MBCrgMdA6BGV3TsXKiDra+rxOf3RfvMqTsSBfVNgmjVv0PUL/Anr3vVOFbldg5CzATdz
-         1ySJfpaoJMulpYdFqkZThamEhG9tJVP2pKePdL9kKH/uFU/GMZ3SGm4jLfG4XDoIy0Fd
-         KJh0D9GQkRH+LOIDj3caUrQi9rrb2+fMacqbtSS33bWI4teXuJRUB8XaOkYm8+CmVp9j
-         hjH94X0jEjqCV5Z4yF6nsAAa2OMkKGN2/5Rmp+n9I6qmey0ZU7H2K/Sh+pSPTXCxJM3U
-         xV/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776794340; x=1777399140;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vlQuH9I8d8JGzpXuro5Nk2tmErbsbCQw/sXQZA/3BQc=;
-        b=eCN3dqUM0DIe8C4rOj3qEvADlYWFervnRqoAnMciXiXdUwWEkBwDedaAwx+5o2TBgC
-         Cv4r2S2w4sWBhmPO2OOIK2vxAE24utZQIOr37P4JgROUTHlQx6/rNnL8DMMWnVugGQvA
-         axppXC0VK06dUeGbAhJPoYyQgX+a4qfqP5lhZPpXY76f4Dq4BtDWkt/6Xv25HhkE3HOj
-         yNL8ehSvy5y1klWw9IJVeI+reYJkXdOBNCAZIySpYhwu/2Q/riOTxg7AnOP+ZCH8TNZN
-         hV6eRB9CxqbGLqgw/rUnoVhx61xwxMaRtlpfqbiSOGfVf6Bl0nqMsyaDvOtAPWbRZT9Y
-         XgHQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/D5hK4JJAwLk2sI9o1bnEfJhyb8TxsDvMj1LkwWE8ZOtpgMPn7GboJc7yVvYArQU2qghwXoUs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPek1pFAHAlEER7p917V8Zilb/AiinkW3n3tM6N0KwTOB5pHlQ
-	zhd//yRzOWpBlbHchkaJPKDrQYlQVi0VQOBWGsE+AokLt8KHA4hSVG0S
-X-Gm-Gg: AeBDietmEIk5iU+ANcqGhfVDJjfKUoDOZ08lazvso6KvQ7P/DzPuydApubnud5dIylF
-	ABN0e6h58K/xCyOVLRds8ejA7zgQF69mv5RQxdCHP9PmuTdI4+ZRhkIcpWtZCqGl97zcBTpjWU8
-	7RfAs4PbNmuFxEXbQIS0hlYr576I9Q7jwM9pLwVuI1a8oLIge6aPn0CQMkglLv4jREMj/14x4ig
-	6RzqO4bCDXFLq1PWrbuwpEIycv6LPZSApUGZ41CyD8qAUs4p4WXfLWJ1vG0XmjfNeTm3A4ue6NG
-	yyHU1W7GYhjYIfQdUXBZOnJ372pnqdrriIn4kh2lAhq8oGVNmLJrz4/yGCbgXF0m4xVgZnmmZkK
-	OgXi4+fm2BvFKqgFt0bBRS8za4ipl/485dgGkeXonhqKFB/BkVK0OcV9SKHGw5ZVzCKuheve/tQ
-	qDXWSfObmZ7LpfuHTVztPcHeyHpe3U+PyZzocL1twzEhEPFB08xVUYK5mabJU8PegeJwXf7SHEm
-	wGXEffzN8cme07YwYF319ClCik=
-X-Received: by 2002:a05:600d:b:b0:48a:56de:d63c with SMTP id 5b1f17b1804b1-48a56dedadfmr32847085e9.27.1776794339439;
-        Tue, 21 Apr 2026 10:58:59 -0700 (PDT)
-Received: from ?IPV6:2a02:a03f:a75e:9a00:7546:18b7:2c8c:e879? ([2a02:a03f:a75e:9a00:7546:18b7:2c8c:e879])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-489fec8f7cbsm121049875e9.11.2026.04.21.10.58.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Apr 2026 10:58:58 -0700 (PDT)
-Message-ID: <db82f89f-0811-46e8-bf81-f3ef1db646cb@gmail.com>
-Date: Tue, 21 Apr 2026 19:58:58 +0200
+	dkim=pass (2048-bit key) header.d=uliege.be header.i=@uliege.be header.b="uMDVrEqL"
+Received: from [192.168.1.58] (220.24-245-81.adsl-dyn.isp.belgacom.be [81.245.24.220])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by serv108.segi.ulg.ac.be (Postfix) with ESMTPSA id 660551045;
+	Tue, 21 Apr 2026 19:50:29 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 serv108.segi.ulg.ac.be 660551045
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uliege.be;
+	s=ulg20190529; t=1776793829;
+	bh=gUoY7e6VWR3cECyo6qQIXb6/saGIgBLVjZvUmCe+aGA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=uMDVrEqLAUyB+rTiqplLh1IO9Ca2/chScoiKp7ZvQeiUv3yDpyPQFDTFcCEls47a4
+	 W4Vk4uAlU0DqssiIawlRz5Z1zqCrnNuHMuGI+ar3fHdqIEvcjQuR083mL2tfuSF77A
+	 fjGgBlM+RucAwdWqedF1/iBx2w4if/LirKvDgvcj1CjuwHtFX0DlocJEq4QKRgPh7V
+	 YGJ9o63QK2xPmZLJOMOgUjLshBIOeOQn76SgKrGdWPgWKshcpZCPGXylbwqFjoowPN
+	 SXJUllOP9+IYA4fNnS9GnQXhLMYN6a+ePsvk2hD8m/TxH56V/N1Kp1tNE4dhh9xdTs
+	 NqqkTCZfnpq1A==
+Message-ID: <d2a0a7ac-09bc-4773-b106-a4cfa62ec06e@uliege.be>
+Date: Tue, 21 Apr 2026 19:50:28 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -69,51 +42,51 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] gtp: disable BH before calling udp_tunnel_xmit_skb()
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: David Carlier <devnexen@gmail.com>,
- Pablo Neira Ayuso <pablo@netfilter.org>, Harald Welte
- <laforge@gnumonks.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Weiming Shi <bestswngs@gmail.com>, osmocom-net-gprs@lists.osmocom.org,
+Subject: Re: [PATCH net] seg6: fix seg6 lwtunnel output redirect for L2
+ reduced encap mode
+To: Andrea Mayer <andrea.mayer@uniroma2.it>, davem@davemloft.net,
+ dsahern@kernel.org, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org
+Cc: anton.makarov11235@gmail.com, stefano.salsano@uniroma2.it,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260417055408.4667-1-devnexen@gmail.com>
- <b44de581-9f41-4804-afb1-72c491d9443a@gmail.com>
- <20260420125815.3a920d9a@kernel.org>
+References: <20260418162838.31979-1-andrea.mayer@uniroma2.it>
 Content-Language: en-US
-From: Justin Iurman <justin.iurman@gmail.com>
-In-Reply-To: <20260420125815.3a920d9a@kernel.org>
+From: Justin Iurman <justin.iurman@uliege.be>
+In-Reply-To: <20260418162838.31979-1-andrea.mayer@uniroma2.it>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 4/20/26 21:58, Jakub Kicinski wrote:
-> On Mon, 20 Apr 2026 21:02:55 +0200 Justin Iurman wrote:
->> On 4/17/26 07:54, David Carlier wrote:
->>> gtp_genl_send_echo_req() runs as a generic netlink doit handler in
->>> process context with BH not disabled. It calls udp_tunnel_xmit_skb(),
->>> which eventually invokes iptunnel_xmit() — that uses __this_cpu_inc/dec
->>> on softnet_data.xmit.recursion to track the tunnel xmit recursion level.
->>>
->>> Without local_bh_disable(), the task may migrate between
->>> dev_xmit_recursion_inc() and dev_xmit_recursion_dec(), breaking the
->>> per-CPU counter pairing. The result is stale or negative recursion
->>> levels that can later produce false-positive
->>> SKB_DROP_REASON_RECURSION_LIMIT drops on either CPU.
->>>
->>> The other udp_tunnel_xmit_skb() call sites in gtp.c are unaffected:
->>> the data path runs under ndo_start_xmit and the echo response handlers
->>> run from the UDP encap rx softirq, both with BH already disabled.
->>>
->>> Fix it by disabling BH around the udp_tunnel_xmit_skb() call, mirroring
->>> commit 2cd7e6971fc2 ("sctp: disable BH before calling
->>> udp_tunnel_xmit_skb()").
->>
->> Why not fix iptunnel_xmit() directly, rather than fixing all possible
->> callers? Basically, jut like we did for lwtunnel_{output|xmit}(). The
->> advantage would be that we no longer have to worry about BHs in the
->> callers, and BHs would only be disabled when necessary.
+On 4/18/26 18:28, Andrea Mayer wrote:
+> When SEG6_IPTUN_MODE_L2ENCAP_RED (L2ENCAP_RED) was introduced, the
+> condition in seg6_build_state() that excludes L2 encap modes from
+> setting LWTUNNEL_STATE_OUTPUT_REDIRECT was not updated to account for
+> the new mode.
+> As a consequence, L2ENCAP_RED routes incorrectly trigger seg6_output()
+> on the output path, where the packet is silently dropped because
+> skb_mac_header_was_set() fails on L3 packets.
 > 
-> Oops, I pushed this already. The bot hasn't caught up yet.
-> Let's revisit this if we find another caller in process context?
+> Extend the check to also exclude L2ENCAP_RED, consistent with L2ENCAP.
+> 
+> Fixes: 13f0296be8ec ("seg6: add support for SRv6 H.L2Encaps.Red behavior")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+> ---
+>   net/ipv6/seg6_iptunnel.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
+> index 97b50d9b1365..9b64343ebad6 100644
+> --- a/net/ipv6/seg6_iptunnel.c
+> +++ b/net/ipv6/seg6_iptunnel.c
+> @@ -746,7 +746,8 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
+>   	newts->type = LWTUNNEL_ENCAP_SEG6;
+>   	newts->flags |= LWTUNNEL_STATE_INPUT_REDIRECT;
+>   
+> -	if (tuninfo->mode != SEG6_IPTUN_MODE_L2ENCAP)
+> +	if (tuninfo->mode != SEG6_IPTUN_MODE_L2ENCAP &&
+> +	    tuninfo->mode != SEG6_IPTUN_MODE_L2ENCAP_RED)
+>   		newts->flags |= LWTUNNEL_STATE_OUTPUT_REDIRECT;
+>   
+>   	newts->headroom = seg6_lwt_headroom(tuninfo);
 
-No worries, works for me!
+Reviewed-by: Justin Iurman <justin.iurman@gmail.com>
