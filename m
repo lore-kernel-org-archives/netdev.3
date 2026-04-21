@@ -1,165 +1,329 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [4.193.249.245])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F9A71E2614
-	for <netdev@vger.kernel.org>; Tue, 21 Apr 2026 16:09:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=4.193.249.245
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E73B17A305;
+	Tue, 21 Apr 2026 16:17:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776787795; cv=none; b=T1HBJWXRSO3H+U26zpFXlDbaLDpwt4kTG8U/eQ1jzleEl2G8zuzuHO/T8sW9rSKux9RyQxcqO3uFpXDuk9MdmNG5ca7TSpijg1zcjTHiAWvPZ5lcBjIyrWMb22PyVOCa/QBNot8oDSgzvujIpV4FeVrBIMbahYDZwLilSUHTsFk=
+	t=1776788243; cv=none; b=be9+ceFdtGwKv4iVVAsu9/iJPsdsk0xvtRZoPkKfbWkLGXrhVFAcLePXoJA1Nop6DEO94R7HdnIgmK/G4gAHnqkSGtVXF9zj+gRCpdUZmWNlTZigNNuzrL7m1YadXmBBxGDtHGk0TN0j3t0UU5EEeJ6BJlm7lZfaAISF62oVCUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776787795; c=relaxed/simple;
-	bh=OSnuaCIIpwIgyHOrVk2/OtdRAqQ0f0tuJ8fyC/1QgA8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dBX3/gkYyf3ls4Mu41yP1TgbTNoebcidqMOuzIZFdUkG5LRxLu5Jj0uwHXvLHjpvIflehd5EgmbPC3wf96E3ZVTaks+Hgyf/hjD46wb57qpYYtsPIxPAbicEst0cPEej/WEViOJepvOk8Cqb5DPCeO+RUo1TwUmR5NFoj1nDQKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn; spf=pass smtp.mailfrom=lzu.edu.cn; arc=none smtp.client-ip=4.193.249.245
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lzu.edu.cn
-Received: from enjou-Legion-Y7000P-2019.coin-barley.ts.net (unknown [172.23.56.36])
-	by app1 (Coremail) with SMTP id ygmowAC3MAE7oedp+A_ZAA--.52811S2;
-	Wed, 22 Apr 2026 00:09:32 +0800 (CST)
-From: Ren Wei <n05ec@lzu.edu.cn>
-To: netdev@vger.kernel.org
-Cc: jhs@mojatatu.com,
-	jiri@resnulli.us,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	sbrivio@redhat.com,
-	vladbu@mellanox.com,
-	yuantan098@gmail.com,
-	yifanwucs@gmail.com,
-	tomapufckgml@gmail.com,
-	bird@lzu.edu.cn,
-	kanolyc@gmail.com,
-	z1652074432@gmail.com,
-	n05ec@lzu.edu.cn
-Subject: [PATCH net v2 1/1] net/sched: cls_flower: avoid stale mask references after delete
-Date: Wed, 22 Apr 2026 00:03:02 +0800
-Message-ID: <20260421160303.1919562-1-n05ec@lzu.edu.cn>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1776788243; c=relaxed/simple;
+	bh=Rx0BZ0cGJyVS+dN5uBo9yCytt0x7FN65QdU72qTNcHk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=orZCmGlour1mf+Obfzyv0aILUvxr2SNusKRiiS2vhJ/o2GhmXB37KUjhKNCza0roS6J+oPTCyDG/3YFZ+s+W6sQclNxuYRbVOcfSo97MzvbhONoRpN0sWuYgQXi7a00S8jvccJTiQGgbWGgRWdfyobiK+NaacKRawa4xtCHDk+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ahhch9gB; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ahhch9gB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34A94C2BCB0;
+	Tue, 21 Apr 2026 16:17:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776788243;
+	bh=Rx0BZ0cGJyVS+dN5uBo9yCytt0x7FN65QdU72qTNcHk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=ahhch9gBqz/Ve5ejormjhbp/fGLuEMSKMeJvSPfKLgXSEsKtz89Vwup2jgYC8nLDe
+	 Zp+lH2/C0AVFS1vzhG8gZzNZFgd3VusAuaIBSQKDxJw188DJJeMBdYDeakSvd7+oYe
+	 6nKGi2J1lzsu/nfStubv7mMmHLU1WhEkLhAvS1rlYdogvbuTNbrXWXGhQqjGe4KgKY
+	 zuufkAkWuhRPr1z7ETBcFDbYdhLraiWBpGNQsfFUzJHoXACSQ8T3aL5mVqRW8Fsc0J
+	 ys6TVdVbj2sqmRLJZr+9J8jjmIn+pNevv3LUfTeNcnB9jfCtChovAUy01SomG7pYNJ
+	 kqjI3wV4527+A==
+From: Thomas Gleixner <tglx@kernel.org>
+To: Waiman Long <longman@redhat.com>, Tejun Heo <tj@kernel.org>, Johannes
+ Weiner <hannes@cmpxchg.org>, Michal =?utf-8?Q?Koutn=C3=BD?=
+ <mkoutny@suse.com>, Jonathan
+ Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, Catalin
+ Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, "K. Y.
+ Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>,
+ Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, Long Li
+ <longli@microsoft.com>, Guenter Roeck <linux@roeck-us.net>, Frederic
+ Weisbecker <frederic@kernel.org>, "Paul E. McKenney" <paulmck@kernel.org>,
+ Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, Joel Fernandes
+ <joelagnelf@nvidia.com>, Josh Triplett <josh@joshtriplett.org>, Boqun Feng
+ <boqun@kernel.org>, Uladzislau Rezki <urezki@gmail.com>, Steven Rostedt
+ <rostedt@goodmis.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>,
+ Anna-Maria Behnsen <anna-maria@linutronix.de>, Ingo Molnar
+ <mingo@kernel.org>, Chen Ridong <chenridong@huaweicloud.com>, Peter
+ Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann
+ <dietmar.eggemann@arm.com>, Ben Segall <bsegall@google.com>, Mel Gorman
+ <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, K Prateek
+ Nayak <kprateek.nayak@amd.com>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Cc: cgroups@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-hyperv@vger.kernel.org, linux-hwmon@vger.kernel.org,
+ rcu@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, Costa Shulyupin <cshulyup@redhat.com>,
+ Qiliang Yuan <realwujing@gmail.com>, Waiman Long <longman@redhat.com>
+Subject: Re: [PATCH 18/23] cpu/hotplug: Add a new cpuhp_offline_cb() API
+In-Reply-To: <20260421030351.281436-19-longman@redhat.com>
+References: <20260421030351.281436-1-longman@redhat.com>
+ <20260421030351.281436-19-longman@redhat.com>
+Date: Tue, 21 Apr 2026 18:17:19 +0200
+Message-ID: <87o6jcb84w.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:ygmowAC3MAE7oedp+A_ZAA--.52811S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxAw4ktryfKF4UuF15Ar1fZwb_yoWrGw1kpF
-	ZrG34UJrWDXF15W3ZIy3yj9wn0kas7AFy5WF1rW395tr97ta9YkFykZ3y29Fn8Kr4UWryS
-	vF4qyr1rZ3WkCrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBY1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
-	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
-	IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1l84ACjcxK6I8E
-	87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UM2AIxVAIcxkEcV
-	Aq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j
-	6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64
-	vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0E
-	n4kS14v26r4a6rW5MxkIecxEwVCm-wCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6c
-	x26r48MxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCj
-	r7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6x
-	IIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAI
-	w20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x
-	0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7sRi_HU3UUUUU==
-X-CM-SenderInfo: zqqvvuo6o23hxhgxhubq/1tbiAQAECWnnOeEJTwAAsc
+Content-Type: text/plain
 
-From: Yuhang Zheng <z1652074432@gmail.com>
+On Mon, Apr 20 2026 at 23:03, Waiman Long wrote:
+> Add a new cpuhp_offline_cb() API that allows us to offline a set of
+> CPUs one-by-one, run the given callback function and then bring those
+> CPUs back online again while inhibiting any concurrent CPU hotplug
+> operations from happening.
 
-cls_flower keeps filter and mask state separately. After a filter is
-removed or replaced, some paths can still need the mask data associated
-with that filter.
+Please provide a properly structured change log which explains the
+context, the problem and the solution in separate paragraphs and this
+order. This is not new. It's documented...
 
-Cache the mask key and dissector in struct cls_fl_filter when the mask
-is assigned, and use the cached copies in dump and offload paths. This
-avoids depending on the external mask object's lifetime after delete or
-replace.
+> This new API can be used to enable runtime adjustment of nohz_full and
+> isolcpus boot command line options. A new cpuhp_offline_cb_mode flag
+> is also added to signal that the system is in this offline callback
+> transient state so that some hotplug operations can be optimized out
+> if we choose to.
 
-Fixes: 92149190067d ("net: sched: flower: set unlocked flag for flower proto ops")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Tested-by: Yucheng Lu <kanolyc@gmail.com>
-Signed-off-by: Yuhang Zheng <z1652074432@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
----
+We chose nothing.
 
-changes in v2:
-- target the net tree instead of nf
-- fix the Fixes tag to the first triggerable introduction
-- correct the Yuan Tan Reported-by address and add the forwarder sign-off
-- v1 Link: https://lore.kernel.org/all/0fdcae6ac3e07afbbd43958f6b42e2ed6281e3d2.1773559972.git.z1652074432@gmail.com
+> +#include <linux/cpumask_types.h>
 
- net/sched/cls_flower.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+What for? This header only needs a 'struct cpumask' forward declaration
+so that the compiler can handle the pointer argument, no?
 
-diff --git a/net/sched/cls_flower.c b/net/sched/cls_flower.c
-index 099ff6a3e1f5..c1f10b4ec748 100644
---- a/net/sched/cls_flower.c
-+++ b/net/sched/cls_flower.c
-@@ -124,8 +124,10 @@ struct cls_fl_head {
- 
- struct cls_fl_filter {
- 	struct fl_flow_mask *mask;
-+	struct flow_dissector mask_dissector;
- 	struct rhash_head ht_node;
- 	struct fl_flow_key mkey;
-+	struct fl_flow_key mask_key;
- 	struct tcf_exts exts;
- 	struct tcf_result res;
- 	struct fl_flow_key key;
-@@ -445,6 +447,12 @@ static void fl_destroy_filter_work(struct work_struct *work)
- 	__fl_destroy_filter(f);
- }
- 
-+static void fl_filter_copy_mask(struct cls_fl_filter *f)
-+{
-+	f->mask_key = f->mask->key;
-+	f->mask_dissector = f->mask->dissector;
-+}
-+
- static void fl_hw_destroy_filter(struct tcf_proto *tp, struct cls_fl_filter *f,
- 				 bool rtnl_held, struct netlink_ext_ack *extack)
- {
-@@ -476,8 +484,8 @@ static int fl_hw_replace_filter(struct tcf_proto *tp,
- 	tc_cls_common_offload_init(&cls_flower.common, tp, f->flags, extack);
- 	cls_flower.command = FLOW_CLS_REPLACE;
- 	cls_flower.cookie = (unsigned long) f;
--	cls_flower.rule->match.dissector = &f->mask->dissector;
--	cls_flower.rule->match.mask = &f->mask->key;
-+	cls_flower.rule->match.dissector = &f->mask_dissector;
-+	cls_flower.rule->match.mask = &f->mask_key;
- 	cls_flower.rule->match.key = &f->mkey;
- 	cls_flower.classid = f->res.classid;
- 
-@@ -2489,6 +2497,7 @@ static int fl_change(struct net *net, struct sk_buff *in_skb,
- 	err = fl_check_assign_mask(head, fnew, fold, mask);
- 	if (err)
- 		goto unbind_filter;
-+	fl_filter_copy_mask(fnew);
- 
- 	err = fl_ht_insert_unique(fnew, fold, &in_ht);
- 	if (err)
-@@ -2705,8 +2714,8 @@ static int fl_reoffload(struct tcf_proto *tp, bool add, flow_setup_cb_t *cb,
- 		cls_flower.command = add ?
- 			FLOW_CLS_REPLACE : FLOW_CLS_DESTROY;
- 		cls_flower.cookie = (unsigned long)f;
--		cls_flower.rule->match.dissector = &f->mask->dissector;
--		cls_flower.rule->match.mask = &f->mask->key;
-+		cls_flower.rule->match.dissector = &f->mask_dissector;
-+		cls_flower.rule->match.mask = &f->mask_key;
- 		cls_flower.rule->match.key = &f->mkey;
- 
- 		err = tc_setup_offload_action(&cls_flower.rule->action, &f->exts,
-@@ -3709,7 +3718,7 @@ static int fl_dump(struct net *net, struct tcf_proto *tp, void *fh,
- 		goto nla_put_failure_locked;
- 
- 	key = &f->key;
--	mask = &f->mask->key;
-+	mask = &f->mask_key;
- 	skip_hw = tc_skip_hw(f->flags);
- 
- 	if (fl_dump_key(skb, net, key, mask))
--- 
-2.43.0
+> +typedef int (*cpuhp_cb_t)(void *arg);
+
+You couldn't come up with a more generic name for this, right?
+
+>  struct device;
+>  
+>  extern int lockdep_is_cpus_held(void);
+> @@ -29,6 +31,8 @@ void clear_tasks_mm_cpumask(int cpu);
+>  int remove_cpu(unsigned int cpu);
+>  int cpu_device_down(struct device *dev);
+>  void smp_shutdown_nonboot_cpus(unsigned int primary_cpu);
+> +int cpuhp_offline_cb(struct cpumask *mask, cpuhp_cb_t func, void *arg);
+
+Ditto.
+
+> +extern bool cpuhp_offline_cb_mode;
+
+Groan. The only users are in the cpusets code which invokes this muck
+and should therefore know what's going on, no?
+
+>  #else /* CONFIG_HOTPLUG_CPU */
+>  
+> @@ -43,6 +47,11 @@ static inline void cpu_hotplug_disable(void) { }
+>  static inline void cpu_hotplug_enable(void) { }
+>  static inline int remove_cpu(unsigned int cpu) { return -EPERM; }
+>  static inline void smp_shutdown_nonboot_cpus(unsigned int primary_cpu) { }
+> +static inline int cpuhp_offline_cb(struct cpumask *mask, cpuhp_cb_t func, void *arg)
+> +{
+> +	return -EPERM;
+
+-EPERM?
+
+> +/**
+> + * cpuhp_offline_cb - offline CPUs, invoke callback function & online CPUs afterward
+> + * @mask: A mask of CPUs to be taken offline and then online
+> + * @func: A callback function to be invoked while the given CPUs are offline
+> + * @arg:  Argument to be passed back to the callback function
+> + *
+> + * Return: 0 if successful, an error code otherwise
+> + */
+> +int cpuhp_offline_cb(struct cpumask *mask, cpuhp_cb_t func, void *arg)
+> +{
+> +	int off_cpu, on_cpu, ret, ret2 = 0;
+> +
+> +	if (WARN_ON_ONCE(cpumask_empty(mask) ||
+> +	   !cpumask_subset(mask, cpu_online_mask)))
+> +		return -EINVAL;
+
+No line break required. You have 100 characters.
+
+But what's worse is that the access to cpu_online_mask is not protected
+against a concurrent CPU hotplug operation.
+
+> +
+> +	pr_debug("%s: begin (CPU list = %*pbl)\n", __func__, cpumask_pr_args(mask));
+
+Tracing?
+
+> +	lock_device_hotplug();
+> +	cpuhp_offline_cb_mode = true;
+> +	/*
+> +	 * If all offline operations succeed, off_cpu should become nr_cpu_ids.
+> +	 */
+> +	for_each_cpu(off_cpu, mask) {
+> +		ret = device_offline(get_cpu_device(off_cpu));
+> +		if (unlikely(ret))
+> +			break;
+> +	}
+> +	if (!ret)
+> +		ret = func(arg);
+> +
+> +	/* Bring previously offline CPUs back online */
+> +	for_each_cpu(on_cpu, mask) {
+> +		int retries = 0;
+> +
+> +		if (on_cpu == off_cpu)
+> +			break;
+> +
+> +retry:
+> +		ret2 = device_online(get_cpu_device(on_cpu));
+> +
+> +		/*
+> +		 * With the unlikely event that CPU hotplug is disabled while
+> +		 * this operation is in progress, we will need to wait a bit
+> +		 * for hotplug to hopefully be re-enabled again. If not, print
+> +		 * a warning and return the error.
+> +		 *
+> +		 * cpu_hotplug_disabled is supposed to be accessed while
+> +		 * holding the cpu_add_remove_lock mutex. So we need to
+> +		 * use the data_race() macro to access it here.
+> +		 */
+> +		while ((ret2 == -EBUSY) && data_race(cpu_hotplug_disabled) &&
+> +		       (++retries <= 5)) {
+> +			msleep(20);
+> +			if (!data_race(cpu_hotplug_disabled))
+> +				goto retry;
+> +		}
+> +		if (ret2) {
+> +			pr_warn("%s: Failed to bring CPU %d back online!\n",
+> +				__func__, on_cpu);
+
+Provide a proper text and not this silly __func__ thing.
+
+> +			break;
+> +		}
+> +	}
+
+TBH. This is unreviewable gunk and the whole 'unlikely event that CPU
+hotplug is disabled' is just a lazy hack.
+
+All of this can be avoided including this made up callback function.
+
+It's not rocket science to provide:
+
+     1) A function which serializes against any other CPU hotplug
+        related action.
+
+     2) A function which brings the CPUs in a given CPU mask down
+
+     3) A function which brings the CPUs in a given CPU mask up
+
+     4) A function which undoes #1
+
+Yeah I know, it's more work and not convoluted enough. But see below.
+
+That brings me to that other hack namely cpuhp_offline_cb_mode, which
+you self described as such in patch 21/23:
+
+> +	/*
+> +	 * Hack: In cpuhp_offline_cb_mode, pretend all partitions are empty
+> +	 * to prevent unnecessary partition invalidation.
+> +	 */
+> +	if (cpuhp_offline_cb_mode)
+> +		return false;
+> +
+
+We are not merging hacks. End of story. But you knew that already, no?
+
+Let's take a step back and see what you really need to achieve:
+
+  1) Update tick_nohz_full_mask
+  2) Update the managed interrupt mask
+  3) Update CPU sets
+
+Independent of the direction of this update you need to ensure that the
+affected functionality keeps working correctly.
+
+You achieve that by bulk offlining the affected CPUs, invoking a magic
+callback and then bulk onlining the affected CPUs again, which requires
+that ill defined cpuhp_offline_cb_mode hackery and probably some more
+hacks all over the place.
+
+You can achieve the same by doing CPU by CPU operations in the right
+order without this mode hack, when you establish proper limitations for
+this:
+
+  At no point in time it's allowed to empty a CPU set or a affected CPU
+  mask, except when you completely undo the isolation of CPUs.
+
+  That can be computed upfront w/o changing anything at all. Once the
+  validity is established, the update can proceed. Or you can leave it
+  to user space which can keep the pieces if it gets it wrong.
+
+That's a reasonable limitation as there is absolutely zero justification
+to support something like:
+
+       housekeeping_cpus = [CPU 0], isolated_cpus = [CPU 1]
+  ---> housekeeping_cpus = [CPU 1], isolated_cpus = [CPU 0]
+
+just because we can with enough horrible hacks.
+
+If you get that out of the way, then a CPU by CPU update becomes the
+obvious and simplest solution. The ordering constraints can be computed
+in user space upfront and there is no reason to do any of this in the
+kernel itself except for an eventual validation step. It might be a tad
+slower, but this is all but a hotpath operation.
+
+Just for the record. I suggested exactly this more than a year ago and
+it's still the right thing to do.
+
+And of course neither your cover letter nor any of the patches give a
+proper rationale why you think that your bulk hackery is better. For the
+very simple reason that there is no rationale at all.
+
+This bulk muck is doomed when your ultimate goal is to avoid the stop
+machine dance. With a per CPU update it is actually doable without more
+ill defined hacks all over the place.
+
+   1) Bring down the CPU to CPUHP_AP_SCHED_WAIT_EMPTY, which is the last
+      state before stop machine is invoked.
+
+      At that point:
+
+         - no user space thread is running on the CPU anymore
+
+         - everything related to this CPU has been shut down or moved
+           elsewhere
+
+         - interrupt managed device queues are quiesced if the CPU was
+           the last online one in the queue affinity mask. If not the
+           interrupt might still be affine to the CPU, but there is at
+           least one other CPU available in the mask.
+
+   2) Update the tick NOHZ handover
+
+      This can be done without going into stop machine by providing a
+      hotplug callback right between CPUHP_AP_SMPBOOT_THREADS and
+      CPUHP_AP_IRQ_AFFINITY_ONLINE.
+
+      That's trivial enough to achieve and can work independently of
+      NOHZ full.
+
+   3) Rework the affinity management, so that interrupt affinities can
+      be reassigned in the CPUHP_AP_IRQ_AFFINITY_ONLINE state.
+
+      That needs a lot of thoughts, but there is no real reason why it
+      can't work.
+
+   4) Flip the housekeeping CPU masks in sched_cpu_wait_empty() after
+      balance_hotplug_wait().
+
+   5) Bring the CPU online again.
+
+For #2 and #3 to work you need a separate CPU mask which avoids touching
+CPU online mask. For #3 this needs some more work to avoid reassigning the
+interrupts once sparse_irq_lock is dropped, but the bulk is achieved
+with the separate CPU mask.
+
+No?
+
+Thanks,
+
+        tglx
 
