@@ -1,81 +1,61 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out203-205-221-205.mail.qq.com (out203-205-221-205.mail.qq.com [203.205.221.205])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 527583368B2
-	for <netdev@vger.kernel.org>; Tue, 21 Apr 2026 07:33:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 763F2331A78;
+	Tue, 21 Apr 2026 07:37:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776756835; cv=none; b=kUcK2PLVHPZZ5jqMn1txSNma3IVT9l5CJ3wrh52e+bEuYOg7vfT1D+IawhXOaL46/bj7eqSHBpA3fVb767NYfLOP06OaBivftFStGss/M43svHVwEOw08Wb0BdwQ/Owmds77cYdpV4L5xU76rJY7ytniImjL60KX24/Y/Q98E1Y=
+	t=1776757066; cv=none; b=UwyNEapbbMqoz7GLwyuPvbaa7DVIoVmKiMeRsYPYLr6V+e+Ut8s2PIg9YUAkcNsg9zTOZ+KuT9JIaNrK7L1LFlbzqTKVUB6RqINtHBllut72f/i++Oc41XsbzXQjqjoz6kdt4sKRJWI3Zsmapui23AOE/XsZPQAZ072IcQc5vxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776756835; c=relaxed/simple;
-	bh=kacipmRh/ARA/yj251suNKvUgkiVHzItJyjKIF1jCv8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FBHb5HuZRPu1dLdox3/eEl/MJ02xlRCLI+saNGogI285+eYPa7p07R5QH2pV3l74vn0f6AuJTzRqGvUvP24V2tnszJSntVwdqZ4IIeOwV7FYPKFrAZD/Vv/+0nDd6gq8Ibzenee3Rq63kmqY/z/WTsHfPESi0gJM/D7eWvVO6FE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XvB2zik+; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1776757066; c=relaxed/simple;
+	bh=SZcklxgbjsX5ROMo/zD0+7P0xxMaGcOIVethWe0eTFs=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=SVjLvBwZGiIhEKv+WqbhVRpZXPEUAJbFmXE2hn16bglqH23ioruHEVsWEAxGIAsAt3NQBdcafh9AfA482aZ+oqTF8SnXO057uIDURsi5BZfhPVLUnpHs+xO0MKsT+fJplxlr2wkKyR65sT/ewVflMmWnICT5L8SwRPwxdkhJU9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=bXduOs3p; arc=none smtp.client-ip=203.205.221.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XvB2zik+"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-3614826eca4so3355216a91.1
-        for <netdev@vger.kernel.org>; Tue, 21 Apr 2026 00:33:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776756834; x=1777361634; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=1tN5kwaSs4mUzaWaK2mJMmR2b/ZFzAdC6nGIO7bzkSw=;
-        b=XvB2zik+You16ZAqXsdCCWXx9ivmehqG4NGlR1hGiIdeluO3DKYjN3qkYYmVvsBwmY
-         ia6oqVGIdWrxxT2lmQ2XdbAXrEwnVvrd6mqNCA9m9+ppJUxS0qxkmRsGBcxkK9mfg7Us
-         28Y26XviCjkbVV73NUsimZpofjkuaKNIqQ2Ddw1/jvG0nUceikMFUHTj5JUeGbh5aOH4
-         cJ9xHok2gmQkCEYPEKDvgKZHVzsKsXAf9sGd5HviNASSqf2DTdCeP4ysicHQHRo3pNEo
-         SH4Ae44vLrae0OTLGA5sWzPuzElh1NLH0OPDZpTvwksgpAEu91D0SAKK0ThdJfX2OSss
-         4QgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776756834; x=1777361634;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1tN5kwaSs4mUzaWaK2mJMmR2b/ZFzAdC6nGIO7bzkSw=;
-        b=JxZtboz673U83NK+cJ3HWRQ6CPTITEsh06aXxBAf9iD4hsBEwxqA0y93LPumGl4Xhx
-         pCZbSHXvppJFe1TqmBloK/MG6Hwrc7u5J5YXSUfNmYjl60N3GvVxCILXdpDMsYitAHwC
-         I+HipVcz6HjD3F0fLM2HK16OLH+uubnKT4rqJm4HMjWwhexkC/M4Fog6EFMUo++3piyU
-         TsrmsQvaXJIcYx4fvMZM2oUkBQHRZZsL7pelKjPRdAh1LJFBAKHsU6Js0uQn+Xw12XzD
-         p1zEhP5oQHEVXoaSRUFkOOX2kiAaz/W+1mR/Jl9w41W+s6gXqy9PrhplLXQzT0R2qiSS
-         +p8w==
-X-Forwarded-Encrypted: i=1; AFNElJ/Bb5S3tY2cPzxjGiWSK+4YpkOVJsIKFE1l5o8eY8wFAgJmdu8+2+Hf1KIZaAsyzRa7LTOSO8I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyGPwa8OW4VXGjBvIKW3xxLZccSkfFIxriQ1+/hmgO/mWTYEpiw
-	uJpTOm7xyzC6pN6bte5OVmbL1PtT0gPNH5OHEtaBeQRk5MeeyZlbPdEX
-X-Gm-Gg: AeBDietqFjNm/qQRGnO1OYIHx8p6a3QJ7zTEwI5LwMk6J1JxaGCu7jlKS+Yn91/HSUl
-	pSVBXSchZAHTQ3YM2SSyVcWSYIA8FJ9DXziLwQbBOunTRg7hPtaS0oCGjaFEqJZcYxQRDEF8Mij
-	pof3FJy1ZlMKSMXfX568jQpcr6roPX//WprBHiH/7S5qhHX4MgUBf6LzZPyYimhleQCg6qNaPQP
-	wLho/+0GdS6yOmTJVbcysZ9lBRjsfMM0P7MTZ/phM+fwMqcw6qXuOBx5FQt/35nN2HpH1pnk/rZ
-	PV+E5d+MJKX1QpVyEf8BWHWq3cvUserLHPnxodH52IdDpAzw1tkuI0uHVeFy39Q+j0uOrtk4Qqk
-	i3KWdJSv0iQwbtBBbxfkFlztNKtQ0wEEOKBQs+2gYW7AtG2mu6DNd6ny7VKnMHRUJ+QjaaNboSY
-	T5dXUROKoIWqmHaVUvmUDHBCut/5/NQFQMrWeKoqwfk9RwUZiTYNK1dIi8NzfSXLrAGnfOz8Nhq
-	6OjXUy4WZg=
-X-Received: by 2002:a17:90b:5865:b0:35e:27ec:dea with SMTP id 98e67ed59e1d1-36140493410mr18530382a91.23.1776756833615;
-        Tue, 21 Apr 2026 00:33:53 -0700 (PDT)
-Received: from localhost.localdomain ([115.110.225.242])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3614195a8f0sm12411902a91.12.2026.04.21.00.33.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Apr 2026 00:33:53 -0700 (PDT)
-From: Shitalkumar Gandhi <shital.gandhi45@gmail.com>
-X-Google-Original-From: Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>
-To: alex.aring@gmail.com,
-	stefan@datenfreihafen.org,
-	miquel.raynal@bootlin.com
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-wpan@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>
-Subject: [PATCH] ieee802154: ca8210: fix cas_ctl leak on spi_async failure
-Date: Tue, 21 Apr 2026 13:02:59 +0530
-Message-Id: <20260421073259.2259783-1-shitalkumar.gandhi@cambiumnetworks.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="bXduOs3p"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1776757053;
+	bh=2BBidtQmGzyXD/iwQeUorAjjDt5+eczMlZJZiK5y47c=;
+	h=From:To:Cc:Subject:Date;
+	b=bXduOs3pnI4YZBLFrqcm4AI041rmihVF05/4sE+aVLBNg2GTX8be7PHk1eyFuXqYV
+	 nkNqw/3+7CZahOxCKH/KwFLbS9e8b4USSPZtdnRuMspl+ziW4wxkkHJCoWApbh43xB
+	 AVl1FS9l8ufHs8yC/3ZnFdGZsmvakdUrIhgHBx/c=
+Received: from China-team ([183.241.55.34])
+	by newxmesmtplogicsvrszc56-0.qq.com (NewEsmtp) with SMTP
+	id 93391298; Tue, 21 Apr 2026 15:36:51 +0800
+X-QQ-mid: xmsmtpt1776757011tmk20dh89
+Message-ID: <tencent_7584C190359CD12AD5987DB848D65BFFE10A@qq.com>
+X-QQ-XMAILINFO: OR37DonC/00MCS5yXHp3/J333TXtMSiu4sUMVoulxmLaPnaZ+qLLlKiJasG2PD
+	 Qo0QAT+YomW1B2LG9A9pKvYf2sxRjn4//1Thrpr86bbvpDzTFAk2Q5obkZodZoCO8zAdlcpmQekS
+	 TxSmsHffYRpHw3caEjkD4P8J1xXMAlclFBbUuBzDC8CiS6lZauwEEEiKDZS540iaQM7hIrSN+e/G
+	 pWd5AVA/FnVIAaiQMUbGoAYdXU5mMQ2ZtT49U5Nzf90BtptrrtcM8sBEZsftSJVb2PCixDnzX0yK
+	 r3ReoODyuRwMk6lB+ZPB3u+WIOId8JXZ4/zb9xCjFygJuPmf/Hnkjsfi4upVThOP5s+CAxFLg/Sf
+	 vsofBNDt/VKMbCosuJdJD6stSmyqLODX8Yi5xqcRXSQECwNoyz9vuJuhiuQnB5GMuORSDldxtSi3
+	 1S+JZawexCJr0PHs/0Q7Wny2V3LCvXhZmrspSVDUdwXDN/jXbeYz/I3Dh3j1o0jKKjuHcyt3edWk
+	 kK5nHota+T1AVxvTLw+5fUDpqcjKnTeCUcwb8HWA9d1cfvZXFJiZgH/aXtMQDpLOtUfIguAn+jgG
+	 r16KaiJ9o1g1E+rxRzlpt8Ssg/DUh6IZaUaEIuSYPpRDcdNqGuShbD0GVsZzRIrdodTzPulQQPjo
+	 R5yU1eu6OIfhTUT50kob8ofVl0lOZNg8TiYp96VfQKp4rGn/GLXUSYtad3jxJsWAtBpdM8xn1KpA
+	 8+iPMI51vvYW0yDhUwcr50GRnVrOQfJ4xMgP57wFiaPJDw+c7p/1RsUCrstRLoHG2mmBirqqlGsd
+	 L7sdCb4xFsThghJ73gJyS6qN6Ae4s2Qp8NU70kNhElyLf8KRVrIleF+fOORHY/+avdXbcY4+HIIJ
+	 PV6XFk9FkkVsKaz8LrwJ/SOpsGe6yEz3f+oXuYSOygYziUUTGRAaDqvpEIQ/bNisyBb01wmUTFq8
+	 R8X7fomkvsvFLsCvpjgYu4Da6lXcus39CHPMdxkSZteezAwmtau8l4EQPC3XHLjROe988Hyh9gYj
+	 cLiRxOENFiun0ufmIxIa/6MFWw0RhqtGj3Uup7iIBQSF9fblu72GPbwNi18W2kPDfB06TW5nUBcf
+	 mOQ7soKt+jQzNAZHk=
+X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
+From: Alva Lan <alvalan9@foxmail.com>
+To: gregkh@linuxfoundation.org,
+	sashal@kernel.org,
+	stable@vger.kernel.org
+Cc: netdev@vger.kernel.org,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Alva Lan <alvalan9@foxmail.com>
+Subject: [PATCH 6.1.y] net: dsa: clean up FDB, MDB, VLAN entries on unbind
+Date: Tue, 21 Apr 2026 15:36:35 +0800
+X-OQ-MSGID: <20260421073635.531-1-alvalan9@foxmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -84,50 +64,118 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-ca8210_spi_transfer() allocates cas_ctl with kzalloc_obj(GFP_ATOMIC)
-and relies entirely on the SPI completion callback
-ca8210_spi_transfer_complete() to free it.
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-The spi_async() API only invokes the completion callback on successful
-submission.  On failure it returns a negative error code without ever
-queuing the callback, which leaves cas_ctl and its embedded spi_message
-and spi_transfer orphaned.  Every kfree(cas_ctl) in the driver is
-inside the completion callback, so there is no other reclamation path.
+[ Upstream commit 7afb5fb42d4950f33af2732b8147c552659f79b7 ]
 
-ca8210_spi_transfer() is called from ca8210_spi_exchange(), the
-interrupt handler ca8210_interrupt_handler(), and from the retry path
-inside the completion callback itself.  The exchange and interrupt
-handler paths loop on -EBUSY, so under sustained SPI bus contention
-every retry iteration leaks a fresh cas_ctl (~600 bytes per
-occurrence).
+As explained in many places such as commit b117e1e8a86d ("net: dsa:
+delete dsa_legacy_fdb_add and dsa_legacy_fdb_del"), DSA is written given
+the assumption that higher layers have balanced additions/deletions.
+As such, it only makes sense to be extremely vocal when those
+assumptions are violated and the driver unbinds with entries still
+present.
 
-Fix it by freeing cas_ctl on the spi_async() error path.  While here,
-correct the misleading error string: the function calls spi_async(),
-not spi_sync().
+But Ido Schimmel points out a very simple situation where that is wrong:
+https://lore.kernel.org/netdev/ZDazSM5UsPPjQuKr@shredder/
+(also briefly discussed by me in the aforementioned commit).
 
-Fixes: ded845a781a5 ("ieee802154: Add CA8210 IEEE 802.15.4 device driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>
+Basically, while the bridge bypass operations are not something that DSA
+explicitly documents, and for the majority of DSA drivers this API
+simply causes them to go to promiscuous mode, that isn't the case for
+all drivers. Some have the necessary requirements for bridge bypass
+operations to do something useful - see dsa_switch_supports_uc_filtering().
+
+Although in tools/testing/selftests/net/forwarding/local_termination.sh,
+we made an effort to popularize better mechanisms to manage address
+filters on DSA interfaces from user space - namely macvlan for unicast,
+and setsockopt(IP_ADD_MEMBERSHIP) - through mtools - for multicast, the
+fact is that 'bridge fdb add ... self static local' also exists as
+kernel UAPI, and might be useful to someone, even if only for a quick
+hack.
+
+It seems counter-productive to block that path by implementing shim
+.ndo_fdb_add and .ndo_fdb_del operations which just return -EOPNOTSUPP
+in order to prevent the ndo_dflt_fdb_add() and ndo_dflt_fdb_del() from
+running, although we could do that.
+
+Accepting that cleanup is necessary seems to be the only option.
+Especially since we appear to be coming back at this from a different
+angle as well. Russell King is noticing that the WARN_ON() triggers even
+for VLANs:
+https://lore.kernel.org/netdev/Z_li8Bj8bD4-BYKQ@shell.armlinux.org.uk/
+
+What happens in the bug report above is that dsa_port_do_vlan_del() fails,
+then the VLAN entry lingers on, and then we warn on unbind and leak it.
+
+This is not a straight revert of the blamed commit, but we now add an
+informational print to the kernel log (to still have a way to see
+that bugs exist), and some extra comments gathered from past years'
+experience, to justify the logic.
+
+Fixes: 0832cd9f1f02 ("net: dsa: warn if port lists aren't empty in dsa_port_teardown")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20250414212930.2956310-1-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Apply the patch to net/dsa/dsa2.c in v6.1 since commit
+47d2ce03dcfb ("net: dsa: rename dsa2.c back into dsa.c and create its header")
+renamed this file to net/dsa/dsa.c starting from v6.2. ]
+Signed-off-by: Alva Lan <alvalan9@foxmail.com>
 ---
- drivers/net/ieee802154/ca8210.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/dsa/dsa2.c | 38 +++++++++++++++++++++++++++++++++++---
+ 1 file changed, 35 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ieee802154/ca8210.c b/drivers/net/ieee802154/ca8210.c
-index ed4178155a5d..bf837adfebb2 100644
---- a/drivers/net/ieee802154/ca8210.c
-+++ b/drivers/net/ieee802154/ca8210.c
-@@ -919,9 +919,10 @@ static int ca8210_spi_transfer(
- 	if (status < 0) {
- 		dev_crit(
- 			&spi->dev,
--			"status %d from spi_sync in write\n",
-+			"status %d from spi_async in write\n",
- 			status
- 		);
-+		kfree(cas_ctl);
- 	}
+diff --git a/net/dsa/dsa2.c b/net/dsa/dsa2.c
+index 415e856ba0ac..9ecb5e34e484 100644
+--- a/net/dsa/dsa2.c
++++ b/net/dsa/dsa2.c
+@@ -1738,12 +1738,44 @@ static int dsa_switch_parse(struct dsa_switch *ds, struct dsa_chip_data *cd)
  
- 	return status;
+ static void dsa_switch_release_ports(struct dsa_switch *ds)
+ {
++	struct dsa_mac_addr *a, *tmp;
+ 	struct dsa_port *dp, *next;
++	struct dsa_vlan *v, *n;
+ 
+ 	dsa_switch_for_each_port_safe(dp, next, ds) {
+-		WARN_ON(!list_empty(&dp->fdbs));
+-		WARN_ON(!list_empty(&dp->mdbs));
+-		WARN_ON(!list_empty(&dp->vlans));
++		/* These are either entries that upper layers lost track of
++		 * (probably due to bugs), or installed through interfaces
++		 * where one does not necessarily have to remove them, like
++		 * ndo_dflt_fdb_add().
++		 */
++		list_for_each_entry_safe(a, tmp, &dp->fdbs, list) {
++			dev_info(ds->dev,
++				 "Cleaning up unicast address %pM vid %u from port %d\n",
++				 a->addr, a->vid, dp->index);
++			list_del(&a->list);
++			kfree(a);
++		}
++
++		list_for_each_entry_safe(a, tmp, &dp->mdbs, list) {
++			dev_info(ds->dev,
++				 "Cleaning up multicast address %pM vid %u from port %d\n",
++				 a->addr, a->vid, dp->index);
++			list_del(&a->list);
++			kfree(a);
++		}
++
++		/* These are entries that upper layers have lost track of,
++		 * probably due to bugs, but also due to dsa_port_do_vlan_del()
++		 * having failed and the VLAN entry still lingering on.
++		 */
++		list_for_each_entry_safe(v, n, &dp->vlans, list) {
++			dev_info(ds->dev,
++				 "Cleaning up vid %u from port %d\n",
++				 v->vid, dp->index);
++			list_del(&v->list);
++			kfree(v);
++		}
++
+ 		list_del(&dp->list);
+ 		kfree(dp);
+ 	}
 -- 
-2.25.1
+2.43.0
 
