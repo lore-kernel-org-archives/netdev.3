@@ -1,99 +1,94 @@
-Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64B773D565E
-	for <netdev@vger.kernel.org>; Tue, 21 Apr 2026 13:04:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB2B222A817;
+	Tue, 21 Apr 2026 13:10:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776776647; cv=none; b=QhFpVYDQOrliNZKpzC8pRr4dU28WhtUCgNyDsIB5z/KrhpLBHpv6MzsxzHRIPFDBHQmhM2SmiZd3pvoH+EXwao8LGzUyIS74EcP03N1nLCxP2zVtJ1Tz3Jk/Nl/4ePxeqRM5VoggATsq2o+y89dWSNZDY4D2aAE0sYcJtbCVUf4=
+	t=1776777046; cv=none; b=jYkOIFnuezobcUgURc/QMea8sTXeLeUqE9CDb6nFuZao3UxTulkUdDXV7wwZdBLTLKcz7ue4tFpyaHWH86yQDAqRT39R5IDGSTEdK6BivVH4pkHyAiWScp0/z109k3G6Zy+2Lq8509CBOwfB3Fj3fy38iu8f4yfg5WPyzmaHlQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776776647; c=relaxed/simple;
-	bh=rQ/BRBEsXi0bHqOHBtrs1Jx+3fQW3yP7liPQ4hPHDSU=;
+	s=arc-20240116; t=1776777046; c=relaxed/simple;
+	bh=wdB6JNQz6DFu/XYSinyJ1DxwR8phdAf78gwLP/h2J5Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i7gDMK+B+ptR75oFi86h/X+7fLZX72C+osWtXGp92gzz63/QMaAmoKdOdE/fZGeqNM4jsQWwd1gED6HRxi95HZNar7KPYneclRWfGxv4KDPCkGd3xmMwaESI4U42W5C9hk2XFrYCvbtG9uemde0hOV9tQHjaaVd4281aE6l3zkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=q87ZlKNF; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=PVk+tpZm; arc=none smtp.client-ip=103.168.172.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	 Content-Type:Content-Disposition:In-Reply-To; b=VEgkEyQ+z3QB6fsx/cjrp7Z/PF1v1zHwBG0qQ2Zs6LSlpt/BoXQnxsJrzRt7oDEPYSawdwNzLXlyh82pC6QM4JUbgQnLnSCblWP7afwZnoiGYX5hOj+YOHRcSiL77N/l6UoZ9l9oWUf102SzPcoD4if33NocqsrL8dBmBUdv5EI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pFwja/1H; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="q87ZlKNF";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="PVk+tpZm"
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfout.phl.internal (Postfix) with ESMTP id 231F0EC01ED;
-	Tue, 21 Apr 2026 09:04:03 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Tue, 21 Apr 2026 09:04:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1776776643; x=
-	1776863043; bh=6lyv7vM+l0ugpljwjkwCV1PNwvXzdBDgeadIDyXoYZU=; b=q
-	87ZlKNFx5iYCUILIJSw6BxGyBHEkNTd0rB77FmDJCiNtrpBcQCwAn59sqQvdZTLA
-	BsP+AYCc0JUrxwjQwladEvNA61sjXNkU2zAgzGS8zlKSJf7MJMshmjkNw3Hgfpvd
-	WDXuvcJBCYUOz5eDdTapMiMi8YkUC+wRxx7IHmZfjcDxfQ944PklZFqKRGUhqkIu
-	0b5XI8d7CYhBIoUsNbir355VwhZuxBzPkFljvwfGw+IUlaqouzSPUxgONTgMfLIM
-	XqSI2fH79ae1qCWCue0iLjHiV+dtenmWBJ5pEetP/w98cj4rLfE7IUcfOrXpp4uz
-	zClgbb3WCel7dXP1eeh3Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1776776643; x=1776863043; bh=6lyv7vM+l0ugpljwjkwCV1PNwvXzdBDgead
-	IDyXoYZU=; b=PVk+tpZmkFi1xdrOiZT2XvyoFOqI/dFCIUnH9g5mggcj3+S/N96
-	bRLKARCi5UkT/EqNLXGNev4v1OecPMCATkgxjG5BSzeBH80mP6LWyGekRn/Ub7p/
-	5lgdMLbOurZO/P5tPkXT2QzTDbnc9Q+qsPWvpH6DKpWFDBbo5cEpzg9zNMhghooT
-	xKt5kMJIibFR+awbTD9DAEBvUvQylIWAZHUvqytwZfVJSnlv8vlnCXLYKXbga4Q7
-	e7LW8CJMinYA23IP8ZkY64zwhH9ZyZ1mNumBV0lt4gasOddy9D9ywDPyZ6fEDqRr
-	HjnLvjFG8f6ReUBJd4p+pDGy3WkY4ZVnhQg==
-X-ME-Sender: <xms:wnXnaWcn2471R1PauQZj0ESGr8CQRZqOd8J3qS1ZNpvO7YJYgX7iqA>
-    <xme:wnXnaWPwPTZbRXSS79Atz7HZ_O4JzqM9NGp8qfBlwSgDNbY48pBMQHvsAcmC7Es4H
-    Br-sL7L9SKFqeBKTU1tT2DnxhqUBEnxe7FOostBTEpV0V8X-jgdk5M>
-X-ME-Received: <xmr:wnXnaVJC5WcQ1NYuWkVmGYnIUvFrTCNSGxBykTE3x9-SWzCMnOop6NCw_FLa>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdeiudegiecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdertddttdejnecuhfhrohhmpefurggsrhhinhgr
-    ucffuhgsrhhotggruceoshgusehquhgvrghshihsnhgrihhlrdhnvghtqeenucggtffrrg
-    htthgvrhhnpeeuhffhfffgfffhfeeuiedugedtfefhkeegteehgeehieffgfeuvdeuffef
-    gfduffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    hsugesqhhuvggrshihshhnrghilhdrnhgvthdpnhgspghrtghpthhtohepvddpmhhouggv
-    pehsmhhtphhouhhtpdhrtghpthhtohepkhgrrhholhdrghgrjhguohhssehnohhkihgrrd
-    gtohhmpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:wnXnafExpZ2XaHOTcIyfozPBOY2WlIeuPDXdkZOfhMMtO59vamBxFw>
-    <xmx:wnXnaVRHJ3x9S7iZi98SqJN2khlnJ-hToPohjbbGLX7Zqq2pfwiuFA>
-    <xmx:wnXnaTHC1l31Vas8Gl-e8_MoOfsNErAbOgCmhWIFhL5brJpu_YFtyg>
-    <xmx:wnXnaZ9nqUVlaC0TWzfeUA8ssqrqzy2sf0IC4AOiFWhUD0ZwCaXsag>
-    <xmx:w3XnacD-l2U3SnXb6p5QVIZcF_d5QD_eDsqls0hO9vr2MDnKDm_w8v1K>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 21 Apr 2026 09:04:02 -0400 (EDT)
-Date: Tue, 21 Apr 2026 15:04:00 +0200
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: "Karol Gajdos (Nokia)" <karol.gajdos@nokia.com>
-Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: a bug in drivers/net/macsec.c ? (ssci endianness)
-Message-ID: <aed1wCDC2Oh4eZ1h@krikkit>
-References: <AS5PR07MB9837EA10B11F76A167FD20A896202@AS5PR07MB9837.eurprd07.prod.outlook.com>
- <VI1PR07MB9850B2C9119357C3B254F83F962C2@VI1PR07MB9850.eurprd07.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pFwja/1H"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9EE6C2BCB0;
+	Tue, 21 Apr 2026 13:10:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776777046;
+	bh=wdB6JNQz6DFu/XYSinyJ1DxwR8phdAf78gwLP/h2J5Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pFwja/1Hn9YXep3bvu5CxTuoPGrUsNOQVhM8ifYCIH4fNcpgI7GpmgNdDWE8hXnyi
+	 grSjVV/xCo5V0SMRUTI9f58JbY4ZM7beAQlVsDcYmujiynxzrbeFos/X+8qi4SHaDp
+	 GrTNjrcYUvhPVBoricD9tmg1rz2qg4m74eiyLsfb7mGqIkzYDUVY87YZGTN6Df3n7X
+	 fcmFa9DqOXHUuDAdsZ78don4SZYsJykLiSA2omD+OSRKvhCtJ74eBJkgdwoAoJiRjE
+	 us5jQkPhllz51LCFMiP5nUYyutvTvDsK+oXf3x1Ohzmw5pJb8MXyE2rmNnc/0gkjSN
+	 B/chdLfO3Eb0g==
+Date: Tue, 21 Apr 2026 14:10:39 +0100
+From: Simon Horman <horms@kernel.org>
+To: Stephen Hemminger <stephen@networkplumber.org>
+Cc: netdev@vger.kernel.org, jiri@resnulli.us, jhs@mojatatu.com,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Dave Taht <dave.taht@gmail.com>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net v8 4/6] net/sched: netem: validate slot configuration
+Message-ID: <20260421131039.GA651125@horms.kernel.org>
+References: <20260418032027.900913-1-stephen@networkplumber.org>
+ <20260418032027.900913-5-stephen@networkplumber.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <VI1PR07MB9850B2C9119357C3B254F83F962C2@VI1PR07MB9850.eurprd07.prod.outlook.com>
+In-Reply-To: <20260418032027.900913-5-stephen@networkplumber.org>
 
-2026-04-21, 11:37:53 +0000, Karol Gajdos (Nokia) wrote:
-> Hi,
+On Fri, Apr 17, 2026 at 08:19:42PM -0700, Stephen Hemminger wrote:
+> Reject slot configurations that have no defensible meaning:
 > 
-> there seems to be a bug in the function filling IV for the XPN case.
-> Can you confirm please ?
+>   - negative min_delay or max_delay
+>   - min_delay greater than max_delay
+>   - negative dist_delay or dist_jitter
+>   - negative max_packets or max_bytes
+> 
+> Negative or out-of-order delays underflow in get_slot_next(),
+> producing garbage intervals. Negative limits trip the per-slot
+> accounting (packets_left/bytes_left <= 0) on the first packet of
+> every slot, defeating the rate-limiting half of the slot feature.
+> 
+> Note that dist_jitter has been silently coerced to its absolute
+> value by get_slot() since the feature was introduced; rejecting
+> negatives here converts that silent coercion into -EINVAL. The
+> abs() can be removed in a follow-up.
+> 
+> Fixes: 836af83b54e3 ("netem: support delivering packets in delayed time slots")
+> Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
 
-We expect userspace to provide the SSCI in network byte order via the
-netlink API (same as SCI). As long as we're handling it that way
-consistently, which I think is the case, there is no bug.
+Reviewed-by: Simon Horman <horms@kernel.org>
 
--- 
-Sabrina
+I acknowledge that Sashiko has provided feedback on this patch.
+
+1. "Does rejecting negative dist_jitter values with -EINVAL cause a
+    regression in userspace ABI backward compatibility?  Since the kernel
+    previously accepted these values and silently coerced them using abs(),
+    existing userspace tools or scripts that happen to pass negative values
+    might start failing to configure the qdisc."
+
+This is intended and explicitly explained in the cover letter.
+
+2. "Could directly dereferencing 64-bit fields from the netlink attribute
+    payload cause undefined behavior on strict-alignment architectures?
+    Netlink attribute payloads are typically only guaranteed to be 4-byte
+    aligned because NLA_ALIGNTO is 4, but the __s64 fields within
+    tc_netem_slot like min_delay require 8-byte natural alignment.
+    Performing an 8-byte read from a potentially 4-byte aligned address
+    might cause an alignment fault on certain architectures."
+
+This patch does not change the presence of this problem; and I suspect
+it is not a problem at all.
