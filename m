@@ -1,85 +1,46 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 850D428000F
-	for <netdev@vger.kernel.org>; Tue, 21 Apr 2026 07:29:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 047133563E1
+	for <netdev@vger.kernel.org>; Tue, 21 Apr 2026 07:33:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776756558; cv=none; b=ZRn8SdcnKZJy6BxU6UnC02wQ85qhd6Oqzg01PCL3UV+sWYcg55xk+gp+SiDJhqxApti+GMaYYe2rx0UgjY8KchBbcb/GSUWy16KKzwldC4jIdzmaV5LXUeP6EB6Ji4B4bRCQEwzzj0F0yV/aS6wj48EL/QVM+RYGNmzNQJQTN4c=
+	t=1776756802; cv=none; b=k/vwGRjfiFLs6ziooKuOMehfQ1LDKkRvpIQGlgTeHXflraIxSoMWJZRQ0RKwgzzN9H0qj5y9QcTj/3oJEJF1HXTYbTY0fwyRyIO33UO8NR++0QacTmVzRXSV1qkWl2ePJEn8Hpc4PNHUBhbjEOKiKOb+eA/arQj68e/JjpI6Cd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776756558; c=relaxed/simple;
-	bh=EFB5UkHyueGfQTFQHUNylRK3bf8BxDDdh3vlHZTjHpg=;
+	s=arc-20240116; t=1776756802; c=relaxed/simple;
+	bh=HdKN6vR/WF7gxYiO6PAmkmeiwKR29Ppe8uMUYLeZqFM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eNL+zYA+dKUBnw0xtiRCQVp1j/s/6c8s5tkzscA87Z601F+sK5DiXIP59fQRJKcBK7uQXo2RKEcRO552bu4tNdA0BGVMHX4f8g+un8oa1ICPxFkqVUZFDOEdPtLbaAdns8kxJov1GYFdgT4vFucmH9B6gQXccGZ/V9c97vlSLps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TUkZ17mi; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=aLpnRslt; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 In-Reply-To:Content-Type; b=UItgBw7Jk9GQiqgp/LQo/qQbdsfXgTNG2Q5pSO+c0CIJl3vidumaoh8T5gy3y1wPT2lpZjO0+foespwRfdv9bTalA3q8wOGdiCHl5xF/dX1mYEnaigvCWcQI+uNrEPCi61sOsB8cY+aDLOh2uj+m15WG6+dQSlTbwTS3e/JTjS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=P/fIqS/b; arc=none smtp.client-ip=213.133.104.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TUkZ17mi";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="aLpnRslt"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1776756556;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iRLdvmbBl0X69xNsqP6IUVqffOA4KBnsa7u+Y5umkmA=;
-	b=TUkZ17mik1P4jnYkfTSrJM7Z08StXKbHVfywnGgqCU/VnrV3Vt7Kpxkomy7MPyvdQsHIr5
-	rY4PtK6uyhSUtJRVMKrMIcg6H59d4AsC5MrpKTaaVe/hhUT0XFAfVox8OaZdimIkSCEzcX
-	Cml/zRhawLA4dJvVK0WfORvlH3EGPj8=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-621-0lZM__6FPROCSVfEJfKDOA-1; Tue, 21 Apr 2026 03:29:15 -0400
-X-MC-Unique: 0lZM__6FPROCSVfEJfKDOA-1
-X-Mimecast-MFC-AGG-ID: 0lZM__6FPROCSVfEJfKDOA_1776756554
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-43fe4674d3eso4000758f8f.1
-        for <netdev@vger.kernel.org>; Tue, 21 Apr 2026 00:29:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1776756554; x=1777361354; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=iRLdvmbBl0X69xNsqP6IUVqffOA4KBnsa7u+Y5umkmA=;
-        b=aLpnRsltrztVRlCtjci8FSoUzVYgW+yjAcPGJkH7+yvK+Ef3fnpQW1z2IjmWvj2tQd
-         T6CGexBxk1fNVZkaX+88hhB0Oufjd0XOp9IuYpXeFXhPk9hfhXUbzRB1TVwsmPO1IQ+Q
-         42HydizFHIcWf7BGQMwOAp8U8dDbsOdBULmqX20RMduOYUbXdOkX2LFS14MNxWwML1DC
-         by3YVTzgQY7mt88cz96zf3c8uqsDCdOuobJqrBrWXsTovoG37Fz7qxwIboBNhs0rTWbx
-         V9fzzLm4GcPlJsZN0aCl4x0hu+IZHhqvCNJJuvRlyFSOO71YPqT6SLltT7/K8EPx8cQd
-         hwFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776756554; x=1777361354;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=iRLdvmbBl0X69xNsqP6IUVqffOA4KBnsa7u+Y5umkmA=;
-        b=XmC/I/sbLOVC1Bc8DS32USXEgOEW611J3BYtxrBMrgOlUK+/TPHAudKUuMrfwAlGAi
-         SMMsjegFlDAMzm16HXN4cpHYHZrygdldvXDLIjkZECTKQCRtjJS74nOYLqY1LQ/aqJr7
-         1rysHsKea4/ezzVxU6vuoKt5X8+t/Xvj93LLygm1zNQpOQ8skDFP6eqMVdc1IW+rjXp8
-         tAsL4ingCM6UusMJUSkUCExFWDghE8BC9LOHf6GXcnLy92ZqkiRjv4UUC2ba7wjMB2vv
-         N4Twjfajw22eK6PVSySaZfssnmekVMjY2/dLWchsX9065AKrW7n0erf3F+4epR3aV+AD
-         sy5g==
-X-Forwarded-Encrypted: i=1; AFNElJ8woMHPKpfULoDx/S9JE1y8ECOutfd5zV5Tj7u3JzilIFsS8E/DaHyP1Em1LHD8/A9TJL7xASw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyi+VEM2IVWMpa5/uLJxlQe9X+97FuL2S+2jeRyv+cmiahPxl9v
-	QmEZVPZUrMxJrNLk9F4HZ+wnR/d8FvS6zF/c9eX5eYCVRplLmEuKUlsd5jy1cGn1aU1e0K2RhJQ
-	mWZDaSU+j1Z8h/+JUpGL+4Z7HCO3k7AvSZKs0n2OLNr9jFVuLgqARKwzU5g==
-X-Gm-Gg: AeBDiet2JN62qPwkoCn4MiEU36DhTedUojOxs1kv/ZrXFJ0/7QvWb3QlsKAwvLL7Z50
-	0pMpsjtRAHCks5DzezXO2sjoCezkxQ2sV8awrtKOwe7pqrPg+z+R6RGnIbpsPWk+iqHT8zJ9wnd
-	ORq5EJTzYehNopaUyRNttvfjV+0E2FG/oEAk07dp+Ail7ueBBOefAf94OttQalkXkTM0MjS3VX8
-	YZOnGTllbxe9O3ok4v4e4BKTQGZvVWeQGnJVxYV+kFbeApEMdT0mAuSoV5kfnTY79ZM0ZpEpHMt
-	ju1/IVABr/YiQew5toFj2V9uVKcXwUZxBRfuNFtGUO/bVq/vt1I7sSbaCxgG70gSwhEFrfXQOic
-	JbYItfgd32PqV52iE1DEyEsznECHnSzoAA7Rs6SkWreuD0yqRMAma2IcBppbxOH8aF/A=
-X-Received: by 2002:a05:6000:2289:b0:43c:f793:f1c5 with SMTP id ffacd0b85a97d-43fe3e0c63cmr25969215f8f.34.1776756554227;
-        Tue, 21 Apr 2026 00:29:14 -0700 (PDT)
-X-Received: by 2002:a05:6000:2289:b0:43c:f793:f1c5 with SMTP id ffacd0b85a97d-43fe3e0c63cmr25969163f8f.34.1776756553771;
-        Tue, 21 Apr 2026 00:29:13 -0700 (PDT)
-Received: from [192.168.88.32] ([150.228.25.104])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43fe4cb135asm39362379f8f.6.2026.04.21.00.29.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Apr 2026 00:29:13 -0700 (PDT)
-Message-ID: <805a8583-6a84-4dfb-a4d4-53f80f50effc@redhat.com>
-Date: Tue, 21 Apr 2026 09:29:11 +0200
+	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="P/fIqS/b"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=6nFLI4Wi6mv0Oz5B/rGpGVmJgVc3OUepi2LoX3t2SaY=; b=P/fIqS/b75rYhRDX+Mjwa0OXBK
+	q/zuI7IZUaHkNNzKXOMFCihiE6sHkvhuy0RmLKAPGmCgK0LLO3grMofkhNLEKCCJvxclHTLV9axZL
+	V055XNx2EpygnXHVY1r5g4lLoSS7nELI1exBkNCuSTuAAFDgx7W9lmn50pDikyL2AgRNEjlkb9epa
+	HsB3kyjRNcebc5z8tsx8OGc+RSVhwQ/WxIOV/iN8j0/WZgFEM0nruEIf2zSRl45fUZrc8p2mt1lxq
+	T4Ds+vku52xGXfAwi43qM0B/GqvlEBrpbunoPOp8Umn+QSrXKcU4kFsD7vZjMeD5d8d9fB0utMirC
+	Bs4KzWgg==;
+Received: from sslproxy03.your-server.de ([88.198.220.132])
+	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1wF5bb-000CMM-2S;
+	Tue, 21 Apr 2026 09:33:11 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy03.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1wF5ba-0007Df-2J;
+	Tue, 21 Apr 2026 09:33:11 +0200
+Message-ID: <94dab191-524b-4f8d-abde-e0ffc5848258@iogearbox.net>
+Date: Tue, 21 Apr 2026 09:33:08 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -87,49 +48,95 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 net] net: ax25: fix integer overflow in
- ax25_rx_fragment()
-To: Mashiro Chen <mashiro.chen@mailbox.org>, netdev@vger.kernel.org
-Cc: linux-hams@vger.kernel.org, kuba@kernel.org, horms@kernel.org,
- davem@davemloft.net, edumazet@google.com
-References: <20260409025026.24575-1-mashiro.chen@mailbox.org>
- <20260413204921.70463-1-mashiro.chen@mailbox.org>
+Subject: Re: [PATCH net v2] ipv6: Apply max_dst_opts_cnt to
+ ip6_tnl_parse_tlv_enc_lim
+To: Justin Iurman <justin.iurman@gmail.com>, Ido Schimmel <idosch@nvidia.com>
+Cc: kuba@kernel.org, edumazet@google.com, dsahern@kernel.org,
+ tom@herbertland.com, willemdebruijn.kernel@gmail.com, pabeni@redhat.com,
+ netdev@vger.kernel.org
+References: <20260418121538.706095-1-daniel@iogearbox.net>
+ <7c715640-5c20-4226-9c31-d2c5eef551db@gmail.com>
+ <d8d60970-6f73-4b9d-8808-76f4f8023100@iogearbox.net>
+ <8fdf517b-6217-4df6-8adf-0c79ce8d3be8@gmail.com>
+ <20260419143137.GA885197@shredder>
+ <524def33-63e1-47c0-be38-dee68d859332@gmail.com>
 Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20260413204921.70463-1-mashiro.chen@mailbox.org>
-Content-Type: text/plain; charset=UTF-8
+From: Daniel Borkmann <daniel@iogearbox.net>
+Autocrypt: addr=daniel@iogearbox.net; keydata=
+ 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
+In-Reply-To: <524def33-63e1-47c0-be38-dee68d859332@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: Clear (ClamAV 1.4.3/27977/Mon Apr 20 08:26:26 2026)
 
-On 4/13/26 10:49 PM, Mashiro Chen wrote:
-> ax25_rx_fragment() accumulates fragment lengths into ax25_cb->fraglen,
-> which is an unsigned short. When the total exceeds 65535, fraglen wraps
-> around to a small value. The subsequent alloc_skb(fraglen) allocates a
-> too-small buffer, and skb_put() in the copy loop triggers skb_over_panic().
+On 4/20/26 8:55 PM, Justin Iurman wrote:
+> On 4/19/26 16:31, Ido Schimmel wrote:
+>> On Sun, Apr 19, 2026 at 12:37:35AM +0200, Justin Iurman wrote:
+>>> Nope. But if it happens, users would be confused as max_dst_opts_cnt would
+>>> not have the same meaning in two different code paths. OTOH, I agree that
+>>> such situation would look suspicious. I guess it's fine to keep your patch
+>>> as is and to not over-complicate things unnecessarily.
+>>
+>> I agree that it's weird to reuse max_dst_opts_cnt here:
+>>
+>> 1. The meaning is different from the Rx path.
+>>
+>> 2. We only enforce max_dst_opts_cnt, but not max_dst_opts_len.
+>>
+>> 3. The default is derived from the initial netns, unlike in the Rx path.
+>>
+>> Given the above and that:
+>>
+>> 1. We believe that 8 options until the tunnel encapsulation limit option
+>> is liberal enough.
+>>
+>> 2. We don't want to over-complicate things.
+>>
+>> Can we go with an hard coded 8 and see if anyone complains? In the
+>> unlikely case that someone complains we can at least gain some insight
+>> into how this option is actually used with tunnels.
 > 
-> Add pskb_may_pull(skb, 1) at function entry to ensure the segmentation
-> header byte is in the linear data area before dereferencing skb->data.
-> This also rejects zero-length skbs, which the original code did not
-> check for.
-> 
-> Two issues in the overflow error path are also fixed:
-> First, the current skb, after skb_pull(skb, 1), is neither enqueued
-> nor freed before returning 1, leaking it. Add kfree_skb(skb) before
-> the return.
-> Second, ax25->fraglen is not reset after skb_queue_purge(). Add
-> ax25->fraglen = 0 to restore a consistent state.
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Signed-off-by: Mashiro Chen <mashiro.chen@mailbox.org>
+> In general, I'm not a big fan of hard-coded values, but I also think that in this context it would make sense to do so. This is not a strong +1, let's say it's more a "not against it".
 
-we are moving ax25 out of tree:
-
-https://lore.kernel.org/netdev/20260421021824.1293976-1-kuba@kernel.org/
-
-please hold off until Thursday (after that our net PR will land into
-mainline), and eventually resend if the code still exists in Linus's
-tree at that point.
-
-Thanks,
-
-Paolo
-
+Makes sense, I'll update it in a v3.
