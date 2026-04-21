@@ -1,143 +1,83 @@
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E403353EF7
-	for <netdev@vger.kernel.org>; Tue, 21 Apr 2026 11:50:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 683D319D89E;
+	Tue, 21 Apr 2026 11:51:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.181.231.80
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776772256; cv=none; b=fcijDxzxb4LLlOidukZu5bADqYQA1C3/KW4YByPJ80cqvivj8AW19ehU7vE1hd0gtG1QulNRMjJ/3YH/0P0tTZln6511JE67asg5NT2wxe41Y7NAB0EMolz6nG46j1kirafUC82SHzvrVUerDOvGZWLggCLIGJbS69IaaoLpRAg=
+	t=1776772286; cv=none; b=P+cte7Xs6GH8i9wDlDtm2L6TrYrikK26nZ1th6F/82n+9HfhqTRNgyw9nnUAFRivGuWezfjpPK0jmbPtVDMTW8jTk2VhsYZxTts0e0dSQFxGTOajy1QeC68L2tNJJSNTQk1PQYwuJyUEInfofmyFkLVG4ibVzGDrXXY8Wcq8Fmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776772256; c=relaxed/simple;
-	bh=e9b8RBrfW+lTefYIZ1ahNWqlMpdaZ7PH/7L4D03Bsss=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type:
-	 References; b=SChcnf6286kbc2Ne69zM6f0XlXdYPzkt+4OwxF7VFsPda+oZWMVxYpjwqx7wU0P33DmpaXchy5FB0XEiIp6byX+zTpJoDMSRcj7KyXKmBR+x96a/WR2eiU6sG2lvqL6GDAgMoVdUalBc2Pd+qIEDRsBmgz8b5xw4h9uencoGmpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=OXRIxigN; arc=none smtp.client-ip=210.118.77.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1776772286; c=relaxed/simple;
+	bh=nO2HrpFcOfLbYEAEtqzGYNCRQRtbaOzBL2FTmFlYSJQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SHo0OKgKVYA6k8b126Sm5Rtfrb8LOcI5qfstWhCxMZrFkEsSVoPV7Tj9/9tgL9ov/Pieyktge03Zd1Vy00eY7GByTn1NWzO/AmfTX205TMsWJ7QijGgdnpEewO4wM+Ubur5ZHhah6CcpVzfQLix8YDsulTIZAFTa6dEQytSmpMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b=cb0uNtWu; arc=none smtp.client-ip=180.181.231.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="OXRIxigN"
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260421115052euoutp021dcec36fe1e04ae86b7739aa1a79377b~oXPMsNcc33202332023euoutp02L
-	for <netdev@vger.kernel.org>; Tue, 21 Apr 2026 11:50:52 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260421115052euoutp021dcec36fe1e04ae86b7739aa1a79377b~oXPMsNcc33202332023euoutp02L
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1776772252;
-	bh=Wdm3kV4WDvCDxi2Q1eh8TQdGmwSJyWv03shz+xr93NA=;
-	h=From:To:Cc:Subject:Date:References:From;
-	b=OXRIxigNRGwkHnJiEZ1USlGtyC22qjDAtNpf+a0Ge/z/2SbHAFLKXO3BdBaS2e703
-	 YTpSTUwAlx93ngfJ+caYX8rDuOVftYXVl3wRjJMThlON7ULwiDGahtVcDJHx77wCeW
-	 vICmQnjG9MlVkJym6OCqB9HE3SEvJ8eDZ2HngkZM=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20260421115052eucas1p103281c5b25719a44c0875d6b0860bfa6~oXPMWi_xc0669206692eucas1p1S;
-	Tue, 21 Apr 2026 11:50:52 +0000 (GMT)
-Received: from AMDC4843.eu.corp.samsungelectronics.net (unknown
-	[106.120.77.61]) by eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20260421115051eusmtip10861a4b8207300cfdc8286dec4615f9e~oXPL4eC_W1849318493eusmtip1l;
-	Tue, 21 Apr 2026 11:50:51 +0000 (GMT)
-From: Jakub Raczynski <j.raczynski@samsung.com>
-To: netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, kuba@kernel.org, davem@davemloft.net,
-	andrew+netdev@lunn.ch, kernel-janitors@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com, Jakub Raczynski
-	<j.raczynski@samsung.com>
-Subject: [PATCH] net/stmmac: Fix typos: 'tx_undeflow_irq' ->
- 'tx_underflow_irq'
-Date: Tue, 21 Apr 2026 13:50:09 +0200
-Message-Id: <20260421115008.2690541-1-j.raczynski@samsung.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b="cb0uNtWu"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
+	from:content-type:reply-to; bh=OwjntzVNeDypYl+gb8gCC9m3YpwtU8u86yLeBxwqWjE=; 
+	b=cb0uNtWuFWwCwtmeaDWAtvbkC3Y8S6XHqngK5Wla5CxIYXescDcvY0ZvESkjzs7A7+GGcSLzH1H
+	aWkhry4AoKM/X34MbmXMSHJ8Jk5FJoJFRuz4aSSt3EHCuRn4km27h2yChnahNdoNEFROqX7IAyxH3
+	/xS6JeQ6icnUP8PU3MGN5/2+Ht5vSSPmwSmMQFkpuTMrXo7vy9IEmNeZaMb0tQ0bPTcBc6Iqk1jzI
+	9ofZNvzOr2qUKNoSsJObv4qmR8V8vXWaw9/Tzb7VitfQ1s6LO48RCOr5r397r2maHXmbic/hx0MFw
+	QxqwwuA3NfDRVgGHR6H7wBEsAfpjnmVjwiKw==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1wF9c7-007h5o-3C;
+	Tue, 21 Apr 2026 19:50:01 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Tue, 21 Apr 2026 19:49:59 +0800
+Date: Tue, 21 Apr 2026 19:49:59 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net,
+	netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+	andrew+netdev@lunn.ch, horms@kernel.org, corbet@lwn.net,
+	skhan@linuxfoundation.org, linux@armlinux.org.uk,
+	tsbogend@alpha.franken.de, maddy@linux.ibm.com, mpe@ellerman.id.au,
+	npiggin@gmail.com, chleroy@kernel.org, 3chas3@gmail.com,
+	razor@blackwall.org, idosch@nvidia.com, jani.nikula@intel.com,
+	mchehab+huawei@kernel.org, tytso@mit.edu, geert@linux-m68k.org,
+	ebiggers@kernel.org, johannes.berg@intel.com,
+	jonathan.cameron@huawei.com, kees@kernel.org, kuniyu@google.com,
+	fourier.thomas@gmail.com, andriy.shevchenko@intel.com,
+	rdunlap@infradead.org, akpm@linux-foundation.org,
+	linux-doc@vger.kernel.org, linux-mips@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, bridge@lists.linux.dev
+Subject: Re: [PATCH net-deletions] net: remove unused ATM protocols and
+ legacy ATM device drivers
+Message-ID: <aedkZ5bizasuBPI8@gondor.apana.org.au>
+References: <20260421021943.1295109-1-kuba@kernel.org>
+ <c7506c225ce22a71c03abc2673823cf84bbb5b0d.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20260421115052eucas1p103281c5b25719a44c0875d6b0860bfa6
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20260421115052eucas1p103281c5b25719a44c0875d6b0860bfa6
-X-EPHeader: CA
-X-CMS-RootMailID: 20260421115052eucas1p103281c5b25719a44c0875d6b0860bfa6
-References: <CGME20260421115052eucas1p103281c5b25719a44c0875d6b0860bfa6@eucas1p1.samsung.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c7506c225ce22a71c03abc2673823cf84bbb5b0d.camel@infradead.org>
 
-All references to tx_underflow_irq are misspelled as 'undeflow'. Fix them.
+On Tue, Apr 21, 2026 at 10:26:18AM +0100, David Woodhouse wrote:
+>
+> I suspect they don't have a huge amount of interest in the Solos any
+> more, or the Geode-based SBC they sold with two of them on-board. But
+> OpenWrt does still support them, and I even have one here (although no
+> ADSL line to test it with). They were briefly popular as fully Linux-
+> supported ADSL routers.
 
-Signed-off-by: Jakub Raczynski <j.raczynski@samsung.com>
----
- drivers/net/ethernet/stmicro/stmmac/common.h         | 2 +-
- drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c | 2 +-
- drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c    | 2 +-
- drivers/net/ethernet/stmicro/stmmac/dwmac_lib.c      | 2 +-
- drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c | 2 +-
- 5 files changed, 5 insertions(+), 5 deletions(-)
+ADSL is history, it only ever made sense in rich countries where
+physical copper cables were pre-installed in homes.  While rich
+countries have moved to fibre, the rest of the world won't use
+ADSL either because there is no copper cable to begin with.  So
+it's actually cheaper to just lay a fibre cable for a new install.
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/common.h b/drivers/net/ethernet/stmicro/stmmac/common.h
-index d26e8a063022..e7da9964854d 100644
---- a/drivers/net/ethernet/stmicro/stmmac/common.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/common.h
-@@ -147,7 +147,7 @@ struct stmmac_extra_stats {
- 	unsigned long rx_vlan;
- 	unsigned long rx_split_hdr_pkt_n;
- 	/* Tx/Rx IRQ error info */
--	unsigned long tx_undeflow_irq;
-+	unsigned long tx_underflow_irq;
- 	unsigned long tx_process_stopped_irq;
- 	unsigned long tx_jabber_irq;
- 	unsigned long rx_overflow_irq;
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-index 815213223583..068c21f37c29 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-@@ -247,7 +247,7 @@ static int loongson_dwmac_dma_interrupt(struct stmmac_priv *priv,
- 	if (unlikely(abnor_intr_status)) {
- 		if (unlikely(intr_status & DMA_STATUS_UNF)) {
- 			ret = tx_hard_error_bump_tc;
--			x->tx_undeflow_irq++;
-+			x->tx_underflow_irq++;
- 		}
- 		if (unlikely(intr_status & DMA_STATUS_TJT))
- 			x->tx_jabber_irq++;
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-index c01b86fd64da..a73720811791 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-@@ -459,7 +459,7 @@ static int sun8i_dwmac_dma_interrupt(struct stmmac_priv *priv,
- 
- 	if (v & EMAC_TX_UNDERFLOW_INT) {
- 		ret |= tx_hard_error;
--		x->tx_undeflow_irq++;
-+		x->tx_underflow_irq++;
- 	}
- 
- 	if (v & EMAC_TX_EARLY_INT)
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac_lib.c b/drivers/net/ethernet/stmicro/stmmac/dwmac_lib.c
-index a0383f9486c2..79fe50ad33d1 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac_lib.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac_lib.c
-@@ -182,7 +182,7 @@ int dwmac_dma_interrupt(struct stmmac_priv *priv, void __iomem *ioaddr,
- 	if (unlikely(intr_status & DMA_STATUS_AIS)) {
- 		if (unlikely(intr_status & DMA_STATUS_UNF)) {
- 			ret = tx_hard_error_bump_tc;
--			x->tx_undeflow_irq++;
-+			x->tx_underflow_irq++;
- 		}
- 		if (unlikely(intr_status & DMA_STATUS_TJT))
- 			x->tx_jabber_irq++;
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-index c1e26965d9b5..df092fb354ed 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-@@ -78,7 +78,7 @@ static const struct stmmac_stats stmmac_gstrings_stats[] = {
- 	STMMAC_STAT(rx_vlan),
- 	STMMAC_STAT(rx_split_hdr_pkt_n),
- 	/* Tx/Rx IRQ error info */
--	STMMAC_STAT(tx_undeflow_irq),
-+	STMMAC_STAT(tx_underflow_irq),
- 	STMMAC_STAT(tx_process_stopped_irq),
- 	STMMAC_STAT(tx_jabber_irq),
- 	STMMAC_STAT(rx_overflow_irq),
+Cheers,
 -- 
-2.34.1
-
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
