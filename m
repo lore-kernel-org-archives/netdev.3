@@ -1,116 +1,112 @@
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B575A39FCBA
-	for <netdev@vger.kernel.org>; Tue, 21 Apr 2026 09:00:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A87823D7DC;
+	Tue, 21 Apr 2026 09:02:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776762055; cv=none; b=iJTDn17JFM2z/utHbUaVijZYYDBUkWrTTLmYUWV4wJrX94G6jhRVUJ9fIEKWKkZKBeGfyktiFptjp4x22I2aJxTJsAmJw7bw7ZX+VrR2h/v7S49SD6CyelkxyM4Au/ILDJjxjDubEOZNm58oaYEyyisbB0rWf23ltEq1wryGAvA=
+	t=1776762153; cv=none; b=kM7cXqrVB4SJsHLqPjyt/rpCaxmVRXv/K59iwuPFUZOOaEKug6s/6CBX8H0sr+M4Uo1TdJAPDVTb85NR9qVHmOGP4f4yrPvT3YZNpmSffQmhH6AhIpVv5e0a1K5IiE0rY9Q1oge5jzw20qbsFYWAbory5N5wL/vENttORWtk/MM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776762055; c=relaxed/simple;
-	bh=BjutMcIEH3kbQHlv3u1kc0EHf31XPA5x+6cvpcO5yEY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qK78sK0eMtKzzARsIvU9kWLfbbvE5gMIx6M8qvI0Ejq60qojplndyqTJcxgVvYWD+YOQZEAvUhwfH6TIOzsRSbeTaa3wTozDYXF3FAdh6pFlFmDG7AMdtJg5ynYTkeC6O8b8s/LprtM4L8S/79r1gQy3HxebSB6AfgW3FU7M86k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ue7+Jk+l; arc=none smtp.client-ip=209.85.208.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1776762153; c=relaxed/simple;
+	bh=hyZWWcOnCF0YqBIfepMB2TKvI6XHZWcg6x6y0OZJQLI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=QGmpFxmiLi2ZiMh/4pUFdLub6B8g0tlQ9SU9FiSw1LJv1U2kQ1/N5fa8KUiSa12yvSQfA/r8BjOcl3BoMGOapUoDSh4903ESek074jkamKBFu7tOxvT7m5xq/dxXM/BLCscPVXvO3234xeIkMVyz7zPp19QuwVAnOXgpu3zS2n4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dTHsJ8O1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ue7+Jk+l"
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-38e7b0903cdso35909981fa.3
-        for <netdev@vger.kernel.org>; Tue, 21 Apr 2026 02:00:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776762051; x=1777366851; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dthsqIm/Cpxg0B4QgCoO1C8r6BeVrJ1ExMuPMtumgl8=;
-        b=Ue7+Jk+lTAUjZaDV8JrNC5bHrQWgfjBDDODcJIZIQtyZmBYDXW5qk+nZzgjoRMnmXi
-         40YWmB3Ug/qpARNBJ6di3TId8Y1A7X4bJDAQ2dGii4AD00P5rf810FMugH3+iqxhbJez
-         lyIrO+YNA/WwYfyegTF84av3KM9pLiCVpH4yBdSRAeSdN3g9XIfqmMQ94PPvrNHkACAI
-         pHEPjfEePp1+qM16HYu3EfMsfoPtpBynu+H3z8+IQiL9ZHN2eivHvylJOma1p5Ofk+Z9
-         vqmZPP9pD9oj20wc4RyXd/p2GPXPbWpJ+lNCLVdTYUje5CfhQnZgaDyvoGMjYF9rjIwL
-         QeBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776762051; x=1777366851;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=dthsqIm/Cpxg0B4QgCoO1C8r6BeVrJ1ExMuPMtumgl8=;
-        b=U4vdL+VtedsPoVxP1eOo8qorp9xkftr5DWGK1sthYla1/79UeQe+qBdtqHU13Kd4Lq
-         J5NsL+UDj4joX1MfM9zEPX7h33dxUK9yz5c8Bwfh9Re1VQkLW3kfUv+lowGv3rl7wSfy
-         DDoN8LGNJBKfFsAo7buqVc6PGu3R9CRCKNbkgZMe2eYxhIJqSDFLHjTVeUDUV95gdvyR
-         0CwbcYSTGG0WRRUeUAFZ73DgMMYI6iEAhTlTMnXfDjp7S5XcRyfvI8dBm5MdFnSSS7KK
-         fuBHq+/ElUbTwL52TEEco/gerj43XdbkexxfuZEUdP+8GZxrxPVojRv4eLQ6WTSvwFsO
-         fXjw==
-X-Forwarded-Encrypted: i=1; AFNElJ8aoxarhi+6wnfX/ytZ7cPdd6MtIMpIMZIuQNaf+ttZ60zhVRf1HLY6ds/koYhqyziWB0XATBo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzzsI89qUT+Dv0eHT4mcyfDhMZs5UQ3PhZQHK45Zif1Xm9+Bfqr
-	/6LlNzdSqJOL5EAwHFurmtLgcpjLyLEtF8T+QRhJquFhIpMwsLO6iypO
-X-Gm-Gg: AeBDieubzDOkaV9eKMbia7gCrADRjVW8d+lnUOETe4cOFrbVGoAKBz8HYx1DPBIqNLi
-	i8gw/qj7FND+nHbVfZJxzfiNfm+LCxYMfnzuQLRX7vdRPDspLsoaq+IGDzj4/Bq7DDnamP6fgtq
-	ex4tJkb3AaDR8Nnn9nybW7TyfIFGIf/QYdTCXBgbU01cYTCu+a8gsyf9BuCTd8IDR9/zRIyTUqY
-	RAdVocDinQ8Y1EjQBdKYWF7UoDmyMfcvC3oCch2UL6HzO0ZvgAhcGYvW+NMkKdh+NJi7UYknwUw
-	KRnBvlZg/EI+t26FLhxdmXkYyVl6tSgl+zg6rtKih45QNbF9hyR+n3VxQ6xdPFHvXJNpSRVn2Jr
-	r/k+hMqWbibqTa4ClGoSNuvPU4wZ408DVNl6HEuEb229/5wiOLNwZQMu/5DqszEo/t7E2j6dUXC
-	bPFCG7arFg55otkSIAmVlVTn/bOrAaHuQ=
-X-Received: by 2002:a05:651c:1551:b0:38e:d3ec:4fac with SMTP id 38308e7fff4ca-38ed3ec5605mr47926221fa.3.1776762050707;
-        Tue, 21 Apr 2026 02:00:50 -0700 (PDT)
-Received: from thinkpad ([178.205.156.194])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38ecb75b033sm28583931fa.39.2026.04.21.02.00.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Apr 2026 02:00:50 -0700 (PDT)
-From: Matthew Bystrin <dev.mbstr@gmail.com>
-To: Lee Jones <lee@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Min Li <min.li.xe@renesas.com>
-Cc: linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH 1/2] mfd: rsmu_spi: fix page register setup
-Date: Tue, 21 Apr 2026 12:07:09 +0300
-Message-ID: <20260421090710.395591-2-dev.mbstr@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260421090710.395591-1-dev.mbstr@gmail.com>
-References: <20260421090710.395591-1-dev.mbstr@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dTHsJ8O1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB781C2BCB5;
+	Tue, 21 Apr 2026 09:02:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776762152;
+	bh=hyZWWcOnCF0YqBIfepMB2TKvI6XHZWcg6x6y0OZJQLI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=dTHsJ8O1tmL/CMMD9GDGnTM+P4zaYf0VkAPrivxCnrtZ13VF+imGxW9VTBIRq/Uf2
+	 SOF+NB6yQxfQQYNPzJk34BR5kVyD+W+jdDXneQtqRSWhS4SD+QZSj6I4bQzTtcspBX
+	 e8pzBlONSb73VG8u3/0biZVM1Fe2lfQa3EkCLYd20CL1r9ZXze4oaIXMZz5tEqWYTF
+	 Ji9ZurauMtTzsXivS8ZiFUfHXNA89x8w0rTDN5iIoWs3qPAfjwgLXFVn5Tx64Jrd8S
+	 IZ8CmCzIzJA5ncBEo/OSVj1zWApAUV1Ddw4xCcHDxilmuZ4e5C0ni0Qolyo9QgCEwE
+	 5Nrc5IUcYX9Og==
+From: Thomas Gleixner <tglx@kernel.org>
+To: Waiman Long <longman@redhat.com>, Tejun Heo <tj@kernel.org>, Johannes
+ Weiner <hannes@cmpxchg.org>, Michal =?utf-8?Q?Koutn=C3=BD?=
+ <mkoutny@suse.com>, Jonathan
+ Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, Catalin
+ Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, "K. Y.
+ Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>,
+ Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, Long Li
+ <longli@microsoft.com>, Guenter Roeck <linux@roeck-us.net>, Frederic
+ Weisbecker <frederic@kernel.org>, "Paul E. McKenney" <paulmck@kernel.org>,
+ Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, Joel Fernandes
+ <joelagnelf@nvidia.com>, Josh Triplett <josh@joshtriplett.org>, Boqun Feng
+ <boqun@kernel.org>, Uladzislau Rezki <urezki@gmail.com>, Steven Rostedt
+ <rostedt@goodmis.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>,
+ Anna-Maria Behnsen <anna-maria@linutronix.de>, Ingo Molnar
+ <mingo@kernel.org>, Chen Ridong <chenridong@huaweicloud.com>, Peter
+ Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann
+ <dietmar.eggemann@arm.com>, Ben Segall <bsegall@google.com>, Mel Gorman
+ <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, K Prateek
+ Nayak <kprateek.nayak@amd.com>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Cc: cgroups@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-hyperv@vger.kernel.org, linux-hwmon@vger.kernel.org,
+ rcu@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, Costa Shulyupin <cshulyup@redhat.com>,
+ Qiliang Yuan <realwujing@gmail.com>, Waiman Long <longman@redhat.com>
+Subject: Re: [PATCH 16/23] genirq/cpuhotplug: Use RCU to protect access of
+ HK_TYPE_MANAGED_IRQ cpumask
+In-Reply-To: <20260421030351.281436-17-longman@redhat.com>
+References: <20260421030351.281436-1-longman@redhat.com>
+ <20260421030351.281436-17-longman@redhat.com>
+Date: Tue, 21 Apr 2026 11:02:29 +0200
+Message-ID: <87qzo8bs9m.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Fix writes to page register in 8A3400x family (Clock Matrix).
+On Mon, Apr 20 2026 at 23:03, Waiman Long wrote:
 
-All calls to rsmu_write_page_register() have resulted in early return,
-becase all addresses in include/linux/mfd/idt8a340_reg.h are less than
-RSMU_CM_SCSR_BASE.
+> As HK_TYPE_MANAGED_IRQ cpumask is going to be changeable at run time,
+> use RCU to protect access to the cpumask.
+>
+> To enable the new HK_TYPE_MANAGED_IRQ cpumask to take effect, the
+> following steps can be done.
 
-There were 2 separate patch series which have to be merged in one time:
-mfd and ptp. The latter have been merged, the former[1] have not.
+Can be done?
 
-Link: https://lore.kernel.org/netdev/LV3P220MB1202F8E2FCCFBA2519B4966EA0192@LV3P220MB1202.NAMP220.PROD.OUTLOOK.COM/
-Fixes: 67d6c76fc815 ("mfd: rsmu: Support 32-bit address space")
-Signed-off-by: Matthew Bystrin <dev.mbstr@gmail.com>
----
- drivers/mfd/rsmu_spi.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+>  1) Update the HK_TYPE_MANAGED_IRQ cpumask to take out the newly isolated
+>     CPUs and add back the de-isolated CPUs.
+>  2) Tear down the affected CPUs to cause irq_migrate_all_off_this_cpu()
+>     to be called on the affected CPUs to migrate the irqs to other
+>     HK_TYPE_MANAGED_IRQ housekeeping CPUs.
+>  3) Bring up the previously offline CPUs to invoke
+>     irq_affinity_online_cpu() to allow the newly de-isolated CPUs to
+>     be used for managed irqs.
 
-diff --git a/drivers/mfd/rsmu_spi.c b/drivers/mfd/rsmu_spi.c
-index 39d9be1e141f..55c5698e7e77 100644
---- a/drivers/mfd/rsmu_spi.c
-+++ b/drivers/mfd/rsmu_spi.c
-@@ -101,11 +101,9 @@ static int rsmu_write_page_register(struct rsmu_ddata *rsmu, u32 reg)
- 
- 	switch (rsmu->type) {
- 	case RSMU_CM:
--		/* Do not modify page register for none-scsr registers */
--		if (reg < RSMU_CM_SCSR_BASE)
--			return 0;
- 		page_reg = RSMU_CM_PAGE_ADDR;
- 		page = reg & RSMU_PAGE_MASK;
-+		page |= RSMU_CM_SCSR_BASE;
- 		buf[0] = (u8)(page & 0xFF);
- 		buf[1] = (u8)((page >> 8) & 0xFF);
- 		buf[2] = (u8)((page >> 16) & 0xFF);
--- 
-2.53.0
+Which previously offline CPUs?
 
+> diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
+> index 2e8072437826..8270c4de260b 100644
+> --- a/kernel/irq/manage.c
+> +++ b/kernel/irq/manage.c
+> @@ -263,6 +263,7 @@ int irq_do_set_affinity(struct irq_data *data, const struct cpumask *mask, bool
+>  	    housekeeping_enabled(HK_TYPE_MANAGED_IRQ)) {
+>  		const struct cpumask *hk_mask;
+>  
+> +		guard(rcu)();
+>  		hk_mask = housekeeping_cpumask(HK_TYPE_MANAGED_IRQ);
+>  
+>  		cpumask_and(tmp_mask, mask, hk_mask);
+
+How is this hunk related to $Subject?
+
+Thanks,
+
+        tglx
