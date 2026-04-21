@@ -1,48 +1,49 @@
 Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A86413B7A3
-	for <netdev@vger.kernel.org>; Tue, 21 Apr 2026 11:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B23930E836
+	for <netdev@vger.kernel.org>; Tue, 21 Apr 2026 11:48:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776771931; cv=none; b=tENAqGDDINcClavvW/APcQk+0ImHgw3szU1vEdloQ8oFM80StaAW434lhkIioeP8pRDp/yi+NOIhKhA2wxFGOE3g/+D4NnyZ51bbPysS8PgyyuweDAZOiZXBHn7WVZnXoRwKhLjlja+yvKsedCBMr9be5sSQoNhhgtXHN073FO0=
+	t=1776772139; cv=none; b=WdHPAVeeZfEr0wIelSsW8H3GLMVw4fIb7zIjTSt3wt/8f2x+q/Wih/r0sUWS4x0lOpzipaun2FSzQ1MnPJ+0jow2YfFfF4/VISm/eUzVS7NIyVkOcyfrHl1J2UGPrxRjld6VG41ZheIsf3cFR56p7xDrxA0OrmgscWsXWpM8JBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776771931; c=relaxed/simple;
-	bh=RNz5LmDyHPB4MHvSyJ0JgcjEODsNOXlh24JhzgEMuy8=;
+	s=arc-20240116; t=1776772139; c=relaxed/simple;
+	bh=Aqwmxj8uFkfP9nHrc8fZ7RRLzeMC8fJOyFF5kKMYktE=;
 	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type:
-	 References; b=SITOvlL2KjUlrYGJSuPFpDnMwyaFa+ZY1XP/LOb2C2sybh5tgaU4aPA9Q6tcAr8SxKm3RMGUghWPSDx501aD8QwAbnZx1zvqkQntFEmlgoU9xOb5oiBPUGhGjNJZjwM8V6h3JpU+z/R4S67c7KWasouFGd6fQR3fbleUSBRmq9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=s1Bn6xbc; arc=none smtp.client-ip=210.118.77.11
+	 References; b=l1yjP9FHWpIvCf1N8b7S37sI2bx8uhPLcZYK5OTxTudldpOL1TThXkl7fdDV/D12nhoesJ7ktDH+Yt5tONKBnmWpCyyZHD0vaQC012xcxtgZR0geYYB14Q3jdUzWr6A05ZaFaiaSFfNJ7Pkp7GyO8oM4FYZ5utm/zo0l1ChHSPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=K8oDEJ1P; arc=none smtp.client-ip=210.118.77.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="s1Bn6xbc"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="K8oDEJ1P"
 Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260421114527euoutp018d1111454f4a14bfb542502de9b71755~oXKdu_uwA0828908289euoutp01y
-	for <netdev@vger.kernel.org>; Tue, 21 Apr 2026 11:45:27 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260421114527euoutp018d1111454f4a14bfb542502de9b71755~oXKdu_uwA0828908289euoutp01y
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260421114034euoutp0141ce51d36a834170fa53b60f5eec3134~oXGNl9HsP0192801928euoutp01g
+	for <netdev@vger.kernel.org>; Tue, 21 Apr 2026 11:40:34 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260421114034euoutp0141ce51d36a834170fa53b60f5eec3134~oXGNl9HsP0192801928euoutp01g
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1776771927;
-	bh=FSqmIXppWFqk/YElGJWo05VBfGafJTbE0JQ6hI/zBT0=;
+	s=mail20170921; t=1776771635;
+	bh=MtJpmhcXNEwjZg/96uUvgc/7Ds9nqk3h5aj71RrwZIY=;
 	h=From:To:Cc:Subject:Date:References:From;
-	b=s1Bn6xbcEXFRLdVa0/dzHCiZP9Dp9CKlY0tTfrACNj46yevQbBXRQiYgGlCwwalOj
-	 x3XjBEX12Jr6SgiGvcIUnOC6CyS0CzdklimSu9o9CidFdY56oe3XtuGhho1H5E9hdz
-	 0z5mB6FP52BYkcUSIuE/n/PewGml6SBnXWpLCQO8=
-Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20260421114526eucas1p29a73b6c60123beb164975e931347f1a4~oXKdNCXqN1096110961eucas1p2B;
-	Tue, 21 Apr 2026 11:45:26 +0000 (GMT)
+	b=K8oDEJ1P4QrFUafUofy21JaFfSTfykL+A1gBtrqVVOYwIf+1osMgat2N1wnkguvmc
+	 ZPMA5OEQ6twMpuf9+QJLEG5oSvPviYW2Gqb4O+HCuF2io1eqJPccIxj8stL3g7xQmJ
+	 cX0IBtaakUxkqt/b9U6vFAcrPQ1/fr4ZZx6N651A=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20260421114034eucas1p1d746ffe32b49aeb57f10e729d1331124~oXGNTHFly0938209382eucas1p1q;
+	Tue, 21 Apr 2026 11:40:34 +0000 (GMT)
 Received: from AMDC4843.eu.corp.samsungelectronics.net (unknown
-	[106.120.77.61]) by eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20260421114526eusmtip2b6f946da4f0a3872649321dd09e2d436~oXKc2R3ST2309923099eusmtip2M;
-	Tue, 21 Apr 2026 11:45:26 +0000 (GMT)
+	[106.120.77.61]) by eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20260421114034eusmtip112d8a374cc8b5bf185ab61c332f660d0~oXGM-A0Sj0596605966eusmtip17;
+	Tue, 21 Apr 2026 11:40:34 +0000 (GMT)
 From: Jakub Raczynski <j.raczynski@samsung.com>
 To: netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, kuba@kernel.org, davem@davemloft.net,
-	andrew+netdev@lunn.ch, kernel-janitors@vger.kernel.org, Jakub Raczynski
+Cc: kuba@kernel.org, przemyslaw.kitszel@intel.com,
+	anthony.l.nguyen@intel.com, kernel-janitors@vger.kernel.org, Jakub Raczynski
 	<j.raczynski@samsung.com>
-Subject: [PATCH] net/sun: Fix multiple typos in comments
-Date: Tue, 21 Apr 2026 13:45:12 +0200
-Message-Id: <20260421114512.2690443-1-j.raczynski@samsung.com>
+Subject: [PATCH] net/intel: Replace manual array size calculation with
+ ARRAY_SIZE
+Date: Tue, 21 Apr 2026 13:40:29 +0200
+Message-Id: <20260421114029.2689961-1-j.raczynski@samsung.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -51,214 +52,50 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20260421114526eucas1p29a73b6c60123beb164975e931347f1a4
+X-CMS-MailID: 20260421114034eucas1p1d746ffe32b49aeb57f10e729d1331124
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20260421114526eucas1p29a73b6c60123beb164975e931347f1a4
+X-RootMTR: 20260421114034eucas1p1d746ffe32b49aeb57f10e729d1331124
 X-EPHeader: CA
-X-CMS-RootMailID: 20260421114526eucas1p29a73b6c60123beb164975e931347f1a4
-References: <CGME20260421114526eucas1p29a73b6c60123beb164975e931347f1a4@eucas1p2.samsung.com>
+X-CMS-RootMailID: 20260421114034eucas1p1d746ffe32b49aeb57f10e729d1331124
+References: <CGME20260421114034eucas1p1d746ffe32b49aeb57f10e729d1331124@eucas1p1.samsung.com>
 
-There are some typos in comments and while they are harmless and not visible,
-there is no reason not to fix them. Fix the ones that are not register related,
-which might have intentional naming convention.
+There are still places in the code where manual calculation of array size
+exist, but it is good to enforce usage of single macro through the whole
+code as it makes code bit more readable.
 
 Signed-off-by: Jakub Raczynski <j.raczynski@samsung.com>
 ---
- drivers/net/ethernet/sun/cassini.c |  8 ++++----
- drivers/net/ethernet/sun/cassini.h | 16 ++++++++--------
- drivers/net/ethernet/sun/sunbmac.h |  2 +-
- drivers/net/ethernet/sun/sungem.c  |  4 ++--
- drivers/net/ethernet/sun/sungem.h  |  4 ++--
- drivers/net/ethernet/sun/sunhme.c  |  2 +-
- 6 files changed, 18 insertions(+), 18 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_adminq.h | 2 +-
+ drivers/net/ethernet/intel/iavf/iavf_adminq.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/sun/cassini.c b/drivers/net/ethernet/sun/cassini.c
-index fe00e7dd3fe4..74fb0de12d21 100644
---- a/drivers/net/ethernet/sun/cassini.c
-+++ b/drivers/net/ethernet/sun/cassini.c
-@@ -1029,7 +1029,7 @@ static int cas_pcs_link_check(struct cas *cp)
- 			 * point a bit earlier in the sequence. If we had
- 			 * generated a reset a short time ago, we'll wait for
- 			 * the link timer to check the status until a
--			 * timer expires (link_transistion_jiffies_valid is
-+			 * timer expires (link_transition_jiffies_valid is
- 			 * true when the timer is running.)  Instead of using
- 			 * a system timer, we just do a check whenever the
- 			 * link timer is running - this clears the flag after
-@@ -4547,7 +4547,7 @@ static int cas_get_link_ksettings(struct net_device *dev,
- 	}
- 	if (linkstate != link_up) {
- 		/* Force these to "unknown" if the link is not up and
--		 * autonogotiation in enabled. We can set the link
-+		 * autonegotiation in enabled. We can set the link
- 		 * speed to 0, but not cmd->duplex,
- 		 * because its legal values are 0 and 1.  Ethtool will
- 		 * print the value reported in parentheses after the
-@@ -4799,7 +4799,7 @@ static void cas_program_bridge(struct pci_dev *cas_pdev)
- 	 */
- 	pci_write_config_word(pdev, 0x50, (5 << 10) | 0x3ff);
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_adminq.h b/drivers/net/ethernet/intel/i40e/i40e_adminq.h
+index 1be97a3a86ce..0e7cecd00169 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_adminq.h
++++ b/drivers/net/ethernet/intel/i40e/i40e_adminq.h
+@@ -109,7 +109,7 @@ static inline int i40e_aq_rc_to_posix(int aq_ret, int aq_rc)
+ 		-EFBIG,      /* I40E_AQ_RC_EFBIG */
+ 	};
  
--	/* The Read Prefecth Policy register is 16-bit and sits at
-+	/* The Read Prefetch Policy register is 16-bit and sits at
- 	 * offset 0x52.  It enables a "smart" pre-fetch policy.  We
- 	 * enable it and max out all of the settings since only one
- 	 * device is sitting underneath and thus bandwidth sharing is
-@@ -4906,7 +4906,7 @@ static int cas_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+-	if (!((u32)aq_rc < (sizeof(aq_to_posix) / sizeof((aq_to_posix)[0]))))
++	if (!((u32)aq_rc < ARRAY_SIZE(aq_to_posix)))
+ 		return -ERANGE;
  
- 	/*
- 	 * On some architectures, the default cache line size set
--	 * by pci_try_set_mwi reduces perforamnce.  We have to increase
-+	 * by pci_try_set_mwi reduces performance.  We have to increase
- 	 * it for this case.  To start, we'll print some configuration
- 	 * data.
- 	 */
-diff --git a/drivers/net/ethernet/sun/cassini.h b/drivers/net/ethernet/sun/cassini.h
-index 2d91f4936d52..0c24547a4534 100644
---- a/drivers/net/ethernet/sun/cassini.h
-+++ b/drivers/net/ethernet/sun/cassini.h
-@@ -259,7 +259,7 @@
+ 	return aq_to_posix[aq_rc];
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_adminq.h b/drivers/net/ethernet/intel/iavf/iavf_adminq.h
+index bbf5c4b3a2ae..eb0257c86058 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_adminq.h
++++ b/drivers/net/ethernet/intel/iavf/iavf_adminq.h
+@@ -113,7 +113,7 @@ static inline int iavf_aq_rc_to_posix(int aq_ret, int aq_rc)
+ 	if (aq_ret == IAVF_ERR_ADMIN_QUEUE_TIMEOUT)
+ 		return -EAGAIN;
  
- /* output enables are provided for each device's chip select and for the rest
-  * of the outputs from cassini to its local bus devices. two sw programmable
-- * bits are connected to general purpus control/status bits.
-+ * bits are connected to general purpose control/status bits.
-  * DEFAULT: 0x7
-  */
- #define  REG_BIM_LOCAL_DEV_EN          0x1020  /* BIM local device
-@@ -404,7 +404,7 @@
- 						    GMII on SERDES pins for
- 						    monitoring. */
- #define   SATURN_PCFG_FSI             0x00000200 /* 1 = freeze serdes/gmii. all
--						    pins configed as outputs.
-+						    pins configured as outputs.
- 						    for power saving when using
- 						    internal phy. */
- #define   SATURN_PCFG_LAD             0x00000800 /* 0 = mac core led ctrl
-@@ -622,7 +622,7 @@
- 						      enabled */
- #define    RX_CFG_SWIVEL_MASK           0x00001C00 /* byte offset of the 1st
- 						      data byte of the packet
--						      w/in 8 byte boundares.
-+						      w/in 8 byte boundaries.
- 						      this swivels the data
- 						      DMA'ed to header
- 						      buffers, jumbo buffers
-@@ -1248,7 +1248,7 @@
-  */
- #define  REG_MAC_TX_STATUS                 0x6010  /* TX MAC status reg */
- #define    MAC_TX_FRAME_XMIT               0x0001  /* successful frame
--						      transmision */
-+						      transmission */
- #define    MAC_TX_UNDERRUN                 0x0002  /* terminated frame
- 						      transmission due to
- 						      data starvation in the
-@@ -1414,7 +1414,7 @@
-  * when passed to the host. to ensure proper operation, need to wait 3.2ms
-  * after clearing RX_CFG_EN before writing to any other RX MAC registers
-  * or other MAC parameters. alternatively, poll RX_CFG_EN until it clears
-- * to 0. similary, HASH_FILTER_EN and ADDR_FILTER_EN have the same
-+ * to 0. Similarly, HASH_FILTER_EN and ADDR_FILTER_EN have the same
-  * restrictions as CFG_EN.
-  */
- #define  REG_MAC_RX_CFG                 0x6034  /* RX MAC config reg */
-@@ -1670,7 +1670,7 @@
-  * programmed in frame mode. load this register w/ a valid instruction
-  * (as per IEEE 802.3u MII spec). poll this register to check for instruction
-  * execution completion. during a read operation, this register will also
-- * contain the 16-bit data returned by the tranceiver. unless specified
-+ * contain the 16-bit data returned by the transceiver. unless specified
-  * otherwise, fields are considered "don't care" when polling for
-  * completion.
-  */
-@@ -1734,7 +1734,7 @@
- #define    MIF_CFG_POLL_REG_SHIFT       3
- #define    MIF_CFG_MDIO_0               0x0100 /* (ro) dual purpose.
- 						  when MDIO_0 is idle,
--						  1 -> tranceiver is
-+						  1 -> transceiver is
- 						  connected to MDIO_0.
- 						  when MIF is communicating
- 						  w/ MDIO_0 in bit-bang
-@@ -1750,7 +1750,7 @@
- 						  mode, this bit indicates
- 						  the incoming bit stream
- 						  during a read op */
--#define    MIF_CFG_POLL_PHY_MASK        0x7C00 /* tranceiver address to
-+#define    MIF_CFG_POLL_PHY_MASK        0x7C00 /* transceiver address to
- 						  be polled */
- #define    MIF_CFG_POLL_PHY_SHIFT       10
+-	if (!((u32)aq_rc < (sizeof(aq_to_posix) / sizeof((aq_to_posix)[0]))))
++	if (!((u32)aq_rc < ARRAY_SIZE(aq_to_posix)))
+ 		return -ERANGE;
  
-diff --git a/drivers/net/ethernet/sun/sunbmac.h b/drivers/net/ethernet/sun/sunbmac.h
-index d379bd407eca..85778edcf8dc 100644
---- a/drivers/net/ethernet/sun/sunbmac.h
-+++ b/drivers/net/ethernet/sun/sunbmac.h
-@@ -205,7 +205,7 @@
- #define FRAME_WRITE           0x50020000
- #define FRAME_READ            0x60020000
- 
--/* Tranceiver registers. */
-+/* Transceiver registers. */
- #define TCVR_PAL_SERIAL       0x00000001 /* Enable serial mode              */
- #define TCVR_PAL_EXTLBACK     0x00000002 /* Enable external loopback        */
- #define TCVR_PAL_MSENSE       0x00000004 /* Media sense                     */
-diff --git a/drivers/net/ethernet/sun/sungem.c b/drivers/net/ethernet/sun/sungem.c
-index 8e69d917d827..35c3226ce719 100644
---- a/drivers/net/ethernet/sun/sungem.c
-+++ b/drivers/net/ethernet/sun/sungem.c
-@@ -2187,7 +2187,7 @@ static void gem_do_stop(struct net_device *dev, int wol)
- 	 * if we did. This is not an issue however as the reset
- 	 * task is synchronized vs. us (rtnl_lock) and will do
- 	 * nothing if the device is down or suspended. We do
--	 * still clear reset_task_pending to avoid a spurrious
-+	 * still clear reset_task_pending to avoid a spurious
- 	 * reset later on in case we do resume before it gets
- 	 * scheduled.
- 	 */
-@@ -2370,7 +2370,7 @@ static int __maybe_unused gem_resume(struct device *dev_d)
- 	gem_do_start(dev);
- 
- 	/* If we had WOL enabled, the cell clock was never turned off during
--	 * sleep, so we end up beeing unbalanced. Fix that here
-+	 * sleep, so we end up being unbalanced. Fix that here
- 	 */
- 	if (gp->asleep_wol)
- 		gem_put_cell(gp);
-diff --git a/drivers/net/ethernet/sun/sungem.h b/drivers/net/ethernet/sun/sungem.h
-index 626302a9bc89..b921d3074017 100644
---- a/drivers/net/ethernet/sun/sungem.h
-+++ b/drivers/net/ethernet/sun/sungem.h
-@@ -352,7 +352,7 @@
- #define MAC_HASH14	0x60F8UL	/* Hash Table 14 Register	*/
- #define MAC_HASH15	0x60FCUL	/* Hash Table 15 Register	*/
- #define MAC_NCOLL	0x6100UL	/* Normal Collision Counter	*/
--#define MAC_FASUCC	0x6104UL	/* First Attmpt. Succ Coll Ctr.	*/
-+#define MAC_FASUCC	0x6104UL	/* First Attempt. Succ Coll Ctr.*/
- #define MAC_ECOLL	0x6108UL	/* Excessive Collision Counter	*/
- #define MAC_LCOLL	0x610CUL	/* Late Collision Counter	*/
- #define MAC_DTIMER	0x6110UL	/* Defer Timer			*/
-@@ -657,7 +657,7 @@
- 
- /* MIF Frame/Output Register.  This 32-bit register allows the host to
-  * communicate with a transceiver in frame mode (as opposed to big-bang
-- * mode).  Writes by the host specify an instrution.  After being issued
-+ * mode).  Writes by the host specify an instruction.  After being issued
-  * the host must poll this register for completion.  Also, after
-  * completion this register holds the data returned by the transceiver
-  * if applicable.
-diff --git a/drivers/net/ethernet/sun/sunhme.c b/drivers/net/ethernet/sun/sunhme.c
-index 4c9d5d4dd8a0..efbf042e9352 100644
---- a/drivers/net/ethernet/sun/sunhme.c
-+++ b/drivers/net/ethernet/sun/sunhme.c
-@@ -1118,7 +1118,7 @@ static void happy_meal_transceiver_check(struct happy_meal *hp, void __iomem *tr
-  *
-  * We use skb_reserve() to align the data block we get in the skb.  We
-  * also program the etxregs->cfg register to use an offset of 2.  This
-- * imperical constant plus the ethernet header size will always leave
-+ * emperical constant plus the ethernet header size will always leave
-  * us with a nicely aligned ip header once we pass things up to the
-  * protocol layers.
-  *
+ 	return aq_to_posix[aq_rc];
 -- 
 2.34.1
 
