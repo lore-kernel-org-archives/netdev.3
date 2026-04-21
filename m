@@ -1,130 +1,165 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9FC3295DA6;
-	Tue, 21 Apr 2026 16:07:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [4.193.249.245])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F9A71E2614
+	for <netdev@vger.kernel.org>; Tue, 21 Apr 2026 16:09:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=4.193.249.245
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776787641; cv=none; b=OKGca9zkmlJhFR7kn0nQKtP3t4sqPrTlWGCcL/a1o9eUq/25j4jjzEp4q+xbTq6PuwCWi54fZsn8uS+3TqHuTxxVD9jSAiGZEuFf+KaWNKQIaxt2XUegCIYMPkpBLMcAH4g+Osx+HFXx/T31XQqeeJfmW3+9hHdPs+HXhGO8/fw=
+	t=1776787795; cv=none; b=T1HBJWXRSO3H+U26zpFXlDbaLDpwt4kTG8U/eQ1jzleEl2G8zuzuHO/T8sW9rSKux9RyQxcqO3uFpXDuk9MdmNG5ca7TSpijg1zcjTHiAWvPZ5lcBjIyrWMb22PyVOCa/QBNot8oDSgzvujIpV4FeVrBIMbahYDZwLilSUHTsFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776787641; c=relaxed/simple;
-	bh=fKowrHbZJCe7YKyNI7Ish5wGyNOJSRJrxLJLMwb//RI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dkLWCO+tozuOxPnEiCYyooOUB6pSlmzTVuRMuXEkpYEyx30ImPUtbKOoPUsEYmqKCxmhwEG3H3u5XICdrhj2rDmcWOGs8pXdm4M4tC71ZbKUKgAAXt0QcdTdZL5dI1RwqzgZTd7dQhPn4OeuSMzsc0LANVQZQWzgl3y7sFLCqCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uZifecUu; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uZifecUu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A953C2BCB0;
-	Tue, 21 Apr 2026 16:07:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776787641;
-	bh=fKowrHbZJCe7YKyNI7Ish5wGyNOJSRJrxLJLMwb//RI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=uZifecUuEovU4uCy7/OkoJAYaN5EbLkhRENzu2sCsqyrbjiGtlu25mmmH424rC705
-	 sU1IHpnZX2Hfyq2JiLYnDE9STwgsSFoXj6q7hDgBlav0Yp7WjZXCKGxf8OYBO9YA55
-	 Fb7+t6dL54FBWveGEI4Ka0rBNyJNNDkQBfxIKV6EasVUUXN766/jlMXt5Wq0y4DXeM
-	 zhAt6b9BZYpGoz0EPu8SeEgcUPelnrT8X55UXje8qs3C7fG2kZHDCIqUaphe9GIWFI
-	 54f3q5QZCRMJYHZtNNqW4aMeGfABtcPyBo5Te9Hoy9H6X0beX/hvdh0ru/Q4wQmTzk
-	 lbM2ydP1do4LA==
-Message-ID: <e190409c-3dee-4de8-b1a0-7867213cb801@kernel.org>
-Date: Tue, 21 Apr 2026 18:07:15 +0200
+	s=arc-20240116; t=1776787795; c=relaxed/simple;
+	bh=OSnuaCIIpwIgyHOrVk2/OtdRAqQ0f0tuJ8fyC/1QgA8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dBX3/gkYyf3ls4Mu41yP1TgbTNoebcidqMOuzIZFdUkG5LRxLu5Jj0uwHXvLHjpvIflehd5EgmbPC3wf96E3ZVTaks+Hgyf/hjD46wb57qpYYtsPIxPAbicEst0cPEej/WEViOJepvOk8Cqb5DPCeO+RUo1TwUmR5NFoj1nDQKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn; spf=pass smtp.mailfrom=lzu.edu.cn; arc=none smtp.client-ip=4.193.249.245
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lzu.edu.cn
+Received: from enjou-Legion-Y7000P-2019.coin-barley.ts.net (unknown [172.23.56.36])
+	by app1 (Coremail) with SMTP id ygmowAC3MAE7oedp+A_ZAA--.52811S2;
+	Wed, 22 Apr 2026 00:09:32 +0800 (CST)
+From: Ren Wei <n05ec@lzu.edu.cn>
+To: netdev@vger.kernel.org
+Cc: jhs@mojatatu.com,
+	jiri@resnulli.us,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	sbrivio@redhat.com,
+	vladbu@mellanox.com,
+	yuantan098@gmail.com,
+	yifanwucs@gmail.com,
+	tomapufckgml@gmail.com,
+	bird@lzu.edu.cn,
+	kanolyc@gmail.com,
+	z1652074432@gmail.com,
+	n05ec@lzu.edu.cn
+Subject: [PATCH net v2 1/1] net/sched: cls_flower: avoid stale mask references after delete
+Date: Wed, 22 Apr 2026 00:03:02 +0800
+Message-ID: <20260421160303.1919562-1-n05ec@lzu.edu.cn>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH 0/3] mptcp: add RECVERR and MSG_ERRQUEUE support
-To: David Carlier <devnexen@gmail.com>, netdev@vger.kernel.org,
- mptcp@lists.linux.dev
-Cc: martineau@kernel.org, geliang@kernel.org, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org
-References: <20260421152216.38127-1-devnexen@gmail.com>
-From: Matthieu Baerts <matttbe@kernel.org>
-Content-Language: fr
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <20260421152216.38127-1-devnexen@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:ygmowAC3MAE7oedp+A_ZAA--.52811S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxAw4ktryfKF4UuF15Ar1fZwb_yoWrGw1kpF
+	ZrG34UJrWDXF15W3ZIy3yj9wn0kas7AFy5WF1rW395tr97ta9YkFykZ3y29Fn8Kr4UWryS
+	vF4qyr1rZ3WkCrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBY1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
+	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
+	IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1l84ACjcxK6I8E
+	87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UM2AIxVAIcxkEcV
+	Aq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j
+	6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64
+	vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0E
+	n4kS14v26r4a6rW5MxkIecxEwVCm-wCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6c
+	x26r48MxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCj
+	r7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6x
+	IIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAI
+	w20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x
+	0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7sRi_HU3UUUUU==
+X-CM-SenderInfo: zqqvvuo6o23hxhgxhubq/1tbiAQAECWnnOeEJTwAAsc
 
-Hi David,
+From: Yuhang Zheng <z1652074432@gmail.com>
 
-On 21/04/2026 17:22, David Carlier wrote:
-> MPTCP already advertises IP_RECVERR/IPV6_RECVERR as supported, but the
-> parent socket does not currently provide usable MSG_ERRQUEUE handling.
-> 
-> This series wires the MPTCP socket up to the IPv4/IPv6 error queue
-> paths. It propagates RECVERR-related sockopts to existing and future
-> subflows, makes poll() report pending errqueue activity through the
-> parent socket, and allows recvmsg(MSG_ERRQUEUE) on the MPTCP socket to
-> consume queued errors with the parent socket ABI.
-> 
-> The series also handles mixed-family subflows by applying the matching
-> sockopt according to each subflow family, and avoids silently losing an
-> error skb if requeueing to the parent socket fails under rmem pressure.
-Thank you for this series!
+cls_flower keeps filter and mask state separately. After a filter is
+removed or replaced, some paths can still need the mask data associated
+with that filter.
 
-Even if I agree it would be good to have full MSG_ERRQUEUE support,
-net-next is currently closed, and only bug fixes are accepted, see:
+Cache the mask key and dissector in struct cls_fl_filter when the mask
+is assigned, and use the cached copies in dump and offload paths. This
+avoids depending on the external mask object's lifetime after delete or
+replace.
 
-  https://docs.kernel.org/process/maintainer-netdev.html
+Fixes: 92149190067d ("net: sched: flower: set unlocked flag for flower proto ops")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Yucheng Lu <kanolyc@gmail.com>
+Signed-off-by: Yuhang Zheng <z1652074432@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+---
 
-pw-bot: defer
+changes in v2:
+- target the net tree instead of nf
+- fix the Fixes tag to the first triggerable introduction
+- correct the Yuan Tan Reported-by address and add the forwarder sign-off
+- v1 Link: https://lore.kernel.org/all/0fdcae6ac3e07afbbd43958f6b42e2ed6281e3d2.1773559972.git.z1652074432@gmail.com
 
-Instead, I suggest switching the discussions only to the MPTCP ML if
-that's OK. If the CI is happy, someone will try to review it over there,
-when time permits. If not, please send the new versions only to the
-MPTCP ML, with the 'PATCH mptcp-next' prefix, and ideally on top of the
-'export' (or 'for-review') branch of our tree. For more details:
+ net/sched/cls_flower.c | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-  https://www.mptcp.dev/contributing.html#kernel-development
-
-Cheers,
-Matt
+diff --git a/net/sched/cls_flower.c b/net/sched/cls_flower.c
+index 099ff6a3e1f5..c1f10b4ec748 100644
+--- a/net/sched/cls_flower.c
++++ b/net/sched/cls_flower.c
+@@ -124,8 +124,10 @@ struct cls_fl_head {
+ 
+ struct cls_fl_filter {
+ 	struct fl_flow_mask *mask;
++	struct flow_dissector mask_dissector;
+ 	struct rhash_head ht_node;
+ 	struct fl_flow_key mkey;
++	struct fl_flow_key mask_key;
+ 	struct tcf_exts exts;
+ 	struct tcf_result res;
+ 	struct fl_flow_key key;
+@@ -445,6 +447,12 @@ static void fl_destroy_filter_work(struct work_struct *work)
+ 	__fl_destroy_filter(f);
+ }
+ 
++static void fl_filter_copy_mask(struct cls_fl_filter *f)
++{
++	f->mask_key = f->mask->key;
++	f->mask_dissector = f->mask->dissector;
++}
++
+ static void fl_hw_destroy_filter(struct tcf_proto *tp, struct cls_fl_filter *f,
+ 				 bool rtnl_held, struct netlink_ext_ack *extack)
+ {
+@@ -476,8 +484,8 @@ static int fl_hw_replace_filter(struct tcf_proto *tp,
+ 	tc_cls_common_offload_init(&cls_flower.common, tp, f->flags, extack);
+ 	cls_flower.command = FLOW_CLS_REPLACE;
+ 	cls_flower.cookie = (unsigned long) f;
+-	cls_flower.rule->match.dissector = &f->mask->dissector;
+-	cls_flower.rule->match.mask = &f->mask->key;
++	cls_flower.rule->match.dissector = &f->mask_dissector;
++	cls_flower.rule->match.mask = &f->mask_key;
+ 	cls_flower.rule->match.key = &f->mkey;
+ 	cls_flower.classid = f->res.classid;
+ 
+@@ -2489,6 +2497,7 @@ static int fl_change(struct net *net, struct sk_buff *in_skb,
+ 	err = fl_check_assign_mask(head, fnew, fold, mask);
+ 	if (err)
+ 		goto unbind_filter;
++	fl_filter_copy_mask(fnew);
+ 
+ 	err = fl_ht_insert_unique(fnew, fold, &in_ht);
+ 	if (err)
+@@ -2705,8 +2714,8 @@ static int fl_reoffload(struct tcf_proto *tp, bool add, flow_setup_cb_t *cb,
+ 		cls_flower.command = add ?
+ 			FLOW_CLS_REPLACE : FLOW_CLS_DESTROY;
+ 		cls_flower.cookie = (unsigned long)f;
+-		cls_flower.rule->match.dissector = &f->mask->dissector;
+-		cls_flower.rule->match.mask = &f->mask->key;
++		cls_flower.rule->match.dissector = &f->mask_dissector;
++		cls_flower.rule->match.mask = &f->mask_key;
+ 		cls_flower.rule->match.key = &f->mkey;
+ 
+ 		err = tc_setup_offload_action(&cls_flower.rule->action, &f->exts,
+@@ -3709,7 +3718,7 @@ static int fl_dump(struct net *net, struct tcf_proto *tp, void *fh,
+ 		goto nla_put_failure_locked;
+ 
+ 	key = &f->key;
+-	mask = &f->mask->key;
++	mask = &f->mask_key;
+ 	skip_hw = tc_skip_hw(f->flags);
+ 
+ 	if (fl_dump_key(skb, net, key, mask))
 -- 
-Sponsored by the NGI0 Core fund.
+2.43.0
 
