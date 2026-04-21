@@ -1,97 +1,136 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C267D3CFF5A;
-	Tue, 21 Apr 2026 12:32:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 458153BD226;
+	Tue, 21 Apr 2026 12:33:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776774770; cv=none; b=hq2w/t8k+ouoF+pCHGtr/GYPOjfpWYTmeVNbRbqbqXZof8PeADZKKEAC0E76E/c572at2ZfW/CjZud57hmd+adcOw4H+uZr2MZ/M4xQF3uWFPMPIK69JORFWQUs53iWwbJMXXPgaN30UABdo3/Ws3WhmomU9XFXIttoAIymg0fk=
+	t=1776774784; cv=none; b=Upxi9Qeq8whGpS6hF/BDeaZ2OlP0zJBBFK6cQtlHbBGPMlT3LGyof2vs/wQpsKn9RCFGmsW6oL7+8Zxfz4jAGUXhUEi6e+uNHGXwA3mwPlf2epJsvWNucscChblRjgMMi8p7DcXarNcMrJtZyCCB4NEEV0VQESezwF6beZSlkc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776774770; c=relaxed/simple;
-	bh=FQUyXWQVM+YuNW8hLLBN8C1mr41Ou4vkDSJGr7RLI9Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iLpvOYHRMBsUo4/qSBRYacEe4+sbvDVcahlTVqvU/6+2IAe2fWJzuAg9UOZuK3qgLJIvif5P0IzFfW5JstDSc2ODugLk70Yaf3XnCE2PIqXwknIEdjTs7cIYfSWlVISCqfybiqRbVs3a1Epq0WDyjOfk9Pqg1rUiakf3Ev8BY6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=vMkJyLSA; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1776774784; c=relaxed/simple;
+	bh=oHBjTkhCMzejxen8DTPYlVNZC/WO3tnUI/m2vLeC0Ho=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZJokRkwwKYhNtSiz5jQVJyg4Bz56M0aNkrunWEwCCnxGV/A1W6lw0EmRM4PU75KvpCwbeACyzlOGehZe9BLzZfbTZWsQDpbT9jQACNY5i0QdGBlUKsezwaqeYW+wEn9dHoYyVeEiZpxx33d4J5z4IClcaBFvFdJ9KEHryFenLIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mNjlAyzc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="vMkJyLSA"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=CojY5epJaQHYMuXOD58raOu9GZcCKSAkFBErgdsKqzg=; b=vMkJyLSACrqDGk0E6dZD9O6Sel
-	3YP3mNz+cFkpY3YFQeOgFN+VEloUfxeVW2GXShT0qwMXQZhET/orScLl79PLywjrAg0XdXJhRhBer
-	vLpeO8hyHEFqg718LVxzbA7YMD8beYNwtweUzwmrTSnBG4nvmGczpxvwGH9yoph2gHUA=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wFAHI-00GtKR-VM; Tue, 21 Apr 2026 14:32:32 +0200
-Date: Tue, 21 Apr 2026 14:32:32 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Morduan Zang <zhangdandan@uniontech.com>
-Cc: petkan@nucleusys.com, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch,
-	linux-usb@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com,
-	Zhan Jun <zhanjun@uniontech.com>,
-	syzbot+3f46c095ac0ca048cb71@syzkaller.appspotmail.com
-Subject: Re: [PATCH] net: usb: rtl8150: fix use-after-free in
- rtl8150_start_xmit()
-Message-ID: <e64d95d6-817c-480f-8205-525f407279eb@lunn.ch>
-References: <73ACB7391A6DE033+20260421110412.14795-1-zhangdandan@uniontech.com>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mNjlAyzc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74DF3C2BCB0;
+	Tue, 21 Apr 2026 12:33:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1776774783;
+	bh=oHBjTkhCMzejxen8DTPYlVNZC/WO3tnUI/m2vLeC0Ho=;
+	h=From:To:Cc:Subject:Date:From;
+	b=mNjlAyzcmHFOWIF48s5OBb+aSkox1up6S7kmp0ky5kiaXHKjz0yc0v26AGF57L1WD
+	 zjK4c6SXUDYM6wNTQOiinvqaaKSuH4+OeVfmcF0xJKwY2OBJ8H339AD847B2hDDGaz
+	 peF3rIUk2X4aQFOK5lyTJMFy/Bpuq0khmlSF98VU=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	David Ahern <dsahern@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	stable <stable@kernel.org>
+Subject: [PATCH net v2] ipv6: rpl: reserve mac_len headroom when recompressed SRH grows
+Date: Tue, 21 Apr 2026 14:32:59 +0200
+Message-ID: <2026042158-sediment-elliptic-a954@gregkh>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <73ACB7391A6DE033+20260421110412.14795-1-zhangdandan@uniontech.com>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3584; i=gregkh@linuxfoundation.org; h=from:subject:message-id; bh=oHBjTkhCMzejxen8DTPYlVNZC/WO3tnUI/m2vLeC0Ho=; b=owGbwMvMwCRo6H6F97bub03G02pJDJnP86rKVh5aFvMiasmxG1PN7k9znjR7ZdKxwqKQDX02l x5vO590oCOWhUGQiUFWTJHlyzaeo/srDil6GdqehpnDygQyhIGLUwAmMmMJwzybNemtLGzXAlP0 dijO7chxyLhUksGwYHrpXgaHE1/MU0utcq7HvO1Zor3qEQA=
+X-Developer-Key: i=gregkh@linuxfoundation.org; a=openpgp; fpr=F4B60CC5BF78C2214A313DCB3147D40DDB2DFB29
+Content-Transfer-Encoding: 8bit
 
-On Tue, Apr 21, 2026 at 07:04:12PM +0800, Morduan Zang wrote:
-> From: Zhan Jun <zhanjun@uniontech.com>
-> 
-> syzbot reported a KASAN slab-use-after-free read in rtl8150_start_xmit()
-> when accessing skb->len for tx statistics after usb_submit_urb() has
-> been called:
-> 
->   BUG: KASAN: slab-use-after-free in rtl8150_start_xmit+0x71f/0x760
->     drivers/net/usb/rtl8150.c:712
->   Read of size 4 at addr ffff88810eb7a930 by task kworker/0:4/5226
-> 
-> The URB completion handler write_bulk_callback() frees the skb via
-> dev_kfree_skb_irq(dev->tx_skb). The URB may complete on another CPU
-> in softirq context before usb_submit_urb() returns in the submitter,
-> so by the time the submitter reads skb->len the skb has already been
-> queued to the per-CPU completion_queue and freed by net_tx_action():
-> 
->   CPU A (xmit)                      CPU B (USB completion softirq)
->   ------------                      ------------------------------
->   dev->tx_skb = skb;
->   usb_submit_urb()      --+
->                           |-------> write_bulk_callback()
->                           |           dev_kfree_skb_irq(dev->tx_skb)
->                           |         net_tx_action()
->                           |           napi_skb_cache_put()   <-- free
->   netdev->stats.tx_bytes  |
->     += skb->len;          <-- UAF read
-> 
-> Fix it by caching skb->len before submitting the URB and using the
-> cached value when updating the tx_bytes counter. This mirrors the
-> fix pattern used by other USB network drivers.
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Reported-by: syzbot+3f46c095ac0ca048cb71@syzkaller.appspotmail.com
-> Closes: https://lore.kernel.org/all/69e69ee7.050a0220.24bfd3.002b.GAE@google.com/
-> Closes: https://syzkaller.appspot.com/bug?extid=3f46c095ac0ca048cb71
-> Signed-off-by: Zhan Jun <zhanjun@uniontech.com>
+ipv6_rpl_srh_rcv() decompresses an RFC 6554 Source Routing Header, swaps
+the next segment into ipv6_hdr->daddr, recompresses, then pulls the old
+header and pushes the new one plus the IPv6 header back.  The
+recompressed header can be larger than the received one when the swap
+reduces the common-prefix length the segments share with daddr (CmprI=0,
+CmprE>0, seg[0][0] != daddr[0] gives the maximum +8 bytes).
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+pskb_expand_head() was gated on segments_left == 0, so on earlier
+segments the push consumed unchecked headroom.  Once skb_push() leaves
+fewer than skb->mac_len bytes in front of data,
+skb_mac_header_rebuild()'s call to:
 
-For future patches, please could you set the subject line correctly. See
+	skb_set_mac_header(skb, -skb->mac_len);
 
-https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
+will store (data - head) - mac_len into the u16 mac_header field, which
+wraps to ~65530, and the following memmove() writes mac_len bytes ~64KiB
+past skb->head.
 
-    Andrew
+A single AF_INET6/SOCK_RAW/IPV6_HDRINCL packet over lo with a two
+segment type-3 SRH (CmprI=0, CmprE=15) reaches headroom 8 after one
+pass; KASAN reports a 14-byte OOB write in ipv6_rthdr_rcv.
+
+Fix this by expanding the head whenever the remaining room is less than
+the push size plus mac_len, and request that much extra so the rebuilt
+MAC header fits afterwards.
+
+Fixes: 8610c7c6e3bd ("net: ipv6: add support for rpl sr exthdr")
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: David Ahern <dsahern@kernel.org>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>
+Cc: stable <stable@kernel.org>
+Reported-by: Anthropic
+Assisted-by: gkh_clanker_t1000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+v2: - fixed up if statement to actually work properly, and test it against
+      a working poc (poc will be sent separately)
+      Reworded the changelog and the subject to make more sense
+      Link to v1: https://lore.kernel.org/r/2026042024-cabbie-gills-9371@gregkh
+
+ net/ipv6/exthdrs.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
+
+diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
+index 95558fd6f447..b86a638d51e4 100644
+--- a/net/ipv6/exthdrs.c
++++ b/net/ipv6/exthdrs.c
+@@ -491,6 +491,7 @@ static int ipv6_rpl_srh_rcv(struct sk_buff *skb)
+ 	struct net *net = dev_net(skb->dev);
+ 	struct inet6_dev *idev;
+ 	struct ipv6hdr *oldhdr;
++	unsigned int chdr_len;
+ 	unsigned char *buf;
+ 	int accept_rpl_seg;
+ 	int i, err;
+@@ -590,11 +591,11 @@ static int ipv6_rpl_srh_rcv(struct sk_buff *skb)
+ 	oldhdr = ipv6_hdr(skb);
+ 
+ 	skb_pull(skb, ((hdr->hdrlen + 1) << 3));
+-	skb_postpull_rcsum(skb, oldhdr,
+-			   sizeof(struct ipv6hdr) + ((hdr->hdrlen + 1) << 3));
+-	if (unlikely(!hdr->segments_left)) {
+-		if (pskb_expand_head(skb, sizeof(struct ipv6hdr) + ((chdr->hdrlen + 1) << 3), 0,
+-				     GFP_ATOMIC)) {
++	chdr_len = sizeof(struct ipv6hdr) + ((chdr->hdrlen + 1) << 3);
++	skb_postpull_rcsum(skb, oldhdr, chdr_len);
++	if (unlikely(!hdr->segments_left ||
++		     skb_headroom(skb) < chdr_len + skb->mac_len)) {
++		if (pskb_expand_head(skb, chdr_len + skb->mac_len, 0, GFP_ATOMIC)) {
+ 			__IP6_INC_STATS(net, ip6_dst_idev(skb_dst(skb)), IPSTATS_MIB_OUTDISCARDS);
+ 			kfree_skb(skb);
+ 			kfree(buf);
+@@ -603,7 +604,7 @@ static int ipv6_rpl_srh_rcv(struct sk_buff *skb)
+ 
+ 		oldhdr = ipv6_hdr(skb);
+ 	}
+-	skb_push(skb, ((chdr->hdrlen + 1) << 3) + sizeof(struct ipv6hdr));
++	skb_push(skb, chdr_len);
+ 	skb_reset_network_header(skb);
+ 	skb_mac_header_rebuild(skb);
+ 	skb_set_transport_header(skb, sizeof(struct ipv6hdr));
+-- 
+2.53.0
+
