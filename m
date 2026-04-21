@@ -1,163 +1,129 @@
-Received: from mail-oa1-f80.google.com (mail-oa1-f80.google.com [209.85.160.80])
+Received: from mail-oo1-f80.google.com (mail-oo1-f80.google.com [209.85.161.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7A729BD91
-	for <netdev@vger.kernel.org>; Tue, 21 Apr 2026 15:34:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 312162D97B7
+	for <netdev@vger.kernel.org>; Tue, 21 Apr 2026 15:35:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.80
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776785665; cv=none; b=GObMDBYiDV+5EJJCRdkeGe7XM+n7J+K4hQ0isqDsgsV1SzXQR5mhbe4Qyx7up4VM4xxwTtorlCqj1ImxRs4Q30KCE24bYRKrSWR3j5xD7eC0DwMX2V0rA2eaoVsU/JbPa3Osv9lItbOlR1Vle7amXyh8H2HpsycJJ9zJVeYqcv4=
+	t=1776785736; cv=none; b=AI9rJPQkk+lvqQlmRmy+O7K9HNg+fYKGk6BENwsPGwEx4VeTL0PCW3a4JyNBAJogqZH7aoVycla1v4DS0BIOSgqpNOCsTEntJEJhecVfErMFfKnRKK2nRnA78V33EO3XFTE1kc7Ikk75trfTB3M7XLRdHE+sCGmB3A/mN6wHLDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776785665; c=relaxed/simple;
-	bh=rZArWJHmRxt1om2wMFT5MbRr454f6XOP0FkgvXszVdc=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=FcnBkQVZz8aG2uv3JTyzvLpSy06jORsO7SWblvW/F1gCcvC3dYdeI/Bod9fa7FHjrGSpYozQpuAjlNCqrotMsz2ItGe6Nd34/IBPZCuxUZr0o3GtlsLcNkUFm8c+tjFLnOLVgXl3qfDXPKkad9zCFp/B8IYBmd9IEwhz+erDFY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.160.80
+	s=arc-20240116; t=1776785736; c=relaxed/simple;
+	bh=iqEWk6uYHERT5rbJJGWanfCq1ohLZkd0SSFaqHxel6Y=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=kaUCE82fpY2sAp4mQ4rpRizhaOujzdstLDh/u3aZ4GDuc13hm9nC2D1sldvlEqbqj3ZY+ePIHA42HFF6zIdX8ozC554buw6MOIWI8GavIi+8bBwqN05yRylSmNrIupbwEL+wKH6pJerWap0sfTQi7t+4E7xuWMKI8gy8CUcEbDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.80
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oa1-f80.google.com with SMTP id 586e51a60fabf-42c06895be6so3599337fac.0
-        for <netdev@vger.kernel.org>; Tue, 21 Apr 2026 08:34:23 -0700 (PDT)
+Received: by mail-oo1-f80.google.com with SMTP id 006d021491bc7-66308f16ea1so6397529eaf.2
+        for <netdev@vger.kernel.org>; Tue, 21 Apr 2026 08:35:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776785662; x=1777390462;
+        d=1e100.net; s=20251104; t=1776785732; x=1777390532;
         h=to:from:subject:message-id:date:mime-version:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=wy8SfbKEgZbWh8Ix/2J0vDXqxb5Y/5n9Sl1yQnlcfBM=;
-        b=NgQJJakc7z1aYofiK4AXwuaxtRhi6TnYtu4gSaU+yQKHlczW8SL0w62+iszQI3aUE/
-         lMCDz85rzfcBYR6+DC/Cbcaej39do2wKUeAFBDjGnFt5nbMvtSpy2ikyemBIC878Jwu/
-         tgO3454v0Rt/WulqxiQp09CKETm1fX6PmABmgwoKu/3qP6MY52iiogrPR63mC0t5ql7A
-         UCTPOQuQWv2pSFbydnTmzP9vdBb/AfQz8J9/kxKEH2zSdIMpKA8X7e6Q2AvNYoujM5WR
-         SrAUObsN0mNcdNluFBzz1Nd82W0YuRcpL8mRYiFLKN7h11/1WhDIiKPTRv0ioPJO29ul
-         bGPw==
-X-Forwarded-Encrypted: i=1; AFNElJ8b/6IaY6AveLbHZ76URX2som1lUW3qnwXSmr0VGMLnI0eaIVtVhMrGAj69XqrNr09K/AyXf1Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwEEkk2T5LdM9DwEanUKiS4aF5Zda/BD6IMLrcaLFs1SHDI0kk8
-	+lYnUE7o3lJHmnwM5Q5oebpUyKWVcvAr+bx0OEfdP9w9GOZyILMekg8tgwdntCUlpPM7Lk/+h37
-	eiehyN0imJA6xW+5VFSr/TxxO9Zgy2rWY+KdkfWc6RzdOTHr5uNILqbKUMxM=
+        bh=kOpqBM96QcpbmuHxumsP+RAdHvAHkt+d2uQmzoGd1Dc=;
+        b=tKuwF3hNxsLNfjcQ3LKEpTvbxCybiq8cv+kgH1VOroigu2Br/sAPh5NwC5p7qJ8GFL
+         TRt6/7uWyn8GkODTlw9FXhsaiJWl161l2TlVX7EV90ngnahYUFixiLQG0df7Gkt0mTfE
+         OflzNixCx4tiSP1P7BbXgAOyYBsuoY7d504xG11kWIhHaVFszWcjcN6xaGuwID0/07Qw
+         9s5xpjJlON7y9sUQN3SREUU3FmiooPvzwBVxpKxtedeGbSbGrNT7RWPTbDxcNFjs4pmx
+         ki2u3tOAH7GuXwWkyWl0aydP/jpqUQCd/wJvf10FQwexIGX28gi3Q5HjED2147re2saX
+         0Fyw==
+X-Forwarded-Encrypted: i=1; AFNElJ+kr8XaolxAlaifYPs8p8ctgZs/hE78HnS5xkiBd2llBBVx5IFuv1hlh5eNPdbals/kCVfCR6Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzN0DlaAfe3L0TRkOa+mFyPUUGK7pb35ui89Zp+MWyYK2zeQcDk
+	ro0mEM2g61YoExgYXWtONRMb9BZZ9bxscBBX5BMH9yjgta624K4ODnNI1tdmsOmuWjKnYZk2WpK
+	hhOJYsXcGo5siv1vYLjOe+cKGPo+m1GPBEweIPedXS+epqD4pSQKH/tkXIf8=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:c90:b0:688:6d55:195 with SMTP id
- 006d021491bc7-69462f2f14fmr10770363eaf.57.1776785662586; Tue, 21 Apr 2026
- 08:34:22 -0700 (PDT)
-Date: Tue, 21 Apr 2026 08:34:22 -0700
+X-Received: by 2002:a05:6820:622:b0:694:9c29:c298 with SMTP id
+ 006d021491bc7-6949c29db53mr1049682eaf.33.1776785732069; Tue, 21 Apr 2026
+ 08:35:32 -0700 (PDT)
+Date: Tue, 21 Apr 2026 08:35:32 -0700
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69e798fe.050a0220.24bfd3.0033.GAE@google.com>
-Subject: [syzbot] [sctp?] WARNING: refcount bug in sctp_association_hold
-From: syzbot <syzbot+61bdf856ff699245c643@syzkaller.appspotmail.com>
-To: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
-	kuba@kernel.org, linux-kernel@vger.kernel.org, linux-sctp@vger.kernel.org, 
-	lucien.xin@gmail.com, marcelo.leitner@gmail.com, netdev@vger.kernel.org, 
-	pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Message-ID: <69e79944.a00a0220.17a17.001a.GAE@google.com>
+Subject: [syzbot] [net?] kernel BUG in pn_socket_autobind
+From: syzbot <syzbot+b3c0e6a240078433c42b@syzkaller.appspotmail.com>
+To: courmisch@gmail.com, davem@davemloft.net, edumazet@google.com, 
+	horms@kernel.org, kuba@kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
 
 Hello,
 
 syzbot found the following issue on:
 
-HEAD commit:    c1f49dea2b8f Merge tag 'mm-hotfixes-stable-2026-04-19-00-1..
+HEAD commit:    b4e07588e743 tracing: tell git to ignore the generated 'un..
 git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=15de0e6a580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=507c1c0a12a79510
-dashboard link: https://syzkaller.appspot.com/bug?extid=61bdf856ff699245c643
+console output: https://syzkaller.appspot.com/x/log.txt?x=10aa8e6a580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=95ee3fe1c5a8ab57
+dashboard link: https://syzkaller.appspot.com/bug?extid=b3c0e6a240078433c42b
 compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-userspace arch: i386
 
 Unfortunately, I don't have any reproducer for this issue yet.
 
 Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-c1f49dea.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/98ce9fed1a97/vmlinux-c1f49dea.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/b02e163ec959/bzImage-c1f49dea.xz
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-b4e07588.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/bb7067cc2bb4/vmlinux-b4e07588.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/46b9d3bae153/bzImage-b4e07588.xz
 
 IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+61bdf856ff699245c643@syzkaller.appspotmail.com
+Reported-by: syzbot+b3c0e6a240078433c42b@syzkaller.appspotmail.com
 
+netlink: 'syz.3.104': attribute type 2 has an invalid length.
 ------------[ cut here ]------------
-refcount_t: addition on 0; use-after-free.
-WARNING: lib/refcount.c:25 at refcount_warn_saturate+0x111/0x130 lib/refcount.c:25, CPU#0: swapper/0/0
-Modules linked in:
-CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted syzkaller #0 PREEMPT(full) 
+kernel BUG at net/phonet/socket.c:213!
+Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+CPU: 1 UID: 0 PID: 6429 Comm: syz.3.104 Tainted: G             L      syzkaller #0 PREEMPT(full) 
+Tainted: [L]=SOFTLOCKUP
 Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:refcount_warn_saturate+0x111/0x130 lib/refcount.c:25
-Code: 06 e8 e3 e8 11 fd 48 8d 3d 8c d6 ef 0b 67 48 0f b9 3a e8 d2 e8 11 fd 5b 5d c3 cc cc cc cc e8 c6 e8 11 fd 48 8d 3d 7f d6 ef 0b <67> 48 0f b9 3a e8 b5 e8 11 fd 5b 5d e9 0e de a2 06 48 89 df e8 a6
-RSP: 0000:ffffc90000007bd8 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: ffff888075d2e004 RCX: ffffffff84f6dc0b
-RDX: ffffffff8e4955c0 RSI: ffffffff84f6dcba RDI: ffffffff90e6b340
-RBP: 0000000000000002 R08: 0000000000000005 R09: 0000000000000004
-R10: 0000000000000002 R11: 0000000000000000 R12: ffff888075d2e004
-R13: 0000000000000002 R14: ffff88804fd3cbd0 R15: ffff888050620000
-FS:  0000000000000000(0000) GS:ffff8880970ee000(0000) knlGS:0000000000000000
+RIP: 0010:pn_socket_autobind net/phonet/socket.c:213 [inline]
+RIP: 0010:pn_socket_autobind+0x14c/0x170 net/phonet/socket.c:202
+Code: 00 00 00 00 48 8b 44 24 58 65 48 2b 05 35 85 47 09 75 2a 48 83 c4 60 89 d8 5b 5d 41 5c 41 5d c3 cc cc cc cc e8 f5 0f 3d f7 90 <0f> 0b e8 ad c8 aa f7 eb 9e e8 06 c9 aa f7 e9 6c ff ff ff e8 5c b0
+RSP: 0018:ffffc900037ffa30 EFLAGS: 00010287
+RAX: 000000000000084d RBX: 0000000000000000 RCX: ffffc90007544000
+RDX: 0000000000080000 RSI: ffffffff8acc6aeb RDI: ffff888034de8000
+RBP: 0000000000000000 R08: 0000000000000003 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: 1ffff920006fff46
+R13: dffffc0000000000 R14: 1ffff920006fff61 R15: ffffc900037ffe48
+FS:  00007fdb20e7f6c0(0000) GS:ffff8880d63e1000(0000) knlGS:0000000000000000
 CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000080066018 CR3: 000000004c3cc000 CR4: 0000000000352ef0
+CR2: 00007fce31d5ee9c CR3: 000000002d58c000 CR4: 0000000000352ef0
 Call Trace:
- <IRQ>
- __refcount_add include/linux/refcount.h:289 [inline]
- __refcount_inc include/linux/refcount.h:366 [inline]
- refcount_inc include/linux/refcount.h:383 [inline]
- sctp_association_hold+0x9f/0xb0 net/sctp/associola.c:843
- sctp_generate_timeout_event+0x292/0x3f0 net/sctp/sm_sideeffect.c:284
- call_timer_fn+0x19a/0x640 kernel/time/timer.c:1748
- expire_timers kernel/time/timer.c:1799 [inline]
- __run_timers+0x75f/0xaf0 kernel/time/timer.c:2374
- __run_timer_base kernel/time/timer.c:2386 [inline]
- __run_timer_base kernel/time/timer.c:2378 [inline]
- run_timer_base+0x114/0x190 kernel/time/timer.c:2395
- run_timer_softirq+0x1a/0x50 kernel/time/timer.c:2405
- handle_softirqs+0x1ea/0xa00 kernel/softirq.c:622
- __do_softirq kernel/softirq.c:656 [inline]
- invoke_softirq kernel/softirq.c:496 [inline]
- __irq_exit_rcu+0x162/0x210 kernel/softirq.c:735
- irq_exit_rcu+0x9/0x30 kernel/softirq.c:752
- instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1061 [inline]
- sysvec_apic_timer_interrupt+0xa3/0xc0 arch/x86/kernel/apic/apic.c:1061
- </IRQ>
  <TASK>
- asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:697
-RIP: 0010:steal_cookie_task kernel/sched/core.c:6401 [inline]
-RIP: 0010:sched_core_balance+0x3fd/0xea0 kernel/sched/core.c:6422
-Code: 7e 48 48 89 4c 24 40 e8 61 df c2 09 48 8b 4c 24 40 e9 3a 01 00 00 49 8d 7f 48 e8 4e df c2 09 e8 79 76 3a 00 fb 80 7c 24 30 00 <0f> 85 92 00 00 00 8d 4d 01 48 63 d1 49 39 d4 73 48 83 f9 08 74 41
-RSP: 0000:ffffffff8e407b80 EFLAGS: 00000246
-RAX: 000000000046d04f RBX: ffff88802b23b3c8 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: ffffffff8df51613 RDI: ffffffff8c1c0200
-RBP: 0000000000000001 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000000 R12: 0000000000000001
-R13: dffffc0000000000 R14: ffff88802b33b380 R15: ffff88802b23b380
- do_balance_callbacks kernel/sched/core.c:5017 [inline]
- __balance_callbacks+0x21d/0x6e0 kernel/sched/core.c:5073
- __schedule+0x31b9/0x6820 kernel/sched/core.c:7191
- schedule_idle+0x54/0x80 kernel/sched/core.c:7308
- do_idle+0x2dd/0x590 kernel/sched/idle.c:381
- cpu_startup_entry+0x4f/0x60 kernel/sched/idle.c:451
- rest_init+0x251/0x260 init/main.c:762
- start_kernel+0x484/0x490 init/main.c:1220
- x86_64_start_reservations+0x24/0x30 arch/x86/kernel/head64.c:310
- x86_64_start_kernel+0x12b/0x130 arch/x86/kernel/head64.c:291
- common_startup_64+0x13e/0x148
+ pn_socket_sendmsg+0x43/0xe0 net/phonet/socket.c:421
+ sock_sendmsg_nosec net/socket.c:787 [inline]
+ __sock_sendmsg net/socket.c:802 [inline]
+ ____sys_sendmsg+0x9e1/0xb70 net/socket.c:2698
+ ___sys_sendmsg+0x190/0x1e0 net/socket.c:2752
+ __sys_sendmsg+0x170/0x220 net/socket.c:2784
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x10b/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fdb1ff9c819
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fdb20e7f028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00007fdb20215fa0 RCX: 00007fdb1ff9c819
+RDX: 0000000000008000 RSI: 0000200000000380 RDI: 0000000000000006
+RBP: 00007fdb20032c91 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fdb20216038 R14: 00007fdb20215fa0 R15: 00007ffc7b77c6b8
  </TASK>
-----------------
-Code disassembly (best guess), 1 bytes skipped:
-   0:	e8 e3 e8 11 fd       	call   0xfd11e8e8
-   5:	48 8d 3d 8c d6 ef 0b 	lea    0xbefd68c(%rip),%rdi        # 0xbefd698
-   c:	67 48 0f b9 3a       	ud1    (%edx),%rdi
-  11:	e8 d2 e8 11 fd       	call   0xfd11e8e8
-  16:	5b                   	pop    %rbx
-  17:	5d                   	pop    %rbp
-  18:	c3                   	ret
-  19:	cc                   	int3
-  1a:	cc                   	int3
-  1b:	cc                   	int3
-  1c:	cc                   	int3
-  1d:	e8 c6 e8 11 fd       	call   0xfd11e8e8
-  22:	48 8d 3d 7f d6 ef 0b 	lea    0xbefd67f(%rip),%rdi        # 0xbefd6a8
-* 29:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
-  2e:	e8 b5 e8 11 fd       	call   0xfd11e8e8
-  33:	5b                   	pop    %rbx
-  34:	5d                   	pop    %rbp
-  35:	e9 0e de a2 06       	jmp    0x6a2de48
-  3a:	48 89 df             	mov    %rbx,%rdi
-  3d:	e8                   	.byte 0xe8
-  3e:	a6                   	cmpsb  %es:(%rdi),%ds:(%rsi)
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:pn_socket_autobind net/phonet/socket.c:213 [inline]
+RIP: 0010:pn_socket_autobind+0x14c/0x170 net/phonet/socket.c:202
+Code: 00 00 00 00 48 8b 44 24 58 65 48 2b 05 35 85 47 09 75 2a 48 83 c4 60 89 d8 5b 5d 41 5c 41 5d c3 cc cc cc cc e8 f5 0f 3d f7 90 <0f> 0b e8 ad c8 aa f7 eb 9e e8 06 c9 aa f7 e9 6c ff ff ff e8 5c b0
+RSP: 0018:ffffc900037ffa30 EFLAGS: 00010287
+RAX: 000000000000084d RBX: 0000000000000000 RCX: ffffc90007544000
+RDX: 0000000000080000 RSI: ffffffff8acc6aeb RDI: ffff888034de8000
+RBP: 0000000000000000 R08: 0000000000000003 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: 1ffff920006fff46
+R13: dffffc0000000000 R14: 1ffff920006fff61 R15: ffffc900037ffe48
+FS:  00007fdb20e7f6c0(0000) GS:ffff8880d63e1000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fce31d5ee9c CR3: 000000002d58c000 CR4: 0000000000352ef0
 
 
 ---
