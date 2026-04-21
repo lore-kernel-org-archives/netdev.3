@@ -1,85 +1,95 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B18292B44;
-	Tue, 21 Apr 2026 16:22:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 379332ED17B;
+	Tue, 21 Apr 2026 16:24:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776788544; cv=none; b=aNRzO8+s6G7kFr1SJceLeb9CWObDnwjqpJqb4K6CmpyOMDT000yRba/iarACrleH38T5+HNzOqBLk9A+HCVX6J5cogqcwLilh+zxK3hddJCF8jbhvEZLokEz/Ae7n1njQqXQTVEJ6nTWdlPIbZ0pSaoVlH9bmAgzQsomTpD/4qo=
+	t=1776788663; cv=none; b=UorwxaVIWASKr5BAWPJ2aqHToun13ZeXq8dQtr8hQq8qU+9VNBTwGAVjpBz0wAxRFgsbwfydq5MBBGizwuRKXRtkQoC9O4GqDWdGtXMCPrhEyozfcRF0NpJRI+KXP8OOn5dlQeLHF9ckEd46FzU3+H4KgvgskMrCE7COxjrRfeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776788544; c=relaxed/simple;
-	bh=gHsASOzXsEnqn/QnRRYJ8wPU43DiCZy7Il0YtQlOeXU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZRiikyK7cl0e7/XMKtvwSj2OQPbJxOkZpudCLW02PzBrVkSn7HAgZPohoCJvIAFuW1T3r5zWG6sEkolLPw8AZllHDF6FsvnodawqDfan05H9MHAbnXBifdKMTXpAh0tuMMb3aTNQ0EsxPOPpukc2kFlLkoRDAYi+aEo6bCmKXy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fZjMlnIJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776788663; c=relaxed/simple;
+	bh=6UeoK3+oPAoW5BkB+MhbM0T6YpD6sWSw9Ifvnqy2WLQ=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=smli7RI/1vOQtvb6+jXoSmH1qsU7jXKzh3EzQO/3qWte9w7G4gpjVR4DZ6Rp0Bhf2cDoTF9MpqPu0KP2jxXJeAhH6ralOM62Jota/qHUgNO+cw/vRGLI/pZupY+7jQQ6K6sP6r9uDkUlewMsEOc57SWz4HVsA1j8bFoRZp6hLaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iuZ6fx4J; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fZjMlnIJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F68FC2BCB3;
-	Tue, 21 Apr 2026 16:22:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iuZ6fx4J"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B77BC2BCB0;
+	Tue, 21 Apr 2026 16:24:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776788544;
-	bh=gHsASOzXsEnqn/QnRRYJ8wPU43DiCZy7Il0YtQlOeXU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fZjMlnIJ+uLakBqR6xQhCF0xSWL5z8DoQg7YYlYMFLjWqUNFq1uss0a4Voi1KI/Av
-	 OTW6qjbjiCx/VR/qN33KfV/HJz9rnfm/rN9KsaTAEcaVkjmU7rdrONmei7C2csGCfx
-	 a/cznI8IIe92qBd3SpigKuU3IlFc4cs39HHke94B6stxDcStl3vfL7lrrn617uJwJN
-	 s8I76Mfjcf7x2Fp2P604SwhuK+2HHQZxMvTT9YulJQFwkx7t5gZ0pAm78urEO+Pv5u
-	 uzzz7WOOujUwnyjd6gLKVbQlou9F3Ger/94ixOPDpfxs5dCrGThSnDKjG7qB5Tpbck
-	 rgoPyff8ZLl7Q==
-Date: Tue, 21 Apr 2026 17:22:19 +0100
-From: Simon Horman <horms@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Matthew Wood <thepacketgeek@gmail.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel-team@meta.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net] netconsole: avoid out-of-bounds access on empty
- string in trim_newline()
-Message-ID: <20260421162219.GF651125@horms.kernel.org>
-References: <20260420-netcons_trim_newline-v1-1-dc35889aeedf@debian.org>
+	s=k20201202; t=1776788662;
+	bh=6UeoK3+oPAoW5BkB+MhbM0T6YpD6sWSw9Ifvnqy2WLQ=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
+	b=iuZ6fx4JVHp/tHoAu2c1IAvBj0EXt9JCd1m0L0LcRg9vaof4ci1VsDG0Jnkr6aw6Z
+	 cvajuYSeUDnL62p+JjfiHycnqY+ig39cRb7gSWKdxUEXMOKp3xQ950TZj/g6hmGprG
+	 UUswZoC9IBrtYv2K9ls3Plhv06gzM6/ZMsQ2J0pZOgiiO3Q5opb3pwQElojVgouNSD
+	 FJJvovRQ3cc8SJ5HfcejtpjOcrnzIUiLRdg5FFRZ56NayBhLyjX7NFGI9wY4cMrrgc
+	 PV7OnbzP08f2bNuv5nCIH3DylIJfCCWK5j+8Qy2A7411Etbvg6rAKvNeZpqOVL/euj
+	 9pPeQxViY+YMQ==
+Content-Type: multipart/mixed; boundary="===============6483710146441311888=="
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260420-netcons_trim_newline-v1-1-dc35889aeedf@debian.org>
+Message-Id: <cc500964d83d95307126b05cc7557309b498bafce0c514fa3f1656dd6413ce71@mail.kernel.org>
+In-Reply-To: <20260421155024.997077-2-bestswngs@gmail.com>
+References: <20260421155024.997077-2-bestswngs@gmail.com>
+Subject: Re: [PATCH bpf v2] bpf: Fix NULL pointer dereference in bpf_sk_storage_clone and diag paths
+From: bot+bpf-ci@kernel.org
+To: bestswngs@gmail.com,davem@davemloft.net,edumazet@google.com,kuba@kernel.org,pabeni@redhat.com
+Cc: horms@kernel.org,martin.lau@kernel.org,ast@kernel.org,ameryhung@gmail.com,leon.hwang@linux.dev,kees@kernel.org,wangfushuai@baidu.com,menglong8.dong@gmail.com,netdev@vger.kernel.org,bpf@vger.kernel.org,xmei5@asu.edu,bestswngs@gmail.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Tue, 21 Apr 2026 16:24:22 +0000 (UTC)
 
-On Mon, Apr 20, 2026 at 03:18:36AM -0700, Breno Leitao wrote:
-> trim_newline() unconditionally dereferences s[len - 1] after computing
-> len = strnlen(s, maxlen). When the string is empty, len is 0 and the
-> expression underflows to s[(size_t)-1], reading (and potentially
-> writing) one byte before the buffer.
-> 
-> The two callers feed trim_newline() with the result of strscpy() from
-> configfs store callbacks (dev_name_store, userdatum_value_store).
-> configfs guarantees count >= 1 reaches the callback, but the byte
-> itself can be NUL: a userspace write(fd, "\0", 1) leaves the
-> destination empty after strscpy() and triggers the underflow. The OOB
-> write only fires if the adjacent byte happens to be '\n', so this is
-> not a security issue, but the access is undefined behaviour either way.
-> 
-> This pattern is commonly flagged by LLM-based code reviewers. While it
-> is not a security fix, the underlying access is undefined behaviour and
-> the change is small and self-contained, so it is a reasonable candidate
-> for the stable trees.
-> 
-> Guard the dereference on a non-zero length.
-> 
-> Fixes: ae001dc67907 ("net: netconsole: move newline trimming to function")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Breno Leitao <leitao@debian.org>
+--===============6483710146441311888==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+> diff --git a/net/core/bpf_sk_storage.c b/net/core/bpf_sk_storage.c
+> index 14eb7812bda4..b2cd2b0292cb 100644
+> --- a/net/core/bpf_sk_storage.c
+> +++ b/net/core/bpf_sk_storage.c
 
-Sashiko has provided some feedback on this patch.
-I do not believe that should hold up progress of this patch.
-But I'd appreciate it if you could look over that feedback
-and see if any follow-up is warranted.
+[ ... ]
 
-Thanks!
+> @@ -596,6 +596,8 @@ static int bpf_sk_storage_diag_put_all(struct sock *sk, struct sk_buff *skb,
+>  	saved_len = skb->len;
+>  	hlist_for_each_entry_rcu(selem, &sk_storage->list, snode) {
+>  		smap = rcu_dereference(SDATA(selem)->smap);
+> +		if (!smap)
+> +			continue;
+>  		diag_size += nla_value_size(smap->map.value_size);
+>
+>  		if (nla_stgs && diag_get(SDATA(selem), skb))
+
+Martin KaFai Lau pointed out in the v1 review that the NULL check for
+smap doesn't fully address the race condition. The issue is that
+diag_get() will re-dereference sdata->smap independently:
+
+net/core/bpf_sk_storage.c:diag_get() {
+    ...
+    smap = rcu_dereference(sdata->smap);
+    ...
+}
+
+Between the NULL check above and the call to diag_get(), smap could
+become NULL again, leading to the same race condition.
+
+Martin suggested passing smap as a parameter to diag_get() to avoid
+the second dereference. This would ensure diag_get() uses the same
+smap pointer that was already checked.
+
+Could the fix be updated to pass smap to diag_get() as Martin
+suggested?
+
+Reference: https://lore.kernel.org/bpf/2026420182243.zAiN.martin.lau@linux.dev/
+
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/24732581685
+--===============6483710146441311888==--
