@@ -1,71 +1,75 @@
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E38E39EF2D
-	for <netdev@vger.kernel.org>; Tue, 21 Apr 2026 09:00:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F88A3A1D1C
+	for <netdev@vger.kernel.org>; Tue, 21 Apr 2026 09:00:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776762053; cv=none; b=leOJgRq7K/z0rLKoK6hv+QaFy+OCzVsfIMH2WmXbLqTgf4ut+yjSuWzS5b7EBe++mBJXY2J8soaW8sssAYqaZeyA3vzNu19J7IV+02DItNkSx9zbXcsoOWxVi8WysgevLjdd5PsDqXGgOzXOWUXQ67jaWawxi8aN6QNizP4aels=
+	t=1776762054; cv=none; b=BmZHrwG9PtYcYKVO8TyUckZf92KGN/6EUoFhCJdxt8FlrwH3l+2UAAVgJnnfUgR2JNrWDoKLbLQ0QEbIxG6fss+QRLpuomAqh4GXwPrPxBk6w5iPCXeUeIS9ZlyP1LY83a+PNPnsS4prZNFRgWD+ZIlwXjES9DPy+unBeCbA81E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776762053; c=relaxed/simple;
-	bh=y+/AIiRTJdMKJNGPNWVH8nSZsggF71AOLdWzKUHA+M8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=l4M5v4nFuIWkbAAoKgfpJqTVQVpHGCKKbrNvBzjMM424gtwm/9CDn6MWjmMvzs0MWWZnKv2LVFKDTasN1oVuV+bmGflkEyvtTAEurZNUQvI0L07iGlCCBU2tsvbetvQi1eu8Bxd7JrVvGf/UNrZ6jnNT0VKzEkHfKZ521JPlp7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=tM76s56l; arc=none smtp.client-ip=209.85.167.53
+	s=arc-20240116; t=1776762054; c=relaxed/simple;
+	bh=5O3E4beXCFsn+2omG2JaeUU9yR3L603oMfZIX81POm0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ocBoKG7WavFaUHUE92AGaqyuy9t+6C3L+hUVtOYMGnCg9W6pQ5/zyICWMKAwi7sLlUfoRCqhsN+OYfTcdTgoN5mnIuiqNdfmtpzI7fav4PQZGKdpZBMM5DujZnjCP35iKooz4/n02hRDnDTYyYoFbJmj9WRvX3hvC/hDIylAgeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YMlWzJvs; arc=none smtp.client-ip=209.85.208.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="tM76s56l"
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5a283c44478so6927643e87.3
-        for <netdev@vger.kernel.org>; Tue, 21 Apr 2026 02:00:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YMlWzJvs"
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-38e7c3a2deaso25711421fa.2
+        for <netdev@vger.kernel.org>; Tue, 21 Apr 2026 02:00:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776762050; x=1777366850; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=jIHT3F2PNAZPkCdPUPHQsxeMRfyG2lVqjjmEWm4QMoo=;
-        b=tM76s56lTVu9L3yTL42tSmOHHuj45F0eRZKT+i6hVDzwhyjyJTzTAw/zFXgDv6PBaK
-         RuYYMXoQY5SOhPwO8dk2R+2brtOX9luXrW7sN+6LZeK3pU44ARBjWV7XoEaTOIzrhtZ6
-         JuJfx9fPuJjgKl1E6plWgeePWRsu0SczpuOhnL+OT6ExD0mWgUzQwVwUM0JroLLv0im/
-         9nsoPK58IoJd71HDLnV5wXoLC20k+aERlhSRJumXSUa35+wDwiCpK7h0iiYIBXsIdkWR
-         Rc9Q72j1ml77/GVNxZ20JDHlvKr+PsaR3ccBeg8/8+1+xUEi144iEL5daBDSi6zM0wWE
-         38Qw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776762050; x=1777366850;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1776762052; x=1777366852; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=jIHT3F2PNAZPkCdPUPHQsxeMRfyG2lVqjjmEWm4QMoo=;
-        b=L0VnKU5MpKhAXwNSUyiMrVh6ezl+d5gJXwpKsLWBLSbZYtaqGYqmzlSHcK8kGnCnrz
-         piTPpxjqZ36w+8CnCKRzDM0YK5c7iiNEX3c/QHc61Y8Eh2NNfP1V4GNxiTR4inS9QJ0D
-         MUdZMjNWiYFUiF6/uW9p6woTTYzB3AXbh1N5cTPpjDWg5okhb4C2nm53r++TiXIgIDtH
-         P4YGbLSf8Y6MXLiqvVabCyiYGgHEyB0J9hdO1H3NyoquIQpuolSv8EQMIPuNFolyfdRH
-         /jp2qH7mPORjPfLkjQmyK7FMppUfu4E3ALoGoWYgXh57DtUhfe+icHSi/bGPFvoxEQTV
-         wVRA==
-X-Forwarded-Encrypted: i=1; AFNElJ/9alStdS9WSthE8/Vmqe6nxM/N+4fd/W55Qz2Sr4iBwmp9QQHTFWNj4Rs5Ypi1NIfjBttCvw8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyEcwSWha/1Eqx4p+vcSesjjtFBIro3nvDaTl18b6YAVnsNEvih
-	gPM9T/OjRlg/jEhVjNgGsC3ze4neM5cj5D3GxuOKMbpC/B6w835M6wj0
-X-Gm-Gg: AeBDievOnGpw9Xj8WGhllJMSF7dWNFVftISnQJL5D0uC8TGfCoOVVrgSqZzFFWRdPR1
-	dY3J1tRzJ7cQy1xz1eSkyoAiXzAQZzE7YXkIUfyhoeIifBuF1+aNgOP2z8kLHTl308DXV+eM6m8
-	EpZxwRqr/OCTrvElqSbSl39pOmBDmjVflGnRkeAoJXBHPXgxsHqgA9eY8MYKYowtDXl6xCFZsCa
-	yYDqBwT2wEesx1tTB/+l79JJXmRzB7xltUJykf9IqFS0LiDszsCLBxpWFHWZp6p/TAuDy5LBMxr
-	VlTnAzvHBQF+2h9685oQ6aIu9sLLUgybhsuaI3qS5D2i1LBKkhG3J/WB5PH8sEze7XnhfNoImPH
-	dIPFRf0Mh1UJJFltA7onhytk+8YqzpZa5heS89a0uCImp8h/nCOFYmSfuPG+clm20oR5SCPDGSz
-	gA5KBUdI+kTvcuan3TRj2p564SmN6v6II=
-X-Received: by 2002:a05:6512:3b8d:b0:5a2:9bd8:838d with SMTP id 2adb3069b0e04-5a4172b7afcmr4858988e87.6.1776762050063;
-        Tue, 21 Apr 2026 02:00:50 -0700 (PDT)
+        bh=4uqEjO1x7U0hEHfUcPuuf7JjPHoK2TE27oUo7PzQd9s=;
+        b=YMlWzJvs+gPhRHvzCNYFK2kg736BhSRlf1DYEcuTmjSBA1qHk0kTzyhqg5NB5wFjuu
+         8FFrGFHQHN+tQOo2RYXBo+j+GMwk2aBU7iZxqPX7lvyee029TFfelkAhbzGqQZqsOlSh
+         zDLoekKcIehCZF6k4mqEC8HxEnK8bCVAS+1Wkdjuu+4od2SN3I8Iy1GPY2dKn6oI1r+9
+         fSnqaP/tmVAiMrA0mMYf+KbLmUGNj/tPzPsYjcdnD7QFnqq0h8xvDBU/Vc9nQxEEz5lz
+         Q9RVuNJNsANRnqwO1cJxlYYj9BEkWtKrmEzuzmK69bdyZo1IvefiSojAYQ5HkdC0JxqG
+         DLuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776762052; x=1777366852;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=4uqEjO1x7U0hEHfUcPuuf7JjPHoK2TE27oUo7PzQd9s=;
+        b=DKYZa7gFyCPUJFljHnAIaw7+6XkxFkxEWH1QYIF5OCvgofGUe7SfAmZF/rLAEotoRi
+         b16faaqK/SpcahbzkKQ+gNKQOmezpOqfdEezBa2hwP7ThUvfUJLm6mqg39TKEfbhfFPU
+         n+Ww0KvqZLLkUhNzkSXwR6WZFpfcMC4dAnE4t8SfRfyG1iSZEWiPxMXrPmX1VqJPF7Hj
+         NGQXRlBPbnT/uOaoweoOi+O0IspKeqFMVaErZmrHhaW+dnmmOoetEhyXS60A+ux/jqlH
+         m/eioIShGa4+eTCNbvVOLojAtr9LCndjhmq1vMQDGGcrqu0P1Bz7MXVt+8lfRwy8T/Fb
+         0SPA==
+X-Forwarded-Encrypted: i=1; AFNElJ9yMqic23uQuBuVXPUFovgBE/I/gQBAvEHLVTYG8ARSdJ9K0VL7w8dGJ7OP+81KG5kore1l8sA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz5pEWoRCIuK9BGQs0JV0hDz2CfyJK3NkTtKCrveOyxeBS9sZxA
+	q8+IpKFUpaSkT06089t25uajem2AUjHz11Y2HnNeLbMELfb+v8xlpW5b
+X-Gm-Gg: AeBDieuzRuz/gBDpBnOc8cM6nAEdrdC3VCddbo6sM30f76dLx03RUkp5CeFVxsqd6eD
+	+oaTnDF7ODJt2MMLYremQ2CbCk6JLn67Z+rSTZxugTWOj6PPkYUqomP66ocNUMmcE0bIVG8YA7m
+	r3hi+OVw/oKFNMlEcQSKu+GGgZSov4WXxP7GZ5MACwnd5YUjsv0nK4ZJJFIxo/SvFIvFKK5fVqj
+	HMH+dbEhXp1dp1jGksvjpj42tzU7kQCo0bt6Lgtvrh9lSgxmlD2kSBt5vyDNafoFhv76VdRpYkO
+	9ZnuE+bHjm9vKHEOfMfvMjJeUFzK+tb0gfh2i/c9/iVw+wL1x/gpN3ZNhAm+DsZTngFhrs2GWZm
+	/GIMralgXvdToTxmRskomEmkn7M68D4GubW9EPET0ffs7FUkKAIRsgVgjAcULHnremlg59D7BpH
+	OfBxzOfE/utaI/IaUChU01tsAvS8Nd1JA=
+X-Received: by 2002:a05:651c:b0f:b0:38e:7e2:3324 with SMTP id 38308e7fff4ca-38ec7b693f9mr50643341fa.27.1776762051353;
+        Tue, 21 Apr 2026 02:00:51 -0700 (PDT)
 Received: from thinkpad ([178.205.156.194])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38ecb75b033sm28583931fa.39.2026.04.21.02.00.49
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38ecb75b033sm28583931fa.39.2026.04.21.02.00.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Apr 2026 02:00:49 -0700 (PDT)
+        Tue, 21 Apr 2026 02:00:51 -0700 (PDT)
 From: Matthew Bystrin <dev.mbstr@gmail.com>
 To: Lee Jones <lee@kernel.org>,
 	Richard Cochran <richardcochran@gmail.com>,
 	Min Li <min.li.xe@renesas.com>
 Cc: linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH 0/2] mfd: rsmu_spi: fixes and new IC support
-Date: Tue, 21 Apr 2026 12:07:08 +0300
-Message-ID: <20260421090710.395591-1-dev.mbstr@gmail.com>
+Subject: [PATCH 2/2] mfd: rsmu_spi: add 8a34002 support
+Date: Tue, 21 Apr 2026 12:07:10 +0300
+Message-ID: <20260421090710.395591-3-dev.mbstr@gmail.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260421090710.395591-1-dev.mbstr@gmail.com>
+References: <20260421090710.395591-1-dev.mbstr@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -74,58 +78,33 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Greetings!
+Add separate compatible string and spi_devcie_id to support 8a34002.
 
-First patch fixes Renesas 8A34002 SPI driver.
-
-In my setup 8A34002 is connected to VisionFive2 via SPI. I've discovered that
-upstream driver does not work:
-
-[    4.728771] 8a3400x-phc 8a3400x-phc.0.auto: 4.8.7, Id: 0x4002  HW Rev: 5  OTP Config Select: 0
-[    4.737389] 8a3400x-phc 8a3400x-phc.0.auto: requesting firmware 'idtcm.bin'
-[    4.744462] 8a3400x-phc 8a3400x-phc.0.auto: Direct firmware load for idtcm.bin failed with error -2
-[    4.753547] 8a3400x-phc 8a3400x-phc.0.auto: Failed at line 1273 in idtcm_load_firmware!
-[    4.761576] 8a3400x-phc 8a3400x-phc.0.auto: loading firmware failed with -2
-[    4.769411] 8a3400x-phc 8a3400x-phc.0.auto: No wait state: DPLL_SYS_STATE 0
-[    4.776374] 8a3400x-phc 8a3400x-phc.0.auto: Continuing while SYS APLL/DPLL is not locked
-[    4.785206] 8a3400x-phc 8a3400x-phc.0.auto: Unsupported MANUAL_REFERENCE: 0x00
-[    4.796930] 8a3400x-phc 8a3400x-phc.0.auto: PLL2 registered as ptp0
-
-This being caused by a piece of code in rsmu_write_page_register() function:
-
-if (reg < RSMU_CM_SCSR_BASE)
-	return 0;
-
-All addresses in include/linux/mfd/idt8a340_reg.h are less than
-RSMU_CM_SCSR_BASE so function was returning early, before any modifications to
-the page register. Valid read of versions - is just a coincidence, because
-default value of the page register is zero.
-
-There were 2 separate patch series which have to be merged in one time: mfd and
-ptp. The latter have been merged, the former[1] have not. As result we've got a
-broken driver.
-
-This patch can be reverted later when the second part will be ready (of course
-if it is planned to do so). Any comments, Min? I could support with testing.
-
-Also I've had a quick look into I2C part. It may also require the same kind of
-fixes to work properly. But I didn't tested it. I could do some experiments and
-return with patches later.
-
-
-Second patch just adds support for 8A34002, which is compatible with 8A34001. As
-I can see there is no need to update bindings, everything is already being done.
-
-Link: https://lore.kernel.org/netdev/LV3P220MB1202F8E2FCCFBA2519B4966EA0192@LV3P220MB1202.NAMP220.PROD.OUTLOOK.COM/
 Signed-off-by: Matthew Bystrin <dev.mbstr@gmail.com>
+---
+ drivers/mfd/rsmu_spi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Matthew Bystrin (2):
-  mfd: rsmu_spi: fix page register setup
-  mfd: rsmu_spi: add 8a34002 support
-
- drivers/mfd/rsmu_spi.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
+diff --git a/drivers/mfd/rsmu_spi.c b/drivers/mfd/rsmu_spi.c
+index 55c5698e7e77..2d4ad9606aec 100644
+--- a/drivers/mfd/rsmu_spi.c
++++ b/drivers/mfd/rsmu_spi.c
+@@ -242,6 +242,7 @@ static void rsmu_spi_remove(struct spi_device *client)
+ static const struct spi_device_id rsmu_spi_id[] = {
+ 	{ "8a34000",  RSMU_CM },
+ 	{ "8a34001",  RSMU_CM },
++	{ "8a34002",  RSMU_CM },
+ 	{ "82p33810", RSMU_SABRE },
+ 	{ "82p33811", RSMU_SABRE },
+ 	{}
+@@ -251,6 +252,7 @@ MODULE_DEVICE_TABLE(spi, rsmu_spi_id);
+ static const struct of_device_id rsmu_spi_of_match[] = {
+ 	{ .compatible = "idt,8a34000",  .data = (void *)RSMU_CM },
+ 	{ .compatible = "idt,8a34001",  .data = (void *)RSMU_CM },
++	{ .compatible = "idt,8a34002",  .data = (void *)RSMU_CM },
+ 	{ .compatible = "idt,82p33810", .data = (void *)RSMU_SABRE },
+ 	{ .compatible = "idt,82p33811", .data = (void *)RSMU_SABRE },
+ 	{}
 -- 
 2.53.0
 
