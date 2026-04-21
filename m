@@ -1,46 +1,52 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D412DEA74;
-	Tue, 21 Apr 2026 06:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF12175A6D;
+	Tue, 21 Apr 2026 06:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776751436; cv=none; b=KnaUPrBz7DF+yZgkL3GgkkE5bbUsi67+pzoLmlhz30/jewsJ+dNm82QjGZr8sujWgZdi0kl658gJ42dSzT9n3HRcP0suxPODDxaRbEOSjwML69ARhEuXRDUsfZEx3plxxpF4KOM5jnzMnb0RF7LovK9axIqpS9MaHY8+H0QtORU=
+	t=1776751449; cv=none; b=hs5CDcmtIxsYSI8K6vOOmUEwg3Ae4XPjBZkokGc0FzvBuvvwMbr31yYTycwptJ/OPRfNjGwNG/60JGri2B6SEBbI4uN+g7L7Kgwiv/d0V8sBXqgYrSdTwUMHUX21l0NiyfbqM6WRDVEBIKlygaVb6NIyX1UWji0gVrHgiFYxp9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776751436; c=relaxed/simple;
-	bh=39MG2Se+/eyfVMM8XJDbfOL9SLmB52vW2YmkOjx7r20=;
+	s=arc-20240116; t=1776751449; c=relaxed/simple;
+	bh=TI8LZTYV/KmCG1OsPote9A8sOaawJsYT4yYstMBFTCU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ikeQ0yO+rpVlDY8BeHTVP431rcxheDunb8FJgHZfQ68AH/93Pw0vaA63ZjkPTSzKT7F60ON/lX3HJ4CRLFtOItvOLjqO/tjeLaEsUntTtBDUpJ9cExj2pZtxk7wvGoZOXkRHMgseMxO+DkSuh1FnpCI47stF0iHaCtD7PsMMzRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bgmjUyCx; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ecb0K45IzfjlyMUC+3yLC2C+TqVEL7rIn5b0CCC8os1W7VnxsSvj+MFhDTSJiej3/cSMbK52e1noJbhgh9OQN0M7wI90uCnk96uhCljegByN6XzqTRE+VsJP/BcuYhhpTJVEBHNzucJVdjE558OcpONlkzY4IqnWVTmaMiVfKAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KKzkWbc5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bgmjUyCx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6839AC2BCB0;
-	Tue, 21 Apr 2026 06:03:55 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KKzkWbc5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44F9EC2BCB0;
+	Tue, 21 Apr 2026 06:04:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776751435;
-	bh=39MG2Se+/eyfVMM8XJDbfOL9SLmB52vW2YmkOjx7r20=;
+	s=korg; t=1776751448;
+	bh=TI8LZTYV/KmCG1OsPote9A8sOaawJsYT4yYstMBFTCU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bgmjUyCxe1lDtznRkSQdMrrR5WAhkEdyjcYyknvtpLYZMokfXpFgYp5S8MmFmADwg
-	 +dxfqHOlEMagE/PLX1d+6Hv4yL7DkVwB/aHgeXv2fkYG1OxBw3sxHMq+YI3ZBkWJ7I
-	 +tGnwR/zN5LpYqZfvI6OO6veC1eV6qNHAhsdbDu4=
-Date: Tue, 21 Apr 2026 08:03:53 +0200
+	b=KKzkWbc5zL/8yJTVCXh7VfQ7nS4igOr4WOal5jSjMRc7iDCFJnXy1sx4DEDi87qrO
+	 Uds4IM6Kdw6qdCwQfTyE4PIAKBUg1FbOOP/M+YgxW77CFjMqJmcMtcaDTgL8iwj6pa
+	 77JJvJeqH8avcFa+tFt2RU/Fbs63lE2txcpQPIAY=
+Date: Tue, 21 Apr 2026 08:04:06 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
 To: Jakub Kicinski <kuba@kernel.org>
 Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
 	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
-	corbet@lwn.net, skhan@linuxfoundation.org, marcel@holtmann.org,
-	luiz.dentz@gmail.com, mchehab+huawei@kernel.org,
-	jani.nikula@intel.com, demarchi@kernel.org, rdunlap@infradead.org,
-	justonli@chromium.org, ivecera@redhat.com,
-	jonathan.cameron@huawei.com, kees@kernel.org,
-	marco.crivellari@suse.com, ferr.lambarginio@gmail.com,
-	nihaal@cse.iitm.ac.in, mingo@kernel.org, tglx@kernel.org,
-	linmq006@gmail.com, linux-doc@vger.kernel.org,
-	linux-bluetooth@vger.kernel.org
-Subject: Re: [PATCH net-deletions] net: remove ISDN subsystem and Bluetooth
- CMTP
-Message-ID: <2026042144-crispness-perfected-6cff@gregkh>
-References: <20260421022108.1299678-1-kuba@kernel.org>
+	corbet@lwn.net, skhan@linuxfoundation.org, federico.vaga@vaga.pv.it,
+	carlos.bilbao@kernel.org, avadhut.naik@amd.com, alexs@kernel.org,
+	si.yanteng@linux.dev, dzm91@hust.edu.cn,
+	2023002089@link.tyut.edu.cn, tsbogend@alpha.franken.de,
+	dsahern@kernel.org, jani.nikula@intel.com,
+	mchehab+huawei@kernel.org, jirislaby@kernel.org, tytso@mit.edu,
+	herbert@gondor.apana.org.au, ebiggers@kernel.org,
+	johannes.berg@intel.com, geert@linux-m68k.org, pablo@netfilter.org,
+	tglx@kernel.org, mashiro.chen@mailbox.org, mingo@kernel.org,
+	dqfext@gmail.com, jreuter@yaina.de, sdf@fomichev.me,
+	pkshih@realtek.com, enelsonmoore@gmail.com, mkl@pengutronix.de,
+	toke@toke.dk, kees@kernel.org, crossd@gmail.com, jlayton@kernel.org,
+	wangliang74@huawei.com, aha310510@gmail.com, takamitz@amazon.co.jp,
+	kuniyu@google.com, linux-doc@vger.kernel.org,
+	linux-mips@vger.kernel.org
+Subject: Re: [PATCH net-deletions] net: remove ax25 and amateur radio
+ (hamradio) subsystem
+Message-ID: <2026042158-upward-obsessive-0c8f@gregkh>
+References: <20260421021824.1293976-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,28 +55,24 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260421022108.1299678-1-kuba@kernel.org>
+In-Reply-To: <20260421021824.1293976-1-kuba@kernel.org>
 
-On Mon, Apr 20, 2026 at 07:21:07PM -0700, Jakub Kicinski wrote:
-> Remove the ISDN (mISDN, CAPI) subsystem and Bluetooth CMTP protocol
-> from the kernel tree.
+On Mon, Apr 20, 2026 at 07:18:23PM -0700, Jakub Kicinski wrote:
+> Remove the amateur radio (AX.25, NET/ROM, ROSE) protocol implementation
+> and all associated hamradio device drivers from the kernel tree.
+> This set of protocols has long been a huge bug/syzbot magnet,
+> and since nobody stepped up to help us deal with the influx
+> of the AI-generated bug reports we need to move it out of tree
+> to protect our sanity.
 > 
-> ISDN is a pretty old technology and it's unclear whether anyone still
-> uses it. I went over the last few years of git history and all the
-> commits are either tree-wide conversions or syzbot/static analyzer
-> fixes.
-> 
-> When we discussed removal in the past IIRC there were some concerns
-> about ISDN still being used in parts of Germany. Unfortunately, the
-> code base is quite old, none of the current maintainers are familiar
-> with it and AI tools will have a field day finding bugs here.
-> 
-> Delete this code and preserve it in an out-of-tree repository
-> for any remaining users:
+> The code is moved to an out-of-tree repo:
 > https://github.com/linux-netdev/mod-orphan
+> if it's cleaned up and reworked there we can accept it back.
 > 
-> UAPI constants AF_ISDN/PF_ISDN and the SELinux isdn_socket class
-> are preserved for ABI stability, but the rest of uAPI is removed.
+> Minimal stub headers are kept for include/net/ax25.h (AX25_P_IP,
+> AX25_ADDR_LEN, ax25_address) and include/net/rose.h (ROSE_ADDR_LEN)
+> so that the conditional integration code in arp.c and tun.c continues
+> to compile and work when the out-of-tree modules are loaded.
 > 
 > Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
