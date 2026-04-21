@@ -1,101 +1,134 @@
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B23930E836
-	for <netdev@vger.kernel.org>; Tue, 21 Apr 2026 11:48:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6AB937FF49;
+	Tue, 21 Apr 2026 11:49:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776772139; cv=none; b=WdHPAVeeZfEr0wIelSsW8H3GLMVw4fIb7zIjTSt3wt/8f2x+q/Wih/r0sUWS4x0lOpzipaun2FSzQ1MnPJ+0jow2YfFfF4/VISm/eUzVS7NIyVkOcyfrHl1J2UGPrxRjld6VG41ZheIsf3cFR56p7xDrxA0OrmgscWsXWpM8JBA=
+	t=1776772196; cv=none; b=j386PO8BIBHd74eXQ59zY/n9L62uSkyyvvUlC4bsNvrSza3KIY7bDrW/pHe2og1PkTbTYcK234D0Ge6suWoyLaU8c4nqKdEJf4GSd8Wr+wlJhvOC1xmk2jRLuUXZIXt1/G5e7j5qyHzt3yDLz96ykwd70uH91kbP/6B/iNp4Vy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776772139; c=relaxed/simple;
-	bh=Aqwmxj8uFkfP9nHrc8fZ7RRLzeMC8fJOyFF5kKMYktE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type:
-	 References; b=l1yjP9FHWpIvCf1N8b7S37sI2bx8uhPLcZYK5OTxTudldpOL1TThXkl7fdDV/D12nhoesJ7ktDH+Yt5tONKBnmWpCyyZHD0vaQC012xcxtgZR0geYYB14Q3jdUzWr6A05ZaFaiaSFfNJ7Pkp7GyO8oM4FYZ5utm/zo0l1ChHSPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=K8oDEJ1P; arc=none smtp.client-ip=210.118.77.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1776772196; c=relaxed/simple;
+	bh=uuRDbH7KRxOKKZlcf1KF1ZvZpDGq5h2ULvk6YWb9YpA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oX2Jy8r2d3y9XaOTMW3elwQN9C/RssGwF7pmCfKymvRN2L2z2ZRWBLMQPVG3dCo46wl0I71hpNLjJYvHuVZzyIBAbu1fl88Vf83Pz0Z83JOfO3gVmNeNSRKur5uJZZ2KbIc3HsrQ4poAekcjAwl+oErI9ey25sRA0h1fn8SzahY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E0t9BphM; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="K8oDEJ1P"
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260421114034euoutp0141ce51d36a834170fa53b60f5eec3134~oXGNl9HsP0192801928euoutp01g
-	for <netdev@vger.kernel.org>; Tue, 21 Apr 2026 11:40:34 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260421114034euoutp0141ce51d36a834170fa53b60f5eec3134~oXGNl9HsP0192801928euoutp01g
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1776771635;
-	bh=MtJpmhcXNEwjZg/96uUvgc/7Ds9nqk3h5aj71RrwZIY=;
-	h=From:To:Cc:Subject:Date:References:From;
-	b=K8oDEJ1P4QrFUafUofy21JaFfSTfykL+A1gBtrqVVOYwIf+1osMgat2N1wnkguvmc
-	 ZPMA5OEQ6twMpuf9+QJLEG5oSvPviYW2Gqb4O+HCuF2io1eqJPccIxj8stL3g7xQmJ
-	 cX0IBtaakUxkqt/b9U6vFAcrPQ1/fr4ZZx6N651A=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20260421114034eucas1p1d746ffe32b49aeb57f10e729d1331124~oXGNTHFly0938209382eucas1p1q;
-	Tue, 21 Apr 2026 11:40:34 +0000 (GMT)
-Received: from AMDC4843.eu.corp.samsungelectronics.net (unknown
-	[106.120.77.61]) by eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20260421114034eusmtip112d8a374cc8b5bf185ab61c332f660d0~oXGM-A0Sj0596605966eusmtip17;
-	Tue, 21 Apr 2026 11:40:34 +0000 (GMT)
-From: Jakub Raczynski <j.raczynski@samsung.com>
-To: netdev@vger.kernel.org
-Cc: kuba@kernel.org, przemyslaw.kitszel@intel.com,
-	anthony.l.nguyen@intel.com, kernel-janitors@vger.kernel.org, Jakub Raczynski
-	<j.raczynski@samsung.com>
-Subject: [PATCH] net/intel: Replace manual array size calculation with
- ARRAY_SIZE
-Date: Tue, 21 Apr 2026 13:40:29 +0200
-Message-Id: <20260421114029.2689961-1-j.raczynski@samsung.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E0t9BphM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776772194; x=1808308194;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=uuRDbH7KRxOKKZlcf1KF1ZvZpDGq5h2ULvk6YWb9YpA=;
+  b=E0t9BphMD8FUqCw9mK3xlD9RxmbRezLoXvNKvUINq7ZlZMhffzGJMOkV
+   OA/dqwZEw6dg5GPRzxjNGWu3HWcrHYZq46p/LCxVszMTdBF6cXO+H3LHh
+   eQOLJUt6sVqzvnylnshd1IvbAwNXlfsZwLMzS13L8ZNC9o0Cdvt9jecA1
+   /sY6tqrgViTymCAIbp8yyT9s+d6VhJqF3rhnhzax9NThfdzIxl/qifSNU
+   CUaVAaoN+wTvTfba14Mn4C/JRraKQ5hFAES/Q492trHwOf/pSlMP3nQs+
+   hB6+yU0d+AngJT361qiAKO1QTkmpo44dRxlblw6biqqB6TgRbirKXUa4t
+   A==;
+X-CSE-ConnectionGUID: HqOYzKmGQV+cC+gBgd55NA==
+X-CSE-MsgGUID: k8xRjuQMQiKZov8hkqmg2w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11762"; a="81570450"
+X-IronPort-AV: E=Sophos;i="6.23,191,1770624000"; 
+   d="scan'208";a="81570450"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2026 04:49:53 -0700
+X-CSE-ConnectionGUID: ddKaYSOzS0qlHzI1zxETiw==
+X-CSE-MsgGUID: i5VMa8ZhS4+kSj9vA0U/YA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,191,1770624000"; 
+   d="scan'208";a="270102600"
+Received: from lkp-server01.sh.intel.com (HELO 7e48d0ff8e22) ([10.239.97.150])
+  by orviesa001.jf.intel.com with ESMTP; 21 Apr 2026 04:49:50 -0700
+Received: from kbuild by 7e48d0ff8e22 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wF9bw-000000003Sa-1KoJ;
+	Tue, 21 Apr 2026 11:49:48 +0000
+Date: Tue, 21 Apr 2026 19:48:50 +0800
+From: kernel test robot <lkp@intel.com>
+To: Marino Dzalto <marino.dzalto@gmail.com>, pablo@netfilter.org,
+	fw@strlen.de
+Cc: oe-kbuild-all@lists.linux.dev, netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Marino Dzalto <marino.dzalto@gmail.com>
+Subject: Re: [PATCH] netfilter: xt_HL: add pr_fmt, default case and NULL
+ checks
+Message-ID: <202604211905.6ZPE3dFs-lkp@intel.com>
+References: <20260403193929.89449-1-marino.dzalto@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20260421114034eucas1p1d746ffe32b49aeb57f10e729d1331124
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20260421114034eucas1p1d746ffe32b49aeb57f10e729d1331124
-X-EPHeader: CA
-X-CMS-RootMailID: 20260421114034eucas1p1d746ffe32b49aeb57f10e729d1331124
-References: <CGME20260421114034eucas1p1d746ffe32b49aeb57f10e729d1331124@eucas1p1.samsung.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260403193929.89449-1-marino.dzalto@gmail.com>
 
-There are still places in the code where manual calculation of array size
-exist, but it is good to enforce usage of single macro through the whole
-code as it makes code bit more readable.
+Hi Marino,
 
-Signed-off-by: Jakub Raczynski <j.raczynski@samsung.com>
----
- drivers/net/ethernet/intel/i40e/i40e_adminq.h | 2 +-
- drivers/net/ethernet/intel/iavf/iavf_adminq.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+kernel test robot noticed the following build errors:
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_adminq.h b/drivers/net/ethernet/intel/i40e/i40e_adminq.h
-index 1be97a3a86ce..0e7cecd00169 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_adminq.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e_adminq.h
-@@ -109,7 +109,7 @@ static inline int i40e_aq_rc_to_posix(int aq_ret, int aq_rc)
- 		-EFBIG,      /* I40E_AQ_RC_EFBIG */
- 	};
- 
--	if (!((u32)aq_rc < (sizeof(aq_to_posix) / sizeof((aq_to_posix)[0]))))
-+	if (!((u32)aq_rc < ARRAY_SIZE(aq_to_posix)))
- 		return -ERANGE;
- 
- 	return aq_to_posix[aq_rc];
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_adminq.h b/drivers/net/ethernet/intel/iavf/iavf_adminq.h
-index bbf5c4b3a2ae..eb0257c86058 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_adminq.h
-+++ b/drivers/net/ethernet/intel/iavf/iavf_adminq.h
-@@ -113,7 +113,7 @@ static inline int iavf_aq_rc_to_posix(int aq_ret, int aq_rc)
- 	if (aq_ret == IAVF_ERR_ADMIN_QUEUE_TIMEOUT)
- 		return -EAGAIN;
- 
--	if (!((u32)aq_rc < (sizeof(aq_to_posix) / sizeof((aq_to_posix)[0]))))
-+	if (!((u32)aq_rc < ARRAY_SIZE(aq_to_posix)))
- 		return -ERANGE;
- 
- 	return aq_to_posix[aq_rc];
+[auto build test ERROR on netfilter-nf/main]
+[also build test ERROR on nf-next/master horms-ipvs/master linus/master v7.0 next-20260420]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Marino-Dzalto/netfilter-xt_HL-add-pr_fmt-default-case-and-NULL-checks/20260420-185652
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf.git main
+patch link:    https://lore.kernel.org/r/20260403193929.89449-1-marino.dzalto%40gmail.com
+patch subject: [PATCH] netfilter: xt_HL: add pr_fmt, default case and NULL checks
+config: m68k-allmodconfig (https://download.01.org/0day-ci/archive/20260421/202604211905.6ZPE3dFs-lkp@intel.com/config)
+compiler: m68k-linux-gcc (GCC) 15.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260421/202604211905.6ZPE3dFs-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202604211905.6ZPE3dFs-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   net/netfilter/xt_hl.c: In function 'ttl_mt':
+>> net/netfilter/xt_hl.c:34:13: error: assignment of read-only variable 'ttl'
+      34 |         ttl = ip_hdr(skb)->ttl;
+         |             ^
+
+
+vim +/ttl +34 net/netfilter/xt_hl.c
+
+    25	
+    26	static bool ttl_mt(const struct sk_buff *skb, struct xt_action_param *par)
+    27	{
+    28		const struct ipt_ttl_info *info = par->matchinfo;
+    29		const u8 ttl;
+    30	
+    31		if (!skb)
+    32			return false;
+    33	
+  > 34		ttl = ip_hdr(skb)->ttl;
+    35	
+    36		switch (info->mode) {
+    37		case IPT_TTL_EQ:
+    38			return ttl == info->ttl;
+    39		case IPT_TTL_NE:
+    40			return ttl != info->ttl;
+    41		case IPT_TTL_LT:
+    42			return ttl < info->ttl;
+    43		case IPT_TTL_GT:
+    44			return ttl > info->ttl;
+    45		default:
+    46			pr_warn("Unknown TTL match mode: %d\n", info->mode);
+    47			return false;
+    48		}
+    49	}
+    50	
+
 -- 
-2.34.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
