@@ -1,173 +1,140 @@
-Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from 15.mo561.mail-out.ovh.net (15.mo561.mail-out.ovh.net [87.98.150.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF3581C701F
-	for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 22:50:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BC0128DC4
+	for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 23:03:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=87.98.150.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776898262; cv=none; b=WdD/9+skQEN9a526Py/C2yEFjkhvdsF+z1PGVX9V9mymRu9XD7cvYkj01qzYlOD3D32UR5b5riKYZLUiKzUmGDHBfzV/Qa7XDb+KEz9PtGK+loR7jyoBk+sctQ8UrSGL6RVchN6mbpvV/bp67Am+o0+8vWQ7iuHDnNSVJdV2vU0=
+	t=1776899026; cv=none; b=Hcrp7CnGnjSekpmAPrdoOJWYmmOBUUYumuDwJt93qL0O+j3JRnnkXg0AuZ9sNWf7mGNKfIP6mqUiaHTLQlBuejb+INLkCtIqH6W6Uz5ZbOBxXBeCU2HGFjaX7+yg1z8qa79h/sPZJ7R9mh94s306y6YJ9qGzlGO5zq4UftoZfiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776898262; c=relaxed/simple;
-	bh=ks+dCualzOaqs77AbQPlKYXvBqKtbOBNZnorH0jGzJs=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=KdH8xqPfFZzfTm2UyzQOqUL2+vYsKSwoWUCHwdGJP6abvzAtn55Kv3q+QRPpTFFiGgQG5m1DU6KZMwV9/hVc/eiI+2Wi7zvUDXaTQ1QH+8gB7Sl79Xx7ux5VPLACkWABta/+auL1+fT9C8MSS/KXLACfm0iLbQlsvYt4WNzgc5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EyI4fjzh; arc=none smtp.client-ip=74.125.82.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EyI4fjzh"
-Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-12c637089ccso3559892c88.1
-        for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 15:50:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776898255; x=1777503055; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=EsIQHrEiJD5FzpoBONUuhlECKQYQ9gBcLPk2ubeY5ao=;
-        b=EyI4fjzheJmLMslMftbiCJbsvExX5Z0TDiI4LyK3u+VBtkPbbiZIn/8dRL4qjmDVUJ
-         dR1I2/q5zK1lx0X9MmwCAFjMwzzyNnoBKMrjsiyaM9jfot5Ixkylfsu82GNypNd11DP/
-         4ULbjG39JJO28vJ+pshVr/fKvhIimhn3WwFbW3NZ6pUtiQ3OXm/6GNyL0qpygJdYIIwP
-         3/th6UscbJSViPdI15cx4DsjDVSLViUJqaBRu0jABpSKLXSBRzTeTUZPASkpXrcEd0xC
-         TcXva58x2fAgMFLxtqrB7VcjG4FJ5HjmUW+VdCYVPNLw2NiEI6b/Dppua2gROrxYjYoT
-         2ctg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776898255; x=1777503055;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EsIQHrEiJD5FzpoBONUuhlECKQYQ9gBcLPk2ubeY5ao=;
-        b=qIzMQl4eArnnNFLukEFIJeRXtPvz1kES0IG3XSZN5rlaU8StoSccnvSWb06ah8yS11
-         rrLJScEXClk5CWlWx7fff9DgzGRZfKFwIrNuXE5HkTZWltUIPmDW32eUtrOaaJMUVwgj
-         k2uhkZaYox2NfpUHZtb2Sy5ltetKAMMi+uUZVkkVTaRex6L0yD6OyLQsvXXZbX1JAmBq
-         u5gZXNbpaQu/7zJamQO13SGOhzjooG+3GR3DNBontvyvg+3/jmuRSGxDn2A9FzezeVhn
-         1X8jxIpauhH/LkLIT6kNbFcHeWbn8sd+FSMwwZZqXCTOt4jbiJ1Ehg0wdKwPrnhv2x9D
-         NeKw==
-X-Forwarded-Encrypted: i=1; AFNElJ9eCEE8UfNhbVJh0ev4Emr4KK0nWRISgcb5MRAh6aT0/fQK1CfJLGrVUDk6UXAmq6/P7BwTZzI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyKiQ5L4dszlGbE4zDkhu85o9DRL3y+KlzgAxrTtva45xjBksa3
-	Fwb2tu8AXrB8/Z/RDf7nhpA4xq9LrSPW07htUjltwVtr210hbA2GK3RP
-X-Gm-Gg: AeBDievT1jQt+6IuoS9YxRdglzMXbKKroYcLVIGY7wWnMUCQN0s+jHrBbP6rRM9f8IW
-	BOm9ZdWE5vXxB8Y6vSrw9CHrxziAvLO2B6eYtIAQjCGGezvmfOaSV5AVAJXaQKPnBISExma0ubN
-	DMjRqFiLWFIB9sSyHJ52w1HsRiTeQgnQItbr7ukjL1nMyTSUtO+YB9ACffPwKCtaskyJdx7rYkM
-	fuYIvEDxx4mJk/9SmMqCCFtM+jNHqWkuxBQJdxHyeHZ39+wVXYCdRi/CykS40OcsqbYFmvM1nlT
-	9evfpbY3P7XeU27q7gevMvaZ5c6VnGHDXFNtH7TC9WKOrmDx7Gz7wnwQG8jKHaR9mPJywjOhV1N
-	/B6jQZ+ORvqG7KcHmLASz6WuOneY62M+DYnJ2IGknLCa+w9jrYcqyW+4XkyA1Or4YYyzFdqSPwT
-	xWzKyTtlelE1NcAWpR7N5Vx3ZFhO6gOqS+VoRtZJt7qlvN51l7bBdlrdx8LgsOffjjaA5ZOxIFS
-	pSlkoBPz0xVXObfY55RnMjXWfBuJC8=
-X-Received: by 2002:a05:7022:129:b0:12a:68cc:3efb with SMTP id a92af1059eb24-12c73f9303fmr14127409c88.16.1776898255008;
-        Wed, 22 Apr 2026 15:50:55 -0700 (PDT)
-Received: from ?IPv6:2a03:83e0:115c:1:1053:1d3b:d6cb:4350? ([2620:10d:c090:500::2:bea8])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12dbaab165bsm5912690c88.6.2026.04.22.15.50.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Apr 2026 15:50:54 -0700 (PDT)
-Message-ID: <c84a7beccd4ae527981797a6e5a6af840ba9c312.camel@gmail.com>
-Subject: Re: [PATCH bpf-next v3 2/9] bpf: Assign reg->id when getting
- referenced kptr from ctx
-From: Eduard Zingerman <eddyz87@gmail.com>
-To: Amery Hung <ameryhung@gmail.com>
-Cc: bpf@vger.kernel.org, netdev@vger.kernel.org,
- alexei.starovoitov@gmail.com, 	andrii@kernel.org, daniel@iogearbox.net,
- memxor@gmail.com, martin.lau@kernel.org, 	mykyta.yatsenko5@gmail.com,
- kernel-team@meta.com
-Date: Wed, 22 Apr 2026 15:50:52 -0700
-In-Reply-To: <CAMB2axMzeQs3WzFd1PZFB=DgR6d2ye4qzHKhATK2895ryzAEog@mail.gmail.com>
-References: <20260421221016.2967924-1-ameryhung@gmail.com>
-	 <20260421221016.2967924-3-ameryhung@gmail.com>
-	 <9237d7b35463c79863488e3f2180239aab679049.camel@gmail.com>
-	 <CAMB2axMzeQs3WzFd1PZFB=DgR6d2ye4qzHKhATK2895ryzAEog@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1776899026; c=relaxed/simple;
+	bh=P6TMWpuoDcnMkBNq2rr+RdSacWukC6T/CI7O5PuFsIo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SY+rr9gXyvwisjO4gNAf75HMiKBeMmd+7sX1FdFq6Wkoh90x04puYTajVZiWiaZvq2gA8je5HUdPLC58kPWr2gsIgGd8/LX5M7WSLx4JwGs7ClsIyYrX0h277KxlzWNrcHJoRrD6Mg2Vf75lIuc6PcTespSCkV4qKoCaJ1qEkcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=remlab.net; spf=pass smtp.mailfrom=remlab.net; arc=none smtp.client-ip=87.98.150.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=remlab.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=remlab.net
+Received: from director10.ghost.mail-out.ovh.net (unknown [10.110.37.197])
+	by mo561.mail-out.ovh.net (Postfix) with ESMTP id 4g12th1NYpz602W
+	for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 15:18:52 +0000 (UTC)
+Received: from ghost-submission-7d8d68f679-5pbb9 (unknown [10.111.182.62])
+	by director10.ghost.mail-out.ovh.net (Postfix) with ESMTPS id 09706C0FFF;
+	Wed, 22 Apr 2026 15:18:49 +0000 (UTC)
+Received: from courmont.net ([37.59.142.112])
+	by ghost-submission-7d8d68f679-5pbb9 with ESMTPSA
+	id WZFVLdnm6GmgNQAAmGmyiA
+	(envelope-from <remi@remlab.net>); Wed, 22 Apr 2026 15:18:49 +0000
+Authentication-Results:garm.ovh; auth=pass (GARM-112S00611734424-5a69-4c73-a642-2a7cd00ff7f5,
+                    14B14BC8C77B9486866D902178DE58E78B326C1C) smtp.auth=postmaster@courmont.net
+X-OVh-ClientIp:87.94.153.51
+From: =?UTF-8?B?UsOpbWk=?= Denis-Courmont <remi@remlab.net>
+To: Remi Denis-Courmont <courmisch@gmail.com>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Morduan Zang <zhangdandan@uniontech.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com,
+ syzbot+706f5eb79044e686c794@syzkaller.appspotmail.com,
+ Morduan Zang <zhangdandan@uniontech.com>, zhanjun <zhanjun@uniontech.com>
+Subject:
+ Re: [PATCH] net: phonet: do not BUG_ON() in pn_socket_autobind() on failed
+ bind
+Date: Wed, 22 Apr 2026 18:18:48 +0300
+Message-ID: <2466095.vKB9LnXJlr@basile.remlab.net>
+Organization: Remlab
+In-Reply-To:
+ <81A6570B633FF6FE+20260422013807.63087-1-zhangdandan@uniontech.com>
+References:
+ <81A6570B633FF6FE+20260422013807.63087-1-zhangdandan@uniontech.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+x-ovh-tracer-id: 16635171126822978512
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: dmFkZTFwgEp8Qq+Q0A9WIx2zgaVqCKQUhN1HNPX2iHG2ubWEB1Ixda3cVg9fzHImdu0419pDnYgV+5kdUUG4bTSh0Mz4wSWBbD22d5LQqwG1pzolRjFHg/2hFXBm0UUNAaljPVCaJXgugqN45RY7zujiIqtJ3xcJI4cX2uGhGhThEKp0dmA6JXuKDjSEN/MN8FVmQsZAkLz9D4lncZ0Ke01FEAk75HsV/sgJkdNVYFzo0m3wlkMyAJFIzFLvBz9p5Y6g8K2Nmj2eEGNFwrsbnfDB+y8VV67epTCO6AaS6ddHH45dX4edEWOwwTaJaLLLHq6+uHzrM3IWlMrGOwnMP/MQleEAdmRs7CqAqTYj6397q5qvy7dnuvN6hSt6ea/berWW+BvgJx1V37E9+LRrTpX1FNrxBLiGNUC4HBUODYzbdi+XkLsPAOP5I5pD2VGywt7AgnEMBvOy6iTjAphYFQtQqwnM0Ex2/W49/RFx7dvvYoYRS3h47+IIU9tBPUIVd9i4B03vSRIBwRPJ6mRru7KaXXtTJV8AHx45Bz/6FrSpijsC/Rw9CDrYNaLvUpyDzArmuIP14KFtyzNT4GGLwwfMvkLfC82B4/DsTjFk9eqQMl6R+FVT8zKGurD+9tJ5WidSv1Djv9HXh9zm60rHP2ip5OOTXbIrMXTUgTBDI0EBM5soDg
 
-On Wed, 2026-04-22 at 15:45 -0700, Amery Hung wrote:
-> On Wed, Apr 22, 2026 at 2:46=E2=80=AFPM Eduard Zingerman <eddyz87@gmail.c=
-om> wrote:
-> >=20
-> > On Tue, 2026-04-21 at 15:10 -0700, Amery Hung wrote:
-> > > Assign reg->id when getting referenced kptr from read program context
-> > > to be consistent with R0 of KF_ACQUIRE kfunc. skb dynptr will track t=
-he
-> > > referenced skb in qdisc programs using a new field reg->parent_id in
-> > > a later patch.
-> > >=20
-> > > Signed-off-by: Amery Hung <ameryhung@gmail.com>
-> > > ---
-> > >  kernel/bpf/verifier.c | 5 +++--
-> > >  1 file changed, 3 insertions(+), 2 deletions(-)
-> > >=20
-> > > diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-> > > index 41e4ea41c72e..93003a2a96b0 100644
-> > > --- a/kernel/bpf/verifier.c
-> > > +++ b/kernel/bpf/verifier.c
-> > > @@ -6448,8 +6448,6 @@ static int check_mem_access(struct bpf_verifier=
-_env *env, int insn_idx, u32 regn
-> > >                       } else {
-> > >                               mark_reg_known_zero(env, regs,
-> > >                                                   value_regno);
-> > > -                             if (type_may_be_null(info.reg_type))
-> > > -                                     regs[value_regno].id =3D ++env-=
->id_gen;
-> > >                               /* A load of ctx field could have diffe=
-rent
-> > >                                * actual load size with the one encode=
-d in the
-> > >                                * insn. When the dst is PTR, it is for=
- sure not
-> > > @@ -6459,8 +6457,11 @@ static int check_mem_access(struct bpf_verifie=
-r_env *env, int insn_idx, u32 regn
-> > >                               if (base_type(info.reg_type) =3D=3D PTR=
-_TO_BTF_ID) {
-> > >                                       regs[value_regno].btf =3D info.=
-btf;
-> > >                                       regs[value_regno].btf_id =3D in=
-fo.btf_id;
-> > > +                                     regs[value_regno].id =3D info.r=
-ef_obj_id;
-> > >                                       regs[value_regno].ref_obj_id =
-=3D info.ref_obj_id;
-> > >                               }
-> >=20
-> > Hi Amery,
-> >=20
-> > Could you please help me double-check my understanding of this change?
-> >=20
-> > It adds a new behavior, if struct_ops method parameter is annotated
-> > with __ref, then if a field is read from such struct_ops context
-> > the destination register would now have it's .id =3D=3D ref_obj_id
-> > allocated for the parameter at the beginning of do_check().
-> > E.g. for `rB =3D *(T *)(rA + off)`, if `rA` is a pointer to struct_ops
-> > context and parameter corresponding to `off` has `__ref` annotation
-> > the `rB.id` will be assigned, contrary to old behavior, when it remaine=
-d 0.
-> >=20
+Hi,
+
+Le keskiviikkona 22. huhtikuuta 2026, 4.38.07 It=C3=A4-Euroopan kes=C3=A4ai=
+ka Morduan=20
+Zang a =C3=A9crit :
+> syzbot reported a kernel BUG triggered from pn_socket_sendmsg() via
+> pn_socket_autobind():
 >=20
-> Right
-
-Ack, thank you.
-
-> > This change in behavior, however, becomes visible only after the
-> > changes to release_reference() later in the series.
-> > There the `rB.id` is used to initiate `mark_reg_invalid(env, reg)` for
-> > the `rB`.
-> >=20
+>   kernel BUG at net/phonet/socket.c:213!
+>   RIP: 0010:pn_socket_autobind net/phonet/socket.c:213 [inline]
+>   RIP: 0010:pn_socket_sendmsg+0x240/0x250 net/phonet/socket.c:421
+>   Call Trace:
+>    sock_sendmsg_nosec+0x112/0x150 net/socket.c:797
+>    __sock_sendmsg net/socket.c:812 [inline]
+>    __sys_sendto+0x402/0x590 net/socket.c:2280
+>    ...
 >=20
-> I probably should mention it in the commit message. The purpose of the
-> patch is to make the implementation consistent with the design:
-> parent_id tracks the id of the parent objects.
+> pn_socket_autobind() calls pn_socket_bind() with port 0 and, on
+> -EINVAL, assumes the socket was already bound and asserts that the
+> port is non-zero:
 >=20
-> Without this patch, it should still work since in this case ref_obj_id
-> always equals to id. When release_reference() is called on a
-> KF_RELEASE kfunc, the children objects will still be invalidated
-> correctly.
+>   err =3D pn_socket_bind(sock, ..., sizeof(struct sockaddr_pn));
+>   if (err !=3D -EINVAL)
+>           return err;
+>   BUG_ON(!pn_port(pn_sk(sock->sk)->sobject));
+>   return 0; /* socket was already bound */
+>=20
+> However pn_socket_bind() also returns -EINVAL when sk->sk_state is not
+> TCP_CLOSE, even when the socket has never been bound and pn_port() is
+> still 0.  In that case the BUG_ON() fires and panics the kernel from a
+> user-triggerable path.
+>=20
+> Treat the "bind returned -EINVAL but pn_port() is still 0" case as a
+> regular error and propagate -EINVAL to the caller instead of crashing.
+> Existing callers already translate a non-zero return from
+> pn_socket_autobind() into -ENOBUFS/-EAGAIN, so returning -EINVAL here
+> only changes behaviour from panic to a normal errno.
+>=20
+> Fixes: ba113a94b750 ("Phonet: common socket glue")
+> Reported-by: syzbot+706f5eb79044e686c794@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=3D706f5eb79044e686c794
+> Signed-off-by: Morduan Zang <zhangdandan@uniontech.com>
+> Signed-off-by: zhanjun <zhanjun@uniontech.com>
+> ---
+>  net/phonet/socket.c | 10 +++++++++-
+>  1 file changed, 9 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/net/phonet/socket.c b/net/phonet/socket.c
+> index 4423d483c630..de9108adfe1c 100644
+> --- a/net/phonet/socket.c
+> +++ b/net/phonet/socket.c
+> @@ -210,7 +210,15 @@ static int pn_socket_autobind(struct socket *sock)
+>  			     sizeof(struct sockaddr_pn));
+>  	if (err !=3D -EINVAL)
+>  		return err;
+> -	BUG_ON(!pn_port(pn_sk(sock->sk)->sobject));
+> +	/*
+> +	 * pn_socket_bind() can return -EINVAL both when the socket is
+> +	 * already bound (pn_port() !=3D 0) and when sk_state !=3D TCP_CLOSE
+> +	 * without a prior bind.  Only the former is an "already bound"
+> +	 * success for autobind; otherwise propagate -EINVAL instead of
+> +	 * crashing the kernel.
+> +	 */
+> +	if (!pn_port(pn_sk(sock->sk)->sobject))
+> +		return -EINVAL;
 
-bpf_qdisc_fail__invalid_dynptr_cross_frame.c:invalid_dynptr_cross_frame
-fails if I comment out the line `regs[value_regno].id =3D info.ref_obj_id;`=
-.
-The added .id link is used to propagate invalidation triggered by
-`free_skb(skb);` to  `hdr`.
-The patch seem mandatory for the series.
+This could be written as just if (err !=3D -EINVAL || unlikely(...)) return=
+ err;
+
+>  	return 0; /* socket was already bound */
+>  }
+
+
+=2D-=20
+=E5=BE=B7=E5=B0=BC-=E5=BA=93=E5=B0=94=E8=92=99=E2=80=A7=E9=9B=B7=E7=B1=B3
+https://www.remlab.net/
+
+
+
