@@ -1,110 +1,147 @@
-Received: from sonic310-24.consmr.mail.ne1.yahoo.com (sonic310-24.consmr.mail.ne1.yahoo.com [66.163.186.205])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E10FB1A3164
-	for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 16:08:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.186.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C6B32FD665
+	for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 16:09:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776874141; cv=none; b=ObRXJrxhwnXr0pjt2B/4c/Egpbpuay2TwQ78so2jkzq3fMEbVBghTZOgXTUWnGpDmWycnQOpvEmwdltf340qmCspDqmaMge1MyycYxWuJJN5S+wBwml9mzZ879pFD+fk/lfuZJEmH8PeD+NuHTFyaMIH7wNse0XCTiETZXYUdRc=
+	t=1776874169; cv=none; b=G0m9vusSld+8OCa8KALaV23OkWpEBHnSCZIWrFpBH+ymJMuoSX0txtUeiNu6/846n/lGnmXVhLO9ewxNzkxCqEgHo0+GhHoaU2i0C4Uz3kA5fGAezqGYKvjLKoJ6Uf6vCaOBquipMBk2Hr9Tx7J8ozmQVydXObrEhmG4sOd0RY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776874141; c=relaxed/simple;
-	bh=8ZvHiRf4z8++p3P+aibZvYTARv7s/QIDad/VcQq9u9A=;
-	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type:
-	 References; b=FOI8mo93t6uTWJgIJQCq5Y60y1N2xsP4xvDjIgG06Gr+ihkPqT/DWWYB46LSquLwB9wMbBsBov78y0sSXC/TVzMla7nZIgubKo7wvOKKApNtrpjVgBfhONocg7xpMpo8h9n4AT7PcQrAzUeqGMuCSAMAns1l9EZ+tM7KPCjLNgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=VfJGIJUr; arc=none smtp.client-ip=66.163.186.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+	s=arc-20240116; t=1776874169; c=relaxed/simple;
+	bh=SBPYOB3ZXq1r3Di2k7yUx1oZXfbnIN5yGtjLEJy8hko=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mBzHDWjqzbcNpEZE1FCrpf/kWtRCrfzXif3zLhy5KR/Yj1+XpMTX9BssvaWJBqN9nzWrAQJjcotbKIyT/QmnXCEJvi9EtYHyWlVLU0bNLJrea5esCyecK5IZG6+VzyFmhgiN9ogcnW+3F1LzZEEeg8nW4NVzbYU61hDaHvFezYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V7e8pti7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="VfJGIJUr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1776874132; bh=GaCB3dkZrFSDuqe/NVRFFWp4LwsBt1eBcyvZB+LlCj8=; h=Date:To:From:Subject:References:From:Subject:Reply-To; b=VfJGIJUrZ5msPAKyR3t8ZHdkXbnJ7S0qOjxvM2DwXS+76tY/R4ig/H2Wv2ORRqANzPWrONfXwjfjIWlCUn8hX75e865QxS9V6EMFNRoo8+WhO20XvNMcKGqIIsfPSoz6ddcllCbNTlh/6gtvg7YvsVlMhade+wk6Quo+s5cQh470cgZyT7N/fWXXKRoqfYbLeIYm823AFWESGWMXRqsaVYMwAJizMK9LbghIIwuMNsWW482lTbricIeJ8k1RDfB0HZrni4HNsi+xJ+uNOoeRGBpGXTH7lTplNNnQsMh4ctqAkvHzOiEaIXNa5owD+kEaz461ok2CkuMNMYzQE6aO7Q==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1776874132; bh=IfEhLCH6+JaIcolcSd6uHMJHFzZe2eR9+lPKPRGVhUG=; h=X-Sonic-MF:Date:To:From:Subject:From:Subject; b=KO9g5HWy7FQb1F9hSYVHgo5sMPNccv4BuVFmJbTRejQ2htlzeVJUFWc0ONj3eHdL7kNn+r9GA4LegIb1ZZqRfSQdvXhqz6UMJ8wAbP+6w/WAmJuwmUcSfx/Q0SSDDF9mqrdOsl9SC+Dfys12NDXLpJbsJD27puEJoCtytfl+Q0SH2S1pXG8XlY9Dlvf1fFOXZj/v4XXBIYBOPJ4GapyC4wp6LaMVN0biLl1cGTmGFReuI2DB8jLKhmHap1HiVV9h1aaI1RS/G/BlRJLmi0ZuO5Aq1VUg89TCzFDmwM9l0mhqrqXmb6H1zPE7C2rv7SgkrF01It3khvGgMEAICQvGVw==
-X-YMail-OSG: uTMPa3sVM1mX03.SUFXlTrT9_q1cfPyDly2sPXp5D911AdsxkciYA5o9fJZFUyc
- FApOcceH0o0po600oAXlVRaEV17BKI_reMAJ3fWvIzHkgKABY92mNg0CZwvZn2LNsGyFawQccVjK
- j4m_geJjqLGsZGS_knYszI76hnJnfrttGQjyTWolBWu6wJxReJULcJ4Hpht00Y_XoOEw89850J9l
- PIPCfTlG51gJQKzOs4kuVqH8oYgHVNjFY5iJ_NZDYwvRsbeacb_GQHyJQKd2bkhL6I910U9KzuE5
- o6gNcgalqiBAnK9j6xJJI4VoerpWPJiD6VanNIDhxf2HHY.eXJ3LXikl27u.pFGYPAlEzKCza0Jg
- PLgEHJICM1nwLj9uhgYVDgpOgFM3JA34lnLCbmisnHLrXDeS3h_agB8MdhfNKgGnabJggbJ6EGPn
- x1S2A.APgzLdHTzxvSjvacmHCIuMw0WwggtXKNtIle57ha2_IQHoE2sfAl8pg8Kz.gW1_GHnGDg.
- dmNfHjWnda.ipJZUkiFOyCeX2qr_d1tJKZ6LHqmcWDg9xIVZ1Z1BRXwncwPCHqKxS6ejETNq1jji
- HEJDh0Q83vRi8__fSLWjO6L8siFAN0p8b4FpSUeYk2_O3YM0o3jZJZW5uG9vmydHjTTwl3OTSQS0
- zqEh163NInMxdLBrsLYLlnsL62WbYyWPKOu_kY6DoYrrbeJRuYmHs30.xnZDIOWKRfdRKWdWPVF5
- eTTag0K5yYCsaCLUqwqAkMNe3ZvH.XWUV_PZW47xe9TnT4H6drNQsvnD07aZhPnPhF_KbY_MP022
- NlyaO62P4nPqRj5mF_IvFcmLqVG8Pqd4fO1Af0ybL4pTjSL2MO3d0sorEZoL2v_4_Tom.XC9uZ5u
- JECeCVdmjHLQfgRbSQcd9h6t1ACnb17ZFGbJhgFGZHgDR9GFS441CBILFJwDfWV9THp1vTZkZSht
- tPS7mKUBG2ERFqXoi8Q8tipTsmkfy5yCDDswT1bSvys5We0M4ArAxhjpPaJ8VZ_jeAODMFK3uvuw
- Egd21C9CGYmzUArjfRK2Oma0fEvUTzXMDiBnR3xyOlu1HhqY6DPWYTBbg_uU33Xd67MqKCUkT8sy
- NopB7zPfcUo0DrjXJBAvCUSZjGm968tENP.KRvv1OiXsOuMBTY8QmSHLhXJX6yqw0XF6KueWJLps
- O.RM7q7RQGCZdWWqnAHnz83RV_PWumuJwElS2HaWhAWEKR1tv5yGPu0kcWngkYj8AX7o6MYyamUx
- Qg.5Hd6w3lF9O9Dc3y8At.sTGYE66WUoq0m.qYo.fhDFqKIjWSjaHiKaELzqG5E8RY.qu8MCDTZa
- 1HYL_8.LszIGBGSorZIkWay5bPECQh7e3pjkm28l5kF.hIND5zGugyAWTNmCukCgEpaAcRfbhxt3
- .6qaJlA1GLJmduLRtJ6eFJCBzVbiLWpq3E1u2HhfIuexdxcnujqKgVekzJAE9UHQADxnqYF5uyhB
- Oh6osR9Fqn0eq1Ifgwu01WTn85yRIIX_fYbeg1UxTCw1xs8GhiFMucvDIWPl8Wkg2AXNOOAv1wMV
- FwF3Hlur.4_d.KXJm6HW.Rq96AAZkyUob6WaJvIYaWc1904KrT9nj_9Wb2Ep8Vyrc_eZiyP5LKTS
- 2aHRUdx6PrjlpuNqXKKABhtQHtPjn2mYOBD7tLL1X1IYlOH7L4qyknQkCdXbNcDzh6bu29Jd8WKK
- nzTIZg6UuJZrf9cDhduahN3xzbcys6XbJx064vUscNWlqgpqcw3k4iac5uxbIPdlkoZEI0pPH9mE
- ST1Vuzi_lkNjouA6NvrvGt3gFpUxrcqdRAh4Iqymlvkztm7kRC1yO89ZUrSU0lIU60AaJtmxWLGG
- yGW3ZsJ7lhUpQ_qs2RDuBT2XJjhEMXxSadG71YLbIBFzE.eQQgoijSQ0Z4vQjQS1O6uUTiEZYSiv
- 4exZeZBm33qMh68E1Hfx5Jbm16LZWB.oYT.7eCoNSEjkuGbedzGFj_EPVbsMjgtkeAOmkUOS2lK6
- ovK2Y80C9tAm8wsDzaVj2oFNKKjB_7wa1MX4appKeNgHi6g2AYaJ7UcAGDefFdg.3Wpy_A6WjcoY
- Ih5_cnlheUWJsqTIoztjitIkdO39pdcHnP1SkQ0p8TC8A3EU.BdwTo0wmCbEOtV7WmaS2CEh56SM
- WwSoo7G6GP.749aiQhHxD4FoSRvvtXMUqfCYm8AwtOFUSGHNqmricCwdMk8VgNWzxSG1dwTMmQO0
- S8I56HAHq6KzpOnNOf9gY0P.ezC5SkuM2kYMHXGXk.VCcnCOucIV_6VX2jvfShaZrmrYGmObnnY0
- bZJtqX9Y-
-X-Sonic-MF: <namiltd@yahoo.com>
-X-Sonic-ID: 4b7ff493-bf8a-44a2-83e4-f8d164aa6258
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic310.consmr.mail.ne1.yahoo.com with HTTP; Wed, 22 Apr 2026 16:08:52 +0000
-Received: by hermes--production-ir2-bbcfb4457-24w5t (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 12c9d26ec1d4f5f656ef177b8755f686;
-          Wed, 22 Apr 2026 15:58:33 +0000 (UTC)
-Message-ID: <f5ac420f-0087-4af0-bb43-b9a5b6228fbd@yahoo.com>
-Date: Wed, 22 Apr 2026 17:58:30 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V7e8pti7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99B0CC2BCAF;
+	Wed, 22 Apr 2026 16:09:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776874169;
+	bh=SBPYOB3ZXq1r3Di2k7yUx1oZXfbnIN5yGtjLEJy8hko=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=V7e8pti7lKvpIs1AkotuqIqFHzZdqo47cRmPEhe3/IYU0V2bRNpXpSjlkox//gteU
+	 k4azoB6utVu+bjq0p19DnS9MhhEjWPzREcPm+HrHpvJBZmAOBJUR+9Yp+9VVs4aEoz
+	 bJ79R5JTtCsBJnp6YEW+QcRRam29+dW5hUXWkUAjivG/SgvHCn0ewkKkXsS2P8Svon
+	 Aqi2LG0zPzAVv1NchUws1iimiM2ja77at2rU0LeFi7WcxGKnMXcWaSrl+N/a7f8Wvg
+	 4rFRNjM6deHxv3W5agmjB2Mb6Kyysafr6v+Efalb7aswbvvNF3uDMCOT3Fig2uWqdV
+	 L97vpVYDCkoQw==
+Date: Wed, 22 Apr 2026 18:09:26 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net v2 1/2] net: airoha: Move ndesc initialization at end
+ of airoha_qdma_init_rx_queue()
+Message-ID: <aejyttYXyW_vzi8o@lore-desk>
+References: <20260420-airoha_qdma_init_rx_queue-fix-v2-0-d99347e5c18d@kernel.org>
+ <20260420-airoha_qdma_init_rx_queue-fix-v2-1-d99347e5c18d@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: pl
-To: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-Subject: [PATCH] net: dsa: realtek: rtl8365mb: add support for RTL8367SB
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-References: <f5ac420f-0087-4af0-bb43-b9a5b6228fbd.ref@yahoo.com>
-X-Mailer: WebService/1.1.25559 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="kZko5lrIFyDnW20B"
+Content-Disposition: inline
+In-Reply-To: <20260420-airoha_qdma_init_rx_queue-fix-v2-1-d99347e5c18d@kernel.org>
 
-Add chip info entry for the Realtek RTL8367SB switch. This device has
-chip ID 0x6367 and version 0x0010. It exposes two external interfaces:
-port 6 supports SGMII and HSGMII, while port 7 supports MII, TMII,
-RMII and RGMII. Use the existing 8365MB-VC jam table for initialization.
 
-Signed-off-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
----
- drivers/net/dsa/realtek/rtl8365mb.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+--kZko5lrIFyDnW20B
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/net/dsa/realtek/rtl8365mb.c b/drivers/net/dsa/realtek/rtl8365mb.c
-index 073f12ca8028..84d6fdb94a96 100644
---- a/drivers/net/dsa/realtek/rtl8365mb.c
-+++ b/drivers/net/dsa/realtek/rtl8365mb.c
-@@ -545,6 +545,18 @@ static const struct rtl8365mb_chip_info
- 		.jam_size = ARRAY_SIZE(rtl8365mb_init_jam_8365mb_vc),
- 	},
- 	{
-+		.name = "RTL8367SB",
-+		.chip_id = 0x6367,
-+		.chip_ver = 0x0010,
-+		.extints = {
-+			{ 6, 1, PHY_INTF(SGMII) | PHY_INTF(HSGMII) },
-+			{ 7, 2, PHY_INTF(MII) | PHY_INTF(TMII) |
-+				PHY_INTF(RMII) | PHY_INTF(RGMII) },
-+		},
-+		.jam_table = rtl8365mb_init_jam_8365mb_vc,
-+		.jam_size = ARRAY_SIZE(rtl8365mb_init_jam_8365mb_vc),
-+	},
-+	{
- 		.name = "RTL8367RB-VB",
- 		.chip_id = 0x6367,
- 		.chip_ver = 0x0020,
--- 
-2.53.0
+> If queue entry or DMA descriptor list allocation fails in
+> airoha_qdma_init_rx_queue routine, airoha_qdma_cleanup() will trigger a
+> NULL pointer dereference running netif_napi_del() for RX queue NAPIs
+> since netif_napi_add() has never been executed to this particular RX NAPI.
+> The issue is due to the early ndesc initialization in
+> airoha_qdma_init_rx_queue() since airoha_qdma_cleanup() relies on ndesc
+> value to check if the queue is properly initialized. Fix the issue moving
+> ndesc initialization at end of airoha_qdma_init_tx routine.
+> Move page_pool allocation after descriptor list allocation in order to
+> avoid memory leaks if desc allocation fails.
+>=20
+> Fixes: 23020f049327 ("net: airoha: Introduce ethernet support for EN7581 =
+SoC")
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> ---
+>  drivers/net/ethernet/airoha/airoha_eth.c | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
+>=20
+> diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ether=
+net/airoha/airoha_eth.c
+> index e1ab15f1ee7d..fc79c456743c 100644
+> --- a/drivers/net/ethernet/airoha/airoha_eth.c
+> +++ b/drivers/net/ethernet/airoha/airoha_eth.c
+> @@ -745,14 +745,18 @@ static int airoha_qdma_init_rx_queue(struct airoha_=
+queue *q,
+>  	dma_addr_t dma_addr;
+> =20
+>  	q->buf_size =3D PAGE_SIZE / 2;
+> -	q->ndesc =3D ndesc;
+>  	q->qdma =3D qdma;
+> =20
+> -	q->entry =3D devm_kzalloc(eth->dev, q->ndesc * sizeof(*q->entry),
+> +	q->entry =3D devm_kzalloc(eth->dev, ndesc * sizeof(*q->entry),
+>  				GFP_KERNEL);
+>  	if (!q->entry)
+>  		return -ENOMEM;
+> =20
+> +	q->desc =3D dmam_alloc_coherent(eth->dev, ndesc * sizeof(*q->desc),
+> +				      &dma_addr, GFP_KERNEL);
+> +	if (!q->desc)
+> +		return -ENOMEM;
+> +
+>  	q->page_pool =3D page_pool_create(&pp_params);
+>  	if (IS_ERR(q->page_pool)) {
+>  		int err =3D PTR_ERR(q->page_pool);
+> @@ -761,11 +765,7 @@ static int airoha_qdma_init_rx_queue(struct airoha_q=
+ueue *q,
+>  		return err;
+>  	}
+> =20
+> -	q->desc =3D dmam_alloc_coherent(eth->dev, q->ndesc * sizeof(*q->desc),
+> -				      &dma_addr, GFP_KERNEL);
+> -	if (!q->desc)
+> -		return -ENOMEM;
+> -
+> +	q->ndesc =3D ndesc;
+>  	netif_napi_add(eth->napi_dev, &q->napi, airoha_qdma_rx_napi_poll);
+> =20
+>  	airoha_qdma_wr(qdma, REG_RX_RING_BASE(qid), dma_addr);
+>=20
+> --=20
+> 2.53.0
+>=20
+
+As requested, I am commenting the issue reported by Sashiko on this patch:
+https://sashiko.dev/#/patchset/20260420-airoha_qdma_init_rx_queue-fix-v2-0-=
+d99347e5c18d%40kernel.org
+
+- Does this code leave a regression in the TX path by omitting the equivale=
+nt fix?
+  This issue is not related to this patch and already fixed here:
+  https://patchwork.kernel.org/project/netdevbpf/patch/20260417-airoha_qdma=
+_cleanup_tx_queue-fix-net-v4-1-e04bcc2c9642@kernel.org/
+
+Regards,
+Lorenzo
+
+--kZko5lrIFyDnW20B
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaejytgAKCRA6cBh0uS2t
+rNjYAPsE6vHRstqCNtY7VdsXgogfTMg3eIitwR4Cd7rx8vkc9wEAlT/aXD/pfWfU
+I4HEEr6YV9z6AGOdd7AdPDauj/tIXww=
+=6ghH
+-----END PGP SIGNATURE-----
+
+--kZko5lrIFyDnW20B--
