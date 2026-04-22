@@ -1,51 +1,51 @@
-Received: from pdx-out-011.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-011.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.35.192.45])
+Received: from pdx-out-003.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-003.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.68.102])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B40AE32F757;
-	Wed, 22 Apr 2026 22:24:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.35.192.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0989835AC38;
+	Wed, 22 Apr 2026 22:24:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.246.68.102
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776896676; cv=none; b=IMZ5t+kjDHh64sIy+aYAY8o+kpBFV4RyqsGOY9k90C/jCJAJPYWw/OIq4ZgM/ZLCR889eQzoUAc0dKlmlYGR9VNHaiFT+u+zVdQ+K+CZoo3tsNKrPRWCVd9EoJDbgpse2f6EloEbfGJikYM7TdEc8PocIMYe5ruDJJ4x94+zHjs=
+	t=1776896678; cv=none; b=l1qJVVhd2j3O8ANdYLTrLd9hfd63EffKbW3TWfnzxWZ0OeFXIRr988+b3EMeEX7Nmu7ua2QhlqUgjkReyc/U/99ru4iuQw9nQQ8SGHBp9KCB40T+ysqmpT86Wgk5UrjXr2kAUDwUrP478y385vSOsGdGYYJechR16Zqk4ButsUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776896676; c=relaxed/simple;
-	bh=64/A9eKby6JJjSlhlEoVioLXS6RwLUbJc8MhXuHlF9E=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lT1rzhaQMYZ4WqAP1OThzoMJ6wGAkMm1o0XqhxDvZ1WZnRs2Dxs1HzmJ8jZsdBrFXcWfX/BgPzUUtaXhp4/2Lc5NnfPpIn1PQlMuArJiwc5Hz8Ek7F5ktuLkjRY0CcYXQTiZ6cS/QEl/NbUI/UEHPEo/KE1/tvrfMNTXxNlwyNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=ndCq9yn+; arc=none smtp.client-ip=52.35.192.45
+	s=arc-20240116; t=1776896678; c=relaxed/simple;
+	bh=aV0Yqusp7dkh6lrlJ2Jv1Zo2aG5LKV0U0aIeTJ3mZbo=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZiBmF1b+fY1cSEvV9x6Zrzq7g9ZQWiJ/1jMzekj1B/NHICG3S1VZffU6+H5LD23huH+3y9swb7UniZz1vxf2l7cLuCdenaCxkct3aKQ4Ew5w4VBPUl/B1J9QVYHLhNotAvHJc8OHIhFKbQyj99HmUbH7WO+EZLl15nl6aKr3K2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=srz/BMzB; arc=none smtp.client-ip=44.246.68.102
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="ndCq9yn+"
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="srz/BMzB"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1776896675; x=1808432675;
+  t=1776896677; x=1808432677;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=hpJ2niGNMWMAiOWnWchr1xLnih4fGB7KThFqHTJLvkE=;
-  b=ndCq9yn+st6arL1jlRZoPNZSpa/PCAB4rnHS/cRc6eAQ9m+dVUIFzX/E
-   dLgzwwKcqTek0oIrgJUtB+1ee/UfzrF8/0uUFMTsbUHpuu8QuqxXsYaDE
-   7qP76urXzi6YtBwea8GC8n0eosQetaMdhDwUW88clhy/klRb+9mTdhric
-   HTPuC3T/2zoDSk7TPsh2u975llWnC5zuw+/HRdC14Ojp/BI25fG4Nd/dq
-   3HhlqeuBxNH8aQwhgexmtRjoTjLd0PF8TB1K3IjaHBHvlYtjs+Bx0Uhw6
-   C6cfhLwvLYEY25xCTFU6fw2S3Cf1+8YS86xwCOAg2JLMxJiFNvihRuCFx
-   w==;
-X-CSE-ConnectionGUID: RKVNVfxARX2lcKF/3V23Rw==
-X-CSE-MsgGUID: wL6wf5zNRoar8Fz59QCVSA==
+  bh=2j1F84ix7FFqj+0BKDWxaKYO7U6TQBJMkXlqCnvcFf8=;
+  b=srz/BMzBVaQ7knFkkgMEZ9Gm+vjUiVn+TlNsBZSMbiQx9+OGhDtYaPir
+   I+scMxCIMamsF51lv1xfRxQc/F1+O8PhdVnVirgQKQTAnTR0h08NPjtXe
+   yxBAJ1KLW6j35LVlPjdY38hcUSh6ARqKsATxa7LKwCNUANEqc3x9BdJkO
+   z5CyoeCj2g2gvLp4Nl2WONe1PGxbFDld13s3rvLxLx16goRzUT05gpoQq
+   aO5wG77IijQ2fAlHUR6VCv0GYtBqcpiF54+n8kS6HYHkKA7OV85OgAhIH
+   UIEaSiBSCKNvmuCOUOWbjPwUUw/Oc2x7FW38Ecghn5nuzkt3f7aR+wiOd
+   g==;
+X-CSE-ConnectionGUID: kkMX/GhXSauFJP+kzUZT+w==
+X-CSE-MsgGUID: G4IQBKh7StaLI0iTIB1cOQ==
 X-IronPort-AV: E=Sophos;i="6.23,193,1770595200"; 
-   d="scan'208";a="17763681"
-Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
-  by internal-pdx-out-011.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2026 22:24:35 +0000
-Received: from EX19MTAUWB002.ant.amazon.com [205.251.233.111:11045]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.41.10:2525] with esmtp (Farcaster)
- id a1b1ab5e-00f8-48b2-a9b2-fd709f4ab206; Wed, 22 Apr 2026 22:24:35 +0000 (UTC)
-X-Farcaster-Flow-ID: a1b1ab5e-00f8-48b2-a9b2-fd709f4ab206
+   d="scan'208";a="17996001"
+Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
+  by internal-pdx-out-003.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2026 22:24:36 +0000
+Received: from EX19MTAUWA002.ant.amazon.com [205.251.233.234:12510]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.3.51:2525] with esmtp (Farcaster)
+ id d5547afb-e4a6-4a9a-a52e-92f951ea4799; Wed, 22 Apr 2026 22:24:36 +0000 (UTC)
+X-Farcaster-Flow-ID: d5547afb-e4a6-4a9a-a52e-92f951ea4799
 Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
+ EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
  Wed, 22 Apr 2026 22:24:32 +0000
 Received: from dev-dsk-wanjay-2c-d25651b4.us-west-2.amazon.com (172.19.198.4)
  by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Wed, 22 Apr 2026 22:24:31 +0000
+ Wed, 22 Apr 2026 22:24:32 +0000
 From: Jay Wang <wanjay@amazon.com>
 To: <stable@vger.kernel.org>
 CC: <dhowells@redhat.com>, <marc.dionne@auristor.com>, <davem@davemloft.net>,
@@ -53,9 +53,9 @@ CC: <dhowells@redhat.com>, <marc.dionne@auristor.com>, <davem@davemloft.net>,
 	<netdev@vger.kernel.org>, <linux-afs@lists.infradead.org>,
 	<jay.wang.upstream@gmail.com>, Faith <faith@zellic.io>, Pumpkin Chang
 	<pumpkin@devco.re>
-Subject: [PATCH 6.1.y] rxrpc: Fix recvmsg() unconditional requeue
-Date: Wed, 22 Apr 2026 22:24:31 +0000
-Message-ID: <20260422222431.7187-1-wanjay@amazon.com>
+Subject: [PATCH 5.15.y] rxrpc: Fix recvmsg() unconditional requeue
+Date: Wed, 22 Apr 2026 22:24:32 +0000
+Message-ID: <20260422222432.7211-1-wanjay@amazon.com>
 X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -65,7 +65,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EX19D035UWA001.ant.amazon.com (10.13.139.101) To
+X-ClientProxiedBy: EX19D044UWB001.ant.amazon.com (10.13.139.171) To
  EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
 From: David Howells <dhowells@redhat.com>
@@ -96,18 +96,33 @@ Signed-off-by: David Howells <dhowells@redhat.com>
 Acked-by: Marc Dionne <marc.dionne@auristor.com>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Cc: stable@vger.kernel.org
-[Adapted to 6.1: use write_lock_bh/write_unlock_bh, trace_rxrpc_call
- directly for see-call tracing, and 6.1 trace enum naming convention.]
+[Adapted to 5.15: use write_lock_bh/write_unlock_bh, trace_rxrpc_call
+ directly for see-call tracing, 5.15 trace enum naming convention, and
+ added entries to both plain enum and EM() macro list.]
 Signed-off-by: Jay Wang <wanjay@amazon.com>
 ---
- include/trace/events/rxrpc.h |  4 ++++
+ include/trace/events/rxrpc.h | 8 ++++++++
  net/rxrpc/recvmsg.c          | 20 ++++++++++++++++----
- 2 files changed, 20 insertions(+), 4 deletions(-)
+ 2 files changed, 24 insertions(+), 4 deletions(-)
 
 diff --git a/include/trace/events/rxrpc.h b/include/trace/events/rxrpc.h
 --- a/include/trace/events/rxrpc.h
 +++ b/include/trace/events/rxrpc.h
-@@ -82,9 +82,13 @@
+@@ -93,9 +93,13 @@ enum rxrpc_call_trace {
+ 	rxrpc_call_put_notimer,
+ 	rxrpc_call_put_timer,
+ 	rxrpc_call_put_userid,
++	rxrpc_call_put_recvmsg_peek_nowait,
+ 	rxrpc_call_queued,
+ 	rxrpc_call_queued_ref,
+ 	rxrpc_call_release,
++	rxrpc_call_see_recvmsg_requeue,
++	rxrpc_call_see_recvmsg_requeue_first,
++	rxrpc_call_see_recvmsg_requeue_move,
+ 	rxrpc_call_seen,
+ };
+ 
+@@ -291,9 +295,13 @@ enum rxrpc_tx_point {
  	EM(rxrpc_call_put_notimer,		"PnT") \
  	EM(rxrpc_call_put_timer,		"PTM") \
  	EM(rxrpc_call_put_userid,		"Pus") \
