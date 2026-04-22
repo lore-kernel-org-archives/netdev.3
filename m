@@ -1,72 +1,145 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 676953EAC9E;
-	Wed, 22 Apr 2026 13:27:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0862E3D331A
+	for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 13:27:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776864447; cv=none; b=MtN5pn2Q5j9OMqkT++UxZt9MFbh1ghGe5qJXWaRhLDkjUIDuKWIFz1cDzbjR2CYd1YPXRnyG6DaXkMtivm3XHf+3uL//kauMsdIfUZ6djoNZqAVcsOD7ApZtxsSzPHAGPL/RlnstlhV/oF8ESbBjUraadKdk2P/vjZjBmtnw2c8=
+	t=1776864462; cv=none; b=GKwytYS9JrkkJOD1WyEiLsux/Ry+5xANkoLX+2aP6K341fchGaP3rSkKDVRl/dqTYAYRlFL0LwDN3+VFfK7Hn8VkqmeZQ4z5hWknlP5/G4q0oHYchgOHvc2V1Mhr4VKfRkeNrNft379rg19xeEGK0mw3c9V3Om3HKmVXyrTzoxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776864447; c=relaxed/simple;
-	bh=UAB8ew6M1c8iaKe1esw1FMMRUKB/6o7RwuwKu9bwzBg=;
+	s=arc-20240116; t=1776864462; c=relaxed/simple;
+	bh=Pql9kSun8yhCpr7OB5Y/ZbxhKxZIRI5uVLS8Hj2D8hU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Kmt/ZZzvBoepH7ziH0mY2InbzzSSplQFMOylQrLx/rzFZ0EkgDqexVeQ55Gt0Z4nY8niPtNKepK9fyND1BWmH4AeUZdYfImZ7Bxhh0MuYLl3KM7jZWE+pElCBFqS6jt+xbPGUY8W1Q5zd22j95lZF3EVKtsVgFNvvptvNZK6WZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=4Mml/GuL; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=XAWw+h4yCOMUlUt8k6/elqTUZiqjgadqK/kmMIt4B7JKBBH6CcJPc2nwWmOHaWL+kZ/FDWzGtfANVrKlCGJN60G/Vglb3sEw3aXS+T8bhWheVTiAQOVARZs1E7uwe9wjiXbo0QE2dhcTFoGBigIvws9Qq5wu3n6U0O9Y8Bw5u6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tIY2zndc; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1AZNVJHo; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="4Mml/GuL"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=CUHnSisp2kcYkSoP1xx2XQwlkh4hdcNpQIBttcFUKgA=; b=4Mml/GuLFA5XsLCSZrj+zW/Gsr
-	h1S04ZOEiGXlmsUw7fjqxgGRFNdblXPn/co23sNxp4SsndEO51smHVPRbvepMIoRIbJaVN/6o4PF+
-	v5n/yOeAQEnfF5D8pZQ+g3ynkmdFRo3AWhIlzmyhtnGSei/jtFqV0USPG7I5UxA+o5Mk=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wFXbe-00H2Il-DQ; Wed, 22 Apr 2026 15:27:06 +0200
-Date: Wed, 22 Apr 2026 15:27:06 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Minda Chen <minda.chen@starfivetech.com>
-Cc: Frank <Frank.Sae@motor-comm.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [net-next v2 0/3] Add motorcomm 8531s set ds func and 8522 driver
-Message-ID: <eea18d2f-5294-40e4-9ea1-87aa55f8ea28@lunn.ch>
-References: <20260422083255.29692-1-minda.chen@starfivetech.com>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tIY2zndc";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1AZNVJHo"
+Date: Wed, 22 Apr 2026 15:27:36 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1776864458;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gp6I89CelbWfiY620SyiAMASHDD2+76IuwJlP04E4n0=;
+	b=tIY2zndcq8hF9Tl7K7KqJ5j/T2dhuxPAm8cm4AjJ76BG1wf5WbNH3WT6WwbrGA1IHL9lUU
+	bbvw/rJI5iPxPDkT7+RWDyXNb9Ippua5HUcQBbkQjrjoizGMiroGkypUwG/7WvoSWzz7nw
+	U5rVRZHt8rIWEHBf1JR3wz9f/+ziavrbOAQpNFG2cF8W77AgkxFYzLprXs5rq4EcJdYqhD
+	asAIC2Fl9eiNGvuZGbeZJd49Lk3yzQf57PduNWUeGYrra7nz9XsLtnqzEDCvyhdwwOaEX1
+	kqWboKSWxJZ8U0NlLC6TFjVAlI3DwoRATWUl1THcVbJise5LE7YLLhzStfflZw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1776864458;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gp6I89CelbWfiY620SyiAMASHDD2+76IuwJlP04E4n0=;
+	b=1AZNVJHo4BGnMjVxXaZWLcJeWZVsVZU2Nkp/M1teUqvTucjsrng3Xheo+zBb7sVrmZ4svQ
+	WvjJSrSFP4fobuAg==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: netdev@vger.kernel.org, "(JC), Jayachandran" <j-rameshbabu@ti.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Chintan Vankar <c-vankar@ti.com>, Danish Anwar <danishanwar@ti.com>,
+	Daolin Qiu <d-qiu@ti.com>, Eric Dumazet <edumazet@google.com>,
+	Felix Maurer <fmaurer@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	"Raghavendra, Vignesh" <vigneshr@ti.com>,
+	"Bajjuri, Praneeth" <praneeth@ti.com>,
+	"TK, Pratheesh Gangadhar" <pratheesh@ti.com>,
+	"Muralidharan, Neelima" <neelima@ti.com>
+Subject: Re: [PATCH RFC net-next v2 2/2] af_packet: Add port specific
+ handling for HSR
+Message-ID: <20260422132736.TakH_dhQ@linutronix.de>
+References: <willemdebruijn.kernel.1fbf050c50d62@gmail.com>
+ <20260317172906.eG2LxlZ7@linutronix.de>
+ <willemdebruijn.kernel.17068ce38efa5@gmail.com>
+ <20260319142613.KHz32I-V@linutronix.de>
+ <willemdebruijn.kernel.8e323262df61@gmail.com>
+ <20260324163820.p9M2z27W@linutronix.de>
+ <20260402163237.EIE16Pj_@linutronix.de>
+ <willemdebruijn.kernel.1f3d8356e4a5a@gmail.com>
+ <20260416161856.CsL4npMH@linutronix.de>
+ <willemdebruijn.kernel.270fa204f615f@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260422083255.29692-1-minda.chen@starfivetech.com>
+In-Reply-To: <willemdebruijn.kernel.270fa204f615f@gmail.com>
 
-On Wed, Apr 22, 2026 at 04:32:52PM +0800, Minda Chen wrote:
-> This patch is for Starfive JHB100 EVB board. JHB100  contain
-> 1 RGMII/RMII and 1 RMII synopsys GMAC cores. In the EVB board, RGMII
-> interface connect with YT8531s Ethernet PHY. RMII interface connect
-> with YT8522 ethernet PHY. So patch 1-2 is for RGMII interface
-> patch 3 is RMII is for RMII interface.
+On 2026-04-21 03:41:52 [-0400], Willem de Bruijn wrote:
+> Sebastian Andrzej Siewior wrote:
+Hi Willem,
+
+> > I understand your concern. I tried to make as self contained as
+> > possible and little runtime overhead as possible.
+> > 
+> > > One perhaps interesting Rx only option I had missed before is
+> > > SOF_TIMESTAMPING_OPT_PKTINFO. Would that give you the original
+> > > device ifindex today?
+> > 
+> > The upper logic expects to poll() on the fd. If I need to filter the
+> > device based on this then breaks the expectations.
+> > I need also to receive packets without a timestamp so I don't think this
+> > works.
 > 
-> JHB100 is a Starfive new RISC-V SoC for datacenter BMC (BaseBoard
-> Managent Controller). Similar with Aspeed 27x0.
+> I don't follow this. My suggestion is to optionally receive this
+> additional metadata along with the data. Not as a filter.
+
+Yes. Just ignore that part.
+
+> > cb[] is limited to one layer. I do have a skb_ext variant working but
+> > this requires cmsg to set it. Do you think about generic skb_ext which
+> > is set from af_packet? But I don't think it brings much value if I can't
+> > filter on the RX side before returning the packet to userland.
+> > 
+> > > But at this point I see enough options that do not require changes
+> > > to packet sockets.
+> > > 
+> > > To get back to the simplest approach: skb->mark. Is there any
+> > > concrete risk that on this path that would conflict with other
+> > > uses of that field? If packet sockets inject directly into this
+> > > driver (possibly even with PACKET_QDISC_BYPASS)?
+> > 
+> > So I have a skb->mark variant working. I do read on the ethX interface
 > 
-> The JHB100 minimal system upstream is in progress:
-> https://patchwork.kernel.org/project/linux-riscv/cover/20260403054945.467700-1-changhuang.liang@starfivetech.com/
+> When reading on both ethX interfaces, that gives you all the info you
+> need on Rx, right? Or alternatively by attaching to hsr0 with
+> SOF_TIMESTAMPING_OPT_PKTINFO.
+> 
+> So skb->mark is only relevant to the Tx side, right? There might be
+> yet another way to identify in the hsr ndo_start_xmit that a packet
+> arrived from a PF_PACKET socket. E.g., by checking skb->sk->sk_family.
+> As alternative or complement to skb->protocol.
+> 
+> Btw, on receive the inverse could also be true: insert a synthetic
+> header and pop that in userspace, e.g., a VLAN tag.
 
-Please take a read of sections 1.3 and 1.4 of:
+So I made this:
+I open hsr0 for TX with a custom header. The header is expected if the
+ether-type is set to PTP. This extra header holds the HSR-header
+information and port request.
+I open eth0 for RX. I set PACKET_IGNORE_OUTGOING to avoid the feedback
+from hsr0 writes. This is part is crucial ;)
 
-https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
+I use skb_ext to pass the information from the inline-header to
+the network driver since the data pointer of the skb is forwarded after
+that header. In the end I have no idea if the network driver supports HW
+offloading and needs this information or not and sends the packet as-is.
 
-    Andrew
+HW offloading becomes a bit tricky but relying on skb_ext (for HSR) and
+checking otherwise for the ether type vs PTP (in the PRP case) does the
+trick.
 
----
-pw-bot: cr
+So it is slightly more complicated but seems to work.
+Let me wait until after the merge window and then I present what I have.
+
+Sebastian
