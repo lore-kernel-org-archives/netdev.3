@@ -1,195 +1,194 @@
-Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CAFE37266E
-	for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 07:37:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.43
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776843453; cv=none; b=tNNL8K4GbWuV3PKtI7BCN74+0dNVD1Bc+Wl4gqYWtdJF+T5y11U9nsiTV9Zi2tLN/xvs2JCi9FH6hkc0POJMff0uG6c8+/nXYfAT5hlur1v6WTkPoU1tTWkybtitQaloq0qNBhHziOXfWxeNq+0M42SXUSySer+tlgRZaGBVLLE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776843453; c=relaxed/simple;
-	bh=5dyoG/KCVtoa4Pp0xAZxPffQDXF8eRW3WvaFi6JA03I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EehX5D1jFL1dvohkZdCHD2OvVHQ+l9VbpDWcHRvkg0vNQ3EIktHzsAJZiKt9oA9I+FegLFrHBh9Q2s2f43W3zE/2DFxlRscXeiIrkNUjz8LlsHTpNgFTZQL3wyG/kLS6TvIYSqFjxmDqY0usUcOvickaUUM0ChaFIpU6KU84IOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WWAwc0sj; arc=none smtp.client-ip=74.125.82.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D987F2DC77F
+	for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 07:39:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776843589; cv=pass; b=GKftuVoiVUNYFbHcDFYMLbjNwU/Al5C33pKsUNfYyKnd0wCc1vKGax8yvRVn+bARaCP7gQwXN0at1tSl5hb5mq+Zig24gEBJiT2zNhq0er2kdvftRQF1BUgZN/EMeMKPqiVCh3l+nP9kkNVT9J8TPmAqmam/kYUJIusR2rZxwjQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776843589; c=relaxed/simple;
+	bh=JIrqPstQwYNJn316wsBaxXz9zfKoIdJWF3ekFOqkV2g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NNvPPK4+fDj6Gk1BWhDlzBVIy0M6XRlfad93MilwSWyY8QZgwYIeUpQIAhXRn3IvVN+/c/+D1Hajr5TLG05FzHSZ0C1b8BKnE06wpvQxOyXKuNHaF2zkhRT+xBXXehb/AoEk96w2zcCIcIUTOwpvHtm+fRCI9c6bOkgpj5lMoeo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=P3HtJIZL; arc=pass smtp.client-ip=209.85.222.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WWAwc0sj"
-Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-12c19d23b19so6549184c88.0
-        for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 00:37:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="P3HtJIZL"
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-8ed4dd182efso159046185a.3
+        for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 00:39:46 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776843586; cv=none;
+        d=google.com; s=arc-20240605;
+        b=VEADnTF3Wzt9DXkJBXk8gWZfB8AttJ+TV4R89DPgzmR3mGH147R45pgWtZOd+FYvFf
+         S1eF9zIKBdyHf2DJKVT+IOoIXdlOH/o5e32458Z/os4KQJs9/PSi0GpoDAiDLQ+mwVfv
+         JbUakATfHikN/YPATpY+mTD4qs/ChOf8GO1OC+hgDlN913/bEMzg3C/KlHwoYeBKkCui
+         Y3171babEgnbjPA3Tzc0I1Dp6MeuNNTIvO6kAUnsg5zHLnJQV0cXe7BVQr+qBmQBRXho
+         qGgPTjN920IdwkZGOaF1WsgfhvsE2s60FQyJsaJFoeItdiEAByfIy49Plm2JiFOg4RVk
+         VymA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=E8AU1puBQWeKYqSEIxsINcktHRXGb7onN9YVXllTiVY=;
+        fh=DhuG2D2chCHdXCaDPKTqk4m5sQ+v6n7dtRAwcL9AFS8=;
+        b=Bc0CYAsYWglt4QIfSS3c/nOBwKhtfAY0uh5VehaV9XY/unGlJ0bsV039pgCqi/0gKx
+         F8N1lX/9MdJh3+OULmrCfO38pjwrASorR7u6nzPE+sgQpgAH7RUVq0DVb5iw5gGKW0E7
+         tU7rsn6Seg8kTnIuIXWUgcW4scO9Pj7AFaVBbAXXfyG2enyZ/JCfLr3mRB8cZ6xU90os
+         HfUBMs3VOvaJjZqppp+ze50zeIx+udJJ9mesm9o4BjGL74gUC85lJLNcb/lrhlyWalGG
+         8W7nTMa/Qup/ZCCxxf2QbwGLr7dlQ189g6UVQJc3Z47TAAzdSmobN+V84Mv8seza71aR
+         dc9g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776843451; x=1777448251; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=8wgrP8hCcHXs+AdVctjn43hPNU4GYFc9lVuWtTj29k0=;
-        b=WWAwc0sjsbeFGHYjnuCaACNq5u0idJLYArsJNW7jW7/0n2vpC8H62GzhYDpNwQpYhX
-         DN//BuooZzVGHUTQloi1bt8gFWNiVjDTbCUgQXVNgcLgRsDNRb9Bhn4l2VuJVMsS4KGC
-         0N9LE3AfZDyUD76ffvMpE/SX6Jutx7U2FRP7lU7NPRI9r+RlTTQG/C0Vzd6EiHg+y2JS
-         dUlbKgOT67SBzXLh8mTbucgo3y4NCLbMHh4a1I2xDCNYkDyqBCoklF62lXLP/0Kw/juh
-         0ObdNILeWZZCzjbjiji8gCBPBETrze/A74aEomKI3l3bfiiOXIjWIKwK9rmnYhXAYm2+
-         J6hg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776843451; x=1777448251;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=google.com; s=20251104; t=1776843586; x=1777448386; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8wgrP8hCcHXs+AdVctjn43hPNU4GYFc9lVuWtTj29k0=;
-        b=jhP/GmwFC1hMpKZ7eIuIrFtF7T4iWC5jz7eqiJ8W4dpVjQS1WGqTPR0L4ds9TpkX7d
-         jVAYbv3PI/nEhv74KId8BiAwvRcWjZkZshjCHvqKONak24DLWmxrbsBpijp0j0eqbo5b
-         dYlEeGhO8h8RFlVaagB2ue7vdWcfHsAuUy9d7ht/isRKZDlTDSOcOVeR1nBFSnXZ6dC5
-         Qae+p93CCFUO1gyCHTn18C67f6rf0NItrxWBkwpKJRYpbROro1Z8ytN3qVC2wqosZHRR
-         ObqCBD8Bodld3Zsg/8+eBOdNnmctmFmmAHhWOvXiZ7yGqemjBWlLK25K4UHZAZ6XkYkG
-         H2fQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+4P1GXiPmufV3+AOvnQQNTAGGR9jVUE79O/ZSAspgE7jZ3+qFtgfbFY7wV97wzz8L2hTJwNA0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxjt1YtbQpVfqdfwRuLbziewd/5wxhIbWGR8OxBndWWXBQiHc3u
-	1a/X2RJokg1jNimWvfh3lUFysF6D3iXGIJ31hDrU00OdgHuxnQz6uxA2
-X-Gm-Gg: AeBDietCzQeryRkcBHyOmZStMUDtIHBfu5D3+UJc30Qa1+ZwMkotNux2Vwe9wsv0jWz
-	/Qae8He+xL3L0EL2T5VLIx2TFLoHwv/qBWlK0ZbBCyhJV7S9hihob+meOnE5T5HZ34UWdcVq20c
-	K/Yc0Eq3fAUZBRXV8A2/pp8cyF+zOspk4KssIsbomN1yD04GmeZlT97ee+5nYWsmDaX6VYEvpzw
-	YJi/9c4l0npv0WXQg+45rIiU3XlIHPIYrNAKVOD1m6sSDQiixgQgRj3ZmLLYxh6L4l1gVoHO9Y+
-	sHqKzD36keKxRBcxXkD9i42YZ6LRNgMtd8grMW02ajAcj+xkhrY6ANfvRzOOdFq/oJiRipKsXtv
-	CvFS5x879R1WieFgsTjM1ME3mdZg6bH+HttTGrSndPSXJjjd23Eq2aWlqA2EcoDU3i0hfky84UM
-	i3JBXaWtIb3pSmUndYkZxVOAbOrYfwizwZ89pksofWWhXTcLXIYcjnwexXsxFzSwU6ABy5Ip3mX
-	G+tUB38rFqZR06Wa0YcM8tQCjThC3M=
-X-Received: by 2002:a05:7022:eac8:b0:128:d375:f1cc with SMTP id a92af1059eb24-12c73f759e5mr11998285c88.12.1776843451156;
-        Wed, 22 Apr 2026 00:37:31 -0700 (PDT)
-Received: from efaec68ba852.tailc0aff1.ts.net ([206.206.192.132])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12db8684f90sm3360768c88.13.2026.04.22.00.37.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Apr 2026 00:37:30 -0700 (PDT)
-From: Weiming Shi <bestswngs@gmail.com>
-To: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Amery Hung <ameryhung@gmail.com>,
-	Leon Hwang <leon.hwang@linux.dev>,
-	Kees Cook <kees@kernel.org>,
-	Fushuai Wang <wangfushuai@baidu.com>,
-	Menglong Dong <menglong8.dong@gmail.com>,
-	netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>
-Subject: [PATCH bpf v3] bpf: Fix NULL pointer dereference in bpf_sk_storage_clone and diag paths
-Date: Tue, 21 Apr 2026 23:54:12 -0700
-Message-ID: <20260422065411.1007737-2-bestswngs@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        bh=E8AU1puBQWeKYqSEIxsINcktHRXGb7onN9YVXllTiVY=;
+        b=P3HtJIZLs7kDSBolrJNzMrG1uE48oHG8h06yAyq9xPxUwa+s1ryX+Q9KdgHmIqUjpL
+         3aiWKO8DoQABhi05ThWbW4LAdwPkmN5orv7fGQ4v+3yOgUQJVdXsfOisRIprQqaAny9e
+         KkG11tb72a2h4842ibzCILZjcROa++ZBcdeKvxxAHfhP3l9niBcWIAvpMl15nqrxwb24
+         jBXdx7Hwu3RtvGYshO92zjYDDgcBQtrjZ2kQS0Kg2qpmqDLT7ouomyO+bB8zJCUOx1Ku
+         xcutZB7UElyBsZrl4+orjDLJ5TRuQ3mQBjeUMHBtwF/fyhpq8uXJ7/jwArUMeOsj5Rhe
+         553w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776843586; x=1777448386;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=E8AU1puBQWeKYqSEIxsINcktHRXGb7onN9YVXllTiVY=;
+        b=Rt3Q+59Z3p6uHqr8Yt8PP4pDC0TLR7dr4uriqF9bubqDitRApXkrMCVkDghVjcomSO
+         sLYRh/OGkdLcwDf7cbp7vDJ+/a8hNT12Hg8TtZoWdH7kZ//LJpCoYHaM2HlBgByhwF5D
+         n3hpJuVGB55+M+og2IB7U9ljZOi5ah80w9vsZwZLoAjyw+bH0D3lE+jJ3YA+n1FESuNE
+         tAAj8oWt3FDMXn2BaEWc0HGsRjRUAKumOylPN31EAoj5VYJ5+X6R6IIaBqYy+40bUzxq
+         k0eKLHvkVy6M4XJs/so77QBEGnZuSCq19cagTItqbP7bALlsq4oNxphWQzhkQpSTHDxq
+         kecA==
+X-Forwarded-Encrypted: i=1; AFNElJ9unHs0ZazeHup1KCy28VOI3xcXr8TwVe+Iuqxzo9wv9MeJisV+L56ejTRnqBiLZS1149ylnuU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwdlnWI0xV0AWjPPRsdjA1flBy3ZIDO9NUaITouWGYCMUMFSBn7
+	jP9IlkVRSDvxWYl+wvKK4QplhQuPrOQow6CR6bNn7FDgM/SOujsagH307THgTg/pGlgpXPbVELc
+	l6PK8XQzoRZxYgW65/deRsMo42zwStDvLmBO2fukd
+X-Gm-Gg: AeBDieul5wwmdCOtocMOfFQe99bW1CkrwXaWECyXrsHhLGv6XyXuw/PRGb8DdGXG1e8
+	N3jnFNIJqdqDFwgRSEU1lVyd1o4Zs8V2vtNiD2qWoXHWEiB5po7cZ0aE/WyADHayW9dCcwl+Mxu
+	25NiVIWtGIkVy62AUxAq3sIkshURv+J4LVhGUxcxJC2rHMW7zqw6negnpnr3vC7BrSLwpeAL509
+	7JshPM+Krt2UIOVQws2RLxk9W7nlOUDnXUnAZIPLzkgO9Vt8m7Z1d0tGxvW2cfkJ6P/vAPykLMy
+	dK7RgTLaJPxMZ5dCogiYXg+Bpo2WPZENWo4Y4lfXodUUOOE50zUH+M34YvgRisSJjF8wi1yIMdP
+	DcR10Y1bF
+X-Received: by 2002:a05:620a:4589:b0:8c7:13b8:8b55 with SMTP id
+ af79cd13be357-8e79236daddmr2963147785a.46.1776843585314; Wed, 22 Apr 2026
+ 00:39:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260414013634.43997-1-ahacigu.linux@gmail.com>
+ <CANn89i+vq9O8PJZaDf=0YjcKTM8=-64TcUn-i-F4siGKAMKz+A@mail.gmail.com> <CALjTKDkJ9L-88hdODbt-8D=eEDe6r5egtTfk_RnwgVq_NF+q+g@mail.gmail.com>
+In-Reply-To: <CALjTKDkJ9L-88hdODbt-8D=eEDe6r5egtTfk_RnwgVq_NF+q+g@mail.gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 22 Apr 2026 00:39:33 -0700
+X-Gm-Features: AQROBzA8TC84INUrYccUyZ1jV2DQcRrv0QbfayCd9P2QgDRedVzWP2R4pTIwduQ
+Message-ID: <CANn89iKwgoxM==synaLGKEP3k0jtCJ4b+Bap8ZF9k8yHJGnORg@mail.gmail.com>
+Subject: Re: [PATCH net] tcp: make probe0 timer handle expired user timeout
+To: Altan Hacigumus <ahacigu.linux@gmail.com>
+Cc: Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	"David S . Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Enke Chen <enchen@paloaltonetworks.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-bpf_selem_unlink_nofail() sets SDATA(selem)->smap to NULL before
-removing the selem from the storage hlist. A concurrent RCU reader in
-bpf_sk_storage_clone() can observe the selem still on the list with
-smap already NULL, causing a NULL pointer dereference.
+On Tue, Apr 21, 2026 at 8:31=E2=80=AFPM Altan Hacigumus <ahacigu.linux@gmai=
+l.com> wrote:
+>
+> On Mon, Apr 20, 2026 at 9:58=E2=80=AFPM Eric Dumazet <edumazet@google.com=
+> wrote:
+> >
+> > On Mon, Apr 13, 2026 at 6:36=E2=80=AFPM Altan Hacigumus <ahacigu.linux@=
+gmail.com> wrote:
+> > >
+> > > tcp_clamp_probe0_to_user_timeout() computes remaining time in jiffies
+> > > using subtraction with an unsigned lvalue.  If elapsed probing time
+> > > already exceeds the configured TCP_USER_TIMEOUT, the subtraction
+> > > underflows and yields a large value.
+> > >
+> > > Handle this expiration case similarly to tcp_clamp_rto_to_user_timeou=
+t().
+> > >
+> > > Fixes: 344db93ae3ee ("tcp: make TCP_USER_TIMEOUT accurate for zero wi=
+ndow probes")
+> > > Signed-off-by: Altan Hacigumus <ahacigu.linux@gmail.com>
+> > > ---
+> > >  net/ipv4/tcp_timer.c | 5 ++++-
+> > >  1 file changed, 4 insertions(+), 1 deletion(-)
+> > >
+> > > diff --git a/net/ipv4/tcp_timer.c b/net/ipv4/tcp_timer.c
+> > > index 5a14a53a3c9e..4a43356a4e06 100644
+> > > --- a/net/ipv4/tcp_timer.c
+> > > +++ b/net/ipv4/tcp_timer.c
+> > > @@ -50,7 +50,8 @@ static u32 tcp_clamp_rto_to_user_timeout(const stru=
+ct sock *sk)
+> > >  u32 tcp_clamp_probe0_to_user_timeout(const struct sock *sk, u32 when=
+)
+> > >  {
+> > >         const struct inet_connection_sock *icsk =3D inet_csk(sk);
+> > > -       u32 remaining, user_timeout;
+> > > +       u32 user_timeout;
+> > > +       s32 remaining;
+> > >         s32 elapsed;
+> > >
+> > >         user_timeout =3D READ_ONCE(icsk->icsk_user_timeout);
+> > > @@ -61,6 +62,8 @@ u32 tcp_clamp_probe0_to_user_timeout(const struct s=
+ock *sk, u32 when)
+> > >         if (unlikely(elapsed < 0))
+> > >                 elapsed =3D 0;
+> > >         remaining =3D msecs_to_jiffies(user_timeout) - elapsed;
+> > > +       if (remaining <=3D 0)
+> > > +               return 1;
+> >
+> > I do not think this chunk is needed ?
+> > If @remaining is signed, then perhaps change the following line to:
+> >
+> > remaining =3D max_t(int, remaining, TCP_TIMEOUT_MIN);
+> >
+>
+> The if (remaining <=3D 0) return 1 handles the already-expired case and
+> mirrors the logic in tcp_clamp_rto_to_user_timeout().
 
- general protection fault, probably for non-canonical address 0xdffffc000000000a:
- KASAN: null-ptr-deref in range [0x0000000000000050-0x0000000000000057]
- RIP: 0010:bpf_sk_storage_clone+0x1cd/0xaa0 net/core/bpf_sk_storage.c:174
- Call Trace:
-  <IRQ>
-  sk_clone+0xfed/0x1980 net/core/sock.c:2591
-  inet_csk_clone_lock+0x30/0x760 net/ipv4/inet_connection_sock.c:1222
-  tcp_create_openreq_child+0x35/0x2680 net/ipv4/tcp_minisocks.c:571
-  tcp_v4_syn_recv_sock+0x123/0xf90 net/ipv4/tcp_ipv4.c:1729
-  tcp_check_req+0x8e1/0x2580 include/net/tcp.h:855
-  tcp_v4_rcv+0x1845/0x3b80 net/ipv4/tcp_ipv4.c:2347
+tcp_clamp_rto_to_user_timeout() has two conditionals.
 
-Add a NULL check for smap in bpf_sk_storage_clone().
-bpf_sk_storage_diag_put_all() and bpf_sk_storage_diag_put() have the
-same unprotected dereference pattern, add NULL checks there as well and
-pass the validated smap to diag_get() so it no longer performs its own
-rcu_dereference.
+if (remaining <=3D 0)
+   return 1;
+return min_t(u32, icsk->icsk_rto, msecs_to_jiffies(remaining));
 
-Fixes: 5d800f87d0a5 ("bpf: Support lockless unlink when freeing map or local storage")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
----
-v3:
-  pass smap to diag_get()
-v2:
-  drop the NULL check in diag_get(); The caller already checks smap for
-NULL.
+First one was to avoid to call msecs_to_jiffies() with a negative number.
 
- net/core/bpf_sk_storage.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+tcp_clamp_probe0_to_user_timeout() has 3 tests already, you want to
+add a fourth one...
+I would prefer something less obscure.
+We do not care if we return 1 or 2 (TCP_TIMEOUT_MIN) jiffies
 
-diff --git a/net/core/bpf_sk_storage.c b/net/core/bpf_sk_storage.c
-index f8338acebf077..1f9bd0005883b 100644
---- a/net/core/bpf_sk_storage.c
-+++ b/net/core/bpf_sk_storage.c
-@@ -172,7 +172,7 @@ int bpf_sk_storage_clone(const struct sock *sk, struct sock *newsk)
- 		struct bpf_map *map;
- 
- 		smap = rcu_dereference(SDATA(selem)->smap);
--		if (!(smap->map.map_flags & BPF_F_CLONE))
-+		if (!smap || !(smap->map.map_flags & BPF_F_CLONE))
- 			continue;
- 
- 		/* Note that for lockless listeners adding new element
-@@ -534,10 +534,10 @@ bpf_sk_storage_diag_alloc(const struct nlattr *nla_stgs)
- }
- EXPORT_SYMBOL_GPL(bpf_sk_storage_diag_alloc);
- 
--static int diag_get(struct bpf_local_storage_data *sdata, struct sk_buff *skb)
-+static int diag_get(struct bpf_local_storage_map *smap,
-+		    struct bpf_local_storage_data *sdata, struct sk_buff *skb)
- {
- 	struct nlattr *nla_stg, *nla_value;
--	struct bpf_local_storage_map *smap;
- 
- 	/* It cannot exceed max nlattr's payload */
- 	BUILD_BUG_ON(U16_MAX - NLA_HDRLEN < BPF_LOCAL_STORAGE_MAX_VALUE_SIZE);
-@@ -546,7 +546,6 @@ static int diag_get(struct bpf_local_storage_data *sdata, struct sk_buff *skb)
- 	if (!nla_stg)
- 		return -EMSGSIZE;
- 
--	smap = rcu_dereference(sdata->smap);
- 	if (nla_put_u32(skb, SK_DIAG_BPF_STORAGE_MAP_ID, smap->map.id))
- 		goto errout;
- 
-@@ -599,9 +598,11 @@ static int bpf_sk_storage_diag_put_all(struct sock *sk, struct sk_buff *skb,
- 	saved_len = skb->len;
- 	hlist_for_each_entry_rcu(selem, &sk_storage->list, snode) {
- 		smap = rcu_dereference(SDATA(selem)->smap);
-+		if (!smap)
-+			continue;
- 		diag_size += nla_value_size(smap->map.value_size);
- 
--		if (nla_stgs && diag_get(SDATA(selem), skb))
-+		if (nla_stgs && diag_get(smap, SDATA(selem), skb))
- 			/* Continue to learn diag_size */
- 			err = -EMSGSIZE;
- 	}
-@@ -633,6 +634,7 @@ int bpf_sk_storage_diag_put(struct bpf_sk_storage_diag *diag,
- 	unsigned int diag_size = nla_total_size(0);
- 	struct bpf_local_storage *sk_storage;
- 	struct bpf_local_storage_data *sdata;
-+	struct bpf_local_storage_map *smap;
- 	struct nlattr *nla_stgs;
- 	unsigned int saved_len;
- 	int err = 0;
-@@ -668,7 +670,11 @@ int bpf_sk_storage_diag_put(struct bpf_sk_storage_diag *diag,
- 
- 		diag_size += nla_value_size(diag->maps[i]->value_size);
- 
--		if (nla_stgs && diag_get(sdata, skb))
-+		smap = rcu_dereference(sdata->smap);
-+		if (!smap)
-+			continue;
-+
-+		if (nla_stgs && diag_get(smap, sdata, skb))
- 			/* Continue to learn diag_size */
- 			err = -EMSGSIZE;
- 	}
--- 
-2.43.0
+>
+> max_t(s32, remaining, TCP_TIMEOUT_MIN) with remaining changed to s32
+> also fixes the underflow; I used the explicit early return for symmetry
+> with the RTO helper, but I can switch that in v2 if you prefer.
+>
+> > Also, it would be great to have a  new packetdrill test.
+> >
+>
+> With packetdrill, AFAICS it would require a late ACK to be processed
+> after TCP_USER_TIMEOUT has elapsed but before tcp_probe_timer() runs the
+> abort check - i.e. a race between the RX softirq path and the timer.
+> This is not purely an event/packet ordering problem, so it is not clear
+> to me how a deterministic behavior can be simulated with packetdrill
+> without tying it to exact probe timing.
 
+I was trying to sense if the bug was serious or not, considering last
+tcp_clamp_probe0_to_user_timeout()
+statement is:
+
+return min_t(u32, remaining, when);
+
+Perhaps you should give more details in the changelog. What were the
+symptoms of this bug, for TCP_USER_TIMEOUT users.
