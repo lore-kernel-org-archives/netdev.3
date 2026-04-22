@@ -1,2719 +1,311 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f227.google.com (mail-pf1-f227.google.com [209.85.210.227])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D61BA3CB2C7;
-	Wed, 22 Apr 2026 18:02:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA04C3BED76
+	for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 18:11:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776880983; cv=none; b=lWuKN1FpNhIFwOqbmp2EguXkAV49AHh0C/X1uDWnXFZnVAfrBLVvwipJ8FlKLj4rhzt2rQGQmCFm9UEMcTSldATdmtzeIN7DAAzg16LeZKiKAhQqdRf1PKAROvQ7++N08o4YbpGvC5maklhJz/x/9eUza8jGFadxkx1kTncXXt4=
+	t=1776881502; cv=none; b=hA1HxNHdpPyNtgs5TcJ475IVOlJp93Rnx+USBO3hXvLJUPTH3mJQQVIaJyViGQhwoFptFUO2QFypIcdOdUn3jnXfOZt9XXWDZvGzuXMuchiO+WLWBKiIUugnIM4z46NUSq92ruW7wKiVEDPoKxB0IQ9Bbz8iv24LZDREvfWOYF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776880983; c=relaxed/simple;
-	bh=mWNXwoQPTma9ohyAGR8hti171DbA3ZRV4bQO3xuAbOU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=R3cHEGJBI0AjNKp53FVX0tQX2KnLoJBpsU0+6E2ns0PPW8k4tP3jg+YsfHPOD/ZWfnt7Ti3GjegHSzVz903HRagTG38RFC6ohd9KSAplVUQ/uMndglHWvsZ/4IFajIDMfbAVJB7njvcStd75EQ6EhTw1EbceQDIXMiVDzc0firw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=jC3xZPdz; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1776881502; c=relaxed/simple;
+	bh=kJ6SnXMZuz9AEQvU7bExiPMTIWCij4s9BSxbx3q7K50=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EwVUDAjn4uNKGa3pzNjogYlMQZcrroVZdAEjbcXXnK7+FVyORnJmgLKXS6vWF/aZn5cnsTBvxYbEfXyDbeZn8pDIF2PDaC1yn8f6DRmjGP32SNtWU9OL7rj15thAMVyxaJ1Eiq1qMF0Z2GggUFC+RSdqtyEAuh1R9numXkyjeH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=eKbZLDwt; arc=none smtp.client-ip=209.85.210.227
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="jC3xZPdz"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=Cc:To:In-Reply-To:References:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=XvwrdWjZt9VnVqcfYFTz2Ic37Z114XV16+bjT75J4uY=; b=jC
-	3xZPdzu5rdM5QOWf0vr52VDQZy7hndkNwcDMNKO0s034M4jt7oI2iqgSt1BSktIrQ4GtS8fDQ2Gkq
-	9XoBjbfJ1OhFHdDOgY99Q9mcjT//xqAyGg2lCkJRhwFVaG89AgyEZpEP7Adva4mBcpa5+60uy3hxJ
-	seRWCQQA6nRQNio=;
-Received: from c-66-41-74-139.hsd1.mn.comcast.net ([66.41.74.139] helo=thinkpad.home.lunn.ch)
-	by vps0.lunn.ch with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wFbuT-00H4Ba-B2; Wed, 22 Apr 2026 20:02:49 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-Date: Wed, 22 Apr 2026 13:01:52 -0500
-Subject: [PATCH net v2 09/15] drivers: net: cirrus: cs89x0: Remove this
- driver
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="eKbZLDwt"
+Received: by mail-pf1-f227.google.com with SMTP id d2e1a72fcca58-82fbf5d4dc2so2701486b3a.1
+        for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 11:11:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776881500; x=1777486300;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qT0jxCrA040kI6196iRS21pG9IoWaBGboEW0YzCmftM=;
+        b=YfH4iTT5brC0AKwTdw+PH125+k96Jjm/LnwNEVP2whcUCyN3mqr6Ycj9oFOvmuKimR
+         mSIbXr6YlNqargIwAaJPzhxGvLr6/dDl4q7EmT7SmLzgDJkWu41UsJQ4rlgMCYbxR1kf
+         oBKcEBPua18WfiI+HkX4DKAsXrCc2hhBmll3xNkCvQJeSdlAFXtURX0ElXgrv8kyFodk
+         TdEmBQvBSB/f5Z3fMXJAOi7EIgDpbvLXkTpFIq7yVM2MCQPmDNOwJx+TPO41NNtEfnos
+         9ZpJtsKjiqOreoPYxVlRotY1qd9IKLOV4N741lRpx71r56MuxQVOoECctHKJMXtqGZAY
+         RHkg==
+X-Forwarded-Encrypted: i=1; AFNElJ/f9dhw6tKXltyALK5Y8zIq7/ldyPvRReadTAZN+BxDfdh66tnZCENyQjj3oT331Wmuhvpk/xI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzIqoK5YJEaZFyqB1/2qTZXzlHfcPRvfcUZyQCQ04H1A0+cd5Tx
+	ZlurNlciw+HF0g3EnYosF8XusELnZ7TB0scO3Hoyyj1JdAMec4H9lFw13nd25fMhTrHjYJ92pk+
+	jUx8J0sAznZhxqLk/MXEd4gOcfM7pqH7WN+c7GRztISKBRMJ0/s0urb0cFjSRGMEU+Hg4neeg0y
+	+qL2zoWfjqkv2YLvjBB3mUxm/4kYq8OJU5Ik2QNJ7DCsj5waM65uqaFD/rRrpUGa3N5dUbqQd2Y
+	NcsIbKtnA==
+X-Gm-Gg: AeBDies6sBwnXK3ghwugOcjuIKEd48bpLzXuxvPl4Zw0FjQFUvlP3XyZi6rBNbyWZND
+	UpTXJxpcyMOpx4MxdA2M9t71vYx2ugN/JAHhNofG9t3A8emTJnGpVuEmellnskHemdir9D5Vxgm
+	W4FnPb7910Ufs7HGJbpQwvZbhPCQAUzSGOIF4UqAWG+t6s8nQMLknaqqcEjEMrmqfW5YMir5KGo
+	POZrBmm908t92Q5MhkQl/+DUN0OVEURtfTWsU/mR7xyGEhA6QvoyHPeCZS03JRJlRr5/0ebYL7J
+	wHCFFQ+MNyfikg/xwAwSTWI5hHZOCDRVFEUPLPW321cBrPK7KurXYW210q6PIJM6ez13rqDnu/y
+	P9srAEelXuhpBwyH1W9YjxzuA2TZlEtlSoi5iNX8tDQWaBQOhNF0Dho/IbOW402gwDCeDjmZXRw
+	8iRIJY/iCxvpdnf7F5gprKRo/JUAgjF9Hyi7iZCuH8eCON65pA5wRo+ksErpJQEvb16b8Q
+X-Received: by 2002:a05:6a00:4b4d:b0:82c:6b46:271d with SMTP id d2e1a72fcca58-82f8c93a983mr25059638b3a.48.1776881499881;
+        Wed, 22 Apr 2026 11:11:39 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-119.dlp.protect.broadcom.com. [144.49.247.119])
+        by smtp-relay.gmail.com with ESMTPS id d2e1a72fcca58-82f8e965820sm1300536b3a.2.2026.04.22.11.11.39
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 22 Apr 2026 11:11:39 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-b9c0bdea9faso516181466b.2
+        for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 11:11:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1776881498; x=1777486298; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=qT0jxCrA040kI6196iRS21pG9IoWaBGboEW0YzCmftM=;
+        b=eKbZLDwtM0Gh6PNgEkGY++pRATZTGuobmBYetM37xcBomfbYLRvhs/0Vz5tbOBBAYz
+         Z6oc+DuHbauKI490cELkQ+vowMy4JgMEHS1RoU8Kah7iFVErpWG+U9ZY1kUWIfmntc9N
+         YIwEPP+daEmhxxSygIIHCAPoaUv+3PuSfKzx0=
+X-Forwarded-Encrypted: i=1; AFNElJ9u+zh4Xy/80ibH5XbkGoQKLqg9f3dt/b/hmMNCwW0nSpb/2kEn9gvdjDU1r0KO6uo9A+RXzVA=@vger.kernel.org
+X-Received: by 2002:a17:906:4796:b0:b88:5158:d10e with SMTP id a640c23a62f3a-ba41965503dmr1161248666b.21.1776881497604;
+        Wed, 22 Apr 2026 11:11:37 -0700 (PDT)
+X-Received: by 2002:a17:906:4796:b0:b88:5158:d10e with SMTP id
+ a640c23a62f3a-ba41965503dmr1161246166b.21.1776881497061; Wed, 22 Apr 2026
+ 11:11:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260422-v7-0-0-net-next-driver-removal-v1-v2-9-08a5b59784d5@lunn.ch>
-References: <20260422-v7-0-0-net-next-driver-removal-v1-v2-0-08a5b59784d5@lunn.ch>
-In-Reply-To: <20260422-v7-0-0-net-next-driver-removal-v1-v2-0-08a5b59784d5@lunn.ch>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <skhan@linuxfoundation.org>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>, 
- Michael Fritscher <michael@fritscher.net>, 
- Byron Stanoszek <gandalf@winds.org>, Daniel Palmer <daniel@0x0f.com>, 
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
- linux-doc@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=83078; i=andrew@lunn.ch;
- h=from:subject:message-id; bh=mWNXwoQPTma9ohyAGR8hti171DbA3ZRV4bQO3xuAbOU=;
- b=owEBbQKS/ZANAwAIAea/DcumaUyEAcsmYgBp6Q0p8ZCvMqy43YDsYchh4U4o3PcRf7/8JMFUM
- SNS1arRWymJAjMEAAEIAB0WIQRh+xAly1MmORb54bfmvw3LpmlMhAUCaekNKQAKCRDmvw3LpmlM
- hGOQEACso3g6njzlJ3CHLb3BZvZpQWOYfVs+gwDyzBnb8f0KGJ0Z4U2IfGCY0VHcd+xsoc/j814
- +Xv8T5TJep9krzuMsPqTdC6jo0Izyb/Fwxrws/IM5XBuF3zFWR+3Slgf+znGpPdACuo7cZm4lq5
- kEn00uBTB23SY7mg5lc2SavSJtTxN5WvpNdCvizD7UDIoVTM8bTM4o1r51zejjWI0rb3kxNX+P/
- lodtaDbzSCbi+3M5o3zGxuBZR2s01NimEIOFudgWZd3dZX633qrpEUoP+5gyLi2t4V2/kRwnTHa
- rfJai4C9aK4rwBT/tM62HEPOR32h4f2GjVkp3p39gOuqQIl0BPjhX/lSPPKuasOr7W4PybJwqaY
- 2VspcOE4YzFXI9UylXsLprmszlBABqJcjMzdtWd1WdFWb3zqZTDCgJsuYaWOyPBXpL5RX9zWCjE
- 4rT0vrUgStEogdNkLPE9KeoFVm2pxsTOVV19M8E1OAF5319msywhL7gGyfyqKHrIdTjjiqVFXaA
- 7ocdEOwLNZHC7eVyR71Iznn8F6++dXuu6DWuJ1p8amxKrQEPtPHcRWCMT0nz7J2iZsnAzvljKir
- QE9Nkr20z2/G9Z7zvJSZYWaJ4i9qa7DgS243jt71g9F8SqBWDNNK2UObJv0/aaA5maV9soijAkK
- StdWGCEPwn0kjSg==
-X-Developer-Key: i=andrew@lunn.ch; a=openpgp;
- fpr=61FB1025CB53263916F9E1B7E6BF0DCBA6694C84
+References: <20260418023438.1597876-2-vikas.gupta@broadcom.com> <20260422170641.846322-1-horms@kernel.org>
+In-Reply-To: <20260422170641.846322-1-horms@kernel.org>
+From: Vikas Gupta <vikas.gupta@broadcom.com>
+Date: Wed, 22 Apr 2026 23:41:21 +0530
+X-Gm-Features: AQROBzDnaG_f7LjGqV4O4XYJt2CQwthoIZg5O70Ixhb8MZ7t2ohvn841oELygkg
+Message-ID: <CAHLZf_tF53V+uTk8z3VKdGywEnmDcErFohWMQZbyYOWwqJ_M4Q@mail.gmail.com>
+Subject: Re: [PATCH net v3 1/2] bnge: fix initial HWRM sequence
+To: Simon Horman <horms@kernel.org>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, vsrama-krishna.nemani@broadcom.com, 
+	bhargava.marreddy@broadcom.com, rajashekar.hudumula@broadcom.com, 
+	ajit.khaparde@broadcom.com, dharmender.garg@broadcom.com, 
+	rahul-rg.gupta@broadcom.com
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="0000000000007f4d7c06501076f3"
 
-The cs89x0 was written by Bonald Becker 1993 to 1994. It is an ISA
-device, so unlikely to be used with modern kernels.
+--0000000000007f4d7c06501076f3
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Andrew Lunn <andrew@lunn.ch>
----
-v2
-Remove documentation as well
----
- .../device_drivers/ethernet/cirrus/cs89x0.rst      |  647 -------
- drivers/net/ethernet/cirrus/Kconfig                |   30 -
- drivers/net/ethernet/cirrus/Makefile               |    1 -
- drivers/net/ethernet/cirrus/cs89x0.c               | 1915 --------------------
- 4 files changed, 2593 deletions(-)
+Hi Simon,
+We have discussed the AI review comments on the behaviour of
+bnge_alloc_ctx_mem().
+Please review the explanation and let me know if it does not provide
+sufficient clarity.
 
-diff --git a/Documentation/networking/device_drivers/ethernet/cirrus/cs89x0.rst b/Documentation/networking/device_drivers/ethernet/cirrus/cs89x0.rst
-deleted file mode 100644
-index e5c283940ac5..000000000000
---- a/Documentation/networking/device_drivers/ethernet/cirrus/cs89x0.rst
-+++ /dev/null
-@@ -1,647 +0,0 @@
--.. SPDX-License-Identifier: GPL-2.0
--
--================================================
--Cirrus Logic LAN CS8900/CS8920 Ethernet Adapters
--================================================
--
--.. note::
--
--   This document was contributed by Cirrus Logic for kernel 2.2.5.  This version
--   has been updated for 2.3.48 by Andrew Morton.
--
--   Still, this is too outdated! A major cleanup is needed here.
--
--Cirrus make a copy of this driver available at their website, as
--described below.  In general, you should use the driver version which
--comes with your Linux distribution.
--
--
--Linux Network Interface Driver ver. 2.00 <kernel 2.3.48>
--
--
--.. TABLE OF CONTENTS
--
--   1.0 CIRRUS LOGIC LAN CS8900/CS8920 ETHERNET ADAPTERS
--	1.1 Product Overview
--	1.2 Driver Description
--	    1.2.1 Driver Name
--	    1.2.2 File in the Driver Package
--	1.3 System Requirements
--	1.4 Licensing Information
--
--   2.0 ADAPTER INSTALLATION and CONFIGURATION
--	2.1 CS8900-based Adapter Configuration
--	2.2 CS8920-based Adapter Configuration
--
--   3.0 LOADING THE DRIVER AS A MODULE
--
--   4.0 COMPILING THE DRIVER
--	4.1 Compiling the Driver as a Loadable Module
--	4.2 Compiling the driver to support memory mode
--	4.3 Compiling the driver to support Rx DMA
--
--   5.0 TESTING AND TROUBLESHOOTING
--	5.1 Known Defects and Limitations
--	5.2 Testing the Adapter
--	    5.2.1 Diagnostic Self-Test
--	    5.2.2 Diagnostic Network Test
--	5.3 Using the Adapter's LEDs
--	5.4 Resolving I/O Conflicts
--
--   6.0 TECHNICAL SUPPORT
--	6.1 Contacting Cirrus Logic's Technical Support
--	6.2 Information Required Before Contacting Technical Support
--	6.3 Obtaining the Latest Driver Version
--	6.4 Current maintainer
--	6.5 Kernel boot parameters
--
--
--1. Cirrus Logic LAN CS8900/CS8920 Ethernet Adapters
--===================================================
--
--
--1.1. Product Overview
--=====================
--
--The CS8900-based ISA Ethernet Adapters from Cirrus Logic follow
--IEEE 802.3 standards and support half or full-duplex operation in ISA bus
--computers on 10 Mbps Ethernet networks.  The adapters are designed for operation
--in 16-bit ISA or EISA bus expansion slots and are available in
--10BaseT-only or 3-media configurations (10BaseT, 10Base2, and AUI for 10Base-5
--or fiber networks).
--
--CS8920-based adapters are similar to the CS8900-based adapter with additional
--features for Plug and Play (PnP) support and Wakeup Frame recognition.  As
--such, the configuration procedures differ somewhat between the two types of
--adapters.  Refer to the "Adapter Configuration" section for details on
--configuring both types of adapters.
--
--
--1.2. Driver Description
--=======================
--
--The CS8900/CS8920 Ethernet Adapter driver for Linux supports the Linux
--v2.3.48 or greater kernel.  It can be compiled directly into the kernel
--or loaded at run-time as a device driver module.
--
--1.2.1 Driver Name: cs89x0
--
--1.2.2 Files in the Driver Archive:
--
--The files in the driver at Cirrus' website include:
--
--  ===================  ====================================================
--  readme.txt           this file
--  build                batch file to compile cs89x0.c.
--  cs89x0.c             driver C code
--  cs89x0.h             driver header file
--  cs89x0.o             pre-compiled module (for v2.2.5 kernel)
--  config/Config.in     sample file to include cs89x0 driver in the kernel.
--  config/Makefile      sample file to include cs89x0 driver in the kernel.
--  config/Space.c       sample file to include cs89x0 driver in the kernel.
--  ===================  ====================================================
--
--
--
--1.3. System Requirements
--------------------------
--
--The following hardware is required:
--
--   * Cirrus Logic LAN (CS8900/20-based) Ethernet ISA Adapter
--
--   * IBM or IBM-compatible PC with:
--     * An 80386 or higher processor
--     * 16 bytes of contiguous IO space available between 210h - 370h
--     * One available IRQ (5,10,11,or 12 for the CS8900, 3-7,9-15 for CS8920).
--
--   * Appropriate cable (and connector for AUI, 10BASE-2) for your network
--     topology.
--
--The following software is required:
--
--* LINUX kernel version 2.3.48 or higher
--
--   * CS8900/20 Setup Utility (DOS-based)
--
--   * LINUX kernel sources for your kernel (if compiling into kernel)
--
--   * GNU Toolkit (gcc and make) v2.6 or above (if compiling into kernel
--     or a module)
--
--
--
--1.4. Licensing Information
----------------------------
--
--This program is free software; you can redistribute it and/or modify it under
--the terms of the GNU General Public License as published by the Free Software
--Foundation, version 1.
--
--This program is distributed in the hope that it will be useful, but WITHOUT
--ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
--FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
--more details.
--
--For a full copy of the GNU General Public License, write to the Free Software
--Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
--
--
--
--2. Adapter Installation and Configuration
--=========================================
--
--Both the CS8900 and CS8920-based adapters can be configured using parameters
--stored in an on-board EEPROM. You must use the DOS-based CS8900/20 Setup
--Utility if you want to change the adapter's configuration in EEPROM.
--
--When loading the driver as a module, you can specify many of the adapter's
--configuration parameters on the command-line to override the EEPROM's settings
--or for interface configuration when an EEPROM is not used. (CS8920-based
--adapters must use an EEPROM.) See Section 3.0 LOADING THE DRIVER AS A MODULE.
--
--Since the CS8900/20 Setup Utility is a DOS-based application, you must install
--and configure the adapter in a DOS-based system using the CS8900/20 Setup
--Utility before installation in the target LINUX system.  (Not required if
--installing a CS8900-based adapter and the default configuration is acceptable.)
--
--
--2.1. CS8900-based Adapter Configuration
-----------------------------------------
--
--CS8900-based adapters shipped from Cirrus Logic have been configured
--with the following "default" settings::
--
--  Operation Mode:      Memory Mode
--  IRQ:                 10
--  Base I/O Address:    300
--  Memory Base Address: D0000
--  Optimization:	       DOS Client
--  Transmission Mode:   Half-duplex
--  BootProm:            None
--  Media Type:	       Autodetect (3-media cards) or
--		       10BASE-T (10BASE-T only adapter)
--
--You should only change the default configuration settings if conflicts with
--another adapter exists. To change the adapter's configuration, run the
--CS8900/20 Setup Utility.
--
--
--2.2. CS8920-based Adapter Configuration
-----------------------------------------
--
--CS8920-based adapters are shipped from Cirrus Logic configured as Plug
--and Play (PnP) enabled.  However, since the cs89x0 driver does NOT
--support PnP, you must install the CS8920 adapter in a DOS-based PC and
--run the CS8900/20 Setup Utility to disable PnP and configure the
--adapter before installation in the target Linux system.  Failure to do
--this will leave the adapter inactive and the driver will be unable to
--communicate with the adapter.
--
--::
--
--	****************************************************************
--	*                    CS8920-BASED ADAPTERS:                    *
--	*                                                              *
--	* CS8920-BASED ADAPTERS ARE PLUG and PLAY ENABLED BY DEFAULT.  *
--	* THE CS89X0 DRIVER DOES NOT SUPPORT PnP. THEREFORE, YOU MUST  *
--	* RUN THE CS8900/20 SETUP UTILITY TO DISABLE PnP SUPPORT AND   *
--	* TO ACTIVATE THE ADAPTER.                                     *
--	****************************************************************
--
--
--
--
--3. Loading the Driver as a Module
--=================================
--
--If the driver is compiled as a loadable module, you can load the driver module
--with the 'modprobe' command.  Many of the adapter's configuration parameters can
--be specified as command-line arguments to the load command.  This facility
--provides a means to override the EEPROM's settings or for interface
--configuration when an EEPROM is not used.
--
--Example::
--
--    insmod cs89x0.o io=0x200 irq=0xA media=aui
--
--This example loads the module and configures the adapter to use an IO port base
--address of 200h, interrupt 10, and use the AUI media connection.  The following
--configuration options are available on the command line::
--
--  io=###               - specify IO address (200h-360h)
--  irq=##               - specify interrupt level
--  use_dma=1            - Enable DMA
--  dma=#                - specify dma channel (Driver is compiled to support
--			 Rx DMA only)
--  dmasize=# (16 or 64) - DMA size 16K or 64K.  Default value is set to 16.
--  media=rj45           - specify media type
--   or media=bnc
--   or media=aui
--   or media=auto
--  duplex=full          - specify forced half/full/autonegotiate duplex
--   or duplex=half
--   or duplex=auto
--  debug=#              - debug level (only available if the driver was compiled
--			 for debugging)
--
--**Notes:**
--
--a) If an EEPROM is present, any specified command-line parameter
--   will override the corresponding configuration value stored in
--   EEPROM.
--
--b) The "io" parameter must be specified on the command-line.
--
--c) The driver's hardware probe routine is designed to avoid
--   writing to I/O space until it knows that there is a cs89x0
--   card at the written addresses.  This could cause problems
--   with device probing.  To avoid this behaviour, add one
--   to the ``io=`` module parameter.  This doesn't actually change
--   the I/O address, but it is a flag to tell the driver
--   to partially initialise the hardware before trying to
--   identify the card.  This could be dangerous if you are
--   not sure that there is a cs89x0 card at the provided address.
--
--   For example, to scan for an adapter located at IO base 0x300,
--   specify an IO address of 0x301.
--
--d) The "duplex=auto" parameter is only supported for the CS8920.
--
--e) The minimum command-line configuration required if an EEPROM is
--   not present is:
--
--   io
--   irq
--   media type (no autodetect)
--
--f) The following additional parameters are CS89XX defaults (values
--   used with no EEPROM or command-line argument).
--
--   * DMA Burst = enabled
--   * IOCHRDY Enabled = enabled
--   * UseSA = enabled
--   * CS8900 defaults to half-duplex if not specified on command-line
--   * CS8920 defaults to autoneg if not specified on command-line
--   * Use reset defaults for other config parameters
--   * dma_mode = 0
--
--g) You can use ifconfig to set the adapter's Ethernet address.
--
--h) Many Linux distributions use the 'modprobe' command to load
--   modules.  This program uses the '/etc/conf.modules' file to
--   determine configuration information which is passed to a driver
--   module when it is loaded.  All the configuration options which are
--   described above may be placed within /etc/conf.modules.
--
--   For example::
--
--     > cat /etc/conf.modules
--     ...
--     alias eth0 cs89x0
--     options cs89x0 io=0x0200 dma=5 use_dma=1
--     ...
--
--   In this example we are telling the module system that the
--   ethernet driver for this machine should use the cs89x0 driver.  We
--   are asking 'modprobe' to pass the 'io', 'dma' and 'use_dma'
--   arguments to the driver when it is loaded.
--
--i) Cirrus recommend that the cs89x0 use the ISA DMA channels 5, 6 or
--   7.  You will probably find that other DMA channels will not work.
--
--j) The cs89x0 supports DMA for receiving only.  DMA mode is
--   significantly more efficient.  Flooding a 400 MHz Celeron machine
--   with large ping packets consumes 82% of its CPU capacity in non-DMA
--   mode.  With DMA this is reduced to 45%.
--
--k) If your Linux kernel was compiled with inbuilt plug-and-play
--   support you will be able to find information about the cs89x0 card
--   with the command::
--
--     cat /proc/isapnp
--
--l) If during DMA operation you find erratic behavior or network data
--   corruption you should use your PC's BIOS to slow the EISA bus clock.
--
--m) If the cs89x0 driver is compiled directly into the kernel
--   (non-modular) then its I/O address is automatically determined by
--   ISA bus probing.  The IRQ number, media options, etc are determined
--   from the card's EEPROM.
--
--n) If the cs89x0 driver is compiled directly into the kernel, DMA
--   mode may be selected by providing the kernel with a boot option
--   'cs89x0_dma=N' where 'N' is the desired DMA channel number (5, 6 or 7).
--
--   Kernel boot options may be provided on the LILO command line::
--
--	LILO boot: linux cs89x0_dma=5
--
--   or they may be placed in /etc/lilo.conf::
--
--	image=/boot/bzImage-2.3.48
--	  append="cs89x0_dma=5"
--	  label=linux
--	  root=/dev/hda5
--	  read-only
--
--   The DMA Rx buffer size is hardwired to 16 kbytes in this mode.
--   (64k mode is not available).
--
--
--4. Compiling the Driver
--=======================
--
--The cs89x0 driver can be compiled directly into the kernel or compiled into
--a loadable device driver module.
--
--Just use the standard way to configure the driver and compile the Kernel.
--
--
--4.1. Compiling the Driver to Support Rx DMA
---------------------------------------------
--
--The compile-time optionality for DMA was removed in the 2.3 kernel
--series.  DMA support is now unconditionally part of the driver.  It is
--enabled by the 'use_dma=1' module option.
--
--
--5. Testing and Troubleshooting
--==============================
--
--5.1. Known Defects and Limitations
------------------------------------
--
--Refer to the RELEASE.TXT file distributed as part of this archive for a list of
--known defects, driver limitations, and work arounds.
--
--
--5.2. Testing the Adapter
--------------------------
--
--Once the adapter has been installed and configured, the diagnostic option of
--the CS8900/20 Setup Utility can be used to test the functionality of the
--adapter and its network connection.  Use the diagnostics 'Self Test' option to
--test the functionality of the adapter with the hardware configuration you have
--assigned. You can use the diagnostics 'Network Test' to test the ability of the
--adapter to communicate across the Ethernet with another PC equipped with a
--CS8900/20-based adapter card (it must also be running the CS8900/20 Setup
--Utility).
--
--.. note::
--
--	 The Setup Utility's diagnostics are designed to run in a
--	 DOS-only operating system environment.  DO NOT run the diagnostics
--	 from a DOS or command prompt session under Windows 95, Windows NT,
--	 OS/2, or other operating system.
--
--To run the diagnostics tests on the CS8900/20 adapter:
--
--   1.  Boot DOS on the PC and start the CS8900/20 Setup Utility.
--
--   2.  The adapter's current configuration is displayed.  Hit the ENTER key to
--       get to the main menu.
--
--   4.  Select 'Diagnostics' (ALT-G) from the main menu.
--       * Select 'Self-Test' to test the adapter's basic functionality.
--       * Select 'Network Test' to test the network connection and cabling.
--
--
--5.2.1. Diagnostic Self-test
--^^^^^^^^^^^^^^^^^^^^^^^^^^^
--
--The diagnostic self-test checks the adapter's basic functionality as well as
--its ability to communicate across the ISA bus based on the system resources
--assigned during hardware configuration.  The following tests are performed:
--
--   * IO Register Read/Write Test
--
--     The IO Register Read/Write test insures that the CS8900/20 can be
--     accessed in IO mode, and that the IO base address is correct.
--
--   * Shared Memory Test
--
--     The Shared Memory test insures the CS8900/20 can be accessed in memory
--     mode and that the range of memory addresses assigned does not conflict
--     with other devices in the system.
--
--   * Interrupt Test
--
--     The Interrupt test insures there are no conflicts with the assigned IRQ
--     signal.
--
--   * EEPROM Test
--
--     The EEPROM test insures the EEPROM can be read.
--
--   * Chip RAM Test
--
--     The Chip RAM test insures the 4K of memory internal to the CS8900/20 is
--     working properly.
--
--   * Internal Loop-back Test
--
--     The Internal Loop Back test insures the adapter's transmitter and
--     receiver are operating properly.  If this test fails, make sure the
--     adapter's cable is connected to the network (check for LED activity for
--     example).
--
--   * Boot PROM Test
--
--     The Boot PROM  test insures the Boot PROM is present, and can be read.
--     Failure indicates the Boot PROM  was not successfully read due to a
--     hardware problem or due to a conflicts on the Boot PROM address
--     assignment. (Test only applies if the adapter is configured to use the
--     Boot PROM option.)
--
--Failure of a test item indicates a possible system resource conflict with
--another device on the ISA bus.  In this case, you should use the Manual Setup
--option to reconfigure the adapter by selecting a different value for the system
--resource that failed.
--
--
--5.2.2. Diagnostic Network Test
--^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
--
--The Diagnostic Network Test verifies a working network connection by
--transferring data between two CS8900/20 adapters installed in different PCs
--on the same network. (Note: the diagnostic network test should not be run
--between two nodes across a router.)
--
--This test requires that each of the two PCs have a CS8900/20-based adapter
--installed and have the CS8900/20 Setup Utility running.  The first PC is
--configured as a Responder and the other PC is configured as an Initiator.
--Once the Initiator is started, it sends data frames to the Responder which
--returns the frames to the Initiator.
--
--The total number of frames received and transmitted are displayed on the
--Initiator's display, along with a count of the number of frames received and
--transmitted OK or in error.  The test can be terminated anytime by the user at
--either PC.
--
--To setup the Diagnostic Network Test:
--
--    1.  Select a PC with a CS8900/20-based adapter and a known working network
--	connection to act as the Responder.  Run the CS8900/20 Setup Utility
--	and select 'Diagnostics -> Network Test -> Responder' from the main
--	menu.  Hit ENTER to start the Responder.
--
--    2.  Return to the PC with the CS8900/20-based adapter you want to test and
--	start the CS8900/20 Setup Utility.
--
--    3.  From the main menu, Select 'Diagnostic -> Network Test -> Initiator'.
--	Hit ENTER to start the test.
--
--You may stop the test on the Initiator at any time while allowing the Responder
--to continue running.  In this manner, you can move to additional PCs and test
--them by starting the Initiator on another PC without having to stop/start the
--Responder.
--
--
--
--5.3. Using the Adapter's LEDs
-------------------------------
--
--The 2 and 3-media adapters have two LEDs visible on the back end of the board
--located near the 10Base-T connector.
--
--Link Integrity LED: A "steady" ON of the green LED indicates a valid 10Base-T
--connection.  (Only applies to 10Base-T.  The green LED has no significance for
--a 10Base-2 or AUI connection.)
--
--TX/RX LED: The yellow LED lights briefly each time the adapter transmits or
--receives data. (The yellow LED will appear to "flicker" on a typical network.)
--
--
--5.4. Resolving I/O Conflicts
------------------------------
--
--An IO conflict occurs when two or more adapter use the same ISA resource (IO
--address, memory address or IRQ).  You can usually detect an IO conflict in one
--of four ways after installing and or configuring the CS8900/20-based adapter:
--
--    1.  The system does not boot properly (or at all).
--
--    2.  The driver cannot communicate with the adapter, reporting an "Adapter
--	not found" error message.
--
--    3.  You cannot connect to the network or the driver will not load.
--
--    4.  If you have configured the adapter to run in memory mode but the driver
--	reports it is using IO mode when loading, this is an indication of a
--	memory address conflict.
--
--If an IO conflict occurs, run the CS8900/20 Setup Utility and perform a
--diagnostic self-test.  Normally, the ISA resource in conflict will fail the
--self-test.  If so, reconfigure the adapter selecting another choice for the
--resource in conflict.  Run the diagnostics again to check for further IO
--conflicts.
--
--In some cases, such as when the PC will not boot, it may be necessary to remove
--the adapter and reconfigure it by installing it in another PC to run the
--CS8900/20 Setup Utility.  Once reinstalled in the target system, run the
--diagnostics self-test to ensure the new configuration is free of conflicts
--before loading the driver again.
--
--When manually configuring the adapter, keep in mind the typical ISA system
--resource usage as indicated in the tables below.
--
--::
--
--  I/O Address    	Device                        IRQ      Device
--  -----------    	--------                      ---      --------
--     200-20F       	Game I/O adapter               3       COM2, Bus Mouse
--     230-23F       	Bus Mouse                      4       COM1
--     270-27F       	LPT3: third parallel port      5       LPT2
--     2F0-2FF       	COM2: second serial port       6       Floppy Disk controller
--     320-32F       	Fixed disk controller          7       LPT1
--							 8       Real-time Clock
--						     9       EGA/VGA display adapter
--						    12       Mouse (PS/2)
--  Memory Address  Device                          13       Math Coprocessor
--  --------------  ---------------------           14       Hard Disk controller
--  A000-BFFF	EGA Graphics Adapter
--  A000-C7FF	VGA Graphics Adapter
--  B000-BFFF	Mono Graphics Adapter
--  B800-BFFF	Color Graphics Adapter
--  E000-FFFF	AT BIOS
--
--
--
--
--6. Technical Support
--====================
--
--6.1. Contacting Cirrus Logic's Technical Support
--------------------------------------------------
--
--Cirrus Logic's CS89XX Technical Application Support can be reached at::
--
--  Telephone  :(800) 888-5016 (from inside U.S. and Canada)
--	     :(512) 442-7555 (from outside the U.S. and Canada)
--  Fax        :(512) 912-3871
--  Email      :ethernet@crystal.cirrus.com
--  WWW        :http://www.cirrus.com
--
--
--6.2. Information Required before Contacting Technical Support
---------------------------------------------------------------
--
--Before contacting Cirrus Logic for technical support, be prepared to provide as
--Much of the following information as possible.
--
--1.) Adapter type (CRD8900, CDB8900, CDB8920, etc.)
--
--2.) Adapter configuration
--
--    * IO Base, Memory Base, IO or memory mode enabled, IRQ, DMA channel
--    * Plug and Play enabled/disabled (CS8920-based adapters only)
--    * Configured for media auto-detect or specific media type (which type).
--
--3.) PC System's Configuration
--
--    * Plug and Play system (yes/no)
--    * BIOS (make and version)
--    * System make and model
--    * CPU (type and speed)
--    * System RAM
--    * SCSI Adapter
--
--4.) Software
--
--    * CS89XX driver and version
--    * Your network operating system and version
--    * Your system's OS version
--    * Version of all protocol support files
--
--5.) Any Error Message displayed.
--
--
--
--6.3 Obtaining the Latest Driver Version
-----------------------------------------
--
--You can obtain the latest CS89XX drivers and support software from Cirrus Logic's
--Web site.  You can also contact Cirrus Logic's Technical Support (email:
--ethernet@crystal.cirrus.com) and request that you be registered for automatic
--software-update notification.
--
--Cirrus Logic maintains a web page at http://www.cirrus.com with the
--latest drivers and technical publications.
--
--
--6.4. Current maintainer
-------------------------
--
--In February 2000 the maintenance of this driver was assumed by Andrew
--Morton.
--
--6.5 Kernel module parameters
------------------------------
--
--For use in embedded environments with no cs89x0 EEPROM, the kernel boot
--parameter ``cs89x0_media=`` has been implemented.  Usage is::
--
--	cs89x0_media=rj45    or
--	cs89x0_media=aui     or
--	cs89x0_media=bnc
-diff --git a/drivers/net/ethernet/cirrus/Kconfig b/drivers/net/ethernet/cirrus/Kconfig
-index 5bdf731d9503..1a0c7b3bfcd6 100644
---- a/drivers/net/ethernet/cirrus/Kconfig
-+++ b/drivers/net/ethernet/cirrus/Kconfig
-@@ -17,36 +17,6 @@ config NET_VENDOR_CIRRUS
- 
- if NET_VENDOR_CIRRUS
- 
--config CS89x0
--	tristate
--
--config CS89x0_ISA
--	tristate "CS89x0 ISA driver support"
--	depends on HAS_IOPORT_MAP
--	depends on ISA
--	depends on !PPC32
--	depends on CS89x0_PLATFORM=n
--	select NETDEV_LEGACY_INIT
--	select CS89x0
--	help
--	  Support for CS89x0 chipset based Ethernet cards. If you have a
--	  network (Ethernet) card of this type, say Y and read the file
--	  <file:Documentation/networking/device_drivers/ethernet/cirrus/cs89x0.rst>.
--
--	  To compile this driver as a module, choose M here. The module
--	  will be called cs89x0.
--
--config CS89x0_PLATFORM
--	tristate "CS89x0 platform driver support"
--	depends on ARM || (COMPILE_TEST && !PPC)
--	select CS89x0
--	help
--	  Say Y to compile the cs89x0 platform driver. This makes this driver
--	  suitable for use on certain evaluation boards such as the iMX21ADS.
--
--	  To compile this driver as a module, choose M here. The module
--	  will be called cs89x0.
--
- config EP93XX_ETH
- 	tristate "EP93xx Ethernet support"
- 	depends on (ARM && ARCH_EP93XX) || COMPILE_TEST
-diff --git a/drivers/net/ethernet/cirrus/Makefile b/drivers/net/ethernet/cirrus/Makefile
-index 84865e593788..cb740939d976 100644
---- a/drivers/net/ethernet/cirrus/Makefile
-+++ b/drivers/net/ethernet/cirrus/Makefile
-@@ -3,6 +3,5 @@
- # Makefile for the Cirrus network device drivers.
- #
- 
--obj-$(CONFIG_CS89x0) += cs89x0.o
- obj-$(CONFIG_EP93XX_ETH) += ep93xx_eth.o
- obj-$(CONFIG_MAC89x0) += mac89x0.o
-diff --git a/drivers/net/ethernet/cirrus/cs89x0.c b/drivers/net/ethernet/cirrus/cs89x0.c
-deleted file mode 100644
-index fa5857923db4..000000000000
---- a/drivers/net/ethernet/cirrus/cs89x0.c
-+++ /dev/null
-@@ -1,1915 +0,0 @@
--/* cs89x0.c: A Crystal Semiconductor (Now Cirrus Logic) CS89[02]0
-- *           driver for linux.
-- * Written 1996 by Russell Nelson, with reference to skeleton.c
-- * written 1993-1994 by Donald Becker.
-- *
-- * This software may be used and distributed according to the terms
-- * of the GNU General Public License, incorporated herein by reference.
-- *
-- * The author may be reached at nelson@crynwr.com, Crynwr
-- * Software, 521 Pleasant Valley Rd., Potsdam, NY 13676
-- *
-- * Other contributors:
-- * Mike Cruse        : mcruse@cti-ltd.com
-- * Russ Nelson
-- * Melody Lee        : ethernet@crystal.cirrus.com
-- * Alan Cox
-- * Andrew Morton
-- * Oskar Schirmer    : oskar@scara.com
-- * Deepak Saxena     : dsaxena@plexity.net
-- * Dmitry Pervushin  : dpervushin@ru.mvista.com
-- * Deepak Saxena     : dsaxena@plexity.net
-- * Domenico Andreoli : cavokz@gmail.com
-- */
--
--
--/*
-- * Set this to zero to disable DMA code
-- *
-- * Note that even if DMA is turned off we still support the 'dma' and  'use_dma'
-- * module options so we don't break any startup scripts.
-- */
--#ifndef CONFIG_ISA_DMA_API
--#define ALLOW_DMA	0
--#else
--#define ALLOW_DMA	1
--#endif
--
--/*
-- * Set this to zero to remove all the debug statements via
-- * dead code elimination
-- */
--#define DEBUGGING	1
--
--/* Sources:
-- *	Crynwr packet driver epktisa.
-- *	Crystal Semiconductor data sheets.
-- */
--
--#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
--
--#include <linux/module.h>
--#include <linux/printk.h>
--#include <linux/errno.h>
--#include <linux/netdevice.h>
--#include <linux/etherdevice.h>
--#include <linux/of.h>
--#include <linux/platform_device.h>
--#include <linux/kernel.h>
--#include <linux/types.h>
--#include <linux/fcntl.h>
--#include <linux/interrupt.h>
--#include <linux/ioport.h>
--#include <linux/in.h>
--#include <linux/jiffies.h>
--#include <linux/skbuff.h>
--#include <linux/spinlock.h>
--#include <linux/string.h>
--#include <linux/init.h>
--#include <linux/bitops.h>
--#include <linux/delay.h>
--#include <linux/gfp.h>
--#include <linux/io.h>
--
--#include <net/Space.h>
--
--#include <asm/irq.h>
--#include <linux/atomic.h>
--#if ALLOW_DMA
--#include <asm/dma.h>
--#endif
--
--#include "cs89x0.h"
--
--#define cs89_dbg(val, level, fmt, ...)				\
--do {								\
--	if (val <= net_debug)					\
--		pr_##level(fmt, ##__VA_ARGS__);			\
--} while (0)
--
--static char version[] __initdata =
--	"v2.4.3-pre1 Russell Nelson <nelson@crynwr.com>, Andrew Morton";
--
--#define DRV_NAME "cs89x0"
--
--/* First, a few definitions that the brave might change.
-- * A zero-terminated list of I/O addresses to be probed. Some special flags..
-- * Addr & 1 = Read back the address port, look for signature and reset
-- * the page window before probing
-- * Addr & 3 = Reset the page window and probe
-- * The CLPS eval board has the Cirrus chip at 0x80090300, in ARM IO space,
-- * but it is possible that a Cirrus board could be plugged into the ISA
-- * slots.
-- */
--/* The cs8900 has 4 IRQ pins, software selectable. cs8900_irq_map maps
-- * them to system IRQ numbers. This mapping is card specific and is set to
-- * the configuration of the Cirrus Eval board for this chip.
-- */
--#if IS_ENABLED(CONFIG_CS89x0_ISA)
--static unsigned int netcard_portlist[] __used __initdata = {
--	0x300, 0x320, 0x340, 0x360, 0x200, 0x220, 0x240,
--	0x260, 0x280, 0x2a0, 0x2c0, 0x2e0, 0
--};
--static unsigned int cs8900_irq_map[] = {
--	10, 11, 12, 5
--};
--#endif
--
--#if DEBUGGING
--static unsigned int net_debug = DEBUGGING;
--#else
--#define net_debug 0	/* gcc will remove all the debug code for us */
--#endif
--
--/* The number of low I/O ports used by the ethercard. */
--#define NETCARD_IO_EXTENT	16
--
--/* we allow the user to override various values normally set in the EEPROM */
--#define FORCE_RJ45	0x0001    /* pick one of these three */
--#define FORCE_AUI	0x0002
--#define FORCE_BNC	0x0004
--
--#define FORCE_AUTO	0x0010    /* pick one of these three */
--#define FORCE_HALF	0x0020
--#define FORCE_FULL	0x0030
--
--/* Information that need to be kept for each board. */
--struct net_local {
--	int chip_type;		/* one of: CS8900, CS8920, CS8920M */
--	char chip_revision;	/* revision letter of the chip ('A'...) */
--	int send_cmd;		/* the proper send command: TX_NOW, TX_AFTER_381, or TX_AFTER_ALL */
--	int auto_neg_cnf;	/* auto-negotiation word from EEPROM */
--	int adapter_cnf;	/* adapter configuration from EEPROM */
--	int isa_config;		/* ISA configuration from EEPROM */
--	int irq_map;		/* IRQ map from EEPROM */
--	int rx_mode;		/* what mode are we in? 0, RX_MULTCAST_ACCEPT, or RX_ALL_ACCEPT */
--	int curr_rx_cfg;	/* a copy of PP_RxCFG */
--	int linectl;		/* either 0 or LOW_RX_SQUELCH, depending on configuration. */
--	int send_underrun;	/* keep track of how many underruns in a row we get */
--	int force;		/* force various values; see FORCE* above. */
--	spinlock_t lock;
--	void __iomem *virt_addr;/* CS89x0 virtual address. */
--#if ALLOW_DMA
--	int use_dma;		/* Flag: we're using dma */
--	int dma;		/* DMA channel */
--	int dmasize;		/* 16 or 64 */
--	unsigned char *dma_buff;	/* points to the beginning of the buffer */
--	unsigned char *end_dma_buff;	/* points to the end of the buffer */
--	unsigned char *rx_dma_ptr;	/* points to the next packet  */
--#endif
--};
--
--/* Example routines you must write ;->. */
--#define tx_done(dev) 1
--
--/*
-- * Permit 'cs89x0_dma=N' in the kernel boot environment
-- */
--#if !defined(MODULE)
--#if ALLOW_DMA
--static int g_cs89x0_dma;
--
--static int __init dma_fn(char *str)
--{
--	g_cs89x0_dma = simple_strtol(str, NULL, 0);
--	return 1;
--}
--
--__setup("cs89x0_dma=", dma_fn);
--#endif	/* ALLOW_DMA */
--
--static int g_cs89x0_media__force;
--
--static int __init media_fn(char *str)
--{
--	if (!strcmp(str, "rj45"))
--		g_cs89x0_media__force = FORCE_RJ45;
--	else if (!strcmp(str, "aui"))
--		g_cs89x0_media__force = FORCE_AUI;
--	else if (!strcmp(str, "bnc"))
--		g_cs89x0_media__force = FORCE_BNC;
--
--	return 1;
--}
--
--__setup("cs89x0_media=", media_fn);
--#endif
--
--static void readwords(struct net_local *lp, int portno, void *buf, int length)
--{
--	u8 *buf8 = (u8 *)buf;
--
--	do {
--		u16 tmp16;
--
--		tmp16 = ioread16(lp->virt_addr + portno);
--		*buf8++ = (u8)tmp16;
--		*buf8++ = (u8)(tmp16 >> 8);
--	} while (--length);
--}
--
--static void writewords(struct net_local *lp, int portno, void *buf, int length)
--{
--	u8 *buf8 = (u8 *)buf;
--
--	do {
--		u16 tmp16;
--
--		tmp16 = *buf8++;
--		tmp16 |= (*buf8++) << 8;
--		iowrite16(tmp16, lp->virt_addr + portno);
--	} while (--length);
--}
--
--static u16
--readreg(struct net_device *dev, u16 regno)
--{
--	struct net_local *lp = netdev_priv(dev);
--
--	iowrite16(regno, lp->virt_addr + ADD_PORT);
--	return ioread16(lp->virt_addr + DATA_PORT);
--}
--
--static void
--writereg(struct net_device *dev, u16 regno, u16 value)
--{
--	struct net_local *lp = netdev_priv(dev);
--
--	iowrite16(regno, lp->virt_addr + ADD_PORT);
--	iowrite16(value, lp->virt_addr + DATA_PORT);
--}
--
--static int __init
--wait_eeprom_ready(struct net_device *dev)
--{
--	unsigned long timeout = jiffies;
--	/* check to see if the EEPROM is ready,
--	 * a timeout is used just in case EEPROM is ready when
--	 * SI_BUSY in the PP_SelfST is clear
--	 */
--	while (readreg(dev, PP_SelfST) & SI_BUSY)
--		if (time_after_eq(jiffies, timeout + 40))
--			return -1;
--	return 0;
--}
--
--static int __init
--get_eeprom_data(struct net_device *dev, int off, int len, int *buffer)
--{
--	int i;
--
--	cs89_dbg(3, info, "EEPROM data from %x for %x:", off, len);
--	for (i = 0; i < len; i++) {
--		if (wait_eeprom_ready(dev) < 0)
--			return -1;
--		/* Now send the EEPROM read command and EEPROM location to read */
--		writereg(dev, PP_EECMD, (off + i) | EEPROM_READ_CMD);
--		if (wait_eeprom_ready(dev) < 0)
--			return -1;
--		buffer[i] = readreg(dev, PP_EEData);
--		cs89_dbg(3, cont, " %04x", buffer[i]);
--	}
--	cs89_dbg(3, cont, "\n");
--	return 0;
--}
--
--static int  __init
--get_eeprom_cksum(int off, int len, int *buffer)
--{
--	int i, cksum;
--
--	cksum = 0;
--	for (i = 0; i < len; i++)
--		cksum += buffer[i];
--	cksum &= 0xffff;
--	if (cksum == 0)
--		return 0;
--	return -1;
--}
--
--static void
--write_irq(struct net_device *dev, int chip_type, int irq)
--{
--	int i;
--
--	if (chip_type == CS8900) {
--#if IS_ENABLED(CONFIG_CS89x0_ISA)
--		/* Search the mapping table for the corresponding IRQ pin. */
--		for (i = 0; i != ARRAY_SIZE(cs8900_irq_map); i++)
--			if (cs8900_irq_map[i] == irq)
--				break;
--		/* Not found */
--		if (i == ARRAY_SIZE(cs8900_irq_map))
--			i = 3;
--#else
--		/* INTRQ0 pin is used for interrupt generation. */
--		i = 0;
--#endif
--		writereg(dev, PP_CS8900_ISAINT, i);
--	} else {
--		writereg(dev, PP_CS8920_ISAINT, irq);
--	}
--}
--
--static void
--count_rx_errors(int status, struct net_device *dev)
--{
--	dev->stats.rx_errors++;
--	if (status & RX_RUNT)
--		dev->stats.rx_length_errors++;
--	if (status & RX_EXTRA_DATA)
--		dev->stats.rx_length_errors++;
--	if ((status & RX_CRC_ERROR) && !(status & (RX_EXTRA_DATA | RX_RUNT)))
--		/* per str 172 */
--		dev->stats.rx_crc_errors++;
--	if (status & RX_DRIBBLE)
--		dev->stats.rx_frame_errors++;
--}
--
--/*********************************
-- * This page contains DMA routines
-- *********************************/
--
--#if ALLOW_DMA
--
--#define dma_page_eq(ptr1, ptr2) ((long)(ptr1) >> 17 == (long)(ptr2) >> 17)
--
--static void
--get_dma_channel(struct net_device *dev)
--{
--	struct net_local *lp = netdev_priv(dev);
--
--	if (lp->dma) {
--		dev->dma = lp->dma;
--		lp->isa_config |= ISA_RxDMA;
--	} else {
--		if ((lp->isa_config & ANY_ISA_DMA) == 0)
--			return;
--		dev->dma = lp->isa_config & DMA_NO_MASK;
--		if (lp->chip_type == CS8900)
--			dev->dma += 5;
--		if (dev->dma < 5 || dev->dma > 7) {
--			lp->isa_config &= ~ANY_ISA_DMA;
--			return;
--		}
--	}
--}
--
--static void
--write_dma(struct net_device *dev, int chip_type, int dma)
--{
--	struct net_local *lp = netdev_priv(dev);
--	if ((lp->isa_config & ANY_ISA_DMA) == 0)
--		return;
--	if (chip_type == CS8900)
--		writereg(dev, PP_CS8900_ISADMA, dma - 5);
--	else
--		writereg(dev, PP_CS8920_ISADMA, dma);
--}
--
--static void
--set_dma_cfg(struct net_device *dev)
--{
--	struct net_local *lp = netdev_priv(dev);
--
--	if (lp->use_dma) {
--		if ((lp->isa_config & ANY_ISA_DMA) == 0) {
--			cs89_dbg(3, err, "set_dma_cfg(): no DMA\n");
--			return;
--		}
--		if (lp->isa_config & ISA_RxDMA) {
--			lp->curr_rx_cfg |= RX_DMA_ONLY;
--			cs89_dbg(3, info, "set_dma_cfg(): RX_DMA_ONLY\n");
--		} else {
--			lp->curr_rx_cfg |= AUTO_RX_DMA;	/* not that we support it... */
--			cs89_dbg(3, info, "set_dma_cfg(): AUTO_RX_DMA\n");
--		}
--	}
--}
--
--static int
--dma_bufcfg(struct net_device *dev)
--{
--	struct net_local *lp = netdev_priv(dev);
--	if (lp->use_dma)
--		return (lp->isa_config & ANY_ISA_DMA) ? RX_DMA_ENBL : 0;
--	else
--		return 0;
--}
--
--static int
--dma_busctl(struct net_device *dev)
--{
--	int retval = 0;
--	struct net_local *lp = netdev_priv(dev);
--	if (lp->use_dma) {
--		if (lp->isa_config & ANY_ISA_DMA)
--			retval |= RESET_RX_DMA; /* Reset the DMA pointer */
--		if (lp->isa_config & DMA_BURST)
--			retval |= DMA_BURST_MODE; /* Does ISA config specify DMA burst ? */
--		if (lp->dmasize == 64)
--			retval |= RX_DMA_SIZE_64K; /* did they ask for 64K? */
--		retval |= MEMORY_ON;	/* we need memory enabled to use DMA. */
--	}
--	return retval;
--}
--
--static void
--dma_rx(struct net_device *dev)
--{
--	struct net_local *lp = netdev_priv(dev);
--	struct sk_buff *skb;
--	int status, length;
--	unsigned char *bp = lp->rx_dma_ptr;
--
--	status = bp[0] + (bp[1] << 8);
--	length = bp[2] + (bp[3] << 8);
--	bp += 4;
--
--	cs89_dbg(5, debug, "%s: receiving DMA packet at %lx, status %x, length %x\n",
--		 dev->name, (unsigned long)bp, status, length);
--
--	if ((status & RX_OK) == 0) {
--		count_rx_errors(status, dev);
--		goto skip_this_frame;
--	}
--
--	/* Malloc up new buffer. */
--	skb = netdev_alloc_skb(dev, length + 2);
--	if (skb == NULL) {
--		dev->stats.rx_dropped++;
--
--		/* AKPM: advance bp to the next frame */
--skip_this_frame:
--		bp += (length + 3) & ~3;
--		if (bp >= lp->end_dma_buff)
--			bp -= lp->dmasize * 1024;
--		lp->rx_dma_ptr = bp;
--		return;
--	}
--	skb_reserve(skb, 2);	/* longword align L3 header */
--
--	if (bp + length > lp->end_dma_buff) {
--		int semi_cnt = lp->end_dma_buff - bp;
--		skb_put_data(skb, bp, semi_cnt);
--		skb_put_data(skb, lp->dma_buff, length - semi_cnt);
--	} else {
--		skb_put_data(skb, bp, length);
--	}
--	bp += (length + 3) & ~3;
--	if (bp >= lp->end_dma_buff)
--		bp -= lp->dmasize*1024;
--	lp->rx_dma_ptr = bp;
--
--	cs89_dbg(3, info, "%s: received %d byte DMA packet of type %x\n",
--		 dev->name, length,
--		 ((skb->data[ETH_ALEN + ETH_ALEN] << 8) |
--		  skb->data[ETH_ALEN + ETH_ALEN + 1]));
--
--	skb->protocol = eth_type_trans(skb, dev);
--	netif_rx(skb);
--	dev->stats.rx_packets++;
--	dev->stats.rx_bytes += length;
--}
--
--static void release_dma_buff(struct net_local *lp)
--{
--	if (lp->dma_buff) {
--		free_pages((unsigned long)(lp->dma_buff),
--			   get_order(lp->dmasize * 1024));
--		lp->dma_buff = NULL;
--	}
--}
--
--#endif	/* ALLOW_DMA */
--
--static void
--control_dc_dc(struct net_device *dev, int on_not_off)
--{
--	struct net_local *lp = netdev_priv(dev);
--	unsigned int selfcontrol;
--	unsigned long timenow = jiffies;
--	/* control the DC to DC convertor in the SelfControl register.
--	 * Note: This is hooked up to a general purpose pin, might not
--	 * always be a DC to DC convertor.
--	 */
--
--	selfcontrol = HCB1_ENBL; /* Enable the HCB1 bit as an output */
--	if (((lp->adapter_cnf & A_CNF_DC_DC_POLARITY) != 0) ^ on_not_off)
--		selfcontrol |= HCB1;
--	else
--		selfcontrol &= ~HCB1;
--	writereg(dev, PP_SelfCTL, selfcontrol);
--
--	/* Wait for the DC/DC converter to power up - 500ms */
--	while (time_before(jiffies, timenow + HZ))
--		;
--}
--
--/* send a test packet - return true if carrier bits are ok */
--static int
--send_test_pkt(struct net_device *dev)
--{
--	struct net_local *lp = netdev_priv(dev);
--	char test_packet[] = {
--		0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0,
--		0, 46,		/* A 46 in network order */
--		0, 0,		/* DSAP=0 & SSAP=0 fields */
--		0xf3, 0		/* Control (Test Req + P bit set) */
--	};
--	unsigned long timenow = jiffies;
--
--	writereg(dev, PP_LineCTL, readreg(dev, PP_LineCTL) | SERIAL_TX_ON);
--
--	memcpy(test_packet,            dev->dev_addr, ETH_ALEN);
--	memcpy(test_packet + ETH_ALEN, dev->dev_addr, ETH_ALEN);
--
--	iowrite16(TX_AFTER_ALL, lp->virt_addr + TX_CMD_PORT);
--	iowrite16(ETH_ZLEN, lp->virt_addr + TX_LEN_PORT);
--
--	/* Test to see if the chip has allocated memory for the packet */
--	while (time_before(jiffies, timenow + 5))
--		if (readreg(dev, PP_BusST) & READY_FOR_TX_NOW)
--			break;
--	if (time_after_eq(jiffies, timenow + 5))
--		return 0;	/* this shouldn't happen */
--
--	/* Write the contents of the packet */
--	writewords(lp, TX_FRAME_PORT, test_packet, (ETH_ZLEN + 1) >> 1);
--
--	cs89_dbg(1, debug, "Sending test packet ");
--	/* wait a couple of jiffies for packet to be received */
--	for (timenow = jiffies; time_before(jiffies, timenow + 3);)
--		;
--	if ((readreg(dev, PP_TxEvent) & TX_SEND_OK_BITS) == TX_OK) {
--		cs89_dbg(1, cont, "succeeded\n");
--		return 1;
--	}
--	cs89_dbg(1, cont, "failed\n");
--	return 0;
--}
--
--#define DETECTED_NONE  0
--#define DETECTED_RJ45H 1
--#define DETECTED_RJ45F 2
--#define DETECTED_AUI   3
--#define DETECTED_BNC   4
--
--static int
--detect_tp(struct net_device *dev)
--{
--	struct net_local *lp = netdev_priv(dev);
--	unsigned long timenow = jiffies;
--	int fdx;
--
--	cs89_dbg(1, debug, "%s: Attempting TP\n", dev->name);
--
--	/* If connected to another full duplex capable 10-Base-T card
--	 * the link pulses seem to be lost when the auto detect bit in
--	 * the LineCTL is set.  To overcome this the auto detect bit will
--	 * be cleared whilst testing the 10-Base-T interface.  This would
--	 * not be necessary for the sparrow chip but is simpler to do it
--	 * anyway.
--	 */
--	writereg(dev, PP_LineCTL, lp->linectl & ~AUI_ONLY);
--	control_dc_dc(dev, 0);
--
--	/* Delay for the hardware to work out if the TP cable is present
--	 * - 150ms
--	 */
--	for (timenow = jiffies; time_before(jiffies, timenow + 15);)
--		;
--	if ((readreg(dev, PP_LineST) & LINK_OK) == 0)
--		return DETECTED_NONE;
--
--	if (lp->chip_type == CS8900) {
--		switch (lp->force & 0xf0) {
--#if 0
--		case FORCE_AUTO:
--			pr_info("%s: cs8900 doesn't autonegotiate\n",
--				dev->name);
--			return DETECTED_NONE;
--#endif
--			/* CS8900 doesn't support AUTO, change to HALF*/
--		case FORCE_AUTO:
--			lp->force &= ~FORCE_AUTO;
--			lp->force |= FORCE_HALF;
--			break;
--		case FORCE_HALF:
--			break;
--		case FORCE_FULL:
--			writereg(dev, PP_TestCTL,
--				 readreg(dev, PP_TestCTL) | FDX_8900);
--			break;
--		}
--		fdx = readreg(dev, PP_TestCTL) & FDX_8900;
--	} else {
--		switch (lp->force & 0xf0) {
--		case FORCE_AUTO:
--			lp->auto_neg_cnf = AUTO_NEG_ENABLE;
--			break;
--		case FORCE_HALF:
--			lp->auto_neg_cnf = 0;
--			break;
--		case FORCE_FULL:
--			lp->auto_neg_cnf = RE_NEG_NOW | ALLOW_FDX;
--			break;
--		}
--
--		writereg(dev, PP_AutoNegCTL, lp->auto_neg_cnf & AUTO_NEG_MASK);
--
--		if ((lp->auto_neg_cnf & AUTO_NEG_BITS) == AUTO_NEG_ENABLE) {
--			pr_info("%s: negotiating duplex...\n", dev->name);
--			while (readreg(dev, PP_AutoNegST) & AUTO_NEG_BUSY) {
--				if (time_after(jiffies, timenow + 4000)) {
--					pr_err("**** Full / half duplex auto-negotiation timed out ****\n");
--					break;
--				}
--			}
--		}
--		fdx = readreg(dev, PP_AutoNegST) & FDX_ACTIVE;
--	}
--	if (fdx)
--		return DETECTED_RJ45F;
--	else
--		return DETECTED_RJ45H;
--}
--
--static int
--detect_bnc(struct net_device *dev)
--{
--	struct net_local *lp = netdev_priv(dev);
--
--	cs89_dbg(1, debug, "%s: Attempting BNC\n", dev->name);
--	control_dc_dc(dev, 1);
--
--	writereg(dev, PP_LineCTL, (lp->linectl & ~AUTO_AUI_10BASET) | AUI_ONLY);
--
--	if (send_test_pkt(dev))
--		return DETECTED_BNC;
--	else
--		return DETECTED_NONE;
--}
--
--static int
--detect_aui(struct net_device *dev)
--{
--	struct net_local *lp = netdev_priv(dev);
--
--	cs89_dbg(1, debug, "%s: Attempting AUI\n", dev->name);
--	control_dc_dc(dev, 0);
--
--	writereg(dev, PP_LineCTL, (lp->linectl & ~AUTO_AUI_10BASET) | AUI_ONLY);
--
--	if (send_test_pkt(dev))
--		return DETECTED_AUI;
--	else
--		return DETECTED_NONE;
--}
--
--/* We have a good packet(s), get it/them out of the buffers. */
--static void
--net_rx(struct net_device *dev)
--{
--	struct net_local *lp = netdev_priv(dev);
--	struct sk_buff *skb;
--	int status, length;
--
--	status = ioread16(lp->virt_addr + RX_FRAME_PORT);
--	length = ioread16(lp->virt_addr + RX_FRAME_PORT);
--
--	if ((status & RX_OK) == 0) {
--		count_rx_errors(status, dev);
--		return;
--	}
--
--	/* Malloc up new buffer. */
--	skb = netdev_alloc_skb(dev, length + 2);
--	if (skb == NULL) {
--		dev->stats.rx_dropped++;
--		return;
--	}
--	skb_reserve(skb, 2);	/* longword align L3 header */
--
--	readwords(lp, RX_FRAME_PORT, skb_put(skb, length), length >> 1);
--	if (length & 1)
--		skb->data[length-1] = ioread16(lp->virt_addr + RX_FRAME_PORT);
--
--	cs89_dbg(3, debug, "%s: received %d byte packet of type %x\n",
--		 dev->name, length,
--		 (skb->data[ETH_ALEN + ETH_ALEN] << 8) |
--		 skb->data[ETH_ALEN + ETH_ALEN + 1]);
--
--	skb->protocol = eth_type_trans(skb, dev);
--	netif_rx(skb);
--	dev->stats.rx_packets++;
--	dev->stats.rx_bytes += length;
--}
--
--/* The typical workload of the driver:
-- * Handle the network interface interrupts.
-- */
--
--static irqreturn_t net_interrupt(int irq, void *dev_id)
--{
--	struct net_device *dev = dev_id;
--	struct net_local *lp;
--	int status;
--	int handled = 0;
--
--	lp = netdev_priv(dev);
--
--	/* we MUST read all the events out of the ISQ, otherwise we'll never
--	 * get interrupted again.  As a consequence, we can't have any limit
--	 * on the number of times we loop in the interrupt handler.  The
--	 * hardware guarantees that eventually we'll run out of events.  Of
--	 * course, if you're on a slow machine, and packets are arriving
--	 * faster than you can read them off, you're screwed.  Hasta la
--	 * vista, baby!
--	 */
--	while ((status = ioread16(lp->virt_addr + ISQ_PORT))) {
--		cs89_dbg(4, debug, "%s: event=%04x\n", dev->name, status);
--		handled = 1;
--		switch (status & ISQ_EVENT_MASK) {
--		case ISQ_RECEIVER_EVENT:
--			/* Got a packet(s). */
--			net_rx(dev);
--			break;
--		case ISQ_TRANSMITTER_EVENT:
--			dev->stats.tx_packets++;
--			netif_wake_queue(dev);	/* Inform upper layers. */
--			if ((status & (TX_OK |
--				       TX_LOST_CRS |
--				       TX_SQE_ERROR |
--				       TX_LATE_COL |
--				       TX_16_COL)) != TX_OK) {
--				if ((status & TX_OK) == 0)
--					dev->stats.tx_errors++;
--				if (status & TX_LOST_CRS)
--					dev->stats.tx_carrier_errors++;
--				if (status & TX_SQE_ERROR)
--					dev->stats.tx_heartbeat_errors++;
--				if (status & TX_LATE_COL)
--					dev->stats.tx_window_errors++;
--				if (status & TX_16_COL)
--					dev->stats.tx_aborted_errors++;
--			}
--			break;
--		case ISQ_BUFFER_EVENT:
--			if (status & READY_FOR_TX) {
--				/* we tried to transmit a packet earlier,
--				 * but inexplicably ran out of buffers.
--				 * That shouldn't happen since we only ever
--				 * load one packet.  Shrug.  Do the right
--				 * thing anyway.
--				 */
--				netif_wake_queue(dev);	/* Inform upper layers. */
--			}
--			if (status & TX_UNDERRUN) {
--				cs89_dbg(0, err, "%s: transmit underrun\n",
--					 dev->name);
--				lp->send_underrun++;
--				if (lp->send_underrun == 3)
--					lp->send_cmd = TX_AFTER_381;
--				else if (lp->send_underrun == 6)
--					lp->send_cmd = TX_AFTER_ALL;
--				/* transmit cycle is done, although
--				 * frame wasn't transmitted - this
--				 * avoids having to wait for the upper
--				 * layers to timeout on us, in the
--				 * event of a tx underrun
--				 */
--				netif_wake_queue(dev);	/* Inform upper layers. */
--			}
--#if ALLOW_DMA
--			if (lp->use_dma && (status & RX_DMA)) {
--				int count = readreg(dev, PP_DmaFrameCnt);
--				while (count) {
--					cs89_dbg(5, debug,
--						 "%s: receiving %d DMA frames\n",
--						 dev->name, count);
--					if (count > 1)
--						cs89_dbg(2, debug,
--							 "%s: receiving %d DMA frames\n",
--							 dev->name, count);
--					dma_rx(dev);
--					if (--count == 0)
--						count = readreg(dev, PP_DmaFrameCnt);
--					if (count > 0)
--						cs89_dbg(2, debug,
--							 "%s: continuing with %d DMA frames\n",
--							 dev->name, count);
--				}
--			}
--#endif
--			break;
--		case ISQ_RX_MISS_EVENT:
--			dev->stats.rx_missed_errors += (status >> 6);
--			break;
--		case ISQ_TX_COL_EVENT:
--			dev->stats.collisions += (status >> 6);
--			break;
--		}
--	}
--	return IRQ_RETVAL(handled);
--}
--
--/* Open/initialize the board.  This is called (in the current kernel)
--   sometime after booting when the 'ifconfig' program is run.
--
--   This routine should set everything up anew at each open, even
--   registers that "should" only need to be set once at boot, so that
--   there is non-reboot way to recover if something goes wrong.
--*/
--
--/* AKPM: do we need to do any locking here? */
--
--static int
--net_open(struct net_device *dev)
--{
--	struct net_local *lp = netdev_priv(dev);
--	int result = 0;
--	int i;
--	int ret;
--
--	if (dev->irq < 2) {
--		/* Allow interrupts to be generated by the chip */
--/* Cirrus' release had this: */
--#if 0
--		writereg(dev, PP_BusCTL, readreg(dev, PP_BusCTL) | ENABLE_IRQ);
--#endif
--/* And 2.3.47 had this: */
--		writereg(dev, PP_BusCTL, ENABLE_IRQ | MEMORY_ON);
--
--		for (i = 2; i < CS8920_NO_INTS; i++) {
--			if ((1 << i) & lp->irq_map) {
--				if (request_irq(i, net_interrupt, 0, dev->name,
--						dev) == 0) {
--					dev->irq = i;
--					write_irq(dev, lp->chip_type, i);
--					/* writereg(dev, PP_BufCFG, GENERATE_SW_INTERRUPT); */
--					break;
--				}
--			}
--		}
--
--		if (i >= CS8920_NO_INTS) {
--			writereg(dev, PP_BusCTL, 0);	/* disable interrupts. */
--			pr_err("can't get an interrupt\n");
--			ret = -EAGAIN;
--			goto bad_out;
--		}
--	} else {
--#if IS_ENABLED(CONFIG_CS89x0_ISA)
--		if (((1 << dev->irq) & lp->irq_map) == 0) {
--			pr_err("%s: IRQ %d is not in our map of allowable IRQs, which is %x\n",
--			       dev->name, dev->irq, lp->irq_map);
--			ret = -EAGAIN;
--			goto bad_out;
--		}
--#endif
--/* FIXME: Cirrus' release had this: */
--		writereg(dev, PP_BusCTL, readreg(dev, PP_BusCTL)|ENABLE_IRQ);
--/* And 2.3.47 had this: */
--#if 0
--		writereg(dev, PP_BusCTL, ENABLE_IRQ | MEMORY_ON);
--#endif
--		write_irq(dev, lp->chip_type, dev->irq);
--		ret = request_irq(dev->irq, net_interrupt, 0, dev->name, dev);
--		if (ret) {
--			pr_err("request_irq(%d) failed\n", dev->irq);
--			goto bad_out;
--		}
--	}
--
--#if ALLOW_DMA
--	if (lp->use_dma && (lp->isa_config & ANY_ISA_DMA)) {
--		unsigned long flags;
--		lp->dma_buff = (unsigned char *)__get_dma_pages(GFP_KERNEL,
--								get_order(lp->dmasize * 1024));
--		if (!lp->dma_buff) {
--			pr_err("%s: cannot get %dK memory for DMA\n",
--			       dev->name, lp->dmasize);
--			goto release_irq;
--		}
--		cs89_dbg(1, debug, "%s: dma %lx %lx\n",
--			 dev->name,
--			 (unsigned long)lp->dma_buff,
--			 (unsigned long)isa_virt_to_bus(lp->dma_buff));
--		if ((unsigned long)lp->dma_buff >= MAX_DMA_ADDRESS ||
--		    !dma_page_eq(lp->dma_buff,
--				 lp->dma_buff + lp->dmasize * 1024 - 1)) {
--			pr_err("%s: not usable as DMA buffer\n", dev->name);
--			goto release_irq;
--		}
--		memset(lp->dma_buff, 0, lp->dmasize * 1024);	/* Why? */
--		if (request_dma(dev->dma, dev->name)) {
--			pr_err("%s: cannot get dma channel %d\n",
--			       dev->name, dev->dma);
--			goto release_irq;
--		}
--		write_dma(dev, lp->chip_type, dev->dma);
--		lp->rx_dma_ptr = lp->dma_buff;
--		lp->end_dma_buff = lp->dma_buff + lp->dmasize * 1024;
--		spin_lock_irqsave(&lp->lock, flags);
--		disable_dma(dev->dma);
--		clear_dma_ff(dev->dma);
--		set_dma_mode(dev->dma, DMA_RX_MODE); /* auto_init as well */
--		set_dma_addr(dev->dma, isa_virt_to_bus(lp->dma_buff));
--		set_dma_count(dev->dma, lp->dmasize * 1024);
--		enable_dma(dev->dma);
--		spin_unlock_irqrestore(&lp->lock, flags);
--	}
--#endif	/* ALLOW_DMA */
--
--	/* set the Ethernet address */
--	for (i = 0; i < ETH_ALEN / 2; i++)
--		writereg(dev, PP_IA + i * 2,
--			 (dev->dev_addr[i * 2] |
--			  (dev->dev_addr[i * 2 + 1] << 8)));
--
--	/* while we're testing the interface, leave interrupts disabled */
--	writereg(dev, PP_BusCTL, MEMORY_ON);
--
--	/* Set the LineCTL quintuplet based on adapter configuration read from EEPROM */
--	if ((lp->adapter_cnf & A_CNF_EXTND_10B_2) &&
--	    (lp->adapter_cnf & A_CNF_LOW_RX_SQUELCH))
--		lp->linectl = LOW_RX_SQUELCH;
--	else
--		lp->linectl = 0;
--
--	/* check to make sure that they have the "right" hardware available */
--	switch (lp->adapter_cnf & A_CNF_MEDIA_TYPE) {
--	case A_CNF_MEDIA_10B_T:
--		result = lp->adapter_cnf & A_CNF_10B_T;
--		break;
--	case A_CNF_MEDIA_AUI:
--		result = lp->adapter_cnf & A_CNF_AUI;
--		break;
--	case A_CNF_MEDIA_10B_2:
--		result = lp->adapter_cnf & A_CNF_10B_2;
--		break;
--	default:
--		result = lp->adapter_cnf & (A_CNF_10B_T |
--					    A_CNF_AUI |
--					    A_CNF_10B_2);
--	}
--	if (!result) {
--		pr_err("%s: EEPROM is configured for unavailable media\n",
--		       dev->name);
--release_dma:
--#if ALLOW_DMA
--		free_dma(dev->dma);
--release_irq:
--		release_dma_buff(lp);
--#endif
--		writereg(dev, PP_LineCTL,
--			 readreg(dev, PP_LineCTL) & ~(SERIAL_TX_ON | SERIAL_RX_ON));
--		free_irq(dev->irq, dev);
--		ret = -EAGAIN;
--		goto bad_out;
--	}
--
--	/* set the hardware to the configured choice */
--	switch (lp->adapter_cnf & A_CNF_MEDIA_TYPE) {
--	case A_CNF_MEDIA_10B_T:
--		result = detect_tp(dev);
--		if (result == DETECTED_NONE) {
--			pr_warn("%s: 10Base-T (RJ-45) has no cable\n",
--				dev->name);
--			if (lp->auto_neg_cnf & IMM_BIT) /* check "ignore missing media" bit */
--				result = DETECTED_RJ45H; /* Yes! I don't care if I see a link pulse */
--		}
--		break;
--	case A_CNF_MEDIA_AUI:
--		result = detect_aui(dev);
--		if (result == DETECTED_NONE) {
--			pr_warn("%s: 10Base-5 (AUI) has no cable\n", dev->name);
--			if (lp->auto_neg_cnf & IMM_BIT) /* check "ignore missing media" bit */
--				result = DETECTED_AUI; /* Yes! I don't care if I see a carrier */
--		}
--		break;
--	case A_CNF_MEDIA_10B_2:
--		result = detect_bnc(dev);
--		if (result == DETECTED_NONE) {
--			pr_warn("%s: 10Base-2 (BNC) has no cable\n", dev->name);
--			if (lp->auto_neg_cnf & IMM_BIT) /* check "ignore missing media" bit */
--				result = DETECTED_BNC; /* Yes! I don't care if I can xmit a packet */
--		}
--		break;
--	case A_CNF_MEDIA_AUTO:
--		writereg(dev, PP_LineCTL, lp->linectl | AUTO_AUI_10BASET);
--		if (lp->adapter_cnf & A_CNF_10B_T) {
--			result = detect_tp(dev);
--			if (result != DETECTED_NONE)
--				break;
--		}
--		if (lp->adapter_cnf & A_CNF_AUI) {
--			result = detect_aui(dev);
--			if (result != DETECTED_NONE)
--				break;
--		}
--		if (lp->adapter_cnf & A_CNF_10B_2) {
--			result = detect_bnc(dev);
--			if (result != DETECTED_NONE)
--				break;
--		}
--		pr_err("%s: no media detected\n", dev->name);
--		goto release_dma;
--	}
--	switch (result) {
--	case DETECTED_NONE:
--		pr_err("%s: no network cable attached to configured media\n",
--		       dev->name);
--		goto release_dma;
--	case DETECTED_RJ45H:
--		pr_info("%s: using half-duplex 10Base-T (RJ-45)\n", dev->name);
--		break;
--	case DETECTED_RJ45F:
--		pr_info("%s: using full-duplex 10Base-T (RJ-45)\n", dev->name);
--		break;
--	case DETECTED_AUI:
--		pr_info("%s: using 10Base-5 (AUI)\n", dev->name);
--		break;
--	case DETECTED_BNC:
--		pr_info("%s: using 10Base-2 (BNC)\n", dev->name);
--		break;
--	}
--
--	/* Turn on both receive and transmit operations */
--	writereg(dev, PP_LineCTL,
--		 readreg(dev, PP_LineCTL) | SERIAL_RX_ON | SERIAL_TX_ON);
--
--	/* Receive only error free packets addressed to this card */
--	lp->rx_mode = 0;
--	writereg(dev, PP_RxCTL, DEF_RX_ACCEPT);
--
--	lp->curr_rx_cfg = RX_OK_ENBL | RX_CRC_ERROR_ENBL;
--
--	if (lp->isa_config & STREAM_TRANSFER)
--		lp->curr_rx_cfg |= RX_STREAM_ENBL;
--#if ALLOW_DMA
--	set_dma_cfg(dev);
--#endif
--	writereg(dev, PP_RxCFG, lp->curr_rx_cfg);
--
--	writereg(dev, PP_TxCFG, (TX_LOST_CRS_ENBL |
--				 TX_SQE_ERROR_ENBL |
--				 TX_OK_ENBL |
--				 TX_LATE_COL_ENBL |
--				 TX_JBR_ENBL |
--				 TX_ANY_COL_ENBL |
--				 TX_16_COL_ENBL));
--
--	writereg(dev, PP_BufCFG, (READY_FOR_TX_ENBL |
--				  RX_MISS_COUNT_OVRFLOW_ENBL |
--#if ALLOW_DMA
--				  dma_bufcfg(dev) |
--#endif
--				  TX_COL_COUNT_OVRFLOW_ENBL |
--				  TX_UNDERRUN_ENBL));
--
--	/* now that we've got our act together, enable everything */
--	writereg(dev, PP_BusCTL, (ENABLE_IRQ
--				  | (dev->mem_start ? MEMORY_ON : 0) /* turn memory on */
--#if ALLOW_DMA
--				  | dma_busctl(dev)
--#endif
--			 ));
--	netif_start_queue(dev);
--	cs89_dbg(1, debug, "net_open() succeeded\n");
--	return 0;
--bad_out:
--	return ret;
--}
--
--/* The inverse routine to net_open(). */
--static int
--net_close(struct net_device *dev)
--{
--#if ALLOW_DMA
--	struct net_local *lp = netdev_priv(dev);
--#endif
--
--	netif_stop_queue(dev);
--
--	writereg(dev, PP_RxCFG, 0);
--	writereg(dev, PP_TxCFG, 0);
--	writereg(dev, PP_BufCFG, 0);
--	writereg(dev, PP_BusCTL, 0);
--
--	free_irq(dev->irq, dev);
--
--#if ALLOW_DMA
--	if (lp->use_dma && lp->dma) {
--		free_dma(dev->dma);
--		release_dma_buff(lp);
--	}
--#endif
--
--	/* Update the statistics here. */
--	return 0;
--}
--
--/* Get the current statistics.
-- * This may be called with the card open or closed.
-- */
--static struct net_device_stats *
--net_get_stats(struct net_device *dev)
--{
--	struct net_local *lp = netdev_priv(dev);
--	unsigned long flags;
--
--	spin_lock_irqsave(&lp->lock, flags);
--	/* Update the statistics from the device registers. */
--	dev->stats.rx_missed_errors += (readreg(dev, PP_RxMiss) >> 6);
--	dev->stats.collisions += (readreg(dev, PP_TxCol) >> 6);
--	spin_unlock_irqrestore(&lp->lock, flags);
--
--	return &dev->stats;
--}
--
--static void net_timeout(struct net_device *dev, unsigned int txqueue)
--{
--	/* If we get here, some higher level has decided we are broken.
--	   There should really be a "kick me" function call instead. */
--	cs89_dbg(0, err, "%s: transmit timed out, %s?\n",
--		 dev->name,
--		 tx_done(dev) ? "IRQ conflict" : "network cable problem");
--	/* Try to restart the adaptor. */
--	netif_wake_queue(dev);
--}
--
--static netdev_tx_t net_send_packet(struct sk_buff *skb, struct net_device *dev)
--{
--	struct net_local *lp = netdev_priv(dev);
--	unsigned long flags;
--
--	cs89_dbg(3, debug, "%s: sent %d byte packet of type %x\n",
--		 dev->name, skb->len,
--		 ((skb->data[ETH_ALEN + ETH_ALEN] << 8) |
--		  skb->data[ETH_ALEN + ETH_ALEN + 1]));
--
--	/* keep the upload from being interrupted, since we
--	 * ask the chip to start transmitting before the
--	 * whole packet has been completely uploaded.
--	 */
--
--	spin_lock_irqsave(&lp->lock, flags);
--	netif_stop_queue(dev);
--
--	/* initiate a transmit sequence */
--	iowrite16(lp->send_cmd, lp->virt_addr + TX_CMD_PORT);
--	iowrite16(skb->len, lp->virt_addr + TX_LEN_PORT);
--
--	/* Test to see if the chip has allocated memory for the packet */
--	if ((readreg(dev, PP_BusST) & READY_FOR_TX_NOW) == 0) {
--		/* Gasp!  It hasn't.  But that shouldn't happen since
--		 * we're waiting for TxOk, so return 1 and requeue this packet.
--		 */
--
--		spin_unlock_irqrestore(&lp->lock, flags);
--		cs89_dbg(0, err, "Tx buffer not free!\n");
--		return NETDEV_TX_BUSY;
--	}
--	/* Write the contents of the packet */
--	writewords(lp, TX_FRAME_PORT, skb->data, (skb->len + 1) >> 1);
--	spin_unlock_irqrestore(&lp->lock, flags);
--	dev->stats.tx_bytes += skb->len;
--	dev_consume_skb_any(skb);
--
--	/* We DO NOT call netif_wake_queue() here.
--	 * We also DO NOT call netif_start_queue().
--	 *
--	 * Either of these would cause another bottom half run through
--	 * net_send_packet() before this packet has fully gone out.
--	 * That causes us to hit the "Gasp!" above and the send is rescheduled.
--	 * it runs like a dog.  We just return and wait for the Tx completion
--	 * interrupt handler to restart the netdevice layer
--	 */
--
--	return NETDEV_TX_OK;
--}
--
--static void set_multicast_list(struct net_device *dev)
--{
--	struct net_local *lp = netdev_priv(dev);
--	unsigned long flags;
--	u16 cfg;
--
--	spin_lock_irqsave(&lp->lock, flags);
--	if (dev->flags & IFF_PROMISC)
--		lp->rx_mode = RX_ALL_ACCEPT;
--	else if ((dev->flags & IFF_ALLMULTI) || !netdev_mc_empty(dev))
--		/* The multicast-accept list is initialized to accept-all,
--		 * and we rely on higher-level filtering for now.
--		 */
--		lp->rx_mode = RX_MULTCAST_ACCEPT;
--	else
--		lp->rx_mode = 0;
--
--	writereg(dev, PP_RxCTL, DEF_RX_ACCEPT | lp->rx_mode);
--
--	/* in promiscuous mode, we accept errored packets,
--	 * so we have to enable interrupts on them also
--	 */
--	cfg = lp->curr_rx_cfg;
--	if (lp->rx_mode == RX_ALL_ACCEPT)
--		cfg |= RX_CRC_ERROR_ENBL | RX_RUNT_ENBL | RX_EXTRA_DATA_ENBL;
--	writereg(dev, PP_RxCFG, cfg);
--	spin_unlock_irqrestore(&lp->lock, flags);
--}
--
--static int set_mac_address(struct net_device *dev, void *p)
--{
--	int i;
--	struct sockaddr *addr = p;
--
--	if (netif_running(dev))
--		return -EBUSY;
--
--	eth_hw_addr_set(dev, addr->sa_data);
--
--	cs89_dbg(0, debug, "%s: Setting MAC address to %pM\n",
--		 dev->name, dev->dev_addr);
--
--	/* set the Ethernet address */
--	for (i = 0; i < ETH_ALEN / 2; i++)
--		writereg(dev, PP_IA + i * 2,
--			 (dev->dev_addr[i * 2] |
--			  (dev->dev_addr[i * 2 + 1] << 8)));
--
--	return 0;
--}
--
--#ifdef CONFIG_NET_POLL_CONTROLLER
--/*
-- * Polling receive - used by netconsole and other diagnostic tools
-- * to allow network i/o with interrupts disabled.
-- */
--static void net_poll_controller(struct net_device *dev)
--{
--	disable_irq(dev->irq);
--	net_interrupt(dev->irq, dev);
--	enable_irq(dev->irq);
--}
--#endif
--
--static const struct net_device_ops net_ops = {
--	.ndo_open		= net_open,
--	.ndo_stop		= net_close,
--	.ndo_tx_timeout		= net_timeout,
--	.ndo_start_xmit		= net_send_packet,
--	.ndo_get_stats		= net_get_stats,
--	.ndo_set_rx_mode	= set_multicast_list,
--	.ndo_set_mac_address	= set_mac_address,
--#ifdef CONFIG_NET_POLL_CONTROLLER
--	.ndo_poll_controller	= net_poll_controller,
--#endif
--	.ndo_validate_addr	= eth_validate_addr,
--};
--
--static void __init reset_chip(struct net_device *dev)
--{
--#if !defined(CONFIG_MACH_MX31ADS)
--	struct net_local *lp = netdev_priv(dev);
--	unsigned long reset_start_time;
--
--	writereg(dev, PP_SelfCTL, readreg(dev, PP_SelfCTL) | POWER_ON_RESET);
--
--	/* wait 30 ms */
--	msleep(30);
--
--	if (lp->chip_type != CS8900) {
--		/* Hardware problem requires PNP registers to be reconfigured after a reset */
--		iowrite16(PP_CS8920_ISAINT, lp->virt_addr + ADD_PORT);
--		iowrite8(dev->irq, lp->virt_addr + DATA_PORT);
--		iowrite8(0, lp->virt_addr + DATA_PORT + 1);
--
--		iowrite16(PP_CS8920_ISAMemB, lp->virt_addr + ADD_PORT);
--		iowrite8((dev->mem_start >> 16) & 0xff,
--			 lp->virt_addr + DATA_PORT);
--		iowrite8((dev->mem_start >> 8) & 0xff,
--			 lp->virt_addr + DATA_PORT + 1);
--	}
--
--	/* Wait until the chip is reset */
--	reset_start_time = jiffies;
--	while ((readreg(dev, PP_SelfST) & INIT_DONE) == 0 &&
--	       time_before(jiffies, reset_start_time + 2))
--		;
--#endif /* !CONFIG_MACH_MX31ADS */
--}
--
--/* This is the real probe routine.
-- * Linux has a history of friendly device probes on the ISA bus.
-- * A good device probes avoids doing writes, and
-- * verifies that the correct device exists and functions.
-- * Return 0 on success.
-- */
--static int __init
--cs89x0_probe1(struct net_device *dev, void __iomem *ioaddr, int modular)
--{
--	struct net_local *lp = netdev_priv(dev);
--	int i;
--	int tmp;
--	unsigned rev_type = 0;
--	int eeprom_buff[CHKSUM_LEN];
--	u8 addr[ETH_ALEN];
--	int retval;
--
--	/* Initialize the device structure. */
--	if (!modular) {
--		memset(lp, 0, sizeof(*lp));
--		spin_lock_init(&lp->lock);
--#ifndef MODULE
--#if ALLOW_DMA
--		if (g_cs89x0_dma) {
--			lp->use_dma = 1;
--			lp->dma = g_cs89x0_dma;
--			lp->dmasize = 16;	/* Could make this an option... */
--		}
--#endif
--		lp->force = g_cs89x0_media__force;
--#endif
--	}
--
--	pr_debug("PP_addr at %p[%x]: 0x%x\n",
--		 ioaddr, ADD_PORT, ioread16(ioaddr + ADD_PORT));
--	iowrite16(PP_ChipID, ioaddr + ADD_PORT);
--
--	tmp = ioread16(ioaddr + DATA_PORT);
--	if (tmp != CHIP_EISA_ID_SIG) {
--		pr_debug("%s: incorrect signature at %p[%x]: 0x%x!="
--			 CHIP_EISA_ID_SIG_STR "\n",
--			 dev->name, ioaddr, DATA_PORT, tmp);
--		retval = -ENODEV;
--		goto out1;
--	}
--
--	lp->virt_addr = ioaddr;
--
--	/* get the chip type */
--	rev_type = readreg(dev, PRODUCT_ID_ADD);
--	lp->chip_type = rev_type & ~REVISON_BITS;
--	lp->chip_revision = ((rev_type & REVISON_BITS) >> 8) + 'A';
--
--	/* Check the chip type and revision in order to set the correct
--	 * send command.  CS8920 revision C and CS8900 revision F can use
--	 * the faster send.
--	 */
--	lp->send_cmd = TX_AFTER_381;
--	if (lp->chip_type == CS8900 && lp->chip_revision >= 'F')
--		lp->send_cmd = TX_NOW;
--	if (lp->chip_type != CS8900 && lp->chip_revision >= 'C')
--		lp->send_cmd = TX_NOW;
--
--	pr_info_once("%s\n", version);
--
--	pr_info("%s: cs89%c0%s rev %c found at %p ",
--		dev->name,
--		lp->chip_type == CS8900  ? '0' : '2',
--		lp->chip_type == CS8920M ? "M" : "",
--		lp->chip_revision,
--		lp->virt_addr);
--
--	reset_chip(dev);
--
--	/* Here we read the current configuration of the chip.
--	 * If there is no Extended EEPROM then the idea is to not disturb
--	 * the chip configuration, it should have been correctly setup by
--	 * automatic EEPROM read on reset. So, if the chip says it read
--	 * the EEPROM the driver will always do *something* instead of
--	 * complain that adapter_cnf is 0.
--	 */
--
--	if ((readreg(dev, PP_SelfST) & (EEPROM_OK | EEPROM_PRESENT)) ==
--	    (EEPROM_OK | EEPROM_PRESENT)) {
--		/* Load the MAC. */
--		for (i = 0; i < ETH_ALEN / 2; i++) {
--			unsigned int Addr;
--			Addr = readreg(dev, PP_IA + i * 2);
--			addr[i * 2] = Addr & 0xFF;
--			addr[i * 2 + 1] = Addr >> 8;
--		}
--		eth_hw_addr_set(dev, addr);
--
--		/* Load the Adapter Configuration.
--		 * Note:  Barring any more specific information from some
--		 * other source (ie EEPROM+Schematics), we would not know
--		 * how to operate a 10Base2 interface on the AUI port.
--		 * However, since we  do read the status of HCB1 and use
--		 * settings that always result in calls to control_dc_dc(dev,0)
--		 * a BNC interface should work if the enable pin
--		 * (dc/dc converter) is on HCB1.
--		 * It will be called AUI however.
--		 */
--
--		lp->adapter_cnf = 0;
--		i = readreg(dev, PP_LineCTL);
--		/* Preserve the setting of the HCB1 pin. */
--		if ((i & (HCB1 | HCB1_ENBL)) == (HCB1 | HCB1_ENBL))
--			lp->adapter_cnf |= A_CNF_DC_DC_POLARITY;
--		/* Save the sqelch bit */
--		if ((i & LOW_RX_SQUELCH) == LOW_RX_SQUELCH)
--			lp->adapter_cnf |= A_CNF_EXTND_10B_2 | A_CNF_LOW_RX_SQUELCH;
--		/* Check if the card is in 10Base-t only mode */
--		if ((i & (AUI_ONLY | AUTO_AUI_10BASET)) == 0)
--			lp->adapter_cnf |=  A_CNF_10B_T | A_CNF_MEDIA_10B_T;
--		/* Check if the card is in AUI only mode */
--		if ((i & (AUI_ONLY | AUTO_AUI_10BASET)) == AUI_ONLY)
--			lp->adapter_cnf |=  A_CNF_AUI | A_CNF_MEDIA_AUI;
--		/* Check if the card is in Auto mode. */
--		if ((i & (AUI_ONLY | AUTO_AUI_10BASET)) == AUTO_AUI_10BASET)
--			lp->adapter_cnf |=  A_CNF_AUI | A_CNF_10B_T |
--				A_CNF_MEDIA_AUI | A_CNF_MEDIA_10B_T | A_CNF_MEDIA_AUTO;
--
--		cs89_dbg(1, info, "%s: PP_LineCTL=0x%x, adapter_cnf=0x%x\n",
--			 dev->name, i, lp->adapter_cnf);
--
--		/* IRQ. Other chips already probe, see below. */
--		if (lp->chip_type == CS8900)
--			lp->isa_config = readreg(dev, PP_CS8900_ISAINT) & INT_NO_MASK;
--
--		pr_cont("[Cirrus EEPROM] ");
--	}
--
--	pr_cont("\n");
--
--	/* First check to see if an EEPROM is attached. */
--
--	if ((readreg(dev, PP_SelfST) & EEPROM_PRESENT) == 0)
--		pr_warn("No EEPROM, relying on command line....\n");
--	else if (get_eeprom_data(dev, START_EEPROM_DATA, CHKSUM_LEN, eeprom_buff) < 0) {
--		pr_warn("EEPROM read failed, relying on command line\n");
--	} else if (get_eeprom_cksum(START_EEPROM_DATA, CHKSUM_LEN, eeprom_buff) < 0) {
--		/* Check if the chip was able to read its own configuration starting
--		   at 0 in the EEPROM*/
--		if ((readreg(dev, PP_SelfST) & (EEPROM_OK | EEPROM_PRESENT)) !=
--		    (EEPROM_OK | EEPROM_PRESENT))
--			pr_warn("Extended EEPROM checksum bad and no Cirrus EEPROM, relying on command line\n");
--
--	} else {
--		/* This reads an extended EEPROM that is not documented
--		 * in the CS8900 datasheet.
--		 */
--
--		/* get transmission control word  but keep the autonegotiation bits */
--		if (!lp->auto_neg_cnf)
--			lp->auto_neg_cnf = eeprom_buff[AUTO_NEG_CNF_OFFSET / 2];
--		/* Store adapter configuration */
--		if (!lp->adapter_cnf)
--			lp->adapter_cnf = eeprom_buff[ADAPTER_CNF_OFFSET / 2];
--		/* Store ISA configuration */
--		lp->isa_config = eeprom_buff[ISA_CNF_OFFSET / 2];
--		dev->mem_start = eeprom_buff[PACKET_PAGE_OFFSET / 2] << 8;
--
--		/* eeprom_buff has 32-bit ints, so we can't just memcpy it */
--		/* store the initial memory base address */
--		for (i = 0; i < ETH_ALEN / 2; i++) {
--			addr[i * 2] = eeprom_buff[i];
--			addr[i * 2 + 1] = eeprom_buff[i] >> 8;
--		}
--		eth_hw_addr_set(dev, addr);
--		cs89_dbg(1, debug, "%s: new adapter_cnf: 0x%x\n",
--			 dev->name, lp->adapter_cnf);
--	}
--
--	/* allow them to force multiple transceivers.  If they force multiple, autosense */
--	{
--		int count = 0;
--		if (lp->force & FORCE_RJ45) {
--			lp->adapter_cnf |= A_CNF_10B_T;
--			count++;
--		}
--		if (lp->force & FORCE_AUI) {
--			lp->adapter_cnf |= A_CNF_AUI;
--			count++;
--		}
--		if (lp->force & FORCE_BNC) {
--			lp->adapter_cnf |= A_CNF_10B_2;
--			count++;
--		}
--		if (count > 1)
--			lp->adapter_cnf |= A_CNF_MEDIA_AUTO;
--		else if (lp->force & FORCE_RJ45)
--			lp->adapter_cnf |= A_CNF_MEDIA_10B_T;
--		else if (lp->force & FORCE_AUI)
--			lp->adapter_cnf |= A_CNF_MEDIA_AUI;
--		else if (lp->force & FORCE_BNC)
--			lp->adapter_cnf |= A_CNF_MEDIA_10B_2;
--	}
--
--	cs89_dbg(1, debug, "%s: after force 0x%x, adapter_cnf=0x%x\n",
--		 dev->name, lp->force, lp->adapter_cnf);
--
--	/* FIXME: We don't let you set dc-dc polarity or low RX squelch from the command line: add it here */
--
--	/* FIXME: We don't let you set the IMM bit from the command line: add it to lp->auto_neg_cnf here */
--
--	/* FIXME: we don't set the Ethernet address on the command line.  Use
--	 * ifconfig IFACE hw ether AABBCCDDEEFF
--	 */
--
--	pr_info("media %s%s%s",
--		(lp->adapter_cnf & A_CNF_10B_T) ? "RJ-45," : "",
--		(lp->adapter_cnf & A_CNF_AUI) ? "AUI," : "",
--		(lp->adapter_cnf & A_CNF_10B_2) ? "BNC," : "");
--
--	lp->irq_map = 0xffff;
--
--	/* If this is a CS8900 then no pnp soft */
--	if (lp->chip_type != CS8900 &&
--	    /* Check if the ISA IRQ has been set  */
--	    (i = readreg(dev, PP_CS8920_ISAINT) & 0xff,
--	     (i != 0 && i < CS8920_NO_INTS))) {
--		if (!dev->irq)
--			dev->irq = i;
--	} else {
--		i = lp->isa_config & INT_NO_MASK;
--#if IS_ENABLED(CONFIG_CS89x0_ISA)
--		if (lp->chip_type == CS8900) {
--			/* Translate the IRQ using the IRQ mapping table. */
--			if (i >= ARRAY_SIZE(cs8900_irq_map))
--				pr_err("invalid ISA interrupt number %d\n", i);
--			else
--				i = cs8900_irq_map[i];
--
--			lp->irq_map = CS8900_IRQ_MAP; /* fixed IRQ map for CS8900 */
--		} else {
--			int irq_map_buff[IRQ_MAP_LEN/2];
--
--			if (get_eeprom_data(dev, IRQ_MAP_EEPROM_DATA,
--					    IRQ_MAP_LEN / 2,
--					    irq_map_buff) >= 0) {
--				if ((irq_map_buff[0] & 0xff) == PNP_IRQ_FRMT)
--					lp->irq_map = ((irq_map_buff[0] >> 8) |
--						       (irq_map_buff[1] << 8));
--			}
--		}
--#endif
--		if (!dev->irq)
--			dev->irq = i;
--	}
--
--	pr_cont(" IRQ %d", dev->irq);
--
--#if ALLOW_DMA
--	if (lp->use_dma) {
--		get_dma_channel(dev);
--		pr_cont(", DMA %d", dev->dma);
--	} else
--#endif
--		pr_cont(", programmed I/O");
--
--	/* print the ethernet address. */
--	pr_cont(", MAC %pM\n", dev->dev_addr);
--
--	dev->netdev_ops	= &net_ops;
--	dev->watchdog_timeo = HZ;
--
--	cs89_dbg(0, info, "cs89x0_probe1() successful\n");
--
--	retval = register_netdev(dev);
--	if (retval)
--		goto out2;
--	return 0;
--out2:
--	iowrite16(PP_ChipID, lp->virt_addr + ADD_PORT);
--out1:
--	return retval;
--}
--
--#if IS_ENABLED(CONFIG_CS89x0_ISA)
--/*
-- * This function converts the I/O port address used by the cs89x0_probe() and
-- * init_module() functions to the I/O memory address used by the
-- * cs89x0_probe1() function.
-- */
--static int __init
--cs89x0_ioport_probe(struct net_device *dev, unsigned long ioport, int modular)
--{
--	struct net_local *lp = netdev_priv(dev);
--	int ret;
--	void __iomem *io_mem;
--
--	if (!lp)
--		return -ENOMEM;
--
--	dev->base_addr = ioport;
--
--	if (!request_region(ioport, NETCARD_IO_EXTENT, DRV_NAME)) {
--		ret = -EBUSY;
--		goto out;
--	}
--
--	io_mem = ioport_map(ioport & ~3, NETCARD_IO_EXTENT);
--	if (!io_mem) {
--		ret = -ENOMEM;
--		goto release;
--	}
--
--	/* if they give us an odd I/O address, then do ONE write to
--	 * the address port, to get it back to address zero, where we
--	 * expect to find the EISA signature word. An IO with a base of 0x3
--	 * will skip the test for the ADD_PORT.
--	 */
--	if (ioport & 1) {
--		cs89_dbg(1, info, "%s: odd ioaddr 0x%lx\n", dev->name, ioport);
--		if ((ioport & 2) != 2) {
--			if ((ioread16(io_mem + ADD_PORT) & ADD_MASK) !=
--			    ADD_SIG) {
--				pr_err("%s: bad signature 0x%x\n",
--				       dev->name, ioread16(io_mem + ADD_PORT));
--				ret = -ENODEV;
--				goto unmap;
--			}
--		}
--	}
--
--	ret = cs89x0_probe1(dev, io_mem, modular);
--	if (!ret)
--		goto out;
--unmap:
--	ioport_unmap(io_mem);
--release:
--	release_region(ioport, NETCARD_IO_EXTENT);
--out:
--	return ret;
--}
--
--#ifndef MODULE
--/* Check for a network adaptor of this type, and return '0' iff one exists.
-- * If dev->base_addr == 0, probe all likely locations.
-- * If dev->base_addr == 1, always return failure.
-- * If dev->base_addr == 2, allocate space for the device and return success
-- * (detachable devices only).
-- * Return 0 on success.
-- */
--
--struct net_device * __init cs89x0_probe(int unit)
--{
--	struct net_device *dev = alloc_etherdev(sizeof(struct net_local));
--	unsigned *port;
--	int err = 0;
--	int irq;
--	int io;
--
--	if (!dev)
--		return ERR_PTR(-ENODEV);
--
--	sprintf(dev->name, "eth%d", unit);
--	netdev_boot_setup_check(dev);
--	io = dev->base_addr;
--	irq = dev->irq;
--
--	cs89_dbg(0, info, "cs89x0_probe(0x%x)\n", io);
--
--	if (io > 0x1ff)	{	/* Check a single specified location. */
--		err = cs89x0_ioport_probe(dev, io, 0);
--	} else if (io != 0) {	/* Don't probe at all. */
--		err = -ENXIO;
--	} else {
--		for (port = netcard_portlist; *port; port++) {
--			if (cs89x0_ioport_probe(dev, *port, 0) == 0)
--				break;
--			dev->irq = irq;
--		}
--		if (!*port)
--			err = -ENODEV;
--	}
--	if (err)
--		goto out;
--	return dev;
--out:
--	free_netdev(dev);
--	pr_warn("no cs8900 or cs8920 detected.  Be sure to disable PnP with SETUP\n");
--	return ERR_PTR(err);
--}
--#else
--static struct net_device *dev_cs89x0;
--
--/* Support the 'debug' module parm even if we're compiled for non-debug to
-- * avoid breaking someone's startup scripts
-- */
--
--static int io;
--static int irq;
--static int debug;
--static char media[8];
--static int duplex = -1;
--
--static int use_dma;			/* These generate unused var warnings if ALLOW_DMA = 0 */
--static int dma;
--static int dmasize = 16;		/* or 64 */
--
--module_param_hw(io, int, ioport, 0);
--module_param_hw(irq, int, irq, 0);
--module_param(debug, int, 0);
--module_param_string(media, media, sizeof(media), 0);
--module_param(duplex, int, 0);
--module_param_hw(dma , int, dma, 0);
--module_param(dmasize , int, 0);
--module_param(use_dma , int, 0);
--MODULE_PARM_DESC(io, "cs89x0 I/O base address");
--MODULE_PARM_DESC(irq, "cs89x0 IRQ number");
--#if DEBUGGING
--MODULE_PARM_DESC(debug, "cs89x0 debug level (0-6)");
--#else
--MODULE_PARM_DESC(debug, "(ignored)");
--#endif
--MODULE_PARM_DESC(media, "Set cs89x0 adapter(s) media type(s) (rj45,bnc,aui)");
--/* No other value than -1 for duplex seems to be currently interpreted */
--MODULE_PARM_DESC(duplex, "(ignored)");
--#if ALLOW_DMA
--MODULE_PARM_DESC(dma , "cs89x0 ISA DMA channel; ignored if use_dma=0");
--MODULE_PARM_DESC(dmasize , "cs89x0 DMA size in kB (16,64); ignored if use_dma=0");
--MODULE_PARM_DESC(use_dma , "cs89x0 using DMA (0-1)");
--#else
--MODULE_PARM_DESC(dma , "(ignored)");
--MODULE_PARM_DESC(dmasize , "(ignored)");
--MODULE_PARM_DESC(use_dma , "(ignored)");
--#endif
--
--MODULE_AUTHOR("Mike Cruse, Russwll Nelson <nelson@crynwr.com>, Andrew Morton");
--MODULE_LICENSE("GPL");
--
--/*
-- * media=t             - specify media type
-- * or media=2
-- * or media=aui
-- * or medai=auto
-- * duplex=0            - specify forced half/full/autonegotiate duplex
-- * debug=#             - debug level
-- *
-- * Default Chip Configuration:
-- * DMA Burst = enabled
-- * IOCHRDY Enabled = enabled
-- * UseSA = enabled
-- * CS8900 defaults to half-duplex if not specified on command-line
-- * CS8920 defaults to autoneg if not specified on command-line
-- * Use reset defaults for other config parameters
-- *
-- * Assumptions:
-- * media type specified is supported (circuitry is present)
-- * if memory address is > 1MB, then required mem decode hw is present
-- * if 10B-2, then agent other than driver will enable DC/DC converter
-- * (hw or software util)
-- */
--
--static int __init cs89x0_isa_init_module(void)
--{
--	struct net_device *dev;
--	struct net_local *lp;
--	int ret = 0;
--
--#if DEBUGGING
--	net_debug = debug;
--#else
--	debug = 0;
--#endif
--	dev = alloc_etherdev(sizeof(struct net_local));
--	if (!dev)
--		return -ENOMEM;
--
--	dev->irq = irq;
--	dev->base_addr = io;
--	lp = netdev_priv(dev);
--
--#if ALLOW_DMA
--	if (use_dma) {
--		lp->use_dma = use_dma;
--		lp->dma = dma;
--		lp->dmasize = dmasize;
--	}
--#endif
--
--	spin_lock_init(&lp->lock);
--
--	/* boy, they'd better get these right */
--	if (!strcmp(media, "rj45"))
--		lp->adapter_cnf = A_CNF_MEDIA_10B_T | A_CNF_10B_T;
--	else if (!strcmp(media, "aui"))
--		lp->adapter_cnf = A_CNF_MEDIA_AUI   | A_CNF_AUI;
--	else if (!strcmp(media, "bnc"))
--		lp->adapter_cnf = A_CNF_MEDIA_10B_2 | A_CNF_10B_2;
--	else
--		lp->adapter_cnf = A_CNF_MEDIA_10B_T | A_CNF_10B_T;
--
--	if (duplex == -1)
--		lp->auto_neg_cnf = AUTO_NEG_ENABLE;
--
--	if (io == 0) {
--		pr_err("Module autoprobing not allowed\n");
--		pr_err("Append io=0xNNN\n");
--		ret = -EPERM;
--		goto out;
--	} else if (io <= 0x1ff) {
--		ret = -ENXIO;
--		goto out;
--	}
--
--#if ALLOW_DMA
--	if (use_dma && dmasize != 16 && dmasize != 64) {
--		pr_err("dma size must be either 16K or 64K, not %dK\n",
--		       dmasize);
--		ret = -EPERM;
--		goto out;
--	}
--#endif
--	ret = cs89x0_ioport_probe(dev, io, 1);
--	if (ret)
--		goto out;
--
--	dev_cs89x0 = dev;
--	return 0;
--out:
--	free_netdev(dev);
--	return ret;
--}
--module_init(cs89x0_isa_init_module);
--
--static void __exit cs89x0_isa_cleanup_module(void)
--{
--	struct net_local *lp = netdev_priv(dev_cs89x0);
--
--	unregister_netdev(dev_cs89x0);
--	iowrite16(PP_ChipID, lp->virt_addr + ADD_PORT);
--	ioport_unmap(lp->virt_addr);
--	release_region(dev_cs89x0->base_addr, NETCARD_IO_EXTENT);
--	free_netdev(dev_cs89x0);
--}
--module_exit(cs89x0_isa_cleanup_module);
--#endif /* MODULE */
--#endif /* CONFIG_CS89x0_ISA */
--
--#if IS_ENABLED(CONFIG_CS89x0_PLATFORM)
--static int __init cs89x0_platform_probe(struct platform_device *pdev)
--{
--	struct net_device *dev = alloc_etherdev(sizeof(struct net_local));
--	void __iomem *virt_addr;
--	int err;
--
--	if (!dev)
--		return -ENOMEM;
--
--	dev->irq = platform_get_irq(pdev, 0);
--	if (dev->irq < 0) {
--		err = dev->irq;
--		goto free;
--	}
--
--	virt_addr = devm_platform_ioremap_resource(pdev, 0);
--	if (IS_ERR(virt_addr)) {
--		err = PTR_ERR(virt_addr);
--		goto free;
--	}
--
--	err = cs89x0_probe1(dev, virt_addr, 0);
--	if (err) {
--		dev_warn(&dev->dev, "no cs8900 or cs8920 detected\n");
--		goto free;
--	}
--
--	platform_set_drvdata(pdev, dev);
--	return 0;
--
--free:
--	free_netdev(dev);
--	return err;
--}
--
--static void cs89x0_platform_remove(struct platform_device *pdev)
--{
--	struct net_device *dev = platform_get_drvdata(pdev);
--
--	/* This platform_get_resource() call will not return NULL, because
--	 * the same call in cs89x0_platform_probe() has returned a non NULL
--	 * value.
--	 */
--	unregister_netdev(dev);
--	free_netdev(dev);
--}
--
--static const struct of_device_id __maybe_unused cs89x0_match[] = {
--	{ .compatible = "cirrus,cs8900", },
--	{ .compatible = "cirrus,cs8920", },
--	{ },
--};
--MODULE_DEVICE_TABLE(of, cs89x0_match);
--
--static struct platform_driver cs89x0_driver = {
--	.driver	= {
--		.name		= DRV_NAME,
--		.of_match_table	= of_match_ptr(cs89x0_match),
--	},
--	.remove = cs89x0_platform_remove,
--};
--
--module_platform_driver_probe(cs89x0_driver, cs89x0_platform_probe);
--
--#endif /* CONFIG_CS89x0_PLATFORM */
--
--MODULE_LICENSE("GPL");
--MODULE_DESCRIPTION("Crystal Semiconductor (Now Cirrus Logic) CS89[02]0 network driver");
--MODULE_AUTHOR("Russell Nelson <nelson@crynwr.com>");
+The discussion on v2 is available at:
+https://lore.kernel.org/netdev/CAHLZf_uARgZzoTPnnPjxRu5AGeHEOw3yyTEbNHYP3br=
+fwuW0Sw@mail.gmail.com/
+https://lore.kernel.org/netdev/CAHLZf_voEPTrfkuO6pJcchaQaOqJin8m7j-+hwMrjJc=
+GFmJv0A@mail.gmail.com/
 
--- 
-2.53.0
+Thanks,
+Vikas
 
+On Wed, Apr 22, 2026 at 10:36=E2=80=AFPM Simon Horman <horms@kernel.org> wr=
+ote:
+>
+> From: 'Simon Horman' <horms@kernel.org>
+>
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> Full review at: https://sashiko.dev
+> ---
+> bnge: fix initial HWRM sequence
+>
+> Firmware may not advertize correct resources if backing store is not
+> enabled before resource information is queried.
+> Fix the initial sequence of HWRMs so that driver gets capabilities
+> and resource information correctly.
+>
+> > diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_core.c b/drivers/n=
+et/ethernet/broadcom/bnge/bnge_core.c
+> > index 1c14c5fe8d613..68b74eb2c3a29 100644
+> > --- a/drivers/net/ethernet/broadcom/bnge/bnge_core.c
+> > +++ b/drivers/net/ethernet/broadcom/bnge/bnge_core.c
+> [ ... ]
+> > @@ -133,23 +140,28 @@ static int bnge_fw_register_dev(struct bnge_dev *=
+bd)
+> >
+> >       bnge_hwrm_fw_set_time(bd);
+> >
+> > -     rc =3D  bnge_hwrm_func_drv_rgtr(bd);
+> > +     /* Get the resources and configuration from firmware */
+> > +     rc =3D bnge_func_qcaps(bd);
+> >       if (rc) {
+> > -             dev_err(bd->dev, "Failed to rgtr with firmware rc: %d\n",=
+ rc);
+> > +             dev_err(bd->dev, "Failed querying caps rc: %d\n", rc);
+> >               return rc;
+> >       }
+> >
+> >       rc =3D bnge_alloc_ctx_mem(bd);
+> >       if (rc) {
+> >               dev_err(bd->dev, "Failed to allocate ctx mem rc: %d\n", r=
+c);
+> > -             goto err_func_unrgtr;
+> > +             goto err_free_ctx_mem;
+> >       }
+> >
+> > -     /* Get the resources and configuration from firmware */
+> > -     rc =3D bnge_func_qcaps(bd);
+> > +     rc =3D bnge_hwrm_func_drv_rgtr(bd);
+> >       if (rc) {
+> > -             dev_err(bd->dev, "Failed initial configuration rc: %d\n",=
+ rc);
+> > -             rc =3D -ENODEV;
+> > +             dev_err(bd->dev, "Failed to rgtr with firmware rc: %d\n",=
+ rc);
+> > +             goto err_free_ctx_mem;
+>
+> Does this regression leave the hardware with active DMA pointers to freed
+> memory?
+>
+> If bnge_alloc_ctx_mem() allocates host DMA memory and passes the addresse=
+s
+> to the firmware via bnge_hwrm_func_backing_store(), and then
+> bnge_hwrm_func_drv_rgtr() fails, the code jumps directly to err_free_ctx_=
+mem.
+>
+> > +     }
+> > +
+> > +     rc =3D bnge_func_qrcaps_qcfg(bd);
+> > +     if (rc) {
+> > +             dev_err(bd->dev, "Failed querying resources rc: %d\n", rc=
+);
+> >               goto err_func_unrgtr;
+> >       }
+> >
+> > @@ -158,7 +170,9 @@ static int bnge_fw_register_dev(struct bnge_dev *bd=
+)
+> >       return 0;
+> >
+> >  err_func_unrgtr:
+> > -     bnge_fw_unregister_dev(bd);
+> > +     bnge_hwrm_func_drv_unrgtr(bd);
+> > +err_free_ctx_mem:
+> > +     bnge_free_ctx_mem(bd);
+>
+> Since the err_func_unrgtr label is bypassed, is the firmware ever told to
+> drop the backing store configuration before the host frees the memory in
+> bnge_free_ctx_mem()?
+>
+> In the pre-patch sequence, the driver was registered first, so any failur=
+e
+> subsequently triggered a driver unregister, which implicitly told the
+> firmware to drop the backing store configuration. With the new order, doe=
+s
+> the firmware maintain active DMA pointers to the freed host memory?
+
+--0000000000007f4d7c06501076f3
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+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
+ZKzsTDzWEhPsCM5DcbMg/B7eD9n+rBWHxsk+yKJKdkLpkpTKdxxTd1Y5Ln+k5KCTjxlCUQQ7Q2Zz
+qYU8bfRq5ZMwUVJD3NZCqEKbEIgSX2vXFS61zdPwnLyHyaC/erAWmgHLu4kzpk/V10NcnUjX9FYK
+f/Ggi9MeMNG20gEIUbCg3RgYf89YLXUJDOuoz/Yajw/VuiVlwS81wF44DmJhAVcGzrI00uydpksG
+oQY2qVlhYsvNTqU2V/uaBrKQnyM0PkU140cCAwEAAaOCAdwwggHYMA4GA1UdDwEB/wQEAwIFoDAM
+BgNVHRMBAf8EAjAAMIGTBggrBgEFBQcBAQSBhjCBgzBGBggrBgEFBQcwAoY6aHR0cDovL3NlY3Vy
+ZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyNnNtaW1lY2EyMDIzLmNydDA5BggrBgEFBQcw
+AYYtaHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyNnNtaW1lY2EyMDIzMGUGA1UdIARe
+MFwwCQYHZ4EMAQUDAzALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgoDAjA0MDIGCCsGAQUFBwIBFiZo
+dHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzBBBgNVHR8EOjA4MDagNKAyhjBo
+dHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMy5jcmwwIwYDVR0RBBww
+GoEYdmlrYXMuZ3VwdGFAYnJvYWRjb20uY29tMBMGA1UdJQQMMAoGCCsGAQUFBwMEMB8GA1UdIwQY
+MBaAFAApNp5ceroPry1QLdugI4UYsKCSMB0GA1UdDgQWBBQI6pBWVwIN47wGrC1m7lYfqN94QjAN
+BgkqhkiG9w0BAQsFAAOCAgEAOdSnSEyuTvTtsnmEilB0JfgRKx1MM7kNdv0pfWcINJhssfHD8Fc5
+wm+JzenYR9yJAkntX0Lr9yv+OG0Jqhvy7u9gKljfI4jXO4qxZ2jf1YvI+fDK29/NV3JAQuipT3Vs
+IxBI73CQO11VwMePOTsUNM1s+9cWT5zLuqOEEu+95jRo5KEtH1/4nahrToLU1Y+flylsBaAUhB72
+KoBBzdewa+psa32lY8X23AWDoczIlUBmPt0hmApBvHOUCYszSiBu4/VhVDuq2iMBtnYAj2j9Q7Ct
+pZHPj6fQv247S9dTDDym05r8arHAsUw7B29KvPfxeaqexL4gwQQjIsfdZeh88XYLXA+mvEej6OlO
+YO3546G7bczFxIjO6V9RrvYEeAb+n7udXYymuIm02XtxIkr/Uk0gRuFoOpG2Dw1OH8xsOUER1+16
+qGb2QKMgaKL/IIM3gXAuCxNVBOT+Fj/wh5hw7MFvTTXPFA8IKusoHZYpxdrr9xjoJ/wt6j4/E6K4
+IO/WuSc4nM6kshiwIu5c6r97213ZtJFOrjoITiBIYFP0WQsTsEbWvaBX/7daT5IVr9rvCOCk2JA8
+bOWwP4OYXCKJY5nZOntb0ECSI7RM0kGelGY4MAD42+OBWHxKU1Qvt5WK4kIXdKpdFp9Drv17PyCU
+dR4AvAJyWnkqZyi5QuRg/hMxggJXMIICUwIBATBiMFIxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBH
+bG9iYWxTaWduIG52LXNhMSgwJgYDVQQDEx9HbG9iYWxTaWduIEdDQyBSNiBTTUlNRSBDQSAyMDIz
+Agxt8eaxmNwH4eu5pUowDQYJYIZIAWUDBAIBBQCggccwLwYJKoZIhvcNAQkEMSIEII+eh+2a15mK
+9VQy6v5xamfZMyRDJxYsNLyi7PRmDF9JMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZI
+hvcNAQkFMQ8XDTI2MDQyMjE4MTEzOFowXAYJKoZIhvcNAQkPMU8wTTALBglghkgBZQMEASowCwYJ
+YIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQcwCwYJYIZIAWUD
+BAIBMA0GCSqGSIb3DQEBAQUABIIBAEvFssVXwDaF3R5gPnesupw03uujYHE0QX6WQmPvL+lbrAHI
+jIYtlex+nSrsu9qn3GlXf2VDQEVXu10y8dluuQvVgOaN5TSlX+c7WewURJjbn0FeLBJdq2ZXVmfp
+NGUE1lL5Z+nEus2S55nQsLBCf9DGCVGR0OsFFRT32NaLLTz+5fbfB5Dr4BZ/h3Q3dAO+NuXiu4ls
+Wi/a01EAqxSYA4rubKROtKK2IRDrYJKh7wafuSnMO9KF7ORfWhYCSGQRHRMgCqCTj10Ku80XRdjk
+dOfJKvoPPYqIwmUMr7HyyMrB/avItSqpoyhd0++jo/ItT+sGkez7hutF0z44D42PrG0=
+--0000000000007f4d7c06501076f3--
