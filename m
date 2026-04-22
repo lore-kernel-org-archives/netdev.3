@@ -1,80 +1,57 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4AC23D3D0B
-	for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 12:33:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C643DBD52
+	for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 12:35:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776861186; cv=none; b=LyugnaE++QPEb/DwtTDCMNqD2vxSlYg746uwQ+6BIuPXdpkZEMR/6hmx4iwk/3edBMtafptElj0Q9fdRK7UK24THj47D1MsKOgUePVAmUPEVqq2OJ8PwJfch61JTEG+nwV4c9z0X0T37Z4xYmB11x+NA42JvqvltqvRugUjFwn8=
+	t=1776861352; cv=none; b=K6zfqbKoF8wUHEHY6DsKC+MXlvQlug6opWFRhxm1L7si8DDZY5AFdzMlUfLfyasxakPuqPaxuV6DXlS9AKxkMYBbOguluOIiQQbPHye51hCX+MTDP20arOzpHrpXRZVUyc1UV1Nn2Me0ivGwDyInjSsdx3tevEZgCwZjWcOU7Zw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776861186; c=relaxed/simple;
-	bh=5AQUuZuBcRvVORnEep4ySfzS6iUsjezi8qJg+VqkZVc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NcMBctV5voP67R2lKRUtK9/vbPoAuH7LPEBe9/m0i4/l6FO/Dn4SzmLQ7KjDwb1FLcDCy1TNG5TSSZ4WiVrRmAjUPIhxO9xrYWmmDhyyc+aENwd5Ziicg4/D/9nbsc4G1rSyMUf+OuZG5o2d/NF8vxFiWXenwVew4eVkTry1Ig8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=Yw3HgHD1; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
+	s=arc-20240116; t=1776861352; c=relaxed/simple;
+	bh=5Rx8FzAFlkPbSNLE1tihtAPpSgQCtHK0fEk6lBOaH3I=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mHwmntsX+t10BClxltSBC+A/7SLhbs5W7jinHSKgOQKCfVPU47v4WFsGhXmXpCnX/rCUX2lqfzMGjFRMqlsd6sAGZ0aRSYrp3lzf3KVE5RCfqCH+VTxUNwBwpMoX+WjnLxePCzepHjQDH1JQ36LhbZKytAiwJphSdN1g0+WNa+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=I0/hLPoJ; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="Yw3HgHD1"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-488a8ca4aadso73755995e9.3
-        for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 05:33:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openvpn.net; s=google; t=1776861183; x=1777465983; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4JeqNan0xNNQ2mjbH1UZqMzC5N5p/zVRqy2TyVfTMYk=;
-        b=Yw3HgHD1tQqwp1ICfv/TCGwYtSh/gyl4ivNFAGz5sVOHHeI0Qb2spxu7yBbbJ3g4fU
-         2Tzhj1zf33TTZAbYarH9H4ue2Kw4pVZzAfCbquln8oW1STK/hXbGXmnB21lpwqRBGlhB
-         Hs2FSrmsuAfdMXtV4I7SkY1KNJheXWJftTRQtaVeoUIA9E8yRRftQsV2+0XDYntmJXjU
-         1R7OnGAZZRh0lFW6fYQQLwNfgVpaQbi299b/rlHH+pgkDR8ZUFTDTP3RRJ1QPztsRFrs
-         b8wlmgcqtYP2VQL4ozTRZgxwevLzfh3NUPix45GdgISwhN1/er8ODvvQ7tMmKDpegIq+
-         Owug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776861183; x=1777465983;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4JeqNan0xNNQ2mjbH1UZqMzC5N5p/zVRqy2TyVfTMYk=;
-        b=QmsvekRNIsp6oHiJ/srPVOgFG1PVUam+zgSd0XAcwwkKi0vIp7pBn4AOJ1VRxLu8Z0
-         qzdFnSEfVUYSuBs91yMlcPSwo+T1AKdqGgeQONvhssjJgkQUjLqak1b8lFmU+PfkIlvT
-         tDnsLnyHWqL4YUKXyB28TTNjbzqsX5LFZ53tGfHgxxlHNuXJFeK+LUugOl+hkvePVlGb
-         71D5GdmCpMZYZLFUp0FwWKQRDX6RKIHSCHsUSnZGnIhcGYWvShTYsuHf18TBbcWb0EZP
-         ABG2ZYlNlJlW4BTTJSeCbVQGHJr2vFK1AHgzqWd6QowjaCeDU+nJAf8DXhyzsWJBYA6M
-         9shA==
-X-Gm-Message-State: AOJu0Yz15PqGdzvs6IGZ+vv45LfGAO4cp/WBOP+aNEJrIOi8d7lthXz+
-	xYZstMj48z5etHN020ly/dYSJFGmmTK4Omz61V7Vk3ZRrUPsgqUAP1aEf+fk30i695t2GBoSQam
-	ooS2ZvJWSh3JnBRcu//McrAysKaqIYdAVwn9n9P3QmL/D+hMxKokA9ySKUGuhlPkb
-X-Gm-Gg: AeBDieuiaJKriNmxSON7ZAvkdWQSoUgEnkCYdG0+o9ckDE2y+J9LdeDJ3SOg+uOY9J6
-	XhpDneHAa0EhcIVkYC4Z31u1yqKGr8fOcvvpPumeq+F88ZXnxlOLNwOzyFbhygj+q3BnI+6K9mz
-	yd1SrD7RRDOit20O3Mv0jea/E6I2eut5s+aRG2vj+72mbXeBIEt7AA5g4yFkwUnEZ95BtNxcnmS
-	i1eezcjnX0JaUEIXASIGNg5mL2e/VaMlm7djeG6W2uN3ga30FlA/d3CJyPykMYCxF34PCJM3LT0
-	r/yZ/G1QKzDXBoQQSSPC36NiKzlhnU0yz8Cr6iXigN/8KDgVlXh49jD+3KxBzoSTVbIgxlb+zHi
-	vWP7gMvdySimjz+PTjSVNN12vgxYdHgAx9kl/7rRQjLI67usWhSfVGpFlXj4dW0LMEpa7EgR+dp
-	lqtIqDQIyQR1tBVCJDEnprrOa2eQy3DJLRfDEeygMhE8gAtYY=
-X-Received: by 2002:a05:600d:8408:b0:488:be58:bb5b with SMTP id 5b1f17b1804b1-488fb773f0cmr241989455e9.24.1776861182162;
-        Wed, 22 Apr 2026 05:33:02 -0700 (PDT)
-Received: from inifinity.mandelbit.com ([2001:67c:2fbc:1:9c05:1850:4a76:783e])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488fb74c68asm139657135e9.3.2026.04.22.05.33.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Apr 2026 05:33:01 -0700 (PDT)
-From: Antonio Quartulli <antonio@openvpn.net>
-To: netdev@vger.kernel.org
-Cc: Antonio Quartulli <antonio@openvpn.net>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Ralf Lici <ralf@mandelbit.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Hyunwoo Kim <imv4bel@gmail.com>
-Subject: [PATCH net 1/1] ovpn: fix race between deleting interface and adding new peer
-Date: Wed, 22 Apr 2026 14:32:42 +0200
-Message-ID: <20260422123242.530882-2-antonio@openvpn.net>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260422123242.530882-1-antonio@openvpn.net>
-References: <20260422123242.530882-1-antonio@openvpn.net>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="I0/hLPoJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776861350; x=1808397350;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=5Rx8FzAFlkPbSNLE1tihtAPpSgQCtHK0fEk6lBOaH3I=;
+  b=I0/hLPoJ/mBd/PytWgC3rQI0oMNOHuq1p2GZwwR4lTT4xjPChLn1yE7V
+   xocuFOaeak1l6ZNN+IbGEYnibggHf+7lovDKLi3Pvei8qBWMLTAIF4tzt
+   qPwzLL73k9FRe2kvHGNKXL96eqgeAEa0IqoETy5JRnLNnUzuhVAbYfJTt
+   Wu17nHo7UBXwTgzjc3mBQnJgFqRYQP/O8eSCqkKb9ExNvd/C70rJp3Y5G
+   KyErA/GsR0tER4vnKsJdKmKdfGXWU+sJSqngHse9fSwGoIkQfeMlZPrfh
+   xyq2tPGcgdnLaN0RXT2Xm5hl/edgDNXQvyiCoEb1yKB9GO0AsZjNRbX4c
+   w==;
+X-CSE-ConnectionGUID: PO/wvlmwRryOZLSbhcOFiw==
+X-CSE-MsgGUID: sdoCXhGGS1uCJquUGL4rEQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11764"; a="77826152"
+X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
+   d="scan'208";a="77826152"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2026 05:35:48 -0700
+X-CSE-ConnectionGUID: xUojld6nRtKRTMQ5LXjtZA==
+X-CSE-MsgGUID: t98CEG3SR5yuPoqjPZs11g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
+   d="scan'208";a="229167424"
+Received: from gklab-003-001.igk.intel.com ([10.91.173.48])
+  by fmviesa007.fm.intel.com with ESMTP; 22 Apr 2026 05:35:46 -0700
+From: Grzegorz Nitka <grzegorz.nitka@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	Grzegorz Nitka <grzegorz.nitka@intel.com>
+Subject: [PATCH 0/2] ice: ptp: fix E825 timer synchronization and locking
+Date: Wed, 22 Apr 2026 14:31:42 +0200
+Message-Id: <20260422123144.485930-1-grzegorz.nitka@intel.com>
+X-Mailer: git-send-email 2.39.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,96 +60,29 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-While deleting an existing ovpn interface, there is a very
-narrow window where adding a new peer via netlink may cause
-the netdevice to hang and prevent its unregistration.
+These two fixes address E825 PTP synchronization issues in
+ice_ptp_hw.c.
 
-It may happen during ovpn_dellink(), when all existing peers are
-freed and the device is queued for deregistration, but a
-CMD_PEER_NEW message comes in adding a new peer that takes again
-a reference to the netdev.
+The first patch serializes PHY timer start against concurrent PTP
+command paths by holding the global PTP semaphore while programming
+TIMETUS registers and issuing INIT_INCVAL.
 
-At this point there is no way to release the device because we are
-under the assumption that all peers were already released.
+The second patch fixes semaphore access for E825 2xNAC configurations by
+making ice_ptp_lock() and ice_ptp_unlock() use the primary NAC register
+block, matching the rest of the primary-only PTP register access path.
 
-Fix the race condition by releasing all peers in ndo_uninit(),
-when the netdevice has already been removed from the netdev
-list. Also ovpn_peer_add() has now an extra check that
-forces the function to bail out if the device reg_state is
-UNREGISTERING (or later state).
+Together, the series closes two locking gaps in E825 timer control: one
+during PHY timer initialization and one in 2xNAC semaphore selection.
 
-This way any incoming CMD_PEER_NEW racing with the interface
-deletion routine will simply stop before adding the peer.
+Grzegorz Nitka (2):
+  ice: ptp: serialize E825 PHY timer start with PTP lock
+  ice: ptp: use primary NAC semaphore on E825
 
-At this point ovpn_dellink() becomes empty and can just be
-removed.
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.c | 24 +++++++++++++++++++--
+ 1 file changed, 22 insertions(+), 2 deletions(-)
 
-Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
-Closes: https://lore.kernel.org/netdev/aaVgJ16edTfQkYbx@v4bel/
-Suggested-by: Sabrina Dubroca <sd@queasysnail.net>
-Fixes: 80747caef33d ("ovpn: introduce the ovpn_peer object")
-Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
----
- drivers/net/ovpn/main.c | 12 ++----------
- drivers/net/ovpn/peer.c |  8 ++++++++
- 2 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/ovpn/main.c b/drivers/net/ovpn/main.c
-index 2e0420febda0..0eab305780c7 100644
---- a/drivers/net/ovpn/main.c
-+++ b/drivers/net/ovpn/main.c
-@@ -92,6 +92,8 @@ static void ovpn_net_uninit(struct net_device *dev)
- {
- 	struct ovpn_priv *ovpn = netdev_priv(dev);
- 
-+	cancel_delayed_work_sync(&ovpn->keepalive_work);
-+	ovpn_peers_free(ovpn, NULL, OVPN_DEL_PEER_REASON_TEARDOWN);
- 	gro_cells_destroy(&ovpn->gro_cells);
- }
- 
-@@ -208,15 +210,6 @@ static int ovpn_newlink(struct net_device *dev,
- 	return register_netdevice(dev);
- }
- 
--static void ovpn_dellink(struct net_device *dev, struct list_head *head)
--{
--	struct ovpn_priv *ovpn = netdev_priv(dev);
--
--	cancel_delayed_work_sync(&ovpn->keepalive_work);
--	ovpn_peers_free(ovpn, NULL, OVPN_DEL_PEER_REASON_TEARDOWN);
--	unregister_netdevice_queue(dev, head);
--}
--
- static int ovpn_fill_info(struct sk_buff *skb, const struct net_device *dev)
- {
- 	struct ovpn_priv *ovpn = netdev_priv(dev);
-@@ -235,7 +228,6 @@ static struct rtnl_link_ops ovpn_link_ops = {
- 	.policy = ovpn_policy,
- 	.maxtype = IFLA_OVPN_MAX,
- 	.newlink = ovpn_newlink,
--	.dellink = ovpn_dellink,
- 	.fill_info = ovpn_fill_info,
- };
- 
-diff --git a/drivers/net/ovpn/peer.c b/drivers/net/ovpn/peer.c
-index c02dfab51a6e..8ef485a8c851 100644
---- a/drivers/net/ovpn/peer.c
-+++ b/drivers/net/ovpn/peer.c
-@@ -1034,6 +1034,14 @@ static int ovpn_peer_add_p2p(struct ovpn_priv *ovpn, struct ovpn_peer *peer)
-  */
- int ovpn_peer_add(struct ovpn_priv *ovpn, struct ovpn_peer *peer)
- {
-+	/* Prevent adding new peers while destroying the ovpn interface.
-+	 * Failing to do so would end up holding the device reference
-+	 * endlessly hostage of the new peer object with no chance of
-+	 * release..
-+	 */
-+	if (ovpn->dev->reg_state >= NETREG_UNREGISTERING)
-+		return -ENODEV;
-+
- 	switch (ovpn->mode) {
- 	case OVPN_MODE_MP:
- 		return ovpn_peer_add_mp(ovpn, peer);
+base-commit: 3662329d3f304a421e0230ee3913dab021ec3a3d
 -- 
-2.53.0
+2.39.3
 
