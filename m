@@ -1,157 +1,160 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB3883932D0
-	for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 02:46:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776826009; cv=none; b=p4o16mTgAb2tfG7RDxRRw1JfvB6rXs9XWXpG3UbU6Dq+OrfW0YlpgiMXiYeKMGoD/Ov2/g8/+chaniQWDZiI46E9rzsigqG+oF4sxERgbGnuI3wEA/+CRRQFH1rt1p/jMqrAcvveq8ugiDldvatJvR/P8XHYXECn+HFf0W1ZIt4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776826009; c=relaxed/simple;
-	bh=OaQovPa9+EGt0TGv46fnTHFkH7yaRjfaIRFduQr/UYw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MvqotenSCubg5JYSfm/0WA4RPq7mRN3cT2WoS1jGmEB8iUEQU2dTZ/7WtXfQ+J+SwoGCyJkVyTETyQvNfAg4BP0siwBdzJyk8BOEVkARSAwNO/AHDj6MhmwDwKbAVaet1mqTjpfV4IknlB5PZbjeq2zXXm2CVcczJtLRCMywfAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FlY59O+2; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF2039280D
+	for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 02:54:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.169
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776826502; cv=pass; b=hCGm/0qmo/LB0Lj6+/s+37zgmzaDHoNQwzse9zGIlK6UQs8+Wr6P1Icv2XlWrmmIlMAOrzKo4401mzLLHORuX2H8jsXMf5PyvFnX3t9BSE5CYFbkHL3al1RHKWRNiK/Op67lbVRZiIiFfcsUxFLGLHQUizEwLIxRc0sjN6bA90Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776826502; c=relaxed/simple;
+	bh=5B8p+QDUxXae132Fq/olL0Df/Jc61502WZG8qooebxM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=X15OfoN4YA0546ziEFNK+FS1FP1o9C8jTu9IhKSY7KFBKonUzkzGV7pa5h8jeitmOBn91oFYDEYLV3FE7bNNiTVsAaMqAcyjhBUHS3totJqLCO5KKbwF0/gLBCTjUQpH/yykLiNJoapxRBkwdoxoCQJ732S+o06ZJHaXVQY/Y/Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D/dtEV60; arc=pass smtp.client-ip=209.85.208.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FlY59O+2"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-82f1f6103afso2283723b3a.1
-        for <netdev@vger.kernel.org>; Tue, 21 Apr 2026 19:46:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D/dtEV60"
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-38ce0ab821cso41625411fa.0
+        for <netdev@vger.kernel.org>; Tue, 21 Apr 2026 19:54:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776826494; cv=none;
+        d=google.com; s=arc-20240605;
+        b=fMdqn5PrsDS6rXZuGp6rN+uUGbohz395qC1DkXuHE/vO9iIfG8OkVRmixGB9hlW8tD
+         cZJ+OpVJAflZM542bjwDFatRv5xWvO2px6zvGmJKZ01RGRzz1oPfbRaSgKbZ+MT8NWtf
+         pJyp8RxoZyKFTUKCKIru0t38ZY/8tXyr22CduqXLQXykZAjZSu9sd9Sk8CwYtF5aPuGk
+         rfhXSeEkPUHwICaqH/n5TL9TXT+moiEa9PP6COBOxLk0XN1FgnzTmBGrgIAC9vF2rocF
+         iS0zYz2pnM0OsoOP73EY+Lb/O/cuKICfpn7gKxEDBoC7y+b9So2vq0gQ0V8StSK2J8xJ
+         PPWw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=OG7eT7g8H7j0h83hkzwInJ6CPJnFxfvuaf/IIwu8WPE=;
+        fh=3vOABN1mpvyCOgC5bNmWmS0as6nFmYy+BrfcC01rnl0=;
+        b=KC//ke+p65e8QVR/jbeivXi8i08QPPVt9soggVvkX0rPf8VGpzf1mzAnCOSB2daJ7g
+         CmDE1gOyQODpiKducwanlq/iU50jR2LpZWTVsn9Um2SEYCyZIrrRoVP36tfxi/FEIPL9
+         dVln5P5xMRB874BUD0dmwycR1vuB62W1V78Toz6MJ7duQiF6eqaiG6838SJR3rQJl6Zd
+         7masGslYWo+hOVQzJUcJNQ568290unEZi0w8SYP1Uejbuf+19eGVGHIm0slAOs4dNuVa
+         6cm8/E9V0evMOTejrMgJ0Ly/06IWIT09sxxsCrsodY/BOc8UTJSq5Tr4sMMbVwnEW83P
+         s3ow==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776825986; x=1777430786; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=OfsVOB0fT6t3Cc1A7FO/ne2eHtXjxBYweMBP+Bjao20=;
-        b=FlY59O+2+cAEFXGSvhuuINNDm5uHJnpwY0VA5Ez97mYcbqStGUaqnZ7LK42d/f1TVi
-         BB1BvUaNt4/tDDAiFIbVc4kGrd+3cNY0+1u/tlZv6qJ9IG7QoeIutDdOZWcS/R3oxepw
-         tTsnIlxYiTmHN8BJ6Iazgutnt7l35r7pvfnpZqwRH8LfEF8IGxEjmyaj0c5FP8KvCmex
-         3sKmB9JadEbKXbBlwpMsaVUNzO6FzxkFOUVW9rXxwGp1py7XX8xUfrx103X1BI7Dc99d
-         554OZ6ZhPHN+Md+Lxr46EtfvsGXEGltjQt5lTKe/4lWCt44RRbd3DgxNmVJkHnOU+POR
-         WIeA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776825986; x=1777430786;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1776826494; x=1777431294; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=OfsVOB0fT6t3Cc1A7FO/ne2eHtXjxBYweMBP+Bjao20=;
-        b=gxfiaU2uEoXnPVqifYpph6Q6FPoQSzNciG7V78jhAnCL+f7BKo7Tj57uYydGywZ3XX
-         Inn1hZGwx3NGpW4h6Hp/VNjYnbftCJwTxT/S/281qoc3x2oYul7TJYm3zxocBGG/ffLS
-         D61ECowatVY5LxU1aLwheqrdddaeuXhdXn7UQ8MGjlBC6RKSGVFerIfwoTekwegZrXM4
-         CGS5djRSVmESAcBpbRqtJ7sMj574DXClTpQwF8jeC0WpDEgoFVt326QrNLn9AaDBh2BH
-         TWp9YJEFrRJiierEWlKR9+GjTRbVXaL6pOxRmIE8FUbqHhyNb+w72GiygX37uTE0z0IC
-         BLaw==
-X-Gm-Message-State: AOJu0Yy1PuiJ6JqVBbMH2qhGZaX2ov2GYagETK+9D3cZKjTv8Z1YnlxB
-	gJW+Y4zWsea6MBRE/Pegxk+71wJgLTU/WIyH/ktQiP/GLi3oVqdAWjbtv2SIkStNcnA53Q==
-X-Gm-Gg: AeBDiesFgihY/FUE4JVj4CJTtj0puB630lxInsKLxvq5rJrchhxzq74Ft7q5h24VtyH
-	M35Ef/eZV48EPdXJjK6gX4cBRaWzWidjJbtlFEasaH2MBMbVrk8yu6QjKx0NoE6cPfrQYTHekrt
-	6DXjqb1YIjJo7nVBblj7DUEj89KXt3n+cGrPROOBAz2CJfBQQJMzKPXYwLA6GoRDqKmuMe2jquK
-	MZry1TVGC0V/jbSg3J4k9WL5PVTtNHc7skEerxfhM+nqXy5n1siQfmOSDE/x+G8qSfNDGfXgEpH
-	+yRIIZKIhYO3k+eK9PW1f/cM0B1WSgwzu+oqv9SDPyhKGIXZEER7DWWtxVFozWFpo6SYbpkcKjb
-	G46idzUOj23pJ4LKQSAl9VYrah9s77nT8QQnzwo9h1Z+A3EecYWdDPAJ4NbGstFMmUW72cy3lTS
-	fN+Y3fRZViV0W9fmRHAQTkoIK0iOF89HltPJU++Ed7QhrIIOfRd8t52nryJhPT3Q==
-X-Received: by 2002:a05:6a20:7f92:b0:398:b95c:51f7 with SMTP id adf61e73a8af0-3a08d8e2805mr22818050637.37.1776825986281;
-        Tue, 21 Apr 2026 19:46:26 -0700 (PDT)
-Received: from DESKTOP-MUHC17F.tail07b66e.ts.net ([188.253.121.151])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7976f92183sm10656632a12.3.2026.04.21.19.46.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Apr 2026 19:46:25 -0700 (PDT)
-From: Zhenzhong Wu <jt26wzz@gmail.com>
-To: netdev@vger.kernel.org
-Cc: edumazet@google.com,
-	ncardwell@google.com,
-	kuniyu@google.com,
-	davem@davemloft.net,
-	dsahern@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	shuah@kernel.org,
-	tamird@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	Zhenzhong Wu <jt26wzz@gmail.com>
-Subject: [PATCH net v4 0/2] tcp: fix listener wakeup after reuseport migration
-Date: Wed, 22 Apr 2026 10:45:52 +0800
-Message-ID: <20260422024554.130346-1-jt26wzz@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        bh=OG7eT7g8H7j0h83hkzwInJ6CPJnFxfvuaf/IIwu8WPE=;
+        b=D/dtEV60ZtyfzKCFbJV1Rz5c782y6UMxQu4J/EMDtymOw1ihuX4HQoVXVsnL0vwUyv
+         D7VWXLxRQqIa0/DUJy7shZ596s0anxAJ7wyMoURxDwHwYuvf2na5VjkdfhhV6LJo0lCo
+         QmZYB/iVwSfltbsFLNDFFKFFzIeETXEOfq/ivTAPTSoKIotLvA4v4cKkONJpa6USzCxD
+         x1pmgLGigOtBA/SvnISjoO4c5OPpAUt5mA77q5TdPtFhnZYzdARsoxSVHU/lPs82/uS0
+         q1ZlY/7RPvP7Qm8zsBwle9XJwfvZ1gYPER8sAV4U0wrbAQz6uKZIc5PyPA3EKsjdSSOX
+         8p/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776826494; x=1777431294;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=OG7eT7g8H7j0h83hkzwInJ6CPJnFxfvuaf/IIwu8WPE=;
+        b=GOdf87xoPG2fg6YXQ4ibj0Q1jFxpBQ1OvLUNCRKFGpXrpNZRep8NlvOnJBTzVhbf5d
+         VfG7weOiv6sVTJ0xa/85h5lzgOY7YGCIzDV2PoWBVLZHdkl3oFVlnBn4STW5+Sl7d9Gc
+         5Qhc1d1f4SQkbgo1fyVIMmw5cIjmVJO8LoS1xjbfXCMngWswiawD4WCidlrD5bCsrZuq
+         PyVb/gDZEn6Dq7uRqsY87dju3Mu5r4Lyp/UVJp0vn0Z3R9mYEj0xNzJaMXhsUwaT3V+x
+         ils7ihttKiqUrYtlZUIYo6xrgFX7JQxlXo3ZogfGDAu4CYP/SbrHHrCbZhFcYTeYwYXs
+         8EJA==
+X-Forwarded-Encrypted: i=1; AFNElJ+tZdHI+TkPgzB9uLKGqLbr+wugsGHtuD1Dfb3snxSF//VTZhP8DLgPV8pn40LCaW/dSNUYFKY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YydsKSMtfe7VPgitcc7f0zL9HmG6U5ETXJTiJTXlnsv3iAzvIuc
+	tIn3pFdfNDUWfUieUavP5wNlYwBYo/AFsWeGNagjG70u6eFHfWwCIAUmlzIdgxO8jWYC64ziAJ+
+	mFHsWnjmH/Rj6lntHooalpFeFn1bJZsI=
+X-Gm-Gg: AeBDiesaqzlUJQczrFRWBTohW7ELd4iSyBFd0O+qG0Ce41l66a+r3ad4Yy3Yg8bxAxn
+	K2mNb4xl+MEuTZzYdSX+sWg5oBoh1Mqhzl2xqkk3C5w3WmB7CIT90ZNiWDBTh7tnwPbv6xZcepA
+	yhf2LcbLc8ojUYF/RDrp9qXAr5KYFkZ5w3yxW0cJyoFxASWOG6h3w9feGHn+LpxRYr6no7hO7Hb
+	fc0S6XZTjj37FptKMDOl+oMhh1W7H9++wvFUdHDtxw0ZKIm+zboPcKOyqMoC1uzHr8/ilHqAKF+
+	RjPsHve976NxMQUtN/v2g0vmRFEPHg==
+X-Received: by 2002:a05:6512:108d:b0:5a4:6dd:87 with SMTP id
+ 2adb3069b0e04-5a4172ca7f0mr5866475e87.2.1776826494007; Tue, 21 Apr 2026
+ 19:54:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260420082805.14844-1-kerneljasonxing@gmail.com>
+ <20260420082805.14844-9-kerneljasonxing@gmail.com> <aeaCzchKwsp_LWyA@devvm17672.vll0.facebook.com>
+ <CAL+tcoCxQ8cU+wr7eJsMH+FPMcp+vQ4J4BdSdsVqyTRqN8q9LQ@mail.gmail.com> <aef4XHnqR2cs5U1O@devvm17672.vll0.facebook.com>
+In-Reply-To: <aef4XHnqR2cs5U1O@devvm17672.vll0.facebook.com>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Wed, 22 Apr 2026 10:54:16 +0800
+X-Gm-Features: AQROBzDfQhIVaSKFF0sXfFlijZMZ5nryThbH6nQqDrBrxgUtb9-hDG926vitTvQ
+Message-ID: <CAL+tcoArQEuVPGGKEg5f82W=Ar35PxDDCtKso_O+RTogK=LT3g@mail.gmail.com>
+Subject: Re: [PATCH net v2 8/8] xsk: fix u64 descriptor address truncation on
+ 32-bit architectures
+To: Stanislav Fomichev <sdf.kernel@gmail.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, bjorn@kernel.org, magnus.karlsson@intel.com, 
+	maciej.fijalkowski@intel.com, jonathan.lemon@gmail.com, sdf@fomichev.me, 
+	ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org, 
+	john.fastabend@gmail.com, bpf@vger.kernel.org, netdev@vger.kernel.org, 
+	Jason Xing <kernelxing@tencent.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This series fixes a missing wakeup when inet_csk_listen_stop() migrates
-an established child socket from a closing listener to another socket
-in the same SO_REUSEPORT group after the child has already been queued
-for accept.
+On Wed, Apr 22, 2026 at 6:23=E2=80=AFAM Stanislav Fomichev <sdf.kernel@gmai=
+l.com> wrote:
+>
+> On 04/21, Jason Xing wrote:
+> > On Tue, Apr 21, 2026 at 3:49=E2=80=AFAM Stanislav Fomichev <sdf.kernel@=
+gmail.com> wrote:
+> > >
+> > > On 04/20, Jason Xing wrote:
+> > > > From: Jason Xing <kernelxing@tencent.com>
+> > > >
+> > > > In copy mode TX, xsk_skb_destructor_set_addr() stores the 64-bit
+> > > > descriptor address into skb_shinfo(skb)->destructor_arg (void *) vi=
+a a
+> > > > uintptr_t cast:
+> > > >
+> > > >     skb_shinfo(skb)->destructor_arg =3D (void *)((uintptr_t)addr | =
+0x1UL);
+> > > >
+> > > > On 32-bit architectures uintptr_t is 32 bits, so the upper 32 bits =
+of
+> > > > the descriptor address are silently dropped. In XDP_ZEROCOPY unalig=
+ned
+> > > > mode the chunk offset is encoded in bits 48-63 of the descriptor
+> > > > address (XSK_UNALIGNED_BUF_OFFSET_SHIFT =3D 48), meaning the offset=
+ is
+> > > > lost entirely. The completion queue then returns a truncated addres=
+s to
+> > > > userspace, making buffer recycling impossible.
+> > > >
+> > > > Fix this by handling the 32-bit case directly in
+> > > > xsk_skb_destructor_set_addr(): when !CONFIG_64BIT, allocate an xsk_=
+addrs
+> > > > struct (the same path already used for multi-descriptor SKBs) to st=
+ore
+> > > > the full u64 address.
+> > >
+> > > Is it easier to make XSK `depends on 64BIT` to avoid dealing with tha=
+t? Does
+> >
+> > Of course, it would be super easy. Actually the initial version looks
+> > like this. One line of coder is simply enough.
+> >
+> > > anybody seriously run af_xdp on 32 bit systems?
+> >
+> > But my worry as you guess is if there exists a 32 bit system? I doubt
+> > it. That's why I put some effort into adding the compatibility code to
+> > cover the case. Good news is that it doesn't add any side effects of
+> > the 64 bit system since they are protected under IS_ENABLED condition.
+>
+> If someone complains, we can follow up? af_xdp is all u64 everywhere,
+> including uapi, I doubt someone is using it on 32 bit systems. We don't
+> test this part on 32 bit systems on nipa either..
 
-The target listener receives the migrated accept-queue entry via
-inet_csk_reqsk_queue_add(), but its waiters are not notified.
-Nonblocking accept() still succeeds because it checks the accept queue
-directly, but readiness-based waiters can remain asleep until another
-connection generates a wakeup.
+Great! Then it saves me some time :)
 
-Patch 1 notifies the target listener after a successful migration in
-inet_csk_listen_stop() and protects the post-queue_add() nsk accesses
-with rcu_read_lock()/rcu_read_unlock().
-
-Patch 2 extends the existing migrate_reuseport BPF selftest with epoll
-readiness checks inside migrate_dance(), around shutdown() where the
-migration happens. The test now verifies that the target listener is
-not ready before migration and becomes ready immediately after it, for
-both TCP_ESTABLISHED and TCP_SYN_RECV. TCP_NEW_SYN_RECV remains
-excluded because it still depends on later handshake completion.
-
-Testing:
-- On a local unpatched kernel, the focused migrate_reuseport test
-  fails for the listener-migration cases and passes for the
-  TCP_NEW_SYN_RECV cases:
-    not ok 1 IPv4 TCP_ESTABLISHED  inet_csk_listen_stop
-    not ok 2 IPv4 TCP_SYN_RECV     inet_csk_listen_stop
-    ok 3 IPv4 TCP_NEW_SYN_RECV reqsk_timer_handler
-    ok 4 IPv4 TCP_NEW_SYN_RECV inet_csk_complete_hashdance
-    not ok 5 IPv6 TCP_ESTABLISHED  inet_csk_listen_stop
-    not ok 6 IPv6 TCP_SYN_RECV     inet_csk_listen_stop
-    ok 7 IPv6 TCP_NEW_SYN_RECV reqsk_timer_handler
-    ok 8 IPv6 TCP_NEW_SYN_RECV inet_csk_complete_hashdance
-- On a patched kernel booted under QEMU, the full migrate_reuseport
-  selftest passes:
-    ok 1 IPv4 TCP_ESTABLISHED  inet_csk_listen_stop
-    ok 2 IPv4 TCP_SYN_RECV     inet_csk_listen_stop
-    ok 3 IPv4 TCP_NEW_SYN_RECV reqsk_timer_handler
-    ok 4 IPv4 TCP_NEW_SYN_RECV inet_csk_complete_hashdance
-    ok 5 IPv6 TCP_ESTABLISHED  inet_csk_listen_stop
-    ok 6 IPv6 TCP_SYN_RECV     inet_csk_listen_stop
-    ok 7 IPv6 TCP_NEW_SYN_RECV reqsk_timer_handler
-    ok 8 IPv6 TCP_NEW_SYN_RECV inet_csk_complete_hashdance
-    SELFTEST_RC=0
-
----
-
-v4:
-- fix patch 2 to route shutdown() failures through the epoll cleanup path
-- guard patch 2's epoll cleanup when no epoll fd was created
-
-v3:
-  https://lore.kernel.org/netdev/20260421123106.142299-1-jt26wzz@gmail.com/
-
-v2:
-  https://lore.kernel.org/netdev/20260418181333.1713389-1-jt26wzz@gmail.com/
-
-v1:
-  https://lore.kernel.org/netdev/20260418041633.691435-1-jt26wzz@gmail.com/
-
-Zhenzhong Wu (2):
-  tcp: call sk_data_ready() after listener migration
-  selftests/bpf: check epoll readiness during reuseport migration
-
- net/ipv4/inet_connection_sock.c               |  3 ++
- .../bpf/prog_tests/migrate_reuseport.c        | 49 ++++++++++++++++---
- 2 files changed, 45 insertions(+), 7 deletions(-)
-
-
-base-commit: 52bcb57a4e8a0865a76c587c2451906342ae1b2d
--- 
-2.43.0
+Thanks,
+Jason
