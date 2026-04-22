@@ -1,81 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D20AEEC0;
-	Wed, 22 Apr 2026 10:55:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BBB73542E5
+	for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 10:58:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776855327; cv=none; b=jpuA573BIWdVk72lDQl8P1S8XZCaIoYfoWvBHKg37Ssr3FMBnvhor/CSmHV//Z23VC6kTO4+zQzC3cIifHNJbutj/sbyumLGDQaQShEkr0Va+hvnoTG345okCJbPJ1YJsLfkTwpYHvK9HEQXnNtaujAsNo2jwriA+Q4QAJmfCGI=
+	t=1776855498; cv=none; b=fJ4C89EnRLJCD96LCRq6QDeoK4YP2LpdxvuIwgZiSyiEaOK805dNNHkh7VUzDLoPyOQfjTqOVSIJKLW3tt8TmYKDbpBr8ADsVH8p+vo7PTMLhrr+oSjyQLBjwpO6f6PQCbY5fE+PVzNJjur6/gZk3/o8GKHd9RK7YZM/+tf4jbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776855327; c=relaxed/simple;
-	bh=Cv/dvtt9j+p8MbtSj7Sysg2FpL5y9fNb3weRLkynaWU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dBjME7YrnCM9kKmrxEzPG4cqCogfh8UjJat7dgF/YkZpxiMu3PXBeAEV5HrgnkrhNNqzo4UhzVyq5wf//Kb6uga33tctBgg4c7WphDZ9wgODJyDYCp1tVGiD1qtyICpiAPC/5sxdSbKQK4PSkAt2lJJ9FHPmnBh86P1sFb775tQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ArQE3mYU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776855498; c=relaxed/simple;
+	bh=087e/nvJmgEeLsXW0RHyWGzu7RXBNSYdUUjS8aydZE4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:MIME-Version:
+	 Content-Type:References; b=bPPlHRv1BWut45knBfSW1X2aO7askuWVlAKRQH4m6dhPAVusd9RzsrvsHnU00XBysudZJLf4wm5/T9WR/hGCvw1nNsc56zz68hwrGYusgvTOCm321PskqzXQq7Sd34b0m4w4VJwXtKOJPuWhu9kFwIcL/yPaON6Nau4FPZ8CA+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=O78c/4K0; arc=none smtp.client-ip=210.118.77.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ArQE3mYU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAEDDC19425;
-	Wed, 22 Apr 2026 10:55:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776855327;
-	bh=Cv/dvtt9j+p8MbtSj7Sysg2FpL5y9fNb3weRLkynaWU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ArQE3mYUDYrhzX+54sLB9RhfxEf5H81CS8mcbi8mUaELpUurEgvq9posUW1zfxq6u
-	 GX6wuyTtjA3YLevsf+u39UeeqLTY3Z0nJlD/VZOOapW+QFvCJttxJRHSmbDVL+plNg
-	 i2Ozp3hU7kcwCQR4y+eAgFN0veEmgAdsohrCK2fa3JPWa+hKy98tmpEPLfemuLS55b
-	 Nzzn4MX5/ehEIhigE2mtIobktFku2Bl5yBSTzYzHh44GLABvYxfFPgjjcjr4EpgB6a
-	 dC1GlMsWFvHbhiSyINSlWef96SBv64+oya2Aqy8R6UidGyiD2vfjRuPfYSlP2idFmv
-	 hE3qjQvZPG9sA==
-Date: Wed, 22 Apr 2026 11:55:16 +0100
-From: Simon Horman <horms@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
-	pabeni@redhat.com, andrew+netdev@lunn.ch, corbet@lwn.net,
-	skhan@linuxfoundation.org, marcel@holtmann.org,
-	luiz.dentz@gmail.com, mchehab+huawei@kernel.org,
-	jani.nikula@intel.com, gregkh@linuxfoundation.org,
-	demarchi@kernel.org, rdunlap@infradead.org, justonli@chromium.org,
-	ivecera@redhat.com, jonathan.cameron@huawei.com, kees@kernel.org,
-	marco.crivellari@suse.com, ferr.lambarginio@gmail.com,
-	nihaal@cse.iitm.ac.in, mingo@kernel.org, tglx@kernel.org,
-	linmq006@gmail.com, linux-doc@vger.kernel.org,
-	linux-bluetooth@vger.kernel.org
-Subject: Re: [PATCH net-deletions] net: remove ISDN subsystem and Bluetooth
- CMTP
-Message-ID: <20260422105516.GN651125@horms.kernel.org>
-References: <20260421022108.1299678-1-kuba@kernel.org>
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="O78c/4K0"
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260422105814euoutp02388d06c6b9bf5769f2f333b00c1c2c0f~oqKhphXnM3164431644euoutp02c
+	for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 10:58:14 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260422105814euoutp02388d06c6b9bf5769f2f333b00c1c2c0f~oqKhphXnM3164431644euoutp02c
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1776855494;
+	bh=HqZ/MfNxixsoC5HUHKPFpN1nTHkNJ5klIDKPGmogXBs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=O78c/4K0wAM0YGFZ8WN3N64GlFLsKgB+jiRv60SEoZNAtbVhzpEKeYLSMQ3/7khUI
+	 7FdazqVt7/3sz75rbUY+Fp10sbMgXkCVo6VQO9Z/HgAclQmWNllebCaL2MoUfZ7r90
+	 6LR38jWBGRGtiD0X6Pdxi7+TFxiEdSSqqVavZBJU=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20260422105813eucas1p1a59a07ab8c1ac0c4b7eba37d509f69b8~oqKhYw4N90671706717eucas1p1Y;
+	Wed, 22 Apr 2026 10:58:13 +0000 (GMT)
+Received: from AMDC4843.eu.corp.samsungelectronics.net (unknown
+	[106.120.77.61]) by eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20260422105813eusmtip15775a2bab96a887094e270ad7d48787e~oqKhA-sow1020810208eusmtip1X;
+	Wed, 22 Apr 2026 10:58:13 +0000 (GMT)
+From: Jakub Raczynski <j.raczynski@samsung.com>
+To: error27@gmail.com
+Cc: netdev@vger.kernel.org, kuba@kernel.org, przemyslaw.kitszel@intel.com,
+	anthony.l.nguyen@intel.com, kernel-janitors@vger.kernel.org, Jakub Raczynski
+	<j.raczynski@samsung.com>
+Subject: [PATCH v2] net/intel: Replace manual array size calculation with
+ ARRAY_SIZE
+Date: Wed, 22 Apr 2026 12:57:12 +0200
+Message-Id: <20260422105710.268003-1-j.raczynski@samsung.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <aeeFh1zQqhVysvxI@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260421022108.1299678-1-kuba@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20260422105813eucas1p1a59a07ab8c1ac0c4b7eba37d509f69b8
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20260422105813eucas1p1a59a07ab8c1ac0c4b7eba37d509f69b8
+X-EPHeader: CA
+X-CMS-RootMailID: 20260422105813eucas1p1a59a07ab8c1ac0c4b7eba37d509f69b8
+References: <aeeFh1zQqhVysvxI@stanley.mountain>
+	<CGME20260422105813eucas1p1a59a07ab8c1ac0c4b7eba37d509f69b8@eucas1p1.samsung.com>
 
-On Mon, Apr 20, 2026 at 07:21:07PM -0700, Jakub Kicinski wrote:
-> Remove the ISDN (mISDN, CAPI) subsystem and Bluetooth CMTP protocol
-> from the kernel tree.
-> 
-> ISDN is a pretty old technology and it's unclear whether anyone still
-> uses it. I went over the last few years of git history and all the
-> commits are either tree-wide conversions or syzbot/static analyzer
-> fixes.
-> 
-> When we discussed removal in the past IIRC there were some concerns
-> about ISDN still being used in parts of Germany. Unfortunately, the
-> code base is quite old, none of the current maintainers are familiar
-> with it and AI tools will have a field day finding bugs here.
-> 
-> Delete this code and preserve it in an out-of-tree repository
-> for any remaining users:
-> https://github.com/linux-netdev/mod-orphan
-> 
-> UAPI constants AF_ISDN/PF_ISDN and the SELinux isdn_socket class
-> are preserved for ABI stability, but the rest of uAPI is removed.
-> 
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+There are still places in the code where manual calculation of array size
+exist, but it is good to enforce usage of single macro through the whole
+code as it makes code bit more readable.
+While at it, beautify condition surrounding it by reversing check and remove
+unnecessary casting.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Jakub Raczynski <j.raczynski@samsung.com>
+---
+ drivers/net/ethernet/intel/i40e/i40e_adminq.h | 2 +-
+ drivers/net/ethernet/intel/iavf/iavf_adminq.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_adminq.h b/drivers/net/ethernet/intel/i40e/i40e_adminq.h
+index 1be97a3a86ce..dcf3baec7b73 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_adminq.h
++++ b/drivers/net/ethernet/intel/i40e/i40e_adminq.h
+@@ -109,7 +109,7 @@ static inline int i40e_aq_rc_to_posix(int aq_ret, int aq_rc)
+ 		-EFBIG,      /* I40E_AQ_RC_EFBIG */
+ 	};
+ 
+-	if (!((u32)aq_rc < (sizeof(aq_to_posix) / sizeof((aq_to_posix)[0]))))
++	if (aq_rc >= ARRAY_SIZE(aq_to_posix))
+ 		return -ERANGE;
+ 
+ 	return aq_to_posix[aq_rc];
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_adminq.h b/drivers/net/ethernet/intel/iavf/iavf_adminq.h
+index bbf5c4b3a2ae..dd2f61172157 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_adminq.h
++++ b/drivers/net/ethernet/intel/iavf/iavf_adminq.h
+@@ -113,7 +113,7 @@ static inline int iavf_aq_rc_to_posix(int aq_ret, int aq_rc)
+ 	if (aq_ret == IAVF_ERR_ADMIN_QUEUE_TIMEOUT)
+ 		return -EAGAIN;
+ 
+-	if (!((u32)aq_rc < (sizeof(aq_to_posix) / sizeof((aq_to_posix)[0]))))
++	if (aq_rc >= ARRAY_SIZE(aq_to_posix))
+ 		return -ERANGE;
+ 
+ 	return aq_to_posix[aq_rc];
+-- 
+2.34.1
 
