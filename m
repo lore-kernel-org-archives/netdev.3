@@ -1,86 +1,96 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f72.google.com (mail-oa1-f72.google.com [209.85.160.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E10D2EA754
-	for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 08:52:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22D43C1969
+	for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 09:08:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776847978; cv=none; b=kg0PxpfU8SRvJZLao8yU3XXj09zkSSOufIJTLGcCHWuhbaFV/pDFeP9OHTuHNuXqiOfPw5LkFQsKzF+4QwMLaYjZMGR2H3ibOeWw09RNRol4pwm56yvaWXi29VzWmWXcrDskvhh1y3nqt+nM0Zf+JSlypKxogPXN1ewMLoOryW4=
+	t=1776848918; cv=none; b=skoE1rDYbTnhIqPT5WPUuyXezv6PXhdn6Yek09UawR7kofthTeHswtxPUWK3FrQvpcu5KfRGhkE8qQIyXoQbSHyY2zufhfmz18O9b8nfG/qb4/4wBpVkJe7AGsTCTGhPG4xDwi1EUdU9gvHCRSHF6Vit9ucojLYWkyyYEMdxxH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776847978; c=relaxed/simple;
-	bh=ZP0zLOUYPCz6XY3n+DrjlGKzVp2SHC+G7wTWKDUfoGM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ng0lIgQDaBZOKv9rxhtSuWOHPHa/qv71r/yO52zsD/yITWu2EYywVEF697iNq2F60qyJ71bCLa3CjsIwOqSXf7lK7wRgKJjc2EqXCWVutsr7wEdzcProTvBVDf5bOGIcgP1g8/zpbXSAkKWy+NpTzp6erjh541GS+RkCbDix2ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JngPhmSr; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JngPhmSr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1776847976;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZP0zLOUYPCz6XY3n+DrjlGKzVp2SHC+G7wTWKDUfoGM=;
-	b=JngPhmSrzzirXOCv9+bU8N95JhlIoN8QC+buDsdNrLC3n4sGv2Vf93VqNDG5nnZ/ocmEmB
-	8kGh1sAI7CgGyQColVhDr0gRTVTe+H+0by3HMK//y8B8drZTOPepMjoBU0zyfBcsnlMj9I
-	zFcIhYdUyQbmBC82Pvq/p35JJc5WESE=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-592-KAfABAXVPC2VY7LAeMqU0Q-1; Wed,
- 22 Apr 2026 04:52:52 -0400
-X-MC-Unique: KAfABAXVPC2VY7LAeMqU0Q-1
-X-Mimecast-MFC-AGG-ID: KAfABAXVPC2VY7LAeMqU0Q_1776847971
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4C1071800473;
-	Wed, 22 Apr 2026 08:52:50 +0000 (UTC)
-Received: from griffin (unknown [10.44.48.93])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6A2AA19560AB;
-	Wed, 22 Apr 2026 08:52:44 +0000 (UTC)
-Date: Wed, 22 Apr 2026 10:52:42 +0200
-From: Jiri Benc <jbenc@redhat.com>
-To: Ren Wei <n05ec@lzu.edu.cn>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, yuantan098@gmail.com,
- yifanwucs@gmail.com, tomapufckgml@gmail.com, bird@lzu.edu.cn,
- lx24@stu.ynu.edu.cn, caoruide123@gmail.com
-Subject: Re: [PATCH net 1/1] net: nsh: handle nested NSH headers during GSO
-Message-ID: <20260422105242.7b28f72c@griffin>
-In-Reply-To: <6112cce99b4e3571444a616d0fb19e91e2fcca72.1776597598.git.caoruide123@gmail.com>
-References: <cover.1776597597.git.caoruide123@gmail.com>
-	<6112cce99b4e3571444a616d0fb19e91e2fcca72.1776597598.git.caoruide123@gmail.com>
+	s=arc-20240116; t=1776848918; c=relaxed/simple;
+	bh=ci4Y0n1rv087m2Y1JSXYceDbibXT+0vtYgXS+1CRuYE=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=C0udLJNTUxYbQSE1WdpAHoYXTwpP/NtVP7Wv9w5dKrYGWo0etNinBxmM647JOLsSmtYHNHHphVBCulknHGvzOlGugUGSeCTPtcMH84o+4Gd29mjpcjhhkt33lGNRznopOvtxzObEtIr0qobqXcevAoWG54P5/5O5NfgjR6MA94g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.160.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oa1-f72.google.com with SMTP id 586e51a60fabf-42467c9547bso4484415fac.0
+        for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 02:08:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776848916; x=1777453716;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=e4PjCc5VcY5hByNV5cEGk/kXKEUzMT29U0LekpTGfKs=;
+        b=NY94nuuLDAOZF4/ACzPmprEY1tIsQ89Eotwpqmgd+IR+Dm5bHoVFfdUuH6COHLB93W
+         2FAK0ukeRINHtdVG9dYCz7XXQARHCeBK1YgbkH+MSCFCRH0vTlwSzyJ3Ly4lk/nWqJtK
+         +k8cbx7V9Hxef/gVRtv8yCncdLTnJJs7ilwTnYd3qp0pvk7au1ngs9qNW/BosqfvJqDf
+         JpaEbHYa0FYDOVP2JEvwqiVUMz8SwmhXQHDoc/FpKhysmcPGwnXsiUZkWx3RuAaKNFcS
+         3iFPSdDdfuwe1FOf9tiQ5WtvakN7mY4SA7Zr6nkaBahyv27wBSWSqnVv03a2BiHmA/8f
+         D8LA==
+X-Forwarded-Encrypted: i=1; AFNElJ85OUNiPWt9rEyPNzaPMeTejrhLlhFz+zLh6svg1Raef5g5TPwWOB/TwLQIK0Y2cZ1CPOUhd1Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxfu9gCbnnE46ZUsXPYkkXpUv2EF0E6oBDvKfTUXJdguW6n/xpc
+	TrNrnNkXtdD29DmL1bTRcm0qUnf+ynG4RdDWlEF7MGdS2QxB5sCiHMsaCrJeU7TSzVlJEiSt0M5
+	BdxFCHD3yPog9VMprdYzOU4c/AbTx4RyTHEdqVHEJja89Ecved72Mpepguwo=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Received: by 2002:a05:6820:2916:b0:694:9910:f77e with SMTP id
+ 006d021491bc7-6949910f852mr3539035eaf.4.1776848915765; Wed, 22 Apr 2026
+ 02:08:35 -0700 (PDT)
+Date: Wed, 22 Apr 2026 02:08:35 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69e89013.a00a0220.17a17.002b.GAE@google.com>
+Subject: [syzbot] Monthly net report (Apr 2026)
+From: syzbot <syzbot+listacaa5400174a98951554@syzkaller.appspotmail.com>
+To: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 20 Apr 2026 11:31:32 +0800, Ren Wei wrote:
-> Handle nested NSH headers iteratively in a single nsh_gso_segment()
-> invocation. Unwrap consecutive NSH headers until the first non-NSH payload
-> is reached, including the case where the next redispatch target is reached
-> through ETH_P_TEB, segment that payload once, and then restore the full
-> outer encapsulation on each output segment.
+Hello net maintainers/developers,
 
-This looks fragile. If there's ever another protocol with similar logic
-added, we'll be in the same situation. (And obviously, unrolling the
-recursion for any combination of protocols doesn't scale well.)
+This is a 31-day syzbot report for the net subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/net
 
-What about using a mechanism similar to dev_xmit_recursion to limit the
-depth and returning EINVAL if we exceed the limit? I think it's fine to
-drop the packet in this pathological case.
+During the period, 9 new issues were detected and 5 were fixed.
+In total, 94 issues are still open and 1720 have already been fixed.
 
-We might even just use dev_xmit_recursion directly, since it can be
-argued that such nested NSH headers are in fact nested tunnels.
+Some of the still happening issues:
 
- Jiri
+Ref  Crashes Repro Title
+<1>  8561    Yes   KMSAN: uninit-value in eth_type_trans (2)
+                   https://syzkaller.appspot.com/bug?extid=0901d0cc75c3d716a3a3
+<2>  3513    Yes   INFO: task hung in linkwatch_event (4)
+                   https://syzkaller.appspot.com/bug?extid=2ba2d70f288cf61174e4
+<3>  3170    Yes   INFO: task hung in synchronize_rcu (4)
+                   https://syzkaller.appspot.com/bug?extid=222aa26d0a5dbc2e84fe
+<4>  2914    Yes   WARNING in rcu_check_gp_start_stall
+                   https://syzkaller.appspot.com/bug?extid=111bc509cd9740d7e4aa
+<5>  2111    Yes   KMSAN: uninit-value in bpf_prog_run_generic_xdp
+                   https://syzkaller.appspot.com/bug?extid=0e6ddb1ef80986bdfe64
+<6>  2008    Yes   INFO: task hung in del_device_store
+                   https://syzkaller.appspot.com/bug?extid=6d10ecc8a97cc10639f9
+<7>  1675    Yes   INFO: task hung in addrconf_dad_work (5)
+                   https://syzkaller.appspot.com/bug?extid=82ccd564344eeaa5427d
+<8>  1312    Yes   possible deadlock in hsr_dev_xmit (2)
+                   https://syzkaller.appspot.com/bug?extid=fbf74291c3b7e753b481
+<9>  663     Yes   INFO: task hung in tun_chr_close (5)
+                   https://syzkaller.appspot.com/bug?extid=b0ae8f1abf7d891e0426
+<10> 632     Yes   INFO: rcu detected stall in tc_modify_qdisc
+                   https://syzkaller.appspot.com/bug?extid=9f78d5c664a8c33f4cce
 
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
+
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
