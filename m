@@ -1,135 +1,145 @@
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com [209.85.221.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E50BC23D291
-	for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 15:57:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.176
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776873431; cv=pass; b=u4FWhB1GTfJE9V6SXSxRuTJFrqqdAihjaJsrIfu2hZQd3PteQcfh8DLYnb/MSrUjpZZK+Bc37fzrKmTjwYEixyFb2gaPEusam8xA2pWBEEQnIgtKMAm8WO3F4CbhPF9PPdG5il/3ZLRXns/pX0349Rrc9y+qpCYBKnhbWVU1aLc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776873431; c=relaxed/simple;
-	bh=NieXPC3YS6T5Y8AdieDzRo0mzb0fpU++KX+cXLQAlNM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Bfxb4B+TwZDPHXGHc0fEa8R9RNmaybFXkVuKI6lYeoy7Tjx7etkQoFItogJ6vYIFMMgatFyJ1/Wi5A9OCKjQJANHLmNAq3yQLQLekqPsdlRnbvIidxe4zF5KBzlV1pRtbSpb09W6Z9tlQghGBJeSGYS97idVaG9ibKv6UYTbNXI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SkjhoE67; arc=pass smtp.client-ip=209.85.160.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFA5C37CD3C
+	for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 16:05:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776873909; cv=none; b=XXb1Yd9DcVIBSZ3xOl8+f+DABK7Wq2LMVIvwBOkaIQvM/85yDAnSZysjCKRpb2Cwp2INpsbTM/Qy85Lo+2qiN+V3kyuYUysI5w++mKWUrynylzQEYjoftQMy5KA22Fz2n7BNlBtnIBzb6Jbwk7X0jKEVGduAJEUPoCV4F6phxk8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776873909; c=relaxed/simple;
+	bh=MTFLpvqVFwD4wOUmZSXx4b0ZH4SvpKBE09cohDgGFFU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DBwLfp0sA6sjuSfMWQ4ZmK2Zs/MvlD6yM9+Ppd6YKClak9fXqJ0NbWvAO8gMiJHP8+mtsUVqYtS54gfRxuEksC+rRMvrHalwoF1QxNXqbWpOKY1Is9330+6vmaIm91WIV5jQmW408KL1U15j2Bmv+RdDyaGV82iwdvot7bmopsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BZbRHzgP; arc=none smtp.client-ip=209.85.221.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SkjhoE67"
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-50e614fdb42so32337791cf.3
-        for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 08:57:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776873429; cv=none;
-        d=google.com; s=arc-20240605;
-        b=WBScaQOeuh6Vl2V1imf4EaJUM2xcNMB9sV5Nk58W7yVC5hRIlVTeS49e94fEDo4uk5
-         Bb6eIgXW10WvnFTRrt2GHqteVmyokG4yF9+vUUA4XJnjetE+dNbGRfxU+NT55D51sujz
-         N3WKDXwMdmozn+kcFn8iKotNuF6eMT8I70EOSzcW//H1Bq7cKOaHH770n1atOFR5lLnJ
-         AN6Nz0h3AMAc3IkIPuh7VtjH0S0D0rvO/hUgiPNeB4MVvcWwG/UGb9c5xiOEYyXkjpWW
-         pfcBUZcUXUqj0Jp6o1O9SzhqFTyLAjzNzGGsqe5QxfQjGuK8WvcJ1beM2Shsn+3vRIkf
-         Zclg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=NieXPC3YS6T5Y8AdieDzRo0mzb0fpU++KX+cXLQAlNM=;
-        fh=Awrco3dRq6rRba0geolah6bcgAgwGukE+i0cFcadf3U=;
-        b=X90vWGChHDG3iTvh7Z0ud2t/9AxQvnKhMsIWOj+r7DyVnukMiwTLUquB+Ziut3gHE5
-         iAmSJ2uYvQ8uIeyB4QlVo4bsCXWJzI35K1G0UhUPoiIyWeWVZKTUhgtT68/ZfYsWxq9B
-         NlVgP9UJhwmhZwzPZc2aaCNd7jvBVAA+Nao8AAfE7rgihWmml4M8QHxOMIlRkPyq9YzX
-         Zs9uBPUL3O/0D72C/VXbuNN5p6WZcspFbFL3Qs0qCtSTYkRQz6U5e5iuUssB1HIKGOQ+
-         JQXaro/d+Jx3moMxDnr46TmKD14N09KUwJTIIzGaFegipiXDCamxmXkDi7GQU8U5ZOda
-         /Dbw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BZbRHzgP"
+Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-56f75445470so3406978e0c.2
+        for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 09:05:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776873429; x=1777478229; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NieXPC3YS6T5Y8AdieDzRo0mzb0fpU++KX+cXLQAlNM=;
-        b=SkjhoE67dnRKt0g0ZeQ6NFvfbtBvQcZglYg3UgL8ahdJQXdxyy84Mbq8XO0OP88GuB
-         HyJnMnGbCraKStvZ4L+7WOr7skiWRCrcgHyHk+tc1JjYhMHIoBtwLm6SG8b+olKPNZCW
-         fZSlQ4s0jFwIlxklMcAwPnCr7hvyOAx2VOwgwD32AnZeVKf1pe7BgqQQkdCYGBI9+fh1
-         GXMWI/W/myQflGSUzZUrJTOrOns/7itz3XCuV/eenXc2wgIeZsH1L8A4yTpTAZbWXPCI
-         fMjxWVCEMHm7SVUSZJ3e7M1PSYKBUjmbgrlHjJ+WgebzeNccoNuwxjyqs7mYiOYy6nyH
-         BvgA==
+        d=gmail.com; s=20251104; t=1776873905; x=1777478705; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=24ucL5O3EzfMhPg47OjudcgTvu+hLai1chIqdTg8Gs8=;
+        b=BZbRHzgP/WAnZzspo62I5qcgLW9G2PdSkMExOt+6ndvEbBI/DFD49xfqkgX4gzy2ti
+         oN4+ThKSzLC0+xs/Rj06mSQJjg0rit99DauF4UHdsI95knJLkaAAIKlcgMyc4K8Szggj
+         d4BgZrjuZf3kDNN/+fqYnxCUmpEQpb7Vp3HgBvRu/aOH/nZ5lTesh85dxhUsZWMgphuB
+         cXcK8LRqniQ3mWpKIpv8va5d16B1TjbhjD4ZgE0YGA9u3YRA5pSlC+3x41EApp7KpsEe
+         6JOW7fIVKy7oJ9p/wTtgjglFkdiZxE1cM1wEblhO8b6snIwd6+q5CskNgETQNh4vjqSv
+         N1ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776873429; x=1777478229;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=NieXPC3YS6T5Y8AdieDzRo0mzb0fpU++KX+cXLQAlNM=;
-        b=H3DWmnQ6suKumCLD4a5GppGj0DWOKreRmEjMZvKkp74WBVeG9Lcz/BbRGD3EEE8id0
-         bDLilj97Y98RjCSDRGhJ6cQER5xMEMdcUvS9OS5RwImS216VCskCGRPPFNnmGwRglkh0
-         u3UVczMjyrvlqB/MS/XEW2j4Bi191NecaFhudJVNB/r2TUdyQgsv1ULkko+EvSvnMvjX
-         Shyuk3kOtL8aTPGH7jecc7QEGEbkCc6hhXvuPQBUQ4Q5trnqW7IIT7OhQD94fEUvqZRc
-         rlIxGsGOe3ILVOVbjSPQQfprbXxzk94XhHTN6Dhe9Onow0Eh1q776dLwHV7mViTeCy/i
-         lk4g==
-X-Gm-Message-State: AOJu0YyPTjz+cG8diTCJVROUBARmTNvo+vi12RmMrOVsJh8KthsVmIGd
-	4xXbdqhVImO3yXDRJlHxooE3NL58xR1G5KWDu5Cl2p0I9IqcG5M/tGK9CwQ9x3JGhwXjumFX+yB
-	ToIuXMPaH15HRDAdj+cwGYjg6Ek2s6ID0O1ILQ/xx
-X-Gm-Gg: AeBDiev+uxPMHmwtr1ut2SV4gfFYP5eXwvYOpGqICdLkmfQOIYJVwuIny98rjgl4SgB
-	TVhuCfQXHguLo2nmnyc3IJkTvALynEmm5DtCJg/VkHAO1wEmOiPac1wN4MPzS99iz5zj+Br1XHK
-	Ta9DoLVP6rYCTPwSHO6JbgYxq5YsDMKYPj1wDL5ITJBWWiZptCn+jMcGEqOZ9P3VoxZYGj4Snak
-	Trr4FFBlW3ZiSEVzduYyuN1Gb8l8S0Der7zi3x/H1wnoxr/q5U+r2+8JmntjHv8o6B9wES01Dj9
-	aWuMDZaiD4vzQg5TprY08V79Ho5EtFO4B6FiJRCNz7cAhMzee3/LROa57Jq2TGgrXaHCHpGrnga
-	SDoLTRFqJ
-X-Received: by 2002:a05:622a:4c87:b0:50f:bdeb:1e47 with SMTP id
- d75a77b69052e-50fbdeb24e1mr81744721cf.44.1776873428348; Wed, 22 Apr 2026
- 08:57:08 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1776873905; x=1777478705;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=24ucL5O3EzfMhPg47OjudcgTvu+hLai1chIqdTg8Gs8=;
+        b=KDscgwG/NRhizIDOHfQQiK/yK/PMnpTU0fzQQFLXZw7bc5MwlgW1oQb375e1vFeRnP
+         3uCA1nQtreDJWqMl+vglLKzl0dQtV1YR5+dFcGQ1yrJ+UiZNibtVGXZ28D7099fhARwN
+         7s8m4U9sdKBFFwq8cQg8u303bSnYTpCBJDa6piAejLV0L+khc8VfXtijVo2QjtgCfprm
+         zdP75UI3fHfS3oaeSQVOaLVyFoWA/68Rx8ajE0gU4zg48n2recNifvq1l8ZCWvjvE1Pt
+         /EvzyX5hyJKB5txelF2Nmo4qp1LjIegkUKUq3qf/RSPBBlsm4By8K/kGJrlFICZpBnRy
+         yQgQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8ZdQusbhqAutwCxmBilJTljJS0u4ey0iNno8tbCykFMZRmRj2QgVOrvCrqvmE1+9mnvXFrXwI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YymXPaj6uxDZs8r9E5QysOtOKBotHj+wcFjywZ9gxx5J1BILGkW
+	RvHTlUsEhAnbp462JOLRKEU+X3ipFjncRFF9lIEJnagZoIn7tDDqhnFl
+X-Gm-Gg: AeBDieveJAnvBvW6NhI6Og0K308zS3qy0zhi1BM/7XnyiT9+IGYlEb2bi6u393dSobV
+	DnA8lZM6m/SlxtmI8/fCO2h+VlM1XjXGpeVsAqB4/B80M+mm2SFERbLgywQHC33ElhO5Sid+RYY
+	WZtMJPKax4OwwlLhRUbC1dkby8ZdrvNRM02cE0yLEzeAbUOPFpCqfP7pTKIVa3WvP926yjWitPY
+	cHGMwq/FzfbwAnGLPsagOzHig5HD6VpIN9UL9YqV8oOyOKg1H6BLOZLjHLDrU2d956MiovzK2v1
+	bhjag/5O3xNejKzitaBZYOC7NwQsKKXD5k3gve7u4BmsGSbo14n7yMhhGHj8cfWKXmZENf1HxQb
+	s1o3TqU7YYxTNFbKNrfGfYhgRvVbDAtx+zRPurHlu835nsCPl8OwIAVembBeEx54wRdqseMUy/F
+	mq1EBM0Yh7Osc7LFwNbSE8Dq4rAPZC7f0eqFxdwK+jvF/z83r2KdKHzZHC8sEe8OABz7a1v+JeL
+	+lgyZVsfMR+iKJxDjmBo001zC+uWUo=
+X-Received: by 2002:a05:6122:4fa2:b0:56f:b2c3:d4d9 with SMTP id 71dfb90a1353d-56fb2c3daa2mr9155887e0c.14.1776873904625;
+        Wed, 22 Apr 2026 09:05:04 -0700 (PDT)
+Received: from server0 (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b02ac462d9sm136370786d6.7.2026.04.22.09.05.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Apr 2026 09:05:03 -0700 (PDT)
+From: Michael Bommarito <michael.bommarito@gmail.com>
+To: Samuel Mendoza-Jonas <sam@mendozajonas.com>,
+	Paul Fertser <fercerpav@gmail.com>,
+	netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	Michael Bommarito <michael.bommarito@gmail.com>
+Subject: [PATCH net 0/6] net/ncsi: harden packet parsing against malformed BMC replies
+Date: Wed, 22 Apr 2026 12:03:36 -0400
+Message-ID: <20260422160342.1975093-1-michael.bommarito@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260422024554.130346-1-jt26wzz@gmail.com> <20260422024554.130346-2-jt26wzz@gmail.com>
-In-Reply-To: <20260422024554.130346-2-jt26wzz@gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 22 Apr 2026 08:56:56 -0700
-X-Gm-Features: AQROBzAxAmfFhRZGfkUgjI6oI5pnFyMaVXwdwbwsAVkf7mnNe9dRlKDjPQZm21w
-Message-ID: <CANn89i+RuNBmUuacPLv9oKNFA0g71z65Fy-tFRjW7gm0TSGbqw@mail.gmail.com>
-Subject: Re: [PATCH net v4 1/2] tcp: call sk_data_ready() after listener migration
-To: Zhenzhong Wu <jt26wzz@gmail.com>
-Cc: netdev@vger.kernel.org, ncardwell@google.com, kuniyu@google.com, 
-	davem@davemloft.net, dsahern@kernel.org, kuba@kernel.org, pabeni@redhat.com, 
-	horms@kernel.org, shuah@kernel.org, tamird@kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Apr 21, 2026 at 7:46=E2=80=AFPM Zhenzhong Wu <jt26wzz@gmail.com> wr=
-ote:
->
-> When inet_csk_listen_stop() migrates an established child socket from
-> a closing listener to another socket in the same SO_REUSEPORT group,
-> the target listener gets a new accept-queue entry via
-> inet_csk_reqsk_queue_add(), but that path never notifies the target
-> listener's waiters. A nonblocking accept() still works because it
-> checks the queue directly, but poll()/epoll_wait() waiters and
-> blocking accept() callers can also remain asleep indefinitely.
->
-> Call READ_ONCE(nsk->sk_data_ready)(nsk) after a successful migration
-> in inet_csk_listen_stop().
->
-> However, after inet_csk_reqsk_queue_add() succeeds, the ref acquired
-> in reuseport_migrate_sock() is effectively transferred to
-> nreq->rsk_listener. Another CPU can then dequeue nreq via accept()
-> or listener shutdown, hit reqsk_put(), and drop that listener ref.
-> Since listeners are SOCK_RCU_FREE, wrap the post-queue_add()
-> dereferences of nsk in rcu_read_lock()/rcu_read_unlock(), which also
-> covers the existing sock_net(nsk) access in that path.
->
-> The reqsk_timer_handler() path does not need the same changes for two
-> reasons: half-open requests become readable only after the final ACK,
-> where tcp_child_process() already wakes the listener; and once nreq is
-> visible via inet_ehash_insert(), the success path no longer touches
-> nsk directly.
->
-> Fixes: 54b92e841937 ("tcp: Migrate TCP_ESTABLISHED/TCP_SYN_RECV sockets i=
-n accept queues.")
-> Cc: stable@vger.kernel.org
-> Suggested-by: Eric Dumazet <edumazet@google.com>
-> Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-> Signed-off-by: Zhenzhong Wu <jt26wzz@gmail.com>
+NC-SI treats the management controller as privileged, but the Linux
+packet parser still needs to reject malformed or truncated replies
+instead of walking past the skb or past its software filter tables.
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+This series closes six linked parser issues in net/ncsi:
+
+  - short replies accepted before response header/checksum reads
+  - GC/GP count fields exceeding software filter limits
+  - GMCMA address counts exceeding payload-backed addresses
+  - OEM response parsing that trusts vendor-specific payload offsets
+  - short AEN packets accepted before AEN header/payload reads
+  - GP payloads not checked against the consumed MAC/VLAN table bytes
+
+The threat model here is a compromised BMC or management-channel MITM
+on the NC-SI link. This is not internet-reachable remote input, so I am
+sending it as a public [PATCH net] series with Cc: stable rather than
+through security@.
+
+Testing:
+
+  - x86_64 defconfig with CONFIG_NET_NCSI=y and
+    CONFIG_NCSI_OEM_CMD_GET_MAC=y:
+    `make -C ~/src/linux-mainline O=~/src/build-ncsi-bmc-oob ARCH=x86_64
+    -j$(nproc) net/ncsi/`
+  - live x86_64/KASAN QEMU guest for the GP path: guest `virtio-net`
+    registered with NCSI, `SP -> CIS -> GC -> GP` issued over the
+    `NCSI` generic-netlink family, and a host tap responder returning
+    matching NC-SI frames.  Without the series applied, a GP reply
+    with mac_cnt=65 triggers
+    `KASAN: slab-out-of-bounds in ncsi_rsp_handler_gp()`.  With the
+    series applied, the same reply is rejected with `-ERANGE` and no
+    KASAN report.
+  - synthetic A/B userspace harness covering the other malformed-
+    response cases: without the series, parsing either faults or
+    corrupts adjacent state; with the series, each case is rejected
+    or clamped at the parser boundary.
+
+Impact / regression notes:
+
+  - libclang call-graph query shows ncsi_validate_rsp_pkt() is only
+    reached from ncsi_rcv_rsp() and ncsi_rsp_handler_dc(), so the new
+    skb-length guard stays local to the response path.
+  - cscope shows ncsi_aen_handler() is only reached from ncsi_rcv_rsp(),
+    so the new AEN pulls stay local to AEN dispatch.
+  - cscope on n_vids shows the downstream consumers are the response
+    parser, the manage-side VLAN bitmap walkers, and ncsi-netlink's
+    channel dump path, which is the surface this series intentionally
+    tightens.
+
+Michael Bommarito (6):
+  net/ncsi: validate response packet lengths against the skb
+  net/ncsi: bound filter table state to software limits
+  net/ncsi: validate GMCMA address counts against the payload
+  net/ncsi: validate OEM response payloads before parsing
+  net/ncsi: validate AEN packet lengths against the skb
+  net/ncsi: validate GP payload lengths before parsing
+
+ net/ncsi/ncsi-aen.c |  30 +++++++++---
+ net/ncsi/ncsi-rsp.c | 114 ++++++++++++++++++++++++++++++++++++++++----
+ 2 files changed, 128 insertions(+), 16 deletions(-)
+
+-- 
+2.53.0
