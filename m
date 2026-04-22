@@ -1,61 +1,47 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB5F3DC4C7
-	for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 12:35:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 530BA3DDDC1;
+	Wed, 22 Apr 2026 12:36:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776861357; cv=none; b=Vc1M1in8+0DsTe7ZsgBXYw/QaamWyKiXhW2TKk3p13fZhQxah6Ps5SAcHy5cMwW/JC06Yj+RkbFwX+6WQs7atLmj4/3TRNmZ/73PqYgVGQ/uqaOFFwAIbwnyTktPIrIs9GtSa7r+i0nrhcJbDoJOPFpFk1L4G4d6gCEfCA4wGkY=
+	t=1776861381; cv=none; b=XRhqu5ZClEpXunGKxkkI6c37/MybXHW7jcCzRl+SRkYqoMDKZoDCE0V3NeVpLFKj1odsPu/l68IaEUCLzjCPSiCZ3w2CRaCq17/Dj7+VjwH3l5si1P4KV6DwgUMQaUcZigv74IjBjHM4Bg+4qqRrBe4ZhMPkQjjRFZSGPHxWHss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776861357; c=relaxed/simple;
-	bh=wDLA3/GJGEO1IbM955Q5FElcfpvCOUEomPnwlKEBe7g=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Nq0RWKLevBUBbRQx827DfPAhw0NuS5dpxo95ax62KL8vlvE2yw/W/v0oJiHUdeNcwO5FNGExx8Sl5tA7m+VvUlOkwUYegP/Al1rutE7JeQrnLqZ5C9YaS3By49fVRN1sXzi/SlwLLmi+DaS8zbMKPRt7XllXPzdyTvbmPpOEiS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XtRsKYsH; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1776861381; c=relaxed/simple;
+	bh=1LmTa/2nISMh6mOU+dH4LIOT3D7vOAh4Af8/IN/LEsQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ibFPdw6A2nxpi2gDmUZgWcVbEVXvn6qvKaH89ubxHylXAnwC9VOqaxsJm0zND5qCCUr4orCCPiXCAJartNAmVmzEw79zcmo/fgXFddGF+C+P+Dr5jh/lsb6esk/m6qVSUp13+F8+fUQKSTCiB96xsQVl5CwbJA0LWdgAMp0UgXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=fBWWcSKq; arc=none smtp.client-ip=95.215.58.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XtRsKYsH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776861354; x=1808397354;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=wDLA3/GJGEO1IbM955Q5FElcfpvCOUEomPnwlKEBe7g=;
-  b=XtRsKYsHLMMIOvBawBL7pVE0F3l7lPgw1J3Dd4mnjYZWONW7GkpKKe5Y
-   /csQC2k2c2xQ7u1qLX5tshUe24HDkDEjcV/wn0azWzm400gLPEXymVQwY
-   9li/0BgpcfDCQn7GQ2VsXQjt7LYDc2ywQ2Gh1nE7xLN3uJ5CgRqFNOica
-   C6rrEcQFJ5ChTgCk3XF0GKnO0Nl90dXGU2+9SNgpo6vYDkNUyXCrYCi+T
-   lET8sjunlJYCVxK7xd6vdikoRkPvISRABiun18orZ1zkKwuMxnaGm/rZJ
-   UJR1S4MZWkEpT6aeO0L+y4MDQLAMGcRzV5pKPROGv60JPqpDar8Iz97lo
-   A==;
-X-CSE-ConnectionGUID: 2S1JhPu4TPm1/ZEqjjsBeg==
-X-CSE-MsgGUID: 7l5HGe8ASBuZ7DcXmGh2rQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11764"; a="77826165"
-X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
-   d="scan'208";a="77826165"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2026 05:35:54 -0700
-X-CSE-ConnectionGUID: jnPp+D69RzWk8HTMMSZLhg==
-X-CSE-MsgGUID: SIJp+xLLQbOKFjQTNtXCzw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
-   d="scan'208";a="229167437"
-Received: from gklab-003-001.igk.intel.com ([10.91.173.48])
-  by fmviesa007.fm.intel.com with ESMTP; 22 Apr 2026 05:35:52 -0700
-From: Grzegorz Nitka <grzegorz.nitka@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	Grzegorz Nitka <grzegorz.nitka@intel.com>,
-	Arkadiusz Kubalewski <Arkadiusz.kubalewski@intel.com>
-Subject: [PATCH iwl-net 2/2] ice: ptp: use primary NAC semaphore on E825
-Date: Wed, 22 Apr 2026 14:31:44 +0200
-Message-Id: <20260422123144.485930-3-grzegorz.nitka@intel.com>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20260422123144.485930-1-grzegorz.nitka@intel.com>
-References: <20260422123144.485930-1-grzegorz.nitka@intel.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="fBWWcSKq"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776861374;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=M9Gx7IlnlS1uNsPF0cg+zpWITXpZQp1mOnbZe0OCetU=;
+	b=fBWWcSKqQG5zCycwG+raCLyHwjZxuRIRhAGD1Bj0GcOElJUNik4wdEm8Rf63nJoeLkD8tA
+	aj07x0slv1iK+zRECsfmItUG90+YVyNxnrD4RC+Gnl/tP+L8G8F6SZW3/nA0RKq6mxw7qp
+	MZ+UFS5TuUwqdNK9lwRMbremNxwaaY4=
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: netdev@vger.kernel.org
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Eric Dumazet <edumazet@google.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH net v3 0/2] tcp: symmetric challenge ACK for SEG.ACK > SND.NXT
+Date: Wed, 22 Apr 2026 20:35:37 +0800
+Message-ID: <20260422123605.320000-1-jiayuan.chen@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,58 +49,60 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-For E825 2xNAC configurations, PTP semaphore operations must hit the
-primary NAC register block so both sides coordinate on the same lock.
+Commit 354e4aa391ed ("tcp: RFC 5961 5.2 Blind Data Injection Attack
+Mitigation") quotes RFC 5961 Section 5.2 in full, which requires
+that any incoming segment whose ACK value falls outside
+[SND.UNA - MAX.SND.WND, SND.NXT] MUST be discarded and an ACK sent
+back.  Linux currently sends that challenge ACK only on the lower
+edge (SEG.ACK < SND.UNA - MAX.SND.WND); on the symmetric upper edge
+(SEG.ACK > SND.NXT) the segment is silently dropped with
+SKB_DROP_REASON_TCP_ACK_UNSENT_DATA.
 
-Commit e2193f9f9ec9 ("ice: enable timesync operation on 2xNAC E825
-devices") updated other primary-only PTP register accesses to
-use the primary NAC on non-primary functions, but left ice_ptp_lock()
-and ice_ptp_unlock() operating on the local NAC. As a result, secondary
-NAC PTP paths can take a different semaphore than the primary side.
+Patch 1 completes the mitigation by emitting a rate-limited challenge
+ACK on that branch, reusing tcp_send_challenge_ack() and honouring
+FLAG_NO_CHALLENGE_ACK for consistency with the lower-edge case.  It
+also updates the existing tcp_ts_recent_invalid_ack.pkt selftest,
+which drives this exact path, to consume the new challenge ACK so
+bisect stays clean.
 
-Select the primary hardware in ice_ptp_lock() and ice_ptp_unlock() when
-the current function is not primary, keeping semaphore operations
-symmetric and consistent with the rest of the 2xNAC PTP register access
-path.
+Patch 2 adds a new packetdrill selftest that exercises RFC 5961
+Section 5.2 on both edges of the acceptable window, filling a gap in
+the selftests tree (neither edge had dedicated coverage before).
 
-Fixes: e2193f9f9ec9 ("ice: enable timesync operation on 2xNAC E825 devices")
-Reviewed-by: Arkadiusz Kubalewski <Arkadiusz.kubalewski@intel.com>
-Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_ptp_hw.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-index 8bb94e785f2a..2c18e16fe053 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-@@ -5264,9 +5264,13 @@ static void ice_ptp_init_phy_e830(struct ice_ptp_hw *ptp)
-  */
- bool ice_ptp_lock(struct ice_hw *hw)
- {
-+	struct ice_pf *pf = container_of(hw, struct ice_pf, hw);
- 	u32 hw_lock;
- 	int i;
- 
-+	if (!ice_is_primary(hw))
-+		hw = ice_get_primary_hw(pf);
-+
- #define MAX_TRIES 15
- 
- 	for (i = 0; i < MAX_TRIES; i++) {
-@@ -5293,6 +5297,11 @@ bool ice_ptp_lock(struct ice_hw *hw)
-  */
- void ice_ptp_unlock(struct ice_hw *hw)
- {
-+	struct ice_pf *pf = container_of(hw, struct ice_pf, hw);
-+
-+	if (!ice_is_primary(hw))
-+		hw = ice_get_primary_hw(pf);
-+
- 	wr32(hw, PFTSYN_SEM + (PFTSYN_SEM_BYTES * hw->pf_id), 0);
- }
- 
+Changelog
+=========
+v2 -> v3:
+  - I don't think the AI's concern holds, but I think I can split write(2000)
+    into write(1000) so the test doesn't rely on kernel internals.
+    sashiko: https://sashiko.dev/#/patchset/20260421014128.289362-1-jiayuan.chen%40linux.dev
+v1 -> v2:
+  - Add Reviewed-by tag.
+  - Fold the tcp_ts_recent_invalid_ack.pkt update into patch 1 so
+    that bisect stays clean and the fix is self-contained for
+    backport.
+  - Extend the new selftest to cover both edges of RFC 5961
+    Section 5.2 (SEG.ACK > SND.NXT and SEG.ACK < SND.UNA -
+    MAX.SND.WND) in a single connection, and rename it to
+    tcp_rfc5961_ack-out-of-window.pkt.  Neither edge had explicit
+    packetdrill coverage before.
+
+v1: https://lore.kernel.org/netdev/20260420025428.101192-1-jiayuan.chen@linux.dev/
+
+Jiayuan Chen (2):
+  tcp: send a challenge ACK on SEG.ACK > SND.NXT
+  selftests/net: packetdrill: cover RFC 5961 5.2 challenge ACK on both
+    edges
+
+ net/ipv4/tcp_input.c                          | 10 ++--
+ .../tcp_rfc5961_ack-out-of-window.pkt         | 48 +++++++++++++++++++
+ .../packetdrill/tcp_ts_recent_invalid_ack.pkt |  4 +-
+ 3 files changed, 58 insertions(+), 4 deletions(-)
+ create mode 100644 tools/testing/selftests/net/packetdrill/tcp_rfc5961_ack-out-of-window.pkt
+
 -- 
-2.39.3
+2.43.0
 
