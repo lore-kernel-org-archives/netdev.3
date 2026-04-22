@@ -1,55 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E1CB3BF67A;
-	Wed, 22 Apr 2026 10:45:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F5DD3CAE61
+	for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 10:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776854736; cv=none; b=Lwzfnh2hqBaREHemN62p+57Ap9aBU4hGXRHfy9V0ZL/HjO/nXgow+qV/hBU+YG09P6AUfgwGVME4gUblfDvTKFl0NNKA3DVbwPScb4S7eUViqwr5l2ny4FIy6qPcohqWyACFIl+ZZH+T9kkNa92m3KcwbhDTvPhTSFkfP3qayk4=
+	t=1776854897; cv=none; b=mrktqVhdh28Oqa6GAYcMrNrviRgihG3DLxA+Ri8r6tlNBbJWV/o3kLv76Iz/kGdNiVIjm+ZdvQxlvAEHd0mZC8nDWFVF/xH35y6vwqremX03GAsBSNN4zXO+r2MuWpCHSmTTuKy4bGhSHTMtXE+TID2YFynOizYBZUchLaH4nXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776854736; c=relaxed/simple;
-	bh=TpfNQlTkSNL7BzUK+Pd9K+KxRlrlEHZM5h0NyDeSYWQ=;
+	s=arc-20240116; t=1776854897; c=relaxed/simple;
+	bh=6mQ5LyQB4fRfCoB0R+sQQG1+3BTD84pOGcxptMUQH+8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KQ4twTkSPfcFUS6b1fhCR8KPzYiAq+wtzBkdLYopemJ7i2U0uTwXPAPxrXVBs7v+say2+SKg3DPhRCWs2ZoTDFLIuZIr1tKoruQjQntLfrye3sClOMizyqMk2ASnchQD037CDHfKmAx2VXCaUskPmmKaZIX3GYCh6kEC59cS/Fg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f6bKDgI9; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=AXq0aGmpgW5hZFTscRvwx0LHB97AhPWQwGqRoJvLQF06CTURazFSBUnYA+ZdXDCt+cEaoHiWppHnQIhVnMSSRDwPvtrbWarEYUWb5Q0ufQOqOQggwn0hK2UAvw0IfPNecQ6ZWEWCNjoJxdPyUSWTJqbZAANhClCghU3gCh+Bhw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SoQZstCl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f6bKDgI9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7891FC19425;
-	Wed, 22 Apr 2026 10:45:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SoQZstCl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88F0DC19425;
+	Wed, 22 Apr 2026 10:48:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776854736;
-	bh=TpfNQlTkSNL7BzUK+Pd9K+KxRlrlEHZM5h0NyDeSYWQ=;
+	s=k20201202; t=1776854896;
+	bh=6mQ5LyQB4fRfCoB0R+sQQG1+3BTD84pOGcxptMUQH+8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=f6bKDgI9RhEZIh7+hobdoxWlVq1gHUaQyXR4m+1d0/IMupVsD0m/usRRM6n2xHp7w
-	 LH52RTuZgV1klLheUCo5ynp4FP35Zj2EpxRVJQAfRpTDi6myG7w3JNn51MqTLFPfnh
-	 wdac20g8lTLSUjPxwCmZD7CQtRijt3WcBBiETSDJE4f41maAgeucEBT1IFzjLcQr6x
-	 KeIgEayOFRii/pXgvj2J3i3jcx9/lrZYwLlqo/03Lp+YKKbwfxyUkgJHA6/eCQ1fD5
-	 849kcCG7giSQotmykPgpASc+/lfbQNCloBaFITkZI0pmIu1agXk7hFNzKZLNhjSrkd
-	 DReCWtzjFLzJQ==
-Date: Wed, 22 Apr 2026 11:45:22 +0100
+	b=SoQZstClHLhnHdwrCNUO85JgbXi82BhXuvlv3zmPM+PubBOBI5anpVsaj8E8Ij5j8
+	 HkS+NfxqVRkDZnuoCyJcIRkMA08L1YU9kbex0wreKDBEVi9+rLVT+/+98nJGb9yepW
+	 +EbXKyQJlNfj4ZWBG5U3kvbyJNOzKAWJX36UQxrkSGSoCntW3Cjqh+DCYSfL9XpFWI
+	 n4ou976kzwMGAf9oGldQ+zQ4eFhF6YD6sKAfN7g6kURRUlB+O5qlmMvzOsrSg9eQs7
+	 Rk0g6/xXeDhCkbv1PO25bx80Fu8dwUBO9UkECDpi/lBKI1C7RyNfMRaa09Aw+8oVqP
+	 qS20PkpIm5dKA==
+Date: Wed, 22 Apr 2026 11:48:06 +0100
 From: Simon Horman <horms@kernel.org>
 To: Jakub Kicinski <kuba@kernel.org>
 Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
 	pabeni@redhat.com, andrew+netdev@lunn.ch, corbet@lwn.net,
-	skhan@linuxfoundation.org, federico.vaga@vaga.pv.it,
-	carlos.bilbao@kernel.org, avadhut.naik@amd.com, alexs@kernel.org,
-	si.yanteng@linux.dev, dzm91@hust.edu.cn,
-	2023002089@link.tyut.edu.cn, tsbogend@alpha.franken.de,
-	dsahern@kernel.org, jani.nikula@intel.com,
-	mchehab+huawei@kernel.org, gregkh@linuxfoundation.org,
-	jirislaby@kernel.org, tytso@mit.edu, herbert@gondor.apana.org.au,
-	ebiggers@kernel.org, johannes.berg@intel.com, geert@linux-m68k.org,
-	pablo@netfilter.org, tglx@kernel.org, mashiro.chen@mailbox.org,
-	mingo@kernel.org, dqfext@gmail.com, jreuter@yaina.de,
-	sdf@fomichev.me, pkshih@realtek.com, enelsonmoore@gmail.com,
-	mkl@pengutronix.de, toke@toke.dk, kees@kernel.org, crossd@gmail.com,
-	jlayton@kernel.org, wangliang74@huawei.com, aha310510@gmail.com,
-	takamitz@amazon.co.jp, kuniyu@google.com, linux-doc@vger.kernel.org,
-	linux-mips@vger.kernel.org
-Subject: Re: [PATCH net-deletions] net: remove ax25 and amateur radio
- (hamradio) subsystem
-Message-ID: <20260422104522.GK651125@horms.kernel.org>
-References: <20260421021824.1293976-1-kuba@kernel.org>
+	skhan@linuxfoundation.org, alexs@kernel.org, si.yanteng@linux.dev,
+	dzm91@hust.edu.cn, linux@armlinux.org.uk, mst@redhat.com,
+	jasowang@redhat.com, xuanzhuo@linux.alibaba.com,
+	eperezma@redhat.com, xu.xin16@zte.com.cn, wang.yaxin@zte.com.cn,
+	jiang.kun2@zte.com.cn, linusw@kernel.org,
+	jihed.chaibi.dev@gmail.com, arnd@arndb.de, tytso@mit.edu,
+	jiayuan.chen@shopee.com, gregkh@linuxfoundation.org
+Subject: Re: [PATCH net-deletions] caif: remove CAIF NETWORK LAYER
+Message-ID: <20260422104806.GL651125@horms.kernel.org>
+References: <20260416182829.1440262-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -58,25 +49,36 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260421021824.1293976-1-kuba@kernel.org>
+In-Reply-To: <20260416182829.1440262-1-kuba@kernel.org>
 
-On Mon, Apr 20, 2026 at 07:18:23PM -0700, Jakub Kicinski wrote:
-> Remove the amateur radio (AX.25, NET/ROM, ROSE) protocol implementation
-> and all associated hamradio device drivers from the kernel tree.
-> This set of protocols has long been a huge bug/syzbot magnet,
-> and since nobody stepped up to help us deal with the influx
-> of the AI-generated bug reports we need to move it out of tree
-> to protect our sanity.
+On Thu, Apr 16, 2026 at 11:28:28AM -0700, Jakub Kicinski wrote:
+> Remove CAIF (Communication CPU to Application CPU Interface), the
+> ST-Ericsson modem protocol. The subsystem has been orphaned since 2013.
+> The last meaningful changes from the maintainers were in March 2013:
+>   a8c7687bf216 ("caif_virtio: Check that vringh_config is not null")
+>   b2273be8d2df ("caif_virtio: Use vringh_notify_enable correctly")
+>   0d2e1a2926b1 ("caif_virtio: Introduce caif over virtio")
 > 
-> The code is moved to an out-of-tree repo:
-> https://github.com/linux-netdev/mod-orphan
-> if it's cleaned up and reworked there we can accept it back.
+> Not-so-coincidentally, according to "the Internet" ST-Ericsson officially
+> shut down its modem joint venture in Aug 2013.
 > 
-> Minimal stub headers are kept for include/net/ax25.h (AX25_P_IP,
-> AX25_ADDR_LEN, ax25_address) and include/net/rose.h (ROSE_ADDR_LEN)
-> so that the conditional integration code in arp.c and tun.c continues
-> to compile and work when the out-of-tree modules are loaded.
+> If anyone is using this code please yell!
+> 
+> In the 13 years since, the code has accumulated 200 non-merge commits,
+> of which 71 were cross-tree API changes, 21 carried Fixes: tags, and
+> the remaining ~110 were cleanups, doc conversions, treewide refactors,
+> and one partial removal (caif_hsi, ca75bcf0a83b).
+> 
+> We are still getting fixes to this code, in the last 10 days there were
+> 3 reports on security@ about CAIF that I have been CCed on.
+> 
+> UAPI constants (AF_CAIF, ARPHRD_CAIF, N_CAIF, VIRTIO_ID_CAIF) and the
+> SELinux classmap entry are intentionally kept for ABI stability.
 > 
 > Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+> I think we should accumulate such patches over the coming days on a separate
+> branch. CAIF is a no-brainer IMO but other removals may be more controversial.
 
 Reviewed-by: Simon Horman <horms@kernel.org>
+
