@@ -1,130 +1,111 @@
-Received: from 20.mo581.mail-out.ovh.net (20.mo581.mail-out.ovh.net [46.105.49.208])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62CB2332EBB
-	for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 15:22:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.105.49.208
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0058133ADAD
+	for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 15:22:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776871358; cv=none; b=AjnW3HNhaPbvtuAC2WqTEe/woRwIoOx9hQZQt8jXtzoPUghTT42E6qJE7YQvgZic1vNMgZ//R/9eYlZklRG0kT2Wh/ME3wbP/EdWEprHPLBZKCauuL6tplypAbUoqJdlg/VwuSBmvnSSeqf6xlTVYpK9MijZc27UdXI7jI6kUIQ=
+	t=1776871382; cv=none; b=UKh5xPoVLlXEaqfrC1BWagyXXZiSmKQbJ6ETV1ul/TrGrLEuB8LruRJCh8zeqw8MBCX/DZxhzlWrTLWzY5DO8zaVVNghpA+O1adVb3atEw//JfjcWBpmsWSXrn1NndDebhaDNjgdSPRdmAsewPsHEIHFEq6sQxhqmHRw4nUfHxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776871358; c=relaxed/simple;
-	bh=sU3DTkNexIWUYOoGKggdnAW3V/g3KBQ/sxSUjVw7qsU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EIFlM0P3ihLlBKSN9Y4TIbufyea9/kW9VkBz2hyQlY0e5rXLZet2kxIl30lo/9+yNsjXw5Ht3Yioxp97eLBVGl6sB6rptEo1l1x04VzqYrhBCd8ipZmi1LYoQmR1bSY3TGUz/Y9tgPEfekGGinZyME5mDJYLiloE33jAbv5OhJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=remlab.net; spf=pass smtp.mailfrom=remlab.net; arc=none smtp.client-ip=46.105.49.208
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=remlab.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=remlab.net
-Received: from director8.ghost.mail-out.ovh.net (unknown [10.110.0.129])
-	by mo581.mail-out.ovh.net (Postfix) with ESMTP id 4g12mx2Dkfz5yXt
-	for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 15:13:53 +0000 (UTC)
-Received: from ghost-submission-7d8d68f679-st2nk (unknown [10.111.182.110])
-	by director8.ghost.mail-out.ovh.net (Postfix) with ESMTPS id ED9CAC0167;
-	Wed, 22 Apr 2026 15:13:51 +0000 (UTC)
-Received: from courmont.net ([37.59.142.100])
-	by ghost-submission-7d8d68f679-st2nk with ESMTPSA
-	id VRmGK6/l6GmGWQwAqxBLcg
-	(envelope-from <remi@remlab.net>); Wed, 22 Apr 2026 15:13:51 +0000
-Authentication-Results:garm.ovh; auth=pass (GARM-100R003c8cb7736-6058-46d1-bedc-9cbb91f5e008,
-                    14B14BC8C77B9486866D902178DE58E78B326C1C) smtp.auth=postmaster@courmont.net
-X-OVh-ClientIp:87.94.153.51
-From: =?UTF-8?B?UsOpbWk=?= Denis-Courmont <remi@remlab.net>
-To: courmisch@gmail.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- Deepanshu Kartikey <kartikey406@gmail.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Deepanshu Kartikey <kartikey406@gmail.com>,
- syzbot+706f5eb79044e686c794@syzkaller.appspotmail.com
-Subject: Re: [PATCH] net: phonet: fix BUG_ON() in pn_socket_autobind()
-Date: Wed, 22 Apr 2026 18:13:50 +0300
-Message-ID: <2493746.XLGD3V4XZc@basile.remlab.net>
-Organization: Remlab
-In-Reply-To: <20260422021533.16987-1-kartikey406@gmail.com>
-References: <20260422021533.16987-1-kartikey406@gmail.com>
+	s=arc-20240116; t=1776871382; c=relaxed/simple;
+	bh=WaAzBz93zy4+rMZv39m6v0KHxfqV3r/1x2qqkZktacQ=;
+	h=From:Date:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=bekwiI3hrn3jrlI+YccL5nts3HeYNg1lCvZCZlXkFp3oOj23N3tqvlQXIm2gkz7wFenzcwHC8M+VylReI70uX6MoSag082d/BqfMKkzWOJiNhmhXPn7cH5UhZm+o6z+/OgV2svNrPNZRuKz5VTFSWZDRK/qm8jWk2vsWtDaw+8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZBnCIUJ5; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZBnCIUJ5"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-43eb05b1875so3328131f8f.3
+        for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 08:22:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776871377; x=1777476177; darn=vger.kernel.org;
+        h=content-disposition:mime-version:reply-to:message-id:subject:to
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=eQIno5B+jCCWPl3fct9QNDDgC0X0xxcIwgPx80lrh18=;
+        b=ZBnCIUJ5uirrt+BhiW5jyILDlLsslZJ2GVAF2soVkcqKFcbatRJ/fPH5Po1QINinzp
+         RbdCja/wyQvRE8KDB7vNj44PN2aGwnv85viaFrai0/xguR9cpyDKZ3jlC9mIons4ISgs
+         UcCwPKap+MlBO1QBOJRt4hkI4VjephvvAq/5Uet9q5WctC7mw6RyCqMCJKRwSJQsA5i7
+         COcV7JgRvAJP8sRo1nynoLIrEhDj9JCJwWkO0QlICnOYqs1ncCfMgzo6W1638AR4YFUf
+         UFETuPndyWQgbDxlKwT8pUQUFkl9Gar/m9cY4zoGOjOvgIyLDJO3CJSoPes+ryucFHg6
+         IHoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776871377; x=1777476177;
+        h=content-disposition:mime-version:reply-to:message-id:subject:to
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eQIno5B+jCCWPl3fct9QNDDgC0X0xxcIwgPx80lrh18=;
+        b=rC9Sz3jqZJXASmYKx3221tHtuDbJFyFc3nVD/F2M0ZPjLgjrd4pc0Ua/UTBEq8RdIJ
+         Fc4xnGS+echt5SGUgbwvlOYaVojDEbQ0+7qnEiVxxiJO03ZpAtVmkF6M2N9Hz/ENtu1P
+         tF4LUMeWa1shnG72xRYOYAUuR3jfJyyiH1iKpmYtW18oDsNu7TYNMb9ujckYKCqH4HP1
+         yQRrx694Ef9+C43au2uhg6qxHT00MFv62ijpQvINhl4Phf9VtfviVBeIGvrKaeiBcmvf
+         eQAzMBwIXH3PPllLFxZGGq4x4SBCatJSsnZ5G38QuwNM0v6iUf/6NxCZr+7NkFajR/co
+         wYBA==
+X-Gm-Message-State: AOJu0YwAtXTKgDJ4RmH4yjmF76fkEJfnPq5mwuzFbesaA6D/F+PUEFyU
+	/a1Itcajs5l1h3dGG7YuA2bCof3GtYKCYhvsqw5422GfOXCMyjNMlxjHDQugkw==
+X-Gm-Gg: AeBDievHl+OvJb8+ORIP4WYPU1aXNX6x11FLgsjAvvwwLIZdZYvDZjBc0y8J375wATb
+	nlzKBdadMy+SU4g2H5nYtV9dGSYBpoqU8CzPStwBWWUV1WJbIhIW4P596EyrAl1WTqh0J0ZJAnH
+	R00V7sJDBqfftn3dcMUwBnvN6uGSrk/zmccXw8c3UVZbpvGu/010w4pFyNG6xuQr47Z8eoR4U3c
+	TZWHlb0nBUIr2OwqDc/vVThdcSPpO3dvO85llhdSBJ5hQpM7QXLsMx7ZTeYQJYOWfGoh3vZam4v
+	JvncMhbsajklSKIgzaQ4a09SEDcmaClFhPWyPoBar/GPyDCaNtFiuMIWjHhAWSyhQsI4iDx/lSU
+	pELRHbC9hcPFBDdW0s60dniLEPmwyFN5416WHp96/jgENuqt34T2vjKjsQAQgUiucLDti+pCEPk
+	gQSAaR/stDeGwEhfVygkKICSujtLBQPcu0qiYVzEgI/ntSwR6Eu7TtMPb1e5wOSIwezVgpVA==
+X-Received: by 2002:a5d:584c:0:b0:43d:7403:4b57 with SMTP id ffacd0b85a97d-43fe3db3ca7mr35551311f8f.10.1776871377281;
+        Wed, 22 Apr 2026 08:22:57 -0700 (PDT)
+Received: from watcher (102-182-140-48.ip.afrihost.capetown. [102.182.140.48])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43fe4e4daf2sm45110635f8f.33.2026.04.22.08.22.56
+        for <netdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Apr 2026 08:22:56 -0700 (PDT)
+From: Bruce Merry <bmerry.robot@gmail.com>
+X-Google-Original-From: Bruce Merry <bmerry@gmail.com>
+Received: by watcher (Postfix, from userid 1000)
+	id B79622C05BA; Wed, 22 Apr 2026 17:22:53 +0200 (SAST)
+Date: Wed, 22 Apr 2026 17:22:53 +0200
+To: netdev@vger.kernel.org
+Subject: Help with PCIe THP on ConnectX-7
+Message-ID: <aejnzWR_szvAOxkK@brucemerry.org.za>
+Reply-To: bmerry@gmail.com
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
-x-ovh-tracer-id: 16551010105893405648
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: dmFkZTG2Nb2IOQQkyz5XOn5WmFHmBuMkJ3XqXf6ad9mGrNbCaO5vLNMhM04cM+jxKuJtmN0KRoodhSstc9MGd0fOYBZZzM+/s4nCPL/HdASVvRW/qBBs+nQWABfSD6udFKGZhYh8xVuIebAhD4oiwfEe8OjSvOcd7Kvw16qWHOuQVybCI12Nu0uQUNH2QzKoMTDhqyAVXqEzd/p5UNY6RdwltP43xxGKoPXOdgqWkbux4TmFYAln0kXKleauKxX2nRBxuzgj/LeOGKha1sZm9lzrLYMbI+bZyyIZ8Te/qgwE1VGTfRN5i0qA+9JTSjI/aJWHAjShHhJXtj6U9PvMmpBAJCX3Kzt6RdZUJY4gypXWVMqg3oWo7kTlBoz+fq9vpXEYGwcZfmCJMkZm0NT27DPhKtPIgVLCDtw8inO877hJpkXTSxPZt330ODyNONdneWc2O+u+cC3PdXMNXIEQz/iJZJk3mh9t5uKvD7MlmzfOqtoHNW0zWYi659CHncBUyUXfM2WLZOhqFw8fJ046kTZzyl7r8/JG2pQhm+2goZ0O0yxbbNsgRgl2aHqqF337IPrBhnLFcoyH+vBPLY0RiFxf9gmwB4X1pENxgpU82MusWHpwqlGbJnkwxTLLg1Lkzv8M3mVRqieYFvaVpw6ZqnBdle01GdAxLyGDaOhYZLa7oIp42A
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Hi,
+Hello
 
-Le keskiviikkona 22. huhtikuuta 2026, 5.15.33 It=C3=A4-Euroopan kes=C3=A4ai=
-ka Deepanshu=20
-Kartikey a =C3=A9crit :
-> pn_socket_autobind() calls pn_socket_bind() and treats
-> -EINVAL as a signal that the socket was already bound,
-> then uses BUG_ON() to verify it:
->=20
->     if (err !=3D -EINVAL)
->         return err;
->     BUG_ON(!pn_port(pn_sk(sock->sk)->sobject));
->=20
-> However, pn_socket_bind() returns -EINVAL in multiple
-> cases:
->=20
->   1. address length too short
->   2. socket not in TCP_CLOSE state
->   3. socket already bound  <- only intended case
->=20
-> When -EINVAL comes from cases 1 or 2, sobject is still
-> zero (never assigned), causing BUG_ON to fire and crash
-> the kernel.
->=20
-> Fix this by checking the bound state directly via
-> pn_port(sobject) BEFORE calling pn_socket_bind(),
-> eliminating the ambiguous -EINVAL interpretation
-> entirely.
->=20
-> Reported-by: syzbot+706f5eb79044e686c794@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=3D706f5eb79044e686c794
-> Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-> ---
->  net/phonet/socket.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
->=20
-> diff --git a/net/phonet/socket.c b/net/phonet/socket.c
-> index c4af26357144..5a55e7d14e85 100644
-> --- a/net/phonet/socket.c
-> +++ b/net/phonet/socket.c
-> @@ -204,14 +204,14 @@ static int pn_socket_autobind(struct socket *sock)
->  	struct sockaddr_pn sa;
->  	int err;
->=20
-> +	if (pn_port(pn_sk(sock->sk)->sobject))
-> +		return 0; /* socket was already bound */
-> +
+I'm hoping someone from NVIDIA Networking can help with this; I wasn't
+sure of the best way to get in contact with the engineers working on
+mlx5 kernel code so thought I'd try here. I'm trying to write some
+(userspace) code using ibv_reg_mr_ex to register a memory region using
+TLP Processing Hints (THP) to improve performance on an Epyc Turin
+(Zen 5) system. However, in the kernel mlx5_st_create is bailing out
+because of this check:
 
-This was almost 20 years ago, but IIRC, we did not do it that way back then=
-=20
-because it results in a data race on sobject if another task binds the sock=
-et=20
-in parallel.
-=20
->  	memset(&sa, 0, sizeof(sa));
->  	sa.spn_family =3D AF_PHONET;
->  	err =3D pn_socket_bind(sock, (struct sockaddr_unsized *)&sa,
->  			     sizeof(struct sockaddr_pn));
-> -	if (err !=3D -EINVAL)
-> -		return err;
-> -	BUG_ON(!pn_port(pn_sk(sock->sk)->sobject));
-> -	return 0; /* socket was already bound */
-> +	return err;
->  }
->=20
->  static int pn_socket_connect(struct socket *sock, struct sockaddr_unsized
-> *addr,
+       if (!MLX5_CAP_GEN(dev, mkey_pcie_tph))
+                return NULL;
 
+As far as I can tell, that is checking a capability bit returned by
+the firmware.
 
-=2D-=20
-=E5=BE=B7=E5=B0=BC-=E5=BA=93=E5=B0=94=E8=92=99=E2=80=A7=E9=9B=B7=E7=B1=B3
-https://www.remlab.net/
+Before I spend a lot more time debugging, can you tell me whether
+ConnectX-7 supports this feature at all (I'm on the latest 28.48.1000
+firmware)? I see it mentioned in release notes for ConnectX-8
+firmware, but not in ConnectX-7 release notes.
 
+If ConnectX-7 does support it, do you have any tips on what might
+cause that capability bit to be false and how to determine what the
+cause is? For example, could that happen if the motherboard BIOS
+doesn't support TPH?
 
+Thanks
+Bruce
+-- 
+Dr Bruce Merry
+bmerry <@> gmail <.> com
+http://www.brucemerry.org.za/
+http://blog.brucemerry.org.za/
 
