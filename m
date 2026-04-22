@@ -1,202 +1,154 @@
-Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2F49381AF9
-	for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 16:37:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.182
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776875876; cv=pass; b=l5isgQ7x/zg7OblCQjMBuqZMeUkibF0rXMQ3HDStbvPY9zpfkyCrfgRQeLG9im9VuCo/w0iKyDujBnH3ha2IF57tSAu+K/FB4i8AiJ/oI2wQx5SvjSMUwR3z7sq+jAg3XIcabOmcv7Be3AFxo1ZaxpAspNIcD8TB8G4kihnlmkU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776875876; c=relaxed/simple;
-	bh=rGjuzTnqffiAxIUz5jJ763+/vcX4tKbZXHk/NyqMxzA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hYAftsdt+P6SgrO9pGfCJpRiRYPf0/oN3GqCSK5CJBRNxG9lU6wCApIXNFa1EP4jsZYZ326KvtWpZgX/qV9fBXQOuxxCDB33ZcylGnOU9wIO86FDiOgPzWyoE8tWWAApnToaGpTLHEdtcCTHDMkd+vcVqDYnSOPUAEa1Wm08AKE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZB8ohsHb; arc=pass smtp.client-ip=74.125.82.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EEC8379ED6
+	for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 16:42:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776876125; cv=none; b=V6osfO9+z5i1QgNshHvH97PMR7A44qGEmrFiKhg6NWKHBFj0gi4uBe0gUUwcLwTUBAMapaZdBNH9/EQ9e1Gi3KekZpk10xDML2IhUb0GbCMapwfcQFBCdWHdDve5Aiy/O46PcvWYsOCP5rMbUEbok6X0zkEQp/+ElZ7oja3elkQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776876125; c=relaxed/simple;
+	bh=ArRBtXXmLev7uDHjOd7RdB9AcTeBhDxqe4hHfT/kj7k=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=gWFJiLYf7498wlDPhF5Jchv8Bh7rrLt52BeJn0RHwEXXYworX123v2/B5cnnCFjtcQ6pGxZvUobTAFQJ/jV2HOrYQHzBvpPq83B4gyWJZLAeqn0+WgoL2004zurqn2RT5DTawE17c+yLOjd2kGUtwuBMqgTzY59BBnSKEjN4iC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VMLvk9iR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZB8ohsHb"
-Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-2b6b0500e06so9089910eec.1
-        for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 09:37:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776875874; cv=none;
-        d=google.com; s=arc-20240605;
-        b=VCSjNCpdpP5evlRFYVSWsDXvl6tTwBUh31gRL6qTOL0RVU3W9s46eTqsnbTjBLAnYN
-         fpBlrBgDOBEQWEagNMoRLkGyeeJWfTw+8rRXVyTd7jpL8K6mx/4Xj0dMNBUEt+tG6Zy0
-         YTbVSb+l5UUQH13s1ChZvhNQ05eX6CnKWwI8W/07nL+4vlyEwaEAnQ6C1DH63SI0JidM
-         6vwZnC1LdhSH5olMGvx9NfYJZPr5Uvu1zgSuakWK9abV/NGdbLgCDI5SDhwvkHkZFD+p
-         FhFtMkELOIFIIJVe9xuoh806TKy0BzXzy3lMDsFnUMMPdDKOR7sGkqUnsvNkqeOB/+di
-         AbUg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=NqOrOUk1MLYhmJuehDDrG9eDODdEaY852b+08CC2TZc=;
-        fh=eEghWXaFewbhntCI1OlNuu2xOOPC8RIe6OmYbmnxAVs=;
-        b=Wd0HyEjfrHUF1WsxUIHpr9kMTz6fAg/VsHzOMyQ7cjg2VJc8P0HsFZEBPVrnFWASMN
-         p0i0CknmDZFLrVixwq5E8reM/sucb9g+srH53h1HNf5P8JFBE035kDWk1LqMCAYNMY0Y
-         SiG5+Sfdb4YrjbUHEeDNB658/7jJXoH6CZX6tJV1TMlW2IzxiapybNFZmGa9lys5wRSN
-         YsuW/Sqd2kvr+TejTcojjqogOQ4g717AacakjpAb4/G0p7TTikVkURhhudWX6T4YYK9/
-         d6cObQn85A/0+kYsxKD9XyM4ZXWFd310RsHwKagtx6dOqe718IAyTJ6v9ga2XXNZGKPm
-         O+jQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776875874; x=1777480674; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NqOrOUk1MLYhmJuehDDrG9eDODdEaY852b+08CC2TZc=;
-        b=ZB8ohsHb3jpCaMzUxCzcMUOPdRWxPYzHwoAUUlUt8ZEJhLqQ9CNvuhS1GX3VfjSavR
-         TfYcxGcO+Jxw/WkwHJjgciam+uVpnlDzTE7ZoJLTZ6uOiHNd1tLVTWa4ark8Ro1vsTH1
-         yEk9LLAWPoZmDTuB67KU4MBcWbiLaFBNKXnq0V6Ojg+oDQWWnPlFVa5GG7FrokNMsA4J
-         UhR4e8lXsKFuY8Y1OE5IOdvQkNhIdRSGVeqib7/guhK7T8k7b21TU1q6j+PxsfzFQCKn
-         ELUbpdlapQMSCM7EyXtWqGwCjUKH0474+M2ADdm6UUBoIO7apI/Nt2zYxtU/c3Hw+Few
-         x/yg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776875874; x=1777480674;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=NqOrOUk1MLYhmJuehDDrG9eDODdEaY852b+08CC2TZc=;
-        b=h/7/p/kM2MT3K15+a/NQYzA5eki2i7x3ye+MTPuauP4c0qjrP8azPgJH2gvnizPAe+
-         MdEgkOEuVX89U+kK/cZmOj1Vj18/vQxbDTQBUGcGKxgVqkam7UOKyOnc8gsTRKLAW0tv
-         EhPaIHDLpZvPB9PxzUnPFIoKADhSRLsao5TzshCHYK714cyVCblIgMWytyDU5WN482c3
-         cccn3lNWJYDr+nBuESWtvF8nq2hgd89Hwr0NvhpMdVNURzQ7Q7wqMtBs43HEiyNS78ZR
-         ihgyxe7dvLBDMHCpggO/Y/+UWqDDIsmAVB0QFI0q39QAFXG9Or/dLF/vPfdugY9C/bcj
-         +HpA==
-X-Forwarded-Encrypted: i=1; AFNElJ+QVz69eN0fIBf9DJ0Yiat0h9e6kqT8idnYX/YcMZt1bfhE2x/S/E8hCuTVd4yrxJuPl9WKQk4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0LZD4ZAann8/18SDbW+j4ox9YUIFKT5j7YWqTLJfZ4U8iwIfi
-	MEFmhF5cSo4g1KgAoqs6fU6BnjvScMov7Wm66/KnDtQQpq8ftEjJQzpTEfJlHFUcq+rBPDK3bB3
-	xpjJn7f8b8jpyfyJe5t+m+rY9rCGOxao=
-X-Gm-Gg: AeBDies0LMtUlYpAyMeErppWt3aRVVH+WgI/2xmaIzS78F/LmOqNfqlxekiCFcB3J/c
-	Ot8PD9s9KCyPII+ZvgjiFyneeISaHkhnE95SNKY/SI76i67jr4nHybtJOdPPdiZnWpcat5ePHt+
-	d1PR2ElEafZ2n3qEMy07j8yzHMszmq6tEZN/gxj05em4oO9owYfRlz8jFkBzm6Fl+Bg93+cfRKB
-	25m3WINk8KT0bOtEvHTb+m+RyQXFgaqViQMyKgZdgSiLapdQ4/fTWpW3ZSjq3Xr9RYgwjWEKoj9
-	sOCzOACIEayk4S2WFg==
-X-Received: by 2002:a05:693c:2c84:b0:2da:44ac:6d17 with SMTP id
- 5a478bee46e88-2e47873bd2cmr13631932eec.17.1776875873645; Wed, 22 Apr 2026
- 09:37:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VMLvk9iR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E552C19425;
+	Wed, 22 Apr 2026 16:42:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776876125;
+	bh=ArRBtXXmLev7uDHjOd7RdB9AcTeBhDxqe4hHfT/kj7k=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=VMLvk9iRgKi+rUPQYxVnihL141tI1ivigOVfQ0S+TQ335cVpV4m93G6BxTw2Pyn5Y
+	 ft/mgc2pSBaCR5USiynBSqIFT6sImuzhG3b0xfedqZ11M/jFsK/hBnIQJyZbaRQ+ud
+	 yIcUTtt+sV9tK0Qo4dHyoPWJ1TVRagMJJIicPz1d5ZfDXMLgNPwauiipzRwh59Vpvh
+	 Z4o0PtND6XcSgLju3oDvvShaQ/1avZGE2PSkwH9rNTQD/wPgJ6FS17MEhMLaUDfyIl
+	 Z5QqpLwnONXeiYKlffx0mxHWBwpUJM4YZ2SYKfHEwRC4keqTqSyRaFY9dLLzC7+k2m
+	 +V9vSmpdzzbGg==
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 209A1F4006C;
+	Wed, 22 Apr 2026 12:42:04 -0400 (EDT)
+Received: from phl-imap-15 ([10.202.2.104])
+  by phl-compute-10.internal (MEProxy); Wed, 22 Apr 2026 12:42:04 -0400
+X-ME-Sender: <xms:XProac7b_DlIvkt2SReJ2nBrL95t_iZ7Aq0c3D_WpG6vRwwNxumJ3A>
+    <xme:XProaYt-m__B3JT52thv5LsgTqe5Iy4uett7zdQyo39CM6PWg73AM_JjkyEh7aYcL
+    u4cHpg5ZjjwsYidPJRbN0SfNnYugqIPU4IDLlTx2Snb31RkD0oAnhab>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdeigeejjecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdevhhhutghk
+    ucfnvghvvghrfdcuoegtvghlsehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvghrnh
+    ephfffkefffedtgfehieevkeduuefhvdejvdefvdeuuddvgeelkeegtefgudfhfeelnecu
+    vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheptghhuhgtkh
+    hlvghvvghrodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieefgeelleel
+    heelqdefvdelkeeggedvfedqtggvlheppehkvghrnhgvlhdrohhrghesfhgrshhtmhgrih
+    hlrdgtohhmpdhnsggprhgtphhtthhopeekpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopehjohhhnhdrfhgrshhtrggsvghnugesghhmrghilhdrtghomhdprhgtphhtthhope
+    hkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhgvrhhnvghlqdhtlhhsqdhh
+    rghnughshhgrkhgvsehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoheptghhuh
+    gtkhdrlhgvvhgvrhesohhrrggtlhgvrdgtohhmpdhrtghpthhtohepshgusehquhgvrghs
+    hihsnhgrihhlrdhnvghtpdhrtghpthhtohephhgrrhgvsehsuhhsvgdruggvpdhrtghpth
+    htohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghl
+    ihhsthgrihhrrdhfrhgrnhgtihhsseifuggtrdgtohhm
+X-ME-Proxy: <xmx:XProaa63nrFW5WOWg0leRddcTiQnPuol0luwAhVeGOkjde9bh3jS2Q>
+    <xmx:XProaf6GulLYKCDLYTN0DFMY9XIXdGk7gsQVw-c9pYs60mofHIKbEQ>
+    <xmx:XProabr-ngdnyvkpeAvYdtdXLpz6utYb9GbwJXyZKCQf2r5HtvUFVw>
+    <xmx:XProaYNxuWmWWcqpvkbkY31rlb21fQaUOHbN3bCJoV8TX-u9K5E_BQ>
+    <xmx:XProab3b0mXWua95ZStp9P2hwCGLei7e2DE7A6HZvq7jJIYgcwIzSZ8b>
+Feedback-ID: ifa6e4810:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id F32F2780070; Wed, 22 Apr 2026 12:42:03 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260422033650.68457-1-kerneljasonxing@gmail.com>
- <20260422033650.68457-9-kerneljasonxing@gmail.com> <2e0e0e18-cb75-4638-9a12-5906de6a8308@intel.com>
-In-Reply-To: <2e0e0e18-cb75-4638-9a12-5906de6a8308@intel.com>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Thu, 23 Apr 2026 00:37:07 +0800
-X-Gm-Features: AQROBzCJb-hsse55EN9VHp2l2OXgryyt-OS9eWVzC4SgEK6a_JBN4N7SWbH5hI4
-Message-ID: <CAL+tcoDTXEsehprDHeO7P1pcqwu_US3Li-dm_YyGDAwu2aYZvw@mail.gmail.com>
-Subject: Re: [PATCH net v3 8/8] xsk: don't support AF_XDP on 32-bit architectures
-To: Alexander Lobakin <aleksander.lobakin@intel.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, bjorn@kernel.org, magnus.karlsson@intel.com, 
-	maciej.fijalkowski@intel.com, jonathan.lemon@gmail.com, sdf@fomichev.me, 
-	ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org, 
-	john.fastabend@gmail.com, bpf@vger.kernel.org, netdev@vger.kernel.org, 
-	Jason Xing <kernelxing@tencent.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-ThreadId: A5XFUYgNEVqc
+Date: Wed, 22 Apr 2026 12:41:43 -0400
+From: "Chuck Lever" <cel@kernel.org>
+To: john.fastabend@gmail.com, "Jakub Kicinski" <kuba@kernel.org>,
+ "Sabrina Dubroca" <sd@queasysnail.net>
+Cc: netdev@vger.kernel.org, kernel-tls-handshake@lists.linux.dev,
+ "Chuck Lever" <chuck.lever@oracle.com>, "Hannes Reinecke" <hare@suse.de>,
+ "Alistair Francis" <alistair.francis@wdc.com>
+Message-Id: <3fc31ab1-23de-4381-b85c-5faa39169ad9@app.fastmail.com>
+In-Reply-To: <20260328-tls-read-sock-v7-0-15678415dfc1@oracle.com>
+References: <20260328-tls-read-sock-v7-0-15678415dfc1@oracle.com>
+Subject: Re: [PATCH net-next v7 0/5] TLS read_sock performance scalability
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On Thu, Apr 23, 2026 at 12:10=E2=80=AFAM Alexander Lobakin
-<aleksander.lobakin@intel.com> wrote:
->
-> From: Jason Xing <kerneljasonxing@gmail.com>
-> Date: Wed, 22 Apr 2026 11:36:50 +0800
->
-> > From: Jason Xing <kernelxing@tencent.com>
-> >
-> > In copy mode TX, xsk_skb_destructor_set_addr() stores the 64-bit
-> > descriptor address into skb_shinfo(skb)->destructor_arg (void *) via a
-> > uintptr_t cast:
-> >
-> >     skb_shinfo(skb)->destructor_arg =3D (void *)((uintptr_t)addr | 0x1U=
-L);
-> >
-> > On 32-bit architectures uintptr_t is 32 bits, so the upper 32 bits of
-> > the descriptor address are silently dropped. In XDP_ZEROCOPY unaligned
-> > mode the chunk offset is encoded in bits 48-63 of the descriptor
-> > address (XSK_UNALIGNED_BUF_OFFSET_SHIFT =3D 48), meaning the offset is
-> > lost entirely. The completion queue then returns a truncated address to
-> > userspace, making buffer recycling impossible.
->
-> What if we relax the restriction a bit? For example, refuse to configure
 
-As to the bug itself, yes, It only affects the unaligned mode.
-
-I wonder if we can support this after someone requires us to support
-32-bit arch and use it in the real world, then we can use the previous
-patch to complete the full support (which doesn't harm the path on
-64-bit arch).
-
-The code looks like this based on your suggestion. Just for the record.
-diff --git a/net/xdp/xdp_umem.c b/net/xdp/xdp_umem.c
-index 58da2f4f4397..03417b04592f 100644
---- a/net/xdp/xdp_umem.c
-+++ b/net/xdp/xdp_umem.c
-@@ -177,6 +177,9 @@ static int xdp_umem_reg(struct xdp_umem *umem,
-struct xdp_umem_reg *mr)
-if (mr->flags & ~XDP_UMEM_FLAGS_VALID)
-return -EINVAL;
-+ if (!IS_ENABLED(CONFIG_64BIT) && unaligned_chunks)
-+ return -EOPNOTSUPP;
-+
-if (!unaligned_chunks && !is_power_of_2(chunk_size))
-return -EINVAL;
-
-Actually I'm fine with either of them. Right now I'm not so sure which
-direction this patch should take :)
-
-Thanks,
-Jason
-
-> an XSk socket in unaligned mode if on a 32-bit arch? Or add a check
-> under CONFIG_32_BIT like it was done in Page Pool:
+On Sat, Mar 28, 2026, at 11:17 AM, Chuck Lever wrote:
+> I'd like to encourage in-kernel kTLS consumers (i.e., NFS and
+> NVMe/TCP) to coalesce on the use of read_sock. When I suggested
+> this to Hannes, he reported a number of nagging performance
+> scalability issues with read_sock. This series is an attempt to
+> run these issues down and get them fixed before we convert the
+> above sock_recvmsg consumers over to read_sock.
 >
-> skb_shinfo(skb)->destructor_arg =3D (void *)((uintptr_t)addr | 0x1UL);
+> Batch async decryption and its submit/deliver scaffolding were
+> dropped from this series because async_capable is always false
+> for TLS 1.3, which NFS and NVMe/TCP both require. Async crypto
+> support for TLS 1.3 is a prerequisite for revisiting that work.
 >
-> #ifdef CONFIG_32BIT
-> if (((uintptr_t)skb_shinfo(skb)->destructor_arg) & ~0x1UL) !=3D addr)
->         // WARN_ONCE or whatever + error path
-> #endif
+> ---
+> Changes since v6:
+> - Rebased on net-next, v5's 1/6 was merged upstream
 >
-> I never used XSk on a 32-bit arch, but back when I was working on 32-bit
-> MIPS 1G routers, I wanted to add native XSk support to the Eth driver.
-> Sure, just for fun, now that we have cheap AArch64 and other 64-bit
-> embedded chips, 32-bit embedded networking SoCs are almost dead, but
-> OTOH, as you can see, other subsystems like PP still try to support 32 bi=
-t.
-> Especially given that this issue applies to only to the skb XSk path,
-> not native in-driver implementations.
+> Changes since v5:
+> - Patch 6: Set released = true when sk_flush_backlog() returns
+>   true, so tls_strp_msg_load() knows the socket lock was
+>   released (Sabrina)
+> - Patch 6: Drop Fixes tag; submit bug fix separately via net
+>   if warranted (Sabrina)
+> - Patch 6: Note redundant flush on cold path in commit message
+>   (Sabrina)
 >
-> >
-> > Since we hear no one is using AF_XDP on 32-bit arch, we decided to
-> > strictly stop supporting it at compile time.
-> >
-> > Closes: https://lore.kernel.org/all/20260419045824.D9E5EC2BCAF@smtp.ker=
-nel.org/
-> > Fixes: 0ebc27a4c67d ("xsk: avoid data corruption on cq descriptor numbe=
-r")
-> > Suggested-by: Stanislav Fomichev <sdf@fomichev.me>
-> > Signed-off-by: Jason Xing <kernelxing@tencent.com>
-> > ---
-> >  net/xdp/Kconfig | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/net/xdp/Kconfig b/net/xdp/Kconfig
-> > index 71af2febe72a..819aa5795f50 100644
-> > --- a/net/xdp/Kconfig
-> > +++ b/net/xdp/Kconfig
-> > @@ -1,7 +1,7 @@
-> >  # SPDX-License-Identifier: GPL-2.0-only
-> >  config XDP_SOCKETS
-> >       bool "XDP sockets"
-> > -     depends on BPF_SYSCALL
-> > +     depends on BPF_SYSCALL && 64BIT
-> >       default n
-> >       help
-> >         XDP sockets allows a channel between XDP programs and
+> Changes since v4:
+> - Drop batch async decryption and submit/deliver restructure:
+>   async_capable is always false for TLS 1.3, so the new code
+>   was unreachable for NFS and NVMe/TCP
+> - Purge async_hold directly in tls_decrypt_async_wait() and drop
+>   the tls_decrypt_async_drain() wrapper
+> - Merge tls_strp_check_rcv_quiet() into tls_strp_check_rcv() with
+>   a bool wake parameter; fix lost wakeup on the recvmsg exit path
 >
-> Thanks,
-> Olek
+> Changes since v3:
+> - Clarify why tls_decrypt_async_drain() is separate from _wait()
+> - Fold tls_err_abort() into tls_rx_one_record(), drop tls_rx_decrypt_record()
+> - Move backlog flush into tls_rx_rec_wait() so all RX paths benefit
+>
+> Changes since v2:
+> - Fix short read self tests
+>
+> Changes since v1:
+> - Add C11 reference
+> - Extend data_ready reduction to recvmsg and splice
+> - Restructure read_sock and recvmsg using shared helpers
+>
+> ---
+> Chuck Lever (5):
+>       tls: Abort the connection on decrypt failure
+>       tls: Fix dangling skb pointer in tls_sw_read_sock()
+>       tls: Factor tls_strp_msg_release() from tls_strp_msg_done()
+>       tls: Suppress spurious saved_data_ready on all receive paths
+>       tls: Flush backlog before waiting for a new record
+>
+>  net/tls/tls.h      |  4 ++--
+>  net/tls/tls_main.c |  2 +-
+>  net/tls/tls_strp.c | 42 +++++++++++++++++++++++++++++++-----------
+>  net/tls/tls_sw.c   | 50 ++++++++++++++++++++++++++++++--------------------
+>  4 files changed, 64 insertions(+), 34 deletions(-)
+> ---
+> base-commit: ced629dc8e5c51ff2b5d847adeeb1035cd655d58
+> change-id: 20260317-tls-read-sock-a0022c9df265
+
+I see that this series is currently not in v7.1. What is left to do?
+
+
+-- 
+Chuck Lever
