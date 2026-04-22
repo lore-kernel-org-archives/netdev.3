@@ -1,140 +1,173 @@
-Received: from 15.mo561.mail-out.ovh.net (15.mo561.mail-out.ovh.net [87.98.150.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BC0128DC4
-	for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 23:03:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=87.98.150.177
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776899026; cv=none; b=Hcrp7CnGnjSekpmAPrdoOJWYmmOBUUYumuDwJt93qL0O+j3JRnnkXg0AuZ9sNWf7mGNKfIP6mqUiaHTLQlBuejb+INLkCtIqH6W6Uz5ZbOBxXBeCU2HGFjaX7+yg1z8qa79h/sPZJ7R9mh94s306y6YJ9qGzlGO5zq4UftoZfiE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776899026; c=relaxed/simple;
-	bh=P6TMWpuoDcnMkBNq2rr+RdSacWukC6T/CI7O5PuFsIo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SY+rr9gXyvwisjO4gNAf75HMiKBeMmd+7sX1FdFq6Wkoh90x04puYTajVZiWiaZvq2gA8je5HUdPLC58kPWr2gsIgGd8/LX5M7WSLx4JwGs7ClsIyYrX0h277KxlzWNrcHJoRrD6Mg2Vf75lIuc6PcTespSCkV4qKoCaJ1qEkcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=remlab.net; spf=pass smtp.mailfrom=remlab.net; arc=none smtp.client-ip=87.98.150.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=remlab.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=remlab.net
-Received: from director10.ghost.mail-out.ovh.net (unknown [10.110.37.197])
-	by mo561.mail-out.ovh.net (Postfix) with ESMTP id 4g12th1NYpz602W
-	for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 15:18:52 +0000 (UTC)
-Received: from ghost-submission-7d8d68f679-5pbb9 (unknown [10.111.182.62])
-	by director10.ghost.mail-out.ovh.net (Postfix) with ESMTPS id 09706C0FFF;
-	Wed, 22 Apr 2026 15:18:49 +0000 (UTC)
-Received: from courmont.net ([37.59.142.112])
-	by ghost-submission-7d8d68f679-5pbb9 with ESMTPSA
-	id WZFVLdnm6GmgNQAAmGmyiA
-	(envelope-from <remi@remlab.net>); Wed, 22 Apr 2026 15:18:49 +0000
-Authentication-Results:garm.ovh; auth=pass (GARM-112S00611734424-5a69-4c73-a642-2a7cd00ff7f5,
-                    14B14BC8C77B9486866D902178DE58E78B326C1C) smtp.auth=postmaster@courmont.net
-X-OVh-ClientIp:87.94.153.51
-From: =?UTF-8?B?UsOpbWk=?= Denis-Courmont <remi@remlab.net>
-To: Remi Denis-Courmont <courmisch@gmail.com>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Morduan Zang <zhangdandan@uniontech.com>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com,
- syzbot+706f5eb79044e686c794@syzkaller.appspotmail.com,
- Morduan Zang <zhangdandan@uniontech.com>, zhanjun <zhanjun@uniontech.com>
-Subject:
- Re: [PATCH] net: phonet: do not BUG_ON() in pn_socket_autobind() on failed
- bind
-Date: Wed, 22 Apr 2026 18:18:48 +0300
-Message-ID: <2466095.vKB9LnXJlr@basile.remlab.net>
-Organization: Remlab
-In-Reply-To:
- <81A6570B633FF6FE+20260422013807.63087-1-zhangdandan@uniontech.com>
-References:
- <81A6570B633FF6FE+20260422013807.63087-1-zhangdandan@uniontech.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3E0280A5B
+	for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 23:46:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776901576; cv=pass; b=lz78DmSIs74LAKoNgF95EfZETYHzGClLGt52S6myjRswVfPLcrqSmbFYPP7D00Sx4XGlC1VjBpAcu49GVF9ixGZoQE0bzNQlFtVmCwNHJEejp5k/Ah/N+xP3rTNcIfdD+29QYCnc89j8nGKYuwxoiKwZQM4wKndPpE+UmXYpmiU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776901576; c=relaxed/simple;
+	bh=r85R57NVW8eSM/NE6sMPR1IjJ29w3fmDxqW/oYNi0ww=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UnN55dadimAcs27Rj7XKSWNz3vj8sPlyta1y8vt8AXijUELW9hWEryi0j4Z9dHdoLuxEe+wCnOx5wxadZZRMEJXQeCMX6wsI67p+0tEbOn8NZbPlFxdASC2Vo35GNfg1CeQjpV4YvzWwPQ2voSZgHJLpsNHglEDeQiEGRtJg1cM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LEov8WDK; arc=pass smtp.client-ip=209.85.167.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LEov8WDK"
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5a2b5ea59a1so8263723e87.1
+        for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 16:46:15 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776901573; cv=none;
+        d=google.com; s=arc-20240605;
+        b=R1tRjucOOp0NH2vRAE760qosisCrg+qWz33BT0m6J5rIlIDKou4N7/iPe7axO0qPg6
+         o4ZKtw59ztoBN5naRqtoByQY9561s2BJSr4FMWB/xGFeOYXtJANHzxveJ9M3/YQAffcX
+         MvJO+c4ooWZQuQZCycdefBR8OFOUVcmRWYM8POt4gjrWIfphy9/zQUCoe/fl71ThUpMz
+         TGQMqeFsiyYzEFs2Uorp25hYueMRSVXebKkjjlFmHQa2JAtKwr95rfZwNC569d0DIa1H
+         iwp4KjhmhdKJhOGxt/ZJl5MvF1+3vk3M27EjUUK3VHKBnlAfPg1WEVf1dCQmM4C+n0j1
+         cG2g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=GVdJjNNn1/VkVF3ZLZB/9uFSUrjOsGK5ioRT6dmRAqE=;
+        fh=etdBIslC9HzJHxzuDlspvI2iUE2k0njBXSxxDMiR+hA=;
+        b=SJFU5btWm26dTG7LtiysSJGVrGWmK/9Dnm1nj1E0xVjV9XVn9wGTDP58HwrZ6LjE9h
+         zbiuMwbZe8xDRkmiBMcXLZds5A6j7mMPIKBTFnE3KAEXdkoMLm1YxMgRHsIrGLqPwE6o
+         gaQM/R+LqUug7aCKgo9UJ/lI2W2GjANCMks73wPV+VusiyWt+rmO2iZFykmRWf4o5uYW
+         QKVDBCfp9RH2l4zLroGen0XBY5u+LpjIDrCBCWc1HqoWbXRxP4WNDd+R0p5elXh9OolX
+         WULKq1GXb1w5nYMoLmS3J3a2mTViYbqMeY5x3H09+sJpOkD/S3IZUbqU5gjV5qQSymSW
+         h+Xw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776901573; x=1777506373; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GVdJjNNn1/VkVF3ZLZB/9uFSUrjOsGK5ioRT6dmRAqE=;
+        b=LEov8WDKj597klFA7bnqipJ0uFLax7RlRjwccd8yOQDCwp4xFmWBUf8jV3Zll5S13Q
+         Dk/QDEozJVBofGP6kJa3rN7MOABT5x1R7rrQ8gANflGPQvuVjt3Fs7IQ+AXNjRhSf1xl
+         vwy5GmEbqlM3Vt402SxXSR86FmGR58oZi4raKZwBBa5WR00A/W7nLAiSddSddYrMnqbh
+         SZ07wLLNJcdYkvXRJ6MxNFSHKCUj6KSh9k3s/Dnx9jYO/vWwOt8I5aw38bCiWWL8P9ta
+         GmDo7FQVRUHC9EZgg4joiWETeinHS5N7VD9O04mKxLQD3Tr08JFHW21547aDkQ3hq53W
+         diMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776901573; x=1777506373;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=GVdJjNNn1/VkVF3ZLZB/9uFSUrjOsGK5ioRT6dmRAqE=;
+        b=J0Ra/Boz2/GkfIH43f8t/d6bRBz6s7fo+s7C/+r7XwOTpTsuQhguijkrCKx8+rDZym
+         G+0eI5Pck4oLs7+OKQX6h9paDnLtaL6+kO6x4JL7Rdku5tK3FMBAdYpFFniAKE0VTaV+
+         9TN37+kNqWMYTqtMTS2tMVu1QA9s7NqMLphe6EtLHZ6MqOp3UgBfEnWclxip9TGyKQNc
+         SiuDFo9Z3CmLBtfcVSnfOECUBgC3EGc4JPq0c7hLqGMTyl/kG0MebTyQYJxitQyuvJKY
+         /Z2U/5YV2mNaN40OHVQF4QsO+h7ivG3Lsn8D1pUVB6icwAQdA075f7zYhFxKGvhKpdUW
+         DYUw==
+X-Forwarded-Encrypted: i=1; AFNElJ/etSIOt4I/kx9VO3gwf4ZnSJhguRKzjT+6z83LtsCqEEPMp3KjCLaAFHfxTw94Wsq1NnSh2c8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy40t4guuItP01HwOsubL/PARxCEpzCnAgg7DrZU/NqkKSSr1pW
+	GgUVjCaNVtWP/OhIJWznKdJk7wguVI+kaOHqkM9fgePtYz3OBp6PwYfLL5cwIZzJ40pYPkJEx+o
+	UYUg/ym43MxCfqBgmgYC1eR3ogFp0IME=
+X-Gm-Gg: AeBDiesm701yx0Wxlmr0mkjL8ZotPm1HM2rT0U1H9d/LvBbG663wA2SMfCLt7vi8eNx
+	5ValAxbpnZAiUbeB95k/8NZCbZtHa+gCtDEoUAmUFHPANYJdc7hNxYL86zFsEHxmOpwo1dM+syV
+	7P4OFC4PfheN597wS3W0AlTtqpoDydSSljsJgJ3n8NMPvNGyMVfT4iC6SPPdytwDV01ZHsQrgpQ
+	K5u2NEkB7r11iAxoWfpw1jOjOzOPRqceM4i591h6mhtj2XoG+NFMtigLClcdZ6jjHqN3f7ovMKa
+	qShzSabvktczRlVrfA==
+X-Received: by 2002:a05:6512:3b08:b0:5a2:afbe:4aaf with SMTP id
+ 2adb3069b0e04-5a4172f63eamr7151436e87.21.1776901573109; Wed, 22 Apr 2026
+ 16:46:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20260422033650.68457-1-kerneljasonxing@gmail.com>
+ <20260422033650.68457-9-kerneljasonxing@gmail.com> <20260422212741.50deeb06@pumpkin>
+In-Reply-To: <20260422212741.50deeb06@pumpkin>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Thu, 23 Apr 2026 07:45:35 +0800
+X-Gm-Features: AQROBzDDuAl2OSnLbOvFaE-XlTSEU46HN_-vyDfaJxynGIzlHMZSeJrJj2JfxfA
+Message-ID: <CAL+tcoCMrtYR=938roeQ-q4j8LKcsUYxm_qSTPLCdYjBhD_urg@mail.gmail.com>
+Subject: Re: [PATCH net v3 8/8] xsk: don't support AF_XDP on 32-bit architectures
+To: David Laight <david.laight.linux@gmail.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, bjorn@kernel.org, magnus.karlsson@intel.com, 
+	maciej.fijalkowski@intel.com, jonathan.lemon@gmail.com, sdf@fomichev.me, 
+	ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org, 
+	john.fastabend@gmail.com, bpf@vger.kernel.org, netdev@vger.kernel.org, 
+	Jason Xing <kernelxing@tencent.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
-x-ovh-tracer-id: 16635171126822978512
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: dmFkZTFwgEp8Qq+Q0A9WIx2zgaVqCKQUhN1HNPX2iHG2ubWEB1Ixda3cVg9fzHImdu0419pDnYgV+5kdUUG4bTSh0Mz4wSWBbD22d5LQqwG1pzolRjFHg/2hFXBm0UUNAaljPVCaJXgugqN45RY7zujiIqtJ3xcJI4cX2uGhGhThEKp0dmA6JXuKDjSEN/MN8FVmQsZAkLz9D4lncZ0Ke01FEAk75HsV/sgJkdNVYFzo0m3wlkMyAJFIzFLvBz9p5Y6g8K2Nmj2eEGNFwrsbnfDB+y8VV67epTCO6AaS6ddHH45dX4edEWOwwTaJaLLLHq6+uHzrM3IWlMrGOwnMP/MQleEAdmRs7CqAqTYj6397q5qvy7dnuvN6hSt6ea/berWW+BvgJx1V37E9+LRrTpX1FNrxBLiGNUC4HBUODYzbdi+XkLsPAOP5I5pD2VGywt7AgnEMBvOy6iTjAphYFQtQqwnM0Ex2/W49/RFx7dvvYoYRS3h47+IIU9tBPUIVd9i4B03vSRIBwRPJ6mRru7KaXXtTJV8AHx45Bz/6FrSpijsC/Rw9CDrYNaLvUpyDzArmuIP14KFtyzNT4GGLwwfMvkLfC82B4/DsTjFk9eqQMl6R+FVT8zKGurD+9tJ5WidSv1Djv9HXh9zm60rHP2ip5OOTXbIrMXTUgTBDI0EBM5soDg
 
-Hi,
+On Thu, Apr 23, 2026 at 4:27=E2=80=AFAM David Laight
+<david.laight.linux@gmail.com> wrote:
+>
+> On Wed, 22 Apr 2026 11:36:50 +0800
+> Jason Xing <kerneljasonxing@gmail.com> wrote:
+>
+> > From: Jason Xing <kernelxing@tencent.com>
+> >
+> > In copy mode TX, xsk_skb_destructor_set_addr() stores the 64-bit
+> > descriptor address into skb_shinfo(skb)->destructor_arg (void *) via a
+> > uintptr_t cast:
+> >
+> >     skb_shinfo(skb)->destructor_arg =3D (void *)((uintptr_t)addr | 0x1U=
+L);
+> >
+> > On 32-bit architectures uintptr_t is 32 bits, so the upper 32 bits of
+> > the descriptor address are silently dropped. In XDP_ZEROCOPY unaligned
+> > mode the chunk offset is encoded in bits 48-63 of the descriptor
+> > address (XSK_UNALIGNED_BUF_OFFSET_SHIFT =3D 48), meaning the offset is
+> > lost entirely. The completion queue then returns a truncated address to
+> > userspace, making buffer recycling impossible.
+>
+> I had a look at how this is used.
+>
+> I suspect that XSK_UNALIGNED_BUF_OFFSET_SHIFT can just be made smaller.
+> The 'addr' isn't really a normal address of any kind, it is a really
+> and offset into an array made up of pages of memory.
+> The actual address (kernel virtual of dma) is generated by:
+>         ptr->array[addr >> PAGE_SHIFT] + addr & ~PAGE_MASK
+> (after removing the unaligned chunk offset from 'addr').
+>
+> It is actually quite likely that there are enough free high bits
+> even in 32bit mode.
 
-Le keskiviikkona 22. huhtikuuta 2026, 4.38.07 It=C3=A4-Euroopan kes=C3=A4ai=
-ka Morduan=20
-Zang a =C3=A9crit :
-> syzbot reported a kernel BUG triggered from pn_socket_sendmsg() via
-> pn_socket_autobind():
->=20
->   kernel BUG at net/phonet/socket.c:213!
->   RIP: 0010:pn_socket_autobind net/phonet/socket.c:213 [inline]
->   RIP: 0010:pn_socket_sendmsg+0x240/0x250 net/phonet/socket.c:421
->   Call Trace:
->    sock_sendmsg_nosec+0x112/0x150 net/socket.c:797
->    __sock_sendmsg net/socket.c:812 [inline]
->    __sys_sendto+0x402/0x590 net/socket.c:2280
->    ...
->=20
-> pn_socket_autobind() calls pn_socket_bind() with port 0 and, on
-> -EINVAL, assumes the socket was already bound and asserts that the
-> port is non-zero:
->=20
->   err =3D pn_socket_bind(sock, ..., sizeof(struct sockaddr_pn));
->   if (err !=3D -EINVAL)
->           return err;
->   BUG_ON(!pn_port(pn_sk(sock->sk)->sobject));
->   return 0; /* socket was already bound */
->=20
-> However pn_socket_bind() also returns -EINVAL when sk->sk_state is not
-> TCP_CLOSE, even when the socket has never been bound and pn_port() is
-> still 0.  In that case the BUG_ON() fires and panics the kernel from a
-> user-triggerable path.
->=20
-> Treat the "bind returned -EINVAL but pn_port() is still 0" case as a
-> regular error and propagate -EINVAL to the caller instead of crashing.
-> Existing callers already translate a non-zero return from
-> pn_socket_autobind() into -ENOBUFS/-EAGAIN, so returning -EINVAL here
-> only changes behaviour from panic to a normal errno.
->=20
-> Fixes: ba113a94b750 ("Phonet: common socket glue")
-> Reported-by: syzbot+706f5eb79044e686c794@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=3D706f5eb79044e686c794
-> Signed-off-by: Morduan Zang <zhangdandan@uniontech.com>
-> Signed-off-by: zhanjun <zhanjun@uniontech.com>
-> ---
->  net/phonet/socket.c | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
->=20
-> diff --git a/net/phonet/socket.c b/net/phonet/socket.c
-> index 4423d483c630..de9108adfe1c 100644
-> --- a/net/phonet/socket.c
-> +++ b/net/phonet/socket.c
-> @@ -210,7 +210,15 @@ static int pn_socket_autobind(struct socket *sock)
->  			     sizeof(struct sockaddr_pn));
->  	if (err !=3D -EINVAL)
->  		return err;
-> -	BUG_ON(!pn_port(pn_sk(sock->sk)->sobject));
-> +	/*
-> +	 * pn_socket_bind() can return -EINVAL both when the socket is
-> +	 * already bound (pn_port() !=3D 0) and when sk_state !=3D TCP_CLOSE
-> +	 * without a prior bind.  Only the former is an "already bound"
-> +	 * success for autobind; otherwise propagate -EINVAL instead of
-> +	 * crashing the kernel.
-> +	 */
-> +	if (!pn_port(pn_sk(sock->sk)->sobject))
-> +		return -EINVAL;
+Interesting idea. But if everything is folded into a 32-bit area, it
+means the size of umem is only 20-bit. 20-bit reflects that users only
+put a max 1MB data into it. It might be too small to use?
 
-This could be written as just if (err !=3D -EINVAL || unlikely(...)) return=
- err;
+Thanks,
+Jason
 
->  	return 0; /* socket was already bound */
->  }
-
-
-=2D-=20
-=E5=BE=B7=E5=B0=BC-=E5=BA=93=E5=B0=94=E8=92=99=E2=80=A7=E9=9B=B7=E7=B1=B3
-https://www.remlab.net/
-
-
-
+>
+>         David
+>
+> >
+> > Since we hear no one is using AF_XDP on 32-bit arch, we decided to
+> > strictly stop supporting it at compile time.
+> >
+> > Closes: https://lore.kernel.org/all/20260419045824.D9E5EC2BCAF@smtp.ker=
+nel.org/
+> > Fixes: 0ebc27a4c67d ("xsk: avoid data corruption on cq descriptor numbe=
+r")
+> > Suggested-by: Stanislav Fomichev <sdf@fomichev.me>
+> > Signed-off-by: Jason Xing <kernelxing@tencent.com>
+> > ---
+> >  net/xdp/Kconfig | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/net/xdp/Kconfig b/net/xdp/Kconfig
+> > index 71af2febe72a..819aa5795f50 100644
+> > --- a/net/xdp/Kconfig
+> > +++ b/net/xdp/Kconfig
+> > @@ -1,7 +1,7 @@
+> >  # SPDX-License-Identifier: GPL-2.0-only
+> >  config XDP_SOCKETS
+> >       bool "XDP sockets"
+> > -     depends on BPF_SYSCALL
+> > +     depends on BPF_SYSCALL && 64BIT
+> >       default n
+> >       help
+> >         XDP sockets allows a channel between XDP programs and
+>
