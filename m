@@ -1,62 +1,112 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65EBB273D8D
-	for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 16:20:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CA46220F49;
+	Wed, 22 Apr 2026 16:20:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776874804; cv=none; b=uB1Z4f8KY9im3oYhOAJBWZpK8hA0fs1xwdG9lzdJdTcHgoiiuFg0HnpO9HEymIAQqV6k2P4JmPa/6kxQ9VgVaaAnIb6wCIL6RBmSjIpAHa2BFLfXSmfPLLQrTOVbgC+2QecGc1MBW81cQECjmrgMiAkMYWIeaqxLaOvQzj2ZmZw=
+	t=1776874808; cv=none; b=XuCCHY/8emQzunJBADNZN0bSGvwGG6vxGscsfB/h4MKKAHRGRXwNq1mbbg2wFlSdjxt02uqhT7yeEYnSx7nAHn/gFyIvFpGoCK3we5Im7l0ewDpda4UaF/UjFatVhemoOQBeWw/VDhm4nflDJ1zlWfMUlVFPZVxONHnd/EbFZE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776874804; c=relaxed/simple;
-	bh=hTbQ+7rBn6Z6oE4IHG7B+e3OJoHuV9HV2cu0aa7qwWk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VgU7Y5fQ1BlKS70TzwsdbHePjvt3qPtu2zYN6BXZn5QVulZRcZBZnI7G+CbO8fgoIT2425pnfJOs/iexitm/9WPg1gEr/4ca/0E58P6xRkI1ehjE1uhsCGLTFQRA27YJw/U+2HARDeaYHQVpLgye9d+SjhM9FO1K0QFW1aJoY3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=RmpKPxzn; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1776874808; c=relaxed/simple;
+	bh=Ut5giVmbsImJs8yL0H3YCWudMqhBdgqTW7EV5XSP3Ls=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MoECGbYV/RFT7yl8zS2X7RXEyYTdKULuGN0/UCNl7IwCJlGrQuUYxO+ZLh3OcjvCZg/4uVJFXotrvPlpJdKcFhsRqOKNBeo3nqqjt+YLqZ0rEhVuMRXItlDUWS/ynBs9+1RBI53zF94I4XdHsZlQIU6z1S9YLoR9pzr4rvoIenY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Mab07/N0; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="RmpKPxzn"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=841VCFZltsKSyO2IrUGokvlS9Y7hR4F0aLxXWbhCsD0=; b=RmpKPxznEfqB69d5h7g0nT4oAR
-	L053wtOhwrAZlJE/p3yids1FjPutOVv43d6mrs4Dfx23QW9vgMCp5JL70cGGMMFNTiUxQ6cutlNU4
-	yBlKSw6jo6BC4EJVEMMOcPavpOOcWUIcXpZXAIzjPfvu5zlNA6+miqZQN7nkGBYOPiDI=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wFaIv-00H3bR-3C; Wed, 22 Apr 2026 18:19:57 +0200
-Date: Wed, 22 Apr 2026 18:19:57 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Junyang Han <han.junyang@zte.com.cn>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, andrew+netdev@lunn.ch,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	ran.ming@zte.com.cn, han.chengfei@zte.com.cn,
-	zhang.yanze@zte.com.cn
-Subject: Re: [PATCH net-next v2 0/3] Add ZTE DingHai Ethernet PF driver
-Message-ID: <39e6d965-44ee-4edb-a558-859a902ffe54@lunn.ch>
-References: <20260422144901.2403456-1-han.junyang@zte.com.cn>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Mab07/N0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776874807; x=1808410807;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Ut5giVmbsImJs8yL0H3YCWudMqhBdgqTW7EV5XSP3Ls=;
+  b=Mab07/N0Vtn2iOpegP8DeFUyfcfnQ/R4RIk/UFNxnIq4vdUE1i+0jHsY
+   /A4pcPObUVqqCEcytg9xizmv/Be9uNRoQQBwSNsJHxUHrGa87upOC++53
+   +ELbocZkxmqQouhndW8E4t6HE5wmBIYAGGSSv31lChxtAF5N0lgs5gL6m
+   e/gi+z6XIa9yZFQSCoSWpiCeM075pxUlhy+H9YYm9xpVL688C7+xApXRT
+   nUbNyGib2Xhw8aWuGTcAbygxPZBsb9lJYW+JpwnvfAKBOYk8dahl+g8un
+   jpuqS+ZTCBzuIVLnhabHv0fqOSVnzEDtuaXZB+MqhqFPxC9jbCWJviQxW
+   w==;
+X-CSE-ConnectionGUID: ufrzjZwCROGfZT+szV/8OA==
+X-CSE-MsgGUID: GfeZEEVeQ4mtbOy2q7aCvg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11764"; a="88134460"
+X-IronPort-AV: E=Sophos;i="6.23,193,1770624000"; 
+   d="scan'208";a="88134460"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2026 09:20:07 -0700
+X-CSE-ConnectionGUID: w0LEF1wJTcy4bK6zG8h0tw==
+X-CSE-MsgGUID: g1ONIYzqTkuMuwXE53Wm/A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,193,1770624000"; 
+   d="scan'208";a="228052418"
+Received: from unknown (HELO localhost.png.intel.com) ([10.107.255.61])
+  by fmviesa010.fm.intel.com with ESMTP; 22 Apr 2026 09:20:03 -0700
+From: KhaiWenTan <khai.wen.tan@linux.intel.com>
+To: anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	faizal.abdul.rahim@intel.com,
+	hong.aun.looi@intel.com,
+	khai.wen.tan@intel.com,
+	Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
+Subject: [PATCH iwl-next v3 0/3] igc: add support for forcing link speed without autonegotiation
+Date: Wed, 22 Apr 2026 23:56:58 +0800
+Message-ID: <20260422155701.7420-1-khai.wen.tan@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260422144901.2403456-1-han.junyang@zte.com.cn>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Apr 22, 2026 at 10:48:58PM +0800, Junyang Han wrote:
-> This series adds initial support for the ZTE DingHai Ethernet controller,
-> a high-performance PCIe Ethernet device supporting SR-IOV, hardware
-> offloading, and advanced virtualization features.
+From: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
 
-https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
+This series adds support for forcing 10/100 Mb/s link speed via ethtool
+when autonegotiation is disabled on the igc driver.
 
-Please read sections 1.3 and 1.4, particularly the bit in red.
+Changes in v3:
+- Modify condition from "if (duplex == DUPLEX_HALF)" to
+  "if (duplex != DUPLEX_FULL)". (Simon Horman)
 
-    Andrew
+Changes in v2:
+- When forcing half-duplex, set hw->fc.requested_mode = igc_fc_none,
+  since half-duplex cannot support flow control per IEEE 802.3.
+  (Simon Horman)
+- Split the original single patch into three patches for clarity:
+  patches 1 and 2 are preparatory cleanups; patch 3 carries the
+  functional change.
 
----
-pw-bot: cr
+v2 at:
+https://patchwork.kernel.org/project/netdevbpf/patch/20260416015520.6090-4-khai.wen.tan@linux.intel.com/
+
+v1 at:
+https://patchwork.ozlabs.org/project/intel-wired-lan/patch/20260409072747.217836-1-khai.wen.tan@linux.intel.com/
+
+Faizal Rahim (3):
+  igc: remove unused autoneg_failed field
+  igc: move autoneg-enabled settings into igc_handle_autoneg_enabled()
+  igc: add support for forcing link speed without autonegotiation
+
+ drivers/net/ethernet/intel/igc/igc_base.c    |  35 +++-
+ drivers/net/ethernet/intel/igc/igc_defines.h |   9 +-
+ drivers/net/ethernet/intel/igc/igc_ethtool.c | 203 +++++++++++++------
+ drivers/net/ethernet/intel/igc/igc_hw.h      |  10 +-
+ drivers/net/ethernet/intel/igc/igc_mac.c     |  16 +-
+ drivers/net/ethernet/intel/igc/igc_main.c    |   2 +-
+ drivers/net/ethernet/intel/igc/igc_phy.c     |  65 +++++-
+ drivers/net/ethernet/intel/igc/igc_phy.h     |   1 +
+ 8 files changed, 251 insertions(+), 90 deletions(-)
+
+--
+2.43.0
+
