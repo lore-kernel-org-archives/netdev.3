@@ -1,98 +1,134 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE1EA37FF68;
-	Wed, 22 Apr 2026 16:20:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E9038E10F
+	for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 16:20:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776874845; cv=none; b=XQYBXSdp52fI54k1gqfjxtRf06Cb83mpZm+oO58EkIDErXCpn7P1ut8r8GGGwWacEtSJAJ/EhOG+Ho2u7BxMu6GQjD9sNOln8v22iWMhVRwiUa0V3PwWzwx9aggkVAMScFpx7yd534+goU48WsTFx73h1Vt0BaMW2prpjjnZiJA=
+	t=1776874847; cv=none; b=RSLDrPB/lsk7QI9CZpTTsjHRtoD6OYKrs8Ses/dwTJLancG3R+a+em9t+M7mTRyb7miLY1MnCkJHTIJRSWMzV+IY+NIdSKhd1cFPPfW1gVIZE0hxPfQrUuUA/MK40kX8VyFLi+4cATkdYMfuqdCbfooPWVT5r939xlrtdzPEF4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776874845; c=relaxed/simple;
-	bh=6/OMqD+59TuORkuwHoA/SFCxiAHmkdbLz9aAfiTuwLc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=SnHN4hAXcIzDbQg1qlLpYSsAa17zlGsiKQKgenAKjPiHT6Z9LFoqOSz94GAXFn9LPV0oDtiTInqgbEokTgr3Chg5OVo7MCQHH/eHhLDcVtGvdrfR99cz6Qe2in5hEOGCCCvhE0M1zPzbqvUcG+uW+7T0M+47kbnuflmAKeCs6QQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=SxQ4fz7N; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1776874847; c=relaxed/simple;
+	bh=552f9hdt0Q9xyd/Cb6oPTHWO+NEzOX+2d/uM6MbS2OI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mWsXeGPBmLaoDrZQHwG/8C34DQR5IC3/F2uIqywgD/rCamdYdZnvzJ7auFYio3OgHi9JiPGiHGZMj/kwmG4tq0o+0J/C7CiNRkp9RbxKDDTYqXPHYuyRzNK8RRYSgXe5Fig5FrasJwkRL77GX3wBQhGSFt9LQFaO6YGp9qQAha8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BgjTxvBi; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="SxQ4fz7N"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 8A769C5B1AC;
-	Wed, 22 Apr 2026 16:21:23 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id AA25B5FA8F;
-	Wed, 22 Apr 2026 16:20:42 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AE355104608C5;
-	Wed, 22 Apr 2026 18:20:39 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1776874841; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=/OeQaPHqgxOT0nI16nQdUnS3gmk63KqT0dFXD3w7yZ4=;
-	b=SxQ4fz7NUAZBTDtaJecUlJqQlga5tLD/ljcSe5zjWI5wSxT9J1Pr30P4/cmBUoHC1PDeos
-	hFuh89yrE01a0HKZU8ypIWnpZelBMyRJt+ZxbMahAaKh3Cak+EtZ7q+LKE937zxgIkhLXW
-	ogqG4r+UnxGqYSSB0CWXoYnFHPyHZzvkCzKEkbx2Yc+WMqj3tSlP0b/Fe+McayUlaGcx0o
-	H8gIK1ApmgRXlGHRwLc4roq3t9OyU1jcOn5H2eU2sYad8Wdp1P7plboL0BrsJ4n0EqDR/l
-	BfX3ZPlmoGBi8BxkoZMHqCSKg9MTMsluUogtn2RbEmRic1YeRGoDTo17AUcKDg==
-From: =?utf-8?q?Alexis_Lothor=C3=A9_=28eBPF_Foundation=29?= <alexis.lothore@bootlin.com>
-Date: Wed, 22 Apr 2026 18:20:24 +0200
-Subject: [PATCH bpf-next v2 1/2] selftests/bpf: make btf_dump use xdp_dummy
- rather than xdping_kern
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BgjTxvBi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FBBBC19425;
+	Wed, 22 Apr 2026 16:20:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776874847;
+	bh=552f9hdt0Q9xyd/Cb6oPTHWO+NEzOX+2d/uM6MbS2OI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BgjTxvBi83hfTofpSFlo88+EJuEGRVFDeCZ/l18hrUWBXQzTJx1U4781OKv4OGGDC
+	 pwV6W9Z3sMF93ezLbQFQ9/9pRGe3DefnQLvASUtPOZ/5qYczxj4gkif4DzEzKlB7w0
+	 fHCQuGl+2kcwbax+S7ICOP7xmo6q7P4zxL9g3d9e4t9qvE3nIEs6bmz/U7qfYbOGfA
+	 im/HSL0eFRevOvaVgE12KPYM8SC+wuP6B/Myn5MvMl1tAYxpygLDyIABNFKyoTPdsg
+	 OMPO2BcInv8IIxBX1qbTguitq2wTEX86fZAksrLVPgkSDpt98V31n5xeTdOXxrjc5P
+	 WTZCzF/rpZ1yw==
+Date: Wed, 22 Apr 2026 17:20:41 +0100
+From: Simon Horman <horms@kernel.org>
+To: Ren Wei <n05ec@lzu.edu.cn>
+Cc: netdev@vger.kernel.org, edumazet@google.com, andrew+netdev@lunn.ch,
+	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+	kees@kernel.org, yuantan098@gmail.com, ylong030@ucr.edu,
+	yifanwucs@gmail.com, tomapufckgml@gmail.com, bird@lzu.edu.cn
+Subject: Re: [PATCH net v2 2/2] 8021q: delete cleared egress QoS mappings
+Message-ID: <20260422162041.GO651125@horms.kernel.org>
+References: <9136768189f8c6d3f824f476c62d2fa1111688e8.1776647968.git.yuantan098@gmail.com>
+ <ecfa6f6ce2467a42647ff4c5221238ae85b79a59.1776647968.git.yuantan098@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260422-xdping-v2-1-c0f8ccedcf91@bootlin.com>
-References: <20260422-xdping-v2-0-c0f8ccedcf91@bootlin.com>
-In-Reply-To: <20260422-xdping-v2-0-c0f8ccedcf91@bootlin.com>
-To: Alexei Starovoitov <ast@kernel.org>, 
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
- Martin KaFai Lau <martin.lau@linux.dev>, 
- Eduard Zingerman <eddyz87@gmail.com>, 
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>, 
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
- Shuah Khan <shuah@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
- Jakub Kicinski <kuba@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>, 
- John Fastabend <john.fastabend@gmail.com>, 
- Stanislav Fomichev <sdf@fomichev.me>
-Cc: ebpf@linuxfoundation.org, 
- Bastien Curutchet <bastien.curutchet@bootlin.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, bpf@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
- netdev@vger.kernel.org, 
- =?utf-8?q?Alexis_Lothor=C3=A9_=28eBPF_Foundation=29?= <alexis.lothore@bootlin.com>
-X-Mailer: b4 0.15.2
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ecfa6f6ce2467a42647ff4c5221238ae85b79a59.1776647968.git.yuantan098@gmail.com>
 
-In order to prepare xdping tool removal from the BPF selftests
-directory, make the btf_dump test use another BPF program for the btf
-datasec dump test. Use xdp_dummy.bpf.o, as it is already used by various
-other tests.
+On Mon, Apr 20, 2026 at 11:18:46AM +0800, Ren Wei wrote:
+> From: Longxuan Yu <ylong030@ucr.edu>
+> 
+> vlan_dev_set_egress_priority() currently keeps cleared egress
+> priority mappings in the hash as tombstones. Repeated set/clear cycles
+> with distinct skb priorities therefore accumulate mapping nodes until
+> device teardown and leak memory.
+> 
+> Delete mappings when vlan_prio is cleared instead of keeping tombstones.
+> Now that the egress mapping lists are RCU protected, the node can be
+> unlinked safely and freed after a grace period.
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Cc: stable@kernel.org
+> Reported-by: Yifan Wu <yifanwucs@gmail.com>
+> Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+> Reported-by: Xin Liu <bird@lzu.edu.cn>
+> Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+> Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+> Signed-off-by: Longxuan Yu <ylong030@ucr.edu>
+> Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+> ---
+>  net/8021q/vlan_dev.c     | 20 ++++++++++++++------
+>  net/8021q/vlan_netlink.c |  4 ----
+>  2 files changed, 14 insertions(+), 10 deletions(-)
+> 
+> diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
+> index a5340932b657..7aa3af8b10ea 100644
+> --- a/net/8021q/vlan_dev.c
+> +++ b/net/8021q/vlan_dev.c
+> @@ -172,26 +172,34 @@ int vlan_dev_set_egress_priority(const struct net_device *dev,
+>  				 u32 skb_prio, u16 vlan_prio)
+>  {
+>  	struct vlan_dev_priv *vlan = vlan_dev_priv(dev);
+> +	struct vlan_priority_tci_mapping __rcu **mpp;
+>  	struct vlan_priority_tci_mapping *mp;
+>  	struct vlan_priority_tci_mapping *np;
+>  	u32 bucket = skb_prio & 0xF;
+>  	u32 vlan_qos = (vlan_prio << VLAN_PRIO_SHIFT) & VLAN_PRIO_MASK;
+>  
+>  	/* See if a priority mapping exists.. */
+> -	mp = rtnl_dereference(vlan->egress_priority_map[bucket]);
+> +	mpp = &vlan->egress_priority_map[bucket];
+> +	mp = rtnl_dereference(*mpp);
+>  	while (mp) {
+>  		if (mp->priority == skb_prio) {
+> -			if (mp->vlan_qos && !vlan_qos)
+> +			if (!vlan_qos) {
+> +				rcu_assign_pointer(*mpp, rtnl_dereference(mp->next));
+>  				vlan->nr_egress_mappings--;
+> -			else if (!mp->vlan_qos && vlan_qos)
+> -				vlan->nr_egress_mappings++;
+> -			WRITE_ONCE(mp->vlan_qos, vlan_qos);
+> +				kfree_rcu(mp, rcu);
+> +			} else {
+> +				WRITE_ONCE(mp->vlan_qos, vlan_qos);
+> +			}
+>  			return 0;
+>  		}
+> -		mp = rtnl_dereference(mp->next);
+> +		mpp = &mp->next;
+> +		mp = rtnl_dereference(*mpp);
+>  	}
 
-Signed-off-by: Alexis Lothoré (eBPF Foundation) <alexis.lothore@bootlin.com>
----
- tools/testing/selftests/bpf/prog_tests/btf_dump.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Hi Ren,
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/btf_dump.c b/tools/testing/selftests/bpf/prog_tests/btf_dump.c
-index f1642794f70e..9f1b50e07a29 100644
---- a/tools/testing/selftests/bpf/prog_tests/btf_dump.c
-+++ b/tools/testing/selftests/bpf/prog_tests/btf_dump.c
-@@ -1027,8 +1027,8 @@ static void test_btf_dump_datasec_data(char *str)
- 	char license[4] = "GPL";
- 	struct btf_dump *d;
- 
--	btf = btf__parse("xdping_kern.bpf.o", NULL);
--	if (!ASSERT_OK_PTR(btf, "xdping_kern.bpf.o BTF not found"))
-+	btf = btf__parse("xdp_dummy.bpf.o", NULL);
-+	if (!ASSERT_OK_PTR(btf, "xdp_dummy.bpf.o BTF not found"))
- 		return;
- 
- 	d = btf_dump__new(btf, btf_dump_snprintf, str, NULL);
+Thanks for splitting up the patchset, it is very helpful to me.
 
--- 
-2.53.0
+It seems to me that the mpp/mp construct used is a bit complex and
+stems from the use of a hand-rolled list centred the next field of
+struct vlan_priority_tci_mapping.
 
+I wonder if things can be simplified by moving to use a standardised
+list construct, such as an hlist. And the helpers available for using it.
+
+>  
+>  	/* Create a new mapping then. */
+> +	if (!vlan_qos)
+> +		return 0;
+> +
+>  	np = kmalloc_obj(struct vlan_priority_tci_mapping);
+>  	if (!np)
+>  		return -ENOBUFS;
+
+...
