@@ -1,52 +1,79 @@
-Received: from bg1.exmail.qq.com (bg1.exmail.qq.com [114.132.77.159])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11023082.outbound.protection.outlook.com [52.101.83.82])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1070B3CAE9A
-	for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 09:57:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.132.77.159
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776851863; cv=none; b=a5u1jfvo2+TgO+YN/X8t4/0uGAWV5B75q2autJsDdXqU0Fpax8tapRMrpegjKppwtC8tylWP9uXlr7sJfwUNJ0Bmsq9wIDS0PovWqsBFKVtZ6HBdIwNk/rA8jY98vJpZxRkdLyTVNkbAJmYiGLGDq7hUhGzFyXD6ghCBlj4DeNs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776851863; c=relaxed/simple;
-	bh=kibypjruGxPZlZRomStopJ4CK9Lwzd+vZvZyTJH93FY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=QyLEYE+fvQaR3YOexV5wotHu7OXhaX+ROuBpYNZJf/rUeMOdZePkbPzAVRm4ft1T2nWusGH1e/fWr3ApzJBN69tKkiT84wgQdmVHG4U67+4od4i5926pdOF/f37v3h/sXjzGzRckDFfrFdKJp1Ovny0iFxtQhQMCE3rJ/j1BgQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=114.132.77.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: esmtpgz13t1776851797ta17b84dd
-X-QQ-Originating-IP: JQoZ1BNPjmvDsTVyIq7s0tY9k4L3ihRsDcD/XCgLrCs=
-Received: from lap-jiawenwu.trustnetic.com ( [115.220.225.180])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 22 Apr 2026 17:56:35 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 12193327949234377655
-EX-QQ-RecipientCnt: 17
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: netdev@vger.kernel.org
-Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Simon Horman <horms@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	Breno Leitao <leitao@debian.org>,
-	Joe Damato <joe@dama.to>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Fabio Baltieri <fabio.baltieri@gmail.com>,
-	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [RFC PATCH net-next 2/5] net: wangxun: add Tx timeout process
-Date: Wed, 22 Apr 2026 17:56:14 +0800
-Message-Id: <20260422095617.27080-3-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.21.0.windows.1
-In-Reply-To: <20260422095617.27080-1-jiawenwu@trustnetic.com>
-References: <20260422095617.27080-1-jiawenwu@trustnetic.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9BB3CBE78;
+	Wed, 22 Apr 2026 10:09:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.82
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776852586; cv=fail; b=NCePHHrhQ+smhH7xGrYvn42+mD28cb4aQEe9bT1mbGN1Tc+dItAecPY0loeXg23ohUTE5yLWG8uwhRUCKfVN9/Uvm/d8yB06Q4WlLt8GCcs+RwGI/H8tGNHKMTedTvj2xx3ajQGWvbq97XBDyjiky9K+XuRZtaHGxQB1HKb3q34=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776852586; c=relaxed/simple;
+	bh=bPvZ/jPKr0jcZK2JuyKc7tPKnIxUa4VWpKyYn9c379M=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Qv1IHcpBrXXcM0Fk3wJh2TQKZNJIMGSm+UNs4NN7JQJXKJuLRRPZ0XuCoWiIDoRi7THBCFYgzS4kop1tD6x3eH0i67AWGwKtu/p1yOQe+OVOxOWksIN+4gmku/R67iG4ECZL1aEtvrcGeWvlO3RtHUtjJzXWt5YTfzdFqDW9X74=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=prodrive-technologies.com; spf=pass smtp.mailfrom=prodrive-technologies.com; dkim=pass (1024-bit key) header.d=prodrive-technologies.com header.i=@prodrive-technologies.com header.b=mBQvOr3r; arc=fail smtp.client-ip=52.101.83.82
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=prodrive-technologies.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prodrive-technologies.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=prodrive-technologies.com header.i=@prodrive-technologies.com header.b="mBQvOr3r"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=zJ22slWFv04MQXuGX7X4epy65hg4ZvHJh2AJJs+B8fDMOEWtU4yjimtizQnTssQNhZGvK1Mgl1g/AmbeL1gE2jEfUJmGJQffKECe22OVR0Q7cjs0swNd50yoY0iZJvSeOum0aVPxrJj+xWOZP8AEy4HvbEkLHdtH0wGhCgeKO8w6vJgimdLhd3x12O80QLJUGqTntoYEQy/MJWRJ2FvxtrBQKOkNHzX9nzNJAtmuTT183YdJDfUSL2ITVcy7cHp+G04RMBK4R0cn4C9dw4HEG51x2byHN3SXZnD7PE1AaY35l5yPtvavtju3O4SDV6sp8OF0BuCbxLf+M+qHpiKEcQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gx69FgFVFkN5cVIxZ+PQDv5WJQ7ttMf3jz5SZ/O8DTg=;
+ b=wGBekHAw0pxMEZfJ7yfVymVRJ9ahh+Ifm81+ofjE/i59AhHcfA34oXJ/wQl3Iq7mOr7vX8KK3WyqxhylSs3WDoTt/zFU3vYhKVS7YFeVTyqx75GIz43O8606rFhR7zTDk1WKptzzPyRJzdt14GJXVaVYGPGoBQfWliNBt7Wgg3C3FLoxVV6PGFJ4r+q5VpbweEQpKswwkibPiwQnCyXFDulvo8Gnp/SXhVJcRuv4UJPBHN+j/KclFNmLi/w2ho7PzmFa5O/l2OCtSuhb/zLCh3FEux0Jn8rwRikJ4Z2/WV9ri1+6qkUnhqTqT/mikPRkVwnzuOnCg2YFR2Ib0pJ4tQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 212.61.153.67) smtp.rcpttodomain=animalcreek.com
+ smtp.mailfrom=prodrive-technologies.com; dmarc=pass (p=reject sp=reject
+ pct=100) action=none header.from=prodrive-technologies.com; dkim=none
+ (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=prodrive-technologies.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gx69FgFVFkN5cVIxZ+PQDv5WJQ7ttMf3jz5SZ/O8DTg=;
+ b=mBQvOr3rC0X3+Z9qE0nLK/JxeTAdG+Nm3tR13pMgJQzgUp66iZhJpDAGtyRJE1bODfFIcgbiAMlUv1yrEZtYX2+BbX+1qyAOLjugHisL84Uu6vWcSzaoKG6LYju+hYnolb5EXVj9YAVVYQ5Po+Ea5HFtWTapDBYfEnvvV0MgMZA=
+Received: from AS9PR05CA0174.eurprd05.prod.outlook.com (2603:10a6:20b:496::6)
+ by VI2PR02MB10999.eurprd02.prod.outlook.com (2603:10a6:800:27b::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.19; Wed, 22 Apr
+ 2026 10:09:36 +0000
+Received: from AMS0EPF000001B0.eurprd05.prod.outlook.com
+ (2603:10a6:20b:496:cafe::a2) by AS9PR05CA0174.outlook.office365.com
+ (2603:10a6:20b:496::6) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9791.48 via Frontend Transport; Wed,
+ 22 Apr 2026 10:09:36 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 212.61.153.67)
+ smtp.mailfrom=prodrive-technologies.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=prodrive-technologies.com;
+Received-SPF: Pass (protection.outlook.com: domain of
+ prodrive-technologies.com designates 212.61.153.67 as permitted sender)
+ receiver=protection.outlook.com; client-ip=212.61.153.67;
+ helo=webmail.prodrive.nl; pr=C
+Received: from webmail.prodrive.nl (212.61.153.67) by
+ AMS0EPF000001B0.mail.protection.outlook.com (10.167.16.164) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9846.18 via Frontend Transport; Wed, 22 Apr 2026 10:09:36 +0000
+Received: from EXCOP01.bk.prodrive.nl (10.1.0.22) by EXCOP01.bk.prodrive.nl
+ (10.1.0.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.39; Wed, 22 Apr
+ 2026 12:09:35 +0200
+Received: from lnxdevrm02.bk.prodrive.nl (10.1.1.121) by
+ EXCOP01.bk.prodrive.nl (10.1.0.22) with Microsoft SMTP Server id 15.2.1748.39
+ via Frontend Transport; Wed, 22 Apr 2026 12:09:35 +0200
+Received: from paugeu by lnxdevrm02.bk.prodrive.nl with local (Exim 4.96)
+	(envelope-from <paul.geurts@prodrive-technologies.com>)
+	id 1wFUWV-002RiT-0S;
+	Wed, 22 Apr 2026 12:09:35 +0200
+From: Paul Geurts <paul.geurts@prodrive-technologies.com>
+To: <mgreer@animalcreek.com>, <sameo@linux.intel.com>,
+	<linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+CC: <martijn.de.gouw@prodrive-technologies.com>, Paul Geurts
+	<paul.geurts@prodrive-technologies.com>
+Subject: [PATCH] NFC: trf7970a: Ignore antenna noise when checking for RF field
+Date: Wed, 22 Apr 2026 12:09:30 +0200
+Message-ID: <20260422100930.581237-1-paul.geurts@prodrive-technologies.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,451 +81,70 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpgz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: MeGVnsUF9M9xbyztiu/alv9CpHv3l2xgiUbRdS8WU/dHpXOGKo/7UzSd
-	f/Og3Z3TNnyLNKytq0SKjUpz4nTWIdTOXUQKAhRFdmfaPWHeGTobWlSpjbQIHeUNG4eX+cv
-	AlgmCmHLa/gDgfHF3yt0YRFvedYBSMgc6AIKTpwkb3IZiG7yh7P/2PG1CVxVBmats4n09NQ
-	+8DPSvJncHW0PKw062dTERoiUBiNgf34hFNfqJoP3hxjOzc3JgqbbKCpNtokvrDLZ1+HZRe
-	OgaIGrSxdWjprrqT+BoWWbHB5pOqLIUIq0cARD9sEt+1Oh57g9en58On5tldcIzqEgOpRl/
-	bv1qqecVvmqJ9jq81Q+OlFVxx24jDkQNbgwiA0PUcRqqcXSrMoLpGYEYS02bYaMf2IZiNvb
-	ftF6yofUrcfHsQcBOwXQNZSHavcYPXxnOePKGkpvg0n0M+FWH/yBUCKVW5QOKsTAFT/h0hW
-	UXyx8NYbadoQ8FVLcwt6D3ofQvrlMTfmBGgQ99WpAoYO5I5rKxxcGrVCsjmFoY/cRPF/lP3
-	6adDQ0H75O75Ud4zOIuH7cqA8IKKHw2c9/q5T9WBdnL0X1T2xTC6tONlXKI9KnL5KJ2l7Zp
-	/3n7uBZN/xfqA1FzG+8SJnm3sNDmtqmeDot+QBoasbIg1LLyVi2jEvhvaQ9AOq35kxL7tQN
-	V53FgZ12YTvIPsiA+zFtbf2IVK4x0igJaGqeYjTMpNQ+MNbPbBr11YvIjSU7RBRkOPzTsN/
-	xq59lF/U4TZzQD3sxzDAR5LMZ541WFtivWIerAxtIj1EBPRPJ5UDt5K2qRPY2h1v1Mve4ZK
-	EUxuZWGZRc1zeRZYQv1i9Ew1tDA273nyMEdkHHvOyRhreEVwQiejU3EKaQ3e3xeR7h5OqTR
-	1ye1St1KPE9qu05N7OenR6zYzyhDzIGgQLxwBJL65qLqHi9WxFXd+0cfX/p2Hqpb36XwOxt
-	sAwnKjA46zkHGV0RuiuOu3YULK8ntsWRgVu5dVDa6nMFhqMfBM515Uvy41XZrFdVsxdaMcP
-	YMXuht8pPlw/AtHFtZjbWtvdkkcsYBQgVjb/m0gMf4pQJYsgP0yYIZ7TUXJeivYEyW0HN4p
-	EjUh2AwdkE/IOLrMiT4Zeg=
-X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AMS0EPF000001B0:EE_|VI2PR02MB10999:EE_
+X-MS-Office365-Filtering-Correlation-Id: b05fa4d7-3d42-4b82-14c5-08dea05741e0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|36860700016|376014|82310400026|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	AQGCjCb0cFu/XR9/Kkb6mJkSBTXwM3Ot73fjtc80RXskgLUC1Z3zmCdJpaxdH44rG3UyTORDxk2DR6d7S7DkKhbu1OQDRJNRrRxOqsnFED03nF1fFzfr+2Qv/E+teSYq/3wgaZM50gztDsftRaSd43YaSTQ27kzhieS/Aj20hKjH3sQT529N/V8rjLZ5qQDLQrbRIYOSyaaroQWVSjAUL4OM0C6SjDRytWRs/5h+eogaCXR4T8WwEj/8/YS0mA1w8ciOOKx+Clpq0J0ScK2u2kfi34xj+cRQNXeHSjpioKzphCV7abrH6waHqKfYjVcJAIO2attb+Htsdi4l0NHJr826nSYIxwyPsP/9TEPEvGjoOigTo8wAAq1rbgEp1vL2aHzoSVty+r9GfCrQOji/DxJfJJQwsrsntMUim/VvegUSwAwCtxlb0yA+O2e++Ov4svuwttziF5H+l2Y4rAEKbxgRziYZx6tVX1ADRux39z1pIM6egU3sk8UL+WKFztJmzB7uEpcHymYEXh03vsjWjGwJLkZroYBBinNrixrmTxjQ55qAtSdh5HWFJ/gLOM5t05WS5df31BMdszU7j/spUg+6H4CbIay3WhFqChlxwLsZ/6OEarlyuYit9a3Kalhq7++Tkr0biwJ9UR+2rV55WXKTvO9dfq31yOOJHLPoCKW1emn8Rfe6RZU816YyqLBZYw/iM1g9blpAd95bD4La/GNqiV0AY1mKbLGstDJw6XVyKkuk/n4dfXkWN6/PgMHuCrFEEx0JRRp3YQTXI8ptKw==
+X-Forefront-Antispam-Report:
+	CIP:212.61.153.67;CTRY:NL;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:webmail.prodrive.nl;PTR:mail.prodrive-technologies.com;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(376014)(82310400026)(18002099003)(56012099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	yessdqGPVb1BjY2ugm8Mm8RI6FXwjq19Gga9qUxEvP+PZ6OUb3oNYsXnrK4KmH5UsrHCpErWW2WZuoqCp1ZufLqx2vB0pSzBm4q1PoDbr13hU9Jm26uQf0WKQU4b8mWTIWFJKfBeNuF1EKrTufUYI2b1v1N1HYkZuqvPn3RlzV112/rrcU/PFiWiRllOhAKX7UFVK27RNyrDyB21kNczYCTzKT2epAzZSPyEnalf1E2xtIlU3hmliRcYAeQEvoQyyU4VcdoVI6aUNyw88YJvqigVJfUBTsWh9B0x7kZ/IMdTnuno7qPlOqzp2S7WuDjRX0YNUpAkFChPChSKsvvuJls1eoY2KGMp4LoMIyjoOi6Gsy5y4LYIhM3GvZ/s7gB+TJ4AgeRiPYPUIBmL36nCV4AXz8Z5VZmECFcUH/y9FtvSyL/LCpp7H5eMbdVNE+P0
+X-OriginatorOrg: prodrive-technologies.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Apr 2026 10:09:36.0224
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b05fa4d7-3d42-4b82-14c5-08dea05741e0
+X-MS-Exchange-CrossTenant-Id: 612607c9-5af7-4e7f-8976-faf1ae77be60
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=612607c9-5af7-4e7f-8976-faf1ae77be60;Ip=[212.61.153.67];Helo=[webmail.prodrive.nl]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AMS0EPF000001B0.eurprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR02MB10999
 
-Implement .ndo_tx_timeout to handle Tx side timeout event. When Tx
-timeout event occur, it will triger driver into reset process.
+The main channel Received Signal Strength Indicator (RSSI) measurement
+is used to determine whether an RF field is present or not. RSSI != 0
+is interpreted as an RF Field is present. This does not take RF noise
+and measurement inaccuracy into account, and results in false positives
+in the field.
 
-The WX_HANG_CHECK_ARMED bit is set to indicate a potential hang. It will
-be cleared if a pause frame is received to remove false hang detection
-due to 802.3 frames.
+Define a noise level and make sure the RF field is only interpreted as
+present when the RSSI is above the noise level.
 
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Fixes: 851ee3cbf850 ("NFC: trf7970a: Don't turn on RF if there is already an RF field")
+Signed-off-by: Paul Geurts <paul.geurts@prodrive-technologies.com>
 ---
- drivers/net/ethernet/wangxun/libwx/Makefile   |   2 +-
- drivers/net/ethernet/wangxun/libwx/wx_err.c   | 125 ++++++++++++++++++
- drivers/net/ethernet/wangxun/libwx/wx_err.h   |  14 ++
- drivers/net/ethernet/wangxun/libwx/wx_hw.c    |  17 ++-
- drivers/net/ethernet/wangxun/libwx/wx_lib.c   |  37 ++++++
- drivers/net/ethernet/wangxun/libwx/wx_lib.h   |   1 +
- drivers/net/ethernet/wangxun/libwx/wx_type.h  |  12 +-
- drivers/net/ethernet/wangxun/ngbe/ngbe_main.c |   4 +
- .../net/ethernet/wangxun/txgbe/txgbe_main.c   |   4 +
- 9 files changed, 211 insertions(+), 5 deletions(-)
- create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_err.c
- create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_err.h
+ drivers/nfc/trf7970a.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/Makefile b/drivers/net/ethernet/wangxun/libwx/Makefile
-index a71b0ad77de3..c8724bb129aa 100644
---- a/drivers/net/ethernet/wangxun/libwx/Makefile
-+++ b/drivers/net/ethernet/wangxun/libwx/Makefile
-@@ -4,5 +4,5 @@
+diff --git a/drivers/nfc/trf7970a.c b/drivers/nfc/trf7970a.c
+index d17c701c7888..08c27bb438b5 100644
+--- a/drivers/nfc/trf7970a.c
++++ b/drivers/nfc/trf7970a.c
+@@ -317,6 +317,7 @@
+ #define TRF7970A_RSSI_OSC_STATUS_RSSI_MASK	(BIT(2) | BIT(1) | BIT(0))
+ #define TRF7970A_RSSI_OSC_STATUS_RSSI_X_MASK	(BIT(5) | BIT(4) | BIT(3))
+ #define TRF7970A_RSSI_OSC_STATUS_RSSI_OSC_OK	BIT(6)
++#define TRF7970A_RSSI_OSC_STATUS_RSSI_NOISE_LEVEL	1
  
- obj-$(CONFIG_LIBWX) += libwx.o
+ #define TRF7970A_SPECIAL_FCN_REG1_COL_7_6		BIT(0)
+ #define TRF7970A_SPECIAL_FCN_REG1_14_ANTICOLL		BIT(1)
+@@ -1300,7 +1301,7 @@ static int trf7970a_is_rf_field(struct trf7970a *trf, bool *is_rf_field)
+ 	if (ret)
+ 		return ret;
  
--libwx-objs := wx_hw.o wx_lib.o wx_ethtool.o wx_ptp.o wx_mbx.o wx_sriov.o
-+libwx-objs := wx_hw.o wx_lib.o wx_ethtool.o wx_ptp.o wx_mbx.o wx_sriov.o wx_err.o
- libwx-objs += wx_vf.o wx_vf_lib.o wx_vf_common.o
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_err.c b/drivers/net/ethernet/wangxun/libwx/wx_err.c
-new file mode 100644
-index 000000000000..42e00f0bd8da
---- /dev/null
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_err.c
-@@ -0,0 +1,125 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright (c) 2015 - 2026 Beijing WangXun Technology Co., Ltd. */
-+
-+#include <linux/netdevice.h>
-+#include <linux/pci.h>
-+
-+#include "wx_type.h"
-+#include "wx_lib.h"
-+#include "wx_err.h"
-+
-+static void wx_reset_subtask(struct wx *wx)
-+{
-+	if (!test_bit(WX_FLAG_NEED_PF_RESET, wx->flags))
-+		return;
-+
-+	rtnl_lock();
-+
-+	if (!netif_running(wx->netdev) ||
-+	    test_bit(WX_STATE_RESETTING, wx->state))
-+		return;
-+
-+	wx_warn(wx, "Reset adapter.\n");
-+
-+	if (test_and_clear_bit(WX_FLAG_NEED_PF_RESET, wx->flags)) {
-+		if (wx->do_reset)
-+			wx->do_reset(wx->netdev);
-+	}
-+
-+	rtnl_unlock();
-+}
-+
-+/*
-+ * wx_check_tx_hang_subtask - check for hung queues and dropped interrupts
-+ * @wx - pointer to the device wx structure
-+ *
-+ * This function serves two purposes.  First it strobes the interrupt lines
-+ * in order to make certain interrupts are occurring.  Secondly it sets the
-+ * bits needed to check for TX hangs.  As a result we should immediately
-+ * determine if a hang has occurred.
-+ */
-+static void wx_check_tx_hang_subtask(struct wx *wx)
-+{
-+	int i;
-+
-+	/* If we're down or resetting, just bail */
-+	if (!netif_running(wx->netdev) ||
-+	    test_bit(WX_STATE_RESETTING, wx->state))
-+		return;
-+
-+	/* Force detection of hung controller */
-+	if (netif_carrier_ok(wx->netdev)) {
-+		for (i = 0; i < wx->num_tx_queues; i++)
-+			set_bit(WX_TX_DETECT_HANG, wx->tx_ring[i]->state);
-+	}
-+}
-+
-+void wx_handle_errors_subtask(struct wx *wx)
-+{
-+	wx_reset_subtask(wx);
-+	wx_check_tx_hang_subtask(wx);
-+}
-+EXPORT_SYMBOL(wx_handle_errors_subtask);
-+
-+static void wx_tx_timeout_reset(struct wx *wx)
-+{
-+	if (!netif_running(wx->netdev))
-+		return;
-+
-+	set_bit(WX_FLAG_NEED_PF_RESET, wx->flags);
-+	wx_warn(wx, "initiating reset due to tx timeout\n");
-+	wx_service_event_schedule(wx);
-+}
-+
-+void wx_tx_timeout(struct net_device *netdev, unsigned int txqueue)
-+{
-+	struct wx *wx = netdev_priv(netdev);
-+	u32 head, tail;
-+	int i;
-+
-+	for (i = 0; i < wx->num_tx_queues; i++) {
-+		struct wx_ring *tx_ring = wx->tx_ring[i];
-+
-+		if (test_bit(WX_TX_DETECT_HANG, tx_ring->state) &&
-+		    wx_check_tx_hang(tx_ring))
-+			wx_warn(wx, "Real tx hang detected on queue %d\n", i);
-+
-+		head = rd32(wx, WX_PX_TR_RP(tx_ring->reg_idx));
-+		tail = rd32(wx, WX_PX_TR_WP(tx_ring->reg_idx));
-+		wx_warn(wx,
-+			"tx ring %d next_to_use is %d, next_to_clean is %d\n",
-+			i, tx_ring->next_to_use,
-+			tx_ring->next_to_clean);
-+		wx_warn(wx, "tx ring %d hw rp is 0x%x, wp is 0x%x\n",
-+			i, head, tail);
-+	}
-+
-+	wx_tx_timeout_reset(wx);
-+}
-+EXPORT_SYMBOL(wx_tx_timeout);
-+
-+void wx_handle_tx_hang(struct wx_ring *tx_ring, unsigned int next)
-+{
-+	struct wx *wx = netdev_priv(tx_ring->netdev);
-+
-+	wx_warn(wx, "Detected Tx Unit Hang\n"
-+		"  Tx Queue             <%d>\n"
-+		"  TDH, TDT             <%x>, <%x>\n"
-+		"  next_to_use          <%x>\n"
-+		"  next_to_clean        <%x>\n"
-+		"tx_buffer_info[next_to_clean]\n"
-+		"  time_stamp           <%lx>\n"
-+		"  jiffies              <%lx>\n",
-+		tx_ring->queue_index,
-+		rd32(wx, WX_PX_TR_RP(tx_ring->reg_idx)),
-+		rd32(wx, WX_PX_TR_WP(tx_ring->reg_idx)),
-+		tx_ring->next_to_use, next,
-+		tx_ring->tx_buffer_info[next].time_stamp, jiffies);
-+
-+	netif_stop_subqueue(tx_ring->netdev, tx_ring->queue_index);
-+
-+	wx_warn(wx, "tx hang detected on queue %d, resetting adapter\n",
-+		tx_ring->queue_index);
-+
-+	wx_tx_timeout_reset(wx);
-+}
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_err.h b/drivers/net/ethernet/wangxun/libwx/wx_err.h
-new file mode 100644
-index 000000000000..e317e6c8d928
---- /dev/null
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_err.h
-@@ -0,0 +1,14 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * WangXun Gigabit PCI Express Linux driver
-+ * Copyright (c) 2015 - 2026 Beijing WangXun Technology Co., Ltd.
-+ */
-+
-+#ifndef _WX_ERR_H_
-+#define _WX_ERR_H_
-+
-+void wx_handle_errors_subtask(struct wx *wx);
-+void wx_tx_timeout(struct net_device *netdev, unsigned int txqueue);
-+void wx_handle_tx_hang(struct wx_ring *tx_ring, unsigned int next);
-+
-+#endif /* _WX_ERR_H_ */
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-index d3772d01e00b..401dc7eb1137 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-@@ -1932,6 +1932,7 @@ static void wx_configure_tx_ring(struct wx *wx,
+-	if (rssi & TRF7970A_RSSI_OSC_STATUS_RSSI_MASK)
++	if ((rssi & TRF7970A_RSSI_OSC_STATUS_RSSI_MASK) > TRF7970A_RSSI_OSC_STATUS_RSSI_NOISE_LEVEL)
+ 		*is_rf_field = true;
  	else
- 		ring->atr_sample_rate = 0;
- 
-+	bitmap_zero(ring->state, WX_RING_STATE_NBITS);
- 	/* reinitialize tx_buffer_info */
- 	memset(ring->tx_buffer_info, 0,
- 	       sizeof(struct wx_tx_buffer) * ring->count);
-@@ -2847,16 +2848,26 @@ EXPORT_SYMBOL(wx_fc_enable);
- static void wx_update_xoff_rx_lfc(struct wx *wx)
- {
- 	struct wx_hw_stats *hwstats = &wx->stats;
-+	u64 data;
-+	int i;
- 
- 	if (wx->fc.mode != wx_fc_full &&
- 	    wx->fc.mode != wx_fc_rx_pause)
- 		return;
- 
- 	if (wx->mac.type >= wx_mac_aml)
--		hwstats->lxoffrxc += rd32_wrap(wx, WX_MAC_LXOFFRXC_AML,
--					       &wx->last_stats.lxoffrxc);
-+		data = rd32_wrap(wx, WX_MAC_LXOFFRXC_AML,
-+				 &wx->last_stats.lxoffrxc);
- 	else
--		hwstats->lxoffrxc += rd64(wx, WX_MAC_LXOFFRXC);
-+		data = rd64(wx, WX_MAC_LXOFFRXC);
-+	hwstats->lxoffrxc += data;
-+
-+	/* refill credits (no tx hang) if we received xoff */
-+	if (!data)
-+		return;
-+
-+	for (i = 0; i < wx->num_tx_queues; i++)
-+		clear_bit(WX_HANG_CHECK_ARMED, wx->tx_ring[i]->state);
- }
- 
- /**
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-index 746623fa59b4..9e6167b43f75 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-@@ -14,6 +14,7 @@
- 
- #include "wx_type.h"
- #include "wx_lib.h"
-+#include "wx_err.h"
- #include "wx_ptp.h"
- #include "wx_hw.h"
- #include "wx_vf_lib.h"
-@@ -742,6 +743,36 @@ static struct netdev_queue *wx_txring_txq(const struct wx_ring *ring)
- 	return netdev_get_tx_queue(ring->netdev, ring->queue_index);
- }
- 
-+static u32 wx_get_tx_pending(struct wx_ring *ring)
-+{
-+	unsigned int head, tail;
-+
-+	head = ring->next_to_clean;
-+	tail = ring->next_to_use;
-+
-+	return ((head <= tail) ? tail : tail + ring->count) - head;
-+}
-+
-+bool wx_check_tx_hang(struct wx_ring *ring)
-+{
-+	u32 tx_done_old = ring->tx_stats.tx_done_old;
-+	u32 tx_pending = wx_get_tx_pending(ring);
-+	u32 tx_done = ring->stats.packets;
-+
-+	clear_bit(WX_TX_DETECT_HANG, ring->state);
-+
-+	if (tx_done_old == tx_done && tx_pending)
-+		/* make sure it is true for two checks in a row */
-+		return test_and_set_bit(WX_HANG_CHECK_ARMED, ring->state);
-+
-+	/* update completed stats and continue */
-+	ring->tx_stats.tx_done_old = tx_done;
-+	/* reset the countdown */
-+	clear_bit(WX_HANG_CHECK_ARMED, ring->state);
-+
-+	return false;
-+}
-+
- /**
-  * wx_clean_tx_irq - Reclaim resources after transmit completes
-  * @q_vector: structure containing interrupt and ring information
-@@ -866,6 +897,12 @@ static bool wx_clean_tx_irq(struct wx_q_vector *q_vector,
- 	netdev_tx_completed_queue(wx_txring_txq(tx_ring),
- 				  total_packets, total_bytes);
- 
-+	if (test_bit(WX_TX_DETECT_HANG, tx_ring->state) &&
-+	    wx_check_tx_hang(tx_ring)) {
-+		wx_handle_tx_hang(tx_ring, i);
-+		return true;
-+	}
-+
- #define TX_WAKE_THRESHOLD (DESC_NEEDED * 2)
- 	if (unlikely(total_packets && netif_carrier_ok(tx_ring->netdev) &&
- 		     (wx_desc_unused(tx_ring) >= TX_WAKE_THRESHOLD))) {
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.h b/drivers/net/ethernet/wangxun/libwx/wx_lib.h
-index aed6ea8cf0d6..e373cd7f05d3 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_lib.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.h
-@@ -10,6 +10,7 @@
- struct wx_dec_ptype wx_decode_ptype(const u8 ptype);
- void wx_alloc_rx_buffers(struct wx_ring *rx_ring, u16 cleaned_count);
- u16 wx_desc_unused(struct wx_ring *ring);
-+bool wx_check_tx_hang(struct wx_ring *ring);
- netdev_tx_t wx_xmit_frame(struct sk_buff *skb,
- 			  struct net_device *netdev);
- void wx_napi_enable_all(struct wx *wx);
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-index 0da5565ee4ff..f65c2d7bae39 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-@@ -1039,6 +1039,7 @@ struct wx_queue_stats {
- struct wx_tx_queue_stats {
- 	u64 restart_queue;
- 	u64 tx_busy;
-+	u32 tx_done_old;
- };
- 
- struct wx_rx_queue_stats {
-@@ -1054,6 +1055,12 @@ struct wx_rx_queue_stats {
- #define wx_for_each_ring(posm, headm) \
- 	for (posm = (headm).ring; posm; posm = posm->next)
- 
-+enum wx_ring_state {
-+	WX_TX_DETECT_HANG,
-+	WX_HANG_CHECK_ARMED,
-+	WX_RING_STATE_NBITS
-+};
-+
- struct wx_ring_container {
- 	struct wx_ring *ring;           /* pointer to linked list of rings */
- 	unsigned int total_bytes;       /* total bytes processed this int */
-@@ -1073,6 +1080,7 @@ struct wx_ring {
- 		struct wx_tx_buffer *tx_buffer_info;
- 		struct wx_rx_buffer *rx_buffer_info;
- 	};
-+	DECLARE_BITMAP(state, WX_RING_STATE_NBITS);
- 	u8 __iomem *tail;
- 	dma_addr_t dma;                 /* phys. address of descriptor ring */
- 	dma_addr_t headwb_dma;
-@@ -1273,6 +1281,7 @@ enum wx_pf_flags {
- 	WX_FLAG_NEED_DO_RESET,
- 	WX_FLAG_RX_MERGE_ENABLED,
- 	WX_FLAG_TXHEAD_WB_ENABLED,
-+	WX_FLAG_NEED_PF_RESET,
- 	WX_PF_FLAGS_NBITS               /* must be last */
- };
- 
-@@ -1503,7 +1512,8 @@ rd32_wrap(struct wx *wx, u32 reg, u32 *last)
- 
- #define wx_err(wx, fmt, arg...) \
- 	dev_err(&(wx)->pdev->dev, fmt, ##arg)
--
-+#define wx_warn(wx, fmt, arg...) \
-+	dev_warn(&(wx)->pdev->dev, fmt, ##arg)
- #define wx_dbg(wx, fmt, arg...) \
- 	dev_dbg(&(wx)->pdev->dev, fmt, ##arg)
- 
-diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-index bd905e267575..e9561996b970 100644
---- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-+++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-@@ -14,6 +14,7 @@
- #include "../libwx/wx_type.h"
- #include "../libwx/wx_hw.h"
- #include "../libwx/wx_lib.h"
-+#include "../libwx/wx_err.h"
- #include "../libwx/wx_ptp.h"
- #include "../libwx/wx_mbx.h"
- #include "../libwx/wx_sriov.h"
-@@ -147,6 +148,7 @@ static void ngbe_service_task(struct work_struct *work)
- {
- 	struct wx *wx = container_of(work, struct wx, service_task);
- 
-+	wx_handle_errors_subtask(wx);
- 	wx_update_stats(wx);
- 
- 	wx_service_event_complete(wx);
-@@ -642,6 +644,7 @@ static const struct net_device_ops ngbe_netdev_ops = {
- 	.ndo_stop               = ngbe_close,
- 	.ndo_change_mtu         = wx_change_mtu,
- 	.ndo_start_xmit         = wx_xmit_frame,
-+	.ndo_tx_timeout         = wx_tx_timeout,
- 	.ndo_set_rx_mode        = wx_set_rx_mode,
- 	.ndo_set_features       = wx_set_features,
- 	.ndo_fix_features       = wx_fix_features,
-@@ -731,6 +734,7 @@ static int ngbe_probe(struct pci_dev *pdev,
- 	wx->driver_name = ngbe_driver_name;
- 	ngbe_set_ethtool_ops(netdev);
- 	netdev->netdev_ops = &ngbe_netdev_ops;
-+	netdev->watchdog_timeo = 5 * HZ;
- 
- 	netdev->features = NETIF_F_SG | NETIF_F_IP_CSUM |
- 			   NETIF_F_TSO | NETIF_F_TSO6 |
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-index ec32a5f422f2..b13c48507374 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-@@ -14,6 +14,7 @@
- 
- #include "../libwx/wx_type.h"
- #include "../libwx/wx_lib.h"
-+#include "../libwx/wx_err.h"
- #include "../libwx/wx_ptp.h"
- #include "../libwx/wx_hw.h"
- #include "../libwx/wx_mbx.h"
-@@ -128,6 +129,7 @@ static void txgbe_service_task(struct work_struct *work)
- {
- 	struct wx *wx = container_of(work, struct wx, service_task);
- 
-+	wx_handle_errors_subtask(wx);
- 	txgbe_module_detection_subtask(wx);
- 	txgbe_link_config_subtask(wx);
- 	wx_update_stats(wx);
-@@ -659,6 +661,7 @@ static const struct net_device_ops txgbe_netdev_ops = {
- 	.ndo_stop               = txgbe_close,
- 	.ndo_change_mtu         = wx_change_mtu,
- 	.ndo_start_xmit         = wx_xmit_frame,
-+	.ndo_tx_timeout         = wx_tx_timeout,
- 	.ndo_set_rx_mode        = wx_set_rx_mode,
- 	.ndo_set_features       = wx_set_features,
- 	.ndo_fix_features       = wx_fix_features,
-@@ -750,6 +753,7 @@ static int txgbe_probe(struct pci_dev *pdev,
- 	wx->driver_name = txgbe_driver_name;
- 	txgbe_set_ethtool_ops(netdev);
- 	netdev->netdev_ops = &txgbe_netdev_ops;
-+	netdev->watchdog_timeo = 5 * HZ;
- 	netdev->udp_tunnel_nic_info = &txgbe_udp_tunnels;
- 
- 	/* setup the private structure */
+ 		*is_rf_field = false;
 -- 
-2.51.0
+2.39.2
 
