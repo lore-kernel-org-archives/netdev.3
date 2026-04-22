@@ -1,137 +1,105 @@
-Received: from fhigh-a3-smtp.messagingengine.com (fhigh-a3-smtp.messagingengine.com [103.168.172.154])
+Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C9DC3C277B;
-	Wed, 22 Apr 2026 10:43:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F3E63C277B;
+	Wed, 22 Apr 2026 10:45:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776854619; cv=none; b=Mm1KHdu0TJNn7wSYApovG2bb1LrdXqDZQ2Zkx3n4GE+CYjcD8GhHoOd84sD7q75VAPq2Qv18b1Jm5jWqdATzzNEZbmgZMZ0CB0s3XL3hT3uacixfufLuYfpO6aLEFOxEeBwPUHiejquIvTwCPP65Kp4JentAs67ae8gzocm+gB4=
+	t=1776854717; cv=none; b=Cc0XKRsU/AhLOGvPuZZ6VD+IacfXl8AC0tAW1adOxmJBCt5sgypZT+/HslKANY2fRoAcZVINPhRFNIi3nQO34FVjIPmXmqE4esmUjR0GCTyRvZn7cKPSC217Mzc/PFIi4bZyEZizHZ9D7TAmOfNThix4c6TGrE9BsMBnrP4y2Cs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776854619; c=relaxed/simple;
-	bh=uM1m22NQCJC6W6RjzJbd6hba2pmg1Gp2U5erA96FCJg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZtARE2fUVxMN/imlOjVX4noDW9/hYI1G23qm5gd2GfhFIrp5CkD8oixzi9jZ4K8p5RwCW+Ifwd5OAXwv1GvYfmTASNRzOOGZotUbA9vXCLsFHJ8xX6IXp7zqfMYmDvmeiRPEYgwTacqQn0ATkMcn2qyjvPvRq//r5hga/jEbOMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=uEw11Ere; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=VkDnfR1T; arc=none smtp.client-ip=103.168.172.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	s=arc-20240116; t=1776854717; c=relaxed/simple;
+	bh=v2a5FraOdc2dV95xHacv/Tb64RjV51isslI60fgVfa8=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=HvEwGNyJtT0PR1bbDrV8BW7ohatrCWJtX+g5jrbXxvOGKXVCWGCj9mdZe5Zu7GfJifica4ULYKNmiP5vs+v8bfhMrtBoNiu+PHLQWPFxGCTK6vak4gXKFOJDKU7UFTkVBmWujNw4dIGEMfuxN+wDT8IejFr31QnZLmH4xfQLkhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=DYJMmGIb; arc=none smtp.client-ip=103.168.172.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="uEw11Ere";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="VkDnfR1T"
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 38B6714000E4;
-	Wed, 22 Apr 2026 06:43:35 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Wed, 22 Apr 2026 06:43:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1776854615; x=
-	1776941015; bh=abmoqNblxfuAVDr9rChyocYxcejJ84mZ8H9MflgsjCU=; b=u
-	Ew11EreFFNLlLqsYtfzP0GgKeZ2Sx9qaSIjq3TuuIKmdYK7FDPwZH/aPmQPaWo1t
-	r7CJx27SCVjplvbzbwkVBgZpKY4r2J2YEqSFBURmZJWC/SBDOdRnpAoIhvBK5w/7
-	upBwD0JjOiYsS4urhR2RIrkzS7MJqaSzcYsJ7U6wOvS+Tu5W631Z8POdAW74FDUg
-	rxJG09JQkWVAwH9lTLAIQtZkOEz/sYWDGJdfZ3xdcOLRDEttjyn7eijuaVjR8Nkn
-	Ngbk3XE4aSHact/zrPQCiE13obvt5KsdoYvDVFm7GqfoJ1RR8Y9iLMCw0d5XH1GS
-	7+LcHnJJRrSC5azfamhJA==
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="DYJMmGIb"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfout.phl.internal (Postfix) with ESMTP id BE2C5EC0530;
+	Wed, 22 Apr 2026 06:45:14 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Wed, 22 Apr 2026 06:45:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-type:content-type:date:date
 	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
 	:message-id:mime-version:references:reply-to:subject:subject:to
 	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1776854615; x=1776941015; bh=abmoqNblxfuAVDr9rChyocYxcejJ84mZ8H9
-	MflgsjCU=; b=VkDnfR1Tzp6v7lLd4fXV7kfa6v4sMTq67FXSbr69EmO+AzKlR4B
-	xh3IyIckEye6hbXwYIGEDTbZdxWRK0aiwfU/mGsxk6DGWZxQ9NsiMIPR0RV2UdWi
-	lZJuotMmJIy2ckaiGN/dbB0gjfbXhdo/hp1o67dgn9rEvxc7oqg5lyjXbtjUnt8s
-	gJr3lsp6PobZ+UWlsglFP/1XggWhhsmqUip44xbZOS0Sp7sjyeURVeHR0HdTu/5t
-	byx8roVHNLSTTX5S9wOMpDqH3C/sCoZeEY0lhKAmiuEWo3JkF/jXKHV8CWZn/9Tx
-	ohiYYE6vrT7XgviqWOtaVGCfXahuwNbkdcA==
-X-ME-Sender: <xms:Vqboaac5e0q0c1kjg2EFkW7QkhSycDERUIQwnAbizoJcQWVlxj9hgg>
-    <xme:VqboaZJLxHHl64aGT8WX6V71nHSUifG7dc1LQN_esXGorgzdi4AKGB2lpC7xnetou
-    lrYqba4k_AMYj7Qtya-qOhrWxZ2zfke3xTSC7fBWocj9963Uk4lghk>
-X-ME-Received: <xmr:VqboafyIkZQx2zYekB55gPTbux-pFnoaDvRhxSHAvYOnFgzI9KA52USJUGo->
+	1776854714; x=1776941114; bh=w1yxN6tr6bpwlPeIBT7a54lyLgshzwZVuMM
+	UiX19j+Q=; b=DYJMmGIb8/DvRW2kiyZTzLMHIA5ZQokWhy7ved5GrE78m5W5ogs
+	9BRUeY8oQjJ92ZEcHy74UOGjxCNvfAm4X2AwdteWYvrD86wyGH9aUMZ/LEoyVk0c
+	vA3WrZxez5maakt8UX2aWb2CzJCcDFBitu0E7zA7wKmWnOP9BNelNGO+Wqy5RhfW
+	WxdTgFgWGI2wURMkW/ZKCO88FXEZbBeo4i9tJovF3u+7wL+igrZ2QfbuK5FwmI1V
+	J3HhbsP/+HR83WZj+KqW1Ci4ZojxYQL9sV8+/xI7HMuk3Sr4BOJGvkek73CU7yoG
+	7c8h1pesCQaADn/SXGiBCv3/8yefK6Hh9rw==
+X-ME-Sender: <xms:uqboaQYUt3GrwH5PKAbXDWrqNA_OZo-mBrfRveHGfHreLnT0j3K0WQ>
+    <xme:uqboaTi8d7v0T7AqKfxGzJ1LY5FNGpaggFX8XFRxuC3ZCXROq_gGj-0-JSYkM6bYf
+    TYzjjzH5V1_QE5PuLx-8V6yr34N2Kv91IWzgWk1OAyPjUoVMbXvJ48>
+X-ME-Received: <xmr:uqboaaeBTkInTvwOr9bomA97nt-t2RlNDYv1HQEdxLKtCTegeV6NRb1uALmJc4-SBOFs_8pFZzkM9E4GFF5HUnHmQBVjhuvDIQE>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdeigedtiecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
     ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdertddttdejnecuhfhrohhmpefurggsrhhinhgr
-    ucffuhgsrhhotggruceoshgusehquhgvrghshihsnhgrihhlrdhnvghtqeenucggtffrrg
-    htthgvrhhnpeeuhffhfffgfffhfeeuiedugedtfefhkeegteehgeehieffgfeuvdeuffef
-    gfduffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    hsugesqhhuvggrshihshhnrghilhdrnhgvthdpnhgspghrtghpthhtohepledpmhhouggv
-    pehsmhhtphhouhhtpdhrtghpthhtoheplhhilhhinhhmrghosehkhihlihhnohhsrdgtnh
-    dprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohep
-    ughsrghhvghrnheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepvgguuhhmrgiivghtse
-    hgohhoghhlvgdrtghomhdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhr
-    tghpthhtohepphgrsggvnhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopehhohhrmh
-    hssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghr
-    nhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvg
-    hrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:VqboaXtx--QqrM0uz3fYDmDloxouxuOznzH5l08cj6u8nPgNsyJo9g>
-    <xmx:VqboaaDPbnedMDXNAkjEDKn9h9O3SizquM5uh54swheWS742YpfYfg>
-    <xmx:VqboaREOBAiMeg5FYAGLZAg-zjdZiaFao-1e3UK_XGOhdK2iP29M2A>
-    <xmx:VqboaSB8rzeF5g5AARdtcMHtnMJssE59ViFJqqqm5e3M2udAaWCkww>
-    <xmx:V6boaRygc9dKZPh5ZVepxeoT44jiDfOBhL4CQg0UOL22syODzkF7UqmS>
-Feedback-ID: i934648bf:Fastmail
+    hrpeffhffvvefujgfkfhggtgesthdtredttddtvdenucfhrhhomhephfhinhhnucfvhhgr
+    ihhnuceofhhthhgrihhnsehlihhnuhigqdhmieekkhdrohhrgheqnecuggftrfgrthhtvg
+    hrnhepleeuheelheekgfeuvedtveetjeekhfffkeeffffftdfgjeevkeegfedvueehueel
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepfhhthh
+    grihhnsehlihhnuhigqdhmieekkhdrohhrghdpnhgspghrtghpthhtohepuddvpdhmohgu
+    vgepshhmthhpohhuthdprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprhgtph
+    htthhopegrnhgurhgvfidonhgvthguvghvsehluhhnnhdrtghhpdhrtghpthhtohepuggr
+    vhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopegvughumhgriigvthesgh
+    hoohhglhgvrdgtohhmpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgt
+    phhtthhopehprggsvghnihesrhgvughhrghtrdgtohhmpdhrtghpthhtohephhhorhhmsh
+    eskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheptghorhgsvghtsehlfihnrdhnvghtpdhr
+    tghpthhtohepshhkhhgrnheslhhinhhugihfohhunhgurghtihhonhdrohhrgh
+X-ME-Proxy: <xmx:uqboaam8R27j7I05wOpxBGdfax_tGr5NOqO_boruyzRKhM4Mq4elWQ>
+    <xmx:uqboaXxLx15kLawTGEAdZb7MjAKn1Aq543hzQw7aACqtS9b9vPpLCg>
+    <xmx:uqboaVwraux5KwsML9T4wAoxtaA7cV6mwHDbTLg8AtBRtbssn4l-Kg>
+    <xmx:uqboafUo42Vl8CA-0fMCURUGA0jwsfYQSL7Nmjaw-BEI6tBPvaaNBw>
+    <xmx:uqboaZRTBPY8uLTxwR9hrarQBFvAEdzPXyHcb5rtDA0_QQyfJDK-Reg6>
+Feedback-ID: i58a146ae:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 22 Apr 2026 06:43:34 -0400 (EDT)
-Date: Wed, 22 Apr 2026 12:43:32 +0200
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Linmao Li <lilinmao@kylinos.cn>
-Cc: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2] ipv6: addrconf: skip ERRDAD transition when
- address already DEAD
-Message-ID: <aeimVEuF6Sn8l0x0@krikkit>
-References: <20260420032842.1063277-1-lilinmao@kylinos.cn>
- <20260421075033.1110816-1-lilinmao@kylinos.cn>
+ 22 Apr 2026 06:45:12 -0400 (EDT)
+Date: Wed, 22 Apr 2026 20:45:23 +1000 (AEST)
+From: Finn Thain <fthain@linux-m68k.org>
+To: Andrew Lunn <andrew@lunn.ch>
+cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+    "David S. Miller" <davem@davemloft.net>, 
+    Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+    Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+    Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+    linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+    linux-doc@vger.kernel.org
+Subject: Re: [PATCH net 00/18] Remove a number of ISA and PCMCIA Ethernet
+ drivers
+In-Reply-To: <20260421-v7-0-0-net-next-driver-removal-v1-v1-0-69517c689d1f@lunn.ch>
+Message-ID: <17fae078-66bb-1d22-3b19-d5491a9fbb53@linux-m68k.org>
+References: <20260421-v7-0-0-net-next-driver-removal-v1-v1-0-69517c689d1f@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260421075033.1110816-1-lilinmao@kylinos.cn>
+Content-Type: text/plain; charset=us-ascii
 
-2026-04-21, 15:50:33 +0800, Linmao Li wrote:
-> addrconf_dad_end() transitions ifp->state from DAD to POSTDAD under
-> ifp->lock and releases the lock.  addrconf_dad_failure() takes
-> ifp->lock again with the spin_lock_bh() following the
-> net_info_ratelimited() duplicate-address log.  A concurrent
-> ipv6_del_addr() can acquire the lock in that window, set ifp->state
-> to DEAD and run list_del_rcu(&ifp->if_list).
 
-You're pretty much saying that the ifp->state check we did in
-addrconf_dad_end before dropping the lock is not valid, so it seems we
-should just skip that separate check since it's not doing anything
-useful, and move it under the "main" lock we acquire after the
-net_info_ratelimited(). There would still be a problem with "we
-dropped the lock in the STABLE_PRIVACY block", which your patch
-handles.
+On Tue, 21 Apr 2026, Andrew Lunn wrote:
 
-> addrconf_dad_failure() then overwrites DEAD with ERRDAD at errdad:
-> and schedules a new dad_work.  The work calls ipv6_del_addr() again,
-> hitting the already-poisoned list entry:
+> These old drivers have not been much of a Maintenance burden until 
+> recently.
+
+They are not much of a maintenance burden because they are small, mature 
+and stable.
+
+> Now there are more newbies using AI and fuzzers finding issues, 
+> resulting in more work for Maintainers.
+
+AI helps find issues but AI also helps resolve issues.
+
+> Fixing these old drivers make little sense, if it is not clear they have 
+> users.
 > 
->   general protection fault: 0000 [#1] SMP NOPTI
->   CPU: 4 PID: 217 Comm: kworker/4:1
->   Workqueue: ipv6_addrconf addrconf_dad_work
->   RIP: 0010:ipv6_del_addr+0xe9/0x280
->   RAX: dead000000000122
->   Call Trace:
->    addrconf_dad_stop+0x113/0x140
->    addrconf_dad_work+0x28c/0x430
->    process_one_work+0x1eb/0x3b0
->    worker_thread+0x4d/0x400
->    kthread+0x104/0x140
->    ret_from_fork+0x35/0x40
-> 
-> Bail out at errdad: when ifp->state is already DEAD. The existing
-> in6_ifa_put() releases the reference taken for this invocation.
 
-Mentioning "the existing in6_ifa_put()" is a bit confusing since
-you're adding a separate unlock/put/return path.
-
--- 
-Sabrina
+Removing these old drivers makes little sense, if the issues were only 
+noticed by AI and not by actual users.
