@@ -1,153 +1,121 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from forward206b.mail.yandex.net (forward206b.mail.yandex.net [178.154.239.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE0C320A14
-	for <netdev@vger.kernel.org>; Thu, 23 Apr 2026 07:42:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6F5130C63A;
+	Thu, 23 Apr 2026 07:43:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776930151; cv=none; b=pqfUUsaR0M6Ff9rCh905EUlYxilbZrdp76ZmD0EzBXYUh4t6dQAiq9dpMD1mKhw9ejeZyfEoYjDhpj6///+VwUTScLIoVLeqjjAEdkKZcTg8EjX0z63V2D4SiQudDu/5wENC5qAEujIj31OMyUI/5EBnYLZdj5Lamxk+kStMDvw=
+	t=1776930231; cv=none; b=kEnJT2ziC5s7G42AlnsIV8vw9KUj+rHloqWFCUxR2FFsbssjGPezD8cjjGFEa6jxv8EmWbrqNyhXVG8cUPtPxWfZkPDLpIxpwLNa3X8c2rK9SLs3NVZ6/O5p4og7ye6P2TH3OJ4EzD1zne5srw0zChZIgFVHttF2XHkGhurYPAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776930151; c=relaxed/simple;
-	bh=XRdpb9nVRkqJctOt0Dfi0nllkU3AoSVeiFDjds5RJCA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Kb8eNajv60/n2JEgSl/LpJ9K9lGrA/QUPw9t4B9JWslXbw/AhzuYfYVngbsUcbKZ9TZXl+ON6z/yUaQDqg0oYjOzxCqhnu29XVnjkUgBGkgAbtJhmKqPk7lc3R5VdwBXK6Aeb0cO9t9eBlb2Qk0lVXIcpwDGlV0peVsDLJaGRVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CY+i9rXP; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776930231; c=relaxed/simple;
+	bh=P+vxiwOcKxAiKsT7+7OxCqfy8g+9CM/8eAsl7KYas3U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CtC9A6V+ykh4BNvtL9TG5EfQVlCX1HVzMBG3AJUlY6gjx8skHUC5jS368mHXfAVvO2YyaF9/eQuwcCA2hd1n9TJmnJ5vXO3yYQhg76JHKwK9ITHge24wWCgciz8HJB5zQSdtjrAKvY+8jYgTcG5nlXRtwH1tAff3AmO2bdVHlQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=TRx9zNhB; arc=none smtp.client-ip=178.154.239.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CY+i9rXP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC7C2C2BCAF;
-	Thu, 23 Apr 2026 07:42:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776930151;
-	bh=XRdpb9nVRkqJctOt0Dfi0nllkU3AoSVeiFDjds5RJCA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CY+i9rXP7j/oBVjARa/Hga/mWJYfWrYij6Ejp9K8Fmx0Fw52s4dCXIhvCr4xf4AjC
-	 FTw+atqA7j65Cn7ygGjeEL27vpc0HE1LEpl9kwxrUt6m/TmN6E055rWYx2vlycLXgH
-	 jdwz/9GyxoyZWXWYQ0Ink7GFquEUAiigkToZ/84M7crxVGd4r7DcWI93Rs5xWvZknE
-	 HaO/yxJ0/LpHzxR3I3UNkOJd8s1jMt3Vh2WJhCoUmVW1ti3bHRrN7cjsL+L87uABsU
-	 APkFOfhiQsdu7qcAHL4wPA+BiMgpXi4oWVzwVSAVhYMj11JKDf4bvq5Mg4z2OQkA38
-	 UiLHj27jE0X5w==
-Date: Thu, 23 Apr 2026 09:42:28 +0200
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="TRx9zNhB"
+Received: from forward103b.mail.yandex.net (forward103b.mail.yandex.net [IPv6:2a02:6b8:c02:900:1:45:d181:d103])
+	by forward206b.mail.yandex.net (Yandex) with ESMTPS id 0032A8156B;
+	Thu, 23 Apr 2026 10:37:19 +0300 (MSK)
+Received: from mail-nwsmtp-smtp-production-main-85.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-85.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:2a2c:0:640:49cf:0])
+	by forward103b.mail.yandex.net (Yandex) with ESMTPS id EB58EC00B2;
+	Thu, 23 Apr 2026 10:37:10 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-85.iva.yp-c.yandex.net (smtp) with ESMTPSA id 8bONsJ0R3qM0-eRRRhrMu;
+	Thu, 23 Apr 2026 10:37:10 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+	t=1776929830; bh=wRLZkxFG2PlbFAjzQxBRAMljhGrOcvfkXIl4TIN3Ymg=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=TRx9zNhBWGLCDmAKVOOq96F8N2Q0AbnwjFR1Bj6Pq91TULHcWn619p+tZzIWOygA9
+	 9n7qEUbZrpefIJ7Iz7RlruH6lr3hyf/RBuKXXcsanjsa3xL4EcbaxoDBupa1g+xRTe
+	 MiByypAX0uoAXGaJObFzJRvTQ1YHmssM/RjJLdW0=
+Authentication-Results: mail-nwsmtp-smtp-production-main-85.iva.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From: Dmitry Antipov <dmantipov@yandex.ru>
+To: "David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
-Subject: Re: [PATCH net] net: airoha: stop net_device TX queue before
- updating CPU index
-Message-ID: <aenNZELmY3Z7VP7j@lore-desk>
-References: <20260421-airoha-xmit-stop-condition-v1-1-e670d6a48467@kernel.org>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org,
+	linux-bluetooth@vger.kernel.org,
+	Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [RFC PATCH] net: skb: on zero-copy formatted output to skb
+Date: Thu, 23 Apr 2026 10:36:38 +0300
+Message-ID: <20260423073638.778334-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="n+fdmW4T+/Z6vLY1"
-Content-Disposition: inline
-In-Reply-To: <20260421-airoha-xmit-stop-condition-v1-1-e670d6a48467@kernel.org>
+Content-Transfer-Encoding: 8bit
 
+Some code, most notably the Bluetooth drivers, uses something like
+the following:
 
---n+fdmW4T+/Z6vLY1
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+char buf[80];
+snprintf(buf, sizeof(buf), "Driver: %s\n", driver_name);
+skb_put_data(skb, buf, strlen(buf));
 
-> Currently, airoha_eth driver updates the CPU index register prior of
-> verifying whether the number of free descriptors has fallen below the
-> threshold.
-> Move net_device TX queue length check before updating the TX CPU index
-> in order to update TX CPU index even if there are more packets to be
-> transmitted but the net_device TX queue is going to be stopped
-> accounting the inflight packets.
->=20
-> Fixes: 1d304174106c ("net: airoha: Implement BQL support")
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> ---
->  drivers/net/ethernet/airoha/airoha_eth.c | 9 ++++-----
->  1 file changed, 4 insertions(+), 5 deletions(-)
->=20
-> diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ether=
-net/airoha/airoha_eth.c
-> index 19f67c7dd8e1..5d327237e274 100644
-> --- a/drivers/net/ethernet/airoha/airoha_eth.c
-> +++ b/drivers/net/ethernet/airoha/airoha_eth.c
-> @@ -2058,17 +2058,16 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff=
- *skb,
-> =20
->  	skb_tx_timestamp(skb);
->  	netdev_tx_sent_queue(txq, skb->len);
-> +	if (q->ndesc - q->queued < q->free_thr) {
-> +		netif_tx_stop_queue(txq);
-> +		q->txq_stopped =3D true;
-> +	}
-> =20
->  	if (netif_xmit_stopped(txq) || !netdev_xmit_more())
->  		airoha_qdma_rmw(qdma, REG_TX_CPU_IDX(qid),
->  				TX_RING_CPU_IDX_MASK,
->  				FIELD_PREP(TX_RING_CPU_IDX_MASK, index));
-> =20
-> -	if (q->ndesc - q->queued < q->free_thr) {
-> -		netif_tx_stop_queue(txq);
-> -		q->txq_stopped =3D true;
-> -	}
-> -
->  	spin_unlock_bh(&q->lock);
-> =20
->  	return NETDEV_TX_OK;
->=20
-> ---
-> base-commit: a663bac71a2f0b3ac6c373168ca57b2a6e6381aa
-> change-id: 20260421-airoha-xmit-stop-condition-344dc0292a19
->=20
-> Best regards,
-> --=20
-> Lorenzo Bianconi <lorenzo@kernel.org>
->=20
+This looks suboptimal at least because:
 
-commenting on Sashiko retported issues:
-https://sashiko.dev/#/patchset/20260421-airoha-xmit-stop-condition-v1-1-e67=
-0d6a48467%40kernel.org
+1) It yields in BUG() just in case the developer underestimates
+   the size of an skb being used;
+2) It requires extra data copy from an external buffer;
+3) It uses 'strlen()' redundantly because actual data length
+   is calculated by 'snprintf()' itself.
 
-- Could this cause a deadlock if exactly q->free_thr descriptors are free?
-  This does not seem a problem to me since, even if the netdev tx queue is
-  stopped as described in the report, the airoha_qdma_tx_napi_poll() will f=
-ree
-  space in the queue and subsequent packets will update REG_TX_CPU_IDX regi=
-ster.
+So introduce 'skb_printf()' which aims to address all of these
+issues. As usual, thoughts and comments are highly appreciated.
 
-- Is it possible for this loop to read past the end of the frags array?
-  As pointed out by Sashiko, this issue is not introduced by this patch and=
- I
-  will fix with a dedicated patch.
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+---
+ include/linux/skbuff.h |  1 +
+ net/core/skbuff.c      | 18 ++++++++++++++++++
+ 2 files changed, 19 insertions(+)
 
-- Might this lead to memory corruption if the tcp header is not in the line=
-ar area?
-  This issue is not introduced by this patch and I will fix with a dedicate=
-d patch.
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index 2bcf78a4de7b..fb4ef55a8f86 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -4292,6 +4292,7 @@ int skb_mpls_update_lse(struct sk_buff *skb, __be32 mpls_lse);
+ int skb_mpls_dec_ttl(struct sk_buff *skb);
+ struct sk_buff *pskb_extract(struct sk_buff *skb, int off, int to_copy,
+ 			     gfp_t gfp);
++int skb_printf(struct sk_buff *skb, const char *fmt, ...);
+ 
+ static inline int memcpy_from_msg(void *data, struct msghdr *msg, int len)
+ {
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 7dad68e3b518..051ab4f28c75 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -6992,6 +6992,24 @@ struct sk_buff *pskb_extract(struct sk_buff *skb, int off,
+ }
+ EXPORT_SYMBOL(pskb_extract);
+ 
++int skb_printf(struct sk_buff *skb, const char *fmt, ...)
++{
++	int len, size = skb_availroom(skb);
++	va_list args;
++
++	va_start(args, fmt);
++	len = vsnprintf(skb_tail_pointer(skb), size, fmt, args);
++	va_end(args);
++
++	if (unlikely(len >= size))
++		return -ENOSPC;
++
++	skb->tail += len;
++	skb->len += len;
++	return len;
++}
++EXPORT_SYMBOL(skb_printf);
++
+ /**
+  * skb_condense - try to get rid of fragments/frag_list if possible
+  * @skb: buffer
+-- 
+2.53.0
 
-- If an error occurs during transmission, the driver jumps to the error lab=
-el
-  frees the skb, and returns NETDEV_TX_OK without ringing the qdma cpu inde=
-x doorbell?
-  Similar to the first issue, this does not seem a problem to me since subs=
-equent
-  packets will update REG_TX_CPU_IDX register.
-
-Regards,
-Lorenzo
-
---n+fdmW4T+/Z6vLY1
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaenNZAAKCRA6cBh0uS2t
-rC1vAP9MtTmL8U3BdrfMedc+Vlc+MTA91gnMBQG8HOGouOvAdgEA1r1ltUGjtato
-t0YBtofFZLtW7ijWbfS45I4FIwGzKAo=
-=N6KP
------END PGP SIGNATURE-----
-
---n+fdmW4T+/Z6vLY1--
