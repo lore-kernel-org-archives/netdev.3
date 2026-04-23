@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C8FE30BB8D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C3E31079B;
 	Thu, 23 Apr 2026 07:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776930135; cv=none; b=jm6LMMO4T4zITkePPST6w28zltAQJOA7YGXCqMUoADS7nNs0asnAFgn/TXT1R/FwFuH8X9p6JU08iywibfSR5C4o1pRpCY7r6J5G9XXW9BObnyo3oKD9uwBxGR4lbwJGL5CKoI5z8srVLV4XXHEu2MZZh13Aqs4kZiacjK+LbWM=
+	t=1776930135; cv=none; b=rSxR+4N0TzaUPL53Fk0ZNmaTBSXwNRSz6aLbsyrl7Z/TLARE36IkpzXi2DWbhd66H0wZVhsfXg0B93e1F/Il+0uGY+ayP/2lLrzchfp6IumhHEIjSKn2ASgRs+0o94NOL2/gH/qKkOgZrUZbGfWGogL+i11lgH+/PNuDW6v6xaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1776930135; c=relaxed/simple;
-	bh=SHR2yJQ/Tjbh+rC55nFexgk7YhcMTx8ekAsEFlEHgTk=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=HZS3ZOsy84SiDwuaxihfl9/5JOZW0Gbb2ec7SgspwJw8TL6upjkqDTyMsWA28l1oHMeVNK0dHbLp0FONg0xhDFoCInbNMOWB8seM1Zeipxd40kULscJ16nVlEE6XZIeXZc/cW5L8YmoDZ3Oa80YVvoPalgfkDyYa6E0b893OEE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UGWo7CRs; arc=none smtp.client-ip=10.30.226.201
+	bh=z7L1y/lceWNcGtWDS9MvRXoRJYU0HgYaw9u3PFvDJok=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=VVbXqEbQodaU34C20ZMAUjLW/gP2jKTTt04LNH1kfOeVU4n1H+hUpvr4/4IEzdvnHWCJLnGioC5GJmr/H4e1qawJ/W66sogF1hkm/kP0mEqNL4Y4op/QQBfwdzBBXoe+pWqmHsbQohdaS/XDW4aMf3xw+YSMsDYg5vjxO929Pf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NGxc5/nF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UGWo7CRs"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5481DC2BCB2;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NGxc5/nF"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 862D8C2BCB7;
 	Thu, 23 Apr 2026 07:42:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1776930135;
-	bh=SHR2yJQ/Tjbh+rC55nFexgk7YhcMTx8ekAsEFlEHgTk=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=UGWo7CRsCA6pqq11blBN+ScpTkXePRKNdgtS478DBCdUNZ1VDTb6tIInf74G6BCuO
-	 c8sU75Y9OauGMsaYLRhqaQ0anvpMRFSHux9u14S9DRRiyQBQTlFvGmfrFjRP8QeG8n
-	 kY9ua+hNIIT7oHJ2AkkiBGPzMa/SIeacttKWB9qum3RSt7XtyfU//RGA6l0/Q7iurr
-	 hewl+j7uOmghUVwuof2GRboRxayy0G395URFB+C6/Rn8d6rhHUiKmGdjuaBABwqtoB
-	 O7INsm29tYgr/b2epW54YeOEwUWhYHvE6cXox21xx58tAg9ZJ7O7JK2BTGXVTfECD2
-	 QuFV3buody28A==
+	bh=z7L1y/lceWNcGtWDS9MvRXoRJYU0HgYaw9u3PFvDJok=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=NGxc5/nFW8lNyT/dv2GXpRR2KxHjXt6MtTrjgIvoV4VOqQaSI0onUoW2SMJ7nvYMY
+	 QnpRKIHwR+8p5s65Dx7mDrNbXd7HgnblzgGvqiQALPapc7kk/8uyAQwmuD13+aCNEs
+	 nlcsigzRyIWgQ/6VkSa8jwOhPhcHSmkYpwjE9fSw+ppXMc12283FP1lT2zmbtl+OrU
+	 756LK96NYFFgMewVMk4ifFMIsUS4HL7DaMcoOIHhxb8sjK177F84lstKIDV7AeRdQ5
+	 yexvgAEXgJLFA5g60cMcUTanaT9cAlGQtp1hAQgxMjku2dg914CBWXg+VCVjK0Bfzv
+	 AiCP2V0/7znlg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3E5E0F9934C;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 77472F9934F;
 	Thu, 23 Apr 2026 07:42:15 +0000 (UTC)
 From: Corey Leavitt via B4 Relay <devnull+corey.leavitt.info@kernel.org>
-Subject: [PATCH RFC net-next 0/4] net: pse-pd: decouple controller lookup
- from MDIO probe
-Date: Thu, 23 Apr 2026 01:42:13 -0600
-Message-Id: <20260423-pse-notifier-decouple-v1-0-86ed750a9d62@leavitt.info>
+Date: Thu, 23 Apr 2026 01:42:16 -0600
+Subject: [PATCH RFC net-next 3/4] net: pse-pd: fire lifecycle events on
+ controller register/unregister
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,10 +41,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMQQrCMBQFrxL+2g8xFCtuBQ/gtrhokxf9IklIU
- imU3t2oy2GYWakgCwqd1EoZbykSQ4P9TpF9jOEOFteYjDYH3RnDqYBDrOIFmR1snNMLDD8etet
- 7302g1qYML8vvO9D1clYBlQOWSre/LfP0hK3fNW3bBzhMoZmHAAAA
-X-Change-ID: 20260422-pse-notifier-decouple-efa80d77f4be
+Message-Id: <20260423-pse-notifier-decouple-v1-3-86ed750a9d62@leavitt.info>
+References: <20260423-pse-notifier-decouple-v1-0-86ed750a9d62@leavitt.info>
+In-Reply-To: <20260423-pse-notifier-decouple-v1-0-86ed750a9d62@leavitt.info>
 To: Oleksij Rempel <o.rempel@pengutronix.de>, 
  Kory Maincent <kory.maincent@bootlin.com>, 
  Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -55,11 +54,11 @@ To: Oleksij Rempel <o.rempel@pengutronix.de>,
 Cc: Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Corey Leavitt <corey@leavitt.info>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1776930134; l=5388;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1776930134; l=1536;
  i=corey@leavitt.info; s=default; h=from:subject:message-id;
- bh=SHR2yJQ/Tjbh+rC55nFexgk7YhcMTx8ekAsEFlEHgTk=;
- b=BtV/BevWrW5hwYx+khyDHbDE7TKm3ukK8q2aMjCdsZMF22Qb4DO/rZ49yXtFKOlR3PVVhhVTf
- n177erRh+ePC94oDFIsSyGa34zybnTgA9T3r8000oCGk4Eon3iUzQHo
+ bh=MOnFN08SYHgfOekYGnbnF8wDziGnDMovMc1cNiCo+D8=;
+ b=IUOXxGgqd7R2ArRe+iXdztqayIZwufjmynyMcSsq84IiA15zdQNGk7q1KjJ6DOKNsF8p6Hor/
+ OLbqnLpd4jXAqXRcQvoPT0J9acMSe3u1Q4Fqwvs5NjOjo49vTHcvUc7
 X-Developer-Key: i=corey@leavitt.info; a=ed25519;
  pk=Q3mmZT+4CRYT8qp8RWvab30X2v2JnLdhHuK7YIHKzpI=
 X-Endpoint-Received: by B4 Relay for corey@leavitt.info/default with
@@ -67,115 +66,50 @@ X-Endpoint-Received: by B4 Relay for corey@leavitt.info/default with
 X-Original-From: Corey Leavitt <corey@leavitt.info>
 Reply-To: corey@leavitt.info
 
-On systems where a PSE controller driver loads as a module and a
-device-tree PHY node carries a `pses = <&pse_pi>` reference,
-fwnode_mdiobus_register_phy() tries to resolve the PSE handle before
-the controller driver has probed. of_pse_control_get() returns
--EPROBE_DEFER, the enclosing MDIO/DSA probe fails, and driver-core
-re-queues the work. The retry loop spins until the PSE driver module
-loads and its controller registers.
+From: Corey Leavitt <corey@leavitt.info>
 
-Commit fa2f0454174c ("net: pse-pd: Introduce attached_phydev to pse
-control") made each retry expensive. It reordered
-fwnode_mdiobus_register_phy() so the PHY is registered before the
-PSE lookup. Every deferral now performs a full
-phy_device_register() / phy_device_remove() cycle. On a board with a
-sufficiently tight watchdog the retry loop can starve the watchdog
-kthread. On the reporting hardware (MT7621 + gpio-wdt, 1-second
-margin) the retry loop converts a slow probe phase into a reset
-before userspace loads.
+Hook the newly-introduced pse_controller_notifier chain so that
+pse_controller_register() fires PSE_REGISTERED after the controller
+has been added to pse_controller_list (i.e. is now resolvable by
+of_pse_control_get()), and pse_controller_unregister() fires
+PSE_UNREGISTERED before the controller is removed from the list
+(while it is still valid to dereference from a subscriber's
+pse_control pointer targeting it).
 
-The affected population today looks small. OpenWrt, where PSE
-actually ships, is still on 6.12 (pre-regression), and most
-environments with CONFIG_PSE_*=m do not have boards whose DT
-references a PSE controller from a PHY. Still, the mechanism is
-general. Any modular PSE driver combined with the documented
-`pses = <&...>` binding reproduces the retry loop. Whether it
-reaches brick-grade or merely slow/flaky boot depends on local
-watchdog timing. More exposure is expected as distribution and
-embedded kernels move to 6.13 and later.
-
-The narrow fix would be to partially revert the ordering in
-fa2f0454174c so each defer is cheap again. That keeps the same
-architecture (fwnode_mdio holding PSE knowledge, -EPROBE_DEFER
-flowing across the subsystem boundary), and any future reorder
-reintroduces the same class of bug. This series takes the larger
-fix: decouple PSE controller lookup from MDIO registration entirely.
-pse_core now publishes a BLOCKING_NOTIFIER chain with REGISTERED
-and UNREGISTERED events. phy_device subscribes, owns phydev->psec
-lifetime, and attaches PSE handles in response to controller
-lifecycle rather than during probe. fwnode_mdio loses its PSE
-awareness, and -EPROBE_DEFER no longer flows out of fwnode_mdio.
-
-Patch breakdown:
-
-  1. Scope the pse_control regulator handle to kref lifetime
-     (Fixes: d83e13761d5b). A latent bug that patch 4 makes
-     reachable.
-  2. Add the notifier chain (enum, head, register/unregister
-     helpers). Pure infrastructure. No subscribers yet, no
-     observable change.
-  3. Fire REGISTERED and UNREGISTERED events from the controller
-     register/unregister paths. Still no subscribers, still no
-     observable change.
-  4. Subscribe from the PHY layer, take ownership of phydev->psec
-     via the notifier, and remove fwnode_find_pse_control() from
-     fwnode_mdio.
-
-Patch 1 is bundled here per stable-kernel-rules section 4
-reachability guidance. On mainline today, with no notifier
-subscriber, no caller drives the dangling regulator-handle sequence.
-Patches 2 and 3 are deliberately split to separate "add
-infrastructure" from "wire it up". Happy to fold them if maintainers
-prefer the combined form.
-
-Validated on a Cudy C200P (MT7621 + IP804AR) running an OpenWrt
-build of 6.18.21 with the series applied. A lockdep build
-(CONFIG_PROVE_LOCKING + CONFIG_DEBUG_ATOMIC_SLEEP) shows no splats
-from the series' code paths during boot, PHY attach, PHY detach, or
-a full controller unbind/rebind cycle. ethtool --set-pse drives all
-four PoE-capable LAN ports, and a Ruckus H510 class-4 PD plugged
-into lan3 negotiates and receives 48 V.
-
-The C200P has no SFP cage, so the SFP path change in sfp.c
-(phy_device_register -> phy_device_register_locked) isn't exercised
-on the bench. Verified by call-graph audit: every path reaching
-sfp_sm_probe_phy() holds rtnl at entry, via sfp_timeout,
-sfp_check_state, sfp_probe, sfp_remove, or
-sfp_bus_{add,del}_upstream.
-
-Not addressed by this series: ethtool --show-pse returns "No data
-available" on DSA netdevs in 6.18, because dev->phydev is NULL for
-DSA-frontend netdevs and ethnl_req_get_phydev() therefore returns
-NULL. That's a DSA / ethtool integration quirk that predates this
-work.
-
-Sending as RFC because this is my first net-next series. I'd
-appreciate maintainer guidance on whether patch 1 should go to net
-rather than net-next, and whether the patch 2/3 split is preferred
-to the combined form.
+With no subscribers yet, this is observably a no-op. A later change
+wires the phy subsystem in as the first subscriber.
 
 Signed-off-by: Corey Leavitt <corey@leavitt.info>
 ---
-Corey Leavitt (4):
-      net: pse-pd: scope pse_control regulator handle to kref lifetime
-      net: pse-pd: add notifier chain for controller lifecycle events
-      net: pse-pd: fire lifecycle events on controller register/unregister
-      net: phy: own phydev->psec via PSE notifier and remove fwnode_mdio hook
+ drivers/net/pse-pd/pse_core.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
- drivers/net/mdio/fwnode_mdio.c |  34 ----------
- drivers/net/phy/phy_device.c   | 144 ++++++++++++++++++++++++++++++++++++++---
- drivers/net/phy/sfp.c          |   2 +-
- drivers/net/pse-pd/pse_core.c  |  60 ++++++++++++++++-
- include/linux/phy.h            |   2 +
- include/linux/pse-pd/pse.h     |  41 ++++++++++++
- 6 files changed, 236 insertions(+), 47 deletions(-)
----
-base-commit: 1f5ffc672165ff851063a5fd044b727ab2517ae3
-change-id: 20260422-pse-notifier-decouple-efa80d77f4be
+diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
+index 80c5c6c1758c..82125502a8e3 100644
+--- a/drivers/net/pse-pd/pse_core.c
++++ b/drivers/net/pse-pd/pse_core.c
+@@ -1138,6 +1138,9 @@ int pse_controller_register(struct pse_controller_dev *pcdev)
+ 	list_add(&pcdev->list, &pse_controller_list);
+ 	mutex_unlock(&pse_list_mutex);
+ 
++	blocking_notifier_call_chain(&pse_controller_notifier,
++				     PSE_REGISTERED, pcdev);
++
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(pse_controller_register);
+@@ -1148,6 +1151,9 @@ EXPORT_SYMBOL_GPL(pse_controller_register);
+  */
+ void pse_controller_unregister(struct pse_controller_dev *pcdev)
+ {
++	blocking_notifier_call_chain(&pse_controller_notifier,
++				     PSE_UNREGISTERED, pcdev);
++
+ 	pse_flush_pw_ds(pcdev);
+ 	pse_release_pis(pcdev);
+ 	if (pcdev->irq)
 
-Best regards,
---  
-Corey Leavitt <corey@leavitt.info>
+-- 
+2.53.0
 
 
