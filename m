@@ -1,16 +1,16 @@
 Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B5CC2FD7BC
-	for <netdev@vger.kernel.org>; Thu, 23 Apr 2026 12:10:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B87E3EB801
+	for <netdev@vger.kernel.org>; Thu, 23 Apr 2026 12:11:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.95.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776946241; cv=none; b=gs889hjZFlNISXteLVjoN92E3fNHSy5loaxQq2C2huWv6fEj8Wck28hrq/DuhlGUHa8pbmj9jBxqzUqMcMtyL1pUAT1e1/eAiuzsTiFfJXckXF2ZXEgf8XfiBDqCL2BHw5TydGyolSms2sHp0U1Xl2upO6Mau4hCwfogYLNw61U=
+	t=1776946263; cv=none; b=iVoBpA0fhB07Q2s/gMg/K+rb7ynTcI7shZcK0TzEYuBxqH8D/v6AlinsRB77q1/GS/ODkTKVmi/7r+eWcj8wVS1L7CeuDGJQMJWlI4BAs3iNWSL/82awUPaGCstPR7catErb9PjEiiuVdwQNFY6l9jKyp55syDs+d6CWOd3jaok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776946241; c=relaxed/simple;
-	bh=20LCn011KeloyfGzR0WiIIJsqkeH7IkA13ix9/kv4sc=;
+	s=arc-20240116; t=1776946263; c=relaxed/simple;
+	bh=KhWqerK0DY5rV1yBA2kJutYqkWJchjpI1tdRUFnxflM=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=TBDxDHViLyEk2PR9ygWqMaqDg/nZXkx8FTuY81X7ITSZR95ZublWZGYDmKG0CS/7a/YLMLlkkbs4R5fDIzSoYUOFnXMq1VxG5rmiUX7MVNTjp+n4Zf0yeJCsjNS2bAKJwQ/ZNx8/GNyoWIxjsBiBdG/zAPt7nDqZ8/YMxveD/eg=
+	 MIME-Version:Content-Type; b=dBIYMxni7WmgumcKZfzPWegJTF3G12OJHCzcQrKi6faPoLtc8yBqn3P8yI3DPK76Lq52icNdnKCdkqEWGStD1cKT+uiQu9rOFwf0bem0jGG5RGCm113TZhyMsdWs5Dgml2gNc+jWjK+SPnVT3y84cHnWma8YHwMEam749+WSbc0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk; spf=pass smtp.mailfrom=toke.dk; arc=none smtp.client-ip=45.145.95.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
@@ -22,14 +22,14 @@ To: Eric Dumazet <edumazet@google.com>, "David S . Miller"
 Cc: Simon Horman <horms@kernel.org>, Jamal Hadi Salim <jhs@mojatatu.com>,
  Jiri Pirko <jiri@resnulli.us>, netdev@vger.kernel.org,
  eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>
-Subject: Re: [PATCH net 2/5] net/sched: sch_cake: annotate data-races in
- cake_dump_stats() (II)
-In-Reply-To: <20260423102324.3172448-3-edumazet@google.com>
+Subject: Re: [PATCH net 3/5] net/sched: sch_cake: annotate data-races in
+ cake_dump_stats() (III)
+In-Reply-To: <20260423102324.3172448-4-edumazet@google.com>
 References: <20260423102324.3172448-1-edumazet@google.com>
- <20260423102324.3172448-3-edumazet@google.com>
-Date: Thu, 23 Apr 2026 14:10:38 +0200
+ <20260423102324.3172448-4-edumazet@google.com>
+Date: Thu, 23 Apr 2026 14:11:00 +0200
 X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <877bpxyj0h.fsf@toke.dk>
+Message-ID: <874il1yizv.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -43,13 +43,16 @@ Eric Dumazet <edumazet@google.com> writes:
 
 > cake_dump_stats() runs without qdisc spinlock being held.
 >
-> In this second patch, I add READ_ONCE()/WRITE_ONCE() annotations
+> In this third patch, I add READ_ONCE()/WRITE_ONCE() annotations
 > for the following fields:
 >
-> - bulk_flow_count
-> - unresponsive_flow_count
-> - max_skblen
-> - flow_quantum
+> - packets
+> - tin_dropped
+> - tin_ecn_mark
+> - ack_drops
+> - peak_delay
+> - avge_delay
+> - base_delay
 >
 > Other annotations are added in following patches, to ease code review.
 >
