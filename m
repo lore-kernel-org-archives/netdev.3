@@ -1,42 +1,42 @@
-Received: from mail-4320.protonmail.ch (mail-4320.protonmail.ch [185.70.43.20])
+Received: from mail-4318.protonmail.ch (mail-4318.protonmail.ch [185.70.43.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 631F02DE6F8;
-	Thu, 23 Apr 2026 07:23:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CCB52DEA74;
+	Thu, 23 Apr 2026 07:23:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776928989; cv=none; b=L6Wsg0yXy3pVMrxRAoLF9h9CxMIsixDvr5RbYUjJPIaJS1WzS8WcAYpbDlqILW1sANskQQoS9ZiHHFgRnLOCXB6Gb7Kkgo5nV/eQXS7niCOLmnlNQh4hASkiVSWu8U/BMOi0s/4r8tDtDGU7KYo529Ik1wIAyK/lPbyTxVe4GJU=
+	t=1776928993; cv=none; b=TPsHjxRE/HUFcEiN3/vzNjzNtcW5LDQ2NcIs8spYRobRVBgIygHxr73y0ewYzqfS68XSqPqHHkRbj0mbVIXvmLxbSsOfBbhjv1B+cK/IUCQ66YTr66MjaSHQ2SmQ1AU1bH7VsNpIjoHRDx3Ldj8y+JzID1HgRVyAcd3gTHcAyfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776928989; c=relaxed/simple;
-	bh=rU5SFRDMxVUocEWkRBaTwnmlMCuQOyRV9Xszlm2djQY=;
+	s=arc-20240116; t=1776928993; c=relaxed/simple;
+	bh=Arx4hOYjLkGsnfY6tXgcbFX1wKOxubgXKQeBDqdW4X4=;
 	h=Date:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JKiM/5AsxT/NLJr3xYYu9FPsHp9knPTkT22Cubbk4Q70i0Oc7RD9EAUPRPBpxqMpBYto2LHmW8pRKqSeBPlXZUOJXS70MON119En/TziWzVbrd6pyyjYNnT8VT81h5MSCHnYB8PgSoQKbtJOnjGVe0ktZ9YRFZOf0mirlRjqrV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=leavitt.info; spf=pass smtp.mailfrom=leavitt.info; dkim=pass (2048-bit key) header.d=leavitt.info header.i=@leavitt.info header.b=AMRS5U9j; arc=none smtp.client-ip=185.70.43.20
+	 MIME-Version:Content-Type; b=lDq4G7Am8mWvWRpCnIJF3UIlIvgqBn0jLIZIgVgUaqSeIYiDuHnDZO89tBKzRvwmmr8mBlMqrOz+ozE2R6UN5u4wWcICz+0O7JcOD8yYUSOPLHyTjQ/CIm4AIK9UvNqkXkJLO+zGJmyRgvL3owMUxpTflTA9kZku6csCzIoXJVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=leavitt.info; spf=pass smtp.mailfrom=leavitt.info; dkim=pass (2048-bit key) header.d=leavitt.info header.i=@leavitt.info header.b=Kz3+aLTi; arc=none smtp.client-ip=185.70.43.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=leavitt.info
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leavitt.info
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leavitt.info header.i=@leavitt.info header.b="AMRS5U9j"
+	dkim=pass (2048-bit key) header.d=leavitt.info header.i=@leavitt.info header.b="Kz3+aLTi"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=leavitt.info;
-	s=protonmail2; t=1776928975; x=1777188175;
-	bh=YfI4kXOLAwVZfQy4tYll6QMphd3BqRNpbQf/vGRAJ8s=;
+	s=protonmail2; t=1776928990; x=1777188190;
+	bh=R3M4S5i9yX5QgyGHLDpIQ0EoTADd9Orpohb+BkQJq0g=;
 	h=Date:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=AMRS5U9jSZCsIvAeAH9/lse6bYeUlkF3b+ovW0WuuGMRizrxjD5lY4gQ5w1icUn3y
-	 jKjumGf8JSlpeqmHFE3YpOaf58HggBNEmMRbSfpOo+Nqf88ZXQmMB7+VuMkKMECqlI
-	 BQbvrQ8C17Tx5vr70ssKpUBL9hglhBAtSKPGLj24uXMW9lUOl4nbLsEiNZZItdGYJd
-	 4/489ZwMfUhjSWSh6t8JhdKA94uFncWaIM2zplaEMk8LE6SPbTsZ34XxEVvovLjB1W
-	 ZAfD1hEi9Ot4sGZtEY0LefCYshxGTXOLktcdCV609xASaxGTaRytngS6isy63P15nk
-	 bzPX23dJJY3pA==
-Date: Thu, 23 Apr 2026 07:22:48 +0000
+	b=Kz3+aLTioi8WF2EV1r/QiLGs+5J4XbE94aZMAwyuX7wbgyNwhrg+K8rdZXrxZ5lt/
+	 h+tlX7x61iTGpG6ZykrBvr1MZAM1NzYUY4tdnSE4QLk66Dytz+AHFcOpyiWS2VF2vi
+	 3G0K0rfUJ6RTXOpjVeSJPE3Jr0d4dncX6dBWY2Doue6eC9qox+ufjsBX/wVWdX+nYk
+	 dub1wDs+2ZMLVyF+Pw5Sjc4k5hjQNFK/Gj2ITNtodMDvR/dmKXIULApoGk/gAuMLoK
+	 2AIOM+zoVJMFVfQ77zv/eBHjMnFgVRMxl3TCGIeBzw1DL8ThKiKb1KG8bZUWmcOkej
+	 HhAkEk+iHkzGQ==
+Date: Thu, 23 Apr 2026 07:23:05 +0000
 From: Corey Leavitt <corey@leavitt.info>
 Cc: Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Corey Leavitt <corey@leavitt.info>
-Subject: [PATCH RFC net-next 1/4] net: pse-pd: scope pse_control regulator handle to kref lifetime
-Message-ID: <20260423-pse-notifier-decouple-v1-1-7d4856f686f6@leavitt.info>
+Subject: [PATCH RFC net-next 3/4] net: pse-pd: fire lifecycle events on controller register/unregister
+Message-ID: <20260423-pse-notifier-decouple-v1-3-7d4856f686f6@leavitt.info>
 In-Reply-To: <20260423-pse-notifier-decouple-v1-0-7d4856f686f6@leavitt.info>
 References: <20260423-pse-notifier-decouple-v1-0-7d4856f686f6@leavitt.info>
 Feedback-ID: 22087991:user:proton
-X-Pm-Message-ID: a3ccc6cd4734ba283db894f3fd3911ccfe1c3737
+X-Pm-Message-ID: 9786f841e078a3542c664a83c2acd05174e23d04
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,64 +46,47 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-__pse_control_release() drops psec->ps via devm_regulator_put(), which
-only succeeds if the devres entry added by the matching
-devm_regulator_get_exclusive() is still present on pcdev->dev at the
-time the pse_control's kref hits zero.
+Hook the newly-introduced pse_controller_notifier chain so that
+pse_controller_register() fires PSE_REGISTERED after the controller
+has been added to pse_controller_list (i.e. is now resolvable by
+of_pse_control_get()), and pse_controller_unregister() fires
+PSE_UNREGISTERED before the controller is removed from the list
+(while it is still valid to dereference from a subscriber's
+pse_control pointer targeting it).
 
-In practice that assumption does not hold when the controller is
-unbound while any pse_control still has consumers: pcdev->dev's
-devres list is released LIFO, so every per-attach regulator-GET
-devres runs (and regulator_put()s the underlying regulator) before
-pse_controller_unregister() itself is invoked. Any later
-pse_control_put() from that unbind path then reads psec->ps as a
-dangling pointer inside devm_regulator_put() and WARNs at
-drivers/regulator/devres.c:232 (devres_release() fails to find the
-already-released match).
+With no subscribers yet, this is observably a no-op. A later change
+wires the phy subsystem in as the first subscriber.
 
-The pse_control's consumer handle is logically scoped to the
-pse_control's refcount, not to pcdev->dev's devres lifetime. Switch
-to the plain regulator_get_exclusive() / regulator_put() pair so
-__pse_control_release() does the right put regardless of whether
-the controller's devres has already been unwound.
-
-No change to the regulator-framework-visible refcount or lifetime of
-the underlying regulator: a single get paired with a single put. The
-existing devm_regulator_register() for the per-PI rails is unchanged
-(those ARE correctly scoped to the controller's lifetime).
-
-Fixes: d83e13761d5b ("net: pse-pd: Use regulator framework within PSE frame=
-work")
 Signed-off-by: Corey Leavitt <corey@leavitt.info>
 ---
- drivers/net/pse-pd/pse_core.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/pse-pd/pse_core.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
-index f6b94ac7a68a..893ec2185947 100644
+index 80c5c6c1758c..82125502a8e3 100644
 --- a/drivers/net/pse-pd/pse_core.c
 +++ b/drivers/net/pse-pd/pse_core.c
-@@ -1362,7 +1362,7 @@ static void __pse_control_release(struct kref *kref)
+@@ -1138,6 +1138,9 @@ int pse_controller_register(struct pse_controller_dev=
+ *pcdev)
+ =09list_add(&pcdev->list, &pse_controller_list);
+ =09mutex_unlock(&pse_list_mutex);
 =20
- =09if (psec->pcdev->pi[psec->id].admin_state_enabled)
- =09=09regulator_disable(psec->ps);
--=09devm_regulator_put(psec->ps);
-+=09regulator_put(psec->ps);
-=20
- =09module_put(psec->pcdev->owner);
-=20
-@@ -1431,8 +1431,8 @@ pse_control_get_internal(struct pse_controller_dev *p=
-cdev, unsigned int index,
- =09=09goto free_psec;
-=20
- =09pcdev->pi[index].admin_state_enabled =3D ret;
--=09psec->ps =3D devm_regulator_get_exclusive(pcdev->dev,
--=09=09=09=09=09=09rdev_get_name(pcdev->pi[index].rdev));
-+=09psec->ps =3D regulator_get_exclusive(pcdev->dev,
-+=09=09=09=09=09   rdev_get_name(pcdev->pi[index].rdev));
- =09if (IS_ERR(psec->ps)) {
- =09=09ret =3D PTR_ERR(psec->ps);
- =09=09goto put_module;
++=09blocking_notifier_call_chain(&pse_controller_notifier,
++=09=09=09=09     PSE_REGISTERED, pcdev);
++
+ =09return 0;
+ }
+ EXPORT_SYMBOL_GPL(pse_controller_register);
+@@ -1148,6 +1151,9 @@ EXPORT_SYMBOL_GPL(pse_controller_register);
+  */
+ void pse_controller_unregister(struct pse_controller_dev *pcdev)
+ {
++=09blocking_notifier_call_chain(&pse_controller_notifier,
++=09=09=09=09     PSE_UNREGISTERED, pcdev);
++
+ =09pse_flush_pw_ds(pcdev);
+ =09pse_release_pis(pcdev);
+ =09if (pcdev->irq)
 
 --=20
 2.53.0
