@@ -1,119 +1,111 @@
-Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88BD433436A
-	for <netdev@vger.kernel.org>; Thu, 23 Apr 2026 22:27:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 572763093CB
+	for <netdev@vger.kernel.org>; Thu, 23 Apr 2026 22:46:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776983237; cv=none; b=kK62OMykw7Gm7A+T7kVkfhFNRqHIeiADgSGhjmyHs8D1Be/+TpqCwJGAIFUE/xlTCMLZd3DZV38PwxLczPwSvs85alxH/kP1d71zYwfBEUz40MF3igFURS+5DmglLH5vb+bW/KsBw6UZL1qiwYZsw1/aLFoC+ReOJ40khVzxsxI=
+	t=1776984389; cv=none; b=WdSihtMf7v28K7s0Hb03ism+4ZFcPfCIP9BJm4BdDfth+DVedSEPPVCIG/BdsXaPKioAQMaACiUWuM8agGgQRgwCG5E+9Nxse9NWp5oV5q/8GDwxkz8ZcTuqJsw91UXvuwuRt/RGYOK6WlwMMjPWoSeIFZVAkYOlmyEObVxeQfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776983237; c=relaxed/simple;
-	bh=K/rv7vg9o1YKpDguK+R50Qfy17vzgHgNh9qMLvluVBk=;
+	s=arc-20240116; t=1776984389; c=relaxed/simple;
+	bh=l9uHSdgj37MlVqmUNMTjAdytE8mxXV9iMRTSDZHL+Qo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ERlT4ao+gHZszZuzb7yheLpGksiztIUoMNOYa6KGzCbybdxC+tOrIhhEo68oaqIugGygQImzG1n3B93n4CzfqVmGQQhKy28ys2BR7hOQ9yX8xLxbtFOGg6W5RTD2/2aaO+S8mg6xyDdYpN+8MLcl5jzAt54zwf82mLyrYhLZbUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=TVTbuRAV; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=M6wmyyVt; arc=none smtp.client-ip=202.12.124.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	 Content-Type:Content-Disposition:In-Reply-To; b=UrwCZSuegSKNjWpH3LU72R9HyFGawMwMkDsnGn+JFh6oWOT/SgCwTO0hF9PoKU4uyg+YxX+NfuOgebP3OWjWXv/KUcR6SQhiiTbCB8mns1MQobNiiG4rSEdO+MWSBh1lkUk0pKlf4uxRcAqEdjZkxoSJFBBGytghipRYQCT0jD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=gHsocES4; arc=none smtp.client-ip=209.85.222.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="TVTbuRAV";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="M6wmyyVt"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 52AB17A0140;
-	Thu, 23 Apr 2026 18:27:13 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Thu, 23 Apr 2026 18:27:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1776983233; x=
-	1777069633; bh=VN2AmLlnP64m1QZ3DL+eF3J0eOsS0udkViE9JKY2i6c=; b=T
-	VTbuRAVLWFhgECrY8GBvfgeB8OKwpRkH0OuUBU+XAlu+0z5GB0Tr+7LoE+Rpd3yn
-	jnOXgNE0bGYzDYO+C5oQHV+rShp5Wfn+cbjsrVN5KyOlrJGSmURF+A17gb03dLkJ
-	g/JfzVCSNAVa5CAPA5mDsXaBdYOtFOkT+AHpTm3CVNNE19u851k2ci35+Vh/3cro
-	5maGI6mVSY6fiCl6Lsik8UDMVIxpQnvQoTzkjhTxnAiTQKSSRA/QiTyYfqyu+c4W
-	4wKLzTtfZe7beS5Sic/TRSd0U8vxKmxSM1WHNlhAi9gJOzNn8LZxglZeblEs5HfX
-	NU8R/Wv20uCf2FZVoCSDg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1776983233; x=1777069633; bh=VN2AmLlnP64m1QZ3DL+eF3J0eOsS0udkViE
-	9JKY2i6c=; b=M6wmyyVtPXjj5VD2VJTV4AJwcPuh8sGI2j4pw9SSZCNFz+AWa0A
-	GQiCxmJ1uXYQ4uSRYobcpqv9+SQYbPtJBkHxaREhu3HBWf8y4JOYZCY3tF8ePBY7
-	Yot1Bo+yr4exZElXnPWWhCPhAwHMd9dkQzAQJXNN/Jt9VKOqdkC/XRIKcozpZDIo
-	ZJ4iNROoOKYTyy8c+CRTorz6sCHw3o33tggpoBo+ZwRaZWJknU5cFyCiFtT6pkQa
-	po48LmK07+Ccq7qiiS9QAzyvrj1khKCdGiaR5EiApVtYYBdJAieX3DpbQvYwgk56
-	T8fUKbWutulTUwJ4/P+o36KncUA1iaiQNBw==
-X-ME-Sender: <xms:wJzqaa3cl6za5C1-haRoaysM7dBXtd08BYtxxH-xfdd97EvkztBYDA>
-    <xme:wJzqafpDHJU0RkDos6MJlXNIbWRCHgy-MIA8h7XqigI8hBTfFXsqE8NJals4ak0fI
-    0_p85WuZhcAAhstj68cIgyJp6AuGV45cDn692JsKcE9aUv9EjawXkY>
-X-ME-Received: <xmr:wJzqaWhisd9-COnzj7b8yM9IlbtXZK6ZMlML_rRpys9YDXCew_HzhCqvZkut>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdeikeefhecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdertddttdejnecuhfhrohhmpefurggsrhhinhgr
-    ucffuhgsrhhotggruceoshgusehquhgvrghshihsnhgrihhlrdhnvghtqeenucggtffrrg
-    htthgvrhhnpeeuhffhfffgfffhfeeuiedugedtfefhkeegteehgeehieffgfeuvdeuffef
-    gfduffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    hsugesqhhuvggrshihshhnrghilhdrnhgvthdpnhgspghrtghpthhtohepledpmhhouggv
-    pehsmhhtphhouhhtpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtph
-    htthhopegrnhhtohhnihhosehophgvnhhvphhnrdhnvghtpdhrtghpthhtohepnhgvthgu
-    vghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhgrlhhfsehmrghnug
-    gvlhgsihhtrdgtohhmpdhrtghpthhtohepphgrsggvnhhisehrvgguhhgrthdrtghomhdp
-    rhgtphhtthhopegrnhgurhgvfidonhgvthguvghvsehluhhnnhdrtghhpdhrtghpthhtoh
-    epuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopegvughumhgriigv
-    thesghhoohhglhgvrdgtohhmpdhrtghpthhtohepihhmvhegsggvlhesghhmrghilhdrtg
-    homh
-X-ME-Proxy: <xmx:wJzqab8LXZKMAdjG9f8x1tAIVxnnEKOQIujyrZH0tUgN5sWbc7Ya0Q>
-    <xmx:wJzqaSXKv-F7LakomHPS_xkW2t0x4Tr7ZsNG07ROEH82TjtIJLHfxQ>
-    <xmx:wJzqafAFBPCrEK4p89Si0HYZMn1ANF4REN80UMhs56u75Mk4-fg2cw>
-    <xmx:wJzqaXEjUzEioN6MmdbzFt-_X81a9CFGUhVcidKUkDgnmmLg3hiBtw>
-    <xmx:wZzqaXdEspw62baSWFUnExk9hLhbw7ajwX5bHaAeUXFBMK3uPAGwmpir>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 23 Apr 2026 18:27:12 -0400 (EDT)
-Date: Fri, 24 Apr 2026 00:27:10 +0200
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Antonio Quartulli <antonio@openvpn.net>, netdev@vger.kernel.org,
-	Ralf Lici <ralf@mandelbit.com>, Paolo Abeni <pabeni@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Hyunwoo Kim <imv4bel@gmail.com>
-Subject: Re: [PATCH net 1/1] ovpn: fix race between deleting interface and
- adding new peer
-Message-ID: <aeqcvgufY0F50rkU@krikkit>
-References: <20260422123242.530882-1-antonio@openvpn.net>
- <20260422123242.530882-2-antonio@openvpn.net>
- <20260422192050.7c4ca760@kernel.org>
- <7481bc31-44f6-43ae-b3aa-07002644d9e6@openvpn.net>
- <9221605c-ad31-44f9-b3b7-db2237f75eb7@openvpn.net>
- <aepK3XXc8IFemb1Z@krikkit>
- <20260423103628.4ce6fc05@kernel.org>
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="gHsocES4"
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-8d68f702851so801867185a.0
+        for <netdev@vger.kernel.org>; Thu, 23 Apr 2026 15:46:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1776984387; x=1777589187; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=LOyCcpWY9ETk6/DQ/Zzf9IsC2/j7viPfylDYdsbXpuw=;
+        b=gHsocES4rM2iEUWKqG8kp+69ntn5/8KkwOOSvqiYUtEDR23ce6l56FUnFcdYvMklOU
+         d4iVS5lIb3Y+GL0Pnq9sDAjar03xr2XnLZije5OdOOdjBatHPNLRzHwLUkXjsDLM25G1
+         HPol8Kez21ljDOoCS1nRmB9Bl2hxNYShOzDakJLxpTpzUDnbLkKpVZZe9Hf8si1UWDLl
+         /Cj/tkVtPO0B6oC/FFGdIQihVUQjyOgTJxjcv9iAiTPKYvDblGzxvu9aLUQxbRuQ4I6I
+         q9T4Qp3qASJDwtuUTFCpGZq4yXMEbbQ+J5KEDDPrrylcADSqCh6vlyled3ozriSBybLE
+         EDGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776984387; x=1777589187;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LOyCcpWY9ETk6/DQ/Zzf9IsC2/j7viPfylDYdsbXpuw=;
+        b=NIM71nfONle+JLsfgI3bMX2Gc5wx5K/1a1z4wCOFnNTi//Fj3vTpiCC55VvtkVrXS3
+         0JwFXZiW4tA0WFvTo3jh8PTWtn+D80zrOGozfNc9DDNi01UJDD8s2FXAvxutYfKHtdhh
+         p7uBKipHZ1ZNLEmFLz0XzZy5DHXVM8urIoaW2ZMfSPG0pmywsnDovPdO9/nY7CnApsMd
+         DADwJRlJvLILg6YhR2gC/GC5hu7mKhGyW6M0IT7N5CFR+BqQSuE2D+FYOWoc1fwojkcy
+         uF2dQtehUm7BpqdoXQdlWIjqfDC56/9jYdNYwNpFD90BJtkblPdMYkPAjDK6lISxfUkw
+         75HQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/rcQdWk3kHAHR068NtP+E1KvjWJfH6IDeyq9DfG/30i/1y53lJvtKEqjJO3+vKHBZB8jGAzFU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxd47WTtY4p9kLllH2gGWY2K6LV6sHT2vJN40LFAwN/n5K7cUR7
+	bpxkGC9i4q2bWQWt8kB9WXwkyEIGOAfnWBHaVNNZycNZLgP6ovCQ5ollU8Xdxd0SgxU=
+X-Gm-Gg: AeBDieuiRUBIJEgKUNUNRHQo9rRtkg5UMJ3NEVvGCHzTHSk9Jum+l3a3HrMer3W6Pbt
+	tbQgtoy2aQRn/TE717ZHp8PavvZ0zeYl3k0dnDgbSWv7x5L+ZP6yc7caBT2g/dts8KMDHDmDfll
+	S2lXjhxeDledmIphyELyCER+5nqCThfs1OL3Zhti49VebouOYZnhzdc7ZfsbDkn0dFf3yTMhPs4
+	YPut+mhYatiLl5q2s/V9tWoOJ6pdQL3XU4BV9igx7afbe/zDLUJ8TX1i6AhUZadOI1MgshOe7q2
+	MH15fqfLDifTr8Xa7ChjjhtIBG1dBEKIpYH1Qs3DaDcyHklV6X3Mq6oFHI2PHOG6BWNne/dvOPn
+	W/TD+otgXxRvCvvT7SecZg02gJFL8jAia3x3gKzC8UHykGJFkAq/jcGTIP4bZ/NxB6VaWyd/a4X
+	2/+9aG7aydCsjouTkLw5WxVeryq10ceL+mZxLA3qFj1QrxJHJOplUBy7pXVAQ173y0pdzgJWjHy
+	Z0tbFje8kBleaenGwcBTXWBmZU=
+X-Received: by 2002:a05:620a:440d:b0:8ef:74c9:daa7 with SMTP id af79cd13be357-8ef74c9e32fmr1451093685a.8.1776984387201;
+        Thu, 23 Apr 2026 15:46:27 -0700 (PDT)
+Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8e7d98c15a9sm1970538185a.43.2026.04.23.15.46.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Apr 2026 15:46:26 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wG2oU-0000000GMBz-0jKo;
+	Thu, 23 Apr 2026 19:46:26 -0300
+Date: Thu, 23 Apr 2026 19:46:26 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Alex Williamson <alex@shazbot.org>
+Cc: Zhiping Zhang <zhipingz@meta.com>, Stanislav Fomichev <sdf@meta.com>,
+	Keith Busch <kbusch@kernel.org>, Leon Romanovsky <leon@kernel.org>,
+	Bjorn Helgaas <helgaas@kernel.org>, linux-rdma@vger.kernel.org,
+	linux-pci@vger.kernel.org, netdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, Yochai Cohen <yochai@nvidia.com>,
+	Yishai Hadas <yishaih@nvidia.com>
+Subject: Re: [PATCH v1 1/2] vfio: add callback to get tph info for dma-buf
+Message-ID: <20260423224626.GV3611611@ziepe.ca>
+References: <20260420183920.3626389-1-zhipingz@meta.com>
+ <20260420183920.3626389-2-zhipingz@meta.com>
+ <20260422092327.3f629ad6@shazbot.org>
+ <20260422162928.GL3611611@ziepe.ca>
+ <20260422132740.5f809bf7@shazbot.org>
+ <20260423142828.GQ3611611@ziepe.ca>
+ <20260423132016.4a25e074@shazbot.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260423103628.4ce6fc05@kernel.org>
+In-Reply-To: <20260423132016.4a25e074@shazbot.org>
 
-2026-04-23, 10:36:28 -0700, Jakub Kicinski wrote:
-> On Thu, 23 Apr 2026 18:37:49 +0200 Sabrina Dubroca wrote:
-> > We could also wrap all of ovpn_peer_add (including the new reg_state
-> > check) in netdev_lock, since we can't move to NETREG_UNREGISTERING
-> > until netdev_lock is released (then I think we wouldn't need the
-> > READ_ONCE(reg_state)). But I don't know if that's an acceptable use of
-> > netdev_lock.
+On Thu, Apr 23, 2026 at 01:20:16PM -0600, Alex Williamson wrote:
+
+> My suggestion would be that we leave VFIO_DEVICE_FEATURE_DMA_BUF
+> unchanged and add a VFIO_DEVICE_FEATURE_DMA_BUF_TPH ioctl which takes
+> the fd from VFIO_DEVICE_FEATURE_DMA_BUF, along with a steering tag and
+> processing hint.  It would fdget() the dmabuf fd, validate it's a
+> dmabuf via f_ops, validate it's a vfio exported dmabuf via dmabuf->ops,
+> find the matching vfio_pci_dma_buf via priv under memory_lock, and
+> stuff the provided TPH values into the object.  It would be left to the
+> user to sequence setting the TPH values on the dmabuf before the dmabuf
+> is consumed by the importer.
 > 
-> Yup, fwiw it's a perfectly legitimate use case.
+> Is that a more reasonable uAPI?  Thanks,
 
-Ok. There's still a worrying bit in nesting lock_sock under
-netdev_lock (ovpn_peer_add -> netdev_lock -> ovpn_peer_add_p2p ->
-unlock_ovpn -> ovpn_socket_release -> lock_sock).
+Off hand I think it can work, with the proviso that if userspace uses
+the dmabuf before setting the tph the importer may ignore it. I don't
+think that is a problem in practice.
 
--- 
-Sabrina
+Jason
