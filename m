@@ -1,63 +1,111 @@
-Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 298162BE026
-	for <netdev@vger.kernel.org>; Thu, 23 Apr 2026 12:08:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.95.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 135DC3E0C5C
+	for <netdev@vger.kernel.org>; Thu, 23 Apr 2026 12:08:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776946106; cv=none; b=aP5GxccjgtBLmuzkD1/ZJrd1052Ks+890PON0+098GYNgicPhl1f8h0MdAaJTSHzMsHI1e9poKYST9KIpguZvvmOtMzplBYpELeTZbrWIL0WpD8w6vyHyLPRLoQQAx2rwcD5furt/6Fy7imBgZ6tcGfL69x1yx0qC+cflSVLKx0=
+	t=1776946115; cv=none; b=ooDv391hpr0QCmlRWP8THiEjWMy4v46UUKfgBahANbuY/hz1QvoXhgLT3GkTRuq+bHpDB2F3jT1AFH3WBiETh2vxZV1oxbvxgDWR5guCupY07TAoMm3RHRZHWiwzY0u+HMAoweuvXiyHH/NxjtX/q5kJX8t/9W4m/frN0tHepwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776946106; c=relaxed/simple;
-	bh=9Amh17detrVqvzU7RxH1v/MIpeUMgRuJt11KfZMbzag=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=eSD4Z9VIHj8ui79DEC++KReuWkoWhVQsSkm295ibrbTakpka2HNwgggDuN+W+Y7ZckgWvc1kIHglnLf/be0jSLs/C9SUI4INldum8qKC/slUcP57TI77zl5PZgO2Fg16FhGvkbbjuuvQajMmuAOejsc0ZUKYCEr2axVhh+uTdcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk; spf=pass smtp.mailfrom=toke.dk; arc=none smtp.client-ip=45.145.95.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-Authentication-Results: mail.toke.dk; dkim=none
-To: Eric Dumazet <edumazet@google.com>, "David S . Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Jamal Hadi Salim <jhs@mojatatu.com>,
- Jiri Pirko <jiri@resnulli.us>, netdev@vger.kernel.org,
- eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>
-Subject: Re: [PATCH net 1/5] net/sched: sch_cake: annotate data-races in
- cake_dump_stats() (I)
-In-Reply-To: <20260423102324.3172448-2-edumazet@google.com>
-References: <20260423102324.3172448-1-edumazet@google.com>
- <20260423102324.3172448-2-edumazet@google.com>
-Date: Thu, 23 Apr 2026 14:08:20 +0200
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87bjf9yj4b.fsf@toke.dk>
+	s=arc-20240116; t=1776946115; c=relaxed/simple;
+	bh=nbvVHypLXYe4HQ6kM/FsSGnZ/2YTCBEdf3DpEFbQvMk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Z/n3uE/zh0S4K1AalpLzCvwXF6RHq0GyYp7oZsqKa8z0j9qK+e6WODT/K+Riu2VVo7GolYs3XL1Pw6LWWET//6p6WPEGNUY6Sk2F27HB6YFx1GxlhAqsRMF7GfZ89E3QsWXeO/hjmCwiu1t5orunFrkQv/eJHflBUaBJ5Pc+Wzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iH2YXuPe; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iH2YXuPe"
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b9d9971d059so971313166b.2
+        for <netdev@vger.kernel.org>; Thu, 23 Apr 2026 05:08:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776946111; x=1777550911; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=SRhug5EctNOjlbS2XQzhvxEAEMbzIA+RUPcEwvw3GOY=;
+        b=iH2YXuPemyx6UQ5/DLT4XzWNHQyMYf0PWZT7fmchSobAgF18y0Goq5IFqyNwCpEz06
+         6Q4l4yeqFakEbtMtkFsrVp+N8DYEk/jJ/RUe/kGVUuvLjXt1Muob8afevP6OEiKwKzRP
+         kc3PYvaUelGmcPillTbSFMprLaBoDsg2hrR//RLW4Z0O8XnNdHKHJbMm1oaLtNlrVy2j
+         o82KHUojy6KCJmpgkak3wpVNCqutY+4dNNdW3sCykGaGp7XVoWWvyj63rDbNnzMzzsXs
+         e2plnUW7bR7lYA+mJLUqsHZaZFdI+O902QcE3Qs6FEQaf0BRHll7lkQyisBnIBuraKUM
+         pNvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776946111; x=1777550911;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SRhug5EctNOjlbS2XQzhvxEAEMbzIA+RUPcEwvw3GOY=;
+        b=eacMIXbi7R9f3H7PJFeWYZ9dBznBKhrpI1D+u0ihLGKf5IatZ1ROlkUafzfGdROvXY
+         rm0XLWnB+6lMREbuLC87ahUE5dLtl40kYAQ67FH5lAutG+CULkPfViI0ylYqZusvEm+3
+         SYUSloE4GAKgGg2vOeXbXqNPHCQ6D4Cn0mVA3pjux7Ne7ROVY9Eb5TcKO0SBbwG81XRd
+         ci2sjlCuGnj+cCM2Ek8EV4zF9EJgzJVmagn16WOH3MJAzQIPX0bxoLk5dlIk4SEXpagv
+         3TUmW7VcLKuLAx8Ns5L6FDGV5epQSoSGInulCWMSBCdIZ5CKkuyWys5UiywJRrD/wNZX
+         R2dQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8G2TpZnItCJRuDLMlGLYM5OvazkhfGnkXQqt+zb9LcJLcc4hL5lXuczNLqq/l4LT5BORx2Lxk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwDgJsteeKC/Cjq/PX6glBn9xhm4DUEPyQ3PcjlOYaUKXpDdyNR
+	pe1QMQJslZt7BTyXe5c/AusXSj56O117+bmS6NvFHd4toOT9fYUa/lvV
+X-Gm-Gg: AeBDiesOZgA5eDtrO2V/FEIoep1XSamkcZUnGAX6q6QvIJz8VEEM8FObuj34G5A92NK
+	2zB9br9gOO4RI+0p2NgRny3lHnCESOahppYgXtE0IQwtCM5eBva6tlB0R5FiMKHezfgoHBcWXWB
+	WhVK0ogsNr40doC0+MHfbR7tS3xEzgzQW20XEiRvWKhP+DljAK3IhvCkC3O97M8390m/WHV95J+
+	jZYtugCXiHjUmBGS/xw3nyUergq+OAMwUqh5NvwOggxlPqm35SjxMHIeVziqB8iNWxhtuRVKhVu
+	d8FQfpluYFYDJqBDzGyvuqsghD6hHOiw7ipQnZxPj9vsJFWjbwCvefKgYnpTzPHsOYfLakYuVgG
+	WyBn/g6/9ja8s2i+/axpjA7FLiT297LwrwXEu1ix1XrSYVLRJfb7gmpeUPA6SYAs0Csi6Jxl98S
+	Mr7Ir2tL+X3YELPBj2cA5kF8lDZ0XykyIch+gNmX64paL+b/NZ073bavF3hmCpZ1adMWNIjDjl0
+	X0SOsNe7/Wx9JBbUnJfPmLZrMtoBwchUGJp/AvyrUNkVbBDFnljqi5bM13F4IQcnDwLIQD+pYUu
+	hdTeIT/MbfS6HGx/pQ==
+X-Received: by 2002:a17:907:806:b0:b9b:4519:7914 with SMTP id a640c23a62f3a-ba41a82618emr1393462366b.33.1776946110847;
+        Thu, 23 Apr 2026 05:08:30 -0700 (PDT)
+Received: from [192.168.0.2] (dslb-002-205-019-021.002.205.pools.vodafone-ip.de. [2.205.19.21])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ba45504441bsm644606266b.45.2026.04.23.05.08.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 23 Apr 2026 05:08:30 -0700 (PDT)
+Message-ID: <c346ac78-3e33-4062-a459-b83d845dc2eb@gmail.com>
+Date: Thu, 23 Apr 2026 14:08:29 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC net-next 0/4] net: pse-pd: decouple controller lookup
+ from MDIO probe
+To: Corey Leavitt <corey@leavitt.info>,
+ Oleksij Rempel <o.rempel@pengutronix.de>,
+ Kory Maincent <kory.maincent@bootlin.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>
+Cc: Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260423-pse-notifier-decouple-v1-0-7d4856f686f6@leavitt.info>
+ <177693362253.84762.6848519898058872632@leavitt.info>
+Content-Language: en-US
+From: Jonas Gorski <jonas.gorski@gmail.com>
+In-Reply-To: <177693362253.84762.6848519898058872632@leavitt.info>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Eric Dumazet <edumazet@google.com> writes:
+On 23/04/2026 10:40, Corey Leavitt wrote:
+> Apologies for the noise -- this series was inadvertently sent twice. The
+> first send went out through an SMTP path that stripped the patatt
+> developer signature and re-encoded the bodies as quoted-printable.
+> 
+> Please disregard this thread and use the clean, signed copy as canonical:
+> 
+>   https://lore.kernel.org/netdev/20260423-pse-notifier-decouple-v1-0-86ed750a9d62@leavitt.info/T/
+> 
+> Any v2 will land as a reply to that thread. Sorry for the extra inbox
+> traffic.
 
-> cake_dump_stats() runs without qdisc spinlock being held.
->
-> In this first patch, I add READ_ONCE()/WRITE_ONCE() annotations
-> for the following fields:
->
-> - way_hits
-> - way_misses
-> - way_collisions
-> - sparse_flow_count
-> - decaying_flow_count
->
-> Other annotations are added in following patches, to ease code review.
->
-> Fixes: 046f6fd5daef ("sched: Add Common Applications Kept Enhanced (cake)=
- qdisc")
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
-> Cc: "Toke H=C3=B8iland-J=C3=B8rgensen" <toke@toke.dk>
+https://docs.kernel.org/process/maintainer-netdev.html#resending-after-review
 
-Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
+"The new version of patches should be posted as a separate thread, not as a
+reply to the previous posting.  Change log should include a link to the
+previous posting (see Changes requested)."
 
+Best regards,
+Jonas
