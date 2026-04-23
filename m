@@ -1,85 +1,63 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 477703A7F61;
-	Thu, 23 Apr 2026 02:38:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 344363A7F61;
+	Thu, 23 Apr 2026 02:44:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776911912; cv=none; b=I7lFbKzeqfVPODe8cb2Iqao2gXl1Q0nJ3EZZFzad1hYzPVL+H6g9qBMyGioUyOlAQY6SB29hPuo1G3lumNMsKNM7GHHqyWXdf0WC6MXNkrqD53mjcbmgcg1rlr3e2D4j4+rnj7W+/0W3L65+o8wmBpn/uiNCj4XdNA/bAIjglz4=
+	t=1776912278; cv=none; b=CaVrTLGVyyVdu6ISwZCONw8aaho7/DKR2vRWdPBosnWghmjQosL2IfKr4XnQalLnnkAjOMCczlw45naGAINfjGTTxZ6Gme+yilK45+v34aZOWmnK+Qg2Mvvl6G0s0GzEIhXWf0047PTnU2BM7Y25bTlJFzgAwt+Qe53chzd9ewY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776911912; c=relaxed/simple;
-	bh=7HQSrbuMx/rshmSLfm00CK6rla06OEjtmcvJSRGnOjY=;
+	s=arc-20240116; t=1776912278; c=relaxed/simple;
+	bh=X6TikhqBuKL3LHIiQZRafoGq2I9En0G3QhQRU26UtH8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mcy2fIQORusAM3W0cTle0RqRVi81M9Y7Gpqq3WK12ha9LP1/FwxHJhEBRs+J90dLumjB4Y254wNOhvDGf/SqZggDAETqGmf5ePLKD/W1UXtT6ZgTc604l4SO/XW3SZ2X3oFN9Jo2HnAQhs5drB4cCnl5vDP0zCRDkvMlp0kpWI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=prvyABly; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=chWr0JfMDg/Ukd2Zy4Q1GrKEKVWZFL798jGLdWrR3gcmoH2jWTQMHUF9XQeP3hQnylJkDAT/QMG5q1rjKmJP4HvWuTCPV2RchJ90Eg4z4iSfI8dCCR39Oxc7hroE9GAUc3SOFQ49x9ekkGhzEqBXm+I7LQFq+pJmYC//NIE4Plw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=epxMGkaK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="prvyABly"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B354C19425;
-	Thu, 23 Apr 2026 02:38:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="epxMGkaK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47767C19425;
+	Thu, 23 Apr 2026 02:44:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776911911;
-	bh=7HQSrbuMx/rshmSLfm00CK6rla06OEjtmcvJSRGnOjY=;
+	s=k20201202; t=1776912277;
+	bh=X6TikhqBuKL3LHIiQZRafoGq2I9En0G3QhQRU26UtH8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=prvyABlyIBh76ipwT0Afooq3T3f6JlD/yCFjPoSCymJl3aylCSjP6Kgv6P+8HJVc9
-	 7aGu7xLaYmd8MZUomu6ml+HSk0MZqBBwFhwGr6Ys73P8lChfUFlcP9g0h9xpIOyvmE
-	 QOWO+F+sTBZVg7XnJOmb+wh2BQR/8m6Ry8iDoNT9Kcs4faHr9nOlsJIQj2Bai54J7h
-	 VL89KdofK8lO10crs15R4zUBxqWmHokA3Fi+4ikMGqNxNLWnsOAULtv7ToMihHLvqR
-	 WDzjNYdm3wHQ2ZG5wPZO5wA21ly8uYx6htZdQAgY7Zcon/Z4U60W2hPdf4RZfTXFGV
-	 EZatCi46/sjuQ==
-Date: Wed, 22 Apr 2026 19:38:29 -0700
+	b=epxMGkaKD1KnvCAr2uEOuBEj+WyuNFq0Wu9fnVwxD/v8fyI7XMVuBUG9Ly/lrBw7C
+	 t45vL0AL1p0dYdWBbH2eL+/+BzkR73njaBnWpJ/YsO7YTqZgRu3bYD3nlGIt1UbQ0K
+	 n9mlmbo/vUIJiFA33OaDnsli6H2kSA8tdp2DsPeAVRDZmwh3MvR7mZRdgG4JB0JZc5
+	 gEBLEDJ5ynMTgW6DUl6H8RzCJlx79EyhuFwqA5JPyciMDmzrEQJ5k4XwEzjjhpjdAx
+	 Ws60RlIc+WjvpC6bqnDitefmygd1EICWH9XAr4RWb3MdASv9izrLmjqyQdOi2VcVc9
+	 Rjl7GPzjzaEXw==
+Date: Wed, 22 Apr 2026 19:44:36 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: davem@davemloft.net, openwrt-devel  <openwrt-devel@lists.openwrt.org>,
- Guy Ellis <guy@traverse.com.au>, netdev@vger.kernel.org,
- edumazet@google.com, pabeni@redhat.com, andrew+netdev@lunn.ch,
- horms@kernel.org, corbet@lwn.net, skhan@linuxfoundation.org,
- linux@armlinux.org.uk, tsbogend@alpha.franken.de, maddy@linux.ibm.com,
- mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org,
- 3chas3@gmail.com, razor@blackwall.org, idosch@nvidia.com,
- jani.nikula@intel.com, mchehab+huawei@kernel.org, tytso@mit.edu,
- herbert@gondor.apana.org.au, geert@linux-m68k.org, ebiggers@kernel.org,
- johannes.berg@intel.com, jonathan.cameron@huawei.com, kees@kernel.org,
- kuniyu@google.com, fourier.thomas@gmail.com, andriy.shevchenko@intel.com,
- rdunlap@infradead.org, akpm@linux-foundation.org,
- linux-doc@vger.kernel.org, linux-mips@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, bridge@lists.linux.dev
-Subject: Re: [PATCH net-deletions v2] net: remove unused ATM protocols and
- legacy ATM device drivers
-Message-ID: <20260422193829.0b8539a3@kernel.org>
-In-Reply-To: <accbbcdf0ec14ae4d3f21ef5da7091bdcbd6574f.camel@infradead.org>
-References: <20260422041846.2035118-1-kuba@kernel.org>
-	<accbbcdf0ec14ae4d3f21ef5da7091bdcbd6574f.camel@infradead.org>
+To: Daniel Palmer <daniel@0x0f.com>
+Cc: David Laight <david.laight.linux@gmail.com>, Andrew Lunn
+ <andrew@lunn.ch>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Jonathan Corbet
+ <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ linux-doc@vger.kernel.org
+Subject: Re: [PATCH net 00/18] Remove a number of ISA and PCMCIA Ethernet
+ drivers
+Message-ID: <20260422194436.7e1e6ce0@kernel.org>
+In-Reply-To: <CAFr9PXnuyb0jTAhRgJGRmdzUMxP-0HrHHHN3YpQnOn8-nBBC1g@mail.gmail.com>
+References: <20260421-v7-0-0-net-next-driver-removal-v1-v1-0-69517c689d1f@lunn.ch>
+	<CAFr9PXn1ixyhD42OswoyGZ=W-O-oZygUGpRNm2dcAuYBNgtmQw@mail.gmail.com>
+	<20260422101316.0efdcf24@pumpkin>
+	<CAFr9PXnuyb0jTAhRgJGRmdzUMxP-0HrHHHN3YpQnOn8-nBBC1g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, 22 Apr 2026 14:05:31 +0100 David Woodhouse wrote:
-> On Tue, 2026-04-21 at 21:18 -0700, Jakub Kicinski wrote:
-> > =C2=A0=C2=A0 I'm still deleting the solos driver, chances are nobody us=
-es it.
-> > =C2=A0=C2=A0 Easy enough to revert back in since core is still around.
-> > =C2=A0=C2=A0 The guiding principle is to keep USB modems and delete
-> > =C2=A0=C2=A0 the rest as USB ADSL2+ CPEs were most popular historically=
-. =20
->=20
-> Still not entirely convinced; I worked on both USB ATM modems and on
-> Solos, and the Solos is both the most modern and the only one I still
-> actually have. And the only one we have native support for that could
-> ever do full 24Mb/s ADSL2+, I believe.
->=20
-> If we drop it, OpenWrt will need to drop support for these, which I
-> think were quite popular at the time; there were a few UK resellers:
-> https://openwrt.org/toh/traverse/geos1_1
->=20
-> I still don't actually care *enough* to try to find an ADSL line I
-> could plug one into for testing though... :)
+On Wed, 22 Apr 2026 18:33:15 +0900 Daniel Palmer wrote:
+> Seriously though, I think we should have something to mark stuff in
+> MAINTAINERS and elsewhere that is in the kernel but only because a few
+> people are having fun with it.
 
-I'm inversely unconvinced. The argument has the ring of "I still have
-this HW lying around somewhere", which is usually what prevents us from
-shedding all this dead weight code. I don't want to argue, so I'll keep it.
-But if one "fix" arrives for this driver - it's going :(
+IMHO that's not a great use of upstream maintainers' time.
+We support loadable modules, perfect fit for retro computing
+and drivers which aren't up to the standards.
