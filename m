@@ -1,219 +1,153 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9CE6311957;
-	Thu, 23 Apr 2026 07:42:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE0C320A14
+	for <netdev@vger.kernel.org>; Thu, 23 Apr 2026 07:42:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776930135; cv=none; b=t9zFT13JJS7kqaNTlC58yzVsoIzQJ7fnNXoJsZCA2gnUhOBjLn2Gc7JAMJyb9E4XtHpBrROTDGP0B6n1Wd5IV1BU8UF0iKiYDsT0KQzMhiyXvfuaqvveXE6OfSD6onfsy1twtSry/LHGefTiAK9P5izdShAgZfgzzaRpC0Wd0Dk=
+	t=1776930151; cv=none; b=pqfUUsaR0M6Ff9rCh905EUlYxilbZrdp76ZmD0EzBXYUh4t6dQAiq9dpMD1mKhw9ejeZyfEoYjDhpj6///+VwUTScLIoVLeqjjAEdkKZcTg8EjX0z63V2D4SiQudDu/5wENC5qAEujIj31OMyUI/5EBnYLZdj5Lamxk+kStMDvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776930135; c=relaxed/simple;
-	bh=+C27/4TFGd6sUuW+X9doh2+F27pm4Xs+1B5NISDWs4M=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=NMBtYZ+iBTzDXq/rEXS36Ky7nzUjBu8WfYlLvi1PcBPzQRp+IgVDXXqcFwzsVGeca/+qNLqpZfBZVndgC0Gg3YuJUA1rS1GV5q6ZamBgRd69t+wzZKNZIkLVuVzv5kxYoskydm7W2eYE2zFJU6G1cezPz+R49O+q7hwhzMXYO2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F9DdkDvq; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776930151; c=relaxed/simple;
+	bh=XRdpb9nVRkqJctOt0Dfi0nllkU3AoSVeiFDjds5RJCA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Kb8eNajv60/n2JEgSl/LpJ9K9lGrA/QUPw9t4B9JWslXbw/AhzuYfYVngbsUcbKZ9TZXl+ON6z/yUaQDqg0oYjOzxCqhnu29XVnjkUgBGkgAbtJhmKqPk7lc3R5VdwBXK6Aeb0cO9t9eBlb2Qk0lVXIcpwDGlV0peVsDLJaGRVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CY+i9rXP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F9DdkDvq"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7394CC2BCB5;
-	Thu, 23 Apr 2026 07:42:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CY+i9rXP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC7C2C2BCAF;
+	Thu, 23 Apr 2026 07:42:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776930135;
-	bh=+C27/4TFGd6sUuW+X9doh2+F27pm4Xs+1B5NISDWs4M=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=F9DdkDvq3j334Jk60iFnILBB7nq701FlaNU4smL6Njeaf0y9vOiAVYQbPUfTi4eDR
-	 3vzgePhw5OBOV7f5VkyhB84sBtMxpYwNm5XQo8pse5kPs5suG42X/Mc8KZko6CLOOL
-	 5AlfDLIpDgrOEY74hIF7xh1mGVRI+fQ/s8g4g71KPHgFFKW0mgVbc71oEptqUck8mF
-	 Oh+tggu93BEkuCjXcq7lJhUIWC9m4zrSL6nz2GqHKmUM/y67/8hn5bbrhNR+wk30dd
-	 f1Ib2vZGeqNjbPYxOBrziTZ8YY1p1GGS6k+X49Pq/4sLKIDULaTAlYajgpxIhdIEuq
-	 heDGbCg+aeM1g==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 65527F9934E;
-	Thu, 23 Apr 2026 07:42:15 +0000 (UTC)
-From: Corey Leavitt via B4 Relay <devnull+corey.leavitt.info@kernel.org>
-Date: Thu, 23 Apr 2026 01:42:15 -0600
-Subject: [PATCH RFC net-next 2/4] net: pse-pd: add notifier chain for
- controller lifecycle events
+	s=k20201202; t=1776930151;
+	bh=XRdpb9nVRkqJctOt0Dfi0nllkU3AoSVeiFDjds5RJCA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CY+i9rXP7j/oBVjARa/Hga/mWJYfWrYij6Ejp9K8Fmx0Fw52s4dCXIhvCr4xf4AjC
+	 FTw+atqA7j65Cn7ygGjeEL27vpc0HE1LEpl9kwxrUt6m/TmN6E055rWYx2vlycLXgH
+	 jdwz/9GyxoyZWXWYQ0Ink7GFquEUAiigkToZ/84M7crxVGd4r7DcWI93Rs5xWvZknE
+	 HaO/yxJ0/LpHzxR3I3UNkOJd8s1jMt3Vh2WJhCoUmVW1ti3bHRrN7cjsL+L87uABsU
+	 APkFOfhiQsdu7qcAHL4wPA+BiMgpXi4oWVzwVSAVhYMj11JKDf4bvq5Mg4z2OQkA38
+	 UiLHj27jE0X5w==
+Date: Thu, 23 Apr 2026 09:42:28 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net] net: airoha: stop net_device TX queue before
+ updating CPU index
+Message-ID: <aenNZELmY3Z7VP7j@lore-desk>
+References: <20260421-airoha-xmit-stop-condition-v1-1-e670d6a48467@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260423-pse-notifier-decouple-v1-2-86ed750a9d62@leavitt.info>
-References: <20260423-pse-notifier-decouple-v1-0-86ed750a9d62@leavitt.info>
-In-Reply-To: <20260423-pse-notifier-decouple-v1-0-86ed750a9d62@leavitt.info>
-To: Oleksij Rempel <o.rempel@pengutronix.de>, 
- Kory Maincent <kory.maincent@bootlin.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>
-Cc: Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Corey Leavitt <corey@leavitt.info>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1776930134; l=5160;
- i=corey@leavitt.info; s=default; h=from:subject:message-id;
- bh=JPjkGmRXffHFQfC2I2vGQ0xhYy/8ixYQjJi6kY9CoRc=;
- b=WTrN9hNzFnWYjnegdQXY9EXP6Nb2/tYCtDR/EZpjo+akks/VVElvHkgPuNG14q+u38RSX6vFN
- dnI5aTIvFlkDsOUJQX4rYpQ0JHF937ScFG5zigPZR22XHiX2ckWv6gO
-X-Developer-Key: i=corey@leavitt.info; a=ed25519;
- pk=Q3mmZT+4CRYT8qp8RWvab30X2v2JnLdhHuK7YIHKzpI=
-X-Endpoint-Received: by B4 Relay for corey@leavitt.info/default with
- auth_id=748
-X-Original-From: Corey Leavitt <corey@leavitt.info>
-Reply-To: corey@leavitt.info
-
-From: Corey Leavitt <corey@leavitt.info>
-
-Introduce a blocking notifier chain that allows other subsystems to be
-informed when a PSE controller is registered or unregistered, and
-provide pse_register_notifier() / pse_unregister_notifier() as the
-subscriber interface.
-
-Subsequent patches will use this to let the phy subsystem own the
-phydev->psec lifecycle directly, decoupling PSE lookup from
-fwnode_mdiobus_register_phy() and removing the probe-time
--EPROBE_DEFER coupling that currently exists between mdio, phy and
-pse-pd when the PSE controller driver is modular.
-
-A blocking chain (rather than atomic) is used because callbacks will
-take rtnl_lock and call back into pse_core via of_pse_control_get().
-
-The enum pse_controller_event is placed outside the
-IS_ENABLED(CONFIG_PSE_CONTROLLER) guard so that subscribers compiled
-into a kernel without PSE support can still reference the event
-values in dead-code paths without breaking the build.
-
-This patch is pure infrastructure: nothing fires events yet, and
-nothing subscribes. No observable behavior change.
-
-Signed-off-by: Corey Leavitt <corey@leavitt.info>
----
- drivers/net/pse-pd/pse_core.c | 34 ++++++++++++++++++++++++++++++++++
- include/linux/pse-pd/pse.h    | 32 ++++++++++++++++++++++++++++++++
- 2 files changed, 66 insertions(+)
-
-diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
-index 893ec2185947..80c5c6c1758c 100644
---- a/drivers/net/pse-pd/pse_core.c
-+++ b/drivers/net/pse-pd/pse_core.c
-@@ -8,6 +8,7 @@
- #include <linux/device.h>
- #include <linux/ethtool.h>
- #include <linux/ethtool_netlink.h>
-+#include <linux/notifier.h>
- #include <linux/of.h>
- #include <linux/phy.h>
- #include <linux/pse-pd/pse.h>
-@@ -23,6 +24,39 @@ static LIST_HEAD(pse_controller_list);
- static DEFINE_XARRAY_ALLOC(pse_pw_d_map);
- static DEFINE_MUTEX(pse_pw_d_mutex);
- 
-+static BLOCKING_NOTIFIER_HEAD(pse_controller_notifier);
-+
-+/**
-+ * pse_register_notifier - register a callback for PSE controller events
-+ * @nb: notifier block to register
-+ *
-+ * See enum pse_controller_event for events fired and their subscriber
-+ * contract. Callbacks run in process context; they may sleep, take
-+ * rtnl, and call of_pse_control_get(). The chain fires synchronously,
-+ * so a PSE controller driver's probe/unbind path must not hold any
-+ * such lock when calling pse_controller_register() or
-+ * pse_controller_unregister().
-+ *
-+ * Return: 0 on success, negative error code otherwise.
-+ */
-+int pse_register_notifier(struct notifier_block *nb)
-+{
-+	return blocking_notifier_chain_register(&pse_controller_notifier, nb);
-+}
-+EXPORT_SYMBOL_GPL(pse_register_notifier);
-+
-+/**
-+ * pse_unregister_notifier - unregister a previously registered callback
-+ * @nb: notifier block previously passed to pse_register_notifier()
-+ *
-+ * Return: 0 on success, negative error code otherwise.
-+ */
-+int pse_unregister_notifier(struct notifier_block *nb)
-+{
-+	return blocking_notifier_chain_unregister(&pse_controller_notifier, nb);
-+}
-+EXPORT_SYMBOL_GPL(pse_unregister_notifier);
-+
- /**
-  * struct pse_control - a PSE control
-  * @pcdev: a pointer to the PSE controller device
-diff --git a/include/linux/pse-pd/pse.h b/include/linux/pse-pd/pse.h
-index 4e5696cfade7..78fe3a2b1ea8 100644
---- a/include/linux/pse-pd/pse.h
-+++ b/include/linux/pse-pd/pse.h
-@@ -21,6 +21,7 @@ struct net_device;
- struct phy_device;
- struct pse_controller_dev;
- struct netlink_ext_ack;
-+struct notifier_block;
- 
- /* C33 PSE extended state and substate. */
- struct ethtool_c33_pse_ext_state_info {
-@@ -337,6 +338,24 @@ enum pse_budget_eval_strategies {
- 	PSE_BUDGET_EVAL_STRAT_DYNAMIC	= 1 << 2,
- };
- 
-+/**
-+ * enum pse_controller_event - PSE controller lifecycle events
-+ *
-+ * Event data in callbacks is always a pointer to the struct
-+ * pse_controller_dev firing the event.
-+ *
-+ * @PSE_REGISTERED: controller added to pse_controller_list and
-+ *	resolvable by of_pse_control_get().
-+ * @PSE_UNREGISTERED: controller about to be removed from
-+ *	pse_controller_list. Subscribers holding pse_control references
-+ *	targeting it must drop them before returning and must not
-+ *	acquire new references for it.
-+ */
-+enum pse_controller_event {
-+	PSE_REGISTERED,
-+	PSE_UNREGISTERED,
-+};
-+
- #if IS_ENABLED(CONFIG_PSE_CONTROLLER)
- int pse_controller_register(struct pse_controller_dev *pcdev);
- void pse_controller_unregister(struct pse_controller_dev *pcdev);
-@@ -366,6 +385,9 @@ int pse_ethtool_set_prio(struct pse_control *psec,
- bool pse_has_podl(struct pse_control *psec);
- bool pse_has_c33(struct pse_control *psec);
- 
-+int pse_register_notifier(struct notifier_block *nb);
-+int pse_unregister_notifier(struct notifier_block *nb);
-+
- #else
- 
- static inline struct pse_control *of_pse_control_get(struct device_node *node,
-@@ -416,6 +438,16 @@ static inline bool pse_has_c33(struct pse_control *psec)
- 	return false;
- }
- 
-+static inline int pse_register_notifier(struct notifier_block *nb)
-+{
-+	return 0;
-+}
-+
-+static inline int pse_unregister_notifier(struct notifier_block *nb)
-+{
-+	return 0;
-+}
-+
- #endif
- 
- #endif
-
--- 
-2.53.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="n+fdmW4T+/Z6vLY1"
+Content-Disposition: inline
+In-Reply-To: <20260421-airoha-xmit-stop-condition-v1-1-e670d6a48467@kernel.org>
 
 
+--n+fdmW4T+/Z6vLY1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+> Currently, airoha_eth driver updates the CPU index register prior of
+> verifying whether the number of free descriptors has fallen below the
+> threshold.
+> Move net_device TX queue length check before updating the TX CPU index
+> in order to update TX CPU index even if there are more packets to be
+> transmitted but the net_device TX queue is going to be stopped
+> accounting the inflight packets.
+>=20
+> Fixes: 1d304174106c ("net: airoha: Implement BQL support")
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> ---
+>  drivers/net/ethernet/airoha/airoha_eth.c | 9 ++++-----
+>  1 file changed, 4 insertions(+), 5 deletions(-)
+>=20
+> diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ether=
+net/airoha/airoha_eth.c
+> index 19f67c7dd8e1..5d327237e274 100644
+> --- a/drivers/net/ethernet/airoha/airoha_eth.c
+> +++ b/drivers/net/ethernet/airoha/airoha_eth.c
+> @@ -2058,17 +2058,16 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff=
+ *skb,
+> =20
+>  	skb_tx_timestamp(skb);
+>  	netdev_tx_sent_queue(txq, skb->len);
+> +	if (q->ndesc - q->queued < q->free_thr) {
+> +		netif_tx_stop_queue(txq);
+> +		q->txq_stopped =3D true;
+> +	}
+> =20
+>  	if (netif_xmit_stopped(txq) || !netdev_xmit_more())
+>  		airoha_qdma_rmw(qdma, REG_TX_CPU_IDX(qid),
+>  				TX_RING_CPU_IDX_MASK,
+>  				FIELD_PREP(TX_RING_CPU_IDX_MASK, index));
+> =20
+> -	if (q->ndesc - q->queued < q->free_thr) {
+> -		netif_tx_stop_queue(txq);
+> -		q->txq_stopped =3D true;
+> -	}
+> -
+>  	spin_unlock_bh(&q->lock);
+> =20
+>  	return NETDEV_TX_OK;
+>=20
+> ---
+> base-commit: a663bac71a2f0b3ac6c373168ca57b2a6e6381aa
+> change-id: 20260421-airoha-xmit-stop-condition-344dc0292a19
+>=20
+> Best regards,
+> --=20
+> Lorenzo Bianconi <lorenzo@kernel.org>
+>=20
+
+commenting on Sashiko retported issues:
+https://sashiko.dev/#/patchset/20260421-airoha-xmit-stop-condition-v1-1-e67=
+0d6a48467%40kernel.org
+
+- Could this cause a deadlock if exactly q->free_thr descriptors are free?
+  This does not seem a problem to me since, even if the netdev tx queue is
+  stopped as described in the report, the airoha_qdma_tx_napi_poll() will f=
+ree
+  space in the queue and subsequent packets will update REG_TX_CPU_IDX regi=
+ster.
+
+- Is it possible for this loop to read past the end of the frags array?
+  As pointed out by Sashiko, this issue is not introduced by this patch and=
+ I
+  will fix with a dedicated patch.
+
+- Might this lead to memory corruption if the tcp header is not in the line=
+ar area?
+  This issue is not introduced by this patch and I will fix with a dedicate=
+d patch.
+
+- If an error occurs during transmission, the driver jumps to the error lab=
+el
+  frees the skb, and returns NETDEV_TX_OK without ringing the qdma cpu inde=
+x doorbell?
+  Similar to the first issue, this does not seem a problem to me since subs=
+equent
+  packets will update REG_TX_CPU_IDX register.
+
+Regards,
+Lorenzo
+
+--n+fdmW4T+/Z6vLY1
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaenNZAAKCRA6cBh0uS2t
+rC1vAP9MtTmL8U3BdrfMedc+Vlc+MTA91gnMBQG8HOGouOvAdgEA1r1ltUGjtato
+t0YBtofFZLtW7ijWbfS45I4FIwGzKAo=
+=N6KP
+-----END PGP SIGNATURE-----
+
+--n+fdmW4T+/Z6vLY1--
