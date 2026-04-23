@@ -1,143 +1,67 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23E7B32142B;
-	Thu, 23 Apr 2026 16:39:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FACE31DDBF;
+	Thu, 23 Apr 2026 16:46:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776962341; cv=none; b=V5FkPCi3VcInXCjT6OHaG5ViFr4OPLUTYSN2VE7wYtomFLnc6S+GZftb9shK1XGK6Z0p1z13weUoyITTOsS8eE07yIKEXgpYHwkcKL6AsS5VAU3eS6a4+qWtdk/wu9jDJMeKCZeY5CrNm6bc/OxfHClEKGPLcQ304YnEvJXAzwk=
+	t=1776962808; cv=none; b=kUkclskBtWLM0bMr/6CGtyZ772dEpLLOoL0PO5f6IsbJLW7iMzd7e/DfGSXKp46J1fD77tr2xMzM33TUudDN0/JSp88GWZA4ni1yvpEihDyHCq90eT1WC77yGh6qNZKjS6wJUKbrS0W+tGmyZ2Pqzl97y7LsImrq7k8Y9nlAjDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776962341; c=relaxed/simple;
-	bh=kX7pLScbuR1BMQ6cyntXkY/4oiaKg/6C0QQKGD8dxYU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M9F1pBdjGZTvqCjB+sBSKsVtPF8I6DK3sZ2ppXAP4nwiDkfhXrke0+EIAnY81ssZOl2j6RBcInkI7td58yDR8Bg/WJ/dEgEJFgdufGyAETbqQ8Bc1RsXwHVA05lBm2coKnbFrISr6eCxJXVCt4f8tKRclShyVrKYS75HCM5kIks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GwO+A49b; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776962808; c=relaxed/simple;
+	bh=bT4T3mr5wQG7XMwrFze16ct6UyUgR364L6z1mh3xjjw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sAcjGkic+CAqOfwvN4cOEMLOq2RUQdgCZhfUMwgF8ZNGjzB82qsGjaz13o//g/ZBAxHTjZByp3Gm4WYheNPOqRPsStoTOR26JDRERzh13Cc3iuf3yRNh7uKpzhBRAqFbxgO3lLwMwX0Seo5qCqATXUpPu9pF6bs0cjq4ngTBVZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=jtuFRaQR; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GwO+A49b"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A192CC2BCAF;
-	Thu, 23 Apr 2026 16:38:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776962341;
-	bh=kX7pLScbuR1BMQ6cyntXkY/4oiaKg/6C0QQKGD8dxYU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GwO+A49bwE2MsJ7xV6/BsjCM3Wxnx8UYUgghMEM9eyxNa8NKgfiWD2+u8waB24W4c
-	 3sReF8vwvRm2JeGL5g9msoCkyHvJ+jJm1SfbxQ/H9DDSXxBMHe1lGce++QHmhqquc/
-	 mbpw/dlDCSTlJgWH3ksGHSDRKjN1x1umaLumAJYnOm1Urv5LbFTtOlBSY0kDk1ad7/
-	 O6MOuVEXHwtL9qmUVP+cmL0p2E1IdgPghQpzvc413XYcyapByymwcHu0La6UnDkBv1
-	 0Tg0lEy0znq11eYibfW2KPyZENNTwVG+hz2lgulkjUmEb2RtfKRFwYoZo+vtU7wL2A
-	 fNSHjQ3A++Qtg==
-From: Simon Horman <horms@kernel.org>
-To: boolli@google.com
-Cc: 'Simon Horman' <horms@kernel.org>,
-	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	edumazet@google.com,
-	intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	decot@google.com,
-	anjali.singhai@intel.com,
-	sridhar.samudrala@intel.com,
-	brianvv@google.com,
-	emil.s.tantilov@intel.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH iwl-net v2] idpf: do not perform flow ops when netdev is detached
-Date: Thu, 23 Apr 2026 17:33:09 +0100
-Message-ID: <20260423163307.989421-3-horms@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260421051641.370436-1-boolli@google.com>
-References: <20260421051641.370436-1-boolli@google.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="jtuFRaQR"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=KRyk8zs0yOkAi8m3yp/2JrJvn5JKJ5mHqm7TULytzF0=; b=jtuFRaQR9HJKm6KgImnmOr3pFQ
+	1fvyJdWnFXwpgUMaYxiV7wyC+e206Bon8Wb7mPOMg5hgUqxeqYR2ljBYijO+o0amP7oClbSCXNL5y
+	kFetmKw9OKiVM70w+bWCdfZmee6PF87rmosVeXRL9LffY3Ilca/inWJ7AaT6a3FVazvc=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wFxCI-00HGq4-Kx; Thu, 23 Apr 2026 18:46:38 +0200
+Date: Thu, 23 Apr 2026 18:46:38 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Dmitry Antipov <dmantipov@yandex.ru>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-bluetooth@vger.kernel.org
+Subject: Re: [RFC PATCH] net: skb: on zero-copy formatted output to skb
+Message-ID: <cdcb241c-5c7c-4ce4-a628-0375ff2668b2@lunn.ch>
+References: <20260423073638.778334-1-dmantipov@yandex.ru>
+ <8ed4f473-9c7b-4f77-911c-85cfb2fba2a5@lunn.ch>
+ <65872064c2ab5fbf47a743f2dcd72182ea8296a7.camel@yandex.ru>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <65872064c2ab5fbf47a743f2dcd72182ea8296a7.camel@yandex.ru>
 
-From: 'Simon Horman' <horms@kernel.org>
+> > So please add some kerneldoc describing what it actually does.
+> 
+> OK, some more neutral name like 'skb_fmt(...)' may be better indeed.
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev
----
-idpf: do not perform flow ops when netdev is detached
+Sure. Just document what it actually does, what the return value
+means, etc.
 
-This commit adds checks to prevent crashes when out-of-tree modules bypass
-ethtool core locks and call flow operations on detached netdevs during a
-hardware reset. It introduces netdev and netif_device_present checks in
-idpf_get_rxnfc and idpf_set_rxnfc.
+> > Please also annotate the const char *fmt, so the compiler can do
+> > format string checks, parameter counting etc.
+> 
+> Surely '__printf(2, 3)' should be used here.
 
-> Even though commit 2e281e1155fc ("idpf: detach and close netdevs while
-> handling a reset") prevents ethtool -N/-n operations to operate on
-> detached netdevs, we found that out-of-tree workflows like OpenOnload
-> can bypass ethtool core locks and call idpf_set_rxnfc directly during
-> an idpf HW reset.
+Yep.
 
-Is it acceptable to add defensive checks upstream solely to accommodate
-out-of-tree modules that bypass core kernel locking?
-
-The core ethtool infrastructure manages locks like rtnl_lock for in-tree
-callers to guarantee safety. Modifying the upstream driver to paper over
-locking violations in out-of-tree modules might contradict upstream policies.
-
-Simon says: If this is to address OOT module behaviour then I am concerned.
-            And I would suggest that the correct approach is to fix
-	    the OOT kernel module.
-
-> diff --git a/drivers/net/ethernet/intel/idpf/idpf_ethtool.c b/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
-> index bb99d9e7c65d5..8368a7e6a7544 100644
-> --- a/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
-> +++ b/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
-> @@ -43,6 +43,9 @@ static int idpf_get_rxnfc(struct net_device *netdev, struct ethtool_rxnfc *cmd,
->  	unsigned int cnt = 0;
->  	int err = 0;
->  
-> +	if (!netdev || !netif_device_present(netdev))
-> +		return -ENODEV;
-> +
-
-Could this result in undefined behavior if netdev is NULL? Before this check,
-np is initialized using netdev_priv(netdev), which does pointer arithmetic.
-If netdev can genuinely be NULL from out-of-tree callers, should the
-initialization of np be moved after the validation?
-
-Simon says: I think the actual problem here is that netdev is never NULL.
-            And thus the !netdev check should not be added.
-
-	    Likewise for idpf_set_rxnfc()
-
-Also, is there a time-of-check to time-of-use race here?
-
-The netif_device_present() check is performed outside the vport_ctrl_lock
-critical section.
-
-If a concurrent hardware reset detaches the device and clears the present bit
-before acquiring the vport_ctrl_lock to set np->vport = NULL, this thread
-might pass the present check, block on idpf_vport_ctrl_lock(netdev), and
-then dereference the newly set NULL vport once the lock is acquired.
-
-Should the device presence check be moved inside the vport_ctrl_lock
-critical section to prevent the NULL pointer dereference?
-
-Simon says: This seems to be a legitimate concern.
-            Which seems to further suggest that the problem
-	    should be addressed by the caller.
-
->  	idpf_vport_ctrl_lock(netdev);
-
-[ ... ]
-
-> @@ -349,6 +352,9 @@ static int idpf_set_rxnfc(struct net_device *netdev, struct ethtool_rxnfc *cmd)
->  {
->  	int ret = -EOPNOTSUPP;
->  
-> +	if (!netdev || !netif_device_present(netdev))
-> +		return -ENODEV;
-> +
->  	idpf_vport_ctrl_lock(netdev);
-
-Would this be vulnerable to the same time-of-check to time-of-use race
-mentioned above, since the present check is outside the lock?
+Thanks
+	Andrew
