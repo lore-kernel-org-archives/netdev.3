@@ -1,54 +1,61 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F1E92D0C72;
-	Thu, 23 Apr 2026 19:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52EE339182A;
+	Thu, 23 Apr 2026 19:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776971430; cv=none; b=WN8+JDfY/lNHbEQICdxxTJgFm9hrNk82UKbEDoaOl1f1STDWvcHMuukSVaydz++PXv5b3vGaAi4aWAL5es+NRHs8cubAuYf42S6j7Brs/qaEOmdyoqwVAfBATLRgpEGsPCFO8h/c1XmoZNgCyFXRTq4nlwge99zroUNjAgp16DU=
+	t=1776971456; cv=none; b=pPBrpu+6qha4Sqp54DisqiizSQU6NqB6nOgKgaP4L1pVlFITwlGEWudQSG50XN0EBSxLKWD0l7GNeH7sk+RKhN0AAG9VrSQy7Wq09IckrPkFaoY8qvgKaZYp/p0agApnD6RH67Ewzmu9/Mv3YOvZq6wd2sDD9sJjIMH2kbooGAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776971430; c=relaxed/simple;
-	bh=8CQFHiiCKbq7zgsrgaz6pt31g625ZCmmS9WRYx+cFBU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TgbhxB4kSm+aONvPtXHzgprbE5Fo0nejnStsU3c03sdv6wlxsWNOIvb/pqa8sUTSd07YJwSd7T5ovdLFrkYkBSLheIeEfOD04i4c+wM5wPrq7Q9H8PiKgrRmrthI8FqSKWaLIbfzKqWBIwa7oKWIoN4+iDjt+Goo8WCT3+GyuwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eOJDR2Ta; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776971456; c=relaxed/simple;
+	bh=6SGZbcsI37W5mNbIsWK/IxFSRNG5tDV0vfuw1Lv5Nnc=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=M/syuC/9Fe9pFGqGm0mEEQs04w7M+AKMTNCl5Kq+lXniBsU/pSnXf4qAN7FMqimedAh6TxpE10H7OmgpsjbaXQf6k01DO3HEgRYEynzfifF8DSSuhngXbWKfIBlkhmTRO4zrMVIz/rxP5IiNqwVZPJW0xLeWGui55aux9wzTdjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T3QD459P; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eOJDR2Ta"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF72BC2BCAF;
-	Thu, 23 Apr 2026 19:10:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T3QD459P"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E21B5C2BCAF;
+	Thu, 23 Apr 2026 19:10:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776971429;
-	bh=8CQFHiiCKbq7zgsrgaz6pt31g625ZCmmS9WRYx+cFBU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eOJDR2TaSqwBPtRjWf7v5oep4qFIuGzG/g3o4tiSorBKWkdoqualqifJVh2Xuipga
-	 54JWsybnIUG+2wkSl1BvzFGNRvsDiWZdwrhNaw2Hp87DQVIy9KAkrSbDBQ6S6swxqu
-	 mMJgO9n6yWwnahXM065/0pl2noCHTAxnoXmCA/U7NvVQs7FEZKiv/Up84qbZLgfBAS
-	 bPglJbh52xC37tjeF8wLAlifQJLrXJpjBzV4vaTFuxlH5JF9lLN86GufXthbjchz2o
-	 viTN6pQvbwVROCHWzNR5A7yObVXtgwcrvMsvepgSp9FsReNlI0zi/ba92O76lm0390
-	 f05ewczxvc1eg==
-Date: Thu, 23 Apr 2026 20:10:25 +0100
-From: Simon Horman <horms@kernel.org>
-To: Lee Jones <lee@kernel.org>
-Cc: Jon Maloy <jmaloy@redhat.com>, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Ying Xue <ying.xue@windriver.com>, netdev@vger.kernel.org,
-	tipc-discussion@lists.sourceforge.net, linux-kernel@vger.kernel.org,
-	Tung Nguyen <tung.quang.nguyen@est.tech>
-Subject: Re: [PATCH v2 1/1] tipc: fix double-free in tipc_buf_append()
-Message-ID: <20260423191025.GJ900403@horms.kernel.org>
-References: <20260421124528.162996-1-lee@kernel.org>
+	s=k20201202; t=1776971456;
+	bh=6SGZbcsI37W5mNbIsWK/IxFSRNG5tDV0vfuw1Lv5Nnc=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=T3QD459PKrfs+NQyLDD+fC97K/AZ4b5/fgek2h480PGxIZYiwmnwR/OstDo2o342H
+	 2xesb3oB+CY6dCufyKCyn90GOEQ6/oS15fP6GU+ZDWJWWEzObd0J63KTnY8VljDjvW
+	 uzfnWhc0Rd7nFlAyAjE4su2F0/wA1d9GOFaSmJqo/JcvJHDfXhUoOtCOM6L4asRGi8
+	 pkouqggF/ZVdgHwgjHMk80rPsD3lzTUHPRS4LG0Rg0Muh7UflUQHPc1iFi60NFVGgs
+	 1ukKSbP54rOqWth4NOCqOW83KZMwHtpkb2Pom8lIfEshLMHJJbcBiOJ66ZnBOtE2Vc
+	 hws8HsCQIzoig==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CFCF3809A90;
+	Thu, 23 Apr 2026 19:10:18 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2 1/1] tipc: fix double-free in tipc_buf_append()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177697141705.724716.9960573430185428617.git-patchwork-notify@kernel.org>
+Date: Thu, 23 Apr 2026 19:10:17 +0000
+References: <20260421124528.162996-1-lee@kernel.org>
 In-Reply-To: <20260421124528.162996-1-lee@kernel.org>
+To: Lee Jones <lee@kernel.org>
+Cc: jmaloy@redhat.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, ying.xue@windriver.com,
+ netdev@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
+ linux-kernel@vger.kernel.org, tung.quang.nguyen@est.tech
 
-On Tue, Apr 21, 2026 at 01:45:26PM +0100, Lee Jones wrote:
+Hello:
+
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Tue, 21 Apr 2026 13:45:26 +0100 you wrote:
 > tipc_msg_validate() can potentially reallocate the skb it is validating,
 > freeing the old one.  In tipc_buf_append(), it was being called with a
 > pointer to a local variable which was a copy of the caller's skb
@@ -58,17 +65,15 @@ On Tue, Apr 21, 2026 at 01:45:26PM +0100, Lee Jones wrote:
 > handling path would free the original skb pointer, which had already
 > been freed, leading to double-free.
 > 
-> Fix this by checking if head now points to a newly allocated reassembled
-> skb.  If it does, reassign *headbuf for later freeing operations.
-> 
-> Fixes: d618d09a68e4 ("tipc: enforce valid ratio between skb truesize and contents")
-> Suggested-by: Tung Nguyen <tung.quang.nguyen@est.tech>
-> Signed-off-by: Lee Jones <lee@kernel.org>
-> ---
-> 1v => v2: Keep the passed pointer type the same, but reassign on-change
+> [...]
 
-FTR: Sashiko has generated a review of this patch which I have examined.
-I do not believe that review should halt progress of this patch
-as it appears that the problem flagged pre-dates this patch. Actually,
-its unclear to me if it is a problem that warrants addressing at all.
-But I'd appreciate if it could be looked over as a follow-up task.
+Here is the summary with links:
+  - [v2,1/1] tipc: fix double-free in tipc_buf_append()
+    https://git.kernel.org/netdev/net/c/d293ca716e7d
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
