@@ -1,39 +1,51 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2D1F2FE071;
-	Thu, 23 Apr 2026 12:13:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41DC9382288;
+	Thu, 23 Apr 2026 12:14:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776946402; cv=none; b=KvFsq093S7pD3nMPmzCUobMUTpZw2WeFQOn1RmcvqHcRQkx4vSRB57X0sZ2GgL67gJe0A8GPRRBHrInsn8YW9nYa4blgCxH8Ny/Dr61gNiaP3nmTR4SqJ1BVEzUPjXKfTh+8qNUmF5oviB42Qr8Ah0ngQBKKp1HUNyHRWd+nvoI=
+	t=1776946454; cv=none; b=eBmeqXC1Cd+Ftq83Zfs0e37rOpvQS9NnUfZuDxAkusQWEkuVMkrImZn8h1l9hIOEA9n29bji4UgRIw7LosC6f0HMbDMnFgNY66hsSMwaWxBQkULfL/wH9iMRyhVposZgF8HsDMTChqr4fbJP/pjTg0YeZw+/FT7YjeYEeC4Iq/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776946402; c=relaxed/simple;
-	bh=f/om5ADRMKsy+r05vHr/1yUfOvzUiOshox5HxAehQWY=;
+	s=arc-20240116; t=1776946454; c=relaxed/simple;
+	bh=hPWLVNZGfvg7xxQEwP/A/HiM96fztS75ceThmP4IroA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r8HjoDGCKOi5fo5dazkINVXraJIfR35R9uRTVoVdBfcS+Kz3zwlpVCBTRpSDbP16jVfh1Gko4kfFIqX+/DEd0iFkNtiAZ+O5eh9pF2FpxgsBB8Ui8ih7oTzCJwqoUfER0I8SkoWOE3rQ4e9GjCFX0IqCoutfElIy9eRfppXlgCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWkZ/Q6o; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=BSUDmkBDfyi5Ai/f99Z6fnkl6AOH22/O7zyQ99SLc07z/SMMI63yvzIXQHBuwLPLzP3nRWSh1gEDxfQWn6LlDV74OFRQ1pTN+/b0p+NVhEqv71Nr76BB+p+TCFjLitEqgjVm/yfXfnG/Z9b+D3jXfqf7kYBigiNzuCjG+zvRARI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=e8wd9O+h; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWkZ/Q6o"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26CF5C2BCAF;
-	Thu, 23 Apr 2026 12:13:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776946402;
-	bh=f/om5ADRMKsy+r05vHr/1yUfOvzUiOshox5HxAehQWY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MWkZ/Q6oCvZmNx3P8Mc2McHSHF134OiT6NCkkuVcULYym4NNklwnEm1/gZut3d4Vo
-	 6SFkZzdsCUcpU9Ga4g/7DZsFfRPPP8ejLRM0AP5aQiQf92Qcoj3BsieJyWnhMtwSv3
-	 IXlVei2fGesjiH3BTs2jfiqZB2S6QTdyofaEasxQ=
-Date: Thu, 23 Apr 2026 14:13:20 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Jay Wang <wanjay@amazon.com>
-Cc: stable@vger.kernel.org, dhowells@redhat.com, marc.dionne@auristor.com,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, netdev@vger.kernel.org,
-	linux-afs@lists.infradead.org, jay.wang.upstream@gmail.com,
-	Faith <faith@zellic.io>, Pumpkin Chang <pumpkin@devco.re>
-Subject: Re: [PATCH 5.10.y] rxrpc: Fix recvmsg() unconditional requeue
-Message-ID: <2026042307-joyous-deliverer-c4bb@gregkh>
-References: <20260422222432.7236-1-wanjay@amazon.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="e8wd9O+h"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=ImGXxTVYjTzC5+KMI/sxy/q4lpK9EKCgYwT08oZOWrA=; b=e8wd9O+hjho6+Ng3U0m1q4Z3ii
+	c5JFSMRFTwYHnKIW3taM06quURrlL/mx3mqgeKVam6vecldKT2KJlvFZojBYsvT4x+btSPoXgpFYR
+	gxKpJQU2tFXZlW8483PYTidF7i2xanCNl0IV7dkzaYRY7WuiIaVKinAJBhJUA++57hck=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wFswY-00HEv8-AK; Thu, 23 Apr 2026 14:14:06 +0200
+Date: Thu, 23 Apr 2026 14:14:06 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Jakub Raczynski <j.raczynski@samsung.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kuba@kernel.org,
+	davem@davemloft.net, andrew+netdev@lunn.ch,
+	kernel-janitors@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH] net/stmmac: Fix typos: 'tx_undeflow_irq' ->
+ 'tx_underflow_irq'
+Message-ID: <4b90a06a-4e67-4c8e-9749-1b48e9c32c13@lunn.ch>
+References: <CGME20260421115052eucas1p103281c5b25719a44c0875d6b0860bfa6@eucas1p1.samsung.com>
+ <20260421115008.2690541-1-j.raczynski@samsung.com>
+ <7eb9e4d4-909c-4203-833d-bd8b664fdfbc@lunn.ch>
+ <aeiJ3zr4WJAm1UCk@AMDC4622.eu.corp.samsungelectronics.net>
+ <f1d51362-ca8f-481a-b9c1-400ab6422686@lunn.ch>
+ <aejYCYObZyFPpLat@AMDC4622.eu.corp.samsungelectronics.net>
+ <52b06f0a-8283-4903-9d8a-2bbdf637dd5d@lunn.ch>
+ <aenhiHCZge2dMBFw@AMDC4622.eu.corp.samsungelectronics.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,21 +54,18 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260422222432.7236-1-wanjay@amazon.com>
+In-Reply-To: <aenhiHCZge2dMBFw@AMDC4622.eu.corp.samsungelectronics.net>
 
-On Wed, Apr 22, 2026 at 10:24:32PM +0000, Jay Wang wrote:
-> From: David Howells <dhowells@redhat.com>
-> 
-> [ Upstream commit 2c28769a51deb6022d7fbd499987e237a01dd63a ]
-> 
-> If rxrpc_recvmsg() fails because MSG_DONTWAIT was specified but the call
-> at the front of the recvmsg queue already has its mutex locked, it
-> requeues the call - whether or not the call is already queued.  The call
-> may be on the queue because MSG_PEEK was also passed and so the call was
-> not dequeued or because the I/O thread requeued it.
+> Question is whether this should then remain that way forever?
+> And was it really part of some ABI if no one noticed?
 
-Why did you reformat the changelog text?  Please do not.
+Hard to say. I could also be that people did notice, but after it got
+released in a kernel, which makes it ABI. It can be very hard to fix
+these issues, if you don't catch them in -rcX kernels.
 
-thanks,
+The other patches in this series look O.K, please drop this one and
+repost once net-next is open.
 
-greg k-h
+https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
+
+      Andrew
