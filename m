@@ -1,100 +1,110 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78AB4285CA4;
-	Thu, 23 Apr 2026 10:14:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 782FF38737A;
+	Thu, 23 Apr 2026 10:19:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776939269; cv=none; b=tPL/sAbe8Ti0QRLuYdO7gkCPWa2n5vO0VTUXs0Ur8PjXLmKQgQsEbNa68awN1xWnUqdjymxQplNUAScSnvhuHWX0G190DfCkdvtRQ+ZxcLBkkUhfvcjSSaapx+It/Fltvs9k1GnBh7tuVI01nCr0vJ8frGwwHZzUyHEw8zCqMDI=
+	t=1776939570; cv=none; b=AQ6BaswjrbMQNbNH8iydrGjUcPNi92vXks3iWyuc96PE0kwG86BrT+2luFRdfTFdyEnUXemTh7IDx8WTPpJ7mVdsdzLdFWFWOG0VoFsFVuYZD3UzrfziVv5an/nZcwWuc5fMK9NCgI3RQGK5lf8BkDkYxTqL38Ur9lOwqCNpQeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776939269; c=relaxed/simple;
-	bh=n8PIjgIUEEPbYl8wiqKvWUmCj65cJf49TySsuytpK7A=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JAC4xzI4oky6EDOr82PN1n1aEXFTC+KXCdP89MbDVcSU1ZOu1nBPjLpwEZSkPaflmHpP3/DfYjoHIpPyQdUhl31fByzEADKYvF0W9gsxc3Jfmxa4/85tthsv61UpXYjQK3HUfVPVE60bwpc+yHF2EfVWHgBq59pyQmLfXIv6vfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tPjLXDu5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776939570; c=relaxed/simple;
+	bh=3ygz8aPQ887mmlXRKJ2niuUkt3iUa+0zyJRimlH0iLg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=O3QsDMCLOcW4r80DVqa70vs7NsxzL5GJZvQ8vZ+wVtwHQLu6MTPhMyYI0LtcS2COZkDPGsHgbtrAfw9b0A89fOvrl/fNKecMgvJMEAIE08uJzG7Fn1gVQaIROyTWMb301XCWBZMhHUUq6BwzTQCNctWkzyn9LpzV1mNX+sBNqVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WdFbFYl7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tPjLXDu5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10D7EC2BCAF;
-	Thu, 23 Apr 2026 10:14:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WdFbFYl7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62B77C2BCAF;
+	Thu, 23 Apr 2026 10:19:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776939269;
-	bh=n8PIjgIUEEPbYl8wiqKvWUmCj65cJf49TySsuytpK7A=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tPjLXDu5U98lUgHoOFztzZjJCdypSNHcXrtuJDmG0XbCFaChSeQ100t7L5fCEF8Mr
-	 lIX68jwc2X3Z1MQzcBDQk64Je/U3ajk5rM3aArELccP20WwII3W5jLqYFWBafTvC9J
-	 2sTn3ugFy5R2FobE8ilHp+XFIWc7Ck65qWVbH/qjj0/T30h2/gSNYOZAhxNjvQ706m
-	 RRPU+Wqc8TNRbSi0xKXw2nBCNyhHrHH6lBT++34BPsIK/tTY0E6x6BlE1wyBcSlPEw
-	 cjIxa1BhsnUos6cWRMotJA6k1Gl2Y+LhjyruNa4EdnxsihoWHv2l/a31S4IHch9re1
-	 wI4e/sUcylHNA==
-From: Simon Horman <horms@kernel.org>
-To: rkannoth@marvell.com
-Cc: Simon Horman <horms@kernel.org>,
-	davem@davemloft.net,
-	edumazet@google.com,
-	linux-kernel@vger.kernel.org,
-	andrew+netdev@lunn.ch,
-	sumang@marvell.com,
-	netdev@vger.kernel.org,
-	dan.carpenter@linaro.org,
-	sgoutham@marvell.com,
-	error27@gmail.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Subject: Re: [PATCH v2 net 01/11] octeontx2-af: npc: cn20k: Propagate MCAM key-type errors on cn20k
-Date: Thu, 23 Apr 2026 11:01:47 +0100
-Message-ID: <20260423100147.908443-2-horms@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420023442.3295891-2-rkannoth@marvell.com>
-References: <20260420023442.3295891-2-rkannoth@marvell.com>
+	s=k20201202; t=1776939570;
+	bh=3ygz8aPQ887mmlXRKJ2niuUkt3iUa+0zyJRimlH0iLg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WdFbFYl7H0jbCT8dSo1bJErpMV5J/bQS1D6GT7LviSzdrkc1ANJuyh4N1Ww1b7Y9u
+	 Cd2mW+9bEAknm5VH+yY+BHD5NTdni+7zMnHnpxOtkqc91h7oOvPI5GiutDoUGhw4QW
+	 s33rrZZHxx2YytIIoBvImlZlU1rYctjB2GsY9M/UXhh29p8AvKBA/JLDq53Axu0Xce
+	 dfjx6UKHV90rHugLaF6MYnoS8FBE8sJu21qUUohO4naSFLbiSJu7IqjIg2RHCN1SXk
+	 NpDzzO1Jg0wq48N2b+XYaz2xndvfuSQ8629Ma2RHHHQ5y/z/d9Bv0spT3AKcwXD/ov
+	 RAeChM9mscW4g==
+Date: Thu, 23 Apr 2026 13:19:24 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Chenguang Zhao <zhaochenguang@kylinos.cn>
+Cc: Shuah Khan <shuah@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	RDMA mailing list <linux-rdma@vger.kernel.org>
+Subject: Re: [PATCH] selftests: net: add RDMA CM observability and regression
+ scripts
+Message-ID: <20260423101924.GB172828@unreal>
+References: <20260416062224.1546388-1-zhaochenguang@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260416062224.1546388-1-zhaochenguang@kylinos.cn>
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
+On Thu, Apr 16, 2026 at 02:22:24PM +0800, Chenguang Zhao wrote:
+> Add a minimal RDMA CM selftest suite that captures observability
+> baselines and runs trace, counter-delta, and fault-injection oriented
+> checks, plus a review-loop helper for repeated validation rounds.
+> 
+> Usage (client side):
+> - export
+>   CM_WORKLOAD_CMD='ib_send_bw -d <dev> -i <port> -R -g <gid> <server_ip>'
+>   (User can customize CM_WORKLOAD_CMD)
+> - sudo -E make -C tools/testing/selftests
+>   TARGETS=drivers/net/rdma run_tests
+> 
+> Signed-off-by: Chenguang Zhao <zhaochenguang@kylinos.cn>
+> ---
+>   The first patch adds a focused RDMA CM selftest suite under
+>   kselftest to make CM behavior easier to observe and validate
+>   in routine regression runs.
+> 
+>   It introduces baseline collection, trace-sequence checks,
+>   counter-delta checks, and failslab-based recovery checks, plus
+>   a review-loop script for one-shot serial execution. It also
+>   registers drivers/net/rdma in the top-level selftests TARGETS,
+>   so the suite runs through standard kselftest flow
+>   (make ... TARGETS=drivers/net/rdma run_tests) instead of requiring
+>   manual script-by-script execution.
+> ---
+>  tools/testing/selftests/Makefile              |   1 +
+>  .../selftests/drivers/net/rdma/Makefile       |  13 ++
+>  .../selftests/drivers/net/rdma/README.md      | 168 ++++++++++++++++++
+>  .../drivers/net/rdma/rdma_cm_baseline.sh      |  58 ++++++
+>  .../drivers/net/rdma/rdma_cm_counter_delta.sh |  72 ++++++++
+>  .../net/rdma/rdma_cm_fault_injection.sh       |  95 ++++++++++
+>  .../drivers/net/rdma/rdma_cm_review_loop.sh   |  35 ++++
+>  .../net/rdma/rdma_cm_trace_sequence.sh        |  83 +++++++++
+>  .../selftests/drivers/net/rdma/rdma_common.sh | 126 +++++++++++++
+>  9 files changed, 651 insertions(+)
+>  create mode 100644 tools/testing/selftests/drivers/net/rdma/Makefile
+>  create mode 100644 tools/testing/selftests/drivers/net/rdma/README.md
+>  create mode 100755 tools/testing/selftests/drivers/net/rdma/rdma_cm_baseline.sh
+>  create mode 100755 tools/testing/selftests/drivers/net/rdma/rdma_cm_counter_delta.sh
+>  create mode 100755 tools/testing/selftests/drivers/net/rdma/rdma_cm_fault_injection.sh
+>  create mode 100755 tools/testing/selftests/drivers/net/rdma/rdma_cm_review_loop.sh
+>  create mode 100755 tools/testing/selftests/drivers/net/rdma/rdma_cm_trace_sequence.sh
+>  create mode 100755 tools/testing/selftests/drivers/net/rdma/rdma_common.sh
+> 
+> diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/Makefile
+> index 984abb6d42ab..0df7034f46b2 100644
+> --- a/tools/testing/selftests/Makefile
+> +++ b/tools/testing/selftests/Makefile
+> @@ -22,6 +22,7 @@ TARGETS += drivers/ntsync
+>  TARGETS += drivers/s390x/uvdevice
+>  TARGETS += drivers/net
+>  TARGETS += drivers/net/bonding
+> +TARGETS += drivers/net/rdma
 
-For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
----
-octeontx2-af: npc: cn20k: Propagate MCAM key-type errors on cn20k
+It is very wrong place to put RDMA functionality.
+We have tools/testing/selftests/rdma folder for that.
 
-This patch converts several cn20k NPC functions from void to int return
-types to propagate MCAM key-type lookup errors. It adds error checking
-for npc_mcam_idx_2_key_type() and threads these errors through the
-cn20k MCAM handlers.
-
-Link: https://lore.kernel.org/netdev/adiQJvuKlEhq2ILx@stanley.mountain/
-
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
-> index 7291fdb89b03..18d70f4527d1 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
-
-[ ... ]
-
-> @@ -1415,9 +1435,9 @@ int rvu_mbox_handler_npc_cn20k_mcam_alloc_and_write_entry(struct rvu *rvu,
->  	else
->  		nix_intf = pfvf->nix_rx_intf;
->
-> -	npc_cn20k_config_mcam_entry(rvu, blkaddr, entry, nix_intf,
-> -				    &req->entry_data, req->enable_entry,
-> -				    req->hw_prio, req->req_kw_type);
-> +	rc = npc_cn20k_config_mcam_entry(rvu, blkaddr, entry, nix_intf,
-> +					 &req->entry_data, req->enable_entry,
-> +					 req->hw_prio, req->req_kw_type);
->
->  	mutex_unlock(&mcam->lock);
->
->  	rsp->entry = entry_rsp.entry;
->  	return 0;
-
-Does this function need to return rc instead of 0? If
-npc_cn20k_config_mcam_entry() fails (for example, due to an invalid key
-type), the function still returns success to the caller. The mailbox
-response indicates the entry was successfully allocated and configured,
-but the hardware entry may be in an undefined state.
-
-[ ... ]
+Thanks
