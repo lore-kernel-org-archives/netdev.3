@@ -1,87 +1,127 @@
-Received: from isilmar-4.linta.de (isilmar-4.linta.de [136.243.71.142])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77AFE29D26C;
-	Thu, 23 Apr 2026 14:02:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.243.71.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 945CC30FF31
+	for <netdev@vger.kernel.org>; Thu, 23 Apr 2026 14:12:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776952930; cv=none; b=K4qP92MNFeKLErqZTeK+7Vd6jY/681LUuazeFBAmW0Z+0MXTBYq2rsUwSfFYekaQz4wWh8CekFKgctBoETDqpMecXMZSLGj/ipUDFfFMZc2UuRYH+WfU23fvgENu+FT1uyenkD/M/muWTsUFY56Dwk5M/WpBmHTE2JRF2snfslQ=
+	t=1776953547; cv=none; b=mrxYcFOXVVSGOKMXmlRlkM7PizZSjuuf4hDeMFaaoVY2/u0+JAACpcJ8kERbdcvpxvClifm6bb+WCo3BKQ0NKSiyknI4Suz5te0qpuuPdyPk7FFRSKr1Wiq+PN3U1tY4JjIrWnusCF/knLa2yMEsEhiY2yn3oejYDwwNvgyiAYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776952930; c=relaxed/simple;
-	bh=jI9Q+8KeYN2zjNv72wMIkDsTFIX0Tl19jG7hy2QvQ0A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DO7/Cquz5kITSoJv0JnJ3hOYKS8ZoINNDLRyL3KZzJ2yEVjZjQtTOWG88ncuxS/l9N1m+Ho74OLQ9Hmqtqko4Om68+TlggoJ3mtLTHNGvNyj2ZUQvsRf6e25Z6LrcXPk+g9m2KsNPOGsw/2vgGDfoO453xrYezMMe8MZvGP4NrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dominikbrodowski.net; spf=pass smtp.mailfrom=dominikbrodowski.net; dkim=pass (2048-bit key) header.d=dominikbrodowski.net header.i=@dominikbrodowski.net header.b=Fmw1vFHr; arc=none smtp.client-ip=136.243.71.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dominikbrodowski.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dominikbrodowski.net
+	s=arc-20240116; t=1776953547; c=relaxed/simple;
+	bh=DN+ouaVoyOfzP1qbJqimNJE+Or/ATyJ/QGg+moKK+G0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WNkt1E/qBk5WzQ5h4nhLv6egVdy//WAxweHUEzu0g9WQXNXAic+L2e4KFyEDMoAIQpIR6ccwsT4QDIM7g/6HMzuupI6S8cEdDamt6LmrZi9t8YCV4cpMpMAvceTcw0xblebep4NQFJ8LGXmS2aYDcZcxHEmJ9T4ji4bJcRAhbow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Jxf6beRu; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Up/C/jwc; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dominikbrodowski.net header.i=@dominikbrodowski.net header.b="Fmw1vFHr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=dominikbrodowski.net;
-	s=k27.isilmar-4; t=1776952925;
-	bh=jI9Q+8KeYN2zjNv72wMIkDsTFIX0Tl19jG7hy2QvQ0A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Fmw1vFHrjaDO/kDX2ynRaFAiYgh7flPfA5jU4qCEeKWa0R1f8N67PLatniDUEc7VS
-	 JBFMVNgnxtmZOQgtpCYD2un5Pk9fWmpDvo9ZtDwu1rQrQDTtWcfTkuwwduB8go/cFV
-	 HQtwbAiPFPWmgZxDEO6S/fbgkQVFRTJ0+oLErjpKNMFJnVW2J8oT2GNeY8Pl0wqd9g
-	 +3X5/41+LV4x1BWn0s6tg454BGQ5KSgnPKBKTX02AiMrWu4cbvp3aw8gJMHBTfAQSz
-	 yxwjTJLqfUV4C8id3BU61rDl/3aQJvFN8GltkCyKpqs69/jsjzPuPmUOSI5+sNEq9b
-	 83/8HCsg64RJw==
-Received: from scops.dominikbrodowski.net (scops.brodo.linta [10.2.0.113])
-	by isilmar-4.linta.de (Postfix) with ESMTPSA id 557FC2008A2;
-	Thu, 23 Apr 2026 14:02:05 +0000 (UTC)
-Received: by scops.dominikbrodowski.net (Postfix, from userid 1000)
-	id B869480066; Thu, 23 Apr 2026 16:01:54 +0200 (CEST)
-Date: Thu, 23 Apr 2026 16:01:54 +0200
-From: Dominik Brodowski <linux@dominikbrodowski.net>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Michael Fritscher <michael@fritscher.net>,
-	Byron Stanoszek <gandalf@winds.org>,
-	Daniel Palmer <daniel@0x0f.com>, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH net v2 13/15] drivers: net: 8390: pcnet: Remove this
- driver
-Message-ID: <aeomUh5JqFvkLTH7@scops.dominikbrodowski.net>
-References: <20260422-v7-0-0-net-next-driver-removal-v1-v2-0-08a5b59784d5@lunn.ch>
- <20260422-v7-0-0-net-next-driver-removal-v1-v2-13-08a5b59784d5@lunn.ch>
- <aemy5Lm9B2dLItdd@isilmar-4.linta.de>
- <97a5bd32-5080-4dd7-91c6-dcb65e154481@lunn.ch>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Jxf6beRu";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Up/C/jwc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1776953545;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=30/URGWxQ2aDJOTEEoof2WFLjwrIki9pEdY8zPtEL0g=;
+	b=Jxf6beRuhXAEU92gmk+EXbjPKGJXMZzAHjZEvsiVD0jnq/h19ZmsdOrHKvFUl2rxd4qrZX
+	vHlA/gVu73BRqYuX8KfQijEfOHdq649EwhjV7FMpwDrwUh/jtsRHEIsEhm5prNcxIL6KCU
+	sZ6ZfawoeJbeFpWxMHjndW/dtdtTQM0=
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com
+ [209.85.210.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-524-JzCquHj5MnuecNYiN7kdZA-1; Thu, 23 Apr 2026 10:12:22 -0400
+X-MC-Unique: JzCquHj5MnuecNYiN7kdZA-1
+X-Mimecast-MFC-AGG-ID: JzCquHj5MnuecNYiN7kdZA_1776953541
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-82fa366fb79so5881287b3a.2
+        for <netdev@vger.kernel.org>; Thu, 23 Apr 2026 07:12:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1776953541; x=1777558341; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=30/URGWxQ2aDJOTEEoof2WFLjwrIki9pEdY8zPtEL0g=;
+        b=Up/C/jwcYZggi4jwtp4B930CRb/qhg5b65CsJvskQt2JmkXPinbukomp7Z8RAcv5Bc
+         1svpZroNAtYeo5L5NdV5OFikSDLcol4YWL0jY/KW48mF37PNOYlsCJDAloDCuavFqz7P
+         9YGAz916HzrZNEMCMN8wBGHINboBtwlrmu3aA3lJC0DvBW84HjwOtA4X77jszr+V6yAq
+         qtt3FZRTeK/lH8iqfojJkJOVwm0A/YLfa7skTqMw7LF/Tqq+OHiS+zqOY3vtkbQNfLgR
+         +JFd9L0zQzoLVFQpBdPqLnvX8v+0/uzu9ycWDYsRfha8jgiZlL6DWAfowxA7rE86lV/5
+         4xBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776953541; x=1777558341;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=30/URGWxQ2aDJOTEEoof2WFLjwrIki9pEdY8zPtEL0g=;
+        b=PTkrg/1+P25RwEuzioCybanu/r4De96hnoMN2AfQeDztyIn52Whmjeb1cAU9bQmFvZ
+         BoI6djOb60DxvJ9i0VatVqFXjZtlLABNv2p7Z2dfLHuGoKfh9fbkqP0Gz0NwIwqZ+JMe
+         XCAFe4TWZ95OtgntNq0ukJ1O271z3t+IoSP2ceQgWdCjiX6yleHTTcKJZGG5rsfQ5Nc4
+         JkX5IptgYeF4/+WZV05bWKgDcGyERDwSeEk8TMtbawQl7phhw+PvL2Ar+zWPoFb33ihL
+         PmhtZD9oYYNraqhljRqmPOwNsttd6QIAVIgaJrbDnoIzGP7MRWHhzgKBmDRTZ22FVc6Y
+         nnvQ==
+X-Gm-Message-State: AOJu0Ywb4VfMErpTRwn41VMteoBIxCaCkJtnCgIqTOGDnlIOUHmdmSLj
+	w8iYBa9roVZTtw9v/7ghdgrgB1WRAY4TmPndNJ+CG8RGs+X214BvwgNqpU+9ORYjBtrctFg8Azw
+	MkxXnu46ML9egkqTPbdKIVjbzGRvzmFE6uJXMMyFY5sYow9liZEtWSNfK2w==
+X-Gm-Gg: AeBDiesGNkl4dscswAOKOm/JUPD4ePG369zDFHAPVAoOQdbqe1Rvm+ZMEBaMwfihDXL
+	WnNaCP2lRyj0QQQO2pnuYtVoDAd1jOJn3DbAXWw0I0fWu/+d6/o/2wcrc1WT6XpuBvuXDQFSw3g
+	pG7iEUsj2A1omIOyRc9WadpKWnOcRGi6HxU92ZuXM2MtHRq4+QT4Jlh2FrRbklAW+GgUDKz3PB+
+	pfsJEk86FDeqlqvpIeOxpMA4iDirCWhNN+Mxub4fskAh6yscrJry0JzS5nZwWFryYiMm2831jUC
+	ac8weaGEG3hGBBcGyoLEI6Z+xQVTZZzrTUfRHzHNYPJjWRZwV8jt2RsuYz4xqeJeuV8byPqK5NB
+	RYvUjWBoq7/FIktxaWhTQv49+HIqZfDhu3AnzWlh8dp7QhigLjF2WrSfeTPNGBgSYqaU=
+X-Received: by 2002:a05:6a00:3695:b0:82c:9e00:f958 with SMTP id d2e1a72fcca58-82f8c3dac2dmr26504356b3a.0.1776953541046;
+        Thu, 23 Apr 2026 07:12:21 -0700 (PDT)
+X-Received: by 2002:a05:6a00:3695:b0:82c:9e00:f958 with SMTP id d2e1a72fcca58-82f8c3dac2dmr26504302b3a.0.1776953540507;
+        Thu, 23 Apr 2026 07:12:20 -0700 (PDT)
+Received: from [192.168.88.32] ([150.228.93.216])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8ebe92desm20295399b3a.44.2026.04.23.07.11.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 23 Apr 2026 07:12:19 -0700 (PDT)
+Message-ID: <65cf5447-9876-40f8-a802-ed21b976a91c@redhat.com>
+Date: Thu, 23 Apr 2026 16:11:51 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <97a5bd32-5080-4dd7-91c6-dcb65e154481@lunn.ch>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-deletions] net: remove ax25 and amateur radio
+ (hamradio) subsystem
+To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
+Cc: netdev@vger.kernel.org, edumazet@google.com, andrew+netdev@lunn.ch,
+ horms@kernel.org, corbet@lwn.net, skhan@linuxfoundation.org,
+ federico.vaga@vaga.pv.it, carlos.bilbao@kernel.org, avadhut.naik@amd.com,
+ alexs@kernel.org, si.yanteng@linux.dev, dzm91@hust.edu.cn,
+ 2023002089@link.tyut.edu.cn, tsbogend@alpha.franken.de, dsahern@kernel.org,
+ jani.nikula@intel.com, mchehab+huawei@kernel.org,
+ gregkh@linuxfoundation.org, jirislaby@kernel.org, tytso@mit.edu,
+ herbert@gondor.apana.org.au, ebiggers@kernel.org, johannes.berg@intel.com,
+ geert@linux-m68k.org, pablo@netfilter.org, tglx@kernel.org,
+ mashiro.chen@mailbox.org, mingo@kernel.org, dqfext@gmail.com,
+ jreuter@yaina.de, sdf@fomichev.me, pkshih@realtek.com,
+ enelsonmoore@gmail.com, mkl@pengutronix.de, toke@toke.dk, kees@kernel.org,
+ crossd@gmail.com, jlayton@kernel.org, wangliang74@huawei.com,
+ aha310510@gmail.com, takamitz@amazon.co.jp, kuniyu@google.com,
+ linux-doc@vger.kernel.org, linux-mips@vger.kernel.org
+References: <20260421021824.1293976-1-kuba@kernel.org>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260421021824.1293976-1-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Am Thu, Apr 23, 2026 at 02:04:10PM +0200 schrieb Andrew Lunn:
-> On Thu, Apr 23, 2026 at 07:49:24AM +0200, Dominik Brodowski wrote:
-> > On Wed, Apr 22, 2026 at 01:01:56PM -0500, Andrew Lunn wrote:
-> > > The pcnet was written by David A. Hindsh in 1999. It is an PCMCIA
-> > > device, so unlikely to be used with modern kernels.
-> > > 
-> > > Signed-off-by: Andrew Lunn <andrew@lunn.ch>
-> > > ---
-> > >  drivers/net/ethernet/8390/Kconfig    |   11 -
-> > >  drivers/net/ethernet/8390/Makefile   |    1 -
-> > >  drivers/net/ethernet/8390/pcnet_cs.c | 1717 ----------------------------------
-> > 
-> > NACK for this one. This is the most common PCMCIA networking device, so
-> > should be removed only once the rest of the PCMCIA subsystem is removed.
-> 
-> Please submit a patch to MAINTAINERS making yourself the Maintainer of
-> this driver, if you want to keep it around.
+On 4/21/26 4:18 AM, Jakub Kicinski wrote:
+> @@ -2316,9 +2316,6 @@ struct net_device {
+>  #if IS_ENABLED(CONFIG_ATALK)
+>  	void 			*atalk_ptr;
+>  #endif
+> -#if IS_ENABLED(CONFIG_AX25)
+> -	struct ax25_dev	__rcu	*ax25_ptr;
+> -#endif
 
-Feel free to move the MAINTAINER entry for this to the PCMCIA subsystem, as
-patches will be handled then via the PCMCIA tree anyway.
+AI reviews notes that this leaves behind a stray doxygen comment. I
+think we are better off with a follow-up that with a v2.
 
-Best,
-	Dominik
+/P
+
