@@ -1,183 +1,157 @@
-Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f77.google.com (mail-ot1-f77.google.com [209.85.210.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241001A239A;
-	Thu, 23 Apr 2026 00:49:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992E21A6825
+	for <netdev@vger.kernel.org>; Thu, 23 Apr 2026 01:06:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776905379; cv=none; b=Sh8xVbymJrUBrVt3tNckOEol4teUwymvk4rdkFoyZR4+RvhKFqowqkYNySOQwcMUGdaBJFQmEK3MA8tPjaXAvmGpqk1LX4fwCwesxU1S4FMDveuxRtBdVx9d72K7nDf+koiWQ6hspJtEycoogHq3GcmcRzJ75H1VgXwwSBnCPSU=
+	t=1776906390; cv=none; b=PCfCxYX7/7g5EZMUxy5manjLU0i1aZOBrgDb89ZT1X2iS829EBmN6HGBatrDUl6RjLh9YK3Fn7cmXMLWv+J1OhT3sQUhqGwZiyGSU07Vjq4CBiOn4eMq9u+zFvxFYfgFRQx8RkdWiEKDWjOLQWpW/d1tOWKB8/2f9UbaTMNhMGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776905379; c=relaxed/simple;
-	bh=uGFvtLAWamxcAKGzomzYdxJMOB56FEC0xZY1zIHrnAY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aLL/ZDg53L+hXkNB2w+8//uQnxYze6sfgaRt/VzYLqggeep9Q2xYpqRH2LJbzIcAzvMHtWdEKsjfnNMOy1NYzu1CIdQzOeJqn8V18q8aFqEcYNOKHl8eP1vOsnrHZfU8JI/5R2UUKbqZ9xZ18jd4a4q/ZBBjSw2jMfYdEwhyfD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=EgWGewa9; arc=none smtp.client-ip=54.254.200.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="EgWGewa9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1776905375;
-	bh=Pzt9GPYqHlrWqMYF6Atgi6G7hlhArIM+lXCWpMBLm64=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=EgWGewa9shRNZrAc7N+YO1KERC0d2tRue7CLnfKrQzp06DpoNabdSrEScl5Jd/m4x
-	 F7qwu22D5fXkr5ThFKFDinIServhK/zjg/72W3YAP3rXramLUBbEOEbjJhn+ZiwQjR
-	 Ztj4g5DXu9Vzdc2zzYdLPq1p1cTVu+qZQU68d/L4=
-X-QQ-mid: zesmtpgz3t1776905357t93035a83
-X-QQ-Originating-IP: FHm+qjRyj8mRmsl7Wo7M7pe9j8S7PcRsmv7qgqLsA5M=
-Received: from uos-PC ( [117.152.201.246])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 23 Apr 2026 08:49:15 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 9726520865553334205
-EX-QQ-RecipientCnt: 14
-From: Morduan Zang <zhangdandan@uniontech.com>
-To: petkan@nucleusys.com
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	andrew@lunn.ch,
-	michal.pecio@gmail.com,
-	linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	syzkaller-bugs@googlegroups.com,
-	Zhan Jun <zhanjun@uniontech.com>,
-	syzbot+3f46c095ac0ca048cb71@syzkaller.appspotmail.com
-Subject: [PATCH net v2] net: usb: rtl8150: fix use-after-free in rtl8150_start_xmit()
-Date: Thu, 23 Apr 2026 08:49:12 +0800
-Message-ID: <809895186B866C10+20260423004913.136655-1-zhangdandan@uniontech.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <73ACB7391A6DE033+20260421110412.14795-1-zhangdandan@uniontech.com>
-References: <73ACB7391A6DE033+20260421110412.14795-1-zhangdandan@uniontech.com>
+	s=arc-20240116; t=1776906390; c=relaxed/simple;
+	bh=vWqOM9nXuwLGUOZ+JxVDQtJNjHxs/osDVjdzuCyp35E=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=p82LltlkLDdslsn/lkyxKfi3DDI2MKJ7/DcNgvteBFoPR5gWKf1TAgLrKGHmIVAjHhlYR8+NZ64yho9DeLS3L2HQ0tH1a9ptogyeJV2CUoIkBWJNItgtsQBmYG6t6GyZ4vtjL6fRw3pBL7Tv/hzEsxngC8rBtJ9ay/bzbfuu87s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-ot1-f77.google.com with SMTP id 46e09a7af769-7d4be1dee67so14913552a34.1
+        for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 18:06:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776906387; x=1777511187;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zsSvGzVB80tFyVwkB3cRPRPM6dI8of/Q43SEFzEvigI=;
+        b=OrnztPrGYvGUlBn1QoO/4eodUEIXCn2R7BrAHb7sTJDxWyaHRXYQA0I1WWn5cF9NSq
+         kstglstnjNRygvYdjDNR90nB7LfQqaiXVjV+BdRowegY4z2UhPa/9cfDhurTBI2fkChr
+         Y8DJSXp21UdjPVE0qBns+unSHoxLLElD+MK3KNFB25aL9mBtfsiAaQtYZpkJ7eBHckOc
+         lSX30psFeqAhT6pJWOFhjHUgfqaPbuXFAj3lYLnb4COu4zA2S4jTrrLUAbQkn7JRpLNQ
+         FJcbR7npKa9Ss9CMayxc6izlZKFmxsjF+WuyoRMFZn8zopLIHzwnBNZ8gTMx3AHK393f
+         kFiw==
+X-Forwarded-Encrypted: i=1; AFNElJ8GhIFTURRqtGMhw2QSWRUrJbSm9pQkLGji/Eo/U0y/+C/P+8NVwYXmwILGl42rpPclsICu8yI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzTlk3Q5YUE/EpV2AJTxu+BamWTKjvsmzSf0snkU30MfyrDfa+e
+	A6sRbhPUZJ+WgRCZLRQfGJSRtLfyn3FNC+63A4oyVjCjYv4gv03IhnmfL+waT9MTRr2FNxmSxYj
+	aWPZ9vbhj4FQWVU+E8nYx4hAAhe9tBrk5sWnDETExDMaR+d1d+ItrinyMMFg=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: M6Pq6l2cVyBBX1B1WY+sNOp5CuxnUtMxa7MnIrF4Dyah9S1gibxE4+I6
-	2t10Xmmv56Av5IiOQ8Y8OlY9JcvaLyyLOdP5z5U7BwcBrR0W4WZPxEgsBHEj/dvqDhxayD7
-	8IflSF4uvrh8Il1o+IhPwn6FhVEvAeFGsROLFwFjslA3jEwo+ngvKE7U40kHlSrXy8mVOqx
-	VK4Pmo3iAVOibwM+1YwgV8tZTFfD4rlryRvBhcYac2+fXlyfLXhxFtTsOqA8N8ai9efjlZc
-	l7y2X4XKEt4iOgj6pdeLdOSnRJ/w7AKRE93RNSsnDmhlszVF4HH7YnVBPDtRe2Lz8E7w/E3
-	UhGDwykNSuRsAX5h/NPQiTn2CvjYnWURF/8pQDYWVFnrKP49HpaE8zPZqwK40PzXn27RZHS
-	I0TLbWBQPNwBPqP2ANiEafptAyfLef36VF9o+uyEGNFy4/7zm7YWnUNqO7xdyIbR/GXaFr6
-	0e781K6gPovN4h9SBiCrgUN20xtEdnQkxHu69/rDjOuLnZS1Ae3Dm3Bs30QX2lDLw+XQv+u
-	6evOncpu/q+FftnUh8YHQ8F/rmAEyJiyNhSad5WGq61PfYs/hMok8zG3/HUHUJN4a4X4hwB
-	rX2vodyNkk0zXHw7YOyF+byaJ+87YmETjCuYTrQo2Y5pHu/1MpVS1kULwysCtfKT7/QZ0bO
-	+PaxP713pTQylQ5+uD3KIthqj7m1R/PGrCpkt1daxrkdvElsamI++qGY3bq1/mVmPHbS/gi
-	d2e80Mpq9gOgAlYTiCYhUWPDR/KWeX0QwhhC14Vxaf63owcZjUurNKnUMDqTXrwHMTSl7Np
-	DllT2ELKeCEGmNHy/tuRU1UkphVN5e5WSWSO7C2lcnV8wID1Q6pnJT+FfPvBqxvPIomm5ps
-	90PVkXfpoHzQAvfmtXIjhd1x7MM4Hc7PUAJ5kH82frQH221ck9+LJ8Dr0sjeod/ZFnc57++
-	QtQpoQeZYz2Kgzhm7uHinQkZ4wwh6P0EKdDX65bQuWErX5ZUEZnzgSsh+/wTjh2ySIu8DiG
-	OS3CovTGyEUG7+Kt3Nbe68Dx0AtD5L5fR/ms4cVTkY2Yjb6agwSJ5pV1U74ueyRiTQsD8tP
-	laZd0RJe7df00dFVGt6NHY=
-X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
-X-QQ-RECHKSPAM: 0
+X-Received: by 2002:a4a:e844:0:b0:67e:36e9:79a6 with SMTP id
+ 006d021491bc7-69462e48a91mr15566883eaf.19.1776906387619; Wed, 22 Apr 2026
+ 18:06:27 -0700 (PDT)
+Date: Wed, 22 Apr 2026 18:06:27 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69e97093.050a0220.24bfd3.0048.GAE@google.com>
+Subject: [syzbot] [net?] KCSAN: data-race in __udp4_lib_mcast_deliver /
+ udp_lib_unhash (3)
+From: syzbot <syzbot+04905b8b3523856476c0@syzkaller.appspotmail.com>
+To: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com, 
+	horms@kernel.org, kuba@kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com, 
+	willemdebruijn.kernel@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 
-From: Zhan Jun <zhanjun@uniontech.com>
+Hello,
 
-syzbot reported a KASAN slab-use-after-free read in rtl8150_start_xmit()
-when accessing skb->len for tx statistics after usb_submit_urb() has
-been called:
+syzbot found the following issue on:
 
-  BUG: KASAN: slab-use-after-free in rtl8150_start_xmit+0x71f/0x760
-    drivers/net/usb/rtl8150.c:712
-  Read of size 4 at addr ffff88810eb7a930 by task kworker/0:4/5226
+HEAD commit:    c23719abc330 Merge tag 'x86-urgent-2026-03-08' of git://gi..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=141b0806580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=6b32b22d8934c136
+dashboard link: https://syzkaller.appspot.com/bug?extid=04905b8b3523856476c0
+compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
 
-The URB completion handler write_bulk_callback() frees the skb via
-dev_kfree_skb_irq(dev->tx_skb). The URB may complete on another CPU
-in softirq context before usb_submit_urb() returns in the submitter,
-so by the time the submitter reads skb->len the skb has already been
-queued to the per-CPU completion_queue and freed by net_tx_action():
+Unfortunately, I don't have any reproducer for this issue yet.
 
-  CPU A (xmit)                      CPU B (USB completion softirq)
-  ------------                      ------------------------------
-  dev->tx_skb = skb;
-  usb_submit_urb()      --+
-                          |-------> write_bulk_callback()
-                          |           dev_kfree_skb_irq(dev->tx_skb)
-                          |         net_tx_action()
-                          |           napi_skb_cache_put()   <-- free
-  netdev->stats.tx_bytes  |
-    += skb->len;          <-- UAF read
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/c0ec3784100d/disk-c23719ab.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/ff5ee751c9be/vmlinux-c23719ab.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/1dda25fb6996/bzImage-c23719ab.xz
 
-Fix it by caching skb->len before submitting the URB and using the
-cached value when updating the tx_bytes counter.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+04905b8b3523856476c0@syzkaller.appspotmail.com
 
-The pre-existing tx_bytes semantics are preserved: the counter tracks
-the original frame length (skb->len), not the ETH_ZLEN/USB-alignment
-padded "count" value that is handed to the device.  Changing that
-would be a user-visible accounting change and is out of scope for
-this UAF fix.
+==================================================================
+BUG: KCSAN: data-race in __udp4_lib_mcast_deliver / udp_lib_unhash
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+3f46c095ac0ca048cb71@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/69e69ee7.050a0220.24bfd3.002b.GAE@google.com/
-Closes: https://syzkaller.appspot.com/bug?extid=3f46c095ac0ca048cb71
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Zhan Jun <zhanjun@uniontech.com>
+read-write to 0xffff88810194a9c8 of 4 bytes by task 15107 on cpu 0:
+ udp_lib_unhash+0x1f4/0x3e0 net/ipv4/udp.c:2261
+ sk_common_release+0x7a/0x230 net/core/sock.c:3990
+ udp_lib_close+0x15/0x20 include/net/udp.h:324
+ inet_release+0xcd/0xf0 net/ipv4/af_inet.c:437
+ __sock_release net/socket.c:662 [inline]
+ sock_close+0x6b/0x150 net/socket.c:1455
+ __fput+0x29b/0x650 fs/file_table.c:469
+ ____fput+0x1c/0x30 fs/file_table.c:497
+ task_work_run+0x130/0x1a0 kernel/task_work.c:233
+ resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
+ __exit_to_user_mode_loop kernel/entry/common.c:67 [inline]
+ exit_to_user_mode_loop+0x1f4/0x6f0 kernel/entry/common.c:98
+ __exit_to_user_mode_prepare include/linux/irq-entry-common.h:226 [inline]
+ syscall_exit_to_user_mode_prepare include/linux/irq-entry-common.h:256 [inline]
+ syscall_exit_to_user_mode include/linux/entry-common.h:325 [inline]
+ do_syscall_64+0x249/0x370 arch/x86/entry/syscall_64.c:100
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+read to 0xffff88810194a9c8 of 4 bytes by task 15111 on cpu 1:
+ __udp4_lib_mcast_deliver+0x9a/0x790 net/ipv4/udp.c:2564
+ __udp4_lib_rcv+0x972/0x1250 net/ipv4/udp.c:2749
+ udp_rcv+0x4f/0x60 net/ipv4/udp.c:2936
+ ip_protocol_deliver_rcu+0x3f7/0x790 net/ipv4/ip_input.c:207
+ ip_local_deliver_finish+0x1fc/0x2f0 net/ipv4/ip_input.c:241
+ NF_HOOK include/linux/netfilter.h:318 [inline]
+ ip_local_deliver+0xe8/0x1e0 net/ipv4/ip_input.c:262
+ dst_input include/net/dst.h:480 [inline]
+ ip_sublist_rcv_finish net/ipv4/ip_input.c:584 [inline]
+ ip_list_rcv_finish net/ipv4/ip_input.c:628 [inline]
+ ip_sublist_rcv+0x415/0x6a0 net/ipv4/ip_input.c:644
+ ip_list_rcv+0x261/0x290 net/ipv4/ip_input.c:678
+ __netif_receive_skb_list_ptype net/core/dev.c:6207 [inline]
+ __netif_receive_skb_list_core+0x4dc/0x500 net/core/dev.c:6254
+ __netif_receive_skb_list net/core/dev.c:6306 [inline]
+ netif_receive_skb_list_internal+0x47d/0x5f0 net/core/dev.c:6397
+ netif_receive_skb_list+0x35/0x220 net/core/dev.c:6449
+ xdp_recv_frames net/bpf/test_run.c:269 [inline]
+ xdp_test_run_batch net/bpf/test_run.c:350 [inline]
+ bpf_test_run_xdp_live+0x104c/0x1360 net/bpf/test_run.c:379
+ bpf_prog_test_run_xdp+0x57b/0xa10 net/bpf/test_run.c:1397
+ bpf_prog_test_run+0x204/0x340 kernel/bpf/syscall.c:4722
+ __sys_bpf+0x52e/0x7e0 kernel/bpf/syscall.c:6246
+ __do_sys_bpf kernel/bpf/syscall.c:6341 [inline]
+ __se_sys_bpf kernel/bpf/syscall.c:6339 [inline]
+ __x64_sys_bpf+0x41/0x50 kernel/bpf/syscall.c:6339
+ x64_sys_call+0x10cb/0x3020 arch/x86/include/generated/asm/syscalls_64.h:322
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x12c/0x370 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+value changed: 0x00000001 -> 0x00000000
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 1 UID: 0 PID: 15111 Comm: syz.6.4060 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2026
+==================================================================
+
+
 ---
-Changes in v2:
- - Drop the vague "This mirrors the fix pattern used by other USB
-   network drivers." claim from the changelog (Michal Pecio).
- - Clarify that the patch intentionally preserves the existing
-   tx_bytes semantics (no ETH_ZLEN/USB padding accounted), and that
-   adjusting that is out of scope for this UAF fix (Michal Pecio).
- - Use the correct "[PATCH net]" subject prefix per
-   Documentation/process/maintainer-netdev.rst (Andrew Lunn).
- - Add Reviewed-by: Andrew Lunn.
- - No functional changes; code diff is identical to v1.
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-v1: https://lore.kernel.org/all/73ACB7391A6DE033+20260421110412.14795-1-zhangdandan@uniontech.com/
----
- drivers/net/usb/rtl8150.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
-diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
-index 4cda0643afb6..6fc6be0cced6 100644
---- a/drivers/net/usb/rtl8150.c
-+++ b/drivers/net/usb/rtl8150.c
-@@ -683,6 +683,7 @@ static netdev_tx_t rtl8150_start_xmit(struct sk_buff *skb,
- 					    struct net_device *netdev)
- {
- 	rtl8150_t *dev = netdev_priv(netdev);
-+	unsigned int skb_len;
- 	int count, res;
- 
- 	/* pad the frame and ensure terminating USB packet, datasheet 9.2.3 */
-@@ -694,6 +695,14 @@ static netdev_tx_t rtl8150_start_xmit(struct sk_buff *skb,
- 		return NETDEV_TX_OK;
- 	}
- 
-+	/*
-+	 * Cache skb->len before submitting the URB: the URB completion
-+	 * handler (write_bulk_callback) frees the skb, and it may run
-+	 * on another CPU before usb_submit_urb() returns, which would
-+	 * leave skb dangling here.
-+	 */
-+	skb_len = skb->len;
-+
- 	netif_stop_queue(netdev);
- 	dev->tx_skb = skb;
- 	usb_fill_bulk_urb(dev->tx_urb, dev->udev, usb_sndbulkpipe(dev->udev, 2),
-@@ -709,7 +718,7 @@ static netdev_tx_t rtl8150_start_xmit(struct sk_buff *skb,
- 		}
- 	} else {
- 		netdev->stats.tx_packets++;
--		netdev->stats.tx_bytes += skb->len;
-+		netdev->stats.tx_bytes += skb_len;
- 		netif_trans_update(netdev);
- 	}
- 
--- 
-2.51.0
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
 
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
