@@ -1,81 +1,82 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED49023D7CE;
-	Thu, 23 Apr 2026 21:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C62C11F1932;
+	Thu, 23 Apr 2026 22:02:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776981050; cv=none; b=UJ/X4gr4m/pU7k9urtrj3QmTp+min5Dkr8E8/ZdrBjE6xULY+CBKfM9qM1Z2mbg8ny2lmDyQgxzkXLW3Jd7kfYmpyRJCKaSiq5wLqaig13ojbWfhQ+CDpLxjSJuq8YlsK5h4f+L+s0AsRBfk9kbvjrSeU5Ib00CnALPrrCYc5bE=
+	t=1776981761; cv=none; b=herrVonBIAIaHt6ujP5XTtYFcjNTk+FL6hXH5NDWkDjwgcbDz3FtLrzv7qs2DZhmLni7VBhBtBdRfxxtO3GgFEtiIz3fzivoXEdzKlvdcBKbdIOMKm4hTdyYx8GbvEX6NI7GnrT15r3o0vsCL6pA+WI9J1/ZWc5d6Owkt3M235c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776981050; c=relaxed/simple;
-	bh=XYuKr+eaOJj0h6C00DY+gStx8tqVxxnWPOfaL0ideFs=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=o4FMsOoQUvbR408104n2lgwOku3TF1LV7EQU0W1cWNvHo1p8UzwjbJQe3zDioDecDi2Wh8PBHy0meAXz/Y5f2PQIXla22ahtJYbv/CDYDrR1aEimrDjlMBSuhCU+ql06CeCyB87geoa4N03FgRZcW6aFVLIOjwHY075VeI8irck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n4JSeUjv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776981761; c=relaxed/simple;
+	bh=iesPwsztrmjzqui51g0i4ZUJjHRh01BEx/nK4WBofiE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TfS0ADj0l8IkFp/FFk1gJOjhE5Kk4tbhSlKeS2AZl+O+NQaeqcuVkpEFvnOCBOnHboVf1m+NE/a5m8bR8Z+3D1KVQdz9uCSE9zg/d8qWGRKHWAMQt4egvIc0M9stAJDp8IM8sJVYc9EYsY5Ajybq4LrhBkIdPsBSRNwWZJsM6iI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nICZytuC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n4JSeUjv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86CDFC2BCAF;
-	Thu, 23 Apr 2026 21:50:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nICZytuC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E931FC2BCAF;
+	Thu, 23 Apr 2026 22:02:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776981049;
-	bh=XYuKr+eaOJj0h6C00DY+gStx8tqVxxnWPOfaL0ideFs=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=n4JSeUjvAxQOaOZKSOuAOEhyZUagMglFLYbT7kJx+29PPFnKsb6tTP1EOg4u1H7EP
-	 yXkBPNp/8ZRIzUs7Qq/yhSpolzWadXLwcKXGNfIWnCOwjUdV3ZxkOLvkTTf5/0h1/W
-	 L4xCJ1j14PM0D5r6qPNc8SCRQBUfzES5Eu8ycMnjQNSWCAu1qwDDPuj8Rri1M2KRj7
-	 Fu1IPdk+fYvXmeT+uvaY2yBNPueADw/Rstab0UUu5UDhpU1SS5YzwkYudvf54eOhQy
-	 oRf93hINIew46E78/SdaylGufTbWb1lUXCC4vIqIfDOGMROxcla3p+Aj3lo/jRsERh
-	 CdSaDpnAtFYSA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02DDE380A94F;
-	Thu, 23 Apr 2026 21:50:12 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1776981761;
+	bh=iesPwsztrmjzqui51g0i4ZUJjHRh01BEx/nK4WBofiE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=nICZytuCKFQx1NjUGnK00MlvMZ6BTkRxWuArGYeg7uSAoyotoI5/n4t5tcrHYpN5E
+	 X8GHApH6zuetYq6cytvOKH8mh3lUPOlm/zyXh+nsvfKowVoc09bNmUIZqmFh+xc2ig
+	 AEpr9ftRmvzoQJrUt0gbv2fzKbvdFTgQhbn8WZ8Jqvtx6hcmc2R0cVyo1j1SJEwJvD
+	 0rtpedsKqqsFQTse7FsMeb8gzXK7EsoKsGiZ3ZfOZMaV1/vQ7qh3iWXfSsN+aJIDGJ
+	 dP2a1MaJ6DXgdShAvpMDtlLnm46sNF+D4bgElxfEICpjqQJo8qmNhBhI2AebrByk8R
+	 cgtgFUn1MgGyQ==
+Date: Thu, 23 Apr 2026 15:02:40 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: Daniel Palmer <daniel@0x0f.com>, Geert Uytterhoeven
+ <geert@linux-m68k.org>, Andrew Lunn <andrew@lunn.ch>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet	 <edumazet@google.com>, Paolo Abeni	 <pabeni@redhat.com>, Simon
+ Horman <horms@kernel.org>, Jonathan Corbet	 <corbet@lwn.net>, Shuah Khan
+ <skhan@linuxfoundation.org>, Michael Fritscher	 <michael@fritscher.net>,
+ Byron Stanoszek <gandalf@winds.org>, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, linux-doc@vger.kernel.org, linux-m68k
+ <linux-m68k@lists.linux-m68k.org>
+Subject: Re: [PATCH net v2 10/15] drivers: net: cirrus: mac89x0: Remove this
+ driver
+Message-ID: <20260423150240.07c350a2@kernel.org>
+In-Reply-To: <aee0393e2a2bd5a5d0bf8aee758122633e54aa06.camel@physik.fu-berlin.de>
+References: <20260422-v7-0-0-net-next-driver-removal-v1-v2-0-08a5b59784d5@lunn.ch>
+	<20260422-v7-0-0-net-next-driver-removal-v1-v2-10-08a5b59784d5@lunn.ch>
+	<CAMuHMdV-vF6sTvAi8kKzxGwZ9YUSBO1Qta5PDCRbA0zr-LEp_w@mail.gmail.com>
+	<c0c80113af470b265650405fa24deefe2d82ea24.camel@physik.fu-berlin.de>
+	<CAFr9PXnECog56b+Jq9TBohhQ4oBB3hGV1pHj6OstOSLqkOpcTQ@mail.gmail.com>
+	<aee0393e2a2bd5a5d0bf8aee758122633e54aa06.camel@physik.fu-berlin.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/3] rxrpc: Miscellaneous fixes
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177698101049.775674.1567171164890583654.git-patchwork-notify@kernel.org>
-Date: Thu, 23 Apr 2026 21:50:10 +0000
-References: <20260423200909.3049438-1-dhowells@redhat.com>
-In-Reply-To: <20260423200909.3049438-1-dhowells@redhat.com>
-To: David Howells <dhowells@redhat.com>
-Cc: netdev@vger.kernel.org, marc.dionne@auristor.com, kuba@kernel.org,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- horms@kernel.org, anderson@allelesecurity.com, linux-afs@lists.infradead.org,
- linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Thu, 23 Apr 2026 21:09:05 +0100 you wrote:
-> Here are some fixes for rxrpc, as found by Sashiko[1]:
+On Thu, 23 Apr 2026 11:28:11 +0200 John Paul Adrian Glaubitz wrote:
+> > > Retrocomputing still is not well regarded by some maintainers, it seems :-(.  
+> > 
+> > I've found bugs in drivers by plugging those things into exotic
+> > hardware like my Amiga 4000 and Ultra5 [0].
+> > So, it's not totally pointless. And having a shader capable Amiga[1]
+> > is pretty cool.  
 > 
->  (1) Fix rxrpc_input_call_event() to only unshare DATA packets.
+> Not only that. Those exotic architectures also help iron out generic kernel
+> bugs and give new maintainers an possibility to get their feet wet.
 > 
->  (2) Fix re-decryption of RESPONSE packets where a partially decrypted
->      skbuff gets requeued if there was a failure due to ENOMEM.
+> > Sad to see fun stuff getting pushed out by basically spam bots. :(  
 > 
-> [...]
+> It's not so much pushed out by spam bots but by the commercialization of the
+> Linux kernel. Many developers think that the sole purpose of the Linux kernel
+> is to run on modern commodity hardware.
 
-Here is the summary with links:
-  - [net,1/3] rxrpc: Fix rxrpc_input_call_event() to only unshare DATA packets
-    https://git.kernel.org/netdev/net/c/55b2984c96c3
-  - [net,2/3] rxrpc: Fix re-decryption of RESPONSE packets
-    https://git.kernel.org/netdev/net/c/0422e7a4883f
-  - [net,3/3] rxrpc: Fix error handling in rxgk_extract_token()
-    https://git.kernel.org/netdev/net/c/3476c8bb960f
+Please send that MAINTAINERS patch to designate yourselves
+as maintainers (like Daniel already did for another driver).
+This is the ideal outcome.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+We want to be welcoming in the community. But being a part
+of the community means participating in _work_.
