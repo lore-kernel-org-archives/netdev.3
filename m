@@ -1,157 +1,159 @@
-Received: from mail-ot1-f77.google.com (mail-ot1-f77.google.com [209.85.210.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbguseast3.qq.com (smtpbguseast3.qq.com [54.243.244.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992E21A6825
-	for <netdev@vger.kernel.org>; Thu, 23 Apr 2026 01:06:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B578924EA90;
+	Thu, 23 Apr 2026 01:07:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.243.244.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776906390; cv=none; b=PCfCxYX7/7g5EZMUxy5manjLU0i1aZOBrgDb89ZT1X2iS829EBmN6HGBatrDUl6RjLh9YK3Fn7cmXMLWv+J1OhT3sQUhqGwZiyGSU07Vjq4CBiOn4eMq9u+zFvxFYfgFRQx8RkdWiEKDWjOLQWpW/d1tOWKB8/2f9UbaTMNhMGw=
+	t=1776906447; cv=none; b=Rkc8mQVxuAMCEapKZm6ViN6AQIkrt3ozWypSqo/GsZQEVssLT782QPoe6XYZpSnPWYTaFQaPyqAn6gQiu4yAOEvTzEF1IHW5UhusbDbQyj6ZusYT5a3Bk5cIm2eSn8nSz5NlmoUwDx8966oPuxYoBauCbI/Do6SLEP9jhX8w9P8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776906390; c=relaxed/simple;
-	bh=vWqOM9nXuwLGUOZ+JxVDQtJNjHxs/osDVjdzuCyp35E=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=p82LltlkLDdslsn/lkyxKfi3DDI2MKJ7/DcNgvteBFoPR5gWKf1TAgLrKGHmIVAjHhlYR8+NZ64yho9DeLS3L2HQ0tH1a9ptogyeJV2CUoIkBWJNItgtsQBmYG6t6GyZ4vtjL6fRw3pBL7Tv/hzEsxngC8rBtJ9ay/bzbfuu87s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-ot1-f77.google.com with SMTP id 46e09a7af769-7d4be1dee67so14913552a34.1
-        for <netdev@vger.kernel.org>; Wed, 22 Apr 2026 18:06:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776906387; x=1777511187;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zsSvGzVB80tFyVwkB3cRPRPM6dI8of/Q43SEFzEvigI=;
-        b=OrnztPrGYvGUlBn1QoO/4eodUEIXCn2R7BrAHb7sTJDxWyaHRXYQA0I1WWn5cF9NSq
-         kstglstnjNRygvYdjDNR90nB7LfQqaiXVjV+BdRowegY4z2UhPa/9cfDhurTBI2fkChr
-         Y8DJSXp21UdjPVE0qBns+unSHoxLLElD+MK3KNFB25aL9mBtfsiAaQtYZpkJ7eBHckOc
-         lSX30psFeqAhT6pJWOFhjHUgfqaPbuXFAj3lYLnb4COu4zA2S4jTrrLUAbQkn7JRpLNQ
-         FJcbR7npKa9Ss9CMayxc6izlZKFmxsjF+WuyoRMFZn8zopLIHzwnBNZ8gTMx3AHK393f
-         kFiw==
-X-Forwarded-Encrypted: i=1; AFNElJ8GhIFTURRqtGMhw2QSWRUrJbSm9pQkLGji/Eo/U0y/+C/P+8NVwYXmwILGl42rpPclsICu8yI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzTlk3Q5YUE/EpV2AJTxu+BamWTKjvsmzSf0snkU30MfyrDfa+e
-	A6sRbhPUZJ+WgRCZLRQfGJSRtLfyn3FNC+63A4oyVjCjYv4gv03IhnmfL+waT9MTRr2FNxmSxYj
-	aWPZ9vbhj4FQWVU+E8nYx4hAAhe9tBrk5sWnDETExDMaR+d1d+ItrinyMMFg=
+	s=arc-20240116; t=1776906447; c=relaxed/simple;
+	bh=tYCzHor47hqxp8rLOA7WTY/+BbPkDn44rqQOP1bXeYY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=fhtOaOmwQy2ZihQ/FF9aBGlibNfBQvDTVRdy5kMkGBdJxpCfzM4hlO+yJM1oCXBDMsYz+JszjBfBLVOpNQhUXFITqBux+QFoFyT1JfB+Z+Sh1mPnIB+H4l5SkBcgRoas6m/kLIpB8n8HZR/riMDkofBh9JGuk/DYStj0GFiHZTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=oNNrOc8v; arc=none smtp.client-ip=54.243.244.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="oNNrOc8v"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1776906372;
+	bh=eggo0kWU9G/tlBHOtS1ZEL/eQvikyrXBED2PxIykBh0=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=oNNrOc8v8kRJDRSBvpqlIW4hSnkP3+bOWfBhRtqh+j+pKNF8shWqVE4J/uhTo3ZKG
+	 zumbmQIOc6EHJbGHg8gvPczUD7tWUDKuoVRpKqKHXk4BrJLl4Cy5QgtUw4TjpY3d0K
+	 CLiq9a2vcLYKKJIrFpRzv0tgIXxNA63rvaG9GhSw=
+X-QQ-mid: esmtpgz13t1776906365t1bceb4d6
+X-QQ-Originating-IP: +2maIw1gtaxOC5WLdgL2MajtIYHujWkA+NSD3rmx6ZU=
+Received: from uos-PC ( [117.152.201.246])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Thu, 23 Apr 2026 09:06:03 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 17469408873635827104
+EX-QQ-RecipientCnt: 12
+From: Morduan Zang <zhangdandan@uniontech.com>
+To: Remi Denis-Courmont <courmisch@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	syzkaller-bugs@googlegroups.com,
+	syzbot+706f5eb79044e686c794@syzkaller.appspotmail.com,
+	zhanjun@uniontech.com,
+	Morduan Zang <zhangdandan@uniontech.com>
+Subject: [PATCH net v2] net: phonet: do not BUG_ON() in pn_socket_autobind() on failed bind
+Date: Thu, 23 Apr 2026 09:05:57 +0800
+Message-ID: <87A8960A2045AF3C+20260423010557.138124-1-zhangdandan@uniontech.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <81A6570B633FF6FE+20260422013807.63087-1-zhangdandan@uniontech.com>
+References: <81A6570B633FF6FE+20260422013807.63087-1-zhangdandan@uniontech.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a4a:e844:0:b0:67e:36e9:79a6 with SMTP id
- 006d021491bc7-69462e48a91mr15566883eaf.19.1776906387619; Wed, 22 Apr 2026
- 18:06:27 -0700 (PDT)
-Date: Wed, 22 Apr 2026 18:06:27 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69e97093.050a0220.24bfd3.0048.GAE@google.com>
-Subject: [syzbot] [net?] KCSAN: data-race in __udp4_lib_mcast_deliver /
- udp_lib_unhash (3)
-From: syzbot <syzbot+04905b8b3523856476c0@syzkaller.appspotmail.com>
-To: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com, 
-	horms@kernel.org, kuba@kernel.org, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com, 
-	willemdebruijn.kernel@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: MrosOnwPZ59QofduHQP5G2zL4G75JMULfaVNVig0+pTmebN6YD2IKTxP
+	wi0sKdiak6z0zNA+NA/i5ESqaSWQ66Ye8lpAqltAEAPPOeMvybQ/3YgVSGtb/25QjUCFw2f
+	ksnYfUuYoacDEylnC11V633n5SXk76VNKdX6lhhqpYB0XTzo/tQFIl/YvJ8xpgubay3eUcK
+	3sHCn7avnuSJwcJrKSVNeU6FIRPfCXixpF4LuPUpmK+iFnOLUhwSbvWomUn+BpgZ634ac5H
+	5JCD3abqTtsnqbCVoqZ920hw2jfEIEK2gc+Uiwrrm+4rxgEJjgW5C/CeRpmMsAI+g1AYH0N
+	kttWjX3iZhgc1UUfIXxcM44/weTg8UMqxZ49MuFTqdfAsLvTjYhkY+n+BJ40/xzPsVpNxUz
+	HOmLO6QajEdb41ypzXQu9098xjamHiqfyLiiz9MQkgN+wpeJp5eXt9KkfV/+UQAwjDup4Ov
+	MbI9/n1N6LKbBSlyI30C25XZ0+kjp0WeNjhUtDC9y8+BSjGH6H+TJYuBv6rr6hYoRfEH919
+	kZfYgAo1UOY4OT8mYS5j5dHAgvPzHd8y0NTPRR4PQKlHlkeZI8sZmT7SQd8Z2xrPLsvZGaa
+	EZA967wY/LQO2wrbo5TdxGAqkUO9GciuAJ0xtLO4OAN8yOc0gZXxu3vw2J7+FHMBHgRdOaJ
+	Ed3VDvzFGowTozPoQcdneHrmu5Ehy7UWMZcIc8S5zSLyzSDtOLOXn7JRdky9deaHQOsNbm3
+	Y0kvfFs88ylCYzvGrybQA6OSLQqOJAHGzM0gUzDd3KpEy8WHCWMwnYr8v23ayrBTyFKz0kh
+	XVSHldwpoz6jj5sBYiQoniVEcbLb4pXTq+nY7Jr1jbL72TyYpTFZtRSUsqbzfera46ghdXp
+	MzQ2UjrHMo4xjDP1IvAsFWbw3O3X3mko/GWuXRQOSqiBFlu/PMiSEHTFKGTCi4xuVMRp6Ih
+	FRtJC5OgX4rCipzSlV80ATG4apUYr55mVDrAKEhNaKDsem35dPYEFmh9E6g60OcpdPS8cHS
+	ZIyxlDOfqZbvRt7blCv1elFWfznMs8r23bOElKkm/jE5HyMBJNIvWqhD2/0Hz0tbF016nLY
+	OlwzfAws6gCj23XD19O2cFWqwZ36Zt6jg==
+X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
+X-QQ-RECHKSPAM: 0
 
-Hello,
+syzbot reported a kernel BUG triggered from pn_socket_sendmsg() via
+pn_socket_autobind():
 
-syzbot found the following issue on:
+  kernel BUG at net/phonet/socket.c:213!
+  RIP: 0010:pn_socket_autobind net/phonet/socket.c:213 [inline]
+  RIP: 0010:pn_socket_sendmsg+0x240/0x250 net/phonet/socket.c:421
+  Call Trace:
+   sock_sendmsg_nosec+0x112/0x150 net/socket.c:797
+   __sock_sendmsg net/socket.c:812 [inline]
+   __sys_sendto+0x402/0x590 net/socket.c:2280
+   ...
 
-HEAD commit:    c23719abc330 Merge tag 'x86-urgent-2026-03-08' of git://gi..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=141b0806580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=6b32b22d8934c136
-dashboard link: https://syzkaller.appspot.com/bug?extid=04905b8b3523856476c0
-compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+pn_socket_autobind() calls pn_socket_bind() with port 0 and, on
+-EINVAL, assumes the socket was already bound and asserts that the
+port is non-zero:
 
-Unfortunately, I don't have any reproducer for this issue yet.
+  err = pn_socket_bind(sock, ..., sizeof(struct sockaddr_pn));
+  if (err != -EINVAL)
+          return err;
+  BUG_ON(!pn_port(pn_sk(sock->sk)->sobject));
+  return 0; /* socket was already bound */
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/c0ec3784100d/disk-c23719ab.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/ff5ee751c9be/vmlinux-c23719ab.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/1dda25fb6996/bzImage-c23719ab.xz
+However pn_socket_bind() also returns -EINVAL when sk->sk_state is not
+TCP_CLOSE, even when the socket has never been bound and pn_port() is
+still 0.  In that case the BUG_ON() fires and panics the kernel from a
+user-triggerable path.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+04905b8b3523856476c0@syzkaller.appspotmail.com
+Treat the "bind returned -EINVAL but pn_port() is still 0" case as a
+regular error and propagate -EINVAL to the caller instead of crashing.
+Existing callers already translate a non-zero return from
+pn_socket_autobind() into -ENOBUFS/-EAGAIN, so returning -EINVAL here
+only changes behaviour from panic to a normal errno.
 
-==================================================================
-BUG: KCSAN: data-race in __udp4_lib_mcast_deliver / udp_lib_unhash
-
-read-write to 0xffff88810194a9c8 of 4 bytes by task 15107 on cpu 0:
- udp_lib_unhash+0x1f4/0x3e0 net/ipv4/udp.c:2261
- sk_common_release+0x7a/0x230 net/core/sock.c:3990
- udp_lib_close+0x15/0x20 include/net/udp.h:324
- inet_release+0xcd/0xf0 net/ipv4/af_inet.c:437
- __sock_release net/socket.c:662 [inline]
- sock_close+0x6b/0x150 net/socket.c:1455
- __fput+0x29b/0x650 fs/file_table.c:469
- ____fput+0x1c/0x30 fs/file_table.c:497
- task_work_run+0x130/0x1a0 kernel/task_work.c:233
- resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
- __exit_to_user_mode_loop kernel/entry/common.c:67 [inline]
- exit_to_user_mode_loop+0x1f4/0x6f0 kernel/entry/common.c:98
- __exit_to_user_mode_prepare include/linux/irq-entry-common.h:226 [inline]
- syscall_exit_to_user_mode_prepare include/linux/irq-entry-common.h:256 [inline]
- syscall_exit_to_user_mode include/linux/entry-common.h:325 [inline]
- do_syscall_64+0x249/0x370 arch/x86/entry/syscall_64.c:100
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-read to 0xffff88810194a9c8 of 4 bytes by task 15111 on cpu 1:
- __udp4_lib_mcast_deliver+0x9a/0x790 net/ipv4/udp.c:2564
- __udp4_lib_rcv+0x972/0x1250 net/ipv4/udp.c:2749
- udp_rcv+0x4f/0x60 net/ipv4/udp.c:2936
- ip_protocol_deliver_rcu+0x3f7/0x790 net/ipv4/ip_input.c:207
- ip_local_deliver_finish+0x1fc/0x2f0 net/ipv4/ip_input.c:241
- NF_HOOK include/linux/netfilter.h:318 [inline]
- ip_local_deliver+0xe8/0x1e0 net/ipv4/ip_input.c:262
- dst_input include/net/dst.h:480 [inline]
- ip_sublist_rcv_finish net/ipv4/ip_input.c:584 [inline]
- ip_list_rcv_finish net/ipv4/ip_input.c:628 [inline]
- ip_sublist_rcv+0x415/0x6a0 net/ipv4/ip_input.c:644
- ip_list_rcv+0x261/0x290 net/ipv4/ip_input.c:678
- __netif_receive_skb_list_ptype net/core/dev.c:6207 [inline]
- __netif_receive_skb_list_core+0x4dc/0x500 net/core/dev.c:6254
- __netif_receive_skb_list net/core/dev.c:6306 [inline]
- netif_receive_skb_list_internal+0x47d/0x5f0 net/core/dev.c:6397
- netif_receive_skb_list+0x35/0x220 net/core/dev.c:6449
- xdp_recv_frames net/bpf/test_run.c:269 [inline]
- xdp_test_run_batch net/bpf/test_run.c:350 [inline]
- bpf_test_run_xdp_live+0x104c/0x1360 net/bpf/test_run.c:379
- bpf_prog_test_run_xdp+0x57b/0xa10 net/bpf/test_run.c:1397
- bpf_prog_test_run+0x204/0x340 kernel/bpf/syscall.c:4722
- __sys_bpf+0x52e/0x7e0 kernel/bpf/syscall.c:6246
- __do_sys_bpf kernel/bpf/syscall.c:6341 [inline]
- __se_sys_bpf kernel/bpf/syscall.c:6339 [inline]
- __x64_sys_bpf+0x41/0x50 kernel/bpf/syscall.c:6339
- x64_sys_call+0x10cb/0x3020 arch/x86/include/generated/asm/syscalls_64.h:322
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x12c/0x370 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-value changed: 0x00000001 -> 0x00000000
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 1 UID: 0 PID: 15111 Comm: syz.6.4060 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2026
-==================================================================
-
-
+Fixes: ba113a94b750 ("Phonet: common socket glue")
+Reported-by: syzbot+706f5eb79044e686c794@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=706f5eb79044e686c794
+Suggested-by: Remi Denis-Courmont <courmisch@gmail.com>
+Signed-off-by: Morduan Zang <zhangdandan@uniontech.com>
+Signed-off-by: zhanjun <zhanjun@uniontech.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+Changes in v2:
+ - Fold the extra port check into the existing -EINVAL test so that
+   autobind now reads as a single compact "not already bound" guard
+   using unlikely() (Remi Denis-Courmont).
+ - Reword the accompanying comment accordingly; no functional change
+   vs. v1 other than the code-style simplification.
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+v1: https://lore.kernel.org/all/81A6570B633FF6FE+20260422013807.63087-1-zhangdandan@uniontech.com/
+---
+ net/phonet/socket.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+diff --git a/net/phonet/socket.c b/net/phonet/socket.c
+index 4423d483c630..bbd710d95b97 100644
+--- a/net/phonet/socket.c
++++ b/net/phonet/socket.c
+@@ -208,9 +208,15 @@ static int pn_socket_autobind(struct socket *sock)
+ 	sa.spn_family = AF_PHONET;
+ 	err = pn_socket_bind(sock, (struct sockaddr_unsized *)&sa,
+ 			     sizeof(struct sockaddr_pn));
+-	if (err != -EINVAL)
++	/*
++	 * pn_socket_bind() also returns -EINVAL when sk_state != TCP_CLOSE
++	 * without a prior bind, so -EINVAL alone is not sufficient to infer
++	 * that the socket was already bound.  Only treat it as "already
++	 * bound" when the port is non-zero; otherwise propagate the error
++	 * instead of crashing the kernel.
++	 */
++	if (err != -EINVAL || unlikely(!pn_port(pn_sk(sock->sk)->sobject)))
+ 		return err;
+-	BUG_ON(!pn_port(pn_sk(sock->sk)->sobject));
+ 	return 0; /* socket was already bound */
+ }
+ 
+-- 
+2.50.1
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
