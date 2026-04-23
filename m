@@ -1,110 +1,90 @@
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 715C93BF673;
-	Thu, 23 Apr 2026 09:28:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.133.4.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B02AF3E4C8E;
+	Thu, 23 Apr 2026 09:30:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776936505; cv=none; b=c7bTzqJ1iBLkHOxoDGNjH0/NLST7Qx97enKc0stZg8YR6agjkxBkuWXW5IhuYRiQOHWaCCFiwrSY5eaIO+kVCVzs798mUWKtKHew83IF281KnuDI9GJ0heT3K35zpxhj5CUNkO9gvdlsgSg0c/La0h6qEGWL0o6SABPQQRrQqCo=
+	t=1776936653; cv=none; b=Vp47YiG2ajUhaXIMNuEXWH91LAHyOjELG3oO3O+LG2XPtwIBTh52nDn9CA/uFWyg9iyWFgAfvY+dPOiaFLIC+i1TJ8o6adqA79f0dzqNiG1Ym5ztYt4UEYhvGtmSszw2rIvVi3B1jFkMuCbRu86O02j8y7qmbtGTTkomsuPHg+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776936505; c=relaxed/simple;
-	bh=HuBA0Qzq/DYd0rcngJlieMV/XLHFFCqFQhkapYaGSQw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ArgDXBNPFHybZ8XPIePaSqc/fHww1KgluGLSrsag27kGM4n0hsDM4dobAKDdT4RTVTD41Cl1uHG1WlFTAWETFkqQqbru5Pccccil19i4TqshctCHhuJljOShL6BtBD+Z4YJEL92DMO1ZVwCIpY3ej0s9wuq54YJQjgOPZUd0Pac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de; spf=pass smtp.mailfrom=zedat.fu-berlin.de; dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b=IuUl4oxF; arc=none smtp.client-ip=130.133.4.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zedat.fu-berlin.de
+	s=arc-20240116; t=1776936653; c=relaxed/simple;
+	bh=xTAI9xIr1VqM9v3nC9pXYRhVtz4waWq5chM0ORi9Wbg=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Q78ZwQCNkapRA6EyqsmO6GuKrDCqfdF6S/C7vDZS1uWzG5Ni9s8gMmtSeWTWQTfcsWQc/2OHSuEj8fveqlpNyI8sO3FAcLjPkc2ZvjsyD0cB4KMBoYMYDgJ174UKtmLOerirha9jzxEuAxS2C1xdXjhyUPdkF14Sgjx9EkbToec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CaunIDfd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b="IuUl4oxF"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:From:
-	Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=zeWo4E4PlcntrIRoAt4bWIDzaFjt/YqZgC2/aPWnV5w=; t=1776936502;
-	x=1777541302; b=IuUl4oxFjrX7RAQBfg6A9FUElSPdccwLFvOxZMchQmLQ/xT1gt3lyyAHfOPhP
-	bo1Pk7p2WYLFWG5BQ0lQyBpTdD8t0ydCMsnNLlIg7m7hYYECVuTv0KY9cVGa328bKIL+xfE+RlJxP
-	JhIslN1QEDRf3EuFypWWkag3Z+7RFRvC/R/Ibmw9M/Saih/VnEe239eP0arZftkkoS4cwH66S9QWb
-	7mlbZTqKf6hQATgsXAzK6gmwiVytzZs1fdi0uwWL9mW6D7gzqv99x+W2MKV8GSsY0NEVk/VQlr+lu
-	zBIzur5yuKhje9+FyAeTRUFffNiURygjzxXo0naDiu11V0LnQQ==;
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.99)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1wFqM1-000000004TA-0qZk; Thu, 23 Apr 2026 11:28:13 +0200
-Received: from p5dc559e1.dip0.t-ipconnect.de ([93.197.89.225] helo=[192.168.178.61])
-          by inpost2.zedat.fu-berlin.de (Exim 4.99)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1wFqM0-000000033VG-3woU; Thu, 23 Apr 2026 11:28:13 +0200
-Message-ID: <aee0393e2a2bd5a5d0bf8aee758122633e54aa06.camel@physik.fu-berlin.de>
-Subject: Re: [PATCH net v2 10/15] drivers: net: cirrus: mac89x0: Remove this
- driver
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To: Daniel Palmer <daniel@0x0f.com>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>, Andrew Lunn <andrew@lunn.ch>,
-  Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet	 <edumazet@google.com>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni	 <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Jonathan Corbet	 <corbet@lwn.net>, Shuah Khan
- <skhan@linuxfoundation.org>, Michael Fritscher	 <michael@fritscher.net>,
- Byron Stanoszek <gandalf@winds.org>, 	linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, linux-doc@vger.kernel.org,  linux-m68k
- <linux-m68k@lists.linux-m68k.org>
-Date: Thu, 23 Apr 2026 11:28:11 +0200
-In-Reply-To: <CAFr9PXnECog56b+Jq9TBohhQ4oBB3hGV1pHj6OstOSLqkOpcTQ@mail.gmail.com>
-References: 
-	<20260422-v7-0-0-net-next-driver-removal-v1-v2-0-08a5b59784d5@lunn.ch>
-	 <20260422-v7-0-0-net-next-driver-removal-v1-v2-10-08a5b59784d5@lunn.ch>
-	 <CAMuHMdV-vF6sTvAi8kKzxGwZ9YUSBO1Qta5PDCRbA0zr-LEp_w@mail.gmail.com>
-	 <c0c80113af470b265650405fa24deefe2d82ea24.camel@physik.fu-berlin.de>
-	 <CAFr9PXnECog56b+Jq9TBohhQ4oBB3hGV1pHj6OstOSLqkOpcTQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.1 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CaunIDfd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C639C2BCAF;
+	Thu, 23 Apr 2026 09:30:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776936653;
+	bh=xTAI9xIr1VqM9v3nC9pXYRhVtz4waWq5chM0ORi9Wbg=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=CaunIDfd4/pt10XfBFZ0GfjQRfAXfNICMw6MfenaiMV35NlnfkZj3YBQQ60H3wmyI
+	 Z0cYjgZgdEP3jzd7bZ8eF1+cpp+qalyX8N5bjOhOvwF9TvTeT/deNo0nRrV/wOLV4D
+	 h7EW3qu7V7Bd0FK2yKa5j0DOmhv9FTs/PYAbfeEYZ8+/DIRrNAaBBZiXS0YwyLgdWy
+	 KVjZVPZFdcWql7CkDSXYMkEJuBGkw9nrokRP9QhA9OcweJMbxJHHgbBFTtr/NVQiw1
+	 kzwYmCQHDnGrL/2PDGNUWMxdnaB76crtp8H7naXdQOcWORsQDY0NfCs3dMRV9o+cZM
+	 +cMi399n851uw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FD82380CFF9;
+	Thu, 23 Apr 2026 09:30:16 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-ZEDAT-Hint: PO
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 1/8] netfilter: nft_osf: restrict it to ipv4
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177693661488.73226.2217297170932768226.git-patchwork-notify@kernel.org>
+Date: Thu, 23 Apr 2026 09:30:14 +0000
+References: <20260420220215.111510-2-pablo@netfilter.org>
+In-Reply-To: <20260420220215.111510-2-pablo@netfilter.org>
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
+ netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, fw@strlen.de, horms@kernel.org
 
-Hi Daniel,
+Hello:
 
-On Thu, 2026-04-23 at 17:52 +0900, Daniel Palmer wrote:
-> Hi Adrian,
->=20
-> On Thu, 23 Apr 2026 at 16:10, John Paul Adrian Glaubitz
-> <glaubitz@physik.fu-berlin.de> wrote:
-> > > Macs do run modern kernels.
-> >=20
-> > Retrocomputing still is not well regarded by some maintainers, it seems=
- :-(.
->=20
-> I've found bugs in drivers by plugging those things into exotic
-> hardware like my Amiga 4000 and Ultra5 [0].
-> So, it's not totally pointless. And having a shader capable Amiga[1]
-> is pretty cool.
+This series was applied to netdev/net.git (main)
+by Pablo Neira Ayuso <pablo@netfilter.org>:
 
-Not only that. Those exotic architectures also help iron out generic kernel
-bugs and give new maintainers an possibility to get their feet wet.
+On Tue, 21 Apr 2026 00:02:08 +0200 you wrote:
+> This expression only supports for ipv4, restrict it.
+> 
+> Fixes: b96af92d6eaf ("netfilter: nf_tables: implement Passive OS fingerprint module in nft_osf")
+> Acked-by: Florian Westphal <fw@strlen.de>
+> Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+> Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+> 
+> [...]
 
-> Sad to see fun stuff getting pushed out by basically spam bots. :(
+Here is the summary with links:
+  - [net,1/8] netfilter: nft_osf: restrict it to ipv4
+    https://git.kernel.org/netdev/net/c/b336fdbb7103
+  - [net,2/8] netfilter: nfnetlink_osf: fix divide-by-zero in OSF_WSS_MODULO
+    https://git.kernel.org/netdev/net/c/2195574dc6d9
+  - [net,3/8] netfilter: conntrack: remove sprintf usage
+    https://git.kernel.org/netdev/net/c/6e7066bdb481
+  - [net,4/8] netfilter: xtables: restrict several matches to inet family
+    https://git.kernel.org/netdev/net/c/b6fe26f86a16
+  - [net,5/8] netfilter: nat: use kfree_rcu to release ops
+    https://git.kernel.org/netdev/net/c/6eda0d771f94
+  - [net,6/8] ipvs: fix MTU check for GSO packets in tunnel mode
+    https://git.kernel.org/netdev/net/c/67bf42cae41d
+  - [net,7/8] netfilter: nfnetlink_osf: fix out-of-bounds read on option matching
+    https://git.kernel.org/netdev/net/c/f5ca450087c3
+  - [net,8/8] netfilter: nfnetlink_osf: fix potential NULL dereference in ttl check
+    https://git.kernel.org/netdev/net/c/711987ba281f
 
-It's not so much pushed out by spam bots but by the commercialization of th=
-e
-Linux kernel. Many developers think that the sole purpose of the Linux kern=
-el
-is to run on modern commodity hardware.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Adrian
 
---=20
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer
-`. `'   Physicist
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
