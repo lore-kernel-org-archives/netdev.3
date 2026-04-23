@@ -1,173 +1,109 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C01830E0FC
-	for <netdev@vger.kernel.org>; Thu, 23 Apr 2026 09:39:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B3E30E0FC;
+	Thu, 23 Apr 2026 09:41:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776937165; cv=none; b=XUNY27UMWiJ/XfHZzhV/bQVWa09AGiIf0RJKcwHCKhH/KY0yruCmu4XGm+94voilxHhfNjhO0E0eU1UhGrCVtWK6Ac4gfA2PYrSbwm8n1RFGTYNaguTCaKfxu9P6l3hKl8XsCaGhdhNoa+efkrNknWR6Xys5erLOvrRlDvue/Ek=
+	t=1776937314; cv=none; b=PrhEXDyQgkZOxQZqrGVzSeD0NySBGtBFuIpg9FrarcEOkBo4xdb+uWyb4sQ4tDO6TYSYxiUtLRT7uaTJYg38TaLTaocfgVKz/am23Bs3ETa6DyMS8hgZDg7k5FRKTIkncrQjTPhNZD3Ir6j4Q5x51SrVZVwwPrsZk864RiIIWow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776937165; c=relaxed/simple;
-	bh=kckCjN1bAJ/aD+ZME7sjfLu222AnPjsahtqch0OotT4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vk5c+X21sELspPrtUnvzQpuGY1UT185x/nsRYUigrY2SFQ1er8/03/KnccCLHEGufK7jm7CCLb+wpvrx5kVhmvT8WpafXNo+2n69YEOPbM5yA7KJ4afa/2VZKgMf3WphrJSMhi46Rh9OW/n2CGd+fBb9EKsdWfvuJMbPmssflV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JAanRu3B; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1776937314; c=relaxed/simple;
+	bh=yPQzRlotaICidFf4b3L3Ohyn7dtDX0gqvtrmn35l5IY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=d+bbOFva80dVIa0RtGw1Y3Ru7TKL7IMRMw3avOWpZ9mZkJboMmol+Tl7XxjMQFtn2DJqL1wJfWA9E8JApRm6rMgmhci90OgGHvIP07BCSpkmV/cOp1lJQyTU7n0tmP4Tn+oYzm4SvWFt7nEhlYyeTao2HAlcgm3o4+vQ1Z9p0y0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=DvmmPLuU; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JAanRu3B"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1776937160;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QWf4pA6wYuLbxdkqZpiZsCBUl5UU+tVZFdkRbdv2rks=;
-	b=JAanRu3BHkG+S7xlwPwQxrxLj6ByFBoqS8B7gqOM3K4OdwD/m9mzZ1TW/5dHf4YjTbLOES
-	WZjX+UJ+ZNqMW4OCjVvURfsLuwdfH91miv3qDFSrO8/FhYDXF3UWw4TuO3CkpEi6qJlb/b
-	DZ4h6r5whBc9hO+h/fZbkl+3eNLWoAs=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-88-GsRj5rZwOJy_-piOMFOLmw-1; Thu,
- 23 Apr 2026 05:39:16 -0400
-X-MC-Unique: GsRj5rZwOJy_-piOMFOLmw-1
-X-Mimecast-MFC-AGG-ID: GsRj5rZwOJy_-piOMFOLmw_1776937155
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B2A531956059;
-	Thu, 23 Apr 2026 09:39:14 +0000 (UTC)
-Received: from gerbillo.redhat.com (unknown [10.44.32.251])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8A8823000709;
-	Thu, 23 Apr 2026 09:39:10 +0000 (UTC)
-From: Paolo Abeni <pabeni@redhat.com>
-To: rkannoth@marvell.com
-Cc: davem@davemloft.net,
-	sgoutham@marvell.com,
-	pabeni@redhat.com,
-	sumang@marvell.com,
-	dan.carpenter@linaro.org,
-	error27@gmail.com,
-	andrew+netdev@lunn.ch,
-	kuba@kernel.org,
-	horms@kernel.org,
-	linux-kernel@vger.kernel.org,
-	edumazet@google.com,
-	netdev@vger.kernel.org
-Subject: Re: [v2,net,06/11] octeontx2-af: npc: cn20k: Clear MCAM entries by index and key width
-Date: Thu, 23 Apr 2026 11:39:06 +0200
-Message-ID: <20260423093906.138472-1-pabeni@redhat.com>
-In-Reply-To: <20260420023442.3295891-7-rkannoth@marvell.com>
-References: <20260420023442.3295891-7-rkannoth@marvell.com>
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="DvmmPLuU"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Message-Id:Date:Subject:From:Reply-To:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=NJeeDF5ovZcr7LJof0hitJHWjcITAQzayd1qTKh4yT0=; b=DvmmPLuUn8mxdi8K3D9tm/wNGW
+	AL52tBSjGpUW8GgpO+uGIpYhv246B0GGjEH8UMuaA9h4sbLK6/0oP67LhaI+Uk1kw0ugi1t4BYYtt
+	DKzNztoPIHjxs/RYC6SlC6mv2da35ixE/4CS+Hbt6YG126eDqUiMU5NHDBhVFdJG1FMw5RIrDgLXv
+	uI2uIShdWfPQShL4tUZ6FG35Yj/oXGlNvt5mmhMO5bAkC7XiZPNu7AJI0uekD4oUy9Ieh2tfzVbMc
+	oAO0CU7Tc4zcB+5o+P+dIKiXjLE5eZU1GzqCgFS/FkMKV4hPfVHk6rxxWQn5aVRfDpFEJhXUQXvPg
+	/+TLNVgg==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wFqZ7-002J31-2m;
+	Thu, 23 Apr 2026 09:41:46 +0000
+From: Breno Leitao <leitao@debian.org>
+Subject: [PATCH net 0/3] netconsole: configfs store callback fixes
+Date: Thu, 23 Apr 2026 02:41:14 -0700
+Message-Id: <20260423-netconsole_ai_fixes-v1-0-92b8b7de9a2c@debian.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADrp6WkC/yXMUQrCMBBF0a0M77uBmlZLshUpJaajjkgimShC6
+ d6l9vceuAuUi7DC04LCH1HJCZ4ODSHeQ7qxkRmeYFt7antrTeIac9L85CnIdJUvq7H90bmuG8L
+ gZjSEV+E/wNMZiSvGPer78uBYtx/W9QdXO7osfAAAAA==
+X-Change-ID: 20260422-netconsole_ai_fixes-24599337a79d
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Keiichi Kii <k-keiichi@bx.jp.nec.com>, Satyam Sharma <satyam@infradead.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Matthew Wood <thepacketgeek@gmail.com>, asantostc@gmail.com, 
+ gustavold@gmail.com
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Breno Leitao <leitao@debian.org>, kernel-team@meta.com
+X-Mailer: b4 0.16-dev-453a6
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1193; i=leitao@debian.org;
+ h=from:subject:message-id; bh=yPQzRlotaICidFf4b3L3Ohyn7dtDX0gqvtrmn35l5IY=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBp6elUUU6DgtPkIAq2QtF7tiA+Bmn0xFoMIBF3s
+ QCk5Z4NjhaJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaenpVAAKCRA1o5Of/Hh3
+ bfTvD/sFOAsVm7yTgkfKlwGjfkImkOcjGLSttyI3eC6PAfUtT+9lf6smdOnbKcfAF83K2Fbf7tC
+ pUSt5DsCb31aZWmEZi9voKbl/KPxunRh9Z0xDXjQ4TJdmwojdI2JXpfOcf0PrN2AOdPQmz89IvM
+ CtxIYhqZ5FW6YFe1Xw6BuzULcivBiw63fusH2tmhu/5Cr06PhZTQq93hy5JNenbQT4G+glhlG0p
+ 1oI8c22KM1pqEzGWM6a3/pDWZM0I02DsgogHKI9z+qaeV+GP420o6zl8k7gFvnUk1F+/eh7xm86
+ YX1mLtm+ozUkT4MJWXsTO8z4JLK9W4r+mfqF7Wwo+C2QrS/0RhXi5saxlbY6WvMc3F0NTcrMq9B
+ 3LHHDHikjayI2oWuNwE58Uuf2WRDuqdvdCwpTjUqxzaR5DHryeuAGJWv1w1rVm21CWb/Bjmu1TO
+ 4S+WzulgvgCuXiTXdG2wk54G4MCPsHjc7wsNt+26SsOTMtyQJcFcSNvv7E9Cq/7hQOiv2dUQQwR
+ 4c9Kc0/joRfbFry8sGq4CjJXjjnFa0rmlpQBmvH4iLeJIAU/y/yXW6ilBiduvX3/cKh0Ssh+4B5
+ vo3KpMM8DP4aHlJoYLLmNnpANZg4BQSklydBDoXMHRE2+zkXRa9/1oDNX8vhUT15zquy01JI4B0
+ bQc3H2GqBmtQfKg==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
+This series fixes a small cluster of related issues in netconsole's
+configfs store callbacks.
 
-For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+They showed up in sashiko and brought to my attention by Simon:
+
+https://lore.kernel.org/all/20260421162219.GF651125@horms.kernel.org/
+
+None are crashes or security problems, but each is a real correctness
+bug that surfaces at boundary conditions and was easy to clean up while
+the code was already under the microscope.
+
+All three changes narrow the accepted write size by exactly one byte
+at the boundary that was previously buggy, so no well-behaved
+userspace should notice the tightening.
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
-octeontx2-af: npc: cn20k: Clear MCAM entries by index and key width
+Breno Leitao (3):
+      netconsole: return count instead of strnlen(buf, count) from store callbacks
+      netconsole: avoid clobbering userdatum value on truncated write
+      netconsole: propagate device name truncation in dev_name_store()
 
-Replace the old four-argument CN20K MCAM clear with a per-bank static
-helper and npc_cn20k_clear_mcam_entry() that takes a logical MCAM index,
-resolves the key width via npc_mcam_idx_2_key_type(), and clears either
-one bank (X2) or every bank (X4). Call it from npc_clear_mcam_entry() on
-cn20k and log when key-type lookup fails. Use the per-bank helper from
-npc_cn20k_config_mcam_entry() for pre-program clears. For loopback VFs,
-use the promisc MCAM index as ucast_idx when copying RSS action for
-promisc, matching cn20k default-rule layout.
+ drivers/net/netconsole.c | 31 +++++++++++++++++--------------
+ 1 file changed, 17 insertions(+), 14 deletions(-)
+---
+base-commit: 70c8a7ec6715b5fb14e501731b5b9210a16684f7
+change-id: 20260422-netconsole_ai_fixes-24599337a79d
 
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
-> index 705fe7a877e6..7bfd39fe0f5e 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
-
-[ ... ]
-
-> @@ -877,6 +877,32 @@ npc_cn20k_clear_mcam_entry(struct rvu *rvu, int blkaddr, int bank, int index)
->  		    NPC_AF_CN20K_MCAMEX_BANKX_STAT_EXT(index, bank), 0);
->  }
->
-> +int
-> +npc_cn20k_clear_mcam_entry(struct rvu *rvu, int blkaddr, int mcam_idx)
-> +{
-> +	struct npc_mcam *mcam = &rvu->hw->mcam;
-> +	int bank = npc_get_bank(mcam, mcam_idx);
-> +	u8 kw_type, index;
-> +
-> +	if (npc_mcam_idx_2_key_type(rvu, mcam_idx, &kw_type))
-> +		return -EINVAL;
-> +
-> +	index = mcam_idx & (mcam->banksize - 1);
-
-Can the index calculation overflow a u8 when banksize exceeds 256?
-
-The mcam->banksize field is u16 and can be up to 65535, with typical
-values like 512 or 1024 for NPC MCAM hardware. When computing 'mcam_idx &
-(mcam->banksize - 1)', the result will be truncated to 8 bits if it
-exceeds 255, causing the wrong MCAM entry to be cleared.
-
-Other code in this driver uses u16 or int for the same calculation:
-
-drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c:npc_cn20k_copy_mcam_entry()
-    u16 src, dest;
-    ...
-    src = src_idx & (mcam->banksize - 1);
-
-drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c:npc_clear_mcam_entry()
-    index &= (mcam->banksize - 1);
-
-where index is int.
-
-> +
-> +	if (kw_type == NPC_MCAM_KEY_X2) {
-> +		npc_clear_x2_entry(rvu, blkaddr, bank, index);
-> +		return 0;
-> +	}
-> +
-> +	/* For NPC_MCAM_KEY_X4 keys, both the banks
-> +	 * need to be programmed with the same value.
-> +	 */
-> +	for (bank = 0; bank < mcam->banks_per_entry; bank++)
-> +		npc_clear_x2_entry(rvu, blkaddr, bank, index);
-> +
-> +	return 0;
-> +}
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-> index 762fafd4ccb7..0a2191fda614 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-> @@ -259,6 +259,13 @@ static void npc_clear_mcam_entry(struct rvu *rvu, struct npc_mcam *mcam,
->  	int bank = npc_get_bank(mcam, index);
->  	int actbank = bank;
->
-> +	if (is_cn20k(rvu->pdev)) {
-> +		if (npc_cn20k_clear_mcam_entry(rvu, blkaddr, index))
-> +			dev_err(rvu->dev, "%s Failed to enable mcam %u\n",
-> +				__func__, index);
-
-This isn't a bug, but the error message says "Failed to enable mcam"
-when the operation is clearing the entry. Should this be "Failed to clear
-mcam"?
-
-> +		return;
-> +	}
-> +
->  	index &= (mcam->banksize - 1);
->  	for (; bank < (actbank + mcam->banks_per_entry); bank++) {
->  		rvu_write64(rvu, blkaddr,
-
-[ ... ]
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
 
