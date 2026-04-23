@@ -1,48 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C484E3A7F60
-	for <netdev@vger.kernel.org>; Thu, 23 Apr 2026 17:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 769EB3A75B3
+	for <netdev@vger.kernel.org>; Thu, 23 Apr 2026 17:38:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776965790; cv=none; b=RaVNPBasfDvw5KfXzBt03KTBtXOT2OSYMnxFutrqOsfI8P4Ad9G56qkO74Ue8/UHWtLHDll51DbrBnz3jmoaUaJWQn6ehOoAllqhwQhFLWefEhPQ1WIwqsVYs58P7M4QJsMqfgQ2GgHM7Y9OlyFsk1hJEwOmJbI6L0jqdHak7EA=
+	t=1776965905; cv=none; b=sVpXJTKb84EQnEMajJcPEiLIMiPDPwoN1rBgJPz6NxNz7bU6tI1J4MgXA5fnZQKW4k/lPGogjOZ6RVaWIvXed3DDqT3WTSucX3wqH9vi9PzObl+4B3eJdYYgm0pG8y1He0nsebjzArdjsf59uzOaFLH2yoRgw5GDIyHwPVnC8HI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776965790; c=relaxed/simple;
-	bh=bIZFMSMGAQM+2T3qmWbdwI10bDMC1V46VUgJWTmMx6s=;
+	s=arc-20240116; t=1776965905; c=relaxed/simple;
+	bh=u0BWCATOBoCz2tMSDG3Lm3CNPPqdPs4DFB5/hyjE/eo=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NGJGZhb4jqix0A+wJ5KjaVz25dSqH9ALMVfbLzm6mdokT9qNg7WAD42R3v5e9WIz4eLH+YKHUTjWhnHjI+L5YmTZZzRtCCyqbUOIm7/KsRMuRzaCBqQEUV7oho5GbEPSLzWII8NwQzKagOuiF2Lu4BDGZpugZtLG0//yiAPGOXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q/oE30wg; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=jBdeAZNSUbMWKV65WNJiWcEnilvR1R87FlNltqiFfAtRVeNik2ffLWuB3CGt/KsOiGx1z5QhbYweb+ESF5N7b8dJU8SzDtiv2Ufw4w147Hh7iuFYikVmyiuyLZ2HR+6pMqIZbypPSHmB+lBAx/2Y6KdaYDd1W84K/Kd4BYdTL/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WTfClv1L; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q/oE30wg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07951C2BCAF;
-	Thu, 23 Apr 2026 17:36:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WTfClv1L"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B23D3C2BCB2;
+	Thu, 23 Apr 2026 17:38:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776965790;
-	bh=bIZFMSMGAQM+2T3qmWbdwI10bDMC1V46VUgJWTmMx6s=;
+	s=k20201202; t=1776965905;
+	bh=u0BWCATOBoCz2tMSDG3Lm3CNPPqdPs4DFB5/hyjE/eo=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=q/oE30wgS5BzbtlihveBd+oQsXr1tG9cIo3DN6XgwloDEYXlUOytniIpCPyHDdkp8
-	 5Dk2D/5IYIBRJJ4S+kXM+TlKNq91vkL4YCMTGbIdZKfVv8Uh8hoqdeJuXufJczk+w7
-	 m7JAlkmr9zvQnknlVsYyDNUsImv5LHLxkKTgjS4vR52xGhzuMlwUn5iDGvf1A53rnB
-	 A9krGIbWfEV2VIlhIBmAuo54r+vuNmTLPE5uavE2+OByguonI6vAkf4L+6nzpt+Zke
-	 UF0YisZ5Et9tNCSj/L6eCUFVU2tsFcVpoqcLMEMXDF6ekSwJsGGSooL95MofkA+Chd
-	 GFz6mk6Mfje5g==
-Date: Thu, 23 Apr 2026 10:36:28 -0700
+	b=WTfClv1LPgFZXruQm6ml4ZWarv1Ljb8LreurYz/pVNPcSZunTi7WCmrB+vgMBV06a
+	 W9L9LnfA6UJ2ihh5wMpeDi4mA8cWGITIDxQZJPuOKSgU7+RpkooDkTr1MH3q2IA+9H
+	 oIRkXvrChRYre3FdZ9cGbsbWEK9Ls8qVlA6dJGdHGjqW+Lq6+aEwBTZVoknxH7Snff
+	 ynLgYTc54kTbWeLJQcjDnXoHL402yWHnazEI7WN1kHdg1eI1vwx8mS6zp3W+64FR3Y
+	 o+itn8tTAvwZTFzH7rHbk5l9FV92qYZ7fy33OymPm9gCp0oo91uMu1DLsADYt6KOka
+	 9agF7foo87zGQ==
+Date: Thu, 23 Apr 2026 10:38:23 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Sabrina Dubroca <sd@queasysnail.net>
-Cc: Antonio Quartulli <antonio@openvpn.net>, netdev@vger.kernel.org, Ralf
- Lici <ralf@mandelbit.com>, Paolo Abeni <pabeni@redhat.com>, Andrew Lunn
+To: Antonio Quartulli <antonio@openvpn.net>
+Cc: netdev@vger.kernel.org, Sabrina Dubroca <sd@queasysnail.net>, Ralf Lici
+ <ralf@mandelbit.com>, Paolo Abeni <pabeni@redhat.com>, Andrew Lunn
  <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
  Dumazet <edumazet@google.com>, Hyunwoo Kim <imv4bel@gmail.com>
 Subject: Re: [PATCH net 1/1] ovpn: fix race between deleting interface and
  adding new peer
-Message-ID: <20260423103628.4ce6fc05@kernel.org>
-In-Reply-To: <aepK3XXc8IFemb1Z@krikkit>
+Message-ID: <20260423103823.20a68dab@kernel.org>
+In-Reply-To: <7481bc31-44f6-43ae-b3aa-07002644d9e6@openvpn.net>
 References: <20260422123242.530882-1-antonio@openvpn.net>
 	<20260422123242.530882-2-antonio@openvpn.net>
 	<20260422192050.7c4ca760@kernel.org>
 	<7481bc31-44f6-43ae-b3aa-07002644d9e6@openvpn.net>
-	<9221605c-ad31-44f9-b3b7-db2237f75eb7@openvpn.net>
-	<aepK3XXc8IFemb1Z@krikkit>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,11 +50,18 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 23 Apr 2026 18:37:49 +0200 Sabrina Dubroca wrote:
-> We could also wrap all of ovpn_peer_add (including the new reg_state
-> check) in netdev_lock, since we can't move to NETREG_UNREGISTERING
-> until netdev_lock is released (then I think we wouldn't need the
-> READ_ONCE(reg_state)). But I don't know if that's an acceptable use of
-> netdev_lock.
+On Thu, 23 Apr 2026 14:16:52 +0200 Antonio Quartulli wrote:
+> > If you agree make sure Sashiko doesn't complain about anything else
+> > once it's public:
+> > https://sashiko.dev/#/patchset/20260422123242.530882-2-antonio@openvpn.net  
+> 
+> Is there any way to get earlier access to these reviews? (at least for 
+> patches somehow related to me/ovpn)
 
-Yup, fwiw it's a perfectly legitimate use case.
+netdev ones are blocked because noobs spam the list for a test.
+Which you also appear to be trying to do :D So I shall count
+that as a win, I guess? :)
+
+The LLM is mostly just using the review prompts -
+https://github.com/masoncl/review-prompts
+point you favorite coding agent at that and ask it questions...
