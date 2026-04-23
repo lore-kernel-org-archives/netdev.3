@@ -1,146 +1,96 @@
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013019.outbound.protection.outlook.com [40.93.196.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com [209.85.210.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8917F3242BC
-	for <netdev@vger.kernel.org>; Thu, 23 Apr 2026 14:56:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.19
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776956186; cv=fail; b=bDRph7TEnPgfo5AK0KVLOUxBiXlCmFaErTY0KL4ipqItBlFGODBcoSI0RQhVf0T2bSFWGOPcXUmv0BKBIn9ZXeXgYzq4gJA5luhFHII9/VtsFN+bxrxL9SDIIKpLSnXbTZSwnQiAZsnqVs2YBrZYWr+igsY6ET49M4dS3OLrZVA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776956186; c=relaxed/simple;
-	bh=JLDvqVki/AVaj7kcuW5AthWLharpGDYtMKYiQC3wKXQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=kll42nJaP4xN+AGwWDATaaE7muFYmdjruhSWjqjlAco+tvTr6DawAr85cFJ8huenTfB1IJWb3dOhE86OIc1+rbQ4KyApIFcZOxG15dTHM+XOchwbigfPGhhPvIucRFzqENys6qhsLn1T/2k6674ozeIeBs+GyTDKWa1d41XnE6g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ndHePR4v; arc=fail smtp.client-ip=40.93.196.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ndHePR4v"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=O907jcTkh9vOFe0vwZ6d6dbakgf6054N4KbYxXuS8msHxs6ilE/cz/IBgjchfqRLs4m4Jstc0TBr0jEtwkaEoNhk0wcMJdeLCXRroack9nDzXi9UaMoEFR6JKQrPjC5WGhAhLEPMYnYAF16gaWU+ZsKZk9K+HD78H5OnDzVQkz9bfL5hPaOj8W3oDVcK5aJBtVKGD/pYuOPrFhIdK352HoEvtQ6N5xuSM+DiCAdcBX9mZDT/ee6wJDiunpQGNciXiDCK1ux/iGVeUsEO+IZe7n0BOsbfYf5CSM897s/BKHovEgEOeMhLtBIpl2wjqAQapGHS+2tPaRHAXXs+WlMgng==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=u6mTRVoNB9Dm/EV9NlVcqdaACXS8CCds+j8k3HSjIbA=;
- b=ZJVSx3uXA5UHHSyjBx5/OHovjq+LPp6+MHfy9FqK4lgGifLBrB1PdYWAoeWJRN28jD/F6N27Ipc6d19RgDEu3xJggp0Ol2k/0+TO0tKiQ0aqCKJw0l0OIfUJq9ePLDW/xQJIhrpg7nntjJd+R9td30T+ziaKZPPBUF7n/0GLherkxYI0FGwIVYJuTb8wPL4R2hQtBHHeXPhvdT3pgIvsXzxUdNl953CRguyoLFm8Utu35q4zjRTGln/Pa1gun39MZ9bLyIw1MBmWJwj93r4j4XvKbd2oYixACkS4tNAVue9P70MdATDoU1+3DhlYe2i/VW855u/7JUkauvMCDOEKtQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=gmail.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=u6mTRVoNB9Dm/EV9NlVcqdaACXS8CCds+j8k3HSjIbA=;
- b=ndHePR4vIBj5ZWhSrnXzwTjPEUsd0tWCJf0RhAyyaD+OscHte+OVq/uGnYa0GtdWtDw9fEvgUEbhoUaByfAZslNB1Bl90okrRuoeEG6qBa4U4MHhjxbHlZB8mI75KxXRClBqZ5SU7fw2GUxawWMTYcwLLb0LWDT4xEw9BG9eN9bEs0ldTdZSfsrtAp+CkXGMGl6iSbgBti7MfJcU5tYF0WBihiyJ+O7F3agBpVYq92ut27y2XMAcdjr0DS6mCfKyTyywo8zQeL/+FdNjL1rhjPtBhfQeezWyXHFyNVFHsoHbUWmafU9CPdQN9fJszbk/EvoqBStg8aq1rTeGK7EkFQ==
-Received: from BY1P220CA0026.NAMP220.PROD.OUTLOOK.COM (2603:10b6:a03:5c3::17)
- by IA0PR12MB8893.namprd12.prod.outlook.com (2603:10b6:208:484::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.21; Thu, 23 Apr
- 2026 14:56:19 +0000
-Received: from SJ5PEPF000001D1.namprd05.prod.outlook.com
- (2603:10b6:a03:5c3:cafe::18) by BY1P220CA0026.outlook.office365.com
- (2603:10b6:a03:5c3::17) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9846.22 via Frontend Transport; Thu,
- 23 Apr 2026 14:56:19 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- SJ5PEPF000001D1.mail.protection.outlook.com (10.167.242.53) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9846.18 via Frontend Transport; Thu, 23 Apr 2026 14:56:19 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 23 Apr
- 2026 07:55:57 -0700
-Received: from [10.221.197.34] (10.126.230.37) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 23 Apr
- 2026 07:55:55 -0700
-Message-ID: <58a85178-c00f-4705-aa20-61e668bb9216@nvidia.com>
-Date: Thu, 23 Apr 2026 17:55:53 +0300
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 580133246E8
+	for <netdev@vger.kernel.org>; Thu, 23 Apr 2026 14:59:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.70
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776956389; cv=none; b=tTLJMOIxpXDE0KRa/Bht3QYar8pSd48UNKTgBZhyYg8dvdtlWy1mNWYJH7I2c5hBpSB9VK5ZUzLgr9OoCRGWvprl35wvgI/JAbUOtew1/7MkC1aBpjdyrEEuNLp+yxEDlWfqtvQ/yp9i86hVCUi0u7fAzfMZSQ9goiOjZW1SAt4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776956389; c=relaxed/simple;
+	bh=If6Mb/S1ZsOVfgxtDmu/wCQJemWSEhglJAFELaq7rbc=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=Q/I/y+p84lRjQ2t4re8TG0mFKsYZmBQ5HruK2j9nGm6BLZr9bB5drSoa6g6Lv9KsO7TQ66KDZVAZ6B//PsGVPiTo/U7rOPzLx45rCbnLlFcAgG2GpeeTXrFWPEQmO+XqHP3JsVPiUQCZMznXIYiTZ8RbOgCe5h6Izwh5J6+RcPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-ot1-f70.google.com with SMTP id 46e09a7af769-7dbbb806e10so13877162a34.1
+        for <netdev@vger.kernel.org>; Thu, 23 Apr 2026 07:59:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776956387; x=1777561187;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=U1NlAwgaAPzBKKSxBGbiIQ9c9bd/h88zyiSOgY7aTWA=;
+        b=IPpJL+uVa1Gck1/Sq3D1hlo5ri2s3emIlPdDfGZxk7F8eqPnHtTVbOVvzuBodOyu1+
+         8Zjrfe7LVDnD6WlD+51E6bIOo4B2J+dHIfraua4bimx/hUEf90lEpjQ0/X5qBdz+0YG3
+         VwKROgH4sPcTV0ahuZ6WPsbCXwUipwqrC4exmIC8+bwSzcovrWZ1i2vTl7d9v4rEeK6+
+         HIuBVmJ1A6xfARlVowZCeyxlt+017PX4Qm0wkrMmnBbvsxGw9O4B/ulGOZtuLBxiMOg1
+         M4DXGtBQDfb/dv5h0Gfb1x01tx8NmSgulkNhtbSAaRGJD+v5HyYqC/O+Vzff/jEoRbg/
+         JtLg==
+X-Forwarded-Encrypted: i=1; AFNElJ+xE5eUkVl3ig4/zcweGNVkpv0eE1dJexU5wgjVFWVarEtHUs1gJfrTzeolbfu7UscwZfIZCrM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxnG720ZZnCI2RkYiGhZSD9ztCBo0jVImlmmxiGrELUJSUglZyL
+	G0rufruBcHDxrB75GkuDkBTV7c3akduP7z5dxKblbOe5EFL4nEmtm5zZ3eBde1HFZ7da3xRPEAA
+	XU/MEDDAPFR/ZnJr3AYJohlEt0k4AKMKjz2U5aVO9sCrNJia6HRA1wtSMxtE=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Help with PCIe THP on ConnectX-7
-To: <bmerry@gmail.com>, <netdev@vger.kernel.org>
-References: <aejnzWR_szvAOxkK@brucemerry.org.za>
-Content-Language: en-US
-From: Yishai Hadas <yishaih@nvidia.com>
-In-Reply-To: <aejnzWR_szvAOxkK@brucemerry.org.za>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF000001D1:EE_|IA0PR12MB8893:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0c34e9ef-1670-413f-5e0a-08dea1487a5d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|376014|82310400026|1800799024|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	Y67QwLzVvDtQURvxtrYExE0WYNo+zElxZju1V3E5FD3DqktRBhkrYqG3YhNv1G/WAMQE/IzxEXgme9U3wTuXZVpsmz0Xg6L6xUKE9ZRYMTxZpSePGOzQ1hFzpUGk2XIdpuUxtixXui/ZNuyi9zwxgY5qqIscg1fEv961Dhmq4vSgnKDkKTzez+U+uC/iPxLq7gVyMRaxeG4g0R8JT9PG7zXs9MlHc9wr48MZD9oa59v499cLV4x0On+6qhu9R8NoMHkQsMhzPvuCHiQATeM0YaQPGIwzNHiD0Bdj0V0itVidAj671cXU5K5pw61av48C7R7ehfFPzrWWEcgS5XOmodJJCpO1wkGtbCALjSWaXOgCmCr2KE6Ielf8sr4KiMOu4eTHECtxJ9szhU0ZLqpf082tJs9uIZHgLRAUZJoTOXZfHMeNWef3+jk0KUulYG6H8pwp/RWEsvLrYjcc6fc9PHsxDbZjUeHaVU0F/gP3Z8m13lH6/nzNIVf4jTsIH1WZybUy21z9AMrCCf6nnaZdLJvQ/t1HDWtrWMpCs0AQMQ2bRB9g6otRIfQ0C0NillDMFpT9UshE+4QMhPx2fmXdSUB63FA9Vz+0DcfCRvETACwjnB/9tS+2MZVPhuz6yxyy6dZV8jKXm0JMrFiidQSlKpuc007zSL0/fPjCcOUt1Rb+d9fA+ltE5F+z3IPfxiKbCFtieEYCA3eVS6sO4EkeSj7dcuWpeCmMBfV5tfWy9jIhR7SFOsutlPRTdNsruRNvX1hhYW6Cjb45Dp+PwAEqhA==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(376014)(82310400026)(1800799024)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	Q8Mc2vD0gR85N1QmcgscuMS+0lrTEWpA76xYMN9gaau117WFYIrjmQkthOAqED7hs15egmuYp4QXlAkIHoMInXlcW6gvdM599TY3aypnlCfpfzQHXXdH4dUkSq/lT5H8AFrA/gc9qw7vpghi7NBFciZfpua1zyVuuWkSTwEuRQpGMUnEg4fMbeuQjoKiXrJrqKJxo1T3onQMHrPnK/k5gc/FYcGB9wz5VXuJkCO+Q3552XA6m7j/udxmFXYaDLjf/BQ8wK8SCYbSB2P0h7/0ZNw8xtY5k0XBAVD2qY0QQrQmu6FPybL/kanl1hQUz7ZbCxKbC/4/RGT9IF/+RsDavBnQCBT4MISwBo280i4oZpIDzdb8tvf0ctsDId0wbUyE+oONWJt4yqZxpGihjVNntpSmDskRQhbTtlymfolBmcNhqPLxu7LZ/vPNAFnNBh/D
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Apr 2026 14:56:19.4611
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0c34e9ef-1670-413f-5e0a-08dea1487a5d
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF000001D1.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8893
+X-Received: by 2002:a05:6820:4b02:b0:694:92fe:54f2 with SMTP id
+ 006d021491bc7-69492fe5782mr8923231eaf.56.1776956387278; Thu, 23 Apr 2026
+ 07:59:47 -0700 (PDT)
+Date: Thu, 23 Apr 2026 07:59:47 -0700
+In-Reply-To: <willemdebruijn.kernel.28284ffff84dc@gmail.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69ea33e3.a00a0220.9259.002a.GAE@google.com>
+Subject: Re: [PATCH v2] ipv6: fix memory leak in __ip6_make_skb() when queue
+ is empty
+From: syzbot <syzbot@syzkaller.appspotmail.com>
+To: willemdebruijn.kernel@gmail.com
+Cc: 25181214217@stu.xidian.edu.cn, davem@davemloft.net, dsahern@kernel.org, 
+	edumazet@google.com, horms@kernel.org, kuba@kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
+	sd@queasysnail.net, willemdebruijn.kernel@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 
-On 22/04/2026 18:22, Bruce Merry wrote:
-> Hello
-> 
-> I'm hoping someone from NVIDIA Networking can help with this; I wasn't
-> sure of the best way to get in contact with the engineers working on
-> mlx5 kernel code so thought I'd try here. I'm trying to write some
-> (userspace) code using ibv_reg_mr_ex to register a memory region using
-> TLP Processing Hints (THP) to improve performance on an Epyc Turin
-> (Zen 5) system. However, in the kernel mlx5_st_create is bailing out
-> because of this check:
-> 
->         if (!MLX5_CAP_GEN(dev, mkey_pcie_tph))
->                  return NULL;
-> 
-> As far as I can tell, that is checking a capability bit returned by
-> the firmware.
+> Mingyu Wang wrote:
+>> During fuzzing with failslab enabled, a memory leak was observed in the
+>> IPv6 UDP send path.
+>> 
+>> The root cause resides in __ip6_make_skb(). In extremely rare cases
+>> (such as fault injection or specific empty payload conditions),
+>
+> Can you elaborate on this? Which fault injection lets
+> __ip6_append_data succeed without writing data?
+>
+>> __ip6_append_data() may succeed but leave the socket's write queue
+>> empty.
+>> 
+>> When __ip6_make_skb() is subsequently called, __skb_dequeue(queue)
+>> returns NULL. The previous logic handled this by executing a 'goto out;',
+>> which completely bypassed the call to ip6_cork_release(cork).
+>> 
+>> Since the 'cork' structure actively holds a reference to the routing
+>> entry (dst_entry) and potentially other allocated options, skipping
+>> the release cleanly leaks these resources.
+>> 
+>> Fix this by introducing an 'out_cork_release' label and jumping to it
+>> when skb is NULL, ensuring the cork state is always properly cleaned up.
+>> The now-unused 'out' label is also removed to prevent compiler warnings.
+>> 
+>> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+>
+> I think this is 
+>
+> Fixes: 6422398c2ab0 ("ipv6: introduce ipv6_make_skb")
+>
+>> Reported-by: syzbot+e5d6936b9f4545fd88ab@syzkaller.appspotmail.com
+>> Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
 
-Right
-
-> 
-> Before I spend a lot more time debugging, can you tell me whether
-> ConnectX-7 supports this feature at all (I'm on the latest 28.48.1000
-> firmware)? I see it mentioned in release notes for ConnectX-8
-> firmware, but not in ConnectX-7 release notes.
-> 
-
-It's supported only on CX8 for now.
-
-Yishai
-
-> If ConnectX-7 does support it, do you have any tips on what might
-> cause that capability bit to be false and how to determine what the
-> cause is? For example, could that happen if the motherboard BIOS
-> doesn't support TPH?
-> 
-> Thanks
-> Bruce
+I see the command but can't find the corresponding bug.
+The email is sent to  syzbot+HASH@syzkaller.appspotmail.com address
+but the HASH does not correspond to any known bug.
+Please double check the address.
 
