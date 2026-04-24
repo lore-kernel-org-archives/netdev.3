@@ -1,73 +1,35 @@
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CFC61B4F1F
-	for <netdev@vger.kernel.org>; Fri, 24 Apr 2026 03:34:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0336A2E3FE;
+	Fri, 24 Apr 2026 03:40:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777001641; cv=none; b=KX9u9yjafmBOCZBDWTAw2LoVwCD9QbExUj8ZjMBtrrXhGZd/0rDy4qyyB2CjEN8gtVWnRL8lTyI4M9MGuUV1/B5zLIVpMhc9zERbUS/FjM765ad6uqdTMWSxqQsYmSlGTtCYsbL7CXFjeE9bL2HQE0jQQC1uMAlls62WnNzc6lA=
+	t=1777002047; cv=none; b=KLyKjs7L6maYicdEQnOU4md+dk3SHIdLjo1f1jn7VOS/NDkKMaGghidMEcCsNu2C23HR9XLWhTQa4Y5kf9a0Zv8e/z5WGomEzC38bjhwWQEfJ2Y0GVTiitZ0XeQxqiUSOn8fBLTQjAbbyusRRC0Hz9NkYuhMZNPoYke7mX67nD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777001641; c=relaxed/simple;
-	bh=0QosxY/o8tb5B1JTDe6dmHhKbgTsbsBuSRx2bY8e0xQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O/MWf9sFYwOG35GNHcTUWdFzXDyI9p0f4yRcOowbl2raQmaGXwkEoSwcQ5UX5V3gtWSFl5jSK9DXVxlSCL83cfCvpvv4BmNHsYs9lBw/rQT5TOvd74vRklOndEmwfsqMmjDk0SqoXzlWqXO4aCpy9ejbhcwxA5rV1yJiL4H+0dQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qTB8tU3i; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1777002047; c=relaxed/simple;
+	bh=0wxYqtxE3UIMzurHgMJXcwbbShaJ/8VU0s3pGn5hVCQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=YHtLzBbgZMJRmNxHcVVMXXbCmOUKoIFMBDoXgYtQx+MzwuH4O+SkzhIVOf57TGw1E8XeQ8w/pDGzxkEZVIfwAD67b62i88iQc9RUyHuF8jqfk5hGqi/ikbPKqK3JjUqw6JrRd7I/2fCQR+6hEVlttu3NLyGLLnZzTa+q47UOHJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fh3OoQWm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qTB8tU3i"
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-82f83bd32efso5724400b3a.2
-        for <netdev@vger.kernel.org>; Thu, 23 Apr 2026 20:34:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777001640; x=1777606440; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gKZeI69AMY1zWybSYtDN8RDRjMihnobL/AcJ00QScLc=;
-        b=qTB8tU3i60ZkW0mNwY+wvqEU3BSm/bxn2dh1BD0nCst9sg5To596uy4Wlnhj7AC7R5
-         PQWHPiBeCXL4b4sI+GFIb0SoA1LahNNz9IbLZyUWszH+EqIG+BzvBQTsy6IsJfSuGk7w
-         jPPcgHNl/qwB2NeNXAd35QMgF0fySWcNWt/vyfmX/Z1EDMF7v3F9ciovH5BRU4ZeKO/1
-         80LCS9iEKHFgKO4Q+/NKMfsSJ33MVKlvJPb1vr1yTIZsK6e3XUfDaOGpO+mHr8w7cmeK
-         4AnW4Hm9wW/x9hgHABjY5X5aUJPQsFvKtfnK6qfV65xMdx2PNKM48MCynSUWD6cLkQd+
-         IzmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777001640; x=1777606440;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=gKZeI69AMY1zWybSYtDN8RDRjMihnobL/AcJ00QScLc=;
-        b=LuGEpzVkaY+UFD2yvm0hMUvaffib3vbgVupWPdAcJIndLlqnSS+Xu7P0DIyMeom7Wp
-         mkntlDFSuf2LFdvg+k7LBrLwD+rFHme0R62RNbEXQr3p2FX1uj5WePwQR4AwPr3Re6o7
-         +pezHHaWegFklGFHic8qe4gbluRnwYrzxu5CPkoJ/MWMgA08RB1TcvMALE6LIxTgCLSR
-         hX93xwDJ6Z9ISWf6ay0UC551kMj8LVwDQsVR3X8RU9C6kDzW5jfY6XO40EZOvZJkrxkv
-         m73ht3zylAcnZt7dOU0n20knathiBmVUWFIT12mm8Ox4uBbWIl7NTMzyy0KhplKQL+UR
-         CzAw==
-X-Gm-Message-State: AOJu0YwC7tW6cDBYkoGCZOkO/K2Jy7oziJzb0cnlgfw5Gz6H3eRINxdI
-	J8K4wLK2EX5Al6ziCx74Y1kS5hS91MoUyMzaBG34K5ObjqxCgW16scW+
-X-Gm-Gg: AeBDievnsV8OCNbq+n2lCrJGxVSQXcErRQKI5DPKyfs6B8CGGGwYGTFtibK362TgJdT
-	eAs4XZIiL00gFHdfkoA9NtUmX2Y8LBqYrd5B5/h0KaqD4AeYUEMmOXCqODD0dDy1bTq8wIopQA1
-	vIWMDCJimgW1oULDko4fB88dPCCMlXSQZ0oIcpNyY2wD8V9AzqBgi8hlfTntuCoPdF3KxbmjNhe
-	eIj0sXdgTiv1XBaQRYxUSA9EiLroY5FKT4gIOAGOwgm4x/m8k9fHv4OyIkKYUtoJS9VA8GjtRG0
-	M6M9f+uL16unKiKXq+MMOOJJYSJRjraCrD9e2hW3YwbQGNeCfqC6dHODPdfopCYizH+acm34txg
-	mbfMSy5t8I/Elf0mQSu8AjCI7KvINSyfkoAH3mwO02wI1whfgHpof5pAros0gLsGhW6g9Piq1z3
-	T3eOcCrVzeUEDBQgJtbyAl4ed1hNFFDcJj0kH4jjw6xm0oQ5bDh43CN8JTMvqTbmiDZLF1zaii
-X-Received: by 2002:a05:6a00:928b:b0:82f:6dad:7b75 with SMTP id d2e1a72fcca58-82f8c8ebc91mr33576208b3a.33.1777001639902;
-        Thu, 23 Apr 2026 20:33:59 -0700 (PDT)
-Received: from ubunut-vm.. (c-73-240-82-137.hsd1.or.comcast.net. [73.240.82.137])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8e9cbb1dsm23797624b3a.14.2026.04.23.20.33.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Apr 2026 20:33:59 -0700 (PDT)
-From: Joel <joelcrouch@gmail.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Joel <joelcrouch@gmail.com>
-Subject: [PATCH v2 2/2] sungem: validate BCM5411 PHY register reads
-Date: Fri, 24 Apr 2026 03:33:48 +0000
-Message-ID: <20260424033348.1917-3-joelcrouch@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260424033348.1917-1-joelcrouch@gmail.com>
-References: <20260424033348.1917-1-joelcrouch@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fh3OoQWm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90854C19425;
+	Fri, 24 Apr 2026 03:40:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777002046;
+	bh=0wxYqtxE3UIMzurHgMJXcwbbShaJ/8VU0s3pGn5hVCQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=Fh3OoQWmc8PEdQIODW8CjTDGV+ngVllfAeXgRC4UemxvxpTvMBbcS/5JkdKxZFwYZ
+	 LoF3dsanzqHLgw3AErCg+cJSDwCbn1goImbOcytfEoIc4BJS9YgpP4HyO4s2HjloE1
+	 BwTJcKe2AWPDLjGu+SM/V5vwD8aKLy7sLFV/COdpirdjv9sEnrJeDE+cs6Z/fl7meQ
+	 m0nYHkonS+vj+clTmuP0s30SOmPktk/49PF48HGuSlhClrcndi5j1E1JOf9hbdiHb0
+	 +gxu9Ya3/KnJRPpzurkchvrpmvZmstPXQ72rHlm3b3hjNNiaFUYdP+Cgc/PxMjq3CZ
+	 M5PCT/8gu7oeQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9FC63811955;
+	Fri, 24 Apr 2026 03:40:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -75,50 +37,45 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH bpf v2] bpf: Fix NULL pointer dereference in
+ bpf_skb_fib_lookup()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177700200756.900079.314534091561331618.git-patchwork-notify@kernel.org>
+Date: Fri, 24 Apr 2026 03:40:07 +0000
+References: <20260423183831.1325480-2-bestswngs@gmail.com>
+In-Reply-To: <20260423183831.1325480-2-bestswngs@gmail.com>
+To: Weiming Shi <bestswngs@gmail.com>
+Cc: martin.lau@linux.dev, daniel@iogearbox.net, ast@kernel.org,
+ andrii@kernel.org, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, john.fastabend@gmail.com, sdf@fomichev.me,
+ eddyz87@gmail.com, song@kernel.org, yonghong.song@linux.dev,
+ kpsingh@kernel.org, haoluo@google.com, jolsa@kernel.org, horms@kernel.org,
+ hawk@kernel.org, bpf@vger.kernel.org, netdev@vger.kernel.org, xmei5@asu.edu,
+ paul.chaignon@gmail.com
 
-Check for -EIO and 0xffff during initialization to prevent silent failures. Add error logging to gem_init_phy to report failures.
----
- drivers/net/ethernet/sun/sungem.c | 8 ++++++--
- drivers/net/sungem_phy.c          | 7 ++++++-
- 2 files changed, 12 insertions(+), 3 deletions(-)
+Hello:
 
-diff --git a/drivers/net/ethernet/sun/sungem.c b/drivers/net/ethernet/sun/sungem.c
-index 8e69d917d..525aba527 100644
---- a/drivers/net/ethernet/sun/sungem.c
-+++ b/drivers/net/ethernet/sun/sungem.c
-@@ -1707,8 +1707,12 @@ static void gem_init_phy(struct gem *gp)
- 		sungem_phy_probe(&gp->phy_mii, gp->mii_phy_addr);
- 
- 		/* Init PHY */
--		if (gp->phy_mii.def && gp->phy_mii.def->ops->init)
--			gp->phy_mii.def->ops->init(&gp->phy_mii);
-+		if (gp->phy_mii.def && gp->phy_mii.def->ops->init) {
-+			int err = gp->phy_mii.def->ops->init(&gp->phy_mii);
-+
-+			if (err)
-+				netdev_err(gp->dev, "PHY init failed: %d\n", err);
-+		}
- 	} else {
- 		gem_pcs_reset(gp);
- 		gem_pcs_reinit_adv(gp);
-diff --git a/drivers/net/sungem_phy.c b/drivers/net/sungem_phy.c
-index 44cbe1938..ec8800c93 100644
---- a/drivers/net/sungem_phy.c
-+++ b/drivers/net/sungem_phy.c
-@@ -296,7 +296,12 @@ static int bcm5411_init(struct mii_phy *phy)
- 	sungem_phy_write(phy, MII_BMCR, BMCR_RESET);
- 	sungem_phy_write(phy, MII_BMCR, 0x1340);
- 
--	data = sungem_phy_read(phy, MII_BCM5400_GB_CONTROL);
-+	val = sungem_phy_read(phy, MII_BCM5400_GB_CONTROL);
-+
-+	if (val < 0 || val == 0xffff)
-+		return -EIO;
-+
-+	data = (u16)val;
- 	data |= MII_BCM5400_GB_CONTROL_FULLDUPLEXCAP;
- 	sungem_phy_write(phy, MII_BCM5400_GB_CONTROL, data);
- 
+This patch was applied to bpf/bpf.git (master)
+by Martin KaFai Lau <martin.lau@kernel.org>:
+
+On Thu, 23 Apr 2026 11:38:32 -0700 you wrote:
+> When tot_len is not provided by the user, bpf_skb_fib_lookup()
+> resolves the FIB result's output device via dev_get_by_index_rcu()
+> to check skb forwardability and fill in mtu_result. The returned
+> pointer is dereferenced without a NULL check. If the device is
+> concurrently unregistered, dev_get_by_index_rcu() returns NULL and
+> is_skb_forwardable() crashes at dev->flags:
+> 
+> [...]
+
+Here is the summary with links:
+  - [bpf,v2] bpf: Fix NULL pointer dereference in bpf_skb_fib_lookup()
+    https://git.kernel.org/bpf/bpf/c/1081de1accb2
+
+You are awesome, thank you!
 -- 
-2.43.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
