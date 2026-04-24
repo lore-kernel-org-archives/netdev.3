@@ -1,188 +1,320 @@
-Received: from acj35aaf126.lhr1.oracleemaildelivery.com (acj35aaf126.lhr1.oracleemaildelivery.com [130.35.116.126])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E73535AC29
-	for <netdev@vger.kernel.org>; Fri, 24 Apr 2026 22:38:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.35.116.126
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79AFB1A681D
+	for <netdev@vger.kernel.org>; Fri, 24 Apr 2026 22:48:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777070321; cv=none; b=FRbShPjzFfc4nuZieajPdTQDdEzUObeDItCtnFTe0+SKNLlHlvGtVHAqxU31cmqrS+QtPnomSttI5hpfPEzdvEZbab990PlrAFT2BpVj+qxle6Hb65xxVDF63RSPfYSoYo6O4YDfnLWwJIFsZQ2r49AM3peuTFpfcp1CwXy13oQ=
+	t=1777070902; cv=none; b=ZAFwPm0FNQoCy4rMirNjvRDZw2GM3p5/FlCkv9a9G2clGga240n/lPOUv3Kv8VqN9RpzMTgLoS05B1FB+hmzyEXXZrsJN6ScUMQEeQLfk3KSYDOlmWcY0SrXiDETnk2mulv29SY+Y3rB90tSHXLfTzEMtGE/nAxXF8MUokVrOUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777070321; c=relaxed/simple;
-	bh=xUJwXvMkpWSDYRXgzCZLsd+EsgdoCgW8I52ZPmglP2Y=;
-	h=From:To:Cc:Subject:Date:Message-id:MIME-version; b=JkbzPQMw2qqg49SCGALTFV0CpOchy+4Jvb6qEoejKgfh3Qee4AWxHldcqezpIyLSkXR1VUii41r5DXQDZOMmQ5nqYRmyNtG79I3VXONU39GoyVrS1p29VcsCiEZFXG4wTrJ7ew4XCVeXAYWcbxPqmiJUX1Dv0khAl5ikhyWERJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=raczylo.com; spf=pass smtp.mailfrom=lhr1.rp.oracleemaildelivery.com; dkim=pass (2048-bit key) header.d=raczylo.com header.i=@raczylo.com header.b=jXiZTnWY; dkim=pass (2048-bit key) header.d=lhr1.rp.oracleemaildelivery.com header.i=@lhr1.rp.oracleemaildelivery.com header.b=6Gah3koJ; arc=none smtp.client-ip=130.35.116.126
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=raczylo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lhr1.rp.oracleemaildelivery.com
+	s=arc-20240116; t=1777070902; c=relaxed/simple;
+	bh=M/c6C4Zvps/uQEioy4pIoWH2KYqeHzzMEAVv6eOjphQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=qgMzcJ27kkf8glnfCKybs5+B3CvdU7q20oGkOK9i+y6DYYvUAJEMg1vGICP1Mzgum8lruz7XN4AN9VjLjiI1m5Ov+4b8dmOYBVFBBKv+VB/DqXeNTWCQRtxzOVGgq0U0WoUR4Ef0fSdcIAaVXFvPFNQuWEsf81J48Ac+sBC+v3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GVQztRfv; arc=none smtp.client-ip=74.125.82.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=raczylo.com header.i=@raczylo.com header.b="jXiZTnWY";
-	dkim=pass (2048-bit key) header.d=lhr1.rp.oracleemaildelivery.com header.i=@lhr1.rp.oracleemaildelivery.com header.b="6Gah3koJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=oracle-uk-012026;
- d=raczylo.com;
- h=Date:To:From:Subject:Message-Id:MIME-Version:Sender:List-Unsubscribe:List-Unsubscribe-Post;
- bh=PuNCSuhDY3aqUFt5mHJ3ZpNiytDxGYxQFnYjsTy8j+M=;
- b=jXiZTnWYwDGQ7gZeSDBaYTeQocXetHQYnnQme7EA1hzK/HZ+0qOVmutX1s9PrFB+TIb+cFib1KUJ
-   +s2iTQ04y7CEcdiWgqGRnerRPRv3yCImBicHqFk7LQ+2hU4HdwtQos+JGCM+cGYtoUtnQ3SLd0wE
-   Yo592gtEGOJqX5graM22O8MAdlyuBD6gGQwEaJB8RaAd3C04HX7M2SGHRMyd1UWgpaNZk3/J/+cX
-   Mep/3Bhzaie6foC0FNDJrRUTcwbZ2zSfRW8OEqRxr+NzKUxFqFPXMHP1fIWRruKhg3+d5HmNIzEy
-   1UbaF/LxbbF9WPbXnVTc7AykFOyzI32HTMlhlA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=prod-lhr-20191104;
- d=lhr1.rp.oracleemaildelivery.com;
- h=Date:To:From:Subject:Message-Id:MIME-Version:Sender:List-Unsubscribe:List-Unsubscribe-Post;
- bh=PuNCSuhDY3aqUFt5mHJ3ZpNiytDxGYxQFnYjsTy8j+M=;
- b=6Gah3koJuEV9uqe2DPZ1BnhNLS8s3c3xt7AMdVbF+XlkyCT6nQGzt03pKDt6O7p2oUXbPZaKcljZ
-   V2GHm1mBvPttH0jpnHEihJih5SjDn+jSXXbIsckXNRdBU6Li4z8KFaxDmdJ/HE/VHmh4WLYJKXqO
-   vRWoY7Y1lY7khHNlQAgQ4i45aXKCfG8Q54gEN6cGpTlO7rD3Kg5MqxYHZEHZnLjtqwVGU+WJhgYF
-   1yrxQ3MH9mDw39/Ea7a6AO2KYBpx/DktQlOYTjCxQkYnjZ1xNrLoK+fVEWFTPfPp2RAWvD3TEfMU
-   B3n5QnDjtQ2DnpX5eNmHcSkpBCHmMdBzkI3zkw==
-Received: by omta-ad1-fd1-402-uk-london-1.omtaad1.vcndplhr.oraclevcn.com
- (Oracle Communications Messaging Server 8.1.0.1.20260212 64bit (built Feb 12
- 2026))
- with ESMTPS id <0TE0001IRS8AB850@omta-ad1-fd1-402-uk-london-1.omtaad1.vcndplhr.oraclevcn.com> for
- netdev@vger.kernel.org; Fri, 24 Apr 2026 22:38:34 +0000 (GMT)
-List-Unsubscribe-Post: List-Unsubscribe=One-Click
-From: Lukasz Raczylo <lukasz@raczylo.com>
-To: netdev@vger.kernel.org
-Cc: Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,	linux-rpi-kernel@lists.infradead.org
-Subject: [RFC PATCH net-next 0/3] net: macb: candidate fixes for silent TX
- stall on BCM2712/RP1
-Date: Fri, 24 Apr 2026 23:38:30 +0100
-Message-id: <cover.1777064117.git.lukasz@raczylo.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GVQztRfv"
+Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-12dca45ca21so877410c88.1
+        for <netdev@vger.kernel.org>; Fri, 24 Apr 2026 15:48:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777070900; x=1777675700; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=XoHn3xR/D6GkJaP6jV88s909txgrnyJW9G2/FzN3nwk=;
+        b=GVQztRfvMSxojY0IFKn5Ax7lgl5X5P5+AK5nQTpJIEXBm5XrRyrurHl713BkHy6QqM
+         aD9wbujchn8ociXqawdaYYJ3xbhysa2GQDhVIkCmZe28pBski1Qhs+9QLG2+ZPRpaTz8
+         bJdz4NiRfpDLotkUlri1hpMX/R/oWk2sIVu2m4T61jtqkJ62IEMAaooNWDlXdP/Ok0/y
+         J5LWgcnGupzCK3efpoy4xo1Mx0FWB1PMWWxJQOe4EGezaMw30pzvwvVcqwd9foQa6Iee
+         h0vK81+jx3s5mFacsU94GLWXNVqMEEj0ptbf80Kq2150UaAqK7xb1rxZh9UJKyEIxZup
+         6mKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777070900; x=1777675700;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XoHn3xR/D6GkJaP6jV88s909txgrnyJW9G2/FzN3nwk=;
+        b=TUc1TeARuyUeU8SoM8ptqJG90IjI6rcHXotr6iQS1DFNyjcwJxzyHPtYO9pt0QdWJw
+         S70z749lqjyJ7LgpqukOjQlbeVz4GoOzMNrdedu/B5ijqMH+YqCd7PbdOlQRqHHPdwRW
+         FHHy0cfse1DS4Q2Rb+21OqVHkbw0EylMVSGfpGdnuxCvR/CK/GYZ7zbVofRUbILe2xkQ
+         GxjXFVDOpyq13K1Dcf3ytpyTsxvR6munwheBxHpaiF9/6PZhXvDmEqiTydQVATXmcrxP
+         yad8Xgwl62UumHe8wEJBBW07vH4gn/D7NQmZRwJA12w1ov2Z4bUvanBDBc5zxeP2ABSA
+         sWiw==
+X-Gm-Message-State: AOJu0Yxb6Iu/WuxLSljOtjJm1IRu3LMnkQuIxO82YDIIwCFa4jhdGca6
+	w1zAEPfiE9k0Q7sAgnHtpwadC+AEZIwHvEO2ofHUgZTGFFJETcQDixZN
+X-Gm-Gg: AeBDietF87sdqLYXzMTWqcJsg8onqtFeGoMBokXJ2uZa7e7m1yhg+91ypn9tq+GdpUF
+	+Cthv6ghT9JiewI3iRTFDECWpSk9OvKmKgnYi1Lj5ekUtrCXSSejMvNkNufl/ZvjoAGz2K0lMxh
+	Lu26cld7RjZfuzI57W2wBrEVFtMuDYUVYHB9DZIpdl0wNSQjEBJV6NWN0QuOHBnyj+1xG0f4GZ4
+	bOgNYoIoWLBLRhL31oOUDwDr/vL1s7SzLZ98HOu4w6Pp/ihbNW8c3MpYk9WYMvTHHOIvHGRVrdl
+	yNV2Db9RZ0WVIMljB3DkpmFz4wVWXLAu6cDOFIfzIyWVKDxIk0WvO6C6ubU5ozBj5S8oMtT6ZTB
+	jKnSj6W/azEQ9iBbazm79/37wX9l3iD0faGq/ftqYz5ZwHlXEN5y+bsoSltMbGIQTeGnNb7lLtm
+	hbJvi6txoM4cWgphk3LoEl1PtN+QSQMmzu8+zBCVQaZtgKPKcRnLfHMgHEjz3qijXNyRBEMOPgG
+	1HGDSewcDD1d5x/I+SB
+X-Received: by 2002:a05:7022:6627:b0:128:dcbd:e27c with SMTP id a92af1059eb24-12c73f95191mr17500938c88.20.1777070900415;
+        Fri, 24 Apr 2026 15:48:20 -0700 (PDT)
+Received: from ?IPv6:2a03:83e0:115c:1:92a1:14f3:18de:3c64? ([2620:10d:c090:500::1:b6b2])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12da8b8fbc4sm29105885c88.4.2026.04.24.15.48.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Apr 2026 15:48:20 -0700 (PDT)
+Message-ID: <02dbf08511c72ea0c1a5caa33ed400f4a3e3c3c9.camel@gmail.com>
+Subject: Re: [PATCH bpf-next v3 4/9] bpf: Refactor object relationship
+ tracking and fix dynptr UAF bug
+From: Eduard Zingerman <eddyz87@gmail.com>
+To: Amery Hung <ameryhung@gmail.com>, bpf@vger.kernel.org
+Cc: netdev@vger.kernel.org, alexei.starovoitov@gmail.com, andrii@kernel.org,
+ 	daniel@iogearbox.net, memxor@gmail.com, martin.lau@kernel.org, 
+	mykyta.yatsenko5@gmail.com, kernel-team@meta.com
+Date: Fri, 24 Apr 2026 15:48:17 -0700
+In-Reply-To: <20260421221016.2967924-5-ameryhung@gmail.com>
+References: <20260421221016.2967924-1-ameryhung@gmail.com>
+	 <20260421221016.2967924-5-ameryhung@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-version: 1.0
-Content-transfer-encoding: 8bit
-Reporting-Meta:
- AAFzDiYTuS9jvqSCDQoXiqVnkU2yDl7DFh57yZB8VktRLO86c1eFyO5ekvNWCLwV
- PHyd9gw8WA5srfV/TRD60HPcqN0ckK5QcJL8GxoA66ySSfFo1PcOK2lmmEbtUZw5
- PiAmw5/lJh5no0aLuB1SPnuvKcHlQ2Gm6Cy97g5ocVN/a69uZW69m4pRsqFnUGLp
- DvzMrxjfu8rd+J9GyYMD7Cq0Y4N1mnotj19RrXunseXJyWXRxQj5zFaH01Ln95Ja
- UOq+zonMcrYjihIVuuCRABOhGMpd0ca4AQdA3DBzcQ/muCjmmQGFcSIkmCisx+Ot
- ICiewyf8d8fpB6ZsJGir6DwMwR61Hh42uctgnzcfrUHwfB6WwBzX+RlPo+I6k5Wv
- GzPWVXfSbdD6wStUq7S5mIYEEOLTHtEnCDMh0/HqxGZ4L766Y7vXjBrS4Bu0KA==
+MIME-Version: 1.0
 
-Hi netdev, Nicolas, Claudiu, linux-rpi,
+On Tue, 2026-04-21 at 15:10 -0700, Amery Hung wrote:
 
-This series proposes three candidate fixes for the silent TX stall
-observed on Raspberry Pi 5 (BCM2712 SoC, Cadence GEM via RP1 PCIe
-south bridge).  The bug has been reported, with reproducers, at:
+Tbh, I find current state of affairs with id/ref_obj_id/parent_id hard
+to follow. The release_reference() is an improvement, but the means by
+which the fields are propagated to bpf_reg_state objects are convoluted.
+I wonder if having a separate "object table" in bpf_verifier_state and
+having bpf_reg_state->id refer to objects within this table would make
+things more straight forward.
 
-  * https://github.com/cilium/cilium/issues/43198
-  * https://bugs.launchpad.net/ubuntu/+source/linux-raspi/+bug/2133877
+A few nits below.
 
-Cilium #43198 reports reproduction on linux-raspi 6.17.0-1004, and
-explicitly notes reproduction with both Cilium/eBPF and
-Calico/nftables dataplanes (i.e. not CNI-specific).  We observe the
-same failure mode on kernel 6.18.24 built from raspberrypi/linux
-rpi-6.18.y @ f2f68e79f16f, across a 24-node Raspberry Pi 5 fleet.
-The 6.17/6.18 commonality and the two-CNI reproduction together
-put the root cause below the packet-scheduling layer, in the macb
-driver or the RP1 PCIe path.
+[...]
 
-Observed symptoms (our side, 6.18.24; consistent with the linked
-reports):
+> diff --git a/include/linux/bpf_verifier.h b/include/linux/bpf_verifier.h
 
-  * queue->tx_tail stops advancing at a single second;
-  * /sys/class/net/<iface>/statistics/tx_packets stops incrementing;
-  * qdisc backlog grows past zero; netif_stop_subqueue() is called;
-  * RX counters continue advancing; the MAC IRQ line continues to
-    fire (RX completions are handled);
-  * no kernel log line is produced for the duration of the stall;
-  * dev_watchdog does not fire: macb_netdev_ops has no
-    .ndo_tx_timeout, and our reading is that trans_start is kept
-    fresh by successful xmit prior to the ring filling;
-  * recovery on our side has required `ip link set <iface> down/up`
-    via an out-of-band watchdog DaemonSet.
+[...]
 
-Reading the current driver we identified three plausible races
-between driver and hardware, each of which could independently
-produce the observed behaviour.  We did not determine which is the
-actual root cause -- that likely requires either BCM2712/RP1
-documentation we do not have, or dynamic tracing of the driver
-during an in-situ stall.  The series therefore attempts to close
-all three, with each commit message stating which specific race
-that patch is targeting.
+> @@ -1323,6 +1335,7 @@ struct bpf_dynptr_desc {
+>  	enum bpf_dynptr_type type;
+>  	u32 id;
+>  	u32 ref_obj_id;
+> +	u32 parent_id;
+>  };
 
-  Patch 1/3 -- flush PCIe posted write after TSTART doorbell.
-  Writes to NCR are posted PCIe writes and may not reach the MAC
-  before the driver returns.  If the TSTART doorbell is lost, no
-  TX starts, no TCOMP arrives, and the ring goes quiescent.  A
-  read-back of NCR after the write is a standard read-after-write
-  PCIe flush.
+Nit: would be nice to have a comment describing when the above fields
+     are populated.
 
-  Patch 2/3 -- re-check ISR after IER re-enable in macb_tx_poll().
-  An existing comment in macb_tx_poll() notes that completions
-  raised while TCOMP is masked do not re-fire when IER is
-  re-enabled, and mitigates the window with macb_tx_complete_pending(),
-  which inspects driver-visible ring state only (after rmb()).  On
-  PCIe-attached parts the descriptor DMA write that sets TX_USED
-  can remain in flight when that check runs; the rmb() orders CPU
-  writes but does not retire peripheral DMA.  Reading ISR directly
-  after IER re-enable addresses this in two ways: (a) the MMIO read
-  is an architected PCIe read barrier for prior DMA writes, so a
-  subsequent macb_tx_complete_pending() sees up-to-date TX_USED
-  state; (b) it directly observes a pending TCOMP bit if the
-  hardware has one set.  Either signal reschedules NAPI.
+> =20
+>  struct bpf_kfunc_call_arg_meta {
+> @@ -1334,6 +1347,7 @@ struct bpf_kfunc_call_arg_meta {
+>  	const char *func_name;
+>  	/* Out parameters */
+>  	u32 ref_obj_id;
+> +	u32 id;
 
-  Patch 3/3 -- TX stall watchdog.  Defence-in-depth.  If patches
-  1 and 2 close the races we identified, this patch performs a
-  single spin_lock_irqsave/unlock and a branch per queue per
-  second with no other effect.  If a further race remains that we
-  have not identified, it invokes the driver's own existing
-  macb_tx_restart(), which already verifies that TBQP is behind
-  tx_head before re-asserting TSTART.  We include this patch
-  because we have empirically observed multi-minute stalls on this
-  hardware; we are willing to drop it if the preference is for
-  1 and 2 to stand alone.
+Nit: would be nice to have a comment here too.
 
-Status and testing:
+[...]
 
-  * Apply-tested against Linux net-next HEAD (this series is
-    generated from it) and against raspberrypi/linux rpi-6.18.y @
-    f2f68e79f16f (the fork our fleet runs): all three apply
-    cleanly on net-next; the rpi fork carries an additional local
-    `bool tx_pending` field on `struct macb_queue` that is not in
-    mainline, so we maintain a small rebased patch 3 hunk for it.
-  * Build-tested: the series compiles cleanly as part of our Talos
-    image build pipeline on arm64.
-  * Runtime-tested, early signal: ~4 h 20 min of post-patch uptime
-    on the canary node, ~3 h 15 min on the slowest (last master to
-    upgrade), ~95 node-hours cumulative across the 24-node fleet at
-    the time this cover letter was written.  During that window the
-    fleet-wide counts are zero RECOVER events, zero `[tx-stall]`
-    partial markers (an out-of-band userspace detector that records
-    even transient one-second freezes that recover before the
-    3-second threshold), and zero ping-failure markers.  Pre-patch
-    reference window (2026-04-24 14:00-18:10 UTC, when proper
-    monitoring was in place) observed multiple stalls per hour at
-    fleet level; at that rate we would expect on the order of 50
-    stalls in 95 node-hours, actual is zero.  We will follow up
-    with a 24 h and a 1-week data point as the same observability
-    runs forward; the direction so far is consistent with patches
-    1 and 2 closing the underlying race(s) and patch 3 correctly
-    being a no-op on healthy hardware.
+> diff --git a/kernel/bpf/states.c b/kernel/bpf/states.c
+> index 8478d2c6ed5b..72bd3bcda5fb 100644
+> --- a/kernel/bpf/states.c
+> +++ b/kernel/bpf/states.c
+> @@ -494,7 +494,8 @@ static bool regs_exact(const struct bpf_reg_state *ro=
+ld,
+>  {
+>  	return memcmp(rold, rcur, offsetof(struct bpf_reg_state, id)) =3D=3D 0 =
+&&
+>  	       check_ids(rold->id, rcur->id, idmap) &&
+> -	       check_ids(rold->ref_obj_id, rcur->ref_obj_id, idmap);
+> +	       check_ids(rold->ref_obj_id, rcur->ref_obj_id, idmap) &&
+> +	       check_ids(rold->parent_id, rcur->parent_id, idmap);
 
-The series does not depend on any other in-flight work we are
-aware of.  Happy to split, rebase, or drop individual patches on
-feedback.  All three are independently revertable.
+Nit: these check_ids() become repetitive, maybe add a utility function
+     checking id/ref_obj_id/parent_id?
 
-Lukasz Raczylo (3):
-  net: macb: flush PCIe posted write after TSTART doorbell
-  net: macb: re-check ISR after IER re-enable in macb_tx_poll
-  net: macb: add TX stall watchdog as defence-in-depth safety net
+>  }
+> =20
+>  enum exact_level {
+> @@ -619,7 +620,8 @@ static bool regsafe(struct bpf_verifier_env *env, str=
+uct bpf_reg_state *rold,
+>  		       range_within(rold, rcur) &&
+>  		       tnum_in(rold->var_off, rcur->var_off) &&
+>  		       check_ids(rold->id, rcur->id, idmap) &&
+> -		       check_ids(rold->ref_obj_id, rcur->ref_obj_id, idmap);
+> +		       check_ids(rold->ref_obj_id, rcur->ref_obj_id, idmap) &&
+> +		       check_ids(rold->parent_id, rcur->parent_id, idmap);
+>  	case PTR_TO_PACKET_META:
+>  	case PTR_TO_PACKET:
+>  		/* We must have at least as much range as the old ptr
+> @@ -799,7 +801,8 @@ static bool stacksafe(struct bpf_verifier_env *env, s=
+truct bpf_func_state *old,
+>  			cur_reg =3D &cur->stack[spi].spilled_ptr;
+>  			if (old_reg->dynptr.type !=3D cur_reg->dynptr.type ||
+>  			    old_reg->dynptr.first_slot !=3D cur_reg->dynptr.first_slot ||
+> -			    !check_ids(old_reg->ref_obj_id, cur_reg->ref_obj_id, idmap))
+> +			    !check_ids(old_reg->ref_obj_id, cur_reg->ref_obj_id, idmap) ||
+> +			    !check_ids(old_reg->parent_id, cur_reg->parent_id, idmap))
 
- drivers/net/ethernet/cadence/macb.h      |  5 ++
- drivers/net/ethernet/cadence/macb_main.c | 99 +++++++++++++++++++++---
- 2 files changed, 94 insertions(+), 10 deletions(-)
+Not something changed by the current patch, but still a question:
+this path ignores old_reg->id, is it a bug?
 
--- 
-2.53.0
+>  				return false;
+>  			break;
+>  		case STACK_ITER:
+> diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+> index 0313b7d5f6c9..908a3af0e7c4 100644
 
+[...]
+
+> @@ -241,6 +241,7 @@ struct bpf_call_arg_meta {
+>  	int mem_size;
+>  	u64 msize_max_value;
+>  	int ref_obj_id;
+> +	u32 id;
+
+Nit: please add a comment here as well.
+
+[...]
+
+> @@ -635,11 +636,12 @@ static int destroy_if_dynptr_stack_slot(struct bpf_=
+verifier_env *env,
+>  				        struct bpf_func_state *state, int spi);
+> =20
+>  static int mark_stack_slots_dynptr(struct bpf_verifier_env *env, struct =
+bpf_reg_state *reg,
+> -				   enum bpf_arg_type arg_type, int insn_idx, int clone_ref_obj_id)
+> +				   enum bpf_arg_type arg_type, int insn_idx, int parent_id,
+> +				   struct bpf_dynptr_desc *dynptr)
+
+Having both parent_id and dynptr->parent_id as parameters of this
+function is very confusing, but I don't have a suggestion on how to
+better deal with it.
+
+[...]
+
+> @@ -8489,6 +8444,7 @@ static int check_func_arg(struct bpf_verifier_env *=
+env, u32 arg,
+>  			return -EACCES;
+>  		}
+>  		meta->ref_obj_id =3D reg->ref_obj_id;
+> +		meta->id =3D reg->id;
+
+Could you please leave a comment here explaining when e.g.
+meta->ref_obj_id and meta->id would have same or different ids here?
+Maybe a few lines of BPF C code.
+
+>  	}
+> =20
+>  	switch (base_type(arg_type)) {
+> @@ -9111,26 +9067,75 @@ static int release_reference_nomark(struct bpf_ve=
+rifier_state *state, int ref_ob
+
+[...]
+
+> +/* Release id and objects referencing the id iteratively in a DFS manner=
+ */
+> +static int release_reference(struct bpf_verifier_env *env, int id)
+> +{
+> +	u32 mask =3D (1 << STACK_SPILL) | (1 << STACK_DYNPTR);
+>  	struct bpf_verifier_state *vstate =3D env->cur_state;
+> +	struct bpf_idmap *idstack =3D &env->idmap_scratch;
+> +	struct bpf_stack_state *stack;
+>  	struct bpf_func_state *state;
+>  	struct bpf_reg_state *reg;
+> -	int err;
+> +	int root_id =3D id, err;
+> =20
+> -	err =3D release_reference_nomark(vstate, ref_obj_id);
+> -	if (err)
+> -		return err;
+> +	idstack->cnt =3D 0;
+> +	idstack_push(idstack, id);
+> =20
+> -	bpf_for_each_reg_in_vstate(vstate, state, reg, ({
+> -		if (reg->ref_obj_id =3D=3D ref_obj_id)
+> -			mark_reg_invalid(env, reg);
+> -	}));
+> +	if (find_reference_state(vstate, id))
+> +		WARN_ON_ONCE(release_reference_nomark(vstate, id));
+> +
+> +	while ((id =3D idstack_pop(idstack))) {
+> +		bpf_for_each_reg_in_vstate_mask(vstate, state, reg, stack, mask, ({
+> +			if (reg->id !=3D id && reg->parent_id !=3D id && reg->ref_obj_id !=3D=
+ id)
+> +				continue;
+> +
+> +			if (reg->ref_obj_id && id !=3D root_id) {
+> +				struct bpf_reference_state *ref_state;
+> +
+> +				ref_state =3D find_reference_state(env->cur_state, reg->ref_obj_id);
+> +				verbose(env, "Unreleased reference id=3D%d alloc_insn=3D%d when rele=
+asing id=3D%d\n",
+> +					ref_state->id, ref_state->insn_idx, root_id);
+> +				return -EINVAL;
+> +			}
+> +
+> +			if (reg->id !=3D id) {
+> +				err =3D idstack_push(idstack, reg->id);
+> +				if (err)
+> +					return err;
+> +			}
+> +
+> +			if (!stack || stack->slot_type[BPF_REG_SIZE - 1] =3D=3D STACK_SPILL)
+> +				mark_reg_invalid(env, reg);
+> +			else if (stack->slot_type[BPF_REG_SIZE - 1] =3D=3D STACK_DYNPTR)
+> +				invalidate_dynptr(env, state, stack);
+
+invalidate_dynptr() rewrites to stack slots, can it be the case that
+this body of bpf_for_each_reg_in_vstate_mask() is computed for first
+and second dynptr stack slots, hence triggering invalidate_dynptr() to
+rewrite three slots instead of two?
+
+> +		}));
+> +	}
+> =20
+>  	return 0;
+>  }
+
+[...]
+
+> @@ -12009,6 +12009,7 @@ static int check_kfunc_args(struct bpf_verifier_e=
+nv *env, struct bpf_kfunc_call_
+>  				return -EFAULT;
+>  			}
+>  			meta->ref_obj_id =3D reg->ref_obj_id;
+> +			meta->id =3D reg->id;
+
+And here a comment describing when this happens would be helpful.
+
+[...]
+
+> @@ -12171,15 +12171,10 @@ static int check_kfunc_args(struct bpf_verifier=
+_env *env, struct bpf_kfunc_call_
+>  				}
+> =20
+>  				dynptr_arg_type |=3D (unsigned int)get_dynptr_type_flag(parent_type)=
+;
+> -				clone_ref_obj_id =3D meta->dynptr.ref_obj_id;
+> -				if (dynptr_type_refcounted(parent_type) && !clone_ref_obj_id) {
+> -					verifier_bug(env, "missing ref obj id for parent of clone");
+> -					return -EFAULT;
+> -				}
+>  			}
+> =20
+> -			ret =3D process_dynptr_func(env, regno, insn_idx, dynptr_arg_type, cl=
+one_ref_obj_id,
+> -						  &meta->dynptr);
+> +			ret =3D process_dynptr_func(env, regno, insn_idx, dynptr_arg_type,
+> +						  meta->ref_obj_id ? meta->id : 0, &meta->dynptr);
+
+And an example here as well.
+
+>  			if (ret < 0)
+>  				return ret;
+>  			break;
+
+[...]
