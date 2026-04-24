@@ -1,137 +1,84 @@
-Received: from outbound.ms.icloud.com (p-west3-cluster2-host12-snip4-5.eps.apple.com [57.103.74.98])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B18B33E5EDB
-	for <netdev@vger.kernel.org>; Fri, 24 Apr 2026 18:13:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.74.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18C743EF669;
+	Fri, 24 Apr 2026 18:20:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777054423; cv=none; b=pRlHtt1/24EOa3tmSWs+OIGC3MmINHKiLYYizcYbZJQE6BOWf7hQMk9NcVpWtWBSbE/liKaJeMT53+EmU7YM/7QkMkEolJR9L0QWe5StLHT3HkyFOgpfjBlcQSH2Tqe0kDkQYZ2n4+yzMA43Ax2YTzD2W5n60aSh4IX9mg3ek7w=
+	t=1777054849; cv=none; b=kHpA931SWz1JbnGWB2M5jDxPrtuavjlLLkho1KrscurP88zB381lU/MKRm6sW2oIO+8ULHkizoLYnIXUi9R1Hx94qOhPRY7UKxpfZXdc/SdGv65cNZWxNwDfMVj26z3wkDCCw5W4kdEyjdFLqFaC0OkyRVRwXNZKE3h60NyESxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777054423; c=relaxed/simple;
-	bh=LYDREB4Bqps9FC+aFIm1KtvUspKg1EblFTB8f6AIayI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sKLXJCM/4Uue4gQXTn/bJdbVGdcHMdSFKRVZT/wVbarttw+riuG8FAXHEOqjat6nlcaHZtiE75oYqhm1H1ymk+EFr6BSrh1zHj73IhWY9+fRFxKUttX5WyDrCGqrTpvGm2+R9WL3z0l3WNUooiFQpvdFiInyOVPRv2/PYg5Wok4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=icSrAtwl; arc=none smtp.client-ip=57.103.74.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+	s=arc-20240116; t=1777054849; c=relaxed/simple;
+	bh=fPAbYszOYtL10ym6d9Nwm9WB5nSR2Kqggw78z0h+UpY=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=HdzXL8XZcheyjt5i5jULA6L3ef+ZNTOrcoxhjU5zE8xHBcUy60QdC92hZcM/Zb+RQwGvipLjfYbiwgXPSP6Qzm5+xGgZ5j+4jXnWLkh2/mdvcswwpEDCanKLQaqjEJtTHeGkj9+FxPjBLTHdDOcNMK1ukzrqiULbUn+mzhjkdVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m3LJa+Mc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="icSrAtwl"
-Received: from outbound.ms.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-west-3a-60-percent-9 (Postfix) with ESMTPS id 026DD180010C;
-	Fri, 24 Apr 2026 18:13:39 +0000 (UTC)
-X-ICL-Out-Info: HUtFAUMEWwJACUgBTUQeDx5WFlZNRAJCTQ1OHVQORQNFF0sCTVIPDwNXF0QaWwpZFXkRUAFYHlZeWhdeTVEPDwNXF0QaWwpZFXkRUAFYHlZeWhdeTUUID0EJWFsIWwQPH0wMUQJCBVZeVAsdBFQHXQVdVlACWktCBEtFaFwFXBxAF0gdX2pLVhQEEVABWB5WXloXXk1aAlZNBUoDXwFbBkINSQtcBFsFXgpAAl0AWQVdClVAA1gcRRxYE1YtXgheH0wcHQ5YBgxQTQFDCAoCURxWDVc=
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1777054421; x=1779646421; bh=v030gjjOMNdPgby97TC8nj4zkzBFhagiFjfmyAJggcY=; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=icSrAtwllG94XuTiVeds4KgLS8Ei5mJqNDFNSNNSFd605TuHH8t5X0TniVZ6GTxc5lhlqmYK1GPKM+adChYqC0WfvmZxesVsiVIkbeU0Xp93+vZ+CBbFW0HgDwueXky3wOC84P2zdrnghn8WnwQH1Dm22zh0iyY1O2mFt00LG1F3nKr5WprzUrw7N9C54vDjhh43IQBNC7DC5u6j8Z57kAJ4Hw9l04WHcYbzExu5+SSR/qdXYDBRPVfAcM81ydpOkdmgHK1VGa03fok/qjz/nLWEhGIqmSfzAiOgr3rPYT57t31d4tpd1rnO9tXPQt+7y+IoLeNxh/apY9Zrk3gV0g==
-Received: from mainframe.tailfb0f7b.ts.net (unknown [17.57.154.37])
-	by p00-icloudmta-asmtp-us-west-3a-60-percent-9 (Postfix) with ESMTPSA id 9869E1800139;
-	Fri, 24 Apr 2026 18:13:37 +0000 (UTC)
-From: =?UTF-8?q?Lek=C3=AB=20Hap=C3=A7iu?= <snowwlake@icloud.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	krzk@kernel.org,
-	horms@kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	=?UTF-8?q?Lek=C3=AB=20Hap=C3=A7iu?= <snowwlake@icloud.com>
-Subject: [PATCH net v4 5/5] nfc: llcp: fix TLV parsing OOB in nfc_llcp_connect_sn
-Date: Fri, 24 Apr 2026 20:13:07 +0200
-Message-ID: <20260424181307.3810727-3-snowwlake@icloud.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260424181307.3810727-1-snowwlake@icloud.com>
-References: <20260424180151.3808557-1-snowwlake@icloud.com>
- <20260424181307.3810727-1-snowwlake@icloud.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m3LJa+Mc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 745D5C19425;
+	Fri, 24 Apr 2026 18:20:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777054848;
+	bh=fPAbYszOYtL10ym6d9Nwm9WB5nSR2Kqggw78z0h+UpY=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=m3LJa+McnhVi32mADpapuSEfTG9xZF/8YAWofxUOdSk8bGL1QCsaxeOx1sPkQHXeN
+	 MTMgN5BxhJ6OlIzvDGvKF2cjbWO956YbzpJKwWri6dBX5rA7re9R4y6cQ1xL+HyCle
+	 Cr//5iWk2yeWQwLQyjiEbqQd1XoKQHUpWROX/c8UesKumBSgNuLw5gr1WTxgdGi1pc
+	 +wRv64yOYhiuSFmfct4bLbiHISDZs5m92dKOK+9w+nlrTwEcvw1KaDs6jxbvg35vJ8
+	 ZpA0n2OhAlymEJHuM+AJb/3028JkXKQlDoarJHxNQsK9HrFoY7kRjOPak6KNhElviu
+	 GCtq20RZxUVTg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02CE938119C3;
+	Fri, 24 Apr 2026 18:20:10 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI0MDE3NyBTYWx0ZWRfXxCRZcrhPZuVN
- CQsEMSMWQfqY9TWtGuwUBuiV/oI7+5roEXa6uNCvw1qrqfDVCIi913HLrEvYqPTizFHbnbi43xo
- Jp18yjOMCWRdhBERIMiMAM1lyXo9/oj6vofLg9xHLrhXMX2I7FmoSf5yegd9bDYkNLa+cityVTx
- wXTPNq2Z1hXCMxs0JG5W1EMya6NuD1csXo1BVUlOSNw6mgkoWi4jWQyFxYZYJ1iyOi9BbiNwJkG
- a7A+teS2KWvekNEjdL3+SgS7da1t4bRFTqlScXW/NP2aNnUqEKf8bji/b00sBuY0uq6Gh64lU2n
- 2B9Rz4DlocUuNH36xHqxDL1OcwjeicEV2n8Gnwd4DGze3BakfD5Z8RLsKTXKC8=
-X-Proofpoint-GUID: EcR2TPKI8emhvf9-ySeavq2QvEzc48iT
-X-Authority-Info-Out: v=2.4 cv=QdNrf8bv c=1 sm=1 tr=0 ts=69ebb2d4
- cx=c_apl:c_pps:t_out a=qkKslKyYc0ctBTeLUVfTFg==:117 a=IkcTkHD0fZMA:10
- a=A5OVakUREuEA:10 a=M51BFTxLslgA:10 a=x7bEGLp0ZPQA:10 a=LbuW6tbUWPcA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=v3ZZPjhaAAAA:8
- a=MCyzZkT_QOhwK6_fNwUA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: EcR2TPKI8emhvf9-ySeavq2QvEzc48iT
+Subject: Re: [PATCH bpf-next v2 0/2] selftests/bpf: drop xdping tool
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177705480880.1650547.11751423238740714723.git-patchwork-notify@kernel.org>
+Date: Fri, 24 Apr 2026 18:20:08 +0000
+References: <20260422-xdping-v2-0-c0f8ccedcf91@bootlin.com>
+In-Reply-To: <20260422-xdping-v2-0-c0f8ccedcf91@bootlin.com>
+To: =?utf-8?q?Alexis_Lothor=C3=A9_=28eBPF_Foundation=29_=3Calexis=2Elothore=40bo?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org,
+	=?utf-8?q?otlin=2Ecom=3E?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org
+Cc: ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
+ martin.lau@linux.dev, eddyz87@gmail.com, memxor@gmail.com, song@kernel.org,
+ yonghong.song@linux.dev, jolsa@kernel.org, shuah@kernel.org,
+ davem@davemloft.net, kuba@kernel.org, hawk@kernel.org,
+ john.fastabend@gmail.com, sdf@fomichev.me, ebpf@linuxfoundation.org,
+ bastien.curutchet@bootlin.com, thomas.petazzoni@bootlin.com,
+ bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org, alan.maguire@oracle.com
 
-nfc_llcp_connect_sn() walks the TLV array of an LLCP CONNECT PDU
-looking for the Service Name TLV, but shares the same class of bugs
-as nfc_llcp_recv_snl() / nfc_llcp_parse_gb_tlv():
+Hello:
 
- 1. tlv_array_len = skb->len - LLCP_HEADER_SIZE wraps when skb->len
-    is 0 or 1.  The subsequent loop then runs far past the buffer.
+This series was applied to bpf/bpf-next.git (master)
+by Martin KaFai Lau <martin.lau@kernel.org>:
 
- 2. The per-iteration guard `offset < tlv_array_len` only proves one
-    byte is available, but the body reads both tlv[0] (type) and
-    tlv[1] (length).
+On Wed, 22 Apr 2026 18:20:23 +0200 you wrote:
+> Hello,
+> 
+> this is the v2 of the small series dropping xdping tool. This removal is
+> part of the larger effort aiming to tidy the bpf selftests directory.
+> This new revision updates btf_dump test to make it use another bpf
+> program rather than xdping_kern so that we can drop it as well.
+> 
+> [...]
 
- 3. The peer-supplied `length` field is used to advance `tlv` without
-    being checked against the remaining array space, so a crafted
-    length walks `tlv` past the buffer.  On the following iteration
-    tlv[0]/tlv[1] are read from adjacent memory.
+Here is the summary with links:
+  - [bpf-next,v2,1/2] selftests/bpf: make btf_dump use xdp_dummy rather than xdping_kern
+    https://git.kernel.org/bpf/bpf-next/c/d4a2eeb2ac78
+  - [bpf-next,v2,2/2] selftests/bpf: drop xdping tool
+    https://git.kernel.org/bpf/bpf-next/c/feb13b19f3fa
 
- 4. When an LLCP_TLV_SN is found, the function returns &tlv[2] with
-    *sn_len = length but without verifying that `length` bytes at
-    tlv[2..] are still inside the TLV array.  The caller in
-    nfc_llcp_recv_connect() then uses this (pointer, length) pair as
-    a service name, so it may read past the PDU.
-
-Fix: reject frames smaller than LLCP_HEADER_SIZE up front; add TLV
-header and TLV value guards at the top of each iteration.  The value
-guard also ensures that the (&tlv[2], length) pair returned on
-LLCP_TLV_SN lies fully inside the TLV array.
-
-Also use LLCP_HEADER_SIZE instead of the magic literal `2` to match
-the style of neighbouring LLCP receive paths.
-
-Reported-by: Simon Horman <horms@kernel.org>
-Closes: https://lore.kernel.org/netdev/20260417160438.GH31784@horms.kernel.org/
-Fixes: d646960f7986 ("NFC: Initial LLCP support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lekë Hapçiu <snowwlake@icloud.com>
----
- net/nfc/llcp_core.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
-
-diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
-index ca0abfd329e5..df5567ca7fa8 100644
---- a/net/nfc/llcp_core.c
-+++ b/net/nfc/llcp_core.c
-@@ -849,12 +849,22 @@ static struct nfc_llcp_sock *nfc_llcp_sock_get_sn(struct nfc_llcp_local *local,
- static const u8 *nfc_llcp_connect_sn(const struct sk_buff *skb, size_t *sn_len)
- {
- 	u8 type, length;
--	const u8 *tlv = &skb->data[2];
--	size_t tlv_array_len = skb->len - LLCP_HEADER_SIZE, offset = 0;
-+	const u8 *tlv;
-+	size_t tlv_array_len, offset = 0;
-+
-+	if (skb->len < LLCP_HEADER_SIZE)
-+		return NULL;
-+
-+	tlv = &skb->data[LLCP_HEADER_SIZE];
-+	tlv_array_len = skb->len - LLCP_HEADER_SIZE;
- 
- 	while (offset < tlv_array_len) {
-+		if (tlv_array_len - offset < 2)
-+			break;
- 		type = tlv[0];
- 		length = tlv[1];
-+		if (tlv_array_len - offset - 2 < length)
-+			break;
- 
- 		pr_debug("type 0x%x length %d\n", type, length);
- 
+You are awesome, thank you!
 -- 
-2.51.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
