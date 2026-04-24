@@ -1,49 +1,88 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFE7E3FA5DE;
-	Fri, 24 Apr 2026 19:05:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA993659FD
+	for <netdev@vger.kernel.org>; Fri, 24 Apr 2026 19:18:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777057563; cv=none; b=giMwWQmkgo5Zzr9D13EqvuxbmPdZKhqmxxXD4+A4JAANQJUJeF2sN6JmRLsE5/KMGjl2ew+3jjmh9VLFFfcPucWVIrfTKqBojNKuJHNQScMuySN0WyEs2r6gN+dIuuB1Vzuh7srC8rasumfUrl+U0wluBksXObSwWiBSwrE1jDA=
+	t=1777058321; cv=none; b=OdcxeIIuZxA2FqulawzhyOmDzBUEo72EPv3iaoTovvjrnkN5pBGldr1s8sfdZ7/xLTtSewmdUOmReV2taG+9t9W/3MeFPZQgPYSL4NEbxLpGZId/EPEkZ84tjs0C6uwtJa55r4RCVGpjzyFu/hP5Xf9vEYnLYnD2qlX1trbVsik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777057563; c=relaxed/simple;
-	bh=29wWlStnyCXeqDvHmB64rl/bAHBUlz5UggpdhR7TL0E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ABp1x2mgBJpjtHqXyN9Oiv9jLlvn30IVbMRuoeCatXpYVjXPChCGoTt1qJ+RLR7tFeIynyIqxCjJNBLnoKt+WYqo5zJG2jW658NnvsmkQoYeqF2TxezNinKD93PsDUtYY6njahP3HQxoSJg3C5PnpUp5TZNksDBcp9a2Rrq7aBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=wLf7OWW6; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	s=arc-20240116; t=1777058321; c=relaxed/simple;
+	bh=bVTg7g/DgY21o4JRsmGKmk0kP2qQqkrlnZU2sa3maDc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mzTXiTdfVyOSl9ET9WZzNoFcK+/8JspPp1n4Rs9gK608gjXVnub2WVEjHMpNgJGrZ7oO/NluPPr139zfQbebjffQOl2uQ61iVlVkKqoj3eepAVxQI11dzKto4aszUecolIOT0tLJoIucseV6+oaVHEvNp1ED+YLZKAlhc/eCLF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oZqyNv6S; arc=none smtp.client-ip=74.125.82.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="wLf7OWW6"
-Received: from localhost.localdomain (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with ESMTPSA id AF8A960289;
-	Fri, 24 Apr 2026 21:05:57 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1777057558;
-	bh=w5WjPpyUh/+YeCeHBR5uyrR2t2Uk2pwl5Ldk2Aq2JOI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wLf7OWW6UAsp/eC+3h6Ay1wBrWt8kYMZ8RAM39nlbHWH2x8aWU42VMm7tYILlX/m0
-	 FqExYz0JOPV3gGlpgHFY1DYsajfh36KEYX2+DHgCHhxGrxnPWemSzUVctCA9yJFtDe
-	 A4I9nqYZUrvwGU6t6UTS/KA+YYZTWoeym5gRgw+aveIgW3WfcjJFN+1cMHfgcvVyf5
-	 5Xwvd3pIuPqzj12++nt6TOiqfnRiCBwNAa04IvrxTAFX3w+8JdPahfzodsiZnabb/Y
-	 0O6zPCPtjHsPyDq2UFNkETMrQBrJvw3EMoFCRmq8aJ4imtYG0z/oXsEwWC0TktYeKH
-	 4ywJ2xQ5k6i/w==
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: netfilter-devel@vger.kernel.org
-Cc: davem@davemloft.net,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oZqyNv6S"
+Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-12dbd0f7ecaso1259235c88.0
+        for <netdev@vger.kernel.org>; Fri, 24 Apr 2026 12:18:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777058319; x=1777663119; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=NsjhhZdX0yxy3kgINItwDji3KGNUTwxF928253yyINA=;
+        b=oZqyNv6Saw2P8WkXhAfhkkQEvJvRtnFuOod/+TNOshIqn1tGk+hu6mMVVVrEvZcH3E
+         QqGEgw7xgmcRcg4CGAkPFI4PN7qk8tvvOCU8xI7mHthQP6fBBBt3k15Qy6lKn+sETuhE
+         48XElsXsmqI12UYFVZnYgVR15RDkSSCJsCO6ThGBFW69W7G8IV9n7a/OkYDzWr9IzhaN
+         yxpgeFOPlwGlhgY6QCochBfXehLUwGvkHkeboObqqok+8IFePCEGAwJMDqFcrSQj2Z+9
+         JaenZPofulJDn7ry1tolLf212LTKO5PXmq5WM4itCS5GX/y8suJgzw/O+JVwz3Oredwi
+         joMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777058319; x=1777663119;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NsjhhZdX0yxy3kgINItwDji3KGNUTwxF928253yyINA=;
+        b=JOuz4nera2ridhKh2DbY7egKo5Dg4223pSQ2fLbKobi/Llz8QOOWZOEhpk7hzAw3cL
+         OcY1FCcTgVQEW0siO9pIpzh+7CgIR9cAjj8Hkkeb0b1cys1dL3iZ/duEkN5zSKnQfs1G
+         AfhYoXX1WKhBSdgMGg81NPMXDiGZCSifqzRI8oyWE2Gf0R5Cazx3pf+1LdPUKI+JK8e1
+         PPwG1/086GZgWxHMKxzcSzebOyxyIF1fLBb9BiEyj96z4cpb1Fdz+pJjS06uJ/KOTbMX
+         8T2QtOAuts/rIXxt2OEPM8aanz5qRN7k+HkzEla779gcosB9SR1Ki9khXaZKj18oG8Tg
+         +ljg==
+X-Forwarded-Encrypted: i=1; AFNElJ+lj9jeinzw6UuatA7XqS/5MurIzwv/llPm1G4hjppMJyDVLKYubjmkdHev+O+D3F3PK4Ecy3E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YziEL+hdo4Yh7qvQ8s7r7Ez/djiQTTe30I54G+q0c9Snu2lNTfN
+	Pi280ayqIIcVGithszx+rz4gZw71uDhS4BgOvpXr519T5mhHjjV+siO1
+X-Gm-Gg: AeBDiesj0Vs353cjYQnPUt/smt7SMuxGqcWyx5mpVivqXjgIzYCDIoxpcylJp3gL74k
+	jzYCikZMddytS6ufMDd+iFE/n/UaCDiBscxWI9Hnw+bYVA4kDHsKgPwbBPaVHq8Mx0EhbBkwTUd
+	LPvF9Fl6G0/uat+pfPF5SM2QSH1QSzfVnac7dMUjgZTrO1fDCpJeizrGu+niRN3+gYjmW7c88Tx
+	vBSGtdCGELq2ZkWEHQIu63/1q41EYU6yHqBd591Ix1Sg5+bhuxNYKLIhW1u+Oieed3Ba60rqMw4
+	rj6of7ZHY5/ly7hKkF6YAQgqQd2zSl62nGS7QKtlwz+koCcOHluBKL9xYkfg48vp9rx+JO+4tPa
+	XNXIB7El/A5i4rJwo0/BAeHYwGA4J/uOwVZARTyA2SqbEyZUEZdVVVo/gDoFrwMscBodCiKVY48
+	qAFahmp2Ng02tsu1MNT5ViisCVkVPugn0dnCkL2SlOOkLUqcJPQme6X4vIsAdwNW9Qc8aOhwWaI
+	Mc1Nbeueeu64b5WDDmd
+X-Received: by 2002:a05:7022:383:b0:12b:ebb9:1c18 with SMTP id a92af1059eb24-12c73fa739fmr19364941c88.31.1777058318879;
+        Fri, 24 Apr 2026 12:18:38 -0700 (PDT)
+Received: from efaec68ba852.tailc0aff1.ts.net ([206.206.192.132])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12db8684f90sm15312204c88.13.2026.04.24.12.18.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Apr 2026 12:18:38 -0700 (PDT)
+From: Weiming Shi <bestswngs@gmail.com>
+To: Martin KaFai Lau <martin.lau@linux.dev>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	bpf@vger.kernel.org,
 	netdev@vger.kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	fw@strlen.de,
-	horms@kernel.org
-Subject: [PATCH net 10/11] ipvs: fix races around the conn_lfactor and svc_lfactor sysctl vars
-Date: Fri, 24 Apr 2026 21:05:12 +0200
-Message-ID: <20260424190513.32823-11-pablo@netfilter.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260424190513.32823-1-pablo@netfilter.org>
-References: <20260424190513.32823-1-pablo@netfilter.org>
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Xinyu Ma <mmmxny@gmail.com>
+Subject: [PATCH bpf] bpf, sockmap: reject overflowing copy + len in bpf_msg_push_data()
+Date: Fri, 24 Apr 2026 12:16:04 -0700
+Message-ID: <20260424191602.1522411-3-bestswngs@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,79 +91,49 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Julian Anastasov <ja@ssi.bg>
+When the scatterlist ring is full or nearly full, bpf_msg_push_data()
+enters a copy fallback path and computes copy + len for the page
+allocation size. Since len comes from BPF with arg3_type = ARG_ANYTHING
+and both are u32, a crafted len can wrap the sum to a small value,
+causing an undersized allocation followed by an out-of-bounds memcpy.
 
-Sashiko warns that the new sysctls vars can be changed
-after the hash tables are destroyed and their respective
-resizing works canceled, leading to mod_delayed_work()
-being called for canceled works.
+ BUG: unable to handle page fault for address: ffffed104089a402
+ Oops: Oops: 0000 [#1] SMP KASAN NOPTI
+ Call Trace:
+  __asan_memcpy (mm/kasan/shadow.c:105)
+  bpf_msg_push_data (net/core/filter.c:2852 net/core/filter.c:2788)
+  bpf_prog_9ed8b5711920a7d7+0x2e/0x36
+  sk_psock_msg_verdict (net/core/skmsg.c:934)
+  tcp_bpf_sendmsg (net/ipv4/tcp_bpf.c:421 net/ipv4/tcp_bpf.c:584)
+  __sys_sendto (net/socket.c:2206)
+  do_syscall_64 (arch/x86/entry/syscall_64.c:94)
+  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
 
-Solve this in different ways. conn_tab can be present even
-without services and is destroyed only on netns exit, so use
-disable_delayed_work_sync() to disable the work instead of
-adding more synchronization mechanisms.
+Add an overflow check before the allocation.
 
-As for the svc_table, it is destroyed when the services
-are deleted, so we must be sure that netns exit is not
-called yet (the check for 'enable') and the work is
-not canceled by checking all under same mutex lock.
-
-Also, use WRITE_ONCE when updating the sysctl vars as we
-already read them with READ_ONCE.
-
-Link: https://sashiko.dev/#/patchset/20260410112352.23599-1-fw%40strlen.de
-Signed-off-by: Julian Anastasov <ja@ssi.bg>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Link: https://lore.kernel.org/all/20260424155913.A19FDC19425@smtp.kernel.org
+Fixes: 6fff607e2f14 ("bpf: sk_msg program helper bpf_msg_push_data")
+Tested-by: Xiang Mei <xmei5@asu.edu>
+Tested-by: Xinyu Ma <mmmxny@gmail.com>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
 ---
- net/netfilter/ipvs/ip_vs_conn.c |  2 +-
- net/netfilter/ipvs/ip_vs_ctl.c  | 12 +++++++++---
- 2 files changed, 10 insertions(+), 4 deletions(-)
+ net/core/filter.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/netfilter/ipvs/ip_vs_conn.c b/net/netfilter/ipvs/ip_vs_conn.c
-index 2082bfb2d93c..84a4921a7865 100644
---- a/net/netfilter/ipvs/ip_vs_conn.c
-+++ b/net/netfilter/ipvs/ip_vs_conn.c
-@@ -1835,7 +1835,7 @@ static void ip_vs_conn_flush(struct netns_ipvs *ipvs)
+diff --git a/net/core/filter.c b/net/core/filter.c
+index bc96c18df4e0..4f5a00ade2d3 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -2820,6 +2820,9 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
+ 	if (!space || (space == 1 && start != offset))
+ 		copy = msg->sg.data[i].length;
  
- 	if (!rcu_dereference_protected(ipvs->conn_tab, 1))
- 		return;
--	cancel_delayed_work_sync(&ipvs->conn_resize_work);
-+	disable_delayed_work_sync(&ipvs->conn_resize_work);
- 	if (!atomic_read(&ipvs->conn_count))
- 		goto unreg;
- 
-diff --git a/net/netfilter/ipvs/ip_vs_ctl.c b/net/netfilter/ipvs/ip_vs_ctl.c
-index 27e50afe9a54..caec516856e9 100644
---- a/net/netfilter/ipvs/ip_vs_ctl.c
-+++ b/net/netfilter/ipvs/ip_vs_ctl.c
-@@ -2469,7 +2469,7 @@ static int ipvs_proc_conn_lfactor(const struct ctl_table *table, int write,
- 		if (val < -8 || val > 8) {
- 			ret = -EINVAL;
- 		} else {
--			*valp = val;
-+			WRITE_ONCE(*valp, val);
- 			if (rcu_access_pointer(ipvs->conn_tab))
- 				mod_delayed_work(system_unbound_wq,
- 						 &ipvs->conn_resize_work, 0);
-@@ -2496,10 +2496,16 @@ static int ipvs_proc_svc_lfactor(const struct ctl_table *table, int write,
- 		if (val < -8 || val > 8) {
- 			ret = -EINVAL;
- 		} else {
--			*valp = val;
--			if (rcu_access_pointer(ipvs->svc_table))
-+			mutex_lock(&ipvs->service_mutex);
-+			WRITE_ONCE(*valp, val);
-+			/* Make sure the services are present */
-+			if (rcu_access_pointer(ipvs->svc_table) &&
-+			    READ_ONCE(ipvs->enable) &&
-+			    !test_bit(IP_VS_WORK_SVC_NORESIZE,
-+				      &ipvs->work_flags))
- 				mod_delayed_work(system_unbound_wq,
- 						 &ipvs->svc_resize_work, 0);
-+			mutex_unlock(&ipvs->service_mutex);
- 		}
- 	}
- 	return ret;
++	if (unlikely(copy + len < copy))
++		return -EINVAL;
++
+ 	page = alloc_pages(__GFP_NOWARN | GFP_ATOMIC | __GFP_COMP,
+ 			   get_order(copy + len));
+ 	if (unlikely(!page))
 -- 
-2.47.3
+2.43.0
 
