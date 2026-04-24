@@ -1,144 +1,120 @@
-Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net (zg8tmtyylji0my4xnjqumte4.icoremail.net [162.243.164.118])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4ECD3246F4;
-	Fri, 24 Apr 2026 03:27:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.164.118
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8005333710F;
+	Fri, 24 Apr 2026 03:28:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777001241; cv=none; b=h8bnKDFESph/FGRykRXCLbs/9j5DY5h7CKM5UFtD+h+DfjesOB/dcSMKZNIQN+dTwPf5JDCBAs6z+Q6w2ojf1vK6RaN3bF1+aPyAV5KG2bnqJ+I6nsYFqA8/hzmomYUf0B4t8AcvPG3YpFw/5HAtci+S6O1VZ7+WYjQT/fcxgR0=
+	t=1777001337; cv=none; b=nEJC+rummXbh4//IUWihWaYNlTRqI4Wn7aUiHXMEOZS/X5D3nqslGKKbOwq4XiLQH3HAK6XkCX7hOJaH89TAJRru17s+mi/28aMlr1kmfngijtm/jmQf/LK25yg7sLKHXywSfGyPOZX+oFV186LAuiNi5TJ5eGpA9iPbguTGVg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777001241; c=relaxed/simple;
-	bh=Nfyh6EZXE4jFN6//pg3oGRK0yvC6mBI8iw3AmGvBYOM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=vE5hHAIJUPiHb52WZvIgOI5W4sb7nnaPxKKxr3w89+flhs3S51faHjk8PxwuqAnh28U5buNbTYeXtoUsLKAsYvW1Di4iPMqGfaQxf5WIka3itavWpMLcA/PErWqnhNYgjv0bdxFivAfebLGH2mjxkWMT5pUDUA2gys8/QbPKIgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stu.xidian.edu.cn; spf=pass smtp.mailfrom=stu.xidian.edu.cn; dkim=fail (0-bit key) header.d=stu.xidian.edu.cn header.i=@stu.xidian.edu.cn header.b=0IDPDMQ3 reason="key not found in DNS"; arc=none smtp.client-ip=162.243.164.118
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stu.xidian.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=stu.xidian.edu.cn
+	s=arc-20240116; t=1777001337; c=relaxed/simple;
+	bh=8KbY4d9Sc1hur3MrKTEc3ePr/WWJlpdT80t8kvm2Slo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QTF7i3SXlKSqzYZaX/fCZEZCDG/l6Eqp2hw28X7t3W2TEgVb9Rg6ZfmOZCwEfcchMH8x2E2BB5/mfgJqk5TNA1ctEnZuysvy/Oocb+1x/QUy2nOIt6yNBaOb29mRFM1xaOG0t5TTBXvcQgXz/9c1T77MnCj1Mg1kiQj8/pjWwfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=s62oztTN; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=stu.xidian.edu.cn header.i=@stu.xidian.edu.cn header.b="0IDPDMQ3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=stu.xidian.edu.cn; s=dkim; h=Received:Date:From:To:Cc:Subject:
-	In-Reply-To:References:Content-Transfer-Encoding:Content-Type:
-	MIME-Version:Message-ID; bh=03auAPiwYF+opus+PAsyB8VIJ1LtPw9sr9sG
-	VHXuhQ8=; b=0IDPDMQ3BQhz+stCTDHkpb5rgNnjQofkjVITmydt9RqdIuwKt5Kg
-	kaWXAPujkMlrvDnR6stiuzzqrdj5b466+PWYqz1e3cXXQmdkN8FK1h75sEynQqJ5
-	YIdsP5DeLUyFp61bUjKBX+RibvQYbkg28ddTVrwLIf2AUPlLRG48B9M=
-Received: from 25181214217$stu.xidian.edu.cn ( [113.200.174.80] ) by
- ajax-webmail-hzbj-edu-front-4.icoremail.net (Coremail) ; Fri, 24 Apr 2026
- 11:26:49 +0800 (GMT+08:00)
-Date: Fri, 24 Apr 2026 11:26:49 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From: =?UTF-8?B?546L5piO54Wc?= <25181214217@stu.xidian.edu.cn>
-To: "Willem de Bruijn" <willemdebruijn.kernel@gmail.com>
-Cc: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, sd@queasysnail.net,
-	horms@kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+e5d6936b9f4545fd88ab@syzkaller.appspotmail.com
-Subject: Re: Re: Re: [PATCH v2] ipv6: fix memory leak in __ip6_make_skb()
- when queue is empty
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2024.3-cmXT6 build
- 20250410(2f5ccd7f) Copyright (c) 2002-2026 www.mailtech.cn
- mispb-8dfce572-2f24-404d-b59d-0dd2e304114c-icoremail.cn
-In-Reply-To: <2ebe2714.7628.19dbd7d2b62.Coremail.25181214217@stu.xidian.edu.cn>
-References: <20260423082233.514056-1-25181214217@stu.xidian.edu.cn>
- <willemdebruijn.kernel.28284ffff84dc@gmail.com>
- <2ebe2714.7628.19dbd7d2b62.Coremail.25181214217@stu.xidian.edu.cn>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="s62oztTN"
+Received: by linux.microsoft.com (Postfix, from userid 1204)
+	id 5EFDF20B7165; Thu, 23 Apr 2026 20:28:55 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 5EFDF20B7165
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1777001335;
+	bh=hozJVYNbCa3wzecJn7QvQ9EMZSOZzc1JqZvHkZlE9Zo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=s62oztTNxMqGVuyaG2gEvGu12rVs6B0C5CMdSYnyxlsFB9uJ03pN+q5zWKBEuMwx5
+	 L6UvbtEEU07uN8K57dKz84WtwOg7rV1dbI1AVqLbiwG1FU5chgJDIbxLQMbNXw72HA
+	 TpEcyo9QNs20D6sNbK8Gaa/FamMqDPv9Yz/F83EU=
+Date: Thu, 23 Apr 2026 20:28:55 -0700
+From: Dipayaan Roy <dipayanroy@linux.microsoft.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+	decui@microsoft.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	leon@kernel.org, longli@microsoft.com, kotaranov@microsoft.com,
+	horms@kernel.org, shradhagupta@linux.microsoft.com,
+	ssengar@linux.microsoft.com, ernis@linux.microsoft.com,
+	shirazsaleem@microsoft.com, linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-rdma@vger.kernel.org, stephen@networkplumber.org,
+	jacob.e.keller@intel.com, dipayanroy@microsoft.com,
+	leitao@debian.org, kees@kernel.org, john.fastabend@gmail.com,
+	hawk@kernel.org, bpf@vger.kernel.org, daniel@iogearbox.net,
+	ast@kernel.org, sdf@fomichev.me, yury.norov@gmail.com
+Subject: Re: [PATCH net] net: mana: hardening: Validate SHM offset from BAR0
+ register to prevent crash due to alignment fault
+Message-ID: <aerjdzgetiIeiBto@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <aepF3NwyANeklkfD@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+ <edccaafd-73f3-421d-a48e-a6cb704d39e6@lunn.ch>
+ <aepviNMszMBtiB/H@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+ <7c4dbe89-9b51-45d6-ae89-39d4183e66b1@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <5eabb1a1.7642.19dbd869da3.Coremail.25181214217@stu.xidian.edu.cn>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:BrQMCkCGLrr54upp_XO7AQ--.44067W
-X-CM-SenderInfo: qsvrmiqsrujiux6v33wo0lvxldqovvfxof0/1tbiAQUMEWno5lnjs
-	QAFsw
-X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
-	CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
-	daVFxhVjvjDU=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7c4dbe89-9b51-45d6-ae89-39d4183e66b1@lunn.ch>
 
-SGkgU2FicmluYSBhbmQgSmFrdWIsCgpCZWZvcmUgc2VuZGluZyBvdXQgdGhlIHYzIHBhdGNoLCBJ
-IHN5bmNlZCBteSB0cmVlIHRvIHRoZSBsYXRlc3QgbWFpbmxpbmUgYW5kIGNoZWNrZWQgdGhlIGN1
-cnJlbnQgc3RhdGUgb2YgYGlwNl9tYWtlX3NrYigpYC4gCgpJdCB0dXJucyBvdXQgdGhhdCB0aGUg
-bWlzc2luZyBgaXA2X2NvcmtfcmVsZWFzZShjb3JrKWAgaW4gdGhlIGVycm9yIHBhdGggd2FzIGFs
-cmVhZHkgbmF0dXJhbGx5IHJlc29sdmVkIGJ5IEVyaWMgRHVtYXpldCdzIHJlY2VudCByZWZhY3Rv
-cmluZyBjb21taXQ6CmI0MDlhN2Y3MTc2YiAoImlwdjY6IGNvbG9jYXRlIGluZXQ2X2NvcmsgaW4g
-aW5ldF9jb3JrX2Z1bGwiKQoKV2l0aCBFcmljJ3MgY2hhbmdlcywgdGhlIGVycm9yIGhhbmRsaW5n
-IG5vdyBjb3JyZWN0bHkgY2FsbHMgYGlwNl9jb3JrX3JlbGVhc2UoY29yaylgIGlmIGBpcDZfc2V0
-dXBfY29yaygpYCBmYWlscywgbWVhbmluZyB0aGUgbWVtb3J5IGxlYWsgaXMgbm8gbG9uZ2VyIHBy
-ZXNlbnQgaW4gdGhlIGxhdGVzdCB0cmVlLgoKUGxlYXNlIGRpc3JlZ2FyZCBteSB2MSBhbmQgdjIg
-cGF0Y2hlcy4gSSBhbSBhbHNvIHRlbGxpbmcgc3l6Ym90IHRvIGNsb3NlIHRoaXMgcmVwb3J0IGJh
-c2VkIG9uIEVyaWMncyBjb21taXQuCgpUaGFuayB5b3UgYWxsIGFnYWluIGZvciB5b3VyIHRpbWUs
-IHRoZSBkZWVwIGNvZGUgcmV2aWV3LCBhbmQgZm9yIGd1aWRpbmcgbWUgdG8gZmluZCB0aGUgdHJ1
-ZSByb290IGNhdXNlLiBJIGxlYXJuZWQgYSBodWdlIGFtb3VudCBmcm9tIHRoaXMgZGlzY3Vzc2lv
-biEKCiNzeXogZml4OiBpcHY2OiBjb2xvY2F0ZSBpbmV0Nl9jb3JrIGluIGluZXRfY29ya19mdWxs
-CgpCZXN0IHJlZ2FyZHMsCk1pbmd5dSBXYW5nCgoyMDI2LTA0LTI0IDExOjE2OjMwICLnjovmmI7n
-hZwiIDwyNTE4MTIxNDIxN0BzdHUueGlkaWFuLmVkdS5jbj4g5YaZ6YGT77yaCj4gSGksDQo+IA0K
-PiBUaGFuayB5b3Ugc28gbXVjaCBmb3IgdGhlIHJldmlldyBhbmQgZm9yIHBvaW50aW5nIG1lIHRv
-IHRoZSBjb3JyZWN0IEZpeGVzIHRhZyENCj4gDQo+IFlvdSBoaXQgdGhlIG5haWwgb24gdGhlIGhl
-YWQgcmVnYXJkaW5nIGBfX2lwNl9hcHBlbmRfZGF0YSgpYC4gQWZ0ZXIgcmUtZXZhbHVhdGluZyB0
-aGUgY29kZSBwYXRoIGJhc2VkIG9uIHlvdXIgcXVlc3Rpb24sIEkgcmVhbGl6ZSBteSBhc3N1bXB0
-aW9uIGluIHYyIHdhcyBpbmNvcnJlY3QuIGBfX2lwNl9hcHBlbmRfZGF0YSgpYCBkb2VzIGluZGVl
-ZCBndWFyYW50ZWUgdGhhdCBhbiBza2IgaXMgcXVldWVkIHVwb24gc3VjY2VzcywgbWFraW5nIHRo
-ZSBgc2tiID09IE5VTExgIHBhdGggZGVhZCBjb2RlIGluIHRoaXMgY29udGV4dC4NCj4gDQo+IEkg
-dHJhY2VkIHRoZSBgZmFpbHNsYWJgIG1lbW9yeSBsZWFrIGJhY2sgdG8gaXRzIHRydWUgb3JpZ2lu
-OiB0aGUgbG9ja2xlc3MgZmFzdCBwYXRoIHdyYXBwZXIgYGlwNl9tYWtlX3NrYigpYC4NCj4gDQo+
-IFNhYnJpbmEgcHJldmlvdXNseSBub3RlZCB0aGF0IGBpcDZfc2V0dXBfY29yaygpYCBmYWlsdXJl
-cyBjb3JyZWN0bHkgcmVsZWFzZSB0aGUgZHN0LiBUaGF0IGlzIGFic29sdXRlbHkgdHJ1ZSBmb3Ig
-dGhlIHNsb3cgcGF0aCwgd2hlcmUgYHVkcF92Nl9mbHVzaF9wZW5kaW5nX2ZyYW1lcygpYCBldmVu
-dHVhbGx5IGhhbmRsZXMgdGhlIGNsZWFudXAuIA0KPiANCj4gSG93ZXZlciwgaW4gdGhlIGZhc3Qg
-cGF0aCwgYGlwNl9tYWtlX3NrYigpYCBjYWxscyBgaXA2X3NldHVwX2NvcmsoKWAuIEluc2lkZSBg
-aXA2X3NldHVwX2NvcmsoKWAsIGBjb3JrLT5iYXNlLmRzdGAgaXMgYXNzaWduZWQgZWFybHkuIElm
-IGEgc3Vic2VxdWVudCBtZW1vcnkgYWxsb2NhdGlvbiBmYWlscyAoZS5nLiwgYHY2X2NvcmstPm9w
-dCA9IGt6YWxsb2MoLi4uKWAgZmFpbGluZyBkdWUgdG8gZmFpbHNsYWIpLCBpdCByZXR1cm5zIGFu
-IGVycm9yLiBgaXA2X21ha2Vfc2tiKClgIHRoZW4gZGlyZWN0bHkgcmV0dXJucyBgRVJSX1BUUihl
-cnIpYCBXSVRIT1VUIGNhbGxpbmcgYGlwNl9jb3JrX3JlbGVhc2UoY29yaylgLg0KPiANCj4gU2lu
-Y2UgYHVkcHY2X3NlbmRtc2coKWAgYXNzdW1lcyB0aGUgYGRzdGAgcmVmZXJlbmNlIGlzIHN0b2xl
-biBieSBgaXA2X21ha2Vfc2tiKClgIGFuZCB1bmNvbmRpdGlvbmFsbHkganVtcHMgdG8gYG91dF9u
-b19kc3RgLCB0aGUgYGRzdGAgaXMgY29tcGxldGVseSBsZWFrZWQuDQo+IA0KPiBUaGUgZml4IGlz
-IHNpbXBseSB0byBhZGQgYGlwNl9jb3JrX3JlbGVhc2UoY29yaylgIGluIHRoZSBgaXA2X3NldHVw
-X2NvcmsoKWAgZXJyb3IgcGF0aCBpbnNpZGUgYGlwNl9tYWtlX3NrYigpYC4NCj4gDQo+IEkgd2ls
-bCBzdWJtaXQgYSB2MyBwYXRjaCBzaG9ydGx5IGFkZHJlc3NpbmcgdGhpcyB0cnVlIHJvb3QgY2F1
-c2UgYW5kIHVzaW5nIHlvdXIgc3VnZ2VzdGVkIEZpeGVzIHRhZy4gVGhhbmsgeW91IGFnYWluIGZv
-ciBzdGVlcmluZyBtZSBpbiB0aGUgZXhhY3QgcmlnaHQgZGlyZWN0aW9uIQ0KPiANCj4gQmVzdCBy
-ZWdhcmRzLA0KPiBNaW5neXUgV2FuZw0KPiANCj4gDQo+ID4gLS0tLS3ljp/lp4vpgq7ku7YtLS0t
-LQ0KPiA+IOWPkeS7tuS6ujogIldpbGxlbSBkZSBCcnVpam4iIDx3aWxsZW1kZWJydWlqbi5rZXJu
-ZWxAZ21haWwuY29tPg0KPiA+IOWPkemAgeaXtumXtDoyMDI2LTA0LTIzIDIyOjU5OjQ1ICjmmJ/m
-nJ/lm5spDQo+ID4g5pS25Lu25Lq6OiAiTWluZ3l1IFdhbmciIDwyNTE4MTIxNDIxN0BzdHUueGlk
-aWFuLmVkdS5jbj4sIHdpbGxlbWRlYnJ1aWpuLmtlcm5lbEBnbWFpbC5jb20sIGRhdmVtQGRhdmVt
-bG9mdC5uZXQsIGRzYWhlcm5Aa2VybmVsLm9yZywgZWR1bWF6ZXRAZ29vZ2xlLmNvbSwga3ViYUBr
-ZXJuZWwub3JnLCBwYWJlbmlAcmVkaGF0LmNvbQ0KPiA+IOaKhOmAgTogc2RAcXVlYXN5c25haWwu
-bmV0LCBob3Jtc0BrZXJuZWwub3JnLCBuZXRkZXZAdmdlci5rZXJuZWwub3JnLCBsaW51eC1rZXJu
-ZWxAdmdlci5rZXJuZWwub3JnLCAiTWluZ3l1IFdhbmciIDwyNTE4MTIxNDIxN0BzdHUueGlkaWFu
-LmVkdS5jbj4sIHN5emJvdCtlNWQ2OTM2YjlmNDU0NWZkODhhYkBzeXprYWxsZXIuYXBwc3BvdG1h
-aWwuY29tDQo+ID4g5Li76aKYOiBSZTogW1BBVENIIHYyXSBpcHY2OiBmaXggbWVtb3J5IGxlYWsg
-aW4gX19pcDZfbWFrZV9za2IoKSB3aGVuIHF1ZXVlIGlzIGVtcHR5DQo+ID4gDQo+ID4gTWluZ3l1
-IFdhbmcgd3JvdGU6DQo+ID4gPiBEdXJpbmcgZnV6emluZyB3aXRoIGZhaWxzbGFiIGVuYWJsZWQs
-IGEgbWVtb3J5IGxlYWsgd2FzIG9ic2VydmVkIGluIHRoZQ0KPiA+ID4gSVB2NiBVRFAgc2VuZCBw
-YXRoLg0KPiA+ID4gDQo+ID4gPiBUaGUgcm9vdCBjYXVzZSByZXNpZGVzIGluIF9faXA2X21ha2Vf
-c2tiKCkuIEluIGV4dHJlbWVseSByYXJlIGNhc2VzDQo+ID4gPiAoc3VjaCBhcyBmYXVsdCBpbmpl
-Y3Rpb24gb3Igc3BlY2lmaWMgZW1wdHkgcGF5bG9hZCBjb25kaXRpb25zKSwNCj4gPiANCj4gPiBD
-YW4geW91IGVsYWJvcmF0ZSBvbiB0aGlzPyBXaGljaCBmYXVsdCBpbmplY3Rpb24gbGV0cw0KPiA+
-IF9faXA2X2FwcGVuZF9kYXRhIHN1Y2NlZWQgd2l0aG91dCB3cml0aW5nIGRhdGE/DQo+ID4gDQo+
-ID4gPiBfX2lwNl9hcHBlbmRfZGF0YSgpIG1heSBzdWNjZWVkIGJ1dCBsZWF2ZSB0aGUgc29ja2V0
-J3Mgd3JpdGUgcXVldWUNCj4gPiA+IGVtcHR5Lg0KPiA+ID4gDQo+ID4gPiBXaGVuIF9faXA2X21h
-a2Vfc2tiKCkgaXMgc3Vic2VxdWVudGx5IGNhbGxlZCwgX19za2JfZGVxdWV1ZShxdWV1ZSkNCj4g
-PiA+IHJldHVybnMgTlVMTC4gVGhlIHByZXZpb3VzIGxvZ2ljIGhhbmRsZWQgdGhpcyBieSBleGVj
-dXRpbmcgYSAnZ290byBvdXQ7JywNCj4gPiA+IHdoaWNoIGNvbXBsZXRlbHkgYnlwYXNzZWQgdGhl
-IGNhbGwgdG8gaXA2X2NvcmtfcmVsZWFzZShjb3JrKS4NCj4gPiA+IA0KPiA+ID4gU2luY2UgdGhl
-ICdjb3JrJyBzdHJ1Y3R1cmUgYWN0aXZlbHkgaG9sZHMgYSByZWZlcmVuY2UgdG8gdGhlIHJvdXRp
-bmcNCj4gPiA+IGVudHJ5IChkc3RfZW50cnkpIGFuZCBwb3RlbnRpYWxseSBvdGhlciBhbGxvY2F0
-ZWQgb3B0aW9ucywgc2tpcHBpbmcNCj4gPiA+IHRoZSByZWxlYXNlIGNsZWFubHkgbGVha3MgdGhl
-c2UgcmVzb3VyY2VzLg0KPiA+ID4gDQo+ID4gPiBGaXggdGhpcyBieSBpbnRyb2R1Y2luZyBhbiAn
-b3V0X2NvcmtfcmVsZWFzZScgbGFiZWwgYW5kIGp1bXBpbmcgdG8gaXQNCj4gPiA+IHdoZW4gc2ti
-IGlzIE5VTEwsIGVuc3VyaW5nIHRoZSBjb3JrIHN0YXRlIGlzIGFsd2F5cyBwcm9wZXJseSBjbGVh
-bmVkIHVwLg0KPiA+ID4gVGhlIG5vdy11bnVzZWQgJ291dCcgbGFiZWwgaXMgYWxzbyByZW1vdmVk
-IHRvIHByZXZlbnQgY29tcGlsZXIgd2FybmluZ3MuDQo+ID4gPiANCj4gPiA+IEZpeGVzOiAxZGEx
-NzdlNGMzZjQgKCJMaW51eC0yLjYuMTItcmMyIikNCj4gPiANCj4gPiBJIHRoaW5rIHRoaXMgaXMg
-DQo+ID4gDQo+ID4gRml4ZXM6IDY0MjIzOThjMmFiMCAoImlwdjY6IGludHJvZHVjZSBpcHY2X21h
-a2Vfc2tiIikNCj4gPiANCj4gPiA+IFJlcG9ydGVkLWJ5OiBzeXpib3QrZTVkNjkzNmI5ZjQ1NDVm
-ZDg4YWJAc3l6a2FsbGVyLmFwcHNwb3RtYWlsLmNvbQ0KPiA+ID4gU2lnbmVkLW9mZi1ieTogTWlu
-Z3l1IFdhbmcgPDI1MTgxMjE0MjE3QHN0dS54aWRpYW4uZWR1LmNuPg0K
+On Thu, Apr 23, 2026 at 09:44:04PM +0200, Andrew Lunn wrote:
+> On Thu, Apr 23, 2026 at 12:14:16PM -0700, Dipayaan Roy wrote:
+> > On Thu, Apr 23, 2026 at 06:37:04PM +0200, Andrew Lunn wrote:
+> > > > The root cause is in mana_gd_init_vf_regs(), which computes:
+> > > > 
+> > > >   gc->shm_base = gc->bar0_va + mana_gd_r64(gc, GDMA_REG_SHM_OFFSET);
+> > > > 
+> > > > without validating the offset read from hardware. If the register
+> > > > returns a garbage value that is neither within bar 0 bounds nor aligned
+> > > > to the 4-byte granularity, thus causing the alignment fault.
+> > > 
+> > > Is GDMA_REG_SHM_OFFSET special?
+> > Hi Andrew,
+> > GDMA_REG_SHM_OFFSET is not special. It was simply the only register
+> > read that had no validation at all. The other two registers
+> > (GDMA_REG_DB_PAGE_SIZE, GDMA_REG_DB_PAGE_OFFSET) already have checks
+> > in place.
+> 
+> I must be missing something:
+> 
+> grep page_size *
+> 
+> gdma_main.c:	gc->db_page_size = mana_gd_r32(gc, GDMA_PF_REG_DB_PAGE_SIZE) & 0xFFFF;
+> gdma_main.c:	gc->db_page_size = mana_gd_r32(gc, GDMA_REG_DB_PAGE_SIZE) & 0xFFFF;
+> gdma_main.c:	void __iomem *addr = gc->db_page_base + gc->db_page_size * db_index;
+> 
+
+Hi Andrew,
+There are 2 upstream commits regarding these, I think you missed
+them please check once:
+
+commit fb4b4a05aeeb8b0f253c5ddce21f4635dadc9550
+Author: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+Date:   Wed Mar 25 11:04:17 2026 -0700
+ 
+    net: mana: Use at least SZ_4K in doorbell ID range check
+
+commit 89fe91c65992a37863241e35aec151210efc53ce
+Author: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+Date:   Fri Mar 6 13:12:06 2026 -0800
+ 
+    net: mana: hardening: Validate doorbell ID from GDMA_REGISTER_DEVICE response
+
+> So if GDMA_REG_DB_PAGE_SIZE returns garbage, it is at least masked,
+> but it is still a random number.
+> 
+> mana_gd_ring_doorbell() takes this random number, multiples by
+> db_index, adds, gc->db_page_base and then does:
+> 
+> writeq(e.as_uint64, addr);
+> 
+> So you write to a random address. 
+> 
+> I don't see any sanity checks here. Cannot you check that db_page_size
+> is at least one of the expected page sizes?
+As mentioned above checks are already present in this commit: 89fe91c65992a37863241e35aec151210efc53ce
+> 
+>    Andrew
+
+Regards
+Dipayaan Roy
