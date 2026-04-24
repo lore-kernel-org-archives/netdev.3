@@ -1,96 +1,147 @@
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from acj35aaf125.lhr1.oracleemaildelivery.com (acj35aaf125.lhr1.oracleemaildelivery.com [130.35.116.125])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBE4D239E6C
-	for <netdev@vger.kernel.org>; Fri, 24 Apr 2026 22:01:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39079337688
+	for <netdev@vger.kernel.org>; Fri, 24 Apr 2026 22:38:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.35.116.125
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777068069; cv=none; b=P4gH+JH5vwEDOhqCqh/a220iqhg0rTZML7heuSC/P/rnn6ieRAhuwUHlVswNLH3+GPR/cI4G/UsqA5bONO44PTS+mDW3OvIvfGSW3B5M0MtX1wm3WcnguhuSk+O5JmZh+kTSQb2bvZ+KkcuU5i5J1FqbusxN+S1YeO3f2Vn5NVg=
+	t=1777070318; cv=none; b=opaeCeJSVjnfIWujaPZ7P+d1tiGV38Je9aSEUqJFbBveEoP7UVZH69Z6hDRzNZ1pkf61inZnUYNTqfZXd3zNks2k5GaaY+Cxkwkl0zPJTXHVqfDH99jOpy4oc7StcOKd1qSdomykd4ZTfdzhhQ7IRkxPm0z0dFK/pJuWwkiP94A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777068069; c=relaxed/simple;
-	bh=Z8MToLMmTv7vX4Z6ouI/G4uQEhPx1JpDZt2yFdxB+vQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UoJWHukEU9HiriA1KhnsW0ufIK8JiS6YTXamOZMYfimT9f4coVZByi+QNuLYTf6g1DLR/Bs19h7pVVO/OqIqT4Si2JmnY6pFAcGc3ZOQG9b5fdvrfzs5slyo/hPP1y+LKeNQ/8SPYeZYEcHSVHaf4SJW+DvVxXq9q+KNKu9wJ0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b=dmX33PDY; arc=none smtp.client-ip=209.85.210.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
+	s=arc-20240116; t=1777070318; c=relaxed/simple;
+	bh=7xxX0CkMupQcfPTzee8ry5FcQlhHy6640eeW3exSrBA=;
+	h=From:To:Cc:Subject:Date:Message-id:In-reply-to:References:
+	 MIME-version; b=OPET/3VJGY5ociaWd7XIUDKARQXqtanIvnACQRbHLAn+hu5rlbl4Vb9bNATY6k+zFjHjLw0Zj1kAwGeBaDmnaiur72VEWnW7Z2OwWl3wYF2+xqj+wz7s0rCbbkGteKjzx07WgTWhADVdSiQXZbFTwCb8bd5Yfj1vqtXr6xPS19o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=raczylo.com; spf=pass smtp.mailfrom=lhr1.rp.oracleemaildelivery.com; dkim=pass (2048-bit key) header.d=raczylo.com header.i=@raczylo.com header.b=TSogRzS1; dkim=pass (2048-bit key) header.d=lhr1.rp.oracleemaildelivery.com header.i=@lhr1.rp.oracleemaildelivery.com header.b=K6Lrzat6; arc=none smtp.client-ip=130.35.116.125
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=raczylo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lhr1.rp.oracleemaildelivery.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b="dmX33PDY"
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-7dbec19732eso7080040a34.3
-        for <netdev@vger.kernel.org>; Fri, 24 Apr 2026 15:01:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20251104.gappssmtp.com; s=20251104; t=1777068067; x=1777672867; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VU54WrT8vSKz2nv46NK69CbxZNPdBhrL3CM8N1zOX1c=;
-        b=dmX33PDYb0Uh8Ieqorj7XWxY1gw4auirLLX6eC1//MmtMt9Dd+nnhrim5Oygfo32iT
-         Lrjms2F+EfCKwy7bjTV5q5s5tObfAMDXNONBaLD2MEMSUblmdCCq93YdcxVSdUODYzyv
-         Q2v9nlSIkL0zJcfz8PjyR6GkpenToPgU6/7FyhD7i9yz7tD3wQIxInPAygxTDJhGOuSK
-         UHKsiawywH1kwyMqv2mSl93GmtZaWRGEXAanc5Rn/OoBOJ+ttm5o3EtB7wlxwLNBBuHe
-         FoAkDntxZF9gqw831oAYVAtF1Orz2JRnHfG7/Vhi1C2WTLxGaEN1iweDF1ut0n/Bhfv1
-         3TjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777068067; x=1777672867;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=VU54WrT8vSKz2nv46NK69CbxZNPdBhrL3CM8N1zOX1c=;
-        b=GcyxdLCsH/UGuW1ytGU9cvY97Xc2CMHJEKrYRES1NxylZP+ypFGTFfakAtPBM9XpAk
-         uLfkogFDqW/7Kr2dPkf8pF+koTmMnsBL71M7hZkx7BLKPF+OCWj3QySCr+pYfEL7LcdW
-         SDQP+FT+JlafDnCVETB00AYL0MNXCvd78t7L7puUH4yYgfvBv6YsQHONkFGF0Hvsf7UP
-         Izs1I0C5d3tGESM/CmhYccWZ/nCEY+KnrjtChLWaMmoBieIii67+ZHiVU5W/h/ipnLNL
-         Gyb6hNQHW+6NrrejFh9/czS/27f6lP3GlVEBzUdSFBH7xdsk198N84auaTd9NzuCIu7P
-         8vnQ==
-X-Gm-Message-State: AOJu0YyPoY2o/7oGjX9UObs6+E4Hdj33y5aD2guCLBc37qb0nVzilp+i
-	e6f5uWBsEbEoXx25ST3RAVgyhb8FHojWKRO97MD2g99ai/qxFMoIGzqzu6TIi3zym7SziuPHYHH
-	QitWC
-X-Gm-Gg: AeBDietbhmwfOYWqpiY8IcLljSwiFbCYZqKqdmg3sDq43Lc33fwURok+5Cw2RYwy+Fw
-	DCaUrCMu7Evo4q+qQ32t9BAqrLe6ASfnEcvD1RT3/cOcwbbLu+z39dNSvpNF2xdJML/M0adyIoD
-	SVtRi8W0Hv3wP/bBGiFT7zoA5Jv0D3/7vHhqnKNqDjkLnQmzIqY9YsOeH8EyA+O+0EvMgCNjWmC
-	tFM/JxQs/4tr4oFPmqbAmnnerxqlFBQ1uGwKVzfbw8KdGGmyuqAIBZGsICOs/3rSJ8PRMGFbX/+
-	mGeyn1pqH0M6+8fOuCmr4s54n8MJbTC/RZ5GGEKbKhdc42C5pOuxG51DxClulzlFw59cbDG8JCo
-	dkp0bP9qFxoDnEtlxjASD9ujG/mbf+fx6Bk+o43z+guNp0GG+kjujnknTcnzpoJL+M7jRt6BNLJ
-	Stx2/nXhuBi3HKfeJwfA3p2hqBqk4xnUZF1TK5SHuhd9pTUw==
-X-Received: by 2002:a05:6830:280a:b0:7dc:4a43:fb5c with SMTP id 46e09a7af769-7dc950fedeamr23445672a34.11.1777068066705;
-        Fri, 24 Apr 2026 15:01:06 -0700 (PDT)
-Received: from phoenix.local ([104.202.41.210])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7dc97616c11sm19793538a34.25.2026.04.24.15.01.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Apr 2026 15:01:06 -0700 (PDT)
-Date: Fri, 24 Apr 2026 15:01:03 -0700
-From: Stephen Hemminger <stephen@networkplumber.org>
-To: Sergei Trofimovich <slyich@gmail.com>
-Cc: netdev@vger.kernel.org
-Subject: Re: [ANNOUNCE] iproute2 7.0 release
-Message-ID: <20260424150103.1f15fb4f@phoenix.local>
-In-Reply-To: <20260424213233.4dabf6bf@nz.home>
-References: <20260424213233.4dabf6bf@nz.home>
+	dkim=pass (2048-bit key) header.d=raczylo.com header.i=@raczylo.com header.b="TSogRzS1";
+	dkim=pass (2048-bit key) header.d=lhr1.rp.oracleemaildelivery.com header.i=@lhr1.rp.oracleemaildelivery.com header.b="K6Lrzat6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=oracle-uk-012026;
+ d=raczylo.com;
+ h=Date:To:From:Subject:Message-Id:MIME-Version:Sender:List-Unsubscribe:List-Unsubscribe-Post;
+ bh=G7jLGar8TG1IVsYdC7k9CyHPoJnsdAXy6l5eRrUEDPc=;
+ b=TSogRzS1n1mycUmGkpmYO5lL143T5F2DMNbAzHxby4VN9n+lBPx4X1pxHYIWS4Yz8SWQ6CxJhGZp
+   mm/8BqKibo+dj2yRBdedcLA7b3fh5EPg+ccD2MMR9an2M4CXHNs7UV2eDjHsh13BfbU/V9WAztdV
+   iQ+UCZbuIDOCD2svSrwc+XP1hA3zPF1JfEFtnsRbmoTbyqaNwR+M2bHurgFh/NwbUpTVAS9PzpKV
+   49+Ck2rXbp3S1gSsRSxK0f5GM/VQ31HtHoOgAuMp0g4AksPZ26Ni8tw8rp4fMr0+Oiu1r8J3bwk7
+   Ib1HCo+M/ZkbT6nEqruSNs3pw2KtTfHwfLJxxA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=prod-lhr-20191104;
+ d=lhr1.rp.oracleemaildelivery.com;
+ h=Date:To:From:Subject:Message-Id:MIME-Version:Sender:List-Unsubscribe:List-Unsubscribe-Post;
+ bh=G7jLGar8TG1IVsYdC7k9CyHPoJnsdAXy6l5eRrUEDPc=;
+ b=K6Lrzat6IjmF3/fCzjVKWErIcKFurJsh9BWs8qg6DrOLMapseRWURZaUGx6w96Wni29md4zpbZBS
+   igEXTi9UTIqixe0TH+Si302yJzZvWxDZmaNukN69ndI8duiBJTo5KFH3Uj3nTX6xHNRRHROj64hH
+   jLnPYeDKqfMgy7vkPSfdHB9+kmvL+8VdEMZbXtjTLn9WgygrW24yatazGbmd+ltBuNkxUQ+Exccg
+   eC4ICio5PYR5w/PbN7uS+xVEaW4xBj0qOyMPraOY+jwNO5eqT392nfo/5ml6VahfCNonp/k+Iqww
+   h7dLoLOkHIHdFmxKv1lOuQasu8vsL7i/cwfOkQ==
+Received: by omta-ad1-fd2-401-uk-london-1.omtaad1.vcndplhr.oraclevcn.com
+ (Oracle Communications Messaging Server 8.1.0.1.20260212 64bit (built Feb 12
+ 2026))
+ with ESMTPS id <0TE0005VUS8A7ZE0@omta-ad1-fd2-401-uk-london-1.omtaad1.vcndplhr.oraclevcn.com> for
+ netdev@vger.kernel.org; Fri, 24 Apr 2026 22:38:34 +0000 (GMT)
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+From: Lukasz Raczylo <lukasz@raczylo.com>
+To: netdev@vger.kernel.org
+Cc: Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,	linux-rpi-kernel@lists.infradead.org
+Subject: [RFC PATCH net-next 1/3] net: macb: flush PCIe posted write after
+ TSTART doorbell
+Date: Fri, 24 Apr 2026 23:38:31 +0100
+Message-id:
+ <3106d546d494f2f52ec832e7f7d04f534286e254.1777064117.git.lukasz@raczylo.com>
+X-Mailer: git-send-email 2.53.0
+In-reply-to: <cover.1777064117.git.lukasz@raczylo.com>
+References: <cover.1777064117.git.lukasz@raczylo.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-version: 1.0
+Content-transfer-encoding: 8bit
+Reporting-Meta:
+ AAFzDiYTuS9jvqSCDQoXiqVnkU2yDl7DFh57yZB8VktRLO86c1eFyO5ekvNWCLwV
+ PHyd9gw8WA5srfV/TRAF0XPcqN0ckK5QcJIF7eobe03u2sRYs57fa3Mgmg2gAtMw
+ 1CT7xUBuqHay+QGcBkLVevgREbdvX1cGfWq/pj43bFZqOKH7jp3vStUCpFn3WnqV
+ TyGYwGpmpEoP9tMuixXrpE2OujxyjmkJjmge/RsB5fLCB/drQzdkkH4AuS/ipJKk
+ 0RySA/KdV3OpQ2gZrrNZCCa3WiCohIFMCKYGaLEacN0QZBrdCcc8iPUNce3IAcGf
+ fxWvkC+id2HOacV04teARomQrNeXUQmRGPKZ/ZT3wcfkMLKNdUE7efBM/EkwoXJw
+ XV9gjqUV6s/ge8dwcHoSco74Y2yDf7H3Ua+uDwEQX9UaKavseF06+TkUOp99
 
-On Fri, 24 Apr 2026 21:32:33 +0100
-Sergei Trofimovich <slyich@gmail.com> wrote:
+macb_start_xmit() and macb_tx_restart() kick transmission by
+OR-ing MACB_BIT(TSTART) into NCR.  On PCIe-attached macb instances
+(BCM2712 + RP1 PCIe south bridge on Raspberry Pi 5 is the setup we
+have in front of us), writes to NCR are posted PCIe writes: they
+are not guaranteed to reach the device before the issuing CPU
+returns.  If the TSTART doorbell does not reach the MAC, no TX
+begins, no TCOMP completion arrives, and the ring remains
+quiescent without any kernel-visible indication.
 
-> > Download:
-> >    https://www.kernel.org/pub/linux/utils/net/iproute2/iproute2-7.0.0.tar.gz  
-> 
-> This URL is 404. Looking at https://www.kernel.org/pub/linux/utils/net/iproute2/
-> it looks like tarballs slightly changed their naming and now prepend `v`:
-> 
-> iproute2-6.19.0.tar.gz                             18-Feb-2026 15:36      1M
-> iproute2-6.19.0.tar.sign                           18-Feb-2026 15:36     566
-> iproute2-6.19.0.tar.xz                             18-Feb-2026 15:36    936K
-> ...
-> iproute2-v7.0.0.tar.gz                             13-Apr-2026 19:31      1M
-> iproute2-v7.0.0.tar.sign                           13-Apr-2026 19:31     566
-> iproute2-v7.0.0.tar.xz                             13-Apr-2026 19:31    940K
-> 
-> Should `v` be there? Worth removing at least for next releases?
-The v ones should not be there. It was a typo
+Note that the raspberrypi/linux vendor fork carries a local patch
+around the TSTART site (a queue->tx_pending breadcrumb that is
+promoted to queue->txubr_pending by the next TCOMP interrupt,
+triggering macb_tx_restart()).  That workaround makes the loss
+recoverable under traffic, but it cannot help if TCOMP itself is
+not raised because no TX started -- which is exactly the case we
+are targeting here.  The handshake is not present in mainline.
+
+Add a read-back of NCR after each TSTART write in macb_start_xmit()
+and macb_tx_restart().  The read is an architected PCIe read
+barrier for earlier posted writes on the same path; it ensures the
+doorbell has reached the MAC before the functions return.
+
+We do not yet have direct hardware evidence that TSTART is being
+lost on the RP1 path (that would require a PCIe protocol analyser,
+or at minimum a before/after counter on queue->tx_stall_last_tail
+with and without this patch applied in isolation).  This patch is
+one of a three-patch series ("candidate fixes for silent TX stall
+on BCM2712/RP1"); see the cover letter for context.  We have
+verified the series compiles and applies cleanly against mainline
+HEAD and against raspberrypi/linux rpi-6.18.y @ f2f68e79f16f;
+runtime verification is pending.
+
+Link: https://github.com/cilium/cilium/issues/43198
+Link: https://bugs.launchpad.net/ubuntu/+source/linux-raspi/+bug/2133877
+Signed-off-by: Lukasz Raczylo <lukasz@raczylo.com>
+---
+ drivers/net/ethernet/cadence/macb_main.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index a12aa2124..b6cca55ad 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -1922,6 +1922,13 @@ static void macb_tx_restart(struct macb_queue *queue)
+ 
+ 	spin_lock(&bp->lock);
+ 	macb_writel(bp, NCR, macb_readl(bp, NCR) | MACB_BIT(TSTART));
++	/*
++	 * Flush the PCIe posted-write queue so the TSTART doorbell
++	 * reliably reaches the MAC.  Without this, the write can sit
++	 * in the fabric and the MAC never advances, causing a silent
++	 * TX stall.
++	 */
++	(void)macb_readl(bp, NCR);
+ 	spin_unlock(&bp->lock);
+ 
+ out_tx_ptr_unlock:
+@@ -2560,6 +2567,11 @@ static netdev_tx_t macb_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	spin_lock(&bp->lock);
+ 	macb_tx_lpi_wake(bp);
+ 	macb_writel(bp, NCR, macb_readl(bp, NCR) | MACB_BIT(TSTART));
++	/*
++	 * Flush the PCIe posted-write queue; see the comment in
++	 * macb_tx_restart() for the reasoning.
++	 */
++	(void)macb_readl(bp, NCR);
+ 	spin_unlock(&bp->lock);
+ 
+ 	if (CIRC_SPACE(queue->tx_head, queue->tx_tail, bp->tx_ring_size) < 1)
+-- 
+2.53.0
+
