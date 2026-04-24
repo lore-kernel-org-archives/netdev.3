@@ -1,119 +1,101 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67116362133;
-	Fri, 24 Apr 2026 10:01:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42AB3364EA5
+	for <netdev@vger.kernel.org>; Fri, 24 Apr 2026 10:32:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777024881; cv=none; b=dgH72pNz7uCe7uwIvDGvX4ldrbqxRbl+1mQs7pEedS4Bm+3PFTVpTUnHkwAV6ivkMTjCnTR6FLxsoprDs/KbraDvahALRUh72Y0qgsyClcSL58quh7xuuj2yUkAxrRtp4Jq9lj2mFQ7epftmYy7KQa5TTtpXBBkvnE4GzG4e/d4=
+	t=1777026767; cv=none; b=riapW3uwQObKyhfPrQu1BCSYqG+irii6fHGkfowvmMWMJcwitdq2Q/lZb7UxdeEKWFpwEaVSDpygudaKZVZKLdbt2YZUVxhl++9omXvxjKr+OcrpkIbUB2/oLDisrBUTwqK0ZSqm0jFT5jHhMwA2ypc/3iPULKQZcDzelRiiB38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777024881; c=relaxed/simple;
-	bh=Yy2WannBX4lvU7zWsEb5b+r7/XwUG2n+24zBsfypLiY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=kPsCMX7SmvTNQDpPUwi9XJoXitsVoRxMQXU8ypSoESIDPc76NgUKib1urmDQXIAooupSH99fujmGdpKmAgpGovr53a8fYC7Vv3FIzytHLKWjiB3T4CoftmQm3rhxKrH1HDaW/qsRMdbAKQgQuXjzuWlTKm/MPPRsxQYFZSwCPjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=hNIS1fBb; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1777026767; c=relaxed/simple;
+	bh=FdOO5ZJKpunXt8R9oWk6B4rgl/tR+89ai4r1VJJ6pgo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=YjArQtEDVYSw2bl61gl1jJyPR9OweXHngyXc2+1ecLlSn2yytT8OGfgIZkZ3H4d/ltbwHIenttzT3ZSy83XK+6InbdvDya3EvHrMAHJYMg9eEcmC7az21qfOS7FJ2JojL5NkOKG/7M2XKdaZsc1XkKkYW1NDhb2AmLbzEAilNOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SmV9njz5; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="hNIS1fBb"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 428B9C5EF25;
-	Fri, 24 Apr 2026 10:01:57 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 7E950604EB;
-	Fri, 24 Apr 2026 10:01:15 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 70DD31072077B;
-	Fri, 24 Apr 2026 12:01:01 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1777024874; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=Zj0vqNHZ44r/6iCMJXkPmXsULWpgIxSih4Gcje05/Qo=;
-	b=hNIS1fBbL2jmpGnQpvm8pSLTr6wUeBb7FYn8g/hM9ONaWwZgtLnl8tgi6qQeCYtGrpY6D2
-	d3vUaAkJhOEo2xrNWcU0FbCgqCkTpg+hkLqjUiqEQAITtdKNhJqIouY6tvkrsk/Vm7Vu9A
-	xM73KELBCLRWzOVD3XNrqumcmmLxBRU44MdnVbsEvUm+cB0O18j9AYqoaraVlV2Pd0Zq9X
-	iLindmxk1IbAUiSWKTSYL5AuBmFLWiOhCIPjlwVyLVS1JVIsfr29Sed+uwnOL3smieQD2w
-	kgvOgF6TNN5jsPwblGZYa52vwkoj+QTNcGhQGKgV9jmruhpZdsCBaUSz/OKaCQ==
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Date: Fri, 24 Apr 2026 12:01:01 +0200
-Subject: [PATCH net] net: macb: drop in-flight Tx SKBs on close
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SmV9njz5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777026765;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=j8BpQcTU/HrFkQ0+UuHlyLaR2zAA5vDMBO2MGcO/oD4=;
+	b=SmV9njz5Ccuknz8SZJc2EggTZmWIdO+TCnenqk0QBEKIzERC+SGBinSQca42h+nOj4LIAj
+	cslWlJU/fTZAr73rP4VbQKFAZ2tuF+aAaWLYM5j0Bfcq0fqTnu3MDUdc2O+fS0+Rm3RE16
+	BXl/A76t0FByEGEtKgHB+nV491tIXZI=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-572-Bb_4hFO_PMqekvjZMqwVzw-1; Fri,
+ 24 Apr 2026 06:32:41 -0400
+X-MC-Unique: Bb_4hFO_PMqekvjZMqwVzw-1
+X-Mimecast-MFC-AGG-ID: Bb_4hFO_PMqekvjZMqwVzw_1777026759
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3576E19560AF;
+	Fri, 24 Apr 2026 10:32:39 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.44.32.29])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0D9631800348;
+	Fri, 24 Apr 2026 10:32:34 +0000 (UTC)
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+To: aleksandr.loktionov@intel.com
+Cc: anthony.l.nguyen@intel.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	horms@kernel.org,
+	intel-wired-lan@lists.osuosl.org,
+	jacob.e.keller@intel.com,
+	jesse.brandeburg@intel.com,
+	jtornosm@redhat.com,
+	kuba@kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	przemyslaw.kitszel@intel.com
+Subject: RE: [PATCH net v4 4/4] ice: skip unnecessary VF reset when setting trust
+Date: Fri, 24 Apr 2026 12:32:33 +0200
+Message-ID: <20260424103233.622318-1-jtornosm@redhat.com>
+In-Reply-To: <IA3PR11MB89862412A9F682D59474841DE52A2@IA3PR11MB8986.namprd11.prod.outlook.com>
+References: <IA3PR11MB89862412A9F682D59474841DE52A2@IA3PR11MB8986.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260424-macb-drop-tx-v1-1-b3ecb787d84d@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMzQqDMBAGX0W+swtx+yP6KtKDJmu7hUZJ0iKI7
- 96oxxmYWRElqES0xYogP406+QxVWcC+ev8UUpcZbPhurnyhT28HcmGaKS00NlZqrtk4c0NO5iC
- jLseug5eExynjd3iLTfsI2/YH5Ttx6XUAAAA=
-X-Change-ID: 20260423-macb-drop-tx-f9ce72720d05
-To: Nicolas Ferre <nicolas.ferre@microchip.com>, 
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Haavard Skinnemoen <hskinnemoen@atmel.com>, Jeff Garzik <jeff@garzik.org>
-Cc: Paolo Valerio <pvalerio@redhat.com>, Conor Dooley <conor@kernel.org>, 
- Nicolai Buchwitz <nb@tipi-net.de>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>, 
- Gregory CLEMENT <gregory.clement@bootlin.com>, 
- =?utf-8?q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>, 
- Tawfik Bayouk <tawfik.bayouk@mobileye.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Maxime Chevallier <maxime.chevallier@bootlin.com>, 
- =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-X-Mailer: b4 0.15.2
-X-Last-TLS-Session-Version: TLSv1.3
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-The MACB driver has since forever leaked the outgoing SKBs that have not
-yet been marked as completed. They live in queue->tx_skb which gets
-freed without remorse nor checking.
+Hello Aleksandr,
 
-macb_free_consistent() gets called in a few codepaths, but only
-close will trigger the added expressions. In macb_open() and
-macb_alloc_consistent() failure cases, tx_skb just got allocated
-and is empty.
+> For me it looks like  cc: stable@vger.kernel.org must be added
+I am not sure about that, because the bugs fixed  here (vf->trusted
+ordering and race condition) only trigger when MAC LLDP filters exist,
+which is an uncommon scenario.
+And most users will benefit from the performance improvement that is an
+optimization rather than the bug fixes.
+I mean, I included the commit fixed as a reference but due to optimization
+as the main reason, I didn't dare to request this for older versions.
 
-Fixes: 89e5785fc8a6 ("[PATCH] Atmel MACB ethernet driver")
-Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
----
- drivers/net/ethernet/cadence/macb_main.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+> You declare ice_vf_clear_all_promisc_modes() returning int, but ignore
+> the return value.
+> Looks suspicious isn't it?
+Well, it is used like that when the funciton is called locally (the
+function is not modifiedi, just made public), and really my intention was
+to clean as much as possible (so error checking is not necessary).
+In my opinion it would be enough to warn about the possible problems
+(already done in the existing function).
 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index a12aa21244e8..3ffd60b852f8 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -2649,6 +2649,7 @@ static unsigned int macb_rx_ring_size_per_queue(struct macb *bp)
- static void macb_free_consistent(struct macb *bp)
- {
- 	struct device *dev = &bp->pdev->dev;
-+	unsigned int dropped, tail;
- 	struct macb_queue *queue;
- 	unsigned int q;
- 	size_t size;
-@@ -2668,6 +2669,14 @@ static void macb_free_consistent(struct macb *bp)
- 	dma_free_coherent(dev, size, bp->queues[0].rx_ring, bp->queues[0].rx_ring_dma);
- 
- 	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
-+		dropped = CIRC_CNT(queue->tx_head, queue->tx_tail,
-+				   bp->tx_ring_size);
-+		queue->stats.tx_dropped += dropped;
-+		bp->dev->stats.tx_dropped += dropped;
-+
-+		for (tail = queue->tx_tail; tail != queue->tx_head; tail++)
-+			macb_tx_unmap(bp, macb_tx_skb(queue, tail), 0);
-+
- 		kfree(queue->tx_skb);
- 		queue->tx_skb = NULL;
- 		queue->tx_ring = NULL;
+Anyway, if, despite the reasons I have tried to explain, you still think
+the same way, please let me know so I can adjust them (if you don't mind,
+I would wait for more reviews to include them in a next version).
 
----
-base-commit: 41517b5a932a35c6f59a997ab3b7fa7746c273bd
-change-id: 20260423-macb-drop-tx-f9ce72720d05
+Thanks
 
-Best regards,
---  
-Théo Lebrun <theo.lebrun@bootlin.com>
+Best regards
+Jose Ignacio
 
