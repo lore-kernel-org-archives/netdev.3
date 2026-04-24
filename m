@@ -1,123 +1,183 @@
-Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net (zg8tmtyylji0my4xnjqumte4.icoremail.net [162.243.164.118])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC247322533;
-	Fri, 24 Apr 2026 03:16:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.164.118
+Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com [209.85.161.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D528933067F
+	for <netdev@vger.kernel.org>; Fri, 24 Apr 2026 03:27:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777000622; cv=none; b=tWnrP48wnuIl4kxlUPipQb4FDAuIG3oB5xM4fUyghmGG+Jf3ngCM66NYiDbX9B3xKr8/zMwSJdWeeuVEAG3y4ms09TyN39EW3pYW5KoJTIryW26+1+IUSyx1Q1VvbJ/ig4JGi3K6GcelX21H/SbAgE2dxuH6dqE+pGL/899Ce7E=
+	t=1777001237; cv=none; b=avuiaXsTJLrDl9oOyetixgM3wpDBGzpCrlqUfJOypfFWq0+c6AKZI4nErds2nmqJIdcOG1xgjEKIA6p+65r0GvMC34I4t18vccBHzBZz+k7z8HPK5EPddSC5PdMGovN0CdcuRAJLPjSiaaV9rWSiboKq0URXF0r8NzCu3KZhs7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777000622; c=relaxed/simple;
-	bh=5d+aTvIARB81a2h/srUTNg30rWs8r0SAMbRnn1BwJaE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=ggHpG6EimHbHi3zfMNsxwT9WdOLjYiQ63TioAz4SaEo+4uIYudOM+xVhLooV9IMvl0cP87t3on5bLHCYNF+svcoPAM95WlRcM3qIIaoOMTlx2zLiighiFHAEdW6PyQViJi5RNjIFg673Scj2I4mfVKRdbdDBNndxDPiQL+RHnBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stu.xidian.edu.cn; spf=pass smtp.mailfrom=stu.xidian.edu.cn; dkim=fail (0-bit key) header.d=stu.xidian.edu.cn header.i=@stu.xidian.edu.cn header.b=akk1KSvs reason="key not found in DNS"; arc=none smtp.client-ip=162.243.164.118
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stu.xidian.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=stu.xidian.edu.cn
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=stu.xidian.edu.cn header.i=@stu.xidian.edu.cn header.b="akk1KSvs"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=stu.xidian.edu.cn; s=dkim; h=Received:Date:From:To:Cc:Subject:
-	In-Reply-To:References:Content-Transfer-Encoding:Content-Type:
-	MIME-Version:Message-ID; bh=1bX4ogkkZT+w4GK5fk2iazUo5s/glwAUSDMJ
-	0JNhIZ0=; b=akk1KSvs3Z/BdgiqW25Pk49v6CunPbcQ9mLCr3IG9GPYcS1B4rkV
-	DzJ3h47Drj46hh7O4QktZgJgLoSjRjGj5GHj/WnL7d+8yO/MTo0EqMTMUzo2HL8a
-	GKVOJTznuBLYmgvR7zIrTVN8cG+FfwlBZDFI7+BPL7zEJm8+wrPxh9Q=
-Received: from 25181214217$stu.xidian.edu.cn ( [113.200.174.80] ) by
- ajax-webmail-hzbj-edu-front-4.icoremail.net (Coremail) ; Fri, 24 Apr 2026
- 11:16:30 +0800 (GMT+08:00)
-Date: Fri, 24 Apr 2026 11:16:30 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From: =?UTF-8?B?546L5piO54Wc?= <25181214217@stu.xidian.edu.cn>
-To: "Willem de Bruijn" <willemdebruijn.kernel@gmail.com>
-Cc: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, sd@queasysnail.net,
-	horms@kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+e5d6936b9f4545fd88ab@syzkaller.appspotmail.com
-Subject: Re: Re: [PATCH v2] ipv6: fix memory leak in __ip6_make_skb() when
- queue is empty
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2024.3-cmXT6 build
- 20250410(2f5ccd7f) Copyright (c) 2002-2026 www.mailtech.cn
- mispb-8dfce572-2f24-404d-b59d-0dd2e304114c-icoremail.cn
-In-Reply-To: <willemdebruijn.kernel.28284ffff84dc@gmail.com>
-References: <20260423082233.514056-1-25181214217@stu.xidian.edu.cn>
- <willemdebruijn.kernel.28284ffff84dc@gmail.com>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+	s=arc-20240116; t=1777001237; c=relaxed/simple;
+	bh=0AoTguzBN8mKKCDCJ82u/RQxCwI2CsHGJNhMtrhiwYY=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=bJihRm+b2l8WJIzce4bZ5uVXfURNrUpHcyzdsonmgSPM3wK/GZ9oJ/mRx9YgivnmyR3dKRxw8fm6XLSIgKxLh601u152rBSlj0UIuBG6Pozz8CkB2ZN79fYFUM5YgF+po3Yp2hbxG2o7v3slQ7EwT//jaCIRl/n8D5AfovPLSdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f70.google.com with SMTP id 006d021491bc7-694885643e1so9364498eaf.3
+        for <netdev@vger.kernel.org>; Thu, 23 Apr 2026 20:27:15 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777001235; x=1777606035;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:in-reply-to
+         :date:mime-version:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9H9/taI5CUrg1eJFWKBiLdIg5ptElOQYy3iuN3iNMrM=;
+        b=snPz1sn+KRDm+6HiSHBPSIIz3zYZQG1NdBvIUsfJHrJNbMRzWaHHK9CT/4dbIjfj86
+         L+aqb1LbbVa7xO9CgfvGyedIjZP+a14gIZfoOAHi3w1wx9M7zNeD9K5QbAEulLUbJFEV
+         /aU7wocX5cf/6Ve3UIU3vvMY30Rd/YF22+GyEp+wZdp3GbX3uFdIO/BXyYmDHRFHroHZ
+         t9qt9w3PShlLrnZBtKcz9tux9+P2gikAka9I5ZRbhK2Uj4jYRDUUy0XZfAfM5Izmo7v8
+         XAVASLD2fE3aGMgWCLDztTh5OISFLFH9RSNZIcOQrv5kOGN3XyG+CNmoM5udGowDxL84
+         NZ3g==
+X-Forwarded-Encrypted: i=1; AFNElJ+o+NrvQ+GAk+fRDqumPVhjgKtUBvw02fXlikQ+mNk2CRd35UK6wukW3+jZ4VyalU3U9t5Z6Yo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxIcdqzTUgnYr3N5BEvaNMonQyUsPc9FqXhH6uPY+xk5GrmauPm
+	MW7kQpLafztKYfHcIcHjrHPNNLNzKVT4yF0WBI0y59bBQEuyqMViyRDWS6z/YYtMbwRzD4jpz5C
+	w44t10J15bBuIOyCF0Hy8U9S6Awzb3cXA+sGYTkhygAh9O+iiVsq3vyPcD+Y=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <2ebe2714.7628.19dbd7d2b62.Coremail.25181214217@stu.xidian.edu.cn>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:BrQMCkCWP7uO4OppfmW7AQ--.43534W
-X-CM-SenderInfo: qsvrmiqsrujiux6v33wo0lvxldqovvfxof0/1tbiAQUMEWno5lnjs
-	QACs3
-X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
-	CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
-	daVFxhVjvjDU=
+X-Received: by 2002:a05:6820:1629:b0:67e:dab:7cf5 with SMTP id
+ 006d021491bc7-69462e4892fmr18137490eaf.17.1777001234878; Thu, 23 Apr 2026
+ 20:27:14 -0700 (PDT)
+Date: Thu, 23 Apr 2026 20:27:14 -0700
+In-Reply-To: <5eabb1a1.7642.19dbd869da3.Coremail.25181214217@stu.xidian.edu.cn>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69eae312.a00a0220.9259.0030.GAE@google.com>
+Subject: Re: Re: Re: [PATCH v2] ipv6: fix memory leak in __ip6_make_skb() when
+ queue is empty
+From: syzbot <syzbot@syzkaller.appspotmail.com>
+To: 25181214217@stu.xidian.edu.cn
+Cc: 25181214217@stu.xidian.edu.cn, davem@davemloft.net, dsahern@kernel.org, 
+	edumazet@google.com, horms@kernel.org, kuba@kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
+	sd@queasysnail.net, willemdebruijn.kernel@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-SGksCgpUaGFuayB5b3Ugc28gbXVjaCBmb3IgdGhlIHJldmlldyBhbmQgZm9yIHBvaW50aW5nIG1l
-IHRvIHRoZSBjb3JyZWN0IEZpeGVzIHRhZyEKCllvdSBoaXQgdGhlIG5haWwgb24gdGhlIGhlYWQg
-cmVnYXJkaW5nIGBfX2lwNl9hcHBlbmRfZGF0YSgpYC4gQWZ0ZXIgcmUtZXZhbHVhdGluZyB0aGUg
-Y29kZSBwYXRoIGJhc2VkIG9uIHlvdXIgcXVlc3Rpb24sIEkgcmVhbGl6ZSBteSBhc3N1bXB0aW9u
-IGluIHYyIHdhcyBpbmNvcnJlY3QuIGBfX2lwNl9hcHBlbmRfZGF0YSgpYCBkb2VzIGluZGVlZCBn
-dWFyYW50ZWUgdGhhdCBhbiBza2IgaXMgcXVldWVkIHVwb24gc3VjY2VzcywgbWFraW5nIHRoZSBg
-c2tiID09IE5VTExgIHBhdGggZGVhZCBjb2RlIGluIHRoaXMgY29udGV4dC4KCkkgdHJhY2VkIHRo
-ZSBgZmFpbHNsYWJgIG1lbW9yeSBsZWFrIGJhY2sgdG8gaXRzIHRydWUgb3JpZ2luOiB0aGUgbG9j
-a2xlc3MgZmFzdCBwYXRoIHdyYXBwZXIgYGlwNl9tYWtlX3NrYigpYC4KClNhYnJpbmEgcHJldmlv
-dXNseSBub3RlZCB0aGF0IGBpcDZfc2V0dXBfY29yaygpYCBmYWlsdXJlcyBjb3JyZWN0bHkgcmVs
-ZWFzZSB0aGUgZHN0LiBUaGF0IGlzIGFic29sdXRlbHkgdHJ1ZSBmb3IgdGhlIHNsb3cgcGF0aCwg
-d2hlcmUgYHVkcF92Nl9mbHVzaF9wZW5kaW5nX2ZyYW1lcygpYCBldmVudHVhbGx5IGhhbmRsZXMg
-dGhlIGNsZWFudXAuIAoKSG93ZXZlciwgaW4gdGhlIGZhc3QgcGF0aCwgYGlwNl9tYWtlX3NrYigp
-YCBjYWxscyBgaXA2X3NldHVwX2NvcmsoKWAuIEluc2lkZSBgaXA2X3NldHVwX2NvcmsoKWAsIGBj
-b3JrLT5iYXNlLmRzdGAgaXMgYXNzaWduZWQgZWFybHkuIElmIGEgc3Vic2VxdWVudCBtZW1vcnkg
-YWxsb2NhdGlvbiBmYWlscyAoZS5nLiwgYHY2X2NvcmstPm9wdCA9IGt6YWxsb2MoLi4uKWAgZmFp
-bGluZyBkdWUgdG8gZmFpbHNsYWIpLCBpdCByZXR1cm5zIGFuIGVycm9yLiBgaXA2X21ha2Vfc2ti
-KClgIHRoZW4gZGlyZWN0bHkgcmV0dXJucyBgRVJSX1BUUihlcnIpYCBXSVRIT1VUIGNhbGxpbmcg
-YGlwNl9jb3JrX3JlbGVhc2UoY29yaylgLgoKU2luY2UgYHVkcHY2X3NlbmRtc2coKWAgYXNzdW1l
-cyB0aGUgYGRzdGAgcmVmZXJlbmNlIGlzIHN0b2xlbiBieSBgaXA2X21ha2Vfc2tiKClgIGFuZCB1
-bmNvbmRpdGlvbmFsbHkganVtcHMgdG8gYG91dF9ub19kc3RgLCB0aGUgYGRzdGAgaXMgY29tcGxl
-dGVseSBsZWFrZWQuCgpUaGUgZml4IGlzIHNpbXBseSB0byBhZGQgYGlwNl9jb3JrX3JlbGVhc2Uo
-Y29yaylgIGluIHRoZSBgaXA2X3NldHVwX2NvcmsoKWAgZXJyb3IgcGF0aCBpbnNpZGUgYGlwNl9t
-YWtlX3NrYigpYC4KCkkgd2lsbCBzdWJtaXQgYSB2MyBwYXRjaCBzaG9ydGx5IGFkZHJlc3Npbmcg
-dGhpcyB0cnVlIHJvb3QgY2F1c2UgYW5kIHVzaW5nIHlvdXIgc3VnZ2VzdGVkIEZpeGVzIHRhZy4g
-VGhhbmsgeW91IGFnYWluIGZvciBzdGVlcmluZyBtZSBpbiB0aGUgZXhhY3QgcmlnaHQgZGlyZWN0
-aW9uIQoKQmVzdCByZWdhcmRzLApNaW5neXUgV2FuZwoKCj4gLS0tLS3ljp/lp4vpgq7ku7YtLS0t
-LQo+IOWPkeS7tuS6ujogIldpbGxlbSBkZSBCcnVpam4iIDx3aWxsZW1kZWJydWlqbi5rZXJuZWxA
-Z21haWwuY29tPgo+IOWPkemAgeaXtumXtDoyMDI2LTA0LTIzIDIyOjU5OjQ1ICjmmJ/mnJ/lm5sp
-Cj4g5pS25Lu25Lq6OiAiTWluZ3l1IFdhbmciIDwyNTE4MTIxNDIxN0BzdHUueGlkaWFuLmVkdS5j
-bj4sIHdpbGxlbWRlYnJ1aWpuLmtlcm5lbEBnbWFpbC5jb20sIGRhdmVtQGRhdmVtbG9mdC5uZXQs
-IGRzYWhlcm5Aa2VybmVsLm9yZywgZWR1bWF6ZXRAZ29vZ2xlLmNvbSwga3ViYUBrZXJuZWwub3Jn
-LCBwYWJlbmlAcmVkaGF0LmNvbQo+IOaKhOmAgTogc2RAcXVlYXN5c25haWwubmV0LCBob3Jtc0Br
-ZXJuZWwub3JnLCBuZXRkZXZAdmdlci5rZXJuZWwub3JnLCBsaW51eC1rZXJuZWxAdmdlci5rZXJu
-ZWwub3JnLCAiTWluZ3l1IFdhbmciIDwyNTE4MTIxNDIxN0BzdHUueGlkaWFuLmVkdS5jbj4sIHN5
-emJvdCtlNWQ2OTM2YjlmNDU0NWZkODhhYkBzeXprYWxsZXIuYXBwc3BvdG1haWwuY29tCj4g5Li7
-6aKYOiBSZTogW1BBVENIIHYyXSBpcHY2OiBmaXggbWVtb3J5IGxlYWsgaW4gX19pcDZfbWFrZV9z
-a2IoKSB3aGVuIHF1ZXVlIGlzIGVtcHR5Cj4gCj4gTWluZ3l1IFdhbmcgd3JvdGU6Cj4gPiBEdXJp
-bmcgZnV6emluZyB3aXRoIGZhaWxzbGFiIGVuYWJsZWQsIGEgbWVtb3J5IGxlYWsgd2FzIG9ic2Vy
-dmVkIGluIHRoZQo+ID4gSVB2NiBVRFAgc2VuZCBwYXRoLgo+ID4gCj4gPiBUaGUgcm9vdCBjYXVz
-ZSByZXNpZGVzIGluIF9faXA2X21ha2Vfc2tiKCkuIEluIGV4dHJlbWVseSByYXJlIGNhc2VzCj4g
-PiAoc3VjaCBhcyBmYXVsdCBpbmplY3Rpb24gb3Igc3BlY2lmaWMgZW1wdHkgcGF5bG9hZCBjb25k
-aXRpb25zKSwKPiAKPiBDYW4geW91IGVsYWJvcmF0ZSBvbiB0aGlzPyBXaGljaCBmYXVsdCBpbmpl
-Y3Rpb24gbGV0cwo+IF9faXA2X2FwcGVuZF9kYXRhIHN1Y2NlZWQgd2l0aG91dCB3cml0aW5nIGRh
-dGE/Cj4gCj4gPiBfX2lwNl9hcHBlbmRfZGF0YSgpIG1heSBzdWNjZWVkIGJ1dCBsZWF2ZSB0aGUg
-c29ja2V0J3Mgd3JpdGUgcXVldWUKPiA+IGVtcHR5Lgo+ID4gCj4gPiBXaGVuIF9faXA2X21ha2Vf
-c2tiKCkgaXMgc3Vic2VxdWVudGx5IGNhbGxlZCwgX19za2JfZGVxdWV1ZShxdWV1ZSkKPiA+IHJl
-dHVybnMgTlVMTC4gVGhlIHByZXZpb3VzIGxvZ2ljIGhhbmRsZWQgdGhpcyBieSBleGVjdXRpbmcg
-YSAnZ290byBvdXQ7JywKPiA+IHdoaWNoIGNvbXBsZXRlbHkgYnlwYXNzZWQgdGhlIGNhbGwgdG8g
-aXA2X2NvcmtfcmVsZWFzZShjb3JrKS4KPiA+IAo+ID4gU2luY2UgdGhlICdjb3JrJyBzdHJ1Y3R1
-cmUgYWN0aXZlbHkgaG9sZHMgYSByZWZlcmVuY2UgdG8gdGhlIHJvdXRpbmcKPiA+IGVudHJ5IChk
-c3RfZW50cnkpIGFuZCBwb3RlbnRpYWxseSBvdGhlciBhbGxvY2F0ZWQgb3B0aW9ucywgc2tpcHBp
-bmcKPiA+IHRoZSByZWxlYXNlIGNsZWFubHkgbGVha3MgdGhlc2UgcmVzb3VyY2VzLgo+ID4gCj4g
-PiBGaXggdGhpcyBieSBpbnRyb2R1Y2luZyBhbiAnb3V0X2NvcmtfcmVsZWFzZScgbGFiZWwgYW5k
-IGp1bXBpbmcgdG8gaXQKPiA+IHdoZW4gc2tiIGlzIE5VTEwsIGVuc3VyaW5nIHRoZSBjb3JrIHN0
-YXRlIGlzIGFsd2F5cyBwcm9wZXJseSBjbGVhbmVkIHVwLgo+ID4gVGhlIG5vdy11bnVzZWQgJ291
-dCcgbGFiZWwgaXMgYWxzbyByZW1vdmVkIHRvIHByZXZlbnQgY29tcGlsZXIgd2FybmluZ3MuCj4g
-PiAKPiA+IEZpeGVzOiAxZGExNzdlNGMzZjQgKCJMaW51eC0yLjYuMTItcmMyIikKPiAKPiBJIHRo
-aW5rIHRoaXMgaXMgCj4gCj4gRml4ZXM6IDY0MjIzOThjMmFiMCAoImlwdjY6IGludHJvZHVjZSBp
-cHY2X21ha2Vfc2tiIikKPiAKPiA+IFJlcG9ydGVkLWJ5OiBzeXpib3QrZTVkNjkzNmI5ZjQ1NDVm
-ZDg4YWJAc3l6a2FsbGVyLmFwcHNwb3RtYWlsLmNvbQo+ID4gU2lnbmVkLW9mZi1ieTogTWluZ3l1
-IFdhbmcgPDI1MTgxMjE0MjE3QHN0dS54aWRpYW4uZWR1LmNuPgo=
+> Hi Sabrina and Jakub,
+>
+> Before sending out the v3 patch, I synced my tree to the latest mainline =
+and checked the current state of `ip6_make_skb()`.=20
+>
+> It turns out that the missing `ip6_cork_release(cork)` in the error path =
+was already naturally resolved by Eric Dumazet's recent refactoring commit:
+> b409a7f7176b ("ipv6: colocate inet6_cork in inet_cork_full")
+>
+> With Eric's changes, the error handling now correctly calls `ip6_cork_rel=
+ease(cork)` if `ip6_setup_cork()` fails, meaning the memory leak is no long=
+er present in the latest tree.
+>
+> Please disregard my v1 and v2 patches. I am also telling syzbot to close =
+this report based on Eric's commit.
+>
+> Thank you all again for your time, the deep code review, and for guiding =
+me to find the true root cause. I learned a huge amount from this discussio=
+n!
+>
+> #syz fix: ipv6: colocate inet6_cork in inet_cork_full
+
+I see the command but can't find the corresponding bug.
+The email is sent to  syzbot+HASH@syzkaller.appspotmail.com address
+but the HASH does not correspond to any known bug.
+Please double check the address.
+
+>
+> Best regards,
+> Mingyu Wang
+>
+> 2026-04-24 11:16:30 "=E7=8E=8B=E6=98=8E=E7=85=9C" <25181214217@stu.xidian=
+.edu.cn> =E5=86=99=E9=81=93=EF=BC=9A
+>> Hi,
+>>=20
+>> Thank you so much for the review and for pointing me to the correct Fixe=
+s tag!
+>>=20
+>> You hit the nail on the head regarding `__ip6_append_data()`. After re-e=
+valuating the code path based on your question, I realize my assumption in =
+v2 was incorrect. `__ip6_append_data()` does indeed guarantee that an skb i=
+s queued upon success, making the `skb =3D=3D NULL` path dead code in this =
+context.
+>>=20
+>> I traced the `failslab` memory leak back to its true origin: the lockles=
+s fast path wrapper `ip6_make_skb()`.
+>>=20
+>> Sabrina previously noted that `ip6_setup_cork()` failures correctly rele=
+ase the dst. That is absolutely true for the slow path, where `udp_v6_flush=
+_pending_frames()` eventually handles the cleanup.=20
+>>=20
+>> However, in the fast path, `ip6_make_skb()` calls `ip6_setup_cork()`. In=
+side `ip6_setup_cork()`, `cork->base.dst` is assigned early. If a subsequen=
+t memory allocation fails (e.g., `v6_cork->opt =3D kzalloc(...)` failing du=
+e to failslab), it returns an error. `ip6_make_skb()` then directly returns=
+ `ERR_PTR(err)` WITHOUT calling `ip6_cork_release(cork)`.
+>>=20
+>> Since `udpv6_sendmsg()` assumes the `dst` reference is stolen by `ip6_ma=
+ke_skb()` and unconditionally jumps to `out_no_dst`, the `dst` is completel=
+y leaked.
+>>=20
+>> The fix is simply to add `ip6_cork_release(cork)` in the `ip6_setup_cork=
+()` error path inside `ip6_make_skb()`.
+>>=20
+>> I will submit a v3 patch shortly addressing this true root cause and usi=
+ng your suggested Fixes tag. Thank you again for steering me in the exact r=
+ight direction!
+>>=20
+>> Best regards,
+>> Mingyu Wang
+>>=20
+>>=20
+>> > -----=E5=8E=9F=E5=A7=8B=E9=82=AE=E4=BB=B6-----
+>> > =E5=8F=91=E4=BB=B6=E4=BA=BA: "Willem de Bruijn" <willemdebruijn.kernel=
+@gmail.com>
+>> > =E5=8F=91=E9=80=81=E6=97=B6=E9=97=B4:2026-04-23 22:59:45 (=E6=98=9F=E6=
+=9C=9F=E5=9B=9B)
+>> > =E6=94=B6=E4=BB=B6=E4=BA=BA: "Mingyu Wang" <25181214217@stu.xidian.edu=
+.cn>, willemdebruijn.kernel@gmail.com, davem@davemloft.net, dsahern@kernel.=
+org, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
+>> > =E6=8A=84=E9=80=81: sd@queasysnail.net, horms@kernel.org, netdev@vger.=
+kernel.org, linux-kernel@vger.kernel.org, "Mingyu Wang" <25181214217@stu.xi=
+dian.edu.cn>, syzbot+e5d6936b9f4545fd88ab@syzkaller.appspotmail.com
+>> > =E4=B8=BB=E9=A2=98: Re: [PATCH v2] ipv6: fix memory leak in __ip6_make=
+_skb() when queue is empty
+>> >=20
+>> > Mingyu Wang wrote:
+>> > > During fuzzing with failslab enabled, a memory leak was observed in =
+the
+>> > > IPv6 UDP send path.
+>> > >=20
+>> > > The root cause resides in __ip6_make_skb(). In extremely rare cases
+>> > > (such as fault injection or specific empty payload conditions),
+>> >=20
+>> > Can you elaborate on this? Which fault injection lets
+>> > __ip6_append_data succeed without writing data?
+>> >=20
+>> > > __ip6_append_data() may succeed but leave the socket's write queue
+>> > > empty.
+>> > >=20
+>> > > When __ip6_make_skb() is subsequently called, __skb_dequeue(queue)
+>> > > returns NULL. The previous logic handled this by executing a 'goto o=
+ut;',
+>> > > which completely bypassed the call to ip6_cork_release(cork).
+>> > >=20
+>> > > Since the 'cork' structure actively holds a reference to the routing
+>> > > entry (dst_entry) and potentially other allocated options, skipping
+>> > > the release cleanly leaks these resources.
+>> > >=20
+>> > > Fix this by introducing an 'out_cork_release' label and jumping to i=
+t
+>> > > when skb is NULL, ensuring the cork state is always properly cleaned=
+ up.
+>> > > The now-unused 'out' label is also removed to prevent compiler warni=
+ngs.
+>> > >=20
+>> > > Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+>> >=20
+>> > I think this is=20
+>> >=20
+>> > Fixes: 6422398c2ab0 ("ipv6: introduce ipv6_make_skb")
+>> >=20
+>> > > Reported-by: syzbot+e5d6936b9f4545fd88ab@syzkaller.appspotmail.com
+>> > > Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
