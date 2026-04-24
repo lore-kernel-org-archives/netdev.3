@@ -1,111 +1,138 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE6C11A683D;
-	Fri, 24 Apr 2026 08:22:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB9C244687;
+	Fri, 24 Apr 2026 08:26:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777018931; cv=none; b=SqWQS2fpNHqnPlrMSlPpZrPQdapdFAkHS6h0ebHYFm+nieEtrEwJ/NLO0Zb/bLmKdPsfdOrjgYBF3Ps5LG6Qk8OdNeRex0Ea8nARz/+I37h4H6Yoa43U5j+G8uKWg5K8WBjjcpN2dOG9vAkyvTpxx1KVL+h8OFF4Kb3HrrEnek8=
+	t=1777019191; cv=none; b=dvdPO7K9CFE5XEfoSiyTbkySIf/opRY8haxkAB5Zp2Oy1Y6aYn+DAgtHleMOqY1thjnB+sIpMq7+QDZPlxiEoBzdhTOUGCr+Sr1ja+KRAHodQ3KmVgHZb650pMwUEWhYMXvS2TEGZ0oQOOhsGOwIAXdDO7Y5XX8nvYrN3RBjBBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777018931; c=relaxed/simple;
-	bh=BP1jtlFzuy/jbBYrDe/iU+3cgpfGhVIi+xBQHeCU6P8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=vA4faMhn7Q4h4W/YlnCitKF6KuzgGo50q5lCLnR+v0ZsPJdhJ0gbMK8e7K2Bg65lTdWrpl0VkpXrZTaztf974vxWFc1Le/GIksfxMtbNcjTrUYhopfAMXWTBbpFSqi9O6Mdp5XxDvOLcSF0JE+3zcVhx5B4AMmvU1UZMjtNjHRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nlXR83Rb; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1777019191; c=relaxed/simple;
+	bh=r6UwaujmmA34X05ARd2oY0WcRCAWhL4Vghc8FhMyeTo=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=j3UC4f+HjPAxs1nzLqgkeJDxMiZKe1eWmrqSf8xXLnyDggWJWT86U/sg+3DByLVnQVMUW9LAyFutSXAl4CWu2Rga9n6zz0xShT8GD1fxwotwY5iu4pWFpM3d1QbWNukTEjIhtjGcIFovdNcSCKuweJ8QUGLPzuuDdcEMMd39QAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=Wwn7wEhn; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nlXR83Rb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777018930; x=1808554930;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=BP1jtlFzuy/jbBYrDe/iU+3cgpfGhVIi+xBQHeCU6P8=;
-  b=nlXR83RbSm+2Fru0p4HzcpVuAYqTE2Uqz7sFMTOmXd2OU9eTNEwVmKaB
-   qzPKHGxEKRom1+vPmqqk68EJFIQ04adUfqyPu1dWSUrZvmSjEmunpkRTs
-   jv25pr2GuICwdwKMOIV3luBZ1190yYWO6Yuc0Orpyf5Us8r65sRYEOKf4
-   eEhQO+vMZaambCt6hqNg5LclUUI0vqllPAELaC35n1W6TCG1oj7q5kb5w
-   Ulh1zLlDK/iSkKu9aZYQ1oGolVWqIYOf3Tk+g16pS9CTX8KoZvj2WaK+I
-   KKTOHRrb0zuOJ9zVN3dlpDmjjh55Jq4dRfsji8yL/AFkI+RD6iu+0h9xu
-   w==;
-X-CSE-ConnectionGUID: 30q9tRLfSjW8C7f8XvGDkg==
-X-CSE-MsgGUID: e6te3ISYRoG0oVRdWkxHYg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11765"; a="89379234"
-X-IronPort-AV: E=Sophos;i="6.23,196,1770624000"; 
-   d="scan'208";a="89379234"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2026 01:22:09 -0700
-X-CSE-ConnectionGUID: KA9DsLuUT36JWraU6AZaMQ==
-X-CSE-MsgGUID: /vhcOBMyRaiY/wX48777yw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,196,1770624000"; 
-   d="scan'208";a="228330450"
-Received: from unknown (HELO localhost.png.intel.com) ([10.107.255.61])
-  by fmviesa006.fm.intel.com with ESMTP; 24 Apr 2026 01:22:05 -0700
-From: KhaiWenTan <khai.wen.tan@linux.intel.com>
-To: anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	chwee.lin.choong@intel.com,
-	vladimir.oltean@nxp.com,
-	vinicius.gomes@intel.com
-Cc: faizal.abdul.rahim@linux.intel.com,
-	intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	khai.wen.tan@intel.com,
-	hong.aun.looi@intel.com,
-	faizal.abdul.rahim@intel.com,
-	KhaiWenTan <khai.wen.tan@linux.intel.com>
-Subject: [PATCH iwl-net 1/1] igc: skip RX timestamp header for frame preemption verification
-Date: Fri, 24 Apr 2026 15:59:07 +0800
-Message-ID: <20260424075907.310456-1-khai.wen.tan@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="Wwn7wEhn"
+Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63O771V11922659;
+	Fri, 24 Apr 2026 01:26:20 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pfpt0220; bh=TLDmDwIinwnU1WuZsd+E6cxzH
+	IjQG9Et0UwIndVSXNY=; b=Wwn7wEhnDlay2+8HnPNZfHcF1Y8YWftLgxQBGqRTg
+	VxCkvBlkQnYmBd+gxz3+N9HEBKER9AP+NDhKbx3YmI4BkFsLCtqQMTEli0jYjqhJ
+	83i7bivBMPimPkI3T6+jb1KtoV7+mW/3Bgl1sBriTR3EeS5m0r3EqMujy5FA2Y7U
+	93w13OH8qZb3ZtJ80IqdP77QyeSuKumf69RKhlWQmad0uLenlfWQvFjcsSfpZieK
+	XNH1AIiS85l76PePlRN6HXXfaC2BQLCt6LSl19Mkw3kPCKzW4hmZ9Ps9GO/FvBDk
+	yh8Y5W0IhiFIQVpEeT8Jw+ndCAmfSK82cjxL5I0dpj/QQ==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4dqc06ur7p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Apr 2026 01:26:20 -0700 (PDT)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Fri, 24 Apr 2026 01:26:19 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Fri, 24 Apr 2026 01:26:19 -0700
+Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with SMTP id 5EAB83F7082;
+	Fri, 24 Apr 2026 01:26:16 -0700 (PDT)
+Date: Fri, 24 Apr 2026 13:56:15 +0530
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC: <sgoutham@marvell.com>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <andrew+netdev@lunn.ch>
+Subject: Re: [PATCH v3 net 04/11] octeontx2-af: npc: cn20k: Make default
+ entries as x4.
+Message-ID: <aespJ5nvW-pfeMFo@rkannoth-OptiPlex-7090>
+References: <20260423104317.2707923-1-rkannoth@marvell.com>
+ <20260423104317.2707923-5-rkannoth@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260423104317.2707923-5-rkannoth@marvell.com>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI0MDA3NyBTYWx0ZWRfX2aYmJPhjouVE
+ SkLf0/gW5BU2FlU30I3L/vrajzvsoRHr3O49mGXa2Wlu7l2O1EXdbR8RgKcmQeoa7QKCwnoUxS0
+ 80u7ycVCT49cnCFjEyhgHUDoDydjkE+Red3ol6ZYnIudMGDoOzzmpqh368qaSjnBIzhS884sE79
+ 9uSYxiAMZHhacfGANiHHFEsD1o1bSD6sp5HTQDbIHun48j6HcrOsfkaoJ1/IbfnxcKrPo7or/KF
+ M0AWpv/i+clNTRsgvXcCajx3JhkxtBgLTfrRjxkyEy3gV10+cvUhjymiUD0zRk6bxHvYzK000x9
+ sAmmBflwQYmNGs6ZKSa6aMHDDfV3ecSxwC7pLpLTR5uzcjTu/SQoqPfHW0R4q00TGtEOHDHWlEP
+ /QGlF2YBoWB9bHBUC/qAQq/hrabWbPiqPo6ZRfI10ktEl1ub3dzdxRo3oXVxHE+7wVAHGTavv4b
+ vQR32BoX07zFbr9IhEQ==
+X-Proofpoint-GUID: f6Pi8vNwbC-4amU_j6ypsEqC815eY_3z
+X-Authority-Analysis: v=2.4 cv=N84Z0W9B c=1 sm=1 tr=0 ts=69eb292c cx=c_pps
+ a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
+ a=kj9zAlcOel0A:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=l0iWHRpgs5sLHlkKQ1IR:22 a=qit2iCtTFQkLgVSMPQTB:22 a=9R54UkLUAAAA:8
+ a=M5GUcnROAAAA:8 a=tFNJmSkQzRgE3DcoZz0A:9 a=CjuIK1q_8ugA:10
+ a=YTcpBFlVQWkNscrzJ_Dz:22 a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-ORIG-GUID: f6Pi8vNwbC-4amU_j6ypsEqC815eY_3z
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-23_03,2026-04-21_02,2025-10-01_01
 
-When RX hardware timestamping is enabled, a 16-byte inline timestamp header
-is added to the start of the packet buffer, causing FPE handshake
-verification to fail.
+On 2026-04-23 at 16:13:10, Ratheesh Kannoth (rkannoth@marvell.com) wrote:
+> X4 profile users won't alloc x2 entries. Allocating x2 entries
+> would cause under utilized subbanks(X2). Avoid this in X4 kex
+> profile, all allocations will be from x4 subbank.
+>
+> Fixes: 09d3b7a1403f ("octeontx2-af: npc: cn20k: Allocate default MCAM indexes")
+> Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
 
-Because an incorrect packet buffer is passed to igc_fpe_handle_mpacket(),
-the mem_is_zero() check inspects the timestamp metadata instead of the
-actual mPacket payload. As a result, valid Verify/Response mPackets can be
-missed when inline RX timestamps are present.
+>> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
+>> index 8630a6a73387..97acba77ff88 100644
+>> --- a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
+>> +++ b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
+>
+>[ ... ]
+>
+>> @@ -4274,10 +4289,16 @@ int npc_cn20k_dft_rules_alloc(struct rvu *rvu, u16 pcifunc)
+>>  	pfvf = rvu_get_pfvf(rvu, pcifunc);
+>>  	pfvf->hw_prio = NPC_DFT_RULE_PRIO;
+>>
+>> +	if (npc_priv.kw == NPC_MCAM_KEY_X4) {
+>> +		req.kw_type = NPC_MCAM_KEY_X4;
+>> +		req.ref_entry = eidx & (npc_priv.bank_depth - 1);
+>> +	} else {
+>> +		req.kw_type = NPC_MCAM_KEY_X2;
+>> +		req.ref_entry = eidx;
+>> +	}
+>> +
+>>  	req.contig = false;
+>>  	req.ref_prio = NPC_MCAM_HIGHER_PRIO;
+>> -	req.ref_entry = eidx;
+>> -	req.kw_type = NPC_MCAM_KEY_X2;
+>>  	req.count = cnt;
+>>  	req.hdr.pcifunc = pcifunc;
+>>
+>> @@ -4299,8 +4320,9 @@ int npc_cn20k_dft_rules_alloc(struct rvu *rvu, u16 pcifunc)
+>>
+>>  		req = otx2_mbox_alloc_msg_npc_mcam_alloc_entry(&pf->mbox);
+>>  		req->contig = false;
+>> -		req->ref_entry = eidx + 1;
+>>  		req->kw_type = NPC_MCAM_KEY_X2;
+>> +		req->ref_entry = eidx + 1;
+>
+>The VF fallback path still hardcodes req.kw_type = NPC_MCAM_KEY_X2. Does this
+>violate the commit message's claim that "X4 profile users won't alloc x2
+>entries"? When the first allocation attempt fails for a VF on an X4 system,
+>wouldn't this retry path still allocate from X2 subbanks?
+>
+>Also, should the ref_entry here be masked with (npc_priv.bank_depth - 1)
+>similar to the primary allocation path for X4 profiles?
 
-Pass pktbuf + pkt_offset to igc_fpe_handle_mpacket() so it inspects the
-actual mPacket payload instead of the timestamp header.
+AI review report: https://netdev-ai.bots.linux.dev/ai-review.html?id=9923f145-31df-46b0-84e8-b15f1e307ad2#patch-10
+pw-bot: changes-requested
 
-Fixes: 5422570c0010 ("igc: add support for frame preemption verification")
-Co-developed-by: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
-Signed-off-by: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
-Signed-off-by: KhaiWenTan <khai.wen.tan@linux.intel.com>
----
- drivers/net/ethernet/intel/igc/igc_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-index 8ac16808023c..c470d2354ce8 100644
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -2649,7 +2649,7 @@ static int igc_clean_rx_irq(struct igc_q_vector *q_vector, const int budget)
- 		}
- 
- 		if (igc_fpe_is_pmac_enabled(adapter) &&
--		    igc_fpe_handle_mpacket(adapter, rx_desc, size, pktbuf)) {
-+		    igc_fpe_handle_mpacket(adapter, rx_desc, size, pktbuf + pkt_offset)) {
- 			/* Advance the ring next-to-clean */
- 			igc_is_non_eop(rx_ring, rx_desc);
- 			cleaned_count++;
--- 
-2.43.0
-
+Simon suggested to remove this from net, and post it as enhancement when net-next opens. So Dropping it for now.
+Will post it in net-next after fixing this comment.
