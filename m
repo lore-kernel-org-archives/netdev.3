@@ -1,108 +1,80 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 209CE35F5F4
-	for <netdev@vger.kernel.org>; Sat, 25 Apr 2026 09:09:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B365B38551D;
+	Sat, 25 Apr 2026 09:33:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777108179; cv=none; b=lOO5PLtFaUD95QClR7zGiVEBZD/XMZXcAAyEufcTMHZ605ATotoNAp8t51RhCBy142oeNL+iiHvHcRrhemwEjRyBhP7REueo+s24UPlO0yGpyHt6tV0u5YwiLGaVIJf46tpRgNnN+SF7+ZK+xVupArGmeabwOa4e6G3KE46oP7c=
+	t=1777109604; cv=none; b=NHtzYnCHyZKSWZn4YKH8FhV7zRz6nq+7J/1WBGQdnOdxBkxrVmFmtZzZfFMdRP/VQi44o5Ezur+4qZfmCS8oJ6Sb5pUydUSpoRCnURw3Sm4tsOMHJmMVOKUuIlDrWGHN+EO8p3TfpgPE1RUHFf+czExIXL5Z/CVdj+0/pXcuFbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777108179; c=relaxed/simple;
-	bh=yn0n7unySXi2xE38g0Fs5uwMd71BZF2HOYgbp6bbEcQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=cnoTMooX4hHmgvXnUJI3G2tuQGcpE0IqXc2mNZmZMNURt51dpN674+4q5BWWmu1cMtAtU9UfrLDVrTX3AQF2MhAqz4Ec5FwkLC1I7hiRfZYs/t6Vyprw5KJMFoFV/8fWSMB4mfA/ZHpZ+UKmpqmOYOQ1i2TtPnrZ5Mmpv9elA8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jqETPIQb; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1777109604; c=relaxed/simple;
+	bh=vTnWUB3963217PH6E98v4MIyJ/E5FD6u2p/ki3Ycw2o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PwslgRnWNVx7vMC/1kbz6rJlnyI+caPp9NdhR+pc4hyo0a7vmDMMd2mxAaLh/K16H34GhY1NSk420aDKfY4ZhdO7E7S7TItHR1QEaTyMZXWg9D1rr4aSoBeGbfgjJniVtyOgaZqYhgHvRhBxDWe4LDpHRXA6w5LnVlVS9W9VGHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kT8Q+d6o; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jqETPIQb"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4838c15e3cbso79944355e9.3
-        for <netdev@vger.kernel.org>; Sat, 25 Apr 2026 02:09:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777108176; x=1777712976; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1GuYWc9nESbYSG7ThORlI5mhNLyHqE9tuWw4BPRuJSI=;
-        b=jqETPIQbJ+ORypc0Yu7mYdfEGjcTZvVecsV3RMS1Qdaby40HZFVhdHeWoiX0jAvSBs
-         XTj7PXMxBvNf2JuBOPppeQkjbw4obkjtQN2NRfr5g2qcQHMVzum3D3/53fT5Wi8X3vds
-         /gZ7bI3oWp0NTzUtNj2NAGVrqVou/PJQ9p+EOuTO9hYv/dtDDneMqlCBy662jLJnkj6d
-         gMLq5PmdfiKDR2e9wZYbtM3sdmHA7wJc3RFZy+RehR6UMzBgddWNLYZh6bCdmcUFYX8B
-         zL52xKQQWXwhUiWDzxVc78IHD6u5ZCamj9iY8qv74HjhMXHLKqEjh2v0wd04anzyEmLK
-         l7aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777108176; x=1777712976;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1GuYWc9nESbYSG7ThORlI5mhNLyHqE9tuWw4BPRuJSI=;
-        b=pGxDMeqdcn7ka/g3s1GEhrRzfDhKSFrgzio9NPzfTaGfsHpa72GbMrMclLqOSXSnn9
-         YU4hF2B6Nq8F8wIOiL94W829mj1cY49RNcslshiEMZtCG7lDuPoB4qqyhIkPMCyVH1hb
-         aZTshC1WRwNRK84i5FH+m3BGozKNFg/iwBtGxXuS/xQXdNCX06rv+txFdkGzGHw3Rhkr
-         cEllrfltHO47deMcvgxNtjCZ+tJWFLZUnDwKcD4LAFCtBHlOcZusvGk1oJszoF8HsytY
-         LMclA/5DSHNtyyDpgunTzyMpaN1QSxyWxonTEkEdBVqkqjU97LU9uj6L4P7Z6alIdDFd
-         m88Q==
-X-Forwarded-Encrypted: i=1; AFNElJ8chTm6ZBxCjzN9yGwwQpPrUPrmxWM+zWXL/2NcHb7k4O1zs/XA5pxyZCXO+lmdmuaKEmnO6xk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZJOMQbEUKA2XD/++zZQsFZOWCnMcfT02/K2JQRPDTbAP5Hbss
-	SCDfDumQNP4zWB7T4x2pT0S9/zVVm8DnoiZr9K5WQ9/yJs63JoZm1PMR
-X-Gm-Gg: AeBDieuhboDCzlCIAWGSo2j8cWxtekzApw/ifcZAocSEd0xt1VPw7cb4RSVsdu/xTbI
-	PG3Jk++/0NmZtvfTkAacfyFbxW/j02cvUvznchhU+NczWl2bCgTwWifUb8MroKAfF1ZARTXjiCt
-	fEv1MNhJiDZQnYVwwhSysjAL59rLfn0YgqanxBhSVt8ZhAchvqRoV7kvBiJt17xXlodHtyWmCDx
-	zyuTDmbRq2FUhXRvfGqOImWPvPidoBSykK5bscDjpbs2Omj+hYTD1Nq+V57k1Si0UL1lX8Esgt4
-	lMHsAg7tHjT/9ErwogrRR5B+iBPegWaLI7kSDrUFQJSxLbXpdB3cMsN5NFkslgUo9x37vMIplLw
-	n+7UPRAdYvosbAXx+oMl95+lSh7jcsbqs4K6PeAZX8VFyRuUWrf321pCnnAFgNt+F3DKgba0HDz
-	8kSqU7Xjq33qH1kpKBLe8TVUEEd1VzSQALbzWPnxrb
-X-Received: by 2002:a05:600c:888b:b0:485:4bd1:4c64 with SMTP id 5b1f17b1804b1-488fb796f95mr416216655e9.31.1777108176309;
-        Sat, 25 Apr 2026 02:09:36 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4891c08faffsm782163945e9.1.2026.04.25.02.09.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 25 Apr 2026 02:09:35 -0700 (PDT)
-Date: Sat, 25 Apr 2026 12:09:32 +0300
-From: Dan Carpenter <error27@gmail.com>
-To: Alejandro Lucero <alejandro.lucero-palau@amd.com>
-Cc: Edward Cree <ecree.xilinx@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Martin Habets <habetsm.xilinx@gmail.com>,
-	Jiri Pirko <jiri@resnulli.us>, netdev@vger.kernel.org,
-	linux-net-drivers@amd.com, linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org
-Subject: [PATCH net] sfc: fix error code in
- efx_devlink_info_running_versions()
-Message-ID: <aeyEzO6C-v6J1VHH@stanley.mountain>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kT8Q+d6o"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89AEDC2BCB0;
+	Sat, 25 Apr 2026 09:33:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777109604;
+	bh=vTnWUB3963217PH6E98v4MIyJ/E5FD6u2p/ki3Ycw2o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kT8Q+d6o6nw+n1KPS+w1ZpJZl3Yc/tDH77v0iMYo8pnCj7XYzNRzqn66o/+5loj06
+	 us0LWHBLCY0Uds+AjizRvxUzdDxpq3OEqzBhXN2rZVTAMXy+1f0/ElBO/GRYjTafII
+	 ldWiYfqhzxYU/08LZsfArV9vUlP5cCPZcSqTpvY1DmjbiIjpyE5zlnOTAyKkpa/TEz
+	 kYlnNDET7XxapKrMtaUi5ICdwN0WGH4T5M8XKc9kB6tRx9nDKJ6mbKKcGns/l2lZmQ
+	 l8DJu3YF8zaf7wa6vfbTLogAeRe1ENAnhvwLfA+/6d+R4wvi/Nmd5X+oNQN7v3KF1Y
+	 GNFTzaymKptEA==
+Date: Sat, 25 Apr 2026 11:33:21 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: lizhi2@eswincomputing.com
+Cc: devicetree@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
+	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, rmk+kernel@armlinux.org.uk, 
+	pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, 
+	linux-riscv@lists.infradead.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, maxime.chevallier@bootlin.com, 
+	ningyu@eswincomputing.com, linmin@eswincomputing.com, pinkesh.vaghela@einfochips.com, 
+	pritesh.patel@einfochips.com, weishangjuan@eswincomputing.com, horms@kernel.org
+Subject: Re: [PATCH net-next v6 3/3] riscv: dts: eswin:
+ eic7700-hifive-premier-p550: enable Ethernet controller
+Message-ID: <20260425-woodoo-righteous-earthworm-0ed34c@quoll>
+References: <20260423085501.760-1-lizhi2@eswincomputing.com>
+ <20260423085650.820-1-lizhi2@eswincomputing.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
+In-Reply-To: <20260423085650.820-1-lizhi2@eswincomputing.com>
 
-Return -EINVAL if efx_mcdi_rpc() doesn't return enough space.
+On Thu, Apr 23, 2026 at 04:56:50PM +0800, lizhi2@eswincomputing.com wrote:
+> From: Zhi Li <lizhi2@eswincomputing.com>
+> 
+> Enable the on-board Gigabit Ethernet controller on the
+> HiFive Premier P550 development board.
+> 
+> Signed-off-by: Zhi Li <lizhi2@eswincomputing.com>
+> ---
+>  .../devicetree/bindings/mfd/syscon.yaml       |   2 +
+>  .../dts/eswin/eic7700-hifive-premier-p550.dts | 232 ++++++++++++++++++
+>  arch/riscv/boot/dts/eswin/eic7700.dtsi        | 103 ++++++++
+>  3 files changed, 337 insertions(+)
+> 
 
-Fixes: 14743ddd2495 ("sfc: add devlink info support for ef100")
-Signed-off-by: Dan Carpenter <error27@gmail.com>
----
- drivers/net/ethernet/sfc/efx_devlink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Please split the patches.
 
-diff --git a/drivers/net/ethernet/sfc/efx_devlink.c b/drivers/net/ethernet/sfc/efx_devlink.c
-index d842c60dfc10..45f412bb9b5d 100644
---- a/drivers/net/ethernet/sfc/efx_devlink.c
-+++ b/drivers/net/ethernet/sfc/efx_devlink.c
-@@ -531,7 +531,7 @@ static int efx_devlink_info_running_versions(struct efx_nic *efx,
- 	if (rc || outlength < MC_CMD_GET_VERSION_OUT_LEN) {
- 		netif_err(efx, drv, efx->net_dev,
- 			  "mcdi MC_CMD_GET_VERSION failed\n");
--		return rc;
-+		return rc ?: -EINVAL;
- 	}
- 
- 	/* Handle previous output */
--- 
-2.53.0
+Please run scripts/checkpatch.pl on the patches and fix reported
+warnings. After that, run also 'scripts/checkpatch.pl --strict' on the
+patches and (probably) fix more warnings. Some warnings can be ignored,
+especially from --strict run, but the code here looks like it needs a
+fix. Feel free to get in touch if the warning is not clear.
+
+Best regards,
+Krzysztof
 
