@@ -1,116 +1,159 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [207.46.229.174])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBFC84A07
-	for <netdev@vger.kernel.org>; Sat, 25 Apr 2026 16:41:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.46.229.174
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07869358376
+	for <netdev@vger.kernel.org>; Sat, 25 Apr 2026 18:00:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777135304; cv=none; b=tDnHKlWp1edscy98OIfJJy8D4isOZbrJGAROBvmF5CXCDks4BFLFfzIvGGAEZ3o1eAVexR/kt+exxELOo5i8ZyjUnSpniXI5mGIGAOCTNWxYBy3XMhdbZ/33fEWCGxdpm2bjnnohFV3jSpCpBnGXtG52WOgUd3WeJJq5eqjpbh0=
+	t=1777140003; cv=none; b=NjTOSYdEoLqcAlas1+et/d94bRwaHBJxP99NyTkl9/vWT1wW9cZhvbx0cs/LsnMQRr0QWfktfkfC62l2tzR961kmUgvI/72d9wM4Onr4bt7qLRO04F8R8/qVmbd5oc0iRWOzcMdueZL6WOFOcnT3szZp6tDGE2cEEyNmgyk7gXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777135304; c=relaxed/simple;
-	bh=IyEjCDE7epQ0rtjjw9pg94OGT7uTsHOMvbnm25wia0E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CGzVwtR5jclvXm8C58n2mYJC4zsu+cUL5wDFIFJ2WCQPZWLZH0r6YCdfjBKs891iYYdLOBkZ3p7qlvaPsAGv+WdDNSwjHb00znxiBqYI87T1LL6iYvvmNTzNfRAPP8Cvtvgim9EpNQEao0/ZQ7DeaVQwaB7l4KW5JZ9KLl7e/2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn; spf=pass smtp.mailfrom=lzu.edu.cn; arc=none smtp.client-ip=207.46.229.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lzu.edu.cn
-Received: from enjou-Legion-Y7000P-2019.coin-barley.ts.net (unknown [172.23.56.36])
-	by app2 (Coremail) with SMTP id zQmowAAnvoSc7uxppodDAA--.29050S3;
-	Sun, 26 Apr 2026 00:41:03 +0800 (CST)
-From: Ren Wei <n05ec@lzu.edu.cn>
-To: netdev@vger.kernel.org,
-	dev@openvswitch.org
-Cc: aconole@redhat.com,
-	echaudro@redhat.com,
-	i.maximets@ovn.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	jbenc@redhat.com,
-	e@erig.me,
-	yi.y.yang@intel.com,
-	pshelar@ovn.org,
-	yuantan098@gmail.com,
-	yifanwucs@gmail.com,
-	tomapufckgml@gmail.com,
-	bird@lzu.edu.cn,
-	ldy3087146292@gmail.com,
-	n05ec@lzu.edu.cn
-Subject: [PATCH net 1/1] openvswitch: reject oversized NSH MD2 metadata in push_nsh
-Date: Sun, 26 Apr 2026 00:40:59 +0800
-Message-ID: <9d2b5c6127e149ebd35094d662bfd008c20347c2.1777120226.git.ldy3087146292@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1776929256.git.ldy3087146292@gmail.com>
-References: <cover.1776929256.git.ldy3087146292@gmail.com>
+	s=arc-20240116; t=1777140003; c=relaxed/simple;
+	bh=CK9YYDsSVZGCgJah9TQvpjQXc/1mFwRV9PzA3lTyxVE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tXaVUJ7X+q3sK9NBbYC4ERb4CI9txEW2tq2NUgoveqkifqLwiD+z92egrveYAHi0FWnmkfjLLo93UfYlEkkQDyB8PwYBMN+HCEFAuFT3yHCNlgzK+g0XGXK9JxbiNrX0Tvxboovd+vcw8jLINkfGyyXDwFoFUMD5wkjMLcPLHbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eodqC1a5; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eodqC1a5"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-3585ec417f6so4656715a91.1
+        for <netdev@vger.kernel.org>; Sat, 25 Apr 2026 11:00:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777140001; x=1777744801; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=qFcDbOFyHJ3yOFFB2U6uoZi3zDlX/raHpEMdVEL47T0=;
+        b=eodqC1a5xSY4OQOtI1+tC7j6Hak8NtyEN5Q1FmzULRhs94K4UIRBhDAmqM4RfrX2oR
+         sE+hdQZgSpbeEK4VqNYJvXJNKDwMlk/KGwbjpIVBGEqGO3sqvNndJ1h/iGDss72ESTjr
+         7FWe3Xk0WjQyjWZN2S4l6yAEH17x2iQLaA2IGCJXdIe5oPSc7muDq6gAt7G61Jla3xkQ
+         pW7/0RQ/1+ypsIUYi2irOx4TRLQrK07pATGK/3V492UMWiDCEQOBS85xuPyFG9IhDGVr
+         21z/fa3uC3shqk0HRCPsjtwmaSSqe3SmbsG7ZPP5PMChw950Ccpn7ecvANVFV+tmYFO9
+         dnXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777140001; x=1777744801;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qFcDbOFyHJ3yOFFB2U6uoZi3zDlX/raHpEMdVEL47T0=;
+        b=qsvxmvz5iEanXQ56Qg2uDDDlORZJ5rN4YEexSOI1oYnittmaJFTNyp4jAONHjjq7Wg
+         wQrgrbCcAJZYJnPO8ZQWutNa1j+luxbrk/3+Hd2CPW4DbxXAiXXvQqFiRFb2+OZGscd/
+         x1P886ZFQBwj++iDvkRpJfoUXn/Na7YMRZMe5REALVJrVjpVlh55CuxYQ5fqnkPP+EIZ
+         cHb36OUFDPE/T1xq6IuNip/k9nqnkJxmYHe71A5mn+N6nyg2YR45J1+juro8d4nN+AP9
+         tsqN+XEytegX3tns0dPk0AZmf2N4+nEUV1QTFHlIJYBIqz0JRWTivRXiS9ZW7uqunmf7
+         2s6A==
+X-Forwarded-Encrypted: i=1; AFNElJ9okGb3fGCQqYUXg9LES1roGB3gDvQPxJ8gD3xKr2xSUImUfBlv0968ctenWT0oCmAd7DRobTU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwNjQR4GwyeNpxAr96cUInx1UKYt7YhrCMy4Z1vfZmc2Z9QqEkE
+	uZU8uWPftKPF4ydOZRGmO5R5Uxa1MFWRpJ9LDyRWjap/lkV5b7N73zql
+X-Gm-Gg: AeBDievVwPF6qfpHHnzy1jw12uICsMAY898CWRPh3Y9aFhlrRdc9bYeCLzQOcQ7TZZo
+	K4pYUVAGxmzjKaf00JHx8K43lGHW9CTXJFTFAmjv1uzYunm9nJqVwmskZUZ7cl8P1DH9mj2zP92
+	dxBgnNQzAV1OgyjEgYm/IFO5OTGKusmHmBTFBjAsH+xyYPI3agJG2PmdAPRiWx1SiF1UfoUpJPT
+	FDyIUzJqnRFGse0lk2NriStyTvg45wYjPI/oCM2jEesDjFNUqKW2zmITGRXm8YyX/KLFfV7cI9O
+	EMOkpDolnPBdtCqfP+Ia8sInQFPxmWWvoJcD9oTk6kx3CYqTZfcgGIUW5Hmz40qWothH74OB/ni
+	cGzBnNcuzvKgz9wl0lG8rXWLwbLRrKkMUYXl81P/TQXSp63oQSMMecGP+kRtxA63WPdZdmGBBco
+	4+9t9I5+c/IjxIPZxam9urrghhIHdRAfQZyX5kOk1mu6xy8Gk3lqKuX0MhFunG6RovLwglQOoH
+X-Received: by 2002:a17:90b:384a:b0:35b:9e53:e2df with SMTP id 98e67ed59e1d1-361401beeaamr33976893a91.2.1777140001191;
+        Sat, 25 Apr 2026 11:00:01 -0700 (PDT)
+Received: from Air.local ([198.176.50.157])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5fab30f29sm258765765ad.68.2026.04.25.10.59.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 25 Apr 2026 11:00:00 -0700 (PDT)
+Date: Sun, 26 Apr 2026 01:59:51 +0800
+From: Weiming Shi <bestswngs@gmail.com>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: Martin KaFai Lau <martin.lau@linux.dev>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Alexei Starovoitov <ast@kernel.org>, 
+	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, John Fastabend <john.fastabend@gmail.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, Simon Horman <horms@kernel.org>, 
+	bpf@vger.kernel.org, netdev@vger.kernel.org, Xiang Mei <xmei5@asu.edu>, 
+	Xinyu Ma <mmmxny@gmail.com>
+Subject: Re: [PATCH bpf] bpf, sockmap: zero-initialize pages allocated in
+ bpf_msg_push_data
+Message-ID: <aey55I9gC0VtaN1p@Air.local>
+References: <20260424190310.1520555-2-bestswngs@gmail.com>
+ <c4a9412d-b6ad-4b80-9580-865575f4152c@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQmowAAnvoSc7uxppodDAA--.29050S3
-X-Coremail-Antispam: 1UD129KBjvJXoW7Ar18XFWrJw4xWr1kWw4kJFb_yoW8AFyrpa
-	y3KF17KrW8Ary7Xr4kAr4IgFW2kFs7GF47Was8AF4I9wnrWr9Fgr4rKFWa9w1v9ayDKFZ8
-	ZFW2gr90k3sxA3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUB01xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
-	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
-	IY67AKxVWUJVWUCwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2
-	jsIE14v26r4j6F4UM28EF7xvwVC2z280aVCY1x0267AKxVW8JVW8Jr1le2I262IYc4CY6c
-	8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_
-	Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwI
-	xGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAa
-	w2AFwI0_GFv_Wrylc2xSY4AK6svPMxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY2
-	0_Gr4l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8G
-	jcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2I
-	x0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK
-	8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I
-	0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjTRMXdjDUUUU
-X-CM-SenderInfo: zqqvvuo6o23hxhgxhubq/1tbiAQ0ICWnsf+IDngAAsI
+In-Reply-To: <c4a9412d-b6ad-4b80-9580-865575f4152c@linux.dev>
 
-From: Douya Le <ldy3087146292@gmail.com>
+On 26-04-25 11:17, Jiayuan Chen wrote:
+> 
+> On 4/25/26 3:03 AM, Weiming Shi wrote:
+> > bpf_msg_push_data() allocates pages via alloc_pages() without
+> > __GFP_ZERO. In the non-copy path, the entire page of uninitialized
+> > heap content is added directly to the sk_msg scatterlist, which is
+> > then transmitted over TCP to userspace via tcp_bpf_push(). In the
+> > copy path, a gap of len bytes between the front and back memcpy
+> > regions is similarly left uninitialized.
+> > 
+> > This leads to a kernel heap information leak: stale page content
+> > including kernel pointers from the direct-map and vmemmap regions
+> > is transmitted to userspace, which can be used to defeat KASLR.
+> > 
+> > Add __GFP_ZERO to the alloc_pages() call to ensure the allocated
+> > page is always zeroed before it enters the scatterlist.
+> 
+> 
+> 
+> As the helper's own documentation says:
+> 
+>     If a program of type BPF_PROG_TYPE_SK_MSG is run on a msg it may
+>     want to insert metadata or options into the msg. This can later be
+>     read and used by any of the lower layer BPF hooks.
+> 
+> The inserted region is meant to be written by the BPF program — that's the
+> entire point of calling push.
+> 
+> If the program doesn't fill it,  the push has no purpose to begin with.
+> 
+> 
+> Isn't the uninitialized content a bug in the BPF program rather than
+> something the kernel helper should paper over?
+> 
 
-The NSH header length is encoded in 4-byte words in a 6-bit field.
-The current push_nsh validation only checks the MD2 payload against
-NSH_CTX_HDRS_MAX_LEN, which still allows metadata sizes that cannot be
-represented once the base header is included.
+Hi, Thanks for the review.
 
-Reject MD2 metadata lengths whose total NSH header size cannot be
-encoded exactly in the NSH length field, whether because the field
-would wrap or because the length is not a multiple of 4 bytes.
+In my testing a process with only CAP_BPF + CAP_NET_ADMIN can receive
+kernel heap and vmalloc pointers through recv() from the uninitialized
+pushed region. The uninitialized memory contains critical kernel metadata
+such as direct-map and vmalloc pointers, which breaks KASLR.
 
-Fixes: b2d0f5d5dc53 ("openvswitch: enable NSH support")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Tested-by: Douya Le <ldy3087146292@gmail.com>
-Signed-off-by: Douya Le <ldy3087146292@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
----
- net/openvswitch/flow_netlink.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+Kernels without CONFIG_INIT_ON_ALLOC_DEFAULT_ON (e.g. RHEL) are
+directly affected the leak is not masked by any mitigation.
 
-diff --git a/net/openvswitch/flow_netlink.c b/net/openvswitch/flow_netlink.c
-index 13052408a132..8a1ae5309c2c 100644
---- a/net/openvswitch/flow_netlink.c
-+++ b/net/openvswitch/flow_netlink.c
-@@ -1432,7 +1432,13 @@ static int nsh_key_put_from_nlattr(const struct nlattr *attr,
- 
- 			has_md2 = true;
- 			mdlen = nla_len(a);
--			if (mdlen > NSH_CTX_HDRS_MAX_LEN || mdlen <= 0) {
-+			/* The NSH length field stores the total header size
-+			 * in 4-byte words in 6 bits. Reject MD2 metadata
-+			 * lengths that cannot be encoded exactly or would
-+			 * make the length field wrap.
-+			 */
-+			if (mdlen <= 0 || !IS_ALIGNED(mdlen, 4) ||
-+			    NSH_BASE_HDR_LEN + mdlen > (NSH_LEN_MASK << 2)) {
- 				OVS_NLERR(
- 				    log,
- 				    "Invalid MD length %d for MD type %d",
--- 
-2.43.0
+Thanks,
+Weiming Shi
 
+> 
+> > Link: https://lore.kernel.org/all/20260424155913.A19FDC19425@smtp.kernel.org
+> > Fixes: 6fff607e2f14 ("bpf: sk_msg program helper bpf_msg_push_data")
+> > Tested-by: Xiang Mei <xmei5@asu.edu>
+> > Tested-by: Xinyu Ma <mmmxny@gmail.com>
+> > Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+> > ---
+> >   net/core/filter.c | 2 +-
+> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/net/core/filter.c b/net/core/filter.c
+> > index bc96c18df4e0..ea02239892fd 100644
+> > --- a/net/core/filter.c
+> > +++ b/net/core/filter.c
+> > @@ -2820,7 +2820,7 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
+> >   	if (!space || (space == 1 && start != offset))
+> >   		copy = msg->sg.data[i].length;
+> > -	page = alloc_pages(__GFP_NOWARN | GFP_ATOMIC | __GFP_COMP,
+> > +	page = alloc_pages(__GFP_NOWARN | GFP_ATOMIC | __GFP_COMP | __GFP_ZERO,
+> >   			   get_order(copy + len));
+> >   	if (unlikely(!page))
+> >   		return -ENOMEM;
