@@ -1,134 +1,116 @@
-Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 034D622068D
-	for <netdev@vger.kernel.org>; Sat, 25 Apr 2026 14:34:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [207.46.229.174])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBFC84A07
+	for <netdev@vger.kernel.org>; Sat, 25 Apr 2026 16:41:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.46.229.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777127694; cv=none; b=h/qpXNyj9FSYO5dXEIpoP6xPFP+0TNm+784FOwwfOYFVg97zPOhLWlodjC87WIjQEcsSMYp8bLz/sTbvKvHsoKKAgAbzGuFpR0JuMkqxOd69CK1mfjkRGJEfrgfEZPBYAiHblw9LG6O7Pc1H9Kup4bQBLlTMdHLNim49+BLo7E4=
+	t=1777135304; cv=none; b=tDnHKlWp1edscy98OIfJJy8D4isOZbrJGAROBvmF5CXCDks4BFLFfzIvGGAEZ3o1eAVexR/kt+exxELOo5i8ZyjUnSpniXI5mGIGAOCTNWxYBy3XMhdbZ/33fEWCGxdpm2bjnnohFV3jSpCpBnGXtG52WOgUd3WeJJq5eqjpbh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777127694; c=relaxed/simple;
-	bh=f5iw195cLpLKf/7r9atvm0GkP8AHLn0x8lV0OmREZ/Y=;
-	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
-	 References:Date:Message-Id; b=hfFWYSUI7NaXelybQ72ShPCX1j+r3yWzVVLNP65x9d2w+zoNiGFrBjRVyS97rCGYgjDrMUnHZoyLsFOKuv1qO/fIth5UQ+JHuvX7blz32SaY+KEiujdt8aeNNHJr5l5V+b8XQe+22skVfck4TJ9OgCfE5IwcdtjXOWiaxfnWNzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=POcRUCBB; arc=none smtp.client-ip=213.160.73.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="POcRUCBB"
-Received: by dvalin.narfation.org (Postfix) id 18BD4214B3;
-	Sat, 25 Apr 2026 14:27:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1777127245;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=V6eoI+Q5YMAFhwWdYzQxJXW219gl6YFdQqBxyOL+a/w=;
-	b=POcRUCBB5iLtEI37Hm4EOi0x7vLEKQK6XSBuZaRPIn21xi941eMbhtKOdHlzGAZXCEjWn0
-	Rm3dbOn5707N87qNZiq6RGvke7Ee8DOHT7uxtGqiiiPCaPpS+S4kFDL38mLWRDKhBAUzv7
-	lCg4k1xzPGKH+IVFxt35VG+5x0Ls7vg=
+	s=arc-20240116; t=1777135304; c=relaxed/simple;
+	bh=IyEjCDE7epQ0rtjjw9pg94OGT7uTsHOMvbnm25wia0E=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=CGzVwtR5jclvXm8C58n2mYJC4zsu+cUL5wDFIFJ2WCQPZWLZH0r6YCdfjBKs891iYYdLOBkZ3p7qlvaPsAGv+WdDNSwjHb00znxiBqYI87T1LL6iYvvmNTzNfRAPP8Cvtvgim9EpNQEao0/ZQ7DeaVQwaB7l4KW5JZ9KLl7e/2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn; spf=pass smtp.mailfrom=lzu.edu.cn; arc=none smtp.client-ip=207.46.229.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lzu.edu.cn
+Received: from enjou-Legion-Y7000P-2019.coin-barley.ts.net (unknown [172.23.56.36])
+	by app2 (Coremail) with SMTP id zQmowAAnvoSc7uxppodDAA--.29050S3;
+	Sun, 26 Apr 2026 00:41:03 +0800 (CST)
+From: Ren Wei <n05ec@lzu.edu.cn>
+To: netdev@vger.kernel.org,
+	dev@openvswitch.org
+Cc: aconole@redhat.com,
+	echaudro@redhat.com,
+	i.maximets@ovn.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	jbenc@redhat.com,
+	e@erig.me,
+	yi.y.yang@intel.com,
+	pshelar@ovn.org,
+	yuantan098@gmail.com,
+	yifanwucs@gmail.com,
+	tomapufckgml@gmail.com,
+	bird@lzu.edu.cn,
+	ldy3087146292@gmail.com,
+	n05ec@lzu.edu.cn
+Subject: [PATCH net 1/1] openvswitch: reject oversized NSH MD2 metadata in push_nsh
+Date: Sun, 26 Apr 2026 00:40:59 +0800
+Message-ID: <9d2b5c6127e149ebd35094d662bfd008c20347c2.1777120226.git.ldy3087146292@gmail.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <cover.1776929256.git.ldy3087146292@gmail.com>
+References: <cover.1776929256.git.ldy3087146292@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH net 1/1] batman-adv: stop tp_meter sessions during mesh
- teardown
-From: Sven Eckelmann <sven@narfation.org>
-To: Ren Wei <n05ec@lzu.edu.cn>
-Cc: b.a.t.m.a.n@lists.open-mesh.org, netdev@vger.kernel.org, 
- marek.lindner@mailbox.org, sw@simonwunderlich.de, antonio@mandelbit.com, 
- sven@narfation.org, davem@davemloft.net, edumazet@google.com, 
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, yuantan098@gmail.com, 
- yifanwucs@gmail.com, tomapufckgml@gmail.com, bird@lzu.edu.cn, 
- tr0jan@lzu.edu.cn, wangjiexun2025@gmail.com
-In-Reply-To: <80ccaa2c7ce0f72c4555b039217834386282aa0e.1776998957.git.wangjiexun2025@gmail.com>
-References: <cover.1776998957.git.wangjiexun2025@gmail.com>
- <80ccaa2c7ce0f72c4555b039217834386282aa0e.1776998957.git.wangjiexun2025@gmail.com>
-Date: Sat, 25 Apr 2026 16:22:08 +0200
-Message-Id: <177712692887.34614.2289598356887428944.b4-review@b4>
-X-Mailer: b4 0.15.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2332; i=sven@narfation.org;
- h=from:subject:message-id; bh=f5iw195cLpLKf/7r9atvm0GkP8AHLn0x8lV0OmREZ/Y=;
- b=owGbwMvMwCXmy1+ufVnk62nG02pJDJlvzonF+en1Zq/3M/oTvaTSxCEr4lOGksC7K8H1e9KOh
- dt3+zZ1lLIwiHExyIopsuy5kn9+M/tb+c/TPh6FmcPKBDKEgYtTACYS4MjI8LCo5je//uEl2iXn
- RX6bnNyX2PjpQQCnWvfiwhmTm/hUMhn++wkXZ/wobXKxUKlidzc5uPbn6fSfM+TPLZ75Zt25xfx
- KvAA=
-X-Developer-Key: i=sven@narfation.org; a=openpgp;
- fpr=522D7163831C73A635D12FE5EC371482956781AF
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQmowAAnvoSc7uxppodDAA--.29050S3
+X-Coremail-Antispam: 1UD129KBjvJXoW7Ar18XFWrJw4xWr1kWw4kJFb_yoW8AFyrpa
+	y3KF17KrW8Ary7Xr4kAr4IgFW2kFs7GF47Was8AF4I9wnrWr9Fgr4rKFWa9w1v9ayDKFZ8
+	ZFW2gr90k3sxA3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUB01xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
+	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
+	IY67AKxVWUJVWUCwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2
+	jsIE14v26r4j6F4UM28EF7xvwVC2z280aVCY1x0267AKxVW8JVW8Jr1le2I262IYc4CY6c
+	8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_
+	Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwI
+	xGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAa
+	w2AFwI0_GFv_Wrylc2xSY4AK6svPMxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY2
+	0_Gr4l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8G
+	jcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2I
+	x0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK
+	8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I
+	0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjTRMXdjDUUUU
+X-CM-SenderInfo: zqqvvuo6o23hxhgxhubq/1tbiAQ0ICWnsf+IDngAAsI
 
-On Sat, 25 Apr 2026 20:59:16 +0800, Ren Wei <n05ec@lzu.edu.cn> wrote:
-> [...]
-> Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-> Reported-by: Xin Liu <bird@lzu.edu.cn>
-> Co-developed-by: Luxing Yin <tr0jan@lzu.edu.cn>
-> Signed-off-by: Luxing Yin <tr0jan@lzu.edu.cn>
-> Signed-off-by: Jiexun Wang <wangjiexun2025@gmail.com>
-> Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+From: Douya Le <ldy3087146292@gmail.com>
 
-Thanks. I have some minor notes about the patch:
+The NSH header length is encoded in 4-byte words in a 6-bit field.
+The current push_nsh validation only checks the MD2 payload against
+NSH_CTX_HDRS_MAX_LEN, which still allows metadata sizes that cannot be
+represented once the base header is included.
 
->
->
-> diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
-> index 2e42f6b3..028cd4e0 100644
-> --- a/net/batman-adv/tp_meter.c
-> +++ b/net/batman-adv/tp_meter.c
-> @@ -947,6 +964,13 @@ void batadv_tp_start(struct batadv_priv *bat_priv, const u8 *dst,
->  
->  	/* look for an already existing test towards this node */
->  	spin_lock_bh(&bat_priv->tp_list_lock);
-> +	if (atomic_read(&bat_priv->mesh_state) != BATADV_MESH_ACTIVE) {
-> +		spin_unlock_bh(&bat_priv->tp_list_lock);
-> +		batadv_tp_batctl_error_notify(BATADV_TP_REASON_DST_UNREACHABLE,
-> +					      dst, bat_priv, session_cookie);
-> +		return;
-> +	}
-> +
->  	tp_vars = batadv_tp_list_find(bat_priv, dst);
->  	if (tp_vars) {
->  		spin_unlock_bh(&bat_priv->tp_list_lock);
+Reject MD2 metadata lengths whose total NSH header size cannot be
+encoded exactly in the NSH length field, whether because the field
+would wrap or because the length is not a multiple of 4 bytes.
 
-Hm, this looks a little bit out of place. Maybe split it in a patch for
-handling the starting part (this) and the rest (the shutdown handling).
+Fixes: b2d0f5d5dc53 ("openvswitch: enable NSH support")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Douya Le <ldy3087146292@gmail.com>
+Signed-off-by: Douya Le <ldy3087146292@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+---
+ net/openvswitch/flow_netlink.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-> @@ -966,7 +990,6 @@ void batadv_tp_start(struct batadv_priv *bat_priv, const u8 *dst,
->  					      bat_priv, session_cookie);
->  		return;
->  	}
-> -
->  	tp_vars = kmalloc_obj(*tp_vars, GFP_ATOMIC);
->  	if (!tp_vars) {
->  		spin_unlock_bh(&bat_priv->tp_list_lock);
-
-Why was this changed?
-
-> @@ -1342,7 +1362,6 @@ batadv_tp_init_recv(struct batadv_priv *bat_priv,
->  			   "Meter: too many ongoing sessions, aborting (RECV)\n");
->  		goto out_unlock;
->  	}
-> -
->  	tp_vars = kmalloc_obj(*tp_vars, GFP_ATOMIC);
->  	if (!tp_vars)
->  		goto out_unlock;
-
-Why was this changed?
-
-> @@ -1478,9 +1500,57 @@ void batadv_tp_meter_recv(struct batadv_priv *bat_priv, struct sk_buff *skb)
-> [ ... skip 12 lines ... ]
-> +void batadv_tp_stop_all(struct batadv_priv *bat_priv)
-> +{
-> +	struct batadv_tp_vars *tp_vars[BATADV_TP_MAX_NUM];
-> +	struct batadv_tp_vars *tp_var;
-> +	int count = 0;
-> +	int i;
-
-size_t count = 0;
-size_t i;
-
+diff --git a/net/openvswitch/flow_netlink.c b/net/openvswitch/flow_netlink.c
+index 13052408a132..8a1ae5309c2c 100644
+--- a/net/openvswitch/flow_netlink.c
++++ b/net/openvswitch/flow_netlink.c
+@@ -1432,7 +1432,13 @@ static int nsh_key_put_from_nlattr(const struct nlattr *attr,
+ 
+ 			has_md2 = true;
+ 			mdlen = nla_len(a);
+-			if (mdlen > NSH_CTX_HDRS_MAX_LEN || mdlen <= 0) {
++			/* The NSH length field stores the total header size
++			 * in 4-byte words in 6 bits. Reject MD2 metadata
++			 * lengths that cannot be encoded exactly or would
++			 * make the length field wrap.
++			 */
++			if (mdlen <= 0 || !IS_ALIGNED(mdlen, 4) ||
++			    NSH_BASE_HDR_LEN + mdlen > (NSH_LEN_MASK << 2)) {
+ 				OVS_NLERR(
+ 				    log,
+ 				    "Invalid MD length %d for MD type %d",
 -- 
-Sven Eckelmann <sven@narfation.org>
+2.43.0
+
