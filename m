@@ -1,132 +1,115 @@
-Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99FBC2236EB;
-	Sun, 26 Apr 2026 14:17:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19105364953
+	for <netdev@vger.kernel.org>; Sun, 26 Apr 2026 14:28:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777213064; cv=none; b=SLy6lOZBOWRlcm8xhnOgCmUm3ueuMH6Pzbi4rqqES/u1EkRVKyzScr3MloWphH9nTzBQRFOJNScK8GpS42G0IpXTW8/MvUA/GuTkIkzxaqoai38bxc2YhaQI+BQMVLZ4DDYCl7DFmMfoJC2Om/H0V/uyHeyZ1BXoLCO3fCgmNSA=
+	t=1777213713; cv=none; b=BInyZkJMG3SmRkv56ieE2yL8FMHKNEiY7JrUNeUcgNC3OQJMhOdjLlJwad3YWixsq+oboGs8Vjy0CwHuAJRNoM98SzpfqPAthHdN3tZ7cdHy6DTpUOMjOCRd+OxuDQtAhKyHZ3sBql5vXMoRcqvxVkJjmdKwjcnM64XITDREubA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777213064; c=relaxed/simple;
-	bh=PpgkP1YKmlbuFUrJNXhMVv1K4LUZT2tLz09Jj+Nnro0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gfQC2aqZalEToTQeUvXFbomjsBRuldvj1Nk1Y6i/6aGZSfkSgvLcS4N+7pwMxjL+TJAHJbDgQDylzgTg0D/s5IgvIse9H7ho7lxJSPtA+9Cm39MvJPhQIH4LATHrP/09tJAtBBETDVt38r/oEkOr04YgVbX9irudt9ODhJTub/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=MiHDuQ3a; arc=none smtp.client-ip=117.135.210.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+	s=arc-20240116; t=1777213713; c=relaxed/simple;
+	bh=VZFl5/IU1v4UTxpNq12Cpk26Nokne9p5RJzDQgfLWwQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JKiIDmO1Ynz2tbJsBjxG3tcXVY74ELkJI2YkN3Lwx+EjlYudbqEjbit8WrwSlm3V+A5wYnoQb10es7WNdHnkieywpFgy8cEqfwNSjH3EYjEe8aL4J5Ntzd8k+ldkzrHTr/zKTLB+i/kz1hygtrLs/BrdrtBm97R/XI7q2UOgg04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YRBawhXB; arc=none smtp.client-ip=209.85.210.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="MiHDuQ3a"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
-	Content-Type; bh=buJnxB7ZO086rGZFo2LRvhB0nYMnOVMe4qEqFrdkycM=;
-	b=MiHDuQ3aM0w40MkZuRTZDrM885olgYuK7xbsTOXHp4lT/cD7bkwpwZZ5XVkNrZ
-	r81nQvRWVagRR3hk6K4kEm4G+n6t/UKXjfxhvevhUatCqlPXKtOEpl8/Yc8ooebv
-	GLgKMdGai9+gq1Q85IKLbNypuUgpj9yVPZRD36EWDEneo=
-Received: from [IPV6:2408:8210:480a:2590:ec66:74e8:68a7:a44b] (unknown [])
-	by gzsmtp4 (Coremail) with SMTP id PykvCgD3X9rhHe5pse0hEA--.31129S2;
-	Sun, 26 Apr 2026 22:15:00 +0800 (CST)
-Message-ID: <7b73e122-8bca-410d-a14f-a8f55a79305c@126.com>
-Date: Sun, 26 Apr 2026 22:14:57 +0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YRBawhXB"
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-82f9fdfc965so3685206b3a.1
+        for <netdev@vger.kernel.org>; Sun, 26 Apr 2026 07:28:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777213711; x=1777818511; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=RS8ucX8FcZXkpy4jFipC3+eWnTvqfIiw+EMH9PjAj6g=;
+        b=YRBawhXBm9xLvA4Ua4Im3mLZTvEMURLItTWpm44na0bojRsL/YzTGkYnFhIlt7ctDf
+         52Tin0gKJVv0mSDdp+Y5G7vlpOPkE6xPI1wzfAXrPuomj2uE2ujDDp81yq46AtEGEWYd
+         aH4Kil+HqvW87QyWR0OLYvSZSSgR+ehd3Os+9MWA9YxaMUQfmcr4qUwW8dJOptGs46J0
+         Hb7OxZQWf+SLprBL0cUgdwkHga4OJ450vvGBcXUHMp3e2pFW32MfOS1w+cEWtsWz1hMM
+         3614ys00tnGoTc1g4TDT55HJRKsMgiOP99TRDDYzvP377va6VOjJF+kgVWmLZKF+9hmB
+         Q4KA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777213711; x=1777818511;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RS8ucX8FcZXkpy4jFipC3+eWnTvqfIiw+EMH9PjAj6g=;
+        b=b219iOtg0q+v6K1Vh9YnjJtXU7UXfQS15rAtKY04yWDRoTAH32ylSslPCjjKqGbOs4
+         UsYo05FqlI+8GwgntgUi1/IQTKQ/w+St6/BLM5Prs+cArCqILwZPZbazyB18QI8vWNq4
+         MwP/yj3uqF2HIHlf6y3C8Jn+u/ejjb1t13aK39SqOjuqnHukjDJG4pyO3cC+3Gf9S57v
+         OixdxlcSXyh+apLqD7UC6sX1TKjRz2FCeUmxjdKLRZi+qa/TXO1wFa142WkgxbJ8mzJk
+         kDQRFDnG6VWiSjVw2aUtjduxGXDxFv8kA+vCSIrHxasqk4vmqgD1JSB9Ubma82I/XAXA
+         cuxQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8Cv3NZ2C8esC9VVzkvuAZa3j6C0SJNhLOOHE4H30bNoKhCEfYv8wh4KDVILstNlDAov6urllk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0hDoswHJvw0wD41MG6dBqzJa3xhWNBHUcQvaKLY1YPhlWkEyV
+	8iKB7+7bSE5A0koTQe1o1EfT+/KALLi68xtE2jZ1UCNNSqO+J/ArXnTUoCZAOxvldg==
+X-Gm-Gg: AeBDievJ8n1qbc0BpIC4Iib2Lu/SyQTrxomQlwb7/YFz5qwNx55m7YwQeB8tGwJDhJA
+	dQYkAJanE+U65JzQZoN5xQvuiULwiOPWxJJTqOJZFlEbJFvVzwuOi4PSuYBuZ6nInAB2YBCchOU
+	KljjMM0Hlar/23HJvxNTGkE0Tb7rKi5KlpyaaOf2pZKwRyVytnxSMwMTfYuGbexjz3uGdiP3rbv
+	KqYAyYNNQwg3oRDFlT1Ah7cQH5w9YVAMDnEDI1t9pjgd7vUuw6fCY9v8lXYwkl1gdQQVg8SRSRb
+	ERBdWRk4jEOcY4t0JzGlHp5F2kR4vnfbhArLiqH8Q1YYW+imD18r2b9mdVdV3Ob5878L9Uzlntn
+	rcVc/Js/EEdxc6QyO5Fjwyy/tSfSOCFI95fvMFzTnvo20RTUs8ITqzfm9iNHyjvzHmuTeTv2fX1
+	9Xrwg3ZmE2tRxEuuHbujzkgvumU7TgnuzXrt2T9YvnDwrN1sRp2Ywp1X7SXMwnLo+4qw2foRcLT
+	J3BrURG4g==
+X-Received: by 2002:a05:6a00:a883:b0:829:6f7d:3093 with SMTP id d2e1a72fcca58-82f8c9ece1emr40810968b3a.48.1777213711426;
+        Sun, 26 Apr 2026 07:28:31 -0700 (PDT)
+Received: from localhost.localdomain ([1.226.165.54])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f94204ac8sm28318578b3a.0.2026.04.26.07.28.28
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 26 Apr 2026 07:28:30 -0700 (PDT)
+From: Myeonghun Pak <mhun512@gmail.com>
+To: Horatiu Vultur <horatiu.vultur@microchip.com>,
+	UNGLinuxDriver@microchip.com,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Ijae Kim <ae878000@gmail.com>
+Cc: Myeonghun Pak <mhun512@gmail.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] net: lan966x: avoid unregistering netdev on register failure
+Date: Sun, 26 Apr 2026 23:27:50 +0900
+Message-ID: <20260426142806.36028-1-mhun512@gmail.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 1/2] kernel/notifier: replace single-linked list with
- double-linked list for reverse traversal
-To: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Cc: rafael@kernel.org, lenb@kernel.org, mturquette@baylibre.com,
- sboyd@kernel.org, viresh.kumar@linaro.org, agk@redhat.com,
- snitzer@kernel.org, mpatocka@redhat.com, bmarzins@redhat.com,
- song@kernel.org, yukuai@fnnas.com, linan122@huawei.com,
- jason.wessel@windriver.com, danielt@kernel.org, dianders@chromium.org,
- horms@kernel.org, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, paulmck@kernel.org, frederic@kernel.org,
- mcgrof@kernel.org, petr.pavlu@suse.com, da.gomez@kernel.org,
- samitolvanen@google.com, atomlin@atomlin.com, jpoimboe@kernel.org,
- jikos@kernel.org, mbenes@suse.cz, pmladek@suse.com, joe.lawrence@redhat.com,
- rostedt@goodmis.org, mark.rutland@arm.com, mathieu.desnoyers@efficios.com,
- linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
- linux-clk@vger.kernel.org, linux-pm@vger.kernel.org,
- live-patching@vger.kernel.org, dm-devel@lists.linux.dev,
- linux-raid@vger.kernel.org, kgdb-bugreport@lists.sourceforge.net,
- netdev@vger.kernel.org
-References: <20260415070137.17860-1-chensong_2000@189.cn>
- <20260420144429.57b45f2beece690bceea96ec@kernel.org>
-Content-Language: en-US
-From: Song Chen <chensong_2000@126.com>
-In-Reply-To: <20260420144429.57b45f2beece690bceea96ec@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:PykvCgD3X9rhHe5pse0hEA--.31129S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7AF4DuFWxKw45Ww15ZF1DWrg_yoW8KF13pa
-	4qgr4fCF4kJr92yFs2qw1xWFyYga95JFWUJF18C34Sywn0gF9FvrWxtw45uFWkCws3Zry2
-	9w4UXwnrua4DZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UXBMNUUUUU=
-X-CM-SenderInfo: xfkh02prqjsjqqqqqiyswou0bp/xtbBpASWFmnuHeTUYwAA3p
+Content-Transfer-Encoding: 8bit
 
-Hi Hiramatsu san,
+lan966x_probe_port() stores the newly allocated net_device in the
+port before calling register_netdev(). If register_netdev() fails,
+the probe error path calls lan966x_cleanup_ports(), which sees
+port->dev and calls unregister_netdev() for a device that was never
+registered.
 
+Destroy the phylink instance created for this port and clear port->dev
+before returning the registration error, matching the existing guard
+used by the common cleanup path.
 
-On 4/20/26 13:44, Masami Hiramatsu (Google) wrote:
-> Hi Song,
-> 
-> On Wed, 15 Apr 2026 15:01:37 +0800
-> chensong_2000@189.cn wrote:
-> 
->> From: Song Chen <chensong_2000@189.cn>
->>
->> The current notifier chain implementation uses a single-linked list
->> (struct notifier_block *next), which only supports forward traversal
->> in priority order. This makes it difficult to handle cleanup/teardown
->> scenarios that require notifiers to be called in reverse priority order.
-> 
-> What about introducing a new notification callback API that allows you
-> to describe dependencies between callback functions?
-> 
-> For example, when registering a callback, you could register a string
-> as an ID and specify whether to call it before or after that ID,
-> or you could register a comparison function that is called when adding
-> to a list. (I prefer @name and @depends fields so that it can be easily
-> maintained.)
-> 
-> This would allow for better dependency building when adding to the list.
-> 
+Fixes: d28d6d2e37d1 ("net: lan966x: add port module support")
+Co-developed-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+---
+ drivers/net/ethernet/microchip/lan966x/lan966x_main.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Is the new notification callback API going to replace 
-blocking_notifier_chain in module loader? or an expansion inside 
-blocking_notifier_chain but introducing less complexity?
->>
->> A concrete example is the ordering dependency between ftrace and
->> livepatch during module load/unload. see the detail here [1].
-> 
-> If this only concerns notification callback issues with the ftrace
-> and livepatch modules, it's far more robust to simply call the
-> necessary processing directly when the modules load and unload,
-> rather than registering notification callbacks externally.
-> 
-> There are fprobe, kprobe and its trace-events, all of them are using
-> ftrace as its fundation layer. In this case, I always needs to
-> consider callback order when a module is unloaded.
-> 
-> If ftrace is working as a part of module callbacks, it will conflict
-> with fprobe/kprobe module callback. Of course we can reorder it with
-> modifying its priority. But this is ugly, because when we introduce
-> a new other feature which depends on another layer, we need to
-> reorder the callback's priority number on the list.
-> 
-> Based on the above, I don't think this can be resolved simply by
-> changing the list of notification callbacks to a bidirectional list.
-> 
-> Thank you,
-> 
-
-understood, many thanks for your proposal, i will think  about it.
-
-best regards,
-
-Song
-
+diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
+index 47752d3fde..22c496f588 100644
+--- a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
++++ b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
+@@ -873,6 +873,9 @@ static int lan966x_probe_port(struct lan966x *lan966x, u32 p,
+ 	err = register_netdev(dev);
+ 	if (err) {
+ 		dev_err(lan966x->dev, "register_netdev failed\n");
++		phylink_destroy(phylink);
++		port->phylink = NULL;
++		port->dev = NULL;
+ 		return err;
+ 	}
+ 
