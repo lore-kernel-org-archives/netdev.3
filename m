@@ -1,93 +1,62 @@
-Received: from mx4.wp.pl (mx4.wp.pl [212.77.101.11])
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 800E330BBB9
-	for <netdev@vger.kernel.org>; Sun, 26 Apr 2026 22:24:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EA30138490
+	for <netdev@vger.kernel.org>; Sun, 26 Apr 2026 23:20:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777242246; cv=none; b=tbes9B11gxVHgT30hVlXP8uJkmR2pBbo/gDj8p0YEUgU04duvb8UHpFfI5jGAu1u8p8FbTRDqDJlqVGxvnOQMfgzxiuqjLuXUmrxJ6Uh11E1BFN02X2eUPFxTrUNIkJwBZij9iDbmHrHsSkkb1CtevrKIWDxd7kW6OT3CL+adCY=
+	t=1777245626; cv=none; b=Bl9enM3sEsAsWJTA5BrgEUl2VXqGJnR4yBBF5UJpv50AjwKnn7yPnLcbqWTkIfncySBs2e9BfG852J9bO7c5PBeECVqMOc4yypux8yYH1+7WDZQjFA83+WaamNkElWeM5CIauI7mVw0OBZWI+QAIDFYNJWSdoXO4ZTBmoIbmhrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777242246; c=relaxed/simple;
-	bh=duvRwRyeAinnB/xvun0uxF9j9V4bN/P78/1rb+3Veq0=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=Td7C/Os5RPZ5H7Zumb5kzgbbVxIOBeBAXLnoxUaskIlizHHo0ObjsGTPT2vqU5mpDQ7X3TgSpSboni4E+AYJXltwILji4WokqiWlFTGqdwQjnhzKfuzkbV/2Pn2pbSHMnk/v6OMgxAIgsUIXeJaRRRg0W4gS2zgp8PX6Mf5DAJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=X69MiKwp; arc=none smtp.client-ip=212.77.101.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
+	s=arc-20240116; t=1777245626; c=relaxed/simple;
+	bh=Pz0wRMeuU5MHSiNmGPdDSD6/RntfkTLDDlks2S2u7+w=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=KlHfW5g5wFvd0Ol+yJqlpY/jnKcrDrH4qm8noR5mcaY2JMrQPdpRVWxw1fSwldOb8zkK+9ESwGXCw3iPB/8hhEEKG72Q+JimrmiwmyDh5xK2ZOgykomrB9+roEST6IgCFo5lIP6GF3geA8xtDefdcUpCkJC1Gg92uCx7BcRQiZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=JsBu6ySt; arc=none smtp.client-ip=95.215.58.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="X69MiKwp"
-Received: (wp-smtpd smtp.wp.pl 7590 invoked from network); 27 Apr 2026 00:24:02 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=20241105;
-          t=1777242242; bh=yi7xlcKtlsDvAwwYvHTnNAfEA4EJ74uDBLc0UVQJAkI=;
-          h=From:To:Subject;
-          b=X69MiKwpAkE0LuJEBQH+897iQGplRR5b6BupD08zXikYew9hBR17kKujN/uF0i8wZ
-           PnCK4aZcLuTruHyqHGQ4DG1kEIylKJ/tqVEXLX6RHNzPMA84VzYyU1bUZ8mcb+51I9
-           oRptr1YgoKoAxY9OUmGU6B9loRzrt8EtsPOa6IdkqGgKxtuspmXpFEZi4CECrnhYSY
-           fItOSrluUvmgC82trUy0aPCIclgfY+I1CD9+o+FFgPu9d0CjllOF9WEWOBSxxw4SeB
-           aCpUkZ9AOC/CQJJRc9QVzezR3AnGLhiDGjGrtWLp4qzFItjlm+wlUQnXE9MycE955A
-           g6XjoKBZsYB+A==
-Received: from 83.24.138.167.ipv4.supernova.orange.pl (HELO abajkowski.lan) (olek2@wp.pl@[83.24.138.167])
-          (envelope-sender <olek2@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with TLS_AES_256_GCM_SHA384 encrypted SMTP
-          for <andrew@lunn.ch>; 27 Apr 2026 00:24:02 +0200
-From: Aleksander Jan Bajkowski <olek2@wp.pl>
-To: andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	daniel@makrotopia.org,
-	vladimir.oltean@nxp.com,
-	michael@fossekall.de,
-	olek2@wp.pl,
-	ih@simonwunderlich.de,
-	rmk+kernel@armlinux.org.uk,
-	marek.vasut@mailbox.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next] net: phy: realtek: replace magic number with register bit macros
-Date: Mon, 27 Apr 2026 00:23:44 +0200
-Message-ID: <20260426222359.3443278-1-olek2@wp.pl>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="JsBu6ySt"
+Message-ID: <6c3fb15e-711d-4b8d-b152-e03d9b05293f@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1777245622;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Pz0wRMeuU5MHSiNmGPdDSD6/RntfkTLDDlks2S2u7+w=;
+	b=JsBu6yStYEos3W0X3N1ZwgG7KOZUlm+LBmzB54mON9+idiyW16zs4RD76uF0z2HQ4perUt
+	B5LiEeeDKCGAuzvoRrE67vSzVvkIZquKefBkvVgif0YjJkaBXTcBf5Ob6a4MxJESv9twOQ
+	hsNid0nDDHYep6WvpJ2EBq5LLN2lFTM=
+Date: Sun, 26 Apr 2026 16:20:16 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-WP-MailID: 37bdd7c5aaae4d1e559689eec61f739b
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 0000003 [AcCc]                               
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Matthew Schwartz <matthew.schwartz@linux.dev>
+Subject: [REGRESSION] aquantia: Sunshine/Moonlight UDP video streaming broken
+ since 5b4015ad833c ("net: aquantia: Remove redundant UDP length adjustment
+ with GSO_PARTIAL")
+To: Gal Pressman <gal@nvidia.com>, Dragos Tatulea <dtatulea@nvidia.com>,
+ Jakub Kicinski <kuba@kernel.org>
+Cc: regressions@lists.linux.dev, netdev@vger.kernel.org,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-Replace magic number with register bit macros. The description of the
-RTL8211B interrupt register is obtained from the datasheet.
+Hello,
 
-1. RTL8211B(L) Rev. 1.5 Datasheet
-Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
----
- drivers/net/phy/realtek/realtek_main.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+When using a previously working setup of remote streaming from my workstation to another device via Sunshine (the host server) and Moonlight (the client app) on my home network, I no longer receive any video output on the client app after upgrading my host workstation to kernel 7.0. Reverting back to kernel 6.19 on the host restored my setup to a working state.
 
-diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
-index 79c867ef64da..9f2a0bc03728 100644
---- a/drivers/net/phy/realtek/realtek_main.c
-+++ b/drivers/net/phy/realtek/realtek_main.c
-@@ -40,7 +40,12 @@
- 						 RTL8201F_ISR_LINK)
- 
- #define RTL821x_INER				0x12
--#define RTL8211B_INER_INIT			0x6400
-+#define RTL8211B_INER_SPEED			BIT(14)
-+#define RTL8211B_INER_DUPLEX			BIT(13)
-+#define RTL8211B_INER_LINK_STATUS		BIT(10)
-+#define RTL8211B_INER_INIT			(RTL8211B_INER_SPEED | \
-+						 RTL8211B_INER_DUPLEX | \
-+						 RTL8211B_INER_LINK_STATUS)
- #define RTL8211E_INER_LINK_STATUS		BIT(10)
- #define RTL8211F_INER_PME			BIT(7)
- #define RTL8211F_INER_LINK_STATUS		BIT(4)
--- 
-2.53.0
+After bisecting, I landed on 5b4015ad833c ("net: aquantia: Remove redundant UDP length adjustment with GSO_PARTIAL") as the first bad commit. I confirmed this by moving the cable to my second on-board NIC (Intel) on the same workstation, which restored video output without any other kernel changes. My affected on-board NIC is Aquantia AQC113 [1d6a:04c0] (rev 03), atlantic driver, firmware 1.3.34, MTU 1500.
 
+Looking into it a bit further, ethtool -K enp97s0 tx-udp-segmentation off also serves as a workaround on my Aquantia port without changing to my other ethernet port. The working Intel NIC reports tx-udp-segmentation as "off [fixed]", so traffic falls back to software UDP segmentation on there.
+
+Please let me know if there's any additional info I can provide.
+
+Thanks,
+Matt
+
+#regzbot introduced: 5b4015ad833c
