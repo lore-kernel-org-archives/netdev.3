@@ -1,51 +1,54 @@
-Received: from mx3.wp.pl (mx3.wp.pl [212.77.101.10])
+Received: from mx4.wp.pl (mx4.wp.pl [212.77.101.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81F0F4A0C
-	for <netdev@vger.kernel.org>; Sun, 26 Apr 2026 21:49:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 800E330BBB9
+	for <netdev@vger.kernel.org>; Sun, 26 Apr 2026 22:24:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777240162; cv=none; b=dDpIv7kyAGBdstAZ4t6jPbTO93ZtoKSM/mYy0hs3g86jkCdpIRzczvfpQmr9YeXkCdeE3UBjTJbz8oFAIcd/LO03J5E7rw/qX0xMBbi/0upVxqdrlFSezqWH8pczlmWijhsh4CJsfA8oIjVPX6JFKnG6+5vnREBHapBNg1oTm9I=
+	t=1777242246; cv=none; b=tbes9B11gxVHgT30hVlXP8uJkmR2pBbo/gDj8p0YEUgU04duvb8UHpFfI5jGAu1u8p8FbTRDqDJlqVGxvnOQMfgzxiuqjLuXUmrxJ6Uh11E1BFN02X2eUPFxTrUNIkJwBZij9iDbmHrHsSkkb1CtevrKIWDxd7kW6OT3CL+adCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777240162; c=relaxed/simple;
-	bh=hqc/CK0y2YVF3dMMJiIgh0dUs3rUUbZBVUb0oTGFGbI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=C3D79XhXA7nTla8CsUhatvmffkqWUYZM+x+KoYqCyMjVvMWzfavsghvLxtB4cZ63Vu1OWgK9xg1v662A7EFLlOLORVNIss/pbNp6/XGg3uHYUOt704VbEyf4dLQVQtKoFi7yfr8w2ba8R/LRfIC6nY/pOww93gPFR3InLcOyo4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=MzOhzEeX; arc=none smtp.client-ip=212.77.101.10
+	s=arc-20240116; t=1777242246; c=relaxed/simple;
+	bh=duvRwRyeAinnB/xvun0uxF9j9V4bN/P78/1rb+3Veq0=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=Td7C/Os5RPZ5H7Zumb5kzgbbVxIOBeBAXLnoxUaskIlizHHo0ObjsGTPT2vqU5mpDQ7X3TgSpSboni4E+AYJXltwILji4WokqiWlFTGqdwQjnhzKfuzkbV/2Pn2pbSHMnk/v6OMgxAIgsUIXeJaRRRg0W4gS2zgp8PX6Mf5DAJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=X69MiKwp; arc=none smtp.client-ip=212.77.101.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="MzOhzEeX"
-Received: (wp-smtpd smtp.wp.pl 23436 invoked from network); 26 Apr 2026 23:49:11 +0200
+	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="X69MiKwp"
+Received: (wp-smtpd smtp.wp.pl 7590 invoked from network); 27 Apr 2026 00:24:02 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=20241105;
-          t=1777240151; bh=wNiG3vmaZvmJc/Ed24L3ke+xWsq9YoBhZy8VatvB0CY=;
-          h=From:To:Cc:Subject;
-          b=MzOhzEeX0WBcWZhX5JGkOt/ze9j2PrSpXwWk8+I6idbLvFY59mr/S0KAPo9IYd8eI
-           5X3iDJzMR2ag+YP97YlWQN4S57HwM71TTnVS5rt60X4fdgajMCR2JJdXSbU1kxA6s9
-           TUKYebkCYqzDvswpHHypuu2eylRQaY8dqjQ6l7G9empyiuQM9xBsZs9JkCvtXp9moE
-           E5EihUC/hu7z/lZay+h+4hoxDOhsSlf/iP5c294toQPr/5VaVNLLTblK6MYSXeycUg
-           0HnqVVcjyAT4hPY6RkA2hoOwQT1dDStY1Pj0UZAwp7fr/lhd7jNnbVxbk6PcsobdSn
-           XD0C/O1ssB/5A==
+          t=1777242242; bh=yi7xlcKtlsDvAwwYvHTnNAfEA4EJ74uDBLc0UVQJAkI=;
+          h=From:To:Subject;
+          b=X69MiKwpAkE0LuJEBQH+897iQGplRR5b6BupD08zXikYew9hBR17kKujN/uF0i8wZ
+           PnCK4aZcLuTruHyqHGQ4DG1kEIylKJ/tqVEXLX6RHNzPMA84VzYyU1bUZ8mcb+51I9
+           oRptr1YgoKoAxY9OUmGU6B9loRzrt8EtsPOa6IdkqGgKxtuspmXpFEZi4CECrnhYSY
+           fItOSrluUvmgC82trUy0aPCIclgfY+I1CD9+o+FFgPu9d0CjllOF9WEWOBSxxw4SeB
+           aCpUkZ9AOC/CQJJRc9QVzezR3AnGLhiDGjGrtWLp4qzFItjlm+wlUQnXE9MycE955A
+           g6XjoKBZsYB+A==
 Received: from 83.24.138.167.ipv4.supernova.orange.pl (HELO abajkowski.lan) (olek2@wp.pl@[83.24.138.167])
           (envelope-sender <olek2@wp.pl>)
           by smtp.wp.pl (WP-SMTPD) with TLS_AES_256_GCM_SHA384 encrypted SMTP
-          for <andrew+netdev@lunn.ch>; 26 Apr 2026 23:49:11 +0200
+          for <andrew@lunn.ch>; 27 Apr 2026 00:24:02 +0200
 From: Aleksander Jan Bajkowski <olek2@wp.pl>
-To: andrew+netdev@lunn.ch,
+To: andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
 	davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
-	hayeswang@realtek.com,
-	hsu.chih.kai@realtek.com,
-	kees@kernel.org,
-	mail@birger-koblitz.de,
-	linux-usb@vger.kernel.org,
+	daniel@makrotopia.org,
+	vladimir.oltean@nxp.com,
+	michael@fossekall.de,
+	olek2@wp.pl,
+	ih@simonwunderlich.de,
+	rmk+kernel@armlinux.org.uk,
+	marek.vasut@mailbox.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Cc: Aleksander Jan Bajkowski <olek2@wp.pl>
-Subject: [PATCH net-next] net: usb: r8152: add TRENDnet TUC-ET2G v2.0
-Date: Sun, 26 Apr 2026 23:49:00 +0200
-Message-ID: <20260426214909.3426105-1-olek2@wp.pl>
+Subject: [PATCH net-next] net: phy: realtek: replace magic number with register bit macros
+Date: Mon, 27 Apr 2026 00:23:44 +0200
+Message-ID: <20260426222359.3443278-1-olek2@wp.pl>
 X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -54,33 +57,37 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-WP-DKIM-Status: good (id: wp.pl)                                                      
-X-WP-MailID: 596669f7ac28c279c4a913887e3b90b9
+X-WP-MailID: 37bdd7c5aaae4d1e559689eec61f739b
 X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 0000000 [8YMk]                               
+X-WP-SPAM: NO 0000003 [AcCc]                               
 
-The TRENDnet TUC-ET2G V2.0 is an RTL8156B based 2.5G Ethernet controller.
+Replace magic number with register bit macros. The description of the
+RTL8211B interrupt register is obtained from the datasheet.
 
-Add the vendor and product ID values to the driver. This makes Ethernet
-work with the adapter.
-
+1. RTL8211B(L) Rev. 1.5 Datasheet
 Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
 ---
- drivers/net/usb/r8152.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/phy/realtek/realtek_main.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index 7337bf1b7d6a..1ace1d2398c9 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -10138,6 +10138,7 @@ static const struct usb_device_id rtl8152_table[] = {
- 	{ USB_DEVICE(VENDOR_ID_DELL,    0xb097) },
- 	{ USB_DEVICE(VENDOR_ID_ASUS,    0x1976) },
- 	{ USB_DEVICE(VENDOR_ID_TRENDNET, 0xe02b) },
-+	{ USB_DEVICE(VENDOR_ID_TRENDNET, 0xe02c) },
- 	{}
- };
+diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
+index 79c867ef64da..9f2a0bc03728 100644
+--- a/drivers/net/phy/realtek/realtek_main.c
++++ b/drivers/net/phy/realtek/realtek_main.c
+@@ -40,7 +40,12 @@
+ 						 RTL8201F_ISR_LINK)
  
+ #define RTL821x_INER				0x12
+-#define RTL8211B_INER_INIT			0x6400
++#define RTL8211B_INER_SPEED			BIT(14)
++#define RTL8211B_INER_DUPLEX			BIT(13)
++#define RTL8211B_INER_LINK_STATUS		BIT(10)
++#define RTL8211B_INER_INIT			(RTL8211B_INER_SPEED | \
++						 RTL8211B_INER_DUPLEX | \
++						 RTL8211B_INER_LINK_STATUS)
+ #define RTL8211E_INER_LINK_STATUS		BIT(10)
+ #define RTL8211F_INER_PME			BIT(7)
+ #define RTL8211F_INER_LINK_STATUS		BIT(4)
 -- 
 2.53.0
 
