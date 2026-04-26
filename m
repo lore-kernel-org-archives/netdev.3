@@ -1,128 +1,244 @@
-Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE814EEC0
-	for <netdev@vger.kernel.org>; Sun, 26 Apr 2026 16:54:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 660E226AC3;
+	Sun, 26 Apr 2026 18:08:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777222451; cv=none; b=COk1xX2qZwS67n/9mgWCPgMNJZhNNPEnn6n2igVM+nT5ObsGv2V+PIu7iK+G0OTnmVgW7+kQk7IGwis5C7kzzTkuNKr2iBcpQ/4z0UcaI2jaOUA5hwjzhfvk/p2uFtPc5jJ/Y01VmUEIJdAYvOi5l9pv7RXgh0ZkhuzxDPhHfDQ=
+	t=1777226930; cv=none; b=ofqkoAqXs9FVpxfkmo15RHYfbAZ4kZdkdpw76ETV+kxyFjwYuPuCwMVCf65rSA8jMN2xTDm1Yw7hyTmnTc95e+KlS4SaVNylHovoH5uN1rkDBRH2nCuhc7BtPaGxgvqVUb8HYu5rcEWaf+Rj8qSgeBlfbEmKEui3D55Miy5VMwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777222451; c=relaxed/simple;
-	bh=Nz8RE9jBowKZinbU00agnMEyKGXH2n0e/WSlA5lzJUw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qp6Z7tEHc6qf8LPJchmKCrAx2ZKkr7ZLpxFCy7v17l1darRw+BrBXVZ0da3l8xAmgYDrONT2lasgpMd0FrlRRXo4ST1xuT/Wvvc4Lm33knQR+0yod3c89crH93Hlyi2Hss/M1bQbAdKlcLq/CP6RsIi56ziwJDywNZcpel6z8DI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PjnOFllF; arc=none smtp.client-ip=74.125.82.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1777226930; c=relaxed/simple;
+	bh=4J+qsBSPaKy3NZSauAGXCjlNIlVE9Rx3dS4xhq26CDU=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CBv5o5dY1Othd/ghBpYG5YM85qJvuFVuir/OuzwCpo+09OIEYYj1WL4SpJyv44cKJlF7q1KFMBLSYHcpzAKawJ9pkPuv8TYwhiP4wnL3c0e5l5d3AV0aFXoU3IEMqCBXHS9a+2cHV1WPwcgot3VtHo9oGDTQmnLcd7g7/O1d+sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=HcGvrLBY; arc=none smtp.client-ip=67.231.148.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PjnOFllF"
-Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-2b6b0500e06so14576223eec.1
-        for <netdev@vger.kernel.org>; Sun, 26 Apr 2026 09:54:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777222449; x=1777827249; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Fek+ClrEARBNMfK0Lmi3AOoFP46bSz44bXEprXCKlnU=;
-        b=PjnOFllFRmnAungmxXWtuZlFK1QFr5AJ/Hjn7pWtyi/KeCehG6PH+bcrxSJ5cpbAiB
-         2KCEbrLsBILHYB2HNq6Zb2bMLTlgpo3gtb2PBkeYq8OTZM0K+ra4yGVQIojHt/G4rZ/s
-         TO5Fw9CJjkxRLXa6pHgriWx6WumEonDt1MYGQK83QIrmisNQCnJmlndGHKZ07uqqpRNx
-         y90xDlC41SSzUL1HJZRLDHo3ReclMN5BP7FCjJm56zktek7fNFoGSEOsPIcvrf4R3wmA
-         LXcda4/89ZZiztzAzoDEJKIZIrRXnTp3Xz2oOwHGniy1iUPdxWELLbT+g/TBR8bvfS4h
-         6Ttg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777222449; x=1777827249;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Fek+ClrEARBNMfK0Lmi3AOoFP46bSz44bXEprXCKlnU=;
-        b=ahUOFAHC4uoNWag9M+vVkzpLQlT/kWaj5+LNdcx699AT+qqEDKx+oUQ+thdLfD9Va4
-         fgQxe0GsGiw6NTUNpp1HYmTaaNaaMpj9bViP2jKZc3mhVQR8Il651ZKFCwLZkgnPUC7k
-         AliAXM5tSB85P5woXloAiFPpNsTI3GfOyAsa4ApaVyd59zWJexMQpuN69oLc8mL33YyK
-         2Gifv+M7TgpQcgWhwsp0AKgz6ytnPudZ1+JIrsbMoieeGvxnLgoCkAPZNX/+3nFnk2PY
-         vMf42KFE2lkludfIYaCDrBtePIrPnXjwlW/6R9tckG9rukMTrrdLErSn4S5kmYFsx3oa
-         B+jg==
-X-Forwarded-Encrypted: i=1; AFNElJ+AGU/5xfUdrLmThRYO3lqgoW+UNvVwC7Asv+bVWhxan5sifmQWX/FIKh5tYdHgon66JIHzHE0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxOFKuMEEGUTB9TElfB1yTKKfRTvVSyFACEG3GIS0WHu6GkyCrW
-	OMc0b77g95hn9vvCppbS15kIQutvL8IB1BAn5fWfxETLqLw4ZU5n7vB+
-X-Gm-Gg: AeBDieuNa5+mDtVBTofIiYiP79iaDmnqBSqkQQXH+ui9Ut6BT4HGP/2sUArnwLjPb96
-	eUvGbxgZvEH5KnCdsth2zzYvpmtxGDW+0K0azBeUq+Ypfhvr09lT2s5Sihjv4NSe/yBDQOUB6HN
-	BgKL9yM+Gzxokn/f/IeUGkP95eYoDsWlU3Yk7HnSZFn4u/fZSpx1Ee3hihDb8F86Q/3S/8MgMv7
-	TXF15jIi7ubAjKEpavclE69qCpnw+lMC5pQzj6cbS3oxOSuDmex9UgRMfvfFfCV57ZvkH3qJcjR
-	z1hr44/D8GIzpm3PPALbiZxh6iQUh1XE79tzvOx2Xx6Y+sDVTiutbrsmG15hPP3Omv6rIO/ejJV
-	I4LIMQDH63D6CuxTO/aRXCjs59qYO2LutgqpYiPIuacoxIyJT9Hivf1ynTqCTMYV7CW4t2lpB2R
-	enWvqS524TbiMz8o/g5NzoJ6jbNyDLcME9SEa/mmpOepLMYrs6lFfdp9kl5hR50cP/dqZXRkcxe
-	zXk/6LeuEn8KjuhuKHW
-X-Received: by 2002:a05:693c:310b:b0:2dd:649d:751d with SMTP id 5a478bee46e88-2e46538dc17mr18627051eec.8.1777222448989;
-        Sun, 26 Apr 2026 09:54:08 -0700 (PDT)
-Received: from efaec68ba852.tailc0aff1.ts.net ([206.206.192.132])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2e53a4a80c7sm50404803eec.10.2026.04.26.09.54.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Apr 2026 09:54:08 -0700 (PDT)
-From: Weiming Shi <bestswngs@gmail.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Willem de Bruijn <willemb@google.com>,
-	Martin Varghese <martin.varghese@nokia.com>,
-	netdev@vger.kernel.org,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>
-Subject: [PATCH net] bareudp: fix NULL pointer dereference in bareudp_fill_metadata_dst()
-Date: Sun, 26 Apr 2026 09:53:51 -0700
-Message-ID: <20260426165350.1663137-2-bestswngs@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="HcGvrLBY"
+Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63QEEG772399519;
+	Sun, 26 Apr 2026 11:08:35 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pfpt0220; bh=1kOHuBdvnulMDjDL83SJuMa2A
+	0DzOUtFe3RtzPxrojA=; b=HcGvrLBYHAOqTU6OuIsqmpydEgnV+sXbUZBC8DOfP
+	wbfEG+uXUS2zStBgj8hdE3VOTOeUjBkd3obMi7fUkrwhOGPQq62hiDJAAAJUanrN
+	1YWfzYks6SiUpi9DSbr50ePQYr4QG8hVrYcOZVwPRhgHhYhLibu58YQtqd/Qp0Xg
+	Q80VairhEthfdf6ON1D1yTtogva85ifrOZrMom5mI1fJ9OkdXq0ou7kwb4G00Lo0
+	Kxh8dHXV8IKBeJeSWfOXD58RJf/30rVkl6BDCo2kBLuafd55tEgkZ28xotHn4ZOs
+	CV4KHSXUvysDxL9VZrg4NGU6BSN0ZaNqlzln7uwygBVMg==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4drtypa3cf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 26 Apr 2026 11:08:34 -0700 (PDT)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Sun, 26 Apr 2026 11:08:33 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Sun, 26 Apr 2026 11:08:33 -0700
+Received: from kernel-ep2 (unknown [10.29.36.53])
+	by maili.marvell.com (Postfix) with SMTP id 374733F703F;
+	Sun, 26 Apr 2026 11:08:29 -0700 (PDT)
+Date: Sun, 26 Apr 2026 23:38:29 +0530
+From: Subbaraya Sundeep <sbhatta@marvell.com>
+To: javen <javen_xu@realsil.com.cn>
+CC: <hkallweit1@gmail.com>, <nic_swsd@realtek.com>, <andrew+netdev@lunn.ch>,
+        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <horms@kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC Patch net-next v1 1/9] r8169: add some register definitions
+Message-ID: <20260426180829.GB791856@kernel-ep2>
+References: <20260420021957.1756-1-javen_xu@realsil.com.cn>
+ <20260420021957.1756-2-javen_xu@realsil.com.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260420021957.1756-2-javen_xu@realsil.com.cn>
+X-Proofpoint-GUID: l72h3dSEMjnyKv27tVoO0A4vpvCHw4t7
+X-Authority-Analysis: v=2.4 cv=UfJhjqSN c=1 sm=1 tr=0 ts=69ee54a2 cx=c_pps
+ a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
+ a=kj9zAlcOel0A:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=l0iWHRpgs5sLHlkKQ1IR:22 a=EAYMVhzMl8SCOHhVQcBL:22 a=YYF7fsvRAAAA:8
+ a=gykGYSUolajar4F4hnIA:9 a=CjuIK1q_8ugA:10 a=A1P4WKtVarNJ2X4oDzNE:22
+X-Proofpoint-ORIG-GUID: l72h3dSEMjnyKv27tVoO0A4vpvCHw4t7
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI2MDIwMCBTYWx0ZWRfX1uSp1XVj8AHt
+ UzlKxLeoVkdS0f7B510tueft3xcOLLrZ2LoTT5UgU/jkI6x5iRG/OK0iHBYJiAf5FAJr01iwFBT
+ kWEqLupmXhsfd6MckmNtNI8pSoD5Dh9yjGiDvZhsKo8RD7wny8lGg58lQJdIDErHTCr3vIMJN7I
+ b/mPBQoieREpjXy527Rsa8wIJ+8Xsiu3+7T2lxCOwGT0jW1c0XgmJ1a1OK7KP91TQKIGvNRTOVB
+ blQPIZaCE1V4gkp73KLl6xVQhXpB4bqsUIotBeJ6H8aX7eDBAKMdBz6F2V9t0W/xd0+49xy/Tvq
+ B6QESlSn7tEB3oqhnAWJGaQAKi8BDBLjuXp71qBvsdOoEaYi+REqUla5HrI8Y4JCraxrz5emMfx
+ H8tyPUQ6f/fvbNEFO5merFuUd6sEA8eelAEBEHNxZqNUpYzLGEVKpkSAlnYd3BEeifSVWrGU/Ss
+ KVF8VwdN9YRO11Wir6Q==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-26_06,2026-04-21_02,2025-10-01_01
 
-bareudp_fill_metadata_dst() passes bareudp->sock to
-udp_tunnel6_dst_lookup() in the IPv6 path without a NULL check.
-The socket is only created in bareudp_open() and NULLed in
-bareudp_stop(), so calling this function while the device is down
-triggers a NULL dereference via sock->sk.
+On 2026-04-20 at 07:49:49, javen (javen_xu@realsil.com.cn) wrote:
+> From: Javen Xu <javen_xu@realsil.com.cn>
+> 
+> To support rss, this patch adds some macro definitions and register
+> definitions.
+> 
+> Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
+> ---
+>  drivers/net/ethernet/realtek/r8169_main.c | 75 +++++++++++++++++++++++
+>  1 file changed, 75 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+> index 791277e750ba..0fbec27e4a0d 100644
+> --- a/drivers/net/ethernet/realtek/r8169_main.c
+> +++ b/drivers/net/ethernet/realtek/r8169_main.c
+> @@ -77,6 +77,23 @@
+>  #define R8169_RX_RING_BYTES	(NUM_RX_DESC * sizeof(struct RxDesc))
+>  #define R8169_TX_STOP_THRS	(MAX_SKB_FRAGS + 1)
+>  #define R8169_TX_START_THRS	(2 * R8169_TX_STOP_THRS)
+> +#define R8169_MAX_RX_QUEUES	8
+> +#define R8169_MAX_TX_QUEUES	1
+> +#define R8169_MAX_MSIX_VEC	32
+> +#define R8127_MAX_TX_QUEUES	1
+> +#define R8127_MAX_RX_QUEUES	8
+> +#define R8127_MAX_IRQ		32
+> +#define R8127_MIN_IRQ		30
+> +#define RTL8127_RSS_KEY_SIZE	40
+> +#define RSS_CPU_NUM_OFFSET	16
+> +#define RSS_MASK_BITS_OFFSET	8
+> +#define RTL8127_MAX_INDIRECTION_TABLE_ENTRIES 128
+> +#define RXS_8125B_RSS_UDP_V4 BIT(27)
+> +#define RXS_8125_RSS_IPV4_V4 BIT(28)
+> +#define RXS_8125_RSS_IPV6_V4 BIT(29)
+> +#define RXS_8125_RSS_TCP_V4 BIT(30)
+> +#define RTL8127_RXS_RSS_L3_TYPE_MASK_V4 (RXS_8125_RSS_IPV4_V4 | RXS_8125_RSS_IPV6_V4)
+> +#define RTL8127_RXS_RSS_L4_TYPE_MASK_V4 (RXS_8125_RSS_TCP_V4 | RXS_8125B_RSS_UDP_V4)
+>  
+>  #define OCP_STD_PHY_BASE	0xa400
+>  
+> @@ -435,6 +452,8 @@ enum rtl8125_registers {
+>  #define INT_CFG0_CLKREQEN		BIT(3)
+>  	IntrMask_8125		= 0x38,
+>  	IntrStatus_8125		= 0x3c,
+> +	IntrMask1_8125		= 0x800,
+> +	IntrStatus1_8125	= 0x802,
+>  	INT_CFG1_8125		= 0x7a,
+>  	LEDSEL2			= 0x84,
+>  	LEDSEL1			= 0x86,
+> @@ -444,6 +463,36 @@ enum rtl8125_registers {
+>  	RSS_CTRL_8125		= 0x4500,
+>  	Q_NUM_CTRL_8125		= 0x4800,
+>  	EEE_TXIDLE_TIMER_8125	= 0x6048,
+> +	TNPDS_Q1_LOW		= 0x2100,
+> +	RDSAR_Q1_LOW		= 0x4000,
+> +	IMR_V2_SET_REG_8125	= 0x0d0c,
+> +	IMR_V2_CLEAR_REG_8125	= 0x0d00,
+> +	IMR_V4_L2_CLEAR_REG_8125 = 0x0d10,
+> +	ISR_V2_8125		= 0x0d04,
+> +	ISR_V4_L2_8125		= 0x0d14,
+> +};
+> +
+> +enum rtl8127_msix_id {
+> +	MSIX_ID_V4_LINKCHG	= 29,
+> +};
+> +
+> +enum rtl8127_rss_register_content {
+> +	RSS_CTRL_TCP_IPV4_SUPP		= (1 << 0),
+> +	RSS_CTRL_IPV4_SUPP		= (1 << 1),
+> +	RSS_CTRL_TCP_IPV6_SUPP		= (1 << 2),
+> +	RSS_CTRL_IPV6_SUPP		= (1 << 3),
+> +	RSS_CTRL_IPV6_EXT_SUPP		= (1 << 4),
+> +	RSS_CTRL_TCP_IPV6_EXT_SUPP	= (1 << 5),
+> +	RSS_CTRL_UDP_IPV4_SUPP		= (1 << 11),
+> +	RSS_CTRL_UDP_IPV6_SUPP		= (1 << 12),
+> +	RSS_CTRL_UDP_IPV6_EXT_SUPP	= (1 << 13),
+> +	RSS_INDIRECTION_TBL_8125_V2	= 0x4700,
+> +	RSS_KEY_8125			= 0x4600,
+> +};
+> +
+> +enum rtl8127_rss_flag {
+> +	RTL_8125_RSS_FLAG_HASH_UDP_IPV4  = (1 << 0),
+> +	RTL_8125_RSS_FLAG_HASH_UDP_IPV6  = (1 << 1),
+>  };
+>  
+>  #define LEDSEL_MASK_8125	0x23f
+> @@ -474,6 +523,10 @@ enum rtl_register_content {
+>  	RxRUNT	= (1 << 20),
+>  	RxCRC	= (1 << 19),
+>  
+> +	RxRES_RSS	= (1 << 22),
+> +	RxRUNT_RSS	= (1 << 21),
+> +	RxCRC_RSS	= (1 << 20),
+> +
+>  	/* ChipCmdBits */
+>  	StopReq		= 0x80,
+>  	CmdReset	= 0x10,
+> @@ -576,6 +629,9 @@ enum rtl_register_content {
+>  
+>  	/* magic enable v2 */
+>  	MagicPacket_v2	= (1 << 16),	/* Wake up when receives a Magic Packet */
+> +	ISRIMR_V6_LINKCHG	= (1 << 29),
+> +	ISRIMR_V6_TOK_Q0	= (1 << 8),
+> +	ISRIMR_V6_ROK_Q0	= (1 << 0),
+>  };
+>  
+>  enum rtl_desc_bit {
+> @@ -633,6 +689,11 @@ enum rtl_rx_desc_bit {
+>  #define RxProtoIP	(PID1 | PID0)
+>  #define RxProtoMask	RxProtoIP
+>  
+> +	RxUDPT_v4	= (1 << 19),
+> +	RxTCPT_v4	= (1 << 18),
+> +	RxUDPF_v4	= (1 << 16), /* UDP/IP checksum failed */
+> +	RxTCPF_v4	= (1 << 15), /* TCP/IP checksum failed */
+> +
+>  	IPFail		= (1 << 16), /* IP checksum failed */
+>  	UDPFail		= (1 << 15), /* UDP/IP checksum failed */
+>  	TCPFail		= (1 << 14), /* TCP/IP checksum failed */
+> @@ -659,6 +720,11 @@ struct RxDesc {
+>  	__le64 addr;
+>  };
+>  
+> +enum features {
+> +	RTL_FEATURE_MSI		= (1 << 1),
+> +	RTL_FEATURE_MSIX	= (1 << 2),
+> +};
+> +
+>  struct ring_info {
+>  	struct sk_buff	*skb;
+>  	u32		len;
+> @@ -728,6 +794,13 @@ enum rtl_dash_type {
+>  	RTL_DASH_25_BP,
+>  };
+>  
+> +enum rx_desc_ring_type {
+> +	RX_DESC_RING_TYPE_UNKNOWN = 0,
+> +	RX_DESC_RING_TYPE_DEAFULT,
+typo DEFAULT
 
- BUG: kernel NULL pointer dereference, address: 0000000000000018
- RIP: 0010:udp_tunnel6_dst_lookup (net/ipv6/ip6_udp_tunnel.c:160)
- Call Trace:
-  <TASK>
-  bareudp_fill_metadata_dst (drivers/net/bareudp.c:532)
-  do_execute_actions (net/openvswitch/actions.c:901)
-  ovs_execute_actions (net/openvswitch/actions.c:1589)
-  ovs_packet_cmd_execute (net/openvswitch/datapath.c:700)
-  genl_family_rcv_msg_doit (net/netlink/genetlink.c:1114)
-  genl_rcv_msg (net/netlink/genetlink.c:1209)
-  netlink_rcv_skb (net/netlink/af_netlink.c:2550)
-  </TASK>
+Thanks,
+Sundeep
 
-Add a NULL check returning -ESHUTDOWN, consistent with the xmit paths
-in the same driver.
-
-Fixes: 571912c69f0e ("net: UDP tunnel encapsulation module for tunnelling different protocols like MPLS, IP, NSH etc.")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
----
- drivers/net/bareudp.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/net/bareudp.c b/drivers/net/bareudp.c
-index 0df3208783ad..da5866ba0699 100644
---- a/drivers/net/bareudp.c
-+++ b/drivers/net/bareudp.c
-@@ -529,6 +529,9 @@ static int bareudp_fill_metadata_dst(struct net_device *dev,
- 		struct in6_addr saddr;
- 		struct socket *sock = rcu_dereference(bareudp->sock);
- 
-+		if (!sock)
-+			return -ESHUTDOWN;
-+
- 		dst = udp_tunnel6_dst_lookup(skb, dev, bareudp->net, sock,
- 					     0, &saddr, &info->key,
- 					     sport, bareudp->port, info->key.tos,
--- 
-2.43.0
-
+> +	RX_DESC_RING_TYPE_RSS,
+> +	RX_DESC_RING_TYPE_MAX
+> +};
+> +
+>  struct rtl8169_private {
+>  	void __iomem *mmio_addr;	/* memory map physical address */
+>  	struct pci_dev *pci_dev;
+> @@ -763,6 +836,8 @@ struct rtl8169_private {
+>  	unsigned aspm_manageable:1;
+>  	unsigned dash_enabled:1;
+>  	bool sfp_mode:1;
+> +	bool rss_support:1;
+> +	bool rss_enable:1;
+>  	dma_addr_t counters_phys_addr;
+>  	struct rtl8169_counters *counters;
+>  	struct rtl8169_tc_offsets tc_offset;
+> -- 
+> 2.43.0
+> 
