@@ -1,175 +1,315 @@
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013036.outbound.protection.outlook.com [40.107.201.36])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F25A264A97;
-	Mon, 27 Apr 2026 22:30:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.36
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777329030; cv=fail; b=uxjiPRgsemOguxFsr/u526sua9Ji81Pb35xtaH2pR6oTiZQPDe+winqAOCzoPI0BhOUkrWj+qJttYHC+f9hh1032kQe//BSN8FpP1BAy2dzYtVb3KBLfP0muF8yw7elhPOLjzfULjh96oAHNIb1gvtfIAKgmeiHhZ7/Pnj6ey1s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777329030; c=relaxed/simple;
-	bh=msNz8K+R7tcezW+jasT95EJ5zMdq6fMm1GADMREockM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=UzOeaFQ06qyjKdPahMdOFf/DENR+JGpgtdfdpzfacIoAJjlCQM00LBJXgr5pu6Jc/5uBc/NgNTEy8P6FyruwZ/71jtiAIVefZQpjYJtI0XGTluDo+0bCdQ9APmAqUcokGs8hmrGsN68f5O7OZImPtCmjuVmiEWuHWVhCdrccdPU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=nMn9Mg2e; arc=fail smtp.client-ip=40.107.201.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9989D2DF12F;
+	Mon, 27 Apr 2026 22:33:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777329220; cv=none; b=ma88TJ48a5R6ZJWp2N6FAEcgBboh1gHaZfNjwTR/q35R5WKCIrYg0V8z9VWUBDjW34PLzMtbDLz9Dq7WnF/iHTGhKKcD+QmTV9jnvswTd8xmT35Lb38ju8NbhM2/L4JLuTbJHAG3FlZhIv4prET33EMqg7xdhfiPLzY9pHm/yVw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777329220; c=relaxed/simple;
+	bh=uuG6m9JJzzDuJXg4Q5er1swNxzGNOCZ6GcUTfaZUSNU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WvpyCmjb5b/+z0UpmUWZjOM61JWUHCQ9oBVlBMwR3J9Xd4GWdIdvZ9KuBIuJW2wyoWtnKN1s44mt0uRkODJWM+FW3J1NgtUbhAsSiuX5w3bzfRjDlEZGXKJdVoHaomqv27yE+tQ/Fn5qkuZdlmO4Sd/XSJ/WG5PbTYEPkPqd4To=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TsMb9PCm; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="nMn9Mg2e"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cw2dkYic0VXH1kOjwz3jIZQqr8NTQVH9DBTRDd+uRIJW8uYvfM3m58iBDy5zpHYFWzEy5HurjZ12uATc9tuoWjt6/VUzJQgYZAXBZYTEWP2XEmKALhwnH1ENaA8Ac3CwlRTLvFMEwZgba4b3Efi2fsBGQWsShlfVbk+iphjAE+Pk8XuV/eyWjUpmRM4Y9HTRa5iR9RbjMNZZynCz9AHHff0s05EhkIWAfnApXK/qNRqGYLDiFlw7SNnaj3GyeIXPMO8znU+1Kcc/CMVRnCsFx/w1kA7TU7UcIRQb+Rb580j65fMEeEArkSpCjuQa2ek7DCgnd0gLF6jXF9N06qZxtg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=INTDocwjeOkxaSI4e6JrPlp7Kh7b3u8/5GXqjyNfeUk=;
- b=SqLxt4MZPnahGOYqHMCjywU0/HSF4waA/vwnt9ydy1Lm3yrvjNZmkOwuRl93fy6RdmE6bPOC0ZQH4p62+pUUajNd8KxX3yJjBZ746IuQ8gH2tmJrktf9NUD/vrVHw11Y2NBVtrlIsVl9bi7Gqi3ZmgASKvtgOkWY/PmrmgA8udiJVCjbw3br3CieEjsiA/YIbcoZFACykvsdKe3H0iQEMKywElW7FGY/qQYU/hi4PYicWTB3SL3zcJzUqBCWxEiVibRndteACQ6BsdcLI27Rvh553IDZD+jPGF6v9qtpISs3YncftmVw4ldPrz0yQOOExCWF0vjzgVzKvTwuTXEdYA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=INTDocwjeOkxaSI4e6JrPlp7Kh7b3u8/5GXqjyNfeUk=;
- b=nMn9Mg2etjSkCULYpJ5Rnl9/tmBSYad+HpQiMXeFiB6hdvpkrBodtOjFqLvvae82lTwKkV5GAhUHMYupb9utCbBt74zqUto3WQW72bithMtImxRQVa6G6ZaLkW4OIEKHFvEKJ+4xMIBslyesZGqZr4aXMhT6ctHxrHNz0lcJuSDOtu83n51qwHc7wWb/LGrn5RUMmskk9za8NlV0oTff8Bpmfg6PDqFInZvOWRUYF9K6Lc76NhEMq83jHNyESr4la6NDuNth/60Y4SeDe0uNCU02GfnTMD1so+hMFearXgJnH1poNP4yUWzDn8gizO53kHtparXBSnIxAyJtXuIfFA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CY8PR12MB8300.namprd12.prod.outlook.com (2603:10b6:930:7d::16)
- by SA1PR12MB6871.namprd12.prod.outlook.com (2603:10b6:806:25f::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.16; Mon, 27 Apr
- 2026 22:30:21 +0000
-Received: from CY8PR12MB8300.namprd12.prod.outlook.com
- ([fe80::ce75:8187:3ac3:c5de]) by CY8PR12MB8300.namprd12.prod.outlook.com
- ([fe80::ce75:8187:3ac3:c5de%3]) with mapi id 15.20.9870.013; Mon, 27 Apr 2026
- 22:30:18 +0000
-Date: Mon, 27 Apr 2026 18:30:16 -0400
-From: Yury Norov <ynorov@nvidia.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Laight <david.laight.linux@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>, linux-alpha@vger.kernel.org,
-	Yury Norov <yury.norov@gmail.com>, linux-kernel@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
-	dmaengine@vger.kernel.org, linux-efi@vger.kernel.org,
-	linux-fsi@lists.ozlabs.org, amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-	linux-wpan@vger.kernel.org, netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
-	linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
-	xen-devel@lists.xenproject.org, linux-fsdevel@vger.kernel.org,
-	ocfs2-devel@lists.linux.dev, bpf@vger.kernel.org,
-	kasan-dev@googlegroups.com, linux-mm@kvack.org,
-	linux-x25@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-sound@vger.kernel.org, sound-open-firmware@alsa-project.org,
-	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
-	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
-	linux-sh@vger.kernel.org, linux-arch@vger.kernel.org
-Subject: Re: [RFC PATCH v1 7/9] x86: Add unsafe_copy_from_user()
-Message-ID: <ae_jeJLlVWjJ4sOY@yury>
-References: <cover.1777306795.git.chleroy@kernel.org>
- <0ee46bb228d97163fbdc14f2a7c52b93d8bc34ce.1777306795.git.chleroy@kernel.org>
- <ae-j2_QirCySZD02@yury>
- <63a4d0f6-0eb3-48cd-9f98-bf7b223b2606@kernel.org>
- <ae-2yLWSGnfeTvh1@yury>
- <CAHk-=wgPrLy0FR3sEWBYQuNAac1axDASYMnTuPuxEU0WytzL7w@mail.gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHk-=wgPrLy0FR3sEWBYQuNAac1axDASYMnTuPuxEU0WytzL7w@mail.gmail.com>
-X-ClientProxiedBy: BN0PR04CA0197.namprd04.prod.outlook.com
- (2603:10b6:408:e9::22) To CY8PR12MB8300.namprd12.prod.outlook.com
- (2603:10b6:930:7d::16)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TsMb9PCm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777329218; x=1808865218;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=uuG6m9JJzzDuJXg4Q5er1swNxzGNOCZ6GcUTfaZUSNU=;
+  b=TsMb9PCmDZuwMimTL5ZHX/UqVjoco47TIsR9qTcFLfYzSQ3V34gIU/Of
+   LcHhWqduU4j7JuqO0YGhC1wAEJAqk5BSuh4qbYvJLtHcSlINIRjh7bvrL
+   O3YX5NQ+MN8+mBXZHsUGpZ14b2XwfVze/xvHGHPLxT0/IboxxwG1UXSL+
+   TBW023CCwE5oEjwtk1x31x7gOyHFk3WOpqVtuWBIwoOcpEe7sEOHdk/W4
+   pZ3DbWGbJnh8OUWBHYEN+TQxLCejnrQ61ok4bnPDl6cCmWxfpkBzs49MK
+   MaYxjEsiL6oVYwl9wGClmieDDNp16c78h+ZUDZCgetSjQm7jwBOPXkEXW
+   w==;
+X-CSE-ConnectionGUID: B8g0XgEYREuCpJd9w8MiSg==
+X-CSE-MsgGUID: /Bu913h1TqKwhqK8l7MjXQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="95796867"
+X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; 
+   d="scan'208";a="95796867"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 15:33:37 -0700
+X-CSE-ConnectionGUID: XSmbS6lARpKP1U1bYtOGTg==
+X-CSE-MsgGUID: uMrMv8oLQqONyKqB4fVMVw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; 
+   d="scan'208";a="257079940"
+Received: from dcskidmo-m40.jf.intel.com ([10.166.241.14])
+  by fmviesa002.fm.intel.com with ESMTP; 27 Apr 2026 15:33:36 -0700
+From: Joshua Hay <joshua.a.hay@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: emil.s.tantilov@intel.com,
+	willemb@google.com,
+	decot@google.com,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	aleksander.lobakin@intel.com,
+	netdev@vger.kernel.org,
+	kuba@kernel.org,
+	stable@vger.kernel.org,
+	Joshua Hay <joshua.a.hay@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Subject: [Intel-wired-lan][PATCH net v3] idpf: fix xdp crash in soft reset error path
+Date: Mon, 27 Apr 2026 15:44:26 -0700
+Message-Id: <20260427224426.3933839-1-joshua.a.hay@intel.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY8PR12MB8300:EE_|SA1PR12MB6871:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1f3655ce-20ef-4e2c-2fe2-08dea4ac8fa5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|376014|7416014|366016|1800799024|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	/PUX5wTJGMs/KBsNviNpWA288jfovgZeFH/D5rlo4Ft68PLkNzRu+VJLbwZPVL7WMTmGE/7sGAUjidmOrf6PO7cVfcrQe6QT08Oqm4vVTbq+1kk8SU+vprwEBmYwG+gAfH2qmWzaQJsEm7YpHDRuW/7Cs1/Xk+BrlRiawZrKiyZzPhbDmpZp82G1md2nBR6MipihlTfUyQ+saizppq6JVvqKLc5dE++LYGjddOZxiO3yutMfU07Cp5tvF3yobREfTw/fDdOZgk2+rMoVASDdUVkAaqH0FXJ28Bm6NVJs+NSRjDYnMLXVfJoJcrsNuF4W22tsLIY5w3wDLjkrtfUAaGwMnqXvKgmEE1qpibH4HaSjxrWfCswHPCx7Vc7oELIEGKApXlepMVtafKQ1eBm0bnWKqspLr19ifmkOBqioMXptCdlJ75n5gVcLiBzfflllkv55OjNYGzmu/P23vn89/MqFVHCPYaOOw1vjLjy3Olm5/wQLP++hGKYxXIrZ64iQpyo+GIlD3HGQMFC+oPQ+4alqqHQ0+kc6l4epUtSsHVmWOEFWpRzFBafriU8ilGCl8/f8jCwsnB3t+/+q8pFFXiilqgDF9lWOw60zcIbP7xO24Ozxdu5GXF2ThaRP8NVaPA/4be0MJgysKa4xa0hnonHdTiIDcF4SkkqpHjiJ5qwmY2Gce2PdYuEwEpTf8TjR66psUlL2DcOZVs8sQNjcffnyedzo5Nat0VSDOW7wgzk=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR12MB8300.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(376014)(7416014)(366016)(1800799024)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?y1CvQpZYZ2eMHe2MhRl9jMjiWbPAKKWXFKb0rNr6P2FKNpuYqlm0vHnj/c+p?=
- =?us-ascii?Q?etrijvKck7MltKVOhuLlrUk/4maEie31AAuCO4vEDEQz7eLSMhE+LXqZ7580?=
- =?us-ascii?Q?/dTzhhd6ZXj5MAUt3SGOfXeBZ9mnjjf2uZ2zVl0944wpMj1aPR6bhJJsKwkp?=
- =?us-ascii?Q?VUL5kcdJLltj/bbXdIYt5R4Q5sFcreBO2t2YjdncWBk9awGhHkshgH2+xQK3?=
- =?us-ascii?Q?KZ9jZvFRcaTs7WARWb/cK4emdp6bDzM7GZoacpZC4jFUpUOAzU++q1cUqbIp?=
- =?us-ascii?Q?IcojDKNgAE9HncwAue719JnQVeUjYbuQfI9vFrEzSJwqQkAaJNY/N9KIqHH5?=
- =?us-ascii?Q?gb6ElO029nGL4z2hh5SKSqKFAJYfJvd6N318L3xLFXMXoREhQbz05reO9kR7?=
- =?us-ascii?Q?GWI0NeihuZjKnE/Ak2IoeTePP++KCVgyuhiSD0PXj7MCcQGFIfSjdMtsrSD0?=
- =?us-ascii?Q?qpof8HORPaHefDg6xtvU0Ls17iRCuj1Xtuu5fBcRshNrriAJmj0nlZqzlPp0?=
- =?us-ascii?Q?oq96Gm2fPd5N0qcJLOIB4vfutS46eOW3OBK4BlzxlMwOHl6WCEd/wmb2kDAK?=
- =?us-ascii?Q?VPTN1pR756Yxc8PWdgyvhKBLft+N8lDJQGyoSrLOClJEovN6quxxF5UrmLgl?=
- =?us-ascii?Q?BSzU4GMBOjLU5qQqVVM1fzFPiQJrPzyeuGPUF6s5eWsZMUNFhY8uESY52c+S?=
- =?us-ascii?Q?SE6TQJUy1lWTLGmxVFeFQgD9qZCVc47lVZv/tMLN8sA71HzeCfL2tx6zUAP1?=
- =?us-ascii?Q?hu81S/ywLrBvCHKaffr0P8d1j0edNWOzngwXYnwimWLWnJ+OOYH82yO8AfMj?=
- =?us-ascii?Q?9OG00BjXZXIsalWG80IQlBy27WpQ84/1c9oAnvbNeJfjdgOz4uIbM6FHkYyA?=
- =?us-ascii?Q?MupGlptk1Xu50YbzeOZ03kGiMKX0VxGdprIqVjtikQtw3BlYFt0IIGwsWiy8?=
- =?us-ascii?Q?wb6reRFBF6KZAnTmSERVS8uD68yLvuu4uDhGLoBqPxQofaxbHl5bqyIHeiVZ?=
- =?us-ascii?Q?JmIJF4RPeAJ5/v6RFBLjGohX5ZjyNkXJb9RZjSdHP1ziqpItJ3rcJG2ZFZJT?=
- =?us-ascii?Q?TOtNJUdl8MYzQUzieK78aUKDOyKuWpAWh2Jep6/sVe9CBZ2NlHHJGqtGJ0+6?=
- =?us-ascii?Q?owwVe4C6J1ikL7yn0gdEWIiiyjuOxoCdI3+hulZemm7LK5thRU+ZyJaPjQR+?=
- =?us-ascii?Q?YK+iuiqW4QYnqG8Bp71RoCe6giJoTJeiqfcGpFeX0h22VmfkFjYMyp/W8nb3?=
- =?us-ascii?Q?mBn+6WSNLOLGrrznB6jKXoRf6cnQ1xEMeJxPdXY/BnX2sOfoIY42tLqAScbN?=
- =?us-ascii?Q?LtZ7qBEv6zip7I8sQ5//f4FDcyaAHJDISd0ze+LMD1SGCz1vUejeBGt5jNwE?=
- =?us-ascii?Q?iyPDDoJ3VJHJ8aGIrV8p6MgUo+UO94WHdRtz/JHe7JLmdPqflsqW5Z53kqYw?=
- =?us-ascii?Q?MP/nGig0/bW+qSUHZi0ybA7U9qUULzBtAdJ3gf4NkhxIRHImljJP3sZS+AbG?=
- =?us-ascii?Q?VX+xV6ny9hftAe82VJ9ewoJIvZ1jOdavxAo38YgxrnhYM4VA4PLlPxMJgrFB?=
- =?us-ascii?Q?bl95emjkBX7MxnGkfKrgN0u2MtTSs3sO1Wdm6BH6ZQ9kazGSKdvWqMQAmcgZ?=
- =?us-ascii?Q?2TAXsG9f2jiTJy/XjYe+XqDYMz+09yazlugWhbXrIX8heUtqQqlD4RBq2C5J?=
- =?us-ascii?Q?CuCIR2G+UzaeT6rHBATVfYnF1JfQa1er7U7HJW5PSDW8XBt5cyY/COXOF+YI?=
- =?us-ascii?Q?h6yFwkKGk0zfxpHpRxxXg2KPpUtDCbrrUbX4jMC5IsdF387MIWjR?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1f3655ce-20ef-4e2c-2fe2-08dea4ac8fa5
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR12MB8300.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Apr 2026 22:30:18.5780
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8yVCjxcKtFstGt67IdVeO9hT/qCk0UDq0EBYtz0042ex6ttmtrXzmmIlGerSzGsUENgCE8ayV5UchO391MZbfA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6871
+Content-Transfer-Encoding: 8bit
 
-On Mon, Apr 27, 2026 at 02:52:05PM -0700, Linus Torvalds wrote:
-> On Mon, 27 Apr 2026 at 12:19, Yury Norov <ynorov@nvidia.com> wrote:
-> >
-> > This is what Linus said when added x86 implementation for copy_from_user()
-> > in c512c69187197:
-> 
-> Note that some things have happily changed in the six+ years since...
-> 
-> >   That's partly because we have no current users of it, but also partly
-> >   because the copy_from_user() case is slightly different and cannot
-> >   efficiently be implemented in terms of a unsafe_get_user() loop (because
-> >   gcc can't do asm goto with outputs).
-> 
-> now everybody can do asm goto with outputs.
-> 
-> Yes, it's disabled on older versions, so it's not *always* available,
-> but all modern versions do it. And if you care about performance, you
-> won't be using an old compiler.
+From: Emil Tantilov <emil.s.tantilov@intel.com>
 
-The minimal GCC version is 8.1, and asm goto with outputs is supported
-since GCC-11. That would brake the build, if we just switch to using it
-without "CC_IS_GCC && (GCC_VERSION >= 110100)" guard.
+NULL pointer dereference is reported in cases where idpf_vport_open()
+fails during soft reset:
 
-Is it worth to maintain 2 version of the function? I don't know...
+./xdpsock -i <inf> -q -r -N
 
-Thanks,
-Yury
+[ 3179.186687] idpf 0000:83:00.0: Failed to initialize queue ids for vport 0: -12
+[ 3179.276739] BUG: kernel NULL pointer dereference, address: 0000000000000010
+[ 3179.277636] #PF: supervisor read access in kernel mode
+[ 3179.278470] #PF: error_code(0x0000) - not-present page
+[ 3179.279285] PGD 0
+[ 3179.280083] Oops: Oops: 0000 [#1] SMP NOPTI
+...
+[ 3179.283997] Workqueue: events xp_release_deferred
+[ 3179.284770] RIP: 0010:idpf_find_rxq_vec+0x17/0x30 [idpf]
+...
+[ 3179.291937] Call Trace:
+[ 3179.292392]  <TASK>
+[ 3179.292843]  idpf_qp_switch+0x25/0x820 [idpf]
+[ 3179.293325]  idpf_xsk_pool_setup+0x7c/0x520 [idpf]
+[ 3179.293803]  idpf_xdp+0x59/0x240 [idpf]
+[ 3179.294275]  xp_disable_drv_zc+0x62/0xb0
+[ 3179.294743]  xp_clear_dev+0x40/0xb0
+[ 3179.295198]  xp_release_deferred+0x1f/0xa0
+[ 3179.295648]  process_one_work+0x226/0x730
+[ 3179.296106]  worker_thread+0x19e/0x340
+[ 3179.296557]  ? __pfx_worker_thread+0x10/0x10
+[ 3179.297009]  kthread+0xf4/0x130
+[ 3179.297459]  ? __pfx_kthread+0x10/0x10
+[ 3179.297910]  ret_from_fork+0x32c/0x410
+[ 3179.298361]  ? __pfx_kthread+0x10/0x10
+[ 3179.298702]  ret_from_fork_asm+0x1a/0x30
+
+Fix the error handling of the soft reset in idpf_xdp_setup_prog() by
+restoring the vport->xdp_prog to the old value. This avoids referencing
+the orphaned prog that was copied to vport->xdp_prog in the soft reset
+and prevents subsequent false positive by idpf_xdp_enabled(). Roll back
+the number of queues as well. Also only call put on the program if the
+soft reset was successful. Returning an error will trigger the core XDP
+stack to handle the put otherwise.
+
+Update the restart check in idpf_xsk_pool_setup() to use IDPF_VPORT_UP bit
+instead of netif_running(). The idpf_vport_stop/start() calls will not
+update the __LINK_STATE_START bit, making this test a false positive
+should the soft reset fail.
+
+Fixes: 3d57b2c00f09 ("idpf: add XSk pool initialization")
+Cc: stable@vger.kernel.org
+Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
+Signed-off-by: Joshua Hay <joshua.a.hay@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+---
+v3:
+- call idpf_vport_adjust_qs in case of XDP soft reset failure to restore
+  previous queue configuration, including data queue config
+- change idpf_vport_adjust_qs and idpf_vport_calc_total_qs return types
+  to void since they cannot fail
+- only call bpf_prog_put if soft reset succeeds
+---
+ drivers/net/ethernet/intel/idpf/idpf_lib.c    |  4 +---
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c   | 12 ++++--------
+ drivers/net/ethernet/intel/idpf/idpf_txrx.h   |  6 +++---
+ .../net/ethernet/intel/idpf/idpf_virtchnl.c   | 19 ++++---------------
+ .../net/ethernet/intel/idpf/idpf_virtchnl.h   |  4 ++--
+ drivers/net/ethernet/intel/idpf/xdp.c         |  8 +++++---
+ drivers/net/ethernet/intel/idpf/xsk.c         |  4 +++-
+ 7 files changed, 22 insertions(+), 35 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+index cf966fe6c759..56198b417c97 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+@@ -2042,9 +2042,7 @@ int idpf_initiate_soft_reset(struct idpf_vport *vport,
+ 	/* Adjust resource parameters prior to reallocating resources */
+ 	switch (reset_cause) {
+ 	case IDPF_SR_Q_CHANGE:
+-		err = idpf_vport_adjust_qs(new_vport, new_rsrc);
+-		if (err)
+-			goto free_vport;
++		idpf_vport_adjust_qs(new_vport, new_rsrc);
+ 		break;
+ 	case IDPF_SR_Q_DESC_CHANGE:
+ 		/* Update queue parameters before allocating resources */
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+index 4fc0bb14c5b1..4e0d31023123 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+@@ -1568,12 +1568,10 @@ void idpf_vport_calc_num_q_desc(struct idpf_vport *vport,
+  * @vport_idx: vport idx to retrieve vport pointer
+  * @vport_msg: message to fill with data
+  * @max_q: vport max queue info
+- *
+- * Return: 0 on success, error value on failure.
+  */
+-int idpf_vport_calc_total_qs(struct idpf_adapter *adapter, u16 vport_idx,
+-			     struct virtchnl2_create_vport *vport_msg,
+-			     struct idpf_vport_max_q *max_q)
++void idpf_vport_calc_total_qs(struct idpf_adapter *adapter, u16 vport_idx,
++			      struct virtchnl2_create_vport *vport_msg,
++			      struct idpf_vport_max_q *max_q)
+ {
+ 	int dflt_splitq_txq_grps = 0, dflt_singleq_txqs = 0;
+ 	int dflt_splitq_rxq_grps = 0, dflt_singleq_rxqs = 0;
+@@ -1624,7 +1622,7 @@ int idpf_vport_calc_total_qs(struct idpf_adapter *adapter, u16 vport_idx,
+ 	}
+ 
+ 	if (!vport_config)
+-		return 0;
++		return;
+ 
+ 	user = &vport_config->user_config;
+ 	user->num_req_rx_qs = le16_to_cpu(vport_msg->num_rx_q);
+@@ -1640,8 +1638,6 @@ int idpf_vport_calc_total_qs(struct idpf_adapter *adapter, u16 vport_idx,
+ 	vport_msg->num_tx_q = cpu_to_le16(user->num_req_tx_qs + num_xdpsq);
+ 	if (idpf_is_queue_model_split(le16_to_cpu(vport_msg->txq_model)))
+ 		vport_msg->num_tx_complq = vport_msg->num_tx_q;
+-
+-	return 0;
+ }
+ 
+ /**
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.h b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
+index b6836e38f449..22c647d6dd5c 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.h
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
+@@ -1084,9 +1084,9 @@ void idpf_vport_init_num_qs(struct idpf_vport *vport,
+ 			    struct idpf_q_vec_rsrc *rsrc);
+ void idpf_vport_calc_num_q_desc(struct idpf_vport *vport,
+ 				struct idpf_q_vec_rsrc *rsrc);
+-int idpf_vport_calc_total_qs(struct idpf_adapter *adapter, u16 vport_index,
+-			     struct virtchnl2_create_vport *vport_msg,
+-			     struct idpf_vport_max_q *max_q);
++void idpf_vport_calc_total_qs(struct idpf_adapter *adapter, u16 vport_index,
++			      struct virtchnl2_create_vport *vport_msg,
++			      struct idpf_vport_max_q *max_q);
+ void idpf_vport_calc_num_q_groups(struct idpf_q_vec_rsrc *rsrc);
+ int idpf_vport_queues_alloc(struct idpf_vport *vport,
+ 			    struct idpf_q_vec_rsrc *rsrc);
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+index be66f9b2e101..91af4f298475 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+@@ -1578,12 +1578,7 @@ int idpf_send_create_vport_msg(struct idpf_adapter *adapter,
+ 	else
+ 		vport_msg->rxq_model = cpu_to_le16(VIRTCHNL2_QUEUE_MODEL_SINGLE);
+ 
+-	err = idpf_vport_calc_total_qs(adapter, idx, vport_msg, max_q);
+-	if (err) {
+-		dev_err(&adapter->pdev->dev, "Enough queues are not available");
+-
+-		return err;
+-	}
++	idpf_vport_calc_total_qs(adapter, idx, vport_msg, max_q);
+ 
+ 	if (!adapter->vport_params_recvd[idx]) {
+ 		adapter->vport_params_recvd[idx] = kzalloc(IDPF_CTLQ_MAX_BUF_LEN,
+@@ -4065,24 +4060,18 @@ int idpf_vport_queue_ids_init(struct idpf_vport *vport,
+  * @vport: virtual port data struct
+  * @rsrc: pointer to queue and vector resources
+  *
+- * Renegotiate queues.  Returns 0 on success, negative on failure.
++ * Renegotiate queues.
+  */
+-int idpf_vport_adjust_qs(struct idpf_vport *vport, struct idpf_q_vec_rsrc *rsrc)
++void idpf_vport_adjust_qs(struct idpf_vport *vport, struct idpf_q_vec_rsrc *rsrc)
+ {
+ 	struct virtchnl2_create_vport vport_msg;
+-	int err;
+ 
+ 	vport_msg.txq_model = cpu_to_le16(rsrc->txq_model);
+ 	vport_msg.rxq_model = cpu_to_le16(rsrc->rxq_model);
+-	err = idpf_vport_calc_total_qs(vport->adapter, vport->idx, &vport_msg,
+-				       NULL);
+-	if (err)
+-		return err;
++	idpf_vport_calc_total_qs(vport->adapter, vport->idx, &vport_msg, NULL);
+ 
+ 	idpf_vport_init_num_qs(vport, &vport_msg, rsrc);
+ 	idpf_vport_calc_num_q_groups(rsrc);
+-
+-	return 0;
+ }
+ 
+ /**
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
+index 6876e3ed9d1b..76d238fc660c 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
+@@ -169,8 +169,8 @@ int idpf_send_destroy_vport_msg(struct idpf_adapter *adapter, u32 vport_id);
+ int idpf_send_enable_vport_msg(struct idpf_adapter *adapter, u32 vport_id);
+ int idpf_send_disable_vport_msg(struct idpf_adapter *adapter, u32 vport_id);
+ 
+-int idpf_vport_adjust_qs(struct idpf_vport *vport,
+-			 struct idpf_q_vec_rsrc *rsrc);
++void idpf_vport_adjust_qs(struct idpf_vport *vport,
++			  struct idpf_q_vec_rsrc *rsrc);
+ int idpf_vport_alloc_max_qs(struct idpf_adapter *adapter,
+ 			    struct idpf_vport_max_q *max_q);
+ void idpf_vport_dealloc_max_qs(struct idpf_adapter *adapter,
+diff --git a/drivers/net/ethernet/intel/idpf/xdp.c b/drivers/net/ethernet/intel/idpf/xdp.c
+index dcd867517a5f..f6e6b72169fd 100644
+--- a/drivers/net/ethernet/intel/idpf/xdp.c
++++ b/drivers/net/ethernet/intel/idpf/xdp.c
+@@ -488,11 +488,13 @@ static int idpf_xdp_setup_prog(struct idpf_vport *vport,
+ 				   "Could not reopen the vport after XDP setup");
+ 
+ 		cfg->user_config.xdp_prog = old;
+-		old = prog;
+-	}
++		vport->xdp_prog = old;
+ 
+-	if (old)
++		/* Restore previous queue config */
++		idpf_vport_adjust_qs(vport, &vport->dflt_qv_rsrc);
++	} else if (old) {
+ 		bpf_prog_put(old);
++	}
+ 
+ 	libeth_xdp_set_redirect(vport->netdev, vport->xdp_prog);
+ 
+diff --git a/drivers/net/ethernet/intel/idpf/xsk.c b/drivers/net/ethernet/intel/idpf/xsk.c
+index d95d3efdfd36..3d8c430efd2b 100644
+--- a/drivers/net/ethernet/intel/idpf/xsk.c
++++ b/drivers/net/ethernet/intel/idpf/xsk.c
+@@ -553,6 +553,7 @@ int idpf_xskrq_poll(struct idpf_rx_queue *rxq, u32 budget)
+ 
+ int idpf_xsk_pool_setup(struct idpf_vport *vport, struct netdev_bpf *bpf)
+ {
++	const struct idpf_netdev_priv *np = netdev_priv(vport->netdev);
+ 	struct xsk_buff_pool *pool = bpf->xsk.pool;
+ 	u32 qid = bpf->xsk.queue_id;
+ 	bool restart;
+@@ -568,7 +569,8 @@ int idpf_xsk_pool_setup(struct idpf_vport *vport, struct netdev_bpf *bpf)
+ 		return -EINVAL;
+ 	}
+ 
+-	restart = idpf_xdp_enabled(vport) && netif_running(vport->netdev);
++	restart = idpf_xdp_enabled(vport) &&
++		  test_bit(IDPF_VPORT_UP, np->state);
+ 	if (!restart)
+ 		goto pool;
+ 
+-- 
+2.39.2
+
