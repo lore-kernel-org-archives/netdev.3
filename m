@@ -1,85 +1,108 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9653398911
-	for <netdev@vger.kernel.org>; Mon, 27 Apr 2026 08:00:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 704AB390C95
+	for <netdev@vger.kernel.org>; Mon, 27 Apr 2026 08:07:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777276803; cv=none; b=ePfcAFWlnMhMhc0mN1j04iLR68k0ilV8Bo63uARkVQv18baKajmSm8f1+lnjMXJprjePPRn6soDobPJPh8LtN8axwIPEt1l80923rPc4qToM+sTkG/dYFar7poDmE4/JlvJrvPt9KebvXOo/9kqbcDQw7CluKQe67b2SSlKwzFU=
+	t=1777277265; cv=none; b=gCD1vQlislb2tZ4Rmw4i8/tUTUh4f2kmjmGPf1lRgGkV0b+pf9NWVVg0e2PdeMD54L/M6FL8SvFQBnoe/xjxZoVbVMAh1aI5np3bKcPOMdPgwfb59uuCmpnGn5U/FtTq8z9E4nkv+uANesk1g+RCtS3d8zwiCfmbblCMnXKdqKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777276803; c=relaxed/simple;
-	bh=8muKc8/uv8ZwFs1HhIEKd2DGHtuHL4YiGE08g4+DiMc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dsAoWuwTFYyaQavQMZhOEStcfKcNmzgwZGVEvpWRGP5pGaMA6Vu85NQ+2aNUHx2a7bSGBs0D0IcXbvkgRKxLL0U/Um9HYby1x/+NX/4jXW8kSleTUZArRePtLgtceoQZx0D2ttoaANaxfdj9xaKgeO7uiuVzKYomDDpi0NMe9d0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=afK5TEj8; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1777277265; c=relaxed/simple;
+	bh=NmleoNkeAR3Ndp8dp1vkK8TK0y1144rekpDYcW1gZUs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OFrhhojWs3xpcFFYR+tvF6UjG8MAfulDK0XSdBLDz/Y/9rN0Au6Ou04Lx91qGVLhmRQiB5eulhyRt/88sLZzwN0LCWz31lEvu35k4ZiDNseegQDOT361Ox2w00QjowPRKqYWJRZlfkNLFNK9bx7TxTZ6nVO/tm0UpqocXa4k9Hc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=sS2k5mmQ; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="afK5TEj8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777276800;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8muKc8/uv8ZwFs1HhIEKd2DGHtuHL4YiGE08g4+DiMc=;
-	b=afK5TEj8+duPm6USnvP8lG+aJRnfsBhrvxScGRVLA5yXjA0l1cOloITp9lvxMKDalROxlQ
-	kwMa2ZqpI07JTCq0BcZiKCfYKqUSHrNoXTbZOSajcxeMR05lmgKQHTFy7IN5AH4cbsB8pw
-	ZvzzxpFlqjqE8LXa94gM3FpheCS6jqg=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-198-QMhenUDpPoqrWVabTYQnhg-1; Mon,
- 27 Apr 2026 03:59:56 -0400
-X-MC-Unique: QMhenUDpPoqrWVabTYQnhg-1
-X-Mimecast-MFC-AGG-ID: QMhenUDpPoqrWVabTYQnhg_1777276795
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6C6221956046;
-	Mon, 27 Apr 2026 07:59:54 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.44.32.96])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id AF372180047F;
-	Mon, 27 Apr 2026 07:59:49 +0000 (UTC)
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-To: aleksandr.loktionov@intel.com
-Cc: anthony.l.nguyen@intel.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	horms@kernel.org,
-	intel-wired-lan@lists.osuosl.org,
-	jacob.e.keller@intel.com,
-	jesse.brandeburg@intel.com,
-	jtornosm@redhat.com,
-	kuba@kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	przemyslaw.kitszel@intel.com
-Subject: RE: [PATCH net v4 4/4] ice: skip unnecessary VF reset when setting trust
-Date: Mon, 27 Apr 2026 09:59:48 +0200
-Message-ID: <20260427075948.870208-1-jtornosm@redhat.com>
-In-Reply-To: <IA3PR11MB8986BB8F2B8FBA03679590AEE52B2@IA3PR11MB8986.namprd11.prod.outlook.com>
-References: <IA3PR11MB8986BB8F2B8FBA03679590AEE52B2@IA3PR11MB8986.namprd11.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="sS2k5mmQ"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 6D2411A343C;
+	Mon, 27 Apr 2026 08:07:37 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 40F85600D1;
+	Mon, 27 Apr 2026 08:07:37 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B2C8D1072227A;
+	Mon, 27 Apr 2026 10:07:29 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1777277256; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=V5TkgjwxbUuArCO4ICwo8xJ3fv0RVK8UqGSazM8m0Bg=;
+	b=sS2k5mmQAU4Zb7zznUnG859IoZPkdpzVfbBEqSt2jdp3iibOyd685Y3UoWN8fV1P2FA6DF
+	RwuoebpIjbLNXLCXAdZYOBwssrqtL3Wo1rvYugVJdkLpqsLU/D5ua1v7PK4RUfTJD1k0JD
+	QLzZucGMsbZzapITl7u1LR0NwXlj6BhPXKUb+nknCxQD7381AKuojgb0Fh7ck7UPmKyAoT
+	lypZEI24eyFSSzHnH+5SiBlyRK0uFd6pscE/hNu4iwqRRwdb5vOhMneFZTuYzqfcXZaDE3
+	tPscWq0H0c3SLSHSn3Fyc8/B5EdtMjlVcEp7zy2BZPKvyzeRcuGs+kco/GMxkA==
+Message-ID: <d83c971e-659c-433e-888a-dc1bdffe975e@bootlin.com>
+Date: Mon, 27 Apr 2026 10:07:29 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net: stmmac: fix RX DMA leak on TX alloc failure
+To: dev.taqnialabs@gmail.com, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20260425-stmmac-rx-desc-cleanup-v1-1-1a18a704c422@gmail.com>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20260425-stmmac-rx-desc-cleanup-v1-1-1a18a704c422@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hello Aleksandr,
 
-> One more nit, kdoc should end with '*/' not '**/'
-Ok, in the current code there are already some functions with headers
-ending in '**/' and others with '*/' , the functions I have added or
-changed the prototype in the series will all end in '*/' as you say,
-in the next version.
 
-Thanks
+On 25/04/2026 14:38, Abid Ali via B4 Relay wrote:
+> From: Abid Ali <dev.taqnialabs@gmail.com>
+> 
+> Free RX DMA resources when alloc_dma_tx_desc_resources() fails in
+> alloc_dma_desc_resources().
+> 
+> Signed-off-by: Abid Ali <dev.taqnialabs@gmail.com>
+> ---
+>  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> index 13d3cac05..8bb843b55 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> @@ -2370,8 +2370,12 @@ static int alloc_dma_desc_resources(struct stmmac_priv *priv,
+>  		return ret;
+>  
+>  	ret = alloc_dma_tx_desc_resources(priv, dma_conf);
+> +	if (ret) {
+> +		free_dma_rx_desc_resources(priv, dma_conf);
+> +		return ret;
+> +	}
+>  
+> -	return ret;
+> +	return 0;
+>  }
 
-Best regards
-Jose Ignacio
+This change looks correct, however you're missing a Fixes: tag
+indicating when was this issue introduced. You must also indicate what
+tree you're targetting (in this case, net) :
+
+Please look here for the process information :
+
+https://docs.kernel.org/process/maintainer-netdev.html
+
+Maxime
+>  
+>  /**
+> 
+> ---
+> base-commit: 028ef9c96e96197026887c0f092424679298aae8
+> change-id: 20260425-stmmac-rx-desc-cleanup-440f05845492
+> 
+> Best regards,
 
