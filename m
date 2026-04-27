@@ -1,88 +1,55 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAC9E364E92;
-	Mon, 27 Apr 2026 23:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B358221FBB;
+	Mon, 27 Apr 2026 23:23:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777332130; cv=none; b=tjgMh2BQ8X/tMO/RpdmjfL74vz36N+lDwen2tfZzqO6zAnH7V/D+n7FisLq6lUY217nlZfRuv3nqmBcTUqMu9JRgFB6b/hrccRZ0KMfuwzWx3iaL5W8MCFmSNWkQ7JuQzHhWWsgrzPePSELnNPkIKGtTjqVdJ3AfHXZsPPwlRog=
+	t=1777332197; cv=none; b=PhDW4qCjutnXEV/k4To1x2hwYCCZ9/gXYlAUcEh25g+ey47lJbFcGXpdcP+2wF5SfSE5m5zfeJg8TNuaGcOVEkKMcxsieo0+UAgOKCObs3QPFP2dhXlB4/nBwWYmR9EjlzpD1sSRSTtMdturliA1l0Iu3iKAo4R0MYBv1ERRMDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777332130; c=relaxed/simple;
-	bh=81IQ/eYd32l85bdWp0t/7BehSWwgwWIf1MHbUIqakJE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aGNSc8J0cdNjrI/E4GOXIy4uMZ8RCui2brNt+TiQI+2e3D36CiWa5WGO8Euzh7xIGdaAxq6rv5COdsdJrJlfvs+RJzVtOpCt8h4obpIcQk1EulqFUTzD71+L+400/pLgyJPPNTjYoTQNi8QUkJBDlEeSlD6s3rOPmJCwMFqPUH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ay8SLq9g; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777332197; c=relaxed/simple;
+	bh=Ddrs/UQbLpt69ZO8G25NpUQNwuWYdy//XwqSK0PvFH8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GWaWaFPOurhWp6JmaSQJS6O1Q2S4tm9ZgpBu+mnssHncTzJrk61cIPEZWQtN2PvaccdE9JnTWZrX65jR0UKf593X3nmxP9ekdSbm7XWB1m/CPIieCEUetw7ayRWcxi3xVMKMZWNLjv3uL410USiYY6DXmTP7suGXyehu+97go3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=si/cEtvf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ay8SLq9g"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED307C19425;
-	Mon, 27 Apr 2026 23:22:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="si/cEtvf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6B84C19425;
+	Mon, 27 Apr 2026 23:23:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777332130;
-	bh=81IQ/eYd32l85bdWp0t/7BehSWwgwWIf1MHbUIqakJE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ay8SLq9g6MkldlXKvnRMFU99Vo8iswS1DrDib2XLG9qsL6qHOXZXGIaKcYxG40Uto
-	 rvp3d2JItXDwS8t90gTKr11cFTIHECCqADiuld7cwvOQyVivREKIr3ohQ8EU8GOqKp
-	 MnsG2wzgZ6JROXBxJDwnfJMvXI63I2ogcXnEDYt+Mu2GszGjsVW6T9TN+HeQEOP2jT
-	 rSRmD6DfafHweOg5UsR6y6Ly8iZObBOtv70EK+XTtQWVllvU9P2Xm68tCGYlssgOL/
-	 5EbuxWT2iXSo4hq7rY+zt0KwKC9GrSWmVSznfLcQ7/R+PSAziew8pOshkFrFP0RLGU
-	 NUTaXtF6C2svw==
-Date: Mon, 27 Apr 2026 16:20:54 -0700
-From: Eric Biggers <ebiggers@kernel.org>
-To: Dmitry Safonov <0x7f454c46@gmail.com>
-Cc: netdev@vger.kernel.org, linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Jason A . Donenfeld" <Jason@zx2c4.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Dmitry Safonov <dima@arista.com>
-Subject: Re: [PATCH net-next v2 0/5] Reimplement TCP-AO using crypto library
-Message-ID: <20260427232054.GA2700@sol>
-References: <20260427172727.9310-1-ebiggers@kernel.org>
- <CAJwJo6Z9oJSMMBUL_pbYWN6ha3n4MRpKV_aVut8E+af3JUDFkw@mail.gmail.com>
- <20260427200116.GA3454259@google.com>
+	s=k20201202; t=1777332197;
+	bh=Ddrs/UQbLpt69ZO8G25NpUQNwuWYdy//XwqSK0PvFH8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=si/cEtvfB4SzbR/leFNjGog8+/prnFuAFeZvSX2AiA5N/KP52kEUvw2kJJfWQNwh7
+	 WoRbKOnPkH240C7O2qevmYc8K8atQqi1B3Fjd0x5jTlAnSncQk1vJbqYvAmqf86jbp
+	 NVIRmenNkaWyen793uuSoURlfW8rsR4DlVnXNYRqEsYaBqYfSNl0PLYZqHNStd/Pg5
+	 RbMfrrFKUlU7jYLof+bvia7HeIUW0MBA5ruGx2tt52Bnq5cLgcfJkU/1FxLkhmU31u
+	 k32aI27PmqFMCTI8HzdnJX/f6p+oDlUEbbEodGxCBrmYwft+U7TIvpnBtmAdIfe+jM
+	 Epx7EAc2eEx1Q==
+Date: Mon, 27 Apr 2026 16:23:16 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Adrian Moreno <amorenoz@redhat.com>
+Cc: netdev@vger.kernel.org, aconole@redhat.com, pabeni@redhat.com,
+ dev@openvswitch.org (open list:OPENVSWITCH), linux-kernel@vger.kernel.org
+ (open list), Simon Horman <horms@kernel.org>
+Subject: Re: [PATCH net-next v3 0/2] Decouple flow operations from RTNL
+Message-ID: <20260427162316.63eb2725@kernel.org>
+In-Reply-To: <20260427091153.3210301-1-amorenoz@redhat.com>
+References: <20260427091153.3210301-1-amorenoz@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260427200116.GA3454259@google.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Apr 27, 2026 at 08:01:16PM +0000, Eric Biggers wrote:
-> > - Ronald P. Bonica (the original RFC5925 author), together with Tony
-> > Li do have an active RFC draft to support the additional algorithms
-[...]
-> > [1] https://www.ietf.org/archive/id/draft-bonica-tcpm-tcp-ao-algs-00.html
+On Mon, 27 Apr 2026 11:11:46 +0200 Adrian Moreno wrote:
+> When RTNL is contended, network-related control-plane operations can be
+> delayed.
 
-For what it's worth, that draft makes very little sense.  For example,
-it proposes three variants of HMAC-SHA3, instead of just making the
-modern choice of KMAC256.  And it proposes both HMAC-SHA384 and
-HMAC-SHA512, despite them being redundant with each other after the
-specified truncation to 128 bits.
-
-Thus, it's clear that draft needs some work.  That would include, for
-example, input from people who may be more familiar with best practices
-for choosing cryptographic algorithms in new designs.
-
-So I don't think the Linux kernel's implementation should, or needs to,
-already implement all the algorithms in that unofficial draft.
-
-All that's needed is the flexibility to add new algorithms later,
-whether from a fixed version of that draft or from somewhere else.
-
-We'll still have that with the library.
-
-And to emphasize again, the current code also isn't really generic.  So
-the support for new MACs doesn't necessarily come for free currently.
-It probably works for arbitrary HMACs.  But HMAC != MAC.  If
-AES-256-CMAC, BLAKE2, KMAC256, Poly1305-AES, or just about any other MAC
-is ever needed, the code would have to be changed to support it anyway.
-
-- Eric
+net-next wasn't open yet, when you posted.
+Please resubmit in a couple of days.
+-- 
+pw-bot: defer
