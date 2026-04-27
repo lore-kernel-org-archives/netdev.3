@@ -1,111 +1,119 @@
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C93C245005;
-	Mon, 27 Apr 2026 10:40:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C903B0AE4;
+	Mon, 27 Apr 2026 10:51:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777286452; cv=none; b=S5FniGO8luVy1a6+4oiSIJb6xP+I9zGe3JU2RT0175mj4r/GUYlziiF/p/JJly/pTZFOF5weP7QeDgea+HxAgGmpOykmP1iKdNmB6Z/AzFo7oaJPQkQ5R62naLT9iFgBw1p3SOWaulHOswfhXNx85onNPsOcAv37p2JLEUjoAAs=
+	t=1777287105; cv=none; b=OfQ9JUugCQpTw2Vz2LkGs62OSsaQNAM9XkCjP7SCU4dDliVZDbqJiCJy5ZdITrjm1H3e/XrG7BkHdj7iVm5OssYNCFBuYPijFwhTeFhm9YleyveCgubWFNVou292TgZx7gwlaFvr5T/vE2ixyQPeUxAmOE8TbVfV/PIYmF31jR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777286452; c=relaxed/simple;
-	bh=zIyORH2OmHKEZ0f5Rmsn1/v+UpjmsyIbl5Li1L7nKgo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ndBpZLYpV5VcjI6wg+RcCVdHVFC2X5a1CJcJOyqUPAlR+XgndIo2w98w2WJMvwMs+k4NXWyvODA3/hMFpOV6hyEZONmmvy6LzavlY6JLsy0/h6ZMRE4zKstCUvKs6QBPq2yuRKPbLpI+9zd/TYo8F1TpaFuNhtwdi0i8ZrQywDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [141.14.220.42] (g42.guest.molgen.mpg.de [141.14.220.42])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id EB4764C2C37D45;
-	Mon, 27 Apr 2026 12:40:17 +0200 (CEST)
-Message-ID: <2d8bd703-f368-4405-9266-d0d8824455aa@molgen.mpg.de>
-Date: Mon, 27 Apr 2026 12:40:17 +0200
+	s=arc-20240116; t=1777287105; c=relaxed/simple;
+	bh=6pyrW8sJIANJQbRHFg8gx/scOttl8M5LrU/gaDM6qzU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NsUtyDTjbcpOmETEH28t/fXnCchrz4iroo27s6ToN1DiQX6GJGDKe097FZ/oyKXkMOfAUoW6zl169199mevWVCL33Pj0aBXOEa529ouw7L6HeQQ3iye7u94KEYkdBnjoj1Yg1gcnni0nMt5d37z097Mego1gG+hI56ayKpasFj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=jOtwIQwq; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="jOtwIQwq"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=aEkTn9BlH5RrGCS2Yw9JDIJ2OMglOp2TPgHVKf+qbEU=; b=jOtwIQwqz0sEd24VHIfShoo7tD
+	KORkS6vK/lkKYbsZc5xVO9rJv0EgpX07XCe18MSpMlvvg/CQi5SjTQ/CfrWzESLuk6RZkLQaxwOem
+	EhqfSF+nTpWoAKE0Oyoq+Oc0bRRIVsy0NBhascHwYOIYaUnAVnrnvi6Dne/1QWUs+4RM5eiw8k9XR
+	NtTNR4jv1T/WzLx6vMP5den1C3axE8EFwX29nCNfhVpwPv6ijwA2q/2wb+/c+eyHnQh9Cz5bJfU5w
+	VhN/C+hDKNTaVftVjDdmLy/WEarrjVJXc6kD3m43dAlxYUhyktK5OtLFFS09haxK87ho11HKVNe48
+	tVa/vwNw==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wHJYo-005Qj6-1e;
+	Mon, 27 Apr 2026 10:51:31 +0000
+Date: Mon, 27 Apr 2026 03:51:25 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Simon Horman <horms@kernel.org>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, k-keiichi@bx.jp.nec.com, satyam@infradead.org, 
+	akpm@linux-foundation.org, thepacketgeek@gmail.com, asantostc@gmail.com, 
+	gustavold@gmail.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH net 2/3] netconsole: avoid clobbering userdatum value on
+ truncated write
+Message-ID: <ae8-qlp629HHmyAR@gmail.com>
+References: <20260423-netconsole_ai_fixes-v1-2-92b8b7de9a2c@debian.org>
+ <20260426083515.1127542-2-horms@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Intel-wired-lan] [PATCH iwl-next] libie: log more info when
- virtchnl fails
-To: Li Li <boolli@google.com>
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Eric Dumazet <edumazet@google.com>, intel-wired-lan@lists.osuosl.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- David Decotigny <decot@google.com>, Anjali Singhai
- <anjali.singhai@intel.com>, Sridhar Samudrala <sridhar.samudrala@intel.com>,
- Brian Vazquez <brianvv@google.com>, emil.s.tantilov@intel.com
-References: <20260424031545.3777023-1-boolli@google.com>
-Content-Language: en-US
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <20260424031545.3777023-1-boolli@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260426083515.1127542-2-horms@kernel.org>
+X-Debian-User: leitao
 
-Dear Li,
-
-
-Thank you for your patch.
-
-Am 24.04.26 um 05:15 schrieb Li Li via Intel-wired-lan:
-> Virtchnl failures can be hard to debug without logs. Logging the details
-> of virtchnl transactions can be useful for debugging virtchnl-related
-> issues.
-
-Why is the first added one added as error, and the second as info?
-
-Do you have a reproducer to get each of the new log messages?
-
-> Tested: Built and booted on a test machine.
-
-Please paste the new messages.
-
-> Signed-off-by: Li Li <boolli@google.com>
-> ---
->   drivers/net/ethernet/intel/libie/controlq.c | 15 +++++++++++++++
->   1 file changed, 15 insertions(+)
+On Sun, Apr 26, 2026 at 09:35:16AM +0100, Simon Horman wrote:
+> From: 'Simon Horman' <horms@kernel.org>
 > 
-> diff --git a/drivers/net/ethernet/intel/libie/controlq.c b/drivers/net/ethernet/intel/libie/controlq.c
-> index ebc05355e39d..7eaa77413621 100644
-> --- a/drivers/net/ethernet/intel/libie/controlq.c
-> +++ b/drivers/net/ethernet/intel/libie/controlq.c
-> @@ -762,6 +762,16 @@ libie_ctlq_xn_process_recv(struct libie_ctlq_xn_recv_params *params,
->   	status = ctlq_msg->chnl_retval ? -EFAULT : 0;
->   
->   	xn = &xnm->ring[xn_index];
-> +
-> +	if (ctlq_msg->chnl_retval) {
-> +		dev_err_ratelimited(
-> +			params->ctlq->dev,
-> +			"Non-zero virtchnl ret val (msg op: %u, ret val: %u, msg_cookie: %u, data_len: %u); xn op: %u, id: %u, cookie: %u\n",
-> +			ctlq_msg->chnl_opcode, ctlq_msg->chnl_retval,
-> +			msg_cookie, ctlq_msg->data_len, xn->virtchnl_opcode,
-> +			xn->index, xn->cookie);
-> +	}
-> +
->   	if (ctlq_msg->chnl_opcode != xn->virtchnl_opcode ||
->   	    msg_cookie != xn->cookie)
->   		return false;
-> @@ -1011,6 +1021,11 @@ int libie_ctlq_xn_send(struct libie_ctlq_xn_send_params *params)
->   		params->recv_mem = xn->recv_mem;
->   		break;
->   	default:
-> +		dev_notice_ratelimited(
-> +			params->ctlq->dev,
-> +			"Transaction failed (op %u, xn state: %d, id: %u, cookie: %u, size: %zu)\n",
-> +			params->chnl_opcode, xn->state, xn->index, xn->cookie,
-> +			xn->recv_mem.iov_len);
->   		ret = -EBADMSG;
->   		break;
->   	}
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> Full review at: https://sashiko.dev
+> ---
+> netconsole: avoid clobbering userdatum value on truncated write
+> 
+> This patch tightens the boundary check on userdatum values to prevent
+> strscpy() from returning -E2BIG and leaving a truncated string in udm->value.
+> 
+> > diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
+> > index 5713cb3783ef2..4bef003d9df64 100644
+> > --- a/drivers/net/netconsole.c
+> > +++ b/drivers/net/netconsole.c
+> > @@ -1074,7 +1074,7 @@ static ssize_t userdatum_value_store(struct config_item *item, const char *buf,
+> >  	struct userdata *ud;
+> >  	ssize_t ret;
+> >  
+> > -	if (count > MAX_EXTRADATA_VALUE_LEN)
+> > +	if (count >= MAX_EXTRADATA_VALUE_LEN)
+> >  		return -EMSGSIZE;
+> >  
+> >  	mutex_lock(&netconsole_subsys.su_mutex);
+> 
+> This patch addresses the state corruption caused by strscpy() failing, but does
+> this fully resolve the issue?
+> 
+> The commit message notes that returning an error after modifying udm->value
+> leaves the internal state out of sync until the next write. Looking slightly
+> further down in userdatum_value_store():
+> 
+> userdatum_value_store() {
+>         ...
+>         ret = strscpy(udm->value, buf, sizeof(udm->value));
+>         if (ret < 0)
+>                 goto out_unlock;
+>         trim_newline(udm->value, sizeof(udm->value));
+> 
+>         ud = to_userdata(item->ci_parent);
+>         nt = userdata_to_target(ud);
+>         ret = update_userdata(nt);
+>         if (ret < 0)
+>                 goto out_unlock;
+>         ...
+> }
+> 
+> If update_userdata() fails, the function jumps to out_unlock and returns an
+> error to userspace. Since udm->value has already been updated with the new
+> string, the next successful write to any entry on this target will unknowingly
+> pack this new value into the payload, recreating the same deferred-activation
+> issue.
 
+Right, this seems to be an issue where udm->value continues to be set,
+even when update_userdata() fails.
 
-Kind regards,
+The correct approach here seems to use a bouncy bufferr.
 
-Paul
+Let me create add this exta fix in the v2.
+--breno
