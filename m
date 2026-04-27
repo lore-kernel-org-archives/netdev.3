@@ -1,59 +1,58 @@
 Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7C75370D54;
-	Mon, 27 Apr 2026 06:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1844E384256;
+	Mon, 27 Apr 2026 06:32:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777271566; cv=none; b=K9HU0s+FbrlR16ZF/fSIR8o2MmMxblP+nqcCJQ4B+mN31AjWJ66e4nIKLYVNKURk7Ub/e40yfz6JMamZXITEFSOAeE5bTppvVN6WxCKwjHMEvTubfuutIeLOllJqaSAl6JVENUCnVCHDdFMpMtI3wk2oPUO5rlyVproIR9TtehI=
+	t=1777271568; cv=none; b=duRtjbASG3GgfOc+8EBCz/4MqghB/zKNjoUzruHPRCsT2o4sfYxRYwbzA0xzvVReSB8yy2sfitDnTa1K9kC8hmRwebsavsXdAwAKl0nA2G0JiLJxhHWiOI9Pb5pbqs9MgVtvGc/T7gYRehzSw7tOaTt/d6bZcsuLzi3ifShB1XE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777271566; c=relaxed/simple;
-	bh=uxrJZElSqfg0fYbW2nlTmSD3ropI2Zqrt31kC05hpW0=;
+	s=arc-20240116; t=1777271568; c=relaxed/simple;
+	bh=x/83aG/E5wzqFUx4I2wXoaMsKi157deGsLdiRTosAqg=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Kiq59aC+CbE36l5BJU0Ky2yCGMakxOXiLLZrropK7NEQ4BwCq8IQzreNba1FqoICtIOd5I2F0l+KIeNodONJJG9RWwvU6LNqOQho5Ii1ZmHR9EkeJfbS/Vn5HWF7+2vy0Hdrut0PsX0304rbtJ0o31MC4bfi3J57y9zvBCERZ0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=aBxnNZv+; arc=none smtp.client-ip=67.231.156.173
+	 MIME-Version:Content-Type; b=NbCoMZtOK6ylfGOYXCvA2dYxmT50wIM4I6EAHCR8ncoqupnkyZeVNOhtIoaKlANPsMipzej4UknzCRImRT6phjNlwC5SeOHpAxemIq6P5hz4vOUG2tq8dbxJuR6oW82hKa6ocDdZT3hVhqEoISZmtsJMkRqmfil1tte3kUEmocE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=iFvBvTsb; arc=none smtp.client-ip=67.231.156.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="aBxnNZv+"
-Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63QNmBc23112869;
-	Sun, 26 Apr 2026 23:32:33 -0700
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="iFvBvTsb"
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63QLglBK2492898;
+	Sun, 26 Apr 2026 23:32:40 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=n
-	XYKKNSXuSlcFyRLZhnxMm5OlqtUaaY6BF/dLuHkJJQ=; b=aBxnNZv+P37OmlDYh
-	U7vl8rD+ingcqsgUR9GkxrNg9p0RkhMzZMgait35ksQ4olbKszm1XayFfHGcyzER
-	3EZt29kAQDbYKjqt+qi0FmDwQFIw1OVSDLM2aIkvZCQ3SJh7Wnwx6MJTMsmIKmxn
-	NFYTHPIeLHrMGTTUNA2fwWDCCiZxbjB2LWyw9zmk7NRDr9lj78Xyg9QWLsGiEAt5
-	mLUPt2hkVZofDHg7xbt49/lLnoNCHHOx476cq2dhEppKijzkzQSfR0fWIwaColxt
-	pZYASx+w1QXewA4cPlXza/UzI3vWNuCqiUIS0Ap0citcGRhu+Xk+tZ7CZEILqne0
-	zVENg==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4dsec9sp6y-1
+	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=B
+	XxQnUPlcnUofPin7AAXjdxbqPIOsVkHeRw89AYcoos=; b=iFvBvTsbMKBvRaI84
+	FWonPU3cvKI6CX6W3wRRQZnUEJJQ2xtewHo+TV+gSqSMzqD0ok0LmdxijI43nDAj
+	XgLaMvpbAIwrOj3XfPq5MYNnJXrElWeMMcrAhlVTYrNpeBrNsLCO4GdulOrjvhBt
+	wEsxNMRm9wVmZstzpbuZvXDz24Fy/s+JJ4S+QjuYZEb+M6sm3CiAHJe9gzUjKAhP
+	VSg+AmTcHQ651y/Y+UASSoaCpUD/zKUBoJOuv08Hwd5nukKSNGX2KrRde0LV3XGv
+	ZLUol1Bsx9yNeh9Z/jHST1cucrYA0kMkai+nrAo3mbnVxnUZ829bSbYWBflyrF/R
+	Jr7xw==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4drw4fjxre-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 26 Apr 2026 23:32:32 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+	Sun, 26 Apr 2026 23:32:39 -0700 (PDT)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Sun, 26 Apr 2026 23:32:31 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Sun, 26 Apr 2026 23:32:31 -0700
+ 15.2.1544.25; Sun, 26 Apr 2026 23:32:39 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Sun, 26 Apr 2026 23:32:39 -0700
 Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with ESMTP id DCEF83F70BB;
-	Sun, 26 Apr 2026 23:32:27 -0700 (PDT)
+	by maili.marvell.com (Postfix) with ESMTP id A57213F70BB;
+	Sun, 26 Apr 2026 23:32:35 -0700 (PDT)
 From: Ratheesh Kannoth <rkannoth@marvell.com>
 To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 CC: <sgoutham@marvell.com>, <davem@davemloft.net>, <edumazet@google.com>,
         <kuba@kernel.org>, <pabeni@redhat.com>, <andrew+netdev@lunn.ch>,
         "Ratheesh
  Kannoth" <rkannoth@marvell.com>,
-        Dan Carpenter <error27@gmail.com>, "Simon
- Horman" <horms@kernel.org>
-Subject: [PATCH v4 net 03/10] octeontx2-af: npc: cn20k: Propagate errors in defrag MCAM alloc rollback
-Date: Mon, 27 Apr 2026 12:02:06 +0530
-Message-ID: <20260427063213.3937451-4-rkannoth@marvell.com>
+        Suman Ghosh <sumang@marvell.com>
+Subject: [PATCH v4 net 05/10] octeontx2-af: npc: cn20k: Clear MCAM entries by index and key width
+Date: Mon, 27 Apr 2026 12:02:08 +0530
+Message-ID: <20260427063213.3937451-6-rkannoth@marvell.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260427063213.3937451-1-rkannoth@marvell.com>
 References: <20260427063213.3937451-1-rkannoth@marvell.com>
@@ -65,99 +64,163 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI3MDA2NyBTYWx0ZWRfXwNYUPUkKW2JY
- EXvUO0/a2vd/Dm8dn/LPS7JO01WK50MU0QSeD7bar/oo1olwDMogJkBAd2kdX1/Ql0+aXZ+vtEv
- laB7+GpEYW0jIPXMBLQYyXZH+UzrXfdvqTveRzE0nFilc5uIkOmTSMO0dzoVDzSCW6Oluaw+c0f
- nw5EG7c4CwAftt+uD6P0Gb6rYKESOs4QYhmlg96ElJyPz5wCwUCSiK8/XJftjmlDS8bjECUCXLR
- kKxnvZsjEOcgK+zUwtlLZBQXzSXVgYvf7QRFyBpDdByK1RMWfO9ZXKMkzcGYEUbZCjfcNtxnmvk
- MkG2sckJ8DRZ412V+Shhr1qWJFvs00oPTlCV0lW8EzNZ8130KOiZsuTQuYn4lKA+3rSsNn7i0kE
- I1z3XtD4uz0VX3l9i2PR+LRqefVUVp5F/n6s7Y/nxhozqaNX+bDwx0/gcGfqv46ObWjk0+yCT7t
- ehyDb7JJ3DREaK7oy2A==
-X-Proofpoint-ORIG-GUID: Li1WPJcM79Pr6yO7Z9zxlBwvEmS_hBI-
-X-Authority-Analysis: v=2.4 cv=Cf84Irrl c=1 sm=1 tr=0 ts=69ef0301 cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
+X-Proofpoint-ORIG-GUID: eXff_6iaKoKtRcGJq3EH6m2p9vIPlxqb
+X-Proofpoint-GUID: eXff_6iaKoKtRcGJq3EH6m2p9vIPlxqb
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI3MDA2NyBTYWx0ZWRfX3jyGuUNZUYDK
+ xrrKfagOWoHffMlbU2Wu/jmK+dRtIBgBLttbn+q/KOW0QOvF+VR6JuBC1cADlh3zg6SeTO0X7XR
+ SkVsgasc01b4F713765edrL0Gi/snpZjTW2vbJ8kE12pHGPu/DBhbwKF3f6UbokxMJ6vXZKMXjn
+ pVrxZCOrxoVaryXBHA3mqwUaYIVuhGVpGXXoWSIe04iXrK3LCMCQSWJqhMVpr7UP1c01GcMvDRy
+ /Yo5B9OvpblXILk4xh21hscT7cJL4bK7joYIz30xl7u3hf37KW+tTGUA4+3nG9aleADc+1KGs0J
+ Ry7ElSp47M5tHaNpbpCKpu+UIfJ92yy5e9T6XlF/8lSSdj1duoWGRXvteytCf+0Ku3GJJcs2cs0
+ nc/Yw9OUnDfdbvhA0q7RXYIH5kLZWPGaREOgkwrgBPifBhrDVSsAOHzsCfCVsjMYH4d4LheqKdX
+ 8NKhN2Kt/UpzUEPT/Zw==
+X-Authority-Analysis: v=2.4 cv=X/Ni7mTe c=1 sm=1 tr=0 ts=69ef0307 cx=c_pps
+ a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
  a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=qit2iCtTFQkLgVSMPQTB:22 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=M5GUcnROAAAA:8
- a=nhaU4qLH0yjqk7k21MUA:9 a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-GUID: Li1WPJcM79Pr6yO7Z9zxlBwvEmS_hBI-
+ a=QXcCYyLzdtTjyudCfB6f:22 a=M5GUcnROAAAA:8 a=Te6SKzNpAKJ10Xq2tLIA:9
+ a=OBjm3rFKGHvpk9ecZwUJ:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-04-27_01,2026-04-21_02,2025-10-01_01
 
-npc_defrag_alloc_free_slots() allocates MCAM indexes in up to two passes
-on bank0 then bank1.  On failure it rolls back by freeing entries already
-placed in save[].
+Replace the old four-argument CN20K MCAM clear with a per-bank static
+helper and npc_cn20k_clear_mcam_entry() that takes a logical MCAM index,
+resolves the key width via npc_mcam_idx_2_key_type(), and clears either
+one bank (X2) or every bank (X4).
+Call it from npc_clear_mcam_entry() on cn20k and log when key-type lookup
+fails. Use the per-bank helper from npc_cn20k_config_mcam_entry() for
+pre-program clears.
+For loopback VFs, use the promisc MCAM index as ucast_idx when copying
+RSS action for promisc, matching cn20k default-rule layout.
 
-__npc_subbank_alloc() can return a negative errno while only part of the
-indexes are valid.  The rollback loop used rc for
-npc_mcam_idx_2_subbank_idx() as well, so a successful lookup stored zero
-in rc and a later __npc_subbank_free() failure could still end with
-return 0 when the allocation path had also left rc at zero
-(for example shortfall after zero return values from the alloc helpers).
-
-Jump to the rollback path immediately when either __npc_subbank_alloc()
-call fails, preserving its errno.  If both calls succeed but the total
-allocated count is still less than cnt, set rc to -ENOSPC before rollback.
-Use a separate err variable for npc_mcam_idx_2_subbank_idx() so a
-successful lookup no longer clears a non-zero rc from the allocation
-phase.
-
-Cc: Dan Carpenter <error27@gmail.com>
-Fixes: 645c6e3c1999 ("octeontx2-af: npc: cn20k: virtual index support")
-Link: https://lore.kernel.org/netdev/adjNJEpILRZATB2N@stanley.mountain/
-Reviewed-by: Simon Horman <horms@kernel.org>
+Cc: Suman Ghosh <sumang@marvell.com>
+Fixes: 6d1e70282f76 ("octeontx2-af: npc: cn20k: Use common APIs")
 Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ .../ethernet/marvell/octeontx2/af/cn20k/npc.c | 37 ++++++++++++++++---
+ .../ethernet/marvell/octeontx2/af/cn20k/npc.h |  3 +-
+ .../ethernet/marvell/octeontx2/af/rvu_npc.c   | 17 ++++++++-
+ 3 files changed, 48 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
-index 8d5cee833af7..c831585424df 100644
+index 020496c82806..28ea9c508846 100644
 --- a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
 +++ b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
-@@ -2325,6 +2325,7 @@ static int __npc_subbank_alloc(struct rvu *rvu, struct npc_subbank *sb,
- 		__npc_subbank_mark_free(rvu, sb);
- err1:
- 	kfree(save);
-+	*alloc_cnt = 0;
- 	return rc;
+@@ -842,8 +842,8 @@ npc_cn20k_enable_mcam_entry(struct rvu *rvu, int blkaddr,
+ 	return 0;
  }
  
-@@ -3502,7 +3503,7 @@ static int npc_defrag_alloc_free_slots(struct rvu *rvu,
+-void
+-npc_cn20k_clear_mcam_entry(struct rvu *rvu, int blkaddr, int bank, int index)
++static void
++npc_clear_x2_entry(struct rvu *rvu, int blkaddr, int bank, int index)
  {
- 	int alloc_cnt1, alloc_cnt2;
- 	struct npc_subbank *sb;
--	int rc, sb_off, i;
-+	int rc, sb_off, i, err;
- 	bool deleted;
+ 	rvu_write64(rvu, blkaddr,
+ 		    NPC_AF_CN20K_MCAMEX_BANKX_CAMX_INTF_EXT(index, bank, 1),
+@@ -877,6 +877,33 @@ npc_cn20k_clear_mcam_entry(struct rvu *rvu, int blkaddr, int bank, int index)
+ 		    NPC_AF_CN20K_MCAMEX_BANKX_STAT_EXT(index, bank), 0);
+ }
  
- 	sb = &npc_priv.sb[f->idx];
-@@ -3516,6 +3517,7 @@ static int npc_defrag_alloc_free_slots(struct rvu *rvu,
- 				 NPC_MCAM_LOWER_PRIO,
- 				 false, cnt, save, cnt, true,
- 				 &alloc_cnt1);
++int
++npc_cn20k_clear_mcam_entry(struct rvu *rvu, int blkaddr, int mcam_idx)
++{
++	struct npc_mcam *mcam = &rvu->hw->mcam;
++	int bank = npc_get_bank(mcam, mcam_idx);
++	u8 kw_type;
++	int index;
 +
- 	if (alloc_cnt1 < cnt) {
- 		rc = __npc_subbank_alloc(rvu, sb,
- 					 NPC_MCAM_KEY_X2, sb->b1b,
-@@ -3533,13 +3535,14 @@ static int npc_defrag_alloc_free_slots(struct rvu *rvu,
- 			__func__, cnt, alloc_cnt1, alloc_cnt2);
- 		goto fail_free_alloc;
++	if (npc_mcam_idx_2_key_type(rvu, mcam_idx, &kw_type))
++		return -EINVAL;
++
++	index = mcam_idx & (mcam->banksize - 1);
++
++	if (kw_type == NPC_MCAM_KEY_X2) {
++		npc_clear_x2_entry(rvu, blkaddr, bank, index);
++		return 0;
++	}
++
++	/* For NPC_MCAM_KEY_X4 keys, both the banks
++	 * need to be programmed with the same value.
++	 */
++	for (bank = 0; bank < mcam->banks_per_entry; bank++)
++		npc_clear_x2_entry(rvu, blkaddr, bank, index);
++
++	return 0;
++}
++
+ static void npc_cn20k_get_keyword(struct cn20k_mcam_entry *entry, int idx,
+ 				  u64 *cam0, u64 *cam1)
+ {
+@@ -1071,7 +1098,7 @@ int npc_cn20k_config_mcam_entry(struct rvu *rvu, int blkaddr, int index,
+ 	 */
+ 	if (kw_type == NPC_MCAM_KEY_X2) {
+ 		/* Clear mcam entry to avoid writes being suppressed by NPC */
+-		npc_cn20k_clear_mcam_entry(rvu, blkaddr, bank, mcam_idx);
++		npc_clear_x2_entry(rvu, blkaddr, bank, mcam_idx);
+ 		npc_cn20k_config_kw_x2(rvu, mcam, blkaddr,
+ 				       mcam_idx, intf, entry,
+ 				       bank, kw_type, kw, req_kw_type);
+@@ -1096,8 +1123,8 @@ int npc_cn20k_config_mcam_entry(struct rvu *rvu, int blkaddr, int index,
  	}
-+
- 	return 0;
  
- fail_free_alloc:
- 	for (i = 0; i < alloc_cnt1 + alloc_cnt2; i++) {
--		rc =  npc_mcam_idx_2_subbank_idx(rvu, save[i],
--						 &sb, &sb_off);
--		if (rc) {
-+		err =  npc_mcam_idx_2_subbank_idx(rvu, save[i],
-+						  &sb, &sb_off);
-+		if (err) {
- 			dev_err(rvu->dev,
- 				"%s: Error to find subbank for mcam idx=%u\n",
- 				__func__, save[i]);
+ 	/* Clear mcam entry to avoid writes being suppressed by NPC */
+-	npc_cn20k_clear_mcam_entry(rvu, blkaddr, 0, mcam_idx);
+-	npc_cn20k_clear_mcam_entry(rvu, blkaddr, 1, mcam_idx);
++	npc_clear_x2_entry(rvu, blkaddr, 0, mcam_idx);
++	npc_clear_x2_entry(rvu, blkaddr, 1, mcam_idx);
+ 
+ 	npc_cn20k_config_kw_x4(rvu, mcam, blkaddr,
+ 			       mcam_idx, intf, entry,
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.h b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.h
+index 8f3eea9cfb1d..2f761b97f91b 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.h
+@@ -330,8 +330,7 @@ int npc_cn20k_copy_mcam_entry(struct rvu *rvu, int blkaddr,
+ int npc_cn20k_read_mcam_entry(struct rvu *rvu, int blkaddr, u16 index,
+ 			      struct cn20k_mcam_entry *entry, u8 *intf,
+ 			      u8 *ena, u8 *hw_prio);
+-void npc_cn20k_clear_mcam_entry(struct rvu *rvu, int blkaddr,
+-				int bank, int index);
++int npc_cn20k_clear_mcam_entry(struct rvu *rvu, int blkaddr, int index);
+ int npc_mcam_idx_2_key_type(struct rvu *rvu, u16 mcam_idx, u8 *key_type);
+ u16 npc_cn20k_vidx2idx(u16 index);
+ u16 npc_cn20k_idx2vidx(u16 idx);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
+index ecaf0946b852..44ca65efc80f 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
+@@ -261,6 +261,13 @@ static void npc_clear_mcam_entry(struct rvu *rvu, struct npc_mcam *mcam,
+ 	int bank = npc_get_bank(mcam, index);
+ 	int actbank = bank;
+ 
++	if (is_cn20k(rvu->pdev)) {
++		if (npc_cn20k_clear_mcam_entry(rvu, blkaddr, index))
++			dev_err(rvu->dev, "%s Failed to clear mcam %u\n",
++				__func__, index);
++		return;
++	}
++
+ 	index &= (mcam->banksize - 1);
+ 	for (; bank < (actbank + mcam->banks_per_entry); bank++) {
+ 		rvu_write64(rvu, blkaddr,
+@@ -755,9 +762,15 @@ void rvu_npc_install_promisc_entry(struct rvu *rvu, u16 pcifunc,
+ 
+ 	/* If the corresponding PF's ucast action is RSS,
+ 	 * use the same action for promisc also
++	 * Please note that for lbk(s) "index" and "ucast_idx"
++	 * will be same.
+ 	 */
+-	ucast_idx = npc_get_nixlf_mcam_index(mcam, pcifunc,
+-					     nixlf, NIXLF_UCAST_ENTRY);
++	if (is_lbk_vf(rvu, pcifunc))
++		ucast_idx = index;
++	else
++		ucast_idx = npc_get_nixlf_mcam_index(mcam, pcifunc,
++						     nixlf, NIXLF_UCAST_ENTRY);
++
+ 	if (is_mcam_entry_enabled(rvu, mcam, blkaddr, ucast_idx))
+ 		*(u64 *)&action = npc_get_mcam_action(rvu, mcam,
+ 						      blkaddr, ucast_idx);
 -- 
 2.43.0
 
