@@ -1,51 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED243221FBB;
-	Mon, 27 Apr 2026 23:21:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F62364E92;
+	Mon, 27 Apr 2026 23:21:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777332063; cv=none; b=k2o9YoIrATvuJlnsr8gsx4+cA18NdwGkj2K1OqLZ0klYUCak6AYj5f3MLCCUFKKzpzeEcTAzTeJWittxDIRsXMg09rFzQb28Aln4TRVhN6Q0yDy08nhqZFzLCOBa9NkHbbEx0JtlM6/VRO2Ur/CgllXOfVD7yYboimALt3u9cT8=
+	t=1777332113; cv=none; b=QeCBg+4r8XCPNjK8OHSPbeRTsr8MOrXTUkra2gkoSc9g1OnVxguP8I4jQEhxRQrVlmQhsyAkd67SNJA+bd9a/zuBvl0RtifpVDJzhICS4chlbheB3BxRl5w3BzmYONsMSMyaGSrn6lWmHIRMYgTTwvOQpyFalFWhoKM1Cp3hl7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777332063; c=relaxed/simple;
-	bh=kJhtciu421O7ueHQhqPqW6F64apq6WD9S/98PUZ0xhE=;
+	s=arc-20240116; t=1777332113; c=relaxed/simple;
+	bh=Q2hQsgYw45RQ6lsi5Z/STthBpvPXGMk2unvl5kytVUM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hrxSjfwKtVMhpMckRMEjpytiZa9SmP7RhcJ61lV8bYB3Y+O/gITKsEPx9JwgzB/Rql0r8Aopj76NQ5pyNPUbz7fTV8Y71VVDCx0469uFjjvt8KjLbWwi8Q0O2MMvVXqv9C07ZNzC1AxLZHJQdtMj+4oBfl/c+IcbhkfyXV76WIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gEdcdVm7; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=RbOMcaNwYq/Ep81+5nRq8gpRA3P+A617LHzC3K6eg4rvFh+JkoNzcdTYn4w3rACw4KXv4FJP7VKUgtWqMlMmskZuOBG3b7uQORiyFTJlokzCWS+7s5qv0GkSlfOwZsko6yY/yoBdGGH4zPJRoMaYkDcm3qZlx9ME3rJGGwZMhPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fpaqMdl2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gEdcdVm7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46B83C19425;
-	Mon, 27 Apr 2026 23:21:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fpaqMdl2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 426DEC19425;
+	Mon, 27 Apr 2026 23:21:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777332062;
-	bh=kJhtciu421O7ueHQhqPqW6F64apq6WD9S/98PUZ0xhE=;
+	s=k20201202; t=1777332112;
+	bh=Q2hQsgYw45RQ6lsi5Z/STthBpvPXGMk2unvl5kytVUM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=gEdcdVm7xpKZrEsM+oT2xb2RFKvUXaok9tghYeXA7iP9kB7K+w2s4DbBe5oKKUfrv
-	 fF1d5+1vlcDyPNI6YZtxo4SbLgqcQWZUK4SpZ9ogkpIP8TSoG8nXgzSDFKuLAkZHWL
-	 NSaClz1SmkpxtucZOHTWV7GVqFYV/rTUWOqZd6X/NjG/5+94iIk1kXL9FA2lWrM24d
-	 xgEFYhLjplK8N3sN8lH2QDc72BGF1pmwJPXjQy7WCRrOkunQmRQxnsypD1sK8vz03x
-	 73ppN0ijH8W7S+/IIN/Hd6YbRGLx3ZV/pZv4h+tvRA0sXDDtVJKKrlXaMGkHT0LxO8
-	 5q1Wa9usw9fJw==
-Date: Mon, 27 Apr 2026 16:21:00 -0700
+	b=fpaqMdl2a8ebYpyDMjN1575+a0FgqoEi2U0gT+5RN4H1nn8N3frBjBQX5YmMOkNfo
+	 SWGKSYU+4hlcJc+NAE5mcmKhPjfmYs3wAKHK8/I0D0CFbzfeaS6mF8S9G04jhz88OT
+	 cICNl0qP+lhEBeubdB16wJRTiZsJEA5c9e53BnN6g7ytx6UR6ObgFjZ+yo1xjiMAQW
+	 Yk4BkALpWq+e1Xp+h/HfanCpl2wyVHlZxoc+ObYm7VZPmk2in3ufZbe0WPRx2mlvJy
+	 oBtOvsfC0LB6qUwSgE25UAZ7lLprxtXUA6AVIYvUFcZvgfb6UEW6ojkscLyL/wWwNE
+	 5Xhve7SgE1ILQ==
+Date: Mon, 27 Apr 2026 16:21:51 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Dipayaan Roy <dipayanroy@linux.microsoft.com>
-Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
- decui@microsoft.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, leon@kernel.org,
- longli@microsoft.com, kotaranov@microsoft.com, horms@kernel.org,
- shradhagupta@linux.microsoft.com, ssengar@linux.microsoft.com,
- ernis@linux.microsoft.com, shirazsaleem@microsoft.com,
- linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
- stephen@networkplumber.org, jacob.e.keller@intel.com,
- dipayanroy@microsoft.com, leitao@debian.org, kees@kernel.org,
- john.fastabend@gmail.com, hawk@kernel.org, bpf@vger.kernel.org,
- daniel@iogearbox.net, ast@kernel.org, sdf@fomichev.me, yury.norov@gmail.com
-Subject: Re: [PATCH net-next] net: mana: Force single RX buffer per page for
- CVM/encrypted guest memory
-Message-ID: <20260427162100.5f731228@kernel.org>
-In-Reply-To: <ae9pxvJfkAZYfKMf@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-References: <ae9pxvJfkAZYfKMf@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+To: Thorsten Blum <thorsten.blum@linux.dev>
+Cc: David Howells <dhowells@redhat.com>, Jarkko Sakkinen
+ <jarkko@kernel.org>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Kees Cook <kees@kernel.org>, "Gustavo A. R. Silva"
+ <gustavoars@kernel.org>, Tim Bird <tim.bird@sony.com>,
+ keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH net-next v3 1/2] keys, dns: drop unused upayload->data
+ NUL terminator
+Message-ID: <20260427162151.37fee368@kernel.org>
+In-Reply-To: <20260427114422.313356-3-thorsten.blum@linux.dev>
+References: <20260427114422.313356-3-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,16 +50,8 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 27 Apr 2026 06:51:02 -0700 Dipayaan Roy wrote:
-> When page_pool allocates sub-page RX buffer fragments, the bounce buffer
-> granularity may not align with these smaller fragment sizes, leading to
-> failure in mana driver rx path.
-> 
-> Refactor the RX buffer decision into mana_use_single_rxbuf_per_page().
-> When cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT) is true, the driver is
-> forced to use a single RX buffer per page. This ensures:
-> - Each RX buffer is exactly one PAGE_SIZE.
-> - The DMA offset is always 0.
-> - SWIOTLB maps full, page-aligned blocks.
+On Mon, 27 Apr 2026 13:44:23 +0200 Thorsten Blum wrote:
+> Subject: [PATCH net-next v3 1/2] keys, dns: drop unused upayload->data NUL terminator
 
-As commented on your RFC - I'm not sure why you need this.
+to be clear - I expect "keys" maintainers to handle this, not net-next
+directly.
