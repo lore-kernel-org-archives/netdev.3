@@ -1,244 +1,200 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1682B3B8D78;
-	Mon, 27 Apr 2026 14:27:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 142E939A049
+	for <netdev@vger.kernel.org>; Mon, 27 Apr 2026 14:29:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.153.30
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777300034; cv=fail; b=mOqCr4m0pOLO8ntxrlEjWBk4DuJ5j6R/MD+SB0SKTZPJRvBrNgNH8chrXdtSSHhTqdAM7DI5uilURL1KpRWb78wvhEo/2dG2vYNWHeqqdHMBypV7JDtqE5t3KHtA+qIJBGVcVVLLAe8SzKnXpwclodeLKaO2P/1vBPfrloUDuVQ=
+	t=1777300152; cv=fail; b=ATFGdi+rWDz1Ihvyt1bQF+IchYES6xCI9O8bCNpMbBOQ1Jk/yUbK3OsQ4aUKJIQytWBPUK8LiaLtETBqA533obg/cWzkAqpgxd+mh6L5TGsUCca5bSLUNwFEWXPBMHmKlYOpTaGw1cnqbM8a0tZoP2JXv6tXDVksDrvSqks8/6w=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777300034; c=relaxed/simple;
-	bh=wKHWWcV2d6xZB1YwptSdfDjWcaW2y8+xxgN/RvfIeBM=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=SXwm/IK+b9YWfXdr+3Fp5AL5y+BS6PYjKkbK039zQth2wg0OsXM2h0xdA7o3AyN9D56U6NUgQa2DrYp7kVEexMYeLanQQbIZASwnrmq8qkm4n/ChPKJ8FNI6jRQU+s1izw9u0ChmZ8qLV1Fe2jFWoSGOhlHon7QAEDABxac9aPk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KKMMiq7L; arc=fail smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1777300152; c=relaxed/simple;
+	bh=cNz2WSzENxZIwe3ENOoH+tx49yVa0W2AI9rc1OJhwvc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FSn7/fdcpUxTpgRrAVsDhoWq1NdfPilHic+8W7DcIKokBhmK6wTz6CjAcqwqkj01S32E+xJisMu/sZl34RJhIRBvf349SS1Ggf5pz1Ul/7RCRzk2/ATlyQbBe9fAMen3EnDE6o/SeOZHMK+ALJ8hL5b/aiR0tZc/G8lFGtJ7rAo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=EUDXK0UB; arc=fail smtp.client-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KKMMiq7L"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777300032; x=1808836032;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=wKHWWcV2d6xZB1YwptSdfDjWcaW2y8+xxgN/RvfIeBM=;
-  b=KKMMiq7LVV2dunsnvYpCh/E48DVCQnx3Tuqlz69ZqjM0QFUHszDPgi1A
-   tDKk/V5rTmkxC98pT78fQ5AuLCCPik1e5i/cn5RxYnjkRxZbTwUGBG0Qi
-   NDo/qH7J+EyZraOUlBbqt1F9YAskvCaa8F+lXVidoTBfJN7uPE4RPn8Lv
-   TcpOv2K29juLhSIW9jQwVwqtOaa/lsVjGvjCCfKLKI4D762zSTPx9FgvA
-   BJJeGvHEoVUA4h/8y0aM+9bt+N7vZxBCc8/zvI8/9TnrAOv+lZFLl+8Qr
-   l3a2dPY5a6qFuRR/3diCfnDAcYi/HbKhO5RpG0qODdXX7a8xZYGQYbpLN
-   Q==;
-X-CSE-ConnectionGUID: wELOCHXiTHKdWvMzQDgZfQ==
-X-CSE-MsgGUID: BNEjPeIIT6W6DfF9EGEDHw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="77215511"
-X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; 
-   d="scan'208";a="77215511"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 07:27:11 -0700
-X-CSE-ConnectionGUID: LEfUB/cuSnCKzIDYnfo0pA==
-X-CSE-MsgGUID: sOPZ87LhSgOjEXbZkeC4Rg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; 
-   d="scan'208";a="231015726"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 07:27:11 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 27 Apr 2026 07:27:10 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Mon, 27 Apr 2026 07:27:10 -0700
-Received: from CH5PR02CU005.outbound.protection.outlook.com (40.107.200.51) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 27 Apr 2026 07:27:10 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PZkJn/gbTJYAtXx+lJwXLguWtgpZYyVHiH9FKf2dyrjXIwhzYnoVjh11C5ovy7Z7n+HqZZPqkP8i1AhixYI0RwZNKOH2Lu9z6hxLowA19xxmPAiUINae4ftCNXOjjcXH4qk8n04/eQgFg9SvPi+dImgqeXtiVda13gsUfkW1KSjCVHxkjT01NcgF0tF1vkkF6Zm+QGKhOJX48McF7nVrNqLlCXKux8bC3eHQaej+4FN7Z81VLnPNOO6qxhtDNnCSdyAarm++dpNERLZdwIeTRZBGYMCUfqm++R69JgYLFtGGtzICVG0emW8XCwJH1sQaKywNgILwa3ijGGHYvRut5g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lRBmpxPEC42T5m0YVgIXyuO0Xn/1gjxZ5zii3QmNOuM=;
- b=hNsm48af0qm9D8VN/hnY5XSQPdRFGOfPfEEkIyaWDgqRQa4pUc/WqyY7kBj4hc0y9tO4EhbOB34FkPmMrM/0wEOy7u7USd06VWBkQ2z5TID49Pqa999M689OMGVEzb9bcKqmX6XdHLDbwcAHZsdeG8wkByizaSrg8AFB4SCxhiDg/AWXZbJXpM2NRc5mjbUw2Yx2WEwvsz6lltwkMe2dTy0UwEn1YwIIqOBhzTOohiKhwafNkhKOwGK4Injzj8PvV/j+QYaqllhckYtTqdkCL3SU/UVgQF6ualZWywbSBixTXgMu2xkGfCHyqT/4YdwbVdcWmi1HcmWDqEoVJlpfmA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA0PR11MB7378.namprd11.prod.outlook.com (2603:10b6:208:432::8)
- by DM3PPF4AE904FD9.namprd11.prod.outlook.com (2603:10b6:f:fc00::f1d) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.25; Mon, 27 Apr
- 2026 14:27:07 +0000
-Received: from IA0PR11MB7378.namprd11.prod.outlook.com
- ([fe80::7b0c:7df:21b8:dbbf]) by IA0PR11MB7378.namprd11.prod.outlook.com
- ([fe80::7b0c:7df:21b8:dbbf%3]) with mapi id 15.20.9870.013; Mon, 27 Apr 2026
- 14:27:06 +0000
-From: "Kubalewski, Arkadiusz" <arkadiusz.kubalewski@intel.com>
-To: "Oros, Petr" <poros@redhat.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>
-CC: "Vecera, Ivan" <ivecera@redhat.com>, Vadim Fedorenko
-	<vadim.fedorenko@linux.dev>, "Oros, Petr" <poros@redhat.com>, "Nguyen,
- Anthony L" <anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
-	<przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>, Jiri Pirko <jiri@resnulli.us>, "Schmidt, Michal"
-	<mschmidt@redhat.com>, "Keller, Jacob E" <jacob.e.keller@intel.com>,
-	"Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>, "Rinitha, SX"
-	<sx.rinitha@intel.com>, "intel-wired-lan@lists.osuosl.org"
-	<intel-wired-lan@lists.osuosl.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH iwl-net v7 1/3] dpll: export __dpll_pin_change_ntf() for
- use under dpll_lock
-Thread-Topic: [PATCH iwl-net v7 1/3] dpll: export __dpll_pin_change_ntf() for
- use under dpll_lock
-Thread-Index: AQHcznrQNjPiXpXsHk+M7alWwvoiw7XzBhPQ
-Date: Mon, 27 Apr 2026 14:27:06 +0000
-Message-ID: <IA0PR11MB737836335E02893D26AFC52C9B362@IA0PR11MB7378.namprd11.prod.outlook.com>
-References: <20260417145907.696307-1-poros@redhat.com>
- <20260417145907.696307-2-poros@redhat.com>
-In-Reply-To: <20260417145907.696307-2-poros@redhat.com>
-Accept-Language: en-US, pl-PL
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA0PR11MB7378:EE_|DM3PPF4AE904FD9:EE_
-x-ms-office365-filtering-correlation-id: 4577fe17-f84f-4ab5-44c4-08dea4690f2c
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024|38070700021|56012099003|18002099003|22082099003;
-x-microsoft-antispam-message-info: xne2dgVnKHlKrZXPCZgjTcILry9JLBZr6tmNfCdZTeOZJuxA0p1rZEbOXuBBURcIIrsd0kg1Txr9a6h4To5dH4Jg6RmXzel5h+YuYNIaDQEztCKEXFAYoUzO1VB9Nw/MKwsSJFytPXuvLCfsuHnnkx/j5HUQOJyJG7vKzFV3gsz0n26BKPDuQJISAu0Z0RFgOB/sRf57xO0xYwE5MPIKeGnPE7+xcY86LYcDW+3UDKgz6ZljQY3GifsaQgQM5u07X3MZ2CNYf/KKFfqYZ2OIyJ/75ydKZzEYuJ3VrTMmUL83nCIHXFtgU2ecgJb1puUSx6WYONFtFta5rJiddw+sKv+v1yDZ8svqkAqeiNPxjsbIKq0yjS0Xl5ZIFXzp/fI2onag81s3kprvBiskgBTqFoUdMB2BShE3HPrA2rEW8XsIq2aXQTpO/JwbNzhohAzQqJXwhA/tDMgEyOhzYm/VMevBZTg2sfnCUNk55X1j98tJ1OgDvlogUp2tIAPiSJH/WAWdhjyUM+AGDK5H5L1HrF9hoDUO/bVad9t9vzw6gMzgx1nkQgzd2zvIhReppT1n8rhN3wtHdg1KtXoWh5IVOdjcPQsXzcqAonXDEnspeep0vKyujZxVtovspKYdaQFCDUi/STcOyxTOpvMQcbTrKO+UFQUGHWGBFSPGbivOQsmBsw6scVae2wuhTZZ45WEnPvnEPcrzEMsEaXKXFe7HrF4Yx1eBlHEea9f5zOSo/Dp8knUnuXgTxF0vXpxpAqVXe0Vq3hi4yhMNXoLn6ICh9BF1qnbZG+EIMTIKXnKUSSM=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR11MB7378.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(38070700021)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?HkyeUUuePxyt1tcMTeYYj8g8p0gE8jCKZ1IBSrIenbn/rPSIqKHPwpk5hAxP?=
- =?us-ascii?Q?r/82aSR+krDJHyXnkR9bn9AfCFJ23NrivMqO0EaS1LkMUZ4UyK0KX3abfvaq?=
- =?us-ascii?Q?fx3Kb1g4JmcDBcng18obGnkATOsaczqcuHPZB9VuIWpHkDjxMEda4MRYmMZN?=
- =?us-ascii?Q?UCLOfgowR99kGU0EzaYpB+3wpz4w/9xFhorTDe7ss07CxQsExrosDqu9PQTY?=
- =?us-ascii?Q?6Q2ClLry/H/1r+yFt+NgSCWmh/zyczhglyOnxSYJ0A081JYDX1JkXA9OxUnf?=
- =?us-ascii?Q?Z7MxoIx4t6BwTDcZ5+5LxPXdptW+OnKoosceK+Qa2EM5jyE1R1cGyCNCngWK?=
- =?us-ascii?Q?eDB54zSMCU5+aJJPjTvx6uRgBakGHcufHkTWMn9x+VhPC7e3SQm8PFEH3maN?=
- =?us-ascii?Q?sNgFapwo12uWm5/7Etwp+61E3Qs/1drR/kBLCywhHrQmqkB5OC3KIeKjxzKC?=
- =?us-ascii?Q?4nXs5nu9ruBWeuOifcwl8MCjX/XCQLQBbZFZF09HyN1i0AsZGYxSPyaiuYzQ?=
- =?us-ascii?Q?a3T1TOKTF+mFFncmVOo0HjQmpDMloFr6WK0tS0dskOuFRRXV8tBjUhgv4IqE?=
- =?us-ascii?Q?+yiSDPLIZZIbekzl36Qxp1jyZa8czsVEhw8Z298HM6wiXGaYGP92fqsD3U2k?=
- =?us-ascii?Q?/rjSfPjnC5fpkmxj4HouvbfOueDBS1L1Ckjj6L1zuIwuTBVElOz9pFvmkVF/?=
- =?us-ascii?Q?7VGQn2neTPo/y3v1NpXrhOZWrqgGK26TNQJgfsglSdL2JybH2rphNAWTU1z6?=
- =?us-ascii?Q?bkztS4NzFxfG4Gd+e2+es8ld2j1RlMRrRr3K9rIVLIujeCCSjAb8jIVj0xic?=
- =?us-ascii?Q?izHLC7HS1s2UpyeRUpFfeJC6kgNsqHNgICYJ0iIydtfFkNG5l3VBr4wDraXX?=
- =?us-ascii?Q?WAKdyoU/zOOabZ4rjnEdBRNRCrYiqPF2+dkUi2SjlVdpTsoyBJFA892iMGpf?=
- =?us-ascii?Q?COsLPIQ2I7n0HgGo7/U+Ym9ouqXIKq69olGsqrUOFZNJp3bIFtLGCm9CLAgG?=
- =?us-ascii?Q?0XsX1OelJS0cDoE4HJUjERzcfnaNaiV67a5aQfd90c/yRO4rnyOQie1N6MiG?=
- =?us-ascii?Q?Ci1ebNabTthhD1kvYNHnlUPQal/ZzhXOoOo4p87UuZOT4BJZCoWv7zlaTlXW?=
- =?us-ascii?Q?nPlYAhGlFPK0WGZziD+7dp2Q21lCIUbPxaKtQXvsUdvFgg1sJnKwZ8Ml/eTs?=
- =?us-ascii?Q?v0C8VERW6q0ohUVOHdUbg/tAw/meU2UFlwHhAGWS9MniyZdjMUn7RYq8ZoTC?=
- =?us-ascii?Q?2STWYdadjspNWR6gFTQSRlh9smXJpJ5GvkKqIyu7YltsvYPAo4jmbRtb6LNU?=
- =?us-ascii?Q?pNXoUjrrwLNi7k3NTs/tnBeiEv5jFlvpWz7d3yjFt7V4r9l5dfhDbAiT0eYG?=
- =?us-ascii?Q?T0JMUoyXF5j/Ib2V0XIrEKxxvOKCmGfqtKhN2xTIm24qir2GC5tcjQaCAPhf?=
- =?us-ascii?Q?a6QPCvJ8nsdRCHXjZz09puzweahSu7lik6vBt0eKtdF584HOlOHOupBNxvlC?=
- =?us-ascii?Q?8Y1nHnUzPma8v9f0MYU5tWnEfT9YLGXmUvYdV3nCARF8KVFYWpy2DkZsMx6s?=
- =?us-ascii?Q?nZ7fZ10K9eY1wJDgskOzkXa8mGMk7kSq8eN0UWCMGv1Wd17b+1JDwEOav44e?=
- =?us-ascii?Q?xkKR9yQpgGr05jfQZ18TwEJ7McK6TaEwum779qYJlbSsqSb/KEXZUQESIZUj?=
- =?us-ascii?Q?NZqnnX1vhsVamHahGwrRMuoAIaqtWG6QQseT49JAsRBQ4HvCa8lgcRfA3iiX?=
- =?us-ascii?Q?K0gJ5ytam/9W4VHtUoL3cSYJY2Lfsno=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="EUDXK0UB"
+Received: from pps.filterd (m0109331.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63R3k31V876075
+	for <netdev@vger.kernel.org>; Mon, 27 Apr 2026 07:29:10 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=2UYvqcb6I1B7arRH3pzlLzPrPOKAEH8Y0SQKyqL2jag=; b=EUDXK0UBjzGK
+	QKaoX5rIbqufWNaKZdxeAqfPQCkyeDJd2/wFJgapOGZ67xUUMlghtDbf4D/d1LxH
+	5K8gn8+RpXX2sydNaWxkc5Fg5ZbqRGAsqwVsCp1OE3OWi5+yquLz/58V0qPoBIMB
+	HhedRrHQtQxwKZTwXJUSL7FPjA3ZBGAKGlymgWIYr0yRV3XBk5s5Z4C1y8nt7KML
+	jPg8exqznSgbfD7YbW/T/LWbR/ipKX7cSSMzAc4VFZlAkI+faif4DC/D2wB4c7UM
+	RbXB1a99Y6RAwk67EGD4OMCuU6JKBc5xh1gQ4EhZCgV4Nyiw1GPLWPY/voT8hSRh
+	Zbz3O5ycQA==
+Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com [209.85.210.69])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4druea0m9x-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Mon, 27 Apr 2026 07:29:09 -0700 (PDT)
+Received: by mail-ot1-f69.google.com with SMTP id 46e09a7af769-7dcc9e6b772so16963469a34.0
+        for <netdev@vger.kernel.org>; Mon, 27 Apr 2026 07:29:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777300149; cv=none;
+        d=google.com; s=arc-20240605;
+        b=iLASIMsM+PCjrih7ZUQUl7BfKLoNo1+VMg6XQbtOI2qEDH5L8xbYC1wIyo5mPWSTpH
+         IfRSyGA9yplaorVyYQi3GUiF8f4Lx+lNxJOR6N7uo+wXDoYXM7mTxttD6farqBYrBN1O
+         5VJC4Iex4dAY1pwPpBI/n3l3NXEVmDZmxf6F27PaRg9SmoVViOeiAG7GMmmCVfcyH1T8
+         PocYGx7iC2J9801oE7Tx+QyFin2+JaYM8UxGIYnm0loqZO8BMVYTGLmpdk9Ow5HIEWKE
+         rE9DrgEXLIt9DVw8agUmRvbeJ9EbgGksSsA7sL6uLeT7kKNW+ayC3Kk/j3MSfi9Yn0u1
+         4kKw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version;
+        bh=fc3CIGbC+cnKFtpvmB87XnJppPdvAQ5kyZjnAa4rMk0=;
+        fh=kpp7sq6jDHcnCGOl+7e0kaNjErldM5iOgu3kOQFaTuU=;
+        b=YyCfjjB6G5idFRJjmFLdj3WmPS0iYOeZPAgQPC0UL4gO0UESyuj3NMpUS271d2lof+
+         iJoDE5OvlRcR48ICfgmvkgYnZFnPdK4UPZwIIYquzqALZ/QY4aDFZOLFN8a6OoVuzHG3
+         8psN4DnLVVY3VdGHk4hjvHn//DkVRrv5IsXV2VfAX+evnOBFmvwQegUfd2r9zu5yz0/9
+         vbRouAmF7xRDXJzdBbccsDEWzhewKzN0BdK4ZMtzGCXRzmYQZZFru3mjyo1YUWrZZMGl
+         F4U+koHgXb+8TcotrvmF9WvtOKJK7/HJPDme7Lf/T47oNRmosSlRfxB2XlBEi0wRDDXe
+         xglQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777300149; x=1777904949;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=fc3CIGbC+cnKFtpvmB87XnJppPdvAQ5kyZjnAa4rMk0=;
+        b=jVeox+txeJdF5Hb/N0aVh2+2/r7ZNyB2ez74x6771ZuB/vkqEbasR/JHMTKx7PMzJX
+         IPt2WHo0dS4rOhcIB/3gYhjb+jCHmnk4KsnFm/M9CznBuwpgkEgMe7hKDql5f1LRhEqf
+         G6082GhrCc9xHQ0vzWQEnl//hmfxJqTOAQDY9ZT/wPZUJ8/5hS/JzgRo2FZ5s68KH60d
+         Geg7CNlv1Y/tP9yl17SRJUYH+6jJLfZlkw7FWwfsNLr1DoMGe2sOerDF0ZMxvxy/evU/
+         HXPoqdv5v1iy5b8lIssukYoOS2UiCLI1sAtYnAfGK2vWLIa1rWIr6dH3/4OCDPpJW6wJ
+         FhRg==
+X-Forwarded-Encrypted: i=1; AFNElJ9nBd5nCRa8kz5v93tXV/W52ovG65Ku42XffiWP3QC7VA6Ofzc+bQp49H3x59wU3C7NTEEYlps=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyBRhTmHweCL5Fx0ngkh4IIJS9bHriulDMB6f8FjSpPzniBSeAG
+	PJdAekNhcU689u7aigE/n85hOBulQz21oRBk6jmKHaiAS1zJ4V/pj6n8ko7QStDKGlyifP0jmLX
+	63pq77SCU3/TbpDL8DS1QYMyjcEGuMfUGm3zMdHAfL0xH9nSP1g4/wDPzc3ZH6WoBeqkvePtGw9
+	Pwf2EnEirB2p6nrEMLG4l82eegq0pM56w=
+X-Gm-Gg: AeBDievPJFFaDq3JvPCZdxBzWIfYFjw9mLAQBANPPfD8Fb2ydwG4ioAYJga2oE0TfGf
+	zYtRXugkr/drT1QnuxBpKnn3vNo6sY0LYoBJpro9S0XQS2hJbwuaACnyMNd3S7fpm+tXb9U+7CJ
+	cAuZlMFuKAGAp0udDHEqtwBf3KhxKwzSVlBDtY/9kfXhoFD2dRUD2bDG1QlK4/90nRGLLD59hqi
+	rimGSN57jNSpbmX5VZrBpsnsvABHw==
+X-Received: by 2002:a05:6830:82c6:b0:7d7:e3d7:e200 with SMTP id 46e09a7af769-7dc95525104mr20499561a34.6.1777300149176;
+        Mon, 27 Apr 2026 07:29:09 -0700 (PDT)
+X-Received: by 2002:a05:6830:82c6:b0:7d7:e3d7:e200 with SMTP id
+ 46e09a7af769-7dc95525104mr20499546a34.6.1777300148671; Mon, 27 Apr 2026
+ 07:29:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: vAAaqp1cwUJsxcwHWfXDzf7EGd1Qo4I9XZpzWRTm2V7rhTewl6J8NktKg1UgOiDna2rsR9OE1kLjOtp5WpzDT6ukCJwpzsXh9wnutb+939fSlaAERXARLrNaWuNm+4ievV6Mdcw1qzc9oyTJJAJI/SyPvYmNX2lQePBUF5VlzSCVSxnVlHGrzpPmAMWPJoxVDfaITBtRq/GIMuCtCucn56N8hZkCRzSmEy3V/ylEmRXl7epZLBFjh6Fk3pc3P3Ncneg9WA3LMyhoLaZC1GsbvNCEBAHNF616gcqVVTai4UafYk2LdTLmpSfK+1kdUxVK5wt2/rip2036fUZAWRv2dA==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR11MB7378.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4577fe17-f84f-4ab5-44c4-08dea4690f2c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Apr 2026 14:27:06.5895
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: AyDcG70txtyoYSGAo4TOBKiyUGBHHSzHobuBO1HcEG+bXQXRQvDcn5ADgQ1yL0w5O2pz2dxzyd6csgAxxo0vCTuSgGOAx89Lb7gACtwH6VY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PPF4AE904FD9
-X-OriginatorOrg: intel.com
+References: <20260420183920.3626389-1-zhipingz@meta.com> <20260420183920.3626389-2-zhipingz@meta.com>
+ <20260422092327.3f629ad6@shazbot.org> <20260427133746.GJ440345@unreal>
+In-Reply-To: <20260427133746.GJ440345@unreal>
+From: Zhiping Zhang <zhipingz@meta.com>
+Date: Mon, 27 Apr 2026 07:28:57 -0700
+X-Gm-Features: AVHnY4JY-sO0J_s7LFL2WwzvQxcK7s_leO-HiTQgItvSXPr8LTKeRFwdBSndRaI
+Message-ID: <CAH3zFs2Sy0mv=QkK4VSV+MVR=ef_CdoxMhTFgzaqoZ+uSOpxoQ@mail.gmail.com>
+Subject: Re: [PATCH v1 1/2] vfio: add callback to get tph info for dma-buf
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Alex Williamson <alex@shazbot.org>, Stanislav Fomichev <sdf@meta.com>,
+        Keith Busch <kbusch@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+        Bjorn Helgaas <helgaas@kernel.org>, linux-rdma@vger.kernel.org,
+        linux-pci@vger.kernel.org, netdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, Yochai Cohen <yochai@nvidia.com>,
+        Yishai Hadas <yishaih@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Authority-Analysis: v=2.4 cv=M7N97Sws c=1 sm=1 tr=0 ts=69ef72b5 cx=c_pps
+ a=z9lCQkyTxNhZyzAvolXo/A==:117 a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=wpfVPzegXHpEFt3DAXn9:22
+ a=VwQbUJbxAAAA:8 a=VabnemYjAAAA:8 a=jaC9V5GCrIjCCUt1bV4A:9 a=QEXdDO2ut3YA:10
+ a=EyFUmsFV_t8cxB2kMr4A:22 a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI3MDE1NCBTYWx0ZWRfXxUMUdI6nJqCg
+ JUYZ049xXoMZt/FB8LGPoB7tLwDdEDJrWAGMQsdpns9KvIlDiBA+YWzic7iL04kvsAOEX33tnk5
+ ea9Zd+JfB1FCmt7WZ7dybPS8owhj3Ag2HlK4D3uh4sWQwwcXliiTuRSlsOhvjwdaUCFPNB8gZGT
+ QpfpLvaYBv4Os52G/ptaHYCgtmDsCEJjeuERPOdsCzSGuotevnqG3tQPiwg1rzPmzzROfjbNzoq
+ xXzMEegDOfQyMZvZektbhV1GioZeYmQ4BH212PwwKT5OMNylWhz8YxNVCE680pGGpf5yqBAvn77
+ zPGb5cC2hhnOsxqZZGBw+lPers+jFXdx11JSrhlIVPnkgRRnaBQsjHDU93OcXFRFGiXyn+qcj5G
+ hGyk/FWQgWHws31HICJiT+ZePFTfUSC5xQDzmkJyIkLNQsB/ZdMQr9yIVtw6yDlOJGYvoygmh2H
+ UIMhFgADvw0TiJ6pAbA==
+X-Proofpoint-ORIG-GUID: a1RW_buuVIlD80yf4QRKsMW-VeIFV4hN
+X-Proofpoint-GUID: a1RW_buuVIlD80yf4QRKsMW-VeIFV4hN
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-27_04,2026-04-21_02,2025-10-01_01
 
->From: Petr Oros <poros@redhat.com>
->Sent: Friday, April 17, 2026 4:59 PM
+On Mon, Apr 27, 2026 at 6:37=E2=80=AFAM Leon Romanovsky <leon@kernel.org> w=
+rote:
 >
->From: Ivan Vecera <ivecera@redhat.com>
+> >
+> On Wed, Apr 22, 2026 at 09:23:27AM -0600, Alex Williamson wrote:
+> > On Mon, 20 Apr 2026 11:39:15 -0700
+> > Zhiping Zhang <zhipingz@meta.com> wrote:
+> >
+> > > Add a dma-buf callback that returns raw TPH metadata from the exporter
+> > > so peer devices can reuse the steering tag and processing hint
+> > > associated with a VFIO-exported buffer.
+> > >
+> > > Keep the existing VFIO_DEVICE_FEATURE_DMA_BUF uAPI layout intact by
+> > > using a flag plus one extra trailing entries[] object for the optional
+> > > TPH metadata. Rename the uAPI field dma_ranges to entries. The
+> > > nr_ranges field remains the DMA range count; when VFIO_DMABUF_FLAG_TPH
+> > > is set the kernel reads one extra entry beyond nr_ranges for the TPH
+> > > metadata.
+> > >
+> > > Add an st_width parameter to get_tph() so the exporter can reject
+> > > steering tags that exceed the consumer's supported width (8 vs 16 bit=
+).
+> > > When no TPH metadata was supplied, make get_tph() return -EOPNOTSUPP.
+> > >
+> > > Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
+> > > ---
+> > >  drivers/vfio/pci/vfio_pci_dmabuf.c | 62 +++++++++++++++++++++++-----=
+--
+> > >  include/linux/dma-buf.h            | 17 ++++++++
+> > >  include/uapi/linux/vfio.h          | 28 ++++++++++++--
+> > >  3 files changed, 89 insertions(+), 18 deletions(-)
 >
->Export __dpll_pin_change_ntf() so that drivers can send pin change
->notifications from within pin callbacks, which are already called
->under dpll_lock. Using dpll_pin_change_ntf() in that context would
->deadlock.
+> <...>
 >
->Add lockdep_assert_held() to catch misuse without the lock held.
+> > > diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
+> > > index bb7b89330d35..a0bd24623c52 100644
+> > > --- a/include/uapi/linux/vfio.h
+> > > +++ b/include/uapi/linux/vfio.h
+> > > @@ -1490,16 +1490,36 @@ struct vfio_device_feature_bus_master {
+> > >   * open_flags are the typical flags passed to open(2), eg O_RDWR, O_=
+CLOEXEC,
+> > >   * etc. offset/length specify a slice of the region to create the dm=
+abuf from.
+> > >   * nr_ranges is the total number of (P2P DMA) ranges that comprise t=
+he dmabuf.
+> > > + * When VFIO_DMABUF_FLAG_TPH is set, entries[] contains one extra tr=
+ailing
+> > > + * object after the nr_ranges DMA ranges carrying the TPH steering t=
+ag and
+> > > + * processing hint.
+> >
+> > I really don't think we want to design an API where entries is
+> > implicitly one-off from what's actually there.  This feeds back into
+> > the below removal of the __counted by attribute, which is a red flag
+> > that this is the wrong approach.
 >
->Acked-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
->Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+> I believe removing `__counted` is a mistake. In my proposal, the intent
+> was to adjust the meaning of the storage object based on the flag bit.
+> The size of the array should still be represented correctly.
+>
+> Thanks
 
-LGTM,
-Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+Thanks Leon =E2=80=94 you're right that __counted_by should be preserved. In
+your approach, when the flag is set, the last entry in the array
+carries the TPH data, so the effective DMA range count is nr_ranges -
+1.
 
->Signed-off-by: Petr Oros <poros@redhat.com>
->---
-> drivers/dpll/dpll_netlink.c | 10 ++++++++++
-> drivers/dpll/dpll_netlink.h |  2 --
-> include/linux/dpll.h        |  1 +
-> 3 files changed, 11 insertions(+), 2 deletions(-)
->
->diff --git a/drivers/dpll/dpll_netlink.c b/drivers/dpll/dpll_netlink.c
->index af7ce62ec55ca8..0ff1658c2dc1ba 100644
->--- a/drivers/dpll/dpll_netlink.c
->+++ b/drivers/dpll/dpll_netlink.c
->@@ -900,11 +900,21 @@ int dpll_pin_delete_ntf(struct dpll_pin *pin)
-> 	return dpll_pin_event_send(DPLL_CMD_PIN_DELETE_NTF, pin);
-> }
->
->+/**
->+ * __dpll_pin_change_ntf - notify that the pin has been changed
->+ * @pin: registered pin pointer
->+ *
->+ * Context: caller must hold dpll_lock. Suitable for use inside pin
->+ *          callbacks which are already invoked under dpll_lock.
->+ * Return: 0 if succeeds, error code otherwise.
->+ */
-> int __dpll_pin_change_ntf(struct dpll_pin *pin)
-> {
->+	lockdep_assert_held(&dpll_lock);
-> 	dpll_pin_notify(pin, DPLL_PIN_CHANGED);
-> 	return dpll_pin_event_send(DPLL_CMD_PIN_CHANGE_NTF, pin);
-> }
->+EXPORT_SYMBOL_GPL(__dpll_pin_change_ntf);
->
-> /**
->  * dpll_pin_change_ntf - notify that the pin has been changed
->diff --git a/drivers/dpll/dpll_netlink.h b/drivers/dpll/dpll_netlink.h
->index dd28b56d27c56d..a9cfd55f57fc42 100644
->--- a/drivers/dpll/dpll_netlink.h
->+++ b/drivers/dpll/dpll_netlink.h
->@@ -11,5 +11,3 @@ int dpll_device_delete_ntf(struct dpll_device *dpll);
-> int dpll_pin_create_ntf(struct dpll_pin *pin);
->
-> int dpll_pin_delete_ntf(struct dpll_pin *pin);
->-
->-int __dpll_pin_change_ntf(struct dpll_pin *pin);
->diff --git a/include/linux/dpll.h b/include/linux/dpll.h
->index b7277a8b484d26..f8037f1ab20b60 100644
->--- a/include/linux/dpll.h
->+++ b/include/linux/dpll.h
->@@ -286,6 +286,7 @@ int dpll_pin_ref_sync_pair_add(struct dpll_pin *pin,
->
-> int dpll_device_change_ntf(struct dpll_device *dpll);
->
->+int __dpll_pin_change_ntf(struct dpll_pin *pin);
-> int dpll_pin_change_ntf(struct dpll_pin *pin);
->
-> int register_dpll_notifier(struct notifier_block *nb);
->--
->2.52.0
+That said, after discussing internally, we're leaning toward
+introducing a new VFIO device feature with dedicated TPH fields (as
+Alex suggested too), to avoid overloading vfio_region_dma_range with a
+union that changes semantics based on position.
 
+Would you have concerns with that direction? I'll post a v3 with the
+new approach.
