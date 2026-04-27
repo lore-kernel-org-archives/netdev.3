@@ -1,54 +1,68 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F42D3E63B5;
-	Mon, 27 Apr 2026 17:27:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B6203E3C67
+	for <netdev@vger.kernel.org>; Mon, 27 Apr 2026 17:28:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777310873; cv=none; b=OnHREuH5368nH5QLd5y6DYYvp7Bor0wHav31MEOuqSf4Eq0w3x05lhLDEcTLsBu7dCqluTzBAP8MAZZSV1MY9a9wKzUEs6nnEqSSRo6nB2l9rukMDt8omdRg/eOZwGcJEESLEUP8BGGuLpBGNOrnO/LLf3sHFDTbCxSZIYApqiU=
+	t=1777310913; cv=none; b=DjPHixsAjno0JOtnscjE245N+DswzBLCEA8WR1NCZ2V8fMnCAYZ6TncYzAaSTapYoFukKX0pwRnDdSw0ncpeTvPuRfEl759a45FzRF9kZ/bQN2lbnMcJG7xCBzk5HkKOaEmWNBdT0/fFDq8yoQngY9DAvkEOBJt+oVoMVguigas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777310873; c=relaxed/simple;
-	bh=+NrWvMgiVvlEudVsw7+IRDB0fGeSLZsPN3zldOZaqqo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hqfYkNe3yQKUc68tF98RwtR3JZ7jQPfMNyCyfFgNgVaUwhIchg6lR3zX0eW98G/3rHwP1dxQY3IS+qVhvG8M5tzpvlBCbSZcnQeQtnQD9EzaL2PoKzIdHk9fYoB7HjcT6zFSi/p6hzIdfsEqDrKDWODqL6rVJ6pjiW5E+8OgNNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YpP4LBmC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777310913; c=relaxed/simple;
+	bh=jXvHJ3mCpKNTJ01ifTFRjjM2Kl7Y74pw7LCSUk3FAwo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=geo3syaJ7RTt+2HmVp9FM37ecsdc9lHEzougiURyLoLipmzlvKICadY1gB0kEJrB8D+nKV8pHne7FTJ7ksoPV680xeGWltiP5qdlG7FJWminICk61czWjqtIKFH5xvLN6YNCZjgT1YD8V0+42RlP7CaECnJc8aUSjRuKXSSY8aQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b=N0Vpai9z; arc=none smtp.client-ip=209.85.160.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YpP4LBmC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C62AC2BCB9;
-	Mon, 27 Apr 2026 17:27:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777310872;
-	bh=+NrWvMgiVvlEudVsw7+IRDB0fGeSLZsPN3zldOZaqqo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YpP4LBmCGZHspJLD+2JNirRNPwOdffnXFVxWNXDIPBER45CMZ2UxWs8snY6g1jesw
-	 isScPYoccE6JSVmSmF8tz3fnY7TDSZFEpMfQSGMlAe6diHp1OD8OZUI/6f/kSU76Qp
-	 hkG15fppU8+75p5COCMAIBZ1ODj6YRNNY7dIWFbt4gwmjDeGSpzObx+jdlRgFko0A8
-	 xB24qm985vJTyal9g74Bbg8a0AKIZqUPRj0BEdhK/7yhZh6GXn3XX1J5XMLkhuduQG
-	 021P3oYePofglP6vRUsL3ZWqCwuBMiJ/o6Gz+mw+5ITcEmQ/V2b9xaLQGfz0zMf/MC
-	 eVopHRYOeqv4w==
-From: Eric Biggers <ebiggers@kernel.org>
+	dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b="N0Vpai9z"
+Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-40ea36b56b7so7350333fac.3
+        for <netdev@vger.kernel.org>; Mon, 27 Apr 2026 10:28:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=networkplumber-org.20251104.gappssmtp.com; s=20251104; t=1777310910; x=1777915710; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=k02fxAkhOxLm3bpWu4bT7yYCODOiyh61+gtQymBxpCI=;
+        b=N0Vpai9zOU18t8ZuQXNBIrylBUPmJN7Utml6WN6Uz0ne0liBXlAu5VGwh0wJ/Uktw2
+         5ck3OFjHOanN/lt9FR72uXNOEgDBMVrVN7F6IJ+qgwmOArc0mg+IPi8IKVdxnPA5BwqK
+         byD6hIPzpJPlsTf8TWwXinSlQ8lLQWPWkz+y5azPB8zr05wXXIAf9388kM14BPT4xIry
+         eZGyBz9krP/b8DJO+4/QToB4+/ciDhuUulzyC1tFbNFbMPsW1eNy2Xr0oFzC915IiWce
+         JOPWLKuHEkaUlChWiFwlRamljkIYPqO+pVKaaQKrvTTXrQhIRwZMpAosl3lUi/EsI/a1
+         N5tQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777310910; x=1777915710;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=k02fxAkhOxLm3bpWu4bT7yYCODOiyh61+gtQymBxpCI=;
+        b=n3duqXMvaWBDVYynnHB2XeEUYA97Trn73dtJ3zJzhF7fn8bzqbnUbOwEi650Qri6cm
+         UaC07vpDLnlG8s6mEs419PwAOFut6iBoJcaN/xbhrXkQXySf5mHaTtaq2YaKWgWYUMqW
+         tSTBsa1j+uND2iOMBQCrAhF1/Y3ik8yZiaRBFSpfqZ3ic3zA9I9zjglOKS9LyRemfm7R
+         wyBOY4kYH7LXIM28AETdxT2YDhAeQKGMSx7rXiJ1A2c9kSl1LdR8RztdTSk16m8IdnLr
+         hk/kUVstvA43FYQ4+TafFFUQB+pLN4l0BIDA535L0Tnhxt/v3Fkod3NjkA52FC4gGpb2
+         s/gQ==
+X-Gm-Message-State: AOJu0YzsMVKnIfztrH+pBKjuyEOVe+LPdLULA5eOLxZylBpCtbymN/Yg
+	noRNnfYxLKzSkB+EqtU6jeuCRUgt2bgQ/YtfA7W1k1mYb5jyc8tggGnm5uYpPFvAU7iQaW2tG96
+	glQzX
+X-Gm-Gg: AeBDietYp+3wMQI6MWI4M7NFmy8dxspCTvIiPuX1ZixBY+9dSLMuteR0nQpGaeyUrlz
+	snl2vrUsaTd8u4C6IwXzGjmYNbl06MQ1+F6k7NttQpiET7N2XO/ezmZOPXf6MCMUPSt3/wCw2xV
+	6kjKW4YD9zHGnystnHvi2K+zLsCqgnXf3WLU3PjWcw1xkOwm+jNmsfI+2XqrJIKZpIFbScn18qL
+	wxNQ/gIs4Il4HeNgvFwEMp//CaIqS056383zOYRrIPzW03TW5kfh/mqO/q+/fcGO5jtT4E/fHoI
+	gYfVD/1er9okd4TPY8jdgvZ7UAP98bTDTAzIgNN/JPkrzjd574f2rkgPwh5AcANYNLax1YMk+Mv
+	uexlqK0Af2UETs5/TpQllcW/IYeIz1hqr0O74hpNTUyHXBl+2Znx4bUw9pOpxAqDCu4GnD4BeVP
+	w9VSv+40B9Z7loY//+0WegqgfZgyBHHB4PaeJbpK2sQyI=
+X-Received: by 2002:a05:6870:e091:b0:41c:a7b:a8d2 with SMTP id 586e51a60fabf-42abf217259mr26324470fac.5.1777310910161;
+        Mon, 27 Apr 2026 10:28:30 -0700 (PDT)
+Received: from phoenix.lan ([104.202.41.210])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-42fb4f92351sm17395371fac.4.2026.04.27.10.28.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Apr 2026 10:28:29 -0700 (PDT)
+From: Stephen Hemminger <stephen@networkplumber.org>
 To: netdev@vger.kernel.org
-Cc: linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Jason A . Donenfeld" <Jason@zx2c4.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Dmitry Safonov <0x7f454c46@gmail.com>,
-	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH net-next v2 5/5] net/tcp: Remove tcp_sigpool
-Date: Mon, 27 Apr 2026 10:27:27 -0700
-Message-ID: <20260427172727.9310-6-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260427172727.9310-1-ebiggers@kernel.org>
-References: <20260427172727.9310-1-ebiggers@kernel.org>
+Cc: Stephen Hemminger <stephen@networkplumber.org>
+Subject: [PATCH iproute2-next] man: remove libnetlink man page
+Date: Mon, 27 Apr 2026 10:28:27 -0700
+Message-ID: <20260427172827.300214-1-stephen@networkplumber.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,475 +71,261 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-tcp_sigpool is no longer used.  It existed only as a workaround for
-issues in the design of the crypto_ahash API, which have been avoided by
-switching to the much easier-to-use library APIs instead.  Remove it.
+The iproute2 libnetlink is not a public and stable API.
+Having a man page encourages users to think it is available.
 
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
 ---
- include/net/tcp.h      |  34 ----
- net/ipv4/Kconfig       |   3 -
- net/ipv4/Makefile      |   1 -
- net/ipv4/tcp_sigpool.c | 366 -----------------------------------------
- 4 files changed, 404 deletions(-)
- delete mode 100644 net/ipv4/tcp_sigpool.c
+ man/Makefile          |   2 +-
+ man/man3/Makefile     |  18 ----
+ man/man3/libnetlink.3 | 200 ------------------------------------------
+ 3 files changed, 1 insertion(+), 219 deletions(-)
+ delete mode 100644 man/man3/Makefile
+ delete mode 100644 man/man3/libnetlink.3
 
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index 8817e7b8cc67..660ad8c63395 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -2015,44 +2015,10 @@ struct tcp6_pseudohdr {
- 	struct in6_addr daddr;
- 	__be32		len;
- 	__be32		protocol;	/* including padding */
- };
+diff --git a/man/Makefile b/man/Makefile
+index c0b0d416..91dd8f3d 100644
+--- a/man/Makefile
++++ b/man/Makefile
+@@ -8,7 +8,7 @@ MAN_CHECK=LC_ALL=en_US.UTF-8 MANROFFSEQ='' MANWIDTH=100 man --warnings \
+ # Hide man output, count and print errors.
+ MAN_REDIRECT=2>&1 >/dev/null | tee /dev/fd/2 | wc -l
  
--/*
-- * struct tcp_sigpool - per-CPU pool of ahash_requests
-- * @scratch: per-CPU temporary area, that can be used between
-- *	     tcp_sigpool_start() and tcp_sigpool_end() to perform
-- *	     crypto request
-- * @req: pre-allocated ahash request
-- */
--struct tcp_sigpool {
--	void *scratch;
--	struct ahash_request *req;
--};
--
--int tcp_sigpool_alloc_ahash(const char *alg, size_t scratch_size);
--void tcp_sigpool_get(unsigned int id);
--void tcp_sigpool_release(unsigned int id);
--int tcp_sigpool_hash_skb_data(struct tcp_sigpool *hp,
--			      const struct sk_buff *skb,
--			      unsigned int header_len);
--
--/**
-- * tcp_sigpool_start - disable bh and start using tcp_sigpool_ahash
-- * @id: tcp_sigpool that was previously allocated by tcp_sigpool_alloc_ahash()
-- * @c: returned tcp_sigpool for usage (uninitialized on failure)
-- *
-- * Returns: 0 on success, error otherwise.
-- */
--int tcp_sigpool_start(unsigned int id, struct tcp_sigpool *c);
--/**
-- * tcp_sigpool_end - enable bh and stop using tcp_sigpool
-- * @c: tcp_sigpool context that was returned by tcp_sigpool_start()
-- */
--void tcp_sigpool_end(struct tcp_sigpool *c);
--size_t tcp_sigpool_algo(unsigned int id, char *buf, size_t buf_len);
--/* - functions */
- void tcp_v4_md5_hash_skb(char *md5_hash, const struct tcp_md5sig_key *key,
- 			 const struct sock *sk, const struct sk_buff *skb);
- int tcp_md5_do_add(struct sock *sk, const union tcp_md5_addr *addr,
- 		   int family, u8 prefixlen, int l3index, u8 flags,
- 		   const u8 *newkey, u8 newkeylen);
-diff --git a/net/ipv4/Kconfig b/net/ipv4/Kconfig
-index 77b053b445a0..301b47660305 100644
---- a/net/ipv4/Kconfig
-+++ b/net/ipv4/Kconfig
-@@ -739,13 +739,10 @@ config DEFAULT_TCP_CONG
- 	default "dctcp" if DEFAULT_DCTCP
- 	default "cdg" if DEFAULT_CDG
- 	default "bbr" if DEFAULT_BBR
- 	default "cubic"
+-SUBDIRS = man3 man7 man8
++SUBDIRS = man7 man8
  
--config TCP_SIGPOOL
--	tristate
--
- config TCP_AO
- 	bool "TCP: Authentication Option (RFC5925)"
- 	select CRYPTO_LIB_AES_CBC_MACS
- 	select CRYPTO_LIB_SHA1
- 	select CRYPTO_LIB_SHA256
-diff --git a/net/ipv4/Makefile b/net/ipv4/Makefile
-index 7f9f98813986..7964234f0d08 100644
---- a/net/ipv4/Makefile
-+++ b/net/ipv4/Makefile
-@@ -58,11 +58,10 @@ obj-$(CONFIG_TCP_CONG_NV) += tcp_nv.o
- obj-$(CONFIG_TCP_CONG_VENO) += tcp_veno.o
- obj-$(CONFIG_TCP_CONG_SCALABLE) += tcp_scalable.o
- obj-$(CONFIG_TCP_CONG_LP) += tcp_lp.o
- obj-$(CONFIG_TCP_CONG_YEAH) += tcp_yeah.o
- obj-$(CONFIG_TCP_CONG_ILLINOIS) += tcp_illinois.o
--obj-$(CONFIG_TCP_SIGPOOL) += tcp_sigpool.o
- obj-$(CONFIG_NET_SOCK_MSG) += tcp_bpf.o
- obj-$(CONFIG_BPF_SYSCALL) += udp_bpf.o
- obj-$(CONFIG_NETLABEL) += cipso_ipv4.o
- 
- obj-$(CONFIG_XFRM) += xfrm4_policy.o xfrm4_state.o xfrm4_input.o \
-diff --git a/net/ipv4/tcp_sigpool.c b/net/ipv4/tcp_sigpool.c
+ all clean install check:
+ 	@for subdir in $(SUBDIRS); do $(MAKE) -C $$subdir $@ || exit $$?; done
+diff --git a/man/man3/Makefile b/man/man3/Makefile
 deleted file mode 100644
-index 10b2e5970c40..000000000000
---- a/net/ipv4/tcp_sigpool.c
+index 1732be26..00000000
+--- a/man/man3/Makefile
 +++ /dev/null
-@@ -1,366 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-or-later
+@@ -1,18 +0,0 @@
+-# SPDX-License-Identifier: GPL-2.0
+-MAN3PAGES = $(wildcard *.3)
 -
--#include <crypto/hash.h>
--#include <linux/cpu.h>
--#include <linux/kref.h>
--#include <linux/module.h>
--#include <linux/mutex.h>
--#include <linux/percpu.h>
--#include <linux/workqueue.h>
--#include <net/tcp.h>
+-all:
 -
--static size_t __scratch_size;
--struct sigpool_scratch {
--	local_lock_t bh_lock;
--	void __rcu *pad;
--};
+-distclean: clean
 -
--static DEFINE_PER_CPU(struct sigpool_scratch, sigpool_scratch) = {
--	.bh_lock = INIT_LOCAL_LOCK(bh_lock),
--};
+-clean:
 -
--struct sigpool_entry {
--	struct crypto_ahash	*hash;
--	const char		*alg;
--	struct kref		kref;
--	uint16_t		needs_key:1,
--				reserved:15;
--};
+-install:
+-	$(INSTALLDIR) $(DESTDIR)$(MANDIR)/man3
+-	$(INSTALLMAN) $(MAN3PAGES) $(DESTDIR)$(MANDIR)/man3
 -
--#define CPOOL_SIZE (PAGE_SIZE / sizeof(struct sigpool_entry))
--static struct sigpool_entry cpool[CPOOL_SIZE];
--static unsigned int cpool_populated;
--static DEFINE_MUTEX(cpool_mutex);
+-check:
+-	@for page in $(MAN3PAGES); do test 0 -eq $$($(MAN_CHECK) $$page \
+-		$(MAN_REDIRECT)) || { echo "Error in $$page"; exit 1; }; done
 -
--/* Slow-path */
--struct scratches_to_free {
--	struct rcu_head rcu;
--	unsigned int cnt;
--	void *scratches[];
--};
+-.PHONY: install clean distclean check
+diff --git a/man/man3/libnetlink.3 b/man/man3/libnetlink.3
+deleted file mode 100644
+index 9a2c801c..00000000
+--- a/man/man3/libnetlink.3
++++ /dev/null
+@@ -1,200 +0,0 @@
+-.TH libnetlink 3
+-.SH NAME
+-libnetlink \- A library for accessing the netlink service
+-.SH SYNOPSIS
+-.nf
+-#include <asm/types.h>
+-.br
+-#include <libnetlink.h>
+-.br
+-#include <linux/netlink.h>
+-.br
+-#include <linux/rtnetlink.h>
+-.sp
+-int rtnl_open(struct rtnl_handle *rth, unsigned subscriptions)
+-.sp
+-int rtnl_wilddump_request(struct rtnl_handle *rth, int family, int type)
+-.sp
+-int rtnl_send(struct rtnl_handle *rth, char *buf, int len)
+-.sp
+-int rtnl_dump_request(struct rtnl_handle *rth, int type, void *req, int len)
+-.sp
+-int rtnl_dump_filter(struct rtnl_handle *rth,
+-		     int (*filter)(struct sockaddr_nl *, struct nlmsghdr *n, void *),
+-		     void *arg1,
+-		     int (*junk)(struct sockaddr_nl *,struct nlmsghdr *n, void *),
+-		     void *arg2)
+-.sp
+-int rtnl_talk(struct rtnl_handle *rtnl, struct nlmsghdr *n, pid_t peer,
+-	      unsigned groups, struct nlmsghdr *answer,
+-.br
+-	      int (*junk)(struct sockaddr_nl *,struct nlmsghdr *n, void *),
+-.br
+-	      void *jarg)
+-.sp
+-int rtnl_listen(struct rtnl_handle *rtnl,
+-	      int (*handler)(struct sockaddr_nl *, struct rtnl_ctrl_data *,
+-			     struct nlmsghdr *n, void *),
+-	      void *jarg)
+-.sp
+-int rtnl_from_file(FILE *rtnl,
+-	      int (*handler)(struct sockaddr_nl *,struct nlmsghdr *n, void *),
+-	      void *jarg)
+-.sp
+-int addattr32(struct nlmsghdr *n, int maxlen, int type, __u32 data)
+-.sp
+-int addattr_l(struct nlmsghdr *n, int maxlen, int type, void *data, int alen)
+-.sp
+-int rta_addattr32(struct rtattr *rta, int maxlen, int type, __u32 data)
+-.sp
+-int rta_addattr_l(struct rtattr *rta, int maxlen, int type, void *data, int alen)
+-.SH DESCRIPTION
+-libnetlink provides a higher level interface to
+-.BR rtnetlink (7).
+-The read functions return 0 on success and a negative errno on failure.
+-The send functions return the amount of data sent, or -1 on error.
+-.TP
+-rtnl_open
+-Open a rtnetlink socket and save the state into the
+-.B rth
+-handle. This handle is passed to all subsequent calls.
+-.B subscriptions
+-is a bitmap of the rtnetlink multicast groups the socket will be
+-a member of.
 -
--static void free_old_scratches(struct rcu_head *head)
--{
--	struct scratches_to_free *stf;
+-.TP
+-rtnl_wilddump_request
+-Request a full dump of the
+-.B type
+-database for
+-.B family
+-addresses.
+-.B type
+-is a rtnetlink message type.
+-.\" XXX
 -
--	stf = container_of(head, struct scratches_to_free, rcu);
--	while (stf->cnt--)
--		kfree(stf->scratches[stf->cnt]);
--	kfree(stf);
--}
+-.TP
+-rtnl_dump_request
+-Request a full dump of the
+-.B type
+-data buffer into
+-.B buf
+-with maximum length of
+-.B len.
+-.B type
+-is a rtnetlink message type.
 -
--/**
-- * sigpool_reserve_scratch - re-allocates scratch buffer, slow-path
-- * @size: request size for the scratch/temp buffer
-- */
--static int sigpool_reserve_scratch(size_t size)
--{
--	struct scratches_to_free *stf;
--	size_t stf_sz = struct_size(stf, scratches, num_possible_cpus());
--	int cpu, err = 0;
+-.TP
+-rtnl_dump_filter
+-Receive netlink data after a request and filter it.
+-The
+-.B filter
+-callback checks if the received message is wanted. It gets the source
+-address of the message, the message itself and
+-.B arg1
+-as arguments. 0 as return means that the filter passed, a negative
+-value is returned
+-by
+-.I rtnl_dump_filter
+-in case of error. NULL for
+-.I filter
+-means to not use a filter.
+-.B junk
+-is used to filter messages not destined to the local socket.
+-Only one message bundle is received. If there is a message
+-pending, this function does not block.
 -
--	lockdep_assert_held(&cpool_mutex);
--	if (__scratch_size >= size)
--		return 0;
+-.TP
+-rtnl_listen
+-Receive netlink data after a request and pass it to
+-.I handler.
+-.B handler
+-is a callback that gets the message source address, anscillary data, the message
+-itself, and the
+-.B jarg
+-cookie as arguments. It will get called for all received messages.
+-Only one message bundle is received. If there is a message
+-pending this function does not block.
 -
--	stf = kmalloc(stf_sz, GFP_KERNEL);
--	if (!stf)
--		return -ENOMEM;
--	stf->cnt = 0;
+-.TP
+-rtnl_from_file
+-Works like
+-.I rtnl_listen,
+-but reads a netlink message bundle from the file
+-.B file
+-and passes the messages to
+-.B handler
+-for parsing. The file should contain raw data as received from a rtnetlink socket.
+-.PP
+-The following functions are useful to construct custom rtnetlink messages. For
+-simple database dumping with filtering it is better to use the higher level
+-functions above. See
+-.BR rtnetlink (3)
+-and
+-.BR netlink (3)
+-on how to generate a rtnetlink message. The following utility functions
+-require a continuous buffer that already contains a netlink message header
+-and a rtnetlink request.
 -
--	size = max(size, __scratch_size);
--	cpus_read_lock();
--	for_each_possible_cpu(cpu) {
--		void *scratch, *old_scratch;
+-.TP
+-rtnl_send
+-Send the rtnetlink message in
+-.B buf
+-of length
+-.B len
+-to handle
+-.B rth.
 -
--		scratch = kmalloc_node(size, GFP_KERNEL, cpu_to_node(cpu));
--		if (!scratch) {
--			err = -ENOMEM;
--			break;
--		}
+-.TP
+-addattr32
+-Add a __u32 attribute of type
+-.B type
+-and with value
+-.B data
+-to netlink message
+-.B n,
+-which is part of a buffer of length
+-.B maxlen.
 -
--		old_scratch = rcu_replace_pointer(per_cpu(sigpool_scratch.pad, cpu),
--					scratch, lockdep_is_held(&cpool_mutex));
--		if (!cpu_online(cpu) || !old_scratch) {
--			kfree(old_scratch);
--			continue;
--		}
--		stf->scratches[stf->cnt++] = old_scratch;
--	}
--	cpus_read_unlock();
--	if (!err)
--		__scratch_size = size;
+-.TP
+-addattr_l
+-Add a variable length attribute of type
+-.B type
+-and with value
+-.B data
+-and
+-.B alen
+-length to netlink message
+-.B n,
+-which is part of a buffer of length
+-.B maxlen.
+-.B data
+-is copied.
 -
--	call_rcu(&stf->rcu, free_old_scratches);
--	return err;
--}
+-.TP
+-rta_addattr32
+-Initialize the rtnetlink attribute
+-.B rta
+-with a __u32 data value.
 -
--static void sigpool_scratch_free(void)
--{
--	int cpu;
+-.TP
+-rta_addattr32
+-Initialize the rtnetlink attribute
+-.B rta
+-with a variable length data value.
 -
--	for_each_possible_cpu(cpu)
--		kfree(rcu_replace_pointer(per_cpu(sigpool_scratch.pad, cpu),
--					  NULL, lockdep_is_held(&cpool_mutex)));
--	__scratch_size = 0;
--}
+-.SH BUGS
+-This library is meant for internal use, use libmnl for new programs.
 -
--static int __cpool_try_clone(struct crypto_ahash *hash)
--{
--	struct crypto_ahash *tmp;
+-The functions sometimes use fprintf and exit when a fatal error occurs.
+-This library should be named librtnetlink.
 -
--	tmp = crypto_clone_ahash(hash);
--	if (IS_ERR(tmp))
--		return PTR_ERR(tmp);
+-.SH AUTHORS
+-netlink/rtnetlink was designed and written by Alexey Kuznetsov.
+-Andi Kleen wrote the man page.
 -
--	crypto_free_ahash(tmp);
--	return 0;
--}
--
--static int __cpool_alloc_ahash(struct sigpool_entry *e, const char *alg)
--{
--	struct crypto_ahash *cpu0_hash;
--	int ret;
--
--	e->alg = kstrdup(alg, GFP_KERNEL);
--	if (!e->alg)
--		return -ENOMEM;
--
--	cpu0_hash = crypto_alloc_ahash(alg, 0, CRYPTO_ALG_ASYNC);
--	if (IS_ERR(cpu0_hash)) {
--		ret = PTR_ERR(cpu0_hash);
--		goto out_free_alg;
--	}
--
--	e->needs_key = crypto_ahash_get_flags(cpu0_hash) & CRYPTO_TFM_NEED_KEY;
--
--	ret = __cpool_try_clone(cpu0_hash);
--	if (ret)
--		goto out_free_cpu0_hash;
--	e->hash = cpu0_hash;
--	kref_init(&e->kref);
--	return 0;
--
--out_free_cpu0_hash:
--	crypto_free_ahash(cpu0_hash);
--out_free_alg:
--	kfree(e->alg);
--	e->alg = NULL;
--	return ret;
--}
--
--/**
-- * tcp_sigpool_alloc_ahash - allocates pool for ahash requests
-- * @alg: name of async hash algorithm
-- * @scratch_size: reserve a tcp_sigpool::scratch buffer of this size
-- */
--int tcp_sigpool_alloc_ahash(const char *alg, size_t scratch_size)
--{
--	int i, ret;
--
--	/* slow-path */
--	mutex_lock(&cpool_mutex);
--	ret = sigpool_reserve_scratch(scratch_size);
--	if (ret)
--		goto out;
--	for (i = 0; i < cpool_populated; i++) {
--		if (!cpool[i].alg)
--			continue;
--		if (strcmp(cpool[i].alg, alg))
--			continue;
--
--		/* pairs with tcp_sigpool_release() */
--		if (!kref_get_unless_zero(&cpool[i].kref))
--			kref_init(&cpool[i].kref);
--		ret = i;
--		goto out;
--	}
--
--	for (i = 0; i < cpool_populated; i++) {
--		if (!cpool[i].alg)
--			break;
--	}
--	if (i >= CPOOL_SIZE) {
--		ret = -ENOSPC;
--		goto out;
--	}
--
--	ret = __cpool_alloc_ahash(&cpool[i], alg);
--	if (!ret) {
--		ret = i;
--		if (i == cpool_populated)
--			cpool_populated++;
--	}
--out:
--	mutex_unlock(&cpool_mutex);
--	return ret;
--}
--EXPORT_SYMBOL_GPL(tcp_sigpool_alloc_ahash);
--
--static void __cpool_free_entry(struct sigpool_entry *e)
--{
--	crypto_free_ahash(e->hash);
--	kfree(e->alg);
--	memset(e, 0, sizeof(*e));
--}
--
--static void cpool_cleanup_work_cb(struct work_struct *work)
--{
--	bool free_scratch = true;
--	unsigned int i;
--
--	mutex_lock(&cpool_mutex);
--	for (i = 0; i < cpool_populated; i++) {
--		if (kref_read(&cpool[i].kref) > 0) {
--			free_scratch = false;
--			continue;
--		}
--		if (!cpool[i].alg)
--			continue;
--		__cpool_free_entry(&cpool[i]);
--	}
--	if (free_scratch)
--		sigpool_scratch_free();
--	mutex_unlock(&cpool_mutex);
--}
--
--static DECLARE_WORK(cpool_cleanup_work, cpool_cleanup_work_cb);
--static void cpool_schedule_cleanup(struct kref *kref)
--{
--	schedule_work(&cpool_cleanup_work);
--}
--
--/**
-- * tcp_sigpool_release - decreases number of users for a pool. If it was
-- * the last user of the pool, releases any memory that was consumed.
-- * @id: tcp_sigpool that was previously allocated by tcp_sigpool_alloc_ahash()
-- */
--void tcp_sigpool_release(unsigned int id)
--{
--	if (WARN_ON_ONCE(id >= cpool_populated || !cpool[id].alg))
--		return;
--
--	/* slow-path */
--	kref_put(&cpool[id].kref, cpool_schedule_cleanup);
--}
--EXPORT_SYMBOL_GPL(tcp_sigpool_release);
--
--/**
-- * tcp_sigpool_get - increases number of users (refcounter) for a pool
-- * @id: tcp_sigpool that was previously allocated by tcp_sigpool_alloc_ahash()
-- */
--void tcp_sigpool_get(unsigned int id)
--{
--	if (WARN_ON_ONCE(id >= cpool_populated || !cpool[id].alg))
--		return;
--	kref_get(&cpool[id].kref);
--}
--EXPORT_SYMBOL_GPL(tcp_sigpool_get);
--
--int tcp_sigpool_start(unsigned int id, struct tcp_sigpool *c) __cond_acquires(0, RCU_BH)
--{
--	struct crypto_ahash *hash;
--
--	rcu_read_lock_bh();
--	if (WARN_ON_ONCE(id >= cpool_populated || !cpool[id].alg)) {
--		rcu_read_unlock_bh();
--		return -EINVAL;
--	}
--
--	hash = crypto_clone_ahash(cpool[id].hash);
--	if (IS_ERR(hash)) {
--		rcu_read_unlock_bh();
--		return PTR_ERR(hash);
--	}
--
--	c->req = ahash_request_alloc(hash, GFP_ATOMIC);
--	if (!c->req) {
--		crypto_free_ahash(hash);
--		rcu_read_unlock_bh();
--		return -ENOMEM;
--	}
--	ahash_request_set_callback(c->req, 0, NULL, NULL);
--
--	/* Pairs with tcp_sigpool_reserve_scratch(), scratch area is
--	 * valid (allocated) until tcp_sigpool_end().
--	 */
--	local_lock_nested_bh(&sigpool_scratch.bh_lock);
--	c->scratch = rcu_dereference_bh(*this_cpu_ptr(&sigpool_scratch.pad));
--	return 0;
--}
--EXPORT_SYMBOL_GPL(tcp_sigpool_start);
--
--void tcp_sigpool_end(struct tcp_sigpool *c) __releases(RCU_BH)
--{
--	struct crypto_ahash *hash = crypto_ahash_reqtfm(c->req);
--
--	local_unlock_nested_bh(&sigpool_scratch.bh_lock);
--	rcu_read_unlock_bh();
--	ahash_request_free(c->req);
--	crypto_free_ahash(hash);
--}
--EXPORT_SYMBOL_GPL(tcp_sigpool_end);
--
--/**
-- * tcp_sigpool_algo - return algorithm of tcp_sigpool
-- * @id: tcp_sigpool that was previously allocated by tcp_sigpool_alloc_ahash()
-- * @buf: buffer to return name of algorithm
-- * @buf_len: size of @buf
-- */
--size_t tcp_sigpool_algo(unsigned int id, char *buf, size_t buf_len)
--{
--	if (WARN_ON_ONCE(id >= cpool_populated || !cpool[id].alg))
--		return -EINVAL;
--
--	return strscpy(buf, cpool[id].alg, buf_len);
--}
--EXPORT_SYMBOL_GPL(tcp_sigpool_algo);
--
--/**
-- * tcp_sigpool_hash_skb_data - hash data in skb with initialized tcp_sigpool
-- * @hp: tcp_sigpool pointer
-- * @skb: buffer to add sign for
-- * @header_len: TCP header length for this segment
-- */
--int tcp_sigpool_hash_skb_data(struct tcp_sigpool *hp,
--			      const struct sk_buff *skb,
--			      unsigned int header_len)
--{
--	const unsigned int head_data_len = skb_headlen(skb) > header_len ?
--					   skb_headlen(skb) - header_len : 0;
--	const struct skb_shared_info *shi = skb_shinfo(skb);
--	const struct tcphdr *tp = tcp_hdr(skb);
--	struct ahash_request *req = hp->req;
--	struct sk_buff *frag_iter;
--	struct scatterlist sg;
--	unsigned int i;
--
--	sg_init_table(&sg, 1);
--
--	sg_set_buf(&sg, ((u8 *)tp) + header_len, head_data_len);
--	ahash_request_set_crypt(req, &sg, NULL, head_data_len);
--	if (crypto_ahash_update(req))
--		return 1;
--
--	for (i = 0; i < shi->nr_frags; ++i) {
--		const skb_frag_t *f = &shi->frags[i];
--		unsigned int offset = skb_frag_off(f);
--		struct page *page;
--
--		page = skb_frag_page(f) + (offset >> PAGE_SHIFT);
--		sg_set_page(&sg, page, skb_frag_size(f), offset_in_page(offset));
--		ahash_request_set_crypt(req, &sg, NULL, skb_frag_size(f));
--		if (crypto_ahash_update(req))
--			return 1;
--	}
--
--	skb_walk_frags(skb, frag_iter)
--		if (tcp_sigpool_hash_skb_data(hp, frag_iter, 0))
--			return 1;
--
--	return 0;
--}
--EXPORT_SYMBOL(tcp_sigpool_hash_skb_data);
--
--MODULE_LICENSE("GPL");
--MODULE_DESCRIPTION("Per-CPU pool of crypto requests");
+-.SH SEE ALSO
+-.BR netlink (7),
+-.BR rtnetlink (7)
+-.br
+-/usr/include/linux/rtnetlink.h
 -- 
-2.54.0
+2.53.0
 
