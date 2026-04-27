@@ -1,315 +1,206 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013022.outbound.protection.outlook.com [40.93.201.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 730F33DA7ED;
-	Mon, 27 Apr 2026 13:51:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777297894; cv=none; b=CZdcvmws56rHdLHAzBcdwf1yJ1DwFxLE8R+dDkNF7LlInDQgnusG/A/QXnykQYo6TYr/tyBrNCCnBBxz+3hH2cHU47cR6aQkmLoyp3TrevSER7uHECykZHJqlnmsvHD54baL4WjsOSzvEkrFN9qpoYM8DgCiYqysiBB9ksmeywk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777297894; c=relaxed/simple;
-	bh=ee48qQ1ebmEk113ksktKi85c/cNBi1NXFBxr5NvstQI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=WWrrM47aE+/FfRux8bNHnhl2E0rB9FuNEVvcD9U14Dup5njP3T/oFRJ2KoDBqnNpfobPqXeNtEqvUW0xwMiF+0Kz/Dz7BWIUEhs8qZNn8TanPbM1gRsb0+5YXBPEClm6x+aQIgRZQkvfsgNeWZ1N11Y3FL3nIm8/Wdqn04/fNbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SABeRa2T; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97FC631195C
+	for <netdev@vger.kernel.org>; Mon, 27 Apr 2026 13:55:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.22
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777298126; cv=fail; b=uz0pBSh/HfMin1xwo21DA80/wee5QKcbHV4xmxA3+LTmO+Ip7Do+Xt+hsApLAAQBI6QRfQPb2vA31iSpaAqMGGUmQI8NwqFMPt3/Yna1egsVrIalRHAC0hkPWgrylpAepp/Ntv5LGJPb464foSw+Pe1mPsywfWyxxyY+n4stTWo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777298126; c=relaxed/simple;
+	bh=m38wk5DqhTsRlVY2D/k9IYecInHM7Qc7dy1+sp+YUwM=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=qp+lHtZbMjT0cmFcCV9pHtUuQKYOi50Yq1GVZ5YK9/rXg2s0KqcH5FQfjU9jtJTIfDQb/nA9tkDknZOcbS0tkCg24Mdaf2Y8LXE8+JuVYf3Z1D6kfQsmv3wQP+is4+EmmCFXXvAnOTzJ+TJMT06sUJD+x4taXxfiKkgxuIz5ddQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=O+PQM80e; arc=fail smtp.client-ip=40.93.201.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SABeRa2T"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E66E8C2BCB4;
-	Mon, 27 Apr 2026 13:51:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777297894;
-	bh=ee48qQ1ebmEk113ksktKi85c/cNBi1NXFBxr5NvstQI=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=SABeRa2TSxwIaGAql/M/N4P/l6kM6uO/b8zYxE0xOTjTFThc5v3FDV3VmRcT3FpvO
-	 gfTxZZIWSSXmWkblbdUkN8NeLztCYTI8KK8q4kFabCQM1X+vsm3pexBRmMZomI/lMV
-	 /ZNK7e9o/NGIfJYKRcOtActYr1n7iBJqa71lDDz6W9m1ikcp6nOsfADUtBIb4XKOQR
-	 fRlC2uRYGtnrwypvHBuY6CFu9ZVwgoFhm6q5omNT69i9hen5qoxXAFVnYb7X/Irlxr
-	 ZY1HXSp2tClzz34YEBwQF6r2NVykYpRbTklwqF/+B9NmfVX+zRrBnYt+4L2P8Gfusv
-	 MvCBLmHaDEdNA==
-From: Chuck Lever <cel@kernel.org>
-Date: Mon, 27 Apr 2026 09:51:02 -0400
-Subject: [PATCH 18/18] SUNRPC: Remove dead rpcsec_gss_krb5 definitions
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="O+PQM80e"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cL5wP9t1+b0BWdjoKOTnlWwKuokQLs0VJRk9Fvmbag6trscc31IHOdKhV/DnFxUbicZbMfDNe5+hOqYjMZaqbZ8EaA8mZqTlmzwcMOcIUyW+KL5ZqektM49yjnoRy5Z1Ok7xpsfrd/R1GPYIc7nEDewxcw/lNVa9WhVG4HbwG4XgvTsPdCZ8Z0IA7kOkdra3J5k6fqjhYC4mgAkIiw3AMlWrcmtjfsIBM7/IBO9NkRIW138A9WZg75k+tMblaxhNUwbWqnSEq8uBPqIJd5SQ7JjzX9q6hZmMtlk6Aa2393YU0qzd8Xbs5zsUZI5zc07F3t0BTq/De53UeKSg9D77mg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=p7ubS/gAq+l/nVecxQEBSpFINt09/82x1CGZhVW6BoA=;
+ b=hxlwIjdudSiMcjxwxihuQzCzXJwn/yg0F6Y9NUE1a6FUXnHcVt8351K/NbTXu17B8EOYs4jvhr1wt+OLhoiDVRTjA9a6f7dhsx5omQ8qAMXEdk2d2C45+vtL4hVDvskku3xOqUbL7hCARUoJmM9AH14qSRX6oNVxZsAdAgGZ+lijRyFX9TkgnJJXlEwbfVOmyP4/9WmiO/95u8AvyRFyOGw1PyflCC2NcwnXF9s+iOYNtODSlpM47P2alPYuS2zQesuzWCCBYR8pLZN55lHW0OIPbm2nk1gCn4gIja8w5kIpJIk05kYSlfyUIcctKTGxvuQdu5uZsxlVJCw39FsIWw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=p7ubS/gAq+l/nVecxQEBSpFINt09/82x1CGZhVW6BoA=;
+ b=O+PQM80epokyyQau1KhNF3pEpJxQx7MR7O1Xv6jcxbFDx50i1gdur9bj7ZTlfWM6IGuJrTuHGWpGtDOMQ7EfY/XJ0IsEySh2qHEcOFXBw9K/aU/gkUffRL+aIjyDuh1yMbSWyxAgX+/xueFE4k1eFf/N68MESJGthpqbK24lc86/mYdDF5rnqck6V5ALlDP8IJk+NAWfR70nldG+zKseaA6+1N/4uobcvtbMN3dRuNhJtPmIL9yBeQcL3FtE97Tv+FvCpI7qHt9hGh2zeJPOlF4kRPPoP4H2q4AjUkimR7F3IxCi64SggzzKZ32clGha6h1IhuPIpZFOisbiatR79A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8728.namprd12.prod.outlook.com (2603:10b6:610:171::12)
+ by PH7PR12MB6764.namprd12.prod.outlook.com (2603:10b6:510:1ae::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.16; Mon, 27 Apr
+ 2026 13:55:22 +0000
+Received: from CH3PR12MB8728.namprd12.prod.outlook.com
+ ([fe80::2641:1046:bdf3:93d7]) by CH3PR12MB8728.namprd12.prod.outlook.com
+ ([fe80::2641:1046:bdf3:93d7%7]) with mapi id 15.20.9870.013; Mon, 27 Apr 2026
+ 13:55:19 +0000
+Message-ID: <1126aa35-1924-492f-8d7f-072c0dec9bde@nvidia.com>
+Date: Mon, 27 Apr 2026 15:55:15 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [BUG] mlx5: VLAN-aware bridge drops all traffic in legacy eswitch
+ mode without promiscuous
+To: bryan <bpliscott@gmail.com>, netdev@vger.kernel.org
+Cc: saeedm@nvidia.com, tariqt@nvidia.com
+References: <96b4d723ac443f3a42680fa1c8b94b929df39da3.camel@gmail.com>
+Content-Language: en-US
+From: Dragos Tatulea <dtatulea@nvidia.com>
+In-Reply-To: <96b4d723ac443f3a42680fa1c8b94b929df39da3.camel@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0446.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:c6::12) To CH3PR12MB8728.namprd12.prod.outlook.com
+ (2603:10b6:610:171::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260427-crypto-krb5-api-v1-18-1fc1253b64c0@oracle.com>
-References: <20260427-crypto-krb5-api-v1-0-1fc1253b64c0@oracle.com>
-In-Reply-To: <20260427-crypto-krb5-api-v1-0-1fc1253b64c0@oracle.com>
-To: Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
- Chuck Lever <chuck.lever@oracle.com>, Jeff Layton <jlayton@kernel.org>, 
- NeilBrown <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>, 
- Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>
-Cc: linux-nfs@vger.kernel.org, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>, 
- David Howells <dhowells@redhat.com>, Simo Sorce <simo@redhat.com>
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9198;
- i=chuck.lever@oracle.com; h=from:subject:message-id;
- bh=ZcFb+k2n2t58LNAq047I6Ch8sAwnbgJ5yMByohgAJt0=;
- b=owEBbQKS/ZANAwAKATNqszNvZn+XAcsmYgBp72nHhPB1gj2AZ6nAAJsMn+/ZRncpq03Ac9W10
- MSvSQ/KmtOJAjMEAAEKAB0WIQQosuWwEobfJDzyPv4zarMzb2Z/lwUCae9pxwAKCRAzarMzb2Z/
- lzFJEACmEB6wjbeS3sPQo2wKLJoy7IJ78ZSAznwmAsX3/ZZiT73a+Yn8Ep400TJPgRPUvoqAGeg
- G4rbAseDMOwI7MK2IQSr9bYi84hPKrL5t8g1XZ9ywFRFBZJlQcE40WDeUnViEJ65yux0KvIZJ9M
- qtNeA4y8hLaYUUawucTgfEfmZmb41zTwOZUPPq8Aad/TDdyjRCr8GhDwd5xAd0Zl2Muy/HH7LNx
- vEi5BqkEteBryuWoNwBJhEpbwoa64WRhE/Zh1Els2r2mqVSMs9zKbHsvIOrS4cOAmtgT07lNKjz
- adZ3tIc9J1a08xg8J5oX0funr/qeWk3Dh4B2TIB6Us4uxie4U1JluqTWe0aQCXGrmhH53OZS0At
- 6F9mAQZLK00pUCynwrUkAkZwqXbLLBJVdWM6taBqnsalWvQ7bHLhQRF+jSiftYBsagyZbxcIsp+
- J5BYoeimKr3JyuGjH2KK7BR8Fq1nwfxpkzn74acYld418hjEAWiI1fcTUGD8WtInr6xu4lRzD7+
- eGMeAVVZg6u+VWkdZYmaVko1d/fQLsnV3Zjm1rIrxDFlTz9YffH18XoNZrhrIV2O0jVFX/8BY9v
- cj/0MI1RdQRIicCGmpG52hrk8jM7QHgIo/d8tVSRGIbFIJXG9/xp1UAVxUS5Q9xDu56drwv/ugB
- Dc/0CqmNvYXt+hg==
-X-Developer-Key: i=chuck.lever@oracle.com; a=openpgp;
- fpr=28B2E5B01286DF243CF23EFE336AB3336F667F97
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8728:EE_|PH7PR12MB6764:EE_
+X-MS-Office365-Filtering-Correlation-Id: f5046ac2-aeb1-46f6-5a63-08dea4649e35
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|366016|1800799024|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	jFIC7EmAw1tdt1/B+SzLMrSNfV7ge3NuHcAZVUuqwbrMJOedhDny28BJgrlQTSdLwoE7TzxuLBRM/xMKQd80ZQYQLPbrrHnUCHsPPiPLJzKojmEceOwYDgKWZLeKzEcyEGkBlYAYzUa6f9cw7vus745Ld30xupVProV7w+gHbYEagiLvkrGtugwMxW5i92hsJeJ6jR4Pv9k/0vNOFJZCU5Jz2cc//MpItxlQ8bo2OjmVoolcYGIEcLlUXf+XvHGZzTWmWpkQ9S9k74Nk5cgNbJ4+r3H8HDCLwu+KWw8pskCrGIiNac3yZYTbHI1jofvNaAlm4IAxkUHuwofPZsQQKHldRA+SiXAqjW1/fDJ7VvF+/KIJl+ljjGHNEkN4HKePYXpMu6v2n+TMERHO7F8bayGzj3MnuV1s34508Zwj0EaDXYGXSIVl6EbzvSe9lkHrtnI9uDjFbahgiIKY9paac97kjLSyphAL1iyiNTTOLgJ2c/hCFiRSolLlXTk7ZZdxJu6NyPkS+QVQEmeZluSgvM+EuFzvxPHwvrOmwkApFPbcZxI+PD00aBJTiNqnEHyAsk7q0zMi7zXNsJd837ggkRm96HjZnkfiE55m3V/wZB5X60pXPAvsEkqlKsmFguXwLVKhJexzKcAcJAy+fhPKQUF1FQeChyKYjuWHvvGs07W43im1+y1MWYtGixATosBS5wZfma85fD2FjBqt19m4jLooAr+1O+pT4JWOiPwLS2s=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8728.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Y0xIc2o3T1VxMGpqTEN3WTBESU0xNkIwZHNWS3RvQnp1eTN6ek1hRThnRHJ1?=
+ =?utf-8?B?SEljUlpwVHI4OFZMYUwxb1UzMEFrRFVGeTdPM3VGdU5lWnc3cS9TeVhCazRK?=
+ =?utf-8?B?YVRyYytHcmZ3MEhDZ0oyd2Z2ZmU0Ty91bzRLZVhxZUdYNEtJR2Q5eWovUkVP?=
+ =?utf-8?B?ZTNUbmZNb3VkaG5telVUa0JweVBBZk5seCtvNUlVZFdWNGRDUXRJem1hWno2?=
+ =?utf-8?B?T1ZGYXVOUm9CVDhhK3pHMHdPb1M0MUFVUlUyNG5wWjJ4cnFwU1laVDZKM2l2?=
+ =?utf-8?B?ZVd0STVuR0ZsRHZkOW8ybUs2alJNM0FVMDV1OC9SWllyM212djc2R0QzYTBu?=
+ =?utf-8?B?Zm82Y05qeGJscnc2OUd4NTVhUk5wNnNwRkpaRk9aeHFOS1g4NE5sVTdFQks3?=
+ =?utf-8?B?RU0vQVdwcGs1NjVpMDVkZUZWS1N3V282WitZSFY2VUJMd3ZjM1RUdTRNblBS?=
+ =?utf-8?B?R2l2aTN1Ym1GeHJlZG5SQTFCbDVaRnJ2Y1Zqb3FOSHk3bGZVMHdaQXk4U3h0?=
+ =?utf-8?B?WUg3eUp1aVlvbE04M2dXVlk2VmNqdi9ZejJUdjdscEJPbjNjWitZMGE0Y0RY?=
+ =?utf-8?B?dEhjR05VL3YzcVg4S0Erc3hGaU5QUDRmYjlaT1BTMlRheVVSWjVDcXRiMmE5?=
+ =?utf-8?B?MTVTM3AxT2ViSDh0aHVnWDhIVG9FdnZ3QXFkL2dKWHh0VmlXZFpzQVdFMVIy?=
+ =?utf-8?B?N21ibHp6T0c0NXJmeU1qMzF0MEVsZ0FuVVZMYXdGMjhvTDM2MDY0THdNenVZ?=
+ =?utf-8?B?NHlyYUFKeVdMQUlUL1ZEK1h6UW5NSEF1dTJ1NEpCd0c5cm52d2dQKzdZam12?=
+ =?utf-8?B?aEN6ZjZ6aTRmcm1RdjVoNUs3TFFUUXREUWF5dW1ZRzEwMitKeHo2RHRnQzM1?=
+ =?utf-8?B?UllWWGZJc0lyVFRIcjNDeHlham9BcFdORysxN0ZvTVZybU9OZ1Vxd0IzaitK?=
+ =?utf-8?B?dXd6cXR4bzhIbG1oNHZGZis4NW1tMnZyK0I0N3A0ZEhWNk9zSC9oSHpnbmxa?=
+ =?utf-8?B?cVNvQVFLZGd3TE52bEwzWG1kZlg1NGUySlBNR0QrWWpsWEFjcXppeWVZVStB?=
+ =?utf-8?B?WVVOK1krci9sampua1ZMY2NZMkprd3pXTTEvMTRQL0UwU3RCWnBIRFNnV2Nz?=
+ =?utf-8?B?dVlHV2F1WDI0bVVaWFRSNmg0c0lEMXdXN20wc3cvY1B2WUVyVjFYMGdaOEQ1?=
+ =?utf-8?B?MnVjaHhRMmw4Q3FTNURPY0lUMGxMZmVITEpPVVViNkh4TVFsZzRhb2hkL3Fu?=
+ =?utf-8?B?TGY0bEUwbVVFMzR3bTJOUUNBd0RpUlcydWtFdnoyVys3blA2T1dMQWc2QU9s?=
+ =?utf-8?B?ZjgweWxMU0hGQWE1VXdBMHQ2T096TFRGVFJobHBEYWZpWnJDZkFWeEFsYkdB?=
+ =?utf-8?B?akVRVGRRNHRzRXdBOFE0bEJyV3d0RVFyVE9JbU5VZFZpMEpXVlc1YVFjVnRO?=
+ =?utf-8?B?NTZCQkdBZTZJRklTNnY0MmhyZGxFbTJzNGhHcXZNYUVrUmRqRk43d0RXR1cv?=
+ =?utf-8?B?SzRCZzM4eExOK2dsQm1JelZMdThna1pqeU01ZU1HUUl0dlRMa1lSc2V2NEpI?=
+ =?utf-8?B?V0VUbGtOZnMraDFsYUs0RDdQTzU4T0wvODJBa2c3VDNKOVhDWnNVdjd0MkVq?=
+ =?utf-8?B?K09vaUduc3NpQ25ldzdvcnBORkJtNnN6Q05SWXFwbVlRVkIzc2lUa2tKa09F?=
+ =?utf-8?B?SnBlZlVaSWJSZDFsRkhWdmdOSkFSZDRnbHIxbkFWRWs5ZVpheGpnZklKVVgr?=
+ =?utf-8?B?TTRCRW41MUM1OVdnNVBWV29seFM4ZWxCaklXUGJOeW9HZEJxeERWVFNNVmdY?=
+ =?utf-8?B?MVVSRjRsWHhCeEpROWJYRVpCRWNHTGVUMnpuM2VMSkJmMko2S2h3NDFwU0Y4?=
+ =?utf-8?B?M1I1ZithVHNaL3NRNWNOWmdLYlNlOVdwUEp0bkl3blJJOHBWQVcwdGJqdEd3?=
+ =?utf-8?B?RUo5ZkV3eC9ZYWZwOFZlQ20xTVZLYXNRdExlT3RGQ3lHRjB6RGRwVTFsaytm?=
+ =?utf-8?B?SE5IblFjK1dNaWxPb042WmgvcXFweVg2dldYeUxSNzZXaGVIMEh1dms5MnJy?=
+ =?utf-8?B?SytQZW5uRVVnS2c0SFB1c0hScE9ZOVBmRUN6WC94ekZvbUVER092QUNja0JP?=
+ =?utf-8?B?QUdYQlUxY2s0Nm8va0s4SGQyZ1BRRXdzNklQMVF6S3NLS1lpTks5VW9raGZm?=
+ =?utf-8?B?dkw2QlByRG45VE5LclFwZnFLeWtReTd0YWt6SWpoSlV3SzI2YjlFTnM2UC9X?=
+ =?utf-8?B?empHQWd6SGY4U0FpN25QYjVnMXpQYUZqeTgvdFdMRFNoYnNOaTA1Y25zQUFw?=
+ =?utf-8?B?STZlVzAvbjBEeHNMaHEyTmRtZXBCd2F2L3o5aDdWcmZwOUt4MUN4dz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f5046ac2-aeb1-46f6-5a63-08dea4649e35
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8728.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Apr 2026 13:55:19.3987
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: LMnHkjNBw5YclIGR9aI9Up/htOY8arSUuIXXAD2QRN2TihYFI2JXLNCXi8spxp6owi9oM4Hil1s1KXxGrthweQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6764
 
-From: Chuck Lever <chuck.lever@oracle.com>
+Hi,
 
-The migration to crypto/krb5 eliminated the per-enctype
-function dispatch and direct crypto API usage, leaving
-behind a number of orphaned definitions.
+On 24.04.26 13:07, bryan wrote:
+> Good day,
+>
+> I wanted to check whether there is an open bug report or known fix in
+> progress for an issue that has been affecting mlx5 users (specifically
+> ConnectX-4 Lx, but likely broader from what I have seen other
+> reporting) since at least 2021:
+>
+> When an mlx5 interface is added as a port to a VLAN-aware Linux bridge
+> (bridge-vlan-aware yes / vlan_filtering 1) in legacy eswitch mode, all
+> traffic stops passing through the bridge. Both tagged and untagged
+> traffic is affected. The same configuration works correctly with non-
+> mlx5 NICs (tested Intel, Chelsio cards).
+>
+Is this even with one vlan? I ran a flow on a CX4LX pair with one vlan
+and vlan_filtering set and traffic seems to be flowing normally.
+Something like:
 
-Remove the following from gss_krb5.h:
+# IFACE=eth2
+# VID=100
+# ip link add br0 type bridge vlan_filtering 1
+# ip link set "$IFACE" master br0
+# bridge vlan add vid "$VID" dev "$IFACE"
+# bridge vlan add vid "$VID" dev br0 self
+# ip link add link br0 name "br0.$VID" type vlan id "$VID"
+# ip addr add 10.0.0.1/24 dev br0
+# ip addr add "10.0.$VID.1/24" dev "br0.$VID"
+# ip link set "$IFACE" up
+# ip link set br0 up
+# ip link set "br0.$VID" up
 
- - GSS_KRB5_K5CLENGTH, used only by removed key derivation
- - KG_TOK_MIC_MSG and KG_TOK_WRAP_MSG (Kerberos v1 token
-   types; v1 support was dropped earlier)
- - KG2_TOK_INITIAL and KG2_TOK_RESPONSE (context
-   establishment token types; no remaining users)
- - KG2_RESP_FLAG_ERROR and KG2_RESP_FLAG_DELEG_OK
- - enum sgn_alg and enum seal_alg (v1 algorithm constants)
- - All CKSUMTYPE_* definitions, now duplicated by
-   KRB5_CKSUMTYPE_* in <crypto/krb5.h>
- - The KG_ error constants from gssapi_err_krb5.h, which
-   have no remaining users
- - The ENCTYPE_* constant block, replaced by KRB5_ENCTYPE_*
-   from <crypto/krb5.h>
- - KG_USAGE_SEAL/SIGN/SEQ (3DES usage constants)
- - KEY_USAGE_SEED_CHECKSUM/ENCRYPTION/INTEGRITY, duplicated
-   by <crypto/krb5.h>
- - #include <crypto/skcipher.h>, no longer needed
+From the other side where I have a similar setup I can ping
+br0.100.
 
-Remove the cksum[] field from struct krb5_ctx in
-gss_krb5_internal.h; no code reads or writes it after the
-key derivation removal.
+Tested on a CX4LX with FW version 28.48.1000 and kernel 6.18.
+eth2 is a PF in legacy switchdev mode.
 
-Switch gss_krb5_enctypes[] in gss_krb5_mech.c to the
-canonical KRB5_ENCTYPE_* names from <crypto/krb5.h>.
+> [...]
+> This is well documented in community forums but does not appear to have
+> been formally reported to netdev that I have been able to find. My
+> apologies in advance if this has been reported and I wasn't able to
+> locate it. Here are a couple of forum examples where this is discussed
+> among other affected users:
+>
+> - NVIDIA Developer Forum (opened 2021, unresolved):
+>
+> https://forums.developer.nvidia.com/t/vlan-aware-linux-bridging-is-not-functional-on-connectx4lx-card-unless-manually-put-in-promiscuous-mode/206083
+>
+> - Proxmox Forum thread (2023, ongoing):
+>
+> https://forum.proxmox.com/threads/mellanox-connectx-4-lx-and-brigde-vlan-aware-on-proxmox-8-0-1.130902/
+>
+> - Community writeup with analysis:
+>   https://www.apalrd.net/posts/2023/tip_mellanox/
+>
+This last link seems the only one that provides some extra data. From it
+I can see that the amount of VLAN ids > what the FW supports. This could
+result in loss of traffic for the vlan ids > 512. Do you also see in
+your dmesg these kinds of errors:
 
-Remove stale #include directives:
- - <crypto/skcipher.h> from gss_krb5_wrap.c
- - <linux/random.h> and <linux/crypto.h> from
-   gss_krb5_seal.c
+mlx5_core 0000:19:00.1: mlx5e_vport_context_update_vlans:179:(pid 13470): netdev vlans list size (4080) > (512) max vport list size, some vlans will be dropped
 
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
----
- include/linux/sunrpc/gss_krb5.h         | 105 --------------------------------
- net/sunrpc/auth_gss/gss_krb5_internal.h |   1 -
- net/sunrpc/auth_gss/gss_krb5_mech.c     |  12 ++--
- net/sunrpc/auth_gss/gss_krb5_seal.c     |   2 -
- net/sunrpc/auth_gss/gss_krb5_wrap.c     |   1 -
- 5 files changed, 6 insertions(+), 115 deletions(-)
+This is not a bug, simply a limit being reached.
 
-diff --git a/include/linux/sunrpc/gss_krb5.h b/include/linux/sunrpc/gss_krb5.h
-index 43950b5237c8..1cd452ed1db5 100644
---- a/include/linux/sunrpc/gss_krb5.h
-+++ b/include/linux/sunrpc/gss_krb5.h
-@@ -37,13 +37,9 @@
- #ifndef _LINUX_SUNRPC_GSS_KRB5_H
- #define _LINUX_SUNRPC_GSS_KRB5_H
- 
--#include <crypto/skcipher.h>
- #include <linux/sunrpc/auth_gss.h>
- #include <linux/sunrpc/gss_err.h>
- 
--/* Length of constant used in key derivation */
--#define GSS_KRB5_K5CLENGTH (5)
--
- /* Maximum key length (in bytes) for the supported crypto algorithms */
- #define GSS_KRB5_MAX_KEYLEN (32)
- 
-@@ -56,11 +52,6 @@
- /* The length of the Kerberos GSS token header */
- #define GSS_KRB5_TOK_HDR_LEN	(16)
- 
--#define KG_TOK_MIC_MSG    0x0101
--#define KG_TOK_WRAP_MSG   0x0201
--
--#define KG2_TOK_INITIAL     0x0101
--#define KG2_TOK_RESPONSE    0x0202
- #define KG2_TOK_MIC         0x0404
- #define KG2_TOK_WRAP        0x0504
- 
-@@ -68,102 +59,6 @@
- #define KG2_TOKEN_FLAG_SEALED           0x02
- #define KG2_TOKEN_FLAG_ACCEPTORSUBKEY   0x04
- 
--#define KG2_RESP_FLAG_ERROR             0x0001
--#define KG2_RESP_FLAG_DELEG_OK          0x0002
--
--enum sgn_alg {
--	SGN_ALG_DES_MAC_MD5 = 0x0000,
--	SGN_ALG_MD2_5 = 0x0001,
--	SGN_ALG_DES_MAC = 0x0002,
--	SGN_ALG_3 = 0x0003,		/* not published */
--	SGN_ALG_HMAC_SHA1_DES3_KD = 0x0004
--};
--enum seal_alg {
--	SEAL_ALG_NONE = 0xffff,
--	SEAL_ALG_DES = 0x0000,
--	SEAL_ALG_1 = 0x0001,		/* not published */
--	SEAL_ALG_DES3KD = 0x0002
--};
--
--/*
-- * These values are assigned by IANA and published via the
-- * subregistry at the link below:
-- *
-- * https://www.iana.org/assignments/kerberos-parameters/kerberos-parameters.xhtml#kerberos-parameters-2
-- */
--#define CKSUMTYPE_CRC32			0x0001
--#define CKSUMTYPE_RSA_MD4		0x0002
--#define CKSUMTYPE_RSA_MD4_DES		0x0003
--#define CKSUMTYPE_DESCBC		0x0004
--#define CKSUMTYPE_RSA_MD5		0x0007
--#define CKSUMTYPE_RSA_MD5_DES		0x0008
--#define CKSUMTYPE_NIST_SHA		0x0009
--#define CKSUMTYPE_HMAC_SHA1_DES3	0x000c
--#define CKSUMTYPE_HMAC_SHA1_96_AES128   0x000f
--#define CKSUMTYPE_HMAC_SHA1_96_AES256   0x0010
--#define CKSUMTYPE_CMAC_CAMELLIA128	0x0011
--#define CKSUMTYPE_CMAC_CAMELLIA256	0x0012
--#define CKSUMTYPE_HMAC_SHA256_128_AES128	0x0013
--#define CKSUMTYPE_HMAC_SHA384_192_AES256	0x0014
--#define CKSUMTYPE_HMAC_MD5_ARCFOUR      -138 /* Microsoft md5 hmac cksumtype */
--
--/* from gssapi_err_krb5.h */
--#define KG_CCACHE_NOMATCH                        (39756032L)
--#define KG_KEYTAB_NOMATCH                        (39756033L)
--#define KG_TGT_MISSING                           (39756034L)
--#define KG_NO_SUBKEY                             (39756035L)
--#define KG_CONTEXT_ESTABLISHED                   (39756036L)
--#define KG_BAD_SIGN_TYPE                         (39756037L)
--#define KG_BAD_LENGTH                            (39756038L)
--#define KG_CTX_INCOMPLETE                        (39756039L)
--#define KG_CONTEXT                               (39756040L)
--#define KG_CRED                                  (39756041L)
--#define KG_ENC_DESC                              (39756042L)
--#define KG_BAD_SEQ                               (39756043L)
--#define KG_EMPTY_CCACHE                          (39756044L)
--#define KG_NO_CTYPES                             (39756045L)
--
--/* per Kerberos v5 protocol spec crypto types from the wire. 
-- * these get mapped to linux kernel crypto routines.  
-- *
-- * These values are assigned by IANA and published via the
-- * subregistry at the link below:
-- *
-- * https://www.iana.org/assignments/kerberos-parameters/kerberos-parameters.xhtml#kerberos-parameters-1
-- */
--#define ENCTYPE_NULL            0x0000
--#define ENCTYPE_DES_CBC_CRC     0x0001	/* DES cbc mode with CRC-32 */
--#define ENCTYPE_DES_CBC_MD4     0x0002	/* DES cbc mode with RSA-MD4 */
--#define ENCTYPE_DES_CBC_MD5     0x0003	/* DES cbc mode with RSA-MD5 */
--#define ENCTYPE_DES_CBC_RAW     0x0004	/* DES cbc mode raw */
--/* XXX deprecated? */
--#define ENCTYPE_DES3_CBC_SHA    0x0005	/* DES-3 cbc mode with NIST-SHA */
--#define ENCTYPE_DES3_CBC_RAW    0x0006	/* DES-3 cbc mode raw */
--#define ENCTYPE_DES_HMAC_SHA1   0x0008
--#define ENCTYPE_DES3_CBC_SHA1   0x0010
--#define ENCTYPE_AES128_CTS_HMAC_SHA1_96 0x0011
--#define ENCTYPE_AES256_CTS_HMAC_SHA1_96 0x0012
--#define ENCTYPE_AES128_CTS_HMAC_SHA256_128	0x0013
--#define ENCTYPE_AES256_CTS_HMAC_SHA384_192	0x0014
--#define ENCTYPE_ARCFOUR_HMAC            0x0017
--#define ENCTYPE_ARCFOUR_HMAC_EXP        0x0018
--#define ENCTYPE_CAMELLIA128_CTS_CMAC	0x0019
--#define ENCTYPE_CAMELLIA256_CTS_CMAC	0x001A
--#define ENCTYPE_UNKNOWN         0x01ff
--
--/*
-- * Constants used for key derivation
-- */
--/* for 3DES */
--#define KG_USAGE_SEAL (22)
--#define KG_USAGE_SIGN (23)
--#define KG_USAGE_SEQ  (24)
--
--/* from rfc3961 */
--#define KEY_USAGE_SEED_CHECKSUM         (0x99)
--#define KEY_USAGE_SEED_ENCRYPTION       (0xAA)
--#define KEY_USAGE_SEED_INTEGRITY        (0x55)
--
- /* from rfc4121 */
- #define KG_USAGE_ACCEPTOR_SEAL  (22)
- #define KG_USAGE_ACCEPTOR_SIGN  (23)
-diff --git a/net/sunrpc/auth_gss/gss_krb5_internal.h b/net/sunrpc/auth_gss/gss_krb5_internal.h
-index 208f9df9ea96..3b392e96f25d 100644
---- a/net/sunrpc/auth_gss/gss_krb5_internal.h
-+++ b/net/sunrpc/auth_gss/gss_krb5_internal.h
-@@ -26,7 +26,6 @@ struct krb5_ctx {
- 	struct crypto_shash	*initiator_sign_shash;
- 	struct crypto_shash	*acceptor_sign_shash;
- 	u8			Ksess[GSS_KRB5_MAX_KEYLEN]; /* session key */
--	u8			cksum[GSS_KRB5_MAX_KEYLEN];
- 	atomic64_t		seq_send64;
- 	time64_t		endtime;
- 	struct xdr_netobj	mech_used;
-diff --git a/net/sunrpc/auth_gss/gss_krb5_mech.c b/net/sunrpc/auth_gss/gss_krb5_mech.c
-index 996e452b9b3c..c41b5f3e1789 100644
---- a/net/sunrpc/auth_gss/gss_krb5_mech.c
-+++ b/net/sunrpc/auth_gss/gss_krb5_mech.c
-@@ -33,12 +33,12 @@ static struct gss_api_mech gss_kerberos_mech;
-  * enctypes that crypto/krb5 supports are advertised.
-  */
- static const u32 gss_krb5_enctypes[] = {
--	ENCTYPE_AES256_CTS_HMAC_SHA384_192,
--	ENCTYPE_AES128_CTS_HMAC_SHA256_128,
--	ENCTYPE_CAMELLIA256_CTS_CMAC,
--	ENCTYPE_CAMELLIA128_CTS_CMAC,
--	ENCTYPE_AES256_CTS_HMAC_SHA1_96,
--	ENCTYPE_AES128_CTS_HMAC_SHA1_96,
-+	KRB5_ENCTYPE_AES256_CTS_HMAC_SHA384_192,
-+	KRB5_ENCTYPE_AES128_CTS_HMAC_SHA256_128,
-+	KRB5_ENCTYPE_CAMELLIA256_CTS_CMAC,
-+	KRB5_ENCTYPE_CAMELLIA128_CTS_CMAC,
-+	KRB5_ENCTYPE_AES256_CTS_HMAC_SHA1_96,
-+	KRB5_ENCTYPE_AES128_CTS_HMAC_SHA1_96,
- };
- 
- static char gss_krb5_enctype_priority_list[64];
-diff --git a/net/sunrpc/auth_gss/gss_krb5_seal.c b/net/sunrpc/auth_gss/gss_krb5_seal.c
-index 66c179337029..cfe066e89f23 100644
---- a/net/sunrpc/auth_gss/gss_krb5_seal.c
-+++ b/net/sunrpc/auth_gss/gss_krb5_seal.c
-@@ -61,8 +61,6 @@
- #include <linux/types.h>
- #include <linux/jiffies.h>
- #include <linux/sunrpc/gss_krb5.h>
--#include <linux/random.h>
--#include <linux/crypto.h>
- #include <linux/atomic.h>
- #include <linux/scatterlist.h>
- #include <linux/slab.h>
-diff --git a/net/sunrpc/auth_gss/gss_krb5_wrap.c b/net/sunrpc/auth_gss/gss_krb5_wrap.c
-index 93aa7500d032..ac4b32df42b9 100644
---- a/net/sunrpc/auth_gss/gss_krb5_wrap.c
-+++ b/net/sunrpc/auth_gss/gss_krb5_wrap.c
-@@ -28,7 +28,6 @@
-  * SUCH DAMAGES.
-  */
- 
--#include <crypto/skcipher.h>
- #include <linux/types.h>
- #include <linux/jiffies.h>
- #include <linux/sunrpc/gss_krb5.h>
+> Has anyone bisected this or is there a fix already in progress that I
+> did not find? This affects a fairly common hypervisor configuration
+> (VLAN-aware bridge for VM networking) and the workarounds are not
+> conducive to production use.
+>
+Could you provide a short repro script for this. Not being able to
+reproduce the issue makes it hard to check :).
 
--- 
-2.53.0
-
+Thanks,
+Dragos
