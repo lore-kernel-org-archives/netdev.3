@@ -1,125 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709263B4E84;
-	Mon, 27 Apr 2026 10:00:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35CAB358378;
+	Mon, 27 Apr 2026 10:01:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777284001; cv=none; b=vBciAurc8ZtzKUedooYIa+umxCqKGRcFGfWpJSzJDdGCMxoozt82Ygg5flIMKFh86/W0+ZZmYGyTRAU4yPr30JZoUuo21kSdAQEEBvrbgew7hHdTpjEIP6FKWCxzEaB2UKoO2aPgUp1TuAyrGEhXa/eP5+vkCwHWEiPCSbMnQ8E=
+	t=1777284091; cv=none; b=TW1m+sr+vqtaP+cDY2gXTbtxGvbclVVQe7sGisvKW+EDoV83rRUXnJHTfo7yRMXuGhPs7Wb0inRQJnELixPqyELvax05dLGkU8iSOdZWWwYab+UrBhOHfrxGdSMrC82A6WvyK4fQSb/wmk5zcS6sG0pevPUw4yPeo+YmYO3sz1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777284001; c=relaxed/simple;
-	bh=yEIG92a1FH3cEp3tne1pDeDmYK3WLKv3UmItU7XJzvM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uH7hnVCOrqcWht66RtnFFnCdXseIY4YeGKE2hVTVTucP7D2mX5IG9D1S5kG1alZZr/bBm+5u8omey/Qjwy88jRqToGUWwk7zIzPu1azuZTpEaDn88j9QRYlGpWDjTKKrCOEAyg/O1RUn8z3MPsK3sFZkQrsOdK5az+ayPNtNpqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qalb8bye; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777284091; c=relaxed/simple;
+	bh=atbEGFmeDSSdktHKnGJMRG/KmbT+1bnX/jq+DUetKC8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iK3Cepqzkfidg6qQoq1iEIJchl882hND5qrhyeYDu7gI21bQNJ5xE3hctSbQYlikktLYdnMM+Eqr66/+aXCLFWOqbT366MRUrQH35BNR5eYsiaztXPfPDXkXbRqCOVK5cxMWtBopUGAqmfRDWBzKaH6dJYlOiUQNiA9/yf2HfvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=o34wvNlV; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qalb8bye"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9593AC19425;
-	Mon, 27 Apr 2026 09:59:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777284001;
-	bh=yEIG92a1FH3cEp3tne1pDeDmYK3WLKv3UmItU7XJzvM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qalb8byeKCMMPPdR3bDLqXrUNZ+T4+X41ohfZotvM9auPRR7bOGHhVHCLkIyfKCl8
-	 pnLK46wiHan9Xfxjjz36dxDwTNFxa5f9q4LKwuawCeJaN1aC4iu8LonbB4lhg3hzBi
-	 cQxKOxHaO3lDsjmAB2YLNEX1HNKTZWvz5RIPGamsOtkK1INwJuOQSjoVOKfHENFxUb
-	 jxEiO3i1TaeqM8gMtKbZAI+juIF4MJLlyBLRB626lxjmsdGrKo2PxNQMBYbRm4IQKV
-	 zoB8Xr2Lgq66lOSvjvahrZWUGtvZAIe8zo+PyiYBOO/4DBu2VMxc/6uw34FALVJp4R
-	 2+P8PGOw11Khg==
-From: Sumit Garg <sumit.garg@kernel.org>
-To: andersson@kernel.org,
-	konradybcio@kernel.org
-Cc: linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	freedreno@lists.freedesktop.org,
-	linux-media@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	ath12k@lists.infradead.org,
-	linux-remoteproc@vger.kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	robin.clark@oss.qualcomm.com,
-	sean@poorly.run,
-	akhilpo@oss.qualcomm.com,
-	lumag@kernel.org,
-	abhinav.kumar@linux.dev,
-	jesszhan0024@gmail.com,
-	marijn.suijten@somainline.org,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	vikash.garodia@oss.qualcomm.com,
-	dikshita.agarwal@oss.qualcomm.com,
-	bod@kernel.org,
-	mchehab@kernel.org,
-	elder@kernel.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	jjohnson@kernel.org,
-	mathieu.poirier@linaro.org,
-	trilokkumar.soni@oss.qualcomm.com,
-	mukesh.ojha@oss.qualcomm.com,
-	pavan.kondeti@oss.qualcomm.com,
-	jorge.ramirez@oss.qualcomm.com,
-	tonyh@qti.qualcomm.com,
-	vignesh.viswanathan@oss.qualcomm.com,
-	srinivas.kandagatla@oss.qualcomm.com,
-	amirreza.zarrabi@oss.qualcomm.com,
-	jens.wiklander@linaro.org,
-	op-tee@lists.trustedfirmware.org,
-	apurupa@qti.qualcomm.com,
-	skare@qti.qualcomm.com,
-	linux-kernel@vger.kernel.org,
-	Sumit Garg <sumit.garg@oss.qualcomm.com>
-Subject: [PATCH v4 15/15] MAINTAINERS: Add maintainer entry for Qualcomm PAS TZ service
-Date: Mon, 27 Apr 2026 15:26:03 +0530
-Message-ID: <20260427095603.1157963-16-sumit.garg@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260427095603.1157963-1-sumit.garg@kernel.org>
-References: <20260427095603.1157963-1-sumit.garg@kernel.org>
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="o34wvNlV"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=RBUKs+AUojAOYNRxGOXMvbj4xCArWDXdG0JasNB01rE=; b=o34wvNlVkC9lGQz8ZIYV7wCJPC
+	UjI3IuIHZD5XLdNZG63zX7PlfSrcCpAXFG8iXElTN/odIybNH7A9Bd6VXRW9B7ZPLLH2AbxVUg/C5
+	k/Pah3s/6NhxiWn0cCH10+yy9Nu/BWQwI2bh0U1ZEpRb7B8CW9/BjXo6uvxDvsiDSZvCyAYkWAku9
+	Kgj8nq4lhqWC9NphB1LFB1qdQElvEcR4nRK+otAlseAky/inICLGNpP/VPgicjgvuFplX1qz3yrf9
+	Ppbezdl3Q8SR+Uu4ZNSS5OsD9fSd88qNdqteHLjjuEtJtJsymXLZpPYvYqOZpWQ8Aysew9y35Wrzj
+	pZ8sY1lw==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wHIlv-005Osq-0l;
+	Mon, 27 Apr 2026 10:00:59 +0000
+Date: Mon, 27 Apr 2026 03:00:52 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Simon Horman <horms@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Keiichi Kii <k-keiichi@bx.jp.nec.com>, Satyam Sharma <satyam@infradead.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Matthew Wood <thepacketgeek@gmail.com>, asantostc@gmail.com, 
+	gustavold@gmail.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH net 1/3] netconsole: return count instead of strnlen(buf,
+ count) from store callbacks
+Message-ID: <ae8zD24sBNtZnYtJ@gmail.com>
+References: <20260423-netconsole_ai_fixes-v1-0-92b8b7de9a2c@debian.org>
+ <20260423-netconsole_ai_fixes-v1-1-92b8b7de9a2c@debian.org>
+ <20260426084640.GN900403@horms.kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260426084640.GN900403@horms.kernel.org>
+X-Debian-User: leitao
 
-From: Sumit Garg <sumit.garg@oss.qualcomm.com>
+Hello Simon,
 
-Add Sumit Garg as the maintainer for the Qualcomm generic Peripheral
-Authentication Service (PAS) as well as the PAS TEE backend driver.
+On Sun, Apr 26, 2026 at 09:46:40AM +0100, Simon Horman wrote:
+> On Thu, Apr 23, 2026 at 02:41:15AM -0700, Breno Leitao wrote:
+> > Several configfs store callbacks in netconsole end with:
+> >
+> > 	ret = strnlen(buf, count);
+> >
+> > This under-reports the number of bytes consumed when the input
+> > contains an embedded NUL within count, telling the VFS that fewer
+> > bytes were written than userspace actually handed in. A conformant
+> > partial-write loop would then retry the trailing bytes against a
+> > callback that has already accepted them.
+> >
+> > Every other configfs driver in the tree returns count directly from
+> > its store callbacks once parsing has succeeded, including
+> > drivers/nvme/target/configfs.c, drivers/gpio/gpio-sim.c,
+> > drivers/most/configfs.c, drivers/block/null_blk/main.c,
+> > drivers/pci/endpoint/pci-ep-cfs.c, and the rest of the configfs
+> > users. netconsole was the outlier (along with
+> > drivers/infiniband/core/cma_configfs.c, which has the same latent
+> > issue).
+> >
+> > Align netconsole with the rest of the configfs ecosystem: return
+> > count once the parser/validator has accepted the input. The numeric
+> > and boolean parsers (kstrtobool, kstrtou16, mac_pton,
+> > netpoll_parse_ip_addr) have already validated the meaningful prefix;
+> > any trailing bytes are padding and should simply be reported as
+> > consumed.
+> >
+> > Fixes: 0bcc1816188e ("[NET] netconsole: Support dynamic reconfiguration using configfs")
+> > Signed-off-by: Breno Leitao <leitao@debian.org>
+>
+> Reviewed-by: Simon Horman <horms@kernel.org>
+>
+> FTR: Sashiko has provided an AI generated review of this patch.
+> Like it's review of patch 3/3 - which I forwarded separately -
+> it flags that trim_newline() may perform an OOB access
+> if passed an empty string. But this is not correct because
+> trim_newline() correctly handles this case.
 
-Signed-off-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
----
- MAINTAINERS | 9 +++++++++
- 1 file changed, 9 insertions(+)
+You're absolutely right. This has been addressed in the patch that recently
+landed in Linus' tree.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 2fb1c75afd16..6d3fc5145f0a 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -22007,6 +22007,15 @@ F:	Documentation/devicetree/bindings/media/*qcom*
- F:	drivers/media/platform/qcom
- F:	include/dt-bindings/media/*qcom*
- 
-+QUALCOMM PAS TZ SERVICE
-+M:	Sumit Garg <sumit.garg@oss.qualcomm.com>
-+L:	linux-arm-msm@vger.kernel.org
-+S:	Maintained
-+F:	drivers/firmware/qcom/qcom_pas.c
-+F:	drivers/firmware/qcom/qcom_pas.h
-+F:	drivers/firmware/qcom/qcom_pas_tee.c
-+F:	include/linux/firmware/qcom/qcom_pas.h
-+
- QUALCOMM SMB CHARGER DRIVER
- M:	Casey Connolly <casey.connolly@linaro.org>
- L:	linux-arm-msm@vger.kernel.org
--- 
-2.51.0
+It appears Sashiko ran its analysis on a tree predating that fix.
 
+https://github.com/torvalds/linux/commit/7079c8c13f2d33992bc846240517d88f4ab07781
+
+Thanks for the review,
+--breno
