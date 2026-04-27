@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 304F43C73EA
-	for <netdev@vger.kernel.org>; Mon, 27 Apr 2026 16:43:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42D13D6673
+	for <netdev@vger.kernel.org>; Mon, 27 Apr 2026 16:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777308191; cv=none; b=gK2tv+3GENNOsj8MSpuIvldeQpSAKl456QF3vH44FrfFX0hqQfy2Wze9HzT3xasyekEKfRPgh6nYfav5V6YVKt34FN64oj/Us0EekLsPKX/xEjpNNra2M9mIZRvh0gA6GZ/uk+wThJuTN26hRcyZBRmuC6RiTPEpej2jcYD5wdU=
+	t=1777308244; cv=none; b=KM3EeqrdF/nbI0nPutq8vlQdobfnKWmVnwD6ZFwFrpU1xwOzw8qLxiC15CxS8H2GtnTcrZhHbLmzq92r86mID/+m8U29yVhErzR1hkeflrHW3/durCnQjbOHR3rT/wb9rjt2OnicszENj+YGJWgOH0EG4qGkNcNVypC6Q+RGn20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777308191; c=relaxed/simple;
-	bh=sop+jYumr5WtvqsHY9B185SKGiwtvPmTo1JFw0Tpae8=;
+	s=arc-20240116; t=1777308244; c=relaxed/simple;
+	bh=wKIY3PMnej7pArpikhLOSs8krStKOs1qix0SOQmNecA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QL6w53R0nIHOsM2rDsKnAXOTTNa3H1XpfMW4YtBQBnGnW/4TYgI8D0dniG343VWpPWFa/kGUyqqkiATTTFGAyTLaKgkWvhxsPK02o8IxzfWEQgknDSMkORjhdsPv6Uh8HFNFqKq0klofE2NE19KPuaEi6k41WQvnr7BCdB541lE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uVfMjh1c; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=q3hzLuBH3aHa3Y3ZAMEKOI5NzRkXUFroEd7WqAYTTKD6tXpL//JgorRowO0Z5pV+VEy4bF7+rnnsSXiEKKKKpODmZzRYiN1WRXynfytQgfXPXan5M82AVroMBNnV5FKn6iLMj45huOTPR4elFLZD1ygd0Xeavrymym4gT4S9SUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tGSOJSFZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uVfMjh1c"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84A9CC19425;
-	Mon, 27 Apr 2026 16:43:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tGSOJSFZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F0CEC19425;
+	Mon, 27 Apr 2026 16:44:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777308190;
-	bh=sop+jYumr5WtvqsHY9B185SKGiwtvPmTo1JFw0Tpae8=;
+	s=k20201202; t=1777308244;
+	bh=wKIY3PMnej7pArpikhLOSs8krStKOs1qix0SOQmNecA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uVfMjh1cSBeqXGQ1jpCQ9zi8y+sTNtFMx7uFJIqELSbHlu3wvQxMojZMmnqDmqbfI
-	 tFjd2V+4VIB0HgXqW1NBUPrSi6+cDpagxMVB+g47/MnI2pxC0xiASjCYRIbeTKkNJe
-	 MKCj29fZj+er3mkIukGaLhf9e4b776AdAPqs/T6DDrbkq66nQX4GZBi1XYd4G5S60z
-	 OLZXEVb4aXabZiunIscGt6OQBGWvSuQNwlaIJbRrhUD6keCnQ+OmH/W8rpdHDMMCT9
-	 NihTpn9E5yhPUptzF+iUMSD7arywiQ+u7rg+2jcqUHfvEIPsJz3yQyrqOeE1R3ICVz
-	 dbFc7rxsS052Q==
+	b=tGSOJSFZK7W2BeZeFd0/3P9QJ0274sr8/HSIOVmOy4Li3fTQhVIiJ39Dq/nNoXPNL
+	 gZz98ZPZaIqvddoAANT3I1/qEfDO379sOVfmvXQ5vJZc1a0FghNpEDmPTAtM3x4Gf8
+	 ghiAtIgaCwlnEv0aSoZCLl9G7tM4/5mvKe3tqnE5Bp4w3Pa+ZhPWHyJRtECbqVkcfU
+	 PccYEqgWhdzcqDTzlhGFBhqbPrW7Rwg/MGf4zF/mRwbRU/ytZSKhDqw8unENe6IRYM
+	 /b4BkMVAAWMjx5+J9bJrpxEZicfhfiM1bWX1YfGxZar1xKrr2zSVevEqohjgUa5ldM
+	 UGFfh1BoeN+kg==
 From: Simon Horman <horms@kernel.org>
 To: jtornosm@redhat.com
 Cc: 'Simon Horman' <horms@kernel.org>,
@@ -40,12 +40,12 @@ Cc: 'Simon Horman' <horms@kernel.org>,
 	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com
-Subject: Re: [PATCH net v4 2/4] i40e: skip unnecessary VF reset when setting trust
-Date: Mon, 27 Apr 2026 17:25:48 +0100
-Message-ID: <20260427162548.1221245-2-horms@kernel.org>
+Subject: Re: [PATCH net v4 3/4] iavf: send MAC change request synchronously
+Date: Mon, 27 Apr 2026 17:43:57 +0100
+Message-ID: <20260427164357.1227583-1-horms@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260423130405.139568-3-jtornosm@redhat.com>
-References: <20260423130405.139568-3-jtornosm@redhat.com>
+In-Reply-To: <20260423130405.139568-4-jtornosm@redhat.com>
+References: <20260423130405.139568-4-jtornosm@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,112 +60,167 @@ This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 Full review at: https://sashiko.dev
 ---
-i40e: skip unnecessary VF reset when setting trust
+iavf: send MAC change request synchronously
 
-This commit attempts to reduce the bonding setup delay by skipping the
-synchronous VF reset when changing the trust setting, manually handling
-the capability flag and promiscuous mode instead.
+This commit updates the MAC address setting in the iavf driver to be
+synchronous. It sends the virtchnl message directly and polls the admin
+queue for the response, rather than relying on the watchdog task, to avoid
+deadlocks when holding the netdev instance lock.
 
-> When we do reset (ADQ case), we reset first to clear VF_STATE_ACTIVE
-> (which blocks new cloud filter additions), then delete existing cloud
-> filters safely. This avoids the race condition where VF could add filters
-> during deletion.
+> diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+> index 67aa14350b1b01..bc5994bf2cd99d 100644
+> --- a/drivers/net/ethernet/intel/iavf/iavf_main.c
+> +++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
 
-Is this description accurate?
-
-i40e_vc_reset_vf() is synchronous and restores I40E_VF_STATE_ACTIVE before
-returning. When i40e_del_all_cloud_filters() traverses
-vf->cloud_filter_list locklessly afterwards, the VF is already active again.
-
-Could a concurrent VIRTCHNL_OP_ADD_CLOUD_FILTER message from the guest be
-processed asynchronously and corrupt the list?
-
-> diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-> index a26c3d47ec1561..26b62650aac9aa 100644
-> --- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-> +++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
 [ ... ]
-> @@ -4943,6 +4943,30 @@ int i40e_ndo_set_vf_spoofchk(struct net_device *netdev, int vf_id, bool enable)
->  	return ret;
+
+> @@ -1067,25 +1109,20 @@ static int iavf_set_mac(struct net_device *netdev, void *p)
+>  		return -EADDRNOTAVAIL;
+>  
+>  	ret = iavf_replace_primary_mac(adapter, addr->sa_data);
+> -
+>  	if (ret)
+>  		return ret;
+>  
+> -	ret = wait_event_interruptible_timeout(adapter->vc_waitqueue,
+> -					       iavf_is_mac_set_handled(netdev, addr->sa_data),
+> -					       msecs_to_jiffies(2500));
+> -
+> -	/* If ret < 0 then it means wait was interrupted.
+> -	 * If ret == 0 then it means we got a timeout.
+> -	 * else it means we got response for set MAC from PF,
+> -	 * check if netdev MAC was updated to requested MAC,
+> -	 * if yes then set MAC succeeded otherwise it failed return -EACCES
+> -	 */
+> -	if (ret < 0)
+> +	ret = iavf_set_mac_sync(adapter, addr->sa_data);
+> +	if (ret) {
+> +		/* Rollback for local failures (timeout, send error, -EBUSY).
+> +		 * Note: If PF rejects the request (sends error response),
+> +		 * iavf_virtchnl_completion() automatically calls
+> +		 * iavf_mac_add_reject(), ret=0, and this is not executed.
+> +		 * Only local failures (no PF response received) need manual rollback.
+> +		 */
+> +		iavf_mac_add_reject(adapter);
+>  		return ret;
+> -
+> -	if (!ret)
+> -		return -EAGAIN;
+> +	}
+
+Does the manual rollback in iavf_set_mac() need to restore adapter->hw.mac.addr?
+
+Before calling iavf_set_mac_sync(), iavf_replace_primary_mac() optimistically
+updates adapter->hw.mac.addr to the new MAC address and unsets the is_primary
+flag on the old MAC filter. If iavf_set_mac_sync() fails locally,
+iavf_mac_add_reject() deletes the pending new MAC filter but doesn't restore
+adapter->hw.mac.addr back to netdev->dev_addr.
+
+By contrast, the PF-rejection path in iavf_virtchnl_completion() explicitly
+restores it:
+
+	iavf_mac_add_reject(adapter);
+	/* restore administratively set MAC address */
+	ether_addr_copy(adapter->hw.mac.addr, netdev->dev_addr);
+
+If the local failure was a timeout and a delayed success response arrives from
+the PF later, could iavf_virtchnl_completion() blindly copy the corrupted
+adapter->hw.mac.addr into netdev->dev_addr? This seems like it would silently
+change the interface MAC to an address already deleted from the internal list.
+
+Additionally, on subsequent MAC change attempts, wouldn't
+iavf_replace_primary_mac() search for the old filter using the corrupted
+adapter->hw.mac.addr, fail to find it, and permanently leak the old filter in
+the PF's hardware tables?
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+> index a52c100dcbc56d..d1afb8261c2412 100644
+> --- a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+> +++ b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+
+[ ... ]
+
+> @@ -2956,3 +2966,76 @@ void iavf_virtchnl_completion(struct iavf_adapter *adapter,
+>  	} /* switch v_opcode */
+>  	adapter->current_op = VIRTCHNL_OP_UNKNOWN;
 >  }
->  
+> +
 > +/**
-> + * i40e_setup_vf_trust - Enable/disable VF trust mode without reset
-> + * @vf: VF to configure
-> + * @setting: trust setting
+> + * iavf_poll_virtchnl_response - Poll admin queue for virtchnl response
+> + * @adapter: adapter structure
+> + * @condition: callback to check if desired response received
+> + * @cond_data: context data passed to condition callback
+> + * @timeout_ms: maximum time to wait in milliseconds
 > + *
-> + * Manually handle capability flag and promiscuous mode when changing trust
-> + * without performing a VF reset.
-> + * When reset is performed, this is not necessary as the reset procedure
-> + * already handles this.
+> + * Polls the admin queue and processes all incoming virtchnl messages.
+> + * After processing each valid message, calls the condition callback to check
+> + * if the expected response has been received. The callback receives the opcode
+> + * of the processed message to identify which response was received. Continues
+> + * polling until the callback returns true or timeout expires.
+> + * Clear current_op on timeout to prevent permanent -EBUSY state.
+> + * Caller must hold netdev_lock. This can sleep for up to timeout_ms while
+> + * polling hardware.
+> + *
+> + * Return: 0 on success (condition met), -EAGAIN on timeout, or error code
 > + **/
-> +static void i40e_setup_vf_trust(struct i40e_vf *vf, bool setting)
+> +int iavf_poll_virtchnl_response(struct iavf_adapter *adapter,
+> +				bool (*condition)(struct iavf_adapter *adapter,
+> +						  const void *data,
+> +						  enum virtchnl_ops v_op),
+> +				const void *cond_data,
+> +				unsigned int timeout_ms)
 > +{
-> +	if (setting) {
-> +		set_bit(I40E_VIRTCHNL_VF_CAP_PRIVILEGE, &vf->vf_caps);
-> +	} else {
-> +		clear_bit(I40E_VIRTCHNL_VF_CAP_PRIVILEGE, &vf->vf_caps);
+
+[ ... ]
+
+> +		if (iavf_clean_arq_element(hw, &event, &pending) == IAVF_SUCCESS) {
+> +			received_op = (enum virtchnl_ops)le32_to_cpu(event.desc.cookie_high);
+> +			if (received_op != VIRTCHNL_OP_UNKNOWN) {
+> +				v_retval = le32_to_cpu(event.desc.cookie_low);
 > +
-> +		if (test_bit(I40E_VF_STATE_UC_PROMISC, &vf->vf_states) ||
-> +		    test_bit(I40E_VF_STATE_MC_PROMISC, &vf->vf_states))
-> +			i40e_config_vf_promiscuous_mode(vf, vf->lan_vsi_idx,
-> +							false, false);
+> +				iavf_virtchnl_completion(adapter, received_op,
+> +							 (enum iavf_status)v_retval,
+> +							 event.msg_buf, event.msg_len);
+> +
+> +				if (condition(adapter, cond_data, received_op)) {
+> +					ret = 0;
+> +					break;
+> +				}
+> +			}
+> +
+> +			memset(event.msg_buf, 0, IAVF_MAX_AQ_BUF_SIZE);
+> +
+> +			if (pending)
+> +				continue;
+> +		}
+> +
+> +		usleep_range(50, 75);
+> +	} while (time_before(jiffies, timeout));
+> +
+> +	if (ret == -EAGAIN && adapter->current_op != VIRTCHNL_OP_UNKNOWN)
+> +		adapter->current_op = VIRTCHNL_OP_UNKNOWN;
 
-Does this pass the internal software array index (vf->lan_vsi_idx) instead of
-the firmware VSI ID (vf->lan_vsi_id)?
+Could clearing adapter->current_op on timeout cause overlapping virtchnl
+commands and state corruption?
 
-i40e_config_vf_promiscuous_mode() uses i40e_find_vsi_from_id() which matches
-against the firmware ID. Could this cause the lookup to fail and silently
-leave promiscuous mode enabled on the hardware?
+If the timeout expires and adapter->current_op is forced to
+VIRTCHNL_OP_UNKNOWN, the VF watchdog might consider the admin queue free
+and send a new command while the PF is still actively processing the
+timed-out request.
 
-Also, should this clear the I40E_VF_STATE_UC_PROMISC and
-I40E_VF_STATE_MC_PROMISC flags from vf->vf_states?
+If the PF eventually completes the timed-out request and sends a late response,
+iavf_virtchnl_completion() will process it. At the end of
+iavf_virtchnl_completion(), the driver unconditionally clears the state:
 
-If an untrusted VF performs a valid operation like adding a new VLAN, could
-i40e_vc_add_vlan_msg() check the uncleared state bit and automatically issue
-an AdminQ command to re-enable promiscuous mode, bypassing the revocation?
+	adapter->current_op = VIRTCHNL_OP_UNKNOWN;
 
-> +	}
+Would this prematurely clear the tracking state for the newly in-flight
+overlapping command, compounding the state machine corruption and allowing
+even more commands to be sent concurrently?
+
+> +
+> +	kfree(event.msg_buf);
+> +	return ret;
 > +}
-> +
->  /**
->   * i40e_ndo_set_vf_trust
->   * @netdev: network interface device structure of the pf
-> @@ -4987,19 +5011,17 @@ int i40e_ndo_set_vf_trust(struct net_device *netdev, int vf_id, bool setting)
->  	set_bit(__I40E_MACVLAN_SYNC_PENDING, pf->state);
->  	pf->vsi[vf->lan_vsi_idx]->flags |= I40E_VSI_FLAG_FILTER_CHANGED;
->  
-> -	i40e_vc_reset_vf(vf, true);
-> +	/* Reset only if revoking trust with ADQ (for cloud filter cleanup) */
-> +	if (vf->adq_enabled && !setting) {
-> +		i40e_vc_reset_vf(vf, true);
-> +		i40e_del_all_cloud_filters(vf);
-
-Could this lead to a memory leak of the cloud filters?
-
-The synchronous reset in i40e_vc_reset_vf() destroys the VF's VSI and
-allocates a new one with a new firmware SEID. When
-i40e_del_all_cloud_filters() executes afterwards, it looks up the VSI using
-the old SEID from the filters, which might fail and cause it to skip the
-free operation entirely.
-
-> +	} else {
-> +		i40e_setup_vf_trust(vf, setting);
-> +	}
-
-By skipping the reset when revoking trust for non-ADQ VFs, do we leave excess
-hardware filters intact? Trusted VFs can configure MAC and VLAN filters
-beyond standard limits. Without a reset to flush them, does the untrusted
-VF retain its configured spoofed MAC addresses and excessive VLANs
-indefinitely?
-
-Furthermore, when granting trust, skipping the reset prevents sending the
-VIRTCHNL_EVENT_RESET_IMPENDING event to the guest. Since virtchnl VF drivers
-negotiate their capabilities and resource requests during initialization,
-does this mean the guest driver remains unaware of its newly granted
-privileges until the interface is manually restarted?
-
-> +
->  	dev_info(&pf->pdev->dev, "VF %u is now %strusted\n",
->  		 vf_id, setting ? "" : "un");
->
