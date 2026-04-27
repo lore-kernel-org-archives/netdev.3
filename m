@@ -1,137 +1,147 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 568D73BA241;
-	Mon, 27 Apr 2026 13:51:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276123D16F5;
+	Mon, 27 Apr 2026 13:51:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777297863; cv=none; b=poTGdep3JDeYiHpm8LEAP9pxhyLVp2SMezosenH68LDg+s8vhPiPfsc7wW6ugFmggTfb+NU/aZGVLwvdZS87PfxCR5/fgjycrxYFhWbLFTUR5Wn69WnIcAb4yOLHaCdM7KrD3bFjWDceGOCydlTDHjTnrTslJ2RagZrlpIudUe8=
+	t=1777297865; cv=none; b=AUcDpDrTYtRGNGOLQuoGVQoY70wQj9s78xnTk65yCYBwpME3lhGUZunvvtQ84CE1YzDuy4T5iT3qZRx+UPsa497Kt3wMtgJF+2XpA4VJ3Nv4jUUhXHNgLeGwbhS4sr/ng/fHMZruG22iumsq0p4Jv3ALJkHGBSAYSWVlQcIBKxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777297863; c=relaxed/simple;
-	bh=+b/XARtL8TTdO5avBV72s4wEqPqZTYtiOCXUOIpscXQ=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=JBbCZYANgPtSguXMwZDSu5OQfx83kTOGtixBQZWI4E1xffcIDzYLi0ncSzBobmSzJMgWESU1/6ecznXOf5NDejb32thoh733ZkN9KabaUCQ6T7rGk17+bSnVXXMqI/8V2VuIxAC4nm5JA0o1aFrFhnDRDGzVm5LxSXPekg8Fsd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=ZXFFxoIA; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1777297865; c=relaxed/simple;
+	bh=bZly/W7iPqKsOHvekoqvriPAW6jV4g/N5XUkx7ULlk0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=hdmdXkc40MR/AwVhjmWMUySVaUh7aY1m8QcoXSGPLWENfcxxm9rfaocNzP53J8gYVYiG2ED3h+T3R6jSN2rK6IBLJwA+PlGakjXH7OrDFwspbx4fnBGJbOjHZIxzSa+AtCXqr9OhViEA+afsqPeYXYLJRGdveBY8G85Nlk7oqKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BvsWs1gD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="ZXFFxoIA"
-Received: by linux.microsoft.com (Postfix, from userid 1204)
-	id 83B4C20B716A; Mon, 27 Apr 2026 06:51:02 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 83B4C20B716A
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1777297862;
-	bh=JjVpccUnXnnI/i5ox4+KGA4Y9noeTr3ND10yN1jOoHY=;
-	h=Date:From:To:Subject:From;
-	b=ZXFFxoIAeUD8B7w1wMbldnxsJscValauGXIjdFCs+DaZDXhrsE3Ax5RnuuNodFPmg
-	 9tBYiB2KqkG5snNSJCaLs0//HqRqbwg0CoSNUBBDxv9N5a4hBPrgQbhHsIqPTdTX0A
-	 prAL8T6PMpP8Q9fba0txT8f1BtdkyYulV2QBxzkE=
-Date: Mon, 27 Apr 2026 06:51:02 -0700
-From: Dipayaan Roy <dipayanroy@linux.microsoft.com>
-To: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
-	decui@microsoft.com, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	leon@kernel.org, longli@microsoft.com, kotaranov@microsoft.com,
-	horms@kernel.org, shradhagupta@linux.microsoft.com,
-	ssengar@linux.microsoft.com, ernis@linux.microsoft.com,
-	shirazsaleem@microsoft.com, linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-rdma@vger.kernel.org, stephen@networkplumber.org,
-	jacob.e.keller@intel.com, dipayanroy@microsoft.com,
-	leitao@debian.org, kees@kernel.org, john.fastabend@gmail.com,
-	hawk@kernel.org, bpf@vger.kernel.org, daniel@iogearbox.net,
-	ast@kernel.org, sdf@fomichev.me, yury.norov@gmail.com
-Subject: [PATCH net-next] net: mana: Force single RX buffer per page for
- CVM/encrypted guest memory
-Message-ID: <ae9pxvJfkAZYfKMf@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BvsWs1gD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 596FDC19425;
+	Mon, 27 Apr 2026 13:51:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777297864;
+	bh=bZly/W7iPqKsOHvekoqvriPAW6jV4g/N5XUkx7ULlk0=;
+	h=From:Subject:Date:To:Cc:From;
+	b=BvsWs1gDCo6L3rE0lZAEfnGreIIwR5UMFlO0VfEW6owMY9OskdxGmiwNuyt4CPt0B
+	 1jcolpVBr0GHI9CvCJZWg5MYU58V9lXookZoz8TtsG7tt4HDqbQqCltZ87iEXc9UFZ
+	 9gCSn9Ikl3WymVvg5/HKbnuwr0mqmERpev9OHMB8Oe7cyXRV42KFvBkSfD5zjnppFz
+	 Wws5LfOX3mKD7iOBZ4HEePyV4pR6Wb2W4alitYKi5kLsV0rBl6/8uPJAQ6EtOklA4V
+	 WcRZpR5ACD2n9ZMFiecHdMmoLlPrwrVTuBuWdJr3tzZsFBdqWMqvnf8LpG80KFk1BG
+	 YQUO/FgjqDzkA==
+From: Chuck Lever <cel@kernel.org>
+Subject: [PATCH 00/18] Migrate rpcsec_gss_krb5 to the crypto/krb5 library
+Date: Mon, 27 Apr 2026 09:50:44 -0400
+Message-Id: <20260427-crypto-krb5-api-v1-0-1fc1253b64c0@oracle.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALRp72kC/x3MwQ6CMAyA4VchPdsIIy7iqxgO2yjQaMrSLkZDe
+ Henx+/w/zsYKZPBrdlB6cXGm1R0pwbSGmQh5KkaXOt823cek35y2fCh8YIhM8aByDnfez9coVZ
+ Zaeb3/3gfq2MwwqhB0vr7JHqeZbYJC1lhWeA4vkmBVGqEAAAA
+X-Change-ID: 20260316-crypto-krb5-api-b9ee22636698
+To: Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
+ Chuck Lever <chuck.lever@oracle.com>, Jeff Layton <jlayton@kernel.org>, 
+ NeilBrown <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>, 
+ Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: linux-nfs@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>, 
+ David Howells <dhowells@redhat.com>, Simo Sorce <simo@redhat.com>
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3763;
+ i=chuck.lever@oracle.com; h=from:subject:message-id;
+ bh=bZly/W7iPqKsOHvekoqvriPAW6jV4g/N5XUkx7ULlk0=;
+ b=owEBbQKS/ZANAwAKATNqszNvZn+XAcsmYgBp72m80pC78DpNgWqJGtrD7TukF1Lsb7HvjbtvS
+ 0AryKudXhWJAjMEAAEKAB0WIQQosuWwEobfJDzyPv4zarMzb2Z/lwUCae9pvAAKCRAzarMzb2Z/
+ lyB6EACyWOwqfs8wGrIGJ5Gk9OpOB7guUNForYPxw+t3679wrD29XKM4RrjfTd3IJgHAFJt2EC7
+ xjio/GFdJWIPQRXo1BUM9QsWoYQah7lHv03qM5pnv8MKTfpTyLFe3QsY+7KuZsTC05QpQksxAS7
+ gfuDRKcRVlQLVuszHezuAO1PbmOp6ublHO5Whk2qdtTdQrGu5kYrKIbiMPjn4T0eA8cBELig36U
+ oDqjVpSlf+CxhF4YoDCnBIo2dPN6WXkZPQIEOQJMJpoiA5ZFSa1NW+ijdLSu6zKGKpkFTl88mYM
+ m26H2h1o+MhqBpy5ZP/FksF2fYqrpkp9JLEbJj6ubusEtGTe6fObhO5vudr+IIgQDC2102F1Zvo
+ IajHai1BKcnem6QXsPGX4ukb5p9u5uUTo4bbwYJSzmSG/fO7K/Ure15sZY8tFzfnHowyKrgvvJi
+ V3vttoY1gucbwCJmGstAMOlMaB715+j087dn3PSNw1Ncq7q879bxx0CL+ci8b2SmqVC151Clu60
+ gBxPl14+emQY9mY2F7cV5Qi+uRQYA4I+YWNedCHoozBPrVQWvVDRKdy/YdHiOd5bFCE72njpTLj
+ ZRSP4ZjErkZS7f/1Sk9Bnb3L9XFnQE9zxjpa0upQdyKFc2fBuC8mSEBdWgvEKuNGgimbZbfKBpo
+ aLljR7T68B8NLLg==
+X-Developer-Key: i=chuck.lever@oracle.com; a=openpgp;
+ fpr=28B2E5B01286DF243CF23EFE336AB3336F667F97
 
-On Confidential VMs (CVMs) such as AMD SEV-SNP or Intel TDX, the guest
-operating system's memory is encrypted. And current hardwares lacks the
-support for TDISP (TEE Device Interface Security Protocol), meaning the
-NIC cannot directly access this encrypted VM memory. Consequently, all
-DMA operations must utilize SWIOTLB bounce buffers.
+The rpcsec_gss_krb5 module carries its own Kerberos 5 crypto imple-
+mentation: key derivation, CBC-CTS encryption, HMAC checksumming,
+and the encrypt-then-MAC construction from RFC 8009. Keeping
+cryptographic code inside an RPC module means it receives review
+only from the SUNRPC maintainers, who lack deep crypto expertise.
+Vulnerabilities and algorithmic errors can persist unnoticed.
 
-In the MANA driver currently, there are two distinct paths for DMA
-mapping:
+Replacing the private SunRPC Kerberos implementation eliminates
+this duplicated audit surface. A single implementation of Kerberos
+5 key derivation and authenticated encryption is easier to verify
+than two independent copies. New encryption types and hardware
+offload added to crypto/krb5 will automatically become available
+to SunRPC Kerberos consumers.
 
-1. Without PP_FLAG_DMA_MAP: The driver manually maps full pages for each
-packet. This creates standalone, page-aligned mappings where the offset
-is always zero.
+The crypto/krb5 library handles enctype differences internally, so
+a single encrypt function and a single decrypt function serve all
+enctypes, eliminating the per-enctype dispatch table that previously
+existed in struct gss_krb5_enctype.
 
-2. With PP_FLAG_DMA_MAP: Optimizes memory by using page_pool with
-sub-page fragments (e.g., multiple RX buffers sharing a single page).
-When PP_FLAG_DMA_MAP is enabled, page_pool maps the entire page once.
-Subsequent RX buffer allocations use offsets into this pre-mapped area.
+RFC 4121 Section 4.2.4 requires MIC checksums to cover the message
+body followed by the GSS token header. The crypto/krb5 get_mic/
+verify_mic API hashes optional metadata before the scatterlist
+data, which is the wrong order for the GSS header. The header is
+therefore placed at the end of the scatterlist rather than passed
+as the metadata parameter, and a dedicated gss_krb5_mic_build_sg()
+helper constructs this three-section layout (checksum area, message
+body, token header) with proper sg_mark_end() termination.
 
-When page_pool allocates sub-page RX buffer fragments, the bounce buffer
-granularity may not align with these smaller fragment sizes, leading to
-failure in mana driver rx path.
+This implementation was available during the Spring 2026 NFS bake-
+a-thon, and received testing there.
 
-Refactor the RX buffer decision into mana_use_single_rxbuf_per_page().
-When cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT) is true, the driver is
-forced to use a single RX buffer per page. This ensures:
-- Each RX buffer is exactly one PAGE_SIZE.
-- The DMA offset is always 0.
-- SWIOTLB maps full, page-aligned blocks.
-
-Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
-Signed-off-by: Dipayaan Roy <dipayanroy@linux.microsoft.com>
 ---
- drivers/net/ethernet/microsoft/mana/mana_en.c | 21 +++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+Chuck Lever (18):
+      SUNRPC: Add Kconfig dependency on CRYPTO_KRB5
+      SUNRPC: Add crypto/krb5 enctype lookup to krb5_ctx
+      SUNRPC: Add helpers to convert xdr_buf byte ranges to scatterlists
+      SUNRPC: Add errno-to-GSS status conversion helper
+      SUNRPC: Prepare crypto/krb5 encryption and checksum handles
+      SUNRPC: Switch wrap token encryption to crypto/krb5
+      SUNRPC: Switch wrap token decryption to crypto/krb5
+      SUNRPC: Switch Camellia decrypt to crypto/krb5
+      SUNRPC: Switch MIC token generation to crypto/krb5
+      SUNRPC: Switch MIC token verification to crypto/krb5
+      SUNRPC: Remove get_mic/verify_mic function pointers from enctype table
+      SUNRPC: Remove wrap/unwrap function pointers from enctype table
+      SUNRPC: Remove encrypt/decrypt function pointers from enctype table
+      SUNRPC: Remove legacy skcipher/ahash handles from krb5_ctx
+      SUNRPC: Remove dead code from rpcsec_gss_krb5
+      SUNRPC: Remove per-enctype Kconfig options
+      SUNRPC: Remove redundant crypto Kconfig dependencies
+      SUNRPC: Remove dead rpcsec_gss_krb5 definitions
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index a654b3699c4c..2d44eaf932a8 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -12,6 +12,7 @@
- #include <linux/pci.h>
- #include <linux/export.h>
- #include <linux/skbuff.h>
-+#include <linux/cc_platform.h>
- 
- #include <net/checksum.h>
- #include <net/ip6_checksum.h>
-@@ -744,6 +745,23 @@ static void *mana_get_rxbuf_pre(struct mana_rxq *rxq, dma_addr_t *da)
- 	return va;
- }
- 
-+static bool
-+mana_use_single_rxbuf_per_page(struct mana_port_context *apc, u32 mtu)
-+{
-+	/* On confidential VMs with guest memory encryption, all DMA goes
-+	 * through SWIOTLB bounce buffers. Sub-page RX fragments may not
-+	 * be properly bounce-buffered, so use fullpage buffers.
-+	 */
-+	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
-+		return true;
-+
-+	/* For xdp and jumbo frames make sure only one packet fits per page. */
-+	if (mtu + MANA_RXBUF_PAD > PAGE_SIZE / 2 || mana_xdp_get(apc))
-+		return true;
-+
-+	return false;
-+}
-+
- /* Get RX buffer's data size, alloc size, XDP headroom based on MTU */
- static void mana_get_rxbuf_cfg(struct mana_port_context *apc,
- 			       int mtu, u32 *datasize, u32 *alloc_size,
-@@ -754,8 +772,7 @@ static void mana_get_rxbuf_cfg(struct mana_port_context *apc,
- 	/* Calculate datasize first (consistent across all cases) */
- 	*datasize = mtu + ETH_HLEN;
- 
--	/* For xdp and jumbo frames make sure only one packet fits per page */
--	if (mtu + MANA_RXBUF_PAD > PAGE_SIZE / 2 || mana_xdp_get(apc)) {
-+	if (mana_use_single_rxbuf_per_page(apc, mtu)) {
- 		if (mana_xdp_get(apc)) {
- 			*headroom = XDP_PACKET_HEADROOM;
- 			*alloc_size = PAGE_SIZE;
--- 
-2.43.0
+ include/linux/sunrpc/gss_krb5.h         |  105 --
+ include/linux/sunrpc/xdr.h              |   16 +-
+ net/sunrpc/.kunitconfig                 |   29 -
+ net/sunrpc/Kconfig                      |   56 +-
+ net/sunrpc/auth_gss/Makefile            |    4 +-
+ net/sunrpc/auth_gss/gss_krb5_crypto.c   | 1014 ++++-------------
+ net/sunrpc/auth_gss/gss_krb5_internal.h |  155 +--
+ net/sunrpc/auth_gss/gss_krb5_keys.c     |  546 ---------
+ net/sunrpc/auth_gss/gss_krb5_mech.c     |  441 ++------
+ net/sunrpc/auth_gss/gss_krb5_seal.c     |   47 +-
+ net/sunrpc/auth_gss/gss_krb5_test.c     | 1868 -------------------------------
+ net/sunrpc/auth_gss/gss_krb5_unseal.c   |   36 +-
+ net/sunrpc/auth_gss/gss_krb5_wrap.c     |   13 +-
+ net/sunrpc/xdr.c                        |  266 +++--
+ 14 files changed, 573 insertions(+), 4023 deletions(-)
+---
+base-commit: f3a96328282e8d41ba9f478d24ac122e4cbd2989
+change-id: 20260316-crypto-krb5-api-b9ee22636698
+
+Best regards,
+--  
+Chuck Lever
 
