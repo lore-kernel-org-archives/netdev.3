@@ -1,41 +1,38 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C671FBEB0;
-	Mon, 27 Apr 2026 14:48:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86C43D6483;
+	Mon, 27 Apr 2026 14:50:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777301328; cv=none; b=VTPinHMnigMfl6XwXmygj9bU8625O8obHrVF0u3U0QS+OUAoWpeGwsvmnXjFSuOZfVK0BE8jiVUWpJ9kjMZb0Db3x0lrplcTnGPtKWkuveY+g52QR1Mq5hQ7NCCAkZ7An8izikK+cSnOTyS9Vgh6mbAus44hlHKMrvG+tAgzxQM=
+	t=1777301415; cv=none; b=OTaZp2uErPVXt2QmajN/b20wVz6yvHGlitCCyJMLd8UJufNkgsLRa1Nz9ti7jT4ZVfFFX8NbDOk63rJ24lnUFVgIJJ/4xI9Uspc5xHQknEoGErP4+PpLcZiMuS0hUvL9YvA2n6+3NJZrXz/YzFcWLjE2dQog7/vrqPY3uvt3qqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777301328; c=relaxed/simple;
-	bh=xELjnsD2nntviaMuLAcUvc9vtT3nPDW/+I9+DmI4Gxg=;
+	s=arc-20240116; t=1777301415; c=relaxed/simple;
+	bh=3f4DN6hiZKdaoRMXc1J6Ht5Eqi3bbto2vwcmKUs5o4Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=su0ffDxZMUpYFmrMW/y/zArDN87H4AKpRhVdqXXlufsn7xDW83Njxm2sicdAAzL7Klga1J/xIiivo43976XMJVI2vIfjZMCS+LYwTXtlMLbc0+s7G5yY6gbzjNNZuS897RW4IKuF0g9tXz8OYg5/hFe7KefyVsnQnhTUgQ87cnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=an+CbRDC; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=jABuobTYCxxdzT4xzbNCeH/mmySthXqGOfnnjhpp3KvgeDn9mkXQ7S34UOJs88RKV09EDdsSilxLp8hzpoUFzvf02W134pBGtttIoa3cUIZ8eWnR3of7hnYcXcqUA65/mZPFqxy0AlpokPs+8j7Q+1vVB4UOHW16FuvjKXrRQnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I4jcv6Yd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="an+CbRDC"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=VQGiL/B5rHD7mVT0Vt1EvekIqOlhDKRdgOwOAyd+KjY=; b=an+CbRDC38HI8tK+uxf1lSSodM
-	Wm0PvtoJ8z/d+bEgWSI2Wy0bLkYqSxJZC2BR6zUmrn/JMmW+P/rVt99baJlcU+6nL3v5TgeSt+Zha
-	p8mK41WNsruOm+VP07RTxD3MkebIYLvY+crpLMTz8Eh7tcZHVepkrW51SVXntSkawSm0=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wHNGJ-000B9v-Kq; Mon, 27 Apr 2026 16:48:39 +0200
-Date: Mon, 27 Apr 2026 16:48:39 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Arnd Bergmann <arnd@kernel.org>,
-	Nicolas Saenz Julienne <nsaenz@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I4jcv6Yd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86895C19425;
+	Mon, 27 Apr 2026 14:50:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777301412;
+	bh=3f4DN6hiZKdaoRMXc1J6Ht5Eqi3bbto2vwcmKUs5o4Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=I4jcv6YdUBqMu7B6wLn+2KDfuXfPlxGvc/C98vRJVVWe/Raqd/ouq3tab1ijj4Hjn
+	 Rx/A1FMQMc3b9r6o1FZgDeACfCp0X6FFSXF7OkQAHoBfbK3bG8rmx9k7G7o4myrmad
+	 0mwDzoHAFNJixhjw7lYZ6IOQxbXBoEBaiJuD7sxlpNgGe2oPD8qg4IeYZZqtvltz1T
+	 u1Np4y7NiZhJ5oKUWu6Geb2L4yBhROnBjAR0m1pN9vSxKS8RJOpnJvq25FZXHEwnyD
+	 BUf6U+1b3WvOdlGURa+AW7eI4/NzwGlXAwfvcLEwTGQ8Y4VF97YJiKHW/muVrwceFT
+	 UJ2WeNS4uokdA==
+Date: Mon, 27 Apr 2026 09:50:10 -0500
+From: Rob Herring <robh@kernel.org>
+To: Arnd Bergmann <arnd@kernel.org>
 Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
 	Linus Walleij <linusw@kernel.org>,
@@ -45,7 +42,7 @@ Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	netdev@vger.kernel.org, devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org
 Subject: Re: [PATCH] [v4] wiznet: convert to GPIO descriptors
-Message-ID: <bcf1d4a1-e99b-4ce2-8849-8cb1d10aa3f2@lunn.ch>
+Message-ID: <20260427145010.GA2502144-robh@kernel.org>
 References: <20260427142924.2702598-1-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -64,23 +61,28 @@ On Mon, Apr 27, 2026 at 04:28:29PM +0200, Arnd Bergmann wrote:
 > MMIO mode, or probing with DT in SPI mode. There are no users of this
 > platform data in tree, and from the git history it appears that the only
 > users of MMIO mode were on the (since removed) blackfin architecture.
-
-A quick grep does not find any .dts files referencing the compatible.
-
+> 
+> Remove the platform data option, as it's unlikely to still be needed, and
+> change the internal operation to GPIO descriptors, making the behavior
+> the same for SPI and MMIO mode. The other data in the platform_data
+> structure is the MAC address, so make that also handled the same for both.
+> 
 > It would probably be possible to just remove the MMIO mode driver
 > completely, but it seems fine otherwise, and fixing it to use the modern
 > interface seems easy enough.
+> 
+> The CONFIG_WIZNET_BUS_SHIFT value was apparently meant to be set
+> at compile time to a machine specific value. This was always broken
+> for multiplatform configurations with conflicting requirements, and
+> in the mainline kernel it was set to 0 anyway. Leave it defined
+> locally as 0 but rename it to something without the CONFIG_ prefix.
+> 
+> Acked-by: Rob Herring <robh@kernel.org>
 
-Last real development work on this driver was:
+Well, 3 years later and I'm a bit grumpier seeing .txt binding 
+additions. A new compatible plus new property we generally require 
+converting the binding first. But I'm not going to revoke my ack here.
 
-Author: Nicolas Saenz Julienne <nsaenz@kernel.org>
-Date:   Wed Jun 12 14:25:25 2019 +0200
+Is there even a known user for this new compatible?
 
-    net: ethernet: wiznet: w5X00 add device tree support
-    
-    The w5X00 chip provides an SPI to Ethernet inteface. This patch allows
-    platform devices to be defined through the device tree.
-
-Nicolas, are you still using it?
-
-	Andrew
+Rob
