@@ -1,116 +1,76 @@
-Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A57A322B9F
-	for <netdev@vger.kernel.org>; Mon, 27 Apr 2026 20:16:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 711032F691F;
+	Mon, 27 Apr 2026 20:17:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777321014; cv=none; b=Lvc6JT7soybPWupMtW/Rn4Q3SvRP8XfmuF1h3qSL3IDuj59zfjkmwTIpySMTMk1cI5ULUNiaV4AxKzocO5neoHc4Xt+zqnRbqAw3uQH0QzXHxqwuOuE/fmCltfzOCizJPyVxJ+7VWFNdtz/S5wS8iaGmqiGAVOK0QBdpo0DZhKk=
+	t=1777321068; cv=none; b=PoTsNot26uIY3Q8yrXGFir4wrzap4hv3oX6W60734Ow0PKxmuoEUExH56bDFq0S644P7wlOh/CY8JTX0RUI1Wy+YIcUCjw/wTSJA83fdDDuSbV1/fwpjghhJaggcs0J18vhXUPIIHisCxfoHdRnGZPwL+Ahbt2rI8wsWnxB2Yyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777321014; c=relaxed/simple;
-	bh=6IRZDJj+r5sp+QVknT1l4Md6WM8TiqCR6LQHlxM2R3w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qOnSUAWHcQXHRpntM3hby5Tg7Y3rK3FTFvKyLhEfsLzgov8pUEK93kEiT0BKGGrn07hFqL4vC5WLBs8FgrUHga2ett+MBblh2utKeiSoBWHGvV46CjAWV2DidHNLz2g/iHiLZkD+A6ENfNEaUiUZKfEBuHd4EhL/d2XWlURtDP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZI1//Nvy; arc=none smtp.client-ip=209.85.128.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1777321068; c=relaxed/simple;
+	bh=h3ynAWc+KoIn2+PfrPfZOKHeqJ7c7EO2O5VFULiKX/g=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OnEVv32C9JvwpDdmwgRRKzDvCy1jrmIy23R9bGJ5YZRQmWVEPRDDwcI3pvdsNndUD8w6+FTk4rtREeczynR9Nh1tTyqdQ60MIy4KrSzOsudfe3/qoJt8z4ojeaP7/xAEYBF6U86wlkUX0eV6hUmze9+N7wwYfIjy63D574R9CmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uZg05WDq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZI1//Nvy"
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-79a74765703so99542987b3.3
-        for <netdev@vger.kernel.org>; Mon, 27 Apr 2026 13:16:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777321012; x=1777925812; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ey+vtW5zGSIcS5Imm4MD7T8reur80NswJgiOxTbyp3o=;
-        b=ZI1//NvygfoThiHFa5mMXAVuiXJgbH3IVO0NnmJKbOHbmJdFy4DkWi2sWNy8NBmjsN
-         Ovwbh0I3vSnRZ4kPYpnNHjtGTSh0Mbjw6/NkXGfSVOCCb1wNkQH4teVyCykWgW0YXmzM
-         9dpAUujxjmZ5/cZFVofiDGSlfbBbT0XqcZH8ietwe53Mn6K1SA7qFWawn70kFhEl82Eg
-         arK2VVVKVNZgS75G18vLzr3vtYYKIMd7FYeRFO/e/p+8Um+Qxaw1OitLSSFTZTrvb7zb
-         DsWxrHY3ytz2dEreeuxzuzKLAj7OQgSPi/u9KiwXxn3yQStR9UfBQqR1sVExq5pBmXWk
-         /4vQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777321012; x=1777925812;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ey+vtW5zGSIcS5Imm4MD7T8reur80NswJgiOxTbyp3o=;
-        b=VS8uIwyt0M8itw/Wvhgz8cv/Ou+liJBhzB0phHatdrqkCEIvwAbI4VDBk3lq/HGhXa
-         xfutNe8oOfYDSExQ7882m1Uq7n7ACzTXzbmy9E8J9DHU8+ocPNq6zwd/A0fX7yCcOEHm
-         Al8pzCKf8a0hUAvlp0xToKOxAGwr8K0pd/P6I8MtyWJhMeJDMPOOvWvl4DJEPj2D+FBS
-         hoFmNhL7trEPl5Qn6UtRybtd0GNhG84W3pRikIYy09E1AoUww113NvPDp7EqmLu6bHBn
-         f7sGWtopAWQqzTuyRFpUNJgXLhmI3Atw+CIzWpAdh0nXO3iQmjr0CZn8LWzUZh98K05I
-         HUFQ==
-X-Gm-Message-State: AOJu0YxWUS6zzXPZvmXx59wij1kFSLs1nGgPfde7Qt062KOaGRqx5lXc
-	6yRKi+ks1XV6N4gWFwQ2Ga5fUK8/mjNl2dm16E8G9eZ+CvpL9frFK6J0Gkz4Dzvm
-X-Gm-Gg: AeBDietoymY1pz+S25wgCwvIapDnsYZEDC8QHZwbGg2AD7FRggSC6XZp2jXIECQvyaY
-	Es5J0UMZm3bFmNBX9qTJ32nOTUyUSq5IkD8oWz7+flBCeKD19UbEGGTAIi1Hzkse44sAbKSG9HH
-	paNv0nwfF6ej0BaA0sSRxiFr4wa7U6SJj1EAvAP7fwTDfVJiqDPnTp2IA29TwWYWwBRTlJzhf5J
-	L+PCl4iovTqdpsvR23vNvmzml1lzfFLp/hNTceBX4gOovrLti+mOyKK97sqy5VQtMa7B59yOezE
-	DiYTM44lKVqrpe/OPwQJheTLItOKnjsdMY09ayTQLXixn84hePuYK9s+vcyzIzMeFpdQNdlBnOJ
-	QQ8nXyUIbQsX15HpZp0oYQ97+d1/O3SOdTbzQh4bTUI3j4H2yHrtvVbzEO4oZCnTsKAAPU9Pysn
-	pUU+RjptCUAMVM2Sk3Ct1oXZuEuyTvJAj0A17rHtBa2Jp20HvotVoSpNmE9RkKyKBLiCEbK9OKo
-	sGVFI8iGRBgI84dX81/Dhea9v6mwheZ0+sIWA==
-X-Received: by 2002:a05:690c:c1d9:b0:7a2:f14d:5a1 with SMTP id 00721157ae682-7bcf58cb7e4mr153787b3.49.1777321007663;
-        Mon, 27 Apr 2026 13:16:47 -0700 (PDT)
-Received: from willemb.c.googlers.com.com (172.235.85.34.bc.googleusercontent.com. [34.85.235.172])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7bcf05e6149sm1753387b3.11.2026.04.27.13.16.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Apr 2026 13:16:46 -0700 (PDT)
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	linux-kselftest@vger.kernel.org,
-	shuah@kernel.org,
-	Willem de Bruijn <willemb@google.com>
-Subject: [PATCH net-next v5 0/3] selftests: drv-net: convert so_txtime to drv-net
-Date: Mon, 27 Apr 2026 16:14:32 -0400
-Message-ID: <20260427201640.294694-1-willemdebruijn.kernel@gmail.com>
-X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uZg05WDq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 919C5C19425;
+	Mon, 27 Apr 2026 20:17:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777321067;
+	bh=h3ynAWc+KoIn2+PfrPfZOKHeqJ7c7EO2O5VFULiKX/g=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=uZg05WDqsUvgubQYtoia9zuGY+BfgeBh+A0L0TAgox5S6gpSMlOc387pWsqSWVDns
+	 2lS2/zPiZ6cBnEp401HXLASraMbLAPCXjOfr1d19gNtipPEKe8tBhoJgPZRlmlVdBd
+	 T4adWsYnFxiV+prsL8qFMh6tr7t272eB8wkg7PL1e5ENom2VzP6O+cF0AiFNGkvfrs
+	 zHkyEhHiOpMaRrhczJjjTREeGP2dYDiz4wEEXniF/rwIas8vVHl9YM5slMnmZmDTPX
+	 5ewinJM60znpxfBdbr+LxVw8NakjQxE92PYoJUbo9FhZAJK5uCtS4LHyjwVA8YnHS5
+	 vJByFaQBoGgvg==
+Date: Mon, 27 Apr 2026 13:17:45 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Dipayaan Roy <dipayanroy@linux.microsoft.com>
+Cc: David Wei <dw@davidwei.uk>, kys@microsoft.com, haiyangz@microsoft.com,
+ wei.liu@kernel.org, decui@microsoft.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ leon@kernel.org, longli@microsoft.com, kotaranov@microsoft.com,
+ horms@kernel.org, shradhagupta@linux.microsoft.com,
+ ssengar@linux.microsoft.com, ernis@linux.microsoft.com,
+ shirazsaleem@microsoft.com, linux-hyperv@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-rdma@vger.kernel.org, stephen@networkplumber.org,
+ jacob.e.keller@intel.com, leitao@debian.org, kees@kernel.org,
+ john.fastabend@gmail.com, hawk@kernel.org, bpf@vger.kernel.org,
+ daniel@iogearbox.net, ast@kernel.org, sdf@fomichev.me,
+ dipayanroy@microsoft.com
+Subject: Re: [PATCH net-next v6 0/2] net: mana: add ethtool private flag for
+ full-page RX buffers
+Message-ID: <20260427131745.2eac52ef@kernel.org>
+In-Reply-To: <aex119OtL8CEGXkb@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <20260407200216.272659-1-dipayanroy@linux.microsoft.com>
+	<20260409183509.0b24dea6@kernel.org>
+	<20260412125917.4fa8fc8d@kernel.org>
+	<ad5kuCZz+gR1TlSh@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+	<20260416083146.0bb94d2b@kernel.org>
+	<aeoVC27mIzoKytqA@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+	<685d7bf9-062d-4bd2-8448-f7714bb05302@davidwei.uk>
+	<aex119OtL8CEGXkb@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Willem de Bruijn <willemb@google.com>
+On Sat, 25 Apr 2026 01:05:43 -0700 Dipayaan Roy wrote:
+> Hi Jakub,
+> with this new data from David, is it convincing enough for a mana driver
+> specific private flag, which can be set from user space by a udev rule
+> by detecting the underlying platform? If not then I will send the next
+> version with the other rxbuflen approach. 
 
-In preparation for extending to pacing hardware offload, convert the
-so_txtime.sh test to a drv-net test that can be run against netdevsim
-and real hardware.
-
-Two preparatory patches
-1. support negative tests, where tests are expected to fail
-2. add a tc helper 
-
-See individual patches for details.
-
-Willem de Bruijn (3):
-  selftests: net: py: support cmd verifying expected failure
-  selftests: net: py: add tc utility
-  selftests: drv-net: convert so_txtime to drv-net
-
- .../testing/selftests/drivers/net/.gitignore  |   1 +
- tools/testing/selftests/drivers/net/Makefile  |   2 +
- tools/testing/selftests/drivers/net/config    |   2 +
- .../selftests/drivers/net/lib/py/__init__.py  |   5 +-
- .../selftests/{ => drivers}/net/so_txtime.c   |  25 +++-
- .../selftests/drivers/net/so_txtime.py        |  95 +++++++++++++++
- tools/testing/selftests/net/.gitignore        |   1 -
- tools/testing/selftests/net/Makefile          |   2 -
- .../testing/selftests/net/lib/py/__init__.py  |   4 +-
- tools/testing/selftests/net/lib/py/utils.py   |  18 ++-
- tools/testing/selftests/net/so_txtime.sh      | 110 ------------------
- 11 files changed, 141 insertions(+), 124 deletions(-)
- rename tools/testing/selftests/{ => drivers}/net/so_txtime.c (96%)
- create mode 100755 tools/testing/selftests/drivers/net/so_txtime.py
- delete mode 100755 tools/testing/selftests/net/so_txtime.sh
-
--- 
-2.54.0.545.g6539524ca2-goog
-
+I think so, thank you both for the testing.
+Please look out for the net-next opening up and repost the patches.
+(The reopening is delayed, it was supposed to happen already but I
+can't get a clean run out of our CI, sigh)
