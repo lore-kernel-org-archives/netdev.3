@@ -1,113 +1,123 @@
-Received: from mail.eswincomputing.com (mail.eswincomputing.com [123.124.195.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A22536AB77;
-	Mon, 27 Apr 2026 07:27:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.124.195.78
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777274852; cv=none; b=XYOEBFeytwRzIETNYijJnb7aRHXHVuSpUvDqj30ALFPvjswoSV9iGc8HOZb7O/DDcOGEOidX0tbp8HsqiTJtA5It9y8Qf3EJmkinNWtBZOBN1OTxFyGmt/QWVflxL1ntiWo5Vmuji4rHXLvh0V6qldCAZiINAV4zfonPk4ayQ1Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777274852; c=relaxed/simple;
-	bh=VWbHMN/Vau/n/YZ4U9o4rE+X3k0yJff0Gk73WPb7DrY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XiuIyAN+SSBcCBhV/uz/n0H9V+ekbcLvWPD66si/rCOwzfhg3GQjl61s6v5R92jvg27v4JYgO1bJ3FLiVwR5yvFBrOoOGUCQJco8+CFPyAN+FJdkfFeGxBqRgpi/R6j1N3in6L2Z/QgG8uW2WQqTrv1Mg4yrcW1IjV9l124bnK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=eswincomputing.com; spf=pass smtp.mailfrom=eswincomputing.com; arc=none smtp.client-ip=123.124.195.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=eswincomputing.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=eswincomputing.com
-Received: from E0004057DT.eswin.cn (unknown [10.11.96.26])
-	by app1 (Coremail) with SMTP id TAJkCgDHXHF3D+9pgxAVAA--.17532S2;
-	Mon, 27 Apr 2026 15:25:44 +0800 (CST)
-From: lizhi2@eswincomputing.com
-To: devicetree@vger.kernel.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com,
-	rmk+kernel@armlinux.org.uk,
-	pjw@kernel.org,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	alex@ghiti.fr,
-	linux-riscv@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	maxime.chevallier@bootlin.com
-Cc: ningyu@eswincomputing.com,
-	linmin@eswincomputing.com,
-	pinkesh.vaghela@einfochips.com,
-	pritesh.patel@einfochips.com,
-	weishangjuan@eswincomputing.com,
-	horms@kernel.org,
-	Zhi Li <lizhi2@eswincomputing.com>
-Subject: [PATCH net-next v7 3/4] dt-bindings: mfd: syscon: add ESWIN EIC7700 compatible
-Date: Mon, 27 Apr 2026 15:25:41 +0800
-Message-ID: <20260427072541.1174-1-lizhi2@eswincomputing.com>
-X-Mailer: git-send-email 2.52.0.windows.1
-In-Reply-To: <20260427072353.1114-1-lizhi2@eswincomputing.com>
-References: <20260427072353.1114-1-lizhi2@eswincomputing.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52B3D382382
+	for <netdev@vger.kernel.org>; Mon, 27 Apr 2026 07:36:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.173
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777275419; cv=pass; b=RZEQjxX+IlGRnRNcv8nfE/56g2TgTqzOxSjydT3dosK80ldg3Jq9MlRvR2o8KuADpqV/nbrVpka9WHn+1uyshiE0rkngn0Sx3UFHGIEpoznnuW7zsyr/nmT6XfCnJzrj5LUR3BcY7Wa4ppZ9KFyP9g94IWkNOouRMPf1VsRw5Rc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777275419; c=relaxed/simple;
+	bh=DLATZw/E6X5X5U4Q/6l08XSMP/bwe7ob52fPdh13YhM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cbXJiZfXhFZF7IbHLvgfrT9MY0w1uIwQbL15WDIduPuH4fZfZ9IKEfjN9BZTypvsySuug7xTVPQbiswwwbx377M3OwEwrW/WJRgmQseTC+UX7V/Q5C1Pfw4ElfcIwX5+dcTaRLdJeZe36MDiD45k2bhKsPckpeiMv/zol6dQKUk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rZveSDvW; arc=pass smtp.client-ip=209.85.160.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rZveSDvW"
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-50d876329bbso107989831cf.2
+        for <netdev@vger.kernel.org>; Mon, 27 Apr 2026 00:36:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777275415; cv=none;
+        d=google.com; s=arc-20240605;
+        b=D6kMXES5o6L+w6e1/ADgIC9H4vBKJCDiiLhAVeLHRtR5umTXAZCKiCUGpfDaHq8S0r
+         1A50B2SWDhWZ+sZeAJYYfNBW8nyEXrVgb3rADwOWjBG3Zbjz+JYp/SlijQn0egUy5b5R
+         IS83WYx62heKg4abaM8c4S0ZxHvEW/GCtBz26ESqdbAFTsHkRzbI5AOcQr/YHIOsj5GC
+         H2V7fIwOwJ1m9CfGkuJZo8LA+CUtCcH/9g+QgdFClNX/ziSoGikUuH/zykcFYkCXEcy5
+         ZQv8GCFDwevuJVWM2yXrif5l1bv+JkNr0lL9toSwYcboyHsimCPvkRgghAEEHY5stRGz
+         tvCg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=v7hV5C0UMkp30VZ36pfLZBNeBSgytE4WrIQisiBHlvc=;
+        fh=msNdiVQncVKJbbfSWTP6z/TrDOwlmXOtEcPRBIJdqv8=;
+        b=eheR53gGNYhTLysnRiVMG64PPjOcx64raT9b0qWKNiqTdGSNgqXu5HlWUymalnuUfu
+         tP0gfCnPpGoVGWPS6B9Z9n5nBS8YCPHIiEvSrB8l/0n3ftqYpW9Mblw9odMSqRct69Sj
+         yZ3HHZ9HZJVG5dyc77RTfG51D3l4GEQDJXsA+UseG4rndqFMsFRNevDt9D1jpIIqABdO
+         /Rdu6hUs3V+dlvIs1abn4FfJzG6xse9XUafnwhgMcXUAZlJMOLwGu7PJbJ1L4xf3eah7
+         8mJlcDVxzFg8W3brEGD7HsvLL2K89nBsGEtrlzB+3wFpe1ue1GCH6FUmvcTYEIgxOQGB
+         1kjw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777275415; x=1777880215; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=v7hV5C0UMkp30VZ36pfLZBNeBSgytE4WrIQisiBHlvc=;
+        b=rZveSDvWMnTRN83T5O+G/aIx0uafgSwT9Omrwrr7vcpt+8fJvx1I0vekTSBAHTQtyw
+         x9fFt4ta3jUhWLR/CiTca40kHnvbkExZiuSXwVJ+ecZ+EZjO75Fpepj9SVFQZriInB8c
+         S0byyab8I4oG6CjXo49Uev2ut42OHiVsNbxPOt53inJCzVL37CJlCgLC+C9kPNDrcjNP
+         Ez9MZYXJcOKFjgubp834UVvzpXefzbyUVtU2isQ28gBSSS1dwC30YxI1m783jJQqnVRP
+         T60SeFZIgrxCaj9DRJu53lgAMvHp4o6bzekq4HW55Ufvr3og4GpxdEpWPwD9GNIIcYrQ
+         npTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777275415; x=1777880215;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=v7hV5C0UMkp30VZ36pfLZBNeBSgytE4WrIQisiBHlvc=;
+        b=Vr8qtW4sJUq7sUTGIHCIj+lLUyc2JGEUg4SnwxuMJzP4UPDsFfQpv0OdTtHnhFqDX5
+         ezadNMGzZ8JFsjMWzIERsED8xk7OIAI7Tmk77yQGe0uXWs4gk4gnb+2AgcFmWqIOFrRC
+         gsX5om533b56XIojmf8MrGbZ2cGubXe1O9DHIKy8Z8oUmyUQDZBN9bcQtcA/BepzyqgO
+         +P6mQ0nSWj30sxH1GvcKP6hm6aaOXqK+ivr0gnO3GvGqyruuQf+vj8qQTmOamxaG2zkD
+         m/L5yl/Bw8HEm+hGcKckxOyU+bL3ySWA7Vbs+rZ2Si0nfAm1ar3Jb2SRVgBHZQBwyg9K
+         xAsA==
+X-Forwarded-Encrypted: i=1; AFNElJ9Oebo1MkI4ECnEWZZCvhkUlz8cDgZ6oO7i+L+Sd3qtYBOp5tzQfeQIbAgNnPlFv7ATkDzx5bM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwORRi/OtDAMEJ6Fhs8GuJWLJmVj4hYR6+hUXUd0qcX6NtfnSKu
+	ovFzrwkWAt4wGUe0NVPXfQ+GSzaln/CvlMex2oHu5tTamM22HrPO9jX/v3YgVDnGy049/kTx3jB
+	DvTF/9nLnioGQ0KDAS3azHLoa51Xh4U6mgOQZ0Yea
+X-Gm-Gg: AeBDietx5Q3hYgsxadYqRop4L2rDCfYF4NDZs41pwPV9uaF2mc4ifxXCmmUU4TFa18e
+	2jGqWn5sIfnbfbxBxoRSItujwHYRnCVKPyBLbNSTCcvlLsc7ys9P2xdr2QkNf1I09zLAWZW5ea2
+	vkMvKnEMPR/8Vi/mehyjBBRpzaf3P+GVSTa9vzTCJZ19qPjgE66ISAZpKAdZn5KAMl4Gvg/oadv
+	E7wdTpzULETdDqBqB5vFjPYK2q28dCWATS/LN4mYhbH7dqO9Y4OILyT/01YqQzbTuAe/EO27V8V
+	8RgRPh3ujG/RN08w8/nsPg8QfKNvnq3bpzzmbWIBArZngmlkyrPkFXzrCLFbloSjywdRjLiOR5A
+	2lYFQ3GUI
+X-Received: by 2002:ac8:7fcf:0:b0:50b:4946:2781 with SMTP id
+ d75a77b69052e-50e36c4959cmr595635871cf.38.1777275414972; Mon, 27 Apr 2026
+ 00:36:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:TAJkCgDHXHF3D+9pgxAVAA--.17532S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7Gw4UtF48uw13KF1kZFW5KFg_yoWDuFgE9r
-	17urn8A39xAFW0g3yvvrZ7JF4fA3WSkr1kZ39ruF1vy34Fv3W5XF97J345Ar47uFs7ur1r
-	W3WkXrW7t3ZrGjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUb68FF20E14v26rWj6s0DM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j
-	6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
-	n2kIc2xKxwAKzVCY07xG64k0F24lc7CjxVAaw2AFwI0_GFv_Wrylc2xSY4AK6svPMxAIw2
-	8IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4l
-	x2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrw
-	CI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1U
-	MIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I
-	8E87Iv6xkF7I0E14v26r4UJVWxJrUvcSsGvfC2KfnxnUUI43ZEXa7sRiWrW5UUUUU==
-X-CM-SenderInfo: xol2xx2s6h245lqf0zpsxwx03jof0z/
+References: <20260414013634.43997-1-ahacigu.linux@gmail.com> <20260424014639.54110-1-ahacigu.linux@gmail.com>
+In-Reply-To: <20260424014639.54110-1-ahacigu.linux@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Mon, 27 Apr 2026 00:36:43 -0700
+X-Gm-Features: AQROBzCL4oBIXS1zs1IlbDWmYGsdfXvFJC1NgEt2hHNDKn6LozYfbM0-MQyV8_Q
+Message-ID: <CANn89i+UDvqJVQJO3ye3ZGB7vyOawTHPsKJNFzZxT=yyoS4g-Q@mail.gmail.com>
+Subject: Re: [PATCH net v2] tcp: make probe0 timer handle expired user timeout
+To: Altan Hacigumus <ahacigu.linux@gmail.com>
+Cc: Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	"David S . Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Enke Chen <enchen@paloaltonetworks.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Zhi Li <lizhi2@eswincomputing.com>
+On Thu, Apr 23, 2026 at 6:46=E2=80=AFPM Altan Hacigumus <ahacigu.linux@gmai=
+l.com> wrote:
+>
+> tcp_clamp_probe0_to_user_timeout() computes remaining time in jiffies
+> using subtraction with an unsigned lvalue.  If elapsed probing time
+> exceeds the configured TCP_USER_TIMEOUT, the underflow yields a large
+> value.
+>
+> This ends up re-arming the probe timer for a full backoff interval
+> instead of expiring immediately, delaying connection teardown beyond
+> the configured timeout.
+>
+> Fix this by preventing underflow so user-set timeout expiration is
+> handled correctly without extending the probe timer.
+>
+> Fixes: 344db93ae3ee ("tcp: make TCP_USER_TIMEOUT accurate for zero window=
+ probes")
+> Link: https://lore.kernel.org/r/20260414013634.43997-1-ahacigu.linux@gmai=
+l.com
+> Signed-off-by: Altan Hacigumus <ahacigu.linux@gmail.com>
+> ---
 
-Document ESWIN EIC7700 SoC compatible for syscon registers.
-
-Signed-off-by: Zhi Li <lizhi2@eswincomputing.com>
----
- Documentation/devicetree/bindings/mfd/syscon.yaml | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/Documentation/devicetree/bindings/mfd/syscon.yaml b/Documentation/devicetree/bindings/mfd/syscon.yaml
-index e22867088063..7d3365601249 100644
---- a/Documentation/devicetree/bindings/mfd/syscon.yaml
-+++ b/Documentation/devicetree/bindings/mfd/syscon.yaml
-@@ -62,6 +62,7 @@ select:
-           - cirrus,ep7209-syscon3
-           - cnxt,cx92755-uc
-           - econet,en751221-chip-scu
-+          - eswin,eic7700-syscfg
-           - freecom,fsg-cs2-system-controller
-           - fsl,imx93-aonmix-ns-syscfg
-           - fsl,imx93-wakeupmix-syscfg
-@@ -175,6 +176,7 @@ properties:
-               - cirrus,ep7209-syscon3
-               - cnxt,cx92755-uc
-               - econet,en751221-chip-scu
-+              - eswin,eic7700-syscfg
-               - freecom,fsg-cs2-system-controller
-               - fsl,imx93-aonmix-ns-syscfg
-               - fsl,imx93-wakeupmix-syscfg
--- 
-2.25.1
-
+Reviewed-by: Eric Dumazet <edumazet@google.com>
