@@ -1,44 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E2F8264A97;
-	Mon, 27 Apr 2026 23:26:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D367279903
+	for <netdev@vger.kernel.org>; Mon, 27 Apr 2026 23:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777332369; cv=none; b=Iq/iNaei9qDvuT8+e1ZGR51xnTkbRWb+XNY/8QWMJwt2WkNJYGyF7/gamWuj8uV3lpy0Yzky0eQP23+Q4//60JMqDpIasZKHIaYi78pGaCkiYMEY9cnHXPL0lCRiqfgrc3WM6gcBydADIFTr12DHK+nTViPT3bQBVE7Yncp4M6s=
+	t=1777332521; cv=none; b=URLVYhU7JOjMbjUc7+fwRBgMdXBAFJwFeHGQwPrGV77dbgYRfW/B+hnQaCb1maPPK8Fmw1vipnAWdfzljMTkBdJWqSSzewBBdav/EGXFI0S5ZbGJtl8W22RYYIkGMgN250ruWZhlOQwYVjnpLVBVqzh+4JUYtyZyWkfw1h+Eki4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777332369; c=relaxed/simple;
-	bh=NCjVlyMEkbMZCsORLvwsyvrNExMeYxUE9LRyioSGo+o=;
+	s=arc-20240116; t=1777332521; c=relaxed/simple;
+	bh=xysbY8sph3l57de7MgdutJ1XnDCyzhQWxaKE/MVYGTY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j6E4S6SAG9Z855VeCyzqS8qJoB58kXKjJmhGFiXNsaBTcEziLrF2RWbKRqi4gQQsekIcnBvgk0xCjfNaWcRBJROuaHBmjjiiJectjI+MHt10+VkSqhSqCX9JdnO7bGH59KUQskIJyrIQsDJyz5UE4baDWCTA7zrXkOgv61WSHsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nGLrQA1z; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=htdtm6Hns3pW6ZjGL7/ySodaAUEV6KgI7x5o+Jq+I7+F9aWA7IHhTlEFEZ7JuHO5oDCSgJVqx/Q1kUG1xi5vNFywvn6mEkLiSIGefFOngv6aPYFt1YOGLSoPhWPwSlO8YY1w7ru2z7kDNMc/CALXgbEgsuv7zGorDdYGoo8MSM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=llfv4Qu0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nGLrQA1z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44570C19425;
-	Mon, 27 Apr 2026 23:26:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="llfv4Qu0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02B12C19425;
+	Mon, 27 Apr 2026 23:28:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777332368;
-	bh=NCjVlyMEkbMZCsORLvwsyvrNExMeYxUE9LRyioSGo+o=;
+	s=k20201202; t=1777332521;
+	bh=xysbY8sph3l57de7MgdutJ1XnDCyzhQWxaKE/MVYGTY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=nGLrQA1zuhEAknR9FBh4E81srj7ewPenQqRFkRuBfWZrRXrivEBMNUnkJ1Q84+64h
-	 bQmdGGl9XAXG3AELJEuqIgJTOd2WiBkl9/dbjZYXEUlOxenDUhCWkNPo6th6VAw0LP
-	 1L9mK51zk6dfq4Djvxs3Ce1eRDHSCEMcHwGWeKDhyO2r8daBYv5+cTNaVKPaLGUxBE
-	 nuNords68Zvy4lO7lcEeC4QnTiNAL2yj71k9Z6Z04en6xIlIy1dWlr33XqeP4L/zo/
-	 jZKAcoaPs62R0lTkKZbng7mm+dFVrMUxiA818k6f5wFeXJK/7MYRcog/GR1X7t6PeX
-	 hHsa/go+PPJ/w==
-Date: Mon, 27 Apr 2026 16:26:07 -0700
+	b=llfv4Qu0qY0Qiq9spc05A8MBZD8GevEkLW8a8HmibwmiyK91tBrv++04yeiDs8ozC
+	 owTp8zgEtn1gsZaJ49S4MeWkjT/nY/LLfRKaD54eLHkfcFDoP1HM65CMwBrI3x4S4l
+	 jtJL3wjB2NXNike406xyHUzkk7/H0I30HPTmbql4Npez+D1ezvfbUTHPjLr2ot2xW6
+	 zE15VRQYI120BW+CQCq0MZs8dFdyS/n1X+yw05H9eqsB2wNL3NnvEc4X/CwI53S75y
+	 v71IiOT04GCzHxGBYT/fogLCNNjoeiaRO8janjfgwT3GbHpVvj96lpjF4Gk9H/q16Z
+	 N27iK69IV4JPQ==
+Date: Mon, 27 Apr 2026 16:28:39 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Aleksander Jan Bajkowski <olek2@wp.pl>
-Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- daniel@makrotopia.org, vladimir.oltean@nxp.com, michael@fossekall.de,
- ih@simonwunderlich.de, rmk+kernel@armlinux.org.uk, marek.vasut@mailbox.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] net: phy: realtek: replace magic number with
- register bit macros
-Message-ID: <20260427162607.6df44090@kernel.org>
-In-Reply-To: <20260426222359.3443278-1-olek2@wp.pl>
-References: <20260426222359.3443278-1-olek2@wp.pl>
+To: Raju.Rangoju@amd.com
+Cc: Patrick Oppenlander <patrick.oppenlander@gmail.com>,
+ netdev@vger.kernel.org, Shyam-sundar.S-k@amd.com
+Subject: Re: CL37 autonegotiation not working on amd-xgbe
+Message-ID: <20260427162839.350135c8@kernel.org>
+In-Reply-To: <CAEg67GmFS0Q4oSZkz8zWdOzckSth9_vBPiOy6a7-d697C2w2Xg@mail.gmail.com>
+References: <CAEg67GmFS0Q4oSZkz8zWdOzckSth9_vBPiOy6a7-d697C2w2Xg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,11 +44,8 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 27 Apr 2026 00:23:44 +0200 Aleksander Jan Bajkowski wrote:
-> Replace magic number with register bit macros. The description of the
-> RTL8211B interrupt register is obtained from the datasheet.
+On Thu, 23 Apr 2026 10:18:49 +1000 Patrick Oppenlander wrote:
+> A recent change [1] stopped CL37 autonegotiation from working on
+> amd-xgbe hardware.
 
-net-next wasn't open yet, when you posted.
-Please resubmit in a couple of days.
--- 
-pw-bot: defer
+Hi Raju! Are you looking into this report?
