@@ -1,51 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8240F308F05;
-	Mon, 27 Apr 2026 22:44:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E3352D8DDB
+	for <netdev@vger.kernel.org>; Mon, 27 Apr 2026 22:47:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777329872; cv=none; b=q/TSrzFRt6jKdAHq47NxCtKV9jT6pSz/J1tpD4//G+BrMUk4Wdzi1BU5E+zV4h82T+l8vqEDigA/fSSA2IjsroL51PAUsvmRcnF6GRj2Dtl+k5aKxbdzpBU8i/gDnszBCDBplQGj7Yg+qzzvmffcJxEYp6IY18VXahCvnj8CUTQ=
+	t=1777330048; cv=none; b=mjKopfkGKb3v1K4cWMBtRDuQcNfZg50kVCz7DQznBLNRMpuNPDcZfzEwZme0guenJrguBOG1rRSL4udLsCKIQhVYcQJIgZsiY46kp7PqSNK2yJcRZSZk8gcv7cfPLaMMZg0T9WkA8QDcUb6+eKhJBIbaOMhP38MxD7H9cyEDDqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777329872; c=relaxed/simple;
-	bh=R4LMRbc5mg+8UIeUjMdT+Efo6WUGtul9TLdlExK2ELg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b4I7Zo4AwGZQTno7qf7eXzV/7kFVPUuITcE82Py3Sa+r1x1fdKwopcKRG9v/yjZehScNvb6DFBCplKpqebH/LmNJ8SmE+w8KUSbsfdTrWBYRBROxFwaN+/exxMcg4rKmi88UarAjjc2tg5q4HNT4WrtYfTtVBTgdFHCDbkRcuHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c6RgOq+V; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777330048; c=relaxed/simple;
+	bh=JgUqgmZu3vKcXz5qJfNqkgHMPjRsLhPReRKxJDDy+cs=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=ZQ1WD4agThm8AwGp1I4ecWgmiFfkfiStVuDfRVIkLsDImdVWKM/uNT2s6rCllCstx9qwFsA57iR1ckcdoh1oR87CPk1xEqzH60EP0SeZQZ9u/RYrOMaZvA7HVR6cJBxN3SQYd2BN8gLf0h3LDxwTiJMf/qLfxiiBxpjpKMZRxgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NtTdD6as; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c6RgOq+V"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD4E5C19425;
-	Mon, 27 Apr 2026 22:44:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NtTdD6as"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83AB7C19425
+	for <netdev@vger.kernel.org>; Mon, 27 Apr 2026 22:47:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777329872;
-	bh=R4LMRbc5mg+8UIeUjMdT+Efo6WUGtul9TLdlExK2ELg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=c6RgOq+VoUwVn47JnHkDjnuu/vZqEpPZOlm1WZEXW/vRsvPtcEGYyFKv9mV4QRI4g
-	 sHTuo03n9gQ59wKHHTU91b6z0CY/HRapOAxL2u/H9v68niu59kvE7L5CJ2Iy6q5Fcz
-	 kZd2yb5mLU38GFtoTykuyYSTBnimjRDQyc3jh7DMUtOdDR3mxaT+iXvNAGF1i8Trea
-	 iBZ4c3jzhxByCX3W8ZYweQjMeL1Muhoo7vEde1Ax8Q7FfB/RsIs7uz1aGjkDSFpWCl
-	 r8WFeBXaND+y38YxAN8HcdklDfKfu+lLMFdQ1u/b4uYKWE6Ulb9sPXLQ7YyM35dihO
-	 /dYNut8aAZ1Ng==
-Date: Mon, 27 Apr 2026 15:44:29 -0700
+	s=k20201202; t=1777330047;
+	bh=JgUqgmZu3vKcXz5qJfNqkgHMPjRsLhPReRKxJDDy+cs=;
+	h=Date:From:To:Subject:From;
+	b=NtTdD6asDT3Hs3k0e2i0WkvK0PB9CcUhF8vKQRw48FQaDuazeRobjwJojsTAvUhl1
+	 qHyG4lHmzmHeT873CFL8Cg6k034AzQEvcU1KrA7pPLmxGTQ3oHINq1eTm43rPV5dNq
+	 c40bQ7EREgxyjWKke6omdM3WfpZmo6ZNcgNGcNNCaFImOKcMmbbI+HHzAgVRKSRQoV
+	 c/0+0KT3VTeK02xOZyXntK40fFy9aU2ZHu9inYcBz8nN7hOdxiIsE3tgLUkXRd9Wyk
+	 951icgJ4Etk05LJP+gtnsA7ulGZdojvQx/iUAMy/selhaDG6VSdbq5BlySRLkR/4T/
+	 zr8b5By7sKbKg==
+Date: Mon, 27 Apr 2026 15:47:26 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Dipayaan Roy <dipayanroy@linux.microsoft.com>
-Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
- decui@microsoft.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, leon@kernel.org,
- longli@microsoft.com, kotaranov@microsoft.com, horms@kernel.org,
- shradhagupta@linux.microsoft.com, ssengar@linux.microsoft.com,
- ernis@linux.microsoft.com, shirazsaleem@microsoft.com,
- linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
- stephen@networkplumber.org, jacob.e.keller@intel.com,
- dipayanroy@microsoft.com, leitao@debian.org, kees@kernel.org,
- john.fastabend@gmail.com, hawk@kernel.org, bpf@vger.kernel.org,
- daniel@iogearbox.net, ast@kernel.org, sdf@fomichev.me, yury.norov@gmail.com
-Subject: Re: [RFC PATCH net-next] net: mana: Force single RX buffer per page
- under SWIOTLB bounce modes
-Message-ID: <20260427154429.6a141824@kernel.org>
-In-Reply-To: <ae91hyrLf4n23XE6@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-References: <ae91hyrLf4n23XE6@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+To: netdev@vger.kernel.org
+Subject: [ANN] net-next is OPEN
+Message-ID: <20260427154726.30b9d333@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,10 +39,10 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 27 Apr 2026 07:41:11 -0700 Dipayaan Roy wrote:
-> In both cases, sub-page RX buffer fragments allocated via page_pool may
-> not be compatible with bounce buffering in this mode, leading to failures
-> in the RX path.
+Hi!
 
-What does it mean to not be compatible with swiotlb?
-Normally that indicates that DMA API is mis-used.
+net-next is now open, and accepting v7.2 patches.
+
+I was hoping to get a single clean run out of the CI before
+the announcement but it's still a bit wonky. So let's open
+net-next and I'll try to somehow mend it as we go.
