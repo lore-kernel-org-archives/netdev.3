@@ -1,61 +1,66 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF8B232D7D9
-	for <netdev@vger.kernel.org>; Mon, 27 Apr 2026 15:18:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0871317165;
+	Mon, 27 Apr 2026 15:24:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777303130; cv=none; b=W0Uzfvq2ipboYTlKwymECVbwAbz7I1MGX2rrFxIKQRZ3FjBEHlga/FBcweyxIdvw2MnYkwjuJVG4Cnfr+TlbXaD923jhctNGsoW4/CGKdNjd5g7KR0UiBmfB5YgVSFOYcKr1le9PRTFnZlHWuZu6gzvxZOQRZ9Ln+cfQWTSXTiQ=
+	t=1777303479; cv=none; b=fgHxRSUkeln8ThU3vgQoxdC+dkw+7YoD8WDAX5q8JS9hUNZgkOqFUqnEVtFFQ4z6OCNKxy8r0S4r2EBQGVZc92wxq0dujIAd11SKc+hZgH6uYr3zCPJb4s1gNRgX9y264izRO5Jv6XbjYcRNwleAJ66ap6QyY3d4/bQPU7nD3kc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777303130; c=relaxed/simple;
-	bh=6Jdv3cqBkQD//yDzmKZiisg1VQ1oAmgqLU48pGDosGY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cuhJebOFnbNonPFkhw/pAF9Qyp1w2E9XcLyUEZjZ2nnpmYxqn4ob93bHTwJCwmQdhphIouSwwYtPBvH/E0LWS2f+KAKDCWu1O5mYR1gZlTbuhrzwXqGXyEDIerJ8EcR5mL7tj/86+wQXrYYm4ZclNGPLf9FhmTiSCWgHDXOprn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ei/P92ia; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1777303479; c=relaxed/simple;
+	bh=R5DLnmIxW2S4tSZP6THD6UB5dpyAV7DU4ODVzkQz070=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=p/Dapjt811E3D8Bq4eybMOeVPdPyTz0NxjKZqPgZhZyiPfx6BUQMz7e5DIh11nZC4OvYa+SndT0bINuWd/4zp0/pXUJfpobRk7dYCwVOqbXBrrYJ9krvTIOuktSAsn5lWoimQqv8hNnT6C+/os8xkth5eBKlAE5kWBhG4NyF7VA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PWOMyz9o; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ei/P92ia"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777303128;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=eP255AJKi20CdWJSLl90PUo6dc/xnZcS6fxVydD/CJk=;
-	b=Ei/P92iaF7jS50llvw7T5MI2TfAZk27M7ELho574O1VI+8g9N1G74nGmdR1cPeOoeNq2US
-	8Llq2iIy1gtQaxcK5tOe6+C9Ffhaf7gvrpvLU0oUlXgoA6iAAOkZdPgbn3kViEH8rkY+Ti
-	txF2i65nDQoVuA0rCf6+Tef6pIl0gS4=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-551-fctzMtMrNLG8LE1L4Putxw-1; Mon,
- 27 Apr 2026 11:18:41 -0400
-X-MC-Unique: fctzMtMrNLG8LE1L4Putxw-1
-X-Mimecast-MFC-AGG-ID: fctzMtMrNLG8LE1L4Putxw_1777303120
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E4DA01956059;
-	Mon, 27 Apr 2026 15:18:39 +0000 (UTC)
-Received: from mschmidt-thinkpadp1gen4i.tpbc.com (unknown [10.44.34.211])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A9401195608E;
-	Mon, 27 Apr 2026 15:18:35 +0000 (UTC)
-From: Michal Schmidt <mschmidt@redhat.com>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Petr Oros <poros@redhat.com>
-Cc: intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net] ice: fix stats array overflow when VF requests more queues
-Date: Mon, 27 Apr 2026 17:18:26 +0200
-Message-ID: <20260427151827.43342-1-mschmidt@redhat.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PWOMyz9o"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777303478; x=1808839478;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=R5DLnmIxW2S4tSZP6THD6UB5dpyAV7DU4ODVzkQz070=;
+  b=PWOMyz9od8dZl5eFNiMQVG7Y9X6cpZNqkg5Ani30+Ae4Tdgq6Bj3gOAt
+   2/oO4ETXgnUgHxqP4rS3nvUUzZK34tszuj+JZs9LEOMncdMY2HUcfDJ4F
+   PlcIhxDVTCXf0hIzHqf/R9tE0gUBIul4OmdCoBfQiRWIiBxXV4qD1VEww
+   42frVP7AUdeAsnQm4px8v6sj4xVEyrunxzlgfysh+BJc5u9h0TIkCI+ji
+   x0q1s17gnDmTwIpHg18600bV4j4hCcLV7uSH3J5c3cGz+8tAXhWmEt5iq
+   Lhk+UWKQSipmzlPTFWAN0o7FQc/km4BSaTLkuppn6xbil3dvZGFMIe2el
+   Q==;
+X-CSE-ConnectionGUID: ITWC6WHtQIiN76owQy97ug==
+X-CSE-MsgGUID: pWSkZpWGS+aVC6B9she2EQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="78383764"
+X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; 
+   d="scan'208";a="78383764"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 08:24:37 -0700
+X-CSE-ConnectionGUID: PwEIYR3NQcS8qjf/f3QjSw==
+X-CSE-MsgGUID: hAM213QHTt2xPLJ5JbvL1w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; 
+   d="scan'208";a="233500399"
+Received: from arjan-box.jf.intel.com ([10.88.27.153])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 08:24:37 -0700
+From: Arjan van de Ven <arjan@linux.intel.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	horms@kernel.org,
+	jreuter@yaina.de,
+	kuba@kernel.org,
+	linux-hams@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	pabeni@redhat.com,
+	syzkaller-bugs@googlegroups.com,
+	syzbot+9c8999af06ca7df15fc6@syzkaller.appspotmail.com
+Subject: Re: [syzbot] [hams?] KASAN: slab-use-after-free Read in ax25_send_frame (3)
+Date: Mon, 27 Apr 2026 08:25:26 -0700
+Message-ID: <20260427152555.500903-1-arjan@linux.intel.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <69ef2847.170a0220.11de9.001a.GAE@google.com>
+References: <69ef2847.170a0220.11de9.001a.GAE@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,136 +68,154 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-When a VF increases its queue count via VIRTCHNL_OP_REQUEST_QUEUES,
-ice_vc_request_qs_msg() sets vf->num_req_qs and triggers a VF reset.
-The reset calls ice_vf_reconfig_vsi(), which does ice_vsi_decfg()
-followed by ice_vsi_cfg(). ice_vsi_decfg() does not free the per-ring
-stats arrays. Inside ice_vsi_cfg_def(), ice_vsi_set_num_qs() updates
-alloc_txq/alloc_rxq to the new larger value, but
-ice_vsi_alloc_stat_arrays() returns early because the stats already
-exist. ice_vsi_alloc_ring_stats() then iterates using the new larger
-alloc_txq and writes beyond the bounds of the old, smaller
-tx_ring_stats/rx_ring_stats pointer arrays, corrupting adjacent SLUB
-metadata.
+This email is created by automation to help kernel developers
+deal with a large volume of AI generated bug reports by decoding
+oopses into more actionable information.
 
-KASAN detects the bug:
- ==================================================================
- BUG: KASAN: slab-out-of-bounds in ice_vsi_alloc_ring_stats+0x385/0x4a0 [ice]
- Read of size 8 at addr ffff88810affea60 by task kworker/u131:7/221
+Decoded Backtrace
 
- CPU: 24 UID: 0 PID: 221 Comm: kworker/u131:7 Not tainted 7.1.0-rc1+ #1 PREEMPT(lazy)
- ...
- Workqueue: ice ice_service_task [ice]
- Call Trace:
-  <TASK>
-  ...
-  kasan_report+0xd7/0x120
-  ice_vsi_alloc_ring_stats+0x385/0x4a0 [ice]
-  ice_vsi_cfg_def+0x12e2/0x2060 [ice]
-  ice_vsi_cfg+0xb5/0x3c0 [ice]
-  ice_reset_vf+0x858/0xf80 [ice]
-  ice_vc_request_qs_msg+0x1da/0x290 [ice]
-  ice_vc_process_vf_msg+0xb15/0x1430 [ice]
-  __ice_clean_ctrlq+0x70d/0x9d0 [ice]
-  ice_service_task+0x840/0xf20 [ice]
-  process_one_work+0x690/0xff0
-  worker_thread+0x4d9/0xd20
-  kthread+0x322/0x410
-  ret_from_fork+0x332/0x660
-  ret_from_fork_asm+0x1a/0x30
-  </TASK>
+net/ax25/ax25_out.c (crash site, UAF read)
 
- Allocated by task 2439:
-  kasan_save_stack+0x1c/0x40
-  kasan_save_track+0x10/0x30
-  __kasan_kmalloc+0x96/0xb0
-  __kmalloc_noprof+0x1d8/0x580
-  ice_vsi_cfg_def+0x115c/0x2060 [ice]
-  ice_vsi_cfg+0xb5/0x3c0 [ice]
-  ice_vsi_setup+0x180/0x320 [ice]
-  ice_start_vfs+0x1f3/0x590 [ice]
-  ice_ena_vfs+0x66d/0x798 [ice]
-  ice_sriov_configure.cold+0xe4/0x121 [ice]
-  sriov_numvfs_store+0x279/0x480
-  kernfs_fop_write_iter+0x331/0x4f0
-  vfs_write+0x4c4/0xe40
-  ksys_write+0x10c/0x240
-  do_syscall_64+0xd9/0x650
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  32  ax25_cb *ax25_send_frame(struct sk_buff *skb, int paclen,
+  32      const ax25_address *src, ax25_address *dest,
+  32      ax25_digi *digi, struct net_device *dev)
+  33  {
+  34      ax25_dev *ax25_dev;
+  35      ax25_cb *ax25;
+       ...
+  77      if (digi != NULL) {
+->78          ax25->digipeat = kmemdup(digi, sizeof(*digi), GFP_ATOMIC);
+              // <- digi = neigh->digipeat; freed ax25_digi; 66-byte UAF read
+  79          if (ax25->digipeat == NULL) {
+       ...
+ 115      return ax25;
+ 116  }
 
- The buggy address belongs to the object at ffff88810affea40
-                which belongs to the cache kmalloc-32 of size 32
- The buggy address is located 0 bytes to the right of
-                allocated 32-byte region [ffff88810affea40, ffff88810affea60)
- ...
- ==================================================================
+net/rose/rose_link.c (caller, t0timer callback)
 
-ice_vsi_rebuild() handles this correctly by calling
-ice_vsi_realloc_stat_arrays() before reconfiguration, but
-ice_vf_reconfig_vsi() was missing this call.
+  79  static void rose_t0timer_expiry(struct timer_list *t)
+  80  {
+  81      struct rose_neigh *neigh = timer_container_of(neigh, t, t0timer);
+  82
+->83      rose_transmit_restart_request(neigh);
+         // <- inlined; calls rose_send_frame -> ax25_send_frame
+         //    with neigh->digipeat as the digi argument
+  84
+  85      neigh->dce_mode = 0;
+  86
+  87      rose_start_t0timer(neigh);
+  88  }
 
-Fix by calling ice_vsi_realloc_stat_arrays() in ice_vf_reconfig_vsi()
-before ice_vsi_decfg(), mirroring the ice_vsi_rebuild() pattern. Set
-vsi->req_txq/req_rxq from vf->num_req_qs so the realloc function knows
-the target array size.
+rose_send_frame() inlined at rose_link.c:106:
 
-See the linked RHEL Jira item for a reproducer.
+  95  static int rose_send_frame(struct sk_buff *skb, struct rose_neigh *neigh)
+  96  {
+       ...
+ 105      ax25s = neigh->ax25;
+->106     neigh->ax25 = ax25_send_frame(skb, 260, rose_call,
+             &neigh->callsign, neigh->digipeat, neigh->dev);
+         // <- neigh->digipeat passed as digi; freed by rose_timer_expiry
+ 107      if (ax25s)
+ 108          ax25_cb_put(ax25s);
+ 109      return neigh->ax25 != NULL;
+ 110  }
 
-Fixes: 2a2cb4c6c181 ("ice: replace ice_vf_recreate_vsi() with ice_vf_reconfig_vsi()")
-Closes: https://redhat.atlassian.net/browse/RHEL-164321
-Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
-Assisted-by: Claude:claude-opus-4-6 semcode
----
- drivers/net/ethernet/intel/ice/ice_lib.c    | 2 +-
- drivers/net/ethernet/intel/ice/ice_lib.h    | 1 +
- drivers/net/ethernet/intel/ice/ice_vf_lib.c | 7 +++++++
- 3 files changed, 9 insertions(+), 1 deletion(-)
+net/rose/rose_timer.c (free site)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-index 837b71b7b2b7..fc78176a2a8d 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -3015,7 +3015,7 @@ ice_vsi_rebuild_set_coalesce(struct ice_vsi *vsi,
-  * ice_vsi_realloc_stat_arrays - Frees unused stat structures or alloc new ones
-  * @vsi: VSI pointer
-  */
--static int
-+int
- ice_vsi_realloc_stat_arrays(struct ice_vsi *vsi)
- {
- 	u16 req_txq = vsi->req_txq ? vsi->req_txq : vsi->alloc_txq;
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.h b/drivers/net/ethernet/intel/ice/ice_lib.h
-index 49454d98dcfe..6f7da84384e5 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.h
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.h
-@@ -66,6 +66,7 @@ int ice_ena_vsi(struct ice_vsi *vsi, bool locked);
- void ice_vsi_decfg(struct ice_vsi *vsi);
- void ice_dis_vsi(struct ice_vsi *vsi, bool locked);
- 
-+int ice_vsi_realloc_stat_arrays(struct ice_vsi *vsi);
- int ice_vsi_rebuild(struct ice_vsi *vsi, u32 vsi_flags);
- int ice_vsi_cfg(struct ice_vsi *vsi);
- struct ice_vsi *ice_vsi_alloc(struct ice_pf *pf);
-diff --git a/drivers/net/ethernet/intel/ice/ice_vf_lib.c b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
-index 772f6b07340d..9edb2c14f553 100644
---- a/drivers/net/ethernet/intel/ice/ice_vf_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
-@@ -268,6 +268,13 @@ static int ice_vf_reconfig_vsi(struct ice_vf *vf)
- 
- 	vsi->flags = ICE_VSI_FLAG_NO_INIT;
- 
-+	vsi->req_txq = vf->num_req_qs;
-+	vsi->req_rxq = vf->num_req_qs;
-+
-+	err = ice_vsi_realloc_stat_arrays(vsi);
-+	if (err)
-+		return err;
-+
- 	ice_vsi_decfg(vsi);
- 	ice_fltr_remove_all(vsi);
- 
--- 
-2.54.0
+ 164  static void rose_timer_expiry(struct timer_list *t)
+ 165  {
+ 166      struct rose_sock *rose = timer_container_of(rose, t, timer);
+ 167      struct sock *sk = &rose->sock;
+       ...
+ 174      switch (rose->state) {
+       ...
+ 182      case ROSE_STATE_2:  /* T3 */
+->183          rose_neigh_put(rose->neighbour);
+              // <- drops refcount to 0; frees neigh->digipeat (ax25_digi)
+              //    and neigh itself; t0timer still pending
+ 184          rose_disconnect(sk, ETIMEDOUT, -1, -1);
+ 185          break;
+       ...
+ 197  }
 
+include/net/rose.h (rose_neigh_put, inline free function)
+
+ 160  static inline void rose_neigh_put(struct rose_neigh *rose_neigh)
+ 161  {
+ 162      if (refcount_dec_and_test(&rose_neigh->use)) {
+ 163          if (rose_neigh->ax25)
+ 164              ax25_cb_put(rose_neigh->ax25);
+->165          kfree(rose_neigh->digipeat);
+              // <- frees the ax25_digi (66 bytes); t0timer not cancelled
+ 166          kfree(rose_neigh);
+ 167      }
+ 168  }
+
+net/rose/rose_route.c (allocation site)
+
+  84      if (rose_neigh == NULL) {
+  85          rose_neigh = kmalloc_obj(*rose_neigh, GFP_ATOMIC);
+       ...
+ 100          refcount_set(&rose_neigh->use, 1);
+       ...
+ 107          if (rose_route->ndigis != 0) {
+ 108              rose_neigh->digipeat =
+->109                  kmalloc_obj(ax25_digi, GFP_ATOMIC);
+                  // <- allocates the 66-byte ax25_digi later freed and read
+       ...
+ 124          }
+ 125      }
+
+
+Tentative Analysis
+
+The crash is a KASAN slab-use-after-free: rose_t0timer_expiry() reads
+the freed rose_neigh->digipeat (an ax25_digi struct, 66 bytes) via
+ax25_send_frame() -> kmemdup().
+
+Commit d860d1faa6b2 ("net: rose: convert 'use' field to refcount_t")
+changed rose_timer_expiry() from merely decrementing the plain 'use'
+counter to calling rose_neigh_put(), which now frees rose_neigh (and
+its digipeat) when the refcount hits zero. The new rose_neigh_put()
+omits timer cancellation, so after it returns the t0timer embedded in
+the (now-freed) rose_neigh can still fire in the same TIMER_SOFTIRQ
+batch.
+
+The race on a single-CPU machine (the syzbot scenario) is purely
+sequential: rose_timer_expiry() fires first, frees the neigh; then
+rose_t0timer_expiry() fires next in the same run_timer_base batch with
+a dangling neigh pointer, passes neigh->digipeat to ax25_send_frame,
+and kmemdup triggers the KASAN report.
+
+Before d860d1faa6b2, rose_timer_expiry() never freed the neigh; the
+free was always performed by rose_remove_neigh() which called
+timer_delete_sync() on both timers before freeing. The refcount
+conversion introduced a new free path that missed this cancellation.
+
+
+Potential Solution
+
+Add timer_delete() calls for both ftimer and t0timer inside
+rose_neigh_put() before the kfree calls, mirroring what
+rose_remove_neigh() already does via timer_delete_sync(). The
+non-synchronous variant is required because rose_neigh_put() may be
+called from softirq context.
+
+   static inline void rose_neigh_put(struct rose_neigh *rose_neigh)
+   {
+       if (refcount_dec_and_test(&rose_neigh->use)) {
+           timer_delete(&rose_neigh->ftimer);
+           timer_delete(&rose_neigh->t0timer);
+           if (rose_neigh->ax25)
+               ax25_cb_put(rose_neigh->ax25);
+           kfree(rose_neigh->digipeat);
+           kfree(rose_neigh);
+       }
+   }
+
+
+More information
+
+Oops-Analysis: http://oops.fenrus.org/reports/lkml/69ef2847.170a0220.11de9.001a.GAE_google.com/
+Assisted-by: Copilot:claude-sonnet-4.6 linux-kernel-oops-x86.
