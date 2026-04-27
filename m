@@ -1,558 +1,268 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 297C42F4A18;
-	Mon, 27 Apr 2026 14:29:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777300171; cv=none; b=bjr0xANaoD5E53zeeiXvr0h4zDh9Kz6ggpArfmThE0NGsMtlNx9LTzZXdr+n42uMSrUTmdsDler3x77O3M90jKxSZfaqW5W2DPBuFHCqTWLBqLiyu1kbSG5sTgqmCBR4br8ugUOzR3QZYxIo2ExkCpIN/94YUf3O9jtibI+tgXk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777300171; c=relaxed/simple;
-	bh=Wl48KU7FFzY9tc+YJTHH50tO37f3gtqdY9BqM/ZabGA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=A68dRmCaICB/lkHURMzdhDCj7ibY0DVkxHgi5aD1PsDnwR8yCezFOw4dE74j9O63trwjxM0Q+1kXlR2OFE5/SMkgY0BrmpJssFIaSlUFI1bL0hNPXa7EE552KKHT+6+0oxmMOqbocyHdCwu0gtH/2CDBwVRcQeA5iqvICd9WWAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FRXPpZlD; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A90583D411A;
+	Mon, 27 Apr 2026 14:30:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777300204; cv=fail; b=YnyUpe8YJsKqBLqpcVnXonAEltm+Y1JMA1yNs3G+OZXvv4Tx/DJGWUljnyUr4qdpkxSpaHIWcIrUDrnf+5vLZYggT9++rDH8yhvIXizK+ecdKvvRFTAWhQj1dQKYfEH2UW5b1/NFLL3V5HvfYamcANdiUZgaqq384B6fHLsB6Sk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777300204; c=relaxed/simple;
+	bh=KMdpWVjclh+fvsCO7doj24N2KcfOCEuQeEsMrB+gLvo=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=IRGp3JaoxWpntBtA578orolEGoTtUlivPzW/LvMnEhh8P5AaBf2SkDKTIJPxFfqaEnZLJkf3fcztFb8uGEyT827OQCvl2lsnaTYipLNLFd1+GuqT6gC/Rx9RkVU4VzkP9O+YPBG1IDLXDz19WwojJlVbgihIkRM5UK/wlsCKqtg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XNbVrTPH; arc=fail smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FRXPpZlD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B8BDC2BCB4;
-	Mon, 27 Apr 2026 14:29:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777300170;
-	bh=Wl48KU7FFzY9tc+YJTHH50tO37f3gtqdY9BqM/ZabGA=;
-	h=From:To:Cc:Subject:Date:From;
-	b=FRXPpZlDCJPy1KTUYNDV/98kbRfznaGgF/hnO2PPhup9kUcOz6vqiKDmNFEaJ2E1o
-	 3N8fhOGopOGljrRdlbBmhMyvq3IgmBGnXDvEBjEjjvFA8EA9mRuONzB5UBGGsDgYxD
-	 cUu6ELVl41Ri5qlZff2NGV+CjpQqcaGgn69xKlAqfI3WQjvtuCdxS6QLu01jQuGUzf
-	 lFRA+BpKIC+bFj9ysC4xPruzXQ0LsE0SWg9z0e81C7FOBTcnPvPvPUk0nX/0+HAnUr
-	 rGZCo3mgNPySGdV53gLU++DqY3JD0v79IAVmQBdOizaPYuHQZwCEfmoCoVnZfONiOE
-	 UcqCpq1uew7cA==
-From: Arnd Bergmann <arnd@kernel.org>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Marco Crivellari <marco.crivellari@suse.com>,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-gpio@vger.kernel.org
-Subject: [PATCH] [v4] wiznet: convert to GPIO descriptors
-Date: Mon, 27 Apr 2026 16:28:29 +0200
-Message-Id: <20260427142924.2702598-1-arnd@kernel.org>
-X-Mailer: git-send-email 2.39.5
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XNbVrTPH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777300202; x=1808836202;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=KMdpWVjclh+fvsCO7doj24N2KcfOCEuQeEsMrB+gLvo=;
+  b=XNbVrTPHGgMhC5Xay4p4vpWCW9J3yH/RXNNiCFl075kO4yN25bCrrHP1
+   iIh5wQCQEbxaVS9RjvgmaaHjjWgt2Oiv9hOkVDoQ4rpXlhe32dav8N+MI
+   o/KUiyCNS9SLr34Z1Bkj068OkzutkCUg7JWxGqehc8PCfpHVVVx6HQ/zi
+   i28q9Z3ZbozEWkFK8D8EdsbtcVnV9LemBQle3dH8Qo9tTVFcI6W8FiYht
+   TKl8g9N8GabxGLF4CgRvvBGxiuFFamFqSIb5+dbfMcuVPpKT/W/vdnoQs
+   tCy/FQATB7b3o2qjGIxVGMOpgWm1lj/G4mHTX+Q2k/YPGwsXZd3/rR+vT
+   A==;
+X-CSE-ConnectionGUID: bYiHyw2DTXO31JQG6w06oA==
+X-CSE-MsgGUID: UsvF8p/hSbeZiYdsfTxRfw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="100845928"
+X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; 
+   d="scan'208";a="100845928"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 07:30:01 -0700
+X-CSE-ConnectionGUID: 33JD7j86S/e86V3PB+8VoA==
+X-CSE-MsgGUID: 7n2oy4UHSuaW/GD2g7l25A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,202,1770624000"; 
+   d="scan'208";a="271786073"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 07:30:01 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 27 Apr 2026 07:30:00 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Mon, 27 Apr 2026 07:30:00 -0700
+Received: from MW6PR02CU001.outbound.protection.outlook.com (52.101.48.29) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 27 Apr 2026 07:29:57 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=eYU8yloXDG+c2X+tZhngnIgsKg4sLRBvvIXkQny9/vq7kGsx6MxTFJXkbWpH9v4bqaoUkvTDFcfRUetPJChXMy6uP2aiKEP2BBIiO3j2WGB5SJPZ0XhnbSSVaK+5ROfCx1V8l+L8uRn9jzm3pfYlEorwI66zIP4WFpgapU5RxH+4I7yIgbqjeY2zZCs+nVxb6RaBW3ujys4cimRhPi1XOIgly88aNA4H1e2YB06D9OTBx0oER9r31f2TlNuS9NYzRrLJJQsmmUPil0RVWgn5yesKOwgUVSqzBpFIdYZKx3epop8uXxjP2AdXPtJQiJYVDZoUlTrUF4EsvasRxVhBxA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hs6XFdGNL3GVTabAOaEiOLYt/vOG9uPa2Gt5rDq5wY0=;
+ b=ZrFd+ObdOUuLSlrGFFIDq8JMyRpCGOBLQ9rGke1zqcODWX5yTy4WiQ9+XX9fE+qSMQPiohzkf6fJD3ybIiZCeOLwXFgFVpzNo2qLoSewIe2sfLCIZNiOxtBCNpIntimVL1scKHiLEh3r/E1o+pGan8KPWcqhITb8bzOiNLQhgUGERUSjfQJ7UsFDu+mGj9tSrUpypUxmoj1JTrSAd1w/bkdN46/dsMoIMCtcIUvk+OO4LzmYPG/wd/OhLUPZaeaU72Z2VfEcVj8G8OPa0Isui51pKyYEI4bIOTgUdPOPPT73j7E7TJ2O1z5BYbanQYjfAIS1upUSfrphJmzAzA1Glw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from IA0PR11MB7378.namprd11.prod.outlook.com (2603:10b6:208:432::8)
+ by DM3PPF4AE904FD9.namprd11.prod.outlook.com (2603:10b6:f:fc00::f1d) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.25; Mon, 27 Apr
+ 2026 14:29:51 +0000
+Received: from IA0PR11MB7378.namprd11.prod.outlook.com
+ ([fe80::7b0c:7df:21b8:dbbf]) by IA0PR11MB7378.namprd11.prod.outlook.com
+ ([fe80::7b0c:7df:21b8:dbbf%3]) with mapi id 15.20.9870.013; Mon, 27 Apr 2026
+ 14:29:51 +0000
+From: "Kubalewski, Arkadiusz" <arkadiusz.kubalewski@intel.com>
+To: "Oros, Petr" <poros@redhat.com>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>
+CC: "Oros, Petr" <poros@redhat.com>, "Nguyen, Anthony L"
+	<anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
+	<przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>, Jiri Pirko <jiri@resnulli.us>, Vadim Fedorenko
+	<vadim.fedorenko@linux.dev>, "Vecera, Ivan" <ivecera@redhat.com>, "Schmidt,
+ Michal" <mschmidt@redhat.com>, "Keller, Jacob E" <jacob.e.keller@intel.com>,
+	"Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>, "Rinitha, SX"
+	<sx.rinitha@intel.com>, "intel-wired-lan@lists.osuosl.org"
+	<intel-wired-lan@lists.osuosl.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH iwl-net v7 3/3] ice: add dpll peer notification for paired
+ SMA and U.FL pins
+Thread-Topic: [PATCH iwl-net v7 3/3] ice: add dpll peer notification for
+ paired SMA and U.FL pins
+Thread-Index: AQHcznrd26w2nzavMUWL7AhYacG7wrXzBdrw
+Date: Mon, 27 Apr 2026 14:29:51 +0000
+Message-ID: <IA0PR11MB7378830375A8B5DCF3046C2C9B362@IA0PR11MB7378.namprd11.prod.outlook.com>
+References: <20260417145907.696307-1-poros@redhat.com>
+ <20260417145907.696307-4-poros@redhat.com>
+In-Reply-To: <20260417145907.696307-4-poros@redhat.com>
+Accept-Language: en-US, pl-PL
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA0PR11MB7378:EE_|DM3PPF4AE904FD9:EE_
+x-ms-office365-filtering-correlation-id: 2aef7914-9e3e-41aa-83b6-08dea4697195
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024|38070700021|56012099003|18002099003|22082099003;
+x-microsoft-antispam-message-info: aANnpE9ct7WlPBsyDoL+XGhvrh+2SQC/cicQJwtNgqebaH7q2p27CSDCuUhu/SqLMYLKge7rDPro/yPPKJyHxXKSv/wRB+ioTjNmUCH77WQDZKhxgY2XLULgQg1OeEi5RqVMcZ5awDXhd6ZYQq3L33bcsBYswYwsilRBJbtYGxzLwNLYyWFSMRYcqp5SZh6wsgOQv33CkheNXPQTsdh2Q5w8afgjHPKAlUUbmndGmqhrn/AsnB9wQXfmgT1JmxlCDKCw63WBsWX+PQhuAu1ZrDXfq+QHNGFSBE+z9Vh30NPaYHxXmxc1SJ8mFme3yDICc6WYR1ckJRELS2+b2K6KkHcx70+uInt1azw9t8AqdBCvpD/VzL7x8RZqhUG416nNw7bnz0bT9FHYVPFy5unw9z4EyIow0Qi0c+K0cGo4B6gX0iPBynOMUY6fPm5/33W9xnyWxjVaIqCatAiP6qhsrNW36QOC9LcwqeMeAMfOz9x+5Qj4uBhoN8/X9WCIsJWeNF4jL7Id01eYY17Q6xo+WSLcLRFiXqpJd4dyFh+Hhlp5JQPEDx5se12u+jSrVvp/9+PSkokjs6BCBQs8sokSv3kQV7jHsiMP/yx+J0GgLI8Mr1uRUEyFKeiGdHPLwd7xQfslncC3Kr5tgnRXFSwhHLB+/POiuPE5z+Hp14Ps/MJ16OnWxiDzjGYjsYsrKJuYh4ck9WzuJV5TDzFCdjfgunlZcbCkvBIFiuwfH5a0FvSZxhra/Rm2FJBd7MQdasgSL3I6S4mvhqRjDYsYSqfZcK4eEeMfjBH+F4zC+StZWuk=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR11MB7378.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(38070700021)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?vtw34nHoO85TRc/HPJlanmFzbf6mVcT18uYQkbwKljskqvL0HCkfz2TU/J1D?=
+ =?us-ascii?Q?ghaQQcNtYplPx2wvCrwS9A9xuEODkc0TBhXiyr3BATvy6XvWhh3QL8bGqT97?=
+ =?us-ascii?Q?w/ovDWTsgTNHjucRHn6N3FbM4aw6Qlf9URH98+/Asq6r8G27nBMQ+h2AZ/72?=
+ =?us-ascii?Q?19Obd+REImZ9BXFPwQwU9j9iwHnAMc0vuwXhSa88J2oqhhMApk5VaNO82ol2?=
+ =?us-ascii?Q?3s2Ah0txPb1a0fj7RB+CuDTsAhQY6ZNNWvFMyZw/RA5z9UTVTb8HhdDRcVz5?=
+ =?us-ascii?Q?Zt4r/9HvvrryudFINfzLEtxNj9vRzuuQd1R1aBnYWDr8OPFdxRoV9vY6C329?=
+ =?us-ascii?Q?maWo4UZJj5nE71XX7doo80U3G0vx3gKNOtAdwAemrSRh+NG8nnSKjN+rW2BC?=
+ =?us-ascii?Q?yXOO2+z2NvSoY+LxXg834SpcaaJlc+B5dqSJlS7gYsqoDGmXKxlGDMFiVvSD?=
+ =?us-ascii?Q?3Q6J0OIQLvG8aI1ghOefCtGg4OITxDH3hGkxOb91PR+RPig+RFnUhB8XQCm/?=
+ =?us-ascii?Q?JRZgnfChrgGK+lvMUgQq6Ow3Ik8abSRIwFTB3LscAEtO5nDgEWMTDFqcIFgJ?=
+ =?us-ascii?Q?izv8s6ZuTfR41L2arOXsdNlbzoH/mTLjMpo41OFCVoYMDSDf4GIOjG07V9k9?=
+ =?us-ascii?Q?jHMxzdv8DyY8RRW9PXdIXhLPwcYyBJPOcOLEEMo4O08/NHP27uAS3+elSk00?=
+ =?us-ascii?Q?bF2q8iweo/v5mcvYQ40TkGlpTNz1SGSUrP+CEnpqY2wgrdfyIe9OWbA6pMec?=
+ =?us-ascii?Q?Cfn1I8DSkG5zM2/uH5qSIZstSY1zWeqOaFf8X2U80Qm9ZQCr8jFg0UNzAs1N?=
+ =?us-ascii?Q?iHka4LT7am6sHrCAkWhmbnxBcswzHA/4orBFj7BMZUTJsNYQJlZ8bofZAARP?=
+ =?us-ascii?Q?SWawkv/uxMzm5UuOgngV3goCwZhnOQG2Ab355ByK1sGIuUYkYUYOL2tiAfro?=
+ =?us-ascii?Q?vQbFh/kE6XKhPJQ5AOkDThJWIRA8Wms3sDWf3sQ2X1JHUdVPVq90M08GxjvF?=
+ =?us-ascii?Q?3SFIleNInp6wh5gQ9FKGG6o4ZBMwGyxBbNpv+YUsz2UVTpahQ4X+e4jbfRnn?=
+ =?us-ascii?Q?0eB+OG0Se7SWmffx/bHNjdFhHGcbYyVyTir1J4iBWwXjb6p6mPJ4IeoNVFSk?=
+ =?us-ascii?Q?CJmhR30r8ly1q5ur8za5I4qzw37fhLdSOYaI8FMr/YdqyQ+O9myAhz08gQvx?=
+ =?us-ascii?Q?zjApG5FkWaBvIVYoiyRlJLq0RLW1MDIMORinZsHbFqUQzCJwwWkKnc7JM4kI?=
+ =?us-ascii?Q?mCgM3Urq0RymhwEhrphKdzwiedAV71rZmtgX+qXgINAkwX0YEaIvnW54l9sQ?=
+ =?us-ascii?Q?n38XapA7CdXKyUbKuxQx23Z5Kcq23AcHz1uNqXEe5lHY5nxCiQCG2jkYQIAM?=
+ =?us-ascii?Q?lv1AHbmL/RXUqcMEg4RM75ki6VGsjoPrd4gxhPP6EM04kFRXc6R6ugvB7bO5?=
+ =?us-ascii?Q?p3ucWoYOXOtqjvTe8ylr2HcmP7LAHisQJWwckR5OtfMmqXfTCF1ls0OK+9Rk?=
+ =?us-ascii?Q?9PrvUvxlp2Jt/P5oCOIRT/WnbNwnWTbUMRUVK64//fUkPakwFhL5/nhvwvDK?=
+ =?us-ascii?Q?Qnok55P6hgoPwO99758T94kEPsbWmnxNgnbxFVGZNyuU+NE7lgNIXlHzc6vR?=
+ =?us-ascii?Q?WgDwLcZMSL0yXV7cvzMKsqufVC+RXC3SJLLSndbQvsztdysqzU+rX1rNk94u?=
+ =?us-ascii?Q?YV57VotdSWVbexkcsnmFcLU8QmeCHpu//3hbXTOKA7rF5XkkBdxXeSBMbftL?=
+ =?us-ascii?Q?T+niZhjcGvPT5vB0b77MSfF+fSM/q80=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Exchange-RoutingPolicyChecked: F8Zi8zWoIaRXCIyxO8mb648upZFJDJIYdTKYGi+nZqnvyAnwUapqt1Luzv8KR02VmmD7Uz/Negb3eKW63bIxNfQ3M3jm+vovaLIOfJpCwFJxIS0G23yB759obIRjLLXV9qPem3vzgRN+c3q+JejglZmOrCDSsn8I0fpO4+yJma/dlM+u5wp4lzxc12osAbPPoob0YSpoV4wAi6eEM61xnRwTzP0aav8BDOtlhZQqnX5mbg0cpS2YtGWe6J/Yh/Kv2s+V16bXNPg7sUibCEM6Jh6+N+RZgwgxsGg+toukq21OzvUDGtd7B5s7a2d2hyenLUAbfQIiANprPD+GYciXFA==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR11MB7378.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2aef7914-9e3e-41aa-83b6-08dea4697195
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Apr 2026 14:29:51.7075
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 3Fhal+ps7HerVaIz88VcGMsNn3JwzOZuD/4UQ/0O1xpVmjaRW6PyA2VhuBY96uZGDS4afw+YzoR4rMBjxJbDXWSHnwzSRf/TUxg1kSzGezA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PPF4AE904FD9
+X-OriginatorOrg: intel.com
 
-From: Arnd Bergmann <arnd@arndb.de>
+>From: Petr Oros <poros@redhat.com>
+>Sent: Friday, April 17, 2026 4:59 PM
+>
+>SMA and U.FL pins share physical signal paths in pairs (SMA1/U.FL1 and
+>SMA2/U.FL2).  When one pin's state changes via a PCA9575 GPIO write,
+>the paired pin's state also changes, but no notification is sent for
+>the peer pin.  Userspace consumers monitoring the peer via dpll netlink
+>subscribe never learn about the update.
+>
+>Add ice_dpll_sw_pin_notify_peer() which sends a change notification for
+>the paired SW pin.  Call it from ice_dpll_pin_sma_direction_set(),
+>ice_dpll_sma_pin_state_set(), and ice_dpll_ufl_pin_state_set() after
+>pf->dplls.lock is released.  Use __dpll_pin_change_ntf() because
+>dpll_lock is still held by the dpll netlink layer (dpll_pin_pre_doit).
+>
+>Fixes: 2dd5d03c77e2 ("ice: redesign dpll sma/u.fl pins control")
 
-The w5100/w5300 drivers only support probing with old platform data in
-MMIO mode, or probing with DT in SPI mode. There are no users of this
-platform data in tree, and from the git history it appears that the only
-users of MMIO mode were on the (since removed) blackfin architecture.
+LGTM,
+Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
 
-Remove the platform data option, as it's unlikely to still be needed, and
-change the internal operation to GPIO descriptors, making the behavior
-the same for SPI and MMIO mode. The other data in the platform_data
-structure is the MAC address, so make that also handled the same for both.
-
-It would probably be possible to just remove the MMIO mode driver
-completely, but it seems fine otherwise, and fixing it to use the modern
-interface seems easy enough.
-
-The CONFIG_WIZNET_BUS_SHIFT value was apparently meant to be set
-at compile time to a machine specific value. This was always broken
-for multiplatform configurations with conflicting requirements, and
-in the mainline kernel it was set to 0 anyway. Leave it defined
-locally as 0 but rename it to something without the CONFIG_ prefix.
-
-Acked-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/all/20230127095839.3266452-1-arnd@kernel.org/
----
-v4: rebase to 7.1
-v3: include linux/gpio/consumer.h to avoid build failure without GPIOLIB
-v2: replace CONFIG_WIZNET_BUS_SHIFT with a constant
----
- .../devicetree/bindings/net/wiznet,w5x00.txt  |  4 +-
- drivers/net/ethernet/wiznet/w5100-spi.c       |  9 +--
- drivers/net/ethernet/wiznet/w5100.c           | 61 ++++++++++---------
- drivers/net/ethernet/wiznet/w5100.h           |  3 +-
- drivers/net/ethernet/wiznet/w5300.c           | 54 ++++++++--------
- include/linux/platform_data/wiznet.h          | 23 -------
- 6 files changed, 67 insertions(+), 87 deletions(-)
- delete mode 100644 include/linux/platform_data/wiznet.h
-
-diff --git a/Documentation/devicetree/bindings/net/wiznet,w5x00.txt b/Documentation/devicetree/bindings/net/wiznet,w5x00.txt
-index e9665798c4be..e8a802d65817 100644
---- a/Documentation/devicetree/bindings/net/wiznet,w5x00.txt
-+++ b/Documentation/devicetree/bindings/net/wiznet,w5x00.txt
-@@ -1,6 +1,6 @@
- * Wiznet w5x00
- 
--This is a standalone 10/100 MBit Ethernet controller with SPI interface.
-+This is a standalone 10/100 MBit Ethernet controller with SPI or MMIO interface.
- 
- For each device connected to a SPI bus, define a child node within
- the SPI master node.
-@@ -9,6 +9,7 @@ Required properties:
- - compatible: Should be one of the following strings:
- 	      "wiznet,w5100"
- 	      "wiznet,w5200"
-+	      "wiznet,w5300"
- 	      "wiznet,w5500"
- - reg: Specify the SPI chip select the chip is wired to.
- - interrupts: Specify the interrupt index within the interrupt controller (referred
-@@ -25,6 +26,7 @@ Optional properties:
-   According to the w5500 datasheet, the chip allows a maximum of 80 MHz, however,
-   board designs may need to limit this value.
- - local-mac-address: See ethernet.txt in the same directory.
-+- link-gpios: a GPIO line used for the link detection interrupt
- 
- 
- Example (for Raspberry Pi with pin control stuff for GPIO irq):
-diff --git a/drivers/net/ethernet/wiznet/w5100-spi.c b/drivers/net/ethernet/wiznet/w5100-spi.c
-index 990a3cce8c0f..0626fcb8db5a 100644
---- a/drivers/net/ethernet/wiznet/w5100-spi.c
-+++ b/drivers/net/ethernet/wiznet/w5100-spi.c
-@@ -422,14 +422,7 @@ static int w5100_spi_probe(struct spi_device *spi)
- {
- 	const struct w5100_ops *ops;
- 	kernel_ulong_t driver_data;
--	const void *mac = NULL;
--	u8 tmpmac[ETH_ALEN];
- 	int priv_size;
--	int ret;
--
--	ret = of_get_mac_address(spi->dev.of_node, tmpmac);
--	if (!ret)
--		mac = tmpmac;
- 
- 	driver_data = (uintptr_t)spi_get_device_match_data(spi);
- 
-@@ -450,7 +443,7 @@ static int w5100_spi_probe(struct spi_device *spi)
- 		return -EINVAL;
- 	}
- 
--	return w5100_probe(&spi->dev, ops, priv_size, mac, spi->irq, -EINVAL);
-+	return w5100_probe(&spi->dev, ops, priv_size, spi->irq);
- }
- 
- static void w5100_spi_remove(struct spi_device *spi)
-diff --git a/drivers/net/ethernet/wiznet/w5100.c b/drivers/net/ethernet/wiznet/w5100.c
-index c5424d882135..62b2f24106cd 100644
---- a/drivers/net/ethernet/wiznet/w5100.c
-+++ b/drivers/net/ethernet/wiznet/w5100.c
-@@ -11,7 +11,6 @@
- #include <linux/netdevice.h>
- #include <linux/etherdevice.h>
- #include <linux/platform_device.h>
--#include <linux/platform_data/wiznet.h>
- #include <linux/ethtool.h>
- #include <linux/skbuff.h>
- #include <linux/types.h>
-@@ -23,7 +22,8 @@
- #include <linux/ioport.h>
- #include <linux/interrupt.h>
- #include <linux/irq.h>
--#include <linux/gpio.h>
-+#include <linux/gpio/consumer.h>
-+#include <linux/of_net.h>
- 
- #include "w5100.h"
- 
-@@ -139,6 +139,10 @@ MODULE_LICENSE("GPL");
- #define W5500_RX_MEM_START	0x30000
- #define W5500_RX_MEM_SIZE	0x04000
- 
-+#define WIZNET_BUS_SHIFT 0	/* possibly machine specific */
-+
-+#define W5100_BUS_DIRECT_SIZE  (0x8000 << WIZNET_BUS_SHIFT)
-+
- /*
-  * Device driver private data structure
-  */
-@@ -157,7 +161,7 @@ struct w5100_priv {
- 
- 	int irq;
- 	int link_irq;
--	int link_gpio;
-+	struct gpio_desc *link_gpio;
- 
- 	struct napi_struct napi;
- 	struct net_device *ndev;
-@@ -204,13 +208,13 @@ static inline void __iomem *w5100_mmio(struct net_device *ndev)
-  */
- static inline int w5100_read_direct(struct net_device *ndev, u32 addr)
- {
--	return ioread8(w5100_mmio(ndev) + (addr << CONFIG_WIZNET_BUS_SHIFT));
-+	return ioread8(w5100_mmio(ndev) + (addr << WIZNET_BUS_SHIFT));
- }
- 
- static inline int __w5100_write_direct(struct net_device *ndev, u32 addr,
- 				       u8 data)
- {
--	iowrite8(data, w5100_mmio(ndev) + (addr << CONFIG_WIZNET_BUS_SHIFT));
-+	iowrite8(data, w5100_mmio(ndev) + (addr << WIZNET_BUS_SHIFT));
- 
- 	return 0;
- }
-@@ -729,8 +733,8 @@ static u32 w5100_get_link(struct net_device *ndev)
- {
- 	struct w5100_priv *priv = netdev_priv(ndev);
- 
--	if (gpio_is_valid(priv->link_gpio))
--		return !!gpio_get_value(priv->link_gpio);
-+	if (priv->link_gpio)
-+		return !!gpiod_get_value(priv->link_gpio);
- 
- 	return 1;
- }
-@@ -943,7 +947,7 @@ static irqreturn_t w5100_detect_link(int irq, void *ndev_instance)
- 	struct w5100_priv *priv = netdev_priv(ndev);
- 
- 	if (netif_running(ndev)) {
--		if (gpio_get_value(priv->link_gpio) != 0) {
-+		if (gpiod_get_value(priv->link_gpio) != 0) {
- 			netif_info(priv, link, ndev, "link is up\n");
- 			netif_carrier_on(ndev);
- 		} else {
-@@ -998,8 +1002,8 @@ static int w5100_open(struct net_device *ndev)
- 	w5100_hw_start(priv);
- 	napi_enable(&priv->napi);
- 	netif_start_queue(ndev);
--	if (!gpio_is_valid(priv->link_gpio) ||
--	    gpio_get_value(priv->link_gpio) != 0)
-+	if (!priv->link_gpio ||
-+	    gpiod_get_value(priv->link_gpio) != 0)
- 		netif_carrier_on(ndev);
- 	return 0;
- }
-@@ -1037,15 +1041,10 @@ static const struct net_device_ops w5100_netdev_ops = {
- 
- static int w5100_mmio_probe(struct platform_device *pdev)
- {
--	struct wiznet_platform_data *data = dev_get_platdata(&pdev->dev);
--	const void *mac_addr = NULL;
- 	struct resource *mem;
- 	const struct w5100_ops *ops;
- 	int irq;
- 
--	if (data && is_valid_ether_addr(data->mac_addr))
--		mac_addr = data->mac_addr;
--
- 	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	if (!mem)
- 		return -EINVAL;
-@@ -1058,8 +1057,7 @@ static int w5100_mmio_probe(struct platform_device *pdev)
- 	if (irq < 0)
- 		return irq;
- 
--	return w5100_probe(&pdev->dev, ops, sizeof(struct w5100_mmio_priv),
--			   mac_addr, irq, data ? data->link_gpio : -EINVAL);
-+	return w5100_probe(&pdev->dev, ops, sizeof(struct w5100_mmio_priv), irq);
- }
- 
- static void w5100_mmio_remove(struct platform_device *pdev)
-@@ -1075,13 +1073,13 @@ void *w5100_ops_priv(const struct net_device *ndev)
- EXPORT_SYMBOL_GPL(w5100_ops_priv);
- 
- int w5100_probe(struct device *dev, const struct w5100_ops *ops,
--		int sizeof_ops_priv, const void *mac_addr, int irq,
--		int link_gpio)
-+		int sizeof_ops_priv, int irq)
- {
- 	struct w5100_priv *priv;
- 	struct net_device *ndev;
- 	int err;
- 	size_t alloc_size;
-+	u8 tmpmac[ETH_ALEN];
- 
- 	alloc_size = sizeof(*priv);
- 	if (sizeof_ops_priv) {
-@@ -1127,7 +1125,9 @@ int w5100_probe(struct device *dev, const struct w5100_ops *ops,
- 	priv->ndev = ndev;
- 	priv->ops = ops;
- 	priv->irq = irq;
--	priv->link_gpio = link_gpio;
-+	priv->link_gpio = gpiod_get_optional(dev, "link", GPIOD_IN);
-+	if (IS_ERR(priv->link_gpio))
-+		return PTR_ERR(priv->link_gpio);
- 
- 	ndev->netdev_ops = &w5100_netdev_ops;
- 	ndev->ethtool_ops = &w5100_ethtool_ops;
-@@ -1154,8 +1154,9 @@ int w5100_probe(struct device *dev, const struct w5100_ops *ops,
- 	INIT_WORK(&priv->setrx_work, w5100_setrx_work);
- 	INIT_WORK(&priv->restart_work, w5100_restart_work);
- 
--	if (mac_addr)
--		eth_hw_addr_set(ndev, mac_addr);
-+	err = of_get_mac_address(dev->of_node, tmpmac);
-+	if (!err)
-+		eth_hw_addr_set(ndev, tmpmac);
- 	else
- 		eth_hw_addr_random(ndev);
- 
-@@ -1180,7 +1181,7 @@ int w5100_probe(struct device *dev, const struct w5100_ops *ops,
- 	if (err)
- 		goto err_hw;
- 
--	if (gpio_is_valid(priv->link_gpio)) {
-+	if (priv->link_gpio) {
- 		char *link_name = devm_kzalloc(dev, 16, GFP_KERNEL);
- 
- 		if (!link_name) {
-@@ -1188,12 +1189,14 @@ int w5100_probe(struct device *dev, const struct w5100_ops *ops,
- 			goto err_gpio;
- 		}
- 		snprintf(link_name, 16, "%s-link", netdev_name(ndev));
--		priv->link_irq = gpio_to_irq(priv->link_gpio);
-+		priv->link_irq = gpiod_to_irq(priv->link_gpio);
- 		if (request_any_context_irq(priv->link_irq, w5100_detect_link,
- 					    IRQF_TRIGGER_RISING |
- 					    IRQF_TRIGGER_FALLING,
--					    link_name, priv->ndev) < 0)
--			priv->link_gpio = -EINVAL;
-+					    link_name, priv->ndev) < 0) {
-+			gpiod_put(priv->link_gpio);
-+			priv->link_gpio = NULL;
-+		}
- 	}
- 
- 	return 0;
-@@ -1217,7 +1220,7 @@ void w5100_remove(struct device *dev)
- 
- 	w5100_hw_reset(priv);
- 	free_irq(priv->irq, ndev);
--	if (gpio_is_valid(priv->link_gpio))
-+	if (priv->link_gpio)
- 		free_irq(priv->link_irq, ndev);
- 
- 	flush_work(&priv->setrx_work);
-@@ -1254,8 +1257,8 @@ static int w5100_resume(struct device *dev)
- 		w5100_hw_start(priv);
- 
- 		netif_device_attach(ndev);
--		if (!gpio_is_valid(priv->link_gpio) ||
--		    gpio_get_value(priv->link_gpio) != 0)
-+		if (!priv->link_gpio ||
-+		    gpiod_get_value(priv->link_gpio) != 0)
- 			netif_carrier_on(ndev);
- 	}
- 	return 0;
-diff --git a/drivers/net/ethernet/wiznet/w5100.h b/drivers/net/ethernet/wiznet/w5100.h
-index 481af3b6d9e8..013ef2835115 100644
---- a/drivers/net/ethernet/wiznet/w5100.h
-+++ b/drivers/net/ethernet/wiznet/w5100.h
-@@ -29,8 +29,7 @@ struct w5100_ops {
- void *w5100_ops_priv(const struct net_device *ndev);
- 
- int w5100_probe(struct device *dev, const struct w5100_ops *ops,
--		int sizeof_ops_priv, const void *mac_addr, int irq,
--		int link_gpio);
-+		int sizeof_ops_priv, int irq);
- void w5100_remove(struct device *dev);
- 
- extern const struct dev_pm_ops w5100_pm_ops;
-diff --git a/drivers/net/ethernet/wiznet/w5300.c b/drivers/net/ethernet/wiznet/w5300.c
-index 3e711dea3b2c..303c04cb7fc4 100644
---- a/drivers/net/ethernet/wiznet/w5300.c
-+++ b/drivers/net/ethernet/wiznet/w5300.c
-@@ -12,7 +12,6 @@
- #include <linux/netdevice.h>
- #include <linux/etherdevice.h>
- #include <linux/platform_device.h>
--#include <linux/platform_data/wiznet.h>
- #include <linux/ethtool.h>
- #include <linux/skbuff.h>
- #include <linux/types.h>
-@@ -24,7 +23,8 @@
- #include <linux/ioport.h>
- #include <linux/interrupt.h>
- #include <linux/irq.h>
--#include <linux/gpio.h>
-+#include <linux/gpio/consumer.h>
-+#include <linux/of_net.h>
- 
- #define DRV_NAME	"w5300"
- #define DRV_VERSION	"2012-04-04"
-@@ -80,6 +80,10 @@ MODULE_LICENSE("GPL");
- #define W5300_S0_RX_FIFO	0x0230	/* S0 Receive FIFO */
- #define W5300_REGS_LEN		0x0400
- 
-+#define WIZNET_BUS_SHIFT 0
-+
-+#define W5300_BUS_DIRECT_SIZE  (0x0400 << WIZNET_BUS_SHIFT)
-+
- /*
-  * Device driver private data structure
-  */
-@@ -91,7 +95,7 @@ struct w5300_priv {
- 	void (*write)(struct w5300_priv *priv, u16 addr, u16 data);
- 	int irq;
- 	int link_irq;
--	int link_gpio;
-+	struct gpio_desc *link_gpio;
- 
- 	struct napi_struct napi;
- 	struct net_device *ndev;
-@@ -113,13 +117,13 @@ struct w5300_priv {
-  */
- static inline u16 w5300_read_direct(struct w5300_priv *priv, u16 addr)
- {
--	return ioread16(priv->base + (addr << CONFIG_WIZNET_BUS_SHIFT));
-+	return ioread16(priv->base + (addr << WIZNET_BUS_SHIFT));
- }
- 
- static inline void w5300_write_direct(struct w5300_priv *priv,
- 				      u16 addr, u16 data)
- {
--	iowrite16(data, priv->base + (addr << CONFIG_WIZNET_BUS_SHIFT));
-+	iowrite16(data, priv->base + (addr << WIZNET_BUS_SHIFT));
- }
- 
- /*
-@@ -292,8 +296,8 @@ static u32 w5300_get_link(struct net_device *ndev)
- {
- 	struct w5300_priv *priv = netdev_priv(ndev);
- 
--	if (gpio_is_valid(priv->link_gpio))
--		return !!gpio_get_value(priv->link_gpio);
-+	if (priv->link_gpio)
-+		return !!gpiod_get_value(priv->link_gpio);
- 
- 	return 1;
- }
-@@ -442,7 +446,7 @@ static irqreturn_t w5300_detect_link(int irq, void *ndev_instance)
- 	struct w5300_priv *priv = netdev_priv(ndev);
- 
- 	if (netif_running(ndev)) {
--		if (gpio_get_value(priv->link_gpio) != 0) {
-+		if (gpiod_get_value(priv->link_gpio) != 0) {
- 			netif_info(priv, link, ndev, "link is up\n");
- 			netif_carrier_on(ndev);
- 		} else {
-@@ -485,8 +489,8 @@ static int w5300_open(struct net_device *ndev)
- 	w5300_hw_start(priv);
- 	napi_enable(&priv->napi);
- 	netif_start_queue(ndev);
--	if (!gpio_is_valid(priv->link_gpio) ||
--	    gpio_get_value(priv->link_gpio) != 0)
-+	if (!priv->link_gpio ||
-+	    gpiod_get_value(priv->link_gpio) != 0)
- 		netif_carrier_on(ndev);
- 	return 0;
- }
-@@ -524,7 +528,6 @@ static const struct net_device_ops w5300_netdev_ops = {
- 
- static int w5300_hw_probe(struct platform_device *pdev)
- {
--	struct wiznet_platform_data *data = dev_get_platdata(&pdev->dev);
- 	struct net_device *ndev = platform_get_drvdata(pdev);
- 	struct w5300_priv *priv = netdev_priv(ndev);
- 	const char *name = netdev_name(ndev);
-@@ -533,11 +536,9 @@ static int w5300_hw_probe(struct platform_device *pdev)
- 	int irq;
- 	int ret;
- 
--	if (data && is_valid_ether_addr(data->mac_addr)) {
--		eth_hw_addr_set(ndev, data->mac_addr);
--	} else {
--		eth_hw_addr_random(ndev);
--	}
-+        ret = of_get_ethdev_address(pdev->dev.of_node, ndev);
-+        if (ret)
-+                eth_hw_addr_random(ndev);
- 
- 	priv->base = devm_platform_get_and_ioremap_resource(pdev, 0, &mem);
- 	if (IS_ERR(priv->base))
-@@ -568,17 +569,22 @@ static int w5300_hw_probe(struct platform_device *pdev)
- 		return ret;
- 	priv->irq = irq;
- 
--	priv->link_gpio = data ? data->link_gpio : -EINVAL;
--	if (gpio_is_valid(priv->link_gpio)) {
-+	priv->link_gpio = gpiod_get_optional(&pdev->dev, "link", GPIOD_IN);
-+	if (IS_ERR(priv->link_gpio))
-+		return PTR_ERR(priv->link_gpio);
-+
-+	if (priv->link_gpio) {
- 		char *link_name = devm_kzalloc(&pdev->dev, 16, GFP_KERNEL);
- 		if (!link_name)
- 			return -ENOMEM;
- 		snprintf(link_name, 16, "%s-link", name);
--		priv->link_irq = gpio_to_irq(priv->link_gpio);
-+		priv->link_irq = gpiod_to_irq(priv->link_gpio);
- 		if (request_any_context_irq(priv->link_irq, w5300_detect_link,
- 				IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING,
--				link_name, priv->ndev) < 0)
--			priv->link_gpio = -EINVAL;
-+				link_name, priv->ndev) < 0) {
-+			priv->link_gpio = NULL;
-+			gpiod_put(priv->link_gpio);
-+		}
- 	}
- 
- 	netdev_info(ndev, "at 0x%llx irq %d\n", (u64)mem->start, irq);
-@@ -633,7 +639,7 @@ static void w5300_remove(struct platform_device *pdev)
- 
- 	w5300_hw_reset(priv);
- 	free_irq(priv->irq, ndev);
--	if (gpio_is_valid(priv->link_gpio))
-+	if (priv->link_gpio)
- 		free_irq(priv->link_irq, ndev);
- 
- 	unregister_netdev(ndev);
-@@ -665,8 +671,8 @@ static int w5300_resume(struct device *dev)
- 		w5300_hw_start(priv);
- 
- 		netif_device_attach(ndev);
--		if (!gpio_is_valid(priv->link_gpio) ||
--		    gpio_get_value(priv->link_gpio) != 0)
-+		if (!priv->link_gpio ||
-+		    gpiod_get_value(priv->link_gpio) != 0)
- 			netif_carrier_on(ndev);
- 	}
- 	return 0;
-diff --git a/include/linux/platform_data/wiznet.h b/include/linux/platform_data/wiznet.h
-deleted file mode 100644
-index 1154c4db8a13..000000000000
---- a/include/linux/platform_data/wiznet.h
-+++ /dev/null
-@@ -1,23 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0-or-later */
--/*
-- * Ethernet driver for the WIZnet W5x00 chip.
-- */
--
--#ifndef PLATFORM_DATA_WIZNET_H
--#define PLATFORM_DATA_WIZNET_H
--
--#include <linux/if_ether.h>
--
--struct wiznet_platform_data {
--	int	link_gpio;
--	u8	mac_addr[ETH_ALEN];
--};
--
--#ifndef CONFIG_WIZNET_BUS_SHIFT
--#define CONFIG_WIZNET_BUS_SHIFT 0
--#endif
--
--#define W5100_BUS_DIRECT_SIZE	(0x8000 << CONFIG_WIZNET_BUS_SHIFT)
--#define W5300_BUS_DIRECT_SIZE	(0x0400 << CONFIG_WIZNET_BUS_SHIFT)
--
--#endif /* PLATFORM_DATA_WIZNET_H */
--- 
-2.39.5
+>Signed-off-by: Petr Oros <poros@redhat.com>
+>---
+> drivers/net/ethernet/intel/ice/ice_dpll.c | 32 +++++++++++++++++++++++
+> 1 file changed, 32 insertions(+)
+>
+>diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c
+>b/drivers/net/ethernet/intel/ice/ice_dpll.c
+>index 11b942b83500fb..be72a076f7a15c 100644
+>--- a/drivers/net/ethernet/intel/ice/ice_dpll.c
+>+++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
+>@@ -1154,6 +1154,32 @@ ice_dpll_input_state_get(const struct dpll_pin
+>*pin, void *pin_priv,
+> 				      extack, ICE_DPLL_PIN_TYPE_INPUT);
+> }
+>
+>+/**
+>+ * ice_dpll_sw_pin_notify_peer - notify the paired SW pin after a state
+>change
+>+ * @d: pointer to dplls struct
+>+ * @changed: the SW pin that was explicitly changed (already notified by
+>dpll core)
+>+ *
+>+ * SMA and U.FL pins share physical signal paths in pairs (SMA1/U.FL1 and
+>+ * SMA2/U.FL2).  When one pin's routing changes via the PCA9575 GPIO
+>+ * expander, the paired pin's state may also change.  Send a change
+>+ * notification for the peer pin so userspace consumers monitoring the
+>+ * peer via dpll netlink learn about the update.
+>+ *
+>+ * Context: Called from dpll_pin_ops callbacks after pf->dplls.lock is
+>+ *          released.  Uses __dpll_pin_change_ntf() because dpll_lock is
+>+ *          still held by the dpll netlink layer.
+>+ */
+>+static void ice_dpll_sw_pin_notify_peer(struct ice_dplls *d,
+>+					struct ice_dpll_pin *changed)
+>+{
+>+	struct ice_dpll_pin *peer;
+>+
+>+	peer =3D (changed >=3D d->sma && changed < d->sma + ICE_DPLL_PIN_SW_NUM)
+>?
+>+		&d->ufl[changed->idx] : &d->sma[changed->idx];
+>+	if (peer->pin)
+>+		__dpll_pin_change_ntf(peer->pin);
+>+}
+>+
+> /**
+>  * ice_dpll_sma_direction_set - set direction of SMA pin
+>  * @p: pointer to a pin
+>@@ -1344,6 +1370,8 @@ ice_dpll_ufl_pin_state_set(const struct dpll_pin
+>*pin, void *pin_priv,
+>
+> unlock:
+> 	mutex_unlock(&pf->dplls.lock);
+>+	if (!ret)
+>+		ice_dpll_sw_pin_notify_peer(&pf->dplls, p);
+>
+> 	return ret;
+> }
+>@@ -1462,6 +1490,8 @@ ice_dpll_sma_pin_state_set(const struct dpll_pin
+>*pin, void *pin_priv,
+>
+> unlock:
+> 	mutex_unlock(&pf->dplls.lock);
+>+	if (!ret)
+>+		ice_dpll_sw_pin_notify_peer(&pf->dplls, sma);
+>
+> 	return ret;
+> }
+>@@ -1657,6 +1687,8 @@ ice_dpll_pin_sma_direction_set(const struct dpll_pin
+>*pin, void *pin_priv,
+> 	mutex_lock(&pf->dplls.lock);
+> 	ret =3D ice_dpll_sma_direction_set(p, direction, extack);
+> 	mutex_unlock(&pf->dplls.lock);
+>+	if (!ret)
+>+		ice_dpll_sw_pin_notify_peer(&pf->dplls, p);
+>
+> 	return ret;
+> }
+>--
+>2.52.0
 
