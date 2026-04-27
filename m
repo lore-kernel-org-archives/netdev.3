@@ -1,144 +1,137 @@
-Received: from mail-oa1-f80.google.com (mail-oa1-f80.google.com [209.85.160.80])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 939B83E314C
-	for <netdev@vger.kernel.org>; Mon, 27 Apr 2026 17:27:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2DA3DA7ED;
+	Mon, 27 Apr 2026 17:27:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777310851; cv=none; b=kWC42o+lHHEg4xyk7CJbvhbDdQb0JEc1hIIb8Kym3nWqI9d4SLzkgiIpe2J9lDcVTFnXEeFvkb39JhPeu1NeQkzVAbIX7WIxGPZvRbOy3QNRRN7c2/ahaEQNiwtB6wCoxs+yxrKDY7zTDgGo4ZbXk5rc5vQqOdtMxj2IR+0W6tY=
+	t=1777310867; cv=none; b=Q3NYmo05o5HZXqxISYJc+jmPWpkElQnqJxY2W/3sZ3XGicT0lxhkW5LaioIG2iy1COh4EUN6gpMLOfDKWiqDXd3lZ0I8YipIg6kwkQwETVEI59rtKY7cD1j7r1t1ywaS8hlhilTtNtybSgat1DXOufMdjvUviOX2/uRzuMW1p04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777310851; c=relaxed/simple;
-	bh=cshR2R8EYWLHnttddvuQPhrhTqxK3mfBoXOPWgeDAtI=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=fE3+lWIk8M8IlB79ngd3gPqW1OKcyYMMsOCxbXVimynBLYjUJEG9xVWpMTg86mWEcvzBCf0noEmcpLJgLoZ/NT9gg517Uk0mgOQDt1EPpLJRhNwn9/fgqvag+gn4PvgpI21vMguqlNueH1Sg9QhtiOcfcPYwwR3aWoXCd49He4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.160.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oa1-f80.google.com with SMTP id 586e51a60fabf-40ea48ccbd2so5972492fac.3
-        for <netdev@vger.kernel.org>; Mon, 27 Apr 2026 10:27:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777310848; x=1777915648;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=CYjopPpYaJxYSiyLuTK+YXWn9hsUD1ElXWVwEnYsnlo=;
-        b=UoOaALZBTEqGilYZMKoTmL2NDSeK/GVNZfB5yqumjBn5G7sH2fyekG8qnHePqLgMhk
-         /uEDMQ+7upnZnV2le4cu9UHEGts0M5yr728iebx5wB6hXhwrkaOGDUr1k6OnB4ivOlcE
-         gkOzO2vXNTVvNGozHrCvChiYfkQNAI+hBUghRPcAcCcZaOIEAR3UeG3+G5M6qoP9laBy
-         m/EMr+k8/R0jRrLD7LjSUyi3A7jDjYwzEOwHgbvR0QiHYWQUol3YduBnUKxleMeylx64
-         gsvFOIXiPXxb60W1Vj0mutkfLhCk5GV1bKdHd36j1KjX57JWuJxA26/gahrQ7lWD7TZr
-         R2jA==
-X-Forwarded-Encrypted: i=1; AFNElJ/LX+Lr29K4fMxbP+s9SEF3ctCJBcZyXpqECVPtAmzsnxkSsnbnZYS+YZt+UKPlmL3Up2W9sjk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy0xrJpt9/7L0rthyd4zKKb45LqdfVh+7kGlA9y+6arIRamNtoG
-	Vwz73bVHgYtuOTWWEYe9VECBmOYxpeyhB6KVkxd30KO9k9Hcm1rj24LCOhh3GbsLveC/dCv70eM
-	RvtqLkjThrXpb5vUsg7/IhpnFgh93nhrHH0/xu2l0hGfUmvBYLuCsB5ZbE+I=
+	s=arc-20240116; t=1777310867; c=relaxed/simple;
+	bh=lffQnEF2HxPa86nR073wmKFncHxsvNGQFc1fCjNgYos=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AzMGX48rsSKhknSHm15KeFY+0a5dsD9tnniJejq3fgxGEyyEXh+GS4ZMg5N7zbYkJ2qpfU20Ux3qrjHDbhBEVH7WkbQfgTXOg++aEdh9q3zYFqUo2UDo4BFBbHdeYpE/XcqH+LTK5J4Vr1iXeu3jXzq2fUgj/Z5iMJ/5kaCxl9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FQWh91jQ; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FQWh91jQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89740C19425;
+	Mon, 27 Apr 2026 17:27:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777310867;
+	bh=lffQnEF2HxPa86nR073wmKFncHxsvNGQFc1fCjNgYos=;
+	h=From:To:Cc:Subject:Date:From;
+	b=FQWh91jQO/zC/C+ji8OmIrTTTUN3CZckMtGiKZREDIZs+oHlCiYRnfeReTMhoBRFM
+	 ZA/EykxErVe9XfPJB2laIdM0V4eO1pWY7QImwz9cl9AzutYCb/m60MVWJ6ZOm1nrcd
+	 A0kduFH9/hKVNDewi7xjH4NuO+1y8zqlaeJxsUH8ouvlF7lPj2IbA8ISvS/+S3kjQp
+	 46WNoddh2xS/Gi5xZaEC35rCJUNFUMCDiwfWVfDp8xWGDHBEs9KJs3mNQp7AMtie4+
+	 +AmOFE4hzvrqn11sCbuO04tc0Z8OttaOt0/tWtgct38IN+9bmvU9fwSFKCGuPATRo/
+	 yZYZMj5HxFGuw==
+From: Eric Biggers <ebiggers@kernel.org>
+To: netdev@vger.kernel.org
+Cc: linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Eric Dumazet <edumazet@google.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	"Jason A . Donenfeld" <Jason@zx2c4.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Dmitry Safonov <0x7f454c46@gmail.com>,
+	Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH net-next v2 0/5] Reimplement TCP-AO using crypto library
+Date: Mon, 27 Apr 2026 10:27:22 -0700
+Message-ID: <20260427172727.9310-1-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:1987:b0:696:21ad:a4f0 with SMTP id
- 006d021491bc7-69621ada98fmr10066287eaf.36.1777310848618; Mon, 27 Apr 2026
- 10:27:28 -0700 (PDT)
-Date: Mon, 27 Apr 2026 10:27:28 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69ef9c80.050a0220.18b4f.0005.GAE@google.com>
-Subject: [syzbot] [lvs?] UBSAN: shift-out-of-bounds in ip_vs_rht_desired_size
-From: syzbot <syzbot+217f1db9c791e27fe54a@syzkaller.appspotmail.com>
-To: coreteam@netfilter.org, davem@davemloft.net, edumazet@google.com, 
-	fw@strlen.de, horms@verge.net.au, ja@ssi.bg, kuba@kernel.org, 
-	linux-kernel@vger.kernel.org, lvs-devel@vger.kernel.org, 
-	netdev@vger.kernel.org, netfilter-devel@vger.kernel.org, pabeni@redhat.com, 
-	pablo@netfilter.org, phil@nwl.cc, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hello,
+This series can also be retrieved from:
 
-syzbot found the following issue on:
+    git fetch https://git.kernel.org/pub/scm/linux/kernel/git/ebiggers/linux.git tcp-ao-v2
 
-HEAD commit:    e728258debd5 Merge tag 'net-7.1-rc1' of git://git.kernel.o..
-git tree:       net-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=169022ce580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=ca77bfc4078c8193
-dashboard link: https://syzkaller.appspot.com/bug?extid=217f1db9c791e27fe54a
-compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+This series is targeting net-next for 7.2.  To make this series
+self-contained in the networking code, I dropped the patches that remove
+support for transformation cloning from the crypto API, which is a
+further negative 275-line cleanup and optimization this series enables.
+That will be done as a follow-up, either through the crypto tree for
+7.3, or still through net-next for 7.2 at maintainer preference.
 
-Unfortunately, I don't have any reproducer for this issue yet.
+This series refactors the TCP-AO (TCP Authentication Option) code to do
+MAC and KDF computations using lib/crypto/ instead of crypto_ahash.
+This greatly simplifies the code and makes it much more efficient.  The
+entire tcp_sigpool mechanism becomes unnecessary and is removed, as the
+problems it was designed to solve don't exist with the library APIs.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/24195bde5d1d/disk-e728258d.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/78131d1b0e14/vmlinux-e728258d.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/836d0dd78c10/bzImage-e728258d.xz
+The crypto API's support for crypto transformation cloning also becomes
+unnecessary and will be removed in follow-up patches.  Note that as part
+of that, we'll be able to roll back the addition of the reference count
+to crypto_tfm, which had regressed performance for all crypto API users.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+217f1db9c791e27fe54a@syzkaller.appspotmail.com
+To make this simplification and optimization possible, this series also
+updates the TCP-AO code to support a specific set of algorithms, rather
+than arbitrary algorithms that don't make sense and are very likely not
+being used, e.g. CRC-32 and HMAC-MD5.
 
-wlan0: No active IBSS STAs - trying to scan for other IBSS networks with same SSID (merge)
-------------[ cut here ]------------
-UBSAN: shift-out-of-bounds in ./include/linux/log2.h:57:13
-shift exponent 64 is too large for 64-bit type 'unsigned long'
-CPU: 1 UID: 0 PID: 77 Comm: kworker/u8:4 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/18/2026
-Workqueue: events_unbound conn_resize_work_handler
-Call Trace:
- <TASK>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- ubsan_epilogue+0xa/0x30 lib/ubsan.c:233
- __ubsan_handle_shift_out_of_bounds+0x385/0x410 lib/ubsan.c:494
- __roundup_pow_of_two include/linux/log2.h:57 [inline]
- ip_vs_rht_desired_size+0x2cf/0x410 net/netfilter/ipvs/ip_vs_core.c:240
- ip_vs_conn_desired_size net/netfilter/ipvs/ip_vs_conn.c:765 [inline]
- conn_resize_work_handler+0x1b6/0x14c0 net/netfilter/ipvs/ip_vs_conn.c:822
- process_one_work kernel/workqueue.c:3302 [inline]
- process_scheduled_works+0xb5d/0x1860 kernel/workqueue.c:3385
- worker_thread+0xa53/0xfc0 kernel/workqueue.c:3466
- kthread+0x388/0x470 kernel/kthread.c:436
- ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
----[ end trace ]---
-Kernel panic - not syncing: UBSAN: panic_on_warn set ...
-CPU: 1 UID: 0 PID: 77 Comm: kworker/u8:4 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/18/2026
-Workqueue: events_unbound conn_resize_work_handler
-Call Trace:
- <TASK>
- vpanic+0x56c/0xa60 kernel/panic.c:650
- panic+0xc5/0xd0 kernel/panic.c:787
- check_panic_on_warn+0x89/0xb0 kernel/panic.c:524
- __ubsan_handle_shift_out_of_bounds+0x385/0x410 lib/ubsan.c:494
- __roundup_pow_of_two include/linux/log2.h:57 [inline]
- ip_vs_rht_desired_size+0x2cf/0x410 net/netfilter/ipvs/ip_vs_core.c:240
- ip_vs_conn_desired_size net/netfilter/ipvs/ip_vs_conn.c:765 [inline]
- conn_resize_work_handler+0x1b6/0x14c0 net/netfilter/ipvs/ip_vs_conn.c:822
- process_one_work kernel/workqueue.c:3302 [inline]
- process_scheduled_works+0xb5d/0x1860 kernel/workqueue.c:3385
- worker_thread+0xa53/0xfc0 kernel/workqueue.c:3466
- kthread+0x388/0x470 kernel/kthread.c:436
- ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-Kernel Offset: disabled
-Rebooting in 86400 seconds..
+Specifically, this series retains the support for AES-128-CMAC,
+HMAC-SHA1, and HMAC-SHA256.  AES-128-CMAC and HMAC-SHA1 are the only
+algorithms that are actually standardized for use in TCP-AO, while
+HMAC-SHA256 makes sense to continue supporting as a Linux extension.  Of
+course, other algorithms can still be (re-)added later if ever needed.
+It's worth noting that TCP-AO MACs are limited to 20 bytes by the TCP
+options space, which limits the benefit of further algorithm upgrades.
+
+This series passes the tcp_ao selftests
+(sudo make -C tools/testing/selftests/net/tcp_ao/ run_tests).
+
+To get a sense for how much more efficient this makes the TCP-AO code,
+here's a microbenchmark for tcp_ao_hash_skb() with skb->len == 128:
+
+        Algorithm       Avg cycles (before)     Avg cycles (after)
+        ---------       -------------------     ------------------
+        HMAC-SHA1       3319                    1256
+        HMAC-SHA256     3311                    1344
+        AES-128-CMAC    2720                    1107
+
+Changed in v2:
+    - Rebased onto v7.1-rc1.
+    - Added Ard's Reviewed-by.
+    - Dropped patches that clean up things in the crypto/ directory, as
+      mentioned above.  They'll be sent separately.
+    - Added some mentions of the MAC length being limited by the TCP
+      options space.
+    - Removed unnecessary explicit assignment of values to enums.
+
+Eric Biggers (5):
+  net/tcp-ao: Drop support for most non-RFC-specified algorithms
+  net/tcp-ao: Use crypto library API instead of crypto_ahash
+  net/tcp-ao: Use stack-allocated MAC and traffic_key buffers
+  net/tcp-ao: Return void from functions that can no longer fail
+  net/tcp: Remove tcp_sigpool
+
+ include/net/tcp.h                             |  42 +-
+ include/net/tcp_ao.h                          |  74 +-
+ net/ipv4/Kconfig                              |   8 +-
+ net/ipv4/Makefile                             |   1 -
+ net/ipv4/tcp_ao.c                             | 677 +++++++++---------
+ net/ipv4/tcp_output.c                         |  10 +-
+ net/ipv4/tcp_sigpool.c                        | 366 ----------
+ net/ipv6/tcp_ao.c                             | 139 ++--
+ tools/testing/selftests/net/tcp_ao/config     |   4 -
+ .../selftests/net/tcp_ao/key-management.c     |  41 +-
+ 10 files changed, 440 insertions(+), 922 deletions(-)
+ delete mode 100644 net/ipv4/tcp_sigpool.c
 
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
+-- 
+2.54.0
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
