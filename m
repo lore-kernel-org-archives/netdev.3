@@ -1,129 +1,139 @@
-Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22EA5238178;
-	Mon, 27 Apr 2026 02:21:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.194.254.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E09EA2E7179
+	for <netdev@vger.kernel.org>; Mon, 27 Apr 2026 02:21:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777256477; cv=none; b=kwCr19cvuHUgREYort/M56eMOBUBgxa8BjJT1dg/bO7x6tqnne0NezkuH6XvQlVWVD8pQJnW9kI/NwA79ouWKK7RlaDuqoEWqTCEw3Ktq5TXjmVxK5xVPxE+RQoV7aIRchoYnco2csUdmhodbleno8zbigOyq+SHGbKANCDqeak=
+	t=1777256507; cv=none; b=FUPL/vkC0rMRnKX2iBdRyNuJCzIcgRMlmgHXs9JIENTamQ9eq3BpFURG4oVQhuQyUatzW00FlfI7pNEk61qMjMJk8jYzejhu0Ma9fselXUUdwRrAmDE3vXpuTfXafUaBAQav9E8go5sZv0oKZ/QABXUs/XTfnyN6bHw1hlRDio8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777256477; c=relaxed/simple;
-	bh=co1RdjeOQZH2sNYS4MUANF7LGIXtQ2CtepFbJxD85dY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uv6E/HkFnVWn7KXlCdtMVCK/8BJJEKChHTdA9rHNVFQZ2O/Opq5ZlDVt4YTjgF0Gk9BCzqwZvKQp376fGGj5X/AyvabfFjiGldIiX+h8Y1JQE2r7It1DK+UdeEbXAU439NvkNcbZgL+s7NjORoAwK0kuFYdehU1TrGupbTfGUHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com; spf=pass smtp.mailfrom=mucse.com; arc=none smtp.client-ip=18.194.254.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mucse.com
-X-QQ-mid: zesmtpgz5t1777256377t5db908a4
-X-QQ-Originating-IP: oE9iB2v5bNNLFBgcIeFSt/rN44YqypOmTE6/93RjNak=
-Received: from localhost ( [203.174.112.180])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 27 Apr 2026 10:19:35 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 3068986924725525179
-Date: Mon, 27 Apr 2026 10:19:35 +0800
-From: Yibo Dong <dong100@mucse.com>
-To: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	MD Danish Anwar <danishanwar@ti.com>
-Subject: Re: [PATCH] net: ethernet: rnpgbe: mark nonfunctional incomplete
- driver as BROKEN
-Message-ID: <4F5207723421A765+20260427021935.GA462000@nic-Precision-5820-Tower>
-References: <20260425041816.19070-1-enelsonmoore@gmail.com>
+	s=arc-20240116; t=1777256507; c=relaxed/simple;
+	bh=sWrJUi8cl9/CaVwIOP0PW2RVAENzXIRsdanxfXkA3LM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tVsRkkV4ASTRX2E3vYpj2S2EMLSyfygfBCI6b7jmr7WLmzRPp0+N63S7Dn6tqynlyICWtkxUTOJsLr6KlZtWmmJcg8/fWh88SGt29ntZhKlYwm2YqC29Vek7P3HiJ6zDZ0ULhcmat7hlW5AGmXT2ETJ9Ya6y0wPbs5R95tIx5oI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=snu.ac.kr; spf=pass smtp.mailfrom=snu.ac.kr; dkim=pass (1024-bit key) header.d=snu.ac.kr header.i=@snu.ac.kr header.b=uIcAWcs4; arc=none smtp.client-ip=209.85.210.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=snu.ac.kr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=snu.ac.kr
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=snu.ac.kr header.i=@snu.ac.kr header.b="uIcAWcs4"
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-82f0884bcfaso6588804b3a.1
+        for <netdev@vger.kernel.org>; Sun, 26 Apr 2026 19:21:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=snu.ac.kr; s=google; t=1777256503; x=1777861303; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sWrJUi8cl9/CaVwIOP0PW2RVAENzXIRsdanxfXkA3LM=;
+        b=uIcAWcs4Kfx5nl67IF3h/SKO+v3LmAqJQrvIX5LCewRx7VYla9jouh88b8kotqUHOU
+         oOJNy35WvA8f2yRyFOpNnElREb9bf/BZiygXeau9Y7CdEALB+q5vnmhrhH0sovuBxDwT
+         XipfqS8OXVfqL19jc+uSXajlsfEg0MntBfhcw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777256503; x=1777861303;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=sWrJUi8cl9/CaVwIOP0PW2RVAENzXIRsdanxfXkA3LM=;
+        b=n/WMSCqffeOnk3yDjdyKJopHxbqY2GOlaRC+8twdyb5NOxkU/GfCTIL657zdGkNLfr
+         mEHZoqiLStPSxNZI4I8O20VMNjAGG7OyrJ7Py2yFV2s9V34mAZa3z9xfGWwUgvqxMZ90
+         qrgH2DKmavAOn2IQjIDSZ8sQw/9g8/x+LQFF/+/Xjue7P7pVWCLhL+3YWVOe+RxDhj67
+         mpTDygHqchjlkA7YjTwovETR6vIyKQDvniJWW6P2loFSXu+1gejfUysARKRm8ccoEKO0
+         eEagSYdgbBm4QpBvj320KkWNJ0/FjiumHPycUzKj+2fbF+AU0g34msEuEQfYivsQfm20
+         x4SQ==
+X-Forwarded-Encrypted: i=1; AFNElJ95JZLKhnh0CwkzA1LOMMRfXmKdwtJeWfpOoMWA2xWNRTY6KclPraZbo9XC10nqdk6wjpLUqWQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxgGsbpmnsH7aKGX0a1XIQDFzDVWG64MeLFDtdVmn21EbHtMCzT
+	zKBAtTOHKmt37pu1aEZSlfinny9gUJdgs2CUhtviMfQI/6o46AfLGplZyRJwfynOZ/4=
+X-Gm-Gg: AeBDieuAHP98/8UVPL3c3MPRAyaAMBh7MbQbY2SX5IksAqGnEUvYlorfTU1T0N3e49E
+	H1UibmzoGp68gb2v64JtloXtezUSEZeXl6VX+EVJ9IF+kWR/XqBHBOXOre/ulbrUW9x13TRzls8
+	N6Bj+uYezOXRroWz605cxT6hlFM4loGxPtyjmh/J/U+/KLvKDWGqzv55OJ6MWwxlWbIQyMCJzXp
+	oBZMmrAUQM/D5QetK6nl82koGZFNSoyj1r5rrScQarTtm73VmF4TLJA1HB5lMfkeTvq38b+bVYE
+	fDyw0Nn9bBDm0fi0zfrYdm3xmu1wpypIvlns13xRaCIDujA9FZmJPh7Iy0f8wQ9B6TbjU/aCizo
+	UgOEEwefQfxD4Cmif06GlmrK3FHNAAS2oRyMPLq/sPU72x7kFf8y0f2e3IhzKDxjQAwWbBBHKOp
+	d/D8f6K8TqhJZ30Sk6KrF+xqZwOCXvS2sTRc/wSx3u0OBO8jUlP+Ub1XHVIyfE1KHD87UW3is8g
+	KutXD9kX6gS
+X-Received: by 2002:a05:6a00:2d25:b0:824:adf4:5a2f with SMTP id d2e1a72fcca58-82f8c934230mr42491061b3a.43.1777256503240;
+        Sun, 26 Apr 2026 19:21:43 -0700 (PDT)
+Received: from eulgyu-desktop.localdomain ([147.46.174.223])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8e9d9a1csm32499509b3a.20.2026.04.26.19.21.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 26 Apr 2026 19:21:42 -0700 (PDT)
+From: Eulgyu Kim <eulgyukim@snu.ac.kr>
+To: edumazet@google.com,
+	jiayuan.chen@linux.dev,
+	pabeni@redhat.com
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	horms@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	byoungyoung@snu.ac.kr,
+	jjy600901@snu.ac.kr
+Subject: Re: [BUG] KASAN: slab-use-after-free Write in sk_skb_reason_drop
+Date: Mon, 27 Apr 2026 11:21:35 +0900
+Message-ID: <20260427022135.38925-1-eulgyukim@snu.ac.kr>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <9992caa6-ec37-4727-ae5d-80d0b5b596c0@linux.dev>
+References: <9992caa6-ec37-4727-ae5d-80d0b5b596c0@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260425041816.19070-1-enelsonmoore@gmail.com>
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpgz:mucse.com:qybglogicsvrgz:qybglogicsvrgz3a-1
-X-QQ-XMAILINFO: NEAuM+RWOySTxvujY/6yndByIu6fPL6SzOJQjPte3MoYbh4jaymPXTpf
-	uCuT9djTqEKW/qrNbL1f1/dJQ6WTJXJscugZa5Na0fmVmDtIHjuEStAc2S2tkpQWIFvNs9V
-	Vs+P2XDiu+CEOGPH8R8JCqZP28AB5IH7zZj7/qLTJoX1sYrkE80cJB1FQPrF4biWn0cu+69
-	aGyBJ1d6fKynlhnOLwjTU04TngQBwl5HIERMJjGnhPpJf0pr8GX6rchA6gPyQNi6lSpUaHg
-	OtxaUAYVs9+XVWG/xektcNLNOBcjliNlRrarPN9AVg3U9BwwKg4rdmx6dTx97VIY3NtnXEY
-	PYLxPRLcm2LpSCSebDJeS9L4oyQoK1Gr9MSM9RXWHhj2fP+mYQjch/L/O4tx5nVYXJtmj0E
-	8qiN7IyLqbUtlZ/oTBhz8O6/cWx87rggVfotNzZuWuJlBdpoJIOu+FDUve0cByztkOCHIAv
-	YWaxxxa1LbyAFII1DqNi7vdf4SkvRuE+JYW+TLotneTdZKGUCVfO/xptpoq/6wBPkkYfxfQ
-	uGh2fW+ppxGpq3WbOGttGPh6H3/UMNWP21qdkxCIPNCmwI95AcqHpFP5BC0ITzQtwvzOJh8
-	0LHxI2WRxMwmXlPOTEDS9GPZTMTGzOD0I3hDHCJr1tTmZr+8Y58cRCsO5e/qEkRGmBowy7Z
-	+Rg6DnDMM3upcH3KP6aPB6NZnjwM+JOQiqeW3WR2I1Njq0NQvRDOcQOCXECfqHIU66+VObq
-	x/7lSbjY0aiGJDEZvWeJOCvkUfTHsxnHEMvjdeVMyG6LuavVQmMsMjfOSdv53xvewMNtwlZ
-	VztoG1UP+sUcddiIWHoYG5QM9b9obyP5Vt6M9723+H4M68nhDRBuRVPIvo5LjHfIFU4PZ/1
-	g9iyi0MpXIk3zuiXguy49TLKoJX7KjwP4etl0MaSoUjBJHVy2DWgkEy3rYtm6tXtDcZpsK2
-	JjluPBTsKqmrKuMlUsWw0wduDjleqkyO5pUttYnepgyqwwWgMj8w908GBwA2QQO86G7g=
-X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, Apr 24, 2026 at 09:18:15PM -0700, Ethan Nelson-Moore wrote:
-> The rnpgbe driver as currently shipped in the kernel is incomplete and
-> has no useful functionality. It will bind to a PCI device and create a
-> network device, but that device does not function (its .ndo_start_xmit
-> callback, rnpgbe_xmit_frame, just drops all packets). This situation
-> means that users could enable this driver and have it load and attach
-> to their device but not transfer any data. To remove the potential for
-> user confusion, mark the driver as broken until it is completed and
-> explain why this was done.
-> 
-Thank you for the patch.
+>
+> The fix could be this:
+>
+> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+> index b183189f1853..6a0bbd4def76 100644
+> --- a/drivers/net/tun.c
+> +++ b/drivers/net/tun.c
+> @@ -289,8 +289,12 @@ static void tun_napi_disable(struct tun_file *tfile)
+>
+>   static void tun_napi_del(struct tun_file *tfile)
+>   {
+> -       if (tfile->napi_enabled)
+> -               netif_napi_del(&tfile->napi);
+> +       if (!tfile->napi_enabled)
+> +               return;
+> +
+> +       mutex_lock(&tfile->napi_mutex);
+> +       netif_napi_del(&tfile->napi);
+> +       mutex_unlock(&tfile->napi_mutex);
+>   }
+>
+>   static bool tun_napi_frags_enabled(const struct tun_file *tfile)
+> @@ -1783,6 +1787,12 @@ static ssize_t tun_get_user(struct tun_struct
+> *tun, struct tun_file *tfile,
+>
+>                  if (frags) {
+>                          mutex_lock(&tfile->napi_mutex);
+> +                       if (unlikely(tfile->detached ||
+> + rcu_access_pointer(tfile->tun) != tun)) {
+> +                               err = -EBUSY;
+> +  mutex_unlock(&tfile->napi_mutex);
+> +                               goto out;
+> +                       }
+>                          skb = tun_napi_alloc_frags(tfile, copylen, from);
+>                          /* tun_napi_alloc_frags() enforces a layout for
+> the skb.
+>                           * If zerocopy is enabled, then this layout will be
+> @@ -1981,6 +1991,7 @@ static ssize_t tun_get_user(struct tun_struct
+> *tun, struct tun_file *tfile,
+>                  mutex_unlock(&tfile->napi_mutex);
+>          }
+>
+> +out:
+>          return err ?: total_len;
+>   }
+>
 
-The TX/RX functionality patches for this driver are still under submission, 
-and I agree to mark the driver as BROKEN for now. I will revise this part
-and remove the BROKEN dependency in the subsequent patches that add full 
-TX/RX functionality.
+Hello,
 
-> Fixes: ee61c10cd482 ("net: rnpgbe: Add build support for rnpgbe")
-> Cc: stable@vger.kernel.org # 7.0+
-> Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-> ---
->  drivers/net/ethernet/mucse/Kconfig | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/mucse/Kconfig b/drivers/net/ethernet/mucse/Kconfig
-> index 0b3e853d625f..c37a90a6c808 100644
-> --- a/drivers/net/ethernet/mucse/Kconfig
-> +++ b/drivers/net/ethernet/mucse/Kconfig
-> @@ -3,9 +3,12 @@
->  # Mucse network device configuration
->  #
->  
-> +# This section depends on BROKEN because its only child item also does;
-> +# see the explanation below.
->  config NET_VENDOR_MUCSE
->  	bool "Mucse devices"
->  	default y
-> +	depends on BROKEN
->  	help
->  	  If you have a network (Ethernet) card from Mucse(R), say Y.
->  
-> @@ -16,12 +19,14 @@ config NET_VENDOR_MUCSE
->  
->  if NET_VENDOR_MUCSE
->  
-> +# This driver is marked as broken because it is incomplete; this avoids users
-> +# enabling it and expecting it to work.
->  config MGBE
->  	tristate "Mucse(R) 1GbE PCI Express adapters support"
-> -	depends on PCI
-> +	depends on PCI && BROKEN
->  	help
->  	  This driver supports Mucse(R) 1GbE PCI Express family of
-> -	  adapters.
-> +	  adapters. It is incomplete and currently has no useful functionality.
->  
->  	  More specific information on configuring the driver is in
->  	  <file:Documentation/networking/device_drivers/ethernet/mucse/rnpgbe.rst>.
-> -- 
-> 2.43.0
-> 
-> 
+We have tested the proposed patch, and our reproducer did not trigger any issue.
+
+Thanks!
+
+Best Regards,
+Eulgyu Kim
