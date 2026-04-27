@@ -1,122 +1,92 @@
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 476773B47C9;
-	Mon, 27 Apr 2026 10:14:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0EE73B2FE4;
+	Mon, 27 Apr 2026 10:23:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777284849; cv=none; b=ce3FuO7rVVxXE4/K17xaLaHseutW7Z3G3MdS+AIG6r9FwnvKnZ1IJwT0rZElQkm+Vbw22M/Elh9FrqdKN69JoC6ZGyOS/Ev4mhJYXi6z70iMo8KXQUfWTTbQd08mboWKDSSNwhfWFZZQH/cQynU3GfjHHz7rTtW8Cs3MAe7mYJg=
+	t=1777285396; cv=none; b=RiiHA2V5dPtBGgCitZs/hnOgW1ZCM7T/FKMZoGrzBvUXDMSHx1Cdq4ZumNUeebb/e2vssniyG1thtWS/EMhShWSU6M0DAM342XJBNAnQW09Hgbm6Y8n2HjLSYxpPUEbqbq5T22pd99AeU10fC64Mj0kxXAYcCEHvXuJIKuNrkRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777284849; c=relaxed/simple;
-	bh=UzA5WMzcWv2xbAxpYjnWf1tULuDCSUF4xceawOiR1fY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DtPq1fzJkRpL5m7jowKXH9lka0Vxx2RpazFbSlq+3TP736FN5xA9+FMGPaTsoqPFTVB03bn653ctZ7GMJ/O+UxdF5DXbHmH5k0ur2WivEAcbTOQkIrr3OX9pWg9jNmzgoenzllbTIAybgKMh38u8lFagTt6iROMfOBzUMGVrH4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [141.14.220.42] (g42.guest.molgen.mpg.de [141.14.220.42])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 478B74C2C37D59;
-	Mon, 27 Apr 2026 12:13:05 +0200 (CEST)
-Message-ID: <0d1ef57c-7ab6-4ed1-bc11-323aeeb12eac@molgen.mpg.de>
-Date: Mon, 27 Apr 2026 12:13:04 +0200
+	s=arc-20240116; t=1777285396; c=relaxed/simple;
+	bh=KYNnnw4HiGNPcsaG3tAwbVMKywNDqyNoJ8d6WUHUwkI=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=XYMBpYFb8ntZwZnf8tvfAvotDV053bS0ryYrzchoPEPKN3ZW0rcqpgBA8H60hs43RNGQ3BA82op4hqBtEvCHLpWvo1VK6dyL0UtQMLQCwci1tHnwdkW0P8ieY1ElS6PCyUhvKmQIgLZ6Kb2CCI0H75VBBQ+xpDj0NXc00L1htcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GQ8RnrP/; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GQ8RnrP/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58E74C2BCB4;
+	Mon, 27 Apr 2026 10:23:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777285395;
+	bh=KYNnnw4HiGNPcsaG3tAwbVMKywNDqyNoJ8d6WUHUwkI=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
+	b=GQ8RnrP/r29khRiMqh9xxp8xY2wRszQKkVTZE5jneGn1ZfipXp2IWihCgRbltBi7r
+	 pXsSkAZA7VU7YUXgEroBmbLr3O5ZxFcThU0iP0amusqdloKu/k2l5ugpytSkQrQuNG
+	 XlQEs0aWMqDKATXN+qeuhbhJgwRcKEuB+IjU7CSgwmIc/xPoHZliV6wFd6+0eZHGUp
+	 WWB4Z4vywtpW3/44/7XK8pyjQX345e9/+HGZFrPiCPMBKw/q+O/cI0s1mj3fpA9nfQ
+	 714ZB1FbC/3tiWW69MLwHLSLX2sTetroO1IOxiIsVUq3tLJ1Qg2Y1ClJ1NkGvcD/ry
+	 oQct3Lfmws8AQ==
+Content-Type: multipart/mixed; boundary="===============3666957595155164308=="
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Intel-wired-lan] [PATCH v2] ice: wait for reset completion in
- ice_resume()
-To: Aaron Ma <aaron.ma@canonical.com>
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Akeem G Abodunrin <akeem.g.abodunrin@intel.com>,
- Jesse Brandeburg <jesse.brandeburg@intel.com>,
- intel-wired-lan@lists.osuosl.org, Kohei Enju <kohei@enjuk.jp>
-References: <20260424030345.1140665-1-aaron.ma@canonical.com>
-Content-Language: en-US
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <20260424030345.1140665-1-aaron.ma@canonical.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Message-Id: <7d8dab98e0e2d4f4f67b1e2d24c900f35b951ddfdf46c0aa32409c5f34f76fc9@mail.kernel.org>
+In-Reply-To: <2b156bc4277a9e891f3399935416701d1f9efd7c.1777276241.git.linpu5433@gmail.com>
+References: <2b156bc4277a9e891f3399935416701d1f9efd7c.1777276241.git.linpu5433@gmail.com>
+Subject: Re: [PATCH v2 bpf 1/1] xskmap: reject TX-only AF_XDP sockets
+From: bot+bpf-ci@kernel.org
+To: linpu5433@gmail.com,kerneljasonxing@gmail.com,magnus.karlsson@intel.com,maciej.fijalkowski@intel.com,netdev@vger.kernel.org,bpf@vger.kernel.org
+Cc: sdf@fomichev.me,davem@davemloft.net,edumazet@google.com,kuba@kernel.org,pabeni@redhat.com,horms@kernel.org,ast@kernel.org,daniel@iogearbox.net,hawk@kernel.org,john.fastabend@gmail.com,bjorn@kernel.org,linux-kernel@vger.kernel.org,tanyuan98@outlook.com,yifanwucs@gmail.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Mon, 27 Apr 2026 10:23:15 +0000 (UTC)
+
+--===============3666957595155164308==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
-Dear Aaron,
+> commit 6df1a89cfba973e50ce1bcafe9ffe818f3de7c06
+> Author: Linpu Yu <linpu5433@gmail.com>
+>
+>     xskmap: reject TX-only AF_XDP sockets
+>
+>     XSKMAP entries are used as redirect targets for incoming XDP frames.
+>     A TX-only AF_XDP socket lacks an Rx ring and cannot handle redirected
+>     traffic, but xsk_map_update_elem() currently allows such sockets to
+>     be inserted into the map.
+>
+>     Redirecting packets to such a socket on the veth generic-XDP path
+>     causes a kernel crash in xsk_generic_rcv().
+>
+>     Reject TX-only sockets during XSKMAP updates to avoid the crash.
+>     They remain fully operational for pure Tx purposes outside XSKMAP.
+>
+>     Fixes: fbfc504a24f5 ("bpf: introduce new bpf AF_XDP map type BPF_MAP_TYPE_XSKMAP")
+                     ^^^^
+
+Is this the correct commit to fix? The original commit fbfc504a24f5
+introduced xskmap WITH a check (xsk_is_setup_for_bpf_map) that prevented
+TX-only sockets from being inserted. It looks like commit 968be23ceaca
+("xsk: Fix possible segfault at xskmap entry insertion") later removed
+this check, which allowed TX-only sockets without Rx rings to be
+inserted into the map, causing the kernel crash.
+
+Should the Fixes tag reference 968be23ceaca instead?
+
+>     Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+>     Reported-by: Yuan Tan <yuantan098@gmail.com>
+>     Reported-by: Xin Liu <bird@lzu.edu.cn>
+>     Signed-off-by: Yifan Wu <yifanwucs@gmail.com>
+>     Signed-off-by: Linpu Yu <linpu5433@gmail.com>
+
+[ ... ]
 
 
-Thank you for your patch.
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
-Am 24.04.26 um 05:03 schrieb Aaron Ma via Intel-wired-lan:
-> ice_resume() schedules an asynchronous PF reset and returns
-> immediately. The reset runs later in ice_service_task(). If
-> userspace tries to bring up the net device before the reset
-> finishes, ice_open() fails with -EBUSY:
-> 
->    ice_resume()
->      ice_schedule_reset()          # sets ICE_PFR_REQ, returns
->    ...
->    ice_open()
->      ice_is_reset_in_progress()    # ICE_PFR_REQ still set, -EBUSY
->    ...
->    ice_service_task()
->      ice_do_reset()
->        ice_rebuild()               # clears ICE_PFR_REQ, too late
-> 
-> Reproduced on E800 series NICs during suspend/resume with irdma
-> enabled, where the aux device probe widens the race window.
-
-Please document, how you reproduced it, and also paste possible messages 
-by Linux or NetworkManager, so that people can easily search for the commit.
-
-> Wait for the reset to complete before returning from ice_resume().
-
-Please mention the delay length in the commit message.
-
-> Fixes: 769c500dcc1e ("ice: Add advanced power mgmt for WoL")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Aaron Ma <aaron.ma@canonical.com>
-> ---
-> v2: reword comment to clarify best-effort semantics (Kohei Enju)
-> 
->   drivers/net/ethernet/intel/ice/ice_main.c | 9 +++++++++
->   1 file changed, 9 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-> index 5f92377d4dfc2..a81eb21ea87c1 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_main.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_main.c
-> @@ -5635,6 +5635,15 @@ static int ice_resume(struct device *dev)
->   	/* Restart the service task */
->   	mod_timer(&pf->serv_tmr, round_jiffies(jiffies + pf->serv_tmr_period));
->   
-> +	/* Best-effort wait for the scheduled reset to finish so that the
-> +	 * device is operational before returning. Without this, userspace
-> +	 * (e.g. NetworkManager) may try to open the net device while the
-> +	 * asynchronous reset is still in progress, hitting -EBUSY.
-> +	 */
-> +	ret = ice_wait_for_reset(pf, 10 * HZ);
-
-Why not pass a delay in micro/milliseconds?
-
-> +	if (ret)
-> +		dev_err(dev, "Wait for reset failed during resume: %d\n", ret);
-
-Mention the delay?
-
-> +
->   	return 0;
->   }
->   
-
-
-Kind regards,
-
-Paul
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/24988517198
+--===============3666957595155164308==--
