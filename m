@@ -1,114 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C306736B061;
-	Mon, 27 Apr 2026 13:34:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 240B93CA481;
+	Mon, 27 Apr 2026 13:35:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777296853; cv=none; b=I5ffG4lK3yDZbES0FaUcUP4H1RJWYqcepoY7UhiKkHx7O9fL/Zz1Z7q315bI0Ii85cGn6Z4e4LTpzli2hD3y+cTIZu9jQCVpyNSYVrFqVST+kvUcw1qENt5ZNvWbRRMNtbyqQJtK4Vuy+aXazw7+uWdHdLD41ISH5BAb88JGJnQ=
+	t=1777296927; cv=none; b=cw5KGXvrDKlkQmtSmwmzlz7KD9hdBM5/Qvoj1RLoVQw2Y+VaHWSWCk/9br1Gy70mgNvO5v70I5aJARvGgx+DbAnJ2FvqA7g+FK+9CABnf+TsVKwl7Hx8VqRwEIIiz2g8PCkpZEb1ekPPLN5OZiHr8ULbklIoteQUW5mE0V4CfWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777296853; c=relaxed/simple;
-	bh=1aWTbIbaCSHlvMHm8QDsZWgkNtn14T5Y6WWN+DwuFc4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lody42Mut+dP8HximLuOIPqtNHiRtJlarap164gYSO7VIFhFsXkunSPDv5zZ3yl8pTfQc7dYhx0Pauu/S40ZVUoBDcz3g73eFqABAvMsc49zYlKFXbGPllgTRs0bW/yyhbIY+Xd9u370uLJcfQpj5lCygD184hVaR08wnUxb6/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rHNjNzOd; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777296927; c=relaxed/simple;
+	bh=6UnbY4DrqGtksJ4MzzZtojHfq0UuwCW7gM2ovAeSmYg=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=SpXJYuE1Kxp9By95LHSTAE5tcu4gyw4Ps8+RB3Okd+2fQF8cXllml0wInrsWd8SZoz2juGDVZ4PNoYTuIv4+Pg/GxN7O+UkGLEjy01sSYqJvJAN2jxN8XEWh6jjWTxNm7pybgiamd6hgUFuAvTD1bD3OeAbi0/I/Lqh2gHPQGMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=OvoJEIid; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rHNjNzOd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A311C19425;
-	Mon, 27 Apr 2026 13:34:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777296853;
-	bh=1aWTbIbaCSHlvMHm8QDsZWgkNtn14T5Y6WWN+DwuFc4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rHNjNzOd2jT3nxQiLKK7QhNKx8luuXoldNL1uz/UHwCHFyZCHmcyQDGfrEovSmufu
-	 co2H0sfNT5/D0E9jXoUxnkH048xE6xu0q0gGSpBgNH7V3O3K/RZLD445/rj2pQ9PJO
-	 zpvZfQXdHy+hFr7ZHNwtGibOa0ACxinRYR1cGJexDqaJFNuqhTBv0k5xMXYRDS+iRo
-	 h0uq2hvZEGoM3hCO2M+3YqmQWUVeTaUHRLcyFfPTyNLgHwHueqB/dRV9zXBSGWNfSu
-	 s5sUNJE1cEkMJR1N78hCIKMNbxq3UPE+YGoR6WtykKYX60rKg3U9c7eXILyJrXWDke
-	 9W2NnG3CPXSnA==
-Date: Mon, 27 Apr 2026 15:34:11 +0200
-From: Thierry Reding <thierry.reding@kernel.org>
-To: Daniel Borkmann <daniel@iogearbox.net>, 
-	Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>
-Cc: linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-next@vger.kernel.org
-Subject: Re: linux-next: build failure after merge of the bpf-next tree
-Message-ID: <ae9lXJ4vMyEQOaIs@orome>
-References: <20260427132604.3754048-1-thierry.reding@kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="OvoJEIid"
+Received: by linux.microsoft.com (Postfix, from userid 1231)
+	id 460C420B716E; Mon, 27 Apr 2026 06:35:26 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 460C420B716E
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1777296926;
+	bh=K/dQLWpvtfHpW7x2/2gVgixuqfIkLb/3dZkP2GDm5KU=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=OvoJEIidR5awQYT90mrlCmhY4HAlsh3WlvMkUWHSGMMurZxtSecu67XyqKVtIvA40
+	 KaRp1QMqSPHxxgeis+1TExCMq8PlFs0b+xv9zHoR8QzFfgUJOEU8lS6R9n+NFH28uV
+	 6yNOPRPBUWAqgPb0bGo/rMVIfJGf6iGY+FH8ynco=
+From: Aditya Garg <gargaditya@linux.microsoft.com>
+To: kys@microsoft.com,
+	haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	longli@microsoft.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	kotaranov@microsoft.com,
+	horms@kernel.org,
+	ssengar@linux.microsoft.com,
+	jacob.e.keller@intel.com,
+	dipayanroy@linux.microsoft.com,
+	ernis@linux.microsoft.com,
+	shirazsaleem@microsoft.com,
+	kees@kernel.org,
+	sbhatta@marvell.com,
+	leitao@debian.org,
+	netdev@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	bpf@vger.kernel.org,
+	gargaditya@microsoft.com,
+	gargaditya@linux.microsoft.com
+Subject: [PATCH net-next v2 2/2] net: mana: Use kvmalloc for large RX queue and buffer allocations
+Date: Mon, 27 Apr 2026 06:23:35 -0700
+Message-ID: <20260427132807.1642290-3-gargaditya@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.7
+In-Reply-To: <20260427132807.1642290-1-gargaditya@linux.microsoft.com>
+References: <20260427132807.1642290-1-gargaditya@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ieveytj5ntrjzxpi"
-Content-Disposition: inline
-In-Reply-To: <20260427132604.3754048-1-thierry.reding@kernel.org>
+Content-Transfer-Encoding: 8bit
 
+The RX path allocations for rxbufs_pre, das_pre, and rxq scale with
+queue count and queue depth. With high queue counts and depth, these can
+exceed what kmalloc can reliably provide from physically contiguous
+memory under fragmentation.
 
---ieveytj5ntrjzxpi
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: linux-next: build failure after merge of the bpf-next tree
-MIME-Version: 1.0
+Switch these from kmalloc to kvmalloc variants so the allocator
+transparently falls back to vmalloc when contiguous memory is scarce,
+and update the corresponding frees to kvfree.
 
-On Mon, Apr 27, 2026 at 03:26:01PM +0200, Thierry Reding wrote:
-> Hi all,
->=20
-> After merging the bpf-next tree, today's linux-next build (x86_64_perf)
-> failed like this:
->=20
->       CC      builtin-trace.o
->     builtin-trace.c: In function =E2=80=98syscall_arg__strtoul_btf_enum=
-=E2=80=99:
->     builtin-trace.c:972:27: error: comparison of integer expressions of d=
-ifferent signedness: =E2=80=98int=E2=80=99 and =E2=80=98__u32=E2=80=99 {aka=
- =E2=80=98unsigned int=E2=80=99} [-Werror=3Dsign-compare]
->       972 |         for (int i =3D 0; i < btf_vlen(bt); ++i, ++be) {
->           |                           ^
->       CC      util/btf.o
->     util/btf.c: In function =E2=80=98__btf_type__find_member_by_name=E2=
-=80=99:
->     util/btf.c:19:43: error: comparison of integer expressions of differe=
-nt signedness: =E2=80=98int=E2=80=99 and =E2=80=98__u32=E2=80=99 {aka =E2=
-=80=98unsigned int=E2=80=99} [-Werror=3Dsign-compare]
->        19 |         for (i =3D 0, m =3D btf_members(t); i < btf_vlen(t); =
-i++, m++) {
->           |                                           ^
->=20
-> Caused by commit
->=20
->     f7a6b9eaff3e ("bpf: Extend BTF UAPI vlen, kinds to use unused bits")
->=20
-> I've fixed it up like below, but please fix this in your tree as well.
+Signed-off-by: Aditya Garg <gargaditya@linux.microsoft.com>
+Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+---
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-Given that I later saw that the build broke due to the other change and
-I had to use the old bpf-next tree, this fixup is no longer in the tree
-but it should still be fixed so that bpf-next can be merged into linux-
-next again soon.
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index 8adf72b96145..e1d8ac3417e8 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -685,11 +685,11 @@ void mana_pre_dealloc_rxbufs(struct mana_port_context *mpc)
+ 		put_page(virt_to_head_page(mpc->rxbufs_pre[i]));
+ 	}
+ 
+-	kfree(mpc->das_pre);
++	kvfree(mpc->das_pre);
+ 	mpc->das_pre = NULL;
+ 
+ out2:
+-	kfree(mpc->rxbufs_pre);
++	kvfree(mpc->rxbufs_pre);
+ 	mpc->rxbufs_pre = NULL;
+ 
+ out1:
+@@ -806,11 +806,11 @@ int mana_pre_alloc_rxbufs(struct mana_port_context *mpc, int new_mtu, int num_qu
+ 	num_rxb = num_queues * mpc->rx_queue_size;
+ 
+ 	WARN(mpc->rxbufs_pre, "mana rxbufs_pre exists\n");
+-	mpc->rxbufs_pre = kmalloc_array(num_rxb, sizeof(void *), GFP_KERNEL);
++	mpc->rxbufs_pre = kvmalloc_array(num_rxb, sizeof(void *), GFP_KERNEL);
+ 	if (!mpc->rxbufs_pre)
+ 		goto error;
+ 
+-	mpc->das_pre = kmalloc_objs(dma_addr_t, num_rxb);
++	mpc->das_pre = kvmalloc_objs(dma_addr_t, num_rxb);
+ 	if (!mpc->das_pre)
+ 		goto error;
+ 
+@@ -2564,7 +2564,7 @@ static void mana_destroy_rxq(struct mana_port_context *apc,
+ 	if (rxq->gdma_rq)
+ 		mana_gd_destroy_queue(gc, rxq->gdma_rq);
+ 
+-	kfree(rxq);
++	kvfree(rxq);
+ }
+ 
+ static int mana_fill_rx_oob(struct mana_recv_buf_oob *rx_oob, u32 mem_key,
+@@ -2704,7 +2704,7 @@ static struct mana_rxq *mana_create_rxq(struct mana_port_context *apc,
+ 
+ 	gc = gd->gdma_context;
+ 
+-	rxq = kzalloc_flex(*rxq, rx_oobs, apc->rx_queue_size);
++	rxq = kvzalloc_flex(*rxq, rx_oobs, apc->rx_queue_size);
+ 	if (!rxq)
+ 		return NULL;
+ 
+-- 
+2.43.0
 
-Thierry
-
---ieveytj5ntrjzxpi
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmnvZdMACgkQ3SOs138+
-s6EANxAAvKuyRRy+MJedxbh6F7g9KKaAv1V5xwiB/D8asKOTCfHlniCxm7RCT4jZ
-ySsfVaEZo3s5ncfiw1+XHQCwDqAzvRBMx6IZK1kGFBlPhulnA6Dj08ueBiQz+6zb
-GZDvowyyIgZcMu5hRFV5VbOiBFNdBKHcVZ2xfRLqjAE0kMXOKi7pOjQ7MbfJ+Sx6
-/fmaqAPKsXAwU662sgAUPIGTED6/Rbrpop9Vzi6ertn2Ij9OWjO3GmC7nx8VdtQG
-60wfF/J7jwhZDlpZqBTId/+Eg50lWya47wbWuAnbDT49FzHPywl9ev5EwPbS/Ma9
-PAIShmmGbPoHtN418O2PYbCYjr6Vn/wCAiuHWNH2Rdi4WMIA4oGgAD9gFlTuqnRb
-CnfwpJGSv3KuSevRgYWaL5GwH6kTCGFWVbCqBJov70sVDpwiRT7dwltkAdR5cjpi
-GHkNsOilPXL2oRrdxK4SD6IL68sUfu2rWv5ytpXToqK8ACtHmJmfHxCX7nbH66K5
-pT7+YX0dpCDg2gPr6wGyIomnTbIL7AmwPMaYB5oLWN3pdlh5d6DG3+nHVesElyiC
-lXgq3V6wst/of63rD1fNoLV5znssU+CzU2RBAaqGBgwDIK3xX+Mv0MCSwd0LINRz
-ZRw+Z2RAWAb3iU8TGT8dWcn3f8Ig5CUywGy4OKcK1jq7eJHzzzY=
-=KWhs
------END PGP SIGNATURE-----
-
---ieveytj5ntrjzxpi--
