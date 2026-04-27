@@ -1,43 +1,51 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 558F83D34A0;
-	Mon, 27 Apr 2026 14:19:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16B423D5223;
+	Mon, 27 Apr 2026 14:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777299578; cv=none; b=iJsWmE+X4KYunOlAmri80hYOkDJreeb9zI4iwAtirOTROyk+sq8k2NSb7h3IKhQg+yQvG9DA+NGYIWJINHx95+DIGVkzRqQbNdXjejLwrH6WwuN79EhJ1k6doZsG7Z25oyCq7X1FtjVl8yzCR9e2+P6d+cqgOm2UZCbCUfGtvyo=
+	t=1777299782; cv=none; b=iqH8H1+MtAdLWxbYWJ8gWLqi8vRy2zrpOL+LMVAHS56OnkeN8A3snEZVHQSRWU29XOHk7r0P1m5R4JJibGv4Y2Vp0fcw7n7OnEmXZ3z51H2EzNWRpu+j2947yJHInIGCGDYuRvxHbteELv8tGSoKkrs2yq66ZBRCyLhVrO0Dv+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777299578; c=relaxed/simple;
-	bh=R+582z6KuOZm32OAUc/Aw4Nzhq+aywRFgnNyTKawiqs=;
+	s=arc-20240116; t=1777299782; c=relaxed/simple;
+	bh=x3INYK3FMdwrkwM/uwyEQ2Ke1ivaYA0MvNR0xVSCPWA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q1CX+48rMtTIWOHrEaEZHCQU79V/B2Qy/DK8HJyshk4WL+i0g+4SdbHzbH5ECMRIOYEw3OTMBU3Y0D/2eGVgaLuuYfT0jR8aCOxu/euHU7lzEa1fvtg9u7eQHtVN0tMUFSZAU1YwMflrTjahWl0QN17LfUUBHbRADb+s0REnrnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=GooT9vkp; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=BK4ZIRk3/sAqDjTFLNkdh9ykJpXgkE3Jks0302j5tagZMiiFG6gsqlqt27Rzg5Qgqi1bQYzJ10KWO/rk/yQYSB/Dfsg0WL6M+Umpnp7Udy2SQ4L8FhLECQ1PlFjLCUGIkR8e0vyGmqJACr7Lk7vop1xqtxXZUJ5LMpbHlyuuVjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=IJyw50GF; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="GooT9vkp"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="IJyw50GF"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=GEpkskhKvoKgL3hqgrxpncDprXd6TTl8aeJyXbSaKVI=; b=GooT9vkp6nwOrUMSDoFk8Hh/M1
-	+vI1dozXaD0e38IsyrhmGC3n+tdzzkcRDJBc37up1bLdpZ3OZlrHdCYQCDyy52zvmBhCJuB9LQO5f
-	WdtmueUT1EYGELA+LG9iidR0Wu/ON5CMtrdmRPglAzXqPCdkOwmF7/I0tVGMKgvQ39nQ=;
+	bh=KYfYtf5Y4Fyu2QE8+zpHAIL9xId7qqkHn3ODGSBMfBg=; b=IJyw50GFOFMgsD6WDyh2COPUuJ
+	oqY1DdVUBP4s+3OqO8MoGdBu7yK6awZk0fTFKGxqct2ylxs+gvV/Y+IZLDU/6TXAWrQ9M/yh/+d4L
+	2v2viFH3PZqouIwsFIqa2OrlLmXu/60IEExuo9CMPmaeOjPUkjjLnyZKb7ZgQVEN3sVc=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1wHMo5-000Anb-Tl; Mon, 27 Apr 2026 16:19:29 +0200
-Date: Mon, 27 Apr 2026 16:19:29 +0200
+	id 1wHMrF-000AqO-ES; Mon, 27 Apr 2026 16:22:45 +0200
+Date: Mon, 27 Apr 2026 16:22:45 +0200
 From: Andrew Lunn <andrew@lunn.ch>
-To: Rosen Penev <rosenp@gmail.com>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next] net: enc28j60: use of_get_ethdev_address
-Message-ID: <b1dcbb65-8fce-40d9-b259-6d9bc9f3d454@lunn.ch>
-References: <20260427052533.960487-1-rosenp@gmail.com>
+To: Javen <javen_xu@realsil.com.cn>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>,
+	"nic_swsd@realtek.com" <nic_swsd@realtek.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"horms@kernel.org" <horms@kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC Patch net-next v1 1/9] r8169: add some register definitions
+Message-ID: <d7240f69-66de-41e2-a4fb-f7757cac1c94@lunn.ch>
+References: <20260420021957.1756-1-javen_xu@realsil.com.cn>
+ <20260420021957.1756-2-javen_xu@realsil.com.cn>
+ <546ff9b7-68b0-46ff-9db4-5fcde421f7df@gmail.com>
+ <335ace172e20415ead8e56ae117b0fce@realsil.com.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,36 +54,51 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260427052533.960487-1-rosenp@gmail.com>
+In-Reply-To: <335ace172e20415ead8e56ae117b0fce@realsil.com.cn>
 
-On Sun, Apr 26, 2026 at 10:25:33PM -0700, Rosen Penev wrote:
-> Since this is an OF only driver, of_ instead of device_ allows nvmem to
-> be used to specify the MAC address.
+On Mon, Apr 27, 2026 at 06:41:22AM +0000, Javen wrote:
+> >On 20.04.2026 04:19, javen wrote:
+> >> From: Javen Xu <javen_xu@realsil.com.cn>
+> >>
+> >> To support rss, this patch adds some macro definitions and register
+> >> definitions.
+> >>
+> >> Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
+> >> ---
+> >>  drivers/net/ethernet/realtek/r8169_main.c | 75
+> >> +++++++++++++++++++++++
+> >>  1 file changed, 75 insertions(+)
+> >>
+> >> diff --git a/drivers/net/ethernet/realtek/r8169_main.c
+> >> b/drivers/net/ethernet/realtek/r8169_main.c
+> >> index 791277e750ba..0fbec27e4a0d 100644
+> >> --- a/drivers/net/ethernet/realtek/r8169_main.c
+> >> +++ b/drivers/net/ethernet/realtek/r8169_main.c
+> >> @@ -77,6 +77,23 @@
+> >>  #define R8169_RX_RING_BYTES  (NUM_RX_DESC * sizeof(struct RxDesc))
+> >>  #define R8169_TX_STOP_THRS   (MAX_SKB_FRAGS + 1)
+> >>  #define R8169_TX_START_THRS  (2 * R8169_TX_STOP_THRS)
+> >> +#define R8169_MAX_RX_QUEUES  8
+> >> +#define R8169_MAX_TX_QUEUES  1
+> >> +#define R8169_MAX_MSIX_VEC   32
+> >> +#define R8127_MAX_TX_QUEUES  1
+> >
+> >Then why multi tx queue support?
+> >
+> >> +#define R8127_MAX_RX_QUEUES  8
+> >> +#define R8127_MAX_IRQ                32
+> >> +#define R8127_MIN_IRQ                30
+> >
+> >This isn't self-explanatory. What do min and max refer to here?
+> 
+> The hardware actually reserves a 64-bit interrupt status space for the new mapping in RTL8127. Although I don't think it is reasonable, its hardware design.
+> - Vector 0-7 (from reg 0x0d04): Rx queues
+> - Vector 8-15 (from reg 0x0d04): Tx queues
+> - Vector 29 (from reg 0x0d06): Link Status Change (LSC)
+> As the Link Status Change interrupt is fixed at vector index 29, we are forced to request a minimum of 30 MSI-X vectors from the PCI core.
 
-Now that is usual, somebody converting device_ to of_. It is normally
-the other way around, for not particularly good reasons. Nice.
 
-> -	if (device_get_ethdev_address(&spi->dev, dev))
-> +	ret = of_get_ethdev_address(spi->dev.of_node, dev);
-> +	if (ret == -EPROBE_DEFER)
-> +		return ret;
+Thanks for the explanation. Now please try to explain that in code, so
+developers can understand what the driver is doing and why.
 
-/**
- * device_get_mac_address - Get the MAC for a given device
- * @dev:	Pointer to the device
- * @addr:	Address of buffer to store the MAC in
- */
-int device_get_mac_address(struct device *dev, char *addr)
-{
-	if (!fwnode_get_mac_address(dev_fwnode(dev), addr))
-		return 0;
-
-	return nvmem_get_mac_address(dev, addr);
-}
-EXPORT_SYMBOL(device_get_mac_address);
-
-This appears to support nvmem. Would device_get_mac_address() actually
-work? I'm not against swapping to of_get_ethdev_address, but the
-commit message should be accurate.
-
-   Andrew
+	Andrew
