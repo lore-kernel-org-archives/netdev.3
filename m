@@ -1,127 +1,147 @@
-Received: from mail-dl1-f100.google.com (mail-dl1-f100.google.com [74.125.82.100])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48FA0317158
-	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 09:24:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B820E3806B0
+	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 09:26:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777368264; cv=none; b=Z3xyIQ0HdsrCmMxAIvpHe0NIW2lPUtmmg+h1OydC08pq6yP6a9m6LX/hcv2y30myDGaKkTHHHnJnJFuCspaB61Pj7nnubWPWsR/3NP7lvgP9W3iSofuo2eqaJwvisrdRkf3WtW9f0Pg/R0l5Hr+5a6eefEa2vAqu2RydsFMu3cc=
+	t=1777368379; cv=none; b=TJiUlwZO84BMkhYoKRJEpV6CaWcEe6OQREW5S6vcxh+v6d2YAjh+4eqpc1L0WiHREkabeJSoEkIQTJfd0WGqKNf/ZM+AMwDW7eXdzhyNWHEXdUni+InPpgVKVEclFQ2oqrroz/57HMCPXcUftPTFeESGphL0AOTtLIQCt+IkYd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777368264; c=relaxed/simple;
-	bh=IzPOnX+4u79/JYJ7Z4oEDndQq0Exv1P8b4YAmspEcU4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sJSZmg+i0QixkG/qqiwT2LXDy4Qu28jbNrznrTBNPPBnatqD7/PZX99IGmfg8P16P+c9RpxQoDER58JimmofHZHEn3Gt3fT4D1fs8Y+u5g6Yr28bw5dqotGCJY7u9fRtgpYWgZkkATfVuHEDZalSPhIYws8MvIRv2f2SLneZFHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=JgZASNic; arc=none smtp.client-ip=74.125.82.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1777368379; c=relaxed/simple;
+	bh=9Cmk2zEMnqYDCmmzuz7M/Q/Kf4X+1td9feLwCVsavls=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=N3GTWwY0gnxpSVR5Kd54bG40A+dfo7+iu3gBvnkC+FF2pALxul3dDzjLxO8t3IzZdfumHlXDeTV9pQ3GIBWYKR97CSICwhBgR73uhM2mARB2a7fdRJLnSuQkfsMLelS6CDRM4OyB8OlcJ3AVFXv+KVjKb7YegtxxOsOIKdLIQVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QundDFMv; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="JgZASNic"
-Received: by mail-dl1-f100.google.com with SMTP id a92af1059eb24-12db205ca0bso771814c88.2
-        for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 02:24:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777368262; x=1777973062;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=IzPOnX+4u79/JYJ7Z4oEDndQq0Exv1P8b4YAmspEcU4=;
-        b=myT0xsDdKBiR4IihcooIdGsmoC0KxJ+VRWrUFus9pl/MYMHP6/pYZEDJOBpd554jV5
-         c2YxhQ7UnZ0BPYXzWSeemHiqdPyrRcrRRY4D95Xp+tFGXCSTVZar//TPF+NMFUJinPDs
-         99O5sciqSQmzI88w+EKlvSRjT+XH9RsT0g1tITurNLrV/MVm4dN14pCXZ2ombEB02qPC
-         darZVj+OEK41SmsMtMzk4a5yHoNZBSKeTmcTJjUfXqr4RLtG2k9kKC+xxlYpM90qMLqz
-         YtOYycc22OUsiURKcigFw/LwrPD6Ip79lspgH/y3jti9LgPLWnduVyhZXNIvAopGHsaQ
-         FTBg==
-X-Gm-Message-State: AOJu0Yz8/9Ln/e6ty7JPdtUBQ7V35qExpyWsFD0H7FthGIsYXveOVjpE
-	7tON0Kqz63qZGEWPsl4lGmXcwaMWbeGQxbKlfEoFqmHC7k0YqQznsd0aYNC6c9+HK/4Y/OFGEfe
-	BKZn2AWBQ+iwhgxZ37idfPUQgMm/xbXle3w1R38IpualmJ+bBRNLOO4cjfuoiLv+JkBE+d0IlzX
-	ED8D/WTOcEd6S6/XowrELw3hPFKp0dnN6M36ESzokn3gQ7I/t7bSaEIJ2Ja/6wioFq+hNRt3+LB
-	u+tg3QcYkIkPy8=
-X-Gm-Gg: AeBDietkE2+eOcFkRuui+JLnNwq1amexK7OCxdJAfwV3g3+AhxXXMkhOt3W6hVOoLy1
-	vNWdDrMinDUoKGBvMPxJ6vwG4GHIADsXmXYZbNrhfSQ5ZBeYw8CcZqiPgNUIgGwt13fbLbkhlwx
-	2liceTSYrGwdc5zAn15crltYHJsOO+E/zaMrF0AX0KcUgLH6hh+lBZVcaP4GBmy2Bg8CY5uNeiA
-	vfjsdwsE2bn6pevjpmGPOVQlTTJILcOiPBD5XTD98Kt34wQT9076wA90XKgku7YRldqGUuuiQ13
-	BYxr2wo/YlV1V99PAmuGRPwAd1hzC6QavFcGn8REgx3MQPC0g0F1Sq4L0cr6fW7OZ8uIIirtIl5
-	s5mO2rR2iY92wDD0gjEv2IUMOh+xbt3Q5qbAOjpiSqHBxB0xzEo+f35+OWii3dj9ewQK1+kbU3B
-	baPxqItg2MO9kQCBEITqcmmKNZgZWBfN2NBH4ATaFGE8EmUkfG37k6jFrlCgef4bf9DVlV
-X-Received: by 2002:a05:7022:2383:b0:12c:20b9:80fc with SMTP id a92af1059eb24-12ddd55ce38mr578166c88.7.1777368262128;
-        Tue, 28 Apr 2026 02:24:22 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-21.dlp.protect.broadcom.com. [144.49.247.21])
-        by smtp-relay.gmail.com with ESMTPS id 5a478bee46e88-2ed0a18637bsm132600eec.17.2026.04.28.02.24.21
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 28 Apr 2026 02:24:22 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-2dd329abc22so1003876eec.0
-        for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 02:24:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QundDFMv"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-488d2079582so131999615e9.2
+        for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 02:26:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1777368260; x=1777973060; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IzPOnX+4u79/JYJ7Z4oEDndQq0Exv1P8b4YAmspEcU4=;
-        b=JgZASNicZYhFDPOEua8M8St8hIx6jLDc2TFrJdHtt9yfi7n8ZhbO8kB1v5HIgpZIzy
-         C0qyUnqgwJHc2dm3DrRZKqIpcboCZ/EO8Ud//hMykpL0tJoAoV2QsHOE1p5xyjgcM8Ll
-         D2Y0Vz8fZWjVCsdm3m3tP8N75U+d+9hYdYM0Y=
-X-Received: by 2002:a05:7300:d70d:b0:2c4:ec89:bdb with SMTP id 5a478bee46e88-2ed09a38a2bmr455066eec.2.1777368259664;
-        Tue, 28 Apr 2026 02:24:19 -0700 (PDT)
-X-Received: by 2002:a05:7300:d70d:b0:2c4:ec89:bdb with SMTP id 5a478bee46e88-2ed09a38a2bmr455057eec.2.1777368258999;
-        Tue, 28 Apr 2026 02:24:18 -0700 (PDT)
-Received: from photon-d7fac424c0d3 ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ed09fd6e19sm1666250eec.13.2026.04.28.02.24.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Apr 2026 02:24:18 -0700 (PDT)
-From: Ankit Jain <ankit-aj.jain@broadcom.com>
-To: kuba@kernel.org
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	ncardwell@google.com,
-	kuniyu@google.com,
-	davem@davemloft.net,
-	dsahern@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	quic_stranche@quicinc.com,
-	quic_subashab@quicinc.com,
-	linux-kernel@vger.kernel.org,
-	karen.badiryan@broadcom.com,
-	ajay.kaher@broadcom.com,
-	alexey.makhalov@broadcom.com,
-	vamsi-krishna.brahmajosyula@broadcom.com,
-	yin.ding@broadcom.com,
-	tapas.kundu@broadcom.com
-Subject: Re: [PATCH net] tcp: do not shrink window clamp when SO_RCVBUF is locked
-Date: Tue, 28 Apr 2026 09:21:10 +0000
-Message-ID: <20260428092110.2280-1-ankit-aj.jain@broadcom.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260427131111.168ed0dc@kernel.org>
-References: <20260427131111.168ed0dc@kernel.org>
+        d=gmail.com; s=20251104; t=1777368371; x=1777973171; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=b/bKX8nWZ5h+TCYbqj5tfLIob37kb6iKL7nSpxWlYBs=;
+        b=QundDFMv/byC/UjeX6qUyYUarW3gWzJGjkEa7oIu+C/0B+J61SZzner+sEaiNbwiBC
+         SZvQ2wBUfosAJYpKsH7XKqhZ0LDxKhQz+llcRxDOm3qXvNaYzhMSV7YrYSxttDBOIrlO
+         VmcJuqFvyW/No5ORyNI+57rg8krZcMtUWg4AJqj1azgfRbEB+vrAsNdsrwJAu1uzyWOd
+         1a3J+1MsZcsYtyrWLLHnrtlwmdMqG1wOiwrqvDBd6pZ+B8py41Vx9Fnu7SK1CXoIudi+
+         pjtzx1FQsHkpzIv0+rfCCIUDJ/lKMkoXKyX5BqyXU0SgweplA5f95j7Pl/8MPVGZfwEJ
+         EfQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777368371; x=1777973171;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=b/bKX8nWZ5h+TCYbqj5tfLIob37kb6iKL7nSpxWlYBs=;
+        b=A2YVDrDWJSxS51XDRgTMowVGrHcjYzdKlPox5BiQ0cdMXhy6BRScaToXe7c4Rh6wZI
+         mDoTKsMCMCS8A17j5Ar//sPsS/jfVokUcuuord7YFbQ1mMLqkYfwgaj8FhbH1Ixj73KB
+         vuqd9JY4av+n6o77R0OZDyhoLZ00maHGGNdzI4DNazYpc4GryB9iQeB5lMnIn7i5/Dsv
+         rm25aGHAy7tP5Ttz3yZghYLqDuJ4M9iPeRtTXPfO/FXqA5dUaa6KAZC0pHQJCW1/sprP
+         IhGne7gRoF7RkEoIhFE1f2HDevGEH5zyW3JoIVQynCylNJ8oxeu9Bzxqb9fsuh3wkWJp
+         DiQw==
+X-Forwarded-Encrypted: i=1; AFNElJ9MU0ASy8JHwFUEhuwvHn3jbeNe1ersWX0ITFuu0/1KDx3KxxKhR2rLzcPPE/Mb/1I1zH/Zu4g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwEodFmisE++UMq8zXp+PVCQRJCee5iaUGvWwQW0mZhVMqCzD1H
+	O9m/rIgWuAaXEaw7iHX9tujVx/jq6eRPIcoNCQE84Hrv7KSQFdpkhhiO
+X-Gm-Gg: AeBDievM6CoOWLHqGa0VhF3+/2Ix2wHWr8IguYOFXedNJ+4PSqWJOiLAOPINhodjICR
+	qiR7KXcgy2m4EB08SkN8lIr61Wvsog5IveDwv1dAZpUjq+MIaz1YlLBdhmv82oC4GePcQuR/2MH
+	MLZHNTgo0zevd7vYKUGhN1STM1MHlbXCbShKGWMcxgowKaGl8J/CfPXH8x9qTh6Qw1e8pMoMbV0
+	9vmmCyekO3o6ZT02KBYpzj5NcI111azprwRkJqX/npLAw5K4W1zAH+LE7b1bSrJINew7rR90JnC
+	Q1Rx21yei0AlmvvAN5r9FVVuzryMSHLw1hQJgq1JSsbsZhvyVK4D9a/dtTaYY0xoUwPTzDjMv2Z
+	HHFHXGGROZrgvjFHIpBcvXbhu6yk7fWg7giO1emdAZj1/W/llYszrGuAGEBeP0cN/R0YQLWBSA8
+	RCS+t0A1SyYRZzB8EzWsW7BF6bnM3jYA5Z2I292wFOB2Na+WO3o+fbTlTlb1+k1T7Bbgg3a5QgA
+	w==
+X-Received: by 2002:a05:600c:c048:b0:489:1e8a:90b4 with SMTP id 5b1f17b1804b1-48a77b2203emr26399355e9.21.1777368371175;
+        Tue, 28 Apr 2026 02:26:11 -0700 (PDT)
+Received: from [192.168.20.170] (5D59A51C.catv.pool.telekom.hu. [93.89.165.28])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a773f1fa0sm44594055e9.14.2026.04.28.02.26.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Apr 2026 02:26:10 -0700 (PDT)
+Message-ID: <232d7c53-f413-4c8d-bc70-f03a12d601f5@gmail.com>
+Date: Tue, 28 Apr 2026 11:26:08 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [net-next PATCH 06/10] net: dsa: realtek: rtl8365mb: add VLAN
+ support
+To: Luiz Angelo Daros de Luca <luizluca@gmail.com>,
+ Linus Walleij <linusw@kernel.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, =?UTF-8?Q?Alvin_=C5=A0ipraga?=
+ <alsi@bang-olufsen.dk>, Yury Norov <yury.norov@gmail.com>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260331-realtek_forward-v1-0-44fb63033b7e@gmail.com>
+ <20260331-realtek_forward-v1-6-44fb63033b7e@gmail.com>
+ <CAD++jLmRT+3EJ-f_FNuZwOGU4fBB6pGHhq2OuxBS7O-cEnWt=g@mail.gmail.com>
+ <CAJq09z6Y3MfkyiyaMhPTQH3W7p-ZmsNeS-iBKOeQNWWpDi0UoQ@mail.gmail.com>
+ <CAD++jLkqcqUThJe+kJhR2hwyg1y_RWJc7yrM-kqMeiA4T-Jqig@mail.gmail.com>
+ <CAJq09z6O81Sev07pQiQzCXzbKC2JxBCjep6=tX2Noqd=pPW1KQ@mail.gmail.com>
+ <CAJq09z6PjXeDYhfo3=UmLyUhXyx5rPHCK4kBaMaJWNZNssjo2Q@mail.gmail.com>
+Content-Language: hu
+From: Gabor Juhos <j4g8y7@gmail.com>
+In-Reply-To: <CAJq09z6PjXeDYhfo3=UmLyUhXyx5rPHCK4kBaMaJWNZNssjo2Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-Hi Jakub,
+Hi Luiz, Linus,
 
-Thank you for pointing this out.
+Sorry for the late reply.
 
-I checked the logic again, I placed the SOCK_RCVBUF_LOCK check on
-the outer if-statement. This successfully prevented
-tcp_set_window_clamp() from crushing the window (fixing the
-Java SWS bug), but it accidentally bypassed the tp->rcvq_space.space
-bounds check as well. Because of this, the receive queue tracking got
-out of sync when the test hit a negative window.
+> 
+>>> I haven't yet wrapped my head around if the RTL8367 (no extra letters)
+>>> is more RTL8366RB-ish or more RTL8365MB-ish... take a look at the
+>>> old code if you can figure it out from register maps etc:
+>>> https://github.com/openwrt/openwrt/tree/main/target/linux/generic/files/drivers/net/phy
+>>> (maybe Gabor knows, put him on cc)
+> 
+> Regarding the RTL8367 (no extra letters), the RTL8367R is indeed a
+> member of that original family, rather than the "B" family as I
+> previously suggested. It uses Port 9 for the CPU, which is absent in
+> RTL8367B. Architecturally, it is definitely more RTL8365MB-ish.
 
-For v2, I will move the lock check inside the block so it only bypasses
-tcp_set_window_clamp(), ensuring the rcvq_space.space limits still
-execute as expected.
+I wrote the rtl8367 driver for the RTL8367R and RTL8367M switches. I have
+no datasheet for those chips, but there are some basic information about
+their features [1].
 
-I will test the refined logic against my reproducer and the
-tcp_rcv_neg_window.pkt script locally, and I will post the v2 series
-in a new thread after the 24-hour cooldown.
+The driver was based on various code found in GPL sources of the TP-Link
+TL-WR2543ND and ASUS RT-N56U devices. Those sources were using the RTL8370
+specific API for these chips.
 
-Thanks,
-Ankit
+It was not clear that the two models really belongs to the RTL8370 family
+or simply the vendors were using the RTL8370 specific code as a base, so
+I have used RTL8367 prefix in the swconfig driver. Probably, it would have
+been better to keep the RTL8370 prefix to avoid confusion.
+
+> 
+> The main challenge with the base RTL8367 is the lack of a public API.
+> Most vendors support it via binary managers (ASUS) or proprietary
+> kernel modules (TP-Link). The only available references I’ve found are
+> the OpenWrt swconfig driver you mentioned and some U-Boot
+> initialization code. I do have the rtl8367{b,c,d} APIs. While the
+> rtl8367b seems close to the original RTL8367, it has fewer ports. Does
+> anyone happen to have access to the original RTL8367 API
+> documentation?
+
+I have no documentation, but the RTL8370 API source can be found at various
+places [2], [3].
+
+To be honest, I don't remember all the details, but I hope that this helps.
+
+Regards,
+Gabor
+
+[1] http://semitron.co.kr/product/product.php?lcate=001&mcate=005&scate=004&uid=47&PHPSESSID=ec195486d91ed175f698567462571180
+[2] https://github.com/cgoder/openwrt_rtk/tree/master/rtk_openwrt_sdk/target/linux/rtkmipsel/files/drivers/net/rtl819x/RTL8370_RTL8367_API
+[3] https://github.com/andy-padavan/rt-n56u/tree/master/uboot/mips/uboot-5.x.x.x/drivers/rtl8367/api_8370
+
