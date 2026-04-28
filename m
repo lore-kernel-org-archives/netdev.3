@@ -1,52 +1,47 @@
-Received: from bg1.exmail.qq.com (bg1.exmail.qq.com [114.132.77.159])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7B0E30ACFB
-	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 02:12:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.132.77.159
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FA11379EC4;
+	Tue, 28 Apr 2026 02:13:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777342374; cv=none; b=Ng9fDluWdVl5FguNqo4DqoxrMLx/R3hr99lxkfaIJPWeSqcsYeUgcZpid7eimMpC78RAdufttPnah+4XybD4Ty2NFVDDK/Ng8QC+5OOwmrOLOT7NWJ4siFLJ8Zss9JLSMTzqvbLGcrT5UrCfVZ00LRXZC/oIzpPINLGytdhs8Q4=
+	t=1777342395; cv=none; b=fcw2gmlgxePZUTWqD0bQF+DIx2CPErZo8lMybrikqrH+Td+YgoRuARtEwvE9nYHFL5T6/e/G4ZyUJFQNQMu22FXJo8eBM5LBWCkt4vS5p2AkBbHjtNiP18tasdb7CbGHoeUQiv23UziwGAOPAHNSOvdVtm7wy0u2ddszkkA+2+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777342374; c=relaxed/simple;
-	bh=GYquoJ1OJF63F1rXbC7ebsrzyvJH/znlX+DBQxoXMoE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=e/JvcyzPXPG6yxLVj82yN9bVGtSrIJzeVg/nxaFhyTZ+XbI6Qd4WTl1wRjaLMmTH9JNMn/uOZaQub3dzC4Vh+C5gYQTpS2VfvIVHC/Yw/ZCM6/6zs7Zqh63Hr5W9inTOwIRTyA0ZNNGpsBBjjyTYiPgec1WMnJ2BB3cYNRYEPnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=114.132.77.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: esmtpgz11t1777342325ta863fc72
-X-QQ-Originating-IP: o+nimyvfbSicWv+mGXuCGbkfydiBdduJEKwr1gaCp7o=
-Received: from lap-jiawenwu.trustnetic.com ( [36.24.191.108])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 28 Apr 2026 10:12:03 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 3952486834042546466
-EX-QQ-RecipientCnt: 17
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: netdev@vger.kernel.org
-Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Simon Horman <horms@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	Breno Leitao <leitao@debian.org>,
-	Joe Damato <joe@dama.to>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Fabio Baltieri <fabio.baltieri@gmail.com>,
-	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net-next v1 1/5] net: ngbe: implement libwx reset ops
-Date: Tue, 28 Apr 2026 10:11:52 +0800
-Message-Id: <20260428021156.13564-2-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.21.0.windows.1
-In-Reply-To: <20260428021156.13564-1-jiawenwu@trustnetic.com>
-References: <20260428021156.13564-1-jiawenwu@trustnetic.com>
+	s=arc-20240116; t=1777342395; c=relaxed/simple;
+	bh=xyMpV0FK4Ngqyen1vRZuh5Pl2265SYBluoI7GajV8uc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jna4T+FOfky2w4wT0hgvMe6CQoU3BRTEEjYNR5cUvmLuesQokQU/19W6t5357WuTHEkNekDwmnWyTC0NhGOzumVA0i9A7ZzlzyawzSnXWgB5BvooCQnCwvNIenVzIb/gd8OY388Ay0nGTwvwMRe/CTJxZcYP2FO0R8TcuUZbTnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eE0G5cD8; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eE0G5cD8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9987C19425;
+	Tue, 28 Apr 2026 02:13:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777342395;
+	bh=xyMpV0FK4Ngqyen1vRZuh5Pl2265SYBluoI7GajV8uc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=eE0G5cD80VLE+Fseoeh9/IybAY83APnABjoyYWqAuJEx1dnjheOTtZD1S8/zKYWp7
+	 f/DTErocbqIgkBQ/kuTh+eA7C70v/+qo8smTBO2RU+TtmuBWYXzQ8qNaor5odjUta/
+	 nHaVg/3Pwt72mrhGg11B9okpeXwLjLEcoQ5cj5Apy0KVPkoUxYzTnmYx8h/IrcIAgm
+	 w1quN8sjWOE6hdaDvptZ5+OYOaL1Q1b31lGrVSyQZY0sQQ1isIXavv7LzRi8kQCPFb
+	 NwgxXBzSYcUuHPhodxIbOP1zZZtDYSoY2kUFC/wOW0XSubN6vIY6FqEmqZBztxRTIn
+	 kq7rjJ7iexeeg==
+From: Jakub Kicinski <kuba@kernel.org>
+To: pablo@netfilter.org
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	netfilter-devel@vger.kernel.org,
+	davem@davemloft.net,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	fw@strlen.de,
+	horms@kernel.org
+Subject: Re: [PATCH net 11/11] ipvs: fix the spin_lock usage for RT build
+Date: Mon, 27 Apr 2026 19:13:11 -0700
+Message-ID: <20260428021311.793367-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260424190513.32823-12-pablo@netfilter.org>
+References: <20260424190513.32823-12-pablo@netfilter.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,143 +49,129 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpgz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: NyTsQ4JOu2J20lf578BUyoyZ6+3cCr+VOvdSpPDbIxj1CO9nqqvrrM4R
-	nHwU86G+vGJQR/JgM0KP0J/PWOluAIwEBaMjJrdzVCTtoTqw24TF05JFH4VEjfH73SXpXX6
-	4/RRCKHso+AvBPXQkQDGtAJA4/0F6f3BA5YllF8joxGFhn0K0dXXy2m2oMz6EzW7zpBRovD
-	9fkVPHDWoRYk7ZrRrwN3ApM0D19JOVNkK7j+WkazrFxw2ZpKQ4zQhG5hLE/W5O6Mdb6an/0
-	AGK9zAgoHyiJ6jYQ6RMw7jO6XkEqTh2bQur6T8QSQBypJCR9U2Oeu9iNK2WaccFv4ow7Rgs
-	ECZ0G0wymNmDzbdiMr6jgrRi09H4oZzxciv0y4JGtJEDfXpAb8VRXbNYUguikLvtq5THIyT
-	nAow/KNy9BkMn8Xk8KQ7YxFHc2qv0ChfQ7REF6lovTkQ8gXJtIEptl2fpwJCOAD38aUP08s
-	2SQ+5Wr50lzNu2zQMaZK8v5bTBT358s//Fi+BR1bAr/UdV4cbJjz/rKMFbPZPs9OHg2WV4U
-	VNJzLb33QBRloswd5xglUcs4I3augOH4Fbpb6Dj+cxs4yjvW7AR2vvNlzB82LP7WFAJ0whT
-	wnIXBd9x1xtgxuCbgGREPIYAbQOO5lxMo2/b88LIDGgHimx2qkuz9U7WM6H0pKyKpCtiBol
-	aiTN5Hv3ZYmB6heKC7YZbN2FxljaaHCZqdGfow9FPlleVm4GKGWw2Rhdse6WtwJmR/G5Rhr
-	XI1AQyFSobAyvWwHEhNIj/OpAaSFnSaIaUqhFf9+JkmebHlKd1OBRbwByxOXxKg27jDqzuZ
-	WAMrpgZA0Byowa25JctgtCeA/H/isuSa9K1yyWjjsoLFsH2fiQmsxkPh5Jgee4viz79tGrw
-	Ttv/2+V1q0uIhLlAxlNDbwPJeQbUhqH9Vzp2DgAkeMSbv8ZkB2iz8ZH/mkY9fmkCztjuTNl
-	tnHecGLqP7SV+SXKBPnQ54ZQaFxTa0E8ZmYEfDM9Z6k9qwOgvOvR+UQv1rMSrEIZ/GtLuXo
-	Bg4uoe4rOlDGreua2zYvVh32WPHCeKyPjRKowgZa1ZPJ7HOIyhe2sblkTNhwfkeQD1+5+DX
-	g==
-X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
-X-QQ-RECHKSPAM: 0
 
-Implement wx->do_reset() for library module calling.
-
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
 ---
- .../net/ethernet/wangxun/ngbe/ngbe_ethtool.c  |  1 -
- drivers/net/ethernet/wangxun/ngbe/ngbe_main.c | 37 ++++++++++++++++++-
- drivers/net/ethernet/wangxun/ngbe/ngbe_type.h |  1 +
- 3 files changed, 36 insertions(+), 3 deletions(-)
+ipvs: fix the spin_lock usage for RT build
 
-diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_ethtool.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_ethtool.c
-index b2e191982803..1960f7154151 100644
---- a/drivers/net/ethernet/wangxun/ngbe/ngbe_ethtool.c
-+++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_ethtool.c
-@@ -59,7 +59,6 @@ static int ngbe_set_ringparam(struct net_device *netdev,
- 	wx_set_ring(wx, new_tx_count, new_rx_count, temp_ring);
- 	kvfree(temp_ring);
- 
--	wx_configure(wx);
- 	ngbe_up(wx);
- 
- clear_reset:
-diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-index d8e3827a8b1f..bd905e267575 100644
---- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-+++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-@@ -133,6 +133,7 @@ static int ngbe_sw_init(struct wx *wx)
- 
- 	wx->mbx.size = WX_VXMAILBOX_SIZE;
- 	wx->setup_tc = ngbe_setup_tc;
-+	wx->do_reset = ngbe_do_reset;
- 	set_bit(0, &wx->fwd_bitmask);
- 
- 	return 0;
-@@ -422,7 +423,7 @@ void ngbe_down(struct wx *wx)
- 	wx_clean_all_rx_rings(wx);
- }
- 
--void ngbe_up(struct wx *wx)
-+static void ngbe_up_complete(struct wx *wx)
- {
- 	wx_configure_vectors(wx);
- 
-@@ -488,7 +489,7 @@ static int ngbe_open(struct net_device *netdev)
- 
- 	wx_ptp_init(wx);
- 
--	ngbe_up(wx);
-+	ngbe_up_complete(wx);
- 
- 	return 0;
- err_dis_phy:
-@@ -501,6 +502,12 @@ static int ngbe_open(struct net_device *netdev)
- 	return err;
- }
- 
-+void ngbe_up(struct wx *wx)
-+{
-+	wx_configure(wx);
-+	ngbe_up_complete(wx);
-+}
-+
- /**
-  * ngbe_close - Disables a network interface
-  * @netdev: network interface device structure
-@@ -588,6 +595,8 @@ int ngbe_setup_tc(struct net_device *dev, u8 tc)
- 	 */
- 	if (netif_running(dev))
- 		ngbe_close(dev);
-+	else
-+		ngbe_reset(wx);
- 
- 	wx_clear_interrupt_scheme(wx);
- 
-@@ -604,6 +613,30 @@ int ngbe_setup_tc(struct net_device *dev, u8 tc)
- 	return 0;
- }
- 
-+static void ngbe_reinit_locked(struct wx *wx)
-+{
-+	netif_trans_update(wx->netdev);
-+
-+	mutex_lock(&wx->reset_lock);
-+	set_bit(WX_STATE_RESETTING, wx->state);
-+
-+	ngbe_down(wx);
-+	ngbe_up(wx);
-+
-+	clear_bit(WX_STATE_RESETTING, wx->state);
-+	mutex_unlock(&wx->reset_lock);
-+}
-+
-+void ngbe_do_reset(struct net_device *netdev)
-+{
-+	struct wx *wx = netdev_priv(netdev);
-+
-+	if (netif_running(netdev))
-+		ngbe_reinit_locked(wx);
-+	else
-+		ngbe_reset(wx);
-+}
-+
- static const struct net_device_ops ngbe_netdev_ops = {
- 	.ndo_open               = ngbe_open,
- 	.ndo_stop               = ngbe_close,
-diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h b/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
-index 7077a0da4c98..4f648f272c08 100644
---- a/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
-+++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
-@@ -125,5 +125,6 @@ extern char ngbe_driver_name[];
- void ngbe_down(struct wx *wx);
- void ngbe_up(struct wx *wx);
- int ngbe_setup_tc(struct net_device *dev, u8 tc);
-+void ngbe_do_reset(struct net_device *netdev);
- 
- #endif /* _NGBE_TYPE_H_ */
+This patch fixes PREEMPT_RT issues with spin_lock usage under bit
+locks in the IPVS resizable hash tables, and reworks ip_vs_conn_hash(),
+ip_vs_conn_unlink(), and ip_vs_conn_fill_cport() accordingly.
+
+Link: https://sashiko.dev/#/patchset/20260415200216.79699-1-ja%40ssi.bg
+Link: https://sashiko.dev/#/patchset/20260420165539.85174-4-ja%40ssi.bg
+Link: https://sashiko.dev/#/patchset/20260422135823.50489-4-ja%40ssi.bg
+
+> diff --git a/net/netfilter/ipvs/ip_vs_conn.c b/net/netfilter/ipvs/ip_vs_conn.c
+> index 84a4921a7865..9e23cda84825 100644
+> --- a/net/netfilter/ipvs/ip_vs_conn.c
+> +++ b/net/netfilter/ipvs/ip_vs_conn.c
+
+[ ... ]
+
+> @@ -637,6 +628,7 @@ void ip_vs_conn_fill_cport(struct ip_vs_conn *cp, __be16 cport)
+>  	struct ip_vs_conn_hnode *hn;
+>  	u32 hash_key, hash_key_new;
+>  	struct ip_vs_conn_param p;
+> +	bool by_me = false;
+>  	int ntbl;
+>  	int dir;
+>  
+> @@ -664,8 +656,11 @@ void ip_vs_conn_fill_cport(struct ip_vs_conn *cp, __be16 cport)
+>  		t = rcu_dereference(t->new_tbl);
+>  		ntbl++;
+>  		/* We are lost? */
+> -		if (ntbl >= 2)
+> +		if (ntbl >= 2) {
+> +			IP_VS_ERR_RL("%s(): Too many ht changes for dir %d\n",
+> +				     __func__, dir);
+>  			return;
+> +		}
+>  	}
+
+Can the ntbl >= 2 early return strand cp in an unrecoverable state
+when it is reached on the dir=0 iteration after dir=1 has already
+committed partial state?
+
+In the pre-patch code, cp->cport, the clearing of
+IP_VS_CONN_F_NO_CPORT, and the atomic_dec() of no_cport_conns[] were
+all performed together inside a single if (!dir) critical section, so
+an abort via ntbl >= 2 simply left cp->cport == 0 and a later packet
+could retry from scratch.
+
+[ ... ]
+
+> -	spin_lock(&cp->lock);
+> -	if ((cp->flags & IP_VS_CONN_F_NO_CPORT) &&
+> -	    (cp->flags & IP_VS_CONN_F_HASHED)) {
+> +	/* Fill cport once, even if multiple packets try to do it */
+> +	if (cp->flags & IP_VS_CONN_F_NO_CPORT && (!cp->cport || by_me)) {
+> +		/* If we race with resizing make sure cport is set for dir 1 */
+> +		if (!cp->cport) {
+> +			cp->cport = cport;
+> +			by_me = true;
+> +		}
+> +		if (!dir) {
+> +			atomic_dec(&ipvs->no_cport_conns[af_id]);
+> +			cp->flags &= ~IP_VS_CONN_F_NO_CPORT;
+> +		}
+
+With the new structure, the dir=1 iteration (which runs first when
+use2 is true) sets cp->cport = cport and by_me = true, but leaves
+IP_VS_CONN_F_NO_CPORT set and does not touch no_cport_conns[].  The
+flag clear and the atomic_dec happen only in the subsequent dir=0
+iteration.
+
+If the dir=0 iteration then returns early via the ntbl >= 2 path,
+either directly on entry or after an accumulated ntbl across retry:
+restarts (ntbl is reset per next_dir, not per retry), cp ends up
+with cp->cport set to the new value but IP_VS_CONN_F_NO_CPORT still
+set.
+
+Can any subsequent ip_vs_conn_fill_cport() call complete the
+transition?  The gate is:
+
+	if (cp->flags & IP_VS_CONN_F_NO_CPORT && (!cp->cport || by_me)) {
+
+For a fresh caller, by_me is false and cp->cport is now non-zero, so
+the gate is structurally unsatisfiable and the flag clear /
+atomic_dec never runs.
+
+In __ip_vs_conn_in_get() the lookup
+
+	!p->cport ^ !(cp->flags & IP_VS_CONN_F_NO_CPORT)
+
+evaluates false for this cp (flag still set, p->cport non-zero), and
+the cport=0 fallback also fails since p->cport != cp->cport (cp->cport
+is now non-zero).  Does this leave cp unreachable via forward
+direction lookup until the timer expires?
+
+As a side effect, does no_cport_conns[af_id] stay elevated for the
+remainder of cp's lifetime, forcing ip_vs_conn_in_get() into the
+slower cport=0 fallback path for that af/netns while the stuck entry
+lives?
+
+> -		if (!dir) {
+> -			atomic_dec(&ipvs->no_cport_conns[af_id]);
+> -			cp->flags &= ~IP_VS_CONN_F_NO_CPORT;
+> -			cp->cport = cport;
+> -		}
+>  	}
+> -	spin_unlock(&cp->lock);
+>  
+>  	if (head != head2)
+>  		hlist_bl_unlock(head2);
+>  	hlist_bl_unlock(head);
+>  	write_seqcount_end(&t->seqc[hash_key & t->seqc_mask]);
+>  	preempt_enable_nested();
+> -	spin_unlock_bh(&t->lock[hash_key & t->lock_mask].l);
+> -	if (dir--)
+> +	spin_unlock(&t->lock[hash_key & t->lock_mask].l);
+> +
+> +	spin_unlock_bh(&cp->lock);
+> +	if (dir-- && by_me)
+>  		goto next_dir;
+>  }
 -- 
-2.51.0
-
+pw-bot: cr
