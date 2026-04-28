@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D13194C98
-	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 00:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FA9B22A4E9
+	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 00:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777337461; cv=none; b=cLYCc8QOq34ciMb5TIUAu99x+0uTRcf63XVhuLdreofr2RYEwWVL1PyBO6jfYzuEZNOkjZrJLSYprH6a5pUmujDeDLn4u0ryV24hP7GdlpqgdKoKQTknoXYflSB47f2n97qlFa/3LZj9Q+N9XgSkS2ki/z8ErUUprwfJyLVFUsQ=
+	t=1777337463; cv=none; b=maLOALZhgNUn8OnY8Rm3kUxDA4gsmMU3G/1rnm4G6HzkZIddexSd3ogJyn0vRw1qJFPNwSZaoBpf0k1OSjuGHcgRLFyy+dU825ZssDlY2LzQzxeer3rJM2bg5AgoO+QwDsq1fDkgMF/jn/BmQJKfUhW3cMBifzGPokoj2TLC4NQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777337461; c=relaxed/simple;
-	bh=5Ri8joccBWwhmyuhXiC1KxUz9bPRfRNan1t6eJUwBF4=;
+	s=arc-20240116; t=1777337463; c=relaxed/simple;
+	bh=VGh2L+COy3hGOTtTFrTSH55dIP8goJvnDbksuLcJVeg=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ZdPYrb//6/SmL6oE3aafQKX4bLYJL/NarVAHcnbbv5GR11i5KilPSp3UTpMvA/NdxWkZheYtdD3TAfDG36rohvBmcJ5ecpt9691ZjvfKzjr9eOSJYie3rZIXmtknNE4fbfNtRLoOcH3Tp1Neo7KFzZZbIwwA7SDCKzOfrrVcgOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k/aPE3Ni; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=bdXfxF48Jwby51V/SSCiYQr5ve4eFRCOrI7HPE8pb2FvCXsJOi76e7Hc17ylHjnRhwdqIAodb2JMEcSkKVOR3KYc24rRR8QQnFSqJ9D9riVnonRVcm9y39dZtMI/6O1lpyGkZk26jnGDobQuFTZsEOMlH/ZAOluBmQjycP7sTQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gyXfe+J4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k/aPE3Ni"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 442DAC2BCB4;
-	Tue, 28 Apr 2026 00:51:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gyXfe+J4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8B84C2BCB7;
+	Tue, 28 Apr 2026 00:51:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777337461;
-	bh=5Ri8joccBWwhmyuhXiC1KxUz9bPRfRNan1t6eJUwBF4=;
+	s=k20201202; t=1777337462;
+	bh=VGh2L+COy3hGOTtTFrTSH55dIP8goJvnDbksuLcJVeg=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=k/aPE3NirdiDQEeSxlWHEYdYma2Gt4QD1ICwCL3RppzMGrxq4x5PPRsdu1O5O3vcT
-	 HRyB4Pj8E8O3od1jV6iC+qskIf4y0Nn5qgNuYlCkz86B9z4UhjXzafXqDgJn09da2q
-	 Jw3BSmi+p0UMVPNEZmpnJ0GJnMYsbFk5RN8wApJp8ToBQ9gl2NutZ0AnBgej8dFvRu
-	 5ph/tP2NSdDUw6y6gawin3dyCEYam3PDkQp6cuyrugSitv7iI151oV37TyZEnpnSPS
-	 aXNEApI3//fwf8tW7kldmzAaxvuqQhtohcSf7IdjqvkufqT8cLqCo4ihLssvPDhNeO
-	 q6xVIv2b3lneg==
+	b=gyXfe+J4lIazgN1Xp5kGiIFw4YwPi+6+vpIqrUT3CvdyTpbkMjw7GHgYzQ0hvrO6T
+	 SQ1SCS7oG9FAW+948Mp0uc+f6HBNUat2HoJtaWLFK2ROW1Vh3C99xHmNzZm4uBsXjD
+	 OPyr03wmve5YnUf3Ao0igIpCijsvi6ZGKweQNJpMTi+lkBYR/FCoZfIGxzim+Mkowb
+	 d22EX2qGMBw+Y29lgS/jeXNFllg1bFW9/B4veG2zKWA16Q5yvB82Smm/PQmYwd7HAH
+	 uHNWE4iBWX4aRDeo53P7uecv3Ohr1WrbKdW6MJJIIx262Jm5k9iPzvR0V4fe5pYcFc
+	 IOR2OjOXUG63w==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9D0838119DB;
-	Tue, 28 Apr 2026 00:50:19 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FD3738119DB;
+	Tue, 28 Apr 2026 00:50:21 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,18 +37,16 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: airoha: stop net_device TX queue before updating
- CPU index
+Subject: Re: [PATCH net] net: airoha: fix BQL imbalance in TX path
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177733741829.177472.11417413578434219767.git-patchwork-notify@kernel.org>
-Date: Tue, 28 Apr 2026 00:50:18 +0000
-References: <20260421-airoha-xmit-stop-condition-v1-1-e670d6a48467@kernel.org>
-In-Reply-To: 
- <20260421-airoha-xmit-stop-condition-v1-1-e670d6a48467@kernel.org>
+ <177733741979.177472.4126211834690754531.git-patchwork-notify@kernel.org>
+Date: Tue, 28 Apr 2026 00:50:19 +0000
+References: <20260421-airoha-fix-bql-v1-1-f135afe4275b@kernel.org>
+In-Reply-To: <20260421-airoha-fix-bql-v1-1-f135afe4275b@kernel.org>
 To: Lorenzo Bianconi <lorenzo@kernel.org>
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, hkelam@marvell.com, horms@kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
  netdev@vger.kernel.org
 
@@ -57,20 +55,19 @@ Hello:
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 21 Apr 2026 08:43:07 +0200 you wrote:
-> Currently, airoha_eth driver updates the CPU index register prior of
-> verifying whether the number of free descriptors has fallen below the
-> threshold.
-> Move net_device TX queue length check before updating the TX CPU index
-> in order to update TX CPU index even if there are more packets to be
-> transmitted but the net_device TX queue is going to be stopped
-> accounting the inflight packets.
+On Tue, 21 Apr 2026 08:35:11 +0200 you wrote:
+> Fix a possible BQL imbalance in airoha_dev_xmit(), where inflight
+> packets are accounted only for the AIROHA_NUM_TX_RING netdev TX
+> queues. The queue index is computed as:
+> 
+>     qid = skb_get_queue_mapping(skb) % ARRAY_SIZE(qdma->q_tx)
+>     txq = netdev_get_tx_queue(dev, qid);
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net: airoha: stop net_device TX queue before updating CPU index
-    https://git.kernel.org/netdev/net/c/3854de7b38be
+  - [net] net: airoha: fix BQL imbalance in TX path
+    https://git.kernel.org/netdev/net/c/2d9f5a118205
 
 You are awesome, thank you!
 -- 
