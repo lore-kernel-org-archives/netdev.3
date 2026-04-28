@@ -1,69 +1,190 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0944429812;
-	Tue, 28 Apr 2026 12:39:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D56D63F7882;
+	Tue, 28 Apr 2026 12:41:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777380009; cv=none; b=N48Z3sq3ohWn6qrz21GaRRPysc/08P+oRIu7o9W6WIps8WksFOyjspCd+386qRVWAlETk9oSwhBpjUY5Ei4DJfcs0YrnD82QAU+8du7NkN1L01G61a82vCLJdIOPq3I4hOkR54amsp6BBJIXqcBL6Xfi66X5Z27fngnL/uTv2dY=
+	t=1777380087; cv=none; b=dvsyz8fYiHB0L2Vvk2l8apC1h1RZY53q8PK6vmmABi6XVGieSIzpA3JqtKa8jzGqbkwB+lr4yU4s4jlxAFMRIwrmisBHufULaPgaOnzwPCq9WmaRsyp1sIUpzA3PaClc3lm0V4WydmnqxVmYl12Pck/kpV1l7GVAhUL3wI0GdLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777380009; c=relaxed/simple;
-	bh=VkJCNXld27ViSk1GksVTuVWmIxaHWW/Vkk8rGBOs4jI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LH5QxyENhAN+UMPwnuETjGwYCGTy65sxsbf6iE0lN70S4e1zUJUBpmheIDWsEgOmP7xB3XJKgXi6R0nETGd9mbH4KdOkt3MNwjKWys/eZt6pIcSQCIO4hidK6a19PanhvU9+fzE22xczXBvbH8byd8iH10Yd9hjpBZZEw56pZjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=TDIxPIbb; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="TDIxPIbb"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=Pvn8z6UXcaffCR4fdIvZyFHgKnwPxuriIYucWjCpEUI=; b=TDIxPIbbwvecqNPDEvrALLKohJ
-	2MIkNLxxs1XnkCHypSgQ6lUjAkAdjKGEFtC4KqBCSq3Aij5zAtvUPmy0KRayUtEPMcwGiwLoskJq3
-	UDntK9eq0Xxy0apPGAbmJTDqN19Bm+HdRoNKTJGmCnJWYjcNwyXnnE7v9ypKAh3CWMAY=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wHhj1-000KhY-Dy; Tue, 28 Apr 2026 14:39:39 +0200
-Date: Tue, 28 Apr 2026 14:39:39 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Rosen Penev <rosenp@gmail.com>
-Cc: netdev@vger.kernel.org, Justin Chen <justin.chen@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	"open list:BROADCOM ASP 2.0 ETHERNET DRIVER" <bcm-kernel-feedback-list@broadcom.com>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCHv2 net-next] net: bcmasp: handle EPROBE_DEFER for MAC
- retrieval
-Message-ID: <6046a450-8db5-45b4-aca3-b84b0826af38@lunn.ch>
-References: <20260428014329.779779-1-rosenp@gmail.com>
+	s=arc-20240116; t=1777380087; c=relaxed/simple;
+	bh=/FIAmCE+jTSbIDR44bizH17/rllnYYVWfYT2DpoxWm0=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=lNgZz9o/Z+eVasw1CGXNGmuaVEtj88Xo43xF0nTYBllpaj4S5ZUB5z/kn39M3ru8jXc60keCRJnpbdPF5Zs5r3SF3IiprKQDOIVR0RV5/qaA8njcEMxydgYFiDItwmM0FzwV0A1Z9xpdUWC7CmEpqOD4CDq7zz2WUU2bhi8FzRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; arc=none smtp.client-ip=129.217.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
+Received: from simon-Latitude-5450.cni.e-technik.tu-dortmund.de ([129.217.186.62])
+	(authenticated bits=0)
+	by unimail.uni-dortmund.de (8.18.2/8.18.2) with ESMTPSA id 63SCewwm012433
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 28 Apr 2026 14:41:01 +0200 (CEST)
+From: Simon Schippers <simon.schippers@tu-dortmund.de>
+To: willemdebruijn.kernel@gmail.com, jasowang@redhat.com,
+        andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, mst@redhat.com,
+        eperezma@redhat.com, leiyang@redhat.com, stephen@networkplumber.org,
+        jon@nutanix.com, tim.gebauer@tu-dortmund.de,
+        simon.schippers@tu-dortmund.de, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        virtualization@lists.linux.dev
+Subject: [PATCH net-next v9 4/4] tun/tap & vhost-net: avoid ptr_ring tail-drop when a qdisc is present
+Date: Tue, 28 Apr 2026 14:38:59 +0200
+Message-ID: <20260428123859.19578-5-simon.schippers@tu-dortmund.de>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260428123859.19578-1-simon.schippers@tu-dortmund.de>
+References: <20260428123859.19578-1-simon.schippers@tu-dortmund.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260428014329.779779-1-rosenp@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-> +++ b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
-> @@ -1254,7 +1254,7 @@ struct bcmasp_intf *bcmasp_interface_create(struct bcmasp_priv *priv,
->  	struct device *dev = &priv->pdev->dev;
->  	struct bcmasp_intf *intf;
->  	struct net_device *ndev;
-> -	int ch, port, ret;
-> +	int ch, port, ret = -EINVAL;
+This commit prevents tail-drop when a qdisc is present and the ptr_ring
+becomes full. Once an entry is successfully produced and the ptr_ring
+reaches capacity, the netdev queue is stopped instead of dropping
+subsequent packets.
 
-That breaks the reverse christmas tree. Otherwise this looks O.K.
+If producing an entry fails anyways due to a race, tun_net_xmit returns
+NETDEV_TX_BUSY, again avoiding a drop. Such races are expected because
+LLTX is enabled and the transmit path operates without the usual locking.
 
-    Andrew
+If no qdisc is present, the previous tail-drop behavior is preserved.
 
+The existing __tun_wake_queue() function of the consumer races with the
+producer for waking/stopping the netdev queue: the consumer may drain
+the ring just as the producer stops the queue, leading to a permanent
+stall. To avoid this, the producer re-checks the ring after stopping
+and wakes the queue itself if space was just made. An
+smp_mb__after_atomic() is required so the re-peek of the ring sees any
+drain that the consumer performed.
+smp_mb__after_atomic() pairs with the test_and_clear_bit() inside of
+netif_wake_subqueue():
+
+Consumer CPU                  Producer CPU
+========================      =========================
+__ptr_ring_consume()
+netif_wake_subqueue()         netif_tx_stop_queue()
+          /\                  smp_mb__after_atomic()
+          ||                  __ptr_ring_produce_peek()
+contains RMW operation
+ test_and_clear_bit()
+          /\
+          ||
+ "Fully ordered RMW:
+smp_mb() before + after"
+    - atomic_t.txt
+
+Benchmarks:
+The benchmarks show a slight regression in raw transmission performance,
+though no packets are lost anymore.
+
+The previously introduced threshold to only wake after the queue stopped
+and half of the ring was consumed showed to be a descent choice:
+Waking the queue whenever a consume made space in the ring strongly
+degrades performance for tap, while waking only when the ring is empty
+is too late and also hurts throughput for tap & tap+vhost-net.
+Other ratios (3/4, 7/8) showed similar results (not shown here), so
+1/2 was chosen for the sake of simplicity for both tun/tap and
+tun/tap+vhost-net.
+
+Test setup:
+AMD Ryzen 5 5600X at 4.3 GHz, 3200 MHz RAM, isolated QEMU threads;
+Average over 50 runs @ 100,000,000 packets. SRSO and spectre v2
+mitigations disabled.
+
+Note for tap+vhost-net:
+XDP drop program active in VM -> ~2.5x faster, slower for tap due to
+more syscalls (high utilization of entry_SYSRETQ_unsafe_stack in perf)
+
++--------------------------+--------------+----------------+----------+
+| 1 thread                 | Stock        | Patched with   | diff     |
+| sending                  |              | fq_codel qdisc |          |
++------------+-------------+--------------+----------------+----------+
+| TAP        | Transmitted | 1.136 Mpps   | 1.130 Mpps     | -0.6%    |
+|            +-------------+--------------+----------------+----------+
+|            | Lost/s      | 3.758 Mpps   | 0 pps          |          |
++------------+-------------+--------------+----------------+----------+
+| TAP        | Transmitted | 3.858 Mpps   | 3.816 Mpps     | -1.1%    |
+|            +-------------+--------------+----------------+----------+
+| +vhost-net | Lost/s      | 789.8 Kpps   | 0 pps          |          |
++------------+-------------+--------------+----------------+----------+
+
++--------------------------+--------------+----------------+----------+
+| 2 threads                | Stock        | Patched with   | diff     |
+| sending                  |              | fq_codel qdisc |          |
++------------+-------------+--------------+----------------+----------+
+| TAP        | Transmitted | 1.117 Mpps   | 1.087 Mpps     | -2.7%    |
+|            +-------------+--------------+----------------+----------+
+|            | Lost/s      | 8.476 Mpps   | 0 pps          |          |
++------------+-------------+--------------+----------------+----------+
+| TAP        | Transmitted | 3.679 Mpps   | 3.464 Mpps     | -5.8%    |
+|            +-------------+--------------+----------------+----------+
+| +vhost-net | Lost/s      | 5.306 Mpps   | 0 pps          |          |
++------------+-------------+--------------+----------------+----------+
+
+Co-developed-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
+Signed-off-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
+Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
 ---
-pw-bot: cr
-     
+ drivers/net/tun.c | 30 ++++++++++++++++++++++++++++--
+ 1 file changed, 28 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+index efe809597622..c2a1618cc9db 100644
+--- a/drivers/net/tun.c
++++ b/drivers/net/tun.c
+@@ -1011,6 +1011,8 @@ static netdev_tx_t tun_net_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	struct netdev_queue *queue;
+ 	struct tun_file *tfile;
+ 	int len = skb->len;
++	bool qdisc_present;
++	int ret;
+ 
+ 	rcu_read_lock();
+ 	tfile = rcu_dereference(tun->tfiles[txq]);
+@@ -1065,13 +1067,37 @@ static netdev_tx_t tun_net_xmit(struct sk_buff *skb, struct net_device *dev)
+ 
+ 	nf_reset_ct(skb);
+ 
+-	if (ptr_ring_produce(&tfile->tx_ring, skb)) {
++	queue = netdev_get_tx_queue(dev, txq);
++	qdisc_present = !qdisc_txq_has_no_queue(queue);
++
++	spin_lock(&tfile->tx_ring.producer_lock);
++	ret = __ptr_ring_produce(&tfile->tx_ring, skb);
++	if (__ptr_ring_produce_peek(&tfile->tx_ring) && qdisc_present) {
++		netif_tx_stop_queue(queue);
++		/* Re-peek and wake if the consumer drained the ring
++		 * concurrently in a race. smp_mb__after_atomic() pairs
++		 * with the test_and_clear_bit() of netif_wake_subqueue()
++		 * in __tun_wake_queue().
++		 */
++		smp_mb__after_atomic();
++		if (!__ptr_ring_produce_peek(&tfile->tx_ring))
++			netif_tx_wake_queue(queue);
++	}
++	spin_unlock(&tfile->tx_ring.producer_lock);
++
++	if (ret) {
++		/* If a qdisc is attached to our virtual device,
++		 * returning NETDEV_TX_BUSY is allowed.
++		 */
++		if (qdisc_present) {
++			rcu_read_unlock();
++			return NETDEV_TX_BUSY;
++		}
+ 		drop_reason = SKB_DROP_REASON_FULL_RING;
+ 		goto drop;
+ 	}
+ 
+ 	/* dev->lltx requires to do our own update of trans_start */
+-	queue = netdev_get_tx_queue(dev, txq);
+ 	txq_trans_cond_update(queue);
+ 
+ 	/* Notify and wake up reader process */
+-- 
+2.43.0
+
