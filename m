@@ -1,124 +1,142 @@
-Received: from mail-dl1-f67.google.com (mail-dl1-f67.google.com [74.125.82.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0916C15ECCC
-	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 03:08:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA23301485;
+	Tue, 28 Apr 2026 03:45:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777345728; cv=none; b=qOPVB7ZvU78cd7PFPtnTRqiQD1DnV9WgHXv7u6ZrJ62d38i653ANQTBiFjkT6O8amFkLTOxXBQn1N+ya0SSJsKfQzKwiV9T4+2mWwjDus0WCJ+fLuYFLr4PCydbDH4e/+XFeuSTfnP+pYG1ZV55bkg3zPDOLjr1aq7QOJAmTQAg=
+	t=1777347905; cv=none; b=N5gR2njG+HXayIILqcE7DqUrRuPpvG5hNHTcreaZfeONHZKeAIhue8O7N2bR93SYS2zA19Cby1EkOS4Jup7AopmW/q7u3SRA5Dv0MkVJGHoOjSQKTv2NozZQBXJeBLuKdfSynkeOvpO3Ery9T24Z6c3Am0Fbw4iPfvnLh5Hk3Eo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777345728; c=relaxed/simple;
-	bh=58/SxyygshXwr02hHK/RwB8HspCENne0hR9jOMX8ceE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FeXzNKKNNrbKV4HkBv0G1/tjQBF9YEMokRuyjwIOHU2j+032j9dtVDrNPwAez7UygGFVpc3q+2WRLtseT+rMKq0bbvSRIGQ2IpKnnt7kRipH7JV+1UafpgqJ3aKV7TlMzMrOw6pqe5dG+4GcgepJIk5mVXt5jqdKc/XjfXA2CaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m/USccQc; arc=none smtp.client-ip=74.125.82.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1777347905; c=relaxed/simple;
+	bh=xs7FohA2kQ00M5o/FHhRwv43hH00H8f8LM+NLgsZgU0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=aUgAYeT4OU2cJP60QaicErSFOKmW5L+2/VEIgOz1W4sMFpWSqKdNDjmuBRKaAy0oPz5rWBofixJcyncdButYxcR3QEtPipmFekRPY0Fzm52bqqqPTOah+lSwLas4BTYV5lXM8L0XvczkrSlN0tpA+gc7FAu0r2aMOLYfBD5v+Dk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=v1BLrdcP; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=v1BLrdcP; arc=none smtp.client-ip=23.88.97.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m/USccQc"
-Received: by mail-dl1-f67.google.com with SMTP id a92af1059eb24-12c6df0b9bbso2019892c88.1
-        for <netdev@vger.kernel.org>; Mon, 27 Apr 2026 20:08:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777345726; x=1777950526; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZFKsY0zkP8TQm+0BNdc4CTwtYvq4U2UiY8lkQgxP8es=;
-        b=m/USccQcC4ufknC1/lT1zZSAVOA4i8qOS4W6Lw2pxfE9fro4Df9tjs7UUsoWmmJRB0
-         becUZqlg3UT9EgoTmAcXOMd/7KSLJQmAX/mvKk8Da7CAb6zGNGAkB5JsBHsFhSl/KeZs
-         a3iZ4K/8fzK6nKRisdL4v9ZDXHDrOhuzwX145EEV0mFpTlearp0S9D+lmOO7D4683h7h
-         tMQ6MNtOmx73ABXpcFuFi6UAdeaTXTGuOS65iYj7Vp2Gpy+2vgrssfGBLCNzXC0jhVrz
-         yneeVnIZL9B3w10jBrtAiybqzJZa9iHcsRTXoOmssQ9F1790c3lfUcSj4u0Mhb1unPNw
-         op+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777345726; x=1777950526;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZFKsY0zkP8TQm+0BNdc4CTwtYvq4U2UiY8lkQgxP8es=;
-        b=LlpxrYIOSW28ia+rcc5j8UVR7W8QZX3xqxu7wwFw87eYppQGkDVXZVLrqzKrwcKtdV
-         tUkhC6CR7qPBVLLu7UbuIOgGSwSoSYUDYRiU35OQgFXZG8uhEGbMC2HmP+TItRFuhXL+
-         qUWVeVu9fVdzfOsiexJTujEOidCzk/1RBBQzb7k+DLA3yllCclBoa62jX534yM9SijFA
-         2N1Nh8HWtYhkb+6OGMkXREsdju/0pxq2swsB8jfk92Bn3w2uS45D+JqQNSNyRbgQeQFg
-         PojNpXDnRvWQR6+TIRw8NOdWGuaUquhocJld5l/o2cw4ZEKrNGApO0iPlZL6enWVy0Xe
-         LiCg==
-X-Gm-Message-State: AOJu0Yyny4PDJ+beCq/TFCYffZAZG9jOISprwnYU84kFptEnNRYzWN38
-	FwqSNLuiNpwh+SWcNZOd46ggoPY6CyJlLzXQuF3cMHvKa8Mc2hGk35XhQ0lOq0Lm
-X-Gm-Gg: AeBDietZoL+KIXe68zxkwaBAShekxTQnDLTyKgQlfDiP49F9CRSaq1nApZJcssSDHtG
-	Bw4prVXaHFIi8mdCTaD5L2diM/CnV+XhFtC0h5dRr/+iF2CpplZ8g/0LaYdhmYhEerHfvYkzmkC
-	hOrfGyjS6N+YG2dgLuxRuwFSzVWH1uLn7pBLltBa5RHNzG5uGiJPmd+3QdW+cFIx/EwpQ9otmF7
-	BnicyWVF4rllAARgqlRr/kdD+tLxqj56iRQSaXCo8W+tWFN29Rgyw5e0bB+dP4pO8xLuAz8RqAk
-	WOhtQkopa2ahKLEzfcfoTa3lm0DY/eNRjW6dDoyhVRq2CS9mCVVjbzhljvTavJDW0fubw30fMo1
-	3NQnE5riBx+cuRES0oC4hcc1Ijz/R3/yxUGV54/CnQi5Yuh+eefEExnuwiKEuNWmXQ7s3jVBd4Y
-	OtT97ROjuVXqcQ5rficEREnwt0Z70oMWE/MmxwZ8aGC1BDtirhTmYlz6nmfoeTE6MUgtQWhX7pA
-	qwG4o0P3jk7O6tOs0G0ECNhw9w7GHA6pRXzZJJQYN3ezGlRcgaheUy3x0Me+QeFtVkHIQc1kyDo
-	WeBPJOhQQe7Pf/PDwByEWpEi1BYe
-X-Received: by 2002:a05:7022:f94:b0:12d:c9b6:bbba with SMTP id a92af1059eb24-12ddd984193mr789914c88.8.1777345725911;
-        Mon, 27 Apr 2026 20:08:45 -0700 (PDT)
-Received: from ethan-latitude5420.. (host-127-24.cafrjco.fresno.ca.us.clients.pavlovmedia.net. [68.180.127.24])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12ddd8951edsm1256362c88.0.2026.04.27.20.08.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Apr 2026 20:08:45 -0700 (PDT)
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	stable@vger.kernel.org,
-	Yibo Dong <dong100@mucse.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	MD Danish Anwar <danishanwar@ti.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Subject: [PATCH v2] net: ethernet: rnpgbe: mark nonfunctional incomplete driver as BROKEN
-Date: Mon, 27 Apr 2026 20:08:25 -0700
-Message-ID: <20260428030826.47509-1-enelsonmoore@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="v1BLrdcP";
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="v1BLrdcP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1777347901;
+	bh=xs7FohA2kQ00M5o/FHhRwv43hH00H8f8LM+NLgsZgU0=;
+	h=From:Date:Subject:To:Cc:From;
+	b=v1BLrdcP/Yqim8VGoap4xUT6qX+McMcu+7N81pYfOFS4oa+hLriqkqIqg9OX34nOV
+	 oZaq/tU4NZuuT++YRMtW9Hs8AetjAhSyXI1AgOkJDFzl+VpXaPGcTTiXyEjL6XjUWx
+	 OvKAWlqtdf/puTxD1dv8Tol+Tkvybmi6/CjFOTSS0f+oolWPU9ufNppxsPDrSJf8dT
+	 LWzwKzbEHxIkNB8+lD4Nv6beHMujv1zcH1xEmX/ZelYjYM+5bsyboeK4qKkMGtZm7E
+	 xn7vLmt+GPDh8jewYnNFe8IXIOHxCXGDakJfOsVDK63GmL52QC0LAls+zFWdfAY/yI
+	 59de88ndw65dQ==
+Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
+	id A9503478CD; Tue, 28 Apr 2026 03:45:01 +0000 (UTC)
+X-Spam-Level: 
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1777347901;
+	bh=xs7FohA2kQ00M5o/FHhRwv43hH00H8f8LM+NLgsZgU0=;
+	h=From:Date:Subject:To:Cc:From;
+	b=v1BLrdcP/Yqim8VGoap4xUT6qX+McMcu+7N81pYfOFS4oa+hLriqkqIqg9OX34nOV
+	 oZaq/tU4NZuuT++YRMtW9Hs8AetjAhSyXI1AgOkJDFzl+VpXaPGcTTiXyEjL6XjUWx
+	 OvKAWlqtdf/puTxD1dv8Tol+Tkvybmi6/CjFOTSS0f+oolWPU9ufNppxsPDrSJf8dT
+	 LWzwKzbEHxIkNB8+lD4Nv6beHMujv1zcH1xEmX/ZelYjYM+5bsyboeK4qKkMGtZm7E
+	 xn7vLmt+GPDh8jewYnNFe8IXIOHxCXGDakJfOsVDK63GmL52QC0LAls+zFWdfAY/yI
+	 59de88ndw65dQ==
+Received: from AMDDesktop.lan (unknown [IPv6:2a00:6020:47a3:e800:271c:c6c5:9fde:77cb])
+	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 054EB475CE;
+	Tue, 28 Apr 2026 03:45:01 +0000 (UTC)
+From: Birger Koblitz <mail@birger-koblitz.de>
+Date: Tue, 28 Apr 2026 05:44:58 +0200
+Subject: [PATCH net-next] r8152: Use ocp/mdio test and clear functions in
+ r8157_hw_phy_cfg()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260428-use_bit_functions-v1-1-6eb5a3507610@birger-koblitz.de>
+X-B4-Tracking: v=1; b=H4sIADkt8GkC/x2M0QoCIRAAf0X2OcGs7K5fOULU1m5ftsP1Qjj89
+ 6THgZk5QLAQCjzUAQW/JPThAeeTgrQGfqOm12CwxjpztXe9C/pI1eedUx2yaONymN0txuliYXR
+ bwUzt/1yAsWrGVuHZ+w9Gykg2bQAAAA==
+X-Change-ID: 20260427-use_bit_functions-06fa965bb832
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Chih Kai Hsu <hsu.chih.kai@realtek.com>, 
+ Birger Koblitz <mail@birger-koblitz.de>
+X-Mailer: b4 0.14.2
 
-The rnpgbe driver as currently shipped in the kernel is incomplete and
-has no useful functionality. It will bind to a PCI device and create a
-network device, but that device does not function (its .ndo_start_xmit
-callback, rnpgbe_xmit_frame, just drops all packets). This situation
-means that users could enable this driver and have it load and attach
-to their device but not transfer any data. To remove the potential for
-user confusion, mark the driver as broken until it is completed and
-explain why this was done.
+Replace explicit testing of bits and clearing these bits by existing
+functions ocp_word_test_and_clr_bits() and r8152_mdio_test_and_clr_bit()
+to re-use this code.
 
-Fixes: ee61c10cd482 ("net: rnpgbe: Add build support for rnpgbe")
-Cc: stable@vger.kernel.org # 7.0+
-Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+This allows to remove the "ocp_data" variable. Also remove the "ret" variable
+which was incorrectly used for the r8153_phy_status() return value which
+is a u16, so that the remaining "data" variable is sufficient.
+
+Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
 ---
-Changes from v1: Do not mark vendor section as BROKEN
- drivers/net/ethernet/mucse/Kconfig | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+The ocp and mdio bit test-and-clear functions were added in the last
+netdev patch submission cycle at the same time as the support for
+the RTL8157. Make use of these new functions in the PHY setup of
+that Chip. 
+---
+ drivers/net/usb/r8152.c | 20 ++++----------------
+ 1 file changed, 4 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/ethernet/mucse/Kconfig b/drivers/net/ethernet/mucse/Kconfig
-index 0b3e853d625f..810fc1230d97 100644
---- a/drivers/net/ethernet/mucse/Kconfig
-+++ b/drivers/net/ethernet/mucse/Kconfig
-@@ -16,12 +16,14 @@ config NET_VENDOR_MUCSE
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index 7337bf1b7d6ad03572edbc492706c07a8f58760f..c7c1b07d4159d50a1641894235a011e467e5d3e7 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -7952,17 +7952,11 @@ static void r8156b_hw_phy_cfg(struct r8152 *tp)
  
- if NET_VENDOR_MUCSE
+ static void r8157_hw_phy_cfg(struct r8152 *tp)
+ {
+-	u32 ocp_data;
+ 	u16 data;
+-	int ret;
  
-+# This driver is marked as broken because it is incomplete; this avoids users
-+# enabling it and expecting it to work.
- config MGBE
- 	tristate "Mucse(R) 1GbE PCI Express adapters support"
--	depends on PCI
-+	depends on PCI && BROKEN
- 	help
- 	  This driver supports Mucse(R) 1GbE PCI Express family of
--	  adapters.
-+	  adapters. It is incomplete and currently has no useful functionality.
+ 	r8156b_wait_loading_flash(tp);
  
- 	  More specific information on configuring the driver is in
- 	  <file:Documentation/networking/device_drivers/ethernet/mucse/rnpgbe.rst>.
+-	ocp_data = ocp_read_word(tp, MCU_TYPE_USB, USB_MISC_0);
+-	if (ocp_data & PCUT_STATUS) {
+-		ocp_data &= ~PCUT_STATUS;
+-		ocp_write_word(tp, MCU_TYPE_USB, USB_MISC_0, ocp_data);
+-	}
++	ocp_word_test_and_clr_bits(tp, MCU_TYPE_USB, USB_MISC_0, PCUT_STATUS);
+ 
+ 	data = r8153_phy_status(tp, 0);
+ 	switch (data) {
+@@ -7976,19 +7970,13 @@ static void r8157_hw_phy_cfg(struct r8152 *tp)
+ 		break;
+ 	}
+ 
+-	data = r8152_mdio_read(tp, MII_BMCR);
+-	if (data & BMCR_PDOWN) {
+-		data &= ~BMCR_PDOWN;
+-		r8152_mdio_write(tp, MII_BMCR, data);
+-	}
++	r8152_mdio_test_and_clr_bit(tp, MII_BMCR, BMCR_PDOWN);
+ 
+ 	r8153_aldps_en(tp, false);
+ 	rtl_eee_enable(tp, false);
+ 
+-	ret = r8153_phy_status(tp, PHY_STAT_LAN_ON);
+-	if (ret < 0)
+-		return;
+-	WARN_ON_ONCE(ret != PHY_STAT_LAN_ON);
++	data = r8153_phy_status(tp, PHY_STAT_LAN_ON);
++	WARN_ON_ONCE(data != PHY_STAT_LAN_ON);
+ 
+ 	/* PFM mode */
+ 	ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_PHY_PWR, PFM_PWM_SWITCH);
+
+---
+base-commit: 35c2c39832e569449b9192fa1afbbc4c66227af7
+change-id: 20260427-use_bit_functions-06fa965bb832
+
+Best regards,
 -- 
-2.43.0
+Birger Koblitz <mail@birger-koblitz.de>
 
