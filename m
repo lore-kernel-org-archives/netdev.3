@@ -1,60 +1,101 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 956DF330644
-	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 16:40:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [52.175.55.52])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4E953264DE
+	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 16:42:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.175.55.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777394416; cv=none; b=RF0ahLJaZrZ9QYCVlQK4qHwA/7D1qO6Xu669k+qO+epczHc12OyfWJNixj9n6ic1yC9wwPoQZLkue0Bf01/0Ba6Zs+AYL5ucFlNMGAITXzcxWGlLezHqeBaQeEDytRDERZz0ckZ7hpP4qEbE6l1GJ3U2lTSkelu/a+09MSF7ldM=
+	t=1777394539; cv=none; b=PCSGnOOFA1gCE/JcWU/7NyCXm7l8AxJ6K/khu7uijqPlu8kg39XwI9maNWIiYd1LxNYeVurG7dgjB87NzVjmuPtRhE1TBnpX1FgkVXAZ+wGDsE0VCqfY312aUS4VzD+fUnEoTNH9ZQ25seyPBJIOKvu85t/wc1Mv+9AkyV99Yho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777394416; c=relaxed/simple;
-	bh=/H/qYEml20skAVQTa8A0yHC53jjrmwvl6PPvPrmVfy0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BHmgyJ0UKfYd+e1kMHwavaUfqXiOm0XOmiCe3LuIW2Fe9aoS8htIeb4JzirkyxPlpF7syIfcoh2HFscfVt6wx17Z8dbv2e2mg8yVEhnKCQakWjV+joyfLOdPouFp8O47yyZCi5sBonCLaVQqYp4eMUj7mjitTsYJBNAMoIu7HsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=KKe1Fh4r; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="KKe1Fh4r"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=eKhg67p/Q/vgzvwHgsfFuYjbdk49SIaClYWCRzGtz+k=; b=KKe1Fh4rrJ27mEZWOW/03Womj+
-	1lJqc7r5rddVXbTIV9NHYzMU6tKvIZEEcWe7+FVD1cHTa+3d8Sviza3CkTIch0iIsGV4C0MRJc+H5
-	5Bg4RXbNFm/pO+9c15m5ZdYvW4lKgWmMPHJNf6Rqma35vAAupDRZ4srAE4klSZTXEpEQ=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wHlTk-000NIk-6r; Tue, 28 Apr 2026 18:40:08 +0200
-Date: Tue, 28 Apr 2026 18:40:08 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Satish Kharat <satishkh@cisco.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org
-Subject: Re: Recommended local LLM-assisted review for netdev submissions?
-Message-ID: <6fb66176-a20f-4d6a-b12f-f15b95189327@lunn.ch>
-References: <20260428151755.1310712-1-satishkh@cisco.com>
+	s=arc-20240116; t=1777394539; c=relaxed/simple;
+	bh=swIbiRs52URCr4ERBXpm1D/Ebin53127fjmZKeifs8g=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=BYNI6gBJIIaHuOcfPPfOlbUZZ0cqSpvUQ48VzNObRpS9pNetv0/jguwSfsHBuiNPHqctG73dp7lSBHvR+G7Q9hH2E0zB0plPzPr3ZzDw3pZIpGHrMo0n8UoE2PbIhlHx+nkN7/wwXrbfRQfwUisvO3r8j5coatPTrnjutOp73Ko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn; spf=pass smtp.mailfrom=lzu.edu.cn; arc=none smtp.client-ip=52.175.55.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lzu.edu.cn
+Received: from enjou-Legion-Y7000P-2019.coin-barley.ts.net (unknown [172.23.56.36])
+	by app1 (Coremail) with SMTP id ygmowADXTwBJ4_BpC1foAA--.57594S3;
+	Wed, 29 Apr 2026 00:41:48 +0800 (CST)
+From: Ren Wei <n05ec@lzu.edu.cn>
+To: netdev@vger.kernel.org
+Cc: steffen.klassert@secunet.com,
+	herbert@gondor.apana.org.au,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	0x7f454c46@gmail.com,
+	yuantan098@gmail.com,
+	yifanwucs@gmail.com,
+	tomapufckgml@gmail.com,
+	bird@lzu.edu.cn,
+	ruijieli51@gmail.com,
+	n05ec@lzu.edu.cn
+Subject: [PATCH net 1/1] xfrm: provide message size for XFRM_MSG_MAPPING
+Date: Wed, 29 Apr 2026 00:41:43 +0800
+Message-ID: <93a1ffe802d9c5d741ab95dce75eb3e9368be97d.1777354203.git.ruijieli51@gmail.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <cover.1777354203.git.ruijieli51@gmail.com>
+References: <cover.1777354203.git.ruijieli51@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260428151755.1310712-1-satishkh@cisco.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:ygmowADXTwBJ4_BpC1foAA--.57594S3
+X-Coremail-Antispam: 1UD129KBjvJXoW7WFykJry8AF4ruF18Kw15urg_yoW8Gw47pr
+	Z8Gr93KFyxXayjkw1kWry0gFWxGFZ2gryUt34akF15Xr9Fgr45GF1YyayDtrWkJFyUWrW0
+	va4q9ry7tw4qvrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBI1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
+	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
+	IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1l84ACjcxK6I8E
+	87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr0_Cr1UM2AIxVAIcx
+	kEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v2
+	6r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2
+	Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF
+	7I0En4kS14v26r1q6r43MxkIecxEwVCm-wCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7
+	Cv6cx26r48MxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2Iq
+	xVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42
+	IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY
+	6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aV
+	CY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbGQ6JUUUUU==
+X-CM-SenderInfo: zqqvvuo6o23hxhgxhubq/1tbiAQELCWnwdGIImwAAse
 
-On Tue, Apr 28, 2026 at 08:17:55AM -0700, Satish Kharat wrote:
-> Hi Jakub,
-> 
-> I'm the author of the in-flight enic SR-IOV series. Before posting
-> revisions I run checkpatch --strict, make W=1 C=1 on touched files,
-> scripts/kernel-doc -none, and `b4 prep --check`.
+From: Ruijie Li <ruijieli51@gmail.com>
 
-AI reviews is the big news at the moment, but please don't forget the
-more mundane testing which also gets run on patches and series. You
-can run these locally:
+The compat 64=>32 translation path handles XFRM_MSG_MAPPING, but
+xfrm_msg_min[] does not provide the native payload size for this
+message type.
 
-https://github.com/linux-netdev/nipa#running-locally
+Add the missing XFRM_MSG_MAPPING entry so compat translation can size
+and translate mapping notifications correctly.
 
-	Andrew
+Fixes: 5461fc0c8d9f ("xfrm/compat: Add 64=>32-bit messages translator")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Ruijie Li <ruijieli51@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+---
+ net/xfrm/xfrm_user.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index d56450f61669..38a90e5ee3d9 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -3323,6 +3323,7 @@ const int xfrm_msg_min[XFRM_NR_MSGTYPES] = {
+ 	[XFRM_MSG_GETSADINFO  - XFRM_MSG_BASE] = sizeof(u32),
+ 	[XFRM_MSG_NEWSPDINFO  - XFRM_MSG_BASE] = sizeof(u32),
+ 	[XFRM_MSG_GETSPDINFO  - XFRM_MSG_BASE] = sizeof(u32),
++	[XFRM_MSG_MAPPING     - XFRM_MSG_BASE] = XMSGSIZE(xfrm_user_mapping),
+ 	[XFRM_MSG_SETDEFAULT  - XFRM_MSG_BASE] = XMSGSIZE(xfrm_userpolicy_default),
+ 	[XFRM_MSG_GETDEFAULT  - XFRM_MSG_BASE] = XMSGSIZE(xfrm_userpolicy_default),
+ };
+-- 
+2.34.1
+
