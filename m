@@ -1,213 +1,337 @@
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013002.outbound.protection.outlook.com [40.107.201.2])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA7803DA7DB;
-	Tue, 28 Apr 2026 10:06:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC8F7264A97;
+	Tue, 28 Apr 2026 10:08:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.16
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777370780; cv=fail; b=Mnr4Le2VMM2DrTvOhxWTdS5qLkA8Uj23XcjgdgROrfKCOMkRpR3b8LMe3CDFjtpATJXmybOdTt2Pt95vYRLrjPejAh5cDgtIOQWLBvJrQsXddUqx/XGWc7mYmk4ih3jq9XW9mlxBME5c7HISIs3YEM+wl2NqhLoI5gTpNltGwjU=
+	t=1777370942; cv=fail; b=n+t6J4UlU8b9KAI32evuEFh00L++dbLjWZqjYctgPHDVJUFYB3O/pMv2VD7pG1ar0T6PNs+Xjm72P+5Nz72hTF3+vvHyZCvvDPd9rbOiu7yfdpIS7ykx78MtYKcDAh3AFzCbDhNlTQjh9khezskMRpabZdgnKMlGjMSlqvsUyPA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777370780; c=relaxed/simple;
-	bh=af3QgH6n0m9iYqKghbd3ggFYJ9UIezo8lj4fuYHsJ60=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=l5krQmPR7zh41QdZpNwveqQG/YekMIC51W1LSWeVa16M2ORdOfyNoUEw2EWE8MHV12igfMnOtgPcb1KlDeLKyMbxOrd2hQt7CUmI+Qz6uNmTVhYpDfv5I6H1mhgKnf8O+AuJezwKG8BYfJoGA3drjm5epLPA3lc0fSV3TX9O698=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=nXYLVpB9; arc=fail smtp.client-ip=40.107.201.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1777370942; c=relaxed/simple;
+	bh=joGvd8sVzFPjq1xokBZAvnSHRPkzXR+2l2kLNUNtilU=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=rBpUUcCi4qZ/bmbbY/cPQNFX4xXNgPTs2l6jGyEbCSOG8Yqae1RYCSIr9Y0IojuMqQeu0scLALB1iSPoAwEjYITQu5OG3TRoUeMIwA+dcwd4joWyIQOhjtU3t8BIyx6ft6DXQnUaTluphJZm6ybm3XBCgS5H7BlaIEN1LmFl/ms=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KKpj0CZ1; arc=fail smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="nXYLVpB9"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KKpj0CZ1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777370940; x=1808906940;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=joGvd8sVzFPjq1xokBZAvnSHRPkzXR+2l2kLNUNtilU=;
+  b=KKpj0CZ1vMjDmXRvh6/d2W0V5oLQCJgtN2SQk0sTa3A6PEumlsNZ5UFK
+   10SkHjhnUkeV6FoBajSlEBRnhpnrige8tkxVxg7DKMyYmTwUT8rF5rbp2
+   FeRM7F5exXHaFFph+u/0Ci3b+5MDiBTRmXSZlUrD1xUrE/L+9Kic9qlw/
+   WrWwkpfM6Z+wPkfYC9ujSaiGIvjzMBfiaRcVBA1yBl+EV3108MMWz8sNd
+   TPwL79VUi7FXjy1sNcPhECYmlRVfDhW+IbzFrVoQlVUh4nfWmzgNKdCZt
+   fm1/ST7eXdo4KLV+0It2v6uidpP4AZfMGFTZ7ejCU5QiUs1AhjwxYxk2B
+   g==;
+X-CSE-ConnectionGUID: qH9EDpbYQzuJyHzvkx9sLw==
+X-CSE-MsgGUID: FrKthLseR5a35pe/2ALmNg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="65805046"
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
+   d="scan'208";a="65805046"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 03:08:59 -0700
+X-CSE-ConnectionGUID: vs/RxxgVRvKv2aSrGopZDg==
+X-CSE-MsgGUID: b4RSJ+1IRO+++99tVBXkMg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
+   d="scan'208";a="257223162"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 03:08:59 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 28 Apr 2026 03:08:58 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Tue, 28 Apr 2026 03:08:58 -0700
+Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.25) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 28 Apr 2026 03:08:58 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EnREC9faOCZVMD5PC+HhEojyxqg+ivd9xkY4gndT8RrfXj9s1N5CLkeL7+zC7+CQdf8fZRTMbV5Ko2wI/M/rg/TPghRa9x5amV7azhQ/4uAdzoMcUUW1wbCOSA1UdloEGqW8+pV5ZTDRmQCNCAsTbTC6/05PniuBlAiLq9wVTRpf0QAQDy1T3Qb05BgG2QmXVJ+7hj22oDAKZ+sz14SaJqUthRAhgdGwYVfjGM2g0mE1Ufom4zRQ/mnNKnUUKt2zB/pKiYudUw8+xd2PtPRKFxd1xXwJWsHOc8F2LK7G0qYFLyImteDbJRrbOZsylBiPxzDFleZQWf2pOhl4LwbycA==
+ b=dngB59NXAH4l2B1vnShO7MEoo1+PmHsQPB8VbMv6ly5W2cXR+IXvujvfYzs+Zgct5QXYcZwXV09Pb7GA6/AG9nvrNO1RB++dX1SeOPg7n8o3NkLrR6APGSaR8bjiimV8Lu13wCzCUlmpaV8jclHVl4dH4aSthRMEQnHD9U+0HKtKaju44dhC7MXu3F5Scga8oFx8YjtuLonDE6RIEQcs7RzMYB6p/Xa51Aas5vWNZy0xhSFhXhKdqSD8tWmFh2XODNlZbuorOq+CP4BdJ2m9NzhvyVmngUWN+gtmxlOSe4tyKXlq9GkROo/Sej8hTRiuKFfHDj+2gQaQZZiwW8/xgA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mc1Uvwfs4unQLAxIUhD35HCLQ0eCBMI0ZD7xNXuv2pw=;
- b=nDaPNbLZp2h+gTlfhFxGkO+YnhKYAA35JvScAzknSLauIzpP/ptJZOPKOwMvzx9ldTw3WXfn3xqkhPQ5cP1ayWkOjiYmlHNxeYRnjQhfprxqcmu9fb5cu+ES2hWTYpL4dNOGXgu+auu7EXTQUUuhkMnG5IcCqRV5wnYqBGKJS1IXrDJBni49cSVIB3X3Sw7QmyO44Y5wxcYi13zuxVfbnYh2PwSCPin9CQhXTzkNZWrhOJwTVQjlIbfQqFmfi20b5tL5erioFl8dMUWlzuu1bFw1l2fm5aePpyM2pCFPGA9fl8bM+CrI3igoE7As1jonESICOxJgzGJBuKCE4gyQEw==
+ bh=WHzQp0IysSMlVBNV1PsgNxiJ0Bq7asCXHu0FHEEMvu0=;
+ b=AEFi1BD2MqE7GvVycGu5zDp27wItpmjwHBMoWnhbd2xbcWfsgqbC9VU2b2X9SYVkMHS/5zh2EcfyVgDb4aje9RbFY1A3sSLYHv8FrNNSimsKqgtCndbW3f2GhxIaTarcL5ZhEZFU7VcunovxEtXdDlGc2hsZ3UnJL5qlzBuynUtzo1kZTB5y6BY3O6N5C9aHygill5zdwZRgh2npx+GrAXPhNnKOtLPPv2qkwAMNu4Pv7s7FwHbFhOFG8tWyWm9XOF3DdjP7s3y+of6KuccqAjeL20ia/VVjNK2rqJqu6q09fN7Q8Cwvsn5b+r0NiyeMoqMh/cJgTEo3A6gyk4LfZA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mc1Uvwfs4unQLAxIUhD35HCLQ0eCBMI0ZD7xNXuv2pw=;
- b=nXYLVpB9TbTUXuvFwGwiOcUR4kSCEXvcxHhqw76U4hJVGUJmrXIMqvY/xX64krlBDAOFcQNMyZ0Wo3kLzhWMYCSZmabg6eXJMH7ywR/zk0frF+Yy4/wmrERDr8HGqA7iNv7rJZhZZAkcgclkxAWeOjO7kTe1lTKFDYwLJe87rAZ+HSLsZgrTycl0CnzemgIz48QQlxT7ulaCQC+iKkRmSXgv65K//KxsWJ6gXQDHsJuoiMWU5+0DRmF6vP4TfGN1BrbaBTAvuGCGoU6iqlW9v+X7ykwTTYyOGlkS3ahDh3MDqaGhcBDStGXu+aY6atTnnnFQwaZxraZdh1RDucj5Cw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SN7PR12MB7023.namprd12.prod.outlook.com (2603:10b6:806:260::16)
- by SA3PR12MB7903.namprd12.prod.outlook.com (2603:10b6:806:307::12) with
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from IA3PR11MB8986.namprd11.prod.outlook.com (2603:10b6:208:577::21)
+ by MW3PR11MB4716.namprd11.prod.outlook.com (2603:10b6:303:53::17) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.16; Tue, 28 Apr
- 2026 10:05:55 +0000
-Received: from SN7PR12MB7023.namprd12.prod.outlook.com
- ([fe80::e329:4fcc:313d:2e3e]) by SN7PR12MB7023.namprd12.prod.outlook.com
- ([fe80::e329:4fcc:313d:2e3e%5]) with mapi id 15.20.9870.013; Tue, 28 Apr 2026
- 10:05:55 +0000
-Message-ID: <98c17c60-6747-4c2b-bfe4-ce9bbe560f6d@nvidia.com>
-Date: Tue, 28 Apr 2026 13:05:49 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 iproute2-next 1/4] rdma: Update headers
-To: David Ahern <dsahern@gmail.com>,
- Stephen Hemminger <stephen@networkplumber.org>
-Cc: leon@kernel.org, michaelgur@nvidia.com, jgg@nvidia.com,
- linux-rdma@vger.kernel.org, netdev@vger.kernel.org,
- Patrisious Haddad <phaddad@nvidia.com>
-References: <20260330173118.766885-1-cmeiohas@nvidia.com>
- <20260330173118.766885-2-cmeiohas@nvidia.com>
- <20260427112505.684c21f3@phoenix.local>
- <77e1a762-e204-497b-b7cb-40d5a93f8ec7@gmail.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.18; Tue, 28 Apr
+ 2026 10:08:50 +0000
+Received: from IA3PR11MB8986.namprd11.prod.outlook.com
+ ([fe80::e6f0:6afb:6ef9:ab5c]) by IA3PR11MB8986.namprd11.prod.outlook.com
+ ([fe80::e6f0:6afb:6ef9:ab5c%5]) with mapi id 15.20.9870.013; Tue, 28 Apr 2026
+ 10:08:47 +0000
+From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
+To: "Zaremba, Larysa" <larysa.zaremba@intel.com>,
+	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+	"Nguyen, Anthony L" <anthony.l.nguyen@intel.com>
+CC: "Lobakin, Aleksander" <aleksander.lobakin@intel.com>, "Samudrala, Sridhar"
+	<sridhar.samudrala@intel.com>, Michal Swiatkowski
+	<michal.swiatkowski@linux.intel.com>, "Zaremba, Larysa"
+	<larysa.zaremba@intel.com>, "Fijalkowski, Maciej"
+	<maciej.fijalkowski@intel.com>, "Tantilov, Emil S"
+	<emil.s.tantilov@intel.com>, "Chittim, Madhu" <madhu.chittim@intel.com>,
+	"Hay, Joshua A" <joshua.a.hay@intel.com>, "Keller, Jacob E"
+	<jacob.e.keller@intel.com>, "Shanmugam, Jayaprakash"
+	<jayaprakash.shanmugam@intel.com>, Jiri Pirko <jiri@resnulli.us>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Richard Cochran
+	<richardcochran@gmail.com>, "Kitszel, Przemyslaw"
+	<przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Salin,
+ Samuel" <samuel.salin@intel.com>, "Czurylo, Krzysztof"
+	<krzysztof.czurylo@intel.com>
+Subject: RE: [Intel-wired-lan] [PATCH iwl-next v7 01/14] virtchnl: create
+ 'include/linux/intel' and move necessary header files
+Thread-Topic: [Intel-wired-lan] [PATCH iwl-next v7 01/14] virtchnl: create
+ 'include/linux/intel' and move necessary header files
+Thread-Index: AQHc1ujceWe0FhMREEOXauksZkm32bX0QApA
+Date: Tue, 28 Apr 2026 10:08:47 +0000
+Message-ID: <IA3PR11MB89868E4D9E17649A3C25B2F3E5372@IA3PR11MB8986.namprd11.prod.outlook.com>
+References: <20260428082654.44364-1-larysa.zaremba@intel.com>
+ <20260428082654.44364-2-larysa.zaremba@intel.com>
+In-Reply-To: <20260428082654.44364-2-larysa.zaremba@intel.com>
+Accept-Language: en-US
 Content-Language: en-US
-From: Chiara Meiohas <cmeiohas@nvidia.com>
-In-Reply-To: <77e1a762-e204-497b-b7cb-40d5a93f8ec7@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR3P281CA0063.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:4b::13) To SN7PR12MB7023.namprd12.prod.outlook.com
- (2603:10b6:806:260::16)
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA3PR11MB8986:EE_|MW3PR11MB4716:EE_
+x-ms-office365-filtering-correlation-id: 8fc70b93-8d4e-4906-6f4d-08dea50e2344
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014|22082099003|18002099003|38070700021|56012099003;
+x-microsoft-antispam-message-info: iF6G/egl5ld+I44S1chxCw5iFV4y6dh2V7OLlzre6jIwDI+s7LYL0rYkJE7Xv7ywNEYouEtK5rT7UUxFmUcYCtoHlyxwWCit8HCnEX3v5dPFTXhGFFnVUB29x48KXNp3RQ4Xh1kQK6VfY75o/9dNYkBJsvqEeI/kGbyXrYzLo4wUdhDVAsDxrLy2d3/XGC8MO2nT2K0yYOTSMlHtV8gJIgr/XdmHzpYn9rnQP8gjRzWLlBuhtc9jIaEsGFr3Zku20U5B0F0V/RNzL6AqRUiyJPCpmxue4naHsnFJbyCpTiPLuMoMhihcA8Ixz/BTKYOun9dZ7utrCqUeuIyKWNShXP3PZpxJ8omFKc2Bxn1OqQTjXQ0t17D5jQjThpBgRY6/oZD2sHNSyKzNGY+co+DOGxTrRRl/KVnrlSdVLa75OWuVnNNBheK6FRrBNUqD2cNlSiVVmET6AKDt++bU26LueOkzPCa997IVeblTTVyiRZWX+tYtYa4L0rrbILXHS6bGfF0Q/oBdaSIeaXcRrhbcl4z7Y6Fk3VvmsyRNNUubdS+O5D4lhwerD38rW7lM1YKgTm2urfxjrnrCJTdeiFe9c6jXphQ1JAh5oE96TtmD3xH467r7kYwen5piBFThvyBixBDzcNMXZUcN567N+JG6n+Ro3Y2+X0QerllJOQJEaP8ypn5F0s2V0IF9KxPoBOTCf8ti/NskIGOH4m9uk59cb73TrAMgtTdAqh7VsIBLeJPC0FQG3E6l/Och82Ti8STYCsC8V2IcJB5GQ3GwOlb4PU18WBNKEAYc5RxQ/ElhJFE=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB8986.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(22082099003)(18002099003)(38070700021)(56012099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?e2kJ9lkS77FZrjudKQrBPMTiUhcrhd45UzKqiT08HfJ3yV6jlOH1RJ6luvGn?=
+ =?us-ascii?Q?jvdkYbu7rXVytJhYzl65FL0PmhYoV5maMHtWq2+suaPuO2Yh+qFM+n0fgwcx?=
+ =?us-ascii?Q?UQ3b3ec7QTskhPvhPbwXX1T7WYUrOYUWRiX2/U/XGPjU9nzkM9I7SJFbNO46?=
+ =?us-ascii?Q?gqoi3q6tiiriZguU1vGSWpK3T5/nOOYmXBlyxg7ZvcDQL6PEsRGvxZ5OU4Y7?=
+ =?us-ascii?Q?skBjzmcXiXjofvQI1JQncCtU5wBYOOsEBKENdLQRJK8OM3eT/HCHsKa/haJQ?=
+ =?us-ascii?Q?XUZAnNUQEtnlFiGaHabbXVMwjyLbv2gKIRKSXim3lE96MmzEmbwxJDqyM7Cu?=
+ =?us-ascii?Q?x/wyeBg1McJRcL93fboqz33DxhAcacw9oWo3i41NFZvMdhGu3OzS68nSWlI+?=
+ =?us-ascii?Q?30bUZWwen9fxXhb6NwxFtubWGvYf8Sm0EqcQPsVy0WL9+eUhvh76j7EftgJ/?=
+ =?us-ascii?Q?/NXrfPgN3nG/oAwc3L7wXp92H6P/jwrQus7GqN/6AMd+w6hh9wUieIbPwMT6?=
+ =?us-ascii?Q?dCYxw21mTnSmHZt1bwTmH65J4HKGEtvkhVlekn2HYV5KtnIa+SiQ+Fpji3A/?=
+ =?us-ascii?Q?HaN4ojtYkNHLrc1w1WwET+CamuwXdksY8JGs0z/dl2kueCg6e+swrlJjZl2U?=
+ =?us-ascii?Q?yjDhYy0W0Geb04mZmK5o2FkNKhviudxycyuwwxl4nM+oEIH7xDlzp8BO/70I?=
+ =?us-ascii?Q?t4EsL1uKEf9HiEUBMA5JeNI80qWVTeYqo/UU62cfiq9x9INk/wLpRhM36snM?=
+ =?us-ascii?Q?yIaH7BNxCg6fnD5rwmi8g+0nv1D0yVntoEW2faic7BqTg8CwkuM7FEUxWxNd?=
+ =?us-ascii?Q?Z+ea/Nj9VqXULB51/41eBAf/tWeOyTviMENtLKEP4KijmbzsYe0l4cvTv90R?=
+ =?us-ascii?Q?+Ev2u+cA+awWqqbZC/bbcBCPQHtjGVnFA/PpQA84fooIJSfFrtcw08Ust12a?=
+ =?us-ascii?Q?tYMzCzRJdEdZfxwkY1KAFnfctg3zqTBQyWgolG2kHkqAdiV5pL+ClMb5vpKL?=
+ =?us-ascii?Q?+NVdCZjBpHXvwQI+Zq7zOqJ31t4xEJbdatBdMPkzpWq1m1+Zb16WQuSAiSvd?=
+ =?us-ascii?Q?ICCp22xF9cqUtG6Wh4Tkw6Agos+/KPMvlPSygz6Bwf7+ll6bJ166Mo4DC8iX?=
+ =?us-ascii?Q?UdPRU7Ez7x72LQZNhYEGc24VfiLqvybV5cK2F1pbZhfVvIogWfrkuG0X6peR?=
+ =?us-ascii?Q?vxb7Cf1E20bL7DJC6WnKIcOlD5T+teH6QwwjhBf3BcV3DJTrlhzHTJwBH1rY?=
+ =?us-ascii?Q?APm5N6uYcm3pTSdKyliPKDgOws2MbrwDxNO5JLoqb4YA0XnCjr5384SHnZra?=
+ =?us-ascii?Q?I1OzikRBBrh5gaUq6UDn423+lxS+FBvqN/lg5fGvybAsiyAnKcDouurtADLO?=
+ =?us-ascii?Q?Mvgp/nXk51qPLdkmKUIE4c1qf3kvNc1vbx85ihbJ6mrtcNJGBORHQ2sB9qOy?=
+ =?us-ascii?Q?Gc0E9iMu76jm6TAdqsOTATL3j6sMX6zz1X/1FMnSdWwERLRYebaDZd79F2Z/?=
+ =?us-ascii?Q?zLynBkJTuH0PSz9MJXrXw4Zw2Bu9mzlexroj7GPk1DFTEaqgUXA4SHjNJM58?=
+ =?us-ascii?Q?aMj6Q/4VCuSHWI0tIsg8Oxndi490ocQ2ATuJ+qRbIuKjj6pm8zaEc9tZq4Yi?=
+ =?us-ascii?Q?F0TfODH/MGgnsh3d3XmMaqDwWDEigfWFIWcZb1Tf15wttlcxGe1WNGxZh3re?=
+ =?us-ascii?Q?Jj7fXVIyk5uiQm2QvHLF2PGgNooQHX7C/Em56pa4jRZy4P7oMFxn3lGHckMQ?=
+ =?us-ascii?Q?wmS8vBUcfwrjLVuUFUMFnwECARVDe90=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN7PR12MB7023:EE_|SA3PR12MB7903:EE_
-X-MS-Office365-Filtering-Correlation-Id: 10a5940a-291a-48bd-b79d-08dea50dbcab
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|366016|1800799024|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	ca+5UGBUcS16wDOHnCCZG2llvavz+1DHmy2F5/KTMwzdW7uSs4kBfPSs9jphHXXcC9Dh3LzQb1J1coLmI9E6jCvfrMBAWymzNdH0Vxal+bILxhNFmVUCzFhNDyKEwD3dGz8+kWr2pyXD+VNOoolFA54eHKTy6796zrTxmtTMILruibKQZtVvNPX581kxcivn3+jqUdcmJ/DpTeTqbsyblgdjlxGXBtuICJIqdSJI2jAoKv6p79Wrcal5/huaqzErIyFxX+9tBtv8zdYvDVcoxW2LBL9aFXBnvYNwVIBchp789/RImmyQ6af9exg71d9R4PaB2Vs5YMmKQfEfxRWduNhKLoPrTggz28FidB0ziPRmsRak991arcPHMF15jLwmdzwI3SQggNlx1Lw0Hg19EQLp3952I6s7AHyfADoOBhTKVIB4IwBCIs4RAA39huF0PrShK3Dfm/ffqjxqVXU8EjPqh3IuQbVWAQnWOcj6ToUOV6RBG9v+juYljsihtzLWMVNG/Dn70osWo2CMDFwjvodGjvXXLICdbfZ+/ueu8IR948h/124YMncX9khc0mNib36bWJVPg0CqQxxvNuQ3fOV9s5AIjjo7PfZSJhWeHqyTU1qst0MItNcGkL/FEMcGTtjfkA5iwJd00PJ+cRIpxFrza2gZhTaE/RGiJWTEb8EmYm1qnVVQS5LmNp8XSzAiv4kkXlUctSiDtcQOsHNs9ZU/+/u3s1YDHSx8ysXYjYw=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB7023.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cDNRMVVHeW9nYkFSeFduSHh6NzlGL0wyT3c4S0t1czR4MG5aSGl0MnVYbmZL?=
- =?utf-8?B?Rk5FRmZYV3FkYmlMOUw1RDBSQTRHK3QvSEhYYndETVpuOWcvWlhnVHVNK3hn?=
- =?utf-8?B?amNiT1FzUmRsemJGZHErazl0WXJBSVdNQ3Y2RW45L3ZLUzh6dkl6bS9md1JB?=
- =?utf-8?B?WFdCOXorTUZhNnFTUFpibFl5bWpjVnNMa2VNNnFBeWkxQVVsc05yKyt4UDRC?=
- =?utf-8?B?M1ZYWm1DTG9lMFJ3V2czZDhkNmQvOEt6d1NzSGwvOGd1c1pFS0d3MGpzWktR?=
- =?utf-8?B?RGdZY2w4WXJSQkxFaEdyTm8wMTBaSjd2SDJrWDJCMXNCYVQ2OWdhQjVPV1Nq?=
- =?utf-8?B?RUtmYUNGY1NqTSsvUENmRDdLdWJFb2V2OGtFOVFZZjBJbjhoQzVkUlhHTlBH?=
- =?utf-8?B?c1BHckhMeFIxVG56bE9pcHlETkw5QlBrNFduTjdRbVpSWk4vS1d1U3dyd2VY?=
- =?utf-8?B?U0lIWmpMVThwVVZOQ3Zib0dZTjMwMVpZbkN5eG5LR1VoeTdWbERjRmpFZ2N6?=
- =?utf-8?B?TmJtTFlSNnFCS0tsYm55cndpNUZoODJHbmJBM3BjMUJMbU1lQjdlaDNvbHJP?=
- =?utf-8?B?RGhOYzZ0WXpGWHRDQUxFSTBud3ZxdmYyOWxWYmkybjlpamtIb1BxOFJ5cjZv?=
- =?utf-8?B?dEg2U1NVQTYrYnJwTmlmajV3Z09SVkRrQkZrMHFuSVErS1FPS1ZHR1ZIUmV1?=
- =?utf-8?B?alg3VTVOQjJVMkZzSzVRRWxjOGFBcnhxVTEyN2p4SHhJZEg4SGxMUjdOaVpu?=
- =?utf-8?B?ZWhOU0dhZ2h2N2dTcFFLNFczbjhlYWUxT1RnZkJ6VTdTM0MyK0w3c1B2N29T?=
- =?utf-8?B?UDlQa1QxbVVUOVZpMG9nWXhWMGdrM2U3R1k4STUxYUlleHpkYUxFNzQxZzN3?=
- =?utf-8?B?ZGh0SncxbUdxcU5Sc0xvTXZXNS8vRkJyQzR2dithbDVYRWFlYXg2d1lnYVdV?=
- =?utf-8?B?WFNSNWRoTEpFakJrcitlNGxYT3c1US9zUzNGN0RUOHBJeW1IZk9jeGlrR1lm?=
- =?utf-8?B?RXJCbWRkZFo3cjBBbTIvSkF2MnZrR2JOYzV2YVRReExDcUVBTE8zYy9lUzhG?=
- =?utf-8?B?QUFYdG0xSjBYcGpJVGcySlJNWXZNb1JyUngrdVozSEwwbG9ULzV3NEtiVGEw?=
- =?utf-8?B?emc4QUx4V3RacC9tWVVqWXRQaENCRFZ1TTFGZmVITmRmZkpWR3p2MFg5SXd2?=
- =?utf-8?B?a2hVR0FHblZlbmorcmlhYzBqaHB5Nlk4NkUyWkU2and0Y1NyUUVDc0xZK1Jl?=
- =?utf-8?B?cHROdjNoUTFRZEFleWpuUTNtaHNuZmRuZXdRT3RTWExuUlV3a1FaeVhna3g0?=
- =?utf-8?B?NUlpc3EraG9ON3lmT0ovS20ycXBJMDNncXhJS3licGVJK05UK1luVWtDT0Z1?=
- =?utf-8?B?ZVNSL1JxMTk0akhYMFhaODk3M2c4QVlHeVNkMkpYVzQwc2sxSEdPaW5xdmlD?=
- =?utf-8?B?THZ4bWVnbDlJZmtMc1MzUWdyT3EveTV0YWIwQytyNFJETXYzQmU3TEhjVUoy?=
- =?utf-8?B?emFUQUxSVW9DOXVabE5wUnpVZ1Nzb3BQTmlXTkk3QXI1M1Z3Zm9NV0RJMStU?=
- =?utf-8?B?TlJrM0d6SmFSNVhrZkJZdTN1TC9sdlgwcFF1NVNyYUx6bVNqamZrRGhFZTZq?=
- =?utf-8?B?cUVSTzRsay9lSmE0UzR2QnVKeDU4NWM3eDhXVGR1eTN1d0dMVUJHdE9XQjNB?=
- =?utf-8?B?ZUIvcDVkYmJadGxHTG1IU3NCdGNKdGdaaTNlWE54NEN5SkhMaW8weHFYVzdI?=
- =?utf-8?B?clNhdnExWFptNW4yZVY1amNIZW84dXpkY3RCUU9VMGFvTW5XejZIdlZKcmQ4?=
- =?utf-8?B?VkpzZFRTa3h1NUUzVGRaY01ndUJ1TWhRb3JySVlwVWtZbldjUXNMZUJ5YVZG?=
- =?utf-8?B?Sko1eW5SY0ZLeU84aHpGZGcxNGQ2L21rVTJpNk9YbkZMZHdmWk8vWS96Rk96?=
- =?utf-8?B?VzFUa1BPN1ZLMVkrcDVLaXBVWklyUlJ4aUwzRE9pMUlzL2xMdjJkS04zOGtW?=
- =?utf-8?B?MER0ZXg2Sndlalp1T3JvSkNBa1Z0TzFtdlRPRklVeThWSDdLQkxrOVY2SGZ0?=
- =?utf-8?B?c0ZzRWNlZmxmdEI3QncxVTNHamRodW9oNVZhaWN4QVZibVZVOElhRVQvclF1?=
- =?utf-8?B?N3d4TEdtZFpUbmh3T2VjR1BZRW5PbjNZcjYwY2ZPVVQrSzVZdWo5LzJhRUht?=
- =?utf-8?B?MzEzRDJoMlI2cHZTNDJvZFpITTc3LzNnWFV4Z2E3WHJPQ0FiTzEzT0h1OXlH?=
- =?utf-8?B?Y3greHNaaVlXUVJyYjdtR0VPcEdwWTYxYnZmYUVPbTVRZ2NpK2pYQXdxbm55?=
- =?utf-8?B?YVdxL2FEakErRllvOEJpdTdnVjYwQWE0UC9tVEVpdm9mUU05eHJGUT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 10a5940a-291a-48bd-b79d-08dea50dbcab
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB7023.namprd12.prod.outlook.com
+X-Exchange-RoutingPolicyChecked: Bj6ySDB5Yo464nfexdAnoVaFjOVD2kCUgy3EoHISgrRaUGyz+m1U9tEg0GJIClUUx/A+Wv89I0D0UjXZsPppyX8Fg8pOaW5v2evtoK1o+M89S6svPAsRDqVPIJHAlaUPLKwLyMt1SBXZduXgGg1bmhtdhgg/V2VdnTRrS43NA8+KbJmV17uLXp3fHpcIKKTDtgeh+0qRIltrDpnTkLd1Pecs8/7fk5sCjUlf5oMC1GE/eUfU70mRn4i8Pj7rn4FKb/LjrcXuyLQTXy1qHgssy4iyavSlRo20MpnYuwPFRIJNVZKeXxIEfGtIIopz6ulRwcLqkeifb7BfC8SuBSAqaw==
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2026 10:05:55.3887
+X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB8986.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8fc70b93-8d4e-4906-6f4d-08dea50e2344
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Apr 2026 10:08:47.2952
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: c9WGNdZ7bFCA9dhJVuBdfZ6d80nesAze1xLtweb1O4MJC9IkSbCNjtdERN2gbLgosSJzUBEFnRwATeqU33AW8g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7903
-
-On 27/04/2026 21:27, David Ahern wrote:
-
-> On 4/27/26 12:25 PM, Stephen Hemminger wrote:
->> On Mon, 30 Mar 2026 20:31:15 +0300
->> Chiara Meiohas <cmeiohas@nvidia.com> wrote:
->>
->>> From: Michael Guralnik <michaelgur@nvidia.com>
->>>
->>> Update rdma_netlink.h file up to kernel commit dbd0472fd7a5
->>> ("RDMA/nldev: Expose kernel-internal FRMR pools in netlink")
->>>
->>> Signed-off-by: Michael Guralnik <michaelgur@nvidia.com>
->>> Reviewed-by: Patrisious Haddad <phaddad@nvidia.com>
->>> Reviewed-by: Chiara Meiohas <cmeiohas@nvidia.com>
->> The upstream macro names changed, the iproute2 build is broken after
->> current headers sync.
->>
->> In file included from res.c:7:
->> res.h: In function ‘_res_frmr_pools’:
->> res.h:203:26: error: ‘RDMA_NLDEV_CMD_RES_FRMR_POOLS_GET’ undeclared (first use in this function); did you mean ‘RDMA_NLDEV_CMD_FRMR_POOLS_GET’?
->>   203 | RES_FUNC(res_frmr_pools, RDMA_NLDEV_CMD_RES_FRMR_POOLS_GET,
->>       |                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->> res.h:56:44: note: in definition of macro ‘RES_FUNC’
->>    56 |                 _command = res_get_command(command, rd);                               \
->>       |                                            ^~~~~~~
->> res.h:203:26: note: each undeclared identifier is reported only once for each function it appears in
->>   203 | RES_FUNC(res_frmr_pools, RDMA_NLDEV_CMD_RES_FRMR_POOLS_GET,
->>       |                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->> res.h:56:44: note: in definition of macro ‘RES_FUNC’
->>    56 |                 _command = res_get_command(command, rd);                               \
->>       |                                            ^~~~~~~
->
-> Looks like the merged API does not have the _RES part of the uapi:
->
-> kernel vs iproute2:
->
-> @@ -590,19 +590,19 @@
->  	/*
->  	 * FRMR Pools attributes
->  	 */
-> -	RDMA_NLDEV_ATTR_FRMR_POOLS,		/* nested table */
-> -	RDMA_NLDEV_ATTR_FRMR_POOL_ENTRY,	/* nested table */
-> -	RDMA_NLDEV_ATTR_FRMR_POOL_KEY,		/* nested table */
-> -	RDMA_NLDEV_ATTR_FRMR_POOL_KEY_ATS,	/* u8 */
-> -	RDMA_NLDEV_ATTR_FRMR_POOL_KEY_ACCESS_FLAGS,	/* u32 */
-> -	RDMA_NLDEV_ATTR_FRMR_POOL_KEY_VENDOR_KEY,	/* u64 */
-> -	RDMA_NLDEV_ATTR_FRMR_POOL_KEY_NUM_DMA_BLOCKS,	/* u64 */
-> -	RDMA_NLDEV_ATTR_FRMR_POOL_QUEUE_HANDLES,	/* u32 */
-> -	RDMA_NLDEV_ATTR_FRMR_POOL_MAX_IN_USE,	/* u64 */
-> -	RDMA_NLDEV_ATTR_FRMR_POOL_IN_USE,	/* u64 */
-> -	RDMA_NLDEV_ATTR_FRMR_POOLS_AGING_PERIOD,	/* u32 */
-> -	RDMA_NLDEV_ATTR_FRMR_POOL_PINNED_HANDLES,	/* u32 */
-> -	RDMA_NLDEV_ATTR_FRMR_POOL_KEY_KERNEL_VENDOR_KEY,	/* u64 */
-> +	RDMA_NLDEV_ATTR_RES_FRMR_POOLS,			/* nested table */
-> +	RDMA_NLDEV_ATTR_RES_FRMR_POOL_ENTRY,		/* nested table */
-> +	RDMA_NLDEV_ATTR_RES_FRMR_POOL_KEY,		/* nested table */
-> +	RDMA_NLDEV_ATTR_RES_FRMR_POOL_KEY_ATS,		/* u8 */
-> +	RDMA_NLDEV_ATTR_RES_FRMR_POOL_KEY_ACCESS_FLAGS,	/* u32 */
-> +	RDMA_NLDEV_ATTR_RES_FRMR_POOL_KEY_VENDOR_KEY,	/* u64 */
-> +	RDMA_NLDEV_ATTR_RES_FRMR_POOL_KEY_NUM_DMA_BLOCKS, /* u64 */
-> +	RDMA_NLDEV_ATTR_RES_FRMR_POOL_QUEUE_HANDLES,	/* u32 */
-> +	RDMA_NLDEV_ATTR_RES_FRMR_POOL_MAX_IN_USE,	/* u64 */
-> +	RDMA_NLDEV_ATTR_RES_FRMR_POOL_IN_USE,		/* u64 */
-> +	RDMA_NLDEV_ATTR_RES_FRMR_POOL_AGING_PERIOD,	/* u32 */
-> +	RDMA_NLDEV_ATTR_RES_FRMR_POOL_PINNED,		/* u32 */
-> +	RDMA_NLDEV_ATTR_RES_FRMR_POOL_KEY_KERNEL_VENDOR_KEY, /* u64 */
->
->  	/*
-
-Thanks for catching this.
-
-We will prepare a sync patch to align the names with the kernel and send it shortly.
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: PhoAc30Vq7inEXGcSpiZcoathFPRZwvHeCjVfoKRSIoRew54JbhbqEF4CKDgbayMloxwftSjdjKZKuL6obIrlN7X3gfYpvgzrcDOyzlN7ug=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR11MB4716
+X-OriginatorOrg: intel.com
 
 
-Best regards,
 
-Chiara
+> -----Original Message-----
+> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf
+> Of Larysa Zaremba
+> Sent: Tuesday, April 28, 2026 10:27 AM
+> To: intel-wired-lan@lists.osuosl.org; Nguyen, Anthony L
+> <anthony.l.nguyen@intel.com>
+> Cc: Lobakin, Aleksander <aleksander.lobakin@intel.com>; Samudrala,
+> Sridhar <sridhar.samudrala@intel.com>; Michal Swiatkowski
+> <michal.swiatkowski@linux.intel.com>; Zaremba, Larysa
+> <larysa.zaremba@intel.com>; Fijalkowski, Maciej
+> <maciej.fijalkowski@intel.com>; Tantilov, Emil S
+> <emil.s.tantilov@intel.com>; Chittim, Madhu <madhu.chittim@intel.com>;
+> Hay, Joshua A <joshua.a.hay@intel.com>; Keller, Jacob E
+> <jacob.e.keller@intel.com>; Shanmugam, Jayaprakash
+> <jayaprakash.shanmugam@intel.com>; Jiri Pirko <jiri@resnulli.us>;
+> David S. Miller <davem@davemloft.net>; Eric Dumazet
+> <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo Abeni
+> <pabeni@redhat.com>; Simon Horman <horms@kernel.org>; Jonathan Corbet
+> <corbet@lwn.net>; Richard Cochran <richardcochran@gmail.com>; Kitszel,
+> Przemyslaw <przemyslaw.kitszel@intel.com>; Andrew Lunn
+> <andrew+netdev@lunn.ch>; netdev@vger.kernel.org; linux-
+> doc@vger.kernel.org; linux-kernel@vger.kernel.org; Salin, Samuel
+> <samuel.salin@intel.com>; Czurylo, Krzysztof
+> <krzysztof.czurylo@intel.com>
+> Subject: [Intel-wired-lan] [PATCH iwl-next v7 01/14] virtchnl: create
+> 'include/linux/intel' and move necessary header files
+>=20
+> From: Victor Raj <victor.raj@intel.com>
+>=20
+> include/linux/net houses a single folder "intel", meanwhile
+> include/linux/intel is vacant. On top of that, it would be useful to
+> place all iavf headers together with other intel networking headers,
+> same goes for virtchnl2 headers which will be used by both idpf and
+> ixd drivers.
+>=20
+> Move abovementioned intel header files into new folder
+> include/linux/intel.
+> Also, assign new folder to both intel and general networking
+> maintainers.
+>=20
+> Suggested-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+> Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
+> Signed-off-by: Victor Raj <victor.raj@intel.com>
+> Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
+> Tested-by: Samuel Salin <Samuel.salin@intel.com>
+> Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+> ---
+>  MAINTAINERS                                                 | 6 +++--
+> -
+>  drivers/infiniband/hw/irdma/i40iw_if.c                      | 2 +-
+>  drivers/infiniband/hw/irdma/icrdma_if.c                     | 2 +-
+>  drivers/infiniband/hw/irdma/ig3rdma_if.c                    | 2 +-
+>  drivers/infiniband/hw/irdma/main.c                          | 2 +-
+>  drivers/infiniband/hw/irdma/main.h                          | 2 +-
+>  drivers/net/ethernet/intel/i40e/i40e.h                      | 4 ++--
+>  drivers/net/ethernet/intel/i40e/i40e_adminq_cmd.h           | 2 +-
+>  drivers/net/ethernet/intel/i40e/i40e_client.c               | 2 +-
+>  drivers/net/ethernet/intel/i40e/i40e_common.c               | 2 +-
+>  drivers/net/ethernet/intel/i40e/i40e_ethtool.c              | 2 +-
+>  drivers/net/ethernet/intel/i40e/i40e_main.c                 | 2 +-
+>  drivers/net/ethernet/intel/i40e/i40e_prototype.h            | 2 +-
+>  drivers/net/ethernet/intel/i40e/i40e_txrx.c                 | 4 ++--
+>  drivers/net/ethernet/intel/i40e/i40e_txrx.h                 | 2 +-
+>  drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h          | 2 +-
+>  drivers/net/ethernet/intel/iavf/iavf.h                      | 2 +-
+>  drivers/net/ethernet/intel/iavf/iavf_adminq_cmd.h           | 2 +-
+>  drivers/net/ethernet/intel/iavf/iavf_common.c               | 2 +-
+>  drivers/net/ethernet/intel/iavf/iavf_main.c                 | 2 +-
+>  drivers/net/ethernet/intel/iavf/iavf_prototype.h            | 2 +-
+>  drivers/net/ethernet/intel/iavf/iavf_txrx.c                 | 2 +-
+>  drivers/net/ethernet/intel/iavf/iavf_txrx.h                 | 2 +-
+>  drivers/net/ethernet/intel/iavf/iavf_types.h                | 4 +---
+>  drivers/net/ethernet/intel/iavf/iavf_virtchnl.c             | 2 +-
+>  drivers/net/ethernet/intel/ice/ice.h                        | 2 +-
+>  drivers/net/ethernet/intel/ice/ice_adminq_cmd.h             | 2 +-
+>  drivers/net/ethernet/intel/ice/ice_base.c                   | 2 +-
+>  drivers/net/ethernet/intel/ice/ice_common.h                 | 2 +-
+>  drivers/net/ethernet/intel/ice/ice_flow.h                   | 2 +-
+>  drivers/net/ethernet/intel/ice/ice_idc_int.h                | 4 ++--
+>  drivers/net/ethernet/intel/ice/ice_txrx.c                   | 2 +-
+>  drivers/net/ethernet/intel/ice/ice_txrx_lib.c               | 2 +-
+>  drivers/net/ethernet/intel/ice/ice_type.h                   | 2 +-
+>  drivers/net/ethernet/intel/ice/ice_vf_lib.h                 | 2 +-
+>  drivers/net/ethernet/intel/ice/virt/virtchnl.h              | 2 +-
+>  drivers/net/ethernet/intel/idpf/idpf.h                      | 6 +++--
+> -
+>  drivers/net/ethernet/intel/idpf/idpf_txrx.h                 | 2 +-
+>  drivers/net/ethernet/intel/idpf/idpf_virtchnl.h             | 2 +-
+>  drivers/net/ethernet/intel/ixgbe/ixgbe_type.h               | 2 +-
+>  drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h          | 2 +-
+>  drivers/net/ethernet/intel/libie/adminq.c                   | 2 +-
+>  drivers/net/ethernet/intel/libie/fwlog.c                    | 2 +-
+>  drivers/net/ethernet/intel/libie/rx.c                       | 2 +-
+>  include/linux/{net =3D> }/intel/i40e_client.h                 | 0
+>  include/linux/{net =3D> }/intel/iidc_rdma.h                   | 0
+>  include/linux/{net =3D> }/intel/iidc_rdma_ice.h               | 0
+>  include/linux/{net =3D> }/intel/iidc_rdma_idpf.h              | 0
+>  include/linux/{net =3D> }/intel/libie/adminq.h                | 0
+>  include/linux/{net =3D> }/intel/libie/fwlog.h                 | 2 +-
+>  include/linux/{net =3D> }/intel/libie/pctype.h                | 0
+>  include/linux/{net =3D> }/intel/libie/rx.h                    | 0
+>  include/linux/{avf =3D> intel}/virtchnl.h                     | 0
+>  .../ethernet/intel/idpf =3D> include/linux/intel}/virtchnl2.h | 0
+> .../intel/idpf =3D> include/linux/intel}/virtchnl2_lan_desc.h | 0
+>  55 files changed, 52 insertions(+), 54 deletions(-)  rename
+> include/linux/{net =3D> }/intel/i40e_client.h (100%)  rename
+> include/linux/{net =3D> }/intel/iidc_rdma.h (100%)  rename
+> include/linux/{net =3D> }/intel/iidc_rdma_ice.h (100%)  rename
+> include/linux/{net =3D> }/intel/iidc_rdma_idpf.h (100%)  rename
+> include/linux/{net =3D> }/intel/libie/adminq.h (100%)  rename
+> include/linux/{net =3D> }/intel/libie/fwlog.h (98%)  rename
+> include/linux/{net =3D> }/intel/libie/pctype.h (100%)  rename
+> include/linux/{net =3D> }/intel/libie/rx.h (100%)  rename
+> include/linux/{avf =3D> intel}/virtchnl.h (100%)  rename
+> {drivers/net/ethernet/intel/idpf =3D> include/linux/intel}/virtchnl2.h
+> (100%)  rename {drivers/net/ethernet/intel/idpf =3D>
+> include/linux/intel}/virtchnl2_lan_desc.h (100%)
+>=20
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index e7dc9e6fad2e..8bfa20b02005 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -12842,8 +12842,7 @@ T:	git
+> git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/next-queue.git
+>  F:	Documentation/networking/device_drivers/ethernet/intel/
+>  F:	drivers/net/ethernet/intel/
+>  F:	drivers/net/ethernet/intel/*/
 
+...
+
+>=20
+>  /* Only a single log level should be set and all log levels under the
+> set value
+>   * are enabled, e.g. if log level is set to
+> LIBIE_FW_LOG_LEVEL_VERBOSE, then all diff --git
+> a/include/linux/net/intel/libie/pctype.h
+> b/include/linux/intel/libie/pctype.h
+> similarity index 100%
+> rename from include/linux/net/intel/libie/pctype.h
+> rename to include/linux/intel/libie/pctype.h
+> diff --git a/include/linux/net/intel/libie/rx.h
+> b/include/linux/intel/libie/rx.h similarity index 100% rename from
+> include/linux/net/intel/libie/rx.h
+> rename to include/linux/intel/libie/rx.h diff --git
+> a/include/linux/avf/virtchnl.h b/include/linux/intel/virtchnl.h
+> similarity index 100% rename from include/linux/avf/virtchnl.h rename
+> to include/linux/intel/virtchnl.h diff --git
+> a/drivers/net/ethernet/intel/idpf/virtchnl2.h
+> b/include/linux/intel/virtchnl2.h similarity index 100% rename from
+> drivers/net/ethernet/intel/idpf/virtchnl2.h
+> rename to include/linux/intel/virtchnl2.h diff --git
+> a/drivers/net/ethernet/intel/idpf/virtchnl2_lan_desc.h
+> b/include/linux/intel/virtchnl2_lan_desc.h
+> similarity index 100%
+> rename from drivers/net/ethernet/intel/idpf/virtchnl2_lan_desc.h
+> rename to include/linux/intel/virtchnl2_lan_desc.h
+> --
+> 2.47.0
+
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
