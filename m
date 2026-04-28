@@ -1,45 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1309A2DECA8
-	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 07:48:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A3222E7162
+	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 07:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777362524; cv=none; b=Xz6kKkbA+3vPc1OxlUKnPkC5lrDyP+V7pskfAX1m9arfAtbIiNqgPfXW6eJ3sFI2enhF2voV4AOZn5BqE2KeYJtch3Ix/tjvtm2H/o1AmeqFe26ZHNp1cJ/BaoYqm8S5t1Y48OINcS7227vO1c4dBeDJPwc2WVoZAHuR45dDNmI=
+	t=1777362526; cv=none; b=fTtGR3AKuuIM6j6Zxttvek6BnYjPHrJ9iICI1F0DmbmXutQ0ptM2S+L4BdAovQzCTWY2Q2qswF0ai4j6TpIT9/fvkuwH8IcIoMUeBL9I4KUlyn6u5tIuEvzpMOwjLao1O6DBkEJKfOFHrCm6Aq3Q/eZNgV8Te/6NP47Tgofj5NU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777362524; c=relaxed/simple;
-	bh=1J1mF9VLA4ad+WVCKHtPLi8k9wXENH/phrj6cZ2eDTM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=erkHWVSA3oD80s6vJ+dpZa+7haLFj8xfAf26yPkR294GwSRKsM/pITz15d7Qz+QBJTWcGF8lqYn4g9FchUsLtcL/uFhby3WXMF96j6RfzjtQN4meP7PYC0sZCQsoQu2YGBXRHN8Mozy4PClW0yGUglG4VdgFdytG65e5mLuBAQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Wlg3ZW4b; arc=none smtp.client-ip=192.198.163.12
+	s=arc-20240116; t=1777362526; c=relaxed/simple;
+	bh=v7FR8f9Bf7hDGtGHvqy69oIKLKN59GzoNuO6jFdL1vk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=UoLEWEbsMDZIgXESzKy+ykmgUjfraDrJy36RDk66SDzL+nNfzsIELgg63cbAsG7t/oB/VBwFVa0myCmc3XtiTuCaf3z3VY8kLcwSogZYrRzVEl9d98ZNfV++rMsrA0mFFV1bONxSyTmqePUIwflTheKKQIBPCf8PguHg9ztpij0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U1k9xf50; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Wlg3ZW4b"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U1k9xf50"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777362523; x=1808898523;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=1J1mF9VLA4ad+WVCKHtPLi8k9wXENH/phrj6cZ2eDTM=;
-  b=Wlg3ZW4bvuLlDi81nsjK8C8Mu6W8iWuUNKWASrneUxOb/PQkcM0D4mGk
-   XaX5aBJGkodkCw/c2B3cNBan3uWfArfmNuDNhgh/tJ1e55SLb811vibyO
-   jkrace46HmkebSHu75lB2Z+9K5bYyKlCzBiNvNsj08HnN6rWfGs2mdqsN
-   NzbNkK1f3LY2HkD1cBk1i4cEflaN8hcyydL2ugC+N+208K4LSYSF9s0bF
-   vgq2PZd0MplGjxUdSCGExmS6248hdS2psOIucDD4BVZEItmkgzT2N2oKu
-   4mHN971TmxzDN3GUtxQGCPGTfEDzAf+YlsUKZ+FcPuklRuPnpZbNMvEYs
-   w==;
-X-CSE-ConnectionGUID: 9VKO7rIdRliUuBo9QksYMg==
-X-CSE-MsgGUID: TTKmO3LkSWGBj/WMBMwNDQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="82114973"
+  t=1777362525; x=1808898525;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=v7FR8f9Bf7hDGtGHvqy69oIKLKN59GzoNuO6jFdL1vk=;
+  b=U1k9xf50Axv5y4i013Pq/mG7tIlto8+pXuM5a2KLV7IxRivc2UpFvMTq
+   hUTbQLWGxg+2x520xXjFydZQL0mBpYPdrq2T0LtoQUxzAssQGPQnbqzxP
+   bMt3zCQfLUALxIBzkd27fbTHM5oVK1aA19aDxB2yKPK8YKB176mfoYKND
+   KWzyYbj/LmiYokAuXgLvEQbu55Y1moX0AtteSMP7z9LRFo39US1NqXhVJ
+   yu+hqJKFFX9fL58pkKN/yv8pCXY3EJHk9zky2uA0ACJmMslgFsqxDPPN6
+   IO3J5B1C1do2tMJ9KurLNb98sZVlGiz2loFrPJHbbl+KItDeV/jv75tgL
+   Q==;
+X-CSE-ConnectionGUID: NKiJhNM1SUmzbWVk1OtoLw==
+X-CSE-MsgGUID: 8mtNdCRnT6KXbuPubICFqQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="82114986"
 X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
-   d="scan'208";a="82114973"
+   d="scan'208";a="82114986"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 00:48:41 -0700
-X-CSE-ConnectionGUID: 6zDqpDuoQdS5dOu/lJqulA==
-X-CSE-MsgGUID: 81SKb8KxQ/S+MTVdb8qPmQ==
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 00:48:43 -0700
+X-CSE-ConnectionGUID: Wk4hzHRfT0iqPGSytiMW/A==
+X-CSE-MsgGUID: srlJlaO7Tty0WggEyj2/eA==
 X-ExtLoop1: 1
 Received: from os-delivery.igk.intel.com ([10.102.21.165])
-  by fmviesa003.fm.intel.com with ESMTP; 28 Apr 2026 00:48:37 -0700
+  by fmviesa003.fm.intel.com with ESMTP; 28 Apr 2026 00:48:41 -0700
 From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 To: intel-wired-lan@lists.osuosl.org
 Cc: netdev@vger.kernel.org,
@@ -48,10 +49,12 @@ Cc: netdev@vger.kernel.org,
 	przemyslaw.kitszel@intel.com,
 	aleksandr.loktionov@intel.com,
 	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Subject: [PATCH iwl-net v1 0/2] Rework ice Tx checksum
-Date: Tue, 28 Apr 2026 09:06:45 +0200
-Message-ID: <20260428070647.777141-1-michal.swiatkowski@linux.intel.com>
+Subject: [PATCH iwl-net v1 2/2] ice: use NETIF_F_HW_CSUM instead of IP/IPV6
+Date: Tue, 28 Apr 2026 09:06:47 +0200
+Message-ID: <20260428070647.777141-3-michal.swiatkowski@linux.intel.com>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20260428070647.777141-1-michal.swiatkowski@linux.intel.com>
+References: <20260428070647.777141-1-michal.swiatkowski@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,45 +63,77 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi,
+The hardware is capable of calculating checksum for IPV6 packets with
+extension header. To not drop such packets switch from IP/IPV6 checksum
+to HW_CSUM.
 
-Jakub find the problem with how ice handles Tx checksum offload [1].
+HW_CSUM is also used in previous generation (i40e).
 
-The issue is that IP_CSUM/IPV6_CSUM should support only basic packet
-types. Kernel assumes that if there are extensions headers and there is
-no HW_CSUM software fallback should be applied. Here is a patch that
-introduced that [2].
+Previously HW_CSUM was used to indicate that hardware supports general
+checksum. Drop it assuming that if the hardware supports it, it is used.
 
-However, software fallback can't be applied when TSO offload happens.
-That is the situation that this patchset is fixing.
+Disabling offload for E830 in case of TSO isn't needed anymore as the
+check for TSO is done in Tx path just before preparation of the special
+GCS descriptor.
 
-When TSO is enabled and IP_CSUM/IPV6_CSUM is on, kernel is assuming
-hardware will be able to calculate the checksum, but later on the
-extension headers are checked and if there is no HW_CSUM the
-skb_bad_offload() is called.
+The commit from Fixes didn't introduce a bug, it just shown that the
+driver is doing sth wrong with the checksum features.
 
-Following the documentation ice driver is capable of HW_CSUM support, so
-switch from IP_CSUM/IPV6_CSUM to HW_CSUM. Other Intel drivers (even
-previous like i40e, ixgbe) also supports HW_CSUM.
-
-The HW_CSUM was used to indicate that GCS (Intel name for checksumming
-offload using additional descriptor) is support, which is variation of
-HW_CSUM. Even without GCS th HW_CSUM is supported. First patch is
-switching to use custom Tx ring flags to allow HW_CSUM usage.
-
-[1] https://lore.kernel.org/netdev/20260310150557.1138437-1-jramaseu@redhat.com/
-[2] https://lore.kernel.org/all/5fbeecfc311ea182aa1d1c771725ab8b4cac515e.1729778144.git.benoit.monin@gmx.fr/
-
-Michal Swiatkowski (2):
-  ice: always do GCS if hardware supports it
-  ice: use NETIF_F_HW_CSUM instead of IP/IPV6
-
- drivers/net/ethernet/intel/ice/ice_lib.c  |  4 ++++
+Suggested-by: Jakub Ramaseuski <jramaseu@redhat.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Fixes: 04c20a9356f2 ("net: skip offload for NETIF_F_IPV6_CSUM if ipv6 header contains extension")
+Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+---
  drivers/net/ethernet/intel/ice/ice_main.c | 21 +--------------------
- drivers/net/ethernet/intel/ice/ice_txrx.c |  2 +-
- drivers/net/ethernet/intel/ice/ice_txrx.h |  1 +
- 4 files changed, 7 insertions(+), 21 deletions(-)
+ 1 file changed, 1 insertion(+), 20 deletions(-)
 
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 15550216fbf0..0f2f949af536 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -3500,9 +3500,8 @@ void ice_set_netdev_features(struct net_device *netdev)
+ 			NETIF_F_RXHASH;
+ 
+ 	csumo_features = NETIF_F_RXCSUM	  |
+-			 NETIF_F_IP_CSUM  |
+ 			 NETIF_F_SCTP_CRC |
+-			 NETIF_F_IPV6_CSUM;
++			 NETIF_F_HW_CSUM;
+ 
+ 	vlano_features = NETIF_F_HW_VLAN_CTAG_FILTER |
+ 			 NETIF_F_HW_VLAN_CTAG_TX     |
+@@ -3564,12 +3563,6 @@ void ice_set_netdev_features(struct net_device *netdev)
+ 	/* Allow core to manage IRQs affinity */
+ 	netif_set_affinity_auto(netdev);
+ 
+-	/* Mutual exclusivity for TSO and GCS is enforced by the set features
+-	 * ndo callback.
+-	 */
+-	if (ice_is_feature_supported(pf, ICE_F_GCS))
+-		netdev->hw_features |= NETIF_F_HW_CSUM;
+-
+ 	netif_set_tso_max_size(netdev, ICE_MAX_TSO_SIZE);
+ }
+ 
+@@ -6489,18 +6482,6 @@ ice_set_features(struct net_device *netdev, netdev_features_t features)
+ 	if (changed & NETIF_F_LOOPBACK)
+ 		ret = ice_set_loopback(vsi, !!(features & NETIF_F_LOOPBACK));
+ 
+-	/* Due to E830 hardware limitations, TSO (NETIF_F_ALL_TSO) with GCS
+-	 * (NETIF_F_HW_CSUM) is not supported.
+-	 */
+-	if (ice_is_feature_supported(pf, ICE_F_GCS) &&
+-	    ((features & NETIF_F_HW_CSUM) && (features & NETIF_F_ALL_TSO))) {
+-		if (netdev->features & NETIF_F_HW_CSUM)
+-			dev_err(ice_pf_to_dev(pf), "To enable TSO, you must first disable HW checksum.\n");
+-		else
+-			dev_err(ice_pf_to_dev(pf), "To enable HW checksum, you must first disable TSO.\n");
+-		return -EIO;
+-	}
+-
+ 	return ret;
+ }
+ 
 -- 
 2.49.0
 
