@@ -1,52 +1,52 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF3FA340298
-	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 05:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E2213385AC
+	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 05:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777353811; cv=none; b=DwBOPvMeSCfyil9B8mKw5cZGgV3ekSr1vvF1z6OhSQ8tUaEw2gM1rkl8Ss9BX194Rs8IJvLCxnd4A73hB2CzpVSPcJOFl2V8W0Oyi8hvEAJfcX1rhnfY+E8CGdGzGmqDYgoRstldWi5L3qSrVhXK2/InGQiQ6BCCb9EC/wJAAT4=
+	t=1777353811; cv=none; b=HeP6krbmx8eySv7TLi+vV7XO4NGk6ay8+4FKd9/1EjQ3DxsHZEBSVBlMJkKVDugLq46SvKPdIjf24MacROtk0WOQqUI8CNwq9l09h4zaGzWhnpIz/rqqnOjJYVni84/i9cf43w89YqAeUV7llm7L8kU7lPX5fI5VAcdFfdT14Ts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777353811; c=relaxed/simple;
-	bh=DUIP6hE7Sbg2WWd/iGWzwTfHvmeLBELLnPdgWBnnWYQ=;
+	bh=79UNIdRbdEZJGXXSS4mI8Aw7kQj6IUHoR05XOC4K5do=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=pgiyBqLrVtAlFDRLt5lYrMSNqytaT9QS55dT6iON2S/V+Myf2x3Sa4AQiMFmGvBAd/D9DBNV6ifI6bOVyBLMBm0KLhc93VprmkLk3qtNFxbS4rdRjhTZTJOv58OpSIA/HQsD7OdpiXrPlziUEtR5WL7LYiZ3rCDqLNgsWMaW8cE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=d5MfIuC6; arc=none smtp.client-ip=198.175.65.9
+	 In-Reply-To:To:Cc; b=NmTdx+aKRiD92JDJj1WY1j47nRK0d4lrgYH4WetjElVplB0lQCKS69oLWhIvZ3o81vhKtVVwVnr4oAM15wX5L5yv5GBHulGSUMgR/OPywuVlYdxCYN5XIc/x8p2qYluO4TWDVQ+gPonH+PLttBZOTcWjN2WRHWyYVb3o272mGM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=j4SY8h0l; arc=none smtp.client-ip=198.175.65.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="d5MfIuC6"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="j4SY8h0l"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777353803; x=1808889803;
+  t=1777353804; x=1808889804;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=DUIP6hE7Sbg2WWd/iGWzwTfHvmeLBELLnPdgWBnnWYQ=;
-  b=d5MfIuC6Eno3oCHtI5PgUbVLkpx0l7syUJEcgYCDYXDVLf59Qdc8mDRJ
-   14Hlxt5qcgBl1DRFMLWe75HVpfTI4eAx8j8pvJUQc60ZHVWr73tF9TbIN
-   gbRjlXgpLGeLdxbafzWBF8Oq3obwrblPxo5JLwLgGU3Hb141ZHhTtyJoK
-   nFVD89tSUIrAv5jDEQ1HpIQ1mtvx3hoC7rr4lU10TaJsX7O1O25odrpm1
-   1rotgLGBbSFC828zGbhdCQQ7UBUD2xEpFlc9hOWtwx4Lyr4iNtGHBze1b
-   aHsXo2vympFsrUZuqNtCsjsd5RJmTrdb/09tZQeSstAl+QTDJQGx2IZZi
-   A==;
-X-CSE-ConnectionGUID: 3PkX1AT0RjmGSOrP+K0ozg==
-X-CSE-MsgGUID: EZnZIzdWTd+5ffH0+miLQA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="100910561"
+  bh=79UNIdRbdEZJGXXSS4mI8Aw7kQj6IUHoR05XOC4K5do=;
+  b=j4SY8h0l3EMvKEg7U8SwK8QyDdKOTfTP/hD8IZKCAwFyec1pf0oryY71
+   NiufhIL8ITvzAbQ3XpXUN4psfcej1hT/frcW7bVfo0SZXYNdFUz5X6f4I
+   KrucFG4gc0uk/VNWMuTEZ6rsmU5DscsfnpHwbDLXXbWSP6vUPfEba0/iJ
+   KRxatd7YWDSHi9axNTf1n6jflML2d7wGZEDV8tZNRysn/MGDeVlAqeKLS
+   zhl5399hAF1J7sEtLzrtTaghaFRR/73y1UpQfEApPf6WIrQ8Ecwd/u87m
+   QIO6NAEpqwSFPNzHDIMPE7zB67rXnSA+6y2WCib4Ln2im+iXaH2MLYoUy
+   g==;
+X-CSE-ConnectionGUID: BmWipOZdSiSizRtjJm2ymQ==
+X-CSE-MsgGUID: /7FMql40S7epHFqmV113FA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="100910580"
 X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
-   d="scan'208";a="100910561"
+   d="scan'208";a="100910580"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
   by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 22:23:16 -0700
-X-CSE-ConnectionGUID: +R+kI0/hS+iaXon3f/dAcg==
-X-CSE-MsgGUID: VMSA+t9tR+mCVBMDKlw9gw==
+X-CSE-ConnectionGUID: wf/XumPJQF6tEJW4mg3rAA==
+X-CSE-MsgGUID: irt0c/eORUSdn1mwITn2qQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
-   d="scan'208";a="237800216"
+   d="scan'208";a="237800224"
 Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.109]) ([10.166.28.109])
   by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 22:23:16 -0700
 From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Mon, 27 Apr 2026 22:22:20 -0700
-Subject: [PATCH net 08/11] ice: fix SMA and U.FL pin state changes
- affecting paired pin
+Date: Mon, 27 Apr 2026 22:22:23 -0700
+Subject: [PATCH net 11/11] ice: add dpll peer notification for paired SMA
+ and U.FL pins
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,7 +55,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260427-jk-iwl-net-petr-oros-fixes-v1-8-cdcb48303fd8@intel.com>
+Message-Id: <20260427-jk-iwl-net-petr-oros-fixes-v1-11-cdcb48303fd8@intel.com>
 References: <20260427-jk-iwl-net-petr-oros-fixes-v1-0-cdcb48303fd8@intel.com>
 In-Reply-To: <20260427-jk-iwl-net-petr-oros-fixes-v1-0-cdcb48303fd8@intel.com>
 To: Tony Nguyen <anthony.l.nguyen@intel.com>, 
@@ -69,143 +69,104 @@ Cc: netdev@vger.kernel.org, Jacob Keller <jacob.e.keller@intel.com>,
  Petr Oros <poros@redhat.com>, Alexander Nowlin <alexander.nowlin@intel.com>, 
  Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
 X-Mailer: b4 0.16-dev-ea14f
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4838;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3518;
  i=jacob.e.keller@intel.com; h=from:subject:message-id;
- bh=NTS5yytC0mSYm1Ki4bxMALc5JlYK6eBqfl+CY2PaRHY=;
- b=kA0DAAoWapZdPm8PKOgByyZiAGnwREKigDvhbZ0rcll0MSzqYCR7X/0GqVbDRbqPnT1ICo1Dt
- oh1BAAWCgAdFiEEIEBUqdczkFYq7EMeapZdPm8PKOgFAmnwREIACgkQapZdPm8PKOj5fwD+MKSD
- LyPfVdT5I5N06gGp02pkeZsHVJ4D/hUD0OoaB1wA/iLE0/YjD1mohe0B2u/K6gtFvE5SVsg4GV3
- zNrbiq4sA
+ bh=Nrpw6/I0sRTf/rVqMAjNqDeGDXgOM2EnvVEM0zoWHx4=;
+ b=owGbwMvMwCWWNS3WLp9f4wXjabUkhswPLs6ytdnLDx6dH676yqJn7xNp5pCvrZ56cpZxTKEsB
+ V/yZx/rKGVhEONikBVTZFFwCFl53XhCmNYbZzmYOaxMIEMYuDgFYCK6PYwM/zb56V3q1LnnvXyH
+ wMX5b36/jHjaoJgzR+fWpiivUw99JRkZbgnKMepmzJxndvT6wyd7mA1Tq+U+LtDYdP8KzzHFX5l
+ vuQA=
 X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
  fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
 
 From: Petr Oros <poros@redhat.com>
 
 SMA and U.FL pins share physical signal paths in pairs (SMA1/U.FL1 and
-SMA2/U.FL2) controlled by the PCA9575 GPIO expander.  Each pair can
-only have one active pin at a time: SMA1 output and U.FL1 output share
-the same CGU output, SMA2 input and U.FL2 input share the same CGU
-input.  The PCA9575 register bits determine which connector in each
-pair owns the signal path.
+SMA2/U.FL2).  When one pin's state changes via a PCA9575 GPIO write,
+the paired pin's state also changes, but no notification is sent for
+the peer pin.  Userspace consumers monitoring the peer via dpll netlink
+subscribe never learn about the update.
 
-The driver does not account for this pairing in two places:
-
-ice_dpll_ufl_pin_state_set() modifies PCA9575 bits and disables the
-backing CGU pin without checking whether the U.FL pin is currently
-active.  Disconnecting an already inactive U.FL pin flips bits that
-the paired SMA pin relies on, breaking its connection.
-
-ice_dpll_sma_direction_set() does not propagate direction changes to
-the paired U.FL pin.  For SMA2/U.FL2 the ICE_SMA2_UFL2_RX_DIS bit is
-never managed, so U.FL2 stays disconnected after SMA2 switches to
-output.  For both pairs the backing CGU pin of the U.FL side is never
-enabled when a direction change activates it, so userspace sees the
-pin as disconnected even though the routing is correct.
-
-Fix by guarding the U.FL disconnect path against inactive pins and by
-updating the paired U.FL pin fully on SMA direction changes: manage
-ICE_SMA2_UFL2_RX_DIS for the SMA2/U.FL2 pair and enable the backing
-CGU pin whenever the peer becomes active.
+Add ice_dpll_sw_pin_notify_peer() which sends a change notification for
+the paired SW pin.  Call it from ice_dpll_pin_sma_direction_set(),
+ice_dpll_sma_pin_state_set(), and ice_dpll_ufl_pin_state_set() after
+pf->dplls.lock is released.  Use __dpll_pin_change_ntf() because
+dpll_lock is still held by the dpll netlink layer (dpll_pin_pre_doit).
 
 Fixes: 2dd5d03c77e2 ("ice: redesign dpll sma/u.fl pins control")
 Signed-off-by: Petr Oros <poros@redhat.com>
 Tested-by: Alexander Nowlin <alexander.nowlin@intel.com>
 Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_dpll.c | 50 ++++++++++++++++++++++++++++++-
- 1 file changed, 49 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_dpll.c | 32 +++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
 diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
-index 498ec2c045f3..3f8cd5b8298b 100644
+index 721a3f4d6a28..27b460926bac 100644
 --- a/drivers/net/ethernet/intel/ice/ice_dpll.c
 +++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
-@@ -1171,6 +1171,8 @@ static int ice_dpll_sma_direction_set(struct ice_dpll_pin *p,
- 				      enum dpll_pin_direction direction,
- 				      struct netlink_ext_ack *extack)
- {
-+	struct ice_dplls *d = &p->pf->dplls;
-+	struct ice_dpll_pin *peer;
- 	u8 data;
- 	int ret;
+@@ -1154,6 +1154,32 @@ ice_dpll_input_state_get(const struct dpll_pin *pin, void *pin_priv,
+ 				      extack, ICE_DPLL_PIN_TYPE_INPUT);
+ }
  
-@@ -1189,8 +1191,9 @@ static int ice_dpll_sma_direction_set(struct ice_dpll_pin *p,
- 	case ICE_DPLL_PIN_SW_2_IDX:
- 		if (direction == DPLL_PIN_DIRECTION_INPUT) {
- 			data &= ~ICE_SMA2_DIR_EN;
-+			data |= ICE_SMA2_UFL2_RX_DIS;
- 		} else {
--			data &= ~ICE_SMA2_TX_EN;
-+			data &= ~(ICE_SMA2_TX_EN | ICE_SMA2_UFL2_RX_DIS);
- 			data |= ICE_SMA2_DIR_EN;
- 		}
- 		break;
-@@ -1202,6 +1205,34 @@ static int ice_dpll_sma_direction_set(struct ice_dpll_pin *p,
- 		ret = ice_dpll_pin_state_update(p->pf, p,
- 						ICE_DPLL_PIN_TYPE_SOFTWARE,
- 						extack);
-+	if (ret)
-+		return ret;
++/**
++ * ice_dpll_sw_pin_notify_peer - notify the paired SW pin after a state change
++ * @d: pointer to dplls struct
++ * @changed: the SW pin that was explicitly changed (already notified by dpll core)
++ *
++ * SMA and U.FL pins share physical signal paths in pairs (SMA1/U.FL1 and
++ * SMA2/U.FL2).  When one pin's routing changes via the PCA9575 GPIO
++ * expander, the paired pin's state may also change.  Send a change
++ * notification for the peer pin so userspace consumers monitoring the
++ * peer via dpll netlink learn about the update.
++ *
++ * Context: Called from dpll_pin_ops callbacks after pf->dplls.lock is
++ *          released.  Uses __dpll_pin_change_ntf() because dpll_lock is
++ *          still held by the dpll netlink layer.
++ */
++static void ice_dpll_sw_pin_notify_peer(struct ice_dplls *d,
++					struct ice_dpll_pin *changed)
++{
++	struct ice_dpll_pin *peer;
 +
-+	/* When a direction change activates the paired U.FL pin, enable
-+	 * its backing CGU pin so the pin reports as connected. Without
-+	 * this the U.FL routing is correct but the CGU pin stays disabled
-+	 * and userspace sees the pin as disconnected.  Do not disable the
-+	 * backing pin when U.FL becomes inactive because the SMA pin may
-+	 * still be using it.
-+	 */
-+	peer = &d->ufl[p->idx];
-+	if (peer->active) {
-+		struct ice_dpll_pin *target;
-+		enum ice_dpll_pin_type type;
++	peer = (changed >= d->sma && changed < d->sma + ICE_DPLL_PIN_SW_NUM) ?
++		&d->ufl[changed->idx] : &d->sma[changed->idx];
++	if (peer->pin)
++		__dpll_pin_change_ntf(peer->pin);
++}
 +
-+		if (peer->output) {
-+			target = peer->output;
-+			type = ICE_DPLL_PIN_TYPE_OUTPUT;
-+		} else {
-+			target = peer->input;
-+			type = ICE_DPLL_PIN_TYPE_INPUT;
-+		}
-+		ret = ice_dpll_pin_enable(&p->pf->hw, target,
-+					  d->eec.dpll_idx, type, extack);
-+		if (!ret)
-+			ret = ice_dpll_pin_state_update(p->pf, target,
-+							type, extack);
-+	}
+ /**
+  * ice_dpll_sma_direction_set - set direction of SMA pin
+  * @p: pointer to a pin
+@@ -1344,6 +1370,8 @@ ice_dpll_ufl_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
+ 
+ unlock:
+ 	mutex_unlock(&pf->dplls.lock);
++	if (!ret)
++		ice_dpll_sw_pin_notify_peer(&pf->dplls, p);
  
  	return ret;
  }
-@@ -1253,6 +1284,14 @@ ice_dpll_ufl_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
- 			data &= ~ICE_SMA1_MASK;
- 			enable = true;
- 		} else if (state == DPLL_PIN_STATE_DISCONNECTED) {
-+			/* Skip if U.FL1 is not active, setting TX_EN
-+			 * while DIR_EN is set would also deactivate
-+			 * the paired SMA1 output.
-+			 */
-+			if (data & (ICE_SMA1_DIR_EN | ICE_SMA1_TX_EN)) {
-+				ret = 0;
-+				goto unlock;
-+			}
- 			data |= ICE_SMA1_TX_EN;
- 			enable = false;
- 		} else {
-@@ -1267,6 +1306,15 @@ ice_dpll_ufl_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
- 			data &= ~ICE_SMA2_UFL2_RX_DIS;
- 			enable = true;
- 		} else if (state == DPLL_PIN_STATE_DISCONNECTED) {
-+			/* Skip if U.FL2 is not active, setting
-+			 * UFL2_RX_DIS could also disable the paired
-+			 * SMA2 input.
-+			 */
-+			if (!(data & ICE_SMA2_DIR_EN) ||
-+			    (data & ICE_SMA2_UFL2_RX_DIS)) {
-+				ret = 0;
-+				goto unlock;
-+			}
- 			data |= ICE_SMA2_UFL2_RX_DIS;
- 			enable = false;
- 		} else {
+@@ -1462,6 +1490,8 @@ ice_dpll_sma_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
+ 
+ unlock:
+ 	mutex_unlock(&pf->dplls.lock);
++	if (!ret)
++		ice_dpll_sw_pin_notify_peer(&pf->dplls, sma);
+ 
+ 	return ret;
+ }
+@@ -1657,6 +1687,8 @@ ice_dpll_pin_sma_direction_set(const struct dpll_pin *pin, void *pin_priv,
+ 	mutex_lock(&pf->dplls.lock);
+ 	ret = ice_dpll_sma_direction_set(p, direction, extack);
+ 	mutex_unlock(&pf->dplls.lock);
++	if (!ret)
++		ice_dpll_sw_pin_notify_peer(&pf->dplls, p);
+ 
+ 	return ret;
+ }
 
 -- 
 2.54.0.rc2.531.gaf818d63126a
