@@ -1,171 +1,173 @@
-Received: from server.couthit.com (server.couthit.com [162.240.164.96])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 440623C9ED6;
-	Tue, 28 Apr 2026 07:30:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.164.96
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DECB30DD11;
+	Tue, 28 Apr 2026 07:33:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777361405; cv=none; b=o/EpGidwdNXfKYagHgo8QyLQlEO5iqFZmpNvd2wNhNP09xzuyJLaVEBDl+STvUywy+Vmg1Aq5n3O7TiVvYp8wA2xS9A577X/aeA7iaNq0nNv1uyJs/ssBoZRT+bP3fdnTZB54RgQb1/777QR/Jv51OWrS4Qzck+i53vIghFYHM8=
+	t=1777361610; cv=none; b=uToGoN4e1UMwCoDM81QKvtm1i8abAoUHYVO41VBQwLpZ5UY6dr0aWxm+oXXUgVf6H4UasOq5D4srdvyatrW/VY7SkbSm4VkNp+eeh/GqJorpJsqecQpQlGvoj4wLw3abtb4bizjYf752d69xJY2rYHu8/T8K9osmLYbNEuStkrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777361405; c=relaxed/simple;
-	bh=77phWsaigQmSYE4bT5DU9fTaMkciOvN27E52vUWUBNI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bH2HAWVioIYuyUF8IpBi4OxE6ZeIBlNjcsOv+I8Kv0nJ6/71oEKNKyOyVE/vvA3vwe8vtSYYFDIHeza7msdtBJ65nACuR5iGCw+46vInSQqVXdS9ijPWOs9zQrgBrQ6nvaRrIbaE8j6LwPIRHQnEaEfzJV6kiF4DTw8tCax4x2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=YPoiHbCx; arc=none smtp.client-ip=162.240.164.96
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
+	s=arc-20240116; t=1777361610; c=relaxed/simple;
+	bh=x1HK04n83Ri/VIOK/knZMOm7u2xbxr5aRjP8h9e6Moc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QrgS5f0PMQ/qKcGuV3oDm+vRbc8g6YQYlwYJqFTXfTCF/iHjFAVnzC1NpfVU7f6RkY5hVUBBTUAVwwP/rCid9l5Wmjiw7dCzF8QXwLHIbic98eMh2aFx9D0jThotfGHqFzN1tDkj73wrr55kHYUanmPdHgBOy6YF0qLtBWlQ4vI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZgUC3+46; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="YPoiHbCx"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
-	; s=default; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject
-	:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=5LBdL41YcH/krzzVhyyE3Vtp0Kla/ikLLpLRIkmMtI0=; b=YPoiHbCxXzMK6L4OIpCrpb51q5
-	t4A5VVrsiGzd5eE14J0FD9xpOSDrOQgM4snezahqOdtkOZXVaLg1zWW3oBCiPif3/r0AILOF9/4ZQ
-	nX2sTfhcQm2JBdX+etP3qnwUAwPVKZ+3TKZ4GC1H8g+yhrQ06j5sSfqj0sev2ZYprN6ZTfaT+/lpT
-	6IocEYKpySGzAltAiE/kft/YD8OXhlvBwSPoGi+nWcuvrVPj8AFNUSHY/+vRNUILHWegkB9Pbzh+5
-	X+Da1ZqpbJo8Nls/q7hni99ALvDXWap5GEzaqu7JpTXy8i0XhvcLDV1PMDQOZDIxHT6l47wKfaYyY
-	uGFk+xog==;
-Received: from [115.246.246.98] (port=30876 helo=cypher.couthit.local)
-	by server.couthit.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.1)
-	(envelope-from <parvathi@couthit.com>)
-	id 1wHclA-0000000GFVv-3Ahw;
-	Tue, 28 Apr 2026 03:21:33 -0400
-From: Parvathi Pudi <parvathi@couthit.com>
-To: nm@ti.com,
-	vigneshr@ti.com,
-	afd@ti.com,
-	khilman@baylibre.com,
-	rogerq@kernel.org,
-	tony@atomide.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	richardcochran@gmail.com,
-	aaro.koskinen@iki.fi,
-	andreas@kemnade.info
-Cc: linux-omap@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	andrew@lunn.ch,
-	danishanwar@ti.com,
-	pratheesh@ti.com,
-	j-rameshbabu@ti.com,
-	praneeth@ti.com,
-	srk@ti.com,
-	rogerq@ti.com,
-	krishna@couthit.com,
-	mohan@couthit.com,
-	pmohan@couthit.com,
-	basharath@couthit.com,
-	parvathi@couthit.com
-Subject: [PATCH v7 0/3] Add support for ICSSM Ethernet on AM57x, AM437x, and AM335x
-Date: Tue, 28 Apr 2026 12:47:26 +0530
-Message-ID: <20260428072046.3022679-1-parvathi@couthit.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZgUC3+46"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777361610; x=1808897610;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=x1HK04n83Ri/VIOK/knZMOm7u2xbxr5aRjP8h9e6Moc=;
+  b=ZgUC3+46JbAnQ27EufyD8rIGIfmean4ztzPORFBVSfavqpDBbU0bB3Y7
+   bl1cPQY9llGnHjEh07vniUlkLxFOxUU1o9FuhfDRPyS/EB2SrVz2+ugyq
+   0wuche58xJ4hHaVKi91joojnlhLhkmjpcXPEBbNCDcoR2jo9eDKLu9Put
+   DhciCXDrNLVAmRy0uN3eVQZjKTjVAH5/AqBwl1wCJu1mU8F6G5Z7O4uFE
+   ku4O/aK4A7Gb3qKyE7VTXlZtVqrKxzBE6yGLuaSVe839UTUVPxZ3DjrZM
+   My41z/Pr5mX4Qo0lS/de9/42l6w8PEVCK9sqKi2B65CI38wSlMXDjcTDJ
+   Q==;
+X-CSE-ConnectionGUID: ZkKvm+/ZR8Crl/AdbyW+8Q==
+X-CSE-MsgGUID: pKCnbk74Q9esWV/qUIaVnw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="78453741"
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
+   d="scan'208";a="78453741"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 00:33:29 -0700
+X-CSE-ConnectionGUID: U58WZYodRz2zAQsWlC8R0g==
+X-CSE-MsgGUID: ha4MF1xxQ3eMn79BPVKDUw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
+   d="scan'208";a="229311531"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by fmviesa006.fm.intel.com with ESMTP; 28 Apr 2026 00:33:26 -0700
+Received: by black.igk.intel.com (Postfix, from userid 1001)
+	id 1380195; Tue, 28 Apr 2026 09:33:25 +0200 (CEST)
+Date: Tue, 28 Apr 2026 09:33:25 +0200
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+To: Benjamin Berman <benjamin.s.berman@gmail.com>
+Cc: Andreas Noever <andreas.noever@gmail.com>,
+	Mika Westerberg <westeri@kernel.org>,
+	Yehezkel Bernat <YehezkelShB@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] thunderbolt: drop start_poll guard in
+ tb_ring_poll_complete()
+Message-ID: <20260428073325.GO557136@black.igk.intel.com>
+References: <20260428015521.3454006-1-benjamin.s.berman@gmail.com>
+ <20260428015521.3454006-2-benjamin.s.berman@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server.couthit.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - couthit.com
-X-Get-Message-Sender-Via: server.couthit.com: authenticated_id: parvathi@couthit.com
-X-Authenticated-Sender: server.couthit.com: parvathi@couthit.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260428015521.3454006-2-benjamin.s.berman@gmail.com>
 
 Hi,
 
-This series adds support for ICSSM Ethernet on Texas Instruments AM57x,
-AM437x and AM335x platforms.
+On Mon, Apr 27, 2026 at 06:55:20PM -0700, Benjamin Berman wrote:
+> Under concurrent load on a single NHI with several rings simultaneously
+> in NAPI poll (e.g. a Maple Ridge TB4 transit forwarding tbnet traffic
+> between two peers), one ring's interrupt enable bit in
+> REG_RING_INTERRUPT_BASE can stay cleared.  MSI-X stops for that ring,
+> NAPI is never rescheduled, but carrier is reported up and no driver
+> event fires.  The ring stays masked until thunderbolt_net is reloaded.
+> 
+> tb_ring_poll_complete() gated the unmask on @start_poll:
+> 
+> 	if (ring->start_poll)
+> 		__ring_interrupt_mask(ring, false);
+> 
+> while the ISR path masks unconditionally via __ring_interrupt().  In a
+> window where @start_poll is observed as NULL by the unmask path while
+> the paired mask persists, the ring is left permanently masked.
+> 
+> Gate on @running instead and add an ioread32() barrier so the posted
+> enable reaches the device before the spinlock is dropped.
+> 
+> On NHIs without QUIRK_AUTO_CLEAR_INT a second issue compounds the
+> first: stale pending status in REG_RING_NOTIFY_BASE can prevent the
+> hardware from re-arming its MSI-X generator when the ring is
+> re-enabled.  Clear the ring's bit in REG_RING_INT_CLEAR before setting
+> the enable bit, mirroring what ring_msix() already does at ISR entry.
+> 
+> Verified on a Maple Ridge 4C transit and two TB3 Titan Ridge endpoints
+> running NCCL all-reduce over tb-lo: pre-patch the chain wedges in
+> under 1 GB; post-patch a 192 GB run (3000 iterations of a 64 MiB
+> all-reduce) completes with mask/unmask counters balanced.
 
-The AM57x and AM437x IDKs support two PRU-ICSS instances, each consisting
-of two PRU cores, with each PRU-ICSS instance capable of handling two
-Ethernet ports. For the AM57x platforms, the PRU-ICSS2 node has been added
-to the am57xx-idk-common.dtsi, while for the AM437x platform, the PRU-ICSS1
-node has been added to the am437x-idk-evm.dts.
+I think this makes sense.
 
-The AM335x ICE features a single PRU-ICSS instance. A new device tree overlay
-source file, am335x-icev2-prueth-overlay.dtso, has been introduced to define the
-PRU-ICSS node for the AM335x platform.
+I do have few comments about the code itself. See below.
 
-This is v7 of the patch series [v1]. This series is based on the latest
-next-20260427 linux-next.
+> Generated-by: Claude Opus 4.7 <claude-opus-4-7@anthropic.com>
+> Tested-by: Benjamin Berman <benjamin.s.berman@gmail.com>
+> Signed-off-by: Benjamin Berman <benjamin.s.berman@gmail.com>
+> ---
+>  drivers/thunderbolt/nhi.c | 22 +++++++++++++++++++---
+>  1 file changed, 19 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/thunderbolt/nhi.c b/drivers/thunderbolt/nhi.c
+> index 2bb2e79ca..bba45ec36 100644
+> --- a/drivers/thunderbolt/nhi.c
+> +++ b/drivers/thunderbolt/nhi.c
+> @@ -389,10 +389,24 @@ static void __ring_interrupt_mask(struct tb_ring *ring, bool mask)
+>  	u32 val;
+>  
+>  	val = ioread32(ring->nhi->iobase + reg);
+> -	if (mask)
+> +	if (mask) {
+>  		val &= ~BIT(bit);
+> -	else
+> +	} else {
+> +		if (!(ring->nhi->quirks & QUIRK_AUTO_CLEAR_INT)) {
+> +			int cbit = ring_interrupt_index(ring) & 31;
+> +
+> +			if (ring->is_tx)
+> +				iowrite32(BIT(cbit),
+> +					  ring->nhi->iobase +
+> +					  REG_RING_INT_CLEAR);
+> +			else
+> +				iowrite32(BIT(cbit),
+> +					  ring->nhi->iobase +
+> +					  REG_RING_INT_CLEAR +
+> +					  4 * (ring->nhi->hop_count / 32));
+> +		}
 
-Changes from v6 to v7 :
+This should be a separate helper function.
 
-*) No code changes were made, only the version was updated.
-*) Rebased the series on latest linux-next.
+ring_interrupt_clear() or so. We actually have function with that name but
+it clears with bit too big hammer for this. So I suggest to rework it with
+the above code and user here and also in nhi_disable_interrupts().
 
-Changes from v5 to v6 :
+>  		val |= BIT(bit);
+> +	}
+>  	iowrite32(val, ring->nhi->iobase + reg);
+>  }
+>  
+> @@ -423,8 +437,10 @@ void tb_ring_poll_complete(struct tb_ring *ring)
+>  
+>  	spin_lock_irqsave(&ring->nhi->lock, flags);
+>  	spin_lock(&ring->lock);
+> -	if (ring->start_poll)
+> +	if (ring->running) {
+>  		__ring_interrupt_mask(ring, false);
+> +		(void)ioread32(ring->nhi->iobase + REG_RING_INTERRUPT_BASE);
 
-*) Addressed Kevin Hilman, Krzysztof and Andrew lunn comments on patch 3 of
-the series.
-*) Fixed an issue with overlaying "output-low" property in "mux-mii-hog"
-sub-node under "gpio3" node.
-*) Rebased the series on latest linux-next.
+Drop the (void) cast but add a comment that this is for posted write.
 
-Changes from v4 to v5 :
-
-*) Addressed Andrew Davis's comments on patch 2 of the series.
-*) Addressed Andrew Lunn and Nikolaus Schaller comments on patch 2 of the series.
-*) Rebased the series on latest linux-next.
-
-Changes from v3 to v4 :
-
-*) No code changes were made, only the version was updated.
-*) Rebased the series on latest linux-next.
-
-Changes from v2 to v3 :
-
-*) Addressed Andrew Davis's comment by placing PRUETH nodes in a new overlay file
-am335x-icev2-prueth-overlay.dtso.
-*) Rebased the series on latest linux-next.
-
-Changes from v1 to v2 :
-
-*) Addressed Andrew Lunn's comment on patch 1 of the series.
-*) Addressed MD Danish Anwar comment on patch 1 of the series.
-*) Rebased the series on latest linux-next.
-
-[v1] https://lore.kernel.org/all/20251013125401.1435486-1-parvathi@couthit.com/
-[v2] https://lore.kernel.org/all/20251103124820.1679167-1-parvathi@couthit.com/
-[v3] https://lore.kernel.org/all/20251217130715.1327138-1-parvathi@couthit.com/
-[v4] https://lore.kernel.org/all/20260105162546.1809714-1-parvathi@couthit.com/
-[v5] https://lore.kernel.org/all/20260307122641.738450-1-parvathi@couthit.com/
-[v6] https://lore.kernel.org/all/20260402073853.2170099-1-parvathi@couthit.com/
-
-Thanks and Regards,
-Parvathi
-
-Roger Quadros (3):
-  arm: dts: ti: Add device tree support for PRU-ICSS on AM57xx
-  arm: dts: ti: Add device tree support for PRU-ICSS on AM437x
-  arm: dts: ti: Add device tree support for PRU-ICSS on AM335x
-
- arch/arm/boot/dts/ti/omap/Makefile            |   4 +
- .../ti/omap/am335x-icev2-prueth-overlay.dtso  | 156 ++++++++++++++++++
- arch/arm/boot/dts/ti/omap/am33xx-l4.dtsi      |  11 ++
- arch/arm/boot/dts/ti/omap/am4372.dtsi         |  11 ++
- arch/arm/boot/dts/ti/omap/am437x-idk-evm.dts  | 103 +++++++++++-
- arch/arm/boot/dts/ti/omap/am57-pruss.dtsi     |  11 ++
- arch/arm/boot/dts/ti/omap/am571x-idk.dts      |   8 +-
- arch/arm/boot/dts/ti/omap/am572x-idk.dts      |  10 +-
- arch/arm/boot/dts/ti/omap/am574x-idk.dts      |  10 +-
- .../boot/dts/ti/omap/am57xx-idk-common.dtsi   |  61 +++++++
- 10 files changed, 375 insertions(+), 10 deletions(-)
- create mode 100644 arch/arm/boot/dts/ti/omap/am335x-icev2-prueth-overlay.dtso
-
--- 
-2.43.0
-
+> +	}
+>  	spin_unlock(&ring->lock);
+>  	spin_unlock_irqrestore(&ring->nhi->lock, flags);
+>  }
+> -- 
+> 2.43.0
