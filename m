@@ -1,84 +1,104 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1E63E51F9;
-	Tue, 28 Apr 2026 13:03:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 679673AF65C;
+	Tue, 28 Apr 2026 13:07:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777381437; cv=none; b=jZeYHe2Nz0u7pLk0pgM4WkKS/Jaoek7ij1BUCG8ed+lCnipq/jKp0glbyOIxS7ZQD4bvv4IykoOimj5T7ftmTOqgRRv1ClPzVFgdJulR++RMedrJ/IzhjOwBOJSsB4IGBIrGFjk1hsf0dhlit3jAnELDHH5AIe3EP8b8De+7n6s=
+	t=1777381641; cv=none; b=WYlFFtfG3MwUDeM97q008QlA0WOGkJZOzmd1SKAFPBr5ZFkGGml8JBAweOj+yqrFzZLz78D0JQl0uQ5RCl3Cos0Xfm46qNGtSDBKk5zXCeJ97aKFnb/r13Kz1XK79/T2QdXbCFnIN+ns3x2AEHdIZhlOc4NdHwkx0qM7lO7sNZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777381437; c=relaxed/simple;
-	bh=xZbP5qcEMJ/KrG9R1lnVooWrMadkmUd4Nrp/Za6BggA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZgHHXWitEr/G37FKyCkWPzc0+a/RgLEiKkVQCmMb5bbdMl1062goReN2yiP6i3OcdFlgdXqPbrp9WEaMT6mJC7SOFVhfqGbbZUlFqISXfM9xE5JhfsUBdgSOXzVsFvjMXnvo9Y6AqLWMH3MyKeEEN1d+QNJmmpoPhBm27C3qkUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=5xqdZvhA; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1777381641; c=relaxed/simple;
+	bh=u5vp6FbftZARpKR4Xdii8fdcaaW1jSq2pgUEfYf9HaE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
+	 In-Reply-To:To:CC; b=MCBOfnTW7Y+y+Qs6nFgSWTpQ4DpBDo7vh8qQZmV52y1mVvdVIyjVw1V4n/1aMAlaJs4LdV1FxvWlpXFdx/GVXompt+QR9t5hd4X7ayOawia2n5kOfL05dy/7xAXx4j85NJtS7bnTPeFepGFdonV3zwI7OGM7N+Tx+s6ZZiM3sSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=mNYw/QFi; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="5xqdZvhA"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=LoZmBGb/wpi4U8bvGQZ6PW1zMxptFxMPpGFyLLh+QA4=; b=5xqdZvhADpst2KhHPL4DyPhtXp
-	xMaBcuXPH+bu6WvC/3E52OTGQi1elEMUzvH+1s1OXeI/YJPGB5ijEpKjycXA/xRBvklKfTe8JtvT/
-	uz1OUuziruCQuk0gQeldAYTk4Bb8GvVasxlS4Zarjf3+k4WfLZqx8UDOQy0HE+XcTNPg=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wHi6T-000Krv-C8; Tue, 28 Apr 2026 15:03:53 +0200
-Date: Tue, 28 Apr 2026 15:03:53 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Denis Benato <benato.denis96@gmail.com>,
-	Ingo Molnar <mingo@kernel.org>, Simon Horman <horms@kernel.org>
-Subject: Re: [PATCH] net: fealnx: make driver work on architectures without
- I/O ports
-Message-ID: <17af8886-7be9-411a-8067-feb59eae2c7d@lunn.ch>
-References: <20260428021145.40930-1-enelsonmoore@gmail.com>
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="mNYw/QFi"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1777381640; x=1808917640;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:references:in-reply-to:to:cc;
+  bh=u5vp6FbftZARpKR4Xdii8fdcaaW1jSq2pgUEfYf9HaE=;
+  b=mNYw/QFiX4yVAvoDdWKNKUuJT73LkDpsj0lroWmT4rvq+kunZsVSeFio
+   G/x1Zrvq3kwdnrYpUZxij3mKwSAF1zoaDRi0LqxvfJUGuJnac1j3up8R+
+   ASqyElaIbohS9G0Cjd4eMkkxYm56uZknSSvo1RJ9tV1rEwDod0DwTigPY
+   oEc25+tdbs8VbjZ1I/K/A04FMCVvjMWfbN0jD1TfeXcEn72PnUD548bHh
+   2pUkMTQ7J8fmWsTTq8FYMZmpm67pyq2/7dopb958FmFQC31TWYVvpe+2d
+   RNqOwxfocgrJvGxTUEHRJoZ1oH1yMX43fhUqvLug6tYe53gtIjC+dNgT7
+   w==;
+X-CSE-ConnectionGUID: l6k+7SRBSTiZ5RirIUYLoQ==
+X-CSE-MsgGUID: LJB9MmItSri1Voh4+Lz4uw==
+X-IronPort-AV: E=Sophos;i="6.23,204,1770620400"; 
+   d="scan'208";a="288093138"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 28 Apr 2026 06:07:14 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Tue, 28 Apr 2026 06:07:12 -0700
+Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Tue, 28 Apr 2026 06:07:09 -0700
+From: Daniel Machon <daniel.machon@microchip.com>
+Date: Tue, 28 Apr 2026 15:06:50 +0200
+Subject: [PATCH net-next v2 01/13] MAINTAINERS: add FDMA library to Sparx5
+ SoC entry
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260428021145.40930-1-enelsonmoore@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20260428-lan966x-pci-fdma-v2-1-d3ec66e06202@microchip.com>
+References: <20260428-lan966x-pci-fdma-v2-0-d3ec66e06202@microchip.com>
+In-Reply-To: <20260428-lan966x-pci-fdma-v2-0-d3ec66e06202@microchip.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Horatiu Vultur
+	<horatiu.vultur@microchip.com>, Steen Hegelund
+	<steen.hegelund@microchip.com>, <UNGLinuxDriver@microchip.com>, "Alexei
+ Starovoitov" <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+	"Jesper Dangaard Brouer" <hawk@kernel.org>, John Fastabend
+	<john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, Herve
+ Codina <herve.codina@bootlin.com>, Arnd Bergmann <arnd@arndb.de>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Mohsin Bashir
+	<mohsin.bashr@gmail.com>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<bpf@vger.kernel.org>
+X-Mailer: b4 0.14.3
 
-On Mon, Apr 27, 2026 at 07:11:36PM -0700, Ethan Nelson-Moore wrote:
-> Devices supported by the fealnx driver support both MMIO and PIO access
-> (they have a PCI BAR for each). However, the driver always tries to use
-> the PIO BAR on architectures other than Alpha. This makes the driver
-> not work on architectures without I/O port mapping support. The comment
-> explaining why this was done explains that some x86 systems have issues
-> with MMIO. To enable the driver on all architectures while preventing
-> potential regressions, change the driver to only use PIO on x86.
-> 
-> Issue discovered by manual inspection.
+The FDMA library under drivers/net/ethernet/microchip/fdma/ is shared by
+the lan966x, sparx5 and lan969x drivers, but is not covered by an entry
+in the MAINTAINERS file. A subsequent patch will add new files to the
+FDMA library, so let's make sure it's covered.
 
-Does that mean it is untested? Probably broken?
+Add drivers/net/ethernet/microchip/fdma/ to the Sparx5 SoC entry, since
+I am already listed there.
 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-
-Given that nobody has cared about this for the last 20 years, why
-change it now?
-
-Please stop making changes to old drivers, unless you have the
-hardware in your hands and you have a real problem with it. If those
-conditions are not met, you are just wasting peoples time.
-
-If you want to do something useful, please spend some time reviewing
-other peoples patches. Or get some real hardware in your hands and add
-new features to its driver.
-
-    Andrew
-
+Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
 ---
-pw-bot: cr
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index e7dc9e6fad2e..53559c74a132 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3084,6 +3084,7 @@ M:	UNGLinuxDriver@microchip.com
+ L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+ S:	Supported
+ F:	arch/arm64/boot/dts/microchip/sparx*
++F:	drivers/net/ethernet/microchip/fdma/
+ F:	drivers/net/ethernet/microchip/vcap/
+ F:	drivers/pinctrl/pinctrl-microchip-sgpio.c
+ N:	sparx5
+
+-- 
+2.34.1
+
