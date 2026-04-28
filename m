@@ -1,212 +1,188 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-yx1-f73.google.com (mail-yx1-f73.google.com [74.125.224.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC960279DC2
-	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 07:05:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C16A361DB1
+	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 07:09:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777359961; cv=none; b=aroWX+pTFY5Ijjt84bXQ6QckV8jU1mRBEEb6Tw+913WUlTXAgizpAhYK2pAtpJGmwq3d4DMPOsp0LmyeZ3C4yqGpDwmbWyj/XH+d1tMJWhA8QCMxQ8niWc6VRVwKGzrRD5D8yaLscH74PJwVL0UJLn/PjCEb5N+b5/14NuAj9OM=
+	t=1777360163; cv=none; b=NLY+yvnDCuo8cr3w+Mv9ujJsuLQSv8+/PPH8wvAddX4bjBWW+K8uc9NO7oMUkia9aD1lrkJCP4HaCSyUT03qM/kboweQ/G3JgWz9UH42HBLiaQAyI+Pt+W4RYWbs5ClB8GgWMoFt+UI7RIqjKlm30LoYU5Bcg1q8uw2uIjXNqUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777359961; c=relaxed/simple;
-	bh=tACCu/RrLVvZC//dKCwwbhTR6SIl2MeUDsZQJWY4aCc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=neaFwtF5nY/LlvgrOF6b1alwDpPXIbENC+mEyal8H+gDjRXkNZ3JCgRclGxXHwUsjjSWbLrcmOkDuQcbyrnDGW9IPYMiJ1ooaXvoMNBzGBZyU8PnychusUFTXF+N4o7DqGqDlwz0KbP+1Up7p3upC4tYjZni4AaDxNiSnpUBDWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=snQhJN9q; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1777360163; c=relaxed/simple;
+	bh=6AB3orESIKLAo/khVc7XcxX39RJUVU5bY+L1mBF5+hA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=nO4V46lEVfnO9SDuP/OWUSmymR3OB3IlLGTy7RAKiX1CdLHS4sNrECI+EMu9jWD07G5GHgoD/ist/t4r2Qa14Jfj+cfKQhJ9XiM+4yYCJ88VVW5ZMZuJttpyQM1wcMChnPh6LIn4rgGaGqMlLBIPGMtS2xOPtQe5erjZ9WX42EE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=O4VDxM2L; arc=none smtp.client-ip=74.125.224.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="snQhJN9q"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-488a9033b2cso116660955e9.2
-        for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 00:05:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="O4VDxM2L"
+Received: by mail-yx1-f73.google.com with SMTP id 956f58d0204a3-651c92dd649so19916975d50.1
+        for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 00:09:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777359958; x=1777964758; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+        d=google.com; s=20251104; t=1777360161; x=1777964961; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=ghYH9B96BjOnUVsotLaVY0NUZVw8cYbfQ/KArJKrvpM=;
-        b=snQhJN9qa2uOoOMMuUpxTqcCPpxy4Tvyz6axATUz9N9pNf24FmSRk6Kftd4/zArydW
-         RTxlm0JY4cqZEKgnPznzGvys9UfKChngS0vA5OhVq1c/J+6VCcmdoKKm7WHyIMnkOXCn
-         0Fe7T2nEoILCkNC+mDeCfrFS6JFzgUeiiXsog7hc2q6sunT7DPmOELShjezpuAHlo6ix
-         s9m6mdjZgSqSQJOVXWJ3kQhkMPiYjX+GcP8qdx0Fi1usWKxWWB1DKNJ6sCkryUeaITyv
-         ZnmhBMTchyy3at54VbAkGB2tpugQRAziq6QI3FD+8s+r9SlqjD7NnnPAMzlpSRLTWH1p
-         zjtQ==
+        bh=mKlZyTkMgncwvi2sfTQVzqCBKhiJuDWXk5fIO/U9gnc=;
+        b=O4VDxM2LzIsVV6pZYLpNq1ATsDMlFomlUVlBxcG35moxvDE72yuScwg4ass65qIr8h
+         jOVqj4Z+lGksPxgLk8v7BMYQA2UAef4hgnNS7YOFVCCZL3oimgEAZUjoOec2vNZ473Yv
+         T6CS5CFJTHHOcYOzrgg4GNO3qnIxjFAgSmxO9S+0JglsWdjiK+HKAWQQ8GBTyk6ai7Ll
+         +fB9DiE8ueaOKr8mBy+lVsqbGEVGGIxvRgHUrRAKx9TBt3E5exJmhkK3AL23EMeU58B0
+         9iTfYaxsWC5RksnWc4344AvTZlv8mOOx6xRUoyc1VjaMLUhpr1zeLdPCXAUBG7/wdmGM
+         nccg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777359958; x=1777964758;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ghYH9B96BjOnUVsotLaVY0NUZVw8cYbfQ/KArJKrvpM=;
-        b=hOgUwvqqoKzWjr45ZzjYmhlJjIAqe0zFO7KtYHDFGzRA1YDqr4cX3muWtfJMJu2qgL
-         /V0ZlC+Euea+7/4EV4EPhpNTO3YpKLyIIaYqDnSjtmXlzgj8VrqfvQarTgMATCxPChhN
-         05xujaqL0yDcbkMwpdiC+CUMASrfBadA4UpVE2z5R2HZM+k+YEdD5NqP/l5ITZzaLw8p
-         Dli7SBX8yemAijsCztbwr3+FJon0r7dXcUln/HSq6Rk/ELveVK9FSxMi+zKUbSiEY1jU
-         SOEezdxdcFv05J2LhfeIkEzc2xRFTOdKAyMBXhtRkXqLXi14iSQMwGMz3TRAr1Gebt0x
-         097Q==
-X-Forwarded-Encrypted: i=1; AFNElJ8dBNxYU26EkWoFRoY7Xex6TEgGlLMCtEub5U+knJjS039DOgTSpcidjr5ax8sKhX4kzyzyPT0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxq8yVLXsIJk1tWhzpFQl0SpjIxzJc1ap72Lmx8SPmcOsjgOtIZ
-	Elqg76faN64wj6amrExni8FmgMX2ikdE0skQujn1h+KygDG0WF1T5kYJ
-X-Gm-Gg: AeBDietya0KTts0/O2zkWZk6qW8BlqTx+wRvacKB1ILctSkTCC9amkN33PffOuZuSSa
-	K4St3IS/FfGt/CiyM3RqePHnq4d3XO5VW0WtRJSEs3JYb+orVTKT8HQSHjxrbNmu42HNRU4tnMA
-	DYc3tn5HRadCUgp9yZ43aZ0DbguPiVYokEGbdPAg+D5l6hLOOykzH/5beRdpmA/YzxkXvDejmmn
-	7CG89KVQpscmTsQ5r4l10Lt8mwAWErU7BDm0I99lhtfzyLAQ/h+yiE+2/AYZd0eZ7Z6KC1ME51q
-	4qb9yt85ZEnZFWUReyY1D5FRn8VDrHslcuGyIF1fKfeEMeZf/GdaqgDgRa0Q6GmC5X1vjPBlpWU
-	QN62jKH3n+1IMlOTP4MPHr1rsW5UEF4bIPu7nbTA1pskV1pc/FJrPiFdmYnqi9Zl9yNHs98e+aD
-	+6p87mM908mWabweX478IXgSD7Gj/1vmLncLMyFIu1eReBFn2pf2aNNwA9q0ruqodjFux68wku2
-	aXj/ltxEg+6z9mfCA==
-X-Received: by 2002:a05:600c:8b8b:b0:48a:568f:ae8a with SMTP id 5b1f17b1804b1-48a77aed44bmr29091265e9.8.1777359958027;
-        Tue, 28 Apr 2026 00:05:58 -0700 (PDT)
-Received: from ?IPv6:2a03:83e0:1126:4:b8d:4d94:5e6c:7b79? ([2620:10d:c092:500::5:add7])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a775ebb83sm12333835e9.23.2026.04.28.00.05.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Apr 2026 00:05:56 -0700 (PDT)
-Message-ID: <4386cf7de9b7fa5a03191bf97d7f5fda1f39de34.camel@gmail.com>
-Subject: Re: [PATCH bpf-next v3 4/9] bpf: Refactor object relationship
- tracking and fix dynptr UAF bug
-From: Eduard Zingerman <eddyz87@gmail.com>
-To: Amery Hung <ameryhung@gmail.com>
-Cc: bpf@vger.kernel.org, netdev@vger.kernel.org,
- alexei.starovoitov@gmail.com, 	andrii@kernel.org, daniel@iogearbox.net,
- memxor@gmail.com, martin.lau@kernel.org, 	mykyta.yatsenko5@gmail.com,
- kernel-team@meta.com
-Date: Tue, 28 Apr 2026 00:05:55 -0700
-In-Reply-To: <CAMB2axPaDEG_oKLxhcRmivv+YK_ExxNVY_KpSf1vvgLiPq1tvg@mail.gmail.com>
-References: <20260421221016.2967924-1-ameryhung@gmail.com>
-	 <20260421221016.2967924-5-ameryhung@gmail.com>
-	 <02dbf08511c72ea0c1a5caa33ed400f4a3e3c3c9.camel@gmail.com>
-	 <CAMB2axPaDEG_oKLxhcRmivv+YK_ExxNVY_KpSf1vvgLiPq1tvg@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+        d=1e100.net; s=20251104; t=1777360161; x=1777964961;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=mKlZyTkMgncwvi2sfTQVzqCBKhiJuDWXk5fIO/U9gnc=;
+        b=nE9n7QmdV8aHSl/MmrhTSgcS/V0RSNKXPrZ2z1/o05ncCCpIah/jFcQoVBui5DTbfp
+         TI+3tyaHi68q39jP4UIPCKSJLd/SuxM/EDX1p7/5hKk5VWq8vvmxs1mxLx/45tM06Wco
+         tYUjJh0tvmRVBBkVWx/ANWX1IeXlkTsrFvLePjkK+cGsYGKWmDJlweS3pfVFkBWqjPcj
+         6lS5lRTuxMT9sX7RdyHzRja3yOmAZh0tkXYYGw8SuMVJvrP64huUQ50kWmMOUzWpEADQ
+         006ZERN+RYpYhtSA8DbSUvmDIu8b04Tetj3VHlNzBRB0dnE6BDOxqOIeT3bgxl85RtR8
+         0sVA==
+X-Forwarded-Encrypted: i=1; AFNElJ963Q86+d+v4LFfTzpKH4ZphGslDOfae/zw3Nte0fZj2TDeE4qkaGJe2+F8+iaabmNwIKUbD7M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzE2hOD09pKpKSI8JuJLLjM/ybaXKPJe4fmDRxppSpGi2v+3Sdn
+	o8l9PAIgxBDOPTGjy7A9HKic73nCPRAc4+lCy+E226G+feWo6TY9rhBCS6i5VP+RA8LacxS370s
+	K+rcRByXjYu70WA==
+X-Received: from yxak7-n1.prod.google.com ([2002:a53:c047:0:10b0:652:df1f:6403])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:690e:1906:b0:651:b214:cb69 with SMTP id 956f58d0204a3-65beeef1619mr1368003d50.65.1777360161159;
+ Tue, 28 Apr 2026 00:09:21 -0700 (PDT)
+Date: Tue, 28 Apr 2026 07:09:19 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
+Message-ID: <20260428070919.3109557-1-edumazet@google.com>
+Subject: [PATCH v4 net-next] net/sched: rename qstats_overlimit_inc() to qstats_cpu_overlimit_inc()
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>, 
+	netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 2026-04-27 at 13:21 -0700, Amery Hung wrote:
-> On Fri, Apr 24, 2026 at 3:48=E2=80=AFPM Eduard Zingerman <eddyz87@gmail.c=
-om> wrote:
-> >=20
-> > On Tue, 2026-04-21 at 15:10 -0700, Amery Hung wrote:
-> >=20
-> > Tbh, I find current state of affairs with id/ref_obj_id/parent_id hard
-> > to follow. The release_reference() is an improvement, but the means by
-> > which the fields are propagated to bpf_reg_state objects are convoluted=
-.
-> > I wonder if having a separate "object table" in bpf_verifier_state and
-> > having bpf_reg_state->id refer to objects within this table would make
-> > things more straight forward.
->=20
-> I think this is a good idea in the long term. First, we need to make
-> id a stable and unique object identifier (i.e., always assign id to
-> objects; different objects have different ids). Then, we can create
-> the object table indexed by id and each entry contains the ref_obj_id
-> and parent_id moved from bpf_reg_state. Then, there will be helpers
-> managing the lifetime, relationship (e.g., bpf_obj_create,
-> bpf_obj_release, bpf_obj_clone) with clear semantics to centralize how
-> id,parent_id,ref_obj_id are manipulated.
->=20
-> If this makes sense, I can send this as a follow up patchset.
+qstats_overlimit_inc() is only used to increment per cpu overlimits.
 
-I'd play with it a bit, might make sense if we move a lot of objects
-into this table. E.g. forgo find_good_pkt_pointers() and keep packet
-info as one of the objects, etc.  On the other hand, dynptr and iters
-are inherently stack allocated objects, so it might be the case that
-the final implementation would be an over-complication.
+It can use this_cpu_inc() to avoid this_cpu_ptr() extra cost
+and avoid potential store tearing.
 
-[...]
+Change qstats_overlimit_inc() name and its argument type.
 
-> > >  static int mark_stack_slots_dynptr(struct bpf_verifier_env *env, str=
-uct bpf_reg_state *reg,
-> > > -                                enum bpf_arg_type arg_type, int insn=
-_idx, int clone_ref_obj_id)
-> > > +                                enum bpf_arg_type arg_type, int insn=
-_idx, int parent_id,
-> > > +                                struct bpf_dynptr_desc *dynptr)
-> >=20
-> > Having both parent_id and dynptr->parent_id as parameters of this
-> > function is very confusing, but I don't have a suggestion on how to
-> > better deal with it.
->=20
-> Does tweaking the argument name and reorder the if-else block make it
-> more obvious how these two arguments are used?
+Also add a WRITE_ONCE() in qdisc_qstats_overlimit() to prevent
+store tearing.
 
-Idk, let's go with your original code, maybe?  The eventual goal is to
-have a unified handling for both helpers and kfuncs, right?
-Meaning that these would be packed into some common arg_info_meta,
-with some comments on the structure fields should look ok.
+$ scripts/bloat-o-meter -t vmlinux.0 vmlinux.1
+add/remove: 0/0 grow/shrink: 0/7 up/down: 0/-91 (-91)
+Function                                     old     new   delta
+tcf_skbmod_act                               772     764      -8
+tcf_police_act                               733     725      -8
+tcf_gate_act                                 318     310      -8
+tcf_pedit_act                               1295    1284     -11
+tcf_mirred_to_dev                           1126    1114     -12
+tcf_ife_act                                 1077    1061     -16
+tcf_mirred_act                              1324    1296     -28
+Total: Before=24274627, After=24274536, chg -0.00%
 
-[...]
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+---
+ include/net/act_api.h     | 2 +-
+ include/net/sch_generic.h | 6 +++---
+ net/sched/act_ife.c       | 4 ++--
+ net/sched/act_police.c    | 2 +-
+ net/sched/act_skbmod.c    | 2 +-
+ 5 files changed, 8 insertions(+), 8 deletions(-)
 
-> > > +/* Release id and objects referencing the id iteratively in a DFS ma=
-nner */
-> > > +static int release_reference(struct bpf_verifier_env *env, int id)
-> > > +{
-> > > +     u32 mask =3D (1 << STACK_SPILL) | (1 << STACK_DYNPTR);
-> > >       struct bpf_verifier_state *vstate =3D env->cur_state;
-> > > +     struct bpf_idmap *idstack =3D &env->idmap_scratch;
-> > > +     struct bpf_stack_state *stack;
-> > >       struct bpf_func_state *state;
-> > >       struct bpf_reg_state *reg;
-> > > -     int err;
-> > > +     int root_id =3D id, err;
-> > >=20
-> > > -     err =3D release_reference_nomark(vstate, ref_obj_id);
-> > > -     if (err)
-> > > -             return err;
-> > > +     idstack->cnt =3D 0;
-> > > +     idstack_push(idstack, id);
-> > >=20
-> > > -     bpf_for_each_reg_in_vstate(vstate, state, reg, ({
-> > > -             if (reg->ref_obj_id =3D=3D ref_obj_id)
-> > > -                     mark_reg_invalid(env, reg);
-> > > -     }));
-> > > +     if (find_reference_state(vstate, id))
-> > > +             WARN_ON_ONCE(release_reference_nomark(vstate, id));
-> > > +
-> > > +     while ((id =3D idstack_pop(idstack))) {
-> > > +             bpf_for_each_reg_in_vstate_mask(vstate, state, reg, sta=
-ck, mask, ({
-> > > +                     if (reg->id !=3D id && reg->parent_id !=3D id &=
-& reg->ref_obj_id !=3D id)
-> > > +                             continue;
-> > > +
-> > > +                     if (reg->ref_obj_id && id !=3D root_id) {
-> > > +                             struct bpf_reference_state *ref_state;
-> > > +
-> > > +                             ref_state =3D find_reference_state(env-=
->cur_state, reg->ref_obj_id);
-> > > +                             verbose(env, "Unreleased reference id=
-=3D%d alloc_insn=3D%d when releasing id=3D%d\n",
-> > > +                                     ref_state->id, ref_state->insn_=
-idx, root_id);
-> > > +                             return -EINVAL;
-> > > +                     }
-> > > +
-> > > +                     if (reg->id !=3D id) {
-> > > +                             err =3D idstack_push(idstack, reg->id);
-> > > +                             if (err)
-> > > +                                     return err;
-> > > +                     }
-> > > +
-> > > +                     if (!stack || stack->slot_type[BPF_REG_SIZE - 1=
-] =3D=3D STACK_SPILL)
-> > > +                             mark_reg_invalid(env, reg);
-> > > +                     else if (stack->slot_type[BPF_REG_SIZE - 1] =3D=
-=3D STACK_DYNPTR)
-> > > +                             invalidate_dynptr(env, state, stack);
-> >=20
-> > invalidate_dynptr() rewrites to stack slots, can it be the case that
-> > this body of bpf_for_each_reg_in_vstate_mask() is computed for first
-> > and second dynptr stack slots, hence triggering invalidate_dynptr() to
-> > rewrite three slots instead of two?
->=20
-> invalidate_dynptr() will mark the two stack slots as STACK_INVALID so
-> I didn't bother to check whether it is the first slot or not. Am I
-> missing anything?
+diff --git a/include/net/act_api.h b/include/net/act_api.h
+index d11b791079302f50c47e174979767e0b24afc59a..2ec4ef9a5d0c8e9110f92f135cc3c31a38af0479 100644
+--- a/include/net/act_api.h
++++ b/include/net/act_api.h
+@@ -250,7 +250,7 @@ static inline void tcf_action_inc_drop_qstats(struct tc_action *a)
+ static inline void tcf_action_inc_overlimit_qstats(struct tc_action *a)
+ {
+ 	if (likely(a->cpu_qstats)) {
+-		qstats_overlimit_inc(this_cpu_ptr(a->cpu_qstats));
++		qstats_cpu_overlimit_inc(a->cpu_qstats);
+ 		return;
+ 	}
+ 	atomic_inc(&a->tcfa_overlimits);
+diff --git a/include/net/sch_generic.h b/include/net/sch_generic.h
+index 11159a50d6a14535d7c173c81c0de80dff108807..cbfe9ed435fd77422a181074980e5779190ab9c3 100644
+--- a/include/net/sch_generic.h
++++ b/include/net/sch_generic.h
+@@ -1004,9 +1004,9 @@ static inline void qstats_drop_inc(struct gnet_stats_queue *qstats)
+ 	qstats->drops++;
+ }
+ 
+-static inline void qstats_overlimit_inc(struct gnet_stats_queue *qstats)
++static inline void qstats_cpu_overlimit_inc(struct gnet_stats_queue __percpu *qstats)
+ {
+-	qstats->overlimits++;
++	this_cpu_inc(qstats->overlimits);
+ }
+ 
+ static inline void qdisc_qstats_drop(struct Qdisc *sch)
+@@ -1021,7 +1021,7 @@ static inline void qdisc_qstats_cpu_drop(struct Qdisc *sch)
+ 
+ static inline void qdisc_qstats_overlimit(struct Qdisc *sch)
+ {
+-	sch->qstats.overlimits++;
++	WRITE_ONCE(sch->qstats.overlimits, sch->qstats.overlimits + 1);
+ }
+ 
+ static inline int qdisc_qstats_copy(struct gnet_dump *d, struct Qdisc *sch)
+diff --git a/net/sched/act_ife.c b/net/sched/act_ife.c
+index d5e8a91bb4eb9f1f1f084e199b5ada4e7f7e7205..e1b825e14900d6f46bbfd1b7f72ab6cd554d8a73 100644
+--- a/net/sched/act_ife.c
++++ b/net/sched/act_ife.c
+@@ -750,7 +750,7 @@ static int tcf_ife_decode(struct sk_buff *skb, const struct tc_action *a,
+ 			 */
+ 			pr_info_ratelimited("Unknown metaid %d dlen %d\n",
+ 					    mtype, dlen);
+-			qstats_overlimit_inc(this_cpu_ptr(ife->common.cpu_qstats));
++			qstats_cpu_overlimit_inc(ife->common.cpu_qstats);
+ 		}
+ 	}
+ 
+@@ -814,7 +814,7 @@ static int tcf_ife_encode(struct sk_buff *skb, const struct tc_action *a,
+ 		/* abuse overlimits to count when we allow packet
+ 		 * with no metadata
+ 		 */
+-		qstats_overlimit_inc(this_cpu_ptr(ife->common.cpu_qstats));
++		qstats_cpu_overlimit_inc(ife->common.cpu_qstats);
+ 		return action;
+ 	}
+ 	/* could be stupid policy setup or mtu config
+diff --git a/net/sched/act_police.c b/net/sched/act_police.c
+index 12ea9e5a600536b603ea73cc99b4c00381287219..8060f43e4d11c0a26e1475db06b76426f50c5975 100644
+--- a/net/sched/act_police.c
++++ b/net/sched/act_police.c
+@@ -307,7 +307,7 @@ TC_INDIRECT_SCOPE int tcf_police_act(struct sk_buff *skb,
+ 	}
+ 
+ inc_overlimits:
+-	qstats_overlimit_inc(this_cpu_ptr(police->common.cpu_qstats));
++	qstats_cpu_overlimit_inc(police->common.cpu_qstats);
+ inc_drops:
+ 	if (ret == TC_ACT_SHOT)
+ 		qstats_drop_inc(this_cpu_ptr(police->common.cpu_qstats));
+diff --git a/net/sched/act_skbmod.c b/net/sched/act_skbmod.c
+index 23ca46138f040d38de37684439873921bc9c86af..a464b0a3c1b81dba6c28c1141aa38c5c7cad3acb 100644
+--- a/net/sched/act_skbmod.c
++++ b/net/sched/act_skbmod.c
+@@ -87,7 +87,7 @@ TC_INDIRECT_SCOPE int tcf_skbmod_act(struct sk_buff *skb,
+ 	return p->action;
+ 
+ drop:
+-	qstats_overlimit_inc(this_cpu_ptr(d->common.cpu_qstats));
++	qstats_cpu_overlimit_inc(d->common.cpu_qstats);
+ 	return TC_ACT_SHOT;
+ }
+ 
+-- 
+2.54.0.545.g6539524ca2-goog
 
-Oh, right, the =3D=3D STACK_DYNPTR won't fire for the second slot.
-Sorry for the noise.
-
-[...]
