@@ -1,144 +1,118 @@
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902D92E2852;
-	Tue, 28 Apr 2026 09:18:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 308432DF12F;
+	Tue, 28 Apr 2026 09:23:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777367937; cv=none; b=TdyZhTCAraYjxAOu8GFgZn8Fg9RlWoEhBF2x3I5Dv45n6n81x6jPpwM4ScAzKYAb2pCiDtdnzyKI+MZmrAv5xckm3CvAnOtuPFlY/46HLiF3sfsQ2A4zVaM/AAd9stlgKrfBS8Jn/t3O6jHpBBB92A+tgriPpBVUsOOGb2VYNeU=
+	t=1777368198; cv=none; b=TSMn6oEqcv++MNId+KpXsHLtAIpQad0v3jyNMnWDys/+TwaszmbzB7TKWAMD8iBBs5z78rEO8krKet+fYSvvt5YnZigCKiyMDNTHRxoOzlKUJItjSdBJJRJMAINpWtg+Q7IXmPdXFNLDczpg/r4hAAH7pR82Gtts3qwUy9B4bX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777367937; c=relaxed/simple;
-	bh=hWEKb+8Ve/B5+/4K9nf7ZmA6HaAUHpWBy4yoT5wrjPU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Uq6m84mnIfIdo2WhkfuHkmQBvtNvnBfQP1wFuxY2OsXQjfI39rDrWY4zXBX6ULZoioFr4g1s0Q3E65FAqz3QKVhgV8d5SxsR6Adl95lC5XXNM8srUqu3XyLkujpK6gQ3K9zn7XwlCd1onRD+WxDYsFmZW4Dg2LrlYH994GAw/Uc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [141.14.220.42] (g42.guest.molgen.mpg.de [141.14.220.42])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 899634C4431022;
-	Tue, 28 Apr 2026 11:18:00 +0200 (CEST)
-Message-ID: <091fa6fa-0f1d-40b3-9c32-8401306f0e66@molgen.mpg.de>
-Date: Tue, 28 Apr 2026 11:17:59 +0200
+	s=arc-20240116; t=1777368198; c=relaxed/simple;
+	bh=ASWifXhbZTozEOdrs+66Pjf8bwkBn3UUp/Y7mK5dhI4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S+TtxE6qyfRBTg0w5gzkM8TXFBfPJMcFsOb0Z0v8HC811WkFcxcpK4+/z+W2JUlRNyrExDDAuOsdgGoa2Ypte56r4TlSX8jFxBGLpcDQNLlxjGw3TgDZ+HEapSDbVQc8+6tY8yONIPYBoVqEKxR3m7y1uW7f5EIqTVUgLYQl8Rw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZXdtRjob; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZXdtRjob"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 020B6C2BCAF;
+	Tue, 28 Apr 2026 09:23:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777368197;
+	bh=ASWifXhbZTozEOdrs+66Pjf8bwkBn3UUp/Y7mK5dhI4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZXdtRjobck1OUgzVvakqApcNDBubeoCDdPcbG6FLTJI/Dj2FjMVHAR5sb4eVZMLeh
+	 VFNpM5IvVTlU4oPG4mCEmrdJOT5ysUQnBw0IohSxVyyfpMiTbLVwx3ASQm3A5RYNRQ
+	 tQ3oD75ZjdDGNF9oQ8/EQl2BQh3SQDx8rfJMTCp/BGb8X/tdpLYKNWV8+o7nDvcKrx
+	 sbtv5kW2Ya2BOF6dLxDKEtVlEcZLpZqVtUDW/LwamuxAUaWOyDgaJkcbQS/w6I1jw+
+	 kSut/pr45nIFmOeHeWMevkt5ZFTiUe8VXHoJD+24MUbj/jnW5VKHkBZ7P/KGDEfz/l
+	 OWYbjOogbzlPA==
+Date: Tue, 28 Apr 2026 10:23:12 +0100
+From: Simon Horman <horms@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, k-keiichi@bx.jp.nec.com,
+	satyam@infradead.org, akpm@linux-foundation.org,
+	thepacketgeek@gmail.com, asantostc@gmail.com, gustavold@gmail.com,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH net 3/3] netconsole: propagate device name truncation in
+ dev_name_store()
+Message-ID: <20260428092312.GO900403@horms.kernel.org>
+References: <20260423-netconsole_ai_fixes-v1-3-92b8b7de9a2c@debian.org>
+ <20260426083904.1130399-2-horms@kernel.org>
+ <ae85UEWf7dgJtmeS@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Intel-wired-lan] [PATCH v2] ice: wait for reset completion in
- ice_resume()
-To: Aaron Ma <aaron.ma@canonical.com>
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Akeem G Abodunrin <akeem.g.abodunrin@intel.com>,
- Jesse Brandeburg <jesse.brandeburg@intel.com>,
- intel-wired-lan@lists.osuosl.org, Kohei Enju <kohei@enjuk.jp>
-References: <20260424030345.1140665-1-aaron.ma@canonical.com>
- <0d1ef57c-7ab6-4ed1-bc11-323aeeb12eac@molgen.mpg.de>
- <CAJ6xRxUEcbadApMg0i7ngcqYMUacrGNvCrUZ96sqkW22TsC7iA@mail.gmail.com>
-Content-Language: en-US
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <CAJ6xRxUEcbadApMg0i7ngcqYMUacrGNvCrUZ96sqkW22TsC7iA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <ae85UEWf7dgJtmeS@gmail.com>
 
-Dear Aaron,
-
-
-Thank you for your reply.
-
-Am 28.04.26 um 09:53 schrieb Aaron Ma:
-> On Mon, Apr 27, 2026 at 6:13 PM Paul Menzel wrote:
-
->> Am 24.04.26 um 05:03 schrieb Aaron Ma via Intel-wired-lan:
->>> ice_resume() schedules an asynchronous PF reset and returns
->>> immediately. The reset runs later in ice_service_task(). If
->>> userspace tries to bring up the net device before the reset
->>> finishes, ice_open() fails with -EBUSY:
->>>
->>>     ice_resume()
->>>       ice_schedule_reset()          # sets ICE_PFR_REQ, returns
->>>     ...
->>>     ice_open()
->>>       ice_is_reset_in_progress()    # ICE_PFR_REQ still set, -EBUSY
->>>     ...
->>>     ice_service_task()
->>>       ice_do_reset()
->>>         ice_rebuild()               # clears ICE_PFR_REQ, too late
->>>
->>> Reproduced on E800 series NICs during suspend/resume with irdma
->>> enabled, where the aux device probe widens the race window.
->>
->> Please document, how you reproduced it, and also paste possible messages
->> by Linux or NetworkManager, so that people can easily search for the commit.
+On Mon, Apr 27, 2026 at 03:26:29AM -0700, Breno Leitao wrote:
+> On Sun, Apr 26, 2026 at 09:39:05AM +0100, Simon Horman wrote:
+> > From: 'Simon Horman' <horms@kernel.org>
+> > 
+> > This is an AI-generated review of your patch. The human sending this
+> > email has considered the AI review valid, or at least plausible.
+> > Full review at: https://sashiko.dev
+> > ---
+> > netconsole: propagate device name truncation in dev_name_store()
+> > 
+> > This commit rejects interface name writes that exceed the size of the
+> > destination buffer to avoid silently truncating names and binding to
+> > unintended devices.
+> > 
+> > > diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
+> > > index 4bef003d9df64..3914fb90f9afd 100644
+> > > --- a/drivers/net/netconsole.c
+> > > +++ b/drivers/net/netconsole.c
+> > > @@ -816,6 +816,9 @@ static ssize_t dev_name_store(struct config_item *item, const char *buf,
+> > >  {
+> > >  	struct netconsole_target *nt = to_target(item);
+> > >  
+> > > +	if (count >= IFNAMSIZ)
+> > > +		return -ENAMETOOLONG;
+> > > +
+> > 
+> > Does this check incorrectly reject valid maximum-length interface names when
+> > written with a trailing newline?
+> > 
+> > Standard userspace tools like echo append a trailing newline when writing to
+> > configfs attributes. If userspace writes a 15-character name, the count will
+> > be exactly 16 bytes.
+> > 
+> > Since IFNAMSIZ is 16, the condition count >= IFNAMSIZ evaluates to true,
+> > causing dev_name_store() to reject the valid input with -ENAMETOOLONG.
+> > 
+> > Prior to this patch, strscpy() safely truncated the trailing newline by
+> > copying the 15 characters and a NUL terminator.
 > 
-> The error message is "can't open net device while reset is in progress"
-> I can add it in v3 if you like.
-
-Yes, that’d be great.
-
->   > > Wait for the reset to complete before returning from ice_resume().
->>
->> Please mention the delay length in the commit message.
+> That is a valid issue, if someone is using a 16-byte ifname, it will fail, for
+> instance:
 > 
-> The timeout is 10 * HZ (10 seconds), matching the existing usage in
-> ice_devlink_info_get() for the same ice_wait_for_reset() call. In
-> practice the wait completes in ~300ms.
-
-I often wonder, where the delay values come from. Maybe mention, that 
-you copied it.
-
->>> Fixes: 769c500dcc1e ("ice: Add advanced power mgmt for WoL")
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: Aaron Ma <aaron.ma@canonical.com>
->>> ---
->>> v2: reword comment to clarify best-effort semantics (Kohei Enju)
->>>
->>>    drivers/net/ethernet/intel/ice/ice_main.c | 9 +++++++++
->>>    1 file changed, 9 insertions(+)
->>>
->>> diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
->>> index 5f92377d4dfc2..a81eb21ea87c1 100644
->>> --- a/drivers/net/ethernet/intel/ice/ice_main.c
->>> +++ b/drivers/net/ethernet/intel/ice/ice_main.c
->>> @@ -5635,6 +5635,15 @@ static int ice_resume(struct device *dev)
->>>        /* Restart the service task */
->>>        mod_timer(&pf->serv_tmr, round_jiffies(jiffies + pf->serv_tmr_period));
->>>
->>> +     /* Best-effort wait for the scheduled reset to finish so that the
->>> +      * device is operational before returning. Without this, userspace
->>> +      * (e.g. NetworkManager) may try to open the net device while the
->>> +      * asynchronous reset is still in progress, hitting -EBUSY.
->>> +      */
->>> +     ret = ice_wait_for_reset(pf, 10 * HZ);
->>
->> Why not pass a delay in micro/milliseconds?
+> echo eth0123456789012 (15 chars) writes 16 bytes including the trailing \n
 > 
-> ice_wait_for_reset() takes jiffies — that's the existing API.
-
-It’s recommended to use `msecs_to_jiffies()` to make it HZ invariant.
-
->>> +     if (ret)
->>> +             dev_err(dev, "Wait for reset failed during resume: %d\n", ret);
->>
->> Mention the delay?
+> With IFNAMSIZ=16, a valid 15-character interface name written via echo arrives
+> as 16 bytes (15 chars + \n), and the count >= IFNAMSIZ check rejects it — a
+> regression compared to the prior strscpy() + trim_newline() behavior, which
+> silently dropped the newline.
 > 
-> Good point. I'll include the timeout in the error message in v3.
+> I think a better approach would be:
+> 
+>   size_t len = count;
+> 
+>   if (len && buf[len - 1] == '\n')
+>       len--;
+>   if (len >= IFNAMSIZ)
+>       return -ENAMETOOLONG;
+> 
+> That keeps the length check consistent with what trim_newline() does to the
+> stored string.
+> 
+> I will send a v2.
 
-Awesome.
-
-[…]
-
-
-Thanks,
-
-Paul
+Thanks. The approach above looks good to me.
