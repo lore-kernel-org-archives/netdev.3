@@ -1,30 +1,30 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFA5C3090E2
-	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 20:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 630534A35
+	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 20:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777408766; cv=none; b=XTOvGteqHsfA/jElLksppBeqGQKOrrWpU+NfxfFmHYMbgAMzEKFy2DlrL61gzNLc8o4f3GnbOzKF7wJFbOq+dyZgI8D2mZFe6vbyJidB2PRaQjbyETZMW6DovOUTbtyU6xzH7Vd3N4EKiYe7WYmcuz4APUkDd02lUfBxkxNS7g8=
+	t=1777409637; cv=none; b=KrZBdX+PR8VTUAa1eUH9dBtn00m0ioAkeGOdOmgpkyWKEcd2TAlvTx7eL28P+csYgwOybTQ0cYXCNNNUpPOsWVI5zkzZV/ccPh+Z1AwJYIjXe1L1xAygF0by01p3P1rZ0W+yen31cJUEkf/rT11r1Lg/+tETlqNIx7sP6V1PHHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777408766; c=relaxed/simple;
-	bh=prmRY6/ckm5/oIfr0fuK/BDLwFlhbbWczIFYf2+dT7g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pvsqStcJsJm7HBqAAj6K+KgYareRpSf3aD21H3ZPuOK19SD8xe+SCf7C3lkipnaiTpo1TtjVuNtC0jU1ivGcxDp8ehZlljX1ANOe2fin6VSNq7X3PfjtcIS7lwMFF5t9+OSAbn4RfBBBinM9Sn6rs3AJQ2W9qq+L72SAZVU4y/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oQoM650a; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777409637; c=relaxed/simple;
+	bh=IMLCwLEATMEpfj5w0tTt9weavcjT5AffFw/8eOy/8nc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jzVTXB+PX+Xkre6To4tdGrH66nKXvxMQQdgM+up6cwhig14Gu40gl4Bf+nT1xzs3DbWJclZ51en6TNwDyeiqKqOvZuSRGRYGXFW/G4wjvdhB94/xa4oqXBaTTUp2bnBdAr19IlmtoCNyYjLqC4AUc5CQUjSsOK5xDt11MTVBRaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qohuYlnq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oQoM650a"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E776C2BCAF;
-	Tue, 28 Apr 2026 20:39:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qohuYlnq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9201CC2BCAF;
+	Tue, 28 Apr 2026 20:53:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777408766;
-	bh=prmRY6/ckm5/oIfr0fuK/BDLwFlhbbWczIFYf2+dT7g=;
+	s=k20201202; t=1777409637;
+	bh=IMLCwLEATMEpfj5w0tTt9weavcjT5AffFw/8eOy/8nc=;
 	h=From:To:Cc:Subject:Date:From;
-	b=oQoM650ahjojqrOOazOqEUgwFK5ddBYVMBhHdREuegM9Z8TGTZpCndxsiQ1eve1q9
-	 4vB88f0OKhapSkszaS3UTJdz+tCOi11k38PCt7FR3dSSM7UOLQdjy89zxkL5jCxTUx
-	 kzoUHYM3z4bi1cE3cUHaFKmpIWDcSi6ZAgPTrRUy6jqPhiSBUJllRFXOhXdMN3WWSa
-	 3BIdLDY2Niff5yoIIkmmGyUAd201QilVeUW0OHB2cSD1hryLxnWY224BfOcJCsgPmf
-	 km8L87cyv49VpsgG53FRrfk2QDLrZRfL+n2wc/nK5uQwdVWdfB0ie2SJ2KIS6UOJV1
-	 bwcy+7KSqkQvA==
+	b=qohuYlnqTQbeNpq/m6OxnIgqWwtoZtsoOdG/aqDHSgm0+iTVIO1n6YP+oSDfLXK7d
+	 p+AVCOpC4TkhA783j471UOaS9wswgYy08pCBTe54x/E24f1M7HfBYy43r7rLo31Hpa
+	 isHetW6LvcgsRyQ5XY0/UdSvxmrkNM2RP90E6OGKN8xQsHMpc2i9JItd6xZJ3bOuRo
+	 IjrQOoPy9xdUuMBR6ifIwypzNxrygGkhp1L3iIlAGuOaE0jXUS5DVeiBwQvPmW9odM
+	 I6Zfm9/EojOwivUCF7YTnW1S8TLyoE0/pIQj/5wztl2NeWibxdmmSs38t0N1yDWcWW
+	 zXiINcZxKr7QQ==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -32,12 +32,12 @@ Cc: netdev@vger.kernel.org,
 	pabeni@redhat.com,
 	andrew+netdev@lunn.ch,
 	horms@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>
-Subject: [PATCH net] MAINTAINERS: update the IPv4/IPv6 entry and add Ido Schimmel
-Date: Tue, 28 Apr 2026 13:39:24 -0700
-Message-ID: <20260428203924.1229169-1-kuba@kernel.org>
+	willemdebruijn.kernel@gmail.com,
+	daniel.zahka@gmail.com,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH net-next 0/3] net: psp: add more validation
+Date: Tue, 28 Apr 2026 13:53:49 -0700
+Message-ID: <20260428205352.1247325-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -47,110 +47,20 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The IPv4/IPv6 and routing code is not very well separated from
-the TCP/UDP code. Scope it down properly by providing a more
-accurate file list, instead of net/ipv4/ and net/ipv6/
+Address some AI code-scan issues with the PSP code.
+I don't think any of these are real bugs, but they may
+become bugs in the future. The two real bugs discovered
+were posted separately for net. AI reports 3 more which
+seem plain wrong (rx SPI "leak" on error etc.).
 
-Now that the entry is more accurately representing layer 3
-and routing merge in the nexthop entry into it.
+Jakub Kicinski (3):
+  psp: validate protocol before mutating skb in psp_dev_encapsulate()
+  psp: add a comment about a psp_dev add netlink notification
+  psp: validate IPv4 header fields in psp_dev_rcv()
 
-Add Ido Schimmel as a co-maintainer, Ido's git history speaks
-for itself.
+ net/psp/psp_main.c | 21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
- MAINTAINERS | 63 +++++++++++++++++++++++++++++++++++++++--------------
- 1 file changed, 47 insertions(+), 16 deletions(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 2fb1c75afd16..70663f4387dc 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -18672,19 +18672,59 @@ F:	net/xfrm/
- F:	tools/testing/selftests/net/ipsec.c
- 
- NETWORKING [IPv4/IPv6]
--M:	"David S. Miller" <davem@davemloft.net>
- M:	David Ahern <dsahern@kernel.org>
-+M:	Ido Schimmel <idosch@nvidia.com>
- L:	netdev@vger.kernel.org
- S:	Maintained
--T:	git git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git
--F:	arch/x86/net/*
--F:	include/linux/ip.h
--F:	include/linux/ipv6*
-+F:	Documentation/netlink/specs/rt-addr.yaml
-+F:	Documentation/netlink/specs/rt-neigh.yaml
-+F:	Documentation/netlink/specs/rt-route.yaml
-+F:	Documentation/netlink/specs/rt-rule.yaml
-+F:	include/linux/inetdevice.h
-+F:	include/linux/mroute*
-+F:	include/net/addrconf.h
-+F:	include/net/arp.h
- F:	include/net/fib*
-+F:	include/net/if_inet6.h
-+F:	include/net/inetpeer.h
- F:	include/net/ip*
-+F:	include/net/lwtunnel.h
-+F:	include/net/ndisc.h
-+F:	include/net/netns/nexthop.h
-+F:	include/net/nexthop.h
- F:	include/net/route.h
--F:	net/ipv4/
--F:	net/ipv6/
-+F:	include/uapi/linux/fib_rules.h
-+F:	include/uapi/linux/in_route.h
-+F:	include/uapi/linux/mroute*
-+F:	include/uapi/linux/nexthop.h
-+F:	net/core/fib*
-+F:	net/core/lwtunnel.c
-+F:	net/ipv4/arp.c
-+F:	net/ipv4/devinet.c
-+F:	net/ipv4/fib*
-+F:	net/ipv4/icmp.c
-+F:	net/ipv4/igmp.c
-+F:	net/ipv4/inet_fragment.c
-+F:	net/ipv4/inetpeer.c
-+F:	net/ipv4/ip*
-+F:	net/ipv4/metrics.c
-+F:	net/ipv4/netlink.c
-+F:	net/ipv4/nexthop.c
-+F:	net/ipv4/route.c
-+F:	net/ipv6/addr*
-+F:	net/ipv6/anycast.c
-+F:	net/ipv6/exthdrs.c
-+F:	net/ipv6/exthdrs_core.c
-+F:	net/ipv6/fib*
-+F:	net/ipv6/icmp.c
-+F:	net/ipv6/ip*
-+F:	net/ipv6/mcast*
-+F:	net/ipv6/ndisc.c
-+F:	net/ipv6/output_core.c
-+F:	net/ipv6/reassembly.c
-+F:	net/ipv6/route.c
-+F:	tools/testing/selftests/net/fib*
-+F:	tools/testing/selftests/net/forwarding/
- 
- NETWORKING [LABELED] (NetLabel, Labeled IPsec, SECMARK)
- M:	Paul Moore <paul@paul-moore.com>
-@@ -18819,15 +18859,6 @@ F:	Documentation/networking/net_failover.rst
- F:	drivers/net/net_failover.c
- F:	include/net/net_failover.h
- 
--NEXTHOP
--M:	David Ahern <dsahern@kernel.org>
--L:	netdev@vger.kernel.org
--S:	Maintained
--F:	include/net/netns/nexthop.h
--F:	include/net/nexthop.h
--F:	include/uapi/linux/nexthop.h
--F:	net/ipv4/nexthop.c
--
- NFC SUBSYSTEM
- L:	netdev@vger.kernel.org
- S:	Orphan
 -- 
 2.54.0
 
