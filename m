@@ -1,47 +1,74 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C849938239B;
-	Tue, 28 Apr 2026 22:27:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3957D37B030
+	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 22:31:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777415243; cv=none; b=EB3zISzd435WMUK/vvIw3iJKHtNxgxdZmjViihCieyTPZrgMpLhB5pOobmU6MFudnrqs5Yrr6yoAroGy2N2hPbth7+2PbiDz6GgOy3mPmdpfiGIp9740kSxkfyrbrGDnq7TQMPXbqjRDUFrr7F+wGUTrUxNKgamRRwwrNPThEtk=
+	t=1777415479; cv=none; b=AkxNV8I7xg2hyZnohjHS9qPEfgnrC1Iv4nA5GgkA0r8OkEEkkJ8UI2BnhQA8kaw8B7ielKt0SJPNAIuwJZgYBybSnlyF2/T2UF0N1JU/8IrC8IWLZG13IqjYQXeEfSghsub+7lyvrUHVm0slI0dortrAuqhQJU96JZIr20Yv1Pc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777415243; c=relaxed/simple;
-	bh=OT182rWBpEf7KODSzPQcLkzia7cbfVmufjFSVAQBTgA=;
-	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=rVCBjhzuodB9CD5W2zyDMJHrbb2gR9IQrHn1Esbtoj5bw02Lbq7aypuKH2xKK67t4S+wEHdWHS+sTow08o3kaF3G2XH3VtGR3qePP/NgZ9n0eZWqz7j8WC9VEnbezTBN1Vh2Qao0c5n67ZnWtBJmQsdCMp3QsGMyuHNbbVYwLUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WHgn9VaV; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777415479; c=relaxed/simple;
+	bh=Afdookp9zil2VtHeQbBPiJ6JrqKRSbgNe+scVywFeJQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uvfrHmf9fLOd2InPqXH+3JbiJSC/JCGuw0cyh/dd+qu5REsqnIEf0daRMgIlrJWPIbmy5EfvpabFaFt/gJ74e/kTnR3tDbqk1oHkiZ4NkhbLoe5BNOC1Y+fD9t9yYt1hmuY/QcZhN0ftP630gnAFEkVlqdYSG2BIubBDUh9uAyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rZNjp57y; arc=none smtp.client-ip=209.85.219.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WHgn9VaV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D69AC2BCAF;
-	Tue, 28 Apr 2026 22:27:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777415242;
-	bh=OT182rWBpEf7KODSzPQcLkzia7cbfVmufjFSVAQBTgA=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=WHgn9VaV5nTy/iR6IaHGxYIwd76SfTPgb34fKuhbJxenM95xOV5Sor4Xeju1QoyWq
-	 UAU1+TA2bBZ6l+yzKac4+D+asry8ZQsRJBc9P4ppmlNYmHf7K0JTQrqbnkDKs/NDlk
-	 30srbyUXC4N6oVS2A7kGzIztz1ptkCHo9anxe04FF5OvVNH68U3btdZf6FIu1YDzqu
-	 lJxX5Ut/gE10C5JqsAVPVRo1B76Vfj1zjq0OMR23FRWhWqTFk3xUgK5O95Mu9NuzB/
-	 OkeojcQry7HAz5rdr2b1ZyfEhTH+O0XjuNpdTIjXoxFt6HFhWbJN4Gt2zpJMkr9o6U
-	 i2Gfti+c0JOeQ==
-From: Allison Henderson <achender@kernel.org>
-To: netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	kuba@kernel.org,
-	horms@kernel.org,
-	linux-rdma@vger.kernel.org,
-	achender@kernel.org,
-	linux-kselftest@vger.kernel.org,
-	shuah@kernel.org
-Subject: [PATCH net-next v2 6/7] selftests: rds: Collect pcaps on timeout
-Date: Tue, 28 Apr 2026 15:27:15 -0700
-Message-Id: <20260428222716.2960871-7-achender@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260428222716.2960871-1-achender@kernel.org>
-References: <20260428222716.2960871-1-achender@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rZNjp57y"
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-8acb3dab8dfso74717136d6.1
+        for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 15:31:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777415477; x=1778020277; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=YY6FTulJBSPvlfGVmGfJuioC6VTkKeDBKn6rrD6zw1I=;
+        b=rZNjp57yscktkgFUy8xNu/U7g1meWA8gFU8DzFfaVrNEh/UFhCeaCV8AeP/8O4DT2A
+         HK61ZAij8FWUGANsd2LGZNd/sOzH5dGmlP+QxkwDzFCsvkzGpj3pUTrckAZis4ZBLVD/
+         e7jjwctama7txqzIU/eKIwr+xGSxR7VDbdGVap25H64Gnh/v1p0OndP0yjp3B7EwN+8g
+         WTf6+U7vWD65Er5ps3pBzA8aLcgqr+FZdpTl+abemAjcoMAASNSKjk9Fjyi/R1yYR8Ii
+         bSbI5IJU1eXz9T3p8JjYf65jSNTK/l5KCjZ0Aw/hXjVs3WpSiugkzQyabNEbd7IE7a4o
+         zeUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777415477; x=1778020277;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YY6FTulJBSPvlfGVmGfJuioC6VTkKeDBKn6rrD6zw1I=;
+        b=kI8dL1JjXddBImGRC6Rh/yXWKDDWcI1tvQ4vj9ggGuRjYVnmlFYgV1dKWCQZodpcH4
+         3g0pVD8j/1JBueMnHdxz+f0aqgFFmZDyJdv3vWEP5FmUYvgM3h/YvWgtaxRsj3/GQYd8
+         m+M0hf5v/EKOXyajeAKdi+0/xPLLaxegH96wdC+WV08ZXLyxDAAo5ZpxomD6Uvs4E1oM
+         rNGGMLAXOLMP+cecRpMOvFTzvZ0KN92irmxNs/OKSsB4F3F2h/LznTMIQ/QWlgszJLfu
+         S4fOBdIEfvhFP2y352L6zVqIU7GZbjLIdgsP9+LkOUQ6hwwyt5FedNv0+FffTsnHkFx5
+         CGbA==
+X-Gm-Message-State: AOJu0Yz0J2Yi71rYAg1WJcI8ye2MPytIifVbiXziZFb1qkK+jvI0vXUy
+	nGApO/G2ztoyto2iGPSr8gbriUBHLQVZ46cPlh3cSr3rofzLC7PKcLY7FFc0Ag==
+X-Gm-Gg: AeBDievbz6hMKgpILreAjMJOghINT2ByP85TJqCQJG26BNflqQt7WBJFD01lH5MFN29
+	7XKcWoTfkdaznH8j2fI1Va5+mDDpNG7POnJuwaob38UK3IGtseR7jxJEbUVqy1lI9AsO1e5P3uC
+	Dd+l8uBAJ8MowRhunCC8NgGP2V8k/RzIJd3N77/o4bKawz3aytQFJYLheVMSN/hfatb4/ZAcW0L
+	uxpVSkxtZI7uw+5idx83E4//ILX9AqXfq1CkjJSxuhKZTCkK087rMx/3yrQGxHR4OV6l0i0HcpF
+	PSCHzF71T+sjA9NpC24eMovAqnflXiCiXy6jp2wAVG+rN6LsqOB8QL4MXNV3mmiEydORmfW3d8V
+	Da4Rm3gNCpwvLeC2adRkVP1sJ4BUtQxYh/z+4JbcAtJZQw/wpmRhqz2S8KrHvRoN5MjG6+rEdbu
+	USSy6Gm+ua5JtH/2nr1/jB4w0NLSb09KpMGG2HrueN+ffyUoKoAwmw7LaZSaRFETdiF71M/Lj5G
+	aWxq3rJafOC9fGTy6xSTVmJHnAl2fu9qNpm
+X-Received: by 2002:a05:6214:8119:b0:89f:97cc:b8d2 with SMTP id 6a1803df08f44-8b3edd30efcmr21727386d6.17.1777415476801;
+        Tue, 28 Apr 2026 15:31:16 -0700 (PDT)
+Received: from ryzen ([2601:644:8000:5b5d::8bd])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b3ef81f156sm2874916d6.37.2026.04.28.15.31.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Apr 2026 15:31:16 -0700 (PDT)
+From: Rosen Penev <rosenp@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH net-next] net: gianfar: use alloc_ethdev_mqs
+Date: Tue, 28 Apr 2026 15:30:58 -0700
+Message-ID: <20260428223058.113013-1-rosenp@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,59 +77,40 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The timeout signal handler for the rds selftests currently just
-exits when the time limit is exceeded, and forgets to collect the
-network dumps.  Which can be valueable for discerning why the test
-timed out in the first place.  Fix this by hoisting the network
-dump collection into a helper function, and call it from the
-signal handler before exiting
+From looking at git history, mqs was introduced after mq and after this
+code was written. Having said that, mqs can be used as there is already
+an RX queue variable in place. Not only that, mqs already sets the
+num_xx_queues members. No need to open code this.
 
-Signed-off-by: Allison Henderson <achender@kernel.org>
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
 ---
- tools/testing/selftests/net/rds/test.py | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/freescale/gianfar.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/net/rds/test.py b/tools/testing/selftests/net/rds/test.py
-index d48533505f0f..1c7aebddeb61 100755
---- a/tools/testing/selftests/net/rds/test.py
-+++ b/tools/testing/selftests/net/rds/test.py
-@@ -70,11 +70,21 @@ def netns_socket(netns, *sock_args):
-     u1.close()
-     return socket.fromfd(fds[0], *sock_args)
+diff --git a/drivers/net/ethernet/freescale/gianfar.c b/drivers/net/ethernet/freescale/gianfar.c
+index 3271de5844f8..7b47c7c49c08 100644
+--- a/drivers/net/ethernet/freescale/gianfar.c
++++ b/drivers/net/ethernet/freescale/gianfar.c
+@@ -669,7 +669,7 @@ static int gfar_of_init(struct platform_device *ofdev, struct net_device **pdev)
+ 		return -EINVAL;
+ 	}
  
-+def collect_pcaps():
-+    """Stop tcpdump processes and move their pcaps into the log dir."""
-+    print("Stopping network packet captures")
-+    for proc, tmp_path, dest_path, fno in tcpdump_procs:
-+        proc.terminate()
-+        proc.wait()
-+        os.close(fno)
-+        shutil.move(tmp_path, dest_path)
-+
- def signal_handler(_sig, _frame):
-     """
-     Test timed out signal handler
-     """
-     print('Test timed out')
-+    collect_pcaps()
-     sys.exit(1)
+-	*pdev = alloc_etherdev_mq(sizeof(*priv), num_tx_qs);
++	*pdev = alloc_etherdev_mqs(sizeof(*priv), num_tx_qs, num_rx_qs);
+ 	dev = *pdev;
+ 	if (NULL == dev)
+ 		return -ENOMEM;
+@@ -679,10 +679,6 @@ static int gfar_of_init(struct platform_device *ofdev, struct net_device **pdev)
  
- #Parse out command line arguments.  We take an optional
-@@ -251,13 +261,7 @@ for s in sockets:
-                 pass
+ 	priv->mode = mode;
  
- print(f"getsockopt(): {nr_success}/{nr_error}")
+-	priv->num_tx_queues = num_tx_qs;
+-	netif_set_real_num_rx_queues(dev, num_rx_qs);
+-	priv->num_rx_queues = num_rx_qs;
 -
--print("Stopping network packet captures")
--for p, pcap_tmp, pcap, fd in tcpdump_procs:
--    p.terminate()
--    p.wait()
--    os.close(fd)
--    shutil.move(pcap_tmp, pcap)
-+collect_pcaps()
- 
- # We're done sending and receiving stuff, now let's check if what
- # we received is what we sent.
+ 	err = gfar_alloc_tx_queues(priv);
+ 	if (err)
+ 		goto tx_alloc_failed;
 -- 
-2.25.1
+2.54.0
 
