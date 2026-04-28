@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 858823D3CE2;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDFA33D75A0;
 	Tue, 28 Apr 2026 07:22:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777360936; cv=none; b=AbAaM+SQIDPMezL08ckekcxesXPIvV3pz9839iPNWLRMLoLX3Ojwk6XseRM8xe6XPmtBX6uIIcjZxF3MNa1ivUH40L0CR2KX7WYUXd5eqodqrlNnXRq1FKqNOHgllKRN0ThHJeKtloADLuLTv3IEfYyllYgmTgofMKo1L26y3n8=
+	t=1777360936; cv=none; b=s+l907JrHcAuRPpWA8+BDMwTi/QwD6sUJD47rIBWzp6+IPnV7eAJCoUoYh7X7Jqce09Hk1zmyNoPau6H32YP2EgXcxpOAxAtenFDtK5X+DIKQGpkVOWHR5MtIsF6Akie2LtAmETf78Nn/8I1yixp6eWjPz8jwY1UrsNy9UafbDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777360936; c=relaxed/simple;
-	bh=r+B/thzkNXyzFYtme/OIZkWSrnFaUmpj2YxmWtsupAw=;
+	bh=gKY+m2RtVcXm2VZoNIYMq/+KxJ4h9LPXmk9s/YJksto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RibM9KbayFHwWO1sSgjdVGCaRoWfCsecdHxcZLs+nlPSA/IhyQA83BKClVE6csU8qOp4VwkGmcOd1gOmJ143CnUNxJ7KGt0Ly4encZ6TKe5o1SeO6vPtxezQTy5bAAfmYfGbu+Sc4GMwfwhaMFXZGxcCzNjWGdAmxkPn4KXwR3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Lm+ync1M; arc=none smtp.client-ip=198.175.65.14
+	 MIME-Version; b=UFeYIYcteGXW2bt3apvPNBOtzSE8ZDNAc0wDvpUkysPWlTnq5kxyFcLWmFVfkykuJRuagb9/GpA/w/9UEMfD0Clk5s50UZXEGYMWeX+1nsMtviKzOd1wqzzsQfvI1XQp9B3UBMVdGzSFSCG/Tcq6MAyw30YIcQm2ld86Pcm9i7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OB4sr+/V; arc=none smtp.client-ip=198.175.65.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Lm+ync1M"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OB4sr+/V"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777360934; x=1808896934;
+  t=1777360935; x=1808896935;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=r+B/thzkNXyzFYtme/OIZkWSrnFaUmpj2YxmWtsupAw=;
-  b=Lm+ync1MnYEkg+wP20fSWaQnmN7R59zQBqvMwdPvK5moC1DlP9UA4zHT
-   MWVw6F0gpgua8McoK5SVL35YSqdLk7RuiZPl2t2t3XJb8YWtWSWnpoq1D
-   7FnmeO8VI3rOs+Di/Gay6O9HjbOdsdG1ctqahQ/i9L7ffF2D67EZ3dTYf
-   T94uMPn1QUYNNpQP9uzOwjfRgApB6/yopAKkaIzk6EEUSgFt5Rq9Ek82C
-   ADaBnjnf6ThXpUupSVEVScZQFCwqWHinsE386uKL7Wc4BaBqXzIVZ6pjh
-   jYfCpYWW4dLJKRjv0ahHzwgpwTyap1LjB65GqhIMDj4BwNt6Wm376+a0A
+  bh=gKY+m2RtVcXm2VZoNIYMq/+KxJ4h9LPXmk9s/YJksto=;
+  b=OB4sr+/VUoSw1evdNI3cuzZBD8g0zONZE3l6eT7Xl4EO8eTTtCrLkP/T
+   3CzeQduK0toYPY32wAn1JuQymx4As+zoPjM96mnnWp4Gd9g1M6Xb00Nzl
+   hJV5p3nU2AByLSGDExsTLX8qsAyDaoBqHMpkcJsLfRUadaRO0AFMzhcC8
+   xIfK692m/s/dBdDpkz0yrJ8VKxxYq3aPipmwZ/Qq17LWDEHj9LrPIvzbe
+   7ceZkDBI4RR41PlAcp8cDEvwMHqf8iZRK73ywHoWPFDGTP1unM7p13Q7K
+   YSV26lEN1kd2LzKnmrC9Q6ZCCxt0y3GC1oNnyZy5yBjZLWYHZXVlXN3Xy
    w==;
-X-CSE-ConnectionGUID: 5AY4KnlsQ8agcf+cj2t+BQ==
-X-CSE-MsgGUID: QRpS/2vrTRS+WRCEhW+cBw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="82126030"
+X-CSE-ConnectionGUID: WAoq8xvJTm6DCtu64I03Kw==
+X-CSE-MsgGUID: C5GQ+9CRSmO10EW3XneP3g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="89720822"
 X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
-   d="scan'208";a="82126030"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 00:22:13 -0700
-X-CSE-ConnectionGUID: hhuu/p7pSZWSOFlBNahEBA==
-X-CSE-MsgGUID: RIXWXRZXTAeh+ec8t1+RkA==
+   d="scan'208";a="89720822"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 00:22:14 -0700
+X-CSE-ConnectionGUID: 9IQem98NRXW+GtkVuji8mA==
+X-CSE-MsgGUID: axNM1riOQeq/XyYYzokHhg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
-   d="scan'208";a="229308638"
+   d="scan'208";a="238206403"
 Received: from black.igk.intel.com ([10.91.253.5])
-  by fmviesa006.fm.intel.com with ESMTP; 28 Apr 2026 00:22:10 -0700
+  by orviesa004.jf.intel.com with ESMTP; 28 Apr 2026 00:22:11 -0700
 Received: by black.igk.intel.com (Postfix, from userid 1001)
-	id 05A2D9B; Tue, 28 Apr 2026 09:22:10 +0200 (CEST)
+	id F248660; Tue, 28 Apr 2026 09:22:09 +0200 (CEST)
 From: Mika Westerberg <mika.westerberg@linux.intel.com>
 To: linux-usb@vger.kernel.org
 Cc: Yehezkel Bernat <YehezkelShB@gmail.com>,
@@ -58,9 +58,9 @@ Cc: Yehezkel Bernat <YehezkelShB@gmail.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	netdev@vger.kernel.org,
 	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 3/9] thunderbolt: Allow service drivers to specify their own properties
-Date: Tue, 28 Apr 2026 09:22:03 +0200
-Message-ID: <20260428072209.3084930-4-mika.westerberg@linux.intel.com>
+Subject: [PATCH 1/9] thunderbolt: Add tb_property_merge_dir()
+Date: Tue, 28 Apr 2026 09:22:01 +0200
+Message-ID: <20260428072209.3084930-2-mika.westerberg@linux.intel.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260428072209.3084930-1-mika.westerberg@linux.intel.com>
 References: <20260428072209.3084930-1-mika.westerberg@linux.intel.com>
@@ -72,228 +72,226 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The XDomain properties can be useful for service drivers, for example to
-implement a registry for the services they expose. So far there has been
-no need for service drivers to specify these but with the USB4STREAM
-driver that we are going to use them.
-
-This adds remote and local side properties that the service drivers have
-access to. Remote side is read-only but the local side can be changed by
-a service driver. Also provide a mechanism to notify the remote side
-that there are changes.
+This allows merging one XDomain property directory into another. We are
+going to use this in the subsequent patch.
 
 Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 ---
- drivers/thunderbolt/xdomain.c | 95 ++++++++++++++++++++++++++++++-----
- include/linux/thunderbolt.h   | 12 +++++
- 2 files changed, 94 insertions(+), 13 deletions(-)
+ drivers/thunderbolt/property.c | 154 ++++++++++++++++++++++++---------
+ include/linux/thunderbolt.h    |   3 +
+ 2 files changed, 114 insertions(+), 43 deletions(-)
 
-diff --git a/drivers/thunderbolt/xdomain.c b/drivers/thunderbolt/xdomain.c
-index 6e83f93eee83..781d88d06b93 100644
---- a/drivers/thunderbolt/xdomain.c
-+++ b/drivers/thunderbolt/xdomain.c
-@@ -640,6 +640,32 @@ void tb_unregister_protocol_handler(struct tb_protocol_handler *handler)
- }
- EXPORT_SYMBOL_GPL(tb_unregister_protocol_handler);
+diff --git a/drivers/thunderbolt/property.c b/drivers/thunderbolt/property.c
+index 50cbfc92fe65..6b9666b61181 100644
+--- a/drivers/thunderbolt/property.c
++++ b/drivers/thunderbolt/property.c
+@@ -38,6 +38,7 @@ struct tb_property_dir_entry {
+ static struct tb_property_dir *__tb_property_parse_dir(const u32 *block,
+ 	size_t block_len, unsigned int dir_offset, size_t dir_len,
+ 	bool is_root);
++static struct tb_property *tb_property_copy(const struct tb_property *property);
  
-+static int update_service_properties(struct device *dev, void *data)
-+{
-+	struct tb_property_dir *root = data;
-+	struct tb_service *svc;
-+	struct tb_property *p;
-+
-+	svc = tb_to_service(dev);
-+	if (!svc)
-+		return 0;
-+
-+	guard(mutex)(&svc->lock);
-+
-+	/*
-+	 * Replace the static service properties with the dynamic one.
-+	 * Typically this is the same but service drivers can add their
-+	 * own dynamic properties here too.
-+	 */
-+	p = tb_property_find(root, svc->key, TB_PROPERTY_TYPE_DIRECTORY);
-+	if (!p)
-+		return 0;
-+	if (svc->local_properties)
-+		return tb_property_merge_dir(p->value.dir,
-+					     svc->local_properties, false);
-+	return 0;
-+}
-+
- static void update_property_block(struct tb_xdomain *xd)
+ static inline void parse_dwdata(void *dst, const void *src, size_t dwords)
  {
- 	mutex_lock(&xdomain_lock);
-@@ -664,6 +690,9 @@ static void update_property_block(struct tb_xdomain *xd)
- 		tb_property_add_text(dir, "deviceid", utsname()->nodename);
- 		tb_property_add_immediate(dir, "maxhopid", xd->local_max_hopid);
- 
-+		/* Add service specific dynamic properties */
-+		device_for_each_child(&xd->dev, dir, update_service_properties);
-+
- 		ret = tb_property_format_dir(dir, NULL, 0);
- 		if (ret < 0) {
- 			dev_warn(&xd->dev, "local property block creation failed\n");
-@@ -936,6 +965,40 @@ void tb_unregister_service_driver(struct tb_service_driver *drv)
+@@ -507,17 +508,9 @@ ssize_t tb_property_format_dir(const struct tb_property_dir *dir, u32 *block,
+ 	return ret < 0 ? ret : 0;
  }
- EXPORT_SYMBOL_GPL(tb_unregister_service_driver);
  
-+static int update_xdomain(struct device *dev, void *data)
-+{
-+	struct tb_xdomain *xd;
-+
-+	xd = tb_to_xdomain(dev);
-+	if (xd) {
-+		queue_delayed_work(xd->tb->wq, &xd->properties_changed_work,
-+				   msecs_to_jiffies(50));
+-/**
+- * tb_property_copy_dir() - Take a deep copy of directory
+- * @dir: Directory to copy
+- *
+- * The resulting directory needs to be released by calling tb_property_free_dir().
+- *
+- * Return: Pointer to &struct tb_property_dir, %NULL in case of failure.
+- */
+-struct tb_property_dir *tb_property_copy_dir(const struct tb_property_dir *dir)
++static struct tb_property_dir *copy_dir(const struct tb_property_dir *dir)
+ {
+-	struct tb_property *property, *p = NULL;
++	struct tb_property *property, *p;
+ 	struct tb_property_dir *d;
+ 
+ 	if (!dir)
+@@ -528,56 +521,131 @@ struct tb_property_dir *tb_property_copy_dir(const struct tb_property_dir *dir)
+ 		return NULL;
+ 
+ 	list_for_each_entry(property, &dir->properties, list) {
+-		struct tb_property *p;
+-
+-		p = tb_property_alloc(property->key, property->type);
++		p = tb_property_copy(property);
+ 		if (!p)
+ 			goto err_free;
++		list_add_tail(&p->list, &d->properties);
 +	}
-+
-+	return 0;
+ 
+-		p->length = property->length;
++	return d;
+ 
+-		switch (property->type) {
+-		case TB_PROPERTY_TYPE_DIRECTORY:
+-			p->value.dir = tb_property_copy_dir(property->value.dir);
+-			if (!p->value.dir)
+-				goto err_free;
+-			break;
++err_free:
++	tb_property_free_dir(d);
++	return NULL;
 +}
+ 
+-		case TB_PROPERTY_TYPE_DATA:
+-			p->value.data = kmemdup(property->value.data,
+-						property->length * 4,
+-						GFP_KERNEL);
+-			if (!p->value.data)
+-				goto err_free;
+-			break;
++static struct tb_property *tb_property_copy(const struct tb_property *property)
++{
++	struct tb_property *p;
+ 
+-		case TB_PROPERTY_TYPE_TEXT:
+-			p->value.text = kzalloc(p->length * 4, GFP_KERNEL);
+-			if (!p->value.text)
+-				goto err_free;
+-			strcpy(p->value.text, property->value.text);
+-			break;
++	p = tb_property_alloc(property->key, property->type);
++	if (!p)
++		return NULL;
+ 
+-		case TB_PROPERTY_TYPE_VALUE:
+-			p->value.immediate = property->value.immediate;
+-			break;
++	p->length = property->length;
++	switch (property->type) {
++	case TB_PROPERTY_TYPE_DIRECTORY:
++		p->value.dir = copy_dir(property->value.dir);
++		if (!p->value.dir)
++			goto err_free;
++		break;
+ 
+-		default:
+-			break;
+-		}
++	case TB_PROPERTY_TYPE_DATA:
++		p->value.data = kmemdup(property->value.data,
++					property->length * 4,
++					GFP_KERNEL);
++		if (!p->value.data)
++			goto err_free;
++		break;
+ 
+-		list_add_tail(&p->list, &d->properties);
++	case TB_PROPERTY_TYPE_TEXT:
++		p->value.text = kzalloc(p->length * 4, GFP_KERNEL);
++		if (!p->value.text)
++			goto err_free;
++		strcpy(p->value.text, property->value.text);
++		break;
++
++	case TB_PROPERTY_TYPE_VALUE:
++		p->value.immediate = property->value.immediate;
++		break;
++
++	default:
++		break;
+ 	}
+ 
+-	return d;
++	return p;
+ 
+ err_free:
+ 	kfree(p);
+-	tb_property_free_dir(d);
+-
+ 	return NULL;
+ }
+ 
++/**
++ * tb_property_copy_dir() - Take a deep copy of directory
++ * @dir: Directory to copy
++ *
++ * The resulting directory needs to be released by calling tb_property_free_dir().
++ *
++ * Return: Pointer to &struct tb_property_dir, %NULL in case of failure.
++ */
++struct tb_property_dir *tb_property_copy_dir(const struct tb_property_dir *dir)
++{
++	return copy_dir(dir);
++}
++EXPORT_SYMBOL_GPL(tb_property_copy_dir);
 +
 +/**
-+ * tb_service_properties_changed() - Notify the other host about changes
-+ * @svc: Service whose properties changed
++ * tb_property_merge_dir() - Merges directory into parent
++ * @parent: Directory to merge @dir
++ * @dir: Directory that is merged
++ * @replace: Replace existing entries
 + *
-+ * Notifies the other host that service properties may have been
-+ * changed. This should be called whenever @svc->local_properties is
-+ * updated.
++ * This will merge @dir into @parent. Both must have same UUID. The
++ * properties in @dir will overwrite overlapping properties in @parent
++ * if @replace is %true. Contents of @dir is copied (so if it is not
++ * needed afterwards it needs to relesed by calling tb_property_free_dir()).
 + */
-+void tb_service_properties_changed(struct tb_service *svc)
++int tb_property_merge_dir(struct tb_property_dir *parent,
++			  const struct tb_property_dir *dir,
++			  bool replace)
 +{
-+	struct tb_xdomain *xd = tb_service_parent(svc);
++	const struct tb_property *property;
 +
-+	if (xd->is_unplugged)
-+		return;
++	if (WARN_ON(parent == dir))
++		return -EINVAL;
 +
-+	scoped_guard(mutex, &xdomain_lock)
-+		xdomain_property_block_gen++;
-+	update_xdomain(&xd->dev, NULL);
-+}
-+EXPORT_SYMBOL_GPL(tb_service_properties_changed);
++	if (!uuid_equal(parent->uuid, dir->uuid))
++		return -EINVAL;
 +
- static ssize_t key_show(struct device *dev, struct device_attribute *attr,
- 			char *buf)
- {
-@@ -1035,6 +1098,7 @@ static void tb_service_release(struct device *dev)
- 	struct tb_service *svc = container_of(dev, struct tb_service, dev);
- 	struct tb_xdomain *xd = tb_service_parent(svc);
- 
-+	tb_property_free_dir(svc->remote_properties);
- 	ida_free(&xd->service_ids, svc->id);
- 	kfree(svc->key);
- 	kfree(svc);
-@@ -1049,6 +1113,16 @@ const struct device_type tb_service_type = {
- };
- EXPORT_SYMBOL_GPL(tb_service_type);
- 
-+static void update_service(struct tb_service *svc, struct tb_property *property)
-+{
-+	struct tb_property_dir *dir = property->value.dir;
++	list_for_each_entry(property, &dir->properties, list) {
++		struct tb_property *p, *tmp;
 +
-+	guard(mutex)(&svc->lock);
-+	tb_property_free_dir(svc->remote_properties);
-+	svc->remote_properties = tb_property_copy_dir(dir);
-+	kobject_uevent(&svc->dev.kobj, KOBJ_CHANGE);
-+}
++		tmp = tb_property_copy(property);
++		if (!tmp)
++			return -ENOMEM;
 +
- static void __unregister_service(struct device *dev)
- {
- 	struct tb_service *svc = tb_to_service(dev);
-@@ -1109,6 +1183,12 @@ static int populate_service(struct tb_service *svc,
- 	if (!svc->key)
- 		return -ENOMEM;
- 
-+	svc->remote_properties = tb_property_copy_dir(dir);
-+	if (!svc->remote_properties) {
-+		kfree(svc->key);
-+		return -ENOMEM;
++		p = tb_property_find(parent, property->key, property->type);
++		if (p) {
++			if (replace) {
++				/*
++				 * Found existing property in parent so
++				 * replace with the new one.
++				 */
++				list_replace(&p->list, &tmp->list);
++				tb_property_free(p);
++			} else {
++				tb_property_free(tmp);
++				continue;
++			}
++		} else {
++			list_add_tail(&tmp->list, &parent->properties);
++		}
 +	}
 +
- 	return 0;
- }
- 
-@@ -1133,6 +1213,7 @@ static void enumerate_services(struct tb_xdomain *xd)
- 		/* If the service exists already we are fine */
- 		dev = device_find_child(&xd->dev, p, find_service);
- 		if (dev) {
-+			update_service(tb_to_service(dev), p);
- 			put_device(dev);
- 			continue;
- 		}
-@@ -1156,6 +1237,7 @@ static void enumerate_services(struct tb_xdomain *xd)
- 		svc->dev.bus = &tb_bus_type;
- 		svc->dev.type = &tb_service_type;
- 		svc->dev.parent = get_device(&xd->dev);
-+		mutex_init(&svc->lock);
- 		dev_set_name(&svc->dev, "%s.%d", dev_name(&xd->dev), svc->id);
- 
- 		tb_service_debugfs_init(svc);
-@@ -2549,19 +2631,6 @@ bool tb_xdomain_handle_request(struct tb *tb, enum tb_cfg_pkg_type type,
- 	return ret > 0;
- }
- 
--static int update_xdomain(struct device *dev, void *data)
--{
--	struct tb_xdomain *xd;
--
--	xd = tb_to_xdomain(dev);
--	if (xd) {
--		queue_delayed_work(xd->tb->wq, &xd->properties_changed_work,
--				   msecs_to_jiffies(50));
--	}
--
--	return 0;
--}
--
- static void update_all_xdomains(void)
- {
- 	bus_for_each_dev(&tb_bus_type, NULL, NULL, update_xdomain);
-diff --git a/include/linux/thunderbolt.h b/include/linux/thunderbolt.h
-index e98d569779f9..f60e3a1aecae 100644
---- a/include/linux/thunderbolt.h
-+++ b/include/linux/thunderbolt.h
-@@ -397,6 +397,10 @@ void tb_unregister_protocol_handler(struct tb_protocol_handler *handler);
-  * @prtcvers: Protocol version from the properties directory
-  * @prtcrevs: Protocol software revision from the properties directory
-  * @prtcstns: Protocol settings mask from the properties directory
-+ * @lock: Protects this structure
-+ * @local_properties: Properties owned by the service driver
-+ * @remote_properties: Properties read from the remote service. These
-+ *		       are read-only.
-  * @debugfs_dir: Pointer to the service debugfs directory. Always created
-  *		 when debugfs is enabled. Can be used by service drivers to
-  *		 add their own entries under the service.
-@@ -404,6 +408,9 @@ void tb_unregister_protocol_handler(struct tb_protocol_handler *handler);
-  * Each domain exposes set of services it supports as collection of
-  * properties. For each service there will be one corresponding
-  * &struct tb_service. Service drivers are bound to these.
-+ *
-+ * Service drivers can add their own dynamic properties to
-+ * @local_properties but whenever they do so @lock must be held.
-  */
- struct tb_service {
- 	struct device dev;
-@@ -413,6 +420,9 @@ struct tb_service {
- 	u32 prtcvers;
- 	u32 prtcrevs;
- 	u32 prtcstns;
-+	struct mutex lock;
-+	struct tb_property_dir *local_properties;
-+	struct tb_property_dir *remote_properties;
- 	struct dentry *debugfs_dir;
- };
- 
-@@ -481,6 +491,8 @@ static inline struct tb_xdomain *tb_service_parent(struct tb_service *svc)
- 	return tb_to_xdomain(svc->dev.parent);
- }
- 
-+void tb_service_properties_changed(struct tb_service *svc);
++	return 0;
++}
++EXPORT_SYMBOL_GPL(tb_property_merge_dir);
 +
  /**
-  * struct tb_nhi - thunderbolt native host interface
-  * @lock: Must be held during ring creation/destruction. Is acquired by
+  * tb_property_add_immediate() - Add immediate property to directory
+  * @parent: Directory to add the property
+diff --git a/include/linux/thunderbolt.h b/include/linux/thunderbolt.h
+index bbdbbc84c999..e98d569779f9 100644
+--- a/include/linux/thunderbolt.h
++++ b/include/linux/thunderbolt.h
+@@ -153,6 +153,9 @@ struct tb_property_dir *tb_property_parse_dir(const u32 *block,
+ ssize_t tb_property_format_dir(const struct tb_property_dir *dir, u32 *block,
+ 			       size_t block_len);
+ struct tb_property_dir *tb_property_copy_dir(const struct tb_property_dir *dir);
++int tb_property_merge_dir(struct tb_property_dir *parent,
++			  const struct tb_property_dir *dir,
++			  bool replace);
+ struct tb_property_dir *tb_property_create_dir(const uuid_t *uuid);
+ void tb_property_free_dir(struct tb_property_dir *dir);
+ int tb_property_add_immediate(struct tb_property_dir *parent, const char *key,
 -- 
 2.50.1
 
