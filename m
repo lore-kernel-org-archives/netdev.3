@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F88233D9E;
-	Tue, 28 Apr 2026 01:50:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C34892DB7BD;
+	Tue, 28 Apr 2026 01:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777341054; cv=none; b=ajJgXe7AaQo+v9SEa4VR8KLXQgqg1ZAGbSrfa60wlM74p4UaYQs7L/9lIzsqz25d0COfYFONxFzapbBgdgPS6LbwCV0eZ5oZTVja9zlE8+WXkbBjKlkOx5ft5IgHvxMLp1vbijzgFVjVFyBDmEsWrhxJ9FD9FFShf9Q/Qcfk8ug=
+	t=1777341055; cv=none; b=gpwK3qCjATCeN0obDEnmUmNQHpb14bPwso2IHqFwQUcR6aGEWtndwlJh9a8lgTutxb0jQ5zp193joz4/2Jzj2RKXBLMIX19Y9Pl+SgemcsDPnDPIYF7QoXLwHvgumIPepeQLqjv7mSp011Suv4sMkYFUOHehlU8W2Tp/1NvyZDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777341054; c=relaxed/simple;
-	bh=dDm56LrY1wnMkVZXn1HuuqbwzFQXkvyAteKdtIHrhko=;
+	s=arc-20240116; t=1777341055; c=relaxed/simple;
+	bh=blhnT1OhgZfmkBn7i5SypMFOmLdooHT0yasHfhzVmL0=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ZbJHCmdU7byNSyOegvYXTD/lBohuhEXjPUi2+KyYMOPwtL8jNfKlvLIIi8U4rrpXDAlx59wA7etM79b65HRA9BeseLq1lqRkSdvrYRHoyE0Rj1m+Z511Va/MvB/GqhwboeNdw4HW0xCRVH+5zQFNfVburtX2TMUfkQcdfWRID3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MY5hc1jt; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=O9LNfKYVF4KWkuX8erqfV0s/aLfzgzKKt+ouYBb0AgZ3nq8pCVPhBy3+7eG+DJFpRWy5JgAvVpD38BN/L+0SK+xomhvw63eWLgCO87qYE+tEhJEjgHkRLlJHlWyzl3qmooyo1bZEF11nI9KO7LcGLhg28i3qL+0Z6xpSQWWcgKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eMidOyBR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MY5hc1jt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 421C5C19425;
-	Tue, 28 Apr 2026 01:50:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eMidOyBR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84E21C19425;
+	Tue, 28 Apr 2026 01:50:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777341054;
-	bh=dDm56LrY1wnMkVZXn1HuuqbwzFQXkvyAteKdtIHrhko=;
+	s=k20201202; t=1777341055;
+	bh=blhnT1OhgZfmkBn7i5SypMFOmLdooHT0yasHfhzVmL0=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=MY5hc1jtmcqYxsu2f/msV3fGJe/WR2rmPew4V80As56oxxj3LgjaN3UeRS06Gbu7E
-	 NmkGfOkkkJXITUpgUAG7NypmVh84REfNm2aqLd5we/2+QlAAJ62m6+nBplA5QtqXba
-	 jayMnYXynOGFRL90CiA+ctD7+lFZ9hqfORociWBdBaHp5+t3l1ft5uHDfWkfGkAbPW
-	 aVcpZbT6FR/P2L6xs5m7PclZRbAkNfrOG79E462/+uYZZtnVP2UGjLrK0ywuJivnSL
-	 4rGY13WEia523KxhUfPAYosbNRwRnfe8LIExuZMMSUpTwIHiSaxE+M/FtFqFeNI2zK
-	 uX/z/TnTnaYbg==
+	b=eMidOyBRA1zd0r021PRvVAP62k8XR+0zGeFcvzMhPdoFkm730HryHtgSkCMJmDkZD
+	 s2XoB2FzkUdYgfSpTJ4Ek3BeLSZ/G7TpXYVF2n75rNLDCDSvjivNcAB2h1xW4HPG07
+	 aW7hii4IVM3hCNxYSPzcQiexyLiWvwFOzhVkscmM7489KDFyED5UdopuWJwbSlKBhy
+	 eHg2j/ogESuuma1VgUvpRZECVw7C1d43zLZcCjl4pWmRwmnVlbmjEjwUhuk6VlXpbx
+	 DfipXe9YrCfehzKIP8tNLj0gss6Cts7jQPLEcb2IsakwY5UvmcbOftNDS9U0OUQz/8
+	 uozrwBBPBb2Ew==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B55CE392FFDF;
-	Tue, 28 Apr 2026 01:50:12 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02E09392FFDF;
+	Tue, 28 Apr 2026 01:50:14 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,46 +37,44 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net: phonet: do not BUG_ON() in
- pn_socket_autobind()
- on failed bind
+Subject: Re: [PATCH net v5 0/2] net/sched: taprio: fix NULL pointer
+ dereference in
+ class dump
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177734101155.196918.12322132819040532011.git-patchwork-notify@kernel.org>
-Date: Tue, 28 Apr 2026 01:50:11 +0000
-References: 
- <87A8960A2045AF3C+20260423010557.138124-1-zhangdandan@uniontech.com>
-In-Reply-To: 
- <87A8960A2045AF3C+20260423010557.138124-1-zhangdandan@uniontech.com>
-To: Morduan Zang <zhangdandan@uniontech.com>
-Cc: courmisch@gmail.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com,
- syzbot+706f5eb79044e686c794@syzkaller.appspotmail.com, zhanjun@uniontech.com
+ <177734101277.196918.11456842228580431598.git-patchwork-notify@kernel.org>
+Date: Tue, 28 Apr 2026 01:50:12 +0000
+References: <20260422161958.2517539-2-bestswngs@gmail.com>
+In-Reply-To: <20260422161958.2517539-2-bestswngs@gmail.com>
+To: Weiming Shi <bestswngs@gmail.com>
+Cc: vinicius.gomes@intel.com, jhs@mojatatu.com, jiri@resnulli.us,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, vladimir.oltean@nxp.com, shuah@kernel.org, xmei5@asu.edu,
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This series was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 23 Apr 2026 09:05:57 +0800 you wrote:
-> syzbot reported a kernel BUG triggered from pn_socket_sendmsg() via
-> pn_socket_autobind():
+On Thu, 23 Apr 2026 00:19:57 +0800 you wrote:
+> Fix a NULL pointer dereference in taprio_dump_class() reachable by an
+> unprivileged local user on kernels with unprivileged user namespaces
+> enabled and CONFIG_NET_SCH_TAPRIO=y. The bug allows a local DoS via a
+> crafted sequence of taprio child-qdisc graft, delete, and class dump.
 > 
->   kernel BUG at net/phonet/socket.c:213!
->   RIP: 0010:pn_socket_autobind net/phonet/socket.c:213 [inline]
->   RIP: 0010:pn_socket_sendmsg+0x240/0x250 net/phonet/socket.c:421
->   Call Trace:
->    sock_sendmsg_nosec+0x112/0x150 net/socket.c:797
->    __sock_sendmsg net/socket.c:812 [inline]
->    __sys_sendto+0x402/0x590 net/socket.c:2280
->    ...
+> Patch 1/2 is the fix: replace NULL entries in q->qdiscs[] with the
+> global &noop_qdisc singleton so that control-plane dump paths, as well
+> as the existing NULL guards in the data-plane enqueue/dequeue paths,
+> cannot deref a NULL child qdisc.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2] net: phonet: do not BUG_ON() in pn_socket_autobind() on failed bind
-    https://git.kernel.org/netdev/net/c/5b0c911bcdbd
+  - [net,v5,1/2] net/sched: taprio: fix NULL pointer dereference in class dump
+    https://git.kernel.org/netdev/net/c/3d07ca5c0fae
+  - [net,v5,2/2] selftests/tc-testing: add taprio test for class dump after child delete
+    https://git.kernel.org/netdev/net/c/a469feed399d
 
 You are awesome, thank you!
 -- 
