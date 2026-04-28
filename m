@@ -1,49 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CDA33DA5B5;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D6003DA5B6;
 	Tue, 28 Apr 2026 07:22:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777360938; cv=none; b=pYfgWXTF301X94RoOFj5A9IDGy26ScJUzr+tqpRfJPoTs3Igx599OhyPJKEaJ6Nu1jh/38qlYGYCfvP3wCHfn1zeSCpTYCm2Un0drIwMeYarK6DwFAuZdQYdGHeoImWC3GljSUp/fFRiOG7lH/HG5LUKyraUJqVp/8Ox7SUhSRQ=
+	t=1777360938; cv=none; b=GO3R+SuPSXFa0cBIiJJSAXetAfvHEt4k3nUSd314IHN0hLDm8F0mTlSDPmF9/GbYAnrd8eLKM3XyHlfdmjd1hrKUMh8lxJP+uc45nwneiAW5f6Fq47rSLIUz2+38fWa++/7yI1mXCuLVdcuk7yVHp775KUgimOTRG7lI4vUYOEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777360938; c=relaxed/simple;
-	bh=wQAPuxovCp2uWQoWCBJfZsiB+eWwZVD72BaGWQWSOe0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QFw9roMY8jAhOGxQ1nz7m59oOpm9VHaJ9M3zl9U+R0xZFkij50COTg9N80rh/xlLg4M3z+2h2YZwYFv6pGdx2AB3Sn8jWBX2YdvthM6hU0bTY9ysYBXRrIJh8dyeVk1T79Zk+sE6B6/JAB8AyPy7NZ0Vyapgp0bjXmTIKsWXX3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DiWv9p3M; arc=none smtp.client-ip=198.175.65.12
+	bh=AlIGB9lf9eF95T/O7YxOQaHcetghLMJ9AjutOyvepFM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qBSaouJk8X08rQl1V9RklhWfuVR6Sh5kGsVACfTSE8vHdN0iYZwNDCXG6jnwuYrYjTdz65fdVnYZ1b/t9Ux2p6zkhZGdxffe8IieeCNnSXgZwAtbwGnWA3Xsl7NKZPy65p2d/2gXmQRYygE9uAI5JR118dHGUAg45WMStaxII+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Rg0N6chZ; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DiWv9p3M"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Rg0N6chZ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1777360936; x=1808896936;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=wQAPuxovCp2uWQoWCBJfZsiB+eWwZVD72BaGWQWSOe0=;
-  b=DiWv9p3MMBfTzaHZa7QYFXEt7eCQK1WWO9zXg5yGJIekKnq5JCl3DUey
-   6McEcuRKzV+cgprvrVe74myV1AKk9TaocMipV7y8olZ4YpXuNhFFuZZLg
-   lWDi7bcg2lFgQXlDkpQmWaZxg7DICxEMPCdUQw+UrkfFonLVPvC1Ug0VO
-   9bgirWSf+3gomOJ+CfhhNSfiTfhRJ1o1GTzXCJ0KFJvVHsZXew7OvOpxt
-   xOdPR6SQ9ZG/DQxqvDvyPxSG751kmvnsxGGhe+uEHaSOuORYcsMGFykbY
-   ZYB0Bx/VUXXh9iY/fATqbvtejARk3/cu0vnbgfqNYsuQSf5JuW6kLz/5q
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=AlIGB9lf9eF95T/O7YxOQaHcetghLMJ9AjutOyvepFM=;
+  b=Rg0N6chZQ7NylPv2QjzdniwOaoVqnQfUGhaNsZIKc6xenO1hfLEvCeXT
+   9a7HQLMPkw7pFWGtOLoc7XUnsif9yoXYHDd6ZScVh2T2HeO+BOH2wuvjE
+   2haxLxkBaCQUp7MBRRLHoPQYd7sQpRHxtMoqON1JdXnJNrCsvaCfK2KBf
+   0usLjSPGIZp+1n197zybuq6VEfNG9rCp8TX3i8p1QsS2DfG4ja5FGl22b
+   EIhPz0OFqKuvHhye+xau5HWhBQPaKfcP5vWzaNi1/mhiex8HuuVlnZBcv
+   kTlZz/snuSDGMWYoIh0ZmGTzdmFTy2EfF97zM/c7EcA1gFClZQAEO3dmM
    w==;
-X-CSE-ConnectionGUID: L0qoLlaLQBekP+m0p29W3Q==
-X-CSE-MsgGUID: 21PP4QN2SEyD3BUKRrXAqA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="89720810"
+X-CSE-ConnectionGUID: cRFXabFxSneILjP+0NvsAw==
+X-CSE-MsgGUID: D8oo87DWQcSiiage+KD0oA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="82126034"
 X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
-   d="scan'208";a="89720810"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 00:22:14 -0700
-X-CSE-ConnectionGUID: TWEcvninRYWjL9banI8Pgg==
-X-CSE-MsgGUID: md6I94qMRB+6ZsKaMg72Rg==
+   d="scan'208";a="82126034"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 00:22:14 -0700
+X-CSE-ConnectionGUID: H5kDPuT4Ss+YWSlcnRBJxQ==
+X-CSE-MsgGUID: pj2YPWByQj65M2GxjalYBg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
-   d="scan'208";a="238206404"
+   d="scan'208";a="229308639"
 Received: from black.igk.intel.com ([10.91.253.5])
-  by orviesa004.jf.intel.com with ESMTP; 28 Apr 2026 00:22:11 -0700
+  by fmviesa006.fm.intel.com with ESMTP; 28 Apr 2026 00:22:11 -0700
 Received: by black.igk.intel.com (Postfix, from userid 1001)
-	id EFCC595; Tue, 28 Apr 2026 09:22:09 +0200 (CEST)
+	id 092599D; Tue, 28 Apr 2026 09:22:10 +0200 (CEST)
 From: Mika Westerberg <mika.westerberg@linux.intel.com>
 To: linux-usb@vger.kernel.org
 Cc: Yehezkel Bernat <YehezkelShB@gmail.com>,
@@ -57,10 +58,12 @@ Cc: Yehezkel Bernat <YehezkelShB@gmail.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	netdev@vger.kernel.org,
 	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 0/9] thunderbolt: Introduce USB4STREAM
-Date: Tue, 28 Apr 2026 09:22:00 +0200
-Message-ID: <20260428072209.3084930-1-mika.westerberg@linux.intel.com>
+Subject: [PATCH 4/9] thunderbolt / net: Move ring_frame_size() to thunderbolt.h
+Date: Tue, 28 Apr 2026 09:22:04 +0200
+Message-ID: <20260428072209.3084930-5-mika.westerberg@linux.intel.com>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260428072209.3084930-1-mika.westerberg@linux.intel.com>
+References: <20260428072209.3084930-1-mika.westerberg@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -69,70 +72,100 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi all,
+This function can be used outside of thunderbolt networking driver so
+move it to the common header.
 
-This series adds support for a new protocol over USB4/Thunderbolt cable
-called USB4STREAM. The protocol is super-simple and basically just
-transfers raw packets from one host to another. It is documented as part of
-the thunderbolt_stream driver.
+No functional changes.
 
-The driver exposes /dev/tbstreamX devices on each side of the link that can
-be used to transfer data using regular filesystem operations such as
-read(2) and write(2):
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+---
+ drivers/net/thunderbolt/main.c | 16 ++++++----------
+ include/linux/thunderbolt.h    | 10 +++++++++-
+ 2 files changed, 15 insertions(+), 11 deletions(-)
 
-  host1 # cat /dev/tbstream0
-  host2 # echo hello > /dev/tbstream0
-
-This can be useful in cases where network tooling is not available or just
-for existing applications like 'dd' and 'cat' that do not support sockets.
-
-thunderbolt_stream can be used at the same time with thunderbolt_net so
-they don't rule each other our. 
-
-thunderbolt_stream allows multiple streams to be created, for example one
-stream for control traffic and another for data (there are some limitations
-in the core USB4/Thunderbolt driver due to dedicated flow control scheme
-but this is likely change in the future). Each stream is bi-directional
-tunnel over the fabric.
-
-There are a couple of additional usage examples in the last patch that adds
-the driver itself.
-
-This applies on top of my XDomain improvements series [1].
-
-[1] https://lore.kernel.org/linux-usb/20260427081109.2337731-1-mika.westerberg@linux.intel.com/
-
-Mika Westerberg (9):
-  thunderbolt: Add tb_property_merge_dir()
-  thunderbolt: Add KUnit test for tb_property_merge_dir()
-  thunderbolt: Allow service drivers to specify their own properties
-  thunderbolt / net: Move ring_frame_size() to thunderbolt.h
-  thunderbolt / net: Let the service drivers configure interrupt throttling
-  thunderbolt: Add helper to figure size of the ring
-  thunderbolt: Add tb_ring_flush()
-  thunderbolt: Add support for ConfigFS
-  thunderbolt: Add support for USB4STREAM
-
- .../ABI/testing/configfs-thunderbolt_stream   |   77 +
- drivers/net/thunderbolt/main.c                |   23 +-
- drivers/thunderbolt/Kconfig                   |   15 +
- drivers/thunderbolt/Makefile                  |    4 +
- drivers/thunderbolt/configfs.c                |   61 +
- drivers/thunderbolt/dma_test.c                |    5 +
- drivers/thunderbolt/domain.c                  |    2 +
- drivers/thunderbolt/nhi.c                     |   86 +-
- drivers/thunderbolt/nhi_regs.h                |    3 +-
- drivers/thunderbolt/property.c                |  154 +-
- drivers/thunderbolt/stream.c                  | 1693 +++++++++++++++++
- drivers/thunderbolt/tb.h                      |    8 +
- drivers/thunderbolt/test.c                    |   82 +
- drivers/thunderbolt/xdomain.c                 |   95 +-
- include/linux/thunderbolt.h                   |   44 +-
- 15 files changed, 2257 insertions(+), 95 deletions(-)
- create mode 100644 Documentation/ABI/testing/configfs-thunderbolt_stream
- create mode 100644 drivers/thunderbolt/configfs.c
- create mode 100644 drivers/thunderbolt/stream.c
-
+diff --git a/drivers/net/thunderbolt/main.c b/drivers/net/thunderbolt/main.c
+index d8fcf18fc55c..49673f7e0055 100644
+--- a/drivers/net/thunderbolt/main.c
++++ b/drivers/net/thunderbolt/main.c
+@@ -38,7 +38,7 @@
+ #define TBNET_MATCH_FRAGS_ID	BIT(1)
+ #define TBNET_64K_FRAMES	BIT(2)
+ #define TBNET_MAX_MTU		SZ_64K
+-#define TBNET_FRAME_SIZE	SZ_4K
++#define TBNET_FRAME_SIZE	TB_MAX_FRAME_SIZE
+ #define TBNET_MAX_PAYLOAD_SIZE	\
+ 	(TBNET_FRAME_SIZE - sizeof(struct thunderbolt_ip_frame_header))
+ /* Rx packets need to hold space for skb_shared_info */
+@@ -327,11 +327,6 @@ static void stop_login(struct tbnet *net)
+ 	netdev_dbg(net->dev, "login stopped\n");
+ }
+ 
+-static inline unsigned int tbnet_frame_size(const struct tbnet_frame *tf)
+-{
+-	return tf->frame.size ? : TBNET_FRAME_SIZE;
+-}
+-
+ static void tbnet_free_buffers(struct tbnet_ring *ring)
+ {
+ 	unsigned int i;
+@@ -561,7 +556,7 @@ static struct tbnet_frame *tbnet_get_tx_buffer(struct tbnet *net)
+ 	tf->frame.size = 0;
+ 
+ 	dma_sync_single_for_cpu(dma_dev, tf->frame.buffer_phy,
+-				tbnet_frame_size(tf), DMA_TO_DEVICE);
++				tb_ring_frame_size(&tf->frame), DMA_TO_DEVICE);
+ 
+ 	return tf;
+ }
+@@ -743,7 +738,7 @@ static bool tbnet_check_frame(struct tbnet *net, const struct tbnet_frame *tf,
+ 	}
+ 
+ 	/* Should be greater than just header i.e. contains data */
+-	size = tbnet_frame_size(tf);
++	size = tb_ring_frame_size(&tf->frame);
+ 	if (size <= sizeof(*hdr)) {
+ 		net->stats.rx_length_errors++;
+ 		return false;
+@@ -1010,7 +1005,8 @@ static bool tbnet_xmit_csum_and_map(struct tbnet *net, struct sk_buff *skb,
+ 						hdr->frame_index, hdr->frame_count);
+ 			dma_sync_single_for_device(dma_dev,
+ 				frames[i]->frame.buffer_phy,
+-				tbnet_frame_size(frames[i]), DMA_TO_DEVICE);
++				tb_ring_frame_size(&frames[i]->frame),
++						   DMA_TO_DEVICE);
+ 		}
+ 
+ 		return true;
+@@ -1084,7 +1080,7 @@ static bool tbnet_xmit_csum_and_map(struct tbnet *net, struct sk_buff *skb,
+ 	 */
+ 	for (i = 0; i < frame_count; i++) {
+ 		dma_sync_single_for_device(dma_dev, frames[i]->frame.buffer_phy,
+-			tbnet_frame_size(frames[i]), DMA_TO_DEVICE);
++			tb_ring_frame_size(&frames[i]->frame), DMA_TO_DEVICE);
+ 	}
+ 
+ 	return true;
+diff --git a/include/linux/thunderbolt.h b/include/linux/thunderbolt.h
+index f60e3a1aecae..1d1bd458b5af 100644
+--- a/include/linux/thunderbolt.h
++++ b/include/linux/thunderbolt.h
+@@ -628,7 +628,15 @@ struct ring_frame {
+ };
+ 
+ /* Minimum size for ring_rx */
+-#define TB_FRAME_SIZE		0x100
++#define TB_FRAME_SIZE		256
++#define TB_MAX_FRAME_SIZE	4096
++
++static inline size_t tb_ring_frame_size(const struct ring_frame *frame)
++{
++	if (frame->size)
++		return frame->size;
++	return TB_MAX_FRAME_SIZE;
++}
+ 
+ struct tb_ring *tb_ring_alloc_tx(struct tb_nhi *nhi, int hop, int size,
+ 				 unsigned int flags);
 -- 
 2.50.1
 
