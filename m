@@ -1,181 +1,69 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF343F165A
-	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 10:59:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 326C039891F;
+	Tue, 28 Apr 2026 11:00:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777373969; cv=none; b=D4/GM33xsRR3mPWV7GtP2J8Q6qpvCbXTGKFJLbaTrysatCUpCduJ0ILW0yxx6qmzNWmtfdaUvANvNiW7CGOLt3q7WzBW5TygcG5dLoSWdOZccmM8RTrRxTlagYN28ElrgAJmsakEXfiTgwlmeToe5SB95sr4X7hbd8yi7Ukuw04=
+	t=1777374047; cv=none; b=o1ndADAR/+BanQJXqtMOvnYjek+0dli5O3ORHHCCPi1Ot9iNRWTNAYTAykwD0toWEA3JQkRK5kTveB0c/0EjRIIbSmGvZL0K5/y+sQ3wpLfg4KndJpCumn6hqQ+5Vy7LUfSxTwXHdkyam4yUqzdqQpSYLejy1jE7BYhjtf5KHaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777373969; c=relaxed/simple;
-	bh=G2/rF3EEGk3k5lEdsdDKT8n233J1tCl4qTDhr0OOqe4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GbDPdBOUZS0+xl0dAe+MxCK9wJ+7+Ay7TYN87Q0yFeswleRPmXdF6f7zVXomJFlPOwz/Od+uxk5ttrAlj1eWazJj00uWuq/bbvJZD2ho3Lih4HHEmw+vhjFxVtCAm+7TRG9Whd8xTxyJB7X2QX8Zq11bUbwvSnPnfo+TuCgT+bQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MprkDYBp; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=SiZ1m3Ps; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1777374047; c=relaxed/simple;
+	bh=Uefk//Or6MWKb4FY2PvkClVl4kqx5cq6unjXrhiqhsE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DAh2tnVYN16AT6AQMI9qk7mm6h8xFQtlYFVmH478Vdky0DZn0VVegq0dx/IZBefHm1E0a4tb7UixRRhUeLF9KCByc4a74f/pbRDiugUO6HGvGdnLSwVHXmgGXMKfz53LGiCVYX/Jam5mYwFKD2ZG9/4X/x7ErINqroij+Ce6q3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=aETsHw7m; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MprkDYBp";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="SiZ1m3Ps"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777373967;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4U2KZSCsoWmBFIeQ+MczWaDGXp2iubZYjNi4WCkdB1M=;
-	b=MprkDYBpmfqUbcVHUjJIufmykWIMC2Ta4K+MGjg5k6AFRHztoGXF4UBRbA1Z6P/TB0AAQa
-	RtUkKlM2coExnbrizwe5moW8pY1EvkHELLf35Z45JklmkuRcaZLaG/A+8Z9vReIevAsZ+Q
-	7+ArVFpEma9yu9vn26nv68Xu0oL1XCo=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-357-8vZp1B2zNc-skSf9QEf_qg-1; Tue, 28 Apr 2026 06:59:25 -0400
-X-MC-Unique: 8vZp1B2zNc-skSf9QEf_qg-1
-X-Mimecast-MFC-AGG-ID: 8vZp1B2zNc-skSf9QEf_qg_1777373965
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-8d4c2906fdfso1201939585a.2
-        for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 03:59:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1777373965; x=1777978765; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4U2KZSCsoWmBFIeQ+MczWaDGXp2iubZYjNi4WCkdB1M=;
-        b=SiZ1m3PssW45E64iFtaW1SyuJxjr14jlST6Zhh5+JKREk09/vafVsjQCX7n5QqO1em
-         dXbd70ubv6VBE/yklN9+PlRjp50zsj6zg/bKAHkCmaN2vXLLgCC09Dv7qFE92/nMKeHE
-         2C8MhOp32mvx8gKrX4sVOst6LRqIkGGO4/6RkBlk4dFCH2MXypAKEQvwBW8WK01pkBTM
-         ux9V31uptZY4GsPMsfdi0Nq95hK9ZPq2p/jjRWvaLVV2E2NUG1CB1bhKMZaJS+Hwb34E
-         Fitmn0Tt5Z2e9HfXW8KzL3fiAFuLAnk0SUtAjNuqpG6bBHrKTxcA+rtg7UQKLT9N0fcF
-         pAMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777373965; x=1777978765;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4U2KZSCsoWmBFIeQ+MczWaDGXp2iubZYjNi4WCkdB1M=;
-        b=YJQMNF7AOPrklnt5ryh7zJqcmjI84jfzCQWfzA0Rg0mpTt8RMTCVQvRPjaeEJ4j1ce
-         GAfbcRTXjkRrHVo47jPnAk4t10O7FZRinQisdQa333rF3xLWrH+6vZTeBiHAiuXLHNzA
-         BCeRrLB7x9yV8xNGUhP8pq1MIr7aBy822HGsoZBZJHQ7qXPUW5xL5PbEKX49tXtN3S+P
-         X2DL5q75tEZGoAUzzcco1gFnMhtbQtXOt5WpAQbR05mqQjoq4xSkoC7ssc3OWKGC9LPr
-         eu0WoVOHAWwo0SKBMmmFAOhq+cjiF7gJZy0C1xnGbfE1O6AujDSLUjLDfjV6DU3fwoXo
-         wxkw==
-X-Forwarded-Encrypted: i=1; AFNElJ/z8v71hPHEt3lVHTX5EKX9LCVFQqLcgCnPCE2VFwz0YZgmOohfLfIzNx3xpulws1AwiJGaKRM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy1DG32ByZP6u4CVOKJDErhRwdqU1uBYGqeHLpzOgb9oQF3qDH7
-	cjN4vEeOnp3lGnisJcg88qbx5a1L1SeQvTJR4YOq0vO1EympX7Udc2g8Jt1fbGXCuj0fYXYhtlt
-	J6ge/IvooVkUArbmFy1s3HJapurWfv7hIOJmu4P/JwIn2ARc6Q7iwGlZ5Nh1thVG8GQ==
-X-Gm-Gg: AeBDietuulRH0cEpWBFl+oCdjII7LtM0nO7iFwHxvPl3WkUTjWR8C6kcTpW4ppk2trL
-	7aI5ES1cZMUh04DmMm047uXsLCIMldx0kE840Cmc66panj5JG8m1Cu9KIv2J8xIG6k85qIiwNHT
-	Na9aOavCr/AwcRVNtHhcRGW31LE0aA2swSinLObdC3Mjj+Eob2wR4HXApqFZSpfUFQk2kGa4FUF
-	imm1MFb1AdW3grg4mK+KiomVSL8T/9sJQ81uqsTg/981eYT0Sf02or5OckoBfXPJ/oJKG/EkxFS
-	7o3WM1oRzQaf31LR6hbUHA2tUjGHBa9rq/4sa2RYnfq///nEF0byGCO2jdTW2p/V0RxnUXkmqGF
-	A7+DCwYOHcVuwWc/xXLah/JfAomnwiX2xk72H0++3n5eHIYWj7/FOI1ByzLLwtip+Ew==
-X-Received: by 2002:a05:620a:31a4:b0:8d6:2beb:9470 with SMTP id af79cd13be357-8f7d910b295mr331469185a.40.1777373965172;
-        Tue, 28 Apr 2026 03:59:25 -0700 (PDT)
-X-Received: by 2002:a05:620a:31a4:b0:8d6:2beb:9470 with SMTP id af79cd13be357-8f7d910b295mr331464685a.40.1777373964645;
-        Tue, 28 Apr 2026 03:59:24 -0700 (PDT)
-Received: from [192.168.88.32] ([216.128.9.114])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8f7c4dbcfbdsm168341585a.12.2026.04.28.03.59.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Apr 2026 03:59:24 -0700 (PDT)
-Message-ID: <d7bab1a1-6938-49aa-9fdb-fab42633c678@redhat.com>
-Date: Tue, 28 Apr 2026 12:59:21 +0200
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="aETsHw7m"
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 59149600B5;
+	Tue, 28 Apr 2026 13:00:43 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1777374043;
+	bh=dwn6CWlk95VWnSN849r13HbnQotK1IIZo/b3BQl5OCM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aETsHw7mV+swGUDWBtiHGigJxGgYrppmYq5SfOK5rmn1gzT4yB4LVcZD6NZ96HLAy
+	 L08AMwMNL4NhEgbDzyGCPNV1h8rNbHF2rOCdEvbMCiwiL9RqBKIEuYfEdltX7p4XY9
+	 Zq702P9rLqNK/x+Q+aQUhsrmvYb+Rr5dNbCX1P2ud2hF2gtvh+ptLgMEkLj9lUUL9E
+	 tAfDOTqsO/ko3sgo33XJoClf1Xgi3CHmzAPxGi5e5dJCnuN9WRO5rfc6LBvMTljGst
+	 JgfGsAYo2AZVSS3nteHw7cg8nLCXpHtduP5mD47FTKduavxW1efvdqyrG4t1LtPzj2
+	 MKU4DUKHWk7Zg==
+Date: Tue, 28 Apr 2026 13:00:40 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: netdev@vger.kernel.org
+Cc: netfilter-devel@vger.kernel.org, edumazet@google.com,
+	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org
+Subject: Re: [PATCH net] neighbour: neigh_xmit needs to release skb on
+ -EAFNOSUPPORT
+Message-ID: <afCTWAZ7yl7L9pM8@chamomile>
+References: <20260428102052.53637-1-pablo@netfilter.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3] ipv6: addrconf: skip ERRDAD transition when
- address already DEAD
-To: Linmao Li <lilinmao@kylinos.cn>, davem@davemloft.net, dsahern@kernel.org,
- edumazet@google.com, kuba@kernel.org
-Cc: horms@kernel.org, stephen@networkplumber.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260421075033.1110816-1-lilinmao@kylinos.cn>
- <20260423023216.1221731-1-lilinmao@kylinos.cn>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20260423023216.1221731-1-lilinmao@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260428102052.53637-1-pablo@netfilter.org>
 
-On 4/23/26 4:32 AM, Linmao Li wrote:
-> addrconf_dad_failure() transitions ifp->state from DAD to POSTDAD
-> via addrconf_dad_end(), which drops ifp->lock on return.  The lock
-> is re-acquired after net_info_ratelimited().  A concurrent
-> ipv6_del_addr() can take the lock in that window, set ifp->state
-> to DEAD and run list_del_rcu(&ifp->if_list).
+On Tue, Apr 28, 2026 at 12:20:52PM +0200, Pablo Neira Ayuso wrote:
+> Sashiko reports:
 > 
-> addrconf_dad_failure() then overwrites DEAD with ERRDAD at errdad:
-> and schedules a new dad_work.  The work calls ipv6_del_addr()
-> again, hitting the already-poisoned list entry:
+> "... if the target neighbor table is NULL (for example, for
+> NEIGH_ND_TABLE when IPv6 is disabled), the code takes the out_unlock
+> path and bypasses the out_kfree_skb cleanup"
 > 
->   general protection fault: 0000 [#1] SMP NOPTI
->   CPU: 4 PID: 217 Comm: kworker/4:1
->   Workqueue: ipv6_addrconf addrconf_dad_work
->   RIP: 0010:ipv6_del_addr+0xe9/0x280
->   RAX: dead000000000122
->   Call Trace:
->    addrconf_dad_stop+0x113/0x140
->    addrconf_dad_work+0x28c/0x430
->    process_one_work+0x1eb/0x3b0
->    worker_thread+0x4d/0x400
->    kthread+0x104/0x140
->    ret_from_fork+0x35/0x40
-> 
-> Fold the addrconf_dad_end() logic into addrconf_dad_failure()
-> under a single ifp->lock critical section.  The STABLE_PRIVACY
-> branch temporarily drops ifp->lock, so keep a state-is-DEAD
-> bail-out at errdad: for that remaining window.
-> 
-> Fixes: c15b1ccadb32 ("ipv6: move DAD and addrconf_verify processing to workqueue")
-> Signed-off-by: Linmao Li <lilinmao@kylinos.cn>
-> ---
->  net/ipv6/addrconf.c | 13 ++++++++++---
->  1 file changed, 10 insertions(+), 3 deletions(-)
-> 
-> diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-> index 5476b6536eb7..c9ea0d5042d0 100644
-> --- a/net/ipv6/addrconf.c
-> +++ b/net/ipv6/addrconf.c
-> @@ -2166,16 +2166,18 @@ void addrconf_dad_failure(struct sk_buff *skb, struct inet6_ifaddr *ifp)
->  	struct net *net = dev_net(idev->dev);
->  	int max_addresses;
->  
-> -	if (addrconf_dad_end(ifp)) {
-> +	spin_lock_bh(&ifp->lock);
-> +
-> +	if (ifp->state != INET6_IFADDR_STATE_DAD) {
-> +		spin_unlock_bh(&ifp->lock);
->  		in6_ifa_put(ifp);
->  		return;
->  	}
-> +	ifp->state = INET6_IFADDR_STATE_POSTDAD;
->  
->  	net_info_ratelimited("%s: IPv6 duplicate address %pI6c used by %pM detected!\n",
->  			     ifp->idev->dev->name, &ifp->addr, eth_hdr(skb)->h_source);
->  
-> -	spin_lock_bh(&ifp->lock);
-> -
->  	if (ifp->flags & IFA_F_STABLE_PRIVACY) {
->  		struct in6_addr new_addr;
->  		struct inet6_ifaddr *ifp2;
-> @@ -2227,6 +2229,11 @@ void addrconf_dad_failure(struct sk_buff *skb, struct inet6_ifaddr *ifp)
->  
->  errdad:
->  	/* transition from _POSTDAD to _ERRDAD */
-> +	if (ifp->state == INET6_IFADDR_STATE_DEAD) {
-> +		spin_unlock_bh(&ifp->lock);
-> +		in6_ifa_put(ifp);
-> +		return;
+> Fix this skb memleak by releasing the skb in case of -EAFNOSUPPORT.
 
-It looks like this check is need only when the ifp->lock is released
-again, i.e. just after the `lock_errdad`. Please move it there, to avoid
-confusion when looking at this code in the future.
+Please, withdraw.
 
-Thanks,
+Florian Westphal already posted a similar fix that is already in
+net.git
 
-Paolo
+Thanks.
 
+> Fixes: f8f2eb9de69a ("neighbour: add RCU protection to neigh_tables[]")
+> Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
