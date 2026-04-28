@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BDE937BE7C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF69137CD45
 	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 20:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777409638; cv=none; b=OLQF1jzQPXJ7fC53gW0n/J+ld54SmrTxRmzt1t0l+OItNEkt16MFEYkfJc/KMR0QVZnA6+/YYRyHejprQhr2yL6IY1Djh8cJiP9MvCEthic5HRdU+f3BmVbRCnqT4/vedwIkWJIzhtcNc0bf+MUFLmC7YnafaVN9VoBlyOBTIeI=
+	t=1777409638; cv=none; b=hcFrnwiDxiTF7h75n+TgJpE+NqhqJctkOMxufsg5ASsOLJRe1WeCxnAE1T9shXEM3q3gp9eO6S3h+lKMWsIR0aG/srP2sgt9TZEN2DuXv7n2MeiFqUs0uiyTCOmnVU7zYhkudDm5wmZunFq8UWGccvYWYhYtMFduHNRU1Enm6+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777409638; c=relaxed/simple;
-	bh=kq/0J+Ftl468joYkW8fhfnGSH/A+B110vMVnKoQ0GOA=;
+	bh=4oTH/xrcufxBq/Rnkb7ZiwjmAVVhUjri5mktdyDyRLQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NQWnDux7Gffr3Ahsrdm3y7+RPZ7k3pXgVr32ndSE/nE3GNaAIBEdQXiIOkfhz+lh3ueCc6aR707JNdowfPxwNKum3kkF5J561Ed2sMbVvBkam3Vi9JsYygnAleai//KKz5l5NlOOEhABF1LnrXOHAtqZs0+mHLjH+WYepZgKONc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p8dqEVrX; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=XNCE+tvV0OAqPGPGvGb8yHIra2qGu68KHhwEe38fH9cmR8a40iimlMZu/Yknok5gg64ZAGljEvRb+/SRHO0eo/PYxfJDwCyvY2lQI9nM9LCdzZsSlBfUamF4uAhpBRm/jzAEJaONTphGMyru/rJ1SIbS8oH6CZ6Eop41aWKURI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IMjOCamP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p8dqEVrX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD15DC2BCB8;
-	Tue, 28 Apr 2026 20:53:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IMjOCamP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BBB4C2BCAF;
+	Tue, 28 Apr 2026 20:53:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1777409638;
-	bh=kq/0J+Ftl468joYkW8fhfnGSH/A+B110vMVnKoQ0GOA=;
+	bh=4oTH/xrcufxBq/Rnkb7ZiwjmAVVhUjri5mktdyDyRLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p8dqEVrXc0arQ5yKrG6zb8AUi72R46mhUHFkD1z8G8cVPEL/otV8b7w6et4lYzyzi
-	 oj5HDwVN8jOXUgT5k2FEibW6tGBjCeZBL0JR0Wpw6xFIqNC+x3cPE2UdSy+tvy7N2i
-	 u+bqDKlpyhdQRcB6VueGE7XT+9FwikSQ88X/xGoicMDAg163+TysE/46WOHT4k0/QI
-	 Zxrw14bbMm2MWu5k6UzRJWdHOHgTBmtteMHLp/UpEGXwIqpwZ1HJRCRqb/IHKjuDNL
-	 YbO1DOCH/HGq+if3AINogIQru+O7eL8lhPPB3Hp1Cx06KDyX7mfln2+/WN/8gMVY3t
-	 Fma03hsq9PZ3g==
+	b=IMjOCamPFnpW0vSwcjTB7BSKGr3VYx8qSObVjX74vZEZV3cGGvXhfAg3tbF7eKm08
+	 RRQMhaDc5Ax77u+1kg+3Q0B+klCwrmWwgQPy6GQfdzPQ3w7BeK89EFKxFdmcrHTTgn
+	 3Ls6qxOAX3Xk2CZLmWLyRBMuB6ZOR8y55yeZX5HPTfMO3hS7iP3w58bcGQz/xDFZkb
+	 O7kZnnKoGADnlFx7uMoqlY4cAjZZNmcQo/hhyN0a+LzTklqYIPwZahcfXJnD4/b2Td
+	 gVn/DSUIjH/Tw0/Z74mVyYa8hshpTvNg0/eCqaCbJAJOiF17EqSTn1OJhAw9i5zHTk
+	 j9Q/WTI72BzMA==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -36,9 +36,9 @@ Cc: netdev@vger.kernel.org,
 	willemdebruijn.kernel@gmail.com,
 	daniel.zahka@gmail.com,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next 2/3] psp: add a comment about a psp_dev add netlink notification
-Date: Tue, 28 Apr 2026 13:53:51 -0700
-Message-ID: <20260428205352.1247325-3-kuba@kernel.org>
+Subject: [PATCH net-next 3/3] psp: validate IPv4 header fields in psp_dev_rcv()
+Date: Tue, 28 Apr 2026 13:53:52 -0700
+Message-ID: <20260428205352.1247325-4-kuba@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260428205352.1247325-1-kuba@kernel.org>
 References: <20260428205352.1247325-1-kuba@kernel.org>
@@ -50,33 +50,51 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In psp_dev_create(), the DEV_ADD_NTF netlink notification is sent
-before the device is published to the netdev via rcu_assign_pointer().
-IIRC this is intentional because a single PSP device is expected
-to be shared with multiple netdevs. So we are trying to default to
-not having the netdev info. We can change it if someone complains
-but for now just add a comment that it's intentional.
+psp_dev_rcv() is called from the NIC driver's RX completion path
+before the frame reaches ip_rcv_core(), so the IP header has not
+been validated in SW, yet. We expect that the device has done
+all this validation, but let's also add the SW checks, to avoid
+surprises.
 
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- net/psp/psp_main.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/psp/psp_main.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
 diff --git a/net/psp/psp_main.c b/net/psp/psp_main.c
-index 652ec8a9c8a4..f069117c867a 100644
+index f069117c867a..524978dfb8fd 100644
 --- a/net/psp/psp_main.c
 +++ b/net/psp/psp_main.c
-@@ -90,6 +90,10 @@ psp_dev_create(struct net_device *netdev,
- 	mutex_lock(&psd->lock);
- 	mutex_unlock(&psp_devs_lock);
+@@ -300,6 +300,9 @@ int psp_dev_rcv(struct sk_buff *skb, u16 dev_id, u8 generation, bool strip_icv)
+ 	if (proto == htons(ETH_P_IP)) {
+ 		struct iphdr *iph = (struct iphdr *)(skb->data + l2_hlen);
  
-+	/* notify before netdev assignment
-+	 * There's no strong reason for it, but thinking is to avoid creating
-+	 * implicit expectations about the PSP dev <> netdev relationship.
-+	 */
- 	psp_nl_notify_dev(psd, PSP_CMD_DEV_ADD_NTF);
++		if (unlikely(iph->ihl < 5))
++			return -EINVAL;
++
+ 		is_udp = iph->protocol == IPPROTO_UDP;
+ 		l3_hlen = iph->ihl * 4;
+ 		if (l3_hlen != sizeof(struct iphdr) &&
+@@ -335,6 +338,9 @@ int psp_dev_rcv(struct sk_buff *skb, u16 dev_id, u8 generation, bool strip_icv)
+ 	if (proto == htons(ETH_P_IP)) {
+ 		struct iphdr *iph = (struct iphdr *)(skb->data + l2_hlen);
  
- 	rcu_assign_pointer(netdev->psp_dev, psd);
++		if (unlikely(ntohs(iph->tot_len) < l3_hlen + encap))
++			return -EINVAL;
++
+ 		iph->protocol = psph->nexthdr;
+ 		iph->tot_len = htons(ntohs(iph->tot_len) - encap);
+ 		iph->check = 0;
+@@ -342,6 +348,9 @@ int psp_dev_rcv(struct sk_buff *skb, u16 dev_id, u8 generation, bool strip_icv)
+ 	} else {
+ 		struct ipv6hdr *ipv6h = (struct ipv6hdr *)(skb->data + l2_hlen);
+ 
++		if (unlikely(ntohs(ipv6h->payload_len) < encap))
++			return -EINVAL;
++
+ 		ipv6h->nexthdr = psph->nexthdr;
+ 		ipv6h->payload_len = htons(ntohs(ipv6h->payload_len) - encap);
+ 	}
 -- 
 2.54.0
 
