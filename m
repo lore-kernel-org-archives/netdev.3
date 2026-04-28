@@ -1,106 +1,144 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F3AA22A4E9;
-	Tue, 28 Apr 2026 01:36:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 542522D839C
+	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 01:43:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777340202; cv=none; b=K8E0t+dXsLdXTJdbf3iBC/YeL64kjg02wELif38xAistlWeebBr3CHMv8B8wyRURBGDzz47RVGRzCMmunR9bSdW9WqqsjgPPWYli/oqfVqEOwcSKSdFxvH3mWwGexPU4Ev07ouALtM+AOtk5sgzeNV2jfxQUijT5Iu7Ajp+lkpA=
+	t=1777340629; cv=none; b=qK630fv00MVOyr08HGpCz1TpAcdhDwBN5PNpV+T8Z0bl2SYEV163TwmI1V0lbCVfyzSt+DXRRvbtNWkgMDMpM3viAXhlLm+F9viaP29G2XI3ByLfGMBLaUiI6PksP5/nFqJ64fVSZnrg59bV/GY0/i04lYnmqjm5u8LZBT1B8y0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777340202; c=relaxed/simple;
-	bh=SxEnJ5lG7Z3dI9JA/sUF0K65BeJfFboQkDmohfpIDPA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CExG5A4dGRYGEWfy3QKAUKqD9agsrgOMRJz/KbMKt2Qkgz9u6DQQVcj7sPX4/EojSUTEpav26TQRflqh7pIJL8l0uSEUbjIbZaU/pzlaxfTud+vtzOhLV3koNb9dPBKAosi9K7VthYZqxHa8Z56JAB55RqeV97QyVpv923fAFds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gNoXSzz9; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777340629; c=relaxed/simple;
+	bh=CKXcttVAKTLWfc/d7LCcMNBW+m1sEh7gangdV+IOaUc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UdNt6VrxQZMx8XM7u1vCt5UFfLJXDQS5olelxbuVPAhr1tmdaXHVeKgh2ph4hkv236aSJlgu524F1aFwH4SxqLbNKiDm8ZM9c3gTkTdt2vRwRocB7hDFKqeT+hGyYSOqq5wwavbqkAIoWezC4PaDh7JjJn1skE9XAMdJmuE1GPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZKUichJ7; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gNoXSzz9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C431CC19425;
-	Tue, 28 Apr 2026 01:36:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777340202;
-	bh=SxEnJ5lG7Z3dI9JA/sUF0K65BeJfFboQkDmohfpIDPA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gNoXSzz9njbbGSOq71tipeGEgjt4i+Nq2t1QmvP0O1uNKQMyq/2NLqswpkfsvTaDM
-	 fjQpokGjQG9lS67rzUV0Kqqyk7B93gRLgWMLcfzkn7r0SdMM9cJaN6wXblS9v2/I8J
-	 KjcxQbMmsXQHuqYq6i2MKu1bC6sPJ5q8fqDsQlFhGyIL5IaqYQ1FUlRDxptQeyUHSo
-	 5iwI7nPcWUWngIRs5suRvgYrpN4zWlMh3mnuL/frmthtO6D4sJbwqUGy3D64qmjimK
-	 FcsJXV+lSuMVjpaxxczEoX5DkGrmiNjTEzzjMxeYA3Rgs3prI6mbKNvBtCGOxNKV1O
-	 HXWcR/tufMzBw==
-Date: Mon, 27 Apr 2026 18:35:24 -0700
-From: Eric Biggers <ebiggers@kernel.org>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: netdev@vger.kernel.org, linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Jason A . Donenfeld" <Jason@zx2c4.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Dmitry Safonov <0x7f454c46@gmail.com>
-Subject: Re: [PATCH net-next v2 2/5] net/tcp-ao: Use crypto library API
- instead of crypto_ahash
-Message-ID: <20260428013524.GB2700@sol>
-References: <20260427172727.9310-1-ebiggers@kernel.org>
- <20260427172727.9310-3-ebiggers@kernel.org>
- <20260428022445.65e14a27@pumpkin>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZKUichJ7"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2b7adb38d65so45538575ad.2
+        for <netdev@vger.kernel.org>; Mon, 27 Apr 2026 18:43:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777340627; x=1777945427; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=4lnDRz4vDSxZH5/9mkvW+QxHdHkEwKhYpgnzlKg+vYA=;
+        b=ZKUichJ7uFgQ40fRlfnd2KEqO0c8gblagXS88o+4BIuD7ENCdQzada6XhZ7Ypsa4EY
+         04dipPBhKWl6UoGKJ6q7fxUKPTgfBsRlVxxZW1pwlqRNq5OKgSuIy4DFa7xVcu4IslUa
+         8r0TQQOuGwnPXg/lTnr9kTpxwaFFifNtxwjP/snoIjmEJnKcTj6Am2XP5BzQT++YJ5Tb
+         EFgfL8fQSGYbkuZoFQ+8UWs6JYxqry94sL9S6SxEk4rQoaNtBZzzpIk2BbXkrMVuu4fO
+         GoZx5tOf7Q71n8q2LEW7axRePm7+gCYmXPQYakyepqhPZH43mrAA22Rhv6bV2jIu6svN
+         eE4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777340627; x=1777945427;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4lnDRz4vDSxZH5/9mkvW+QxHdHkEwKhYpgnzlKg+vYA=;
+        b=Vyp8BCLE0Nbww8ijqegIARzeKsGPTd5N/sjvFm24Huee6gogu1MydQBaGMvYBs+WK2
+         KAv5kzypoohfTQie6xdy8tlxJpmq4TRk/iZAcmG0q4JQuRXjemt7CIRnydWgYxW9uoiA
+         ZQLqaxRl5cKD2ZZemUyHTBnfoAfcTTO6uknCzcbpxJQZMrTbP7AYeScQJ7vDD94OeHwy
+         TqnlvgjhdxHFLu9b0EuPUfD3/Xex0uP7+Aayg712bnc4uzF4cpzrRwHTiJri99rAlgZp
+         FLn/yKiz7/aAsLoEaF0gf9beh63YjZ/4gff/mC6NkdxcuKmMz2GQ0gAZv9Bn6qgfsmVY
+         zsaQ==
+X-Gm-Message-State: AOJu0Yx3bjYYHBjPOUH1wMcQ9CYZASEIkOSSoQ9uZsGjNOsur/GGRQPP
+	44VI5r/krcAPjPwX0edZ6DCU4GvcRmB01E3obeTSyOHs5pcY2E9xq9JWUjS40bbj
+X-Gm-Gg: AeBDietue/Kq2MccspvyB75PURIsovcS6Rdx1nmH/62OzAYAP58AnlMcbPIWk1ZL4+c
+	1U82Nv5C1A82/AUMPRGVKLrOcxUF33VaCoY2uUgjRyaaeXb8CPFOQu3VK9Ft1xEKQ8Qsm59o7jI
+	blqIfFrfAWHwd/f6v7OqTUmry5kElmRhm/h7oTmD3vEilH/wTuCVrHbNH6kbxZl/fwiYwRTn5s0
+	1RMX/5Rk19p1XHRwFKVP4iAVJQJ/XLa54n+HNWLHRy72dNJlbHp3cHsj9lp8ujJkLst+EDMG86b
+	KfBs0Qp6guXC4yL0dIDw5mYh6XYuS6ah694aCHTmXpFT2IzPlZU5hp4iyUaS+mglBFXnuFe93ZW
+	YspRHAFqpV22yjykQqM4SQWkKDc2uH2dBCRLBWAkQIQot/GDH8jclDtrb1cAXipYnyTyuUuOgch
+	q7Fec+sXYSLmosDoXgY1zs6km0Ro8FW3lyMwKFWOhukCcd3ahkXNrN6po0IYccFb7n7Rz8SXM9Q
+	ubl6ggMfp4+HxLOKTq7/2MpSrIhA6PNkZy9
+X-Received: by 2002:a17:903:388f:b0:2b2:4a9a:b168 with SMTP id d9443c01a7336-2b97c3febaamr9189575ad.11.1777340627263;
+        Mon, 27 Apr 2026 18:43:47 -0700 (PDT)
+Received: from ryzen ([2601:644:8000:5b5d::8bd])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b97aaaf144sm7890965ad.29.2026.04.27.18.43.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Apr 2026 18:43:46 -0700 (PDT)
+From: Rosen Penev <rosenp@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Justin Chen <justin.chen@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	bcm-kernel-feedback-list@broadcom.com (open list:BROADCOM ASP 2.0 ETHERNET DRIVER),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCHv2 net-next] net: bcmasp: handle EPROBE_DEFER for MAC retrieval
+Date: Mon, 27 Apr 2026 18:43:29 -0700
+Message-ID: <20260428014329.779779-1-rosenp@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260428022445.65e14a27@pumpkin>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Apr 28, 2026 at 02:24:45AM +0100, David Laight wrote:
-> On Mon, 27 Apr 2026 10:27:24 -0700
-> Eric Biggers <ebiggers@kernel.org> wrote:
-> 
-> > Currently the kernel's TCP-AO implementation does the MAC and KDF
-> > computations using the crypto_ahash API.  This API is inefficient and
-> > difficult to use, and it has required extensive workarounds in the form
-> > of per-CPU preallocated objects (tcp_sigpool) to work at all.
-> > 
-> > Let's use lib/crypto/ instead.  This means switching to straightforward
-> > stack-allocated structures, virtually addressed buffers, and direct
-> > function calls.  It also means removing quite a bit of error handling.
-> > This makes TCP-AO quite a bit faster.
-> > 
-> > This also enables many additional cleanups, which later commits will
-> > handle: removing tcp-sigpool, removing support for crypto_tfm cloning,
-> > removing more error handling, and replacing more dynamically-allocated
-> > buffers with stack buffers based on the now-statically-known limits.
-> > 
-> > Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-> > Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-> ...
-> > @@ -344,33 +444,26 @@ static int tcp_v4_ao_calc_key(struct tcp_ao_key *mkt, u8 *key,
-> >  	struct kdf_input_block {
-> >  		u8                      counter;
-> >  		u8                      label[6];
-> >  		struct tcp4_ao_context	ctx;
-> >  		__be16                  outlen;
-> > -	} __packed * tmp;
-> 
-> That looks a bit horrid.
-> I also had a feeling that the compiler sometimes rejects non-packed structures
-> inside packed ones.
-> Perhaps nest the whole thing inside another structure that has an initial
-> u8 pad and is marked __packed __aligned(4).
-> Then the assignments to the fields of 'ctx' will be known to be aligned
-> even when tcp4_ao_context is also __packed.
-> 
-> 	David
+of_get_ethdev_address can return EPROBE_DEFER when using nvmem. To
+handle this, encode the error with ERR_PTR for minimal changes. Adjust
+the only place using bcmasp_interface_create.
 
-This series doesn't change the definition of struct kdf_input_block.
-Could we defer changing it (if it makes sense to) to a later patch?
-Yes, there might be a way to get the be32 and be16 fields naturally
-aligned and get the compiler to understand that.  But that would be a
-pretty small micro-optimization compared to removing all the tcp_sigpool
-overhead from the same function (which this series does).
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+---
+ v2: use dev_err_probe.
+ drivers/net/ethernet/broadcom/asp2/bcmasp.c      | 6 +++---
+ drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c | 6 ++++--
+ 2 files changed, 7 insertions(+), 5 deletions(-)
 
-- Eric
+diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp.c b/drivers/net/ethernet/broadcom/asp2/bcmasp.c
+index 972474893a6b..e9b11b956344 100644
+--- a/drivers/net/ethernet/broadcom/asp2/bcmasp.c
++++ b/drivers/net/ethernet/broadcom/asp2/bcmasp.c
+@@ -1333,10 +1333,10 @@ static int bcmasp_probe(struct platform_device *pdev)
+ 	i = 0;
+ 	for_each_available_child_of_node_scoped(ports_node, intf_node) {
+ 		intf = bcmasp_interface_create(priv, intf_node, i);
+-		if (!intf) {
+-			dev_err(dev, "Cannot create eth interface %d\n", i);
++		if (IS_ERR(intf)) {
+ 			of_node_put(ports_node);
+-			ret = -EINVAL;
++			ret = dev_err_probe(dev, PTR_ERR(intf), "Cannot create eth interface %d\n",
++					    i);
+ 			goto err_cleanup;
+ 		}
+ 		list_add_tail(&intf->list, &priv->intfs);
+diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
+index ec63f50a849e..caf0e408e2f7 100644
+--- a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
++++ b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
+@@ -1254,7 +1254,7 @@ struct bcmasp_intf *bcmasp_interface_create(struct bcmasp_priv *priv,
+ 	struct device *dev = &priv->pdev->dev;
+ 	struct bcmasp_intf *intf;
+ 	struct net_device *ndev;
+-	int ch, port, ret;
++	int ch, port, ret = -EINVAL;
+ 
+ 	if (of_property_read_u32(ndev_dn, "reg", &port)) {
+ 		dev_warn(dev, "%s: invalid port number\n", ndev_dn->name);
+@@ -1314,6 +1314,8 @@ struct bcmasp_intf *bcmasp_interface_create(struct bcmasp_priv *priv,
+ 	}
+ 
+ 	ret = of_get_ethdev_address(ndev_dn, ndev);
++	if (ret == -EPROBE_DEFER)
++		return ERR_PTR(-EPROBE_DEFER);
+ 	if (ret) {
+ 		netdev_warn(ndev, "using random Ethernet MAC\n");
+ 		eth_hw_addr_random(ndev);
+@@ -1340,7 +1342,7 @@ struct bcmasp_intf *bcmasp_interface_create(struct bcmasp_priv *priv,
+ err_free_netdev:
+ 	free_netdev(ndev);
+ err:
+-	return NULL;
++	return ERR_PTR(ret);
+ }
+ 
+ void bcmasp_interface_destroy(struct bcmasp_intf *intf)
+-- 
+2.54.0
+
