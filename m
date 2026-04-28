@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D6003DA5B6;
-	Tue, 28 Apr 2026 07:22:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D31F3DA7D9;
+	Tue, 28 Apr 2026 07:22:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777360938; cv=none; b=GO3R+SuPSXFa0cBIiJJSAXetAfvHEt4k3nUSd314IHN0hLDm8F0mTlSDPmF9/GbYAnrd8eLKM3XyHlfdmjd1hrKUMh8lxJP+uc45nwneiAW5f6Fq47rSLIUz2+38fWa++/7yI1mXCuLVdcuk7yVHp775KUgimOTRG7lI4vUYOEg=
+	t=1777360939; cv=none; b=PaEAfugmJs3IjqAvvDSrER9yGr8bEDmTbP2aoAwWYpmeOQRx1MqVfdCBtMcGCu+rnBfEmP0jjG9X5/foSc2Wc6lroSir9X6RUt5ypAShcmn+4UlUe5KtJXBYr4gL+6VnGnXW5D+Oas9tOhEu7SIDP4Y/4ioMgI5Uu2FO3Ies1Tc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777360938; c=relaxed/simple;
-	bh=AlIGB9lf9eF95T/O7YxOQaHcetghLMJ9AjutOyvepFM=;
+	s=arc-20240116; t=1777360939; c=relaxed/simple;
+	bh=GsYEHEkt98uPa1kAUcoAyuDvM0AUCRrOyaT9RTmz9q8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qBSaouJk8X08rQl1V9RklhWfuVR6Sh5kGsVACfTSE8vHdN0iYZwNDCXG6jnwuYrYjTdz65fdVnYZ1b/t9Ux2p6zkhZGdxffe8IieeCNnSXgZwAtbwGnWA3Xsl7NKZPy65p2d/2gXmQRYygE9uAI5JR118dHGUAg45WMStaxII+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Rg0N6chZ; arc=none smtp.client-ip=198.175.65.14
+	 MIME-Version; b=ag8ZHOlcmzLS9bbVuKQCU0TNZTmpd91ACV6OdMkOuotRDmsmTDdikJFZHEtcYoc81iZMhAQpfenbW/+fyi8ItoxTZDKks6DyqdckJruFyDb533SGuZ7NshhQRe0vuc832BkPofaVGx4Scr2nxg+KZs/YoKQ/hT28DzGSNGh4740=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dGIHnEMB; arc=none smtp.client-ip=198.175.65.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Rg0N6chZ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dGIHnEMB"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777360936; x=1808896936;
+  t=1777360937; x=1808896937;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=AlIGB9lf9eF95T/O7YxOQaHcetghLMJ9AjutOyvepFM=;
-  b=Rg0N6chZQ7NylPv2QjzdniwOaoVqnQfUGhaNsZIKc6xenO1hfLEvCeXT
-   9a7HQLMPkw7pFWGtOLoc7XUnsif9yoXYHDd6ZScVh2T2HeO+BOH2wuvjE
-   2haxLxkBaCQUp7MBRRLHoPQYd7sQpRHxtMoqON1JdXnJNrCsvaCfK2KBf
-   0usLjSPGIZp+1n197zybuq6VEfNG9rCp8TX3i8p1QsS2DfG4ja5FGl22b
-   EIhPz0OFqKuvHhye+xau5HWhBQPaKfcP5vWzaNi1/mhiex8HuuVlnZBcv
-   kTlZz/snuSDGMWYoIh0ZmGTzdmFTy2EfF97zM/c7EcA1gFClZQAEO3dmM
+  bh=GsYEHEkt98uPa1kAUcoAyuDvM0AUCRrOyaT9RTmz9q8=;
+  b=dGIHnEMB5PWlLtFAzfU0/alY0HiBI76q3PwGLo8q69v5Mmbz9fmgryCt
+   lseGNXDwTpP27xjhXbcZkemHreBpmp7UbwE8KuEHyZ5OP+5g+BBKFQXP9
+   9VfbEoRQleUnUXIlsBOHetOghmEeVWRHNo4vx5jiiG+pGZGu3EPEP3qm4
+   RhpGOhJodSAc691PnVnrb1Ea+Hc0r9FL+kTfS5VzfyDZCiVKJR2LVOk+S
+   Dx34mRVucUB8oiDKhc9Vx89K5X41OYKSAl8Bjv/YEsbI4ypZdEAzIT98L
+   +A3Z3qEfMjbiDT2DVtVbLeM3objRvXyq66tneGz0mL923SYw9z743/4gX
    w==;
-X-CSE-ConnectionGUID: cRFXabFxSneILjP+0NvsAw==
-X-CSE-MsgGUID: D8oo87DWQcSiiage+KD0oA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="82126034"
+X-CSE-ConnectionGUID: +QqqQzjBRK+UJNh2GJiBgA==
+X-CSE-MsgGUID: 5srFOKerRQeX/Sn/kogdfQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="89720831"
 X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
-   d="scan'208";a="82126034"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 00:22:14 -0700
-X-CSE-ConnectionGUID: H5kDPuT4Ss+YWSlcnRBJxQ==
-X-CSE-MsgGUID: pj2YPWByQj65M2GxjalYBg==
+   d="scan'208";a="89720831"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 00:22:14 -0700
+X-CSE-ConnectionGUID: WASokzf3QwCfAqesvCb2Gg==
+X-CSE-MsgGUID: fLtZC1HJS5mPzb1uoGYSWA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
-   d="scan'208";a="229308639"
+   d="scan'208";a="238206405"
 Received: from black.igk.intel.com ([10.91.253.5])
-  by fmviesa006.fm.intel.com with ESMTP; 28 Apr 2026 00:22:11 -0700
+  by orviesa004.jf.intel.com with ESMTP; 28 Apr 2026 00:22:11 -0700
 Received: by black.igk.intel.com (Postfix, from userid 1001)
-	id 092599D; Tue, 28 Apr 2026 09:22:10 +0200 (CEST)
+	id 01E3699; Tue, 28 Apr 2026 09:22:10 +0200 (CEST)
 From: Mika Westerberg <mika.westerberg@linux.intel.com>
 To: linux-usb@vger.kernel.org
 Cc: Yehezkel Bernat <YehezkelShB@gmail.com>,
@@ -58,9 +58,9 @@ Cc: Yehezkel Bernat <YehezkelShB@gmail.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	netdev@vger.kernel.org,
 	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 4/9] thunderbolt / net: Move ring_frame_size() to thunderbolt.h
-Date: Tue, 28 Apr 2026 09:22:04 +0200
-Message-ID: <20260428072209.3084930-5-mika.westerberg@linux.intel.com>
+Subject: [PATCH 2/9] thunderbolt: Add KUnit test for tb_property_merge_dir()
+Date: Tue, 28 Apr 2026 09:22:02 +0200
+Message-ID: <20260428072209.3084930-3-mika.westerberg@linux.intel.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260428072209.3084930-1-mika.westerberg@linux.intel.com>
 References: <20260428072209.3084930-1-mika.westerberg@linux.intel.com>
@@ -72,100 +72,113 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This function can be used outside of thunderbolt networking driver so
-move it to the common header.
-
-No functional changes.
+This makes sure it keeps working if we ever need to change it.
 
 Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 ---
- drivers/net/thunderbolt/main.c | 16 ++++++----------
- include/linux/thunderbolt.h    | 10 +++++++++-
- 2 files changed, 15 insertions(+), 11 deletions(-)
+ drivers/thunderbolt/test.c | 82 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 82 insertions(+)
 
-diff --git a/drivers/net/thunderbolt/main.c b/drivers/net/thunderbolt/main.c
-index d8fcf18fc55c..49673f7e0055 100644
---- a/drivers/net/thunderbolt/main.c
-+++ b/drivers/net/thunderbolt/main.c
-@@ -38,7 +38,7 @@
- #define TBNET_MATCH_FRAGS_ID	BIT(1)
- #define TBNET_64K_FRAMES	BIT(2)
- #define TBNET_MAX_MTU		SZ_64K
--#define TBNET_FRAME_SIZE	SZ_4K
-+#define TBNET_FRAME_SIZE	TB_MAX_FRAME_SIZE
- #define TBNET_MAX_PAYLOAD_SIZE	\
- 	(TBNET_FRAME_SIZE - sizeof(struct thunderbolt_ip_frame_header))
- /* Rx packets need to hold space for skb_shared_info */
-@@ -327,11 +327,6 @@ static void stop_login(struct tbnet *net)
- 	netdev_dbg(net->dev, "login stopped\n");
+diff --git a/drivers/thunderbolt/test.c b/drivers/thunderbolt/test.c
+index 1f4318249c22..ce14ab9ef7dd 100644
+--- a/drivers/thunderbolt/test.c
++++ b/drivers/thunderbolt/test.c
+@@ -2852,6 +2852,87 @@ static void tb_test_property_copy(struct kunit *test)
+ 	tb_property_free_dir(src);
  }
  
--static inline unsigned int tbnet_frame_size(const struct tbnet_frame *tf)
--{
--	return tf->frame.size ? : TBNET_FRAME_SIZE;
--}
--
- static void tbnet_free_buffers(struct tbnet_ring *ring)
- {
- 	unsigned int i;
-@@ -561,7 +556,7 @@ static struct tbnet_frame *tbnet_get_tx_buffer(struct tbnet *net)
- 	tf->frame.size = 0;
- 
- 	dma_sync_single_for_cpu(dma_dev, tf->frame.buffer_phy,
--				tbnet_frame_size(tf), DMA_TO_DEVICE);
-+				tb_ring_frame_size(&tf->frame), DMA_TO_DEVICE);
- 
- 	return tf;
- }
-@@ -743,7 +738,7 @@ static bool tbnet_check_frame(struct tbnet *net, const struct tbnet_frame *tf,
- 	}
- 
- 	/* Should be greater than just header i.e. contains data */
--	size = tbnet_frame_size(tf);
-+	size = tb_ring_frame_size(&tf->frame);
- 	if (size <= sizeof(*hdr)) {
- 		net->stats.rx_length_errors++;
- 		return false;
-@@ -1010,7 +1005,8 @@ static bool tbnet_xmit_csum_and_map(struct tbnet *net, struct sk_buff *skb,
- 						hdr->frame_index, hdr->frame_count);
- 			dma_sync_single_for_device(dma_dev,
- 				frames[i]->frame.buffer_phy,
--				tbnet_frame_size(frames[i]), DMA_TO_DEVICE);
-+				tb_ring_frame_size(&frames[i]->frame),
-+						   DMA_TO_DEVICE);
- 		}
- 
- 		return true;
-@@ -1084,7 +1080,7 @@ static bool tbnet_xmit_csum_and_map(struct tbnet *net, struct sk_buff *skb,
- 	 */
- 	for (i = 0; i < frame_count; i++) {
- 		dma_sync_single_for_device(dma_dev, frames[i]->frame.buffer_phy,
--			tbnet_frame_size(frames[i]), DMA_TO_DEVICE);
-+			tb_ring_frame_size(&frames[i]->frame), DMA_TO_DEVICE);
- 	}
- 
- 	return true;
-diff --git a/include/linux/thunderbolt.h b/include/linux/thunderbolt.h
-index f60e3a1aecae..1d1bd458b5af 100644
---- a/include/linux/thunderbolt.h
-+++ b/include/linux/thunderbolt.h
-@@ -628,7 +628,15 @@ struct ring_frame {
++static void tb_test_property_merge(struct kunit *test)
++{
++	struct tb_property_dir *dir1, *dir2, *dir3;
++	struct tb_property *p;
++	uuid_t uuid;
++	int ret;
++
++	dir1 = tb_property_create_dir(&network_dir_uuid);
++	KUNIT_ASSERT_NOT_NULL(test, dir1);
++	ret = tb_property_add_immediate(dir1, "prtcid", 1);
++	KUNIT_EXPECT_EQ(test, ret, 0);
++	ret = tb_property_add_immediate(dir1, "prtcvers", 1);
++	KUNIT_EXPECT_EQ(test, ret, 0);
++	ret = tb_property_add_immediate(dir1, "prtcrevs", 0);
++	KUNIT_EXPECT_EQ(test, ret, 0);
++	ret = tb_property_add_immediate(dir1, "prtcstns", 0);
++	KUNIT_EXPECT_EQ(test, ret, 0);
++
++	dir2 = tb_property_create_dir(&network_dir_uuid);
++	KUNIT_ASSERT_NOT_NULL(test, dir2);
++	ret = tb_property_add_text(dir2, "descr", "This is text");
++	KUNIT_EXPECT_EQ(test, ret, 0);
++	/* This replaces the value in dir1 */
++	ret = tb_property_add_immediate(dir2, "prtcvers", 0x1234);
++	KUNIT_EXPECT_EQ(test, ret, 0);
++
++	uuid_gen(&uuid);
++	dir3 = tb_property_create_dir(&uuid);
++	KUNIT_ASSERT_NOT_NULL(test, dir3);
++	ret = tb_property_add_immediate(dir3, "value0", 0);
++	KUNIT_EXPECT_EQ(test, ret, 0);
++	ret = tb_property_add_text(dir3, "value1", "Text value");
++	KUNIT_EXPECT_EQ(test, ret, 0);
++	ret = tb_property_add_dir(dir2, "my", dir3);
++	KUNIT_EXPECT_EQ(test, ret, 0);
++
++	ret = tb_property_merge_dir(dir1, dir2, true);
++	KUNIT_EXPECT_EQ(test, ret, 0);
++
++	p = tb_property_get_next(dir1, NULL);
++	KUNIT_ASSERT_NOT_NULL(test, p);
++	KUNIT_ASSERT_STREQ(test, &p->key[0], "prtcid");
++	KUNIT_ASSERT_EQ(test, p->type, TB_PROPERTY_TYPE_VALUE);
++	KUNIT_ASSERT_EQ(test, p->length, 1);
++	KUNIT_ASSERT_EQ(test, p->value.immediate, 1);
++	p = tb_property_get_next(dir1, p);
++	KUNIT_ASSERT_NOT_NULL(test, p);
++	KUNIT_ASSERT_STREQ(test, &p->key[0], "prtcvers");
++	KUNIT_ASSERT_EQ(test, p->type, TB_PROPERTY_TYPE_VALUE);
++	KUNIT_ASSERT_EQ(test, p->length, 1);
++	KUNIT_ASSERT_EQ(test, p->value.immediate, 0x1234);
++	p = tb_property_get_next(dir1, p);
++	KUNIT_ASSERT_NOT_NULL(test, p);
++	KUNIT_ASSERT_STREQ(test, &p->key[0], "prtcrevs");
++	KUNIT_ASSERT_EQ(test, p->type, TB_PROPERTY_TYPE_VALUE);
++	KUNIT_ASSERT_EQ(test, p->length, 1);
++	KUNIT_ASSERT_EQ(test, p->value.immediate, 0);
++	p = tb_property_get_next(dir1, p);
++	KUNIT_ASSERT_NOT_NULL(test, p);
++	KUNIT_ASSERT_STREQ(test, &p->key[0], "prtcstns");
++	KUNIT_ASSERT_EQ(test, p->type, TB_PROPERTY_TYPE_VALUE);
++	KUNIT_ASSERT_EQ(test, p->length, 1);
++	KUNIT_ASSERT_EQ(test, p->value.immediate, 0);
++	p = tb_property_get_next(dir1, p);
++	KUNIT_ASSERT_NOT_NULL(test, p);
++	KUNIT_ASSERT_STREQ(test, &p->key[0], "descr");
++	KUNIT_ASSERT_EQ(test, p->type, TB_PROPERTY_TYPE_TEXT);
++	KUNIT_ASSERT_EQ(test, p->length, 4);
++	KUNIT_ASSERT_STREQ(test, p->value.text, "This is text");
++	p = tb_property_get_next(dir1, p);
++	KUNIT_ASSERT_NOT_NULL(test, p);
++	KUNIT_ASSERT_STREQ(test, &p->key[0], "my");
++	KUNIT_ASSERT_EQ(test, p->type, TB_PROPERTY_TYPE_DIRECTORY);
++	compare_dirs(test, p->value.dir, dir3);
++	p = tb_property_get_next(dir1, p);
++	KUNIT_ASSERT_NULL(test, p);
++
++	tb_property_free_dir(dir2);
++	tb_property_free_dir(dir1);
++}
++
+ static struct kunit_case tb_test_cases[] = {
+ 	KUNIT_CASE(tb_test_path_basic),
+ 	KUNIT_CASE(tb_test_path_not_connected_walk),
+@@ -2892,6 +2973,7 @@ static struct kunit_case tb_test_cases[] = {
+ 	KUNIT_CASE(tb_test_property_parse),
+ 	KUNIT_CASE(tb_test_property_format),
+ 	KUNIT_CASE(tb_test_property_copy),
++	KUNIT_CASE(tb_test_property_merge),
+ 	{ }
  };
  
- /* Minimum size for ring_rx */
--#define TB_FRAME_SIZE		0x100
-+#define TB_FRAME_SIZE		256
-+#define TB_MAX_FRAME_SIZE	4096
-+
-+static inline size_t tb_ring_frame_size(const struct ring_frame *frame)
-+{
-+	if (frame->size)
-+		return frame->size;
-+	return TB_MAX_FRAME_SIZE;
-+}
- 
- struct tb_ring *tb_ring_alloc_tx(struct tb_nhi *nhi, int hop, int size,
- 				 unsigned int flags);
 -- 
 2.50.1
 
