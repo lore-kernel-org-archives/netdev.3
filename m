@@ -1,252 +1,198 @@
-Received: from mail-qt1-f201.google.com (mail-qt1-f201.google.com [209.85.160.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C1523D75C6
-	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 08:28:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.201
+Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4C3829B20A;
+	Tue, 28 Apr 2026 08:30:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777364935; cv=none; b=uOU3Fm84lxYuhdfctEF4+2N+F4rJnmU6DBfsDPc8AiflNhBbY76lUD+i9yuNs8t17Yy+EHdc2j/C5kVuKdwalWQ7VqaXHFY5svKwnGXB9w/vXyV751g+ghm55b/m0nnYzJ38G9GymD12pstuw3UXRyHMOemUkQWpNys+Asqm5+8=
+	t=1777365014; cv=none; b=SfZcqKfSmTMxTX3jweimw28Dx3SznGpXmg7+DFEUif4Oa+mpNICDNQHqLM+G1BThoMFuzQRPTdfePTjex8Q5hXasWm/KZ8aHrVxJV0KYZHLP497xuTOq0WkhWCYjmr+reauMezidGwFfcwsr0+z3atmRp2sCfL4inJEOUmWAVts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777364935; c=relaxed/simple;
-	bh=XhJcrSJ5j1XR3kI25yvETY77CY8uis/clrpe5Cu19ns=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Z0i2vAjwUDnK0TCemhIWxHajlNTMV9Zs3DX4QELbj1+iUsHOVGLk/NuzO7M73eFrEU2j7oUjkjGu4Ld0XPD1Z2lueByK3TvdW8CXzOS3+X1BAxpA3SMbepZ03dkTyYhRZ19BVs6xqeqD6Ux6MyYNRh764DPr65tvDWmzGRfMvxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mguRKT73; arc=none smtp.client-ip=209.85.160.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mguRKT73"
-Received: by mail-qt1-f201.google.com with SMTP id d75a77b69052e-50d812c898cso295212701cf.1
-        for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 01:28:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777364933; x=1777969733; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=AZ7AM4sUTj1CsDlwy22BwmLFhBvxq226uLWhzfZ1iUw=;
-        b=mguRKT73Lhrp131LzAIOUjvp4Ra1iQQPciutSrlWS/29TZuPmowgk2DU4PQjht+kvh
-         HyP84aY+xIwBnLjNTWtduvxas5uJlSYKq1xdCQSe0q/LKO5dHSQ5lHck3hxlIyjDuNie
-         GMAMt6og/Su+GVumFy40dJmqploPmfgnVQFOU3lfc2zVgO5icow4+n9jdfF2yeWnHwg5
-         4s2cGP237A9Sd34hqyGqE0h4XO2ekPgCp047B+DJgyQHXFDrG5kicmffluXaxzV+OhQK
-         oFt24/AyRMRNSO6sSJXtGv4blkii/ZbUft0c6Rhcf8oRATE9X2kbhjeFmJYQOUCrgzaf
-         b0ug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777364933; x=1777969733;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AZ7AM4sUTj1CsDlwy22BwmLFhBvxq226uLWhzfZ1iUw=;
-        b=Ixh+bNz6iwf7mebeNxfPGTqqJgtbn2VQ116aNB/risWnsujkmwWBA5CTQuB6IGw2IZ
-         MfxdAEL3cUHhudS5Klwz2LH2lzDKf5RtA0pvZYVaHhSp0sCOSWmfGYjMiMeDd95qqBOd
-         jS7vv64IUYPZKnkr/LSj+f6WGPtw/d8mk13QdrkKyzZvmJ0Qk0nwfblk0Yhdqs9DZTtG
-         4J2FtuxpUkzK1ucemKKEi9pDBUzm//2QJxRrpdXe27cDWLtrTUC4L1UOgBNd+Ifx9gpd
-         dDsgyprXoqGg2Nr+hOI3ngZLVUtFe1kwckxiFvhh75hpYkBEioDDQFU7MVB+FvVz7r0q
-         QZ2Q==
-X-Forwarded-Encrypted: i=1; AFNElJ9n0iHAHuebmWYHoW3dclUgpT48g1qOeBCfoBwlloyaIprhh3l544SLa1qGYxi1HVajMD0nvMk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzSFop5gZtcOBrwo/a5/EfLE0WPtVt6Ya0ThojTEuFswXNmZ2kb
-	0+SfJ7n4X64VSa2yebQgK+FL2wfrqDMHqQEwEh0kNNsicpPATp20/Ql8zSPlePrq1gvMneQVKda
-	lDPss1qmdt3tTMw==
-X-Received: from qtbce13.prod.google.com ([2002:a05:622a:41cd:b0:50f:c3ab:2ee9])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:622a:10a:b0:50d:efc1:841d with SMTP id d75a77b69052e-5100e13f4e3mr25680781cf.23.1777364932985;
- Tue, 28 Apr 2026 01:28:52 -0700 (PDT)
-Date: Tue, 28 Apr 2026 08:28:51 +0000
+	s=arc-20240116; t=1777365014; c=relaxed/simple;
+	bh=06IdvlqN3C6rUqlYelqWPtkHcy6SOnAqVKtcRw4LPmw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sXpQpgueEVmf0h3F+vB96ACkovI2cxUbni2co0gHnUWYXkCxSx14dp/Trm7iS2Wt2u3qjmR03ShcLEpVcP+7iU0pvQhUVR1SrzGb02WF/1om5XU75noR7kbzc4Rw6Qou1yaJGS0IZ6/qyp5qkhpgYcPA7qgPYgFBPARX6uWyhAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
+X-AuditID: a67dfc5b-c2dff70000001609-83-69f06c832b09
+Date: Tue, 28 Apr 2026 17:14:53 +0900
+From: Byungchul Park <byungchul@sk.com>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net,
+	netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+	andrew+netdev@lunn.ch, horms@kernel.org, asml.silence@gmail.com,
+	axboe@kernel.dk, almasrymina@google.com, sdf@fomichev.me,
+	hawk@kernel.org, akpm@linux-foundation.org, rppt@kernel.org,
+	io-uring@vger.kernel.org, kernel_team@skhynix.com
+Subject: Re: [PATCH net] net: add net_iov_init() and use it to initialize
+ ->page_type
+Message-ID: <20260428081453.GA29789@system.software.com>
+References: <20260428025320.853452-1-kuba@kernel.org>
+ <6dcbee42-df9b-4c0a-b153-aad953441fad@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
-Message-ID: <20260428082851.3240821-1-edumazet@google.com>
-Subject: [PATCH iproute2-next] tc: use ll_init_map() only when needed
-From: Eric Dumazet <edumazet@google.com>
-To: David Ahern <dsahern@kernel.org>, Stephen Hemminger <stephen@networkplumber.org>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6dcbee42-df9b-4c0a-b153-aad953441fad@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprGIsWRmVeSWpSXmKPExsXC9ZZnoW5zzodMg4OtWhZz1q9hs1j9o8Ji
+	+YMdrBZzVm1jtFh9t5/NYs75FhaLp8cesVvsad/ObPGo/wSbxbvWcywWF7b1sVocWyBm8e30
+	G0aLI+u3M1lcnbmLyaLj5X0WBwGPLStvMnnc2HeKyWPnrLvsHgs2lXpcPlvqsWlVJ5vHiRm/
+	WTx27vjM5PF+31U2j8+b5AK4orhsUlJzMstSi/TtErgyPs2ezFawSLdi9v7LjA2Mi5S6GDk5
+	JARMJLbcWsrSxcgBZh/tFgEJswioSjxonsQMYrMJqEvcuPETzBYRMJDYvfk8K4jNLPCOSeLT
+	wSQQW1ggXGLHo33sIGN4BSwkWnpVQMJCApkSC+5/AmvlFRCUODnzCQtEq5bEjX8vmUDKmQWk
+	JZb/4wAJcwrYSfz/3s4IYosKKEsc2HYcqIQL6LB+dokzbx6xQlwsKXFwxQ2WCYwCs5CMnYVk
+	7CyEsQsYmVcxCmXmleUmZuaY6GVU5mVW6CXn525iBMbWsto/0TsYP10IPsQowMGoxMN7Iux9
+	phBrYllxZe4hRgkOZiUR3iv/3mYK8aYkVlalFuXHF5XmpBYfYpTmYFES5zX6Vp4iJJCeWJKa
+	nZpakFoEk2Xi4JRqYPTXSDFcvlO8uGteQMTRC64su+ru+9g3mbKUvy/4m7ckrfPRlnq/Szzt
+	0/KzAo4Hfaxi3a51rpjJfhFPvP1hr8BrB+vk/cwTDFaGvfm3z3XNiqY5W8v2bb+q7DPxx+0d
+	Kxq2bZ3hUDTLY02G8tawLfLPhKqDeb8W3xDw/7v4YM0H/TsHvz59lKbEUpyRaKjFXFScCACJ
+	EHK5qQIAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrLLMWRmVeSWpSXmKPExsXC5WfdrNuc8yHT4Pc+OYs569ewWaz+UWGx
+	/MEOVos5q7YxWqy+289mMed8C4vF02OP2C32tG9ntnjUf4LN4l3rORaLw3NPslpc2NbHanFs
+	gZjFt9NvGC2OrN/OZHF15i4mi46X91kcBD22rLzJ5HFj3ykmj52z7rJ7LNhU6nH5bKnHplWd
+	bB4nZvxm8di54zOTx/t9V9k8Fr/4wOTxeZNcAHcUl01Kak5mWWqRvl0CV8an2ZPZChbpVsze
+	f5mxgXGRUhcjB4eEgInE0W6RLkZODhYBVYkHzZOYQWw2AXWJGzd+gtkiAgYSuzefZwWxmQXe
+	MUl8OpgEYgsLhEvseLSPHWQMr4CFREuvCkhYSCBTYsH9T2CtvAKCEidnPmGBaNWSuPHvJRNI
+	ObOAtMTyfxwgYU4BO4n/39sZQWxRAWWJA9uOM01g5J2FpHsWku5ZCN0LGJlXMYpk5pXlJmbm
+	mOoVZ2dU5mVW6CXn525iBEbKsto/E3cwfrnsfohRgINRiYf3RNj7TCHWxLLiytxDjBIczEoi
+	vFf+vc0U4k1JrKxKLcqPLyrNSS0+xCjNwaIkzusVnpogJJCeWJKanZpakFoEk2Xi4JRqYFy8
+	bSfbNYemnRw77si2bexc7mn2eOO3euv2iwFSIiUPfuaEpszSMfp59seb576/1pRItUeJabK1
+	LWL4FqHZetqr/cXnvLQra7xmqx1oOCh8s2fzg+KK1w/nfNh5tONNGR/H1LZjOvOXOX86d+no
+	vOt/Nh8t7OSWv/GspnOTnevDu3vm/03j9J6hxFKckWioxVxUnAgA3mk5z5ACAAA=
+X-CFilter-Loop: Reflected
 
-Some setups can have thousands of devices.
+On Tue, Apr 28, 2026 at 09:57:08AM +0200, Vlastimil Babka (SUSE) wrote:
+> +Cc Byungchul
+> 
+> On 4/28/26 04:53, Jakub Kicinski wrote:
+> > Commit db359fccf212 ("mm: introduce a new page type for page pool in
+> > page type") added a page_type field to struct net_iov at the same
+> > offset as struct page::page_type, so that page_pool_set_pp_info() can
+> > call __SetPageNetpp() uniformly on both pages and net_iovs.
+> >
+> > The page-type API requires the field to hold the UINT_MAX "no type"
+> > sentinel before a type can be set; for real struct page that invariant
+> > is established by the page allocator on free. struct net_iov is not
+> > allocated through the page allocator, so the field is left as zero
 
-ll_init_map() is rather expensive for them.
+My bad.  Overlooked the point.  Thanks for the fix.
 
-Only call ll_init_map() in the following cases:
+Acked-by: Byungchul Park <byungchul@sk.com>
 
-1) tc runs in batch mode.
-2) tc runs in monitor mode.
-3) tc dumps qdiscs/classes/filters for all netdev.
+	Byungchul
 
-This greatly reduces RTNL pressure on common operations.
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
----
- tc/f_route.c   |  1 -
- tc/m_mirred.c  |  2 --
- tc/tc.c        |  1 +
- tc/tc_class.c  |  6 ++----
- tc/tc_filter.c | 32 ++++++++++++++++----------------
- tc/tc_qdisc.c  |  5 ++---
- 6 files changed, 21 insertions(+), 26 deletions(-)
-
-diff --git a/tc/f_route.c b/tc/f_route.c
-index 96b99b06be179c90dfb0d24d9577b5206dd98ef1..c234ddf0cb9309556844c85047d0f9ef53a2fd7b 100644
---- a/tc/f_route.c
-+++ b/tc/f_route.c
-@@ -76,7 +76,6 @@ static int route_parse_opt(const struct filter_util *qu, char *handle, int argc,
- 			__u32 id;
- 
- 			NEXT_ARG();
--			ll_init_map(&rth);
- 			if ((id = ll_name_to_index(*argv)) <= 0) {
- 				fprintf(stderr, "Illegal \"fromif\"\n");
- 				return -1;
-diff --git a/tc/m_mirred.c b/tc/m_mirred.c
-index f4da3c76284460d7f4bb73c7c3c172732f054632..e9ae5199432e828026f15ce226c5f5f84998c660 100644
---- a/tc/m_mirred.c
-+++ b/tc/m_mirred.c
-@@ -213,8 +213,6 @@ parse_direction(const struct action_util *a, int *argc_p, char ***argv_p,
- 	if (d[0])  {
- 		int idx;
- 
--		ll_init_map(&rth);
--
- 		idx = ll_name_to_index(d);
- 		if (!idx)
- 			return nodev(d);
-diff --git a/tc/tc.c b/tc/tc.c
-index 0fc658c881f0f553f1f1f8d87b46943d4d0eed8f..7d69e4d533a98b9c071cb954443a049a52252f2c 100644
---- a/tc/tc.c
-+++ b/tc/tc.c
-@@ -243,6 +243,7 @@ static int batch(const char *name)
- 		return -1;
- 	}
- 
-+	ll_init_map(&rth);
- 	ret = do_batch(name, force, tc_batch_cmd, NULL);
- 
- 	rtnl_close(&rth);
-diff --git a/tc/tc_class.c b/tc/tc_class.c
-index 6d707d8c924f4b5e90201d4de8e9779f82ce17f3..9aace019e6c8b96fb51edb4fe89bea5b7469beed 100644
---- a/tc/tc_class.c
-+++ b/tc/tc_class.c
-@@ -136,11 +136,11 @@ static int tc_class_modify(int cmd, unsigned int flags, int argc, char **argv)
- 	}
- 
- 	if (d[0])  {
--		ll_init_map(&rth);
--
- 		req.t.tcm_ifindex = ll_name_to_index(d);
- 		if (!req.t.tcm_ifindex)
- 			return -nodev(d);
-+	} else {
-+		ll_init_map(&rth);
- 	}
- 
- 	if (rtnl_talk(&rth, &req.n, NULL) < 0)
-@@ -437,8 +437,6 @@ static int tc_class_list(int argc, char **argv)
- 		argc--; argv++;
- 	}
- 
--	ll_init_map(&rth);
--
- 	if (d[0]) {
- 		t.tcm_ifindex = ll_name_to_index(d);
- 		if (!t.tcm_ifindex)
-diff --git a/tc/tc_filter.c b/tc/tc_filter.c
-index 7db850bda11a3408ec66b457c9fc590f3a734f65..be70e360849e5058192640da0f061810a99e2ea8 100644
---- a/tc/tc_filter.c
-+++ b/tc/tc_filter.c
-@@ -188,16 +188,17 @@ static int tc_filter_modify(int cmd, unsigned int flags, int argc, char **argv)
- 		addattr_l(&req.n, sizeof(req), TCA_KIND, k, strlen(k)+1);
- 
- 	if (d[0])  {
--		ll_init_map(&rth);
--
- 		req.t.tcm_ifindex = ll_name_to_index(d);
- 		if (req.t.tcm_ifindex == 0) {
- 			fprintf(stderr, "Cannot find device \"%s\"\n", d);
- 			return 1;
- 		}
--	} else if (block_index) {
--		req.t.tcm_ifindex = TCM_IFINDEX_MAGIC_BLOCK;
--		req.t.tcm_block_index = block_index;
-+	} else {
-+		ll_init_map(&rth);
-+		if (block_index) {
-+			req.t.tcm_ifindex = TCM_IFINDEX_MAGIC_BLOCK;
-+			req.t.tcm_block_index = block_index;
-+		}
- 	}
- 
- 	if (q) {
-@@ -539,8 +540,6 @@ static int tc_filter_get(int cmd, unsigned int flags, int argc, char **argv)
- 	}
- 
- 	if (d[0])  {
--		ll_init_map(&rth);
--
- 		req.t.tcm_ifindex = ll_name_to_index(d);
- 		if (!req.t.tcm_ifindex)
- 			return -nodev(d);
-@@ -704,21 +703,22 @@ static int tc_filter_list(int cmd, int argc, char **argv)
- 
- 	req.t.tcm_info = TC_H_MAKE(prio<<16, protocol);
- 
--	ll_init_map(&rth);
--
- 	if (d[0]) {
- 		req.t.tcm_ifindex = ll_name_to_index(d);
- 		if (!req.t.tcm_ifindex)
- 			return -nodev(d);
- 		filter_ifindex = req.t.tcm_ifindex;
--	} else if (block_index) {
--		if (!tc_qdisc_block_exists(block_index)) {
--			fprintf(stderr, "Cannot find block \"%u\"\n", block_index);
--			return 1;
-+	} else {
-+		ll_init_map(&rth);
-+		if (block_index) {
-+			if (!tc_qdisc_block_exists(block_index)) {
-+				fprintf(stderr, "Cannot find block \"%u\"\n", block_index);
-+				return 1;
-+			}
-+			req.t.tcm_ifindex = TCM_IFINDEX_MAGIC_BLOCK;
-+			req.t.tcm_block_index = block_index;
-+			filter_block_index = block_index;
- 		}
--		req.t.tcm_ifindex = TCM_IFINDEX_MAGIC_BLOCK;
--		req.t.tcm_block_index = block_index;
--		filter_block_index = block_index;
- 	}
- 
- 	if (filter_chain_index_set)
-diff --git a/tc/tc_qdisc.c b/tc/tc_qdisc.c
-index 7eb9a31baa31fb91a8141c9eca1135e76a52fa8b..252ea861f249a5a71cf782389776e68c3e48c6cc 100644
---- a/tc/tc_qdisc.c
-+++ b/tc/tc_qdisc.c
-@@ -193,8 +193,6 @@ static int tc_qdisc_modify(int cmd, unsigned int flags, int argc, char **argv)
- 	if (d[0])  {
- 		int idx;
- 
--		ll_init_map(&rth);
--
- 		idx = ll_name_to_index(d);
- 		if (!idx)
- 			return -nodev(d);
-@@ -411,13 +409,14 @@ static int tc_qdisc_list(int argc, char **argv)
- 		argc--; argv++;
- 	}
- 
--	ll_init_map(&rth);
- 
- 	if (d[0]) {
- 		req.t.tcm_ifindex = ll_name_to_index(d);
- 		if (!req.t.tcm_ifindex)
- 			return -nodev(d);
- 		filter_ifindex = req.t.tcm_ifindex;
-+	} else {
-+		ll_init_map(&rth);
- 	}
- 
- 	if (dump_invisible) {
--- 
-2.54.0.545.g6539524ca2-goog
-
+> > (io_uring zcrx, which uses __GFP_ZERO) or as slab garbage (devmem,
+> > which uses kvmalloc_objs() without zeroing). When the page pool then
+> > calls page_pool_set_pp_info() on a freshly-bound niov,
+> > __SetPageNetpp()'s VM_BUG_ON_PAGE(page->page_type != UINT_MAX) fires
+> > and the kernel BUGs. Triggered in selftests by io_uring zcrx setup
+> > through the fbnic queue restart path:
+> >
+> >  kernel BUG at ./include/linux/page-flags.h:1062!
+> >  RIP: 0010:page_pool_set_pp_info (./include/linux/page-flags.h:1062
+> >                                   net/core/page_pool.c:716)
+> >  Call Trace:
+> >   <TASK>
+> >   net_mp_niov_set_page_pool (net/core/page_pool.c:1360)
+> >   io_pp_zc_alloc_netmems (io_uring/zcrx.c:1089 io_uring/zcrx.c:1110)
+> >   fbnic_fill_bdq (./include/net/page_pool/helpers.h:160
+> >                   drivers/net/ethernet/meta/fbnic/fbnic_txrx.c:906)
+> >   __fbnic_nv_restart (drivers/net/ethernet/meta/fbnic/fbnic_txrx.c:2470
+> >                       drivers/net/ethernet/meta/fbnic/fbnic_txrx.c:2874)
+> >   fbnic_queue_start (drivers/net/ethernet/meta/fbnic/fbnic_txrx.c:2903)
+> >   netdev_rx_queue_reconfig (net/core/netdev_rx_queue.c:137)
+> >   __netif_mp_open_rxq (net/core/netdev_rx_queue.c:234)
+> >   io_register_zcrx (io_uring/zcrx.c:818 io_uring/zcrx.c:903)
+> >   __io_uring_register (io_uring/register.c:931)
+> >   __do_sys_io_uring_register (io_uring/register.c:1029)
+> >   do_syscall_64 (arch/x86/entry/syscall_64.c:63
+> >                  arch/x86/entry/syscall_64.c:94)
+> >   </TASK>
+> >
+> > The same path is reachable through devmem dmabuf binding via
+> > netdev_nl_bind_rx_doit() -> net_devmem_bind_dmabuf_to_queue().
+> >
+> > Add a net_iov_init() helper that stamps ->owner, ->type and the
+> > ->page_type sentinel, and use it from both the devmem and io_uring
+> > zcrx niov init loops.
+> >
+> > Fixes: db359fccf212 ("mm: introduce a new page type for page pool in page type")
+> > Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> 
+> Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> 
+> > ---
+> > CC: asml.silence@gmail.com
+> > CC: axboe@kernel.dk
+> > CC: almasrymina@google.com
+> > CC: sdf@fomichev.me
+> > CC: hawk@kernel.org
+> > CC: akpm@linux-foundation.org
+> > CC: rppt@kernel.org
+> > CC: vbabka@kernel.org
+> > CC: io-uring@vger.kernel.org
+> > ---
+> >  include/net/netmem.h | 15 +++++++++++++++
+> >  io_uring/zcrx.c      |  3 +--
+> >  net/core/devmem.c    |  3 +--
+> >  3 files changed, 17 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/include/net/netmem.h b/include/net/netmem.h
+> > index 507b74c9f52d..78fe51e5756b 100644
+> > --- a/include/net/netmem.h
+> > +++ b/include/net/netmem.h
+> > @@ -127,6 +127,21 @@ static inline unsigned int net_iov_idx(const struct net_iov *niov)
+> >       return niov - net_iov_owner(niov)->niovs;
+> >  }
+> >
+> > +/* Initialize a niov: stamp the owning area, the memory provider type,
+> > + * and the page_type "no type" sentinel expected by the page-type API
+> > + * (see PAGE_TYPE_OPS in <linux/page-flags.h>) so that
+> > + * page_pool_set_pp_info() can later call __SetPageNetpp() on a niov
+> > + * cast to struct page.
+> > + */
+> > +static inline void net_iov_init(struct net_iov *niov,
+> > +                             struct net_iov_area *owner,
+> > +                             enum net_iov_type type)
+> > +{
+> > +     niov->owner = owner;
+> > +     niov->type = type;
+> > +     niov->page_type = UINT_MAX;
+> > +}
+> > +
+> >  /* netmem */
+> >
+> >  /**
+> > diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
+> > index 7b93c87b8371..19837e0b5e91 100644
+> > --- a/io_uring/zcrx.c
+> > +++ b/io_uring/zcrx.c
+> > @@ -495,10 +495,9 @@ static int io_zcrx_create_area(struct io_zcrx_ifq *ifq,
+> >       for (i = 0; i < nr_iovs; i++) {
+> >               struct net_iov *niov = &area->nia.niovs[i];
+> >
+> > -             niov->owner = &area->nia;
+> > +             net_iov_init(niov, &area->nia, NET_IOV_IOURING);
+> >               area->freelist[i] = i;
+> >               atomic_set(&area->user_refs[i], 0);
+> > -             niov->type = NET_IOV_IOURING;
+> >       }
+> >
+> >       if (ifq->dev) {
+> > diff --git a/net/core/devmem.c b/net/core/devmem.c
+> > index cde4c89bc146..468344739db2 100644
+> > --- a/net/core/devmem.c
+> > +++ b/net/core/devmem.c
+> > @@ -297,8 +297,7 @@ net_devmem_bind_dmabuf(struct net_device *dev,
+> >
+> >               for (i = 0; i < owner->area.num_niovs; i++) {
+> >                       niov = &owner->area.niovs[i];
+> > -                     niov->type = NET_IOV_DMABUF;
+> > -                     niov->owner = &owner->area;
+> > +                     net_iov_init(niov, &owner->area, NET_IOV_DMABUF);
+> >                       page_pool_set_dma_addr_netmem(net_iov_to_netmem(niov),
+> >                                                     net_devmem_get_dma_addr(niov));
+> >                       if (direction == DMA_TO_DEVICE)
