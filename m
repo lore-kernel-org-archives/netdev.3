@@ -1,147 +1,103 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B820E3806B0
-	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 09:26:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCE9838910D
+	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 09:26:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777368379; cv=none; b=TJiUlwZO84BMkhYoKRJEpV6CaWcEe6OQREW5S6vcxh+v6d2YAjh+4eqpc1L0WiHREkabeJSoEkIQTJfd0WGqKNf/ZM+AMwDW7eXdzhyNWHEXdUni+InPpgVKVEclFQ2oqrroz/57HMCPXcUftPTFeESGphL0AOTtLIQCt+IkYd4=
+	t=1777368404; cv=none; b=s/oAy9BG9/F4UdXI/+gdwjcehdbnACyd8WNVD7R78J9KElaxHR2Afbm1+xJ6CNQCquvaXx1ANJ+vITsNhMaIB95qEfvsNwgE1rXublsbBlU8bZ+ypit4nhkmPILKG+pmzkPqu8NvDX/OJoc7ev1+N5fVXifCwO8+lngO13SFJRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777368379; c=relaxed/simple;
-	bh=9Cmk2zEMnqYDCmmzuz7M/Q/Kf4X+1td9feLwCVsavls=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=N3GTWwY0gnxpSVR5Kd54bG40A+dfo7+iu3gBvnkC+FF2pALxul3dDzjLxO8t3IzZdfumHlXDeTV9pQ3GIBWYKR97CSICwhBgR73uhM2mARB2a7fdRJLnSuQkfsMLelS6CDRM4OyB8OlcJ3AVFXv+KVjKb7YegtxxOsOIKdLIQVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QundDFMv; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1777368404; c=relaxed/simple;
+	bh=NPBLQJqucg7/CxKX3h1LojM1m977hcBM54QKuG8/OJ0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CwqyS+AVyh8JS8mFsxenYb89e6rjxBHFtlKsXkQ+hZCryHNbE8TMsFPYNKbH0tEwSQZc0dVKaAhBHtaBEwWMcovgEiclte9hx6NacLTgiw8FxJSnqZY1c00jDJDV3N0/qDHvfOOnNfVec6e6B2rkxHef7Rq0gXtFyjC4AeAy7Qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Zvw9CDm0; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QundDFMv"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-488d2079582so131999615e9.2
-        for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 02:26:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777368371; x=1777973171; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=b/bKX8nWZ5h+TCYbqj5tfLIob37kb6iKL7nSpxWlYBs=;
-        b=QundDFMv/byC/UjeX6qUyYUarW3gWzJGjkEa7oIu+C/0B+J61SZzner+sEaiNbwiBC
-         SZvQ2wBUfosAJYpKsH7XKqhZ0LDxKhQz+llcRxDOm3qXvNaYzhMSV7YrYSxttDBOIrlO
-         VmcJuqFvyW/No5ORyNI+57rg8krZcMtUWg4AJqj1azgfRbEB+vrAsNdsrwJAu1uzyWOd
-         1a3J+1MsZcsYtyrWLLHnrtlwmdMqG1wOiwrqvDBd6pZ+B8py41Vx9Fnu7SK1CXoIudi+
-         pjtzx1FQsHkpzIv0+rfCCIUDJ/lKMkoXKyX5BqyXU0SgweplA5f95j7Pl/8MPVGZfwEJ
-         EfQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777368371; x=1777973171;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=b/bKX8nWZ5h+TCYbqj5tfLIob37kb6iKL7nSpxWlYBs=;
-        b=A2YVDrDWJSxS51XDRgTMowVGrHcjYzdKlPox5BiQ0cdMXhy6BRScaToXe7c4Rh6wZI
-         mDoTKsMCMCS8A17j5Ar//sPsS/jfVokUcuuord7YFbQ1mMLqkYfwgaj8FhbH1Ixj73KB
-         vuqd9JY4av+n6o77R0OZDyhoLZ00maHGGNdzI4DNazYpc4GryB9iQeB5lMnIn7i5/Dsv
-         rm25aGHAy7tP5Ttz3yZghYLqDuJ4M9iPeRtTXPfO/FXqA5dUaa6KAZC0pHQJCW1/sprP
-         IhGne7gRoF7RkEoIhFE1f2HDevGEH5zyW3JoIVQynCylNJ8oxeu9Bzxqb9fsuh3wkWJp
-         DiQw==
-X-Forwarded-Encrypted: i=1; AFNElJ9MU0ASy8JHwFUEhuwvHn3jbeNe1ersWX0ITFuu0/1KDx3KxxKhR2rLzcPPE/Mb/1I1zH/Zu4g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwEodFmisE++UMq8zXp+PVCQRJCee5iaUGvWwQW0mZhVMqCzD1H
-	O9m/rIgWuAaXEaw7iHX9tujVx/jq6eRPIcoNCQE84Hrv7KSQFdpkhhiO
-X-Gm-Gg: AeBDievM6CoOWLHqGa0VhF3+/2Ix2wHWr8IguYOFXedNJ+4PSqWJOiLAOPINhodjICR
-	qiR7KXcgy2m4EB08SkN8lIr61Wvsog5IveDwv1dAZpUjq+MIaz1YlLBdhmv82oC4GePcQuR/2MH
-	MLZHNTgo0zevd7vYKUGhN1STM1MHlbXCbShKGWMcxgowKaGl8J/CfPXH8x9qTh6Qw1e8pMoMbV0
-	9vmmCyekO3o6ZT02KBYpzj5NcI111azprwRkJqX/npLAw5K4W1zAH+LE7b1bSrJINew7rR90JnC
-	Q1Rx21yei0AlmvvAN5r9FVVuzryMSHLw1hQJgq1JSsbsZhvyVK4D9a/dtTaYY0xoUwPTzDjMv2Z
-	HHFHXGGROZrgvjFHIpBcvXbhu6yk7fWg7giO1emdAZj1/W/llYszrGuAGEBeP0cN/R0YQLWBSA8
-	RCS+t0A1SyYRZzB8EzWsW7BF6bnM3jYA5Z2I292wFOB2Na+WO3o+fbTlTlb1+k1T7Bbgg3a5QgA
-	w==
-X-Received: by 2002:a05:600c:c048:b0:489:1e8a:90b4 with SMTP id 5b1f17b1804b1-48a77b2203emr26399355e9.21.1777368371175;
-        Tue, 28 Apr 2026 02:26:11 -0700 (PDT)
-Received: from [192.168.20.170] (5D59A51C.catv.pool.telekom.hu. [93.89.165.28])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a773f1fa0sm44594055e9.14.2026.04.28.02.26.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Apr 2026 02:26:10 -0700 (PDT)
-Message-ID: <232d7c53-f413-4c8d-bc70-f03a12d601f5@gmail.com>
-Date: Tue, 28 Apr 2026 11:26:08 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Zvw9CDm0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777368399; x=1808904399;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=NPBLQJqucg7/CxKX3h1LojM1m977hcBM54QKuG8/OJ0=;
+  b=Zvw9CDm0oZ8G1FmOqYFKX/j8MyQPfMWGwz/MiPg+d9Ba8b/vVOx6SNRG
+   E95bMPEB1MQ4PkkPTl88LTW2qsDvDTe1LI7+BTNt9CeS2eh6/q+Rgxp03
+   FK6s4VLRTth8ptSErXerKQ/ff5oPqlpvdrc/+bCcawuylm3yee/zXvLYf
+   b+kOBeLk9HA0bYC6bazy9VPF2otyN+bPFBH5hi2zZsw32x1CeCiNapIYn
+   ISOmgLgzWp/DvDIYWCnt7gaT85IwwdRUHAh8pwBbqaVmBaGYRJ9GzbJnt
+   Su3KcHNd1LWEDO+RIYqxECiW4cmFkQEcG4kht4AkvTA/gDNFPke138BlA
+   w==;
+X-CSE-ConnectionGUID: zRCB01jBQ0iVi8u7ZqrD6Q==
+X-CSE-MsgGUID: oOfP/95tQ+ieBRsWfKK0Rg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="103731752"
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
+   d="scan'208";a="103731752"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 02:26:35 -0700
+X-CSE-ConnectionGUID: Wzke/4szQrev/j5M+PO4pg==
+X-CSE-MsgGUID: mK2Ni828QX2LTMAvEA+HGg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
+   d="scan'208";a="237861386"
+Received: from irvmail002.ir.intel.com ([10.43.11.120])
+  by orviesa003.jf.intel.com with ESMTP; 28 Apr 2026 02:26:32 -0700
+Received: from vecna.igk.intel.com (vecna.igk.intel.com [10.123.220.17])
+	by irvmail002.ir.intel.com (Postfix) with ESMTP id B5BEE2816F;
+	Tue, 28 Apr 2026 10:26:29 +0100 (IST)
+From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+To: netdev@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jiri Pirko <jiri@resnulli.us>
+Cc: intel-wired-lan@lists.osuosl.org,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Lukasz Czapnik <lukasz.czapnik@intel.com>,
+	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Subject: [PATCH net-next 0/2] devlink, ice, mlx5: add init/fini ops for shared devlink for ice to use
+Date: Tue, 28 Apr 2026 11:09:10 +0200
+Message-Id: <20260428090912.3461-1-przemyslaw.kitszel@intel.com>
+X-Mailer: git-send-email 2.39.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next PATCH 06/10] net: dsa: realtek: rtl8365mb: add VLAN
- support
-To: Luiz Angelo Daros de Luca <luizluca@gmail.com>,
- Linus Walleij <linusw@kernel.org>
-Cc: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, =?UTF-8?Q?Alvin_=C5=A0ipraga?=
- <alsi@bang-olufsen.dk>, Yury Norov <yury.norov@gmail.com>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260331-realtek_forward-v1-0-44fb63033b7e@gmail.com>
- <20260331-realtek_forward-v1-6-44fb63033b7e@gmail.com>
- <CAD++jLmRT+3EJ-f_FNuZwOGU4fBB6pGHhq2OuxBS7O-cEnWt=g@mail.gmail.com>
- <CAJq09z6Y3MfkyiyaMhPTQH3W7p-ZmsNeS-iBKOeQNWWpDi0UoQ@mail.gmail.com>
- <CAD++jLkqcqUThJe+kJhR2hwyg1y_RWJc7yrM-kqMeiA4T-Jqig@mail.gmail.com>
- <CAJq09z6O81Sev07pQiQzCXzbKC2JxBCjep6=tX2Noqd=pPW1KQ@mail.gmail.com>
- <CAJq09z6PjXeDYhfo3=UmLyUhXyx5rPHCK4kBaMaJWNZNssjo2Q@mail.gmail.com>
-Content-Language: hu
-From: Gabor Juhos <j4g8y7@gmail.com>
-In-Reply-To: <CAJq09z6PjXeDYhfo3=UmLyUhXyx5rPHCK4kBaMaJWNZNssjo2Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Hi Luiz, Linus,
+Extend devlink by two callbacks used by shared devlink.
+Callbacks provide option for the driver to have constructor/destructor
+for the priv data attached to the shared devlink instance.
 
-Sorry for the late reply.
+Use the callbacks from ice.
+mlx5 is just touched to have additional param passed.
 
-> 
->>> I haven't yet wrapped my head around if the RTL8367 (no extra letters)
->>> is more RTL8366RB-ish or more RTL8365MB-ish... take a look at the
->>> old code if you can figure it out from register maps etc:
->>> https://github.com/openwrt/openwrt/tree/main/target/linux/generic/files/drivers/net/phy
->>> (maybe Gabor knows, put him on cc)
-> 
-> Regarding the RTL8367 (no extra letters), the RTL8367R is indeed a
-> member of that original family, rather than the "B" family as I
-> previously suggested. It uses Port 9 for the CPU, which is absent in
-> RTL8367B. Architecturally, it is definitely more RTL8365MB-ish.
+Non-null additional param for the constructor will be used by separate series.
 
-I wrote the rtl8367 driver for the RTL8367R and RTL8367M switches. I have
-no datasheet for those chips, but there are some basic information about
-their features [1].
+Przemek Kitszel (2):
+  devlink, mlx5: add init/fini ops for shared devlink
+  ice: use shared devlink to store ice_adapters instead of custom xarray
 
-The driver was based on various code found in GPL sources of the TP-Link
-TL-WR2543ND and ASUS RT-N56U devices. Those sources were using the RTL8370
-specific API for these chips.
+ drivers/net/ethernet/intel/ice/ice_adapter.h  | 13 +--
+ include/net/devlink.h                         | 26 +++++
+ .../net/ethernet/intel/ice/devlink/devlink.c  |  3 +
+ drivers/net/ethernet/intel/ice/ice_adapter.c  | 95 ++++++-------------
+ drivers/net/ethernet/intel/ice/ice_main.c     |  4 +-
+ .../ethernet/mellanox/mlx5/core/sh_devlink.c  |  2 +-
+ net/devlink/sh_dev.c                          | 39 +++++++-
+ 7 files changed, 106 insertions(+), 76 deletions(-)
 
-It was not clear that the two models really belongs to the RTL8370 family
-or simply the vendors were using the RTL8370 specific code as a base, so
-I have used RTL8367 prefix in the swconfig driver. Probably, it would have
-been better to keep the RTL8370 prefix to avoid confusion.
-
-> 
-> The main challenge with the base RTL8367 is the lack of a public API.
-> Most vendors support it via binary managers (ASUS) or proprietary
-> kernel modules (TP-Link). The only available references I’ve found are
-> the OpenWrt swconfig driver you mentioned and some U-Boot
-> initialization code. I do have the rtl8367{b,c,d} APIs. While the
-> rtl8367b seems close to the original RTL8367, it has fewer ports. Does
-> anyone happen to have access to the original RTL8367 API
-> documentation?
-
-I have no documentation, but the RTL8370 API source can be found at various
-places [2], [3].
-
-To be honest, I don't remember all the details, but I hope that this helps.
-
-Regards,
-Gabor
-
-[1] http://semitron.co.kr/product/product.php?lcate=001&mcate=005&scate=004&uid=47&PHPSESSID=ec195486d91ed175f698567462571180
-[2] https://github.com/cgoder/openwrt_rtk/tree/master/rtk_openwrt_sdk/target/linux/rtkmipsel/files/drivers/net/rtl819x/RTL8370_RTL8367_API
-[3] https://github.com/andy-padavan/rt-n56u/tree/master/uboot/mips/uboot-5.x.x.x/drivers/rtl8367/api_8370
+-- 
+2.39.3
 
