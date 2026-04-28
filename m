@@ -1,105 +1,61 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27E8542EEA2
-	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 12:58:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E02D4212542;
+	Tue, 28 Apr 2026 13:01:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777381130; cv=none; b=SHWT5hnwKRoAvt4gpINKjpcY+hVyutfDc0hR7Q4xTXqKTN6Qbt5JbtZIBL256GMxomHgsUGarOVeF0eJe3HF7Myh1gZpmMPKJ149xAaeGP2H4psW2BJeV/bgodzococDLczz3l8dSOJTAUuCCCleHlTawmBnmJqUPpTM6eqtw6s=
+	t=1777381295; cv=none; b=rokLj7DUfIcX+yCbFMrP4mYDOOz/NR+sCPHISPQF5dJcnbobdvZmv/1ntuZY45S+RJo4Cc13trLSLG2eoEchy6iVJxSpeOe8+eRlR+6SCphXN1wCqvxH1CVMKVFwphFvNezXuWU3iz2xmgxUWVy5I8+lbpgtNqBKmZxMw3T2JKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777381130; c=relaxed/simple;
-	bh=mXAUgVrsGmi1Pu/7E2MbcsYLqDHmGZYRZhThUyg1CKE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Bu4wYjEoxR0brSWr10bAjHKhgWeXI/o2TRDLZmDFq4T1Xlr95skfW40XQt9TJyejHypLR4pcbP8UNL5O7DI56A818fyAn0FU1rhLi1T58r4V2LDzsV3bwrzZNpRDkCnOjIrFP6i/dbeEW9VfqkgCqvzxhSVEi1oJG2DC1vl8IzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=a6Fjp7Av; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1777381295; c=relaxed/simple;
+	bh=mYMvL3RT0JQEkkV8OC+iZfRT5L4605aTgd/Wc9MdFO8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZxnuI5N2TrTV6z9VS033b+9WWUBUhx3KOcmXT6mxaJKseef/g2GU9q2bjqhDmPcxO3WM9pR8JINke0liag+apGKNTiBwrziqvKhqBV917GXhatCPMviMg9OSVqaaEgu7sHHJwH5H1tr2NONXae5txYGVoWc250Vx6zci6CXjMk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fdQoeFhZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="a6Fjp7Av"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id C3C49C5EF07;
-	Tue, 28 Apr 2026 12:59:27 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 17F23601D0;
-	Tue, 28 Apr 2026 12:58:44 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7E15A10728B55;
-	Tue, 28 Apr 2026 14:58:38 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1777381123; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=TpPwl4y9tm8O+ejPdtapeLQ0xFITNwvuZv5Vcb8QVqw=;
-	b=a6Fjp7AvaxJYEm6KKsDpL1vPpyQUsPxSw80XqsG+CA8+3g/w3ejWzzvXWquJYhZZWJEHZ1
-	QmGLxVqgc4pJb9T8uxK623dXpoRR5B+nQIl+nJqYEbG8n59Rm2tluYcnvPLXFuY7SykG1M
-	KVN9l9UC2xAzTYuVFTcgcbp/OLBPmH+vbynN6UDbrX3GVuUMXkR0yusDsxnIuEbbbcISSu
-	7LcL4g8GVb5YbT8Bm1Pu1kGmIcDsUXWvNXH71aSdADSbkU1pXBG6a/0IXYudBjhqy3gHKU
-	/WCF/2XpRgsfOXGEzfuhfWmanmrXXXeTsFponb1O/gRD/XH83nxL/Fcr/Ci34Q==
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	davem@davemloft.net,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fdQoeFhZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B72BDC2BCAF;
+	Tue, 28 Apr 2026 13:01:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777381294;
+	bh=mYMvL3RT0JQEkkV8OC+iZfRT5L4605aTgd/Wc9MdFO8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fdQoeFhZBreFNnWW+ZqREafCfVPWpjBGzHW23FP6hJOP3IoyUinShHrF/Z6g0nBen
+	 v6fiRGyFWR9TB19DWi7GOPX6M31IXzivNjEWm1S4iXRJ3oDsiWodVyhrG5+YZ5cGuI
+	 GqWTBGo64cGjJE2zPxKkdSu4d0EPM8LKm2OnZTAWQ2nfn5YfuqRIK5A/In6u90AiSp
+	 KHP6wD8z1Uy6V2dFPJgP+B9a+IR8rLr8u6/17F0W7hYoamQhFOQN02S0Xvxue60hKY
+	 mnZmhh5FUHGO5sIiIIPfP/MJMweDD+ZxsWTDVlDaerS2ytELHcjLfqs+nKScS8e6sT
+	 QPjX7I7YKgNkQ==
+Date: Tue, 28 Apr 2026 14:01:28 +0100
+From: Simon Horman <horms@kernel.org>
+To: Heiko Schocher <hs@nabladev.com>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
 	Heiner Kallweit <hkallweit1@gmail.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Camelia Groza <camelia.groza@nxp.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	thomas.petazzoni@bootlin.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next] net: phy: aquantia: use ADVERTISE_XNP for extended next page advertising
-Date: Tue, 28 Apr 2026 14:58:27 +0200
-Message-ID: <20260428125827.238469-1-maxime.chevallier@bootlin.com>
-X-Mailer: git-send-email 2.49.0
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] net: phy: dp83869: fix setting CLK_O_SEL field.
+Message-ID: <20260428130128.GR900403@horms.kernel.org>
+References: <20260425031339.3318-1-hs@nabladev.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260425031339.3318-1-hs@nabladev.com>
 
-When configuring the link parameters in forced mode for the AQR-105, the
-Extended Next Page bit gets advertised for Multi-Gigabit modes.
+On Sat, Apr 25, 2026 at 05:13:39AM +0200, Heiko Schocher wrote:
+> Table 7-121 in datasheet says we have to set register 0xc6
+> to value 0x10 before CLK_O_SEL can be modified. No more infos
+> about this field found in datasheet. With this fix, setting
+> of CLK_O_SEL field in IO_MUX_CFG register worked through dts
+> property "ti,clk-output-sel" on a DP83869HMRGZR.
+> 
+> Signed-off-by: Heiko Schocher <hs@nabladev.com>
 
-This is done through bit 12 of MDIO_AN_ADVERTISE in MDIO_MMD_AN. This
-contains a copy of the MII_ADVERTISE, for which 802.3 defines bit 12 as
-the Extended Next Page advertising. This bit used to be marked as
-reserved, but a proper define for it was added in :
-
-commit e7a62edd34b1 ("net: phy: qcom: at803x: Use the correct bit to disable extended next page")
-
-Let's use it instead of the ADVERTISE_RESV definition, making the code
-more self-documenting.
-
-Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
----
- drivers/net/phy/aquantia/aquantia_main.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/phy/aquantia/aquantia_main.c b/drivers/net/phy/aquantia/aquantia_main.c
-index 41f3676c7f1e..e95d391a6dc2 100644
---- a/drivers/net/phy/aquantia/aquantia_main.c
-+++ b/drivers/net/phy/aquantia/aquantia_main.c
-@@ -385,15 +385,15 @@ static int aqr105_setup_forced(struct phy_device *phydev)
- 			vend |= MDIO_AN_VEND_PROV_1000BASET_HALF;
- 		break;
- 	case SPEED_2500:
--		adv |= (ADVERTISE_NPAGE | ADVERTISE_RESV);
-+		adv |= (ADVERTISE_NPAGE | ADVERTISE_XNP);
- 		vend |= MDIO_AN_VEND_PROV_2500BASET_FULL;
- 		break;
- 	case SPEED_5000:
--		adv |= (ADVERTISE_NPAGE | ADVERTISE_RESV);
-+		adv |= (ADVERTISE_NPAGE | ADVERTISE_XNP);
- 		vend |= MDIO_AN_VEND_PROV_5000BASET_FULL;
- 		break;
- 	case SPEED_10000:
--		adv |= (ADVERTISE_NPAGE | ADVERTISE_RESV);
-+		adv |= (ADVERTISE_NPAGE | ADVERTISE_XNP);
- 		ctrl10 |= MDIO_AN_10GBT_CTRL_ADV10G;
- 		break;
- 	default:
--- 
-2.49.0
+Reviewed-by: Simon Horman <horms@kernel.org>
 
