@@ -1,69 +1,75 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from server.couthit.com (server.couthit.com [162.240.164.96])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A8AF3DBD49;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B203D3CE6;
 	Tue, 28 Apr 2026 07:22:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.164.96
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777360940; cv=none; b=mEullLVK7DOYzKWAwqkNsoVc9mqgya1FjtxAQTeseVQEAM4NXwidkbvCwQLKgV2T2CobxxfpCb5CyPXpcJo/QL7qn7nkszrroyyLEmW6qQfKpL15jxkUH/xnmN+fthHtsa/MAaxcd9TtUfvdUtw5luBNJ/pfo2Mcxy3qXU1MjsE=
+	t=1777360941; cv=none; b=FpvOgc+Pv9eXZKK4NyDudUyMQpUGgfakj2gWhqxJ4ZoS0ObuxT7foHyrdjsNrnx164SS6PMnIuH570rjYqEMAp/t8LKEMTAOPaLhpA99ZcWNXcnVE14pRnd7ggdRqgn05CYG4Z7HnfcC2pqelujuPYY/DAsur3+/qrWAOM02lP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777360940; c=relaxed/simple;
-	bh=qmjzAhQS3pD0BsMOImrRP6Xo62hpVGiLh6Cjn84POeY=;
+	s=arc-20240116; t=1777360941; c=relaxed/simple;
+	bh=YVVXZjs89RP1ow2ZDE2YXTxhvBousxGQ4f2ZZv5X8/g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ckm1S1tMQikOtxbYO8bJ+UKPBbQIWDqeB5NN/Y26Vi7XvTLQDgPjOGxsRwYtPowwUL1Y1L9bMvOJ0skyAW1yYbXGuT4pGY+3G236QGCKdZh6ZJD+ReGYaE1sVo7WRRGqOuya6L4a+fAeepDCoLJRIzx2MsIa6QMNzKlNcgr9jkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SKweqOla; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 MIME-Version; b=R7CuCd/8obPZZqdgmr8vo5GWyKSDumIC1WYCrpcGi3gqR88BlIx1uHQQAAGXvZe808YAUGpiUCOi5byn4S9ziCJ2LtJteUjZZOaj5idri5n0jrdRTc8Q5q8wJlYpZqEWA0BimVgoNTDGLnddg0MZbRhftBfzmDTFjB45qAqZYdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=YRRX/6Xf; arc=none smtp.client-ip=162.240.164.96
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SKweqOla"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777360938; x=1808896938;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=qmjzAhQS3pD0BsMOImrRP6Xo62hpVGiLh6Cjn84POeY=;
-  b=SKweqOlasXRgV9QcVBqYEO7wJPBpx/3CjeixIAvM7aa9XH6hAIftZxdb
-   2Q4I/5E/EhH+EVspsYasHYxQExCgFswpmd0Cquaj+Von5HO6VY7G7TKeb
-   cMNH+Jhv77S/EmmnXrW9JE/yasAng+oRuYBRk5xAuHzUtbCMNbTsCO6RO
-   T3kXgiQj6ffGzi/VTPmiPM1LhuJRdDEo4BfvFaK6ix0J+/FYqB2O1xWR8
-   xIqJUdwDJ+XFN1A5Ypl4JINKDGU4/7jvJ/GUgrDYNiWgM9aBlOflxLh6g
-   yQJmiMF99wYXkb1xwcQW9SdTPxFQaYK2dnymftJU4ygXT5GTlZFfij5nk
-   Q==;
-X-CSE-ConnectionGUID: 6yPjSvPoQ1Ol+9lPTNm/bQ==
-X-CSE-MsgGUID: bhYPQ1REQDKrJfc4qo4Clw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="82126041"
-X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
-   d="scan'208";a="82126041"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 00:22:17 -0700
-X-CSE-ConnectionGUID: S0KJIqosSYyIYGanaceSfQ==
-X-CSE-MsgGUID: 2dt3utxYRDasjcBx9x5ssg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
-   d="scan'208";a="229308649"
-Received: from black.igk.intel.com ([10.91.253.5])
-  by fmviesa006.fm.intel.com with ESMTP; 28 Apr 2026 00:22:14 -0700
-Received: by black.igk.intel.com (Postfix, from userid 1001)
-	id 0C5C79E; Tue, 28 Apr 2026 09:22:10 +0200 (CEST)
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
-To: linux-usb@vger.kernel.org
-Cc: Yehezkel Bernat <YehezkelShB@gmail.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Andreas Noever <andreas.noever@gmail.com>,
-	Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="YRRX/6Xf"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
+	; s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=dc7Y+VkQoAkyGWlPc6z/9j8tSqCUYBl2rc6souccr60=; b=YRRX/6XfRDkfHX3HXldzbJhLnH
+	Hq+MHsfoDxqZ2MnwdPe8OtAYO8RS4xy9KX1ePWKQe+N8raS2HtYHkNQuMmLO9MqXvBSvJaANlPJXP
+	DdYeXzroUcGkYD1F3+VF7BygGwvmAFbR27afeASztNxT8a4o3CD2CDnbDFxrT9zqxbOpN/B7LPu6H
+	M2215x0MAhofWD9fQuSIhM/FWevSdjORV+4rAFzCqewGJz63PXzZ42LhXCo8HYc7JGVWlLj0MZd9e
+	snVX6qclywCHySV5gJNhzCrKC4Vra0OAuu8+r9t/AZttVKQmLPDNzWOrFpAx2SotKmTZSNFxTpcbK
+	6/CfV97A==;
+Received: from [115.246.246.98] (port=30876 helo=cypher.couthit.local)
+	by server.couthit.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.98.1)
+	(envelope-from <parvathi@couthit.com>)
+	id 1wHclq-0000000GFVv-29vg;
+	Tue, 28 Apr 2026 03:22:15 -0400
+From: Parvathi Pudi <parvathi@couthit.com>
+To: nm@ti.com,
+	vigneshr@ti.com,
+	afd@ti.com,
+	khilman@baylibre.com,
+	rogerq@kernel.org,
+	tony@atomide.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	richardcochran@gmail.com,
+	aaro.koskinen@iki.fi,
+	andreas@kemnade.info
+Cc: linux-omap@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 5/9] thunderbolt / net: Let the service drivers configure interrupt throttling
-Date: Tue, 28 Apr 2026 09:22:05 +0200
-Message-ID: <20260428072209.3084930-6-mika.westerberg@linux.intel.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260428072209.3084930-1-mika.westerberg@linux.intel.com>
-References: <20260428072209.3084930-1-mika.westerberg@linux.intel.com>
+	andrew@lunn.ch,
+	danishanwar@ti.com,
+	pratheesh@ti.com,
+	j-rameshbabu@ti.com,
+	praneeth@ti.com,
+	srk@ti.com,
+	rogerq@ti.com,
+	krishna@couthit.com,
+	mohan@couthit.com,
+	pmohan@couthit.com,
+	basharath@couthit.com,
+	parvathi@couthit.com,
+	Murali Karicheri <m-karicheri2@ti.com>
+Subject: [PATCH v7 2/3] arm: dts: ti: Add device tree support for PRU-ICSS on AM437x
+Date: Tue, 28 Apr 2026 12:47:28 +0530
+Message-ID: <20260428072046.3022679-3-parvathi@couthit.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260428072046.3022679-1-parvathi@couthit.com>
+References: <20260428072046.3022679-1-parvathi@couthit.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -71,231 +77,198 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - server.couthit.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - couthit.com
+X-Get-Message-Sender-Via: server.couthit.com: authenticated_id: parvathi@couthit.com
+X-Authenticated-Sender: server.couthit.com: parvathi@couthit.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-Instead of the core driver programming fixed value for throttling let
-the service drivers to specify the interval if they need this. We also
-allow user to tune this through a module parameter if the default is not
-good fit.
+From: Roger Quadros <rogerq@ti.com>
 
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+The TI Sitara AM437x series of devices consists of 2 PRU-ICSS instances
+(PRU-ICSS0 and PRU-ICSS1). This patch adds the device tree nodes for the
+PRU-ICSS1 instance to support DUAL-MAC mode of operation. Support for
+Ethernet over PRU is available only for ICSS1 instance.
+
+PRU-ICSS instance consists of two PRU cores along with various
+peripherals such as the Interrupt Controller (PRU_INTC), the Industrial
+Ethernet Peripheral(IEP), the Real Time Media Independent Interface
+controller (MII_RT), and the Enhanced Capture (eCAP) event module.
+
+am4372.dtsi - Adds IEP and eCAP peripheral as child nodes of the PRUSS
+subsystem node.
+
+am437x-idk-evm.dts - Adds PRU-ICSS instance node along with PRU eth port
+information and corresponding port configuration. It includes interrupt
+mapping for packet reception, HW timestamp collection, and PRU Ethernet
+ports in MII mode,
+
+GPIO configuration, boot strapping along with delay configuration for
+individual PRU Ethernet port and other required nodes.
+
+Signed-off-by: Roger Quadros <rogerq@ti.com>
+Signed-off-by: Andrew F. Davis <afd@ti.com>
+Signed-off-by: Murali Karicheri <m-karicheri2@ti.com>
+Signed-off-by: Basharath Hussain Khaja <basharath@couthit.com>
+Signed-off-by: Parvathi Pudi <parvathi@couthit.com>
 ---
- drivers/net/thunderbolt/main.c |  7 ++++
- drivers/thunderbolt/dma_test.c |  5 +++
- drivers/thunderbolt/nhi.c      | 58 ++++++++++++++++++----------------
- drivers/thunderbolt/nhi_regs.h |  3 +-
- include/linux/thunderbolt.h    |  5 +++
- 5 files changed, 50 insertions(+), 28 deletions(-)
+ arch/arm/boot/dts/ti/omap/am4372.dtsi        |  11 ++
+ arch/arm/boot/dts/ti/omap/am437x-idk-evm.dts | 103 ++++++++++++++++++-
+ 2 files changed, 113 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/thunderbolt/main.c b/drivers/net/thunderbolt/main.c
-index 49673f7e0055..8771ca807933 100644
---- a/drivers/net/thunderbolt/main.c
-+++ b/drivers/net/thunderbolt/main.c
-@@ -218,6 +218,10 @@ static bool tbnet_e2e = true;
- module_param_named(e2e, tbnet_e2e, bool, 0444);
- MODULE_PARM_DESC(e2e, "USB4NET full end-to-end flow control (default: true)");
+diff --git a/arch/arm/boot/dts/ti/omap/am4372.dtsi b/arch/arm/boot/dts/ti/omap/am4372.dtsi
+index 504fa6b57d39..494f251c8e6a 100644
+--- a/arch/arm/boot/dts/ti/omap/am4372.dtsi
++++ b/arch/arm/boot/dts/ti/omap/am4372.dtsi
+@@ -476,6 +476,17 @@ pruss1_mii_rt: mii-rt@32000 {
+ 					reg = <0x32000 0x58>;
+ 				};
  
-+static unsigned int tbnet_throttling = 128000;
-+module_param_named(throttling, tbnet_throttling, uint, 0444);
-+MODULE_PARM_DESC(throttling, "Interrupt throttling rate in ns (default: 128000)");
++				pruss1_iep: iep@2e000 {
++					compatible = "ti,am4376-icss-iep";
++					reg = <0x2e000 0x31c>;
++					clocks = <&pruss1_iepclk_mux>;
++				};
 +
- static void tbnet_fill_header(struct thunderbolt_ip_header *hdr, u64 route,
- 	u8 sequence, const uuid_t *initiator_uuid, const uuid_t *target_uuid,
- 	enum thunderbolt_ip_type type, size_t size, u32 command_id)
-@@ -955,6 +959,9 @@ static int tbnet_open(struct net_device *dev)
- 	}
- 	net->rx_ring.ring = ring;
- 
-+	tb_ring_throttling(net->tx_ring.ring, tbnet_throttling);
-+	tb_ring_throttling(net->rx_ring.ring, tbnet_throttling);
++				pruss1_ecap: ecap@30000 {
++					compatible = "ti,pruss-ecap";
++					reg = <0x30000 0x60>;
++				};
 +
- 	napi_enable(&net->napi);
- 	start_login(net);
- 
-diff --git a/drivers/thunderbolt/dma_test.c b/drivers/thunderbolt/dma_test.c
-index af1e6bc9c7cd..7877319b1b03 100644
---- a/drivers/thunderbolt/dma_test.c
-+++ b/drivers/thunderbolt/dma_test.c
-@@ -155,6 +155,8 @@ static int dma_test_start_rings(struct dma_test *dt)
- 		dt->tx_ring = ring;
- 		e2e_tx_hop = ring->hop;
- 
-+		tb_ring_throttling(ring, 128000);
+ 				pruss1_intc: interrupt-controller@20000 {
+ 					compatible = "ti,pruss-intc";
+ 					reg = <0x20000 0x2000>;
+diff --git a/arch/arm/boot/dts/ti/omap/am437x-idk-evm.dts b/arch/arm/boot/dts/ti/omap/am437x-idk-evm.dts
+index 826f687c368a..2efa303d45be 100644
+--- a/arch/arm/boot/dts/ti/omap/am437x-idk-evm.dts
++++ b/arch/arm/boot/dts/ti/omap/am437x-idk-evm.dts
+@@ -168,6 +168,48 @@ led-out7 {
+ 			default-state = "off";
+ 		};
+ 	};
 +
- 		ret = tb_xdomain_alloc_out_hopid(xd, -1);
- 		if (ret < 0) {
- 			dma_test_free_rings(dt);
-@@ -162,6 +164,7 @@ static int dma_test_start_rings(struct dma_test *dt)
- 		}
- 
- 		dt->tx_hopid = ret;
++	/* Dual-MAC Ethernet application node on PRU-ICSS1 */
++	pruss1_eth: pruss1-eth {
++		compatible = "ti,am4376-prueth";
++		ti,prus = <&pru1_0>, <&pru1_1>;
++		sram = <&ocmcram>;
++		ti,mii-rt = <&pruss1_mii_rt>;
++		ti,iep = <&pruss1_iep>;
++		ti,ecap = <&pruss1_ecap>;
++		interrupts = <20 2 2>, <21 3 3>;
++		interrupt-names = "rx_hp", "rx_lp";
++		interrupt-parent = <&pruss1_intc>;
 +
- 	}
- 
- 	if (dt->packets_to_receive) {
-@@ -180,6 +183,8 @@ static int dma_test_start_rings(struct dma_test *dt)
- 
- 		dt->rx_ring = ring;
- 
-+		tb_ring_throttling(ring, 128000);
++		pinctrl-0 = <&pruss1_eth_default>;
++		pinctrl-names = "default";
 +
- 		ret = tb_xdomain_alloc_in_hopid(xd, -1);
- 		if (ret < 0) {
- 			dma_test_free_rings(dt);
-diff --git a/drivers/thunderbolt/nhi.c b/drivers/thunderbolt/nhi.c
-index 1a2051673067..13009246e617 100644
---- a/drivers/thunderbolt/nhi.c
-+++ b/drivers/thunderbolt/nhi.c
-@@ -93,7 +93,7 @@ static void ring_interrupt_active(struct tb_ring *ring, bool active)
- 	u32 old, new;
- 
- 	if (ring->irq > 0) {
--		u32 step, shift, ivr, misc;
-+		u32 step, shift, ivr, misc, itr;
- 		void __iomem *ivr_base;
- 		int auto_clear_bit;
- 		int index;
-@@ -131,6 +131,12 @@ static void ring_interrupt_active(struct tb_ring *ring, bool active)
- 		if (active)
- 			ivr |= ring->vector << shift;
- 		iowrite32(ivr, ivr_base + step);
++		ethernet-ports {
++			#address-cells = <1>;
++			#size-cells = <0>;
++			pruss1_emac0: ethernet-port@0 {
++				reg = <0>;
++				phy-handle = <&pruss1_eth0_phy>;
++				phy-mode = "mii";
++				interrupts = <20 2 2>, <26 6 6>, <23 6 6>;
++				interrupt-names = "rx", "emac_ptp_tx",
++						  "hsr_ptp_tx";
++				/* Filled in by bootloader */
++				local-mac-address = [00 00 00 00 00 00];
++			};
 +
-+		/* Throttling is specified in 256ns increments */
-+		itr = DIV_ROUND_UP(ring->interval_nsec, 256);
-+		itr &= REG_INT_THROTTLING_RATE_INTERVAL_MASK;
-+		iowrite32(itr, ring->nhi->iobase + REG_INT_THROTTLING_RATE +
-+			  ring->vector * 4);
- 	}
- 
- 	old = ioread32(ring->nhi->iobase + reg);
-@@ -854,6 +860,26 @@ void tb_ring_free(struct tb_ring *ring)
- }
- EXPORT_SYMBOL_GPL(tb_ring_free);
- 
-+/**
-+ * tb_ring_throttling() - Configure throttling for ring interrupt
-+ * @ring: Ring to configure
-+ * @interval_nsec: Interval counter for moderation (in ns), %0 disables
-+ *
-+ * Enables or disables ring interrupt throttling. The ring must be
-+ * stopped for this to be called. Granularity is 256 ns.
-+ *
-+ * Return: %0 on success, negative errno otherwise.
-+ */
-+int tb_ring_throttling(struct tb_ring *ring, unsigned int interval_nsec)
-+{
-+	guard(spinlock_irqsave)(&ring->lock);
-+	if (WARN_ON_ONCE(ring->running))
-+		return -EBUSY;
-+	ring->interval_nsec = interval_nsec;
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(tb_ring_throttling);
-+
- /**
-  * nhi_mailbox_cmd() - Send a command through NHI mailbox
-  * @nhi: Pointer to the NHI structure
-@@ -1035,22 +1061,6 @@ static int nhi_poweroff_noirq(struct device *dev)
- 	return __nhi_suspend_noirq(dev, wakeup);
- }
- 
--static void nhi_enable_int_throttling(struct tb_nhi *nhi)
--{
--	/* Throttling is specified in 256ns increments */
--	u32 throttle = DIV_ROUND_UP(128 * NSEC_PER_USEC, 256);
--	unsigned int i;
--
--	/*
--	 * Configure interrupt throttling for all vectors even if we
--	 * only use few.
--	 */
--	for (i = 0; i < MSIX_MAX_VECS; i++) {
--		u32 reg = REG_INT_THROTTLING_RATE + i * 4;
--		iowrite32(throttle, nhi->iobase + reg);
--	}
--}
--
- static int nhi_resume_noirq(struct device *dev)
- {
- 	struct pci_dev *pdev = to_pci_dev(dev);
-@@ -1065,13 +1075,10 @@ static int nhi_resume_noirq(struct device *dev)
- 	 */
- 	if (!pci_device_is_present(pdev)) {
- 		nhi->going_away = true;
--	} else {
--		if (nhi->ops && nhi->ops->resume_noirq) {
--			ret = nhi->ops->resume_noirq(nhi);
--			if (ret)
--				return ret;
--		}
--		nhi_enable_int_throttling(tb->nhi);
-+	} else if (nhi->ops && nhi->ops->resume_noirq) {
-+		ret = nhi->ops->resume_noirq(nhi);
-+		if (ret)
-+			return ret;
- 	}
- 
- 	return tb_domain_resume_noirq(tb);
-@@ -1133,7 +1140,6 @@ static int nhi_runtime_resume(struct device *dev)
- 			return ret;
- 	}
- 
--	nhi_enable_int_throttling(nhi);
- 	return tb_domain_runtime_resume(tb);
- }
- 
-@@ -1271,8 +1277,6 @@ static int nhi_init_msi(struct tb_nhi *nhi)
- 	/* In case someone left them on. */
- 	nhi_disable_interrupts(nhi);
- 
--	nhi_enable_int_throttling(nhi);
--
- 	ida_init(&nhi->msix_ida);
- 
- 	/*
-diff --git a/drivers/thunderbolt/nhi_regs.h b/drivers/thunderbolt/nhi_regs.h
-index cf5222bee971..d6a197fabc74 100644
---- a/drivers/thunderbolt/nhi_regs.h
-+++ b/drivers/thunderbolt/nhi_regs.h
-@@ -101,7 +101,8 @@ struct ring_desc {
- 
- #define REG_RING_INTERRUPT_MASK_CLEAR_BASE	0x38208
- 
--#define REG_INT_THROTTLING_RATE	0x38c00
-+#define REG_INT_THROTTLING_RATE			0x38c00
-+#define REG_INT_THROTTLING_RATE_INTERVAL_MASK	GENMASK(15, 0)
- 
- /* Interrupt Vector Allocation */
- #define REG_INT_VEC_ALLOC_BASE	0x38c40
-diff --git a/include/linux/thunderbolt.h b/include/linux/thunderbolt.h
-index 1d1bd458b5af..1160e0bf5c5b 100644
---- a/include/linux/thunderbolt.h
-+++ b/include/linux/thunderbolt.h
-@@ -554,6 +554,8 @@ struct tb_nhi {
-  * @start_poll: Called when ring interrupt is triggered to start
-  *		polling. Passing %NULL keeps the ring in interrupt mode.
-  * @poll_data: Data passed to @start_poll
-+ * @interval_nsec: Interval counter if interrupt throttling is to be
-+ *		   used with this ring (in ns)
-  */
- struct tb_ring {
- 	spinlock_t lock;
-@@ -577,6 +579,7 @@ struct tb_ring {
- 	u16 eof_mask;
- 	void (*start_poll)(void *data);
- 	void *poll_data;
-+	unsigned int interval_nsec;
++			pruss1_emac1: ethernet-port@1 {
++				reg = <1>;
++				phy-handle = <&pruss1_eth1_phy>;
++				phy-mode = "mii";
++				interrupts = <21 3 3>, <27 9 5>, <24 9 5>;
++				interrupt-names = "rx", "emac_ptp_tx",
++						  "hsr_ptp_tx";
++				/* Filled in by bootloader */
++				local-mac-address = [00 00 00 00 00 00];
++			};
++		};
++	};
  };
  
- /* Leave ring interrupt enabled on suspend */
-@@ -697,6 +700,8 @@ static inline int tb_ring_tx(struct tb_ring *ring, struct ring_frame *frame)
- struct ring_frame *tb_ring_poll(struct tb_ring *ring);
- void tb_ring_poll_complete(struct tb_ring *ring);
+ &am43xx_pinmux {
+@@ -303,6 +345,52 @@ AM4372_IOPAD(0x94c, PIN_INPUT_PULLDOWN | MUX_MODE7)
+ 		>;
+ 	};
  
-+int tb_ring_throttling(struct tb_ring *ring, unsigned int interval_nsec);
++	pruss1_mdio_default: pruss1-mdio-default-pins {
++		pinctrl-single,pins = <
++			AM4372_IOPAD(0x88c, PIN_OUTPUT | MUX_MODE5) /* (A12) gpmc_clk.pr1_mdio_mdclk */
++			AM4372_IOPAD(0xa70, PIN_INPUT | MUX_MODE8) /* (D24) xdma_event_intr0.pr1_mdio_data */
++			AM4372_IOPAD(0xa00, PIN_INPUT_PULLUP | MUX_MODE7) /* (AD23) cam1_data6.gpio4[20] */
++		>;
++	};
 +
- /**
-  * tb_ring_dma_device() - Return device used for DMA mapping
-  * @ring: Ring whose DMA device is retrieved
++	pruss1_eth_default: pruss1-eth-default-pins {
++		pinctrl-single,pins = <
++			AM4372_IOPAD(0x8a0, PIN_INPUT | MUX_MODE2) /* (B22) dss_data0.pr1_mii_mt0_clk */
++			AM4372_IOPAD(0x8b4, PIN_OUTPUT | MUX_MODE2) /* (B20) dss_data5.pr1_mii0_txd0 */
++			AM4372_IOPAD(0x8b0, PIN_OUTPUT | MUX_MODE2) /* (A20) dss_data4.pr1_mii0_txd1 */
++			AM4372_IOPAD(0x8ac, PIN_OUTPUT | MUX_MODE2) /* (C21) dss_data3.pr1_mii0_txd2 */
++			AM4372_IOPAD(0x8a8, PIN_OUTPUT | MUX_MODE2) /* (B21) dss_data2.pr1_mii0_txd3 */
++			AM4372_IOPAD(0x8cc, PIN_INPUT | MUX_MODE5) /* (B18) dss_data11.pr1_mii0_rxd0 */
++			AM4372_IOPAD(0x8c8, PIN_INPUT | MUX_MODE5) /* (A18) dss_data10.pr1_mii0_rxd1 */
++			AM4372_IOPAD(0x8c4, PIN_INPUT | MUX_MODE5) /* (B19) dss_data9.pr1_mii0_rxd2 */
++			AM4372_IOPAD(0x8c0, PIN_INPUT | MUX_MODE5) /* (A19) dss_data8.pr1_mii0_rxd3 */
++			AM4372_IOPAD(0x8a4, PIN_OUTPUT | MUX_MODE2) /* (A21) dss_data1.pr1_mii0_txen */
++			AM4372_IOPAD(0x8d8, PIN_INPUT | MUX_MODE5) /* (C17) dss_data14.pr1_mii_mr0_clk */
++			AM4372_IOPAD(0x8dc, PIN_INPUT | MUX_MODE5) /* (D17) dss_data15.pr1_mii0_rxdv */
++			AM4372_IOPAD(0x8d4, PIN_INPUT | MUX_MODE5) /* (D19) dss_data13.pr1_mii0_rxer */
++			AM4372_IOPAD(0x8d0, PIN_INPUT | MUX_MODE5) /* (C19) dss_data12.pr1_mii0_rxlink */
++			AM4372_IOPAD(0xa40, PIN_INPUT | MUX_MODE5) /* (G20) gpio5_10.pr1_mii0_crs */
++			AM4372_IOPAD(0xa38, PIN_INPUT | MUX_MODE5) /* (D25) gpio5_8.pr1_mii0_col */
++
++			AM4372_IOPAD(0x858, PIN_INPUT | MUX_MODE5) /* (E8) gpmc_a6.pr1_mii_mt1_clk */
++			AM4372_IOPAD(0x854, PIN_OUTPUT | MUX_MODE5) /* (E7) gpmc_a5.pr1_mii1_txd0 */
++			AM4372_IOPAD(0x850, PIN_OUTPUT | MUX_MODE5) /* (D7) gpmc_a4.pr1_mii1_txd1 */
++			AM4372_IOPAD(0x84c, PIN_OUTPUT | MUX_MODE5) /* (A4) gpmc_a3.pr1_mii1_txd2 */
++			AM4372_IOPAD(0x848, PIN_OUTPUT | MUX_MODE5) /* (C6) gpmc_a2.pr1_mii1_txd3 */
++			AM4372_IOPAD(0x86c, PIN_INPUT | MUX_MODE5) /* (D8) gpmc_a11.pr1_mii1_rxd0 */
++			AM4372_IOPAD(0x868, PIN_INPUT | MUX_MODE5) /* (G8) gpmc_a10.pr1_mii1_rxd1 */
++			AM4372_IOPAD(0x864, PIN_INPUT | MUX_MODE5) /* (B4) gpmc_a9.pr1_mii1_rxd2 */
++			AM4372_IOPAD(0x860, PIN_INPUT | MUX_MODE5) /* (F7) gpmc_a8.pr1_mii1_rxd3 */
++			AM4372_IOPAD(0x840, PIN_OUTPUT | MUX_MODE5) /* (C3) gpmc_a0.pr1_mii1_txen */
++			AM4372_IOPAD(0x85c, PIN_INPUT | MUX_MODE5) /* (F6) gpmc_a7.pr1_mii_mr1_clk */
++			AM4372_IOPAD(0x844, PIN_INPUT | MUX_MODE5) /* (C5) gpmc_a1.pr1_mii1_rxdv */
++			AM4372_IOPAD(0x874, PIN_INPUT | MUX_MODE5) /* (B3) gpmc_wpn.pr1_mii1_rxer */
++			AM4372_IOPAD(0xa4c, PIN_INPUT | MUX_MODE5) /* (E24) gpio5_13.pr1_mii1_rxlink */
++			AM4372_IOPAD(0xa44, PIN_INPUT | MUX_MODE5) /* (F23) gpio5_11.pr1_mii1_crs */
++			AM4372_IOPAD(0x878, PIN_INPUT | MUX_MODE5) /* (A3) gpmc_be1n.pr1_mii1_col */
++		>;
++	};
++
+ 	qspi_pins_default: qspi-default-pins {
+ 		pinctrl-single,pins = <
+ 			AM4372_IOPAD(0x87c, PIN_OUTPUT_PULLUP | MUX_MODE3)	/* gpmc_csn0.qspi_csn */
+@@ -539,5 +627,18 @@ opp-100-600000000 {
+ };
+ 
+ &pruss1_mdio {
+-	status = "disabled";
++	pinctrl-0 = <&pruss1_mdio_default>;
++	pinctrl-names = "default";
++	status = "okay";
++
++	reset-gpios = <&gpio4 20 GPIO_ACTIVE_LOW>;
++	reset-delay-us = <2>;	/* PHY datasheet states 1uS min */
++
++	pruss1_eth0_phy: ethernet-phy@0 {
++		reg = <0>;
++	};
++
++	pruss1_eth1_phy: ethernet-phy@1 {
++		reg = <1>;
++	};
+ };
 -- 
-2.50.1
+2.43.0
 
