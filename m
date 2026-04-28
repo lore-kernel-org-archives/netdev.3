@@ -1,40 +1,41 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CFD6DDA9;
-	Tue, 28 Apr 2026 16:33:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F3D332D441
+	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 16:33:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777394012; cv=none; b=a2lH7PCOmEsPCkNgETyXP1gU+sCDK3an92euyC0mcQP5rn3W6daCanu1TaZ/EDU3wWrfaQWc3O/l4r7rb3DC7udHxCgv9VdDZyQ7ju5qrGQsxfmDxy18+Rs6FrtQCjyXFRFQ+TbkldPEymc1NC1ZxLz0STQPLbDBFqF2n6KdX/I=
+	t=1777394014; cv=none; b=Biggdj+y6uxgf/q9oNz6yL1CMp78WCqScL8wliLPh44jN/1QRybl1FUABC8kkTO4aVh4hK73OP9gejFIcMWnJv2blZ/efmEeGxTGlOkSjtFBgE5Pn1NlltbCB08tTo6f2Keua/1t2eE5yyNJHzLIFIIFZ1fY0ovD71jcpfcgl48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777394012; c=relaxed/simple;
-	bh=68AUE+rNo6vS7Yl5grOwzZobGoIdJ5ntoXAFGiShIiQ=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=WqKfeIbytfAvOvm+64mbqF04KHj8Ic+HqeTL6Q79CmYBWlBKDok6U3hCNAZzZFFXjZ/yB+s+LcyinVBZPJSSIFYedxPysMF5JKcLGk9g5kEL5ejiiVQo1U7/1POW6uQe2/2SgS8jQUhxYURRre9SctQ/FAyeLq405ngUSfLdPpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ZEih+yr8; arc=none smtp.client-ip=185.246.85.4
+	s=arc-20240116; t=1777394014; c=relaxed/simple;
+	bh=1jBDxYXWJq8oVg4cfwRSFslEeHBgkTsITO5M9rYbr1Q=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=e18GWkOY4hL0eyImBUmRmGoylvFUsl59tdwQWGTyrrWlZtJlXfzbbxu/2A8EEQspiVjVAcgt5/kTML2UUkn6VpyHbmDJkuZGrgroMvRQTrYqOkcW0yjHMorhlV/ORCFFBtNCADWrGjxLlGElJUo32d4M+dkRqOv3CnKBQ50w+3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=JumcAp5o; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ZEih+yr8"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="JumcAp5o"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id A000C4E42B5C;
-	Tue, 28 Apr 2026 16:33:26 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 2AE8C1A3473;
+	Tue, 28 Apr 2026 16:33:32 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 71E88601D0;
-	Tue, 28 Apr 2026 16:33:26 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 138D510728EC7;
-	Tue, 28 Apr 2026 18:33:05 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 013F7601D0;
+	Tue, 28 Apr 2026 16:33:32 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 39B0E10728F26;
+	Tue, 28 Apr 2026 18:33:28 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1777394000; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=RLmfpWDoWjVy/iLit4ugD0dmNcaraSoRaKNFKWYi+xg=;
-	b=ZEih+yr8bYPQOvySc9JN60576r04K6RRgxPf+V7cnSPcA4iPnSZOMsjY7k20peS9Nm4QLj
-	O3dPK2ulrbLD0tWUVavnnOtYDa6mn6ZMzrkKMzDn9IIrKZ1KfflHs3X7bJcp8k9NDd9ID4
-	NmiiQRLh1R1W3LsyLD478CrMEWAO84xDF2pni/nW6hU1aetLv/LMBXkC0R8bBiyLnw5CoC
-	JB+FxJ96saRPeyJwmssEcgZSwvM6oBgbS4okhXdg1QUqjaGb0omHu6m0pA0MAcfTJ5QlF7
-	Ztx2SJt+5bji+A6YGjbSMaRyPQ9MdTVGagU6JSSMHSIu5phQ2xXT1e+g+OvDbA==
+	t=1777394010; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=G9FpCeKi3Ynv/LOiUy9epKx2SW5IzmteIiDj38KugCY=;
+	b=JumcAp5onXM9jDLvIyBzPUYK8wJtJs6z5CeeXt1/YIOK9qYS5hVZggb1tfvouRmYku+c8W
+	eWN3rV904DjoDfHdibquMUXbtrqyglCVTL4l984IEAhdHiPtYFckalWeR7SXGSAmqPNaw6
+	1ETYBOLB4WG1AL/zETolvTeXrlJTNfG/9dL8fZCtTK9xo6T5wQlVE3RB7RtANmUnj+JkTr
+	glLS1k5gtMhJwG404+sxsFtr01nwLxV9H9/NxRLwaxYz6KXsg9+t3DUtlfH/5ZEA955fv+
+	EbQMIY2JDoAhYl1MiTtwDSuYVE2CVSVGxKEUEgJWyERANYrpuuX2ko1tlxrISw==
 From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Subject: [PATCH net v2 0/4] Drop in-flight Tx SKBs on MACB close
-Date: Tue, 28 Apr 2026 18:32:56 +0200
-Message-Id: <20260428-macb-drop-tx-v2-0-647f5199d8df@bootlin.com>
+Date: Tue, 28 Apr 2026 18:32:58 +0200
+Subject: [PATCH net v2 2/4] net: macb: drop in-flight Tx SKBs on close
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -43,11 +44,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/1WNwQ6CMBBEf8Xs2TWloEVP/ofhQNtF1khL2kowh
- H8X0IvHmbx5M0GkwBThspsg0MCRvVuC3O/AtLW7E7JdMkghT6KQOXa10WiD7zGN2JwNKamksOI
- Iy6QP1PC46W7gKEH1LeNLP8ikVbRiLcfkw3s7HbIN/vmLf/+QYYY6J6NVqWxZ2Kv2Pj3ZHYzvo
- Jrn+QNdSuniwQAAAA==
-X-Change-ID: 20260423-macb-drop-tx-f9ce72720d05
+Message-Id: <20260428-macb-drop-tx-v2-2-647f5199d8df@bootlin.com>
+References: <20260428-macb-drop-tx-v2-0-647f5199d8df@bootlin.com>
+In-Reply-To: <20260428-macb-drop-tx-v2-0-647f5199d8df@bootlin.com>
 To: Nicolas Ferre <nicolas.ferre@microchip.com>, 
  Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
  Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -68,62 +67,60 @@ Cc: Paolo Valerio <pvalerio@redhat.com>, Conor Dooley <conor@kernel.org>,
 X-Mailer: b4 0.15.2
 X-Last-TLS-Session-Version: TLSv1.3
 
-The first patch is here to allow giving a drop reason.
-We dissociate consumed packets from dropped ones that way.
+The MACB driver has since forever leaked the outgoing SKBs that
+have not yet been marked as completed. They live in queue->tx_skb
+which gets freed without remorse nor checking.
 
-Second patch is the main one: it drops unsent packets on close.
-MACB driver forgot freeing its SKBs (and associated DMA mappings).
+macb_free_consistent() gets called in a few codepaths, but only
+close will trigger the added expressions. In macb_open() and
+macb_alloc_consistent() failure cases, tx_skb just got allocated
+and is empty.
 
-Last two patches are to fix stats reporting on dropped codepaths.
+Use the new macb_tx_unmap() prototype to report our error as
+SKB_DROP_REASON_NOT_SPECIFIED rather than SKB_CONSUMED which makes it
+sound like no error occurred. Equivalent to dev_kfree_skb_any().
 
----
-Changes in v2:
-- Increment tx_dropped stat once per SKB, not once per frame.
-- Reset tx_head & tx_tail to avoid keeping stalled cursors.
-- Fix SKB dropped reasons throughout by adding the reason as parameter
-  to macb_tx_unmap(). This is a new patch. Then the drop-all-on-close
-  fix can use this ability to report we are not consuming SKBs.
-- Add increment to stats->tx_dropped on DMA mapping failure and
-  tx_error_task. Done as separate patches (3 and 4).
-- Rebase upon net/main @ 46f74a3f7d57, nothing to report.
-- Link to v1: https://patch.msgid.link/20260424-macb-drop-tx-v1-1-b3ecb787d84d@bootlin.com
-
-To: Nicolas Ferre <nicolas.ferre@microchip.com>
-To: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-To: Andrew Lunn <andrew+netdev@lunn.ch>
-To: "David S. Miller" <davem@davemloft.net>
-To: Eric Dumazet <edumazet@google.com>
-To: Jakub Kicinski <kuba@kernel.org>
-To: Paolo Abeni <pabeni@redhat.com>
-To: Haavard Skinnemoen <hskinnemoen@atmel.com>
-To: Jeff Garzik <jeff@garzik.org>
-Cc: Paolo Valerio <pvalerio@redhat.com>
-Cc: Conor Dooley <conor@kernel.org>
-Cc: Nicolai Buchwitz <nb@tipi-net.de>
-Cc: netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>
-Cc: Gregory CLEMENT <gregory.clement@bootlin.com>
-Cc: Benoît Monin <benoit.monin@bootlin.com>
-Cc: Tawfik Bayouk <tawfik.bayouk@mobileye.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Fixes: 89e5785fc8a6 ("[PATCH] Atmel MACB ethernet driver")
+Cc: stable@vger.kernel.org
 Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
-
 ---
-Théo Lebrun (4):
-      net: macb: give reasons for Tx SKB kfree
-      net: macb: drop in-flight Tx SKBs on close
-      net: macb: increment stats.tx_dropped on tx error
-      net: macb: increment stats.tx_dropped on DMA map error
+ drivers/net/ethernet/cadence/macb_main.c | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
- drivers/net/ethernet/cadence/macb_main.c | 57 +++++++++++++++++++++++++++-----
- 1 file changed, 48 insertions(+), 9 deletions(-)
----
-base-commit: e3684df8e778a9988b7f7a84e08daea8019b661e
-change-id: 20260423-macb-drop-tx-f9ce72720d05
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index 9caae1ef52b1..5a2500bd59a6 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -2678,8 +2678,26 @@ static void macb_free_consistent(struct macb *bp)
+ 	dma_free_coherent(dev, size, bp->queues[0].rx_ring, bp->queues[0].rx_ring_dma);
+ 
+ 	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
+-		kfree(queue->tx_skb);
+-		queue->tx_skb = NULL;
++		if (queue->tx_skb) {
++			unsigned int dropped = 0, tail;
++
++			for (tail = queue->tx_tail; tail != queue->tx_head;
++			     tail++) {
++				if (macb_tx_skb(queue, tail)->skb)
++					dropped++;
++				macb_tx_unmap(bp, macb_tx_skb(queue, tail), 0,
++					      SKB_DROP_REASON_NOT_SPECIFIED);
++			}
++
++			queue->stats.tx_dropped += dropped;
++			bp->dev->stats.tx_dropped += dropped;
++
++			kfree(queue->tx_skb);
++			queue->tx_skb = NULL;
++		}
++
++		queue->tx_head = 0;
++		queue->tx_tail = 0;
+ 		queue->tx_ring = NULL;
+ 		queue->rx_ring = NULL;
+ 	}
 
-Best regards,
---  
-Théo Lebrun <theo.lebrun@bootlin.com>
+-- 
+2.54.0
 
