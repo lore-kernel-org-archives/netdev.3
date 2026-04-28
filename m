@@ -1,89 +1,55 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C056C44D6A9
-	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 12:55:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27E8542EEA2
+	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 12:58:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777380949; cv=none; b=G5UgV1FmduiDXkfGRH0K5dHk7IvvZucbQt6akWADONvNXhSo8wGookRtHFw9qYX7Yj6JrFtGcdsnWzgWemJIhzwJgNOWpDgu6ZMu34Qv6vqKcIICi8udv7xPT75G0unwOVL29Qwnc/ACQF4IGKmKCUd24cph4gZEPOBfJqq/dK4=
+	t=1777381130; cv=none; b=SHWT5hnwKRoAvt4gpINKjpcY+hVyutfDc0hR7Q4xTXqKTN6Qbt5JbtZIBL256GMxomHgsUGarOVeF0eJe3HF7Myh1gZpmMPKJ149xAaeGP2H4psW2BJeV/bgodzococDLczz3l8dSOJTAUuCCCleHlTawmBnmJqUPpTM6eqtw6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777380949; c=relaxed/simple;
-	bh=47qUe5iD0anvdWaqTf9AsGaa0trp/rCOtUxo2FmvnEU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=crqra0KId8Wg4gf+4n4c84Sq438HrKzmNb83R1RC5MndSeAtBpNyYZTgquBx9j0pUWkzxPucDDPyG69QSadQKi5cjJOnBN4NRMF0VxEdfDDVQZf73RKOEXF6VG2GMU60RIA+og4Ol0uajQpgnuer/2JuTh3vDYIoHVN3v/GfW4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hF58UUFv; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1777381130; c=relaxed/simple;
+	bh=mXAUgVrsGmi1Pu/7E2MbcsYLqDHmGZYRZhThUyg1CKE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Bu4wYjEoxR0brSWr10bAjHKhgWeXI/o2TRDLZmDFq4T1Xlr95skfW40XQt9TJyejHypLR4pcbP8UNL5O7DI56A818fyAn0FU1rhLi1T58r4V2LDzsV3bwrzZNpRDkCnOjIrFP6i/dbeEW9VfqkgCqvzxhSVEi1oJG2DC1vl8IzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=a6Fjp7Av; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hF58UUFv"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-35e563b0ee7so5441850a91.1
-        for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 05:55:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777380940; x=1777985740; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=slN5/hMTVlDaMpg5JpMzTWkk/vo41vVvsEaBCnd8nHM=;
-        b=hF58UUFvzV2IB93MalYDmlii2PA03+Wb9RjeFNw40uS/NAE+c96pQXf8/2iUcQRF6T
-         eJBjpitUZeWVq9SlXXkEngJ38tNAK15KJcLzhx3L6tFUFKLWPpdZhmzlufd/fCnb4f5h
-         vImFYEud7tdMuAeCTKSy3tKTTaMJQ2PuVggA3O0/Hfrf1lokJ50vBrTs3fpwGpFuFTXi
-         bff+1k/WYPH9FKTH3NJ2yiLhlFKExFxU8pXjmZNJnfIDHdf3kobQEvjaMybjOpXDc6Cm
-         8wdOEx7Iw58zYpfccrzzLo22swzHasWIWbFVHGG0yoVzmkkMZG49x2FRXjxdG9ATUd3r
-         lyXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777380940; x=1777985740;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=slN5/hMTVlDaMpg5JpMzTWkk/vo41vVvsEaBCnd8nHM=;
-        b=oVXaC0CzgjHPxd54mmnYs84ZQ3cxzWQ/HwKHFbqLMnMnU78rjJ0Edg968jFc5TTcEh
-         T6Lj2vgpeJ1grW123hlvxWdgD5PmnyxnBk8m/z2xttqNvM609JAjPcTjB2s/plntNGzB
-         6zg5v8gYZqLAkZqd2e64O5USMP3uBXKKOWFuGIjxnu+3jLx/kR3FMcwQ6XIVNMSDl0Ft
-         CuS3PxuK8L+6lh4XhhW2DVE9QcQgAWpa5NvSgQBbkzig+ZR6hUsqOWbgtkSNcMOI1IoI
-         YgO7ap4iizpAbzxROB9UIhq0ksM0q4JhOfWPpyGXRt6WO7f7R22R2egGcMKTdHNHR9SB
-         2yvA==
-X-Forwarded-Encrypted: i=1; AFNElJ+MWW395kZPckGaPVWvW4zlYz/MZWLOOqsjp8zu31PFCbqYR/yFa7cVr4t0CxigcgIhOGAoCEU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwobmoTcbwt8R5141gTKFdw+0qzwmMV06TNVeRgpIXZdJSJ4DDW
-	hq7sAD5O+oql5TBCGR1dY5Ya8YvjAItNHa9kB8/9UT1JlT2/RT/qcimD
-X-Gm-Gg: AeBDies823qakCcp2Mw1oExkyF8exbJHHlTP/q1URRs70x0XpnBFXpKY7VjjD+YAX40
-	2U7+eyKxbMAF4iPQMSbSYX83m1xIqUCdQpmV4UO4Qq40ZPS/SYwfk9GgiLJcTt9ksCfLVpWTN0U
-	D0t+GAGCe4OyvwvUO16uW/o8Ahvept2yvDXATWDOPorE0ms/GQwhfX0jBXsaOJFthvyL6k26jQP
-	ZxyL1hlGEscVdyExy1pGDBj5ae9WaZH+nM+okLppXB3OP7Eeq/+Xu9G/bTL6TQnlJSegpK5O2TH
-	A/83hgHy0waHCSVyiuHRL699OaxmN8h9zKKHLpLcYVWDAxR9zcvr+XGi29n57UOdA+mLJEuTZAd
-	39JevmgA1eVQ9R3J/W3J5ofC6XZVKsdvGk6VzUbbbh76q28UnLC9dFjR+QeGUt8FqXxLqm3rzzY
-	uMRl6y0b8zdB+j3/ppaohs8Xlvxv+QWwxcmvzRpaD0esbMe3p/9wk18AcH6UxFDDuDqg==
-X-Received: by 2002:a17:90b:3947:b0:35b:d795:cf5d with SMTP id 98e67ed59e1d1-36491ccb41dmr2618794a91.5.1777380940062;
-        Tue, 28 Apr 2026 05:55:40 -0700 (PDT)
-Received: from hyj0824TXAir.sustech.edu.cn ([2001:da8:201d:1103:3367:a44:8d5a:228a])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36490f9a304sm2912298a91.9.2026.04.28.05.55.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Apr 2026 05:55:39 -0700 (PDT)
-From: Linpu Yu <linpu5433@gmail.com>
-To: kerneljasonxing@gmail.com,
-	magnus.karlsson@intel.com,
-	maciej.fijalkowski@intel.com,
-	netdev@vger.kernel.org,
-	bpf@vger.kernel.org
-Cc: sdf@fomichev.me,
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="a6Fjp7Av"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id C3C49C5EF07;
+	Tue, 28 Apr 2026 12:59:27 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 17F23601D0;
+	Tue, 28 Apr 2026 12:58:44 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7E15A10728B55;
+	Tue, 28 Apr 2026 14:58:38 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1777381123; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=TpPwl4y9tm8O+ejPdtapeLQ0xFITNwvuZv5Vcb8QVqw=;
+	b=a6Fjp7AvaxJYEm6KKsDpL1vPpyQUsPxSw80XqsG+CA8+3g/w3ejWzzvXWquJYhZZWJEHZ1
+	QmGLxVqgc4pJb9T8uxK623dXpoRR5B+nQIl+nJqYEbG8n59Rm2tluYcnvPLXFuY7SykG1M
+	KVN9l9UC2xAzTYuVFTcgcbp/OLBPmH+vbynN6UDbrX3GVuUMXkR0yusDsxnIuEbbbcISSu
+	7LcL4g8GVb5YbT8Bm1Pu1kGmIcDsUXWvNXH71aSdADSbkU1pXBG6a/0IXYudBjhqy3gHKU
+	/WCF/2XpRgsfOXGEzfuhfWmanmrXXXeTsFponb1O/gRD/XH83nxL/Fcr/Ci34Q==
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	hawk@kernel.org,
-	john.fastabend@gmail.com,
-	bjorn@kernel.org,
-	linux-kernel@vger.kernel.org,
-	tanyuan98@outlook.com,
-	yifanwucs@gmail.com
-Subject: [PATCH bpf-next v3] xskmap: reject TX-only AF_XDP sockets
-Date: Tue, 28 Apr 2026 20:54:58 +0800
-Message-ID: <20260428125518.4556-1-linpu5433@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <2b156bc4277a9e891f3399935416701d1f9efd7c.1777276241.git.linpu5433@gmail.com>
-References: <2b156bc4277a9e891f3399935416701d1f9efd7c.1777276241.git.linpu5433@gmail.com>
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Camelia Groza <camelia.groza@nxp.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	thomas.petazzoni@bootlin.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next] net: phy: aquantia: use ADVERTISE_XNP for extended next page advertising
+Date: Tue, 28 Apr 2026 14:58:27 +0200
+Message-ID: <20260428125827.238469-1-maxime.chevallier@bootlin.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -91,49 +57,49 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-XSKMAP entries are used as redirect targets for incoming XDP frames.
-A TX-only AF_XDP socket lacks an Rx ring and cannot handle redirected
-traffic, but xsk_map_update_elem() currently allows such sockets to
-be inserted into the map.
+When configuring the link parameters in forced mode for the AQR-105, the
+Extended Next Page bit gets advertised for Multi-Gigabit modes.
 
-Redirecting packets to such a socket on the veth generic-XDP path
-causes a kernel crash in xsk_generic_rcv().
+This is done through bit 12 of MDIO_AN_ADVERTISE in MDIO_MMD_AN. This
+contains a copy of the MII_ADVERTISE, for which 802.3 defines bit 12 as
+the Extended Next Page advertising. This bit used to be marked as
+reserved, but a proper define for it was added in :
 
-This became possible after xsk_is_setup_for_bpf_map() was removed from
-the XSKMAP update path, which allowed bound TX-only sockets to be
-inserted into the map.
+commit e7a62edd34b1 ("net: phy: qcom: at803x: Use the correct bit to disable extended next page")
 
-Reject TX-only sockets during XSKMAP updates to avoid the crash.
-They remain fully operational for pure Tx purposes outside XSKMAP.
+Let's use it instead of the ADVERTISE_RESV definition, making the code
+more self-documenting.
 
-Fixes: 968be23ceaca ("xsk: Fix possible segfault at xskmap entry insertion")
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Yifan Wu <yifanwucs@gmail.com>
-Signed-off-by: Linpu Yu <linpu5433@gmail.com>
+Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 ---
-Changes in v3:
-- fix the Fixes tag to point to 968be23ceaca
+ drivers/net/phy/aquantia/aquantia_main.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
- net/xdp/xskmap.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/net/xdp/xskmap.c b/net/xdp/xskmap.c
-index afa457506274..3bff346308d0 100644
---- a/net/xdp/xskmap.c
-+++ b/net/xdp/xskmap.c
-@@ -184,6 +184,10 @@ static long xsk_map_update_elem(struct bpf_map *map, void *key, void *value,
- 	}
- 
- 	xs = (struct xdp_sock *)sock->sk;
-+	if (!READ_ONCE(xs->rx)) {
-+		sockfd_put(sock);
-+		return -ENOBUFS;
-+	}
- 
- 	map_entry = &m->xsk_map[i];
- 	node = xsk_map_node_alloc(m, map_entry);
+diff --git a/drivers/net/phy/aquantia/aquantia_main.c b/drivers/net/phy/aquantia/aquantia_main.c
+index 41f3676c7f1e..e95d391a6dc2 100644
+--- a/drivers/net/phy/aquantia/aquantia_main.c
++++ b/drivers/net/phy/aquantia/aquantia_main.c
+@@ -385,15 +385,15 @@ static int aqr105_setup_forced(struct phy_device *phydev)
+ 			vend |= MDIO_AN_VEND_PROV_1000BASET_HALF;
+ 		break;
+ 	case SPEED_2500:
+-		adv |= (ADVERTISE_NPAGE | ADVERTISE_RESV);
++		adv |= (ADVERTISE_NPAGE | ADVERTISE_XNP);
+ 		vend |= MDIO_AN_VEND_PROV_2500BASET_FULL;
+ 		break;
+ 	case SPEED_5000:
+-		adv |= (ADVERTISE_NPAGE | ADVERTISE_RESV);
++		adv |= (ADVERTISE_NPAGE | ADVERTISE_XNP);
+ 		vend |= MDIO_AN_VEND_PROV_5000BASET_FULL;
+ 		break;
+ 	case SPEED_10000:
+-		adv |= (ADVERTISE_NPAGE | ADVERTISE_RESV);
++		adv |= (ADVERTISE_NPAGE | ADVERTISE_XNP);
+ 		ctrl10 |= MDIO_AN_10GBT_CTRL_ADV10G;
+ 		break;
+ 	default:
 -- 
-2.54.0
+2.49.0
+
