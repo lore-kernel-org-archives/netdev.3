@@ -1,97 +1,41 @@
-Received: from flow-b1-smtp.messagingengine.com (flow-b1-smtp.messagingengine.com [202.12.124.136])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0722C41C31E;
-	Tue, 28 Apr 2026 18:11:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 711F7466B5E;
+	Tue, 28 Apr 2026 18:11:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777399892; cv=none; b=IJxJq/Ktbff/h31vaPOoZwIvKRtXM6SU3EYUGkIqqMVEttU39u47QYJCKOhjlp3li5C4uT7englTmt8cPXe8OOw35zjfTp/BwiPiOLE2O5BzNoEXLZZ/qYWFlKK9KooR7FwsOHaYYY6FNJ6VJy797W3F7+dCoPv9nyTVBLNyPVI=
+	t=1777399896; cv=none; b=Rj7FqfkMzpy4cOCTZ5rzVskA0hROyv+JoPVdRbYI/j5nSlU8SupJdM4PIyNgH4eW9cJe+ggtRFTHNZl0kcKBoSqUvV7unl6AmVyQzJyviKqehzSv34XFN/iKwb97PwGKJ9xY2WStWxuUdPaUqAZpGRQEzKkdkSzK8YkplN6HfK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777399892; c=relaxed/simple;
-	bh=UWGzQNftb8o8DGBooX3MXOLEiUysLsUT+gtpcYxnW+c=;
+	s=arc-20240116; t=1777399896; c=relaxed/simple;
+	bh=S/AnHKW3MK/QE2PR1Fk+tXCjOwZd0eCKlknwW999+GY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mFCFDqcDk0viFU3v5wUq9uLWEGh98NyG68cAGo51jVJznPQlWSKy3LKSsXRelNvQ7AMezC4spjdKlYGDCypaUhML2UW+HlDZd4icabYgCCrWG40ur9/QvtMZ8nmb3hieHtmkDOS8SfXa6I3iVIX9/0qdE9m/yiPUtZVzAkOjzzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=FwGdACcE; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=PsZGnXFe; arc=none smtp.client-ip=202.12.124.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=rcwZTEdiAzzD+Qc9oUEyrf0h5doyBlVrDOz85uHaZOme3LAhiIT+w2aG9QKPbQ9DWYqn3KC/Scxnp5AAr2IgN6HsIssFHnscF76hV1eL1Ki/rHTmKDL/7Ree65jlU7vsYTbm6tMJEaaMpk0pmFIxvPARqOCQo1l8JUjv7AGLonQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K714a/eO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="FwGdACcE";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="PsZGnXFe"
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailflow.stl.internal (Postfix) with ESMTP id 8E7991300E69;
-	Tue, 28 Apr 2026 14:11:28 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-10.internal (MEProxy); Tue, 28 Apr 2026 14:11:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1777399888; x=1777407088; bh=jRVLkUu+1D
-	UdYPI1Lcftxijdj9hZ7OVSGf1XeqNrozw=; b=FwGdACcEnSvrpvbTfrMPjrIkJv
-	KGZnM1oWOaRRCkQleoPFNPOjuvr81vKjEsM0JN3cBwM0QZ6WF3lDJUyCP78R4zJU
-	n22CI18dmi8QrXo+HHkOITi3vOR8iFbIz336VSQxoKPTtfZb+btfSC2KEjvwkZb1
-	3sv0dvqOA8cmdOCIaHmlwmQACPfsFPvm/bJmXQN2KYIPOL7II7hE2EeHOw2bdRbX
-	pSbmKX0HJGWhJSnIao6pf/1c3vNsDXCzQiaSCmkVCi4x+XRDT5rKur1UIt5GlfF2
-	RmieF2OAV0V+slRYE7eCvGZzUUb2u5YgRwX9kHQJzwvzERfGpUzneyOk81IQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1777399888; x=1777407088; bh=jRVLkUu+1DUdYPI1Lcftxijdj9hZ7OVSGf1
-	XeqNrozw=; b=PsZGnXFes5woefYvRPXJpJaG8yvOFbWqe3blOjMVrhiSyLqFIke
-	GUN0VCNI+Ou7ugttxPAEHl/PTycT/s7urY61pBFl6QuANl3nlvdSBPk6vcXOma48
-	amjZ93FthjhsKh/haYkc+NhoTaBmqzOfvlMeNrc7/pIr/5S2267Y9Ce95BFGQUy3
-	ewCGtPrABOOKttw6wgEJcly/+43plKHgRnZnAJAjKDAnO4pjM75x2rUTdC2QDyvX
-	fOcOJHbwwS3xMHuEzorQPyUvUq0NaMOzaQ313jSuZ5UcKui6aPCYvJOyctysnemE
-	CO+6zWu50Xhzw3nXmMFUdGuAaO8m/Zqhczw==
-X-ME-Sender: <xms:T_jwadUn-CtnAXA52Su38s2Y-GWBGVIIiZ4NJdTX2g771iju8LODLA>
-    <xme:T_jwaW6FLAxJv3XHWt2hYvV-RiahdlZVjcIXlGTo1tZEQobYY7Of5AlMkFmx09csG
-    QoxR0sMypny73vXWAR2MQaWeWdp8kfyKCm5yYmZO80fcMEqcA>
-X-ME-Received: <xmr:T_jwaRYND96jaB8GIf45V5HrGQy-G6d8fTwJJh1AvKJKYcfAxe79uzZ7BQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdekvddvgecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcumffj
-    uceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeehgedvvedvle
-    ejuefgtdduudfhkeeltdeihfevjeekjeeuhfdtueefhffgheekteenucevlhhushhtvghr
-    ufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtg
-    homhdpnhgspghrtghpthhtohepvdeipdhmohguvgepshhmthhpohhuthdprhgtphhtthho
-    pehmihhkrgdrfigvshhtvghrsggvrhhgsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtg
-    hpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtoheplhhinhhugidquhhs
-    sgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopeihvghhvgiikhgvlhhshh
-    gssehgmhgrihhlrdgtohhmpdhrtghpthhtoheplhhukhgrshesfihunhhnvghrrdguvgdp
-    rhgtphhtthhopegrnhgurhgvrghsrdhnohgvvhgvrhesghhmrghilhdrtghomhdprhgtph
-    htthhopegrlhgrnhdrsghorhiivghsiihkohifshhkiheslhhinhhugidrihhnthgvlhdr
-    tghomhdprhgtphhtthhopegrnhgurhgvfidonhgvthguvghvsehluhhnnhdrtghhpdhrtg
-    hpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvth
-X-ME-Proxy: <xmx:T_jwaaC1gXogkYAn5W4vQEkAKmuBOLPYsnOKJGTZIAPLRAgoMcjvnA>
-    <xmx:T_jwaSq_2YXJRjAt5JB4I03Nnfnp-Jpw6xFNRZ9OVkxrSWfatkW1uA>
-    <xmx:T_jwaYJ4Jf73p5PQ-OvMlVggvks5nyTweNcBm9NrIugF377SQYU_wQ>
-    <xmx:T_jwadQxtT35Qq7TtlR7Qv2MM5bjo_Scwf60rI-sLiDdULwHGwH5Ug>
-    <xmx:UPjwady4iLJk3JhGpGdX5EtIn1d9SuKgZF0tN6pvhnB_9yfj5oo-gnfq>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 28 Apr 2026 14:11:27 -0400 (EDT)
-Date: Tue, 28 Apr 2026 12:10:49 -0600
-From: Greg KH <greg@kroah.com>
-To: Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, linux-usb@vger.kernel.org,
-	Yehezkel Bernat <YehezkelShB@gmail.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Andreas Noever <andreas.noever@gmail.com>,
-	Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH 5/9] thunderbolt / net: Let the service drivers configure
- interrupt throttling
-Message-ID: <2026042827-pep-deeply-edc9@gregkh>
-References: <20260428072209.3084930-1-mika.westerberg@linux.intel.com>
- <20260428072209.3084930-6-mika.westerberg@linux.intel.com>
- <a0d3eec7-4c11-404f-804c-fa46515d25fe@lunn.ch>
- <20260428172629.GW557136@black.igk.intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K714a/eO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11162C2BCB5;
+	Tue, 28 Apr 2026 18:11:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777399896;
+	bh=S/AnHKW3MK/QE2PR1Fk+tXCjOwZd0eCKlknwW999+GY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=K714a/eO+/Y7k7FhslO+mkEDqrtUdvQnYBBGcPDmuyC/av0LquXiS3ZSo/NwBNlTe
+	 LjPE9P74ZLxA6qWdok7vWL20cA6PG0XKASXYhBXzSKzx6L82DWz8T9JjUZyt7lGqOE
+	 vkj/i3t3fC1Hu/ui2zk3Q8wHlsTKkNYoQiBt9VFMMIa7VAtL/QJmszfYgfYhiYD4+h
+	 ZIw8FOeWH17tNrKM3OuoVZ3KERZkXu/6Q5h8ouDcmYeN5oSf1JSkei58CpCTMGZkCF
+	 onsKkG6ps1cZMQJKTDgYmBJe0Ydr2lt792035v+hxq9wGBQLxOPwDfVMVEmBMs6ZzX
+	 EkoBWpID0Tk5w==
+Date: Tue, 28 Apr 2026 19:11:31 +0100
+From: Simon Horman <horms@kernel.org>
+To: Prathamesh Deshpande <prathameshdeshpande7@gmail.com>
+Cc: saeedm@nvidia.com, leon@kernel.org, kuba@kernel.org, tariqt@nvidia.com,
+	cratiu@nvidia.com, cjubran@nvidia.com, netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v1] net/mlx5: Fix eswitch offloads cleanup on QoS
+ init failure
+Message-ID: <20260428181131.GV900403@horms.kernel.org>
+References: <20260425003046.6889-1-prathameshdeshpande7@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -100,50 +44,18 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260428172629.GW557136@black.igk.intel.com>
+In-Reply-To: <20260425003046.6889-1-prathameshdeshpande7@gmail.com>
 
-On Tue, Apr 28, 2026 at 07:26:29PM +0200, Mika Westerberg wrote:
-> On Tue, Apr 28, 2026 at 04:59:58PM +0200, Andrew Lunn wrote:
-> > On Tue, Apr 28, 2026 at 09:22:05AM +0200, Mika Westerberg wrote:
-> > > Instead of the core driver programming fixed value for throttling let
-> > > the service drivers to specify the interval if they need this. We also
-> > > allow user to tune this through a module parameter if the default is not
-> > > good fit.
-> > > 
-> > > Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-> > > ---
-> > >  drivers/net/thunderbolt/main.c |  7 ++++
-> > >  drivers/thunderbolt/dma_test.c |  5 +++
-> > >  drivers/thunderbolt/nhi.c      | 58 ++++++++++++++++++----------------
-> > >  drivers/thunderbolt/nhi_regs.h |  3 +-
-> > >  include/linux/thunderbolt.h    |  5 +++
-> > >  5 files changed, 50 insertions(+), 28 deletions(-)
-> > > 
-> > > diff --git a/drivers/net/thunderbolt/main.c b/drivers/net/thunderbolt/main.c
-> > > index 49673f7e0055..8771ca807933 100644
-> > > --- a/drivers/net/thunderbolt/main.c
-> > > +++ b/drivers/net/thunderbolt/main.c
-> > > @@ -218,6 +218,10 @@ static bool tbnet_e2e = true;
-> > >  module_param_named(e2e, tbnet_e2e, bool, 0444);
-> > >  MODULE_PARM_DESC(e2e, "USB4NET full end-to-end flow control (default: true)");
-> > >  
-> > > +static unsigned int tbnet_throttling = 128000;
-> > > +module_param_named(throttling, tbnet_throttling, uint, 0444);
-> > > +MODULE_PARM_DESC(throttling, "Interrupt throttling rate in ns (default: 128000)");
-> > 
-> > As i mentioned elsewhere, netdev does not allow module
-> > parameters. They are hard to use, especially when you have lots of
-> > instances of a device, or you need to set it on the kernel command
-> > line because by the time the kernel has booted, it is too late, etc.
-> > And they are undocumented, and every driver does it differently.
+On Sat, Apr 25, 2026 at 01:29:59AM +0100, Prathamesh Deshpande wrote:
+> If mlx5_esw_qos_init() fails after esw_offloads_init() succeeds,
+> mlx5_eswitch_init() jumps to reps_err and skips esw_offloads_cleanup(),
+> leaking the offloads initialization state.
 > 
-> Right. This was meant to be a "chicken bit" or "escape hatch" not something
-> used in daily basis.
+> Add a dedicated unwind label for QoS init failure that cleans up
+> offloads before continuing the existing vport and outer eswitch cleanup.
+> 
+> Fixes: cac7356c653d ("net/mlx5: Rework esw qos domain init and cleanup")
+> Signed-off-by: Prathamesh Deshpande <prathameshdeshpande7@gmail.com>
 
-Put it in configfs if you really want it.
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-You shouldn't need any new module parameters.
-
-thanks,
-
-greg k-h
