@@ -1,171 +1,210 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7D64611C4;
-	Tue, 28 Apr 2026 13:08:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4B1F44A708;
+	Tue, 28 Apr 2026 13:10:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777381705; cv=none; b=tb7pakzvvbI09yDK+Rkm5IlQQHFCJPX+gcm755qpBuS4M60uxG63I0H9qDuzcmg10IQFl1SPA5T/AHydNOfzrVoHJE0E5a2qcsbCnfO/OSFysREayOpi0Z0W/BdSEUF9hpKvrjt8cG1dxpdxNKg/lvxCTsaLqeD6xCj8bdWI62w=
+	t=1777381857; cv=none; b=c1nlmAzvYVCgpRzhQAeMVgaZ3hlEkY22Ax2Sd05IqTK11feDdYqfxhARGwOW/QTlYL3L8y4NE86wV1dQ2WuMqGIFcdwL/rRw+rVZ2YjeC8zEd/J7b+G+Zl/RQvrQbvNZn5GulzccHrsjuyfEuo3iSG4FgkPA18+3PFJB4pgy29U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777381705; c=relaxed/simple;
-	bh=JNDa4CUKUzTraRNJmigUIT1ioAe5LNbQPZMMv/XDxk4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=ne7m37Wet7jV5oBduIX7CwTep55sieM4J2F5raKykbPvclmTHPwTA9y2sLkIh6GxqhUooums2xVPEd4bX+ZAQyKgl2Mc1h0KQq1bK+f8SJwMXmI/zUS6XCyoel9RiIYqDtBYJtu1OiESKjH5BO0J+lrutSlR4yfSQ9wvNHg8yTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=PsH0XmM6; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="PsH0XmM6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1777381703; x=1808917703;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=JNDa4CUKUzTraRNJmigUIT1ioAe5LNbQPZMMv/XDxk4=;
-  b=PsH0XmM6MQ6v/WtbmR8+xTW32jn5vX3b7Rd0o6NPU4B4ZGHGkScgH+Hb
-   u5Blkd9tLVUGR8PA8dNw8/g7BtDRxfshUm0+nUWalspAGnf2/82dcQh2i
-   5cIBTdsjNfp4OA0/p7rt8Tlv1lAHe07WENpt4zBtS7QSagMVsFcvH8q1P
-   tvWLLN/hPW89lSboHc15VcS05Xs/iaz1hOUMaD/ANcaG4/KeXfGWWM/DP
-   CNNrHJXyqB/VeM/F1B84YO0xIh9dVeElmR3sM/1uCtaZSfr54yp+zolaj
-   MblRaPQPzfLPthoROFABJa6hM/WQiWFqYGISzYIabc3YiKepKa3mNzIdY
-   g==;
-X-CSE-ConnectionGUID: tIebLSBFSYq1E2yHaJt67A==
-X-CSE-MsgGUID: tzUrtEfyRseWfr9UTL4kKQ==
-X-IronPort-AV: E=Sophos;i="6.23,204,1770620400"; 
-   d="scan'208";a="64844185"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 28 Apr 2026 06:08:21 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Tue, 28 Apr 2026 06:07:39 -0700
-Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Tue, 28 Apr 2026 06:07:36 -0700
-From: Daniel Machon <daniel.machon@microchip.com>
-Date: Tue, 28 Apr 2026 15:06:57 +0200
-Subject: [PATCH net-next v2 08/13] net: lan966x: add shutdown callback to
- stop FDMA on reboot
+	s=arc-20240116; t=1777381857; c=relaxed/simple;
+	bh=nmszbhvlmW6fCGQOwQbFQYvBDmzyGhtjk20ogqwaHEE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mWnkvLQjYbnJpDCdrOG9eo7xEKghlTsesQ7zAhNkwL9V8Vmv+XtblzzocDggGIF3gRLKFKAJ2ib64aNhStLFMfvxlVEnnv/N7yreBDFO6UtfsZGI9Mhoimsr1Fk17g0ZcEh/Zhmfu6nGOKeNJikK6X/cJmFSiR9R5RmM2gsMv1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; arc=none smtp.client-ip=129.217.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
+Received: from [129.217.186.62] ([129.217.186.62])
+	(authenticated bits=0)
+	by unimail.uni-dortmund.de (8.18.2/8.18.2) with ESMTPSA id 63SDAig6017192
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 28 Apr 2026 15:10:45 +0200 (CEST)
+Message-ID: <cdc3cbc8-cf6a-437c-b34c-dd8ced65d7f8@tu-dortmund.de>
+Date: Tue, 28 Apr 2026 15:10:44 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v9 4/4] tun/tap & vhost-net: avoid ptr_ring
+ tail-drop when a qdisc is present
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: willemdebruijn.kernel@gmail.com, jasowang@redhat.com,
+        andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, eperezma@redhat.com,
+        leiyang@redhat.com, stephen@networkplumber.org, jon@nutanix.com,
+        tim.gebauer@tu-dortmund.de, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        virtualization@lists.linux.dev
+References: <20260428123859.19578-1-simon.schippers@tu-dortmund.de>
+ <20260428123859.19578-5-simon.schippers@tu-dortmund.de>
+ <20260428084851-mutt-send-email-mst@kernel.org>
+Content-Language: en-US
+From: Simon Schippers <simon.schippers@tu-dortmund.de>
+In-Reply-To: <20260428084851-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-ID: <20260428-lan966x-pci-fdma-v2-8-d3ec66e06202@microchip.com>
-References: <20260428-lan966x-pci-fdma-v2-0-d3ec66e06202@microchip.com>
-In-Reply-To: <20260428-lan966x-pci-fdma-v2-0-d3ec66e06202@microchip.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Horatiu Vultur
-	<horatiu.vultur@microchip.com>, Steen Hegelund
-	<steen.hegelund@microchip.com>, <UNGLinuxDriver@microchip.com>, "Alexei
- Starovoitov" <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
-	"Jesper Dangaard Brouer" <hawk@kernel.org>, John Fastabend
-	<john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, Herve
- Codina <herve.codina@bootlin.com>, Arnd Bergmann <arnd@arndb.de>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Mohsin Bashir
-	<mohsin.bashr@gmail.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<bpf@vger.kernel.org>
-X-Mailer: b4 0.14.3
 
-When lan966x is used as a PCIe endpoint, the FDMA engine runs on the
-card and survives a host reboot. Without a shutdown callback, channels
-stay active and interrupt sources stay armed across the reset, causing
-the shared PCIe INTx to assert before the driver has re-probed.
+On 4/28/26 14:50, Michael S. Tsirkin wrote:
+> On Tue, Apr 28, 2026 at 02:38:59PM +0200, Simon Schippers wrote:
+>> This commit prevents tail-drop when a qdisc is present and the ptr_ring
+>> becomes full. Once an entry is successfully produced and the ptr_ring
+>> reaches capacity, the netdev queue is stopped instead of dropping
+>> subsequent packets.
+>>
+>> If producing an entry fails anyways due to a race, tun_net_xmit returns
+>> NETDEV_TX_BUSY, again avoiding a drop. Such races are expected because
+>> LLTX is enabled and the transmit path operates without the usual locking.
+>>
+>> If no qdisc is present, the previous tail-drop behavior is preserved.
+>>
+>> The existing __tun_wake_queue() function of the consumer races with the
+>> producer for waking/stopping the netdev queue: the consumer may drain
+>> the ring just as the producer stops the queue, leading to a permanent
+>> stall. To avoid this, the producer re-checks the ring after stopping
+>> and wakes the queue itself if space was just made. An
+>> smp_mb__after_atomic() is required so the re-peek of the ring sees any
+>> drain that the consumer performed.
+>> smp_mb__after_atomic() pairs with the test_and_clear_bit() inside of
+>> netif_wake_subqueue():
+>>
+>> Consumer CPU                  Producer CPU
+>> ========================      =========================
+>> __ptr_ring_consume()
+>> netif_wake_subqueue()         netif_tx_stop_queue()
+>>           /\                  smp_mb__after_atomic()
+>>           ||                  __ptr_ring_produce_peek()
+>> contains RMW operation
+>>  test_and_clear_bit()
+>>           /\
+>>           ||
+>>  "Fully ordered RMW:
+>> smp_mb() before + after"
+>>     - atomic_t.txt
+>>
+>> Benchmarks:
+>> The benchmarks show a slight regression in raw transmission performance,
+>> though no packets are lost anymore.
+> 
+> Could you include the packets received as well?
+> To demonstrate the gains/lack of loss. 
+> 
 
-Add a shutdown callback, shared by the platform and PCI paths, that
-masks FDMA interrupts (FDMA_INTR_ENA and FDMA_INTR_DB_ENA) and disables
-the RX and TX channels.
+Do you mean the number of packets received by the VM?
+They should just be the same as the number sent (shown below), right?
 
-FDMA_INTR_ENA persists on the card across a warm reboot, so also
-restore the full enable in lan966x_fdma_rx_start() to re-arm interrupts
-after a previous shutdown(). rx_start() runs after both the RX and TX
-rings are allocated, so the same single-site re-arm works for both the
-platform and PCIe backends.
+I assume they would be visible as RX-DRP for TAP.
+For TAP + vhost-net I would have to rewrite the XDP drop
+program to count the number of dropped packets...
+And I would have to automate it...
 
-Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
----
- drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c |  4 ++++
- drivers/net/ethernet/microchip/lan966x/lan966x_main.c | 15 +++++++++++++++
- drivers/net/ethernet/microchip/lan966x/lan966x_regs.h | 15 +++++++++++++++
- 3 files changed, 34 insertions(+)
-
-diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
-index 9bb40383aa56..493aef5ba8d1 100644
---- a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
-+++ b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
-@@ -146,6 +146,10 @@ void lan966x_fdma_rx_start(struct lan966x_rx *rx)
- 	struct fdma *fdma = &rx->fdma;
- 	u32 mask;
- 
-+	lan_wr(FDMA_INTR_ENA_INTR_PORT_ENA_SET(GENMASK(1, 0)) |
-+	       FDMA_INTR_ENA_INTR_CH_ENA_SET(GENMASK(7, 0)),
-+	       lan966x, FDMA_INTR_ENA);
-+
- 	lan_wr(FDMA_CH_CFG_CH_DCB_DB_CNT_SET(fdma->n_dbs) |
- 	       FDMA_CH_CFG_CH_INTR_DB_EOF_ONLY_SET(1) |
- 	       FDMA_CH_CFG_CH_INJ_PORT_SET(0) |
-diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-index b3701953b090..ac0c626558a5 100644
---- a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-+++ b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-@@ -1311,9 +1311,24 @@ static void lan966x_remove(struct platform_device *pdev)
- 	debugfs_remove_recursive(lan966x->debugfs_root);
- }
- 
-+static void lan966x_shutdown(struct platform_device *pdev)
-+{
-+	struct lan966x *lan966x = platform_get_drvdata(pdev);
-+
-+	if (!lan966x->fdma)
-+		return;
-+
-+	lan_wr(0, lan966x, FDMA_INTR_ENA);
-+	lan_wr(0, lan966x, FDMA_INTR_DB_ENA);
-+
-+	lan966x_fdma_rx_disable(&lan966x->rx);
-+	lan966x_fdma_tx_disable(&lan966x->tx);
-+}
-+
- static struct platform_driver lan966x_driver = {
- 	.probe = lan966x_probe,
- 	.remove = lan966x_remove,
-+	.shutdown = lan966x_shutdown,
- 	.driver = {
- 		.name = "lan966x-switch",
- 		.of_match_table = lan966x_match,
-diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_regs.h b/drivers/net/ethernet/microchip/lan966x/lan966x_regs.h
-index 4b553927d2e0..aba0d36ae6b5 100644
---- a/drivers/net/ethernet/microchip/lan966x/lan966x_regs.h
-+++ b/drivers/net/ethernet/microchip/lan966x/lan966x_regs.h
-@@ -1039,6 +1039,21 @@ enum lan966x_target {
- /*      FDMA:FDMA:FDMA_INTR_ERR */
- #define FDMA_INTR_ERR             __REG(TARGET_FDMA, 0, 1, 8, 0, 1, 428, 400, 0, 1, 4)
- 
-+/*      FDMA:FDMA:FDMA_INTR_ENA */
-+#define FDMA_INTR_ENA             __REG(TARGET_FDMA, 0, 1, 8, 0, 1, 428, 404, 0, 1, 4)
-+
-+#define FDMA_INTR_ENA_INTR_PORT_ENA              GENMASK(9, 8)
-+#define FDMA_INTR_ENA_INTR_PORT_ENA_SET(x)\
-+	FIELD_PREP(FDMA_INTR_ENA_INTR_PORT_ENA, x)
-+#define FDMA_INTR_ENA_INTR_PORT_ENA_GET(x)\
-+	FIELD_GET(FDMA_INTR_ENA_INTR_PORT_ENA, x)
-+
-+#define FDMA_INTR_ENA_INTR_CH_ENA                GENMASK(7, 0)
-+#define FDMA_INTR_ENA_INTR_CH_ENA_SET(x)\
-+	FIELD_PREP(FDMA_INTR_ENA_INTR_CH_ENA, x)
-+#define FDMA_INTR_ENA_INTR_CH_ENA_GET(x)\
-+	FIELD_GET(FDMA_INTR_ENA_INTR_CH_ENA, x)
-+
- /*      FDMA:FDMA:FDMA_ERRORS */
- #define FDMA_ERRORS               __REG(TARGET_FDMA, 0, 1, 8, 0, 1, 428, 412, 0, 1, 4)
- 
-
--- 
-2.34.1
-
+>>
+>> The previously introduced threshold to only wake after the queue stopped
+>> and half of the ring was consumed showed to be a descent choice:
+>> Waking the queue whenever a consume made space in the ring strongly
+>> degrades performance for tap, while waking only when the ring is empty
+>> is too late and also hurts throughput for tap & tap+vhost-net.
+>> Other ratios (3/4, 7/8) showed similar results (not shown here), so
+>> 1/2 was chosen for the sake of simplicity for both tun/tap and
+>> tun/tap+vhost-net.
+>>
+>> Test setup:
+>> AMD Ryzen 5 5600X at 4.3 GHz, 3200 MHz RAM, isolated QEMU threads;
+>> Average over 50 runs @ 100,000,000 packets. SRSO and spectre v2
+>> mitigations disabled.
+>>
+>> Note for tap+vhost-net:
+>> XDP drop program active in VM -> ~2.5x faster, slower for tap due to
+>> more syscalls (high utilization of entry_SYSRETQ_unsafe_stack in perf)
+>>
+>> +--------------------------+--------------+----------------+----------+
+>> | 1 thread                 | Stock        | Patched with   | diff     |
+>> | sending                  |              | fq_codel qdisc |          |
+>> +------------+-------------+--------------+----------------+----------+
+>> | TAP        | Transmitted | 1.136 Mpps   | 1.130 Mpps     | -0.6%    |
+>> |            +-------------+--------------+----------------+----------+
+>> |            | Lost/s      | 3.758 Mpps   | 0 pps          |          |
+>> +------------+-------------+--------------+----------------+----------+
+>> | TAP        | Transmitted | 3.858 Mpps   | 3.816 Mpps     | -1.1%    |
+>> |            +-------------+--------------+----------------+----------+
+>> | +vhost-net | Lost/s      | 789.8 Kpps   | 0 pps          |          |
+>> +------------+-------------+--------------+----------------+----------+
+>>
+>> +--------------------------+--------------+----------------+----------+
+>> | 2 threads                | Stock        | Patched with   | diff     |
+>> | sending                  |              | fq_codel qdisc |          |
+>> +------------+-------------+--------------+----------------+----------+
+>> | TAP        | Transmitted | 1.117 Mpps   | 1.087 Mpps     | -2.7%    |
+>> |            +-------------+--------------+----------------+----------+
+>> |            | Lost/s      | 8.476 Mpps   | 0 pps          |          |
+>> +------------+-------------+--------------+----------------+----------+
+>> | TAP        | Transmitted | 3.679 Mpps   | 3.464 Mpps     | -5.8%    |
+>> |            +-------------+--------------+----------------+----------+
+>> | +vhost-net | Lost/s      | 5.306 Mpps   | 0 pps          |          |
+>> +------------+-------------+--------------+----------------+----------+
+>>
+>> Co-developed-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
+>> Signed-off-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
+>> Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
+>> ---
+>>  drivers/net/tun.c | 30 ++++++++++++++++++++++++++++--
+>>  1 file changed, 28 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+>> index efe809597622..c2a1618cc9db 100644
+>> --- a/drivers/net/tun.c
+>> +++ b/drivers/net/tun.c
+>> @@ -1011,6 +1011,8 @@ static netdev_tx_t tun_net_xmit(struct sk_buff *skb, struct net_device *dev)
+>>  	struct netdev_queue *queue;
+>>  	struct tun_file *tfile;
+>>  	int len = skb->len;
+>> +	bool qdisc_present;
+>> +	int ret;
+>>  
+>>  	rcu_read_lock();
+>>  	tfile = rcu_dereference(tun->tfiles[txq]);
+>> @@ -1065,13 +1067,37 @@ static netdev_tx_t tun_net_xmit(struct sk_buff *skb, struct net_device *dev)
+>>  
+>>  	nf_reset_ct(skb);
+>>  
+>> -	if (ptr_ring_produce(&tfile->tx_ring, skb)) {
+>> +	queue = netdev_get_tx_queue(dev, txq);
+>> +	qdisc_present = !qdisc_txq_has_no_queue(queue);
+>> +
+>> +	spin_lock(&tfile->tx_ring.producer_lock);
+>> +	ret = __ptr_ring_produce(&tfile->tx_ring, skb);
+>> +	if (__ptr_ring_produce_peek(&tfile->tx_ring) && qdisc_present) {
+>> +		netif_tx_stop_queue(queue);
+>> +		/* Re-peek and wake if the consumer drained the ring
+>> +		 * concurrently in a race. smp_mb__after_atomic() pairs
+>> +		 * with the test_and_clear_bit() of netif_wake_subqueue()
+>> +		 * in __tun_wake_queue().
+>> +		 */
+>> +		smp_mb__after_atomic();
+>> +		if (!__ptr_ring_produce_peek(&tfile->tx_ring))
+>> +			netif_tx_wake_queue(queue);
+>> +	}
+>> +	spin_unlock(&tfile->tx_ring.producer_lock);
+>> +
+>> +	if (ret) {
+>> +		/* If a qdisc is attached to our virtual device,
+>> +		 * returning NETDEV_TX_BUSY is allowed.
+>> +		 */
+>> +		if (qdisc_present) {
+>> +			rcu_read_unlock();
+>> +			return NETDEV_TX_BUSY;
+>> +		}
+>>  		drop_reason = SKB_DROP_REASON_FULL_RING;
+>>  		goto drop;
+>>  	}
+>>  
+>>  	/* dev->lltx requires to do our own update of trans_start */
+>> -	queue = netdev_get_tx_queue(dev, txq);
+>>  	txq_trans_cond_update(queue);
+>>  
+>>  	/* Notify and wake up reader process */
+>> -- 
+>> 2.43.0
+> 
