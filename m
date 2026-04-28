@@ -1,79 +1,85 @@
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAB9D23504B
-	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 13:41:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2BE627E1DC
+	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 13:42:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777383717; cv=none; b=tBEv4rfuiRHRvmLEkpIfzqG9N7xr8BpHO5L+TtltpSdKKPKIgCef7MCJSB4AbZwdnHPp4wXlzo17jniK3vrlAHrIW0Es9XdlkISO8/FKFR/gltmuEzJnXiuqCI2hjDP7gVsO6gpViaXQj6HD/KgXp655rUAUhZ7lTew9uMt8N+4=
+	t=1777383766; cv=none; b=SM5iHdWdUHWvu56w1+dzkYzqCd86TTwJtWnipVya92XWPwlgKvSWAspzxd5yncHdNCKjtlZZ5/6DUqH6B6f1qbxmn0lTyBVol2Zj0pLk9YSIUaKba1uhUHAcT1UGbLNZCs2bv20kUWJK1yQ7QCIlhQxCRmr097+pLGh7h3rJE3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777383717; c=relaxed/simple;
-	bh=jqBLOubZ4mXa84mx2wvU/yh4dktQrLifIrEBEEYBwaI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=K22P9g6fxiakbtTbTdxVHpXqDXcniPWBVXgHGfg9mty9K1OEPGslT692hO/B+eAhW985OlifQ8aGzJTtXUlkx1oVSNTywwblAFftQ82cN75ToYICux8+4wxjZHPmBAhukLOs3dcwIw/QecOC8USNEFgtPhJ5IcjPa7N/KgztRzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sartura.hr; spf=pass smtp.mailfrom=sartura.hr; dkim=pass (2048-bit key) header.d=sartura.hr header.i=@sartura.hr header.b=PeUAuQm9; arc=none smtp.client-ip=209.85.219.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sartura.hr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sartura.hr
+	s=arc-20240116; t=1777383766; c=relaxed/simple;
+	bh=3fTJZcmes/th6YUY+hR5wNK8VA/ILbEaybzo8AGKjK8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tLDszsBzkiFEuDA3H2rO0+MGX/x/mCQ5nRmsE6I/s2ODldXtfYCDAbPfbzHHbJPRj7YAcNK+sCo4cVuzES9yxwAxRrJ9PkL8zI9X1XyhO5x8WYnL+LiJrxDCxIcrp3QXpG2tMQBQ5qnjCfi9OcQKWLkiIaffZCGxIFvkCHZdbJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gwpbGlKl; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sartura.hr header.i=@sartura.hr header.b="PeUAuQm9"
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-89fc4147f2eso126705646d6.3
-        for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 06:41:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gwpbGlKl"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4852a9c6309so105150745e9.0
+        for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 06:42:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sartura.hr; s=sartura; t=1777383712; x=1777988512; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1777383761; x=1777988561; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=TqQCQriovYDSHEdS4S+0Ixb7G/LoMFE2Kp0rbzZf96A=;
-        b=PeUAuQm9wN4GtTfHdKXy5iax09XbMHVUpSG2IzKJuMDaq+z0+s4q+h7CPexUcow/SH
-         2HVJVxhxlTST5oSh0KhXw0FXsPdBxIR2AZ/u+JojOK5KR8eh7ZlmfJrjSWi23AJj1AAm
-         ZUAm81p+A5HRQjEpFnKzFo+iCDfBmPHEX91KV2jM9/2l8AxlLLoFGkztlEHgloPOlBu9
-         GgOfHlMTQVJ/IJk1m47Qr1TrtXiIg8CDV0UTJIWmv3a8W4U7lGYwQSU0xW0FlNB52Tbf
-         YNC79Gdswyha6kurkepNpTUUbggzhgpg/YVI1NibeIBPVTopk8U1/vobYhuOE/nGLFoh
-         zogA==
+        bh=SJADsQL6+j0VWedbBviJoQt3A3fje4Hd8xa4kVveAGQ=;
+        b=gwpbGlKllUIfflZgiqn36LzIWT8Vnybuj5rrMdNW6666t0q5BqkwfBoj/WDmDsFfGF
+         +LjU6yaU2C/mDaYvwI15fNzdzPDqrBxt69bOQ0kgnSloIUrSChpDMkM3FXDu0Yr/qm1f
+         X+GRj0ai2Je3KOQjzyDr0JmrNiIyLMnMvPfmk9d9UYC6v5ompKdxGMyWY6oqYu7Osiho
+         LhUfjN0TjMAEaK7I9vfRYueYMuDMnBE9H0zqdIqQ1BizpcXFGKrsLEcMI3HmttSTofs0
+         90gtnFiOQ2x+yQDbE0IohKdKH2l5YNzMQ+UVwDjKz9UROWBkK2sDszwlfGRNEt090xOw
+         rn3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777383712; x=1777988512;
+        d=1e100.net; s=20251104; t=1777383761; x=1777988561;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=TqQCQriovYDSHEdS4S+0Ixb7G/LoMFE2Kp0rbzZf96A=;
-        b=VJNVbbYdiN4Udz0Kfqc2FKGaSwq68hT1e25k1ZDiQrU9QO3d/HyF5vXiVEeCqz0DC6
-         5Yy6t/YR+DDE4uoYmiq2X4CdBr64YQX0285wOK6BSV7TROcmAK/LL1vIzH//bx7qaFgH
-         CU5FduPdPJCSVvspmS0y76dkY0Z3xtNzznHdKf1LZX20o7MTx7wsfRBw+yD9TSZ3v7pI
-         +9IGhX45+Cz01OqlOWrWPV2ToJXMXaQIjkLPGLY9UTO2K0ApP12K+Py021tDfl5Gu+zs
-         k0W17z9TNJqtOQcxdyptCwCQWKgIF8/kykslSVTauIYh5OTN34rx/5MuOTdl+dRt00JD
-         HUHg==
-X-Forwarded-Encrypted: i=1; AFNElJ8wlGYhSFne2EftTpnCeBtOvidn1WaJRDNKOwy/jkBHt2ldwsqo6vOJkmZTsdi7NhKCRdMwYB8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx1F2Hn8RQp46GKKm0XAMOxYU1AzyqiNLD3uSeQdBHIDLuqGzzK
-	0z7qV1RSXjMif/QZ7C1TA0ncK/OWPVM9/KlOiz77tjtk3ajTUth/Kot+gYuE9r8HsBU=
-X-Gm-Gg: AeBDieugUlXbzuxHcNlfEFqN4EuY0HDGaJsL0a2NlJlTQKKfpAu9WhMzBcX6682H+nW
-	up/j0RwefsbeQfy5JMJjgVr2uUPKUyGu6cJ9sg+ZPDIAClbnq/PiKzgcB6Us630b9aHhFT2DvDH
-	YVzMKHUAp+C+MfcCXh7cerHPkSzLLue7GskpMcopBqGvlPhKzZ2KGV6D0O6yDsYp/2lDu884Nm6
-	CEs+aRZQew2B9bKqcJ0wGwQWHiK3jRK/ng20sFgTKmnPx5PwYT11SPYTrf4NvkD+qvGqi8lQ0BV
-	b8P+bVMEhoV1As8roIobbjZeAA6resWlb+ie/ZsmggxqH8ENyETqJuZ8HN1yTvp3ve9ke3PEMGh
-	BRksf12JNsZuIXsqtNZiZyP9TfCCG65gBhYKKexIyodTJEzFW7FNzC2bhkXn4OOl+hhu87nBPOl
-	QC4CBPMa/4Jk962S+u3ECsPkBa1n6IjpckwrVJPWOG0NJSHSDDHgxeFBJH9/HwYCPvRnAqKdNbv
-	ivXBytW9HsYbmuBI5hOGvlIW3tgi/lA+UThWQ==
-X-Received: by 2002:a05:6214:29c9:b0:89c:e38f:6b6c with SMTP id 6a1803df08f44-8b3e301a9f9mr45799576d6.3.1777383712343;
-        Tue, 28 Apr 2026 06:41:52 -0700 (PDT)
-Received: from fedora (d-zg1-128.globalnet.hr. [213.149.36.142])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b3e28623dasm20732486d6.19.2026.04.28.06.41.50
+        bh=SJADsQL6+j0VWedbBviJoQt3A3fje4Hd8xa4kVveAGQ=;
+        b=S5KEGQDMbj3RYZCU0IxmclCsNsJ5MtH0x+EOWyENimJLbdmPh8h7VUIMoi3jrLe6wF
+         P6l91Wqmjvk+WXouigjvHRO/f3OyE+8EwlBEWB3E2nhR3xp80RJXPoOPx6b2hRwjpaL3
+         debJzdOV5eRmAZBch0W9Jn+Pyo5CdT74RhWKVJYj2ZMaNMDWNml5uIpmSIIGUXbl299a
+         5SypMuuCR012n8sT0VCg01/5mPqFnDqv9l+vOe4l+Le8wqKEzdvWRcOaixLASzUIX/h+
+         bZ8/4EsnGI570ZPVcYEFxexjXeeGlwFoXmSh2cOwRZOI3dZzE4lwH0+a8VdXVR9TMAV5
+         OcNQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/2gmXn0cDImk3fz6EwtE0XhkvAnTzpsj7om9uL3lRZJbhhHol90KbWrz0q6g4KT/CZFv3QubE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPk2OAvtf5+9GjVs89nSWH/2wwfVvqvE3xrxuKzPflji333kn7
+	5v6BS9MnlDMfZ2vF1/Vhvi1vx9f9Vbvud0dXQfTZghLdba/wb9MWizOX
+X-Gm-Gg: AeBDietQlOJGq8lDMNSXrNBZs/0pfM4GUPxsD5aUE/McgJeQLxWUu9IPWd0N1M8nqXo
+	F8KVBX8Q0+qFrCKUzd+pNuSmW385OP6GR9UAa+8OJWPns5IfuRACywtjURkgIIwmJnQQ/xJWAUk
+	/kvCmRv+DWHOlGLy+NI7JbADX2tc6isUKcuifdQePMD+Mq0KirDWbj+d5zCWHV7JCiF2etWl2A5
+	hxMlSe5v3D8XxRJ7q9LXxq3/4j6OcV7WK15l51EkY8jc6+hVdQ5X9TbsNxUCMoEgwLQXGPE7HZ7
+	Ktq4Ue1BYP9mNTtU19uaZDOO9/pJUULZ5PO3bfQ6ExlkRWm6GzV3XibDNswj4Lt/px1+BMdLviE
+	USSNNmY+DAme5RWXM7CJtOI0535bd+CPjoHU4ONkEg4LCmJESsq7x9yFpJDH9OQtKXq+dKuyu7U
+	5yIurCfxBNuUKqqJX+Q9dlWmBLmGn4xwa7YMTU73Prezr7R4kl1aZwpCgeVaqdtaGVuOKGRB86M
+	K2Gn/5H7bdXRq20wF3/
+X-Received: by 2002:a05:600c:19d3:b0:488:904b:f31 with SMTP id 5b1f17b1804b1-48a77b240aamr52281015e9.22.1777383761006;
+        Tue, 28 Apr 2026 06:42:41 -0700 (PDT)
+Received: from alessandro-pc.station (net-2-37-205-63.cust.vodafonedsl.it. [2.37.205.63])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a77aeb47csm51114445e9.1.2026.04.28.06.42.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Apr 2026 06:41:51 -0700 (PDT)
-From: Robert Marko <robert.marko@sartura.hr>
-To: andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
+        Tue, 28 Apr 2026 06:42:39 -0700 (PDT)
+From: Alessandro Zanni <alessandro.zanni87@gmail.com>
+To: chuck.lever@oracle.com,
+	jlayton@kernel.org,
+	neil@brown.name,
+	okorniev@redhat.com,
+	Dai.Ngo@oracle.com,
+	tom@talpey.com,
+	trondmy@kernel.org,
+	anna@kernel.org,
 	davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
-	Divya.Koppera@microchip.com,
-	horatiu.vultur@microchip.com,
+	horms@kernel.org
+Cc: Alessandro Zanni <alessandro.zanni87@gmail.com>,
+	linux-nfs@vger.kernel.org,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Robert Marko <robert.marko@sartura.hr>
-Subject: [PATCH net] net: phy: micrel: fix LAN8814 QSGMII soft reset
-Date: Tue, 28 Apr 2026 15:41:01 +0200
-Message-ID: <20260428134138.1741253-1-robert.marko@sartura.hr>
-X-Mailer: git-send-email 2.54.0
+	linux-kernel@vger.kernel.org,
+	syzbot+60cfa08822470bbebe44@syzkaller.appspotmail.com
+Subject: [PATCH] net: sunrpc: fix slab-out-of-bounds read in cache_seq_start_rcu
+Date: Tue, 28 Apr 2026 15:42:24 +0200
+Message-ID: <20260428134230.136533-1-alessandro.zanni87@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,59 +88,38 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-LAN8814 QSGMII soft reset was moved into the probe function to avoid
-triggering it for each of 4 PHY-s in the package.
+Syzbot reported slab-out-of-bounds read in cache_seq_start_rcu().
 
-However, that broke QSGMII link between the MAC and PHY on most LAN8814
-PHY-s, specificaly for us on the Microchip LAN969x switch.
-Reading the QSGMII status registers it was visible that lanes were only
-partially synced.
+The issue happens in function __cache_seq_start() when is invoked
+hlist_for_each_entry_rcu() and the hash value is greater than the
+hash_size.
 
-It looks like the reset timing is crucial, so lets move the reset back
-into the .config_init function but guard it with phy_package_init_once()
-to avoid it being triggered on each of 4 PHY-s in the package.
-Change the probe function to use phy_package_probe_once() for coma and PtP
-setup.
+This fix verifies that the hash index is within the hash_size value
+before dereferencing the hash table: if the hash index is out of
+bounds return NULL, otherwise access the value.
 
-Fixes: 96a9178a29a6 ("net: phy: micrel: lan8814 fix reset of the QSGMII interface")
-Signed-off-by: Robert Marko <robert.marko@sartura.hr>
+Fixes: ae74136b4bb6 ("SUNRPC: Allow cache lookups to use RCU protection rather than the r/w spinlock")
+Reported-by: syzbot+60cfa08822470bbebe44@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=60cfa08822470bbebe44
+Signed-off-by: Alessandro Zanni <alessandro.zanni87@gmail.com>
 ---
- drivers/net/phy/micrel.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ net/sunrpc/cache.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index 2aa1dedd21b8..e211a523c258 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -4548,6 +4548,13 @@ static int lan8814_config_init(struct phy_device *phydev)
- 	struct kszphy_priv *lan8814 = phydev->priv;
- 	int ret;
+diff --git a/net/sunrpc/cache.c b/net/sunrpc/cache.c
+index 7081c1214e6c..aac5f03112f5 100644
+--- a/net/sunrpc/cache.c
++++ b/net/sunrpc/cache.c
+@@ -1348,6 +1348,9 @@ static void *__cache_seq_start(struct seq_file *m, loff_t *pos)
+ 	hash = n >> 32;
+ 	entry = n & ((1LL<<32) - 1);
  
-+	if (phy_package_init_once(phydev))
-+		/* Reset the PHY */
-+		lanphy_modify_page_reg(phydev, LAN8814_PAGE_COMMON_REGS,
-+				       LAN8814_QSGMII_SOFT_RESET,
-+				       LAN8814_QSGMII_SOFT_RESET_BIT,
-+				       LAN8814_QSGMII_SOFT_RESET_BIT);
++	if (hash >= cd->hash_size)
++		return NULL;
 +
- 	/* Based on the interface type select how the advertise ability is
- 	 * encoded, to set as SGMII or as USGMII.
- 	 */
-@@ -4655,13 +4662,7 @@ static int lan8814_probe(struct phy_device *phydev)
- 	priv->is_ptp_available = err == LAN8814_REV_LAN8814 ||
- 				 err == LAN8814_REV_LAN8818;
- 
--	if (phy_package_init_once(phydev)) {
--		/* Reset the PHY */
--		lanphy_modify_page_reg(phydev, LAN8814_PAGE_COMMON_REGS,
--				       LAN8814_QSGMII_SOFT_RESET,
--				       LAN8814_QSGMII_SOFT_RESET_BIT,
--				       LAN8814_QSGMII_SOFT_RESET_BIT);
--
-+	if (phy_package_probe_once(phydev)) {
- 		err = lan8814_release_coma_mode(phydev);
- 		if (err)
- 			return err;
+ 	hlist_for_each_entry_rcu(ch, &cd->hash_table[hash], cache_list)
+ 		if (!entry--)
+ 			return ch;
 -- 
-2.54.0
+2.47.3
 
