@@ -1,32 +1,30 @@
 Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2EF037BE6C;
-	Tue, 28 Apr 2026 20:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEE0E2DF701;
+	Tue, 28 Apr 2026 20:59:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777409983; cv=none; b=LE9g8JON3ZEO0iD0byJYzMm/RRgvgSZhMLxnh73SzTQtF9qq76fkXI2AZAWO1uCeLPNHRjlg2GMgikaRftYSEhmk4/6omgjvnTt9ZV+ZVTIXutCFSr5rFTnjHQ6tGdGsRhsFP2CUDkaYbwaAB6TAqHuw1qfpGQzk0Mr4Mxw7c/E=
+	t=1777409983; cv=none; b=pC7JJdNjR+PNm0IFy4fkG/2L3oVGTKHaSPi5deu3g9qGL+C6l0/LjoRzhMpZw3paAmQMcXSHq7FKYXe80G+x5yr/nh9Z0sKtZQPkX4hZ3dlF2CU2i4DRVh3prflp5tED1kYYE20xVenxg6nrc2bKP820mZD2VI52G/WJvXokio0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777409983; c=relaxed/simple;
-	bh=lEPcgENxTpeK0FlNwhBawc3IL1qTeN9VFAEQBHrVpOM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jXArGyw6bCO0nb5mjXH66l/jrFRbHj7Y4dqy1+8RS/29Tdl2+DXwiIWF1HQjUyEziAfUh3maq45D+F3vCMccB4VhsVYYiF9YrPq4i99q+iIl7xnP/9czHhZeStWb3SBQccen2m70a+9wxuBm+E6xDto83F0cIgbxyMKUlyBzt2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=fAVvQAR4; arc=none smtp.client-ip=194.13.80.246
+	bh=zL2Jdk0x862O3Djzaya+asUlk//2TbTuvBibPanwHLw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PwN125IaqO2Fvc7GS24hWs4lNVmbm3dekQ0X3Kzp4woL5I49GnYfFY0SBiq7juzp3dRfmltFaPcvceDwCOHfOrkNsw+Q7sBzrFjKXk0wnp+2nFALBMxUizk0Mg0nlBWXhrnVMrNe1/5SIeAFydbfTXHSTWKSD3aNT41pN2ewLw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=bo0aRhnb; arc=none smtp.client-ip=194.13.80.246
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="fAVvQAR4"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E02A3A543B;
-	Tue, 28 Apr 2026 22:59:36 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="bo0aRhnb"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 645C8A542E;
+	Tue, 28 Apr 2026 22:59:21 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1777409977; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=DjiL9kXuzoJ7DG8aZHqlsdr+8YcDLn9HwoapIlUc+8s=;
-	b=fAVvQAR4zChGalJZJKDsMkgta4tuE+ht+MN+kc54ULIuEYbVdbNIdbfjlk8nPkvaIGJUbI
-	Tif81z+8fWA9bt+67U6SyEeKAXPahzdHKrVSrriTY5OSShcKQHiuVNRw/Kx0WNG2Z12MWr
-	YiU/nCHqc7bLOhM2lP179msbZZICRRj28H2G2bma9Rgm67dZi+Z7BjJibDoNIYMEPPtJNu
-	inazxohrX6EIFR5ZyJH+zO8TyfX9QRdXzkPWKhy8lBRQwrl11B3UNH6xWO0r7049lH7iLW
-	pmLeG3W4oyRYUqU5ccrqezzS2fjWZZ6SAmDUF06YYaVYs9pmou5gFIuIJJOsog==
+	t=1777409965; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=94Yy4sdgjWSC9wV4eLPu6oHsDvU1flF0Ht992NUKwMM=;
+	b=bo0aRhnbF0c3pgcEn0drHAH/Y+ADQDyD6SIyiV+GMJC7e1BjWWEHV2GYhu1UuJ/HzvXQJ4
+	g2vUkLssyLxeVOmB184Bk2/TkLMxANoBYxMgoj7ZERSMiCbCy/CEwmXuwvSGQGjVHSdHU4
+	vMR8C3LP+k17dTDXihNYe+n8MK06KyzYqoRlsIbdOACbQwJIZAq1nJz68IVba5QWCtGK4K
+	KqlOhsrLv7qv6wHSsjjk/VI6aQZ/syl+7K6sdBQyZJlKXBrB6vUONsZ8OqoU59CJP/PNSV
+	9HXkNwY2psKrMuO1gEnEkkS55pLNP13frpXahetYzH5uB2ZuiCja0rmGSBU0nA==
 From: Nicolai Buchwitz <nb@tipi-net.de>
 To: netdev@vger.kernel.org
 Cc: Justin Chen <justin.chen@broadcom.com>,
@@ -39,21 +37,18 @@ Cc: Justin Chen <justin.chen@broadcom.com>,
 	Eric Dumazet <edumazet@google.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Nicolai Buchwitz <nb@tipi-net.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
 	Alexei Starovoitov <ast@kernel.org>,
 	Daniel Borkmann <daniel@iogearbox.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Jesper Dangaard Brouer <hawk@kernel.org>,
 	John Fastabend <john.fastabend@gmail.com>,
 	Stanislav Fomichev <sdf@fomichev.me>,
-	linux-kernel@vger.kernel.org,
 	bpf@vger.kernel.org
-Subject: [PATCH net-next v8 3/7] net: bcmgenet: add basic XDP support (PASS/DROP)
-Date: Tue, 28 Apr 2026 22:58:40 +0200
-Message-ID: <20260428205846.2625550-4-nb@tipi-net.de>
+Subject: [PATCH net-next v8 0/7] net: bcmgenet: add XDP support
+Date: Tue, 28 Apr 2026 22:58:37 +0200
+Message-ID: <20260428205846.2625550-1-nb@tipi-net.de>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260428205846.2625550-1-nb@tipi-net.de>
-References: <20260428205846.2625550-1-nb@tipi-net.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,249 +58,128 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Add XDP program attachment via ndo_bpf and execute XDP programs in the
-RX path. XDP_PASS builds an SKB from the xdp_buff (handling
-xdp_adjust_head/tail), XDP_DROP returns the page to page_pool without
-SKB allocation.
+Add XDP support to the bcmgenet driver, covering XDP_PASS, XDP_DROP,
+XDP_TX, XDP_REDIRECT, and ndo_xdp_xmit.
 
-XDP_TX and XDP_REDIRECT are not yet supported and return XDP_ABORTED.
+The first patch converts the RX path from the existing kmalloc-based
+allocation to page_pool, which is a prerequisite for XDP. The remaining
+patches incrementally add XDP functionality and per-action statistics.
 
-Advertise NETDEV_XDP_ACT_BASIC in xdp_features.
+Tested on Raspberry Pi CM4 (BCM2711, bcmgenet, 1Gbps link):
+- XDP_PASS: 943 Mbit/s TX, 935 Mbit/s RX (no regression vs baseline)
+- XDP_PASS latency: 0.164ms avg, 0% packet loss
+- XDP_DROP: all inbound traffic blocked as expected
+- XDP_TX: TX counter increments (packet reflection working)
+- Link flap with XDP attached: no errors
+- Program swap under iperf3 load: no errors
+- Upstream XDP selftests (xdp.py): pass_sb, drop_sb, tx_sb passing
+- XDP-based EtherCAT master (~37 kHz cycle rate, all packet processing
+  in BPF/XDP), stable over multiple days
 
-Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
----
- .../net/ethernet/broadcom/genet/bcmgenet.c    | 129 +++++++++++++++---
- .../net/ethernet/broadcom/genet/bcmgenet.h    |   4 +
- 2 files changed, 116 insertions(+), 17 deletions(-)
+Previous versions:
+  v7: https://lore.kernel.org/netdev/20260416054743.1289191-1-nb@tipi-net.de/
+  v6: https://lore.kernel.org/netdev/20260406083536.839517-1-nb@tipi-net.de/
+  v5: https://lore.kernel.org/netdev/20260328230513.415790-1-nb@tipi-net.de/
+  v4: https://lore.kernel.org/netdev/20260323120539.136029-1-nb@tipi-net.de/
+  v3: https://lore.kernel.org/netdev/20260319115402.353509-1-nb@tipi-net.de/
+  v2: https://lore.kernel.org/netdev/20260315214914.1555777-1-nb@tipi-net.de/
+  v1: https://lore.kernel.org/netdev/20260313092101.1344954-1-nb@tipi-net.de/
 
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index e71d9713f917..1b60571446e1 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -35,6 +35,8 @@
- #include <linux/ip.h>
- #include <linux/ipv6.h>
- #include <linux/phy.h>
-+#include <linux/bpf_trace.h>
-+#include <linux/filter.h>
- 
- #include <linux/unaligned.h>
- 
-@@ -2275,6 +2277,56 @@ static int bcmgenet_rx_refill(struct bcmgenet_rx_ring *ring,
- 	return 0;
- }
- 
-+static struct sk_buff *bcmgenet_xdp_build_skb(struct bcmgenet_rx_ring *ring,
-+					      struct xdp_buff *xdp)
-+{
-+	unsigned int metasize;
-+	struct sk_buff *skb;
-+
-+	skb = napi_build_skb(xdp->data_hard_start, PAGE_SIZE);
-+	if (unlikely(!skb))
-+		return NULL;
-+
-+	skb_mark_for_recycle(skb);
-+
-+	metasize = xdp->data - xdp->data_meta;
-+	skb_reserve(skb, xdp->data - xdp->data_hard_start);
-+	__skb_put(skb, xdp->data_end - xdp->data);
-+
-+	if (metasize)
-+		skb_metadata_set(skb, metasize);
-+
-+	return skb;
-+}
-+
-+static unsigned int bcmgenet_run_xdp(struct bcmgenet_rx_ring *ring,
-+				     struct bpf_prog *prog,
-+				     struct xdp_buff *xdp,
-+				     struct page *rx_page)
-+{
-+	unsigned int act;
-+
-+	if (!prog)
-+		return XDP_PASS;
-+
-+	act = bpf_prog_run_xdp(prog, xdp);
-+
-+	switch (act) {
-+	case XDP_PASS:
-+		return XDP_PASS;
-+	case XDP_DROP:
-+		page_pool_put_full_page(ring->page_pool, rx_page, true);
-+		return XDP_DROP;
-+	default:
-+		bpf_warn_invalid_xdp_action(ring->priv->dev, prog, act);
-+		fallthrough;
-+	case XDP_ABORTED:
-+		trace_xdp_exception(ring->priv->dev, prog, act);
-+		page_pool_put_full_page(ring->page_pool, rx_page, true);
-+		return XDP_ABORTED;
-+	}
-+}
-+
- /* bcmgenet_desc_rx - descriptor based rx process.
-  * this could be called from bottom half, or from NAPI polling method.
-  */
-@@ -2284,6 +2336,7 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 	struct bcmgenet_rx_stats64 *stats = &ring->stats64;
- 	struct bcmgenet_priv *priv = ring->priv;
- 	struct net_device *dev = priv->dev;
-+	struct bpf_prog *xdp_prog;
- 	struct enet_cb *cb;
- 	struct sk_buff *skb;
- 	u32 dma_length_status;
-@@ -2294,6 +2347,8 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 	unsigned int p_index, mask;
- 	unsigned int discards;
- 
-+	xdp_prog = READ_ONCE(priv->xdp_prog);
-+
- 	/* Clear status before servicing to reduce spurious interrupts */
- 	mask = 1 << (UMAC_IRQ1_RX_INTR_SHIFT + ring->index);
- 	bcmgenet_intrl2_1_writel(priv, mask, INTRL2_CPU_CLEAR);
-@@ -2325,9 +2380,12 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 	       (rxpktprocessed < budget)) {
- 		struct status_64 *status;
- 		struct page *rx_page;
-+		unsigned int xdp_act;
- 		unsigned int rx_off;
--		__be16 rx_csum;
-+		struct xdp_buff xdp;
-+		__be16 rx_csum = 0;
- 		void *hard_start;
-+		int pkt_len;
- 
- 		cb = &priv->rx_cbs[ring->read_ptr];
- 
-@@ -2404,30 +2462,34 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 			goto next;
- 		} /* error packet */
- 
--		/* Build SKB from the page - data starts at hard_start,
--		 * frame begins after RSB(64) + pad(2) = 66 bytes.
-+		pkt_len = len - GENET_RSB_PAD;
-+		if (priv->crc_fwd_en)
-+			pkt_len -= ETH_FCS_LEN;
-+
-+		/* Save rx_csum before XDP runs - an XDP program
-+		 * could overwrite the RSB via bpf_xdp_adjust_head.
- 		 */
--		skb = napi_build_skb(hard_start, PAGE_SIZE - XDP_PACKET_HEADROOM);
--		if (unlikely(!skb)) {
--			BCMGENET_STATS64_INC(stats, dropped);
--			page_pool_put_full_page(ring->page_pool, rx_page,
--						true);
--			goto next;
--		}
-+		if (dev->features & NETIF_F_RXCSUM)
-+			rx_csum = (__force __be16)(status->rx_csum & 0xffff);
- 
--		skb_mark_for_recycle(skb);
-+		xdp_init_buff(&xdp, PAGE_SIZE, &ring->xdp_rxq);
-+		xdp_prepare_buff(&xdp, page_address(rx_page),
-+				 GENET_RX_HEADROOM, pkt_len, true);
- 
--		/* Reserve the RSB + pad, then set the data length */
--		skb_reserve(skb, GENET_RSB_PAD);
--		__skb_put(skb, len - GENET_RSB_PAD);
-+		xdp_act = bcmgenet_run_xdp(ring, xdp_prog, &xdp, rx_page);
-+		if (xdp_act != XDP_PASS)
-+			goto next;
- 
--		if (priv->crc_fwd_en) {
--			skb_trim(skb, skb->len - ETH_FCS_LEN);
-+		skb = bcmgenet_xdp_build_skb(ring, &xdp);
-+		if (unlikely(!skb)) {
-+			BCMGENET_STATS64_INC(stats, dropped);
-+			page_pool_put_full_page(ring->page_pool,
-+						rx_page, true);
-+			goto next;
- 		}
- 
- 		/* Set up checksum offload */
- 		if (dev->features & NETIF_F_RXCSUM) {
--			rx_csum = (__force __be16)(status->rx_csum & 0xffff);
- 			if (rx_csum) {
- 				skb->csum = (__force __wsum)ntohs(rx_csum);
- 				skb->ip_summed = CHECKSUM_COMPLETE;
-@@ -3741,6 +3803,37 @@ static int bcmgenet_change_carrier(struct net_device *dev, bool new_carrier)
- 	return 0;
- }
- 
-+static int bcmgenet_xdp_setup(struct net_device *dev,
-+			      struct netdev_bpf *xdp)
-+{
-+	struct bcmgenet_priv *priv = netdev_priv(dev);
-+	struct bpf_prog *old_prog;
-+	struct bpf_prog *prog = xdp->prog;
-+
-+	if (prog && dev->mtu > PAGE_SIZE - GENET_RX_HEADROOM -
-+	    SKB_DATA_ALIGN(sizeof(struct skb_shared_info))) {
-+		NL_SET_ERR_MSG_MOD(xdp->extack,
-+				   "MTU too large for single-page XDP buffer");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	old_prog = xchg(&priv->xdp_prog, prog);
-+	if (old_prog)
-+		bpf_prog_put(old_prog);
-+
-+	return 0;
-+}
-+
-+static int bcmgenet_xdp(struct net_device *dev, struct netdev_bpf *xdp)
-+{
-+	switch (xdp->command) {
-+	case XDP_SETUP_PROG:
-+		return bcmgenet_xdp_setup(dev, xdp);
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+}
-+
- static const struct net_device_ops bcmgenet_netdev_ops = {
- 	.ndo_open		= bcmgenet_open,
- 	.ndo_stop		= bcmgenet_close,
-@@ -3752,6 +3845,7 @@ static const struct net_device_ops bcmgenet_netdev_ops = {
- 	.ndo_set_features	= bcmgenet_set_features,
- 	.ndo_get_stats64	= bcmgenet_get_stats64,
- 	.ndo_change_carrier	= bcmgenet_change_carrier,
-+	.ndo_bpf		= bcmgenet_xdp,
- };
- 
- /* GENET hardware parameters/characteristics */
-@@ -4054,6 +4148,7 @@ static int bcmgenet_probe(struct platform_device *pdev)
- 			 NETIF_F_RXCSUM;
- 	dev->hw_features |= dev->features;
- 	dev->vlan_features |= dev->features;
-+	dev->xdp_features = NETDEV_XDP_ACT_BASIC;
- 
- 	netdev_sw_irq_coalesce_default_on(dev);
- 
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.h b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-index 82a6d29f481d..1459473ac1b0 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-@@ -16,6 +16,7 @@
- #include <linux/dim.h>
- #include <linux/ethtool.h>
- #include <net/page_pool/helpers.h>
-+#include <linux/bpf.h>
- #include <net/xdp.h>
- 
- #include "../unimac.h"
-@@ -671,6 +672,9 @@ struct bcmgenet_priv {
- 	u8 sopass[SOPASS_MAX];
- 
- 	struct bcmgenet_mib_counters mib;
-+
-+	/* XDP */
-+	struct bpf_prog *xdp_prog;
- };
- 
- static inline bool bcmgenet_has_40bits(struct bcmgenet_priv *priv)
--- 
+Changes since v7:
+  - No code changes; resubmitted after net-next reopened.
+
+Changes since v6:
+  - Removed GENET_XDP_HEADROOM alias, use XDP_PACKET_HEADROOM
+    directly. (Jakub Kicinski)
+  - Dropped redundant __GFP_NOWARN from page_pool_alloc_pages(),
+    page_pool adds it automatically. (Jakub Kicinski)
+  - Removed floating code block in desc_rx, moved variables to outer
+    scope. (Jakub Kicinski)
+  - Make bcmgenet_run_xdp() return XDP_PASS when no program is set,
+    removing the if (xdp_prog) indentation from desc_rx.
+    (Jakub Kicinski)
+
+Changes since v5:
+  - Refactored desc_rx: always prepare xdp_buff and use
+    bcmgenet_xdp_build_skb for both XDP and non-XDP paths, treating
+    no-prog as XDP_PASS. (Jakub Kicinski)
+  - Removed synchronize_net() before bpf_prog_put(), RCU handles
+    the grace period. (Jakub Kicinski)
+  - Save status->rx_csum before running XDP program to prevent
+    bpf_xdp_adjust_head from corrupting the RSB checksum.
+    (Jakub Kicinski)
+  - Tightened TSB headroom check to include sizeof(struct xdp_frame).
+    (Jakub Kicinski)
+  - Fixed reclaim gating: check for pending frames on the XDP TX ring
+    instead of priv->xdp_prog, so in-flight frames are still reclaimed
+    after XDP program detach. (Jakub Kicinski)
+  - Removed dead len -= ETH_FCS_LEN in patch 1. (Mohsin Bashir)
+  - Added patch 7: minimal ndo_change_mtu that rejects MTU values
+    incompatible with XDP when a program is attached. (Mohsin Bashir,
+    Florian Fainelli)
+
+Changes since v4:
+  - Fixed unused variable warning: moved tx_ring declaration from
+    patch 4 to patch 5 where it is first used. (Jakub Kicinski)
+
+Changes since v3:
+  - Fixed xdp_prepare_buff() called with meta_valid=false, causing
+    bcmgenet_xdp_build_skb() to compute metasize=UINT_MAX and corrupt
+    skb meta_len. Now passes true. (Simon Horman)
+  - Removed bcmgenet_dump_tx_queue() for ring 16 in bcmgenet_timeout().
+    Ring 16 has no netdev TX queue, so netdev_get_tx_queue(dev, 16)
+    accessed beyond the allocated _tx array. (Simon Horman)
+  - Fixed checkpatch alignment warnings in patches 4 and 5.
+
+Changes since v2:
+  - Fixed page leak on partial bcmgenet_alloc_rx_buffers() failure:
+    free already-allocated rx_cbs before destroying page pool.
+    (Simon Horman)
+  - Fixed GENET_Q16_TX_BD_CNT defined as 64 instead of 32.
+    (Simon Horman)
+  - Moved XDP TX ring to a separate struct member (xdp_tx_ring)
+    instead of expanding tx_rings[] to DESC_INDEX+1. (Justin Chen)
+  - Added synchronize_net() before bpf_prog_put() in XDP prog swap.
+  - Removed goto drop_page inside switch; inlined page_pool_put
+    calls in each failure path. (Justin Chen)
+  - Removed unnecessary curly braces around case XDP_TX. (Justin Chen)
+  - Moved int err hoisting from patch 2 to patch 1. (Justin Chen)
+  - Kept return type on same line as function name, per driver
+    convention. (Justin Chen)
+  - XDP TX packets/bytes now counted in TX reclaim for standard
+    network statistics.
+
+Changes since v1:
+  - Fixed tx_rings[DESC_INDEX] out-of-bounds access. Expanded array
+    to DESC_INDEX+1 and initialized ring 16 with dedicated BDs.
+  - Use ring 16 (hardware default descriptor ring) for XDP TX,
+    isolating from normal SKB TX queues.
+  - Piggyback ring 16 TX completion on RX NAPI poll (INTRL2_1 bit
+    collision with RX ring 0).
+  - Fixed ring 16 TX reclaim: skip INTRL2_1 clear, skip BQL
+    completion, use non-destructive reclaim in RX poll path.
+  - Prepend zeroed TSB before XDP TX frame data (TBUF_64B_EN requires
+    64-byte struct status_64 prefix on all TX buffers).
+  - Tested with upstream XDP selftests (xdp.py): pass_sb, drop_sb,
+    tx_sb all passing. The multi-buffer tests (pass_mb, drop_mb,
+    tx_mb) fail because bcmgenet does not support jumbo frames /
+    MTU changes; I plan to add ndo_change_mtu support in a follow-up
+    series.
+
+Nicolai Buchwitz (7):
+  net: bcmgenet: convert RX path to page_pool
+  net: bcmgenet: register xdp_rxq_info for each RX ring
+  net: bcmgenet: add basic XDP support (PASS/DROP)
+  net: bcmgenet: add XDP_TX support
+  net: bcmgenet: add XDP_REDIRECT and ndo_xdp_xmit support
+  net: bcmgenet: add XDP statistics counters
+  net: bcmgenet: reject MTU changes incompatible with XDP
+
+ drivers/net/ethernet/broadcom/Kconfig         |   1 +
+ .../net/ethernet/broadcom/genet/bcmgenet.c    | 637 +++++++++++++++---
+ .../net/ethernet/broadcom/genet/bcmgenet.h    |  19 +
+ 3 files changed, 559 insertions(+), 98 deletions(-)
+
+--
 2.51.0
 
