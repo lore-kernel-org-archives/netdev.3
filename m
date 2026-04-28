@@ -1,139 +1,243 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A3222E7162
-	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 07:48:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777362526; cv=none; b=fTtGR3AKuuIM6j6Zxttvek6BnYjPHrJ9iICI1F0DmbmXutQ0ptM2S+L4BdAovQzCTWY2Q2qswF0ai4j6TpIT9/fvkuwH8IcIoMUeBL9I4KUlyn6u5tIuEvzpMOwjLao1O6DBkEJKfOFHrCm6Aq3Q/eZNgV8Te/6NP47Tgofj5NU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777362526; c=relaxed/simple;
-	bh=v7FR8f9Bf7hDGtGHvqy69oIKLKN59GzoNuO6jFdL1vk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UoLEWEbsMDZIgXESzKy+ykmgUjfraDrJy36RDk66SDzL+nNfzsIELgg63cbAsG7t/oB/VBwFVa0myCmc3XtiTuCaf3z3VY8kLcwSogZYrRzVEl9d98ZNfV++rMsrA0mFFV1bONxSyTmqePUIwflTheKKQIBPCf8PguHg9ztpij0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U1k9xf50; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72E482E7162;
+	Tue, 28 Apr 2026 07:51:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777362703; cv=fail; b=ZUY7U33lsPtiSDzmUEB6wziqJQm8ZhgfCh+w8ZvHZ1quGbsEpLa4Bb5hP0wmW31nbcetnUEGfX5saETLTNTNJ/fkBJwNwFz+pNiBZLT4cF0o0ezka5v8wAPyFEELy7s0KobLXShxe5vp8kLT9E3any6JvP+83v4vfW/CA648iV8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777362703; c=relaxed/simple;
+	bh=zOpOBtc7+jyHZrv7E+1RnnJUMB12jHFGjR0TA6lXKXw=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=ZwYea+nRZHQe29ibLjDjPegEeTwyuToPkhgXTQ0HfNy0iAOEG335LfZOGqNKbyVvWAuVURoIkP8KNyk4tuMIjBjUPxiFRMJeIStHaKQh+1XZGDtnIFVahfD4s0vETd6LE73d3ZCKQCOVU2JqccIsHEZhJrtYxwHEpNWykbnrJhk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=d0uG5hPE; arc=fail smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U1k9xf50"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="d0uG5hPE"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777362525; x=1808898525;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=v7FR8f9Bf7hDGtGHvqy69oIKLKN59GzoNuO6jFdL1vk=;
-  b=U1k9xf50Axv5y4i013Pq/mG7tIlto8+pXuM5a2KLV7IxRivc2UpFvMTq
-   hUTbQLWGxg+2x520xXjFydZQL0mBpYPdrq2T0LtoQUxzAssQGPQnbqzxP
-   bMt3zCQfLUALxIBzkd27fbTHM5oVK1aA19aDxB2yKPK8YKB176mfoYKND
-   KWzyYbj/LmiYokAuXgLvEQbu55Y1moX0AtteSMP7z9LRFo39US1NqXhVJ
-   yu+hqJKFFX9fL58pkKN/yv8pCXY3EJHk9zky2uA0ACJmMslgFsqxDPPN6
-   IO3J5B1C1do2tMJ9KurLNb98sZVlGiz2loFrPJHbbl+KItDeV/jv75tgL
-   Q==;
-X-CSE-ConnectionGUID: NKiJhNM1SUmzbWVk1OtoLw==
-X-CSE-MsgGUID: 8mtNdCRnT6KXbuPubICFqQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="82114986"
+  t=1777362703; x=1808898703;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=zOpOBtc7+jyHZrv7E+1RnnJUMB12jHFGjR0TA6lXKXw=;
+  b=d0uG5hPEX9I7nW7IacAeiFVIMBC2yAaaJnglhN5GW6EPU5tSZp37ytFO
+   vjUBxkM6gTvRV3V1OpAZmKyvihYH8npOpBRkngftY6cyX04ph8209ElMB
+   RbBy0kxhlfZeSjR8Bivz1LhSUume0ZeReg2xxjaE05awIrKCz2ut4etfT
+   WGB+RRdgB4UfasSZFWfjTRkmbN5fYy1qMeQA4jCjVYashkXzwa6W5IhkX
+   T+Zx1zTFM316DBPe+Iycy5Xl/ObPsFRh6ec4AKKojqtEXYOiCyZMs2xsB
+   8NnGPJlEmk91f9WIJm6KicMpufiW1Ui7DzO0Rq8Q/GuKo9i97WI/2FHsY
+   w==;
+X-CSE-ConnectionGUID: J5mTO4usTamvF0Fi3UykOw==
+X-CSE-MsgGUID: eD9JapaGSIup0eCWADM+jw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="89353017"
 X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
-   d="scan'208";a="82114986"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 00:48:43 -0700
-X-CSE-ConnectionGUID: Wk4hzHRfT0iqPGSytiMW/A==
-X-CSE-MsgGUID: srlJlaO7Tty0WggEyj2/eA==
+   d="scan'208";a="89353017"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 00:51:42 -0700
+X-CSE-ConnectionGUID: WEZurL3CQdCZrwKoceqUmQ==
+X-CSE-MsgGUID: 4YlFcY0LQtOEzRaCNhlDjw==
 X-ExtLoop1: 1
-Received: from os-delivery.igk.intel.com ([10.102.21.165])
-  by fmviesa003.fm.intel.com with ESMTP; 28 Apr 2026 00:48:41 -0700
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	jramaseu@redhat.com,
-	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	aleksandr.loktionov@intel.com,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Subject: [PATCH iwl-net v1 2/2] ice: use NETIF_F_HW_CSUM instead of IP/IPV6
-Date: Tue, 28 Apr 2026 09:06:47 +0200
-Message-ID: <20260428070647.777141-3-michal.swiatkowski@linux.intel.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20260428070647.777141-1-michal.swiatkowski@linux.intel.com>
-References: <20260428070647.777141-1-michal.swiatkowski@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
+   d="scan'208";a="233754667"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 00:51:42 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 28 Apr 2026 00:51:41 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Tue, 28 Apr 2026 00:51:41 -0700
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.45)
+ by edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 28 Apr 2026 00:51:41 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=OwOWP8aOD2KxEO63XmC30Me6biOjO6rPC8MVB6NSSeAm2/UCQdogq0W+M9gDGhmsk9+eKTDSFN8/CObBasmp7p9NoFc3nejDGfApIehYhvTPk2G76wh1C/XNoJ5EcLYRlcpP+026djzHMfohtVMoOHiBM8p3zlkxGUfKmCgwoNHeRQF5vHt2nftkx4aTjOqTBIeLJ819S9HRwqK9Flg2LHVJyWeCY/e3UxZKcr0+HypTXjgw+XCahF8UYFQRzhfYgn2ZOAvnkie/pkhCVz3q5SvNizexiLC6kgOTGOsMBsI1qMoVLkHGC+MLWiYLN9ipOjn1nm7Frq1arEY3SaEZ4g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=75z3+T4Qpz+aR7K1BFVxiYukmHn+3e29Ti1MaVWnd9o=;
+ b=T7dsLGrZHWw1VTYBxAuCglrAV2dC9IvPs8Bqu16qNN3+o93OZQ5ricZUedNqkRRtbJO0w7id0Fr5xvpkc6xO39SHbqMIQMsEwT69T+5KZWZc4WZEpN2VxiSdLTVhMIIzsvwSi4gt78GNhiguiqrEvuNcwd5sLlgF8VTqGmYWCbSG8vOOLylBlj90EDmgK/JbAUPktYjfYQ6qDfyEUXmL0UqZCsbtE3tORRcR875bLvg/RdsQiqsTOmAHgisusSXPhCscD8r2LZmWhGW6kPk4vq49uQrkBLPFuBHta2h0B5Uxgxpf7uHStCVHNlVuVY8WjpyF8Ckk59T6/2kTdPh+2g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from IA3PR11MB8986.namprd11.prod.outlook.com (2603:10b6:208:577::21)
+ by IA0PR11MB7744.namprd11.prod.outlook.com (2603:10b6:208:409::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.17; Tue, 28 Apr
+ 2026 07:51:36 +0000
+Received: from IA3PR11MB8986.namprd11.prod.outlook.com
+ ([fe80::e6f0:6afb:6ef9:ab5c]) by IA3PR11MB8986.namprd11.prod.outlook.com
+ ([fe80::e6f0:6afb:6ef9:ab5c%5]) with mapi id 15.20.9870.013; Tue, 28 Apr 2026
+ 07:51:36 +0000
+From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
+To: "Oros, Petr" <poros@redhat.com>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>
+CC: "Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>, Eric Dumazet
+	<edumazet@google.com>, "Kubalewski, Arkadiusz"
+	<arkadiusz.kubalewski@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"Nguyen, Anthony L" <anthony.l.nguyen@intel.com>, Simon Horman
+	<horms@kernel.org>, "intel-wired-lan@lists.osuosl.org"
+	<intel-wired-lan@lists.osuosl.org>, Jakub Kicinski <kuba@kernel.org>, "Paolo
+ Abeni" <pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [Intel-wired-lan] [PATCH iwl-net v2] ice: fix SMA and U.FL pin
+ state changes affecting paired pin
+Thread-Topic: [Intel-wired-lan] [PATCH iwl-net v2] ice: fix SMA and U.FL pin
+ state changes affecting paired pin
+Thread-Index: AQHcx0gPE6hOubO3W0+rhx3WSTn2PLX0OQEQ
+Date: Tue, 28 Apr 2026 07:51:36 +0000
+Message-ID: <IA3PR11MB8986CABF47B72BE92B383033E5372@IA3PR11MB8986.namprd11.prod.outlook.com>
+References: <20260408110504.1032879-1-poros@redhat.com>
+In-Reply-To: <20260408110504.1032879-1-poros@redhat.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA3PR11MB8986:EE_|IA0PR11MB7744:EE_
+x-ms-office365-filtering-correlation-id: 25aac673-33e7-4d7f-240b-08dea4faf92a
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014|38070700021|22082099003|56012099003|18002099003;
+x-microsoft-antispam-message-info: 3UEPg0WgTjfrASnuKSXXnyQgTPFuz6uZmDogV58PruRq0/RrzsauKQ0vDnMJMS2B6xOTzJSA05wz4cL2qSTzzrZbY+zb2i8YlB20jlW0qszi6ZB4zyZE1tz5auOGj32ZrurHlFM/f2joSr1/Lmg4v6QN5Y5UI+54l/VPI1LHXMbT4Ft+zZWLp0Vrco4aR/ndddQnQwl1bO0ZcpYHQ7yf/fCLea+JfSnyH2hs7kNCn+4Dm1320n19UQIQlPM8egAvzgTyWKjLM1nIJu0nZBd/GvLG1lRReZLPJfxy3lUgWCE7EBbbC6YLShKoEbZsoHrLF6WrKv96k1GR1JztDo1HGsbWFb84C9H2OC8Cq+X71sDpOc6EZp2jpsvfNswiNxEzPUM5yG4i0DqsjLhaH/HRLmslruFShle8YJjlsLOEpUuB9VoQaGlIbmfaFjSe7s+IhkSZ4ymHN2ScTKUIl2goW31pAgxHf0yU9B5lnvqGgPCZ13351V7RHyz80S0A34Ko8EPPgnvX4JEhXti1CiY/vqD/140h23WKoCdKaANOnt+UGNoYUosjlLIBLrB/bSRd40q4titvT7Oo+WyL4u7+ng6zYbuNQOkvUIK+VVLoM4IPjwwmB9KwTqzcfUFPgjOGFLOLQoPnHlta2Q/R4LrsSZ/qpwhTA/cyoY4OFmJCh6Sb4pUKvpqtb2Y/0+UqpiMNrO7/Ju2Mb0G56VxwMWXAE7NxY5Hb/cck0C9brB3zUS7lw2IfgdcxrOTGzGTkrN+DE9E5x7aQLjUPZpZoHPHuRkZXMd6+7U10ML0G8+iv2Pc=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB8986.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(38070700021)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?tjNVLiva9BFxG+xroB25/vkB5RGzuYf4cgl+33wh6kIN3ueVluTS565Wmh3A?=
+ =?us-ascii?Q?eJ3X+KEntyqfbpjA+b12itjzfj3dOWlcY3zbsYEDXdsir3rHFwKuu0gw/pij?=
+ =?us-ascii?Q?IsvlgUNwmfIb0maoR6sffypStCgtDGQZwdTwSrqTpYOQKX0Trrb2Xlxm7hBo?=
+ =?us-ascii?Q?/J0lR+4QBuZAkhw9WxVBKQdXBH3YHAAbbND3ZhAhE3OO3Z+44/mO1unkShF4?=
+ =?us-ascii?Q?4jWCY8eFcrjbPTVbCEu8UhBSBqKreg3/FBByr/54l025B9RFbrvRhCPE+G5S?=
+ =?us-ascii?Q?19TYvehhcdr8GuoA/E6GDK45UEcgA8PYcC6Yj0ow5bUqRtaYw0P2dzCqXnB7?=
+ =?us-ascii?Q?2RRrAJPCXf8aPAivj5cG7hU8vr5An3swFJupNOWm8JfARCi/C0fUpnlCCDtx?=
+ =?us-ascii?Q?h4EWxwDVRe/bNEXtY9gfSzOxYCgg6yyk9Mms9srpIemc+Tu7zhByihEh0/iO?=
+ =?us-ascii?Q?pnbLBGZC1tQ/cLW8pCSsGnCw3uAzey9D55U0qosVw5H2ziK0SetkQd4AuTle?=
+ =?us-ascii?Q?dJya6eqOIFLrYPx3DM+rA2HbiHr0bQ/A1p3CF6VXqysu63JpxfnENwIk1XoK?=
+ =?us-ascii?Q?Uz3c+DKI+u75BpYmJZYFjwmKYIeQqLQaCVwC2ltIfN1LNw+dq0ppq0xjjcFm?=
+ =?us-ascii?Q?s+MUHKsBnKQGnynCtEXEE2TsvlAzLlLYqS69YsDPddZ5lp5V3F39+ntpPfxH?=
+ =?us-ascii?Q?eF3F5WzR7mmqXNCh4nOaRRgaOnzeTANEggft0/z0lsCJrjVfD5k1pa4bXRSJ?=
+ =?us-ascii?Q?XsIvsjKRGXgh01MOQqkAw9vrq3t6fYLB6Zv1tiDzrMNwKLVjTWibHci50Pj3?=
+ =?us-ascii?Q?1zagvgIXeXEYtxTeMd+KI020nxwmWeMp2j10rFvXC4R1cJg2+ardA2i+PKXx?=
+ =?us-ascii?Q?Z2Hcrzpsd1pR4AjTj+b0/PY4SgNyASUyHWe4VvvdrZj14Kyh0HL1lrJfMaZg?=
+ =?us-ascii?Q?EN0Vo7EsBG5nRyJdTGAcsSE/OOl8k+d3uoteVeK+UuRIXIt1cRS1Ocs9f+BJ?=
+ =?us-ascii?Q?l94vmaYlt36Ve48QkgEx/HgP8lvmNDq7cHg60p1ijjYjzdKn7Y8RZCszc+6Q?=
+ =?us-ascii?Q?1PtZAzvHhahCfA/CehJvxCISU8FCu1qDg87chCSzinCqsrflBrokBMUBNoac?=
+ =?us-ascii?Q?2/4NkYlkNlY+XkR4WUNe0atMSPCMlIu01lU200WAzeMAv+5ZHNGbT6dBiF3+?=
+ =?us-ascii?Q?7hbPc1UaCO2LJVW/9a0j3A4Nn/zcIDsIcpuCfl8pu4MvZcIkwfXyYvhD2eNS?=
+ =?us-ascii?Q?wo20biArn6uvPDp9JQcVrvfCgH0WYk/2Rw0KoZvJLctyS1vsNJISRxPJEts2?=
+ =?us-ascii?Q?UOvNxHM7X2C+a6hHN83oMk+eus8VuLqJl85IpygCAp/0QNiw/qseavcMAWp0?=
+ =?us-ascii?Q?apodFQWjt0+0rSinQwMWivn09hvSi/eNVhnNRPwN2NCqjdScTHp4WcbO79EX?=
+ =?us-ascii?Q?xZx54YroB7FsJhY47cC56dlimGigUjYaX4P1dzE6x6kcP1EYix4q4wu/Gt60?=
+ =?us-ascii?Q?OFg90DQe5/hVX67OaVygBxI2xkQS53bqb360rmQMN539+IktW5gy+K9oPqYy?=
+ =?us-ascii?Q?jdu6KQZLGGXlbhRjb311GuO8r7dNn0BvOJ+dYv65fmMHSjq3+Lt0W6zpQjyY?=
+ =?us-ascii?Q?pV6tofpwGdD5GSbQIiaYLo6zxI9AGP2hfmD2yDPmMTOnmv/MX3z636gBTqrI?=
+ =?us-ascii?Q?HSOphjz5Gm7mbhVnH2C0+Eu03/y4bWCe6hyN4mzIiIjPWNHljBKKt/NGT3ws?=
+ =?us-ascii?Q?+682E/RG2ZEtParuyg5N3qi6nx6pae4=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Exchange-RoutingPolicyChecked: tIRvnyJb29rftoM1lSbwKL4Nl7Ycrapp5A6YeaRBJ61+5s8oW13CJQRQ5Wj1LBZOjub1t1hpEJB6WPk78p9COr2mnHl5joXgfnQ/fMKZdK8Ry+DnwNwKkN1lcTML1h4J8RbL1PMlQbiLimAp3sjpjFakgOiKO+u7GOJpsKdOsnJ+8exl8QNUrOcYpOlIFnDoMCVcY3L3VZTn0TqbpJdxtpt5kSitUavVm3qeZWDn9VWlx7gZc7JE0NR6WwTTT5TUc41grsRunp8J9vb0NdiU+NkZCkEN7BwlYx5X8tnrMNsuwUFsQpkVCFR9SngHZt04k8m0VvQ3d1iccoDs2mHvHA==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB8986.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 25aac673-33e7-4d7f-240b-08dea4faf92a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Apr 2026 07:51:36.1796
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: P/zha51Od3LDjzOIfZCZPbKQJFdXRqKKh9hjU0IVSL+cDKHBmSIWD5wTCHUy4SXjCq5orPZKE4JGcbe8q6RFE3rW4aRNjEtflNWVLens/N8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB7744
+X-OriginatorOrg: intel.com
 
-The hardware is capable of calculating checksum for IPV6 packets with
-extension header. To not drop such packets switch from IP/IPV6 checksum
-to HW_CSUM.
 
-HW_CSUM is also used in previous generation (i40e).
 
-Previously HW_CSUM was used to indicate that hardware supports general
-checksum. Drop it assuming that if the hardware supports it, it is used.
+> -----Original Message-----
+> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf
+> Of Petr Oros
+> Sent: Wednesday, April 8, 2026 1:05 PM
+> To: netdev@vger.kernel.org
+> Cc: Kitszel, Przemyslaw <przemyslaw.kitszel@intel.com>; Eric Dumazet
+> <edumazet@google.com>; Kubalewski, Arkadiusz
+> <arkadiusz.kubalewski@intel.com>; Andrew Lunn <andrew+netdev@lunn.ch>;
+> Nguyen, Anthony L <anthony.l.nguyen@intel.com>; Simon Horman
+> <horms@kernel.org>; intel-wired-lan@lists.osuosl.org; Jakub Kicinski
+> <kuba@kernel.org>; Paolo Abeni <pabeni@redhat.com>; David S. Miller
+> <davem@davemloft.net>; linux-kernel@vger.kernel.org
+> Subject: [Intel-wired-lan] [PATCH iwl-net v2] ice: fix SMA and U.FL
+> pin state changes affecting paired pin
+>=20
+> SMA and U.FL pins share physical signal paths in pairs (SMA1/U.FL1 and
+> SMA2/U.FL2) controlled by the PCA9575 GPIO expander.  Each pair can
+> only have one active pin at a time: SMA1 output and U.FL1 output share
+> the same CGU output, SMA2 input and U.FL2 input share the same CGU
+> input.  The PCA9575 register bits determine which connector in each
+> pair owns the signal path.
+>=20
+> The driver does not account for this pairing in two places:
+>=20
+> ice_dpll_ufl_pin_state_set() modifies PCA9575 bits and disables the
+> backing CGU pin without checking whether the U.FL pin is currently
+> active.  Disconnecting an already inactive U.FL pin flips bits that
+> the paired SMA pin relies on, breaking its connection.
+>=20
+> ice_dpll_sma_direction_set() does not propagate direction changes to
+> the paired U.FL pin.  For SMA2/U.FL2 the ICE_SMA2_UFL2_RX_DIS bit is
+> never managed, so U.FL2 stays disconnected after SMA2 switches to
+> output.  For both pairs the backing CGU pin of the U.FL side is never
+> enabled when a direction change activates it, so userspace sees the
+> pin as disconnected even though the routing is correct.
+>=20
+> Fix by guarding the U.FL disconnect path against inactive pins and by
+> updating the paired U.FL pin fully on SMA direction changes: manage
+> ICE_SMA2_UFL2_RX_DIS for the SMA2/U.FL2 pair and enable the backing
+> CGU pin whenever the peer becomes active.
+>=20
+> Fixes: 2dd5d03c77e2 ("ice: redesign dpll sma/u.fl pins control")
+> Signed-off-by: Petr Oros <poros@redhat.com>
+> ---
+> v2:
+>  - fix ice_dpll_sma_direction_set() to manage ICE_SMA2_UFL2_RX_DIS
+>    when SMA2 direction changes
+>  - enable paired U.FL backing CGU pin when direction change makes
+>    it active, so it reports as connected immediately
+>  - (both reported by Intel test on the SMA init and notification
+>    patch threads)
+> v1: https://lore.kernel.org/all/20260325151050.2081977-1-
+> poros@redhat.com/
+> ---
+>  drivers/net/ethernet/intel/ice/ice_dpll.c | 50
+> ++++++++++++++++++++++-
+>  1 file changed, 49 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c
+> b/drivers/net/ethernet/intel/ice/ice_dpll.c
+> index 498ec2c045f384..3f8cd5b8298b57 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_dpll.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
+> @@ -1171,6 +1171,8 @@ static int ice_dpll_sma_direction_set(struct
+> ice_dpll_pin *p,
+>  				      enum dpll_pin_direction direction,
+>  				      struct netlink_ext_ack *extack)  {
 
-Disabling offload for E830 in case of TSO isn't needed anymore as the
-check for TSO is done in Tx path just before preparation of the special
-GCS descriptor.
+...
 
-The commit from Fixes didn't introduce a bug, it just shown that the
-driver is doing sth wrong with the checksum features.
+>  			data |=3D ICE_SMA2_UFL2_RX_DIS;
+>  			enable =3D false;
+>  		} else {
+> --
+> 2.52.0
 
-Suggested-by: Jakub Ramaseuski <jramaseu@redhat.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Fixes: 04c20a9356f2 ("net: skip offload for NETIF_F_IPV6_CSUM if ipv6 header contains extension")
-Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
----
- drivers/net/ethernet/intel/ice/ice_main.c | 21 +--------------------
- 1 file changed, 1 insertion(+), 20 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index 15550216fbf0..0f2f949af536 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -3500,9 +3500,8 @@ void ice_set_netdev_features(struct net_device *netdev)
- 			NETIF_F_RXHASH;
- 
- 	csumo_features = NETIF_F_RXCSUM	  |
--			 NETIF_F_IP_CSUM  |
- 			 NETIF_F_SCTP_CRC |
--			 NETIF_F_IPV6_CSUM;
-+			 NETIF_F_HW_CSUM;
- 
- 	vlano_features = NETIF_F_HW_VLAN_CTAG_FILTER |
- 			 NETIF_F_HW_VLAN_CTAG_TX     |
-@@ -3564,12 +3563,6 @@ void ice_set_netdev_features(struct net_device *netdev)
- 	/* Allow core to manage IRQs affinity */
- 	netif_set_affinity_auto(netdev);
- 
--	/* Mutual exclusivity for TSO and GCS is enforced by the set features
--	 * ndo callback.
--	 */
--	if (ice_is_feature_supported(pf, ICE_F_GCS))
--		netdev->hw_features |= NETIF_F_HW_CSUM;
--
- 	netif_set_tso_max_size(netdev, ICE_MAX_TSO_SIZE);
- }
- 
-@@ -6489,18 +6482,6 @@ ice_set_features(struct net_device *netdev, netdev_features_t features)
- 	if (changed & NETIF_F_LOOPBACK)
- 		ret = ice_set_loopback(vsi, !!(features & NETIF_F_LOOPBACK));
- 
--	/* Due to E830 hardware limitations, TSO (NETIF_F_ALL_TSO) with GCS
--	 * (NETIF_F_HW_CSUM) is not supported.
--	 */
--	if (ice_is_feature_supported(pf, ICE_F_GCS) &&
--	    ((features & NETIF_F_HW_CSUM) && (features & NETIF_F_ALL_TSO))) {
--		if (netdev->features & NETIF_F_HW_CSUM)
--			dev_err(ice_pf_to_dev(pf), "To enable TSO, you must first disable HW checksum.\n");
--		else
--			dev_err(ice_pf_to_dev(pf), "To enable HW checksum, you must first disable TSO.\n");
--		return -EIO;
--	}
--
- 	return ret;
- }
- 
--- 
-2.49.0
-
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
