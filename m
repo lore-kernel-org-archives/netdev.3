@@ -1,43 +1,47 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E02D4212542;
-	Tue, 28 Apr 2026 13:01:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1E63E51F9;
+	Tue, 28 Apr 2026 13:03:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777381295; cv=none; b=rokLj7DUfIcX+yCbFMrP4mYDOOz/NR+sCPHISPQF5dJcnbobdvZmv/1ntuZY45S+RJo4Cc13trLSLG2eoEchy6iVJxSpeOe8+eRlR+6SCphXN1wCqvxH1CVMKVFwphFvNezXuWU3iz2xmgxUWVy5I8+lbpgtNqBKmZxMw3T2JKc=
+	t=1777381437; cv=none; b=jZeYHe2Nz0u7pLk0pgM4WkKS/Jaoek7ij1BUCG8ed+lCnipq/jKp0glbyOIxS7ZQD4bvv4IykoOimj5T7ftmTOqgRRv1ClPzVFgdJulR++RMedrJ/IzhjOwBOJSsB4IGBIrGFjk1hsf0dhlit3jAnELDHH5AIe3EP8b8De+7n6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777381295; c=relaxed/simple;
-	bh=mYMvL3RT0JQEkkV8OC+iZfRT5L4605aTgd/Wc9MdFO8=;
+	s=arc-20240116; t=1777381437; c=relaxed/simple;
+	bh=xZbP5qcEMJ/KrG9R1lnVooWrMadkmUd4Nrp/Za6BggA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZxnuI5N2TrTV6z9VS033b+9WWUBUhx3KOcmXT6mxaJKseef/g2GU9q2bjqhDmPcxO3WM9pR8JINke0liag+apGKNTiBwrziqvKhqBV917GXhatCPMviMg9OSVqaaEgu7sHHJwH5H1tr2NONXae5txYGVoWc250Vx6zci6CXjMk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fdQoeFhZ; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZgHHXWitEr/G37FKyCkWPzc0+a/RgLEiKkVQCmMb5bbdMl1062goReN2yiP6i3OcdFlgdXqPbrp9WEaMT6mJC7SOFVhfqGbbZUlFqISXfM9xE5JhfsUBdgSOXzVsFvjMXnvo9Y6AqLWMH3MyKeEEN1d+QNJmmpoPhBm27C3qkUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=5xqdZvhA; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fdQoeFhZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B72BDC2BCAF;
-	Tue, 28 Apr 2026 13:01:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777381294;
-	bh=mYMvL3RT0JQEkkV8OC+iZfRT5L4605aTgd/Wc9MdFO8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fdQoeFhZBreFNnWW+ZqREafCfVPWpjBGzHW23FP6hJOP3IoyUinShHrF/Z6g0nBen
-	 v6fiRGyFWR9TB19DWi7GOPX6M31IXzivNjEWm1S4iXRJ3oDsiWodVyhrG5+YZ5cGuI
-	 GqWTBGo64cGjJE2zPxKkdSu4d0EPM8LKm2OnZTAWQ2nfn5YfuqRIK5A/In6u90AiSp
-	 KHP6wD8z1Uy6V2dFPJgP+B9a+IR8rLr8u6/17F0W7hYoamQhFOQN02S0Xvxue60hKY
-	 mnZmhh5FUHGO5sIiIIPfP/MJMweDD+ZxsWTDVlDaerS2ytELHcjLfqs+nKScS8e6sT
-	 QPjX7I7YKgNkQ==
-Date: Tue, 28 Apr 2026 14:01:28 +0100
-From: Simon Horman <horms@kernel.org>
-To: Heiko Schocher <hs@nabladev.com>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="5xqdZvhA"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=LoZmBGb/wpi4U8bvGQZ6PW1zMxptFxMPpGFyLLh+QA4=; b=5xqdZvhADpst2KhHPL4DyPhtXp
+	xMaBcuXPH+bu6WvC/3E52OTGQi1elEMUzvH+1s1OXeI/YJPGB5ijEpKjycXA/xRBvklKfTe8JtvT/
+	uz1OUuziruCQuk0gQeldAYTk4Bb8GvVasxlS4Zarjf3+k4WfLZqx8UDOQy0HE+XcTNPg=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wHi6T-000Krv-C8; Tue, 28 Apr 2026 15:03:53 +0200
+Date: Tue, 28 Apr 2026 15:03:53 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] net: phy: dp83869: fix setting CLK_O_SEL field.
-Message-ID: <20260428130128.GR900403@horms.kernel.org>
-References: <20260425031339.3318-1-hs@nabladev.com>
+	Thomas Gleixner <tglx@kernel.org>,
+	Denis Benato <benato.denis96@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>, Simon Horman <horms@kernel.org>
+Subject: Re: [PATCH] net: fealnx: make driver work on architectures without
+ I/O ports
+Message-ID: <17af8886-7be9-411a-8067-feb59eae2c7d@lunn.ch>
+References: <20260428021145.40930-1-enelsonmoore@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,16 +50,35 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260425031339.3318-1-hs@nabladev.com>
+In-Reply-To: <20260428021145.40930-1-enelsonmoore@gmail.com>
 
-On Sat, Apr 25, 2026 at 05:13:39AM +0200, Heiko Schocher wrote:
-> Table 7-121 in datasheet says we have to set register 0xc6
-> to value 0x10 before CLK_O_SEL can be modified. No more infos
-> about this field found in datasheet. With this fix, setting
-> of CLK_O_SEL field in IO_MUX_CFG register worked through dts
-> property "ti,clk-output-sel" on a DP83869HMRGZR.
+On Mon, Apr 27, 2026 at 07:11:36PM -0700, Ethan Nelson-Moore wrote:
+> Devices supported by the fealnx driver support both MMIO and PIO access
+> (they have a PCI BAR for each). However, the driver always tries to use
+> the PIO BAR on architectures other than Alpha. This makes the driver
+> not work on architectures without I/O port mapping support. The comment
+> explaining why this was done explains that some x86 systems have issues
+> with MMIO. To enable the driver on all architectures while preventing
+> potential regressions, change the driver to only use PIO on x86.
 > 
-> Signed-off-by: Heiko Schocher <hs@nabladev.com>
+> Issue discovered by manual inspection.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Does that mean it is untested? Probably broken?
 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+
+Given that nobody has cared about this for the last 20 years, why
+change it now?
+
+Please stop making changes to old drivers, unless you have the
+hardware in your hands and you have a real problem with it. If those
+conditions are not met, you are just wasting peoples time.
+
+If you want to do something useful, please spend some time reviewing
+other peoples patches. Or get some real hardware in your hands and add
+new features to its driver.
+
+    Andrew
+
+---
+pw-bot: cr
