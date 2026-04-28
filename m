@@ -1,35 +1,48 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 742EC2DB7AE;
-	Tue, 28 Apr 2026 02:20:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F69328B4E2
+	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 02:44:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777342848; cv=none; b=ZOjfkl6t/bQ6QnJzLdBLNKQ5kKdWIvf/4LLFEm4PjwacPC6rdJ4LOlPFYmJhwbfKJwkORui/beRYrn6r5qS8gj3Ri00pMZVEWQSwnbH5siT86AVYbUyA69LsafOiKkAnQZJVqV0zGIZf62l26bgURLvfszG7tFufVIcaFf0Bnn0=
+	t=1777344281; cv=none; b=NoW339vmUur2MeddE8qYSI4+uv3LWx86GH1aY1DnAqzkZcFtl1t+7ZE1iDzPDh2YADgwvRjZcSpcNL28RPXoESGqX6Q2aX5fO4HdY9L7/l82Xhgjts6uAQbYoCqObXJfSULXDWeO6NfPsH+Kpqwa5o0dBWUvWgr2mQOy1Aoo4dQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777342848; c=relaxed/simple;
-	bh=Gu6KcT5kMSGfIXHS8LsPjrLPCL3C4f6PCQ+8/Bvo0KE=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=NgNF8DE8sVvM7c1jLd5ognLUPl7U/8thKI46ZhNcYUIjzRdhmFm2Q/oz7k+smic5JAY0HOOln5fQiUEgqJFSjhuOy1U+pO/kPu9Bj5lTAFRVWLj+yW8Y74fd++OdusW6erQG9jz7vQwo1dnbPEUWdclkI2o9Av4ghUUQcEjSnLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BNPJukUJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777344281; c=relaxed/simple;
+	bh=EAYUATPuVleEjr1jqIxR9Ui4rzGDh9uFzSfV03KVwHM=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=A5ksROX1dFqLIjDOgaAV7u5GwY8OgF2D42A9rfIz9x9hMe3wlgLVAOwApnmAU6kVRpMTQGnoyX7suLBhDl17lH80y1j98BK/rbsODqTmN483zJYqbluYf3rjojlZMGkAH8RjEfB382NTMz9gjT7UlSpfkI8eDqx2/aGMpAxkKHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=cfq7YZ6V; arc=none smtp.client-ip=91.218.175.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BNPJukUJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E22EC19425;
-	Tue, 28 Apr 2026 02:20:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777342848;
-	bh=Gu6KcT5kMSGfIXHS8LsPjrLPCL3C4f6PCQ+8/Bvo0KE=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=BNPJukUJ1g1XKPobe0KiW0gzD+pJ4qyPNDFq8O1825Xop64UkXBtcUaoaqQbMjNW6
-	 8OuOUwOjLtMJP+G0GUptpR2+iuMiH/rIMfzCrERSc71UALUUKKp3IXt7kve+brdfji
-	 ras4Sey0KGO8DJYUc5CLBafYKOUxFIFBnkBeevvjHVd5IMLfVTAZIsZ2ekivqCo7i/
-	 Fubps5DV/i+wawOveF7MRR5sMvr5kS1cbYIGF4slJZU43ft3i5kKrvfea6zJUgsHOa
-	 r3Z4C2h6ePeA4x8XioCZCSKl6b5T9FgqRy2bmrCot2zc/UJrONMz4k1IM49KWul811
-	 CdvvYAGRidjfA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9E7D392FFDF;
-	Tue, 28 Apr 2026 02:20:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="cfq7YZ6V"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1777344276;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=+MmdwINVAVKBRt4VRZUmggKv0c0KtyEJq4NgLTRltRw=;
+	b=cfq7YZ6VA8I4SIMWTp0CNdpUe9ovzUiphK9oe8tPMq/Hg/vwSW18PL409kpQq1mWzMfgId
+	WH8jtqVULDUWqkhD8B+9TB39rKhM4HdjkSYeixqSp2/PYTzClHuTiCS6UfpUbi6gbOY69Z
+	qV5ZuiZznuq8YZaf3ZQ5OA7xtich6vU=
+From: Qingfang Deng <qingfang.deng@linux.dev>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Qingfang Deng <qingfang.deng@linux.dev>,
+	Guillaume Nault <gnault@redhat.com>,
+	Breno Leitao <leitao@debian.org>,
+	Taegu Ha <hataegu0826@gmail.com>,
+	Kees Cook <kees@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	linux-ppp@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next] ppp: consolidate RX skb queueing
+Date: Tue, 28 Apr 2026 10:44:23 +0800
+Message-ID: <20260428024426.48605-1-qingfang.deng@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,43 +50,98 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v3] ibmveth: Disable GSO for packets with small MSS
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177734280556.205517.1747939663275050652.git-patchwork-notify@kernel.org>
-Date: Tue, 28 Apr 2026 02:20:05 +0000
-References: <20260424162917.65725-1-mmc@linux.ibm.com>
-In-Reply-To: <20260424162917.65725-1-mmc@linux.ibm.com>
-To: Mingming Cao <mmc@linux.ibm.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
- edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
- bjking1@linux.ibm.com, maddy@linux.ibm.com, mpe@ellerman.id.au,
- linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org,
- shaik.abdulla1@ibm.com, naveedaus@in.ibm.com
+X-Migadu-Flow: FLOW_OUT
 
-Hello:
+In ppp_input() and ppp_receive_nonmp_frame(), received skbs are queued
+for userspace delivery using the same open-coded pattern:
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+	skb_queue_tail(&pf->rq, skb);
+	while (pf->rq.qlen > PPP_MAX_RQLEN &&
+	       (skb = skb_dequeue(&pf->rq)))
+		kfree_skb(skb);
+	wake_up_interruptible(&pf->rwait);
 
-On Fri, 24 Apr 2026 09:29:17 -0700 you wrote:
-> Some physical adapters on Power systems do not support segmentation
-> offload when the MSS is less than 224 bytes. Attempting to send such
-> packets causes the adapter to freeze, stopping all traffic until
-> manually reset.
-> 
-> Implement ndo_features_check to disable GSO for packets with small MSS
-> values. The network stack will perform software segmentation instead.
-> 
-> [...]
+This has a potential race: skb_queue_tail() releases the queue lock,
+then qlen is read locklessly before skb_dequeue() re-acquires it.
+Another CPU enqueueing concurrently could cause the length check to see
+stale data. This race is benign, as it only causes extra skbs to be
+freed in the worst case.
 
-Here is the summary with links:
-  - [v3] ibmveth: Disable GSO for packets with small MSS
-    https://git.kernel.org/netdev/net/c/cc427d24ac64
+Introduce ppp_file_queue_rx_skb() to perform the enqueue, length check,
+and trim atomically under a single pf->rq.lock critical section. As both
+callers have softirq disabled, plain spin_lock() can be used instead of
+_bh()/_irqsave() variants. Since only one skb is enqueued at a time, the
+queue can exceed PPP_MAX_RQLEN by at most one frame, so replace the
+while-loop with an if-statement. While at it, use skb_queue_len()
+instead of open-coding the qlen access.
 
-You are awesome, thank you!
+Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
+---
+ drivers/net/ppp/ppp_generic.c | 37 ++++++++++++++++++++++-------------
+ 1 file changed, 23 insertions(+), 14 deletions(-)
+
+diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
+index 57c68efa5ff8..6ab5011540a0 100644
+--- a/drivers/net/ppp/ppp_generic.c
++++ b/drivers/net/ppp/ppp_generic.c
+@@ -2307,6 +2307,27 @@ static bool ppp_channel_bridge_input(struct channel *pch, struct sk_buff *skb)
+ 	return !!pchb;
+ }
+ 
++/* Queue up and deliver a received skb to userspace.
++ * Must be called in softirq.
++ */
++static void ppp_file_queue_rx_skb(struct ppp_file *pf, struct sk_buff *skb)
++{
++	spin_lock(&pf->rq.lock);
++	__skb_queue_tail(&pf->rq, skb);
++	/* limit queue length by dropping old frames */
++	if (unlikely(skb_queue_len(&pf->rq) > PPP_MAX_RQLEN)) {
++		struct sk_buff *old = __skb_peek(&pf->rq);
++
++		__skb_unlink(old, &pf->rq);
++		spin_unlock(&pf->rq.lock);
++		kfree_skb(old);
++	} else {
++		spin_unlock(&pf->rq.lock);
++	}
++	/* wake up any process polling or blocking on read */
++	wake_up_interruptible(&pf->rwait);
++}
++
+ void
+ ppp_input(struct ppp_channel *chan, struct sk_buff *skb)
+ {
+@@ -2337,12 +2358,7 @@ ppp_input(struct ppp_channel *chan, struct sk_buff *skb)
+ 	proto = PPP_PROTO(skb);
+ 	if (!ppp || proto >= 0xc000 || proto == PPP_CCPFRAG) {
+ 		/* put it on the channel queue */
+-		skb_queue_tail(&pch->file.rq, skb);
+-		/* drop old frames if queue too long */
+-		while (pch->file.rq.qlen > PPP_MAX_RQLEN &&
+-		       (skb = skb_dequeue(&pch->file.rq)))
+-			kfree_skb(skb);
+-		wake_up_interruptible(&pch->file.rwait);
++		ppp_file_queue_rx_skb(&pch->file, skb);
+ 	} else {
+ 		ppp_do_recv(ppp, skb, pch);
+ 	}
+@@ -2480,14 +2496,7 @@ ppp_receive_nonmp_frame(struct ppp *ppp, struct sk_buff *skb)
+ 	npi = proto_to_npindex(proto);
+ 	if (npi < 0) {
+ 		/* control or unknown frame - pass it to pppd */
+-		skb_queue_tail(&ppp->file.rq, skb);
+-		/* limit queue length by dropping old frames */
+-		while (ppp->file.rq.qlen > PPP_MAX_RQLEN &&
+-		       (skb = skb_dequeue(&ppp->file.rq)))
+-			kfree_skb(skb);
+-		/* wake up any process polling or blocking on read */
+-		wake_up_interruptible(&ppp->file.rwait);
+-
++		ppp_file_queue_rx_skb(&ppp->file, skb);
+ 	} else {
+ 		/* network protocol frame - give it to the kernel */
+ 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.43.0
 
