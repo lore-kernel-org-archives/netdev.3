@@ -1,193 +1,407 @@
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010015.outbound.protection.outlook.com [52.101.56.15])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAA2B345CC0;
-	Tue, 28 Apr 2026 06:02:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777356164; cv=fail; b=GivXXOFxco6/TlEBLgcHCihd9uBOI+1WusNYx03e4G9yiypAqMuBSzihG1T5jLazlhHAMyViP7XApr2AxSlXO95QAzj7p1G0rxX+u3Xh3jNZtofW+K58ZvWIUbkTbGBfXemF0553Fp6H+7TCKcG/Dy4/fGC70fplayKJLFLwhlw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777356164; c=relaxed/simple;
-	bh=mPpKJ3WMvPWHhFcyep2W4+MK4KvLiomlJsaHvhLNO8Q=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qvsNc18S1a84OK2qUxyGLxFqbkr2FomuMNXMk9ZdHkIRkb52tjj/CL1xXSqdT6sHOf/vC0C0Sn8zPQixrRVEZlSZeaT6YfxtovpFP9DUpS0V8U4vGvp/vWWm/UNpbTQg3o1WGPJyG3RaYub5uvzTcMQ+rnLh2MX1FR8NwdlEciE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=TYemepbf; arc=fail smtp.client-ip=52.101.56.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C124A2D6E58
+	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 06:02:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777356179; cv=none; b=Sp722iXrzdIHF5Fzolvva8BUveO//jafiwgsp2EV45EgfGnVoF9pFxCcVrNDgVSKWmYPUos34e4khnsAb30cuwSfNZQUeFpZ90NbHMbRzJn1NfgvW2eMI3w7JERDLazWWN4NhT9Q/HE0M5YY/KdhoQyaYmU1l/vcBp+DTxswGJ0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777356179; c=relaxed/simple;
+	bh=bnBKURh2CCSd96pdSXR1lYVcneWMv6pNHcGvaINt2/c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=n/yTGU4PmPshM3ZlbeaQEkuTFjttE5jcB0wzi4xKFSl7VduB9GOcsdXyTNQNullgtUSXVEhAA73CK7ks41MZmZNDIGEcZ71CkSfGf5syR8i6jXvatffMwKzpoq0XB7Dk2x9tQecQYamim5xcALVio8BEwNBCaGOxrX+LqwPdvLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HcR7ZQMQ; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="TYemepbf"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=frHZKJAAYroB7TEMq2ix5+7lRhHRh43lVTRD6l9LG49EGq0g3LzmVilha6EuBYtRogOBDK67VLGQ3Vf1bb790nsZ3Yl9f0kB+jlf5UASixwtM4ZXh+JAnxcAVeP/rS7XImKULbjf2MRMp5Vz5thAQifBLpsz2DNucX1NbQLyEztbRE9vgS4sNCcNcueDYmf/1TZMZZjSf4wEppXuNLFdfL71YIw+VmRY2hdQnQLiOmc9ZMh7s6nuGTiq8Ml2/lmBAkXjPglAPUMLdAtNxq6VE7Sp7pdccMet2e8nk43D5uDIcRzV+MrIj+Isjh2azvW7sW73odMWZ+tvW/z8RiGU2A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=q3JEqkxsHPlJOZ5Rl7+T9q7BGhO12RFswsuVwgPlLy8=;
- b=Jh26AfoR+40mM2D12c11JlPxQTz8GOy3EBD/d7RsusSAaAezUhUJsNUzxHIK7XqZh9IBsdtAcIVmOamPMqGx3E927CycXzWBCB00Gq1w89E/rSh98pOrK7THpj54Yj6hM4rWE7u1NiaVYE1qDu2H/N3lzwf5New6fSpzhmEd5CMhTrv9FO/lH6BWW120WzUPWxe6k8/ZJMctFB1yZJL+KcvY5Chf0M2qQYWJ97kQDHfuaa5dPagNnb2ruLx0JxrkbLXkD/zFywqnMBEtB9mSSiBOZcFEf4BZSziCyYDHwbbnIKZzow8BsYWhB8s4s68OJ/1gdH3BsUsdiS++5oaj4g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=q3JEqkxsHPlJOZ5Rl7+T9q7BGhO12RFswsuVwgPlLy8=;
- b=TYemepbfxtjCxkqVl//nznQRMDje44ixtDAtUc8GRYF88hlQjc7UmOW5cZfp90YBUE2mX1nsq20J7ddh9sp+380/PDrpL2vIsnyIJhvx4A8Aa6kuqqVZ3V1N7aY0NuRchJrs7FhaKz0dEMbxlhxe4oXlvrtrbUzNITA6fV83r9LXy+z6UMN2Rl/HB1Dt65whZPrcSVVx8CZpHoWAJ+Kh68dfVAsPlwkmZsWHjoNStM60wxvPSbQnHi0AeX8pBvSmScQQjq3PBSFT5lgJTgeCj9mz6cPHJT5arZKiw/Y7+8zOohYoE5C73Gtl3Ga1I8XgX5htRMzuduDt6RpntqKHnA==
-Received: from SJ0PR13CA0173.namprd13.prod.outlook.com (2603:10b6:a03:2c7::28)
- by SA5PPF8DEAB7A29.namprd12.prod.outlook.com (2603:10b6:80f:fc04::8d4) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.21; Tue, 28 Apr
- 2026 06:02:32 +0000
-Received: from CO1PEPF000066E9.namprd05.prod.outlook.com
- (2603:10b6:a03:2c7:cafe::e7) by SJ0PR13CA0173.outlook.office365.com
- (2603:10b6:a03:2c7::28) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9846.26 via Frontend Transport; Tue,
- 28 Apr 2026 06:02:32 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- CO1PEPF000066E9.mail.protection.outlook.com (10.167.249.11) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9846.18 via Frontend Transport; Tue, 28 Apr 2026 06:02:32 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 27 Apr
- 2026 23:02:11 -0700
-Received: from rnnvmail203.nvidia.com (10.129.68.9) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 27 Apr
- 2026 23:02:11 -0700
-Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.9)
- with Microsoft SMTP Server id 15.2.2562.20 via Frontend Transport; Mon, 27
- Apr 2026 23:02:06 -0700
-From: Tariq Toukan <tariqt@nvidia.com>
-To: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>
-CC: Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
-	"Mark Bloch" <mbloch@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Shay
- Drory <shayd@nvidia.com>, Simon Horman <horms@kernel.org>, Patrisious Haddad
-	<phaddad@nvidia.com>, Kees Cook <kees@kernel.org>, Parav Pandit
-	<parav@nvidia.com>, Gal Pressman <gal@nvidia.com>, <netdev@vger.kernel.org>,
-	<linux-rdma@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Dragos Tatulea
-	<dtatulea@nvidia.com>
-Subject: [PATCH net V4 2/4] net/mlx5: SD, Keep multi-pf debugfs entries on primary
-Date: Tue, 28 Apr 2026 09:01:09 +0300
-Message-ID: <20260428060111.221086-3-tariqt@nvidia.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20260428060111.221086-1-tariqt@nvidia.com>
-References: <20260428060111.221086-1-tariqt@nvidia.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HcR7ZQMQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777356178; x=1808892178;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=bnBKURh2CCSd96pdSXR1lYVcneWMv6pNHcGvaINt2/c=;
+  b=HcR7ZQMQtUDrtpWZOEX5oR+VrH59Z4CEZYwDx/qsmXaRsrx2PChJrVa0
+   orTRK2d6NIhz/NKV/kFV5IAcRH5EHY/jnvxV2HfI9pLZeLofNEsDz+R0N
+   4PPIYpXFGvAdOf/fczy6CMBeJYH4kmpwxANVY6s6iBAGgPzFUpxaAMlxH
+   2e0fLgNyjz21P+sqOSoWABTfIv9ZDoSaSIGoLs4jcOIT6ZsQ9bLJk/3f9
+   dz4tPyv66dh9ZigNq62kSCkLv0UMfNDIjySdmCXpTXe9JVN3LeNxSAvP3
+   0SMuE7Ow9ItuY6KlWtsxt2syIJ+A6ZujjYj18xAfjKtGYUnbmP/41r3tQ
+   w==;
+X-CSE-ConnectionGUID: efz66lMpRUKRlivDS0zM7Q==
+X-CSE-MsgGUID: eO++QZjiTVCdmZFm5GYq/w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="78239622"
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
+   d="scan'208";a="78239622"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 23:02:58 -0700
+X-CSE-ConnectionGUID: f6VeYzKjQya4iCxTFN2vPA==
+X-CSE-MsgGUID: yK3emIbdS0yqGhfzZjyQXw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
+   d="scan'208";a="232852885"
+Received: from igk-lkp-server01.igk.intel.com (HELO bdf09bfdbd5f) ([10.211.93.152])
+  by orviesa006.jf.intel.com with ESMTP; 27 Apr 2026 23:02:55 -0700
+Received: from kbuild by bdf09bfdbd5f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wHbX1-000000004CL-36bR;
+	Tue, 28 Apr 2026 06:02:51 +0000
+Date: Tue, 28 Apr 2026 08:02:40 +0200
+From: kernel test robot <lkp@intel.com>
+To: Daniel Borkmann <daniel@iogearbox.net>, kuba@kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	edumazet@google.com, dsahern@kernel.org, tom@herbertland.com,
+	willemdebruijn.kernel@gmail.com, idosch@nvidia.com,
+	justin.iurman@gmail.com, pabeni@redhat.com, netdev@vger.kernel.org
+Subject: Re: [PATCH net v3] ipv6: Implement limits on extension header parsing
+Message-ID: <202604280700.QqKZKu4g-lkp@intel.com>
+References: <20260427101318.750730-1-daniel@iogearbox.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000066E9:EE_|SA5PPF8DEAB7A29:EE_
-X-MS-Office365-Filtering-Correlation-Id: cd082292-71bf-48f5-b81c-08dea4ebbc9f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|376014|7416014|36860700016|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	OqFaZccP/Dyj8XcYuNGW8ladkhZLs3dbbNHmYLQkxO54IYSTJwriDPKTfk8/lBAmEYQlbQj4uAp3IABc6UhtRlQe/89+JSL/FkfhFuGyTCgECUh0AyzXKDtfeUr2BkkYRHxEywspW6NgYUhkkku7FAdTJDLTltvG7HZ6hVu+F85tay1pLRL5jvjxm3nwN6hE/i+KoirTUFKifVYdnDNAUlNmmfBQatrIwUK8Jr9F+IsKRWCc5o5+EjrCt5HXJXA4WyuWYLhUdQ7R+vjJTNGcm75Lg7IDONibJ4auPsOIV00V0smF2B3uvl08I9i1ul00sBhCg/PT/FePM+fxeqI9FGCkVcm2be5+Hge3AybsOuc/bVmsRJQKHQRSX9q4Y1a3hZ1iznaNqh16/FuybRDOMF4ZdToxy3M0YTH3S5KGhvvK4qpWX0rv1b8ByXFmiSrzoJQXVpdZKpg/AiFHVMufee7IdSSHLpLcVVfU6KOIYfFBzYjppOpbaHOtilbj/1dTNBQ3qIf+NF0LutLNskyI/LJ5TJFLzKuTuememLQRj5FK9DOTKGoOge44MO33GYezn74qWrD8aUoihzxqw0cRsSjePbKl1Hyi7/BfrOU2l1O834u/9WDrUm+hYEoQrjByJ+QRPwmboao2J8W9lCx/GyATDesRcHH3iQZbLQQoalrLZII6KIjTCKYrYE7bViObaXq890AD9y/brCmBo7oYpCAiN0zFZwNN4ldvPITT2DbmmY98Mvq867P/HhIOrQ0RQ4vR6R/4AxopaWj17cBYDw==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(376014)(7416014)(36860700016)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	XDN3X6eNVhaG1A8Zz8BR3SinP/0oFS5Rs5L1o4ca2WdCSm91kpoE9ad0wGHQ2bmtjzOJbIomZa0K2hTsWPPWg4cq0NtU1SzKAg9SCZsQTyaOf5csurHc0qzJmx8cpQoJKRm1n+4zYNBgJAOu8aW6FFh7qx02Hcc4jta18Ws0SaLJkwJIJIJNFMq5iResRzal31a9BsrxuJEP9B9HPCbKe5JnDAihC1QaZjUZWGoSZShESX2A7rgRnmRYm90ZbMLQ3ZKSWGK7jH4bGEBuKjxpg6z1vyod2px52+/GHr52/92zs+ai6vkmx7mxIIOPXu8kj2XW4I5p0mGbWHO0K5u2eq7xOnLXeXSUkFNbLKVBBWD81H8M+L/FhiHC3omDsnT2G76pqfEVyu+tZQTYfADUZnzDvkYr/7qa92xLBq3JSc8c1URU500E95CaANS/fvM0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2026 06:02:32.0604
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: cd082292-71bf-48f5-b81c-08dea4ebbc9f
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF000066E9.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPF8DEAB7A29
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260427101318.750730-1-daniel@iogearbox.net>
 
-From: Shay Drory <shayd@nvidia.com>
+Hi Daniel,
 
-mlx5_sd_init() creates the "multi-pf" debugfs directory under the
-primary device debugfs root, but stored the dentry in the calling
-device's sd struct. When sd_cleanup() run on a different PF,
-this leads to using the wrong sd->dfs for removing entries, which
-results in memory leak and an error in when re-creating the SD.[1]
+kernel test robot noticed the following build errors:
 
-Fix it by explicitly storing the debugfs dentry in the primary
-device sd struct and use it for all per-group files.
+[auto build test ERROR on net/main]
 
-[1]
-debugfs: 'multi-pf' already exists in '0000:08:00.1'
+url:    https://github.com/intel-lab-lkp/linux/commits/Daniel-Borkmann/ipv6-Implement-limits-on-extension-header-parsing/20260427-194303
+base:   net/main
+patch link:    https://lore.kernel.org/r/20260427101318.750730-1-daniel%40iogearbox.net
+patch subject: [PATCH net v3] ipv6: Implement limits on extension header parsing
+config: x86_64-kexec (https://download.01.org/0day-ci/archive/20260428/202604280700.QqKZKu4g-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260428/202604280700.QqKZKu4g-lkp@intel.com/reproduce)
 
-Fixes: 4375130bf527 ("net/mlx5: SD, Add debugfs")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
----
- .../net/ethernet/mellanox/mlx5/core/lib/sd.c  | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202604280700.QqKZKu4g-lkp@intel.com/
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/sd.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/sd.c
-index d42c283cbb38..7a1787f15320 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/sd.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/sd.c
-@@ -463,9 +463,13 @@ int mlx5_sd_init(struct mlx5_core_dev *dev)
- 	if (err)
- 		goto err_sd_unregister;
- 
--	sd->dfs = debugfs_create_dir("multi-pf", mlx5_debugfs_get_dev_root(primary));
--	debugfs_create_x32("group_id", 0400, sd->dfs, &sd->group_id);
--	debugfs_create_file("primary", 0400, sd->dfs, primary, &dev_fops);
-+	primary_sd->dfs =
-+		debugfs_create_dir("multi-pf",
-+				   mlx5_debugfs_get_dev_root(primary));
-+	debugfs_create_x32("group_id", 0400, primary_sd->dfs,
-+			   &primary_sd->group_id);
-+	debugfs_create_file("primary", 0400, primary_sd->dfs, primary,
-+			    &dev_fops);
- 
- 	mlx5_sd_for_each_secondary(i, primary, pos) {
- 		char name[32];
-@@ -475,7 +479,8 @@ int mlx5_sd_init(struct mlx5_core_dev *dev)
- 			goto err_unset_secondaries;
- 
- 		snprintf(name, sizeof(name), "secondary_%d", i - 1);
--		debugfs_create_file(name, 0400, sd->dfs, pos, &dev_fops);
-+		debugfs_create_file(name, 0400, primary_sd->dfs, pos,
-+				    &dev_fops);
- 
- 	}
- 
-@@ -493,7 +498,8 @@ int mlx5_sd_init(struct mlx5_core_dev *dev)
- 	mlx5_sd_for_each_secondary_to(i, primary, to, pos)
- 		sd_cmd_unset_secondary(pos);
- 	sd_cmd_unset_primary(primary);
--	debugfs_remove_recursive(sd->dfs);
-+	debugfs_remove_recursive(primary_sd->dfs);
-+	primary_sd->dfs = NULL;
- err_sd_unregister:
- 	mlx5_devcom_comp_set_ready(sd->devcom, false);
- 	mlx5_devcom_comp_unlock(sd->devcom);
-@@ -528,7 +534,8 @@ void mlx5_sd_cleanup(struct mlx5_core_dev *dev)
- 	mlx5_sd_for_each_secondary(i, primary, pos)
- 		sd_cmd_unset_secondary(pos);
- 	sd_cmd_unset_primary(primary);
--	debugfs_remove_recursive(sd->dfs);
-+	debugfs_remove_recursive(primary_sd->dfs);
-+	primary_sd->dfs = NULL;
- 
- 	sd_info(primary, "group id %#x, uncombined\n", sd->group_id);
- 	primary_sd->state = MLX5_SD_STATE_DOWN;
+All errors (new ones prefixed by >>):
+
+>> net/ipv6/exthdrs_core.c:77:38: error: no member named 'ipv6' in 'struct net'
+      77 |         int exthdr_max = READ_ONCE(init_net.ipv6.sysctl.max_ext_hdrs_cnt);
+         |                                    ~~~~~~~~ ^
+   include/asm-generic/rwonce.h:49:33: note: expanded from macro 'READ_ONCE'
+      49 |         compiletime_assert_rwonce_type(x);                              \
+         |                                        ^
+   include/asm-generic/rwonce.h:36:35: note: expanded from macro 'compiletime_assert_rwonce_type'
+      36 |         compiletime_assert(__native_word(t) || sizeof(t) == sizeof(long long),  \
+         |                                          ^
+   include/linux/compiler_types.h:660:10: note: expanded from macro '__native_word'
+     660 |         (sizeof(t) == sizeof(char) || sizeof(t) == sizeof(short) || \
+         |                 ^
+   include/linux/compiler_types.h:699:22: note: expanded from macro 'compiletime_assert'
+     699 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+         |                             ^~~~~~~~~
+   include/linux/compiler_types.h:687:23: note: expanded from macro '_compiletime_assert'
+     687 |         __compiletime_assert(condition, msg, prefix, suffix)
+         |                              ^~~~~~~~~
+   include/linux/compiler_types.h:679:9: note: expanded from macro '__compiletime_assert'
+     679 |                 if (!(condition))                                       \
+         |                       ^~~~~~~~~
+>> net/ipv6/exthdrs_core.c:77:38: error: no member named 'ipv6' in 'struct net'
+      77 |         int exthdr_max = READ_ONCE(init_net.ipv6.sysctl.max_ext_hdrs_cnt);
+         |                                    ~~~~~~~~ ^
+   include/asm-generic/rwonce.h:49:33: note: expanded from macro 'READ_ONCE'
+      49 |         compiletime_assert_rwonce_type(x);                              \
+         |                                        ^
+   include/asm-generic/rwonce.h:36:35: note: expanded from macro 'compiletime_assert_rwonce_type'
+      36 |         compiletime_assert(__native_word(t) || sizeof(t) == sizeof(long long),  \
+         |                                          ^
+   include/linux/compiler_types.h:660:39: note: expanded from macro '__native_word'
+     660 |         (sizeof(t) == sizeof(char) || sizeof(t) == sizeof(short) || \
+         |                                              ^
+   include/linux/compiler_types.h:699:22: note: expanded from macro 'compiletime_assert'
+     699 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+         |                             ^~~~~~~~~
+   include/linux/compiler_types.h:687:23: note: expanded from macro '_compiletime_assert'
+     687 |         __compiletime_assert(condition, msg, prefix, suffix)
+         |                              ^~~~~~~~~
+   include/linux/compiler_types.h:679:9: note: expanded from macro '__compiletime_assert'
+     679 |                 if (!(condition))                                       \
+         |                       ^~~~~~~~~
+>> net/ipv6/exthdrs_core.c:77:38: error: no member named 'ipv6' in 'struct net'
+      77 |         int exthdr_max = READ_ONCE(init_net.ipv6.sysctl.max_ext_hdrs_cnt);
+         |                                    ~~~~~~~~ ^
+   include/asm-generic/rwonce.h:49:33: note: expanded from macro 'READ_ONCE'
+      49 |         compiletime_assert_rwonce_type(x);                              \
+         |                                        ^
+   include/asm-generic/rwonce.h:36:35: note: expanded from macro 'compiletime_assert_rwonce_type'
+      36 |         compiletime_assert(__native_word(t) || sizeof(t) == sizeof(long long),  \
+         |                                          ^
+   include/linux/compiler_types.h:661:10: note: expanded from macro '__native_word'
+     661 |          sizeof(t) == sizeof(int) || sizeof(t) == sizeof(long))
+         |                 ^
+   include/linux/compiler_types.h:699:22: note: expanded from macro 'compiletime_assert'
+     699 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+         |                             ^~~~~~~~~
+   include/linux/compiler_types.h:687:23: note: expanded from macro '_compiletime_assert'
+     687 |         __compiletime_assert(condition, msg, prefix, suffix)
+         |                              ^~~~~~~~~
+   include/linux/compiler_types.h:679:9: note: expanded from macro '__compiletime_assert'
+     679 |                 if (!(condition))                                       \
+         |                       ^~~~~~~~~
+>> net/ipv6/exthdrs_core.c:77:38: error: no member named 'ipv6' in 'struct net'
+      77 |         int exthdr_max = READ_ONCE(init_net.ipv6.sysctl.max_ext_hdrs_cnt);
+         |                                    ~~~~~~~~ ^
+   include/asm-generic/rwonce.h:49:33: note: expanded from macro 'READ_ONCE'
+      49 |         compiletime_assert_rwonce_type(x);                              \
+         |                                        ^
+   include/asm-generic/rwonce.h:36:35: note: expanded from macro 'compiletime_assert_rwonce_type'
+      36 |         compiletime_assert(__native_word(t) || sizeof(t) == sizeof(long long),  \
+         |                                          ^
+   include/linux/compiler_types.h:661:38: note: expanded from macro '__native_word'
+     661 |          sizeof(t) == sizeof(int) || sizeof(t) == sizeof(long))
+         |                                             ^
+   include/linux/compiler_types.h:699:22: note: expanded from macro 'compiletime_assert'
+     699 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+         |                             ^~~~~~~~~
+   include/linux/compiler_types.h:687:23: note: expanded from macro '_compiletime_assert'
+     687 |         __compiletime_assert(condition, msg, prefix, suffix)
+         |                              ^~~~~~~~~
+   include/linux/compiler_types.h:679:9: note: expanded from macro '__compiletime_assert'
+     679 |                 if (!(condition))                                       \
+         |                       ^~~~~~~~~
+>> net/ipv6/exthdrs_core.c:77:38: error: no member named 'ipv6' in 'struct net'
+      77 |         int exthdr_max = READ_ONCE(init_net.ipv6.sysctl.max_ext_hdrs_cnt);
+         |                                    ~~~~~~~~ ^
+   include/asm-generic/rwonce.h:49:33: note: expanded from macro 'READ_ONCE'
+      49 |         compiletime_assert_rwonce_type(x);                              \
+         |                                        ^
+   include/asm-generic/rwonce.h:36:48: note: expanded from macro 'compiletime_assert_rwonce_type'
+      36 |         compiletime_assert(__native_word(t) || sizeof(t) == sizeof(long long),  \
+         |                                                       ^
+   include/linux/compiler_types.h:699:22: note: expanded from macro 'compiletime_assert'
+     699 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+         |                             ^~~~~~~~~
+   include/linux/compiler_types.h:687:23: note: expanded from macro '_compiletime_assert'
+     687 |         __compiletime_assert(condition, msg, prefix, suffix)
+         |                              ^~~~~~~~~
+   include/linux/compiler_types.h:679:9: note: expanded from macro '__compiletime_assert'
+     679 |                 if (!(condition))                                       \
+         |                       ^~~~~~~~~
+>> net/ipv6/exthdrs_core.c:77:38: error: no member named 'ipv6' in 'struct net'
+      77 |         int exthdr_max = READ_ONCE(init_net.ipv6.sysctl.max_ext_hdrs_cnt);
+         |                                    ~~~~~~~~ ^
+   include/asm-generic/rwonce.h:50:14: note: expanded from macro 'READ_ONCE'
+      50 |         __READ_ONCE(x);                                                 \
+         |                     ^
+   include/asm-generic/rwonce.h:44:65: note: expanded from macro '__READ_ONCE'
+      44 | #define __READ_ONCE(x)  (*(const volatile __unqual_scalar_typeof(x) *)&(x))
+         |                                                                  ^
+   include/linux/compiler_types.h:635:53: note: expanded from macro '__unqual_scalar_typeof'
+     635 | #define __unqual_scalar_typeof(x) __typeof_unqual__(x)
+         |                                                     ^
+>> net/ipv6/exthdrs_core.c:77:38: error: no member named 'ipv6' in 'struct net'
+      77 |         int exthdr_max = READ_ONCE(init_net.ipv6.sysctl.max_ext_hdrs_cnt);
+         |                                    ~~~~~~~~ ^
+   include/asm-generic/rwonce.h:50:14: note: expanded from macro 'READ_ONCE'
+      50 |         __READ_ONCE(x);                                                 \
+         |                     ^
+   include/asm-generic/rwonce.h:44:72: note: expanded from macro '__READ_ONCE'
+      44 | #define __READ_ONCE(x)  (*(const volatile __unqual_scalar_typeof(x) *)&(x))
+         |                                                                         ^
+   net/ipv6/exthdrs_core.c:197:38: error: no member named 'ipv6' in 'struct net'
+     197 |         int exthdr_max = READ_ONCE(init_net.ipv6.sysctl.max_ext_hdrs_cnt);
+         |                                    ~~~~~~~~ ^
+   include/asm-generic/rwonce.h:49:33: note: expanded from macro 'READ_ONCE'
+      49 |         compiletime_assert_rwonce_type(x);                              \
+         |                                        ^
+   include/asm-generic/rwonce.h:36:35: note: expanded from macro 'compiletime_assert_rwonce_type'
+      36 |         compiletime_assert(__native_word(t) || sizeof(t) == sizeof(long long),  \
+         |                                          ^
+   include/linux/compiler_types.h:660:10: note: expanded from macro '__native_word'
+     660 |         (sizeof(t) == sizeof(char) || sizeof(t) == sizeof(short) || \
+         |                 ^
+   include/linux/compiler_types.h:699:22: note: expanded from macro 'compiletime_assert'
+     699 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+         |                             ^~~~~~~~~
+   include/linux/compiler_types.h:687:23: note: expanded from macro '_compiletime_assert'
+     687 |         __compiletime_assert(condition, msg, prefix, suffix)
+         |                              ^~~~~~~~~
+   include/linux/compiler_types.h:679:9: note: expanded from macro '__compiletime_assert'
+     679 |                 if (!(condition))                                       \
+         |                       ^~~~~~~~~
+   net/ipv6/exthdrs_core.c:197:38: error: no member named 'ipv6' in 'struct net'
+     197 |         int exthdr_max = READ_ONCE(init_net.ipv6.sysctl.max_ext_hdrs_cnt);
+         |                                    ~~~~~~~~ ^
+   include/asm-generic/rwonce.h:49:33: note: expanded from macro 'READ_ONCE'
+      49 |         compiletime_assert_rwonce_type(x);                              \
+         |                                        ^
+   include/asm-generic/rwonce.h:36:35: note: expanded from macro 'compiletime_assert_rwonce_type'
+      36 |         compiletime_assert(__native_word(t) || sizeof(t) == sizeof(long long),  \
+         |                                          ^
+   include/linux/compiler_types.h:660:39: note: expanded from macro '__native_word'
+     660 |         (sizeof(t) == sizeof(char) || sizeof(t) == sizeof(short) || \
+         |                                              ^
+   include/linux/compiler_types.h:699:22: note: expanded from macro 'compiletime_assert'
+     699 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+         |                             ^~~~~~~~~
+   include/linux/compiler_types.h:687:23: note: expanded from macro '_compiletime_assert'
+     687 |         __compiletime_assert(condition, msg, prefix, suffix)
+         |                              ^~~~~~~~~
+   include/linux/compiler_types.h:679:9: note: expanded from macro '__compiletime_assert'
+     679 |                 if (!(condition))                                       \
+         |                       ^~~~~~~~~
+   net/ipv6/exthdrs_core.c:197:38: error: no member named 'ipv6' in 'struct net'
+     197 |         int exthdr_max = READ_ONCE(init_net.ipv6.sysctl.max_ext_hdrs_cnt);
+         |                                    ~~~~~~~~ ^
+   include/asm-generic/rwonce.h:49:33: note: expanded from macro 'READ_ONCE'
+      49 |         compiletime_assert_rwonce_type(x);                              \
+         |                                        ^
+   include/asm-generic/rwonce.h:36:35: note: expanded from macro 'compiletime_assert_rwonce_type'
+      36 |         compiletime_assert(__native_word(t) || sizeof(t) == sizeof(long long),  \
+         |                                          ^
+   include/linux/compiler_types.h:661:10: note: expanded from macro '__native_word'
+     661 |          sizeof(t) == sizeof(int) || sizeof(t) == sizeof(long))
+         |                 ^
+   include/linux/compiler_types.h:699:22: note: expanded from macro 'compiletime_assert'
+     699 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+         |                             ^~~~~~~~~
+   include/linux/compiler_types.h:687:23: note: expanded from macro '_compiletime_assert'
+     687 |         __compiletime_assert(condition, msg, prefix, suffix)
+         |                              ^~~~~~~~~
+   include/linux/compiler_types.h:679:9: note: expanded from macro '__compiletime_assert'
+     679 |                 if (!(condition))                                       \
+         |                       ^~~~~~~~~
+   net/ipv6/exthdrs_core.c:197:38: error: no member named 'ipv6' in 'struct net'
+     197 |         int exthdr_max = READ_ONCE(init_net.ipv6.sysctl.max_ext_hdrs_cnt);
+         |                                    ~~~~~~~~ ^
+   include/asm-generic/rwonce.h:49:33: note: expanded from macro 'READ_ONCE'
+      49 |         compiletime_assert_rwonce_type(x);                              \
+         |                                        ^
+   include/asm-generic/rwonce.h:36:35: note: expanded from macro 'compiletime_assert_rwonce_type'
+      36 |         compiletime_assert(__native_word(t) || sizeof(t) == sizeof(long long),  \
+         |                                          ^
+   include/linux/compiler_types.h:661:38: note: expanded from macro '__native_word'
+     661 |          sizeof(t) == sizeof(int) || sizeof(t) == sizeof(long))
+         |                                             ^
+   include/linux/compiler_types.h:699:22: note: expanded from macro 'compiletime_assert'
+     699 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+         |                             ^~~~~~~~~
+   include/linux/compiler_types.h:687:23: note: expanded from macro '_compiletime_assert'
+     687 |         __compiletime_assert(condition, msg, prefix, suffix)
+         |                              ^~~~~~~~~
+   include/linux/compiler_types.h:679:9: note: expanded from macro '__compiletime_assert'
+     679 |                 if (!(condition))                                       \
+         |                       ^~~~~~~~~
+   net/ipv6/exthdrs_core.c:197:38: error: no member named 'ipv6' in 'struct net'
+     197 |         int exthdr_max = READ_ONCE(init_net.ipv6.sysctl.max_ext_hdrs_cnt);
+         |                                    ~~~~~~~~ ^
+   include/asm-generic/rwonce.h:49:33: note: expanded from macro 'READ_ONCE'
+      49 |         compiletime_assert_rwonce_type(x);                              \
+         |                                        ^
+   include/asm-generic/rwonce.h:36:48: note: expanded from macro 'compiletime_assert_rwonce_type'
+      36 |         compiletime_assert(__native_word(t) || sizeof(t) == sizeof(long long),  \
+
+
+vim +77 net/ipv6/exthdrs_core.c
+
+    28	
+    29	/*
+    30	 * Skip any extension headers. This is used by the ICMP module.
+    31	 *
+    32	 * Note that strictly speaking this conflicts with RFC 2460 4.0:
+    33	 * ...The contents and semantics of each extension header determine whether
+    34	 * or not to proceed to the next header.  Therefore, extension headers must
+    35	 * be processed strictly in the order they appear in the packet; a
+    36	 * receiver must not, for example, scan through a packet looking for a
+    37	 * particular kind of extension header and process that header prior to
+    38	 * processing all preceding ones.
+    39	 *
+    40	 * We do exactly this. This is a protocol bug. We can't decide after a
+    41	 * seeing an unknown discard-with-error flavour TLV option if it's a
+    42	 * ICMP error message or not (errors should never be send in reply to
+    43	 * ICMP error messages).
+    44	 *
+    45	 * But I see no other way to do this. This might need to be reexamined
+    46	 * when Linux implements ESP (and maybe AUTH) headers.
+    47	 * --AK
+    48	 *
+    49	 * This function parses (probably truncated) exthdr set "hdr".
+    50	 * "nexthdrp" initially points to some place,
+    51	 * where type of the first header can be found.
+    52	 *
+    53	 * It skips all well-known exthdrs, and returns pointer to the start
+    54	 * of unparsable area i.e. the first header with unknown type.
+    55	 * If it is not NULL *nexthdr is updated by type/protocol of this header.
+    56	 *
+    57	 * NOTES: - if packet terminated with NEXTHDR_NONE it returns NULL.
+    58	 *        - it may return pointer pointing beyond end of packet,
+    59	 *	    if the last recognized header is truncated in the middle.
+    60	 *        - if packet is truncated, so that all parsed headers are skipped,
+    61	 *	    it returns NULL.
+    62	 *	  - First fragment header is skipped, not-first ones
+    63	 *	    are considered as unparsable.
+    64	 *	  - Reports the offset field of the final fragment header so it is
+    65	 *	    possible to tell whether this is a first fragment, later fragment,
+    66	 *	    or not fragmented.
+    67	 *	  - ESP is unparsable for now and considered like
+    68	 *	    normal payload protocol.
+    69	 *	  - Note also special handling of AUTH header. Thanks to IPsec wizards.
+    70	 *
+    71	 * --ANK (980726)
+    72	 */
+    73	
+    74	int ipv6_skip_exthdr(const struct sk_buff *skb, int start, u8 *nexthdrp,
+    75			     __be16 *frag_offp)
+    76	{
+  > 77		int exthdr_max = READ_ONCE(init_net.ipv6.sysctl.max_ext_hdrs_cnt);
+    78		u8 nexthdr = *nexthdrp;
+    79		int exthdr_cnt = 0;
+    80	
+    81		*frag_offp = 0;
+    82	
+    83		while (ipv6_ext_hdr(nexthdr)) {
+    84			struct ipv6_opt_hdr _hdr, *hp;
+    85			int hdrlen;
+    86	
+    87			if (nexthdr == NEXTHDR_NONE)
+    88				return -1;
+    89			if (unlikely(exthdr_cnt++ >= exthdr_max))
+    90				return -1;
+    91			hp = skb_header_pointer(skb, start, sizeof(_hdr), &_hdr);
+    92			if (!hp)
+    93				return -1;
+    94			if (nexthdr == NEXTHDR_FRAGMENT) {
+    95				__be16 _frag_off, *fp;
+    96				fp = skb_header_pointer(skb,
+    97							start+offsetof(struct frag_hdr,
+    98								       frag_off),
+    99							sizeof(_frag_off),
+   100							&_frag_off);
+   101				if (!fp)
+   102					return -1;
+   103	
+   104				*frag_offp = *fp;
+   105				if (ntohs(*frag_offp) & ~0x7)
+   106					break;
+   107				hdrlen = 8;
+   108			} else if (nexthdr == NEXTHDR_AUTH)
+   109				hdrlen = ipv6_authlen(hp);
+   110			else
+   111				hdrlen = ipv6_optlen(hp);
+   112	
+   113			nexthdr = hp->nexthdr;
+   114			start += hdrlen;
+   115		}
+   116	
+   117		*nexthdrp = nexthdr;
+   118		return start;
+   119	}
+   120	EXPORT_SYMBOL(ipv6_skip_exthdr);
+   121	
+
 -- 
-2.44.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
