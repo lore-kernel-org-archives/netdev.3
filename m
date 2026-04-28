@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D31F3DA7D9;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 582A53DA5CF;
 	Tue, 28 Apr 2026 07:22:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777360939; cv=none; b=PaEAfugmJs3IjqAvvDSrER9yGr8bEDmTbP2aoAwWYpmeOQRx1MqVfdCBtMcGCu+rnBfEmP0jjG9X5/foSc2Wc6lroSir9X6RUt5ypAShcmn+4UlUe5KtJXBYr4gL+6VnGnXW5D+Oas9tOhEu7SIDP4Y/4ioMgI5Uu2FO3Ies1Tc=
+	t=1777360939; cv=none; b=PYNHykPSDfKtxs4pTFfwZKA0iotAMHgPamM0z5W15m2LEF6C7fHRtRRvvIkYYS7PslY1oa9U1rxPLRIi3hJgGRdKqmEl1XwG3wcbQBP/b25DQFm78ts4f0uDFHhUY5AQE+vEJTVj01ww+vMvTVahMFdRgT5tNMbGbbse9Zj0jUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777360939; c=relaxed/simple;
-	bh=GsYEHEkt98uPa1kAUcoAyuDvM0AUCRrOyaT9RTmz9q8=;
+	bh=yAUBc6B9439M+/6PIE7fdawFKqo3QdWNQgxsH0GyJ6g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ag8ZHOlcmzLS9bbVuKQCU0TNZTmpd91ACV6OdMkOuotRDmsmTDdikJFZHEtcYoc81iZMhAQpfenbW/+fyi8ItoxTZDKks6DyqdckJruFyDb533SGuZ7NshhQRe0vuc832BkPofaVGx4Scr2nxg+KZs/YoKQ/hT28DzGSNGh4740=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dGIHnEMB; arc=none smtp.client-ip=198.175.65.12
+	 MIME-Version; b=mkOn+KTVUvuabInVfrJ52yhUnARuz/iqpNlvkV0H1IWpuqakvcBLBIcMXpC2dnN476i6S0FWX/tofkllBBKh4uQ1np3XJeO7LHhJUCepaSVJczRfIZV+Ch32gWPcn4GbBwpcIgfVOhuwmLeB8kmRhEmG8Yr66i2IErRFI7sM30o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J1EtBh43; arc=none smtp.client-ip=198.175.65.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dGIHnEMB"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J1EtBh43"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1777360937; x=1808896937;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=GsYEHEkt98uPa1kAUcoAyuDvM0AUCRrOyaT9RTmz9q8=;
-  b=dGIHnEMB5PWlLtFAzfU0/alY0HiBI76q3PwGLo8q69v5Mmbz9fmgryCt
-   lseGNXDwTpP27xjhXbcZkemHreBpmp7UbwE8KuEHyZ5OP+5g+BBKFQXP9
-   9VfbEoRQleUnUXIlsBOHetOghmEeVWRHNo4vx5jiiG+pGZGu3EPEP3qm4
-   RhpGOhJodSAc691PnVnrb1Ea+Hc0r9FL+kTfS5VzfyDZCiVKJR2LVOk+S
-   Dx34mRVucUB8oiDKhc9Vx89K5X41OYKSAl8Bjv/YEsbI4ypZdEAzIT98L
-   +A3Z3qEfMjbiDT2DVtVbLeM3objRvXyq66tneGz0mL923SYw9z743/4gX
-   w==;
-X-CSE-ConnectionGUID: +QqqQzjBRK+UJNh2GJiBgA==
-X-CSE-MsgGUID: 5srFOKerRQeX/Sn/kogdfQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="89720831"
+  bh=yAUBc6B9439M+/6PIE7fdawFKqo3QdWNQgxsH0GyJ6g=;
+  b=J1EtBh43lnIhdzHumKs8SHWyQGCN9NBMUebGDiPRzLha5SlMy8siuOuO
+   uTVR05FxW7bimGXRawHhKKwD46I+Em7UsS0JFWlavd7zSpai3QpfAZWZn
+   ieXiGCYY9qoGJo1plYSmvf87AGd+QFWlQqVkq5Qupf6B4koI9jGarEWe0
+   JS0BeUzHN7kQMb4LHKI8sbN64xnY3h70AMLTSGvoD/vVvhlqR3cicz/Wz
+   owimlQF/yTDDpl5XMptCNZ3zUr2eRUSUv/r/tA7RGGGrFWxZDyu5MVaTh
+   dBE7z0u4wQF4GzFRtGxuHZT1J7yENVNzSwqa0RMcM72IyIrF/1zimJ7rD
+   Q==;
+X-CSE-ConnectionGUID: 513w11bTT96LTLvcC0rXUA==
+X-CSE-MsgGUID: SaThG9AiSm+9yelgj1MpmA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="95675771"
 X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
-   d="scan'208";a="89720831"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 00:22:14 -0700
-X-CSE-ConnectionGUID: WASokzf3QwCfAqesvCb2Gg==
-X-CSE-MsgGUID: fLtZC1HJS5mPzb1uoGYSWA==
+   d="scan'208";a="95675771"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 00:22:17 -0700
+X-CSE-ConnectionGUID: eUh3oqBsT+qxWRzUQDfL5A==
+X-CSE-MsgGUID: Mmi+42A6QbOhhKBEhzlNaA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
-   d="scan'208";a="238206405"
+   d="scan'208";a="229308651"
 Received: from black.igk.intel.com ([10.91.253.5])
-  by orviesa004.jf.intel.com with ESMTP; 28 Apr 2026 00:22:11 -0700
+  by fmviesa006.fm.intel.com with ESMTP; 28 Apr 2026 00:22:14 -0700
 Received: by black.igk.intel.com (Postfix, from userid 1001)
-	id 01E3699; Tue, 28 Apr 2026 09:22:10 +0200 (CEST)
+	id 1762DA4; Tue, 28 Apr 2026 09:22:10 +0200 (CEST)
 From: Mika Westerberg <mika.westerberg@linux.intel.com>
 To: linux-usb@vger.kernel.org
 Cc: Yehezkel Bernat <YehezkelShB@gmail.com>,
@@ -58,9 +58,9 @@ Cc: Yehezkel Bernat <YehezkelShB@gmail.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	netdev@vger.kernel.org,
 	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 2/9] thunderbolt: Add KUnit test for tb_property_merge_dir()
-Date: Tue, 28 Apr 2026 09:22:02 +0200
-Message-ID: <20260428072209.3084930-3-mika.westerberg@linux.intel.com>
+Subject: [PATCH 8/9] thunderbolt: Add support for ConfigFS
+Date: Tue, 28 Apr 2026 09:22:08 +0200
+Message-ID: <20260428072209.3084930-9-mika.westerberg@linux.intel.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260428072209.3084930-1-mika.westerberg@linux.intel.com>
 References: <20260428072209.3084930-1-mika.westerberg@linux.intel.com>
@@ -72,113 +72,174 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This makes sure it keeps working if we ever need to change it.
+This adds ConfigFS support to USB4/Thunderbolt bus. By itself this just
+creates the subsystem but it exposes functions that can be used to
+register groups under it.
 
 Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 ---
- drivers/thunderbolt/test.c | 82 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 82 insertions(+)
+ drivers/thunderbolt/Kconfig    |  4 +++
+ drivers/thunderbolt/Makefile   |  1 +
+ drivers/thunderbolt/configfs.c | 61 ++++++++++++++++++++++++++++++++++
+ drivers/thunderbolt/domain.c   |  2 ++
+ drivers/thunderbolt/tb.h       |  8 +++++
+ include/linux/thunderbolt.h    |  6 ++++
+ 6 files changed, 82 insertions(+)
+ create mode 100644 drivers/thunderbolt/configfs.c
 
-diff --git a/drivers/thunderbolt/test.c b/drivers/thunderbolt/test.c
-index 1f4318249c22..ce14ab9ef7dd 100644
---- a/drivers/thunderbolt/test.c
-+++ b/drivers/thunderbolt/test.c
-@@ -2852,6 +2852,87 @@ static void tb_test_property_copy(struct kunit *test)
- 	tb_property_free_dir(src);
- }
+diff --git a/drivers/thunderbolt/Kconfig b/drivers/thunderbolt/Kconfig
+index db3b0bef48f4..9b4aaa456e32 100644
+--- a/drivers/thunderbolt/Kconfig
++++ b/drivers/thunderbolt/Kconfig
+@@ -18,6 +18,10 @@ menuconfig USB4
  
-+static void tb_test_property_merge(struct kunit *test)
+ if USB4
+ 
++config USB4_CONFIGFS
++	def_tristate USB4
++	depends on CONFIGFS_FS && !(USB4=y && CONFIGFS_FS=m)
++
+ config USB4_DEBUGFS_WRITE
+ 	bool "Enable write by debugfs to configuration spaces (DANGEROUS)"
+ 	help
+diff --git a/drivers/thunderbolt/Makefile b/drivers/thunderbolt/Makefile
+index b44b32dcb832..d5b367dfda1e 100644
+--- a/drivers/thunderbolt/Makefile
++++ b/drivers/thunderbolt/Makefile
+@@ -7,6 +7,7 @@ thunderbolt-objs += usb4_port.o nvm.o retimer.o quirks.o clx.o
+ 
+ thunderbolt-${CONFIG_ACPI} += acpi.o
+ thunderbolt-$(CONFIG_DEBUG_FS) += debugfs.o
++thunderbolt-$(CONFIG_USB4_CONFIGFS) += configfs.o
+ thunderbolt-${CONFIG_USB4_KUNIT_TEST} += test.o
+ CFLAGS_test.o += $(DISABLE_STRUCTLEAK_PLUGIN)
+ 
+diff --git a/drivers/thunderbolt/configfs.c b/drivers/thunderbolt/configfs.c
+new file mode 100644
+index 000000000000..dc6bc363dfe8
+--- /dev/null
++++ b/drivers/thunderbolt/configfs.c
+@@ -0,0 +1,61 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * ConfigFS support
++ *
++ * Copyright (C) 2026, Intel Corporation
++ * Author: Mika Westerberg <mika.westerberg@linux.intel.com>
++ */
++
++#include <linux/configfs.h>
++#include <linux/export.h>
++
++#include "tb.h"
++
++static const struct config_item_type tb_root_group_type = {
++	.ct_owner = THIS_MODULE,
++};
++
++static struct configfs_subsystem tb_configfs = {
++	.su_group = {
++		.cg_item = {
++			.ci_namebuf = "thunderbolt",
++			.ci_type = &tb_root_group_type,
++		},
++	},
++};
++
++/**
++ * tb_configfs_register_group() - Register Thunderbolt ConfigFS group
++ * @group: Group to register.
++ *
++ * Registers the new @group under Thunderbolt subsystem ConfigFS.
++ *
++ * Return: 0% in case of success, negative errno otherwise.
++ */
++int tb_configfs_register_group(struct config_group *group)
 +{
-+	struct tb_property_dir *dir1, *dir2, *dir3;
-+	struct tb_property *p;
-+	uuid_t uuid;
-+	int ret;
++	return configfs_register_group(&tb_configfs.su_group, group);
++}
++EXPORT_SYMBOL_GPL(tb_configfs_register_group);
 +
-+	dir1 = tb_property_create_dir(&network_dir_uuid);
-+	KUNIT_ASSERT_NOT_NULL(test, dir1);
-+	ret = tb_property_add_immediate(dir1, "prtcid", 1);
-+	KUNIT_EXPECT_EQ(test, ret, 0);
-+	ret = tb_property_add_immediate(dir1, "prtcvers", 1);
-+	KUNIT_EXPECT_EQ(test, ret, 0);
-+	ret = tb_property_add_immediate(dir1, "prtcrevs", 0);
-+	KUNIT_EXPECT_EQ(test, ret, 0);
-+	ret = tb_property_add_immediate(dir1, "prtcstns", 0);
-+	KUNIT_EXPECT_EQ(test, ret, 0);
++/**
++ * tb_configfs_unregister_group() - Unregister previously registered group
++ * @group: Group to unregister.
++ */
++void tb_configfs_unregister_group(struct config_group *group)
++{
++	configfs_unregister_group(group);
++}
++EXPORT_SYMBOL_GPL(tb_configfs_unregister_group);
 +
-+	dir2 = tb_property_create_dir(&network_dir_uuid);
-+	KUNIT_ASSERT_NOT_NULL(test, dir2);
-+	ret = tb_property_add_text(dir2, "descr", "This is text");
-+	KUNIT_EXPECT_EQ(test, ret, 0);
-+	/* This replaces the value in dir1 */
-+	ret = tb_property_add_immediate(dir2, "prtcvers", 0x1234);
-+	KUNIT_EXPECT_EQ(test, ret, 0);
-+
-+	uuid_gen(&uuid);
-+	dir3 = tb_property_create_dir(&uuid);
-+	KUNIT_ASSERT_NOT_NULL(test, dir3);
-+	ret = tb_property_add_immediate(dir3, "value0", 0);
-+	KUNIT_EXPECT_EQ(test, ret, 0);
-+	ret = tb_property_add_text(dir3, "value1", "Text value");
-+	KUNIT_EXPECT_EQ(test, ret, 0);
-+	ret = tb_property_add_dir(dir2, "my", dir3);
-+	KUNIT_EXPECT_EQ(test, ret, 0);
-+
-+	ret = tb_property_merge_dir(dir1, dir2, true);
-+	KUNIT_EXPECT_EQ(test, ret, 0);
-+
-+	p = tb_property_get_next(dir1, NULL);
-+	KUNIT_ASSERT_NOT_NULL(test, p);
-+	KUNIT_ASSERT_STREQ(test, &p->key[0], "prtcid");
-+	KUNIT_ASSERT_EQ(test, p->type, TB_PROPERTY_TYPE_VALUE);
-+	KUNIT_ASSERT_EQ(test, p->length, 1);
-+	KUNIT_ASSERT_EQ(test, p->value.immediate, 1);
-+	p = tb_property_get_next(dir1, p);
-+	KUNIT_ASSERT_NOT_NULL(test, p);
-+	KUNIT_ASSERT_STREQ(test, &p->key[0], "prtcvers");
-+	KUNIT_ASSERT_EQ(test, p->type, TB_PROPERTY_TYPE_VALUE);
-+	KUNIT_ASSERT_EQ(test, p->length, 1);
-+	KUNIT_ASSERT_EQ(test, p->value.immediate, 0x1234);
-+	p = tb_property_get_next(dir1, p);
-+	KUNIT_ASSERT_NOT_NULL(test, p);
-+	KUNIT_ASSERT_STREQ(test, &p->key[0], "prtcrevs");
-+	KUNIT_ASSERT_EQ(test, p->type, TB_PROPERTY_TYPE_VALUE);
-+	KUNIT_ASSERT_EQ(test, p->length, 1);
-+	KUNIT_ASSERT_EQ(test, p->value.immediate, 0);
-+	p = tb_property_get_next(dir1, p);
-+	KUNIT_ASSERT_NOT_NULL(test, p);
-+	KUNIT_ASSERT_STREQ(test, &p->key[0], "prtcstns");
-+	KUNIT_ASSERT_EQ(test, p->type, TB_PROPERTY_TYPE_VALUE);
-+	KUNIT_ASSERT_EQ(test, p->length, 1);
-+	KUNIT_ASSERT_EQ(test, p->value.immediate, 0);
-+	p = tb_property_get_next(dir1, p);
-+	KUNIT_ASSERT_NOT_NULL(test, p);
-+	KUNIT_ASSERT_STREQ(test, &p->key[0], "descr");
-+	KUNIT_ASSERT_EQ(test, p->type, TB_PROPERTY_TYPE_TEXT);
-+	KUNIT_ASSERT_EQ(test, p->length, 4);
-+	KUNIT_ASSERT_STREQ(test, p->value.text, "This is text");
-+	p = tb_property_get_next(dir1, p);
-+	KUNIT_ASSERT_NOT_NULL(test, p);
-+	KUNIT_ASSERT_STREQ(test, &p->key[0], "my");
-+	KUNIT_ASSERT_EQ(test, p->type, TB_PROPERTY_TYPE_DIRECTORY);
-+	compare_dirs(test, p->value.dir, dir3);
-+	p = tb_property_get_next(dir1, p);
-+	KUNIT_ASSERT_NULL(test, p);
-+
-+	tb_property_free_dir(dir2);
-+	tb_property_free_dir(dir1);
++int tb_configfs_init(void)
++{
++	config_group_init(&tb_configfs.su_group);
++	mutex_init(&tb_configfs.su_mutex);
++	return configfs_register_subsystem(&tb_configfs);
 +}
 +
- static struct kunit_case tb_test_cases[] = {
- 	KUNIT_CASE(tb_test_path_basic),
- 	KUNIT_CASE(tb_test_path_not_connected_walk),
-@@ -2892,6 +2973,7 @@ static struct kunit_case tb_test_cases[] = {
- 	KUNIT_CASE(tb_test_property_parse),
- 	KUNIT_CASE(tb_test_property_format),
- 	KUNIT_CASE(tb_test_property_copy),
-+	KUNIT_CASE(tb_test_property_merge),
- 	{ }
- };
++void tb_configfs_exit(void)
++{
++	configfs_unregister_subsystem(&tb_configfs);
++}
+diff --git a/drivers/thunderbolt/domain.c b/drivers/thunderbolt/domain.c
+index d83719a37b4c..b381f184340e 100644
+--- a/drivers/thunderbolt/domain.c
++++ b/drivers/thunderbolt/domain.c
+@@ -887,6 +887,7 @@ int tb_domain_init(void)
+ {
+ 	int ret;
  
++	tb_configfs_init();
+ 	tb_debugfs_init();
+ 	tb_acpi_init();
+ 
+@@ -916,4 +917,5 @@ void tb_domain_exit(void)
+ 	tb_xdomain_exit();
+ 	tb_acpi_exit();
+ 	tb_debugfs_exit();
++	tb_configfs_exit();
+ }
+diff --git a/drivers/thunderbolt/tb.h b/drivers/thunderbolt/tb.h
+index 229b9e7961fb..e60f1bc3764e 100644
+--- a/drivers/thunderbolt/tb.h
++++ b/drivers/thunderbolt/tb.h
+@@ -1558,4 +1558,12 @@ static inline void tb_retimer_debugfs_init(struct tb_retimer *rt) { }
+ static inline void tb_retimer_debugfs_remove(struct tb_retimer *rt) { }
+ #endif
+ 
++#if IS_REACHABLE(CONFIG_CONFIGFS_FS)
++int tb_configfs_init(void);
++void tb_configfs_exit(void);
++#else
++static inline int tb_configfs_init(void) { return 0; }
++static inline void tb_configfs_exit(void) { }
++#endif
++
+ #endif
+diff --git a/include/linux/thunderbolt.h b/include/linux/thunderbolt.h
+index 9c5cb5e4f23d..0be9b298e692 100644
+--- a/include/linux/thunderbolt.h
++++ b/include/linux/thunderbolt.h
+@@ -13,6 +13,7 @@
+ 
+ #include <linux/types.h>
+ 
++struct config_group;
+ struct fwnode_handle;
+ struct device;
+ 
+@@ -727,6 +728,11 @@ static inline struct device *tb_ring_dma_device(struct tb_ring *ring)
+ bool usb4_usb3_port_match(struct device *usb4_port_dev,
+ 			  const struct fwnode_handle *usb3_port_fwnode);
+ 
++#if IS_REACHABLE(CONFIG_CONFIGFS_FS)
++int tb_configfs_register_group(struct config_group *group);
++void tb_configfs_unregister_group(struct config_group *group);
++#endif
++
+ #else /* CONFIG_USB4 */
+ static inline bool usb4_usb3_port_match(struct device *usb4_port_dev,
+ 					const struct fwnode_handle *usb3_port_fwnode)
 -- 
 2.50.1
 
