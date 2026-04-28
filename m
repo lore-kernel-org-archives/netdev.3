@@ -1,107 +1,124 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90C643A0E8E;
-	Tue, 28 Apr 2026 07:42:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA3932DCC01
+	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 07:48:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777362179; cv=none; b=H658+OYX3GDl6kugi0pYTFwuhWEUgf1l1ppfUS6Jmc/pzbdXy+5d1xKJfXjHPtiYtbz/AFVbDsrgdzpZaRhJkbwyBxNmkaUDxCCCKBAOX7FetSSmSkvC44y7OCiAYad5pv9zOCUkDHr2lUqQxLySKfk628mG6Am7k9Zh05LGzJU=
+	t=1777362522; cv=none; b=H5EEL0ThbnZQkr/W3+zF3J78/kEE61hA4VCTciajmiG8NZ4q+vmxVbBNp8uwaWoeJKV/+9Xbmd3lldph4FwtnNmTqmNY+m7sAcRyWgmU40uyGGSBkguizycaUlrn44eKBmWYMz4T5ZCJByxW9IIDhF3PMnaNezL9lmPmGHiEqu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777362179; c=relaxed/simple;
-	bh=WkfwgEy4xpwHn+VhVmIheSHazkvkv+HEQOBMy9vIyCI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Xa19GlrsdI0F5D9XeBQn7TDnWgV7PGm+zlwJ2DOpXGD0fxVRA2JJVXVHPOkxMZJ+34hM2ndeyptLfq6FVy8udvJsF+kECymQP9LO89X/rzRKJ/9cPbJYCLtj7kiufgUSDJWCJdsivh3lp5a1vzGxLEw5VO2uEAm3UN+/VbYf1Pw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J2NCZxMM; arc=none smtp.client-ip=192.198.163.10
+	s=arc-20240116; t=1777362522; c=relaxed/simple;
+	bh=89VxZuTuAfq1TCEMT31Kq1wu5QB4YSBR1QkGpSsfP4Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=poDk+aSgIT3kOv946wRvsKf9vRsRA6JlWNVwT2wWPr6ffG12A9PWlLepaGRdcJva8ao10zbCB6u3XMaJc78GntpiX1jA3NEo/KGmLax56qf/KkxAEedPltu5sgDsjE+HJLSssD4zf4f4+/aeCx4oDmQLtOrY+ofPWnKxoBUG9hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZLqvc++F; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J2NCZxMM"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZLqvc++F"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777362178; x=1808898178;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=WkfwgEy4xpwHn+VhVmIheSHazkvkv+HEQOBMy9vIyCI=;
-  b=J2NCZxMMxGpgm0NKI84IxlaRp5ZPVyU/l3EB8jzuRK5qYLdq2KspfP2f
-   a/hX/z9VXd+nr+9eZv5DU+hEVdynmNAOgpSDR6rW9WCg9XcrLoOa937jk
-   PhbBxHbm0JYoI/iClRH3WeQRFhHICAmkzE3JxJN0S7I7BI1hq3Ip2yDPf
-   r3uYDD6jFRnwV/ISusHa2pKj2fXpoPXQ2v5U6ocLVSV/k8OUM0R/jxETJ
-   gIP29sZY6Nm3q1EsRdjr7aQEZtFDrsH/z+r8DMBlJq7y56g8tRB07ZIRU
-   ogjMi5YJtUpK1nFVwPJU4jeBAc/Hld7Dp/389rDMheNDRqtBk/CUAr/Jg
-   A==;
-X-CSE-ConnectionGUID: dwzuz60pRxiOKULhJ5kPWw==
-X-CSE-MsgGUID: zXJh1p16SYCKuBeFmXQ2QA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="89642703"
+  t=1777362522; x=1808898522;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=89VxZuTuAfq1TCEMT31Kq1wu5QB4YSBR1QkGpSsfP4Y=;
+  b=ZLqvc++FnAsxpdsJBpfD2Y7dtlR9tMDhJblSsLzeiBCpSRJ6PqOWnuKo
+   MSG6+GIM9J9QCO98pbjvtwO6Lb3qERF33AY5RGaiorsp6GxUpLF3yMs3p
+   Yx2hZ27tjDlWAjuJhWuYwir+IoSlDQFc/QLh44+MxPY1TqMgPn57OU1Uh
+   6a9nxkpPpDshqA/W7sJKKmStZ+wpbUHeK0DTLLTjDOaVdEy6PYBCoUyUM
+   XZ6z+h4BvZi4J5wy7ofZ7eI92ejK3TprzjohnWvEWDqg3AUk0rLpCwshB
+   M1s7hgHBZTI48qVHnk8+7OxWMBitECasFwA9eqbBgBRJaMJgOEiIyr7cD
+   g==;
+X-CSE-ConnectionGUID: 4VS0FKgWS6CmMzBOQH/tQg==
+X-CSE-MsgGUID: TiHOdHWeSHqxgGT+/8i7hA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="82114976"
 X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
-   d="scan'208";a="89642703"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 00:42:57 -0700
-X-CSE-ConnectionGUID: Pjdk7IkgQ3aQ/BHoXUMwZg==
-X-CSE-MsgGUID: agFps5F4QN6PgRr3lSP7ug==
+   d="scan'208";a="82114976"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 00:48:41 -0700
+X-CSE-ConnectionGUID: oZxoNrDDT2KD76jnox+vpA==
+X-CSE-MsgGUID: RZOxA7l0Sb+HUeBPeYePMQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
-   d="scan'208";a="264265535"
-Received: from black.igk.intel.com ([10.91.253.5])
-  by orviesa002.jf.intel.com with ESMTP; 28 Apr 2026 00:42:54 -0700
-Received: by black.igk.intel.com (Postfix, from userid 1001)
-	id 2CE1795; Tue, 28 Apr 2026 09:42:53 +0200 (CEST)
-Date: Tue, 28 Apr 2026 09:42:53 +0200
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
-To: Benjamin Berman <benjamin.s.berman@gmail.com>
-Cc: Andreas Noever <andreas.noever@gmail.com>,
-	Mika Westerberg <westeri@kernel.org>,
-	Yehezkel Bernat <YehezkelShB@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-usb@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] net: thunderbolt: enlarge RX/TX ring and set NAPI
- weight for sustained load
-Message-ID: <20260428074253.GP557136@black.igk.intel.com>
-References: <20260428015521.3454006-1-benjamin.s.berman@gmail.com>
- <20260428015521.3454006-3-benjamin.s.berman@gmail.com>
+Received: from os-delivery.igk.intel.com ([10.102.21.165])
+  by fmviesa003.fm.intel.com with ESMTP; 28 Apr 2026 00:48:39 -0700
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	jramaseu@redhat.com,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	aleksandr.loktionov@intel.com,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Subject: [PATCH iwl-net v1 1/2] ice: always do GCS if hardware supports it
+Date: Tue, 28 Apr 2026 09:06:46 +0200
+Message-ID: <20260428070647.777141-2-michal.swiatkowski@linux.intel.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20260428070647.777141-1-michal.swiatkowski@linux.intel.com>
+References: <20260428070647.777141-1-michal.swiatkowski@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260428015521.3454006-3-benjamin.s.berman@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Apr 27, 2026 at 06:55:21PM -0700, Benjamin Berman wrote:
-> The default TBNET_RING_SIZE of 256 and the NAPI_POLL_WEIGHT of 64
-> implicit in netif_napi_add() are too small for host-to-host Thunderbolt
-> networking under sustained bulk traffic.  Running NCCL all-reduce over
-> tb-lo on a three-node chain (two TB3 endpoints plus a TB4 Maple Ridge
-> transit) produces rx_missed_errors at ~1 % of rx_packets on the transit
-> and ~0.6 % on the endpoints, with rx_packets stalling against a peer's
-> continuing tx_packets.
-> 
-> Raise TBNET_RING_SIZE to 2048 (8x) and use netif_napi_add_weight() with
-> a per-NAPI weight of 256 so tbnet_poll() drains more frames per softirq
-> invocation.  With matching sysctls (net.core.netdev_budget=1024,
-> net.core.netdev_budget_usecs=8000) rx_missed_errors stays below 0.005 %
-> over a 192 GB all-reduce workload on the same hardware.
-> 
-> Generated-by: Claude Opus 4.7 <claude-opus-4-7@anthropic.com>
-> Tested-by: Benjamin Berman <benjamin.s.berman@gmail.com>
-> Signed-off-by: Benjamin Berman <benjamin.s.berman@gmail.com>
+There is no need to check for NETIF_HW_CSUM. If the code reach
+calculating checksum it means that correct checksum flags are set,
+because kernel is checking that when setting ip->summed.
 
-For ring size I don't have any objections. The current ring size 256 is
-arbitrary and at the time seemed reasonable.
+Instead of netdev feature flag use Tx ring flag to check if the hardware
+can use special descriptor for checksum calculating.
 
-For the poll weigth there is the comment in netdevice.h:
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+---
+ drivers/net/ethernet/intel/ice/ice_lib.c  | 4 ++++
+ drivers/net/ethernet/intel/ice/ice_txrx.c | 2 +-
+ drivers/net/ethernet/intel/ice/ice_txrx.h | 1 +
+ 3 files changed, 6 insertions(+), 1 deletion(-)
 
-/* Default NAPI poll() weight
- * Device drivers are strongly advised to not use bigger value
- */
-#define NAPI_POLL_WEIGHT 64
+diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
+index 837b71b7b2b7..033fabc22f58 100644
+--- a/drivers/net/ethernet/intel/ice/ice_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_lib.c
+@@ -1415,6 +1415,10 @@ static int ice_vsi_alloc_rings(struct ice_vsi *vsi)
+ 			set_bit(ICE_TX_RING_FLAGS_VLAN_L2TAG2, ring->flags);
+ 		else
+ 			set_bit(ICE_TX_RING_FLAGS_VLAN_L2TAG1, ring->flags);
++
++		if (ice_is_feature_supported(pf, ICE_F_GCS))
++			set_bit(ICE_TX_RING_FLAGS_GCS, ring->flags);
++
+ 		WRITE_ONCE(vsi->tx_rings[i], ring);
+ 	}
+ 
+diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
+index 4ca1a0602307..25b19a5d817e 100644
+--- a/drivers/net/ethernet/intel/ice/ice_txrx.c
++++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
+@@ -1743,7 +1743,7 @@ int ice_tx_csum(struct ice_tx_buf *first, struct ice_tx_offload_params *off)
+ 	l3_len = l4.hdr - ip.hdr;
+ 	offset |= (l3_len / 4) << ICE_TX_DESC_LEN_IPLEN_S;
+ 
+-	if ((tx_ring->netdev->features & NETIF_F_HW_CSUM) &&
++	if (test_bit(ICE_TX_RING_FLAGS_GCS, tx_ring->flags) &&
+ 	    !(first->tx_flags & ICE_TX_FLAGS_TSO) &&
+ 	    !skb_csum_is_sctp(skb)) {
+ 		/* Set GCS */
+diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.h b/drivers/net/ethernet/intel/ice/ice_txrx.h
+index 5e517f219379..15dbd5100912 100644
+--- a/drivers/net/ethernet/intel/ice/ice_txrx.h
++++ b/drivers/net/ethernet/intel/ice/ice_txrx.h
+@@ -217,6 +217,7 @@ enum ice_tx_ring_flags {
+ 	ICE_TX_RING_FLAGS_VLAN_L2TAG1,
+ 	ICE_TX_RING_FLAGS_VLAN_L2TAG2,
+ 	ICE_TX_RING_FLAGS_TXTIME,
++	ICE_TX_RING_FLAGS_GCS,
+ 	ICE_TX_RING_FLAGS_NBITS,
+ };
+ 
+-- 
+2.49.0
 
-But if you see improvement using 256 here I'm fine with that unless the
-network folks advice otherwise.
-
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
