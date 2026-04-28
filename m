@@ -1,105 +1,101 @@
-Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 932702D9EC4;
-	Tue, 28 Apr 2026 03:50:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E30526ED33
+	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 05:06:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777348232; cv=none; b=FE9Z1w947CNlwycV6SAcJj1McoI2gtPh8ZpmjJ/osiKmyIIOxe74i/O5KyMaEjlQQNlWJBf6iGErhETG0+HMyv8ADq88kz8U/mPfJdxMjhVuIrXg6pdStT5J3N60UDk+12AFXfB7wrgUhK+kYUAFSDdOk4pDR1atu6faiLFbU60=
+	t=1777352785; cv=none; b=lp1+J4qEuc1+VPButvSIzqUok9rea/0NBBfUlr12OZ/XAlPchxk+rLxvZQ92InO/cduiifVp8AxgjcG9Gzo945yX8DYEeksgSYzesSsbvhQDDN65IF+VjJElTVGz1oW65VC4dmXhOQPdYOhyVQff/YZJAypnZLdT0DiDzps1/Ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777348232; c=relaxed/simple;
-	bh=4eekHztIwR+LF/vl/gbR9AsKwvqpzuz5/e93Tu5pT94=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=mU5A6TUEarkgYxej4bZvG+BGaaRgtXWq7+HIxCAHeKUH1F0FmKqoh+IWniLbdJMjGA6jfNXIQ81jUJ9Ssul0dZv5gZqClsh/OiV9n7DOUqDBdBmYKSEr0S+cfRTFj5nqJYOfoGtnF2p8Mw+XIk2psOwZwAqkE2vMvERGO1q6+p4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=Z2tZ8s8/; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=zPiN/2NQ; arc=none smtp.client-ip=23.88.97.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
+	s=arc-20240116; t=1777352785; c=relaxed/simple;
+	bh=YkVuIVrPUH9G6CQvZXtEIKnd9PzfTiFbEiHpBUaI28o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XL6TNVfHslKEDZWnC70J14PaztvX92aRRg1yQQ/cgxSEmIIa2jodIq0cqc+YEcHxtNcb3+Jcdo2UWDSJPsWFkvVWnVTyvCH6g32vuYq9SakbL7eTor8/KL9fadb/A0haBZC6b5oa/LAgiVnKGyEmRkG/yHxnjXgU3YK8Hte4TmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qzKPtcxO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="Z2tZ8s8/";
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="zPiN/2NQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1777347822;
-	bh=4eekHztIwR+LF/vl/gbR9AsKwvqpzuz5/e93Tu5pT94=;
-	h=From:Date:Subject:To:Cc:From;
-	b=Z2tZ8s8/absQzmkxquGiJZV0L9QbrXUDz+PU40ENEKNd1jkehjp7GOzzRfOj711xV
-	 WPc0Zau37dTiav545nqR39CZAemL3IFuYm/5U+ekpxtMC0eKCku4k7pEPPfVAIECaw
-	 PiPfJ1DpOAXnsPV0Ag7uhiiHJQ87zB2HdKkdunJqptMH4dv+ZO0YgUeU34nU2SGWKM
-	 GCBOhCo7QHX2vdyL+bkukW4+Eynm/F3JdKWp4AbFlVAGxx5J73PMx5BrE1H2VSIoQw
-	 Dg712xA4JCszltuR4k79UaHJsz+0gm6udYa9XAQFY1eXhjCO8ya+B8v14mEBHOBfS/
-	 4xD2g/pTRIIBg==
-Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id 1619747D83; Tue, 28 Apr 2026 03:43:42 +0000 (UTC)
-X-Spam-Level: 
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1777347819;
-	bh=4eekHztIwR+LF/vl/gbR9AsKwvqpzuz5/e93Tu5pT94=;
-	h=From:Date:Subject:To:Cc:From;
-	b=zPiN/2NQQ+/MGT2qR9AL8e2t9USq5s88ogWterKOB6YaM83Zm2qQCQrw4qE0px2Lo
-	 8/32cEN4rjva+vixfzJTnB5Ajx1ahgLxzbN595CQHLq/MCWt/YmO7NqjqApzndiqlX
-	 /GohJQ8qUdNeFVvCtlh0hoVpeBaCniMHhLLC8TDTPLamo3tYgE8J6dCStxZImIUN2D
-	 pq5ADzr7liaLAZv4Kxe3cKI1qg0NkMZl35W/FpCqfVfEr/WkigCHeZ/esyTOk5tBlw
-	 PiTR3Q50knUt9ClOV/516RXQCBpIeOfl3XL0xpQZC3L9nXvgpn2jNZVm2JPC9k3+mQ
-	 BIhM3xBF7IPDg==
-Received: from AMDDesktop.lan (unknown [IPv6:2a00:6020:47a3:e800:271c:c6c5:9fde:77cb])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id BF299475CE;
-	Tue, 28 Apr 2026 03:43:39 +0000 (UTC)
-From: Birger Koblitz <mail@birger-koblitz.de>
-Date: Tue, 28 Apr 2026 05:43:38 +0200
-Subject: [PATCH net-next] r8152: Fix double consecutive clearing of
- PLA_MCU_SPDWN_EN bit
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qzKPtcxO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BED1C2BCAF;
+	Tue, 28 Apr 2026 05:06:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777352784;
+	bh=YkVuIVrPUH9G6CQvZXtEIKnd9PzfTiFbEiHpBUaI28o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qzKPtcxO67dGseiMrH0EaH4Cn+6MBhm4KkTVFSHhX2whOqWCuRtqzNeHRqYoK9g6V
+	 3kNl1i9HqXxMudWRkhgqAo6Kj5ifkYoPXNk1n6r9qESysCNZ2slkHc44W3fJaxayI4
+	 73HaY9dxvXnHYTp+aH6jtSPZzPKDQo4qO3TW7l+3gIm779H5R30peTxBp0dGdhiPFf
+	 gLZL1xz/ltGbyoAjHU4WNQ1Aw/AtK/QQ4AERRX+eatEz0CNQqIJzwSj7tqnpfJbz14
+	 kCUyiaKNktpzRoYV+SzyPnuvzi/s92bVyxa14uCybE7S8mWROn+RftYAQw52I3J/HJ
+	 2PljOTdDU1d9g==
+Date: Tue, 28 Apr 2026 07:06:22 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net] net: airoha: Do not read uninitialized fragment
+ address in airoha_dev_xmit()
+Message-ID: <afBATq82XMLCaWl5@lore-desk>
+References: <20260424-airoha-xmit-fix-read-frag-v1-1-fdc0a83c79e8@kernel.org>
+ <aezLa2POvT0It5AA@lore-desk>
+ <20260427173935.6a1e36ee@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260428-patch_double-v1-1-27c830a9eb2e@birger-koblitz.de>
-X-B4-Tracking: v=1; b=H4sIAOks8GkC/x3M0QpAMBSH8VfRubZipHgVSXP8cUqjbaSWd7dc/
- i6+L5KHE3jqskgOt3g5bEKZZ8SbsSuUzMmkC90UtW7UaQJv43xc0w5VLlwxTI2WmVJyOizy/Lu
- eLIKyeAIN7/sB9jgSJGgAAAA=
-X-Change-ID: 20260426-patch_double-1fc3cea4e9cc
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Chih Kai Hsu <hsu.chih.kai@realtek.com>, 
- Birger Koblitz <mail@birger-koblitz.de>
-X-Mailer: b4 0.14.2
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="OBY97DuD8kgF4vPM"
+Content-Disposition: inline
+In-Reply-To: <20260427173935.6a1e36ee@kernel.org>
 
-Due to a Copy & Paste Error, the PLA_MCU_SPDWN_EN bit was cleared
-twice consecutively using ocp_word_clr_bits. Fix that.
 
-Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
----
-This fixes the issue raised in
-https://lore.kernel.org/netdev/8b324f8c-f4f8-4e90-b5d6-9b87ec3daf2b@redhat.com/
-that due to an editing error, PLA_MCU_SPDWN_EN is cleared twice
-consecutively.
----
- drivers/net/usb/r8152.c | 3 ---
- 1 file changed, 3 deletions(-)
+--OBY97DuD8kgF4vPM
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index 7337bf1b7d6ad03572edbc492706c07a8f58760f..7dba5f3fd052d4db475e61f5c622d89ada1948c1 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -6839,9 +6839,6 @@ static void rtl8156_up(struct r8152 *tp)
- 	ocp_word_w0w1(tp, MCU_TYPE_PLA, PLA_RXFIFO_FULL, RXFIFO_FULL_MASK,
- 		      0x08);
- 
--	ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_MAC_PWR_CTRL3,
--			  PLA_MCU_SPDWN_EN);
--
- 	ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_MAC_PWR_CTRL3, PLA_MCU_SPDWN_EN);
- 
- 	if (tp->version != RTL_VER_16)
+> On Sat, 25 Apr 2026 16:10:51 +0200 Lorenzo Bianconi wrote:
+> > - Does the TSO checksum calculation earlier in this function ensure the
+> >   TCP header is in the linear portion of the SKB?
+> >   This issue is not related to the current patch. Moreover, can we have=
+ a TSO
+> >   packet where the tcp header is not in the linear area of the skb?
+>=20
+> Don't think so.
+>=20
+> > - If dma_map_single() fails partway through a multi-fragment packet and
+> >   triggers this goto error_unmap, will it break the Tx ring contiguity?
+> >   This issue is not related to the current patch. Moreover, I guess the=
+ hw is
+> >   capable of managing out-of-order descriptors.
+> >=20
+> > - Is it safe to map fragment data using dma_map_single() instead of
+> >   skb_frag_dma_map()?
+> >   This issue is not related to the current patch. I will post a dedicat=
+ed patch
+> >   for it.
+>=20
+> I don't think it's an issue. Unless you support DMABUF zero-copy=20
+> the skb_frag helper is just for convenience. I wouldn't bother.
 
----
-base-commit: 35c2c39832e569449b9192fa1afbbc4c66227af7
-change-id: 20260426-patch_double-1fc3cea4e9cc
+ack, let's skip it for the moment.
 
-Best regards,
--- 
-Birger Koblitz <mail@birger-koblitz.de>
+Regards,
+Lorenzo
 
+--OBY97DuD8kgF4vPM
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCafBATgAKCRA6cBh0uS2t
+rM6MAQCQQURreRlwbz1P+oyJbYOcGonb68w+NBmP1WqyypDIrAD/b5Cj5TdBpCS3
+ScvL3g37x9jKb0jOzE+BQ7fR37+t5Qs=
+=Mk+y
+-----END PGP SIGNATURE-----
+
+--OBY97DuD8kgF4vPM--
