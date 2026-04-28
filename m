@@ -1,94 +1,96 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74F8F392C56
-	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 08:45:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 653EA3A7F47;
+	Tue, 28 Apr 2026 08:46:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777365912; cv=none; b=bDSBEwgUV0jIkCJS2AA7VQyaw6ATw2onzZzQ/sYQoKd567RuWYsfTq1W+qup1ra++WLgBx875LhiYfiVsZR2veAGZ6ezPLxsV6R7mca6MOpQ6B3L623QPobqZpL2+cJCCLmg/8M4mb991bsSL+QrX0x+W3LnrFwRIIu+HfHb/w0=
+	t=1777365966; cv=none; b=lBvQ8nwoCXwjmFjFcfwRNTRIN9dwprjUPrIJVU60t08mFCF36oTFXXuJBF3NtFS4APcWjzzbb6JDxtF1No394JEu4VK95aGufChJ0pGRo6LMwdEj8gkSvRhNrKpnoRJdtn0hez2jh6GRA6mGqG5GhS61meu4EnBcJvLCopuggdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777365912; c=relaxed/simple;
-	bh=7fk0VA5+cNoW7sx+mkYAgp0ak+eEVYN/A1DKtFhUDzQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=vFYyAiKIKFt+YxbSrw5kPnScPeOAavnbdAZ6ZiP6qO74zORaeU8+dtl37yQdTw6p5bI4R0HFZqqkc+nWV/lYKHqs27J2U3X/WAfZsMRdU+3cn+HGgj13+shrlojxv3d2PPR59iPWsHObjFpYLuccHYPz4aq0Ly9+G0ChO5LKf5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hhefmOqF; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777365966; c=relaxed/simple;
+	bh=5oFEzi2ZAlzlLxxWSINB4AWhGAI+ETKfgF9SiFdp+FM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kWgeyKRcbFsWt86iQ9SZrXcm8soQ1sE8byi8Up5SID3oYpaAGG5KF4DG38iBHyKfik2fGnwD7o27NYXF5LH5R3WVD8CIQIREZytxT0gm5n34fsD7H0lTQSAOLM7Hjan38JQ78AmA+G0XWZhvGfvTR04vM1hy9PmnW3lnlEZMA3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Jqq5ptdo; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hhefmOqF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE61DC2BCB5;
-	Tue, 28 Apr 2026 08:45:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777365912;
-	bh=7fk0VA5+cNoW7sx+mkYAgp0ak+eEVYN/A1DKtFhUDzQ=;
-	h=From:Date:Subject:To:Cc:From;
-	b=hhefmOqFMk/lzYcUZloW9IrHT1yZMBQfu/PqbsK7uGhhhWUhYzurKYnCzOsjzwNmP
-	 YGmkzWeBflNEs83iQV5a0GgmCShd2HykxBSieNCQ1ihXsAciKJZbcWEVHsKQeYXO6T
-	 /2ajj69aF1bVnq1IEO522qEb/exjULeLeot6AY3AT/DyubuUzBR7YxkYY1hWqAki5s
-	 iFkRMsnXd/O8gY95usOUtxuUCCk3JLT7pjo48BgmhyTyxVwqpNuXGXQclq8MCIzVo1
-	 dTnGwpeOCMnvUhwOXT6wvDMHXDhfGLqKIlCmaNUvevpITkiLFuuem2y0FLDKMJJ6le
-	 HoXR8pIfVFD9Q==
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Tue, 28 Apr 2026 10:44:21 +0200
-Subject: [PATCH net] net: airoha: Move entries to queue head in case of DMA
- mapping failure in airoha_dev_xmit()
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Jqq5ptdo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777365965; x=1808901965;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=5oFEzi2ZAlzlLxxWSINB4AWhGAI+ETKfgF9SiFdp+FM=;
+  b=Jqq5ptdoE92AvWPbmYFAC9+XhwPzXCosv6NfPOb2gtK9K0uA1WQtA3tE
+   /VRmXp9I0lq7ucA3c7W+OK79yeW2IlrjE5pdNidAmbVQso1utN1CFQFr7
+   vgjX8LvxAnVCm//SbnkhJTSyhpIuRsZRXvJBsY9cntUT8pcO2PigiuNaR
+   Pk8VJ9dh5agQBQkfyDBo/+MEQeoJhV3u8urwr5zwTMzPAue7XwGWe+ky6
+   nM95yIDS3PEjSWB5b5R3ogTDVIBHMl5Awph/hAyl0mNRRDqUTLMkH1us+
+   oDmm02gmFD0UYs0KmZKpsRAqeTwvzXUtt7kEGzsrxfLHX9MOljKlpZePu
+   w==;
+X-CSE-ConnectionGUID: JfNLVCVCSOCQeJEvlttW2g==
+X-CSE-MsgGUID: JMyryfZqTo6w2MwhbSc8yw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="77433235"
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
+   d="scan'208";a="77433235"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 01:46:05 -0700
+X-CSE-ConnectionGUID: BkRci9I/TyaSUJRvXcun8A==
+X-CSE-MsgGUID: 7dbZ4OEdRLuIWVLsCO6wkQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
+   d="scan'208";a="233027277"
+Received: from brc05.iind.intel.com (HELO brc05..) ([10.190.162.156])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 01:46:01 -0700
+From: Tushar Vyavahare <tushar.vyavahare@intel.com>
+To: netdev@vger.kernel.org,
+	magnus.karlsson@intel.com,
+	maciej.fijalkowski@intel.com,
+	stfomichev@gmail.com,
+	kernelxing@tencent.com,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	tirthendu.sarkar@intel.com,
+	tushar.vyavahare@intel.com
+Cc: bpf@vger.kernel.org
+Subject: [PATCH 0/5] selftests/xsk: foundational UMEM refactoring
+Date: Tue, 28 Apr 2026 13:33:11 +0530
+Message-ID: <20260428080317.702124-1-tushar.vyavahare@intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260428-airoha-xmit-unmap-error-path-v1-1-aec44c6765c1@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MOw6DMAwA0Ksgz7UE5iPaq1QMpjXEA0nkBISEu
- Hujjm95FyQxlQSv6gKTQ5MGX9A8Kvg49qugfouBahrqjkZkteAYz00z7n7jiGIWDCNnh2NDff/
- sZJmphVJEk0XPf/8GLxmm+/4BL6nh0nMAAAA=
-X-Change-ID: 20260428-airoha-xmit-unmap-error-path-8125594efb23
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Jacob Keller <jacob.e.keller@intel.com>
-Cc: Simon Horman <horms@kernel.org>, linux-arm-kernel@lists.infradead.org, 
- linux-mediatek@lists.infradead.org, netdev@vger.kernel.org, 
- Lorenzo Bianconi <lorenzo@kernel.org>
-X-Mailer: b4 0.14.3
+Content-Transfer-Encoding: 8bit
 
-In order to respect the original descriptor order and avoid any
-potential IOMMU fault or memory corruption, move pending queue entries
-to the head of hw queue tx_list if the DMA mapping of current inflight
-packet fails in airoha_dev_xmit routine.
+This series refactors foundational UMEM handling in selftests/xsk.
 
-Fixes: 3f47e67dff1f7 ("net: airoha: Add the capability to consume out-of-order DMA tx descriptors")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/ethernet/airoha/airoha_eth.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+It centralizes UMEM property setup through helpers, removes ifobject-level
+UMEM ownership state, and normalizes umem_size/mmap_size usage across the
+code paths touched here.
 
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-index 5effb4a4ae84..82018a085e46 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.c
-+++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -2123,14 +2123,14 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff *skb,
- 	return NETDEV_TX_OK;
- 
- error_unmap:
--	while (!list_empty(&tx_list)) {
-+	list_for_each_entry(e, &tx_list, list) {
- 		e = list_first_entry(&tx_list, struct airoha_queue_entry,
- 				     list);
- 		dma_unmap_single(dev->dev.parent, e->dma_addr, e->dma_len,
- 				 DMA_TO_DEVICE);
- 		e->dma_addr = 0;
--		list_move_tail(&e->list, &q->tx_list);
- 	}
-+	list_splice(&tx_list, &q->tx_list);
- 
- 	spin_unlock_bh(&q->lock);
- error:
+No functional behavior change is intended; the focus is internal
+consistency and maintainability.
 
----
-base-commit: 3bc179bc7146c26c9dff75d2943d10528274e301
-change-id: 20260428-airoha-xmit-unmap-error-path-8125594efb23
+Signed-off-by: Magnus Karlsson <magnus.karlsson@intel.com>
+Signed-off-by: Tushar Vyavahare <tushar.vyavahare@intel.com>
 
-Best regards,
+Tushar Vyavahare (5):
+  selftests/xsk: Introduce helpers for setting UMEM properties
+  selftests/xsk: Eliminate umem reference from ifobject
+  selftests/xsk: Remove umem from pkt_generate parameters
+  selftests/xsk: Use umem_size() helper consistently
+  selftests/xsk: Introduce mmap_size in umem struct
+
+ .../selftests/bpf/prog_tests/test_xsk.c       | 195 +++++++++---------
+ .../selftests/bpf/prog_tests/test_xsk.h       |  33 +--
+ 2 files changed, 119 insertions(+), 109 deletions(-)
+
 -- 
-Lorenzo Bianconi <lorenzo@kernel.org>
+2.43.0
 
