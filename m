@@ -1,211 +1,94 @@
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f73.google.com (mail-ua1-f73.google.com [209.85.222.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7730A2DD5E2
-	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 07:53:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.125.188.123
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777362833; cv=pass; b=a/qQOoB15+61Wm15NqLucogLMKoUTruzjO1fuAlbT+nOrigu/1ksD786XzsB9ygrFe7+nb86Sl77lU1vuVNJjyqsRfhq4ye5ivEhVlD4/jMtN103Z3l7eC/AV5hRdTluuETKePsNtZNG0nWbMU4FDxmBn9Za+aED1JHyTtTbqRs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777362833; c=relaxed/simple;
-	bh=ebothyur4qrPKKM9P91h6dnfQnwwGUjd/9tHet0NmPU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oqtbgupyiyFoMjSaUFDIQQVoiV8hj1NVhA6erl5xpneYC6E9siG7qxVNKBlGh7++9gCcZMVmpSasUtnRlOjMoGxWqzEQMbbU1VpomI4uLYUvnLuj0krKSIRuGbGDv5gog2FJCNkLJ4pzusUZPHVe7LiirPB321upXuMFQTG0rvs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b=pdAxTo9h; arc=pass smtp.client-ip=185.125.188.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56D81F4181
+	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 07:56:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.73
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777363017; cv=none; b=Z4fWrOx37yjUgKevxkid6p6hIwKIb3gvMTRIYxBhh9ANMfSwew2nVj1p/toiGL+P9LebTC4gd6dQgfJuUT1BEnkdLkE0z0PffzuGB6LmlRjorpuQ4nUgkq7HggqYrWMF4KEyYici9ub84Iv+Jp3ctfG9w67WkCBdXf6y5CEuOQ8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777363017; c=relaxed/simple;
+	bh=D02i9B/3K0svXTWT3+HTVy7iiU7dDftgrHhsn6yyDIQ=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=eq3cmw2KlpZCS2PYb7XdQ7DEkkHYDthjBXYX2daqrmevY8uZR+0DRvuDr8C4S3A3pZbA0O8amJeB7fxPE9NPnuVNx5FeiEsDyRTWdaWLy1IAcHEJEjojS+07MQkh9WJ9GNd/W/ARGfRtkjzfFvuZofOyTP/uUS6SI1pv4sUlCUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WqtVNFWp; arc=none smtp.client-ip=209.85.222.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b="pdAxTo9h"
-Received: from mail-dl1-f70.google.com (mail-dl1-f70.google.com [74.125.82.70])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 889063F29B
-	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 07:53:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20251003; t=1777362829;
-	bh=+G08MvlEyJpwyQ4ydkn2UD3MgLMhtby1OzIsIy0Akkk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type;
-	b=pdAxTo9hr0YG/1FIug5ujtqEVIwBMWjqlT5zb3Rp5Z5tAG0hp/hU5lA06IguW3HgH
-	 ee7DQoC+EQIW+oNRHrn2f09pf6oGWFN4tlVhbpZDYux/v4+JeKbsv5ijzkNYRgq5nq
-	 TAw+F8Iy7BBxGxhaqBkZBIKVqbXN1fOw+1ivHMmmOIt5AgO16eJNTNKpMDtaUJLC/0
-	 eRlNc2+1laVQQ3R1kW5DPvoCgDUao3cY0ao8OO/Z50NvVj9Zw2C8Kvcf/xTcxxJlUT
-	 XkkHnFJcNmDEZTYKspeAcorexxk3RWML7VXPAyPA/p1uaWLk3GTVZ/VDjaiakbCv/Q
-	 z3/ilAzgtfbeNA8dbAdlaaQt1UG/pEI9e092OI8l11ea7oD4tugQ/SXZybWyC+NTPY
-	 jvbK9ouuFfQGU7h3WsmwhEctWVimxgRlbtSpOA2jMZEPfCOe4jfRXS6fww/FYDLD6f
-	 2q0SLwbDiwD2yXH2WBm5MGswpXCIInwpDJvPSI8L1vzbcgOKxqxOOxjRATLtAGRz56
-	 ADIWmK4JUI4pNG1d6exHcgWdVRMjv7X6utid6VAPhG2x8p1blQrO+HGm7AUSb6ohs2
-	 FlASlR6zNZ+Ypkp/CepGbtbNA0zeCx2gowhUf0J+zMPCeRCEUTJBVW1m08qB8/1ylA
-	 6s+5PJNkdE9eOjq8xuyAR3UU=
-Received: by mail-dl1-f70.google.com with SMTP id a92af1059eb24-12c66fdd4aeso16673518c88.0
-        for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 00:53:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777362828; cv=none;
-        d=google.com; s=arc-20240605;
-        b=lCNuUATMiUjG+inrCZpGjgd9NPN5gkuJOMl/bLarWimfvwtypLYdIN3iiBqpM9JXnw
-         U82BktD3Ziu/iada/GOOAgZDnHqn1q8LhoxYJQA1HTQYrKzgd+Hx/C7ctgZ8tqPHOa//
-         yOQKk1OrOuYYzlY82tjBL7h3g31Nx/wI1FhL95zznMk+e82aPxKIwEdrj1uQhNDR+IjX
-         JIIt/C/BtRzLVYtYrPBTvh8/5YaHDUle3Xdgl/E9l5x6D6nb+04fJr9N07A5UZbFD+AT
-         rP/WwIvphV1jHuZhYr9NddN0vab8W4nURNLqL7dpF5zKq+aThh9cckaPcztHxTSsNWqe
-         uZrg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version;
-        bh=+G08MvlEyJpwyQ4ydkn2UD3MgLMhtby1OzIsIy0Akkk=;
-        fh=L/U+B4ffpC7VK0va//1xjm0eN0OsLAKk8/12h9bHDPM=;
-        b=LlWyokGQoH8p+QRbrrmFrAghkv9cRMxhV+YlU7OV/nSIg0GAk1k/gIdQszgZrIIBOG
-         FvpMxdO/fgnAR8bJGgcTmHDLropSxrJFo+pcsMEYrqzkHojuvaCt2XxpTSaQ6GdDol6J
-         AJSCoIUUXTv6B/kRA8HttnIwnTt75X4Fx3sEA9O8P9YTCMkSBhcI6KZuoKRWb8+I+pGA
-         hMokmC0fJMsQZh7jJ+ie9F5Z0uWHv1Sbm5daQ8TpJ37EJAYfSsxx/HIszLGWQGimH6aO
-         QtzJoU3F+MMcuQu13AMNxm4Dzf+KJQkOJq8jpCddwxQCucbTLsyWKnh6zrBTvze1nrRX
-         Xm/A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WqtVNFWp"
+Received: by mail-ua1-f73.google.com with SMTP id a1e0cc1a2514c-953e9d7ba08so4931738241.0
+        for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 00:56:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777363011; x=1777967811; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=YxJE6nEhuOle2E7GTG6uCrQ/Tnnsutz6TiuiHWgFoFg=;
+        b=WqtVNFWpVK/BcjmoIDU1glSPts14JjB/YfrawLs2775vLhr1aAanCosIgIxydtuZtW
+         4zoOpwtULEnPfftDLnTstFy0pcJ6PSWm1enERpF+cDZkaGwHKno0csfdjt55DlDyPTYC
+         ikRsul57PkuH2hBmOJa8UHJL90PWuwciO125Nu+8Xilhinb/DRcUsG4qoHVzaBw6fPGj
+         /BeWmP86dsV08OsEK7BIud/8FLyyylILcO1g5siF4h/blymg/Ci1FcO/BZVHwKefCyc1
+         nZs9YMRB0Lt3AzynFi2s6ySGg+nu2r4me3zBMGzkgTeWqm/viGlyqF9eJ+XYckwu8uXw
+         HtPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777362828; x=1777967628;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=+G08MvlEyJpwyQ4ydkn2UD3MgLMhtby1OzIsIy0Akkk=;
-        b=KtuwrYKD8bDZrv/q9wrfC7xqiKnQWtXBNiH5Q1SY68anRHaY3o+KP6tzWvrhoZghRf
-         KWVFhnaWeRlwQfvXUgGe4mWO0tNveDiTFr9CM8kKu2lOft3lNJVYwr4bDE00dzsOtJ1I
-         zPcfRd6I0A+XjjF+VofxVwccQea2BAKBlvSVCHLhi95w3TOItzuTw0HkMJCiYbVLpN2j
-         6urib8IAXo10fgzjulhBD5E47eaYBQ1CxN9LWtVvDpm2Qs5E6/foxsQj0BRA2oJrt1/B
-         C8MXSvD+/X6ni78LhKAiLmZe+kV4IHRY7kYwYbKwmLWS4kUJHc7q5zKi0KhBirDpjulk
-         aCaw==
-X-Forwarded-Encrypted: i=1; AFNElJ9ZG/bIloejWxQXYGRegix6n/NwOODW6i6gqKhu+/Lfv3imqypGbmhvNcGm7rKHwmoLIERUwCk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz4ZY0pSWWVGOYK+bkHJeiicksldEbEMp3KxXx5gvwRAG+Ab0x2
-	JU84Umn235ybzjYdlOpHkn+zV+tPyZTa5iT/DkbpoxdKiAlpWN1h2th4NPt4qkWBHHZYVZufEHL
-	W4TKmwviQMQms/UbyG/aRzvXDIGDXwTwfEwd4a4VFuQy8GRPb2soPhNcH1pLCteYIz/oSf5gSGv
-	XXBACtb2cTDtf/Mbr73hs8odPalCMBvNYl6KVFml2678Qqc/9a
-X-Gm-Gg: AeBDievG82KO66pfTuLUOo8gjhUQHu8egvCmX8b08wh5EGuKFf01M6S5Bai735vc7f2
-	RDO5Mr0OiiFuB0S1W+WoQjeNAwQOTy/UH50475axL7odC2YtqN3fAxpIEvkn0ZaXU2Z3DcezcQb
-	d3ZhCX4ndPtq1ekrlkiULulg1WkVqy/v8PKmdWGr5K9lLsIu5Aolg+2tqaqbBBmAYZwMGvHxhVt
-	KVgheNJ9phLvfLJ/eXg7TFhx/wqkUvUhzPOSzefm1lhXkaFPn1GRE9jdGrpL+IgfN2GTrWl4A==
-X-Received: by 2002:a05:7022:526:b0:12c:66fd:6595 with SMTP id a92af1059eb24-12ddd9f3022mr878796c88.34.1777362827793;
-        Tue, 28 Apr 2026 00:53:47 -0700 (PDT)
-X-Received: by 2002:a05:7022:526:b0:12c:66fd:6595 with SMTP id
- a92af1059eb24-12ddd9f3022mr878784c88.34.1777362827376; Tue, 28 Apr 2026
- 00:53:47 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1777363011; x=1777967811;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YxJE6nEhuOle2E7GTG6uCrQ/Tnnsutz6TiuiHWgFoFg=;
+        b=ERuhWJc1D4nqqEAHhELlLqoFCMk4HQlcSM2ikkh+g7fZckQrc7uYrlIHCpoHzwlwsM
+         ZdUxSLk9TZj1e7nX617CfBW7/QhcdCyj537R5Y8dTPpRqHzze7JCI7vsg0bPdwPEwwYc
+         Rj2eygk+yDuMckiP9rCytIfP938E78Y4eeBg3jqDnRJDnDZT1TK0bIiAhU3KBDfDvl58
+         RS/jf14jKQMaJJBLkHaP9aE0lLEQgnW/TAmEvoPfb1zpASiSwlGlI3SDpMkEG/u06o/W
+         NTQz0fzmVQUdXHsR6MdOxOQuqqH+17Cj19yd+yARGkYUo9GM83LKNv0rdVAKuzgylvo5
+         Petw==
+X-Forwarded-Encrypted: i=1; AFNElJ+OOBS04al1UqJSck4bSyOWl+t3MKX4vpRCMqA6LdQlykBGynRKmc7Qu4Fhet7UZMBf8xa1Oio=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUnwvdqfBsyR/NfgxfC1p9P3c5I0jcVa+Ws9NzYugmcUiHdnsj
+	2MN5wvjvqKD1Iovsl6xDYt4WZCbyhaZ4fOGJF6A66W5I69NdSMbkDcNqHQ0p2lvBTwzj2EHNPj+
+	libryvYbTsaK28g==
+X-Received: from uabiq10.prod.google.com ([2002:a05:6130:628a:b0:954:990d:c8d3])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a67:e709:0:b0:607:97ef:4dae with SMTP id ada2fe7eead31-6280a3a7ea9mr602717137.16.1777363011269;
+ Tue, 28 Apr 2026 00:56:51 -0700 (PDT)
+Date: Tue, 28 Apr 2026 07:56:47 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260424030345.1140665-1-aaron.ma@canonical.com> <0d1ef57c-7ab6-4ed1-bc11-323aeeb12eac@molgen.mpg.de>
-In-Reply-To: <0d1ef57c-7ab6-4ed1-bc11-323aeeb12eac@molgen.mpg.de>
-From: Aaron Ma <aaron.ma@canonical.com>
-Date: Tue, 28 Apr 2026 15:53:36 +0800
-X-Gm-Features: AVHnY4J-wg3tR_hPisWtunBUI27BB6t7zZFvy3Lps3d64t--As3DVEcC_39U67M
-Message-ID: <CAJ6xRxUEcbadApMg0i7ngcqYMUacrGNvCrUZ96sqkW22TsC7iA@mail.gmail.com>
-Subject: Re: [Intel-wired-lan] [PATCH v2] ice: wait for reset completion in ice_resume()
-To: Paul Menzel <pmenzel@molgen.mpg.de>
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>, 
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Akeem G Abodunrin <akeem.g.abodunrin@intel.com>, 
-	Jesse Brandeburg <jesse.brandeburg@intel.com>, intel-wired-lan@lists.osuosl.org, 
-	Kohei Enju <kohei@enjuk.jp>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
+Message-ID: <20260428075647.3206962-1-edumazet@google.com>
+Subject: [PATCH iproute2-next] ll_map: add RTEXT_FILTER_SKIP_STATS to ll_init_map()
+From: Eric Dumazet <edumazet@google.com>
+To: David Ahern <dsahern@kernel.org>, Stephen Hemminger <stephen@networkplumber.org>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 27, 2026 at 6:13=E2=80=AFPM Paul Menzel <pmenzel@molgen.mpg.de>=
- wrote:
->
-> Dear Aaron,
->
->
-> Thank you for your patch.
->
-> Am 24.04.26 um 05:03 schrieb Aaron Ma via Intel-wired-lan:
-> > ice_resume() schedules an asynchronous PF reset and returns
-> > immediately. The reset runs later in ice_service_task(). If
-> > userspace tries to bring up the net device before the reset
-> > finishes, ice_open() fails with -EBUSY:
-> >
-> >    ice_resume()
-> >      ice_schedule_reset()          # sets ICE_PFR_REQ, returns
-> >    ...
-> >    ice_open()
-> >      ice_is_reset_in_progress()    # ICE_PFR_REQ still set, -EBUSY
-> >    ...
-> >    ice_service_task()
-> >      ice_do_reset()
-> >        ice_rebuild()               # clears ICE_PFR_REQ, too late
-> >
-> > Reproduced on E800 series NICs during suspend/resume with irdma
-> > enabled, where the aux device probe widens the race window.
->
-> Please document, how you reproduced it, and also paste possible messages
-> by Linux or NetworkManager, so that people can easily search for the comm=
-it.
->
+ll_init_map() only cares about names and ifindex.
 
-The error message is "can't open net device while reset is in progress"
-I can add it in v3 if you like.
+We can save ~300 bytes per device if we ask the kernel to skip stats,
+not counting many cpu cycles if per-cpu stats are involved.
 
- > > Wait for the reset to complete before returning from ice_resume().
->
-> Please mention the delay length in the commit message.
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+---
+ lib/ll_map.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-The timeout is 10 * HZ (10 seconds), matching the existing usage in
-ice_devlink_info_get() for the same ice_wait_for_reset() call. In
-practice the wait completes in ~300ms.
+diff --git a/lib/ll_map.c b/lib/ll_map.c
+index 8970c20f3cddedcdd1a6f522858fa350d2df8e5b..07937e27d4f6fb5506a3da6e9318270635224364 100644
+--- a/lib/ll_map.c
++++ b/lib/ll_map.c
+@@ -391,7 +391,9 @@ void ll_init_map(struct rtnl_handle *rth)
+ 	if (initialized)
+ 		return;
+ 
+-	if (rtnl_linkdump_req(rth, AF_UNSPEC) < 0) {
++	if (rtnl_linkdump_req_filter(rth, AF_UNSPEC,
++				     RTEXT_FILTER_VF |
++				     RTEXT_FILTER_SKIP_STATS) < 0) {
+ 		perror("Cannot send dump request");
+ 		exit(1);
+ 	}
+-- 
+2.54.0.545.g6539524ca2-goog
 
->
-> > Fixes: 769c500dcc1e ("ice: Add advanced power mgmt for WoL")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Aaron Ma <aaron.ma@canonical.com>
-> > ---
-> > v2: reword comment to clarify best-effort semantics (Kohei Enju)
-> >
-> >   drivers/net/ethernet/intel/ice/ice_main.c | 9 +++++++++
-> >   1 file changed, 9 insertions(+)
-> >
-> > diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/et=
-hernet/intel/ice/ice_main.c
-> > index 5f92377d4dfc2..a81eb21ea87c1 100644
-> > --- a/drivers/net/ethernet/intel/ice/ice_main.c
-> > +++ b/drivers/net/ethernet/intel/ice/ice_main.c
-> > @@ -5635,6 +5635,15 @@ static int ice_resume(struct device *dev)
-> >       /* Restart the service task */
-> >       mod_timer(&pf->serv_tmr, round_jiffies(jiffies + pf->serv_tmr_per=
-iod));
-> >
-> > +     /* Best-effort wait for the scheduled reset to finish so that the
-> > +      * device is operational before returning. Without this, userspac=
-e
-> > +      * (e.g. NetworkManager) may try to open the net device while the
-> > +      * asynchronous reset is still in progress, hitting -EBUSY.
-> > +      */
-> > +     ret =3D ice_wait_for_reset(pf, 10 * HZ);
->
-> Why not pass a delay in micro/milliseconds?
-
-ice_wait_for_reset() takes jiffies =E2=80=94 that's the existing API.
-
->
-> > +     if (ret)
-> > +             dev_err(dev, "Wait for reset failed during resume: %d\n",=
- ret);
->
-> Mention the delay?
-
-Good point. I'll include the timeout in the error message in v3.
-
-Thanks,
-Aaron
-
-
->
-> > +
-> >       return 0;
-> >   }
-> >
->
->
-> Kind regards,
->
-> Paul
