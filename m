@@ -1,109 +1,157 @@
-Received: from mail-dl1-f67.google.com (mail-dl1-f67.google.com [74.125.82.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2781419A4
-	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 05:20:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 036321419A4
+	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 05:23:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777353642; cv=none; b=LE0EoIDLAL3JBTnX1I8JAg60B5lSaP1dPBzNCdCOcWi/fNpa2SfMiaFvLpT05PC540HzyoThYynwSYQewkTu1ECc9614ccxdDNmDnTj8GNNhEndKynSFsdXPfyzBcIwW22F3xfaTkfsAq4jytPlRYrH6pHeJWp0J25Gum3eCNks=
+	t=1777353799; cv=none; b=TICbO+6pQTGME0991CLXuKBuLU8DIDpgOwPDpWYLFAQVbA0H/yGZTqRE4uq0f0laOPNWwlPSRfEpdEHMukG34/qTeGTWYlHNhRF3ibVgQUUfl0hsu4PD7l2bXwxwOyDRvfUBJK3rle90PdaUyIlek0SvFeY8DeOai6xoeRRqAb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777353642; c=relaxed/simple;
-	bh=diLJgi8run2/wJsp0OAzZ5RK9Xc5Th3Fv8M6vhyCDcc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ap7ScYddi65661Tf35LHrTyaqJhqrti1gIBOWnGnvcbDONBLenoYCsswEZVPmbtesAywwCtBZoxnQA3lc/x6i/uGZhJZqA+DJ/PKuBa60cY3xD+ZlMXeRjD648ThPp5gzbnUPPItUvTgfe09ihrnopc0CWWbQ3/UP3a61/6/cnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HWdGmtb1; arc=none smtp.client-ip=74.125.82.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1777353799; c=relaxed/simple;
+	bh=QuKwCGamYpEK7cQfu5b6x15fzmgUbzw/E2D0XPX9524=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=aYA9vX/c+xhbPCkG97/L7En8CvrlzQHDAwhWAYH67cIJjAHeLulrx0uePwtmm/bqfI9uLMhk7sQ7HiIYQckX0yf9VmulR1k9uutmHpW2yG2lxiSYM8qVnmzfHD00K1K+XdhApN8FlqTRucS35WFNQlyYbf4ZAV45J6lMWE+H+zs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gu6y5Jem; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HWdGmtb1"
-Received: by mail-dl1-f67.google.com with SMTP id a92af1059eb24-12c19d23b19so14285711c88.0
-        for <netdev@vger.kernel.org>; Mon, 27 Apr 2026 22:20:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777353636; x=1777958436; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+PKBzrou/LVFD4QeWnSpA8ddbWuSRTyEsVeaGpL3Dyo=;
-        b=HWdGmtb19fVMCodxvHwZghmR82ky+hezkv9EzjLzoCut7Q1StaYN9FfivoVTQQRHwp
-         7ntheFeCQ4NiRr63TaXLdtituYFgOyRiAsYMzikMxWMTMrqOLthaR2W3/pFJjvQ55MBJ
-         BmFy1LDdVLr99w5C2/Xc6IRfzAlEVVaXIBGm0WMkzO+qDOAp+9oQc/Yi6uLpf7VrjOQB
-         v22PDrDYlpLjw1oHRu/0B93saQuKg8iVNDhPQjaD/eJg/BBFytEst3MInny/ntBpVGXS
-         cOhZZk1BiuAlgKJNJ2o8uGQIBxRL+dt+CMj6rZQ/0GN9Hvhes5vV9iUViCEGlqxz9YWT
-         AAKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777353636; x=1777958436;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=+PKBzrou/LVFD4QeWnSpA8ddbWuSRTyEsVeaGpL3Dyo=;
-        b=ZnvTBTNH8e+H1/kN5L/NZFpEXD+PK8QhrYCbJCBtfrum9/KcO6h0P8TZjwpV22X2HP
-         r4e3CpiD3i+z+X3/uaw+pjRjVLiQ6D4PJA0UEJwajzJ7l96iRrjsSnrhnzhMOwkU9qF4
-         FPlNPQgxcAPBs7AS1HDjKwQnC9ga5E82V8i71LNcMWX5Ace4eXXvjkXA61661otgzpd9
-         W62b+PbkeoJuDnWIEabqgrV0+vi3Mvtj9LkYibCEJghET5KaOFEBuTRqJWlRPAROkK3F
-         V5Prh3G6eVks5ni6ArcRoE0/ruwYqT+TyJOVNaSsEfEJ9uKly8jnFO5YtgXbZJNs65X3
-         NViQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9JzytCvUzi1aFirtBctVrM2l7OWYU6HjapuHfggesRbIsiayipyMk3KAFkmdCwP5Lg1GAzciQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwIWAjNsYBUCX1Xmu7Sq7bqkaEBxfOC0rXRj1syGTT3VLiqkBwN
-	3uEyAWj10Qx+vzXPunCP6KHHd+H4ld/nsAEYBUYe4sjRwt1ZTg6tz7ud9nvQ5EEG
-X-Gm-Gg: AeBDiest+pDXz6YhO45WPXNFhukaX72b/elMF1U2qPvrCqerRHFO+YSdKtj0+oFTXHL
-	iYBSbtGuxSSITxZIOl0Ih9MfU32t6pVjzUWjajazG+GpRDOllrgixBuELnPxgBjKDg1SrltfpdZ
-	B40npMxBWsFOA1mj0XAOLB4JOrtLq9o0GqLzAnTisrd4rTFWbHPlq2w4HFYz6otmhJx24cTbqK9
-	+37zkInvTHOL6a3MUf3s4KGSzh34YbJShVy0Y1uROH0CQ8W6dz+xjJGtoHwwQ8Jfzi+gGD+IJAe
-	8d5kG94FYaUDapUPtsytO6fPSRHI37n7XvmNns1ihWIyVPAHmzl1pj9BbVs6OWumfKKhgz0ZHMT
-	qxcIWtALXeD3Q6/oYmHQ+k4C4sOLVj8hy18pH3krJ+zwgdYtqWgf56RcaTVMtmKyaubZS0/NLlC
-	r8hoxyir0/UvJXfKEHaFdA0QK3qVPLSo4FdObC1PZHp2iuQl2aXz6Hp8XselV3210dCy240PBnV
-	gERAic/paGxKw8jAI1MQhP++RjSjemb7F74/u4Xak6Ly/X2+VjJYhgz1rkCaBZXjGlz3TppLEE8
-	s8YYtCJYx7H3KhgCwDib8Iz0zj19
-X-Received: by 2002:a05:7022:3885:b0:129:fe5:117e with SMTP id a92af1059eb24-12ddd9b3cd2mr697882c88.26.1777353634205;
-        Mon, 27 Apr 2026 22:20:34 -0700 (PDT)
-Received: from ethan-latitude5420.. (host-127-24.cafrjco.fresno.ca.us.clients.pavlovmedia.net. [68.180.127.24])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12ddd933044sm1355064c88.5.2026.04.27.22.20.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Apr 2026 22:20:33 -0700 (PDT)
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-To: macro@orcam.me.uk
-Cc: andrew@lunn.ch,
-	enelsonmoore@gmail.com,
-	horms@kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH net-next] docs: 3c509: remove note about card detection failing with overclock
-Date: Mon, 27 Apr 2026 22:20:03 -0700
-Message-ID: <20260428052003.66510-2-enelsonmoore@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <alpine.DEB.2.21.2601260039220.40317@angie.orcam.me.uk>
-References: <alpine.DEB.2.21.2601260039220.40317@angie.orcam.me.uk>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gu6y5Jem"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777353797; x=1808889797;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:references:in-reply-to:to:cc;
+  bh=QuKwCGamYpEK7cQfu5b6x15fzmgUbzw/E2D0XPX9524=;
+  b=gu6y5JemjswQjeBjtlLIBrF/wWh2tKXhgXvQVFFokJFMzrycDcecHZ5e
+   jDHOPIV0lvdUetzvlXTdLOuF/1CEz38b97MD/SkP3LmUWgAwg3KVO3k55
+   nwjJHrnXq0jLzP+GBh//BvBhmLPjJXP2YN/+kF+IzcPvXWEyfIvPAy5zo
+   4tWIlB1x7vSHfhHysy9VJqq8b+Byl+juJ0ZtXHa/3HPbLmot2N7wZ0sz8
+   fzzK/sP5sl/7Ga64kJ6LkU31HvxRSbkCd6k1G5B3IJaEryqCN+7ylbBmQ
+   bSCBtXWLrMie1TNoleq4v8FLxdqG3HOE2gtlyul4ZOGRRzByopG63zKEZ
+   Q==;
+X-CSE-ConnectionGUID: lVN/WbebT9eJ2VatC01EVg==
+X-CSE-MsgGUID: QutJTOeZSRO2ExW455GN3w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="100910510"
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
+   d="scan'208";a="100910510"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 22:23:15 -0700
+X-CSE-ConnectionGUID: /0XZMdskQnmyb48Zmt1ZdQ==
+X-CSE-MsgGUID: vJClCeAzT9yHHsJFcTi68Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
+   d="scan'208";a="237800194"
+Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.109]) ([10.166.28.109])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 22:23:15 -0700
+From: Jacob Keller <jacob.e.keller@intel.com>
+Date: Mon, 27 Apr 2026 22:22:13 -0700
+Subject: [PATCH net 01/11] iavf: rename IAVF_VLAN_IS_NEW to
+ IAVF_VLAN_ADDING
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260427-jk-iwl-net-petr-oros-fixes-v1-1-cdcb48303fd8@intel.com>
+References: <20260427-jk-iwl-net-petr-oros-fixes-v1-0-cdcb48303fd8@intel.com>
+In-Reply-To: <20260427-jk-iwl-net-petr-oros-fixes-v1-0-cdcb48303fd8@intel.com>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>, 
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Aleksandr Loktionov <aleksandr.loktionov@intel.com>, 
+ Simon Horman <horms@kernel.org>, Jiri Pirko <jiri@resnulli.us>
+Cc: netdev@vger.kernel.org, Jacob Keller <jacob.e.keller@intel.com>, 
+ Petr Oros <poros@redhat.com>, Rafal Romanowski <rafal.romanowski@intel.com>
+X-Mailer: b4 0.16-dev-ea14f
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2992;
+ i=jacob.e.keller@intel.com; h=from:subject:message-id;
+ bh=1dV4HnIgJi3D9ZSa6z/IljWWPU1eCfyMNh20rGqI6yU=;
+ b=owGbwMvMwCWWNS3WLp9f4wXjabUkhswPLg5vg7stJv8pNn15tPhMr5DlFj+f1iMOJf84LKeke
+ hzsNlzSUcrCIMbFICumyKLgELLyuvGEMK03znIwc1iZQIYwcHEKwESiYhj+e7ccui9zvffd7K0e
+ JRq/T01eHf/qXVOTxO2Y3RILDdI0+hn+aYXNz+8+1RaX8+3HzLyXhTMEdJiTWGbcvSu+u+d+uJc
+ LIwA=
+X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
+ fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
 
-Hi, Maciej,
+From: Petr Oros <poros@redhat.com>
 
-Sorry for the extreme delay in responding - I somehow missed this message.
+Rename the IAVF_VLAN_IS_NEW state to IAVF_VLAN_ADDING to better
+describe what the state represents: an ADD request has been sent to
+the PF and is waiting for a response.
 
-On 26 Jan 2026 Maciej W. Rozycki wrote:
-> -- so it's not about using a time-based vs some other kind of delay.  The
-> comment to be removed was only added along with the whole document on the
-> 3c509 driver with Linux 2.5.13, much later (2002 vs 1998), and therefore
-> still stands.
+This is a pure rename with no behavioral change, preparing for a
+cleanup of the VLAN filter state machine.
 
-I traced back the usage of udelay in this driver and found that id_read_eeprom
-did in fact use a busy waiting loop before kernel 2.0.14:
+Signed-off-by: Petr Oros <poros@redhat.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+---
+ drivers/net/ethernet/intel/iavf/iavf.h          | 2 +-
+ drivers/net/ethernet/intel/iavf/iavf_virtchnl.c | 8 ++++----
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-https://github.com/schwabe/davej-history/commit/8cf64f0c94dcbf029dc3b12cb8e2afba590f8f72#diff-9acb56ec07fd10ccce51b1dc719976d60ee5a947dec31174e2a96f871fde72f9L331
+diff --git a/drivers/net/ethernet/intel/iavf/iavf.h b/drivers/net/ethernet/intel/iavf/iavf.h
+index e9fb0a0919e3..47a862ca5e2c 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf.h
++++ b/drivers/net/ethernet/intel/iavf/iavf.h
+@@ -158,7 +158,7 @@ struct iavf_vlan {
+ enum iavf_vlan_state_t {
+ 	IAVF_VLAN_INVALID,
+ 	IAVF_VLAN_ADD,		/* filter needs to be added */
+-	IAVF_VLAN_IS_NEW,	/* filter is new, wait for PF answer */
++	IAVF_VLAN_ADDING,	/* ADD sent to PF, waiting for response */
+ 	IAVF_VLAN_ACTIVE,	/* filter is accepted by PF */
+ 	IAVF_VLAN_DISABLE,	/* filter needs to be deleted by PF, then marked INACTIVE */
+ 	IAVF_VLAN_INACTIVE,	/* filter is inactive, we are in IFF_DOWN */
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+index a52c100dcbc5..6b06ae872a0c 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+@@ -746,7 +746,7 @@ static void iavf_vlan_add_reject(struct iavf_adapter *adapter)
+ 
+ 	spin_lock_bh(&adapter->mac_vlan_list_lock);
+ 	list_for_each_entry_safe(f, ftmp, &adapter->vlan_filter_list, list) {
+-		if (f->state == IAVF_VLAN_IS_NEW) {
++		if (f->state == IAVF_VLAN_ADDING) {
+ 			list_del(&f->list);
+ 			kfree(f);
+ 			adapter->num_vlan_filters--;
+@@ -812,7 +812,7 @@ void iavf_add_vlans(struct iavf_adapter *adapter)
+ 			if (f->state == IAVF_VLAN_ADD) {
+ 				vvfl->vlan_id[i] = f->vlan.vid;
+ 				i++;
+-				f->state = IAVF_VLAN_IS_NEW;
++				f->state = IAVF_VLAN_ADDING;
+ 				if (i == count)
+ 					break;
+ 			}
+@@ -874,7 +874,7 @@ void iavf_add_vlans(struct iavf_adapter *adapter)
+ 				vlan->tpid = f->vlan.tpid;
+ 
+ 				i++;
+-				f->state = IAVF_VLAN_IS_NEW;
++				f->state = IAVF_VLAN_ADDING;
+ 			}
+ 		}
+ 
+@@ -2910,7 +2910,7 @@ void iavf_virtchnl_completion(struct iavf_adapter *adapter,
+ 
+ 		spin_lock_bh(&adapter->mac_vlan_list_lock);
+ 		list_for_each_entry(f, &adapter->vlan_filter_list, list) {
+-			if (f->state == IAVF_VLAN_IS_NEW)
++			if (f->state == IAVF_VLAN_ADDING)
+ 				f->state = IAVF_VLAN_ACTIVE;
+ 		}
+ 		spin_unlock_bh(&adapter->mac_vlan_list_lock);
 
-This is probably what the comment was referring to, and therefore it is in fact
-incorrect. The documentation appears to have been imported from the Scyld
-out-of-tree driver (the basis of the mainline driver), which still mentioned the
-issue in 2003:
-https://web.archive.org/web/20030605134029/http://www.scyld.com/network/3c509.html
+-- 
+2.54.0.rc2.531.gaf818d63126a
 
-I was not able to find a copy of an old Scyld driver easily to see if it was
-affected by the issue.
-
-Hope that clarifies the situation.
-
-Ethan
