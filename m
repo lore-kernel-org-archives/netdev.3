@@ -1,262 +1,213 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9440371D13;
-	Tue, 28 Apr 2026 09:00:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777366840; cv=fail; b=hwdGdkCArOWCIXT14fl3rUZr7ad3ZumQxnOy4cSVF0DYXBoU/jpBX1QO4FgEKD95YhBbSeA/3L8wncywTeRpgx+/Pvp0FVOk0dXMPbfsDr/8zs4UhnnpHhAbsYxhqc5b7vsin7hukn/KmKoRkBjFXxhZ1eMKR6uOEAkp15TDiGw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777366840; c=relaxed/simple;
-	bh=bZJddvxg46huEo/ervGSz2Yh9gc6A1gDHKEMwYybPAU=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=UvKLUbw/JdEEeJ9WnCfeqF127wz8D6FRc6mp2N9C5o8JMt8oAyTTrBGZ7u/vgZdBcmY9Kk2BaEn6/VROn0zOnD+BIJV7omx/I28UTCHiJORTe2l9EeyugGHpYxnSkdLIY5bja9qjmG1Tbc+Hb6Q8PY2tQnHksqhfLweCTyf82jU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oJOV5/p6; arc=fail smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E383E1CE6
+	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 09:09:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777367388; cv=none; b=jUhCb7kAHAaF3c3CkViuwlAZaQM6tM+bnzZ0PkE03zJtgkjUt8mtmHgJOV4z8d40iuiG4meGCeJz92i/5Cl5hQvhro6XZS/9qKbHnwF8iF4guuIUW+dpfEt+JEk/Xh8u+juYKo1N+gjhrMFKtIvEsoJfPmKe2AotsDBC1jhGkSA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777367388; c=relaxed/simple;
+	bh=ndV9HO4TrB7UH4OQaqRqhxadXpb2M84IgFY4mR7mxMY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=l6Ns22vGkTx1kIktNM7ykJ8MLakAjs5Wc9Aw3ukHszFC8kdc8lHYWTvXsqs8Zb9SHd/KtEkhTlN5NyK/8GFPsw/UmIt2a1w6zdjRp8Usu+S/r57tMSpk1pjU6FiHO5Hb6TRaqL7AaUTtmmDaKkXoHinbIKboaVB1pRya3L/SWWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=grsecurity.net; spf=pass smtp.mailfrom=opensrcsec.com; dkim=pass (2048-bit key) header.d=grsecurity.net header.i=@grsecurity.net header.b=oxd16e8J; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=grsecurity.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensrcsec.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oJOV5/p6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777366839; x=1808902839;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=bZJddvxg46huEo/ervGSz2Yh9gc6A1gDHKEMwYybPAU=;
-  b=oJOV5/p6vwYjefuieeCHo+MqRLEwPlgc/IqzKKqFA8Tz+bkDVFeM0f2u
-   5IJPIA749kWIJwbNg5Ld4YloJBdlfUEtbUMX/wo5XKkGUv+rt5kOANVbp
-   V6p/5j6aMmJGtehvaVM6ILwg93p2MWj1QlhcqR7Fq/8KTj67umBuJ3vYI
-   TsmqSleX9GuokmYoInoN12jUxTbd+/51E8O37bkI0m0DKUGKZ7eFni7ka
-   0kFVP6PFbsqZchsPwtZfPNEQ/a46kUG6qzQeRu2ZOQZxTXQRLY1hZ0+/K
-   AF5M1Kgz3xjKVcGnSNTJrx76pQ7TeG2x6cHO9qCbkWtm1jA4VtsrreoX8
-   g==;
-X-CSE-ConnectionGUID: nbOQezaKSBK9gorh3l7vKg==
-X-CSE-MsgGUID: vptpgZdyRNGxnhQZDAFMAQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="89730561"
-X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
-   d="scan'208";a="89730561"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 02:00:36 -0700
-X-CSE-ConnectionGUID: xpInJJxuQfOzcTGbrO7OOA==
-X-CSE-MsgGUID: fVs8EXbgQpWRiKksyGDcTw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
-   d="scan'208";a="233032799"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 02:00:35 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 28 Apr 2026 02:00:34 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Tue, 28 Apr 2026 02:00:34 -0700
-Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.65) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 28 Apr 2026 02:00:33 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LplGLx6ZIYmpEEXxiMxtI7CFOvPBjqhRWxeNsVMH9cy972JrDY23asuJwePxBkC33088nl2a3CU5RVSmKl+tRDjDGXmxX3M22N69C+2r2zrwZ4pdtvm/lW6Wz3yw0Go4dZWUma8V1Tx75XR7Qxo9dhecBZFoVYqAhr3mdfl70XLY0dXKIIuQ8dTbHCYbHpnncTaI9YSKJs9toPSSlM6MvX6GXRxDhumwT7dICKuTpRPDtQDZl59/NR3LiBM/ZF4vncUr+zmphwn+f2i2XsExEGLj4vDL0tyR08jaHg2mb3XCQ71SAuR/AkMqm87D+FIWEIbddGmC4xOWh0MSBWZUpA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YncHHcyu20s0zyjZHUmW5LDWNr0caKlBi5bFg37Vg8c=;
- b=QCTczbGLfnvHTDXrl6GNnphsjm8TJ6FxN+GjGNS00nPNciObDbvxWuUkP7UG2i3sJwiwa7Etebmb49mUH7fQNT+nCkw5faY1heYBHEG9N3RoAnM17GvkW23Y1WEQfADpKLJP2eCURq6Pop2P/Negwdu/Mf7/ZkiG4qe9mcM9YHquxvK2nPZS82idHqsbeJzOtgdJm3mmlo3Bs+CXfRa1S7yIDjM0ZdnoSfXNkf0D7+wbkTy15RUFQLcT/EzRiUCp3gW/iiI8OspC+MrBXpcVOFEm3YPcC9iBqdAjOzIYyoXZSIxaSchL4INiyLVW1VQkQb5/PS0EJtlGU3Thbo7NKA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA3PR11MB8986.namprd11.prod.outlook.com (2603:10b6:208:577::21)
- by PH8PR11MB8016.namprd11.prod.outlook.com (2603:10b6:510:250::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.16; Tue, 28 Apr
- 2026 09:00:23 +0000
-Received: from IA3PR11MB8986.namprd11.prod.outlook.com
- ([fe80::e6f0:6afb:6ef9:ab5c]) by IA3PR11MB8986.namprd11.prod.outlook.com
- ([fe80::e6f0:6afb:6ef9:ab5c%5]) with mapi id 15.20.9870.013; Tue, 28 Apr 2026
- 09:00:22 +0000
-From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
-To: "Zaremba, Larysa" <larysa.zaremba@intel.com>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-	"Nguyen, Anthony L" <anthony.l.nguyen@intel.com>
-CC: "Lobakin, Aleksander" <aleksander.lobakin@intel.com>, "Samudrala, Sridhar"
-	<sridhar.samudrala@intel.com>, Michal Swiatkowski
-	<michal.swiatkowski@linux.intel.com>, "Zaremba, Larysa"
-	<larysa.zaremba@intel.com>, "Fijalkowski, Maciej"
-	<maciej.fijalkowski@intel.com>, "Tantilov, Emil S"
-	<emil.s.tantilov@intel.com>, "Chittim, Madhu" <madhu.chittim@intel.com>,
-	"Hay, Joshua A" <joshua.a.hay@intel.com>, "Keller, Jacob E"
-	<jacob.e.keller@intel.com>, "Shanmugam, Jayaprakash"
-	<jayaprakash.shanmugam@intel.com>, Jiri Pirko <jiri@resnulli.us>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Richard Cochran
-	<richardcochran@gmail.com>, "Kitszel, Przemyslaw"
-	<przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Salin,
- Samuel" <samuel.salin@intel.com>
-Subject: RE: [Intel-wired-lan] [PATCH iwl-next v7 07/14] idpf: refactor idpf
- to use libie_pci APIs
-Thread-Topic: [Intel-wired-lan] [PATCH iwl-next v7 07/14] idpf: refactor idpf
- to use libie_pci APIs
-Thread-Index: AQHc1ujyZSMaxGI7NE+CoLBnF9lmm7X0K2Rw
-Date: Tue, 28 Apr 2026 09:00:22 +0000
-Message-ID: <IA3PR11MB89866811B05E0CF99A6BA98CE5372@IA3PR11MB8986.namprd11.prod.outlook.com>
-References: <20260428082654.44364-1-larysa.zaremba@intel.com>
- <20260428082654.44364-8-larysa.zaremba@intel.com>
-In-Reply-To: <20260428082654.44364-8-larysa.zaremba@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA3PR11MB8986:EE_|PH8PR11MB8016:EE_
-x-ms-office365-filtering-correlation-id: ea91255f-1aa1-467c-4cbe-08dea50494a8
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024|18002099003|56012099003|22082099003|38070700021;
-x-microsoft-antispam-message-info: 0EzuEiBMu4nEAj6m2W96+Is2y+IinJ9my4vf4yZSJ9+O/fp3ZlxfzclM5eM1hJcnLLbU+rCImKiyQzYUxhUWbMCpsnC/G4rgO9bcMNTkAgsnk7mI98NG4kTus0j03NrnvA+CX55AoE2/kwU416Mnq8kuqnOV0/7QVBWovhVWi4msmVrS9H55L1AQ4Y4CMJb7wu3fAVCLHg+l5/SJv9+AybLg8fLQauZUgzI+o4pS03jjV0wVr3pwP0YIxmQdSZ0AvAIZ8bNRJ03hNhIfXPNKPY3Scb4fhb0uKcHnowxnLapgP3SygleQFf5eLb0gzcyWwhMKioG2JkoRh3SG6pLOfl8e4pxLYiXlwwwW6qj5MCxYzATCc2IB384YngJHUtUZTiOfDMoF98HZCMRufAXC8wrjL9scSgfTH9Wu1drDNpHCiS2+CUFekyODRwDaTe2Th1vEJr+q8gJa0FhAfYqxQmO1llSo0HYnsDrTjwr/MyEXhdNx5PDsCqOjJr8YT6S82b80aIdFaGtgkBwT7eW8VeVw6L/yhmFwyYqZCOVG38b5yCkgk2119Yt2owz3tzhhP8M9LEinORiaqsnUk4f58z5iftSRztWakJBGEUiTE3NXBM3MZGac7ySkUVog+06ugWAF4DwI6JFSPk1xn9y0O1a4+eTAiFh4BRo1ljbZKLQ/SPl/88cXOofuvLnpe/Mp83PKTiXPbg+Vw0ZgGgF9OX+hoWe2blazYV1saSNuIw8IHiBbFpelrNJFL0iitgrdsDF73kGZKkC5b8yGa63kLXQgpBU2M/4CJ8UluWUwcSk=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB8986.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(18002099003)(56012099003)(22082099003)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?7GIr3kzFb0r6Tx5ojtWUvYOXVVIJMwS/I5Bls9k1rOIVh2vMsQRwIkqXY1GG?=
- =?us-ascii?Q?Ux1zj1DSqB6808UCSQXfJVXcE1AadisWuElthDbn74f1r0yBC2JCH5afzgDg?=
- =?us-ascii?Q?MmofhCIv5oWp6X8cIug4QiWBXF6hhUbkZ8InlqQVDGbuDBbMP7MzVmkst8sS?=
- =?us-ascii?Q?klKIVluDUBff9mpiQ+0oZ9yzRNTFYCstG+LW2/zzC3WysRHd8GcQvDVQ7O4L?=
- =?us-ascii?Q?Aoj4m6NJFimM8qUPVMxloUfT1cA1DJcQziGUNsiDmHAzDbGdi5R+eb+wYmzx?=
- =?us-ascii?Q?w2OIazxjm/nwdNm+fp1v7tQ/9lSbPvl1eDk+Fg8vDSc5B+K2ilUxIDZnx2cB?=
- =?us-ascii?Q?0jDtiWRprrYkAGS9QgnmJzvBFUN9nT6SLKF53hnyJeXmizd8ceBlMDtbnW7e?=
- =?us-ascii?Q?mJ9LTBwRqCbFDrwa1i0kUve6ab2hXQHozivjaqoMAdFNfg4w44Rg1qoze32M?=
- =?us-ascii?Q?m8fjJ/ffBXFPfjjCO1W7aC3tBwm7iXQSXKGldGJLs//bR8JtSIkVT/aiL86a?=
- =?us-ascii?Q?YVIVaRUbxSrUKN7t+ZIqHq6lcvKeUBtX8fOdDE4R6vkCSFGAccZ77+WOu5PQ?=
- =?us-ascii?Q?gJEyNTY1HqxuAocATQZLbCRjUkJjrozGjJQxOOQtl+D3xCGLWvXrR9fODATu?=
- =?us-ascii?Q?71SgmhrHCUl5t7sxJ/802/cQduv918rUPPe6xAOx7VPWIq20mPxuJDVBUUGI?=
- =?us-ascii?Q?vebv15SLsBpl6yCE8HAfe+diPTM8hR88uG1zx/jn+rryUSXrUOMmlhjNG1yh?=
- =?us-ascii?Q?vM1Cit/KCs4ULV3jyW6azZD03XRMu6ZkGl6p+X9gKpH44Q0w14gKlDh1U/O0?=
- =?us-ascii?Q?OiPzssdRWwB60chAEe5jQywINblittPp5dSqTI30IeuF/xKSJbwsqcTPkaaw?=
- =?us-ascii?Q?LsUr5Qh75ySC4x/6QDgCiBqyie8QclXJlfQ+7tBqpfh5Zv4tD3FoE98Hp9eo?=
- =?us-ascii?Q?1s9f1EN5m7oy0UwbJBXzCUI5GH6KMU/NYFMkCL8msmz7PuI8x34qBV/L3yas?=
- =?us-ascii?Q?U4Wq8ac8FhCnpdtCT/hvDvnmbMcwEn6bpVGsyleZgDzzz/czl7uOvufwiYwo?=
- =?us-ascii?Q?D4SjbvzYFOhclvVqkua5NvBbQbz4ukZ7fC+rsEwAZMcix8Q6sAkehgDGzvSY?=
- =?us-ascii?Q?OYB/bIiJ0gbDuus1QHA30vulAMhgNS+J807MGyEr9u8bsuBuLffUILaom0W8?=
- =?us-ascii?Q?K3TyDJPN26Xxn5V7UbQcOgOjvOGFirg0ug1D3uusHGPxDO2YQqn4ud998044?=
- =?us-ascii?Q?HM2vnFig3dq2FUQ/l6E72OYK2+Up33ggwboYg3bp8bFiYybzeQKOg/20RsGP?=
- =?us-ascii?Q?3AskR4SIkFhmMUbvw74uaaA7WRaUd3XHloVNmVviig6b9UOqFng2X89LEo8W?=
- =?us-ascii?Q?lUHeddO4OlfWxJ7sn5hncUtNKPdezbtcKlllOyL+KlzbDBSqjwkjPbBeRX64?=
- =?us-ascii?Q?2evOtWwW/J/wCcHtu68zkyDX0aJ9PDiDBVML4ajBt3arUNY+QRTR6/daVEi+?=
- =?us-ascii?Q?INvmdxxTfNe12oLXdwdZAjrzFd0FKxMRTGCiXOziLj4VaEmOAx3vD69C5ofd?=
- =?us-ascii?Q?/I3B7AXFwfwBofkQK5ko0841Ur7JIwzX6qzOc0TaQ+WJqBKXsiuVLumI5I97?=
- =?us-ascii?Q?GBc0kK+EeK/vPJaDgZLWmYh8c8hGWV5P7RG8/BdktNmIH/UlAnS9ubCM39mZ?=
- =?us-ascii?Q?lNc0YHBsgOD2WUFVZAybX8AYbAid2ijIX07hlazOqWQ2GjQTW9VbuS7HKvit?=
- =?us-ascii?Q?1OeFISGaB9P9TYc8+wLHY/yQD/zJDOE=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=grsecurity.net header.i=@grsecurity.net header.b="oxd16e8J"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4891e5b9c1fso96001215e9.2
+        for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 02:09:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=grsecurity.net; s=grsec; t=1777367384; x=1777972184; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=uv+T7Qd810LVMbQvEtvpybibnpScTbWBpv7OZ6oXHZE=;
+        b=oxd16e8JM587DpH50wb73izUKuxGy6KNMTHCm0SnzHK9useMwvOq913/8vzpeiZUNH
+         s6q1s/yrWI/C3elj1lF+DrvrgMnSeURx5pIi9SyTXsn2k3OjEXTBkfKXabQNDBel8CGS
+         g9+4rWSTOYN1sDRr45Y6pWnAYmDUYtKx47v1JElDdv1yQXg2oAtBgsGt9rfRNtxrjOmk
+         rr1WO2LfqavyJPvrOoukwdnx4S04P3jhK4+vHZerVIgPIABYM2uCgNaTbCjct3UBACeq
+         AbaugpzsOAQe1eGu4XddPK+bT7iwZu7GQF6gZtJ+V3pqilFk5zIqexJT5Q7kA+QeFPo4
+         0oVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777367384; x=1777972184;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uv+T7Qd810LVMbQvEtvpybibnpScTbWBpv7OZ6oXHZE=;
+        b=o9YispK1pAF6Ss0wp4ZjZDzjLbNjI9w3XfTRQmULHTe/O4Mopw8yf6cMc4ULD0HBXw
+         Y+m3rNP8GA9c+KDpxVSk9IB5+KAj6zscrnYM77kpK6stNLfOQmdr8zMCkqJ9wFz8Pxbz
+         U5pekNCj5A2j0BmNox4Y8ctT8S7lZh2Zv65rj2/BG2eaC4zkxzT5yQTS/3IBiXNqtoMv
+         yOOcNgSvSUhRGDM0Qi79Qyz5BDD+f+psVuZ0H3rx7sMsOOANfe7Yb2M/iQTAaMXWLqG4
+         5IoPzGo2Tx1XZqa9VOiIxNtA3SQVv2wxtYtd+BbqHUSGjkIRKVxk/RycyKRpHPyL9T5G
+         Vy+A==
+X-Forwarded-Encrypted: i=1; AFNElJ9ZoV2KE0DsNGuBHpN6gJ4ukrdoE/mF3hFi/n0UkJBldi0mbbMTcoNuhRlseyojnx+fDm9uzIc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyeG85T1ylkKAeb/kTfvVxj8nZ9XjhidJsMswaAFCWnT7vFrvbK
+	Mx/XuHSDXLR+7gcj993ew3QyZsEJ0ZaWEpU2hoV9JgMo0pBpTFUuxonJTI/GScwbQQU=
+X-Gm-Gg: AeBDievuokIJVMZlBfXy6DsNRgOLNyapM/YB7PNIXBCpaszOe78/CF8chIso5Od23Fe
+	mYrkoCwWwnRIwnd5gAicX8vo384E+R6p57DBCaLShI6sT+18MzyD4fnm8pOarB5Nr7wXj7VMoNO
+	+4ks/7yDzZ2ocEL1bTzfUo551KtNxG/R3y1h2za9brJscHvoezg97DY52oYJLYJu2zeZWisjpHC
+	WVC29K7wnruqbv6sy9pKWBo1iPBk5kzo+lFmKD2s95Pv1qopDEoVJDoBJtr2intAJ+cfwxajVI7
+	jkz4TD3gaNyQEcmlyaiFZWt6uMOl/6dlRG9AAVhTmVKSgB90VAjWldtBcJ8FHqNVawGIN/YM4CO
+	RzYb8EfLvQkvfFhqVxOXJeRnTlyq6kWI+MCKYnOL/s7Uqz79e92+qBAN28CF0IYbOKA4V2gZ4JY
+	s+0cREUScEem8w+2sTp/sZBenJb3vXam/uPttXDeg/kIrnbb8qRUjlMXFV3SYnPacsTn5yIDE6o
+	Z9pACf05LMNUl11M+u6H6XB4odHEQ==
+X-Received: by 2002:a05:600c:c177:b0:48a:5301:bb5c with SMTP id 5b1f17b1804b1-48a77b12a49mr30418175e9.16.1777367383438;
+        Tue, 28 Apr 2026 02:09:43 -0700 (PDT)
+Received: from bell.fritz.box (p200300faaf260200051aef03a698a1fc.dip0.t-ipconnect.de. [2003:fa:af26:200:51a:ef03:a698:a1fc])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a775defe4sm29070145e9.7.2026.04.28.02.09.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Apr 2026 02:09:42 -0700 (PDT)
+From: Mathias Krause <minipli@grsecurity.net>
+To: netfilter-devel@vger.kernel.org
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	netdev@vger.kernel.org,
+	Mathias Krause <minipli@grsecurity.net>
+Subject: [PATCH net] netfilter: nf_nat: avoid invalid nat_net pointer use on failed nf_nat_init()
+Date: Tue, 28 Apr 2026 11:09:17 +0200
+Message-ID: <20260428090917.3851366-1-minipli@grsecurity.net>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: VsSTY9je1lJ50ezDb5Yk0RPWW+m7sn6idJADffNLWg32VjbLpk5F74EK3aT5RJ/535aGrWkUonE7UdCrmvrABdWu2aHOP2wluxZKfxsR0EhCD6MeCFZIRNNxiw9sQ6eBHEoJ3RhlqxdjpKV9/lIRenUudfBDHAn+zLQQqNDxeN6mWnYB/m2t+0NG/1Frqz59oly3oJwTOyKKqqR3nKBNP94NU2UBe8HkQRhHF395NksQPrmP70nsF3xHvJxlbwxitd9Eon1b0L+pPkBdUNLbmtPnv7W+8AuK5hpY7vahQhq41fNSPCOfut8SktVvL16DgyTl/rkqzyOfrN9Z/7wskg==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB8986.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ea91255f-1aa1-467c-4cbe-08dea50494a8
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Apr 2026 09:00:22.5515
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 9g9LhI+DVJotBr0r1eYyz5vVEY+xlQYNy60JEDFFVxOJDDOVG/DhyDUgVe75St8pO7c/sN34hlXjxsC5jOOkvoFHs4RncDEjMCP3yOXVN+o=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB8016
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+We ran into below KASAN splat, which is mostly uninteresting, beside
+for having nf_nat_register_fn() in the call chain as a cause for the
+offending access:
 
+==================================================================
+BUG: KASAN: slab-out-of-bounds in nf_nat_register_fn+0x5f9/0x640
+Read of size 8 at addr ffff890031e54c20 by task iptables/9510
 
-> -----Original Message-----
-> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf
-> Of Larysa Zaremba
-> Sent: Tuesday, April 28, 2026 10:27 AM
-> To: intel-wired-lan@lists.osuosl.org; Nguyen, Anthony L
-> <anthony.l.nguyen@intel.com>
-> Cc: Lobakin, Aleksander <aleksander.lobakin@intel.com>; Samudrala,
-> Sridhar <sridhar.samudrala@intel.com>; Michal Swiatkowski
-> <michal.swiatkowski@linux.intel.com>; Zaremba, Larysa
-> <larysa.zaremba@intel.com>; Fijalkowski, Maciej
-> <maciej.fijalkowski@intel.com>; Tantilov, Emil S
-> <emil.s.tantilov@intel.com>; Chittim, Madhu <madhu.chittim@intel.com>;
-> Hay, Joshua A <joshua.a.hay@intel.com>; Keller, Jacob E
-> <jacob.e.keller@intel.com>; Shanmugam, Jayaprakash
-> <jayaprakash.shanmugam@intel.com>; Jiri Pirko <jiri@resnulli.us>;
-> David S. Miller <davem@davemloft.net>; Eric Dumazet
-> <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo Abeni
-> <pabeni@redhat.com>; Simon Horman <horms@kernel.org>; Jonathan Corbet
-> <corbet@lwn.net>; Richard Cochran <richardcochran@gmail.com>; Kitszel,
-> Przemyslaw <przemyslaw.kitszel@intel.com>; Andrew Lunn
-> <andrew+netdev@lunn.ch>; netdev@vger.kernel.org; linux-
-> doc@vger.kernel.org; linux-kernel@vger.kernel.org; Salin, Samuel
-> <samuel.salin@intel.com>
-> Subject: [Intel-wired-lan] [PATCH iwl-next v7 07/14] idpf: refactor
-> idpf to use libie_pci APIs
->=20
-> From: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
->=20
-> Use libie_pci init and MMIO APIs where possible, struct idpf_hw cannot
-> be deleted for now as it also houses control queues that will be
-> refactored later. Use libie_cp header for libie_ctlq_ctx that contains
-> mmio info from the start in order to not increase the diff later.
->=20
-> Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
-> Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
-> Signed-off-by: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
-> Co-developed-by: Larysa Zaremba <larysa.zaremba@intel.com>
-> Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
-> Tested-by: Samuel Salin <Samuel.salin@intel.com>
-> Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-> ---
->  drivers/net/ethernet/intel/idpf/Kconfig       |   1 +
->  drivers/net/ethernet/intel/idpf/idpf.h        |  70 +-------
->  .../net/ethernet/intel/idpf/idpf_controlq.c   |  26 ++-
->  .../net/ethernet/intel/idpf/idpf_controlq.h   |   2 -
->  drivers/net/ethernet/intel/idpf/idpf_dev.c    |  61 ++++---
->  drivers/net/ethernet/intel/idpf/idpf_idc.c    |  38 ++--
->  drivers/net/ethernet/intel/idpf/idpf_lib.c    |   7 +-
->  drivers/net/ethernet/intel/idpf/idpf_main.c   | 114 ++++++------
->  drivers/net/ethernet/intel/idpf/idpf_vf_dev.c |  57 +++---
->  .../net/ethernet/intel/idpf/idpf_virtchnl.c   | 169 +++++++++--------
-> -
->  .../ethernet/intel/idpf/idpf_virtchnl_ptp.c   |  58 +++---
->  11 files changed, 288 insertions(+), 315 deletions(-)
->=20
-> diff --git a/drivers/net/ethernet/intel/idpf/Kconfig
-> b/drivers/net/ethernet/intel/idpf/Kconfig
-> index adab2154125b..586df3a4afe9 100644
-> --- a/drivers/net/ethernet/intel/idpf/Kconfig
-> +++ b/drivers/net/ethernet/intel/idpf/Kconfig
-> @@ -6,6 +6,7 @@ config IDPF
->  	depends on PCI_MSI
->  	depends on PTP_1588_CLOCK_OPTIONAL
->  	select DIMLIB
+CPU: 0 UID: 0 PID: 9510 Comm: iptables Not tainted 6.18.18-grsec-full-20260320181326 #1 PREEMPT(voluntary)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Call Trace:
+ <TASK>
+ […] dump_stack_lvl+0xee/0x160 ffff88004117eeb8
+ […] print_report+0x6e/0x640 ffff88004117eee0
+ […] ? __phys_addr+0x8e/0x140 ffff88004117eef0
+ […] ? kasan_addr_to_slab+0x51/0xe0 ffff88004117ef08
+ […] ? complete_report_info+0xec/0x1c0 ffff88004117ef20
+ […] ? nf_nat_register_fn+0x5f9/0x640 ffff88004117ef48
+ […] kasan_report+0xbc/0x140 ffff88004117ef50
+ […] ? nf_nat_register_fn+0x5f9/0x640 ffff88004117ef90
+ […] nf_nat_register_fn+0x5f9/0x640 ffff88004117eff8
+ […] ? nf_nat_icmp_reply_translation+0x6e0/0x6e0 ffff88004117f070
+ […] nf_tables_register_hook.part.0+0xa0/0x220 ffff88004117f080
+ […] nf_tables_addchain.constprop.0+0x1054/0x1fc0 ffff88004117f0b8
+ […] ? nft_chain_lookup.part.0+0x4ce/0xac0 ffff88004117f130
+ […] ? nf_tables_abort+0x3d80/0x3d80 ffff88004117f190
+ […] ? nf_tables_dumpreset_obj+0x100/0x100 ffff88004117f1c8
+ […] ? nft_table_lookup.part.0+0x255/0x300 ffff88004117f310
+ […] ? nf_tables_newchain+0x21a4/0x2fa0 ffff88004117f358
+ […] nf_tables_newchain+0x21a4/0x2fa0 ffff88004117f360
+ […] ? nf_tables_addchain.constprop.0+0x1fc0/0x1fc0 ffff88004117f458
+ […] ? nla_get_range_signed+0x4a0/0x4a0 ffff88004117f488
+ […] ? lock_acquire+0x16f/0x320 ffff88004117f490
+ […] ? find_held_lock+0x3b/0xe0 ffff88004117f4b0
+ […] ? __nla_parse+0x45/0x80 ffff88004117f500
+ […] nfnetlink_rcv_batch+0xbca/0x19a0 ffff88004117f550
+ […] ? nfnetlink_net_exit_batch+0x120/0x120 ffff88004117f618
+ […] ? __sanitizer_cov_trace_switch+0x63/0xe0 ffff88004117f720
+ […] ? gr_acl_handle_mmap+0x1c4/0x320 ffff88004117f7c0
+ […] ? nla_get_range_signed+0x4a0/0x4a0 ffff88004117f7e8
+ […] ? gr_is_capable+0x6f/0xe0 ffff88004117f830
+ […] ? __nla_parse+0x45/0x80 ffff88004117f860
+ […] ? skb_pull+0x103/0x1a0 ffff88004117f880
+ […] nfnetlink_rcv+0x3db/0x4a0 ffff88004117f8b0
+ […] ? nfnetlink_rcv_batch+0x19a0/0x19a0 ffff88004117f8d8
+ […] ? netlink_lookup+0xe2/0x240 ffff88004117f900
+ […] netlink_unicast+0x74b/0xb00 ffff88004117f930
+ […] ? netlink_attachskb+0xb20/0xb20 ffff88004117f980
+ […] ? __check_object_size+0x3e/0xaa0 ffff88004117f998
+ […] ? security_netlink_send+0x51/0x160 ffff88004117f9c8
+ […] netlink_sendmsg+0xa03/0x1200 ffff88004117f9f8
+ […] ? netlink_unicast+0xb00/0xb00 ffff88004117fa70
+ […] ? netlink_unicast+0xb00/0xb00 ffff88004117fac8
+ […] ? ____sys_sendmsg+0xe2a/0x1040 ffff88004117faf8
+ […] ____sys_sendmsg+0xe2a/0x1040 ffff88004117fb00
+ […] ? kernel_recvmsg+0x300/0x300 ffff88004117fb60
+ […] ? reacquire_held_locks+0xe9/0x260 ffff88004117fbc8
+ […] ___sys_sendmsg+0x138/0x200 ffff88004117fbf8
+ […] ? do_recvmmsg+0x7e0/0x7e0 ffff88004117fc30
+ […] ? lockdep_hardirqs_on_prepare+0x101/0x1e0 ffff88004117fc50
+ […] ? lock_acquire+0x16f/0x320 ffff88004117fd20
+ […] ? lock_acquire+0x16f/0x320 ffff88004117fd58
+ […] ? find_held_lock+0x3b/0xe0 ffff88004117fd70
+ […] __sys_sendmsg+0x17a/0x260 ffff88004117fdc8
+ […] ? __sys_sendmsg_sock+0x80/0x80 ffff88004117fdf0
+ […] ? syscall_trace_enter+0x15e/0x2c0 ffff88004117fe98
+ […] do_syscall_64+0x7d/0x400 ffff88004117fec8
+ […] entry_SYSCALL_64_safe_stack+0x4a/0x60 ffff88004117fef8
+ </TASK>
+==================================================================
 
-...
+The out-of-bounds report, though, is a red herring as it is for an
+access that shouldn't have happened in the first place.
 
-> >dev_ops.static_reg_info;
-> +		bool is_static =3D false;
-> +
-> +		for (uint j =3D 0; j < IDPF_MMIO_REG_NUM_STATIC; j++)
-I think you need to use here unsigned int, didn't checkpach.pl complain abo=
-ut it?
+When nf_nat_init() fails to register its BPF kfuncs, it'll unwind and,
+among others, call unregister_pernet_subsys() to deregister its per-net
+ops. This makes the previously allocated net id available for reuse by
+the next caller of register_pernet_subsys(), in our case, synproxy.
+However, 'nat_net_id' will still hold the previously allocated value.
 
+If nf_nat.o gets build as a module, all this doesn't matter. A failed
+initialization routine makes the module fail to load and any dependent
+module won't be able to load either. However, if nf_nat.o is built-in,
+a failing init won't /completely/ make its functionality unavailable to
+dependent modules, namely the code and static data is still there, free
+to be called by modules like nft_chain_nat.ko.
 
-> +			if (mr->offset =3D=3D static_regs[j].start)
-> +				is_static =3D true;
+Case in point, nft_chain_nat registers hooks that'll call into nf_nat
+which, in our case, failed to initialize and therefore won't have a
+valid net id nor related net_nat object any more.
 
-...
+Code in nf_nat, namely nf_nat_register_fn() and nf_nat_unregister_fn(),
+still making use of the reallocated net id, lead to a type confusion as
+the call to net_generic() will no longer return memory belonging to an
+object suited to fit 'struct nat_net' but 'struct synproxy_net' instead.
+The latter is only 24 bytes on 64-bit systems, much smaller than struct
+nat_net which is 176 bytes, perfectly explaining the OOB KASAN report.
 
->=20
->  	return 0;
->  }
-> --
-> 2.47.0
+Detect and handle a failed nf_nat_init() by testing the 'nf_nat_hook'
+pointer which will be reset to NULL on initialization errors to prevent
+the usage of an invalid nat_net pointer.
+
+As this check is only needed when nf_nat.o is built-in, guard it by
+'#ifndef MODULE...'.
+
+Fixes: cbc1dd5b659f ("netfilter: nf_nat: Fix possible memory leak in nf_nat_init()")
+Signed-off-by: Mathias Krause <minipli@grsecurity.net>
+---
+ net/netfilter/nf_nat_core.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/net/netfilter/nf_nat_core.c b/net/netfilter/nf_nat_core.c
+index 3b5434e4ec9c..76a150b9d418 100644
+--- a/net/netfilter/nf_nat_core.c
++++ b/net/netfilter/nf_nat_core.c
+@@ -1187,6 +1187,16 @@ int nf_nat_register_fn(struct net *net, u8 pf, const struct nf_hook_ops *ops,
+ 	struct nf_hook_ops *nat_ops;
+ 	int i, ret;
+ 
++#ifndef MODULE
++	/* If nf_nat_core is built-in and nf_nat_init() fails, dependent
++	 * modules like nft_chain_nat.ko may still call this function.
++	 * However, nat_net would be invalid, likely pointing to some other
++	 * per-net structure.
++	 */
++	if (WARN_ON_ONCE(!nf_nat_hook))
++		return -EOPNOTSUPP;
++#endif
++
+ 	if (WARN_ON_ONCE(pf >= ARRAY_SIZE(nat_net->nat_proto_net)))
+ 		return -EINVAL;
+ 
+-- 
+2.47.3
 
