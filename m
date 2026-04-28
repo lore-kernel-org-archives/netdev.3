@@ -1,229 +1,178 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18367DDA9
-	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 16:28:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5AED280037;
+	Tue, 28 Apr 2026 16:33:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777393713; cv=none; b=O42V0BMpT30Pbez306HVsYAjtIPgAWuC0+jL0wtWnVsqmMoeO17KIiMyThrzMxX6wMSoA6Qe/Dy6Zo7EtbE1qSBUbWI5e9tjt2uX4BQRnb4gueh2aZu1XfG9X0OTs88uYFp1g5uLpE41u8XGcLkkIwgg5F2yYHX97rHwfcPQRQw=
+	t=1777394012; cv=none; b=kduhHVybitUivgPEoRYyjwsWAF/WGSx5w4rN3IlrwcGDHEsiK/bRMEuAnO0AUVebinBbRJKd5OjG/uYsjkQ0lV4nYakNFz70qC42Ul/+IOVwzdOOuJ61WVgrl5mkJeL/mtB/PBKO3PKPOV1gbJeDsjsdz5IztZYkcPxDqgb1qBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777393713; c=relaxed/simple;
-	bh=WeFVN8lacIizVOvd6uFGFEcGw/lCDKJvgHmgBE5IRkk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AwhO9rssCLEp3jAfQhODCEQ0nmbb+G1HYB8EleaRLB+L5PLuRF4L+69WDxTSBfDP75NZjERr0EJwn8YKztXIpugQyqYFHsUHTYNbZpVpLJbNm9Tfl9qIdjp+deYog2oZhrgcZm9jdjzj0a+I0Oa1XO1NWy1VDK4rRRkl9bWGlFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=WEZQmucu; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Pph9b58S; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1777394012; c=relaxed/simple;
+	bh=dAGm4PiwWs80ZnheUKD2LU5YAlmFHcW8oMdB+VthDOQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=HsdAV41HCIMvj1FzHCsWWRTkWSNI7ZVNX2biD1azUwZCNAjvBTvTsbVXRYofU84fxSzfAtHnanPESjyhQrihfFqxMBsagsKnsxTbYuzartFFsdLmKj7kn/qDTJ6LO5F9KAdbPTw9AGM0xoqqzVL++jDBzVo41jpWGKaL2+33xmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=tpujZFg8; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="WEZQmucu";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Pph9b58S"
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63SFskL13979449
-	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 16:28:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	r9kcVg/HkpAwIzD7YQoLEOQSsRjWP+XxJbORsXGW8B8=; b=WEZQmucu4azp0yHd
-	dmAI78aN9OLQ/CUAVBHJate84WC+2bAxJScHOJCD+CtTz5Wzc0DOMO0gLPAgN0fL
-	RB8NHWTr4ms6SuIjVnyB8qxkOuS8LYrpfXsVTicGeycFayKCQg1BJ1HdkjEPtOzg
-	YjdWk7snb77ErJDpwrmKHKdqE58jrjEUW++hGluBTO9yX6EQIkjLiSsEHODlUMUB
-	TABDt5EVmMDSSjJkzpbk65c7pSWBay1IVy1NfkxKSVaAdL5HUTLhz6c9FJCatv4G
-	SizezklbWzU7BOBAxwO70sfzBEtsOsXxdb8DNtG6L6OPA/bw3rjWVkRXsIH7rmkE
-	VS+9lQ==
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dtgmsc0bn-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 16:28:31 +0000 (GMT)
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-50d8e8c47a3so316636921cf.0
-        for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 09:28:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1777393710; x=1777998510; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=r9kcVg/HkpAwIzD7YQoLEOQSsRjWP+XxJbORsXGW8B8=;
-        b=Pph9b58SVhZgOJ1VLoJzX/smslS5Bfgy5fv8DpLsa58SSoQMfhYPrdFIT4r48uAOKJ
-         0HZrKfErEOnysp6URaKry8iMk2x4DoGRpyjeSuo0Ij4kkCJuoE2DJxUkkMkFrZO0LMuX
-         j2uch2u00QTIJhAoavFHFlkZOhFhDpen0ToDIR2vXgBnOLTv7jUW8846WwG0OOsfF69z
-         PVTbIsJEq8acq0um3AnaE/RiMg5AJObxImb+cbxUiVCdn3mcp2vdCER+vbEm3BvgSC8K
-         muMil8q/yzeH16wJCjtFGkp1EMdiZ720yNj+WAyfYmcISK4iaHrYh9Hmrvsb3vWR91GT
-         g4Rw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777393710; x=1777998510;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=r9kcVg/HkpAwIzD7YQoLEOQSsRjWP+XxJbORsXGW8B8=;
-        b=QGWS7ww8lQ1Ww+26FYzFhZw1JcU/v7ooX2ejY33gjZL4sIuw9XnHRgfX8Oubn+us+5
-         nXGjl/6hyt4ufSZ+j6YI7OFwTOCmbEXVmNMiBDqSJuy8Bfrtl8cSAR9K71KKmZdlNbLQ
-         VBGOvB5SPjEGVjyMHdFJHIPrytyVYxumislISClGP+ex3IQYdRhrXeTerFSOtoHwNMvO
-         lvVeIDWobD7i+o38h9v/lkQF7s2p9JgNRtm7oPiI/1v7EFcdUBWI1ltUTJ8TM+lTJUqD
-         A9LeqeA11BvdbOk04bqjnIt3+RrO7OO1hRSFXD9UeUvxlGSQ3ytz8/3SB9Z6DzLmEDCU
-         zPjQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9OAvikyszsgazKLfTpUlzTyYcXQtTq9wglzWsKgYK8eLPi78b1GFrhncs7iU9DZD62FeppFEA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxK2H9EX2V9bBYSJgJLPt94a+qnAxqAMP02eQ9CFNx24+ePzy30
-	fsPESlxY/S+pXtbP/i4I72QF/UBswR0d23XZYR1DpOSS1piSv+OfoCrXJMUb0KFh58mtIJkKJQG
-	LOxqLZEsxuhMuRtmHCbSSaDrDH4je851UPPIJuIzI1AZ7tqsZwof7N5P0gv0=
-X-Gm-Gg: AeBDiev6G0gpYL0GMYaYfqyUqyCyqOp5lFfSQnqDJX1y4nfZ6Wftqoq904fxrZuqdqW
-	ATBq2MV2FQop4ccQrBYjB5kOBQgv4RQ9tWxvLOLUSPp0Hb68/amJ8s3xOmGI8ckPAYChCu1LBnC
-	lHo+nKKmLNsWNxV8LVSv4DGznsAOgqZTD0xNrSbxah7TIBE52MGsk4m2BrURJH4zaMFkt4eLMF3
-	UHSrJrm4hnPURFAWuQPr1qv4WaXnpCO2bsngdeFUzE6FFhuhdHyMUdN6TCmueDQZm/O2W+B3YhK
-	ijPspJT2QIWfw3Q3NmnwUuPRZCTN5bnZHUNysQLTkTs82ovwUyxEBr8uLi7tVkc4+HopauXcWBW
-	RRfAeckcelQGKoUEFtB/iQquSd1g22d0lzPfY4euJ0YbW1WaZiCXd8QRA6x4=
-X-Received: by 2002:a05:622a:1a93:b0:509:26f4:64e9 with SMTP id d75a77b69052e-51018a861c9mr3528301cf.51.1777393710339;
-        Tue, 28 Apr 2026 09:28:30 -0700 (PDT)
-X-Received: by 2002:a05:622a:1a93:b0:509:26f4:64e9 with SMTP id d75a77b69052e-51018a861c9mr3527651cf.51.1777393709727;
-        Tue, 28 Apr 2026 09:28:29 -0700 (PDT)
-Received: from [192.168.1.29] ([178.197.219.94])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5100dbaa48asm20225371cf.29.2026.04.28.09.28.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Apr 2026 09:28:29 -0700 (PDT)
-Message-ID: <ac91a635-4aeb-4fa2-a00a-0e3425caaea4@oss.qualcomm.com>
-Date: Tue, 28 Apr 2026 18:28:24 +0200
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="tpujZFg8"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 6198F1A3471;
+	Tue, 28 Apr 2026 16:33:29 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 2F420601D0;
+	Tue, 28 Apr 2026 16:33:29 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AFB1E10728F25;
+	Tue, 28 Apr 2026 18:33:25 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1777394007; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=+0AqFZZvY0X0WypoYom4SAfWrYqe9FmXmaw/Ruojua0=;
+	b=tpujZFg8P80/C/0+z6G3WGNUMBqqd6OBU/2f0bUtBrfwu9kUCAupJ15DyHo5htcWXJgFwu
+	QJrO6pxRVobTz4UZQFXWsrheAkrB9QerOAUw617WALNUBKV9HzhklPJ2ntOsgVpzr4yVH6
+	P0zcZU+JCdf7Vu5yzUB70kSzjPJ6EVaNj/jA4lQcoG4Ld8xJ/6VuevqH49um+zjuvLbDiI
+	34rhUJEC67WWFRMPo41ivUIVMzqbT0vRkxAhLbz5aRFRPtfunoP77E0msbkSPFfB7yUJv4
+	Yg+6H35lIeS+Az9QtPvgzH9+BDRzeDw0uErmAVT+TQSgGL/vEYQS6YCpmcRQrw==
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+Date: Tue, 28 Apr 2026 18:32:57 +0200
+Subject: [PATCH net v2 1/4] net: macb: give reasons for Tx SKB kfree
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net: Unify user-visible "Qualcomm" name
-To: Simon Horman <horms@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller"
- <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Loic Poulain <loic.poulain@oss.qualcomm.com>,
-        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-        Johannes Berg <johannes@sipsolutions.net>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, =Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, linux-arm-msm@vger.kernel.org
-References: <20260427070127.18471-2-krzysztof.kozlowski@oss.qualcomm.com>
- <20260428161444.GU900403@horms.kernel.org>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Content-Language: en-US
-Autocrypt: addr=krzysztof.kozlowski@oss.qualcomm.com; keydata=
- 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
- cwzYbmi/Et7T2+47PN9NZAOyb771QoVr8A==
-In-Reply-To: <20260428161444.GU900403@horms.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: ZyAFUL4ZPQrL3h0ivUfBRSYDBJj0J91l
-X-Authority-Analysis: v=2.4 cv=R4gz39RX c=1 sm=1 tr=0 ts=69f0e02f cx=c_pps
- a=JbAStetqSzwMeJznSMzCyw==:117 a=gOEeR9iKwsj33Yj5oN/cWg==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22
- a=EUspDBNiAAAA:8 a=MpKeM0OtTd53jt1D06MA:9 a=QEXdDO2ut3YA:10
- a=uxP6HrT_eTzRwkO_Te1X:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI4MDE1OCBTYWx0ZWRfX07QA9xQn4IeT
- DIaTWm+K8QMfDOx/mWUg2/UTjtt59kG6Q2weapVA+0vcI7oqbXkav+roS13f+Ndzglk1PIx4Z0x
- vCclZ/gKYxCnOdFseGVWBzjfZY8IDvJJBkB87tIdpHi5knjpTsr2pN6dTjorI9xt3/BKd4kCmvI
- wef91kh6xx1HY2Oh4BXilk+NLaiIMRTNHPr1eVoTzZ7gibzLjKIAY+WLzN+0qFI4F02H0kiY4HO
- rUR04e/JUii5Gg92/3URVfacJLyiglfuXkhvUq+XNtg3Il7Fc6j82Q5ob2T+44xVzY8LtuaDMTE
- 07vj3jnm1F3plx2TO9Bk7nfyDqydVCAFfRtDsau9gQjaWmfsbP3zqZvqcdXWrhTngmaaxJOuGZ2
- vvo5zLITp/+/QFIzanGrCHHbnx6u1zrF3wIs1o/bWlsYLWWgfsPgKrwxvCg59yjUZ3MRK7VWyaj
- RQV6rYGAF9rKTUDIA1w==
-X-Proofpoint-ORIG-GUID: ZyAFUL4ZPQrL3h0ivUfBRSYDBJj0J91l
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-28_05,2026-04-28_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 priorityscore=1501 malwarescore=0 clxscore=1015
- impostorscore=0 spamscore=0 adultscore=0 bulkscore=0 phishscore=0
- lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
- definitions=main-2604280158
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260428-macb-drop-tx-v2-1-647f5199d8df@bootlin.com>
+References: <20260428-macb-drop-tx-v2-0-647f5199d8df@bootlin.com>
+In-Reply-To: <20260428-macb-drop-tx-v2-0-647f5199d8df@bootlin.com>
+To: Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Haavard Skinnemoen <hskinnemoen@atmel.com>, Jeff Garzik <jeff@garzik.org>
+Cc: Paolo Valerio <pvalerio@redhat.com>, Conor Dooley <conor@kernel.org>, 
+ Nicolai Buchwitz <nb@tipi-net.de>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>, 
+ Gregory CLEMENT <gregory.clement@bootlin.com>, 
+ =?utf-8?q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>, 
+ Tawfik Bayouk <tawfik.bayouk@mobileye.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+ =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.15.2
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 28/04/2026 18:14, Simon Horman wrote:
-> On Mon, Apr 27, 2026 at 09:01:27AM +0200, Krzysztof Kozlowski wrote:
->> Various names for Qualcomm as a company are used in user-visible config
->> options: QCOM, Qualcomm and Qualcomm Technologies.  Switch to unified
->> "Qualcomm" so it will be easier for users to identify the options when
->> for example running menuconfig.
->>
->> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-> 
-> ...
-> 
->> diff --git a/drivers/net/wwan/Kconfig b/drivers/net/wwan/Kconfig
->> index 88df55d78d90..958dbc7347fa 100644
->> --- a/drivers/net/wwan/Kconfig
->> +++ b/drivers/net/wwan/Kconfig
->> @@ -38,7 +38,7 @@ config WWAN_HWSIM
->>  	  called wwan_hwsim.  If unsure, say N.
->>  
->>  config MHI_WWAN_CTRL
->> -	tristate "MHI WWAN control driver for QCOM-based PCIe modems"
->> +	tristate "MHI WWAN control driver for Qualcomm-based PCIe modems"
->>  	depends on MHI_BUS
->>  	help
->>  	  MHI WWAN CTRL allows QCOM-based PCIe modems to expose different modem
-> 
-> Hi Krzysztof,
-> 
-> Sashiko points out that QCOM is still used on the line above.
-> 
->> @@ -51,7 +51,7 @@ config MHI_WWAN_CTRL
->>  	  called mhi_wwan_ctrl.
->>  
->>  config MHI_WWAN_MBIM
->> -        tristate "MHI WWAN MBIM network driver for QCOM-based PCIe modems"
->> +        tristate "MHI WWAN MBIM network driver for Qualcomm-based PCIe modems"
->>          depends on MHI_BUS
->>          help
->>            MHI WWAN MBIM is a WWAN network driver for QCOM-based PCIe modems.
-> 
-> And here too.
+Using dev_consume_skb_any() marks the drop reason as SKB_CONSUMED every
+time we free a Tx SKB. Instead, replace by SKB_DROP_REASON_NOT_SPECIFIED
+when packet has been dropped without sending.
 
-Yes, I did not unify every single text because I believe that might be
-more churn and not that much benefit. I think it is more important to
-have a list of drivers in xconfig or menuconfig nicely organized and the
-help message matters less.
+It is not precise but at least differs from SKB_CONSUMED and is used by
+many drivers for their error codepaths through dev_kfree_skb_{any,irq}().
 
-But if you wish, I can replace it there as well.
+Pass a reason around rather than call dev_consume_skb_any() or
+dev_kfree_skb_any() because macb_tx_unmap() is called for cleanup in
+all cases.
 
-Best regards,
-Krzysztof
+macb_tx_error_task() is made complex because some SKBs encountered have
+been successfully sent.
+
+Fixes: 89e5785fc8a6 ("[PATCH] Atmel MACB ethernet driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
+---
+ drivers/net/ethernet/cadence/macb_main.c | 24 +++++++++++++++++-------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index a12aa21244e8..9caae1ef52b1 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -1201,7 +1201,8 @@ static int macb_halt_tx(struct macb *bp)
+ 					bp, TSR);
+ }
+ 
+-static void macb_tx_unmap(struct macb *bp, struct macb_tx_skb *tx_skb, int budget)
++static void macb_tx_unmap(struct macb *bp, struct macb_tx_skb *tx_skb,
++			  int budget, enum skb_drop_reason reason)
+ {
+ 	if (tx_skb->mapping) {
+ 		if (tx_skb->mapped_as_page)
+@@ -1214,7 +1215,7 @@ static void macb_tx_unmap(struct macb *bp, struct macb_tx_skb *tx_skb, int budge
+ 	}
+ 
+ 	if (tx_skb->skb) {
+-		dev_consume_skb_any(tx_skb->skb);
++		dev_kfree_skb_any_reason(tx_skb->skb, reason);
+ 		tx_skb->skb = NULL;
+ 	}
+ }
+@@ -1297,7 +1298,8 @@ static void macb_tx_error_task(struct work_struct *work)
+ 	 * Free transmit buffers in upper layer.
+ 	 */
+ 	for (tail = queue->tx_tail; tail != queue->tx_head; tail++) {
+-		u32	ctrl;
++		enum skb_drop_reason reason = SKB_DROP_REASON_NOT_SPECIFIED;
++		u32 ctrl;
+ 
+ 		desc = macb_tx_desc(queue, tail);
+ 		ctrl = desc->ctrl;
+@@ -1307,7 +1309,10 @@ static void macb_tx_error_task(struct work_struct *work)
+ 		if (ctrl & MACB_BIT(TX_USED)) {
+ 			/* skb is set for the last buffer of the frame */
+ 			while (!skb) {
+-				macb_tx_unmap(bp, tx_skb, 0);
++				/* The reason parameter is unused because it
++				 * only matters when skb is valid.
++				 */
++				macb_tx_unmap(bp, tx_skb, 0, SKB_CONSUMED);
+ 				tail++;
+ 				tx_skb = macb_tx_skb(queue, tail);
+ 				skb = tx_skb->skb;
+@@ -1326,6 +1331,7 @@ static void macb_tx_error_task(struct work_struct *work)
+ 				bp->dev->stats.tx_bytes += skb->len;
+ 				queue->stats.tx_bytes += skb->len;
+ 				bytes += skb->len;
++				reason = SKB_CONSUMED;
+ 			}
+ 		} else {
+ 			/* "Buffers exhausted mid-frame" errors may only happen
+@@ -1339,7 +1345,7 @@ static void macb_tx_error_task(struct work_struct *work)
+ 			desc->ctrl = ctrl | MACB_BIT(TX_USED);
+ 		}
+ 
+-		macb_tx_unmap(bp, tx_skb, 0);
++		macb_tx_unmap(bp, tx_skb, 0, reason);
+ 	}
+ 
+ 	netdev_tx_completed_queue(netdev_get_tx_queue(bp->dev, queue_index),
+@@ -1458,7 +1464,7 @@ static int macb_tx_complete(struct macb_queue *queue, int budget)
+ 			}
+ 
+ 			/* Now we can safely release resources */
+-			macb_tx_unmap(bp, tx_skb, budget);
++			macb_tx_unmap(bp, tx_skb, budget, SKB_CONSUMED);
+ 
+ 			/* skb is set only for the last buffer of the frame.
+ 			 * WARNING: at this point skb has been freed by
+@@ -2357,7 +2363,11 @@ static unsigned int macb_tx_map(struct macb *bp,
+ 	for (i = queue->tx_head; i != tx_head; i++) {
+ 		tx_skb = macb_tx_skb(queue, i);
+ 
+-		macb_tx_unmap(bp, tx_skb, 0);
++		/* The reason parameter is unused, tx_skb->skb has not yet
++		 * been assigned. Parent caller is responsible for freeing
++		 * the SKB.
++		 */
++		macb_tx_unmap(bp, tx_skb, 0, SKB_DROP_REASON_NOT_SPECIFIED);
+ 	}
+ 
+ 	return -ENOMEM;
+
+-- 
+2.54.0
+
