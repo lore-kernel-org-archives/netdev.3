@@ -1,154 +1,153 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012032.outbound.protection.outlook.com [40.93.195.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39C13DA7CC
-	for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 11:07:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777374451; cv=none; b=bT4mxyGsSN6EhmJxRusHvjn5yW1z7RYnNf3tEzGmbB+1sslGjGXNF525p853GxTLGOOHK77h6rLmwK4KryTTJEtEeXa8M4YD3f2y3AkysAydy7FRhHkUih+L3Zqin4P4HB/KEj8FAKCD/bvNs7HoL2jlVe5j9S3qcrowGCT0iTk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27CFF3F20FE;
+	Tue, 28 Apr 2026 11:07:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777374451; cv=fail; b=jISq9P5NlqkJlBQt0lJFIXDt1ESEic2u9Rqj2xakIbMBd7+9H+LTWdcbSHW53pWB4vTUwOMqxBF/UO3W6CT+ggqMj8N4u0B7uKVJE18l3jDEThA8knPKL8s0eyuNpO7LkTyMEAwqu2274KfUX0cI2O61iYtHmiIqp6xeFRyEQ3Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777374451; c=relaxed/simple;
-	bh=t1J1G0DPTGU3Nq5IK8gdpkJgcqUbwU/dQwACfaQ8rfQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=HDh47/ub4iAiGUf+fgtzBu3ZFkpZbSgUsQb5UMBl2aUyuyn6JtcVQSN8u54NOtmqRVCDhftk8Ocg2UKna5FUcL0pscbJ3qcKSBvxkKEO+3Um6X+UWob290AsfzPuk+xl+2XphF8sJXXyK2tQmjRKvclyZwOzw+GRuk/rmx6B1YE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rYENpmII; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	bh=t5KoRqan7PxVMk48X6iPr7edWi9lSJyShr+hMcKTJtE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=tL82yCTWH7zi9m1Fu5hS7CPe9eExB664ATfOE2JUWrkqzVk7IvLmXQwNcWbNWEusXHbPkRLSTcuG60HuNxmHTAcsrgMu93Dysm32aCfuYCbwG/2ojn3QeAqYLv5V8cBbpzeMsWrBL0xLHBRAPB99e+5WnnCBKHb3/QyS+aB6Rek=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=SUYrFEm7; arc=fail smtp.client-ip=40.93.195.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rYENpmII"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-362e30526f8so2129170a91.3
-        for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 04:07:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777374443; x=1777979243; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jbbMQ0UaEkffRakuaSv0SsaIDp6XiWs2fQ+ORE2pX24=;
-        b=rYENpmIImf6ID+SbAViIxp/ggJ2TcTkqLd72/oZO2O9PeO8JbTLlv10ujnRP5lJ3JL
-         GToWdPOoJxsBm+wkrnFswdeDtWGEbpFejQv12DWD+4Xfv85qsLhKsOKuPaf7vsjKlBKn
-         e8Tro0FEKbz2EXLa0p77Z2hxiyY96mxIfq7eIMrOFE8KKMV2Qk1fw3abqtYmiFwMfAj8
-         VtlOoNAJJNefcKnaNjD0eIgpM/iqZldcs7n5tcRlZ/c/rwCX0ZU0kPA8+Ilk2xWwAby4
-         1GGCP7L+kjE5CYVP8T7PXFMdGVFfjREbp+6Buo1DYHiNL28rPm4fTxNxftyMvl+JnvSJ
-         5lMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777374443; x=1777979243;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=jbbMQ0UaEkffRakuaSv0SsaIDp6XiWs2fQ+ORE2pX24=;
-        b=c7zXFgIzA/O/pj1dzN7WUXXtEEP+prHnYIJIYfeSRjpmVF1dFXD33iO+WwqV4DfzuD
-         Cz7SPqeJl/nL+8Y93nYaA3L6yj2DCtKyW1e9flXHL3JIpvQPNVRLbrdHNsa14i4r14Ez
-         U3OcqQo8B/94JmwIQa04M0dY/j45ALkAbVp1NL261f+weCcaYK6o9dyJxAygy4R2KhuA
-         jyehgDaPy/o8nu8QNTyEIYsaXRvzFzs/xVw1jXmrfKD9xTlrQ+fmI0ESk5nh4hwCLibj
-         TpnDICn4kGueZUEF3RHDnrhafo+k/NNZYOAe6T3ubNLUfZV3RvlpPY5AuWuGb2KYVVFR
-         Prng==
-X-Gm-Message-State: AOJu0YwV8Fi98Vy//ejcjBJ6kza/+An7I0lyK6ZW9rRKjcMBzlvpkjfi
-	cT0YWlmMTQtwGtc4oV5ZX8FtRIYG43m0aEetd1tXJkvsLSVyVGPALYsiE0u9Rpmm
-X-Gm-Gg: AeBDietXuamO40Gx3ZYHJjYLVHt9l/6Gl+xXgajFXL7ELrFWcro6SDaG5h3fpNZREBk
-	ylwYLpzxJdUnYXDF/Rz345Sw8HfNn6Jkq1N5c0m1DpPdAgzkgXseaoNZYFMDtgJHz8ZoaE9j8/s
-	KKQmRUQSo0vT6FIT+P+xjaGl8RGuNezIPSROAkzmDWNlaYvf4ceYj97jARuDimZpP4aII66o/TL
-	42fYyesn/pQGBoofLVw8itBmGdwoOqaEflreYU6JtQt2zn8XFkAcNZHvo4NniziBwgyf3uiDS9L
-	OvUpia0Eoae1OX+Q6KeNDkJtSfjUVeXjaL99Wx7+DpiuQZav7vqrh245gHGf8Q75sdQvpmpCvvJ
-	Ocx+jg/mVWsKsVVmeuiiguTDiQoCtqbjiilUKbxbr07w0oXCWMEY8wFkOZy5ilnwAVkPD3roaCK
-	blqP2rI7v5xq+ELvBpuW0lNs9NE4wOSu/miOkqCtHd+REWIjEx/JCvyuUTUMo=
-X-Received: by 2002:a17:90b:4c86:b0:35f:d56d:1c45 with SMTP id 98e67ed59e1d1-36491fbc102mr2653279a91.12.1777374442873;
-        Tue, 28 Apr 2026 04:07:22 -0700 (PDT)
-Received: from csl-conti-dell7858.ntu.edu.sg ([155.69.195.57])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7fc33d4e11sm2023328a12.24.2026.04.28.04.07.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Apr 2026 04:07:22 -0700 (PDT)
-From: Maoyi Xie <maoyixie.tju@gmail.com>
-To: netdev@vger.kernel.org
-Cc: kuniyu@google.com,
-	shaw.leon@gmail.com,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	dsahern@kernel.org,
-	kuznet@ms2.inr.ac.ru,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	security@kernel.org
-Subject: [PATCH net 1/2] ip6: vti: Use ip6_tnl.net in vti6_changelink().
-Date: Tue, 28 Apr 2026 19:07:12 +0800
-Message-Id: <20260428110713.2550315-2-maoyixie.tju@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260428110713.2550315-1-maoyixie.tju@gmail.com>
-References: <20260428110713.2550315-1-maoyixie.tju@gmail.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="SUYrFEm7"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JosvVneqgjtd1BCyYC2781Tc1eqToQXV3CP1Pu/sKzLJRY+Jsay/wXAzLo3dSCYKz4OWVegpzDoWDcGTR+Zv8XUjYNJbd2Dl+5ureebAzHylEqsXPKORVCBRLE2s7Mfup5moaVmxSWlWUyO0fMYiBfWj6W5/c6B5pbWIfNFE9v9aZxacN2ixnFWL1rUsrXNF2rm1AHGwKkIIjX/PlbDbx/V2pASkpIy+Fz3JjvTlC7aErfvoOXvQoYZybwHnlVvOUyeKI0TrsDyH3D4fha2uUL52U0dMJZ1Bwm/Luql4HZXwW56oh4l5aTyoTGq0vID+fx6f8fNzNy+HBJMMX1dq3Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nmNFJxkDGWO19HZfq6c0HYdYud0wq2SWNKbBEi7oUoU=;
+ b=BqDLmO98UvE132kueXybG8rCOvyEs2fUQDEKtoXi6ykQ6/iljlrEpVIqyYy2hAA8KxQJopi1SHFPtaJgr3pGRULtOZ7Ze2gaIODJRuf1V3kcp9/gA/vnQ8Gnb6VQqUiIgBUk969CRTcgmFsoVUOhrSPVnLYNgiwZ13ot3Ke36PpTOim5rQ5wH/xSlux+r1SB4PL8+2voSP9dNOlR232ZOIGOK7ozeUQAGQp+dCMI1C3fZOQ0KaaDHrT2CI8LiegUNEnHiTWAea84mUWHO5DVmP0eUeCERd2inOCDwHh8bXW5QrZCn0EIQ7ArhXUh9cENrC82i1+6K11MTHkjuyc0SA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nmNFJxkDGWO19HZfq6c0HYdYud0wq2SWNKbBEi7oUoU=;
+ b=SUYrFEm7Cn+YLXg+YMWrfgahUP0QxEsPtqhRWgxcwmMvG+XqQEaRcAdej9irxaUKNCStbpshrWy5jtg8uBcSI8CX2Ud+msZDB7VNeR82jnLtnTlQag+2plzUF350vFEl5VysaIeSY47M8YjJFs6vjr2+ZKYW1/nlfJnQX9X2helXtYiHxq0b9TgSJLB/KpO03w4gW9asHnR003yjcyNsKs0BmBiFhPSSLduEfT8xGTnKdqDDYk/aR21caKwzRJ8oaD94rpBQrJCy7gToQ6Fze6uRAkoRJ7JwDfnUzg2J0S9bZSjzckwapwx6sOG6DOt7LCBy9LYd6t1+/pl1ZfwYag==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
+ by PH0PR12MB7471.namprd12.prod.outlook.com (2603:10b6:510:1e9::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.18; Tue, 28 Apr
+ 2026 11:07:19 +0000
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2%6]) with mapi id 15.20.9870.013; Tue, 28 Apr 2026
+ 11:07:19 +0000
+Date: Tue, 28 Apr 2026 14:07:08 +0300
+From: Ido Schimmel <idosch@nvidia.com>
+To: Sagarika Sharma <sharmasagarika@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	David Ahern <dsahern@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Shuah Khan <shuah@kernel.org>, Simon Horman <horms@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net v1 1/2] ipv6: update route serial number on
+ NETDEV_CHANGE
+Message-ID: <20260428110708.GA571865@shredder>
+References: <20260427224243.3499162-1-sharmasagarika@google.com>
+ <20260427224243.3499162-2-sharmasagarika@google.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260427224243.3499162-2-sharmasagarika@google.com>
+X-ClientProxiedBy: TL2P290CA0021.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:3::15) To SA3PR12MB7901.namprd12.prod.outlook.com
+ (2603:10b6:806:306::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|PH0PR12MB7471:EE_
+X-MS-Office365-Filtering-Correlation-Id: eb840a5f-2938-48f9-59dd-08dea516506b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	XLVSq2pI5HTUXBbK1siJkDx66ZChFUhglWTzAF7goHd3+JIKBrRk991eiUk++JTU5BpC5CqjtYUdtDuqP3mEIPxroM6m6qHvzA1OVK2+tQ5Uru9SQUtJaTtTcvdQruuwSWovYTxKTS0Cp64J8yLeLvkVb3yqwwKKf8FpDZlm7eZHt4ZN3v8ch6LaL0yddPZhaJZYxdUOqMkOWsNJpsoguqHaVY49vP0pFnEECsQSoBI3dinVrxzT3VIwKXjI47gue/UPdCDyGk0f363BRAFbj4a6wIQvkVVkpXkOy8lk9OBg1IKEpr/JmHxzxtIypR+scOV9Pminbv+UwIkVBuUqVonLAV7TCZoFSkBtejL0DpecZy3OB7owZUqLKGVBaYiWCJ3c5MuSWaCJK1+/JLxE2ldVrXMeg+VBs0BwQl9TYIDWtlRbqtfgpgfiP8q4LDffJCrb8VHR80uYSVo4K65pyaBDZiQCcLsQMSXdbEE546h54Hzhl53Auomh2ZquhL/vh4ZhZ1fHlJPJiYcQnVbJdSSc4GrDl/NnLjxvTj+O6mMW8RiO/oCLQ2Pz1YdzPszjj5uK0YE0yDaFy+w5eMN8oQXX7mrv9xs7MPN4bIfaA4aqWxUCcaE2ed7pnUXhDPVUB5Vv+gIvRWxarzNEtdc23h1jieM05s64bvhIum615CxloG9v33BdBJnGhWTRmRpaUWjRb5XtvV4ZzmwNeuTAUBxIDI/L7nqLOLs1Wv7QNSA=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?ccyVepLOxA3bvH1IXVk6T7a5ytGMKIYQ5YJLJ29YBpTlJEH2XqgQhlhwqPuZ?=
+ =?us-ascii?Q?dNfg8ktYOgyKS8Xw4zhpAojbDuA1zQyIH59XDtAjYPYMIIO5U//L+bNxqsoR?=
+ =?us-ascii?Q?huyrx1kOa917K0QYXxzKU3RGm/q/mwF37GvHZMnr7GnA5+orpKQ/DGXTVLW9?=
+ =?us-ascii?Q?KyEdKKihjDMEvp7SIzYjlI/ioKkVH68K6jyEmAdp9U2VTOPBoD+Kh1uzRZ9W?=
+ =?us-ascii?Q?rv6baLpTsXwDoVSUgS/XyLhpIiiLSXvj2xMTYpp0T8sB3C5Y1PLLsU2T1Ro3?=
+ =?us-ascii?Q?iTK8Io6HafePhQpV1K6foA6m1phKBmjAQoyFyZzGSDuarLxdZlb+09/Arz5c?=
+ =?us-ascii?Q?7F1FvxeX+B+RugOUAC46yu/AbotaJeItvPKaUvn+jHIEKs4RD4UOgitjdeX5?=
+ =?us-ascii?Q?5rCpVFr7fbpyLxBC5CMftuLUoedvJ0UyYpR/2Mn1cJCIUMGlVvl8JuZ9mLBL?=
+ =?us-ascii?Q?NW7l/QwxaYmVnq5vgaNR0Y1xUq4d/fMVqog/kjO/GntXOItuOgw971zwbEGY?=
+ =?us-ascii?Q?wyWlsvFY0nejKyrfn3Ij5UlyVOEX3afwKuLH2Omp5NfC092/5+tbFyvG2OTV?=
+ =?us-ascii?Q?FQO5PIjwV2hrV2X3oqA+KiB/v9oTr5IHOoopfK3FNTHS2/vLb7Daiu8irxHh?=
+ =?us-ascii?Q?2RQseN7aRDbBjFXRm7BtaDZk/5Cpz7dLxb4xNLtB9Wv6kV+D2XT9iyHaueeL?=
+ =?us-ascii?Q?vqyL2+g4yn+hc4Bat9nx7cb0C9yvcs2Iu4q1+wS7zVvt8AgaONnvEALF3hLW?=
+ =?us-ascii?Q?7AVWc9byi67s+uKFd0A1C8wuT65EO7pr4togXAtTxEqPETqnvxYhHxKeWKEy?=
+ =?us-ascii?Q?8amqPRzrrWR+RdJ6NcO1gZ/LHZN85r7fha4ZaC5yXXYUd1QrhPGITjLjzFAn?=
+ =?us-ascii?Q?H0YXYWUN/aB2WD02Ad4avMQgyCNT0oqeqvTcZA07+PPo60RO/HdRe998GBvW?=
+ =?us-ascii?Q?sOsJB1WlrdkGfRd0XAVBACE5WQ96AsELiGwRr5nGlLFzRlT4CzSiRigPRqND?=
+ =?us-ascii?Q?adysDNHjyyUrfkOXlhnUBainhpAxIAK+U5DhvjhD5krqhKlnWkp9PWXS2nAW?=
+ =?us-ascii?Q?tqbRFtgPiJiXqceE3eajk/9dl1L4LvGFI8EL/h5QAJonjClA7x8j3YRHPzTN?=
+ =?us-ascii?Q?APF1OJn8wm0YXvUsAReO5hQeAbqcTGv96mPkrhRKC+bYfzYyKLxrfW4TK3RW?=
+ =?us-ascii?Q?rwPakAlAvAF59sPfZJXNW8sQsK4VjLrF/aNEOV7aGLuYGBxP5Go315+p5mzg?=
+ =?us-ascii?Q?UnCE6z9ey7UY3IbEC6viIQwiiRXv3wtBUz+Cjz7mhlvF/oBpvzPvlpwh5PMM?=
+ =?us-ascii?Q?TKyJc2VT6AmggjRvPxVzHhnIvQD0rx9loLvV93UjVlCY2NUwGNiCAMiUCwja?=
+ =?us-ascii?Q?VbwXi2YwtSPWj15Y/rHto4dcWHfFuy/fYjP5NFh2Xqc1oxZDCVMbyUUD1UVv?=
+ =?us-ascii?Q?EzEA6hkDvNXevNpdd0gIe4rMhWRAYRwe9cw0cLo8qKo49c97C4+gBB5gqNxK?=
+ =?us-ascii?Q?hZ9dg6JofBGhFgZs0gS+cp28me1Z6yz4TUJvsRBNodszn85OzliCOzPME7I3?=
+ =?us-ascii?Q?wMTaikOzZA7d41oTOK7DMbFAD+f7R17hc+N1b38XAoxyYzgJ5Ft8sWTMgP/o?=
+ =?us-ascii?Q?wP7DQwa8MBOKW2AUbEatn//+Oj6IKE41JRbQAOpT/5Snu4sEzoYYWYlMi6Ay?=
+ =?us-ascii?Q?HCnuPFV6mFnn+G1hbmOZ1n7BpdWz1iSAjG+TY6x26FPXDUaI?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: eb840a5f-2938-48f9-59dd-08dea516506b
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2026 11:07:19.2596
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9soT0Br0HQqKhJ5XGI0m/638I/pjZdUexFoMNkd0tYLuCNM11TgNBKv0v3ZXAFDBg77JU3wEXlaK+b7utgsVYg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7471
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+On Mon, Apr 27, 2026 at 10:42:22PM +0000, Sagarika Sharma wrote:
+> When using IPv6 ECMP routes, if a netdev listed as a nexthop experiences
+> a carrier change event (e.g., a bond device generating a NETDEV_CHANGE
+> event after its slaves go linkdown), established connections utilizing
+> that nexthop fail to fail over to other available nexthops. Instead,
+> these connections stall or drop.
+> 
+> This happens because the IPv6 FIB code does not invalidate the socket's
+> cached destination when a NETDEV_CHANGE event occurs. While
+> fib6_ifdown() correctly marks the nexthop with RTNH_F_LINKDOWN, it
+> leaves the route's serial number unchanged. As a result, sockets with a
+> previously cached dst do not realize the route is no longer viable and
+> continue to try using the non-functional nexthop.
+> 
+> This behavior contrasts with IPv4, which actively flushes cached
+> destinations on a NETDEV_CHANGE event (see fib_netdev_event() in
+> net/ipv4/fib_frontend.c).
+> 
+> Fix this by updating the route serial number in fib6_ifdown() when
+> setting RTNH_F_LINKDOWN. This invalidates stale cached destinations,
+> forcing sockets to perform a new route lookup and fail over to a
+> functioning nexthop.
+> 
+> Fixes: 51ebd3181572 ("ipv6: add support of equal cost multipath (ECMP)")
+> Signed-off-by: Sagarika Sharma <sharmasagarika@google.com>
+> Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
 
-ip netns add ns1
-ip netns add ns2
-ip -n ns1 link add vti6_test type vti6 remote ::1 local ::2 key 7
-ip -n ns1 link set vti6_test netns ns2
-ip -n ns2 link set vti6_test type vti6 remote ::3 local ::4 key 9
-ip netns del ns2
-ip netns del ns1
-[  132.495484] ------------[ cut here ]------------
-[  132.497609] kernel BUG at net/core/dev.c:12376!
-
-After commit 5e72ce3e3980 ("net: ipv6: Use link netns in newlink() of
-rtnl_link_ops"), vti6_newlink() correctly resolves the per-netns vti6
-hash via link_net. vti6_changelink() and vti6_update() were not
-converted in that series and still read dev_net(dev) /
-dev_net(t->dev), which diverge from the device's creation netns
-after IFLA_NET_NS_FD migration. The result is a stale per-netns hash
-entry; cleanup_net() of the original netns then walks freed memory.
-
-Reachable from an unprivileged user namespace ("unshare --user
---map-root-user --net"); cross-tenant scope on container hosts.
-
-Fixes: 5e72ce3e3980 ("net: ipv6: Use link netns in newlink() of rtnl_link_ops")
-Reported-by: Maoyi Xie <maoyi.xie@ntu.edu.sg>
-Cc: stable@vger.kernel.org # v5.15+
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
----
- net/ipv6/ip6_vti.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
-
-diff --git a/net/ipv6/ip6_vti.c b/net/ipv6/ip6_vti.c
-index ad5290be4..dcb257411 100644
---- a/net/ipv6/ip6_vti.c
-+++ b/net/ipv6/ip6_vti.c
-@@ -722,10 +722,11 @@ vti6_tnl_change(struct ip6_tnl *t, const struct __ip6_tnl_parm *p,
- static int vti6_update(struct ip6_tnl *t, struct __ip6_tnl_parm *p,
- 		       bool keep_mtu)
- {
--	struct net *net = dev_net(t->dev);
--	struct vti6_net *ip6n = net_generic(net, vti6_net_id);
-+	struct net *net = t->net;
-+	struct vti6_net *ip6n;
- 	int err;
- 
-+	ip6n = net_generic(net, vti6_net_id);
- 	vti6_tnl_unlink(ip6n, t);
- 	synchronize_net();
- 	err = vti6_tnl_change(t, p, keep_mtu);
-@@ -1031,11 +1032,12 @@ static int vti6_changelink(struct net_device *dev, struct nlattr *tb[],
- 			   struct nlattr *data[],
- 			   struct netlink_ext_ack *extack)
- {
--	struct ip6_tnl *t;
-+	struct ip6_tnl *t = netdev_priv(dev);
-+	struct net *net = t->net;
- 	struct __ip6_tnl_parm p;
--	struct net *net = dev_net(dev);
--	struct vti6_net *ip6n = net_generic(net, vti6_net_id);
-+	struct vti6_net *ip6n;
- 
-+	ip6n = net_generic(net, vti6_net_id);
- 	if (dev == ip6n->fb_tnl_dev)
- 		return -EINVAL;
- 
--- 
-2.34.1
-
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
