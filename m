@@ -1,293 +1,209 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31A2D37F001;
-	Wed, 29 Apr 2026 18:57:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777489076; cv=none; b=YhIjsTajywTRG9mUZVt2jAGm/PMKAIQ31YGiTWoYJ/cavLtj85WOinUB5X1lOBqKmA3nlXUgR4u1dcjjGud7cHGqx6nqndaoEwuBjmMmBYRnSLtrcy+5HY/8lIwwPTZI0eRzq4XqPKT96Vv9j6Rqu7q2pe0DtAXR0jLa6hCPtOU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777489076; c=relaxed/simple;
-	bh=0Lf1JAZcn5OKtEUrE2xilAaeXrgja2/wjH7CaZRdCDw=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=SqyUUFl8+rF+oTo4F23LjOmDr2clM6wxWS5NFPaIw9y0FQVhG3b5GTQ0hZW9woBu66k5cn9iqinkR7HIM6QhVTK/rvKoJcTsqeTMt7r1B7y+9rZn3xum0YQT5LBLjdvPcKcXgAoLgLQZmUvEuqAgd2wbwUo9sxk5SW6E+Tt3iKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=G4Z9xDaW; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18A44423165
+	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 19:00:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.172
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777489233; cv=pass; b=HAFbGjwUVvI2s4THEZZWOMzGdQhZPEVaBIAxNx/xVjlOXRUkSJtj8gy8kJMlyLhvyy4ky2VX6wLdhTj1VqEgVZSVh+/GXWvpw1mECYLBD84NzIBdHqvlj37ylRiQalME1s55i+Wm3ekTDBQOnOWo4xU4r+l8E6VDx967lUlLkM8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777489233; c=relaxed/simple;
+	bh=iM7lX1LAH/LhGb9GXspkizRvzdSlbuCnGRy3iAnrBy8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RrTlATEoegO7TxPAxebEFVJAwWqPVAtyfo0U0vgsLSv6O6dVyXXWYf5iH0UKNdoDnjuS701kPLSgi4siEPvfgy/5yD497hdoH9aNDPxxEdwSaIGu/idr+lRJvbfrMEAwusuIowWw2+M9qkxfIyckIMYgOwt9x7C4umz5H6YwQGk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HvfXKzO8; arc=pass smtp.client-ip=209.85.128.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="G4Z9xDaW"
-Received: by linux.microsoft.com (Postfix, from userid 1204)
-	id 6525520B716C; Wed, 29 Apr 2026 11:57:55 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 6525520B716C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1777489075;
-	bh=9vI85T3v4VJVXTP0rhG0xF0Bxxz7sGEbD9Trgq1IZew=;
-	h=Date:From:To:Subject:From;
-	b=G4Z9xDaWHRuPja0iDJkXlJOvWGj3HtC7P0ocPfNJ6pCrw+wj6LHvS+9636iUZsTkW
-	 cmtJpOUlngE5/xOggC+i6NfA3fCcJi0v0vpCoeq3qM3qqDaJZ3AjB8hN9PDyxdwwL1
-	 xx7MAiEWd6GBh/lGlBuv9Ure3KgJYJe9Qahh+OTE=
-Date: Wed, 29 Apr 2026 11:57:55 -0700
-From: Dipayaan Roy <dipayanroy@linux.microsoft.com>
-To: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
-	decui@microsoft.com, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	leon@kernel.org, longli@microsoft.com, kotaranov@microsoft.com,
-	horms@kernel.org, shradhagupta@linux.microsoft.com,
-	ssengar@linux.microsoft.com, ernis@linux.microsoft.com,
-	shirazsaleem@microsoft.com, linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-rdma@vger.kernel.org, stephen@networkplumber.org,
-	jacob.e.keller@intel.com, dipayanroy@microsoft.com,
-	leitao@debian.org, kees@kernel.org, john.fastabend@gmail.com,
-	hawk@kernel.org, bpf@vger.kernel.org, daniel@iogearbox.net,
-	ast@kernel.org, sdf@fomichev.me, yury.norov@gmail.com
-Subject: [PATCH net, v2] net: mana: Fix crash from unvalidated SHM offset
- read from BAR0 during FLR
-Message-ID: <afJUszROT+yKjth0@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HvfXKzO8"
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-79ea87af213so20204267b3.0
+        for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 12:00:23 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777489223; cv=none;
+        d=google.com; s=arc-20240605;
+        b=j5gFa8/lEFw4tu+88XEZuYK3Ak4sBT/QccdUHtLXi7lQAq4YbXx5dbMlGQc8FQH8A9
+         H0BJZhbrhIy73imFO5uzQkdtY09kDTrU5Ox5Hl30T9dJxkEcs1mVRWHY4MQmFldcXJk5
+         PGVbr9A3IIMfubBUCVbnD39l8xOGlE3c0/5twbTF/S4daJOcjLTXfjnSCfxtSi9q9lTD
+         BsARQCK4LXEXF3NIlFHISUeq0YfTlzzE4LLbwG8Q5woyxP6P22ScypkW2YtY61nhfgQi
+         57ksL6oqgjt66JBpkTqzeXbhIa4jild47xXaF+k+6fDbKDzZt+PuTZa5+SRC9miciHug
+         xk1Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=GmsyAk+1K4Zh4JpsAlzbO2xUG7nOG4rp6/xwDZcjDBE=;
+        fh=4aHnWlzNeoC2q++JxWYI7caY3Cbeg4AMZBp4Bh3oGcQ=;
+        b=NV3nRrarxSBLto+4QaZ726B4O2kPx43XPiMWUWi28ChVV9wVftiv/M6pyh7fKr+bhd
+         Kh3wJ7kh+avFRLU5hE0FmSlZ8TQt1crA7qw4nxZK/jj03DMUcH/5eSKBaFHggM3osn/Q
+         guHBkbIhsfgfDBNNk337CX2OmSlKuxl/oXD75sQiUKdivaOCrhufQ46lWb4oTo1UjctY
+         iJVWnGpR8rDjLKkr1fGwUvjsURYMtaVVNeeEMbXOFM++gqn8gmFbK3Yi4m4hYh/RQn3g
+         mluEASO/UGZ8VD1lgC8afhJtYSmvMblNBcW2n5GCf/czBNWYBM1Zo+1LkZBTk1mPznYO
+         2I1A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777489223; x=1778094023; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GmsyAk+1K4Zh4JpsAlzbO2xUG7nOG4rp6/xwDZcjDBE=;
+        b=HvfXKzO87AmQihl7D4FPfiB4sGCopMnLRKufTkmhPXdImBCD2NmNTbxPfkhNK8g+6Z
+         bcUvnXk2OJ+3fMnmsvMt8EODtwYnumQkDL+oOn0Jjblo1cQtcYvMI3vSJMq3eG7K5z+l
+         ARvHUUm0AwLsnlO7JeMPLN4jeaWb/RoFHdNWUO3VOGtPHpKyd7TWL3AiusKQiKT6FT1t
+         epQfNkzjHsst+2Nlm7hh8viwgYadjKb1lqWPpbA07224OaMLlAN1RlsKlvmGvSxcmhxN
+         2obfxtRil9+XUHu+nQRRqaZES543fBDg1vYgZAgrqn1/NzB/F7mxlS/Spsc5bxVO9o+A
+         EYsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777489223; x=1778094023;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=GmsyAk+1K4Zh4JpsAlzbO2xUG7nOG4rp6/xwDZcjDBE=;
+        b=ktkhzGWFK/EN1nmBsldYtOB+DEsI8pws+tQiTLzY3KLq5foFTNqzgo8RPbujdqqiid
+         ExxxTUS9XEv9FnyK3MfTFSSoBv8Mc8QYBMzqvKO1X+vO5m07xugkU1BZNf9iCCTSyesK
+         H9P9KN0AXwJ6R8JiuifeVmDkpvswHK+0lN9AHfOg5/JHWALaJ/U/nXjM0xr8VUWX+KQ5
+         w5TxITcyhH9M2o39f0yF6eW60btMlpiKvZ5aE26cCDusjK8l1p06uk8B8XOOiOr8zv/X
+         qA5Zm7GtEDYWh9FE6fSp5GKGhTpScELi0Q9NoX0LRkSiLmFiut1wCB8c92hFbhzPGGdf
+         Wrpg==
+X-Forwarded-Encrypted: i=1; AFNElJ9ruF6IruH0wQe9M5faVnwiFa8kQoVHhY9rf2WAd6tjUIn7N0QjzknfBzgvsls6zUl9+x/6iCo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwDGvtjUUL2gWd11+K3agc6M+oF0kXl4Tw1GRRrqX1LZOKiXjC4
+	VyxkBreCHhbTkElylmWEU3GD1jRUsabMOWg9MaVjfRTwRlRnZk/RrqGkfuGoPJFeZYkzEosZRGU
+	CJ5MoC27MLq4/earcBlPm0k+8u9UenL4hrkqWOFPQ
+X-Gm-Gg: AeBDieulz+fi/LAQ3eHmm89H7QlMa9AWpjw9nIQzDciEbgof4sjb+InzgO1+NXn/Il+
+	TMgxNUJ7ElxLuDDd5NFkLN3zxfgF5NPajFreTek/dX7hDBekI28MxzD7+36mY728chwqfWtdhRx
+	YfwV0Ey3nfW+Y8RFTRIMMSF6gfwhS4oAFWUohjOYycZbZkI3r3hNqV7g46A/ctX0IvJXn4yFIZt
+	9I7cYtSpY1qLtWwGbJzzpn/KAAXqSUtrX27bsNFhKnmzuf0LllnhOIdgjjFQsQAIB8PLk7ZWO3D
+	QjqVplfVHZujHYrA5i5NklkhGbor1RDVRAh8F65wj/Z9WGWMOwRVVqkJTR4=
+X-Received: by 2002:a05:690e:1445:b0:64a:d7e6:a1e4 with SMTP id
+ 956f58d0204a3-65bff459cbfmr3311716d50.38.1777489222600; Wed, 29 Apr 2026
+ 12:00:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20260424031545.3777023-1-boolli@google.com> <2d8bd703-f368-4405-9266-d0d8824455aa@molgen.mpg.de>
+In-Reply-To: <2d8bd703-f368-4405-9266-d0d8824455aa@molgen.mpg.de>
+From: Li Li <boolli@google.com>
+Date: Wed, 29 Apr 2026 12:00:10 -0700
+X-Gm-Features: AVHnY4K-GqWrj9dfjsEYCEiuG9ysJ5WntmXLLc6b-8jqsGSXaVn7-1bjI0Zpo_c
+Message-ID: <CAODvEq5xMxsn+N0VV=CEGfGQO7rxAc8UR=LBU6NHPAydPy9+kA@mail.gmail.com>
+Subject: Re: [Intel-wired-lan] [PATCH iwl-next] libie: log more info when
+ virtchnl fails
+To: Paul Menzel <pmenzel@molgen.mpg.de>
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>, 
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>, "David S. Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>, intel-wired-lan@lists.osuosl.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	David Decotigny <decot@google.com>, Anjali Singhai <anjali.singhai@intel.com>, 
+	Sridhar Samudrala <sridhar.samudrala@intel.com>, Brian Vazquez <brianvv@google.com>, 
+	emil.s.tantilov@intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-During Function Level Reset recovery, the MANA driver reads
-hardware BAR0 registers that may temporarily contain garbage values.
-The SHM (Shared Memory) offset read from GDMA_REG_SHM_OFFSET is used
-to compute gc->shm_base, which is later dereferenced via readl() in
-mana_smc_poll_register(). If the hardware returns an unaligned or
-out-of-range value, the driver must not blindly use it, as this would
-propagate the hardware error into a kernel crash.
+On Mon, Apr 27, 2026 at 3:40=E2=80=AFAM Paul Menzel <pmenzel@molgen.mpg.de>=
+ wrote:
+>
+> Dear Li,
+>
+>
+> Thank you for your patch.
+>
+> Am 24.04.26 um 05:15 schrieb Li Li via Intel-wired-lan:
+> > Virtchnl failures can be hard to debug without logs. Logging the detail=
+s
+> > of virtchnl transactions can be useful for debugging virtchnl-related
+> > issues.
+>
+> Why is the first added one added as error, and the second as info?
 
-The following crash was observed on an arm64 Hyper-V guest running
-kernel 6.17.0-3013-azure during VF reset recovery triggered by HWC
-timeout.
+Originally I was thinking the second log doesn't warrant an err level
+log, but on second thought, I think it makes more sense to use
+dev_err_ratelimited() in both places. I will send out a v3 patch to
+update it.
 
-[13291.785274] Unable to handle kernel paging request at virtual address ffff8000a200001b
-[13291.785311] Mem abort info:
-[13291.785332]   ESR = 0x0000000096000021
-[13291.785343]   EC = 0x25: DABT (current EL), IL = 32 bits
-[13291.785355]   SET = 0, FnV = 0
-[13291.785363]   EA = 0, S1PTW = 0
-[13291.785372]   FSC = 0x21: alignment fault
-[13291.785382] Data abort info:
-[13291.785391]   ISV = 0, ISS = 0x00000021, ISS2 = 0x00000000
-[13291.785404]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-[13291.785412]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[13291.785421] swapper pgtable: 4k pages, 48-bit VAs, pgdp=00000014df3a1000
-[13291.785432] [ffff8000a200001b] pgd=1000000100438403, p4d=1000000100438403, pud=1000000100439403, pmd=0068000fc2000711
-[13291.785703] Internal error: Oops: 0000000096000021 [#1]  SMP
-[13291.830975] Modules linked in: tls qrtr mana_ib ib_uverbs ib_core xt_owner xt_tcpudp xt_conntrack nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nft_compat nf_tables cfg80211 8021q garp mrp stp llc binfmt_misc joydev serio_raw nls_iso8859_1 hid_generic aes_ce_blk aes_ce_cipher polyval_ce ghash_ce sm4_ce_gcm sm4_ce_ccm sm4_ce sm4_ce_cipher hid_hyperv sm4 sm3_ce sha3_ce hv_netvsc hid vmgenid hyperv_keyboard hyperv_drm sch_fq_codel nvme_fabrics efi_pstore dm_multipath nfnetlink vsock_loopback vmw_vsock_virtio_transport_common hv_sock vmw_vsock_vmci_transport vmw_vmci vsock dmi_sysfs ip_tables x_tables autofs4
-[13291.862630] CPU: 122 UID: 0 PID: 61796 Comm: kworker/122:2 Tainted: G        W           6.17.0-3013-azure #13-Ubuntu VOLUNTARY
-[13291.869902] Tainted: [W]=WARN
-[13291.871901] Hardware name: Microsoft Corporation Virtual Machine/Virtual Machine, BIOS Hyper-V UEFI Release v4.1 01/08/2026
-[13291.878086] Workqueue: events mana_serv_func
-[13291.880718] pstate: 62400005 (nZCv daif +PAN -UAO +TCO -DIT -SSBS BTYPE=--)
-[13291.884835] pc : mana_smc_poll_register+0x48/0xb0
-[13291.887902] lr : mana_smc_setup_hwc+0x70/0x1c0
-[13291.890493] sp : ffff8000ab79bbb0
-[13291.892364] x29: ffff8000ab79bbb0 x28: ffff00410c8b5900 x27: ffff00410d630680
-[13291.896252] x26: ffff004171f9fd80 x25: 000000016ed55000 x24: 000000017f37e000
-[13291.899990] x23: 0000000000000000 x22: 000000016ed55000 x21: 0000000000000000
-[13291.904497] x20: ffff8000a200001b x19: 0000000000004e20 x18: ffff8000a6183050
-[13291.908308] x17: 0000000000000000 x16: 0000000000000000 x15: 000000000000000a
-[13291.912542] x14: 0000000000000004 x13: 0000000000000000 x12: 0000000000000000
-[13291.916298] x11: 0000000000000000 x10: 0000000000000001 x9 : ffffc45006af1bd8
-[13291.920945] x8 : ffff000151129000 x7 : 0000000000000000 x6 : 0000000000000000
-[13291.925293] x5 : 000000015f214000 x4 : 000000017217a000 x3 : 000000016ed50000
-[13291.930436] x2 : 000000016ed55000 x1 : 0000000000000000 x0 : ffff8000a1ffffff
-[13291.934342] Call trace:
-[13291.935736]  mana_smc_poll_register+0x48/0xb0 (P)
-[13291.938611]  mana_smc_setup_hwc+0x70/0x1c0
-[13291.941113]  mana_hwc_create_channel+0x1a0/0x3a0
-[13291.944283]  mana_gd_setup+0x16c/0x398
-[13291.946584]  mana_gd_resume+0x24/0x70
-[13291.948917]  mana_do_service+0x13c/0x1d0
-[13291.951583]  mana_serv_func+0x34/0x68
-[13291.953732]  process_one_work+0x168/0x3d0
-[13291.956745]  worker_thread+0x2ac/0x480
-[13291.959104]  kthread+0xf8/0x110
-[13291.961026]  ret_from_fork+0x10/0x20
-[13291.963560] Code: d2807d00 9417c551 71000673 54000220 (b9400281)
-[13291.967299] ---[ end trace 0000000000000000 ]---
+>
+>
+> Do you have a reproducer to get each of the new log messages?
 
-Disassembly of mana_smc_poll_register() around the crash site:
+We recently had an IOMMU subsystem bug in our internal kernel that
+caused virtchnl failures, and this patch helped root cause the IOMMU
+subsystem issue. However, the patch we used internally was applied to
+the OOT driver, which is implemented slightly differently than the
+upstream driver. Example log we saw in our OOT driver, with the patch
+applied:
 
-Disassembly of section .text:
+idpf 0000:43:00.0: Non-zero virtchnl ret val (msg: 523, ret val: 6,
+data_len: 0) (xn 523, id: 254, salt: 40, iov len: 128)
 
-00000000000047c8 <mana_smc_poll_register>:
-    47c8: d503201f        nop
-    47cc: d503201f        nop
-    47d0: d503233f        paciasp
-    47d4: f800865e        str     x30, [x18], #8
-    47d8: a9bd7bfd        stp     x29, x30, [sp, #-48]!
-    47dc: 910003fd        mov     x29, sp
-    47e0: a90153f3        stp     x19, x20, [sp, #16]
-    47e4: 91007014        add     x20, x0, #0x1c
-    47e8: 5289c413        mov     w19, #0x4e20
-    47ec: f90013f5        str     x21, [sp, #32]
-    47f0: 12001c35        and     w21, w1, #0xff
-    47f4: 14000008        b       4814 <mana_smc_poll_register+0x4c>
-    47f8: 36f801e1  tbz  w1, #31, 4834 <mana_smc_poll_register+0x6c>
-    47fc: 52800042        mov     w2, #0x2
-    4800: d280fa01        mov     x1, #0x7d0
-    4804: d2807d00        mov     x0, #0x3e8
-    4808: 94000000        bl      0 <usleep_range_state>
-    480c: 71000673        subs    w19, w19, #0x1
-    4810: 54000200        b.eq    4850 <mana_smc_poll_register+0x88>
-    4814: b9400281      ldr   w1, [x20] <-- **** CRASHED HERE *****
-    4818: d50331bf        dmb     oshld
-    481c: 2a0103e2        mov     w2, w1
-    ...
+The message looks slightly different from the log added in this patch
+because the OOT driver uses different terminology.
 
-From the crash signature x20 = ffff8000a200001b, this address
-ends in 0x1b which is not 4-byte aligned, so the 'ldr w1, [x20]'
-instruction (readl) triggers the arm64 alignment fault (FSC = 0x21).
+>
+> > Tested: Built and booted on a test machine.
+>
+> Please paste the new messages.
 
-The root cause is in mana_gd_init_vf_regs(), which computes:
+As mentioned above, I don't have a reproducer for a real virtchnl
+error in the upstream kernel, but I synthetically produced an error by
+changing ctlq_msg->chnl_retval, and the following message appeared:
 
-  gc->shm_base = gc->bar0_va + mana_gd_r64(gc, GDMA_REG_SHM_OFFSET);
+[  309.891790] idpf 0000:01:00.0: Non-zero virtchnl ret val (msg op:
+1, ret val: 6, msg_cookie: 0, data_len: 8); xn op: 1, id: 0, cookie: 0
+[  309.892357] idpf 0000:01:00.0: Transaction failed (op 1, xn state:
+3, id: 0, cookie: 0, size: 8)
 
-The offset is used without any validation.  The same problem exists
-in mana_gd_init_pf_regs() for sriov_base_off and sriov_shm_off.
+I will mention it in the v3 patch as well.
 
-Fix this by validating all offsets before use:
 
-- VF: check shm_off is within BAR0, properly aligned to 4 bytes
-  (readl requirement), and leaves room for the full 256-bit
-  (32-byte) SMC aperture.
 
-- PF: check sriov_base_off is within BAR0, aligned to 8 bytes
-  (readq requirement), and leaves room to safely read the
-  sriov_shm_off register at sriov_base_off + GDMA_PF_REG_SHM_OFF.
-  Then check sriov_shm_off leaves room for the full SMC aperture.
-  All arithmetic uses subtraction rather than addition to avoid
-  integer overflow on garbage firmware values.
-
-without validating the offset read from hardware. If the register
-returns a garbage value that is neither within bar 0 bounds nor aligned
-to the 4-byte granularity, thus causing the alignment fault.
-
-Define SMC_APERTURE_SIZE (32 bytes, derived from the 256-bit aperture
-width)
-
-Return -EPROTO on invalid values.  The existing recovery path in
-mana_serv_reset() already handles -EPROTO by falling through to PCI
-device rescan, giving the hardware another chance to present valid
-register values after reset.
-
-Fixes: 9bf66036d686 ("net: mana: Handle hardware recovery events when probing the device")
-Signed-off-by: Dipayaan Roy <dipayanroy@linux.microsoft.com>
-
----
-Changes in v2:
-- Fix sriov_base_off alignment check: sizeof(u32) to sizeof(u64), since
-  mana_gd_r64() (readq) requires 8-byte alignment on arm64.
-- Fix sriov_base_off bounds: also verify enough space remains in BAR0
-  to safely read sriov_shm_off at offset GDMA_PF_REG_SHM_OFF + 8 bytes.
-- Fix integer overflow: rewrite bounds checks using subtraction
-  (remaining = bar0_size - base) instead of addition.
-- Fix SMC aperture size: add gc->bar0_size - shm_off < SMC_APERTURE_SIZE
-  checks in both VF and PF paths; previously only the start address was
-  validated, but mana_smc_poll_register() accesses up to shm_base + 0x1c
-  (28 bytes from base, 32 bytes total).
-- Export SMC_APERTURE_SIZE to shm_channel.h.
----
- .../net/ethernet/microsoft/mana/gdma_main.c   | 40 ++++++++++++++++---
- include/net/mana/shm_channel.h                |  6 +++
- 2 files changed, 41 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-index 098fbda0d128..d8e816882f02 100644
---- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-+++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-@@ -43,8 +43,9 @@ static u64 mana_gd_r64(struct gdma_context *g, u64 offset)
- static int mana_gd_init_pf_regs(struct pci_dev *pdev)
- {
- 	struct gdma_context *gc = pci_get_drvdata(pdev);
--	void __iomem *sriov_base_va;
-+	u64 remaining_barsize;
- 	u64 sriov_base_off;
-+	u64 sriov_shm_off;
- 
- 	gc->db_page_size = mana_gd_r32(gc, GDMA_PF_REG_DB_PAGE_SIZE) & 0xFFFF;
- 
-@@ -73,10 +74,28 @@ static int mana_gd_init_pf_regs(struct pci_dev *pdev)
- 	gc->phys_db_page_base = gc->bar0_pa + gc->db_page_off;
- 
- 	sriov_base_off = mana_gd_r64(gc, GDMA_SRIOV_REG_CFG_BASE_OFF);
-+	if (sriov_base_off >= gc->bar0_size ||
-+	    gc->bar0_size - sriov_base_off <
-+		GDMA_PF_REG_SHM_OFF + sizeof(u64) ||
-+	    !IS_ALIGNED(sriov_base_off, sizeof(u64))) {
-+		dev_err(gc->dev,
-+			"SRIOV base offset 0x%llx out of range or unaligned (BAR0 size 0x%llx)\n",
-+			sriov_base_off, (u64)gc->bar0_size);
-+		return -EPROTO;
-+	}
- 
--	sriov_base_va = gc->bar0_va + sriov_base_off;
--	gc->shm_base = sriov_base_va +
--			mana_gd_r64(gc, sriov_base_off + GDMA_PF_REG_SHM_OFF);
-+	remaining_barsize = gc->bar0_size - sriov_base_off;
-+	sriov_shm_off = mana_gd_r64(gc, sriov_base_off + GDMA_PF_REG_SHM_OFF);
-+	if (sriov_shm_off >= remaining_barsize ||
-+	    remaining_barsize - sriov_shm_off < SMC_APERTURE_SIZE ||
-+	    !IS_ALIGNED(sriov_shm_off, sizeof(u32))) {
-+		dev_err(gc->dev,
-+			"SRIOV SHM offset 0x%llx out of range or unaligned (BAR0 size 0x%llx)\n",
-+			sriov_shm_off, (u64)gc->bar0_size);
-+		return -EPROTO;
-+	}
-+
-+	gc->shm_base = gc->bar0_va + sriov_base_off + sriov_shm_off;
- 
- 	return 0;
- }
-@@ -84,6 +103,7 @@ static int mana_gd_init_pf_regs(struct pci_dev *pdev)
- static int mana_gd_init_vf_regs(struct pci_dev *pdev)
- {
- 	struct gdma_context *gc = pci_get_drvdata(pdev);
-+	u64 shm_off;
- 
- 	gc->db_page_size = mana_gd_r32(gc, GDMA_REG_DB_PAGE_SIZE) & 0xFFFF;
- 
-@@ -111,7 +131,17 @@ static int mana_gd_init_vf_regs(struct pci_dev *pdev)
- 	gc->db_page_base = gc->bar0_va + gc->db_page_off;
- 	gc->phys_db_page_base = gc->bar0_pa + gc->db_page_off;
- 
--	gc->shm_base = gc->bar0_va + mana_gd_r64(gc, GDMA_REG_SHM_OFFSET);
-+	shm_off = mana_gd_r64(gc, GDMA_REG_SHM_OFFSET);
-+	if (shm_off >= gc->bar0_size ||
-+	    gc->bar0_size - shm_off < SMC_APERTURE_SIZE ||
-+	    !IS_ALIGNED(shm_off, sizeof(u32))) {
-+		dev_err(gc->dev,
-+			"SHM offset 0x%llx out of range or unaligned (BAR0 size 0x%llx)\n",
-+			shm_off, (u64)gc->bar0_size);
-+		return -EPROTO;
-+	}
-+
-+	gc->shm_base = gc->bar0_va + shm_off;
- 
- 	return 0;
- }
-diff --git a/include/net/mana/shm_channel.h b/include/net/mana/shm_channel.h
-index 5199b41497ff..dbabcfb95daf 100644
---- a/include/net/mana/shm_channel.h
-+++ b/include/net/mana/shm_channel.h
-@@ -4,6 +4,12 @@
- #ifndef _SHM_CHANNEL_H
- #define _SHM_CHANNEL_H
- 
-+#define SMC_APERTURE_BITS 256
-+#define SMC_BASIC_UNIT (sizeof(u32))
-+#define SMC_APERTURE_DWORDS (SMC_APERTURE_BITS / (SMC_BASIC_UNIT * 8))
-+#define SMC_LAST_DWORD (SMC_APERTURE_DWORDS - 1)
-+#define SMC_APERTURE_SIZE  (SMC_APERTURE_BITS / 8)
-+
- struct shm_channel {
- 	struct device *dev;
- 	void __iomem *base;
--- 
-2.43.0
-
+>
+> > Signed-off-by: Li Li <boolli@google.com>
+> > ---
+> >   drivers/net/ethernet/intel/libie/controlq.c | 15 +++++++++++++++
+> >   1 file changed, 15 insertions(+)
+> >
+> > diff --git a/drivers/net/ethernet/intel/libie/controlq.c b/drivers/net/=
+ethernet/intel/libie/controlq.c
+> > index ebc05355e39d..7eaa77413621 100644
+> > --- a/drivers/net/ethernet/intel/libie/controlq.c
+> > +++ b/drivers/net/ethernet/intel/libie/controlq.c
+> > @@ -762,6 +762,16 @@ libie_ctlq_xn_process_recv(struct libie_ctlq_xn_re=
+cv_params *params,
+> >       status =3D ctlq_msg->chnl_retval ? -EFAULT : 0;
+> >
+> >       xn =3D &xnm->ring[xn_index];
+> > +
+> > +     if (ctlq_msg->chnl_retval) {
+> > +             dev_err_ratelimited(
+> > +                     params->ctlq->dev,
+> > +                     "Non-zero virtchnl ret val (msg op: %u, ret val: =
+%u, msg_cookie: %u, data_len: %u); xn op: %u, id: %u, cookie: %u\n",
+> > +                     ctlq_msg->chnl_opcode, ctlq_msg->chnl_retval,
+> > +                     msg_cookie, ctlq_msg->data_len, xn->virtchnl_opco=
+de,
+> > +                     xn->index, xn->cookie);
+> > +     }
+> > +
+> >       if (ctlq_msg->chnl_opcode !=3D xn->virtchnl_opcode ||
+> >           msg_cookie !=3D xn->cookie)
+> >               return false;
+> > @@ -1011,6 +1021,11 @@ int libie_ctlq_xn_send(struct libie_ctlq_xn_send=
+_params *params)
+> >               params->recv_mem =3D xn->recv_mem;
+> >               break;
+> >       default:
+> > +             dev_notice_ratelimited(
+> > +                     params->ctlq->dev,
+> > +                     "Transaction failed (op %u, xn state: %d, id: %u,=
+ cookie: %u, size: %zu)\n",
+> > +                     params->chnl_opcode, xn->state, xn->index, xn->co=
+okie,
+> > +                     xn->recv_mem.iov_len);
+> >               ret =3D -EBADMSG;
+> >               break;
+> >       }
+>
+>
+> Kind regards,
+>
+> Paul
