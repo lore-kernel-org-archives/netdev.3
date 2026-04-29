@@ -1,260 +1,136 @@
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f66.google.com (mail-ot1-f66.google.com [209.85.210.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00766396B7F
-	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 16:07:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E9543FB06F
+	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 16:08:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777478880; cv=none; b=iKCZ6R563L7IpbK+REnzf1dAbx7AM41G3+AKZi3rOnc6T7f12xOVFk6cd/O40cUfL1lwCcgcukVpMyUa1ufBElRKCwtFOThlRXz50K50Zf3/qNvdtqHwvGGim4P//wZQPSUlgCgEnSCNQj/S47Q2nD7SpAbprxFXAsAf3eZFMqs=
+	t=1777478893; cv=none; b=TGKwosmNY1juvSHaamz5aoW2cgrBALDsKGDdB9JzXm8yAnuCkz0cxCS4puRStUaZ3dEBdBNI+/j7KKxJdYA1TeDTNx5rhYwfLoF7f+d2f7fjuvtRn7fj3PHnl3fvVRIO5BGstCuy1NNzqwg+OtdCz1rKiAh9Ynd+0nF0HH+nNsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777478880; c=relaxed/simple;
-	bh=sODTw4lkgTJwelczMMHcIhHau54BuPo/Fs1fFg7jQRU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=a6wUS7M46fBKpgGNo7UI5t1sG/RlHKB/cuA9wbmVOGFeyIJjho4o3126OB+6LzBeXX1eaix3hCLsEj7Q6gJOGIEfhKk6f2fL0KRDgTJNSDEwvlM3uOVFihWHdN7ta7u0mYcjx6XR3g4aqSQzG7NsB1IG4O2aekfLJmmvdZgK7mM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=UGTKI6cG; arc=none smtp.client-ip=213.133.104.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="UGTKI6cG"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References;
-	bh=aZMbzGb+0qGCpaYD2FWrtMaPjY5n8owf0RTtb4CpeQE=; b=UGTKI6cGT3ATL2Ui37mp42z9r1
-	CgSQChRT1wadYEA5JUOjFktItaA+f6YeckNetP9+SdvclGSJ0enDb+IRS0Pn+o2SVmh/P4PACkm5W
-	gEOlysRWvwuT/JCUlzYhEZpzo6Ydo10eZPgPT8K/zuNpYmvgAXjei69IxYYghu1rJnXMsqE2XlBFn
-	svHHltT12kG5T3N3WnXKWfqBR7iY6Cd8jV+ALBFr1Qr7TtXhs0HmQNE3/QOyVrTq/uOuznBRdt2AQ
-	hPgVm2S9cPgKLKL3JHPpxWa6o+76VEQRQy+kvywM31SOTWELlXgw46GTuX/pvkTX5GE7RyXjSPC4c
-	xDA5sreg==;
-Received: from localhost ([127.0.0.1])
-	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1wI77h-000DxD-1a;
-	Wed, 29 Apr 2026 17:46:49 +0200
-From: Daniel Borkmann <daniel@iogearbox.net>
-To: kuba@kernel.org
-Cc: edumazet@google.com,
-	dsahern@kernel.org,
-	tom@herbertland.com,
-	willemdebruijn.kernel@gmail.com,
-	idosch@nvidia.com,
-	pabeni@redhat.com,
-	justin.iurman@gmail.com,
-	netdev@vger.kernel.org
-Subject: [PATCH net v5] ipv6: Implement limits on extension header parsing
-Date: Wed, 29 Apr 2026 17:46:48 +0200
-Message-ID: <20260429154648.809751-1-daniel@iogearbox.net>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1777478893; c=relaxed/simple;
+	bh=CkV3UIcJhdoUQamAo7wSXIPkMsnfCDQLRf9Rws7yZ5o=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=fOHT84HcSr7SHxKTNA/kIpBzegmMb4+f59ltooo+I9s+mslPl0f+plUaawZiABSFmdNor/2k5b6nBA4d0AscaHRlJPNUsn/RHF5euTxMkTM/ieEPVeBSpvLPdGf/ApFpSInjijNYy0oc1ebKKDq3wYjc1ig0iptNVaEnBO/Psvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f66.google.com with SMTP id 46e09a7af769-7dcd9061b1aso7719523a34.2
+        for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 09:08:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777478885; x=1778083685;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:to:subject:cc:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uW0sQP+sekma1N2hzMiGd7HMv+vP1und5+yCAqWbZsE=;
+        b=QD9i8Mhzzn+qonuIqjCK1ssY9bLOV1YmmwY8P6sORsZMVJgVU+MeCDF/1T+3YbSS8u
+         hi2RIW3kE+aS53ENd5vPLU0KuLVo1JEiHk77QzU8RB5Nvp+7i5aE9dKnOWVKpM9SnjKE
+         OIrPkVZz9axbjDy99fgHDZ73nq3D0NIvxFPXQEI5NVGaxvZw8ymc4f4l7z55M1A2OUw3
+         CBWI7X4k7HqifXa67F/QLrPxiD8HXYcbfrH4x/PVMukYQCNHOyrLBL4e6a5NMLEcDblt
+         TjAvUMLEwJh08GUKRsllzu02bSfSxHYATji9G4UuHMdcyIzMTTJF2EMyGPZWgkEqtFCo
+         SCkw==
+X-Gm-Message-State: AOJu0YzN4HecrT3tLZURn8o2L8d/83EMsYPqqs4YpYPjjA2fVjPeweXf
+	5+5MHjmJy2MztkWNkeCSD76p5m0PptIrE6dftGCVfvsYauTEbygOVqPJcaWUBXAxd9Q=
+X-Gm-Gg: AeBDies1MmucKkdgKeQ6j08aL8bTsxO8+942G0qj1DZNtFphEu8xLGcySMzabYQh0NK
+	FGNiuRZqYN4KSXcTMNaXitV4CzrwaHXKj6Q67rEvobVeAd8p9qLKBXGxVa/9IO7xICaSPhdmhKR
+	4sFlB7EeN0IkBr+6sCRlZzOuAfYObwV5il/moU6Q5TcdIZdNP0DmT4OMPIg9ZKu5JJ7I3W+d648
+	B7nvMEZlmpLUmENCQKBNLBvl2Bva5UyaQLE7bhH2N6I1BBpiQ+XxOLuxBQ0LBzzidO1ofAlJrIX
+	cZHNW3obf6fHrKP9nXI+sIryz3WYQlHKrkDKwIsgtXZtjeKrY+LO5ekz8FfdryYV9sE/rzxwugO
+	6wRxcWQeylrTg2jKvyFmQZJjyUS/resAAWV4dltpzVbsDGCuGecd8KofFA8fVr1ZAl9sZq1GvUp
+	Cn47Iv9Z0QA2gL3VxDm7PymiGdhGawy557jGqAs5GIVnRxkZw6CUizArWjHtQUogrPpw==
+X-Received: by 2002:a05:6830:67cc:b0:7d7:e045:b489 with SMTP id 46e09a7af769-7dea66700f1mr2896745a34.12.1777478885133;
+        Wed, 29 Apr 2026 09:08:05 -0700 (PDT)
+Received: from [192.168.88.241] (89-24-32-159.nat.epc.tmcz.cz. [89.24.32.159])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b3ef6faf6asm27819856d6.5.2026.04.29.09.08.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 29 Apr 2026 09:08:04 -0700 (PDT)
+Message-ID: <9e8f5742-d607-4c48-a280-7fc0e425a521@ovn.org>
+Date: Wed, 29 Apr 2026 18:08:00 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: Clear (ClamAV 1.4.3/27986/Wed Apr 29 08:25:43 2026)
+User-Agent: Mozilla Thunderbird
+Cc: i.maximets@ovn.org, Aaron Conole <aconole@redhat.com>,
+ Eelco Chaudron <echaudro@redhat.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
+ Yuan Tan <tanyuan98@outlook.com>, Yang Yang <n05ec@lzu.edu.cn>,
+ dev@openvswitch.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net 2/2] selftests: openvswitch: add tests for tunnel
+ vport refcounting
+To: netdev@vger.kernel.org
+References: <20260429151756.4157670-1-i.maximets@ovn.org>
+ <20260429151756.4157670-3-i.maximets@ovn.org>
+Content-Language: en-US
+From: Ilya Maximets <i.maximets@ovn.org>
+Autocrypt: addr=i.maximets@ovn.org; keydata=
+ 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
+In-Reply-To: <20260429151756.4157670-3-i.maximets@ovn.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-ipv6_{skip_exthdr,find_hdr}() and ip6_{tnl_parse_tlv_enc_lim,
-protocol_deliver_rcu}() iterate over IPv6 extension headers until they
-find a non-extension-header protocol or run out of packet data. The
-loops have no iteration counter, relying solely on the packet length
-to bound them. For a crafted packet with 8-byte extension headers
-filling a 64KB jumbogram, this means a worst case of up to ~8k
-iterations with a skb_header_pointer call each. ipv6_skip_exthdr(),
-for example, is used where it parses the inner quoted packet inside
-an incoming ICMPv6 error:
+On 4/29/26 5:16 PM, Ilya Maximets wrote:
+> There were a few issues found with the tunnel vport types around the
+> vport destruction code.  Add some basic tests, so at least we know that
+> they can be properly added and removed without obvious issues.
+> 
+> The test creates OVS datapath, adds a non-LWT tunnel port, makes sure
+> they are created, and then removes the datapath and waits for all the
+> ports to be gone.
+> 
+> The dpctl script had a few bugs in the none-lwt tunnel creation code,
+> so fixing them as well to make the testing possible:
+> - The type of the --lwt option changed in order to properly disable it.
+> - Removed byte order conversion for the port numbers, as the value
+>   supposed to be in the host order.
 
-  - icmpv6_rcv
-    - checksum validation
-    - case ICMPV6_DEST_UNREACH
-      - icmpv6_notify
-        - pskb_may_pull()       <- pull inner IPv6 header
-        - ipv6_skip_exthdr()    <- iterates here
-        - pskb_may_pull()
-        - ipprot->err_handler() <- sk lookup
+Hrm, forgot to remove the import for socket library that is now unused.
+Can send a v2 with that once I get some reviews on the set.
 
-The per-iteration cost of ipv6_skip_exthdr itself is generally
-light, but skb_header_pointer becomes more costly on reassembled
-packets: the first ~1232 bytes of the inner packet are in the skb's
-linear area, but the remaining ~63KB are in the frag_list where
-skb_copy_bits is needed to read data.
-
-Initially, the idea was to add a configurable limit via a new
-sysctl knob with default 8, in line with knobs from commit
-47d3d7ac656a ("ipv6: Implement limits on Hop-by-Hop and Destination
-options"), but two reasons eventually argued against it:
-
-- It adds to UAPI that needs to be maintained forever, and
-  upcoming work is restricting extension header ordering anyway,
-  leaving little reason for another sysctl knob
-- exthdrs_core.c is always built-in even when CONFIG_IPV6=n,
-  where struct net has no .ipv6 member, so the read site would
-  need an ifdef'd fallback to a constant anyway
-
-Therefore, just use a constant (IP6_MAX_EXT_HDRS_CNT). All four
-extension header walking functions are now bound by this limit.
-
-Note that the check in ip6_protocol_deliver_rcu() happens right
-before the goto resubmit, such that we don't have to have a test
-for ipv6_ext_hdr() in the fast-path.
-
-There's an ongoing IETF draft-iurman-6man-eh-occurrences to enforce
-IPv6 extension headers ordering and occurrence. The latter also
-discusses security implications. As per RFC8200 section 4.1, the
-occurrence rules for extension headers provide a practical upper
-bound which is 8. In order to be conservative, let's define
-IP6_MAX_EXT_HDRS_CNT as 12 to leave enough room for quirky setups.
-In the unlikely event that this is still not enough, then we might
-need to reconsider a sysctl.
-
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
----
- v4->v5:
-   - Reduce the hard-coded limit from 32 to 12 (Justin)
-   - Rest as-is
- v3->v4:
-   - Switching to hard-coded define with 32 limit as discussed
-     earlier, otherwise fixing the kbuild-bot error becomes
-     to ugly.. was worth a try, but given the case of being
-     built-in also with CONFIG_IPV6=n define seems better
-     (Justin, Victor, kbuild-bot)
- v2->v3:
-   - Adding IP6SKB_HOPBYHOP coverage (Justin)
-   - I left the limit at 8 w/ sysctl, still feels the better
-     option to me if we can keep the worst-case more tightened
- v1->v2:
-   - Set the default to 8 (Justin)
-   - Update IETF references (Justin)
-   - Add core path coverage as well (Justin)
-
- include/net/dropreason-core.h | 6 ++++++
- include/net/ipv6.h            | 3 +++
- net/ipv6/exthdrs_core.c       | 7 +++++++
- net/ipv6/ip6_input.c          | 5 +++++
- net/ipv6/ip6_tunnel.c         | 4 ++++
- 5 files changed, 25 insertions(+)
-
-diff --git a/include/net/dropreason-core.h b/include/net/dropreason-core.h
-index e0ca3904ff8e..2f312d1f67d6 100644
---- a/include/net/dropreason-core.h
-+++ b/include/net/dropreason-core.h
-@@ -99,6 +99,7 @@
- 	FN(FRAG_TOO_FAR)		\
- 	FN(TCP_MINTTL)			\
- 	FN(IPV6_BAD_EXTHDR)		\
-+	FN(IPV6_TOO_MANY_EXTHDRS)	\
- 	FN(IPV6_NDISC_FRAG)		\
- 	FN(IPV6_NDISC_HOP_LIMIT)	\
- 	FN(IPV6_NDISC_BAD_CODE)		\
-@@ -494,6 +495,11 @@ enum skb_drop_reason {
- 	SKB_DROP_REASON_TCP_MINTTL,
- 	/** @SKB_DROP_REASON_IPV6_BAD_EXTHDR: Bad IPv6 extension header. */
- 	SKB_DROP_REASON_IPV6_BAD_EXTHDR,
-+	/**
-+	 * @SKB_DROP_REASON_IPV6_TOO_MANY_EXTHDRS: Number of IPv6 extension
-+	 * headers in the packet exceeds IP6_MAX_EXT_HDRS_CNT.
-+	 */
-+	SKB_DROP_REASON_IPV6_TOO_MANY_EXTHDRS,
- 	/** @SKB_DROP_REASON_IPV6_NDISC_FRAG: invalid frag (suppress_frag_ndisc). */
- 	SKB_DROP_REASON_IPV6_NDISC_FRAG,
- 	/** @SKB_DROP_REASON_IPV6_NDISC_HOP_LIMIT: invalid hop limit. */
-diff --git a/include/net/ipv6.h b/include/net/ipv6.h
-index d042afe7a245..1dec81faff28 100644
---- a/include/net/ipv6.h
-+++ b/include/net/ipv6.h
-@@ -90,6 +90,9 @@ struct ip_tunnel_info;
- #define IP6_DEFAULT_MAX_DST_OPTS_LEN	 INT_MAX /* No limit */
- #define IP6_DEFAULT_MAX_HBH_OPTS_LEN	 INT_MAX /* No limit */
- 
-+/* Hard limit on traversed IPv6 extension headers */
-+#define IP6_MAX_EXT_HDRS_CNT		 12
-+
- /*
-  *	Addr type
-  *	
-diff --git a/net/ipv6/exthdrs_core.c b/net/ipv6/exthdrs_core.c
-index 49e31e4ae7b7..9d06d487e8b1 100644
---- a/net/ipv6/exthdrs_core.c
-+++ b/net/ipv6/exthdrs_core.c
-@@ -73,6 +73,7 @@ int ipv6_skip_exthdr(const struct sk_buff *skb, int start, u8 *nexthdrp,
- 		     __be16 *frag_offp)
- {
- 	u8 nexthdr = *nexthdrp;
-+	int exthdr_cnt = 0;
- 
- 	*frag_offp = 0;
- 
-@@ -82,6 +83,8 @@ int ipv6_skip_exthdr(const struct sk_buff *skb, int start, u8 *nexthdrp,
- 
- 		if (nexthdr == NEXTHDR_NONE)
- 			return -1;
-+		if (unlikely(exthdr_cnt++ >= IP6_MAX_EXT_HDRS_CNT))
-+			return -1;
- 		hp = skb_header_pointer(skb, start, sizeof(_hdr), &_hdr);
- 		if (!hp)
- 			return -1;
-@@ -190,6 +193,7 @@ int ipv6_find_hdr(const struct sk_buff *skb, unsigned int *offset,
- {
- 	unsigned int start = skb_network_offset(skb) + sizeof(struct ipv6hdr);
- 	u8 nexthdr = ipv6_hdr(skb)->nexthdr;
-+	int exthdr_cnt = 0;
- 	bool found;
- 
- 	if (fragoff)
-@@ -216,6 +220,9 @@ int ipv6_find_hdr(const struct sk_buff *skb, unsigned int *offset,
- 			return -ENOENT;
- 		}
- 
-+		if (unlikely(exthdr_cnt++ >= IP6_MAX_EXT_HDRS_CNT))
-+			return -EBADMSG;
-+
- 		hp = skb_header_pointer(skb, start, sizeof(_hdr), &_hdr);
- 		if (!hp)
- 			return -EBADMSG;
-diff --git a/net/ipv6/ip6_input.c b/net/ipv6/ip6_input.c
-index 967b07aeb683..8972863c93ee 100644
---- a/net/ipv6/ip6_input.c
-+++ b/net/ipv6/ip6_input.c
-@@ -403,6 +403,7 @@ INDIRECT_CALLABLE_DECLARE(int tcp_v6_rcv(struct sk_buff *));
- void ip6_protocol_deliver_rcu(struct net *net, struct sk_buff *skb, int nexthdr,
- 			      bool have_final)
- {
-+	int exthdr_cnt = IP6CB(skb)->flags & IP6SKB_HOPBYHOP ? 1 : 0;
- 	const struct inet6_protocol *ipprot;
- 	struct inet6_dev *idev;
- 	unsigned int nhoff;
-@@ -487,6 +488,10 @@ void ip6_protocol_deliver_rcu(struct net *net, struct sk_buff *skb, int nexthdr,
- 				nexthdr = ret;
- 				goto resubmit_final;
- 			} else {
-+				if (unlikely(exthdr_cnt++ >= IP6_MAX_EXT_HDRS_CNT)) {
-+					SKB_DR_SET(reason, IPV6_TOO_MANY_EXTHDRS);
-+					goto discard;
-+				}
- 				goto resubmit;
- 			}
- 		} else if (ret == 0) {
-diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-index c468c83af0f2..9d1037ac082f 100644
---- a/net/ipv6/ip6_tunnel.c
-+++ b/net/ipv6/ip6_tunnel.c
-@@ -399,11 +399,15 @@ __u16 ip6_tnl_parse_tlv_enc_lim(struct sk_buff *skb, __u8 *raw)
- 	unsigned int nhoff = raw - skb->data;
- 	unsigned int off = nhoff + sizeof(*ipv6h);
- 	u8 nexthdr = ipv6h->nexthdr;
-+	int exthdr_cnt = 0;
- 
- 	while (ipv6_ext_hdr(nexthdr) && nexthdr != NEXTHDR_NONE) {
- 		struct ipv6_opt_hdr *hdr;
- 		u16 optlen;
- 
-+		if (unlikely(exthdr_cnt++ >= IP6_MAX_EXT_HDRS_CNT))
-+			break;
-+
- 		if (!pskb_may_pull(skb, off + sizeof(*hdr)))
- 			break;
- 
--- 
-2.43.0
-
+Best regards, Ilya Maximets.
