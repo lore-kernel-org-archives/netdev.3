@@ -1,131 +1,90 @@
-Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90ED13F54B7
-	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 11:57:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E8FD39099B
+	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 12:01:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777463841; cv=none; b=LTMA3bd4IKDjP6mxusahdLnzPuWOyc/oczBUaMJc3Z2DxrdfEqbB84iomcvQK3K/mtYLGLrvH/fnSMLp6jtsbGhUYDGrQhCGCNztC3tCaAhy5ipWDwjn/ETKRfD2CiQvbVbmQX23jDC83Y69p5fEeRfRhdmrYhAEDSfD9lzv9Po=
+	t=1777464068; cv=none; b=WL4dlBccucADsoxk7bJZu8bh7KtHMU6QA54t9oFIHdKPULa2li92CmSvxTlqcH9o2KlbpSQLQ6yH72xaM8oFStJMjJ5p/dASb8C5FWMXKHXTBVbkq1yxorLy8XNVqF9cYiUHXIlW3XuERkbmQRBe2z0mqcP/BCzJcviHKRUE+JU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777463841; c=relaxed/simple;
-	bh=f+r2nKtk4YPwX0yTAujy/TEKAPTpBTvALCr9xgGAfhU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FxYp2NJWTurUEjqpO9LT/96LwyE0JMYAczdTRaRuzenYk+AnkzUh81cH1D+4EhrJjmaDSkA5MfDXMpkyDEpjWb2DzOuRhRiaClDGTGcZfQu6mznO0FLqsnBiczE/r1IedDo3hBQckFyq74ogG+CG/uwELx6kI4W4YqUPXLptTK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=fPLNGDa2; arc=none smtp.client-ip=95.215.58.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1777464068; c=relaxed/simple;
+	bh=itr8NWOHQ6V8gxzf86xpcySPtZbv4JBsseEIXm5Jbts=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=KmMKpAW48tqZ/bWLUhMqzjoHiNYi2VAfDiC7Zpe6fKqiZeBzQ8/f6JUGWixZN6uewgtyf2ssBjQynxYyGcg+9Oe6y7W3O3BsbFixMNUu5Hp4sgGwxj7zV2BsbLCDt4K8uxCB+BzEe+k7DEOyREtBl5d5OD1fb7DoJegLQqwINBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RnnXKcd4; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="fPLNGDa2"
-Message-ID: <c0427810-3727-4cf0-b4c2-c8aeba3078df@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777463836;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RnnXKcd4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777464066;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=RpPWUY5XPwzD7ekD3H25/ZLvnnu8rqLnb/pYTK7ozDM=;
-	b=fPLNGDa2kVNpWfEcdNnGc+EXRRZayprA1EyOMns5LrnD8taCVHKoanbgV0IvpTD9EQJnvK
-	OWOsVg9T8RNb/q96yEexECOv8UTxZnmpp7O+HlT27rukY/XPytFTkvr7zHgdJZ7jidJHd6
-	MgIWWRiGobnbLYwUthKvGLoLhKX6izg=
-Date: Wed, 29 Apr 2026 12:57:02 +0100
+	bh=itr8NWOHQ6V8gxzf86xpcySPtZbv4JBsseEIXm5Jbts=;
+	b=RnnXKcd4cSlQ44bQIMP+PEI/llzE0Kqve0kImxTCXVOej74aPieK9dDeRP++mWFqv2gQt9
+	DAgGOqd2Hk8WX0aWo5BaBBYSAesdaOjRfB0Yil6eDsx4LiLCOgqJEzAzTDDFdgPS/fxfbi
+	IeixB0y1KImjl1UiB8kGcl3ffuYbFhY=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-251-1K6ZWJ6kO1qRKGz_ssUZRQ-1; Wed,
+ 29 Apr 2026 08:00:57 -0400
+X-MC-Unique: 1K6ZWJ6kO1qRKGz_ssUZRQ-1
+X-Mimecast-MFC-AGG-ID: 1K6ZWJ6kO1qRKGz_ssUZRQ_1777464054
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4E300180036E;
+	Wed, 29 Apr 2026 12:00:54 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.44.32.45])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 23490195608E;
+	Wed, 29 Apr 2026 12:00:48 +0000 (UTC)
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+To: aleksandr.loktionov@intel.com
+Cc: anthony.l.nguyen@intel.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	horms@kernel.org,
+	intel-wired-lan@lists.osuosl.org,
+	jacob.e.keller@intel.com,
+	jesse.brandeburg@intel.com,
+	jtornosm@redhat.com,
+	kuba@kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	przemyslaw.kitszel@intel.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net v5 3/4] iavf: send MAC change request synchronously
+Date: Wed, 29 Apr 2026 14:00:47 +0200
+Message-ID: <20260429120047.218369-1-jtornosm@redhat.com>
+In-Reply-To: <IA3PR11MB89861527E138BBA14FA907DCE5342@IA3PR11MB8986.namprd11.prod.outlook.com>
+References: <IA3PR11MB89861527E138BBA14FA907DCE5342@IA3PR11MB8986.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net] net: tls: fix strparser anchor skb leak on offload RX
- setup failure
-To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
-Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
- andrew+netdev@lunn.ch, horms@kernel.org, john.fastabend@gmail.com,
- sd@queasysnail.net
-References: <20260428231559.1358502-1-kuba@kernel.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <20260428231559.1358502-1-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-On 29/04/2026 00:15, Jakub Kicinski wrote:
-> When tls_set_device_offload_rx() fails at tls_dev_add(), the error path
-> calls tls_sw_free_resources_rx() to clean up the SW context that was
-> initialized by tls_set_sw_offload(). This function calls
-> tls_sw_release_resources_rx() (which stops the strparser via
-> tls_strp_stop()) and tls_sw_free_ctx_rx() (which kfrees the context),
-> but never frees the anchor skb that was allocated by alloc_skb(0) in
-> tls_strp_init().
-> 
-> Note that tls_sw_free_resources_rx() is exclusively used for this
-> "failed to start offload" code path, there's no other caller.
-> 
-> The leak did not exist before commit 84c61fe1a75b ("tls: rx: do not use
-> the standard strparser"), because the standard strparser doesn't try
-> to pre-allocate an skb.
-> 
-> The normal close path in tls_sk_proto_close() handles cleanup by calling
-> tls_sw_strparser_done() (which calls tls_strp_done()) after dropping
-> the socket lock, because tls_strp_done() does cancel_work_sync() and
-> the strparser work handler takes the socket lock.
-> 
-> Fixes: 84c61fe1a75b ("tls: rx: do not use the standard strparser")
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
-> CC: john.fastabend@gmail.com
-> CC: sd@queasysnail.net
-> ---
->   net/tls/tls.h      | 1 +
->   net/tls/tls_strp.c | 6 ++++++
->   net/tls/tls_sw.c   | 4 ++++
->   3 files changed, 11 insertions(+)
-> 
-> diff --git a/net/tls/tls.h b/net/tls/tls.h
-> index e8f81a006520..12f44cb649c9 100644
-> --- a/net/tls/tls.h
-> +++ b/net/tls/tls.h
-> @@ -188,6 +188,7 @@ int tls_strp_dev_init(void);
->   void tls_strp_dev_exit(void);
->   
->   void tls_strp_done(struct tls_strparser *strp);
-> +void __tls_strp_done(struct tls_strparser *strp);
->   void tls_strp_stop(struct tls_strparser *strp);
->   int tls_strp_init(struct tls_strparser *strp, struct sock *sk);
->   void tls_strp_data_ready(struct tls_strparser *strp);
-> diff --git a/net/tls/tls_strp.c b/net/tls/tls_strp.c
-> index 98e12f0ff57e..c72e88317627 100644
-> --- a/net/tls/tls_strp.c
-> +++ b/net/tls/tls_strp.c
-> @@ -624,6 +624,12 @@ void tls_strp_done(struct tls_strparser *strp)
->   	WARN_ON(!strp->stopped);
->   
->   	cancel_work_sync(&strp->work);
-> +	__tls_strp_done(strp);
-> +}
-> +
-> +/* For setup error paths where the strparser was initialized but never armed. */
-> +void __tls_strp_done(struct tls_strparser *strp)
-> +{
->   	tls_strp_anchor_free(strp);
->   }
->   
-> diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-> index 94d2ae0daa8c..798243eabb1f 100644
-> --- a/net/tls/tls_sw.c
-> +++ b/net/tls/tls_sw.c
-> @@ -2624,8 +2624,12 @@ void tls_sw_free_ctx_rx(struct tls_context *tls_ctx)
->   void tls_sw_free_resources_rx(struct sock *sk)
->   {
->   	struct tls_context *tls_ctx = tls_get_ctx(sk);
-> +	struct tls_sw_context_rx *ctx;
-> +
-> +	ctx = tls_sw_ctx_rx(tls_ctx);
->   
->   	tls_sw_release_resources_rx(sk);
-> +	__tls_strp_done(&ctx->strp);
->   	tls_sw_free_ctx_rx(tls_ctx);
->   }
->   
+Hello Aleksandr,
 
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+> I think continue at the end of the cycle is redundant.
+That continue is intentional; without it, if timeout expires but there
+are still messages in the queue, we give up without processing them. The
+message we're waiting for might be in the queue and not a lot of messages
+stored are expected.
+That continue reduces possible false timeouts (because the expected message
+could be stored in the queue) while keeping the delay minimal.
+The timeout is really just an estimate, and I don't think it needs
+to be very precise.
+
+Thanks
+
+Best regards
+Jose Ignacio
+
