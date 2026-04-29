@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41763D3D06
-	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 10:25:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA14B26A1AF
+	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 10:25:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777458316; cv=none; b=tVnVojplUi4nQrnlE04TJd+XqS34O/FCnEQuWl5pL1Ue3yFm6E/Nk+qVW2ttgRPApSkSc7BdXjHF5SweZLeVWWguvUSFZsdox9AAFQi2q9lJE8JHzrcImn5jbAx0w+B+jAi9RzYrhGcv36XnjMiF0OlKH4w1qRuH/pCi1iXt8Ek=
+	t=1777458324; cv=none; b=tobyUL0p2TV81jIKLewNRVOPUJ4Q09vIZn5mObksmuLPgRIYRwEXfzpQrj/piD0EJl+Ybswx6p+DqpMcUh9lllUKUCIJjU1gi9qrI9CJ8qGpHNByVTv6LU1gu5DLF3RGoKPpU+WApk6SfJ6LWwf7MM1Gd3zdmVGTM+wZZJ+bYQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777458316; c=relaxed/simple;
-	bh=sQQU+qBfwb4nkuhptlJ7tG2yglvb4gUseYG4UTPShqE=;
+	s=arc-20240116; t=1777458324; c=relaxed/simple;
+	bh=+BIXZ8bMGmprfrdSn4TIfTCdmNPNH2uBfeXZPvi7JXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PHFcpipBZggvpuHXmtKfG1rGf12YPkpEzde2rlCMAYHzVsTCIHexT57yILSKBvagh/yuDq1LGI4g10gXdVcuphmVQpRA2zPCgZOfR1kxF8gGogrA7FiXDbW8gVD3fkEGVenFaiyBrHZL3I+ACT/eXZmhziwx84EK6gsuef4c/rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MAa0tgsg; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=TPBT9LXC97FKusCrpz1wg/+NzFXKN5UEM7jrR7olrzdv4nQ62zzIzhcAI5oXCJ3ol1OOJu7p4fhmhRYdLDoqC0h+d2sJovBaz3tAyy0IkAOlutVMOQCeuYrm+JDAAQYoqmpxooBVd+tPT+/CHuUTTPpjYISv9OyhgEEmAIJjPFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cVjXuVU7; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MAa0tgsg"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cVjXuVU7"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777458310;
+	s=mimecast20190719; t=1777458321;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=yTpL5wJR/2IpBuHxEHXZPXPdI76PJuWOkbsqVNAGeqg=;
-	b=MAa0tgsg+U/IIg0M8FoQOfT6nU9x91ZFEnjkzeE1+xZ7+UobdzhhJDNbgrj0mUeXWZYV2Y
-	bzME5/ppDgBFNsiaV5BcCb97alZ7LHXR34Vi1WaBwh6ZKB+pofrS6ykclpImyI+0CMhhXt
-	5nV2urt9eF89RUfM720SsbYGJ9h7dQY=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+	bh=wFXSuTbArLWA6KgK84tVAXunsrSDHkBByEg9Ue3Lwfs=;
+	b=cVjXuVU7cQQe+FiTgd6zm2KKf6qyVMxlCORCVc7uI4k5oxuQK6gu5RUBl6xCPVMRx+ytvc
+	4jv3fkpiH7e8i68C/8fqEXPmKT8SuykGXCHWsO18A+PNROmvtHEpoKAyErDLCFWZylwNOL
+	aX+Kw02g0fADix+E9TCEqG98j19wbHI=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-312-NXrLFJamOQegshwmHEFSZw-1; Wed,
- 29 Apr 2026 06:25:04 -0400
-X-MC-Unique: NXrLFJamOQegshwmHEFSZw-1
-X-Mimecast-MFC-AGG-ID: NXrLFJamOQegshwmHEFSZw_1777458298
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-133-Jg18yUZpOsORwEPjjFjR5w-1; Wed,
+ 29 Apr 2026 06:25:16 -0400
+X-MC-Unique: Jg18yUZpOsORwEPjjFjR5w-1
+X-Mimecast-MFC-AGG-ID: Jg18yUZpOsORwEPjjFjR5w_1777458314
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 867F6180034B;
-	Wed, 29 Apr 2026 10:24:58 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C2C381800366;
+	Wed, 29 Apr 2026 10:25:14 +0000 (UTC)
 Received: from fedora.redhat.com (unknown [10.44.32.45])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id ABD0A1800446;
-	Wed, 29 Apr 2026 10:24:53 +0000 (UTC)
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 421881800446;
+	Wed, 29 Apr 2026 10:25:09 +0000 (UTC)
 From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 To: netdev@vger.kernel.org
 Cc: intel-wired-lan@lists.osuosl.org,
@@ -56,9 +56,9 @@ Cc: intel-wired-lan@lists.osuosl.org,
 	kuba@kernel.org,
 	pabeni@redhat.com,
 	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Subject: [PATCH net v5 2/4] i40e: skip unnecessary VF reset when setting trust
-Date: Wed, 29 Apr 2026 12:24:24 +0200
-Message-ID: <20260429102426.210750-3-jtornosm@redhat.com>
+Subject: [PATCH net v5 4/4] ice: skip unnecessary VF reset when setting trust
+Date: Wed, 29 Apr 2026 12:24:26 +0200
+Message-ID: <20260429102426.210750-5-jtornosm@redhat.com>
 In-Reply-To: <20260429102426.210750-1-jtornosm@redhat.com>
 References: <20260429102426.210750-1-jtornosm@redhat.com>
 Precedence: bulk
@@ -70,47 +70,60 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-The current implementation triggers a VF reset when changing the trust
-setting, causing a ~10 second delay during bonding setup.
+Similar to the i40e fix, ice_set_vf_trust() unconditionally calls
+ice_reset_vf() when the trust setting changes. While the delay is smaller
+than i40e this reset is still unnecessary in most cases.
 
-In all the cases, the reset causes a ~10 second delay during which:
-- VF must reinitialize completely
-- Any in-progress operations (like bonding enslave) fail with timeouts
-- VF is unavailable
+Additionally, the original code has a race condition: it deletes MAC LLDP
+filters BEFORE resetting the VF. During this deletion, the VF is still
+ACTIVE and can add new MAC LLDP filters concurrently, potentially
+corrupting the filter list.
 
 When granting trust, no reset is needed - we can just set the capability
 flag to allow privileged operations.
 
 When revoking trust, we only need to reset (conservative approach) if
 the VF has actually configured advanced features that require cleanup
-(ADQ/cloud filters, promiscuous mode). For VFs in a clean state, we can
+(MAC LLDP filters, promiscuous mode). For VFs in a clean state, we can
 safely change the trust setting without the disruptive reset.
+
+When we do reset (MAC LLDP case), we fix the race condition by resetting
+first to clear VF state (which blocks new MAC LLDP filter additions), then
+delete existing filters safely. During cleanup, vf->trusted remains true so
+ice_vf_is_lldp_ena() works properly. Only after cleanup do we set
+vf->trusted = false.
 
 When we don't reset, we manually handle capability flag via helper
 function, eliminating the delay.
 
+Fixes: 2296345416b0 ("ice: receive LLDP on trusted VFs")
 Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 ---
-v5: kdoc should end with '*/' not '**/' (new function)
-    Address AI review (sashiko.dev) from Simon Horman:
-    -  Adopt a conservative approach checking multiple conditions before
-       skipping reset: ADQ, cloud filters, promiscuous mode
-    - Simplify helper function to only handle capability flag
-v4: https://lore.kernel.org/all/20260423130405.139568-3-jtornosm@redhat.com/
+v5 Address the comments from Aleksandr Loktionov:
+   - Error handling when ice_setup_vf_trust is called is not necessary
+     because ice_vf_clear_all_promisc_modes is not used due to the
+     conservative approach to solve AI tool review concerns 
+   - kdoc should end with '*/' not '**/' (new function)
+   Address AI review (sashiko.dev) from Simon Horman:
+   - Adopt a conservative approach checking multiple conditions before
+     skipping reset: MAC LLDP filters, promiscuous mode
+   - Simplify helper function to only handle capability flag
+   - No need to export ice_vf_clear_all_promisc_modes
+v4: https://lore.kernel.org/all/20260423130405.139568-5-jtornosm@redhat.com/
 
- .../ethernet/intel/i40e/i40e_virtchnl_pf.c    | 38 ++++++++++++++-----
- 1 file changed, 28 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_sriov.c | 33 +++++++++++++++++++---
+ 1 file changed, 29 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-index a26c3d47ec15..0cc434b26eb8 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -4943,6 +4943,23 @@ int i40e_ndo_set_vf_spoofchk(struct net_device *netdev, int vf_id, bool enable)
- 	return ret;
+diff --git a/drivers/net/ethernet/intel/ice/ice_sriov.c b/drivers/net/ethernet/intel/ice/ice_sriov.c
+index 7e00e091756d..3c64ed1b41a8 100644
+--- a/drivers/net/ethernet/intel/ice/ice_sriov.c
++++ b/drivers/net/ethernet/intel/ice/ice_sriov.c
+@@ -1364,6 +1364,23 @@ int ice_set_vf_mac(struct net_device *netdev, int vf_id, u8 *mac)
+ 	return __ice_set_vf_mac(ice_netdev_to_pf(netdev), vf_id, mac);
  }
  
 +/**
-+ * i40e_setup_vf_trust - Enable/disable VF trust mode without reset
++ * ice_setup_vf_trust - Enable/disable VF trust mode without reset
 + * @vf: VF to configure
 + * @setting: trust setting
 + *
@@ -118,48 +131,41 @@ index a26c3d47ec15..0cc434b26eb8 100644
 + * This is only called when it's safe to skip the reset (VF has no advanced
 + * features configured that need cleanup).
 + */
-+static void i40e_setup_vf_trust(struct i40e_vf *vf, bool setting)
++static void ice_setup_vf_trust(struct ice_vf *vf, bool setting)
 +{
 +	if (setting)
-+		set_bit(I40E_VIRTCHNL_VF_CAP_PRIVILEGE, &vf->vf_caps);
++		set_bit(ICE_VIRTCHNL_VF_CAP_PRIVILEGE, &vf->vf_caps);
 +	else
-+		clear_bit(I40E_VIRTCHNL_VF_CAP_PRIVILEGE, &vf->vf_caps);
++		clear_bit(ICE_VIRTCHNL_VF_CAP_PRIVILEGE, &vf->vf_caps);
 +}
 +
  /**
-  * i40e_ndo_set_vf_trust
-  * @netdev: network interface device structure of the pf
-@@ -4987,19 +5004,20 @@ int i40e_ndo_set_vf_trust(struct net_device *netdev, int vf_id, bool setting)
- 	set_bit(__I40E_MACVLAN_SYNC_PENDING, pf->state);
- 	pf->vsi[vf->lan_vsi_idx]->flags |= I40E_VSI_FLAG_FILTER_CHANGED;
+  * ice_set_vf_trust
+  * @netdev: network interface device structure
+@@ -1399,11 +1416,19 @@ int ice_set_vf_trust(struct net_device *netdev, int vf_id, bool trusted)
  
--	i40e_vc_reset_vf(vf, true);
-+	/* Reset only if revoking trust and VF has advanced features configured */
-+	if (!setting &&
-+	    (vf->adq_enabled || vf->num_cloud_filters > 0 ||
-+	     test_bit(I40E_VF_STATE_UC_PROMISC, &vf->vf_states) ||
-+	     test_bit(I40E_VF_STATE_MC_PROMISC, &vf->vf_states))) {
-+		i40e_vc_reset_vf(vf, true);
-+		i40e_del_all_cloud_filters(vf);
-+	} else {
-+		i40e_setup_vf_trust(vf, setting);
-+	}
-+
- 	dev_info(&pf->pdev->dev, "VF %u is now %strusted\n",
- 		 vf_id, setting ? "" : "un");
+ 	mutex_lock(&vf->cfg_lock);
  
--	if (vf->adq_enabled) {
--		if (!vf->trusted) {
--			dev_info(&pf->pdev->dev,
--				 "VF %u no longer Trusted, deleting all cloud filters\n",
--				 vf_id);
--			i40e_del_all_cloud_filters(vf);
--		}
--	}
+-	while (!trusted && vf->num_mac_lldp)
+-		ice_vf_update_mac_lldp_num(vf, ice_get_vf_vsi(vf), false);
 -
- out:
- 	clear_bit(__I40E_VIRTCHNL_OP_PENDING, pf->state);
- 	return ret;
++	/* Reset only if revoking trust and VF has advanced features configured */
++	if (!trusted &&
++	    (vf->num_mac_lldp > 0 ||
++	     test_bit(ICE_VF_STATE_UC_PROMISC, vf->vf_states) ||
++	     test_bit(ICE_VF_STATE_MC_PROMISC, vf->vf_states))) {
++		ice_reset_vf(vf, ICE_VF_RESET_NOTIFY);
++		while (vf->num_mac_lldp)
++			ice_vf_update_mac_lldp_num(vf, ice_get_vf_vsi(vf), false);
++	} else {
++		ice_setup_vf_trust(vf, trusted);
++	}
+ 	vf->trusted = trusted;
+-	ice_reset_vf(vf, ICE_VF_RESET_NOTIFY);
++
+ 	dev_info(ice_pf_to_dev(pf), "VF %u is now %strusted\n",
+ 		 vf_id, trusted ? "" : "un");
+ 
 -- 
 2.53.0
 
