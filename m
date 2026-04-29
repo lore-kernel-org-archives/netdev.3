@@ -1,203 +1,137 @@
-Received: from mail-wr1-f65.google.com (mail-wr1-f65.google.com [209.85.221.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 761E037CD2A
-	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 15:18:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EC1437C10C
+	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 15:18:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777475895; cv=none; b=CGab95rIeBWdLSLkNzc3y/CsPU1aS5s7V81bfv+pIdcJP+PQ2lgGvPGIWDkhx4QR3rFFY2DyKdoKK2LUDXCeuiLY/ACmSKP2maFgKVsvXIRlHVAONRkQzJtjlRM7Y8IZ0xJB9RqJDwl7bxjtRrB3RPpj/jtDLRRWbkXZy3oxYjk=
+	t=1777475901; cv=none; b=q2efK/bBw0ZJydBVLAJ2dBhb8tNxuZYyJfhPMrdOLLL2ME4ru/pn9jcl4WhLLMP2yjqbsSzHZZFF5ct6KgWFKlfJfalNtRUIaOHfpE85issndatP+bibfqc0zlATG05vXNuxbR8/1GRNK+X2yRuahvAFSsf96NnuyKjaroJe9Ks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777475895; c=relaxed/simple;
-	bh=SCCuZca09OdAS3knl33zqAdII8RwnJ+xs+WR0FRDVV0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qjPjkVOc23QszWUqdCM9N0QckxeABBovk5wDOsK5rAldqRRRvapeKCQU6izFFhWEcTGYON9pbglQE74qlz2bFfKRSWRKTXJdRbDdLYIjCLfEYfW1YMSkNZB57+qD0J4O/ojM7eGQGccu6ERrV6Yh6Ismgurf3m1ku+gddPg+8mM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f65.google.com with SMTP id ffacd0b85a97d-43cfd832155so9311523f8f.1
-        for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 08:18:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777475891; x=1778080691;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=hJJfrQeEaqhpRK/hzlkX5+ypxVhHeghBlozgM+ehlX8=;
-        b=AIYTvmOEW05a60V0eo0faMrkNh141bZao2bWdFIplLjeQT8Q6UaXTNPdTUcLXQRxGZ
-         ozz0ZmJCA73oWtfN6SJu+quoVd8uHKWBdUKfGgSFE3tfdiMFoG27sOcb4Kz6K1QVTjEO
-         CqpbXJFARLn7pqJu7CEBwLoadrnp2sNj36gsraqHLQhQhj7Gtiqvn1jL9TqouKM/+AHB
-         2UOpl/Ix46TTBAx9ackF8CjIj0pwPywG6pe0TorQ1DyZauDNbA6H2Rp7hYUyClJ1AJnO
-         nasggBgOcMqQmx1oq66gYPRN6OqPgX8iLHv0NmSell4zWmEid34CMUges7teIZ9sZvem
-         Qqdw==
-X-Gm-Message-State: AOJu0YzBt6/nHqHYrDkGrsdcx9vlGbxW7gvULndz2lAW0wix3E9xKorS
-	slDhdBzZbg+CprH9AQxWblAIFTjiP8iocOVtFaFk+KsD76vBti/0SiSrYUiAWX5Ggjg=
-X-Gm-Gg: AeBDievBx2G1iZ9jRtH2Kcsei59fukrE+YLBY8WGyFvMKt40v2EXu3smX54iv7qgfry
-	iqpabSUiQl7Gyfw0hcrh5N1S/HBr+zkR+lmtljs6jXnuMkHCx/55K/lGzfTMzoqw9pkUHSKGESA
-	u0e5NsYZGdeV5hRzqOd4EV8Ac7/7/UcYSr3w4djf2qcuKPlrV3KZ9kZLGaTmIe+0/ziTmNTBEbL
-	mrEYLHk3rh2bNIOWlKbG0SzhxACzefKkpJOVhEaqNC98Y/1CQYoimZHpgiaW0lEUxdWi8BHK4em
-	ArPD4IxVNwcTeku2xQvmvKlw3GCEOsUbsj7ZDdDij2gx9gUAeuIKHqf6U/NczxjxEQz2XGmgBfl
-	Rhn3BTWOa+jjBmIoA8WLhEYjTkL1SGrrbT0+3kR5zhYH5PCVgMsR5wRUpuKqkwv1blqyFmmItl3
-	t70tCd1KsQxuJTIxVn2rn2hIonEWQa1FbzoEvAhl3VbncKE7V4Ui7Q01EH9s9fak5uf7OZ+g==
-X-Received: by 2002:a05:600c:4fcd:b0:488:a916:14a8 with SMTP id 5b1f17b1804b1-48a77af0507mr126951365e9.10.1777475890388;
-        Wed, 29 Apr 2026 08:18:10 -0700 (PDT)
-Received: from im-t490s.redhat.com (89-24-32-159.nat.epc.tmcz.cz. [89.24.32.159])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a7c2d3811sm32358165e9.3.2026.04.29.08.18.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Apr 2026 08:18:09 -0700 (PDT)
-From: Ilya Maximets <i.maximets@ovn.org>
-To: netdev@vger.kernel.org
-Cc: Aaron Conole <aconole@redhat.com>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Yuan Tan <tanyuan98@outlook.com>,
-	Yang Yang <n05ec@lzu.edu.cn>,
-	dev@openvswitch.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	Ilya Maximets <i.maximets@ovn.org>
-Subject: [PATCH net 2/2] selftests: openvswitch: add tests for tunnel vport refcounting
-Date: Wed, 29 Apr 2026 17:16:37 +0200
-Message-ID: <20260429151756.4157670-3-i.maximets@ovn.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260429151756.4157670-1-i.maximets@ovn.org>
-References: <20260429151756.4157670-1-i.maximets@ovn.org>
+	s=arc-20240116; t=1777475901; c=relaxed/simple;
+	bh=h0Koc3DMkH5zuBD2mgruwskA9s2gm0IgTT9rYzHY+Tk=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=RcnSUTRKs13Sp2DoaByCfYERYd1tZtMiyVHeqDGNA44/+uCEoJrVPXnyyatIJyUKr3qTK6GkDo9wwM1Dz2f426N9MqHt918rzPYxcECqXslYGT2SqxlKFItfH1SR7s9fr220tzXCzUCaU6kIGhf9RUu7jv2sNqbf4m33HCouH2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PPSneN/B; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PPSneN/B"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B54D5C4AF09;
+	Wed, 29 Apr 2026 15:18:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777475901;
+	bh=h0Koc3DMkH5zuBD2mgruwskA9s2gm0IgTT9rYzHY+Tk=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=PPSneN/B+EzpzvRVOXZj1IkCpHE6iJkJDO5If2ocSunhQh93naAL6TxM5jNodGRjy
+	 H4jD/5zvnC4PrhUd9ZXhEuqyvebm5yQaTpfdizGsAJLDocwsuESF62bUdWedxESu4a
+	 Yg4kirqFE8Kg9YGgmim1Y1RyE4WtKXoVAs4Z1rfSxTwYsfAtCpTbTvIkdClOm73UtY
+	 KALp5onRpUFY7phC3jbs6M/0d004eML1UaxpHyfBJpRuPbfqYoEGw0zsUyR6T231AU
+	 fReUS/qDDDO+8ulVOrITVnXdwh5ljZlzuHtkQ7uPtLYEVDIBoo3N9yPp7KKHCrv4qp
+	 RVYURZfrjSPrA==
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id C3CD5F40070;
+	Wed, 29 Apr 2026 11:18:19 -0400 (EDT)
+Received: from phl-imap-15 ([10.202.2.104])
+  by phl-compute-10.internal (MEProxy); Wed, 29 Apr 2026 11:18:19 -0400
+X-ME-Sender: <xms:OyHyafbZGCspSuG0zoXHcr-sqlJCyIba3dEMIwgTokBbAj4qHJ-Ubw>
+    <xme:OyHyaZOlvst9wDsuWPDO-Y7ovkwslQEbZnE_386RgknaYl2g0gr8w9fUgwGRdtwkG
+    ise8HzB8v8Wn-PfVzKTFHJg746gnhA3-HQXmTZ43WGkKtu8aXryino>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdekgeejkecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefoggffhffvvefkjghfufgtgfesthhqredtredtjeenucfhrhhomhepfdevhhhutghk
+    ucfnvghvvghrfdcuoegtvghlsehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvghrnh
+    epgffhgeeutdeiieevuefgvedtjeefudekvefggefguefgtefgledtteeuleelleetnecu
+    vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheptghhuhgtkh
+    hlvghvvghrodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieefgeelleel
+    heelqdefvdelkeeggedvfedqtggvlheppehkvghrnhgvlhdrohhrghesfhgrshhtmhgrih
+    hlrdgtohhmpdhnsggprhgtphhtthhopeduledpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtohepnhgvihhlsegsrhhofihnrdhnrghmvgdprhgtphhtthhopegurghvvghmsegurg
+    hvvghmlhhofhhtrdhnvghtpdhrtghpthhtohephhgvrhgsvghrthesghhonhguohhrrdgr
+    phgrnhgrrdhorhhgrdgruhdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrd
+    gtohhmpdhrtghpthhtoheprghnnhgrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehh
+    ohhrmhhssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehjlhgrhihtohhnsehkvghrnh
+    gvlhdrohhrghdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthht
+    ohepthhrohhnughmhieskhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:OyHyaWxTG0H8ndP_Ip4DU8nsxU5Io_R03CCVwfJysvMpoi_sR6CwAg>
+    <xmx:OyHyaXJk91G48Jz5vlosQ1d-ya9s2kLfLGXMtMVoFTtpkgUYpDodGw>
+    <xmx:OyHyaQ55-NIzWk5ZqXtdpYfSZAAMhEtBC4b4aTlB2n7t5WNE0QB6zw>
+    <xmx:OyHyadxteam5wOluyi3N3HvOA9F0_D-LSu48dSeRVL8UCxCDc9eSEg>
+    <xmx:OyHyaa9VS1mECn1wyDzyBRSwh25gxXSlVjEvVqyr6ERQ4gemJuAvMY90>
+Feedback-ID: ifa6e4810:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 98405780075; Wed, 29 Apr 2026 11:18:19 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-ThreadId: A9zl7fUjdiig
+Date: Wed, 29 Apr 2026 11:17:59 -0400
+From: "Chuck Lever" <cel@kernel.org>
+To: "Jeff Layton" <jlayton@kernel.org>,
+ "Trond Myklebust" <trondmy@kernel.org>, "Anna Schumaker" <anna@kernel.org>,
+ "Chuck Lever" <chuck.lever@oracle.com>, NeilBrown <neil@brown.name>,
+ "Olga Kornievskaia" <okorniev@redhat.com>, "Dai Ngo" <Dai.Ngo@oracle.com>,
+ "Tom Talpey" <tom@talpey.com>, "David S. Miller" <davem@davemloft.net>,
+ "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
+ "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>
+Cc: linux-nfs@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, "Herbert Xu" <herbert@gondor.apana.org.au>,
+ "David Howells" <dhowells@redhat.com>, "Simo Sorce" <simo@redhat.com>
+Message-Id: <0c5ff2b9-97b3-4e6d-a4ca-1e9634c38a66@app.fastmail.com>
+In-Reply-To: <dbaa192b70fa67d51ab6a4294c045100efc65980.camel@kernel.org>
+References: <20260427-crypto-krb5-api-v1-0-1fc1253b64c0@oracle.com>
+ <dbaa192b70fa67d51ab6a4294c045100efc65980.camel@kernel.org>
+Subject: Re: [PATCH 00/18] Migrate rpcsec_gss_krb5 to the crypto/krb5 library
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-There were a few issues found with the tunnel vport types around the
-vport destruction code.  Add some basic tests, so at least we know that
-they can be properly added and removed without obvious issues.
 
-The test creates OVS datapath, adds a non-LWT tunnel port, makes sure
-they are created, and then removes the datapath and waits for all the
-ports to be gone.
+On Wed, Apr 29, 2026, at 2:39 AM, Jeff Layton wrote:
+> On Mon, 2026-04-27 at 09:50 -0400, Chuck Lever wrote:
+>> The rpcsec_gss_krb5 module carries its own Kerberos 5 crypto imple-
+>> mentation: key derivation, CBC-CTS encryption, HMAC checksumming,
+>> and the encrypt-then-MAC construction from RFC 8009. Keeping
+>> cryptographic code inside an RPC module means it receives review
+>> only from the SUNRPC maintainers, who lack deep crypto expertise.
+>> Vulnerabilities and algorithmic errors can persist unnoticed.
+>>=20
+>> Replacing the private SunRPC Kerberos implementation eliminates
+>> this duplicated audit surface. A single implementation of Kerberos
+>> 5 key derivation and authenticated encryption is easier to verify
+>> than two independent copies. New encryption types and hardware
+>> offload added to crypto/krb5 will automatically become available
+>> to SunRPC Kerberos consumers.
+>>=20
+>> The crypto/krb5 library handles enctype differences internally, so
+>> a single encrypt function and a single decrypt function serve all
+>> enctypes, eliminating the per-enctype dispatch table that previously
+>> existed in struct gss_krb5_enctype.
+>>=20
+>> RFC 4121 Section 4.2.4 requires MIC checksums to cover the message
+>> body followed by the GSS token header. The crypto/krb5 get_mic/
+>> verify_mic API hashes optional metadata before the scatterlist
+>> data, which is the wrong order for the GSS header. The header is
+>> therefore placed at the end of the scatterlist rather than passed
+>> as the metadata parameter, and a dedicated gss_krb5_mic_build_sg()
+>> helper constructs this three-section layout (checksum area, message
+>> body, token header) with proper sg_mark_end() termination.
+>>=20
+>> This implementation was available during the Spring 2026 NFS bake-
+>> a-thon, and received testing there.
 
-The dpctl script had a few bugs in the none-lwt tunnel creation code,
-so fixing them as well to make the testing possible:
-- The type of the --lwt option changed in order to properly disable it.
-- Removed byte order conversion for the port numbers, as the value
-  supposed to be in the host order.
-- Added missing 'gre' choice for the tunnel type.
+>
+> Love that diffstat. Nice work!=C2=A0
+>
+> One comment in general: Do you need to add Assisted-by: tags to any of
+> this? You can add this to the set:
+>
+> Reviewed-by: Jeff Layton <jlayton@kernel.org>
 
-Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
----
- .../selftests/net/openvswitch/openvswitch.sh  | 37 +++++++++++++++++++
- .../selftests/net/openvswitch/ovs-dpctl.py    | 10 ++---
- 2 files changed, 42 insertions(+), 5 deletions(-)
+Thanks, applied to nfsd-testing. An Acked-by: from one of the NFS
+client maintainers would be great too.
 
-diff --git a/tools/testing/selftests/net/openvswitch/openvswitch.sh b/tools/testing/selftests/net/openvswitch/openvswitch.sh
-index b327d3061ed53..3cdd953f68132 100755
---- a/tools/testing/selftests/net/openvswitch/openvswitch.sh
-+++ b/tools/testing/selftests/net/openvswitch/openvswitch.sh
-@@ -26,6 +26,7 @@ tests="
- 	netlink_checks				ovsnl: validate netlink attrs and settings
- 	upcall_interfaces			ovs: test the upcall interfaces
- 	tunnel_metadata				ovs: test extraction of tunnel metadata
-+	tunnel_refcount				ovs: test tunnel vport reference cleanup
- 	drop_reason				drop: test drop reasons are emitted
- 	psample					psample: Sampling packets with psample"
- 
-@@ -830,6 +831,42 @@ test_tunnel_metadata() {
- 	return 0
- }
- 
-+test_tunnel_refcount() {
-+	sbxname="test_tunnel_refcount"
-+	sbx_add "${sbxname}" || return 1
-+
-+	ovs_sbx "${sbxname}" ip netns add trefns || return 1
-+	on_exit "ovs_sbx ${sbxname} ip netns del trefns"
-+
-+	for tun_type in gre vxlan geneve; do
-+		info "testing ${tun_type} tunnel vport refcount"
-+
-+		ovs_sbx "${sbxname}" ip netns exec trefns \
-+			python3 $ovs_base/ovs-dpctl.py \
-+			add-dp dp-${tun_type} || return 1
-+
-+		ovs_sbx "${sbxname}" ip netns exec trefns \
-+			python3 $ovs_base/ovs-dpctl.py \
-+			add-if --no-lwt -t ${tun_type} \
-+			dp-${tun_type} ovs-${tun_type}0 || return 1
-+
-+		ovs_wait ip -netns trefns link show \
-+			ovs-${tun_type}0 >/dev/null 2>&1 || return 1
-+
-+		info "deleting dp - may hang if reference counting is broken"
-+		ovs_sbx "${sbxname}" ip netns exec trefns \
-+			python3 $ovs_base/ovs-dpctl.py \
-+			del-dp dp-${tun_type} &
-+
-+		dev_removed() {
-+			! ip -netns trefns link show "$1" >/dev/null 2>&1
-+		}
-+		ovs_wait dev_removed dp-${tun_type} || return 1
-+		ovs_wait dev_removed ovs-${tun_type}0 || return 1
-+	done
-+	return 0
-+}
-+
- run_test() {
- 	(
- 	tname="$1"
-diff --git a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
-index 848f61fdcee09..196813f476434 100644
---- a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
-+++ b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
-@@ -2069,7 +2069,7 @@ class OvsVport(GenericNetlinkSocket):
-         elif vport_type == "internal":
-             return OvsVport.OVS_VPORT_TYPE_INTERNAL
-         elif vport_type == "gre":
--            return OvsVport.OVS_VPORT_TYPE_INTERNAL
-+            return OvsVport.OVS_VPORT_TYPE_GRE
-         elif vport_type == "vxlan":
-             return OvsVport.OVS_VPORT_TYPE_VXLAN
-         elif vport_type == "geneve":
-@@ -2131,7 +2131,7 @@ class OvsVport(GenericNetlinkSocket):
-                 if not lwt:
-                     vportopt = OvsVport.ovs_vport_msg.vportopts()
-                     vportopt["attrs"].append(
--                        ["OVS_TUNNEL_ATTR_DST_PORT", socket.htons(dport)]
-+                        ["OVS_TUNNEL_ATTR_DST_PORT", dport]
-                     )
-                     msg["attrs"].append(
-                         ["OVS_VPORT_ATTR_OPTIONS", vportopt]
-@@ -2563,7 +2563,7 @@ def print_ovsdp_full(dp_lookup_rep, ifindex, ndb=NDB(), vpl=OvsVport()):
-             if vpo:
-                 dpo = vpo.get_attr("OVS_TUNNEL_ATTR_DST_PORT")
-                 if dpo:
--                    opts += " tnl-dport:%s" % socket.ntohs(dpo)
-+                    opts += " tnl-dport:%s" % dpo
-             print(
-                 "  port %d: %s (%s%s)"
-                 % (
-@@ -2632,7 +2632,7 @@ def main(argv):
-         "--ptype",
-         type=str,
-         default="netdev",
--        choices=["netdev", "internal", "geneve", "vxlan"],
-+        choices=["netdev", "internal", "gre", "geneve", "vxlan"],
-         help="Interface type (default netdev)",
-     )
-     addifcmd.add_argument(
-@@ -2645,7 +2645,7 @@ def main(argv):
-     addifcmd.add_argument(
-         "-l",
-         "--lwt",
--        type=bool,
-+        action=argparse.BooleanOptionalAction,
-         default=True,
-         help="Use LWT infrastructure instead of vport (default true)."
-     )
--- 
-2.53.0
 
+--=20
+Chuck Lever
