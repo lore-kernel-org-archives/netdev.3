@@ -1,54 +1,55 @@
-Received: from out-ip0052.fra.mailhop.org (out-ip0052.fra.mailhop.org [18.158.144.38])
+Received: from out-ip0051.fra.mailhop.org (out-ip0051.fra.mailhop.org [18.193.30.102])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81F2D3CA48C
-	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 11:43:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.158.144.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 950163F167C
+	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 11:43:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.193.30.102
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777463013; cv=none; b=GQFILTih7YtB5WiNC9SQZOvsDx83f61i4o/qfFjQ+4uPv4P2iTZy+/BBKY+3VaPwpAeFe0anCf8OS8g1/RCQthV+1P4LSCU+2NNirYZcoeEGdQOFr9lxBoNCmGNUcq9Nf0QHxFhM16eEt4RIHQExyxzBLhq9xt9E6rrDfVxXw7U=
+	t=1777463016; cv=none; b=N5j4wECOXxzEgUs7wSecYSYhE9l2iJtdl5sONGJBgMU0b9EY5C5CAaj87dySoRZHHbqBlmqamgw//RJ17Nc4PeZ7VCAKZRZFh5Ut2eJHjBZ5YNlS6OdP9/Mr2z2OwPwHNwuhULZO/YjV9MgIA0ZT4f2rqpC75ZmXYPgDZodMwHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777463013; c=relaxed/simple;
-	bh=3qKJztgQJUPlrEGGhE7sBKYebN7wefY41CWQRFz0KqU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AEeHpiDOyeX52F4Yuf2apHGoR+0k6Z/P6dvr9LK1oy/7a8T/S4Ij2n2odstW8MfEfVred1PIHUuPbjeh7QR0fvXHGp6AzukYcW8P4bFnqDAl0DTvacsF0v5EHh7bc+52F3N8EX6Z8r1O1lKFQSL55aQgFNJ3WP7zkszLdC7XtCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hitachienergy.com; spf=pass smtp.mailfrom=hitachienergy.com; dkim=pass (1024-bit key) header.d=hitachienergy.com header.i=@hitachienergy.com header.b=YaNpkrW6; dkim=pass (2048-bit key) header.d=outbound.mailhop.org header.i=@outbound.mailhop.org header.b=aIGYQGlc; arc=none smtp.client-ip=18.158.144.38
+	s=arc-20240116; t=1777463016; c=relaxed/simple;
+	bh=W7k6MOnzF2VkPeJqh6DYOFZ51EeiqvwO8qLmU0xZ36g=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=o6osbjn+yDZ55jk/LT21jfMl8OPAShIjvx+2NtPAn82UAgPkdtB1vGOPTacB37SwizFR5lI39axS6aYpjBmSCyHlb4oJ6nJNM5dGnVgsFFG8WQMRv2HlszTzWHHXcJw84C/ZhJhQE2bPz/YtmWJFyW8eIkUSM4zT1i3MOCPMI0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hitachienergy.com; spf=pass smtp.mailfrom=hitachienergy.com; dkim=pass (1024-bit key) header.d=hitachienergy.com header.i=@hitachienergy.com header.b=H926n2b9; dkim=pass (2048-bit key) header.d=outbound.mailhop.org header.i=@outbound.mailhop.org header.b=Vx8BPvPz; arc=none smtp.client-ip=18.193.30.102
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hitachienergy.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hitachienergy.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hitachienergy.com header.i=@hitachienergy.com header.b="YaNpkrW6";
-	dkim=pass (2048-bit key) header.d=outbound.mailhop.org header.i=@outbound.mailhop.org header.b="aIGYQGlc"
+	dkim=pass (1024-bit key) header.d=hitachienergy.com header.i=@hitachienergy.com header.b="H926n2b9";
+	dkim=pass (2048-bit key) header.d=outbound.mailhop.org header.i=@outbound.mailhop.org header.b="Vx8BPvPz"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=hitachienergy.com; s=duo-1630306886989-947ac67a;
-	h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
-	 cfbl-address:cfbl-feedback-id:from;
-	bh=dTVmkDqISXk7x13mQynSnLZ/iRnnoPVhJt0i9GNoi3E=;
-	b=YaNpkrW6dm4ahj1G8g79bt9TkR0OF+l+aKtbgTA8HOxcZcNRfp0GIwqnQJ86DTRFAaQ6acqoNw9/g
-	 RwRrkBoJk3MaOuhjLzzj0RsEbfC/FhQd2Nd+63VrO6YpbTxvmGAMi0Frb7GRjTfrooA4RGcS8FOK+P
-	 VMADsISbWr9AdVB4=
+	h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
+	 subject:cc:to:from:cfbl-address:cfbl-feedback-id:from;
+	bh=L8KWtdPE2JalTOCUmy3pa9Xkw2o8VCxZ9+OBKyymtC8=;
+	b=H926n2b9084WhnKU73lnQXCUjVF6sG0DxcBH6lxl1HZhfY1U6pmXpQYXcQkmEsWSApd6JYFahb4+e
+	 FweGDJoGSvAhLMNDYZiDlmquhdxTZzH/aQELS1wSqr3NdxdvYiuwx583NwcY8Vkkyms7efeKr/xDUJ
+	 SdHKOQKcKaSmZizY=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=outbound.mailhop.org; s=dkim-high;
-	h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
-	 cfbl-address:cfbl-feedback-id:from;
-	bh=dTVmkDqISXk7x13mQynSnLZ/iRnnoPVhJt0i9GNoi3E=;
-	b=aIGYQGlcV7oRz7IIkdVucTBrIAJ6zPtcmqEE0WcY214xKJPrSILxg+b+lYuaEo/QB6Wb0MT0XR8oz
-	 sklnzykja+h9R4YY9+ruDCmlhZJccWircXTRTky0aFck35OeT+QKT+m84jbnmdnHAL2WGt4ntYjgad
-	 AYVtNPyLhI4A88WBfoLLFHGG0hmCFkpdFqR+aCBTMvNB5pu/VptS6Bsdt63y/qdu1mXVs5fQQrAgPG
-	 IsdiHhPdNPUWTihbbsM+vW2wdEysdaDllKTO1zMzm6axCzpBCuCKZPvj4B1emZfpM/O5wZg1qI5Xp+
-	 pJOJH8hDgu9WCMnq6yn/TSjqLVtYF7A==
+	h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
+	 subject:cc:to:from:cfbl-address:cfbl-feedback-id:from;
+	bh=L8KWtdPE2JalTOCUmy3pa9Xkw2o8VCxZ9+OBKyymtC8=;
+	b=Vx8BPvPzgz4zCdYNhQrPybF7CqI7xpCkYHHwcLe74OUrGXSdINl+BzTU1NeN0pOgZKXQQeVVz8oCA
+	 B/KkaXbk1dkQ4KPBysJAwNAvlMX3Xw9uKjxcBJ8J9vMghb2ymnBP2PkcA3XuWDTszTpsslSBxlrbfj
+	 RpsxY9HkkreCTDXxuPNQzcov+OlPr3vg3u/Rqe9DgeAMNYAES/vKKlgpcbVfG4fkNkTV41dCzsOPDM
+	 RhWkH2715bw9bnIyyFdCeJr5Cc3rIT15rvNo+mdzp1eIwYSBf6lDAsZwQDmW/lAFBzViVYbi041pGy
+	 54bGl+APHR1AxGzSiVObzq3p7HonR/w==
 X-MHO-RoutePath: aGVkY3NtdHA=
-X-MHO-User: 7752593b-43c0-11f1-8259-bda8640e0fbb
+X-MHO-User: 775d39e3-43c0-11f1-8259-bda8640e0fbb
 X-Report-Abuse-To: https://support.duocircle.com/support/solutions/articles/5000540958-duocircle-standard-smtp-abuse-information
 X-Mail-Handler: DuoCircle Outbound SMTP
-CFBL-Feedback-ID: 7752593b-43c0-11f1-8259-bda8640e0fbb:11
+CFBL-Feedback-ID: 775d39e3-43c0-11f1-8259-bda8640e0fbb:11
 CFBL-Address: prvs=057955d709=abuse@outbound.mailhop.org; report=arf
 Received: from HPG0000000548.corp.hitachi-powergrids.com (unknown [20.62.140.138])
 	by outbound2.eu.mailhop.org (Halon) with ESMTPSA
-	id 7752593b-43c0-11f1-8259-bda8640e0fbb;
-	Wed, 29 Apr 2026 11:42:16 +0000 (UTC)
+	id 775d39e3-43c0-11f1-8259-bda8640e0fbb;
+	Wed, 29 Apr 2026 11:42:18 +0000 (UTC)
 Received: from gitsiv.hitachienergy.com (unknown [10.54.139.14])
-	by HPG0000000548.corp.hitachi-powergrids.com (Postfix) with ESMTP id A9D4E1614;
+	by HPG0000000548.corp.hitachi-powergrids.com (Postfix) with ESMTP id B5BD5158F;
 	Wed, 29 Apr 2026 11:42:13 +0000 (UTC)
 Received: from chbrn3-p-dev015.keymile.net (chbrn3-p-dev015.keymile.net [172.31.41.201])
-	by gitsiv.hitachienergy.com (Postfix) with ESMTP id 3563E60B7D47;
+	by gitsiv.hitachienergy.com (Postfix) with ESMTP id 412B6637F985;
 	Wed, 29 Apr 2026 13:42:13 +0200 (CEST)
 From: Holger Brunck <holger.brunck@hitachienergy.com>
 To: netdev@vger.kernel.org,
@@ -57,10 +58,12 @@ Cc: andrew+netdev@lunn.ch,
 	chleroy@kernel.org,
 	qiang.zhao@nxp.com,
 	Holger Brunck <holger.brunck@hitachienergy.com>
-Subject: [PATCH 1/2] net: wan: fsl_ucc_hdlc: fix uhdlc_memclean
-Date: Wed, 29 Apr 2026 13:42:07 +0200
-Message-ID: <20260429114208.941011-1-holger.brunck@hitachienergy.com>
+Subject: [PATCH 2/2] net: wan: fsl_ucc_hdlc: fix ucc_hdlc_remove
+Date: Wed, 29 Apr 2026 13:42:08 +0200
+Message-ID: <20260429114208.941011-2-holger.brunck@hitachienergy.com>
 X-Mailer: git-send-email 2.52.0.120.gb31ab939fe
+In-Reply-To: <20260429114208.941011-1-holger.brunck@hitachienergy.com>
+References: <20260429114208.941011-1-holger.brunck@hitachienergy.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -69,30 +72,33 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Unmapping of uf_regs is done from ucc_fast_free and doesn't need to be
-done explicitly. If already unmapped ucc_fast_free will crash.
+If the driver is used in a non tdm mode priv->utdm is a NULL pointer.
+Therefore we need to check this pointer first before checking si_regs.
 
 Signed-off-by: Holger Brunck <holger.brunck@hitachienergy.com>
 ---
- drivers/net/wan/fsl_ucc_hdlc.c | 5 -----
- 1 file changed, 5 deletions(-)
+ drivers/net/wan/fsl_ucc_hdlc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/wan/fsl_ucc_hdlc.c b/drivers/net/wan/fsl_ucc_hdlc.c
-index 3bd57527b1be..8155e92af14e 100644
+index 8155e92af14e..15bfb78381d4 100644
 --- a/drivers/net/wan/fsl_ucc_hdlc.c
 +++ b/drivers/net/wan/fsl_ucc_hdlc.c
-@@ -773,11 +773,6 @@ static void uhdlc_memclean(struct ucc_hdlc_private *priv)
- 	kfree(priv->tx_skbuff);
- 	priv->tx_skbuff = NULL;
+@@ -1250,12 +1250,12 @@ static void ucc_hdlc_remove(struct platform_device *pdev)
  
--	if (priv->uf_regs) {
--		iounmap(priv->uf_regs);
--		priv->uf_regs = NULL;
--	}
--
- 	if (priv->uccf) {
- 		ucc_fast_free(priv->uccf);
- 		priv->uccf = NULL;
+ 	uhdlc_memclean(priv);
+ 
+-	if (priv->utdm->si_regs) {
++	if (priv->utdm && priv->utdm->si_regs) {
+ 		iounmap(priv->utdm->si_regs);
+ 		priv->utdm->si_regs = NULL;
+ 	}
+ 
+-	if (priv->utdm->siram) {
++	if (priv->utdm && priv->utdm->siram) {
+ 		iounmap(priv->utdm->siram);
+ 		priv->utdm->siram = NULL;
+ 	}
 -- 
 2.52.0.120.gb31ab939fe
 
