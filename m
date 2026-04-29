@@ -1,132 +1,87 @@
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D20143FE347
-	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 13:26:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777469220; cv=pass; b=VLOAqLxOQOWv6dfrQHqgPxwvaGnF4Du+o7ImQpv/0e4Y+3r3FIkCPGxpWNAFni8d+QOgmYXaUt24/knC84UxunJmhXHbmmrnloMAESugIPX/tKQh+GGFnJwtforbLCXnLpR2FhXLbNaofNJjo7lMHmyghflb2NlfqT4MGUEMyIE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777469220; c=relaxed/simple;
-	bh=FOsFryz9uEMD0y0xajcCjGUezJTWoq340vDG1IiuyZ0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EEhDJctdhxfJRONFFk9eyigpygHrYh1i+wiy1XJVtarx9ayqKfA4HVl89JpSnbRBiMKh0RebFwRt23PmgS6CkFlSc4QFEo4keIqkPq9Tba02LNJ3jVcDRAQaoBrL/0PcahNIudbPNKCS/KPo2JU8+sZMCveitQY9Ix1jL3jZIso=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kR+of57P; arc=pass smtp.client-ip=209.85.219.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B89F3FBEBB
+	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 13:31:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777469513; cv=none; b=uYiv4r98ZYG8/ZSwbbmJ4EIJE1Bgua+qDVi7c6S8ATL0M8aMGPRzcZ8MHCZu/AbnWwDaLhfYpBpi/riw1I8KYQIg7brNlDIgiEcrdu19y0UWaXLSvpzP9HByXOFeymJ+kPv8C9Q4CyBFP4MD1rk7uHQC2vNNlrb11ixtG+TI0ps=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777469513; c=relaxed/simple;
+	bh=fxKeRhAI7gdMaWpT48f704an3VdOlP1miGnuxVaTUOo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=l78KsfJ7DBC9AFyCRZOFxnQvq1Zsruhx5eBh1/1rAIn1IaLcEhY0doqkkaW+bUj9HTsVAR52ir/1sRU+NOlohmXFW9crONLzQi3raJvAH1OVoT9LR7AJMuHiiouYWC49fo6j+uV5emLH9X5OZydXWiPpFZW9O9CcQRGAYJnVn7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=MQ+da/Xr; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kR+of57P"
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-8aca2726f61so149262576d6.0
-        for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 06:26:58 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777469218; cv=none;
-        d=google.com; s=arc-20240605;
-        b=gd5O/dQQ65QVrdHPE7GFasJJwf7mR8KHFwLmqpZRfrgYO+UtbqTmRFcG8PlblkzKRX
-         +tn+Vw6k25plOVxEwSX6pmY+Fb0WaL3OF338+LOeakkhOoi4uWO25Uit2/aj89AVedW6
-         hnUXi/GFv2osLJO9LDuhx5jiKd7eLRoAYreTekmGgAutCatdfghosBSkj/J0R8IfGgM8
-         C+TIx2Lajd6p7qK7/KMoA+PqKrDXZs1FrtVFuZYwa2rwMmiu0gqpUvgk5sxqC4lH0c15
-         rvKkbAkdF2mInHXfyt+K+0ifa6hjVpR11fRPb5rAJu/xql80fT4prsjNgW64rApa194V
-         wCnQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=R8y+KA4KOzYym1C71KbDBRYhXiIos9WNrsanBlQUO68=;
-        fh=5Kiw+1fhhYZMtK+wXbkeOSuwih2qctmmu3YdXKVcy2c=;
-        b=LwJZA3GhCQAV3/WiQdh+6WHo36QKa3CjfG9TRiAdwTrf+G+XvWxBo7AZR2z9mluQI9
-         Il7XPZoqbEoB+5TuA89xxpSv0veXkR3mwtXvpoyzhOa4UqTMh2VWTXtmASe+OYnkGLtn
-         AFvaZS1aTTgYeUSvcUDboEUOwEl/ZXXqMH/0P2Jpxn0TbNWbTz0pmVX0hG20bc46vfqc
-         CkBci/bv/S3nmS9QAGQtiZyuNNYLJ69UsNOnjsp5HHAfinZJtwTc6evtE9YPhm9vxxWI
-         fGmSBEbJlfSN68kitydHEvXydZSLhpGMKZ73iWj9KMefXtH6ZXeiha6UQthZnDi9bTsl
-         KC6Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777469218; x=1778074018; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=R8y+KA4KOzYym1C71KbDBRYhXiIos9WNrsanBlQUO68=;
-        b=kR+of57Puh0PF92D2FZA7x7arqAkpeM6XKrz1USD9KDJFcXn3EcqpzAO7BNTfk+66R
-         ZS+i0oSlK9wO7kHhws3pyf56xl73AEvSHnCHGZnupnO37tTqmS/NF32+niR98D36mzv1
-         xVMLr5VB2oVLyjZhfO/OmZvxCvJRUvD2Ha5dvItJNWe+vfCOiU36hWGPp9S3CnG4CrvM
-         5dgHi9M0gsDye4A06pPsmt3DRi8DvYfwYiMP0+uQmFebizaeA8lkAQZ/L5AgH2bsi4t8
-         5ntJ5nYPivTnh4kXyBTruQ3CQqH2O3W8Wd6ZbagqlP3x+faew6LIZQ/6O0fNOBgRUKpB
-         db6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777469218; x=1778074018;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=R8y+KA4KOzYym1C71KbDBRYhXiIos9WNrsanBlQUO68=;
-        b=lEMfOc2nkrX0E2eCW1s/tR45d3x3cdKtk/GfOAggjX2J5xoFJkfcnw71NomFegWcHW
-         B5CnD+2Z2KoeomuLTOCyErUo6217iy1iyjgUFKpQxWoEZ3EAL+kGhpo/3OEzKPH7ypql
-         zMRdxbENDX7HS0vDvi5VcwiMoX0u2KIE/WiHJNpB0CBv/DJkZRp4tFG6/2gs2L6qPuVZ
-         31upQhi7FvjSr9J2w/7dOM3D9mKgkHTaNbh1zLlIx8RfbNSLiNeZmi5ABQsmrOlTgYZW
-         6A0G8qzrYh+6Tq3UdC7Q1+/XECMScWr2RTLCAkUgePXpJOHEmIpW0q+bDmiJGA5Dlnv7
-         hH9Q==
-X-Forwarded-Encrypted: i=1; AFNElJ+pX0JR+SjUYnDNE5ov2n/X2SMO4/N5nuRKg91Z1KCtzuXsBMRFqBuqBJyIqvYVfIXqIoeJeYw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywm1t2M/Gx/gkW/5ssZAcr0sM307JvI1Vl38GgLJ1ai6Xk1/Jcc
-	NdVli2RBdAvk1KwxhMTfRT8PK803TZMJV4Rn308VmKyI4ixvWBKel0w4E5XLce18BfWkMJkMupj
-	NcHyTejseflw0USSWqJuktg8w9458sxTWvJShFw51
-X-Gm-Gg: AeBDiespsxRJjc1K6QTGu8lxk2Ic7p9zlhsdnf+0CDlbpVqeCx5m4giZG8lGChKC7ww
-	ihhtpS+AfuRVda0VkZvwCrqA0TPI+WOmSs2c5D7Dl09pnvROdULiQAeuDGZNae8YIistfM1cyVg
-	0K0gGQUh6sCap0VVlC/MIlstquTUfK8LqGFR8D00DMWBYc5oZmlWcFfGYJs9COwS6RzeKJ+hCQ7
-	0Bhg5SEJEgyEkWxzVLaeFec2F+zV6CZe9sX0Mc9fnzRs+jRZzenw1o9i7CMouGurg1ff+lPu3Aa
-	HKqBmFxKPN9SLhPCtiSj0ukUO5xbJW0MAT71hqVY62uCLOhWGswQe955hNXkedjSoT0IJDnhLQq
-	BEUVa3HRO
-X-Received: by 2002:a05:6214:1947:b0:8a1:478a:e58a with SMTP id
- 6a1803df08f44-8b3e31f9dabmr122939496d6.36.1777469217278; Wed, 29 Apr 2026
- 06:26:57 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="MQ+da/Xr"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=ZPEKlVWq/hXxzx1A9ZEvNXireTT56HNiF9KwGj5tPcg=; b=MQ+da/Xr5AjC9S71k4TzDCs6V1
+	GIfGTzS/9czhhNuwHPMErrZlbDEGP63AqV8fyzd2tDOtikdsq9LoFrYdUSwJaW58qDW0xd5DhcJyI
+	AgRHJU39AC6qdSaT3m9/4bBFKggppbc8k6YQRie7nX226pIYGM8HGu+yuRbdHgyJ/afQ=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wI50x-000XNQ-PE; Wed, 29 Apr 2026 15:31:43 +0200
+Date: Wed, 29 Apr 2026 15:31:43 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+	YehezkelShB@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, pabeni@redhat.com
+Subject: Re: [PATCH 1/2] net: thunderbolt: Call tbnet_stop() upon shutdown
+Message-ID: <8a52ab2d-9cfa-4478-bbda-c910c2b0f726@lunn.ch>
+References: <20260427081623.2338179-1-mika.westerberg@linux.intel.com>
+ <20260429011224.1505785-1-kuba@kernel.org>
+ <20260429053046.GZ557136@black.igk.intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260429132218.3548644-1-lee@kernel.org>
-In-Reply-To: <20260429132218.3548644-1-lee@kernel.org>
-From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 29 Apr 2026 06:26:45 -0700
-X-Gm-Features: AVHnY4IwMmXjk-XLg5uSNtzhc5y83lpbiyoRhN9mPIm0gezj-Da4cGBSeDVuvQ4
-Message-ID: <CANn89iL_o4dJ-zgjGzA=gGXiVF1P0TTz74LJNuy2zrgbxB5S0Q@mail.gmail.com>
-Subject: Re: [PATCH 1/1] nfc: llcp: fix use-after-free in llcp_sock_release()
-To: Lee Jones <lee@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Kees Cook <kees@kernel.org>, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260429053046.GZ557136@black.igk.intel.com>
 
-On Wed, Apr 29, 2026 at 6:22=E2=80=AFAM Lee Jones <lee@kernel.org> wrote:
->
-> llcp_sock_release() unconditionally unlinks the socket from the local
-> sockets list.  However, if the socket is still in connecting state, it
-> is on the connecting list.
->
-> Fix this by checking the socket state and unlinking from the correct list=
-.
->
-> Signed-off-by: Lee Jones <lee@kernel.org>
-> ---
->  net/nfc/llcp_sock.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/net/nfc/llcp_sock.c b/net/nfc/llcp_sock.c
-> index f1be1e84f6653..feab29fc62f44 100644
-> --- a/net/nfc/llcp_sock.c
-> +++ b/net/nfc/llcp_sock.c
-> @@ -633,6 +633,8 @@ static int llcp_sock_release(struct socket *sock)
->
->         if (sock->type =3D=3D SOCK_RAW)
->                 nfc_llcp_sock_unlink(&local->raw_sockets, sk);
-> +       else if (sk->sk_state =3D=3D LLCP_CONNECTING)
-> +               nfc_llcp_sock_unlink(&local->connecting_sockets, sk);
->         else
->                 nfc_llcp_sock_unlink(&local->sockets, sk);
->
-> --
-> 2.54.0.545.g6539524ca2-goog
->
+On Wed, Apr 29, 2026 at 07:30:46AM +0200, Mika Westerberg wrote:
+> On Tue, Apr 28, 2026 at 06:12:24PM -0700, Jakub Kicinski wrote:
+> > This is an AI-generated review of your patch. The human sending this
+> > email has considered the AI review valid, or at least plausible.
+> > ---
+> > net: thunderbolt: Call tbnet_stop() upon shutdown
+> >     
+> > This commit updates the shutdown callback for the Thunderbolt network service
+> > driver to call tbnet_stop() if the interface is running. This ensures the
+> > service drivers release the rings upon shutdown.
+> > 
+> > > diff --git a/drivers/net/thunderbolt/main.c b/drivers/net/thunderbolt/main.c
+> > > index 7aae5d915a1e..631af237998d 100644
+> > > --- a/drivers/net/thunderbolt/main.c
+> > > +++ b/drivers/net/thunderbolt/main.c
+> > > @@ -1417,7 +1417,10 @@ static void tbnet_remove(struct tb_service *svc)
+> > >  
+> > >  static void tbnet_shutdown(struct tb_service *svc)
+> > >  {
+> > > -	tbnet_tear_down(tb_service_get_drvdata(svc), true);
+> > > +	struct tbnet *net = tb_service_get_drvdata(svc);
+> > > +
+> > > +	if (netif_running(net->dev))
+> > > +		tbnet_stop(net->dev);
+> > 
+> > Does calling tbnet_stop() directly bypass the network stack teardown sequence?
+> 
+> This is called when the machine is rebooted or shut down to quiesce the
+> device. I don't think the network stack has anything similar?
 
-Why are you sending this patch a second time?
+You mean that network interfaces are left running while the machine
+reboots, potentially DMAing receive packets over the bootloader or
+freshly loaded kernel? Does that seem reasonable? Don't you think the
+core will somehow call the .close function? I cannot point to the code
+doing that without a bit if searching, but i think it probably exists.
 
-You forgot to add a Fixes: tag, as requested for all networking patches.
+	Andrew
