@@ -1,112 +1,155 @@
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2829E24A067
-	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 01:58:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4945F35B136
+	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 01:58:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.46
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777427911; cv=pass; b=SQrjvAIWYffFBSW7h1IJTH+XLizYHtud1hO4229gpEtJ9E7nT0quyT4RX8cFK3zv6xipRImkIK1GLhZ31rGioYQOCaN7zJebOQEl0uX3PKua69QkbeZ17ME/Jru8mTNzZG9Hoa6zBwL5eLP/aR2MYjzPOjG97wkkaDy5PwjEhXQ=
+	t=1777427923; cv=pass; b=uciMKqOl+ExUtARftqpHguclv3T5COnff++ScekH6bbFKSZmMfHFwKB+zVpz2wQ/kT9DywuSsVxdCrBdLsSQb326aObhQeCkqXLXnkNmUvcMokF4KHTlK2JZQjr//YMYwLVjWvTF8TscPWrWatz9B6oIN6+Dq1/E4uQ6h/VK4sM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777427911; c=relaxed/simple;
-	bh=CDF4+RTCOAGouBrckQ9grX8Lmt3xq8cebQxQZaXsFQo=;
+	s=arc-20240116; t=1777427923; c=relaxed/simple;
+	bh=Pxrojmrc2cY8YLtMnn3WHI2wj4Rjocszi1DAJUpeITE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XG9nZNaVVdPlh9TCldX6dj4FU8OxoDCWoh17zqHubehfNnFYDfY2n7l46h56P31hQHWQ1YekOSwB3p+UpTY/P0i4ulqLYxJhxf36IixcocQgyLW5w+GPGPWGpnvhETk9aVCQH0K+1kfXtprgYyzLZD1+LZ8KTYRbD6/MuP+p+a0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=m/VoO911; arc=pass smtp.client-ip=209.85.160.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=fsJdkWbGpZpiDdXqqn+KEDirEemUQ1tG52BZe2tV108V+NLoGM46YCWLDI8LdKtKd0AICEgKOAwtqkWkRbxTtQaM1hmrrkkr6eY1Q+sgHnFAZr4ZUhYJDML9JS7W1gzrhAFnG15VuILf4QhFXljKrg/A2SwLTw67Ul/r3NV/LnA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nFBldmeQ; arc=pass smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="m/VoO911"
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-50e5c7eb565so106471691cf.3
-        for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 18:58:29 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777427909; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nFBldmeQ"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-44509921fbcso1767999f8f.3
+        for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 18:58:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777427920; cv=none;
         d=google.com; s=arc-20240605;
-        b=TK3Sl3Y8NGvKkUIAfOZ9oEtAzydOWuLm7a77+fX5Q07ix9nb8Ov5YeyA4tMp2+Dm7M
-         AqVF4bXA293B2XT4JKErefVmgExmLTpuGSPfzT4t4V3AAtfyJw9zypHr/XEbtU7/0yAh
-         sdYMrXg4RtY8rU3BW9dZxcxCGuiXuwQtUySxEfjpDJEpCjlwyuB5MQtF7vhgbffXk5jQ
-         E+V4VmPiJ/2qvQJ5+h6bFxJFuMYFii3FKIFwbDEwZ1FBQOsPrxkx7P2KDYCUOEV8JFw2
-         uR/aVasIOX9XGjENm2BLBjBv5nTwk/njYM6IdQ+sZVWmDbcXBVdc3XBybW970BLmDvof
-         3kEQ==
+        b=DOb3ky901hRMTM5ZDJdCGmdxtmgv2y4PIumGVfTIUL2xfUGRB2CANib53kXWlsLhwV
+         Wn/qk9MYqO0+R4uVZo7RZMEwjExOjwDGD/wotMvaDyM6MZ4BxlZ2rtfkfw/vENYSJQTL
+         1DesEgHvBqh6HDbVpW5j7BerNMGzkVJKYDdJylxM9orIyTn0CtL082TokfeR78eOBcGO
+         U5x0ldnJzy8Ods2L0cbLySgKWpHjPV3CpSULWi47bvJfJt8LONz9yRADUODai6sHqMxX
+         xKfNolXue2g2zm1RW78+vVGzRatQixI77sHYlX4hkJdCdi7N3+1WHdauhU8aBRt4ZEvy
+         rWgg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=CDF4+RTCOAGouBrckQ9grX8Lmt3xq8cebQxQZaXsFQo=;
-        fh=7hw9xYi+AZck+u7d3AnTyj7+Ey9E6vG5lm5LHq3ywp4=;
-        b=AmkIGrrsvAGJTsyTaZq/M6IS8yV+2af34oRoEA/boxWY0ijeW1a4uA4QmOghgvDZ8K
-         I/SIDPr96Y2DtNauNos2BZqmuAhds5tTPUzpphtNqQ/aJmWpF9uoYUZX8lY6YXwGVN6k
-         FLdR3yHswaPOQdB/TOAALo8OqHqfV18p7XwbFxns0i+cx+Fg2QbfH48QJ0PX7hMTn4RT
-         HfDtSNjlIo1y2TaDFWgOb052bFVUgLV66NSlpTkUmSsAnfV7ebjKL9qlRyvOTFTaz+Mm
-         7lnC+PADYmjs54ckH8+Tj5ZY0FjmLuuaThv6BgKgMAy6ng83WczlCjPHtjSTzGpzrM72
-         IVjA==;
+        bh=yuqGeXahbxcUk1u4/2wMgxO+sa3eSW+uWGPH0ECvggc=;
+        fh=OudhDefOu6sZXRYVe920DUgUFCeVD3MLrIvwmz6g8ws=;
+        b=B+R2h2Pr+LAUKLqJAJihVmTr7yxfUljAmszIi9HepeU9V/N7iI5a7dYVmWCUtiVqUA
+         b/bXLOS757EmDC+bp0toQQYl8CnCNZJAdXCH2mB9I0GGWWj+N4qPm/xsa9cDV9jUiqRU
+         5az2AwiXxMHWgwVNGhnMZbsF4kkHQR0F8BrrcKXpos+oRU/9qCg66fLuZ2/29nV3vIgG
+         HZ3s2Ne7KQwlcw93Q0YsI/Jqv+DvtZWmiXjl7za2eTOwwxocdPkl9SQabDk/HxjybRGW
+         0FLXQsIbxAH3MmXBtRpHxF5MsV+/R1EfoXbhqE99aWGcE95Nrn7DS3UUSUpm5dLhTNTi
+         oxnA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777427909; x=1778032709; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1777427920; x=1778032720; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=CDF4+RTCOAGouBrckQ9grX8Lmt3xq8cebQxQZaXsFQo=;
-        b=m/VoO911B3KHSkj0aj1fkuE9LipOIlPI1MtELBAHlGNthqpDDaPdf4r8GxahoiIrL9
-         iXxSHxkdzXwmvIGnIJUy2UWNTy2u8/vVlSRZDR9BD4+wzeq4ayTSzKjwhzM97NjuifN6
-         ipnmH2rcJcGgCulKa9kiK8E+Krkta2u+jkBgRNjrJGD5CrUUbGohFOLtX+Fv8yxbescu
-         UBGJ5+4W+8X472O28Hwi4C5wS94g+WNBFHVNLQr1kjAc5BO9/EIm1OCa+Lf5xCZEkJsG
-         WH3JABI/9PGxpdjAQuOVrjNHCC0uPQiTvKkeaxURgYHudSbxRhcOA6qw3AO6TY9vtmLr
-         EBaw==
+        bh=yuqGeXahbxcUk1u4/2wMgxO+sa3eSW+uWGPH0ECvggc=;
+        b=nFBldmeQPfcpVzNubkTFn1V/ReisvKU1H1uz0rVgUM6z9F5I4MjjEeopC6jgZWgPpj
+         oRUPQw6Zs+Pitn1CG4yz2KEhZblX8MAcTpJNusQRzqrgOcY25X5aONEUOQDL2baZcUBz
+         whMjUtqv1bgCkqwrsrpQppBsemsh/CrJHjRLQBdfJGIiDPNb0QQpGwN6XR0tHEnH3x1V
+         DqVy3+OgEuzBa1EaDbXlURMoH2QiytRHrVkAH4n7sDnCxipaccG6xGeY6RTHwCcAh5Y5
+         wyUo5Sv1OusV7PrrSSnxbDGCyfxO253B4qFB5d1kzAcWIMN45suzKVWOXI7teS1DyrBL
+         gPFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777427909; x=1778032709;
+        d=1e100.net; s=20251104; t=1777427920; x=1778032720;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=CDF4+RTCOAGouBrckQ9grX8Lmt3xq8cebQxQZaXsFQo=;
-        b=aqLRfAxQr5nwUQlLUzGq7qMTKK15nybXfKeXH3RvM4QhqUpStHyrK9a6Y+qdCIW43K
-         XFd4JlRvDmmUzRsNOLAi/V0jrnPtD0iUszVHrcgbYnRzqNV2vxpAO3+O/UrFJvlTDFQS
-         8JDmZdPNCzAtPdPuvlb5S6t1u1Mmd8gfBU2PWMlKtoZMxkzDjqtnEtFbQs8glLNhLT8S
-         +EPtKWteI0uRoOlSjxYd4tMo62DuaLuWuk/iQIyopm9z7vA7yPjbxYxzlPODJjop9vnZ
-         71NY0KZKHGNdY+LWhWVJocJM3AZoq/+xD8Jnw1DI2wHe6f8W1fqOvdSH+9TMCSjz3Skq
-         vQjw==
-X-Forwarded-Encrypted: i=1; AFNElJ8XBtaCQ0/qm/C9twtAwaZmwx1TrE0ZbQ9VPmd4u3GG67+j2LOE5AdS2FtOrVIoLObTQ+8jAng=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxkBC+lC5pvCqc7vsRNB/VIXttSGyxgw9RY8iar0HbtQw9iJE2A
-	8+lbf+1lHH7i0wxrRaXNXs394SUAfZYTXq4TFs/u3CBfUaeksPV1BJ6goYqtTXLdbwDko0Xo9BN
-	hBOZaPAqX+CIduYoFwa7lnX8zkRjT2wwVWHrPZPw4
-X-Gm-Gg: AeBDievvVmPlNcO8/ofKRApvmyu+2bvkUVbD46P6BnCU/IUYRr2EfCuOGhFBvlL7pOY
-	HG+jblLxI0z1cv5vJSs50E4ky37RntS3gNHcn5POOsyonQGJLMo7Zhhj1dJiQJV4Xeu94UvlLRD
-	IgieGqp7JuhhoONgQTu/V4w4FTtAUkHIa9dQ7oaGMZethd6B8N3tXclZtArBRYbZOXXgWRH0HIV
-	JAmxTlbsmg0msD3d6C7Yr6lVehpPW2c5xb3+eNNt5mV+HI7Bb4Qo7RMG0Otv2Fr5KcLwacqJT1r
-	HV63QS63sGubRU3ZPPk4s5meafcjf+lY/kWnvJuUi+1em1Qwf/J7PmXvQqQ9fmvzoHehCB8uc7Y
-	PlyPddjYQBg==
-X-Received: by 2002:a05:622a:5c95:b0:50d:db76:55cd with SMTP id
- d75a77b69052e-5100e1eadf1mr79444781cf.52.1777427908497; Tue, 28 Apr 2026
- 18:58:28 -0700 (PDT)
+        bh=yuqGeXahbxcUk1u4/2wMgxO+sa3eSW+uWGPH0ECvggc=;
+        b=RXCUoLEgh8oDOq1NksQ40jYnfVgQjTg8RGBAL3WYV2ylGx391zLeg3v3hcb9Ci0S1c
+         elP7Bo6JVL8xhGCvZroM7Cscxn6JzbsRKKPj2NtPhDVcM1eFEb/kqHSP3Nxfbb+v6/ek
+         ed6Ygt6YrUzTplv3O1+4DR5UgpYBA00Ck1f8VozOmUq2+Z8M7ztMBLpd4WmpVxioqgNP
+         7DGbn4H7JANPhddQZMVJikA/ESY7s1uJL7NoU+weMN/Bf6kbIF9qRLPJd7Z3m7X7m7PM
+         JrUrVDxCtCir1NJp0wOPC/ya5ChULvr82z6kyN7sAgV0Ny497NbJsrliHiY5sP6o0wwL
+         LcyQ==
+X-Gm-Message-State: AOJu0Yyz33Kl8NgCSnqrsqiREkay0FaxwXfvvxLmh2yPoGnZwGI9hhh/
+	lLCOPztWQMNrCiHb7KwQxjv3mOSVbJA9qo3I9CpvXxKoU1fOnb1K2obTcuYH6z6y4bYCVuYt4Sr
+	S8vKSlVqyFgceJfPF20uie04+vSWnrPo=
+X-Gm-Gg: AeBDieuAS5iAC4qhEc4zvA42unURk81whpbzoR1Ldkut3IIwPpamHP3Fv/Gvskznxmt
+	JLWWCNcvBqzhKyxWYyU1ixRenQyf5w88zGppqq3OfgeFA/Eit8pG4v8JcjNQ0q9KTg9M/hMI8jg
+	UwUEAYsEb0Jw3xr1hr0xYe75YUR3IRxY/unqbPWbQlx2W/CKZx0gBt2Ce+TVdf6GcuA8qZ/Olao
+	HlxUN4v+uc6marKfdHcAkQAVrRYpdQ2C75+6Cfm0DKHNKDfLnMQ8Tt4IOlzkL03Z61PNV1dhYVq
+	j7e1QUgh4rsg4+3DilgbQFeDnXTAg4bd4hdmu6mHgA8wINR669qcvIKCpeg=
+X-Received: by 2002:a5d:5d0f:0:b0:43d:71f4:7ed4 with SMTP id
+ ffacd0b85a97d-4478e9943c5mr2778885f8f.15.1777427919385; Tue, 28 Apr 2026
+ 18:58:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260429014913.1043836-1-edumazet@google.com>
-In-Reply-To: <20260429014913.1043836-1-edumazet@google.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 28 Apr 2026 18:58:17 -0700
-X-Gm-Features: AVHnY4KI-PjVKn3QtB3Cd_LiHxZ5t8jlwPxpTel98pQWUjIawOHeKaZ15291WxI
-Message-ID: <CANn89i+zJ_pWXoz8bTgaEcB86gh-ocg8kKjz5jWFi9iKd99ftg@mail.gmail.com>
-Subject: Re: [PATCH net-next] tcp: add sk->sk_synq_overflow_ts
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com
+References: <20260428110713.2550315-1-maoyixie.tju@gmail.com> <20260428110713.2550315-3-maoyixie.tju@gmail.com>
+In-Reply-To: <20260428110713.2550315-3-maoyixie.tju@gmail.com>
+From: Xiao Liang <shaw.leon@gmail.com>
+Date: Wed, 29 Apr 2026 09:58:01 +0800
+X-Gm-Features: AVHnY4LERK-_-glKNSMAd_6o281Ks5DC7YxO0koEJgi2NjQopuPz9tDFTvsvn7c
+Message-ID: <CABAhCOTmZ4hAuhtimOX1YQDGFC2fbXm5WmwT0Z8PxZU7Zq-2Fw@mail.gmail.com>
+Subject: Re: [PATCH net 2/2] ip6_gre: Use cached t->net in ip6erspan_changelink().
+To: Maoyi Xie <maoyixie.tju@gmail.com>
+Cc: netdev@vger.kernel.org, kuniyu@google.com, davem@davemloft.net, 
+	kuba@kernel.org, edumazet@google.com, pabeni@redhat.com, dsahern@kernel.org, 
+	kuznet@ms2.inr.ac.ru, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	security@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 28, 2026 at 6:49=E2=80=AFPM Eric Dumazet <edumazet@google.com> =
+On Tue, Apr 28, 2026 at 7:07=E2=80=AFPM Maoyi Xie <maoyixie.tju@gmail.com> =
 wrote:
 >
-> tcp_synq_overflow() and tcp_synq_no_recent_overflow() are currently
-> using tp->rx_opt.ts_recent_stamp to store a 32bit jiffie value.
+> From: Maoyi Xie <maoyi.xie@ntu.edu.sg>
 >
-> Use instead full "unsigned long" storage, as an union with sk->sk_stamp
-> which is not used by a TCP listener.
+> After commit 5e72ce3e3980 ("net: ipv6: Use link netns in newlink() of
+> rtnl_link_ops"), ip6erspan_newlink() correctly resolves the per-netns
+> ip6gre hash via link_net. ip6erspan_changelink() was not converted in
+> that series and still uses dev_net(dev), which diverges from the
+> device's creation netns after IFLA_NET_NS_FD migration.
 >
-> As a bonus, we can remove time_between32() from include/linux/time.h.
+> This re-inserts the tunnel into the wrong per-netns hash, leaving a
+> stale entry in the original creation netns. When that netns is later
+> destroyed, ip6gre_exit_rtnl_net() walks the stale entry, producing a
+> slab-use-after-free reported by KASAN, followed by a kernel BUG at
+> net/core/dev.c (LIST_POISON1) in unregister_netdevice_many_notify().
+>
+> Reachable from an unprivileged user namespace ("unshare --user
+> --map-root-user --net"); cross-tenant scope on container hosts.
+>
+> Note: ip6gre_changelink() (the non-erspan sibling earlier in the same
+> file) already uses the cached t->net correctly. The bug is specific
+> to ip6erspan_changelink() copying the wrong shape.
+>
+> Fixes: 5e72ce3e3980 ("net: ipv6: Use link netns in newlink() of rtnl_link=
+_ops")
 
-Please disregard this, I sent a wrong version of this patch.
+The changes look good to me. But why is 5e72ce3e3980 mentioned
+here? It neither introduced nor was intended to fix this bug.
 
-pw-bot: cr
+Thanks.
+
+> Reported-by: Maoyi Xie <maoyi.xie@ntu.edu.sg>
+> Cc: stable@vger.kernel.org # v5.15+
+> Signed-off-by: Maoyi Xie <maoyi.xie@ntu.edu.sg>
+> ---
+>  net/ipv6/ip6_gre.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
+> index dafcc0dcd..38ac14cc0 100644
+> --- a/net/ipv6/ip6_gre.c
+> +++ b/net/ipv6/ip6_gre.c
+> @@ -2261,7 +2261,8 @@ static int ip6erspan_changelink(struct net_device *=
+dev, struct nlattr *tb[],
+>                                 struct nlattr *data[],
+>                                 struct netlink_ext_ack *extack)
+>  {
+> -       struct ip6gre_net *ign =3D net_generic(dev_net(dev), ip6gre_net_i=
+d);
+> +       struct ip6_tnl *nt =3D netdev_priv(dev);
+> +       struct ip6gre_net *ign =3D net_generic(nt->net, ip6gre_net_id);
+>         struct __ip6_tnl_parm p;
+>         struct ip6_tnl *t;
+>
+> --
+> 2.34.1
+>
