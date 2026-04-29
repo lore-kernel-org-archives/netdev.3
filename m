@@ -1,64 +1,62 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD8B3803D3
-	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 06:51:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 794BE35A381
+	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 06:51:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777445512; cv=none; b=W3eFhhx9bRrfTSyuAU2IvG5qScz/bMKWxaVXyA14YXqJFOo89ks0bRLKYZj3GcucgBBcJRNUGDIo3kVA1q/amrGzQlHP3PAKGFTvMxxzx4WxavRYKKzK9kT9WwRDSgkSqBgxg+mRFQXw7vlMfWNkW+DB7xi7gp904X5SZdHnJWk=
+	t=1777445512; cv=none; b=P0nSakADuruAev1tcu2uE2Itl/1OnqVvUOJLPq07MjX+dVsCILy76Zpp/baxi0ooufA+ORKpoY6YQ3MtLttZgdfBAk+FKrRLUe27sKDpkuq4KpkWW7Be6MJr0YiB5zDyerqodDWQA4QpdEcC1iXdhIaJDatV2QLT37KSc8LaMNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777445512; c=relaxed/simple;
-	bh=2KVzJDW98C1opC/+q5S2P5LsDTckws3OaCSMoRuOgIk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=YcxXRAA7x9QM9iLGofiLi9EdpJFYPJsuDWjtexLfqgTTTnqtmV7ID7zJF6hgQsEXqsSfmA2mEXH244/aknDy+THWL3wAlZIkHBm4mC3mIInzAnJePJqID79EW+5+C52UDCA+ra4tA3DLNQ1+SDEcFkU2OQrJYZ36VIzEBjEVPVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=FR9CQHAW; arc=none smtp.client-ip=209.85.214.181
+	bh=ANsLwTO+kyeAhXqXmZWtED1qgfADSn/30UwqnPezkIw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lP0e4F51DgDZ1YYCkI6t91Wm9EtI6j8Vvxb3BPnBJg8ZzEPTR0syzb2iCTnElISJOxJ6tQTiPaMfU/ya9mTlNUyXE+Z+Tt/tuO5jTsEhsgNHiSpEkrDEW7IOePzHCeozALJftAstPSjPYnsxSzVSkOYSzhkM/6I8nR+Qk+VmMHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=CTBNzO4x; arc=none smtp.client-ip=209.85.214.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sifive.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="FR9CQHAW"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2ad21f437eeso3998625ad.0
-        for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 23:51:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="CTBNzO4x"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2b299b3c739so56815745ad.3
+        for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 23:51:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sifive.com; s=google; t=1777445511; x=1778050311; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HJR0wUneST2OobSctcgeuLs6bttBTQJPSlbTZVLMlC8=;
-        b=FR9CQHAWJDZZ73KQVsu+az51WYlsJviJZ4k07UfLgW9Cwk13giJgH4H8Bq2QfVdx8E
-         xUQ9pD+e186ssYdN84vCCyuhk1BHY4IPL0MDqX9yPuiiLaDm85mk5TqMVjnuO8p/yfZh
-         mgvDcDYkyS3L0vdiEkfMYeMOj2Lm4Mv8OdAcORv4Xe/+H1+fbTIIooVDZvKFly2wMFNM
-         kDmqSdUUTAQ7Vv2NQ5DLPsxjpFkN/Ai58EYIYs7K49BuIZINALVaZZydHIBO3Yq6E79g
-         HVFcZKmUq2RGbpdXBckWm44LQa/OQYeHH9YaerUPLQrTrlxHdY1sP7PFcqjdUYwmnGTV
-         16pw==
+        d=sifive.com; s=google; t=1777445508; x=1778050308; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=t1oIA84XW+a8Bh4ovzb4hgVcCSUxwgN9bGakuQa7qX0=;
+        b=CTBNzO4xJyiIUICQk/UvdDEGm/209dwRqNqbBUPD9opwxJLW/vnt8pw0HGphwlcBTU
+         gmV4oOiBXSwOgSxDBk9R2cVIGtpT3Eu8HjcmfTIU0VrZCXCBXvys+LM44c5HHErtUtBD
+         WzhG8v5hYCx1njksnw1mXiC/2x1l3KDusIQ+4GReyNPTx7ZOvsFjqbKfgC+a7wPR7eeo
+         Pu33fX/6i5dKE4QO073XQq53efgJUBr39/5yDgC1jxslEhvt1Mx8m9KGAL+Wbi884Sqq
+         cCK4AKHEb866BByTZyox9WPBa17w0Cw7cANbOsaZimkf2u8gkJwY2Zas8ipZ0gRxWo/t
+         NLAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777445511; x=1778050311;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=HJR0wUneST2OobSctcgeuLs6bttBTQJPSlbTZVLMlC8=;
-        b=btb9HTlfUXdKCTcK0NKnWI/zIGvif21uTWM5+Buyoh3jym4HG4XdT6jdKeyRZM0wtd
-         GX0mmVtMySr+m9vVyg2hVkvlEb0WOPgGj8+eTpGnBCtK8mabWmPlww4JyQDZefn2TuIY
-         2jwQYz109tIWpAm8XHXYE+OMcmCfc0zWOPwxsmZ8XYqZdXf7gxHc3C574fhQ5r6odSr1
-         3dL5FNEACjPHFAPinKYBIHpT9lU0KwMsYZmaNvXZ3Za/PnsOkwl5vur/inQ/RU9z9c7O
-         C8S/xT02m0DjvQdry/oaB6Oox18vBYol1ef6qkbpvnqg4Bsl3SX4zkmTkTbpOF75QZ0G
-         N+Tw==
-X-Forwarded-Encrypted: i=1; AFNElJ/Oq0jAqE2Kzk2CTqN4DHOxNMBdsikVDoSr0RgmrO6WdOSkbxQKvvobVlcgnpwE4NL9aCuCE5g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwNcsb77+ukFlm7Ga++bIVw9l6jj/DxtNvbJ2hk2A+AEkJgRHR4
-	ZxSfCdJc/8NvNP14EzJ7xUcmZRuxp1nBn49Hbyn/mqqZnmjFSTRqmKKbD+e2zWkTFoY=
-X-Gm-Gg: AeBDietqzBPoGWorxrbWiCXFrMGkvbqakM0GAiiU+gJE08WkqmIfAQ6HSV2wZTEsL6Q
-	RYktuAsD9siZZQDHXfhgmaw5HVUNuIU6QzNER4WrLEnJSkDpuYUw0ZBH/3lxh3m3Hy/AhN+q/YM
-	jc1M83Gv5bAHDFAmlmbFSyB3cUEFD3Yh5YfNyF3H8GM3dM2WUMonMZx8rxTwS0SD83zUAE85pR/
-	0cpZxQgSyFRTKMkbw3BKtjwj7ALmaCWmTqCmKGJC/zjxXGPyQ7tWquitXGD0hDvmUU2WuLC9+Cp
-	4zSABYTyLcxSoCaA4gxUmcmMrGCfUxwMMWVOvyUuXRnNCUy2PFiFY6C0j/74UPNPmBIqxZx3R24
-	wwNE/yWwEGLzqSZ3DjkyCjIdiujkOx8jYCUoEe4j7mhHAi7XBYqsFAaTLby4DVwpgpkmxA0ymC6
-	JL//v6Njoqb/AC8o+DHex9mffkSM1151XwiNWklObarGAlB0Dl51oT0tnbjBG+xF+RcW4GHMWzH
-	7DohA==
-X-Received: by 2002:a17:902:f652:b0:2b2:53f5:461f with SMTP id d9443c01a7336-2b98825bdb5mr18430485ad.25.1777445510644;
-        Tue, 28 Apr 2026 23:51:50 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1777445508; x=1778050308;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=t1oIA84XW+a8Bh4ovzb4hgVcCSUxwgN9bGakuQa7qX0=;
+        b=ionsMZlwcqdD7XMIkGk5z9M2xJ8n7FNZox3hbheYr5+OwiEo94C1+zqcQNSEmgEUJr
+         OEr/GbgYTDKxYbpH6VOLSmyADzzc137DOsQRQaqJE9dQ0iUveUFPJkNFXNQtDjyIdu9/
+         uq8MgVGO7C/0ctbXLfs87wFLFGFJy8xFH0I711sRImvyTs//aBfUz9HefXKnoUaYnH7S
+         2HNhuGu3Az56Z35JE7d/yXxjz6q2ugDV2L3MhJ4dYXW7z3/kZmxQV20enGcbdW3wtkWa
+         AhXjhzufnP6rDIQpqHBuH+58ZHm9h3R6xlF8fidhmvfFsOGG+ymnvjnip2rqqAJ3q1cl
+         BRSA==
+X-Forwarded-Encrypted: i=1; AFNElJ+GhL+RuusvOiZCiPKrOK+YGsBMkFiL9lCeJudlgJE5H4N1JCm0IAUZ1uTZDpCEJ8pwdPShIjI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxwXZvun8gfdmmYor4tJZFgEu7c18GVvwh+OIZl57O5XsAixmTF
+	NtrQpgfVyDwuY2mUYKPd3TnG73LwdfVKjJYu57EB7lzYoeItPiil8gfuwF6RqUJlPFc=
+X-Gm-Gg: AeBDieuJv3tFzjzCZLCcqiesJs0Q88tx5n45ghVDF7agI9b5IZPbXTeqg2BmTHZbyKN
+	NqwNR2JTMDsCQgkfvnu5WCBIS+NxBf9uat+AEkAz7IKE9m5OhI35+QG6g+/LFTCAoDNUZWNzXqR
+	IfjYK4IeEnhqUkuxr1iPAq1Xiw/wfxpjvqQcWKUETPMnTZElHBdvbOYXasdTFdCqUVHIEsGzyrH
+	H4V5lvZWQstQTb9itSR8F1c4bUCrZI1uadhmLgA8k+LGYTiDI+21NaXIqnSSyPqSYo1casuuvG7
+	WukwO2Je6UCYgKc6iNVWBzVCD8c0YDX20bHXDB7jzfBkFUtlOqr94CAke4sP8sXjmrUy/kQuGPA
+	sgi44pyABSSYrZY4EUSz9jRlKGQCPtmgI1/9Sisedk25vIB+I5WcftfpliRPjir6h7jVfWMr2og
+	ga9PLogV+08AOOcKotZoXr27QsWYzD8QeDhlD+7G0GjolFoWWkzmNcgalb1+t7WZN504IzsRGD/
+	Thk9g==
+X-Received: by 2002:a17:903:11d0:b0:2b4:6367:7b86 with SMTP id d9443c01a7336-2b97c4a9217mr63297495ad.37.1777445507739;
+        Tue, 28 Apr 2026 23:51:47 -0700 (PDT)
 Received: from Vincent-X1Extreme-TW.internal.sifive.com ([136.226.240.187])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b98895afaesm15038105ad.57.2026.04.28.23.51.48
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b98895afaesm15038105ad.57.2026.04.28.23.51.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Apr 2026 23:51:50 -0700 (PDT)
+        Tue, 28 Apr 2026 23:51:47 -0700 (PDT)
 From: Vincent Chen <vincent.chen@sifive.com>
 To: anthony.l.nguyen@intel.com,
 	przemyslaw.kitszel@intel.com
@@ -70,12 +68,10 @@ Cc: andrew+netdev@lunn.ch,
 	intel-wired-lan@lists.osuosl.org,
 	netdev@vger.kernel.org,
 	vincent.chen@sifive.com
-Subject: [PATCH 1/2] ice: allow creating VFs when !CONFIG_ICE_SWITCHDEV
-Date: Wed, 29 Apr 2026 14:51:26 +0800
-Message-Id: <20260429065127.423949-2-vincent.chen@sifive.com>
+Subject: [PATCH 0/2] ice: fix VF creation when !CONFIG_ICE_SWITCHDEV
+Date: Wed, 29 Apr 2026 14:51:25 +0800
+Message-Id: <20260429065127.423949-1-vincent.chen@sifive.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260429065127.423949-1-vincent.chen@sifive.com>
-References: <20260429065127.423949-1-vincent.chen@sifive.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -84,62 +80,31 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Currently ice_eswitch_attach_vf() is called unconditionally in
-ice_start_vfs(), which causes VF creation to fail when CONFIG_ICE_SWITCHDEV
-is not defined.
+This patch series fixes an issue where VF creation fails when
+CONFIG_ICE_SWITCHDEV is disabled.
 
-Fix this by adding switchdev mode checks at the call sites before
-calling ice_eswitch_attach_vf(), consistent with how
-ice_eswitch_attach_sf() is already handled in ice_devlink_port_new().
-This is similar to commit aacca7a83b97 ("ice: allow creating VFs for
-!CONFIG_NET_SWITCHDEV") which fixed the same issue for the previous
-ice_eswitch_configure() API.
+When CONFIG_ICE_SWITCHDEV is disabled, the stub function
+ice_eswitch_attach_vf() returns -EOPNOTSUPP, causing VF initialization to
+fail even though basic VF functionality should work without switchdev
+support.
 
-Signed-off-by: Vincent Chen <vincent.chen@sifive.com>
----
- drivers/net/ethernet/intel/ice/ice_sriov.c  | 14 ++++++++------
- drivers/net/ethernet/intel/ice/ice_vf_lib.c |  3 ++-
- 2 files changed, 10 insertions(+), 7 deletions(-)
+The fix is split into two patches:
+1. Add switchdev mode checks at caller sites to fix the immediate
+   issue while maintaining backward compatibility. This ensures
+   ice_eswitch_attach_vf() is only called when switchdev mode is
+   enabled, consistent with how ice_eswitch_attach_sf() is handled.
+2. Remove the now-redundant internal switchdev check from
+   ice_eswitch_attach_vf().
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_sriov.c b/drivers/net/ethernet/intel/ice/ice_sriov.c
-index 843e82fd3bf9..6a0b724e46f9 100644
---- a/drivers/net/ethernet/intel/ice/ice_sriov.c
-+++ b/drivers/net/ethernet/intel/ice/ice_sriov.c
-@@ -484,12 +484,14 @@ static int ice_start_vfs(struct ice_pf *pf)
- 			goto teardown;
- 		}
- 
--		retval = ice_eswitch_attach_vf(pf, vf);
--		if (retval) {
--			dev_err(ice_pf_to_dev(pf), "Failed to attach VF %d to eswitch, error %d",
--				vf->vf_id, retval);
--			ice_vf_vsi_release(vf);
--			goto teardown;
-+		if (ice_is_eswitch_mode_switchdev(pf)) {
-+			retval = ice_eswitch_attach_vf(pf, vf);
-+			if (retval) {
-+				dev_err(ice_pf_to_dev(pf), "Failed to attach VF %d to eswitch, error %d",
-+					vf->vf_id, retval);
-+				ice_vf_vsi_release(vf);
-+				goto teardown;
-+			}
- 		}
- 
- 		set_bit(ICE_VF_STATE_INIT, vf->vf_states);
-diff --git a/drivers/net/ethernet/intel/ice/ice_vf_lib.c b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
-index de9e81ccee66..71595410174c 100644
---- a/drivers/net/ethernet/intel/ice/ice_vf_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
-@@ -807,7 +807,8 @@ void ice_reset_all_vfs(struct ice_pf *pf)
- 		ice_vf_rebuild_vsi(vf);
- 		ice_vf_post_vsi_rebuild(vf);
- 
--		ice_eswitch_attach_vf(pf, vf);
-+		if (ice_is_eswitch_mode_switchdev(pf))
-+			ice_eswitch_attach_vf(pf, vf);
- 
- 		mutex_unlock(&vf->cfg_lock);
- 	}
+Vincent Chen (2):
+  ice: allow creating VFs when !CONFIG_ICE_SWITCHDEV
+  ice: remove redundant switchdev check in ice_eswitch_attach_vf()
+
+ drivers/net/ethernet/intel/ice/ice_eswitch.c |  3 ---
+ drivers/net/ethernet/intel/ice/ice_sriov.c   | 14 ++++++++------
+ drivers/net/ethernet/intel/ice/ice_vf_lib.c  |  3 ++-
+ 3 files changed, 10 insertions(+), 10 deletions(-)
+
 -- 
 2.34.1
 
