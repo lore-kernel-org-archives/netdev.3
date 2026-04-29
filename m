@@ -1,83 +1,162 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f201.google.com (mail-qt1-f201.google.com [209.85.160.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 351A01514F8;
-	Wed, 29 Apr 2026 01:06:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EECE618A6A8
+	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 01:08:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777424788; cv=none; b=GcJoKJdB1X7lvRutpMjBvyg2SbXiDGxWfGiFEyuX5pXXMjFl0SlPgQhoc77r++WLdfUIORgO9GDl08YB1MX+tIMf7hfzeWNMk2F2EHiDQp8Jv9HfeleUmvMeu+nM1Se1Diqfjh/ttvo3eqKkmplR0O0rZMwQsl3H2IekDMYgav4=
+	t=1777424893; cv=none; b=HQd88it5si8t9cVmh1Eg2+ZpFvfXMDyIbJOM1QXkZMDE1BrHQigjvbzF9O2f9sSl6q6kZYBy9IXtKb//RrLRR9c75OzBpgS7KLUMeb3W/bkXzcnyCkzbmMAQwn7cr2FHvk371yp3f0rMxdBks/tnPXDKaELir5eONNoDjWdRDig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777424788; c=relaxed/simple;
-	bh=FbbMYy43PUndM6JPNtV61qlInWSiX44oXWU5kPw/J1Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GQP52Y8d5iKuc4++UFbDv2854fx+/0dkprAiGhg+sRy8lADGeP8MpmvlOTgxREvsGs50Eb5UfBh0oGIUlBAuhN1aYw5lkQzhEKzy5z8kDdfJj/Rs5uqzKCrTKoSOFegysPrghO6IeikePq/a31pjlkgiCC2cWBPoWGy448rfCy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=jcUaphJi; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1777424893; c=relaxed/simple;
+	bh=lYd+iWvhDf1I1SCRjClzNHGWBLv7k2qUy/5FqAskYAg=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=I1VM/PXuTdKVtnmLulhp25QYbkOMRfhSMF91pNDz7A+QC/SRvqBUeEuv1pHMlFkXCgrW7uyzXgRUU79Hg30JikDeeaCOPd6RSR0bYsN4h3oGLKPITxdjSXfIEFFko9q1kx78z3673NpTuZ8MgqgXEVOh+MKF9fNOTskb5rjN9bo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OR7uMh73; arc=none smtp.client-ip=209.85.160.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="jcUaphJi"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=WJyEk5iF/qClSow4VldMYLiNlMJs/+IOgRx7E06PJ0E=; b=jcUaphJirF4jpAsR5pNq2ZozJW
-	w4uXI1olYO9kwy4WUOcz5TkLzG79ZBioNzGCAOCw+9PLMGxAPV7UKXq17hoEznOvhX1I9w5WgLmB4
-	79QLQFdKVGdcw7aEKo4Hc+cLHhIUuX1NQY88sWJ8zjfmVyGpAKSt6FrFdPhmBvhkxfds=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wHtNB-000RMN-PA; Wed, 29 Apr 2026 03:05:53 +0200
-Date: Wed, 29 Apr 2026 03:05:53 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Cc: Ulf Hansson <ulfh@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Jeff Johnson <jjohnson@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
-	Rocky Liao <quic_rjliao@quicinc.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, linux-mmc@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-block@vger.kernel.org,
-	linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
-	linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
-	daniel@makrotopia.org
-Subject: Re: [PATCH 0/9] Support for block device NVMEM providers
-Message-ID: <b4de6c89-dd89-4e02-8d79-911e4f9f0813@lunn.ch>
-References: <20260428-block-as-nvmem-v1-0-6ad23e75190a@oss.qualcomm.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OR7uMh73"
+Received: by mail-qt1-f201.google.com with SMTP id d75a77b69052e-50faf1ecd1dso259209451cf.1
+        for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 18:08:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777424891; x=1778029691; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=orH73nQDw6Ke0h8O6Ce+5We6K2K/EbHU6Ro5LIkStW4=;
+        b=OR7uMh73Y3HZABss1VmRglLZ5x7bbuRl2+fMk3LbKbJBNLQDITnaJhh2dLsqTNsLfP
+         TIa4FAnRQLBj2VnLI6tQqUbOZqaYbJv2pNbFAP1+DNLGA4Tq1Bg6w/F5rE9+9l5Y/8JR
+         Xv6JgC689mchOLa6jLmP7tuaR+1r9biBW3Ld2CEVA/622+BA0pXWlHNiGnwwGhXB95lA
+         AQoE3je4j+ITunFt8nKipnIGppimVr9zTso0wTfOqdIQNYl901dL6t7b0UkpS2uXI2hF
+         BzlIWMWSIg6/MlcSDWZiK/q9Im0cT53KrPQ1PYIkvEkpODiUoek51RWPDOkAAY4ByDre
+         yliw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777424891; x=1778029691;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=orH73nQDw6Ke0h8O6Ce+5We6K2K/EbHU6Ro5LIkStW4=;
+        b=QfeNuLkxc0jowNmApjlud7Rv8aF7tNJTryouQOXjwMHYuRAw6s8IQB+zMtU7eZEqV6
+         GxYAHHXAGBg6S2flMmqo2Mg4cH9H6UjBKbQ2dqcz7mHgwWDKLujKH9KmiwZaJkLplOAR
+         0jFYiJIQHpgqsIpd55NnO4Vfp1coG7d9BgrEThLQcj1nQqO/dgcuW9Oza//81PmoLZsy
+         KfLzJ++AAjqhAQpy75tsY6+fkLXzvWXokXx5BM7uVjOlHFUBIgbdx26TGYmlv1onHDoe
+         KnRfWcvL315b7x19+2yEFNA9w86aq/oScCD7Un3/B0zui/mYWhNQb/Iu569NBCN7gvK9
+         Xodg==
+X-Forwarded-Encrypted: i=1; AFNElJ8uxsUYsMKyj21lRjOnxOWYJSFfplYLsTXqKT/rX3kCyWZJQWwFortyB9gnJG64HW8FSw2Epyo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPN8rnfgdQPsueVzcXP01cKZVviKIhWvDWPkYgJbqjQenBQMFr
+	VE3JIMUi7Vh8TYGcbY0CAJrggSDs64N88Cktun+Sh7LA3YzRbBKRoxPWYtk9AIL0r6Uxgw4y/3t
+	/VdR1S1SknXh4AA==
+X-Received: from qtxz3.prod.google.com ([2002:a05:622a:1243:b0:50f:a53b:ca5b])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:ac8:5807:0:b0:50d:71aa:6b67 with SMTP id d75a77b69052e-5100e1e6f0bmr78428271cf.53.1777424890654;
+ Tue, 28 Apr 2026 18:08:10 -0700 (PDT)
+Date: Wed, 29 Apr 2026 01:08:09 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260428-block-as-nvmem-v1-0-6ad23e75190a@oss.qualcomm.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
+Message-ID: <20260429010809.784315-1-edumazet@google.com>
+Subject: [PATCH net-next] tcp: add tcp_mstamp_refresh_inline()
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-> Note that this is currently limited to eMMC-backed block devices, as
-> only the eMMC core associates a firmware node with the block device
-> (add_disk_fwnode). This can be easily extended in the future to
-> support additional block drivers.
+We want to inline tcp_mstamp_refresh() in fast path only:
 
-Would this be
+- tcp_rcv_established()
+- tcp_write_xmit()
 
-https://elixir.bootlin.com/linux/v7.0.1/source/drivers/mmc/core/block.c#L2641
+Add tcp_mstamp_refresh_inline() for this purpose.
 
-Looking at that function, mmc_blk_alloc_req() i don't see it doing
-anything different between an eMMC and MMC.
+Add noinline qualifier on tcp_mstamp_refresh() for the other paths,
+to reduce bloat.
 
-An eMMC you don't expect to go away, since it is soldered
-down. However an MMC can be ejected. Is the code prepared for that?
+$ scripts/bloat-o-meter -t vmlinux.old vmlinux.new
+add/remove: 0/0 grow/shrink: 1/4 up/down: 26/-123 (-97)
+Function                                     old     new   delta
+tcp_rcv_established                         2238    2264     +26
+tcp_connect                                 4027    4003     -24
+tcp_tsq_write                                152     120     -32
+tcp_send_active_reset                        476     444     -32
+tcp_send_window_probe                        235     200     -35
+Total: Before=25316710, After=25316613, chg -0.00%
 
-      Andrew
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+---
+ include/net/tcp.h     | 10 ++++++++++
+ net/ipv4/tcp_input.c  |  2 +-
+ net/ipv4/tcp_output.c | 12 +++---------
+ 3 files changed, 14 insertions(+), 10 deletions(-)
+
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index ecbadcb3a7446cb18c245e670ba49ff574dfaff7..fb2bc9edc7de01bfc494afa828428723a352c02b 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -1015,6 +1015,16 @@ static inline u32 tcp_time_stamp_ts(const struct tcp_sock *tp)
+ 	return tcp_time_stamp_ms(tp);
+ }
+ 
++/* Refresh clocks of a TCP socket,
++ * ensuring monotically increasing values.
++ */
++static inline void tcp_mstamp_refresh_inline(struct tcp_sock *tp)
++{
++	u64 val = tcp_clock_ns();
++
++	tp->tcp_clock_cache = val;
++	tp->tcp_mstamp = div_u64(val, NSEC_PER_USEC);
++}
+ void tcp_mstamp_refresh(struct tcp_sock *tp);
+ 
+ static inline u32 tcp_stamp_us_delta(u64 t1, u64 t0)
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index d5c9e65d97606d8eb57aba8ebc2373adf1bed62b..7995a89bafc9d1d997b936eeac3964cdd7e7741a 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -6474,7 +6474,7 @@ void tcp_rcv_established(struct sock *sk, struct sk_buff *skb)
+ 	/* TCP congestion window tracking */
+ 	trace_tcp_probe(sk, skb);
+ 
+-	tcp_mstamp_refresh(tp);
++	tcp_mstamp_refresh_inline(tp);
+ 	if (unlikely(!rcu_access_pointer(sk->sk_rx_dst)))
+ 		inet_csk(sk)->icsk_af_ops->sk_rx_dst_set(sk, skb);
+ 	/*
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index f9d8755705f762fe4da3064d2b1bfce4828ec0c1..c8d7b5d20d1874bb7840e1c480195076830f1058 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -52,15 +52,9 @@
+ 
+ #include <trace/events/tcp.h>
+ 
+-/* Refresh clocks of a TCP socket,
+- * ensuring monotically increasing values.
+- */
+-void tcp_mstamp_refresh(struct tcp_sock *tp)
++void noinline tcp_mstamp_refresh(struct tcp_sock *tp)
+ {
+-	u64 val = tcp_clock_ns();
+-
+-	tp->tcp_clock_cache = val;
+-	tp->tcp_mstamp = div_u64(val, NSEC_PER_USEC);
++	tcp_mstamp_refresh_inline(tp);
+ }
+ 
+ static bool tcp_write_xmit(struct sock *sk, unsigned int mss_now, int nonagle,
+@@ -2971,7 +2965,7 @@ static bool tcp_write_xmit(struct sock *sk, unsigned int mss_now, int nonagle,
+ 
+ 	sent_pkts = 0;
+ 
+-	tcp_mstamp_refresh(tp);
++	tcp_mstamp_refresh_inline(tp);
+ 
+ 	/* AccECN option beacon depends on mstamp, it may change mss */
+ 	if (tcp_ecn_mode_accecn(tp) && tcp_accecn_option_beacon_check(sk))
+-- 
+2.54.0.545.g6539524ca2-goog
+
