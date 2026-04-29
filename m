@@ -1,111 +1,145 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F58B39C007
-	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 06:48:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD8B3803D3
+	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 06:51:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777445306; cv=none; b=EB2b1H5uTUBYr6h1STDIIusRJhItsdSC2+sGCisKRwbnafQbCjH69vcVhLfC6VYrBSA1AoZOdaAyvX67FVft8vufTXFaK92LsAd2+TPoWlp696jLzoJj85689+8zaeBsl8ZWual1Uakq+DtMd3pnghgkbLsVx5Uyi32ekE9Onq8=
+	t=1777445512; cv=none; b=W3eFhhx9bRrfTSyuAU2IvG5qScz/bMKWxaVXyA14YXqJFOo89ks0bRLKYZj3GcucgBBcJRNUGDIo3kVA1q/amrGzQlHP3PAKGFTvMxxzx4WxavRYKKzK9kT9WwRDSgkSqBgxg+mRFQXw7vlMfWNkW+DB7xi7gp904X5SZdHnJWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777445306; c=relaxed/simple;
-	bh=74yiVA+barDrmw2/b2nNUKKQm1v84lTrbgkdtxA3hzw=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=pWKxVUn+W6DEgt2YZb3EiSWWm+93pnRY4HgWb4k2BPSFB2HviISYmJZK6cXqe7WIEnlboaR5KQwpFzTZ6/uc0sY5lSHDGkrwk6FA6rR02ZtU0PawwUkN5LLtYfU7qBzDeZdCTd2p+C/SJdxbRiAVCE2Ga1nI29cBK0tdCAKJbWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gazr7/cz; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1777445512; c=relaxed/simple;
+	bh=2KVzJDW98C1opC/+q5S2P5LsDTckws3OaCSMoRuOgIk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=YcxXRAA7x9QM9iLGofiLi9EdpJFYPJsuDWjtexLfqgTTTnqtmV7ID7zJF6hgQsEXqsSfmA2mEXH244/aknDy+THWL3wAlZIkHBm4mC3mIInzAnJePJqID79EW+5+C52UDCA+ra4tA3DLNQ1+SDEcFkU2OQrJYZ36VIzEBjEVPVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=FR9CQHAW; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sifive.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gazr7/cz"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4891b0786beso88258365e9.1
-        for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 23:48:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="FR9CQHAW"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2ad21f437eeso3998625ad.0
+        for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 23:51:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777445302; x=1778050102; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=lDhQuZ2fFicfJqp5+3HbIXCIa2+xN5jtTHPkvfbA9J0=;
-        b=Gazr7/czH233ef4C9mEBOpGxLjLkPZwUhkISYTYvY+1CZFBrEhV/AqEBG+Wnfec5Ty
-         xFUDes3bsfRKouMRjClJLxT6+EiE1pBO179KVhCI2BJoTCNqrNNcUktk9xGV8d/ImYem
-         P2FCN/q4zP9ek8U862wP5ZdIkRMkPPWhGobTjfX5cw2tpFQPCTY8HKdao98qaLKUlGRO
-         ibxvKq82bZOWqYrfZ2MrW7H25wLeWLhptpX7fDPIfa60rHAY917sBcdAfsrrIPtny4PM
-         HtKVNZPiS2Uj8Ix25lodL57ZQev+WrgBazQ15AmwUXOm9JYXBaUlRocmWdDIb8w812kH
-         RxWQ==
+        d=sifive.com; s=google; t=1777445511; x=1778050311; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HJR0wUneST2OobSctcgeuLs6bttBTQJPSlbTZVLMlC8=;
+        b=FR9CQHAWJDZZ73KQVsu+az51WYlsJviJZ4k07UfLgW9Cwk13giJgH4H8Bq2QfVdx8E
+         xUQ9pD+e186ssYdN84vCCyuhk1BHY4IPL0MDqX9yPuiiLaDm85mk5TqMVjnuO8p/yfZh
+         mgvDcDYkyS3L0vdiEkfMYeMOj2Lm4Mv8OdAcORv4Xe/+H1+fbTIIooVDZvKFly2wMFNM
+         kDmqSdUUTAQ7Vv2NQ5DLPsxjpFkN/Ai58EYIYs7K49BuIZINALVaZZydHIBO3Yq6E79g
+         HVFcZKmUq2RGbpdXBckWm44LQa/OQYeHH9YaerUPLQrTrlxHdY1sP7PFcqjdUYwmnGTV
+         16pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777445302; x=1778050102;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lDhQuZ2fFicfJqp5+3HbIXCIa2+xN5jtTHPkvfbA9J0=;
-        b=gshGkOECCKVNi6DhX62Gc21ULXV5XKkj1CM0KHZEZgUR/Uxy5IvfPAa8okZZ1S6tCT
-         DMTFoDA9mwTrbPmhpuY8Ix3qdlCiGxWlByHg/CgZ+IJmmLgzOYReNtUAfJRKZCPK2bWp
-         xmr/a0IBRAyR49UdjpAsw5yD50CdZj8y1j6hORzCODWyM2HI+0oe38/FSEM9C+5MQ3PX
-         FuY/xYDzmmuQ1p0u2l7MsNQURKBLy6UYhUif5l6vrCA8KBvazMT+zHbajPg1R7nwIt6c
-         TwS73FDZMJSw5FySDSWjXenwsAsjKFTkRwXE7eS6ztomI9amWcTMP0QR+kzU/L4mzRGB
-         F8nA==
-X-Forwarded-Encrypted: i=1; AFNElJ/1gMxPouPR8Hw1FCm75gc1Nzs9/aVlpXZr40oikvJqwDsSPVjv7nmsgsGeLPNouhn47BNbQbc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyaOCBdUBZArTQw9mG0drhwfN8eGFRXrJh/cdAox5JowkjQCfVg
-	TUUwlBCXBI78yfIV2qO2SCqzURnjHFV/MhCTgywy08KwlI9fzrgzwA5W
-X-Gm-Gg: AeBDietuOB0rRpjy362GNXlNm6Mo9kCSlN4sTDCobsp8mUzbiOSzY568/PNbiVLm4em
-	LFOW4GGFyLIBEV7mbDrD++uevwKFC5B0WHL+CyLHRdEXPg6U5Y7QkpqihBk+P9AsGHJ0PvzvxBJ
-	L7ZCnRcNXqu3e1xdt0yB45dWzii7oCzwhXh0Jo8bc2L7hZeJq4MjxoJ7ayM65r7RaKZldziwMif
-	R3c9q0qbTkqlFb3ItK/iAO8liRy86u5S9EheZVTpK3oJ9G0beFkYlOrY212p51JyLtKYQCHcAoX
-	acGHQIUielXKkjsdHM3ZLhn3L668CRN+STkMGp5E2yp0C1aR2I9gpcE+PRQvnR7as5maP9peNB2
-	J9NLa4Ikf7+zH4ERaVJlcFScUNvK56UOJ86gyi6U6E529V3Jlxq5zXvqXqZiT6DVF6aV8eUx/oa
-	LWXOWNQxn1XjvtMj2WEZ9GSr4RHpOQRA==
-X-Received: by 2002:a05:600c:c091:b0:489:19e9:b139 with SMTP id 5b1f17b1804b1-48a7b5125ffmr30806325e9.1.1777445301640;
-        Tue, 28 Apr 2026 23:48:21 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a7c57b579sm33738925e9.4.2026.04.28.23.48.20
+        d=1e100.net; s=20251104; t=1777445511; x=1778050311;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=HJR0wUneST2OobSctcgeuLs6bttBTQJPSlbTZVLMlC8=;
+        b=btb9HTlfUXdKCTcK0NKnWI/zIGvif21uTWM5+Buyoh3jym4HG4XdT6jdKeyRZM0wtd
+         GX0mmVtMySr+m9vVyg2hVkvlEb0WOPgGj8+eTpGnBCtK8mabWmPlww4JyQDZefn2TuIY
+         2jwQYz109tIWpAm8XHXYE+OMcmCfc0zWOPwxsmZ8XYqZdXf7gxHc3C574fhQ5r6odSr1
+         3dL5FNEACjPHFAPinKYBIHpT9lU0KwMsYZmaNvXZ3Za/PnsOkwl5vur/inQ/RU9z9c7O
+         C8S/xT02m0DjvQdry/oaB6Oox18vBYol1ef6qkbpvnqg4Bsl3SX4zkmTkTbpOF75QZ0G
+         N+Tw==
+X-Forwarded-Encrypted: i=1; AFNElJ/Oq0jAqE2Kzk2CTqN4DHOxNMBdsikVDoSr0RgmrO6WdOSkbxQKvvobVlcgnpwE4NL9aCuCE5g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwNcsb77+ukFlm7Ga++bIVw9l6jj/DxtNvbJ2hk2A+AEkJgRHR4
+	ZxSfCdJc/8NvNP14EzJ7xUcmZRuxp1nBn49Hbyn/mqqZnmjFSTRqmKKbD+e2zWkTFoY=
+X-Gm-Gg: AeBDietqzBPoGWorxrbWiCXFrMGkvbqakM0GAiiU+gJE08WkqmIfAQ6HSV2wZTEsL6Q
+	RYktuAsD9siZZQDHXfhgmaw5HVUNuIU6QzNER4WrLEnJSkDpuYUw0ZBH/3lxh3m3Hy/AhN+q/YM
+	jc1M83Gv5bAHDFAmlmbFSyB3cUEFD3Yh5YfNyF3H8GM3dM2WUMonMZx8rxTwS0SD83zUAE85pR/
+	0cpZxQgSyFRTKMkbw3BKtjwj7ALmaCWmTqCmKGJC/zjxXGPyQ7tWquitXGD0hDvmUU2WuLC9+Cp
+	4zSABYTyLcxSoCaA4gxUmcmMrGCfUxwMMWVOvyUuXRnNCUy2PFiFY6C0j/74UPNPmBIqxZx3R24
+	wwNE/yWwEGLzqSZ3DjkyCjIdiujkOx8jYCUoEe4j7mhHAi7XBYqsFAaTLby4DVwpgpkmxA0ymC6
+	JL//v6Njoqb/AC8o+DHex9mffkSM1151XwiNWklObarGAlB0Dl51oT0tnbjBG+xF+RcW4GHMWzH
+	7DohA==
+X-Received: by 2002:a17:902:f652:b0:2b2:53f5:461f with SMTP id d9443c01a7336-2b98825bdb5mr18430485ad.25.1777445510644;
+        Tue, 28 Apr 2026 23:51:50 -0700 (PDT)
+Received: from Vincent-X1Extreme-TW.internal.sifive.com ([136.226.240.187])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b98895afaesm15038105ad.57.2026.04.28.23.51.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Apr 2026 23:48:20 -0700 (PDT)
-Date: Wed, 29 Apr 2026 09:48:17 +0300
-From: Dan Carpenter <error27@gmail.com>
-To: Alejandro Lucero <alejandro.lucero-palau@amd.com>
-Cc: Edward Cree <ecree.xilinx@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Martin Habets <habetsm.xilinx@gmail.com>,
-	Jiri Pirko <jiri@resnulli.us>, netdev@vger.kernel.org,
-	linux-net-drivers@amd.com, linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org
-Subject: [PATCH v2 net] sfc: fix error code in
- efx_devlink_info_running_versions()
-Message-ID: <afGpsbLRHL4_H0KS@stanley.mountain>
+        Tue, 28 Apr 2026 23:51:50 -0700 (PDT)
+From: Vincent Chen <vincent.chen@sifive.com>
+To: anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	vincent.chen@sifive.com
+Subject: [PATCH 1/2] ice: allow creating VFs when !CONFIG_ICE_SWITCHDEV
+Date: Wed, 29 Apr 2026 14:51:26 +0800
+Message-Id: <20260429065127.423949-2-vincent.chen@sifive.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260429065127.423949-1-vincent.chen@sifive.com>
+References: <20260429065127.423949-1-vincent.chen@sifive.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
+Content-Transfer-Encoding: 8bit
 
-Return -EIO if efx_mcdi_rpc() doesn't return enough space.
+Currently ice_eswitch_attach_vf() is called unconditionally in
+ice_start_vfs(), which causes VF creation to fail when CONFIG_ICE_SWITCHDEV
+is not defined.
 
-Fixes: 14743ddd2495 ("sfc: add devlink info support for ef100")
-Signed-off-by: Dan Carpenter <error27@gmail.com>
+Fix this by adding switchdev mode checks at the call sites before
+calling ice_eswitch_attach_vf(), consistent with how
+ice_eswitch_attach_sf() is already handled in ice_devlink_port_new().
+This is similar to commit aacca7a83b97 ("ice: allow creating VFs for
+!CONFIG_NET_SWITCHDEV") which fixed the same issue for the previous
+ice_eswitch_configure() API.
+
+Signed-off-by: Vincent Chen <vincent.chen@sifive.com>
 ---
-v2: Originally I returned -EINVAL but -EIO is the usual error code
-    when 'MC response was too short'
----
- drivers/net/ethernet/sfc/efx_devlink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_sriov.c  | 14 ++++++++------
+ drivers/net/ethernet/intel/ice/ice_vf_lib.c |  3 ++-
+ 2 files changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/sfc/efx_devlink.c b/drivers/net/ethernet/sfc/efx_devlink.c
-index d842c60dfc10..e5c6f81af48b 100644
---- a/drivers/net/ethernet/sfc/efx_devlink.c
-+++ b/drivers/net/ethernet/sfc/efx_devlink.c
-@@ -531,7 +531,7 @@ static int efx_devlink_info_running_versions(struct efx_nic *efx,
- 	if (rc || outlength < MC_CMD_GET_VERSION_OUT_LEN) {
- 		netif_err(efx, drv, efx->net_dev,
- 			  "mcdi MC_CMD_GET_VERSION failed\n");
--		return rc;
-+		return rc ?: -EIO;
- 	}
+diff --git a/drivers/net/ethernet/intel/ice/ice_sriov.c b/drivers/net/ethernet/intel/ice/ice_sriov.c
+index 843e82fd3bf9..6a0b724e46f9 100644
+--- a/drivers/net/ethernet/intel/ice/ice_sriov.c
++++ b/drivers/net/ethernet/intel/ice/ice_sriov.c
+@@ -484,12 +484,14 @@ static int ice_start_vfs(struct ice_pf *pf)
+ 			goto teardown;
+ 		}
  
- 	/* Handle previous output */
+-		retval = ice_eswitch_attach_vf(pf, vf);
+-		if (retval) {
+-			dev_err(ice_pf_to_dev(pf), "Failed to attach VF %d to eswitch, error %d",
+-				vf->vf_id, retval);
+-			ice_vf_vsi_release(vf);
+-			goto teardown;
++		if (ice_is_eswitch_mode_switchdev(pf)) {
++			retval = ice_eswitch_attach_vf(pf, vf);
++			if (retval) {
++				dev_err(ice_pf_to_dev(pf), "Failed to attach VF %d to eswitch, error %d",
++					vf->vf_id, retval);
++				ice_vf_vsi_release(vf);
++				goto teardown;
++			}
+ 		}
+ 
+ 		set_bit(ICE_VF_STATE_INIT, vf->vf_states);
+diff --git a/drivers/net/ethernet/intel/ice/ice_vf_lib.c b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
+index de9e81ccee66..71595410174c 100644
+--- a/drivers/net/ethernet/intel/ice/ice_vf_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
+@@ -807,7 +807,8 @@ void ice_reset_all_vfs(struct ice_pf *pf)
+ 		ice_vf_rebuild_vsi(vf);
+ 		ice_vf_post_vsi_rebuild(vf);
+ 
+-		ice_eswitch_attach_vf(pf, vf);
++		if (ice_is_eswitch_mode_switchdev(pf))
++			ice_eswitch_attach_vf(pf, vf);
+ 
+ 		mutex_unlock(&vf->cfg_lock);
+ 	}
 -- 
-2.53.0
+2.34.1
 
