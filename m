@@ -1,36 +1,36 @@
 Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E891215539A
-	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 08:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA6DE3AEF2D
+	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 08:27:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777450943; cv=none; b=lKCH/zc4hzHuVSaubnf/z3kkVy9wWJsqbe1XdtRXWc+dABhOW9TDFqw3x2D+k0EpA48GVZSv8QDlEvm0sREhxSCdw5IVHhv9SREx+AFbh14th9TkZJ1Htva1K5ZIGSCCrCuzuegT7e0MBdCJCp11l+2PEpSHJunOGGD0wPNdv4E=
+	t=1777451268; cv=none; b=gO0fbbMELrcSl9uPZ3rlBUwg8dnFhmIcJvItW4HsklA8EGyqPvKWixySKcltVTLt+Fwks50Um8l47d859EKUUmQCl/gmci7gVug9HxvMbEecHerAOU/pepa1kQPcte5gkorhnemiHrqsSFr/CLboREjlXp3R+yJcGvUq0zQ83EA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777450943; c=relaxed/simple;
-	bh=sykAOu25LebsSEqhmQKN/R0kEJpPb9JEdfulvH5X4I8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=IVLL2MEOTnnkzePPMLHkQY2OPKaBxBv7iqqlizRJPDqF3fcXJTSTlx243zzkYGT4LQuG9+/dDKxQumU4Pw/DWL/lcD4HGXPyxSrM1eRQCxCEnGTv9R/cxCwx2CAeoZ0BQ2n6M5u3FXamxaD2A1jAteJoBFAmAAmq81EFOTvXph8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=hWstlpS7; arc=none smtp.client-ip=203.29.241.158
+	s=arc-20240116; t=1777451268; c=relaxed/simple;
+	bh=UeMbgQyKW4ov6RfuOD74SYC2gPv8C8XNhZJlOULT9L0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=YC2m1V08UbtD+hlnJ7t40WJ0kFbHj5uBsdJO3YzXwlTKpU+kosFkSsrYxRNvVtXbcfg7jZYWynsyv2pH/nfWXqqOEFy9G4/G9IThKvnzRWOcPwODuo2ZDmGkjKN0xXtTwZdp+zKodrCrMHKnuTLbWl0Yg2yeh2SfftVaUdjlYko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=bVEJDhQT; arc=none smtp.client-ip=203.29.241.158
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="hWstlpS7"
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="bVEJDhQT"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1777450938;
-	bh=d5BABExyq/oCWKftul/yaqdLJ0NV496CU+VpXirjNb0=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=hWstlpS7DqTn0rGsssf8feeC30Bs+kPEvbrkPZjvAz5qjnnmAZ7WMNWeQBTseeBa3
-	 L/irv+j0mtj+K8xLuJ5J3VSbUym91FZKFqk58w25U5ii7TxkSE39Y8iwxmSaqjLeI/
-	 FSvfKpWyoDzzLAiM2ncWuJXV+NB/R186y8O+Ku0xrxbqV/5CAf8Z/lgF5LqyMx/s9a
-	 uWQe5QE6saC4R+8o5nd1QHPBCo9bx9DHGmBS8MxvpfcHOhvemv5SRVvjXZkVPkb1tg
-	 GEFUM4UrQDpbKJnCBEByeSt6YgKBu/n5HKWeBUNoaZQZCV5pcGX2Uf51UkmC7D54iR
-	 lKIhnVm+wn4Rg==
+	d=codeconstruct.com.au; s=2022a; t=1777451264;
+	bh=WgrZsvJRYeCZws+T6fsE9IMjwZvCyab/9cFomg6EY6I=;
+	h=From:Date:Subject:To:Cc;
+	b=bVEJDhQTonpj01syqHICznvyz1l4AYgDV0VYVsv04N87zK7lU6BsZXNbLNmzRKDEM
+	 ew7m7cOdVDhRSLZpjGaqYqpO6T13InhyPrJrN2q3ssUvu96XSbjVTNp2nuQmliRPZL
+	 s4/Ce8CdPOQIDS/8Ntj+guf2b0VcnSmCDCe23+e7j4f1X4LtJZO0VZHabuGYiSazqp
+	 qar19dTnKUFhRb3cFY0921TWaogkzXSGbzJxPkuEaPBlRZrjb/C6KjPTO9NhcveXBY
+	 JLlEuiSSEf2JWSoY98e9AYcgKbC2FH0IplAlCg126hVmCJWTfwQupFsfm1OEW0C3Ow
+	 g7zOggCcGwLMg==
 Received: by codeconstruct.com.au (Postfix, from userid 10000)
-	id F0F7B6027F; Wed, 29 Apr 2026 16:22:18 +0800 (AWST)
+	id A94C160263; Wed, 29 Apr 2026 16:27:44 +0800 (AWST)
 From: Jeremy Kerr <jk@codeconstruct.com.au>
-Date: Wed, 29 Apr 2026 16:21:41 +0800
-Subject: [PATCH net 1/2] net: mctp: test: use a zeroed struct sockaddr_mctp
+Date: Wed, 29 Apr 2026 16:27:31 +0800
+Subject: [PATCH net-next] net: mctp: test: remove skb dumps from test
+ output
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -39,9 +39,11 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260429-dev-mctp-test-fixes-v1-1-1127b7425809@codeconstruct.com.au>
-References: <20260429-dev-mctp-test-fixes-v1-0-1127b7425809@codeconstruct.com.au>
-In-Reply-To: <20260429-dev-mctp-test-fixes-v1-0-1127b7425809@codeconstruct.com.au>
+Message-Id: <20260429-dev-mctp-test-skb-dump-v1-1-13fd5789ef71@codeconstruct.com.au>
+X-B4-Tracking: v=1; b=H4sIAPLA8WkC/yWMwQ6CMBAFf4Xs2U2wAQP+ivFA24cWQ226CyEh/
+ LtVj5PJzE6CHCB0rXbKWIOEdyxwPlXknkN8gIMvTKY2l7oxPXusPDtNrBBleVn2y5zYudb27dj
+ BDJ5KnDLGsP3GN4pQjtiU7n8ji53g9Pul4/gA2As9mIQAAAA=
+X-Change-ID: 20260429-dev-mctp-test-skb-dump-cc5b95f8e2ad
 To: Matt Johnston <matt@codeconstruct.com.au>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
@@ -49,31 +51,39 @@ To: Matt Johnston <matt@codeconstruct.com.au>,
 Cc: netdev@vger.kernel.org
 X-Mailer: b4 0.16-dev
 
-Invalid sockaddr padding will cause bind() to fail; ensure we have a
-zeroed address in the testcase.
+We're currently dumping skb info in our fragment input test, which makes
+interpreting the TAP test output a bit awkward.
 
-Fixes: 0d8647bc74cb ("net: mctp: don't require a route for null-EID ingress")
+Remove the skb dumps.
+
 Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
 ---
- net/mctp/test/route-test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mctp/test/route-test.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
 diff --git a/net/mctp/test/route-test.c b/net/mctp/test/route-test.c
-index e1033643fab0..e4b230ef6099 100644
+index e1033643fab0..fbd6d4e08aef 100644
 --- a/net/mctp/test/route-test.c
 +++ b/net/mctp/test/route-test.c
-@@ -920,9 +920,9 @@ static void mctp_test_route_input_cloned_frag(struct kunit *test)
- static void mctp_test_route_input_null_eid(struct kunit *test)
- {
- 	struct mctp_hdr hdr = RX_HDR(1, 10, 0, FL_S | FL_E | FL_TO);
-+	struct sockaddr_mctp addr = { 0 };
- 	struct sk_buff *skb_pkt, *skb_sk;
- 	struct mctp_test_dev *dev;
--	struct sockaddr_mctp addr;
- 	struct socket *sock;
- 	u8 type = 0;
- 	int rc;
+@@ -859,12 +859,6 @@ static void mctp_test_route_input_cloned_frag(struct kunit *test)
+ 	skb[0]->data[4] = 0;
+ 	skb[3]->data[4] = 0;
+ 
+-	skb_dump("pkt1 ", skb[0], false);
+-	skb_dump("pkt2 ", skb[1], false);
+-	skb_dump("pkt3 ", skb[2], false);
+-	skb_dump("pkt4 ", skb[3], false);
+-	skb_dump("pkt5 ", skb[4], false);
+-
+ 	for (int i = 0; i < 5; i++) {
+ 		KUNIT_EXPECT_EQ(test, refcount_read(&skb[i]->users), 1);
+ 		/* Take a reference so we can check refcounts at the end */
 
--- 
-2.39.5
+---
+base-commit: dca922e019dd758b4c1b4bec8f1d509efddeaab4
+change-id: 20260429-dev-mctp-test-skb-dump-cc5b95f8e2ad
+
+Best regards,
+--  
+Jeremy Kerr <jk@codeconstruct.com.au>
 
