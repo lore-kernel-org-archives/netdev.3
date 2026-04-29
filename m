@@ -1,128 +1,126 @@
-Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C7C1F3B87;
-	Wed, 29 Apr 2026 12:15:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.216
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777464937; cv=none; b=BYacb5wNTqzCZuGv8PGSXKOevUQrKUG6fYMhKNvHuWgondiQINW6IE410LOumGEkRFS2tNFcRrEmrzYa6aNA2KImIfmfNfoP4m/KNqdjexXAuJZ9VPdzW+ZUW8we9NBTBw3UrVTxpR2es5gDnI54vZa84SdJX0TNVqoG/QPcDwY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777464937; c=relaxed/simple;
-	bh=uL9vk2jg29WT0te2XlTlXMqJhBp1I5Nix+Oz3cLzEIg=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=tP5OcICc/x4IfkMAz/EpcN1arq71akO2kxL6Yd8GMkjycc9w+aYNdLTmgGNmdU8Vs/lkc95YVIbf42/r/GCBz+q2JYNjVLOuf5k5SHyBwk8fhpb2wATyoQfvnKuhbUaz19eKjbQypAlGsdIEAyEODG6xt7tRmyPKYh6mnU6JvtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=BIm/AEQG; arc=none smtp.client-ip=113.46.200.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6BDD3EF663
+	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 12:32:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.181
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777465929; cv=pass; b=ZMoMYV91cujLrXxyj7DdZrcHwpflvZumV4GrbN8OHltH0pQ6ufQjo5jeVP4IBJHNcAsW7yKBHzl5JzxuBxYXhQdeR1q4srwQ42KhzyxlzY+hsuoTzKhrW3rz6Cf/6Y04c68xErBz6i4ykYjrw+eRJLfB/db4PLUNInQdEF0pW50=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777465929; c=relaxed/simple;
+	bh=KGv+d56Pg7QWyBPbrJ4qHztALT+NJSTOOru5rKlWGoo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=X2lW60c5ZDFIiZ5SUJqEarmLfEzwJGW3pP0Jl5jPz0qmTDmzGpMd2qb37c8kRs7SxG+ygxsCeh34ms7dTekcaTKJRHHUgGXDZDZtX0su9+KyPm6mMSKEgKHcqWAV4/5JOo3quTxvhS8uiFrES9JALezTR+0BDzaEp8aCbzUT7R0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rkcrr/JK; arc=pass smtp.client-ip=209.85.160.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="BIm/AEQG"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=Lieja21KR9tcF55zn9yePRbeLB0kUzBTO/1vd4meHnw=;
-	b=BIm/AEQGHaQk05xxqMh4RewZLiGKXCGDIbGE2RxNTM6UCBRK5diBsCfGX02LsFDkaKLR0Pc/P
-	Qs3inIB2OUQ1zHn3lyHMFW0+2uWvkHJLotUJbykbVXtwo1a6E71UD4eomhqA4Wp7xRlM9hExNFc
-	OG7w0vRNi6HBQrSuzKDJEeQ=
-Received: from mail.maildlp.com (unknown [172.19.163.0])
-	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4g5GLZ4bMtz1T4G8;
-	Wed, 29 Apr 2026 20:09:10 +0800 (CST)
-Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
-	by mail.maildlp.com (Postfix) with ESMTPS id 36DAF40561;
-	Wed, 29 Apr 2026 20:15:31 +0800 (CST)
-Received: from huawei.com (10.50.85.128) by dggpemf500002.china.huawei.com
- (7.185.36.57) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 29 Apr
- 2026 20:15:30 +0800
-From: Yue Haibing <yuehaibing@huawei.com>
-To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <horms@kernel.org>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<yuehaibing@huawei.com>
-Subject: [PATCH net-next] net: core: Call netif_get_rxqueue() in get_rps_cpu()
-Date: Wed, 29 Apr 2026 20:37:41 +0800
-Message-ID: <20260429123741.3777677-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rkcrr/JK"
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-506aa68065eso90715561cf.1
+        for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 05:32:07 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777465927; cv=none;
+        d=google.com; s=arc-20240605;
+        b=aI6z7rQnL/os4uTq2L0JXc6X+nZUoYEcxuA/FI2zQpdsvOu49mhy6IuA63FMboA74R
+         x0lzQgRjvVQBkIBXTH0Q7aTC6IA8PaHShBNVx4YJBpdNhXVm3V9ePxd/QBAHbs7f3w3H
+         74TKKjWg/s87dDAi4wd3Uv22R/tXgymkGO8F21/rVX8lmzlJFr5Bjz702CdUaNh8mohi
+         PanbhS7yyLbp/wOPxQqsFTACE/T6QhXpu4rIzVx7lyGUXTwlUO5RzcMLfE6peSc/v5UV
+         YSOuz7FWLz+4TUXEfFJnXgMqUjRUue4dE0p19tTkvjvAktpqYBhA3mtZbKo9HullSBNw
+         /vHQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=9DHs+YzocsqeU+mv/fyZTv7O47rCb6IRdrHqru+bKqw=;
+        fh=vuEPLyGSwB+7RzNTOI7nlc8Tp08bner6A1cmXtHNWEE=;
+        b=JzIsCusnd/i51CfUahFARv0Rvz6dBV4VzGOCbfSqhPwkURw2XB8Y/5A/F5Xe+R6I+v
+         JgAx3H2+3e8xXg/MxKH3lH7fo7jxmMJbw3v4m6m5llY6WKAQOoZgMX2gtdK/1H3F0FOi
+         s2FSsijDCo7Dvql/rjFl8yp4cR9zj0+e0AxcwwEeWkPqqqI1kIIgH7Cp8SGBbHYY3OsY
+         I41PAAHZeeIfo2cNHe3XKkVUsaRLgnWtoFZMwkCoZ8Z2u5zTmDmPVwKvljNnE1MR6Bkg
+         0werErdxJgjlaSVfQ3VOn2GSkrTRQXUwTsdemLQLAvRO7j0hlwqeHY+rt/+zkKYVic9U
+         Gb0Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777465927; x=1778070727; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9DHs+YzocsqeU+mv/fyZTv7O47rCb6IRdrHqru+bKqw=;
+        b=rkcrr/JKz6zRqdQofqPNeiMk0oGTL4Qd+UJNzzKhAIOq4o57iDSTq6tITLs1iA1Osd
+         A3HqyNky/erxG1Vhypr319cZCjuCgGbsjDx4VewdcRyexPouDtFP6SAACxOrlBHrE+kb
+         6A+20fy12nCoOaNuHtcftiyVM3kM8QUJ+jbZvBMnttCvSg0zrWpVc8jpYXFVKHPZP9al
+         VvUjlSMMkoASk1Lys2/QaExJZ4IJj7y+fb+OR3EDgC/DWRwqHvhQM5Q6KfiQjhyjA+wd
+         tFjZS/jr9buzio9LTQYMDKCudAdPVuXaBBed6FBlp3TWJNowGwcRExlHG5qrLQhEf50p
+         PCEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777465927; x=1778070727;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=9DHs+YzocsqeU+mv/fyZTv7O47rCb6IRdrHqru+bKqw=;
+        b=Yig27lp5vcNpLVfRZEJob9pOnqi5E4Uo3NktrXLHqsGaHvuOEDPiOuTvbTlI39kk9r
+         4R1zKXc1kg6y7Fr5uWZKXI+uRkW49IGBXJUGaOS1YqFn1oGmseTmzVWdKjhsm5NUmAER
+         yHaKqm1FzunOavwYwuPZLHx3roEmpJW13QAw0RshpX449389MJPpghrOL5ZXTlJtcRTy
+         8TBhmNV+HD98/bWPdfQAlOdVNO0QQ3v+0xKoO5xOhhzfRdemeIUkyS3mhYnRTHoJnj2V
+         59PxMzkK+5tm4q9CuEwOl4EqxVq3a2s9eR3Ru2EjnM302Rl9UtVJ7taWEOVNA5zWmOGx
+         nbvA==
+X-Forwarded-Encrypted: i=1; AFNElJ9CywWmKueVNghVkxui4iAyuKoTuKOOKqekbQYdfwSh2ui0kUcLeBfI6TNT/W2i1ibmADjntZc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzH5LCM5jTOd3V2RX06H0HMd5F5GlWFb7Ad5qmvSOc9k1JGsprm
+	mAIekGFN848m6jIYFW9FcNelaYWVNlwEf/6dkHRoLLZaUbcK9mfEjgLv2tqhMG1yS/MEBEzupy4
+	qB93xQWDNlPJw+V+HWTJCvwrAkr6L7oB8EdBV5fTf
+X-Gm-Gg: AeBDievALb21InPLdRZwMYzCGUY1hyPZvqz1pQXnezEWGnioRruP+W4BKeMtl8IrJyh
+	yuu9yotdcL1SST8Gi3VTMo0dF6e2X1Wnlv+5oIdgujBXOodFXHgXlyWSGvdZWVMTZZ2xP9Z1/e9
+	yeFNs8e6Hu0eT2eDfN5PdFbSUarmIW9QcstwVWYfT9N0fjHuqZJF5PYuhfkmJ9QIWZKmT8xH49a
+	VSY1JOwKfJDoGVGi8kTNDWDkjejplWe+Iuvh2NBugKJwXjFp3D0k+UjeQEZn/mhP7shSnxgVuzP
+	UbWPzboIVKrpf30ER6Yel+RH8lHBe2HRr7QAijYehTST+NUp+EomkLw1quDa1XQiNO9oGdHuqzx
+	65W5Qy2cE
+X-Received: by 2002:a05:622a:480e:b0:50d:60a4:47a7 with SMTP id
+ d75a77b69052e-510189363a2mr51069921cf.4.1777465926253; Wed, 29 Apr 2026
+ 05:32:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- dggpemf500002.china.huawei.com (7.185.36.57)
+References: <20260429123741.3777677-1-yuehaibing@huawei.com>
+In-Reply-To: <20260429123741.3777677-1-yuehaibing@huawei.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 29 Apr 2026 05:31:55 -0700
+X-Gm-Features: AVHnY4LqdOcLvpMRs8mkOJGdSd5JEyHBiKDCrR6RiidZ6hVrPe9macOE23BDm98
+Message-ID: <CANn89i+BCcSMCPTzrXPrJ2Zevtrjj6RYu+cadT6qXErMLmLNRA@mail.gmail.com>
+Subject: Re: [PATCH net-next] net: core: Call netif_get_rxqueue() in get_rps_cpu()
+To: Yue Haibing <yuehaibing@huawei.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Refactor netif_get_rxqueue() return NULL when rxq index checking failed
-instead of falling back to first queue, then use it to avoid code
-duplication.
+On Wed, Apr 29, 2026 at 5:15=E2=80=AFAM Yue Haibing <yuehaibing@huawei.com>=
+ wrote:
+>
+> Refactor netif_get_rxqueue() return NULL when rxq index checking failed
+> instead of falling back to first queue, then use it to avoid code
+> duplication.
+>
+> Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+> ---
+>  net/core/dev.c | 24 +++++++++---------------
+>  1 file changed, 9 insertions(+), 15 deletions(-)
+>
 
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
----
- net/core/dev.c | 24 +++++++++---------------
- 1 file changed, 9 insertions(+), 15 deletions(-)
+This code (get_rps_cpu()) is super hot for some of us.
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index e7bc95cbd1fa..72aef872d03c 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -5104,6 +5104,8 @@ set_rps_cpu(struct net_device *dev, struct sk_buff *skb,
- 	return rflow;
- }
- 
-+static struct netdev_rx_queue *netif_get_rxqueue(struct sk_buff *skb);
-+
- /*
-  * get_rps_cpu is called from netif_receive_skb and returns the target
-  * CPU from the RPS map of the receiving queue for a given skb.
-@@ -5112,25 +5114,16 @@ set_rps_cpu(struct net_device *dev, struct sk_buff *skb,
- static int get_rps_cpu(struct net_device *dev, struct sk_buff *skb,
- 		       struct rps_dev_flow **rflowp)
- {
--	struct netdev_rx_queue *rxqueue = dev->_rx;
-+	struct netdev_rx_queue *rxqueue;
- 	rps_tag_ptr global_tag_ptr, q_tag_ptr;
- 	struct rps_map *map;
- 	int cpu = -1;
- 	u32 tcpu;
- 	u32 hash;
- 
--	if (skb_rx_queue_recorded(skb)) {
--		u16 index = skb_get_rx_queue(skb);
--
--		if (unlikely(index >= dev->real_num_rx_queues)) {
--			WARN_ONCE(dev->real_num_rx_queues > 1,
--				  "%s received packet on queue %u, but number "
--				  "of RX queues is %u\n",
--				  dev->name, index, dev->real_num_rx_queues);
--			goto done;
--		}
--		rxqueue += index;
--	}
-+	rxqueue = netif_get_rxqueue(skb);
-+	if (!rxqueue)
-+		goto done;
- 
- 	/* Avoid computing hash if RFS/RPS is not active for this rxqueue */
- 
-@@ -5442,8 +5435,7 @@ static struct netdev_rx_queue *netif_get_rxqueue(struct sk_buff *skb)
- 				  "%s received packet on queue %u, but number "
- 				  "of RX queues is %u\n",
- 				  dev->name, index, dev->real_num_rx_queues);
--
--			return rxqueue; /* Return first rxqueue */
-+			return NULL;
- 		}
- 		rxqueue += index;
- 	}
-@@ -5473,6 +5465,8 @@ u32 bpf_prog_run_generic_xdp(struct sk_buff *skb, struct xdp_buff *xdp,
- 	frame_sz += SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
- 
- 	rxqueue = netif_get_rxqueue(skb);
-+	if (!rxqueue)
-+		rxqueue = skb->dev->_rx;
- 	xdp_init_buff(xdp, frame_sz, &rxqueue->xdp_rxq);
- 	xdp_prepare_buff(xdp, hard_start, skb_headroom(skb) - mac_len,
- 			 skb_headlen(skb) + mac_len, true);
--- 
-2.34.1
+Are you sure netif_get_rxqueue() is kept inline?
 
+I do not think gcc is smart enough:
+
+scripts/bloat-o-meter -t net/core/dev.o.before net/core/dev.o.after
+add/remove: 1/0 grow/shrink: 2/2 up/down: 116/-132 (-16)
+Function                                     old     new   delta
+netif_get_rxqueue.isra                         -      84     +84
+dev_getbyhwaddr_rcu                          133     149     +16
+__netif_set_xps_queue                       2837    2853     +16
+bpf_prog_run_generic_xdp                     899     846     -53
+get_rps_cpu                                  835     756     -79
+      // This is bad,
+Total: Before=3D90848, After=3D90832, chg -0.02%
