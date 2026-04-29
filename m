@@ -1,84 +1,72 @@
-Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
+Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFC1C3AE19D
-	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 08:21:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.202.193.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E899734EEEE
+	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 08:22:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777450914; cv=none; b=KVQGvn+fyXSsiFn1ULp2WTNrd7L8DHDnRUdJsG15fR7kinegKJ852j4bp52DPq83s9zSNBl07s++fgdXCKSr9x0D75NOjNBu9hc5gP1PPwS6f6pgaiSkVc6UNc5FzINy4U0kBQNrPcwGddVQn+D67ME9YdiRC6Onf/caXatokxY=
+	t=1777450942; cv=none; b=K2YFykQp7ip0fFLONczzmQirtZpo779jhf+EkFWXtNBGEZ+ih+Pxee4d8B1MoXtxk8f38zke84F/oMPVcMYqL0dFv4ebMQs69CLwPupEaH0sAzy8Hk773MnxobwvyNSckNFLD7yht41IdqujFUMeY+gkblqLr1WBcnpNiCBW/3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777450914; c=relaxed/simple;
-	bh=+9M/cFtsoQyfrNsQ9FS6t3KvUfUQVhNH19LJXrEpyQM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ivs+frxR87rplESDciu0KjmP0itCixJ+yP+z9VtadJ9XcDTSK+hWXwe2hE+MV5ulYSQAG+v9FZ6cW7BzxKVQlKZ7N0/0W/SkHKyeCJZt6sMgU+SmWdhvp6kDKQzp/4cPKNFoyq36vvbvhGVQpXoFx5imeWfQIPLFeIDc/sOOZOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=tinyisr.com; spf=pass smtp.mailfrom=tinyisr.com; dkim=pass (2048-bit key) header.d=tinyisr.com header.i=@tinyisr.com header.b=Fb/y27gv; dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b=M/JCgXdB; arc=none smtp.client-ip=34.202.193.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=tinyisr.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tinyisr.com
+	s=arc-20240116; t=1777450942; c=relaxed/simple;
+	bh=Z8o1khY6uQKVFqNYMz9pg5w4PYc5V8+KEbdDNWNph+c=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ACu5lfN9kd485VgcBuT6ZLCt/FSyXpAO9mlaVRZy/2CsUIsIu9sVf/Z6ZQDnq3cs1kK5Ge1th19YdLCgsafc53xH3scHq1cKmpK3O2SfUgv9vEv2EZkKO1JDClk/ccq5RKJY384Wnw5b7T6WPdlvD4eBClB1rwAKcCAQK2JwBpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=OQ+j08ft; arc=none smtp.client-ip=203.29.241.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tinyisr.com header.i=@tinyisr.com header.b="Fb/y27gv";
-	dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b="M/JCgXdB"
-DKIM-Signature: a=rsa-sha256; b=Fb/y27gvpwne4EMiKYSKktrm0zoxQw5w0qdKlxYj1PsjUQTQZg08WCD2x8K2Wiu/ud23xcJFAx025119TI5Y3wY6Tj+20NFYrRg+ebAPGh+cxcCS0j6o8nwlcOU/GQjDEAQwJoCCJ1S8Gysg9OHGXWvjKSYb/69+Y6fKvvbLNI3tbckdMZvbIG7vh3pm0u7lndpYYuisnkMgOYrEW0TU5WcsatAlWBVnU5RkDZmD1/aKuN9II45y60EjaZxYkuDqLrnHm5X6sJiViiDrd796RC0ksVqK5J3HQ7Vhcs0MDc2W7BkvTZ5RgcriYEA+VFuwVUmUV02uXQUKGkhp2DFCIw==; s=purelymail2; d=tinyisr.com; v=1; bh=+9M/cFtsoQyfrNsQ9FS6t3KvUfUQVhNH19LJXrEpyQM=; h=Received:Date:From:To:Subject;
-DKIM-Signature: a=rsa-sha256; b=M/JCgXdBvOifLu5hevyQhNXc9XuInd1Hb0cv6pxFLy/VS2PAkaG4uL+tB89UfjLqaSvu+9Ua6Kv3EzZwlaF1mP/qCf0mPhASLukJUyRFSidEqH0bKq1j40XYInMymJilBuedM7ZwbE5uMYB37qKwgzv8Bx+bprBG3P7prrqy2XP+o89wU5NpVeRXR0uKdAcLSBjuYB5Wmfz1HORKQQvraHpVTsm/tFuPukMUXOPVzqLvh767yB1z8uDRt552lacz45ll0nGCA10Pp4Ndvvylge3f4Qq6bgC+Hau65/yvCBUo3dMWa/lrPAUDVtWfFJA11IuMR8p/PydxlARKrl7v9Q==; s=purelymail2; d=purelymail.com; v=1; bh=+9M/cFtsoQyfrNsQ9FS6t3KvUfUQVhNH19LJXrEpyQM=; h=Feedback-ID:Received:Date:From:To:Subject;
-Feedback-ID: 99681:12517:null:purelymail
-X-Pm-Original-To: netdev@vger.kernel.org
-Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id -650336061;
-          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
-          Wed, 29 Apr 2026 08:21:44 +0000 (UTC)
-Date: Wed, 29 Apr 2026 11:21:30 +0300
-From: Joris Vaisvila <joey@tinyisr.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: netdev@vger.kernel.org, horms@kernel.org, pabeni@redhat.com, 
-	kuba@kernel.org, edumazet@google.com, davem@davemloft.net, olteanv@gmail.com, 
-	Andrew Lunn <andrew@lunn.ch>, devicetree@vger.kernel.org, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Subject: Re: [PATCH net-next v3 0/4] net: dsa: mt7628 embedded switch initial
- support
-Message-ID: <afG9uaP_zWiWMdq9@archlinux>
-References: <20260428185510.261521-1-joey@tinyisr.com>
- <20260429-impossible-archetypal-bear-607a7b@quoll>
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="OQ+j08ft"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=codeconstruct.com.au; s=2022a; t=1777450938;
+	bh=tQlrRa9erfttOXuoT74PJM3yYqoign92LdFf76tC5WU=;
+	h=From:Subject:Date:To:Cc;
+	b=OQ+j08ftSxOCdveReg4VgyabmWJa6GIlDzeqQRHLj/ic2G8Q/RtX0/sYsenjI+9w+
+	 NiR7dXpjrmeKGN0m1Z8tf6K1X69OOrZ0cwamKDkzuD7A2nSisZ1YZwTKFPZxKMUsRr
+	 2302oYUDpzReRQcALmjnirSAU8sXQ4dZ6ngClk5oFh6Gusp+oaHlIfi4A40Hq1T737
+	 2uSNtJJQ1mCb712hdIsiHFhBGfiKmvLGUknzpa4shY8vVqZfEsACDsWuobvjxHwgH3
+	 MIHwnRafoEFluo/9k99FnWK+W6iRPccWWITYcSUHxRVP+JjjEVf93VX3yHYMX76bsK
+	 SKGUjoLXucnRw==
+Received: by codeconstruct.com.au (Postfix, from userid 10000)
+	id 9699860263; Wed, 29 Apr 2026 16:22:18 +0800 (AWST)
+From: Jeremy Kerr <jk@codeconstruct.com.au>
+Subject: [PATCH net 0/2] net: mctp: test: minor kunit test fixes
+Date: Wed, 29 Apr 2026 16:21:40 +0800
+Message-Id: <20260429-dev-mctp-test-fixes-v1-0-1127b7425809@codeconstruct.com.au>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260429-impossible-archetypal-bear-607a7b@quoll>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJS/8WkC/yWMQQrCQBAEvxLm7MBmNUL8iniIu62O4Bp2xiCE/
+ N0xOVY11TMpqkDp1MxUMYnKuzi0u4bSYyh3sGRniiEewyH2nDHxK9nIBjW+yRfqru1CN+S870F
+ ejhXr4OGZCowum9TP9Ylk/z9alh8dr00kfAAAAA==
+X-Change-ID: 20260429-dev-mctp-test-fixes-de1505add39e
+To: Matt Johnston <matt@codeconstruct.com.au>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, kernel test robot <oliver.sang@intel.com>
+X-Mailer: b4 0.16-dev
 
-On Wed, Apr 29, 2026 at 09:09:44AM +0200, Krzysztof Kozlowski wrote:
-> On Tue, Apr 28, 2026 at 09:55:06PM +0300, Joris Vaisvila wrote:
-> > Hello,
-> > 
-> > This patch series adds initial support for the MediaTek MT7628 Embedded
-> > Switch.
-> > 
-> > The driver implements the basic functionality required to operate the
-> > switch using DSA. The hardware provides five internal Fast Ethernet user
-> > ports and one Gigabit port connected internally to the CPU MAC.
-> > 
-> > Bridge offloading is not yet supported.
-> > 
-> > Tested on an MT7628NN-based board.
-> > 
-> > changes since v2:
-> > 	- fix binding issues found in review
-> 
-> Which issues exactly?
-> 
-> This has to be specific.
-> 
-> Best regards,
-> Krzysztof
-> 
+This series provides two fixes in the MCTP kunit tests - one exposed by
+ktr, and one found while debugging the former on different VM configs.
 
-Hi Krzysztof, 
+Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
+---
+Jeremy Kerr (2):
+      net: mctp: test: use a zeroed struct sockaddr_mctp
+      net: mctp: test: Use dev_direct_xmit for TX to our test device
 
-My bad. These are the binding changes since v2:
+ net/mctp/test/route-test.c | 2 +-
+ net/mctp/test/utils.c      | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+---
+base-commit: dca922e019dd758b4c1b4bec8f1d509efddeaab4
+change-id: 20260429-dev-mctp-test-fixes-de1505add39e
 
-- Removed description from reg property
-- Clarify reset descriptions
-- Added ethernet-ports to required 
-- Fix reg coming before compatible in the example
-- Replaced 'ports' and 'port' with 'ethernet-ports' and 'ethernet-port'
-  respectively in the example
+Best regards,
+--  
+Jeremy Kerr <jk@codeconstruct.com.au>
+
