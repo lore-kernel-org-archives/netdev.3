@@ -1,33 +1,33 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 160AE284B3B;
-	Wed, 29 Apr 2026 01:53:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA9B01A6819;
+	Wed, 29 Apr 2026 01:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777427599; cv=none; b=nPXze21mdveYD54GKeXNGdoM+XMnrDv3NEW2YTadMm8TKqpJLBftPCKM3mraIIPJTzA7hk9PynZCZ1lsUtMmJpYEkNm4+Z4UmTxlhhoXCMRLCe56RiqR3JBIccLLJ8uXOmg2fow5gBmTCyvOcvO619STt8o/PqZF8OVnuQ5iBcA=
+	t=1777427791; cv=none; b=eEh3nsjBCZMdGCX7PmpguMtjTKQsnNrmzk7ffsyIHmyKnoEPGRs82ukvIDUgfXhCBMTAJxMpXunsLlE4UUddVniOvN1J9WbOr03HLISS6453k4dUogXbChcLtXOp1ouuOlGFNoVsV4qq6gA6SxEbq8YRU0Ajvlw/91rqyCrqEms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777427599; c=relaxed/simple;
-	bh=HEfENaxPdoEBaVjcy6JSx5kQFCbGcsxD+Fxm9fgW2BQ=;
+	s=arc-20240116; t=1777427791; c=relaxed/simple;
+	bh=2qPEQSfzoFkCtcSPzoMzywo6asWd2SqfOfQ7x2Q+YPs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mDlWleIyKBiVT/WjbgExmiV1hppVJCk7sPTWgAn+hMgkLC2S4zNJ0cxILeaFuHGewcdf9z3XyH9XEC7ZkiKb+IIkOsBM9eSUeLHP0+iWrMtVRDZNeXVgC/WkIcmyIHtve+C77r8O+yOpEbthitAIiLWdkk1P9CaT2t+L9nHrB7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Y+oJ1g7s; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZKpnTFnASj4zjVI2W4uy59gcy5+HZxOexX0u/zDuNH/WHzqrq4dJ7AKbbEKcT3etHpvEhZpN0zUZMdgiVhun+O8KslTJJNjxmxlThWPMhEEOlK4Tz2PrUfKl9qdp5dLKb6BJWp7qi8oTs23VIaJGY4a4axF2M92UK87jc8Z4Ujg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=MG/sEtMp; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Y+oJ1g7s"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="MG/sEtMp"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=S3z4+ksZ817zcqBOQryCMtoE2XrWi/5IxYxEIDWo8Aw=; b=Y+oJ1g7sGe6SMd21pqTNLhl8KK
-	e6dbzRuqDYXVXYD5iFrpbck+shiCis13H6Hx/Jko0JnUdjxOHDN1HZb9A88JbkVhUAfgdY7rzcYle
-	7w4EIQkpy53MG95A1fQgCfx6V1IoVx/jEcR9V9HNgoeNP890E5zmDudtNj+j86Y+Jd6A=;
+	bh=cDbvanj8sEqFtgsbvVOkGMWvwYEkjKkO3DLaqyqfcRg=; b=MG/sEtMppUqNpyKcPQ1UOqFOdx
+	xYLfZ0UbBIuC79zoOHyYKmtF7Q0KDjRbi46C8yROd7uDFSwrkqq3J355UqIgGu3hfhm8SNYL5JVjE
+	lzHihXnbYOwK/ZI7BV23jTn7OiL4eBzOgvXf8AAGN81+OAIVTjURGqisu4YmssBJCiDw=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1wHu6x-000Rni-PR; Wed, 29 Apr 2026 03:53:11 +0200
-Date: Wed, 29 Apr 2026 03:53:11 +0200
+	id 1wHuA3-000RpM-6T; Wed, 29 Apr 2026 03:56:23 +0200
+Date: Wed, 29 Apr 2026 03:56:23 +0200
 From: Andrew Lunn <andrew@lunn.ch>
 To: Birger Koblitz <mail@birger-koblitz.de>
 Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -37,11 +37,10 @@ Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	linux-usb@vger.kernel.org, netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Chih Kai Hsu <hsu.chih.kai@realtek.com>
-Subject: Re: [PATCH net-next 1/4] r8152: Add support for 10Gbit Link Speeds
- and EEE
-Message-ID: <b7e0d569-4823-4ebd-ad5a-344b19c11fd4@lunn.ch>
+Subject: Re: [PATCH net-next 3/4] r8152: Add irq mitigation for RTL8157/9
+Message-ID: <06a42ba1-b714-45b1-be30-4a793752e495@lunn.ch>
 References: <20260428-rtl8159_net_next-v1-0-52d03927b46f@birger-koblitz.de>
- <20260428-rtl8159_net_next-v1-1-52d03927b46f@birger-koblitz.de>
+ <20260428-rtl8159_net_next-v1-3-52d03927b46f@birger-koblitz.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,15 +49,39 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260428-rtl8159_net_next-v1-1-52d03927b46f@birger-koblitz.de>
+In-Reply-To: <20260428-rtl8159_net_next-v1-3-52d03927b46f@birger-koblitz.de>
 
-On Tue, Apr 28, 2026 at 05:47:21AM +0200, Birger Koblitz wrote:
-> The RTL8159 supports 10GBit Link speeds. Add support for this speed
-> in the setup and setting/getting through ethtool. Also add 10GBit EEE.
-> Add functionality for setup and ethtool get/set methods.
+On Tue, Apr 28, 2026 at 05:47:23AM +0200, Birger Koblitz wrote:
+> Add interrupt mitigation code for both RTL8157 and RTL8159 that prevents
+> USB interrupt callbacks with urb->status ESHUTDOWN being triggered. While the
+> issue is rarely seen on the RTL8157, without the mitigation, it is
+> common on the RTL8159:
+> [273.561863] r8152 7-1:1.0 enx88c9b3b5xxxx: Stop submitting intr, status -108
 > 
 > Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
+> ---
+>  drivers/net/usb/r8152.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+> index 8255261d73148a7b4dabe0188faf07cb1f356437..08cc3c1dae0facb2400890ba4d093c97ed56d40b 100644
+> --- a/drivers/net/usb/r8152.c
+> +++ b/drivers/net/usb/r8152.c
+> @@ -8444,6 +8444,12 @@ static void r8156_init(struct r8152 *tp)
+>  	else
+>  		r8153_u2p3en(tp, false);
+>  
+> +	if (tp->version >= RTL_VER_16) {
+> +		/* Disable Interrupt Mitigation */
+> +		ocp_byte_clr_bits(tp, MCU_TYPE_USB, 0xcf04,
+> +				  BIT(0) | BIT(1) | BIT(2) | BIT(7));
+> +	}
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+What does interrupt mitigation do?
 
-    Andrew
+Is this a different name for interrupt coalescence, where the MAC
+delays interrupts for a period of time so more packets are in the
+receive ring when it does interrupt, so reducing the number of
+interrupts, and bigger bursts of packets are processed at once?
+
+	Andrew
