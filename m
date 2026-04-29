@@ -1,58 +1,71 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0073A544A
-	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 07:39:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8293733F595;
+	Wed, 29 Apr 2026 07:42:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777448381; cv=none; b=VLX9yIV69cUJj4ZLZ3V1/eni6mfUqZht4cU1np6heOhXnkPTkNq+ydetPR8MTTNUem2aIY8V11wvuK2PLkQI4wwKFIc6tvaNL+4aKkSjiq68fA3NMpu7+dogAsNTukUXbK4jl1PqkeKkef3qTgEnU4tvBxpaAfnlKlL1h7Fj0aU=
+	t=1777448560; cv=none; b=mV41lUTo7Ds6pp3reCgplzyWQ+Q/XiW/ttBIkZxD1yenm5l6uzJZEZfMeBW3vuJ6BwGVvYOEy7LNe1Q7elJsAznF266t1Yg1HE1se/cjRVZnhvDAJ6wZxlDaQKC85PIzXZRcx/3IHyMT6Zgg3ZnAnr7PkfWqneOHaxzKySnptD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777448381; c=relaxed/simple;
-	bh=Qj045nrgY4xXpDTPv/qY1kKn/ZydvUHoD6WybqjMyY0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Z2Nix77l2DtqSsv1QWBrGj0DZWtUuoO19YEosmALrPJmvSPn8NqTLkuyekC64/HEBoqREbIlGmZphQyROFMLNlsRqdV+xmeRsB/sFk+//DdNdJwhMGlwq8725ur5Bdkmtnj8J+cRkKZiWmqicPQgqSW7oOCUfXvbVVugkp1rGwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ArvvLVH6; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1777448560; c=relaxed/simple;
+	bh=Cr0vQaNUqcHT5qkJDPRkR29t4xZtKhdC8p1BUKcPsvY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MckWfqsT1a0V/HttIOy5JCql6x8mTLYMFDdLtEWxnwX7+tQTFofL4UQ4utjyY8CyD9q8mDqeyp2WncQFr5yYXUsZ7XT3mZyblCzS0bsFTpQBROCALiR+o3Kfuqlr2B6BozyUJXsLfbbmx5syN42Ht64fg6c0ZWssel07XFzoXgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i/z50MRc; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ArvvLVH6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777448377;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=prymxDtLIeGSFuHxEZBgAVz2eVsQ1RakOMgN/JCRnuU=;
-	b=ArvvLVH6zHLeJaRXZ8oemcuCf/mqZ4SU69Fly499y00GL5ShPOAXMT1hbwxQe6ftuOf+Ve
-	qrjtq3opp0pAFRZvxodfG7aOzjUR3lD4p7qrz7OnYlBzNejyLDoBUVmmeQtEvIRdyHBBFN
-	grFGWbCm7dJba8H+Xrisbse7XiuaCOk=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-642-CvSA0K8XMzC0Dn0ZXsn_zA-1; Wed,
- 29 Apr 2026 03:39:35 -0400
-X-MC-Unique: CvSA0K8XMzC0Dn0ZXsn_zA-1
-X-Mimecast-MFC-AGG-ID: CvSA0K8XMzC0Dn0ZXsn_zA_1777448373
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EC46E1800464;
-	Wed, 29 Apr 2026 07:39:32 +0000 (UTC)
-Received: from gerbillo.redhat.com (unknown [10.44.34.99])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2FED219560AB;
-	Wed, 29 Apr 2026 07:39:28 +0000 (UTC)
-From: Paolo Abeni <pabeni@redhat.com>
-To: netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i/z50MRc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777448559; x=1808984559;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Cr0vQaNUqcHT5qkJDPRkR29t4xZtKhdC8p1BUKcPsvY=;
+  b=i/z50MRc5q2gQA6wuQLdhj5dGsVknE5cJHbKtL1pnYfD+F87QKbE83FQ
+   SCo8CKimzyx5r6T6BvYMZD5uyjoWTB7sKjSPa0QKd1CoOLmK2VObPAZLG
+   jASbeew4pA59oEfZH4UrgqW/f6k6n8ozHRDd1vN2HoU2uPHTO0bM+Kf8T
+   Y1GWIByLlD0W2njhwJN7ndkzyIMhwSeFepUWcBdcY/wCuNagNAJlQyFzx
+   A5vGgf2TuyGTbGpxVTT60t/7GTZgL7w+4ssSATGaroBSqLZfP+7sO2Ob6
+   huVwSBef9P6+zilPmykd7GQQr7zPF1Iskjd3dZsts0UQn3HbUtrzc4EN5
+   Q==;
+X-CSE-ConnectionGUID: gRVlTk6kTxqR7JDR6118CA==
+X-CSE-MsgGUID: j7VumaU9S+y4/NzqOqkbRA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11770"; a="89833758"
+X-IronPort-AV: E=Sophos;i="6.23,205,1770624000"; 
+   d="scan'208";a="89833758"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2026 00:42:38 -0700
+X-CSE-ConnectionGUID: 8EIVIcpZRqitLPI+BaAevg==
+X-CSE-MsgGUID: CeyFazFEQhSIaQZgcZd+ww==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,205,1770624000"; 
+   d="scan'208";a="235968120"
+Received: from irvmail002.ir.intel.com ([10.43.11.120])
+  by fmviesa004.fm.intel.com with ESMTP; 29 Apr 2026 00:42:35 -0700
+Received: from mglak.igk.intel.com (mglak.igk.intel.com [10.237.112.146])
+	by irvmail002.ir.intel.com (Postfix) with ESMTP id 0A62A27BA2;
+	Wed, 29 Apr 2026 08:42:32 +0100 (IST)
+From: Larysa Zaremba <larysa.zaremba@intel.com>
+To: intel-wired-lan@lists.osuosl.org,
+	Jacob Keller <jacob.e.keller@intel.com>
+Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	"William A. Kennington III" <william@wkennington.com>,
-	Jeremy Kerr <jk@codeconstruct.com.au>
-Subject: [PATCH net] net/sched: cls_flower: revert unintended changes
-Date: Wed, 29 Apr 2026 09:39:11 +0200
-Message-ID: <043026a53ff84da88b17648c4b0d17f0331749cb.1777447863.git.pabeni@redhat.com>
+	Paolo Abeni <pabeni@redhat.com>,
+	Joshua Hay <joshua.a.hay@intel.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Alice Michael <alice.michael@intel.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH iwl-net] idpf: fix RSS LUT memcpy size
+Date: Wed, 29 Apr 2026 09:42:30 +0200
+Message-ID: <20260429074232.180528-1-larysa.zaremba@intel.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,48 +73,61 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-While applying the blamed commit 4ca07b9239bd ("net: mctp i2c: check
-length before marking flow active"), I unintentionally included
-unrelated and unacceptable changes.
+Based on the following feedback from Sashiko (received for iXD phase 1
+patchset, but valid for the net tree):
 
-Revert them.
+ "Is the bounds check xn_params.recv_mem.iov_len < lut_buf_size sufficient?
+  Since lut_buf_size only represents the size of the array elements, should
+  this check instead verify that the payload is at least
+  sizeof(struct virtchnl2_rss_lut) + lut_buf_size?
 
-Fixes: 4ca07b9239bd ("net: mctp i2c: check length before marking flow active")
-Reported-by: Jeremy Kerr <jk@codeconstruct.com.au>
-Closes: https://lore.kernel.org/netdev/bd8704fe0bd53e278add5cde4873256656623e2e.camel@codeconstruct.com.au/
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+  [...]
+
+  Does memcpy copy the correct amount of data here? rss_lut_size stores the
+  number of 32-bit entries, not the size in bytes. Should it use
+  lut_buf_size or rss_data->rss_lut_size * sizeof(u32) instead?"
+
+After inspecting the code, it was concluded that RSS memcpy size is in fact
+4 times smaller than it has to be, since a single array entry in a u32, and
+rss_data->rss_lut_size is clearly used as an array size. Required Rx buffer
+size is also too small, but this is a common issue in the idpf code.
+
+Use a full buffer size (lut_buf_size) instead of the array length
+(rss_data->rss_lut_size) when doing memcpy of RSS lookup table.
+While at it, increase required Rx buffer size to a whole flex-array
+containing structure instead of just the array.
+
+Link: https://sashiko.dev/#/patchset/20260323174052.5355-1-larysa.zaremba%40intel.com?part=8
+Fixes: 95af467d9a4e ("idpf: configure resources for RX queues")
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
 ---
- net/sched/cls_flower.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/net/ethernet/intel/idpf/idpf_virtchnl.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/cls_flower.c b/net/sched/cls_flower.c
-index b9672ea05747..88f8a32fab2b 100644
---- a/net/sched/cls_flower.c
-+++ b/net/sched/cls_flower.c
-@@ -556,7 +556,6 @@ static int __fl_delete(struct tcf_proto *tp, struct cls_fl_filter *f,
- 		       struct netlink_ext_ack *extack)
- {
- 	struct cls_fl_head *head = fl_head_dereference(tp);
--	struct fl_flow_mask *mask;
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+index be66f9b2e101..a97d2e9b54d4 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+@@ -2916,7 +2916,7 @@ int idpf_send_get_set_rss_lut_msg(struct idpf_adapter *adapter,
+ 		return -EIO;
  
- 	*last = false;
+ 	lut_buf_size = le16_to_cpu(recv_rl->lut_entries) * sizeof(u32);
+-	if (reply_sz < lut_buf_size)
++	if (reply_sz < lut_buf_size + sizeof(struct virtchnl2_rss_lut))
+ 		return -EIO;
  
-@@ -573,12 +572,11 @@ static int __fl_delete(struct tcf_proto *tp, struct cls_fl_filter *f,
- 	list_del_rcu(&f->list);
- 	spin_unlock(&tp->lock);
+ 	/* size didn't change, we can reuse existing lut buf */
+@@ -2933,7 +2933,7 @@ int idpf_send_get_set_rss_lut_msg(struct idpf_adapter *adapter,
+ 	}
  
--	mask = f->mask;
-+	*last = fl_mask_put(head, f->mask);
- 	if (!tc_skip_hw(f->flags))
- 		fl_hw_destroy_filter(tp, f, rtnl_held, extack);
- 	tcf_unbind_filter(tp, &f->res);
- 	__fl_put(f);
--	*last = fl_mask_put(head, mask);
+ do_memcpy:
+-	memcpy(rss_data->rss_lut, recv_rl->lut, rss_data->rss_lut_size);
++	memcpy(rss_data->rss_lut, recv_rl->lut, lut_buf_size);
  
  	return 0;
  }
 -- 
-2.53.0
+2.47.0
 
