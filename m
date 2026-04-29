@@ -1,144 +1,115 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-yx1-f53.google.com (mail-yx1-f53.google.com [74.125.224.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1C143845D2
-	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 02:39:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777430363; cv=pass; b=QF7sAOKD4e9FbwWeBo1JYYVL43yDIQ9Y9RFKuzZhW2xUXIXH2qsnUBoxd/c9QazQp4UpeLpmPw48s8d4XwM/p3B5Nd3Rs6Bl75yLXvyScFyiaoZ9UP8S22f9uFxcFzMRNGSdLEeMiiEbom6sS8qPOAee/ZbLxdgg5GFmuR8pr4E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777430363; c=relaxed/simple;
-	bh=3j52Oha4K1noolQeb0YCiATzp5JEOQWzM8960MyAO7Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mzFZRJVJRYpoUbyokEz+nryn4kBFJHUj7CRdKtVu9N4PLIlW38WR7io4fejM2SlHIHLDh10tMIy5YhKNXPUB8a+lwu5SsExC3r/VCbT9jRiS6Qoc1iLZiR6In9wyr0Tabgrcg0HASRZ3z6dPps6LigvkS3DRYqUl/2IpYayBGIU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F2UT6JMC; arc=pass smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C25B29D288
+	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 02:42:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777430530; cv=none; b=gxrfu8OJ7cTHGiUY25CiBpHPW2HyYl0dZJ/NxxUbwLQJoJpY3faXhrwXMUo3DH+wyGl4aqX8SF6Tm4YClDNjc94i1HdSqe4xrBxAevYEw9QYK/Nq8HNN2O3gXoui++waJ3GGbRbLLy6ExYh1mCSKeajAaIhGPAimmrHZXBxavXY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777430530; c=relaxed/simple;
+	bh=LkDbRl8tl4kuJoVWU/LkPRmQ1BdTd+x44yvnNxItZoc=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=Bv0qalifAw5x1MnizJpIgb+MQnzJoyv2focbtSnKsDGjAyRs5yxoFtuqjOL3arBZM2yOJHcUMMo8UubXIvcgqqwYay8lQpFuUmu+TSzLbNsr5fu7CfomW0WcM3BjLEghGXxavOullHeqat0HdWWolk6TAAd+Q0P3cZrLq1Z09F0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MgRkgMya; arc=none smtp.client-ip=74.125.224.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F2UT6JMC"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-488a14c31eeso100171435e9.0
-        for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 19:39:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777430360; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Xlcg2F45hgvV/MjlYGL3s9uy2q6EdJ7S37/jrqgcUBdw47COjW0isq0AHoWOc6PoKC
-         g4HgwdWUKsnsaKh/8LspIsqnSpxO2UAPnQxoIhMXbYiw9vl3fgRLyjcNY0kT0FEqIEGE
-         AnuR7sMNM7dpg6Xk6OyhRD+O3HrfOlAzggBRsVrNGF3xKY0/5eWIvbY3UwGP2NvOBPK7
-         xnAop0y7lAQap5X23pnHM9qL7OMafQk0EWAKHR3vHdQT8mLvgotqG2ux5Dx1958dtMlv
-         TM90E90oWy4XTC8ZnYZGgoZx9fNtptx/NSxgOdf8Ax+iYDFjwkcWtcfjTzMdp1qAPlV6
-         Wq4g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=3j52Oha4K1noolQeb0YCiATzp5JEOQWzM8960MyAO7Y=;
-        fh=7A7Lfp7XLKMK07LO//aJP/E3vpMbi/wF8o3aT9nBrGw=;
-        b=hc0FwV8QB2IA3niUN8WRx+DfPIbdwGyV5BdGJ6hnUs4ET60OVaqf9Uo0jlK1mghqVJ
-         o1EYqboFuTxPEM3HGZs+pYIT6uI7K3JRLUdDboe8NweFuBHrvgnMbhquaMGAZqkyN15O
-         8w6kPnlfVaia+GYIGplKLRO7xdA3gKCBfp1o4nMaLRsd5i611Yo/ZKYkm4kcFnJerZEu
-         SsxOVBGPwo9CQc3SdMC04X0fdaXs6PD/6T/DEqNmXXYgGJ+1FZKymdkIOvzuLzliJye8
-         k3rf0A0FD/Q6s8VfwzBEjo0+NWp13M6mnE/OpCW7R2BOfMhxOR04yurO6fpnH/YZDHxE
-         9uPw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MgRkgMya"
+Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-651bc83e74aso10065130d50.2
+        for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 19:42:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777430360; x=1778035160; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1777430528; x=1778035328; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=3j52Oha4K1noolQeb0YCiATzp5JEOQWzM8960MyAO7Y=;
-        b=F2UT6JMCDHS4+k+vhk3lJOGy45zJjEgLLedAFtnFRyIRCZABmmwHZLLtl6q41YOHUc
-         4chDfd91aV9zWIb2MX3nOIOsGtt9JRzkIMHoKYS5mi8hRv5z0gr6ofqwUmfuZQ12vclr
-         YpjYRd39q0r7sIXZTht8TedUL5n+f1uqoP75/OvYGm7kADaSOGI2fptkighbxxre9n0z
-         ui3AsUkxjRueN8s4JuLRpr1xbxbSLJtLz0K0fuIy6KSrEt+6qlJL4eLJkamrlkwu7sCp
-         ymhOLeRkIq71YQ+HqN5oDkK36HrDAPHwYxAUXEGV3+J9XVUMkQY3CwX/aCaA8+vnnwug
-         kTHg==
+        bh=TsXnDL2f4bjRwOGB8bjtkEsiK3KvwK5FVTY8bFg0h14=;
+        b=MgRkgMyaNMTRaHrXtuBhffeMpr/KYJoMfBfg2T3ZJEruqjLmS4hk8bdPkIV52amlZb
+         Zhq+oMxNxrHijdijeEb8R77k43+pmUgprm3H0zgbELbMygjQc2jgNpgO/r47Du2KyKkq
+         ti8Np0sU6kffkTOYwyu//Y4XcZvKQJYcx/fIZy8Qxh8Q8614BsprEOHYXUtae7kqhsgd
+         2wN3Ut1NacZWdVwZr5wDWBWXLfnHkglt/VquAjHkq4PPVmiyzi7HPkZrLoS2uHg21qJm
+         A+BJllEyjG9TAYb1ru+D2PSCcJTFmBo7cAFysXF0IAL+4Mu0RPJwwOkuscS2ACw3AI/P
+         6zlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777430360; x=1778035160;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=3j52Oha4K1noolQeb0YCiATzp5JEOQWzM8960MyAO7Y=;
-        b=ePC5q76d6aCKSFZFGHdlo+oCfi2moFrOHiXG0LgX41b4wsCUpVAqAyMZVWSxu3i/2r
-         45xgk2UySSW34lg5HYttvHCgopSUClB4ddcTK0fXtW7BxPnROTjiap+0Da4RGbjdFUtM
-         dA0FQ610ZGDbo/TQlDid7yaz0Gee01V2/x+/taqG6pmDjFhwmzIc1npeDNxL89QvWGdu
-         jDWmyQUEx2TYcMqF/NXcx0SYZ/ew5WUg3zCwWA+2Ev3TGjMOpGyz5wcoDkqFRUSSiQUd
-         UK3u8cDsfVnkHjEd9D/0xYZjTpk77ch7RQU+JDVsg+w0cEvBD5uWzMlTgxTx1k/V6IQt
-         OmTg==
-X-Forwarded-Encrypted: i=1; AFNElJ/EQlbLH4x5aOcUvsHq81HBPNZonnIcdbwbF6AOUrmU6SWhcd2sIOS6SwEnmQa40i+uliukH+o=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywg0/uBP29WYAfTPmSodxBowb7zW9EnT16PkTvjq6pz+F3GFZWo
-	A6WkGxGvd9WE8+cS2IbaonbZKllHhc78jnSMls/BgrM5gEk6ng3fCfaqQewBDysmr8XyB2wFCr8
-	BrWV9m72vyPd5XEBS3sTiLBcIteH2RaM=
-X-Gm-Gg: AeBDieuVmei9+mO0HL/oCI2eB8XXl6BJmGqs0rn0GyznHVfcF0YA5SfuTAG6jyGxIYo
-	rWHiT+SttnGAxivyvRr+qU/usStrungevqjHP0sh+vBSAEzCUg7qJyS7iO1NPL6rMk3HaCLu2nY
-	cmQxQgApGOMWy+2M8YwsZmmJUJN6AIefsmS4zuCMtqHN5T0I0UwByB9Cn0Kd9rLkdtH+F8xHJL0
-	taz80zWGoPu/vrncWLjmWax4rJuDSeb4YftSx/QDwbM+WGBRzJJ9x7/wALp9BigylRsw/DZvQx3
-	MGWwTPjhni34s0OSCC6OAdWgI5nDMOgQnMPVgp28UADzOe1C
-X-Received: by 2002:a05:6000:2dc2:b0:43f:e791:a333 with SMTP id
- ffacd0b85a97d-446496d7a5fmr9453139f8f.29.1777430359955; Tue, 28 Apr 2026
- 19:39:19 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1777430528; x=1778035328;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=TsXnDL2f4bjRwOGB8bjtkEsiK3KvwK5FVTY8bFg0h14=;
+        b=AXByXhRwdcPsKQza8qgB6sXB4EFZnxsu6by9QyPJU7PmaDAf+OQ2orHXhm0jV8B8T9
+         3R0CF/gCKVM990xRE354lDAt66/bpK+JOww+sZgqBSAOQ9upegLq938p7v6zMBqlv+In
+         D+8hQNb+dUx26NE7rNcqAbdf75Rv34ErPkCe9+9Nn6iWbCQQYwxNB9ileGRQFWVoo4Fs
+         6CEK3UI72SyKBKmvFuaA7aqzOD8JO9RG/Ci86G+g7zqVnXRE0SyXOzTj5z14Wpj5m2hJ
+         /5in9Ejufuez9YIJn/sTJquA2TzC//FbbPxTtt7XiZDQ2RGqQa5wcEvDeihULoZk275r
+         Zh7w==
+X-Forwarded-Encrypted: i=1; AFNElJ9a8x/9jSBTsfDsv/b6Cetjb+Wr8ryoa1xMGIM7fQrCf9POyhwh7XcHVcBDeXZ32dt5/XA2pf0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwXjsSNVl/J5ViZb+SAeGNoE//FuS0c5tVLdUVcqfs9SmvmzLYj
+	51eDTlWaMKO9B7Ne6QC9UprP0qYTQE2eiwU2BaZXc8ZRSFrBQ/RxEhzC
+X-Gm-Gg: AeBDietK+RcUur63RopKDkbohIFCQE3VonnYY9dJszqjSwUj3wpP2hVHFHmiVpivqGN
+	SPIVgGZo2Ot9RTjVjVxe3sabq7i4EaNkHFTRc7OgPFa74W7eJWnV7C5WuCAyH57tKg/gDTXk7P1
+	kNDTtEOBq+XL18hMyX3vRLkEqMftU4jsKWO0At9XZjoz+lWpyZW5kn7XFfPqT/DJNMBJkG+mM8h
+	T111brmFHBUdAoZAGbHMTXqDsuC07p1NLfQ//pon10I5RDOHqCTnqSiW+myhVnHGFSjbv5bpiPg
+	SdGwJ0GnX8/6i5DPUfaknqKZQvb0i0XJVKv2Pi5I2aWYjCeR/cBTzJOwmHSlKFq21jr7mSDu0kG
+	n+21JA4tS513cWKKN4ZxtMRW2EnBlqkna1oYkFbSdLKtZ22qNhPZO2Lrw/lb0UDtE6zit+BakHJ
+	Pvpj0jPzlmWs9oRuE1JYllleHp+gWHvSm28UfpvWfDRH5CIIS31IznLF1NkANq5uboox2r+UO0j
+	gZXtX9SsxypyKE=
+X-Received: by 2002:a53:a581:0:b0:650:77f4:60d with SMTP id 956f58d0204a3-65bfb708f88mr1799680d50.53.1777430528048;
+        Tue, 28 Apr 2026 19:42:08 -0700 (PDT)
+Received: from gmail.com (172.235.85.34.bc.googleusercontent.com. [34.85.235.172])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-65bff6c9302sm663569d50.10.2026.04.28.19.42.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Apr 2026 19:42:07 -0700 (PDT)
+Date: Tue, 28 Apr 2026 22:42:07 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: davem@davemloft.net, 
+ netdev@vger.kernel.org, 
+ edumazet@google.com, 
+ pabeni@redhat.com, 
+ andrew+netdev@lunn.ch, 
+ horms@kernel.org, 
+ daniel.zahka@gmail.com
+Message-ID: <willemdebruijn.kernel.a64bb369b0ea@gmail.com>
+In-Reply-To: <20260428184336.2244b6a1@kernel.org>
+References: <20260428205352.1247325-1-kuba@kernel.org>
+ <20260428205352.1247325-4-kuba@kernel.org>
+ <willemdebruijn.kernel.223eebd28b57a@gmail.com>
+ <20260428184336.2244b6a1@kernel.org>
+Subject: Re: [PATCH net-next 3/3] psp: validate IPv4 header fields in
+ psp_dev_rcv()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260428110713.2550315-1-maoyixie.tju@gmail.com>
- <20260428110713.2550315-3-maoyixie.tju@gmail.com> <CABAhCOTmZ4hAuhtimOX1YQDGFC2fbXm5WmwT0Z8PxZU7Zq-2Fw@mail.gmail.com>
- <CANn89iJzu1zXpx5G-3jVDS0duLB_tbm+ULzLk1ZW68fayoF9qQ@mail.gmail.com>
-In-Reply-To: <CANn89iJzu1zXpx5G-3jVDS0duLB_tbm+ULzLk1ZW68fayoF9qQ@mail.gmail.com>
-From: Xiao Liang <shaw.leon@gmail.com>
-Date: Wed, 29 Apr 2026 10:38:42 +0800
-X-Gm-Features: AVHnY4LZocalNrJgv7vMB2vdTcn-atowI7erBu9gVSevVS-P9DwrltOsUKB23To
-Message-ID: <CABAhCOSFvmxQjnxcdkJV8mx-d163tKz2ykgyciHSFOqs-yBrmg@mail.gmail.com>
-Subject: Re: [PATCH net 2/2] ip6_gre: Use cached t->net in ip6erspan_changelink().
-To: Eric Dumazet <edumazet@google.com>
-Cc: Maoyi Xie <maoyixie.tju@gmail.com>, netdev@vger.kernel.org, kuniyu@google.com, 
-	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, dsahern@kernel.org, 
-	kuznet@ms2.inr.ac.ru, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	security@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Apr 29, 2026 at 10:00=E2=80=AFAM Eric Dumazet <edumazet@google.com>=
- wrote:
->
-> On Tue, Apr 28, 2026 at 6:58=E2=80=AFPM Xiao Liang <shaw.leon@gmail.com> =
-wrote:
-> >
-> > On Tue, Apr 28, 2026 at 7:07=E2=80=AFPM Maoyi Xie <maoyixie.tju@gmail.c=
-om> wrote:
-> > >
-> > > From: Maoyi Xie <maoyi.xie@ntu.edu.sg>
-> > >
-> > > After commit 5e72ce3e3980 ("net: ipv6: Use link netns in newlink() of
-> > > rtnl_link_ops"), ip6erspan_newlink() correctly resolves the per-netns
-> > > ip6gre hash via link_net. ip6erspan_changelink() was not converted in
-> > > that series and still uses dev_net(dev), which diverges from the
-> > > device's creation netns after IFLA_NET_NS_FD migration.
-> > >
-> > > This re-inserts the tunnel into the wrong per-netns hash, leaving a
-> > > stale entry in the original creation netns. When that netns is later
-> > > destroyed, ip6gre_exit_rtnl_net() walks the stale entry, producing a
-> > > slab-use-after-free reported by KASAN, followed by a kernel BUG at
-> > > net/core/dev.c (LIST_POISON1) in unregister_netdevice_many_notify().
-> > >
-> > > Reachable from an unprivileged user namespace ("unshare --user
-> > > --map-root-user --net"); cross-tenant scope on container hosts.
-> > >
-> > > Note: ip6gre_changelink() (the non-erspan sibling earlier in the same
-> > > file) already uses the cached t->net correctly. The bug is specific
-> > > to ip6erspan_changelink() copying the wrong shape.
-> > >
-> > > Fixes: 5e72ce3e3980 ("net: ipv6: Use link netns in newlink() of rtnl_=
-link_ops")
-> >
-> > The changes look good to me. But why is 5e72ce3e3980 mentioned
-> > here? It neither introduced nor was intended to fix this bug.
->
-> Which patch added the bug then in your opinion?
+Jakub Kicinski wrote:
+> On Tue, 28 Apr 2026 20:22:34 -0400 Willem de Bruijn wrote:
+> > Jakub Kicinski wrote:
+> > > psp_dev_rcv() is called from the NIC driver's RX completion path
+> > > before the frame reaches ip_rcv_core(), so the IP header has not
+> > > been validated in SW, yet. We expect that the device has done
+> > > all this validation, but let's also add the SW checks, to avoid
+> > > surprises.  
+> > 
+> > If devices are expected to have verified this, should these be more
+> > noisy checks, similar to netdev_rx_csum_fault?
+> 
+> Maybe "expect" is a bit of a strong word, I meant "anticipate" /
+> "suspect". Dropping invalid packet in SW doesn't seem like a huge
+> problem, other paths in this function already do. For rx csum the
+> problem is that we got a incorrectly math'ed out value for what is
+> likely a valid packet.
+> 
+> That's just to explain my thinking, if you prefer we warn / dump skb
+> I can respin.
 
-Maybe 2d665034f239 ("net: ip6_gre: Fix ip6erspan hlen calculation")
-which initially introduced ip6erspan_changelink using the wrong
-dev_net()?
-And ab5098fa25b9 ("ip6_gre: fix tunnel list corruption for x-netns")
-fixed this for ip6gre, but ip6erspan was left.
-Anyway 5e72ce3e3980 doesn't exist before v6.15.
+No, sounds good.
+
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+
