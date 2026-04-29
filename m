@@ -1,91 +1,128 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 039F0233D9E;
-	Wed, 29 Apr 2026 12:13:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C7C1F3B87;
+	Wed, 29 Apr 2026 12:15:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777464827; cv=none; b=fhwQ1uyHW/UWYofx2J8HU/9InbBZhJX0flOqs5xO+Tb0T0INWIsmCYdd40FN70Kp03Q/OukHyihwFDi+nkKUuXA3ILMF9qo2UQbXXBaJJJPVmtYuS7+Uj2jDIMXWVXgK7oux38x9haK39XPRBwgwmdBls8a2thN662wnnj8aNqM=
+	t=1777464937; cv=none; b=BYacb5wNTqzCZuGv8PGSXKOevUQrKUG6fYMhKNvHuWgondiQINW6IE410LOumGEkRFS2tNFcRrEmrzYa6aNA2KImIfmfNfoP4m/KNqdjexXAuJZ9VPdzW+ZUW8we9NBTBw3UrVTxpR2es5gDnI54vZa84SdJX0TNVqoG/QPcDwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777464827; c=relaxed/simple;
-	bh=YgfhusDbmypFyboMX5KBAWajcI3SDsTVHoY1eSLksyg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=iS3u8mvY2bZUXmWK3cfDxLiRFWhVDlCeVl4lMu5kTO+mvyo/bHodMxSuQg/dF5WOkmzmtyMiDTneFEKKOExUbPaiRNiy8sNdf97D4YXSMi/uweNjtzSOc82xCy7RRm9IfHTYu0v+YjSsKxk8ONUBrPPc3QjF6PWFK+WJnusFDfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UMOdbp2p; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777464937; c=relaxed/simple;
+	bh=uL9vk2jg29WT0te2XlTlXMqJhBp1I5Nix+Oz3cLzEIg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=tP5OcICc/x4IfkMAz/EpcN1arq71akO2kxL6Yd8GMkjycc9w+aYNdLTmgGNmdU8Vs/lkc95YVIbf42/r/GCBz+q2JYNjVLOuf5k5SHyBwk8fhpb2wATyoQfvnKuhbUaz19eKjbQypAlGsdIEAyEODG6xt7tRmyPKYh6mnU6JvtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=BIm/AEQG; arc=none smtp.client-ip=113.46.200.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UMOdbp2p"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 412BCC19425;
-	Wed, 29 Apr 2026 12:13:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777464826;
-	bh=YgfhusDbmypFyboMX5KBAWajcI3SDsTVHoY1eSLksyg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=UMOdbp2pgNSfq7Y85sU8OdB5gWkj2gJPlg5sMLILBUkW1aBV+YSXPYKxIuoiDXWje
-	 Q3r5/EAwetqH7SidBtQVFTgns8N+KFF+WDdUNDeL8zBeVMwK1KErlvrCj/n9bhTjYp
-	 cSj9A67e0aZmt0xhknXJASk6tOn2WPwfL99L4MNyr2HI/Kr9VHMq8GQAJg6tmjwoI6
-	 BNetgist0Z5tykn29lh0iqFLyZA4eq/EAymrrmjMcl7cYkLw9HKMy8GzWB1XH/+lSN
-	 B2/OR4YKGL0RWsrgKb7nHHmJE/3nUobElCxagLT3jHjsMk82qvjnIBwvEwPvQUSGs2
-	 r5MmoDGMwEShQ==
-From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-To: Dragos Tatulea <dtatulea@nvidia.com>, Jakub Kicinski <kuba@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Martin Karsten
- <mkarsten@uwaterloo.ca>, Gal Pressman <gal@nvidia.com>, Tariq Toukan
- <tariqt@nvidia.com>, Joe Damato <joe@dama.to>, Frederik Deweerdt
- <fdeweerdt@fastly.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH net-next 1/2] net: napi: Fix interrupts permanently
- disabled during busy poll
-In-Reply-To: <36csl4lgsy3psknzdpssq4zc2zsy36negybhhvfhozthhnmfl4@c6y75w6udaiv>
-References: <20260428175134.1197036-2-dtatulea@nvidia.com>
- <20260428175134.1197036-3-dtatulea@nvidia.com>
- <20260428173844.1354aabe@kernel.org>
- <36csl4lgsy3psknzdpssq4zc2zsy36negybhhvfhozthhnmfl4@c6y75w6udaiv>
-Date: Wed, 29 Apr 2026 14:13:43 +0200
-Message-ID: <87o6j2hslk.fsf@all.your.base.are.belong.to.us>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="BIm/AEQG"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=Lieja21KR9tcF55zn9yePRbeLB0kUzBTO/1vd4meHnw=;
+	b=BIm/AEQGHaQk05xxqMh4RewZLiGKXCGDIbGE2RxNTM6UCBRK5diBsCfGX02LsFDkaKLR0Pc/P
+	Qs3inIB2OUQ1zHn3lyHMFW0+2uWvkHJLotUJbykbVXtwo1a6E71UD4eomhqA4Wp7xRlM9hExNFc
+	OG7w0vRNi6HBQrSuzKDJEeQ=
+Received: from mail.maildlp.com (unknown [172.19.163.0])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4g5GLZ4bMtz1T4G8;
+	Wed, 29 Apr 2026 20:09:10 +0800 (CST)
+Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
+	by mail.maildlp.com (Postfix) with ESMTPS id 36DAF40561;
+	Wed, 29 Apr 2026 20:15:31 +0800 (CST)
+Received: from huawei.com (10.50.85.128) by dggpemf500002.china.huawei.com
+ (7.185.36.57) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 29 Apr
+ 2026 20:15:30 +0800
+From: Yue Haibing <yuehaibing@huawei.com>
+To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <horms@kernel.org>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<yuehaibing@huawei.com>
+Subject: [PATCH net-next] net: core: Call netif_get_rxqueue() in get_rps_cpu()
+Date: Wed, 29 Apr 2026 20:37:41 +0800
+Message-ID: <20260429123741.3777677-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ dggpemf500002.china.huawei.com (7.185.36.57)
 
-Dragos Tatulea <dtatulea@nvidia.com> writes:
+Refactor netif_get_rxqueue() return NULL when rxq index checking failed
+instead of falling back to first queue, then use it to avoid code
+duplication.
 
-> On Tue, Apr 28, 2026 at 05:38:44PM -0700, Jakub Kicinski wrote:
->> On Tue, 28 Apr 2026 17:51:30 +0000 Dragos Tatulea wrote:
->> > +	local_irq_save(flags);
->> > +	hrtimer_start(&napi->timer, ns_to_ktime(timeout),
->> > +		      HRTIMER_MODE_REL_PINNED);
->> >  	clear_bit(NAPI_STATE_SCHED, &napi->state);
->> > +	local_irq_restore(flags);
->>=20
->> I don't think disabling IRQ is necessary?
->> Isn't it legal to clear the bit first then schedule the timer?
->> The timer does not own the napi instance.
->
-> Isn't the following scenario possible (but extremely unlikely)?
->
-> 1. busy_poll_stop(): napi timer is schedueled.
-> 2. Hard irq pre-empts busy_poll_stop() and takes an unusually long time.
-> 4. napi timer triggers (also hard irq), napi_watchdog() skips schedule
->    because NAPI_STATE_SCHED is set.
-> 5. busy_poll_stop(): NAPI_STATE_SCHED gets cleared.
+Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+---
+ net/core/dev.c | 24 +++++++++---------------
+ 1 file changed, 9 insertions(+), 15 deletions(-)
 
-(Nice work finding the bug! I had to jog my memory to understand the
-gnarly busy-poll details again!)
+diff --git a/net/core/dev.c b/net/core/dev.c
+index e7bc95cbd1fa..72aef872d03c 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -5104,6 +5104,8 @@ set_rps_cpu(struct net_device *dev, struct sk_buff *skb,
+ 	return rflow;
+ }
+ 
++static struct netdev_rx_queue *netif_get_rxqueue(struct sk_buff *skb);
++
+ /*
+  * get_rps_cpu is called from netif_receive_skb and returns the target
+  * CPU from the RPS map of the receiving queue for a given skb.
+@@ -5112,25 +5114,16 @@ set_rps_cpu(struct net_device *dev, struct sk_buff *skb,
+ static int get_rps_cpu(struct net_device *dev, struct sk_buff *skb,
+ 		       struct rps_dev_flow **rflowp)
+ {
+-	struct netdev_rx_queue *rxqueue = dev->_rx;
++	struct netdev_rx_queue *rxqueue;
+ 	rps_tag_ptr global_tag_ptr, q_tag_ptr;
+ 	struct rps_map *map;
+ 	int cpu = -1;
+ 	u32 tcpu;
+ 	u32 hash;
+ 
+-	if (skb_rx_queue_recorded(skb)) {
+-		u16 index = skb_get_rx_queue(skb);
+-
+-		if (unlikely(index >= dev->real_num_rx_queues)) {
+-			WARN_ONCE(dev->real_num_rx_queues > 1,
+-				  "%s received packet on queue %u, but number "
+-				  "of RX queues is %u\n",
+-				  dev->name, index, dev->real_num_rx_queues);
+-			goto done;
+-		}
+-		rxqueue += index;
+-	}
++	rxqueue = netif_get_rxqueue(skb);
++	if (!rxqueue)
++		goto done;
+ 
+ 	/* Avoid computing hash if RFS/RPS is not active for this rxqueue */
+ 
+@@ -5442,8 +5435,7 @@ static struct netdev_rx_queue *netif_get_rxqueue(struct sk_buff *skb)
+ 				  "%s received packet on queue %u, but number "
+ 				  "of RX queues is %u\n",
+ 				  dev->name, index, dev->real_num_rx_queues);
+-
+-			return rxqueue; /* Return first rxqueue */
++			return NULL;
+ 		}
+ 		rxqueue += index;
+ 	}
+@@ -5473,6 +5465,8 @@ u32 bpf_prog_run_generic_xdp(struct sk_buff *skb, struct xdp_buff *xdp,
+ 	frame_sz += SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
+ 
+ 	rxqueue = netif_get_rxqueue(skb);
++	if (!rxqueue)
++		rxqueue = skb->dev->_rx;
+ 	xdp_init_buff(xdp, frame_sz, &rxqueue->xdp_rxq);
+ 	xdp_prepare_buff(xdp, hard_start, skb_headroom(skb) - mac_len,
+ 			 skb_headlen(skb) + mac_len, true);
+-- 
+2.34.1
 
-You're right that you need the save/restore if you do arm timer/clear,
-but not if you do what Jakub suggests.
-
-  clear_bit(...);
-  hrtimer_start();
-
-That would also follow the scheme in napi_schedule_done(). (Note that
-swapping arm/clear does mean that we can get a wasted-timer outcome.)
-
-
-Bj=C3=B6rn
