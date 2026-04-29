@@ -1,322 +1,202 @@
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010070.outbound.protection.outlook.com [52.101.193.70])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666E4391E7F;
-	Wed, 29 Apr 2026 20:16:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E55E1379EFF
+	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 20:20:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=205.220.180.131
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777493766; cv=fail; b=iiBGbwFuWjY26+pFoirF0PoGp1bLZJEXZR0BlM2/VRI45aCMYv4n4URv/UgVzfoF/meIgya5wwdGOWJ+ptjHhECGhTHQ/kg9f2HfLgIcDtSziM2UUSg0M7SluIEVwLHyd3sUoFzjCqTlGGwQFvnZz7ziGlP5iiJvHzj8Gl/dQcc=
+	t=1777494032; cv=pass; b=Bn7SISdn17N846WIA17QxmyyaeKNG6iOu9M4C0apfgO7E65TXsEhJl84/zYs/S3bYnYC5SBvoeVvqdrvEMBtZvWCvXbm2LxlkBa8fdgiIxz97XTMgWiJRPauRiQJlSU1M6G8wQSN6j3Ig63WVT4kwhVgfUGdWZgGaxXsrHA4cBY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777493766; c=relaxed/simple;
-	bh=NjND37zevYRyGn3aVt1qtYfMRNm7hebyZ5faCA86tF8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FlvG0UF1CQlpBbRG0R7V/zQ7tEYJ+RL4YxYcp/gqv8pJQxwFCsCelmSUH90gM1ACudhI0reQtELT+8ov44jmyK6ob04k2SpdNjzBumkAfOymrGDbaWLni3s4SEQYdSJH4+9GHdb58BmMYAQ4LYkAFqU/PnqlrExFbdg3R/HzmiY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=KzV1Kc/l; arc=fail smtp.client-ip=52.101.193.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1777494032; c=relaxed/simple;
+	bh=4Aw2ShP6ftvHuS4AfDxVpzaTpHpMJuiVnhHUXu+8jX8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gig7OppLseqxeLVJDQpfa7iVFrb34x4YUfKqLWiWpPRMV127AnzrFXiwP/eqlHxwmDsNNP349Mw9GfHDgghuehDOA8CCZJrm/y674tGS47xvKUOqbhlrJ8XXNQnwPZNgixqVK0G+WxsuuWO0p0SrYClYuigYO2R8r9q5POzw/PY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ZJ1yil7R; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=T24P9Fi6; arc=pass smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="KzV1Kc/l"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=b4Y803Rs7jWa8MqxjjIsabOXZd+xm070RKqFryBZvfQnBLDsw6c2PiVXdcnl+8c25Xn7damqTOxsx6k7WSliyPbVy+nulBlHsmTQ9ndb0kPkCJTDI7Tp5sXvjdcpdXixPDKTqx+2begYHR80Fy4ZF2zhbF8zw4roCu1C5gpVDsAy2txrHp1uB4HVyS2A5tEXWk6p8Nyk9ScLDaRhEQAaL21Ij1veBwCbvVGxjZHbmpcPOIIBVLPadyvgNSMKo1G1SVBxf8OMtr7uhlGjJIezWyIoZrAigmIWj+iYiaq4sgs0Caswz/iQXYXCHMsxERLuPebZdwcQ9ugOfm1NxJ39oQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BpfBuggc1F37DFEVglv8FdtpvN+MRYK94M9+jz333lE=;
- b=HnIS53TxAZqHGH1CJU20yuIRnwaQTzAMANPwewnNyimr8GXuqiGIbMxxuZvAT3oa8oM8xo2K1eppJsEASPQ6jMADN8Sy+kKZLQRYzkycYaYjapTzeckLhO0b2YpEmmZxN2sVIgClyiyUM8XDbTJHZ3La/kpZNOPTKhTm7rqvzQBC48josKMEWDvV8R8jNGW+luVobooRo92Kvh+MLiU6j4lcDVngVdD1rW9qnWyWgQniTf+8FgSlCBgxihYHUH6ZpljVzXbr4Px5RmaSihOilMtc3JWQfx/CCf39UV5yopocEzs5MQtIVXhNXZW4MHX51CKWBKHxOyP2npLoaqWGfA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BpfBuggc1F37DFEVglv8FdtpvN+MRYK94M9+jz333lE=;
- b=KzV1Kc/lRSrf9Es2oeYNsvUmWzr5itSStEBj7pc3qRkOKnMTZTe2xfOEh8LTsW7qQ0nsf6fc7r+enxEKOgruud540156ohdsiGB/QPqqXwa0PQ2swox1ZpJEUZIsecgpMoOx8Ea5rA+Eo6R+6BSJRk5Kdsf3DNMDRWcUGpDoapg8fmbDok8CTdqeRHCBY2ZfeJ7MC5WmWDFfm1Y8QHgc5oZtZTk2Bkran0mHXqBB/ANHJlvwG3hfyStL/uQ+tm09eGgBddl+p2b9LyJV179Es+j54aEU0haxJOUvI0j/YdTWca3pjY4PjVeggP7yN92k8EQJY/hoUZP6+YAPRIVVzw==
-Received: from DM6PR06CA0099.namprd06.prod.outlook.com (2603:10b6:5:336::32)
- by MN0PR12MB6365.namprd12.prod.outlook.com (2603:10b6:208:3c2::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.19; Wed, 29 Apr
- 2026 20:15:49 +0000
-Received: from DS1PEPF0001709C.namprd05.prod.outlook.com
- (2603:10b6:5:336:cafe::62) by DM6PR06CA0099.outlook.office365.com
- (2603:10b6:5:336::32) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9846.30 via Frontend Transport; Wed,
- 29 Apr 2026 20:15:49 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- DS1PEPF0001709C.mail.protection.outlook.com (10.167.18.106) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9846.18 via Frontend Transport; Wed, 29 Apr 2026 20:15:48 +0000
-Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 29 Apr
- 2026 13:15:32 -0700
-Received: from drhqmail201.nvidia.com (10.126.190.180) by
- drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.20; Wed, 29 Apr 2026 13:15:31 -0700
-Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
- (10.126.190.180) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
- Transport; Wed, 29 Apr 2026 13:15:27 -0700
-From: Tariq Toukan <tariqt@nvidia.com>
-To: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>
-CC: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
-	Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
-	<netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Gal Pressman <gal@nvidia.com>, Dragos Tatulea
-	<dtatulea@nvidia.com>, Moshe Shemesh <moshe@nvidia.com>, Nimrod Oren
-	<noren@nvidia.com>
-Subject: [PATCH net-next V2 2/3] net/mlx5: add frag buf pools create/destroy paths
-Date: Wed, 29 Apr 2026 23:14:28 +0300
-Message-ID: <20260429201429.223809-3-tariqt@nvidia.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20260429201429.223809-1-tariqt@nvidia.com>
-References: <20260429201429.223809-1-tariqt@nvidia.com>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ZJ1yil7R";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="T24P9Fi6"
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63TFTBmB1642726
+	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 20:20:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	4Aw2ShP6ftvHuS4AfDxVpzaTpHpMJuiVnhHUXu+8jX8=; b=ZJ1yil7RRd4FYxIp
+	p7Iy/QHM4zbRhNpPA0hYLTXJPDkjEZpj0nlJd1/gcn1CaWRIma04TC5JKe3D81SW
+	vVeiRZzWMnD6h1j+/NrrML/N1EdSQ9j/g1w/HfPjcjKblwHioKNVvbPOTS7wMt1g
+	t0Gzh5vN5ormYORSYWNaDzPSF5QRW2Nn76i06d+SpiMnh38SIooyjOtYhh5AvjdN
+	CZmgTmQB8ODoWqmGpsdbBkWvdolXxWGtqhvkZLbyynEZ4or8H895Tf9JexmnCUm7
+	KfrnoxvQeAAeJ1xqAifF8YREdrGH3wXxomLatFCwx3CMWJQTzOX/W5W2A3BAs683
+	leNRfg==
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ducj83c36-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 20:20:29 +0000 (GMT)
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-50faf575af4so4155471cf.0
+        for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 13:20:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777494029; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Mj+Hdnc60/Oa6nfDlEiZgLdvj5CydE2cDBotg+6dQcgiJyAWizuYgskQsd2cPkaiAu
+         ZsmWBFcEX55+alTQpWDIWZrlrjvLWTxQKkA928MhG2WOeFJN+/tvBqK9mfENnvxsZpa/
+         6zvbhxktk0gAAKOjHO/Pu49veJO8D5tfMTvfHuts9BviK6U1l5ObQTJWn/fdFYTf/520
+         dy6+bFryXBkhymt4mKk/bvIZ09OSunoUTgxO645OlIK4e++JyFdwjwOxYCmLJKtrs66V
+         Db00RBSMUQNug2sAZtxRRAviZqGctWJ41fnvlEyn8iD86ZrzVeNK3KZYmNfjVFvoQ6nS
+         N9kw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=4Aw2ShP6ftvHuS4AfDxVpzaTpHpMJuiVnhHUXu+8jX8=;
+        fh=XVCan8S082CfsBBljsbSLxAxak0pbpzEFOVPUvZaBkI=;
+        b=DO5MPfdm+Ck+4qdYNNtX9D68MR5oCHthQQs5J3LFWk5HEfwMhd9AKHdF28Zmem9trA
+         WlymE1HySl1ozhkBzYqxCcmT4uEdJdTzxdv5T1/YRKcpccAIc0R0C3LvBQUvkMU8amxO
+         oYhOy5rHIwKSGZIShvx43gwz/RPYhry1JWTGWfc7XHp7u7u3NbOW0qxFGw+wMA0ItJJn
+         4B4Yw2mDEbkUyMcvgmL5YxiyA0Xr3SlrQHMZdf7ONPkiWbFqnVUH68VWRrRBEGsxcwJg
+         /aUHv57+RyKH2XHFqbWikrGp/qtKuCZvzVA7jY1pdKpIzJv7A6ZgOm4S0hNF30Cc5fBT
+         CrPg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1777494029; x=1778098829; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4Aw2ShP6ftvHuS4AfDxVpzaTpHpMJuiVnhHUXu+8jX8=;
+        b=T24P9Fi6Gf9Zjk4iMavuKmXO+S0kBOW1j11fp+tN8dJeMhZ7AyIwSiSIil0oREiY7O
+         aft2bmgLO5PlC+vWwAwD/jJscZIZdBXEOtHD1hbtYl1+yd33QyWzyFG8C+UyzydLmKAN
+         ctxniHxGmG2dGtuWcGQ1RiUsyXYmdx+3Lq58ciWRCYw7n30BGnGWxPewjF7M0CB26raa
+         n+CKzEGTcjioh1vWjBETZ2SAzyYVBB4IQvLZTAtHnk1MRQLSBN2P7EGZ6G2Hx2w8mHrq
+         Bn0dIxMgTFx2Y7H3gtVcdOZq1Dsw1ffCJbqJUversd03uc+fk7UXUZM+4L94JeprgeeY
+         ltUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777494029; x=1778098829;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=4Aw2ShP6ftvHuS4AfDxVpzaTpHpMJuiVnhHUXu+8jX8=;
+        b=BLF8ZEdUNGKLjhaafq7LF0njQDccLThpf1FmmTCYdcDaEwHYfRPewlcrYQBgNiJBOa
+         7X5P0vvVhuYhuqsxjJsfpCjRpMmduZQbAaX7ZLznXkrjQPhT4LL7Rec/TKmbWvzly16g
+         TjjkmD0cRR0jZm8CBVuH7EoP76/FvMPH2gzX+v9pYZLPPXBA9bsbDpV0oIUgjnfhnHZD
+         xc3YV2wccw0PSLNsZPHfG9MXc0qdPsSj6bSFA2FHxgFZZADX2RSHPBP65nxwe8/oStj1
+         iwfR9h9y9O8p8Dgvk6K7tj+Ngdid9fgSntOU/kmgPZjniGHgEU2/Unrb8ubrt8hgVadt
+         lqGA==
+X-Forwarded-Encrypted: i=1; AFNElJ97uz6wpqGRnEQJXyI6LdXdjoqAbb4STjcMTuy+ki2Z+hqjntVyNT7Vo2/9wDRidPuwmYoYjEo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzxpqIZM3VT82N2eyO1fAe3ht5Ru7+RSKIFEDtmyCtSgCvLpkju
+	iA3S+QwRyAGOnELm6P9tK/C/QG0lKOdkG+XcR9srkPz3w8v0wVKOE80rSEtHLmvY9BZKe0Key9U
+	q3vIRxG9dIzXMppPcQq5Rlc+CtIl81N+ayxTZRwCbXbqgezCyIblx5B12JDAPn3kaiLosdqPR7o
+	VVxHSVflz5wgC8He6QpeDNSEia5kBfZX3NbQ==
+X-Gm-Gg: AeBDiesXES7MBqzZmfSJlq+uD4bTaBsVbN9nlryhtpJp+7zXsP2QWDpcf5YCucgI4oK
+	vsldCZ7oXMJdRpBBNcz4LP6z7XWOgL/LgFJ46hnhubCPRXc8omv5h2E8F6AdJKTKiC6HXyR3+Rd
+	mtqmQ1BxKiYDRkX/k1xAHt6ZEKNbrV0+f2PNw6JBIxMtLRM2Hszv3NcxKLhG6F7ZCEgHhCGM2LY
+	9PbejhhX7vvxeyGcgqgmnKa9YJmuJjm8BeyGvUkGKPhXFeA/A==
+X-Received: by 2002:a05:622a:4cc6:b0:50e:89e9:271c with SMTP id d75a77b69052e-5100e10eb2fmr114762551cf.17.1777494029283;
+        Wed, 29 Apr 2026 13:20:29 -0700 (PDT)
+X-Received: by 2002:a05:622a:4cc6:b0:50e:89e9:271c with SMTP id
+ d75a77b69052e-5100e10eb2fmr114762001cf.17.1777494028820; Wed, 29 Apr 2026
+ 13:20:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS1PEPF0001709C:EE_|MN0PR12MB6365:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7f0548b8-fa82-4370-af6f-08dea62c1ab9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|1800799024|376014|82310400026|22082099003|56012099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	mIAyVS82kFzLhyG4HCIRBRAUiBgFQS6B7rFgdqj5BinVAxqU4cgM5Hm/N8rzPqHBcpc2OaZRTjQeA1NfGXi299F+yS1ViZ3DiDEJZxstr1rjonZWqbx0xehPw5joxI8Kk21m9NO/4RGEByCcibC537VKAuGCDzenFhep6dZ7rrR3N87B37FaEWHB2lsQLcjTZ9ZpEfuwygLF/HMgHcKhd2fwxtBGjfZm7eb7WYRaSbxDKvKWIZScjy9CSYkblyTXPJzrrlkbcAI0b353NNP9z0svTlDzWbJlQyFt5+9qibwMrH4JQznUQXtkqzmLBc+jjQacEB7qt7eC8v18/sKJtyYKhj4n6SDfst2y2XqG20fhBEy06PPEBMDy3a78MN8Ng7A4S2XWNPCZuYPv6kyIq6oZP3+mIHWYDXAIQgcuTTkcPMwt3Qcea3TUaIr/HbEWLJzPTQ1bqNTZcYczu6uO+s1FT2eRZnmbBEX9g+G4gpAxeY7Mma/ANMpcjEYr4hzCkuypx0UVGx+wc9HMbQVw4AwEhq67KE7TYBXf6NFZx88iDlvvWcnOyMLz/ef+qNrm+RfNvLlPvMyJIXRS97bFX0al4iIGDqR9NnjWlsp8Dgt22tKjH66zgVeCZlpO471BGZhQZM0Bro7BEY4Th0nZ9L8q96TEIVAeXCdFt96XDGpqBikIWGpHI2uLRYBFscrQ7JfI/caPI+d99CT9Uo2O1cI7ZEFUnrXCCxUz7I+K5yvBHwY0v+8wPW8danySF00K97LyOaKIefjyGrxr3Xd5KQ==
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(1800799024)(376014)(82310400026)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	CFSlBlWXtGWhBjSpsbmogEaLB6Y6JJ8e9EGJ3UvFAZPonzEXdxT/zktyShmYMHRURY1qe57QOUvjIBwuqH8wpgxWDVJ89N/tm3M/Njg3cuEPuYu4yoDKs4GxuZ0ETswE6E8rE9gkd/Vsp1ePL95mxSeq+mA/4d9rL5gGg1BSgT2eiPgjsc/bHpNiB0/aZCcG2nHo8Ixpu9bewomuJH9Y0JKXlMrjchAn1s5nyoh6RZkNAy2JG7HYqaXvK4cit1kYu+pbHR3Mk42eOGG2wN/M8baoAtOy9kvntcVHnUppDtYuVSMHCHWXUO5wvFXV6JCCvDI4Drl+N7LiuZtABsaQRiMRQz1RH8evWuuiBstrBylS30JtRTMm/IHAeeBFoxJLQPA5I9/xuzyQw/xOfylCOdyIIOxLDcWGPSpPfn/GEfoajba8maxUwBAaqeK0SWLR
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Apr 2026 20:15:48.8892
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7f0548b8-fa82-4370-af6f-08dea62c1ab9
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DS1PEPF0001709C.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6365
+References: <20260428-block-as-nvmem-v1-0-6ad23e75190a@oss.qualcomm.com> <b4de6c89-dd89-4e02-8d79-911e4f9f0813@lunn.ch>
+In-Reply-To: <b4de6c89-dd89-4e02-8d79-911e4f9f0813@lunn.ch>
+From: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Date: Wed, 29 Apr 2026 22:20:17 +0200
+X-Gm-Features: AVHnY4IQns7j5YMIXICXGX8mkvbJAvEU7QYVILcU5HpEGI8Bxfo-jvWggVlQrrA
+Message-ID: <CAFEp6-1GdaJd6Ua15TsyQC07QDbArXO2JZa9nKVFoCG=4xBpWQ@mail.gmail.com>
+Subject: Re: [PATCH 0/9] Support for block device NVMEM providers
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Ulf Hansson <ulfh@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Jeff Johnson <jjohnson@kernel.org>,
+        Bartosz Golaszewski <brgl@kernel.org>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+        Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
+        Rocky Liao <quic_rjliao@quicinc.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-block@vger.kernel.org, linux-wireless@vger.kernel.org,
+        ath10k@lists.infradead.org, linux-bluetooth@vger.kernel.org,
+        netdev@vger.kernel.org, daniel@makrotopia.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-ORIG-GUID: r3nA7q6cDA_E9uUn1uyU5LF9rD4U2FeR
+X-Authority-Analysis: v=2.4 cv=RI6D2Yi+ c=1 sm=1 tr=0 ts=69f2680d cx=c_pps
+ a=WeENfcodrlLV9YRTxbY/uA==:117 a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10
+ a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
+ a=yx91gb_oNiZeI1HMLzn7:22 a=P-IC7800AAAA:8 a=ICsrgdoeZ6IjgJzXnBsA:9
+ a=QEXdDO2ut3YA:10 a=kacYvNCVWA4VmyqE58fU:22 a=d3PnA9EDa4IxuAV0gXij:22
+X-Proofpoint-GUID: r3nA7q6cDA_E9uUn1uyU5LF9rD4U2FeR
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI5MDIwMiBTYWx0ZWRfX/c5IX73Zu0VB
+ rqTz4NiHhxm+w6xF54sP1uPKwdCqQzh08uZEmY8RuZrKJtgKvWmW5/Qi/rvVad+7zOHqxrYiHh1
+ Gn/6kSvPkGkctHhU/+dpBtliQFoQuLSQE98hjE9H1mgEXhoSUTI1opX4hWxrAKp0Jhf3xxygO5y
+ wSN1jZkoFsQD7a/qF6UZuB0joi50TGHZeWQCnMmp+0UIh5/57vBLmtl7Xegu2IuDIznAR5dAgUT
+ +x/XnAoW2eKtVSLQYc23kGg9QDIpcFVo7GFIwmUO0aCnJUK7VCT+YXVX0rtH2NuwMddtJHQr4XT
+ t5+UrXUTTCxvIUT3rm/5qyFFV6ztipkF6kwZ38D+QpC4KxJbOpMHWOUJ9Wu7a2ComI11TbfrQnj
+ p6N2gJM+FJxIIxd68V4HZZfB2xGNllrmvB+tSOs9XHcsrO5MwNktVQ1hysyQzOsq0iw5f541VFn
+ wTDKSf7JWTNK9gyWUcw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-29_02,2026-04-28_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 priorityscore=1501 malwarescore=0 suspectscore=0
+ lowpriorityscore=0 adultscore=0 clxscore=1015 impostorscore=0 bulkscore=0
+ spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
+ definitions=main-2604290202
 
-From: Nimrod Oren <noren@nvidia.com>
+Hi Andrew,
 
-Introduce mlx5 DMA pool and pool-page data structures, and add the
-creation and teardown paths.
+On Wed, Apr 29, 2026 at 3:06=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> > Note that this is currently limited to eMMC-backed block devices, as
+> > only the eMMC core associates a firmware node with the block device
+> > (add_disk_fwnode). This can be easily extended in the future to
+> > support additional block drivers.
+>
+> Would this be
+>
+> https://elixir.bootlin.com/linux/v7.0.1/source/drivers/mmc/core/block.c#L=
+2641
+>
+> Looking at that function, mmc_blk_alloc_req() i don't see it doing
+> anything different between an eMMC and MMC.
 
-Each NUMA node owns a set of mlx5_dma_pool instances, each one with a
-different block size. The sizes are defined as all powers of two
-starting from MLX5_ADAPTER_PAGE_SHIFT and up to PAGE_SHIFT. Since
-mlx5_frag_bufs are used to back objects whose sizes are encoded relative
-to MLX5_ADAPTER_PAGE_SHIFT, a smaller block_shift value cannot be used.
-Requests larger than PAGE_SIZE continue to be handled as page-sized
-fragments, as in the existing frag-buf allocation model.
+Yes, that=E2=80=99s correct, in the previous sentence I should have referre=
+d
+to MMC-backed storage rather than specifically eMMC, since the MMC
+scope also includes removable MMC/SD cards. That said, eMMC is more
+likely to be used as an NVMEM area.
 
-Signed-off-by: Nimrod Oren <noren@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
----
- .../net/ethernet/mellanox/mlx5/core/alloc.c   | 116 +++++++++++++++++-
- include/linux/mlx5/driver.h                   |   7 +-
- 2 files changed, 119 insertions(+), 4 deletions(-)
+>
+> An eMMC you don't expect to go away, since it is soldered
+> down. However an MMC can be ejected. Is the code prepared for that?
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/alloc.c b/drivers/net/ethernet/mellanox/mlx5/core/alloc.c
-index cebb3559d2c9..fcc859c5f810 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/alloc.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/alloc.c
-@@ -37,10 +37,15 @@
- #include <linux/bitmap.h>
- #include <linux/dma-mapping.h>
- #include <linux/vmalloc.h>
-+#include <linux/nodemask.h>
- #include <linux/mlx5/driver.h>
- 
- #include "mlx5_core.h"
- 
-+#define MLX5_FRAG_BUF_POOL_MIN_BLOCK_SHIFT	MLX5_ADAPTER_PAGE_SHIFT
-+#define MLX5_FRAG_BUF_POOLS_NUM \
-+	(PAGE_SHIFT - MLX5_FRAG_BUF_POOL_MIN_BLOCK_SHIFT + 1)
-+
- struct mlx5_db_pgdir {
- 	struct list_head	list;
- 	unsigned long	       *bitmap;
-@@ -48,6 +53,27 @@ struct mlx5_db_pgdir {
- 	dma_addr_t		db_dma;
- };
- 
-+struct mlx5_dma_pool {
-+	/* Protects page_list and per-page allocation bitmaps. */
-+	struct mutex lock;
-+	struct list_head page_list;
-+	struct mlx5_core_dev *dev;
-+	int node;
-+	u8 block_shift;
-+};
-+
-+struct mlx5_dma_pool_page {
-+	struct mlx5_dma_pool *pool;
-+	struct list_head pool_link;
-+	unsigned long *bitmap;
-+	void *buf;
-+	dma_addr_t dma;
-+};
-+
-+struct mlx5_frag_buf_node_pools {
-+	struct mlx5_dma_pool *pools[MLX5_FRAG_BUF_POOLS_NUM];
-+};
-+
- /* Handling for queue buffers -- we allocate a bunch of memory and
-  * register it in a memory region at HCA virtual address 0.
-  */
-@@ -71,14 +97,100 @@ static void *mlx5_dma_zalloc_coherent_node(struct mlx5_core_dev *dev,
- 	return cpu_handle;
- }
- 
--/* Implemented later in the series */
-+static void mlx5_dma_pool_destroy(struct mlx5_dma_pool *pool)
-+{
-+	mutex_destroy(&pool->lock);
-+	kfree(pool);
-+}
-+
-+static struct mlx5_dma_pool *mlx5_dma_pool_create(struct mlx5_core_dev *dev,
-+						  int node, u8 block_shift)
-+{
-+	struct mlx5_dma_pool *pool;
-+
-+	pool = kzalloc_obj(*pool);
-+	if (!pool)
-+		return NULL;
-+
-+	INIT_LIST_HEAD(&pool->page_list);
-+	mutex_init(&pool->lock);
-+	pool->dev = dev;
-+	pool->node = node;
-+	pool->block_shift = block_shift;
-+	return pool;
-+}
-+
-+static void
-+mlx5_frag_buf_node_pools_destroy(struct mlx5_frag_buf_node_pools *node_pools)
-+{
-+	for (int i = 0; i < MLX5_FRAG_BUF_POOLS_NUM; i++)
-+		if (node_pools->pools[i])
-+			mlx5_dma_pool_destroy(node_pools->pools[i]);
-+	kfree(node_pools);
-+}
-+
-+static struct mlx5_frag_buf_node_pools *
-+mlx5_frag_buf_node_pools_create(struct mlx5_core_dev *dev, int node)
-+{
-+	struct mlx5_frag_buf_node_pools *node_pools;
-+
-+	node_pools = kzalloc_obj(*node_pools);
-+	if (!node_pools)
-+		return NULL;
-+
-+	for (int i = 0; i < MLX5_FRAG_BUF_POOLS_NUM; i++) {
-+		u8 block_shift = MLX5_FRAG_BUF_POOL_MIN_BLOCK_SHIFT + i;
-+
-+		node_pools->pools[i] = mlx5_dma_pool_create(dev, node,
-+							    block_shift);
-+		if (!node_pools->pools[i]) {
-+			mlx5_frag_buf_node_pools_destroy(node_pools);
-+			return NULL;
-+		}
-+	}
-+
-+	return node_pools;
-+}
-+
- void mlx5_frag_buf_pools_cleanup(struct mlx5_core_dev *dev)
- {
-+	struct mlx5_priv *priv = &dev->priv;
-+	int node;
-+
-+	for_each_node_state(node, N_POSSIBLE) {
-+		struct mlx5_frag_buf_node_pools *node_pools;
-+
-+		node_pools = priv->frag_buf_node_pools[node];
-+		if (!node_pools)
-+			continue;
-+		mlx5_frag_buf_node_pools_destroy(node_pools);
-+	}
-+
-+	kfree(priv->frag_buf_node_pools);
-+	priv->frag_buf_node_pools = NULL;
- }
- 
--/* Implemented later in the series */
- int mlx5_frag_buf_pools_init(struct mlx5_core_dev *dev)
- {
-+	struct mlx5_priv *priv = &dev->priv;
-+	int node;
-+
-+	priv->frag_buf_node_pools = kzalloc_objs(*priv->frag_buf_node_pools,
-+						 nr_node_ids);
-+	if (!priv->frag_buf_node_pools)
-+		return -ENOMEM;
-+
-+	for_each_node_state(node, N_POSSIBLE) {
-+		struct mlx5_frag_buf_node_pools *node_pools;
-+
-+		node_pools = mlx5_frag_buf_node_pools_create(dev, node);
-+		if (!node_pools) {
-+			mlx5_frag_buf_pools_cleanup(dev);
-+			return -ENOMEM;
-+		}
-+		priv->frag_buf_node_pools[node] = node_pools;
-+	}
-+
- 	return 0;
- }
- 
-diff --git a/include/linux/mlx5/driver.h b/include/linux/mlx5/driver.h
-index 04b96c5abb57..71f7615ab553 100644
---- a/include/linux/mlx5/driver.h
-+++ b/include/linux/mlx5/driver.h
-@@ -558,6 +558,7 @@ enum mlx5_func_type {
- 	MLX5_FUNC_TYPE_NUM,
- };
- 
-+struct mlx5_frag_buf_node_pools;
- struct mlx5_ft_pool;
- struct mlx5_priv {
- 	/* IRQ table valid only for real pci devices PF or VF */
-@@ -581,14 +582,16 @@ struct mlx5_priv {
- 
- 	struct mlx5_debugfs_entries dbg;
- 
--	/* start: alloc staff */
-+	/* start: alloc stuff */
- 	/* protect buffer allocation according to numa node */
- 	struct mutex            alloc_mutex;
- 	int                     numa_node;
- 
- 	struct mutex            pgdir_mutex;
- 	struct list_head        pgdir_list;
--	/* end: alloc staff */
-+
-+	struct mlx5_frag_buf_node_pools **frag_buf_node_pools;
-+	/* end: alloc stuff */
- 
- 	struct mlx5_adev       **adev;
- 	int			adev_idx;
--- 
-2.44.0
+I was about to say this wouldn=E2=80=99t be an issue, since the NVMEM devic=
+e
+would be unregistered along with the MMC card removal. However,
+looking at nvmem_unregister(), it simply performs a kref_put(). This
+means that if a consumer still holds a reference, e.g. through an
+nvmem_cell, it might still be able to access the NVMEM reg_read
+callback after the NVMEM device has been unregistered and the
+NVMEM provider data (bnv) has been freed...
 
+I guess I need to try and dig into this but at first glance it seems to be =
+a
+general NVMEM issue, since even though most NVMEM providers are
+not hard-removable, there is nothing that fundamentally prevents them
+from being logically removed/unbound at runtime.
+
+Regards,
+Loic
