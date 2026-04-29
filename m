@@ -1,202 +1,146 @@
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011069.outbound.protection.outlook.com [52.101.57.69])
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013027.outbound.protection.outlook.com [40.107.201.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787F2339866;
-	Wed, 29 Apr 2026 06:24:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C061437F72F;
+	Wed, 29 Apr 2026 06:24:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.27
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777443876; cv=fail; b=aY0hRC4/6wwrz50cRen4tvCOmAKCZxVhRZkIB9OKnlPbnHcDUs6sgpOXyMG/dXmaj5gV52ka87KrVOC5UHF5BgXCTsvhdXL6R6apGSKU7YbPOJahhlwvC8n18+VnNOnCFSpIodLhcIYb81xl0z6GPP5Qauuqmo+JX4xZjXil9Uo=
+	t=1777443892; cv=fail; b=E5Fm4bOU4WF/0XzxPX9GuNB8XNiKSDypvtpw5C5Tuo611oFTRolClKvtUmk87OwU8BDLOda52XAJ6Jo+sLn8HURJnfLxCSkQqcpFobKaAjb8Tjs7epegl7qceErA9682v9slvXqLE9T44BXunaVp6L9b9s6DS826GsCLy0CMPOg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777443876; c=relaxed/simple;
-	bh=/aYJFUksNRItWTzD9gOWvoysyDB7h35iANo/6iACx7o=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=pg9kZJ7q0aFQ8buBb4sqpHzNqgVmMRBD9OcXuip17P+Uzx2QWBpYRKtKG2WfO1IQnnP0ZcNGA8FosulQ5Cc47qydyhCB2KygwwA09sL3La6vorso6fxPGdysbWgrzUZIuoVoCfd68AVFpgXhVeQ+pS7j7TyukRud9YFqx7Vlm5s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com; spf=pass smtp.mailfrom=altera.com; dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b=MfQEqobg; arc=fail smtp.client-ip=52.101.57.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altera.com
+	s=arc-20240116; t=1777443892; c=relaxed/simple;
+	bh=l96A8Nks6Ig8S6KMF4rfgK+ht/1z2kCNTTFC9huu3GM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=in/3a6QZA8VOSSyYiCSDmdEo3BsAXZ0DRdQa5kC2CnRGOlw6N6mwKiQVmMDpAKb3WoWvXt7EsWCsmJsT049oLmdTNRiLg0Nd2z1Pnh0wvYyeVZ/0VTVD/AESUtKPwQPBWANZI+Q8eNY6teiyoPCUlzAbIBBpIE2zxjuzNE57IWk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Uj360UCZ; arc=fail smtp.client-ip=40.107.201.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b="MfQEqobg"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Uj360UCZ"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aLoaKNP58np7TRXNGR3z07AOFWFxbkKgNkDZ5JEmWEGNkRWYrsE1h47QWBZvnpY4jxsL/3JeOmgsxMWPV5IsvhT+PwWHhuqYzm3nYZv9FgfBkmglbNC7GqDJQ56fyXBbI36aEV9RkLcyVoL/8N0LbOfCZ2l3z83ueq1a32RI3XznQIKoJXALYQ9geBhF4jwcCmVY6n7/TANJ87yNEze/pZR12yT1jLTVxoozvQXEjf/j0pkZModvnqhK7ZDsXtLpSfnO6lD8wKa8+A17TNweoxEU97weD9suuG4y2JDnApsU6u4Opzc0YDwf8M6HRUja9diBeobjKNuvoM6lKQwg7Q==
+ b=KDmEEclHjEqOd7gzU7WtvVJcVWrtI0qrSJZdROZZuLVF3E0GCFHq5onN1oupmGzsPXVD1yO5dhPbZ68isZrz3AhBkNBAIh8Lg3oda3hzLmedily67AcBMX0FxKBlq/TB9Ghm5ihf1E2vy3GWejR0X59E6r/GxyoFDBULaDj4zNBD5iOLbyLm7mSpyVbEmNybskQp8mkDrIW8sRpwfdJAH1rlfXRNfbLsXspdiynthSkCIcZT8dQsCFuIpcvSD8gBkX16wqQVNGKz5eFeyR8Vv4o8yPBVBat6fAu9/Xi3EJv0JsDHtm5gvn/Rzg7CrFg2ouUdNckd8W5bNHSR7dUy6A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Y0W4cGYSU23W2xf+5GWvqm8yWJeVTXoXcGbbov3CU1I=;
- b=f+sA69PJUfIPc5IwyTQgFBg+9yzkJmFMDiWFwGD2j4HQFlvOi6oZ1WqI0qKrD/eqDqMNTsGOBFIjVeZICkODd0Qoc6G1KTaUPbzcb08lvpFLvZhGYeyVDFhH3xLMrjYvkoWNJpFDmdSfzqTxsA15oU6miQr61lxmSicMeTBmgsUfzCrGi748ex/P02FlpU8lCyEWnrSvvfRYkl8LrxYBdBZtdUTUVk7He4jrM53CEPF8WyZOhH/RhWAnkbtOJX6wlGwbWz3Y4tMabeWAfQcNtvJIaWZ6IpkABUrt+eqg0nSQ1FpFNxUn59J2VhZTb8sek7Yd2AW2AEHANmWwXRRW9Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=altera.com; dmarc=pass action=none header.from=altera.com;
- dkim=pass header.d=altera.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=altera.com;
+ bh=kha/dDdMCnnc/aSOcpu627ccdMM19jR8fYNL7mhYOmo=;
+ b=sRRQfdv3WkVjdhG/tHITGu7IX/2NaPRDpUpxqUaLXh0HgLgnoYWb5C9a8t2VCKd8D+HWIckAsdeXKNqDdWBWwcwPNT014sjRp07azXMAJUQBKdmGvTlWHCWWBG6JSo9LI3Iox/TBOyhGcwVvrkKiEHl0LeXncKon3el2HPWuJbO4c4STIFkVKVI7btDdXr/V+Wv4tS1x8bF5pIRSs01OBjMJWzBOdJbxF91PjYItfnzlZhIZqy+gVWcRjOwiK1l4Y1hiKKPMoGgT2Z6sCjhx925fzSE7YBtbr4DcGm/OwnHGEgu5+HGO80v3o0DmZI5Iu5Eb+q6KOCgAVTdBxviqbA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Y0W4cGYSU23W2xf+5GWvqm8yWJeVTXoXcGbbov3CU1I=;
- b=MfQEqobg0wxOqdkhtF/mtKEA6cPuAIVppHBiWAeAE8UMKcF11maWTATA2nafGmLWungNHix9yujmlWVT20qk0NNXvS5QGXQzNXIOdXprpfM77RCzByGYXlK87XBBySxqSnKdKwmZSQ53ZDyyVBM8LIPM5TwdQjNtc8Pc3kqccehQvY1Q2MXgHmF3hm4BBezXvjndlvR4QA4Ap794rMIXgWkAlk5vYuH80lL9XD4/uWneDqOws36iWLfk4O0ft8Sfcjyto+HRx++GhXfbwnz8uWKX6jHhdMo2UXHmkpSpYdtY49qvk5be9MrLGfF2mrd99yHtbpvNbPpGIeHQzbed4w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=altera.com;
-Received: from SJ0PR03MB6964.namprd03.prod.outlook.com (2603:10b6:a03:432::18)
- by CO1PR03MB5796.namprd03.prod.outlook.com (2603:10b6:303:9a::11) with
+ bh=kha/dDdMCnnc/aSOcpu627ccdMM19jR8fYNL7mhYOmo=;
+ b=Uj360UCZqZt0SyEJfXg5gk4+Wj4Ik2seomw0ZBqVdJEG1wMkfGnNqX9GwwFo94Xl0einDGunOb/V71fBh7DNQ/TxUDYMZw/YgD1GFe5Tb6JhsWyy39PAxB8pqI6wEM7UEVOvCWeA9Vnn7O5rJQE5nHTsUFCnhrZr16WEcc+fNBDprXoc4UVcUbhZCZuuKttJPTVCUHEDbptGiWoMSdlul/lUVKGjGDfxR6zzkI1GTdDSIMLOUFTt4HcZD/2ELiz7uEfbmrDQyyftQV0SgAmC0Dep+TeVel7DXkU6ftFBGMTkLadCFGogns39BSUvObClrdcIr7pt+SfT4wMTddCorQ==
+Received: from PH7PR17CA0003.namprd17.prod.outlook.com (2603:10b6:510:324::23)
+ by LV2PR12MB5895.namprd12.prod.outlook.com (2603:10b6:408:173::14) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.26; Wed, 29 Apr
- 2026 06:24:31 +0000
-Received: from SJ0PR03MB6964.namprd03.prod.outlook.com
- ([fe80::b965:bfa8:58fb:e775]) by SJ0PR03MB6964.namprd03.prod.outlook.com
- ([fe80::b965:bfa8:58fb:e775%6]) with mapi id 15.20.9846.025; Wed, 29 Apr 2026
- 06:24:29 +0000
-From: muhammad.nazim.amirul.nazle.asmade@altera.com
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] net: stmmac: Use interrupt mode INTM=1 for per channel irq
-Date: Tue, 28 Apr 2026 23:24:28 -0700
-Message-ID: <20260429062428.18438-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
-X-Mailer: git-send-email 2.43.7
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR13CA0140.namprd13.prod.outlook.com
- (2603:10b6:a03:2c6::25) To SJ0PR03MB6964.namprd03.prod.outlook.com
- (2603:10b6:a03:432::18)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.18; Wed, 29 Apr
+ 2026 06:24:46 +0000
+Received: from CY4PEPF0000EE31.namprd05.prod.outlook.com
+ (2603:10b6:510:324:cafe::d2) by PH7PR17CA0003.outlook.office365.com
+ (2603:10b6:510:324::23) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9846.30 via Frontend Transport; Wed,
+ 29 Apr 2026 06:24:46 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ CY4PEPF0000EE31.mail.protection.outlook.com (10.167.242.37) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9846.18 via Frontend Transport; Wed, 29 Apr 2026 06:24:46 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 28 Apr
+ 2026 23:24:25 -0700
+Received: from dev-r-vrt-155.mtr.labs.mlnx (10.126.231.37) by
+ rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Tue, 28 Apr 2026 23:24:21 -0700
+From: Danielle Ratson <danieller@nvidia.com>
+To: <netdev@vger.kernel.org>
+CC: <razor@blackwall.org>, <idosch@nvidia.com>, <davem@davemloft.net>,
+	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<horms@kernel.org>, <shuah@kernel.org>, <bridge@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>, "Danielle
+ Ratson" <danieller@nvidia.com>
+Subject: [PATCH net-next 0/2] bridge: Do not suppress ARP probes and DAD NS unconditionally
+Date: Wed, 29 Apr 2026 09:24:03 +0300
+Message-ID: <20260429062405.1386417-1-danieller@nvidia.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR03MB6964:EE_|CO1PR03MB5796:EE_
-X-MS-Office365-Filtering-Correlation-Id: ff533045-96e6-4cbc-e9ee-08dea5b7f851
-X-MS-Exchange-AtpMessageProperties: SA
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE31:EE_|LV2PR12MB5895:EE_
+X-MS-Office365-Filtering-Correlation-Id: 989206af-beea-43bc-fede-08dea5b80222
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|366016|18002099003|56012099003|55112099003;
+	BCL:0;ARA:13230040|36860700016|82310400026|376014|7416014|1800799024|56012099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	qfmyJpTb3FtSdM/+vcN13faGC8OSjFLC7pgYSnGWEmgp88dYpdyUOfX/g2v8kwtxxX19aNw0k1bi21PTicbuvAB4n27Z69XlDajl8uxHIqyEhmhwutNeNQTJSOoAksn/8UthsaLfyt1bQQksMSH5wvYZ51Fxf3mceDIxiOTgt3/0a+/H1XjuObCLtWob3N+sRR1Fvt2pR+baDhcQbBuTB5SW/m3B3h6A9uIXMVi55Ul6Dxc4LPEjIcw+fes1s9CiEMn3rTtFtT1ZaSeUOPK+NTg+TcYsW/s1kTnSZgiykOSKRa0TxaEq73EIPqt6zOEH0DrzmRex6pEvwOwnvN0Lu8euD3KZ/UTFKyz+KpxBS7G8QyhSj9j2CXSCzlRj+BYZBR6SUEkUnRa0XQXgkCWOSGGJonGsGrLEMfAbal6JvYni8RFztRTlqT/4qYUhPjVfPrUEgcNN243kXtI7NGGqvstzHoEsS88JoZYY3CPPsp2i0Uv+A4uExKXks9BmpaoXFGKDcGAvZVo7MRm8kaANqTrXyZjczCKnf0Pn+uffuvIEIDBg7NvMFDzzOZGqkdi3dZHMxxCuuo7OJ3xh0pyWdPgqv91WfM4aQo4qyM31s5tvZh/EyJYGsvAaivtuImYknniCtA7HfeOepL5lBwFra7wlRZU/N0RxSTsgpx2CoW+ORrZz5vIz4Kdf4xANluIod4ajcP6+GJhodQsJNSr/36JwTKsWtin4NRxbvSCYaV4=
+	U+nlyF58+iuh/TmAPdIg4Q6vNbSFdsqYAbGkOPF8+ANV+tLp0UgYmxAKJPggwyELWer3TVWj8j7VJxkjtjz9yUAWH57mDDpEcgTHYGM2fv2eU9t3p8Rf09Zb8NK0eas8mTAHIMdsG45UY0+U0pXt+qYGntHXhVGIR2X3ERASAXuiHKHuut4+ADGI2jtBIf8UrMnezr4OMALg0XWxC9BrROpm3Naqd17LMwSQKURToAiukptlXQWBqVWaFXpu9XCj7VCxLLSeiM9k8bw4BEsENSeAp3ELFXQXQndfXsQf4PEJ3hBLbBBR1dprnV2zFEb3RL9sFjYyn/tqgkF8oHdGnlqotWBjL9ga8dSQH6stVba/uI0dhZTF06G9rW09FvWXa+ZwKSOJePWhmUYInfE9AwkVA70bvK3ziO69l7Dc9Emognin+elXDowKsrVG3WUtO09tNstYLeweQpJqHnXPLJs60ZjnMzsIwkQYTQMCBgbE2GBRsnTeBUstYwA7HqUsf6NE+/yh166VPtCguWHvW5B+0NB3CbYYJrY0pg0j/pvJKT3bm7dREidZ10sF9LqCGavGfltcEZtFfbYcRFJBHaYPqDOlmQOW/8tu6kaBab1T912p7ghmL3qqVKYWrAsmLUZLKDySVWAmO3MItuwPESZDMB+nLpB6E39kRzgreKuYch+XddbC/Sua9DrMQz+8FsKDa/wiphsd+yK1z2wlyeOlmHv2d3lyjuO73BwOmFQRn7VZLqlHcCO8UclxngDdo7kC96NtcuH/M/wqzqXaJg==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR03MB6964.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(18002099003)(56012099003)(55112099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(376014)(7416014)(1800799024)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?LgSKB1iWBlls+XFEs1q6mE0+nr95D4FEeUo1oobTE8IzOWD3UcivjoLfWj3N?=
- =?us-ascii?Q?O89tEyYVePHFbrPZowmVrb0XKepG6dQUPewGgZC3aIs+KYDC41xeau4CoBk7?=
- =?us-ascii?Q?uBt3c/bEPgvS0BtLVlrb8s1J2izEvtA7kvkw8E02ZbXjf3xx1HhqiimEKWIL?=
- =?us-ascii?Q?30tuDQ8zzdpkIYyPMGBdIQFKMN1d42riyYHwHTSVkC0HQ2nnY0Lo9xy5TuuV?=
- =?us-ascii?Q?zYoWpZBmeP7jK3kUj/xTBWoy0Hpn7xvcJHE5QSLcYSqH2ZtYHJYCx9NPXCnm?=
- =?us-ascii?Q?0HcnCXBahz/e/X8yjtGXM7vTvntiXQTGepaDHG28Cb4fy4X2NoobKoHEELaP?=
- =?us-ascii?Q?fYO5G3OOLGSLUoQRHsPhThGqOaamhlvf80My8g21wY6F4V+hF2yaDQlVd5Nr?=
- =?us-ascii?Q?5hNC7aroC76TEYPP1DC2sI0xhv63V1okQxKhOrKzz+udR8/0DO5hbF4MrTQc?=
- =?us-ascii?Q?BsFgyKRIleW68q0PLu0udYCGtIrp93q6HmYq1BfUok2YUoFyeWpd+2pwN+fm?=
- =?us-ascii?Q?a11xCZgwQdyPokRLPNE4Y6l6xrcZZgfWSATx67cwlWU8LuwIYNngVmQYiOhI?=
- =?us-ascii?Q?OFBML6JgsEj2AECZOefaRkrrrMheYpbJBPrM5z4EUErhzaYu/oo5tIzv9WO9?=
- =?us-ascii?Q?LIlyq/cOgyPBTHiEher/z/MOADa43MjjY/fqUBaOs7cZEkPa+KnhPeC5suq5?=
- =?us-ascii?Q?jN0ORxyIdlsWkjfzudBqvV3xXSLx4JLA7+x0j266IWsy7aABE7D6zIkld7Jy?=
- =?us-ascii?Q?JOrUemv3TOcZGpf6w8NYI30Nvg0K9PEhRRAFAPRSxZojtewV78GyW+8WjNJt?=
- =?us-ascii?Q?Ez9V0LlrijCHV0ipWveVZ7uCV772Ds0Jds41cF2qAQPT84sWhwKE9B+WrTuH?=
- =?us-ascii?Q?OYB7S1TwEtKker7HK3mzDY+832UbhWIxk8d5EpSdpR6oHeDvxyEZWWJEV9HD?=
- =?us-ascii?Q?3MJuZtlIaukyIEwyrorTeBm9xjXxq/xhhpsih5i6ngU1o7RiiKyZ0TbR3Dw9?=
- =?us-ascii?Q?ZsXvXYQ5XEaZbIRuGjyo81KpIv67/yDU2DM7UuFr97+tD9yJwhKtW1KSMbAR?=
- =?us-ascii?Q?Nh1zU5RzVR0E6APySqDfIN4I2LxkatU+l9uDWn0z26aXX42w3fFeN02m4vfY?=
- =?us-ascii?Q?5js2skT2yJIxHteeCLC51TpZHpFjiNA5ntArqDFF9MGqJ545mPwPN+m2Vqif?=
- =?us-ascii?Q?vriELagCfPUrxtI6uds+F9ItuwJpJ4PQ+BEfvOerdohKaZqPI2D4QBiWg8qF?=
- =?us-ascii?Q?cYZVcB7sW9CsptE9zaBxYRNGpAYHwT9YpEib4fRHEh6qMLFoXo15cDcjiABd?=
- =?us-ascii?Q?J6vQJMWmYjAbdGoXmtditnrs+mqYPJLBA14ZZK3AISXqKBhP/AQatRDfRokU?=
- =?us-ascii?Q?fGLr5CoVv8ph0Aet/EzVhcDTC7bbzzywtPNXJ0Ju4wyCxnap7be+ehKog61M?=
- =?us-ascii?Q?d7UbYIuwR8RPYBaDiqOzx2m1sNHvv2hbRQgtF7yOse1TOlwzTV6K/68NdshO?=
- =?us-ascii?Q?pQnxo38VoVvrlzd2VeyHqXGk7zjtPzDmtOcJZiVEIWia18dEDTAAh0nx3QcO?=
- =?us-ascii?Q?Tb6EEDvphyMSUJArfxU3m1GvVuNZ2+Fq4F4zmatIl27wMemFvYBb//MWc5CO?=
- =?us-ascii?Q?vQVNy8lMG1QkqjuGklydkAO2wLJX7gHQN5AIjz6i8M4Ric6Q2N4+Fv4iiTun?=
- =?us-ascii?Q?hX99lqz40PNDT90FVAMHkqZ+5ZJEh6gDNM997Lx0SyjoHgmsAg4XdANHeYNK?=
- =?us-ascii?Q?TgYX1wpPlE3OYS6fmccvaB1uELcOWPN+wkqjbN+8t5LAPbWLaGo0J1l/MmMf?=
-X-MS-Exchange-AntiSpam-MessageData-1: ixrCtiypJgzw9A==
-X-OriginatorOrg: altera.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ff533045-96e6-4cbc-e9ee-08dea5b7f851
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR03MB6964.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Apr 2026 06:24:29.8365
+	aqmIVR+4cckaYwmqK5VacuogVzj/kF0ge9tYvGjF7qda9WA2Mb8Cp30PcwHHpwo9w9og9UvS1ux/UKWpluKvJsY2PtrqiOCIx11p6sizbF/nthMhZGA/vhb1/raUh1LODu5cjlEP9DjAP0yOpP+vaH/8oqK4c/VTYqvVcDF8OY28BcQpklJFJqlF3ZUYkVC7tHxRYYGMdVTCEJ0hRzT5N2gu0M7TpcIPl2dbuT+m58+8X6lrNGd/DFux7GirtBPSgRJRn1p2nXjPQuOxjE4kxpLpqDKnqxDXnXPB+vzbZEaX49tdTainBCnP29dgB0FYG0/gR83Qi/oXGeqaPYp3mAdcMs3mBPQQOHW/rda8ak7tYKNu+Qt1bYzcnel/mPeijbhGnYjJGSdWFAQMm2G79D+qYFxkLIupXJawwfqn5flcxf88DHbeqn7eCR0d6+K6
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Apr 2026 06:24:46.0309
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: fbd72e03-d4a5-4110-adce-614d51f2077a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8vEK0DB3rv+5APjrdC4uXhpFbq9J6CJ1O+1HTd95hPhSGyoU7Hdgmi+aoRdYS2VBhBygw4F4S5iXLPGIE2VDiB+MMB1s8aHEb9kR1AM2ooxi0UA4VyYveVM101bVktIO8w/+/PvhyUEL4x5RHAvSjA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR03MB5796
+X-MS-Exchange-CrossTenant-Network-Message-Id: 989206af-beea-43bc-fede-08dea5b80222
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000EE31.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB5895
 
-From: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
+When using bridge neighbor suppression in EVPN deployments, Duplicate
+Address Detection (DAD) is currently broken for both IPv4 (ARP probes)
+and IPv6 (DAD Neighbor Solicitations). This prevents proper address
+conflict detection across the VXLAN fabric.
 
-commit 6ccf12ae111e ("net: stmmac: use interrupt mode INTM=1 for
-multi-MSI") introduced INTM=1 interrupt mode for platforms using MSI.
+The neighbor suppression feature allows the bridge to reply to ARP/NS
+messages on behalf of remote hosts when FDB and neighbor entries exist,
+suppressing unnecessary flooding over the VXLAN overlay. However, the
+current implementation unconditionally suppresses ARP probes and DAD NS,
+which breaks DAD.
 
-Apply a similar approach to enable per-channel interrupts using shared
-peripheral interrupt (SPI), so that only per-channel TX and RX
-interrupts (TI/RI) are handled by the TX/RX ISR without invoking the
-common interrupt ISR.
+For DAD to work correctly:
+- When the bridge doesn't know the answer:
+  flood the probe/DAD packet to allow remote VTEPs to respond.
+- When the bridge knows the answer:
+  reply to indicate the address is in use.
 
-The TX/RX NORMAL interrupt check is decoupled since the NIS bit is not
-asserted for TI/RI events when INTM=1.
+This series fixes the issue by adjusting the early suppression checks to
+exclude ARP probes and DAD NS from unconditional suppression, allowing
+them to reach the normal FDB lookup path. Gratuitous ARP and IPv6
+unsolicited-NA messages are still suppressed unconditionally as before.
 
-Signed-off-by: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
----
- drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h     | 3 +++
- drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c | 7 +++++++
- include/linux/stmmac.h                             | 6 ++++++
- 3 files changed, 16 insertions(+)
+Patchset overview:
+Patch #1: Fixes the unconditional suppression.
+Patch #2: Adds selftests.
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
-index 51943705a2b0..94cbf24b3118 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
-@@ -320,6 +320,9 @@
- /* DMA Registers */
- #define XGMAC_DMA_MODE			0x00003000
- #define XGMAC_SWR			BIT(0)
-+#define DMA_MODE_INTM_MASK		GENMASK(13, 12)
-+#define DMA_MODE_INTM_SHIFT		12
-+#define DMA_MODE_INTM_MODE1		0x1
- #define XGMAC_DMA_SYSBUS_MODE		0x00003004
- #define XGMAC_WR_OSR_LMT		GENMASK(29, 24)
- #define XGMAC_RD_OSR_LMT		GENMASK(21, 16)
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
-index 03437f1cf3df..3789b62cd2e3 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
-@@ -31,6 +31,13 @@ static void dwxgmac2_dma_init(void __iomem *ioaddr,
- 		value |= XGMAC_EAME;
- 
- 	writel(value, ioaddr + XGMAC_DMA_SYSBUS_MODE);
-+
-+	if (dma_cfg->multi_irq_en) {
-+		value = readl(ioaddr + XGMAC_DMA_MODE);
-+		value &= ~DMA_MODE_INTM_MASK;
-+		value |= (DMA_MODE_INTM_MODE1 << DMA_MODE_INTM_SHIFT);
-+		writel(value, ioaddr + XGMAC_DMA_MODE);
-+	}
- }
- 
- static void dwxgmac2_dma_init_chan(struct stmmac_priv *priv,
-diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
-index 4430b967abde..5deaa1a797a5 100644
---- a/include/linux/stmmac.h
-+++ b/include/linux/stmmac.h
-@@ -122,6 +122,7 @@ struct stmmac_dma_cfg {
- 	bool eame;
- 	/* multi_msi_en: stmmac core internal */
- 	bool multi_msi_en;
-+	bool multi_irq_en;
- 	/* atds: stmmac core internal */
- 	bool atds;
- };
-@@ -349,6 +350,11 @@ struct plat_stmmacenet_data {
- 	u8 vlan_fail_q;
- 	bool provide_bus_info;
- 	int int_snapshot_num;
-+	int ext_snapshot_num;
-+	bool int_snapshot_en;
-+	bool ext_snapshot_en;
-+	bool multi_msi_en;
-+	bool multi_irq_en;
- 	int msi_mac_vec;
- 	int msi_wol_vec;
- 	int msi_sfty_ce_vec;
+Danielle Ratson (2):
+  bridge: Do not suppress ARP probes and DAD NS unconditionally
+  selftests: net: Add tests for ARP probe and DAD NS handling
+
+ net/bridge/br_arp_nd_proxy.c                  |  16 ++-
+ .../net/test_bridge_neigh_suppress.sh         | 126 ++++++++++++++++++
+ 2 files changed, 137 insertions(+), 5 deletions(-)
+
 -- 
-2.43.7
+2.51.0
 
