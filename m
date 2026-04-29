@@ -1,144 +1,207 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 469591CEAC2
-	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 01:12:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777425148; cv=none; b=evC1xto2lqcSuLtAD+rmcNCYvpY+Yo+Sqr6umQRh3mHDbvvmteWU4GIW2L1+hRqIEZoac9rQrdIWUyL+Y0gbRnQh8oEpeXSBsVZ6l+nhgOHl3VEeDtn5LxlPx1bXBnufrIJW/tvdPKp0w5qH86t679+8aXQhJm3o4OVruJ9yLU4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777425148; c=relaxed/simple;
-	bh=x53b2NrR1Zgl/x9ZrvdzwVzZEyO8bTvt8OTMhuGfn1I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f84qtFWpU5WzvThABLfc9XKWvW7BumM8WNJjGO0yfsq3KSflq8sA+FmvQKlDBYGblvKuRzVyLQYYOVuu4u9eMjrWDQFHUJyG0Z1GCVp6XubZsv0aUni5GsTz76MABWACgD4nB2DLs4FwydDXUa0RT3BRsM6nrkwgSHdlDDHhNPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hnbqo71N; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D9C22301
+	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 01:22:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.174
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777425722; cv=pass; b=sOmD7X9pxQZcaqXCZtK1RvakbCPYor/k/nwPQ1JBwap9trvWHi6IOVXnG32+6/+Yh3bMBvRhS1TEptJFFHtv7+tbN7u0ke4urhz9nf+RlWuJ2kcK8c2M78jUZbFJTyaYX+bpmAj16uJ5GDRwHGtLV/VLo82iMp2T/bXFhLfJQwM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777425722; c=relaxed/simple;
+	bh=U8KzlrzlJEsgqTs9SFEVRR/SDO6JzbWDt0mzXXMsstM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qyGRp1S7pAKDUHnD6Ie6WafezWRsFcDxrDeGFgOkuX5aN5A09wems9+IDeTIwcC2r1U9cc0WjZJzimib6RG2oTq9zuBCLWuL+BcfZg1gEYBEAaJISm/68tn/rMi/8MK0MUw/PP648UAa2U/A/zv6ex7iMbDfSBKezke7woefd+M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=eJYcP4Xw; arc=pass smtp.client-ip=209.85.167.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sifive.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hnbqo71N"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88F5FC2BCB7;
-	Wed, 29 Apr 2026 01:12:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777425147;
-	bh=x53b2NrR1Zgl/x9ZrvdzwVzZEyO8bTvt8OTMhuGfn1I=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hnbqo71NeOuknNnhTCvsZHnzFxHvmBD3lum9F9RahurkufkgEgYNYmkOV8bZ7C7WC
-	 SxO8HuQ64+vjX5wZZ9CRmeIqAOOYD+7+5kHIR0tv6Emkl5B8YhUaV7hk9Vdd9riJsK
-	 mSU3j7k+J3lh/65Yp2BTdph2pr2HNOTz9k1hVrkNuDuY0JdaXs6B7VzStu6lT9YWAZ
-	 vZjFXNZU7FZb309w88SnM0O2fLwkDZ9qC4Oc8yRaPH5uSSB6r/EaTcIJR/QxlXDfXP
-	 vNel2sPBlmoSSw9JhzGu7KNGwVBq3ccK0/VyyPMhurxs7dE3QkF0DNiaFtzy2niJkl
-	 mxkFFEsr6hHgA==
-From: Jakub Kicinski <kuba@kernel.org>
-To: mika.westerberg@linux.intel.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org,
-	YehezkelShB@gmail.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com
-Subject: Re: [PATCH 2/2] net: thunderbolt: Fix lockdep issue during tunnel tear down
-Date: Tue, 28 Apr 2026 18:12:26 -0700
-Message-ID: <20260429011226.1505821-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260427081623.2338179-2-mika.westerberg@linux.intel.com>
-References: <20260427081623.2338179-2-mika.westerberg@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="eJYcP4Xw"
+Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-4648447e29bso3613622b6e.0
+        for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 18:22:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777425720; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Z7rK7PIzgFiWvsKjfMlQ2IiIvIfpTn4mVvurZT8YZwrQaQYKDKYKkDAtLO/sOG+qT5
+         UbRlXha+LLHc9SLbmk8zogngUPAzvrtkOq5+HyflrkNosNjoirLJs3IIgGZW1C6pJ+nk
+         igORjEnbszIU++VOqkjV7kr+7O0EG8mSZcxhgEqAKGnHEY6QIEHMmEAFcw+pwjT4rCfA
+         3tE8sPKOyQsEJeh1hZCx9G41y6sldOnmtHchchkIzdj+S3RKGeW9ToQJTh+cJaeZ34rE
+         VLNH8pYQaVu9vShAviF/fwDqDFeqwSVzGkw+CaxWFmVTKc1HvlqdskC8tL9HSoZPtb2b
+         HSUA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=6f4tckrLY3J7+4J32u1EKG+jNDMEtwYZPpMg9Iuh0zQ=;
+        fh=httzaqpObjgLPh44MqqrDpROWq2sUlnbmFm7co5PEHg=;
+        b=Wu0v94YmmOIk06Hj99xAmCq1JQipdCk4mdNw2Nz1K/NyvxJV1OTRKRggoazL4UVhtg
+         vrxbnVVXO1QXxNu8fSsft8ZOpISUB03Xg2cuF4gUchBO+MLdFlHD3HZEQe+WUvu6/KiI
+         AaSxcVIJkvpve/9txb558FL7n6U31OEHr96eAGvf9Q2V1Tl3174anZSDAF+oBtquWiIv
+         mysdvtzR4h6e8LyrWyimm6fyTJda3owu5AVHYQiMtYvfaXSBHS9wDzNwyrFCxmWm7HuF
+         ksCyIKnIEqorBKZV9ajAevp4ci2yhgqNNyRPzq/n/lxmxWQ5HRF1ZL63GOLTkR47jrBG
+         mdng==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sifive.com; s=google; t=1777425720; x=1778030520; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6f4tckrLY3J7+4J32u1EKG+jNDMEtwYZPpMg9Iuh0zQ=;
+        b=eJYcP4XwaB9ic/KGQqsxByuRg5ycByJlhQU7urJCIOTGZS08ijpMYPr63ZWLDgu3zD
+         IG1ICxAE8hbTRERN0dq+JwX2OgYTPQunQFKtp/qU+wHRAJXiy17swaUs7B2TKI3X0QIT
+         I45v9GUyVIu504QqcxKyW8h4wx8wTcaUszmOC4D1dbLy8LevpYuGnPycQ0FOeJHZ6Ska
+         Pc6JqH2TZ6kPBonbp8nsYRa/UoprWub1Cx4nKd1sux+6NCqgjMUVFGOAStQ42Z/zg69Y
+         D+E0EryHWPHXvynEfGmPkfDSAwb+71sUHwunN/VVjK28qhLNjlGdNpXHDWzFM5d7QfW1
+         zypA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777425720; x=1778030520;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=6f4tckrLY3J7+4J32u1EKG+jNDMEtwYZPpMg9Iuh0zQ=;
+        b=FJOyQchEw1AqafHi7NbYKEdoOS9G236mqrIHfXt14FSq7FBVjXtTSA4K/f3XXgY5J9
+         BD+5vS9/S5pzi/AhTtQuuZhvdsT/TWJFqbOdyiKRAdCk9l61M3Qvz9lBfQIn/G2/9zPD
+         NDEO1hd5M1KntbJCN46BTa5Ha39wA6DpB2yHdix002zxsnjOFxZuDGZe99Aahuwu4Kji
+         UVCF4g6OdT/W5Y6ge8ECW48K+WVZpAHxJpiu1M9W1GQn3QVZ6pMuOXQmCpNq9pskzB+1
+         CxQYqOTALAChz+JoVCbn41OjUL0YcRrJSvwC+JoRMPl8UXZkIj6CaFlQatl1JZ0VXksX
+         EpIw==
+X-Forwarded-Encrypted: i=1; AFNElJ/dL8foatl2SiYZfUlYcvGSfPtGKVlH67SvlCjhIJ2MA9R8ALvF1STA98mEOMuMfCvXpAx4CWI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz5ZbRI3TDlTcd2hJH4dKYKK7z/u8OZrd9ITUfUNP6NqQgU2y5i
+	SKHmECHaBg6/DM+AoSKpglon39+VswV0Gd+08UbfQXVf7oONlu1jQnvdGEpuECEkrG0MZYr6vxH
+	n89kM292uLSeoxTYOUFdqRZMaIc5mqyuMckazxP4YYg==
+X-Gm-Gg: AeBDiesEDwFLTz8ucE2eoPgPb1QMYL8yQrTL7rANjaFa+/4dkO34rK7tFu17bQfEo3I
+	U0c8K30/WIAxNA/NwfMat6cHzxXaIwFZU+cBgWbldNl4rkt2myW2wcc3tB54NeYXzxpZUTs2OsR
+	hXeGh9vB1S/gKuD2hLICk97gu+Eofk4fbfqANulSHTKewRilpr7RJG1Qnp5btcm5TRJg3Fv/DU4
+	26m83XfwiICj6CMl6MpN0mqJBlA6x8m+gADD/hWnFt/7mwrqFXBF5Btg4dAPOqMhdytdx/IzMtv
+	1oScaHGfvjeOQ//GwmE7
+X-Received: by 2002:a05:6808:1929:b0:450:bbed:7a75 with SMTP id
+ 5614622812f47-47c28f816bcmr3004473b6e.28.1777425720132; Tue, 28 Apr 2026
+ 18:22:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260427031158.2665916-1-vincent.chen@sifive.com> <f9fbc8c3-3b1d-456c-a389-4f95bf07822a@molgen.mpg.de>
+In-Reply-To: <f9fbc8c3-3b1d-456c-a389-4f95bf07822a@molgen.mpg.de>
+From: Vincent Chen <vincent.chen@sifive.com>
+Date: Wed, 29 Apr 2026 09:21:49 +0800
+X-Gm-Features: AVHnY4Ldv6uyCJi_ZE8aGxC2v2tla6lK0w3XQ3_fjdXzKK6Ue5badKUDFLkz3tE
+Message-ID: <CABvJ_xhLj+GKpsT2wDNXoS_oWJoydR0h0qxa3BSxSTCvC2-bVA@mail.gmail.com>
+Subject: Re: [Intel-wired-lan] [RFC PATCH] ice: allow creating VFs when !CONFIG_ICE_SWITCHDEV
+To: Paul Menzel <pmenzel@molgen.mpg.de>
+Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com, 
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, intel-wired-lan@lists.osuosl.org, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-    net: thunderbolt: Fix lockdep issue during tunnel tear down
+On Tue, Apr 28, 2026 at 5:45=E2=80=AFPM Paul Menzel <pmenzel@molgen.mpg.de>=
+ wrote:
+>
+> Dear Vincent,
+>
+>
+> Thank you for your patch.
+>
+> Am 27.04.26 um 05:11 schrieb Vincent Chen via Intel-wired-lan:
+> > Currently ice_eswitch_attach_vf() is called unconditionally in
+> > ice_start_vfs() and ice_reset_all_vfs(), which causes VF creation
+> > to fail when CONFIG_ICE_SWITCHDEV is not defined or switchdev mode
+> > is not enabled at runtime.
+>
+> I=E2=80=99d add a blank line between paragraphs.
 
-This commit attempts to fix a circular locking dependency warning in
-tbnet_tear_down() by dropping the connection lock earlier and returning if the
-connection isn't fully established.
+This is a good suggestion. I will modify it in my next version patch.
 
-> diff --git a/drivers/net/thunderbolt/main.c b/drivers/net/thunderbolt/main.c
-> index 631af237998d..d8fcf18fc55c 100644
-> --- a/drivers/net/thunderbolt/main.c
-> +++ b/drivers/net/thunderbolt/main.c
-[ ... ]
-> @@ -372,48 +372,47 @@ static void tbnet_free_buffers(struct tbnet_ring *ring)
->  
->  static void tbnet_tear_down(struct tbnet *net, bool send_logout)
->  {
-> +	int ret, retries = TBNET_LOGOUT_RETRIES;
-> +
->  	netif_carrier_off(net->dev);
->  	netif_stop_queue(net->dev);
->  
->  	stop_login(net);
->  
->  	mutex_lock(&net->connection_lock);
-> +	if (!net->login_sent || !net->login_received) {
-> +		mutex_unlock(&net->connection_lock);
-> +		return;
-> +	}
+>
+> > Fix this by adding switchdev mode checks at the call sites before
+> > calling ice_eswitch_attach_vf(), consistent with how
+> > ice_eswitch_attach_sf() is already handled in ice_devlink_port_new().
+> > Also remove the redundant check inside ice_eswitch_attach_vf() itself.
+>
+> *Also* is a good indicator to make it a separate patch. I=E2=80=99d favor=
+ this
+> in this case.
+>
+OK, I will move the code snippet used to remove the redundant check
+inside ice_eswitch_attach_vf() to a separate patch in my next version
+patch.
 
-If the connection is in a partially established state (e.g. login_sent is
-true, but login_received is false), this early return skips clearing the
-connection states.
-
-Could this stall the connection if a new TBIP_LOGIN arrives later?
-tbnet_handle_packet() would see net->login_sent as true and might fail to
-queue the login_work to reply.
-
-> +	net->login_sent = false;
-> +	net->login_received = false;
-> +	mutex_unlock(&net->connection_lock);
-
-By releasing net->connection_lock here, the rest of the teardown process runs
-without mutual exclusion. Since the network interface is still running, is it
-possible for tbnet_handle_packet() to receive a new TBIP_LOGIN request right
-after this lock is dropped?
-
-If tbnet_handle_packet() acquires the lock, updates net->remote_transmit_path
-and brings up a new connection concurrently:
-
-CPU1
-tbnet_tear_down()
-   mutex_unlock(&net->connection_lock);
-
-CPU2
-tbnet_handle_packet()
-   mutex_lock(&net->connection_lock);
-   net->remote_transmit_path = pkg->transmit_path;
-   mutex_unlock(&net->connection_lock);
-
-CPU1
-   tb_xdomain_release_in_hopid(net->xd, net->remote_transmit_path);
-
-Would CPU1 then erroneously release the newly established connection's hopid
-and free active buffers?
-
->  
-> -	if (net->login_sent && net->login_received) {
-> -		int ret, retries = TBNET_LOGOUT_RETRIES;
-[ ... ]
-> -		tb_xdomain_release_in_hopid(net->xd, net->remote_transmit_path);
-> -		net->remote_transmit_path = 0;
-> -	}
-> +	tb_xdomain_release_in_hopid(net->xd, net->remote_transmit_path);
-> +	net->remote_transmit_path = 0;
->  
-> -	net->login_retries = 0;
-
-With the unconditional clearing of net->login_retries removed, does the
-login_retries counter keep accumulating if tbnet_tear_down() returns early
-above?
-
-If it exceeds TBNET_LOGIN_RETRIES, could it permanently prevent new
-connections until the module is reloaded?
-
-> -	net->login_sent = false;
-> -	net->login_received = false;
->  
->  	netdev_dbg(net->dev, "network traffic stopped\n");
-> -
-> -	mutex_unlock(&net->connection_lock);
->  }
+> > This is similar to commit aacca7a83b97 ("ice: allow creating VFs for
+> > !CONFIG_NET_SWITCHDEV") which fixed the same issue for the previous
+> > ice_eswitch_configure() API.
+> >
+> > Signed-off-by: Vincent Chen <vincent.chen@sifive.com>
+> > ---
+> >   drivers/net/ethernet/intel/ice/ice_eswitch.c |  3 ---
+> >   drivers/net/ethernet/intel/ice/ice_sriov.c   | 14 ++++++++------
+> >   drivers/net/ethernet/intel/ice/ice_vf_lib.c  |  3 ++-
+> >   3 files changed, 10 insertions(+), 10 deletions(-)
+> >
+> > diff --git a/drivers/net/ethernet/intel/ice/ice_eswitch.c b/drivers/net=
+/ethernet/intel/ice/ice_eswitch.c
+> > index 2e4f0969035f..c709decb26d5 100644
+> > --- a/drivers/net/ethernet/intel/ice/ice_eswitch.c
+> > +++ b/drivers/net/ethernet/intel/ice/ice_eswitch.c
+> > @@ -512,9 +512,6 @@ int ice_eswitch_attach_vf(struct ice_pf *pf, struct=
+ ice_vf *vf)
+> >       struct ice_repr *repr;
+> >       int err;
+> >
+> > -     if (!ice_is_eswitch_mode_switchdev(pf))
+> > -             return 0;
+> > -
+> >       repr =3D ice_repr_create_vf(vf);
+> >       if (IS_ERR(repr))
+> >               return PTR_ERR(repr);
+> > diff --git a/drivers/net/ethernet/intel/ice/ice_sriov.c b/drivers/net/e=
+thernet/intel/ice/ice_sriov.c
+> > index 843e82fd3bf9..6a0b724e46f9 100644
+> > --- a/drivers/net/ethernet/intel/ice/ice_sriov.c
+> > +++ b/drivers/net/ethernet/intel/ice/ice_sriov.c
+> > @@ -484,12 +484,14 @@ static int ice_start_vfs(struct ice_pf *pf)
+> >                       goto teardown;
+> >               }
+> >
+> > -             retval =3D ice_eswitch_attach_vf(pf, vf);
+> > -             if (retval) {
+> > -                     dev_err(ice_pf_to_dev(pf), "Failed to attach VF %=
+d to eswitch, error %d",
+> > -                             vf->vf_id, retval);
+> > -                     ice_vf_vsi_release(vf);
+> > -                     goto teardown;
+> > +             if (ice_is_eswitch_mode_switchdev(pf)) {
+> > +                     retval =3D ice_eswitch_attach_vf(pf, vf);
+> > +                     if (retval) {
+> > +                             dev_err(ice_pf_to_dev(pf), "Failed to att=
+ach VF %d to eswitch, error %d",
+> > +                                     vf->vf_id, retval);
+> > +                             ice_vf_vsi_release(vf);
+> > +                             goto teardown;
+> > +                     }
+> >               }
+> >
+> >               set_bit(ICE_VF_STATE_INIT, vf->vf_states);
+> > diff --git a/drivers/net/ethernet/intel/ice/ice_vf_lib.c b/drivers/net/=
+ethernet/intel/ice/ice_vf_lib.c
+> > index de9e81ccee66..71595410174c 100644
+> > --- a/drivers/net/ethernet/intel/ice/ice_vf_lib.c
+> > +++ b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
+> > @@ -807,7 +807,8 @@ void ice_reset_all_vfs(struct ice_pf *pf)
+> >               ice_vf_rebuild_vsi(vf);
+> >               ice_vf_post_vsi_rebuild(vf);
+> >
+> > -             ice_eswitch_attach_vf(pf, vf);
+> > +             if (ice_is_eswitch_mode_switchdev(pf))
+> > +                     ice_eswitch_attach_vf(pf, vf);
+> >
+> >               mutex_unlock(&vf->cfg_lock);
+> >       }
+>
+> The diff looks good.
+>
+>
+> Kind regards,
+>
+> Paul
