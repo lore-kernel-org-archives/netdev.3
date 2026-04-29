@@ -1,37 +1,37 @@
 Received: from www2881.sakura.ne.jp (www2881.sakura.ne.jp [49.212.198.91])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A1DB3BED0C
-	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 09:16:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C1B3C0607
+	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 09:16:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.198.91
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777454208; cv=none; b=PyT6t2CHcpxkx63lC07VuzjTWg093jT99ho3P6tm/eRF3fkd6NNNOTVikjWBKv8CbSQEiaL7/5yZBGLXnEQVlTbIS0rlNv5HFwIs509IPNpFrmSUR4PcmcVKvRheyKuZD1Ntb3854gMDf0gjskz6NI0Mz6eSsGZB/kkbsKWzzao=
+	t=1777454211; cv=none; b=TqE0OVL+24vZ/C/+pDixwLf62h90UIMcmu8YnFGENBBMi3+UeBwEu8PYFfNGogn8hC1ldPbI7gUKlpGpaXffCjsLgiGvPB+p3ce6XkDm1ykNf7V6LIRrbbAQZvsaOzQUd5R7+GVi1Lgri0dYurYOpuJPArYOpw3PBeIHAMxBPbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777454208; c=relaxed/simple;
-	bh=BtyKV9NZOconOnomTH/UMSFkP7SG9aItrYg4CEfxGwE=;
+	s=arc-20240116; t=1777454211; c=relaxed/simple;
+	bh=jooEF0Q2ODBHr+EeWZk3cn58gUgpPnmfj/zlBZ4xAes=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EZDAmXmKfuwI1vhmQDwmSkwTk4EApUVejhzTgFj7hJoDhuDsG6X250w/yMdrm/Tzqr1AYpPexiHyKTCatt9tRpQnoLj+jfuKHOr6mTlVKqSqqOF5fU2/VLd6jBm/CEzujATcu9GwVoVmu6cDemaQQIsfeI1Gn/S90L5YaId9TMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enjuk.jp; spf=pass smtp.mailfrom=enjuk.jp; dkim=pass (2048-bit key) header.d=enjuk.jp header.i=@enjuk.jp header.b=wmTXEC7c; arc=none smtp.client-ip=49.212.198.91
+	 MIME-Version; b=GCT+pwDVGN0l/hc1RfL902MMSLE5wJY+Avt1oqkh20wlC6IOxslwC0WJsFaVAlzhmvB9NRke8CePN1v6HZVSpoi81TpH7KjcTAMayUDurZU27rge1aQ00gC0U/NJJP5gEEtCo6xE5DRjav0BuxUR1t8VMSKhPr/mtXFBwGLyb8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enjuk.jp; spf=pass smtp.mailfrom=enjuk.jp; dkim=pass (2048-bit key) header.d=enjuk.jp header.i=@enjuk.jp header.b=rQEhSziT; arc=none smtp.client-ip=49.212.198.91
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enjuk.jp
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=enjuk.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=enjuk.jp header.i=@enjuk.jp header.b="wmTXEC7c"
+	dkim=pass (2048-bit key) header.d=enjuk.jp header.i=@enjuk.jp header.b="rQEhSziT"
 Received: from ms-a2 (197.87.13.160.dy.iij4u.or.jp [160.13.87.197])
 	(authenticated bits=0)
-	by www2881.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 63T9GcJs043714
+	by www2881.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 63T9Gl79043858
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Wed, 29 Apr 2026 18:16:39 +0900 (JST)
+	Wed, 29 Apr 2026 18:16:47 +0900 (JST)
 	(envelope-from kohei@enjuk.jp)
-DKIM-Signature: a=rsa-sha256; bh=w8mHdSft4ki0M+uNQDu5TQHCbUgfsD+iSWwxpqDgs9c=;
+DKIM-Signature: a=rsa-sha256; bh=VNsqaO4VKM8duP7X8u8FBpIkMOKyeVk0AVzZrcnvqQk=;
         c=relaxed/relaxed; d=enjuk.jp;
         h=From:Message-ID:To:Subject:Date;
-        s=rs20251215; t=1777454200; v=1;
-        b=wmTXEC7cpp7Ca0gt6WK9uo9tXUItXXhKHWUVBLxeNx9aWDQrFJwTaDd8ymbCVWeI
-         XE06nR2U6ho8PWHt7eQ8ehP7jPwtfh6EU3YKs7otu1d2nKgJ/TYagtszEapkEGVi
-         Y7oLoHhaqERCAhT+W7y3jCmAthua3Owp7k5AkUWWWxwJZ8FMJa/rBLBFbeOfPe3h
-         LF+1Hf+0eRIQrckIrP3ggcCWaW9fDfmewxAW56tUJnzob9ZWi58Ov7zaXaky7OY8
-         bvpwUzuZ6u99LRZ0v7iZc9bfxKcija4HZwgZYqnVx6SCAtBjVHHOWfL/mMEkbxxp
-         3ObqEedZxyb5Kj9Y2WAxQw==
+        s=rs20251215; t=1777454208; v=1;
+        b=rQEhSziTaV0FBpgEarw4ucX8bjV0NzKD6QXkBZ5aqUTVRatvlFm0OtMQc44rgxUJ
+         0qPPxlKIL+tX1tAbZHE0CyWNZeijJUmKb1/4PGO01THNbf7tSzRn8dnE29JjzbEE
+         J8KOn0wM4y8IDRxwCvrYoyNB61hwQ6+XgV+MaRfLTqltIPfqSF3SgfIXeLdKOkBw
+         hMxHM45BCjQ4QHIQ2gB6BHsQPIG9ah5a4XP6j1PW6rs58UMGp1ZvmpfAR8noozkT
+         jHHNHh7HfEhsdgjNG/p8z054cAMN0CzvpdGWCVNnDwDgZ3C+XTLweTmQT1NTrg0v
+         kgU2YZZPMvtWSmLryHzKVA==
 From: Kohei Enju <kohei@enjuk.jp>
 To: netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -44,9 +44,9 @@ Cc: "David S. Miller" <davem@davemloft.net>,
         Jonathan Lemon <jonathan.lemon@gmail.com>,
         Richard Cochran <richardcochran@gmail.com>,
         Kohei Enju <kohei@enjuk.jp>
-Subject: [PATCH net v1 1/3] net: introduce helper to resolve hardware timestamps from skb
-Date: Wed, 29 Apr 2026 09:16:17 +0000
-Message-ID: <20260429091632.26509-2-kohei@enjuk.jp>
+Subject: [PATCH net v1 3/3] tcp: use skb_get_hwtstamp() for hardware timestamps
+Date: Wed, 29 Apr 2026 09:16:19 +0000
+Message-ID: <20260429091632.26509-4-kohei@enjuk.jp>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260429091632.26509-1-kohei@enjuk.jp>
 References: <20260429091632.26509-1-kohei@enjuk.jp>
@@ -58,138 +58,95 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Move the logic that resolves a hardware timestamp from an skb, including
-late timestamp resolution via netdev_get_tstamp(), from net/socket.c to
-a common helper.
+Since commit 97dc7cd92ac6 ("ptp: Support late timestamp determination"),
+skb_shared_hwtstamps may contain netdev_data instead of hwtstamp. TCP
+receive timestamping can then interpret the stored value as a ktime_t
+and report bogus hardware timestamps to userspace.
 
-Let's allow other networking code to reuse the same resolution path.
+Use skb_get_hwtstamp() instead of reading hwtstamp directly, so TCP
+sockets follow the same hardware timestamp resolution path as the socket
+layer. When coalescing SKBs, resolve late timestamps before copying them
+to the merged skb. Additionally, recognize SKBTX_HW_TSTAMP_NETDEV as
+indicating a receive timestamp is present.
 
+Note that skb_get_hwtstamp() is called with cycles == false, since TCP
+hasn't honored SOF_TIMESTAMPING_BIND_PHC so far, and this patch doesn't
+change that behavior.
+
+Fixes: 97dc7cd92ac6 ("ptp: Support late timestamp determination")
 Signed-off-by: Kohei Enju <kohei@enjuk.jp>
 ---
- include/linux/skbuff.h | 11 +++++++++++
- net/core/skbuff.c      | 27 +++++++++++++++++++++++++++
- net/socket.c           | 27 +++------------------------
- 3 files changed, 41 insertions(+), 24 deletions(-)
+ include/net/tcp.h    | 2 +-
+ net/ipv4/tcp_input.c | 3 ++-
+ net/ipv4/tcp_ipv4.c  | 6 ++++--
+ net/ipv6/tcp_ipv6.c  | 3 ++-
+ 4 files changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-index 2bcf78a4de7b..651a5ae8b11c 100644
---- a/include/linux/skbuff.h
-+++ b/include/linux/skbuff.h
-@@ -4731,6 +4731,17 @@ void __skb_tstamp_tx(struct sk_buff *orig_skb, const struct sk_buff *ack_skb,
- void skb_tstamp_tx(struct sk_buff *orig_skb,
- 		   struct skb_shared_hwtstamps *hwtstamps);
- 
-+/**
-+ * skb_get_hwtstamp - resolve a hardware timestamp from an skb
-+ * @skb:	skb carrying the timestamp
-+ * @cycles:	true to request the free-running cycle-based timestamp
-+ * @if_index:	optional return pointer for the originating netdev ifindex
-+ *
-+ * Return: resolved hardware timestamp, or the stored skb hwtstamp when no
-+ * device-specific late timestamp resolution is needed.
-+ */
-+ktime_t skb_get_hwtstamp(struct sk_buff *skb, bool cycles, int *if_index);
-+
- /**
-  * skb_tx_timestamp() - Driver hook for transmit timestamping
-  *
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 7dad68e3b518..d11f4e2e9391 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -5729,6 +5729,33 @@ void skb_tstamp_tx(struct sk_buff *orig_skb,
- }
- EXPORT_SYMBOL_GPL(skb_tstamp_tx);
- 
-+ktime_t skb_get_hwtstamp(struct sk_buff *skb, bool cycles, int *if_index)
-+{
-+	struct skb_shared_hwtstamps *shhwtstamps = skb_hwtstamps(skb);
-+	struct net_device *orig_dev;
-+	ktime_t hwtstamp;
-+
-+	if (if_index)
-+		*if_index = 0;
-+
-+	if (!(skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP_NETDEV))
-+		return shhwtstamps->hwtstamp;
-+
-+	rcu_read_lock();
-+	orig_dev = dev_get_by_napi_id(skb_napi_id(skb));
-+	if (orig_dev) {
-+		if (if_index)
-+			*if_index = orig_dev->ifindex;
-+		hwtstamp = netdev_get_tstamp(orig_dev, shhwtstamps, cycles);
-+	} else {
-+		hwtstamp = shhwtstamps->hwtstamp;
-+	}
-+	rcu_read_unlock();
-+
-+	return hwtstamp;
-+}
-+EXPORT_SYMBOL_GPL(skb_get_hwtstamp);
-+
- #ifdef CONFIG_WIRELESS
- void skb_complete_wifi_ack(struct sk_buff *skb, bool acked)
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index ecbadcb3a744..7b5fcee97079 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -524,7 +524,7 @@ tcp_update_recv_tstamps(struct sk_buff *skb,
+ 			struct scm_timestamping_internal *tss)
  {
-diff --git a/net/socket.c b/net/socket.c
-index 22a412fdec07..95b21b16a0fc 100644
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -876,21 +876,7 @@ static bool skb_is_swtx_tstamp(const struct sk_buff *skb, int false_tstamp)
- static ktime_t get_timestamp(struct sock *sk, struct sk_buff *skb, int *if_index)
- {
- 	bool cycles = READ_ONCE(sk->sk_tsflags) & SOF_TIMESTAMPING_BIND_PHC;
--	struct skb_shared_hwtstamps *shhwtstamps = skb_hwtstamps(skb);
--	struct net_device *orig_dev;
--	ktime_t hwtstamp;
--
--	rcu_read_lock();
--	orig_dev = dev_get_by_napi_id(skb_napi_id(skb));
--	if (orig_dev) {
--		*if_index = orig_dev->ifindex;
--		hwtstamp = netdev_get_tstamp(orig_dev, shhwtstamps, cycles);
--	} else {
--		hwtstamp = shhwtstamps->hwtstamp;
--	}
--	rcu_read_unlock();
--
--	return hwtstamp;
-+	return skb_get_hwtstamp(skb, cycles, if_index);
+ 	tss->ts[0] = skb->tstamp;
+-	tss->ts[2] = skb_hwtstamps(skb)->hwtstamp;
++	tss->ts[2] = skb_get_hwtstamp(skb, false, NULL);
  }
  
- static void put_ts_pktinfo(struct msghdr *msg, struct sk_buff *skb,
-@@ -940,7 +926,6 @@ int skb_get_tx_timestamp(struct sk_buff *skb, struct sock *sk,
- {
- 	u32 tsflags = READ_ONCE(sk->sk_tsflags);
- 	ktime_t hwtstamp;
--	int if_index = 0;
+ void tcp_recv_timestamp(struct msghdr *msg, const struct sock *sk,
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index d5c9e65d9760..9fd473559b58 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -5237,7 +5237,8 @@ static bool tcp_try_coalesce(struct sock *sk,
+ 	if (TCP_SKB_CB(from)->has_rxtstamp) {
+ 		TCP_SKB_CB(to)->has_rxtstamp = true;
+ 		to->tstamp = from->tstamp;
+-		skb_hwtstamps(to)->hwtstamp = skb_hwtstamps(from)->hwtstamp;
++		skb_hwtstamps(to)->hwtstamp = skb_get_hwtstamp(from, false, NULL);
++		skb_shinfo(to)->tx_flags &= ~SKBTX_HW_TSTAMP_NETDEV;
+ 	}
  
- 	if ((tsflags & SOF_TIMESTAMPING_SOFTWARE) &&
- 	    ktime_to_timespec64_cond(skb->tstamp, ts))
-@@ -950,10 +935,7 @@ int skb_get_tx_timestamp(struct sk_buff *skb, struct sock *sk,
- 	    skb_is_swtx_tstamp(skb, false))
- 		return -ENOENT;
+ 	return true;
+diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+index 8fc24c3743c5..c35d82317764 100644
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -1993,7 +1993,8 @@ enum skb_drop_reason tcp_add_backlog(struct sock *sk, struct sk_buff *skb)
+ 		if (TCP_SKB_CB(skb)->has_rxtstamp) {
+ 			TCP_SKB_CB(tail)->has_rxtstamp = true;
+ 			tail->tstamp = skb->tstamp;
+-			skb_hwtstamps(tail)->hwtstamp = skb_hwtstamps(skb)->hwtstamp;
++			skb_hwtstamps(tail)->hwtstamp = skb_get_hwtstamp(skb, false, NULL);
++			skb_shinfo(tail)->tx_flags &= ~SKBTX_HW_TSTAMP_NETDEV;
+ 		}
  
--	if (skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP_NETDEV)
--		hwtstamp = get_timestamp(sk, skb, &if_index);
--	else
--		hwtstamp = skb_hwtstamps(skb)->hwtstamp;
-+	hwtstamp = get_timestamp(sk, skb, NULL);
+ 		/* Not as strict as GRO. We only need to carry mss max value */
+@@ -2062,7 +2063,8 @@ static void tcp_v4_fill_cb(struct sk_buff *skb, const struct iphdr *iph,
+ 	TCP_SKB_CB(skb)->ip_dsfield = ipv4_get_dsfield(iph);
+ 	TCP_SKB_CB(skb)->sacked	 = 0;
+ 	TCP_SKB_CB(skb)->has_rxtstamp =
+-			skb->tstamp || skb_hwtstamps(skb)->hwtstamp;
++			skb->tstamp || skb_hwtstamps(skb)->hwtstamp ||
++			(skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP_NETDEV);
+ }
  
- 	if (tsflags & SOF_TIMESTAMPING_BIND_PHC)
- 		hwtstamp = ptp_convert_timestamp(&hwtstamp,
-@@ -1033,10 +1015,7 @@ void __sock_recv_timestamp(struct msghdr *msg, struct sock *sk,
- 	      !(tsflags & SOF_TIMESTAMPING_OPT_RX_FILTER))) &&
- 	    !skb_is_swtx_tstamp(skb, false_tstamp)) {
- 		if_index = 0;
--		if (skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP_NETDEV)
--			hwtstamp = get_timestamp(sk, skb, &if_index);
--		else
--			hwtstamp = shhwtstamps->hwtstamp;
-+		hwtstamp = get_timestamp(sk, skb, &if_index);
+ /*
+diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
+index 2c3f7a739709..3361ed7f94de 100644
+--- a/net/ipv6/tcp_ipv6.c
++++ b/net/ipv6/tcp_ipv6.c
+@@ -1704,7 +1704,8 @@ static void tcp_v6_fill_cb(struct sk_buff *skb, const struct ipv6hdr *hdr,
+ 	TCP_SKB_CB(skb)->ip_dsfield = ipv6_get_dsfield(hdr);
+ 	TCP_SKB_CB(skb)->sacked = 0;
+ 	TCP_SKB_CB(skb)->has_rxtstamp =
+-			skb->tstamp || skb_hwtstamps(skb)->hwtstamp;
++			skb->tstamp || skb_hwtstamps(skb)->hwtstamp ||
++			(skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP_NETDEV);
+ }
  
- 		if (tsflags & SOF_TIMESTAMPING_BIND_PHC)
- 			hwtstamp = ptp_convert_timestamp(&hwtstamp,
+ INDIRECT_CALLABLE_SCOPE int tcp_v6_rcv(struct sk_buff *skb)
 -- 
 2.53.0
 
