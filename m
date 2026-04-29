@@ -1,51 +1,46 @@
-Received: from mail-ot1-f66.google.com (mail-ot1-f66.google.com [209.85.210.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E9543FB06F
-	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 16:08:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F62385504
+	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 16:08:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777478893; cv=none; b=TGKwosmNY1juvSHaamz5aoW2cgrBALDsKGDdB9JzXm8yAnuCkz0cxCS4puRStUaZ3dEBdBNI+/j7KKxJdYA1TeDTNx5rhYwfLoF7f+d2f7fjuvtRn7fj3PHnl3fvVRIO5BGstCuy1NNzqwg+OtdCz1rKiAh9Ynd+0nF0HH+nNsg=
+	t=1777478895; cv=none; b=LHNaUzwkidEPw8pSacCJpTM+oYNuWpcVWZkbRtAuLJWgEWctXpVhqboDElYaio+Hc2mthNLcSAZBd/eYcegL+TJeIt6wMEspdva3M4A1U9LCiNDvH0/lo4OPkvzMtGbtPpbO2RvaovJWmuTzjReFptMO+bijx1VYMQZWWbpb8r0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777478893; c=relaxed/simple;
-	bh=CkV3UIcJhdoUQamAo7wSXIPkMsnfCDQLRf9Rws7yZ5o=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=fOHT84HcSr7SHxKTNA/kIpBzegmMb4+f59ltooo+I9s+mslPl0f+plUaawZiABSFmdNor/2k5b6nBA4d0AscaHRlJPNUsn/RHF5euTxMkTM/ieEPVeBSpvLPdGf/ApFpSInjijNYy0oc1ebKKDq3wYjc1ig0iptNVaEnBO/Psvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f66.google.com with SMTP id 46e09a7af769-7dcd9061b1aso7719523a34.2
-        for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 09:08:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777478885; x=1778083685;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:to:subject:cc:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uW0sQP+sekma1N2hzMiGd7HMv+vP1und5+yCAqWbZsE=;
-        b=QD9i8Mhzzn+qonuIqjCK1ssY9bLOV1YmmwY8P6sORsZMVJgVU+MeCDF/1T+3YbSS8u
-         hi2RIW3kE+aS53ENd5vPLU0KuLVo1JEiHk77QzU8RB5Nvp+7i5aE9dKnOWVKpM9SnjKE
-         OIrPkVZz9axbjDy99fgHDZ73nq3D0NIvxFPXQEI5NVGaxvZw8ymc4f4l7z55M1A2OUw3
-         CBWI7X4k7HqifXa67F/QLrPxiD8HXYcbfrH4x/PVMukYQCNHOyrLBL4e6a5NMLEcDblt
-         TjAvUMLEwJh08GUKRsllzu02bSfSxHYATji9G4UuHMdcyIzMTTJF2EMyGPZWgkEqtFCo
-         SCkw==
-X-Gm-Message-State: AOJu0YzN4HecrT3tLZURn8o2L8d/83EMsYPqqs4YpYPjjA2fVjPeweXf
-	5+5MHjmJy2MztkWNkeCSD76p5m0PptIrE6dftGCVfvsYauTEbygOVqPJcaWUBXAxd9Q=
-X-Gm-Gg: AeBDies1MmucKkdgKeQ6j08aL8bTsxO8+942G0qj1DZNtFphEu8xLGcySMzabYQh0NK
-	FGNiuRZqYN4KSXcTMNaXitV4CzrwaHXKj6Q67rEvobVeAd8p9qLKBXGxVa/9IO7xICaSPhdmhKR
-	4sFlB7EeN0IkBr+6sCRlZzOuAfYObwV5il/moU6Q5TcdIZdNP0DmT4OMPIg9ZKu5JJ7I3W+d648
-	B7nvMEZlmpLUmENCQKBNLBvl2Bva5UyaQLE7bhH2N6I1BBpiQ+XxOLuxBQ0LBzzidO1ofAlJrIX
-	cZHNW3obf6fHrKP9nXI+sIryz3WYQlHKrkDKwIsgtXZtjeKrY+LO5ekz8FfdryYV9sE/rzxwugO
-	6wRxcWQeylrTg2jKvyFmQZJjyUS/resAAWV4dltpzVbsDGCuGecd8KofFA8fVr1ZAl9sZq1GvUp
-	Cn47Iv9Z0QA2gL3VxDm7PymiGdhGawy557jGqAs5GIVnRxkZw6CUizArWjHtQUogrPpw==
-X-Received: by 2002:a05:6830:67cc:b0:7d7:e045:b489 with SMTP id 46e09a7af769-7dea66700f1mr2896745a34.12.1777478885133;
-        Wed, 29 Apr 2026 09:08:05 -0700 (PDT)
-Received: from [192.168.88.241] (89-24-32-159.nat.epc.tmcz.cz. [89.24.32.159])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b3ef6faf6asm27819856d6.5.2026.04.29.09.08.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 Apr 2026 09:08:04 -0700 (PDT)
-Message-ID: <9e8f5742-d607-4c48-a280-7fc0e425a521@ovn.org>
-Date: Wed, 29 Apr 2026 18:08:00 +0200
+	s=arc-20240116; t=1777478895; c=relaxed/simple;
+	bh=Wgc+fzUeQy6BIDSoqGQeEQKlTFxm1pwRCZQfp7NVZYA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CRO8GQH1OiKgc7TJMjaHUUJYh1nJ8vKLTQ1nGeKn6cFshUjb08aU+IjFwIC5swvMZ1ICP2RBYOwxgvnLGxCnXQjd3wCSl/Z5K+ZRuUUIJfPnkiIz0tuNrVeEGQqJ5YMPSW6v8RQC/jRKcbKsxDgeeTh4+NygoF/O5Gd3F4HkqXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=af1gvbfY; arc=none smtp.client-ip=213.133.104.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="af1gvbfY"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=pJSnP36j7nm87VEAhELZt3pO8S9PyBUJBnT+ZpbZzw8=; b=af1gvbfY7CINeFxucq8ZaQDf6k
+	zF7IpOiikUu+tksNucK1j1jNcGvC9Z7L3jkmcPD+MVw8y42/+fJuXTVpNGc267kJ46tS6mw6nsyHU
+	W2ufcDZHUWt08U8jLxDDUbvmsQbLfs8cC+R7jhXyCYxE6i2PElgf3DVSEiBAwfxWiJlFdYlId6uiS
+	TOTKkIfMpKTHOFj1G7jpBpxyy32stwitPs6vuiE9iMBvQ+IxThyYTHCg0qmg+7u2913UvBg2TPyZb
+	FVjXbQHP6IY1CIFfpI01nHIWn7859kgQtiEYGtygs84UyPm68HhTqehJCMUigVuyFLGUuKFEB+qei
+	/QSBAfVg==;
+Received: from sslproxy08.your-server.de ([78.47.166.52])
+	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1wI6uZ-000CZm-1I;
+	Wed, 29 Apr 2026 17:33:15 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy08.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1wI6uW-000Hg8-2g;
+	Wed, 29 Apr 2026 17:33:13 +0200
+Message-ID: <54e77e9d-cc5e-42dc-af00-b005d2f6b04b@iogearbox.net>
+Date: Wed, 29 Apr 2026 17:33:12 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,84 +48,115 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Cc: i.maximets@ovn.org, Aaron Conole <aconole@redhat.com>,
- Eelco Chaudron <echaudro@redhat.com>, "David S. Miller"
+Subject: Re: [PATCH net-next 00/11] net: devmem: support devmem with netkit
+ devices
+To: Bobby Eshleman <bobbyeshleman@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
  <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
- Yuan Tan <tanyuan98@outlook.com>, Yang Yang <n05ec@lzu.edu.cn>,
- dev@openvswitch.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net 2/2] selftests: openvswitch: add tests for tunnel
- vport refcounting
-To: netdev@vger.kernel.org
-References: <20260429151756.4157670-1-i.maximets@ovn.org>
- <20260429151756.4157670-3-i.maximets@ovn.org>
+ Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Alex Shi <alexs@kernel.org>,
+ Yanteng Si <si.yanteng@linux.dev>, Dongliang Mu <dzm91@hust.edu.cn>,
+ Michael Chan <michael.chan@broadcom.com>,
+ Pavan Chebbi <pavan.chebbi@broadcom.com>,
+ Joshua Washington <joshwash@google.com>,
+ Harshitha Ramamurthy <hramamurthy@google.com>,
+ Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
+ Mark Bloch <mbloch@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+ Alexander Duyck <alexanderduyck@fb.com>, kernel-team@meta.com,
+ Nikolay Aleksandrov <razor@blackwall.org>, Shuah Khan <shuah@kernel.org>,
+ David Wei <dw@davidwei.uk>, netdev@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-rdma@vger.kernel.org, bpf@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, Stanislav Fomichev <sdf@fomichev.me>,
+ Mina Almasry <almasrymina@google.com>,
+ Bobby Eshleman <bobbyeshleman@meta.com>
+References: <20260428-tcp-dm-netkit-v1-0-719280eba4d2@meta.com>
+ <f954a636-4d21-47c0-8afa-cc4b24adb0fb@iogearbox.net>
+ <afIhP5dtlzCtzn1T@devvm29614.prn0.facebook.com>
 Content-Language: en-US
-From: Ilya Maximets <i.maximets@ovn.org>
-Autocrypt: addr=i.maximets@ovn.org; keydata=
- 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
-In-Reply-To: <20260429151756.4157670-3-i.maximets@ovn.org>
-Content-Type: text/plain; charset=UTF-8
+From: Daniel Borkmann <daniel@iogearbox.net>
+Autocrypt: addr=daniel@iogearbox.net; keydata=
+ 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
+In-Reply-To: <afIhP5dtlzCtzn1T@devvm29614.prn0.facebook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: Clear (ClamAV 1.4.3/27986/Wed Apr 29 08:25:43 2026)
 
-On 4/29/26 5:16 PM, Ilya Maximets wrote:
-> There were a few issues found with the tunnel vport types around the
-> vport destruction code.  Add some basic tests, so at least we know that
-> they can be properly added and removed without obvious issues.
+On 4/29/26 5:18 PM, Bobby Eshleman wrote:
+> On Wed, Apr 29, 2026 at 02:08:31PM +0200, Daniel Borkmann wrote:
+>> On 4/29/26 12:41 AM, Bobby Eshleman wrote:
+>>> This series enables TCP devmem TX through netkit devices.
+>>>
+>>> Netkit now supports queue leasing. A physical NIC's RX queue can be
+>>> leased to a netkit guest interface inside a container namespace. This
+>>> gives the container a devmem-capable data path on the RX side (bind-rx,
+>>> etc...). On the TX side, the container process binds to its netkit guest
+>>> interface and sends traffic that netkit redirects (via BPF or ip
+>>> forwarding) to the physical NIC for DMA.
+>> [...]
+>> Thanks for working on this, after the RX queue leasing got merged, I've
+>> been looking into the same actually. :)
+>>
+>> I think the NETMEM_TX_* enum approach seems reasonable.
+>>
+>> What I have a PoC on is to build out TX queue leasing as first-class
+>> symmetric infrastructure to complement the RX queue leasing - basically
+>> I implemented an equivalent to the latter in netdev_nl_queue_create_doit
+>> et al, so you can have independent RX and TX leases and per-queue
+>> accountability, such that ynl queue-get op shows the full picture, and
+>> lastly we could also enable AF_XDP TX-only support through this infra.
+>>
+>> Would you be open to collab on integrating both and migrating the devmem
+>> code to work off an TX queue object? Next week is LSF/MM/BPF, are you
+>> there by any chance to catch up in person?
 > 
-> The test creates OVS datapath, adds a non-LWT tunnel port, makes sure
-> they are created, and then removes the datapath and waits for all the
-> ports to be gone.
-> 
-> The dpctl script had a few bugs in the none-lwt tunnel creation code,
-> so fixing them as well to make the testing possible:
-> - The type of the --lwt option changed in order to properly disable it.
-> - Removed byte order conversion for the port numbers, as the value
->   supposed to be in the host order.
+> Definitely am open to that. I will unfortunately not be at LSF/MM/BPF,
+> but maybe we can schedule a meeting offline to sync up?
 
-Hrm, forgot to remove the import for socket library that is now unused.
-Can send a v2 with that once I get some reviews on the set.
+Ack, absolutely, will reach out offline to find sth after LSF/MM/BPF week.
+If anyone else wants to join, just DM me.
 
-Best regards, Ilya Maximets.
+Cheers,
+Daniel
