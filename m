@@ -1,47 +1,81 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC09A3D091F;
-	Wed, 29 Apr 2026 10:32:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773023CFF6A
+	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 10:36:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777458740; cv=none; b=SRxrObPtvPM2roFmX4sbRG71V27e+yUy2jeatWiSK5JTxi7KFKqmTa3D9Fw7hD8psY8g4Y0bmAKvN8NiwOQyBfe2Bp6e+yDRfnyrrYISUjPqGA7uUfC7v0AOawAyX37SCiUlJ+2cYW6tTJ1BsDP5EKBK+d6zzGWpwWNLRb9lgKg=
+	t=1777458976; cv=none; b=gYpy69H40H+I0GJhD/e1AF4/YkZ1Ja11YXpp5nzxH6t2k4ZX3AVxqm89fb9mKlA3QVrO/VXo/51GOQ8CPQSwBeVOtjv9O17hxV3GTjXeC9VVLEBQsDWRCjpsJa2Yh9nBEwxrKhItksvs2ePAWyWvvyDRYbHskj5VwGwc4pEMQ70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777458740; c=relaxed/simple;
-	bh=duAsDJqmbqNJ9PlYMKXHs5Ry2vjSnimCTEf03ja5FRg=;
+	s=arc-20240116; t=1777458976; c=relaxed/simple;
+	bh=Lztaoe8D6tALyIoNz2jIME1CJAhrcwGitSWeewC9wTM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pTKfUXvaNJ6rghLH0OKCyd3Y69+sOP5em7hrRuIf3D44uUVFb6bOsWdTGnky/JHex60076HeKCeDtGEXFaMvtLlkkBqIOBj579owqaIeC6+hMr9h6KQXywKcgt6fCJ6Vn2U457ZKMsyuVtd/FS8lRYChGYziAaCc9dB8YOQf4Jc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BDSdjthw; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=IeWqZNHNBKSQVcBw9E1QNg5D/JBCsXikVj3VVp6rP47Q4udTtBDCn1eIed2wSE88Bm9z2fpmebq3nA1ePbR+yNTpuq6QsxAEtn3qrBBvsUipOwaoJ6KxhlUTjBfNwcUzcNnFCUB82oWCytH6B/2MPo3ic0S4iVqs0ac/LtC+fzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fhOGMnBR; arc=none smtp.client-ip=209.85.160.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BDSdjthw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0034AC19425;
-	Wed, 29 Apr 2026 10:32:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777458740;
-	bh=duAsDJqmbqNJ9PlYMKXHs5Ry2vjSnimCTEf03ja5FRg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BDSdjthwmycI1JuMkY+YoDIMxrV1zeGppZFXcAlagvK0BOvUCw0EICd1Da+IjHAqL
-	 Nl/cHxSqotsKTTxJZnMV5zmmfot+IhZebTQ2sZqZyVmgzwTnCBs7HiknXhpIJI6M6J
-	 O14UMbwWo68lWQHPX24mFeirz8BK84v6OwGSU1IbHzNmiZGH/WH+cagv0FxNZqqY5k
-	 Rr9MKZwVGMF89IjlZPsjFmV7I/JLRAmqLteA2SpIh/vtDMJDwHhCtw1UMaPvac1XKY
-	 miLFtDFJHCPTjxdY/u3kh1A76JTASCGaYN1kzv0CUD2cwTrZ4qV6ZaSUs5eZJNDsWM
-	 3j3wBk9RUb/BA==
-Date: Wed, 29 Apr 2026 11:32:15 +0100
-From: Simon Horman <horms@kernel.org>
-To: Michal Schmidt <mschmidt@redhat.com>
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fhOGMnBR"
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-50fb1ad3734so6523711cf.1
+        for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 03:36:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777458969; x=1778063769; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=IyypOgEbiK3dH2xH1H/KkEjHCpdt2R7NPE0TLtBJdyI=;
+        b=fhOGMnBRbeVVkLq8fQ2e+2oJR11TO+kQQhlRcrcCCVtuAMDbxFEWZ4h9dEc9sZIUf+
+         vWY2TIOxJIJglqNkkzE1rfRbDpmMNI7NmEn1NOegi6KTXk02SMFbf9lQ6J4sWdfMP9Pt
+         WgEqHXTeDP1FsZ1GSmAmPEJ1BfrgQmPfKNiRwljMl7yZCMKFKtetWG5Is9DIt/DHqmI8
+         3JTcwWsdL3DvpqReJkLDmHDY9KfJeH/BCUO8IEwdSg2ulaNBYLf+qzzItyNUzKiYt0eP
+         Yq1uAWEAh/kPux8s+5tKyYDOjpCzNyFRIVFrYTHE0vsC2gLH5ZU8cGB33jiSgmN169c0
+         aHdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777458969; x=1778063769;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IyypOgEbiK3dH2xH1H/KkEjHCpdt2R7NPE0TLtBJdyI=;
+        b=Jxz3UGmFwBN2ZWXa1kRcMRPx+dI/qW3llWbFTET/WtpTJ5uBU+zx8mUwWIfBk7X6yQ
+         xQo28ny43/M+qE9hrUDrckCL8k+LPA1fLH4NOSblx65F8RkuzpD3JwnhLOYZOIO3nxug
+         GNx4sOLjSj/eHRzizjjsiZYOctigdb6USedgmbnebJS71Pj7gy3rYsLlVs36MiAVh67e
+         HAb9UhxvD++cjQemsYqJsKtdMkphjAIOBAn0YtvESE9Pz2sd9RZxZG2Hv4KqTrIAS90G
+         zr/6PvdTxHEIdJ/cjWqbAOM4BXJUdKceVugFYviZUJX+vimiYrRHLX7OQ1/maub5aLc3
+         ZV+Q==
+X-Forwarded-Encrypted: i=1; AFNElJ/Bc4lM+OO3Y3k62HqVOM6aQc1TWRsbhpR2/nXL3f3akNc2b75LOQO8JsZxdsgLFZytVI6JAhg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2rOBDfW1/m9oxXdEAGZKwmJqUvU0G9142SbAWTNDwztTCdafX
+	/tFxnt5vXvWUGH5HinGKt9jVL7l7m97tCP5YuK6jexGruziEKWBsl9N9
+X-Gm-Gg: AeBDieuTaBHJOoeSU5qfr5mWf9NaaEEC4gcsjDeAbp4v5nLXC/LFfieEKRz2d/ReXQS
+	65F3xuQ6/umq/JXv8hBElWZOvki8sbxhCUSwh0JMVDtizh4/z7/VxJ/jbHSKqyOluQ4aPvrTKmZ
+	hKLeXnXTWTsIoertfXzjkI3yctW10TClpf46DxEJJ/MjMRRYj3oaC/s+IiGWcKwNqvj2aNte3mz
+	gTEMkrFo/AFYLCC3qbl0timHfD3SD2C3DlYH6GLtdRVvIOV5iUGIsZgXj71i1pgt2WNJsyqEB2O
+	RgVy5mVVFSYbgTChh72FSxLyoO6SmTE23vHcyip+u18Aqa3PIniktjYGEg4ihhwNhx2adVQEuZM
+	qbOC1MmqdcBwuyEkbEpai5pEaOM54AhXikxi38UtCvB6i9b7Ly7+FHQerYdNaKI2ZWUXzEzBUBx
+	/A8R6ujOXKqPtqLmRQyw5T2acfQS31raSI6TgraxJw8fhKiB1vYMj982XYRI8T3w81LaU=
+X-Received: by 2002:ac8:5813:0:b0:50d:7632:ddb2 with SMTP id d75a77b69052e-51019a37774mr33183071cf.12.1777458969343;
+        Wed, 29 Apr 2026 03:36:09 -0700 (PDT)
+Received: from PF5YBGDS.localdomain ([163.114.130.1])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5101ab30033sm14354911cf.0.2026.04.29.03.36.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Apr 2026 03:36:08 -0700 (PDT)
+Date: Wed, 29 Apr 2026 06:36:06 -0400
+From: Mike Marciniszyn <mike.marciniszyn@gmail.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Alexander Duyck <alexanderduyck@fb.com>,
+	Jakub Kicinski <kuba@kernel.org>, kernel-team@meta.com,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
 	Jacob Keller <jacob.e.keller@intel.com>,
-	Petr Oros <poros@redhat.com>, intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] ice: fix stats array overflow when VF requests more
- queues
-Message-ID: <20260429103215.GY900403@horms.kernel.org>
-References: <20260427151827.43342-1-mschmidt@redhat.com>
+	Mohsin Bashir <mohsin.bashr@gmail.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net-next 1/4] net: eth: fbnic: Fix addr validation in pcs
+ write
+Message-ID: <afHfFj0CkBUIQxRT@PF5YBGDS.localdomain>
+References: <20260428172810.175077-1-mike.marciniszyn@gmail.com>
+ <20260428172810.175077-2-mike.marciniszyn@gmail.com>
+ <caa57970-7377-4986-ab62-f3f5d4054625@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,34 +84,44 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260427151827.43342-1-mschmidt@redhat.com>
+In-Reply-To: <caa57970-7377-4986-ab62-f3f5d4054625@lunn.ch>
 
-On Mon, Apr 27, 2026 at 05:18:26PM +0200, Michal Schmidt wrote:
-> When a VF increases its queue count via VIRTCHNL_OP_REQUEST_QUEUES,
-> ice_vc_request_qs_msg() sets vf->num_req_qs and triggers a VF reset.
-> The reset calls ice_vf_reconfig_vsi(), which does ice_vsi_decfg()
-> followed by ice_vsi_cfg(). ice_vsi_decfg() does not free the per-ring
-> stats arrays. Inside ice_vsi_cfg_def(), ice_vsi_set_num_qs() updates
-> alloc_txq/alloc_rxq to the new larger value, but
-> ice_vsi_alloc_stat_arrays() returns early because the stats already
-> exist. ice_vsi_alloc_ring_stats() then iterates using the new larger
-> alloc_txq and writes beyond the bounds of the old, smaller
-> tx_ring_stats/rx_ring_stats pointer arrays, corrupting adjacent SLUB
-> metadata.
+On Tue, Apr 28, 2026 at 08:11:30PM +0200, Andrew Lunn wrote:
+> On Tue, Apr 28, 2026 at 01:28:07PM -0400, mike.marciniszyn@gmail.com wrote:
+> > From: "Mike Marciniszyn (Meta)" <mike.marciniszyn@gmail.com>
+> >
+> > This patch contains a fix for addr validation in fbnic_mdio_write_pcs().
+> >
+> > Cc: stable@vger.kernel.org
+> > Fixes: d0ce9fd7eae0 ("fbnic: Add SW shim for MDIO interface to PMD and PCS")
+> > Signed-off-by: Mike Marciniszyn (Meta) <mike.marciniszyn@gmail.com>
+>
+> Please don't mix fixed and going development work in one
+> patchset. They should be applied to different trees, etc.
+>
+> https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
+>
+>     Andrew
+>
 
-...
+So I'm guessing I need to send the bug fix to net instead of net-next
+and reissue the patch series?
 
-> See the linked RHEL Jira item for a reproducer.
-> 
-> Fixes: 2a2cb4c6c181 ("ice: replace ice_vf_recreate_vsi() with ice_vf_reconfig_vsi()")
-> Closes: https://redhat.atlassian.net/browse/RHEL-164321
-> Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
-> Assisted-by: Claude:claude-opus-4-6 semcode
+BTW, the review notes that the patch wasn't sent to you
+(https://netdev-ctrl.bots.linux.dev/logs/build/1087030/14544928/cc_maintainers/)
+but that is because there are two addresses for you:
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+grep Lunn MAINTAINERS
+M:      Andrew Lunn <andrew@lunn.ch>
+M:      Andrew Lunn <andrew@lunn.ch>
+M:      Andrew Lunn <andrew@lunn.ch>
+M:      Andrew Lunn <andrew@lunn.ch>
+M:      Andrew Lunn <andrew+netdev@lunn.ch> <----
+M:      Andrew Lunn <andrew@lunn.ch>
+M:      Andrew Lunn <andrew@lunn.ch>
+M:      Andrew Lunn <andrew@lunn.ch>
+M:      Andrew Lunn <andrew@lunn.ch>
 
+That seems to foil my scripting.  Is MAINTAINERS wrong?
 
-FTR: There is an AI generated review of this patch available on sashiko.dev.
-I believe the issues flagged there pre-date this patch and do not impact
-this patch. So while I do not think they should block progress of this
-patch I suggest looking over them to see if any follow-up is warranted.
+Mike
