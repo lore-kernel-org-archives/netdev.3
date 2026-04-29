@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 742762749EA
-	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 01:43:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C76D33F8C4;
+	Wed, 29 Apr 2026 01:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777427018; cv=none; b=eOMTS0sFdGRDleE5LM619RMoa57+5PFwaobiR+6IzEXcz4ZFRkxDd5tYOPGB0xaBr5JgZ6w0YwHjAilTws8hD2c3cgazuiIBvosa/zYzm8LfS/SX9Orn4deawnSS03iQtX6KtGXxolfaeBnkfpSZ9xtZoMju6zTFMmhOa0G9cNs=
+	t=1777427193; cv=none; b=AGwOSmBypjbhDLfx2WeNLGo9mEvLGTpbpBNOLc6fOw37jphOfCzqdur3zbmMQQGHjflNasjGm2/8YEraCY2FaNfDEvuYjtgk6V5H6SuNNBlIL7krky7DZv8wNAUuoIAd6KYmgzgY7sBwNL+aNgEMCZThUlMiWzlwujTUjSCqNgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777427018; c=relaxed/simple;
-	bh=Yb9zc5Unqbm55Kqcwq5GJE34VTgUMnFyUDUbA+hjqY8=;
+	s=arc-20240116; t=1777427193; c=relaxed/simple;
+	bh=sRe4dp3Omm+NGAYOYEzRs45aKL4JXVJG+80i3lBgmjA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nX3HnBJhA2/I9dXGFwkWBH6jBDpsRzoCuB4xT4BIgEej+6Ne/rJVID/qdebQYhwrqudkXjvT4Vt7c96Ye3z3+A7qMh08B1EFJ/BsdqXytO1b9W7AZOjb7fiDFSUGfAF9CsAg8qGbWmWTBuUIYG/bofc0D5DD+PNgG1HlaSih9m0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GUigyiPF; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=pO9bjoLTjy3UQdRh9vwIIkRVnOv7DKgX6U1EhEoPC7PAWrFHDzXUqIWB0vL2Hz5kMStcrHz/nbgmUO3HGMTEiQbeB4exXrfACMvGIYPZzXZZKo0Ojr71wBQX6FqKMiIIM95Qq8++Wzdgms42PKFzTPWuTx61ANk6efsoFb7L3A4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FCJwZb9o; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GUigyiPF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5516C2BCB7;
-	Wed, 29 Apr 2026 01:43:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FCJwZb9o"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A026C2BCB7;
+	Wed, 29 Apr 2026 01:46:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777427018;
-	bh=Yb9zc5Unqbm55Kqcwq5GJE34VTgUMnFyUDUbA+hjqY8=;
+	s=k20201202; t=1777427193;
+	bh=sRe4dp3Omm+NGAYOYEzRs45aKL4JXVJG+80i3lBgmjA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=GUigyiPFHwGr8sWDKONW22d34HdjsUYCDEGfyFYFpIqJO6wiXnQYdMOhfuf68vbDl
-	 JHXO/O1fKar7wE1BIvWHlAmCHSWHP4GZ8pgAxPlDICd1ue4VEhLvypmO0Jpzfw0bGm
-	 0iTjRByjX+tqpvMmPp0M5B9JSPQobTpqS6zroOA0K72bbiqwlvtCLsaQH6rLaULCUL
-	 bEuPIOmYrCBRGgQ3THNpRcMGhlV43kFnHK6s2weORHJEs0aHWl8S80Wo2/9R0e2rh7
-	 Pmy3QdoGE9xXBwaz97ui7fqNY5It2BlTi4UNSI6GAUTMqYc2f/j3UV4wHcMILtSA7B
-	 5XF4kNEO6v2vw==
-Date: Tue, 28 Apr 2026 18:43:36 -0700
+	b=FCJwZb9oDWUqXGsrpoKFTATqT+Fri0BZ+jpU2yjF2y8bNomq72D7a+FYGpwjTKogo
+	 tcVViXIETmRAjNsQPQPQppiZ9vEHx2CIPrasAREbQZ3ckANPVh33hBSwEg+GCwdjt/
+	 MGsY4jDEf7RNpqgWaaO+uJolxl9mP//Yq6gNZXK3xPrFBdz5zIfb9T4w/VMNy/2po5
+	 l/34OlT+ceJeVFsGZ2B5aCee/wLaOjd+WPoUJLKXJCnYfldElh8AjYoP32OwN4MX0/
+	 408X7JMRifm/UjcZlvl5lzoEZ43a5NYzF5z4xzDAnrulX8H93W417Ua/CixPDBMS80
+	 tuxyB/avFywCQ==
+Date: Tue, 28 Apr 2026 18:46:31 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- daniel.zahka@gmail.com
-Subject: Re: [PATCH net-next 3/3] psp: validate IPv4 header fields in
- psp_dev_rcv()
-Message-ID: <20260428184336.2244b6a1@kernel.org>
-In-Reply-To: <willemdebruijn.kernel.223eebd28b57a@gmail.com>
-References: <20260428205352.1247325-1-kuba@kernel.org>
-	<20260428205352.1247325-4-kuba@kernel.org>
-	<willemdebruijn.kernel.223eebd28b57a@gmail.com>
+To: Marc Harvey <marcharvey@google.com>
+Cc: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+ Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, Andrew
+ Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Kuniyuki Iwashima <kuniyu@google.com>
+Subject: Re: [PATCH net-next] net/mlx5: Add MLX5_VXLAN config option
+Message-ID: <20260428184631.40f1f1b7@kernel.org>
+In-Reply-To: <20260428-mlx5_vxlan-v1-1-cf666d042618@google.com>
+References: <20260428-mlx5_vxlan-v1-1-cf666d042618@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,22 +48,20 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 28 Apr 2026 20:22:34 -0400 Willem de Bruijn wrote:
-> Jakub Kicinski wrote:
-> > psp_dev_rcv() is called from the NIC driver's RX completion path
-> > before the frame reaches ip_rcv_core(), so the IP header has not
-> > been validated in SW, yet. We expect that the device has done
-> > all this validation, but let's also add the SW checks, to avoid
-> > surprises.  
+On Tue, 28 Apr 2026 22:44:34 +0000 Marc Harvey wrote:
+> Currently, there is no way to disable mlx5 vxlan offloading if vxlan
+> is enabled. We've (possibly) seen some minor udp rr and udp stream
+> regressions when enabling vxlan, and want a way to disable this
+> offloading. Also coupling vxlan offloading with vxlan enablement
+> generally limits the flexability of vxlan setups.
 > 
-> If devices are expected to have verified this, should these be more
-> noisy checks, similar to netdev_rx_csum_fault?
+> Add a new config option for mlx5 vxlan offloading specifically, so
+> that users can use vxlan without automatically opting in to the
+> offloading.
+> 
+> To keep the same behavior as before, the new config option is enabled
+> by default if vxlan is enabled.
 
-Maybe "expect" is a bit of a strong word, I meant "anticipate" /
-"suspect". Dropping invalid packet in SW doesn't seem like a huge
-problem, other paths in this function already do. For rx csum the
-problem is that we got a incorrectly math'ed out value for what is
-likely a valid packet.
-
-That's just to explain my thinking, if you prefer we warn / dump skb
-I can respin.
+Can we delay init of whatever makes the device slow down until the
+first vxlan port is registered? A kconfig level optimization of this
+sort will have rather limited applicability.
