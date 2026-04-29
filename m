@@ -1,36 +1,37 @@
 Received: from www2881.sakura.ne.jp (www2881.sakura.ne.jp [49.212.198.91])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB23E3BE162
-	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 09:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD4737881C
+	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 09:16:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.198.91
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777454205; cv=none; b=KddnaLwHPyEpBnDPnJfrS4secH/vmBlWyeqxVtMur+rjn/1wBc1qgFGMgoDdS5wetaMwB7Qt8DKcZKpUqbuN1Z5J+hgp7Zhmh1fRg6CayZ4VgiHvlZ3dqeTt1pvpBbdG3DP9gwy83fHMXkmkYCy9Lq4Uq0d7FoXFGjZe3CNUByI=
+	t=1777454207; cv=none; b=t2iEdnIx5mOGJm935Pv2DCn98lZHiTleZA+jk7xVfz8DFXfO6HS3T83wahcDymfXcgGNUHdlk6sJfTDbo8FWyB6VmIylO6lgOvL+HGOOU2CvUt9L9/lpF/KRo3YhAxU/qlMTsaWB5QF/ZojAEWAPsqb8WzLhL4sx1Xh9eabFZQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777454205; c=relaxed/simple;
-	bh=zg/Pz/BFqrf72DZoag/0MP2PduVAz8/HE3aKT5CpnvU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KA9z/jyCoxSNNv2COvwrg2mFmdVKMpQAt+zrNx60Zp6k9p+olYSgBRC4DJjPGrSxGfXehlEmflacvttj7n5yDdiTJUn1SBvgS2z1Qnrr9JBFeotANBOJXDzPtqipBk9BrCMjqS4sl2SD++nn9W2LEF4RNUsYxf1ZTJIT8mm/fkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enjuk.jp; spf=pass smtp.mailfrom=enjuk.jp; dkim=pass (2048-bit key) header.d=enjuk.jp header.i=@enjuk.jp header.b=A3elTUNt; arc=none smtp.client-ip=49.212.198.91
+	s=arc-20240116; t=1777454207; c=relaxed/simple;
+	bh=NbrcFjVj4pAeh30NgS+5QbarhONMcl+DlRVFxYo3BFA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dx3eBgugQqWi5qQWur00oJXFtSwr5QCHPBf606ynAIq9eT3cCxhfM6QWhAVokYBT3LP3taBiehAKgI7elUnETt7Zd/u5J7gmxQZjKg7XwhXejXLe8XzUwicFfOhAdr6SmkjI+yWavTidj/adqQusQqWlhp+nScgxwC+Z3J6pbho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enjuk.jp; spf=pass smtp.mailfrom=enjuk.jp; dkim=pass (2048-bit key) header.d=enjuk.jp header.i=@enjuk.jp header.b=NIcbCA9X; arc=none smtp.client-ip=49.212.198.91
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enjuk.jp
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=enjuk.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=enjuk.jp header.i=@enjuk.jp header.b="A3elTUNt"
+	dkim=pass (2048-bit key) header.d=enjuk.jp header.i=@enjuk.jp header.b="NIcbCA9X"
 Received: from ms-a2 (197.87.13.160.dy.iij4u.or.jp [160.13.87.197])
 	(authenticated bits=0)
-	by www2881.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 63T9GYcI043681
+	by www2881.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 63T9GhfB043822
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Wed, 29 Apr 2026 18:16:34 +0900 (JST)
+	Wed, 29 Apr 2026 18:16:43 +0900 (JST)
 	(envelope-from kohei@enjuk.jp)
-DKIM-Signature: a=rsa-sha256; bh=4BTnd8GaWFqwK6bklZlSRXajgKdYiTs6LR3SRu4Lx3k=;
+DKIM-Signature: a=rsa-sha256; bh=sADltytHJ5kqQvPdJMi42YwYVBgGpDWYmDLr4N3QD4E=;
         c=relaxed/relaxed; d=enjuk.jp;
         h=From:Message-ID:To:Subject:Date;
-        s=rs20251215; t=1777454195; v=1;
-        b=A3elTUNtVD7FP++cQeuEuPv9KFt2PyeIIKrYzZ3C0coqe2wEDJfM0fXyWXH8eqtP
-         0GGlEnFAfnw64bFgwrmsYlTuqM0o2Rg6Gdu673g4s5tJezNt3KLA5wg0ahkeFlDJ
-         lcGNP65/SrCRfy6oZIt0H4QPoAm2TcsHSyMhineVZ0TDHMy751daAQ480clutTPJ
-         3aNLqMqVqwkZwPSFjI+xiaTGVNTg59dE5/ihoEEMMI6XPcb5UdVRqh+YUGyvPKjg
-         eect2DPyvBntv6ji0toYIkeBjIUaZ60rtYEav/Fi13OcAQk4VKLXJdvHi1L6CsVe
-         E+C4meT68Rru1flOa1iTPw==
+        s=rs20251215; t=1777454203; v=1;
+        b=NIcbCA9X5Z4kuTSwqtKJVv1FZlo6wKz5pwwOFDiZRbvAuz78/YGGIl0nKmyGJSeW
+         9crifLfrbhndHdBnkkI9oulrsV2GXdm3tNi5qDk+fDkiy+W8FFbJcCcG7/sbMf77
+         Y/bbG+dZgRv/CVkqiAa8h2Bcx8VtON3yIJsoS6u/PuzukRmpz/oLzsNOUelJDcw7
+         UdLnGIxNpzxLidRKo/ua6sanP9+B2lZWv6nMFQTQSHEwAaXqDVfc9ID5elVeJ2XQ
+         888MbfF62db8mieicJMgofTHR4a1tuD0k5RMRTULB7YNHldIr578/2dohqda20N2
+         5YQizySz05jQX1VEBUHR9w==
 From: Kohei Enju <kohei@enjuk.jp>
 To: netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -43,10 +44,12 @@ Cc: "David S. Miller" <davem@davemloft.net>,
         Jonathan Lemon <jonathan.lemon@gmail.com>,
         Richard Cochran <richardcochran@gmail.com>,
         Kohei Enju <kohei@enjuk.jp>
-Subject: [PATCH net v1 0/3] af_packet/tcp: fix late hardware timestamp handling
-Date: Wed, 29 Apr 2026 09:16:16 +0000
-Message-ID: <20260429091632.26509-1-kohei@enjuk.jp>
+Subject: [PATCH net v1 2/3] af_packet: use skb_get_hwtstamp() for hardware timestamps
+Date: Wed, 29 Apr 2026 09:16:18 +0000
+Message-ID: <20260429091632.26509-3-kohei@enjuk.jp>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260429091632.26509-1-kohei@enjuk.jp>
+References: <20260429091632.26509-1-kohei@enjuk.jp>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,35 +59,38 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
 Since commit 97dc7cd92ac6 ("ptp: Support late timestamp determination"),
-skb_shared_hwtstamps may carry netdev_data instead of a resolved
-hwtstamp. AF_PACKET and TCP could still read that storage as a ktime_t
-and report bogus hardware timestamps to userspace.
+skb_shared_hwtstamps may contain netdev_data instead of hwtstamp.
+tpacket_get_timestamp() unconditionally interprets skb_shared_hwtstamps
+as a resolved hardware timestamp, and can report bogus hardware
+timestamps to userspace.
 
-This series factors the late timestamp resolution logic into a common
-helper, then switches AF_PACKET and TCP to use it.
+Use skb_get_hwtstamp() instead of reading hwtstamp directly, so packet
+sockets follow the same hardware timestamp resolution path as the socket
+layer.
 
-Notes on SOF_TIMESTAMPING_BIND_PHC:
-The generic socket receive timestamping path honors it, but the
-AF_PACKET and TCP receive paths touched here haven't implemented that
-behavior.
-This series doesn't change that; those paths always resolve timestamps
-with cycles == false and preserve their timestamp-domain semantics.
+Note that skb_get_hwtstamp() is called with cycles == false, since
+AF_PACKET hasn't honored SOF_TIMESTAMPING_BIND_PHC so far, and this
+patch doesn't change that behavior.
 
-Kohei Enju (3):
-  net: introduce helper to resolve hardware timestamps from skb
-  af_packet: use skb_get_hwtstamp() for hardware timestamps
-  tcp: use skb_get_hwtstamp() for hardware timestamps
+Fixes: 97dc7cd92ac6 ("ptp: Support late timestamp determination")
+Signed-off-by: Kohei Enju <kohei@enjuk.jp>
+---
+ net/packet/af_packet.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- include/linux/skbuff.h | 11 +++++++++++
- include/net/tcp.h      |  2 +-
- net/core/skbuff.c      | 27 +++++++++++++++++++++++++++
- net/ipv4/tcp_input.c   |  3 ++-
- net/ipv4/tcp_ipv4.c    |  6 ++++--
- net/ipv6/tcp_ipv6.c    |  3 ++-
- net/packet/af_packet.c |  2 +-
- net/socket.c           | 27 +++------------------------
- 8 files changed, 51 insertions(+), 30 deletions(-)
-
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index 8e6f3a734ba0..e88bc3f1156f 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -458,7 +458,7 @@ static __u32 tpacket_get_timestamp(struct sk_buff *skb, struct timespec64 *ts,
+ 
+ 	if (shhwtstamps &&
+ 	    (flags & SOF_TIMESTAMPING_RAW_HARDWARE) &&
+-	    ktime_to_timespec64_cond(shhwtstamps->hwtstamp, ts))
++	    ktime_to_timespec64_cond(skb_get_hwtstamp(skb, false, NULL), ts))
+ 		return TP_STATUS_TS_RAW_HARDWARE;
+ 
+ 	if ((flags & SOF_TIMESTAMPING_SOFTWARE) &&
 -- 
 2.53.0
 
