@@ -1,87 +1,112 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4DC322A80D;
-	Wed, 29 Apr 2026 01:57:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777427867; cv=none; b=ZZq2XVAozshRRkwlhmJ/SuzIbSm/oEA4KCwxhPL7/p66/VUkjn5FkdmowbEfC4fuPsdOmSFzQfwiY0WyLT0T5ugu7aPdyMK5joGkTWFPsnZJ3dGCRZILO32HchEV3yvVjDvR8Wc6Ehk1+0xq1ZMUVyTuMOX1qz7sTxy5arT3SU8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777427867; c=relaxed/simple;
-	bh=1OCg6gv0s9a4rmryuF3WO72m1ZcTPRKGn69AF8kNNqU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O2QQzN7NU+UveQzCrfoUg/uE9TgZHzifNwnMM4FhMx06OUGVO+aSFDpqBi0mVZFD3ZdVwUiVAlZyMqvKL8n4mMuthJP/0tD72rxYLPGHlY7xYN0CUQvsIX9rtpdUfdiGRK7qxLw8uSQ2XrVdWN6S5cJnCzHksiBhY+LQjRwFP6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=cjZsd7oV; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2829E24A067
+	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 01:58:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.179
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777427911; cv=pass; b=SQrjvAIWYffFBSW7h1IJTH+XLizYHtud1hO4229gpEtJ9E7nT0quyT4RX8cFK3zv6xipRImkIK1GLhZ31rGioYQOCaN7zJebOQEl0uX3PKua69QkbeZ17ME/Jru8mTNzZG9Hoa6zBwL5eLP/aR2MYjzPOjG97wkkaDy5PwjEhXQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777427911; c=relaxed/simple;
+	bh=CDF4+RTCOAGouBrckQ9grX8Lmt3xq8cebQxQZaXsFQo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XG9nZNaVVdPlh9TCldX6dj4FU8OxoDCWoh17zqHubehfNnFYDfY2n7l46h56P31hQHWQ1YekOSwB3p+UpTY/P0i4ulqLYxJhxf36IixcocQgyLW5w+GPGPWGpnvhETk9aVCQH0K+1kfXtprgYyzLZD1+LZ8KTYRbD6/MuP+p+a0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=m/VoO911; arc=pass smtp.client-ip=209.85.160.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="cjZsd7oV"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=ABXuMMIgTfQ5OtNDHGIn2rIDcXtUvbW4R29/GTY4DW8=; b=cjZsd7oVat20nuCKlTwBoZA64P
-	xdGQiijMUUs9Pk4RZ5RACN3M8b9+/VuD/LxIKQCKIRi8sW1c8ONbDnvH6pMupRwfPRBSo1I0qpCSd
-	P0bvL+JeaDOvROwsLHIUyH1lO8uzq3/ZMcEcOiHOqTCam4zNnm+kiho/bFbPpUD+Z8hk=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wHuBH-000RqS-T8; Wed, 29 Apr 2026 03:57:39 +0200
-Date: Wed, 29 Apr 2026 03:57:39 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Birger Koblitz <mail@birger-koblitz.de>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-usb@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Chih Kai Hsu <hsu.chih.kai@realtek.com>
-Subject: Re: [PATCH net-next 4/4] r8152: Add firmware upload capability for
- RTL8157/RTL8159
-Message-ID: <d9d69a5a-be6e-4566-9ec3-e742f745a530@lunn.ch>
-References: <20260428-rtl8159_net_next-v1-0-52d03927b46f@birger-koblitz.de>
- <20260428-rtl8159_net_next-v1-4-52d03927b46f@birger-koblitz.de>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="m/VoO911"
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-50e5c7eb565so106471691cf.3
+        for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 18:58:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777427909; cv=none;
+        d=google.com; s=arc-20240605;
+        b=TK3Sl3Y8NGvKkUIAfOZ9oEtAzydOWuLm7a77+fX5Q07ix9nb8Ov5YeyA4tMp2+Dm7M
+         AqVF4bXA293B2XT4JKErefVmgExmLTpuGSPfzT4t4V3AAtfyJw9zypHr/XEbtU7/0yAh
+         sdYMrXg4RtY8rU3BW9dZxcxCGuiXuwQtUySxEfjpDJEpCjlwyuB5MQtF7vhgbffXk5jQ
+         E+V4VmPiJ/2qvQJ5+h6bFxJFuMYFii3FKIFwbDEwZ1FBQOsPrxkx7P2KDYCUOEV8JFw2
+         uR/aVasIOX9XGjENm2BLBjBv5nTwk/njYM6IdQ+sZVWmDbcXBVdc3XBybW970BLmDvof
+         3kEQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=CDF4+RTCOAGouBrckQ9grX8Lmt3xq8cebQxQZaXsFQo=;
+        fh=7hw9xYi+AZck+u7d3AnTyj7+Ey9E6vG5lm5LHq3ywp4=;
+        b=AmkIGrrsvAGJTsyTaZq/M6IS8yV+2af34oRoEA/boxWY0ijeW1a4uA4QmOghgvDZ8K
+         I/SIDPr96Y2DtNauNos2BZqmuAhds5tTPUzpphtNqQ/aJmWpF9uoYUZX8lY6YXwGVN6k
+         FLdR3yHswaPOQdB/TOAALo8OqHqfV18p7XwbFxns0i+cx+Fg2QbfH48QJ0PX7hMTn4RT
+         HfDtSNjlIo1y2TaDFWgOb052bFVUgLV66NSlpTkUmSsAnfV7ebjKL9qlRyvOTFTaz+Mm
+         7lnC+PADYmjs54ckH8+Tj5ZY0FjmLuuaThv6BgKgMAy6ng83WczlCjPHtjSTzGpzrM72
+         IVjA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777427909; x=1778032709; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CDF4+RTCOAGouBrckQ9grX8Lmt3xq8cebQxQZaXsFQo=;
+        b=m/VoO911B3KHSkj0aj1fkuE9LipOIlPI1MtELBAHlGNthqpDDaPdf4r8GxahoiIrL9
+         iXxSHxkdzXwmvIGnIJUy2UWNTy2u8/vVlSRZDR9BD4+wzeq4ayTSzKjwhzM97NjuifN6
+         ipnmH2rcJcGgCulKa9kiK8E+Krkta2u+jkBgRNjrJGD5CrUUbGohFOLtX+Fv8yxbescu
+         UBGJ5+4W+8X472O28Hwi4C5wS94g+WNBFHVNLQr1kjAc5BO9/EIm1OCa+Lf5xCZEkJsG
+         WH3JABI/9PGxpdjAQuOVrjNHCC0uPQiTvKkeaxURgYHudSbxRhcOA6qw3AO6TY9vtmLr
+         EBaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777427909; x=1778032709;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=CDF4+RTCOAGouBrckQ9grX8Lmt3xq8cebQxQZaXsFQo=;
+        b=aqLRfAxQr5nwUQlLUzGq7qMTKK15nybXfKeXH3RvM4QhqUpStHyrK9a6Y+qdCIW43K
+         XFd4JlRvDmmUzRsNOLAi/V0jrnPtD0iUszVHrcgbYnRzqNV2vxpAO3+O/UrFJvlTDFQS
+         8JDmZdPNCzAtPdPuvlb5S6t1u1Mmd8gfBU2PWMlKtoZMxkzDjqtnEtFbQs8glLNhLT8S
+         +EPtKWteI0uRoOlSjxYd4tMo62DuaLuWuk/iQIyopm9z7vA7yPjbxYxzlPODJjop9vnZ
+         71NY0KZKHGNdY+LWhWVJocJM3AZoq/+xD8Jnw1DI2wHe6f8W1fqOvdSH+9TMCSjz3Skq
+         vQjw==
+X-Forwarded-Encrypted: i=1; AFNElJ8XBtaCQ0/qm/C9twtAwaZmwx1TrE0ZbQ9VPmd4u3GG67+j2LOE5AdS2FtOrVIoLObTQ+8jAng=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxkBC+lC5pvCqc7vsRNB/VIXttSGyxgw9RY8iar0HbtQw9iJE2A
+	8+lbf+1lHH7i0wxrRaXNXs394SUAfZYTXq4TFs/u3CBfUaeksPV1BJ6goYqtTXLdbwDko0Xo9BN
+	hBOZaPAqX+CIduYoFwa7lnX8zkRjT2wwVWHrPZPw4
+X-Gm-Gg: AeBDievvVmPlNcO8/ofKRApvmyu+2bvkUVbD46P6BnCU/IUYRr2EfCuOGhFBvlL7pOY
+	HG+jblLxI0z1cv5vJSs50E4ky37RntS3gNHcn5POOsyonQGJLMo7Zhhj1dJiQJV4Xeu94UvlLRD
+	IgieGqp7JuhhoONgQTu/V4w4FTtAUkHIa9dQ7oaGMZethd6B8N3tXclZtArBRYbZOXXgWRH0HIV
+	JAmxTlbsmg0msD3d6C7Yr6lVehpPW2c5xb3+eNNt5mV+HI7Bb4Qo7RMG0Otv2Fr5KcLwacqJT1r
+	HV63QS63sGubRU3ZPPk4s5meafcjf+lY/kWnvJuUi+1em1Qwf/J7PmXvQqQ9fmvzoHehCB8uc7Y
+	PlyPddjYQBg==
+X-Received: by 2002:a05:622a:5c95:b0:50d:db76:55cd with SMTP id
+ d75a77b69052e-5100e1eadf1mr79444781cf.52.1777427908497; Tue, 28 Apr 2026
+ 18:58:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260428-rtl8159_net_next-v1-4-52d03927b46f@birger-koblitz.de>
+References: <20260429014913.1043836-1-edumazet@google.com>
+In-Reply-To: <20260429014913.1043836-1-edumazet@google.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Tue, 28 Apr 2026 18:58:17 -0700
+X-Gm-Features: AVHnY4KI-PjVKn3QtB3Cd_LiHxZ5t8jlwPxpTel98pQWUjIawOHeKaZ15291WxI
+Message-ID: <CANn89i+zJ_pWXoz8bTgaEcB86gh-ocg8kKjz5jWFi9iKd99ftg@mail.gmail.com>
+Subject: Re: [PATCH net-next] tcp: add sk->sk_synq_overflow_ts
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 28, 2026 at 05:47:24AM +0200, Birger Koblitz wrote:
-> The RTL8159 requires firmware for its PHY in order to work at
-> connection speeds > 5GBit. Add support for uploading firmware for
-> the PHYs using the existing rtl8152_apply_firmware() function
-> in r8157_hw_phy_cfg() and set up the correct names for the firmware
-> files.
-> 
-> If no firmware is found, both the RTL8157 and the RTL8159 will continue
-> to work.
-> 
-> Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
-> ---
->  drivers/net/usb/r8152.c | 15 ++++++++++++++-
->  1 file changed, 14 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-> index 08cc3c1dae0facb2400890ba4d093c97ed56d40b..56e00fe6f32405ce753df3e03e54a7daaf1a29ac 100644
-> --- a/drivers/net/usb/r8152.c
-> +++ b/drivers/net/usb/r8152.c
-> @@ -4663,10 +4663,11 @@ static bool rtl8152_is_fw_phy_speed_up_ok(struct r8152 *tp, struct fw_phy_speed_
->  	case RTL_VER_11:
->  	case RTL_VER_12:
->  	case RTL_VER_14:
-> -	case RTL_VER_16:
->  		goto out;
->  	case RTL_VER_13:
->  	case RTL_VER_15:
-> +	case RTL_VER_16:
-> +	case RTL_VER_17:
+On Tue, Apr 28, 2026 at 6:49=E2=80=AFPM Eric Dumazet <edumazet@google.com> =
+wrote:
+>
+> tcp_synq_overflow() and tcp_synq_no_recent_overflow() are currently
+> using tp->rx_opt.ts_recent_stamp to store a 32bit jiffie value.
+>
+> Use instead full "unsigned long" storage, as an union with sk->sk_stamp
+> which is not used by a TCP listener.
+>
+> As a bonus, we can remove time_between32() from include/linux/time.h.
 
-Is that a bug fix?
+Please disregard this, I sent a wrong version of this patch.
 
-	Andrew
+pw-bot: cr
