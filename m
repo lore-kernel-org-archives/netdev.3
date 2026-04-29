@@ -1,62 +1,65 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C193723C50A
-	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 01:28:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC97623ED5B
+	for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 01:28:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777426106; cv=none; b=HzbLcg3rD1ETwRxGKA+dUZVYtJe+aPdizVv4UNQBDdomhWHqogYxOvJk36Q1+BXbcSORqlUqbrsnzt67ulkF8jNQhazvjSol5lrydP0ygPw7mRZ/QAWb6Q9CVO2JEKFccTOZy/2Wne+8BZYbyjog8N73eWIQNpF6Ii/yDw3EeSc=
+	t=1777426107; cv=none; b=obh6Et+HxOKTm5khCxMXW0P8AsBngxeCe4mp7tYKyE+ZgqA2PfRUnhzhIQfIN1XluHf4Cy5qtYwHxemcSv1hkAoIAD87ArKyVEgZWIT/m0UmScR+7eB2n6yeQvTdBzuY/0ZmjeKyfH0I0uux7p4eI4hp/wZc1C8NB0y+smxfgzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777426106; c=relaxed/simple;
-	bh=zmJwPP5H/36Qy9Yn78dY9bAnPw5MKgKV3aHtvdWwKAI=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Zh8TppM9ddPqW82FAtkKrt9bURRXvMGnl4kTt7el8zuxvbqKlxqQ0F0HhQlQoTIynr1JZGORaeSXPIBKpYTgC2Sm3LqsyBNIWsaBgw+VUBjfbOnxGRU/JLmcNAFPOAde9pf0dVzgPb5KCuUe6jHkLYZCfKniloxE9QLJeYNuGag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RdC14iyG; arc=none smtp.client-ip=209.85.216.74
+	s=arc-20240116; t=1777426107; c=relaxed/simple;
+	bh=xGCwW9AJ00w0E9A81uL8RSVHIPPhwZ/YeQ2rEJ++s8I=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=FgJfWPesMDUUobRdphuiggmuqttQUc4yGOLs9CRisL+mDBMqU0by2rE87ZSx9Tigr6WzJPrdX7nBHyfpAlY6SI0gxlQesbDtAbNy7WoAIYfIUVfSBCB0HDKU2377j3Pig7IcdpjhpDyb5LKm2GZP69DvlCsVTx1H4p4RyGVc5/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NTZrDMnw; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RdC14iyG"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-35fbb5779e8so12626452a91.3
-        for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 18:28:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NTZrDMnw"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2b2e91add2aso22681495ad.1
+        for <netdev@vger.kernel.org>; Tue, 28 Apr 2026 18:28:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777426104; x=1778030904; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=mu0FUvPadnlRyYwD6jTUGg5RqUrWd3I8LqUbgKPP4HU=;
-        b=RdC14iyGtx35EFv93IjHTPZZwdTJTPn+YMRkaHamWdC2FzcMezqF7jvMXEDFAKMfxA
-         NWmQs/ywswaFdJRUwo7+8tbnzdykYQbzb4XifSCG4Ks+Dp8gft5Nk6+pbGyqxwuC/l9d
-         kTFJNHa9dfhrFypsGUPDHMyQ3C2wfx/rvOPkIiohThi4WteHkEAHcaerZnfB9+Htb0q9
-         ydlDSu1c6rHwvHJ2oNyPX7a3mt9nrpHbkhiKQTCV0fH8DK5xF1nIq+SCd6qugHJx9277
-         9gO+U6aosrCdRskINg106gI/6v/DZv1LAiBpABGo7H/wSy9clkExdprSOYEaPV1J7TpQ
-         zYLg==
+        d=google.com; s=20251104; t=1777426105; x=1778030905; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=B/sqZJ2nakkLZrxrJSKax1gOUohwsZLRlvLL9dCFNUk=;
+        b=NTZrDMnwap6d8k5krbMSUDLKYe8Jx4JvAplxIKNJPhnkS7ZN7ApdUbQRcbFu+7yI9A
+         kOwNUFQcOiHCq3o2U7kTALKbH/zWad4+n006f24obW/0X3KkrQKXGYrDWZRCRTLD9zGu
+         KbXncm9ManJsiP7GY7U5vyhNCk1FK1KXwhIz4Oh46vIknBd+p/p5TP1jU1S1x3zxA5vm
+         hANvn8AqaRVsqyzobh0ThTykRQ0zYShh/T1vIvr8ZR/WhWmvpYFKcUZANtDGKTtF9/kI
+         RF2O4I58NyR/ECbFpmUz6coy5nIg35vmdTH1R7mlywz7hsQ0XOsOzAkz6xRCmSOGABVX
+         mvYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777426104; x=1778030904;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mu0FUvPadnlRyYwD6jTUGg5RqUrWd3I8LqUbgKPP4HU=;
-        b=HuDR6ZTTsYh4cT01fRnS/Ut62ApgHmavKm4wmxUMBG26+XGjbKHuPYEfgY9/nMJak8
-         llw5Vjmg3c7PeO6ktmQSZGpfpWACArArNT7NXHOY74P14kEuIeeIMmCnSs4oIatFSkIK
-         HkwR7/7QT33MRhzxqCVmizT1Hjf//M2TA2nK8W3hFAPoCt/G2mGwPFwh1PLsU9voHqYd
-         kVDwMsvYPY3tBG1MxDahu0ttnhLmbp30WYD7TIHAMKEIWrGEbeuyUabGL4zQ/XwS69uU
-         YVJxBN0cnCAenqjzEKMEHkco5OpqbxiiYnMSgfVL/Luk58PMLrZUF3mfIPlDZmwGRpqE
-         bGdA==
-X-Gm-Message-State: AOJu0YxRdKO1CqzBf5mhSr8dBAaRlWw2MbZwh2eRVyafbKkXStzhvZ/4
-	n12CCu1IUrny6Gxzd7xiW7skPllCsJ9vzEowgeCrVQOmY0ILbzgHTIYO5X+iIzfJay9IhfKYpGI
-	5kvHkOCzTT3KhjRAcc7gERomd0Q3aNiChf2NSE4speOcHE7lrWf5UUgXdKRL4up0zZrgWMisHkE
-	3QsBlJF9iXDe7DtlVEZTPzNHHQxTmK7mccJiu6bDmtsGcsSDMy7a0FsWTac6GyeHY=
-X-Received: from pjbga9.prod.google.com ([2002:a17:90b:389:b0:35e:5ac0:1246])
+        d=1e100.net; s=20251104; t=1777426105; x=1778030905;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=B/sqZJ2nakkLZrxrJSKax1gOUohwsZLRlvLL9dCFNUk=;
+        b=FolyC2Ngy9+n0FV5IH0+1Y054xWxGNBSk6SEr/0IuhqpoDB94BYYgytZQGCw73ujYV
+         zVeNIbfhsLrvwVPYHJpZlshxi4UFer7xuTSYG9DiLj/H40ztf8sHU8L3G/72XFG1DNh2
+         4K6mLK4uV5sfFFemamEEorhi8VRcIV3t+q/AVZNBlYGNE8ywUwMRDAWjhjKjyA4Zor0S
+         wQ2vJYBeOpz0xx6Hrj4EoBkMKmUKQcdH3NkOtTyQxyIDP9A/QGmQ3j95QHKJ4lFLhAC9
+         jlL3WZxnlZ+5aYcONyk1pKhNyhrWWsIbo9tGsTw70FeAWJVBOnW8fiUK3kJl8bIO/RrX
+         NvMA==
+X-Gm-Message-State: AOJu0YyjHGfcaLPwmIum2M+il5aJvSSg/U4T7Bf5yekDvDZQscraqr3Y
+	IyBEex9PyhFU3wFbscSEVsLqlWTnBre6DXt5sn7XGC7kIsEy/8WX2Z7sK7gaNZI/ZdKUrh8Xt1t
+	tKHerZKXn6TviHlPgM22bgzFFSpg974RbayK25AMjFbl7fBtBW8ueM2rjxHALI/tq9DI2hdcAJq
+	3H9CS1Q0I5dOyVqV8A0XE7de9CzzTLEZ3L6dPtI+S5uK8S13hyFdW0Wj3GgesNDEI=
+X-Received: from plbkk13.prod.google.com ([2002:a17:903:70d:b0:2b2:506e:862d])
  (user=hramamurthy job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:562c:b0:362:f860:f9ba with SMTP id 98e67ed59e1d1-364a0ae65c7mr1771280a91.1.1777426103485;
- Tue, 28 Apr 2026 18:28:23 -0700 (PDT)
-Date: Wed, 29 Apr 2026 01:28:16 +0000
+ 2002:a17:903:1a2b:b0:2b0:9101:1b77 with SMTP id d9443c01a7336-2b987391b1bmr17075435ad.17.1777426104885;
+ Tue, 28 Apr 2026 18:28:24 -0700 (PDT)
+Date: Wed, 29 Apr 2026 01:28:17 +0000
+In-Reply-To: <20260429012819.3102675-1-hramamurthy@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260429012819.3102675-1-hramamurthy@google.com>
 X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
-Message-ID: <20260429012819.3102675-1-hramamurthy@google.com>
-Subject: [PATCH net-next v5 0/3] gve: add support for PTP gettimex64
+Message-ID: <20260429012819.3102675-2-hramamurthy@google.com>
+Subject: [PATCH net-next v5 1/3] gve: skip error logging for retryable AdminQ commands
 From: Harshitha Ramamurthy <hramamurthy@google.com>
 To: netdev@vger.kernel.org
 Cc: joshwash@google.com, hramamurthy@google.com, andrew+netdev@lunn.ch, 
@@ -71,81 +74,84 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: Jordan Rhee <jordanrhee@google.com>
 
-This patch series adds support to obtain near-simultaneous NIC and
-system timestamps with gettimex64. This enables daemons like
-chrony and phc2sys to synchronize the system clock to the NIC clock.
+AdminQ commands may return -EAGAIN under certain transient conditions.
+These commands are intended to be retried by the driver, so logging
+a formal error to the system log is misleading and creates
+unnecessary noise.
 
-GVE does not have direct register access to the NIC hardware clock, so
-it must issue an AdminQ command to read the NIC clock. Due to relatively
-high latency of AQ commands (~100us), it is necessary for the hypervisor
-to sample the system time sandwich inside the AQ command.
+Modify the logging logic to skip the error message when the result
+is -EAGAIN, and move logging to dev_err_ratelimited() to avoid
+spamming the log.
 
-The first two patches pave the way for the PTP implementation by
-quieting excessive logging and refactoring an existing routine for
-thread safety.
-
-This table shows a comparison in chrony tracking statistics between
-the typical implementation pattern for gettimex64(), which is to call
-ptp_read_system_prets() / ptp_read_system_postts(), and the
-implementation in this patchset, which is to use the TSC values from
-the device. The RMS offset is nearly 4 orders of magnitude smaller in
-the chosen implementation.
-
-|                 | TSC from VM           | TSC from device (this patchset) |
-| --------------- | --------------------- | ------------------------------- |
-| System time     | 0.000000005 s slow    | 0.000000001 s fast              |
-| Last offset     | +0.000005606 seconds  | +0.000000001 seconds            |
-| RMS offset      | 0.000009020 seconds   | 0.000000002 seconds             |
-| Frequency       | 4.115 ppm fast        | 0.362 ppm fast                  |
-| Residual freq   | +2.515 ppm            | +0.000 ppm                      |
-| Skew            | 18.480 ppm            | 0.001 ppm                       |
-| Root delay      | 0.000000001 seconds   | 0.000000001 seconds             |
-| Root dispersion | 0.000081905 seconds   | 0.000001169 seconds             |
-| Update interval | 0.5 seconds           | 0.5 seconds                     |
-| Leap status     | Normal                | Normal                          |
-
-
+Reviewed-by: Joshua Washington <joshwash@google.com>
+Signed-off-by: Jordan Rhee <jordanrhee@google.com>
+Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
 ---
-Changelog:
-V5:
-- Reformulate retry loop in terms of total timeout instead of retry
-  count (Jakub Kicinski)
-- Link to v4: https://lore.kernel.org/netdev/20260406234002.3610542-1-hramamurthy@google.com/
-
-V4:
-- Call out change to dev_err_ratelimited() in patch 1 commit message (Jacob Keller)
-- Ensure only one log is emitted when command returns GVE_ADMINQ_COMMAND_UNSET (Jacob Keller)
-- Link to v3: https://lore.kernel.org/netdev/20260403194427.1830609-1-hramamurthy@google.com/
-
-V3:
-- Take system time snapshot inside the mutex
-- Return -EOPNOTSUPP if cross-timestamp is requested on an arch other
-  than x86 or arm64
-- Fix initialization to only register PTP clock once all data is
-  initialized
-- Link to v2: https://lore.kernel.org/netdev/20260326224527.1044097-1-hramamurthy@google.com/
-
-V2:
-- Fixed compilation warning on ARM by casting to u64
-- Link to v1: https://lore.kernel.org/netdev/20260323234829.3185051-1-hramamurthy@google.com/
+Changes in v4:
+- call out change to dev_err_ratelimited() in the commit message (Jacob Keller)
+- remove extra print when adminQ status is GVE_ADMINQ_COMMAND_UNSET (Jacob Keller)
 ---
+ drivers/net/ethernet/google/gve/gve_adminq.c | 27 +++++++++++++++-----
+ 1 file changed, 20 insertions(+), 7 deletions(-)
 
-Ankit Garg (1):
-  gve: make nic clock reads thread safe
-
-Jordan Rhee (2):
-  gve: skip error logging for retryable AdminQ commands
-  gve: implement PTP gettimex64
-
- drivers/net/ethernet/google/gve/gve.h         |  12 +-
- drivers/net/ethernet/google/gve/gve_adminq.c  |  27 +-
- drivers/net/ethernet/google/gve/gve_adminq.h  |   4 +-
- drivers/net/ethernet/google/gve/gve_ethtool.c |   3 +-
- drivers/net/ethernet/google/gve/gve_ptp.c     | 316 +++++++++++++-----
- 5 files changed, 267 insertions(+), 95 deletions(-)
-
-
-base-commit: 790ead9394860e7d70c5e0e50a35b243e909a618
+diff --git a/drivers/net/ethernet/google/gve/gve_adminq.c b/drivers/net/ethernet/google/gve/gve_adminq.c
+index 08587bf40ed4..a65b14835aa0 100644
+--- a/drivers/net/ethernet/google/gve/gve_adminq.c
++++ b/drivers/net/ethernet/google/gve/gve_adminq.c
+@@ -416,16 +416,10 @@ static bool gve_adminq_wait_for_cmd(struct gve_priv *priv, u32 prod_cnt)
+ 
+ static int gve_adminq_parse_err(struct gve_priv *priv, u32 status)
+ {
+-	if (status != GVE_ADMINQ_COMMAND_PASSED &&
+-	    status != GVE_ADMINQ_COMMAND_UNSET) {
+-		dev_err(&priv->pdev->dev, "AQ command failed with status %d\n", status);
+-		priv->adminq_cmd_fail++;
+-	}
+ 	switch (status) {
+ 	case GVE_ADMINQ_COMMAND_PASSED:
+ 		return 0;
+ 	case GVE_ADMINQ_COMMAND_UNSET:
+-		dev_err(&priv->pdev->dev, "parse_aq_err: err and status both unset, this should not be possible.\n");
+ 		return -EINVAL;
+ 	case GVE_ADMINQ_COMMAND_ERROR_ABORTED:
+ 	case GVE_ADMINQ_COMMAND_ERROR_CANCELLED:
+@@ -455,6 +449,16 @@ static int gve_adminq_parse_err(struct gve_priv *priv, u32 status)
+ 	}
+ }
+ 
++static bool gve_adminq_is_retryable(enum gve_adminq_opcodes opcode)
++{
++	switch (opcode) {
++	case GVE_ADMINQ_REPORT_NIC_TIMESTAMP:
++		return true;
++	default:
++		return false;
++	}
++}
++
+ /* Flushes all AQ commands currently queued and waits for them to complete.
+  * If there are failures, it will return the first error.
+  */
+@@ -482,9 +486,18 @@ static int gve_adminq_kick_and_wait(struct gve_priv *priv)
+ 		cmd = &priv->adminq[i & priv->adminq_mask];
+ 		status = be32_to_cpu(READ_ONCE(cmd->status));
+ 		err = gve_adminq_parse_err(priv, status);
+-		if (err)
++		if (err) {
++			enum gve_adminq_opcodes opcode =
++				be32_to_cpu(READ_ONCE(cmd->opcode));
++			priv->adminq_cmd_fail++;
++			if (!gve_adminq_is_retryable(opcode) || err != -EAGAIN)
++				dev_err_ratelimited(&priv->pdev->dev,
++						    "AQ command %d failed with status %d\n",
++						    opcode, status);
++
+ 			// Return the first error if we failed.
+ 			return err;
++		}
+ 	}
+ 
+ 	return 0;
 -- 
 2.54.0.545.g6539524ca2-goog
 
