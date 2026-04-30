@@ -1,238 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com [209.85.222.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0B9F2BD033
-	for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 15:36:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777563377; cv=none; b=rxg5cPU4j5BLuZYr1MyMfKW+v63D630MRAoYyBopKs1E1JrtdTPI9NGilX7yzC14SnPCk7zc9WDd0CjwA9R5W39ZjAc385pzO+W/5am//XzC/rbLHJuUhY7HHfV6pNlhjcnpynKggI2n8TMhBf+groox5Qc3MKr5VsbFfe8wbjg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777563377; c=relaxed/simple;
-	bh=b/ndH+AfS4jQYXgy0E5X4wv8eudyYsbdi6SXA45GkpY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eHPavBOgMhO33Sqi3ENUhvn82wtu9hyf0+45zhOkIy2aZAybbwva5K3dZWXRx3MzvDF+1T1yfYqPdoF6zStZSuH/z1mFMua6F5WaOZMJ5I93ilnv22QZk9mYzsRJ79f5/osj7U7BHif/+4Mu/UMmtH2+T2xKTwsvFHSHYkqtpj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L91qC2au; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B3C031E830
+	for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 15:37:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777563426; cv=pass; b=F7avLTr5qOBwdCvj5iJsGPompAz/WN9FS6FW3uAWgy8k1ezFQy1xeXxXVtSoEXG+en/HtI8UVGCj5kAcOdGG/53gSSK/nisjfzuxCIvQ5U7qzsVlCMdtCazW0NEEZIJPCYiHXW4ZEqdzPticlKsH9buTpzyx8ngVnmrlUjQagP0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777563426; c=relaxed/simple;
+	bh=510+nnx3c418bRyfMTOsuP/0znWHRwewHOZyQyizsQg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bIN6hQd6twoHaG4pQscYgAJemZWcHZc2ekTzLWbv7ITOPGdPRID81Bf0a2qTAecADbTgJQ0hG6x1ZhLYHT+sSl3AbxF0DGVjje/FmLb3cMsx9ODmbdTyZvQwnscD+M0Kw8WFWgBJr7alpX+l7lg12OGrHzhUsV9neYslCAlEZnA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Jj1aD3nj; arc=pass smtp.client-ip=209.85.222.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L91qC2au"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6283C2BCB3;
-	Thu, 30 Apr 2026 15:36:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777563377;
-	bh=b/ndH+AfS4jQYXgy0E5X4wv8eudyYsbdi6SXA45GkpY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=L91qC2aubWB3S6kaBRaW4TNHuvODxGT5it3fC5Z2nRbSTLs/UpMwbbf36HaAij+Q3
-	 GjG6WXZX7QJAWkOshZ3C+1mMKGKBvC6Xe6tBfn2722XINuvqmdABh9B7XgfC5/Remf
-	 hf64C5n5Wt2TAjtknS8UIpe3DhSKhExX0ugmUGRh1nPFaCXnhbP3NUvNHyT+VDvTy2
-	 76PizSoZezKrFBCss+PdII0gP7lS1x1u2qZ53jMXu//PFGrBMYPoqV5EuREfIbvQJn
-	 730niBhjuW52YXntyE/t6J9CLM05VSWu1L2fYecG+TlOnflygMk15SU8zLRKR3wvGT
-	 Q880d5IcTZUmg==
-Message-ID: <18134b6e-8944-49f4-9bb0-2903aa00d28a@kernel.org>
-Date: Thu, 30 Apr 2026 09:36:16 -0600
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Jj1aD3nj"
+Received: by mail-ua1-f47.google.com with SMTP id a1e0cc1a2514c-94e578a0fa5so640943241.0
+        for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 08:37:04 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777563424; cv=none;
+        d=google.com; s=arc-20240605;
+        b=fzTDCTRWJ1HhlIICObXwb+fY9Q7+bC377fqr2CoaJFIc9QTk613VV2ePX6i8/vyPtE
+         1Sswo5W3Qvn2wEHjPSUiksqis6uzwRQrZ7HmWNIN7r6cwz5tIsFPI8Tcso5bCzudrCTL
+         6ST5xA8ItaJ8DUIN8G9sEd3rgABwJxO+o5dsHoraY0C42BWs4OPyi09aA8/ix4HD3p4k
+         CphKmB6w1EcKu38fMdDZr2GwuuVdY2UIuKpJmZaWJItOrCi+85+/akIObX9RW2uP9wfE
+         3QqBF65PiF583zZgZI3HVc/OJClE8mYwBDhVsCVaeyYMN1sUZFW8nqHJmO+/R8QW/S1z
+         +5uw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=x1RKOP4VP3d7J5yz+d/pjS5o/pOR8N4/xyq7WLkcEKo=;
+        fh=MnVumcB2DZGFZ03rgeYtUN5lMq/ZbY+AFBtx841kNgc=;
+        b=bJ7LNdft8nGOJJZRn2DJ+TkJR7f0I/ONA5PctBN7JApXXENnDQuSsgDTOnKMz/zQFH
+         zEFA+H6K00cnh0rEnSBiPUqIYSyqV9VTI02pzVPpfYemqSth4HDQpbxLLzhhkckNctBf
+         PIm1qGlJvx2Yump7x5sb+iSd1KpiccxMLMGArUeEs5czZ+PF5Arru5KhtPv3NpQU1Dly
+         Ab1GHzYn6fEpfA0nZa6pIhl8SC9cS/Lmj3JW/jLeQdlEsQPcJkoSJyeQeqvhH87lz3h8
+         XU+/+cBoFWV/HblaM5pHg0uzSW05KWnqpTVFdoM9aSE3WGdadj3MoVoZKnRTswYyKwZN
+         yG4w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777563424; x=1778168224; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=x1RKOP4VP3d7J5yz+d/pjS5o/pOR8N4/xyq7WLkcEKo=;
+        b=Jj1aD3njS5r/rIAgNzHBidUPMHQDMa/8NP0TE/Ds33yHuTEMC3qV5dxrH71Ircpo2/
+         +AfxIpzb16xtzE/AxSF78EEKNq/CnULAIGAPZWuJlFc4wXTDkg3GZEjcTMEmL7q0sxnU
+         0HGCuLbIGj0Nmi8NRdx1KhaA7+aHXuPsFx8OqXQNXAQCB+Vae5U/4cG0YUJgaElCif9S
+         Y6S2k7w7TWADTkkRn1HDUdXAz9eXLSa9PaW1ahKGLHrdGGOQ5su6ZD66ufg1UYRAstxc
+         tC4HHYSji8HPtwbMD0rwgT1tlxgTojWJUn/CCyKyNP5SLciCdzNuMICF10KZ+2+ZcyQW
+         p3dA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777563424; x=1778168224;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=x1RKOP4VP3d7J5yz+d/pjS5o/pOR8N4/xyq7WLkcEKo=;
+        b=pohLmAYeftdMatFM7xf2yU99EZxZxEPCXXawZgzsDZ9EG8Km/iqwIFQ9fIQq2LPvgC
+         oX44qme0ArshG0jZjFiSbX8QcwhrUh+CGMfcuHyBNeAiybnyshx5rz+QEKTJG7Fn56B9
+         tvTW7dm0l5BDkjFu/S9NJtj0RyEOmcHl+5uRzvBWAdd7lXdfVhwEDQZOmQW/fJXaP7SW
+         mquerdym9x/iV7ZLs5kBTIbNNBM/1MkDgVe5JVwaenxUobjn4D88t+FBt+VtBnpI1Y/Z
+         yScrAy8j6ZiZs1Qp2fQAqTdnx0OW5eCMJ7T20NXFhjwMKCApzV01tUcl3RDymEhTNhKZ
+         Q57w==
+X-Forwarded-Encrypted: i=1; AFNElJ/77Ra06+GCsXpUsr4qFlZMlEsqMnzfjaGKZhWkjzNBzdPGPrhw14Cmeh1wVd98BJvPlPtimtw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YziRYx7MNUvPlsRvgmWGiTdUs4EAvCic/viIz6mDKSAbb9q1qQo
+	kxEmPBoAwM4mk6WF8UEbGBlKbEkevd8NJtXe5ERXt6IfJJlOgOOK88M11Iju2qSl4FoJS977RC+
+	EA46r+US/pcHQ9B6Ex0NgGn8GXRUU6Bw3mz9HrXIIZWvzNRXkwU89YKJ3
+X-Gm-Gg: AeBDies8/DwtR5pVq4P7iHB2HLorUIKl53lyrWTcnLzFph1XJjXBjZkP89S+wcqfY2y
+	j1kZKbfYq/0VdgHcQnpIWbAjXFwb7IcidHVhfvUZoC24Lm+RN8I4nZ85WvptwEKuOX4NwUs9cnI
+	6mz3vU3Ptfxih+9em3xFChWZj4UyEk1Xpbvc7MN3WiHkjjmuhj3bx6NhuChNKBRNe3wVJ9UKQPv
+	VeGsUUYPbwhwwzrnwMXcrojEeTLHuVSa+joWjEsmjYXvvDLgC8JMQXyPG5VSD1/xu2+N5KpAMr7
+	APDaR2H4hhHvp9I/rxyV2gPDy9K3l9r2+Q/8Bql3rep8k16o54JoZJkaOGDg5MhAj/K+wwGDbaM
+	At0Wtv9xTNpC+qmxnvgtEyqwEW0TqwcDBZPUnsLPO
+X-Received: by 2002:a05:6102:2b93:b0:5ff:cb2c:a043 with SMTP id
+ ada2fe7eead31-62ad1d3e0b7mr1964048137.2.1777563423337; Thu, 30 Apr 2026
+ 08:37:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iproute2-next] tc: use ll_init_map() only when needed
-Content-Language: en-US
-To: Eric Dumazet <edumazet@google.com>,
- Stephen Hemminger <stephen@networkplumber.org>,
- Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
- eric.dumazet@gmail.com
-References: <20260428082851.3240821-1-edumazet@google.com>
-From: David Ahern <dsahern@kernel.org>
-In-Reply-To: <20260428082851.3240821-1-edumazet@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260427081953.364819-1-edumazet@google.com> <6e00eaa5-a4d7-45dd-9d90-fb319b76c9fa@kernel.org>
+In-Reply-To: <6e00eaa5-a4d7-45dd-9d90-fb319b76c9fa@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
+Date: Thu, 30 Apr 2026 08:36:49 -0700
+X-Gm-Features: AVHnY4IqHXIxB-ED2RO9MpZRTMiAoy-s6nLq0Fp5f9xarmAhj0jFIwB7lArMlhU
+Message-ID: <CANn89i+VmgMqcte4GgBBF7+rtXUzX-=k1hYY6T0=xsj-Sm-=_Q@mail.gmail.com>
+Subject: Re: [PATCH v2 iproute2-next] utils: add fflush_monitor() helper
+To: David Ahern <dsahern@kernel.org>
+Cc: Stephen Hemminger <stephen@networkplumber.org>, "David S . Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Jamal: waiting for your review ...
+On Thu, Apr 30, 2026 at 8:35=E2=80=AFAM David Ahern <dsahern@kernel.org> wr=
+ote:
+>
+> On 4/27/26 2:19 AM, Eric Dumazet wrote:
+> > Some fflush() calls only make sense for monitor programs.
+> >
+> > For other cases, forcing a flush is expensive.
+> >
+> > After this patch, ip, tc and ss are correctly buffering most of their
+> > output when redirected to a file.
+> >
+> > Signed-off-by: Eric Dumazet <edumazet@google.com>
+> > ---
+> >  include/utils.h  |  7 +++++++
+> >  ip/ipaddress.c   | 12 +++++++-----
+> >  ip/iplink.c      |  4 ++--
+> >  ip/ipmonitor.c   |  1 +
+> >  ip/ipmptcp.c     | 10 +++++-----
+> >  ip/ipneigh.c     |  4 ++--
+> >  ip/ipnetconf.c   |  2 +-
+> >  ip/ipnetns.c     |  2 +-
+> >  ip/ipnexthop.c   | 12 ++++++------
+> >  ip/iproute.c     |  4 ++--
+> >  ip/iprule.c      |  2 +-
+> >  ip/iptoken.c     |  2 +-
+> >  ip/tcp_metrics.c |  2 +-
+> >  lib/utils.c      |  1 +
+> >  misc/ss.c        |  3 ++-
+> >  tc/tc_class.c    |  2 +-
+> >  tc/tc_filter.c   |  2 +-
+> >  tc/tc_monitor.c  |  1 +
+> >  tc/tc_qdisc.c    |  2 +-
+> >  19 files changed, 44 insertions(+), 31 deletions(-)
+> >
+>
+> no longer applies after merging main to next.0
 
-On 4/28/26 2:28 AM, Eric Dumazet wrote:
-> Some setups can have thousands of devices.
-> 
-> ll_init_map() is rather expensive for them.
-> 
-> Only call ll_init_map() in the following cases:
-> 
-> 1) tc runs in batch mode.
-> 2) tc runs in monitor mode.
-> 3) tc dumps qdiscs/classes/filters for all netdev.
-> 
-> This greatly reduces RTNL pressure on common operations.
-> 
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
-> ---
->  tc/f_route.c   |  1 -
->  tc/m_mirred.c  |  2 --
->  tc/tc.c        |  1 +
->  tc/tc_class.c  |  6 ++----
->  tc/tc_filter.c | 32 ++++++++++++++++----------------
->  tc/tc_qdisc.c  |  5 ++---
->  6 files changed, 21 insertions(+), 26 deletions(-)
-> 
-> diff --git a/tc/f_route.c b/tc/f_route.c
-> index 96b99b06be179c90dfb0d24d9577b5206dd98ef1..c234ddf0cb9309556844c85047d0f9ef53a2fd7b 100644
-> --- a/tc/f_route.c
-> +++ b/tc/f_route.c
-> @@ -76,7 +76,6 @@ static int route_parse_opt(const struct filter_util *qu, char *handle, int argc,
->  			__u32 id;
->  
->  			NEXT_ARG();
-> -			ll_init_map(&rth);
->  			if ((id = ll_name_to_index(*argv)) <= 0) {
->  				fprintf(stderr, "Illegal \"fromif\"\n");
->  				return -1;
-> diff --git a/tc/m_mirred.c b/tc/m_mirred.c
-> index f4da3c76284460d7f4bb73c7c3c172732f054632..e9ae5199432e828026f15ce226c5f5f84998c660 100644
-> --- a/tc/m_mirred.c
-> +++ b/tc/m_mirred.c
-> @@ -213,8 +213,6 @@ parse_direction(const struct action_util *a, int *argc_p, char ***argv_p,
->  	if (d[0])  {
->  		int idx;
->  
-> -		ll_init_map(&rth);
-> -
->  		idx = ll_name_to_index(d);
->  		if (!idx)
->  			return nodev(d);
-> diff --git a/tc/tc.c b/tc/tc.c
-> index 0fc658c881f0f553f1f1f8d87b46943d4d0eed8f..7d69e4d533a98b9c071cb954443a049a52252f2c 100644
-> --- a/tc/tc.c
-> +++ b/tc/tc.c
-> @@ -243,6 +243,7 @@ static int batch(const char *name)
->  		return -1;
->  	}
->  
-> +	ll_init_map(&rth);
->  	ret = do_batch(name, force, tc_batch_cmd, NULL);
->  
->  	rtnl_close(&rth);
-> diff --git a/tc/tc_class.c b/tc/tc_class.c
-> index 6d707d8c924f4b5e90201d4de8e9779f82ce17f3..9aace019e6c8b96fb51edb4fe89bea5b7469beed 100644
-> --- a/tc/tc_class.c
-> +++ b/tc/tc_class.c
-> @@ -136,11 +136,11 @@ static int tc_class_modify(int cmd, unsigned int flags, int argc, char **argv)
->  	}
->  
->  	if (d[0])  {
-> -		ll_init_map(&rth);
-> -
->  		req.t.tcm_ifindex = ll_name_to_index(d);
->  		if (!req.t.tcm_ifindex)
->  			return -nodev(d);
-> +	} else {
-> +		ll_init_map(&rth);
->  	}
->  
->  	if (rtnl_talk(&rth, &req.n, NULL) < 0)
-> @@ -437,8 +437,6 @@ static int tc_class_list(int argc, char **argv)
->  		argc--; argv++;
->  	}
->  
-> -	ll_init_map(&rth);
-> -
->  	if (d[0]) {
->  		t.tcm_ifindex = ll_name_to_index(d);
->  		if (!t.tcm_ifindex)
-> diff --git a/tc/tc_filter.c b/tc/tc_filter.c
-> index 7db850bda11a3408ec66b457c9fc590f3a734f65..be70e360849e5058192640da0f061810a99e2ea8 100644
-> --- a/tc/tc_filter.c
-> +++ b/tc/tc_filter.c
-> @@ -188,16 +188,17 @@ static int tc_filter_modify(int cmd, unsigned int flags, int argc, char **argv)
->  		addattr_l(&req.n, sizeof(req), TCA_KIND, k, strlen(k)+1);
->  
->  	if (d[0])  {
-> -		ll_init_map(&rth);
-> -
->  		req.t.tcm_ifindex = ll_name_to_index(d);
->  		if (req.t.tcm_ifindex == 0) {
->  			fprintf(stderr, "Cannot find device \"%s\"\n", d);
->  			return 1;
->  		}
-> -	} else if (block_index) {
-> -		req.t.tcm_ifindex = TCM_IFINDEX_MAGIC_BLOCK;
-> -		req.t.tcm_block_index = block_index;
-> +	} else {
-> +		ll_init_map(&rth);
-> +		if (block_index) {
-> +			req.t.tcm_ifindex = TCM_IFINDEX_MAGIC_BLOCK;
-> +			req.t.tcm_block_index = block_index;
-> +		}
->  	}
->  
->  	if (q) {
-> @@ -539,8 +540,6 @@ static int tc_filter_get(int cmd, unsigned int flags, int argc, char **argv)
->  	}
->  
->  	if (d[0])  {
-> -		ll_init_map(&rth);
-> -
->  		req.t.tcm_ifindex = ll_name_to_index(d);
->  		if (!req.t.tcm_ifindex)
->  			return -nodev(d);
-> @@ -704,21 +703,22 @@ static int tc_filter_list(int cmd, int argc, char **argv)
->  
->  	req.t.tcm_info = TC_H_MAKE(prio<<16, protocol);
->  
-> -	ll_init_map(&rth);
-> -
->  	if (d[0]) {
->  		req.t.tcm_ifindex = ll_name_to_index(d);
->  		if (!req.t.tcm_ifindex)
->  			return -nodev(d);
->  		filter_ifindex = req.t.tcm_ifindex;
-> -	} else if (block_index) {
-> -		if (!tc_qdisc_block_exists(block_index)) {
-> -			fprintf(stderr, "Cannot find block \"%u\"\n", block_index);
-> -			return 1;
-> +	} else {
-> +		ll_init_map(&rth);
-> +		if (block_index) {
-> +			if (!tc_qdisc_block_exists(block_index)) {
-> +				fprintf(stderr, "Cannot find block \"%u\"\n", block_index);
-> +				return 1;
-> +			}
-> +			req.t.tcm_ifindex = TCM_IFINDEX_MAGIC_BLOCK;
-> +			req.t.tcm_block_index = block_index;
-> +			filter_block_index = block_index;
->  		}
-> -		req.t.tcm_ifindex = TCM_IFINDEX_MAGIC_BLOCK;
-> -		req.t.tcm_block_index = block_index;
-> -		filter_block_index = block_index;
->  	}
->  
->  	if (filter_chain_index_set)
-> diff --git a/tc/tc_qdisc.c b/tc/tc_qdisc.c
-> index 7eb9a31baa31fb91a8141c9eca1135e76a52fa8b..252ea861f249a5a71cf782389776e68c3e48c6cc 100644
-> --- a/tc/tc_qdisc.c
-> +++ b/tc/tc_qdisc.c
-> @@ -193,8 +193,6 @@ static int tc_qdisc_modify(int cmd, unsigned int flags, int argc, char **argv)
->  	if (d[0])  {
->  		int idx;
->  
-> -		ll_init_map(&rth);
-> -
->  		idx = ll_name_to_index(d);
->  		if (!idx)
->  			return -nodev(d);
-> @@ -411,13 +409,14 @@ static int tc_qdisc_list(int argc, char **argv)
->  		argc--; argv++;
->  	}
->  
-> -	ll_init_map(&rth);
->  
->  	if (d[0]) {
->  		req.t.tcm_ifindex = ll_name_to_index(d);
->  		if (!req.t.tcm_ifindex)
->  			return -nodev(d);
->  		filter_ifindex = req.t.tcm_ifindex;
-> +	} else {
-> +		ll_init_map(&rth);
->  	}
->  
->  	if (dump_invisible) {
-
+Hmm... I thought Stephen had a better implementation?
