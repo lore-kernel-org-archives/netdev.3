@@ -1,35 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE1727A476
-	for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 01:01:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E86921A9FA4;
+	Thu, 30 Apr 2026 01:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777510863; cv=none; b=OGyhNdJiCK15ANpEBQK2JJdJE5gihc8cGF9gQ2uRTHc/GHs9WxFd3iZad7XpoTXK3dEQyDkWF613G4Uf/MgAf98sSRYFeYEez49PrrEdQXBdBdRfEu97hFJm+z9HEifG0FBgMxPRfKrRb5JHCW9uhweBRA0ewqbDR3p8JOQCeU0=
+	t=1777511006; cv=none; b=sQpTRvetCr8vcrCmJtjDmIihiPZOFDnIc+1aKA+aaG7IkHMZz3aIPiJZcd0jRqVJoyAHCDLj3sMzwyOvWhz513oao37C4WQocSIa0vfFyeDJv4X1X8c/xpLrgEgWd9QITVJ9lcDqPz7Et8TalMGxlp1BUQgKtcPYnEETDJugH58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777510863; c=relaxed/simple;
-	bh=Kop4YNUipvs6vp1kt9DE1V8i3VRKn2Vpku3AP8lFstM=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Z7DgbVEsIi520uYc14n4l1kOWAyM8YqsIsh/JIpol1ZKqsovBqYOAH1h9XVqqea7/5OcuZwzBKKrGovluH2dcFV31gk5dCPFfPGdMp7oWF3V3vifTT7rwGqS1OSvFnEUkzgvLOE9RxTHpjVZ/CPmAr7+NhUMXE1lcZyWfJd4VTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QeZpOU2B; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777511006; c=relaxed/simple;
+	bh=JbFNcbiAuQHSN10MkBynRl4jTPI/nckdEueAPnmUMHw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=VA0lz3hH8AF7jqNGjWMkGHp6oUZQGLdX1Azgnm4d2XgECrzUPVXDmUzXAP9RES3Zhmq7mqP/Pnz0r+yNia65Gs4wAonlAZryPbx5LBXR1WVG7JkkHoDeXL448odgAMn67aCKYoWcH5W1qjdB+x4bohiEV+hwYR4bRvS8/cJiUL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n2VPMHjQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QeZpOU2B"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 910EDC19425;
-	Thu, 30 Apr 2026 01:01:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n2VPMHjQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E4FFC19425;
+	Thu, 30 Apr 2026 01:03:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777510862;
-	bh=Kop4YNUipvs6vp1kt9DE1V8i3VRKn2Vpku3AP8lFstM=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=QeZpOU2BZfJCl3y/7wzyVhwznzzTKL/dU7z5PLW13n2UBB6Rjcl3nZhhIZ0kxS+H0
-	 N1rb6l8O0CX1Gf948BK1QrEa9/AnnBYo1s7r1fcTYgqYO/QDUkLI1S5mMrhP4hS6c/
-	 7GOYwHtk7mNLWRe048uJ6j5eHrBXewisWeCxJIFKp//LU6IC9r41NH3Ke0SxP5BfXt
-	 MjF7WK+MNbs2DRz5uMjHOqfpSe9VcjIUM/nKI1WAj/wV4aVepfDtfwO57Yy0DlYrrh
-	 Yt+PolCIWslh7U0xqV0ZUf2GXUhg0+7AJdYGxGXNORo1d5akta14NuU0LfWAwq+06B
-	 OGZKkXItouw6g==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02C563809A33;
-	Thu, 30 Apr 2026 01:00:19 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1777511005;
+	bh=JbFNcbiAuQHSN10MkBynRl4jTPI/nckdEueAPnmUMHw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=n2VPMHjQmLfxGZMrISEvmPddqTLuus3rZWYlh9AfnWnfyR8yNAZUBLp+H4DplBuId
+	 /eoJYWQ/aAdiEvFS5UVGIpIz+0bxSSrtfdlRRCQUNxTPtZHkHDY498ac7C10jkT4Mk
+	 gQWQ/3eXFuc6hSCv0p+pfBl7aUtRNPRrs1IqJ3Amr+TGa/W2DjznvIERAm3IcFD/qA
+	 gPUqfAfSeXw2JfmJYKt9b3iWmehWoorpx7pEUqbn7CNaM73wrqS1VsLsXMvtNXePJp
+	 pTQE0ycJ6lgtOTNIZpsXRpl8yv869H5qhLnGxyx9FI7B+tDOHCYYCAPYKgSvfSq+Qc
+	 /eF3rOh+MCNkw==
+From: Jakub Kicinski <kuba@kernel.org>
+To: j.raczynski@samsung.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH RESEND net-next] net/sun: Fix multiple typos in comments
+Date: Wed, 29 Apr 2026 18:03:22 -0700
+Message-ID: <20260430010322.2326574-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260428101728.3537456-1-j.raczynski@samsung.com>
+References: <20260428101728.3537456-1-j.raczynski@samsung.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,47 +45,58 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: airoha: Rename get_src_port_id callback in
- get_sport
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177751081754.2244169.1115345882578217600.git-patchwork-notify@kernel.org>
-Date: Thu, 30 Apr 2026 01:00:17 +0000
-References: 
- <20260428-airoha-get_src_port_id-callback-v1-1-3f765c91c1e8@kernel.org>
-In-Reply-To: 
- <20260428-airoha-get_src_port_id-callback-v1-1-3f765c91c1e8@kernel.org>
-To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- netdev@vger.kernel.org
 
-Hello:
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+net/sun: Fix multiple typos in comments
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+This patch fixes various typos in comments across the sun ethernet
+drivers. A couple of the replacements may warrant a second look.
 
-On Tue, 28 Apr 2026 07:23:38 +0200 you wrote:
-> For code consistency, rename get_src_port_id callback in get_sport.
-> Please note this patch does not introduce any logical change and it is
-> just a cosmetic patch.
-> 
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> ---
->  drivers/net/ethernet/airoha/airoha_eth.c | 10 +++++-----
->  drivers/net/ethernet/airoha/airoha_eth.h |  2 +-
->  2 files changed, 6 insertions(+), 6 deletions(-)
-> 
-> [...]
+> diff --git a/drivers/net/ethernet/sun/cassini.c b/drivers/net/ethernet/sun/cassini.c
+> index fe00e7dd3fe4..74fb0de12d21 100644
+> --- a/drivers/net/ethernet/sun/cassini.c
+> +++ b/drivers/net/ethernet/sun/cassini.c
 
-Here is the summary with links:
-  - [net-next] net: airoha: Rename get_src_port_id callback in get_sport
-    https://git.kernel.org/netdev/net-next/c/c06a2f2903f6
+[ ... ]
 
-You are awesome, thank you!
+> @@ -4547,7 +4547,7 @@ static int cas_get_link_ksettings(struct net_device *dev,
+>  	}
+>  	if (linkstate != link_up) {
+>  		/* Force these to "unknown" if the link is not up and
+> -		 * autonogotiation in enabled. We can set the link
+> +		 * autonegotiation in enabled. We can set the link
+
+The "autonogotiation" to "autonegotiation" change looks correct, but
+the neighbouring "in enabled" in the same sentence appears to be a
+leftover grammar slip (should it read "is enabled"?).  Since this
+sentence is already being touched as part of the typo cleanup, would
+it make sense to fix that at the same time?
+
+>  		 * speed to 0, but not cmd->duplex,
+>  		 * because its legal values are 0 and 1.  Ethtool will
+>  		 * print the value reported in parentheses after the
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/sun/sunhme.c b/drivers/net/ethernet/sun/sunhme.c
+> index 4c9d5d4dd8a0..efbf042e9352 100644
+> --- a/drivers/net/ethernet/sun/sunhme.c
+> +++ b/drivers/net/ethernet/sun/sunhme.c
+> @@ -1118,7 +1118,7 @@ static void happy_meal_transceiver_check(struct happy_meal *hp, void __iomem *tr
+>   *
+>   * We use skb_reserve() to align the data block we get in the skb.  We
+>   * also program the etxregs->cfg register to use an offset of 2.  This
+> - * imperical constant plus the ethernet header size will always leave
+> + * emperical constant plus the ethernet header size will always leave
+
+Neither "imperical" nor "emperical" is a correct English word; the
+intended word is "empirical".  Was the replacement here meant to be
+"empirical"?
+
+>   * us with a nicely aligned ip header once we pass things up to the
+>   * protocol layers.
+>   *
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: cr
