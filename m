@@ -1,220 +1,123 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010041.outbound.protection.outlook.com [52.101.46.41])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 019733A5E81;
-	Thu, 30 Apr 2026 09:38:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777541931; cv=fail; b=MYvoi91ypuWy+kdzZPBhESNxTDJ3Vln1yqj4WMXihOir6VFE1dEZxJpJjoVcmLtpr0oJL/b3qQ/akLduJBrApvxUIXfuAg/bzrT107SmLe2102uhE7EhyJc0m4kocQnJj1D2ZRf+lFDgrIfmI2XJuOmdHpS7m7Ukyvw48b2etww=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777541931; c=relaxed/simple;
-	bh=QNmrffibYpEjwPxMmits6zquyZqW4UofHlr+1rKAiHs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=N4HIgQrq2LIgPPmf7yX5Cer16UyTBzUrwCFyRXphIUGCyKQofKtj3hSiHk9faMFsBxcmd81tHe3fHueothxmQDPjtQxWLN3kXWfhaIaWqe160h6OO+9D9kJVxNV+kPjQQJp/1Bw9OX03nGnSzrjtdTdyp6I9zpzR4xzp5fB/gao=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=jPCCdW8a; arc=fail smtp.client-ip=52.101.46.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D4183A5E81;
+	Thu, 30 Apr 2026 09:44:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777542241; cv=none; b=CQQJNRzQ9svU4Dvm5jbkyuZAFwrbzfsNVU/fSMzYc9oYukMcXb/lusnz5RcxDM6ymPK5EQtNQXNr5YltnJPN3rp0E/R6ZUmhHq185q8W3Nee5vzUYpVmN9I5EqIsXbVh0LbjmuhWXtapMdt8C7aTsXCuOoCoJXnsjIdE6umtmH4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777542241; c=relaxed/simple;
+	bh=pjD4a8rJ5wy6WIWFMXc/dMRwPE2lWwOkl+wfhS2cIxg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A6jLjC0mAFIS8/tGx5TlxlOnPGlb7yNv15qXboiAs9kMiuBWR5Lm1gZ4ohD1mAh52Es+k8/ZknJ42TECzDMrEphGTOrC6okF6qmbCYfGTJcoNBMpHKjCKr6XPehmyAoPEi795qjCFxE/je4A57IAZycbXgTVbqLpTfSFZpXE5yE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bplODJU/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="jPCCdW8a"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MQ4zAlsLHIc8z9GWdDc2vjo6bkKcf41JtykMCTux65VLpXGbhaEORbxke5Q857oW8boNj+dyw4ps0Ld2OdGiFxF1Gy1ryakxSGrUKhCHRsXvFXQOKxvMx0weVzZRTpRlOQ2VI/O8qoHOz7FnIyN1y/TWssatcuzi8yRmhCqAyLpK1VYgaDvbtQknmSubFc5CA+X611RyNfqMEdxLGUWCX/2dsUNuTokY+CWFsH73cAc0Oi0ZzBERaBg60S9qc4QRfAp1hXafANfF0t1r3xOtlXWenK/S4TcF/YdU9uV6HThLb7b7ic0+VeiqOQRV7LF1IW/W06GpUHIZV0FdbbIe6Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Jo8oA2A/f2YXESPHSr8fqb54ivwgsE2lX5zQo091J5s=;
- b=iSNaZaCrPW8DgSaSS3PmMu6Lh5vpf+SAcGmHmC//2+0R4FbqTlRJsgc8HJigfGnP7XOTKuNdDVq22nxzqwtJT1wNr29cbCyHeeIEfqehSPPPxVUyg6/JhlUdxoBnngGYIm7v9HWbRmFIxtap3qBk5dZQS8jdjQPA+zJ1YhAxXic58qQ9aMZpQHEP61dbuw8jBh5sukKhiU53gYb/huntliTcfXACYM6HbVVPCoa8aWj75Oi/SxyV2CiJe+o2H7c3/iD07R6KeZ+PCMwljXBb5yH26y/2+IDlFIUwoSa58/Q6QskoIbtzGWGi9q/vPK3E+KYiWGvEtjQ+ihEdJhLt2Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Jo8oA2A/f2YXESPHSr8fqb54ivwgsE2lX5zQo091J5s=;
- b=jPCCdW8aOtKrxcAJfzsk4xidgOT238NVa9HOg2u6U6UPzZOWF8f2uGT2K9a2ECIZRTqc66dM63fBay8ANrZPh90pbiqHJjA8C5ewsNsddm+wm3ECaqzrE44EGy4hugFHp1GoGmDdVUjRu9PbmCxseJlYNNSWB+lQqJHBxWcWfexrNR8Y/vEOo0MoPMDI4nhlT8mS9WVEa3x3615J9et6Ornr5wzivmCFpsOb/VG2NP2E22Gkaqcfj3Gd/lsF0sZO8Q5WJN7PpEyvmCLW380VEvHOLt1mKBTQoZz53PhfCtOfKWJs4k2fSiY5Kg2ZRVfDLVwGsHdPtUmovoJjJiSNrw==
-Received: from SJ0PR03CA0132.namprd03.prod.outlook.com (2603:10b6:a03:33c::17)
- by DS4PR12MB9746.namprd12.prod.outlook.com (2603:10b6:8:2a4::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.20; Thu, 30 Apr
- 2026 09:38:43 +0000
-Received: from SJ1PEPF000023DA.namprd21.prod.outlook.com
- (2603:10b6:a03:33c:cafe::e4) by SJ0PR03CA0132.outlook.office365.com
- (2603:10b6:a03:33c::17) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9846.30 via Frontend Transport; Thu,
- 30 Apr 2026 09:38:43 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- SJ1PEPF000023DA.mail.protection.outlook.com (10.167.244.75) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9891.0 via Frontend Transport; Thu, 30 Apr 2026 09:38:43 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 30 Apr
- 2026 02:38:29 -0700
-Received: from [10.242.158.87] (10.126.231.37) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 30 Apr
- 2026 02:38:23 -0700
-Message-ID: <a88d1885-8f78-45ef-9cd6-6949e3d10757@nvidia.com>
-Date: Thu, 30 Apr 2026 12:38:21 +0300
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bplODJU/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92F83C2BCB3;
+	Thu, 30 Apr 2026 09:44:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777542241;
+	bh=pjD4a8rJ5wy6WIWFMXc/dMRwPE2lWwOkl+wfhS2cIxg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bplODJU/7ooHDNPIO3jofxmXUudXii8FNNlM4cLlKsg2xa1rzkJtzGIaCQEE5PtlT
+	 k2X2s+mFd8BHQrw+yditg9/oAb2mOFnydZHwRjIeFD0D5um8JnTMBeGiyY0lIqzu8A
+	 1dkEpe7x9CySs76qPyfav4wXZJZ33CEYe0VOX2WxMb4kdeR5izyJ4N7QuOfKzD+DYH
+	 OdTB2zDSzpq/JKsvbnZADUyziLCEVZsv4jiGSpL+Rn0Cub486PPITbtdu63OuNPubA
+	 cOL0/bXqyVZSeTcBqQGrpC11wIezKJWt6LrGGRX7T3O57Xmkl/hs+yrorqRVZFkcrf
+	 jmBwyEe1LL1xQ==
+Date: Thu, 30 Apr 2026 11:43:58 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Cc: Ulf Hansson <ulfh@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Jens Axboe <axboe@kernel.dk>, Johannes Berg <johannes@sipsolutions.net>, 
+	Jeff Johnson <jjohnson@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, 
+	Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
+	Balakrishna Godavarthi <quic_bgodavar@quicinc.com>, Rocky Liao <quic_rjliao@quicinc.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	linux-mmc@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-block@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	ath10k@lists.infradead.org, linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org, 
+	daniel@makrotopia.org
+Subject: Re: [PATCH 2/9] arm64: dts: qcom: arduino-imola: Describe boot1
+ NVMEM layout
+Message-ID: <20260430-famous-meek-dinosaur-edacc6@quoll>
+References: <20260428-block-as-nvmem-v1-0-6ad23e75190a@oss.qualcomm.com>
+ <20260428-block-as-nvmem-v1-2-6ad23e75190a@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net V4 1/4] net/mlx5: SD: Serialize init/cleanup
-To: Jakub Kicinski <kuba@kernel.org>, <tariqt@nvidia.com>
-CC: <edumazet@google.com>, <pabeni@redhat.com>, <andrew+netdev@lunn.ch>,
-	<davem@davemloft.net>, <saeedm@nvidia.com>, <mbloch@nvidia.com>,
-	<leon@kernel.org>, <horms@kernel.org>, <phaddad@nvidia.com>,
-	<kees@kernel.org>, <parav@nvidia.com>, <gal@nvidia.com>,
-	<netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <dtatulea@nvidia.com>
-References: <20260428060111.221086-2-tariqt@nvidia.com>
- <20260430014207.2375703-1-kuba@kernel.org>
-Content-Language: en-US
-From: Shay Drori <shayd@nvidia.com>
-In-Reply-To: <20260430014207.2375703-1-kuba@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF000023DA:EE_|DS4PR12MB9746:EE_
-X-MS-Office365-Filtering-Correlation-Id: 23ac5f75-5e3b-47f6-2895-08dea69c44e5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|7416014|376014|36860700016|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	CtosCMitrtkwGpZZ4AtG3dnu2W1S2n4bkysRgjwC0icvTEyjbkWbG6UW2siXaBOUA6dC3q2tJ33YhR5i0fspNG4nIjzlXhRWyr/M8SP0PdmkaNhsdz/GkS0+kFd2DSF+CbAfpMJP5pt7LHZi5CqDqhvXgSMOct6DywnbT4DNQeNMGZUhE4crHHp7ac7QnxyE1eERmqzzb7tNF+YaMgKo09CGBqnI+BsjqqNIvnaBuLZoh9+yr/iplDo1k6S298xcys+2E+QDnIambyO1+0BNH6NXqJX+wpxnv0gYbHlET17HUBx12oOcQXBrwjKx9prpNWMYr23x1XJUvF5kNgZ5gekzJKZybvDySJ3j1J9OjJ2EsUnQRfTRam0fkX92XeixwxygOZRRSERhC/P7zxXoIUXy8mppILoppGRkwNQqXTR44bMOvvQ8kT+9UvFEG1U7DOw1y0uchN1BQNLqgRjOkGOV7uBZOmNHt+yb9N0lTEbTmb+5NM3WwdWIKOt2p8P5IflIzaI0wwa98w8DR9E2JZFbEJNS47Vr+6MyhcywdZkAGYGCCaBhRthvG+qDhk/rJ0WI35C09HYwrCEgIzQATsD3lRiCJSOwLtwjNVa1f4di5n5W6FcJlB+Y2WmUw5uYWJiBefV1QeKiiO0cD5nvSxWNOzOiiJNu7y7m9nGmOA1piBjgR9KnlnJ95CpsEmkedANl8CCYH3Hx9NdpjnLYmscuEBHcP3wOW5MA8aHn0BkXYqr0f6Sn/zl4INsrKN6WwhLPtCpuTxyLZx0C3WNvkw==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(7416014)(376014)(36860700016)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	/ywkjYArQIkTpBKYf+DFCXJwHko6LWf+pXxtEL87D0AfPtFr30oGqGyJVDqT8l7gNC93KJpsLUTtWBkbbeWYVvwXbRdmaXWkxi2y9w2ootlAZ0T9BVy6qiia9+U842ZAkcEOyEmtqDgG0LXHpCrW9MoIeG5vW1ZtE5zmK5De0XFxZMfFXfcshyIDYi32il86z9RkrXJjOrYaliZ8O/37IJcq+5riUtRkTPDCz1ZVLQO0ZxsAP6C4motZSOAFiGk/3ypy+lS1//JBdalH/JJg4/XKNRDP0LWEQbW0XAlsFWFLhO9152ehXDIv3UjiUQp5oEDVA3IVxHD261/+uj0I9WzHEQaPzuMdWB+G7O5GZm1Frc2W6PrUvlW2fYwjj9LNYWtloe9NWIrm32tXyPFTUEzX899SNsK16ZgplxTxkdkSAA+tZiHAhbfpVPaqT2p2
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Apr 2026 09:38:43.3787
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 23ac5f75-5e3b-47f6-2895-08dea69c44e5
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF000023DA.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR12MB9746
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260428-block-as-nvmem-v1-2-6ad23e75190a@oss.qualcomm.com>
 
-
-
-On 30/04/2026 4:42, Jakub Kicinski wrote:
-> External email: Use caution opening links or attachments
+On Tue, Apr 28, 2026 at 04:23:07PM +0200, Loic Poulain wrote:
+> On Arduino Uno-Q, the eMMC boot1 partition is factory provisioned
+> with device-specific information such as the WiFi MAC address
+> and the Bluetooth BD address. This partition can serve as an
+> alternative to additional non-volatile memory, such as a
+> dedicated EEPROM.
 > 
+> The eMMC boot partitions are typically good candidates, as they
+> are realively small, read-only by default (and can be enforced
+> as hardware read-only), and are not affected by board reflashing
+> procedures, which generally target the eMMC user or GP partitions.
 > 
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
+> Describe the corresponding nvmem-layout for the WiFi and
+> Bluetooth addresses.
+> 
+> Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
 > ---
-> net/mlx5: SD: Serialize init/cleanup
+>  arch/arm64/boot/dts/qcom/qrb2210-arduino-imola.dts | 24 ++++++++++++++++++++++
+>  1 file changed, 24 insertions(+)
 > 
-> This commit protects the Socket-Direct (SD) init/cleanup paths with the
-> devcom component lock and tracks the SD group state on the primary device.
-> It skips init if the primary is already UP, and skips cleanup unless the
-> primary is UP, serializing the bring-up/tear-down sequence across PFs.
-> 
->> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/sd.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/sd.c
->> index 762c783156b4..d42c283cbb38 100644
->> --- a/drivers/net/ethernet/mellanox/mlx5/core/lib/sd.c
->> +++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/sd.c
-> 
-> [ ... ]
-> 
->> @@ -491,22 +507,34 @@ void mlx5_sd_cleanup(struct mlx5_core_dev *dev)
->>   {
->>        struct mlx5_sd *sd = mlx5_get_sd(dev);
->>        struct mlx5_core_dev *primary, *pos;
->> +     struct mlx5_sd *primary_sd;
->>        int i;
->>
->>        if (!sd)
->>                return;
->>
->> +     mlx5_devcom_comp_lock(sd->devcom);
->>        if (!mlx5_devcom_comp_is_ready(sd->devcom))
->> -             goto out;
->> +             goto out_unlock;
->>
->>        primary = mlx5_sd_get_primary(dev);
->> +     if (!primary)
->> +             goto out_unlock;
->> +
->> +     primary_sd = mlx5_get_sd(primary);
->> +     if (primary_sd->state != MLX5_SD_STATE_UP)
->> +             goto out_unlock;
-> 
-> If the device is unbound during the race window where the devcom component
-> is ready but the state is still MLX5_SD_STATE_DOWN (for example, just after
-> sd_register() finishes but before mlx5_sd_init() sets the state to UP), does
-> this early exit leave the component marked as ready?
-> 
-> Since mlx5_devcom_comp_set_ready(sd->devcom, false) was moved out of
-> sd_unregister() and into this function, skipping it here means the device will
-> unregister and free its struct mlx5_sd while the group is still ready.
-> 
-> Could a concurrent mlx5_sd_init() on another peer acquire the devcom lock,
-> observe that it is ready, and proceed? If the unregistered device was the
-> primary, mlx5_get_sd(primary) would return NULL, causing a NULL pointer
-> dereference at primary_sd->state. If it was a secondary, mlx5_sd_init()
-> would iterate over primary_sd->secondaries and access the freed device
-> structure, resulting in a use-after-free.
+> diff --git a/arch/arm64/boot/dts/qcom/qrb2210-arduino-imola.dts b/arch/arm64/boot/dts/qcom/qrb2210-arduino-imola.dts
+> index bf088fa9807f040f0c8f405f9111b01790b09377..dc85cf94f71cac8666cab30ccf37cc2d2f8fd941 100644
+> --- a/arch/arm64/boot/dts/qcom/qrb2210-arduino-imola.dts
+> +++ b/arch/arm64/boot/dts/qcom/qrb2210-arduino-imola.dts
+> @@ -409,7 +409,31 @@ &sdhc_1 {
+>  	no-sdio;
+>  	no-sd;
+>  
+> +	#address-cells = <1>;
+> +	#size-cells = <0>;
+> +
+>  	status = "okay";
+> +
+> +	card@0 {
+> +		compatible = "mmc-card";
+> +		reg = <0>;
 
-This is correct :(
-will fix in next version
+> +
+> +		partitions-boot1 {
+> +			nvmem-layout {
 
-> 
->> +
->>        mlx5_sd_for_each_secondary(i, primary, pos)
->>                sd_cmd_unset_secondary(pos);
->>        sd_cmd_unset_primary(primary);
->>        debugfs_remove_recursive(sd->dfs);
-> 
-> This isn't a regression introduced in this patch, but does storing sd->dfs
-> locally instead of on the primary device cause debugfs entries to leak?
-> 
-> If a different peer is unbound first, its sd->dfs is NULL, making the call
-> to debugfs_remove_recursive() a no-op. The cleanup then finishes and marks
-> the group as unready.
-> 
-> When the original device that created the debugfs directory is later unbound,
-> it sees the group is no longer ready and skips this block entirely, never
-> freeing its sd->dfs. Since these files hold pointers to the mlx5_core_dev
-> structs, accessing them from userspace after the devices are freed could
-> trigger a use-after-free.
-> 
-> I note this was fixed later in the series by commit "net/mlx5: SD, Keep
-> multi-pf debugfs entries on primary", but wanted to highlight it here.
+This should not be a separate patch. You add the layout AND you use it.
 
-like mention, this is fixed later and I don't see a reason to change the
-patches order
-
+> +				compatible = "fixed-layout";
+> +				#address-cells = <1>;
+> +				#size-cells = <1>;
+> +
+> +				wifi_mac_addr: mac-addr@4400 {
+> +					reg = <0x4400 0x6>;
+> +				};
+> +
+> +				bd_addr: bd-addr@5400 {
+> +					reg = <0x5400 0x6>;
+> +				};
+> +			};
+> +		};
+> +	};
+>  };
+>  
+>  &spi5 {
 > 
->>
->>        sd_info(primary, "group id %#x, uncombined\n", sd->group_id);
->> -out:
->> +     primary_sd->state = MLX5_SD_STATE_DOWN;
->> +     mlx5_devcom_comp_set_ready(sd->devcom, false);
->> +out_unlock:
->> +     mlx5_devcom_comp_unlock(sd->devcom);
->>        sd_unregister(dev);
->>        sd_cleanup(dev);
->>   }
-> --
-> pw-bot: cr
-
+> -- 
+> 2.34.1
+> 
