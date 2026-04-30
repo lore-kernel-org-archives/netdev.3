@@ -1,116 +1,92 @@
-Received: from mail-qk1-f202.google.com (mail-qk1-f202.google.com [209.85.222.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C9F29B8D3
-	for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 02:36:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F38B40DFDE;
+	Thu, 30 Apr 2026 02:37:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.181.231.80
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777516601; cv=none; b=J1nZZ1kd0MKvQN+P7ozX5GSlF2FrI/170JhJJoryVx0Bmuqiu4tZoO+h9G8kocdRYCUwbLgJwcY85IsgP7q9S2dHnVqxP/+8ia1xJZEDLx7ysv17K9gwIh94UY/DelU50RqTFn6eaetL/X2lBSZbdHFGQPMwqx1PUnhRTFUSXhY=
+	t=1777516657; cv=none; b=PIMzHvAcROUaGwzJkQZUHxi5dHHCPqp7KW5AXEO86P14wOnM9z3gp7/G6GF5VLpstXSYkSx+5/dDhAcxCjOPlIuwwqk0cOj+lbh+kVJ1LUIoC4DHUh4g2Xbi11oupnU0YU+PeWKqvNNO81oSq720pcopQcziZhjnaWdPfhZf+Gk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777516601; c=relaxed/simple;
-	bh=rqIfcvFJMU4U4AVHcj0LU7UoHNsl+kuvgRjGup0eiwc=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=M6/SJmwL67T81oUBsHZ0L+fGW64XZ2qJkpMGRcKeQT4AaahqL09iPZiJIqorwxiP7vcU+0Hu5IgJfNSEbfYMMOlsYN7DfQGVuhCQ0yu4DTrJhQHCKo4erOf9Qu8PPUnh2xYw4AU0CxR+lCN6rhK23Jn/AFaUSAt6Se4JA/BT4g4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PRZ7pHPf; arc=none smtp.client-ip=209.85.222.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1777516657; c=relaxed/simple;
+	bh=cmojHuLP3jnNZWqmo/6rv3gqgflgbv0J4HVHA1I/ffo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=c7JLaLgNQVQG7aGssXup/HQdpoD3E6CAPNGn5t3PFpNJz4ezoYmAq7DkNCY14t+Rq7JaVSxed9xMObrtWJwW/jpXr4vjK801Edb65e9LEd4ip0gnfkSgqix0BVzYPJUTADZ3zJQChsbwUWZktAQCRKY19ci8wxgaTxctt+iJ4Ag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b=B41INN4W; arc=none smtp.client-ip=180.181.231.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PRZ7pHPf"
-Received: by mail-qk1-f202.google.com with SMTP id af79cd13be357-8ead5ab474bso89714985a.1
-        for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 19:36:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777516599; x=1778121399; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/bMNpW3c4F75ct2ys7AkCXK7g/wrITynXJXwYUZMSu4=;
-        b=PRZ7pHPfCF28S8dBQNsNtyq74NAf/pXQcLQ7UM6WE8bM9L1Hwr98jgjFZLQsqBbnJa
-         boelsPZIXCkiVTRAU6fSY+XVQdPQQxqnbbzkbw/9+9N7gZ2i/Xt3kGZDPj0lfnvVL8Uo
-         LYzbRCGeLHlCsoPr33PsVlkaRoXFDtu+2UODqXUe6K04R0G9bapAdUtcweXXJz46gxx4
-         wxDYuRKUVcXWXWIppkMBpnD0VzTLC3XieFLJAQGu8PtliOv4YZlgBzz0AwfPfLoyHH7O
-         t67VUz2LyX2IrdaSgHSPS8V2hQ0kQzIoAmRz6TUBFiBg/kdUuBvbajwiSy/czKLeKR5r
-         JU/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777516599; x=1778121399;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/bMNpW3c4F75ct2ys7AkCXK7g/wrITynXJXwYUZMSu4=;
-        b=l0PJkKY1r+7rSohB23c/SC3fip9g9V//7H8Y48maNFHD1VEVebOOlolUU4Los+NJ8p
-         p8fa6fnIH+43sB5R81ser6lp8Sdg9J7WzcNDvI4gwyHF2ysG5AV0jm+KjtNugby6hwYs
-         NHUZfD6JEyVGUvXdJgeNVIXmgXUCHGML1U01y8GCYMnyDF8lyPy3HIPYnVBAJbBHsGee
-         82eTSOKE6K4pwgbr/kFGYOW7hLLfJJBsEq01XrS0UpFRpmmrfPn/HOR8HWzMC2bZIwLq
-         aFTrnG8S+qjLBKXHqXORelqhlFIYQppoyU2K2vfzFPLSi5+OUMgYDzTQMlF+hRQEblLh
-         xlLg==
-X-Forwarded-Encrypted: i=1; AFNElJ8JI4seMllW+ECqGMQyeId8RVGbKPLLOsQi07wIOJsbHzfCSVRK/7Auqkuacs8hd8CWh9p+V8s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzB7riQvufiNyIzlqsoEBNh5K19Oa5yyYOhjSXT3mH9bjj9BKtx
-	vRgYNLCf5CPMq+SOuJCDMMWZoh081EfTj9XdcKg7yKsLbLrUgXR2tHZVxn1uim63jY5XpI2flOI
-	Im6N+ENk46/CuIg==
-X-Received: from qkntp5.prod.google.com ([2002:a05:620a:3c85:b0:8d4:abda:a95])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:c4d:b0:8ef:1157:6a05 with SMTP id af79cd13be357-8fa86fa7612mr206005285a.19.1777516599205;
- Wed, 29 Apr 2026 19:36:39 -0700 (PDT)
-Date: Thu, 30 Apr 2026 02:36:28 +0000
-In-Reply-To: <20260430023628.3216283-1-edumazet@google.com>
+	dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b="B41INN4W"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
+	from:content-type:reply-to; bh=dVtNlQBpH51UytQpIb8A6JMmXFC/Chl+lh2xCMpAn80=; 
+	b=B41INN4Wgi9RyGKTQmptdjwvbjK5VHc2WwpnIVc1s9k5mK+s0F24dIeS5bFODOqXTdKseb00Naf
+	TCQQOL/t0N3IPq5mCY4NYzk28P7BufssSYEYtiUPX+kFz1zdTlrVU/GJgb8ILVPXaosRMqn+Lw0HN
+	tl6lpUCGLY43BU5x1271pyOkBc9cYBvIigphUr21YA5mFnYFQoY5OuxwnzK4FOL31O3A3yb4DXtaM
+	I2dVeBnvZxrfi8msBorNmpmjRd7LT4oY1Lk87KFqaBega+CUX2NSGg0BdQ1XDWUr8kVUZFu5u1c40
+	13CcP1vx4MIeBY8yqOsVN8u0u26NtvrI5siQ==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1wIGlw-00A1Fb-2O;
+	Thu, 30 Apr 2026 10:05:01 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Thu, 30 Apr 2026 10:05:00 +0800
+Date: Thu, 30 Apr 2026 10:05:00 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-api@vger.kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	David Howells <dhowells@redhat.com>
+Subject: Re: [PATCH] crypto: af_alg - Document the deprecation of AF_ALG
+Message-ID: <afK4zC-Mgo6LBfUh@gondor.apana.org.au>
+References: <20260430011544.31823-1-ebiggers@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260430023628.3216283-1-edumazet@google.com>
-X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
-Message-ID: <20260430023628.3216283-5-edumazet@google.com>
-Subject: [PATCH v3 net-next 4/4] net/sched: speedup tc_dump_qdisc() when
- tcm_ifindex is provided
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>, 
-	netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260430011544.31823-1-ebiggers@kernel.org>
 
-There is no point dumping qdiscs for all devices when user space
-wants them for a single device:
+On Wed, Apr 29, 2026 at 06:15:44PM -0700, Eric Biggers wrote:
+> AF_ALG is almost completely unnecessary, and it exposes a massive attack
+> surface that hasn't been standing up to modern vulnerability discovery
+> tools.  The latest one even has its own website, providing a small
+> Python script that reliably roots most Linux distros: https://copy.fail/
+> 
+> This isn't sustainable, especially as LLMs have accelerated the rate the
+> vulnerabilities are coming in.  The effort that is being put into this
+> thing is vastly disproportional to the few programs that actually use
+> it, and those programs would be better served by userspace code anyway.
+> 
+> These issues have been noted in many mailing list discussions already.
+> But until now they haven't been reflected in the documentation or
+> kconfig menu itself, and the vulnerabilities are still coming in.
+> 
+> Let's go ahead and document the deprecation.
+> 
+> This isn't intended to change anything overnight.  After all, most Linux
+> distros won't be able to disable the kconfig options quite yet, mainly
+> because of iwd.  But this should create a bit more impetus for these
+> userspace programs to be fixed, and the documentation update should also
+> help prevent more users from appearing.
+> 
+> Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 
-tc -s -d qdisc show dev eth1
+What about the exposure of akcipher through security/keys/keyctl_pkey.c?
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
----
- net/sched/sch_api.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+There isn't even a Kconfig option to disable that user-space API.
+If module signatures are enabled then this automatically gets added
+to the kernel:
 
-diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
-index cf3d01dd6b268741a6e4674954940e09dff139a4..dd0edc9bd4610ec865fc97a81f801a7da020667b 100644
---- a/net/sched/sch_api.c
-+++ b/net/sched/sch_api.c
-@@ -1884,6 +1884,7 @@ static int tc_dump_qdisc(struct sk_buff *skb, struct netlink_callback *cb)
- 		unsigned long ifindex;
- 		int q_idx;
- 	} *ctx = (void *)cb->ctx;
-+	const struct tcmsg *tcm;
- 	struct net_device *dev;
- 	int s_q_idx, q_idx;
- 	int err;
-@@ -1894,6 +1895,9 @@ static int tc_dump_qdisc(struct sk_buff *skb, struct netlink_callback *cb)
- 				     rtm_tca_policy, cb->extack);
- 	if (err < 0)
- 		return err;
-+	tcm = nlmsg_data(nlh);
-+	if (tcm->tcm_ifindex && !ctx->ifindex)
-+		ctx->ifindex = tcm->tcm_ifindex;
- 
- 	s_q_idx = ctx->q_idx;
- 
-@@ -1901,6 +1905,9 @@ static int tc_dump_qdisc(struct sk_buff *skb, struct netlink_callback *cb)
- 		struct netdev_queue *dev_queue;
- 		struct Qdisc *q;
- 
-+		if (tcm->tcm_ifindex && ctx->ifindex != tcm->tcm_ifindex)
-+			break;
-+
- 		q_idx = 0;
- 
- 		netdev_lock_ops(dev);
+MODULE_SIG -> MODULE_SIG_FORMAT -> SYSTEM_DATA_VERIFICATION ->
+KEYS + ASYMMETRIC_KEY_TYPE
+
+Cheers,
 -- 
-2.54.0.545.g6539524ca2-goog
-
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
