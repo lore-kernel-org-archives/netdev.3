@@ -1,79 +1,83 @@
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A3831327D
-	for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 15:30:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5284829D294
+	for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 15:30:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777563038; cv=none; b=tLrBe1F8MSqflEjFElyGHb6vjGEc4Hl2ijy//oSfZ5cyr9npmbn6Fu2tPXhHHCO0avYBbNHzk6nmKmz8N8y/6mr1NhA6qcWw+jB+pGLwUK77oAAMDiC8gUZNBVPm3AZrTYNeHou/k70neH2A+pzjqwVermrL7SNGre34DT42qM0=
+	t=1777563045; cv=none; b=erpqhIU3xtVGe+cf6fidIB196DeWGJVIMCeU0HNQb7sLmSuqQMVTEjPS7MQQIfJUFBoRuSgHsyuxJLmANoIdCuy/94icbJxfiB7HYpr0NuJrHuJIU9blJjQ+J1kELf7pEFgv04XzMgAEXxQvpe74gtliH+YtrPf3r6d1fh+uSfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777563038; c=relaxed/simple;
-	bh=xXnQsjtqGxKOM8NZxDlpP6YJlvkaUbX9991pUA+OdbM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kxT6IyhB/tt+A/yjAMX7O6Jl8pTvQphqmzuQYAhdAFZO8vfqW8d85RcFzPcAPWhBDWliXw4rLBLJ9lM73ool3kIjTT9BgQnh9nNJm/iY9g7OHe5edHWpFIXhvOFSZBepN9dHRvQu5NZrBKbYeo7PgU1P5pqRhXoA1z0U+wBxtuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20251104.gappssmtp.com header.i=@mojatatu-com.20251104.gappssmtp.com header.b=Gz3tE79F; arc=none smtp.client-ip=209.85.222.178
+	s=arc-20240116; t=1777563045; c=relaxed/simple;
+	bh=sXOsgeDI/hNqdHSq0P3ZIRfeUXfKjCkhEuj4k3MAmcQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=H82yliKh+VqoOFXJSBGzaHd4ArXkZFzFYXU2BTfpQDLLEm+xqZ239BtUxRj1wR7yNqm2XewDwDIktCxT7Hm7mY4xXzOWPg9W9IJkJHZOZh9qKyeTwrC7pEhi5FnQjU75NQZ67EFKAApb5UOBs/P/46GGp+OH5Xx3hmZTTUnDCi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20251104.gappssmtp.com header.i=@mojatatu-com.20251104.gappssmtp.com header.b=OkVwkwul; arc=none smtp.client-ip=209.85.160.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mojatatu-com.20251104.gappssmtp.com header.i=@mojatatu-com.20251104.gappssmtp.com header.b="Gz3tE79F"
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-8d933da14f0so110109085a.2
-        for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 08:30:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=mojatatu-com.20251104.gappssmtp.com header.i=@mojatatu-com.20251104.gappssmtp.com header.b="OkVwkwul"
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-506a6cf8242so6623551cf.1
+        for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 08:30:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20251104.gappssmtp.com; s=20251104; t=1777563035; x=1778167835; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=lXTJvAOfvRa7NNwLaGmrCktIbRSgY5DJNwPRo6G8z14=;
-        b=Gz3tE79FZAnMGac2Ijn/V12fIBvovLbaPmbZ0ot70v7Zm+fGD3yejkOZNFJdi8cL6/
-         orRzXjJKh9EY8gsWaw0lVARDk/FXXS6NnWypL6Ca7P6rEuvrdKuAcS+cdr3yEKM43vG+
-         ZZmiGeTfc6xW0lphCLXztvnG7kzWk3ZWOZFC7r9VKh9hxAEiAbw684Xmz4NG63CLccCv
-         8wHRNixg4zozW96b6lgc9CDdRsCtRLN8wEbdIVRNXrOoKDXuAYmH8n4xZ8hIWV2tU+X7
-         YqCo+3dQofkgxmeOILA26BSaYuM19XghoTU2bc81BfcrZQSGxVtqnozlTXUpnoW4UEtB
-         QywQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777563035; x=1778167835;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=mojatatu-com.20251104.gappssmtp.com; s=20251104; t=1777563043; x=1778167843; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lXTJvAOfvRa7NNwLaGmrCktIbRSgY5DJNwPRo6G8z14=;
-        b=QW7SmshYbNul0CbqUG8Z+nfHz52ogi3QbhSEaFeP93kQYoQwhZWxwiKfPUfpKPNyhp
-         KaFUKwwzZaRnGjsHela251wf5rFrtWYn/aMgJ8XEXCZ3F0ss4U8aFVQ6WMTWlIwGGUrg
-         +9VCIagZq4zpxcWl8j9bRrV2VWdIelJxgXZGwIOTJL1fgeVhoagkoYCdbp96oqOEmlp+
-         cNfoQagp4H65Tan21QA+43m5qjNvdkjMcK2mRE1fSAnQzA7mNxpp9g7Mkhd7oV5cTNL1
-         bzHopPyDLhml9DhrxnvFAOYfd/veIJvigVQXclXIZGfb+WcEmtvWTUMXjrIaiDdiGB36
-         qomg==
-X-Gm-Message-State: AOJu0YyQ9pV3wyP/lpru7w8QbuDH4ONXoVqenkj26l5ek63pt0b7Y0IC
-	58hGu5EeTAYEMNlkS33fbJzKHGW17YIuIL4wQOhlWa4TglkuDDN+BlWeRuJdh0YrqyI5S14Erpt
-	VYNc=
-X-Gm-Gg: AeBDievxFe57n9Yn1a8jOp4QTdhwhge7PQ1pYkrm1uoNxU59hSqORyw/QlbGHMbPDM3
-	F8VeOLS02mwaWxAMJ5sBngeq4i7584KwJxZl4lyGunkchIcWUfjV0tueEVpOOAVcPnIKxJeGtfM
-	VSJNFOZzlJsc6YOMafevg3JH9q2/darsaZVGjycM96qvj+EtqTd0PuAZjVyJrBrMpVSb6zYboHd
-	z/vnsMAhP1U43u17wy4+OGw3tMQr2JP6J24ZUbgcMovJzrV9gUR+lanakKRfEpN5QOwD7SFkz8S
-	w3kj2cVNkt+MQu9wgngN1DmkK1d1g6AJv5Buph1aYWRr7zUuqk52Z90EzV3rMn52nhjIqSkc538
-	X6L2zC0d8w5CsGj+fGWFWDQ/Gm7gdOTXQFAwt/B9Bm4fe0TyWsUXIQNozb9DpTva8KVbk8UGsye
-	FGP7RpEZxb16Vr1076jfPLsCrf2FZySmGapL4mqQ==
-X-Received: by 2002:ac8:7f42:0:b0:50b:4a84:aa94 with SMTP id d75a77b69052e-5102aaebfb4mr48264681cf.7.1777563029617;
-        Thu, 30 Apr 2026 08:30:29 -0700 (PDT)
+        bh=f0JVO2SpMx/4Aui8gI0QAkkD4prhpett9Sp8rs058FM=;
+        b=OkVwkwulUDievAjfqkqaGLKHqm8RXrgM63g9EnASOxpW80i9qZROFi/hx5awQ65D2Z
+         uHQf6YDokAtOnv8TwzYQFtrjvNC5AeHailjQejEkoFh35oJzpACS/Y/JbcWdNhKq0RRi
+         NYzkMf+qSfLdorNzOUdzWI9NEdgv28jvthGPfEw8o785ZRRJeBfeyNjV5wiVPGKXeUz6
+         JrmuB3JVBmkB17iNR4D/x+TyE315H5HWr2/WsBdVT/9ceep766lry+RJLpaNRoBK/nm4
+         hCtm2Qbt50wiZg1Itq/1myVl+e8QagGjG8BuDeCMOU+TGoKkhnYCr5FrE5gq36T0ck1m
+         NwXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777563043; x=1778167843;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=f0JVO2SpMx/4Aui8gI0QAkkD4prhpett9Sp8rs058FM=;
+        b=Z0G1a+/jqQfNzX3RLRM/tK+kpE1eg7VugadFY/Zq2cmETAv5lNzr3vmb9ZTW8mgiB3
+         jmMCKZ+ZG3nAmPCjbM4jGsvYWIM0r/oPA4uXzli9e+SI8ePEedbOO6ZI5VfZ7TQBHmk0
+         QeyT96GZ+MJlQ0b/H3riJ4iX9HdJbbFaT3oIjXKvfB+j6jmz5/REKft8y0MWNz3TVtpm
+         bkhGCfE+e6tk6JK4cQ0T81MDc37Dm7aHzoLZ2X1+WCMyY0w4vMKGByfwHL5qHvA63uIa
+         Gr2eODJHdlEiowc7+I9AKoK+j9qHl5pV7m830n//yMM5+RKxsnYDWGcCL3X+NxLgMfB1
+         TJmg==
+X-Gm-Message-State: AOJu0YzrKn33fiXXnByPz1jLPEI0t4sMe+LuXPn1bhJnPvVuatD4KZNz
+	5oSK4zD8RY6EbuE348+MC5xQZLLwnhuvaZWZ41n9M6we5zx/KPKu+1sl5tyhPC4Ns15xY/B24Wi
+	RDSQ=
+X-Gm-Gg: AeBDieuYRmpl+GBKfohUQ8+JvBTUncQcQ/bjf47ThLNpOAVS0Ya9XXOJRJ52hlUjBm8
+	+gxURcVCUBHBAGb8qh9BUCsJFuuKoiIeTSfcgjFMIdxNH0UhquQs0hratITnDpWFib8IkFgKBr+
+	FJjRousFiDHwidor/GRWvGUoNNGGVpJLhR2pZ8IPceXRcQzdRC/wdNG5/Kw1ZTXdquynCJysY5S
+	OwsH+exyxFBgwz7p8NahWzfXVLerUASsLQTynFFIPhcVla55y303C+mWl3K7KPcjOrK+3tgUW+9
+	4Cw+X5+f53CTWOT7HXAEtXX8hGIOtdpRk0JEYnQbdWLGuK5LrS5iKh+kAE5sCq4X3st209/Y4nV
+	RpgWuPD4NdN1TPOCtGcJr462JBHoVj2DouRuFDGtjfA1wqg3i7GdxQoUvAAkAHJOvyW5PVjBoxv
+	qEWl818yY1ulWBdBZXhxDSq20S23y9C+QM2L9XjQ==
+X-Received: by 2002:ac8:7f94:0:b0:50f:ae44:515b with SMTP id d75a77b69052e-5102adba973mr47296941cf.37.1777563034019;
+        Thu, 30 Apr 2026 08:30:34 -0700 (PDT)
 Received: from majuu.waya ([184.144.29.222])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5103b398312sm876591cf.10.2026.04.30.08.30.27
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5103b398312sm876591cf.10.2026.04.30.08.30.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Apr 2026 08:30:28 -0700 (PDT)
+        Thu, 30 Apr 2026 08:30:32 -0700 (PDT)
 From: Jamal Hadi Salim <jhs@mojatatu.com>
 To: netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
+Cc: Victor Nogueira <victor@mojatatu.com>,
 	davem@davemloft.net,
 	kuba@kernel.org,
 	edumazet@google.com,
 	pabeni@redhat.com,
 	horms@kernel.org,
 	jiri@resnulli.us,
-	victor@mojatatu.com,
 	pctammela@mojatatu.com,
 	ghandatmanas@gmail.com,
 	rakshitawasthi17@gmail.com,
-	security@kernel.org
-Subject: [PATCH net 0/3] Replace direct dequeue call with qdisc_dequeue_peeked
-Date: Thu, 30 Apr 2026 11:29:54 -0400
-Message-Id: <20260430152957.194015-1-jhs@mojatatu.com>
+	security@kernel.org,
+	Jamal Hadi Salim <jhs@mojatatu.com>
+Subject: [PATCH net 3/3] selftests/tc-testing: Add tests that force red and sfb to dequeue from child's gso_skb
+Date: Thu, 30 Apr 2026 11:29:57 -0400
+Message-Id: <20260430152957.194015-4-jhs@mojatatu.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260430152957.194015-1-jhs@mojatatu.com>
+References: <20260430152957.194015-1-jhs@mojatatu.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,41 +86,188 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
+From: Victor Nogueira <victor@mojatatu.com>
 
-When sfb and red qdiscs have children (eg qfq qdisc) whose peek() callback is
-qdisc_peek_dequeued(), we could get a kernel panic. When the parent of such
-qdiscs (eg illustrated in patch #3 as tbf) wants to retrieve an skb from
-its child (red/sfb in this case), it will do the following:
- 1a. do a peek() - and when sensing there's an skb the child can offer, then
-     - the child in this case(red/sfb) calls its child's (qfq) peek.
-        qfq does the right thing and will return the gso_skb queue packet.
-        Note: if there wasnt a gso_skb entry then qfq will store it there.
- 1b. invoke a dequeue() on the child (red/sfb). And herein lies the problem.
-     - red/sfb will call the child's dequeue() which will essentially just
-       try to grab something of qfq's queue.
+Create 4 test cases:
+- Force red to dequeue from its child's gso_skb with qfq leaf
+- Force sfb to dequeue from its child's gso_skb with qfq leaf
+- Force red to dequeue from its child's gso_skb with dualpi2 leaf
+- Force sfb to dequeue from its child's gso_skb with dualpi2 leaf
 
-The right thing to do in #1b is to grab the skb off gso_skb queue.
-This patchset fixes that issue by changing #1b to use qdisc_dequeue_peeked()
-method instead.
+All of them have tbf followed by red (or sfb) followed by qfq (or
+dualpi2). Since tbf calls its child's peek followed by
+qdisc_dequeue_peeked, it will force red/sfb to call their child's peek.
+In this case, since the child (qfq/dualpi2) has qdisc_peek_dequeued as
+its peek callback, the packet will be stored in its gso_skb queue. During
+the subsequent call to qdisc_dequeue_peeked, red/sfb will have to dequeue
+from the child's gso_skb to retrieve the packet.
+Not doing so will cause a NULL ptr deref which was happening before a
+recent fix.
 
-Patch 1 fixes the issue for red qdisc. Patch 2 fixes it for sfb.
-Patch 3 adds testcases for the two setups.
-
-Jamal Hadi Salim (2):
-  net/sched: sch_red: Replace direct dequeue call with peek and
-    qdisc_dequeue_peeked
-  net/sched: sch_sfb: Replace direct dequeue call with peek and
-    qdisc_dequeue_peeked
-
-Victor Nogueira (1):
-  selftests/tc-testing: Add tests that force red and sfb to dequeue from
-    child's gso_skb
-
- net/sched/sch_red.c                           |   2 +-
- net/sched/sch_sfb.c                           |   2 +-
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+---
  .../tc-testing/tc-tests/infra/qdiscs.json     | 148 ++++++++++++++++++
- 3 files changed, 150 insertions(+), 2 deletions(-)
+ 1 file changed, 148 insertions(+)
 
+diff --git a/tools/testing/selftests/tc-testing/tc-tests/infra/qdiscs.json b/tools/testing/selftests/tc-testing/tc-tests/infra/qdiscs.json
+index eefadd0546d3..b1f856cf62c1 100644
+--- a/tools/testing/selftests/tc-testing/tc-tests/infra/qdiscs.json
++++ b/tools/testing/selftests/tc-testing/tc-tests/infra/qdiscs.json
+@@ -1136,5 +1136,153 @@
+         "teardown": [
+             "$TC qdisc del dev $DUMMY handle 1: root"
+         ]
++    },
++    {
++        "id": "7a5f",
++        "name": "Force red to dequeue from its child's gso_skb with qfq leaf",
++        "category": [
++            "qdisc",
++            "tbf",
++            "red",
++            "qfq"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "$IP link set dev $DUMMY up || true",
++            "$IP addr add 10.10.11.10/24 dev $DUMMY || true",
++            "$TC qdisc add dev $DUMMY root handle 1: tbf rate 88bit burst 1661b peakrate 2257333 minburst 1024 limit 7b",
++            "$TC qdisc add dev $DUMMY parent 1: handle 2: red limit 757 min 16 max 24 avpkt 16",
++            "$TC qdisc add dev $DUMMY parent 2: handle 3: qfq",
++            "$TC class add dev $DUMMY classid 3:1 parent 3: qfq maxpkt 512 weight 1",
++            "$TC filter add dev $DUMMY parent 3: protocol ip prio 1 matchall classid 3:1 action ok"
++        ],
++        "cmdUnderTest": "ping -c 1 10.10.10.1 -W0.01 -I$DUMMY || true",
++        "expExitCode": "0",
++        "verifyCmd": "$TC -s -j qdisc ls dev $DUMMY parent 1:",
++        "matchJSON": [
++            {
++                "kind": "red",
++                "handle": "2:",
++                "bytes": 98,
++                "packets": 1,
++                "backlog": 0,
++                "qlen": 0
++            }
++        ],
++        "teardown": [
++            "$TC qdisc del dev $DUMMY handle 1: root"
++        ]
++    },
++    {
++        "id": "cdae",
++        "name": "Force sfb to dequeue from its child's gso_skb with qfq leaf",
++        "category": [
++            "qdisc",
++            "tbf",
++            "sfb",
++            "qfq"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "$IP link set dev $DUMMY up || true",
++            "$IP addr add 10.10.11.10/24 dev $DUMMY || true",
++            "$TC qdisc add dev $DUMMY root handle 1: tbf rate 88bit burst 1661b peakrate 2257333 minburst 1024 limit 7b",
++            "$TC qdisc add dev $DUMMY parent 1: handle 2: sfb",
++            "$TC qdisc add dev $DUMMY parent 2: handle 3: qfq",
++            "$TC class add dev $DUMMY classid 3:1 parent 3: qfq maxpkt 512 weight 1",
++            "$TC filter add dev $DUMMY parent 3: protocol ip prio 1 matchall classid 3:1 action ok"
++        ],
++        "cmdUnderTest": "ping -c 1 10.10.10.1 -W0.01 -I$DUMMY || true",
++        "expExitCode": "0",
++        "verifyCmd": "$TC -s -j qdisc ls dev $DUMMY parent 1:",
++        "matchJSON": [
++            {
++                "kind": "sfb",
++                "handle": "2:",
++                "bytes": 98,
++                "packets": 1,
++                "backlog": 0,
++                "qlen": 0
++            }
++        ],
++        "teardown": [
++            "$TC qdisc del dev $DUMMY handle 1: root"
++        ]
++    },
++    {
++        "id": "291d",
++        "name": "Force red to dequeue from its child's gso_skb with dualpi2 leaf",
++        "category": [
++            "qdisc",
++            "tbf",
++            "red",
++            "dualpi2"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "$IP link set dev $DUMMY up || true",
++            "$IP addr add 10.10.11.10/24 dev $DUMMY || true",
++            "$TC qdisc add dev $DUMMY root handle 1: tbf rate 88bit burst 1661b peakrate 2257333 minburst 1024 limit 7b",
++            "$TC qdisc add dev $DUMMY parent 1: handle 2: red limit 757 min 16 max 24 avpkt 16",
++            "$TC qdisc add dev $DUMMY parent 2: handle 3: dualpi2"
++        ],
++        "cmdUnderTest": "ping -c 1 10.10.10.1 -W0.01 -I$DUMMY || true",
++        "expExitCode": "0",
++        "verifyCmd": "$TC -s -j qdisc ls dev $DUMMY parent 1:",
++        "matchJSON": [
++            {
++                "kind": "red",
++                "handle": "2:",
++                "bytes": 98,
++                "packets": 1,
++                "backlog": 0,
++                "qlen": 0
++            }
++        ],
++        "teardown": [
++            "$TC qdisc del dev $DUMMY handle 1: root"
++        ]
++    },
++    {
++        "id": "9c6d",
++        "name": "Force sfb to dequeue from its child's gso_skb with dualpi2 leaf",
++        "category": [
++            "qdisc",
++            "tbf",
++            "sfb",
++            "dualpi2"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "$IP link set dev $DUMMY up || true",
++            "$IP addr add 10.10.11.10/24 dev $DUMMY || true",
++            "$TC qdisc add dev $DUMMY root handle 1: tbf rate 88bit burst 1661b peakrate 2257333 minburst 1024 limit 7b",
++            "$TC qdisc add dev $DUMMY parent 1: handle 2: sfb",
++            "$TC qdisc add dev $DUMMY parent 2: handle 3: dualpi2"
++        ],
++        "cmdUnderTest": "ping -c 1 10.10.10.1 -W0.01 -I$DUMMY || true",
++        "expExitCode": "0",
++        "verifyCmd": "$TC -s -j qdisc ls dev $DUMMY parent 1:",
++        "matchJSON": [
++            {
++                "kind": "sfb",
++                "handle": "2:",
++                "bytes": 98,
++                "packets": 1,
++                "backlog": 0,
++                "qlen": 0
++            }
++        ],
++        "teardown": [
++            "$TC qdisc del dev $DUMMY handle 1: root"
++        ]
+     }
+ ]
 -- 
 2.34.1
 
