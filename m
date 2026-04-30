@@ -1,141 +1,111 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from out-06.smtp.spacemail.com (out-06.smtp.spacemail.com [66.29.159.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC77F31327D
-	for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 16:23:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03B514779B3;
+	Thu, 30 Apr 2026 16:25:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.29.159.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777566183; cv=none; b=l/0h07QYZDoB7sJpuaftqbw+gqMdlo9peGKLYrP3dC8EaTRZC/g/VYui2FEX2nbcXq8o/C9xOKE93ypF8I5cceP89DGH2cbqniU/iy8YPl/Aey9bLdMI7BrIwt5rMnzo8m8PffkxigrzYDGQxIITLnYzYRd26SVTWwDLiAo8/3o=
+	t=1777566304; cv=none; b=sW92QhkuVPSp40b9pvEVEg1zHWEv+I5J7ham2Dt54/E2nFi3ZwfTBB1weBNvobg7sDi4uFRcxNYsOto63X9Sx1NoZtV1h/cLAYkV8cUhfiGm9YY1WrbnmB3Xe/i5HMywqVZi4k3wLfDSVbth/ZTkijSR84BtKT3qDol6WMPpBwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777566183; c=relaxed/simple;
-	bh=K7FRDzKZeTlPZwWQB7S+4RIlk3DjCL2AwjuZeyo+tC0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=F+b2Ddr2Y84JvYK1I54b2/2SSy4DoOJwrJFB52rrZNNCfpqYKdbYgMaKzKCRHvVZs9tBw+ISsksVraRqGf9ap5FhYvz9qsiasmpyFLRiTXjP4R0SqKDI/bA7XM8EfiLPBmy6LIbp5FhjBgTkyNgZ31l54dGegausmr6uH4l29BQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZdlnDEkS; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Bj0/7EFE; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1777566304; c=relaxed/simple;
+	bh=kQ68Jqk7qwS4xb2XXtxn7/6Xq/is6YQE2sjqSQ38KGg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=StiRV8hE0xIJ4CQUGk3IQOrmG0sI3fNZg7Jfe2HBMSZiB50JCodv2G5d31QFwxnYz8hs/lOMxRkAMQIGbjARxEYIiYYH00scu3Tg4hN5AgXSWmo5RWsOK+5aYGbv7Ls5/nx0JYAmG9mM2xq4kvKra10s0txzlxM30euLx/vzxz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rexion.ai; spf=pass smtp.mailfrom=rexion.ai; dkim=fail (0-bit key) header.d=rexion.ai header.i=@rexion.ai header.b=VfGdbiLp reason="key not found in DNS"; arc=none smtp.client-ip=66.29.159.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rexion.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rexion.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZdlnDEkS";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Bj0/7EFE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777566180;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mGVTGRbGFblsakPRXn91Stl9dK67n1p85hK2XKk8RFw=;
-	b=ZdlnDEkSMUBsBcziGRnIxx4IDxnxm2kL9XWX46Pbpjc/O19TrkxhyoI0w5WYh9oMrbDP5n
-	WrZUcpCMhknXE8hwrIApjafUqfSicvs5zMSczL0JbOcA+YWYkMCDITwSDjn+Kx6SNPyZnD
-	0FeigvZkz540MHm+FpB1ruV58RG0nCE=
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
- [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-650-fNDLoRUMOKSAP_20OO92EA-1; Thu, 30 Apr 2026 12:22:59 -0400
-X-MC-Unique: fNDLoRUMOKSAP_20OO92EA-1
-X-Mimecast-MFC-AGG-ID: fNDLoRUMOKSAP_20OO92EA_1777566179
-Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-50fb007bc36so24810651cf.3
-        for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 09:22:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1777566179; x=1778170979; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mGVTGRbGFblsakPRXn91Stl9dK67n1p85hK2XKk8RFw=;
-        b=Bj0/7EFEXTw8wZ8OGSi8eHMpTaVpDFwz1UNDMnFacZl9tvvxi0p5rH0KGsbICO/ycB
-         f95vDPPU06xNBCDQ9LXtFhuMWSg8egFnT5jXQ9rKeG+sI1Tm9y1erTcJPnIcQrduOkhH
-         WHRauEr6oP2d+uHjxxttUFG63Wmr0+sSskiB/7qMLAvg51gHo42dV0CqF+AgpMwQDUBt
-         AvQNYJgNKyzrSBfRZA9U+z2XqxORVErQGDt/KiRcSRcDvQudWjEx9iq62XCCgz2LtZc/
-         Ydt5tx9W1FSMx+KI5hhZsI+l/S7AyKa7yn/vzvvrv+zIjCZn94WO9m0JKMXGRKiVxXZ0
-         0/dw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777566179; x=1778170979;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=mGVTGRbGFblsakPRXn91Stl9dK67n1p85hK2XKk8RFw=;
-        b=h1aHzy/NEpa9jwpv+bfSnzSd+22ChSZb+lW7PHyOKRPqrtuhc4+yRTQR0NZOOufINH
-         Lx7YF6MSyFqXJ1c3khhNeO9/8UkAnGrVP4DYoTrbfvDPlMkEU4J6kgbygJ3aVodX1+n/
-         f3R7ICkZv2+MnakP8NsGo3509F1qDVvV1+BZ7WBAxQoCn9B0uovgD+jTU+PUnalNTvPe
-         MP+fVu0/FYLvWvlrEIHjRJGvU9+3+6srzMYdIcu20vk/kVFcMSpWi8EtoBuxoa7pZaXq
-         BTfEONABvkNQMryzfvfH2NR9YZkmtK7UpJj3XmYnvrHHT12IeRfWX+nD+ZE80srbNmXJ
-         2HgA==
-X-Forwarded-Encrypted: i=1; AFNElJ8K6OMchNl18D9aRJiKzIfpd64Tj6iG9IoookdoGAnjHoz2ARakKMFUwmSm/L0l7Yt4a4ocvug=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwXYqZ1yPF5kXQMXvFooogekVqtqsE4L/FJHlDJjzwZpFi/RyHO
-	WPZrJu7imd92giy/PCokLvk08eR7lOkkBIorJVS3GwBS5RwyfIiCt1ct+k+Irfjbub2xVMPGFxP
-	VwTYlkd3G4RqOgF3Jo/tzRKhwGsxVZuXQp2ALFjjvGv0w704Uzi49qhFUeA==
-X-Gm-Gg: AeBDievu0t3ERt3mjRXwXOXL1lipgkc9w46RDrBKu/IZtlT6tmpnHpreFnaogXpFEH8
-	6R3VgSjhMJV3nF1Hrw4E7lxUm3GM81iX5UjgZl42JboIn9XbNmKQ4S/pbNFO4RmIcinM+ctKvZB
-	/ArZc6iL+pFmcuXzcLPyLSt5rNvz0obimq+32vtvF9b0M8zipaq7Fd4tCe3cS87ih1oEdR6cWe3
-	sIf176aFBFxOKXD0Jc015wfsIYMOMdH6QVl/dTbQHeKrypWv6+2Cka86nVG6WoLdA/xtEpUJodW
-	DBHXwHsSuDN4l1az6eGsi/MfnepQSEij4yc9QvLtnATwn2ZGGpyhwbTll7pu+fEW5w1xzrLcmLQ
-	Wr6pIxlYe+WImaeq7szBic15j9vtv07DQncmNzj8fkh0oFYHqTn6gN+yT/IX+Hk32dg==
-X-Received: by 2002:ac8:7d05:0:b0:50d:84a7:72d0 with SMTP id d75a77b69052e-5102ad9b157mr48846641cf.36.1777566178685;
-        Thu, 30 Apr 2026 09:22:58 -0700 (PDT)
-X-Received: by 2002:ac8:7d05:0:b0:50d:84a7:72d0 with SMTP id d75a77b69052e-5102ad9b157mr48846331cf.36.1777566178268;
-        Thu, 30 Apr 2026 09:22:58 -0700 (PDT)
-Received: from [192.168.88.32] ([150.228.93.27])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5103b71c304sm1685121cf.29.2026.04.30.09.22.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 30 Apr 2026 09:22:57 -0700 (PDT)
-Message-ID: <40a6d40e-4312-4a1b-bf90-9e009b29de68@redhat.com>
-Date: Thu, 30 Apr 2026 18:22:54 +0200
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rexion.ai header.i=@rexion.ai header.b="VfGdbiLp"
+Received: from Kyren (unknown [49.207.224.37])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.spacemail.com (Postfix) with ESMTPSA id 4g5zmB4Btkz2x9M;
+	Thu, 30 Apr 2026 16:15:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rexion.ai;
+	s=spacemail; t=1777565726;
+	bh=sRUwxv105zLC4orUk+g7f3wF3S6imYFW5vkon8InWC4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=VfGdbiLpZF3/pFWCEPGshc7+bPnYyCD0Z4KKMjd0NaAALnW/S/R47sIRlmFKaobIV
+	 FQ53fNtE7oFjc4NE5eQOSGW2e+/x1X9QJHvgVCouVJNwuXnD9IxT4NNtqDncHT45N/
+	 mfaF2J5nkp9Ktn1OPrSDXzAuSb3ZwFH0k91Ra9a+8OPhW4vL8e35LAyS1zarrcIKHW
+	 FDOUHl7/ADHTJKEVNB0S1o1mCFaTk2SyzoH3Fv0G5LcCV/oufal/Ot/Z3CN2FiVxKg
+	 dnxML5+0mLX71HTH+xDLJVJgzlorIi11VxSXRxhVFIjT2u6a0Z80iRk8vZMNH5oPqI
+	 vn+hxAIoiQd2w==
+From: HACKE-RC <rc@rexion.ai>
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>
+Cc: Phil Sutter <phil@nwl.cc>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	HACKE-RC <rc@rexion.ai>
+Subject: [PATCH net-next 2/2] netfilter: nf_conntrack_amanda: reject port values above 65535
+Date: Thu, 30 Apr 2026 21:45:15 +0530
+Message-ID: <20260430161515.3449513-3-rc@rexion.ai>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH net-next v6 1/2] net: pppoe: implement GRO/GSO support
-To: Pablo Neira Ayuso <pablo@netfilter.org>, Qingfang Deng <dqfext@gmail.com>
-Cc: Felix Fietkau <nbd@nbd.name>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, David Ahern <dsahern@kernel.org>,
- Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-ppp@vger.kernel.org
-References: <20260326081127.61229-1-dqfext@gmail.com>
- <9d7f1bbc-155d-4c18-bcf7-732ebe4cbf67@redhat.com>
- <CALW65jYB1jWS5LnSxRCrEeCpPfhA8saqbYYfU-LkPh_25gWfsw@mail.gmail.com>
- <afN7_oBICMZ_45Zh@chamomile>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <afN7_oBICMZ_45Zh@chamomile>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Envelope-From: rc@rexion.ai
 
-On 4/30/26 5:57 PM, Pablo Neira Ayuso wrote:
-> On Thu, Apr 30, 2026 at 11:47:57PM +0800, Qingfang Deng wrote:
->> On Thu, Apr 30, 2026 at 5:34 PM Paolo Abeni <pabeni@redhat.com> wrote:
->>>
->>> AFAICS, when the computed len is >= 64K, and the above min() will
->>> truncate it, later pppoe_rcv() will drop the packet.
->>
->> pppoe_rcv() does _not_ drop such packets.
->> The drop condition is "skb->len < ntohs(ph->length)", not the other way around.
->>
->>>> +     skb = segs;
->>>> +     do {
->>>> +             phdr = (struct pppoe_hdr *)(skb_mac_header(skb) + nhoff);
->>>> +             len = skb->len - (nhoff + sizeof(*phdr));
->>>> +             phdr->length = cpu_to_be16(len);
->>>> +             skb->network_header = (u8 *)phdr - skb->head;
->>>
->>> I understand is quite late for the following question, but...
->>> The network headers points to the pppoe hdr. Should it point to the
->>> actual IP hdr?
-> 
-> This is the same with double-tagged-vlan, the network header also
-> points to the inner vlan in the skb payload. Changing this would
-> require to revisit all users in the tree that are already assuming
-> this.
+amanda_help() converts the result of simple_strtoul() to __be16 via
+htons() without checking the parsed value fits in 16 bits. The
+existing len > 5 guard limits strings to five digits, capping the
+parseable range at 99999, but values 65536-99999 still silently
+truncate on the htons() conversion.
 
-Ah right, the relevant GRO stage is running on top of an ethernet device
-and the RX path there resets the NH just after the ethernet one.
+Use an intermediate unsigned long and reject out-of-range values
+before converting to network byte order.
 
-I got lost in the relevant hooking.
+Fixes: 16958900578b ("[NETFILTER]: nf_conntrack/nf_nat: add amanda helper port")
+Signed-off-by: HACKE-RC <rc@rexion.ai>
+---
+ net/netfilter/nf_conntrack_amanda.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-This patch (and v7) LGTM, thanks.
-
-Paolo
+diff --git a/net/netfilter/nf_conntrack_amanda.c b/net/netfilter/nf_conntrack_amanda.c
+index d2c09e8dd..58d6c9f29 100644
+--- a/net/netfilter/nf_conntrack_amanda.c
++++ b/net/netfilter/nf_conntrack_amanda.c
+@@ -88,11 +88,12 @@ static int amanda_help(struct sk_buff *skb,
+ 	struct nf_conntrack_expect *exp;
+ 	struct nf_conntrack_tuple *tuple;
+ 	unsigned int dataoff, start, stop, off, i;
++	nf_nat_amanda_hook_fn *nf_nat_amanda;
+ 	char pbuf[sizeof("65535")], *tmp;
++	unsigned long parsed_port;
++	int ret = NF_ACCEPT;
+ 	u_int16_t len;
+ 	__be16 port;
+-	int ret = NF_ACCEPT;
+-	nf_nat_amanda_hook_fn *nf_nat_amanda;
+ 
+ 	/* Only look at packets from the Amanda server */
+ 	if (CTINFO2DIR(ctinfo) == IP_CT_DIR_ORIGINAL)
+@@ -132,10 +133,11 @@ static int amanda_help(struct sk_buff *skb,
+ 			break;
+ 		pbuf[len] = '\0';
+ 
+-		port = htons(simple_strtoul(pbuf, &tmp, 10));
++		parsed_port = simple_strtoul(pbuf, &tmp, 10);
+ 		len = tmp - pbuf;
+-		if (port == 0 || len > 5)
++		if (parsed_port == 0 || parsed_port > 65535 || len > 5)
+ 			break;
++		port = htons(parsed_port);
+ 
+ 		exp = nf_ct_expect_alloc(ct);
+ 		if (exp == NULL) {
+-- 
+2.54.0
 
