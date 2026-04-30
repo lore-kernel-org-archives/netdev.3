@@ -1,83 +1,64 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B40BB194A6C;
-	Thu, 30 Apr 2026 00:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32FD92147F9;
+	Thu, 30 Apr 2026 00:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777510250; cv=none; b=XPilwKW8PpSK8LRKY/4NjXczeffAMTsLkHzw7jYB6UhgkPRfxKBncS6ZhkaWUH2QQs7t+aoUn0gvbXsJFguUJggsDLQTUjEg2xaZikNEIO8Ftapu8DJF35knPEdb4VIbn1KK9YjHwwHpte51hg8JqTisCIp1t3fp+lFdSDiR+Ro=
+	t=1777510464; cv=none; b=C2J8dqbCOEYruyFz08kawHTkGeQcn9Ub+16kndF7oBc0qxMXxBgJSLxw53WahZHE1+L11PeDOIsp1Q/x9wRqo412LsqOlLRGEfmsPQN6f+mDbTVjhkBqhfKykQQ2ge808J59tDHO+Yci0bS1L/FUapQyksK7VEYjzDigeX1544w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777510250; c=relaxed/simple;
-	bh=8hTjZVo/XxRC+sG5sC75NA15k8DMUXtA+PqswM5vy+w=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=K6zsl9b5iB/6Y2MAv1RW3i2sznr0wsgxp6INwp2KjbAWnzor5LumOPCKcenKTT2tTxeaJwFd6Wu4Iq4uhnDjXX0+pSVL7/i4lrlX2U0jMhwEXSrasy5RIBEt5y6cWAkVVRjwdtKiToHPS+mKdIUNnwAyyydFMovMgRw/zHtxDDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gSohxNtT; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777510464; c=relaxed/simple;
+	bh=1jVVcjmjWGlmRxZMpNv0KbezYUh3E1fqOB92ATzcCuY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eQeC8BudgBQde322WtBU0JTMAoeePb/MVcxTg5Cv9t09JlvFGKG84U+Ys1CSwHtKnDusPY3eUkIBalB95UHvuC5zZx8aW7Dmuf7amACBSTDXaqlO8QslEH10GmY6GKEd9YdA+7HMDXfhbvP0dRhAal0Bsi7QXxaMsskQ10wpqos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eaK1WErH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gSohxNtT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CBE7C19425;
-	Thu, 30 Apr 2026 00:50:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eaK1WErH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD5E0C19425;
+	Thu, 30 Apr 2026 00:54:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777510250;
-	bh=8hTjZVo/XxRC+sG5sC75NA15k8DMUXtA+PqswM5vy+w=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=gSohxNtTNK3/ENPdzslFmBoW9zlgVXTTWbzglFpCKe8Pa4Xte+oDZqHKDnX7YgN43
-	 jbWqss93l6+3pA7vs5oh4P4z69Ct+CXbNjRTSx8AB+A7LddmO5JLfkAY42e3NshICV
-	 Dsvxo9XI7Sp5o3+c0EVSUQqCiISCLtwN/cEnWCXGFbBxGgQ2J/xkEW+xD5NBeHIACn
-	 j5gcLLURkNslPHVNhyakvBXz/xP7ovEOUve53DahJgs5lLQsePyeUzNWi5HyNbwDhu
-	 UQD/E7IViCEc4dQgSvtUKrcVlnP1KvG718lKeWN0mW/1HXF0wQpVgcWNQQd+DY5GdG
-	 W2CBK3XqpZ37A==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9FDC3809A33;
-	Thu, 30 Apr 2026 00:50:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1777510463;
+	bh=1jVVcjmjWGlmRxZMpNv0KbezYUh3E1fqOB92ATzcCuY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=eaK1WErHK43V6oBQjqS2JgcQyBt63tXROg/QKwzWftbVguHr2RkZYQGPnZz0+oHuF
+	 /PwDeQr7dXPHqeZw3+nEvZqcT3tqKZV9bQH0y5/VZq7TNX63Vmk03Wy7yLcyG07RGD
+	 P7Y1sOoAbZ/SU8pcqbJKhWm31D37bfBCEfMnzYpMNRStGH5WDcPnrO1dJ4OwXiR1af
+	 oHnWDUfVcu5ZS6aWpWLy9QdMmjycPjWY6uo6E2lGaUvTZMl3J+dARharO/1rbsPE0p
+	 M/SSpJi1iZnnbBxWvxnhX0FJIXAbca9HFWab5qmX4XufNfHgEOsTNQfY2T/4pktzVm
+	 MNSau0XUrKsAg==
+Date: Wed, 29 Apr 2026 17:54:21 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org, Yibo Dong
+ <dong100@mucse.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, MD Danish Anwar <danishanwar@ti.com>, Vadim Fedorenko
+ <vadim.fedorenko@linux.dev>
+Subject: Re: [PATCH v2] net: ethernet: rnpgbe: mark nonfunctional incomplete
+ driver as BROKEN
+Message-ID: <20260429175421.014bb28f@kernel.org>
+In-Reply-To: <20260428030826.47509-1-enelsonmoore@gmail.com>
+References: <20260428030826.47509-1-enelsonmoore@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] hv_sock: fix ARM64 support
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177751020555.2241449.18420756857338539292.git-patchwork-notify@kernel.org>
-Date: Thu, 30 Apr 2026 00:50:05 +0000
-References: <20260428125339.13963-1-hamzamahfooz@linux.microsoft.com>
-In-Reply-To: <20260428125339.13963-1-hamzamahfooz@linux.microsoft.com>
-To: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
-Cc: netdev@vger.kernel.org, kys@microsoft.com, haiyangz@microsoft.com,
- wei.liu@kernel.org, decui@microsoft.com, longli@microsoft.com,
- sgarzare@redhat.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, mhklinux@outlook.com,
- himadrispandya@gmail.com, linux-hyperv@vger.kernel.org,
- virtualization@lists.linux.dev, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Mon, 27 Apr 2026 20:08:25 -0700 Ethan Nelson-Moore wrote:
+> The rnpgbe driver as currently shipped in the kernel is incomplete and
+> has no useful functionality. It will bind to a PCI device and create a
+> network device, but that device does not function (its .ndo_start_xmit
+> callback, rnpgbe_xmit_frame, just drops all packets). This situation
+> means that users could enable this driver and have it load and attach
+> to their device but not transfer any data. To remove the potential for
+> user confusion, mark the driver as broken until it is completed and
+> explain why this was done.
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Tue, 28 Apr 2026 08:53:39 -0400 you wrote:
-> VMBUS ring buffers must be page aligned. Therefore, the current value of
-> 24K presents a challenge on ARM64 kernels (with 64K pages). So, use
-> VMBUS_RING_SIZE() to ensure they are always aligned and large enough to
-> hold all of the relevant data.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 77ffe33363c0 ("hv_sock: use HV_HYP_PAGE_SIZE for Hyper-V communication")
-> Tested-by: Dexuan Cui <decui@microsoft.com>
-> Reviewed-by: Dexuan Cui <decui@microsoft.com>
-> Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
-> 
-> [...]
-
-Here is the summary with links:
-  - hv_sock: fix ARM64 support
-    https://git.kernel.org/netdev/net/c/b31681206e3f
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+I'm having second thoughts about this. I'm worried users will come to
+expect that drivers are marked as BROKEN until such time that they
+can be considered a sufficiently complete replacement for an OOT /
+vendor driver. This will be highly subjective.
