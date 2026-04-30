@@ -1,132 +1,125 @@
-Received: from mail-qk1-f195.google.com (mail-qk1-f195.google.com [209.85.222.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E6F42050
-	for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 01:13:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.195
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777511640; cv=pass; b=ZRotZebFNt6DIQMSJcOXwlGFy21482bGFjdz9z1XjyW8WJkyFX5HvVx9LOHtgfmkGhbRyWg6odKxVI5LiZ2lK+JXWmvukvqUH5febUbkCWO4+EmWmUgqygGzRMpg9LDmRTsR3AIah2n24gPwP/ZKMV2nQUiq3eWAgkORDOA6UUM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777511640; c=relaxed/simple;
-	bh=tqaDce29jr/G7DRTAEhFxC4N7p1PmHs0sEj/V7P6OGc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=a4oXnJxN/SpkBscvx7HUaJL7QHBfPidniM97nMr3fStl0L8BW1KitgKmVlfPzJz6Pyajd/i6fDH1SxiBjKsOvw5Evcm886cfszo7QNFxc0dMVKrWYoj0xRDR0HsDVewFwdJezpMV0KbRPSYryKrBObpjLZJO/BlWp6JXrZ9vV3Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O/PNwpQ5; arc=pass smtp.client-ip=209.85.222.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F364194A6C;
+	Thu, 30 Apr 2026 01:18:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777511929; cv=none; b=rS/G3a9aFvdQmVFbcuSoCoT2rYEN535HW06nIRGPoL3PEFGxmW/qnNewelWn5JJZMSFLJP4vPR/i6gATDq7vL9cPc8LFJV08F6FGYilP5Q3N+Mv1UWXCuKJq7UYM3Z3bKG1+x1IH0NW1EiUgn8mrrTKDc5BsQtjhE4JhbQ7zu3A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777511929; c=relaxed/simple;
+	bh=8I/TGIeJpKZJ99tALKbqpZFfrLAguMqYMRot9pDDjFA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=nm5Zax7NBDsFx9GbB3yho0kl6jcV0UQwwby8Sz6BcTM7MeDNlV0eZW4KL0NH6E1Mi/VOIAHcuo+Euvn6aGBZqfRWJ7m0bhkYhQANwws7b+BmMbaIueqa5HsF86vdmaKXu3IqrbztdWGIdKskF6MLWAyxsPrUSZ+DWhRK6LADzKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CEdr9kD2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O/PNwpQ5"
-Received: by mail-qk1-f195.google.com with SMTP id af79cd13be357-8d65f4073bfso48859185a.3
-        for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 18:13:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777511638; cv=none;
-        d=google.com; s=arc-20240605;
-        b=LeCuXGghPjbFEiNZH0f6japbZ6hz14lYCpyF3sDvT13Oh7bQgS2A6pkPR6iSIQpUXi
-         iQjohnqeVyJ1JJcGC1GbsH3zFi2bBYjyqaLyaBQFb1CweBxYGzV3EYXy3Qhcsw4PT3J+
-         CIXfTlf+l9Pn0EpOzI0zvpXmXsm536fJu28j2XYsDcrj44DG9jPPN+Vrm2GMEBT473ZF
-         9rqgRQ7YsZhDSFX8B7CgFOnrDRGXzTS5KPUQBWXE9O6J0hkQv9y/2vaOPWxPHqVLBctQ
-         XtowEBnRXdev0UE/uK1p1K3uL4865CjAYENCNjkdzfTanF9JV9z86wCUVXvI7idwtMW8
-         mQsw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=SHnfzzOQ26BJPTjQzYNGFTmRJ+Hsl70GArsyqS+Zp1U=;
-        fh=vAlDPZgThCC6etRTHHhmGYq1pRJwYWxyKtIdxCdY4B8=;
-        b=d9OTc50evoITAASx/8IMMvrqMlfOaklAZU8HqOGI3DKNHGG48ZXMVgu9jbmPJrEQTS
-         OoeC9v/JiwwmdksqxaGJ4tPEnnF/fU/rnXPnjGOQlylCVgLrcMAUfaLJHyTJe1ynXtHQ
-         +/wTX/N5wpe/a+iN1CPsz2Wx0KsBFtdgf5Vsn7TtPXTE9DJy0nOwuQ3GRN2Uh6NLtaT4
-         WLtXQXWxbRBmdoM0fyuyhIiuNaEIqh4g1saNDgruZcftyD5otHpjip+EvNCEfis+GPDw
-         6Hfck+0IMbV42W0nHGLDXVU7XKGm9WEollKQfKlmjy20m9GToVYiqnyjeHY/O73oHUW8
-         crqA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777511638; x=1778116438; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SHnfzzOQ26BJPTjQzYNGFTmRJ+Hsl70GArsyqS+Zp1U=;
-        b=O/PNwpQ5zrqHYinmxLZo6hYQ+Gt71tWCyga2F/pWkU/AKr/XVW9OXFyJwhcLhd7joG
-         Q6pPyM2J9pl4SyWpa2an2h6aciEpTdg1fBvfdGrrJ+iozenF3jHnjk0zyZi1qyFkiq5O
-         zuwxv13fwWgp4QIsGuarCy/BXgldahpj0F2ccjwnVg7i9RD6P8Dgsv7pn/AlMcPCpisW
-         dz6buLQIUXtMpGkIBWaiXywyQtX5Z7qTuCBnnbhR6z5EUubyBvEM8Z5fSowY+a1jjCYM
-         7hhNwLu8AO/oAKivm8k4p+gEkEW2xbB54FrgQX+Mu9TTtVk04orNOUxLSlwYB2p+YffH
-         epbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777511638; x=1778116438;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=SHnfzzOQ26BJPTjQzYNGFTmRJ+Hsl70GArsyqS+Zp1U=;
-        b=d+nk7Qrwbubkp3biHi51SYy61QzRr0b3HCMqhspbDHrSQkekbb9g5QVJA/pebMTmFx
-         iZmjA1LyqCLYd9QyppI6Mjg+UaQ7in9YA3LZuWcTIfxF1ESmJVERBRQSMs2HUglrSaoL
-         cXkba4Or0MZnNLtLtOxxjGEx4XkTTXZucV7Y9aWo5oVyChyywE8RhYVL42V1s8Qpy/1B
-         qN8v42G81cGNMsj7kjmqv6Uc7Mx3aedu8Z59Zy9jwyWJmP/UdUqZgIWv/lElArpg7AN3
-         iWYpI1o5McaB7iow01+aBL9X1gXAeMqIpGOdwqxB33AnmG/RSw4tjDa/idNHrBdQXo0I
-         tp2A==
-X-Gm-Message-State: AOJu0YwGEZXwdG/6IuevL5nA4W8dPjLoPPan6865B8gqKcXGfXTojy0S
-	PxbqoGNrrgPvzye4n2JAm7c29ZycWsuwhySGlKCceccJZrJPzbAaM2ZwoKW7Tz0IoBYK5B4UVf4
-	DE+Ks5/trJ2iC8D7OYffneFnVflPtc0IIJeEDM9o=
-X-Gm-Gg: AeBDiesheEv1o4Ar6XjWerZwOk7HaCUgGHS+Xyfd078MInV56pQri/keDL5R8Z4ahUC
-	t4p2AIluJbmYPn6jq6U7WDwqrPYxwxLgRDKaHf7nVpNR/zs5SfuoaUXoD2Mnvt/IQ0e5dfFezXO
-	EhbZIU4bzTQZBIMPAisopVXiNwztnaE2SrI4XU/fcUg8zw8KzfgwsiGghHd9499VPdavqzTJ1yI
-	esDiBmzGtFv5kuj8b2POOVRIRXo8jt3Slm+SW+IlBHYk7LarKs9riNs4AzeegEfIeambrkIKRgR
-	Ftl19Wz7PadQhbaocsYk4kJStQTeTX1VqLSZtBD8PFAFP6RukObF8hUWj/fsJcSzh7Aqk/QlCXq
-	Urd4=
-X-Received: by 2002:a05:620a:1786:b0:8ed:e1d4:1644 with SMTP id
- af79cd13be357-8fa863df4bcmr184203285a.3.1777511638380; Wed, 29 Apr 2026
- 18:13:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CEdr9kD2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 432F0C19425;
+	Thu, 30 Apr 2026 01:18:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777511928;
+	bh=8I/TGIeJpKZJ99tALKbqpZFfrLAguMqYMRot9pDDjFA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=CEdr9kD2r1ZVsI0g0c7GJRNC+Pq09jt6y+7cDDBpYMJV/41JimIDZMSiNyXoQZ2Us
+	 iimqk9jWtUXNca7Ne9Gu5y8BpvEmXd1V5r+jNM/Lmwt+8ZWz14yFq4elltN2VJq7Co
+	 NKi45Q8L8SFdopY/EYrAqunqvI5qXIFRpHYsVIaUdkKjgrnl8SsnnZ8e4vMfuzeiqK
+	 Qs0cXPCi7GXPgKNpD+wLoVKxvD8gPPKNM/1fBsydCt9FTDYfkaBvYGGel3//uYg2GE
+	 3Cq7Au9wcuVc9IGPDaNzL02+h7BmRU7lJC2ESobGzAwBcCT12rTLTFL/525SDiejCz
+	 JLNd6LSa3MUdA==
+From: Jakub Kicinski <kuba@kernel.org>
+To: maoyixie.tju@gmail.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org,
+	kuniyu@google.com,
+	shaw.leon@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	dsahern@kernel.org,
+	kuznet@ms2.inr.ac.ru,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	security@kernel.org
+Subject: Re: [PATCH net 1/2] ip6: vti: Use ip6_tnl.net in vti6_changelink().
+Date: Wed, 29 Apr 2026 18:18:47 -0700
+Message-ID: <20260430011847.2344915-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260428110713.2550315-2-maoyixie.tju@gmail.com>
+References: <20260428110713.2550315-2-maoyixie.tju@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260428030826.47509-1-enelsonmoore@gmail.com> <20260429175421.014bb28f@kernel.org>
-In-Reply-To: <20260429175421.014bb28f@kernel.org>
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Date: Wed, 29 Apr 2026 18:13:46 -0700
-X-Gm-Features: AVHnY4J1jUYA03pvf-5_5V3JNJphmuZu7BwnIMTt_nc9cAvdILco119uAEfpHjU
-Message-ID: <CADkSEUiRwto-14zkER30WJdiQa2b+OGOZ+2S50pq4doJ37X70Q@mail.gmail.com>
-Subject: Re: [PATCH v2] net: ethernet: rnpgbe: mark nonfunctional incomplete
- driver as BROKEN
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org, 
-	Yibo Dong <dong100@mucse.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, MD Danish Anwar <danishanwar@ti.com>, 
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Apr 29, 2026 at 5:54=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
-> I'm having second thoughts about this. I'm worried users will come to
-> expect that drivers are marked as BROKEN until such time that they
-> can be considered a sufficiently complete replacement for an OOT /
-> vendor driver. This will be highly subjective.
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+ip6: vti: Use ip6_tnl.net in vti6_changelink().
 
-Hi, Jakub,
+After commit 5e72ce3e3980 ("net: ipv6: Use link netns in newlink() of
+rtnl_link_ops"), vti6_newlink() correctly resolves the per-netns vti6
+hash via link_net. vti6_changelink() and vti6_update() were not
+converted in that series and still read dev_net(dev) /
+dev_net(t->dev), which diverge from the device's creation netns
+after IFLA_NET_NS_FD migration. The result is a stale per-netns hash
+entry; cleanup_net() of the original netns then walks freed memory.
 
-I understand your concern, but there is precedent for doing this when
-the driver doesn't work at all.
+> diff --git a/net/ipv6/ip6_vti.c b/net/ipv6/ip6_vti.c
+> index ad5290be4dd6..dcb257411d6e 100644
+> --- a/net/ipv6/ip6_vti.c
+> +++ b/net/ipv6/ip6_vti.c
+> @@ -722,10 +722,11 @@ vti6_tnl_change(struct ip6_tnl *t, const struct __ip6_tnl_parm *p,
+>  static int vti6_update(struct ip6_tnl *t, struct __ip6_tnl_parm *p,
+>  		       bool keep_mtu)
+>  {
+> -	struct net *net = dev_net(t->dev);
+> -	struct vti6_net *ip6n = net_generic(net, vti6_net_id);
+> +	struct net *net = t->net;
+> +	struct vti6_net *ip6n;
+>  	int err;
 
-The ntsync driver was marked as broken in commit f5b335dc025c ("misc:
-ntsync: mark driver as "broken" to prevent from building") until it
-was fully merged. The BROKEN dependency was then removed in commit
-c301e1fefc2d ("ntsync: No longer depend on BROKEN.")
+Does this fix introduce a regression by leaving a loophole in
+vti6_siocdevprivate()?
 
-If it were my decision, I would remove BROKEN from this driver once it
-supports a stable network connection, and perhaps also once it
-survives suspends and resumes, since that is expected in modern
-desktop use cases. I think that is a fairly objective reading of the
-word BROKEN.
+While vti6_changelink() and vti6_update() now correctly use t->net,
+vti6_siocdevprivate() still uses dev_net(dev) to locate the tunnel during
+a tunnel modification ioctl:
 
-It might also be a good idea to agree on expected uses of
-CONFIG_BROKEN and document them in init/Kconfig.
-Currently it says:
-  This option allows you to choose whether you want to try to
-  compile (and fix) old drivers that haven't been updated to
-  new infrastructure.
-which does not fully encompass what it is used for.
+net/ipv6/ip6_vti.c:vti6_siocdevprivate() {
+	...
+	struct net *net = dev_net(dev);
+	...
+	case SIOCCHGTUNNEL:
+		...
+		t = vti6_locate(net, &p1, cmd == SIOCADDTUNNEL);
+		if (dev != ip6n->fb_tnl_dev && cmd == SIOCCHGTUNNEL) {
+			if (t) {
+				if (t->dev != dev) {
+					err = -EEXIST;
+					break;
+				}
+			} else
+				t = netdev_priv(dev);
 
-Ethan
+			err = vti6_update(t, &p1, false);
+		}
+	...
+}
+
+Because the collision check occurs in the new namespace (dev_net(dev)), but
+vti6_update() now modifies the original namespace's hash table (t->net),
+could an attacker in the new namespace configure their tunnel to perfectly
+match the parameters of an existing victim tunnel in the original namespace?
+
+Since the check in the new namespace finds no collision, it seems it bypasses
+the error check. Then vti6_update() prepends the attacker's tunnel
+into the original namespace's hash table, which might allow intercepting or
+hijacking traffic destined for the victim tunnel.
+
+Should vti6_siocdevprivate() also be updated to use t->net for collision
+checks to prevent cross-namespace traffic hijacking?
+-- 
+pw-bot: cr
