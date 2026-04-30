@@ -1,124 +1,97 @@
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 235153148D0
-	for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 15:37:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.170
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777563437; cv=pass; b=OHPS3o+TF1FaIzbzRlFAaSHYVK2JbJ0PAYFZO8LQi9sSyvd64moUqA9mrtDco+uCfB20LizxdkOILuSs9zBhvABNTgSGoK6A4Y0+n/mtYtcz7KCq6OKi6HdmsO5VmBfKIv/+A3zagDjjDNxAPLYz7LmcVZfdiXGeOrT3d1J+fzE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777563437; c=relaxed/simple;
-	bh=4rAAaw2u+l5+w139S4C9brgw1IKGMDn9USBUvCJgE1g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ejTSGxFeLeev5/8nQvZPxDV/GpbGVOvOlL+IHwhoYYe98ik1iyingaqefI+30OorglZeLDfk8z+VQrI6T6nSX7zSHkpUVk8ygnaHnV7XASQlYRiUB5cQKcEWJbF0CDo07q5HjczQW3SeV/zVBUPeKVosfdvMFAvacr3pANxSe+Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20251104.gappssmtp.com header.i=@mojatatu-com.20251104.gappssmtp.com header.b=S7Tb+4iQ; arc=pass smtp.client-ip=209.85.128.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64531336891
+	for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 15:38:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777563492; cv=none; b=A5PtbnSJAn5PBUDZLd+f4HkN3/NbT6J9NHnbfrckfuc2hEkx8RwA3wHz3cQNQwgOGaRyX/wR0otTte1Pi/fc30/pUdyJ6cAKDAHwkidMLy5Xb2xJKa9wadjeVG6mQeH5Qu3w8oR4RvbqF/nrgpBF/HiGknqGcoNnD1kTUpbANdI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777563492; c=relaxed/simple;
+	bh=cas+fx9QXakeDSvStqAi7Mu9SLnLX6s+1H6MiiTcWN4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R2t0WXTJosw+9U9xWPAXrLEG5jZDRYm3F3i+fLHjr5O9g0uxvao3i8U1K1wjPB0TSaOLXRiqtrb+nvUUA8u5rdp6XeNdT+6MGmaPhgQV0njPpkobvPk/61lcoKtyg3TpYd9ke63ScLDo5VAo9mTljP5lv8kSrfCvn2HD77457OA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DU2Qdlgu; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mojatatu-com.20251104.gappssmtp.com header.i=@mojatatu-com.20251104.gappssmtp.com header.b="S7Tb+4iQ"
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-79a60975dc5so13276057b3.0
-        for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 08:37:15 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777563435; cv=none;
-        d=google.com; s=arc-20240605;
-        b=UifpJ6wFz3QGZrHETISvgwuuHtmFqndVSXJWfeg7CIykod7MpElid6qnzXu8LMnn0J
-         V9ZtT12SR6KT2blE5gDJgMqk5EeOR6cOJWDvOODFgEfiNU8Ls2nds20GyrqAFCVmr88W
-         NUIFZc+kw/Ab3PEpPhhkMhIIfS7AbgjNkWAEL5twbdBf9sUTEji8Vak+n7AC+0e6WZTJ
-         skBw11mR7Uc/jPtFqBMDf7DBuRJGnFmuCyQaqJZV0Cy0cIG1dg/Fwb7LibiMFyJtXaKU
-         8aLVXjj7i/oYuxSiiKe+0wv1sXYCFua82ZwyrOFdVAl4F/oi+NruG82VUENnFtT7JYrl
-         WDMg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=4rAAaw2u+l5+w139S4C9brgw1IKGMDn9USBUvCJgE1g=;
-        fh=+0toPGPcfL48ts5Kb9jgJAL3IUYjIoDCg/KvzccWGKo=;
-        b=EZJ6A+dyjprJ2M0zUbN7xyaTV5QamUQngm3XHOeGVkoy0M3Ys22pFuA23fAXiDAfQH
-         jtheSZylY4twmYsrPoOwHZAqWZXPWccFXLzQY71LmjxlQb5JkXmXm5j7u/SO8+FQpVxB
-         oj1NPowPzmXiByOsToy+rm8aJwrooemaP7W8KI1XF1mCZ3iV/4oTVaXkrJiZIWjx/FfJ
-         PSk3ZHghsMvPoPc9223ZNhTk0jgQ04yFdARYTlCp5/IPGUXJt953S8iF1DulNiMZEHcV
-         qqbfWA3mBXExaF9hQnrmWbuWHHNYVcmhIE+EenZ7a0/yIww6MqGG9l2tekBUfk4CJpni
-         300Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20251104.gappssmtp.com; s=20251104; t=1777563435; x=1778168235; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4rAAaw2u+l5+w139S4C9brgw1IKGMDn9USBUvCJgE1g=;
-        b=S7Tb+4iQbfwaVtk1P2LlAVrhmRs7Ev6+2IONV1Pcr5ND2d9X8TLMt3JimUrx2PKy6z
-         0T4hR9kzdca+AQb1ZjD8gR10IJn0Oui3gPq89cpL9o33DWIRZMiN8ipMjh6Op/lmijBe
-         LrDWg2qR9IL0UDTuRFAe+jNp8Mm0nEly7TQj1fVwtei+foT8cwjSjl/a1ZHWNbal3zoi
-         MvzUdZ+eeeWYhDErWk7VN3svWBi0jvl5W8EleeUH6HqItLECBQ/qg5ndn5QeLEkRnh5n
-         /8ULA94LBM+slnZVx8L315ZLIMHCTZ53klFS9ic1rhItzFXKPIvWp5c0hTJHyBgEdY7z
-         enMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777563435; x=1778168235;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4rAAaw2u+l5+w139S4C9brgw1IKGMDn9USBUvCJgE1g=;
-        b=ikdfhHwUn4dvKkaa/bjCD8xWUZJFzRWAuAX50NBbTd3PP4k6UXsgMCxpTub2ncyYf4
-         YrcXaJ0TSsFFCHlolHldxBfrYf/LtSMC3/s7DT1c179Jbqd+x1R2rP4swpYUVhovdHcF
-         a3hWua2Rcz7EwLIPYzIbFE5JWWbkBrcRUZ2zE8LrLWHsV22giVqT7Mcz/cz1qHdBoAgY
-         HCfHuiYRDRmOwNyVj5im4oPl871sQwpjmJTU3NlLLn8EM8ZTKGo4GI5ZVEE1LAT40uPL
-         bhRWUXVgvi9NhoXUocr8+uXcAyU8wtaje9JrYZoRw4EjrI6BddTHuLw7gHrMQIfNkwjL
-         XM0Q==
-X-Forwarded-Encrypted: i=1; AFNElJ9O8amnQ+0zuBzk2sSKUy7Nx4+/iexpgnBEdgD4tLr7N/yPMQ0dXtKPZ6AnUUTyO1d3ifj/aVM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxOpHnouprGbdheCubQJA8soBAwUHrTGkv3hHLqsNfZSlaka5IP
-	UQSE+p9IIQ6Clu6X0KILQCNunzoJLtNlR9genKAFaUrZluec9ivvlMOcViDNwGqOEYqPoRXxcJg
-	wCUfekslA/1NtM7l1InPkXJr3+mSAdyRIym8eQh75
-X-Gm-Gg: AeBDieuKkx0e8uTGJ0R8lK7UIJ0S4LGI92qPYjxg4xaHlYkD7knu7Nqz+ZM4Cq/Ni0H
-	M7cAdIlSvLCT/JClgbtJ2EiHe6BFFy/6FcOcbpaZaua1C5wvwK71u8dsOREmTL+HjVjgLeohyfq
-	PY6gxJRCsT/kIkkMUGNLw/nXnit1kWSm7CJ2NoKG/lT3lWDzKEht9cFA8kmgV6oqyr9ts3554a0
-	92TnzQ2LA6Bx6qFMfA/MmiKk0h5waxIiIgt4P49aTS859VUC7z5Vs6VacBgjSV+fM0yrLMNbCAM
-	I8lcqzCwrcKAPsGzXrx6Fqz/DLDsqw==
-X-Received: by 2002:a05:690c:6609:b0:7ba:eefe:9fa1 with SMTP id
- 00721157ae682-7bd528247acmr36850857b3.6.1777563435175; Thu, 30 Apr 2026
- 08:37:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DU2Qdlgu"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777563488; x=1809099488;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=cas+fx9QXakeDSvStqAi7Mu9SLnLX6s+1H6MiiTcWN4=;
+  b=DU2QdlguVrB9zAqGwlOaZu8LpV+fi+nBGPbXfCjgfGQtp5kEX64xYjAW
+   mmRPwlLfIjanNfgk4Vufqv6FpdcPikNMe96+yXd1GTxur6nkVWCNGNUKI
+   JqHKGZtPj6RBKXOFT1YQ94czGxWO27Act36j1K8CO3hZNaYLP2N31uxVR
+   HluoUWzsifm3ClEfVen0vLEjHNPZUHduluPtZchFykAmTeOUvgcz7iSSg
+   UqG/1EyJqxsTbkGWz86gLVG+zew6OXfoYC33B7JPtjC/4dEYMWBLQsoxP
+   WSSaFyV3Wvq7Ksqdhdc+1TnxPmcmS3PO91RkiRwZhTjLtIBExmnbh093E
+   Q==;
+X-CSE-ConnectionGUID: HaT2ZI3ST/Wn0q9CG5k7Vg==
+X-CSE-MsgGUID: YgfMftBeTn+SOtv1XX9CrA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11772"; a="78711877"
+X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
+   d="scan'208";a="78711877"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 08:36:41 -0700
+X-CSE-ConnectionGUID: 0mtNTPv5QliVKNuQbrjNuQ==
+X-CSE-MsgGUID: dPci9gAPRvmQGjxZuj+76g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
+   d="scan'208";a="230261005"
+Received: from lkp-server01.sh.intel.com (HELO aa799cca880d) ([10.239.97.150])
+  by fmviesa010.fm.intel.com with ESMTP; 30 Apr 2026 08:36:38 -0700
+Received: from kbuild by aa799cca880d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wITRK-00000000CXY-2GqI;
+	Thu, 30 Apr 2026 15:36:34 +0000
+Date: Thu, 30 Apr 2026 23:36:17 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ren Wei <n05ec@lzu.edu.cn>, netdev@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, jbenc@redhat.com,
+	yuantan098@gmail.com, yifanwucs@gmail.com, tomapufckgml@gmail.com,
+	bird@lzu.edu.cn, lx24@stu.ynu.edu.cn, caoruide123@gmail.com,
+	n05ec@lzu.edu.cn
+Subject: Re: [PATCH net 1/1] net: nsh: handle nested NSH headers during GSO
+Message-ID: <202604302359.kU59LnTI-lkp@intel.com>
+References: <6112cce99b4e3571444a616d0fb19e91e2fcca72.1776597598.git.caoruide123@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260428145730.26375-1-ghandatmanas@gmail.com> <20260429185248.4761905d@kernel.org>
-In-Reply-To: <20260429185248.4761905d@kernel.org>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Thu, 30 Apr 2026 11:37:03 -0400
-X-Gm-Features: AVHnY4LwOLVm6sSLOF8RDa500TEP6ehCzzJF3ZHxq6fpB0QAlSfcQE_yEsha5P4
-Message-ID: <CAM0EoMms0LHVCRSPe0t6QPgCPOnbWMVSp8TAws45i2GLxR6JOA@mail.gmail.com>
-Subject: Re: [PATCH] net/sched: sch_dualpi2: Add missing skb check
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Manas <ghandatmanas@gmail.com>, jiri@resnulli.us, davem@davemloft.net, 
-	edumazet@google.com, pabeni@redhat.com, horms@kernel.org, 
-	rakshitawasthi17@gmail.com, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6112cce99b4e3571444a616d0fb19e91e2fcca72.1776597598.git.caoruide123@gmail.com>
 
-On Wed, Apr 29, 2026 at 9:52=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
-> On Tue, 28 Apr 2026 20:27:30 +0530 Manas wrote:
-> > A packed is dequeued using the function `dequeue_packet()` but there is
-> > no check to see if a packet is dequeued. The assignment is always
-> > considered as true resulting in null-ptr-deref
-> >
-> > Fixes: 8f9516daedd6 ("sched: Add enqueue/dequeue of dualpi2 qdisc")
-> > Reported-by: Manas <ghandatmanas@gmail.com>
-> > Reported-by: Rakshit Awasthi <rakshitawasthi17@gmail.com>
-> > Signed-off-by: Manas <ghandatmanas@gmail.com>
->
-> Sorry but the patch is nonsensical. Please don't waste our time.
->
+Hi Ren,
 
-Fixed in: https://lore.kernel.org/netdev/20260430152957.194015-1-jhs@mojata=
-tu.com/T/#mfe773e91a05e103f47dfa71ea434210aebb74e17
+kernel test robot noticed the following build errors:
 
-As I have mentioned a few times, when you find issues, please either
-a) describe how you found the issue (a reproducer helps) or b) provide
-tdc test case for extra bonus.
-As you can see the issue has _nothing_ to do with dualpi2.
+[auto build test ERROR on net/main]
 
-cheers,
-jamal
+url:    https://github.com/intel-lab-lkp/linux/commits/Ren-Wei/net-nsh-handle-nested-NSH-headers-during-GSO/20260423-084001
+base:   net/main
+patch link:    https://lore.kernel.org/r/6112cce99b4e3571444a616d0fb19e91e2fcca72.1776597598.git.caoruide123%40gmail.com
+patch subject: [PATCH net 1/1] net: nsh: handle nested NSH headers during GSO
+config: i386-randconfig-003-20260430 (https://download.01.org/0day-ci/archive/20260430/202604302359.kU59LnTI-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260430/202604302359.kU59LnTI-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202604302359.kU59LnTI-lkp@intel.com/
+
+All errors (new ones prefixed by >>, old ones prefixed by <<):
+
+>> ERROR: modpost: "skb_network_protocol" [net/nsh/nsh.ko] undefined!
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
