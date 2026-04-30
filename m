@@ -1,309 +1,135 @@
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+Received: from out-13.smtp.spacemail.com (out-13.smtp.spacemail.com [63.250.43.96])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6326477E21
-	for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 18:20:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.178
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777573225; cv=pass; b=o0C2ACnIXJP1AAVhiqoUyJYmy/bQft0vJq7e/YwiKM8FpiKI0sOybZKe4q7ENLFw6hDXVAc+b08q35JjoSaQ5HBZSx5xu4aFfmTrQU+DxdqgZCUjr9PxqNBNRMVTvcKhR+kY8Girgmk39yIvRCwG9qzwA+TZtDG31fzl9/U8Tfg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777573225; c=relaxed/simple;
-	bh=aYs83MNb594P2nkPKpIdQB6BP960WTyxNrB2OPYnSEo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FhczEJ1gn+Po6Hz63iDxweJlKXHo/5LTWXNeWKX+suGOK6sb+jc41b6nNQ4bLq/s5wmSk9gZJhWnfA453wIlnUp01FYzAPUMO9vc60s21vXzKGrm2Cm1ODptMMOZ2XptLWJcGNxQAOjw5E3l/AvdU2Wga6rCFq71NKneoyVWBRQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20251104.gappssmtp.com header.i=@mojatatu-com.20251104.gappssmtp.com header.b=oaUTZR7c; arc=pass smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFCFD39D6DE;
+	Thu, 30 Apr 2026 18:26:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=63.250.43.96
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777573566; cv=none; b=XY8JW1/FnqWtgBPM+IvbaILcNANVBnF5hpRwFVuLG5Si4vjLAw8CifrTaIyotsReMgFNE8IL2/8d/ibv8EFFDdy95Yr68LYoh51DGBRocib2hMr4RzPp7brnANMDdMkvoc9SW/S3vDhqz38MTtwdTVlDZaPARZYKkf1BEuEr3EI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777573566; c=relaxed/simple;
+	bh=AQd2sw1EZKQtxF/RoAKXgzvPNwc2JS7cbKhPcFoLW+I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ldEyxirZ9fwZMxpItRE+fvTGiBox1+1YWAqRB1bzm8ri7WwleJ0BybTt0y0LD+yx6ieUVPk9cYD+tbznbw33RPOfbrdKv85Hsh6omPOtGmYdB/Rll3OUq5meIsBMGz30HykejeurwHjBSd7sai2dlv+3L/UUmjNU9VNAvSPcrXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rexion.ai; spf=pass smtp.mailfrom=rexion.ai; dkim=fail (0-bit key) header.d=rexion.ai header.i=@rexion.ai header.b=kpOLI+0V reason="key not found in DNS"; arc=none smtp.client-ip=63.250.43.96
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rexion.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rexion.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mojatatu-com.20251104.gappssmtp.com header.i=@mojatatu-com.20251104.gappssmtp.com header.b="oaUTZR7c"
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-82f8cebc935so631694b3a.0
-        for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 11:20:23 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777573223; cv=none;
-        d=google.com; s=arc-20240605;
-        b=D5XRdK8QnFftk7jtNuiRFZxcODlQ//+Z+nUPKXL27a1aQPdEe8oxeM5l1zLhzH1dz5
-         LSWMDYcnJBR0EgmWx6RUbuEpivp2+aqknn+jX5ySf07hdOqD7zi/oX6WzefyGzT0t/Dj
-         FsQnBhQraVTN7skiAf09WLppDt9kcxo7j+KLNiaZvyqdg0CCYP+tgkNPsa4C7rr15avK
-         gXdDCL117DrNLu2qkMmVCKZoS9v/U0V2f2KqyuG9WQJXMYdZ9K7ER3lNkStpl56qlU54
-         VX4s99x/OqcPURdCyoY84OrC/dPYvdQzoepeMUVR+APmynsAETlU7EsacbZX0wDx/Nym
-         yzEg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=cyDcGvL2bHr7kOuvT1ZyqRfNEGYWnlbp8jkYBRxyltA=;
-        fh=mgx62reLjdDmfH+C9UY6r2mZ2Ow/mIuN9hnce0ox9Ys=;
-        b=cvK/Cvk8EQHvmX9hzyRPGAoqQxBbwPHTZ2RscgxWGsK1G7Ziz6LYtAn1rRls7vo6CX
-         1zLeBHGE+Gy2W/0Zx7arG/sqiF3he1DZGQ36kyo6kdYiMaQ8TvfabNlTuZbDCiDZ6ri0
-         NDpcelVGk9iIVhJiy9ecez9VfwHFpw/eky8e/aEiNLVpYPFrdiy0iz7Iw+ShBz8uWFmX
-         g8r7qVZiOvs8OqoH0TX8tS6n/APmBFX6ocCW3g31qX35kCnl9lbC7NUNOr1fxDM0AHPG
-         wj/6reDDVfX2JPdON33zbNtDRQ2NiZ7eWnKlbe2+Wr5pB9W29/SvX4i/df+B5VDpyeJE
-         /CYQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20251104.gappssmtp.com; s=20251104; t=1777573223; x=1778178023; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cyDcGvL2bHr7kOuvT1ZyqRfNEGYWnlbp8jkYBRxyltA=;
-        b=oaUTZR7ckcxOIqoZmFbKAMG2ShndAA0Ipgth58e0ThC0TmBznT290d0i/2RmkWA5S0
-         5njky+68WlMNramJMEGWVvuLmj7gcopRWtZxfZoCR56wjLoMhLlXjBi5oIL/fvIQ9/tl
-         JY8V2HoruqR85QHog3CfuHTYkyMIxShYsEIa/cPr/4mlaX5I6E/u76NbbwOjDf/vPjh6
-         jsc2gi/y2EG/0jzSIBMD2rFIX5d6HMXXashuLnZrAt8dmMzeNZssqkwj4H+M7eHL6YPa
-         J+/1IW4GAC2j3sTe9CZ6ilPBxaeqC3Efkdve2jzczi+2TfGvWJ+00W0SHUU9TpcdOu4i
-         Jd6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777573223; x=1778178023;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=cyDcGvL2bHr7kOuvT1ZyqRfNEGYWnlbp8jkYBRxyltA=;
-        b=YVunkaFt0BRAzsEOUWxdJyjor1CdhBR3BVPxIfHP30sRFelXsNayrTDv9CG2jxTKpS
-         3eVyhRSSo6wbgNnM/2D5Mx/0y5W3D028bdxuLSLK/Q6oQvSmALPavdiKcsL6/mOKj371
-         DX/lANG+IWLCa1aSu+e6VBruqdYcyTB4FpNEsGVpSFZS1nSmMyq7RSCxOaHcUaWQs5rN
-         ZJYjstHbXVv7xvptHp5Xc7unUU2hp+5oEy6tJUozpR3Nm8cX3ioVmQd8y1HInEbhv8IA
-         roSNBt3qy97embrkKtkGicGuNfAEVouiM2RSA/zZC+V9h7+UIYcZGQeepjATw4LI2gF1
-         +ssg==
-X-Forwarded-Encrypted: i=1; AFNElJ/tzhlY5AwPjXj8prWC8MP+Iub12FAYmE9690/j7UeQq5/nVtOVex2T5epIj51g/mqBxBNkTq0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwylMG9iQwWi3AwomnPTU55n8ytX2L1jB2vtq7yvfsH8U9bqWmJ
-	S0KJq4ZCuJRvCDQ7neEloqWrax4g6ZCe3PnwjFoNMWeLIEwSaPbZGqQihTGSPCwKM5Ku+X9VjxY
-	pRER4Iajp/g1uXuUpyh5eFCjng+LYdA+2Fgwekdtm
-X-Gm-Gg: AeBDievsTumSpg2S8RMHooxJhmbiOEzCfg5KbemBct2sjAccsLZs+WIZBPjmtz6Nf6Z
-	9UJzosMaaXtJ8ci+cCaVHE23wIAwOFXc21FRQmfzLD/Pbxbr/64mwWomppxwCPaROv9q3rDgv2M
-	dH54bXRbDSO41ma2bsyoOhdtFYiW4pUGT5+TZfEC+xjo3Mgnhh9wry1oBOgrDEAuZ05BClH/vOx
-	bTC398ANZdPlDqfelYQWwIedhbnNDTRs8mpcw90t3bl3kkd+y44/+n7KktJSSPCctsA77vub2kA
-	Rc4T8n9bN1P7k08Nc2UTqFOGYkI5rQ==
-X-Received: by 2002:a05:6a00:b46:b0:82f:390a:69df with SMTP id
- d2e1a72fcca58-834fdcb6501mr4909169b3a.35.1777573223160; Thu, 30 Apr 2026
- 11:20:23 -0700 (PDT)
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rexion.ai header.i=@rexion.ai header.b="kpOLI+0V"
+Received: from Kyren (unknown [49.207.224.37])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.spacemail.com (Postfix) with ESMTPSA id 4g62ft5vZwz8sd8;
+	Thu, 30 Apr 2026 18:25:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rexion.ai;
+	s=spacemail; t=1777573563;
+	bh=ykvFs84X9ifnNLgl1nKjZZCGpsIMTr1LlOqri6Q6e/A=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=kpOLI+0VVSya8bQzyfaImZyg6+4oDmG63xnMd9DyNi6uzjE9lUkkaRt1mAoHZhfwz
+	 VAuZ/xE7i7h+Lge5xmZsmFVmnnihngd1dDH+INaTO7iZHB7vBjxkvBEqIU7VKjbLJ6
+	 kh8P0Z3hpjErc8C+rPN/kpL3Tucdiu+0rQWCigRt9K3nO1jToNEePFDnFinWPHi3vs
+	 XCfR9pdeV2unojl/m5YJCgP5EzhgmZkfpE/PgyUQZ/04ZuueTNiBLLGTuY6g4/sXJC
+	 Tqh/JfiUq4qeZXypVx9OftYZ6N2J/ctmedG/xHp23qPrUNFD2GQxA228PiYcFoGWRY
+	 bStee+cUngbZA==
+From: HACKE-RC <rc@rexion.ai>
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>
+Cc: Phil Sutter <phil@nwl.cc>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	HACKE-RC <rc@rexion.ai>
+Subject: [PATCH net-next v2 1/3] netfilter: conntrack: add shared port parser for helpers
+Date: Thu, 30 Apr 2026 23:55:41 +0530
+Message-ID: <20260430182543.3931718-2-rc@rexion.ai>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260430182543.3931718-1-rc@rexion.ai>
+References: <20260430182543.3931718-1-rc@rexion.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260428082851.3240821-1-edumazet@google.com> <18134b6e-8944-49f4-9bb0-2903aa00d28a@kernel.org>
-In-Reply-To: <18134b6e-8944-49f4-9bb0-2903aa00d28a@kernel.org>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Thu, 30 Apr 2026 14:20:11 -0400
-X-Gm-Features: AVHnY4KGahx8YtCnoCdvhzJ9VwRLn1CZx4OnFXhzWcX3YDEbJC1aoxRJlDv4ZZI
-Message-ID: <CAM0EoMmHMMsAbORxETh72c0=CyyAY+PhXReXwP-woGp31YOkHw@mail.gmail.com>
-Subject: Re: [PATCH iproute2-next] tc: use ll_init_map() only when needed
-To: David Ahern <dsahern@kernel.org>
-Cc: Eric Dumazet <edumazet@google.com>, Stephen Hemminger <stephen@networkplumber.org>, 
-	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	netdev@vger.kernel.org, eric.dumazet@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Envelope-From: rc@rexion.ai
 
-On Thu, Apr 30, 2026 at 11:36=E2=80=AFAM David Ahern <dsahern@kernel.org> w=
-rote:
->
-> Jamal: waiting for your review ...
->
-> On 4/28/26 2:28 AM, Eric Dumazet wrote:
-> > Some setups can have thousands of devices.
-> >
-> > ll_init_map() is rather expensive for them.
-> >
-> > Only call ll_init_map() in the following cases:
-> >
-> > 1) tc runs in batch mode.
-> > 2) tc runs in monitor mode.
-> > 3) tc dumps qdiscs/classes/filters for all netdev.
-> >
-> > This greatly reduces RTNL pressure on common operations.
-> >
-> > Signed-off-by: Eric Dumazet <edumazet@google.com>
+Add nf_ct_helper_parse_port() to the conntrack helper core. This
+provides a port parser that does not rely on nul-terminated strings,
+taking an explicit length parameter and validating the result fits
+in the 1-65535 range.
 
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Modeled after the approach in 8cf6809cddcb ("netfilter:
+nf_conntrack_sip: don't use simple_strtoul") but as a shared
+function so IRC, Amanda, and other helpers can use it instead of
+open-coding simple_strtoul calls with ad-hoc range checks.
 
-cheers,
-jamal
+Signed-off-by: HACKE-RC <rc@rexion.ai>
+---
+ include/net/netfilter/nf_conntrack_helper.h |  3 +++
+ net/netfilter/nf_conntrack_helper.c         | 28 +++++++++++++++++++++
+ 2 files changed, 31 insertions(+)
 
-> > ---
-> >  tc/f_route.c   |  1 -
-> >  tc/m_mirred.c  |  2 --
-> >  tc/tc.c        |  1 +
-> >  tc/tc_class.c  |  6 ++----
-> >  tc/tc_filter.c | 32 ++++++++++++++++----------------
-> >  tc/tc_qdisc.c  |  5 ++---
-> >  6 files changed, 21 insertions(+), 26 deletions(-)
-> >
-> > diff --git a/tc/f_route.c b/tc/f_route.c
-> > index 96b99b06be179c90dfb0d24d9577b5206dd98ef1..c234ddf0cb9309556844c85=
-047d0f9ef53a2fd7b 100644
-> > --- a/tc/f_route.c
-> > +++ b/tc/f_route.c
-> > @@ -76,7 +76,6 @@ static int route_parse_opt(const struct filter_util *=
-qu, char *handle, int argc,
-> >                       __u32 id;
-> >
-> >                       NEXT_ARG();
-> > -                     ll_init_map(&rth);
-> >                       if ((id =3D ll_name_to_index(*argv)) <=3D 0) {
-> >                               fprintf(stderr, "Illegal \"fromif\"\n");
-> >                               return -1;
-> > diff --git a/tc/m_mirred.c b/tc/m_mirred.c
-> > index f4da3c76284460d7f4bb73c7c3c172732f054632..e9ae5199432e828026f15ce=
-226c5f5f84998c660 100644
-> > --- a/tc/m_mirred.c
-> > +++ b/tc/m_mirred.c
-> > @@ -213,8 +213,6 @@ parse_direction(const struct action_util *a, int *a=
-rgc_p, char ***argv_p,
-> >       if (d[0])  {
-> >               int idx;
-> >
-> > -             ll_init_map(&rth);
-> > -
-> >               idx =3D ll_name_to_index(d);
-> >               if (!idx)
-> >                       return nodev(d);
-> > diff --git a/tc/tc.c b/tc/tc.c
-> > index 0fc658c881f0f553f1f1f8d87b46943d4d0eed8f..7d69e4d533a98b9c071cb95=
-4443a049a52252f2c 100644
-> > --- a/tc/tc.c
-> > +++ b/tc/tc.c
-> > @@ -243,6 +243,7 @@ static int batch(const char *name)
-> >               return -1;
-> >       }
-> >
-> > +     ll_init_map(&rth);
-> >       ret =3D do_batch(name, force, tc_batch_cmd, NULL);
-> >
-> >       rtnl_close(&rth);
-> > diff --git a/tc/tc_class.c b/tc/tc_class.c
-> > index 6d707d8c924f4b5e90201d4de8e9779f82ce17f3..9aace019e6c8b96fb51edb4=
-fe89bea5b7469beed 100644
-> > --- a/tc/tc_class.c
-> > +++ b/tc/tc_class.c
-> > @@ -136,11 +136,11 @@ static int tc_class_modify(int cmd, unsigned int =
-flags, int argc, char **argv)
-> >       }
-> >
-> >       if (d[0])  {
-> > -             ll_init_map(&rth);
-> > -
-> >               req.t.tcm_ifindex =3D ll_name_to_index(d);
-> >               if (!req.t.tcm_ifindex)
-> >                       return -nodev(d);
-> > +     } else {
-> > +             ll_init_map(&rth);
-> >       }
-> >
-> >       if (rtnl_talk(&rth, &req.n, NULL) < 0)
-> > @@ -437,8 +437,6 @@ static int tc_class_list(int argc, char **argv)
-> >               argc--; argv++;
-> >       }
-> >
-> > -     ll_init_map(&rth);
-> > -
-> >       if (d[0]) {
-> >               t.tcm_ifindex =3D ll_name_to_index(d);
-> >               if (!t.tcm_ifindex)
-> > diff --git a/tc/tc_filter.c b/tc/tc_filter.c
-> > index 7db850bda11a3408ec66b457c9fc590f3a734f65..be70e360849e5058192640d=
-a0f061810a99e2ea8 100644
-> > --- a/tc/tc_filter.c
-> > +++ b/tc/tc_filter.c
-> > @@ -188,16 +188,17 @@ static int tc_filter_modify(int cmd, unsigned int=
- flags, int argc, char **argv)
-> >               addattr_l(&req.n, sizeof(req), TCA_KIND, k, strlen(k)+1);
-> >
-> >       if (d[0])  {
-> > -             ll_init_map(&rth);
-> > -
-> >               req.t.tcm_ifindex =3D ll_name_to_index(d);
-> >               if (req.t.tcm_ifindex =3D=3D 0) {
-> >                       fprintf(stderr, "Cannot find device \"%s\"\n", d)=
-;
-> >                       return 1;
-> >               }
-> > -     } else if (block_index) {
-> > -             req.t.tcm_ifindex =3D TCM_IFINDEX_MAGIC_BLOCK;
-> > -             req.t.tcm_block_index =3D block_index;
-> > +     } else {
-> > +             ll_init_map(&rth);
-> > +             if (block_index) {
-> > +                     req.t.tcm_ifindex =3D TCM_IFINDEX_MAGIC_BLOCK;
-> > +                     req.t.tcm_block_index =3D block_index;
-> > +             }
-> >       }
-> >
-> >       if (q) {
-> > @@ -539,8 +540,6 @@ static int tc_filter_get(int cmd, unsigned int flag=
-s, int argc, char **argv)
-> >       }
-> >
-> >       if (d[0])  {
-> > -             ll_init_map(&rth);
-> > -
-> >               req.t.tcm_ifindex =3D ll_name_to_index(d);
-> >               if (!req.t.tcm_ifindex)
-> >                       return -nodev(d);
-> > @@ -704,21 +703,22 @@ static int tc_filter_list(int cmd, int argc, char=
- **argv)
-> >
-> >       req.t.tcm_info =3D TC_H_MAKE(prio<<16, protocol);
-> >
-> > -     ll_init_map(&rth);
-> > -
-> >       if (d[0]) {
-> >               req.t.tcm_ifindex =3D ll_name_to_index(d);
-> >               if (!req.t.tcm_ifindex)
-> >                       return -nodev(d);
-> >               filter_ifindex =3D req.t.tcm_ifindex;
-> > -     } else if (block_index) {
-> > -             if (!tc_qdisc_block_exists(block_index)) {
-> > -                     fprintf(stderr, "Cannot find block \"%u\"\n", blo=
-ck_index);
-> > -                     return 1;
-> > +     } else {
-> > +             ll_init_map(&rth);
-> > +             if (block_index) {
-> > +                     if (!tc_qdisc_block_exists(block_index)) {
-> > +                             fprintf(stderr, "Cannot find block \"%u\"=
-\n", block_index);
-> > +                             return 1;
-> > +                     }
-> > +                     req.t.tcm_ifindex =3D TCM_IFINDEX_MAGIC_BLOCK;
-> > +                     req.t.tcm_block_index =3D block_index;
-> > +                     filter_block_index =3D block_index;
-> >               }
-> > -             req.t.tcm_ifindex =3D TCM_IFINDEX_MAGIC_BLOCK;
-> > -             req.t.tcm_block_index =3D block_index;
-> > -             filter_block_index =3D block_index;
-> >       }
-> >
-> >       if (filter_chain_index_set)
-> > diff --git a/tc/tc_qdisc.c b/tc/tc_qdisc.c
-> > index 7eb9a31baa31fb91a8141c9eca1135e76a52fa8b..252ea861f249a5a71cf7823=
-89776e68c3e48c6cc 100644
-> > --- a/tc/tc_qdisc.c
-> > +++ b/tc/tc_qdisc.c
-> > @@ -193,8 +193,6 @@ static int tc_qdisc_modify(int cmd, unsigned int fl=
-ags, int argc, char **argv)
-> >       if (d[0])  {
-> >               int idx;
-> >
-> > -             ll_init_map(&rth);
-> > -
-> >               idx =3D ll_name_to_index(d);
-> >               if (!idx)
-> >                       return -nodev(d);
-> > @@ -411,13 +409,14 @@ static int tc_qdisc_list(int argc, char **argv)
-> >               argc--; argv++;
-> >       }
-> >
-> > -     ll_init_map(&rth);
-> >
-> >       if (d[0]) {
-> >               req.t.tcm_ifindex =3D ll_name_to_index(d);
-> >               if (!req.t.tcm_ifindex)
-> >                       return -nodev(d);
-> >               filter_ifindex =3D req.t.tcm_ifindex;
-> > +     } else {
-> > +             ll_init_map(&rth);
-> >       }
-> >
-> >       if (dump_invisible) {
->
+diff --git a/include/net/netfilter/nf_conntrack_helper.h b/include/net/netfilter/nf_conntrack_helper.h
+index de2f956ab..db19fe25f 100644
+--- a/include/net/netfilter/nf_conntrack_helper.h
++++ b/include/net/netfilter/nf_conntrack_helper.h
+@@ -160,6 +160,9 @@ nf_ct_helper_expectfn_find_by_name(const char *name);
+ struct nf_ct_helper_expectfn *
+ nf_ct_helper_expectfn_find_by_symbol(const void *symbol);
+ 
++int nf_ct_helper_parse_port(const char *cp, unsigned int len,
++			    u16 *port, char **endp);
++
+ extern struct hlist_head *nf_ct_helper_hash;
+ extern unsigned int nf_ct_helper_hsize;
+ 
+diff --git a/net/netfilter/nf_conntrack_helper.c b/net/netfilter/nf_conntrack_helper.c
+index a715304a5..12f51670d 100644
+--- a/net/netfilter/nf_conntrack_helper.c
++++ b/net/netfilter/nf_conntrack_helper.c
+@@ -499,6 +499,34 @@ void nf_nat_helper_unregister(struct nf_conntrack_nat_helper *nat)
+ }
+ EXPORT_SYMBOL_GPL(nf_nat_helper_unregister);
+ 
++int nf_ct_helper_parse_port(const char *cp, unsigned int len,
++			    u16 *port, char **endp)
++{
++	unsigned long result = 0;
++	const char *start = cp;
++
++	while (len > 0 && *cp >= '0' && *cp <= '9') {
++		result = result * 10 + (*cp - '0');
++		if (result > 65535)
++			return -1;
++		cp++;
++		len--;
++	}
++
++	if (cp == start)
++		return -1;
++
++	if (result == 0)
++		return -1;
++
++	*port = result;
++	if (endp)
++		*endp = (char *)cp;
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(nf_ct_helper_parse_port);
++
+ int nf_conntrack_helper_init(void)
+ {
+ 	nf_ct_helper_hsize = 1; /* gets rounded up to use one page */
+-- 
+2.54.0
+
