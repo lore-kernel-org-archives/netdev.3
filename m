@@ -1,126 +1,91 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B5292580F2
-	for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 14:58:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41CB9175A6B
+	for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 15:02:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777561140; cv=none; b=lIyjoIncOKoSNa8EYTBDuUjVkNmu3PlPkDf4+duRzISER9HmofFsAxPZIUW8xV3N9Qt8zd4ckix476jjpPyr6ZIyZ+nlfO4gTsu5ghxI26/ELUQdRd3qmZVWUdZAwEP8IRei7JoH4nKEH8MLqtyB0IKIu6YoZdAtQ+MQo7nR9Og=
+	t=1777561348; cv=none; b=qHvNE9gMxQIl7+4daPlzwhK4kJlkst3OLkN8WRb1hbip7Icx0q8gxfS/vGCpf/OYwKttiXxXQnw0t67hZbkL5E96ns12FLTroixD1C14Dac12s3Mw44G1n4ZUuWNgrhHOYpxXVl9ZotuTBTMmewkyNqR63BpzwbuCSsEDwbKY5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777561140; c=relaxed/simple;
-	bh=Qz5Jt0NLcw/CHQdPoqk28nrS/jgP5xrSiN2p0WHFcSM=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=M4JclfKDADCDX3a/VWrLnB6EZRHHQHGAYA+LJNNO0MrZvmUqH9BRnYp9wUNTesIcdJQkreCq8KSd9NgMyov/sBgFTYsoQeM+GZ4KwwYcW+HwBGqEDkVHaS8cLbsc53aNgAmUaJ/c2lQiaokhd6WnFr5jP4qUBn6xAOcbC7GpgH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=e1jahom/; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1777561348; c=relaxed/simple;
+	bh=Qf5EwEZ/zcsWNZN7V9odAiTG92zYEKKGLmXRjkbKMw8=;
+	h=Message-ID:Date:From:To:Subject; b=cotxvhMY2O8li+B+6Ks5CFjLa3al+s/AaQc0BHs7+0gFqVP/HQcuhBpBOVo4wDoDTfZBLeRBwXT41YTdOxKXelB0cAjGF0yhleDHMTLJ6PWRboH+Wegvo3tv8AASPPKfFCr5htC2J14k1PO9t/RDjW6HXc1s1zAY5/d6NBd0Ze8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d1DCKc4T; arc=none smtp.client-ip=74.125.82.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="e1jahom/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777561138;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MFsLQaXt9E1BoxB2u4w8hFiRsin5lzaaJSXFo+bNxMc=;
-	b=e1jahom/bMhie/sTF1mFSunbTJZ1az3M23/9oqqK85tWseYTLJ/PQTrHaTxhToZTX4+6u0
-	xJ4QKHc6FLaFiQsiu7uXXk0RpUrrZ5W4fOyMb77kBL0d0sswSEtgwrIQ3uZ5XfMLtzFlQd
-	hqJtKlVXQ5jwQF4asbmKHk+F3Tlj8oY=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-106-2Zp1chH3Pa-zS4a6bqiIPg-1; Thu,
- 30 Apr 2026 10:58:56 -0400
-X-MC-Unique: 2Zp1chH3Pa-zS4a6bqiIPg-1
-X-Mimecast-MFC-AGG-ID: 2Zp1chH3Pa-zS4a6bqiIPg_1777561132
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D8C5D18001FA;
-	Thu, 30 Apr 2026 14:58:51 +0000 (UTC)
-Received: from [10.44.49.13] (unknown [10.44.49.13])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6619A1953944;
-	Thu, 30 Apr 2026 14:58:45 +0000 (UTC)
-Message-ID: <e1e35bf4-19af-4d69-b310-993b3fef24a4@redhat.com>
-Date: Thu, 30 Apr 2026 16:58:44 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d1DCKc4T"
+Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-12c726f46baso1632307c88.1
+        for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 08:02:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777561345; x=1778166145; darn=vger.kernel.org;
+        h=subject:to:from:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Qf5EwEZ/zcsWNZN7V9odAiTG92zYEKKGLmXRjkbKMw8=;
+        b=d1DCKc4TDoLvVCB21rm9I9DMq207qp7Fsnr1AOetfsZQE4UJxQbUyBfs5ofr7f+U7f
+         pMfNAr2JuhLfafTxv9dZ1wHL+U8nAgCZRI/b61AycpLSCGTs6p7/tyZo4aIwX5fHgyOO
+         1f5oZPr2BheBcFlmFzpKf3/vMXa890hQ39KzTW3FOX+ls+HAEzwVODVBhVjOy640WRax
+         UztDp3ZFoHHtXPbD4ZYQVl8CRrF1A7Jz1Gk5vBcpg9XrunrTi7DE3QD3xCdvaFC+KFM6
+         8srP+VKQc18Pvrg9rkp8v8gW6A3N2bcas+lycm4ZMRzPOdl6OAy1YQiscEYXQ1YhugjZ
+         bh+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777561345; x=1778166145;
+        h=subject:to:from:date:message-id:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Qf5EwEZ/zcsWNZN7V9odAiTG92zYEKKGLmXRjkbKMw8=;
+        b=Xj9obP2DXVWXHuScf4jj1WljzOV10X5T2TnUtfeosesAIvnWyPV4VlvVrpuIgb5fj+
+         2EXmwVK+QhrIOpVtu8lSIYVkP8eocT1mUfLlP2JLOsHrGiZ0rFcwyBKDiSvgurs/+dNh
+         QYeXyoIeGr3HvLNEw1GCtxay703c3Q1pojvPC4DdgFzSkyxNHRlIVZ0Tuw32zjeWdgDz
+         TARv3SCa0YOB7/YGdUXCwNf99edbmQiDXNiPj3BonPSQix1ouyvHHkZ0Gq6ZDgXw02lj
+         WOabxD2CFYV5J3BU7q/7QoumK8wz7K+r41JI1oGIxGF+3eQQnDHj4MMu/WnC2teH8Y7V
+         R/Cw==
+X-Gm-Message-State: AOJu0YwLEl2+VwKa/AuipnZ++VedBLl7/Blh7xJfD0ICDe6oQ65s8ED3
+	i38czRMXIG85e8hRIgvlLNdA9zCI+a7a1HXSrAdW1TN1vmVLAOgq+IF2hYw+QLrLpOlmqQ==
+X-Gm-Gg: AeBDietR7sOzfUlAwL3BrIO497mRbtUyfVBqKfYx/cKtrUp7Be+8qbTR3XK3u4hKKqx
+	KXz3WszABIH9xF2oMOKSuNXabmThIZlrw7ib6wb9/gDb7XYSjy8Ty4z+S/9v1GeV4h5N5Glwafn
+	37QfoY4vlgcmiK9kdMle/XQF6hIx6o/6OVyFWqPneqYQUAMZq8mQeH0g5DeCHh2EMCk6pAOjM3k
+	CmbVqyNX3GT05rAXHyfFyMfLZPiDFftQHbjc1nj6CwXN2jDXTE5XwfHdz+snnRdGaJGPnAkeQoC
+	U1sGgDifJZTJGwfgELgjYnvs7ZKraa+ia93KeqPuXd0kUMInjalsCeor66GmDNiiedwIixhIXJD
+	I2fBH2VgnvlvDjeTlQ7wq7y7BlupeIFHDEsIUMUc0Kl8EA7SHmLvNs5lBUE3G4admc4ubGcZtuB
+	FQZbLvMNHGX8fNX31pl2E3DJ+MKqGRwMcHJDMMJTTMJSPswRlNhQwV8EfDoJP4z0aTzc711nQCh
+	pQ16pcXDQDRY5eUhPaBoZAYH2VheWaprJrLtjbJ4f9Ushp4zg==
+X-Received: by 2002:a05:7022:ea32:b0:12d:de3e:86b6 with SMTP id a92af1059eb24-12dead2ef91mr1258610c88.38.1777561344948;
+        Thu, 30 Apr 2026 08:02:24 -0700 (PDT)
+Received: from localhost (ec2-18-119-103-187.us-east-2.compute.amazonaws.com. [18.119.103.187])
+        by smtp.gmail.com with UTF8SMTPSA id 6a1803df08f44-8b3ff474374sm19875066d6.40.2026.04.30.08.02.23
+        for <netdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 30 Apr 2026 08:02:24 -0700 (PDT)
+Message-ID: <69f36f00.d40a0220.c9b0c.d1db@mx.google.com>
+Date: Thu, 30 Apr 2026 08:02:24 -0700 (PDT)
+From: ysaminushawai@gmail.com
+X-Google-Original-From: PayPal, Inc.
+To: netdev@vger.kernel.org
+Subject: Transaction Overview – File Attached for Reference
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 0/2] dpll: rework fractional frequency offset
- reporting
-From: Ivan Vecera <ivecera@redhat.com>
-To: netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
- Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
- "David S. Miller" <davem@davemloft.net>,
- Donald Hunter <donald.hunter@gmail.com>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Jiri Pirko <jiri@resnulli.us>,
- Jonathan Corbet <corbet@lwn.net>, Leon Romanovsky <leon@kernel.org>,
- Mark Bloch <mbloch@nvidia.com>, Michal Schmidt <mschmidt@redhat.com>,
- Paolo Abeni <pabeni@redhat.com>, Pasi Vaananen <pvaanane@redhat.com>,
- Petr Oros <poros@redhat.com>, Prathosh Satish
- <Prathosh.Satish@microchip.com>, Saeed Mahameed <saeedm@nvidia.com>,
- Shuah Khan <skhan@linuxfoundation.org>, Simon Horman <horms@kernel.org>,
- Tariq Toukan <tariqt@nvidia.com>, Vadim Fedorenko
- <vadim.fedorenko@linux.dev>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org
-References: <20260429150817.3059763-1-ivecera@redhat.com>
-Content-Language: en-US
-In-Reply-To: <20260429150817.3059763-1-ivecera@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
+Dear Valued Customer,
 
+We’ve detected unusual activity on your PayPal, Inc. account and want to ensure your account remains secure.
 
-On 4/29/26 5:08 PM, Ivan Vecera wrote:
-> Rework how the fractional frequency offset (FFO) is reported in
-> the DPLL subsystem.
-> 
-> The fractional-frequency-offset-ppt attribute is moved from the
-> top-level pin attributes into the pin-parent-device nested attribute
-> set. This makes it consistent with phase-offset (which is already
-> per-parent) and clarifies that FFO PPT represents the frequency
-> difference between a pin and its parent DPLL device.
-> 
-> The two FFO contexts are distinguished in the ffo_get callback:
-> dpll=NULL for the top-level RX vs TX symbol rate offset and a valid
-> dpll pointer for the nested pin vs DPLL offset.
-> 
-> Patch 1 restructures the DPLL subsystem netlink handling, updates
-> the YAML spec and driver-api documentation, and adds NULL guards
-> to mlx5 and zl3073x drivers.
-> 
-> Patch 2 implements the nested FFO for zl3073x using the
-> dpll_df_offset_x register with ref_ofst=1, providing 2^-48
-> resolution. The old per-reference frequency measurement is removed
-> as it was redundant with measured-frequency.
-> 
-> Ivan Vecera (2):
->    dpll: move fractional-frequency-offset-ppt under pin-parent-device
->    dpll: zl3073x: report FFO as DPLL vs input reference offset
-> 
->   Documentation/driver-api/dpll.rst             | 16 +++++++
->   Documentation/netlink/specs/dpll.yaml         | 11 +++--
->   drivers/dpll/dpll_netlink.c                   | 34 ++++++++++----
->   drivers/dpll/dpll_nl.c                        |  1 +
->   drivers/dpll/zl3073x/chan.c                   | 31 ++++++++++++-
->   drivers/dpll/zl3073x/chan.h                   | 14 ++++++
->   drivers/dpll/zl3073x/core.c                   | 45 -------------------
->   drivers/dpll/zl3073x/dpll.c                   | 34 +++++++-------
->   drivers/dpll/zl3073x/ref.h                    | 14 ------
->   drivers/dpll/zl3073x/regs.h                   | 15 +++++++
->   .../net/ethernet/mellanox/mlx5/core/dpll.c    |  4 ++
->   11 files changed, 126 insertions(+), 93 deletions(-)
+Transaction Details:
+• Transaction ID: 641029-9798
+• Amount: $492.45
 
-After merge of "dpll: add pin operational state" this needs to be rebased...
+Need Help?
+Our dedicated support team is here to assist you:
+📞 (802)-278-0978 (Available 24/7)
+📧 security@PayPal, Inc..com
 
-Will send v2.
+For your security, we recommend:
+✓ Enabling two-factor authentication
+✓ Monitoring your account regularly
 
-I.
+Thank you for your prompt attention to this matter.
 
+Sincerely,
+The PayPal, Inc. Security Team
