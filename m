@@ -1,169 +1,110 @@
-Received: from TYVP286CU001.outbound.protection.outlook.com (mail-japaneastazolkn19011032.outbound.protection.outlook.com [52.103.43.32])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73FC621A459;
-	Thu, 30 Apr 2026 01:30:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.43.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777512656; cv=fail; b=lJKq9gqJvT4AIJrZs+Hjk/29MSQeO+twFblTrFeKeOpwEBkc+QXWg+JfWDl+bsLbGWBqlIXW1o6BEZTWw+6R8vMnqR2l5E/2zqSJarzY1nmlJpuygwoVO9m43EVS7FgLUEOtXyw7dKKJKstdeiyGNAe5KdiINmbr3bjWXCJhLpo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777512656; c=relaxed/simple;
-	bh=k9I9DwlpwiFKd7DVWBqyzgOTOAvGSmjiIdLcozF0wks=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=Xz2BGbyFCr2nyPrHWdtDGa6Te+9aQzhEn1ZaXNasyRaEGuI80sOodkZWAmBHbiQHLlwyNQKeKeZKapOiOsh+DR0EnK6h4ozXYruv1FlA6QLqzbIEr5WQ6GtLplR5wmGoej1tPBHC4muHY7Q6dV+PYrsyunSfFhFvOGtA8UwXwuk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=ni9q4qfk; arc=fail smtp.client-ip=52.103.43.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B31B1DE2D3;
+	Thu, 30 Apr 2026 01:32:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777512730; cv=none; b=agvw4btLSELFLyKccMM3aIsMYfCMQ8skT4PO3PM8TxnMCLErc2VEd9+NQGjwDX5zaIXudmAtRclEWCyEJ060nrltfhddqi7PFJKfCqozrgS8A3PyH/49sFRyvh6Sncx3NgOB/xoy+ZyU9PaA+nJJtVbkDCV5YrA5Ki0/DHbTx1A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777512730; c=relaxed/simple;
+	bh=GPfPSzp1YJCpnaNQiH/G8TJL9kVKVDTd3wQ5tcMnVn0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dvOgUdoqiiQ2OI/mq+NIoLIdw5XVgr9wFmifFu8iD1fISRF0qdBMSTV1RLU4bCWxj2p9etYNKTNU9AQ7hSYitpvSSM3Ar6Q3ACEWyPx2RwzydLxtRDSBjcfpDMuU5mgz0VQsdlFtzeQEMmheiwjbZO+4W2Lpv/SmT8PpjfdKi+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FGh9/0l8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="ni9q4qfk"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=v4XcbeEE4Yp88bjp7818x1jKkLa+S1yoCj+uGlzBl3qijN2p2YVpMsvk8Sjy6luFcFvkxTcYT1/RneMGxIrePUCkbWbn2OOwR+XxloJRXmHiksgQ52eS8uEZQFGkO6KIy0AiuKqutupjE4gZqlZWZ7Ojw/TyPaJB8i1sGZAC/DpEk5NROT3h8eq+egr1Avl+y/j8dCXVoGeG4bqyJXRZIZIicUvdhEZOLdNxh9K7iKzGIpebLCWeCR86Go1PKSViC8Poa3DrR30VxNngE9iVbNioqS7DWBvKfDZu2h/E90WhNy/Yi4Zrlll4NqT0yrKpJ7GrqZFAPaN/kW7OOKvnVg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NwhiUaUa6CsXJD4g6ZZxbRGKUAMWxxWDdnvDpI0jk6E=;
- b=ikwhlg4vriNYBufwGru1h5PyPC0rb6kovT4yB/4mBo011FzIWI3+l0IqDlwrfYqseku8VeRKKhXlhCt0NwZAuSDy51YSh/Ci4U4ANmGoUW5HIVCTmRH9h9WcQ9KbTXfoT5Dwu9ThClnS8EpgAAnWOHSjDOv6Dj91Mwtvefbwvy0ZcH00EGJAtxGwIwVFjBFWrE1rwAx2nEVXRVWUtlZ43Jqc/NibroEqUO5/e9NeQTi9HRq7JEi5UZmtryuHoAtA5bbDyrbxM4aPmXu/HPxng4YZ1Jx7674FNkaiWVMAKRzc8NJo6NEn6QA5N2qWt8sxeSwqZxHSJuQJPdoRbb4Eag==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NwhiUaUa6CsXJD4g6ZZxbRGKUAMWxxWDdnvDpI0jk6E=;
- b=ni9q4qfkwDJbNmwzTy/Jn8j+MYguTQpv0pgEWqX+EmAgamPEa/TLELi4yc3R5mIzsOolEMHLjrNxdUBH7x5jcfZAPOOCJecFJ6a+XJYL41PU09DQ62GcuWcP9KUgpEBAsPTfGoZB+IrjwrHt3rtWnXGkfuPqohqOWwBmEJJgTG9iijXp5MJRgJlczZ0f2JsHsIrFhPMTJPq+NOVHEEcTZW10r6APxaXqai5qsGywWAGYSNte+ywSaOfzzVNBrr4Sn+Hjf9tNNrTGjUw8c7eXySshiNM02ngehMAjO6AdqLUIjndOVn6KbOQKeiEaUg1UfzwVN1ScNjUjTt2Iv9xynA==
-Received: from TY7PR01MB17205.jpnprd01.prod.outlook.com
- (2603:1096:405:32a::20) by OSZPR01MB8546.jpnprd01.prod.outlook.com
- (2603:1096:604:18b::14) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.20; Thu, 30 Apr
- 2026 01:30:50 +0000
-Received: from TY7PR01MB17205.jpnprd01.prod.outlook.com
- ([fe80::7d34:ceac:fb2a:947c]) by TY7PR01MB17205.jpnprd01.prod.outlook.com
- ([fe80::7d34:ceac:fb2a:947c%6]) with mapi id 15.20.9870.016; Thu, 30 Apr 2026
- 01:30:50 +0000
-From: nmreadelf <kong414@outlook.com>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	corbet@lwn.net,
-	dsahern@kernel.org
-Cc: horms@kernel.org,
-	chia-yu.chang@nokia-bell-labs.com,
-	idosch@nvidia.com,
-	ij@kernel.org,
-	brauner@kernel.org,
-	jack@suse.cz,
-	kuniyu@google.com,
-	jlayton@kernel.org,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FGh9/0l8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4B8BC19425;
+	Thu, 30 Apr 2026 01:32:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777512730;
+	bh=GPfPSzp1YJCpnaNQiH/G8TJL9kVKVDTd3wQ5tcMnVn0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=FGh9/0l87EM/HnNW6kz0veKsHsG0TAEaY0jUX2sepU9JVMHGtdsDww30zHaXwm5LC
+	 xy2/u396oUNUY1oPDvGoS9W+S+EibC40TRD6QLxj3TCQCig9ztsAfiea6ecPP8LwFZ
+	 1/Aj6izP87bik7ZrRIa7/cLTlZqPSpnGWTnc2lIPvEBFoxSuuosuqCIuWJGkMeOowD
+	 bZzCtLNvTdCtfmSk2AG2X55An+X26qN+J8hJGQ7yKqrDVLjCBqTzAsjSNeiMGUlIV3
+	 LfsPyyqJsXSZ897WAYZTyt1WysASQKl1fWANEW6CZlExrl3papNfqCw/A+l+6nKFuX
+	 ti5C9elTQzOtQ==
+From: Jakub Kicinski <kuba@kernel.org>
+To: maoyixie.tju@gmail.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
 	netdev@vger.kernel.org,
-	linux-doc@vger.kernel.org,
+	kuniyu@google.com,
+	shaw.leon@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	dsahern@kernel.org,
+	kuznet@ms2.inr.ac.ru,
 	linux-kernel@vger.kernel.org,
-	kong414@outlook.com,
-	lance.yang@linux.dev,
-	leon.hwang@linux.dev
-Subject: [RFC PATCH net-next 0/3] netns: optionally inherit IPv4 TCP sysctls from old net
-Date: Thu, 30 Apr 2026 09:30:42 +0800
-Message-ID:
- <TY7PR01MB172057C053E8D550485A29A08E0352@TY7PR01MB17205.jpnprd01.prod.outlook.com>
-X-Mailer: git-send-email 2.47.3
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR04CA0211.apcprd04.prod.outlook.com
- (2603:1096:4:187::19) To TY7PR01MB17205.jpnprd01.prod.outlook.com
- (2603:1096:405:32a::20)
-X-Microsoft-Original-Message-ID:
- <20260430013042.4046817-1-kong414@outlook.com>
+	stable@vger.kernel.org,
+	security@kernel.org
+Subject: Re: [PATCH net 2/2] ip6_gre: Use cached t->net in ip6erspan_changelink().
+Date: Wed, 29 Apr 2026 18:18:48 -0700
+Message-ID: <20260430011849.2345207-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260428110713.2550315-3-maoyixie.tju@gmail.com>
+References: <20260428110713.2550315-3-maoyixie.tju@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TY7PR01MB17205:EE_|OSZPR01MB8546:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2e803a32-5f47-4c5e-58e1-08dea6581b5a
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|25031999004|5072599009|24021099003|461199028|23021999003|15080799012|37011999003|19110799012|8060799015|8022599003|440099028|3412199025|26104999006|1710799026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?l6HR7mtBhAZVJswAL7kdcYisCVIzl2qN+DN1JI2/MZ+QxEBAINSu9R1BfjMY?=
- =?us-ascii?Q?TPkSqRX88gNWp3EfqodwiJ+kEUR6giEg92Tuq6HBccK7fp2ySTg08fZdnjla?=
- =?us-ascii?Q?5WOFHauWS25L3SmroQeWdqEDZSv3yPJplfSGQJacyTq5/M3xVvdfoDE9BUwP?=
- =?us-ascii?Q?w5/B6uwletpwdlLLe/txe2ICOF7kYno5wmSRqpADdFY9ojKr3Q3+ZqVo9IAo?=
- =?us-ascii?Q?DEML/y5mIfDC0iKc40EcrNA8a+nVZ82mNtBelz8/QT6VDlJAgL5O7H4aiCJq?=
- =?us-ascii?Q?Pk5BuActhUjcy13PTo319WyuWE/F4ammtVf1Y91jkboMXy4jg2eQARxmjxp2?=
- =?us-ascii?Q?PHQV5uicQk/DC53RByEPWQPjbQYzq3g7jy6R3c904nLkb4zftie8gWePvaNY?=
- =?us-ascii?Q?ZKtBQe3kINK/1vmXlMvrOlheAzTpRm5apZGMMhZ6euOnCV41u3Acs7ujjQ+U?=
- =?us-ascii?Q?sd5aLHty8m3if4+uQjFEdbi/gVDQ2VQYREgYKt+VeIA0WT79+eC7rCxyhCeu?=
- =?us-ascii?Q?VEHidrUipiJHdkUEIMWY47u4TMcOAa6g7e+5O2YhhFFgVfAeLC00yudtLwhu?=
- =?us-ascii?Q?A2FfXI7HDlPe9nwsUC0rx8FdwJ8GhXjp8CMFsW/5B1g2wfRcBrIOaCtBxQqd?=
- =?us-ascii?Q?wHDp8I7NIMNtKfoT7CdMtSGZwJEBEO7qyRjTKklRndgSMmKhyrGZB9Rlmjl+?=
- =?us-ascii?Q?TL8uB91wTgoh/xVh7AB5v9KbKOl8RdS3OGP/uCXvpHTCN4LN13b5bS7ixW5c?=
- =?us-ascii?Q?bdB5u4NFmLDhCH2SWD0S3hV87IbYu1IlYifEJAqM+YnGbtWTDDrM182rnojO?=
- =?us-ascii?Q?cdOzhrToVCoV4bAALVVuMTsytopzSg4LxbzjJInUErn3iQk2gB0dkb+J39LR?=
- =?us-ascii?Q?PDB9QrjTC4iH9Gye55XbYEFrLhk9tSZ5DfNpGgklTIR7FKtxore0B4tX6n2I?=
- =?us-ascii?Q?yfKGV3q6Z7/C2EB+D4HFIRJ0hySLI1qNNTIbfzZJrgJIZcaJQWtWxHDK+o+u?=
- =?us-ascii?Q?BCn+mZaLxhUhkughOFMcBn49Rg=3D=3D?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?/NR4OSCUOR6O0pShAoIZG9NeyRG+Y/IHoSl56ZMPjcvkcrzOgRPB91jJowAI?=
- =?us-ascii?Q?dGw4I5P4LwXDVuo+SIxTfTj/KazYujRtMtS+NJBp9a4MROiroMVfSQCp+WOl?=
- =?us-ascii?Q?zsASjlnaTnRsz46sK6bXJwDYA+3NViA6w5wB5mdHqeZQSuoW/Q86PAUxt69B?=
- =?us-ascii?Q?hXkiBxNOXBjdBZTpFxewHNJ5ZMib2+AfJFmqxXBaPx4AocrPvOgZKOBGTQZH?=
- =?us-ascii?Q?BzK54pV5Cxb6tdRpgCom9JAUltxXKmvL5Dsp3Ao9SUv5BEUGy4z5alJOOIad?=
- =?us-ascii?Q?uULnXh1gVVsg7IHrRrSdVI7t67+s41hCIqtCFh2dPmXdooK9wMAYMIRSEnO7?=
- =?us-ascii?Q?rhMXtJUE8bImPO8DUt0QQmm1z++dA9RV3llT4DOhf67TbAx/5SXG2KeGooOf?=
- =?us-ascii?Q?SjCyNBJoWTf5Te892K3iOJF+JIgtVF17QvBb6FnfIhaCrTP6c8T99eNnBL4b?=
- =?us-ascii?Q?AgrWf3jTOqlpfN2sdtK81nMv910tcWRDu7uc00Ag7oIqXj6MmTVk+EpN7a7A?=
- =?us-ascii?Q?wmSSUX/TO/v/N8UonKT8moQt6iK65wmn9RG08SwH3rimSwf4SHVZb4GYxTru?=
- =?us-ascii?Q?rCW3kEkWFFATz/cZU2xkpuE1AL5mj5EQ7PIgQ1wLUdyzZ63Y7ar6Cd6lyGdo?=
- =?us-ascii?Q?NM37JNvUdL66UTRzZFOF63Em8NjQo3kQlh82nTqI5+Jqm4njpbF3tlcWt8Mv?=
- =?us-ascii?Q?b7/OdcotsNWyVioYqnqpVumP4Yg+qVXxnOAuCwb0Xbo5LJ7w2SCzVdkXkK47?=
- =?us-ascii?Q?99GI5PKxQhahWtme1orXNU1rvXBxBBaGeEowR80oiFYz/QpwWUiuaIL2R8V6?=
- =?us-ascii?Q?yAMBuhTkSjNdmhwVFzcJ/OdFAv3SwRB+mBzjAt/cPv9TReVNWgJBWDq8FbD2?=
- =?us-ascii?Q?+AMTtvBnlUVNsB61g3BlEQ6sj63at1uzcjXzPt7nXEeCArq9L+07IZkqv8/l?=
- =?us-ascii?Q?h6TYfBXEmz1jb5idEcm7jn21FQIggYCCxv44230q8pSeo0Us/KeJxXgJnM22?=
- =?us-ascii?Q?NDtkZ+cMQBRAhIaV3DsyVgbu3pJBYwBkOibsqT4si1M8FeWpZtwqYoGaNjPw?=
- =?us-ascii?Q?WGbxi35OcI2uQ/t9MnhBc7Il5/nwOPR18rzyKNWHL2jcvinID9lsWoCQ0vk7?=
- =?us-ascii?Q?r9oykIhW1LW/W+JUtU4HFivhNuo3II7CgP+mapVkVBgi41BxKDzCg027MFdL?=
- =?us-ascii?Q?TVb6QpdRm0xjbOsD4nmIF8fPNWXGHPlrm0BoHbeZ+H2ePi0K7jMSkszgm4+g?=
- =?us-ascii?Q?zvd0g6eDhxDDV3eI5TuE9Obat6zwZ2T2aOmK9t12p/74OCFamku+Qarh6VWR?=
- =?us-ascii?Q?CJ3EqJVEbZzwJSiv3PnI81E4OqUIqVpIjVs8EBQzU3Ol1XPn+0Z6+scj+SAl?=
- =?us-ascii?Q?ABIYlNxDeoujrGWM02BOldvxTiuO?=
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2e803a32-5f47-4c5e-58e1-08dea6581b5a
-X-MS-Exchange-CrossTenant-AuthSource: TY7PR01MB17205.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Apr 2026 01:30:50.0372
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSZPR01MB8546
+Content-Transfer-Encoding: 8bit
 
-a new network namespace starts with built-in TCP defaults.
-In container-heavy setups, operators often tune TCP sysctls in init_net and then
-need to re-apply the same values for each new netns.
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+ip6_gre: Use cached t->net in ip6erspan_changelink().
 
-This series adds an opt-in mechanism to initialize per-netns IPv4 TCP sysctl
-settings from init_net at netns creation time.
+This commit fixes an issue where ip6erspan_changelink() uses the device
+creation netns instead of the per-netns ip6gre hash. This ensures the tunnel
+is inserted into the correct hash, avoiding a stale entry and subsequent
+use-after-free during netns destruction.
 
-Behavior:
+> diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
+> index 63fc8556b475..c5978e0bdfe3 100644
+> --- a/net/ipv6/ip6_gre.c
+> +++ b/net/ipv6/ip6_gre.c
+> @@ -2262,7 +2262,8 @@ static int ip6erspan_changelink(struct net_device *dev, struct nlattr *tb[],
+>  				struct nlattr *data[],
+>  				struct netlink_ext_ack *extack)
+>  {
+> -	struct ip6gre_net *ign = net_generic(dev_net(dev), ip6gre_net_id);
+> +	struct ip6_tnl *nt = netdev_priv(dev);
+> +	struct ip6gre_net *ign = net_generic(nt->net, ip6gre_net_id);
+>  	struct __ip6_tnl_parm p;
+>  	struct ip6_tnl *t;
 
-Default is unchanged.
-When net.ipv4.netns_inherit_tcp_sysctls=1, new netns inherit
-TCP sysctl from old_net.
+While reviewing this area, I noticed a regression further down in
+ip6erspan_changelink() regarding the metadata tunnel unlinking.
 
-nmreadelf (3):
-  ipv4: netns: group copyable TCP sysctls in netns_ipv4
-  net: ipv4: add netns_inherit_tcp_sysctls sysctl
-  tcp: netns: optionally inherit IPv4 TCP sysctls from parent netns
+If an existing ERSPAN tunnel with metadata collection enabled is modified via
+a netlink changelink request to disable metadata collection, does the unlink
+sequence clear the correct pointer?
 
- .../net_cachelines/netns_ipv4_sysctl.rst      | 25 +++----
- include/net/netns/ipv4.h                      | 33 +++++----
- net/core/net_namespace.c                      | 72 +++++++++++++++++++
- net/ipv4/sysctl_net_ipv4.c                    |  9 +++
- 4 files changed, 114 insertions(+), 25 deletions(-)
+Looking at the rest of ip6erspan_changelink():
 
--- 
-2.47.3
+    ip6gre_tunnel_unlink_md(ign, t);
+    ip6gre_tunnel_unlink(ign, t);
+    ip6erspan_tnl_change(t, &p, !tb[IFLA_MTU]);
+    ip6erspan_tunnel_link_md(ign, t);
 
+Because ip6gre_tunnel_unlink_md() is called instead of
+ip6erspan_tunnel_unlink_md(), it evaluates the old collect_md state but
+clears ign->collect_md_tun instead of ign->collect_md_tun_erspan.
+
+This seems to leave ign->collect_md_tun_erspan pointing to the tunnel.
+
+Since ip6erspan_tnl_change() updates the parameters to disable collect_md,
+the subsequent call to ip6erspan_tunnel_link_md() will skip updating the
+pointer.
+
+When the tunnel is eventually deleted, ip6erspan_tunnel_unlink_md() would
+be bypassed entirely because collect_md is now false.
+
+Could this leave ign->collect_md_tun_erspan as a dangling pointer,
+causing a use-after-free when an incoming ERSPAN packet triggers
+ip6gre_tunnel_lookup() and dereferences it?
