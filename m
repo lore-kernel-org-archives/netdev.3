@@ -1,150 +1,448 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013002.outbound.protection.outlook.com [40.107.162.2])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C920E331A66
-	for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 02:49:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777517359; cv=none; b=kzhHVP/foPOAxyak1goZsVrpnaOOjnUGVBlcy+3CWGFjzlGxvK+19k857aFvrmUAf6XSHLLBAnlXSrUGNlOB91YLy4ijdHHGz23OnSNnhu6SIUJ6Yafdq8FZ2P/MmsJIUyrq0miEh/fDykPva+0CrwDdbE7tCFlDFf1sy/zg+Qc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777517359; c=relaxed/simple;
-	bh=Jzgtlfa0XPZihBMBAayfdTGA4qfZ/66+CFb4fTrbr1I=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=lQ0pdLOt47uIQOSM6Hu45zHoM6peyp9G0eGVFyMO7DSyReIK4tgNfII+V4N60aLZdn6uuFJSGAWzYXb6DjmOhnTLKJtp2/PhAiEjLWJ9szAREgInVwyHnxZmBiQaK9Wbu5lV7Cv9RvAF/PXgZAGjU+DOS82ClHRl5Jls6LrnC5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S+EibLJw; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A809733F8D6;
+	Thu, 30 Apr 2026 02:49:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.2
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777517361; cv=fail; b=g961Yd87YSoKi9l7DQy8LyVJ/A72G2i2LMXphZhItFs5P24FVIQJD6zcLtMfH7ld4oFi/u5JtBRGkxHWVNBpaczIAVXVkytncqUzqQ9yXByX6CiGp+8v3y9dsmf5AUGKVOJOdPad7Yd7r+0raboFjFVvaCoPwjyQiA+bvOgNGjM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777517361; c=relaxed/simple;
+	bh=0V33JuQZ0Fov2wpKeB6RulXK1kkdUhq2n/TH1n3FJD0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=iNlEku/g3saS+S4qNcEbezaJU/WVPD8LAHAVcq0GQsAENhqEfJWoCjQBroxrvMPbS7ukFRAHlkvkIc6raru4x0+neT45VqaGYymsJS+XV0A7Vv9vN+u64+FSJtTU3fjdCO/fpnbCxYe84Uit0P6kCQzlbvlxuj2V5U8k3SOAPd8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=EvXjKQT5; arc=fail smtp.client-ip=40.107.162.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S+EibLJw"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2b2d3a9e149so7106325ad.1
-        for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 19:49:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777517357; x=1778122157; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=IFqSQggU6wMZ3sBcEBzUN/eFk5956xtC2nEBI87o+d8=;
-        b=S+EibLJwmE2dTvXZvzrJ3NDUFadRQwEwaCedn0MlO+Ys8RRVCUcxZR36hRKdMZlpMa
-         wC7aCZ4oxX6pRCC++ArI/QOL0Cb26QbpOTYkEMMiY3fnA445tshDvL7dHQX4BvXLo2+a
-         HlyYILSEHmAIm8P8UgOaWsR75G5WYjwtr5axPWHJ0jIWQud0NLvEUJweTz8yX+LcCgnx
-         3+2DInJICqYacGcADgxDUWmgnyaauXTVG2JXjI+9xvCXxqb7C7kdb1dEP8J+E+MS7XA3
-         9+yUYEN/gGxlHy7M9ijCIKIdOG+rCOvOxTTNkW/oS84bHyRA/puTQwzlxNlJvDVUyOwL
-         T3lg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777517357; x=1778122157;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IFqSQggU6wMZ3sBcEBzUN/eFk5956xtC2nEBI87o+d8=;
-        b=HrYwD70mHmQMu9fP1+KULHp4iwDUl/PaFMNzX28ttlCPBqThzv4T6zxVrukNBObSzw
-         CJ6rrgLU32vXOygcA9v/1Edq7EiMV3XrbnG5Qtpt/vuruOdeRrPDA3eNaVCNw0zQyeSU
-         2sxveUKWvZoo2ATjs0/GFOT/er7JxMbHFLZXE7WTX1SzMxWaYsxVZbg8FELTcpRL3voB
-         5GYeZgFJAGFzBKwP6owRY5ZUDg+krw9/oZd9RkJJEGRL+Z3z+2dxAhya/p89CsAFeKAI
-         +m2IdpHnB1Oflt+X8pVo7dgGFNE7kkMr9i05MXGo8H/zeLubFlLiO9r9ep36RqzMd3jG
-         OilA==
-X-Gm-Message-State: AOJu0YzlRygHGDV5MozSzbr3WNXxYJIjIP2YdCfddmnxLN0wy5c4i+iA
-	vVOYIt3fLK+J/pheWQjOsJruL6vU9i+gGhAJNgqGkwFDuzl1kC2tQXiekWROau76
-X-Gm-Gg: AeBDiesJ8b4ndwfI26LnTO/sm8JwJ32yJ5etei8fGe8RDVE144GBLcqrzcjFz3Zok9l
-	pWsCDfsjQyA4rQioZVtR3X0yfUtcvtCMCCwrJKk7yCC7UEA/VAjLTGYcSqptkYfpnSDM3VgmwOW
-	XoDXCq47LWFPisi7UAbNDafpUQG0G0eBf8AVKUGwJfVayT7hxhY3gG+877TwdqsF/1fusXyUo0M
-	QnYnnHfcCHccbVrmok41PaMaJxGq52u5ZQowFEexnFRiBzMPGWLTYrSiS5rfek148VCgciyGaoJ
-	Tg32ZNfcX51sud1zTDCgnNYTvfSgbiNNGnLYyl1REnM/habtdWbUK4z4qMXiAkln0eJfDsPhdQA
-	HGgIU5F68SrkDj/awBwbiknUOLczfKMtdlmJ9nJuwd+iPkUMQIlMqcGam6wqtuIZshCbZye2xDP
-	V6JfMp4iTHrJT8Y1aVritv1+nObNFxbT56tZMubKg34kdAJ8293/Fk3w==
-X-Received: by 2002:a17:903:1a86:b0:2b2:eba4:2149 with SMTP id d9443c01a7336-2b9a47711b9mr5385535ad.30.1777517357156;
-        Wed, 29 Apr 2026 19:49:17 -0700 (PDT)
-Received: from v4bel ([58.123.110.97])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b988989d67sm36559455ad.76.2026.04.29.19.49.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Apr 2026 19:49:16 -0700 (PDT)
-Date: Thu, 30 Apr 2026 11:49:13 +0900
-From: Hyunwoo Kim <imv4bel@gmail.com>
-To: steffen.klassert@secunet.com, herbert@gondor.apana.org.au,
-	davem@davemloft.net, dsahern@kernel.org, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	ilant@mellanox.com, sowmini.varadhan@oracle.com
-Cc: netdev@vger.kernel.org, imv4bel@gmail.com
-Subject: [PATCH ipsec] esp: Force skb_cow_data() on RX when the skb is
- non-linear
-Message-ID: <afLDKSvAvMwGh7Fy@v4bel>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="EvXjKQT5"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cuj43wRpCeIZmUELR+JnoBGIFtlEfDP3n8HR5BX9x+scOWR+9cSBwa2/ltDdn5yu1j8oOLUwkZy3Tgm60/uvJ894uudPtQhdf80cbUnu9Y269MBXgbYZr/T2YnVhovQUe4hWg2Bs6erR3oQmQWQ7GhiOX628VcFp1el/obsD06GXl0cQC/fyOWANpYjZo+2LQqjWUTjONcX9bZjLPol0KKMewR8/LrIbiB0WAgUv78yFrtm/awV7Ulck7u+f930RD4PdXrSgAuR0UQbWlXYYCpV7WKcVEUrmOAsLnUhcZAfwZ3C3+M9Get0UBTuB7lFDO601q4fr24nTRArmhVYdZA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vpFP/5ZCJ+bg+eA8fAjzxurulz/xwiGFfOFB8EZy15M=;
+ b=iE3jwqdHG95wOf/jU1H2cJby+0lOt39l9dLWAyWAUwhKTIvlwH5HBtjXHilBnvzW5jwXv30vXDkpnbThfjYeV0hLDp2fpfpjBfQZ0FsuYkb7GHYLXX0sfPni4jNDbY4OSD4g8egBuDFx4td/5/sQi3L0xCgtwytlShZk5qyimFVOkeVSMCEtbtuzcad7i+r0ilUAe8jXAoIX3H+a5/kmvW6GuODGT29CDcIJPkFOsCvehqWoYAjdMClQU/LcDnIifCCvDQJzgN3MsHb9mXg4xbYFp8yZ6Pmh0prudmy5dwX2isbuNiF519EwU77ldcYAIXSsWE9xrqLBruy5ymnpTA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vpFP/5ZCJ+bg+eA8fAjzxurulz/xwiGFfOFB8EZy15M=;
+ b=EvXjKQT5p2zCiDg8Yl75PMssrIwkePgjzkv4NwNQ2Ya9qDMuT771lWPf/+IRnHFWw962QuIcq+dL2GFs5G4a8qRkB+NnNdBypLXausmI1SCJDuec9XpfO2nyZPBkC9f2vOCpV0FtVA9Ov23vWoh89Wah6fZ02+WosUZzsvenPyGLyGTDeXx1p1aw++mukUYHfkhI4rxuEEBlWu0TQ8aZDtJq9Z1M8u3cfNll6/OX5PI9atGK8AToSi2uM2JVGs4Jg9NUlh9z77GrwETXKxHQFQVvJTG5bnaNjWmMSw9d9/l/nbwyR/L2DrR7lJgnQkUEM+83bZkea5iaBsANjxTBWw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DBBPR04MB7500.eurprd04.prod.outlook.com (2603:10a6:10:1f4::16)
+ by PAXPR04MB8608.eurprd04.prod.outlook.com (2603:10a6:102:21b::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.18; Thu, 30 Apr
+ 2026 02:49:17 +0000
+Received: from DBBPR04MB7500.eurprd04.prod.outlook.com
+ ([fe80::c291:543b:4bde:cee7]) by DBBPR04MB7500.eurprd04.prod.outlook.com
+ ([fe80::c291:543b:4bde:cee7%6]) with mapi id 15.20.9870.020; Thu, 30 Apr 2026
+ 02:49:16 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: claudiu.manoil@nxp.com,
+	vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	f.fainelli@gmail.com,
+	frank.li@nxp.com,
+	chleroy@kernel.org,
+	horms@kernel.org,
+	linux@armlinux.org.uk
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev
+Subject: [PATCH v5 net-next 15/15] net: dsa: netc: add support for ethtool private statistics
+Date: Thu, 30 Apr 2026 10:49:45 +0800
+Message-Id: <20260430024945.3413973-16-wei.fang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260430024945.3413973-1-wei.fang@nxp.com>
+References: <20260430024945.3413973-1-wei.fang@nxp.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2PR01CA0133.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:8f::13) To DBBPR04MB7500.eurprd04.prod.outlook.com
+ (2603:10a6:10:1f4::16)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DBBPR04MB7500:EE_|PAXPR04MB8608:EE_
+X-MS-Office365-Filtering-Correlation-Id: 863931bb-7cda-4160-efcb-08dea66311ef
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|19092799006|7416014|52116014|376014|38350700014|921020|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	omkXyNqJzMUGvrDATze0xn9OEWc4fUSp1dYH+xQUKQU2bVai8fbNN2mpEIu4MuOS8/76Wh8QWxrymBPS9msNapZoAdYzkrL1le+ZnAhfUlM+3q8uSWTStc84WKdML/yQhjmqai2ZntxDVBwx/M2Tl3iQBlM3x35dRKl2pmwco2bFsy70DzF8mgvNmBgY9C87FuPY4vBIMGKnJqAlOzEEWPll6mSkjuf+8uvDRHfSmuzzqciH72k2CE1QTpCb/K2kWRuu4v5z82pKTQjDEJaz9c7DNoq3wyn/YN5Md8Ttt71q1WR2lmNkgExIUpkCrIwdZWFZVYjWlhiQbehMS7fbOdn3JxDc9TwL9ENWxB9tC0o+NltP+n9iLJ+l8czjAjrLNPXhk7WFd3YBKoVRzma1gaNaJ673SL/3CUtXU1/nMq476uXJSJ4R/kTpUOGlZL41JX69Ui4w53kr6WpEdvctlO7mkXEq2iQOubJQ0v8h2/jfBp4jzO1wiGBXOwcGimaSDrgIhEFBF0FIV81rFzB5YqS+u1sFPY1jnamoU9xykd9u2xl7++DiRBSaASKSZ9Cvij2+uL+cqPia1qxC93/seQh01lzvxFctgIA35LmE5bN6ZXRzJyhU6fnc6X62zJbQ6rCKiI6J96SZqNVBwnLMs8hf5BnGILDJ7/1GPguwT13a52Pwu35HxgWOs0dL59nwzQaBz2R2ecSKVE33daaRH9u2E3hBSb+OXBKFeW/DOuKdXo+o1Fo+vSZ8UZxAqvddwFx4/EXsmPG0maH+q5gKaWhm4UNnJu6KW5h5mtJ7A0oYx8EDEtr8KqLfNP0RcxEd
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DBBPR04MB7500.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(7416014)(52116014)(376014)(38350700014)(921020)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?JBpH7BX7f7Gq3dpgp2ycQ3ARnmRZoCB+cM2H38SjeO7i3E0knbUJrvC+brS9?=
+ =?us-ascii?Q?OIOozH6JFM4E5SAsXUsuxbL94IJ8xAuvkMACcE5zgQqYSy+tFXPplvfUtWsL?=
+ =?us-ascii?Q?AJwA5OqBpFn0NSTFhWX5D13mOlyVJSVu+gCiV2JniaY0lr8GBclwk/iF4M2H?=
+ =?us-ascii?Q?p8ulSqPB6ft27kCn2Vv6BOGEou7ZxuU01ERG0+uml7jvz5+A+lRptYdyZE1D?=
+ =?us-ascii?Q?XDxmWrxKG1S/aajDm5erFKHrL4ThrRKrah5HFCLu56IqC26xgSBbmVPRvP36?=
+ =?us-ascii?Q?CUv7JnYIA2kQPNVbfCjnSAcfpTNLnXOQOPKpjEW70B+9dEUPDl4/iCYB3rUD?=
+ =?us-ascii?Q?dobGyduwZDRV+N3+zN6hTawO89OPtHVSJpVDwWbDGVZt++8ZofLcKi3Ai16D?=
+ =?us-ascii?Q?Pdp2jUre+k/q4/yUwaVO/X2+bM8sAvWZbub1LdaP2E0Gy0TA8QQ92db1gyND?=
+ =?us-ascii?Q?buo1phbkveCE9o6zmirFPYZVofDA72ZbN11dhUNFJwNAVXO7YU/CcvYGpReO?=
+ =?us-ascii?Q?vH49CDqvpCnQp78xZWID9+V9TBK5jPRtIvAEI8eStBXoGJVVdqO2gOg+XPqi?=
+ =?us-ascii?Q?lO5ZtEWIOrfK3FNpWp/ZqoRBBj2tfV3jOJohIem5cfH32LZDPbV649UzoiBG?=
+ =?us-ascii?Q?rqSAH+9NieJFQH86VAUU9GB8yFEAIq2NyUMsIuvB/c2GFM1KF/ai4bjQyQHH?=
+ =?us-ascii?Q?veyaNnfrZ+kuA9e5vPBCFN3EIYytk8NTRlBOjXa9TQSovMEFis/GogIuq+0x?=
+ =?us-ascii?Q?pVdDbsixE8PJQnORP1pFBu62wue4o1Ja99OJ+3LACIN40wIs4V7dpEskQVq3?=
+ =?us-ascii?Q?pnwHggfUK9IG0SevegjLNaWUi/ok099Bksfw9CfgSTYgOMLCA8WZAP6Qx9UA?=
+ =?us-ascii?Q?sUkFp7OamZ8mw5t4mi0p4DrImFCxAquLCLArTBNEvVdYs8GnaGFevw0MB2+B?=
+ =?us-ascii?Q?Y0k/1crRI0OLUMhEPspdA1afHWKn9MDhwE/lzrWYq6VZzHi6E92NJGkPBG+s?=
+ =?us-ascii?Q?AOkmQV71gkq0bMah22rTSRiltKClIue9DVbzlctjBEmYMSrkhTOW0zKxNTic?=
+ =?us-ascii?Q?kPUDAwDM+fiKLJOcErf5kxFM3y+SFqAl+/gUhZs4OzsUUGSFHTVrvdq90O7b?=
+ =?us-ascii?Q?cQ5iLnpC31DOho6TuLMh8bA6VV92opyj9JXuOiW7ffZkCF5weymwKSdE0wrZ?=
+ =?us-ascii?Q?JR9BOfFgDTobyWpiBSNU6mKyPmAFp5jsjQjC6hwL3YYRqokcId76yJZatZ/4?=
+ =?us-ascii?Q?HvBu5L2/t0J/KV5UT78miF0B94ZCeQEnnjwLhLpq2BRircNTMuUvTSwKav2Z?=
+ =?us-ascii?Q?p674U/opKk/gvFmtlbjZ4rSJuWXVReObUFkf2hiobtU2dtavuAYlguEE1kUD?=
+ =?us-ascii?Q?9aNQ+WQHE6vxoKNXDgraW1uecMkaz/QkUaX5GoW9r9HjvMV6h2wHQFiUhDq4?=
+ =?us-ascii?Q?gfBXbQ4ag9awia6TooB9ZpuG8Q/abxW4dD5rwvWGUxsGFEn2v2Q2LuyOrpir?=
+ =?us-ascii?Q?YvKa4fXcmrWk7cmfcKjeVtyiSQb+xCrl6ON1aj3Zy2NGvU41ikpPJePLWvA9?=
+ =?us-ascii?Q?RrWyYMLteVvpAJYWGV+aXgl0Q9SBu7LYCPGeEFYeNmDLxJsHdsaBWUQErh3r?=
+ =?us-ascii?Q?Jpn0fO78EEA+vnliG8Wfkmtk/OFRuSzf15Gy6qW9oh3JwQQjzX7Wlv9tMlUn?=
+ =?us-ascii?Q?bDAn//eDZv2Qmn/3zm8Sy9QFCGCGCTITl9PKFRkxYXdI4s0z?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 863931bb-7cda-4160-efcb-08dea66311ef
+X-MS-Exchange-CrossTenant-AuthSource: DBBPR04MB7500.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Apr 2026 02:49:16.7887
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: dJvxUT4lYrDZnenDWCA7PU9Lz0/FgxVz0efCUqFi+NeaLUvEHZL4HltcUQ35qe63V0zRojy0QNAkVeDlbsnSkQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8608
 
-esp_input() and esp6_input() skip skb_cow_data() on uncloned skbs
-through two arms: one for fully linear skbs (nfrags = 1) and one for
-skbs carrying paged fragments without a frag_list, which sets
-nfrags = skb_shinfo(skb)->nr_frags + 1.  In both arms the skb is mapped
-into a scatterlist via skb_to_sgvec() and passed as both src and dst of
-aead_request_set_crypt(), so the AEAD operates in place over the
-existing frag pages.
+Implement the ethtool private statistics interface to expose additional
+port-level and MAC-level counters that are not covered by the standard
+IEEE 802.3 statistics. The pMAC counters are only reported when the port
+supports Frame Preemption (802.1Qbu/802.3br).
 
-Drop the paged-fragment arm so any non-linear inbound skb falls through
-to skb_cow_data().  The fully linear fast path is unchanged and the
-existing skb_cow_data() error handling that follows the gate is reused.
-
-Fixes: cac2661c53f3 ("esp4: Avoid skb_cow_data whenever possible")
-Fixes: 03e2a30f6a27 ("esp6: Avoid skb_cow_data whenever possible")
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
 ---
- net/ipv4/esp4.c | 13 +++----------
- net/ipv6/esp6.c | 13 +++----------
- 2 files changed, 6 insertions(+), 20 deletions(-)
+ drivers/net/dsa/netc/netc_ethtool.c   | 107 ++++++++++++++++++++++++++
+ drivers/net/dsa/netc/netc_main.c      |   3 +
+ drivers/net/dsa/netc/netc_switch.h    |   9 +++
+ drivers/net/dsa/netc/netc_switch_hw.h |  58 ++++++++++++++
+ 4 files changed, 177 insertions(+)
 
-diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
-index 6dfc0bcdef65..a6fbdec139dc 100644
---- a/net/ipv4/esp4.c
-+++ b/net/ipv4/esp4.c
-@@ -868,17 +868,10 @@ static int esp_input(struct xfrm_state *x, struct sk_buff *skb)
- 		assoclen += seqhilen;
+diff --git a/drivers/net/dsa/netc/netc_ethtool.c b/drivers/net/dsa/netc/netc_ethtool.c
+index ac8940b5a85c..8d04db534347 100644
+--- a/drivers/net/dsa/netc/netc_ethtool.c
++++ b/drivers/net/dsa/netc/netc_ethtool.c
+@@ -19,6 +19,56 @@ static const struct ethtool_rmon_hist_range netc_rmon_ranges[] = {
+ 	{ }
+ };
+ 
++static const struct netc_port_stat netc_port_counters[] = {
++	{ NETC_PTGSLACR,	"port gate late arrival frames" },
++	{ NETC_PSDFTCR,	"port SDF transmit frames" },
++	{ NETC_PSDFDDCR,	"port SDF drop duplicate frames" },
++	{ NETC_PRXDCR,		"port rx discard frames" },
++	{ NETC_PRXDCRRR,	"port rx discard read-reset" },
++	{ NETC_PRXDCRR0,	"port rx discard reason 0" },
++	{ NETC_PRXDCRR1,	"port rx discard reason 1" },
++	{ NETC_PTXDCR,		"port tx discard frames" },
++	{ NETC_PTXDCRRR,	"port tx discard read-reset" },
++	{ NETC_PTXDCRR0,	"port tx discard reason 0" },
++	{ NETC_PTXDCRR1,	"port tx discard reason 1" },
++	{ NETC_BPDCR,		"bridge port discard frames" },
++	{ NETC_BPDCRRR,	"bridge port discard read-reset" },
++	{ NETC_BPDCRR0,	"bridge port discard reason 0" },
++	{ NETC_BPDCRR1,	"bridge port discard reason 1" },
++};
++
++static const struct netc_port_stat netc_emac_counters[] = {
++	{ NETC_PM_ROCT(0),	"eMAC rx octets" },
++	{ NETC_PM_RVLAN(0),	"eMAC rx VLAN frames" },
++	{ NETC_PM_RERR(0),	"eMAC rx frame errors" },
++	{ NETC_PM_RUCA(0),	"eMAC rx unicast frames" },
++	{ NETC_PM_RDRP(0),	"eMAC rx dropped packets" },
++	{ NETC_PM_RPKT(0),	"eMAC rx packets" },
++	{ NETC_PM_TOCT(0),	"eMAC tx octets" },
++	{ NETC_PM_TVLAN(0),	"eMAC tx VLAN frames" },
++	{ NETC_PM_TFCS(0),	"eMAC tx FCS errors" },
++	{ NETC_PM_TUCA(0),	"eMAC tx unicast frames" },
++	{ NETC_PM_TPKT(0),	"eMAC tx packets" },
++	{ NETC_PM_TUND(0),	"eMAC tx undersized packets" },
++	{ NETC_PM_TIOCT(0),	"eMAC tx invalid octets" },
++};
++
++static const struct netc_port_stat netc_pmac_counters[] = {
++	{ NETC_PM_ROCT(1),	"pMAC rx octets" },
++	{ NETC_PM_RVLAN(1),	"pMAC rx VLAN frames" },
++	{ NETC_PM_RERR(1),	"pMAC rx frame errors" },
++	{ NETC_PM_RUCA(1),	"pMAC rx unicast frames" },
++	{ NETC_PM_RDRP(1),	"pMAC rx dropped packets" },
++	{ NETC_PM_RPKT(1),	"pMAC rx packets" },
++	{ NETC_PM_TOCT(1),	"pMAC tx octets" },
++	{ NETC_PM_TVLAN(1),	"pMAC tx VLAN frames" },
++	{ NETC_PM_TFCS(1),	"pMAC tx FCS errors" },
++	{ NETC_PM_TUCA(1),	"pMAC tx unicast frames" },
++	{ NETC_PM_TPKT(1),	"pMAC tx packets" },
++	{ NETC_PM_TUND(1),	"pMAC tx undersized packets" },
++	{ NETC_PM_TIOCT(1),	"pMAC tx invalid octets" },
++};
++
+ static void netc_port_pause_stats(struct netc_port *np, int mac,
+ 				  struct ethtool_pause_stats *stats)
+ {
+@@ -188,3 +238,60 @@ void netc_port_get_eth_mac_stats(struct dsa_switch *ds, int port,
+ 		break;
  	}
+ }
++
++int netc_port_get_sset_count(struct dsa_switch *ds, int port, int sset)
++{
++	struct netc_port *np = NETC_PORT(ds, port);
++	int size;
++
++	if (sset != ETH_SS_STATS)
++		return -EOPNOTSUPP;
++
++	size = ARRAY_SIZE(netc_port_counters) +
++	       ARRAY_SIZE(netc_emac_counters);
++
++	if (np->caps.pmac)
++		size += ARRAY_SIZE(netc_pmac_counters);
++
++	return size;
++}
++
++void netc_port_get_strings(struct dsa_switch *ds, int port,
++			   u32 sset, u8 *data)
++{
++	struct netc_port *np = NETC_PORT(ds, port);
++	int i;
++
++	if (sset != ETH_SS_STATS)
++		return;
++
++	for (i = 0; i < ARRAY_SIZE(netc_port_counters); i++)
++		ethtool_cpy(&data, netc_port_counters[i].name);
++
++	for (i = 0; i < ARRAY_SIZE(netc_emac_counters); i++)
++		ethtool_cpy(&data, netc_emac_counters[i].name);
++
++	if (!np->caps.pmac)
++		return;
++
++	for (i = 0; i < ARRAY_SIZE(netc_pmac_counters); i++)
++		ethtool_cpy(&data, netc_pmac_counters[i].name);
++}
++
++void netc_port_get_ethtool_stats(struct dsa_switch *ds, int port, u64 *data)
++{
++	struct netc_port *np = NETC_PORT(ds, port);
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(netc_port_counters); i++)
++		*data++ = netc_port_rd(np, netc_port_counters[i].reg);
++
++	for (i = 0; i < ARRAY_SIZE(netc_emac_counters); i++)
++		*data++ = netc_port_rd64(np, netc_emac_counters[i].reg);
++
++	if (!np->caps.pmac)
++		return;
++
++	for (i = 0; i < ARRAY_SIZE(netc_pmac_counters); i++)
++		*data++ = netc_port_rd64(np, netc_pmac_counters[i].reg);
++}
+diff --git a/drivers/net/dsa/netc/netc_main.c b/drivers/net/dsa/netc/netc_main.c
+index ae8f28b82b72..803582d939b0 100644
+--- a/drivers/net/dsa/netc/netc_main.c
++++ b/drivers/net/dsa/netc/netc_main.c
+@@ -1472,6 +1472,9 @@ static const struct dsa_switch_ops netc_switch_ops = {
+ 	.get_rmon_stats			= netc_port_get_rmon_stats,
+ 	.get_eth_ctrl_stats		= netc_port_get_eth_ctrl_stats,
+ 	.get_eth_mac_stats		= netc_port_get_eth_mac_stats,
++	.get_sset_count			= netc_port_get_sset_count,
++	.get_strings			= netc_port_get_strings,
++	.get_ethtool_stats		= netc_port_get_ethtool_stats,
+ };
  
--	if (!skb_cloned(skb)) {
--		if (!skb_is_nonlinear(skb)) {
--			nfrags = 1;
--
--			goto skip_cow;
--		} else if (!skb_has_frag_list(skb)) {
--			nfrags = skb_shinfo(skb)->nr_frags;
--			nfrags++;
-+	if (!skb_cloned(skb) && !skb_is_nonlinear(skb)) {
-+		nfrags = 1;
+ static int netc_switch_probe(struct pci_dev *pdev,
+diff --git a/drivers/net/dsa/netc/netc_switch.h b/drivers/net/dsa/netc/netc_switch.h
+index d477b0cd2157..90d750331fb9 100644
+--- a/drivers/net/dsa/netc/netc_switch.h
++++ b/drivers/net/dsa/netc/netc_switch.h
+@@ -93,6 +93,11 @@ struct netc_fdb_entry {
+ 	struct hlist_node node;
+ };
  
--			goto skip_cow;
--		}
-+		goto skip_cow;
- 	}
++struct netc_port_stat {
++	int reg;
++	char name[ETH_GSTRING_LEN] __nonstring;
++};
++
+ struct netc_switch {
+ 	struct pci_dev *pdev;
+ 	struct device *dev;
+@@ -159,5 +164,9 @@ void netc_port_get_eth_ctrl_stats(struct dsa_switch *ds, int port,
+ 				  struct ethtool_eth_ctrl_stats *ctrl_stats);
+ void netc_port_get_eth_mac_stats(struct dsa_switch *ds, int port,
+ 				 struct ethtool_eth_mac_stats *mac_stats);
++int netc_port_get_sset_count(struct dsa_switch *ds, int port, int sset);
++void netc_port_get_strings(struct dsa_switch *ds, int port,
++			   u32 sset, u8 *data);
++void netc_port_get_ethtool_stats(struct dsa_switch *ds, int port, u64 *data);
  
- 	err = skb_cow_data(skb, 0, &trailer);
-diff --git a/net/ipv6/esp6.c b/net/ipv6/esp6.c
-index 9f75313734f8..e5504cc0ecf9 100644
---- a/net/ipv6/esp6.c
-+++ b/net/ipv6/esp6.c
-@@ -910,17 +910,10 @@ static int esp6_input(struct xfrm_state *x, struct sk_buff *skb)
- 		assoclen += seqhilen;
- 	}
+ #endif
+diff --git a/drivers/net/dsa/netc/netc_switch_hw.h b/drivers/net/dsa/netc/netc_switch_hw.h
+index f8d436ad9623..1b016e7dd03e 100644
+--- a/drivers/net/dsa/netc/netc_switch_hw.h
++++ b/drivers/net/dsa/netc/netc_switch_hw.h
+@@ -87,6 +87,17 @@
+ #define  PSR_TX_BUSY			BIT(0)
+ #define  PSR_RX_BUSY			BIT(1)
  
--	if (!skb_cloned(skb)) {
--		if (!skb_is_nonlinear(skb)) {
--			nfrags = 1;
--
--			goto skip_cow;
--		} else if (!skb_has_frag_list(skb)) {
--			nfrags = skb_shinfo(skb)->nr_frags;
--			nfrags++;
-+	if (!skb_cloned(skb) && !skb_is_nonlinear(skb)) {
-+		nfrags = 1;
++#define NETC_PTGSLACR			0x130
++
++#define NETC_PRXDCR			0x1c0
++#define NETC_PRXDCRRR			0x1c4
++#define NETC_PRXDCRR0			0x1c8
++#define NETC_PRXDCRR1			0x1cc
++#define NETC_PTXDCR			0x1e0
++#define NETC_PTXDCRRR			0x1e4
++#define NETC_PTXDCRR0			0x1e8
++#define NETC_PTXDCRR1			0x1ec
++
+ #define NETC_PTCTMSDUR(a)		(0x208 + (a) * 0x20)
+ #define  PTCTMSDUR_MAXSDU		GENMASK(15, 0)
+ #define  PTCTMSDUR_SDU_TYPE		GENMASK(17, 16)
+@@ -94,6 +105,9 @@
+ #define   SDU_TYPE_MPDU			1
+ #define   SDU_TYPE_MSDU			2
  
--			goto skip_cow;
--		}
-+		goto skip_cow;
- 	}
++#define NETC_PSDFTCR			0x4c4
++#define NETC_PSDFDDCR			0x4c8
++
+ #define NETC_BPCR			0x500
+ #define  BPCR_DYN_LIMIT			GENMASK(15, 0)
+ #define  BPCR_MLO			GENMASK(22, 20)
+@@ -142,6 +156,11 @@ enum netc_stg_stage {
+ 	NETC_STG_STATE_FORWARDING,
+ };
  
- 	nfrags = skb_cow_data(skb, 0, &trailer);
++#define NETC_BPDCR			0x580
++#define NETC_BPDCRRR			0x584
++#define NETC_BPDCRR0			0x588
++#define NETC_BPDCRR1			0x58c
++
+ /* Definition of Switch ethernet MAC port registers */
+ #define NETC_PMAC_OFFSET		0x400
+ #define NETC_PM_CMD_CFG(a)		(0x1008 + (a) * 0x400)
+@@ -176,6 +195,9 @@ enum netc_stg_stage {
+ /* Port MAC 0/1 Receive Ethernet Octets Counter */
+ #define NETC_PM_REOCT(a)		(0x1100 + (a) * 0x400)
+ 
++/* Port MAC 0/1 Receive Octets Counter */
++#define NETC_PM_ROCT(a)			(0x1108 + (a) * 0x400)
++
+ /* Port MAC 0/1 Receive Alignment Error Counter Register */
+ #define NETC_PM_RALN(a)			(0x1110 + (a) * 0x400)
+ 
+@@ -188,12 +210,27 @@ enum netc_stg_stage {
+ /* Port MAC 0/1 Receive Frame Check Sequence Error Counter */
+ #define NETC_PM_RFCS(a)			(0x1128 + (a) * 0x400)
+ 
++/* Port MAC 0/1 Receive VLAN Frame Counter */
++#define NETC_PM_RVLAN(a)		(0x1130 + (a) * 0x400)
++
++/* Port MAC 0/1 Receive Frame Error Counter */
++#define NETC_PM_RERR(a)			(0x1138 + (a) * 0x400)
++
++/* Port MAC 0/1 Receive Unicast Frame Counter */
++#define NETC_PM_RUCA(a)			(0x1140 + (a) * 0x400)
++
+ /* Port MAC 0/1 Receive Multicast Frame Counter */
+ #define NETC_PM_RMCA(a)			(0x1148 + (a) * 0x400)
+ 
+ /* Port MAC 0/1 Receive Broadcast Frame Counter */
+ #define NETC_PM_RBCA(a)			(0x1150 + (a) * 0x400)
+ 
++/* Port MAC 0/1 Receive Dropped Packets Counter */
++#define NETC_PM_RDRP(a)			(0x1158 + (a) * 0x400)
++
++/* Port MAC 0/1 Receive Packets Counter */
++#define NETC_PM_RPKT(a)			(0x1160 + (a) * 0x400)
++
+ /* Port MAC 0/1 Receive Undersized Packet Counter */
+ #define NETC_PM_RUND(a)			(0x1168 + (a) * 0x400)
+ 
+@@ -236,6 +273,9 @@ enum netc_stg_stage {
+ /* Port MAC 0/1 Transmit Ethernet Octets Counter */
+ #define NETC_PM_TEOCT(a)		(0x1200 + (a) * 0x400)
+ 
++/* Port MAC 0/1 Transmit Octets Counter */
++#define NETC_PM_TOCT(a)			(0x1208 + (a) * 0x400)
++
+ /* Port MAC 0/1 Transmit Excessive Deferral Packet Counter */
+ #define NETC_PM_TEDFR(a)		(0x1210 + (a) * 0x400)
+ 
+@@ -245,15 +285,30 @@ enum netc_stg_stage {
+ /* Port MAC 0/1 Transmit Frame Counter */
+ #define NETC_PM_TFRM(a)			(0x1220 + (a) * 0x400)
+ 
++/* Port MAC 0/1 Transmit Frame Check Sequence Error Counter */
++#define NETC_PM_TFCS(a)			(0x1228 + (a) * 0x400)
++
++/* Port MAC 0/1 Transmit VLAN Frame Counter */
++#define NETC_PM_TVLAN(a)		(0x1230 + (a) * 0x400)
++
+ /* Port MAC 0/1 Transmit Frame Error Counter */
+ #define NETC_PM_TERR(a)			(0x1238 + (a) * 0x400)
+ 
++/* Port MAC 0/1 Transmit Unicast Frame Counter */
++#define NETC_PM_TUCA(a)			(0x1240 + (a) * 0x400)
++
+ /* Port MAC 0/1 Transmit Multicast Frame Counter */
+ #define NETC_PM_TMCA(a)			(0x1248 + (a) * 0x400)
+ 
+ /* Port MAC 0/1 Transmit Broadcast Frame Counter */
+ #define NETC_PM_TBCA(a)			(0x1250 + (a) * 0x400)
+ 
++/* Port MAC 0/1 Transmit Packets Counter */
++#define NETC_PM_TPKT(a)			(0x1260 + (a) * 0x400)
++
++/* Port MAC 0/1 Transmit Undersized Packet Counter */
++#define NETC_PM_TUND(a)			(0x1268 + (a) * 0x400)
++
+ /* Port MAC 0/1 Transmit 64-Octet Packet Counter */
+ #define NETC_PM_T64(a)			(0x1270 + (a) * 0x400)
+ 
+@@ -293,6 +348,9 @@ enum netc_stg_stage {
+ /* Port MAC 0/1 Transmit Excessive Collisions Counter */
+ #define NETC_PM_TECOL(a)		(0x12f0 + (a) * 0x400)
+ 
++/* Port MAC 0/1 Transmit Invalid Octets Counter */
++#define NETC_PM_TIOCT(a)		(0x12f8 + (a) * 0x400)
++
+ #define NETC_PEMDIOCR			0x1c00
+ #define NETC_EMDIO_BASE			NETC_PEMDIOCR
+ 
 -- 
-2.43.0
+2.34.1
 
