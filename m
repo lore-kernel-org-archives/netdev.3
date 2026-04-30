@@ -1,239 +1,129 @@
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C608F2C159A
-	for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 15:08:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7AD92D1F44;
+	Thu, 30 Apr 2026 15:09:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777561695; cv=none; b=kg7nf/ktFqd4KpIUyxBA1Kw6Y+lgh9raza8cXAMbB+MyEkv71mssttZ6Y1sWCcI8BrhbCL5XZ+bENLEqWY4mGmgY1E9Fbkjkw8ZPfSnxyid1nttc9JrjgP0iPflf6wN2btwmbwFWGH9n9s6TSr5DlJZe/jWqJEAie/GCe0yu+1M=
+	t=1777561762; cv=none; b=AS88G/lVs8WdqKkTWrcLlE17Erx3rZk4fuEM0RxzYQNTmAD84OMxqby+JY8g+liOebkuRNmWvy+AFMuBwlzXW4sbP75QBNb5m9UeTfTV1C8fgqLO51fGWEkaorSLqeN+gumGbghUyTN2a2Ct9TIa8HXINI13oKim/BawuGIMFX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777561695; c=relaxed/simple;
-	bh=4/PXjA5wui8riVIOeSTDKTzLDfB5K2L0rU+nCg+H4co=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nAYQalf+5nBMKHqgrL5dmxz83QBrupjEczShoc18S00BIwzB9Ot/Czb9DOKF7EmS75rSyzoNQ8rDkBZ4QhBXOqFH7DznXN6tuw88B6HoElStvnM101VtL7qZ1dIKCt1vbJ+1JBOH5e5UhYCICYc2Tt1WLu7Y603mHEv/ccE97Oc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hj9fxcls; arc=none smtp.client-ip=209.85.160.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1777561762; c=relaxed/simple;
+	bh=MNQxeylPSH85yof4drJJz0APWpKfXdNcE58Eu9f4KNw=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=jtCShPtz0KXPtYu1vnJGvNP+7i4qE7KFmIC3Boh3VMwu4NgQhVA6GvOa+wmXdXUHXVq3v4wDMexc741ePUSMaIOTuybTiG8II/7inEG/FTrcu1r+M5nFs7EaLLfOD8T1B8lNbcxkfUKZ0C3M0iUwBK/7kI/ohuPGGVbI+0bjj+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p0F59WiA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hj9fxcls"
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-50fc496c8baso7993821cf.3
-        for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 08:08:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777561691; x=1778166491; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GjLCv7/Lm3Fd1vFVHO/bH+3GFNPBrRzS27c9E9pX0+I=;
-        b=Hj9fxclsGD+xISFute/bPAgdCLVFcq+q6v0UHWT2yaRWXAwrux339P3LnTHZUW1Wnu
-         W8CAoDHZIGmalBW8z/w98Y5EKf0xKU/MJ+wVEu4EQ1bCNp8aqU2O1jMAHoHXXldXeDOv
-         ndog7KxiIvaMu5tIdcYi/DRlgXZpc4SMEwnquDqKboLRat7mjwtKpvfrDHhnZcyYUFMf
-         gTG1YVSVut0hCbDlDgFDK6rqvDu6rW2Q5Ucvkxf+7xDfgcn2CExM0zbgAvZ3Ed8E/Lai
-         5Nq8B6UfbhZ0Ec3FPyShxQNPgkC/yt6hbA47BenPa5ciPOMQ3KT5IOfSRzJBmhtZIy8G
-         aI/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777561691; x=1778166491;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=GjLCv7/Lm3Fd1vFVHO/bH+3GFNPBrRzS27c9E9pX0+I=;
-        b=hkSvRkApsE9NQ0rMtJGWXf+d0L5h8epevKNfFhfY/m8ynm4uvbIrAkRqWABXlUlaQQ
-         gfsg9mU/pGTDc0jHGJBG1VFAsIkV6Q3nHz2NXi2K2RKC3DRn2qP8Q3UNYALeWG8iEdOb
-         KqFihKyepeDbBDTvQnfyspozACG6nAJiDmQUmbrALjMhbDjTzAyS3sgKW8YWWzuKwgQ9
-         uXP39Bkvdb0/23E8dTYmymhB31m0uLEqKjLYct0U/7A+e0+hKKtbS8kh3bPeg6izfhSa
-         DheOg04EO1Baq+mc1wpGcCrVJio09bklMbLSydhHmMzDL6Ukltcae6x3+Bvi1w/hifnZ
-         2icg==
-X-Forwarded-Encrypted: i=1; AFNElJ9mg1iKoEFYenEVECT9/UPEYSFl7JLHKxfIOGB0vnb5eUm1kCo+WzWKMONumyT3MeayNi9Qtws=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwbBzVS8tZB6poS9FE75kOLBVrG2Zp6ZWFb1kWwGL0/GFiP4r4l
-	l9r+poOozp3zmNeLZ8Eh+z1zOUAF9lyjUPZhW6rBW1/PRa3DliZApRN6
-X-Gm-Gg: AeBDievGKCcjVUV5WFv4Cfse7t6bAwRmNjVy5fZ0UxyO4daHyIgo/Fvn8HJ9jtrYEsN
-	B7VpXnJZ4peGZythPKBFuvS0yNUEKQBklH4XG3kdG5eIWIiJ/VOunVkFiHX3eyGvgPtywhtWAzE
-	mas9a5czslXAsvchoQ+PN/l0cPPZxF6nfKU73WMqQ2rnjHJvBkENZnAPn4Akcx0fom/xkCiAU22
-	yPCsuSRNbIk6xSSuvLNUwxsp2Klm8wsn5ZQ1A7BdyiTBWc/bkl7bCLkBkqzDNjmw8cCQYNHlBa2
-	f3Kg42HTDes9pM37r8HJxjU4nd6BPwjCoY4k9IpQjkIpwtwwOk8atHb3J2g6/OH38ZiJLznwM1Y
-	PO8k0jBTvPYNwJrecXSmszx2MqOYdsJQNc9b3Z+GM9Bfe6DjWT4Na+ayzZmAwvwgMzSSOrWx5Nr
-	Do8ETbgRw7AlXXldlWteb6Ru0fQGzEBD54TAK4pfsaOYYl61zPSNBRHGjKytr9Ksmoifw=
-X-Received: by 2002:a05:622a:250e:b0:50e:d316:fa35 with SMTP id d75a77b69052e-5102ada86c3mr45222281cf.36.1777561691282;
-        Thu, 30 Apr 2026 08:08:11 -0700 (PDT)
-Received: from PF5YBGDS.localdomain ([163.114.130.4])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5103b397c38sm450731cf.7.2026.04.30.08.08.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Apr 2026 08:08:10 -0700 (PDT)
-From: mike.marciniszyn@gmail.com
-To: Alexander Duyck <alexanderduyck@fb.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	kernel-team@meta.com,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Mohsin Bashir <mohsin.bashr@gmail.com>,
-	Lee Trager <lee@trager.us>,
-	Andrew Lunn <andrew@lunn.ch>
-Cc: mike.marciniszyn@gmail.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v2 3/3] net: eth: fbnic: Add pma read and write access
-Date: Thu, 30 Apr 2026 11:08:02 -0400
-Message-ID: <20260430150802.3521-4-mike.marciniszyn@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260430150802.3521-1-mike.marciniszyn@gmail.com>
-References: <20260430150802.3521-1-mike.marciniszyn@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p0F59WiA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D68F8C4AF0B;
+	Thu, 30 Apr 2026 15:09:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777561762;
+	bh=MNQxeylPSH85yof4drJJz0APWpKfXdNcE58Eu9f4KNw=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=p0F59WiABgO0n40imT/0NFQ1PvgEOqOJpErCQ5ywDB5ItiT2n0V0RfL4W9yq1Zfoi
+	 Ll4YeoCsK7iGTpCGRzZJneQ7ZChS6r2r9YiO2rRYbvXaAFPoXBKTQthM65coJpeGNJ
+	 TBqYVnYoTkRp0r6glbUihyk8q/m/vK3b+teqyDtHyr6GKCk39UziyGUiPfiFxKJuRr
+	 JBo+TCm6wkDIIDJTE/K1mZ8GfKUL6ZwqLHOymVWYzVQV2tP1AjS6WAHwJOsb0LIF7U
+	 zamPd+GWY3kXUCusjltuEAV3X+twM5eut9T2xNtNLMV6cyfZGwf8y7Rjlenf/yz5xC
+	 oz3HER4FDvcqQ==
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 9FDE2F4006C;
+	Thu, 30 Apr 2026 11:09:20 -0400 (EDT)
+Received: from phl-imap-15 ([10.202.2.104])
+  by phl-compute-10.internal (MEProxy); Thu, 30 Apr 2026 11:09:20 -0400
+X-ME-Sender: <xms:oHDzaUteTJwU0ifNxcR-mqak90bWHSlQ-V4XK46Fw_YL_SMN4tm-8Q>
+    <xme:oHDzacRb7vvJ2AruWB-WpUDLYPfdCP6uEK3QKjrgyP8BvAc8Gxuv9o2o2jnqZsvXu
+    eHLa_dpcQ9GoqsxkXhzEr6tKSK55t4_ZTcdANy-ry2nGz_Rbras3gw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdekjeeigecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefoggffhffvvefkjghfufgtgfesthhqredtredtjeenucfhrhhomhepfdevhhhutghk
+    ucfnvghvvghrfdcuoegtvghlsehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvghrnh
+    epgffhgeeutdeiieevuefgvedtjeefudekvefggefguefgtefgledtteeuleelleetnecu
+    vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheptghhuhgtkh
+    hlvghvvghrodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieefgeelleel
+    heelqdefvdelkeeggedvfedqtggvlheppehkvghrnhgvlhdrohhrghesfhgrshhtmhgrih
+    hlrdgtohhmpdhnsggprhgtphhtthhopedvvddpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtohepnhgvihhlsegsrhhofihnrdhnrghmvgdprhgtphhtthhopegurghvvghmsegurg
+    hvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepjhhirghnghhshhgrnhhlrghisehgmhgr
+    ihhlrdgtohhmpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomhdprh
+    gtphhtthhopegrnhhnrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepfhhrvgguvghr
+    ihgtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehhohhrmhhssehkvghrnhgvlhdroh
+    hrghdprhgtphhtthhopehjlhgrhihtohhnsehkvghrnhgvlhdrohhrghdprhgtphhtthho
+    pehkuhgsrgeskhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:oHDzadf_PQQscKrx2ZPYdNnX2P3ZRqVdFCHM16jCB9avE_z_IGTJiQ>
+    <xmx:oHDzabrf4emvYIADYegvD7qH-HB7Q0c2yfVDIey0tyva-Z5la09BRA>
+    <xmx:oHDzab-hY-SFePekJPOu5alvy0XrNCi7e5H-tYUccI1mYP74VxUOcQ>
+    <xmx:oHDzaU7PCZamliF0xzlRIMEBTDQiIQLzVpmft7cyNNp3x7Reh8cPZg>
+    <xmx:oHDzadjQDGq8zJdAAkL7BL1HIk4pQwOSA8HaKNVefq4JDwazsRivp9aV>
+Feedback-ID: ifa6e4810:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 780C5780076; Thu, 30 Apr 2026 11:09:20 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-ThreadId: Ak4FKvzB_QgF
+Date: Thu, 30 Apr 2026 11:09:00 -0400
+From: "Chuck Lever" <cel@kernel.org>
+To: "Frederic Weisbecker" <frederic@kernel.org>
+Cc: "Marco Crivellari" <marco.crivellari@suse.com>,
+ linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org,
+ netdev@vger.kernel.org, "Tejun Heo" <tj@kernel.org>,
+ "Lai Jiangshan" <jiangshanlai@gmail.com>,
+ "Sebastian Andrzej Siewior" <bigeasy@linutronix.de>,
+ "Michal Hocko" <mhocko@suse.com>, "Trond Myklebust" <trondmy@kernel.org>,
+ "Anna Schumaker" <anna@kernel.org>, "Chuck Lever" <chuck.lever@oracle.com>,
+ "Jeff Layton" <jlayton@kernel.org>, NeilBrown <neil@brown.name>,
+ "Olga Kornievskaia" <okorniev@redhat.com>, "Dai Ngo" <Dai.Ngo@oracle.com>,
+ "Tom Talpey" <tom@talpey.com>, "David S . Miller" <davem@davemloft.net>,
+ "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
+ "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>
+Message-Id: <4edf7abf-8f48-4433-98f0-2ed2d97a32f5@app.fastmail.com>
+In-Reply-To: <afNvZKtiQPLbi-3F@localhost.localdomain>
+References: <20260430085412.96961-1-marco.crivellari@suse.com>
+ <8d1eff7b-3712-4039-87d6-028a4118e210@app.fastmail.com>
+ <afNguCraI6AvmZrR@localhost.localdomain>
+ <1e220a70-4318-49de-aaac-332c0a1cfab4@app.fastmail.com>
+ <afNvZKtiQPLbi-3F@localhost.localdomain>
+Subject: Re: [RFC PATCH] xprtrdma: Move long delayed work on system_dfl_long_wq
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-From: "Mike Marciniszyn (Meta)" <mike.marciniszyn@gmail.com>
 
-Document the MDIO interface topology with an ASCII diagram
-showing the MAC, PCS (MMD 3), FEC, Separated PMA (MMD 8), and PMD
-(MMD 1) blocks and their interconnects. The diagram illustrates how
-4 lanes connect the MAC through PCS, FEC, and PMA, then narrow to
-2 lanes at the PMD.
+On Thu, Apr 30, 2026, at 11:04 AM, Frederic Weisbecker wrote:
+> Le Thu, Apr 30, 2026 at 10:05:52AM -0400, Chuck Lever a =C3=A9crit :
 
-The c45 read and write routines are enhanced to support
-read and write of the separated PMA for the fbnic.
+>> Does the patch address a bug (work isn't getting rescheduled at
+>> all) or is it merely a minor optimization for certain platforms?
+>>=20
+>> What's the user-visible issue that will be improved with this
+>> change?
+>
+> It's not a bug, it's an optimization power-wise and performance-wise
+> and also part of a bigger sanity change:
+>
+> - Long works have no reason to stick to a single CPU. If they are conv=
+erted to
+>   be unbound, the scheduler can move them to relevant targets to optim=
+ize
+>   performances and power consumption. Hence the new system_unbound_lon=
+g_wq.
+>   The goal is to remove system_long_wq if none of its users rely on lo=
+cality.
+>
+> - Using queue_delayed_work() with a bound workqueue doesn't make any s=
+ense
+>   since the target is completely random.
 
-Co-developed-by: Alexander Duyck <alexanderduyck@fb.com>
-Signed-off-by: Alexander Duyck <alexanderduyck@fb.com>
-Signed-off-by: Mike Marciniszyn (Meta) <mike.marciniszyn@gmail.com>
----
-v2:
-  - no changes
-v1: https://lore.kernel.org/all/20260428172810.175077-5-mike.marciniszyn@gmail.com/
+The light dawns (for me). That's what I'd like to see in the commit mess=
+age.
 
- drivers/net/ethernet/meta/fbnic/fbnic_csr.h  |  1 +
- drivers/net/ethernet/meta/fbnic/fbnic_mdio.c | 71 ++++++++++++++++++++
- 2 files changed, 72 insertions(+)
+I don't have any technical objections to the code change.
 
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_csr.h b/drivers/net/ethernet/meta/fbnic/fbnic_csr.h
-index 81794bd326e1..64b958df7774 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_csr.h
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_csr.h
-@@ -805,6 +805,7 @@ enum {
- #define FBNIC_CSR_END_PCS		0x10668 /* CSR section delimiter */
 
- #define FBNIC_CSR_START_RSFEC		0x10800 /* CSR section delimiter */
-+#define FBNIC_RSFEC_CONTROL(n)	(0x10800 + 8 * (n))	/* 0x42000 + 32*n */
-
- /* We have 4 RSFEC engines present in our part, however we are only using 1.
-  * As such only CCW(0) and NCCW(0) will never be non-zero and the other
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_mdio.c b/drivers/net/ethernet/meta/fbnic/fbnic_mdio.c
-index a3a072597a2c..7a8727e8f6f2 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_mdio.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_mdio.c
-@@ -7,6 +7,25 @@
- #include "fbnic.h"
- #include "fbnic_netdev.h"
-
-+/* fbnic MDIO Interface Layout
-+ *
-+ *        +-------------------+
-+ *        |        MAC        |
-+ *        +-------------------+
-+ *            |   |   |   |  <-- 25GMII, 50GMII, or CGMII
-+ *        +-------------------+
-+ *  MMD 3 |        PCS        |
-+ *        +-------------------+
-+ *        |        FEC        |
-+ *        +-------------------+
-+ *  MMD 8 |  Separated PMA    |
-+ *        +-------------------+
-+ *              |       |     <-- PMD Service Interface
-+ *        +-------------------+
-+ *  MMD 1 |        PMD        |
-+ *        +-------------------+
-+ */
-+
- #define DW_VENDOR		BIT(15)
- #define FBNIC_PCS_VENDOR	BIT(9)
- #define FBNIC_PCS_ZERO_MASK	(DW_VENDOR - FBNIC_PCS_VENDOR)
-@@ -111,6 +130,32 @@ fbnic_mdio_read_pcs(struct fbnic_dev *fbd, int addr, int regnum)
- 	return ret;
- }
-
-+static int
-+fbnic_mdio_read_pma(struct fbnic_dev *fbd, int addr, int regnum)
-+{
-+	int ret = 0;
-+
-+	/* We will need access to both PMA instances to get config info */
-+	if (addr >= 2)
-+		return 0;
-+
-+	switch (regnum) {
-+	case MDIO_PMA_RSFEC_CTRL ... MDIO_PMA_RSFEC_LANE_MAP:
-+		ret = fbnic_rd32(fbd, FBNIC_RSFEC_CONTROL(addr) +
-+				 regnum - MDIO_PMA_RSFEC_CTRL);
-+		break;
-+	default:
-+		ret = fbnic_mdio_ids(MP_FBNIC_XPCS_PMA_100G_ID, regnum);
-+		break;
-+	}
-+
-+	dev_dbg(fbd->dev,
-+		"SWMII PMA Rd: Addr: %d RegNum: %d Value: 0x%04x\n",
-+		addr, regnum, ret);
-+
-+	return ret;
-+}
-+
- static int
- fbnic_mdio_read_c45(struct mii_bus *bus, int addr, int devnum, int regnum)
- {
-@@ -122,6 +167,9 @@ fbnic_mdio_read_c45(struct mii_bus *bus, int addr, int devnum, int regnum)
- 	if (devnum == MDIO_MMD_PCS)
- 		return fbnic_mdio_read_pcs(fbd, addr, regnum);
-
-+	if (devnum == MDIO_MMD_SEP_PMA1)
-+		return fbnic_mdio_read_pma(fbd, addr, regnum);
-+
- 	return 0;
- }
-
-@@ -155,6 +203,26 @@ fbnic_mdio_write_pcs(struct fbnic_dev *fbd, int addr, int regnum, u16 val)
- 	fbnic_wr32(fbd, FBNIC_PCS_PAGE(addr) + regnum, val);
- }
-
-+static void
-+fbnic_mdio_write_pma(struct fbnic_dev *fbd, int addr, int regnum, u16 val)
-+{
-+	dev_dbg(fbd->dev,
-+		"SWMII PMA Wr: Addr: %d RegNum: %d Value: 0x%04x\n",
-+		addr, regnum, val);
-+
-+	if (addr >= 2)
-+		return;
-+
-+	switch (regnum) {
-+	case MDIO_PMA_RSFEC_CTRL ... MDIO_PMA_RSFEC_LANE_MAP:
-+		fbnic_wr32(fbd, FBNIC_RSFEC_CONTROL(addr) +
-+				regnum - MDIO_PMA_RSFEC_CTRL, val);
-+		break;
-+	default:
-+		break;
-+	}
-+}
-+
- static int
- fbnic_mdio_write_c45(struct mii_bus *bus, int addr, int devnum,
- 		     int regnum, u16 val)
-@@ -167,6 +235,9 @@ fbnic_mdio_write_c45(struct mii_bus *bus, int addr, int devnum,
- 	if (devnum == MDIO_MMD_PCS)
- 		fbnic_mdio_write_pcs(fbd, addr, regnum, val);
-
-+	if (devnum == MDIO_MMD_SEP_PMA1)
-+		fbnic_mdio_write_pma(fbd, addr, regnum, val);
-+
- 	return 0;
- }
-
---
-2.43.0
-
+--=20
+Chuck Lever
