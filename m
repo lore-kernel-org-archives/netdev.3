@@ -1,85 +1,85 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADD833AA4F1
-	for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 10:01:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 218AF3FE671
+	for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 10:04:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777543300; cv=none; b=hB9E5GAaCpilS3OVx1Qg4dUwAx4D9cViFEZxBGTFRO8vFY/RgJeeocQFtI92wHYrBTKWYJXtOr/DUuI5x6cechSdeACSrCkrB+CDUQ7kAY1QufeRIuzude9P4kBHmmqtg9c3szbwmdNtkyuNKjO7vZz7mFZTv8PCZdNKwIgo++c=
+	t=1777543483; cv=none; b=rvMUSUZMWQqgZf8cTNRyOlSReRX+ppwA1K6WO7cCmlddJvy20Mzf5ll47f4uVxYHU1jLiNBIjZ9ke0l2Y2Qey0zu2RCxE2gPLga+mJrjBEyAhI3X+JDt5roClyCc3nBDmQ0YOC1dzWt/vhB5PQGl37JjpTSz9WqVWyYLyHI7zzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777543300; c=relaxed/simple;
-	bh=XuzriXIH4ZVyXTd2Jo14EGNEA6R0lhMFbzpoWHiIR+M=;
+	s=arc-20240116; t=1777543483; c=relaxed/simple;
+	bh=P1D6A4ZZ/nk/jZDN2eR62W2Ir6JYW+HvVastsvEYnJc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sZuqsZDzakweMNjqSbdBNuT+6PEQmTS+zPYtdZ7ntRHaf1AkVPDdmpP8IoDR0E7gaBiH2ZskIZa2953D4cVkiSFoI/2+zzXH+TKICjoSAYQ8OlsQFU6xo3hTcq34mfOqYJWxSNdK0BswU0LH3R/sBfdv9YR1Kvxb2m5IRfojxzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=g9f7+PZu; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=jmMCyuwa; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:Content-Type; b=jGdXTfu7+HoiZsrR/Di/r0+nhOkSct8cJrvCoIGNq3ZnkXu7joSUj1rP07d2yeMTXG6bNpbdi/Jy38o4hjtDfhglJoJHSxjYoHunc8MemF9bTJo94C7xwXK2Re/MRZGSOjT7dkjpa2Lvr3NaabL2+vJLw18kkM3GeOgc6E0yIFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZuQGiqjY; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=tDSFrHZe; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="g9f7+PZu";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="jmMCyuwa"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZuQGiqjY";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="tDSFrHZe"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777543297;
+	s=mimecast20190719; t=1777543481;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=N07/Ak0OajH65jWxaz0uv/NFa2E5T7TXDwVpUO3pEZk=;
-	b=g9f7+PZupYB7Oi6A2H5qLAn7CgQm9HPYijfUqg68UxjA+M72NBhuHqHKt5IeZghLegtq2H
-	dIx/zJ9JxN1M9pU+Ofgc9fGkKDLxbcRN9jJoXlz5a1inooGg4z2PYqoO0V2eydTsV2tNGf
-	7srAbc1jFvrSNTH+lVtfPEkYE3eAMeA=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=rkvdRE+ryZql2LrgVEX/b6XOK1Q1y4i0xKrftOVwIEs=;
+	b=ZuQGiqjYM/29n62R+uRCjLt73QIn2HmG4K+V/a2aCw1Pd331ELML4hX6Os/MCXjlCWHror
+	awD6YakuPd9ZuDUOnKiJG8wdi9XFBQmsOMMEX+KeFsb3gr7Z/HTVLWw91LAc+yf8BoRcx+
+	RDwvzGEarSzA4YLhKnati/yq8kN4uqs=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-630-f5OSvDlcOVC1B2xhjKrZLA-1; Thu, 30 Apr 2026 06:01:36 -0400
-X-MC-Unique: f5OSvDlcOVC1B2xhjKrZLA-1
-X-Mimecast-MFC-AGG-ID: f5OSvDlcOVC1B2xhjKrZLA_1777543295
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-48a5523fd53so3186435e9.3
-        for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 03:01:36 -0700 (PDT)
+ us-mta-343-70-ke9M1OriordadjCgbGA-1; Thu, 30 Apr 2026 06:04:39 -0400
+X-MC-Unique: 70-ke9M1OriordadjCgbGA-1
+X-Mimecast-MFC-AGG-ID: 70-ke9M1OriordadjCgbGA_1777543479
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-488f973ddfeso5582675e9.3
+        for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 03:04:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1777543295; x=1778148095; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1777543479; x=1778148279; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=N07/Ak0OajH65jWxaz0uv/NFa2E5T7TXDwVpUO3pEZk=;
-        b=jmMCyuwasQ5/1y03YvKEICo6UrfVQLV4AjessP0jKUdzOCFMmC6Ovwzpk6a+cB7Tt7
-         Uh+5iTS+OCPdOTDM//K3t5U8Y1j/kG+31lPeRTwoNgtWnBFcmiJjcN5vPwH/mgPH5Qll
-         /ebzCn6+AS7jM5XSke1Gc3znYx+OLB78R4iRwVP3i0FGR1lOTiwakvHPpahaXDUCjxny
-         sSQwNCi0F8Yj9LEsHhE1EqMBPz7T1MYjrhomjuzuWVZwBKRYxVhZZVdJDcbvMCOTxVK3
-         6e+57hC3Y8Jw3/LHho3G5UyVYENjIvg+YTdL568+2bl6b5hrcW1g6aKmXBnEinZ9+yjR
-         bg8w==
+        bh=rkvdRE+ryZql2LrgVEX/b6XOK1Q1y4i0xKrftOVwIEs=;
+        b=tDSFrHZeAk490jIej+EBytvuaHpZov0EqMDFdeKa+d647eEoPpsuRIORGVXY3GK0XA
+         IJEmaajFb7XyxHwnQig1iky3Egu+GPKFK48nQJ+WA81gYtzhWDzWBZeHCrZSRY9fXF8w
+         lg3tkncjKFIyf1JRvR37siiwg04BZkab7NKBP4WRa3c8sQmLNrFd345JyUZk6ufCxw1w
+         cxzvWOsGrjM7Ojo8cGcvgmepq4BmknNGNEGO8kV0RpqJVNzm4aWQcfY9UsMxE8B1flzf
+         UCeCNq2+rXUjJncbLM7R9IfNJtlSYzaZ/+Tais5+SFSCqTEE3pWP4XfdmC01qFIyiYGS
+         Jl+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777543295; x=1778148095;
+        d=1e100.net; s=20251104; t=1777543479; x=1778148279;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=N07/Ak0OajH65jWxaz0uv/NFa2E5T7TXDwVpUO3pEZk=;
-        b=mL9ZDTaBl+lxaw2RGDlNc31T8vhV51NY9iFWUOOujJaxirtOGNzcJf/fYMhvjYFqoG
-         Y/D0Q4csvm/8H9oSRRzsL6mjCSfFEl2dEmnM9z+A4VKlK6KtR3K5w20HPpO8XzDwf1nW
-         RX+6P2H0gvNYk3MGJZ1U7Qe6JDrzfzryNFnbx2kbcC9XRZyTf9DNqil/kUIPAR1qq8kF
-         XTihNJ9xtX0sFX9c+81JxlYcmB95wEFWAC8mK0vX6lyNWtfhhRw4tfDYpUyaPHUxUv4X
-         vVnl7w+tMolfqGf+HSKK+g7gTlAp02e06t8ZPFV30usK51YOXRk7Fv8MFzyUlkn2A512
-         5PvA==
-X-Forwarded-Encrypted: i=1; AFNElJ8gptqVw3Vse+CCoOWwebCH9sSZkoqTu0oRCQz8anCN499kKr+HmbVDmG6mLrFAOJwIjuIFVbA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzjZosE6QNiLpKCATusvwv8Dqg20+qM/Xn+vzCv6qyPWZ2P7ZKN
-	BlMEtY3/ODB6XGWW1XnE4eOiiv5bRtWYh+TpO+Dmi6cC+80LOxIJ+OIBzuUjVm7pnJGKBeTpfuX
-	b9cVhXS9vD+UGrHpzA4vGaPMzrNsmPrrMKP0E35Kwb1ZiDOgFl6Ay+3VY1g==
-X-Gm-Gg: AeBDieumjXHLCNwFdVSDrt9oCAJWwMYvz/jblWOyZEVqNLUgXRRHBTvm1BM51XD5tD3
-	lBa7dzIKQq/eVK43ivzj29+rwp1sIHhFvYR5IusJ7H3c3dUS/Qvj2Hnhcsf3iaSbxRnq4Wb5RC6
-	mnlCdOjdIGe1QjLccm/TnNa+GVUFtuOndjalnSYom8M8Vxs2FLO0QW8E6VmzZKGZbNnlJHwAwPO
-	/LCeeHZjn/aaFDXWYQvoHlUgAHglX4ibtM2os9NqeuI2Xk3zQTlJNkXX25K5q5I8zYQvaGBWa0W
-	OaXfhLmkhRrLSG0qmkz7fQ0MpT0+ihODdquABMmTcDi4UloG8iJMIxyZR3VknBFV9ueGuAXkmMd
-	bX7DFoqxMG2wrwosyWc4Ki7BViu9FUDY2LC0/G02JIuZ40uBH1x607z5vOiAY9ZCXOQ==
-X-Received: by 2002:a05:600c:4fc5:b0:488:9e43:9690 with SMTP id 5b1f17b1804b1-48a83e7206emr39045455e9.10.1777543293605;
-        Thu, 30 Apr 2026 03:01:33 -0700 (PDT)
-X-Received: by 2002:a05:600c:4fc5:b0:488:9e43:9690 with SMTP id 5b1f17b1804b1-48a83e7206emr39044565e9.10.1777543292809;
-        Thu, 30 Apr 2026 03:01:32 -0700 (PDT)
+        bh=rkvdRE+ryZql2LrgVEX/b6XOK1Q1y4i0xKrftOVwIEs=;
+        b=HrT+ZT2bXNjoU9r6Zzka99I7+ZDgQJCmegV8uUzt8HBweBARpa9fJPouhEtTs1in7c
+         aeHJoeF0cW19tUXRHIgPpu1LnmCIQbTa3TR/p88dsNN6045yZ0yQWskpovkpm1GdW5jW
+         9dJSmZqN48WlVNLtncusbNq5b6mWOwdi+4GA2f3pVrlcjlXFVIcN9UJV+XHN1LA753Nw
+         OPw/NLBLIe9MrZiD4COl8RFn+GYIeo6DCaBqstRkKV3lud3w5jgqgrIV0S6h3YKMJAfK
+         A13YsFZSA9c4YEQ8fZA5ArONCAO/0QjlXeTOoiuDjxOC1vzd25L1lCqUhwbjcTK7cRcl
+         aGvg==
+X-Forwarded-Encrypted: i=1; AFNElJ+XToZeihe/tK7yelzeprsUXkhJJ73W61sBAM6r5y4WMeTIpa2jaRLDlurjZt6CgfhxT+X/Rqw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyjDSe2NA5s08372L6DMFmu5oKPxOgwYNCEP7xyKaIsB9jbo3oO
+	O480T4T3eLWowP4qdUoLg7/p3Ht+xUv3SA8LWrjHy9hGCoSEOFudRyUc37ETJni9dz+4yJVjkXh
+	+JB1M+NDBgcJVZFmTOGtKr5a/Z41NyCZ5e9dB7uJW9l2d3ysp5dco/FRnng==
+X-Gm-Gg: AeBDiev3diBdLkkMFGFptohI9i2bo0jrWPT1hAUvA9ihvgMRjiujpKZlbKudb+lhcez
+	gnH3bMmajXsbDcIKYW1FwTWsWM2ktvoXPEuflCth1rtvbP97djvSnB0kMxHIf2vVl684J9aYLUY
+	vQoNXhrT5wT61TwUd+hg9vS9btYj+Yzk8Vo/kzZSxO4bV4Z1hVnorxhBttMVh3cydysFByheUbC
+	5kVbljUP2KUUxKq4QMTwq1cdiwbQEIA5cezEENF4Ru97SfmoZlSBbAxeimtCwOfJwL/m5clL55O
+	V+2BoHmS5kxm3kvwS49670B4im1XVCbsxMDRZc5E6Os4aTyAHpoaTpfWvCyh8E2nZV3RDW3/FTo
+	B6/4Ud3oyjfjiNea/sfht1qvSmAgzLna7UFwuRNSvNZxTG7Q0rd4MbF02AywT9Sqo4w==
+X-Received: by 2002:a05:600c:6992:b0:48a:56de:d62a with SMTP id 5b1f17b1804b1-48a83d7b059mr40214085e9.11.1777543478528;
+        Thu, 30 Apr 2026 03:04:38 -0700 (PDT)
+X-Received: by 2002:a05:600c:6992:b0:48a:56de:d62a with SMTP id 5b1f17b1804b1-48a83d7b059mr40213275e9.11.1777543477963;
+        Thu, 30 Apr 2026 03:04:37 -0700 (PDT)
 Received: from [192.168.88.32] ([150.228.93.27])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a81ed6b65sm89540355e9.3.2026.04.30.03.01.31
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a82301adesm51714265e9.10.2026.04.30.03.04.36
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 30 Apr 2026 03:01:32 -0700 (PDT)
-Message-ID: <5fb1048c-1b3d-4136-9f10-0525ef063e58@redhat.com>
-Date: Thu, 30 Apr 2026 12:01:30 +0200
+        Thu, 30 Apr 2026 03:04:37 -0700 (PDT)
+Message-ID: <2a136e4a-46d5-4527-ab6b-cf61384a8ffe@redhat.com>
+Date: Thu, 30 Apr 2026 12:04:36 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -87,150 +87,167 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v7 1/2] net: pppoe: implement GRO/GSO support
+Subject: Re: [PATCH net-next v7 2/2] selftests: net: test PPPoE packets in
+ gro.sh
 To: Qingfang Deng <qingfang.deng@linux.dev>,
  Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
  <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, David Ahern <dsahern@kernel.org>,
- Simon Horman <horms@kernel.org>, Kees Cook <kees@kernel.org>,
- Guillaume Nault <gnault@redhat.com>, Eric Woudstra <ericwouds@gmail.com>,
- Felix Fietkau <nbd@nbd.name>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+ Jakub Kicinski <kuba@kernel.org>, Shuah Khan <shuah@kernel.org>,
+ Simon Horman <horms@kernel.org>, Willem de Bruijn <willemb@google.com>,
+ Petr Machata <petrm@nvidia.com>, Anubhav Singh <anubhavsinggh@google.com>,
+ Richard Gobert <richardbgobert@gmail.com>, netdev@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
 Cc: linux-ppp@vger.kernel.org, Pablo Neira Ayuso <pablo@netfilter.org>
 References: <20260428064717.74794-1-qingfang.deng@linux.dev>
+ <20260428064717.74794-2-qingfang.deng@linux.dev>
 Content-Language: en-US
 From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20260428064717.74794-1-qingfang.deng@linux.dev>
+In-Reply-To: <20260428064717.74794-2-qingfang.deng@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 4/28/26 8:47 AM, Qingfang Deng wrote:
-> diff --git a/drivers/net/ppp/pppoe.c b/drivers/net/ppp/pppoe.c
-> index bdd61c504a1c..363204e0c49a 100644
-> --- a/drivers/net/ppp/pppoe.c
-> +++ b/drivers/net/ppp/pppoe.c
-> @@ -77,6 +77,7 @@
->  #include <net/net_namespace.h>
->  #include <net/netns/generic.h>
->  #include <net/sock.h>
-> +#include <net/gro.h>
+> Add PPPoE test-cases to the GRO selftest. Only run a subset of
+> common_tests to avoid changing the hardcoded L3 offsets everywhere.
+> Add a new "pppoe_sid" test case to verify that packets with different
+> PPPoE session IDs are correctly identified as separate flows and not
+> coalesced.
+> 
+> Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
+> ---
+> v7:
+>  - Do not run all the tests for PPPoE
+>  - Add a new test for PPPoE
+> v6: https://lore.kernel.org/netdev/20260326081127.61229-2-dqfext@gmail.com
+> 
+>  tools/testing/selftests/drivers/net/config |  2 +
+>  tools/testing/selftests/drivers/net/gro.py | 11 +++
+>  tools/testing/selftests/net/lib/gro.c      | 99 ++++++++++++++++++----
+>  3 files changed, 96 insertions(+), 16 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/drivers/net/config b/tools/testing/selftests/drivers/net/config
+> index fd16994366f4..07e386895b94 100644
+> --- a/tools/testing/selftests/drivers/net/config
+> +++ b/tools/testing/selftests/drivers/net/config
+> @@ -8,5 +8,7 @@ CONFIG_NETCONSOLE=m
+>  CONFIG_NETCONSOLE_DYNAMIC=y
+>  CONFIG_NETCONSOLE_EXTENDED_LOG=y
+>  CONFIG_NETDEVSIM=m
+> +CONFIG_PPP=y
+> +CONFIG_PPPOE=y
+>  CONFIG_VLAN_8021Q=m
+>  CONFIG_XDP_SOCKETS=y
+> diff --git a/tools/testing/selftests/drivers/net/gro.py b/tools/testing/selftests/drivers/net/gro.py
+> index 221f27e57147..ad7c80f7ba96 100755
+> --- a/tools/testing/selftests/drivers/net/gro.py
+> +++ b/tools/testing/selftests/drivers/net/gro.py
+> @@ -313,6 +313,12 @@ def _gro_variants():
+>          "ip_frag6", "ip_v6ext_same", "ip_v6ext_diff",
+>      ]
 >  
->  #include <linux/uaccess.h>
->  
-> @@ -409,7 +410,7 @@ static int pppoe_rcv(struct sk_buff *skb, struct net_device *dev,
->  	if (ppp_skb_is_compressed_proto(skb))
->  		goto drop;
->  
-> -	if (pskb_trim_rcsum(skb, len))
-> +	if (!skb_is_gso(skb) && pskb_trim_rcsum(skb, len))
->  		goto drop;
->  
->  	ph = pppoe_hdr(skb);
-> @@ -1103,6 +1104,164 @@ static struct pernet_operations pppoe_net_ops = {
->  	.size = sizeof(struct pppoe_net),
->  };
->  
-> +static u16
-> +compare_pppoe_header(const struct pppoe_hdr *phdr,
-> +		     const struct pppoe_hdr *phdr2)
-> +{
-> +	__be16 proto = *(const __be16 *)(phdr + 1);
-> +	__be16 proto2 = *(const __be16 *)(phdr2 + 1);
+> +    # Tests specific to PPPoE
+> +    pppoe_tests = [
+> +        "data_same", "data_lrg_sml", "data_sml_lrg", "data_lrg_1byte",
+> +        "data_burst", "pppoe_sid",
+> +    ]
 > +
-> +	return (__force u16)((phdr->sid ^ phdr2->sid) | (proto ^ proto2));
+>      for mode in ["sw", "hw", "lro"]:
+>          for protocol in ["ipv4", "ipv6", "ipip", "ip6ip6"]:
+>              for test_name in common_tests:
+> @@ -325,6 +331,11 @@ def _gro_variants():
+>                  for test_name in ipv6_tests:
+>                      yield mode, protocol, test_name
+>  
+> +    for mode in ["sw"]:
+> +        for protocol in ["pppoev4", "pppoev6"]:
+> +            for test_name in pppoe_tests:
+> +                yield mode, protocol, test_name
+> +
+>  
+>  @ksft_variants(_gro_variants())
+>  def test(cfg, mode, protocol, test_name):
+> diff --git a/tools/testing/selftests/net/lib/gro.c b/tools/testing/selftests/net/lib/gro.c
+> index 11b16ae5f0e8..0da55b757bcc 100644
+> --- a/tools/testing/selftests/net/lib/gro.c
+> +++ b/tools/testing/selftests/net/lib/gro.c
+> @@ -67,12 +67,14 @@
+>  #include <errno.h>
+>  #include <error.h>
+>  #include <getopt.h>
+> +#include <net/ethernet.h>
+> +#include <net/if.h>
+>  #include <linux/filter.h>
+>  #include <linux/if_packet.h>
+> +#include <linux/if_pppox.h>
+>  #include <linux/ipv6.h>
+>  #include <linux/net_tstamp.h>
+> -#include <net/ethernet.h>
+> -#include <net/if.h>
+> +#include <linux/ppp_defs.h>
+>  #include <netinet/in.h>
+>  #include <netinet/ip.h>
+>  #include <netinet/ip6.h>
+> @@ -134,6 +136,7 @@ static int total_hdr_len = -1;
+>  static int ethhdr_proto = -1;
+>  static bool ipip;
+>  static bool ip6ip6;
+> +static bool pppoe;
+>  static uint64_t txtime_ns;
+>  static int num_flows = 4;
+>  static bool order_check;
+> @@ -171,6 +174,22 @@ static void vlog(const char *fmt, ...)
+>  	}
+>  }
+>  
+> +static void fill_pppoelayer(void *buf, int payload_len, uint16_t sid)
+> +{
+> +	struct pppoe_ppp_hdr {
+> +		struct pppoe_hdr eh;
+> +		__be16 proto;
+> +	} *ph = buf;
+> +
+> +	payload_len += sizeof(struct tcphdr);
+> +	ph->eh.type = 1;
+> +	ph->eh.ver = 1;
+> +	ph->eh.code = 0;
+> +	ph->eh.sid = htons(sid);
+> +	ph->eh.length = htons(payload_len + sizeof(ph->proto));
+> +	ph->proto = htons(proto == PF_INET ? PPP_IP : PPP_IPV6);
 > +}
 > +
-> +static __be16 pppoe_hdr_proto(const struct pppoe_hdr *phdr)
-> +{
-> +	__be16 proto = *(const __be16 *)(phdr + 1);
-> +
-> +	switch (proto) {
-> +	case cpu_to_be16(PPP_IP):
-> +		return cpu_to_be16(ETH_P_IP);
-> +#if IS_ENABLED(CONFIG_IPV6)
-> +	case cpu_to_be16(PPP_IPV6):
-> +		return cpu_to_be16(ETH_P_IPV6);
-> +#endif
-> +	default:
-> +		return 0;
-> +	}
-> +}
-> +
-> +static struct sk_buff *pppoe_gro_receive(struct list_head *head,
-> +					 struct sk_buff *skb)
-> +{
-> +	const struct packet_offload *ptype;
-> +	unsigned int hlen, off_pppoe;
-> +	const struct pppoe_hdr *phdr;
-> +	struct sk_buff *pp = NULL;
-> +	struct sk_buff *p;
-> +	int flush = 1;
-> +	__be16 type;
-> +
-> +	off_pppoe = skb_gro_offset(skb);
-> +	hlen = off_pppoe + PPPOE_SES_HLEN;
-> +	phdr = skb_gro_header(skb, hlen, off_pppoe);
-> +	if (unlikely(!phdr))
-> +		goto out;
-> +
-> +	/* filter for session packets (type:1, ver:1, code:0) */
-> +	if (*(const __be16 *)phdr != cpu_to_be16(0x1100))
-> +		goto out;
-> +
-> +	/* ignore packets with padding or invalid length */
-> +	if (skb_gro_len(skb) != be16_to_cpu(phdr->length) + sizeof(*phdr))
-> +		goto out;
-> +
-> +	type = pppoe_hdr_proto(phdr);
-> +	ptype = gro_find_receive_by_type(type);
-> +	if (!ptype)
-> +		goto out;
-> +
-> +	flush = 0;
-> +
-> +	list_for_each_entry(p, head, list) {
-> +		const struct pppoe_hdr *phdr2;
-> +
-> +		if (!NAPI_GRO_CB(p)->same_flow)
-> +			continue;
-> +
-> +		phdr2 = (const struct pppoe_hdr *)(p->data + off_pppoe);
-> +		if (compare_pppoe_header(phdr, phdr2))
-> +			NAPI_GRO_CB(p)->same_flow = 0;
-> +	}
-> +
-> +	skb_gro_pull(skb, PPPOE_SES_HLEN);
-> +	skb_gro_postpull_rcsum(skb, phdr, PPPOE_SES_HLEN);
-> +
-> +	pp = indirect_call_gro_receive_inet(ptype->callbacks.gro_receive,
-> +					    ipv6_gro_receive, inet_gro_receive,
-> +					    head, skb);
-> +
-> +out:
-> +	skb_gro_flush_final(skb, pp, flush);
-> +
-> +	return pp;
-> +}
-> +
-> +static int pppoe_gro_complete(struct sk_buff *skb, int nhoff)
-> +{
-> +	struct pppoe_hdr *phdr = (struct pppoe_hdr *)(skb->data + nhoff);
-> +	__be16 type = pppoe_hdr_proto(phdr);
-> +	struct packet_offload *ptype;
-> +	unsigned int len;
-> +
-> +	ptype = gro_find_complete_by_type(type);
-> +	if (!ptype)
-> +		return -ENOENT;
-> +
-> +	len = skb->len - (nhoff + sizeof(*phdr));
-> +	len = min(len, 0xFFFFU);
-> +	phdr->length = cpu_to_be16(len);
+>  static void setup_sock_filter(int fd)
+>  {
+>  	const int dport_off = tcp_offset + offsetof(struct tcphdr, dest);
+> @@ -412,11 +431,15 @@ static void create_packet(void *buf, int seq_offset, int ack_offset,
+>  
+>  	fill_networklayer(buf + inner_ip_off, payload_len, IPPROTO_TCP);
+>  	if (inner_ip_off > ETH_HLEN) {
+> -		int encap_proto = (proto == PF_INET) ?
+> -				  IPPROTO_IPIP : IPPROTO_IPV6;
+> +		if (pppoe) {
+> +			fill_pppoelayer(buf + ETH_HLEN, payload_len + ip_hdr_len, 0x1234);
+> +		} else {
+> +			int encap_proto = (proto == PF_INET) ?
+> +					  IPPROTO_IPIP : IPPROTO_IPV6;
+>  
+> -		fill_networklayer(buf + ETH_HLEN,
+> -				  payload_len + ip_hdr_len, encap_proto);
+> +			fill_networklayer(buf + ETH_HLEN,
+> +					  payload_len + ip_hdr_len, encap_proto);
+> +		}
+>  	}
+>  
+>  	fill_datalinklayer(buf);
+> @@ -526,7 +549,7 @@ static void send_flags(int fd, struct sockaddr_ll *daddr, int psh, int syn,
+>  static void send_data_pkts(int fd, struct sockaddr_ll *daddr,
+>  			   int payload_len1, int payload_len2)
+>  {
+> -	static char buf[ETH_HLEN + IP_MAXPACKET];
+> +	static char buf[MAX_HDR_LEN + IP_MAXPACKET];
 
-Whoops, I wrongly replied to v6, but comments still apply here:
+Why MAX_HDR_LEN? I think you should add a new define alike:
 
-https://lore.kernel.org/netdev/9d7f1bbc-155d-4c18-bcf7-732ebe4cbf67@redhat.com/T/#m6c92ba4367355abf1bdb001f102c4847853ac4f3
-
+#define L2_HLEN_MAX	(ETH_HLEN + PPPOE_SES_HLEN)
 
 /P
 
