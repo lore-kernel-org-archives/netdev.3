@@ -1,117 +1,182 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A46A39F160;
-	Thu, 30 Apr 2026 09:25:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B412F8BF0
+	for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 09:34:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777541129; cv=none; b=D5hMj1nxEpOETapXT0FoUcSQkrSkRioqQgDF90qKuHZPp9LrXx4U+bBGIZqoAU2ajYUaOJtc1EN+mrii8Uv1PYWrQaHQjI0yqPyGnedN0oc1bRYZI3Al6qqryjHew85osbwExpxeDf9RymHwn3osIPq/7qN4kIZpV4NZDxtuxYk=
+	t=1777541666; cv=none; b=LbxklY8FYW7KoqdWbsHU5EDVoeNTiM0J6rNaHNaeDI2D28Tr+exXMIhuXkG2T5oTb4BtwgwQAEWwrS3FEu1kaER+PWtY+1dqOgLdN0Rwe9VDtv+dymOHPEBPZyd/CIMqBJ6SG5AcgVeT6ROAP7R0aBVUos95g7zUAOwQ/gxSFLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777541129; c=relaxed/simple;
-	bh=B853Eh9uk565MxVVpob3pa08VA0fsq5RODboe/BkwDg=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=Fs9Qj9uAzNV9xGK6MexXhqUIWgV+GRItq+yDB6BBdVRDB9TMOxqyDnAkI6yVJ+8IN55iGUiWzg6yjlNNd9wvxw/JAFoPnuPXTvDeSUI2Ui8fOLUwM2AcqG2c/M6C4i/L4TeBlGCg377xEJ57/7LPWwvHHrY0RidE7Mx3PElnUnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iot/Czbj; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777541666; c=relaxed/simple;
+	bh=6TManpl4gcqzmqAn+8fUAGVRHhuyH7T7ouTpR8dqiSM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=icVkcBDoERPe53AmHY3BFoS3jnt6a3ULcrHlpvOqH7jA/u9LEIZ+CsNPpZC+PQBMrsecSYcMZTlJ6SELgrAyLDjMP1ACSl1cZVSl7Iyo840XFjrdN5edHv2wjY485HJbA3cS0bvVEHoDY28aWYHftjyNCOTSg4XSHTL0tFp7oJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EyC2ie09; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=OiXgsBrY; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iot/Czbj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E38C5C2BCB4;
-	Thu, 30 Apr 2026 09:25:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777541129;
-	bh=B853Eh9uk565MxVVpob3pa08VA0fsq5RODboe/BkwDg=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=iot/Czbj1UTXZtIKbuakUOJPEZf2jgEJsXUobkf3fTE6pxHY1WoYVSUKSdjGjweU2
-	 uJCII7hbjhIouQ7z+4khXHPcxKRfaQKW5M8Ob7Ff/2xSIiteOAtptRQ6PRVkaTUlXR
-	 m5hnmHC34YoQvr6bwwzWq2O9IDz3/7o6w2Ux/d7uBQOzrHFiHHPE6x5MGEwTHosl5Y
-	 FtyWqlDWOsE2uTUmk93O2vMxDZkoZBQ9EeRqJitySRYcWBAmbfCmXMjl7Y98+WSE2j
-	 s23YYEIaJkoJReZgcK3bIv8Gfrr3USg/F7iytFGSPEmXH9vDS7tcs9sL21B1DUkETF
-	 aW/y9woiMNIXw==
-Date: Thu, 30 Apr 2026 04:25:27 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EyC2ie09";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="OiXgsBrY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777541663;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RVHyDFwjO6klzKvDUezrJjMUwHWUlJqJfALG2/aYsdI=;
+	b=EyC2ie09pSYehijGa4aUDyVQlsGTq7t92C2exawAd3xXA4yIBJqkm7rrmnRSam8Ra2Lwg5
+	ixT1dpaRZXxnxr/Y19CYC9dn53XWbWa6gvdq6jBwH+DLfVKP1WNAA1OaXihrZ6CMXGUex2
+	ulRICzpLzwIeZ282keJE2jAJYumGHzs=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-323-qwP4jzFNMauItvCF22XYfg-1; Thu, 30 Apr 2026 05:34:22 -0400
+X-MC-Unique: qwP4jzFNMauItvCF22XYfg-1
+X-Mimecast-MFC-AGG-ID: qwP4jzFNMauItvCF22XYfg_1777541661
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-43d1dea12aaso618371f8f.1
+        for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 02:34:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1777541661; x=1778146461; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=RVHyDFwjO6klzKvDUezrJjMUwHWUlJqJfALG2/aYsdI=;
+        b=OiXgsBrY+SZzSz1ZH+nyxFo5mHQ96KWjIOiiNG/RxX83uiZbip9eRrJti1ZIPYy4eO
+         5Wgt4sFhZAelDNKRXfYeN88aVfBDwT35NSnRqqMnWE2g/Q+2L0ZHM6IYQDsfE+jU+rw/
+         V+UsuiIWYO2aMAR52/XPfuXOrO4ASROqG0yeJ0rseO4NEak8N33EuzGHSqV617vcXXCj
+         ATfi3NohVHrFdl1ka36Wk64UUtDcfnSg+05qhUztgFZuufTFrkYmFD+cg88wql2QAncK
+         OQPVlzk86vYWvqPRfrzYzEmMOWyRtQL7rJ5edu5mLJenYOXHxvC+qt7X1Vh4FZeGUYpG
+         Btuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777541661; x=1778146461;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RVHyDFwjO6klzKvDUezrJjMUwHWUlJqJfALG2/aYsdI=;
+        b=rrqAJkWlFFRzQbZ95CTzj74VIlcn2nVTroHPw7ALvSOH+L2sRnWrzUXpAbV0hUNu2b
+         L9dS2zSzSQYz0oWCwjTXdd1JK29b64PaoKbfRGymsf/UBsGUN9+CKDuohR6e22PZZt+H
+         nv8g8NNJRffn0BDmMjXEvTugUDyE7htUNpZTWgS6U26X65nJj5lVMT/89ti3qKDxqLJH
+         S8etBB0q9UsysN9153Ta+Ck2zZmqbOsCdsk8f8HoTd90/H7FPFBiMyOSpxJWXOB7dD32
+         RfsPV2Nyqn0/Jd2COprt2NQb9GLmtX2DLnqR0g14Ui+A8RbkuT+gmglngGEOxbzHyDGa
+         3MHg==
+X-Forwarded-Encrypted: i=1; AFNElJ9LrgOeoVwtRY0FxNJrX+DIR6bnxqQo9a2qRH3tYdgJ7RP9VX023jbVTWuPbn2LyU2KDyHTh44=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyVsAzNG29SbReyDBBjbs8zkqBX04MEfSsdzhWMiyuWOHBVpCb6
+	Ii5S8maz2FiVDhkZn5yANsRS9UHjH86a6qaks1YBeRn5BoHacqt9TUM8qKlfsN81qJww8rUTYBo
+	I7BzZQUQHpkomRulcxDOUcmmUVjR/1v5zYfn+TR2ICHKI2eqUkxwwp+r4HQ==
+X-Gm-Gg: AeBDievPVFEQfrDpBEvbZJ6pGH2BSNXp+g9WU3Nio/sLrN7JbJan7k1XeMPoF456EAo
+	GxShm17TBuUgsBGNxIlPYgw3PYjSrgWF9rVPDht9VcQFImBi08hIAs0x53ON8jXkoQLluacMxj3
+	Or5K1j56+B47wgX7i3JDYaVK9w60LeYEpAf59CsFbiqIVwqQALh2nytDh2H2Azg5mgDhcgenjao
+	iSGacqrwgvgdIBuhuum3lSI0/BcuC7S7aVwEVHzOHYUdnP0kza7yFJddeaQZbHToRE1jUkFkhap
+	deF/HO2w4uTCyC+FYQ60228YKF+A8bu8yy6WYZZumtSlsag/al5kHZIemR0KZW/OzOyGAaTOuFn
+	WkppFpF3nPkyg/C760F/vLEkgbvG3ILzwiqMbdYrLiujWQ6aUObwe7qexFkLcJJYsJw==
+X-Received: by 2002:a05:6000:40dd:b0:447:55b5:d532 with SMTP id ffacd0b85a97d-4493ec62a60mr3634735f8f.37.1777541660745;
+        Thu, 30 Apr 2026 02:34:20 -0700 (PDT)
+X-Received: by 2002:a05:6000:40dd:b0:447:55b5:d532 with SMTP id ffacd0b85a97d-4493ec62a60mr3634660f8f.37.1777541660114;
+        Thu, 30 Apr 2026 02:34:20 -0700 (PDT)
+Received: from [192.168.88.32] ([150.228.93.27])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-447b76e5c0csm11853942f8f.29.2026.04.30.02.34.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 30 Apr 2026 02:34:19 -0700 (PDT)
+Message-ID: <9d7f1bbc-155d-4c18-bcf7-732ebe4cbf67@redhat.com>
+Date: Thu, 30 Apr 2026 11:34:17 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Christian Lamparter <chunkeey@gmail.com>, 
- Andreas Kemnade <andreas@kemnade.info>, 
- =?utf-8?q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>, 
- Eric Dumazet <edumazet@google.com>, Bartosz Golaszewski <brgl@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Johannes Berg <johannes@sipsolutions.net>, Jakub Kicinski <kuba@kernel.org>, 
- Kevin Hilman <khilman@baylibre.com>, Arnd Bergmann <arnd@arndb.de>, 
- linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
- linux-omap@vger.kernel.org, Felipe Balbi <balbi@kernel.org>, 
- Rob Herring <robh+dt@kernel.org>, linux-gpio@vger.kernel.org, 
- Paolo Abeni <pabeni@redhat.com>, devicetree@vger.kernel.org, 
- netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
- Roger Quadros <rogerq@kernel.org>, linux-arm-kernel@lists.infradead.org, 
- Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
- Aaro Koskinen <aaro.koskinen@iki.fi>, Tony Lindgren <tony@atomide.com>, 
- Linus Walleij <linusw@kernel.org>
-To: Arnd Bergmann <arnd@kernel.org>
-In-Reply-To: <20260430081242.3686993-2-arnd@kernel.org>
-References: <20260430081242.3686993-1-arnd@kernel.org>
- <20260430081242.3686993-2-arnd@kernel.org>
-Message-Id: <177754112702.3678889.4847926893667561974.robh@kernel.org>
-Subject: Re: [PATCH v4 1/3 net-next] dt-bindings: net: add
- st,stlc4560/p54spi binding
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH net-next v6 1/2] net: pppoe: implement GRO/GSO support
+To: Qingfang Deng <dqfext@gmail.com>,
+ Michal Ostrowski <mostrows@earthlink.net>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, David Ahern <dsahern@kernel.org>,
+ Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: linux-ppp@vger.kernel.org, Felix Fietkau <nbd@nbd.name>
+References: <20260326081127.61229-1-dqfext@gmail.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260326081127.61229-1-dqfext@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+On 3/26/26 9:11 AM, Qingfang Deng wrote:
+> +static int pppoe_gro_complete(struct sk_buff *skb, int nhoff)
+> +{
+> +	struct pppoe_hdr *phdr = (struct pppoe_hdr *)(skb->data + nhoff);
+> +	__be16 type = pppoe_hdr_proto(phdr);
+> +	struct packet_offload *ptype;
+> +	unsigned int len;
+> +
+> +	ptype = gro_find_complete_by_type(type);
+> +	if (!ptype)
+> +		return -ENOENT;
+> +
+> +	len = skb->len - (nhoff + sizeof(*phdr));
+> +	len = min(len, 0xFFFFU);
 
-On Thu, 30 Apr 2026 10:12:40 +0200, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> The SPI version of Prism54 was sold under a couple of different
-> names and supported by the Linux p54spi driver, but there was
-> never a DT binding for it.
-> 
-> Document the four known names of this device and the properties
-> that are sufficient for its use on the Nokia N8x0 tablet.
-> 
-> As I don't have this hardware or documentation for it, this is
-> purely based on existing usage in the driver.
-> 
-> Link: https://lore.kernel.org/all/e8dc9acb-6f85-e0a9-a145-d101ca6da201@gmail.com/
-> Acked-by: Christian Lamparter <chunkeey@gmail.com>
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
-> v4: renamed file to st,stlc4560, matching the primary compatible string
->     require st,stlc4560 string
-> ---
->  .../bindings/net/wireless/st,stlc4560.yaml    | 61 +++++++++++++++++++
->  MAINTAINERS                                   |  1 +
->  2 files changed, 62 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/net/wireless/st,stlc4560.yaml
-> 
+AFAICS, when the computed len is >= 64K, and the above min() will
+truncate it, later pppoe_rcv() will drop the packet.
 
-My bot found errors running 'make dt_binding_check' on your patch:
+I think you should prevent such case at GRO time, flushing the chain
+when it grows too big.
 
-yamllint warnings/errors:
+> +	phdr->length = cpu_to_be16(len);
+> +
+> +	return INDIRECT_CALL_INET(ptype->callbacks.gro_complete,
+> +				  ipv6_gro_complete, inet_gro_complete,
+> +				  skb, nhoff + PPPOE_SES_HLEN);
+> +}
+> +
+> +static struct sk_buff *pppoe_gso_segment(struct sk_buff *skb,
+> +					 netdev_features_t features)
+> +{
+> +	unsigned int pppoe_hlen = sizeof(struct pppoe_hdr) + 2;
+> +	struct sk_buff *segs = ERR_PTR(-EINVAL);
+> +	u16 mac_offset = skb->mac_header;
+> +	struct packet_offload *ptype;
+> +	u16 mac_len = skb->mac_len;
+> +	struct pppoe_hdr *phdr;
+> +	__be16 orig_type, type;
+> +	int len, nhoff;
+> +
+> +	skb_reset_network_header(skb);
+> +	nhoff = skb_network_header(skb) - skb_mac_header(skb);
+> +
+> +	if (unlikely(!pskb_may_pull(skb, pppoe_hlen)))
+> +		goto out;
+> +
+> +	phdr = (struct pppoe_hdr *)skb_network_header(skb);
+> +	type = pppoe_hdr_proto(phdr);
+> +	ptype = gro_find_complete_by_type(type);
+> +	if (!ptype)
+> +		goto out;
+> +
+> +	orig_type = skb->protocol;
+> +	__skb_pull(skb, pppoe_hlen);
+> +	segs = ptype->callbacks.gso_segment(skb, features);
+> +	if (IS_ERR_OR_NULL(segs)) {
+> +		skb_gso_error_unwind(skb, orig_type, pppoe_hlen, mac_offset,
+> +				     mac_len);
+> +		goto out;
+> +	}
+> +
+> +	skb = segs;
+> +	do {
+> +		phdr = (struct pppoe_hdr *)(skb_mac_header(skb) + nhoff);
+> +		len = skb->len - (nhoff + sizeof(*phdr));
+> +		phdr->length = cpu_to_be16(len);
+> +		skb->network_header = (u8 *)phdr - skb->head;
 
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/wireless/st,stlc4560.yaml: $id: Cannot determine base path from $id, relative path/filename doesn't match actual path or filename
- 	 $id: http://devicetree.org/schemas/net/wireless/st,stlc45xx.yaml
- 	file: /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/wireless/st,stlc4560.yaml
+I understand is quite late for the following question, but...
+The network headers points to the pppoe hdr. Should it point to the
+actual IP hdr?
 
-doc reference errors (make refcheckdocs):
-Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/net/wireless/st,stlc45xx.yaml
-MAINTAINERS: Documentation/devicetree/bindings/net/wireless/st,stlc45xx.yaml
+Why not? A comment in the code or in the commit message would be
+appreciated.
 
-See https://patchwork.kernel.org/project/devicetree/patch/20260430081242.3686993-2-arnd@kernel.org
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
+/P
 
