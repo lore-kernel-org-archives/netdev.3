@@ -1,56 +1,56 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50C6402B9D
-	for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 12:26:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06086402B9B
+	for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 12:26:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777551969; cv=none; b=bRQCyIf7Vu8RtVSRDi8LjETI1hykV2/T2GUdLfx9dPPKmF29GbpiVWiyhLK65WQAcK5hCQbeWFjUC2vfvA49zu4NR5Yg3uvMmgEu34ayD+UIRn1a9PJkDOCQJWOeLibn2tAIP5li835m8/3606KqLXY74G43TS016B288wqN6mk=
+	t=1777551970; cv=none; b=cfAogMTumiwps53NgPVYPZP1ZPF4iWgQgSQZ7AqbR0ecwos5CDFSBLNnVS5hRsfuucy4U6tIUYMW20GXjTAN1Atox68bLTejCdwSdN4uMuc31OgK6rD1+09Gsyyvfds+yj1CN0GSJyEHsLlstbbMfCUODaW/wlgAzmLgZ3pUyW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777551969; c=relaxed/simple;
-	bh=WmUk/hzZFJcKObTRWjUXnGHFK9+dUHG3QByEE5jydN8=;
+	s=arc-20240116; t=1777551970; c=relaxed/simple;
+	bh=iMyBM89b2seTFG8wKFYplgNuifzMOqRBwqYX3WhqWOE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=avWLA5kq+GEG591VB1mbQnC/tgeBG7uKI+1Ui5XFfr/QpdrarwR1hs8dsdrbyT75ZN4YK3EDMO0ghHM1F/9U3J46MpL61uZWHnzvqbs93gQ0L5kitWEcYJFVJIgMUQ+5Ivg6xugGiCMHsxi19lAYKUqWnKAtuFYtXL+mvxsfyaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PCe9/GJJ; arc=none smtp.client-ip=198.175.65.16
+	 MIME-Version; b=A7wq44Ec7fKbi2vZvxoLf4UGH4k6mSE5vB2DoaXPDqcso3zU/oeIFUrNu67RWDcxYAG2gMbwDWW2TkLsmXiTSW4IpkOTUYlaNFbAK0lYF7WbjTasfTw18gGewXUE7Y+cQdTGKj3s2uW+nCXWVfEHM5wTjmTc3u9IkoVH1bPAFFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l4Uynsl/; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PCe9/GJJ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l4Uynsl/"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777551968; x=1809087968;
+  t=1777551969; x=1809087969;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=WmUk/hzZFJcKObTRWjUXnGHFK9+dUHG3QByEE5jydN8=;
-  b=PCe9/GJJpZWaa9+ShBlk3xpBCGXvj73i6/pnu3bdNbawmxyaGU+XK+fz
-   BzTHT2RvaJjFM6iplWaUalaVJmy3iJdeOwM41QiWSuZMCXp7EqimPJiGI
-   xcfp9IxapYV/ft7Py20ivHgYxwKJz4mLyXAq3ZSQozRJVEzSbCdrh7jpd
-   qaEaTMwpHJ7jWc3o/qHN0cUXjPXILaW2uMx31ZX49P5n1JasyHWtsSWZn
-   KOVZrY/a988Lt4Z+Qj0SCaLz80HpSkd1ZYr52fFKw3rdkbWv/MpjQENTY
-   rsSEnODJdv+99P+AxKPz2dItphaR+BeLIEqnG3ly6zw9dqClDQFHRUsqU
-   A==;
-X-CSE-ConnectionGUID: DyJBGtloRUOghMDwV/FpKw==
-X-CSE-MsgGUID: QboQ6NGqQxCvBy+nAbXhsQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11771"; a="78689185"
+  bh=iMyBM89b2seTFG8wKFYplgNuifzMOqRBwqYX3WhqWOE=;
+  b=l4Uynsl/p4DItv2+ucCAlT4nqgRQHVDm1zALqYYL/9FmgDRQDZsDftBO
+   oLQeyAzO8wX8gCD7wCt3CWvnv1scLXnN+wwWH3n9PyI44EfJQl4Vam/Gt
+   T93qD8JtMdihJ8HZL4J7tQZrOph1VoZ+uYbixlk3LwFVWJHcvf8nmfBAZ
+   i6UtLGLKx5aPeZKaBUOgbHUvuCii171BAzQ/uo28jiGjW4qbUFFAu8LeW
+   Vv2hIm0OmEz3/uX4koTUhKA5YVL6WNkQJMZ2cDCzzgI+XUURTJddpksHv
+   qndUAmmXE++hkLj3RZWKPj+VJHE4h4j4uHxFEiYpaO9yi/viJxR200ANu
+   w==;
+X-CSE-ConnectionGUID: X0OuzMOcSFSYgmeFoj8yug==
+X-CSE-MsgGUID: 4mXXhZTFT8+SMnmqI1fdGg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11771"; a="78689189"
 X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
-   d="scan'208";a="78689185"
+   d="scan'208";a="78689189"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 05:26:07 -0700
-X-CSE-ConnectionGUID: MAPtY//6SAC9yo/g4nHqNA==
-X-CSE-MsgGUID: KMYtALv/QB+btlJa445l+Q==
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 05:26:09 -0700
+X-CSE-ConnectionGUID: 7kFlS1XZQzWuF31ND2ZbkA==
+X-CSE-MsgGUID: TQq6O933TXaYRN5tKBHDjw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
-   d="scan'208";a="233538429"
+   d="scan'208";a="233538433"
 Received: from amlin-019-225.igk.intel.com ([10.102.19.225])
-  by orviesa006.jf.intel.com with ESMTP; 30 Apr 2026 05:26:06 -0700
+  by orviesa006.jf.intel.com with ESMTP; 30 Apr 2026 05:26:08 -0700
 From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 To: intel-wired-lan@lists.osuosl.org,
 	anthony.l.nguyen@intel.com,
 	aleksandr.loktionov@intel.com
 Cc: netdev@vger.kernel.org
-Subject: [PATCH 2/5] ice: remove unnecessary PF_SB_REM_DEV_CTL write for E82X
-Date: Thu, 30 Apr 2026 14:25:59 +0200
-Message-ID: <20260430122602.126722-3-aleksandr.loktionov@intel.com>
+Subject: [PATCH 3/5] ice: add correct handling of SMA/u.FL states
+Date: Thu, 30 Apr 2026 14:26:00 +0200
+Message-ID: <20260430122602.126722-4-aleksandr.loktionov@intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260430122602.126722-1-aleksandr.loktionov@intel.com>
 References: <20260430122602.126722-1-aleksandr.loktionov@intel.com>
@@ -62,52 +62,64 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Karol Kolacinski <karol.kolacinski@intel.com>
+The ICE_SMA2_UFL2_RX_DIS bit name is wrong: the bit is active high
+(setting it *enables* RX for u.FL2 / SMA2), not active low.  Rename
+it to ICE_SMA2_UFL2_RX_EN and invert the use sites in ice_dpll.c so
+that enabling the u.FL2 pin clears the bit (as it used to do) and
+disabling sets it.
 
-Remove the PF_SB_REM_DEV_CTL register write from ice_ptp_init_phc_e82x().
-PHY access is enabled by default on E82X devices and the driver does not
-need to configure switch device access. The register write was a
-remnant of an earlier SWITCH_MODE workaround for a FIFO issue and is
-no longer needed.
-
-Also update the kernel-doc comment to refer to the E82X family rather than
-E822.
-
-Signed-off-by: Karol Kolacinski <karol.kolacinski@intel.com>
+Fixes: 2dd5d03c77e2 ("ice: redesign dpll sma/u.fl pins control")
 Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_ptp_hw.c | 13 ++-----------
- 1 file changed, 2 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_dpll.c   | 6 +++---
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.h | 4 ++--
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-index 61c0a0d..7b1b402 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-@@ -2767,22 +2767,13 @@ static int ice_ptp_set_vernier_wl(struct ice_hw *hw)
- }
+diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
+index 62f75701d..7e8bb63 100644
+--- a/drivers/net/ethernet/intel/ice/ice_dpll.c
++++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
+@@ -672,7 +672,7 @@ ice_dpll_sw_pins_update(struct ice_pf *pf)
+ 		p->active = false;
  
- /**
-- * ice_ptp_init_phc_e82x - Perform E822 specific PHC initialization
-+ * ice_ptp_init_phc_e82x - Perform E82X specific PHC initialization
-  * @hw: pointer to HW struct
-  *
-- * Perform PHC initialization steps specific to E822 devices.
-+ * Perform PHC initialization steps specific to E82X devices.
-  */
- static int ice_ptp_init_phc_e82x(struct ice_hw *hw)
- {
--	u32 val;
--
--	/* Enable reading switch and PHY registers over the sideband queue */
--#define PF_SB_REM_DEV_CTL_SWITCH_READ BIT(1)
--#define PF_SB_REM_DEV_CTL_PHY0 BIT(2)
--	val = rd32(hw, PF_SB_REM_DEV_CTL);
--	val |= (PF_SB_REM_DEV_CTL_SWITCH_READ | PF_SB_REM_DEV_CTL_PHY0);
--	wr32(hw, PF_SB_REM_DEV_CTL, val);
--
- 	/* Set window length for all the ports */
- 	return ice_ptp_set_vernier_wl(hw);
- }
+ 	p = &d->ufl[ICE_DPLL_PIN_SW_2_IDX];
+-	p->active = (data & ICE_SMA2_DIR_EN) && !(data & ICE_SMA2_UFL2_RX_DIS);
++	p->active = (data & ICE_SMA2_DIR_EN) && !(data & ICE_SMA2_UFL2_RX_EN);
+ 	d->sma_data = data;
+ 
+ 	return 0;
+@@ -1264,10 +1264,10 @@ ice_dpll_ufl_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
+ 	case ICE_DPLL_PIN_SW_2_IDX:
+ 		if (state == DPLL_PIN_STATE_SELECTABLE) {
+ 			data |= ICE_SMA2_DIR_EN;
+-			data &= ~ICE_SMA2_UFL2_RX_DIS;
++			data &= ~ICE_SMA2_UFL2_RX_EN;
+ 			enable = true;
+ 		} else if (state == DPLL_PIN_STATE_DISCONNECTED) {
+-			data |= ICE_SMA2_UFL2_RX_DIS;
++			data |= ICE_SMA2_UFL2_RX_EN;
+ 			enable = false;
+ 		} else {
+ 			goto unlock;
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.h b/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
+index c1aa408..278d757 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
++++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
+@@ -655,12 +655,12 @@ static inline u64 ice_get_base_incval(struct ice_hw *hw)
+ /* SMA controller pin control */
+ #define ICE_SMA1_DIR_EN		BIT(4)
+ #define ICE_SMA1_TX_EN		BIT(5)
+-#define ICE_SMA2_UFL2_RX_DIS	BIT(3)
++#define ICE_SMA2_UFL2_RX_EN	BIT(3)
+ #define ICE_SMA2_DIR_EN		BIT(6)
+ #define ICE_SMA2_TX_EN		BIT(7)
+ 
+ #define ICE_SMA1_MASK		(ICE_SMA1_DIR_EN | ICE_SMA1_TX_EN)
+-#define ICE_SMA2_MASK		(ICE_SMA2_UFL2_RX_DIS | ICE_SMA2_DIR_EN | \
++#define ICE_SMA2_MASK		(ICE_SMA2_UFL2_RX_EN | ICE_SMA2_DIR_EN | \
+ 				 ICE_SMA2_TX_EN)
+ #define ICE_SMA2_INACTIVE_MASK	(ICE_SMA2_DIR_EN | ICE_SMA2_TX_EN)
+ #define ICE_ALL_SMA_MASK	(ICE_SMA1_MASK | ICE_SMA2_MASK)
 -- 
 2.52.0
 
