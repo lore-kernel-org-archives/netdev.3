@@ -1,97 +1,77 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64531336891
-	for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 15:38:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94BAE27F01E
+	for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 15:40:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777563492; cv=none; b=A5PtbnSJAn5PBUDZLd+f4HkN3/NbT6J9NHnbfrckfuc2hEkx8RwA3wHz3cQNQwgOGaRyX/wR0otTte1Pi/fc30/pUdyJ6cAKDAHwkidMLy5Xb2xJKa9wadjeVG6mQeH5Qu3w8oR4RvbqF/nrgpBF/HiGknqGcoNnD1kTUpbANdI=
+	t=1777563656; cv=none; b=E1nz762FbybQgZGUvFDHntuJwBXw2AhO3JSfgBP0W/5zHIl8OixQ5xhC6ZBRlmJ91M2r+/Edd/mb0qnqo9uV+2V9R+ps0lvk6VyWEEUJqQPjpzNSKsHAGO3wY/IBd3xg2OXMMsWcmL/C4c13iKyOHYM4BtbRvh70gvsPR+TzVzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777563492; c=relaxed/simple;
-	bh=cas+fx9QXakeDSvStqAi7Mu9SLnLX6s+1H6MiiTcWN4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R2t0WXTJosw+9U9xWPAXrLEG5jZDRYm3F3i+fLHjr5O9g0uxvao3i8U1K1wjPB0TSaOLXRiqtrb+nvUUA8u5rdp6XeNdT+6MGmaPhgQV0njPpkobvPk/61lcoKtyg3TpYd9ke63ScLDo5VAo9mTljP5lv8kSrfCvn2HD77457OA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DU2Qdlgu; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1777563656; c=relaxed/simple;
+	bh=9zccanP4ZE19HwWfy28HcLhsu9JH7Hu4VQst5A/PYDw=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=a0OP2Vm+mslUsAzsz0UOIIr1ktF0X2AzHYn4aq3iLJAPRNQ+bwTNbCwUqXdpTGnd/65qoVzzkZspsiYQ2b6+EJ6Tlo/AJb+kbBgc48JtyLCHZBNpf7JkCGOKOiLCYVRAKrGtqYOhM59TCGwerWrwHyzeUg5w9rUOBcod9jnGWbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F9gp7IL5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DU2Qdlgu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777563488; x=1809099488;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=cas+fx9QXakeDSvStqAi7Mu9SLnLX6s+1H6MiiTcWN4=;
-  b=DU2QdlguVrB9zAqGwlOaZu8LpV+fi+nBGPbXfCjgfGQtp5kEX64xYjAW
-   mmRPwlLfIjanNfgk4Vufqv6FpdcPikNMe96+yXd1GTxur6nkVWCNGNUKI
-   JqHKGZtPj6RBKXOFT1YQ94czGxWO27Act36j1K8CO3hZNaYLP2N31uxVR
-   HluoUWzsifm3ClEfVen0vLEjHNPZUHduluPtZchFykAmTeOUvgcz7iSSg
-   UqG/1EyJqxsTbkGWz86gLVG+zew6OXfoYC33B7JPtjC/4dEYMWBLQsoxP
-   WSSaFyV3Wvq7Ksqdhdc+1TnxPmcmS3PO91RkiRwZhTjLtIBExmnbh093E
-   Q==;
-X-CSE-ConnectionGUID: HaT2ZI3ST/Wn0q9CG5k7Vg==
-X-CSE-MsgGUID: YgfMftBeTn+SOtv1XX9CrA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11772"; a="78711877"
-X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
-   d="scan'208";a="78711877"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 08:36:41 -0700
-X-CSE-ConnectionGUID: 0mtNTPv5QliVKNuQbrjNuQ==
-X-CSE-MsgGUID: dPci9gAPRvmQGjxZuj+76g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
-   d="scan'208";a="230261005"
-Received: from lkp-server01.sh.intel.com (HELO aa799cca880d) ([10.239.97.150])
-  by fmviesa010.fm.intel.com with ESMTP; 30 Apr 2026 08:36:38 -0700
-Received: from kbuild by aa799cca880d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wITRK-00000000CXY-2GqI;
-	Thu, 30 Apr 2026 15:36:34 +0000
-Date: Thu, 30 Apr 2026 23:36:17 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ren Wei <n05ec@lzu.edu.cn>, netdev@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, horms@kernel.org, jbenc@redhat.com,
-	yuantan098@gmail.com, yifanwucs@gmail.com, tomapufckgml@gmail.com,
-	bird@lzu.edu.cn, lx24@stu.ynu.edu.cn, caoruide123@gmail.com,
-	n05ec@lzu.edu.cn
-Subject: Re: [PATCH net 1/1] net: nsh: handle nested NSH headers during GSO
-Message-ID: <202604302359.kU59LnTI-lkp@intel.com>
-References: <6112cce99b4e3571444a616d0fb19e91e2fcca72.1776597598.git.caoruide123@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F9gp7IL5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37EA1C2BCB8;
+	Thu, 30 Apr 2026 15:40:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777563656;
+	bh=9zccanP4ZE19HwWfy28HcLhsu9JH7Hu4VQst5A/PYDw=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=F9gp7IL5ZpldOZiBeS9yfkRJXxqlPSbL9jORFbG25B0X5YMIhx4WVzKYviZgcxGCR
+	 FWrZvoV7YNgcly+c3T8XDLL7FPYaNZ4hDgtRK3/WtOkSWXC403YJSJZNtjvY7f1ERG
+	 jyh95RzcE6wqbcq8dTkQZNINXuuzjIzVMLeANT2PvS5fWdjLDy5c2Vb+wAv+CTtbqN
+	 362C0jKD+WNFFjJqmYPDmAH/Ge78cPUbpfxWPvwfzAIVmOG586mTj0vcx6KCCXQ4td
+	 XZ9xgmhSM1feSr8mgG5e0POB5tYmgo82KWp9HkQoSTOSXmwwdbvPgkA+CrGuXSZ701
+	 l8bTZ1S4H3j0A==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02DD7380AA5D;
+	Thu, 30 Apr 2026 15:40:12 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6112cce99b4e3571444a616d0fb19e91e2fcca72.1776597598.git.caoruide123@gmail.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH iproute2-next] ll_map: add RTEXT_FILTER_SKIP_STATS to
+ ll_init_map()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177756361080.3063728.9662631157405982220.git-patchwork-notify@kernel.org>
+Date: Thu, 30 Apr 2026 15:40:10 +0000
+References: <20260428075647.3206962-1-edumazet@google.com>
+In-Reply-To: <20260428075647.3206962-1-edumazet@google.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: dsahern@kernel.org, stephen@networkplumber.org, davem@davemloft.net,
+ kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+ eric.dumazet@gmail.com
 
-Hi Ren,
+Hello:
 
-kernel test robot noticed the following build errors:
+This patch was applied to iproute2/iproute2-next.git (main)
+by David Ahern <dsahern@kernel.org>:
 
-[auto build test ERROR on net/main]
+On Tue, 28 Apr 2026 07:56:47 +0000 you wrote:
+> ll_init_map() only cares about names and ifindex.
+> 
+> We can save ~300 bytes per device if we ask the kernel to skip stats,
+> not counting many cpu cycles if per-cpu stats are involved.
+> 
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> 
+> [...]
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Ren-Wei/net-nsh-handle-nested-NSH-headers-during-GSO/20260423-084001
-base:   net/main
-patch link:    https://lore.kernel.org/r/6112cce99b4e3571444a616d0fb19e91e2fcca72.1776597598.git.caoruide123%40gmail.com
-patch subject: [PATCH net 1/1] net: nsh: handle nested NSH headers during GSO
-config: i386-randconfig-003-20260430 (https://download.01.org/0day-ci/archive/20260430/202604302359.kU59LnTI-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260430/202604302359.kU59LnTI-lkp@intel.com/reproduce)
+Here is the summary with links:
+  - [iproute2-next] ll_map: add RTEXT_FILTER_SKIP_STATS to ll_init_map()
+    https://git.kernel.org/pub/scm/network/iproute2/iproute2-next.git/commit/?id=7bd7f33509d0
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202604302359.kU59LnTI-lkp@intel.com/
-
-All errors (new ones prefixed by >>, old ones prefixed by <<):
-
->> ERROR: modpost: "skb_network_protocol" [net/nsh/nsh.ko] undefined!
-
+You are awesome, thank you!
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
