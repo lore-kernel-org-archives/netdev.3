@@ -1,102 +1,236 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B23D377ECA
-	for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 10:01:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADD833AA4F1
+	for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 10:01:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777543266; cv=none; b=ssQzObgDJ6WqddYyTJbqgCT9/dZL7EE8IwqF3fVVaHTqyIgBxuKKtA4/upTAPHKQezEH2xKdHXuSRCI2BdmtCSIuosvK9Z/VZ+gqp1atkFDHiC5HmRpeODfwTOzLKWZZxo0OI7josxl74CkU/Y39z2/ov3uMZlHzDwoQAbjMcEE=
+	t=1777543300; cv=none; b=hB9E5GAaCpilS3OVx1Qg4dUwAx4D9cViFEZxBGTFRO8vFY/RgJeeocQFtI92wHYrBTKWYJXtOr/DUuI5x6cechSdeACSrCkrB+CDUQ7kAY1QufeRIuzude9P4kBHmmqtg9c3szbwmdNtkyuNKjO7vZz7mFZTv8PCZdNKwIgo++c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777543266; c=relaxed/simple;
-	bh=4uNn5VjlMIxviBM8I2EAC/V5geQPmRJJ5m8IuNt0Bi0=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=FkxYv2z4zV9yiDHB7n+zlEVlB6UzkQr9j9ZCdqRpFsZB1vqwAGKhPYgQfFaQsVhJtH1hC2Mn9aGwVwp2sSTMXBSyrgh3NqS6ErRDtFjv2TpOJB8+mDDhUjvL2XNh3iJXNODY/xYTDrTguhsmLFdaCWaREhlgt6NX3kO5MdgvRKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lUbGELC0; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777543300; c=relaxed/simple;
+	bh=XuzriXIH4ZVyXTd2Jo14EGNEA6R0lhMFbzpoWHiIR+M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sZuqsZDzakweMNjqSbdBNuT+6PEQmTS+zPYtdZ7ntRHaf1AkVPDdmpP8IoDR0E7gaBiH2ZskIZa2953D4cVkiSFoI/2+zzXH+TKICjoSAYQ8OlsQFU6xo3hTcq34mfOqYJWxSNdK0BswU0LH3R/sBfdv9YR1Kvxb2m5IRfojxzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=g9f7+PZu; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=jmMCyuwa; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lUbGELC0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B15B2C2BCB3;
-	Thu, 30 Apr 2026 10:01:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777543265;
-	bh=4uNn5VjlMIxviBM8I2EAC/V5geQPmRJJ5m8IuNt0Bi0=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=lUbGELC0pfLQ+kxFkajY+Xn1bZUl/Af1m/GldBcX8VN6spiicOj1321B1595Vii1r
-	 16mC/Km8J7Phv+FY/rCUga6MJXBdz3bpF3Si3PUeEYiLy9deVJELbaRTa9003Ta5yn
-	 Mz+HBn3J0xpjtvlwPfBSgSfbFQH/CYxGrzEpWY2g7Zy0m77FVa67IhB/fWDdnBDVEp
-	 0P/pbG5OkP++6RyYWGeWoGT0yFpSS/uQXnZ2nfmkKaWoUh2mY7cFzphLZMELcPGNed
-	 P/28ZdLyt6HbeVdfehAN4wthejrWMkUDzfiHAcpn9Mz2tkBLgnf4NuTjt6E0HjobK+
-	 cPEDI/+5UdFfA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9F34380A965;
-	Thu, 30 Apr 2026 10:00:21 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="g9f7+PZu";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="jmMCyuwa"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777543297;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=N07/Ak0OajH65jWxaz0uv/NFa2E5T7TXDwVpUO3pEZk=;
+	b=g9f7+PZupYB7Oi6A2H5qLAn7CgQm9HPYijfUqg68UxjA+M72NBhuHqHKt5IeZghLegtq2H
+	dIx/zJ9JxN1M9pU+Ofgc9fGkKDLxbcRN9jJoXlz5a1inooGg4z2PYqoO0V2eydTsV2tNGf
+	7srAbc1jFvrSNTH+lVtfPEkYE3eAMeA=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-630-f5OSvDlcOVC1B2xhjKrZLA-1; Thu, 30 Apr 2026 06:01:36 -0400
+X-MC-Unique: f5OSvDlcOVC1B2xhjKrZLA-1
+X-Mimecast-MFC-AGG-ID: f5OSvDlcOVC1B2xhjKrZLA_1777543295
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-48a5523fd53so3186435e9.3
+        for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 03:01:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1777543295; x=1778148095; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=N07/Ak0OajH65jWxaz0uv/NFa2E5T7TXDwVpUO3pEZk=;
+        b=jmMCyuwasQ5/1y03YvKEICo6UrfVQLV4AjessP0jKUdzOCFMmC6Ovwzpk6a+cB7Tt7
+         Uh+5iTS+OCPdOTDM//K3t5U8Y1j/kG+31lPeRTwoNgtWnBFcmiJjcN5vPwH/mgPH5Qll
+         /ebzCn6+AS7jM5XSke1Gc3znYx+OLB78R4iRwVP3i0FGR1lOTiwakvHPpahaXDUCjxny
+         sSQwNCi0F8Yj9LEsHhE1EqMBPz7T1MYjrhomjuzuWVZwBKRYxVhZZVdJDcbvMCOTxVK3
+         6e+57hC3Y8Jw3/LHho3G5UyVYENjIvg+YTdL568+2bl6b5hrcW1g6aKmXBnEinZ9+yjR
+         bg8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777543295; x=1778148095;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=N07/Ak0OajH65jWxaz0uv/NFa2E5T7TXDwVpUO3pEZk=;
+        b=mL9ZDTaBl+lxaw2RGDlNc31T8vhV51NY9iFWUOOujJaxirtOGNzcJf/fYMhvjYFqoG
+         Y/D0Q4csvm/8H9oSRRzsL6mjCSfFEl2dEmnM9z+A4VKlK6KtR3K5w20HPpO8XzDwf1nW
+         RX+6P2H0gvNYk3MGJZ1U7Qe6JDrzfzryNFnbx2kbcC9XRZyTf9DNqil/kUIPAR1qq8kF
+         XTihNJ9xtX0sFX9c+81JxlYcmB95wEFWAC8mK0vX6lyNWtfhhRw4tfDYpUyaPHUxUv4X
+         vVnl7w+tMolfqGf+HSKK+g7gTlAp02e06t8ZPFV30usK51YOXRk7Fv8MFzyUlkn2A512
+         5PvA==
+X-Forwarded-Encrypted: i=1; AFNElJ8gptqVw3Vse+CCoOWwebCH9sSZkoqTu0oRCQz8anCN499kKr+HmbVDmG6mLrFAOJwIjuIFVbA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzjZosE6QNiLpKCATusvwv8Dqg20+qM/Xn+vzCv6qyPWZ2P7ZKN
+	BlMEtY3/ODB6XGWW1XnE4eOiiv5bRtWYh+TpO+Dmi6cC+80LOxIJ+OIBzuUjVm7pnJGKBeTpfuX
+	b9cVhXS9vD+UGrHpzA4vGaPMzrNsmPrrMKP0E35Kwb1ZiDOgFl6Ay+3VY1g==
+X-Gm-Gg: AeBDieumjXHLCNwFdVSDrt9oCAJWwMYvz/jblWOyZEVqNLUgXRRHBTvm1BM51XD5tD3
+	lBa7dzIKQq/eVK43ivzj29+rwp1sIHhFvYR5IusJ7H3c3dUS/Qvj2Hnhcsf3iaSbxRnq4Wb5RC6
+	mnlCdOjdIGe1QjLccm/TnNa+GVUFtuOndjalnSYom8M8Vxs2FLO0QW8E6VmzZKGZbNnlJHwAwPO
+	/LCeeHZjn/aaFDXWYQvoHlUgAHglX4ibtM2os9NqeuI2Xk3zQTlJNkXX25K5q5I8zYQvaGBWa0W
+	OaXfhLmkhRrLSG0qmkz7fQ0MpT0+ihODdquABMmTcDi4UloG8iJMIxyZR3VknBFV9ueGuAXkmMd
+	bX7DFoqxMG2wrwosyWc4Ki7BViu9FUDY2LC0/G02JIuZ40uBH1x607z5vOiAY9ZCXOQ==
+X-Received: by 2002:a05:600c:4fc5:b0:488:9e43:9690 with SMTP id 5b1f17b1804b1-48a83e7206emr39045455e9.10.1777543293605;
+        Thu, 30 Apr 2026 03:01:33 -0700 (PDT)
+X-Received: by 2002:a05:600c:4fc5:b0:488:9e43:9690 with SMTP id 5b1f17b1804b1-48a83e7206emr39044565e9.10.1777543292809;
+        Thu, 30 Apr 2026 03:01:32 -0700 (PDT)
+Received: from [192.168.88.32] ([150.228.93.27])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a81ed6b65sm89540355e9.3.2026.04.30.03.01.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 30 Apr 2026 03:01:32 -0700 (PDT)
+Message-ID: <5fb1048c-1b3d-4136-9f10-0525ef063e58@redhat.com>
+Date: Thu, 30 Apr 2026 12:01:30 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 00/11] Intel Wired LAN Update 2026-04-27 (ice, iavf)
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177754322054.2492956.9695571168501500899.git-patchwork-notify@kernel.org>
-Date: Thu, 30 Apr 2026 10:00:20 +0000
-References: <20260427-jk-iwl-net-petr-oros-fixes-v1-0-cdcb48303fd8@intel.com>
-In-Reply-To: <20260427-jk-iwl-net-petr-oros-fixes-v1-0-cdcb48303fd8@intel.com>
-To: Jacob Keller <jacob.e.keller@intel.com>
-Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, aleksandr.loktionov@intel.com,
- horms@kernel.org, jiri@resnulli.us, netdev@vger.kernel.org, poros@redhat.com,
- rafal.romanowski@intel.com, pmenzel@molgen.mpg.de,
- alexander.nowlin@intel.com, ivecera@redhat.com,
- arkadiusz.kubalewski@intel.com, vadim.fedorenko@linux.dev
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v7 1/2] net: pppoe: implement GRO/GSO support
+To: Qingfang Deng <qingfang.deng@linux.dev>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, David Ahern <dsahern@kernel.org>,
+ Simon Horman <horms@kernel.org>, Kees Cook <kees@kernel.org>,
+ Guillaume Nault <gnault@redhat.com>, Eric Woudstra <ericwouds@gmail.com>,
+ Felix Fietkau <nbd@nbd.name>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: linux-ppp@vger.kernel.org, Pablo Neira Ayuso <pablo@netfilter.org>
+References: <20260428064717.74794-1-qingfang.deng@linux.dev>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260428064717.74794-1-qingfang.deng@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On 4/28/26 8:47 AM, Qingfang Deng wrote:
+> diff --git a/drivers/net/ppp/pppoe.c b/drivers/net/ppp/pppoe.c
+> index bdd61c504a1c..363204e0c49a 100644
+> --- a/drivers/net/ppp/pppoe.c
+> +++ b/drivers/net/ppp/pppoe.c
+> @@ -77,6 +77,7 @@
+>  #include <net/net_namespace.h>
+>  #include <net/netns/generic.h>
+>  #include <net/sock.h>
+> +#include <net/gro.h>
+>  
+>  #include <linux/uaccess.h>
+>  
+> @@ -409,7 +410,7 @@ static int pppoe_rcv(struct sk_buff *skb, struct net_device *dev,
+>  	if (ppp_skb_is_compressed_proto(skb))
+>  		goto drop;
+>  
+> -	if (pskb_trim_rcsum(skb, len))
+> +	if (!skb_is_gso(skb) && pskb_trim_rcsum(skb, len))
+>  		goto drop;
+>  
+>  	ph = pppoe_hdr(skb);
+> @@ -1103,6 +1104,164 @@ static struct pernet_operations pppoe_net_ops = {
+>  	.size = sizeof(struct pppoe_net),
+>  };
+>  
+> +static u16
+> +compare_pppoe_header(const struct pppoe_hdr *phdr,
+> +		     const struct pppoe_hdr *phdr2)
+> +{
+> +	__be16 proto = *(const __be16 *)(phdr + 1);
+> +	__be16 proto2 = *(const __be16 *)(phdr2 + 1);
+> +
+> +	return (__force u16)((phdr->sid ^ phdr2->sid) | (proto ^ proto2));
+> +}
+> +
+> +static __be16 pppoe_hdr_proto(const struct pppoe_hdr *phdr)
+> +{
+> +	__be16 proto = *(const __be16 *)(phdr + 1);
+> +
+> +	switch (proto) {
+> +	case cpu_to_be16(PPP_IP):
+> +		return cpu_to_be16(ETH_P_IP);
+> +#if IS_ENABLED(CONFIG_IPV6)
+> +	case cpu_to_be16(PPP_IPV6):
+> +		return cpu_to_be16(ETH_P_IPV6);
+> +#endif
+> +	default:
+> +		return 0;
+> +	}
+> +}
+> +
+> +static struct sk_buff *pppoe_gro_receive(struct list_head *head,
+> +					 struct sk_buff *skb)
+> +{
+> +	const struct packet_offload *ptype;
+> +	unsigned int hlen, off_pppoe;
+> +	const struct pppoe_hdr *phdr;
+> +	struct sk_buff *pp = NULL;
+> +	struct sk_buff *p;
+> +	int flush = 1;
+> +	__be16 type;
+> +
+> +	off_pppoe = skb_gro_offset(skb);
+> +	hlen = off_pppoe + PPPOE_SES_HLEN;
+> +	phdr = skb_gro_header(skb, hlen, off_pppoe);
+> +	if (unlikely(!phdr))
+> +		goto out;
+> +
+> +	/* filter for session packets (type:1, ver:1, code:0) */
+> +	if (*(const __be16 *)phdr != cpu_to_be16(0x1100))
+> +		goto out;
+> +
+> +	/* ignore packets with padding or invalid length */
+> +	if (skb_gro_len(skb) != be16_to_cpu(phdr->length) + sizeof(*phdr))
+> +		goto out;
+> +
+> +	type = pppoe_hdr_proto(phdr);
+> +	ptype = gro_find_receive_by_type(type);
+> +	if (!ptype)
+> +		goto out;
+> +
+> +	flush = 0;
+> +
+> +	list_for_each_entry(p, head, list) {
+> +		const struct pppoe_hdr *phdr2;
+> +
+> +		if (!NAPI_GRO_CB(p)->same_flow)
+> +			continue;
+> +
+> +		phdr2 = (const struct pppoe_hdr *)(p->data + off_pppoe);
+> +		if (compare_pppoe_header(phdr, phdr2))
+> +			NAPI_GRO_CB(p)->same_flow = 0;
+> +	}
+> +
+> +	skb_gro_pull(skb, PPPOE_SES_HLEN);
+> +	skb_gro_postpull_rcsum(skb, phdr, PPPOE_SES_HLEN);
+> +
+> +	pp = indirect_call_gro_receive_inet(ptype->callbacks.gro_receive,
+> +					    ipv6_gro_receive, inet_gro_receive,
+> +					    head, skb);
+> +
+> +out:
+> +	skb_gro_flush_final(skb, pp, flush);
+> +
+> +	return pp;
+> +}
+> +
+> +static int pppoe_gro_complete(struct sk_buff *skb, int nhoff)
+> +{
+> +	struct pppoe_hdr *phdr = (struct pppoe_hdr *)(skb->data + nhoff);
+> +	__be16 type = pppoe_hdr_proto(phdr);
+> +	struct packet_offload *ptype;
+> +	unsigned int len;
+> +
+> +	ptype = gro_find_complete_by_type(type);
+> +	if (!ptype)
+> +		return -ENOENT;
+> +
+> +	len = skb->len - (nhoff + sizeof(*phdr));
+> +	len = min(len, 0xFFFFU);
+> +	phdr->length = cpu_to_be16(len);
 
-This series was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+Whoops, I wrongly replied to v6, but comments still apply here:
 
-On Mon, 27 Apr 2026 22:22:12 -0700 you wrote:
-> Petr Oros from RedHat has accumulated a number of fixes for the Intel ice
-> and iavf drivers, bundled together in this series.
-> 
-> First, a series of 4 fixes to resolve issues with the iavf driver logic for
-> handling VLAN filters. This includes keeping VLAN filters while the
-> interface is brought down, waiting for confirmation on filter deletion
-> before deleting filters from the driver tracking structures, and handling
-> the VIRTCHNL_OP_ADD_VLAN for the old v1 VLAN_ADD command.
-> 
-> [...]
+https://lore.kernel.org/netdev/9d7f1bbc-155d-4c18-bcf7-732ebe4cbf67@redhat.com/T/#m6c92ba4367355abf1bdb001f102c4847853ac4f3
 
-Here is the summary with links:
-  - [net,01/11] iavf: rename IAVF_VLAN_IS_NEW to IAVF_VLAN_ADDING
-    https://git.kernel.org/netdev/net/c/70d62b669f1f
-  - [net,02/11] iavf: stop removing VLAN filters from PF on interface down
-    https://git.kernel.org/netdev/net/c/f2ce65b9b917
-  - [net,03/11] iavf: wait for PF confirmation before removing VLAN filters
-    https://git.kernel.org/netdev/net/c/bbcbe4ed70de
-  - [net,04/11] iavf: add VIRTCHNL_OP_ADD_VLAN to success completion handler
-    https://git.kernel.org/netdev/net/c/34d33313b52e
-  - [net,05/11] ice: fix NULL pointer dereference in ice_reset_all_vfs()
-    https://git.kernel.org/netdev/net/c/54ef02487914
-  - [net,06/11] ice: fix infinite recursion in ice_cfg_tx_topo via ice_init_dev_hw
-    https://git.kernel.org/netdev/net/c/70ad216411e0
-  - [net,07/11] ice: fix missing SMA pin initialization in DPLL subsystem
-    https://git.kernel.org/netdev/net/c/56a643aed0f0
-  - [net,08/11] ice: fix SMA and U.FL pin state changes affecting paired pin
-    https://git.kernel.org/netdev/net/c/6f9d8393c9f5
-  - [net,09/11] dpll: export __dpll_pin_change_ntf() for use under dpll_lock
-    (no matching commit)
-  - [net,10/11] ice: fix missing dpll notifications for SW pins
-    https://git.kernel.org/netdev/net/c/1a41b58fd4dc
-  - [net,11/11] ice: add dpll peer notification for paired SMA and U.FL pins
-    https://git.kernel.org/netdev/net/c/9e5dead140af
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+/P
 
