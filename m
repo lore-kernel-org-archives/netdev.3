@@ -1,336 +1,157 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013003.outbound.protection.outlook.com [40.107.162.3])
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010009.outbound.protection.outlook.com [52.101.201.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 316C14611EB;
-	Thu, 30 Apr 2026 11:07:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3AD6362154;
+	Thu, 30 Apr 2026 11:17:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.9
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777547280; cv=fail; b=nlZLKjZTtKzeTbPLkyWKz5933+lGIfgguHwzyHC282wC6wW1RYx79L3SGl4CCvRxFmstxkY+1I+LRdP8XpWah8flEc/llmdmBWnjjQ9kArd0jzMhYGee3Hb6WL5KfNELZKngyxJsldu/sZXP1K8QC2jNqU3mNbYHpiuKSHvmDN4=
+	t=1777547855; cv=fail; b=O6iEa1TjemHelUQKSGXm3S1uyPmWxzQZM1JgGdkTZAIJc0FVskC4W4R+HXfpVuuIw2QOtjhp+gCYhM+MP/1RrIUw6w3PVWKMAi+5Mq3VYNHBLES/BF3zdPpOeAZeoHvmCKpGJeh8x9iPtPyQ+44XhXFI2QqwUYEYV9dkgy1Zuqg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777547280; c=relaxed/simple;
-	bh=W6Ze/Sc61KjKcNTf6UMIsJbg52R0jAhE4wdz6vt0gbA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=IcrydxwFJnNLoDZC8EfQqR3oHiS5zXRE2vxaU2qy1Se1my/em71QO1lmsNx/U4c4DKa9rfrTPEJI6fFmwI/o/D3anuGnf4jk6bCSkCZcTUDHenw2EADxfKDTMEjpJno7L+euFs3Wt9fOlVyZdjfHT/WSjGNlIj3u4MC2S18/mXQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=BS5Y1Ai/; arc=fail smtp.client-ip=40.107.162.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1777547855; c=relaxed/simple;
+	bh=CnHiAeHDQeEGbl1+gG4sN7OlxSigivrXGm0dXA0JR7Q=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UzW1DqTUT2ZtUOuG5INyFK693AI7liCRm2EiP0KpyxSfFoS6J+XGqrs9/WNYGdkDSsvStT8eX2+L1ptfHw8jTyePXdSkzmLCOcqkBAcq4mgYYbH7X6W1+KHH2cf6Z9cwx6aIJByMC1KU5vFViBbkD5LdqBbYJGamRuIEHtrz6vw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=dB4Bdqil; arc=fail smtp.client-ip=52.101.201.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="BS5Y1Ai/"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="dB4Bdqil"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rIyFbXxqyf3bYdWx+icI2S3mLExqAQQZcyKRuhr8PrIHI2xzLS8rlXJMRZsTjnJ9Fba/+0j7uNJ5AfcQRFHAAZSD3ev1f+NVkfhBsVkACH5rOxXxNah9ChFyT57I/kWF6heKdzY/anNGU6pBiQ36D91rou+yu2WlZyzihFlCrxHrcw3X1SD1qXIFREcGGDLoeTwUU7QD26yXdgg1rRg9cbQIxy72e3JwKlb0eCimNiYF1fM3ZbRxTDMMPGa4gDKEcn1LxYAOwewAC8pocNCEccofpG0bSe86XUWlqRw8kaXlWbl9qRAIMHeO8bzPD/RIvuz4Mh6rZ0q7fgQklfK4Tw==
+ b=sQhHGkh3lDjmutaY4ECQylJWwB+X+tc4Jwf6PuT/C5o2qp8EZ4BxJ+ocBcLQ0DT23yYgZK/knk+NQ/68GgYbut/bsZW3iXWms5XvaqJzi5qa13NJ4064NLBfu37vQAYgbBjGkug8JH2zrIpBPYdy+k+SmkKEOpunvoOIReEBGBJYSQQWNNvGBPgOjAfJXGyW7pIHwGpu8uigjSDiU9fMDcgIGpNFCxevDHUn3JCY7wwQ18LPN0Nvxck+DWh1iEQqFRrwzAVihFdqk4P2WH2FH1owQtD8dWLPNyi7fzl+cLT3Uz+ozYKK4Jlr8u6GrXISo3odH4lPK+4mbzocbmflCg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Si6UMc96n2N2DF/XC4cnF9nZvr3A9AlpPHbLG67E9R8=;
- b=fnrtMy5Vpv6XciWbZ9Uk5AKp31YZIvfqeAy9NE5QkG+jL1c7CQlIamir3QY2TCOVfi3/9vF7qSnecJLelYQ7e+Trxo+bYB2t8B9DJ11e6qQCc5lvWVlD4vL8yrFlEXZtUG8n0kCRFQg7iE1T+YbA2/zqwDszmkBbDqvM6YZyA2ETiA8hpXH486kubEWkh849QYuQxlYFtlNDXLi2PIAJZWtmKuRLbb0dyfsi/Zx5qgcdb8RI6K5NkWbTj27iEx361kb6sUa681PBpc0OliU6C8C5MvgWbAL5B5SD2UvDcNDABP6hrr6Kx9PCbzUYSQKL5ZQpJLoCc6yF3cw8gEtfrg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ bh=sfPC35Nar/yissUiJ/LQDUwgvhO4OohgsCA7wJ/JJy4=;
+ b=QndFDBPfX6pEEdoCxoX0nLnlb/MI09DhzasCxm3+QXz5aWYu30QR5aS1IMGBnBZeJTFD0t7+1qbPhewa0/uvMAdMDntPmD9JFecQLenS34Q5Uipm+zcHTGACupw9d6rZEEvwzSmf1IJW+RugFVWXd56qpcqjDUgrs1LNZvZJuPfq9aEspoQ6vxqtEjIuNN5RSmSP0bsFDpvRm56xiO2Xhsx4wz05SYjg8sGgN/XqHByvlAB4svLMWvv0WxNgm9BoEW63V4eme6c7RkkHDF2iyf3pF8rRM5DuobY4KdWqZ6QrGRL9uDM2pNfhkTEvZcrJWaJT7lV+egTFjVfAjv4l4Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 198.47.21.195) smtp.rcpttodomain=linux.dev smtp.mailfrom=ti.com; dmarc=pass
+ (p=quarantine sp=none pct=100) action=none header.from=ti.com; dkim=none
+ (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Si6UMc96n2N2DF/XC4cnF9nZvr3A9AlpPHbLG67E9R8=;
- b=BS5Y1Ai//6ZqNt7M/YVk29LITvOeHBwWNiFRrNd3fusAX3BY10B7sQpxVri6Y0/Hi2/ptrRGx0fjMr+Tqn0plkrTZpG/HrZ/S6d0FAe8siDwo+UORz7S+ouGVo0yHTzJ4iFjG5JUTtL6za9F54ZwDoTXoUasLYj0IdVbIWC5QwyYMU9cV/yKSh3MAc1AS7so9sC4w0Nu1DzjtnGKc6SJnYsmdzKDgdwfMxf73fUTwKzwWPcN9eCvVAW7nsBcpK7rbZKfHDih5W7GtcLA2tii8dJdPV4e5D49g2xbbfPm4DUAA78GJnMXUGum5n+6cYqEaHSuQaGwIZbEJ4ALQmbQMQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM9PR04MB8585.eurprd04.prod.outlook.com (2603:10a6:20b:438::13)
- by GV1PR04MB10583.eurprd04.prod.outlook.com (2603:10a6:150:203::7) with
+ bh=sfPC35Nar/yissUiJ/LQDUwgvhO4OohgsCA7wJ/JJy4=;
+ b=dB4Bdqil8NKCocPV+yFgusnmH7aatfGC3utdpBl4++EbSwCOMah39XdUbgBPI128tksl0otsJEGDCKH0ylz3LDeJU9NEL3PtRBqVtX6MDDZiLeqk6lQdmlA918O+NkkiH4d0CPJJe/SLvES02hLU3ag/LXWGOwMicuXP3c/SzH4=
+Received: from CH0PR03CA0369.namprd03.prod.outlook.com (2603:10b6:610:119::22)
+ by SJ0PR10MB4493.namprd10.prod.outlook.com (2603:10b6:a03:2dd::21) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.18; Thu, 30 Apr
- 2026 11:07:43 +0000
-Received: from AM9PR04MB8585.eurprd04.prod.outlook.com
- ([fe80::f010:fca8:7ef:62f4]) by AM9PR04MB8585.eurprd04.prod.outlook.com
- ([fe80::f010:fca8:7ef:62f4%4]) with mapi id 15.20.9846.025; Thu, 30 Apr 2026
- 11:07:42 +0000
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: linux-phy@lists.infradead.org
-Cc: Vinod Koul <vkoul@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	dri-devel@lists.freedesktop.org,
-	freedreno@lists.freedesktop.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-can@vger.kernel.org,
-	linux-gpio@vger.kernel.org,
-	linux-ide@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org,
-	linux-scsi@vger.kernel.org,
-	linux-sunxi@lists.linux.dev,
-	linux-tegra@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org,
-	spacemit@lists.linux.dev,
-	UNGLinuxDriver@microchip.com,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Abhinav Kumar <abhinav.kumar@linux.dev>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Andy Yan <andy.yan@rock-chips.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Chanho Park <chanho61.park@samsung.com>,
-	Chen-Yu Tsai <wens@kernel.org>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Daniel Machon <daniel.machon@microchip.com>,
-	David Airlie <airlied@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Dmitry Baryshkov <lumag@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	=?UTF-8?q?Heiko=20St=C3=BCbner?= <heiko@sntech.de>,
-	Inki Dae <inki.dae@samsung.com>,
-	Jagan Teki <jagan@amarulasolutions.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	JC Kuo <jckuo@nvidia.com>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Jessica Zhang <jesszhan0024@gmail.com>,
-	Joe Perches <joe@perches.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Kevin Xie <kevin.xie@starfivetech.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Markus Schneider-Pargmann <msp@baylibre.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Mathias Nyman <mathias.nyman@intel.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Maxime Ripard <mripard@kernel.org>,
-	Michael Dege <michael.dege@renesas.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Niklas Cassel <cassel@kernel.org>,
-	Nitin Rawat <quic_nitirawa@quicinc.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Peter Chen <peter.chen@kernel.org>,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Robert Foss <rfoss@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Samuel Holland <samuel@sholland.org>,
-	Sandy Huang <hjc@rock-chips.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Sean Paul <sean@poorly.run>,
-	Sebastian Reichel <sre@kernel.org>,
-	Shawn Guo <shawn.guo@linaro.org>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Steen Hegelund <Steen.Hegelund@microchip.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Vincent Mailhol <mailhol@kernel.org>,
-	Yixun Lan <dlan@kernel.org>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Subject: [PATCH v7 phy-next 26/27] phy: remove temporary provider compatibility from consumer header
-Date: Thu, 30 Apr 2026 14:06:51 +0300
-Message-Id: <20260430110652.558622-27-vladimir.oltean@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260430110652.558622-1-vladimir.oltean@nxp.com>
-References: <20260430110652.558622-1-vladimir.oltean@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: AS4P250CA0026.EURP250.PROD.OUTLOOK.COM
- (2603:10a6:20b:5e3::14) To AM9PR04MB8585.eurprd04.prod.outlook.com
- (2603:10a6:20b:438::13)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.21; Thu, 30 Apr
+ 2026 11:17:31 +0000
+Received: from DM2PEPF00003FC8.namprd04.prod.outlook.com
+ (2603:10b6:610:119:cafe::ee) by CH0PR03CA0369.outlook.office365.com
+ (2603:10b6:610:119::22) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9846.30 via Frontend Transport; Thu,
+ 30 Apr 2026 11:17:30 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.21.195)
+ smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
+ action=none header.from=ti.com;
+Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
+ 198.47.21.195 as permitted sender) receiver=protection.outlook.com;
+ client-ip=198.47.21.195; helo=flwvzet201.ext.ti.com; pr=C
+Received: from flwvzet201.ext.ti.com (198.47.21.195) by
+ DM2PEPF00003FC8.mail.protection.outlook.com (10.167.23.26) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9846.18 via Frontend Transport; Thu, 30 Apr 2026 11:17:29 +0000
+Received: from DFLE210.ent.ti.com (10.64.6.68) by flwvzet201.ext.ti.com
+ (10.248.192.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 30 Apr
+ 2026 06:17:29 -0500
+Received: from DFLE215.ent.ti.com (10.64.6.73) by DFLE210.ent.ti.com
+ (10.64.6.68) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 30 Apr
+ 2026 06:17:28 -0500
+Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DFLE215.ent.ti.com
+ (10.64.6.73) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Thu, 30 Apr 2026 06:17:28 -0500
+Received: from fllv0122.itg.ti.com (fllv0122.itg.ti.com [10.247.120.72])
+	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 63UBHSbB1243042;
+	Thu, 30 Apr 2026 06:17:28 -0500
+Received: from localhost (meghana-pc.dhcp.ti.com [10.24.69.13] (may be forged))
+	by fllv0122.itg.ti.com (8.14.7/8.14.7) with ESMTP id 63UBHRDY031157;
+	Thu, 30 Apr 2026 06:17:27 -0500
+From: Meghana Malladi <m-malladi@ti.com>
+To: <vadim.fedorenko@linux.dev>, <haokexin@gmail.com>,
+	<jacob.e.keller@intel.com>, <horms@kernel.org>, <m-malladi@ti.com>,
+	<arnd@arndb.de>, <parvathi@couthit.com>, <afd@ti.com>,
+	<basharath@couthit.com>, <vladimir.oltean@nxp.com>, <rogerq@kernel.org>,
+	<danishanwar@ti.com>, <pabeni@redhat.com>, <kuba@kernel.org>,
+	<edumazet@google.com>, <davem@davemloft.net>, <andrew+netdev@lunn.ch>
+CC: <linux-arm-kernel@lists.infradead.org>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <srk@ti.com>, Vignesh Raghavendra
+	<vigneshr@ti.com>
+Subject: [PATCH net-next v5 0/2] Add Frame Preemption MAC Merge support for ICSSG
+Date: Thu, 30 Apr 2026 16:47:21 +0530
+Message-ID: <20260430111723.497113-1-m-malladi@ti.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9PR04MB8585:EE_|GV1PR04MB10583:EE_
-X-MS-Office365-Filtering-Correlation-Id: a2f5fde0-ba0f-4971-6717-08dea6a8b343
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-TrafficTypeDiagnostic: DM2PEPF00003FC8:EE_|SJ0PR10MB4493:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9ef5e938-fe76-44ed-a8a5-08dea6aa112f
+X-LD-Processed: e5b49634-450b-4709-8abb-1e2b19b982b7,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
- BCL:0;ARA:13230040|366016|19092799006|376014|7416014|10070799003|1800799024|22082099003|56012099003|18002099003;
+	BCL:0;ARA:13230040|1800799024|376014|7416014|82310400026|36860700016|18002099003|56012099003|921020;
 X-Microsoft-Antispam-Message-Info:
- bjDhtYlwTEjLGAG6PD8fzABylAebhnFcZ+11DQ5eWy476jzU7w8Pu57C4FqUfkvLEqhk1ygyV4jWFwHlZFIUQTsXrF1EzuNRHCkgZWQzt/B3kEXgoK6rkylQSKzyoX5LJB1uGojv6/yY7dEswy7krIaure2AJEg+U9n63r9Tm7U44TLbT8Or6GGTDjSkPg2u9DBl5KGR+hLrXcbasbAOmeo4nsVNDdO/FVPsRGRPZRnqrg0qtoGDqzbadVcO6zVohoinb195wTtpNhqF5k7VblzQI7ELe5dmgSHrUeNJ52MW0a7soWiuSjTbKQT4+dmgqjtM4xXC2va2PXXn9xCIgVTSeel8m8BpXY3qhvZyaLLOnOhggl1Qh0EbfhlNHrr/lb+H6kscSA7VJhfE7bbpoFrzVl8QfMVHucWJIRtZRYHKatInJklU9Rt0ZqX2lcIumm67ZuwnoDS0Axz6/XTUQQQaeiKtXPZQL0zug6j2qmtCwHzbBBmEgJWEY6ZjB8kBYwWuXett42GF2fBwa8ZTsFRlCJfbuxr6QeDWbJf87RUajjZjabJcfSlk3ouLJM8FKAcSqouY6RR1o58KeDEy0fs3Y96vAsMD+oQ4/oFDurzP1d1WqsEwUeHkfmB9ZFgvhVFLjCRSSrAc3XRpJ12epa90JcNEjMKclOubikCj8JFY7pKTqCxVLwvbaiQKinsznczaTWXiqlE3d3BLW7MSH6atPIKcZy6CHX8Mfj2BNuo=
+	QBUavrHHv9Nbp+nxrRVnpjkfzWih3dl0gMuBv9C8aPNAJnbVKqVz49WW46rxMK+WbZu6ZWFxkgDYlGDBLNaAIunpEayWSOMLOOACaaL/QXBsu+f7yV5/sn33/vRXqzYV/9Q8mUP/T4zvQNjl3kYaYw1dOQl8tgrbWCeIr/udPpQjNsK/gx74gthQi0FgXLKzI3/Ee04yPtxGLtnn5Zthz3cs24gUiPCzGwmX9oziewmHih0TnrMkJ+5jHZBv9niU/QaXqlRiBKKa4s5WYlF+ItjAJQXcDFNVWAONoT+iprCf3TRJJTHSTarJnEhGhNA3u0gz26kG41KyFsJ6E6DgF6Es9RB4EnFoHGYPIQ4qi0GeEnYFnpbr9tYHQPRbOJk4n41Zggl6MI9Z2+M1B+R4bApBw4JU+GUAtF3W9khZpQ4juUYGOLTwRq/7Auf8xBHlBSz3M3XUefMpvJTUAQkzPTZCg4L9QfOijBZxcsZ9fUIM1LIQtA74sWMdc46QSBvl8grs86iELit7gwV8AM555K6ni3WxSoqdXtez7AEqLjn90ChVOCerMiYlxkxGDGFdWTiUfg651o0x3dUD5qmPrtSi3lxM+JBNme2kcew4R7mw4znuPUISt1S97SJxyXOjOk6u9w3xCKEGiNst9ifWnI9o5NQMrFZGDu1r7EKpY8B0iBeADcqWgUD9YOj/lhXqE8iP6ylEqtixEaEwInjO3HC//ExlHTkXeXZc//u7ovg4TYFNQeTZG+xQ2RXndgIu9I+SRzr2Uqw+43k5NbJUAP6Z198LxTaoMSnqL5Ebop8iFBO5psgf7vXVK1J7Ajhp
 X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8585.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(376014)(7416014)(10070799003)(1800799024)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:198.47.21.195;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:flwvzet201.ext.ti.com;PTR:ErrorRetry;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(82310400026)(36860700016)(18002099003)(56012099003)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?SFRCRVBraWMrQWxFUWZTU2xBNElELzFsWHdRbVl3R0tlY28zbGg0MzFrbTNX?=
- =?utf-8?B?cHZDOEo4RXUwYlJKbFFndS9MSm9JMGtmbWJuSWlDZHZYTElRSzBoL0I3amdK?=
- =?utf-8?B?WnBPKzZBdEIvcG14NitoZy9tSGJXWlE4NXBBZXNJb0tpUVUwSXdmQmF3Vmxh?=
- =?utf-8?B?bjk4bUs0OWVKdUxnMDF0U2tCcFRXbFpnMjhkTkxqT1NUaHJmdnpYc1BoV1A1?=
- =?utf-8?B?WVMzNVNmTnlSaklNcDI3eTBPeU15YkcxVU1RUEhmY2Q3cXgzZ1dXNDBJOVBi?=
- =?utf-8?B?cDZ4STNPUEFsS1BSbkowY3FtazRtblZlRUg5dUFpcjQwSkIzS3JRK2dFWHFm?=
- =?utf-8?B?ZHU3Z1dYQjZHMzJwRytSU1E4eStkNHZYeVB5Y0lCVDZycTN6eEZIU3BZZjA4?=
- =?utf-8?B?clF6SG1CSGFmSXQ0UXBaVGVQc0cxNEtUZWpubTVKR0VjQWNOQkhQVCtmVTZi?=
- =?utf-8?B?dHU3dHkzcEYvVDVoR0NyOXdLMzJ3RUtTV1A2YzVvYWFiNFNlSGdLQXRYU2JM?=
- =?utf-8?B?Y21xbTV3LzUwRzgzMWlwNnVCODJyUFN6UzZrNkI1c0xKTE1pZ3hBeVBFUW9D?=
- =?utf-8?B?ZWxGNmpYVGkrYVg5dmtMbTFyTE45YnJqbEk4dlRLNEI2KzRZN2dXSnpBZ0Z6?=
- =?utf-8?B?WUdkbHpWUVlucmtSNmFIQ2tuTSt1QThHMTczYjY1UHp0YjMyRW1BZ25zZmk1?=
- =?utf-8?B?MUltUWhweVpLZ3Vxam1jMUJqM2Z1dWNTQ2xCWksvYXJ3UllvSXpKQ1FkbVVI?=
- =?utf-8?B?Y1VvVWFQL3FEY1ZhRWQ1OEZiMlBQbzl6a1BFTTZTelU3RVg1ZjdWT1EwRDRp?=
- =?utf-8?B?Z2RYdGNqOUlIanZPWTBFdmcwMDdseDFUY1NJRTdUOUZoak9MRURRTERJeWNw?=
- =?utf-8?B?VmhlSkVwQU0zdmRCRVg0V2pPREx2QkJrOHkvM25BVUpqODd0dkxUeHdQVzNI?=
- =?utf-8?B?WWdRYXRWbVRtOTFUTFJPYUxPcFZ5NTFQbW1ZN0hZYy9vazBjK0xGdmRHa3BH?=
- =?utf-8?B?Z0Z1QmRld0Ivb29NRVQ4Uy9yRWJRdXgyVE45dHgvZTg2VUszMThxZlFhSTYr?=
- =?utf-8?B?dG4wMFdWOGF6Ny90L1EwdTVQamFoMER3elVWekFKeTFtMU5pakVDcWNYZVdL?=
- =?utf-8?B?bTRGWDZKcnk1L1pYdGs5N0kxVmt0dU9VV1k4UG01ZkpqcmRsRURVd3ZlUjlt?=
- =?utf-8?B?bXJKalVsYjVLNTZEVnJxUHUrOHgvZGliSG9KTFA4YXFEQUxQZEFFMVpzTDRD?=
- =?utf-8?B?WmEzbU12RXVjbnRmNVREK25tbTZYTlM5YWZ1ZWlZY0h6QXJsMDJxa2NXSGZy?=
- =?utf-8?B?em0yWlVTZjhKQTQxS1JMSGl5WmVyWFlibkloajV0VHErR2JQQWhlcGdMdXRG?=
- =?utf-8?B?TTFPNGY1eExLeENWSGRkMUpJaGtTbUdlWmYxZlRrc3orcXhKaWhwbmhsTlhU?=
- =?utf-8?B?K3pncWtscHY0dVpjT3loVUxsYlU5SVVLMDBsekJDTS9PdHd3TURMUzZpNzFD?=
- =?utf-8?B?bjNON0dZbkJSemdHdEZNTGlNL3VLM1cyTllrdTllcUtpWTJ3cVROcng5UFYz?=
- =?utf-8?B?NUFUeTNEOW1VWHE0Uzg3YWhLRnVvMHhWczNVMG1Pb0hMZUpRWHBsbWlmTXJs?=
- =?utf-8?B?bkQ2cUlza0J0ZkgrbHAzUzZ0STU3QzE5b0Z3blRSclVCNnhiV1dRQmhqc1BQ?=
- =?utf-8?B?MjZIbmY4SUhnaHZsSmMwRzB0NW1rakNTMmM5UExKV2ZuNncvZ24xbGtVSk1B?=
- =?utf-8?B?NVA2bHNOWVVzRzhGdXdXdU1NdENFY0JPUTVwa0dhVDFZQWE2eVFQZUIxbkEw?=
- =?utf-8?B?eVNScXJSVnA4M1VIcG90T2R2TXU0d3crZ3IvNlk4OFN1Y1ArNlh4ZEtuMjlD?=
- =?utf-8?B?N1NZMmZNZzNxandrSUpmTFRvRTR0eldpcVUybVEvOWI5LzFHWGtkeGJNMkQ5?=
- =?utf-8?B?ZzNnNlV0STlnb3VzWVZGUVFqa0ZpbDVYL0VMTHRwYlBkeEs4ejJBOEFadWN2?=
- =?utf-8?B?NkdVQ1JPQUJQT0dLUHZuc05oenViTmF2bUdMRnZSS1ZvWGc0QldOOWJQdTJB?=
- =?utf-8?B?QmxxZGFqckwrVnZQaFE1bWhkVGdheXdFZFBXM1Ntczg4UzQ4MWRjb1VoYitP?=
- =?utf-8?B?VzVvNFpPNVZZbUc1MnFrcnRBa2RvcUVpUnBBNFUwNFZuTHF0WW1CT1A0Z3ZJ?=
- =?utf-8?B?QjhieW5XNlJuSjl4U3JvS0hiUE94d2lpYmM5WjdYeVRDdVlURzIzUjdSQno2?=
- =?utf-8?B?M0lna2JDbzZYcHd4eGxsK1RYaEZoSW1lOUQ5ZXM4QjQ0K0dQTlJZd28vRkZs?=
- =?utf-8?B?MWZxMjRNVk5TaENMa3d2dGhmVlRycmpVcFpYVzE1TU56T0g1MGdUQ3VTRXlR?=
- =?utf-8?Q?O2k9QUQTo3urSp9MmsvYAffK9GCzd+ALIrnsl?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a2f5fde0-ba0f-4971-6717-08dea6a8b343
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8585.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Apr 2026 11:07:42.7151
+	KiWj6cBhjda5wAgDLOyvM42vSrFnqOCGWAmZHRTopzi0tbrFe8q4M9eOj/4Im2F6DaMRVSfJRs2X7qjZ1U0x+SuecUXh0R+aG0P/FshQA4zI6QDflisHJBxCeRYc86U9MmXSn0OASpcm0vC79jOIRPOszIgDKSs3hLMHwDp1lR6kGmjOqUwNTlGhrcyJq6N95yJwVQtksALmBCdnPd5YPf+YTN/+ZLSRz/1apfGqWBYAfOwQDw57Bp+S68J5ASYIJiLQyl27Gp3hUUBu7cffCYVks38n0bnZ7W3ZQvLpXHvcfhILfLHzbPKxXCFVQH17/63SExIcGZUSyOGO/P6OK83rO9uF4EtkvEkvy2JuP6dY2O4zXUuVecIwPxPmNPeDr7nQE2Nf7+ViRzEbSdOqc+faImgZS0HonweUWnbkdwNr2oAYamQ3cPKPbIuwdLsl
+X-OriginatorOrg: ti.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Apr 2026 11:17:29.5154
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4Cg3c80wgXqplKxSJmmolV7blTeRNxwjaIsz9Q2dSHRgX1MeYE3tXm5nbpUyTCuQxP8aCc+nXnz6acXnGfeA3g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10583
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9ef5e938-fe76-44ed-a8a5-08dea6aa112f
+X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.21.195];Helo=[flwvzet201.ext.ti.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DM2PEPF00003FC8.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR10MB4493
 
-Now that all consumers have been updated to no longer dereference fields
-inside struct phy, we can hide its definition altogether from public view.
+This patch series adds QoS support to the ICSSG PRUETH driver.
+The first patch implements mqprio qdisc handling and TC offload hooks
+so userspace can request TC mappings and queue counts.
 
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
----
-Cc: Abhinav Kumar <abhinav.kumar@linux.dev>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc: "André Draszik" <andre.draszik@linaro.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>
-Cc: Andy Yan <andy.yan@rock-chips.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>
-Cc: Chanho Park <chanho61.park@samsung.com>
-Cc: Chen-Yu Tsai <wens@kernel.org>
-Cc: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Cc: Damien Le Moal <dlemoal@kernel.org>
-Cc: Daniel Machon <daniel.machon@microchip.com>
-Cc: David Airlie <airlied@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Dmitry Baryshkov <lumag@kernel.org>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Fabio Estevam <festevam@gmail.com>
-Cc: Frank Li <Frank.Li@nxp.com>
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: "Heiko Stübner" <heiko@sntech.de>
-Cc: Inki Dae <inki.dae@samsung.com>
-Cc: Jagan Teki <jagan@amarulasolutions.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: JC Kuo <jckuo@nvidia.com>
-Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
-Cc: Jessica Zhang <jesszhan0024@gmail.com>
-Cc: Joe Perches <joe@perches.com>
-Cc: Johan Hovold <johan+linaro@kernel.org>
-Cc: Jonas Karlman <jonas@kwiboo.se>
-Cc: Jonathan Hunter <jonathanh@nvidia.com>
-Cc: Kevin Xie <kevin.xie@starfivetech.com>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Cc: "Krzysztof Wilczyński" <kwilczynski@kernel.org>
-Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
-Cc: Linus Walleij <linusw@kernel.org>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Magnus Damm <magnus.damm@gmail.com>
-Cc: Manivannan Sadhasivam <mani@kernel.org>
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Marijn Suijten <marijn.suijten@somainline.org>
-Cc: Markus Schneider-Pargmann <msp@baylibre.com>
-Cc: "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc: Mathias Nyman <mathias.nyman@intel.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Michael Dege <michael.dege@renesas.com>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>
-Cc: Nicolas Ferre <nicolas.ferre@microchip.com>
-Cc: Niklas Cassel <cassel@kernel.org>
-Cc: Nitin Rawat <quic_nitirawa@quicinc.com>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: Peter Chen <peter.chen@kernel.org>
-Cc: Peter Griffin <peter.griffin@linaro.org>
-Cc: Rob Clark <robin.clark@oss.qualcomm.com>
-Cc: Robert Foss <rfoss@kernel.org>
-Cc: Rob Herring <robh@kernel.org>
-Cc: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Cc: Samuel Holland <samuel@sholland.org>
-Cc: Sandy Huang <hjc@rock-chips.com>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Sean Paul <sean@poorly.run>
-Cc: Sebastian Reichel <sre@kernel.org>
-Cc: Shawn Guo <shawn.guo@linaro.org>
-Cc: Shawn Lin <shawn.lin@rock-chips.com>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: Steen Hegelund <Steen.Hegelund@microchip.com>
-Cc: Thierry Reding <thierry.reding@gmail.com>
-Cc: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Tudor Ambarus <tudor.ambarus@linaro.org>
-Cc: Vincent Mailhol <mailhol@kernel.org>
-Cc: Yixun Lan <dlan@kernel.org>
-Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+It also integrates a driver-side mechanism to program the firmware
+with the IET/FPE preemption mask and to kick the firmware verify state
+machine when frame preemption is enabled. The second patch adds ethtool
+perations for the MAC Merge (Frame Preemption) sublayer, exposing .get_mm,
+.set_mm and .get_mm_stats so admins can view and change MAC Merge
+parameters and retrieve preemption statistics.
 
-v2->v7: none
-v1->v2: collect tag
----
- include/linux/phy/phy.h | 2 --
- 1 file changed, 2 deletions(-)
+v4: https://lore.kernel.org/all/20260224124803.3634808-1-m-malladi@ti.com/
 
-diff --git a/include/linux/phy/phy.h b/include/linux/phy/phy.h
-index 34b656084caf..0fdcefaa3f55 100644
---- a/include/linux/phy/phy.h
-+++ b/include/linux/phy/phy.h
-@@ -12,8 +12,6 @@
- 
- #include <linux/phy/phy-props.h>
- 
--#include "../../../drivers/phy/phy-provider.h"
--
- struct device;
- struct device_node;
- struct phy;
+MD Danish Anwar (2):
+  net: ti: icssg-prueth: Add Frame Preemption MAC Merge support
+  net: ti: icssg-prueth: Add ethtool ops for Frame Preemption MAC Merge
+
+ drivers/net/ethernet/ti/Makefile              |   3 +-
+ drivers/net/ethernet/ti/icssg/icssg_config.h  |   9 -
+ drivers/net/ethernet/ti/icssg/icssg_ethtool.c | 107 +++++++-
+ drivers/net/ethernet/ti/icssg/icssg_prueth.c  |   7 +
+ drivers/net/ethernet/ti/icssg/icssg_prueth.h  |   9 +-
+ drivers/net/ethernet/ti/icssg/icssg_qos.c     | 232 ++++++++++++++++++
+ drivers/net/ethernet/ti/icssg/icssg_qos.h     | 106 ++++++++
+ drivers/net/ethernet/ti/icssg/icssg_stats.c   |   5 +-
+ drivers/net/ethernet/ti/icssg/icssg_stats.h   |   5 +
+ .../net/ethernet/ti/icssg/icssg_switch_map.h  |   5 +
+ 10 files changed, 471 insertions(+), 17 deletions(-)
+ create mode 100644 drivers/net/ethernet/ti/icssg/icssg_qos.c
+ create mode 100644 drivers/net/ethernet/ti/icssg/icssg_qos.h
+
+
+base-commit: 790ead9394860e7d70c5e0e50a35b243e909a618
 -- 
-2.34.1
+2.43.0
 
