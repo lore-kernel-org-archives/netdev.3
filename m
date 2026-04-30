@@ -1,358 +1,136 @@
-Received: from mail-qk1-f201.google.com (mail-qk1-f201.google.com [209.85.222.201])
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD723372B4F
-	for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 06:16:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1321376BE8
+	for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 06:20:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777529782; cv=none; b=nrgfLQaHuGXKTLx4qg+BGhN2IJ09cP4DGnzr6udmv70Oyhq3DCMK4JBe2kZjeNEDk0bJENoEcw2meCBzjgi26INY1N+jcW7kITYHr4FeEBydizXSpKrUtUU3JG6DQ+FuzVApY/86un5BnLr6koggsyETY9zf07eUwTaMfVMg5uc=
+	t=1777530041; cv=none; b=ZkdQJoei3bRDnsvjjxWp1jpGpyG1At9dQo35qvzb9ujCrd4vzMIK1KRuEH/umgZcniupI91oEvs7vw6FXeTaEtEixd7CzA/jzcfQ4PxB3XGtakMbQZB3c/V9uctH5aWPNCCqF7J1guIH67ExYkM7fIyV3i/lkSGquwt1ZRVLCME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777529782; c=relaxed/simple;
-	bh=EwKguQHcYVOZf1q+mNWMh0C1GDcuoDfwk1HVTGRUuAg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=XG8fbaL0PktLin7ZlaiOz6vFXmAj1QRc0lWJqwhhONcH6z3IY/b7+NJ2eap6wi64A/yyQFa5irKJQyECQxIOgWZRnsa/+eBn6hus3/2sU4OZlGvekgvCz+ywzpYmOCN8u47zFo4KraK9ziN+xx/kDoc9IfE1T8cPk1dWpVKEc+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PJcjy2HV; arc=none smtp.client-ip=209.85.222.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1777530041; c=relaxed/simple;
+	bh=WoVUCUrfo2gwpqQRWaT4c9mJLRFmqHWrpaoGhQn80Hk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GMTKVzWMxIrmQlzTvjF17xhj2h/mnM1Z2ZFDGyFchfS1o9uiQD2l5rB3Sf0X1D2UL53ZdpgGuy0F+nDIu/HyvD7z/rwVtAVefFKQjWhkYp0SmvQhtJDA1gP01S2jMsEVU7YCu01pkeMG3eTrL+jwPKBTZMIqlOP2PYxuvwpxFdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HmBHV95e; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PJcjy2HV"
-Received: by mail-qk1-f201.google.com with SMTP id af79cd13be357-8f9e55c40a5so69678085a.3
-        for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 23:16:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HmBHV95e"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-43cfde3c3f3so476243f8f.3
+        for <netdev@vger.kernel.org>; Wed, 29 Apr 2026 23:20:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777529780; x=1778134580; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=juFc9ZGJFjBZi/NqWauZ61qvxKz7qoCHSFAnSDasH0g=;
-        b=PJcjy2HVALQ3wybPdcI8+W9hDfQuG76su/oSQoMbMKDQKSXEeFLskzRmIwPk3Rvg8T
-         QUIQAF5+ya5PoKm9endjeOwetD82F5J07yvz9yq7PaPehJoY7CRARZ0bEpr8p+24YdVE
-         UYs1OeliYqwu1MapoGrbc7fVG7brMA97WceUPlXV9zraOZXzZfg8sz10yMNQPrGhF8j0
-         387b4qwbGX7eDl0zQQ242xLEZ5bMz8qKmy8UbzBhVC/eSpkdV1tLtEsq/37VO3mTuo0m
-         u9qOSa2hnM07pp2Xt2rk5saEey9EHZOkLpMNKV8swaMalrFDVOIOLT+NoVCzUhFyNjEh
-         JDoQ==
+        d=gmail.com; s=20251104; t=1777530037; x=1778134837; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=sV2UBVZcC8+xJMcWfLN7GQdGIuXPa9HMH6HdwJRVHxY=;
+        b=HmBHV95ecCWCsvBZTkzngwPftEEvTs3QGvRVnwaDoTXDr3TJqbJ51mVZR/2HpKaN/u
+         LGiGIPQQod5JIwTkW2WaXVMfCyjoBxIF6Bwi3YiSJknp8YyIBPTWyThJYLE5NPp859EF
+         7aivl48KiyPS0sxwHbfbHOdOgtz6SWC5zOyW8I1XhPsYvxnfkL+VhPecmhkaIEZE7Wzm
+         TwJMCTiJxlKX/OrhXE2qo39WAaZ5KAwp+S7o8E8KZvsWvBj3SlP1P8rddDuifLZNpO/O
+         LK048H7sybWEOvjxJpUUx58mOgDHAsZgjkjajrTwegZEQnLpdXpec/u7Gl5cy9plM82x
+         ljWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777529780; x=1778134580;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=juFc9ZGJFjBZi/NqWauZ61qvxKz7qoCHSFAnSDasH0g=;
-        b=tMyA/nD5MNpHNp9vI6GW3JUdMqdeUIbUQvA/cfowmkLkh2nuZSisiaFY3ccs6+vpds
-         sRG8U0SShOqCnBQ/QoQLLVlNokVTK+jASugdUxTp8WGpb8b6H7RKnnHiQNdP++ydd6pp
-         FAEoDHrCzchi4pnFZMIT7L7T2BPibwyc7Ic1UmY7lrsTaLjoNpa88//yP7fVaKqz+2OB
-         Q6a7t48RViAFx5Sz22rbLBHR/x/OyJgoXmYllQXAIeWv9LMdDr8GotqzsVWVBtA/16jA
-         hK78biRJtstxmNW1ZboTgXKmlb/jAgBPo/4cMgIF8mssvdH2tnuAAnJHC5uIWPCpkfAi
-         eSmQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+/6DPkCIs23kT4IHKkdGGfFELuyuX+ng2ni1Y1Kq77JqcxqbezCfK+hrYawZq3n7xMNM44C1U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwxO+s7krGq/DYD1+hwdGnAnHC7JWDt/183W63A1/kps2Yh4nVX
-	M5teUdiWSFuyhUFHRx3qQvcdDTqPqPMm3ssRor4frNy4QskePdYz+ZignRBiPZA7XeidIwBFuRB
-	18HVXTBWybrtYQg==
-X-Received: from qkbi3.prod.google.com ([2002:a05:620a:5203:b0:8cd:73d8:9b39])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:1a1d:b0:8f4:3a1a:d899 with SMTP id af79cd13be357-8fa8a0de04cmr259734985a.59.1777529779725;
- Wed, 29 Apr 2026 23:16:19 -0700 (PDT)
-Date: Thu, 30 Apr 2026 06:16:10 +0000
-In-Reply-To: <20260430061610.3503483-1-edumazet@google.com>
+        d=1e100.net; s=20251104; t=1777530037; x=1778134837;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sV2UBVZcC8+xJMcWfLN7GQdGIuXPa9HMH6HdwJRVHxY=;
+        b=RTr4nVHcXHcxD8v/+JSeeRPtP3dLrp/i9r2sUy+59HufeNPY16awN2ambpsCdDs/VG
+         +KvPurMU5fuaexxzTOmtWp9q44fAu+J92rkdBq1UNf3C7gIEzRd/oco64O7SrQy1aXnr
+         OrK+qzt0HW6USETqxLEgCNGcmwZ/sMzZz2FjtqvMKpeqHfQ0HXmGN94wRFAAy8BJNWKz
+         QCnFixmjaTXXGSKDVQKneV0CKtRbATswTLSZ2sl/nkYssX8umjPvpKm24mcSeq05Tn3X
+         9IGAh5nzkW5E9l6RB8WjRJsxhCcOHAHbc6EsO+yyqwjdq25Xx6WyRje2Xle7XG/a8J7v
+         n31Q==
+X-Forwarded-Encrypted: i=1; AFNElJ9mYPuISsYChN98rPuOumoIDfrSGw8o+nfSceGa7Kvz96clOuSTeee7dsTK0X+01RelIZtK9Zs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxzWbicGBi1BnJ4bjeUbJuX6ZS4mWVFQmpOnPN3yXD5NNGjnkZv
+	uUd7d8HZ7ho269fVvHkffC8JHukzSapAZzuHXPwcqSXpub7oVteejwmc
+X-Gm-Gg: AeBDies5zX8+JWVJC/nkLnf+7P5Hy5AsirX1LYry7HAnKsmClfSyeJ7hUOkosT9qfK2
+	GuEclg5kSJZP16UePYQ8lxSNhgb9AROyJxQ1wgiKuae7+YDFnkrS1n4KRoeUyAVtvsfWYizez8F
+	w5CMeTcNQ7O/ZPVvHswZOOBwS85ltr/WQEmm1Vn8NdPLyKwWgjWJNSGzkUu5Xe9cfYKx4S8pCLW
+	XGO//9eiWwGYZeDVlp2QQ3rwcF6w+PTvMZJRj961mq1YCO6c/2MHXu6FxQEzSMqlju07zOQ6GZ+
+	1Zv2y1y7rf06fCBepYvtg/L4JR7d/TEeoIDxZYWuvzSa7jd+ywj/RekTyfIfSihOyINWYiMROO+
+	SpV17o7Gq018v/szJmKoefRIr7enHB+4Qnbn6KfQvgdvbqKrOX29dPYAFp3i1DDTUJXhUoZ4oaA
+	g/j5QR8xIPKGfOKkm2zvBipNd/vmwUkQhslhYXj+RsLinQnLR3HTFiEvSv3wnk5UOCRIw/+L42e
+	i5M/ZC4UTyw12KMIuuO+nAceZ20dtjB
+X-Received: by 2002:a05:6000:288d:b0:43c:fde7:f1 with SMTP id ffacd0b85a97d-4493e0c3deemr2155856f8f.18.1777530036849;
+        Wed, 29 Apr 2026 23:20:36 -0700 (PDT)
+Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-447b3d481fdsm11373101f8f.8.2026.04.29.23.20.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Apr 2026 23:20:36 -0700 (PDT)
+From: David Carlier <devnexen@gmail.com>
+To: daniel.zahka@gmail.com,
+	kuba@kernel.org
+Cc: willemdebruijn.kernel@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	raeds@nvidia.com,
+	kees@kernel.org,
+	cratiu@nvidia.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	David Carlier <devnexen@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] psp: reject packets carrying unsupported PSP optional fields
+Date: Thu, 30 Apr 2026 07:20:33 +0100
+Message-ID: <20260430062033.20428-1-devnexen@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260430061610.3503483-1-edumazet@google.com>
-X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
-Message-ID: <20260430061610.3503483-3-edumazet@google.com>
-Subject: [PATCH net 2/2] net/sched: sch_cake: annotate data-races in
- cake_dump_class_stats (II)
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Jamal Hadi Salim <jhs@mojatatu.com>, 
-	"=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?=" <toke@toke.dk>, Jiri Pirko <jiri@resnulli.us>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-cake_dump_class_stats() runs without qdisc spinlock being held.
+psp_dev_rcv() documents that it does not support optional PSP fields
+but never enforces it. The helper unconditionally strips a fixed
+PSP_ENCAP_HLEN, so a frame whose PSP header carries options is
+silently mis-decapsulated: option bytes spill into the inner packet
+head and parsing fails downstream on a corrupted skb instead of being
+rejected early.
 
-In this second patch, I add READ_ONCE()/WRITE_ONCE() annotations for:
+Validate hdrlen, crypt_offset and PSPHDR_VERFL_VIRT, and hoist the
+psph read above skb_ext_add() so rejected packets do not pick up an
+SKB_EXT_PSP extension only to drop it. Both in-tree callers gate on
+hardware-validated, opt-less PSP, so this is hardening rather than a
+reachable corruption path.
 
-- flow->deficit
-- flow->cvars.dropping
-- flow->cvars.count
-- flow->cvars.p_drop
-- flow->cvars.blue_timer
-- flow->cvars.drop_next
-
-Fixes: 046f6fd5daef ("sched: Add Common Applications Kept Enhanced (cake) qdisc")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
+Fixes: 0eddb8023cee ("psp: provide decapsulation and receive helper for drivers")
+Cc: stable@vger.kernel.org
+Signed-off-by: David Carlier <devnexen@gmail.com>
 ---
- net/sched/sch_cake.c | 131 +++++++++++++++++++++++--------------------
- 1 file changed, 71 insertions(+), 60 deletions(-)
+ net/psp/psp_main.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-index 806eb73d6a05e1a7391e4bef55d6aca5052bb8ab..5862933be8d746bf222e6aa2ad5c9433757c9b07 100644
---- a/net/sched/sch_cake.c
-+++ b/net/sched/sch_cake.c
-@@ -399,14 +399,14 @@ static void cake_configure_rates(struct Qdisc *sch, u64 rate, bool rate_adjust);
-  * Here, invsqrt is a fixed point number (< 1.0), 32bit mantissa, aka Q0.32
-  */
+diff --git a/net/psp/psp_main.c b/net/psp/psp_main.c
+index 524978dfb8fd..53d7e14c054a 100644
+--- a/net/psp/psp_main.c
++++ b/net/psp/psp_main.c
+@@ -321,12 +321,20 @@ int psp_dev_rcv(struct sk_buff *skb, u16 dev_id, u8 generation, bool strip_icv)
+ 	if (unlikely(uh->dest != htons(PSP_DEFAULT_UDP_PORT)))
+ 		return -EINVAL;
  
--static void cobalt_newton_step(struct cobalt_vars *vars)
-+static void cobalt_newton_step(struct cobalt_vars *vars, u32 count)
- {
- 	u32 invsqrt, invsqrt2;
- 	u64 val;
- 
- 	invsqrt = vars->rec_inv_sqrt;
- 	invsqrt2 = ((u64)invsqrt * invsqrt) >> 32;
--	val = (3LL << 32) - ((u64)vars->count * invsqrt2);
-+	val = (3LL << 32) - ((u64)count * invsqrt2);
- 
- 	val >>= 2; /* avoid overflow in following multiply */
- 	val = (val * invsqrt) >> (32 - 2 + 1);
-@@ -414,12 +414,12 @@ static void cobalt_newton_step(struct cobalt_vars *vars)
- 	vars->rec_inv_sqrt = val;
- }
- 
--static void cobalt_invsqrt(struct cobalt_vars *vars)
-+static void cobalt_invsqrt(struct cobalt_vars *vars, u32 count)
- {
--	if (vars->count < REC_INV_SQRT_CACHE)
--		vars->rec_inv_sqrt = inv_sqrt_cache[vars->count];
-+	if (count < REC_INV_SQRT_CACHE)
-+		vars->rec_inv_sqrt = inv_sqrt_cache[count];
- 	else
--		cobalt_newton_step(vars);
-+		cobalt_newton_step(vars, count);
- }
- 
- static void cobalt_vars_init(struct cobalt_vars *vars)
-@@ -449,16 +449,19 @@ static bool cobalt_queue_full(struct cobalt_vars *vars,
- 	bool up = false;
- 
- 	if (ktime_to_ns(ktime_sub(now, vars->blue_timer)) > p->target) {
--		up = !vars->p_drop;
--		vars->p_drop += p->p_inc;
--		if (vars->p_drop < p->p_inc)
--			vars->p_drop = ~0;
--		vars->blue_timer = now;
--	}
--	vars->dropping = true;
--	vars->drop_next = now;
-+		u32 p_drop = vars->p_drop;
++	psph = (struct psphdr *)(skb->data + l2_hlen + l3_hlen +
++				 sizeof(struct udphdr));
 +
-+		up = !p_drop;
-+		p_drop += p->p_inc;
-+		if (p_drop < p->p_inc)
-+			p_drop = ~0;
-+		WRITE_ONCE(vars->p_drop, p_drop);
-+		WRITE_ONCE(vars->blue_timer, now);
-+	}
-+	WRITE_ONCE(vars->dropping, true);
-+	WRITE_ONCE(vars->drop_next, now);
- 	if (!vars->count)
--		vars->count = 1;
-+		WRITE_ONCE(vars->count, 1);
++	/* Fixed-length decap; reject optional fields rather than mis-decapsulate. */
++
++	if (unlikely(psph->hdrlen != PSP_HDRLEN_NOOPT ||
++		     psph->crypt_offset ||
++		     (psph->verfl & PSPHDR_VERFL_VIRT)))
++		return -EINVAL;
++
+ 	pse = skb_ext_add(skb, SKB_EXT_PSP);
+ 	if (!pse)
+ 		return -EINVAL;
  
- 	return up;
- }
-@@ -475,20 +478,20 @@ static bool cobalt_queue_empty(struct cobalt_vars *vars,
- 	if (vars->p_drop &&
- 	    ktime_to_ns(ktime_sub(now, vars->blue_timer)) > p->target) {
- 		if (vars->p_drop < p->p_dec)
--			vars->p_drop = 0;
-+			WRITE_ONCE(vars->p_drop, 0);
- 		else
--			vars->p_drop -= p->p_dec;
--		vars->blue_timer = now;
-+			WRITE_ONCE(vars->p_drop, vars->p_drop - p->p_dec);
-+		WRITE_ONCE(vars->blue_timer, now);
- 		down = !vars->p_drop;
- 	}
--	vars->dropping = false;
-+	WRITE_ONCE(vars->dropping, false);
- 
- 	if (vars->count && ktime_to_ns(ktime_sub(now, vars->drop_next)) >= 0) {
--		vars->count--;
--		cobalt_invsqrt(vars);
--		vars->drop_next = cobalt_control(vars->drop_next,
--						 p->interval,
--						 vars->rec_inv_sqrt);
-+		WRITE_ONCE(vars->count, vars->count - 1);
-+		cobalt_invsqrt(vars, vars->count);
-+		WRITE_ONCE(vars->drop_next,
-+			   cobalt_control(vars->drop_next, p->interval,
-+					  vars->rec_inv_sqrt));
- 	}
- 
- 	return down;
-@@ -507,6 +510,7 @@ static enum qdisc_drop_reason cobalt_should_drop(struct cobalt_vars *vars,
- 	bool next_due, over_target;
- 	ktime_t schedule;
- 	u64 sojourn;
-+	u32 count;
- 
- /* The 'schedule' variable records, in its sign, whether 'now' is before or
-  * after 'drop_next'.  This allows 'drop_next' to be updated before the next
-@@ -528,21 +532,22 @@ static enum qdisc_drop_reason cobalt_should_drop(struct cobalt_vars *vars,
- 	over_target = sojourn > p->target &&
- 		      sojourn > p->mtu_time * bulk_flows * 2 &&
- 		      sojourn > p->mtu_time * 4;
--	next_due = vars->count && ktime_to_ns(schedule) >= 0;
-+	count = vars->count;
-+	next_due = count && ktime_to_ns(schedule) >= 0;
- 
- 	vars->ecn_marked = false;
- 
- 	if (over_target) {
- 		if (!vars->dropping) {
--			vars->dropping = true;
--			vars->drop_next = cobalt_control(now,
--							 p->interval,
--							 vars->rec_inv_sqrt);
-+			WRITE_ONCE(vars->dropping, true);
-+			WRITE_ONCE(vars->drop_next,
-+				   cobalt_control(now, p->interval,
-+						  vars->rec_inv_sqrt));
- 		}
--		if (!vars->count)
--			vars->count = 1;
-+		if (!count)
-+			count = 1;
- 	} else if (vars->dropping) {
--		vars->dropping = false;
-+		WRITE_ONCE(vars->dropping, false);
- 	}
- 
- 	if (next_due && vars->dropping) {
-@@ -550,23 +555,23 @@ static enum qdisc_drop_reason cobalt_should_drop(struct cobalt_vars *vars,
- 		if (!(vars->ecn_marked = INET_ECN_set_ce(skb)))
- 			reason = QDISC_DROP_CONGESTED;
- 
--		vars->count++;
--		if (!vars->count)
--			vars->count--;
--		cobalt_invsqrt(vars);
--		vars->drop_next = cobalt_control(vars->drop_next,
--						 p->interval,
--						 vars->rec_inv_sqrt);
-+		count++;
-+		if (!count)
-+			count--;
-+		cobalt_invsqrt(vars, count);
-+		WRITE_ONCE(vars->drop_next,
-+			   cobalt_control(vars->drop_next, p->interval,
-+					  vars->rec_inv_sqrt));
- 		schedule = ktime_sub(now, vars->drop_next);
- 	} else {
- 		while (next_due) {
--			vars->count--;
--			cobalt_invsqrt(vars);
--			vars->drop_next = cobalt_control(vars->drop_next,
--							 p->interval,
--							 vars->rec_inv_sqrt);
-+			count--;
-+			cobalt_invsqrt(vars, count);
-+			WRITE_ONCE(vars->drop_next,
-+				   cobalt_control(vars->drop_next, p->interval,
-+						  vars->rec_inv_sqrt));
- 			schedule = ktime_sub(now, vars->drop_next);
--			next_due = vars->count && ktime_to_ns(schedule) >= 0;
-+			next_due = count && ktime_to_ns(schedule) >= 0;
- 		}
- 	}
- 
-@@ -575,11 +580,12 @@ static enum qdisc_drop_reason cobalt_should_drop(struct cobalt_vars *vars,
- 	    get_random_u32() < vars->p_drop)
- 		reason = QDISC_DROP_FLOOD_PROTECTION;
- 
-+	WRITE_ONCE(vars->count, count);
- 	/* Overload the drop_next field as an activity timeout */
--	if (!vars->count)
--		vars->drop_next = ktime_add_ns(now, p->interval);
-+	if (!count)
-+		WRITE_ONCE(vars->drop_next, ktime_add_ns(now, p->interval));
- 	else if (ktime_to_ns(schedule) > 0 && reason == QDISC_DROP_UNSPEC)
--		vars->drop_next = now;
-+		WRITE_ONCE(vars->drop_next, now);
- 
- 	return reason;
- }
-@@ -1924,7 +1930,7 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		flow->set = CAKE_SET_SPARSE;
- 		WRITE_ONCE(b->sparse_flow_count, b->sparse_flow_count + 1);
- 
--		flow->deficit = cake_get_flow_quantum(b, flow, q->config->flow_mode);
-+		WRITE_ONCE(flow->deficit, cake_get_flow_quantum(b, flow, q->config->flow_mode));
- 	} else if (flow->set == CAKE_SET_SPARSE_WAIT) {
- 		/* this flow was empty, accounted as a sparse flow, but actually
- 		 * in the bulk rotation.
-@@ -2166,7 +2172,8 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
- 			}
- 		}
- 
--		flow->deficit += cake_get_flow_quantum(b, flow, q->config->flow_mode);
-+		WRITE_ONCE(flow->deficit,
-+			   flow->deficit + cake_get_flow_quantum(b, flow, q->config->flow_mode));
- 		list_move_tail(&flow->flowchain, &b->old_flows);
- 
- 		goto retry;
-@@ -2232,7 +2239,7 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
- 		if (q->config->rate_flags & CAKE_FLAG_INGRESS) {
- 			len = cake_advance_shaper(q, b, skb,
- 						  now, true);
--			flow->deficit -= len;
-+			WRITE_ONCE(flow->deficit, flow->deficit - len);
- 			b->tin_deficit -= len;
- 		}
- 		WRITE_ONCE(flow->dropped, flow->dropped + 1);
-@@ -2259,7 +2266,7 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
- 			     delay < b->base_delay ? 2 : 8));
- 
- 	len = cake_advance_shaper(q, b, skb, now, false);
--	flow->deficit -= len;
-+	WRITE_ONCE(flow->deficit, flow->deficit - len);
- 	b->tin_deficit -= len;
- 
- 	if (ktime_after(q->time_next_packet, now) && sch->q.qlen) {
-@@ -3153,6 +3160,8 @@ static int cake_dump_class_stats(struct Qdisc *sch, unsigned long cl,
- 		return -1;
- 	if (flow) {
- 		ktime_t now = ktime_get();
-+		bool dropping;
-+		u32 p_drop;
- 
- 		stats = nla_nest_start_noflag(d->skb, TCA_STATS_APP);
- 		if (!stats)
-@@ -3167,21 +3176,23 @@ static int cake_dump_class_stats(struct Qdisc *sch, unsigned long cl,
- 			goto nla_put_failure;			       \
- 	} while (0)
- 
--		PUT_STAT_S32(DEFICIT, flow->deficit);
--		PUT_STAT_U32(DROPPING, flow->cvars.dropping);
--		PUT_STAT_U32(COBALT_COUNT, flow->cvars.count);
--		PUT_STAT_U32(P_DROP, flow->cvars.p_drop);
--		if (flow->cvars.p_drop) {
-+		PUT_STAT_S32(DEFICIT, READ_ONCE(flow->deficit));
-+		dropping = READ_ONCE(flow->cvars.dropping);
-+		PUT_STAT_U32(DROPPING, dropping);
-+		PUT_STAT_U32(COBALT_COUNT, READ_ONCE(flow->cvars.count));
-+		p_drop = READ_ONCE(flow->cvars.p_drop);
-+		PUT_STAT_U32(P_DROP, p_drop);
-+		if (p_drop) {
- 			PUT_STAT_S32(BLUE_TIMER_US,
- 				     ktime_to_us(
- 					     ktime_sub(now,
--						       flow->cvars.blue_timer)));
-+						       READ_ONCE(flow->cvars.blue_timer))));
- 		}
--		if (flow->cvars.dropping) {
-+		if (dropping) {
- 			PUT_STAT_S32(DROP_NEXT_US,
- 				     ktime_to_us(
- 					     ktime_sub(now,
--						       flow->cvars.drop_next)));
-+						       READ_ONCE(flow->cvars.drop_next))));
- 		}
- 
- 		if (nla_nest_end(d->skb, stats) < 0)
+-	psph = (struct psphdr *)(skb->data + l2_hlen + l3_hlen +
+-				 sizeof(struct udphdr));
+ 	pse->spi = psph->spi;
+ 	pse->dev_id = dev_id;
+ 	pse->generation = generation;
 -- 
-2.54.0.545.g6539524ca2-goog
+2.53.0
 
