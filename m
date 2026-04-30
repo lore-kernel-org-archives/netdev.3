@@ -1,132 +1,96 @@
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 638AE44BC93
-	for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 15:48:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.170
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777564090; cv=pass; b=rg6SoyPSj/QyzlYgdMV1JzP03dzZkRqEIAQg6gRAyYBhrcFpSUKb8kQsMhnLR7gA088fhO95EYvwRNo2j8RdTtW9rPkZcX7pCAp+6b+7Qqk6Xj3MNsL2s6OD7iPlgYc1KPzJwsGKVuCxuMQ7fLsDPQ6JIY4KXFiKYZcUVIH6NJY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777564090; c=relaxed/simple;
-	bh=NHff015SBWIIZDAU//3Z+xZwXxY9PSwzlnhITW5PnP8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JVYLMXJxCjudC93t3Di8ZQ0+lj9b19S8wZUKkafFIw2p/HOEupqEVaat6gz6VEL0TMyMVrUJYSLJALJmV5pws+ZU9BZvKqXhkrprqnKVekk+a6HcgwNK4rmSJYz1JG3IMs2ad++17PxaYvbR0b0ZCJVwilGWSTVtorT9O3gOJUg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c+Lv33Va; arc=pass smtp.client-ip=209.85.128.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CA0F44CAE2
+	for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 15:49:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777564187; cv=none; b=JeCy50nM+0ULg2DZkZS/p+mWZNJSSkehiQiuFnNzScUWzGQXtJYLkuRlqF8uJGp1RZA/jhgEb5cr/syFH0jIYlNQs55qWt2VIhZ9fs/nm4zLS3CAwgXJAhnhS3DnM90R2oAHnmCCyQjzaN8olL9EoSrjZbtSH5UhIomZmGzbP+o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777564187; c=relaxed/simple;
+	bh=Pd8sYVFV1kR0uSimC6jrCcGJEkwAziThLBOjGnujbaw=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:In-Reply-To:
+	 Content-Type:References; b=a8xTtbN2uNMHULG8OFSZ7JLY+ltUzQ5Bg0HHuj075nWa9gVvJSvaXMB4uKJjSA40yrFkqnsq2CnJLEfgdX17uCskIs7uw1s8lYWHCnPAyg6OErmod0cm11gW1e7ds4mGgrU+OLo0FuNshRemByUVJ+1Dj/iccDnDVrTZaLZvbHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=YDPegXpS; arc=none smtp.client-ip=210.118.77.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c+Lv33Va"
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-7982c3b7da9so10774817b3.1
-        for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 08:48:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777564088; cv=none;
-        d=google.com; s=arc-20240605;
-        b=MKyYohWqEoopORwqrWKt56h4PhKnU5jD4PlyLEtkWKZ8LMUv02/8IQK68jL1oEhmhU
-         cB38PdlC4aiprSBgO5s6bFpOXLxL7DB+EUtkvZSFPwqMYIr3oZEBwIOBrHMDAVM1+xYa
-         sbqfh4G8eLQDdiNOgn4AG8hAyzBTNqFcF+/W6v3EUUIjJKt/RNzWMaVI0ziXVj81iGQW
-         X5NQRXKbd+5GBXeUlx19mhcWRCtVhl6UQ0Sz7OVQH5Z4HQmTGp6tKqU1AcRCIMo1lYJ+
-         crMipaf0G3bXUVvpvJUsUWDSWRTzfypJ4BRPS4A0zt4OJylwNrYIEHwKRTJu0BfNtVO6
-         AZFg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Kmrba/VIZGvmAtnPma5JUyYaORZG2GeWjvJefcuxw6o=;
-        fh=VgnLwlum05VtraqkpEeP6IlcNgIDW19FsW3aDxwPStw=;
-        b=Kayd2NcFJhB3IFlkqgobHsbVvBu+KgJYi9m7R6pLUR6NffMENY4fK4a1sGHqoHNdxK
-         qOjhcMnrbbUMcSFLc7mXOINjmbZB4QUG0+8XdmtDxUTmNbhRJK7WvaRN9D7TgAjyV/8L
-         CVHXGQYkWaSSvIRwYdR7gxPsSf7pzTdqsZ2ITLOUvGRdxZEAqmOB3yKP4rd84YLc1LZ1
-         Tm1iCOx+sFPva+LTCAEHp0s9dS9OhJxiXlbdKGf871asgUrrn1iF25ZX9abLN2PV7GD8
-         Ke2FSXPzy6ACV/FltRB1goCH8Cehr61+5rHnQ4n9zRFOtRNOtA9+tugu6MtJ85oDYcws
-         8aqQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777564088; x=1778168888; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Kmrba/VIZGvmAtnPma5JUyYaORZG2GeWjvJefcuxw6o=;
-        b=c+Lv33VaItaTVju8kazA/iSdt6kRPgb8QHIj4+XkKnEs+qPkp2jMoWCfIVzoFlPQKU
-         FKn05ZdLRugJYJXYjvIA4tYR9LdKtOWbO+/iOxoJmMybS3iWAr6KDOYn0TuOqas/tTKM
-         8ABbXCEIjHVoeiwQPke7LPc7+/CjbNWcx4ilmqV2anNBIaMZTU0LFBdpX3LL8PO9h6PE
-         TRNpKBcdkwxTqtkJtKGU/R4a9fteTI3gj7OSWA+HpJFhFjm+aeYxB0zpkRVOGNtC1cyv
-         dsNlN5DOwFatKlSq3mgLcZfcYGFnCzMPpDeVjgvekNFT0+kRRNnySPzTwTfTe7O5URD6
-         +bmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777564088; x=1778168888;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Kmrba/VIZGvmAtnPma5JUyYaORZG2GeWjvJefcuxw6o=;
-        b=NQ9HavDrtF7zmJFdoqCNk+niku0K5rxZbCm2YDLGgNyu0U7p5xbDhBiKo94YJnKuBf
-         WygrA7LhA0p87qnQSVqbXNRst5NoNp6gfThm8W7KmAlgtIEZpjxXVVhvKKP8kfz2DvsE
-         /I9iDwg+UEA6T3aQwJfw3CLdMIb920uZnofYRgluR+/AdT2lfSHwZekrVu0D/CO01kmV
-         NCgyiY+QhmxJg0Ji7+8Z+AJtt3sx/MRQBOz4SSDYJOD/z7LaBsS++cVmdqDHrZo0EWQA
-         j2yw2dTzNRmaUlwX3fN62wKfs7mjf/tI3OClpl8dKCbxdzgoqyxlZfiH5JADo+N5X4am
-         xTCQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/cwfmeb8OgF8wLz8HSFRSbGYm3B5zAbjxhudlYQDT+Np8m8C/Blbl8Z/V5RCFCocUXehEHAhk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzim8aTHO8sRREDAlTAuNHTIUvbCzTAPWrzOWFhLF6O/72FodZn
-	At8VYQZMikhMiOCDMOke00qRcFVnOU/H1DDtuRqDQI6eFhkfCPCfMrhiqs9dYT1KwC1h65gIYnj
-	wJL+Q1TN3BEBnArKcU5a4z8dRdrnS8W4=
-X-Gm-Gg: AeBDievgZu22sPa02oDRR+GC085LseAhdfr0mtMXze5qc6xqXfXieLiu48E+BWns9o9
-	8XW7pprXVwful+vTyTlh/vBQoSgn+JKTbNZX0lnIYy9UxAVUO4maF3quFevYm08mas1sttT8LdT
-	VnMqWoEywRRE5ZIMMJiSGVyZiJP8n4kghe6bg8gaT/wlvZbKmKq3K4TXBC/i4YU92VNOEX1ETwG
-	ukFLTMeMbKa0PE2EMtdJKCoS9djMM7+0bda6lIoxhllL7ewkMkLjY3gtpXeR44vEvcw7psTvNbD
-	fVKXi2hXwO8ooq1onbKnTuZHfJiLpCs44xzsttZSuwVIQCI=
-X-Received: by 2002:a05:690c:8:b0:79a:60f6:c5ed with SMTP id
- 00721157ae682-7bd52809836mr36661477b3.6.1777564088379; Thu, 30 Apr 2026
- 08:48:08 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="YDPegXpS"
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260430154943euoutp01aa4ecc9fcaac5bca7cedc8429f3ee74e~rLTTzpenl2250222502euoutp01T
+	for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 15:49:43 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260430154943euoutp01aa4ecc9fcaac5bca7cedc8429f3ee74e~rLTTzpenl2250222502euoutp01T
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1777564183;
+	bh=iCKWbPC+I/tUrQZJo+RFleYMY1viaZ7b8su8ZQeFbG8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=YDPegXpShtz3+ydmnC4zWjutNW66ZiSt2HRTHYrXgjRx8ghZ9tTFZzomldrOLO+Kj
+	 ydUF+T+w0EUOOBrXecEOjWZKHMm2cN31en3SOjqAfIMKIDLGhEBq8TQn2NKKQjQARy
+	 f0Uxp+ilwFYC7W77ZgwLjlm2BKwn7gnQd8gz+vQ8=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20260430154943eucas1p1bceacf3abe2f9fa802912566f1876217~rLTTrGz3v0489904899eucas1p1s;
+	Thu, 30 Apr 2026 15:49:43 +0000 (GMT)
+Received: from AMDC4622.eu.corp.samsungelectronics.net (unknown
+	[106.120.77.34]) by eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20260430154942eusmtip233cda62c92a14610cd4e27508e05f97c~rLTTNpc3N1125511255eusmtip2i;
+	Thu, 30 Apr 2026 15:49:42 +0000 (GMT)
+Date: Thu, 30 Apr 2026 17:49:39 +0200
+From: Jakub Raczynski <j.raczynski@samsung.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH RESEND net-next] net/sun: Fix multiple typos in comments
+Message-ID: <afN6CpRoH6g2RdoB@AMDC4622.eu.corp.samsungelectronics.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260326081127.61229-1-dqfext@gmail.com> <9d7f1bbc-155d-4c18-bcf7-732ebe4cbf67@redhat.com>
-In-Reply-To: <9d7f1bbc-155d-4c18-bcf7-732ebe4cbf67@redhat.com>
-From: Qingfang Deng <dqfext@gmail.com>
-Date: Thu, 30 Apr 2026 23:47:57 +0800
-X-Gm-Features: AVHnY4KZEw6sEvZhRyNLFyexDtbd8Y82AgKjLjZiaVqz8Hfs_giwU2yWejKheeg
-Message-ID: <CALW65jYB1jWS5LnSxRCrEeCpPfhA8saqbYYfU-LkPh_25gWfsw@mail.gmail.com>
-Subject: Re: [RFC PATCH net-next v6 1/2] net: pppoe: implement GRO/GSO support
-To: Paolo Abeni <pabeni@redhat.com>, Felix Fietkau <nbd@nbd.name>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, David Ahern <dsahern@kernel.org>, 
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-ppp@vger.kernel.org, Pablo Neira Ayuso <pablo@netfilter.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20260430010322.2326574-1-kuba@kernel.org>
+X-CMS-MailID: 20260430154943eucas1p1bceacf3abe2f9fa802912566f1876217
+X-Msg-Generator: CA
+Content-Type: multipart/mixed;
+	boundary="----EbkeEIwBiIKV-5_.nU08j0UNUa-otTO645nIPTj5A2-x7-zv=_3474b_"
+X-RootMTR: 20260430010331eucas1p1e5a85246a4a475b4b70b883f4f241c26
+X-EPHeader: CA
+X-CMS-RootMailID: 20260430010331eucas1p1e5a85246a4a475b4b70b883f4f241c26
+References: <20260428101728.3537456-1-j.raczynski@samsung.com>
+	<CGME20260430010331eucas1p1e5a85246a4a475b4b70b883f4f241c26@eucas1p1.samsung.com>
+	<20260430010322.2326574-1-kuba@kernel.org>
 
-On Thu, Apr 30, 2026 at 5:34=E2=80=AFPM Paolo Abeni <pabeni@redhat.com> wro=
-te:
->
-> AFAICS, when the computed len is >=3D 64K, and the above min() will
-> truncate it, later pppoe_rcv() will drop the packet.
+------EbkeEIwBiIKV-5_.nU08j0UNUa-otTO645nIPTj5A2-x7-zv=_3474b_
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
 
-pppoe_rcv() does _not_ drop such packets.
-The drop condition is "skb->len < ntohs(ph->length)", not the other way aro=
-und.
+On Wed, Apr 29, 2026 at 06:03:22PM -0700, Jakub Kicinski wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
 
-> > +     skb =3D segs;
-> > +     do {
-> > +             phdr =3D (struct pppoe_hdr *)(skb_mac_header(skb) + nhoff=
-);
-> > +             len =3D skb->len - (nhoff + sizeof(*phdr));
-> > +             phdr->length =3D cpu_to_be16(len);
-> > +             skb->network_header =3D (u8 *)phdr - skb->head;
->
-> I understand is quite late for the following question, but...
-> The network headers points to the pppoe hdr. Should it point to the
-> actual IP hdr?
->
-> Why not? A comment in the code or in the commit message would be
-> appreciated.
+I should also implement any basic tools or AI to verify my writing skills.
+This patch was basically prepared with help of 'typos' script and yet has
+errors.
+> The "autonogotiation" to "autonegotiation" change looks correct, but
+> the neighbouring "in enabled" in the same sentence appears to be a
+> leftover grammar slip (should it read "is enabled"?).  Since this
+> sentence is already being touched as part of the typo cleanup, would
+> it make sense to fix that at the same time?
+Probably, no reason to not do that. Might be good to also change double spaces
 
-I'm not sure about the GSO stuff. This code is carried over from
-Felix's v3 patch unmodified and I haven't noticed any issues. Maybe he
-has the answer.
+> Neither "imperical" nor "emperical" is a correct English word; the
+> intended word is "empirical".  Was the replacement here meant to be
+> "empirical"?
+Writing fail. Funny enough, I had someone read/check this before sending and
+it slipped.
 
-FYI, Pablo Neira Ayuso is adding the "inline PPPoE GSO" to Netfilter
-flowtable: https://lore.kernel.org/netfilter-devel/20260430055836.223494-2-=
-pablo@netfilter.org/
-to work around missing GSO support in PPPoE driver, prior to this
-patch.
+Will resend whole patch soon.
+
+Regards
+Jakub Raczynski
+
+------EbkeEIwBiIKV-5_.nU08j0UNUa-otTO645nIPTj5A2-x7-zv=_3474b_
+Content-Type: text/plain; charset="utf-8"
+
+
+------EbkeEIwBiIKV-5_.nU08j0UNUa-otTO645nIPTj5A2-x7-zv=_3474b_--
