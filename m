@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4B44371D13
-	for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 06:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7555372EE0;
+	Thu, 30 Apr 2026 06:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777529407; cv=none; b=ZgTuuzMwJ2FCTdJlc6EvLVI1kwa0IV9DzrEuvi3yFhJqm1KnzzEDoGOLWpT2KB+KBxbavPpwfnbbD7+gjUxdi3COE5Sju7CMbSXXp8GPxdcuzA84JGEhzxBLLcY0QPn//yn7TCrLpFCrIFO/UgmwXptiGQGmT0QijWr+Rl14048=
+	t=1777529467; cv=none; b=F4e+TbaHx2l88CYoeXTDtPzk7Yp/ykFyHD0bpsq6+LLlftxTuheTZHMuxmPvJAfu8JNx7HHju3yQQv3kNwsJk+Ridmwtzz+Fub7vJceY7cf+BOrSGGLUlgU5H7KJmxvjZmmpZdUkVTJyl256d0OwyYD/tlqngjH7zFvXSjrja8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777529407; c=relaxed/simple;
-	bh=5LGbFKaNxM640OxqTHwRtRfZAeHQbWP4HNxgFgDBcME=;
+	s=arc-20240116; t=1777529467; c=relaxed/simple;
+	bh=diyXVB9D3839Jv7qi+h4ebb8PmsPBdrv3loyeloIAvw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WKnO+IiqhMTxTQPTaNT4i5+69XJ42K86EklY3xQ29YAE81zZoN4cIYsCtacHDS4avtnQLLnS6cGbbN4ELdzDzr5ZqgHyli0wEtRvXN+13XhzQpk3YAaDjCK20wj6Q+76B9MgVFdXIjV7z7xU1aVLO8yejBgfadrZiY5N/hmFgYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WIhvz2PN; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=RdHZrdtuLlO62c1dsit7ovVAQxaSCcn/QuoS3oT33Xa2vhq+0JN5EIqIp/BTzKTzKeslGgDI8qQXOAlku2FiOk5pHRWgqjIbLBXduDaUtlKO1j0z6PZEM0+9bOK0e9ijhoEUcsBUk5Z+wH/t8aHNervqyi6zFxG7xNt23yQtJSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cz5MuRVL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WIhvz2PN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ADA6C2BCB8;
-	Thu, 30 Apr 2026 06:10:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cz5MuRVL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0D55C2BCB8;
+	Thu, 30 Apr 2026 06:11:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777529406;
-	bh=5LGbFKaNxM640OxqTHwRtRfZAeHQbWP4HNxgFgDBcME=;
+	s=k20201202; t=1777529466;
+	bh=diyXVB9D3839Jv7qi+h4ebb8PmsPBdrv3loyeloIAvw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=WIhvz2PN3EMh8O53Knti2jhwyvH/dPLaMk6ezFZ3hfuxW4YOKBK6UJ8LkoOPn6K3G
-	 jwEpu9xz9YdB/mjKCsiS78OjKGbbmjsGYDyT/XIKgEtX/lo9dXSaWYNTABy5N0VGOT
-	 mQyHvHPutP/RkFykcWR7yZ6VhblMOQ+4YyJoJOkaoTsk8I4MFPiYGtwxvS3W3VpPDp
-	 BwAPlWU6//piRMBlWijLBbfCCIef/1vnax/Autuf0rVwr5Y0yT1iQCCRz/2aAylFMw
-	 ML0QniCjBoG8Xhfr5heetWAPyDeHOWnxUs2yjZto/dW4/yxN/HNWNuZsfntMd6DGJU
-	 ngfLsmmRleC1A==
-Message-ID: <02af16c7-78be-48c3-8019-8eb665303c72@kernel.org>
-Date: Thu, 30 Apr 2026 08:10:02 +0200
+	b=cz5MuRVLJcp+54PrCtrKjmULCjiwdVruZfkGJTAjjUChjrZitfM3aUcIK15rISWIK
+	 lFyFjib4/rIy7ygzGnw9NLivydKDee/8VfGFbLdTFNi3uyYvnzRWOY7gX1YYW6nduQ
+	 dBIl/iG0P4eyytTSs30eJTaNk3Ff3q1LSNL1+0QrCMKsDizPttqscSz2ygsIvobpYQ
+	 b2OXuYcSuZ+9+dAEEzm1sjqNRqq+1RfsxPgjbUK/N+3XeD0dN4B9K9voAmoM6/p+vY
+	 AUlvjMAdm/S4m2Kb0tFqGiQw2Kv8YjOQtAGgBGIIE/Tj70NPH+Jz8Xg/c36WSJ6WBL
+	 BDbq+BXT8yBqQ==
+Message-ID: <b5d9985c-474c-4866-bc5f-5b7b4be4d641@kernel.org>
+Date: Thu, 30 Apr 2026 08:10:58 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -35,15 +35,29 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [Security] NFC: digital: peer-controlled stack overflow in
- digital_in_recv_sensf_res() (sibling to CVE-2026-31622)
-To: G <c3bersexnews@gmail.com>
-Cc: Networking <netdev@vger.kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- David Heidelberg <david@ixit.cz>
-References: <CAFqytU96TsqxZpcEtotFG2bP3kr=zwDQz94MonKYmSSL12rbWw@mail.gmail.com>
- <1499e17a-43bd-4811-bfcc-f5334a62c75f@kernel.org>
- <7b68e0c4-ac9d-43c1-af62-f306c4cdc751@kernel.org>
- <CAFqytU9LOz6Pz=ja6N6zBLRPejk2KnyNtaSV1wcNfeGS0guMgA@mail.gmail.com>
+Subject: Re: [PATCH v3 3/3] p54spi: convert to devicetree
+To: Arnd Bergmann <arnd@arndb.de>, Arnd Bergmann <arnd@kernel.org>
+Cc: Aaro Koskinen <aaro.koskinen@iki.fi>,
+ Andreas Kemnade <andreas@kemnade.info>, Bartosz Golaszewski
+ <brgl@kernel.org>, =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+ "David S . Miller" <davem@davemloft.net>,
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+ Eric Dumazet <edumazet@google.com>, Felipe Balbi <balbi@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Johannes Berg <johannes@sipsolutions.net>,
+ Kevin Hilman <khilman@baylibre.com>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Linus Walleij <linusw@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh+dt@kernel.org>,
+ Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>,
+ linux-wireless@vger.kernel.org, Netdev <netdev@vger.kernel.org>,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org,
+ "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+ Linux-OMAP <linux-omap@vger.kernel.org>,
+ Christian Lamparter <chunkeey@gmail.com>
+References: <20260427142355.2532714-1-arnd@kernel.org>
+ <20260427142355.2532714-4-arnd@kernel.org>
+ <e4a7e9d8-7091-4520-a634-ff0a44eb5139@kernel.org>
+ <556b64c4-febb-4dc6-8d51-1b1c2d2c6aa6@app.fastmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -89,15 +103,35 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <CAFqytU9LOz6Pz=ja6N6zBLRPejk2KnyNtaSV1wcNfeGS0guMgA@mail.gmail.com>
+In-Reply-To: <556b64c4-febb-4dc6-8d51-1b1c2d2c6aa6@app.fastmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 30/04/2026 02:04, G wrote:
-> Thanks
+On 29/04/2026 23:35, Arnd Bergmann wrote:
+> 
+> The driver doesn't know the difference, so I assume they are
+> either all compatible, or the other ones don't actually work.
+> I've dropped everything except  "st,stlc4550" now, as that is the
+> one I used in the dts file. I kept the other identifiers
+> in the binding as:
+> 
+>   compatible:
+>     oneOf:
+>       - const: st,stlc4560
+>       - items:
+>           - enum:
+>               - cnxt,3110x
+>               - st,stlc4550
+>               - isil,p54spi
 
+Yes, just keep this enum part sorted alphabetically.
 
-So what is your plan?
+>           - const: st,stlc4560
+> 
+> Not sure if that's the best way to express this.
+> 
+>        Arnd
+
 
 Best regards,
 Krzysztof
