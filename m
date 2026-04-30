@@ -1,96 +1,89 @@
-Received: from out-03.smtp.spacemail.com (out-03.smtp.spacemail.com [63.250.43.88])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EBA04779A4;
-	Thu, 30 Apr 2026 18:35:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=63.250.43.88
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354AF45BD45
+	for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 18:44:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777574102; cv=none; b=l7oZvfOGczqJS+8u5eeBMhfqjMG+96nZlFLGDJ1KIVcmZNX741rS96EwCkolR66KBSbCvZceWLBQoZjrkcJDImzOrOSlTcAOQQc4hxW0w+MDFOJRyDSWyS67XGvsn0q7nStNtx2cB97zRgzFuZeGjwLnmamXyuvoaEZSQ7pgwEQ=
+	t=1777574652; cv=none; b=dc1HDlI08roXiN+0lACB1qqCxGI+w2FiMRQNH5ZiV8GydECJifJR4zpzv9H6MmSL65JY9/YOiJRf4JM4IVNG4uhs6PbgHkmd2zhWJTvTna8dLZYAOGATIUBEDwVxJAVFqxHgLNdTrc5HmxP+f0kV5CcKiuAJt5FRkN8m3juAgSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777574102; c=relaxed/simple;
-	bh=nLWDjCYG2VJb/niqMQC2v2WrYtWZ4BxwIhZ+B8UKc9g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R8AwfQXPbNR6II4AtJfWnBC4FhKIv1Z02FtkWj0BSPxsNPZ50xMB0D9UUBcAQtl22JIXq8gvitnXa5YfPA06235YzT9R2gciHDE4JZMOIr81nvhzrsAYqsApb8lv/pDHBEwZSjtdH+dtnSBDXhscD1JthXQDCkilSB1dEktHLuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rexion.ai; spf=pass smtp.mailfrom=rexion.ai; dkim=fail (0-bit key) header.d=rexion.ai header.i=@rexion.ai header.b=iCc8hK9k reason="key not found in DNS"; arc=none smtp.client-ip=63.250.43.88
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rexion.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rexion.ai
+	s=arc-20240116; t=1777574652; c=relaxed/simple;
+	bh=/PRIKgLfKPj4zMKorNmQ1wB3iJTK0C/w2vdDIs7PKVk=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=OCQql1Nar8IXWkqIp0ail2Y6HI65K/UCTdK4OwMnifZthmx3RXq4A+oflxPnXr/AzVFAkhwF9QD9e65WJqVXaTsj8GITnaKVMb0FOqhLzafD3fHDoQcNRpCgUscoBBAlrzBXSstFzQUm8SjBAGhQAWO7c6j7ZPmgBns2O2sGn+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=U92MX/DK; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rexion.ai header.i=@rexion.ai header.b="iCc8hK9k"
-Received: from Kyren (unknown [49.207.224.37])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.spacemail.com (Postfix) with ESMTPSA id 4g62g33chZz8sWt;
-	Thu, 30 Apr 2026 18:26:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rexion.ai;
-	s=spacemail; t=1777573571;
-	bh=tq9jLvGxcCHzQiNF7PIsLncsroNls5TdwyWf8VNvfHA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iCc8hK9kBpcsuU+8KWElc+BIxDQopM1oB1hXU70FPdacdlzueVsHQYtTy0Mysm4jU
-	 RkmISs9xNYGt8ceGTZ5q4n8EigCo78PS2aA7xnm6YEVOXdJHEtjn+hxOTj2XbXxudv
-	 HjXoGihG23TpEfSKJt2ekNyA6X6f+kCqdMc9JP15M0nUeBldeO4aE7uu5Vk9q83wj2
-	 dykXPa5V99DOS/SGjxX3sKrspqAIhdRNo7/cqJiToYHRbzqsopVbjpSOW67hB597FV
-	 bNUt1QneiHkA4OWLyv1CFV4Vbko2BfxbwnHLpD4H+3rbayPwOX2evvK8tDhLH8bG4u
-	 5qlRvI0IhNV6g==
-From: HACKE-RC <rc@rexion.ai>
-To: Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>
-Cc: Phil Sutter <phil@nwl.cc>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	HACKE-RC <rc@rexion.ai>
-Subject: [PATCH net-next v2 2/3] netfilter: nf_conntrack_irc: use nf_ct_helper_parse_port()
-Date: Thu, 30 Apr 2026 23:55:42 +0530
-Message-ID: <20260430182543.3931718-3-rc@rexion.ai>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260430182543.3931718-1-rc@rexion.ai>
-References: <20260430182543.3931718-1-rc@rexion.ai>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="U92MX/DK"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-354c44bf176so1529033a91.0
+        for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 11:44:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777574648; x=1778179448; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=YSFg1U9KtAY77SgXkcle8/Z1smWtplMzJzd6qV/sqH0=;
+        b=U92MX/DKFZjA2U0RpyT4OPLiMTkZnNo6UpEezgKpey9pTj0Q6ivtJLxfqhduwFs3Ny
+         zdlynOq/yrfN3Slp7bs7J9F3057oey3DXssKn7IGNYBKC0mH+esBQkJo0O2hSsmc0xcV
+         31Q3zlAaNFrpDNzBH7KXlWIx4SmbIQ5FUBAF/1RckuG0AH5Y3XHINvc+243mCQTwerki
+         /C6O+U642gbXOj/zjmFQPGQitgIhajw+S79pyTo4xJR3ZB2WZYa/PqvuzDCUt9RwqBYr
+         Zt39kVRAmq+72WC2phGfNeAanb6UpAXDxBGBD2jo67as8eyiLnmeGVD5A7QBoz09OsrG
+         0tcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777574648; x=1778179448;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YSFg1U9KtAY77SgXkcle8/Z1smWtplMzJzd6qV/sqH0=;
+        b=gu5t8ovJDUIB3p6EolWl4m8XcV4apfva9V/PUuNA5JQS5lIyh4T+M499HsKHGGjayW
+         cgC+rDDpRXIWLnVzYDZDVBJznCzFqA6IXT1iC1/NpkYuhzr3hQkn4ikGtHeybuPkbMGl
+         ZlBsGHo2UDPuool2jqEANgB+px7YWM2XIv8PgVL/LUI1yJ125GE3NMlnKlpDbiUlluvH
+         r1vurv2ZWVsCKVfkAJJSR7ka1s5/dAQDDAnAyDM0BEQI/HxjufrjnK4Hc7XtjXDcYOJK
+         98s7pLV4e+QdnsP67qjZnBML+SNtdHdMhJFbO4+IzNCE/D7WGDGJ6b10IalNmIBUQaf9
+         zh9Q==
+X-Forwarded-Encrypted: i=1; AFNElJ+P2AwgkA9zcHFFJ4vtZWoSAKb+bLbwPvpVBW3d49cGWjeqU3Ndi66XrzHjJ6ZTAvcl6Z/Fa7Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJhkrCcuJqNVGVCuGvRpA0CvbTnrqYnMGESQxhvaclIKCwzFjR
+	Y6ZufV6ya82/Hor53qWKN6RbwWsMa7zhMIP9fTg4k4nASwH5r9dneMTJf1TmLnvbOaA49HWW5eG
+	E19MWXw==
+X-Received: from pgbq1.prod.google.com ([2002:a63:5c01:0:b0:c74:664d:4080])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:6a0a:b0:39f:aa3:5e56
+ with SMTP id adf61e73a8af0-3a3cf5e8cd2mr5001483637.14.1777574648207; Thu, 30
+ Apr 2026 11:44:08 -0700 (PDT)
+Date: Thu, 30 Apr 2026 18:43:50 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Envelope-From: rc@rexion.ai
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
+Message-ID: <20260430184405.1227386-1-kuniyu@google.com>
+Subject: [PATCH v1 bpf 0/2] bpf: tcp: Fix type confusion in bpf_tcp_sock().
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: Martin KaFai Lau <martin.lau@linux.dev>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Cc: John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, 
+	Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
+	Eric Dumazet <edumazet@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, bpf@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Replace the bare simple_strtoul() call for port parsing with the
-shared nf_ct_helper_parse_port(). This avoids reliance on the
-nul-terminated string guarantee (currently provided by the newline
-scan earlier in parse_dcc) and validates the port fits in u16.
+bpf_tcp_sock() only check if sk->sk_protocol is IPPROTO_TCP,
+but RAW socket can bypass it:
 
-The simple_strtoul() for the IP address field is left as-is since
-it returns unsigned long for a __be32 conversion, which is a
-separate concern.
+  socket(AF_INET, SOCK_RAW, IPPROTO_TCP)
 
-Fixes: 869f37d8e48f ("[NETFILTER]: nf_conntrack/nf_nat: add IRC helper port")
-Signed-off-by: HACKE-RC <rc@rexion.ai>
----
- net/netfilter/nf_conntrack_irc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Patch 1 fixes it and Patch 2 adds a test.
 
-diff --git a/net/netfilter/nf_conntrack_irc.c b/net/netfilter/nf_conntrack_irc.c
-index 522183b9a..1b51f5a6a 100644
---- a/net/netfilter/nf_conntrack_irc.c
-+++ b/net/netfilter/nf_conntrack_irc.c
-@@ -93,7 +93,9 @@ static int parse_dcc(char *data, const char *data_end, __be32 *ip,
- 		data++;
- 	}
- 
--	*port = simple_strtoul(data, &data, 10);
-+	if (nf_ct_helper_parse_port(data, data_end - data, port, &data))
-+		return -1;
-+
- 	*ad_end_p = data;
- 
- 	return 0;
+
+Kuniyuki Iwashima (2):
+  bpf: tcp: Fix type confusion in bpf_tcp_sock().
+  selftest: bpf: Add test for bpf_tcp_sock() and RAW socket.
+
+ net/core/filter.c                               |  2 +-
+ .../selftests/bpf/prog_tests/sockopt_sk.c       | 17 ++++++++++++++++-
+ tools/testing/selftests/bpf/progs/sockopt_sk.c  | 16 ++++++++++++++++
+ 3 files changed, 33 insertions(+), 2 deletions(-)
+
 -- 
-2.54.0
+2.54.0.545.g6539524ca2-goog
 
