@@ -1,218 +1,132 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 038F83FE373;
-	Thu, 30 Apr 2026 10:05:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777543519; cv=none; b=lFzAkgO40xCPKkt5g85OZB+Vh7QP5emIbqzEVorFvtizg6epCSawQWEf4+4Sl7HZSNNglY3oR6LJk3MgUQpYayVe/6pNNG7cGznHgUCPTEyjQxZTd2v8m3WKzkEu8JGmHykd2q5LIxOmJMhu7hM5qwM8hL5Ia9DRSdxThGhG6To=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777543519; c=relaxed/simple;
-	bh=43/PYTKoM5Si0NIj9BiQpEm3hIxxN21kEzjN//oZk2c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gcI+MQlmlavDB5k7IJWmZdMkTJ+Jrl+SLLmsTzm1qs/h3LTXtN8/WdbzS2OWZ4sgE5W/+ZhWgoJmLFJyM84mvRYilrNEVPf5X4GvTpvokvkwdOEhK1ObcH3WXKgs7/edvvJDo9eAggolWduGogfBw06StZ/xh7u8JB5Qa28DR3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ewglzuO2; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A5CF3DCD94
+	for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 10:06:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777543621; cv=pass; b=qdkaY5BKbvfmkmvarXPkbsUU+zeyGnCzGNFfoXoha/6uJfWqUzWNc8Sg1I8q/8guQnjIwphNSFiIpwT6GY6kK/+THDhF65At6eGkqbZs6q0yRV2viGf8b/vlSL1z3LTwNaRN4tTgkNJJBzPqFcE3wmN/Crloc+MJdqKjnri5MTE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777543621; c=relaxed/simple;
+	bh=Kyvgpw8dc+Zokvv11RDsVRqVEvvShTtobFoI32DJ6jA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XcKjzhj3d2K3tIU9/UrL0tEJxr4BIZlnNqTDUcKfopS1CCTR8aB8gVlCus5Vgis7A1xaX6bJXLiQJiTj5QItt7DLdU5WKTcPUVPfwY0oOIKM9bGaLuSQsmuJsoderZO3qtrwa3JUhkuPefckrfbnMxR7bGLpYpkLgeik+9D3xqk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hWH5Zasr; arc=pass smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ewglzuO2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777543518; x=1809079518;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=43/PYTKoM5Si0NIj9BiQpEm3hIxxN21kEzjN//oZk2c=;
-  b=ewglzuO2k9LLXrjSWyS6OI/3iKUv3aOls09XNTVsMyU8240RTcoGkiaP
-   AhRhwGcTHuOTqaAnEKhS4KqgZuAAmEX6wAqBNdAdbfVZc4PAmwIQzguZW
-   5MdAaYGtcV4KnReYgW42OubmihYuvuFzxW4EWMma86mZ2DqWxsDl1XJhO
-   4r/vZnLbSHiDvw8N4eymDc8zYmrGlQ8O+Eve2XJtAyOgA14OQiVBqH+2E
-   L/xiePGpHfQmQ9U/jUi0KIpgzWYNgcDkn3unvtw3rwYVqzz5RZhDXMmPw
-   +EmSXn5bsBBtqzFTiUPIwXQW9V84Q2NYOBwr9SfMnvJ2Bq2MhI9pmgdAI
-   A==;
-X-CSE-ConnectionGUID: Zk4ekQd6QvK43BtVJahSrQ==
-X-CSE-MsgGUID: dHSWaFI4Rx2Pq2gNtjCuDQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11771"; a="101153184"
-X-IronPort-AV: E=Sophos;i="6.23,207,1770624000"; 
-   d="scan'208";a="101153184"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 03:05:17 -0700
-X-CSE-ConnectionGUID: 4eINE8sUQdOCWlG9SAe+Vg==
-X-CSE-MsgGUID: eLSDstEeSa6KHP0wrJRw4w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,207,1770624000"; 
-   d="scan'208";a="229932585"
-Received: from lkp-server01.sh.intel.com (HELO aa799cca880d) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 30 Apr 2026 03:05:14 -0700
-Received: from kbuild by aa799cca880d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wIOGc-00000000CGW-3J3K;
-	Thu, 30 Apr 2026 10:05:10 +0000
-Date: Thu, 30 Apr 2026 18:04:13 +0800
-From: kernel test robot <lkp@intel.com>
-To: wit_yuan <yuanzhaoming901030@126.com>, jk@codeconstruct.com.au
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	yuanzhaoming901030@126.com, yuanzm2@lenovo.com,
-	matt@codeconstruct.com.au, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net:mctp: split mctp hdr version to ver and rsvd
-Message-ID: <202604301714.OQSuNMur-lkp@intel.com>
-References: <20260409125129.9210-1-yuanzhaoming901030@126.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hWH5Zasr"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-483487335c2so8262015e9.2
+        for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 03:06:59 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777543618; cv=none;
+        d=google.com; s=arc-20240605;
+        b=kGOipXWj6qYW/2asKil8crDfQbtwjNH7O4uuD5Jv0Tik+1IyldMKN5I17GGycx3Jzc
+         TO+CgiYEzgfz/hqRaLiiFytavXBY0L2VqrpKkcVJmC3ic5tIEXrUgHXK2B800H3znPL4
+         39gMOcvO+1YNu5O7xM4pW9kFkXx0QL3o98SkBd3B+Q5Dbct7UHxTVXzAWguLAbK6aWtr
+         25B5I/JLElBEhto9k+7FX5ozlRNIXdjJnxHmJTYuzHfGYRMl6cXL4WLupNB5MNozPZDz
+         00VW+teCGhKgsqmkv9ZjLg/OP1Ak1VfuscwG4sRvv+RNvA3Hku+lSGSJrg1/ITt2YiiL
+         ryDw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=Kyvgpw8dc+Zokvv11RDsVRqVEvvShTtobFoI32DJ6jA=;
+        fh=nPmLF21MbkZpg7BOZ/dovxij/vtfe8xPx2b+PxnREhQ=;
+        b=PGEVNlmzu4RL9oxBj7JDaJtaJWcVFs7deT5+QDUpauzMBFxy1Nyu52+dyTQI/KxQXr
+         /cogXKkAJbhS4a+imHF9LP6zzgVr8jNjcedZ6E/7kxzHCkscHrcNs1eaNOVYRNTR7eja
+         ht1Ix1H7PkXli5wS2TUlEA8uZoNJ211xA02Pw31Ofwabtulhitgxp4xl7TmWOGwOiKoj
+         KP6T7mOFz6LnNsplVc6n6l8ZtqcR6UtNW7jrnlshp7RznrcOMrI9W5AosANy0PRb60Ij
+         GHgn+IKbdVuR3YbDnWtlrEXuHdy2AWiLzqrBT/qqVeBiFPxbvnU8AMQnh7p10xD2ZgXG
+         hU5A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777543618; x=1778148418; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Kyvgpw8dc+Zokvv11RDsVRqVEvvShTtobFoI32DJ6jA=;
+        b=hWH5Zasr9qhJ764vlFS7lMMDRcKYOhbQeGl+nHGoaIKd+LMep7IBHAQT0V+ezw+II/
+         AcrUtka3O1Oa83OrWRHei9M5TE/myPojJV4ndWF2nGXlFQWB1gPn5H/Bpsy/h2AcTS/t
+         Y0aPnZz9ndgpcG9B0tpf3Bnq2i55rPEn7ig9Q7gCbmFG8CSFy8AfugsPqGV9JgwVwRJO
+         ePwhjl4iZqXLwhPRGskY3R2d0awxtdcw2Xr7sQ7+Rb7l5LhazjhVctgNjkdTdiTEiQSP
+         7LDYhr8ADn0K1vjH7qNyMZBzeoOcsn8QLv+DgVaiMHM0du5ey60CyQrmWWA+2Yx0vL91
+         iQdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777543618; x=1778148418;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Kyvgpw8dc+Zokvv11RDsVRqVEvvShTtobFoI32DJ6jA=;
+        b=J+gzenbS2sD0lBqDRoIu6GCkRZZR9wsJBk8q9euxRVUxcjiIS+KnaTYZfj73wzDHyV
+         YNnu/B6DpvzG/coLsfWBZHggP5qKhoL7HLQwGV/UAdtD5CXCnpkHAJNQC+RoPP2Xsnql
+         i9kOnzZygtamiaSOvMWMxUnTre1GqFE7Zh00hO3MaBkPALNGPaNz9mQKWGUiH5nN2Wgj
+         X2h4n27/eLtWRLHVszjCIGvdttfBfSDVv0Tl8BjLgdUN/myWv5cgQercvh3+CoWfLHTj
+         FOwCNR/ClwYFPPrGXd/vhKGVV11zSu65q2+iz9NNyidbiq3JN2bVJRSHvZUahVgdajsQ
+         6yqA==
+X-Gm-Message-State: AOJu0YwO4SApEH9luOF4bbJ4ur5iYaf6sNg3ezdHxjRqNBu2vBk8J4L7
+	woSfEAVMCA4E5X+SA4y1PFvFBiQ26ahuboKYTkpVCxq0l5yeiw+K3Xg5HzzrUTsFWmt2Iv4U0Vs
+	zCAiHa4US9moMkWxsyyZ0VIjCSMBlw4QkPHzN
+X-Gm-Gg: AeBDietegeMRycbQSC+GG3W9zHd2pGcl2f6Qxwf9FcjNAtXx7cqz1TuBmBgwQR3OsLi
+	1uZoh0Y8V789Yo44rdhrYIcSmCR0pZY4CFQaPudMwGgh4iVkjoMIiWHW0tKSCx9rufXLKlH9hQX
+	CYTRflrdayhpxj8ZLxXQ1T7s7PlgTwfaQRFiReO6VE3av/QOoZcfmBqDhrS85Wcfa114Bakjorr
+	EyGzvXOR3zZzKaIOqxG2OltGvYe5+DkGuDCrMrsVbRpxVM4YKd0jiR22dSSFRDUTqjCmnuSn2Ra
+	4cvqghI8Pz2xpn+/R/ckyJqPDyi+
+X-Received: by 2002:a05:600d:8408:b0:480:3ad0:93bf with SMTP id
+ 5b1f17b1804b1-48a8452cd4amr28513795e9.24.1777543616751; Thu, 30 Apr 2026
+ 03:06:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260409125129.9210-1-yuanzhaoming901030@126.com>
+References: <20260428110713.2550315-3-maoyixie.tju@gmail.com> <20260430011849.2345207-1-kuba@kernel.org>
+In-Reply-To: <20260430011849.2345207-1-kuba@kernel.org>
+From: Maoyi Xie <maoyixie.tju@gmail.com>
+Date: Thu, 30 Apr 2026 18:06:45 +0800
+X-Gm-Features: AVHnY4J_1Ckk_0_wc90cHEBhr1N2bAxmlonoBSKgk48Fyitc25vQe1jE3K00alc
+Message-ID: <CAHPEe=G00_xFCx59KVRejzwJJVH0MkK4yB+7PFjHtyp+CBT8dQ@mail.gmail.com>
+Subject: Re: [PATCH net 2/2] ip6_gre: Use cached t->net in ip6erspan_changelink().
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, kuniyu@google.com, shaw.leon@gmail.com, 
+	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, 
+	dsahern@kernel.org, kuznet@ms2.inr.ac.ru, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, security@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hi wit_yuan,
+Hi Kuniyuki, Xiao, Eric, Jakub,
 
-kernel test robot noticed the following build errors:
+Sorry for the delay, I had a fever yesterday.
 
-[auto build test ERROR on linus/master]
-[also build test ERROR on v7.1-rc1 next-20260429]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Thanks for the reviews.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/wit_yuan/net-mctp-split-mctp-hdr-version-to-ver-and-rsvd/20260414-044431
-base:   linus/master
-patch link:    https://lore.kernel.org/r/20260409125129.9210-1-yuanzhaoming901030%40126.com
-patch subject: [PATCH] net:mctp: split mctp hdr version to ver and rsvd
-config: riscv-allyesconfig (https://download.01.org/0day-ci/archive/20260430/202604301714.OQSuNMur-lkp@intel.com/config)
-compiler: clang version 16.0.6 (https://github.com/llvm/llvm-project 7cbf1a2591520c2491aa35339f227775f4d3adf6)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260430/202604301714.OQSuNMur-lkp@intel.com/reproduce)
+> Kuniyuki:
+> nit: Please keep reverse xmas tree order, and you can reuse *t below.
+> nit: Reported-by is not needed if it's same with SOB.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202604301714.OQSuNMur-lkp@intel.com/
+Both noted. v2 reuses *t and drops the Reported-by trailer.
 
-All errors (new ones prefixed by >>):
+> Xiao:
+> > Fixes: 5e72ce3e3980 ...
+> But why is 5e72ce3e3980 mentioned here? It neither introduced nor
+> was intended to fix this bug.
+> Maybe 2d665034f239 ("net: ip6_gre: Fix ip6erspan hlen calculation")
+> which initially introduced ip6erspan_changelink
 
-   In file included from net/mctp/route.c:1793:
->> net/mctp/test/route-test.c:70:3: error: invalid application of 'typeof' to bit-field
-                   KUNIT_EXPECT_EQ(test, hdr2->ver, hdr.ver);
-                   ^
-   include/kunit/test.h:1033:2: note: expanded from macro 'KUNIT_EXPECT_EQ'
-           KUNIT_EXPECT_EQ_MSG(test, left, right, NULL)
-           ^
-   include/kunit/test.h:1036:2: note: expanded from macro 'KUNIT_EXPECT_EQ_MSG'
-           KUNIT_BINARY_INT_ASSERTION(test,                                       \
-           ^
-   include/kunit/test.h:869:2: note: expanded from macro 'KUNIT_BINARY_INT_ASSERTION'
-           KUNIT_BASE_BINARY_ASSERTION(test,                                      \
-           ^
-   include/kunit/test.h:839:14: note: expanded from macro 'KUNIT_BASE_BINARY_ASSERTION'
-           const typeof(left) __left = (left);                                    \
-                       ^
-   In file included from net/mctp/route.c:1793:
->> net/mctp/test/route-test.c:70:3: error: invalid application of 'typeof' to bit-field
-   include/kunit/test.h:1033:2: note: expanded from macro 'KUNIT_EXPECT_EQ'
-           KUNIT_EXPECT_EQ_MSG(test, left, right, NULL)
-           ^
-   include/kunit/test.h:1036:2: note: expanded from macro 'KUNIT_EXPECT_EQ_MSG'
-           KUNIT_BINARY_INT_ASSERTION(test,                                       \
-           ^
-   include/kunit/test.h:869:2: note: expanded from macro 'KUNIT_BINARY_INT_ASSERTION'
-           KUNIT_BASE_BINARY_ASSERTION(test,                                      \
-           ^
-   include/kunit/test.h:840:14: note: expanded from macro 'KUNIT_BASE_BINARY_ASSERTION'
-           const typeof(right) __right = (right);                                 \
-                       ^
-   2 errors generated.
+5e72ce3e3980 was the wrong anchor. 2d665034f239 introduced
+ip6erspan_changelink with the dev_net(dev) shape. v2 uses that as the
+Fixes target.
 
+> Jakub:
+> > While reviewing this area, I noticed a regression further down
+> > in ip6erspan_changelink() regarding the metadata tunnel
+> > unlinking.
 
-vim +/typeof +70 net/mctp/test/route-test.c
+The ip6gre_tunnel_unlink_md / ip6erspan_tunnel_unlink_md naming
+asymmetry is real. Whether collect_md_tun_erspan ends up dangling and
+reachable by ip6gre_tunnel_lookup() requires tracing I have not yet
+done. v2 stays scoped to the dev_net conversion. The unlink_md side is
+better handled in a separate patch.
 
-161eba50e183ed4 Jeremy Kerr 2021-10-03   19  
-161eba50e183ed4 Jeremy Kerr 2021-10-03   20  static void mctp_test_fragment(struct kunit *test)
-161eba50e183ed4 Jeremy Kerr 2021-10-03   21  {
-161eba50e183ed4 Jeremy Kerr 2021-10-03   22  	const struct mctp_frag_test *params;
-161eba50e183ed4 Jeremy Kerr 2021-10-03   23  	int rc, i, n, mtu, msgsize;
-269936db5eb3962 Jeremy Kerr 2025-07-02   24  	struct mctp_test_dev *dev;
-269936db5eb3962 Jeremy Kerr 2025-07-02   25  	struct mctp_dst dst;
-161eba50e183ed4 Jeremy Kerr 2021-10-03   26  	struct sk_buff *skb;
-161eba50e183ed4 Jeremy Kerr 2021-10-03   27  	struct mctp_hdr hdr;
-161eba50e183ed4 Jeremy Kerr 2021-10-03   28  	u8 seq;
-161eba50e183ed4 Jeremy Kerr 2021-10-03   29  
-161eba50e183ed4 Jeremy Kerr 2021-10-03   30  	params = test->param_value;
-161eba50e183ed4 Jeremy Kerr 2021-10-03   31  	mtu = params->mtu;
-161eba50e183ed4 Jeremy Kerr 2021-10-03   32  	msgsize = params->msgsize;
-161eba50e183ed4 Jeremy Kerr 2021-10-03   33  
-161eba50e183ed4 Jeremy Kerr 2021-10-03   34  	hdr.ver = 1;
-161eba50e183ed4 Jeremy Kerr 2021-10-03   35  	hdr.src = 8;
-161eba50e183ed4 Jeremy Kerr 2021-10-03   36  	hdr.dest = 10;
-161eba50e183ed4 Jeremy Kerr 2021-10-03   37  	hdr.flags_seq_tag = MCTP_HDR_FLAG_TO;
-161eba50e183ed4 Jeremy Kerr 2021-10-03   38  
-161eba50e183ed4 Jeremy Kerr 2021-10-03   39  	skb = mctp_test_create_skb(&hdr, msgsize);
-161eba50e183ed4 Jeremy Kerr 2021-10-03   40  	KUNIT_ASSERT_TRUE(test, skb);
-161eba50e183ed4 Jeremy Kerr 2021-10-03   41  
-269936db5eb3962 Jeremy Kerr 2025-07-02   42  	dev = mctp_test_create_dev();
-269936db5eb3962 Jeremy Kerr 2025-07-02   43  	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, dev);
-269936db5eb3962 Jeremy Kerr 2025-07-02   44  
-6ab578739a4c1f5 Jeremy Kerr 2025-11-26   45  	mctp_test_dst_setup(test, &dst, dev, mtu);
-161eba50e183ed4 Jeremy Kerr 2021-10-03   46  
-269936db5eb3962 Jeremy Kerr 2025-07-02   47  	rc = mctp_do_fragment_route(&dst, skb, mtu, MCTP_TAG_OWNER);
-161eba50e183ed4 Jeremy Kerr 2021-10-03   48  	KUNIT_EXPECT_FALSE(test, rc);
-161eba50e183ed4 Jeremy Kerr 2021-10-03   49  
-6ab578739a4c1f5 Jeremy Kerr 2025-11-26   50  	n = dev->pkts.qlen;
-161eba50e183ed4 Jeremy Kerr 2021-10-03   51  	KUNIT_EXPECT_EQ(test, n, params->n_frags);
-161eba50e183ed4 Jeremy Kerr 2021-10-03   52  
-161eba50e183ed4 Jeremy Kerr 2021-10-03   53  	for (i = 0;; i++) {
-161eba50e183ed4 Jeremy Kerr 2021-10-03   54  		struct mctp_hdr *hdr2;
-161eba50e183ed4 Jeremy Kerr 2021-10-03   55  		struct sk_buff *skb2;
-161eba50e183ed4 Jeremy Kerr 2021-10-03   56  		u8 tag_mask, seq2;
-161eba50e183ed4 Jeremy Kerr 2021-10-03   57  		bool first, last;
-161eba50e183ed4 Jeremy Kerr 2021-10-03   58  
-161eba50e183ed4 Jeremy Kerr 2021-10-03   59  		first = i == 0;
-161eba50e183ed4 Jeremy Kerr 2021-10-03   60  		last = i == (n - 1);
-161eba50e183ed4 Jeremy Kerr 2021-10-03   61  
-6ab578739a4c1f5 Jeremy Kerr 2025-11-26   62  		skb2 = skb_dequeue(&dev->pkts);
-161eba50e183ed4 Jeremy Kerr 2021-10-03   63  		if (!skb2)
-161eba50e183ed4 Jeremy Kerr 2021-10-03   64  			break;
-161eba50e183ed4 Jeremy Kerr 2021-10-03   65  
-161eba50e183ed4 Jeremy Kerr 2021-10-03   66  		hdr2 = mctp_hdr(skb2);
-161eba50e183ed4 Jeremy Kerr 2021-10-03   67  
-161eba50e183ed4 Jeremy Kerr 2021-10-03   68  		tag_mask = MCTP_HDR_TAG_MASK | MCTP_HDR_FLAG_TO;
-161eba50e183ed4 Jeremy Kerr 2021-10-03   69  
-161eba50e183ed4 Jeremy Kerr 2021-10-03  @70  		KUNIT_EXPECT_EQ(test, hdr2->ver, hdr.ver);
-161eba50e183ed4 Jeremy Kerr 2021-10-03   71  		KUNIT_EXPECT_EQ(test, hdr2->src, hdr.src);
-161eba50e183ed4 Jeremy Kerr 2021-10-03   72  		KUNIT_EXPECT_EQ(test, hdr2->dest, hdr.dest);
-161eba50e183ed4 Jeremy Kerr 2021-10-03   73  		KUNIT_EXPECT_EQ(test, hdr2->flags_seq_tag & tag_mask,
-161eba50e183ed4 Jeremy Kerr 2021-10-03   74  				hdr.flags_seq_tag & tag_mask);
-161eba50e183ed4 Jeremy Kerr 2021-10-03   75  
-161eba50e183ed4 Jeremy Kerr 2021-10-03   76  		KUNIT_EXPECT_EQ(test,
-161eba50e183ed4 Jeremy Kerr 2021-10-03   77  				!!(hdr2->flags_seq_tag & MCTP_HDR_FLAG_SOM), first);
-161eba50e183ed4 Jeremy Kerr 2021-10-03   78  		KUNIT_EXPECT_EQ(test,
-161eba50e183ed4 Jeremy Kerr 2021-10-03   79  				!!(hdr2->flags_seq_tag & MCTP_HDR_FLAG_EOM), last);
-161eba50e183ed4 Jeremy Kerr 2021-10-03   80  
-161eba50e183ed4 Jeremy Kerr 2021-10-03   81  		seq2 = (hdr2->flags_seq_tag >> MCTP_HDR_SEQ_SHIFT) &
-161eba50e183ed4 Jeremy Kerr 2021-10-03   82  			MCTP_HDR_SEQ_MASK;
-161eba50e183ed4 Jeremy Kerr 2021-10-03   83  
-161eba50e183ed4 Jeremy Kerr 2021-10-03   84  		if (first) {
-161eba50e183ed4 Jeremy Kerr 2021-10-03   85  			seq = seq2;
-161eba50e183ed4 Jeremy Kerr 2021-10-03   86  		} else {
-161eba50e183ed4 Jeremy Kerr 2021-10-03   87  			seq++;
-161eba50e183ed4 Jeremy Kerr 2021-10-03   88  			KUNIT_EXPECT_EQ(test, seq2, seq & MCTP_HDR_SEQ_MASK);
-161eba50e183ed4 Jeremy Kerr 2021-10-03   89  		}
-161eba50e183ed4 Jeremy Kerr 2021-10-03   90  
-161eba50e183ed4 Jeremy Kerr 2021-10-03   91  		if (!last)
-161eba50e183ed4 Jeremy Kerr 2021-10-03   92  			KUNIT_EXPECT_EQ(test, skb2->len, mtu);
-161eba50e183ed4 Jeremy Kerr 2021-10-03   93  		else
-161eba50e183ed4 Jeremy Kerr 2021-10-03   94  			KUNIT_EXPECT_LE(test, skb2->len, mtu);
-161eba50e183ed4 Jeremy Kerr 2021-10-03   95  
-161eba50e183ed4 Jeremy Kerr 2021-10-03   96  		kfree_skb(skb2);
-161eba50e183ed4 Jeremy Kerr 2021-10-03   97  	}
-161eba50e183ed4 Jeremy Kerr 2021-10-03   98  
-6ab578739a4c1f5 Jeremy Kerr 2025-11-26   99  	mctp_dst_release(&dst);
-269936db5eb3962 Jeremy Kerr 2025-07-02  100  	mctp_test_destroy_dev(dev);
-161eba50e183ed4 Jeremy Kerr 2021-10-03  101  }
-161eba50e183ed4 Jeremy Kerr 2021-10-03  102  
+v2 sent on netdev as a separate thread.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Maoyi
