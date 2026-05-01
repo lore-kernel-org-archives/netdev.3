@@ -1,127 +1,90 @@
-Received: from c2682.mx.srv.dfn.de (c2682.mx.srv.dfn.de [194.95.239.80])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD753FBEA4;
-	Fri,  1 May 2026 16:50:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.95.239.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F4993CF032;
+	Fri,  1 May 2026 16:51:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777654218; cv=none; b=YwwDjVbaQDzbGauRVF6xPNcAsBBPdjIplXOpMuQetv+AMuTLaN/Fn3sJWxyyzGoFWJET4iIJZUZsMcc8H4z/AsKP8NVRG461jlSsO2j1yG3kmZivczgHBUGTgUPqvETD5VKIsOoVSwdtKBB6kmGtXUw6/vdxMvP9EgnVR69w10A=
+	t=1777654314; cv=none; b=JLPfdrYyDJft1ItJo42cSEU7ZihTVywr2kPmk0EPFZIJ2z5rs/FOXW552Kup4FHh8LykYlVRswPbW+lI1xs/ikkGOmFGOSMiJQqXj8Bc22b1KHPaMLtRxE/XCfWWHrRqdzOMDhpgStSbstn9ZdHJ8isLSxUs+fGgcsvBD3PXd2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777654218; c=relaxed/simple;
-	bh=7GvWlYJ66GEsKXxb5c+BB1NizN+kBkLoRH4YlKVEf9M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bDEpT08/ipQvontHj/FL6N/SpdQsEUfl6L6E2IIJJnLXho68QPQaYAG8S/aSa4ZypB9BycK1YtegGGlBla5Q6tKJTHkNqOIjmy8pPwqOtsd/Zqi3TUlvi6WYs1f09v9KdbAhJJdol2jn1oMKut3pq654gOEDmd6pSYXQqUkBozM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=soslab.tu-darmstadt.de; spf=pass smtp.mailfrom=soslab.tu-darmstadt.de; dkim=pass (1024-bit key) header.d=soslab.tu-darmstadt.de header.i=@soslab.tu-darmstadt.de header.b=Qzc8N4Qc; arc=none smtp.client-ip=194.95.239.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=soslab.tu-darmstadt.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=soslab.tu-darmstadt.de
+	s=arc-20240116; t=1777654314; c=relaxed/simple;
+	bh=CTFis4He3t1/LFd4De7rN9wAVKxGHHY19eqLUCarLt0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=e0tpjknyads3DfZm2ECcsgmi0NG56E+DI/5QMvT7rz+BLrxu0oXvofEkZpChmkqISdUPaP0foX5QI9qJJlU1XFNbo8UvF5g4EFJRE5TOMiHVR7IO44OBZo0HnvFjUEyeR8kNFya0TtQaGS21tc2iDYIO+TaxmdBSJyo5rlbNu0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=xrgHg38W; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=soslab.tu-darmstadt.de header.i=@soslab.tu-darmstadt.de header.b="Qzc8N4Qc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
-	soslab.tu-darmstadt.de; h=content-transfer-encoding:mime-version
-	:message-id:date:date:subject:subject:from:from:received; s=s1;
-	 t=1777653596; x=1779467997; bh=7GvWlYJ66GEsKXxb5c+BB1NizN+kBkLo
-	RH4YlKVEf9M=; b=Qzc8N4Qc0Xxdm5YkvPaWLZ7jvevJXkG0bONxEbqblwRjn0MU
-	wPXiJo8xPYOSXT0w6OJvjAgGaNo/jSWclBtzZEPldi/6LmkkA4yhU9apk7VCajya
-	G3MoALID5y0KsBbVrG2HTNHAyRsSYzu6c8PZdzaek0CaRfue+38nP6GZlKM=
-Received: from mail-relay150.hrz.tu-darmstadt.de (mailout.hrz.tu-darmstadt.de [130.83.252.150])
-	by c2682.mx.srv.dfn.de (Postfix) with ESMTPS id 4D511438;
-	Fri,  1 May 2026 18:39:54 +0200 (CEST)
-Received: from smtp.tu-darmstadt.de (mail-relay158.hrz.tu-darmstadt.de [IPv6:2001:41b8:83f:1611::158])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits)
-	 client-signature RSA-PSS (4096 bits))
-	(Client CN "mail-relay158.hrz.tu-darmstadt.de", Issuer "GEANT TLS RSA 1" (not verified))
-	by mail-relay150.hrz.tu-darmstadt.de (Postfix) with ESMTPS id 4g6cG04RMVz43Vv;
-	Fri,  1 May 2026 18:39:52 +0200 (CEST)
-From: Markus Baier <Markus.Baier@soslab.tu-darmstadt.de>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	Miaoqian Lin <linmq006@gmail.com>,
-	linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Markus Baier <Markus.Baier@soslab.tu-darmstadt.de>
-Subject: [PATCH net] net: usb: asix: ax88772: re-add usbnet_link_change() in phylink callbacks
-Date: Fri,  1 May 2026 18:39:41 +0200
-Message-ID: <20260501163941.107668-1-Markus.Baier@soslab.tu-darmstadt.de>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="xrgHg38W"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=RgEmX7QWgKuD1xhClx3Y+N85BnaTDGrIn2lScP6LvKU=; b=xrgHg38WznelxoazLMABuUpg3K
+	Cuv2JUXhNPm0pIm2H8VrqhbDIwFNhL+Op32WUoSqymwLL4xc1QLW10L0q1pY1ovTnR3HdNiWmiDUQ
+	mMLyATdYrjaQ+gda2tIzVaJojM4cFRHvE+0vPm78KYHsVVzS/JMS1eXRNefXhrEu3k7k=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wIr4f-000qVa-3e; Fri, 01 May 2026 18:50:45 +0200
+Date: Fri, 1 May 2026 18:50:45 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Alex Elder <elder@riscstar.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, maxime.chevallier@bootlin.com,
+	rmk+kernel@armlinux.org.uk, andersson@kernel.org,
+	konradybcio@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, linusw@kernel.org, brgl@kernel.org,
+	arnd@arndb.de, gregkh@linuxfoundation.org,
+	Daniel Thompson <daniel@riscstar.com>, mohd.anwar@oss.qualcomm.com,
+	a0987203069@gmail.com, alexandre.torgue@foss.st.com, ast@kernel.org,
+	boon.khai.ng@altera.com, chenchuangyu@xiaomi.com,
+	chenhuacai@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
+	hkallweit1@gmail.com, inochiama@gmail.com, john.fastabend@gmail.com,
+	julianbraha@gmail.com, livelycarpet87@gmail.com,
+	matthew.gerlach@altera.com, mcoquelin.stm32@gmail.com, me@ziyao.cc,
+	prabhakar.mahadev-lad.rj@bp.renesas.com, richardcochran@gmail.com,
+	rohan.g.thomas@altera.com, sdf@fomichev.me,
+	siyanteng@cqsoftware.com.cn, weishangjuan@eswincomputing.com,
+	wens@kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 02/12] net: pcs: pcs-xpcs: select operating mode
+ for 10G-baseR capable PCS
+Message-ID: <f9a581a2-02ea-4948-8c97-835cb7638b1d@lunn.ch>
+References: <20260501155421.3329862-1-elder@riscstar.com>
+ <20260501155421.3329862-3-elder@riscstar.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Header-TUDa: <oLVU8RZcsZEyAQfzRmgEF3b1uXjKJR8xr9rjOseZUALhHMCE0j7fB4s3GsGmqsRPyzo3qQyFCncAZxJRB4qZR58VDy64pXzojSOaT.1777653593>
-X-TUDa-Umlauf: 1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260501155421.3329862-3-elder@riscstar.com>
 
-Commit e0bffe3e6894 ("net: asix: ax88772: migrate to phylink") replaced
-the asix_adjust_link() PHY callback with phylink's mac_link_up() and
-mac_link_down() handlers, but did not carry over the usbnet_link_change()
-notification that commit 805206e66fab ("net: asix: fix "can't send until
-first packet is send" issue") had added.
+> +static int xpcs_config_operating_mode(struct dw_xpcs *xpcs, int an_mode)
+> +{
+> +	int mdio_stat2, ret;
+> +
+> +	switch (an_mode) {
+> +	case DW_AN_C37_SGMII:
+> +	case DW_AN_C37_1000BASEX:
+> +	case DW_2500BASEX:
+> +		mdio_stat2 = xpcs_read(xpcs, MDIO_MMD_PCS, MDIO_STAT2);
+> +		if (mdio_stat2 < 0)
+> +			return mdio_stat2;
+> +
+> +		/*
+> +		 * If this XPCS supports 10Gbase-R then it will be the default
+> +		 * which prevents 1000base-X and slower from working correctly.
 
-As a result, the original symptom returns: when the link comes up,
-usbnet is never notified, so the RX URB submission stays dormant until
-some other event (e.g. a transmitted packet triggering the status
-endpoint interrupt) wakes it up.
+It would be interesting to know if Toshiba messed up the integration
+of the PCS, or there is an errata for the licensed IP.
 
-This is reproducible with the Apple A1277 USB Ethernet Adapter
-(05ac:1402, AX88772A based) on a Banana Pro using a static IPv4
-configuration. After bringing the interface up, no incoming packets are
-received until the first outgoing frame triggers usbnet's RX path.
+Anybody got access to the databook and erratas?
 
-Restore the link change notification, gated on a carrier transition so
-the call remains idempotent if the status endpoint also reports the
-change later.
-
-Fixes: e0bffe3e6894 ("net: asix: ax88772: migrate to phylink")
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Markus Baier <Markus.Baier@soslab.tu-darmstadt.de>
----
-
-Transparency notice: The English formulation of this bug report was
-prepared with AI assistance. The actual system testing and verification
-of the issue were performed manually without AI involvement.
-The bug was originally located via git bisect between v5.13 (good)
-and v5.14 (first bad), pointing to commit e532a096be0e ("net: usb: asix:
-ax88772: add phylib support"). Commit 805206e66fab later fixed this in
-v5.19, but commit e0bffe3e6894 (phylink migration in v6.x) re-introduced
-the same symptom by replacing the asix_adjust_link() callback path
-without porting the usbnet_link_change() call to the new phylink
-mac_link_up/down handlers.
-
-First Tested on Linux 6.18.18-gentoo with Apple A1277 USB Ethernet Adapter
-(05ac:1402, AX88772A based) on a Banana Pro (Allwinner A20).
-Later on Linux 7.1.0-rc1 with identical hardware setup.
-
- drivers/net/usb/asix_devices.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/net/usb/asix_devices.c b/drivers/net/usb/asix_devices.c
-index df0bcfedddbc..293ef80c4e30 100644
---- a/drivers/net/usb/asix_devices.c
-+++ b/drivers/net/usb/asix_devices.c
-@@ -756,6 +756,7 @@ static void ax88772_mac_link_down(struct phylink_config *config,
- 	struct usbnet *dev = netdev_priv(to_net_dev(config->dev));
- 
- 	asix_write_medium_mode(dev, 0, 0);
-+	usbnet_link_change(dev, false, false);
- }
- 
- static void ax88772_mac_link_up(struct phylink_config *config,
-@@ -786,6 +787,7 @@ static void ax88772_mac_link_up(struct phylink_config *config,
- 		m |= AX_MEDIUM_RFC;
- 
- 	asix_write_medium_mode(dev, m, 0);
-+	usbnet_link_change(dev, true, false);
- }
- 
- static const struct phylink_mac_ops ax88772_phylink_mac_ops = {
--- 
-2.52.0
-
+	Andrew
