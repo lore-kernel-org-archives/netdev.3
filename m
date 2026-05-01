@@ -1,46 +1,46 @@
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011038.outbound.protection.outlook.com [52.101.52.38])
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010053.outbound.protection.outlook.com [40.93.198.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC17C301472
-	for <netdev@vger.kernel.org>; Fri,  1 May 2026 03:16:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 868622E6CCD
+	for <netdev@vger.kernel.org>; Fri,  1 May 2026 03:16:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.53
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777605393; cv=fail; b=JpygVdsLvbhWALydCP+O8M2qGw/Lo1t/XWmS2pX85uogfnr0bA14dg1XA7RiI+3y/xCkTDlFkjJJ3VBUw+BysgaqzW3BHveNHXjGIpluL/hcnqYlXgvj60oNNBBdkTQWOUTHWRazMqVuB/Sh/jTt3umkxGGzSmjqPX7NPGGx4HI=
+	t=1777605393; cv=fail; b=qKRzDaLWeon0mKjluJHbbvgJv5zL3s9MMDoWmj/Ng+Xl3EZN794mrI5+IFOhstD3QtdtoDo8XL6Z4HY3vSe7RS0zPGHtYeX48Q1MOBNpUSDS9o37RiL7iwcElRgtkINzFbqLV90NQF8mLBXEZSFE1PuPF4EJKiE/IvWp+AJiKRs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777605393; c=relaxed/simple;
-	bh=G8GnAhEwCoq6eum8r2OZ5LbkMhSldt25buP3EhXmD30=;
+	bh=u+SxT8IxKTlMcmEDBvNxC2Hpd3C3vEbxvnKvz95X1gY=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NK/u4Za8+zSHvS+nRMO869lVk6C/xuIka/Q7wRwWPskB2BhPefbpQKauzwv6r2coHVAEHGGtteIAT2EI7+qC1XaENF69viLltNmz39waveTd85S6qOFZ8V/Q63mzJSKjaz7UmFNtuLB8OEfIx1HOrkvgNDI+cKf3jglj3/4Vfgg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=r9n2R7gO; arc=fail smtp.client-ip=52.101.52.38
+	 MIME-Version:Content-Type; b=HLr2VHKQBPaep2Ox9lPnSZO3l2GYGHbcbwuSgeZxhrKKVRn8XDEL2uVz2dFHGYfCLaop0yv3xqgy7yKsWg+J+TS+wV4m4sckbV+DvYZBtD0gdUWodkjyIu9fYtvXrRX9JSS8XuwXIJm2ocmaxfk1Ptho7G3vsJbSo0a5+vPqj+Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=W4dFnDgV; arc=fail smtp.client-ip=40.93.198.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="r9n2R7gO"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="W4dFnDgV"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Z9IkLRRnPRNDuu1sS0YOsFJImxzizbO/6PmUbMsHM1/RVozUtHkhzeX30lwsvixcINlI/7ODgW1uw1EGiKmqpR7pbNzmcyGghxJM7U2Sq8MohXznb/SCrVjjCSg/8WC7v15lrmYZ4F/ClDRdyvwHBOrBrJvqYI6Tc/dJdeoFiDaR+ENkpEo/eUN/8Fjhw6IrQAD+KjuLnquFUR0j3gSVQpSL1ixNxZbUdRWuTbOsXkvl1KCuTee9gHIBkiio4+7iIcagcTOHSD/clbNweE8AxHNjeXs5/x51CBAGMy/H4Vm6o0iTxUsDk361Bfrtc6sxGgU8f9ZFDdrVwoFz/FiMFg==
+ b=RnJmcEWgtPxcnbFD8v+dQ5ddlUXwhcGPE5ciF8BDtbFpZJIDtpBCGykEB3BJdxWNDU3nvFJuPCKMs5ehlUsBCn/gYLNc0heqhmZ6dxZB1sLL2GeKGV+nZt5H/YVWIvTzqDvFQBoHbENJ1MuEpLr1dJB/2Qurb/ZMGw5hbqWourPZSf1eUBgDcZcYwnO4BahUmwxIW8uQ6fa1fbNDlYDWkoUw94EJtcX4nuA2eNhGpY3hMiqsx2/TnONFbhZZ8iAX2ZWfAyjSnSouSNIIDnWfr0JKFIBw9ZMvgoqy8fMKsXjxkJW0YVQS+JUPtkPXl6GvVSmt/YrZ92um/A11Q/NPXg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Uqz5cwx3zq94R9F7+FMtN0m3NzXJvwJ70gy37qvJ6Pc=;
- b=I0n4mh/bNt9eDnQOxJCdKmw7qqnXZVrhQfWYZumRD+zyNSfVINmNRfOYaWqt1/nYQOBCMhnGBPcwD3HW6kW7sw4J3r3DHO0XgxuNeDGzvUfBSi39AC439idXZ6nVDKMFTpwKE282gsGqhF7rh0EDcS4LcK3DLrRVZ7Q/uG94Hcjv2OF4G11hRGkR3WP3vnZTY4oGdMgFUSxDsmW+N8U1R5u+9RTpp+98/ozgiNxrAce22QGIz+NdRpOwjboBQ3+KDjSv0Lc2hVUPDsH72q9IpgTD84ZAqax7LUpKgPbxKu0SmfgxszHQAGOHTwgE8+VRn88Bs3V+1utTy3rUwX4oBw==
+ bh=sBoz/R0gpEIi6gnQ0dhpSLhcRn6WixDt5w/un0gkk9g=;
+ b=svkv/ZTlmkEmSUwpBRdf+T0COtRyGIJ0r7QKcJDz1HEKPsa8OWKV+w6APcALkKA50nlGIv0+xXmbE5mPKoMe5WsYMbbYqjZWdHMvxXTaCnoven6fn2WqBcZW2eQj7zzxAfHvz+RsYRJO6K8cXt8pKJDH1OWuyqt5/HCRHi7FSq0u+9ylLx6imIc/BOwVtFLX7jyctoMyBBj8YJAs7fJKbyzrZxxPSwDRiTXqEPK2cI0HFe5zb6sR9Ko/aCVtJD7cjrVcdqdNHd04CBeMhkxWAwP6mlwPBnwG9Dppo95/nLQ8PSDWwpSRsbmcpd9A0k+stvdXXuSqS82c1h86lxdM/Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Uqz5cwx3zq94R9F7+FMtN0m3NzXJvwJ70gy37qvJ6Pc=;
- b=r9n2R7gOmImEEH8HCG8HgCEQr7Y4k3PdZJfY4i24syoHdmbGg7qvYpOShM9c9xoySi4xrCqRp/STgZNdVl5NBMRQ12WFtaBNvNgoCtfLYvcphEAxz21g1KEUWWA7b2z79ewuEN2S61c5Z5Wy943cJLXYmCxR0xgB1FD4BMt65Jw=
-Received: from SN7P222CA0022.NAMP222.PROD.OUTLOOK.COM (2603:10b6:806:124::7)
- by SA1PR12MB9514.namprd12.prod.outlook.com (2603:10b6:806:458::7) with
+ bh=sBoz/R0gpEIi6gnQ0dhpSLhcRn6WixDt5w/un0gkk9g=;
+ b=W4dFnDgVqXXyqm5mn94IXE6KMJtJF3nAOLMgEhnCbXbm1xz94ps18JCgspWNCF14oTG1AUuQafl8zACWU7GSE8uNDhj2wiwWj4/klWWJRMJQ5OzZMrnsrQseD8VvYr/vvLRQhybjEPuSJx4eQYJsqUJyefovSKUQZOyNPjxp10w=
+Received: from SN7P220CA0027.NAMP220.PROD.OUTLOOK.COM (2603:10b6:806:123::32)
+ by IA0PR12MB8695.namprd12.prod.outlook.com (2603:10b6:208:485::8) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.15; Fri, 1 May
- 2026 03:16:25 +0000
-Received: from SN1PEPF000397AE.namprd05.prod.outlook.com
- (2603:10b6:806:124:cafe::a4) by SN7P222CA0022.outlook.office365.com
- (2603:10b6:806:124::7) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.16; Fri, 1 May
+ 2026 03:16:28 +0000
+Received: from SN1PEPF000397AF.namprd05.prod.outlook.com
+ (2603:10b6:806:123:cafe::a9) by SN7P220CA0027.outlook.office365.com
+ (2603:10b6:806:123::32) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.9846.30 via Frontend Transport; Fri,
- 1 May 2026 03:16:25 +0000
+ 1 May 2026 03:16:28 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -48,22 +48,22 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- SN1PEPF000397AE.mail.protection.outlook.com (10.167.248.52) with Microsoft
+ SN1PEPF000397AF.mail.protection.outlook.com (10.167.248.53) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9891.9 via Frontend Transport; Fri, 1 May 2026 03:16:25 +0000
+ 15.20.9891.9 via Frontend Transport; Fri, 1 May 2026 03:16:28 +0000
 Received: from driver-dev1.pensando.io (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 30 Apr
- 2026 22:16:23 -0500
+ 2026 22:16:27 -0500
 From: Eric Joyner <eric.joyner@amd.com>
 To: <netdev@vger.kernel.org>
 CC: Brett Creeley <brett.creeley@amd.com>, Andrew Lunn
 	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
  Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
 	<pabeni@redhat.com>, Eric Joyner <eric.joyner@amd.com>
-Subject: [PATCH net-next 2/5] ionic: Report "link_down_events_phy" in ethtool statistics
-Date: Thu, 30 Apr 2026 20:15:52 -0700
-Message-ID: <20260501031555.43259-3-eric.joyner@amd.com>
+Subject: [PATCH net-next 5/5] ionic: Add .get_fec_stats ethtool handler
+Date: Thu, 30 Apr 2026 20:15:55 -0700
+Message-ID: <20260501031555.43259-6-eric.joyner@amd.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20260501031555.43259-1-eric.joyner@amd.com>
 References: <20260501031555.43259-1-eric.joyner@amd.com>
@@ -78,83 +78,111 @@ X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF000397AE:EE_|SA1PR12MB9514:EE_
-X-MS-Office365-Filtering-Correlation-Id: ac98363c-635d-4649-9c31-08dea7300718
+X-MS-TrafficTypeDiagnostic: SN1PEPF000397AF:EE_|IA0PR12MB8695:EE_
+X-MS-Office365-Filtering-Correlation-Id: b6594468-1c64-4506-07a0-08dea7300905
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|36860700016|82310400026|1800799024|56012099003|22082099003|18002099003;
+	BCL:0;ARA:13230040|82310400026|1800799024|36860700016|376014|22082099003|18002099003|56012099003;
 X-Microsoft-Antispam-Message-Info:
-	BMFI/AsFuQrjXt+m79uPp0tcFnx0piJi3XzQYvfd61+3w1XcRmyDiozOrnIAzkEbFdNtE41bjZzc9asdyTsid9ob7k0zojdsIsRMSVdsBom0dmo/0msEmN85MVT7jMnoR5IjH5CSjL4awvDgfNBqlgY/DpOhgAdoTV8U+678gV9TI25wlBIcT1BUofGSCPnJHNy3auQxrloe08VKfVgQFRFV2k/gwLR7/9neI0IjiZvMMPJt5V6tMFp33V0ZdtIgQVxMDgrHTtOK4xGFsUt9prkB4fcg0cbRBVzSss93bd7RfV2amhm9duonJ8/AJrkycP52fGvWYWkAxbXh/KJcNBwRmMBQFPJeo7TAo3RkK2pvpyWcBOxXLLuRy+/LMMSTnLtU3sfMmzq2HpBDuuZqsIokQb0WsjzKloWCPUQqLNcbnUuw8dXaZG8CcMSXaS3CxyriypZpq8SxOPIvNG81EJWsIKM12IcWH6xg6+R8l7BbPBMJSwu3N8yyISUDDaXo6tJJjd5tcy55xSwpGCVPQsgFYDj5WcKB9n8jhva5qqfpvmg7fqsNtPd2VoK5x7EyBf+FsAp0GJC75NM9eTyrc0UAAt2wwJWwF9OA6xmkV5kClijJAcKjWsVzEB0T/I2Eqvop9OVqV+AJdCeiOLrWWMl8xFqK76i2r+ono9teP1mW66sSB8UQ8rfXS7MxnJi0Qz8JEjx3LHuZ4ebRp2WijI/71AsoMy/w36Q4gkb7SDI=
+	DkkpZ39uksplH336hQaI47VsFzyaa9bRhzx5EEA/FG8QC3g2vMDLVU70d0EjspSjcHCCA5Knsklu2RH+NYYkI9GFedCz5YgJ/YkyCZ5wwxecLWAzDIz7ISi3xmrZDXQs/kP4jb+Dv9bbmifgG1fAeApRMdLT3hz/NDaxjyvoNSglrqTN6ga790MyQXxBKH9RqW5r5cKMRBQJ4BdKR2icnzLNRs0qzHUCmK1A5OoW2HpCi1rsnb5gC7Kk5kx8+eVvoZvSvBciGUjeoJ9mX6p+r+d0PN7A/qrNbSsxDVWPeLzp6foCnu7sAtrkzWyYHyDx4Uzb7lOwPEHE8vo5rZbxJd8I+fp6ba1S9WuqKX0uR5ZxEQBJ6BjJezhfYoSf3GK3txawyS3yN7eFrDHEj08INTtil5KU4cJrfamgFT7NB9BgbQ+gu7D6j6qKHxLWCkCJbuXqpvG4lda0Sjl+wbDcrWFhyni93qvCPTn4eUdRcLUVslS4mcKfXIO5ikAgyMrEr/yMGoWFzrpeqdn02H83XJoR0aYQY9WuxvyeexfEMmPqTc/JxiiHkK9GfQuur6XhgW4Gbj3Kcg56DlL/T2txonV9XgQo2ShbmTFq1s3GnZLhl/zcD9qykVbyzSiRqIu9pAlM853Nd07snN4lYXFXLw6dUQug7IaFQeDRYNxAxMHUfVFTcmDhrbZmYmuOgh7XaSuTHL8bFvtXUHjBJpD193akNTxLh+R/oM7qTlKP6kw=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700016)(82310400026)(1800799024)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700016)(376014)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	YLk4zonnakIv0dA6IyMacRwfS38IjEolnuAGb54xqSnQAEeFt98XJZadl6qrbmklxn8I+T1O2wfIgNy2awcsYnzDS+tjgwm5M6mpaYDcp8W4jaGWizbX5ybgZEHmCceVsakOk++qmvqH3sgq6V0D4oHPZqmJAjgHbDQp94evH0HTrR5pjNC0+5fAXe4Uy0ktyY7OGmfPQc99xiEcCphHf0FEKfbfnRbKALq6hKDqSKMp6aw3KkIjDb5X38AG7o2+nSXvoXwqYzU5QWPOaRoPDkTY/nzPZU1R1PjIWNmmnEszEZlKj0aNenokjazXJiwbNq+TAaBGwdwEfMtPgegeUuZ/BsxG/n4+CR8+OzQ8wLY2pW4mQkRgVbu6Fbo8c++Cn/m9Vs1f1XB9oEfMO9yTKyJBoe8i9L1M3aA/sAiVh/VTWK+TzytQFyxE61vqwViw
+	cpWVMMB61xHeRPjIfD7IagPX9VIpbcmO6YJzc4mAcpH5LKBPUna7sZf82n51eIpQobPogX5W8lZtO/thmWmNdvNt9oLXlvNL/IjaIuIXtr9SIfCA8H3DrmNb/F4h4J8BYWDIMQt2lRoYnBsJdlSmJ3x7Y9iyjGSwyOq552G2J2MrZfsTKpMmqgoXZHyI0l9TcfNR5CQ04r6qXDCXxXbY7x6vUktN6ZsxWLxSURtWyrlhBH/k27f8G7Me87W3z2Et8D1N+dtmSZwf1VLwgeYOfaM7ziFu2+5MSkA+1wjnfnYLcfCljJpxFyYbjR/QKRVM2/6lBoa49naP5ek9zMmYl44hIrDU/+v+tAzpUeZm7sesmBJ76KztVSwxIMqOAXqmteuVlFfa030kiqd8pkU70HGyTeKN5hrJGQornWzIwEAyrnx+ch63epKtVqm5cDIz
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 May 2026 03:16:25.1875
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 May 2026 03:16:28.4408
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ac98363c-635d-4649-9c31-08dea7300718
+X-MS-Exchange-CrossTenant-Network-Message-Id: b6594468-1c64-4506-07a0-08dea7300905
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF000397AE.namprd05.prod.outlook.com
+	SN1PEPF000397AF.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB9514
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8695
 
-The number of times that link has gone down at the port level is tracked
-by the firmware and sent to the driver via regular DMA writes to an
-instance of struct ionic_port_status in the driver's memory.
-
-This statistic was never reported, but it is useful for diagnostics, so
-add it to the "ethtool -S` stats output, grouped with the other
-port-level stats that are contained in struct ionic_port_stats.
+Several FEC error statistics being collected can be reported in a
+dedicated ethtool callback for FEC errors, so implement the handler that
+does so. This includes 802.3ck FEC histogram data that some newer
+hardware collects.
 
 Assisted-by: Claude:claude-4.6-sonnet
 Signed-off-by: Eric Joyner <eric.joyner@amd.com>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_stats.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ .../ethernet/pensando/ionic/ionic_ethtool.c   | 51 +++++++++++++++++++
+ 1 file changed, 51 insertions(+)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_stats.c b/drivers/net/ethernet/pensando/ionic/ionic_stats.c
-index 0107599a9dd4..8f39f687a39f 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_stats.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_stats.c
-@@ -167,6 +167,7 @@ static const struct ionic_stat_desc ionic_rx_stats_desc[] = {
- #define IONIC_NUM_PORT_STATS ARRAY_SIZE(ionic_port_stats_desc)
- #define IONIC_NUM_TX_STATS ARRAY_SIZE(ionic_tx_stats_desc)
- #define IONIC_NUM_RX_STATS ARRAY_SIZE(ionic_rx_stats_desc)
-+#define IONIC_NUM_EXTRA_PORT_STATS	1
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
+index 78a802eb159f..fe1f753b6115 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
+@@ -418,6 +418,56 @@ static int ionic_get_fecparam(struct net_device *netdev,
+ 	return 0;
+ }
  
- #define MAX_Q(lif)   ((lif)->netdev->real_num_tx_queues)
- 
-@@ -243,7 +244,7 @@ static u64 ionic_sw_stats_get_count(struct ionic_lif *lif)
- 		rx_queues += 1;
- 
- 	total += IONIC_NUM_LIF_STATS;
--	total += IONIC_NUM_PORT_STATS;
-+	total += IONIC_NUM_PORT_STATS + IONIC_NUM_EXTRA_PORT_STATS;
- 
- 	total += tx_queues * IONIC_NUM_TX_STATS;
- 	total += rx_queues * IONIC_NUM_RX_STATS;
-@@ -280,6 +281,7 @@ static void ionic_sw_stats_get_strings(struct ionic_lif *lif, u8 **buf)
- 
- 	for (i = 0; i < IONIC_NUM_PORT_STATS; i++)
- 		ethtool_puts(buf, ionic_port_stats_desc[i].name);
-+	ethtool_puts(buf, "link_down_events_phy");
- 
- 	for (q_num = 0; q_num < MAX_Q(lif); q_num++)
- 		ionic_sw_stats_get_tx_strings(lif, buf, q_num);
-@@ -341,6 +343,8 @@ static void ionic_sw_stats_get_values(struct ionic_lif *lif, u64 **buf)
- 					     &ionic_port_stats_desc[i]);
- 		(*buf)++;
- 	}
-+	**buf = le16_to_cpu(lif->ionic->idev.port_info->status.link_down_count);
-+	(*buf)++;
- 
- 	for (q_num = 0; q_num < MAX_Q(lif); q_num++)
- 		ionic_sw_stats_get_txq_values(lif, buf, q_num);
++static const struct ethtool_fec_hist_range ionic_fec_ranges[] = {
++	{ 0, 0},
++	{ 1, 1},
++	{ 2, 2},
++	{ 3, 3},
++	{ 4, 4},
++	{ 5, 5},
++	{ 6, 6},
++	{ 7, 7},
++	{ 8, 8},
++	{ 9, 9},
++	{ 10, 10},
++	{ 11, 11},
++	{ 12, 12},
++	{ 13, 13},
++	{ 14, 14},
++	{ 15, 15},
++	{ 0, 0},
++};
++
++static void
++ionic_fill_fec_hist(const struct ionic_port_extra_stats *extra_stats,
++		    struct ethtool_fec_hist *hist)
++{
++	int i;
++
++	hist->ranges = ionic_fec_ranges;
++	for (i = 0; i < ETHTOOL_FEC_HIST_MAX - 1; i++)
++		hist->values[i].sum = extra_stats->fec_codeword_error_bin[i];
++}
++
++static void ionic_get_fec_stats(struct net_device *netdev,
++				struct ethtool_fec_stats *fec_stats,
++				struct ethtool_fec_hist *hist)
++{
++	struct ionic_port_extra_stats *extra_stats;
++	struct ionic_lif *lif = netdev_priv(netdev);
++
++	extra_stats = &lif->ionic->idev.port_info->extra_stats;
++
++	fec_stats->corrected_blocks.total =
++		le64_to_cpu(extra_stats->rsfec_correctable_blocks);
++	fec_stats->uncorrectable_blocks.total =
++		le64_to_cpu(extra_stats->rsfec_uncorrectable_blocks);
++	fec_stats->corrected_bits.total =
++		le64_to_cpu(extra_stats->fec_corrected_bits_total);
++
++	ionic_fill_fec_hist(extra_stats, hist);
++}
++
+ static int ionic_set_fecparam(struct net_device *netdev,
+ 			      struct ethtool_fecparam *fec)
+ {
+@@ -1154,6 +1204,7 @@ static const struct ethtool_ops ionic_ethtool_ops = {
+ 	.get_module_eeprom_by_page	= ionic_get_module_eeprom_by_page,
+ 	.get_pauseparam		= ionic_get_pauseparam,
+ 	.set_pauseparam		= ionic_set_pauseparam,
++	.get_fec_stats		= ionic_get_fec_stats,
+ 	.get_fecparam		= ionic_get_fecparam,
+ 	.set_fecparam		= ionic_set_fecparam,
+ 	.get_ts_info		= ionic_get_ts_info,
 -- 
 2.17.1
 
