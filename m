@@ -1,263 +1,169 @@
-Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D081DE2D8;
-	Fri,  1 May 2026 10:15:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40EB8383C60
+	for <netdev@vger.kernel.org>; Fri,  1 May 2026 10:20:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777630523; cv=none; b=osRTJ+UmjZfOF601JqFarHsW1Kveyh1nfrClcCSqQwrdmU/cEGssbrWo9F1ELATrkIlz86sKGyZbNO9zS9JbhqDQH773l1K4QqFVqwW+DBzp7Za0YLqLZ3ma7oXQkDRdg2AwwWrDfSfp0SdoPRczAWO7CjAPxEtoYNT0WhOCCNY=
+	t=1777630837; cv=none; b=HtuHr03FYu8zhERu69b5kkPLiK4pJxexV2+zFr0QCMAPU4bQx9KL4dSdTDS3ijKvAb2v/wpI2Sx/org7J3tkRCfGfWnqSRAFhGQ5syNuAs8KBwIcc2R3M0z9VRvLJsMSZ9i+pQ6I8kX3cKyFAzvz7wlnzctvUP3f5khrHtXVpX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777630523; c=relaxed/simple;
-	bh=dl+25Eus40M68Ieerpnxepbae0fwQlJmCdnGm4sytp8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Vt1CvxdxXAa2Doy2FFO6SL9/qIHYNC/F2PqwV96eM2u7vT8BQi9Es/NcibajsruQqzfj2JNO1WF+x1cmV16tTFUlY79Pe8uT3RrDz6sHK20Cgl3Al6RswJa2W0pPpsJm74zAmyaJXmQMhIqmQO962argvcQrDKPycmz5g1v/a50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jmu.edu.cn; spf=pass smtp.mailfrom=jmu.edu.cn; arc=none smtp.client-ip=101.71.155.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jmu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jmu.edu.cn
-Received: from Vostro-3710.. (unknown [119.122.215.211])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 3cdf2484d;
-	Fri, 1 May 2026 18:10:02 +0800 (GMT+08:00)
-From: Chukun Pan <amadeus@jmu.edu.cn>
-To: "David S . Miller" <davem@davemloft.net>
-Cc: Andrew Lunn <andrew@lunn.ch>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Chukun Pan <amadeus@jmu.edu.cn>
-Subject: [PATCH v3 1/1] net: phy: realtek: Add support for PHY LEDs on RTL8221B
-Date: Fri,  1 May 2026 18:00:02 +0800
-Message-Id: <20260501100002.755672-1-amadeus@jmu.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1777630837; c=relaxed/simple;
+	bh=jtlAbkh5t5cquAQPLybI6fg4VmxSWypzsS31YARlwBg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jzTRvrjk+WHjixQ5o4xYpczLwYZ5uFvEEt8U4ZiNgGJgHVaAKrtCwzGkvFiWqUamKBNF1LeFU6OjgsWWaZnfRv2MFzBW4HmpTGZ7cG4oxKl8AWqFWt1V9+VlIKslg/DduskPp/RRF08LYiXc8bANCPaD4khkk/vUQ7fiBj9YQGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZaSLmIJF; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=iSR6rcQu; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZaSLmIJF";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="iSR6rcQu"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777630835;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ckz7/MuxnhPepMqi4EnxI+M4pL7GZA74kH4n9WH+z5Q=;
+	b=ZaSLmIJFcnCIKnqvY8Y0PZKluFob04/ZWY9r9onmEQ7bI7SyJxLJziYIwTRLdeT+IWwJGO
+	EPn0EjcAyTBZf1EH/F7svUkj8ltfr5XadeperYQWafwVrbgGr57EJ3i6GGMkWTkPkXXsY5
+	rqZLMmM5ScESZ3unurluQfBTo86vaV0=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-624-XWl4nb9QM6uzmDoGDyY4EQ-1; Fri, 01 May 2026 06:20:34 -0400
+X-MC-Unique: XWl4nb9QM6uzmDoGDyY4EQ-1
+X-Mimecast-MFC-AGG-ID: XWl4nb9QM6uzmDoGDyY4EQ_1777630833
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-4411a529bc0so1442091f8f.0
+        for <netdev@vger.kernel.org>; Fri, 01 May 2026 03:20:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1777630832; x=1778235632; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ckz7/MuxnhPepMqi4EnxI+M4pL7GZA74kH4n9WH+z5Q=;
+        b=iSR6rcQuyuawojJu6kqgRLJS2sN96vGQCwFUZvIT16Y5HY78+2q9tiP9QJs9HwMXAQ
+         SKStmlYnQ3KRitzmQpZBficalYxRM/ouJsQ2+Un2+MKYC1lFGhNyM9vPz5lS4IqVsLSt
+         NIm5fh7BvKlGkhQIEW8Ojr/TYbYYpm45a/5SC3Q2h3faqsVUvz0bHqTlra3WDtMtIjf7
+         i+mdPLxyXBJdS88z5lYesDYf8EaU+bO+K51pkC1QirBnSlZyR8bECN5KRMT/RkLi5EpF
+         xhZcc3Rxt+zdrUkHfU4H7Zqx+ZcKSJTVNnTkTSFY8UMb1UpXTBEAT05s+KwinrwJaFMW
+         tRwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777630832; x=1778235632;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ckz7/MuxnhPepMqi4EnxI+M4pL7GZA74kH4n9WH+z5Q=;
+        b=YK/F3iS4DZ/veFRvlShItNKV0ysuyoLKfb2zharIKdpB5UZ4s1/nbO2cJKDfBMUNt7
+         dgM1QJFGXJxt4o2aiJ0x2qZ/MHs+e9yayMIRd5/rTD5nM6wozcKXNF/pt9flBVOIE+PN
+         l1VDKpf28Zy4D59bhwBsKEPDt8j1EEKbWWEMT/nbEPL91Y4737BOa1Ey1nWmT2FslZld
+         hw/6qPCQZMrF3PczR3zQ2njhjQjwFpmthxkpjZNMwP+pvqQ9MFKBHxr+sxp5YILXvkOm
+         sYzzoW9Vy5on1AXnjEd8aimSRo9UxUIKp9OnoCN+ahAmdmkuYjE86yecYerD+m5UTWBd
+         iXtQ==
+X-Forwarded-Encrypted: i=1; AFNElJ88VBpGgYjnrXZ9Rx1gBQODlBGcVumzKiVb24loa1Szbh7QM4dqt3d3+EgTFJuc9w6/wbm1Nig=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx+TUX/TW5z62fHgV1FHjiGf5x04D8IYs3FETtKwLm+EIpzxIeN
+	cdlRkGimL8+OtteBs3MQc73S1EYSGiN+BDZIxpu9mDXuo31VHF6vf5PaZzL12Vh1nU0upHrzXlm
+	FZNC6jwjhYlsHHjom1vPscFJEuFJ7T5AehXW0caKU0ZAss8TfyJxALGEOtna7HjveQm4p
+X-Gm-Gg: AeBDieuHMph6Rn9u4VSacvlPByqTrF30SpGvuij+//QCr5gJdhKNlm5b+X5cXwN6JBQ
+	JiZKFbX0vJ1AB7MjakOYI5SUvJD9uEkhVfcJLOdHrIGfmmz1OD25RCqPcOfrkjP4RScKlgXk27t
+	dF0pqY8a+Yk8b3zKton5DoF1GZKExwr0AZyxuW0mCDfRYEUE36TRPL1R05Tp+TVPY4Pn1IFMpMm
+	XGIRJeBQmlTkfkpVM302m4qYuu7yu7QI/vub9hjKZwynWXpr09DjpECHhXwtfEsYP1k50RDb95u
+	jbjWnwDXZn3MahsLyzOtHTxqgnTVdFJHZlTSNSzzLEYd1Xd8GuhilyWYwNgJ/x2UJy+4OZ5E25Z
+	joWMZkTSjzv7iiYiKTCVkQAd6emqaNYY=
+X-Received: by 2002:a05:6000:220b:b0:439:beb9:5a96 with SMTP id ffacd0b85a97d-4493ef44331mr12107132f8f.31.1777630831706;
+        Fri, 01 May 2026 03:20:31 -0700 (PDT)
+X-Received: by 2002:a05:6000:220b:b0:439:beb9:5a96 with SMTP id ffacd0b85a97d-4493ef44331mr12107092f8f.31.1777630831180;
+        Fri, 01 May 2026 03:20:31 -0700 (PDT)
+Received: from [192.168.2.83] ([46.175.183.46])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-44a981dee90sm4047251f8f.22.2026.05.01.03.20.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 01 May 2026 03:20:30 -0700 (PDT)
+Message-ID: <58e72b6f-3e8a-44b7-a74c-0a21f0720ed3@redhat.com>
+Date: Fri, 1 May 2026 12:20:28 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9de3044b0303a2kunm9d72a4a436bf6
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCQxlCVkJNSUNITBhLSUIaSVYeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlKSkJVSklJVUlKTlVJSkpZV1kWGg8SFR0UWUFZT0tIVUpLSE
-	pOTE5VSktLVUpCS0tZBg++
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH iproute2-next 1/2] dpll: add ps unit to phase-related pin
+ attributes
+To: Ivan Vecera <ivecera@redhat.com>, netdev@vger.kernel.org
+Cc: David Ahern <dsahern@kernel.org>,
+ Stephen Hemminger <stephen@networkplumber.org>
+References: <20260428152115.2815860-1-ivecera@redhat.com>
+ <20260428152115.2815860-2-ivecera@redhat.com>
+Content-Language: en-US
+From: Petr Oros <poros@redhat.com>
+In-Reply-To: <20260428152115.2815860-2-ivecera@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Realtek RTL8221B Ethernet PHY supports three LED pins which are used to
-indicate link status and activity. Add netdev trigger support for them.
 
-Signed-off-by: Chukun Pan <amadeus@jmu.edu.cn>
----
-Changes in v3:
-- In led_hw_control_set, reset the LED polarity to default.
-- Link to v2: https://lore.kernel.org/all/20260420100800.2435204-1-amadeus@jmu.edu.cn/
-Changes in v2:
-- Invert the LED polarity in led_brightness_set to achieve LED_ON.
-- Link to v1: https://lore.kernel.org/all/20260401100010.3079700-1-amadeus@jmu.edu.cn/
----
- drivers/net/phy/realtek/realtek_main.c | 165 +++++++++++++++++++++++++
- 1 file changed, 165 insertions(+)
-
-diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
-index 79c867ef64da..e0b37e8d3410 100644
---- a/drivers/net/phy/realtek/realtek_main.c
-+++ b/drivers/net/phy/realtek/realtek_main.c
-@@ -165,6 +165,18 @@
- 
- #define RTL8221B_VND2_INSR			0xa4d4
- 
-+#define RTL822X_VND2_LED(x)			(0xd032 + ((x) * 2))
-+#define RTL822X_VND2_LCR_LINK_10		BIT(0)
-+#define RTL822X_VND2_LCR_LINK_100		BIT(1)
-+#define RTL822X_VND2_LCR_LINK_1000		BIT(2)
-+#define RTL822X_VND2_LCR_LINK_2500		BIT(5)
-+
-+#define RTL822X_VND2_LCR6			0xd040
-+#define RTL822X_VND2_LED_ACT(x)			BIT(x)
-+
-+#define RTL822X_VND2_LCR7			0xd044
-+#define RTL822X_VND2_LED_POLAR(x)		BIT(x)
-+
- #define RTL8224_MII_RTCT			0x11
- #define RTL8224_MII_RTCT_ENABLE			BIT(0)
- #define RTL8224_MII_RTCT_PAIR_A			BIT(4)
-@@ -1797,6 +1809,151 @@ static int rtl822xb_c45_read_status(struct phy_device *phydev)
- 	return 0;
- }
- 
-+static int rtl822xb_led_brightness_set(struct phy_device *phydev, u8 index,
-+				       enum led_brightness value)
-+{
-+	int ret;
-+
-+	if (index >= RTL8211x_LED_COUNT)
-+		return -EINVAL;
-+
-+	/* clear HW LED setup */
-+	ret = phy_write_mmd(phydev, MDIO_MMD_VEND2,
-+			    RTL822X_VND2_LED(index), 0);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* clear HW LED blink */
-+	ret = phy_clear_bits_mmd(phydev, MDIO_MMD_VEND2, RTL822X_VND2_LCR6,
-+				 RTL822X_VND2_LED_ACT(index));
-+	if (ret < 0)
-+		return ret;
-+
-+	if (value != LED_OFF)
-+		return phy_set_bits_mmd(phydev, MDIO_MMD_VEND2,
-+					RTL822X_VND2_LCR7,
-+					RTL822X_VND2_LED_POLAR(index));
-+	else
-+		return phy_clear_bits_mmd(phydev, MDIO_MMD_VEND2,
-+					  RTL822X_VND2_LCR7,
-+					  RTL822X_VND2_LED_POLAR(index));
-+}
-+
-+static int rtl822xb_led_hw_is_supported(struct phy_device *phydev, u8 index,
-+					unsigned long rules)
-+{
-+	const unsigned long  act_mask = BIT(TRIGGER_NETDEV_RX) |
-+					BIT(TRIGGER_NETDEV_TX);
-+
-+	const unsigned long link_mask = BIT(TRIGGER_NETDEV_LINK) |
-+					BIT(TRIGGER_NETDEV_LINK_10) |
-+					BIT(TRIGGER_NETDEV_LINK_100) |
-+					BIT(TRIGGER_NETDEV_LINK_1000) |
-+					BIT(TRIGGER_NETDEV_LINK_2500);
-+
-+	if (index >= RTL8211x_LED_COUNT)
-+		return -EINVAL;
-+
-+	/* Filter out any other unsupported triggers. */
-+	if (rules & ~(link_mask | act_mask))
-+		return -EOPNOTSUPP;
-+
-+	/* RX and TX are not differentiated, they are not possible
-+	 * without combination with a link trigger.
-+	 */
-+	if ((rules & act_mask) && !(rules & link_mask))
-+		return -EOPNOTSUPP;
-+
-+	return 0;
-+}
-+
-+static int rtl822xb_led_hw_control_get(struct phy_device *phydev, u8 index,
-+				       unsigned long *rules)
-+{
-+	int val;
-+
-+	if (index >= RTL8211x_LED_COUNT)
-+		return -EINVAL;
-+
-+	val = phy_read_mmd(phydev, MDIO_MMD_VEND2, RTL822X_VND2_LED(index));
-+	if (val < 0)
-+		return val;
-+
-+	if (val & RTL822X_VND2_LCR_LINK_10)
-+		__set_bit(TRIGGER_NETDEV_LINK_10, rules);
-+
-+	if (val & RTL822X_VND2_LCR_LINK_100)
-+		__set_bit(TRIGGER_NETDEV_LINK_100, rules);
-+
-+	if (val & RTL822X_VND2_LCR_LINK_1000)
-+		__set_bit(TRIGGER_NETDEV_LINK_1000, rules);
-+
-+	if (val & RTL822X_VND2_LCR_LINK_2500)
-+		__set_bit(TRIGGER_NETDEV_LINK_2500, rules);
-+
-+	if ((val & RTL822X_VND2_LCR_LINK_10) &&
-+	    (val & RTL822X_VND2_LCR_LINK_100) &&
-+	    (val & RTL822X_VND2_LCR_LINK_1000) &&
-+	    (val & RTL822X_VND2_LCR_LINK_2500))
-+		__set_bit(TRIGGER_NETDEV_LINK, rules);
-+
-+	val = phy_read_mmd(phydev, MDIO_MMD_VEND2, RTL822X_VND2_LCR6);
-+	if (val < 0)
-+		return val;
-+
-+	if (val & RTL822X_VND2_LED_ACT(index)) {
-+		__set_bit(TRIGGER_NETDEV_RX, rules);
-+		__set_bit(TRIGGER_NETDEV_TX, rules);
-+	}
-+
-+	return 0;
-+}
-+
-+static int rtl822xb_led_hw_control_set(struct phy_device *phydev, u8 index,
-+				       unsigned long rules)
-+{
-+	u16 val = 0;
-+	bool act;
-+	int ret;
-+
-+	if (index >= RTL8211x_LED_COUNT)
-+		return -EINVAL;
-+
-+	if (test_bit(TRIGGER_NETDEV_LINK, &rules) ||
-+	    test_bit(TRIGGER_NETDEV_LINK_10, &rules))
-+		val |= RTL822X_VND2_LCR_LINK_10;
-+
-+	if (test_bit(TRIGGER_NETDEV_LINK, &rules) ||
-+	    test_bit(TRIGGER_NETDEV_LINK_100, &rules))
-+		val |= RTL822X_VND2_LCR_LINK_100;
-+
-+	if (test_bit(TRIGGER_NETDEV_LINK, &rules) ||
-+	    test_bit(TRIGGER_NETDEV_LINK_1000, &rules))
-+		val |= RTL822X_VND2_LCR_LINK_1000;
-+
-+	if (test_bit(TRIGGER_NETDEV_LINK, &rules) ||
-+	    test_bit(TRIGGER_NETDEV_LINK_2500, &rules))
-+		val |= RTL822X_VND2_LCR_LINK_2500;
-+
-+	ret = phy_write_mmd(phydev, MDIO_MMD_VEND2,
-+			    RTL822X_VND2_LED(index), val);
-+	if (ret < 0)
-+		return ret;
-+
-+	act = test_bit(TRIGGER_NETDEV_RX, &rules) ||
-+	      test_bit(TRIGGER_NETDEV_TX, &rules);
-+
-+	ret = phy_modify_mmd(phydev, MDIO_MMD_VEND2, RTL822X_VND2_LCR6,
-+			     RTL822X_VND2_LED_ACT(index), act ?
-+			     RTL822X_VND2_LED_ACT(index) : 0);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Reset polarity to default */
-+	return phy_clear_bits_mmd(phydev, MDIO_MMD_VEND2, RTL822X_VND2_LCR7,
-+				  RTL822X_VND2_LED_POLAR(index));
-+}
-+
- static int rtl8224_cable_test_start(struct phy_device *phydev)
- {
- 	u32 val;
-@@ -2565,6 +2722,10 @@ static struct phy_driver realtek_drvs[] = {
- 		.write_page	= rtl821x_write_page,
- 		.read_mmd	= rtl822xb_read_mmd,
- 		.write_mmd	= rtl822xb_write_mmd,
-+		.led_brightness_set = rtl822xb_led_brightness_set,
-+		.led_hw_is_supported = rtl822xb_led_hw_is_supported,
-+		.led_hw_control_get = rtl822xb_led_hw_control_get,
-+		.led_hw_control_set = rtl822xb_led_hw_control_set,
- 	}, {
- 		.match_phy_device = rtl8221b_vm_cg_match_phy_device,
- 		.name		= "RTL8221B-VM-CG 2.5Gbps PHY",
-@@ -2584,6 +2745,10 @@ static struct phy_driver realtek_drvs[] = {
- 		.write_page	= rtl821x_write_page,
- 		.read_mmd	= rtl822xb_read_mmd,
- 		.write_mmd	= rtl822xb_write_mmd,
-+		.led_brightness_set = rtl822xb_led_brightness_set,
-+		.led_hw_is_supported = rtl822xb_led_hw_is_supported,
-+		.led_hw_control_get = rtl822xb_led_hw_control_get,
-+		.led_hw_control_set = rtl822xb_led_hw_control_set,
- 	}, {
- 		.match_phy_device = rtl8251b_c45_match_phy_device,
- 		.name		= "RTL8251B 5Gbps PHY",
--- 
-2.34.1
+On 4/28/26 17:21, Ivan Vecera wrote:
+> Display phase-adjust-min, phase-adjust-max and phase-adjust values
+> with ps unit. Add DPLL_PR_PHASE_OFFSET macro that properly formats
+> phase-offset as fractional picoseconds by dividing the raw kernel
+> value by DPLL_PHASE_OFFSET_DIVIDER.
+>
+> Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+> ---
+>   dpll/dpll.c | 27 ++++++++++++++++++++++-----
+>   1 file changed, 22 insertions(+), 5 deletions(-)
+>
+> diff --git a/dpll/dpll.c b/dpll/dpll.c
+> index b6ba3283e0ba..e8056ff6a24b 100644
+> --- a/dpll/dpll.c
+> +++ b/dpll/dpll.c
+> @@ -410,6 +410,21 @@ static __s64 mnl_attr_get_sint(const struct nlattr *attr)
+>   		}                                                              \
+>   	} while (0)
+>   
+> +/* Phase offset - JSON prints raw sub-ps value, FP prints fractional ps */
+> +#define DPLL_PR_PHASE_OFFSET(tb, attr_id)                                      \
+> +	do {                                                                   \
+> +		if (tb[attr_id]) {                                             \
+> +			__s64 val = mnl_attr_get_sint(tb[attr_id]);            \
+> +			lldiv_t d = lldiv(llabs(val),                          \
+> +					  DPLL_PHASE_OFFSET_DIVIDER);	       \
+> +			print_s64(PRINT_JSON, "phase-offset", NULL, val);      \
+> +			print_string(PRINT_FP, NULL, " phase-offset %s",       \
+> +				     val < 0 ? "-" : "");                      \
+> +			print_s64(PRINT_FP, NULL, "%lld.", d.quot);            \
+> +			print_s64(PRINT_FP, NULL, "%03lld ps", d.rem);         \
+> +		}                                                              \
+> +	} while (0)
+> +
+>   /* Generic version with custom format */
+>   #define DPLL_PR_ENUM_STR_FMT(tb, attr_id, name, format_str, name_func)         \
+>   	do {                                                                   \
+> @@ -1507,8 +1522,7 @@ static void dpll_pin_print_parent_devices(struct nlattr *attr)
+>   				 " prio %u");
+>   		DPLL_PR_ENUM_STR_FMT(tb_parent, DPLL_A_PIN_STATE, "state",
+>   				     " state %s", dpll_pin_state_name);
+> -		DPLL_PR_SINT_FMT(tb_parent, DPLL_A_PIN_PHASE_OFFSET,
+> -				 "phase-offset", " phase-offset %" PRId64);
+> +		DPLL_PR_PHASE_OFFSET(tb_parent, DPLL_A_PIN_PHASE_OFFSET);
+>   
+>   		print_nl();
+>   		close_json_object();
+> @@ -1592,10 +1606,13 @@ static void dpll_pin_print_attrs(struct nlattr **tb)
+>   
+>   	dpll_pin_print_capabilities(tb[DPLL_A_PIN_CAPABILITIES]);
+>   
+> -	DPLL_PR_INT(tb, DPLL_A_PIN_PHASE_ADJUST_MIN, "phase-adjust-min");
+> -	DPLL_PR_INT(tb, DPLL_A_PIN_PHASE_ADJUST_MAX, "phase-adjust-max");
+> +	DPLL_PR_INT_FMT(tb, DPLL_A_PIN_PHASE_ADJUST_MIN, "phase-adjust-min",
+> +			"  phase-adjust-min: %d ps\n");
+> +	DPLL_PR_INT_FMT(tb, DPLL_A_PIN_PHASE_ADJUST_MAX, "phase-adjust-max",
+> +			"  phase-adjust-max: %d ps\n");
+>   	DPLL_PR_UINT(tb, DPLL_A_PIN_PHASE_ADJUST_GRAN, "phase-adjust-gran");
+> -	DPLL_PR_INT(tb, DPLL_A_PIN_PHASE_ADJUST, "phase-adjust");
+> +	DPLL_PR_INT_FMT(tb, DPLL_A_PIN_PHASE_ADJUST, "phase-adjust",
+> +			"  phase-adjust: %d ps\n");
+>   
+>   	if (json || !tb[DPLL_A_PIN_FRACTIONAL_FREQUENCY_OFFSET_PPT])
+>   		DPLL_PR_SINT(tb, DPLL_A_PIN_FRACTIONAL_FREQUENCY_OFFSET,
+Reviewed-by: Petr Oros <poros@redhat.com>
 
