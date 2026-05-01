@@ -1,242 +1,120 @@
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082693CAE60
-	for <netdev@vger.kernel.org>; Fri,  1 May 2026 15:03:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBA413CAE60
+	for <netdev@vger.kernel.org>; Fri,  1 May 2026 15:10:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777647796; cv=none; b=e8G8VpHUGpNp0I2cX5jVopjCAelMQ0UC4gAt4XFQHYFfmbO4KzE80DDHu+ulP7KV7K+j/Rmbu8k0dPr5r3LQR+Bs0ssmDme8uZI9FHz2Y/NwY8OnBbzGM+fGz9+kIoSdhO2G4xma0r/6UP7WQx4044McTlf9gX7DhCy5arclSq0=
+	t=1777648229; cv=none; b=d9dUNC7FD41orajwK2OtB+p0PJPulql7r3XZAjkUH+TQO8fHPLFU+2qukOu+Jn/UfDCf03pmBhBkFkTldYwotiut0yzwb+WzJTWcea9mIAM1Ctb04y7NsYKOX30YfbXQh9uXjpEl6sTkCz/ADwqQcESLwa8N2mvbFu/ZYfm9VUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777647796; c=relaxed/simple;
-	bh=Xj1qHrlavKRPo+s72/orvb8seid96VoKXE1IrloD2nc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WijjgjB1AydEbDvMecLN9kD4u1v4JSMQCb0MKjcwZ5049iG/jDNE9y+5ONwjx6Dh6ChM0Qh+/sbN6VT8F/ADM9G33cncgIvzZadOeV9elf3KN7EgNJ95IEykHw0CsAAqlrzrBn/8EBV8k/fU/1rFzLrS+nkN4zxpi9zWBLsvOqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hb0oOPwa; arc=none smtp.client-ip=209.85.210.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1777648229; c=relaxed/simple;
+	bh=PJdNdnWvDDluh7UHBD80CPUJ3FSZdmDldbqnzO2EGv0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mn7khKs5c/56wR3E+SkKxr3Ky46XX7L1Qld5RkpQNOyuDycWT+pAclehpefOxyS79wHzNplKqUc3vqZvIBxvFx/pBxIpW94/oSLv2FDaKvodJM6T5533oDj6ZlZjDUMjI7Ti2myzv8cTXih2bQB/3hj5tbH4n4CAWuIMgzm0nU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b=KGKrAtau; arc=none smtp.client-ip=209.85.161.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hb0oOPwa"
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-8296d553142so1378734b3a.3
-        for <netdev@vger.kernel.org>; Fri, 01 May 2026 08:03:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b="KGKrAtau"
+Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-67c250805ccso822288eaf.1
+        for <netdev@vger.kernel.org>; Fri, 01 May 2026 08:10:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777647794; x=1778252594; darn=vger.kernel.org;
+        d=networkplumber-org.20251104.gappssmtp.com; s=20251104; t=1777648227; x=1778253027; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NwhPu/bxQrCX54xEbayaG+4GqRqCieagoOqy7sLCdrU=;
-        b=Hb0oOPwag4PLUPhnk2uuZlpmGbwK+NBKPsDbvl+8lpb88L6DWFi18B0dXjC6nhPCwL
-         wlDJPTEpDQ3L/sLiLp2nFGQQpK1UEp1LuZoKozkTL4p+r9lJi/5a7bGhnsWlgpn74I+5
-         GOcjIN4jfOy3zan5tr03LJKL8J6rPAVTsb/DB3V7Ngs4tHSIPUDQRlK79j0dGYb+HUma
-         pCYisuMSvHpaFnsczehiqgfqgy0dryKNRaB3Cb4ow4NYFUWD2VCscqQwLhmCRK6+68yX
-         F2ugN6dTW0I1v+UOx9DBfJ9+BwS+fdVdcO74xA/hvXcZiEkKNlQWcEZOY5C9sBG5tmKU
-         PGgQ==
+        bh=GiSLDt0k6mWQuRILOKEajMVcrvzNv9JTk+B5NWaEkIQ=;
+        b=KGKrAtauoXmvAzCbPna2Ngh5UGvIuxlTvXKqm+VKS9lKZgVtRMOB0rjQiRb1wOSXR2
+         yhcjMrThjkkDrdXz9A0ViX2dRiTUgiN2LyCgtr6Ni4ZZkg9CRFnLvDa7gjpPZnyJmh8c
+         3pi+U2ZnFZZkl3HCXpdqmxgkNeSVy2iYOlBMWC7tzvXr3AtuKD2+q41LdCPUV82rdi5+
+         qSzQ6KOzlnhJvebQ20oYVZJL4MX1hRqhVzUgdWTGe3hk2zgSgsqtcNAShi8L5GW4JYAu
+         W/bDudzsZ7Rg5n/CesmL4Dbzx/tKt9d2l1iiFTXK/NwIfhtViOb2pYVbZme68vjji5ML
+         OjOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777647794; x=1778252594;
+        d=1e100.net; s=20251104; t=1777648227; x=1778253027;
         h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=NwhPu/bxQrCX54xEbayaG+4GqRqCieagoOqy7sLCdrU=;
-        b=Shtvz5Sq2koqVifQZ6ampkwdgDzWhnyMxZ8iyfydiaVqZaMuE2jvugocr8LKwLlQ1L
-         4VbeYBtWaQ5UMmkNuGRM7rKQqwC0wEhYi/tFJru1XUiLtyQaKsWkpztYO1oGid9IKPve
-         6/Xc+Lf5BDQIg3iJCfLtmpuYUe9pHs52NgSlZ38PNpkPYnzyNq36tqDVi3RDMGEHXfm8
-         sQ9VTbGS6bFJozvWdPn3dhvButqlPdh/Ino9lMMpkCqtXZc87KPIPhFaA/vlKVf7AqJZ
-         EK2vlDMAbhD3n5TE/UyAoQ9nn8SoGXf8zAowVL8ho2M+UOQ5bw6bn8c+RBMQKJJjTs7l
-         QEJg==
-X-Forwarded-Encrypted: i=1; AFNElJ9Qu1RF1JWXoWQ6YqKWAHtw26so1a41o9GtJrwx85OZEDWvcuo2UW2JSgbv/BK0n7TNYqCdpIo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHTKflRq10mXFfgkYrTafoirt66fHSjFtIlzmHV/TpzaKd/k1D
-	Q45TYG235qkSo5W6ydOycOy77h317jwcvfz+r1QvhmpxEFypbTs87ATN
-X-Gm-Gg: AeBDievCVSeOdRQnT5H+sRJ/di6Iesv/wVau2RPP6SpKt6pSa3LZznbmRF7DMCvx5rB
-	Pq1wdO5uArISgEFAaLd27AqzUK9vpPMGqrq3LnXX3RYu3TMv1phkaHXuqNMW6m9dpRqNyeEkiEL
-	BIClvOooBZvM3eUnKucqVHef5lnffcO+gUXJGe2L4BOhmzTgLI4aocNjrBisWGgjE9ynecTWQ7+
-	AOzQqS1wyWznrgiZFfHhGMG1M+7JRZTq4hj7efBNjnlxxJd+LKnyFhdwVFwt2W+H59JfLA+xkux
-	itMr69guZXgQu71Jw10iO6G6dHI9L9T348tbVzaDTUTMx85VHTMGVSrEyj4975c0NSX0CNTk1Ub
-	sg4iO2RM4QH1Uhqw7UWA8RpMHme0XqI0LwhrZeFoYrQBPQWBua6/6f5K4/xRxmUJDABo8WCD5SD
-	JU9si82KPCKvwp4qTRiay74omYBof0oV6NaV2TlTiWI+WGMgFbeufd5LqnN+TRLZN1maWygq0Jd
-	ShuGHEwQbplePU74mZYziWay5EG2sRTpsklXOo63qFZh8yCP3NC5jxollYN4ZRsmyNEXM7cPkl0
-	jG2d0qFi+4edlpXiwNtWpAoOcAqT7Dk8E3ad9vILMbKVYhNm1b9KGby38X5X
-X-Received: by 2002:a05:6a00:3cce:b0:82f:61bf:7eb8 with SMTP id d2e1a72fcca58-834fdb58b55mr7999450b3a.7.1777647794005;
-        Fri, 01 May 2026 08:03:14 -0700 (PDT)
-Received: from tobiichi3227-framework13-cachyos.misaka.net (36-236-241-206.dynamic-ip.hinet.net. [36.236.241.206])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83515b864c7sm3356061b3a.59.2026.05.01.08.03.11
+        bh=GiSLDt0k6mWQuRILOKEajMVcrvzNv9JTk+B5NWaEkIQ=;
+        b=ik0hZhgj8PsSfOINgL035yvA4EYT+ZksBTarvbCbGlSRBRGyQFx4GVadzTDh4SYRwB
+         9zzXKtW6uRXDpckd+VOwVlx71C8xB9z2neX/C8U+SnA45sMG6Va9yQDTyPSr35qHnN9B
+         LeAfm+/XENQHpg4BkwCZjxddqgHF/J0eg4ydJr+nyoIm1sN8zW151ig6m8MouiNRZ3+4
+         fxCI23yeee38To2KFMXVEjgLNu6CcpwkPWAlOKAhyYoxM7eSVfM5gc3sl4TuafxrSFGl
+         xPSVzzKL/mYtPQ3DzXg0Y1KVN0d6ATusznxacgsJLqjBtRyBBgWiZwSmZjkUD0Xlqj+5
+         1DFw==
+X-Forwarded-Encrypted: i=1; AFNElJ/eOLALqIL2HtePmWBe/2vgTZkDwMIC1kRa01cc8LZLd70dZ0bksfbItvL5bk8CSFkrMLxB6PA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyzHDiQKPRAoJdAZPRdQoRhDMr7OcOtNBa/JIksdTwuyFSNUGfs
+	CCmKhO3RC+MJR40vmWfXOlgz9RycYtm7eI0Pv0hsvyqmHbhIxG2nHX3aqqBsQnMKy+g=
+X-Gm-Gg: AeBDietvStc4pTU0Y2As+bbR+YWBjBHsU4DsqHdgP0n/cFWy8UN5ics7j9EfiVUHVVZ
+	OCSVJ7O/AP5p2PXXl/igfytPJPCuAO/JSZpQs2U1Ai4c6C9iNGbvdiUTj3AUQCBfR6jmvRKVYtt
+	wCrz5vGFcHl55cjKJhhV8OS8QmRg/H7QhjSfOTfgha5kLkNHpenaIO+sw4RAKy3yvuPOTr0gzaC
+	W8OG1sO/VMNz4M8qwOe5IGuZXfHInXk2876RRHEpL0jlNJNLr92AzPgzHbeMOZzRmZQHS8/DZN8
+	ROnHAjHkglSLt5CvTZytbQv1wCkvWom+xNOLVtxqUSh61tGNNl/chZgvgdatG/EOrS05dYWbS6W
+	A0tXmuk+E4klOkqlxWWcX/lHOAt9suekzAtPywmvsi8sdHghq9no7zT2YEKXQZfwvMp229qR6Wo
+	GI60PEiWM0EzeaGYL8OqYiGmcoGLEHiR0BiNf2oYuqFRYFLg==
+X-Received: by 2002:a05:6820:2226:b0:694:97b4:58ff with SMTP id 006d021491bc7-6967a532c78mr3578019eaf.26.1777648226629;
+        Fri, 01 May 2026 08:10:26 -0700 (PDT)
+Received: from phoenix.local ([104.202.41.210])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-434548d9decsm3116639fac.3.2026.05.01.08.10.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 May 2026 08:03:13 -0700 (PDT)
-From: Dao Zhong Ma <cz1346219@gmail.com>
-To: linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	antonio@openvpn.net
-Cc: sd@queasysnail.net,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	Dao Zhong Ma <cz1346219@gmail.com>
-Subject: [PATCH 1/1] ovpn: tcp - defer TX from softirq to workqueue
-Date: Fri,  1 May 2026 22:54:25 +0800
-Message-ID: <20260501145425.757147-2-cz1346219@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260501145425.757147-1-cz1346219@gmail.com>
-References: <20260501145425.757147-1-cz1346219@gmail.com>
+        Fri, 01 May 2026 08:10:26 -0700 (PDT)
+Date: Fri, 1 May 2026 08:10:22 -0700
+From: Stephen Hemminger <stephen@networkplumber.org>
+To: David Ahern <dsahern@kernel.org>
+Cc: Eric Dumazet <edumazet@google.com>, "David S . Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com
+Subject: Re: [PATCH v2 iproute2-next] utils: add fflush_monitor() helper
+Message-ID: <20260501081022.3f297100@phoenix.local>
+In-Reply-To: <6e00eaa5-a4d7-45dd-9d90-fb319b76c9fa@kernel.org>
+References: <20260427081953.364819-1-edumazet@google.com>
+	<6e00eaa5-a4d7-45dd-9d90-fb319b76c9fa@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-ovpn_tcp_send_skb() holds sk->sk_lock.slock while performing the full TCP
-send in softirq context. This can hold the spinlock for a long time
-(large skb), blocking lock_sock() users. This can starve the RCU GP
-kthread and trigger RCU stalls warnings and hung tasks.
+On Thu, 30 Apr 2026 09:35:08 -0600
+David Ahern <dsahern@kernel.org> wrote:
 
-Defer the TCP send operation to process context:
-- In interrupt context, only enqueue the skb under the spinlock
-  schedule tcp_tx_work.
-- In process context, dequeue and flush the send queue under lock_sock()
+> On 4/27/26 2:19 AM, Eric Dumazet wrote:
+> > Some fflush() calls only make sense for monitor programs.
+> > 
+> > For other cases, forcing a flush is expensive.
+> > 
+> > After this patch, ip, tc and ss are correctly buffering most of their
+> > output when redirected to a file.
+> > 
+> > Signed-off-by: Eric Dumazet <edumazet@google.com>
+> > ---
+> >  include/utils.h  |  7 +++++++
+> >  ip/ipaddress.c   | 12 +++++++-----
+> >  ip/iplink.c      |  4 ++--
+> >  ip/ipmonitor.c   |  1 +
+> >  ip/ipmptcp.c     | 10 +++++-----
+> >  ip/ipneigh.c     |  4 ++--
+> >  ip/ipnetconf.c   |  2 +-
+> >  ip/ipnetns.c     |  2 +-
+> >  ip/ipnexthop.c   | 12 ++++++------
+> >  ip/iproute.c     |  4 ++--
+> >  ip/iprule.c      |  2 +-
+> >  ip/iptoken.c     |  2 +-
+> >  ip/tcp_metrics.c |  2 +-
+> >  lib/utils.c      |  1 +
+> >  misc/ss.c        |  3 ++-
+> >  tc/tc_class.c    |  2 +-
+> >  tc/tc_filter.c   |  2 +-
+> >  tc/tc_monitor.c  |  1 +
+> >  tc/tc_qdisc.c    |  2 +-
+> >  19 files changed, 44 insertions(+), 31 deletions(-)
+> >   
+> 
+> no longer applies after merging main to next.
+> 
 
-This reduces the softirq critical section to a short duration, allowing
-lock_sock() users to make progress and preventing RCU stalls.
-
-Signed-off-by: Dao Zhong Ma <cz1346219@gmail.com>
----
- drivers/net/ovpn/tcp.c | 80 +++++++++++++++++++++++++++++++-----------
- 1 file changed, 59 insertions(+), 21 deletions(-)
-
-diff --git a/drivers/net/ovpn/tcp.c b/drivers/net/ovpn/tcp.c
-index 65054cc84be5..d75ad0c22a30 100644
---- a/drivers/net/ovpn/tcp.c
-+++ b/drivers/net/ovpn/tcp.c
-@@ -6,6 +6,7 @@
-  *  Author:	Antonio Quartulli <antonio@openvpn.net>
-  */
-
-+#include <linux/interrupt.h>
- #include <linux/skbuff.h>
- #include <net/hotdata.h>
- #include <net/inet_common.h>
-@@ -312,6 +313,40 @@ static void ovpn_tcp_send_sock(struct ovpn_peer *peer, struct sock *sk)
- 	peer->tcp.tx_in_progress = false;
- }
-
-+/* Caller must hold sk->sk_lock.slock. */
-+static bool ovpn_tcp_queue_skb(struct ovpn_peer *peer, struct sk_buff *skb)
-+{
-+	if (skb_queue_len(&peer->tcp.out_queue) >=
-+	    READ_ONCE(net_hotdata.max_backlog)) {
-+		dev_dstats_tx_dropped(peer->ovpn->dev);
-+		kfree_skb(skb);
-+		return false;
-+	}
-+
-+	__skb_queue_tail(&peer->tcp.out_queue, skb);
-+	return true;
-+}
-+
-+/* Caller must hold sk->sk_lock.slock and own the socket. */
-+static void ovpn_tcp_tx_flush(struct ovpn_peer *peer, struct sock *sk)
-+{
-+	struct sk_buff *skb;
-+
-+	if (peer->tcp.out_msg.skb)
-+		ovpn_tcp_send_sock(peer, sk);
-+
-+	while (!peer->tcp.out_msg.skb) {
-+		skb = __skb_dequeue(&peer->tcp.out_queue);
-+		if (!skb)
-+			break;
-+
-+		peer->tcp.out_msg.skb = skb;
-+		peer->tcp.out_msg.len = skb->len;
-+		peer->tcp.out_msg.offset = 0;
-+		ovpn_tcp_send_sock(peer, sk);
-+	}
-+}
-+
- void ovpn_tcp_tx_work(struct work_struct *work)
- {
- 	struct ovpn_socket *sock;
-@@ -320,7 +355,7 @@ void ovpn_tcp_tx_work(struct work_struct *work)
-
- 	lock_sock(sock->sk);
- 	if (sock->peer)
--		ovpn_tcp_send_sock(sock->peer, sock->sk);
-+		ovpn_tcp_tx_flush(sock->peer, sock->sk);
- 	release_sock(sock->sk);
- }
-
-@@ -345,32 +380,38 @@ static void ovpn_tcp_send_sock_skb(struct ovpn_peer *peer, struct sock *sk,
- void ovpn_tcp_send_skb(struct ovpn_peer *peer, struct sock *sk,
- 		       struct sk_buff *skb)
- {
-+	struct ovpn_socket *sock;
- 	u16 len = skb->len;
-+	bool queued;
-
- 	*(__be16 *)__skb_push(skb, sizeof(u16)) = htons(len);
-
--	spin_lock_nested(&sk->sk_lock.slock, OVPN_TCP_DEPTH_NESTING);
--	if (sock_owned_by_user(sk)) {
--		if (skb_queue_len(&peer->tcp.out_queue) >=
--		    READ_ONCE(net_hotdata.max_backlog)) {
--			dev_dstats_tx_dropped(peer->ovpn->dev);
--			kfree_skb(skb);
--			goto unlock;
--		}
--		__skb_queue_tail(&peer->tcp.out_queue, skb);
--	} else {
--		ovpn_tcp_send_sock_skb(peer, sk, skb);
-+	if (unlikely(in_interrupt())) {
-+		spin_lock_nested(&sk->sk_lock.slock, OVPN_TCP_DEPTH_NESTING);
-+		queued = ovpn_tcp_queue_skb(peer, skb);
-+		spin_unlock(&sk->sk_lock.slock);
-+		if (!queued)
-+			return;
-+
-+		rcu_read_lock();
-+		sock = rcu_dereference_sk_user_data(sk);
-+		if (sock)
-+			schedule_work(&sock->tcp_tx_work);
-+		rcu_read_unlock();
-+		return;
- 	}
--unlock:
--	spin_unlock(&sk->sk_lock.slock);
-+
-+	lock_sock_nested(sk, OVPN_TCP_DEPTH_NESTING);
-+	queued = ovpn_tcp_queue_skb(peer, skb);
-+	if (queued)
-+		ovpn_tcp_tx_flush(peer, sk);
-+	release_sock(sk);
- }
-
- static void ovpn_tcp_release(struct sock *sk)
- {
--	struct sk_buff_head queue;
- 	struct ovpn_socket *sock;
- 	struct ovpn_peer *peer;
--	struct sk_buff *skb;
-
- 	rcu_read_lock();
- 	sock = rcu_dereference_sk_user_data(sk);
-@@ -390,11 +431,7 @@ static void ovpn_tcp_release(struct sock *sk)
- 	}
- 	rcu_read_unlock();
-
--	__skb_queue_head_init(&queue);
--	skb_queue_splice_init(&peer->tcp.out_queue, &queue);
--
--	while ((skb = __skb_dequeue(&queue)))
--		ovpn_tcp_send_sock_skb(peer, sk, skb);
-+	ovpn_tcp_tx_flush(peer, sk);
-
- 	peer->tcp.sk_cb.prot->release_cb(sk);
- 	ovpn_peer_put(peer);
-@@ -653,3 +690,4 @@ void __init ovpn_tcp_init(void)
- 			      &inet6_stream_ops);
- #endif
- }
-+
---
-2.54.0
-
+I put the other version in iproute2 since wanted to test and it
+did not depend on any later kernel changes
