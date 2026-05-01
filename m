@@ -1,44 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3FBB34E771;
-	Fri,  1 May 2026 23:51:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 916ED26C39E;
+	Fri,  1 May 2026 23:52:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777679481; cv=none; b=QpktfH8V0GmNng7Ju4p8SEIWMI5YT7E3+ptTqm5g/bel678wVZzFEX5SEGsatJR6LlmG+q+Irxyjz3iJWoqFDD9RhHP1fIlNLGZTbn1er5FIjK6XbcqvSkmOQgvyKSh/ug4uEQN7qGcsmSbE2dXe6CTSuOKXUdxehpS81iC50CQ=
+	t=1777679569; cv=none; b=d4XyBdjKWExIp9kloRrJltLoeiPnCZDHNQMvokJivpb/tPCahlwm7VP6fTcXbuS6/BUJqFevS5eDOeZr6NFtqchsAppLS+UXCAB07BBA0Pv8MzARusZHAHx86MMyszs0EfhC4UgpFmkySQVaCK2t7pAap8Zcq2C+jloXY500uV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777679481; c=relaxed/simple;
-	bh=z/o5SPBeNCnj8W+pPRlVdKVV1Xv4sidmA4w2XL86RwQ=;
+	s=arc-20240116; t=1777679569; c=relaxed/simple;
+	bh=FX4PXwR541nk9lqlpg4ZyWwJ0QQeR085TUZDYDxe0JM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bPhZwYFL74UroFq9RQLPip9Ziq/t7buxGXqPLZ8FnmA+b9oA4qViQj+BPLOiq/sAJg9C/3djVn+gY6PzSQ0XbsrbLb1Nws2DWK9e3WNWCD0sdRNFwXGA1gIPsTfBJs6VwTsIKrvD+iic0L6sZj7tnL0R/8y2CIN8FvVACRb+y5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yua6v27P; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=lMQtEsEYmBuI7C9Spfx8eO/xWZoS6dbZXmyHhuvN9vmhcdGRiJdMWlFsRehh2/OIGC4spX/N3Qpo0690u/C8iUQGlajs0tCY/2q1hWOhmLMaXcriDvX8My/IF1IwlcMy+2Iu5EKKH7WCNl/VbIVqB+J/QKAYmSRrJADbNJ4o0AE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qCSuiiD6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yua6v27P"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27C0BC2BCB4;
-	Fri,  1 May 2026 23:51:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qCSuiiD6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87969C2BCB4;
+	Fri,  1 May 2026 23:52:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777679480;
-	bh=z/o5SPBeNCnj8W+pPRlVdKVV1Xv4sidmA4w2XL86RwQ=;
+	s=k20201202; t=1777679569;
+	bh=FX4PXwR541nk9lqlpg4ZyWwJ0QQeR085TUZDYDxe0JM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Yua6v27P4/7STHTO03XBcavxCGjeau3wgy33Z/JJ6LsqRXIsNb/MMfvYjVB7NdiNq
-	 btIDV+qOedNbMiw2/Bei1DD+HnlrDZmonNdmVfCq7yaTAvH0b7WAOhYK5Fi6OefHTE
-	 dojSCwTbau4+uZ6aGISeFNGmbKJ2wrivQLr/D/QXY4Ok+oPKgSrEnHhHOYrXPjraM0
-	 dDezoLXc0/v868MyLnzXGqG/gV70H/LFyfXkM0DmSxFA8L78S61xh4oOmLjslYz/Ay
-	 CkVLC1Twp5/8S5AnHGD1uALCCU5ZtVLWpRNC9pH+A4HHQ+7yq1HD2QvAzj3CAnlrm+
-	 jhn/N6czKN7gA==
-Date: Fri, 1 May 2026 16:51:19 -0700
+	b=qCSuiiD6ZPC2W9yrDUa+OApu0jbE2HOK9AwTbkyBPuov+iVJ7IYUQRGDc5hP/azYQ
+	 v9Rj3bXmv/4WuEPoTbWCl9QzCk6m7hNXjaGB96nf5nmM39b7sgyOaVAoZ31dE9efTV
+	 ZuKg8RqfOtpPXU1tr1Uo2/WgZuKs/rjZWdcKMiONlM21sOJbQ9rcDG+2hyXJKqaDtG
+	 PIXHHh0tBvGhlM/VwmVn2ZSiEdlhUmMKkZ903eUGWTo6j4Hjri7W0gusynCM1L+TKc
+	 VQjnqsrsXSYzKjypOHrwcHHcB8zSSI/2P2H3dhhXz5GDQk0vvou9+98QaCiZuf/+dG
+	 1RvD1ZSMnZ+vg==
+Date: Fri, 1 May 2026 16:52:47 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Birger Koblitz <mail@birger-koblitz.de>
-Cc: Aleksander Jan Bajkowski <olek2@wp.pl>, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- hayeswang@realtek.com, hsu.chih.kai@realtek.com, kees@kernel.org,
- linux-usb@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>
-Subject: Re: [PATCH net-next] net: usb: r8152: add TRENDnet TUC-ET2G v2.0
-Message-ID: <20260501165119.2622a2af@kernel.org>
-In-Reply-To: <7b3d3fc6-bbed-4a75-ac19-33fa910359c9@birger-koblitz.de>
-References: <20260430213435.21821-1-olek2@wp.pl>
-	<7b3d3fc6-bbed-4a75-ac19-33fa910359c9@birger-koblitz.de>
+To: Jann Horn <jannh@google.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>, Andrey Konovalov
+ <andreyknvl@gmail.com>, kasan-dev@googlegroups.com, Andrew Morton
+ <akpm@linux-foundation.org>, Alexander Potapenko <glider@google.com>,
+ Valentina Manea <valentina.manea.m@gmail.com>, Shuah Khan
+ <shuah@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>, Hongren Zheng
+ <i@zenithal.me>, linux-usb@vger.kernel.org, "Michael S. Tsirkin"
+ <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, Eugenio
+ =?UTF-8?B?UMOpcmV6?= <eperezma@redhat.com>, kvm@vger.kernel.org,
+ virtualization@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] kcov: refactor common handle ID into
+ kcov_common_handle_id
+Message-ID: <20260501165247.7ed4511f@kernel.org>
+In-Reply-To: <20260430-kcov-refactor-common-handle-v1-1-23a0c7a0ba38@google.com>
+References: <20260430-kcov-refactor-common-handle-v1-1-23a0c7a0ba38@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,28 +53,15 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 1 May 2026 06:03:05 +0200 Birger Koblitz wrote:
-> On 30/04/2026 11:34 pm, Aleksander Jan Bajkowski wrote:
-> > The TRENDnet TUC-ET2G V2.0 is an RTL8156B based 2.5G Ethernet controller.
-> > 
-> > Add the vendor and product ID values to the driver. This makes Ethernet
-> > work with the adapter.
-> > 
-> > Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
-> > Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-> > ---
-> >   drivers/net/usb/r8152.c | 1 +
-> >   1 file changed, 1 insertion(+)
-> > 
-> > diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-> > index 7337bf1b7d6a..1ace1d2398c9 100644
-> > --- a/drivers/net/usb/r8152.c
-> > +++ b/drivers/net/usb/r8152.c
-> > @@ -10138,6 +10138,7 @@ static const struct usb_device_id rtl8152_table[] = {
-> >   	{ USB_DEVICE(VENDOR_ID_TRENDNET, 0xe02b) },
-> > +	{ USB_DEVICE(VENDOR_ID_TRENDNET, 0xe02c) },
-> >     
-> You may also add my Reviewed-by: Birger Koblitz <mail@birger-koblitz.de>
+On Thu, 30 Apr 2026 16:15:33 +0200 Jann Horn wrote:
+> Store common handle IDs in "struct kcov_common_handle_id", which consumes
+> no space in non-KCOV builds.
+> This cleanup removes #ifdef boilerplate code from subsystems that
+> integrate with KCOV (in particular in usbip_common.h and skbuff.h, see the
+> diffstat).
+> This should also make it easier to add KCOV remote coverage to more
+> subsystems in the future.
+> 
+> Signed-off-by: Jann Horn <jannh@google.com>
 
-Thanks! In the future please make sure you send the Review tags on a
-separate line, otherwise our scripts don't pick them up
+Acked-by: Jakub Kicinski <kuba@kernel.org>
