@@ -1,48 +1,72 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 447292DE70D;
-	Fri,  1 May 2026 01:16:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FF1518FDDE
+	for <netdev@vger.kernel.org>; Fri,  1 May 2026 01:16:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777598162; cv=none; b=XUyi6MujO8akr29mbqpH5S2wWzTw6Uh2wUoHKIBrj4OEYrj9Ps24RqvoLGM2Segxns2dk1fMcTPOYsAhWjcKLgwewfwulISoeX/hBxkK7JG68KYBaveOY/uGORCs5LtE3nTkKVSfv1QMXjD76Jm9Y1Ew8Qw/keG5quybWPnBK9k=
+	t=1777598178; cv=none; b=CbFw93DNe17MndQwitc4Q2y4zDFhbzhscPMUqB6aBKcPqXtPG2eL5aqQ5xh/2MEJZiNNxH1zL/dWDzyFrjceiTwejRCgWbqqZnBDdvWy2m/lEpxMUukbi9u6jbAab/V5Z/8PLBqP68r4ART2TwIrPu4KGaKloPaQPqvWYf6ulWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777598162; c=relaxed/simple;
-	bh=ngL/SCzyDDBySzCH6KewEFzjQ7ltMA/20XJ5OAl08rI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UQSisGcDeyjDMeOVo7UK0gIBN07McZEM+FJu87MdoDNAVgOyxqN4948CbwiBJiL6IQ4IxGeCDCl86+7BEFJgG2xFHed1fIeS44VuDcEuxLXJMPgpCnrg3KP7dfP7s0IJflb5BQJG6eW9usRM0nQKLcGDE7bb16Uo/kD08MHx/lE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=brfdpKgk; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777598178; c=relaxed/simple;
+	bh=JO6PXjlfHfBnLGzUji8BB/JYESf8hMrMH8npw/5dtY0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=q1x8z7sKD4qQabZ18zjcH+TO+cnKHusFWosU5N701Cx3Sqc8fJNhkVhjJ+0ViIKWFEUz58LafxH00ywaVKYBBmixIfXVAEZr5cn9D2nosQ35CM56a0iuPW9Ubx8hBeH0ZqSBOHHsaDxrM3RLcmYTVWrR2fLXWiG418q+QIPWA/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RT8A8Nkb; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="brfdpKgk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60053C2BCB8;
-	Fri,  1 May 2026 01:16:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777598161;
-	bh=ngL/SCzyDDBySzCH6KewEFzjQ7ltMA/20XJ5OAl08rI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=brfdpKgkCbWIGB9RWdDtV5RWGTuzj0e87nTN1/DUPNiaFoflCu0pm8vz98FLWeMTO
-	 XA7pnEe+su5SWaBc5WQF5G+Lm3Bb6A5lITiidJgVc1My1JjI5HDJ77zY0wRXTIuMNH
-	 fBweStdIXNROEeRY1SMh76CiXgY005+gVsgrXA+wBIcomrg4uFP20piWl41T62bVEa
-	 tsaUYf/UVOPuLU4XNM/duKWqxUXjXJc0gAh6zBTV1iH4FeKJOoWIRm63jXd887Qu2e
-	 k7KbcqyLasA/NorOzcHFy506RO1x3LDU5AmflGqlGpKsDsKA6F/AGVQLxlz/wkieYo
-	 vl2HmZdw11uVg==
-From: Jakub Kicinski <kuba@kernel.org>
-To: mail@birger-koblitz.de
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RT8A8Nkb"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4891f625344so16406785e9.0
+        for <netdev@vger.kernel.org>; Thu, 30 Apr 2026 18:16:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777598175; x=1778202975; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZueHIPSPNTV1ZqBjmU63LlwYCH0Ig995X9Tl5eH7gHs=;
+        b=RT8A8NkbP8Jgr474lOUqUCBHTxzS430vc+vI2zhCNYAMxU7D86CUJ23tW+fo1qYNOP
+         iLGejOf7jWV/mOOaIHnkHvkfxSaqzAG1EA3LvmnxnKAutGtoMzJ+trrh3Yg8mKmQv1H0
+         cL6DCf6c1KF1U6D6CM3HKyMUPW6MDT4HzGZiwFsoyCOccSMStjb9F9Y9qbW3/ovcMhbO
+         tiNEG8730fSRI02uVloWc6/xLgIeXvL4VJWar/sLQQ+Sh+XiRRK3zN8NdjRVnBX2ZN6E
+         VAGymZsRZF7BW7tp7NgfDr/BK+PCSlq0wEezMcJpWRMwng0L6WUxlfPvQfER7jMBh+ve
+         HwVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777598175; x=1778202975;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZueHIPSPNTV1ZqBjmU63LlwYCH0Ig995X9Tl5eH7gHs=;
+        b=jHKLaSonCgHeQ1HfJAuQmQ5Xb06uIJS85BwTCsO+wUSZEOI9c72C4gG4t7euQET3Qu
+         bqgiIodjQmiYqgZA0lxHnm6JH8iVJILAqjugi8VhLtE6DdEOf9qz0DkgtSd+3xG92GvD
+         685pM5Ma9w5r9cmA8ePqGYIeglJi2uwsL+FyDzGH9RqmYY9A39E8R3+5XEf5kEHGXWL7
+         +udH0locFsT1veQV+oqcrhw1SoQ6zp+2njhSyT9qoVgLEC7yTWqvtlNoardI8WVppY88
+         NJFiSbyAHc4XDgbx64QVgDa/LYAjguMGKtEOEcyLuoo5HM2ccGHMqSR8iBA4kaTvMZvS
+         da7w==
+X-Gm-Message-State: AOJu0YxPSckTz4pm9Ssc4MtnG2iSxl4xWaP/ldupcPu235xT4+j2ilth
+	vuBl7HWP8sLOJ88is9q7emCRg2VrdYZaMIivU3Vvb7XUSiRv8H0sawM7LISDj4oM
+X-Gm-Gg: AeBDies3cUn+7ICU80/ktuCazqBz+E4rLU6/isdL7JaE/tEvuwio46MXozc0M8s421P
+	WtkF3V7DT4/IVdzHaQl/PfVEEvQpBWOh1vszr30ic5yeuwLhfXmcsV7m/TqErhE+eT2SwoiYuW7
+	bXcoUUdOKA25DHDk6nio558DPFjVcqsSi2xOdxpdpWteBEE/UxIznpLtN4DUeX4l6Ckz+vzhHhS
+	c1+HuGipvlcOwSa9aTaUPOXWmfelJbE3+2dzTMjKLGPQFHbuCYoMJMMTMG/+1W7MlBGePvwgZl4
+	GAO6ehmLLH5K42S5NItnMKW7jfz9jtdjMJkiUrKbsDR9Mu+3Wy6G8Bz7qe6fgmootPP0cEWyuIl
+	QZCP5Gd+4oZxvmh1fqrNu4DqpnszknKMvLgAu9tO+tpug4zZwIWMBfH8lyWJ16urkUCWfluBYTj
+	YrxDp+FxaM1oDjbjjnF8ERYs8f6tWmDw==
+X-Received: by 2002:a05:600c:4b1a:b0:488:aa33:dc8f with SMTP id 5b1f17b1804b1-48a85dc37c2mr43435225e9.0.1777598175294;
+        Thu, 30 Apr 2026 18:16:15 -0700 (PDT)
+Received: from localhost ([2a03:2880:31ff:b::])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a8feb8595sm2694385e9.2.2026.04.30.18.16.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Apr 2026 18:16:13 -0700 (PDT)
+From: Mohsin Bashir <mohsin.bashr@gmail.com>
+To: netdev@vger.kernel.org
+Cc: dsahern@kernel.org,
+	stephen@networkplumber.org,
 	pabeni@redhat.com,
-	linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	hsu.chih.kai@realtek.com
-Subject: Re: [PATCH net-next v2 3/4] r8152: Add irq mitigation for RTL8157/9
-Date: Thu, 30 Apr 2026 18:16:00 -0700
-Message-ID: <20260501011600.3154202-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260429-rtl8159_net_next-v2-3-bab3cd4e4c66@birger-koblitz.de>
-References: <20260429-rtl8159_net_next-v2-3-bab3cd4e4c66@birger-koblitz.de>
+	kuba@kernel.org,
+	ernis@linux.microsoft.com,
+	mohsin.bashr@gmail.com
+Subject: [PATCH iproute2-next 0/5] netshaper: Extend netshaper support
+Date: Thu, 30 Apr 2026 18:16:06 -0700
+Message-ID: <20260501011611.3533573-1-mohsin.bashr@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,78 +75,27 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-r8152: Add irq mitigation for RTL8157/9
+From: Mohsin Bashir <hmohsin@meta.com>
 
-This commit clears bits 0, 1, 2, and 7 of USB register 0xcf04 in
-r8156_init() for RTL_VER_16 and later, with the stated intent of avoiding
-intr URB completions with urb->status == -ESHUTDOWN on RTL8157 and
-RTL8159.
+This series extends the netshaper CLI with missing parameter support
+and adds the group command for building scheduling hierarchies.
 
-> diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-> index 2a07dde289e2..9fcad3dac76f 100644
-> --- a/drivers/net/usb/r8152.c
-> +++ b/drivers/net/usb/r8152.c
-> @@ -8452,6 +8452,12 @@ static void r8156_init(struct r8152 *tp)
->  	else
->  		r8153_u2p3en(tp, false);
->  
-> +	if (tp->version >= RTL_VER_16) {
-> +		/* Disable Interrupt Mitigation */
-> +		ocp_byte_clr_bits(tp, MCU_TYPE_USB, 0xcf04,
-> +				  BIT(0) | BIT(1) | BIT(2) | BIT(7));
-> +	}
-> +
+The existing netshaper tool only supports setting bw-max on individual
+shapers. This series adds the remaining shaper attributes (bw-min,
+weight, priority) needed for TX scheduling, and introduces the
+group command which ties leaf shapers to a parent node in a single
+operation.
 
-The subject and changelog describe this as adding "irq mitigation" /
-"interrupt mitigation code", but the in-tree comment says "Disable
-Interrupt Mitigation" and the operation is ocp_byte_clr_bits(), which
-turns a hardware feature off.
+Mohsin Bashir (5):
+  netshaper: Extract parse_scope() and parse_rate() helpers
+  netshaper: Add bw-min and weight parameter support
+  netshaper: Extend show output with parent, bw-min and weight
+  netshaper: Make handle id optional for node scope
+  netshaper: Add group command for creating scheduling hierarchies
 
-Would it be clearer to phrase the subject along the lines of "r8152:
-disable hardware interrupt mitigation on RTL8157/9" so that someone
-bisecting or searching the log for when this feature was "added" is not
-led in the opposite direction?
+ netshaper/netshaper.c | 398 ++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 324 insertions(+), 74 deletions(-)
 
-The same sequence already exists in rtl8153_unload():
+-- 
+2.52.0
 
-	static void rtl8153_unload(struct r8152 *tp)
-	{
-		if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
-			return;
-
-		r8153_power_cut_en(tp, false);
-
-		if (tp->version >= RTL_VER_16) {
-			/* Disable Interrupt Mitigation */
-			ocp_byte_clr_bits(tp, MCU_TYPE_USB, 0xcf04, BIT(0) | BIT(1) | BIT(2) | BIT(7));
-		}
-	}
-
-That copy was introduced by fd3c7d080df5 ("r8152: Add support for the
-RTL8157 hardware"). Now that the bits are cleared during init, does the
-unload-path copy still serve a purpose, or can it be removed as part of
-this change?
-
-The register 0xcf04 and the bit selection BIT(0) | BIT(1) | BIT(2) |
-BIT(7) are bare numeric literals, while most of the file uses named
-defines (USB_MSC_TIMER, USB_U2P3_CTRL, U2P3_ENABLE, and so on). Could
-this change also introduce a symbolic name for the register and for the
-individual bits being cleared, so reviewers can check the mask against
-the datasheet and tell which bit is the enable versus threshold versus
-reserved?
-
-On the causal chain:
-
-The changelog links the register write to intr URB completions with
-status -ESHUTDOWN / -108, but does not explain how a MAC-side
-interrupt-mitigation setting produces that status.
-
--ESHUTDOWN on an intr URB is normally posted by the USB core when an
-endpoint has been disabled or the device is disconnecting. Could the
-commit message describe the mechanism by which clearing these four bits
-prevents the host controller from observing endpoint shutdown, and cite
-the datasheet naming for bits 0, 1, 2, and 7 of 0xcf04 so it is clear
-why exactly those bits (and no others) are the correct set to clear?
