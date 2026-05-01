@@ -1,352 +1,256 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011043.outbound.protection.outlook.com [52.101.62.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7487C3D9DB3;
-	Thu, 30 Apr 2026 23:56:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777593387; cv=none; b=j8Q+bTMT1YhA/V8MldkIqyLnBOln0cCIC8Q/qnnUSQW+HafFPNV/z0E5otVfsKfDj9Kwhaie6A/oGXvbItoUWvgaYSFtCbetK191q5PemlKOtRQBP0gk7HAB7/jiqLxMbLU0w+BC4vsgGOVH88sF2t1Ho/1sVu2SUPeXQfyWj9Y=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777593387; c=relaxed/simple;
-	bh=Xjt9d8An4SheLcIFTQP4r2cQFtRU13RlK74dYzrR/08=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 197DD256D;
+	Fri,  1 May 2026 00:08:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777594123; cv=fail; b=i/4CRSvF0YyJm8NTfCg2har6qUqfVymb3byFhrTXR+YBEsBGHwDeydF4qMHOiuJ3ZdmmaWxAM9ieUwrBTkAVx6f9+cP8GcFbmRNS7Rfznx/PHmSUy9Gn/F33CFEsVCnWt8eYjHMfKeJELXaW0TdBWHzXt7hE/5xPrJ6JOhYYByg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777594123; c=relaxed/simple;
+	bh=j99qN15SeQBC14aGGofgJTIUtx9It7wHPXLLqdaQZ7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HsehJ75Dt519NVQS9dQMKHEm66Idds6bBlGAf9HZaSJrkVpcaXkwYudr9nX0wZ/sqS1lYUTUwx5ig4SRQQeVLgDYUUFasT8l2EyNr2ssTb7+cRisvEuURLQmJISIuMPfHZe4xsCaAB0s6AXzaFZcKf8DvgWBTMwip4xktmowUW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HTHYrutO; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:MIME-Version; b=nfTppE+lIqc/NdjRcNPCKPyxl34BQUN62sO2X6ggwM77V8Yyaoaki06fGx2644aO/LAGenq7P1BJUJbD0kZdchRWhRkQ9NVSr6wmUvsugDCaQ3EGdk9N1WHK11pUkkizH4OcEcK1chYs+vlw0y6x98iBbB+ArXFW7nR3H0YC0m4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=MoikjP59; arc=fail smtp.client-ip=52.101.62.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HTHYrutO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52447C2BCB3;
-	Thu, 30 Apr 2026 23:56:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777593386;
-	bh=Xjt9d8An4SheLcIFTQP4r2cQFtRU13RlK74dYzrR/08=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HTHYrutO3wEsiOdD/ieZwOG2d1+2Bpy+B5r+5Yan3tUfspfQxFQPo6eOiss3Icsfl
-	 xfJ4YlI2DTKxAjqcNnTkFIApm2yhkGtTHKngkT0rYaTVkjk12Fc0B2JYJvOO+j9r/K
-	 9QDzqCtzOVHHOg8RHsN4Nr1doF6dck5t73cMLjq3FhaYbpsa7n/r7UocVLr2H3kFwT
-	 VDaZXX6FT5s4vDuGf2j5RLQA4DiXc7vuSf8J6o/SyT1nRxiUYEu7CveyRz5NGo68ks
-	 byUduPkOM+7h+uPQfOXWYgXau0cqCSF02bvUVU83cjexXYprjpi2tZpN99qhQmw116
-	 3WNVRnWgUhozQ==
-From: Jakub Kicinski <kuba@kernel.org>
-To: joey@tinyisr.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="MoikjP59"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=uoyaYb+knryz5+E5BbHtjsOiy2kItdBUdpUV3h9RYu1UavsI0laZWJKM/OxS0Cy140Ma0Dtsj5vzt3q3Qtl05oRsDG3iaCWu351gpvbgz2GMXy5Gm3oLEeyb7wqvf6HowryFtZRhf6HixQfbkQpqnpcr9JDePEJehbfOHKPg/q8Pn7YacQhz0wZSupImfNFq05KT9XqcfRMsnzimFktsC5+gNKveB+EAFSdgaDMxO3Ga6IwaWqrtocRNcp11u3paSplDQn5QfDt9QY7M0HpmrARwZ8y15NwbppekYpOX5wqUYMT7RWpspZznVLCfJfHv8CrlMa21zprjtYjxdZBgoQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qmYuxiN5ZZ/T+NTdwCrnkSS8mq90pNHhmRuiSSre+IM=;
+ b=AEzArhJkaBezjoYMfjVHmpfCTQEHJm8QMDVMEjDsZ6MMCrdlVsN5rDI/rUVBpP3+H18v4Cxx1H3PC1Be07nUuM5qNTeR3dr/FyywghmynBlq483xqe/vR/du45EyxPbY8mU1pXyNvrc5T3sCxYqVFs6Glh/TeBWSAR8JZqrZEZLqWMQJZUaZsrJmAAeW1rnLWx7usiyzHRAcTjnpDKVku3Bn5pErAu3ZaqBl7bts/MwgVqa24f8soMQvVVZlJB6nX6om03X/+wlRoydxKT2H5YpCJCPRt2Qgy2J1Jh2+f0sqynn74oaFFoDvGBjCPGzTiIRRnYe7k5+2/bGdMo0e1A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qmYuxiN5ZZ/T+NTdwCrnkSS8mq90pNHhmRuiSSre+IM=;
+ b=MoikjP59/MhdxCL8jHsqKHcBKGFW6kwyW2ixaeyK/LA6Nvr4DtG7hmFf4FPhmeYaGn3iWsEID7kkeso/as/6oG7MqcooKfGe7IMkwpizE1hEVPCerrP56z+JNtfJVEejkbIsvnekhcU4iDz3Jxw9srsfQA8EKtxsNmlh3NajtvApNPk5Bw6wiGG3YOmnE4i02NgoYtUKn1kibjdU602VUjUSO8DKy3x2KzwmjqIR39q34y8Ek3cDOoXShAsQODu39sVX1FKq04FM+C/JbTSub2s/3HASMK1KRo1+9OaC3F82Pl/Ijd3fq+A6xWdYhHzAogIwA/zSu+D0ahP+EU5AdQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
+ by SAVPR12MB999167.namprd12.prod.outlook.com (2603:10b6:806:4e5::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.19; Fri, 1 May
+ 2026 00:08:39 +0000
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9870.013; Fri, 1 May 2026
+ 00:08:38 +0000
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Alex Williamson <alex@shazbot.org>,
+	David Matlack <dmatlack@google.com>,
+	kvm@vger.kernel.org,
+	Leon Romanovsky <leon@kernel.org>,
+	linux-kselftest@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	Mark Bloch <mbloch@nvidia.com>,
 	netdev@vger.kernel.org,
-	horms@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	davem@davemloft.net,
-	olteanv@gmail.com,
-	andrew@lunn.ch,
-	devicetree@vger.kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org
-Subject: Re: [PATCH net-next v3 4/4] net: dsa: initial support for MT7628 embedded switch
-Date: Thu, 30 Apr 2026 16:56:23 -0700
-Message-ID: <20260430235623.3080104-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260428185510.261521-5-joey@tinyisr.com>
-References: <20260428185510.261521-5-joey@tinyisr.com>
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Tariq Toukan <tariqt@nvidia.com>
+Cc: patches@lists.linux.dev
+Subject: [PATCH 05/11] selftests: Add additional kernel functions to tools/include/
+Date: Thu, 30 Apr 2026 21:08:31 -0300
+Message-ID: <5-v1-dc5fa250ca1d+3213-mlx5st_jgg@nvidia.com>
+In-Reply-To: <0-v1-dc5fa250ca1d+3213-mlx5st_jgg@nvidia.com>
+References:
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MN2PR03CA0016.namprd03.prod.outlook.com
+ (2603:10b6:208:23a::21) To LV8PR12MB9620.namprd12.prod.outlook.com
+ (2603:10b6:408:2a1::19)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|SAVPR12MB999167:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6e318fec-c3d1-43d7-231a-08dea715cb77
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|366016|921020|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	TyJZuKRy1JX2pQRK7yVgiLmMUc1UuA/ecWyFuURrwZ3FjDm7doFOjARz1pcPC5a0P2aPO/dKwqFCUaDBmO1VqCYBhdWY1bCD9z1TN6TwkpE9jFQ1AarYfE0Ub8Ikz9CDcLqo9NqEKBXP2iSjcLFsC7DXxhuJF/twLuN8ksSc7miWp+4bmeZauR48ns9BAfb3e7BoLvmTdKwrDQdvz9AmSkOT0ON37Lz/ETxilefAySJb3e30y53z6wkoUp1x2G5/fIfYVZ82MTjZu4a4eh0rqLO+Ac7FwooI9lWpiuI0C8jg+Sk1MsvzR0ovfyApkOTZjZVWuvCLxIAN/NkIO00QaDVUivjBCP6AZPIIAlQlSQJPheqcZbeG7hFD8SbDsRRr5LGf/8SxnszogmOgPFqpCzAmAyCjntTMPJBNJMTF0HKOBghyhW9flW5PgiKhOdp5CU5lQSVkPuqiDOyipc//0NQJnthSRylR9hPIalfrQkFlQlCILG3A8ZcuNshHFdQfAzjRPpTVxrWp4+6icrLHr/9JTQFfE5XGa5ehVAbm8zvUaj72RUJJwS9lZ0B6VfR5ToypbyEYPmOKr4biLkwg1AQb1lrVYW7AOTbw2o1hEEdros9L1mZgkuwGfr5GkeRJ+gDpf0tsSlFzWuQbHWaznL5JOAAdZtZJ3JhNnJQtFnjc9ZMKT599NUpbZHgXV0lLPHAL0H5a2EJEDJU1jiZEt2VDi3Axu7uwKPHeB/BVWeA=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(921020)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?LQPz0oY+uvsFZpnxsKTquooCJXctvyRA6QhO+s6wvoW83FhuO6JPO98dyFOg?=
+ =?us-ascii?Q?fgV0EhX5FaHijS44rCryhmQ8CeiMToUEEj80iKzi0Y4RfCdWLx/UujgmyTo+?=
+ =?us-ascii?Q?MRsmEdrato9dqtFvFRjZq8BFJBA8HCjHLwgjnxegkXTzCexWm8xoRviRmhM2?=
+ =?us-ascii?Q?NVtwSmICSrmQVlVc1pWqlz6apo0wCDQUse0zhOhxYc2y+HibshzGLulMJKJ8?=
+ =?us-ascii?Q?wBFJX69PGszSulBda+JbnxG8/N3niAB/K/4ETnx1FiC4HfAOVU01SAb7jGpf?=
+ =?us-ascii?Q?3PFlC/Ah6AFvxRW1m/WBK6T+pU0jpmH0zyfjpnhhpQYKrPw5DjBH6GWzrqly?=
+ =?us-ascii?Q?jwpBcxySoDsAsWt/KFRj4OoAkCGsfXIZhHzt3lVYdBmYcuSp/OWKLKMtzCe/?=
+ =?us-ascii?Q?64iwrzUX1KXeTsd2g1QUm3wOFvuyzF4mSsE2RNRh825LoT80uQt0p3+LQAO2?=
+ =?us-ascii?Q?Y9kLV+6GwbYWMl9hXs1cve2DVc24SHdKERkFm6RL7uI/1LbqirEFbzgocktL?=
+ =?us-ascii?Q?btjUPsnR+ypNpz8gfkU0hUxwHCT3veyI1gycjR330RCRYcPToHACr8U+u+HJ?=
+ =?us-ascii?Q?dtUYX/KkdKJJ97QDPs0sgk2FFZE+q6t6OlDK+4RACJvJ8mQ+PPo6jnGYCKOu?=
+ =?us-ascii?Q?MYvOn32D51lwoynehpA/xZKU8wlNokeiDu/Qrr9a16OA/rnKlyhBmyOOBERN?=
+ =?us-ascii?Q?fuq/ilD7hnOdruAGDnyZeJgnCnfm44hqNuUYCc5V3+KbD1szr8sKkT1uuOfj?=
+ =?us-ascii?Q?UPayRzOC3FZGC+Kn8hq0Jn2HQvelCtQ+NfiX2V0/sNiieCKYF7kJ+mObYHyb?=
+ =?us-ascii?Q?c56zgR9/KRTG9KB8bdUUQjAYVLU5fK/wA3Z93Gl5vgCQ+fMK7EsMb3RkDnlb?=
+ =?us-ascii?Q?WuFJa76bp6IiMFaSYNn5RldUrTRGhkgT3QTF903ZHxf8WeN0IpcpQXt0BXlO?=
+ =?us-ascii?Q?C6Hiyznrl+Zmqs1Yf9cY/UhALG8id1F/kbAt8tsdQYRcaWj1mQYn+UInigW/?=
+ =?us-ascii?Q?ieT73YFM9AixQ8mj/fFmBQC3/lCgi0Km7+DLfk0kOe4FPZOe0pDfSrjk0P3D?=
+ =?us-ascii?Q?vH8XUHfj0dQFRT8O3rhEPjYBNYgHNv9L70LpM6bxlTcIpehGclViVrtgxeT0?=
+ =?us-ascii?Q?FjX2VUo8IUhdbIBGW6c4dEZnjA1P8gVdTzMwsWs+hXsttF0Mwxdps+B9eC4X?=
+ =?us-ascii?Q?/mprDp8EB1jzPpjUs8NXlE53bOCnQs0UhKhD00hrzaYe31plPUz+3XNQg7af?=
+ =?us-ascii?Q?xCyurzjkT1JykmoW9Lzwxik1XxKEGixC21/qSSj02VpYZdP7FZGCIOGgIytw?=
+ =?us-ascii?Q?C7AxmwRV3IvxzilCmKOHV9CQwXO++/gsm59nfS0vh5bLHGTT1mGQNX6Zb+uB?=
+ =?us-ascii?Q?sc1ipN+6iqfUKRAOzlQZVtD1AbgD/4alC81G8KvDxK8MRCtM6dBGgijgifw6?=
+ =?us-ascii?Q?GcFu3UNSkyeDUMfC5VZVwthIddTCop1e3EPoltLmEfR1IMO2vQGMqRsYWz+K?=
+ =?us-ascii?Q?Gpoc72fNU6psQnQt2HW+hb+Lo0cKPNX+WoKcVkkUEO2v/1BtlEJUTxKSexvV?=
+ =?us-ascii?Q?SY4IkpV/uop6t5nURo8pAOkUHKeraXLfabxlnc+iA9NpxaABh58yRMXREEhq?=
+ =?us-ascii?Q?66p7Z1M0n56YuF1LdzYYQyOT0N4TdGre0+Hsh4NNEXiCb3Mtp5Fxc4NmUKkA?=
+ =?us-ascii?Q?sPmrferZnrhSqy6m2OWErBJDtK0SwAfAmYGV5ZZKbAOgdPCW?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6e318fec-c3d1-43d7-231a-08dea715cb77
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 May 2026 00:08:38.4818
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uBcYI+YkwueNas5Z3/7cyVgrKqRpV0U+75X2joOPUQvGd7RGEF+MxikNqr0q8Vm2
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SAVPR12MB999167
 
-This is an AI-generated review of your patch. The human sending this
-email says "Since Andrew requested some changes already here is the
-AI review to look thru as well (could be false positives)."
+These are needed by the VFIO mlx5 selftest in the following patches,
+which includes some headers from mlx5 and also needs a few more
+MMIO-related features.
+
+- DECLARE_FLEX_ARRAY in new tools/include/linux/stddef.h (wraps
+  existing __DECLARE_FLEX_ARRAY from uapi/linux/stddef.h)
+
+- dma_wmb/dma_rmb barriers: x86 uses compiler barrier
+  (DMA-coherent), arm64 uses dmb oshst/oshld (outer-shareable for
+  device visibility), generic fallback uses wmb/rmb
+
+- ioread32be/iowrite32be in tools/include/asm-generic/io.h for
+  big-endian MMIO register access
+
+Assisted-by: Claude:claude-opus-4.6
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 ---
-net: dsa: initial support for MT7628 embedded switch
+ tools/arch/arm64/include/asm/barrier.h |  4 ++++
+ tools/arch/x86/include/asm/barrier.h   |  5 +++++
+ tools/include/asm-generic/io.h         | 28 ++++++++++++++++++++++++++
+ tools/include/asm/barrier.h            |  8 ++++++++
+ tools/include/linux/stddef.h           | 10 +++++++++
+ 5 files changed, 55 insertions(+)
+ create mode 100644 tools/include/linux/stddef.h
 
-This patch adds a new DSA driver for the MT7628 embedded switch, with
-five 100Mbps user ports, a 1Gbps CPU port, and a 16-entry VLAN table
-that is used via tag_8021q for port isolation.
+diff --git a/tools/arch/arm64/include/asm/barrier.h b/tools/arch/arm64/include/asm/barrier.h
+index 3b9b41331c4f16..abdc64fc3c70f0 100644
+--- a/tools/arch/arm64/include/asm/barrier.h
++++ b/tools/arch/arm64/include/asm/barrier.h
+@@ -24,6 +24,10 @@
+ #define smp_wmb()	asm volatile("dmb ishst" ::: "memory")
+ #define smp_rmb()	asm volatile("dmb ishld" ::: "memory")
+ 
++/* DMA barriers use outer-shareable (osh) for device visibility */
++#define dma_rmb()	asm volatile("dmb oshld" ::: "memory")
++#define dma_wmb()	asm volatile("dmb oshst" ::: "memory")
++
+ #define smp_store_release(p, v)						\
+ do {									\
+ 	union { typeof(*p) __val; char __c[1]; } __u =			\
+diff --git a/tools/arch/x86/include/asm/barrier.h b/tools/arch/x86/include/asm/barrier.h
+index 0adf295dd5b6aa..0b51431fa530ea 100644
+--- a/tools/arch/x86/include/asm/barrier.h
++++ b/tools/arch/x86/include/asm/barrier.h
+@@ -43,4 +43,9 @@ do {						\
+ 	___p1;					\
+ })
+ #endif /* defined(__x86_64__) */
++
++/* x86 is DMA-coherent so DMA barriers are just compiler barriers */
++#define dma_rmb()	barrier()
++#define dma_wmb()	barrier()
++
+ #endif /* _TOOLS_LINUX_ASM_X86_BARRIER_H */
+diff --git a/tools/include/asm-generic/io.h b/tools/include/asm-generic/io.h
+index e5a0b07ad452a6..0d89decdafb818 100644
+--- a/tools/include/asm-generic/io.h
++++ b/tools/include/asm-generic/io.h
+@@ -479,4 +479,32 @@ static inline void writesq(volatile void __iomem *addr, const void *buffer,
+ }
+ #endif
+ 
++/*
++ * ioread/iowrite for big-endian MMIO registers.
++ */
++
++#ifndef ioread32be
++#define ioread32be ioread32be
++static inline u32 ioread32be(const volatile void __iomem *addr)
++{
++	return bswap_32(readl(addr));
++}
++#endif
++
++#ifndef iowrite32be
++#define iowrite32be iowrite32be
++static inline void iowrite32be(u32 value, volatile void __iomem *addr)
++{
++	writel(bswap_32(value), addr);
++}
++#endif
++
++#ifndef iowrite64be
++#define iowrite64be iowrite64be
++static inline void iowrite64be(u64 value, volatile void __iomem *addr)
++{
++	writeq(bswap_64(value), addr);
++}
++#endif
++
+ #endif /* _TOOLS_ASM_GENERIC_IO_H */
+diff --git a/tools/include/asm/barrier.h b/tools/include/asm/barrier.h
+index 0c21678ac5e65f..e7e0c7de5a2ffe 100644
+--- a/tools/include/asm/barrier.h
++++ b/tools/include/asm/barrier.h
+@@ -47,6 +47,14 @@
+ # define smp_mb()	mb()
+ #endif
+ 
++#ifndef dma_rmb
++# define dma_rmb()	rmb()
++#endif
++
++#ifndef dma_wmb
++# define dma_wmb()	wmb()
++#endif
++
+ #ifndef smp_store_release
+ # define smp_store_release(p, v)		\
+ do {						\
+diff --git a/tools/include/linux/stddef.h b/tools/include/linux/stddef.h
+new file mode 100644
+index 00000000000000..99182ea4a1419b
+--- /dev/null
++++ b/tools/include/linux/stddef.h
+@@ -0,0 +1,10 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _TOOLS_LINUX_STDDEF_H
++#define _TOOLS_LINUX_STDDEF_H
++
++#include_next <linux/stddef.h>
++
++#define DECLARE_FLEX_ARRAY(TYPE, NAME) \
++	__DECLARE_FLEX_ARRAY(TYPE, NAME)
++
++#endif /* _TOOLS_LINUX_STDDEF_H */
+-- 
+2.43.0
 
-> diff --git a/drivers/net/dsa/mt7628.c b/drivers/net/dsa/mt7628.c
-> new file mode 100644
-> index 000000000000..1ed99706e41d
-> --- /dev/null
-> +++ b/drivers/net/dsa/mt7628.c
-
-[ ... ]
-
-> +static int mt7628_mii_read(struct mii_bus *bus, int port, int regnum)
-> +{
-> +	struct mt7628_esw *esw = bus->priv;
-> +	int ret;
-> +	u32 val;
-> +
-> +	ret = regmap_read_poll_timeout(esw->regmap, MT7628_ESW_REG_PCR1, val,
-> +				       !(val & MT7628_ESW_PCR1_RD_DONE), 10,
-> +				       5000);
-> +	if (ret)
-> +		goto out;
-> +
-> +	ret = regmap_write(esw->regmap, MT7628_ESW_REG_PCR0,
-> +			   FIELD_PREP(MT7628_ESW_PCR0_CPU_PHY_REG,
-> +				      regnum) |
-> +			   FIELD_PREP(MT7628_ESW_PCR0_CPU_PHY_ADDR,
-> +				      port) | MT7628_ESW_PCR0_RD_PHY_CMD);
-> +	if (ret)
-> +		goto out;
-> +
-> +	ret = regmap_read_poll_timeout(esw->regmap, MT7628_ESW_REG_PCR1, val,
-> +				       (val & MT7628_ESW_PCR1_RD_DONE), 10,
-> +				       5000);
-> +out:
-
-Can these MDIO routines work after the first transaction?
-
-Both mt7628_mii_read() and mt7628_mii_write() first poll for
-MT7628_ESW_PCR1_RD_DONE / WT_DONE to be clear, then issue the PCR0
-command, then poll for the done bit to become set.  Nothing in the driver
-writes-to-clear these done bits.
-
-After a successful read, MT7628_ESW_PCR1_RD_DONE is 1 (that is the loop's
-exit condition).  On the next mt7628_mii_read() call the first poll waits
-for it to become 0, which only happens if the hardware auto-clears the
-done bit on a new PCR0 command write.
-
-Is that hardware behavior documented?  Similar MediaTek DSA drivers
-(mt7530/mt7531) do not precede the command with a wait-for-not-done poll.
-If the bit does not self-clear on command issue, every MDIO transaction
-after the first would spin for ~5ms and return -ETIMEDOUT.
-
-> +	if (ret) {
-> +		dev_err(&bus->dev, "read failed. MDIO timeout?\n");
-> +		return ret;
-> +	}
-> +	return FIELD_GET(MT7628_ESW_PCR1_RD_DATA, val);
-> +}
-
-[ ... ]
-
-> +static void mt7628_switch_init(struct dsa_switch *ds)
-> +{
-> +	struct mt7628_esw *esw = ds->priv;
-> +
-> +	regmap_write(esw->regmap, MT7628_ESW_REG_FCT0,
-
-[ ... ]
-
-> +	regmap_update_bits(esw->regmap, MT7628_ESW_REG_PFC1,
-> +			   MT7628_ESW_PFC1_EN_VLAN,
-> +			   FIELD_PREP(MT7628_ESW_PFC1_EN_VLAN,
-> +				      MT7628_ESW_PORTS_ALL));
-> +}
-
-Should mt7628_switch_init() also initialize MT7628_ESW_REG_POC0's
-PORT_DISABLE field to a known state?
-
-DSA only invokes .port_enable / .port_disable for ports described in the
-DT and brought up by the stack.  The CPU port and the non-existent port 5
-are never touched, so they stay at the hardware reset default.  If the
-default is enabled, traffic may be forwarded on ports the driver believes
-are inactive; if disabled, the CPU port may never come up because
-mt7628_port_enable() is only called for user ports.
-
-Other DSA drivers (for example b53_common.c) explicitly set all port
-enable bits to a known state in .setup() before letting per-port callbacks
-modify them.  Is a similar initialization needed here?
-
-[ ... ]
-
-> +static void mt7628_vlan_sync(struct dsa_switch *ds)
-> +{
-
-[ ... ]
-
-> +}
-> +
-> +static int mt7628_setup(struct dsa_switch *ds)
-> +{
-> +	struct mt7628_esw *esw = ds->priv;
-> +	int ret;
-> +
-> +	reset_control_reset(esw->rst_esw);
-> +	usleep_range(1000, 2000);
-> +	reset_control_reset(esw->rst_ephy);
-> +	usleep_range(1000, 2000);
-> +	/*
-> +	 * all MMIO reads hang if esw is not out of reset
-> +	 * ephy needs extra time to get out of reset or it ends up misconfigured
-> +	 */
-> +	mt7628_switch_init(ds);
-
-Should the return values from reset_control_reset() be checked?
-
-The comment in this function says "all MMIO reads hang if esw is not out
-of reset".  reset_control_reset() can fail with -EBUSY, -ENOTSUPP and
-similar (see drivers/reset/core.c), and on failure mt7628_switch_init()
-proceeds to issue regmap writes/reads against a block still held in
-reset, which by this comment hangs the CPU.
-
-Can these return values be propagated from mt7628_setup()?
-
-[ ... ]
-
-> +static void mt7628_phylink_get_caps(struct dsa_switch *ds, int port,
-> +				    struct phylink_config *config)
-> +{
-> +	switch (port) {
-> +	case 6:
-> +		config->mac_capabilities |= MAC_1000;
-> +		fallthrough;
-> +	case 0 ... 4:
-> +		config->mac_capabilities |= MAC_100 | MAC_10;
-> +		__set_bit(PHY_INTERFACE_MODE_INTERNAL,
-> +			  config->supported_interfaces);
-> +		break;
-> +	default:
-> +		break;		/* port 5 does not exist on MT7628 */
-> +	}
-> +}
-
-How is port 5 meant to be handled?
-
-ds->num_ports is set to MT7628_ESW_NUM_PORTS (7), but this function
-comments that port 5 does not exist on MT7628 and leaves its capabilities
-empty.  DSA iterates 0..num_ports-1 in several generic paths (for
-example the tag_8021q setup loop), and phylink setup on a port with
-empty mac_capabilities and no supported_interfaces will warn.
-
-The driver appears to rely on the DT never declaring a port@5 node.  Is
-that implicit contract intentional, and should it be documented or
-enforced (for example by rejecting a port@5 in probe)?
-
-> +
-> +static int mt7628_dsa_8021q_vlan_add(struct dsa_switch *ds, int port,
-> +				     u16 vid, u16 flags)
-> +{
-> +	struct mt7628_esw *esw = ds->priv;
-> +	struct mt7628_vlan *vlan = NULL;
-> +	int i;
-> +
-> +	for (i = 0; i < MT7628_NUM_VLANS; i++) {
-> +		struct mt7628_vlan *check_vlan = &esw->vlans[i];
-> +
-> +		if (!check_vlan->active && !vlan) {
-> +			vlan = check_vlan;
-> +		} else if (check_vlan->vid == vid) {
-> +			vlan = check_vlan;
-> +			break;
-> +		}
-> +	}
-
-Is the else-if branch here intentional for inactive slots?
-
-mt7628_dsa_8021q_vlan_del() clears members, untag and active, but leaves
-vlan->vid untouched:
-
-	vlan->members &= ~BIT(port);
-	vlan->untag &= ~BIT(port);
-
-	if (!vlan->members)
-		vlan->active = false;
-
-An inactive slot that previously held the same VID will therefore match
-via check_vlan->vid == vid and be reused.  For vid == 0 every pristine
-zero-initialized slot also matches, making slot selection
-non-deterministic.
-
-tag_8021q currently composes non-zero VIDs (see DSA_8021Q_RSV in
-net/dsa/tag_8021q.c), so vid == 0 is not reachable via tag_8021q today,
-but the .tag_8021q_vlan_add API itself accepts any u16.  Would guarding
-the match with check_vlan->active (or clearing vid on delete) make the
-allocator more robust?
-
-> +
-> +	if (!vlan)
-> +		return -ENOSPC;
-> +
-> +	vlan->vid = vid;
-> +	vlan->active = true;
-> +	vlan->members |= BIT(port);
-> +
-> +	if (flags & BRIDGE_VLAN_INFO_PVID)
-> +		esw->tag_8021q_pvid[port] = vid;
-> +
-> +	if (flags & BRIDGE_VLAN_INFO_UNTAGGED)
-> +		vlan->untag |= BIT(port);
-> +
-> +	mt7628_vlan_sync(ds);
-> +	return 0;
-> +}
-> +
-> +static int mt7628_dsa_8021q_vlan_del(struct dsa_switch *ds, int port, u16 vid)
-> +{
-> +	struct mt7628_esw *esw = ds->priv;
-> +	struct mt7628_vlan *vlan = NULL;
-> +	int i;
-> +
-> +	for (i = 0; i < MT7628_NUM_VLANS; i++) {
-> +		struct mt7628_vlan *check_vlan = &esw->vlans[i];
-> +
-> +		if (!check_vlan->active || check_vlan->vid != vid)
-> +			continue;
-> +		vlan = check_vlan;
-> +		break;
-> +	}
-> +	if (!vlan)
-> +		return -ENOENT;
-> +
-> +	vlan->members &= ~BIT(port);
-> +	vlan->untag &= ~BIT(port);
-> +
-> +	if (!vlan->members)
-> +		vlan->active = false;
-> +
-> +	mt7628_vlan_sync(ds);
-> +	return 0;
-> +}
-
-Should vlan_del also clear esw->tag_8021q_pvid[port] when the VID being
-deleted is the port's current PVID?
-
-mt7628_vlan_sync() unconditionally programs esw->tag_8021q_pvid[port]
-into MT7628_ESW_REG_PVIDC for every port:
-
-	for (i = 0; i < ds->num_ports; i++)
-		mt7628_esw_set_pvid(esw, i, esw->tag_8021q_pvid[i]);
-
-If the VLAN being deleted becomes inactive (members == 0), the hardware
-PVID for the port still references that VLAN slot, which will be
-reprogrammed with empty members/untag.  Untagged ingress on that port
-would then be tagged with a VID whose VLAN table entry has no members.
-
-In the normal bridge_join/bridge_leave flow
-(dsa_tag_8021q_bridge_join/leave in net/dsa/tag_8021q.c) the replacement
-VID is added (with BRIDGE_VLAN_INFO_PVID) before the old one is deleted,
-which masks the issue.  On teardown/unbind
-(dsa_tag_8021q_port_teardown() deletes without a preceding add) the
-stale pvid can linger and be re-applied by any later vlan_sync.
-
-> +
-> +static void mt7628_teardown(struct dsa_switch *ds)
-> +{
-> +	rtnl_lock();
-> +	dsa_tag_8021q_unregister(ds);
-> +	rtnl_unlock();
-> +}
-> +
-> +static struct dsa_switch_ops mt7628_switch_ops = {
-       ^^^^^^
-
-This isn't a bug, but should mt7628_switch_ops be const?  struct
-dsa_switch holds a const struct dsa_switch_ops *ops, and other DSA
-drivers (mt7530, sja1105, felix, ...) declare their ops tables const so
-the vtable lives in .rodata.
-
-> +	.get_tag_protocol = mt7628_get_tag_proto,
-> +	.setup = mt7628_setup,
-> +	.teardown = mt7628_teardown,
-> +	.port_enable = mt7628_port_enable,
-> +	.port_disable = mt7628_port_disable,
-> +	.phylink_get_caps = mt7628_phylink_get_caps,
-> +	.tag_8021q_vlan_add = mt7628_dsa_8021q_vlan_add,
-> +	.tag_8021q_vlan_del = mt7628_dsa_8021q_vlan_del,
-> +};
-
-[ ... ]
