@@ -1,121 +1,265 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234AC1A0728;
-	Fri,  1 May 2026 13:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71DCF33EF;
+	Fri,  1 May 2026 13:27:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777640471; cv=none; b=HRSixqqGWqDlR70liAlpy4DobS+cEWq1CjCl7svvUeFPFIBAHk0MnLd69LmDBUcWPzmhxzwgGXTP2+Nb1lC/QaJLXaxV8Kre+RfIf3GF0lxWy0iQfX/tEw+HEliAXScsoB8OSluJkWR4Z4HJDj54eHLUDZ8MMny9pxQHHKw1+qo=
+	t=1777642028; cv=none; b=BREC5jtlhomovGqd9l6K9zD5H9kDE8Hdt1HQSp99qobhGwleY/7zvacF8m8jbvA0VwUc0UO6Oz4imarLa5HOx+dwvSTl96V+aBuxAJkrsWvdfV3fNizlhNKJXij2oZ3a6BQV6tLqvCdGqVKKx76YV/xKmD2lsJG8wOwD4vv328w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777640471; c=relaxed/simple;
-	bh=anHGGlP7eUobci4qOJNwgNRVYwi3Jyjr5+UH1j30138=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LcBDp+FCYsVApNTXIuOG9b1i8nWauQNk8Z3AZyy1LyCjVsK0SCNBp3tDlCQsoEwkFUmaRSrPiQ3CxbwfCESAA8mzX5jmp0wWvc+peQXB7u8a2EoZZvDKPWPfd9m/KyicTyvc4TGXgoOiLxgFtavUt7urOiuiRqTiwZHIGW+31+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WakF7gha; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777642028; c=relaxed/simple;
+	bh=cecY22npZ8O09cZUaB8M0VENwxo6jF899E2WK/sGM8U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=THfRSWzYKQdnMnc5FNa7S+Vjzn1hQfl2fslwufIumWFF2b8SqKWCrSk0pf6CV9zHgD/+fdIA3L9QTBDHs9AciGMztiIXF52bisv2RzpbuD7huiwASTMsT+rFaARq3uT2jfueX4ZUSxJhKWiLEbqM0kVdzghArdLPyoYBlO1skWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ks9s1mZI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WakF7gha"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CFB0C2BCB4;
-	Fri,  1 May 2026 13:01:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ks9s1mZI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A09DDC2BCB4;
+	Fri,  1 May 2026 13:26:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777640470;
-	bh=anHGGlP7eUobci4qOJNwgNRVYwi3Jyjr5+UH1j30138=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WakF7gha4S92pyCJb0f2WGU9T08DKi5BS9vG6CjgEqz8zJdrDX6IhemtqYYH1SbTm
-	 BvwHtCyKKaH+6xJDmkqQB7RYt+d4xqcEJNPvZahvKmGcRAS7fBi/5RbY+tCYVJzdUl
-	 9EF2torHoRz7xjqo8DqUt3WoxCOntgjfBdO7xL00fe6cGjjTTfRRIVu7o3JMob7206
-	 8NO8bhdjbcirxd9okt68OD6bhGEd0HwtUPfE4j40sW8TXQKRIRTPsTXFxVBcvYIl0w
-	 RkaLDQh/+8UbjXqA9BOTzULreQzy3WFGzt1ZhMy3qG7ojRgjM6kCEgQKswcMJuNtzy
-	 LJ9J+4MlT7tTA==
-From: Simon Horman <horms@kernel.org>
-To: lee@kernel.org
-Cc: 'Simon Horman' <horms@kernel.org>,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	kuniyu@google.com,
-	mingo@kernel.org,
-	kees@kernel.org,
-	qjx1298677004@gmail.com,
-	sameo@linux.intel.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] nfc: llcp: Fix use-after-free in llcp_sock_release()
-Date: Fri,  1 May 2026 13:58:28 +0100
-Message-ID: <20260501125826.102679-3-horms@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260429134115.3558604-1-lee@kernel.org>
-References: <20260429134115.3558604-1-lee@kernel.org>
+	s=k20201202; t=1777642028;
+	bh=cecY22npZ8O09cZUaB8M0VENwxo6jF899E2WK/sGM8U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ks9s1mZIkV8HxwO4Mq2+M0rNhz33rtPZ+PEpQg8O0T7agTQM/ie+qo1rwFzMc+b+A
+	 VqDH4/+JcAgC//FSDTXVNeTLY3ZnVf6ao0PPeE2eDyKLB70fqAtG1BZGKK4J4NwVYM
+	 OfaQriqJVci3Be7SKDrYFRY61OXwF0wXPYEyzsVt5ayiFhEFxMW1q5daFboq3L7XMO
+	 64Cx2hTxZcYCLazmmG5vv2hGIZnAcTrMTjhtB+7TrKmtFgXcpfm7HFnitN26O/Gx8U
+	 JOUfHUQd9G+45ryjeV+BQBCvFltUxfgmsGCNc+KFS0VD58QfpBufJUzuhvutKP50DW
+	 4FZ/nGOcO+OnA==
+Date: Fri, 1 May 2026 18:56:50 +0530
+From: Sumit Garg <sumit.garg@kernel.org>
+To: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+Cc: andersson@kernel.org, konradybcio@kernel.org,
+	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+	linux-media@vger.kernel.org, netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
+	linux-remoteproc@vger.kernel.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org,
+	robin.clark@oss.qualcomm.com, sean@poorly.run,
+	akhilpo@oss.qualcomm.com, lumag@kernel.org, abhinav.kumar@linux.dev,
+	jesszhan0024@gmail.com, marijn.suijten@somainline.org,
+	airlied@gmail.com, simona@ffwll.ch, vikash.garodia@oss.qualcomm.com,
+	dikshita.agarwal@oss.qualcomm.com, bod@kernel.org,
+	mchehab@kernel.org, elder@kernel.org, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, jjohnson@kernel.org, mathieu.poirier@linaro.org,
+	trilokkumar.soni@oss.qualcomm.com, pavan.kondeti@oss.qualcomm.com,
+	jorge.ramirez@oss.qualcomm.com, tonyh@qti.qualcomm.com,
+	vignesh.viswanathan@oss.qualcomm.com,
+	srinivas.kandagatla@oss.qualcomm.com,
+	amirreza.zarrabi@oss.qualcomm.com, jens.wiklander@linaro.org,
+	op-tee@lists.trustedfirmware.org, apurupa@qti.qualcomm.com,
+	skare@qti.qualcomm.com, linux-kernel@vger.kernel.org,
+	Sumit Garg <sumit.garg@oss.qualcomm.com>
+Subject: Re: [PATCH v4 11/15] media: qcom: Switch to generic PAS TZ APIs
+Message-ID: <afSqGp-yzZip7q-j@sumit-xelite>
+References: <20260427095603.1157963-1-sumit.garg@kernel.org>
+ <20260427095603.1157963-12-sumit.garg@kernel.org>
+ <20260428193714.sg5n3tntww2nuquu@hu-mojha-hyd.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260428193714.sg5n3tntww2nuquu@hu-mojha-hyd.qualcomm.com>
 
-From: 'Simon Horman' <horms@kernel.org>
+On Wed, Apr 29, 2026 at 01:07:14AM +0530, Mukesh Ojha wrote:
+> On Mon, Apr 27, 2026 at 03:25:59PM +0530, Sumit Garg wrote:
+> > From: Sumit Garg <sumit.garg@oss.qualcomm.com>
+> > 
+> > Switch qcom media client drivers over to generic PAS TZ APIs. Generic PAS
+> > TZ service allows to support multiple TZ implementation backends like QTEE
+> > based SCM PAS service, OP-TEE based PAS service and any further future TZ
+> > backend service.
+> > 
+> > Along with that pass proper PAS ID to set_remote_state API. As per testing
+> > the SCM backend just ignores it while OP-TEE makes use of it to for proper
+> > book keeping purpose.
+> 
+> When we use 'Along with' or 'while at it', patch is doing two things and
+> not one.
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev
----
-nfc: llcp: Fix use-after-free in llcp_sock_release()
+Okay, I will split this into 2.
 
-This commit addresses a use-after-free issue in llcp_sock_release(). It
-attempts to fix the problem by checking if the socket is in the connecting
-state, and if so, unlinks it from the connecting_sockets list instead of the
-default sockets list.
+> 
+> > 
+> > Signed-off-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
+> > ---
+> >  drivers/media/platform/qcom/iris/Kconfig      | 25 ++++++++++---------
+> >  .../media/platform/qcom/iris/iris_firmware.c  |  9 ++++---
+> >  drivers/media/platform/qcom/venus/Kconfig     |  1 +
+> >  drivers/media/platform/qcom/venus/firmware.c  | 11 ++++----
+> >  4 files changed, 25 insertions(+), 21 deletions(-)
+> > 
+> > diff --git a/drivers/media/platform/qcom/iris/Kconfig b/drivers/media/platform/qcom/iris/Kconfig
+> > index 3c803a05305a..f54b759c18aa 100644
+> > --- a/drivers/media/platform/qcom/iris/Kconfig
+> > +++ b/drivers/media/platform/qcom/iris/Kconfig
+> > @@ -1,13 +1,14 @@
+> >  config VIDEO_QCOM_IRIS
+> > -        tristate "Qualcomm iris V4L2 decoder driver"
+> > -        depends on VIDEO_DEV
+> > -        depends on ARCH_QCOM || COMPILE_TEST
+> > -        select V4L2_MEM2MEM_DEV
+> > -        select QCOM_MDT_LOADER if ARCH_QCOM
+> > -        select QCOM_SCM
+> > -        select VIDEOBUF2_DMA_CONTIG
+> > -        help
+> > -          This is a V4L2 driver for Qualcomm iris video accelerator
+> > -          hardware. It accelerates decoding operations on various
+> > -          Qualcomm SoCs.
+> > -          To compile this driver as a module choose m here.
+> > +	tristate "Qualcomm iris V4L2 decoder driver"
+> > +	depends on VIDEO_DEV
+> > +	depends on ARCH_QCOM || COMPILE_TEST
+> > +	select V4L2_MEM2MEM_DEV
+> > +	select QCOM_MDT_LOADER if ARCH_QCOM
+> > +	select QCOM_SCM
+> > +	select QCOM_PAS
+> > +	select VIDEOBUF2_DMA_CONTIG
+> > +	help
+> > +	  This is a V4L2 driver for Qualcomm iris video accelerator
+> > +	  hardware. It accelerates decoding operations on various
+> > +	  Qualcomm SoCs.
+> > +	  To compile this driver as a module choose m here.
+> 
+> Here, Space replaced by Tabs just for one line.., should be fine.
 
-> diff --git a/net/nfc/llcp_sock.c b/net/nfc/llcp_sock.c
-> index f1be1e84f665..feab29fc62f4 100644
-> --- a/net/nfc/llcp_sock.c
-> +++ b/net/nfc/llcp_sock.c
-[ ... ]
-> @@ -633,6 +633,8 @@ static int llcp_sock_release(struct socket *sock)
->  
->  	if (sock->type == SOCK_RAW)
->  		nfc_llcp_sock_unlink(&local->raw_sockets, sk);
-> +	else if (sk->sk_state == LLCP_CONNECTING)
-> +		nfc_llcp_sock_unlink(&local->connecting_sockets, sk);
+Yeah, spaces aren't meant here.
 
-Does this cover the case where a remote peer rejects a non-blocking
-connection with a DM frame?
+> 
+> 
+> > diff --git a/drivers/media/platform/qcom/iris/iris_firmware.c b/drivers/media/platform/qcom/iris/iris_firmware.c
+> > index 5f408024e967..856fa6a79064 100644
+> > --- a/drivers/media/platform/qcom/iris/iris_firmware.c
+> > +++ b/drivers/media/platform/qcom/iris/iris_firmware.c
+> > @@ -4,6 +4,7 @@
+> >   */
+> >  
+> >  #include <linux/firmware.h>
+> > +#include <linux/firmware/qcom/qcom_pas.h>
+> >  #include <linux/firmware/qcom/qcom_scm.h>
+> >  #include <linux/of_address.h>
+> >  #include <linux/of_reserved_mem.h>
+> > @@ -79,7 +80,7 @@ int iris_fw_load(struct iris_core *core)
+> >  		return -ENOMEM;
+> >  	}
+> >  
+> > -	ret = qcom_scm_pas_auth_and_reset(core->iris_platform_data->pas_id);
+> > +	ret = qcom_pas_auth_and_reset(core->iris_platform_data->pas_id);
+> >  	if (ret)  {
+> >  		dev_err(core->dev, "auth and reset failed: %d\n", ret);
+> >  		return ret;
+> > @@ -93,7 +94,7 @@ int iris_fw_load(struct iris_core *core)
+> >  						     cp_config->cp_nonpixel_size);
+> >  		if (ret) {
+> >  			dev_err(core->dev, "qcom_scm_mem_protect_video_var failed: %d\n", ret);
+> > -			qcom_scm_pas_shutdown(core->iris_platform_data->pas_id);
+> > +			qcom_pas_shutdown(core->iris_platform_data->pas_id);
+> >  			return ret;
+> >  		}
+> >  	}
+> > @@ -103,10 +104,10 @@ int iris_fw_load(struct iris_core *core)
+> >  
+> >  int iris_fw_unload(struct iris_core *core)
+> >  {
+> > -	return qcom_scm_pas_shutdown(core->iris_platform_data->pas_id);
+> > +	return qcom_pas_shutdown(core->iris_platform_data->pas_id);
+> >  }
+> >  
+> >  int iris_set_hw_state(struct iris_core *core, bool resume)
+> >  {
+> > -	return qcom_scm_set_remote_state(resume, 0);
+> > +	return qcom_pas_set_remote_state(resume, core->irisi_platform_data->pas_id);
+> 
+> 
+> Should be a separate change for qcom_pas_set_remote_state()
+> 
+> >  }
+> > diff --git a/drivers/media/platform/qcom/venus/Kconfig b/drivers/media/platform/qcom/venus/Kconfig
+> > index ffb731ecd48c..574172724e8f 100644
+> > --- a/drivers/media/platform/qcom/venus/Kconfig
+> > +++ b/drivers/media/platform/qcom/venus/Kconfig
+> > @@ -6,6 +6,7 @@ config VIDEO_QCOM_VENUS
+> >  	select OF_DYNAMIC if ARCH_QCOM
+> >  	select QCOM_MDT_LOADER if ARCH_QCOM
+> >  	select QCOM_SCM
+> > +	select QCOM_PAS
+> >  	select VIDEOBUF2_DMA_CONTIG
+> >  	select V4L2_MEM2MEM_DEV
+> >  	help
+> > diff --git a/drivers/media/platform/qcom/venus/firmware.c b/drivers/media/platform/qcom/venus/firmware.c
+> > index 1de7436713ed..3c0727ea137d 100644
+> > --- a/drivers/media/platform/qcom/venus/firmware.c
+> > +++ b/drivers/media/platform/qcom/venus/firmware.c
+> > @@ -12,6 +12,7 @@
+> >  #include <linux/of_reserved_mem.h>
+> >  #include <linux/platform_device.h>
+> >  #include <linux/of_device.h>
+> > +#include <linux/firmware/qcom/qcom_pas.h>
+> >  #include <linux/firmware/qcom/qcom_scm.h>
+> >  #include <linux/sizes.h>
+> >  #include <linux/soc/qcom/mdt_loader.h>
+> > @@ -58,7 +59,7 @@ int venus_set_hw_state(struct venus_core *core, bool resume)
+> >  	int ret;
+> >  
+> >  	if (core->use_tz) {
+> > -		ret = qcom_scm_set_remote_state(resume, 0);
+> > +		ret = qcom_pas_set_remote_state(resume, VENUS_PAS_ID);
+> 
+> This too..
+> 
+> >  		if (resume && ret == -EINVAL)
+> >  			ret = 0;
+> >  		return ret;
+> > @@ -218,7 +219,7 @@ int venus_boot(struct venus_core *core)
+> >  	int ret;
+> >  
+> >  	if (!IS_ENABLED(CONFIG_QCOM_MDT_LOADER) ||
+> > -	    (core->use_tz && !qcom_scm_is_available()))
+> > +	    (core->use_tz && !qcom_pas_is_available()))
+> >  		return -EPROBE_DEFER;
+> >  
+> >  	ret = of_property_read_string_index(dev->of_node, "firmware-name", 0,
+> > @@ -236,7 +237,7 @@ int venus_boot(struct venus_core *core)
+> >  	core->fw.mem_phys = mem_phys;
+> >  
+> >  	if (core->use_tz)
+> > -		ret = qcom_scm_pas_auth_and_reset(VENUS_PAS_ID);
+> > +		ret = qcom_pas_auth_and_reset(VENUS_PAS_ID);
+> >  	else
+> >  		ret = venus_boot_no_tz(core, mem_phys, mem_size);
+> >  
+> > @@ -259,7 +260,7 @@ int venus_boot(struct venus_core *core)
+> >  						     res->cp_nonpixel_start,
+> >  						     res->cp_nonpixel_size);
+> >  		if (ret) {
+> > -			qcom_scm_pas_shutdown(VENUS_PAS_ID);
+> > +			qcom_pas_shutdown(VENUS_PAS_ID);
+> >  			dev_err(dev, "set virtual address ranges fail (%d)\n",
+> >  				ret);
+> >  			return ret;
+> > @@ -274,7 +275,7 @@ int venus_shutdown(struct venus_core *core)
+> >  	int ret;
+> >  
+> >  	if (core->use_tz)
+> > -		ret = qcom_scm_pas_shutdown(VENUS_PAS_ID);
+> > +		ret = qcom_pas_shutdown(VENUS_PAS_ID);
+> >  	else
+> >  		ret = venus_shutdown_no_tz(core);
+> >  
+> > -- 
+> > 2.51.0
+> 
+> with above change
+> 
+> Reviewed-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+> 
 
-If a non-blocking connection is initiated, the socket is placed on
-local->connecting_sockets with the state LLCP_CONNECTING. If the remote
-peer then rejects the connection via a Disconnect Mode (DM) frame,
-nfc_llcp_recv_dm() sets sk->sk_state = LLCP_CLOSED but leaves the socket
-in the connecting_sockets list.
+Thanks.
 
-When llcp_sock_release() later checks the state, it will be LLCP_CLOSED,
-causing the new LLCP_CONNECTING check to fail. The code will then fall
-through to the else branch:
-
->  	else
->  		nfc_llcp_sock_unlink(&local->sockets, sk);
-
-Could this corrupt the list? The nfc_llcp_sock_unlink() call for
-local->sockets acquires local->sockets.lock and executes sk_del_node_init().
-Since the socket is physically still on the local->connecting_sockets hlist,
-this would mutate the connecting_sockets list pointers concurrently without
-holding the correct local->connecting_sockets.lock.
-
-Simon says: while I think the problem above warrants looking into in
-            the context of this patch, I think the problem below pre-dates
-	    this patch and does not need to block progress of it.
-
-Is there also a race condition here with nfc_llcp_recv_cc()?
-
-In nfc_llcp_recv_cc(), a connecting socket is unlinked from
-connecting_sockets and linked to sockets without acquiring lock_sock(sk).
-
-If llcp_sock_release() executes concurrently (since it holds lock_sock(sk)
-while recv_cc does not), could it fully unlink the socket and drop its
-references while nfc_llcp_recv_cc() resumes, blindly linking the now
-released socket into local->sockets?
-
-This would leave a dangling pointer in the local->sockets list. I noticed
-this specific race appears to be addressed later in the series by commit
-e4b0d26ffad8cf0db2a59991b8b7098890b74187 ("nfc: llcp: Fix use-after-free
-race in nfc_llcp_recv_cc()").
+-Sumit
