@@ -1,51 +1,51 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E4136EA80;
-	Fri,  1 May 2026 06:38:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C97B0373C0B;
+	Fri,  1 May 2026 06:38:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777617524; cv=none; b=Q9xe1PfN3vw4Q4WC6PlkgyMojpbCPBO7OYhFgrDeG5z14v7e2B7I/+I80ajwfTUGOzNg2W8wXYuVBC60PVZ3CZlmEWXbWeM92ZPaX0QGtMEAHW1l6/GIC9RuZx6fC85kGIQvhQsC4KZ+CIe3R2uGwLNofhyyr2tbgZA275AM6S8=
+	t=1777617531; cv=none; b=mXhtiRf2azV+YrbcJdAHCrvHVDaAeVWxKbSFr8OKH2mH9SRL1dnItcoR5T0fc5xMZtO5Ohks1JWPLhL1+BsUFnkcn0nL2BN8Z8Ib6JcEAMIXC0oxii6HqqoND9iUw8FdZ+oOqcckbNNSTcsCCqiKBlNhEDCSA3lSzYlNvH/r2rc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777617524; c=relaxed/simple;
-	bh=QOCm2sopwgNpl+EKxsL6rGh0AzlEggXHpYnJl0//k3I=;
+	s=arc-20240116; t=1777617531; c=relaxed/simple;
+	bh=hZEmZMTWms93iScRWFWbXFUbeAQnRsLmufvsHgKBvR8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=H4A5dsk7dDmS9L8pcJMeIYOSPeEzaE2Gs8/OqqJ7oj0tLMrVAUeDrRu1hzZ67CTdkRrW4UNRDo5L8jjCxUWQu60bpC62Hk/xRbTj2mg3hosodeBpqqzn5otOaWLB9DV+PWq8YhN1IFMqTeADjbSBm8gEopTlmCMr2FLUYFT/Nr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hKtgxbBg; arc=none smtp.client-ip=192.198.163.9
+	 In-Reply-To:To:Cc; b=JACEFhabLhBZGMKux2aS7NgNTlf7Lq8/AATfeIjGmd28I4PsEWE92TdCk51Ppmcf4smIwOn/rV/n/+6gplwlzPkYvqRoRKDucdfotl2r4FC4UgFYznc/M8QakWrlHTC6y3BczC53zYL0Zs4GKHhag33E5+10oB/QKRwUY6ZyPhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cyu3DyZg; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hKtgxbBg"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cyu3DyZg"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777617519; x=1809153519;
+  t=1777617525; x=1809153525;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=QOCm2sopwgNpl+EKxsL6rGh0AzlEggXHpYnJl0//k3I=;
-  b=hKtgxbBgj+aqhw1cib1Iwc7RZD7K6XMijgLrvXIh1migjvhCafRZFjDG
-   dxdwTMXEOUhTPaNHbEefPjzWRWjgUBuKo8k6SRWjpq9LZazpqcvKTbAR/
-   bkeizyfd0KFUc7DcDhdE3JKBnjK2G79UzC4fVSrKzEuAHGZjJ2dYi1qHN
-   40JFgLvjiiccQz7/r/D+qV603i+8OwDXAZvhuYn++R+oCcla95hju62K8
-   C//58AkGpaJHCXNxll8iqZHQucZwjn2VbDgmH8YU/80wpZ30ZH316MXHU
-   2F8ydyVU/man02nnEDAKnAlp2Ku++zfcZijRQJrC/2a8EHQEHSossq6VM
-   A==;
-X-CSE-ConnectionGUID: ecWPT3rhR4S45iLgn3fn3A==
-X-CSE-MsgGUID: jBgX2CVXThiOqG+7MB8ZVQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11772"; a="89271910"
+  bh=hZEmZMTWms93iScRWFWbXFUbeAQnRsLmufvsHgKBvR8=;
+  b=cyu3DyZguTEfhZrHoloQ55Tp6uhuG09v70Yav8P0tnfFCUYPTSszbpCo
+   MuxllZm8DNpgPJSPCxGnd79px7XLEVY9JhB6X4pldj8r/kV06XTJorNtt
+   wSVRRnfa/1zrFPQeSoZFYpHgo4aQsHQ01JwrC6LrjJdyYil1wY1LX6JGF
+   XFQFNQHqQotsCV1kEA5UrPJKsYNaaqwRjqcL+vPOBKUlkQeotI1yipQ+k
+   eAdi/bqduUQoB+SrHUNKxFFnJ0nopQ3yasTsyawGYYeVtDLj4GkcU4toB
+   +QLc4INckq3FNAKj1Y03Z6Ov3SVa8GcQucGx/v0lB1VWqKZgHEAjbZsGh
+   w==;
+X-CSE-ConnectionGUID: e5PZwpG9TIisa9iD3BviCA==
+X-CSE-MsgGUID: 4o54v0DnQbe1STWsiG5wNw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11772"; a="89271941"
 X-IronPort-AV: E=Sophos;i="6.23,209,1770624000"; 
-   d="scan'208";a="89271910"
+   d="scan'208";a="89271941"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 23:38:32 -0700
-X-CSE-ConnectionGUID: pVfQznXiSr2BYVQoaq/6GQ==
-X-CSE-MsgGUID: /gxstvVKQiWYcH9CuEmKOg==
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 23:38:33 -0700
+X-CSE-ConnectionGUID: vfifRqAFSMeffQQZCUC4kA==
+X-CSE-MsgGUID: NW34wUKjSFiCI7MR+7U+Ng==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,209,1770624000"; 
-   d="scan'208";a="233752861"
+   d="scan'208";a="233752877"
 Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.109]) ([10.166.28.109])
   by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 23:38:32 -0700
 From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Thu, 30 Apr 2026 23:37:19 -0700
-Subject: [PATCH net-next 08/15] ixgbe: E610: remove redundant assignment
+Date: Thu, 30 Apr 2026 23:37:24 -0700
+Subject: [PATCH net-next 13/15] ice: dpll: Fix compilation warning
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,8 +53,8 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260430-jk-iwl-net-next-2026-04-30-v1-8-6f27ae1cd073@intel.com>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260430-jk-iwl-net-next-2026-04-30-v1-13-6f27ae1cd073@intel.com>
 References: <20260430-jk-iwl-net-next-2026-04-30-v1-0-6f27ae1cd073@intel.com>
 In-Reply-To: <20260430-jk-iwl-net-next-2026-04-30-v1-0-6f27ae1cd073@intel.com>
 To: Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
@@ -71,56 +71,51 @@ To: Przemek Kitszel <przemyslaw.kitszel@intel.com>,
  Tony Nguyen <anthony.l.nguyen@intel.com>, 
  Stefan Wegrzyn <stefan.wegrzyn@intel.com>
 Cc: Piotr Kwapulinski <piotr.kwapulinski@intel.com>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Jacob Keller <jacob.e.keller@intel.com>
+ linux-kernel@vger.kernel.org, Jacob Keller <jacob.e.keller@intel.com>, 
+ Przemyslaw Korba <przemyslaw.korba@intel.com>
 X-Mailer: b4 0.16-dev-ea14f
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1521;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1244;
  i=jacob.e.keller@intel.com; h=from:subject:message-id;
- bh=W/40c8BFZkNJ6uVOUp9nRUCH9K3Lx1uOG5OO7H/Jis0=;
- b=owGbwMvMwCWWNS3WLp9f4wXjabUkhswvXil7GA7xrZ548MXCsBhBuaL4uXs8LU9wLvh69mK9/
- ZorsryxHaUsDGJcDLJiiiwKDiErrxtPCNN64ywHM4eVCWQIAxenAEyEfRIjw+4ODflzdumfSiJ/
- fQ89/3J+nlTLD/dELmXmoJKjO8WdfBn+V582b3qXvWH1/KwlcXo1yh3C1l7aNmt2WpSXsM6Qdf7
- NCQA=
+ bh=e03GxYUPA/S1DBBMfmY+CJB2v7PFQcAFMRVgEvhGnGk=;
+ b=owGbwMvMwCWWNS3WLp9f4wXjabUkhswvXmnxSoEhQZyfLoUazVObuXrF6Vvz3YM+bjO+8lv8+
+ 4QFOQf4O0pZGMS4GGTFFFkUHEJWXjeeEKb1xlkOZg4rE8gQBi5OAZhIyEJGhm8Fn0JqNO+9++0S
+ 5rCiqJvz8pNpj3Uu/IuqabkeP+3VDn5Ghi8fuJSzFyZ8EVhz5VOy0dwJrw25mz8snHuWZ3NXP8d
+ EfVYA
 X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
  fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
 
-From: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
+From: Przemyslaw Korba <przemyslaw.korba@intel.com>
 
-Remove unnecessary code. No functional impact.
+Introduced by commit ad1df4f2d591 ("ice: dpll: Support E825-C SyncE and
+dynamic pin discovery"):
 
-Fixes: 46761fd52a88 ("ixgbe: Add support for E610 FW Admin Command Interface")
-Signed-off-by: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
+ice_dpll.c: In function ‘ice_dpll_init’:
+ice_dpll.c:3588:59: error: ‘%u’ directive output may be truncated
+writing between 1 and 10 bytes into a region of size 4
+[-Werror=format-truncation=] snprintf(pin_name, sizeof(pin_name),
+"rclk%u", i);
+
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
- drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_dpll.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-index b686636beb93..831cfe9a4697 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-@@ -226,19 +226,15 @@ static int ixgbe_aci_send_cmd_execute(struct ixgbe_hw *hw,
+diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
+index 62f75701d652..054a2c05f163 100644
+--- a/drivers/net/ethernet/intel/ice/ice_dpll.c
++++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
+@@ -3527,7 +3527,7 @@ static int
+ ice_dpll_init_fwnode_pins(struct ice_pf *pf, struct ice_dpll_pin *pins,
+ 			  int start_idx)
+ {
+-	char pin_name[8];
++	char pin_name[16];
+ 	int i, ret;
  
- 	/* Read sync Admin Command response */
- 	if ((hicr & IXGBE_PF_HICR_SV)) {
--		for (i = 0; i < IXGBE_ACI_DESC_SIZE_IN_DWORDS; i++) {
-+		for (i = 0; i < IXGBE_ACI_DESC_SIZE_IN_DWORDS; i++)
- 			raw_desc[i] = IXGBE_READ_REG(hw, IXGBE_PF_HIDA(i));
--			raw_desc[i] = raw_desc[i];
--		}
- 		ixgbe_aci_debug(hw, raw_desc, NULL, 0);
- 	}
- 
- 	/* Read async Admin Command response */
- 	if ((hicr & IXGBE_PF_HICR_EV) && !(hicr & IXGBE_PF_HICR_C)) {
--		for (i = 0; i < IXGBE_ACI_DESC_SIZE_IN_DWORDS; i++) {
-+		for (i = 0; i < IXGBE_ACI_DESC_SIZE_IN_DWORDS; i++)
- 			raw_desc[i] = IXGBE_READ_REG(hw, IXGBE_PF_HIDA_2(i));
--			raw_desc[i] = raw_desc[i];
--		}
- 		ixgbe_aci_debug(hw, raw_desc, NULL, 0);
- 	}
- 
+ 	pf->dplls.wq = create_singlethread_workqueue("ice_dpll_wq");
 
 -- 
 2.54.0.rc2.531.gaf818d63126a
