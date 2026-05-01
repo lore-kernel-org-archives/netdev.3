@@ -1,209 +1,93 @@
-Received: from mx03lb.world4you.com (mx03lb.world4you.com [81.19.149.113])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D33F13A258
-	for <netdev@vger.kernel.org>; Fri,  1 May 2026 20:47:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.113
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B11B03491C4;
+	Fri,  1 May 2026 20:56:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777668473; cv=none; b=WKHnkKL8CROjly9qY2Ii577kVJkIid4jL9BfCTT+ApmVxbod9KqlebhMXpV9UbgkIgfucMRrVzvlsZnZm9/9vUPCinh+BAKGxSssMVWTfbQphuN8pgMDrIhpjLcxz++oT0yiIbA2NqVqCVA/LAaOfXgvUv9XZfj5HHx0k3l1Cmc=
+	t=1777668986; cv=none; b=fpsUf+yhDtUJJbriSusYk4QgHFg7p7QRECnQwovYyFM4qAtbn0CKWJrf6aFSlU3fZryf8+/1XjK/QYQ1R/qeqwhYZ9cOV6lOrKiYzN+dJdLIXgnyB70+mqDqWSbZRF1GxizNcfDlHC6bRFgyz1zIkKPLA9ZY9iHkYkFM0lTh80Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777668473; c=relaxed/simple;
-	bh=TRF8fYcONnVHsqExPz8C4knbfeRtaR0EMW0cFytgqBo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CGWMnaofEo0TAexOx/PkKjWDMQUAr8MA4E+Zv4RpDdcNsIF+eRn7293h7H0pJAru7O1hsdlbAFAClz5TU1OUcy8tvxMKGCN3MlpRtMv4P990ohNtj84Vt/cez7Vzp7r4rf+gSX4L7e8NbzAug4ccjih8yG9wwTl4T4/uLIN8qYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=Q+HcyuR3; arc=none smtp.client-ip=81.19.149.113
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
+	s=arc-20240116; t=1777668986; c=relaxed/simple;
+	bh=xrA5pvPy1cRCoop4m79kAzLeDUdXCIENeq4TEMsPG5M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eCBGqdRN/PQ1DntE3iXtTOaGfkVgy9fFx/VS1MeFtyqhcpLI3LyXFS+RQ+6wiI77TqOQwhl+/9RGh2LmbuT/s4p3vlYnrzdkzAtXis0P0o3R9CZEJtaX2/c0ew0crA55cUzyjDklkVtCf/cQQ9CSOR1ca+Ych9sFDNW3zjfsc4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=G3dAtTYj; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="Q+HcyuR3"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Ii3eHhzkLI+6nKE4urymVZnvYkYeIzlV9G6N13Nz3OE=; b=Q+HcyuR3ZfqpcBvY+UKekE2NVx
-	r/fgS33NxxaIhLzvs/NBNDGh4C8YGgCsavU7F32gFFezRQGYDeTLENHlfZ0LU2KsT6B8iG113hP6O
-	ZJlgB03f7Y/vXaLawwP1t2bqbqsbwHi1aFrCYNOAjrGpGpRQP3BuDi8V3NEBicwwf+0E=;
-Received: from [188.22.4.84] (helo=[10.0.0.160])
-	by mx03lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <gerhard@engleder-embedded.com>)
-	id 1wIuQz-0000000055u-11e0;
-	Fri, 01 May 2026 22:26:01 +0200
-Message-ID: <1c81fd5a-1699-408d-a7ca-f08a13764186@engleder-embedded.com>
-Date: Fri, 1 May 2026 22:25:59 +0200
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="G3dAtTYj"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=3Tcbg9/ugxpQr7TMEC6mX5fl4hcvqIRPYh248BBUiSY=; b=G3dAtTYjFbHZBVFYI5xNUl+35H
+	KRyZcgox694pudSxsak7WqvEaSJg6i8zmsRlzvrlJA0nRmjkBO6Ki8ttOeZGIjBBz33HVTKQwHVEa
+	OMKtIGMqPN3Ly370NqGZwL6N2Xu0utn81eXt57J1kyFdGXLZLZHNAY4GisuufoMlJTZk=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wIuth-000shL-GJ; Fri, 01 May 2026 22:55:41 +0200
+Date: Fri, 1 May 2026 22:55:41 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Alex Elder <elder@riscstar.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, maxime.chevallier@bootlin.com,
+	rmk+kernel@armlinux.org.uk, andersson@kernel.org,
+	konradybcio@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, linusw@kernel.org, brgl@kernel.org,
+	arnd@arndb.de, gregkh@linuxfoundation.org, daniel@riscstar.com,
+	mohd.anwar@oss.qualcomm.com, a0987203069@gmail.com,
+	alexandre.torgue@foss.st.com, ast@kernel.org,
+	boon.khai.ng@altera.com, chenchuangyu@xiaomi.com,
+	chenhuacai@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
+	hkallweit1@gmail.com, inochiama@gmail.com, john.fastabend@gmail.com,
+	julianbraha@gmail.com, livelycarpet87@gmail.com,
+	matthew.gerlach@altera.com, mcoquelin.stm32@gmail.com, me@ziyao.cc,
+	prabhakar.mahadev-lad.rj@bp.renesas.com, richardcochran@gmail.com,
+	rohan.g.thomas@altera.com, sdf@fomichev.me,
+	siyanteng@cqsoftware.com.cn, weishangjuan@eswincomputing.com,
+	wens@kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 04/12] net: stmmac: dma: create a separate
+ dma_device pointer
+Message-ID: <4cbe1a04-4a49-4e4d-95f4-ed4df1afa24f@lunn.ch>
+References: <20260501155421.3329862-1-elder@riscstar.com>
+ <20260501155421.3329862-5-elder@riscstar.com>
+ <9203d8dd-8ec0-415e-9c2e-5b06b1b8dc11@lunn.ch>
+ <539b9de3-4a78-44cf-9085-06cd0cab2d17@riscstar.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v1 1/3] net: introduce helper to resolve hardware
- timestamps from skb
-To: Kohei Enju <kohei@enjuk.jp>, netdev@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Kuniyuki Iwashima <kuniyu@google.com>, Willem de Bruijn
- <willemb@google.com>, David Ahern <dsahern@kernel.org>,
- Neal Cardwell <ncardwell@google.com>,
- Jonathan Lemon <jonathan.lemon@gmail.com>,
- Richard Cochran <richardcochran@gmail.com>
-References: <20260429091632.26509-1-kohei@enjuk.jp>
- <20260429091632.26509-2-kohei@enjuk.jp>
-Content-Language: en-US
-From: Gerhard Engleder <gerhard@engleder-embedded.com>
-In-Reply-To: <20260429091632.26509-2-kohei@enjuk.jp>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AV-Do-Run: Yes
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <539b9de3-4a78-44cf-9085-06cd0cab2d17@riscstar.com>
 
-On 29.04.26 11:16, Kohei Enju wrote:
-> Move the logic that resolves a hardware timestamp from an skb, including
-> late timestamp resolution via netdev_get_tstamp(), from net/socket.c to
-> a common helper.
+On Fri, May 01, 2026 at 01:06:23PM -0500, Alex Elder wrote:
+> On 5/1/26 12:13 PM, Andrew Lunn wrote:
+> > >   	if (priv->dma_cap.host_dma_width) {
+> > > -		ret = dma_set_mask_and_coherent(device,
+> > > -				DMA_BIT_MASK(priv->dma_cap.host_dma_width));
+> > > +		u64 mask = DMA_BIT_MASK(priv->dma_cap.host_dma_width);
+> > > +
+> > > +		ret = dma_set_mask_and_coherent(priv->dma_device, mask);
+> > 
+> > I'm nitpicking, but i don't think you need to introduce mask.
+> > DMA_BIT_MASK... is already on a line of its own, and is within the 80
+> > limit. Nothing changes here with s/device/priv->dma_device/
+> > 
+> > 	Andrew
 > 
-> Let's allow other networking code to reuse the same resolution path.
+> I did this.  It was simply to silence a checkpatch.pl warning
+> about a long line.
 > 
-> Signed-off-by: Kohei Enju <kohei@enjuk.jp>
-> ---
->   include/linux/skbuff.h | 11 +++++++++++
->   net/core/skbuff.c      | 27 +++++++++++++++++++++++++++
->   net/socket.c           | 27 +++------------------------
->   3 files changed, 41 insertions(+), 24 deletions(-)
-> 
-> diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-> index 2bcf78a4de7b..651a5ae8b11c 100644
-> --- a/include/linux/skbuff.h
-> +++ b/include/linux/skbuff.h
-> @@ -4731,6 +4731,17 @@ void __skb_tstamp_tx(struct sk_buff *orig_skb, const struct sk_buff *ack_skb,
->   void skb_tstamp_tx(struct sk_buff *orig_skb,
->   		   struct skb_shared_hwtstamps *hwtstamps);
->   
-> +/**
-> + * skb_get_hwtstamp - resolve a hardware timestamp from an skb
-> + * @skb:	skb carrying the timestamp
-> + * @cycles:	true to request the free-running cycle-based timestamp
-> + * @if_index:	optional return pointer for the originating netdev ifindex
-> + *
-> + * Return: resolved hardware timestamp, or the stored skb hwtstamp when no
-> + * device-specific late timestamp resolution is needed.
-> + */
-> +ktime_t skb_get_hwtstamp(struct sk_buff *skb, bool cycles, int *if_index);
-> +
->   /**
->    * skb_tx_timestamp() - Driver hook for transmit timestamping
->    *
-> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-> index 7dad68e3b518..d11f4e2e9391 100644
-> --- a/net/core/skbuff.c
-> +++ b/net/core/skbuff.c
-> @@ -5729,6 +5729,33 @@ void skb_tstamp_tx(struct sk_buff *orig_skb,
->   }
->   EXPORT_SYMBOL_GPL(skb_tstamp_tx);
->   
-> +ktime_t skb_get_hwtstamp(struct sk_buff *skb, bool cycles, int *if_index)
-> +{
-> +	struct skb_shared_hwtstamps *shhwtstamps = skb_hwtstamps(skb);
-> +	struct net_device *orig_dev;
-> +	ktime_t hwtstamp;
-> +
-> +	if (if_index)
-> +		*if_index = 0;
+> I don't care either way, I'll gladly put it back the way it was.
 
-if_index is set to 0 here the second time when called from
-__sock_recv_timestamp(). IMO you can remove these two
-lines, because in skb_get_tx_timestamp() if_index has been
-removed by your commit.
+Please pull checkpatch fixes out into a patch of their own.
 
-> +
-> +	if (!(skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP_NETDEV))
-> +		return shhwtstamps->hwtstamp;
-> +
-> +	rcu_read_lock();
-> +	orig_dev = dev_get_by_napi_id(skb_napi_id(skb));
-> +	if (orig_dev) {
-> +		if (if_index)
-> +			*if_index = orig_dev->ifindex;
-> +		hwtstamp = netdev_get_tstamp(orig_dev, shhwtstamps, cycles);
-> +	} else {
-> +		hwtstamp = shhwtstamps->hwtstamp;
-> +	}
-> +	rcu_read_unlock();
-> +
-> +	return hwtstamp;
-> +}
-> +EXPORT_SYMBOL_GPL(skb_get_hwtstamp);
-> +
->   #ifdef CONFIG_WIRELESS
->   void skb_complete_wifi_ack(struct sk_buff *skb, bool acked)
->   {
-> diff --git a/net/socket.c b/net/socket.c
-> index 22a412fdec07..95b21b16a0fc 100644
-> --- a/net/socket.c
-> +++ b/net/socket.c
-> @@ -876,21 +876,7 @@ static bool skb_is_swtx_tstamp(const struct sk_buff *skb, int false_tstamp)
->   static ktime_t get_timestamp(struct sock *sk, struct sk_buff *skb, int *if_index)
->   {
->   	bool cycles = READ_ONCE(sk->sk_tsflags) & SOF_TIMESTAMPING_BIND_PHC;
-> -	struct skb_shared_hwtstamps *shhwtstamps = skb_hwtstamps(skb);
-> -	struct net_device *orig_dev;
-> -	ktime_t hwtstamp;
-> -
-> -	rcu_read_lock();
-> -	orig_dev = dev_get_by_napi_id(skb_napi_id(skb));
-> -	if (orig_dev) {
-> -		*if_index = orig_dev->ifindex;
-> -		hwtstamp = netdev_get_tstamp(orig_dev, shhwtstamps, cycles);
-> -	} else {
-> -		hwtstamp = shhwtstamps->hwtstamp;
-> -	}
-> -	rcu_read_unlock();
-> -
-> -	return hwtstamp;
-> +	return skb_get_hwtstamp(skb, cycles, if_index);
->   }
->   
->   static void put_ts_pktinfo(struct msghdr *msg, struct sk_buff *skb,
-> @@ -940,7 +926,6 @@ int skb_get_tx_timestamp(struct sk_buff *skb, struct sock *sk,
->   {
->   	u32 tsflags = READ_ONCE(sk->sk_tsflags);
->   	ktime_t hwtstamp;
-> -	int if_index = 0;
-
-if_index is useless in this function, so it can be removed.
-This was introduced with 2410251cde0b. Maybe removing
-if_index here could be a separate commit, as this clean up
-makes sense on its own.
-
->   
->   	if ((tsflags & SOF_TIMESTAMPING_SOFTWARE) &&
->   	    ktime_to_timespec64_cond(skb->tstamp, ts))
-> @@ -950,10 +935,7 @@ int skb_get_tx_timestamp(struct sk_buff *skb, struct sock *sk,
->   	    skb_is_swtx_tstamp(skb, false))
->   		return -ENOENT;
->   
-> -	if (skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP_NETDEV)
-> -		hwtstamp = get_timestamp(sk, skb, &if_index);
-> -	else
-> -		hwtstamp = skb_hwtstamps(skb)->hwtstamp;
-> +	hwtstamp = get_timestamp(sk, skb, NULL);
->   
->   	if (tsflags & SOF_TIMESTAMPING_BIND_PHC)
->   		hwtstamp = ptp_convert_timestamp(&hwtstamp,
-> @@ -1033,10 +1015,7 @@ void __sock_recv_timestamp(struct msghdr *msg, struct sock *sk,
->   	      !(tsflags & SOF_TIMESTAMPING_OPT_RX_FILTER))) &&
->   	    !skb_is_swtx_tstamp(skb, false_tstamp)) {
->   		if_index = 0;
-> -		if (skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP_NETDEV)
-> -			hwtstamp = get_timestamp(sk, skb, &if_index);
-> -		else
-> -			hwtstamp = shhwtstamps->hwtstamp;
-> +		hwtstamp = get_timestamp(sk, skb, &if_index);
->   
->   		if (tsflags & SOF_TIMESTAMPING_BIND_PHC)
->   			hwtstamp = ptp_convert_timestamp(&hwtstamp,
-
-Gerhard
+       Andrew
