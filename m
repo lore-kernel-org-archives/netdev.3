@@ -1,106 +1,149 @@
-Received: from out-12.smtp.spacemail.com (out-12.smtp.spacemail.com [198.54.127.83])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6792FD69E;
-	Fri,  1 May 2026 06:32:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.54.127.83
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11C882770A;
+	Fri,  1 May 2026 06:38:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777617175; cv=none; b=RifVZItf2aXqyDVB3rJWh6RthrhKuGA0c/9kKQS0gnleKKt25qVDA4Tw121WH78z/H7YByOE5K1w27ivhkUUyNPjfuMyAyiEc7Be5OsJ7NVousGFUjrWRxdeTcjNLUDoecOC6EqKk812UPzy0RL2d5zndpvlfCU7DPAwDJmI6G8=
+	t=1777617513; cv=none; b=AsXRE+EMzjlKJyY3ZxiGEAA35VilKsCoXU9zZcveH/xl4MG2PwW+uVQ7xzdLInaPgcRHWqz7nM0pcKfx/W9CRTj9u1/CrWi9lvXeDra25Jha+VnBJD8JorbXyZnEQv1od0SbIxiiZ1tWoVFi420hzc8NNc6KXBMJnxnV1NMoBHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777617175; c=relaxed/simple;
-	bh=LEfRwxPXqszdGmAcwFbZYAfj8/eMmVsN0t8giE59HVs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Aexzvn8tnxNkXWllMtEjhc6KtRkPReeaSqdNUb6dUF6eUC133V3U9wVvBb+ongFNyxKwmoO9jdLnxieU1jW6knZsJQH0UmsPtQf8gz/myyAFgoR6+i/4rWdZI/NLdcSx8uCfiopN5+XcgJojOrXI/Vq8OSfZiLyVckJ+rmnn1pE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rexion.ai; spf=pass smtp.mailfrom=rexion.ai; dkim=fail (0-bit key) header.d=rexion.ai header.i=@rexion.ai header.b=fO1pfL7c reason="key not found in DNS"; arc=none smtp.client-ip=198.54.127.83
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rexion.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rexion.ai
+	s=arc-20240116; t=1777617513; c=relaxed/simple;
+	bh=XSYe7jkpijRWFzoQHobj2J+nayL2ngnYFQd8umnnDPE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=BLbdjnhqheADp4OIsvKwuDaoCQ4nN4ZSOog3+eO27GiKkFJZofjnldSdm0jK38rJLhecyWZY1OdNptC6FH7g/tyuOJ6fsutR80Ttvjua7kx7LKu2Q2FXQy3q5gq2xE1T8GfOcz0Q9P6Ol/E0gO9e/1lcuJK9ViHOCMZIW8zu+G0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FKujK0Nu; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rexion.ai header.i=@rexion.ai header.b="fO1pfL7c"
-Received: from Kyren (unknown [49.207.224.37])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.spacemail.com (Postfix) with ESMTPSA id 4g6LnV0LwPz2x9D;
-	Fri, 01 May 2026 06:32:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rexion.ai;
-	s=spacemail; t=1777617168;
-	bh=ECBkfEoyAYFKvgkf5XccPkJZ00RujU8mtX5aGSijlSg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=fO1pfL7cajuJmY5372FWg7LSKCXOeqaXa/4adMjBG0FkcEq+DvLdYIKANjSMqBNit
-	 pavq2Mm9gdjcFgl+s170DbJAfeWlsJWoqBLJ9Gx8k78fqaBMx6AdNig4tsvKfJRM0j
-	 /vNuTX4Ya7m0eHfNsAFFGBYOA9wexkWTCBU8WqKUQkf2ohlhO3K7XimS4oA0nPq9Vw
-	 Vyu1B/V/y+yPxMPd+TM2Axhdie9tqLtdz1EwuocqMBpNOV357xfBoHCqbJzwdZl99f
-	 ykwhURakCweoOK+bNG/BVRWv5wWM5bv3LEVZs2qSdiVB2BGKxCSLYojPFQw9BgFWOR
-	 7DVcFNgdhjAyg==
-From: HACKE-RC <rc@rexion.ai>
-To: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	Alexander Aring <alex.aring@gmail.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	HACKE-RC <rc@rexion.ai>
-Subject: [PATCH net] ipv6: rpl: fix hdrlen overflow in ipv6_rpl_srh_decompress()
-Date: Fri,  1 May 2026 12:02:42 +0530
-Message-ID: <20260501063242.2523620-1-rc@rexion.ai>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FKujK0Nu"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777617512; x=1809153512;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:references:in-reply-to:to:cc;
+  bh=XSYe7jkpijRWFzoQHobj2J+nayL2ngnYFQd8umnnDPE=;
+  b=FKujK0NuV6MGXk5LEX5lOxlqMUg6bKwoYJ7WcatiudTwsCfb2eP4oBff
+   ECcdVjmzq0jdnsyC/zPI1vhNHqsYPyQhnNNupYJk37SeX2wKVLqdLuBD6
+   ViysbssgIa+MzbeTe5CpZrTGe6fvOcpBrRmVSJmXFzKD/TuHI+TNQVNLQ
+   WXBjQ4sNBJz7NdoJnysotyC9x07tDUjofa104lGcxcwaChf9XfH82oc+X
+   MRqyC8xYotgAxk53I7+Kdwdk8i7pDU1egtDoSTe+fnjbve9FFD6GUNsQB
+   Kwf8U6F9mHHBf0rOGrpcRFZPURCLI1g2B/vFgSkuVLY6Z5kUFWYeHH8B8
+   g==;
+X-CSE-ConnectionGUID: qitlHOdYSc+TBl1tHQzj9g==
+X-CSE-MsgGUID: 76FHRBn7SMa4MUXXptowWQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11772"; a="89271858"
+X-IronPort-AV: E=Sophos;i="6.23,209,1770624000"; 
+   d="scan'208";a="89271858"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 23:38:31 -0700
+X-CSE-ConnectionGUID: cGAuR70URKuVIFC3mPJeAw==
+X-CSE-MsgGUID: 3PiMGmLdQuC8QTGONu3KzQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,209,1770624000"; 
+   d="scan'208";a="233752839"
+Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.109]) ([10.166.28.109])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 23:38:31 -0700
+From: Jacob Keller <jacob.e.keller@intel.com>
+Date: Thu, 30 Apr 2026 23:37:12 -0700
+Subject: [PATCH net-next 01/15] ixgbe: E610: add discovering EEE capability
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Envelope-From: rc@rexion.ai
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260430-jk-iwl-net-next-2026-04-30-v1-1-6f27ae1cd073@intel.com>
+References: <20260430-jk-iwl-net-next-2026-04-30-v1-0-6f27ae1cd073@intel.com>
+In-Reply-To: <20260430-jk-iwl-net-next-2026-04-30-v1-0-6f27ae1cd073@intel.com>
+To: Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Alexander Lobakin <aleksander.lobakin@intel.com>, 
+ Simon Horman <horms@kernel.org>, 
+ Michal Swiatkowski <michal.swiatkowski@linux.intel.com>, 
+ Jedrzej Jagielski <jedrzej.jagielski@intel.com>, 
+ Aleksandr Loktionov <aleksandr.loktionov@intel.com>, 
+ Grzegorz Nitka <grzegorz.nitka@intel.com>, Ivan Vecera <ivecera@redhat.com>, 
+ Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>, 
+ Tony Nguyen <anthony.l.nguyen@intel.com>, 
+ Stefan Wegrzyn <stefan.wegrzyn@intel.com>
+Cc: Piotr Kwapulinski <piotr.kwapulinski@intel.com>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Jacob Keller <jacob.e.keller@intel.com>, 
+ Rinitha S <sx.rinitha@intel.com>
+X-Mailer: b4 0.16-dev-ea14f
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2432;
+ i=jacob.e.keller@intel.com; h=from:subject:message-id;
+ bh=piRjMZsWjhPpWeIoF5aPcVpYYh7oDNAqZaQNX2L0ThE=;
+ b=owGbwMvMwCWWNS3WLp9f4wXjabUkhswvXslbP++R3XPlcZVuiuej2aZC2SeTKmtOH9b3KD3+a
+ dpd8x0+HaUsDGJcDLJiiiwKDiErrxtPCNN64ywHM4eVCWQIAxenAExktjLDPyuddqbHDncj+5oV
+ Ful9eyfJdS0u/Abv5f8MkxedmN49K5SRofd9yuynBQVOcyQviXLq2AT1bsoJ1UjIDndOXPzctsy
+ WDQA=
+X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
+ fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
 
-ipv6_rpl_srh_decompress() computes:
+From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
 
-    outhdr->hdrlen = (((n + 1) * sizeof(struct in6_addr)) >> 3);
+Add detecting and parsing EEE device capability.
 
-hdrlen is __u8. For n >= 127 the result exceeds 255 and silently
-truncates. With n=127 (cmpri=15, cmpre=15, pad=0, hdrlen=16):
+Recently EEE functionality support has been introduced to E610 FW.
+Currently ixgbe driver has no possibility to detect whether NVM
+loaded on given adapter supports EEE.
 
-    (128 * 16) >> 3 = 256, truncated to 0 as __u8
+There's dedicated device capability element reflecting FW support
+for given EEE link speed.
 
-The caller in ipv6_rpl_srh_rcv() then places the compressed header
-at buf + ((ohdr->hdrlen + 1) << 3). With hdrlen=0 this is buf + 8,
-but the decompressed region occupies buf[0..2055] (8-byte header
-plus 128 full addresses). The compressed header overlaps the
-decompressed data, and ipv6_rpl_srh_compress() writes into this
-overlap, corrupting the routing header of the forwarded packet.
-
-The existing guard at exthdrs.c:546 checks (n + 1) > 255, which
-prevents n+1 from overflowing unsigned char (the segments_left
-field), but does not prevent the computed hdrlen from overflowing
-__u8. n=127 passes because 128 <= 255, yet hdrlen=256 does not
-fit.
-
-Tighten the bound to (n + 1) > 127. This caps n at 126, giving
-hdrlen = (127 * 16) >> 3 = 254, which fits in __u8. The compressed
-header then lands at buf + ((254 + 1) << 3) = buf + 2040, exactly
-past the decompressed region (buf[0..2039]). No overlap. 127
-segments is well beyond any realistic RPL deployment.
-
-Fixes: 8610c7c6e3bd ("net: ipv6: add support for rpl sr exthdr")
-Signed-off-by: HACKE-RC <rc@rexion.ai>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Tested-by: Rinitha S <sx.rinitha@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
- net/ipv6/exthdrs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h | 1 +
+ include/linux/net/intel/libie/adminq.h             | 1 +
+ drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c      | 3 +++
+ 3 files changed, 5 insertions(+)
 
-diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
-index 95558fd6f..35a02584f 100644
---- a/net/ipv6/exthdrs.c
-+++ b/net/ipv6/exthdrs.c
-@@ -543,7 +543,7 @@ static int ipv6_rpl_srh_rcv(struct sk_buff *skb)
- 	 * unsigned char which is segments_left field. Should not be
- 	 * higher than that.
- 	 */
--	if (r || (n + 1) > 255) {
-+	if (r || (n + 1) > 127) {
- 		kfree_skb(skb);
- 		return -1;
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
+index ff8d640a50b1..34f62a416eaa 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
+@@ -891,6 +891,7 @@ struct ixgbe_hw_caps {
+ 	u8 apm_wol_support;
+ 	u8 acpi_prog_mthd;
+ 	u8 proxy_support;
++	u8 eee_support;
+ 	bool nvm_update_pending_nvm;
+ 	bool nvm_update_pending_orom;
+ 	bool nvm_update_pending_netlist;
+diff --git a/include/linux/net/intel/libie/adminq.h b/include/linux/net/intel/libie/adminq.h
+index ab13bd777a28..839114d8975a 100644
+--- a/include/linux/net/intel/libie/adminq.h
++++ b/include/linux/net/intel/libie/adminq.h
+@@ -196,6 +196,7 @@ LIBIE_CHECK_STRUCT_LEN(16, libie_aqc_list_caps);
+ #define LIBIE_AQC_BIT_ROCEV2_LAG			BIT(0)
+ #define LIBIE_AQC_BIT_SRIOV_LAG				BIT(1)
+ #define LIBIE_AQC_BIT_SRIOV_AA_LAG			BIT(2)
++#define LIBIE_AQC_CAPS_EEE				0x009B
+ #define LIBIE_AQC_CAPS_FLEX10				0x00F1
+ #define LIBIE_AQC_CAPS_CEM				0x00F2
+ 
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
+index 52f73142ff75..5383f0fd55d6 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
+@@ -628,6 +628,9 @@ static bool ixgbe_parse_e610_caps(struct ixgbe_hw *hw,
+ 			(phys_id & IXGBE_EXT_TOPO_DEV_IMG_PROG_EN) != 0;
+ 		break;
  	}
++	case LIBIE_AQC_CAPS_EEE:
++		caps->eee_support = (u8)number;
++		break;
+ 	default:
+ 		/* Not one of the recognized common capabilities */
+ 		return false;
+
 -- 
-2.54.0
+2.54.0.rc2.531.gaf818d63126a
 
