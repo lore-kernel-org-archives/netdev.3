@@ -1,222 +1,106 @@
-Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0358B311958
-	for <netdev@vger.kernel.org>; Fri,  1 May 2026 20:36:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 094FF4219E7
+	for <netdev@vger.kernel.org>; Fri,  1 May 2026 20:41:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777667781; cv=none; b=GTGurbPSVqrI3+4gl7Eq7lvq2IVNc6R/FWREHdUekWTr6Zone2Wfmfo75Hd08Va+dQA4iThdgbodmziOt+bxPYPSJrqn/Y7oTEL8/fYOLR66iljTn+YYZRKKgo5Brrwfyi40fEBDDXz5utZc8avDCAHV01Hwk1kczk38OSJJWDc=
+	t=1777668070; cv=none; b=NwK07zIHLFMyQtwP5rWbnYa4WPVZKmqbCC2UqLVREa+IksxblOYDDezAcDyJZVjWvzbQWBBVwOij6oz21TIU3WbywKSQnawyZoKN1h4HpIB43HhLyRkTIWoFzP9ntXcuzMRq5uGFb7liqEtAw2YwcoLimKAlbJSDRPG217Z0i/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777667781; c=relaxed/simple;
-	bh=T0lzHt3k2SflcgeBXqnPgMQIkF6Lsb5wQUoirQMnWHg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=D+/ed+55gXveI68BtgSfiu+/Joh/gGOVazrQI62RPe/n0ohR1BvpfsUbj91u/wR7ibxU9MU0bZlfWxhr7J7FZkPk9UYO+bA3vG8xfA6xUAKzNRMrJSFOb+KMoKrIWYR5Ua5BCrF+x2jDt36hjxWL30A4dBQQ/Av8mSKHPn9feW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b=aPaEvqZV; arc=none smtp.client-ip=129.217.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
+	s=arc-20240116; t=1777668070; c=relaxed/simple;
+	bh=VAGwlkfOhO8vq5+QQLvGj7XDBS7ATS4VX2eI2mgwUus=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=sfAGsgMSGnyS+Ag2BL84B2MX2c6y80Sz1StDi+4ns9potvBkIPXEsoqJ1BOgDcErckcw4ezXClmPYP/ugaTgUI69uYoQeM0EJvB3qFNaUp5ktUUzlRkLM9+qWZmEltErtgoIO4quWsbjA23/DpOf62R6+CTlLHBGzi6yUue8ZAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qEi8ltVY; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b="aPaEvqZV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tu-dortmund.de;
-	s=unimail; t=1777667758;
-	bh=T0lzHt3k2SflcgeBXqnPgMQIkF6Lsb5wQUoirQMnWHg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=aPaEvqZVKZCgGHV3/UOG3BOYQUnLYioUmoy6S8NZVzTEp2ZvdRxNTogS5rF+ub4jL
-	 o5ViRGlCg2BIJGmrtXZjm0ktziizzT2TXgi7K/p0WQJJrtLE2T82+BHqdoFH3zDOAE
-	 c0wIRj1edUWsP9M0x7K8dKRiCFnAVBKsC6XHlGUY=
-Received: from [IPV6:2a01:599:222:5292:7ab9:9848:5d84:7612] (tmo-072-87.customers.d1-online.com [80.187.72.87])
-	(authenticated bits=0)
-	by unimail.uni-dortmund.de (8.18.2/8.18.2) with ESMTPSA id 641KZt8c005866
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 1 May 2026 22:35:55 +0200 (CEST)
-Message-ID: <e8cdba04-aa9a-45c6-9807-8274b62920df@tu-dortmund.de>
-Date: Fri, 1 May 2026 22:35:54 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qEi8ltVY"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-488ad135063so18446385e9.0
+        for <netdev@vger.kernel.org>; Fri, 01 May 2026 13:41:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777668067; x=1778272867; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VAGwlkfOhO8vq5+QQLvGj7XDBS7ATS4VX2eI2mgwUus=;
+        b=qEi8ltVY5FPEkzaV0Cs9mYwRsvjaa8SVo60MZY0QFhFnG6FzppCD07Ig8oFLUFCBbH
+         puGD2nsRT7C5GnHb//5Az6G1obFAXi/gAlcuPX8h9ntj0DNsW1CZeuKAALjO/Hhvac9t
+         FmBk6RXdOlM0X+r/1iwngpC8pEKFe3FcIgyaoOwCO1ZGBj1EEZ9zl+Hz4AKfVdVllvM5
+         qpXddun6F14obLU40djU92xYXpovRtbDpeaj2SYRk/FcztH1pkcPdosmgEDdi+YQ5mWx
+         hHx/qpD1IQIGBBInApPHgk5mPsFY6kuiyqmAWxbbfBETeq3dCSihVsbftqa28pXx+Y1/
+         a6KQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777668067; x=1778272867;
+        h=mime-version:content-transfer-encoding:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=VAGwlkfOhO8vq5+QQLvGj7XDBS7ATS4VX2eI2mgwUus=;
+        b=W9Uw5QLYHo+LfEd8NPXmXPupbjXlu/tBckyniLPZaK03UswMhQq/xhuhE2ylTHnmrW
+         rFnF6vmTGeBKtxkCugeEJ6f7xo5bRSUUqVd93Ht4g/VVEJy4X/PiwkLFgZPtSDyoc+QU
+         lzv3qeUBchJ0FUvngzEjhu8jspE5MHgXv/vT3IBuPIICITEM1j1cAr+P6R/XoH1/5Gdg
+         Z4ShrKqU3WMOJw7VzPxWbqMJoY3bnfdEqoPaIHEsfbTf0Kz5SDcozBSi+wsh8ra66s/e
+         1vIhwIODgbuOAakftpF0IbXZtfJn5BWP+Hh4rVSsL5xqNeoX6FicO6k09UYm/OmVxjO3
+         i5Tg==
+X-Forwarded-Encrypted: i=1; AFNElJ8XqQO3SXyUnKnW9RsCPzPtWV/+dtkb/lM9BZyuhIAoAQ8Y0QY3lFF9ftLmFx3BDmDh/15udAo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyKJM8HyoByMK4NzMjcO4QDUpenbqezjAMd29Tc2qbD1fNF2651
+	UYBihTsGfZoRU8cTC4oW8q3zoIr/9Yd2xwHqlIThOJQrx9zCn2fwv2M=
+X-Gm-Gg: AeBDies6Df4vp7ZXc9ar/anehqmrdstqTmv2r5lpTFUyUOKMAoG+YI+JUNrUha4CPNF
+	LOmaWKRC8R/DpZBpsn3m6R0TTfAjzt98bxR21d7QbUv9ZWPJBj3+kDwJuuF5eRqCaTLc+nmk99e
+	trIzxG3wYK7tDraHR0x0CYBz2vDDI0zubzW6NmskSQ6V0U2D7sidgElBU5RPGM4cbI0C67swxzD
+	Cjt6MMRNT2aUTu64EJEC277IAfB+SGzyiKKRkHH7LNuUn6ubbGllKF+rhFkAjPORnt7fo1lEWnm
+	1BmCsaRlJ6NDAZ3H3B+jLb7Dop6q+4MrZE14afRnCyFtbc7G0sBekbM9VvXEE1wPUmclQodTaUF
+	qXn0r5vXwvMrpG3vJbxBLplS6+e77Y2gYZZyseAnZiRKH79JpV0wMOjsR1Jt7+9V9i99Efpvcmz
+	0wRzXxDy6Y4RU=
+X-Received: by 2002:a05:6000:2383:b0:43d:c95c:4259 with SMTP id ffacd0b85a97d-44bb5b4e054mr1421092f8f.30.1777668067195;
+        Fri, 01 May 2026 13:41:07 -0700 (PDT)
+Received: from debian ([2001:41d0:303:db6b::])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-44a986aa3a5sm7882383f8f.26.2026.05.01.13.41.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 May 2026 13:41:06 -0700 (PDT)
+From: Tristan Madani <tristmd@gmail.com>
+To: Florian Westphal <fw@strlen.de>
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>, Phil Sutter <phil@nwl.cc>,
+ netfilter-devel@vger.kernel.org, netdev@vger.kernel.org,
+ stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] netfilter: ip_tables: guard
+ ipt_unregister_table_pre_exit against NULL ops
+Date: Fri, 01 May 2026 20:41:05 -0000
+Message-ID: <177766806589.1898033.5646188235412407059@gmail.com>
+In-Reply-To: <afPUr2oksLlaMcOj@strlen.de>
+References: <20260429175613.1459342-1-tristmd@gmail.com>
+ <177750472539.3004201.15967003942391945312@talencesecurity.com>
+ <177750474339.3016150.13196470704394042910@talencesecurity.com>
+ <afNYqx41pBCyDnjR@strlen.de>
+ <177758578919.118018.11758358602621428742@gmail.com>
+ <afPUr2oksLlaMcOj@strlen.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 5/5] selftests: net: add veth BQL stress test
-To: =?UTF-8?Q?Jonas_K=C3=B6ppeler?= <j.koeppeler@tu-berlin.de>,
-        Jesper Dangaard Brouer <hawk@kernel.org>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-        horms@kernel.org, jhs@mojatatu.com, jiri@resnulli.us,
-        kernel-team@cloudflare.com, kuba@kernel.org, netdev@vger.kernel.org,
-        pabeni@redhat.com
-References: <20260324174719.1224337-7-hawk@kernel.org>
- <02a713ac-f794-416f-9d69-95ea98d515b6@tu-dortmund.de>
- <1c435d90-8d08-4ac1-8b84-cc72c0b4e30f@tu-berlin.de>
- <7bc8edc9-1b46-471a-9a6e-cd2c27aebcfc@tu-dortmund.de>
- <e599e4e9-3440-4a20-9911-c75edad7850e@kernel.org>
- <a841e7ed-eee0-4069-bd0d-ab043a1509c5@tu-berlin.de>
-Content-Language: en-US
-From: Simon Schippers <simon.schippers@tu-dortmund.de>
-In-Reply-To: <a841e7ed-eee0-4069-bd0d-ab043a1509c5@tu-berlin.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-On 5/1/26 10:43, Jonas Köppeler wrote:
-> On 4/30/26 2:31 PM, Jesper Dangaard Brouer wrote:
->>
->>
->> On 30/04/2026 11.45, Simon Schippers wrote:
->>> On 4/30/26 11:17, Jonas Köppeler wrote:
->>>> On 3/28/26 4:19 PM, Simon Schippers wrote:
->>>>> Hi, thanks for your work! I am really interested in this patchset.
->>>>>
->>>>> I am planning to submit a similar patch set (see [1]) for the tun/tap
->>>>> driver, where I am currently implementing qdisc backpressure similar
->>>>> to that used in veth.
->>>>>
->>>>> Can you run pktgen [2] to see if there is a regression?
->>>>> I think that there might be a slowdown due to BQL not choosing a big
->>>>> enough queue size.
->>>> I ran some tests using pktgen by replacing the trafficgen from the
->>>> selftest with samples/pktgen/pktgen_sample01_simple.sh (Patch v3)
->>>> and used --nrules 0. In general the throughput is quite similar:
->>>>
->>>> BQL disabled (using --bql-disable):
->>>>    2378694pps 1141Mb/sec (1141773120bps) errors: 0
->>>>    2400898pps 1152Mb/sec (1152431040bps) errors: 0
->>>>    2358125pps 1131Mb/sec (1131900000bps) errors: 0
->>>>    2402034pps 1152Mb/sec (1152976320bps) errors: 0
->>>>    2362061pps 1133Mb/sec (1133789280bps) errors: 0
->>>>    2416301pps 1159Mb/sec (1159824480bps) errors: 0
->>>>    2398496pps 1151Mb/sec (1151278080bps) errors: 0
->>>>    2415200pps 1159Mb/sec (1159296000bps) errors: 0
->>>>    2375921pps 1140Mb/sec (1140442080bps) errors: 0
->>>>    2427419pps 1165Mb/sec (1165161120bps) errors: 0
->>>>    2382461pps 1143Mb/sec (1143581280bps) errors: 0
->>>>
->>>>    mean: 2392510pps
->>>>
->>>> BQL enabled:
->>>>    2159545pps 1036Mb/sec (1036581600bps) errors: 0
->>>>    2321899pps 1114Mb/sec (1114511520bps) errors: 0
->>>>    2477853pps 1189Mb/sec (1189369440bps) errors: 0
->>>>    2447857pps 1174Mb/sec (1174971360bps) errors: 0
->>>>    2400284pps 1152Mb/sec (1152136320bps) errors: 0
->>>>    2442841pps 1172Mb/sec (1172563680bps) errors: 0
->>>>    2442540pps 1172Mb/sec (1172419200bps) errors: 0
->>>>    2410585pps 1157Mb/sec (1157080800bps) errors: 0
->>>>    2395902pps 1150Mb/sec (1150032960bps) errors: 0
->>>>    2393260pps 1148Mb/sec (1148764800bps) errors: 0
->>>>    2401959pps 1152Mb/sec (1152940320bps) errors: 0
->>>>
->>>>    mean: 2390411pps
->>>>
->>>> BQL enabled is ~2099pps (~0.09%) lower than BQL disabled.
->>>
->>> Sounds great!
->>>
->>> One more thing:
->>> Could you check what BQL limit settles during the test run using
->>> something like:
->>>
->>> watch -n 0.1 'cat /sys/class/net/XXXXX/queues/tx-0/byte_queue_limits/limit'
->>
->> FYI: The selftest already tracks BQL "limit" and "inflight".
->> - Jonas can just report those BQL inflight logs
->>
->> +print_periodic_stats() {
->> +    local elapsed="$1"
->> +
->> +    # BQL stats and watchdog counter
->> +    WD_CNT=$(cat /sys/class/net/${VETH_A}/queues/tx-0/tx_timeout \
->> +        2>/dev/null) || WD_CNT="?"
->> +    if [ -n "$BQL_DIR" ] && [ -d "$BQL_DIR" ]; then
->> +        INFLIGHT=$(cat "$BQL_DIR/inflight" 2>/dev/null || echo "?")
->> +        LIMIT=$(cat "$BQL_DIR/limit" 2>/dev/null || echo "?")
->> +        echo "  [${elapsed}s] BQL inflight=${INFLIGHT} limit=${LIMIT}" \
->> +            "watchdog=${WD_CNT}"
->> +    else
->> +        echo "  [${elapsed}s] watchdog=${WD_CNT} (no BQL sysfs)"
->> +    fi
->>
-> Hi, so what I found is that pktgen does not respect
-> __QUEUE_STATE_STACK_OFF. So the test data above is invalid, since it
-> just sent packets even if the BQL "stopped" the queue. So I patched
-> pktgen with the following:
-> 
-> -       if (unlikely(netif_xmit_frozen_or_drv_stopped(txq))) {
-> +       if (unlikely(netif_xmit_frozen_or_stopped(txq))) {
-> 
-> Test run with --nrules 0
-> 
-> BQL disabled (using --bql-disable):
-> inflight packets is always around 200 packets and throughput
-> 2264138pps 1086Mb/sec (1086786240bps)
-> 
-> BQL enabled:
-> inflight packet is always 3 packets (with some exception that
-> sometimes its even 0) and throughput is degraded:
-> 1813455pps 870Mb/sec (870458400bps)
-> limit is 2.
-> 
-> BQL enabled is roughly 20% worse in throughput.
+On Thu, 1 May 2026 Florian Westphal wrote:
+> If we have races between a thread calling ipt_register_table
+> and the netns cleanup path there is nothing we could ever do to
+> fix it: we are tearing down a live network namespace.
+> Something else must be going on.
 
-Good findings.
+I agree, this one is unusual. I tried multiple PoC approaches
+without success -- all I have is the syzkaller crash I shared,
+no reliable reproducer. Syzkaller itself could not minimize it
+either.
 
-> 
-> Test run with --nrules 3500
-> 
-> BQL disabled: Inflight ~200, throughput: 27161pps 13Mb/sec
-> BQL enabled:  Inflight 3 (limit 2),    throughput: 26085pps 12Mb/sec
-> BQL ~4% worse.
-> 
-> Test run with --nrules 5000
-> 
-> BQL disabled: Inflight ~200, throughput: 19395pps 9Mb/sec
-> BQL enabled:  Inflight 3 (limit 2),    throughput: 20423pps 9Mb/sec
-> BQL ~5.3% better.
-> 
-> So it seems that BQL will always steer to a limit of 2. Could this be
-> a result of that we call netdev_tx_completed_queue for every packet?
-> 
-> Looking at the comment above netdev_tx_completed_queue in
-> include/linux/netdevice.h:
-> 
->   "Must be called at most once per TX completion round (and not per
->    individual packet), so that BQL can adjust its limits appropriately."
-> 
-> This is consistent with what Tom Herbert stated in the original BQL
-> cover letter [1]:
-> 
->   "BQL accounting is in the transmit path for every packet, and the
->    function to recompute the byte limit is run once per transmit
->    completion."
+That said, the crash is real -- KASAN shows ops=NULL in
+pre_exit during cleanup_net -- so something is reaching that
+path. The V2 guard handles it regardless of the root cause:
+if ops is NULL in pre_exit, we should not pass it to
+nf_unregister_net_hooks.
 
-Yes, exactly that will be the problem here.
-There must be a periodic transmit completion but there is not.
+I will share any PoC/repro if I get one.
 
-Adding something like a tasklet for calling netdev_tx_completed_queue()
-periodically feels wrong. And veth_tx_timeout() is also not suited
-for that. And calling it on ptr_ring_empty() is probably also wrong.
-
-I guess there must be a new "BQL" algorithm just for
-software interfaces which considers:
-1. Context Switching (bigger ring size better)
-2. Cache locality (smaller ring size better)
-3. Bufferbloat (time limit in ring?)
-
-I think it is a hard problem.
-
-How about first adding a option to modify the VETH_RING_SIZE?
-
-> 
-> [1] https://lwn.net/Articles/469652/
-> 
-> Jonas
-> 
->>> I guess it will just choose the ptr_ring size as limit in this case,
->>> but it would be nice if you could briefly verify this :)
->>>
->>> Thanks!
->>>
->>>>
->>>>> Thanks!
->>>>>
->>>>> [1] Link:https://lore.kernel.org/all/20260312130639.138988-1-simon.schippers@tu-dortmund.de/
->>>>> [2] Link:https://www.kernel.org/doc/html/latest/networking/pktgen.html
->>
+Thanks,
+Tristan
