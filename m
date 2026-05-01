@@ -1,51 +1,51 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 644D6361675;
-	Fri,  1 May 2026 06:38:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E48CE364053;
+	Fri,  1 May 2026 06:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777617519; cv=none; b=UsvfcAtY9xg2KLvZkKJ3rPd8t/BFva/9xxt7Y0WoSMoukBAAk5wybE2qysf//3QdwSxc5cGKYlgNnhcDhDbLf8/TfrnYM/c0+Adoryx0hCbKp01PmBeeC+kWhQMKjV46KVpdlPytFm40HCdhwCSBD0ytMe1MZyr6opOsyjOygFQ=
+	t=1777617520; cv=none; b=n5V/Z2xqj1Bpa2wrZTOGcWv7NtKRtNL7nxL7N+a+cxzUfpXyQAVoBcBjCU5RWygJHaLUrfauFeKpjtwKJz8RH017rXY4FmsRTDkiXKh9O8Pq9FU2o1rF2NBQwybEYp+nDTx0aaQ3fHYivbUsRGBA+ocGPBqsIafSrtMKTrKPBts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777617519; c=relaxed/simple;
-	bh=FXZ5bJqI4ovhpOunxxdyUT5gfRoy399BLyBsuo38664=;
+	s=arc-20240116; t=1777617520; c=relaxed/simple;
+	bh=RjzD3QV0Pc7FQKiPpdSySz683TeMOk4ms6dduW8uUiY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=OBzcmt3KzFDI3LhY9FgRFlMaM5LpfCfQF7DDbpmA59dM/845hNL5h0F0O5aRmiukp5RQ0usAKfvrRRrMqvp6C3NoAmGxJcY3Xr0Q059gt/YRkoKywJQ6e2WG2g+VqdYSk5ExsuuTeUlZzPKyzNeXfYc5AHG2veNzfkb2UM2nYMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RT+GJGqg; arc=none smtp.client-ip=192.198.163.9
+	 In-Reply-To:To:Cc; b=fR7Gz/b79wixEYJE/SUYxmtqcd7EZgTBlyGDgtgBSKUKYv7VpPK5Q1ZhjW+v8fdHa+iziIFYWaj1Wfp7kdDoucthDAjsl01nwAtpEmUaVwIng/UkD21nXAAxEriC5VD3xQVXS8itMvjnTwBjcKKMLrrqq757/K5Uf+OBGiJS494=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ShQJmyK8; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RT+GJGqg"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ShQJmyK8"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777617517; x=1809153517;
+  t=1777617519; x=1809153519;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=FXZ5bJqI4ovhpOunxxdyUT5gfRoy399BLyBsuo38664=;
-  b=RT+GJGqgUhW6lLvAAShMYs52O+m6D5HxS9Jlo9G1F/ZjY2tsu4YAUAUL
-   C2BZt2DqIQJmf9ypYmjdgi89b14lXWJTbQ7dKjKPAgV8sI8oOf3gxZVcJ
-   yrrwIaX6IttAI0t96ANCPjvXuelioSP5wnORQL2CDbHZEVIB1yRHCrDui
-   qY8V/Adhv4GaESTTC5QgZa/jVrN5+A0MeWPpUxF0G+hr6S5CCm1f3gmk9
-   QLIf+HMgQ0p56y1SRYzsjvk1IGr49npWJb1Uzx8BVl3c+jjqoxTH4yQsy
-   2i0mIgVouplcMp3gGF+5DR6bV8k4W7USQlXd8qLIMTAvp6xbsmJ4sNqI0
-   A==;
-X-CSE-ConnectionGUID: Q2L13DwMR/S+KtTjBcu5iQ==
-X-CSE-MsgGUID: g7VXxXUpRtyQC/hx8TGH+A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11772"; a="89271902"
+  bh=RjzD3QV0Pc7FQKiPpdSySz683TeMOk4ms6dduW8uUiY=;
+  b=ShQJmyK8rRzNs7AS2cOwpTdW/eQRRPs3uyMMMcgMZdE9Etx/O8/cVwGW
+   3w/mwrds51rwAlRhVa6iFbLxoW6K9+ZJBN/o99GEoKdw1JsKNJLE+rPqw
+   85+EK+3js/iabMcyPKB3F4YcG4ThbbDee19DakcOmTstRekhe8XzTCyYf
+   R6EClUTlkOKlTZqXQtrNMY2pstRpTk2CK2Eleoz/uRrKNPY1EIHWl/A6X
+   hiaJFeY1ljCxCcrdprvuAF/OGXzpZe6RKsaPFaVq36ULFxotPWkiQMxGY
+   YnrtGOWbwqAHpQzrXTwp+mplE9uDqBvTljwkP93XCgC7ql4gLZj+L2l89
+   g==;
+X-CSE-ConnectionGUID: tzFr27DyTOqv/wIBWjRpIg==
+X-CSE-MsgGUID: 8RVSWu8WTqyjHEXb+O82vw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11772"; a="89271922"
 X-IronPort-AV: E=Sophos;i="6.23,209,1770624000"; 
-   d="scan'208";a="89271902"
+   d="scan'208";a="89271922"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 23:38:32 -0700
-X-CSE-ConnectionGUID: kFuwsrE2R7S+8bl4GaVb+g==
-X-CSE-MsgGUID: S1haTBXrThKMXck60guAFg==
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 23:38:33 -0700
+X-CSE-ConnectionGUID: GTP21E5iTyKt05mDHzg8GQ==
+X-CSE-MsgGUID: KPmMslOFRGWuw9K8zypH2A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,209,1770624000"; 
-   d="scan'208";a="233752858"
+   d="scan'208";a="233752868"
 Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.109]) ([10.166.28.109])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 23:38:31 -0700
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 23:38:32 -0700
 From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Thu, 30 Apr 2026 23:37:18 -0700
-Subject: [PATCH net-next 07/15] ixgbe: E610: add ACI dynamic debug
+Date: Thu, 30 Apr 2026 23:37:21 -0700
+Subject: [PATCH net-next 10/15] i40e: only timestamp PTP event packets
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260430-jk-iwl-net-next-2026-04-30-v1-7-6f27ae1cd073@intel.com>
+Message-Id: <20260430-jk-iwl-net-next-2026-04-30-v1-10-6f27ae1cd073@intel.com>
 References: <20260430-jk-iwl-net-next-2026-04-30-v1-0-6f27ae1cd073@intel.com>
 In-Reply-To: <20260430-jk-iwl-net-next-2026-04-30-v1-0-6f27ae1cd073@intel.com>
 To: Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
@@ -74,251 +74,126 @@ Cc: Piotr Kwapulinski <piotr.kwapulinski@intel.com>, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, Jacob Keller <jacob.e.keller@intel.com>, 
  Rinitha S <sx.rinitha@intel.com>
 X-Mailer: b4 0.16-dev-ea14f
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8880;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5472;
  i=jacob.e.keller@intel.com; h=from:subject:message-id;
- bh=M3A0TGxQzef9H8v9AL1pR11dIm6zNfcjlkNEFzkda/g=;
- b=owGbwMvMwCWWNS3WLp9f4wXjabUkhswvXik/bWy2nzI332Mh4b3j4iR1noNXXr3fxHHMO1fxL
- vstDau8jlIWBjEuBlkxRRYFh5CV140nhGm9cZaDmcPKBDKEgYtTACYi78rI0Mck5qS1OOeO68qL
- Bn1tgsfMQu9UsX9qvL3yueV2IQbuVob/1ercjPoWiiK5i0SaM5oVqiRML+/Vtz+lvmrb9Ule9YU
- 8AA==
+ bh=RjzD3QV0Pc7FQKiPpdSySz683TeMOk4ms6dduW8uUiY=;
+ b=owGbwMvMwCWWNS3WLp9f4wXjabUkhswvXqkPftw3+PbzwMvtH2QSbr0KbtnVX7yg6KKDZtK/M
+ oNM8+fqHaUsDGJcDLJiiiwKDiErrxtPCNN64ywHM4eVCWQIAxenAExkxXNGhlOT+zINkpd89f52
+ 60Cg3RJ12b9RuzapLG1+MOHw+ZpnWRyMDHtcL/LfND3nvbwxN9Jt24+rstsW7lsrHbhoj5H2z1X
+ ugewA
 X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
  fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
 
-From: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
+The i40e_ptp_set_timestamp_mode() function is responsible for configuring
+hardware timestamping. When programming receive timestamping, the logic
+must determine how to configure the PRTTSYN_CTL1 register for receive
+timestamping.
 
-Enable dynamic debug (dyndbg) of Admin Command Interface (ACI) for e610
-adapter. Utilizes the standard dynamic debug interface. For example to
-enable dyndbg at driver load:
+The i40e hardware does not support timestamping all frames. Instead,
+timestamps are captured into one of the four PRTTSYN_RXTIME registers.
 
-insmod ixgbe.ko dyndbg='+p'
+Currently, the driver configures hardware to timestamp all V2 packets on
+ports 319 and 320, including all message types. This timestamps
+significantly more packets than is actually requested by the
+HWTSTAMP_FILTER_PTP_V2_EVENT filter type.
 
-ACI debug output for e610 adapter is immediately printed into a kernel
-log (dmesg). Example output:
+The documentation for HWTSTAMP_FILTER_PTP_V2_EVENT indicates that it should
+timestamp PTP v2 messages on any layer, including any kind of event
+packets.
 
-ixgbe 0000:01:00.0 eth0: CQ CMD: opcode 0x0701, flags 0x3003, datalen 0x0060, retval 0x0000
-ixgbe 0000:01:00.0 eth0:       cookie (h,l) 0x00000000 0x00000000
-ixgbe 0000:01:00.0 eth0:       param (0,1)  0x8194E044 0x00600000
-ixgbe 0000:01:00.0 eth0:       addr (h,l)   0x00000000 0x00000000
-ixgbe 0000:01:00.0 eth0: Buffer:
-ixgbe 0000:01:00.0 eth0: 00000000: 01 00 17 00 00 00 00 00 00 00 00 00 00 00 00 00
-ixgbe 0000:01:00.0 eth0: 00000010: 1d 00 00 00 0b d5 1e 15 5e 4b 90 63 aa 0b 21 31
-ixgbe 0000:01:00.0 eth0: 00000020: 69 eb cd ab dc f8 8a fd f4 53 e2 dc 54 e0 81 fa
-ixgbe 0000:01:00.0 eth0: 00000030: 12 dc 41 82 01 00 00 00 24 20 08 26 53 08 00 00
-ixgbe 0000:01:00.0 eth0: 00000040: 08 00 14 00 00 00 00 00 00 00 00 00 00 00 00 00
-ixgbe 0000:01:00.0 eth0: 00000050: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-ixgbe 0000:01:00.0 eth0: CQ CMD: opcode 0x0009, flags 0x2003, datalen 0x0000, retval 0x0000
-ixgbe 0000:01:00.0 eth0:       cookie (h,l) 0x00000000 0x00000000
-ixgbe 0000:01:00.0 eth0:       param (0,1)  0x00000001 0x00000000
-ixgbe 0000:01:00.0 eth0:       addr (h,l)   0x00000000 0x00000000
+Timestamping other packets is acceptable, but not required by the filter.
+Doing so wastes valuable slots in the Rx timestamp registers. For most
+applications this doesn't cause a problem. However, for extremely high
+rates of messages, it becomes possible that one of the critical event
+packets is not timestamped.
 
-Co-developed-by: Stefan Wegrzyn <stefan.wegrzyn@intel.com>
-Signed-off-by: Stefan Wegrzyn <stefan.wegrzyn@intel.com>
+The PTP protocol only requires timestamps for event messages on port 319,
+but hardware is timestamping on both 319 and 320, and timestamping message
+types which do not need a timestamp value.
+
+The i40e hardware actually has a more strict filtering option. First, only
+timestamp layer 4 messages on port 319 instead of both 319 and 320. Second,
+note that hardware has a specific mode to timestamp only event packets
+(those with message type < 8).
+
+Update the configuration to use the strict mode that only timestamps event
+messages, switching the TSYNTYPE field from 10b to 11b which limits the
+timestamping only to eventpackets with a Message Type of < 8. Note that the
+X700 series datasheet seems to indicate that the V2MSESTYPE field is no
+longer relevant. However, we only tested and validated with leaving the
+V2MESSTYPE field set to 0xF for the "wildcard" behavior it documents. This
+might not be required but it in that case setting it appears harmless, so
+leave it as is.
+
+This avoids wasting the valuable Rx timestamp register slots on non-event
+frames, and may reduce faults when operating under high event rates.
+
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
 Tested-by: Rinitha S <sx.rinitha@intel.com>
 Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
- drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c | 112 ++++++++++++++++++++++++--
- 1 file changed, 105 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_register.h | 10 ++++++++++
+ drivers/net/ethernet/intel/i40e/i40e_ptp.c      |  9 +++------
+ 2 files changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-index 665a9813e251..b686636beb93 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-@@ -9,6 +9,78 @@
- #include "ixgbe_mbx.h"
- #include "ixgbe_phy.h"
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_register.h b/drivers/net/ethernet/intel/i40e/i40e_register.h
+index 432afbb64201..d426d83e0214 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_register.h
++++ b/drivers/net/ethernet/intel/i40e/i40e_register.h
+@@ -788,8 +788,18 @@
+ #define I40E_PRTTSYN_CTL1_V2MESSTYPE0_SHIFT 16
+ #define I40E_PRTTSYN_CTL1_V2MESSTYPE0_MASK I40E_MASK(0xF, I40E_PRTTSYN_CTL1_V2MESSTYPE0_SHIFT)
+ #define I40E_PRTTSYN_CTL1_TSYNTYPE_SHIFT 24
++#define I40E_PRTTSYN_CTL1_TSYNTYPE_MASK I40E_MASK(0x3, I40E_PRTTSYN_CTL1_TSYNTYPE_SHIFT)
++/* Timestamp UDP v1 packets */
++#define I40E_PRTTSYN_CTL1_TSYNTYPE_V1 \
++	FIELD_PREP(I40E_PRTTSYN_CTL1_TSYNTYPE_MASK, 1)
++/* Timestamp L2 and UDP v2 packets with message type < 8 */
++#define I40E_PRTTSYN_CTL1_TSYNTYPE_V2_EVENT \
++	FIELD_PREP(I40E_PRTTSYN_CTL1_TSYNTYPE_MASK, 3)
+ #define I40E_PRTTSYN_CTL1_UDP_ENA_SHIFT 26
+ #define I40E_PRTTSYN_CTL1_UDP_ENA_MASK I40E_MASK(0x3, I40E_PRTTSYN_CTL1_UDP_ENA_SHIFT)
++/* Timestamp UDP packets on port 319 */
++#define I40E_PRTTSYN_CTL1_UDP_ENA_319 \
++	FIELD_PREP(I40E_PRTTSYN_CTL1_UDP_ENA_MASK, 1)
+ #define I40E_PRTTSYN_CTL1_TSYNENA_SHIFT 31
+ #define I40E_PRTTSYN_CTL1_TSYNENA_MASK I40E_MASK(0x1, I40E_PRTTSYN_CTL1_TSYNENA_SHIFT)
+ #define I40E_PRTTSYN_INC_H 0x001E4060 /* Reset: GLOBR */
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_ptp.c b/drivers/net/ethernet/intel/i40e/i40e_ptp.c
+index 404a716db8da..7bcea7d9720f 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_ptp.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_ptp.c
+@@ -24,9 +24,6 @@
+ #define I40E_PTP_1GB_INCVAL_MULT	20
+ #define I40E_ISGN			0x80000000
  
-+#define IXGBE_ACI_DEBUG_ROW_SIZE	16
-+#define IXGBE_ACI_DEBUG_GROUP_SIZE	1
-+#define IXGBE_NETDEV_PREFIX_BUF_SIZE	64
-+
-+/**
-+ * ixgbe_hex_debug_dump - dump a blob of data in "hex ASCII" format
-+ * @hw: hardware structure address
-+ * @buf: data blob to dump
-+ * @buf_size: number of bytes in the @buf
-+ *
-+ * Dump a blob of data into a kernel log. The blob is printed in lines
-+ * consisting of 16 or 32 bytes decorated with PCI device string. Each byte is
-+ * printed in a "hex ASCII" format.
-+ * Example output:
-+ * ixgbe 0000:01:00.1 eth14: 00000000: 01 00 17 00 00 00 00 00 00 00 00 00 00 00 00 00
-+ * ixgbe 0000:01:00.1 eth14: 00000010: 1d 00 00 00 0b d5 1e 15 5e 4b 90 63 aa 0b 21 31
-+ * ixgbe 0000:01:00.1 eth14: 00000020: 69 eb cd ab dc f8 8a fd f4 53 e2 dc 54 e0 81 fa
-+ */
-+static void ixgbe_hex_debug_dump(struct ixgbe_hw *hw, void *buf,
-+				 size_t buf_size)
-+{
-+	char netdev_info[IXGBE_NETDEV_PREFIX_BUF_SIZE];
-+	struct ixgbe_adapter *adapter = hw->back;
-+	struct pci_dev *pdev = adapter->pdev;
-+
-+	snprintf(netdev_info, IXGBE_NETDEV_PREFIX_BUF_SIZE,
-+		 "%s %s %s: ", ixgbe_driver_name, pci_name(pdev),
-+		 netdev_name(adapter->netdev));
-+	print_hex_dump_debug(netdev_info, DUMP_PREFIX_OFFSET,
-+			     IXGBE_ACI_DEBUG_ROW_SIZE,
-+			     IXGBE_ACI_DEBUG_GROUP_SIZE,
-+			     buf, buf_size, false);
-+}
-+
-+/**
-+ * ixgbe_aci_debug - dump the ACI content
-+ * @hw: pointer to the hardware structure
-+ * @desc: pointer to control queue descriptor
-+ * @buf: pointer to command buffer
-+ * @buf_len: max length of buf
-+ *
-+ * Dump individual ACI commands and its descriptor details.
-+ */
-+static void ixgbe_aci_debug(struct ixgbe_hw *hw, void *desc, void *buf,
-+			    u16 buf_len)
-+{
-+	struct libie_aq_desc *aq_desc = desc;
-+	u16 datalen, flags;
-+
-+	datalen = le16_to_cpu(aq_desc->datalen);
-+	flags = le16_to_cpu(aq_desc->flags);
-+
-+	hw_dbg(hw, "CQ CMD: opcode 0x%04X, flags 0x%04X, datalen 0x%04X, retval 0x%04X\n",
-+	       le16_to_cpu(aq_desc->opcode), flags, datalen,
-+	       le16_to_cpu(aq_desc->retval));
-+	hw_dbg(hw, "\tcookie (h,l) 0x%08X 0x%08X\n",
-+	       le32_to_cpu(aq_desc->cookie_high),
-+	       le32_to_cpu(aq_desc->cookie_low));
-+	hw_dbg(hw, "\tparam (0,1)  0x%08X 0x%08X\n",
-+	       le32_to_cpu(aq_desc->params.generic.param0),
-+	       le32_to_cpu(aq_desc->params.generic.param1));
-+	hw_dbg(hw, "\taddr (h,l)   0x%08X 0x%08X\n",
-+	       le32_to_cpu(aq_desc->params.generic.addr_high),
-+	       le32_to_cpu(aq_desc->params.generic.addr_low));
-+
-+	if (buf && datalen && (flags & (LIBIE_AQ_FLAG_DD | LIBIE_AQ_FLAG_CMP |
-+	    LIBIE_AQ_FLAG_RD))) {
-+		hw_dbg(hw, "Buffer:\n");
-+		ixgbe_hex_debug_dump(hw, buf, min(buf_len, datalen));
-+	}
-+}
-+
- /**
-  * ixgbe_should_retry_aci_send_cmd_execute - decide if ACI command should
-  * be resent
-@@ -69,26 +141,33 @@ static int ixgbe_aci_send_cmd_execute(struct ixgbe_hw *hw,
- 	/* It's necessary to check if mechanism is enabled */
- 	hicr = IXGBE_READ_REG(hw, IXGBE_PF_HICR);
+-#define I40E_PRTTSYN_CTL1_TSYNTYPE_V1  BIT(I40E_PRTTSYN_CTL1_TSYNTYPE_SHIFT)
+-#define I40E_PRTTSYN_CTL1_TSYNTYPE_V2  (2 << \
+-					I40E_PRTTSYN_CTL1_TSYNTYPE_SHIFT)
+ #define I40E_SUBDEV_ID_25G_PTP_PIN	0xB
  
--	if (!(hicr & IXGBE_PF_HICR_EN))
-+	if (!(hicr & IXGBE_PF_HICR_EN)) {
-+		hw_dbg(hw, "CSR mechanism is not enabled\n");
- 		return -EIO;
-+	}
- 
- 	if (hicr & IXGBE_PF_HICR_C) {
- 		hw->aci.last_status = LIBIE_AQ_RC_EBUSY;
-+		hw_dbg(hw, "CSR mechanism is busy\n");
- 		return -EBUSY;
- 	}
- 
- 	opcode = le16_to_cpu(desc->opcode);
- 
--	if (buf_size > IXGBE_ACI_MAX_BUFFER_SIZE)
-+	if (buf_size > IXGBE_ACI_MAX_BUFFER_SIZE) {
-+		hw_dbg(hw, "buf_size is too big\n");
- 		return -EINVAL;
-+	}
- 
- 	if (buf)
- 		desc->flags |= cpu_to_le16(LIBIE_AQ_FLAG_BUF);
- 
- 	if (desc->flags & cpu_to_le16(LIBIE_AQ_FLAG_BUF)) {
- 		if ((buf && !buf_size) ||
--		    (!buf && buf_size))
-+		    (!buf && buf_size)) {
-+			hw_dbg(hw, "error: invalid argument buf or buf_size\n");
- 			return -EINVAL;
-+		}
- 		if (buf && buf_size)
- 			valid_buf = true;
- 	}
-@@ -106,8 +185,12 @@ static int ixgbe_aci_send_cmd_execute(struct ixgbe_hw *hw,
- 		if (desc->flags & cpu_to_le16(LIBIE_AQ_FLAG_RD)) {
- 			for (i = 0; i < buf_size / 4; i++)
- 				IXGBE_WRITE_REG(hw, IXGBE_PF_HIBA(i), ((u32 *)buf)[i]);
--			if (buf_tail_size)
-+			ixgbe_aci_debug(hw, desc, buf, buf_size);
-+			if (buf_tail_size) {
- 				IXGBE_WRITE_REG(hw, IXGBE_PF_HIBA(i), buf_tail);
-+				ixgbe_aci_debug(hw, desc, &buf_tail,
-+						buf_tail_size);
-+			}
- 		}
- 	}
- 
-@@ -147,6 +230,7 @@ static int ixgbe_aci_send_cmd_execute(struct ixgbe_hw *hw,
- 			raw_desc[i] = IXGBE_READ_REG(hw, IXGBE_PF_HIDA(i));
- 			raw_desc[i] = raw_desc[i];
- 		}
-+		ixgbe_aci_debug(hw, raw_desc, NULL, 0);
- 	}
- 
- 	/* Read async Admin Command response */
-@@ -155,14 +239,21 @@ static int ixgbe_aci_send_cmd_execute(struct ixgbe_hw *hw,
- 			raw_desc[i] = IXGBE_READ_REG(hw, IXGBE_PF_HIDA_2(i));
- 			raw_desc[i] = raw_desc[i];
- 		}
-+		ixgbe_aci_debug(hw, raw_desc, NULL, 0);
- 	}
- 
- 	/* Handle timeout and invalid state of HICR register */
--	if (hicr & IXGBE_PF_HICR_C)
-+	if (hicr & IXGBE_PF_HICR_C) {
-+		hw_dbg(hw, "error: Admin Command 0x%X command timeout\n",
-+		       le16_to_cpu(desc->opcode));
- 		return -ETIME;
-+	}
- 
--	if (!(hicr & IXGBE_PF_HICR_SV) && !(hicr & IXGBE_PF_HICR_EV))
-+	if (!(hicr & IXGBE_PF_HICR_SV) && !(hicr & IXGBE_PF_HICR_EV)) {
-+		hw_dbg(hw, "error: Admin Command 0x%X invalid state of HICR register\n",
-+		       le16_to_cpu(desc->opcode));
- 		return -EIO;
-+	}
- 
- 	/* For every command other than 0x0014 treat opcode mismatch
- 	 * as an error. Response to 0x0014 command read from HIDA_2
-@@ -170,12 +261,16 @@ static int ixgbe_aci_send_cmd_execute(struct ixgbe_hw *hw,
- 	 * different opcode than the command.
- 	 */
- 	if (desc->opcode != cpu_to_le16(opcode) &&
--	    opcode != ixgbe_aci_opc_get_fw_event)
-+	    opcode != ixgbe_aci_opc_get_fw_event) {
-+		hw_dbg(hw, "error: Admin Command failed, bad opcode returned\n");
- 		return -EIO;
-+	}
- 
- 	if (desc->retval) {
- 		hw->aci.last_status = (enum libie_aq_err)
- 			le16_to_cpu(desc->retval);
-+		hw_dbg(hw, "error: Admin Command failed with error %x\n",
-+		       le16_to_cpu(desc->retval));
- 		return -EIO;
- 	}
- 
-@@ -183,10 +278,13 @@ static int ixgbe_aci_send_cmd_execute(struct ixgbe_hw *hw,
- 	if (valid_buf) {
- 		for (i = 0; i < buf_size / 4; i++)
- 			((u32 *)buf)[i] = IXGBE_READ_REG(hw, IXGBE_PF_HIBA(i));
-+		ixgbe_aci_debug(hw, raw_desc, buf, buf_size);
- 		if (buf_tail_size) {
- 			buf_tail = IXGBE_READ_REG(hw, IXGBE_PF_HIBA(i));
- 			memcpy(buf + buf_size - buf_tail_size, &buf_tail,
- 			       buf_tail_size);
-+			ixgbe_aci_debug(hw, raw_desc, &buf_tail,
-+					buf_tail_size);
- 		}
- 	}
- 
+ enum i40e_ptp_pin {
+@@ -1219,7 +1216,7 @@ static int i40e_ptp_set_timestamp_mode(struct i40e_pf *pf,
+ 		pf->ptp_rx = true;
+ 		tsyntype = I40E_PRTTSYN_CTL1_V1MESSTYPE0_MASK |
+ 			   I40E_PRTTSYN_CTL1_TSYNTYPE_V1 |
+-			   I40E_PRTTSYN_CTL1_UDP_ENA_MASK;
++			   I40E_PRTTSYN_CTL1_UDP_ENA_319;
+ 		config->rx_filter = HWTSTAMP_FILTER_PTP_V1_L4_EVENT;
+ 		break;
+ 	case HWTSTAMP_FILTER_PTP_V2_EVENT:
+@@ -1236,9 +1233,9 @@ static int i40e_ptp_set_timestamp_mode(struct i40e_pf *pf,
+ 	case HWTSTAMP_FILTER_PTP_V2_L2_DELAY_REQ:
+ 		pf->ptp_rx = true;
+ 		tsyntype = I40E_PRTTSYN_CTL1_V2MESSTYPE0_MASK |
+-			   I40E_PRTTSYN_CTL1_TSYNTYPE_V2;
++			   I40E_PRTTSYN_CTL1_TSYNTYPE_V2_EVENT;
+ 		if (test_bit(I40E_HW_CAP_PTP_L4, pf->hw.caps)) {
+-			tsyntype |= I40E_PRTTSYN_CTL1_UDP_ENA_MASK;
++			tsyntype |= I40E_PRTTSYN_CTL1_UDP_ENA_319;
+ 			config->rx_filter = HWTSTAMP_FILTER_PTP_V2_EVENT;
+ 		} else {
+ 			config->rx_filter = HWTSTAMP_FILTER_PTP_V2_L2_EVENT;
 
 -- 
 2.54.0.rc2.531.gaf818d63126a
