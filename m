@@ -1,52 +1,52 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB90367F21;
-	Fri,  1 May 2026 06:38:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0CF36C0AB;
+	Fri,  1 May 2026 06:38:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777617524; cv=none; b=EzOYVcZsAkus4YrlyjX6ll/jXCKK7VJ59FKz0pMdlEDcGmQ+8pqtU2xd43F3h+1Y/cRFwyyPfLaIgZJzL9KzPOVPeBbAMD+Af079Jvo2Zdu8an9b6c2ljAbOPP2JU3nXeF3tiyBWRbhLDJ1ZgGWmI8xaT9Cpuay23EbC44cdZYI=
+	t=1777617524; cv=none; b=eA7ueCjnnx+EvvMrD3/wZG4nsELYgApf32VUVKYsAK7M4bhXAYVHdl8Z+64ej6vCSWFEaB6jr1YMrrXTdxBnHfpkLk1g3M0bnzXKINl+qdruqHQ9TvjV4wKd1raHAXi8K/0gysCv0TVPCNQv4uGubpAOyxEM3kN8Y1NLSjR6ln4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777617524; c=relaxed/simple;
-	bh=XXZI7pQh1J2x8jCwKraX2UOMZwG+RSwyWryaNcpYiOk=;
+	bh=v1Q32tTQVEzxj1E+BqktrRW1pcgKpQBeKgC005jfIWk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=BSIfz6bfI4AOnM79EYmKnFmrFvJo3/GwkM4AoWZSaWcrnBOstXS/5mcLaOv6LJAiq2+scU0U9MW290YdX0Ed+Iu/kK8fRdeqUJaclj1Vpqg41F3mhGOcmyYlQ/v8xsI0YseE4Q0DqIClgGO0BRkuBfCMYjNIhHQQI99m3kIF8+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IWmFwkVg; arc=none smtp.client-ip=192.198.163.9
+	 In-Reply-To:To:Cc; b=APs9RnRtdHxEIqwKM1ch9Mc4j1JyUTlIYpolsQbd+U8Z86n5W6Z8/NX/uDAjajgFAJqVpiWsUV7FMPqRYQUFd4XhWoLUvHTIs0HA/2chW5ThTzBKuVZrEtntpAiksBM1Zx92h1D1OmmfsS0xB0LwhokrVP161aceI4/EufAw9LQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JeQn9Sd0; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IWmFwkVg"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JeQn9Sd0"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777617521; x=1809153521;
+  t=1777617518; x=1809153518;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=XXZI7pQh1J2x8jCwKraX2UOMZwG+RSwyWryaNcpYiOk=;
-  b=IWmFwkVg9CD42/jueEXYHwqziM9qJfmdQhRJqElS3vf3SJPOfs0/sb/S
-   qNYvcKZPkBoKjZP4Zh9ThFEMZa1YMb89rQQynMSuWemHPHt8p6gLxqM8G
-   P1jGS5fdE8f98M/VmqDn4mUAfvQwvsaa2/8OA8MTBVws/sp9rQJ+vUQe+
-   cWAG3tB9F9q+Xi3OZO6qeRmHcrWNrvZprD7W4Ey35zGvdnar2IOs2xbgy
-   WVoDZ1FsmswSm06SwYyMYJhwhUpaCyTUMIVOYfkONqAoLsn660hIbI/no
-   DXDBJsgOEDMnNU4UGdRTg7EUmAVgt6K7ouyA1XY6+iTMAgFygVJ2cVq70
+  bh=v1Q32tTQVEzxj1E+BqktrRW1pcgKpQBeKgC005jfIWk=;
+  b=JeQn9Sd0JggbUuyDgjLJPdWgdC6/Rj66zuQWMU6GE4JXDouCPvrbIJ1H
+   RLKkhw7T3eo6GVZvxEOWsNpvKLyOpni1og63tS5Oe71fFgsPuST66yauh
+   LuN0ZObdAkb9U1r1auHCk+HuslBaC0qyKPNNCBDP+ahEGRzhSenSKYJ0w
+   /7KrfbblPxomnxufBHmzsbOd27L49gaX1E+Y7DWbmtsZYViv4xMyfKK5n
+   uXGiiizgQ3mBwhmFY7YRNJsRqMJxrDa9yX4WdnWJTiXT6ViXjsue+hI2b
+   Ic3koCuvCkttPRkjxJnY2niqz/8NQx5gh8spq+C+KAxrKb8YwDcN1kO4H
    Q==;
-X-CSE-ConnectionGUID: ljCI5P/bQ1GNgrrwE9uN6w==
-X-CSE-MsgGUID: Iu2RuN4CQyGc6o9SOXQmsw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11772"; a="89271925"
+X-CSE-ConnectionGUID: vMKpfTXTTG+zq+fb/7BLMg==
+X-CSE-MsgGUID: QDzSlLHfTX2bgfvpwKhDpg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11772"; a="89271911"
 X-IronPort-AV: E=Sophos;i="6.23,209,1770624000"; 
-   d="scan'208";a="89271925"
+   d="scan'208";a="89271911"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 23:38:33 -0700
-X-CSE-ConnectionGUID: v4WENUiMRjaf1eMRA68JXQ==
-X-CSE-MsgGUID: CeNn1GWdRVejcGthQMADbQ==
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 23:38:32 -0700
+X-CSE-ConnectionGUID: aVMMG1h/QPqXvWdbYc+n/A==
+X-CSE-MsgGUID: O99SWvQMRFKvPSDZCMpcXg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,209,1770624000"; 
-   d="scan'208";a="233752871"
+   d="scan'208";a="233752865"
 Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.109]) ([10.166.28.109])
   by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 23:38:32 -0700
 From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Thu, 30 Apr 2026 23:37:22 -0700
-Subject: [PATCH net-next 11/15] ice: mention fw_activate action along with
- devlink reload
+Date: Thu, 30 Apr 2026 23:37:20 -0700
+Subject: [PATCH net-next 09/15] ixgbe: fix unaligned u32 access in
+ ixgbe_update_flash_X550()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,7 +55,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260430-jk-iwl-net-next-2026-04-30-v1-11-6f27ae1cd073@intel.com>
+Message-Id: <20260430-jk-iwl-net-next-2026-04-30-v1-9-6f27ae1cd073@intel.com>
 References: <20260430-jk-iwl-net-next-2026-04-30-v1-0-6f27ae1cd073@intel.com>
 In-Reply-To: <20260430-jk-iwl-net-next-2026-04-30-v1-0-6f27ae1cd073@intel.com>
 To: Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
@@ -72,55 +72,70 @@ To: Przemek Kitszel <przemyslaw.kitszel@intel.com>,
  Tony Nguyen <anthony.l.nguyen@intel.com>, 
  Stefan Wegrzyn <stefan.wegrzyn@intel.com>
 Cc: Piotr Kwapulinski <piotr.kwapulinski@intel.com>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Jacob Keller <jacob.e.keller@intel.com>
+ linux-kernel@vger.kernel.org, Jacob Keller <jacob.e.keller@intel.com>, 
+ Paul Menzel <pmenzel@molgen.mpg.de>, Rinitha S <sx.rinitha@intel.com>
 X-Mailer: b4 0.16-dev-ea14f
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1805;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2201;
  i=jacob.e.keller@intel.com; h=from:subject:message-id;
- bh=XXZI7pQh1J2x8jCwKraX2UOMZwG+RSwyWryaNcpYiOk=;
- b=owGbwMvMwCWWNS3WLp9f4wXjabUkhswvXqm8sSLnqh1fnpzTeui+RHrP7a9yZ9+3H2Gb91Zr0
- 69Pm1JXd5SyMIhxMciKKbIoOISsvG48IUzrjbMczBxWJpAhDFycAnARNob/RVecJPa9tz39hd1q
- /1nL2WzqCW95fuUfCH4sss7/zgeZY4wMxxq/3vhw9MmZwFLp8OgWpUP+QktO9l9Msl7eaynvbpH
- KCgA=
+ bh=Aqtc3PLkUgsFHWa28RCMB+oLSMNUQQxnwKMbK9Zb72I=;
+ b=owGbwMvMwCWWNS3WLp9f4wXjabUkhswvXql2F9X/Kf7n2VMSzlf/fYUYA/uq3TZ73tYWscZ4O
+ p1OT3LrKGVhEONikBVTZFFwCFl53XhCmNYbZzmYOaxMIEMYuDgFYCJ3cxgZOiY57T3B3qDqH37z
+ gUp8w9blyREWJd3TLL4vluWvcOK3Y2To+R/8KvrbAn2G4r296en3VB4sLvbe/eIPM+vq+I+bomL
+ YAA==
 X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
  fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
 
-The ice driver reports a helpful status message when updating firmware
-indicating what action is necessary to enable the new firmware. This is
-done because some updates require power cycling or rebooting the machine
-but some can be activated via devlink.
+From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 
-The ice driver only supports activating firmware with the specific action
-of "fw_activate" a bare "devlink dev reload" will *not* update the
-firmware, and will only perform driver reinitialization.
+ixgbe_host_interface_command() treats its buffer as a u32 array. The
+local buffer we pass in was a union of byte-sized fields, which gives
+it 1-byte alignment on the stack. On strict-align architectures this
+can cause unaligned 32-bit accesses.
 
-Update the status message to explicitly reflect that the reload must use
-the fw_activate action.
+Add a u32 member to union ixgbe_hic_hdr2 so the object is 4-byte
+aligned, and pass the u32 member when calling
+ixgbe_host_interface_command().
 
-I considered modifying the text to spell out the full command, but felt
-that was both overkill and something that would belong better as part of
-the user space program and not hard coded into the kernel driver output.
+No functional change on x86; prevents unaligned accesses on
+architectures that enforce natural alignment.
 
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
+Fixes: 49425dfc7451 ("ixgbe: Add support for x550em_a 10G MAC type")
+Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Fixes: 6a14ee0cfb19 ("ixgbe: Add X550 support function pointers")
+Tested-by: Rinitha S <sx.rinitha@intel.com>
 Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_fw_update.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ixgbe/ixgbe_type.h | 1 +
+ drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_fw_update.c b/drivers/net/ethernet/intel/ice/ice_fw_update.c
-index c143e546dd8c..36314610927b 100644
---- a/drivers/net/ethernet/intel/ice/ice_fw_update.c
-+++ b/drivers/net/ethernet/intel/ice/ice_fw_update.c
-@@ -726,7 +726,7 @@ static int ice_finalize_update(struct pldmfw *context)
- 	switch (priv->reset_level) {
- 	case ICE_AQC_NVM_EMPR_FLAG:
- 		devlink_flash_update_status_notify(devlink,
--						   "Activate new firmware by devlink reload",
-+						   "Activate new firmware by devlink reload action fw_activate",
- 						   NULL, 0, 0);
- 		break;
- 	case ICE_AQC_NVM_PERST_FLAG:
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h
+index 01d0aa70b2b7..a461b6542f96 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h
+@@ -2798,6 +2798,7 @@ struct ixgbe_hic_hdr2_rsp {
+ };
+ 
+ union ixgbe_hic_hdr2 {
++	u32 buf[1];
+ 	struct ixgbe_hic_hdr2_req req;
+ 	struct ixgbe_hic_hdr2_rsp rsp;
+ };
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c
+index 76d2fa3ef518..4a0ccbf448a2 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c
+@@ -1228,7 +1228,7 @@ static int ixgbe_update_flash_X550(struct ixgbe_hw *hw)
+ 	buffer.req.buf_lenl = FW_SHADOW_RAM_DUMP_LEN;
+ 	buffer.req.checksum = FW_DEFAULT_CHECKSUM;
+ 
+-	status = ixgbe_host_interface_command(hw, &buffer, sizeof(buffer),
++	status = ixgbe_host_interface_command(hw, buffer.buf, sizeof(buffer),
+ 					      IXGBE_HI_COMMAND_TIMEOUT, false);
+ 	return status;
+ }
 
 -- 
 2.54.0.rc2.531.gaf818d63126a
