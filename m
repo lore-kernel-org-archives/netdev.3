@@ -1,109 +1,78 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 473AE367F36;
-	Fri,  1 May 2026 07:17:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A18021767D;
+	Fri,  1 May 2026 07:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777619822; cv=none; b=k+AG2H21f5+/W9hiSgsWycEe9G0rh3TwlpceWM9JdWE2Kr++JuILvKQZGyYOpGi2nQayik+jQ9/8S6P4oB5p+M0JIF408RzE78629nCLxXLs/yznuvntEtRAhXIlmUud8z8fb0eD49ojEBf2+wRHUX9VbRK+VwGcuMTiWf/9+70=
+	t=1777620535; cv=none; b=l7ZRa19yQa4DOVfNy28XNTYixNWAhp7ECWxwdFXYDKSq3us0mxhdpXQc1VD3vJo24sdzkfYhe4XhXNv9faCgVrX1Af+KTFmIh2CURlu0xUQdqfiAi3iJ7/HltEN+EGDBKA8pANp4aFnzcff9nL2iZ4NK7/pqN1DYWWEmOAjNfhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777619822; c=relaxed/simple;
-	bh=XPcRTdbWwomJwXrQ4r6B2U9JVjj7QGAmxhRjGzNSS7Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pCOZGDiVVJhFiBRqZ6F02uZtM4Tct6ZFO190Xiot79BOcqHUk5wdZluJHl0GQNXi4u3QFBJkN/Igt1RRcytLxSxE4l7cVD7Ef5Cs3D3UaIhftY1IyOjo7BjqVtomGCAcGlhClLic3vhYR8ufGdh9cq3N1+BKCdTnQAGor79+ftQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VUcoNV6V; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777620535; c=relaxed/simple;
+	bh=gHtu4eFjUZRmQUMrmjbJsuj2MVGkgojo6i+6CR5kDLg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AsgAWZRUKqJAC+Xg1ARl+2fBS31WZI2lcypJtoIQvGdmR7FmXlXuxFUWlqXhkD2mKeV+TnaUOGj1f2GHqoj47UAEwxTjlqL/bzu5joKmzBzDI5IIVMPil5XFPbwTaOOzmRRC2UUDhf6u1ctYV3s+cUj4gBItZoT244ogrXQe54s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xa43aQYv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VUcoNV6V"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BC73C2BCC4;
-	Fri,  1 May 2026 07:16:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xa43aQYv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A817C2BCB4;
+	Fri,  1 May 2026 07:28:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777619821;
-	bh=XPcRTdbWwomJwXrQ4r6B2U9JVjj7QGAmxhRjGzNSS7Y=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VUcoNV6VVCnMMmXnEHoWTw7NkaFiYBsCsIQmYifWmfHadBcdOj11ZGqL1BhKRq/I+
-	 UfCcami4rMoMl1QaEO/eNjV4FYMnMusbMdqbEIhYMHHHISjeoJNSXbXMq53eRSa7ge
-	 nE11Llk3bMpule3a6z/QuVvgxUcnMdBBJHM3D7p8MuCb+ImKB/eaX8JU7MLDiZGNVh
-	 NJFk7f/YKdKc+FPqiJs7VUokZR7KwMFhYXvEHBwSGhVq/778YModVDOJ6SY8WiTMWw
-	 nZXPfkAHuDQlhcz0QctynCWx2BtDfsO/SzwPu4X39JYwXrAtIVth65PQXTCmm+dqz7
-	 Fhu3/IxCYrIJQ==
-From: hawk@kernel.org
-To: netdev@vger.kernel.org
-Cc: hawk@kernel.org,
-	kernel-team@cloudflare.com,
-	Jakub Kicinski <kuba@kernel.org>,
-	=?UTF-8?q?Jonas=20K=C3=B6ppeler?= <j.koeppeler@tu-berlin.de>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v4 4/4] net: sched: add timeout count to NETDEV WATCHDOG message
-Date: Fri,  1 May 2026 09:16:31 +0200
-Message-ID: <20260501071633.644353-5-hawk@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260501071633.644353-1-hawk@kernel.org>
-References: <20260501071633.644353-1-hawk@kernel.org>
+	s=k20201202; t=1777620534;
+	bh=gHtu4eFjUZRmQUMrmjbJsuj2MVGkgojo6i+6CR5kDLg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Xa43aQYv2po2JC/SOCRrFJWkdwHcHJdY4kLdOLiEjWEHaeGxp7b3UWMaWnipRBDxa
+	 6ByZQvHTvW0riisxgeufSDEJM7Wm87XR58TfmuObgHonPJ9abK2bIHCmUBoUlUoN0S
+	 917ZDf21r5njNNBGrDuTrUAVLfPfG8VH7WjtTezfOiTyuU4JgNCbNfvSObyA24tBEs
+	 6+UXiFopTbQW3qlVk/ca85liR0L51NdxuXnbdwKf09PqsVR60YLlOcTSJ2/q4ng+YZ
+	 ecurVcoM10hRK73U6XR0wdOovrY04emSYPqJgEl4qss+rLc2ATyXmmFkWNyykkzVQr
+	 PwhPnTWLxW1mA==
+Message-ID: <f9292ffc-e62d-4048-879b-042ec4d7d0db@kernel.org>
+Date: Fri, 1 May 2026 09:28:49 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3 0/5] veth: add Byte Queue Limits (BQL) support
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, kernel-team@cloudflare.com,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org,
+ Chris Arges <carges@cloudflare.com>, Mike Freemon <mfreemon@cloudflare.com>,
+ =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+ =?UTF-8?Q?Jonas_K=C3=B6ppeler?= <j.koeppeler@tu-berlin.de>,
+ Breno Leitao <leitao@debian.org>, Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Stanislav Fomichev <sdf@fomichev.me>, bpf@vger.kernel.org
+References: <20260429172036.1028526-1-hawk@kernel.org>
+ <20260430185825.43b2d0aa@kernel.org>
+Content-Language: en-US
 From: Jesper Dangaard Brouer <hawk@kernel.org>
+In-Reply-To: <20260430185825.43b2d0aa@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Add the per-queue timeout counter (trans_timeout) to the core NETDEV
-WATCHDOG log message.  This makes it easy to determine how frequently
-a particular queue is stalling from a single log line, without having
-to search through and correlate spaced-out log entries.
 
-Useful for production monitoring where timeouts are spaced by the
-watchdog interval, making frequency hard to judge.
 
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Link: https://lore.kernel.org/all/20251107175445.58eba452@kernel.org/
-Signed-off-by: Jesper Dangaard Brouer <hawk@kernel.org>
-Tested-by: Jonas Köppeler <j.koeppeler@tu-berlin.de>
----
- net/sched/sch_generic.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+On 01/05/2026 03.58, Jakub Kicinski wrote:
+> On Wed, 29 Apr 2026 19:20:27 +0200 hawk@kernel.org wrote:
+>> This series adds BQL (Byte Queue Limits) to the veth driver, reducing
+>> latency by dynamically limiting in-flight packets in the ptr_ring and
+>> moving buffering into the qdisc where AQM algorithms can act on it.
+> 
+> Does not apply (am I remembering right that it's not the first time
+> this series doesn't apply?)
 
-diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
-index a93321db8fd7..3e2e2e887a86 100644
---- a/net/sched/sch_generic.c
-+++ b/net/sched/sch_generic.c
-@@ -533,13 +533,12 @@ static void dev_watchdog(struct timer_list *t)
- 		    netif_running(dev) &&
- 		    netif_carrier_ok(dev)) {
- 			unsigned int timedout_ms = 0;
-+			struct netdev_queue *txq;
- 			unsigned int i;
- 			unsigned long trans_start;
- 			unsigned long oldest_start = jiffies;
- 
- 			for (i = 0; i < dev->num_tx_queues; i++) {
--				struct netdev_queue *txq;
--
- 				txq = netdev_get_tx_queue(dev, i);
- 				if (!netif_xmit_stopped(txq))
- 					continue;
-@@ -561,9 +560,10 @@ static void dev_watchdog(struct timer_list *t)
- 
- 			if (unlikely(timedout_ms)) {
- 				trace_net_dev_xmit_timeout(dev, i);
--				netdev_crit(dev, "NETDEV WATCHDOG: CPU: %d: transmit queue %u timed out %u ms\n",
-+				netdev_crit(dev, "NETDEV WATCHDOG: CPU: %d: transmit queue %u timed out %u ms (n:%ld)\n",
- 					    raw_smp_processor_id(),
--					    i, timedout_ms);
-+					    i, timedout_ms,
-+					    atomic_long_read(&txq->trans_timeout));
- 				netif_freeze_queues(dev);
- 				dev->netdev_ops->ndo_tx_timeout(dev, i);
- 				netif_unfreeze_queues(dev);
--- 
-2.43.0
+Rebased posted
+  V4: https://lore.kernel.org/all/20260501071633.644353-1-hawk@kernel.org/
+
+The conflict was on tools/testing/selftests/net/config for a change 
+applied 16 Apr, and I send patchset 29 Apr.  So, yes it seems I forgot 
+to rebase for that period, sorry.
+
+--Jesper
 
