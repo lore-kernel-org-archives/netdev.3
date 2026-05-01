@@ -1,62 +1,205 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1E4A3126CA;
-	Fri,  1 May 2026 12:36:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E74EF1A0728
+	for <netdev@vger.kernel.org>; Fri,  1 May 2026 13:00:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777639015; cv=none; b=iueRk2KNN5WNhKrIOzKs0b1UM+sOCeet4Myt15nuBCUis4+C9uNvzc+54CG20mkE04kLKboLXwQqQhCdpBb22IfEI0KyWccehTb98+Bt140xbaQg2Y4dRWWMKWdZU1nFKjsuEGn0/HIuo1ONf7XfaLpui1NdiyzgOhJCbVwWQ04=
+	t=1777640454; cv=none; b=DO/DjKIeoyWx4/zFoNUHZdGgh+v3MwL46jaThtZHG43xyMgKVkT2hvWhxEBgAVZ56BaBU+2sM31CKQJEKalEd049xo5P+zt7DpKgJi8iQ0smzGSVLpGCGz3rLtCXEwXj/LXPXygk2V71cCm5dBhcElWiNz5486qr7l8fN5SaGoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777639015; c=relaxed/simple;
-	bh=J/V8MLXTFXXRZxVCly9uXT69TJCU8ZRcR3cFQV41D34=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ivf3e8POC45kvHiJqwymwRXhh7lXot3dHuar7D9jW5XedsDg27HMGORWD1W4BW1KQxDLYPtI29zA0TXZ09kTD65VHmsx07RUzSLRlIahAgeOPfU0Gxqm1ThqnvS6eUQm/dWzPp19MNVgKLOtNoo7qhijRiYCHd9rStICkvNtUxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=sZL99jIF; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1777640454; c=relaxed/simple;
+	bh=qyIkRHi6oV5U2SmgdqpjVI5pwMUbK8zwy66lyVzRAGs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=O4PQv1F5AldDna/UNoMSRK2RFRmBhog2DXJuJsUQM+QoAlROHtFcnySGpYM3VJ0EukEp2lIIZn0FkvJPJZJ43GueGuWI9VLoqJSQSmtN+oFSrOt8Ptdt5/CusD8d3nv3XubsCAkkQK+nViVDixTZ55ExO3FBzksqkQB2GEaOyMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UZ1AB4fb; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="sZL99jIF"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=Dx9sVAAw1DRpP9W9u+5vuchyWvdEYlPp6eaNbU1rU58=; b=sZL99jIF9yjHUhg1E/yCM5LqJT
-	9Jwz2tiqZ3ny1g2P7L5E/oGlZlCnSI/aGHJxMsss0dRb7n+6nVlm3IeI52AFssFBZlJAWoAM2i6NK
-	sEe6p9rpnv1R/YiloA7HWdq0MeTxUgoyO7ScHinu4O9q0WGam7J7pkBkKYG2FqwjfaEo=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wIn6j-000oiq-9w; Fri, 01 May 2026 14:36:37 +0200
-Date: Fri, 1 May 2026 14:36:37 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Chukun Pan <amadeus@jmu.edu.cn>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v3 1/1] net: phy: realtek: Add support for PHY LEDs on
- RTL8221B
-Message-ID: <25e53079-1f77-45f5-9031-f66452b8249c@lunn.ch>
-References: <20260501100002.755672-1-amadeus@jmu.edu.cn>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UZ1AB4fb"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-488e1a8ac40so18416585e9.2
+        for <netdev@vger.kernel.org>; Fri, 01 May 2026 06:00:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777640450; x=1778245250; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pqhRiAzIyiH2+fYeG1xj4sXrzPXGhw3STHTuHrGU/qY=;
+        b=UZ1AB4fbwLpo6HsO5504KHdSFb29QYDc7E9RPsNsQXNwn1llm38Mm00ylSnEkk3kFs
+         //0wgOBBzxVAKP8E1WFS4qczuW7LIAyTxG3czvlhOPIxqQPVr6TFBWap9n9RdzzzYa9D
+         O4trE/rFYCUfMIRbulzv8as9ze6FDTqcs9Cgk40an/HrUlb8B2CT5+pOAECM7mTzLl3w
+         a7GJmHiVS297Ig0fQ0p5LboCPAQV7lcvMRGWp/PMUrKwN6qD5Wf2NxoAEE6V/8+9UrcK
+         DxSBEHyAolyaUdq04mSsbqyoPMNw7wafaDMf8o3ZmJHEQqIQsUJmEsD+9L4kyStiQC3C
+         wxXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777640450; x=1778245250;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=pqhRiAzIyiH2+fYeG1xj4sXrzPXGhw3STHTuHrGU/qY=;
+        b=i547blHO6P40cAydsTyMv4oUt33fwfeqLz40gQ62TtIBVH42WnKofShl55KLTkbc7X
+         /GW9Qy2dxUiHWBTRfR32nTe6bofXbo+nKTq2oNw035KdLw4S6FtJ5MgpjLmY+owIROnv
+         Pam/BHNLDriqPp7GkRV5uA8a9lzmYfn4TSGjLmzukg3FDxH2wWjJHISFC8t0d2Sbvq8w
+         pC/wZlYHDNzJ2Lx7TheAFIbWcOpJFNBxjffWj6Li77tzofs5JeKrsJESl51zMtV5q+M8
+         aMEJe0IvboQLUBlKXHljHnRaFGG0FwZUCrPYNIgoe/vpKX6NHtoqygFEaf6aUa0/SjiL
+         b4Vw==
+X-Forwarded-Encrypted: i=1; AFNElJ/GXwhkHYO65hY2UxZbu8hGBqphxm44rVVtWj8EfD0sbvPaLCOD7IRZciH++GD47u/4NY1fGqw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywc8jIPyJ+D8lvqWy2+uXvX1tdwWu6eMw72zo28RT9uoNVoyXCs
+	SCgeajZXVsYzpg5huUjRHjvQBuHdC1JFSVWrwb8Xa4bjFY3pCSyuZmN6
+X-Gm-Gg: AeBDievnxXKRpEwh4FQ7PjRc4Pc5OBkHDSlVHb+ZPXaP+kNOf0y92LmFG3F/wisaI0e
+	Dr34GmtuGul14obAJRJ1FVNda8/9KC8uU+cZYghpluzWN4l9bRoj83nPMx2vt9bwLghMdaDrmp9
+	uPwst1bO1kr7KiQeWQ6k45Hvl4SGXPzvXXPIX6tedYcVUTwOmVe1jHx40kHCKrC4ulvDXJtAXs4
+	Y4NIcxAcPfGWBoazQCVo6YpMzW4bf/GNw2gMspoSEDX71DtGPoK9au9l4fJvuCEsq8O5Jw2yBLe
+	oh29+k9ABQnUze8ZnSWPNUNVtoTDBzc+Mw5h87bdSAotn/7QwTJ2K7tkaFviJvNGmrw6d9QsOYf
+	ZSUgfdjlQA9pqQltpdcIn57Kze3uCIy2O2rYS5KYuwKTVQw4ss6vPJBSYLAUCRvV+34k18Fm9kA
+	KxC0hIN0M7oSG5aFHnV2Wbpey8S9qQsv9gO7JwAmwawPv+1F4ZBvCIVGtD7vwSER4Az7hQNuj8z
+	ROkT0xxl5abX5NDTtihRg==
+X-Received: by 2002:a05:600c:1f10:b0:487:1fb4:7e1 with SMTP id 5b1f17b1804b1-48a8445b91cmr118213405e9.22.1777640449917;
+        Fri, 01 May 2026 06:00:49 -0700 (PDT)
+Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a82301b7bsm151465915e9.11.2026.05.01.06.00.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 May 2026 06:00:49 -0700 (PDT)
+From: David Carlier <devnexen@gmail.com>
+To: daniel.zahka@gmail.com,
+	kuba@kernel.org
+Cc: willemdebruijn.kernel@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	raeds@nvidia.com,
+	kees@kernel.org,
+	cratiu@nvidia.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	David Carlier <devnexen@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net v2] psp: strip variable-length PSP header in psp_dev_rcv()
+Date: Fri,  1 May 2026 14:00:46 +0100
+Message-ID: <20260501130046.16008-1-devnexen@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260430062033.20428-1-devnexen@gmail.com>
+References: <20260430062033.20428-1-devnexen@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260501100002.755672-1-amadeus@jmu.edu.cn>
+Content-Transfer-Encoding: 8bit
 
-On Fri, May 01, 2026 at 06:00:02PM +0800, Chukun Pan wrote:
-> Realtek RTL8221B Ethernet PHY supports three LED pins which are used to
-> indicate link status and activity. Add netdev trigger support for them.
-> 
-> Signed-off-by: Chukun Pan <amadeus@jmu.edu.cn>
+psp_dev_rcv() unconditionally removes a fixed PSP_ENCAP_HLEN, even
+when psph->hdrlen indicates that the PSP header carries optional
+fields. A frame whose PSP header advertises a non-zero VC or any
+extension would therefore be silently mis-decapsulated: option bytes
+would spill into the inner packet head and downstream parsing would
+fail on a corrupted skb.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Compute the full PSP header length from psph->hdrlen, pull the
+optional bytes into the linear region, and strip the whole header
+when decapsulating. Optional fields (VC, ...) are still ignored,
+just discarded with the rest of the header instead of leaking.
+crypt_offset and the VIRT flag are intentionally not validated here
+- callers know their device's PSP implementation and can decide.
 
-    Andrew
+Both in-tree callers gate on hardware-validated PSP, so this is a
+correctness fix rather than a reachable corruption path under
+current configurations.
+
+Fixes: 0eddb8023cee ("psp: provide decapsulation and receive helper for drivers")
+Suggested-by: Daniel Zahka <daniel.zahka@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: David Carlier <devnexen@gmail.com>
+---
+v1 -> v2 (per Daniel Zahka):
+  - strip the variable-length PSP header (psph->hdrlen) instead of
+    rejecting opt-bearing frames; VC/options are ignored, not refused
+  - drop the crypt_offset and PSPHDR_VERFL_VIRT checks
+  - refresh kerneldoc above psp_dev_rcv()
+  - retarget at net (was net-next)
+
+ net/psp/psp_main.c | 41 +++++++++++++++++++++++++++++++----------
+ 1 file changed, 31 insertions(+), 10 deletions(-)
+
+diff --git a/net/psp/psp_main.c b/net/psp/psp_main.c
+index 9508b6c38003..b040345d7273 100644
+--- a/net/psp/psp_main.c
++++ b/net/psp/psp_main.c
+@@ -263,15 +263,17 @@ EXPORT_SYMBOL(psp_dev_encapsulate);
+ 
+ /* Receive handler for PSP packets.
+  *
+- * Presently it accepts only already-authenticated packets and does not
+- * support optional fields, such as virtualization cookies. The caller should
+- * ensure that skb->data is pointing to the mac header, and that skb->mac_len
+- * is set. This function does not currently adjust skb->csum (CHECKSUM_COMPLETE
+- * is not supported).
++ * Accepts only already-authenticated packets. The full PSP header is
++ * stripped according to psph->hdrlen; any optional fields it advertises
++ * (virtualization cookies, etc.) are ignored and discarded along with the
++ * rest of the header. The caller should ensure that skb->data is pointing
++ * to the mac header, and that skb->mac_len is set. This function does not
++ * currently adjust skb->csum (CHECKSUM_COMPLETE is not supported).
+  */
+ int psp_dev_rcv(struct sk_buff *skb, u16 dev_id, u8 generation, bool strip_icv)
+ {
+ 	int l2_hlen = 0, l3_hlen, encap;
++	u32 psp_hdr_len;
+ 	struct psp_skb_ext *pse;
+ 	struct psphdr *psph;
+ 	struct ethhdr *eth;
+@@ -312,18 +314,36 @@ int psp_dev_rcv(struct sk_buff *skb, u16 dev_id, u8 generation, bool strip_icv)
+ 	if (unlikely(uh->dest != htons(PSP_DEFAULT_UDP_PORT)))
+ 		return -EINVAL;
+ 
+-	pse = skb_ext_add(skb, SKB_EXT_PSP);
+-	if (!pse)
++	psph = (struct psphdr *)(skb->data + l2_hlen + l3_hlen +
++				 sizeof(struct udphdr));
++
++	/* Strip the full PSP header per psph->hdrlen; VC/options are pulled
++	 * into the linear region only so they can be discarded with the
++	 * rest of the header.
++	 */
++	psp_hdr_len = ((u32)psph->hdrlen + 1) * 8;
++
++	if (unlikely(psp_hdr_len < sizeof(struct psphdr)))
++		return -EINVAL;
++
++	if (psp_hdr_len > sizeof(struct psphdr) &&
++	    !pskb_may_pull(skb, l2_hlen + l3_hlen +
++				sizeof(struct udphdr) + psp_hdr_len))
+ 		return -EINVAL;
+ 
+ 	psph = (struct psphdr *)(skb->data + l2_hlen + l3_hlen +
+ 				 sizeof(struct udphdr));
++
++	pse = skb_ext_add(skb, SKB_EXT_PSP);
++	if (!pse)
++		return -EINVAL;
++
+ 	pse->spi = psph->spi;
+ 	pse->dev_id = dev_id;
+ 	pse->generation = generation;
+ 	pse->version = FIELD_GET(PSPHDR_VERFL_VERSION, psph->verfl);
+ 
+-	encap = PSP_ENCAP_HLEN;
++	encap = sizeof(struct udphdr) + psp_hdr_len;
+ 	encap += strip_icv ? PSP_TRL_SIZE : 0;
+ 
+ 	if (proto == htons(ETH_P_IP)) {
+@@ -340,8 +360,9 @@ int psp_dev_rcv(struct sk_buff *skb, u16 dev_id, u8 generation, bool strip_icv)
+ 		ipv6h->payload_len = htons(ntohs(ipv6h->payload_len) - encap);
+ 	}
+ 
+-	memmove(skb->data + PSP_ENCAP_HLEN, skb->data, l2_hlen + l3_hlen);
+-	skb_pull(skb, PSP_ENCAP_HLEN);
++	memmove(skb->data + sizeof(struct udphdr) + psp_hdr_len,
++		skb->data, l2_hlen + l3_hlen);
++	skb_pull(skb, sizeof(struct udphdr) + psp_hdr_len);
+ 
+ 	if (strip_icv)
+ 		pskb_trim(skb, skb->len - PSP_TRL_SIZE);
+-- 
+2.53.0
+
