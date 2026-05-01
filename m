@@ -1,52 +1,51 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6C6735F5E1;
-	Fri,  1 May 2026 06:38:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E89193603FC;
+	Fri,  1 May 2026 06:38:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777617514; cv=none; b=RHr/R+iGgcjRjAtcQX7jNfKg0xHpj+QoXwqszV28C3pI78ar6Zwzd4yB8zak41OlAj/c6mq/Qv2K07lix9bI2wzKEOejwa2zLyO+KvCPglrPyzJFLkbXLsLC0pox58t8JgVZYQhQ1vzfC5Lu7EaOQaXNiNGRM3F5ZP6rBTzk//4=
+	t=1777617515; cv=none; b=VGsc3dyLauIaPYU2qGbniaLHlvQ7Gpt21qJS8Eh5i1sZjDa6/L7mPCdzMY0ohhF5vyUVDkDj9oLA9OvJv5y16sdGo3Z7STulZkkgEcuheWNfms7vxhdP3GmDJSrr1Jo7pOjotjrf1MObvA7YnF0B3Kph15c/YOJInosvR8SN4uE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777617514; c=relaxed/simple;
-	bh=krFGoxSPA0/jqDPKvHqen1fQjhlLvRhDjr8/WMo9Am4=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ES8QJHHbG4USY4zVl2QTsUU5Y+fbreCXL9zHHkupfRH/mZmv9D9IG62OFhzA41+rrad3nx9Hscgdgv151EXbk1PQib0T4D4gkBa7tz/9u2BuW6o8XAqr78MUWS70jEg6K8FdRY7SFX+EHLrers00pc50/xFyjNlaAcOYt6nz8vM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mO1tLbnC; arc=none smtp.client-ip=192.198.163.9
+	s=arc-20240116; t=1777617515; c=relaxed/simple;
+	bh=F6pZxeazA8H7XagIyG1by9jazL+U+edc48kAmCX5S8c=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=hdPdXD2I41h8n8VH94KiKxWThjatsn/1p6SHlKc8/ISnZ/RlyjoIcC9ujNJEwrFcXDEYheB9QFvquoyyy/KUnaGtaPgjpD6kL2Io8xB6mDCLgMwhs9BJAgZi2aLuRIYjdXh1IcaI5E8xWsAOWVCxtJHqMVslkAX69qXC6OcbrfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HQtJsdUA; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mO1tLbnC"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HQtJsdUA"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777617513; x=1809153513;
-  h=from:subject:date:message-id:mime-version:
-   content-transfer-encoding:to:cc;
-  bh=krFGoxSPA0/jqDPKvHqen1fQjhlLvRhDjr8/WMo9Am4=;
-  b=mO1tLbnC1FuM+XKc5KRS/cGdzEeA3k7/D8F1bQeRTtEyYVUNSs/yyS2F
-   +J9LxaOvp37SxKPfCu9vRyDSvlLa2/AYhydOGN8yFC/Mquroh6HOH80ow
-   ZP7L5UDaDAPviXXrT3Aavb/Jpsuvnuvcve97nHPcA7NO73EGruXLxR907
-   4hkXdrtKRFt+bMoH3uHenRzUPkas0/NR8prpHtQ+j2RKna+c1xvpcxtMF
-   aygxzhOovTLOCDe6uBX1oE2B4ylSuFTZXvZrgKOgo0GL1vL0bAGXRzjj6
-   ItDfKOsolWQvbNQ5XORTx+/+zHzWFSSpgnVcZ1QSpJeEHTI13H7DBpcsO
-   g==;
-X-CSE-ConnectionGUID: mBIF5zB6Tcq6Boz5DRCY8g==
-X-CSE-MsgGUID: hHlp84cQSGyAi+4r1N41gg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11772"; a="89271847"
+  t=1777617514; x=1809153514;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:references:in-reply-to:to:cc;
+  bh=F6pZxeazA8H7XagIyG1by9jazL+U+edc48kAmCX5S8c=;
+  b=HQtJsdUAaC+99NtWlbKRWiPAGfT5epMz8w7kncXmEbovumC7m2ZVGwpm
+   sxMf103KW9BNYrRltjZKhvvtIe4mRA5EHMqOAkhmfG5litaOT8+cIJys5
+   sbPLwEWH3OULILpTUVX09KLQ/CYbKVvsjYrRkmj0xuW0jCvNn+r6bzowK
+   rTNFk+JWh0ryIh3c2Pm9m8THiMKRa5CJRN/mPuRW7N7PoRJose6SwZahP
+   lTMY2Ha8L51qiCUqIl8zloXuZKUBY8fin7cAlsToE/nF/4keDgCLwp6dM
+   mj0729fHVPqvux9+lTm11tanJqCV+3Vti3Gp7kAeDCaSmkSRbOERUc46u
+   Q==;
+X-CSE-ConnectionGUID: ZIwP/glzQICb8pHMgu8brQ==
+X-CSE-MsgGUID: smdNaxwHRjeqPxymJV5LSg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11772"; a="89271865"
 X-IronPort-AV: E=Sophos;i="6.23,209,1770624000"; 
-   d="scan'208";a="89271847"
+   d="scan'208";a="89271865"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 23:38:31 -0700
-X-CSE-ConnectionGUID: Gk9H0JHDS4KNSjl38phEiQ==
-X-CSE-MsgGUID: Za4jdmWXRnGHIzYKoJaBHw==
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 23:38:32 -0700
+X-CSE-ConnectionGUID: qAmWQXYHTx6HAvdJod5HcQ==
+X-CSE-MsgGUID: evdBjwuXRdmaDmNwv2OrSA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,209,1770624000"; 
-   d="scan'208";a="233752836"
+   d="scan'208";a="233752842"
 Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.109]) ([10.166.28.109])
   by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 23:38:31 -0700
 From: Jacob Keller <jacob.e.keller@intel.com>
-Subject: [PATCH net-next 00/15] Intel Wired LAN Updates 2024-04-30 (ixgbe,
- i40e, ice)
-Date: Thu, 30 Apr 2026 23:37:11 -0700
-Message-Id: <20260430-jk-iwl-net-next-2026-04-30-v1-0-6f27ae1cd073@intel.com>
+Date: Thu, 30 Apr 2026 23:37:13 -0700
+Subject: [PATCH net-next 02/15] ixgbe: E610: update EEE supported speeds
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,10 +54,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/zWMyw6CMBBFf4XM2kkqVAz+imGB5QqDppq2PBLCv
- ztoXNzFyck9K0UEQaRLtlLAJFFeXuF4yMj1je/A0ipTbvLS2MLw8GCZn+yRdEviXbCxrKpFVZx
- cVZ6dBWngHXCX5Ru/0v9A9c/E8TbApb1N2/YBKwvL0ogAAAA=
-X-Change-ID: 20260430-jk-iwl-net-next-2026-04-30-de935c967c4e
+Message-Id: <20260430-jk-iwl-net-next-2026-04-30-v1-2-6f27ae1cd073@intel.com>
+References: <20260430-jk-iwl-net-next-2026-04-30-v1-0-6f27ae1cd073@intel.com>
+In-Reply-To: <20260430-jk-iwl-net-next-2026-04-30-v1-0-6f27ae1cd073@intel.com>
 To: Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
  Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
@@ -74,132 +72,75 @@ To: Przemek Kitszel <przemyslaw.kitszel@intel.com>,
  Stefan Wegrzyn <stefan.wegrzyn@intel.com>
 Cc: Piotr Kwapulinski <piotr.kwapulinski@intel.com>, netdev@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Jacob Keller <jacob.e.keller@intel.com>, 
- Rinitha S <sx.rinitha@intel.com>, Paul Menzel <pmenzel@molgen.mpg.de>, 
- Byungchul Park <byungchul@sk.com>, 
- Alexander Nowlin <alexander.nowlin@intel.com>, 
- "David Hildenbrand (Arm)" <david@kernel.org>, 
- Przemyslaw Korba <przemyslaw.korba@intel.com>, 
- Sunitha Mekala <sunithax.d.mekala@intel.com>
+ Rinitha S <sx.rinitha@intel.com>
 X-Mailer: b4 0.16-dev-ea14f
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5080;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2505;
  i=jacob.e.keller@intel.com; h=from:subject:message-id;
- bh=krFGoxSPA0/jqDPKvHqen1fQjhlLvRhDjr8/WMo9Am4=;
- b=owGbwMvMwCWWNS3WLp9f4wXjabUkhswvXvE1+fuCJ1nGCzs5XWNKcNnsdcD8WvvktEud8y+yH
- +erdFDrKGVhEONikBVTZFFwCFl53XhCmNYbZzmYOaxMIEMYuDgFYCJh6owMr+V4trDZvMnUPpOk
- xZuaxR82dZ0Td729jGzok9CwJWtuM/wVeb68JjLOrPyMmc33uUqn7szifKtx8NayfvuQ42HiCxP
- 5AQ==
+ bh=ac5X7jGfbRIkX633o+bauck12PclZCfVS7L27CYA9Sk=;
+ b=owGbwMvMwCWWNS3WLp9f4wXjabUkhswvXsmasx49MXz4/fI315d7UmZt2HT9jnthulw8p4n0p
+ n9XPnFN7ihlYRDjYpAVU2RRcAhZed14QpjWG2c5mDmsTCBDGLg4BWAidx0Z/ql86P3j99ZBtqpz
+ TVjdlm/vzGL7I+Uvyof+Xn4j1YfFQovhn0Yjv8m526/qWyckqiSfmfH7h6nhFB2VVDuNrQnb/V8
+ o8QAA
 X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
  fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
 
-This series includes updates to support Energy-Efficient Ethernet (EEE) on
-E610 devices in the ixgbe driver, support for an unmanaged DPLL output on
-E830, as well as some other minor cleanups and improvements across ixgbe,
-i40e, and ice.
+From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
 
-Jedrzej begins with the first six patches preparing the ixgbe driver to
-support EEE, adding a EEE capability flag, updating the supported EEE
-speeds, updating the ACI command structures with the fields related to
-EEE, moving the EEE config validation out for re-use, and finally
-implementing the EEE support for E610 hardware.
+Despite there was no EEE (Energy Efficient Ethernet) feature
+support for E610 adapters, eee_speeds_supported variable was
+defined and even initialized with some EEE speeds.
 
-Piotr adds some extended dynamic debug output for the Admin Command
-Interface used by E610 in the ixgbe driver. This adds debug tracing for the
-ACI which is disabled by default but can be enabled through the standard
-dynamic debug interfaces.
+As E610 adapter supports EEE only for 10G, 5G and 2.5G speeds,
+update hw.phy.eee_speeds_supported. Remove unsupported speeds -
+10M, 100M and 1G.
 
-Piotr also removes a redundant self assignment in ixgbe_aci_send_cmd_execute().
+Add also entry for 5G speed in EEE speeds mapping array used
+by ethtool callbacks.
 
-Aleksandr fixes the ixgbe_update_flash_X550() logic to prevent unaligned
-access in ixgbe_host_interface_command(). Note: this has no functional
-change on x86, and is being sent through net-next as it is considered a
-minor cleanup.
-
-Jacob (hi!) modifies the i40e driver to only timestamp PTP event packets,
-instead of timestamping every V2 event frame. This avoids wasting the
-limited number of timestamp slots for frames which the PTP protocol does
-not care about.
-
-Jacob also extends the devlink flash notification message reporting that
-users can activate the new firmware via devlink reload to explicitly
-indicate the required "fw_activate" action.
-
-Byungchul Park  fixes the ice_lbtest_receive_frames() function to use
-netmem_desc instead of the page structure.
-
-Przemyslaw Korba fixes a truncation warning in ice_dpll_init_fwnode_pins()
-by increasing the allowed length of the pin_name string on the stack to 16.
-
-Ivan Vecera adds some bounds checking to ice_dpll_rclk_state_on_pin_get/set()
-and moves the CGU register macros to be under the header guard ifdef in
-ice_dpll.h
-
-Finally, Arkadiusz Kubalewski adds support for an unmanaged DPLL interface
-on E830 devices. This enables users to check the DPLL lock status and
-obtain relevant configuration information through the DPLL netlink, even
-though the physical DPLL settings are hard coded within the hardware and
-thus and unable to be modified.
-
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Tested-by: Rinitha S <sx.rinitha@intel.com>
 Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
-Aleksandr Loktionov (1):
-      ixgbe: fix unaligned u32 access in ixgbe_update_flash_X550()
+ drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c    | 11 ++++++++---
+ drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c |  1 +
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
-Arkadiusz Kubalewski (1):
-      ice: add support for unmanaged DPLL on E830 NIC
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
+index 5383f0fd55d6..097a3e1c67aa 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
+@@ -1983,9 +1983,14 @@ int ixgbe_identify_phy_e610(struct ixgbe_hw *hw)
+ 	/* Set PHY ID */
+ 	memcpy(&hw->phy.id, pcaps.phy_id_oui, sizeof(u32));
+ 
+-	hw->phy.eee_speeds_supported = IXGBE_LINK_SPEED_10_FULL |
+-				       IXGBE_LINK_SPEED_100_FULL |
+-				       IXGBE_LINK_SPEED_1GB_FULL;
++	/* E610 supports EEE only for speeds above 1G */
++	if (hw->device_id == IXGBE_DEV_ID_E610_2_5G_T)
++		hw->phy.eee_speeds_supported = IXGBE_LINK_SPEED_2_5GB_FULL;
++	else
++		hw->phy.eee_speeds_supported = IXGBE_LINK_SPEED_2_5GB_FULL |
++					       IXGBE_LINK_SPEED_5GB_FULL |
++					       IXGBE_LINK_SPEED_10GB_FULL;
++
+ 	hw->phy.eee_speeds_advertised = hw->phy.eee_speeds_supported;
+ 
+ 	return 0;
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
+index ba049b3a9609..8450094a028a 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
+@@ -3541,6 +3541,7 @@ static const struct {
+ 	{ IXGBE_LINK_SPEED_100_FULL, ETHTOOL_LINK_MODE_100baseT_Full_BIT },
+ 	{ IXGBE_LINK_SPEED_1GB_FULL, ETHTOOL_LINK_MODE_1000baseT_Full_BIT },
+ 	{ IXGBE_LINK_SPEED_2_5GB_FULL, ETHTOOL_LINK_MODE_2500baseX_Full_BIT },
++	{ IXGBE_LINK_SPEED_5GB_FULL, ETHTOOL_LINK_MODE_5000baseT_Full_BIT },
+ 	{ IXGBE_LINK_SPEED_10GB_FULL, ETHTOOL_LINK_MODE_10000baseT_Full_BIT },
+ };
+ 
 
-Byungchul Park (1):
-      ice: access @pp through netmem_desc instead of page
-
-Ivan Vecera (1):
-      ice: dpll: fix rclk pin state get and misplaced header macros
-
-Jacob Keller (2):
-      i40e: only timestamp PTP event packets
-      ice: mention fw_activate action along with devlink reload
-
-Jedrzej Jagielski (6):
-      ixgbe: E610: add discovering EEE capability
-      ixgbe: E610: update EEE supported speeds
-      ixgbe: E610: use new version of 0x601 ACI command buffer
-      ixgbe: E610: update ACI command structs with EEE fields
-      ixgbe: move EEE config validation out of ixgbe_set_eee()
-      ixgbe: E610: add EEE support
-
-Piotr Kwapulinski (2):
-      ixgbe: E610: add ACI dynamic debug
-      ixgbe: E610: remove redundant assignment
-
-Przemyslaw Korba (1):
-      ice: dpll: Fix compilation warning
-
- drivers/net/ethernet/intel/i40e/i40e_register.h    |  10 +
- drivers/net/ethernet/intel/ice/ice_adminq_cmd.h    |  12 +
- drivers/net/ethernet/intel/ice/ice_common.h        |   8 +
- drivers/net/ethernet/intel/ice/ice_dpll.h          |  43 +--
- drivers/net/ethernet/intel/ice/ice_ptp_hw.h        |   1 +
- drivers/net/ethernet/intel/ixgbe/ixgbe_e610.h      |   1 +
- drivers/net/ethernet/intel/ixgbe/ixgbe_type.h      |   2 +
- drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h |  32 ++-
- include/linux/net/intel/libie/adminq.h             |   1 +
- drivers/net/ethernet/intel/i40e/i40e_ptp.c         |   9 +-
- drivers/net/ethernet/intel/ice/devlink/health.c    |   4 +
- drivers/net/ethernet/intel/ice/ice_common.c        | 136 +++++++++
- drivers/net/ethernet/intel/ice/ice_dpll.c          | 307 +++++++++++++++++++--
- drivers/net/ethernet/intel/ice/ice_ethtool.c       |   2 +-
- drivers/net/ethernet/intel/ice/ice_fw_update.c     |   2 +-
- drivers/net/ethernet/intel/ice/ice_main.c          |  11 +-
- drivers/net/ethernet/intel/ice/ice_ptp_hw.c        |  46 +++
- drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c      | 193 +++++++++++--
- drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c   | 244 +++++++++++++---
- drivers/net/ethernet/intel/ixgbe/ixgbe_main.c      |  30 +-
- drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c      |   2 +-
- .../device_drivers/ethernet/intel/ice.rst          |  83 ++++++
- 22 files changed, 1057 insertions(+), 122 deletions(-)
----
-base-commit: 82968921d206abeef34bbfdb643d62a08dc7fe30
-change-id: 20260430-jk-iwl-net-next-2026-04-30-de935c967c4e
-
-Best regards,
---  
-Jacob Keller <jacob.e.keller@intel.com>
+-- 
+2.54.0.rc2.531.gaf818d63126a
 
