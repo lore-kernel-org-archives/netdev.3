@@ -1,99 +1,86 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 505CD2EACEF;
-	Fri,  1 May 2026 20:22:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C35C84219F8;
+	Fri,  1 May 2026 20:36:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777666951; cv=none; b=jIrs5O573kSvir6XTA9ps2015BGwkG1Ftyo4sD9y5MU0AxS37wTXV85A6dHE73VpXVtOvG3TEWQXmMjrYO60StyW0nNHvBp64z8mkD+yEFsyrfFnNEs+h8/psKBbBTGCUqZ36TM574KR6iFNv5Ig3RqhdK8TsAq0Xp2n92q4CBA=
+	t=1777667770; cv=none; b=Ph2DODqiWnuohOm2NmxAtROEZq52l4FkeX9ho37vPJ9RAw/KaJweIPJLyJGkpvWM/P8Awmoyqbg1+oLKA9fBs6UDxPPVEdMeYPOy//Y4lo5++dfvvZcPQLV8h/gDwKoNoreankMXKgaBqFh9C5CVnYlABcstBWiw5HZejL1eJeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777666951; c=relaxed/simple;
-	bh=igR+pUQaD8NuaTzcTZl9INS3afQ7Mgsw6S7WL9l+Ue8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EmXcWPuIIfxQKPoHMrOSVjFqT99p0l49ULSXtpBvsm/Og/tEPqorG1f4cFI2VrKCBP9qOz0t1oXAsZ0bSjVB1EDKhUyZsE90clOSnuldGuVwUQcKSfhDBaGuQ9tRM5/sYZOBbg+GrEzyH3o6PXmvt6JUQtZ+NpJhyB44ehL2ZbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=QhlpVl1T; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1777667770; c=relaxed/simple;
+	bh=fI83m7F5K4lmSlu+bvO27xgSrkO0CqK+Zk1qlwALaw8=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=NdSqTCrxSftr1z61yiwIV0mH2YlJG+up636eybUXoOAjTejBNJkXKyLl0J3n2UZOrXeWHH98LMuD6/OwRFhALI9H4kcjYF5qFgVM5pPk8Zjvmu2HW7KUSp1eMX0t9J89DWwxzqFG/hzKmpmayMNuDvHrb4KpGWvUCTULRsFKXqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iymdGePl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="QhlpVl1T"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=UaoQukG8/3m/kqFNc+N8A/oUZtIcpzTqAGxoeuhHRII=; b=QhlpVl1TweTTlpTbX5pCOYywvC
-	yjbCjKNKnQ0m3aULTj1DSyZY5Khe4q8LRJWrbSHZ5b2///ibwDoGsWE5Un3p0B+cumaj0k5Nz+eXf
-	BC3y0+Fcmbl61OY2dj8Vh11rOecE5BTa5IK6cz2idHsC7pF02Le3qXDVi16jg55O8PZw=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wIuNQ-000sOX-5j; Fri, 01 May 2026 22:22:20 +0200
-Date: Fri, 1 May 2026 22:22:20 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
-Cc: Piergiorgio Beruto <Pier.Beruto@onsemi.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next 4/5] onsemi: ncn260xx: Add driver support for
- NCN26010 and TS2500 MAC-PHY
-Message-ID: <12245592-fb85-46d9-9f26-5ed37efacbfc@lunn.ch>
-References: <CY8PR02MB92494A5A16B7AF4EA3A69F2483322@CY8PR02MB9249.namprd02.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iymdGePl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 363BCC2BCB4;
+	Fri,  1 May 2026 20:36:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777667770;
+	bh=fI83m7F5K4lmSlu+bvO27xgSrkO0CqK+Zk1qlwALaw8=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=iymdGePlc03SpWJr+No1VlN9yGnQeVehRP5gh4QPpDkCrr9S0shtEj777W86ckCBW
+	 CJaGXIFvVLAPDWCv1GhEKHjijOVtPeSZ5os5Ulo8dYiGqYQfV337ZMUyrQWN3uGPjf
+	 ZkUQ1/HK/w1We8mlmtMnX+KlsMwgqIG5cW98KWvwDOERWckZZoSFgEiVDZHVjhzOcd
+	 QXQ5NZISp4W84QjXTFBcL1vcixWZ/APP3u8Iq6w28BFhtKCIhSKKNSYMOkYaq6Oain
+	 uVWw3MSUyTN4NSLGcd1nElLYrBXVXFBzhQKNR01ZMNiLR/9ca+0QaLhK/KwXw31FlB
+	 DiNNnuEDg6S9A==
+Date: Fri, 01 May 2026 15:36:07 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CY8PR02MB92494A5A16B7AF4EA3A69F2483322@CY8PR02MB9249.namprd02.prod.outlook.com>
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: edumazet@google.com, conor+dt@kernel.org, devicetree@vger.kernel.org, 
+ Piergiorgio Beruto <Pier.Beruto@onsemi.com>, netdev@vger.kernel.org, 
+ kuba@kernel.org, davem@davemloft.net, andrew+netdev@lunn.ch, 
+ krzk+dt@kernel.org, pabeni@redhat.com, linux-kernel@vger.kernel.org
+To: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+In-Reply-To: <CY8PR02MB9249D083B637477C254F9B0583322@CY8PR02MB9249.namprd02.prod.outlook.com>
+References: <CY8PR02MB9249D083B637477C254F9B0583322@CY8PR02MB9249.namprd02.prod.outlook.com>
+Message-Id: <177766776795.356932.18256256609588920036.robh@kernel.org>
+Subject: Re: [PATCH net-next 1/5] dt-bindings: net: add onsemi's
+ TS2500/NCN26010 10BASE-T1S MACPHY
 
-> +static int mmd2mms(int mmd)
-> +{
-> +       int ret = -EOPNOTSUPP;
-> +
-> +       switch (mmd) {
-> +       case MDIO_MMD_PCS:
-> +               ret = OA_TC6_PHY_C45_PCS_MMS2;
-> +               break;
-> +       case MDIO_MMD_PMAPMD:
-> +               ret = OA_TC6_PHY_C45_PMA_PMD_MMS3;
-> +               break;
-> +       case MDIO_MMD_VEND2:
-> +               ret = OA_TC6_PHY_C45_VS_PLCA_MMS4;
-> +               break;
-> +       case MDIO_MMD_VEND1:
-> +               ret = ONMPH_OA_TC6_VEND1_MMS12;
-> +               break;
-> +       default:
-> +               break;
-> +       }
-> +       return ret;
-> +}
 
-So you seem to be compliant with the standard. I've not seen anything
-use MDIO_MMD_POWER_UNIT so not having that should not be an
-issue. MDIO_MMD_AN is used by a number of PHYs, but i assume yours
-does not.
+On Fri, 01 May 2026 19:15:17 +0000, Selvamani Rajagopal wrote:
+> Add YAML device tree binding for the onsemi NCN26010 and TS2500
+> IEEE 802.3cg compliant Ethernet transceiver devices.
+> 
+> Signed-off-by: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+> ---
+>  .../bindings/net/onnn,ncn260xx.yaml           | 71 +++++++++++++++++++
+>  1 file changed, 71 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/net/onnn,ncn260xx.yaml
+> 
 
-802.3 C45 says that if a register does not exist, it should read
-0. What would happen if a read was made to
-OA_TC6_PHY_C45_AUTO_NEG_MMS5, rather than returning EOPNOTSUPP?
+My bot found errors running 'make dt_binding_check' on your patch:
 
-Table 6 says nothing about MMD 30, which you map to 12. 10-15 are
-defined as vendor specific, so that is O.K.
+yamllint warnings/errors:
 
-But can we simply this. Add something like
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/onnn,ncn260xx.example.dtb: ethernet@0 (onnn,ncn260xx): 'pinctrl-0' is a dependency of 'pinctrl-names'
+	from schema $id: http://devicetree.org/schemas/pinctrl/pinctrl-consumer.yaml
 
-void oa_tc6_set_vend1_mms(struct oa_tc6 *tc6, int mms)
-{
-	tc6->vend1_mms = mms;
-}
+doc reference errors (make refcheckdocs):
 
-and make oa_tc6_get_phy_c45_mms() look at its value?
+See https://patchwork.kernel.org/project/devicetree/patch/CY8PR02MB9249D083B637477C254F9B0583322@CY8PR02MB9249.namprd02.prod.outlook.com
 
-	Andrew
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
+
