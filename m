@@ -1,102 +1,99 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E02EF42314B
-	for <netdev@vger.kernel.org>; Fri,  1 May 2026 20:09:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 505CD2EACEF;
+	Fri,  1 May 2026 20:22:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777666172; cv=none; b=ANTtnyy+r+k2pWwV9/z+X2q8boOuClBUs1kI5YP/jMr0kKm4g36SpQJWk6W2BaoO/HpVg6ZXVK0FDCGZd2+kViVibbqbTHw62ntrOraxZg0PClJQrH2HdBSX4ztCgItU4Jp34yBqBipJCGNoQOf+DBdsFlzEuKpUv12eRu4RPYI=
+	t=1777666951; cv=none; b=jIrs5O573kSvir6XTA9ps2015BGwkG1Ftyo4sD9y5MU0AxS37wTXV85A6dHE73VpXVtOvG3TEWQXmMjrYO60StyW0nNHvBp64z8mkD+yEFsyrfFnNEs+h8/psKBbBTGCUqZ36TM574KR6iFNv5Ig3RqhdK8TsAq0Xp2n92q4CBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777666172; c=relaxed/simple;
-	bh=8urvMXkl24OSZEB0wpWz9ry6TWKjiahjJExaXhP1+c4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m9R3dyxVgSvPtWFDEFc8BEFUosJDvlR9e+isTSkxZp6n2+/DnxqrVX5Bg+1Nd78qCUabW79QQ88YOpVplhuZu2udvaGBNFGANLK3n96gOc+leH6z++OlEIRatdL3vNxoeEBFtL/iVn4jNsfajtOCqWkiQWPhQz7bw+T6Y7zV5zk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GnDC7fr4; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1777666951; c=relaxed/simple;
+	bh=igR+pUQaD8NuaTzcTZl9INS3afQ7Mgsw6S7WL9l+Ue8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EmXcWPuIIfxQKPoHMrOSVjFqT99p0l49ULSXtpBvsm/Og/tEPqorG1f4cFI2VrKCBP9qOz0t1oXAsZ0bSjVB1EDKhUyZsE90clOSnuldGuVwUQcKSfhDBaGuQ9tRM5/sYZOBbg+GrEzyH3o6PXmvt6JUQtZ+NpJhyB44ehL2ZbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=QhlpVl1T; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GnDC7fr4"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-3650a628473so458533a91.3
-        for <netdev@vger.kernel.org>; Fri, 01 May 2026 13:09:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777666169; x=1778270969; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9efDW0M+5+xCAVk/QjLEYc7GQc94XnH8yiFV36Yucj0=;
-        b=GnDC7fr4mCgs3WLus0hMXkXLcgMjItLxAOBAxo8KSQhgZ7n1aHBDiShJPfzyXe4GeH
-         imv/FQi/U1In7yp9WDCQNP89HRi4XJX27q+bwjiMHKewHgYZNEmWWnmcFVicwmFsKZ8I
-         iCbfuNToL9tQB/Rbvftwn9W0OgTgHMX/mjwhJQ2LHzMBRDCJF5iRDqbinKCFcFTDsrz4
-         3F9x417kEV3NaSQEPx8TF1qePG0wxs6uoNwudx+P1IfOcjdZZ8YwiRgnw5wbM3lpltxA
-         Zvn8lp/HFxlBpZNsxFjLpr2J3m1DMCq7p95J2l/1IJLHg8qD9T4ka4OgUtKp+RAOJxEy
-         RT6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777666169; x=1778270969;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=9efDW0M+5+xCAVk/QjLEYc7GQc94XnH8yiFV36Yucj0=;
-        b=Rg+Rg3sp8Yz9F3LvXNHcCJx0Lw/TzsTayuXZ4BBs5oWvo9PY0EG+enbk5QLWynW+tV
-         jzHJG8wPo170Se2D1kOzvYgpmuJyzVPYzHGHmQsoDYuVz6x/mtLq4K5iL6DDwFwIdGm1
-         w49P4Fy+b8wltLoplVb8JC4Vv5Rj5W+vghdRwgJYfXvbJd1oSB3jrE3ivIZqnOTmGY3N
-         V/dNpWrJTs5wzMSC1Ib3XpCYsgqHB3AvaP+ZM8GIIZ2LJIxhoV6yOJ+yFeEjnd4k3WHz
-         LbHqw8oCxeFXVrgtfjE+DLxsIuBii5mYCM5+6SQO111weKKxMpEbLPfCr5tTnw+YI7mj
-         6+7A==
-X-Forwarded-Encrypted: i=1; AFNElJ8fFJt82f0p6uap1d++H2oVKN/R1vhX7JjCxBKPi0F1TRPgT/5Op8S1VEsGwhbPzZuQFOYBIl8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQkhjlbCFekkAvMpjHO/G+XVTx61Lts+0YxNcUaOK8pkEU1T5Z
-	7hvuMNtPI/t+5phWvXm1F51+5qB3V+voIr3D6DYTmf9o7gmDT6tdWW1X
-X-Gm-Gg: AeBDievn2AvridACQRzBk3nEnnRuHsbCFRhTvwdkwOXRMlr82GksGugCrhZP31bY+Bm
-	wU3/HZUBkx84wnn3c5hoVzuSG75HNu8e2mGJDMTqLvEoaM+RXPKwEW7qdJxvqXpDH76wT1Ar5DZ
-	AT4+DUSn7boP48Cw8nkF7R5gQDFzi4P9O1kntc8z9QNBsXDkKcT6FXOfmWLsmve6hpZQLF7Hqhs
-	6wwuFbqwkU5IIJculEy3EIBGFL5EZNEVl4VatZL0eRtKLR9iuZN5ABD6eVkK61npa9SmyIhzY2u
-	q66VkV6zzqg7tWMxLcm6yiN2i+0jZV8Wq3EGZUFpm52jlQvOlCHHRfnG3Mrf6A2wI8Li9BfND1A
-	YKBNMHhiBM1/0zUJIfVZIGqr8dDNO1AnEcSNzGZvYJauSdlzAEkVXq1yOKLP/qmwneGhfj7DNkJ
-	PWa/HzUS/rU2hyBjBgoznzUica4XRBRmRBnykdbrDT1nV7pot8DkmRaaOh6JTdVdRDHGErUkZB
-X-Received: by 2002:a17:90a:d444:b0:364:74c1:53b7 with SMTP id 98e67ed59e1d1-3650cda5d5dmr628144a91.2.1777666168755;
-        Fri, 01 May 2026 13:09:28 -0700 (PDT)
-Received: from localhost.localdomain ([115.110.225.242])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-364bdf2ac19sm8253866a91.3.2026.05.01.13.09.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 May 2026 13:09:28 -0700 (PDT)
-From: Shitalkumar Gandhi <shital.gandhi45@gmail.com>
-X-Google-Original-From: Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>
-To: stefan@datenfreihafen.org,
-	alex.aring@gmail.com
-Cc: miquel.raynal@bootlin.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-wpan@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] ieee802154: ca8210: fix cas_ctl leak on spi_async failure
-Date: Sat,  2 May 2026 01:38:03 +0530
-Message-Id: <20260501200803.3371428-1-shitalkumar.gandhi@cambiumnetworks.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260421073259.12345-1-shitalkumar.gandhi@cambiumnetworks.com>
-References: <20260421073259.12345-1-shitalkumar.gandhi@cambiumnetworks.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="QhlpVl1T"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=UaoQukG8/3m/kqFNc+N8A/oUZtIcpzTqAGxoeuhHRII=; b=QhlpVl1TweTTlpTbX5pCOYywvC
+	yjbCjKNKnQ0m3aULTj1DSyZY5Khe4q8LRJWrbSHZ5b2///ibwDoGsWE5Un3p0B+cumaj0k5Nz+eXf
+	BC3y0+Fcmbl61OY2dj8Vh11rOecE5BTa5IK6cz2idHsC7pF02Le3qXDVi16jg55O8PZw=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wIuNQ-000sOX-5j; Fri, 01 May 2026 22:22:20 +0200
+Date: Fri, 1 May 2026 22:22:20 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+Cc: Piergiorgio Beruto <Pier.Beruto@onsemi.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net-next 4/5] onsemi: ncn260xx: Add driver support for
+ NCN26010 and TS2500 MAC-PHY
+Message-ID: <12245592-fb85-46d9-9f26-5ed37efacbfc@lunn.ch>
+References: <CY8PR02MB92494A5A16B7AF4EA3A69F2483322@CY8PR02MB9249.namprd02.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CY8PR02MB92494A5A16B7AF4EA3A69F2483322@CY8PR02MB9249.namprd02.prod.outlook.com>
 
-Hi Stefan, Alex,
+> +static int mmd2mms(int mmd)
+> +{
+> +       int ret = -EOPNOTSUPP;
+> +
+> +       switch (mmd) {
+> +       case MDIO_MMD_PCS:
+> +               ret = OA_TC6_PHY_C45_PCS_MMS2;
+> +               break;
+> +       case MDIO_MMD_PMAPMD:
+> +               ret = OA_TC6_PHY_C45_PMA_PMD_MMS3;
+> +               break;
+> +       case MDIO_MMD_VEND2:
+> +               ret = OA_TC6_PHY_C45_VS_PLCA_MMS4;
+> +               break;
+> +       case MDIO_MMD_VEND1:
+> +               ret = ONMPH_OA_TC6_VEND1_MMS12;
+> +               break;
+> +       default:
+> +               break;
+> +       }
+> +       return ret;
+> +}
 
-Friendly ping on the patch below.  It still applies cleanly to net/master
-as of today (verified against torvalds/master), and Miquèl provided
-Reviewed-by on Apr 21.
+So you seem to be compliant with the standard. I've not seen anything
+use MDIO_MMD_POWER_UNIT so not having that should not be an
+issue. MDIO_MMD_AN is used by a number of PHYs, but i assume yours
+does not.
 
-If you would prefer this split into two patches per Markus's suggestion
-(one for the leak fix with Fixes:/Cc: stable, one for the misleading
-error-string cleanup), please let me know and I will resend as a v2
-series.
+802.3 C45 says that if a register does not exist, it should read
+0. What would happen if a read was made to
+OA_TC6_PHY_C45_AUTO_NEG_MMS5, rather than returning EOPNOTSUPP?
 
-Thanks,
-Shitalkumar
+Table 6 says nothing about MMD 30, which you map to 12. 10-15 are
+defined as vendor specific, so that is O.K.
+
+But can we simply this. Add something like
+
+void oa_tc6_set_vend1_mms(struct oa_tc6 *tc6, int mms)
+{
+	tc6->vend1_mms = mms;
+}
+
+and make oa_tc6_get_phy_c45_mms() look at its value?
+
+	Andrew
