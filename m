@@ -1,91 +1,83 @@
-Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BAE91CEAC2;
-	Fri,  1 May 2026 04:03:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 099125474F
+	for <netdev@vger.kernel.org>; Fri,  1 May 2026 04:11:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777608201; cv=none; b=sD2s/pz2Ve8NnV0qkHtR/YyxSFd+p6UcCadfVDiuGPlkgE7y58h7ZFsFc4nDO4ABona3eUGonhugrwVcTwb9d8LrPknAwaW861o5Ovw1LaTiXKQgVeTq1z/fzROrC0OX1rexEcqv2GJU4W6rr3NL8QlIule6H4ns1AvGRkxm4EM=
+	t=1777608669; cv=none; b=Vqg7Z7MwVp/z02vT09SaA+BR58pMkovLrduIk+3kaOA2IGWbMa2k6+nxhWL88dmVo+Cf67Gu1L72wHc19PJVE06ssYpxTglKW5vmXN6CmKgCpEjYqi27rraOIUzj6DmtoVBpwRFOqkqSKw0qoPEC1eMWI2WUr/wmc2DtLvF8foM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777608201; c=relaxed/simple;
-	bh=FkIxgPZlZNy64mEA07cC2VpF4xRbXLaoWWOeyCQgk1U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RsckGrt8lBk3YiVGy9GL/Q3ePI01e0xDGoDeewe+8USYxmDVVfH0axck9jUMlWaDkP+oOiUeDj6RInW6bp6+G4jBHcPOrSDWR86AAZoWLkZeZI3nzFirenLH24Hu3OtYrZCbbPRtmoF05XJhh9v5CGAtmpsxgZvzxdQzsDGFRVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=ixYVRtGg; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=N0b6FK6+; arc=none smtp.client-ip=23.88.97.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
+	s=arc-20240116; t=1777608669; c=relaxed/simple;
+	bh=Hn7AS9nLoOeYobBv0Xz8AyLGxwHW7hPieYtvTIBOrAI=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=qgzyvRuSAvOo37Wl3OH6FlAEuHVa4QQ15nf36uEHZIku9B8PduaNUoy2MYsHOZ5WSOsLE4Qx0D4sz4sPdOdbSOW0Etvs4N50fKE0ueY0LSi8MFvUJ+pW9Vr/Izlrn7a8L/q6ZenDXWBxv3lxRI7rza3dVG7daHWWyNw2jixsSJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ir74uxAp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="ixYVRtGg";
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="N0b6FK6+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1777608191;
-	bh=FkIxgPZlZNy64mEA07cC2VpF4xRbXLaoWWOeyCQgk1U=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ixYVRtGgkBET00Q4AbEsrUJk9AOdaklU904nO4naDnLvq4HEGt48ZgSY9gLcxYpE8
-	 qCn5Z8EMBRIu4lzcMLBb6GAs5UGLBVNLiaKvD4BISWKil09GyKyY+nxwROAqtVAjn8
-	 gyKwcEXnGkbuQ5oDsad34HovW1DszAemz5e6r5HX4y73NpibOHV/AbkCqPidbju/5c
-	 YNT70hOJ+eBlJZz2JudQoyPSvXZKo6Z1zMk/2AdrBwU/L+MxyMMIyVKpJxnRHbXKCV
-	 8mVODifCq0mITCLiAvxOISerwyvmO7egq+9jhRiXK9GgSEFh3W5JFjvXZDCxIrkl8l
-	 dl1U+1ibk3N5w==
-Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id C24EB4820C; Fri,  1 May 2026 04:03:11 +0000 (UTC)
-X-Spam-Level: 
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1777608186;
-	bh=FkIxgPZlZNy64mEA07cC2VpF4xRbXLaoWWOeyCQgk1U=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=N0b6FK6+2HOT6vbT0CJcphYs3A3x/ed1irb9MFPYdl5mrF1Ux7r8nUfqgudWHahUA
-	 ula31Ro25Ht52XBGTyepJVSxM6rdIvAMs7GbjhFikwNq4BXTVXW7/WUm8Qh1HAR6rf
-	 6XcQk0onWv5EYyiXMA1oXnIDSQA//vJh8laksMq3I48zXGycTr0UX+krD7D5/v+zDz
-	 ZOFH9dKbuuIXqvyaJ7wA23fZmkz7C4EB+kzs5Ce2V+DsSldLB+HmQxMDdmh9BFKmuo
-	 Vf6z8ZkoWrgj7hGYqu+zvHFmQHE9HOlc9QJ7IHmnDUDKRC55Pay9TWcQxtwrdTLkgt
-	 FU6SNPqj0hq3w==
-Received: from [IPV6:2a00:6020:47a3:e800:271c:c6c5:9fde:77cb] (unknown [IPv6:2a00:6020:47a3:e800:271c:c6c5:9fde:77cb])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 1A7294120B;
-	Fri,  1 May 2026 04:03:06 +0000 (UTC)
-Message-ID: <7b3d3fc6-bbed-4a75-ac19-33fa910359c9@birger-koblitz.de>
-Date: Fri, 1 May 2026 06:03:05 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ir74uxAp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF257C2BCB7;
+	Fri,  1 May 2026 04:11:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777608668;
+	bh=Hn7AS9nLoOeYobBv0Xz8AyLGxwHW7hPieYtvTIBOrAI=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=Ir74uxApL2PsEUWr9ApY6Oea+lZh6Sl/jqEO7te0grLXkCe7nVhH9BprdnbB60ZJP
+	 GQelcwmHj/w1pfhk9m4VR1wvMlVQuyXUoK8QFsX68Tg1wSrn3iwlYkZpToKUXlBZ0M
+	 av4zZMbmCnn8DPqlHpjakbTYhO2VDS7xFCfoXpLN9Kf2nNDm07iuLnKs+AueABX8hI
+	 wtK8KoqJxxhWpAf1MJnGNu5M/xhBn44/P1WPDsg99ttp8hGJhi2OD6fVGdfl7d9+tf
+	 OEcqlwL3UyuG1XUkao4/S1ogVZPM4pOZ7vqE7STURC3NQq1oNEspGyAz8of4trNZfT
+	 ls+QupPygmAwQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02D77380AA66;
+	Fri,  1 May 2026 04:10:24 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] net: usb: r8152: add TRENDnet TUC-ET2G v2.0
-To: Aleksander Jan Bajkowski <olek2@wp.pl>, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, hayeswang@realtek.com, hsu.chih.kai@realtek.com,
- kees@kernel.org, linux-usb@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: Andrew Lunn <andrew@lunn.ch>
-References: <20260430213435.21821-1-olek2@wp.pl>
-From: Birger Koblitz <mail@birger-koblitz.de>
-Content-Language: en-US
-In-Reply-To: <20260430213435.21821-1-olek2@wp.pl>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v3 net-next 0/4] net/sched: tc_dump_qdisc() optimizations
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177760862280.3319327.9882800505110092540.git-patchwork-notify@kernel.org>
+Date: Fri, 01 May 2026 04:10:22 +0000
+References: <20260430023628.3216283-1-edumazet@google.com>
+In-Reply-To: <20260430023628.3216283-1-edumazet@google.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ jhs@mojatatu.com, jiri@resnulli.us, netdev@vger.kernel.org,
+ eric.dumazet@gmail.com
 
-On 30/04/2026 11:34 pm, Aleksander Jan Bajkowski wrote:
-> The TRENDnet TUC-ET2G V2.0 is an RTL8156B based 2.5G Ethernet controller.
-> 
-> Add the vendor and product ID values to the driver. This makes Ethernet
-> work with the adapter.
-> 
-> Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
-> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-> ---
->   drivers/net/usb/r8152.c | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-> index 7337bf1b7d6a..1ace1d2398c9 100644
-> --- a/drivers/net/usb/r8152.c
-> +++ b/drivers/net/usb/r8152.c
-> @@ -10138,6 +10138,7 @@ static const struct usb_device_id rtl8152_table[] = {
->   	{ USB_DEVICE(VENDOR_ID_TRENDNET, 0xe02b) },
-> +	{ USB_DEVICE(VENDOR_ID_TRENDNET, 0xe02c) },
->   
-You may also add my Reviewed-by: Birger Koblitz <mail@birger-koblitz.de>
+Hello:
 
-Birger
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Thu, 30 Apr 2026 02:36:24 +0000 you wrote:
+> Before converting tc_dump_qdisc() to RCU, we make the following changes:
+> 
+> - Use for_each_netdev_dump() instead of for_each_netdev()
+> 
+> - Only dump qdiscs of a single device at user space request.
+> 
+> v2 and v3: addressed Jakub feedback (thanks!)
+> 
+> [...]
+
+Here is the summary with links:
+  - [v3,net-next,1/4] net/sched: propagate tc_fill_tclass() error
+    https://git.kernel.org/netdev/net-next/c/db6ac77b0433
+  - [v3,net-next,2/4] net/sched: tc_dump_qdisc_root() refactor
+    https://git.kernel.org/netdev/net-next/c/304427709ab8
+  - [v3,net-next,3/4] net/sched: switch tc_dump_qdisc() to for_each_netdev_dump()
+    https://git.kernel.org/netdev/net-next/c/748bbef5fc6a
+  - [v3,net-next,4/4] net/sched: speedup tc_dump_qdisc() when tcm_ifindex is provided
+    https://git.kernel.org/netdev/net-next/c/6f63b829632c
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
