@@ -1,96 +1,61 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEECC1A6808;
-	Sat,  2 May 2026 16:53:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 573591E633C;
+	Sat,  2 May 2026 16:54:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777740787; cv=none; b=eM117kfo+KqM7CknbkCJyohBM1LKSK9WbkIf5eiR5clb2iLgG1euJhKRbHIUZKZXZCYE+gWfOwPzuOjq6ZlLvtoLfvGeZxndoLzcnypU28S2jQ+ckPPltviKCnnGQ2uND9Tx7NbndfDz6E+GHPARWG2JzFgwDTTZkbx6V7PscRg=
+	t=1777740841; cv=none; b=k2hAHIbw9s8cOJ5sOwzjgF29M+gag4JPY8qvUrduIEdYA3eCcH1af2OB0Fm+kSK5pmx7/aVgxvlRm43IDGRLbUtQBNp/SXyn0X4FqIBVbJbtyDzT3xUSADSpUp1DeMcLUznX0mjE52RqRyAVFNjXiF+RmLbzvbab3Q9qTI+dQCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777740787; c=relaxed/simple;
-	bh=63je9fQk8rbq2FWAeTdpdXqpGJDjhaBfm7Vkh48f+Ak=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sztee4XeCF2m/q8jxWRxeHaR6DUYT/rCea+779idKj8AFUjss7Mke3GA86aQ2MmowsaVP4QOy0DqcwvA9y3xo5bOdVx9uLdUJlD+gH46eyi6OXjROweujeP3i1+4xV/YYxP5SwIodQ5mdBLF5doH8Q0a0wpththqSLkl9tjVJJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N7ONpL4/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777740841; c=relaxed/simple;
+	bh=aFCb0SFrXTu8ySOYi/1DqtiWnyV3QZoy6i4pgJE+qrQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DFOcX4KUHfm2e/FDhgr1uwjcv4lb45Gnh7waYBP6EoO4dtHKcPnJFlNbkMYVeolPiKkwDCR7TmPWYI71zWBeGPRDkxe1kD8lZaMIgyshVcYruI+eACm1I4mGvNKV1LCyuEM9PO0wq+l4maxtxgO3w/ITZ8CtUbfQJi7K7VWRORI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Utq7eS2I; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N7ONpL4/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C79B8C19425;
-	Sat,  2 May 2026 16:53:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Utq7eS2I"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81277C19425;
+	Sat,  2 May 2026 16:54:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777740786;
-	bh=63je9fQk8rbq2FWAeTdpdXqpGJDjhaBfm7Vkh48f+Ak=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=N7ONpL4/AN7uJhb9ZXPsM8kwagVU4kLEko7Mr30q3l37I+nFleUIC9bJUewS+COES
-	 vAq9Xoeh1KBfFEER9HbAzXuSfm+PLr5ZcrgC9bbeRIFgA+5td5E7ouSF5cxo5enZae
-	 IjzzO6c9eApZiajedDnwHroPsHCUOYqXyopE2Srlb4mqt6tbKf2JwLWlCBy/NtXbwd
-	 dAA5vXmkR9PauyaFsPWFmzHfS4ET5EpfpFO/yN7m2JV+5uIbc2IuYREw+LDTAlORn6
-	 V8VRnhf7gMUhAzPQjy1jWLltibcj7n0yKtGE8r7LeYzUbNKFCkS+kojVMhOSg/82E8
-	 fmT51UAmd4Ffw==
-Date: Sat, 2 May 2026 17:52:58 +0100
-From: Simon Horman <horms@kernel.org>
-To: Dipayaan Roy <dipayanroy@linux.microsoft.com>
-Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
-	decui@microsoft.com, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	leon@kernel.org, longli@microsoft.com, kotaranov@microsoft.com,
-	shradhagupta@linux.microsoft.com, ssengar@linux.microsoft.com,
-	ernis@linux.microsoft.com, shirazsaleem@microsoft.com,
-	linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
-	stephen@networkplumber.org, jacob.e.keller@intel.com,
-	dipayanroy@microsoft.com, leitao@debian.org, kees@kernel.org,
-	john.fastabend@gmail.com, hawk@kernel.org, bpf@vger.kernel.org,
-	daniel@iogearbox.net, ast@kernel.org, sdf@fomichev.me,
-	yury.norov@gmail.com
-Subject: Re: [PATCH 0/3] net: mana: Fix mana_destroy_rxq() cleanup for
- partial RXQ init
-Message-ID: <20260502165258.GM15617@horms.kernel.org>
-References: <20260430035935.1859220-1-dipayanroy@linux.microsoft.com>
+	s=k20201202; t=1777740841;
+	bh=aFCb0SFrXTu8ySOYi/1DqtiWnyV3QZoy6i4pgJE+qrQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Utq7eS2IqS7BtRh5UEBYc63TQ3O6Ghas0oRYzouNbuinsmC8UDeOuHpca54UMnlic
+	 bvDuh/bY4R0OYbOnnym4+lFK5qety6cR/3kR0hj5iVKpkpQQSjWOTpoaugSC4uy2j6
+	 SKBI/Z7XpLgwMRiuKT+G/Yr1maAqYEYGTsL9JH04EE51XR/fe52oP8NwLpwSiofUb1
+	 XD0iTKFGmWWhJ/JZEoizKlT56Pq/7s6O+IIo2aeChJvvsVpzuIj1kwR2glJ8qXrPb+
+	 8WqwSKxzWUayOi3ebaTwMOCRbBemqY9IFG579HjCL9SMOt0drDu7ELg2XA+zCYMF9d
+	 Sl8nPxHigd4HQ==
+Date: Sat, 2 May 2026 09:53:59 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Maoyi Xie <maoyixie.tju@gmail.com>
+Cc: davem@davemloft.net, pabeni@redhat.com, edumazet@google.com,
+ dsahern@kernel.org, kuznet@ms2.inr.ac.ru, willemb@google.com,
+ willemdebruijn.kernel@gmail.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net v6] ipv6: flowlabel: enforce per-netns limit for
+ unprivileged callers
+Message-ID: <20260502095359.496aae9f@kernel.org>
+In-Reply-To: <20260502150918.4171847-1-maoyi.xie@ntu.edu.sg>
+References: <20260502150918.4171847-1-maoyi.xie@ntu.edu.sg>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260430035935.1859220-1-dipayanroy@linux.microsoft.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Apr 29, 2026 at 08:57:51PM -0700, Dipayaan Roy wrote:
-> When mana_create_rxq() fails partway through initialization (e.g. the
-> hardware rejects the WQ object creation), the error path calls
-> mana_destroy_rxq() to tear down a partially-initialized RXQ.
-> This exposed multiple issues in mana_destroy_rxq() path, as it assumed
-> the RXQ was always fully initialized, leading to multiple issues:
-> 
-> 1. xdp_rxq_info_unreg() was called on an unregistered xdp_rxq,
->    triggering a WARN_ON ("Driver BUG") in net/core/xdp.c.
-> 
-> 2. mana_destroy_wq_obj() was called with INVALID_MANA_HANDLE,
->    sending a bogus destroy command to the hardware.
-> 
-> 3. mana_deinit_cq() was called twice — once inside mana_destroy_rxq()
->    and again in mana_create_rxq()'s error path — causing a
->    use-after-free since mana_destroy_rxq() frees the rxq first.
-> 
-> This was observed during ethtool ring parameter changes when the
-> hardware returned an error creating the RXQ. This series makes
-> mana_destroy_rxq() safe to call at any stage of RXQ initialization
-> by guarding each teardown step, and removes the redundant cleanup
-> in mana_create_rxq().
+On Sat,  2 May 2026 23:09:18 +0800 Maoyi Xie wrote:
+> fl_size, fl_ht and ip6_fl_lock in net/ipv6/ip6_flowlabel.c are file
+> scope and shared across netns. mem_check() reads fl_size to decide
+> whether to deny non-CAP_NET_ADMIN callers; capable() runs against
+> init_user_ns, so an unprivileged user in any non-init userns can
+> push fl_size past FL_MAX_SIZE - FL_MAX_SIZE/4 and starve every
+> other unprivileged userns on the host.
 
-For the series:
-
-Reviewed-by: Simon Horman <horms@kernel.org>
-
-I don't think that you need to repost for this. But please keep in mind for
-future submissions that fixes for code present in the net tree should be
-targeted at that tree, like this:
-
-Subject: [PATCH net vN/M] ...
-
-Also, FTR, there is an AI generated review of this patch-set available
-on sashiko.dev. It seems to me that the issues flagged there pre-date
-this patch-set and should not block progress of it. But you may wish
-to use that review as the basis of some follow-up.
+You're getting emailed over and over by the bot telling you not to send
+new version of your patches before 24h passed. Do you not understand
+that message? If you keep violating the rules your patches will get
+automatically discarded.
