@@ -1,56 +1,75 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EEEA27A907;
-	Sat,  2 May 2026 15:31:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF6433DEF7
+	for <netdev@vger.kernel.org>; Sat,  2 May 2026 16:31:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777735918; cv=none; b=mTOkJwO0MLAtnVFvdH3Ix7J4mVbem3+/UTBfYm1H0+2h4OmT+aW4Hdhq1xjIZYQahMNi1Onq0RC05316exbPjxGeluTGBHmdWHnaca27Kfbw6YRDg2P0bSbfHZLor3AV7nQmVjwwgbBV7xBd0aK+0jFFFoDA8klAVJOZEfWC5Dg=
+	t=1777739500; cv=none; b=oHd9cWbsIzgZp36ib1YcD9AX03WlnugxYUD1s3QJ0/bsLd8S4X6GUpoBoagW1atz4DRnzO2Krp0pSlFCab0vBNX7iaOLvQkl+D8JoQg5XvXn4lTvG7S4/cGtPRWKOeI5z9fnzMAMeD/nmBoJrcJwl1avKgX8lvf6Hv/kGdAe9bU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777735918; c=relaxed/simple;
-	bh=cZ48aUpcm/LYH4Do1T34fSyLSVwHUO5JI4d3PeiSdI4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=frJrxziol1pq80HHC3p5TdSxp01yp3xOM/n4wjUTSjpHJtvwfza4ITk+hqaTgSlz8fddnAubrC8oXRR4kBiOwi2Z7ic9gDP+7000BgSekcjLRmr7e6LHuWoqrZvDm0+wu0ajxPvKRfxJ08JriTCp7qGtzDBBJT5lKuUP1SfOyDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q3s86cxH; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777739500; c=relaxed/simple;
+	bh=WVKJdgc/QUTT/L8tYYDqk5ux1njNQl6pEco9+XPg/tw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=E7pJoQ8fqnMm4FjbSgWCB3EzLKfQOofQ2euG5MCmMFVvLBysx0jofQY3TDxK7Ar5GgWPGg/hdFJp3rdi3OoVdFWaxCRrWcriFs/93eVyTK0Tog7R+4c1uys1ICYlyToqqStR9bBeaTcpErjkN+NrptoxDfOeaGLLawZ2n/7MA+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=s80wTa5L; arc=none smtp.client-ip=209.85.219.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q3s86cxH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41303C19425;
-	Sat,  2 May 2026 15:31:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777735917;
-	bh=cZ48aUpcm/LYH4Do1T34fSyLSVwHUO5JI4d3PeiSdI4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q3s86cxHaNHtLwEYL0JuhpnPUVmaD/Pl315gr7vHrw9HeN+LKdb8daxtBrAUK4F5e
-	 JqW5Eh0O7+/WTiUP+7LQLxPURxK7FJ9BIftnUVYqKbW3xUg0cur7mL3EM+NTQOwxEt
-	 t8GPJ0eRM+3VfaqLYLa/yerHy7vVgN2npQrHhf4yw1jtxZeUBG+gIA2RlhO3iqFux4
-	 Rf70zGLHiOtJB0SPflJmDljO687nxAxfaPtnaXzrKMfg6h5+o/uZx4yDBsi5//EyoX
-	 GpKBqu1QtQBgJ6EwhPJoZ0hY9JFdnoK1dlx39i2/SFdHlWU3xlo4VNPQ/r4WB73xtg
-	 N31Xs80O6cLXg==
-From: Simon Horman <horms@kernel.org>
-To: longli@microsoft.com
-Cc: 'Simon Horman' <horms@kernel.org>,
-	kotaranov@microsoft.com,
-	kuba@kernel.org,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="s80wTa5L"
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-8a016799d2cso30771526d6.1
+        for <netdev@vger.kernel.org>; Sat, 02 May 2026 09:31:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777739497; x=1778344297; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JHSGmWJLA8XXidhFzeVkn9Y0uqp8yNzjVJ9f8OAcqY4=;
+        b=s80wTa5L125eZl3v5fwTG/ISft18rvkTZnfSncqZFLp1Sb3rwwKii6MLXolhwzTUQ+
+         RWq3XyCxcG6jGMpAF2Yqp2DXMC7UgOntYF769LvV1Hhanrvy3nDD0vkjl6u0KJ1vf2ae
+         ls0YsSoujjxOEjcMpRzQp2FXq6YJB2h9og+LPn0ttoy8xCzssixUwZ+SK5aWUEW5TXPl
+         2AJBKHnJAWmelu3TQmiHJcyJDhRbnZyaZTXmmXxfszNC+BGMCLCe8HYTuD2pEY/Gf3km
+         hX4b3EMMRNwVlJFiNLs01Nv+aeczeYsbUHuZtu8ChXBZAEWaGw3vI1T10JZftoWlxzf1
+         wZSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777739497; x=1778344297;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JHSGmWJLA8XXidhFzeVkn9Y0uqp8yNzjVJ9f8OAcqY4=;
+        b=UVz65jk70Pay49bS8vmnjCSOGbX1zCW5PNkdiAxWhRhwO2pKoFihdUr8hGF4wZm8g1
+         s7H8VXWeeLD+rYrRcXhPPySSoUwnfcVA8fmP6+4VVxT8CD/xZZuzY76JX2TCBQTmskiy
+         pQMm4oqulwSaBb3QIqerbYzb89X3M2c6BvKru0qmGubadHTE03Ot9K6vk0gZCGrNj9U0
+         aBArnYv4ZU5vsPbaj5iILtKuao875zqmIP7IE8fecBBXrpZSZYf3/iCw0gx3zIDgY/kg
+         9c2LHrO0hGN28sKew3190G1N19LDm09LU9BITAwaBINZmaSmT6XvZ4L1Xh2iCrXib2DT
+         2aug==
+X-Gm-Message-State: AOJu0Yx9eQDBZwfu4VEh9ucTP4GYNZFRoY49lI/waSqrMVKm27HJcFd1
+	/735mkJjL/UlB1NTaAqhiJB2qpQbs0bj6a6jNyonioASu6/oZicQy1Kr8vRCWB+kcVmZ2w==
+X-Gm-Gg: AeBDieuyJw9mUz90KPcv1qYzw7OAzCGu0ZRRzScSpnX+AGVIE/HyYXAU34CMjcKfNRV
+	P4KGNZJwcpANRwQ9NE0VR8NRQbqSVw1WPi/o4+6u+66BUyCsf7beHZag2M4ngO2VSaUTtvehgjO
+	bp9WVxQh0z9hObpiw0KNkxHZOmjvFOG9DVnU5gcGxei/5PvgOnNSTPlOoQl7Is6cva3ZeYkpDMh
+	TQ29IQDeHGNXC3cBUA3n2Xsqsg5oXkpa+Y13MqPzMckK5yQyF75nS4IHuswazFCC2opTfRYdAo1
+	hlk6f2jGHhf9YMm+r950g75PQsO8odqE+KrLl3g6U2OnL+0qJgY2ODks/oFnFpvqr4KjkLjOrQg
+	Oy0orxHl4PGoc1YxQzKdAMCGrSelaNj4fFuDTokYUjgw6tWLtqGCF2cHUtbLphE3bD4yHDdBXRv
+	2eIGu9SfJfMg1c3uTURIAnPuwI3s9r+vyuqcVLoivmYHv8nTVvu6x1b7zQvVUMfOLkl9vhDB/z9
+	vp3ENe8mO9+WLOnaIcc1dt7XNu1JVPgJx/KcpI=
+X-Received: by 2002:a05:6214:6014:b0:8b3:f59d:e6a4 with SMTP id 6a1803df08f44-8b6665f1d8emr66141656d6.17.1777739497391;
+        Sat, 02 May 2026 09:31:37 -0700 (PDT)
+Received: from TDC4045031631.e0cglfehwr0e5gttmepj3hi3hf.ux.internal.cloudapp.net ([20.63.37.123])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b53c0e7ebdsm71694846d6.29.2026.05.02.09.31.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 02 May 2026 09:31:35 -0700 (PDT)
+From: Ashutosh Desai <ashutoshdesai993@gmail.com>
+To: netdev@vger.kernel.org
+Cc: kuba@kernel.org,
+	edumazet@google.com,
 	davem@davemloft.net,
 	pabeni@redhat.com,
-	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	jgg@ziepe.ca,
-	leon@kernel.org,
-	haiyangz@microsoft.com,
-	kys@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	linux-hyperv@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v6 2/6] net: mana: Query device capabilities and configure MSI-X sharing for EQs
-Date: Sat,  2 May 2026 16:26:52 +0100
-Message-ID: <20260502152649.292433-5-horms@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260429221625.1841150-3-longli@microsoft.com>
-References: <20260429221625.1841150-3-longli@microsoft.com>
+	horms@kernel.org,
+	stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ashutosh Desai <ashutoshdesai993@gmail.com>
+Subject: [PATCH v6] nfc: hci: fix out-of-bounds read in HCP header parsing
+Date: Sat,  2 May 2026 16:31:16 +0000
+Message-Id: <20260502163116.3409687-1-ashutoshdesai993@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -59,206 +78,106 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: 'Simon Horman' <horms@kernel.org>
+Both nfc_hci_recv_from_llc() and nci_hci_data_received_cb() read
+packet->header from skb->data at function entry without first checking
+that the buffer holds at least one byte. A malicious NFC peer can send
+a 0-byte HCP frame that passes through the SHDLC layer and reaches
+these functions, causing an out-of-bounds heap read of packet->header.
+The same 0-byte frame, if queued as a non-final fragment, also causes
+the reassembly loop to underflow msg_len to UINT_MAX, triggering
+skb_over_panic() when the reassembled skb is written.
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://netdev-ai.bots.linux.dev/sashiko/
+Fix this by adding a pskb_may_pull() check at the entry of each
+function before packet->header is first accessed. The existing
+pskb_may_pull() checks before the reassembled hcp_skb is cast to
+struct hcp_packet remain in place to guard the 2-byte HCP message
+header.
 
-I apologise for any overlap with this and the review of this
-patchset available at sashiko.dev. They both seem relevant and
-I'm unsure how to cleanly pass them both on.
-
-Both Sashiko instances also flagged concerns in the remaining
-patches of this patchset. But I am not forwarding them as they
-seem to be lower priority, and I think I've already created
-enough noise here.
-
+Fixes: 8b8d2e08bf0d ("NFC: HCI support")
+Fixes: 11f54f228643 ("NFC: nci: Add HCI over NCI protocol support")
+Cc: stable@vger.kernel.org
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Ashutosh Desai <ashutoshdesai993@gmail.com>
 ---
-net: mana: Query device capabilities and configure MSI-X sharing for EQs
+Changes in v6:
+- Add pskb_may_pull(skb, 1) at function entry in both functions before
+  packet->header is first accessed, to fix OOB read on 0-byte frames
+  and prevent integer underflow in the fragment reassembly path
+  (Paolo Abeni)
 
-This patch queries device capabilities early in GDMA probe and chooses
-between dedicated MSI-X per vPort or a shared-MSI-X mode based on the
-available vector count, introducing gc->max_num_queues_vport,
-gc->msi_sharing and gc->msi_bitmap, and renaming mana_query_device_cfg()
-to mana_gd_query_device_cfg() so it can be called from the GDMA layer.
+V5 -> V6: add entry-point length checks per Paolo Abeni's review
+V4 -> V5: fix whitespace damage
+V3 -> V4: add Fixes tags
+V2 -> V3: drop redundant checks from nfc_hci_msg_rx_work/nci_hci_msg_rx_work;
+          remove incorrect Suggested-by tag
+V1 -> V2: use pskb_may_pull() instead of skb->len check
 
-> diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-> index 098fbda0d128..b96859e0aec9 100644
-> --- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-> +++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-> @@ -149,6 +149,9 @@ static int mana_gd_query_max_resources(struct pci_dev *pdev)
->  	struct gdma_context *gc = pci_get_drvdata(pdev);
->  	struct gdma_query_max_resources_resp resp = {};
->  	struct gdma_general_req req = {};
-> +	unsigned int max_num_queues;
-> +	u8 bm_hostmode;
-> +	u16 num_ports;
->  	int err;
->  
->  	mana_gd_init_req_hdr(&req.hdr, GDMA_QUERY_MAX_RESOURCES,
-> @@ -194,6 +197,40 @@ static int mana_gd_query_max_resources(struct pci_dev *pdev)
->  	if (gc->max_num_queues > gc->num_msix_usable - 1)
->  		gc->max_num_queues = gc->num_msix_usable - 1;
->  
-> +	err = mana_gd_query_device_cfg(gc, MANA_MAJOR_VERSION, MANA_MINOR_VERSION,
-> +				       MANA_MICRO_VERSION, &num_ports, &bm_hostmode);
-> +	if (err)
-> +		return err;
+v5: https://lore.kernel.org/netdev/20260416051522.4154698-1-ashutoshdesai993@gmail.com/
+v4: https://lore.kernel.org/netdev/177614425081.3600288.2536320552978506086@gmail.com/
+v3: https://lore.kernel.org/netdev/20260413024329.3293075-1-ashutoshdesai993@gmail.com/
+v2: https://lore.kernel.org/netdev/20260409150825.2217133-1-ashutoshdesai993@gmail.com/
+v1: https://lore.kernel.org/netdev/20260408223113.2009304-1-ashutoshdesai993@gmail.com/
 
-Is this the same MANA_QUERY_DEV_CONFIG that mana_probe() issues shortly
-after?  mana_probe() still contains:
+ net/nfc/hci/core.c | 10 ++++++++++
+ net/nfc/nci/hci.c  | 10 ++++++++++
+ 2 files changed, 20 insertions(+)
 
-	err = mana_gd_query_device_cfg(gc, MANA_MAJOR_VERSION, MANA_MINOR_VERSION,
-				       MANA_MICRO_VERSION, &num_ports, &bm_hostmode);
+diff --git a/net/nfc/hci/core.c b/net/nfc/hci/core.c
+index 0d33c81a15fe..ba6f0310ffd7 100644
+--- a/net/nfc/hci/core.c
++++ b/net/nfc/hci/core.c
+@@ -861,6 +861,11 @@ static void nfc_hci_recv_from_llc(struct nfc_hci_dev *hdev, struct sk_buff *skb)
+ 	struct sk_buff *frag_skb;
+ 	int msg_len;
+ 
++	if (!pskb_may_pull(skb, NFC_HCI_HCP_PACKET_HEADER_LEN)) {
++		kfree_skb(skb);
++		return;
++	}
++
+ 	packet = (struct hcp_packet *)skb->data;
+ 	if ((packet->header & ~NFC_HCI_FRAGMENT) == 0) {
+ 		skb_queue_tail(&hdev->rx_hcp_frags, skb);
+@@ -904,6 +909,11 @@ static void nfc_hci_recv_from_llc(struct nfc_hci_dev *hdev, struct sk_buff *skb)
+ 	 * unblock waiting cmd context. Otherwise, enqueue to dispatch
+ 	 * in separate context where handler can also execute command.
+ 	 */
++	if (!pskb_may_pull(hcp_skb, NFC_HCI_HCP_HEADER_LEN)) {
++		kfree_skb(hcp_skb);
++		return;
++	}
++
+ 	packet = (struct hcp_packet *)hcp_skb->data;
+ 	type = HCP_MSG_GET_TYPE(packet->message.header);
+ 	if (type == NFC_HCI_HCP_RESPONSE) {
+diff --git a/net/nfc/nci/hci.c b/net/nfc/nci/hci.c
+index 40ae8e5a7ec7..c03e8a0bd3bd 100644
+--- a/net/nfc/nci/hci.c
++++ b/net/nfc/nci/hci.c
+@@ -439,6 +439,11 @@ void nci_hci_data_received_cb(void *context,
+ 		return;
+ 	}
+ 
++	if (!pskb_may_pull(skb, NCI_HCI_HCP_PACKET_HEADER_LEN)) {
++		kfree_skb(skb);
++		return;
++	}
++
+ 	packet = (struct nci_hcp_packet *)skb->data;
+ 	if ((packet->header & ~NCI_HCI_FRAGMENT) == 0) {
+ 		skb_queue_tail(&ndev->hci_dev->rx_hcp_frags, skb);
+@@ -482,6 +487,11 @@ void nci_hci_data_received_cb(void *context,
+ 	 * unblock waiting cmd context. Otherwise, enqueue to dispatch
+ 	 * in separate context where handler can also execute command.
+ 	 */
++	if (!pskb_may_pull(hcp_skb, NCI_HCI_HCP_HEADER_LEN)) {
++		kfree_skb(hcp_skb);
++		return;
++	}
++
+ 	packet = (struct nci_hcp_packet *)hcp_skb->data;
+ 	type = NCI_HCP_MSG_GET_TYPE(packet->message.header);
+ 	if (type == NCI_HCI_HCP_RESPONSE) {
+-- 
+2.34.1
 
-so the same HWC round-trip runs twice on every probe with identical
-arguments, both populating gc->adapter_mtu.
-
-The commit message frames this rename as consolidation ("used at GDMA
-device probe time"), but the mana_probe() call-site is not removed.  Was
-one of the two call-sites meant to go away?
-
-The relocation of debugfs_create_u16("adapter-MTU", ...) from
-mana_gd_query_device_cfg() into mana_probe() only makes sense if the
-function is now invoked more than once, which hints at the same
-duplication.
-
-> +
-> +	if (!num_ports)
-> +		return -EINVAL;
-> +
-> +	/*
-> +	 * Adjust gc->max_num_queues returned from the SOC to allow dedicated
-> +	 * MSIx for each vPort. Clamp to no less than MANA_DEF_NUM_QUEUES.
-> +	 */
-> +	max_num_queues = (gc->num_msix_usable - 1) / num_ports;
-> +	max_num_queues = roundup_pow_of_two(max(max_num_queues, 1U));
-> +	if (max_num_queues < MANA_DEF_NUM_QUEUES)
-> +		max_num_queues = MANA_DEF_NUM_QUEUES;
-> +
-> +	/*
-> +	 * Use dedicated MSIx for EQs whenever possible, use MSIx sharing for
-> +	 * Ethernet EQs when (max_num_queues * num_ports > num_msix_usable - 1)
-> +	 */
-> +	max_num_queues = min(gc->max_num_queues, max_num_queues);
-> +	if (max_num_queues * num_ports > gc->num_msix_usable - 1)
-> +		gc->msi_sharing = true;
-
-Is gc->msi_sharing ever reset to false?  The only two writers are this
-line and mana_gd_setup_hwc_irqs() (the !pci_msix_can_alloc_dyn branch),
-and both only set it to true.  mana_gd_remove_irqs() frees msi_bitmap
-and zeros max_num_msix / num_msix_usable, but does not clear
-msi_sharing, and the gdma_context survives mana_gd_suspend() /
-mana_gd_resume().
-
-Once true is latched in any setup cycle, mana_gd_setup() will always
-take the sharing branch on resume even if the recomputed
-max_num_queues * num_ports fits within num_msix_usable - 1.  Is that
-consistent with the commit message saying sharing "is only enabled when
-there are not enough MSI-X vectors for dedicated allocation"?
-
-> +
-> +	/* If MSI is shared, use max allowed value */
-> +	if (gc->msi_sharing)
-> +		gc->max_num_queues_vport = min(gc->num_msix_usable - 1, gc->max_num_queues);
-> +	else
-> +		gc->max_num_queues_vport = max_num_queues;
-> +
-> +	dev_info(gc->dev, "MSI sharing mode %d max queues %d\n",
-> +		 gc->msi_sharing, gc->max_num_queues);
-
-Should this print gc->max_num_queues_vport rather than
-gc->max_num_queues?  The block immediately above computes
-gc->max_num_queues_vport and leaves gc->max_num_queues unchanged, and
-mana_probe_port() sizes alloc_etherdev_mq() and apc->max_queues from
-gc->max_num_queues_vport:
-
-	ndev = alloc_etherdev_mq(sizeof(struct mana_port_context),
-				 gc->max_num_queues_vport);
-	...
-	apc->max_queues = gc->max_num_queues_vport;
-	apc->num_queues = min(gc->max_num_queues_vport, MANA_DEF_NUM_QUEUES);
-
-so the logged value does not match the per-vPort queue count the driver
-actually exposes.
-
-> +
->  	return 0;
->  }
->  
-> @@ -1856,6 +1893,7 @@ static int mana_gd_setup_hwc_irqs(struct pci_dev *pdev)
-
-[ ... ]
-
-> @@ -1968,20 +2008,30 @@ static int mana_gd_setup(struct pci_dev *pdev)
->  	if (err)
->  		goto destroy_hwc;
->  
-> -	err = mana_gd_query_max_resources(pdev);
-> +	err = mana_gd_detect_devices(pdev);
->  	if (err)
->  		goto destroy_hwc;
->  
-> -	err = mana_gd_setup_remaining_irqs(pdev);
-> -	if (err) {
-> -		dev_err(gc->dev, "Failed to setup remaining IRQs: %d", err);
-> -		goto destroy_hwc;
-> -	}
-> -
-> -	err = mana_gd_detect_devices(pdev);
-> +	err = mana_gd_query_max_resources(pdev);
->  	if (err)
->  		goto destroy_hwc;
->  
-> +	if (!gc->msi_sharing) {
-> +		gc->msi_bitmap = bitmap_zalloc(gc->num_msix_usable, GFP_KERNEL);
-> +		if (!gc->msi_bitmap) {
-> +			err = -ENOMEM;
-> +			goto destroy_hwc;
-> +		}
-> +		/* Set bit for HWC */
-> +		set_bit(0, gc->msi_bitmap);
-> +	} else {
-> +		err = mana_gd_setup_remaining_irqs(pdev);
-> +		if (err) {
-> +			dev_err(gc->dev, "Failed to setup remaining IRQs: %d", err);
-> +			goto destroy_hwc;
-> +		}
-> +	}
-> +
-
-Can the driver bring up any vPort after this change when the !msi_sharing
-branch is taken?
-
-In the dedicated branch, only gc->msi_bitmap is allocated and bit 0 is
-set for HWC.  mana_gd_setup_remaining_irqs() is skipped, so no
-gdma_irq_context is inserted into gc->irq_contexts for indices 1..
-num_msix_usable-1.
-
-Later, mana_create_eq() still assigns
-
-	spec.eq.msix_index = (i + 1) % gc->num_msix_usable;
-
-and mana_gd_register_irq() does:
-
-	gic = xa_load(&gc->irq_contexts, msi_index);
-	if (WARN_ON(!gic))
-		return -EINVAL;
-
-On a typical cloud SKU with, for example, num_msix_usable=32,
-num_ports=1 and num_online_cpus=16, the new math keeps msi_sharing=false
-(16 * 1 <= 31), so every EQ-create goes down this path and hits the
-WARN_ON.  Doesn't that make every vPort open and every resume fail for
-the common dedicated-MSI-X case?
-
-The msi_bitmap allocated here is not consumed anywhere in this commit;
-the on-demand allocation via mana_gd_get_gic() appears in the later
-commit "net: mana: Allocate interrupt context for each EQ when creating
-vPort" (dbbdf40a8974).  Should the bitmap and the new branch be
-introduced in the same commit that actually uses them, so each commit in
-the series is independently bootable?
-
->  	dev_dbg(&pdev->dev, "mana gdma setup successful\n");
->  	return 0;
->
