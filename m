@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0FB2C21E8;
-	Sat,  2 May 2026 18:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A636327C1D;
+	Sat,  2 May 2026 18:21:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777746064; cv=none; b=LVbjnrZYEGB+eQAOjgF77Qy5sF5FjDbDA0seDHm0Xb/6vpqTIvzNsfpxq107WfdxkSrzm0Sdu+ZBgysSNGe8Gt5fV4vuihKZR8TTCTkkAuM+K83tbhM/KjWRQbYQX8UvGrGIlIe+1A2O2GCKUeGppPVOBTZBnXkpz2Eya2KcbGs=
+	t=1777746065; cv=none; b=nnUiEi4Epo7WR6MvZNoaV4Tf+WQJwQQBCwBbEdAUfv8OUGuGx3rajkNIQDJLKD5BlLgI7suRcKoO0xeIaNTxeAkOJ65KuizigB4iT0sdifVU4Sffn9VLRfYg+VgB9TGIcCT32KwHLVd9YPJLVnhbt2A4jc2J2ArR0sjiYBNR6Ds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777746064; c=relaxed/simple;
-	bh=j4vnNDNkfLYzHGXg0ozwKeVY6TlO+1JSBuk8ThN308c=;
+	s=arc-20240116; t=1777746065; c=relaxed/simple;
+	bh=6rOLeEhDeZfSlZVg6PHAM2vbYkjw5wGxTdBXEUWomGg=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=e+xSlcEl2wkSdFK6HwWnYfIhpMeR6C6YzBOpTTDcSLQBV+NYSccSyEzAWQdVklCe3q1/znXwUWYdqEtP+zEl919NFUloD8hIn2W7dxjZwqzP9XhIZl9QjnQ9dG7VlaXABCP/K3y6sQ0BXg/PYp0qDCQDXfUr2ZzDdh2i+sqlJsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f1geOsEm; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=N6XWib3eyTC8aB6c49CsVSvfOJAI8bjoBXrWv1jJTRXLl2Rx3osqt52QjCOprxTtHrizb+yMlElEOz1dOfjmY0qIDWdmQKKxfSgOllJcpKKWBmG6Cda46nIUMNnC+VvOpCbyk2Da6JqgDBa1sU2QqX4v3ZU4ucdFWl0vzuCMUEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dyVEWj/p; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f1geOsEm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 083F6C2BCC7;
-	Sat,  2 May 2026 18:21:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dyVEWj/p"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B940C2BCC7;
+	Sat,  2 May 2026 18:21:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777746064;
-	bh=j4vnNDNkfLYzHGXg0ozwKeVY6TlO+1JSBuk8ThN308c=;
+	s=k20201202; t=1777746065;
+	bh=6rOLeEhDeZfSlZVg6PHAM2vbYkjw5wGxTdBXEUWomGg=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=f1geOsEmNR6ExmAsDvrjiXtAZo1KTlnPIMOGTBzQZ5upQ7W9+4zlJkZy4bhfLTO6g
-	 W++bClpzIdr8fpuTHX8/KQFzI5cUawgIGYqBB5hfd7VYfXkGI0Uw0LlujZRd5rd29P
-	 IsWoRVWhLHRaAolJFonz9LfKWUpSWXwFYKsvfir2Z6sxV42EODxdZKBi7s4uNS47Sz
-	 TzcYH7zkqYWeUJ5j6MTrtmkk+rqj+YYIB4u5W3l/nY2obmfAotvT3VgtAREi/Arm5u
-	 4CMaf5p+u0XHM7z59wGNlU4pcdpz0b8RCwi1+4L1OQcnCOcxssPpDSM6U7hrcSFGzu
-	 tf6PVILuOnmSA==
+	b=dyVEWj/pAB5/y02lSbiTkRmrN1q8GI0VOlPVgeuePx3rZeSQA7q2EgcYLrTseEcVo
+	 /BWOHY8Vof0puVTsEY1SzUYJZBoFJSMxiE7lI3VXo5fzIXNCj419iTtBgnYBizmCuz
+	 W2Ni4djnq6UbeDxNeUDGvLye1okkeWOgzRgHl7XO0xKmKH0+cQeh3J0XKth0gH2KXN
+	 K+8sMxK4gHolCCVvoQlYzMoUANcnWq+AG2jEH+fvW+/7I2gV7vfsE+aewLZQcGwfUZ
+	 iqH0psGiMvEuKRgi20C4dLk1/bo9aonXQ4gKeSIQbuCnlw/kP4wM5OkpUYnN/qkSBY
+	 2bzZ/2nISx/pQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CD78380CEFF;
-	Sat,  2 May 2026 18:20:17 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9DD4380CEFF;
+	Sat,  2 May 2026 18:20:18 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,44 +37,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] amd-xgbe: fix PTP addend overflow causing frozen clock
+Subject: Re: [PATCH net v2] ip6_gre: Use cached t->net in
+ ip6erspan_changelink().
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177774601604.3903048.7896822431673696993.git-patchwork-notify@kernel.org>
-Date: Sat, 02 May 2026 18:20:16 +0000
-References: <20260429-fix-xgbe-ptp-addend-v1-1-fca5b0ca5e62@gmail.com>
-In-Reply-To: <20260429-fix-xgbe-ptp-addend-v1-1-fca5b0ca5e62@gmail.com>
-To: Gregory Fuchedgi <gfuchedgi@gmail.com>
-Cc: Raju.Rangoju@amd.com, PrashanthKumar.K.R@amd.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- richardcochran@gmail.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+ <177774601754.3903048.11239187630768514134.git-patchwork-notify@kernel.org>
+Date: Sat, 02 May 2026 18:20:17 +0000
+References: <20260430103318.3206018-1-maoyi.xie@ntu.edu.sg>
+In-Reply-To: <20260430103318.3206018-1-maoyi.xie@ntu.edu.sg>
+To: Maoyi Xie <maoyixie.tju@gmail.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+ pabeni@redhat.com, edumazet@google.com, dsahern@kernel.org, horms@kernel.org,
+ willemb@google.com, kuniyu@google.com, shaw.leon@gmail.com,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 29 Apr 2026 14:54:14 -0700 you wrote:
-> From: Gregory Fuchedgi <gfuchedgi@gmail.com>
+On Thu, 30 Apr 2026 18:33:18 +0800 you wrote:
+> After commit 5e72ce3e3980 ("net: ipv6: Use link netns in newlink() of
+> rtnl_link_ops"), ip6erspan_newlink() correctly resolves the per-netns
+> ip6gre hash via link_net. ip6erspan_changelink() was not converted in
+> that series and still uses dev_net(dev), which diverges from the
+> device's creation netns after IFLA_NET_NS_FD migration.
 > 
-> XGBE_PTP_ACT_CLK_FREQ and XGBE_V2_PTP_ACT_CLK_FREQ were 10x too
-> large (500MHz/1GHz instead of 50MHz/100MHz), causing the computed
-> addend to overflow the 32-bit tstamp_addend. In the general case
-> this would result in the clock advancing at the wrong rate. For v2
-> (PCI), ptpclk_rate is hardcoded to 125MHz, so the addend formula
-> (ACT_CLK_FREQ << 32) / ptpclk_rate yields exactly 8 * 2^32, and
-> when stored to the 32-bit tstamp_addend the value is zero. With
-> addend = 0 the hardware accumulator never overflows and the PTP
-> clock is fully stopped. For v1 (platform), ptpclk_rate is read from
-> ACPI/DT so the exact overflow behavior depends on the
-> firmware-reported frequency.
+> This re-inserts the tunnel into the wrong per-netns hash. The
+> original netns keeps a stale entry. When that netns is later
+> destroyed, ip6gre_exit_rtnl_net() walks the stale entry, producing a
+> slab-use-after-free reported by KASAN, followed by a kernel BUG at
+> net/core/dev.c (LIST_POISON1) in unregister_netdevice_many_notify().
 > 
 > [...]
 
 Here is the summary with links:
-  - amd-xgbe: fix PTP addend overflow causing frozen clock
-    https://git.kernel.org/netdev/net/c/383d0fb89469
+  - [net,v2] ip6_gre: Use cached t->net in ip6erspan_changelink().
+    https://git.kernel.org/netdev/net/c/1d324c2f43f7
 
 You are awesome, thank you!
 -- 
