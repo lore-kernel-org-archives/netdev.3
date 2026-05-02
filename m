@@ -1,78 +1,55 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011011.outbound.protection.outlook.com [52.101.70.11])
+Received: from mx3.wp.pl (mx3.wp.pl [212.77.101.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DAD72FD681;
-	Sat,  2 May 2026 09:26:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777713962; cv=fail; b=csdl4CBH3LGklQ/yO7cI5th3ZHfnKn7Z3nN5lAqGQLxO7g5IppvQUjcwul8Vazr9h1NLLzA36JYDNbobdZ2dnGUcyaFkLHeYFi7zhBcAqeCtQDazmusQ6Yy78sm4J76LleRpc+6hRjKgPyFawI/w94MuTKJk/c/MSN4FNSIo7KM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777713962; c=relaxed/simple;
-	bh=WzI0XFBLrsw+I/UIMAemIKuaPl8WkIHY2pSMJmn/z6k=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cHfWz4dRbOZVpmHpgJxa3xXUC4ZxL8fxgBCsgBqUVBSDaAG4nWbAKJUP0PY1B574S7GsGeSd590SYuT4WE45m5/1vm6LNbQ19mH1tEjVtTlAiRPvf8DC5Thbb8LUQepCzMVFC+Gc1AS0YHnNiRDAPT+BlSMX5EBqogqEFzivEzY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ericsson.com; spf=pass smtp.mailfrom=ericsson.com; dkim=pass (2048-bit key) header.d=ericsson.com header.i=@ericsson.com header.b=CziTYEC4; arc=fail smtp.client-ip=52.101.70.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ericsson.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ericsson.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B22F2FDC20
+	for <netdev@vger.kernel.org>; Sat,  2 May 2026 09:29:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.10
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777714153; cv=none; b=QOuY6KOzKHwRPjnuubSJea+iynO0Qc6wfgUuf3m46MOMvaegsm9Pn4ZPPZ6l/IPe69jjQUIbZMp5YFfghSnaPTLDislaJC37hhI8N/FTYqYQbC/amrGa3iBATgrgJ+cyKS0IGI+Ma6hrWRZXDbjtepjSQBvE/QRVgO4OtqSYcHo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777714153; c=relaxed/simple;
+	bh=JP1gUyFDekV1UyjLr+SAe+PehfO7figE2sb7aL4ff8A=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=fxHa6pJjVsAeTXfCU1UYMxYGbXGwznJZ0OCqyrT8qo2yvC+JH/UPmJsUAyw0L/AXqjP7uyj4v75Opg+o/qVVka2rue8UIWl20iBT1vUExza+QPzPHyTlrGumwpR4PREi/n+dCaU3JrECzPlrs4CPVo3N32wFTEDN7Wuof5Nx3NI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=AgKeYueN; arc=none smtp.client-ip=212.77.101.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ericsson.com header.i=@ericsson.com header.b="CziTYEC4"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Z7NYFCp+n69KLR48g4WdQN2JgWyWGyIzmI5vcaGuO4B3JeMOweA0E87yVDj2MbHePYuREp9M+AEn4IVsz/Wjt83Gxel42GPDakoTQi2OW462eNiprh/C/jE+ZeWoOkKrOmFa4+JObypMmHY385ublz+v0ipiYAudVUZm8cyLB2IpVGNLuxEpoIAQg8D24TU2WpTWaVtNwTGjq+vH8pFaHF7+5+Q7ozLabbKKAqSuuBgAyv/SwtPNHAgPHHeitRmViGryop9fhCTc38PF9J5k9WB7WLGZLpPHDdGOUt3WbcBPFtV1k5fiyGWgsehNsxjCcgIypR4gZuBl/oUBqIdnoA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=crXNQPpS7bTdq3eMZFpBVtCyidF8jttCKQxntZ2buFM=;
- b=g6RyW3EaqyfaJIgHFe498x/jd7hxTT5fybNtaUWACeFZ2FnapDY5nFndslCPkZ2fxCjhoVx+5l5tZUamAR+rFf3888Y23M822xqYbJ5UGcC+cA3k1mDUtQJiDNwNCa/n492M3c2F/HvjuNR0pjEG8h5dsOExrlS7Ko/PldN2haAmdYP9ZDK5yoo7Uupx+0ZGv3nYZbKWXWmp11KzT4MEbxI9toAAOW27Ol/9zkv9BQUS+tOFpYdp4ZwNLJSMMfqBgzKdOLtDfFh7H2QYnba+Dv78nf+FxpYzP+mnsHpIPtXmRu4i7TorCkhjojDHmFTH5Vp9yHuyiSVex66CHwUPmw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 192.176.1.74) smtp.rcpttodomain=davemloft.net smtp.mailfrom=ericsson.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=ericsson.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ericsson.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=crXNQPpS7bTdq3eMZFpBVtCyidF8jttCKQxntZ2buFM=;
- b=CziTYEC4DRvnxvnLpz+/hcDAvdk2Tto9JsjGOksWTenoQB/LdAIHbEqLOrp1YmfJVSiapIQZGP837P+zsN9Qc9dl0ipwvMjk0zqJos6Njwe+xX8dTNCJ0ql9Zm8472iuvrdSXo35WL+YqfeTKtkl2F+8HIxaNAZl5/Txr73dNCubi0kDFQvuvE1TmrOQroXWPJ28bZvBnuD7c2bNeDNLnb384hfncYx3oSi0X1ezRou+V5mBOWRMJCuL4V042iTXKXKsqwiGtYxUDszKfklvc2lOIH4sRh1VmGcHNi7QAc+HAwnd3DRkspD+oEJxqpUNyvBC9FtoiDZserIfCjREyQ==
-Received: from DU2PR04CA0027.eurprd04.prod.outlook.com (2603:10a6:10:3b::32)
- by AMBPR07MB10620.eurprd07.prod.outlook.com (2603:10a6:20b:6b0::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.18; Sat, 2 May
- 2026 09:25:57 +0000
-Received: from DU6PEPF0000A7E0.eurprd02.prod.outlook.com
- (2603:10a6:10:3b:cafe::f1) by DU2PR04CA0027.outlook.office365.com
- (2603:10a6:10:3b::32) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9870.23 via Frontend Transport; Sat,
- 2 May 2026 09:25:57 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 192.176.1.74)
- smtp.mailfrom=ericsson.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=ericsson.com;
-Received-SPF: Pass (protection.outlook.com: domain of ericsson.com designates
- 192.176.1.74 as permitted sender) receiver=protection.outlook.com;
- client-ip=192.176.1.74; helo=oa.msg.ericsson.com; pr=C
-Received: from oa.msg.ericsson.com (192.176.1.74) by
- DU6PEPF0000A7E0.mail.protection.outlook.com (10.167.8.39) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9891.9 via Frontend Transport; Sat, 2 May 2026 09:25:56 +0000
-Received: from seroius18815.sero.gic.ericsson.se (153.88.142.248) by
- smtp-central.internal.ericsson.com (100.87.178.62) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Sat, 2 May 2026 11:25:56 +0200
-Received: from seroius06448.sero.gic.ericsson.se (seroius06448.sero.gic.ericsson.se [10.117.92.228])
-	by seroius18815.sero.gic.ericsson.se (Postfix) with ESMTP id 80F4E4020840;
-	Sat,  2 May 2026 11:25:55 +0200 (CEST)
-Received: by seroius06448.sero.gic.ericsson.se (Postfix, from userid 7434092)
-	id 6B2B91005C88; Sat,  2 May 2026 11:25:55 +0200 (CEST)
-From: Fidan Aliyeva <fidan.aliyeva.ext@ericsson.com>
-To: <andrew@lunn.ch>
-CC: <olteanv@gmail.com>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <thomas.eckerman.ext@ericsson.com>,
-	<fidan.aliyeva.ext@ericsson.com>
-Subject: Re: Re: [PATCH net-next v2 1/2] mv88e6xxx: Refactor 6352's serdes functions
-Date: Sat, 2 May 2026 11:25:52 +0200
-Message-ID: <20260502092552.2217977-1-fidan.aliyeva.ext@ericsson.com>
-X-Mailer: git-send-email 2.36.0
-In-Reply-To: <8f2a1956-5cd9-4267-8035-b81024148a9d@lunn.ch>
-References: <8f2a1956-5cd9-4267-8035-b81024148a9d@lunn.ch>
+	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="AgKeYueN"
+Received: (wp-smtpd smtp.wp.pl 2638 invoked from network); 2 May 2026 11:29:00 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=20241105;
+          t=1777714140; bh=PUcYAMODLw18bjTr+Xo/NHy0u5FhjCUxRTIwqjLUArg=;
+          h=From:To:Subject;
+          b=AgKeYueNTTB2aKgeR85MCjFtcNNBYfR7EXK4qVkM0v8ZpZnIeNyxm7why0dvAO2PK
+           7UuJTljStFGxnVbcU02KP90hKiP9XL6n/2RL4EQtItBAmyzeNyBSOnXY23Lfjj/Dfv
+           0eS5Y0hODEHAY0FzdGvIOnJ2LHoTSQ6+swQ2y1CqF5/n07ooZSlbWxHL1S+XQ2kA7N
+           muMtc0XBpB0y1UXXL0DuCxZSB2u3EDWYjXCFPXIaZZ9UeExCTPcGDNc21fy8fcjB/S
+           URI5/YLpkLMYchjGwqE28Y689c2n68YPcVagtbo+/zO5oqGXd8xb6gRH3fr5f2KFNC
+           e65wsVTpxy7Wg==
+Received: from 83.5.11.80.ipv4.supernova.orange.pl (HELO abajkowski.home) (olek2@wp.pl@[83.5.11.80])
+          (envelope-sender <olek2@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with TLS_AES_256_GCM_SHA384 encrypted SMTP
+          for <andrew@lunn.ch>; 2 May 2026 11:28:59 +0200
+From: Aleksander Jan Bajkowski <olek2@wp.pl>
+To: andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	daniel@makrotopia.org,
+	vladimir.oltean@nxp.com,
+	michael@fossekall.de,
+	olek2@wp.pl,
+	ih@simonwunderlich.de,
+	rmk+kernel@armlinux.org.uk,
+	marek.vasut@mailbox.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next] net: phy: realtek: replace magic number with register bit macros
+Date: Sat,  2 May 2026 11:28:47 +0200
+Message-ID: <20260502092857.156831-1-olek2@wp.pl>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -80,50 +57,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU6PEPF0000A7E0:EE_|AMBPR07MB10620:EE_
-X-MS-Office365-Filtering-Correlation-Id: c376b90a-b8dc-4a59-1dcd-08dea82cd0ad
-X-SMTP-Server: smtp-central.internal.ericsson.com
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|376014|36860700016|18002099003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	xcS0MTKrXVMXQnslsryCEP1DhimVtI7ZLLZF7t/kovYpG2S6eQl/9+NpoGjA7a4psIWEoFwa/lclpWCPSy+hJhc+Cs7Aw/cNHutY6txTl0/CtgBjdfriJFFLMgSRTPC6J4cpQx1KAm9Hmmf2aAfkgUjBwKi+JFOezAe2WDrF9cLNiHgIQqdyx1lMz64iNu4nFoZLgQdNlvWY0RMVUlC91GDLLw/Sf8Q6++ZX2hAf+iMT5pfQEozK5eAVCB1uVL1RquCirN/Tlw9YRkMYWskMl3NDe2GPI1td70y8DiE1HxqGgk4Xe/zKL39cJN60d8u/1tahQ5c4IhcjM/rHY7NGIxBhUIlf/rhhxq9+J9d988I6JnA80p/H4WlVGTasHBNA4QFryPeANXJC/ySitiBw64CUwRFEzAHmau9UEHRKjZ0BUv5dYX+9eeMGUrPrmskY+6zCKw64X4YNvj9V+o+ldJlk0JilvKXKr1LZPxaljF2H1r3f2/bnntWzJJxNTqaJWhxz+088b2HIYFbqc8WPYhnvtlGpzuvBbEaGKtrPZteY0ykZvKbST/+REbXiPQ6cNKFspVc9pFDhaOQ5Pnggp7fNDg7uJSwz7bPxaMnjPxw+OK60xNzD43Y5H10sBeUOhnVMZlf+G+X3gqKdn6sSn8CQ9GPHr3P91ZSpc3vDym+Pc+BzMuesGEdSwZU9WeLKcnoHfBFfBGKjp3LHAXkNuX595RkW4ZLNj3O3Jku95nE=
-X-Forefront-Antispam-Report:
-	CIP:192.176.1.74;CTRY:SE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:oa.msg.ericsson.com;PTR:office365.se.ericsson.net;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(376014)(36860700016)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	/SeAGb+Vbf3KJbGgp7KqutbQeI0RP65b/pyhDTz7ZruRIXD/cd2dnBuE9QZaAGilLcCL1KH21S7h/9bczCZ3+ccjJGuuN1jskLeVBdRD9vARhB9rcnWgwHQVM4ouc6GvS31gpuJ6e2AosKwv4oIPc/EKShKqcxEyU4+V2Uu1GmVf/QEKaAsB9we7gZerOwHU31yVmGqgRtIudaGkrv7K586NvmL7hOsOoTIJnmZKHkkEiCP+pgrKNS0iDNk9O1ahKtdps4IFs2C8ca2H7Nb8ACAt2G8PtIb9bYU4hNuszkhhnaS8cEHjw8VZAMVVDX5zcQX1h4+tp8lS71s03jH0a51nhPmEnZjbM8ydF0NDK1/x3MfpHiHvoI2/gzHz1/+MjOvvEEXasK9a0ruhxM+9FYbcsATSA5yzTdHviG3an3JzHTKa900+/WWGo0QfA96i
-X-OriginatorOrg: ericsson.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 May 2026 09:25:56.5434
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c376b90a-b8dc-4a59-1dcd-08dea82cd0ad
-X-MS-Exchange-CrossTenant-Id: 92e84ceb-fbfd-47ab-be52-080c6b87953f
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=92e84ceb-fbfd-47ab-be52-080c6b87953f;Ip=[192.176.1.74];Helo=[oa.msg.ericsson.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DU6PEPF0000A7E0.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMBPR07MB10620
+X-WP-MailID: 602144fcf0b30c932f654a01782f0688
+X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
+X-WP-SPAM: NO 0000000 [0WMc]                               
 
-> > I wanted to make those functions generic and not introduce new 
-> > functions other than 6321_serdes_get_lane. However, those functions 
-> > cannot be generalised the obvious way because they run with reg_lock 
-> > already taken which would cause deadlock in mv88e6352_serdes_get_lane function.
-> 
-> Ah, the scratch register. None of the other serdes_get_lane() functions need to read a register. O.K.
-> 
-> So we don't expect the scratch register to change at runtime do we?
-> 
-> Nope, the value in it is read during reset. After that, it does not matter what happens to the pin, the value in the scratch register is fixed. So maybe read it during mv88e6xxx_setup_port() and store the value in struct mv88e6xxx_port?
+Replace magic number with register bit macros. The description of the
+RTL8211B interrupt register is obtained from publicly available
+datasheet[1].
 
-Hi again. Thank you for your feedback. I can make the proposed change. But
-I do not have the functional specification for 6352 to refer the change
-to, neither do I have access to a 6352 to be able to test the change on.
-Do you have the functional specification document of the switch, maybe?
+1. RTL8211B(L) Rev. 1.5 Datasheet
+Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
+---
+ drivers/net/phy/realtek/realtek_main.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-Thanks,
-Fidan.
+diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
+index 79c867ef64da..9f2a0bc03728 100644
+--- a/drivers/net/phy/realtek/realtek_main.c
++++ b/drivers/net/phy/realtek/realtek_main.c
+@@ -40,7 +40,12 @@
+ 						 RTL8201F_ISR_LINK)
+ 
+ #define RTL821x_INER				0x12
+-#define RTL8211B_INER_INIT			0x6400
++#define RTL8211B_INER_SPEED			BIT(14)
++#define RTL8211B_INER_DUPLEX			BIT(13)
++#define RTL8211B_INER_LINK_STATUS		BIT(10)
++#define RTL8211B_INER_INIT			(RTL8211B_INER_SPEED | \
++						 RTL8211B_INER_DUPLEX | \
++						 RTL8211B_INER_LINK_STATUS)
+ #define RTL8211E_INER_LINK_STATUS		BIT(10)
+ #define RTL8211F_INER_PME			BIT(7)
+ #define RTL8211F_INER_LINK_STATUS		BIT(4)
+-- 
+2.53.0
+
