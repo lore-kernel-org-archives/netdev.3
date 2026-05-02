@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB673876C5;
-	Sat,  2 May 2026 18:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93EA73876A9;
+	Sat,  2 May 2026 18:21:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777746077; cv=none; b=rXcS9PSOwgM7KBAe7NiOmjiz9NFgI9ouNUJVn/BG6aTy1Tp4Hg/OFN4anAPv2W2IOIV139PruXaohLACEnyYz+vGfsUM/NC3NWpS0ecotK+YnTFuvjGHAdHfJ/6OoqClEpAS+Ku6VQeonCSKDywqvLsHwC3Pdr6SImA1sXzbShg=
+	t=1777746078; cv=none; b=Xo3MaxVhtaOryVKQpgRXaEkrek/WJXDglMHbgHQmWu+q0riBkKgGaIRyV6P/SG9ayHvO2RjzCZDBGGYGy4fKi/7blmXBurjxYjtABS+rMRMT+0tR0Zv2xU9L9LYg3dFEZX+PpHCIFssIS/Y2bchTndAEBZYaPNlO6c/C1T42Mlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777746077; c=relaxed/simple;
-	bh=dcZwfWrlZbE1CFXk+IjsuDnfdbcriifj3/dxazuOL0k=;
+	s=arc-20240116; t=1777746078; c=relaxed/simple;
+	bh=bVOZK9Mo21hpEl651U46SE5lBm9+7itxGfP1kgqIbgw=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=GtXRPhkvmlBe3+LsQdvmnZtr+rgRuTXn/mkiZvCqKDGUiWucBNhDJlv0IuHVxJYmMmLt6bY3townKU3R1mGm1jFdniF9gHPUxz6xg6ZhvU3zggLwSNxw1Lqxh+aXnlTntvJ1mWLT3m2E2I3eo8WVAM255VmfvC9Zdsoa16jzgdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CjXXggLL; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=Vzx08ulIkGoj1etuj4AfcdhLXUDeNLALJqnWtulzvtZYhb9Kcvh6f+zJyIIgehdmTRTqDbeqpw86T5b8NHRhAjBWqWTTuC0dmcL4LQYv3H4Gt5bjhmN9ngVMJNBuQR898kw1pzE9fblEg6bxcbd87kZVyRKsMR0uRqEGWEztrGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kUHBbgCh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CjXXggLL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7061C2BCC6;
-	Sat,  2 May 2026 18:21:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kUHBbgCh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74443C19425;
+	Sat,  2 May 2026 18:21:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777746076;
-	bh=dcZwfWrlZbE1CFXk+IjsuDnfdbcriifj3/dxazuOL0k=;
+	s=k20201202; t=1777746078;
+	bh=bVOZK9Mo21hpEl651U46SE5lBm9+7itxGfP1kgqIbgw=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=CjXXggLL0EvKijBE2HL1ph3CI+893Ko5HMi3EmOCrgjDa+Gqx3MMp0BeT/3We9DKe
-	 gZIDhZbIu4Tn29JgtnnW+AniJ2dU06eorXFKuo9b1tqckBfOsMxU6kmBljfMYqWIjF
-	 UhEpI8CWEmEdP5IhfjhYTa9Brh/aMYHAZ2fNOY56d3BI+TYRMAqCcStJAOuh9eGb3S
-	 P1qm6oy/qiKbAwwig9cDz2X/zVXRu3M4eQdlcAfl7WZVAzfG/u/Hn3Yxgs9TQsAWj4
-	 mmLPU5kHW+WskGXIu+j6/fLw9cZp3odzLuMprppjrslEZal4lY+bDEXjtiR6yIUsMd
-	 4GrisOeIDvZhw==
+	b=kUHBbgChEGnAOufuqgODrVGZtBKeyW4XwFfxktggUdY4UiBBd94C/l628auOZIDmT
+	 tW3YgeQv7ti8TALdyj2+dvy+1vskB9FskRxYHLExKeS8ZDslivF8oWKw/4QONkEBGM
+	 Ua+UQmfEKkj2JmBg9F0fh7wI3aQ6FJBdPO+1TUbycy3fJeXu/UiyjC+IoGGrD2f8ic
+	 qbd7Cz/83peg2vRDKBRNrID2SzZQLqaGqXiCycpFR2evGTy2BgWZk+iXPrht3zGWqZ
+	 hT1sMIFdJtCWw085cv7NnzKS1cm5zWWJ4IhcIzxhuK9TIZWjLN/7vF2pD2n7KrOhXh
+	 UthkD/F4aTNuQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CDD7380CEFF;
-	Sat,  2 May 2026 18:20:30 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02D0A380CEFF;
+	Sat,  2 May 2026 18:20:32 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,50 +37,46 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v6 0/3] net: dsa: yt921x: Add port police support
+Subject: Re: [PATCH net-next] net/mlx5: Add vhca_id_type support to IPsec
+ alias
+ creation
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177774602904.3903048.17546666423358548634.git-patchwork-notify@kernel.org>
-Date: Sat, 02 May 2026 18:20:29 +0000
-References: <20260430114529.3536911-1-mmyangfl@gmail.com>
-In-Reply-To: <20260430114529.3536911-1-mmyangfl@gmail.com>
-To: David Yang <mmyangfl@gmail.com>
-Cc: netdev@vger.kernel.org, vladimir.oltean@nxp.com,
- UNGLinuxDriver@microchip.com, andrew@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- linux-kernel@vger.kernel.org, olteanv@gmail.com
+ <177774603055.3903048.10928743349173579298.git-patchwork-notify@kernel.org>
+Date: Sat, 02 May 2026 18:20:30 +0000
+References: <20260430061958.225245-1-tariqt@nvidia.com>
+In-Reply-To: <20260430061958.225245-1-tariqt@nvidia.com>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, saeedm@nvidia.com,
+ leon@kernel.org, mbloch@nvidia.com, phaddad@nvidia.com, jianbol@nvidia.com,
+ kees@kernel.org, dtatulea@nvidia.com, netdev@vger.kernel.org,
+ linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org, gal@nvidia.com,
+ leonro@nvidia.com
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 30 Apr 2026 19:45:23 +0800 you wrote:
-> v5: https://lore.kernel.org/r/20260428112606.1917230-1-mmyangfl@gmail.com
->   - remove new line chars in extact messages
-> v4: https://lore.kernel.org/r/20260409171209.2575583-1-mmyangfl@gmail.com
->   - split series and drop patch for qdisc tbf
-> v3: https://lore.kernel.org/r/20260407160559.1747616-1-mmyangfl@gmail.com
->   - explain long registers more accurately
->   - fix missing packet mode flag
->   - rearrange function layout, in preparation for further patches
-> v2: https://lore.kernel.org/r/20260402223437.109097-1-mmyangfl@gmail.com
->   - refine commit messages and code styles, no functional changes
-> v1: https://lore.kernel.org/r/20260225090853.2021140-1-mmyangfl@gmail.com
->   - pass extack to user tc policers
->   - keep reg64 helpers along with reg96
->   - avoid macros in favor of functions
->   - adjust log messages
+On Thu, 30 Apr 2026 09:19:58 +0300 you wrote:
+> From: Patrisious Haddad <phaddad@nvidia.com>
+> 
+> When creating an alias FT for MPV IPsec, if alias creation with
+> sw_vhca_id is supported use it instead of using the hw_vhca_id.
+> 
+> This in turn allows IPsec to work properly after live migration,
+> in case a VF was live migrated and his hw_vhca_id changed due to
+> migration which can happen if you migrate to a VF with a different index
+> than yours, IPsec would fail to start post migration, this patch
+> resolves the issue by using sw_vhca_id instead which doesn't change post
+> migration.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v6,1/3] net: dsa: pass extack to dsa_switch_ops :: port_policer_add()
-    https://git.kernel.org/netdev/net-next/c/09e4d1298b36
-  - [net-next,v6,2/3] net: dsa: yt921x: Refactor long register helpers
-    https://git.kernel.org/netdev/net-next/c/9f8888984eb0
-  - [net-next,v6,3/3] net: dsa: yt921x: Add port police support
-    https://git.kernel.org/netdev/net-next/c/39716c00ed0a
+  - [net-next] net/mlx5: Add vhca_id_type support to IPsec alias creation
+    https://git.kernel.org/netdev/net-next/c/c8300af614b2
 
 You are awesome, thank you!
 -- 
