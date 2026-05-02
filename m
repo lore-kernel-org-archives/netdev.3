@@ -1,87 +1,233 @@
 Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B4692D5C83;
-	Sat,  2 May 2026 04:41:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E7C7081E;
+	Sat,  2 May 2026 04:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777696887; cv=none; b=bzPFyWxRlJH1D0B9NFJxZsVUNCgGL7f8R53CZLEHJGRcdTHB8mbTU+kuoGTvrBeGMV7KLKHbHvg7+qjvLs0JP0HcMItjjc3TDypAkySJYjsdt3zGPDsbqCm4P/3J8YnwgeB8/QwJ29EePN1gwIb/c1lezTiTcCBK0swfNRZrlQY=
+	t=1777697459; cv=none; b=bohj+RvOZIHR3ABhhUsKdm6uYojMa8pDa+NVEuNFtMNjQ6DemLuhulTI21ymiZFhryUQ350tPeOHTUIT44I5rmxVFUNdrrUAMubuDdRQC85MHuBtc3mZdfQ52PMzUSrWbLg4o4uyAOEL52LBIvKc6BI2slXJa/stG8oQ86NGxSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777696887; c=relaxed/simple;
-	bh=/tniwKF+wLA6PfpCL7yMr41giTcZ4oDYqT+9D6T5ZeQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=B0gUdLfmX6zCGUtmwOAOlAs2lHdYJ/sQcfHndGTxYkbgS2LpBuEtfwwbC07HzIDxg4ylUOwxN3pUG/O7X9J2DDSVUJNM7CjRKr2xc/HnEcsJCvUBqKldKmV4efgoSwzGxMSHt0wLqGZ6j2vH+aAMCa6aGphyEY9E+vakz+p6s0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=AOwmxjnM; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=vAT+0pOc; arc=none smtp.client-ip=23.88.97.239
+	s=arc-20240116; t=1777697459; c=relaxed/simple;
+	bh=NzT3APBnqSAwLHn2gideBIQArpEmCV4zmBiX4w9QCPQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=hzOZXtaOVC56GXAqNhd23R/FL/g3tIbNdowKZQnOVuKkApcFll1nogVZdtNfoqjF1RpLZ2nE1IHw9HBEj9UKZO+K6za49geWOWWkgVerqO6f3uLoeiujuw/xOLHplwjnhYzNqzODzBZumpsWJo/tQTJCAfENRzgUTJcILYV/EeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=s7ix8f0l; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=V/w4KC8N; arc=none smtp.client-ip=23.88.97.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="AOwmxjnM";
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="vAT+0pOc"
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="s7ix8f0l";
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="V/w4KC8N"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1777696884;
-	bh=/tniwKF+wLA6PfpCL7yMr41giTcZ4oDYqT+9D6T5ZeQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=AOwmxjnMh9hs/jtJ9N2V2RuYwsH7b5NJnmXevyFQHX2hEYibS13wFcBoaR+8rzOi0
-	 MXCX8Oo/5Nn8nJS9Q9w0GVwL14u/c+VXFVrKmK9UPfehdcWkD8IOm2waAOw2svNGpe
-	 eZ4J8GUxcN8Rct/QjK0cfdB73RnPbchjFy+vwGAxezvbcYCKA5SI/jw/Sgyel4vpNx
-	 TVqnNUHgxx3eYkvssiFL6WE/rQpTm4phsna71F8uoP2s1P8HBKX56cae2gqlhPp3jZ
-	 TfKITjZIL79qm43Y7H03/oN+UymrYWXiLGuFkBm1Zgl0mL71oEXsVCOKHFZaLUpw8a
-	 LVTEvoqpfqUDQ==
+	s=default; t=1777697456;
+	bh=NzT3APBnqSAwLHn2gideBIQArpEmCV4zmBiX4w9QCPQ=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=s7ix8f0lCxZ0YxmqjMr4iQGxypQBHQlji+3+cl7TkMfZU/kLyxJUL0WyA1Kh6KVeI
+	 ZbAdfPGI4gFCy/+SgPUDpJX+fSovfBvWt6MExfOQ/kdQAMZKiUjgfFs63T25cO0lVq
+	 8FJ/yYDWfwSG6AZ7zuyGYvKElE8emnSoMOHT2SgAKJ9TP3iMPjbwRQlvK65CONKPlr
+	 TluPwOe5J8a7CS9z7kvw3UIM2c+WYozZtFs5ThXfrjn24qM0GCq9wBx/ExWs2RK01Y
+	 v+pyMrOXGdE54il0EewsQUzOBqR6TPlMwTj7Qnp0InzvTMlZjN4jXD7/aAJLVDTh2S
+	 DkE4aw9ftp+fA==
 Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id 7E3B8482AC; Sat,  2 May 2026 04:41:24 +0000 (UTC)
+	id 3CA72482C3; Sat,  2 May 2026 04:50:56 +0000 (UTC)
 X-Spam-Level: 
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1777696883;
-	bh=/tniwKF+wLA6PfpCL7yMr41giTcZ4oDYqT+9D6T5ZeQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=vAT+0pOcEn/PMx0MBmJVpG9ftNJ4Gm50MJVAKOBuO8yiR/zX7p9UCQl220J95Ewkp
-	 ouH4XeKxmJY2pqsOq0JCXmpQIJe3xmVZT35FYqmuZ+X8eE7DldceKZLv4oX+bNqNOa
-	 1Nr/KYbPTrS3yX+Iuj2QAe0RwesnzMTJOwJyjuD6GCw55uQmOYpv7PqnMfQkq8pKvu
-	 pB3FvuO3zcehxPGGTmS2Nx2/tGSWOQXkLZstHMMpB5LaTXotghrE1uib7+VUqPFiij
-	 NvW14CAuh6KjnFUQbQliDXldvOjSbRV74iJ9Gw2K7Mzr8JB1eV2wokprHuxMeoHUmB
-	 6Vqo+8JHiqouw==
-Received: from [IPV6:2a00:6020:47a3:e800:271c:c6c5:9fde:77cb] (unknown [IPv6:2a00:6020:47a3:e800:271c:c6c5:9fde:77cb])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 8BC88412CF;
-	Sat,  2 May 2026 04:41:23 +0000 (UTC)
-Message-ID: <38fde5fd-7bd9-459b-9ee9-d8a9a8de028e@birger-koblitz.de>
-Date: Sat, 2 May 2026 06:41:23 +0200
+	s=default; t=1777697454;
+	bh=NzT3APBnqSAwLHn2gideBIQArpEmCV4zmBiX4w9QCPQ=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=V/w4KC8NX7FjyAXMjdniYuUgmOw9KuzQz3D1meQywiJFFukLSVQmU7bHcs88s5kiH
+	 Qlz6kJXOZkT6qLhy11BaWnw+7YbkoWb3YMXP+/sNNRWZ0GiObSWiPn+s+7yfWcFmKj
+	 nSQowjyaQNudGoICpU7bP+I995aNRcdARl5t7JHcr+NAuN6iiVGhHiV0atL601XGzy
+	 pGOStjgoYN8K9YBwrdvELXbaXcz44TRiK1jJnc5Wi2wREVij7LYkbJsy5NHH4jsLD8
+	 6lteNMoyGxaPsaonLC/ODSuirmF/9SHAExK8h/638sW50txbMv1/D7/QoQWmJpqyCi
+	 oKX+7r25jIaQw==
+Received: from AMDDesktop.lan (unknown [IPv6:2a00:6020:47a3:e800:271c:c6c5:9fde:77cb])
+	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 959C34829E;
+	Sat,  2 May 2026 04:50:54 +0000 (UTC)
+From: Birger Koblitz <mail@birger-koblitz.de>
+Date: Sat, 02 May 2026 06:50:36 +0200
+Subject: [PATCH net-next v3 1/3] r8152: Add support for 10Gbit Link Speeds
+ and EEE
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 3/4] r8152: Add irq mitigation for RTL8157/9
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, linux-usb@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, hsu.chih.kai@realtek.com,
- Michal Pecio <michal.pecio@gmail.com>
-References: <20260429-rtl8159_net_next-v2-3-bab3cd4e4c66@birger-koblitz.de>
- <20260501011600.3154202-1-kuba@kernel.org>
-From: Birger Koblitz <mail@birger-koblitz.de>
-Content-Language: en-US
-In-Reply-To: <20260501011600.3154202-1-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260502-rtl8159_net_next-v3-1-12c895d46cd6@birger-koblitz.de>
+References: <20260502-rtl8159_net_next-v3-0-12c895d46cd6@birger-koblitz.de>
+In-Reply-To: <20260502-rtl8159_net_next-v3-0-12c895d46cd6@birger-koblitz.de>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Chih Kai Hsu <hsu.chih.kai@realtek.com>, 
+ Birger Koblitz <mail@birger-koblitz.de>, Andrew Lunn <andrew@lunn.ch>, 
+ Aleksander Jan Bajkowski <olek2@wp.pl>
+X-Mailer: b4 0.14.2
 
+The RTL8159 supports 10GBit Link speeds. Add support for this speed
+in the setup and setting/getting through ethtool. Also add 10GBit EEE.
+Add functionality for setup and ethtool get/set methods.
 
+Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Tested-by: Aleksander Jan Bajkowski <olek2@wp.pl>
+---
+ drivers/net/usb/r8152.c | 53 ++++++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 50 insertions(+), 3 deletions(-)
 
-On 01/05/2026 3:16 am, Jakub Kicinski wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> ---
-> r8152: Add irq mitigation for RTL8157/9
-> 
-> This commit clears bits 0, 1, 2, and 7 of USB register 0xcf04 in
-> r8156_init() for RTL_VER_16 and later, with the stated intent of avoiding
-> intr URB completions with urb->status == -ESHUTDOWN on RTL8157 and
-> RTL8159.
-Based on the discussion in the parallel thread with Andrew and Michal,
-I will drop this part of the series, as the issue this patch tries to
-address is harmless, better solved differently, and it affects 
-performance. I will submit a separate patch as bug-fix to remove the 
-same register settings done in rtl8153_unload(), as this also applies to 
-the RTL8157.
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index ae834876aa1acc7a9af08a4c01b7a984c4ab8433..05abfab1df94a571347196bfce7c232865e1058e 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -621,6 +621,7 @@ enum spd_duplex {
+ 	FORCE_1000M_FULL,
+ 	NWAY_2500M_FULL,
+ 	NWAY_5000M_FULL,
++	NWAY_10000M_FULL,
+ };
+ 
+ /* OCP_ALDPS_CONFIG */
+@@ -742,6 +743,7 @@ enum spd_duplex {
+ #define BP4_SUPER_ONLY		0x1578	/* RTL_VER_04 only */
+ 
+ enum rtl_register_content {
++	_10000bps	= BIT(14),
+ 	_5000bps	= BIT(12),
+ 	_2500bps	= BIT(10),
+ 	_1250bps	= BIT(9),
+@@ -757,6 +759,8 @@ enum rtl_register_content {
+ 
+ #define is_speed_2500(_speed)	(((_speed) & (_2500bps | LINK_STATUS)) == (_2500bps | LINK_STATUS))
+ #define is_speed_5000(_speed)	(((_speed) & (_5000bps | LINK_STATUS)) == (_5000bps | LINK_STATUS))
++#define is_speed_10000(_speed)	(((_speed) & (_10000bps | LINK_STATUS)) \
++				 == (_10000bps | LINK_STATUS))
+ #define is_flow_control(_speed)	(((_speed) & (_tx_flow | _rx_flow)) == (_tx_flow | _rx_flow))
+ 
+ #define RTL8152_MAX_TX		4
+@@ -1008,6 +1012,7 @@ struct r8152 {
+ 
+ 	u32 support_2500full:1;
+ 	u32 support_5000full:1;
++	u32 support_10000full:1;
+ 	u32 lenovo_macpassthru:1;
+ 	u32 dell_tb_rx_agg_bug:1;
+ 	u16 ocp_base;
+@@ -1260,6 +1265,7 @@ enum tx_csum_stat {
+ #define RTL_ADVERTISED_1000_FULL		BIT(5)
+ #define RTL_ADVERTISED_2500_FULL		BIT(6)
+ #define RTL_ADVERTISED_5000_FULL		BIT(7)
++#define RTL_ADVERTISED_10000_FULL		BIT(8)
+ 
+ /* Maximum number of multicast addresses to filter (vs. Rx-all-multicast).
+  * The RTL chips use a 64 element hash table based on the Ethernet CRC.
+@@ -6513,6 +6519,9 @@ static int rtl8152_set_speed(struct r8152 *tp, u8 autoneg, u32 speed, u8 duplex,
+ 
+ 			if (tp->support_5000full)
+ 				support |= RTL_ADVERTISED_5000_FULL;
++
++			if (tp->support_10000full)
++				support |= RTL_ADVERTISED_10000_FULL;
+ 		}
+ 
+ 		advertising &= support;
+@@ -6559,9 +6568,10 @@ static int rtl8152_set_speed(struct r8152 *tp, u8 autoneg, u32 speed, u8 duplex,
+ 				r8152_mdio_write(tp, MII_CTRL1000, new1);
+ 		}
+ 
+-		if (tp->support_2500full || tp->support_5000full) {
++		if (tp->support_2500full || tp->support_5000full || tp->support_10000full) {
+ 			orig = ocp_reg_read(tp, OCP_10GBT_CTRL);
+-			new1 = orig & ~(MDIO_AN_10GBT_CTRL_ADV2_5G | MDIO_AN_10GBT_CTRL_ADV5G);
++			new1 = orig & ~(MDIO_AN_10GBT_CTRL_ADV2_5G | MDIO_AN_10GBT_CTRL_ADV5G
++					| MDIO_AN_10GBT_CTRL_ADV10G);
+ 
+ 			if (advertising & RTL_ADVERTISED_2500_FULL) {
+ 				new1 |= MDIO_AN_10GBT_CTRL_ADV2_5G;
+@@ -6573,6 +6583,11 @@ static int rtl8152_set_speed(struct r8152 *tp, u8 autoneg, u32 speed, u8 duplex,
+ 				tp->ups_info.speed_duplex = NWAY_5000M_FULL;
+ 			}
+ 
++			if (advertising & RTL_ADVERTISED_10000_FULL) {
++				new1 |= MDIO_AN_10GBT_CTRL_ADV10G;
++				tp->ups_info.speed_duplex = NWAY_10000M_FULL;
++			}
++
+ 			if (orig != new1)
+ 				ocp_reg_write(tp, OCP_10GBT_CTRL, new1);
+ 		}
+@@ -8708,7 +8723,10 @@ int rtl8152_get_link_ksettings(struct net_device *netdev,
+ 	linkmode_mod_bit(ETHTOOL_LINK_MODE_5000baseT_Full_BIT,
+ 			 cmd->link_modes.supported, tp->support_5000full);
+ 
+-	if (tp->support_2500full || tp->support_5000full) {
++	linkmode_mod_bit(ETHTOOL_LINK_MODE_10000baseT_Full_BIT,
++			 cmd->link_modes.supported, tp->support_10000full);
++
++	if (tp->support_2500full || tp->support_5000full || tp->support_10000full) {
+ 		u16 ocp_10gbt_ctrl = ocp_reg_read(tp, OCP_10GBT_CTRL);
+ 		u16 ocp_10gbt_stat = ocp_reg_read(tp, OCP_10GBT_STAT);
+ 
+@@ -8737,6 +8755,19 @@ int rtl8152_get_link_ksettings(struct net_device *netdev,
+ 			if (is_speed_5000(rtl8152_get_speed(tp)))
+ 				cmd->base.speed = SPEED_5000;
+ 		}
++
++		if (tp->support_10000full) {
++			linkmode_mod_bit(ETHTOOL_LINK_MODE_10000baseT_Full_BIT,
++					 cmd->link_modes.advertising,
++					 ocp_10gbt_ctrl & MDIO_AN_10GBT_CTRL_ADV10G);
++
++			linkmode_mod_bit(ETHTOOL_LINK_MODE_10000baseT_Full_BIT,
++					 cmd->link_modes.lp_advertising,
++					 ocp_10gbt_stat & MDIO_AN_10GBT_STAT_LP10G);
++
++			if (is_speed_10000(rtl8152_get_speed(tp)))
++				cmd->base.speed = SPEED_10000;
++		}
+ 	}
+ 
+ 	mutex_unlock(&tp->control);
+@@ -8790,6 +8821,10 @@ static int rtl8152_set_link_ksettings(struct net_device *dev,
+ 		     cmd->link_modes.advertising))
+ 		advertising |= RTL_ADVERTISED_5000_FULL;
+ 
++	if (test_bit(ETHTOOL_LINK_MODE_10000baseT_Full_BIT,
++		     cmd->link_modes.advertising))
++		advertising |= RTL_ADVERTISED_10000_FULL;
++
+ 	mutex_lock(&tp->control);
+ 
+ 	ret = rtl8152_set_speed(tp, cmd->base.autoneg, cmd->base.speed,
+@@ -8953,6 +8988,13 @@ static int r8153_get_eee(struct r8152 *tp, struct ethtool_keee *eee)
+ 			linkmode_set_bit(ETHTOOL_LINK_MODE_5000baseT_Full_BIT, common);
+ 	}
+ 
++	if (tp->support_10000full) {
++		linkmode_set_bit(ETHTOOL_LINK_MODE_10000baseT_Full_BIT, eee->supported);
++
++		if (speed & _10000bps)
++			linkmode_set_bit(ETHTOOL_LINK_MODE_10000baseT_Full_BIT, common);
++	}
++
+ 	eee->eee_enabled = tp->eee_en;
+ 
+ 	if (speed & _1000bps)
+@@ -9967,6 +10009,11 @@ static int rtl8152_probe_once(struct usb_interface *intf,
+ 			tp->speed = SPEED_5000;
+ 			tp->advertising |= RTL_ADVERTISED_5000_FULL;
+ 		}
++		if (tp->support_10000full &&
++		    tp->udev->speed >= USB_SPEED_SUPER) {
++			tp->speed = SPEED_10000;
++			tp->advertising |= RTL_ADVERTISED_10000_FULL;
++		}
+ 		tp->advertising |= RTL_ADVERTISED_1000_FULL;
+ 	}
+ 	tp->duplex = DUPLEX_FULL;
+
+-- 
+2.47.3
 
