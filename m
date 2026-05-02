@@ -1,47 +1,59 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA37296BC8;
-	Sat,  2 May 2026 16:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C31540DFB4;
+	Sat,  2 May 2026 16:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777740124; cv=none; b=EaLklwiY8FqBzE332CmHFkajxNlzrodE6+3DvtR1Ig7okCyclv0UIhk0RAsnMRBTisnw0TYchrazQki6KvLrnaYLqhoOZOwmODy9nT4q34LUD/BlihSy9CrXIsk0RJ3BSdFmNeppKVzKxh3JGDWhca0EsM7ljsYJJfdlVNQuJLU=
+	t=1777740363; cv=none; b=lWr6H436E2CfIvDkCsJyp3h8EbjTT09gxpk5/T7WZGdBtPruivaoFWWiAa8cAr2Iew2CWjk1ZTAX+qIxIP8+5QJzYubLtDc8zIuB3k67Ab0nsj/B3K/9tC7iPfCJ1VTKawmSIE3/aQuneKDoCL08KidMxgOOc3UF4iPtrr8KGP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777740124; c=relaxed/simple;
-	bh=h/94Mx3HuJnQMsGzdpfcgAvBXvPkJZJfkUbauyL60BM=;
+	s=arc-20240116; t=1777740363; c=relaxed/simple;
+	bh=s93VJCDBnvDfrecPRtxHRCkkBez6Fz+HZPYqWbqIAkw=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bgg6WAYZfhrV6bcEyG86g0O5ZtzVn1aR7W5LJECGWiS/+ge4ckes5p2fYDzD56SQAu9LZh9QfRLhr4gJCg25CjaRdCWcQ86ADgwPGRzW9/PybONPuOBofywFwltg7DYjbZZmdigxCIeTzHjiOcnyt0ypPsvv2WxHJN5Zj7huaTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L39iCl2/; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=R9mKTvcdvy79jBM8bB6wSd2YxNEE02/pBH6BvO8hgidAcutpl8kUgB1Bo+pMcrwi2LZIWJ101cnbDHyV59ZGp/8yFclg171/joZkCDeq54NcZ9KNvmpBppKK/XLjY+TaAkYPXsoRtPCGcaP/Mhx3GG2/mpUVGVDpxtmbZxSe8M0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mM0VFItv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L39iCl2/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 105A4C19425;
-	Sat,  2 May 2026 16:42:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mM0VFItv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB58BC19425;
+	Sat,  2 May 2026 16:46:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777740123;
-	bh=h/94Mx3HuJnQMsGzdpfcgAvBXvPkJZJfkUbauyL60BM=;
+	s=k20201202; t=1777740362;
+	bh=s93VJCDBnvDfrecPRtxHRCkkBez6Fz+HZPYqWbqIAkw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=L39iCl2/xhUSDcB4CozdnnLaqU/fZhcdlxXfJlaH9/YfDv3gL+fmHwzDuESl8wzNx
-	 rP1K3n4jJmskN8qean1Dhe1irHpF4ACL5kUGnuGUDLJEixdB1WkN60jMj3/ghXUzKI
-	 p62TFoa7qHVJQEUEeEQp1Cakc3ctiv9JNkkjwQ+xJC+3maHAkKqIXYcrmvcvUW0Y+K
-	 O24fhpSifWEJrDuNXQmk0XQ1Bp8NEmlAZ+swerPkfsQu0GrOYploJYzElIBbL/O8bd
-	 diEsyGBBoT8ZEoINyG2vHBUqnV1sfa20C9q9xlonAxzyLQKAVWJdPv9OsvJN2WghaZ
-	 SXe+hSamAeNPw==
-Date: Sat, 2 May 2026 09:42:02 -0700
+	b=mM0VFItvv0NwJhTS9Qka9pD2gQhdVDRZNLnEudvHavHJW8PcHO1CMmyYOlFMYXz72
+	 bW8edgGGN9KR5w5kt2QryXHza2K+FphEN+EM4T8tSbNtE1HSOOLzrc+jJPFnNtUhQH
+	 4ixpGPO2jxLUANqnBRaPcgA9a/zpzuEzU0fK4wBgHb1zgFflgV4MpWUzVefa1ssRrX
+	 CS6kp8LDHcZKBTHfy+4rpnDCnoXki8a045qnr45cxJxAIf4sLzfCgohbieuv3ChkTE
+	 9eHKCPBEQfvlwA6xypbDE/fQa1CJkU9UugGOdptKEvZovhqrc4dn+cQaaQfD3cOpTE
+	 IR1LR8d3C7y9Q==
+Date: Sat, 2 May 2026 09:45:59 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: "SnailSploit | Kai Aizen" <kai.aizen.dev@gmail.com>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org, jmaloy@redhat.com,
- ying.xue@windriver.com, pabeni@redhat.com,
- tipc-discussion@lists.sourceforge.net, tung.q.nguyen@dektech.com.au,
- lkp@intel.com, oe-kbuild-all@lists.linux.dev,
- syzkaller-bugs@googlegroups.com, "SnailSploit | Kai Aizen"
- <95986478+SnailSploit@users.noreply.github.com>, syzbot ci
- <syzbot+ci779e8ed86620f383@syzkaller.appspotmail.com>
-Subject: Re: [PATCH net v3] tipc: fix UAF race in
- tipc_mon_peer_up/down/remove_peer vs bearer teardown
-Message-ID: <20260502094202.42ccedd1@kernel.org>
-In-Reply-To: <80ae67e96de2f702028e5bacc89db4575e1531ca.1777559945.git.kai.aizen.dev@gmail.com>
-References: <CALynFi5d0DuGW50xq7xQnsDPdEuN5jBGTqh8bcsUwxk6L-FAdA@mail.gmail.com>
-	<80ae67e96de2f702028e5bacc89db4575e1531ca.1777559945.git.kai.aizen.dev@gmail.com>
+To: Alex Elder <elder@riscstar.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, maxime.chevallier@bootlin.com,
+ rmk+kernel@armlinux.org.uk, andersson@kernel.org, konradybcio@kernel.org,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ linusw@kernel.org, brgl@kernel.org, arnd@arndb.de,
+ gregkh@linuxfoundation.org, daniel@riscstar.com,
+ mohd.anwar@oss.qualcomm.com, a0987203069@gmail.com,
+ alexandre.torgue@foss.st.com, ast@kernel.org, boon.khai.ng@altera.com,
+ chenchuangyu@xiaomi.com, chenhuacai@kernel.org, daniel@iogearbox.net,
+ hawk@kernel.org, hkallweit1@gmail.com, inochiama@gmail.com,
+ john.fastabend@gmail.com, julianbraha@gmail.com, livelycarpet87@gmail.com,
+ matthew.gerlach@altera.com, mcoquelin.stm32@gmail.com, me@ziyao.cc,
+ prabhakar.mahadev-lad.rj@bp.renesas.com, richardcochran@gmail.com,
+ rohan.g.thomas@altera.com, sdf@fomichev.me, siyanteng@cqsoftware.com.cn,
+ weishangjuan@eswincomputing.com, wens@kernel.org, netdev@vger.kernel.org,
+ bpf@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-gpio@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 11/12] misc: tc956x_pci: add TC956x/QPS615
+ support
+Message-ID: <20260502094559.15c3f479@kernel.org>
+In-Reply-To: <20260501155421.3329862-12-elder@riscstar.com>
+References: <20260501155421.3329862-1-elder@riscstar.com>
+	<20260501155421.3329862-12-elder@riscstar.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,15 +63,16 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 30 Apr 2026 18:40:55 +0300 SnailSploit | Kai Aizen wrote:
-> From: "SnailSploit | Kai Aizen" <95986478+SnailSploit@users.noreply.github.com>
+On Fri,  1 May 2026 10:54:19 -0500 Alex Elder wrote:
+> The Toshiba TC956x is an Ethernet AVB/TSN bridge,  and is
+> essentially a small and highly-specialized SoC.  It implements
+> a number of internal functions, including a GPIO controller,
+> control registers managing internal reset and clock control
+> signals, a PCIe switch and internal endpoint, and mapping
+> hardware that translates between PCIe and internal addressing.
 
-We need a real email address. 
-The correct way to include your company / sponsor name is in round
-brackets, eg
-
-	Kai Aizen (SnailSploit) <email...
-
-please refer to the process docs for more info if necessary.
+drivers/misc/tc956x_pci.c:541:17: error: call to undeclared function 'u32_get_bits'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  541 |         chip->rev_id = u32_get_bits(val, NCID_REV_ID_MASK);
+      |                        ^
 -- 
 pw-bot: cr
