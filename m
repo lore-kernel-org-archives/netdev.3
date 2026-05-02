@@ -1,379 +1,337 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3BF63A3E62
-	for <netdev@vger.kernel.org>; Sat,  2 May 2026 21:54:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F9B186A;
+	Sat,  2 May 2026 23:25:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777758857; cv=none; b=sba0Oc9EpmMRnhT8qadfbKV13PQHJpM5oiwBL9NQ8viLIbZZ7ezt+zU5kEFQ9PMTKLBg+6XlLLgbUMod/aDYVtis72GOFuS1+9HvaP2c5qryHkfm/jVXi9J4Yg8DSjBPedWOHuEersATTp4ZWUF4tD/5Z7bd3blfI0COyi5X3zM=
+	t=1777764337; cv=none; b=eoBkygfKY80qseBue3x92PeFb4Nik0zz2Pc/a5sz7CBbsf02E44MIlnu3wscGG6cnUK2ylyJi8gQ1PSnNU+DzRirHhGFlWuRF8kUUkJB0mQb2B7HLnMT2JrQdlUNRsozmTcsdJo+GMut3dROIw89m04VtME3OF7RAkYk+7Ph4nY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777758857; c=relaxed/simple;
-	bh=cRnWCMQ88GSHrKRzoEl4e2//bkZFdnLonj7I/X92Vlc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WeAdW9582qEEXbPwq3CMR5OISEe2fu9Vz65Hbrye0uARfDZdUVLD2YDn82ZOCQgCqiHZKO0v2/PKmh03y0IqRnc9XfFNiYhk6BCLSaUAS7NIYGm2OeDyRmW+jbh0ayZrMK+UqP3ybKyCd9ciI64uRhetO0ifhZ5F72WCjjGQtws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c4L/sLbC; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1777764337; c=relaxed/simple;
+	bh=IpSw53TOh/n7IS6SsjWLenMx6OMEcXR4c08TD6yYtic=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=sFDJNziuK6ul9RHxaai0bMxWBlBE8kCslaM7mFuPpALi4mBKoLbBL5ZTdFjhcSFr+E+F9yqESb/plmvaVzl2tlqvJ32QMg/60QPH5lCfEnnaNcD9DcmG9DECOkmaG9PrkMXEaIWBRhT5ygQ9/XZ9IGPN7uIbejN+Quctt3LWfXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K+IuxdTE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c4L/sLbC"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2a7a9b8ed69so25966235ad.2
-        for <netdev@vger.kernel.org>; Sat, 02 May 2026 14:54:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777758855; x=1778363655; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jTLIWvyiu4EREhHJ+YnuwMmWukQlgS0TtUJWhXuNCiw=;
-        b=c4L/sLbCVLrA+BpVC1i4lO/G+UpE6dp7fBJiUYbxldKSYUFxK5zvI6ekBPRTOoGhy2
-         41YBhYaA3VrIF8sWyEg/iRsEGE65Eo5lPPvMMngsCT+AtQqorCb+rtYs1KJCHa6JcNLq
-         HhGDJq6JULqcJCA4F6+7KixnFifXu+CLIpPOQZEHQ0IsF2PswEulaEBqZ7b/pVNY/2HY
-         Rw07NVTy1E0WWSRL+uGhV5FcQ+GDCsakqs3KtpcJnqshCFxsEHdGJn2mbvE5AMx+AhoG
-         si5IzmhfLEJukaylWcVLKHeNTtZOE7wuDEIRq9IAflkoWlMLxa1ZQ7C1XM6/nTX2P57Y
-         ImLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777758855; x=1778363655;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=jTLIWvyiu4EREhHJ+YnuwMmWukQlgS0TtUJWhXuNCiw=;
-        b=l5N5oEvE3zhVSwxpnX9IHK24xvMJEs2OoiWSSi5fG0W1hvcdrJEFmTWYWTXDvboBj1
-         iCPWFKKnp693oy/9TezvOmbJHKaEBqT0TENb0JmUt+OVd8rXRTJFfcfK04g5PdBtLDke
-         vNBbFN9EyGb5NpchnkWBSxQCLlHYQPs0a5kJSdN5YCHqFsxvZ9pejnPQ7CWYwjLs/bse
-         ngdPnpPfL60dwkhjVlXL2lr3PgfQ6aX7cDutMAo0vHM/RbN47SKLLzKm+Odx3bRb9+HB
-         edVMOFp4sSqQ3gWbffGVAk5hRtIX2ApV/XC/9Z/vrwQTQgsucgcI1DDHzCQvqrPwgu5m
-         peBQ==
-X-Gm-Message-State: AOJu0YzrGRPSE+lVQDZg6IhaK6o8LKG5H5pk09jVQUq2bb1acG0FbV//
-	Ez929Gqzj80RPfRpoYlEm5QwNBWxPZ7XgRJhv1UEY+7pIlry/34r/CMW67BTZekf
-X-Gm-Gg: AeBDieskdBoNBMqteE26XzXjBBTdxqQQWkMddf/Ojtg3ayolDVD/Q4kem7aNf8SPwpb
-	mAJk7Ip0+3NUhFUmrPsYpt8RQRWLq2o8OkicTye2LVnMt7U1wYOqSNgZY9nP8VTjqJyDQ4657yD
-	uw6rc4mWAOyENzHreKDA2ciY8jkLrlFDBTqlAxkT4StkMEt6GPR7tbJZJ6oEx9CMphjBAIoAe3b
-	zt5vbLdRQ26Iuv9pL3Es1Lq15+KXWyMBATrUYri4/GrdlN288TgQ9aNwBCp2gtLK8yPwtU+37f/
-	8NgXrfutCnufd4WLPTj+VX8YbTd4VzlrdQG7y1OrXdgdcDv+Pmi/YdSxeGQZxkB2OKUug/7Dds7
-	SlpcgOImsabiUNcUddz4LbT25FQMA1iT8Z80Aa30F0gaHVghyCnmO/qsFvkiiK4wductDk7Likp
-	jXTriCEi71jB0DZu4F3T6F+c3BVT0cRN/fEhTqkInXse0LWQZS4oyYybFAvcSU
-X-Received: by 2002:a17:903:2f4f:b0:2b9:cd2d:6f14 with SMTP id d9443c01a7336-2b9f25343e2mr43703005ad.2.1777758855137;
-        Sat, 02 May 2026 14:54:15 -0700 (PDT)
-Received: from d.home.yangfl.dn42 ([2a09:bac5:6619:3046::4cf:90])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b9cae1e293sm60508315ad.45.2026.05.02.14.54.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 02 May 2026 14:54:14 -0700 (PDT)
-From: David Yang <mmyangfl@gmail.com>
-To: netdev@vger.kernel.org
-Cc: David Yang <mmyangfl@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Simon Horman <horms@kernel.org>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 3/3] net: dsa: yt921x: Add port qdisc tbf support
-Date: Sun,  3 May 2026 05:53:10 +0800
-Message-ID: <20260502215314.917687-4-mmyangfl@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260502215314.917687-1-mmyangfl@gmail.com>
-References: <20260502215314.917687-1-mmyangfl@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K+IuxdTE"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 26A80C2BCB9;
+	Sat,  2 May 2026 23:25:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777764337;
+	bh=IpSw53TOh/n7IS6SsjWLenMx6OMEcXR4c08TD6yYtic=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=K+IuxdTEywD5QY+rQWZ5rG9iS5aAQ6JgK3t5rb4sav/TpCDyOFdDV4b6onzLb/Idl
+	 BDJ9xb6qJSNKmIM6Px8Ovgx+5Ow7JE0/irGTH3dogSgZZ6jXlIZcscjvldymaLH2G/
+	 NoK3c6twlqZxD8lHP+wOiWAFR7mQPRQ/qofaflsDlFkeH+TQlM68OV1zn7MbKYuqY6
+	 jU71ze3g3B3B4fs7+ABaKcpgrNZ9/LIlmkzfw/Wn6wyJOZGQ5sy3jmDKTMmIrrnU/7
+	 fbIbysvyrRDvn2RjnyTZFFePqGE+uoWeqKM4Y6WkBp21s+EWvocpxO8kk7m2ji+ZM3
+	 8ltXg5r50D/9w==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 176DBCD3426;
+	Sat,  2 May 2026 23:25:37 +0000 (UTC)
+From: Ciprian Regus via B4 Relay <devnull+ciprian.regus.analog.com@kernel.org>
+Date: Sun, 03 May 2026 02:24:50 +0300
+Subject: [PATCH net-next 1/5] net: ethernet: oa_tc6: Handle the OA TC6 SPI
+ protected mode
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260503-adin1140-driver-v1-1-dd043cdd88f0@analog.com>
+References: <20260503-adin1140-driver-v1-0-dd043cdd88f0@analog.com>
+In-Reply-To: <20260503-adin1140-driver-v1-0-dd043cdd88f0@analog.com>
+To: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, Andrew Lunn <andrew@lunn.ch>, 
+ Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-doc@vger.kernel.org, devicetree@vger.kernel.org, 
+ Ciprian Regus <ciprian.regus@analog.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777764335; l=8778;
+ i=ciprian.regus@analog.com; s=20260330; h=from:subject:message-id;
+ bh=smd/ALBtlVdeWdMQcAG2kvWHkVX9YyfLReANHzFrjYA=;
+ b=NgfRGoWt8KE67G6lRWZb1Ea1QUW1DMXqpn2nuURz9Uy0/fttF0/WI/FJp0hgkjR6YkutURFiR
+ o6O1K0tt6zoCj9ktDT1nEyqhWrapNUHQFKi69YfpTPE0z3TciutYAol
+X-Developer-Key: i=ciprian.regus@analog.com; a=ed25519;
+ pk=8WoNhI0kQcQUl8YqJO5ZevROYk9HP8lOIeIgIYgjfbc=
+X-Endpoint-Received: by B4 Relay for ciprian.regus@analog.com/20260330 with
+ auth_id=703
+X-Original-From: Ciprian Regus <ciprian.regus@analog.com>
+Reply-To: ciprian.regus@analog.com
 
-Enable port shaping and support limiting the rate of outgoing traffic.
+From: Ciprian Regus <ciprian.regus@analog.com>
 
-Signed-off-by: David Yang <mmyangfl@gmail.com>
+Implement the OA TC6 standard defined protected mode for control (register
+access) transactions. In addition to the current register access formats
+the oa_tc6 driver handles, 1's complement values of the data field
+are included (by both the host and the MACPHY) in the SPI transfer frames.
+This feature acts as an integrity check.
+
+Control write transactions look like this:
+
+          |<- 32 bits ->|<--- data_size --->|<- 32 bits ->|
+    MOSI: | ctrl header | reg write data    | ignored     |
+    MISO: | (discard)   | echoed ctrl hdr   | echoed data |
+
+    data_size (LEN = number of registers to read in a sequence):
+      Unprotected: 32 x (LEN + 1) bits
+      Protected:   2 x 32 x (LEN + 1) bits
+
+Control read transaction:
+
+          |<- 32 bits ->|<--- 32 bits --> |<- data_size ->|
+    MOSI: | ctrl header | ignored ...                     |
+    MISO: | (discard)   | echoed ctrl hdr | reg read data |
+
+    data_size (LEN = number of registers to read in a sequence):
+      Unprotected: 32 x (LEN + 1) bits
+      Protected:   2 x 32 x (LEN + 1) bits
+
+Register data format ("reg write data" and "reg read data"):
+
+    Unprotected:
+      | W1 (normal) | W2 (normal) | ... | Wx (normal) |
+
+    Protected:
+    | W1 (normal) | W1 (complement) | ... | Wx (normal) | Wx (complement)|
+
+The protected mode state can be read from the bit 5 of CONFIG0 (0x4)
+register, and this setting is usually only configured during the
+MACPHY's reset (depending on the device it can be done by setting the
+state of a pin). We can read the protected mode configuration before any
+other register access and since the SPI transfer is initially sized for an
+unprotected read, the MACPHY's complement words are never clocked out
+and no checking is required. The data transactions (Ethernet frames)
+remain unchanged.
+
+Signed-off-by: Ciprian Regus <ciprian.regus@analog.com>
 ---
- drivers/net/dsa/yt921x.c | 138 +++++++++++++++++++++++++++++++++++++++
- drivers/net/dsa/yt921x.h |  66 ++++++++++++++++++-
- 2 files changed, 203 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/oa_tc6.c | 105 ++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 92 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/dsa/yt921x.c b/drivers/net/dsa/yt921x.c
-index fd1fdcd5f9a3..9560fb2b8657 100644
---- a/drivers/net/dsa/yt921x.c
-+++ b/drivers/net/dsa/yt921x.c
+diff --git a/drivers/net/ethernet/oa_tc6.c b/drivers/net/ethernet/oa_tc6.c
+index 91a906a7918a..546ca652d974 100644
+--- a/drivers/net/ethernet/oa_tc6.c
++++ b/drivers/net/ethernet/oa_tc6.c
 @@ -24,6 +24,7 @@
- #include <net/dsa.h>
- #include <net/dscp.h>
- #include <net/ieee8021q.h>
-+#include <net/pkt_cls.h>
+ #define OA_TC6_REG_CONFIG0			0x0004
+ #define CONFIG0_SYNC				BIT(15)
+ #define CONFIG0_ZARFE_ENABLE			BIT(12)
++#define CONFIG0_PROTE				BIT(5)
  
- #include "yt921x.h"
+ /* Status Register #0 */
+ #define OA_TC6_REG_STATUS0			0x0008
+@@ -87,6 +88,7 @@
+ #define OA_TC6_PHY_C45_AUTO_NEG_MMS5		5	/* MMD 7 */
+ #define OA_TC6_PHY_C45_POWER_UNIT_MMS6		6	/* MMD 13 */
  
-@@ -1272,6 +1273,19 @@ yt921x_marker_tfm_police(struct yt921x_marker *marker,
- 				 priv, port, extack);
- }
++#define OA_TC6_CTRL_PROT_REPLY_SIZE		4
+ #define OA_TC6_CTRL_HEADER_SIZE			4
+ #define OA_TC6_CTRL_REG_VALUE_SIZE		4
+ #define OA_TC6_CTRL_IGNORED_SIZE		4
+@@ -95,6 +97,13 @@
+ 						(OA_TC6_CTRL_MAX_REGISTERS *\
+ 						OA_TC6_CTRL_REG_VALUE_SIZE) +\
+ 						OA_TC6_CTRL_IGNORED_SIZE)
++
++#define OA_TC6_CTRL_SPI_BUF_PROT_SIZE		(OA_TC6_CTRL_HEADER_SIZE +\
++						(OA_TC6_CTRL_MAX_REGISTERS *\
++						(OA_TC6_CTRL_REG_VALUE_SIZE +\
++						 OA_TC6_CTRL_PROT_REPLY_SIZE)) +\
++						OA_TC6_CTRL_IGNORED_SIZE)
++
+ #define OA_TC6_CHUNK_PAYLOAD_SIZE		64
+ #define OA_TC6_DATA_HEADER_SIZE			4
+ #define OA_TC6_CHUNK_SIZE			(OA_TC6_DATA_HEADER_SIZE +\
+@@ -129,6 +138,7 @@ struct oa_tc6 {
+ 	u8 rx_chunks_available;
+ 	bool rx_buf_overflow;
+ 	bool int_flag;
++	bool prot_ctrl;
+ };
  
-+static int
-+yt921x_marker_tfm_shape(struct yt921x_marker *marker, u64 rate, u64 burst,
-+			unsigned int flags, bool queue,
-+			struct yt921x_priv *priv, int port,
-+			struct netlink_ext_ack *extack)
-+{
-+	return yt921x_marker_tfm(marker, rate, burst, flags,
-+				 queue ? priv->queue_shape_slot_ns :
-+				 priv->port_shape_slot_ns, YT921X_SHAPE_CIR_MAX,
-+				 YT921X_SHAPE_CBS_MAX, YT921X_SHAPE_UNIT_MAX,
-+				 priv, port, extack);
-+}
-+
- static int
- yt921x_police_validate(const struct flow_action_police *police,
- 		       const struct flow_action *action,
-@@ -1378,6 +1392,115 @@ yt921x_dsa_port_policer_add(struct dsa_switch *ds, int port,
- 	return res;
- }
- 
-+static int
-+yt921x_tbf_validate(struct yt921x_priv *priv,
-+		    const struct tc_tbf_qopt_offload *qopt, int *queuep)
-+{
-+	struct netlink_ext_ack *extack = qopt->extack;
-+	int queue = -1;
-+
-+	/* TODO: queue support */
-+	if (qopt->parent != TC_H_ROOT) {
-+		NL_SET_ERR_MSG_MOD(extack, "Parent should be \"root\"");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	switch (qopt->command) {
-+	case TC_TBF_REPLACE: {
-+		const struct tc_tbf_qopt_offload_replace_params *p;
-+
-+		p = &qopt->replace_params;
-+
-+		if (p->mtu || p->peak.rate_bytes_ps) {
-+			NL_SET_ERR_MSG_MOD(extack,
-+					   "Offload not supported when mtu/peakrate is configured");
-+			return -EOPNOTSUPP;
-+		}
-+
-+		if (!p->rate.mpu) {
-+			NL_SET_ERR_MSG_MOD(extack, "Assuming mpu = 64");
-+		} else if (p->rate.mpu != 64) {
-+			NL_SET_ERR_MSG_MOD(extack,
-+					   "Offload not supported when mpu is other than 64");
-+			return -EOPNOTSUPP;
-+		}
-+
-+		break;
-+	}
-+	default:
-+		break;
-+	}
-+
-+	*queuep = queue;
-+	return 0;
-+}
-+
-+static int
-+yt921x_dsa_port_setup_tc_tbf_port(struct dsa_switch *ds, int port,
-+				  const struct tc_tbf_qopt_offload *qopt)
-+{
-+	struct yt921x_priv *priv = to_yt921x_priv(ds);
-+	u32 ctrls[2];
-+	int res;
-+
-+	switch (qopt->command) {
-+	case TC_TBF_DESTROY:
-+		ctrls[0] = 0;
-+		ctrls[1] = 0;
-+		break;
-+	case TC_TBF_REPLACE: {
-+		const struct tc_tbf_qopt_offload_replace_params *p;
-+		struct yt921x_marker marker;
-+
-+		p = &qopt->replace_params;
-+
-+		res = yt921x_marker_tfm_shape(&marker, p->rate.rate_bytes_ps,
-+					      p->max_size,
-+					      YT921X_MARKER_SINGLE_BUCKET,
-+					      false, priv, port, NULL);
-+		if (res)
-+			return res;
-+
-+		ctrls[0] = YT921X_PORT_SHAPE_CTRLa_CIR(marker.cir) |
-+			   YT921X_PORT_SHAPE_CTRLa_CBS(marker.cbs);
-+		ctrls[1] = YT921X_PORT_SHAPE_CTRLb_UNIT(marker.unit) |
-+			   YT921X_PORT_SHAPE_CTRLb_EN;
-+		break;
-+	}
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+
-+	mutex_lock(&priv->reg_lock);
-+	res = yt921x_reg64_write(priv, YT921X_PORTn_SHAPE_CTRL(port), ctrls);
-+	mutex_unlock(&priv->reg_lock);
-+
-+	return res;
-+}
-+
-+static int
-+yt921x_dsa_port_setup_tc(struct dsa_switch *ds, int port,
-+			 enum tc_setup_type type, void *type_data)
-+{
-+	struct yt921x_priv *priv = to_yt921x_priv(ds);
-+	int res;
-+
-+	switch (type) {
-+	case TC_SETUP_QDISC_TBF: {
-+		const struct tc_tbf_qopt_offload *qopt = type_data;
-+		int queue;
-+
-+		res = yt921x_tbf_validate(priv, qopt, &queue);
-+		if (res)
-+			return res;
-+
-+		return yt921x_dsa_port_setup_tc_tbf_port(ds, port, qopt);
-+	}
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+}
-+
- static int
- yt921x_mirror_del(struct yt921x_priv *priv, int port, bool ingress)
+ enum oa_tc6_header_type {
+@@ -212,25 +222,36 @@ static void oa_tc6_update_ctrl_write_data(struct oa_tc6 *tc6, u32 value[],
  {
-@@ -3524,6 +3647,20 @@ static int yt921x_chip_setup_tc(struct yt921x_priv *priv)
- 		return res;
- 	priv->meter_slot_ns = ctrl * op_ns;
+ 	__be32 *tx_buf = tc6->spi_ctrl_tx_buf + OA_TC6_CTRL_HEADER_SIZE;
  
-+	ctrl = max(priv->port_shape_slot_ns / op_ns,
-+		   YT921X_PORT_SHAPE_SLOT_MIN);
-+	res = yt921x_reg_write(priv, YT921X_PORT_SHAPE_SLOT, ctrl);
-+	if (res)
-+		return res;
-+	priv->port_shape_slot_ns = ctrl * op_ns;
+-	for (int i = 0; i < length; i++)
++	for (int i = 0; i < length; i++) {
+ 		*tx_buf++ = cpu_to_be32(value[i]);
++		if (tc6->prot_ctrl)
++			*tx_buf++ = cpu_to_be32(~value[i]);
++	}
+ }
+ 
+-static u16 oa_tc6_calculate_ctrl_buf_size(u8 length)
++static u16 oa_tc6_calculate_ctrl_buf_size(u8 length, bool ctrl_prot)
+ {
++	u32 reply_size = OA_TC6_CTRL_REG_VALUE_SIZE;
 +
-+	ctrl = max(priv->queue_shape_slot_ns / op_ns,
-+		   YT921X_QUEUE_SHAPE_SLOT_MIN);
-+	res = yt921x_reg_write(priv, YT921X_QUEUE_SHAPE_SLOT, ctrl);
-+	if (res)
-+		return res;
-+	priv->queue_shape_slot_ns = ctrl * op_ns;
++	if (ctrl_prot)
++		reply_size += OA_TC6_CTRL_PROT_REPLY_SIZE;
++
+ 	/* Control command consists 4 bytes header + 4 bytes register value for
+-	 * each register + 4 bytes ignored value.
++	 * each register (+ 4 bytes for the register value complement in case
++	 * protected mode is used) + 4 bytes ignored value.
+ 	 */
+-	return OA_TC6_CTRL_HEADER_SIZE + OA_TC6_CTRL_REG_VALUE_SIZE * length +
++	return OA_TC6_CTRL_HEADER_SIZE + reply_size * length +
+ 	       OA_TC6_CTRL_IGNORED_SIZE;
+ }
+ 
+ static void oa_tc6_prepare_ctrl_spi_buf(struct oa_tc6 *tc6, u32 address,
+ 					u32 value[], u8 length,
+-					enum oa_tc6_register_op reg_op)
++					enum oa_tc6_register_op reg_op,
++					u16 buf_size)
+ {
+ 	__be32 *tx_buf = tc6->spi_ctrl_tx_buf;
+ 
++	memset(tx_buf, 0, buf_size);
+ 	*tx_buf = oa_tc6_prepare_ctrl_header(address, length, reg_op);
+ 
+ 	if (reg_op == OA_TC6_CTRL_REG_WRITE)
+@@ -253,10 +274,12 @@ static int oa_tc6_check_ctrl_write_reply(struct oa_tc6 *tc6, u8 size)
+ 	return 0;
+ }
+ 
+-static int oa_tc6_check_ctrl_read_reply(struct oa_tc6 *tc6, u8 size)
++static int oa_tc6_check_ctrl_read_reply(struct oa_tc6 *tc6, u8 length)
+ {
+-	u32 *rx_buf = tc6->spi_ctrl_rx_buf + OA_TC6_CTRL_IGNORED_SIZE;
+-	u32 *tx_buf = tc6->spi_ctrl_tx_buf;
++	__be32 *rx_buf = tc6->spi_ctrl_rx_buf + OA_TC6_CTRL_IGNORED_SIZE;
++	__be32 *tx_buf = tc6->spi_ctrl_tx_buf;
++	u32 complement;
++	u32 reply;
+ 
+ 	/* The echoed control read header must match with the one that was
+ 	 * transmitted.
+@@ -264,6 +287,20 @@ static int oa_tc6_check_ctrl_read_reply(struct oa_tc6 *tc6, u8 size)
+ 	if (*tx_buf != *rx_buf)
+ 		return -EPROTO;
+ 
++	if (tc6->prot_ctrl) {
++		/* Skip past the echoed header to the value/complement pairs */
++		rx_buf += 1;
++		for (int i = 0; i < length; i++) {
++			reply = be32_to_cpu(rx_buf[0]);
++			complement = be32_to_cpu(rx_buf[1]);
++
++			if (complement != ~reply)
++				return -EPROTO;
++
++			rx_buf += 2;
++		}
++	}
 +
  	return 0;
  }
  
-@@ -3680,6 +3817,7 @@ static const struct dsa_switch_ops yt921x_dsa_switch_ops = {
- 	/* rate */
- 	.port_policer_del	= yt921x_dsa_port_policer_del,
- 	.port_policer_add	= yt921x_dsa_port_policer_add,
-+	.port_setup_tc		= yt921x_dsa_port_setup_tc,
- 	/* hsr */
- 	.port_hsr_leave		= dsa_port_simple_hsr_leave,
- 	.port_hsr_join		= dsa_port_simple_hsr_join,
-diff --git a/drivers/net/dsa/yt921x.h b/drivers/net/dsa/yt921x.h
-index 546b12a8994a..0114a89b58b8 100644
---- a/drivers/net/dsa/yt921x.h
-+++ b/drivers/net/dsa/yt921x.h
-@@ -521,6 +521,12 @@ enum yt921x_app_selector {
- #define  YT921X_PORT_VLAN_CTRL1_CVLAN_DROP_TAGGED	BIT(1)
- #define  YT921X_PORT_VLAN_CTRL1_CVLAN_DROP_UNTAGGED	BIT(0)
+@@ -273,8 +310,13 @@ static void oa_tc6_copy_ctrl_read_data(struct oa_tc6 *tc6, u32 value[],
+ 	__be32 *rx_buf = tc6->spi_ctrl_rx_buf + OA_TC6_CTRL_IGNORED_SIZE +
+ 			 OA_TC6_CTRL_HEADER_SIZE;
  
-+#define YT921X_PORTn_PRIO_UCAST_QUEUE(port)	(0x300200 + 4 * (port))
-+#define  YT921X_PORT_PRIOm_UCAST_QUEUE_M(m)	(7 << (3 * (m)))
-+#define   YT921X_PORT_PRIOm_UCAST_QUEUE(m, x)		((x) << (3 * (m)))
-+#define YT921X_PORTn_PRIO_MCAST_QUEUE(port)	(0x300280 + 4 * (port))
-+#define  YT921X_PORT_PRIOm_MCAST_QUEUE_M(m)	(3 << (2 * (m)))
-+#define   YT921X_PORT_PRIOm_MCAST_QUEUE(m, x)		((x) << (2 * (m)))
- #define YT921X_MIRROR			0x300300
- #define  YT921X_MIRROR_IGR_PORTS_M		GENMASK(26, 16)
- #define   YT921X_MIRROR_IGR_PORTS(x)			FIELD_PREP(YT921X_MIRROR_IGR_PORTS_M, (x))
-@@ -531,6 +537,48 @@ enum yt921x_app_selector {
- #define  YT921X_MIRROR_PORT_M			GENMASK(3, 0)
- #define   YT921X_MIRROR_PORT(x)				FIELD_PREP(YT921X_MIRROR_PORT_M, (x))
- 
-+#define YT921X_QUEUE_SHAPE_SLOT		0x340008
-+#define  YT921X_QUEUE_SHAPE_SLOT_SLOT_M		GENMASK(11, 0)
-+#define YT921X_PORT_SHAPE_SLOT		0x34000c
-+#define  YT921X_PORT_SHAPE_SLOT_SLOT_M		GENMASK(11, 0)
-+#define YT921X_QUEUEn_SCH(x)		(0x341000 + 4 * (x))
-+#define  YT921X_QUEUE_SCH_E_DWRR_M		GENMASK(27, 18)
-+#define   YT921X_QUEUE_SCH_E_DWRR(x)			FIELD_PREP(YT921X_QUEUE_SCH_E_DWRR_M, (x))
-+#define  YT921X_QUEUE_SCH_C_DWRR_M		GENMASK(17, 8)
-+#define   YT921X_QUEUE_SCH_C_DWRR(x)			FIELD_PREP(YT921X_QUEUE_SCH_C_DWRR_M, (x))
-+#define  YT921X_QUEUE_SCH_E_PRIO_M		GENMASK(7, 4)
-+#define   YT921X_QUEUE_SCH_E_PRIO(x)			FIELD_PREP(YT921X_QUEUE_SCH_E_PRIO_M, (x))
-+#define  YT921X_QUEUE_SCH_C_PRIO_M		GENMASK(3, 0)
-+#define   YT921X_QUEUE_SCH_C_PRIO(x)			FIELD_PREP(YT921X_QUEUE_SCH_C_PRIO_M, (x))
-+#define YT921X_C_DWRRn(x)		(0x342000 + 4 * (x))
-+#define YT921X_E_DWRRn(x)		(0x343000 + 4 * (x))
-+#define  YT921X_DWRR_PKT_MODE			BIT(0)	/* 0: byte rate mode */
-+#define YT921X_QUEUEn_SHAPE_CTRL(x)	(0x34c000 + 0x10 * (x))
-+#define  YT921X_QUEUE_SHAPE_CTRLc_TOKEN_OVERFLOW_EN	BIT(6)
-+#define  YT921X_QUEUE_SHAPE_CTRLc_E_EN		BIT(5)
-+#define  YT921X_QUEUE_SHAPE_CTRLc_C_EN		BIT(4)
-+#define  YT921X_QUEUE_SHAPE_CTRLc_PKT_MODE	BIT(3)	/* 0: byte rate mode */
-+#define  YT921X_QUEUE_SHAPE_CTRLc_UNIT_M	GENMASK(2, 0)
-+#define   YT921X_QUEUE_SHAPE_CTRLc_UNIT(x)		FIELD_PREP(YT921X_QUEUE_SHAPE_CTRLc_UNIT_M, (x))
-+#define  YT921X_QUEUE_SHAPE_CTRLb_EBS_M		GENMASK(31, 18)
-+#define   YT921X_QUEUE_SHAPE_CTRLb_EBS(x)		FIELD_PREP(YT921X_QUEUE_SHAPE_CTRLb_EBS_M, (x))
-+#define  YT921X_QUEUE_SHAPE_CTRLb_EIR_M		GENMASK(17, 0)
-+#define   YT921X_QUEUE_SHAPE_CTRLb_EIR(x)		FIELD_PREP(YT921X_QUEUE_SHAPE_CTRLb_EIR_M, (x))
-+#define  YT921X_QUEUE_SHAPE_CTRLa_CBS_M		GENMASK(31, 18)
-+#define   YT921X_QUEUE_SHAPE_CTRLa_CBS(x)		FIELD_PREP(YT921X_QUEUE_SHAPE_CTRLa_CBS_M, (x))
-+#define  YT921X_QUEUE_SHAPE_CTRLa_CIR_M		GENMASK(17, 0)
-+#define   YT921X_QUEUE_SHAPE_CTRLa_CIR(x)		FIELD_PREP(YT921X_QUEUE_SHAPE_CTRLa_CIR_M, (x))
-+#define YT921X_PORTn_SHAPE_CTRL(port)	(0x354000 + 8 * (port))
-+#define  YT921X_PORT_SHAPE_CTRLb_EN		BIT(4)
-+#define  YT921X_PORT_SHAPE_CTRLb_PKT_MODE	BIT(3)	/* 0: byte rate mode */
-+#define  YT921X_PORT_SHAPE_CTRLb_UNIT_M		GENMASK(2, 0)
-+#define   YT921X_PORT_SHAPE_CTRLb_UNIT(x)		FIELD_PREP(YT921X_PORT_SHAPE_CTRLb_UNIT_M, (x))
-+#define  YT921X_PORT_SHAPE_CTRLa_CBS_M		GENMASK(31, 18)
-+#define   YT921X_PORT_SHAPE_CTRLa_CBS(x)		FIELD_PREP(YT921X_PORT_SHAPE_CTRLa_CBS_M, (x))
-+#define  YT921X_PORT_SHAPE_CTRLa_CIR_M		GENMASK(17, 0)
-+#define   YT921X_PORT_SHAPE_CTRLa_CIR(x)		FIELD_PREP(YT921X_PORT_SHAPE_CTRLa_CIR_M, (x))
-+#define YT921X_PORTn_SHAPE_STAT(port)	(0x356000 + 4 * (port))
+-	for (int i = 0; i < length; i++)
++	for (int i = 0; i < length; i++) {
+ 		value[i] = be32_to_cpu(*rx_buf++);
 +
- #define YT921X_EDATA_EXTMODE	0xfb
- #define YT921X_EDATA_LEN	0x100
++		/* skip complement word */
++		if (tc6->prot_ctrl)
++			rx_buf++;
++	}
+ }
  
-@@ -556,6 +604,11 @@ enum yt921x_fdb_entry_status {
- #define YT921X_METER_UNIT_MAX	((1 << 3) - 1)
- #define YT921X_METER_CIR_MAX	((1 << 18) - 1)
- #define YT921X_METER_CBS_MAX	((1 << 16) - 1)
-+#define YT921X_PORT_SHAPE_SLOT_MIN	80
-+#define YT921X_QUEUE_SHAPE_SLOT_MIN	132
-+#define YT921X_SHAPE_UNIT_MAX	((1 << 3) - 1)
-+#define YT921X_SHAPE_CIR_MAX	((1 << 18) - 1)
-+#define YT921X_SHAPE_CBS_MAX	((1 << 14) - 1)
+ static int oa_tc6_perform_ctrl(struct oa_tc6 *tc6, u32 address, u32 value[],
+@@ -283,10 +325,10 @@ static int oa_tc6_perform_ctrl(struct oa_tc6 *tc6, u32 address, u32 value[],
+ 	u16 size;
+ 	int ret;
  
- #define YT921X_LAG_NUM		2
- #define YT921X_LAG_PORT_NUM	4
-@@ -573,7 +626,16 @@ enum yt921x_fdb_entry_status {
- #define YT921X_TAG_LEN	8
+-	/* Prepare control command and copy to SPI control buffer */
+-	oa_tc6_prepare_ctrl_spi_buf(tc6, address, value, length, reg_op);
++	size = oa_tc6_calculate_ctrl_buf_size(length, tc6->prot_ctrl);
  
- /* 8 internal + 2 external + 1 mcu */
--#define YT921X_PORT_NUM			11
-+#define YT921X_PORT_NUM		11
-+#define YT921X_UCAST_QUEUE_NUM	8
-+#define YT921X_MCAST_QUEUE_NUM	4
-+#define YT921X_PORT_QUEUE_NUM \
-+	(YT921X_UCAST_QUEUE_NUM + YT921X_MCAST_QUEUE_NUM)
-+#define YT921X_UCAST_QUEUE_ID(port, queue) \
-+	(YT921X_UCAST_QUEUE_NUM * (port) + (queue))
-+#define YT921X_MCAST_QUEUE_ID(port, queue) \
-+	(YT921X_UCAST_QUEUE_NUM * YT921X_PORT_NUM + \
-+	 YT921X_MCAST_QUEUE_NUM * (port) + (queue))
+-	size = oa_tc6_calculate_ctrl_buf_size(length);
++	/* Prepare control command and copy to SPI control buffer */
++	oa_tc6_prepare_ctrl_spi_buf(tc6, address, value, length, reg_op, size);
  
- #define yt921x_port_is_internal(port) ((port) < 8)
- #define yt921x_port_is_external(port) (8 <= (port) && (port) < 9)
-@@ -652,6 +714,8 @@ struct yt921x_priv {
+ 	/* Perform SPI transfer */
+ 	ret = oa_tc6_spi_transfer(tc6, OA_TC6_CTRL_HEADER, size);
+@@ -301,7 +343,7 @@ static int oa_tc6_perform_ctrl(struct oa_tc6 *tc6, u32 address, u32 value[],
+ 		return oa_tc6_check_ctrl_write_reply(tc6, size);
  
- 	const struct yt921x_info *info;
- 	unsigned int meter_slot_ns;
-+	unsigned int port_shape_slot_ns;
-+	unsigned int queue_shape_slot_ns;
- 	/* cache of dsa_cpu_ports(ds) */
- 	u16 cpu_ports_mask;
- 	unsigned char cycle_ns;
+ 	/* Check echoed/received control read command reply for errors */
+-	ret = oa_tc6_check_ctrl_read_reply(tc6, size);
++	ret = oa_tc6_check_ctrl_read_reply(tc6, length);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -1224,6 +1266,20 @@ netdev_tx_t oa_tc6_start_xmit(struct oa_tc6 *tc6, struct sk_buff *skb)
+ }
+ EXPORT_SYMBOL_GPL(oa_tc6_start_xmit);
+ 
++static int oa_tc6_check_ctrl_protection(struct oa_tc6 *tc6)
++{
++	u32 regval;
++	int ret;
++
++	ret = oa_tc6_read_register(tc6, OA_TC6_REG_CONFIG0, &regval);
++	if (ret)
++		return ret;
++
++	tc6->prot_ctrl = FIELD_GET(CONFIG0_PROTE, regval);
++
++	return 0;
++}
++
+ /**
+  * oa_tc6_init - allocates and initializes oa_tc6 structure.
+  * @spi: device with which data will be exchanged.
+@@ -1276,6 +1332,29 @@ struct oa_tc6 *oa_tc6_init(struct spi_device *spi, struct net_device *netdev)
+ 	if (!tc6->spi_data_rx_buf)
+ 		return NULL;
+ 
++	ret = oa_tc6_check_ctrl_protection(tc6);
++	if (ret) {
++		dev_err(&tc6->spi->dev,
++			"Failed to check the protection mode: %d\n", ret);
++		return NULL;
++	}
++
++	if (tc6->prot_ctrl) {
++		tc6->spi_ctrl_tx_buf = devm_krealloc(&tc6->spi->dev,
++						     tc6->spi_ctrl_tx_buf,
++						     OA_TC6_CTRL_SPI_BUF_PROT_SIZE,
++						     GFP_KERNEL);
++		if (!tc6->spi_ctrl_tx_buf)
++			return NULL;
++
++		tc6->spi_ctrl_rx_buf = devm_krealloc(&tc6->spi->dev,
++						     tc6->spi_ctrl_rx_buf,
++						     OA_TC6_CTRL_SPI_BUF_PROT_SIZE,
++						     GFP_KERNEL);
++		if (!tc6->spi_ctrl_rx_buf)
++			return NULL;
++	}
++
+ 	ret = oa_tc6_sw_reset_macphy(tc6);
+ 	if (ret) {
+ 		dev_err(&tc6->spi->dev,
+
 -- 
-2.53.0
+2.43.0
+
 
