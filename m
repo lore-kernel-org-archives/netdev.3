@@ -1,72 +1,75 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D186182D0;
-	Sun,  3 May 2026 01:01:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE33188596;
+	Sun,  3 May 2026 01:04:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777770087; cv=none; b=uzdDTO+8f1Th6h1Kyupb9eYkua/pPyjpTvR0UhNLkmzFNRsAPZzWep9roheCNfTI7F3V+TK8XzoXs2Abq+ToAo5OVaUMdz5uYGmcXbJFJUuhEElP9ainKry/qwRRIa7WBiLL2fO3y+MDSn+wRdZarJCYeLwpcK8XaDa5HONBxK4=
+	t=1777770257; cv=none; b=u11x8NNJ49oaHRpkyQNNGgYuchO/0tkZFSsCDkIhzaWowQwXn0jeUkE8vvZZRfAb88YA2QERF51YIN2PloT5j5G7obfrkVxrqnsLrc2y0gtL/msHQyzXWc0UjKjIYgkAZcJSAvNlx3yKH5Xt+Tk+vqcED0jm06z08QxoR1+dPTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777770087; c=relaxed/simple;
-	bh=XDxcAE57Vh+QD4qQRFdtjw4UoQU1NSO56auf9NBefUs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cWLNi+lLKhnep61QjTgjwEori6gEML+e+WcOzKuu7xC6JyU7nGQ5MgP6bqjBQwtuG3XOxrgfaTE0vs+1WEqbkOsVfafzyKouqt9pPYVZuOUggmPz4ICOQxBK3ovx04TMpUu4Ro9XPzrPEvACF+Cq6zXyTP3RTm5Ml1ih8OJZfeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=PX0xo7Fh; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1777770257; c=relaxed/simple;
+	bh=ixgBVm3QW0ZNZzBllIY/kXAyuON4Pz3FrKe4czUF0OA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OgwARltO7mljESQO3FI3NxXTWT2IzlKBQoMYrHxj3+xyzM1P7jwCFjAWBDGIU/8jA+W3GWk+Qpdbfxlv3Y8SwIFSSj9rOJBLx09BES+s4eiS+ZEOSCBkkkKIGcyMKT334lCwlcPVXQYs9mlJ0tGfJnkNUsFqRbY8gjbpxnbbvrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GvZIsrxy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="PX0xo7Fh"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=9mkuMFVnzVmlXRG17VoJ62f7p9TbirL7O14CCQUl9xI=; b=PX0xo7FhjHB3ptw9cj9tb5aaE+
-	4b7kA2//6wi8Kxa4s191Pd2D1qacfDPCKPzO0hCoBDKFMRN9D3QLNeDnOtYm9PrDPIuU45BHl/sW7
-	hT9I9QvZf52nwbpL3kfpvOCa1xX4ikkFS8KvyGq2OVPW2qfL3c79HTdOFVd0QuPuejZI=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wJLCt-0014KH-ID; Sun, 03 May 2026 03:01:15 +0200
-Date: Sun, 3 May 2026 03:01:15 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: ciprian.regus@analog.com
-Cc: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next 4/5] net: ethernet: adi: Add a driver for the
- ADIN1140 MACPHY
-Message-ID: <3ae44fef-4106-4191-b48e-b2c5a952ea3c@lunn.ch>
-References: <20260503-adin1140-driver-v1-0-dd043cdd88f0@analog.com>
- <20260503-adin1140-driver-v1-4-dd043cdd88f0@analog.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GvZIsrxy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6A5DC19425;
+	Sun,  3 May 2026 01:04:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777770257;
+	bh=ixgBVm3QW0ZNZzBllIY/kXAyuON4Pz3FrKe4czUF0OA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=GvZIsrxyYCWyARZBDnQ9sYE2wd6mb39EQI5XHLk7T1AvaGR/5w6Z//+zs93Vn3SUN
+	 Lpi+MovPDZ1d1azHXdTjQ9AKAK3Mw8sxej08kJtoF8PJHhuBdNXK8Yprk8zwLV70oi
+	 B9zgb75JkbvTweT3hcsjrXI62QppHbsp0B95Hv0ZGsK7nl+QVdIqpH+KTUZjxD6Bw+
+	 bSI+t5QgI3kSo+no1yVXA8L76dcjjPpxdDZCALR/NfURbtWGqmuDUHDLdK2Pb8OEYr
+	 vMfmZS0Zig1xAxjPcblqotPh11B2ZD+XMjTlmlrokTsfeluhznl3RbI0ep3h+yKGYc
+	 6/9avyi0y2e6Q==
+Date: Sat, 2 May 2026 18:04:15 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Chuck Lever <cel@kernel.org>
+Cc: John Fastabend <john.fastabend@gmail.com>, Sabrina Dubroca
+ <sd@queasysnail.net>, Eric Dumazet <edumazet@google.com>, Simon Horman
+ <horms@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ netdev@vger.kernel.org, kernel-tls-handshake@lists.linux.dev, Chuck Lever
+ <chuck.lever@oracle.com>, Hannes Reinecke <hare@suse.de>, Alistair Francis
+ <alistair.francis@wdc.com>
+Subject: Re: [PATCH net-next v9 0/5] TLS read_sock performance scalability
+Message-ID: <20260502180415.0b0bf12b@kernel.org>
+In-Reply-To: <20260429-tls-read-sock-v9-0-39e71aa7810f@oracle.com>
+References: <20260429-tls-read-sock-v9-0-39e71aa7810f@oracle.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260503-adin1140-driver-v1-4-dd043cdd88f0@analog.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-> +static int adin1140_ioctl(struct net_device *netdev, struct ifreq *rq, int cmd)
-> +{
-> +	if (!netif_running(netdev))
-> +		return -EINVAL;
-> +
-> +	return phy_do_ioctl(netdev, rq, cmd);
-> +}
+On Wed, 29 Apr 2026 17:48:07 -0400 Chuck Lever wrote:
+> I'd like to encourage in-kernel kTLS consumers (i.e., NFS and
+> NVMe/TCP) to coalesce on the use of read_sock. When I suggested
+> this to Hannes, he reported a few performance scalability issues
+> with read_sock. 
 
-phy_do_ioctl_running()
+Meaning, this series achieves.. what right now?
+I mean - the headline is "performance scalability" and there's no
+performance testing result in any of the messages :S
+Patch 5 for instance "seems logical" but how much difference does
+it make?
 
-	Andrew
+> However, batch async decryption and its
+> submit/deliver scaffolding were dropped from this series because
+> async_capable is always false for TLS 1.3, the TLS version that
+> NFS and NVMe/TCP both require. Async crypto support for TLS 1.3
+> is a prerequisite for revisiting that work.
+> 
+> This series is now only a set of clean-ups. Support for async
+> has been deferred until after TLS KeyUpdate has been merged.
 
+What does "after TLS KeyUpdate has been merged" mean?
+KeyUpdate is supported.. You mean in NFS? Or in async?
+FTR async support is a major pain and we'd rather get rid of it
+(and switch away from cryto API) than extend it.
