@@ -1,316 +1,96 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176C01A681B
-	for <netdev@vger.kernel.org>; Sun,  3 May 2026 19:53:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C9F83A75B9
+	for <netdev@vger.kernel.org>; Sun,  3 May 2026 19:53:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777838031; cv=none; b=pPZI37WinJiWpaR30DflGHqM7yBmaQzL4G6sBbPvafv9O/uF7vyPVTkbIi5kglThwlJsyeSzN2RaNQouTp0Obj1/uazfErnP4Fiod0CFvYvtrtaucVXNWWKNdlNNkV7Lvj8V60Eay7Z/3PwO6CH/U2rhAgTvBx1Dm86WceZrs/I=
+	t=1777838035; cv=none; b=Zh0SMuL6uZIUh2Jj9S1r9HMJhzm9UPkQvpPR8HY0SAMD0robEd7LyUgIXWuXsQOiVdceQpR4VjZ43dKW8kfgnba8AsZA+UOnlNBHk7KwGpHVqYqwNIKcH2jBv9z3UXwWtdVf+SVvJFohTo3qJh6OH+0H2uBqFC2JjO10EY8jJ2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777838031; c=relaxed/simple;
-	bh=JfMGdIbiT2KdVHz8g0viJ1GpkDYuCJYV2rWnOwAWMT0=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=YYlF4VEIWeEXnjU2XVmzeGdZnUfs/87JIMxW8615hPahXB+6E1Dp+IFc23qi8e6RW1l1rWU1Tf7I8AR3sVxWuGMQTUg9OpnLYFjoVWvQzcvVCOd59I3xFbM/gBSULCYxW++wH3ciN/YLNJItO5IYkDUiV+K8yOJCbepKb8dQgTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vastdata.com; spf=pass smtp.mailfrom=vastdata.com; dkim=pass (2048-bit key) header.d=vastdata.com header.i=@vastdata.com header.b=gLt8R0w6; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vastdata.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vastdata.com
+	s=arc-20240116; t=1777838035; c=relaxed/simple;
+	bh=81DV3vOOW/ZYued261SAg6BbMfOBMoW+ILCjhv+3094=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Zh8KXqH+OaL8bYYZpLu235+mlnuL6AGkQynoD6tqgwIZPnFZko2VR94g+ov7tDVDWlXOzpolRwcg7fnh+K+AbS1PINQjVTR1rVMlnDyQSADytZNfwUlfap1Ro7ggEcLp1Etv41oAEYX/b1YGOxF/ufTH1RQf2ZHH072mXxfupHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b=t6K7Zzf5; arc=none smtp.client-ip=74.125.82.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=vastdata.com header.i=@vastdata.com header.b="gLt8R0w6"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-44b052142e1so986582f8f.1
-        for <netdev@vger.kernel.org>; Sun, 03 May 2026 12:53:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b="t6K7Zzf5"
+Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-2dee127b3c5so8403985eec.1
+        for <netdev@vger.kernel.org>; Sun, 03 May 2026 12:53:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=vastdata.com; s=google; t=1777838028; x=1778442828; darn=vger.kernel.org;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nc4ouqvmyuFYLLFWfP/eIRW8O+xQJ4l+PCrNjSXuyTM=;
-        b=gLt8R0w6xEj5VGInipc+Tkd8NYqPhw6ejM4+1gbdBOPoEJ8qDamAhiaK1mlv/KWUX/
-         Xo4tbC3ntqpz0UGYzGtyEDoJWREYwrZE/uyRKGAnwADWl175PrkD0BvVWzkc12fTs51h
-         eSEIInUkHbt4gNlL5rN4HY/oSdwi7gkIN3dKnk/3iCEU1N9805vbA9kbPSAE4/cT2mVP
-         2uzMTCRcSday7/nm55WBzDsfNZgt0UEkLpRLu8A1zMpVLaBKM1Bexv+mYgOnaYJgrhaS
-         S/IZyuCjHZt1Gd0tx3y6hsMXX5m+rjCYBLSq4xhB+HYc9TQpFOK6z699q58dp76crfeu
-         yDpQ==
+        d=networkplumber-org.20251104.gappssmtp.com; s=20251104; t=1777838033; x=1778442833; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+SHBsCOw7VI7tu7TQ8E11dBIA+qtG1EQFQ9pVsPXkwA=;
+        b=t6K7Zzf5robIJXbfQiPoETZUh0gI09F5PWVrj8cP8BqL8yp3Pb4uUOXbW9rebCaPR8
+         9fpVdhQPb8XM2qFFqMEyt8y5Y7vv7Fh3T0YCsrtfAD6r0xjMi+1fujkhip4MHYAu5An4
+         uo1fwur8SKxw/wgRLwE1NUC0we5v3Vb8isXv9wt80fLnbYVvQH+O/n3IslCkKE2dCG1c
+         ghg9VB2oLDWFItDo0xBOp4YGM16P7VQQq9LdyCT3F7vXeJ+ygnWBae24+wP2W2/fbl8W
+         n+XSGYOjIevyeBdyhSDoH80PCAbxHJ2Ygc85DM6K67ypAxZXYLhyCRmPunPFXulXk9g6
+         2eGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777838028; x=1778442828;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=nc4ouqvmyuFYLLFWfP/eIRW8O+xQJ4l+PCrNjSXuyTM=;
-        b=UqKjTDv/vkMB4SRPsHFDTRtrj9Bnwekf9HVvfghFSEGq2HJ9IlPCaXUr3WhhnPlE7U
-         XhTm7taNCLlLEo9FjvHVO5sElY3n+sJ7sEk6fNovquBsa460sJMeqUmqABQAnTZLrwGJ
-         YGPNDjhxLb3wlOWwyFCLbMe8xYBKu29n5PZ1Wofybxv8HD4hLqW6a+BaB9YSSaKfeeJV
-         Ig0x01w6BGtxDzJt9NCRoV0JlOGGvTLFD2vg10ZuFdY2MqtOI9TM/3ltidntks/VFKmn
-         UnFbC60eUVDIlriaEEkqR10irwMyaumwUNWDfCGEhHp5HA349OwIi1uv9nkaTV5brQRJ
-         MesQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9Rk+epshdKM8+V35uERk7xGzvsF/FnLri85WkwqiLnR5SKkWVKSL8vmz7mLSRFT6kBnnZDjhA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy9xP1U6Q/cmsHHoGZjYx1ciQ91xslglwnYAz/F7/unB8i2falK
-	VW1U4OZEPXGZnV2VlwvJe30rEN7B0lfcE6RLC//a9lQ1H2+kDqBiGnO8fBBq9/c4Rg==
-X-Gm-Gg: AeBDieu8HedMm/BEgwmYiu1aV0zYB46EIltlRjkI9G7KRQVUNXB7wYoOIPeK/wgEISY
-	s6FwqlRdSWpaddHk6Tny+Ru7Y/xyXRADgIj7wkx0jhfbBajrJ2SkDgNchsoJAK0zgPTh3SeIw5k
-	w29mQrqQq2MTHENH6YQe0f7DZm5i55HhEWldqQ6btLQr/8UqFU/VvnTtZPK8b1E20K7KG4pRhW3
-	dmOhHycT8S+F+B2YMEFicyAL5JR0dx9xR7E3EmUMQzycFoMVzmCDDcjsc8iOnNwVkCRqMYyXNrw
-	xaHBjIgQ1Q3SiPtmoHbfQ1F5FS/c6reypkd1akO+JEFK92dyf1uViwxixEftUD0G7Y4oM9eaSKq
-	D3G5qXNxjxtdb3PFqhY2C/XJmrNVNZvJt50/rKfMc0TobcNY3Yzdwqup3E33nK8cMIV6m9NcSQC
-	MeI5WDAXvPbqpZ4Bc74Zw9zDYk0RRd5ZWcKHprCdjd1mgVJ5lp3lgFWb8IuBJq0SKcw96LawinD
-	yZq1p4V1e2Ld/LRCk/QsPp7XcdEKA==
-X-Received: by 2002:a05:6000:4312:b0:43d:300b:2285 with SMTP id ffacd0b85a97d-44bb32fd70cmr11638437f8f.11.1777838028438;
-        Sun, 03 May 2026 12:53:48 -0700 (PDT)
-Received: from [192.168.50.79] (46-116-175-134.bb.netvision.net.il. [46.116.175.134])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-44a986aaad6sm18033489f8f.28.2026.05.03.12.53.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 03 May 2026 12:53:47 -0700 (PDT)
-Message-ID: <40e3d522-dfcf-4fc1-9c55-b5e81f1536d5@vastdata.com>
-Date: Sun, 3 May 2026 22:53:45 +0300
+        d=1e100.net; s=20251104; t=1777838033; x=1778442833;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+SHBsCOw7VI7tu7TQ8E11dBIA+qtG1EQFQ9pVsPXkwA=;
+        b=stNpkMqUw/W1P4zciy4Z09TegpiXhwZ9rf6K92Z4goAO+HCgE4ySfwQpgkQzY30YV8
+         OTw8DCzOlpv13F3dcan7RuujH06JL1tVUwagvXLT0uy22dJSVtAN3ih6nsaJnBhUCBN1
+         tVLVvDUnwdK7l7itTzl80e0m/4HN/00SRDXRWMHcXNYUvMkzeTyHmdoeKI5RL6FFDMQL
+         g/V27MYbyxeWTLkLgXTa6T2vlyUt1Vix8QGBtJtqcYXLIie6hwUf3VdfvuEYRvIT2obv
+         ZBomINrN/RykNPWy5RmjzSMwq9s1sOwE+u5ZtNkNfHGqMoQo31iHhApItPnWGbkeg+Wu
+         gsJw==
+X-Gm-Message-State: AOJu0Yy0zm3oK+wQC6Sb1LxBxWHNlXRd8FR1D1dRR8uq31aPDnJksP6X
+	oc/5dL8pMbHgbLBFdMgaQ9SJdeR1sSdUre8sxhEkwAWIWTQERWtqmQVNrTsJkGJqz76wGchSByF
+	MWe04
+X-Gm-Gg: AeBDieszjt82Ock3uxwreyynwV36DDXp1n94E3YJUXslVuTevEgrWzT1/MVcM6o0XCQ
+	wkaryBic7chWeBwGqdiWAn1GjKHa1+HIdXZjAIc2EtXy3a8lCi07zigIyDigCaiUIx6Bw34oCht
+	DEgsXwU39DRbn3zn8+rjk2fIAHWMz+7IQXg8HQPTefFwZbmF8YGdmHNrw/Bc9eNQgVEGQOWNZKR
+	UMmTTXgSvwf3EvMoy5ThbRiHDKmJAZmIbjT/aIef4phwf1AEFkZh+Bu4WPKYLkyEHcZW1EYlCX5
+	1FLYnx2K9fqY9NmsHc/t/4b4dsbQuddPisBDu9nhnDjAUlAoEF7zHw/BeZLJ/RUylAQQ/YeptQZ
+	UYWi+AqtvBV/YBu/+6ff0DRGcBi4Vq2NBpyMJlFiiF8RQIIgXoZeL+fpDQ28mjm/ZKgiIJ5aq2V
+	popYpFjurSuHY2xNRIHkZaq55fKxDpY42ioOJBEyfMoPhhivhajmoQ9Q==
+X-Received: by 2002:a05:693c:6081:b0:2f2:6dde:df67 with SMTP id 5a478bee46e88-2f26ddee15fmr238887eec.22.1777838032176;
+        Sun, 03 May 2026 12:53:52 -0700 (PDT)
+Received: from phoenix.lan ([104.202.41.210])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ee3c24e738sm12834365eec.31.2026.05.03.12.53.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 03 May 2026 12:53:51 -0700 (PDT)
+From: Stephen Hemminger <stephen@networkplumber.org>
+To: netdev@vger.kernel.org
+Cc: jhs@mojatatu.com,
+	jiri@resnulli.us,
+	Stephen Hemminger <stephen@networkplumber.org>
+Subject: [PATCH net-next v2 0/5] net/sched: netem: fixes and improvements
+Date: Sun,  3 May 2026 12:51:58 -0700
+Message-ID: <20260503195348.521225-1-stephen@networkplumber.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: linux-nfs@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: Chuck Lever <chuck.lever@oracle.com>, Jeff Layton <jlayton@kernel.org>,
- NeilBrown <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>,
- Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
- Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Dan Aloni <dan.aloni@vastdata.com>,
- roi.azarzar@vastdata.com, sagi.grimberg@vastdata.com
-From: Michael Nemanov <michael.nemanov@vastdata.com>
-Subject: [RFC PATCH] Possible use-after-free bug in mTLS connect
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-The NFS-over-TLS implementation seems to have a use-after-free bug where
-a raw unrefcounted pointer to an rpc_clnt is stored in xs_connect() and
-accessed by a delayed workqueue item after the client has been freed.
+This is a collection of improvements to netem found while
+investigating the fixes now in net tree.
 
-The issue manifests when an NFS mount uses incorrect credentials (client
-cert is valid but does not match the server's) during TLS setup,
-leading to the client being freed while a delayed work item still
-holds a pointer to it.
+v2 - incorporate AI suggestions
+   - rearrange netem_sched_data
+   - add multi-segment corruption improvement
 
-The patch contains several debug traces that hopefully illustrate the problem
-and a key msleep(100) that helps (though not guarantees) reproduction.
-I had to use pr_debug as the bug often involves a kernel crash and logs can
-only be collected from vmcore-dmesg.
-Used with kernel v7.0-rc5.
+Stephen Hemminger (5):
+  net/sched: netem: reorder struct netem_sched_data
+  net/sched: netem: remove useless VERSION
+  net/sched: netem: replace pr_info with netlink extack error messages
+  net/sched: netem: add per-impairment extended statistics
+  net/sched: netem: handle multi-segment skb in corruption
 
-Traces from vmcore-dmesg.txt showing the lifecycle of the RPC
-client from creation to use-after-free:
-  [   38.611952] New mount #5
-  [   38.630156] @ rpc_new_client: New: 00000000f636d223, parent: 0000000000000000	<< Client created
-  [   38.630179] @ xs_connect: Queue connect work in 0 for clnt 00000000f636d223
-  [   38.630209] @ xs_tcp_tls_setup_socket: Using clnt 00000000f636d223
-  [   38.630258] @ rpc_new_client: New: 0000000004f8c0fe, parent: 0000000000000000
-  [   38.630265] @ xs_connect: Queue connect work in 0 for clnt 0000000004f8c0fe
-  [   38.752404] @ rpc_shutdown_client: 0000000004f8c0fe
-  [   38.752474] @ rpc_free_client: put_cred 0000000004f8c0fe
-  [   38.752489] @ xs_tcp_tls_setup_socket: Done with clnt 00000000f636d223. status=0
-  [   38.752573] @ rpc_free_client_work: xprt_put done for 0000000004f8c0fe
-  [   38.752955] @ xs_sock_process_cmsg: TLS alert -13, level 2
-  [   38.753069] @ xs_tcp_state_change: sk_state=8
-  [   38.857474] @ xs_reset_transport: Null transport->sock for xprt 0000000066fa6fda
-  [   38.857558] @ xs_connect: Queue connect work in 0 for clnt 00000000f636d223	<< Client used
-  [   38.857574] @ xs_tcp_tls_setup_socket: Using clnt 00000000f636d223
-  [   38.857677] @ rpc_new_client: New: 00000000d1455d7f, parent: 0000000000000000
-  [   38.857684] @ xs_connect: Queue connect work in 0 for clnt 00000000d1455d7f
-  [   38.975657] @ rpc_shutdown_client: 00000000d1455d7f
-  [   38.975728] @ rpc_free_client: put_cred 00000000d1455d7f
-  [   38.975742] @ xs_tcp_tls_setup_socket: Done with clnt 00000000f636d223. status=0	<< Client used
-  [   38.975836] @ rpc_free_client_work: xprt_put done for 00000000d1455d7f
-  [   38.976220] @ xs_sock_process_cmsg: TLS alert -13, level 2
-  [   38.976269] @ xs_tcp_state_change: sk_state=8
-  [   38.976303] @ xs_connect: Queue connect work in 3000 for clnt 00000000f636d223	<< Client used
-  [   39.065470] @ rpc_shutdown_client: 00000000f636d223
-  [   39.065580] @ rpc_free_client: put_cred 00000000f636d223				<< Client being destroyed
-  [   42.033267] @ xs_tcp_tls_setup_socket: Using clnt 00000000f636d223			<< Client used
-  [   42.033481] @ rpc_new_client: New: 00000000762dc139, parent: 0000000000000000
-  [   42.033505] @ xs_connect: Queue connect work in 0 for clnt 00000000762dc139
-  [   42.153240] @ rpc_shutdown_client: 00000000762dc139
-  [   42.153274] @ rpc_free_client: put_cred 00000000762dc139
-  [   42.153283] @ xs_tcp_tls_setup_socket: Done with clnt 00000000f636d223. status=0
-  [   42.153297] @ xs_reset_transport: Null transport->sock for xprt 0000000066fa6fda
-  [   42.153355] @ rpc_free_client_work: xprt_put done for 00000000f636d223
-  [   42.153373] @ rpc_free_client_work: xprt_put done for 00000000762dc139
-  [   42.153419] @ xs_reset_transport: Null transport->sock for xprt 0000000093fd6749
-  [   42.164197] ------------[ cut here ]------------
-  [   42.165779] refcount_t: underflow; use-after-free.
-  [   42.166596] WARNING: lib/refcount.c:28 at refcount_warn_saturate+0x5e/0x90, CPU#5: swapper/5/0
+ include/uapi/linux/pkt_sched.h |   9 ++
+ net/sched/sch_netem.c          | 212 ++++++++++++++++++++-------------
+ 2 files changed, 136 insertions(+), 85 deletions(-)
 
-And for reference, a non-crashing attempt:
-  [   16.756822] New mount #1
-  [   17.122657] NFS: Registering the id_resolver key type
-  [   17.123591] Key type id_resolver registered
-  [   17.124329] Key type id_legacy registered
-  [   17.131019] @ rpc_new_client: New: 0000000074283ee9, parent: 0000000000000000
-  [   17.131035] @ xs_connect: Queue connect work in 0 for clnt 0000000074283ee9
-  [   17.131042] @ xs_tcp_tls_setup_socket: Using clnt 0000000074283ee9
-  [   17.131108] @ rpc_new_client: New: 00000000b25a12a5, parent: 0000000000000000
-  [   17.131114] @ xs_connect: Queue connect work in 0 for clnt 00000000b25a12a5
-  [   17.254743] @ xs_``tcp_state_change: sk_state=8
-  [   17.262363] @ rpc_shutdown_client: 00000000b25a12a5
-  [   17.262398] @ rpc_free_client: put_cred 00000000b25a12a5
-  [   17.262404] @ xs_tcp_tls_setup_socket: Done with clnt 0000000074283ee9. status=0
-  [   17.262448] @ rpc_free_client_work: xprt_put done for 00000000b25a12a5
-  [   17.473543] @ xs_reset_transport: Null transport->sock for xprt 000000004c2083b6
-  [   17.473597] @ xs_connect: Queue connect work in 0 for clnt 0000000074283ee9
-  [   17.473606] @ xs_tcp_tls_setup_socket: Using clnt 0000000074283ee9
-  [   17.473709] @ rpc_new_client: New: 00000000c549945c, parent: 0000000000000000
-  [   17.473717] @ xs_connect: Queue connect work in 0 for clnt 00000000c549945c
-  [   17.591937] @ rpc_shutdown_client: 00000000c549945c
-  [   17.591977] @ rpc_free_client: put_cred 00000000c549945c
-  [   17.591984] @ xs_tcp_tls_setup_socket: Done with clnt 0000000074283ee9. status=0
-  [   17.592030] @ rpc_free_client_work: xprt_put done for 00000000c549945c
-  [   17.592534] @ xs_sock_process_cmsg: TLS alert -13, level 2
-  [   17.592564] @ xs_tcp_state_change: sk_state=8
-  [   17.592569] @ rpc_shutdown_client: 0000000074283ee9
-  [   17.592608] @ rpc_free_client: put_cred 0000000074283ee9
-  [   17.593105] @ rpc_free_client_work: xprt_put done for 0000000074283ee9
-  [   17.593148] @ xs_reset_transport: Null transport->sock for xprt 000000004c2083b6
-
-Note that on some iterations, the queued work runs successfully
-despite using a freed client. Not sure if this is of interest.
-
-Reproduction script:
-
-```bash
-sudo echo 'file net/sunrpc/clnt.c +p' > /sys/kernel/debug/dynamic_debug/control
-sudo echo 'file net/sunrpc/xprtsock.c +p' >> /sys/kernel/debug/dynamic_debug/control
-sudo mkdir -p /mnt/export
-
-for i in {1..1000}; do
-        echo "Iteration $i"
-        echo "New mount #$i" | sudo tee /dev/kmsg
-        sudo mount -o vers=4.2,proto=tcp,xprtsec=mtls remote_addr:/opt/export /mnt/export
-        sleep 5
-done
-```
-
-What I understand:
-The connecting task terminates, presumably due to the fatal TLS error as
-expected. The upper client is being destroyed: `rpc_shutdown_client`
-down to `rpc_free_client`, which *puts the creds* that would be used
-by queued connect work.
-
-Where I need help:
-I don't understand if the use-after-free is the root cause and must be
-fixed or a symptom of a problem elsewhere.
-I am also not sure what causes the bug to manifest. It *might* be related
-to the timing of server's FIN (sk_state=8 in the log) and the
-flags it changes.
-Any guidance or pointers on where to look next would be much appreciated.
-
-Thank you for reading,
-Michael.
-
-Signed-off-by: Michael Nemanov <michael.nemanov@vastdata.com>
----
- net/sunrpc/clnt.c     | 4 ++++
- net/sunrpc/xprtsock.c | 8 ++++++++
- 2 files changed, 12 insertions(+)
-
-diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
-index bc8ca470718b..dbc7d51f073d 100644
---- a/net/sunrpc/clnt.c
-+++ b/net/sunrpc/clnt.c
-@@ -429,6 +429,7 @@ static struct rpc_clnt * rpc_new_client(const struct rpc_create_args *args,
- 		refcount_inc(&parent->cl_count);
- 
- 	trace_rpc_clnt_new(clnt, xprt, args);
-+	pr_debug("@ %s: New: %p, parent: %p\n", __func__, clnt, parent);
- 	return clnt;
- 
- out_no_path:
-@@ -949,6 +950,7 @@ void rpc_shutdown_client(struct rpc_clnt *clnt)
- 	might_sleep();
- 
- 	trace_rpc_clnt_shutdown(clnt);
-+	pr_debug("@ %s: %p\n", __func__, clnt);
- 
- 	clnt->cl_shutdown = 1;
- 	while (!list_empty(&clnt->cl_tasks)) {
-@@ -983,6 +985,7 @@ static void rpc_free_client_work(struct work_struct *work)
- 	rpc_free_clid(clnt);
- 	rpc_clnt_remove_pipedir(clnt);
- 	xprt_put(rcu_dereference_raw(clnt->cl_xprt));
-+	pr_debug("@ %s: xprt_put done for %p\n", __func__, clnt);
- 
- 	kfree(clnt);
- 	rpciod_down();
-@@ -1000,6 +1003,7 @@ rpc_free_client(struct rpc_clnt *clnt)
- 	clnt->cl_metrics = NULL;
- 	xprt_iter_destroy(&clnt->cl_xpi);
- 	put_cred(clnt->cl_cred);
-+	pr_debug("@ %s: put_cred %p\n", __func__, clnt);
- 
- 	INIT_WORK(&clnt->cl_work, rpc_free_client_work);
- 	schedule_work(&clnt->cl_work);
-diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
-index 2e1fe6013361..cc4275e0b276 100644
---- a/net/sunrpc/xprtsock.c
-+++ b/net/sunrpc/xprtsock.c
-@@ -377,6 +377,7 @@ xs_sock_process_cmsg(struct socket *sock, struct msghdr *msg,
- 		tls_alert_recv(sock->sk, msg, &level, &description);
- 		ret = (level == TLS_ALERT_LEVEL_FATAL) ?
- 			-EACCES : -EAGAIN;
-+		pr_debug("@ %s: TLS alert %d, level %d\n", __func__, ret, level);
- 		break;
- 	default:
- 		/* discard this record type */
-@@ -1297,6 +1298,7 @@ static void xs_reset_transport(struct sock_xprt *transport)
- 	transport->inet = NULL;
- 	transport->sock = NULL;
- 	transport->file = NULL;
-+	pr_debug("@ %s: Null transport->sock for xprt %p\n", __func__, xprt);
- 
- 	sk->sk_user_data = NULL;
- 	sk->sk_sndtimeo = 0;
-@@ -1589,6 +1591,7 @@ static void xs_tcp_state_change(struct sock *sk)
- 		 */
- 		if (xprt->reestablish_timeout < XS_TCP_INIT_REEST_TO)
- 			xprt->reestablish_timeout = XS_TCP_INIT_REEST_TO;
-+		pr_debug("@ %s: sk_state=%d\n", __func__, sk->sk_state);
- 		break;
- 	case TCP_LAST_ACK:
- 		set_bit(XPRT_CLOSING, &xprt->state);
-@@ -2688,6 +2691,7 @@ static void xs_tcp_tls_setup_socket(struct work_struct *work)
- 	struct sock_xprt *upper_transport =
- 		container_of(work, struct sock_xprt, connect_worker.work);
- 	struct rpc_clnt *upper_clnt = upper_transport->clnt;
-+	pr_debug("@ %s: Using clnt %p\n", __func__, upper_clnt);
- 	struct rpc_xprt *upper_xprt = &upper_transport->xprt;
- 	struct rpc_create_args args = {
- 		.net		= upper_xprt->xprt_net,
-@@ -2759,6 +2763,7 @@ static void xs_tcp_tls_setup_socket(struct work_struct *work)
- 	current_restore_flags(pflags, PF_MEMALLOC);
- 	upper_transport->clnt = NULL;
- 	xprt_unlock_connect(upper_xprt, upper_transport);
-+	pr_debug("@ %s: Done with clnt %p. status=%d\n", __func__, upper_clnt, status);
- 	return;
- 
- out_close:
-@@ -2806,6 +2811,7 @@ static void xs_connect(struct rpc_xprt *xprt, struct rpc_task *task)
- 		dprintk("RPC:       xs_connect scheduled xprt %p\n", xprt);
- 
- 	transport->clnt = task->tk_client;
-+	pr_debug("@ %s: Queue connect work in %lu for clnt %p\n", __func__, delay, transport->clnt);
- 	queue_delayed_work(xprtiod_workqueue,
- 			&transport->connect_worker,
- 			delay);
-@@ -2847,6 +2853,8 @@ static void xs_error_handle(struct work_struct *work)
- 	struct sock_xprt *transport = container_of(work,
- 			struct sock_xprt, error_worker);
- 
-+	msleep(100); // Improves reproducibility
-+
- 	xs_wake_disconnect(transport);
- 	xs_wake_write(transport);
- 	xs_wake_error(transport);
-
-base-commit: c369299895a591d96745d6492d4888259b004a9e
 -- 
-2.43.7
+2.53.0
 
