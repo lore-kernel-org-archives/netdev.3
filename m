@@ -1,130 +1,205 @@
-Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8511C2D877A;
-	Sun,  3 May 2026 16:57:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 631DE5474F
+	for <netdev@vger.kernel.org>; Sun,  3 May 2026 17:02:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777827480; cv=none; b=dmGfRq1I8bJZGQk3SrEUYF+vxWjoSuKEl1nl3vTy1oqu4dPEF1q8NtUWXuleDnJk+ZvWsz6zf/UTxz8bcVZqiwCKG5m57aCASezwtYufbMqVJd6v6Xr7/KcnQiCnS3g8uL3LpC7gyP98GnZvWPusTx13+6yW4pCAxkkVXpztRDM=
+	t=1777827780; cv=none; b=IrnLKlRhD5TT4LKZp9WaiaAYCdGP1UgoUg449gXEMP0OHlv03vDuJUElwXohUjwD9MSJOXYbs3/3h5j2wCjvi+/9hqSmhU2d5rm1kiZPZ4CVpyILzWaJj+BlHJlzphsGN7D681rBD/Rqvos1y1zSyd2dqYCfqK5ITQgbmE8wZSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777827480; c=relaxed/simple;
-	bh=GWXOocp7AUgPPBOxZT6llGYGBfJgPDV3T3W+xglzGNU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GZrzQFYxzQwyo6l+tOnqHwi9MkiNlLPrI/mr8zYSTN/jeQhffoRgcPhy+8WSLNCIn5+zKeoloC5yesR4JnXBnJAof7sIl9kA+RzQNVPq9OetlPnqBDo5UZ8u9SHbMxCgfYetmfjLMc9pFjebpq5Ljcrm0t7XHCeqFfqU26cQ7JY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alyssa.is; spf=pass smtp.mailfrom=alyssa.is; dkim=pass (2048-bit key) header.d=alyssa.is header.i=@alyssa.is header.b=SkyJi43O; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=FNSQAcz4; arc=none smtp.client-ip=103.168.172.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alyssa.is
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alyssa.is
+	s=arc-20240116; t=1777827780; c=relaxed/simple;
+	bh=aenn5BDHAQoXLnotUzXQvERM7+FKJl27QLr4NagtSIs=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=PtNl3P/dIci+qKxm49a2y/gINm3iqNBwU+pcLd3XKEXZCmgRhYmQdSl52MGEFF2Dcvqj/bZ+6kgFnGo7IdBOvkxFMtjtoqXpsakpSth0WOzVNxH5AbB11Yo7tVGxF36WX25l2EnAhVY9hWVjH2rfanPZcfNTDsnaf+90MLhrKE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NW2bsfqs; arc=none smtp.client-ip=209.85.128.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=alyssa.is header.i=@alyssa.is header.b="SkyJi43O";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="FNSQAcz4"
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.phl.internal (Postfix) with ESMTP id 6252EEC0081;
-	Sun,  3 May 2026 12:57:56 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Sun, 03 May 2026 12:57:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alyssa.is; h=cc
-	:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=fm2; t=1777827476; x=1777913876; bh=tMCgbw9JP6++EMQIiWQDT
-	jkgT5TM8HAnim+IqX1/stU=; b=SkyJi43OEgoQ7sb44Wt0qmoPWote/3EUt6E0o
-	sr/vF4d3whWEsNCWWcdHA2YceJu1+E1BUpHLLn0yziGF75MDl1terR9kWXVy7Ndt
-	H+d+NHvvnKTZ2hyZ1zCk6IVmuUKeVC1RbSTlccii7l4jLowb13g9ZBlcMdgDGnsO
-	mK5bRqad7l5vcqJZVL8FYZyQ5Jb3ymjfSq8P9xht1X1OY+FwNs6j2elitNs8n+Dv
-	4VvV3YQ5+qHVE5U13c7jyo8ncbovmDf2XsCb1YTt192ieQelEmqIU5SrMaKaaBDJ
-	LFhXZ9ce9k5SnZxxOP1cExNeZXQDP1bfheJycsTADLtY33oWQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1777827476; x=1777913876; bh=tMCgbw9JP6++EMQIiWQDTjkgT5TM8HAnim+
-	IqX1/stU=; b=FNSQAcz45NhHLoUS5XLZbi7XJt8B5sXDAjLHBmw5NQI0L7/LPGg
-	/KhyEjTVW4H9oAlxWlGsm3VkP2F8OpmkGkrgjuLT9egSmoq9ST8dCqxVdOf9WWbi
-	QuCSV2mSAv1WarRBypsalEt9ezI65BcfvO39OIi5d4iK7cJ0x1EgH9m4PNLLux6/
-	U5u9RttRoKeBFQcnHsVAmepQ/jtd5piIlD9jNLkc/kI9IrPQqLnVZszAku14Fo5x
-	dARGSgEVoMkvgM9qBlmsUSJ+oRk+xxpn2ZWLqdjP9L7ZhTcFWVOIuO8wilG+EFX6
-	NjxTczLUDCuTEVxfhZtD2JrIbkjiPZItE7g==
-X-ME-Sender: <xms:k373aZytS-2ZUEny8ZFERSsz7NXf2r8E2-HOjpzUehnaWTjI7hZU4g>
-    <xme:k373aXiZe70GFyf9EnMamI3lJKipy-7ttGfxFHhfEiwhydjGJEWl8c5ahEBE3hQwL
-    vJZKAKlKBFBcb8qu41cwzjtO1VVB_GuCFG4LDvsaJJVDBRKttUVXg>
-X-ME-Received: <xmr:k373acprcDtNT_vit7kSf7_Ca7Vjj8keitF1aEIYoD3n5UsPFjdjahHDsrh6_bgGIPip3tHy9xB_hQnIS5wQ8BU5Dtf_>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdelieehtdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefhvfevufffkffoggfgsedtkeertdertddtnecuhfhrohhmpeetlhihshhsrgcutfho
-    shhsuceohhhisegrlhihshhsrgdrihhsqeenucggtffrrghtthgvrhhnpeehkefgtdevte
-    dtkeduudeguefgudejheeugfelgeettdfhffduhfehudfhudeuhfenucevlhhushhtvghr
-    ufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehhihesrghlhihsshgrrdhish
-    dpnhgspghrtghpthhtohepuddupdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegu
-    rghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepvgguuhhmrgiivghtse
-    hgohhoghhlvgdrtghomhdprhgtphhtthhopegushgrhhgvrhhnsehkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopehhohhrmhhssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkrh
-    iikheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopehprggsvghnihesrhgvughhrghtrdgtohhmpdhrtghpthhtoheprh
-    gsmhesshhushgvrdgtohhmpdhrtghpthhtohepfhhmrghntggvrhgrsehsuhhsvgdruggv
-X-ME-Proxy: <xmx:k373aegz0tAqFzQKrEg-ouNEkv7if0SeaqJwQFl0gEqIsDu0fzKM6w>
-    <xmx:k373aeOkzZ0ofZqiCQ0m8sL05nCOeg2h2pwDiJKhg2IH1aPQlEtnAg>
-    <xmx:k373aYyRKIsdf5G48L4zcFPHlgqqNBElhsR1nboTHUfRCJWZxfC8ug>
-    <xmx:k373aQr6ahD6XUoMSBYpWgYtuUFT5hH6tpelFStD3VKLzPsjF0Q_Ng>
-    <xmx:lH73aS2KFC5VbT_zP9LcQDIkbZiZu2coZgNl3tp-oJJ49yYELLCrkog1>
-Feedback-ID: i12284293:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 3 May 2026 12:57:55 -0400 (EDT)
-Received: by mbp.qyliss.net (Postfix, from userid 1000)
-	id 389C17E625A1; Sun, 03 May 2026 18:57:53 +0200 (CEST)
-From: Alyssa Ross <hi@alyssa.is>
-To: "David S. Miller" <davem@davemloft.net>,
-	David Ahern <dsahern@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	=?UTF-8?q?Ricardo=20B=20=2E=20Marli=C3=A8re?= <rbm@suse.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>
-Subject: [PATCH] ipv6: default IPV6_SIT to m
-Date: Sun,  3 May 2026 18:57:14 +0200
-Message-ID: <20260503165714.1477819-1-hi@alyssa.is>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NW2bsfqs"
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-7bd8cb261c3so4143117b3.1
+        for <netdev@vger.kernel.org>; Sun, 03 May 2026 10:02:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777827778; x=1778432578; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=X547XFg39eEq/Pg370jmyAlzkzhyFMrJOaU/seHyAlU=;
+        b=NW2bsfqsbP6ywjJnxCAPBrfJbj38nr1XMDWJ6zByVGqWCDv6tOibiOHkJp/zWrbdu9
+         o4xVh13wsU6fI6P5y8y/UfuMFnpZymXcfKxImLD4jpoqXyPfDxfmERXboQyS9/oeRFhk
+         eLMJ3zYFhR0IwNuo3mEcnYWEpTMittWrcfm0Mixo5ItXbK2y5jp58Gh+0Lu823aAige8
+         H9ajM/P9mFPX/XgrRPJYKFjeH1eYdFLOyrsawurLlpxDjpmSmE3Vrj/5LuzzRfy/+PGt
+         OgWe7lV7D7HKURu5YaOCpgQzTMH4v/grjX7RLZSxx4eSCKjFyYII0TanZipYwUznVcdV
+         lfzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777827778; x=1778432578;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=X547XFg39eEq/Pg370jmyAlzkzhyFMrJOaU/seHyAlU=;
+        b=jmjp03dBTY4nbM7iQPr8j49bDIZWSfnrj2cqeUcHUQl4n5f36Xgjj9xlMBUJGa+MpI
+         4ufbpNO64nAE5+W+C6zky/Zplh/bMifyuiOKOlSKuVY+/9o72EqL3mRRyWRHZTXbv285
+         2zOXS5Gw5+4ggMGM7T9kybb1Z2IaOdVJvkiteXM4mFoNDUU9xW6fVrVRpkqAHsrrbHWE
+         6CZjB6Jq8NsGwErC8TRSP6sjJ6rFi7DGM7RvyTGWfr/wuZLo5xg0gm5e29ZHdB39UAe7
+         vMbkeprCjcgyx9hff13EsXoqXbJLVWoEPvusTfCZIWkR1RCZF06xu36I4WVbd+Fb73BF
+         g0mQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8qDf6DMmMkpFJMiOvvel5wXkezv0bkAQC1+Inoh0XqnBx1w3BnDCxce8KrrXoqSyNtnvivfOA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxEMb83R7NkbIZeYPy8VX7hYqs+PLtSmgQ/WzCbMPtDRwpdlVq2
+	GWVJiqmXi7J0pN13szQyarwDEPGONWI3+mzeIx6z5EJ0M4/h6nREjMdbY5kZa5uCEX5RtUlOc+Q
+	taxOUeaynfGNHOg==
+X-Received: from ywad2.prod.google.com ([2002:a05:690c:a742:b0:79d:5f40:6504])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:690c:92:b0:7b4:3d82:bf0 with SMTP id 00721157ae682-7bd76f9f2e9mr69098157b3.11.1777827778078;
+ Sun, 03 May 2026 10:02:58 -0700 (PDT)
+Date: Sun,  3 May 2026 17:02:57 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
+Message-ID: <20260503170257.2782962-1-edumazet@google.com>
+Subject: [PATCH net] net/sched: sch_fq_codel: annotate data-races from fq_codel_dump_class_stats()
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>, 
+	netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-This basically defaulted to m until recently, since IPV6 defaulted to
-m.  Since IPV6 was changed to a boolean with a default of y, IPV6_SIT
-started defaulting to built-in as well.  This results in a surprise
-sit0 device by default for defconfig (and defconfig-derived config)
-users at boot.  For me, this broke an (admittedly non-robust) script.
-Preserve the behaviour of most configs by avoiding building this
-module, that's probably overall seldom used compared to IPv6 as a
-whole, into the kernel.
+fq_codel_dump_class_stats() acquires qdisc spinlock only when requested
+to follow flow->head chain.
 
-Fixes: 309b905deee59 ("ipv6: convert CONFIG_IPV6 to built-in only and clean up Kconfigs")
-Signed-off-by: Alyssa Ross <hi@alyssa.is>
+As we did in sch_cake recently, add the missing READ_ONCE()/WRITE_ONCE()
+annotations.
+
+Fixes: edb09eb17ed8 ("net: sched: do not acquire qdisc spinlock in qdisc/class stats dump")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
- net/ipv6/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sched/sch_fq_codel.c | 37 +++++++++++++++++++------------------
+ 1 file changed, 19 insertions(+), 18 deletions(-)
 
-diff --git a/net/ipv6/Kconfig b/net/ipv6/Kconfig
-index c024aa77f25ba..3cfccb6ce5c29 100644
---- a/net/ipv6/Kconfig
-+++ b/net/ipv6/Kconfig
-@@ -164,7 +164,7 @@ config IPV6_SIT
- 	select INET_TUNNEL
- 	select NET_IP_TUNNEL
- 	select IPV6_NDISC_NODETYPE
--	default y
-+	default m
- 	help
- 	  Tunneling means encapsulating data of one protocol type within
- 	  another protocol and sending it over a channel that understands the
-
-base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
+diff --git a/net/sched/sch_fq_codel.c b/net/sched/sch_fq_codel.c
+index 0664b2f2d6f28041e5250a44fc92311116ae0cf1..f52198ea849b0cc966b455905a62d6c413441260 100644
+--- a/net/sched/sch_fq_codel.c
++++ b/net/sched/sch_fq_codel.c
+@@ -117,7 +117,7 @@ static inline struct sk_buff *dequeue_head(struct fq_codel_flow *flow)
+ {
+ 	struct sk_buff *skb = flow->head;
+ 
+-	flow->head = skb->next;
++	WRITE_ONCE(flow->head, skb->next);
+ 	skb_mark_not_on_list(skb);
+ 	return skb;
+ }
+@@ -127,7 +127,7 @@ static inline void flow_queue_add(struct fq_codel_flow *flow,
+ 				  struct sk_buff *skb)
+ {
+ 	if (flow->head == NULL)
+-		flow->head = skb;
++		WRITE_ONCE(flow->head, skb);
+ 	else
+ 		flow->tail->next = skb;
+ 	flow->tail = skb;
+@@ -174,7 +174,7 @@ static unsigned int fq_codel_drop(struct Qdisc *sch, unsigned int max_packets,
+ 
+ 	/* Tell codel to increase its signal strength also */
+ 	flow->cvars.count += i;
+-	q->backlogs[idx] -= len;
++	WRITE_ONCE(q->backlogs[idx], q->backlogs[idx] - len);
+ 	q->memory_usage -= mem;
+ 	sch->qstats.drops += i;
+ 	sch->qstats.backlog -= len;
+@@ -204,13 +204,13 @@ static int fq_codel_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	codel_set_enqueue_time(skb);
+ 	flow = &q->flows[idx];
+ 	flow_queue_add(flow, skb);
+-	q->backlogs[idx] += qdisc_pkt_len(skb);
++	WRITE_ONCE(q->backlogs[idx], q->backlogs[idx] + qdisc_pkt_len(skb));
+ 	qdisc_qstats_backlog_inc(sch, skb);
+ 
+ 	if (list_empty(&flow->flowchain)) {
+ 		list_add_tail(&flow->flowchain, &q->new_flows);
+ 		q->new_flow_count++;
+-		flow->deficit = q->quantum;
++		WRITE_ONCE(flow->deficit, q->quantum);
+ 	}
+ 	get_codel_cb(skb)->mem_usage = skb->truesize;
+ 	q->memory_usage += get_codel_cb(skb)->mem_usage;
+@@ -263,7 +263,8 @@ static struct sk_buff *dequeue_func(struct codel_vars *vars, void *ctx)
+ 	flow = container_of(vars, struct fq_codel_flow, cvars);
+ 	if (flow->head) {
+ 		skb = dequeue_head(flow);
+-		q->backlogs[flow - q->flows] -= qdisc_pkt_len(skb);
++		WRITE_ONCE(q->backlogs[flow - q->flows],
++			   q->backlogs[flow - q->flows] - qdisc_pkt_len(skb));
+ 		q->memory_usage -= get_codel_cb(skb)->mem_usage;
+ 		sch->q.qlen--;
+ 		sch->qstats.backlog -= qdisc_pkt_len(skb);
+@@ -296,7 +297,7 @@ static struct sk_buff *fq_codel_dequeue(struct Qdisc *sch)
+ 	flow = list_first_entry(head, struct fq_codel_flow, flowchain);
+ 
+ 	if (flow->deficit <= 0) {
+-		flow->deficit += q->quantum;
++		WRITE_ONCE(flow->deficit, flow->deficit + q->quantum);
+ 		list_move_tail(&flow->flowchain, &q->old_flows);
+ 		goto begin;
+ 	}
+@@ -314,7 +315,7 @@ static struct sk_buff *fq_codel_dequeue(struct Qdisc *sch)
+ 		goto begin;
+ 	}
+ 	qdisc_bstats_update(sch, skb);
+-	flow->deficit -= qdisc_pkt_len(skb);
++	WRITE_ONCE(flow->deficit, flow->deficit - qdisc_pkt_len(skb));
+ 
+ 	if (q->cstats.drop_count) {
+ 		qdisc_tree_reduce_backlog(sch, q->cstats.drop_count,
+@@ -328,7 +329,7 @@ static struct sk_buff *fq_codel_dequeue(struct Qdisc *sch)
+ static void fq_codel_flow_purge(struct fq_codel_flow *flow)
+ {
+ 	rtnl_kfree_skbs(flow->head, flow->tail);
+-	flow->head = NULL;
++	WRITE_ONCE(flow->head, NULL);
+ }
+ 
+ static void fq_codel_reset(struct Qdisc *sch)
+@@ -656,21 +657,21 @@ static int fq_codel_dump_class_stats(struct Qdisc *sch, unsigned long cl,
+ 
+ 		memset(&xstats, 0, sizeof(xstats));
+ 		xstats.type = TCA_FQ_CODEL_XSTATS_CLASS;
+-		xstats.class_stats.deficit = flow->deficit;
++		xstats.class_stats.deficit = READ_ONCE(flow->deficit);
+ 		xstats.class_stats.ldelay =
+-			codel_time_to_us(flow->cvars.ldelay);
+-		xstats.class_stats.count = flow->cvars.count;
+-		xstats.class_stats.lastcount = flow->cvars.lastcount;
+-		xstats.class_stats.dropping = flow->cvars.dropping;
+-		if (flow->cvars.dropping) {
+-			codel_tdiff_t delta = flow->cvars.drop_next -
++			codel_time_to_us(READ_ONCE(flow->cvars.ldelay));
++		xstats.class_stats.count = READ_ONCE(flow->cvars.count);
++		xstats.class_stats.lastcount = READ_ONCE(flow->cvars.lastcount);
++		xstats.class_stats.dropping = READ_ONCE(flow->cvars.dropping);
++		if (xstats.class_stats.dropping) {
++			codel_tdiff_t delta = READ_ONCE(flow->cvars.drop_next) -
+ 					      codel_get_time();
+ 
+ 			xstats.class_stats.drop_next = (delta >= 0) ?
+ 				codel_time_to_us(delta) :
+ 				-codel_time_to_us(-delta);
+ 		}
+-		if (flow->head) {
++		if (READ_ONCE(flow->head)) {
+ 			sch_tree_lock(sch);
+ 			skb = flow->head;
+ 			while (skb) {
+@@ -679,7 +680,7 @@ static int fq_codel_dump_class_stats(struct Qdisc *sch, unsigned long cl,
+ 			}
+ 			sch_tree_unlock(sch);
+ 		}
+-		qs.backlog = q->backlogs[idx];
++		qs.backlog = READ_ONCE(q->backlogs[idx]);
+ 		qs.drops = 0;
+ 	}
+ 	if (gnet_stats_copy_queue(d, NULL, &qs, qs.qlen) < 0)
 -- 
-2.53.0
+2.54.0.545.g6539524ca2-goog
 
