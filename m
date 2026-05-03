@@ -1,173 +1,131 @@
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7082E215F42
-	for <netdev@vger.kernel.org>; Sun,  3 May 2026 02:06:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8A37242D67;
+	Sun,  3 May 2026 02:06:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777773995; cv=none; b=euS7K8MD+n7hSR7Uxtp9QlbpC9tDPjmW8pRIxZqOJYePUmgBllltnVLR2sk15BeFpDs1/BXAbkcWPMCy+llXMf0o2Ab6cDo8+dO1FWyllXc/LuOxF6CWgWAsJjNbnUnUgr3pINutZRtUof7clivdKe7QS4QxvR/Uhz4pwBvaS2E=
+	t=1777773999; cv=none; b=GRxzZwUmtu1d32IR/qrA+N6ZvHUAvDAmUiBQ5qIzXd9T9ZdTfohGzhgxNcxfx66ptxN/afWzZNuNEskP7Z87g1q8WNP2S89oIsXlcVkIP4fMa5o4vrd0M11UOcYy5ptR12HlnWMIZR/i/ZEhb6aMHeo+XtIFDkZOBada+ocHdNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777773995; c=relaxed/simple;
-	bh=qTcHuUwch6LxOFnkGYTL4CalYWxKwr9/UP8XDKGTT/8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=F4RVMedy3d93tbbgCHKgsKs57ge38yaihvQ2jNyruRfYPey6Vp4kehvIwLKZ4q1X5af0k+KIkv0JL823TJFylwmLmYoXSfNZJ+qFr+OuZcBbrB5CLfUYgjS91cp82NqAmFLm6xVaF9ORhn8oaofdGNJJTiyNm3IT/FEZOt6wtdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b=IcIA02mK; arc=none smtp.client-ip=209.85.222.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
+	s=arc-20240116; t=1777773999; c=relaxed/simple;
+	bh=bfjBLVh2vMX+BVQ+AHbzzJc6KHbr7hv29LepOAC3ywk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Wf3so+F9C24M0cbNJeoXWn6EmMcY4uE5RKhLRz0/v7+vf5CLllb7OeKXQMNJcSj6JDAKvG3ltMLk9p70jpSkQ5VnmO53YnRLvKFM0rH8VoE6ZPlgmN3NGr57zkoDS+7GpPKlYr7amfWcpJONK+I01e4zkq+O/D659/msyeHHZJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qdr0qjUg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b="IcIA02mK"
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-8ee63e91acfso236391385a.2
-        for <netdev@vger.kernel.org>; Sat, 02 May 2026 19:06:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=riscstar-com.20251104.gappssmtp.com; s=20251104; t=1777773992; x=1778378792; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=pi7lj8hY/RV2kHI36GdoypDFeZXohRaZRLU99hRCU8E=;
-        b=IcIA02mKrh9cSLWZmfS2DujBZyk8sv50e4HrhVIIw+ClMHZKas/ZydC0ERbuySKjOa
-         XLw25N3UJB2JWpKFF4/kd+OjeY8ro+3aHC1M9EjhAwZZoGYB4zKaQiLwqeNguRtvTRgt
-         hwHisICTRc41PvUcNPyDT1gZem76y/MnSkeT1OF/kEEHQ30nzug1LtixNapAlmj81xZq
-         XgNyZB99TvfK4TKtTyRCXvsefrR17Tc7f9YL3sfvyUkPrdHfpL0FnPu336AcRIIVJ3DD
-         9434m04rZZtrSWigXZMfJSZFzgZrm8WpNyoQQFGf+6finIjld8BrfC0hKZ+mClFb+Z8+
-         sbKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777773992; x=1778378792;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=pi7lj8hY/RV2kHI36GdoypDFeZXohRaZRLU99hRCU8E=;
-        b=VawpGncIiYH0XRAHmeDOIjXFS0NQVDj4VbI0vyI1rOqHsSu4mv5RKCNCzPcBP4JhAT
-         u4khOtgbmi9bYPTvE097Wl75ebylF7KrTeZdR451QFBqdtNBZd+HdJRNyp46tDfM2I8t
-         CMVPK+gSr0zFook6JrZq6dt09fJ5/rY8jIL5z7ILcZMZbmG96nlJx9rDvgTtzplSEG0+
-         Ctqs89om3x4WDyMP344C5exeVsqyfuNRYcqhu599mk5WiCqg7sEWoQe9FsbbPKjf4rBq
-         narSWwNNYQMENzBsd+neaDu07Cag7LthJ3bUbYJRHMoLt22cwAkZxS6coc8rxnjgcbXH
-         QKjg==
-X-Forwarded-Encrypted: i=1; AFNElJ8sdx0eYiT+Im64gl+tGkaMJzPgakyLtVVHnLawC6kvgcoGOG0wgDJ50uvpyGH6Xlq4Pq/6Fwc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx5sCw1sohX44YE+qlba/Ah2kU7u/9W6+IJ6myAz6woY6gsY/5o
-	r5XCf739vfran4T9ggbJh3Ntm4hn3H1TMH5CEibHQ1+6LYi9b5Ls1mh/R3rIQHuw428=
-X-Gm-Gg: AeBDietoRNVHwQLsxVgrf5CzEL2No8zRUcTQnBY/CJwyNc+mPKUzozDMAtaOfd06MMi
-	oBIJlJgRuLeUwfcq2gLQgUw4YKgyuX2JjRsBuCmrQ7xQ+dV2cDnGObnLKPCtt8Q8z5z9XTdwprU
-	vxqBrlutTA7guFMMsx75HDV1q+EchVD9/AWg5yz0KHH0tOq+RaYFNr4JYHmPj0G9FlOatKx9Ymk
-	5bBRmpyhiHnFsGhKq5qzPgN1OO0AYqYvbs8egN8bbNYS0U9wjCC7i8vwKNsJGNoMHdNJqxIrlLU
-	IGnbSyMZUw+j3MwYg3UOY8MdhPhE77rtuFsN6+sj5RTfv7j5oe15iCumipFMWy2MoCn3qUMvoOM
-	3tMJjjZyxDqhE+TWz8LzsEAu1dqmE5Dc0BRk/J4TDhyoM3DYLpYwHDei6Gs7RP0LvaG8vhXZHaL
-	95xWFzevwsdfJxfp2oCkrD14Y1pHTlKZ0Q0Ckkj3acJoh90EvWNC+e0rGkMQCxdF7nZeDjXamge
-	g==
-X-Received: by 2002:a05:620a:4083:b0:8f1:5e8f:ffe8 with SMTP id af79cd13be357-8fd16aa97ebmr768552485a.23.1777773992247;
-        Sat, 02 May 2026 19:06:32 -0700 (PDT)
-Received: from [172.22.22.28] (c-75-72-117-212.hsd1.mn.comcast.net. [75.72.117.212])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b53d831ac7sm72634806d6.49.2026.05.02.19.06.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 02 May 2026 19:06:31 -0700 (PDT)
-Message-ID: <083e91d0-d86f-4de9-a01f-ce44eadacc13@riscstar.com>
-Date: Sat, 2 May 2026 21:06:28 -0500
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qdr0qjUg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 853F5C19425;
+	Sun,  3 May 2026 02:06:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777773998;
+	bh=bfjBLVh2vMX+BVQ+AHbzzJc6KHbr7hv29LepOAC3ywk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Qdr0qjUgWinggThnh6Pouzc53Z63huXMs6lxGV5klczsWSdCdkRYWcgHdRSAet/Ke
+	 rFhFedPTgLLiwrJ8R0HGwgyji+lwGsRAQLzNSF+Qqm1Nl0zQPSwzSBqFVbnSkks7bS
+	 Cpmf3HjwX71M73iLYNyu+wYRhLpTmoqjRQBK/dzj2kni85VenhH2DHdu9ivllrppBZ
+	 XIkc60LXJKLUs45L5zc5agPn2n/gjuiS1UyUdWj4k6pqHTlzthE0VdDhP2td4eEtLB
+	 M+tqbOP4OpsYGoRSrdld1BPSZPM3Bqsb+3IX+4vAilCKHy3wEoerZB0CqEkz8KLDG/
+	 CJjnq0R7oZAlQ==
+From: Jakub Kicinski <kuba@kernel.org>
+To: jacob.e.keller@intel.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	aleksander.lobakin@intel.com,
+	horms@kernel.org,
+	michal.swiatkowski@linux.intel.com,
+	jedrzej.jagielski@intel.com,
+	aleksandr.loktionov@intel.com,
+	grzegorz.nitka@intel.com,
+	ivecera@redhat.com,
+	arkadiusz.kubalewski@intel.com,
+	anthony.l.nguyen@intel.com,
+	stefan.wegrzyn@intel.com,
+	piotr.kwapulinski@intel.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	pmenzel@molgen.mpg.de,
+	sunithax.d.mekala@intel.com
+Subject: Re: [PATCH net-next 07/15] ixgbe: E610: add ACI dynamic debug
+Date: Sat,  2 May 2026 19:06:36 -0700
+Message-ID: <20260503020636.4114758-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260430-jk-iwl-net-next-2026-04-30-v1-7-6f27ae1cd073@intel.com>
+References: <20260430-jk-iwl-net-next-2026-04-30-v1-7-6f27ae1cd073@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 11/12] misc: tc956x_pci: add TC956x/QPS615
- support
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, maxime.chevallier@bootlin.com,
- rmk+kernel@armlinux.org.uk, andersson@kernel.org, konradybcio@kernel.org,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, linusw@kernel.org,
- brgl@kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org,
- daniel@riscstar.com, mohd.anwar@oss.qualcomm.com, a0987203069@gmail.com,
- alexandre.torgue@foss.st.com, ast@kernel.org, boon.khai.ng@altera.com,
- chenchuangyu@xiaomi.com, chenhuacai@kernel.org, daniel@iogearbox.net,
- hawk@kernel.org, hkallweit1@gmail.com, inochiama@gmail.com,
- john.fastabend@gmail.com, julianbraha@gmail.com, livelycarpet87@gmail.com,
- matthew.gerlach@altera.com, mcoquelin.stm32@gmail.com, me@ziyao.cc,
- prabhakar.mahadev-lad.rj@bp.renesas.com, richardcochran@gmail.com,
- rohan.g.thomas@altera.com, sdf@fomichev.me, siyanteng@cqsoftware.com.cn,
- weishangjuan@eswincomputing.com, wens@kernel.org, netdev@vger.kernel.org,
- bpf@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-gpio@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20260501155421.3329862-1-elder@riscstar.com>
- <20260501155421.3329862-12-elder@riscstar.com>
- <f9336d01-e2d1-4894-848a-17ab20976872@lunn.ch>
-Content-Language: en-US
-From: Alex Elder <elder@riscstar.com>
-In-Reply-To: <f9336d01-e2d1-4894-848a-17ab20976872@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 5/1/26 4:07 PM, Andrew Lunn wrote:
->> diff --git a/drivers/misc/tc956x_pci.c b/drivers/misc/tc956x_pci.c
-> 
->> +static inline void chip_reset_assert(const struct tc956x_chip *chip,
->> +				     enum reset_id id)
->> +{
->> +	tc956x_reset_clock_set(chip, true, true, true, (u8)id);
->> +}
-> 
-> This is in drivers/misc, where the rules might be different. But in
-> netdev, we don't like inline functions in .c files. It is better to
-> let the compiler decide.
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+ixgbe: E610: add ACI dynamic debug
 
-That was a mistake.  I agree with that perspective.  These functions
-were moved out of the header file because they were only used here.
-And in the process, I neglected to drop the inline.  Will fix.
+This commit enables dynamic debugging of the Admin Command Interface (ACI)
+for the e610 adapter, allowing ACI commands and descriptor details to be
+printed into the kernel log.
 
->> +static void chip_init_state(struct tc956x_chip *chip)
->> +{
->> +	/* The only IP block we currently use is MSIGEN */
->> +	chip_reset_assert(chip, RESET_MCU);
->> +	chip_reset_assert(chip, RESET_MCU1);
->> +	chip_reset_assert(chip, RESET_INTC);
->> +	chip_reset_assert(chip, RESET_UART0);
->> +	chip_clock_disable(chip, CLOCK_MCU);
->> +	chip_clock_disable(chip, CLOCK_SRAM);
->> +	chip_clock_disable(chip, CLOCK_PLL);
->> +	chip_clock_disable(chip, CLOCK_SGMII);
-> 
-> With my networking hat on, this one standard out.
-> 
->> +	chip_clock_disable(chip, CLOCK_REFCLK);
-> 
-> The name REFCLK is sometimes used as for the clock signals for RGMII?
+> diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
+> --- a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
+> +++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
 
-You're saying that the REFCLK disable stood out, and you want to
-understand what "REFCLK" actually represents?
+[ ... ]
 
-I believe this is an *output* reference clock signal generated by the
-TC9564.  Looking at the schematic for the RB3gen2 it leads only to
-a test point.
+> @@ -106,8 +185,12 @@ static int ixgbe_aci_send_cmd_execute(struct ixgbe_hw *hw,
+>  		if (desc->flags & cpu_to_le16(LIBIE_AQ_FLAG_RD)) {
+>  			for (i = 0; i < buf_size / 4; i++)
+>  				IXGBE_WRITE_REG(hw, IXGBE_PF_HIBA(i), ((u32 *)buf)[i]);
+> -			if (buf_tail_size)
+> +			ixgbe_aci_debug(hw, desc, buf, buf_size);
+> +			if (buf_tail_size) {
+>  				IXGBE_WRITE_REG(hw, IXGBE_PF_HIBA(i), buf_tail);
+> +				ixgbe_aci_debug(hw, desc, &buf_tail,
+> +						buf_tail_size);
+> +			}
+>  		}
+>  	}
 
-However I want to compare notes with Daniel on Monday about this.
+Does this result in redundant output being printed to the kernel log?
 
-Would it draw less attention if it were named "REFCLKO"?
+When buf_tail_size is non-zero, ixgbe_aci_debug() is called twice: once for
+the full buffer, and a second time for just the tail. Since ixgbe_aci_debug()
+prints the full CQ CMD descriptor details each time, this appears to print the
+descriptor headers twice and fragment the buffer output.
 
-In any case we can add some reassuring comments.
+[ ... ]
 
-> 
->> +static int
->> +tc956x_function_probe(struct pci_dev *pdev, const struct pci_device_id *id)
->> +{
->> +	struct device *dev = &pdev->dev;
->> +	struct tc956x_chip *chip;
->> +	unsigned int msigen_irq;
->> +	int ret;
->> +
->> +	/* Despite being a PCI device, we require devicetree */
->> +	if (!dev->of_node)
->> +		return -EINVAL;
-> 
-> Might be worth a dev_err(), since it is unusual.
+> @@ -183,10 +278,13 @@ static int ixgbe_aci_send_cmd_execute(struct ixgbe_hw *hw,
+>  	if (valid_buf) {
+>  		for (i = 0; i < buf_size / 4; i++)
+>  			((u32 *)buf)[i] = IXGBE_READ_REG(hw, IXGBE_PF_HIBA(i));
+> +		ixgbe_aci_debug(hw, raw_desc, buf, buf_size);
+>  		if (buf_tail_size) {
+>  			buf_tail = IXGBE_READ_REG(hw, IXGBE_PF_HIBA(i));
+>  			memcpy(buf + buf_size - buf_tail_size, &buf_tail,
+>  			       buf_tail_size);
+> +			ixgbe_aci_debug(hw, raw_desc, &buf_tail,
+> +					buf_tail_size);
+>  		}
+>  	}
 
-Good suggestion.  I'll add that.
+Can this read uninitialized memory from the buffer?
 
-Thanks a lot for your review.
+At the point ixgbe_aci_debug(..., buf, buf_size) is called, the loop has only
+populated the 4-byte aligned chunks of the buffer. The trailing bytes at the
+end of the buffer are not populated until the memcpy() occurs later in the
+block. Because ixgbe_aci_debug() consumes buf_size bytes, it looks like it
+will read and log uninitialized trailing memory (potentially from the kernel
+stack).
 
-					-Alex
+Also, similar to the transmit path, this calls ixgbe_aci_debug() a second
+time on &buf_tail, which will print the descriptor headers again.
 
-> 
-> 	Andrew
-
+Could we move a single ixgbe_aci_debug(..., buf, buf_size) call to the end of
+the block, after the entire buffer including the tail has been fully written?
