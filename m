@@ -1,164 +1,169 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6B137CD25
-	for <netdev@vger.kernel.org>; Sun,  3 May 2026 16:42:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777826536; cv=none; b=lUvf9hJ1bZWwLj5/rfxnRpz1hUjFh7afDv49nYMqxe2IjNvK37qppONgiDJUYsZAdOSf9oqSwe7WoKDbDtJ5IFv5ersNnURBNQYMCOpJ2c/eJwxRd6s09MHBUlKhauQ0MA99mMbii0c4P33gIvyMycy2DPLYOpUxvCvS1QDl0Is=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777826536; c=relaxed/simple;
-	bh=Se9S5vUeFZoS9hDDulyLslLqrZjqxeW2hVsu+xMPWEc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fnH1Gbu+7+22o4ie9NrEQXgo17nzvZrzJswweK/O6BF6FAnERubDGFXabU+oj6mpI5n/4JPMnU/oNNkDpt2Rk1U8nvf96vFTUBzSxavCm9eLgW5myPZLdZg9MNvgVxr9yy6hKe9lK9LhqvzCjpZaYExoinfjgWWvKxZ0pVqTh8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Tfn1MwKW; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 745F4372EEF
+	for <netdev@vger.kernel.org>; Sun,  3 May 2026 16:45:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777826746; cv=pass; b=CMoyPNz4cB6sQSh8G3J4G/nAvtCwvDOIPMvQkM9HggrzqjvOgNE4QlTDUi39ZyLeBRM6bLRWtx5hWeCQk9opkx42967KTR0OtFrbV7otWwbPr1LJLIwpAfA3wE2GmcurA2/WXgoD/tvZVajiNNZqUiE9qWo5W8NKxZ4KtPcP2gk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777826746; c=relaxed/simple;
+	bh=LV2XOb0jyUnumBexNMfNxtwYt5s7oyI9ARwa0OImnCM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PTKezEe0yp+fmGnhN8/E4CHxzSdbYLlzbsVX6RivjoY6vmhFdO9dJ0J30SlTjals4YCWrqQNu40IWjQV7l/ipwrY8myqh7hXDz6m5jiTnwt6GBMOhiwupOU342PuY3Hkc+o8KBSojw4YL9gUUjr0R05J7wlGNd1B0yV2BfS9A6M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AAgd1w53; arc=pass smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Tfn1MwKW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777826525;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=6OMnXFksPWYgCbDa0fqBN0MsKqolVLOn4UZAcKfFliU=;
-	b=Tfn1MwKWdTmLWaWQ2ibmQJyvq4kpfwdPH0DPHBLYEmMrv9GXDgSaUwaG1vu1KdchFoBwra
-	rth2o01hp1RY4iYUt0Ur7ppQ/P3iA5O5hRTuch2EjaGNPBTSuQdTIS6rm34UDbFekW3JtG
-	VmHCRB6uH4h1N/llnXU1A106z5VKNHc=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-461-340km-k-NsG7GjbczS2N4g-1; Sun,
- 03 May 2026 12:42:04 -0400
-X-MC-Unique: 340km-k-NsG7GjbczS2N4g-1
-X-Mimecast-MFC-AGG-ID: 340km-k-NsG7GjbczS2N4g_1777826523
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 593C51800473;
-	Sun,  3 May 2026 16:42:03 +0000 (UTC)
-Received: from p16v.redhat.com (unknown [10.44.48.53])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9EE3C1800480;
-	Sun,  3 May 2026 16:42:01 +0000 (UTC)
-From: Ivan Vecera <ivecera@redhat.com>
-To: netdev@vger.kernel.org
-Cc: Petr Oros <poros@redhat.com>,
-	David Ahern <dsahern@kernel.org>,
-	Stephen Hemminger <stephen@networkplumber.org>
-Subject: [PATCH iproute2] dpll: fix man page correctness issues
-Date: Sun,  3 May 2026 18:42:00 +0200
-Message-ID: <20260503164200.145679-1-ivecera@redhat.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AAgd1w53"
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-ba6838e76f2so363913566b.2
+        for <netdev@vger.kernel.org>; Sun, 03 May 2026 09:45:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777826744; cv=none;
+        d=google.com; s=arc-20240605;
+        b=PFlWkSDo5UfrqBLLRle8zURAizQIo0WQN0v1Ka6SGtbmDm6oqJ2AAzWLXO7E9btjxh
+         x/QpEdB5TNiql4XmVFuBWf9q5FU6l6olcqLLJZIY5fIJb+zogU59BS1nlW3ImAduxt6+
+         suk+SyrGOdJrn/xhH36nyCJnxO/OAOKVNFWemciVUyFWLTRWy9lmlbeq8CuctKEwJgDt
+         umeGRaHjX3Ifvunc79mSxiDOB0dv0A+TFdUCPwadnzWYLK+FrQd3y2IuSdW6XfzyOIu6
+         caTMUEc49nXlIGds8ljdg93bfa7Jmn+D1i9s8e3RYJj9E/CU2/UK6MW0Y/u2C+O1oP6p
+         ToFA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=8JgN0Hefm3t3vAV3GW6QiuYzvhcPvf24+7SaYMn7ur0=;
+        fh=rjGajMQUesDGdaDJgCl5JHj4gmkBog9P3lfhQh09egQ=;
+        b=cUw3Q04U5UFJdKCCwUggDuk/VUEaJYihfOya52dxTcMhcG/WIutP0CcJPI7GbKwPZN
+         bVK8dvoqxW6n+JYRV4YfZVTTPolWmByQOXgoy8x2ulbZAESxch4dXjH9sNB+tgjlNXd2
+         qs0nUOEJL75LYkVKPUCw9CALzAdBQ2m92Pz7Lp07orfx10g4dQYCjV05S8hva9JepNK9
+         YW2J/45gPxbF4CFPqkPXEaXNp3110L84F/21VwJRTc3PFxO0E76BrdBYQ3AnAFhC/Ofi
+         4V+iD31Onkg3JttBCPuN1qRzqeckE6D2OnuZYtu0ZAIRXCPlbAolw3Tf3ugdd7W65+SY
+         ajaQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777826744; x=1778431544; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8JgN0Hefm3t3vAV3GW6QiuYzvhcPvf24+7SaYMn7ur0=;
+        b=AAgd1w537meSNpN8m9OyAc/ycTd+YmUKiznHGwvSuRPsYRRfT4VS1GlpzwHVZ8AEjK
+         czQ6gyMbMykKQYNpiq+YZi+SPHYJk3yveJHNWvi9uc/SvX012cWG1jI/BO4pUyF5FUa5
+         01vf9F1AJtMVC5NEWxlhmbaulgvV7Arjtiyb6GR/JwWwkWArzmIJB4xd/yAh+KqLWj9I
+         U9GVoH9XfTPzhwqWC1AeFMmJXnNakaiqH3oRrjjoPKviVAWPE64QIi/QEXNhMVpXXot5
+         BB5I7Aat0N8/zChheK4tQ/pQnJMpOVcqAakbC6DiO1U9Tt9n1j0MdVm9BaETAC5XPSdw
+         3Wxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777826744; x=1778431544;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=8JgN0Hefm3t3vAV3GW6QiuYzvhcPvf24+7SaYMn7ur0=;
+        b=e2OGNkpDrJwf6kWupNGyACN9YRU1zTioMVdowNtQ/6mNHXxK1owE+scXClUMAWNtob
+         /DYiPqoVoRHsie/m+KtqlHS+N3+QA+9UPleHsu7mTsUSuOzdTJz3oT4tSqEC5MbZyREI
+         olYeXi3MEvsI3eCVXajYEFPmMBUcXcNFIClMTarfN+azxZ0k3Hwg9j0+h7oW6uUbFMGG
+         SOOVx6lHMMUsDG8PJZ8nDwcx3BTkmfFX3b8KYP20rdKu/QN3OY6UyIqxGtBKy/yyaSAM
+         nRzBF//r1UFm08CWg+ASrOpre6DF7DLCFHjFcCj/q4wXU6CoVPhFXxwDBR8wog8fzzgC
+         t/9Q==
+X-Gm-Message-State: AOJu0Yy1LCWhg7sw8h0JyFEFLxKddmBqXxi7miLluyRyAmttubHnv9xC
+	F54BEun1IacWaf53aGvMgd3YVTrCIldWVAkw343MuCRmHLXpuQEjWmWzSMjXgZ2D2Rtbx3o/+5Q
+	A8Es5sMXTAiszp5p/usQl1jxkMdQKZRs=
+X-Gm-Gg: AeBDies1LIe04SgwboTjJYfgz2G9GSo3oXcZDtKdt2/6Ynq5vZ+a2U3L4hSZ/4eAzWI
+	zWvfKZuCbhdCe210L912f9/oIpQFKNWcqrL/MJgCWC+haGEeIEWGwD0bX4GS45G40GHDNKeZ0yH
+	fD2ZIczPmruDP1Cr3zaIZL+yDSTWYUZciZK8FyK46Rb7/zHObeTd/BJDV014OyKhtnE6FKoH8NT
+	OTo5aHaag0tUC2nQ4e7Xs8HrFKxZRI981Whs3jjQSUeM9ycDcH9jHwcFmuAQ2+0nyyy0KXfinpX
+	3CJUBPVjoj86mSrl7/2vtUoAvbiZ8v7aJPBhPWH50bRqoJPe+Jad
+X-Received: by 2002:a17:907:7b83:b0:b9c:2c55:3384 with SMTP id
+ a640c23a62f3a-bbffb846e81mr366878366b.31.1777826743537; Sun, 03 May 2026
+ 09:45:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+References: <20260503153006.900533-1-y-kusakabe@bbsakura.net>
+In-Reply-To: <20260503153006.900533-1-y-kusakabe@bbsakura.net>
+From: Yuya Kusakabe <yuya.kusakabe@gmail.com>
+Date: Mon, 4 May 2026 01:45:31 +0900
+X-Gm-Features: AVHnY4KphqnnGL_fETaHA4JnbzJ5DlVkT9VAjwd25brXuGY3u1NsNWJOgzjbyW4
+Message-ID: <CAGCJULNRzdbVJAtRmAjRcLZ-U9y+Rk9O53yWoivBkjxeyTu9+A@mail.gmail.com>
+Subject: Re: [PATCH iproute2-next 0/6] seg6: SRv6 Mobile User Plane (RFC 9433)
+To: stephen@networkplumber.org, dsahern@kernel.org
+Cc: netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Fix several inaccuracies in dpll.8 man page:
-- Remove bogus "holdover" and "freerun" from operating modes list,
-  only "manual" and "automatic" modes exist in the DPLL API
-- Fix typo "locked-ho-ack" -> "locked-ho-acq" in lock status list
-- Add missing device show output fields: lock-status-error,
-  clock-quality-level, mode-supported, phase-offset-monitor and
-  phase-offset-avg-factor
-- Add missing pin show output fields: panel-label, package-label,
-  fractional-frequency-offset and esync-pulse
-- Remove non-existent exit codes 2 and 255, the tool only returns
-  0 (success) or 1 (failure)
-- Use canonical enable/disable for phase-offset-monitor to match
-  the tool's help text
+Please ignore this thread; resent due to a local git config issue
+that put the Message-IDs under the wrong domain.
 
-Fixes: 656cfc3ce05b ("dpll: Add dpll command")
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
----
- man/man8/dpll.8 | 32 +++++++++++++++++++++-----------
- 1 file changed, 21 insertions(+), 11 deletions(-)
+Correct thread:
+  https://lore.kernel.org/netdev/20260503154510.912576-1-yuya.kusakabe@gmai=
+l.com/
 
-diff --git a/man/man8/dpll.8 b/man/man8/dpll.8
-index 89f17af74923..3abed86f1d52 100644
---- a/man/man8/dpll.8
-+++ b/man/man8/dpll.8
-@@ -102,13 +102,23 @@ Module name providing the device
- .IP \[bu]
- Clock ID (unique identifier)
- .IP \[bu]
--Operating mode (manual, automatic, holdover, freerun)
-+Operating mode (manual, automatic)
- .IP \[bu]
--Lock status (locked-ho-ack, locked, unlocked, holdover)
-+Lock status (unlocked, locked, locked-ho-acq, holdover)
-+.IP \[bu]
-+Lock status error (if present)
-+.IP \[bu]
-+Clock quality level (if supported)
- .IP \[bu]
- Temperature (if supported)
- .IP \[bu]
- Type (PPS or EEC)
-+.IP \[bu]
-+Supported modes
-+.IP \[bu]
-+Phase offset monitor status (enable/disable)
-+.IP \[bu]
-+Phase offset averaging factor
- .RE
- 
- .SS dpll device set id ID [ mode { automatic | manual } ] [ phase-offset-monitor { enable | disable } ] [ phase-offset-avg-factor FACTOR ]
-@@ -131,7 +141,7 @@ mode, the input source must be explicitly configured and the DPLL
- will not automatically switch sources.
- 
- .TP
--.BI phase-offset-monitor " { enable | disable | true | false | 0 | 1 }"
-+.BI phase-offset-monitor " { enable | disable }"
- Enable or disable phase offset monitoring between the device and its pins.
- When enabled, the kernel continuously measures and reports phase differences.
- 
-@@ -231,6 +241,10 @@ Clock ID
- .IP \[bu]
- Board label (hardware label from device tree or ACPI)
- .IP \[bu]
-+Panel label
-+.IP \[bu]
-+Package label
-+.IP \[bu]
- Pin type (mux, ext, synce-eth-port, int-oscillator, gnss)
- .IP \[bu]
- Frequency and supported frequency ranges
-@@ -239,13 +253,15 @@ Capabilities (state-can-change, priority-can-change, direction-can-change)
- .IP \[bu]
- Phase adjustment range, granularity, and current value
- .IP \[bu]
-+Fractional frequency offset
-+.IP \[bu]
- Parent device relationships (direction, priority, state, phase offset)
- .IP \[bu]
- Parent pin relationships
- .IP \[bu]
- Reference sync information
- .IP \[bu]
--Esync frequency support (if applicable)
-+Esync frequency and pulse support (if applicable)
- .RE
- 
- .SS dpll pin set id ID [ PARAMETER VALUE ] ...
-@@ -495,13 +511,7 @@ changes.
- Success
- .TP
- .B 1
--General failure
--.TP
--.B 2
--Invalid arguments or usage
--.TP
--.B 255
--Netlink communication error
-+Failure
- 
- .SH NOTES
- .IP \[bu] 2
--- 
-2.53.0
+On Mon, May 4, 2026 at 12:30=E2=80=AFAM Yuya Kusakabe <yuya.kusakabe@gmail.=
+com> wrote:
+>
+> From: Yuya Kusakabe <yuya.kusakabe@gmail.com>
+>
+> This series adds the iproute2 frontend for the SRv6 Mobile User Plane
+> (MUP) endpoint behaviors of RFC 9433.  It is sent in parallel with the
+> matching kernel net-next series; each commit here is self-contained
+> and brings in the seg6local UAPI bits it needs from the in-progress
+> kernel UAPI header (include/uapi/linux/seg6_local.h):
+>
+>   Section 6.2  End.MAP
+>   Section 6.3  End.M.GTP6.D
+>   Section 6.4  End.M.GTP6.D.Di
+>   Section 6.5  End.M.GTP6.E
+>   Section 6.6  End.M.GTP4.E
+>   Section 6.7  H.M.GTP4.D
+>
+> The series adds these seg6local CLI keywords:
+>
+>   src                  IPv6 source-address template
+>   v4_mask_len          length of the IPv4 DA portion of the SID, in
+>                        bits (1..32)
+>   sr_prefix_len        locator length of the egress End.M.GTP*.E SID,
+>                        in bits (1..88, leaving 40 bits for the
+>                        Args.Mob.Session field)
+>   v6_src_prefix_len    Source UPF Prefix length P in the IPv6 SA
+>                        template (1..127, defaults to 64); requires
+>                        P + v4_mask_len <=3D 128
+>   pdu_type             GTP-U PDU Session Container PDU Type (3GPP
+>                        TS 38.415 Section 5.5.2): downlink|dl|uplink|ul
+>                        or 0..15.  When omitted, the egress emits a
+>                        short GTPv1-U header (no PDU Session Container)
+>                        regardless of the QFI in the SID; 5G N3
+>                        deployments must set pdu_type explicitly.
+>
+> A small per-action attribute validator (introduced in patch 1 and
+> extended by each subsequent behavior) rejects obvious typos in the
+> seg6local block at the userspace layer instead of leaving the
+> operator with an opaque kernel EINVAL.
+>
+> Link: https://datatracker.ietf.org/doc/html/rfc9433
+>
+> Yuya Kusakabe (6):
+>   seg6: add support for the End.MAP behavior
+>   seg6: add support for the End.M.GTP4.E behavior
+>   seg6: add support for the End.M.GTP6.E behavior
+>   seg6: add support for the End.M.GTP6.D behavior
+>   seg6: add support for the End.M.GTP6.D.Di behavior
+>   seg6: add support for the H.M.GTP4.D behavior
+>
+>  include/uapi/linux/seg6_local.h |  17 +++
+>  ip/ip_common.h                  |   2 +-
+>  ip/ipnexthop.c                  |   2 +-
+>  ip/iproute.c                    |  14 +-
+>  ip/iproute_lwtunnel.c           | 263 +++++++++++++++++++++++++++++++-
+>  man/man8/ip-route.8.in          | 154 +++++++++++++++++++
+>  6 files changed, 442 insertions(+), 10 deletions(-)
+>
+>
+> base-commit: 4f5de57e2ff11a5925dacdf3deeeabee7ba9502a
+> --
+> 2.50.1
+>
 
+
+--=20
+Yuya Kusakabe
