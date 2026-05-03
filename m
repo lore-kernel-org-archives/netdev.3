@@ -1,33 +1,65 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D2C311968;
-	Sun,  3 May 2026 19:34:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176C01A681B
+	for <netdev@vger.kernel.org>; Sun,  3 May 2026 19:53:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777836846; cv=none; b=SDTbncWLiSgUcmdqoM0FKUFmbU5kJRTV1d4vaqcl/QqEDoS/EnzkN0DfB6jReNGuYz0LWrOhPD3MoejmG0Fr49/hr7OjkgeLVzEWZYsLMselU5Z1Uun8vrkny1a6ITKwCVTlm6etyx+DAmtQsJ/Pl8s2zOcKk7cgULkFoZ7+ixU=
+	t=1777838031; cv=none; b=pPZI37WinJiWpaR30DflGHqM7yBmaQzL4G6sBbPvafv9O/uF7vyPVTkbIi5kglThwlJsyeSzN2RaNQouTp0Obj1/uazfErnP4Fiod0CFvYvtrtaucVXNWWKNdlNNkV7Lvj8V60Eay7Z/3PwO6CH/U2rhAgTvBx1Dm86WceZrs/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777836846; c=relaxed/simple;
-	bh=9JSKzgl+syuB5t6tQTY0ilz9DTHL1jdtvAEDtOWfJLs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Rs+K9VCUJL+2YL1TwcvctkL2z/4+gSZumOSOT9Rht9cN463tzU64WsHcDJQIQcAodQCgfW0TnE2EKuOxDO+5aXGm6q/Bx1mzKKzg9V0bK5Jhvh7sjvTiuhXJqcD2z8MysMqbzvjttr1dmbjT57NIO/dOZO5zNZrirbZNGjq3CAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y/5g1tVg; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777838031; c=relaxed/simple;
+	bh=JfMGdIbiT2KdVHz8g0viJ1GpkDYuCJYV2rWnOwAWMT0=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=YYlF4VEIWeEXnjU2XVmzeGdZnUfs/87JIMxW8615hPahXB+6E1Dp+IFc23qi8e6RW1l1rWU1Tf7I8AR3sVxWuGMQTUg9OpnLYFjoVWvQzcvVCOd59I3xFbM/gBSULCYxW++wH3ciN/YLNJItO5IYkDUiV+K8yOJCbepKb8dQgTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vastdata.com; spf=pass smtp.mailfrom=vastdata.com; dkim=pass (2048-bit key) header.d=vastdata.com header.i=@vastdata.com header.b=gLt8R0w6; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vastdata.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vastdata.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y/5g1tVg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0036DC2BCB4;
-	Sun,  3 May 2026 19:34:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777836846;
-	bh=9JSKzgl+syuB5t6tQTY0ilz9DTHL1jdtvAEDtOWfJLs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Y/5g1tVgwbcO8fY2GhZ91sRZ2uHJQ237n3Xm1oMlm5PKUwrfYhQlCTHAcKb6hTJwB
-	 5dl7OvcAu3MMzsB0QzYaKCzaTGnxQyFt9iUJF0GHAaDwIxi17+zgWtWjpqP44ieG8v
-	 IMd7vATKzQVhn59ZwsLMBcEOymU97ZYugz8nOeMmiMNLOqnGlOX4SdldR2hfezIO77
-	 Ke3bWORZWKIBW1FALw8YklcuSO+Rqg8DBCWEIK0BpvObUG++M/Yezwv6DlOE7ywDda
-	 41BULQ4UXfXNnCjr5Z9RXy03D6u208Dwbl7H/bijH74GO+bwJLR/xfcWSnZUcUlCxT
-	 mZync/ogBquSw==
-Message-ID: <2d2b5da3-3bfc-4882-8886-8f20b61254e3@kernel.org>
-Date: Sun, 3 May 2026 21:34:01 +0200
+	dkim=pass (2048-bit key) header.d=vastdata.com header.i=@vastdata.com header.b="gLt8R0w6"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-44b052142e1so986582f8f.1
+        for <netdev@vger.kernel.org>; Sun, 03 May 2026 12:53:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=vastdata.com; s=google; t=1777838028; x=1778442828; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nc4ouqvmyuFYLLFWfP/eIRW8O+xQJ4l+PCrNjSXuyTM=;
+        b=gLt8R0w6xEj5VGInipc+Tkd8NYqPhw6ejM4+1gbdBOPoEJ8qDamAhiaK1mlv/KWUX/
+         Xo4tbC3ntqpz0UGYzGtyEDoJWREYwrZE/uyRKGAnwADWl175PrkD0BvVWzkc12fTs51h
+         eSEIInUkHbt4gNlL5rN4HY/oSdwi7gkIN3dKnk/3iCEU1N9805vbA9kbPSAE4/cT2mVP
+         2uzMTCRcSday7/nm55WBzDsfNZgt0UEkLpRLu8A1zMpVLaBKM1Bexv+mYgOnaYJgrhaS
+         S/IZyuCjHZt1Gd0tx3y6hsMXX5m+rjCYBLSq4xhB+HYc9TQpFOK6z699q58dp76crfeu
+         yDpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777838028; x=1778442828;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=nc4ouqvmyuFYLLFWfP/eIRW8O+xQJ4l+PCrNjSXuyTM=;
+        b=UqKjTDv/vkMB4SRPsHFDTRtrj9Bnwekf9HVvfghFSEGq2HJ9IlPCaXUr3WhhnPlE7U
+         XhTm7taNCLlLEo9FjvHVO5sElY3n+sJ7sEk6fNovquBsa460sJMeqUmqABQAnTZLrwGJ
+         YGPNDjhxLb3wlOWwyFCLbMe8xYBKu29n5PZ1Wofybxv8HD4hLqW6a+BaB9YSSaKfeeJV
+         Ig0x01w6BGtxDzJt9NCRoV0JlOGGvTLFD2vg10ZuFdY2MqtOI9TM/3ltidntks/VFKmn
+         UnFbC60eUVDIlriaEEkqR10irwMyaumwUNWDfCGEhHp5HA349OwIi1uv9nkaTV5brQRJ
+         MesQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9Rk+epshdKM8+V35uERk7xGzvsF/FnLri85WkwqiLnR5SKkWVKSL8vmz7mLSRFT6kBnnZDjhA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9xP1U6Q/cmsHHoGZjYx1ciQ91xslglwnYAz/F7/unB8i2falK
+	VW1U4OZEPXGZnV2VlwvJe30rEN7B0lfcE6RLC//a9lQ1H2+kDqBiGnO8fBBq9/c4Rg==
+X-Gm-Gg: AeBDieu8HedMm/BEgwmYiu1aV0zYB46EIltlRjkI9G7KRQVUNXB7wYoOIPeK/wgEISY
+	s6FwqlRdSWpaddHk6Tny+Ru7Y/xyXRADgIj7wkx0jhfbBajrJ2SkDgNchsoJAK0zgPTh3SeIw5k
+	w29mQrqQq2MTHENH6YQe0f7DZm5i55HhEWldqQ6btLQr/8UqFU/VvnTtZPK8b1E20K7KG4pRhW3
+	dmOhHycT8S+F+B2YMEFicyAL5JR0dx9xR7E3EmUMQzycFoMVzmCDDcjsc8iOnNwVkCRqMYyXNrw
+	xaHBjIgQ1Q3SiPtmoHbfQ1F5FS/c6reypkd1akO+JEFK92dyf1uViwxixEftUD0G7Y4oM9eaSKq
+	D3G5qXNxjxtdb3PFqhY2C/XJmrNVNZvJt50/rKfMc0TobcNY3Yzdwqup3E33nK8cMIV6m9NcSQC
+	MeI5WDAXvPbqpZ4Bc74Zw9zDYk0RRd5ZWcKHprCdjd1mgVJ5lp3lgFWb8IuBJq0SKcw96LawinD
+	yZq1p4V1e2Ld/LRCk/QsPp7XcdEKA==
+X-Received: by 2002:a05:6000:4312:b0:43d:300b:2285 with SMTP id ffacd0b85a97d-44bb32fd70cmr11638437f8f.11.1777838028438;
+        Sun, 03 May 2026 12:53:48 -0700 (PDT)
+Received: from [192.168.50.79] (46-116-175-134.bb.netvision.net.il. [46.116.175.134])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-44a986aaad6sm18033489f8f.28.2026.05.03.12.53.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 03 May 2026 12:53:47 -0700 (PDT)
+Message-ID: <40e3d522-dfcf-4fc1-9c55-b5e81f1536d5@vastdata.com>
+Date: Sun, 3 May 2026 22:53:45 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -35,80 +67,250 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v9 0/5] TLS read_sock performance scalability
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: John Fastabend <john.fastabend@gmail.com>,
- Sabrina Dubroca <sd@queasysnail.net>, Eric Dumazet <edumazet@google.com>,
- Simon Horman <horms@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org, kernel-tls-handshake@lists.linux.dev,
- Chuck Lever <chuck.lever@oracle.com>, Hannes Reinecke <hare@suse.de>,
- Alistair Francis <alistair.francis@wdc.com>
-References: <20260429-tls-read-sock-v9-0-39e71aa7810f@oracle.com>
- <20260502180415.0b0bf12b@kernel.org>
-From: Chuck Lever <cel@kernel.org>
 Content-Language: en-US
-Organization: kernel.org
-In-Reply-To: <20260502180415.0b0bf12b@kernel.org>
+To: linux-nfs@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: Chuck Lever <chuck.lever@oracle.com>, Jeff Layton <jlayton@kernel.org>,
+ NeilBrown <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>,
+ Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
+ Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Dan Aloni <dan.aloni@vastdata.com>,
+ roi.azarzar@vastdata.com, sagi.grimberg@vastdata.com
+From: Michael Nemanov <michael.nemanov@vastdata.com>
+Subject: [RFC PATCH] Possible use-after-free bug in mTLS connect
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 5/3/26 3:04 AM, Jakub Kicinski wrote:
-> On Wed, 29 Apr 2026 17:48:07 -0400 Chuck Lever wrote:
->> I'd like to encourage in-kernel kTLS consumers (i.e., NFS and
->> NVMe/TCP) to coalesce on the use of read_sock. When I suggested
->> this to Hannes, he reported a few performance scalability issues
->> with read_sock. 
-> 
-> Meaning, this series achieves.. what right now?
-> I mean - the headline is "performance scalability" and there's no
-> performance testing result in any of the messages :S
-> Patch 5 for instance "seems logical" but how much difference does
-> it make?
+The NFS-over-TLS implementation seems to have a use-after-free bug where
+a raw unrefcounted pointer to an rpc_clnt is stored in xs_connect() and
+accessed by a delayed workqueue item after the client has been freed.
 
-The cover Subject: line has not been changed so all the revisions of
-this series can be located easily.
+The issue manifests when an NFS mount uses incorrect credentials (client
+cert is valid but does not match the server's) during TLS setup,
+leading to the client being freed while a delayed work item still
+holds a pointer to it.
 
-The cover letter makes it clear that the series is now only a clean-up
-series. Since async_capable is set to false for TLSv1.3, there is no
-performance benefit to these changes, so I don't intend to post a
-motivation for it based on performance.
+The patch contains several debug traces that hopefully illustrate the problem
+and a key msleep(100) that helps (though not guarantees) reproduction.
+I had to use pr_debug as the bug often involves a kernel crash and logs can
+only be collected from vmcore-dmesg.
+Used with kernel v7.0-rc5.
 
+Traces from vmcore-dmesg.txt showing the lifecycle of the RPC
+client from creation to use-after-free:
+  [   38.611952] New mount #5
+  [   38.630156] @ rpc_new_client: New: 00000000f636d223, parent: 0000000000000000	<< Client created
+  [   38.630179] @ xs_connect: Queue connect work in 0 for clnt 00000000f636d223
+  [   38.630209] @ xs_tcp_tls_setup_socket: Using clnt 00000000f636d223
+  [   38.630258] @ rpc_new_client: New: 0000000004f8c0fe, parent: 0000000000000000
+  [   38.630265] @ xs_connect: Queue connect work in 0 for clnt 0000000004f8c0fe
+  [   38.752404] @ rpc_shutdown_client: 0000000004f8c0fe
+  [   38.752474] @ rpc_free_client: put_cred 0000000004f8c0fe
+  [   38.752489] @ xs_tcp_tls_setup_socket: Done with clnt 00000000f636d223. status=0
+  [   38.752573] @ rpc_free_client_work: xprt_put done for 0000000004f8c0fe
+  [   38.752955] @ xs_sock_process_cmsg: TLS alert -13, level 2
+  [   38.753069] @ xs_tcp_state_change: sk_state=8
+  [   38.857474] @ xs_reset_transport: Null transport->sock for xprt 0000000066fa6fda
+  [   38.857558] @ xs_connect: Queue connect work in 0 for clnt 00000000f636d223	<< Client used
+  [   38.857574] @ xs_tcp_tls_setup_socket: Using clnt 00000000f636d223
+  [   38.857677] @ rpc_new_client: New: 00000000d1455d7f, parent: 0000000000000000
+  [   38.857684] @ xs_connect: Queue connect work in 0 for clnt 00000000d1455d7f
+  [   38.975657] @ rpc_shutdown_client: 00000000d1455d7f
+  [   38.975728] @ rpc_free_client: put_cred 00000000d1455d7f
+  [   38.975742] @ xs_tcp_tls_setup_socket: Done with clnt 00000000f636d223. status=0	<< Client used
+  [   38.975836] @ rpc_free_client_work: xprt_put done for 00000000d1455d7f
+  [   38.976220] @ xs_sock_process_cmsg: TLS alert -13, level 2
+  [   38.976269] @ xs_tcp_state_change: sk_state=8
+  [   38.976303] @ xs_connect: Queue connect work in 3000 for clnt 00000000f636d223	<< Client used
+  [   39.065470] @ rpc_shutdown_client: 00000000f636d223
+  [   39.065580] @ rpc_free_client: put_cred 00000000f636d223				<< Client being destroyed
+  [   42.033267] @ xs_tcp_tls_setup_socket: Using clnt 00000000f636d223			<< Client used
+  [   42.033481] @ rpc_new_client: New: 00000000762dc139, parent: 0000000000000000
+  [   42.033505] @ xs_connect: Queue connect work in 0 for clnt 00000000762dc139
+  [   42.153240] @ rpc_shutdown_client: 00000000762dc139
+  [   42.153274] @ rpc_free_client: put_cred 00000000762dc139
+  [   42.153283] @ xs_tcp_tls_setup_socket: Done with clnt 00000000f636d223. status=0
+  [   42.153297] @ xs_reset_transport: Null transport->sock for xprt 0000000066fa6fda
+  [   42.153355] @ rpc_free_client_work: xprt_put done for 00000000f636d223
+  [   42.153373] @ rpc_free_client_work: xprt_put done for 00000000762dc139
+  [   42.153419] @ xs_reset_transport: Null transport->sock for xprt 0000000093fd6749
+  [   42.164197] ------------[ cut here ]------------
+  [   42.165779] refcount_t: underflow; use-after-free.
+  [   42.166596] WARNING: lib/refcount.c:28 at refcount_warn_saturate+0x5e/0x90, CPU#5: swapper/5/0
 
->> However, batch async decryption and its
->> submit/deliver scaffolding were dropped from this series because
->> async_capable is always false for TLS 1.3, the TLS version that
->> NFS and NVMe/TCP both require. Async crypto support for TLS 1.3
->> is a prerequisite for revisiting that work.
->>
->> This series is now only a set of clean-ups. Support for async
->> has been deferred until after TLS KeyUpdate has been merged.
-> 
-> What does "after TLS KeyUpdate has been merged" mean?
-> KeyUpdate is supported.. You mean in NFS? Or in async?
+And for reference, a non-crashing attempt:
+  [   16.756822] New mount #1
+  [   17.122657] NFS: Registering the id_resolver key type
+  [   17.123591] Key type id_resolver registered
+  [   17.124329] Key type id_legacy registered
+  [   17.131019] @ rpc_new_client: New: 0000000074283ee9, parent: 0000000000000000
+  [   17.131035] @ xs_connect: Queue connect work in 0 for clnt 0000000074283ee9
+  [   17.131042] @ xs_tcp_tls_setup_socket: Using clnt 0000000074283ee9
+  [   17.131108] @ rpc_new_client: New: 00000000b25a12a5, parent: 0000000000000000
+  [   17.131114] @ xs_connect: Queue connect work in 0 for clnt 00000000b25a12a5
+  [   17.254743] @ xs_``tcp_state_change: sk_state=8
+  [   17.262363] @ rpc_shutdown_client: 00000000b25a12a5
+  [   17.262398] @ rpc_free_client: put_cred 00000000b25a12a5
+  [   17.262404] @ xs_tcp_tls_setup_socket: Done with clnt 0000000074283ee9. status=0
+  [   17.262448] @ rpc_free_client_work: xprt_put done for 00000000b25a12a5
+  [   17.473543] @ xs_reset_transport: Null transport->sock for xprt 000000004c2083b6
+  [   17.473597] @ xs_connect: Queue connect work in 0 for clnt 0000000074283ee9
+  [   17.473606] @ xs_tcp_tls_setup_socket: Using clnt 0000000074283ee9
+  [   17.473709] @ rpc_new_client: New: 00000000c549945c, parent: 0000000000000000
+  [   17.473717] @ xs_connect: Queue connect work in 0 for clnt 00000000c549945c
+  [   17.591937] @ rpc_shutdown_client: 00000000c549945c
+  [   17.591977] @ rpc_free_client: put_cred 00000000c549945c
+  [   17.591984] @ xs_tcp_tls_setup_socket: Done with clnt 0000000074283ee9. status=0
+  [   17.592030] @ rpc_free_client_work: xprt_put done for 00000000c549945c
+  [   17.592534] @ xs_sock_process_cmsg: TLS alert -13, level 2
+  [   17.592564] @ xs_tcp_state_change: sk_state=8
+  [   17.592569] @ rpc_shutdown_client: 0000000074283ee9
+  [   17.592608] @ rpc_free_client: put_cred 0000000074283ee9
+  [   17.593105] @ rpc_free_client_work: xprt_put done for 0000000074283ee9
+  [   17.593148] @ xs_reset_transport: Null transport->sock for xprt 000000004c2083b6
 
-We want to support TLS KeyUpdate in the in-kernel TLS consumers, which
-include NFSD, the NFS client, the NVMe/TCP host, and the NVMe/TCP
-target. There are two pre-requisites:
+Note that on some iterations, the queued work runs successfully
+despite using a freed client. Not sure if this is of interest.
 
-1. The in-kernel TLS consumers need to reliably and securely handle TLS
-   Alerts. That is coming in the next series I plan to post.
+Reproduction script:
 
-2. The TLS handshake upcall needs to handle KeyUpdate operations. That
-   is the series Alistair has been posting since forever, and is waiting
-   on getting this series and support for TLS Alerts merged into the
-   four in-kernel TLS consumers listed above.
+```bash
+sudo echo 'file net/sunrpc/clnt.c +p' > /sys/kernel/debug/dynamic_debug/control
+sudo echo 'file net/sunrpc/xprtsock.c +p' >> /sys/kernel/debug/dynamic_debug/control
+sudo mkdir -p /mnt/export
 
+for i in {1..1000}; do
+        echo "Iteration $i"
+        echo "New mount #$i" | sudo tee /dev/kmsg
+        sudo mount -o vers=4.2,proto=tcp,xprtsec=mtls remote_addr:/opt/export /mnt/export
+        sleep 5
+done
+```
 
-> FTR async support is a major pain and we'd rather get rid of it
-> (and switch away from cryto API) than extend it.
+What I understand:
+The connecting task terminates, presumably due to the fatal TLS error as
+expected. The upper client is being destroyed: `rpc_shutdown_client`
+down to `rpc_free_client`, which *puts the creds* that would be used
+by queued connect work.
 
-That would have been nice to know three months ago when I started work
-on this series.
+Where I need help:
+I don't understand if the use-after-free is the root cause and must be
+fixed or a symptom of a problem elsewhere.
+I am also not sure what causes the bug to manifest. It *might* be related
+to the timing of server's FIN (sk_state=8 in the log) and the
+flags it changes.
+Any guidance or pointers on where to look next would be much appreciated.
 
-Is there nothing left to do here but drop this series? We'd really like
-to get TLS KeyUpdate working for in-kernel TLS consumers, so anything
-that can move this process forward is welcome.
+Thank you for reading,
+Michael.
 
+Signed-off-by: Michael Nemanov <michael.nemanov@vastdata.com>
+---
+ net/sunrpc/clnt.c     | 4 ++++
+ net/sunrpc/xprtsock.c | 8 ++++++++
+ 2 files changed, 12 insertions(+)
 
+diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
+index bc8ca470718b..dbc7d51f073d 100644
+--- a/net/sunrpc/clnt.c
++++ b/net/sunrpc/clnt.c
+@@ -429,6 +429,7 @@ static struct rpc_clnt * rpc_new_client(const struct rpc_create_args *args,
+ 		refcount_inc(&parent->cl_count);
+ 
+ 	trace_rpc_clnt_new(clnt, xprt, args);
++	pr_debug("@ %s: New: %p, parent: %p\n", __func__, clnt, parent);
+ 	return clnt;
+ 
+ out_no_path:
+@@ -949,6 +950,7 @@ void rpc_shutdown_client(struct rpc_clnt *clnt)
+ 	might_sleep();
+ 
+ 	trace_rpc_clnt_shutdown(clnt);
++	pr_debug("@ %s: %p\n", __func__, clnt);
+ 
+ 	clnt->cl_shutdown = 1;
+ 	while (!list_empty(&clnt->cl_tasks)) {
+@@ -983,6 +985,7 @@ static void rpc_free_client_work(struct work_struct *work)
+ 	rpc_free_clid(clnt);
+ 	rpc_clnt_remove_pipedir(clnt);
+ 	xprt_put(rcu_dereference_raw(clnt->cl_xprt));
++	pr_debug("@ %s: xprt_put done for %p\n", __func__, clnt);
+ 
+ 	kfree(clnt);
+ 	rpciod_down();
+@@ -1000,6 +1003,7 @@ rpc_free_client(struct rpc_clnt *clnt)
+ 	clnt->cl_metrics = NULL;
+ 	xprt_iter_destroy(&clnt->cl_xpi);
+ 	put_cred(clnt->cl_cred);
++	pr_debug("@ %s: put_cred %p\n", __func__, clnt);
+ 
+ 	INIT_WORK(&clnt->cl_work, rpc_free_client_work);
+ 	schedule_work(&clnt->cl_work);
+diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
+index 2e1fe6013361..cc4275e0b276 100644
+--- a/net/sunrpc/xprtsock.c
++++ b/net/sunrpc/xprtsock.c
+@@ -377,6 +377,7 @@ xs_sock_process_cmsg(struct socket *sock, struct msghdr *msg,
+ 		tls_alert_recv(sock->sk, msg, &level, &description);
+ 		ret = (level == TLS_ALERT_LEVEL_FATAL) ?
+ 			-EACCES : -EAGAIN;
++		pr_debug("@ %s: TLS alert %d, level %d\n", __func__, ret, level);
+ 		break;
+ 	default:
+ 		/* discard this record type */
+@@ -1297,6 +1298,7 @@ static void xs_reset_transport(struct sock_xprt *transport)
+ 	transport->inet = NULL;
+ 	transport->sock = NULL;
+ 	transport->file = NULL;
++	pr_debug("@ %s: Null transport->sock for xprt %p\n", __func__, xprt);
+ 
+ 	sk->sk_user_data = NULL;
+ 	sk->sk_sndtimeo = 0;
+@@ -1589,6 +1591,7 @@ static void xs_tcp_state_change(struct sock *sk)
+ 		 */
+ 		if (xprt->reestablish_timeout < XS_TCP_INIT_REEST_TO)
+ 			xprt->reestablish_timeout = XS_TCP_INIT_REEST_TO;
++		pr_debug("@ %s: sk_state=%d\n", __func__, sk->sk_state);
+ 		break;
+ 	case TCP_LAST_ACK:
+ 		set_bit(XPRT_CLOSING, &xprt->state);
+@@ -2688,6 +2691,7 @@ static void xs_tcp_tls_setup_socket(struct work_struct *work)
+ 	struct sock_xprt *upper_transport =
+ 		container_of(work, struct sock_xprt, connect_worker.work);
+ 	struct rpc_clnt *upper_clnt = upper_transport->clnt;
++	pr_debug("@ %s: Using clnt %p\n", __func__, upper_clnt);
+ 	struct rpc_xprt *upper_xprt = &upper_transport->xprt;
+ 	struct rpc_create_args args = {
+ 		.net		= upper_xprt->xprt_net,
+@@ -2759,6 +2763,7 @@ static void xs_tcp_tls_setup_socket(struct work_struct *work)
+ 	current_restore_flags(pflags, PF_MEMALLOC);
+ 	upper_transport->clnt = NULL;
+ 	xprt_unlock_connect(upper_xprt, upper_transport);
++	pr_debug("@ %s: Done with clnt %p. status=%d\n", __func__, upper_clnt, status);
+ 	return;
+ 
+ out_close:
+@@ -2806,6 +2811,7 @@ static void xs_connect(struct rpc_xprt *xprt, struct rpc_task *task)
+ 		dprintk("RPC:       xs_connect scheduled xprt %p\n", xprt);
+ 
+ 	transport->clnt = task->tk_client;
++	pr_debug("@ %s: Queue connect work in %lu for clnt %p\n", __func__, delay, transport->clnt);
+ 	queue_delayed_work(xprtiod_workqueue,
+ 			&transport->connect_worker,
+ 			delay);
+@@ -2847,6 +2853,8 @@ static void xs_error_handle(struct work_struct *work)
+ 	struct sock_xprt *transport = container_of(work,
+ 			struct sock_xprt, error_worker);
+ 
++	msleep(100); // Improves reproducibility
++
+ 	xs_wake_disconnect(transport);
+ 	xs_wake_write(transport);
+ 	xs_wake_error(transport);
+
+base-commit: c369299895a591d96745d6492d4888259b004a9e
 -- 
-Chuck Lever
+2.43.7
+
