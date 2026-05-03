@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB98324B32
-	for <netdev@vger.kernel.org>; Sun,  3 May 2026 02:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7534E57C9F
+	for <netdev@vger.kernel.org>; Sun,  3 May 2026 02:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777774534; cv=none; b=RahOPvuEW8Bj1GKQulNiguJpfY8wauh2QMoBrYCENS/gDrhwduaoI/K+YdS+/jYf3SvhGs/Db+YGJeM9gc7sWhkj7C9JU5AN/1p7dp6janacXagL5LfO0fHWH1tbPNrXngymv3bIGrQaeGlzjrWsrfkV73GDsPTeT4PHOeBi7CA=
+	t=1777774536; cv=none; b=aD9iMon4nc4Z9kPmHW+RdBqErNPaC4rSjPEeeP0dfVCQroPUBvoHcq56D77njwS7sC16hBxqO6m3e30BPFstifhRLZzzbq7q88YQe5urX8FbNVSAytuxzdgpjGjxO5yuZxZZwsJN9n+owg5/f08EDOp0SINb2EzJAGV8snw3dLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777774534; c=relaxed/simple;
-	bh=UqQKRImh04Af1l0bAw9K28w99fueEWZ7cBu9sh65J5g=;
+	s=arc-20240116; t=1777774536; c=relaxed/simple;
+	bh=lBXQivGKQTMr9UXZ4Qwa1yAjt9bA2hoVDwRtzeZxKaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D4j4ujotO+nZicZGKisj1fJfDtpRg1PoTfQVWrceT4cO2qi4nxObpAFVy53lOtF68oKsRgXuO7kOu9vvTpmMNUG7/pVStkH6meYEamb1ea9rBSk9Qr4+eMwfwYRgp51aVORx7D5zbEhEH0H+eiMkz8HP2d1ZuVrlr5PqSL7Vj9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HufniLm9; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=OMEbDFWG64AxiAOo9V2idQnioXKpUCcRj458xQGRZqdjYjSjKGrkt76ib5JUDTpcHY0S48zS/e03XaaVxE5+wIYVtfNTkStrfrRvzjrFIRevPNvjk5KHekycx285L7/iRblUHQy4OwjtXV3MB8Ozlcmmd60RjuXd6+a1zxHQKA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CM5oOxWN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HufniLm9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75559C2BCB3;
-	Sun,  3 May 2026 02:15:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CM5oOxWN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 638D7C4AF09;
+	Sun,  3 May 2026 02:15:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777774534;
-	bh=UqQKRImh04Af1l0bAw9K28w99fueEWZ7cBu9sh65J5g=;
+	s=k20201202; t=1777774536;
+	bh=lBXQivGKQTMr9UXZ4Qwa1yAjt9bA2hoVDwRtzeZxKaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HufniLm9BYJkGG1iGwveq3WApig5rLsSfTSqdMFlbSzse7ClfhOP7pBYSZYzdFhow
-	 cJOkwhFWNf3iDgIIg2aJGgmCSxeM7yy7qrpzBvOI76LkdL5cyl47iyoGvVUo/g7POt
-	 XfDARf1G6mfzagAGiR3Hw1ykRHMV+Jx8TARrmX+kc3Usc9rF2PQeSDwkXEL3TfnVw9
-	 jCwtYzHArz3S+N1dM5UWpjUBeeAN18ZIqSEcmUZeJNbYOSUF7TBkrP5AcGQ5uaWTte
-	 VoqYL96o39JyxrMalvtpmNTpyJvSOTHKwYloz3hhWzfmKqx6vlEwQnfJ3W6UDRQywT
-	 lJumGhzgO+3Vw==
+	b=CM5oOxWN9UFUGFIWYK3gp5OMKO+WJI1dbo8kOIfdDRIb1p7PYmVPJcGJh7PvLORDd
+	 RSyG6A5exzobHwxrfqtJ4xl3xMm541akt8ZQ4VLaEb9JY4rgUgRZ20+Y6K6EZlvDrx
+	 Ik6+i0ZPTFvUohtVDxyT1SsAsOhZ5PiZoFIzKxjmho9koYsLhIvDOMWNuxOeUyTFRL
+	 1BMvoxT9YTvR+QbGQK9wJuXkkCHddwRNvdQJEqhz4Hp0RMS5kjwB9bXTCcuq0PcYfU
+	 w72CZRI3Ec0zJFgeahCCp55pHKDZ5XfEFZzBAU1xjO1jvndNKYQaLlI2+fqUiaM4G7
+	 cnM5qGPCr5hrg==
 From: Jakub Kicinski <kuba@kernel.org>
 To: jiawenwu@trustnetic.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -44,12 +44,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	joe@dama.to,
 	jacob.e.keller@intel.com,
 	fabio.baltieri@gmail.com
-Subject: Re: [PATCH net-next v2 2/6] net: wangxun: add Tx timeout process
-Date: Sat,  2 May 2026 19:15:32 -0700
-Message-ID: <20260503021532.4127268-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next v2 4/6] net: wangxun: extract the close_suspend sequence
+Date: Sat,  2 May 2026 19:15:34 -0700
+Message-ID: <20260503021534.4127288-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260430082517.19612-3-jiawenwu@trustnetic.com>
-References: <20260430082517.19612-3-jiawenwu@trustnetic.com>
+In-Reply-To: <20260430082517.19612-5-jiawenwu@trustnetic.com>
+References: <20260430082517.19612-5-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -61,138 +61,43 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-net: wangxun: add Tx timeout process
+net: wangxun: extract the close_suspend sequence
 
-Implement .ndo_tx_timeout to handle Tx side timeout events, triggering
-a driver reset process. It also adds logic to track potential hangs and
-clear false detections during 802.3 pause frames.
-
-> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_err.c b/drivers/net/ethernet/wangxun/libwx/wx_err.c
-> new file mode 100644
-> index 0000000000000..ba5f23cefc0f9
-> --- /dev/null
-> +++ b/drivers/net/ethernet/wangxun/libwx/wx_err.c
-> @@ -0,0 +1,126 @@
-
-[ ... ]
-
-> +static void wx_reset_subtask(struct wx *wx)
-> +{
-> +	if (!test_bit(WX_FLAG_NEED_PF_RESET, wx->flags))
-> +		return;
-> +
-> +	rtnl_lock();
-> +
-> +	if (!netif_running(wx->netdev) ||
-> +	    test_bit(WX_STATE_RESETTING, wx->state))
-> +		goto out;
-
-If the interface is being brought down or a reset is in progress, does
-this leave WX_FLAG_NEED_PF_RESET set indefinitely? When the interface is
-brought back up, could this stale flag trigger an immediate, redundant
-hardware reset?
-
-Also, could this rtnl_lock() call cause an AB-BA deadlock? If the network
-interface is administratively brought down, the networking core acquires
-rtnl_lock() and invokes the driver's .ndo_stop routine.
-
-If the teardown path calls cancel_work_sync(&wx->service_task), the close
-path holding rtnl_lock() will wait for service_task to finish, while this
-service_task waits indefinitely to acquire rtnl_lock().
-
-> +
-> +	wx_warn(wx, "Reset adapter.\n");
-> +
-> +	if (test_and_clear_bit(WX_FLAG_NEED_PF_RESET, wx->flags)) {
-> +		if (wx->do_reset)
-> +			wx->do_reset(wx->netdev);
-> +	}
-> +
-> +out:
-> +	rtnl_unlock();
-> +}
-
-[ ... ]
-
-> +void wx_tx_timeout(struct net_device *netdev, unsigned int txqueue)
-> +{
-> +	struct wx *wx = netdev_priv(netdev);
-> +	u32 head, tail;
-> +	int i;
-> +
-> +	for (i = 0; i < wx->num_tx_queues; i++) {
-> +		struct wx_ring *tx_ring = wx->tx_ring[i];
-> +
-> +		if (test_bit(WX_TX_DETECT_HANG, tx_ring->state) &&
-> +		    wx_check_tx_hang(tx_ring))
-
-Since wx_tx_timeout() can execute concurrently with NAPI's wx_clean_tx_irq()
-on healthy queues, is it safe to call wx_check_tx_hang() here?
-
-wx_check_tx_hang() mutates per-queue NAPI state like
-ring->tx_stats.tx_done_old and ring->state without synchronization. Modifying
-this state concurrently could corrupt the hang detection state machine.
-
-> +			wx_warn(wx, "Real tx hang detected on queue %d\n", i);
-> +
-> +		head = rd32(wx, WX_PX_TR_RP(tx_ring->reg_idx));
-> +		tail = rd32(wx, WX_PX_TR_WP(tx_ring->reg_idx));
-> +		wx_warn(wx,
-> +			"tx ring %d next_to_use is %d, next_to_clean is %d\n",
-> +			i, tx_ring->next_to_use,
-> +			tx_ring->next_to_clean);
-> +		wx_warn(wx, "tx ring %d hw rp is 0x%x, wp is 0x%x\n",
-> +			i, head, tail);
-> +	}
-> +
-> +	wx_tx_timeout_reset(wx);
-> +}
-
-[ ... ]
+Refactor the .ndo_close implementation by extracting the necessary
+hardware shutdown sequence into a dedicated close_suspend function.
+This is for later implementation of PCIe error callback function in
+libwx.
 
 > diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-> index bd905e2675758..e9561996b970f 100644
+> index ec14dd47cd428..2bd00eade11d2 100644
 > --- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
 > +++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-> @@ -147,6 +148,7 @@ static void ngbe_service_task(struct work_struct *work)
->  {
->  	struct wx *wx = container_of(work, struct wx, service_task);
->  
-> +	wx_handle_errors_subtask(wx);
->  	wx_update_stats(wx);
-
-Is there a race condition here that could cause spurious Tx hang resets?
-
-wx_handle_errors_subtask() sets the WX_TX_DETECT_HANG bit.
-wx_update_stats() clears the WX_HANG_CHECK_ARMED bit when XOFF pause
-frames are received.
-
-If a hardware interrupt schedules NAPI between these two calls,
-wx_clean_tx_irq() will execute wx_check_tx_hang() and might test the
-WX_HANG_CHECK_ARMED bit from the previous interval (since wx_update_stats()
-hasn't cleared it yet).
-
-Would calling wx_update_stats() before wx_handle_errors_subtask() prevent
-this false hang detection?
-
->  
->  	wx_service_event_complete(wx);
-
 [ ... ]
-
-> diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-> index 8b7c3753bb6ac..5793da5b7bab4 100644
-> --- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-> +++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-> @@ -128,6 +129,7 @@ static void txgbe_service_task(struct work_struct *work)
->  {
->  	struct wx *wx = container_of(work, struct wx, service_task);
+> @@ -547,7 +555,7 @@ static void ngbe_dev_shutdown(struct pci_dev *pdev, bool *enable_wake)
+>  	netif_device_detach(netdev);
 >  
-> +	wx_handle_errors_subtask(wx);
->  	txgbe_module_detection_subtask(wx);
->  	txgbe_link_config_subtask(wx);
->  	wx_update_stats(wx);
+>  	if (netif_running(netdev))
+> -		ngbe_close(netdev);
+> +		ngbe_close_suspend(wx);
 
-Similar to ngbe_service_task(), could NAPI execution between
-wx_handle_errors_subtask() and wx_update_stats() trigger a false Tx hang
-here as well?
+Is there a chance this change to ngbe_close_suspend could cause issues
+with the PTP clock state during suspend and resume?
+
+Previously, calling ngbe_close would invoke wx_ptp_stop, which unregisters
+the PTP clock and stops its background worker. The new ngbe_close_suspend
+only calls wx_ptp_suspend.
+
+This leaves the PTP clock registered and its worker thread active since
+wx_ptp_do_aux_work will continue to reschedule itself.
+
+On system resume, if ngbe_resume calls ngbe_open, which then calls
+wx_ptp_init, wx_ptp_init will unconditionally call
+seqlock_init(&wx->hw_tc_lock).
+
+Will this re-initialize an active lock, potentially leading to lockdep
+splats or silent lock corruption if the worker thread or a userspace
+process accesses the PTP chardev concurrently?
+
+>  	wx_clear_interrupt_scheme(wx);
+>  	rtnl_unlock();
+>
