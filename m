@@ -1,175 +1,86 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C9C2C11E4;
-	Sat,  2 May 2026 23:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A747625
+	for <netdev@vger.kernel.org>; Sun,  3 May 2026 00:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777764337; cv=none; b=UHS4nKbWMBIsbSSr4Nl5rpLTfnOwOBC0SKQNc1qDllEstKwukI6I66iV6sANHAdHrhKOM53VWX2EQVBv5xttvjS+tyUwL2QUp+waSTeD2LYxvwfQZMcGNiIRqZKn5oqJcPrVcSfKVSryHdcLAAWDGb33PeCo8eVan4H5zxWDu8U=
+	t=1777767057; cv=none; b=Dzrbdi4UdgL2p/eaoZ5W00ZaJHzfFX66J9PIkDVZJImp2tMGEz0rVUMdQ5MOwSD+S8+XGsX7mcEcz35h6yokz8VvWK/t6shFDJ/1fVJbnm9Fs5kFZWNeIZyyLoPhwLyeBkA4CD3FrxdlbdtHlsqFwXh7tsrUuZ6lupXfoAa4IMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777764337; c=relaxed/simple;
-	bh=PU/PgJRELyFZ9axF6kSaLQk+fnNU+Qed4LVJD3zSKoY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=LNHVFH6eXf4fqHAcmrm3ZACDOHGbwvjUKUeIb1hloZyocMURtzyFf0dRj9R4hsUzbBVP8PAXv++lgxNoGzecvXImPxrG9dgQfFTCclBLGYh2MUbjKLR2a0Te1yGyYU/ENK43nuoyzVtaEoCVVwbqPVLRRJwl6roe8f5Y1DkkufQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZQIHiS/j; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777767057; c=relaxed/simple;
+	bh=K0NOUkrcjL1BJFiZTDWTXtF5xjkbdbTHd5NgTgAeV24=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=OJmSALuybCJufcS5v0yVHDSZuILJMmry70G29RX3x5qm3YgaOZF6gi7A3+LvIVXMe2Uiej01tjQfhB7XCESOcSw9EPNatQPHTtG7xZIgV88iWaGpAQpred0yBJQ/Ao4yN7HErPRmygayga4vj3c0YEGm+akOb0ZYAd5gQvuChX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RLSUQbgj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZQIHiS/j"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 62AD2C2BCF6;
-	Sat,  2 May 2026 23:25:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RLSUQbgj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28077C19425;
+	Sun,  3 May 2026 00:10:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777764337;
-	bh=PU/PgJRELyFZ9axF6kSaLQk+fnNU+Qed4LVJD3zSKoY=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=ZQIHiS/jKnUyyk1Kx6a95GRHM+hkpT5cRE3tORgtshMYtXKzx6KZ4kjqpHXIkVk/F
-	 Y6yhidls8VmsczvZR5FcfwEtp6kdc5K5cWLYEs90bFYPXUFAUT379wY0hBI6FPNAeo
-	 k8QdrknPlKWGfwphczAronlP//Pj1Snm9Hk8zL3/GNZJkuCj8dHzCborITqpQWkYIu
-	 lWoN3zBsMKdqXvYk1NhLanIhd9PSC8LqDRND+tbHo8Y9d7RlC9KvQTxen8Cq1l/24n
-	 YSyBlu+mAl5q/OGVQ6pKN5UHWjcsoZhMhNAZkHN99AF5RrJnUdPnOSQjuCrwsG8WVQ
-	 zT4rzhBDnw6pw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5B22ECD3426;
-	Sat,  2 May 2026 23:25:37 +0000 (UTC)
-From: Ciprian Regus via B4 Relay <devnull+ciprian.regus.analog.com@kernel.org>
-Date: Sun, 03 May 2026 02:24:54 +0300
-Subject: [PATCH net-next 5/5] dt-bindings: net: Add bindings for the
- ADIN1140
+	s=k20201202; t=1777767057;
+	bh=K0NOUkrcjL1BJFiZTDWTXtF5xjkbdbTHd5NgTgAeV24=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=RLSUQbgjbmoFFm9YnlVlPFpWyNKskoJcU4WeVoYcL5hAr0+Q1gEj5P3k8RuuozNnw
+	 PELlvt9do89HAsPvzofwWQVeYbk9E+zgGcGOYi0qtE6kHZ3uRBX3UhycOdjenTMCK/
+	 TqdAfHDbFUjZrdmf78zvJPk5BGLi9HE5f+HLLJADGzIp89d+fnYH6FYkbPxW5b62w9
+	 gzN/wVaTDFnrtyBCt19R26e5INIc7M9jd7MnrtzO6UQ/bcsUbk8LnB91CZGFv576Mk
+	 djPZV4mNCG/W80v184sk0dnaD3Ku55JwquVNrJawyXExHZ4ToLp+baYB3jvfbsA6/b
+	 zOefqkRY02IAQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CEA8380CFE5;
+	Sun,  3 May 2026 00:10:10 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260503-adin1140-driver-v1-5-dd043cdd88f0@analog.com>
-References: <20260503-adin1140-driver-v1-0-dd043cdd88f0@analog.com>
-In-Reply-To: <20260503-adin1140-driver-v1-0-dd043cdd88f0@analog.com>
-To: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <skhan@linuxfoundation.org>, Andrew Lunn <andrew@lunn.ch>, 
- Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-doc@vger.kernel.org, devicetree@vger.kernel.org, 
- Ciprian Regus <ciprian.regus@analog.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777764335; l=2909;
- i=ciprian.regus@analog.com; s=20260330; h=from:subject:message-id;
- bh=fsypCuzG+8KsvoEcvGQ6yCJv/rH7hOitcPb70G23Ry8=;
- b=IfQ3JGxqRuCDGFpO/P9bRwjhIFJQOyUBMejKbfs/rBS33QxPU7X5rXn5hE4r4EhqBykipUBB2
- dkVrqgIOr5ZAehaPGZErUqfkPGoO24jQjlt5vghv6N9DQoutLODifLf
-X-Developer-Key: i=ciprian.regus@analog.com; a=ed25519;
- pk=8WoNhI0kQcQUl8YqJO5ZevROYk9HP8lOIeIgIYgjfbc=
-X-Endpoint-Received: by B4 Relay for ciprian.regus@analog.com/20260330 with
- auth_id=703
-X-Original-From: Ciprian Regus <ciprian.regus@analog.com>
-Reply-To: ciprian.regus@analog.com
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 0/2] net/sched: sch_cake: annotate data-races in
+ cake_dump_class_stats (series)
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177776700930.3968668.15253436699791066420.git-patchwork-notify@kernel.org>
+Date: Sun, 03 May 2026 00:10:09 +0000
+References: <20260430061610.3503483-1-edumazet@google.com>
+In-Reply-To: <20260430061610.3503483-1-edumazet@google.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ jhs@mojatatu.com, toke@toke.dk, jiri@resnulli.us, netdev@vger.kernel.org,
+ eric.dumazet@gmail.com
 
-From: Ciprian Regus <ciprian.regus@analog.com>
+Hello:
 
-Add DT bindings for the ADIN1140 10BASE-T1S MACPHY. Update the
-MAINTAINERS entry to include the bindings file as well.
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Signed-off-by: Ciprian Regus <ciprian.regus@analog.com>
----
- .../devicetree/bindings/net/adi,adin1140.yaml      | 69 ++++++++++++++++++++++
- MAINTAINERS                                        |  1 +
- 2 files changed, 70 insertions(+)
+On Thu, 30 Apr 2026 06:16:08 +0000 you wrote:
+> cake_dump_class_stats() runs without qdisc spinlock being held.
+> 
+> In this series (of two), I add READ_ONCE()/WRITE_ONCE() annotations for:
+> 
+> - flow->head
+> - flow->dropped
+> - b->backlogs[]
+> - flow->deficit
+> - flow->cvars.dropping
+> - flow->cvars.count
+> - flow->cvars.p_drop
+> - flow->cvars.blue_timer
+> - flow->cvars.drop_next
+> 
+> [...]
 
-diff --git a/Documentation/devicetree/bindings/net/adi,adin1140.yaml b/Documentation/devicetree/bindings/net/adi,adin1140.yaml
-new file mode 100644
-index 000000000000..26cd40d36f9b
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/adi,adin1140.yaml
-@@ -0,0 +1,69 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/adi,adin1140.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: ADI ADIN1140 10BASE-T1S MAC-PHY
-+
-+maintainers:
-+  - Ciprian Regus <ciprian.regus@analog.com>
-+
-+description: |
-+  The ADIN1140 (also called AD3306) is a low power single port
-+  10BASE-T1S MAC-PHY. It integrates an Ethernet PHY with a MAC
-+  and all the associated analog circuitry.
-+  The device implements the Open Alliance TC6 10BASE-T1x MAC-PHY
-+  Serial Interface specification and is compliant with the
-+  IEEE 802.3cg-2019 Ethernet standard for 10 Mbps single pair
-+  Ethernet (SPE). The device has a 4-wire SPI interface for
-+  communication between the MAC and host processor.
-+
-+allOf:
-+  - $ref: /schemas/net/ethernet-controller.yaml#
-+  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-+
-+properties:
-+  compatible:
-+    enum:
-+      - adi,adin1140
-+      - adi,ad3306
-+
-+  reg:
-+    maxItems: 1
-+
-+  spi-max-frequency:
-+    maximum: 25000000
-+
-+  interrupts:
-+    maxItems: 1
-+    description: Interrupt from the MAC-PHY for receive data available
-+      and error conditions
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+  - spi-max-frequency
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+
-+    spi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        ethernet@0 {
-+            compatible = "adi,adin1140";
-+            reg = <0>;
-+            spi-max-frequency = <23000000>;
-+
-+            interrupt-parent = <&gpio>;
-+            interrupts = <6 IRQ_TYPE_EDGE_FALLING>;
-+
-+            local-mac-address = [ 00 11 22 33 44 55 ];
-+        };
-+    };
-diff --git a/MAINTAINERS b/MAINTAINERS
-index f9784c25beac..55e1e78fe04e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1848,6 +1848,7 @@ M:	Ciprian Regus <ciprian.regus@analog.com>
- L:	netdev@vger.kernel.org
- S:	Maintained
- W:	https://ez.analog.com/linux-software-drivers
-+F:	Documentation/devicetree/bindings/net/adi,adin1140.yaml
- F:	drivers/net/ethernet/adi/adin1140.c
- 
- ANALOG DEVICES INC ETHERNET PHY DRIVERS
+Here is the summary with links:
+  - [net,1/2] net/sched: sch_cake: annotate data-races in cake_dump_class_stats (I)
+    https://git.kernel.org/netdev/net/c/046111a1a35a
+  - [net,2/2] net/sched: sch_cake: annotate data-races in cake_dump_class_stats (II)
+    https://git.kernel.org/netdev/net/c/67dc6c56b871
 
+You are awesome, thank you!
 -- 
-2.43.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
