@@ -1,67 +1,67 @@
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2616E23FC41
-	for <netdev@vger.kernel.org>; Sun,  3 May 2026 02:06:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEE23221277
+	for <netdev@vger.kernel.org>; Sun,  3 May 2026 02:07:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777773999; cv=none; b=O8tG1romadp2qb2yrmspbcPZjkUfwjT5azB68neAsEs6g7k2bBD7BkOjX+q+c2A0IRhjAhx76Yp2F5v45bjmm6bjyJouiPNVPNvAYN9r0HBR7Rv51jz2EgN1NpXGlEcDLFFOH5u6wf9ulqFZSTw5J6a9uEBXB4jOA+v/hvrIjg8=
+	t=1777774041; cv=none; b=RByIRoDr1NRsd5FbzKaFwqslR/ac9DX4nzZ/T4QyAFnh4rZcYyvYKv2Wecn8efAjMrankS4yW6squ1nFnWUDBaS4LXkEZB3kq2dOe2GqSyw6/99TydOwdgN1nhrV4cL0bCAPFp3S5PpvQhm4niy08TNOS5bDxq/LYjKgdKGHFkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777773999; c=relaxed/simple;
-	bh=qSG0sZNcjOSchIbQqXWGt3+PH22qMGXJjEvLkAzwfr0=;
+	s=arc-20240116; t=1777774041; c=relaxed/simple;
+	bh=2Kcr2lEJRIS+Yq6aDi8qN9XogTTh/ToNZ+21H2cfJJk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ojpU99stiw5Icjd4FKQ8BCNZt/gEFvgL1H7OctKr3F6JlTQuOVK2JtVCeRx1zlZmmzKO2wfUgbXsbP7BMJxUMHp9pbpj6jLC0VPhFQy5vvJ7g4n7oZ0qZRTE1HftGQwXtXb2Z0ss4mCCXtFbmtX4DiUGubf18ETqiJzwC2QmwqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b=btbRK1G5; arc=none smtp.client-ip=209.85.219.52
+	 In-Reply-To:Content-Type; b=pmDqm5RY2slqy+Wzp76zUs8ERKtpZC9+1G6R0GVRFD36lhoxTEhi/wZnaX00mGCVnD/QceX+8Qcq1nz6KgeoUm2bdBAOYmjKsoeFpG/vh8nJTldhD/Q9TQrNcXbfkTPtiCyEPYqHh3ZobDKzkOU7Oah5OCe6H3OKkfCFi633aB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b=f1VSA8dB; arc=none smtp.client-ip=209.85.222.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b="btbRK1G5"
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-8b701756684so5434156d6.1
-        for <netdev@vger.kernel.org>; Sat, 02 May 2026 19:06:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b="f1VSA8dB"
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-8f83efb5729so341280585a.1
+        for <netdev@vger.kernel.org>; Sat, 02 May 2026 19:07:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=riscstar-com.20251104.gappssmtp.com; s=20251104; t=1777773997; x=1778378797; darn=vger.kernel.org;
+        d=riscstar-com.20251104.gappssmtp.com; s=20251104; t=1777774039; x=1778378839; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=PnVCaxNshzzHjwMMq5W7gN5QUApxgL+R58MdQlfO6d0=;
-        b=btbRK1G5RFZ+SyUUfNLzRaZPSzJ9/mretRVTMuZqtyEjAHFRiP+elmVpqzKdwFaqZS
-         K1JQ7VMuUx2eE/ACxjiOd+YQB4fYAaK9PnDYGMlwiGUrDK6iKy16aM7glSDXlcsYCWOZ
-         pdbtAygj+OTRinuD4hOOpFFclJKItdPC3RSTp00eokz7QCw22sM+tDNGcxoBaZLAOhtK
-         eqj3Xts+60lWyE4slvV5QZpOBupe5XgNG+mc8HgCjbk6Yr2dQSKb2kIxW1cJXnOmA5Ju
-         KhhQFLAWheKe2R6mmsZjG0MV4EgsW40uo6+MK7clHHb50WVAqb6OEut8vo3Se8+IXAUi
-         540w==
+        bh=2F3DN6wiiB7iU2Xt5hwtqlQ5YfweZqx1JbBrqimlAs8=;
+        b=f1VSA8dBwfFLwd/ytqc4l7vH+LqReYyAbTzJ1V2uQJj1H2372Zs1uj8leoGjOU3JV7
+         +tvSdh0VmDnjGmYvmqYt6Tsv/neN3j4vWkuwcWooMG/dJW4qYE9ToH6R1MUIYRzgJu5y
+         FEHbwM9A2CbcPDTLuVPA1l1r9si4z7kHrr+lVGZGGCbFYo3j4QPL2bc4YJNtWqjlVj5m
+         O5EtKayL6IOmnNNGmMEm5v0ehOb4rz01yJThPnVsQ9supN3X5s/JIk93uX8IGEF9BTD/
+         NAhxY+hY8Q4cp/31nTPYQYIJHdfbzytiuoO18w0Tc1eUz04Z6CexblhuXv1ZK17/IY4i
+         cHQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777773997; x=1778378797;
+        d=1e100.net; s=20251104; t=1777774039; x=1778378839;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=PnVCaxNshzzHjwMMq5W7gN5QUApxgL+R58MdQlfO6d0=;
-        b=nid6nxaQ1gGn59pc3Il7NeA6sbN1Ud7/wOX8fai4rHwwNd9Ow7jWWFERphZEimZcXi
-         nAxEnjPs2+n7GJuRkRmpy+b9VR2Yw3bsPmyj8JGHkW6Ml9OBrLmVrnRX6q4cNWNQw1+0
-         es/dnRQjhOVIELtd5QKLa4SU2V2+g/VI+mWOX5lv/sJpoBUdFLiiGX9Mlhe+IC7qcTIA
-         1UA8Sp0ASRcGA9VTUfjt7mwRkhjRHkbSQ6+vn0d0hYdg9K5yucYEphfGxQr95d9BoP23
-         CrzXXdPGbxKTzddPP2tdMT/aaplSsM2HwIiVHvfX2yTecQf+W2u60rbrLOEOdc+2RBxO
-         Orbg==
-X-Forwarded-Encrypted: i=1; AFNElJ/Nwg/tEq66NVXmiioKymWn+MXHie9DLUl9nC6jm0WxcUaG8dQwvT2sCiodMidAvqcEpVIWddI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YygVvls31mE9KEp1X1FrbtSzh1cR93klI9fdW+Sy8w8idCbIozG
-	OAcgX58FiicFzoGRKtn5nH0wsCE/PBStZ68CGyY61CwWn3UUYatvnAOaZac3h8Y2+Ds=
-X-Gm-Gg: AeBDieu+p94vYyQFq1jAewelB529NryBY9jS+oTMGDMN98mCpxUnmYcuEox1NIXb37g
-	zQ/aeFueH3pCbuUYaJ4hM9uBGXskM5WOCuRd5NYaAeNbsFV9HIFyEv63QxPYPoMQiLOXOtvWI2K
-	tjgfsYhiyvH46R4WpO6nYzBm4iMAcaLSohjCSHrprBOLFmEGLKuDEOb9ugWpMJ7aiwBg5nzNmcc
-	ggfeEcLlcU1oDNGXez04DLw0+4Syg2jcfgz0tIzN0kx+q/jRkem5TlGD0GBtxefOnhJkGpxBeWF
-	YXRMTdGetRAzeVMGslwz+afyYdQzFKLSU9jEPeqHM/XxZ3JsQos0WMT1pQ9cMfBIlKeOnUPpX6N
-	K8THSW6cG7eQNkDi1sS5TyDaOdJves48iT9LMXdWgufM2R88DDwe6xA9zI79T75zck8G3WwJNxM
-	lPcj2ekTTsi5fUgMyq/6+FJ3lmhCv7dP7XySg/kAKZ97iU0iktO016A71fTxnRatFxWM2qVlCiy
-	w==
-X-Received: by 2002:a05:6214:610d:b0:89c:8a3c:e34f with SMTP id 6a1803df08f44-8b667b79753mr56665696d6.12.1777773997147;
-        Sat, 02 May 2026 19:06:37 -0700 (PDT)
+        bh=2F3DN6wiiB7iU2Xt5hwtqlQ5YfweZqx1JbBrqimlAs8=;
+        b=l3IKu+7v45WcO4h++7eSywRlXiJW8042qlP8DAzuk9Wbz2NRrymqZJ21i3EMETaaMm
+         tscsHBluIS6sqP9HTWRzCerl+LblnyYNW/2szANzlapW64RJMWwCzXLieu1nD15yHc/9
+         xXMifACM+uzHCoWl854RAwNxD/+LuitiSFaAC2HXbrOwCPC9YWl4FtP8lHY6x1lzhaHt
+         zNQ3W33MfLwXIMhGnQJUPybznIhpN9aTkbAg6F0hMbMSa1XrWZ4+FwR+n4SXxKajS/uN
+         RLOtf1hzSgagkrGzG9JvVaVHrQoMoTinfg8WLtQ/9hgDW9YaxNIklvUfY6NL9wisGxiF
+         ftGg==
+X-Forwarded-Encrypted: i=1; AFNElJ9hGH+VdLrsr7tBVxmqsCInKEnIP7lzMLUn/R94nlh9kJrTnLQX/8yfkWlkNQTO5kxFi4R26Dk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWDhg3mwdLgRG1hFJm17ELsP/Kkk+qUxYFUh28r5Vdi0GFkSi4
+	+ih5IAMC/yKtVAaf5zkOfX0BENPGsl3+NIsdoBSmIsk71eHNlf30G+FSBCmalBHK128=
+X-Gm-Gg: AeBDiesePBlOukrFCbhJKgiITlFvRE/pu86JHNe/SNPTSJXHyayBphA2pEaVH/HcVnq
+	O6G62O9JGRlTFH9TcYA2kU7QCuF7Q76Woirx2yBNm/dCm3MJTxYEakbkztWnVRqLn+/gKn0x7HO
+	4TPh/ePYhT+9D33nutA0FRytCj+a+uxNvhEOjWOKAJ6Lh5yHYVn4hbs4hoyIoW1211F0FlXLle0
+	okyW+wts06CWk7NbLvWpqHFC3Bt3CDoUIm9VIrkvd1SlIIVS3hU9kO7xioW/bxvBgkMxhaC5Sq3
+	gvVWVq028/zZZK47Ivxrf7BkfMcPxMFKTW/EmjLrFCSycbvRAGUcWQHUqbAegwoRaGrbYWqWJof
+	JGuTZU93ccriqH4gtAXHshcJfBaeAw5wZFHoz5+fk+MrtQ/gfsg1TvgBalNueaSXqG5uy/QNf6Q
+	7pEqkAo2jeoSXoyWpJRmInmMEe4rNK16s+5xLJNaEZV0Bp06GcNzFJUsj3Wn8nmLOBB5roxU4Un
+	37+eNNAmvgV
+X-Received: by 2002:a05:620a:6914:b0:8ee:cbf0:8311 with SMTP id af79cd13be357-8fd18337fcamr755624485a.54.1777774038660;
+        Sat, 02 May 2026 19:07:18 -0700 (PDT)
 Received: from [172.22.22.28] (c-75-72-117-212.hsd1.mn.comcast.net. [75.72.117.212])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b53d831ac7sm72634806d6.49.2026.05.02.19.06.33
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8fc29889603sm636397485a.11.2026.05.02.19.07.15
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 02 May 2026 19:06:36 -0700 (PDT)
-Message-ID: <649428a4-9505-4a1a-bbbe-bd90be9b8155@riscstar.com>
-Date: Sat, 2 May 2026 21:06:33 -0500
+        Sat, 02 May 2026 19:07:18 -0700 (PDT)
+Message-ID: <e39b710e-c742-4485-8798-7e27bf15e0ac@riscstar.com>
+Date: Sat, 2 May 2026 21:07:14 -0500
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -69,8 +69,7 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 11/12] misc: tc956x_pci: add TC956x/QPS615
- support
+Subject: Re: [PATCH net-next 00/12] net: enable TC956x support
 To: Jakub Kicinski <kuba@kernel.org>
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
  pabeni@redhat.com, maxime.chevallier@bootlin.com,
@@ -91,31 +90,25 @@ Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
  linux-stm32@st-md-mailman.stormreply.com,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
 References: <20260501155421.3329862-1-elder@riscstar.com>
- <20260501155421.3329862-12-elder@riscstar.com>
- <20260502094559.15c3f479@kernel.org>
+ <20260502094712.69b29dc8@kernel.org>
 Content-Language: en-US
 From: Alex Elder <elder@riscstar.com>
-In-Reply-To: <20260502094559.15c3f479@kernel.org>
+In-Reply-To: <20260502094712.69b29dc8@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 5/2/26 11:45 AM, Jakub Kicinski wrote:
-> On Fri,  1 May 2026 10:54:19 -0500 Alex Elder wrote:
->> The Toshiba TC956x is an Ethernet AVB/TSN bridge,  and is
->> essentially a small and highly-specialized SoC.  It implements
->> a number of internal functions, including a GPIO controller,
->> control registers managing internal reset and clock control
->> signals, a PCIe switch and internal endpoint, and mapping
->> hardware that translates between PCIe and internal addressing.
+On 5/2/26 11:47 AM, Jakub Kicinski wrote:
+> On Fri,  1 May 2026 10:54:08 -0500 Alex Elder wrote:
+>>   create mode 100644 Documentation/devicetree/bindings/net/toshiba,tc956x-dwmac.yaml
+>>   create mode 100644 drivers/gpio/gpio-tc956x.c
+>>   create mode 100644 drivers/misc/tc956x_pci.c
+>>   create mode 100644 drivers/net/ethernet/stmicro/stmmac/dwmac-tc956x.c
+>>   create mode 100644 drivers/net/pcs/pcs-xpcs-regmap.c
+>>   create mode 100644 include/linux/pcs/pcs-xpcs-regmap.h
+>>   create mode 100644 include/soc/toshiba/tc956x-dwmac.h
 > 
-> drivers/misc/tc956x_pci.c:541:17: error: call to undeclared function 'u32_get_bits'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
->    541 |         chip->rev_id = u32_get_bits(val, NCID_REV_ID_MASK);
->        |                        ^
+> Please add an entry to MAITNAINERS for tx956x stuff?
 
-Yeah I think I noticed an error like that shows up with 32-bit builds?
-In any case we didn't see it during development, and we'll make sure
-<linux/bitfield.h> gets included.
-
-Thanks.
+OK, I'll do that for the next version of the series.  Thanks.
 
 					-Alex
