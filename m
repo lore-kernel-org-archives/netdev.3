@@ -1,155 +1,107 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2480318EF6
-	for <netdev@vger.kernel.org>; Mon,  4 May 2026 08:13:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA87A331A61;
+	Mon,  4 May 2026 08:28:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777882435; cv=none; b=KURci5b2HvzwaeHxOpOBZ/qyRSzEQOJ57J+e+Xn/xYWVu+0Bq5stoIt6xok/V0fGrqyDK6bhWYBgge4lxjSelUDpqRk1Pv4lbGr7UlCAfsqnVKMHgryyGW2f1lmlxSOVLEdhSKZ/r0mnat7gpKsFAXYmoTrIS/cQXKraabptv6U=
+	t=1777883293; cv=none; b=tG5obAHb7kG/n9IjxYL4IL+F3pNMcB0lrgtnUTbK2buS/xf4m0U+lcjZqLrRM29dZtokrhJNJ88mErWMH6Ul5laKqk8K9aQHhbWuPlPPsOQzJTHGRnhOuzw6AVIBBDFkYumM0dPsAC/P98PYPSh58PjZH7fK6SHH2fpP6Durw9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777882435; c=relaxed/simple;
-	bh=i0ow0BGME4ktvZKUNMDO7lIwbJDhWGcBGUZClqgLTvE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qlyF5R2XrmdoEqEzVgzDlH+4ZANuzdXpf8UlLtzXrj1M5RNAgr2ogWqKeuJsYa8FQRmwSza76nzx655q03PDyz42SNczKiPsPvF4JXRMZQOnFj53JdZu7VsDKnYQGD6z+04/4rP6NCWjqzoy+hTP3DH6WV8srW2nXJadbo0ZREI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=C0Os4fDi; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1777883293; c=relaxed/simple;
+	bh=vpVfXkwpSYaRIefcy0a61BzjkpwY7MPWY+jgKHbMKMY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=FBi1U7oWqe8xmVuQ7eGXODLD3WHGbIdkoGBRILe+1KooPIddzAU9rfo3YIDxvmOJAZQGCIMKvPpY6zWgm4A2LQfNI1a8ihwvdDq1k3e9Xr7J7cKpvHzhJRNpfDqMsK02ibSWWP6Q+eQKNg/uC4P7cVvVtN9uouP6z71VJYdV/Qc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=LDyW/NZU; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="C0Os4fDi"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777882434; x=1809418434;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=i0ow0BGME4ktvZKUNMDO7lIwbJDhWGcBGUZClqgLTvE=;
-  b=C0Os4fDiK/tiJxWEygkm/r4sTvACATvvtm8Ebf4pL9vlN4At9W9/7TZb
-   SL1YgRXP644wpbcdrvtsiIIBbFijc+n0h8VFX2eEnpOgWuuTWmV2o2AC9
-   B6ASbWfNINq1g4H3Pq3qmpqJL4/sO0Qq5EwMkoXf2/6fhCnFqH3miLGeM
-   TRS1OmB4X0YUFSD3BBgZ2jIlZDrdQY7KCPsCLohxOsX+6qgWnpfkWD90b
-   BxMhb8teU5ZEv5BWxoRULUB7qHRpD/ddVa8J+g3VoE9TsQJU4Wc9/xo1Q
-   /QkHwvwoXeG+ZVDlxMDRWkQ+c6csKi5cLpOg3mhQpcTznfX7O8ussmfv2
-   w==;
-X-CSE-ConnectionGUID: ObTG+0dPS+GYHRr/gVhZAg==
-X-CSE-MsgGUID: EE0gWmiGSLmM8ptT+TeLyQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11775"; a="66267429"
-X-IronPort-AV: E=Sophos;i="6.23,215,1770624000"; 
-   d="scan'208";a="66267429"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2026 01:13:53 -0700
-X-CSE-ConnectionGUID: FJTjzmBeRjKWGxOzEDSmhA==
-X-CSE-MsgGUID: UPX6moqJSWqissfla8fyxg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,215,1770624000"; 
-   d="scan'208";a="230852817"
-Received: from mev-dev.igk.intel.com ([10.237.112.144])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2026 01:13:51 -0700
-Date: Mon, 4 May 2026 10:09:55 +0200
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: Simon Horman <horms@kernel.org>
-Cc: michal.swiatkowski@linux.intel.com, intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org, jramaseu@redhat.com,
-	anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
-	aleksandr.loktionov@intel.com
-Subject: Re: [PATCH iwl-net v1 2/2] ice: use NETIF_F_HW_CSUM instead of
- IP/IPV6
-Message-ID: <afhUUwTq7xPSe75N@mev-dev.igk.intel.com>
-References: <20260428070647.777141-3-michal.swiatkowski@linux.intel.com>
- <20260430152948.1683359-2-horms@kernel.org>
- <20260430162149.GC900403@horms.kernel.org>
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="LDyW/NZU"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=BN4uSPdgnhHaUi6vQoU5jOpHW/0+tIz+jFTceVnzRvY=;
+	t=1777883291; x=1779092891; b=LDyW/NZUpuU5JKgYIuP4ky975STQ7+LmwAd6M1t1QRtANtb
+	g2vwZEARtCqnowsyLqpqbHgGHaKMPMTVAs0iM0IhwVy7kEr6NZOC6V4KSXzjGG9bX+wk8THO4ggcL
+	J5Iy3XyQeK3wsAzN+TDsnAvVz6gI10eHGKHURLVpJeff9sOaT6jkS4us1iR1GgaaH2s03cQ2R/47D
+	YcviQrniQ1ZQYEmvWXpU5qGFpDFIHXSNzIuPW3Z/9qwoR4KxDuSjeG2GNQJq2hJOCzcjvHQd25NVW
+	lzq/Eyc7IpDG9beHNr4JEWINQFyKzHROG5UTOiENm8OFfFMrM4TzPu8XDz5p/p8Q==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1wJoen-0000000EpQB-2exg;
+	Mon, 04 May 2026 10:28:01 +0200
+Message-ID: <316680e2dc0103774bf0cfb77f60341a85ef5b81.camel@sipsolutions.net>
+Subject: Re: nl80211: SET_WIPHY_NETNS does not check caller's CAP_NET_ADMIN 
+ over the target netns
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Xie Maoyi <maoyi.xie@ntu.edu.sg>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, 
+ "linux-kernel@vger.kernel.org"
+	 <linux-kernel@vger.kernel.org>, netdev@vger.kernel.org
+Date: Mon, 04 May 2026 10:28:00 +0200
+In-Reply-To: <TYZPR01MB6758FE8FDBB58A6CAA4DC6BBDC302@TYZPR01MB6758.apcprd01.prod.exchangelabs.com>
+References: 
+	<TYZPR01MB6758FE8FDBB58A6CAA4DC6BBDC302@TYZPR01MB6758.apcprd01.prod.exchangelabs.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260430162149.GC900403@horms.kernel.org>
+X-malware-bazaar: not-scanned
 
-On Thu, Apr 30, 2026 at 05:21:49PM +0100, Simon Horman wrote:
-> On Thu, Apr 30, 2026 at 04:29:49PM +0100, Simon Horman wrote:
-> > From: 'Simon Horman' <horms@kernel.org>
-> > 
-> > This is an AI-generated review of your patch. The human sending this
-> > email has considered the AI review valid, or at least plausible.
-> > Full review at: https://sashiko.dev
-> 
-> Sorry, the email I am responding to was supposed to come with
-> some commentary - it seems my method for adding it is broken :(
-> So I'm adding it below (as best as I can remember what it was).
-> 
+Hi,
 
-Thanks for adding the comments.
+On Sun, 2026-05-03 at 06:55 +0000, Xie Maoyi wrote:
+> Hi Johannes,
+>=20
+> I think I have found two related namespace handling gaps in nl80211 on v7=
+.0 mainline. I would appreciate your view on whether they are bugs and whet=
+her they are worth fixing. The second one is much narrower than the first.
+>=20
+> Bug A: NL80211_CMD_SET_WIPHY_NETNS does not check the target netns.
 
-> > ---
-> > ice: use NETIF_F_HW_CSUM instead of IP/IPV6
-> > 
-> > This commit replaces the IP and IPV6 checksum offload flags with HW_CSUM
-> > in the ice driver to allow hardware checksumming for IPv6 packets with
-> > extension headers. It also removes the mutual exclusivity check between
-> > TSO and GCS.
-> > 
-> > > diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-> > > index 5f92377d4dfc..33f252a6a22f 100644
-> > > --- a/drivers/net/ethernet/intel/ice/ice_main.c
-> > > +++ b/drivers/net/ethernet/intel/ice/ice_main.c
-> > > @@ -3491,9 +3491,8 @@ void ice_set_netdev_features(struct net_device *netdev)
-> > >  			NETIF_F_RXHASH;
-> > >  
-> > >  	csumo_features = NETIF_F_RXCSUM	  |
-> > > -			 NETIF_F_IP_CSUM  |
-> > >  			 NETIF_F_SCTP_CRC |
-> > > -			 NETIF_F_IPV6_CSUM;
-> > > +			 NETIF_F_HW_CSUM;
-> > 
-> > By advertising NETIF_F_HW_CSUM, the network stack assumes the driver can handle
-> > checksums for any protocol and passes non-IP packets (e.g., from AF_PACKET
-> > injected frames) to the driver with CHECKSUM_PARTIAL.
-> > 
-> > Since ice_tx_csum() strictly parses the L3 header and expects IPv4 or IPv6,
-> > returning -1 for other protocols, will this regression cause non-IP packets to
-> > be silently dropped instead of falling back to software checksums in the kernel?
-> 
-> The problem above seems to be a legitimate concern, if a corner case.
-> It seems to also exist in i40e.
-> 
+I guess that's more a question of convention than anything else?
 
-I think there is a lack of skb_checksum_help() before one error return
-from ice_tx_csum(). I will add it.
+But I guess we should follow the netdev convention:
 
-> > Additionally, skb_csum_hwoffload_help() relies on NETIF_F_IPV6_CSUM to
-> > safely fall back to software checksums when IPv6 extension headers are
-> > present.
-> > 
-> > Does using NETIF_F_HW_CSUM bypass this safeguard, potentially causing
-> > legacy hardware (like E810) or E830 without GCS descriptors to compute
-> > incorrect pseudo-headers and silently corrupt IPv6 packets with extension
-> > headers?
-> 
-> The issue above seems to be a false positive as the ice driver
-> doesn't rely on the behaviour described. Rather ice_tx_csum()
-> uses ipv6_skip_exthdr() to correctly handle extension headers.
-> 
+> By comparison, net/core/rtnetlink.c::rtnl_get_net_ns_capable() spells out=
+ the convention:
+>=20
+>     /* For now, the caller is required to have CAP_NET_ADMIN in
+>      * the user namespace owning the target net ns. */
+>     if (!sk_ns_capable(sk, net->user_ns, CAP_NET_ADMIN))
+>         return ERR_PTR(-EACCES);
 
-Yeah, righ.
+which (also?) requires access in the target netns.
 
-> > 
-> > Finally, for protocols other than TCP, UDP, or SCTP, the driver falls back to
-> > calling skb_checksum_help(skb) in the default case of ice_tx_csum().
-> > 
-> > However, the driver appears to ignore the return value of skb_checksum_help().
-> > 
-> > If skb_checksum_help() fails (e.g., due to -ENOMEM during pskb_expand_head()),
-> > could this result in the packet being transmitted with an uncomputed checksum?
-> 
-> The problem above seems real to me, but it also seems to be pre-existing.
-> So I don't think it should delay progress of this patch.
-> 
-> If it is a problem, it also seems to be present in i40e.
+> Bug B: nl80211_prepare_wdev_dump() continuation does not re-check netns.
+>=20
+> The first dumpit invocation validates the wdev against the caller via __c=
+fg80211_wdev_from_attrs(..., sock_net(cb->skb->sk), ...). Subsequent invoca=
+tions look up the wiphy by global index via wiphy_idx_to_wiphy(). They do n=
+ot re-check sock_net(cb->skb->sk) against the wiphy's current netns.
+>=20
+> Other dump paths in the same file do this check on every iteration. See n=
+l80211_dump_wiphy() at line 3437 and the parallel scheduled scan dump at li=
+ne 4420.
+>=20
+> If a wiphy moves between dumpit invocations of NL80211_CMD_GET_SCAN via N=
+L80211_CMD_SET_WIPHY_NETNS, the dump silently keeps copying BSS list conten=
+ts from the wiphy's new netns into the caller's netns. On its own this race=
+ needs a separate caller to migrate the wiphy mid-dump. With bug A, the att=
+acker can arrange the race themselves.
 
-idpf, igbe too. It should return error in such case and drop the packet.
-What do you think, should I add the patch for that here or send it separately?
-To be honest I prefer sending it separately as this is in already exsisting
-code and touch more than one driver.
+This seems ... inconsequential? After all, moving a wireless device
+between namespaces doesn't really change the physical layout of the
+machine. Perhaps that'd give someone access to the SSID of some hidden
+network but that's not really a secret anyway since it's over the air.
 
-Thanks
+Maybe we should fix it for clarity and convention, but I don't see it's
+really an issue?
+
+johannes
