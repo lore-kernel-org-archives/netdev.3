@@ -1,107 +1,112 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 204282E040D
-	for <netdev@vger.kernel.org>; Mon,  4 May 2026 07:52:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70D5310762;
+	Mon,  4 May 2026 07:54:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777881156; cv=none; b=tuGeEQMtJOlEhao3RyzoIAk5/OO8vdgMcrxdjGXxLkzwcNWmwrHH7AAi+wBvpJMhYAh4cTWARgVYOl8pUYVwACu+pCVCidonKk2Ls9+yNigVRCxsavTDvNJ8b0+QY7XxMj4LRqeerqD3pssFyF6AYLuBdkmy8LoYvuJsbu+7fg4=
+	t=1777881243; cv=none; b=fN1O7hOepj1HghDu4d+4B7yj/GZjyQjgv8xKI9n5rv1FA5i7W98xqKJ2oabnH06ZALcQWMC9JiCJ2U/Lu96GwJhdByYS4PJA9OIutI4Yb7oy3CxO500MbnTq5Chp/C8Byr5Pxh2zdRx6us45blGGHk87SxuRFhAiEaaNDceCgM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777881156; c=relaxed/simple;
-	bh=grBs00BfR7Dgf7lDiyN5qgf6vPiH1ATGim4nShDBzQ0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Up7hhsRytcQnzM49nPyF9eXknU6GCJFolvd+HZNSkDDfdaKi+q3iivil+JdQnIAM0OCUjXANa4ZKEa9H220Vy9Aw9zgHojkugf88P4hHj/D4yAh36tkf+6ZtvmFC7tui4qpfZGTYabi9fFVpMsrphTn25GvCcNc9/EuX2SNH1kE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ic7VGKcz; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	s=arc-20240116; t=1777881243; c=relaxed/simple;
+	bh=zmfJWUtoD6QrwTwY/0qkxmllKEhdZBEbkEMGD29+lN0=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Lk7NzKBjuNeDb3aai08uGhNtFHMaWMhu5P/RUdXlSQkIqvBAW0TxKQkQhGo2/Vqd2ahdMMfXbiPhTRmJ239ySrL7tbpJh92L30u1s2D6Gb2vnGQyx/rGNjbQha12RwkL4L02AzGUtL+RFQo0JNqkjhGpeUAl0h6TQQHa87FtYbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=omec0qvK; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ic7VGKcz"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b630b4d8d52so1638110a12.3
-        for <netdev@vger.kernel.org>; Mon, 04 May 2026 00:52:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777881154; x=1778485954; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=LFTHSBhHCs776VEULE7S1mvel/jKgBzCStXoNW54Izk=;
-        b=ic7VGKczrIqcuNLPtCx68pTMEgR4yjD5v/A9NZ1Ye8cCNC3X3y2pM14cMki3NXRb7M
-         sCROtTghtPJWp/0tGb66EdR0j9k/I+v1vHpphqPtucMYBf35099yZp4I3S5P9k6CDnW2
-         c8rasKbDB8vbbxAzCENeB9YtdVM9fQaq9wYFx3lZ/NMlyZ5eqJXFcyztuQvc8RbOpKBF
-         AvOO50Loq+aY+8/pN5jxxXbILLRCiEii21GKb8IKaywZuG0uufiHPFMzdHQgW/8pQyk9
-         UwEVj3BErWOlcb1g6Wlu+28ftpK75tP5zTZqgPY+AjiVpY7lQ197UCEt1lcvdND6Qu/o
-         UfAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777881154; x=1778485954;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LFTHSBhHCs776VEULE7S1mvel/jKgBzCStXoNW54Izk=;
-        b=OjoLI/M0Z8G2dCyu9KUCjNrO5NAdwnDSTPe8BnaTY4ohUj25EGVq66c/KFTU+waQo8
-         canaHAW6ZYUoVHBv0ouUGTnn2VUDz0bhVWM/hFAS1VmX9xYBiuXUGYJKshn0X0cHlL4R
-         c7KHhp2HsotMeL5rs/6XVncfj2qZa4o0vRkWUleu0Ud1/knTxuO81G5M+9LbLPentDO0
-         j21JvZ7bRtkPZAjyUDEWREjWncOqNZnA+NcgUdyfmYOJqWuGeOOkDnFKrprvFu48Iksy
-         2pg/fiNWKHMLvLssfWHhvA7joTlpi51uTaC9TB4ZpPNRFCUixSDeXxSB+9a9S+rRJ0Mm
-         gDiQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9l/i+RqLkwwi7gabRjccLzbRWoBor3MY8aw+rcaGtojTgjvLsLP4rKIVXMmVeHozhS6Lbu3XY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwCT7uXLvE9J9zM3Z6Owx+AIKJntcvptmedObkcbc3p270Aaql8
-	RmR0Zpw2vyFBpWZR6X8iEW9NS46MignVARn4InPXW8HklOdPyltvzI0KR46/BJOhPrsjYo5AZZh
-	wnWMW1Q==
-X-Received: from pgbbe4.prod.google.com ([2002:a65:6e44:0:b0:c82:26d4:bb49])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:6d8a:b0:3a2:e59a:7a46
- with SMTP id adf61e73a8af0-3a7f1ad06f8mr8848982637.24.1777881154263; Mon, 04
- May 2026 00:52:34 -0700 (PDT)
-Date: Mon,  4 May 2026 07:52:19 +0000
-In-Reply-To: <20260504072325.23474-1-eulgyukim@snu.ac.kr>
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="omec0qvK"
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id 424E620523;
+	Mon,  4 May 2026 09:53:53 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 0_xA0Jmcl71J; Mon,  4 May 2026 09:53:52 +0200 (CEST)
+Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id A736F20189;
+	Mon,  4 May 2026 09:53:52 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com A736F20189
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1777881232;
+	bh=O1M/zVFLhzRw5c7wj/4+AVWP83j9/+MMSJJExWB0Yw0=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
+	b=omec0qvK0665P82qJ/FYq+faN0yvOen3pU+a4dr6STV9BQAxXqwEEhP6FTh/qoWpO
+	 /KRwvgmTgM5ig6qPKydJ9hEdSZUZF6OZqtDRMHXjy2ptaBF022PuS0Qv1/9ZkjiVG1
+	 UbKRp+6TKO/xph/EudyZ3W/4VYFz+0j+Y+Foc03ihWviVT/cT+ug7a/ZicqiqxhxB+
+	 1B89zDvbvORvvsLb3RklxkyqGjdfDJVXXXIIcvLILXPn9K9mlfFSXvH++XEqPXydCg
+	 tCLHP1ZtM5d2didGWJrR+9DqLH2ajaqXEcpkfsv12sZwg4A/+85dh7GDZ+aXEOvun8
+	 09wqdrIiftq1Q==
+Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 4 May
+ 2026 09:53:51 +0200
+Received: (nullmailer pid 2934465 invoked by uid 1000);
+	Mon, 04 May 2026 07:53:50 -0000
+Date: Mon, 4 May 2026 09:53:50 +0200
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: HexRabbit <h3xrabbit@gmail.com>
+CC: <netdev@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>, Simon Horman <horms@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Ido Schimmel <idosch@nvidia.com>,
+	<linux-kernel@vger.kernel.org>, Hyunwoo Kim <imv4bel@gmail.com>
+Subject: Re: [PATCH net] xfrm: esp: avoid in-place decrypt on shared skb frags
+Message-ID: <afhQjlpmt2agPcRE@secunet.com>
+References: <20260504073403.38854-1-h3xrabbit@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260504072325.23474-1-eulgyukim@snu.ac.kr>
-X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
-Message-ID: <20260504075232.3861715-1-kuniyu@google.com>
-Subject: Re: [BUG] KASAN: slab-use-after-free in __sk_msg_recvmsg
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: eulgyukim@snu.ac.kr
-Cc: bpf@vger.kernel.org, byoungyoung@snu.ac.kr, davem@davemloft.net, 
-	edumazet@google.com, horms@kernel.org, jakub@cloudflare.com, 
-	jjy600901@snu.ac.kr, john.fastabend@gmail.com, kuba@kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260504073403.38854-1-h3xrabbit@gmail.com>
+X-ClientProxiedBy: EXCH-03.secunet.de (10.32.0.183) To EXCH-01.secunet.de
+ (10.32.0.171)
 
-From: Eulgyu Kim <eulgyukim@snu.ac.kr>
-Date: Mon,  4 May 2026 16:23:25 +0900
-> Hello,
-> 
-> We encountered a "KASAN: slab-use-after-free in __sk_msg_recvmsg"
-> on kernel version v7.1.0-rc1.
-> 
-> As this issue was identified via fuzzing and we have limited background,
-> we find it challenging to identify the exact root cause or propose a correct fix.
-> Therefore, please consider the following analysis as a best-effort guess,
-> which may still be incomplete or incorrect.
-> 
-> The issue is that sk_psock_peek_msg() only protects the list lookup; after it
-> drops ingress_lock, the returned sk_msg can be concurrently consumed and freed
-> by another recvmsg caller.
-> 
-> Following is the harmful sequence:
-> 
-> 1. Thread A calls recvmmsg() on the socket and reaches __sk_msg_recvmsg()
-> through udp_bpf_recvmsg() -> sk_msg_recvmsg() -> __sk_msg_recvmsg().
-> 
-> 2. __sk_msg_recvmsg() calls sk_psock_peek_msg() and obtains msg_rx, the
-> first struct sk_msg on psock->ingress_msg. The ingress_lock is dropped
-> immediately after the peek.
-> 
-> 3. Thread A copies data to userspace and still holds local pointers to
-> msg_rx and sge = sk_msg_elem(msg_rx, i), but has not yet updated
-> sge->offset/sge->length or dequeued the message.
-> 
-> 4. Thread B concurrently calls recvmmsg() on the same socket.
-> 
-> 5. Because udp_bpf_recvmsg() does not hold a per-socket receive lock,
+We have antoher patch that addresses this issue in a different way,
+so Cc the author of the other patch.
 
-This reminds me that I forgot to respin this series.
-https://lore.kernel.org/bpf/20260221233234.3814768-1-kuniyu@google.com/
+On Mon, May 04, 2026 at 03:34:03PM +0800, HexRabbit wrote:
+> From: Kuan-Ting Chen <h3xrabbit@gmail.com>
+> 
+> MSG_SPLICE_PAGES can attach pages from a pipe directly to an skb. TCP
+> marks such skbs with SKBFL_SHARED_FRAG after skb_splice_from_iter(),
+> so later paths that may modify packet data can first make a private
+> copy. The IPv4/IPv6 datagram append paths did not set this flag when
+> splicing pages into UDP skbs.
+> 
+> That leaves an ESP-in-UDP packet made from shared pipe pages looking
+> like an ordinary uncloned nonlinear skb. ESP input then takes the no-COW
+> fast path for uncloned skbs without a frag_list and decrypts in place
+> over data that is not owned privately by the skb.
+> 
+> Mark IPv4/IPv6 datagram splice frags with SKBFL_SHARED_FRAG, matching
+> TCP. Also make ESP input fall back to skb_cow_data() when the flag is
+> present, so ESP does not decrypt externally backed frags in place.
+> Private nonlinear skb frags still use the existing fast path.
+> 
+> This intentionally does not change ESP output. In esp_output_head(),
+> the path that appends the ESP trailer to existing skb tailroom without
+> calling skb_cow_data() is not reachable for nonlinear skbs:
+> skb_tailroom() returns zero when skb->data_len is nonzero, while ESP
+> tailen is positive. Thus ESP output will either use the separate
+> destination-frag path or fall back to skb_cow_data().
+> 
+> Signed-off-by: Kuan-Ting Chen <h3xrabbit@gmail.com>
+> ---
+>  net/ipv4/esp4.c       | 3 ++-
+>  net/ipv4/ip_output.c  | 2 ++
+>  net/ipv6/esp6.c       | 3 ++-
+>  net/ipv6/ip6_output.c | 2 ++
+>  4 files changed, 8 insertions(+), 2 deletions(-)
 
-I'll rebase and respin it.
+This looks ok to me. From the IPsec point of view, I'm
+fine with this patch, but it also touches generic
+networking code. So I'd like to hear an opinion of one
+of the networking maintainers before proceeding.
