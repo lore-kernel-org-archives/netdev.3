@@ -1,41 +1,51 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8856D3E639C
-	for <netdev@vger.kernel.org>; Mon,  4 May 2026 23:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2CBD3FB7EB;
+	Mon,  4 May 2026 23:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777938891; cv=none; b=j0wO/iaL0UKW09boOHRK036tLqYYrcrMk+jmSecLsiELexCkocfGs5APdETvjRgkX4VeEqdwC38tgJUsoa5HYhUatQtTIaGIY6aen+GCFIPOK9tlUqeHwkZcxZpkYAFJK+2D4bkRHXU+njv7o7WnqN3fxNX350aQdSafsV2Rusw=
+	t=1777939140; cv=none; b=OAfv2Zi8MtCLjLKQy5Qkf0ao0M4fe3G6fipYTPEqFUiWw24Rqq16dpda38aPpsaWXN7df18cywIDrijPiy8OX2CPTIQo1ErjiFkIqR8TJ3lHhLJnGiGhbPzye14GO+oblNA1dOIp8HozcSN+wYC8FsagMFXrm+ZGS/kCejSXFrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777938891; c=relaxed/simple;
-	bh=8Q0ykBaXf0sz3aWKh2H/iAaN9C4POkNO3dVqrYNpg4I=;
+	s=arc-20240116; t=1777939140; c=relaxed/simple;
+	bh=G78gkkTB3+nUxbQ0sEh+cB10zCIPgt3BA3kgSBxBQN4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r53S8EgOb8Rz8guexAIpvWTZzwlu1Pt1fCdUFut7d+PWjWP4YTaXm6MMx/pQz8WZ3OT1+HIrTaLzRTPAptQEoKxGT+WTHc58cryyND906jI5GBBYN31CRLpqyyTwWGvqn+HObaMoNPJngmF7IZrdm44ygnwRj/Fzlxyv+c5CxkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S69KAucb; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=s2wN5JxZ8rG+LYN7EexQIPhdUYy+gZYhcaGd6cjSLs8ckiwfsJ2P+6GJYbAEsbGYOmufmiHkLsP/X4dYypI+4u1yEuTom7fPULJLHaltXHwpc8Ii6wDK3DGoSVNkS0Ht5/6U72VsRhRzlN8iefvVaikH0UP1tzwIsnWByrVrAvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eJA2bxZs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S69KAucb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0FFFC2BCB9;
-	Mon,  4 May 2026 23:54:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eJA2bxZs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DFE4C2BCB8;
+	Mon,  4 May 2026 23:58:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777938891;
-	bh=8Q0ykBaXf0sz3aWKh2H/iAaN9C4POkNO3dVqrYNpg4I=;
+	s=k20201202; t=1777939140;
+	bh=G78gkkTB3+nUxbQ0sEh+cB10zCIPgt3BA3kgSBxBQN4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=S69KAucblOMJHepPpZSqP9Q1rV2ZheBE5DVsbXtsbksZgjGxS/D9LnNGahJvmg728
-	 9SFkh8Q8YoW2iQEKDvDbZoxJFvPOv+P2ysZ7+yUl97d/Sif0/GuZduduc6YQAW4q6w
-	 AiapQrLJqTAT+qJoSMYIUYzJOkI8n3ouL50K5v0FwdfX7PuriEAoYu4K+h31MJqqb7
-	 RUQ9w8ZwehO2Putk0ASimaebZLItZI9IgEWh/J08d3gOmXb0RynnqGVMdzW1+fPSMy
-	 UdzpPDqMtXJEbmY5gtW0Zk6r0T8hjnt1r4QwNM0QqPZh7yEiRAXh7psuEnBYq11om3
-	 arLP5ubOvM8eg==
-Date: Mon, 4 May 2026 16:54:50 -0700
+	b=eJA2bxZsbYEj8zvHRQYdifekgZDfjdBdbS0c2t9kJGGoH0YkBR8V1+DmrqR2fFDBW
+	 SRzgB4W7puSJx+cZSCR82FShM3urezn53PrmPTIET8RFC928s0UBmBUqAQRdFraRIb
+	 MPWTHICnQbpZSWN84PYcZ3bN4ebnyXNlVLhZMBrRHSiywDgix5qIexor1gR7Ech9NZ
+	 X3jtTyLojQNYXixdwv6/yaUqfZ9zrNVprTO/tju9lNM9X6STCQa5p9/aIRTxkEWLJu
+	 jor+dJmwXDUbokcaLACFAmwLgoVZLtHfinDcGsZZe9AXZX11iektKnq3P49sigcirl
+	 G6/F8omOhx37Q==
+Date: Mon, 4 May 2026 16:58:58 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Antonio Quartulli <antonio@openvpn.net>
-Cc: netdev@vger.kernel.org, ralf@mandelbit.com, Hyunwoo Kim
- <imv4bel@gmail.com>, Sabrina Dubroca <sd@queasysnail.net>
-Subject: Re: [RFC net] ovpn: fix race between deleting interface and adding
- new peer
-Message-ID: <20260504165450.7cc15bcd@kernel.org>
-In-Reply-To: <20260504142033.2327646-1-antonio@openvpn.net>
-References: <20260504142033.2327646-1-antonio@openvpn.net>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Carlos Llamas <cmllamas@google.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Andrew Lunn <andrew@lunn.ch>, Donald Hunter
+ <donald.hunter@gmail.com>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
+ Horman <horms@kernel.org>, Matthew Maurer <mmaurer@google.com>, Miguel
+ Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo
+ <gary@garyguo.net>, "=?UTF-8?B?QmrDtnJu?= Roy Baron"
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
+ Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Danilo
+ Krummrich <dakr@kernel.org>, Christian Brauner <brauner@kernel.org>,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ netdev@vger.kernel.org
+Subject: Re: [PATCH v4 2/4] ynl_gen: generate Rust files from yaml files
+Message-ID: <20260504165858.4882730b@kernel.org>
+In-Reply-To: <20260504-binder-netlink-v4-2-601b41cd25b2@google.com>
+References: <20260504-binder-netlink-v4-0-601b41cd25b2@google.com>
+	<20260504-binder-netlink-v4-2-601b41cd25b2@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,10 +55,12 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon,  4 May 2026 16:20:33 +0200 Antonio Quartulli wrote:
-> This patch is sent as RFC to give the AI a chance to review it once
-> again, since it was able to spot a new race condition in its
-> previous version.
+On Mon, 04 May 2026 09:04:55 +0000 Alice Ryhl wrote:
+>  tools/net/ynl/pyynl/ynl_gen_c.py | 139 ++++++++++++++++++++++++++++++++++++++-
 
-FWIW I think you can just ask for Sashiko to track the openvpn mailing
-list?
+No. Rust. In. This. File.
+
+Just commit the artifacts. I truly hope that this is the only Netlink
+family we will have in Rust.
+-- 
+pw-bot: cr
