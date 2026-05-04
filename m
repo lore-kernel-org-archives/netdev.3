@@ -1,131 +1,150 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.nic.cz (mail.nic.cz [217.31.204.67])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E3A53D8114
-	for <netdev@vger.kernel.org>; Mon,  4 May 2026 15:12:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8DA3D75D7;
+	Mon,  4 May 2026 15:12:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.31.204.67
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777907533; cv=none; b=C5Wc2sChy4wnprw5YVt97EUL43qRriyeTsPbEoCFJ611UzoWnpWDPyGZzzdoZucNdHB+wBh0mXsUyCJD/46Gkp4M03OczotH+TCpjULT8b+qd84ZFEOgv1erKzjhpkK55dGKk9qFjQGXS6fc6h1PdCzjdNysuZ19vsnD8yWR2j4=
+	t=1777907570; cv=none; b=HIZ9jqwGip/8tuWFfN9Zd+zC/Lta7DxaMmGPQu4m3K/6OibhEIZpfAm9TzK9Ikv245O/srrr4Sokb2PC0troWrf1CCILQI8d/Jpjs54sstl3a8x9GvGxuK5VAsmf/KWBjRI0CEH3JZwFkOiPGE1gRq6KlJFcaydnhdtfaoZcvTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777907533; c=relaxed/simple;
-	bh=GQicZ6yZ62pnjzm570OJWX3OWvGBTqzTvY8wkRH2lU4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fQEMtpxuOsqf9Yk7kiAzrFLQyLH4YOJttojX8vlDLx0fV5O4vL+ILqom/THChMw4KNissypx35stfVTkeF98Dd6trjSIMX7d/9xvxbJF6sVvSp43Ll1xjishAiDTzqcxP8AzSIqcmHaFamebQeduHQLRqfNOpwrk5zDv6BOZOfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20251104.gappssmtp.com header.i=@baylibre-com.20251104.gappssmtp.com header.b=Rsj/NsQW; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	s=arc-20240116; t=1777907570; c=relaxed/simple;
+	bh=PEPiYfzwHxVC8iWBrgru/8Omh1AEpiov7/LLxgkS4qg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FcVT25KuIDb+bFwwA6Q7eju2F/+0gX3tpO55uEQimJ5XcfF6DgqxZzZjRlnR35GovislqmzDZ+liGm8zhqYR7jFDjRHAhdnPTbefun+yVKX546qCVMEMAOPyMwybMEDPiggAhrsVzKnek9UCEkDXo6TnnA4FatVIl0ChyrKnIxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nic.cz; spf=pass smtp.mailfrom=nic.cz; dkim=pass (1024-bit key) header.d=nic.cz header.i=@nic.cz header.b=RQZeF6mi; arc=none smtp.client-ip=217.31.204.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nic.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nic.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20251104.gappssmtp.com header.i=@baylibre-com.20251104.gappssmtp.com header.b="Rsj/NsQW"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-48909558b3aso45322465e9.0
-        for <netdev@vger.kernel.org>; Mon, 04 May 2026 08:12:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20251104.gappssmtp.com; s=20251104; t=1777907530; x=1778512330; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=uzs0BkQvCPRt6F84mKmO5B0KxLBnGhAmM0EUe+fHF5E=;
-        b=Rsj/NsQWNh7EUHLGQBgKqQLrtQlLQKTPpi9D4Ht0Zmt8775+vF8g+f4eSHBwW08P14
-         cHemegHuVzExY634yu8nLnoOPdCqDZOEcnSmWzX7fRIGx2tiNXmrIry9dDsFZuSPXNd7
-         rYtZj0im/zyB4rER9yWa3leENcTqNGmRNimPDJpCgFpxLlyEbWqp3YIua7SlfWZ7b2dQ
-         bZhXXQZ+3vHcXxqdBeQaN4o8pSENVFB8/fOkjs/ZD/eT2itNX1TJT5iSJpH2OCP9nxal
-         R0IehhQZyv5NgO7XVjs6CcSRoAd3idAWA2lQa0t3S9qcoA0yavD4Hi5TN+LBA88HcdJ/
-         zxVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777907530; x=1778512330;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uzs0BkQvCPRt6F84mKmO5B0KxLBnGhAmM0EUe+fHF5E=;
-        b=W9BLe4kolE/j9xSLA0SPFWAkMBMVJHmln9yvleGup+/9KDNwVotX8ib/JSp9sJGLCW
-         N6oOpq1fYR+Jr1iz70Bhj2Gm1uW/Lb/YoYpkK+Cjw6JhR+Yqk8DJXuzzzqgbRF1Kamtj
-         K8Y4XtCp3M7etNKd8Z+0Setv9TRtKZcgYN1LNqBp4DEb/h7TzG11m6FWcQrqNMvvXTwt
-         PfgFshm+DBbCMmYQpbQDx8JvUpr7VvHU4mjYolIfhtqOMucr4NreOySQ5JByirGv3Hgx
-         XplZXEcPjRjL8baypnIlmfz1z5prPMyFSu5svRI68JMezQ8NWZ3Mto/8zRal1Ebjr0xL
-         1Y2A==
-X-Forwarded-Encrypted: i=1; AFNElJ8M623vCWA3vyNj/5mkPYI6NSk7+OHSO2ofUeAla+QONUdz+9xlLy3n6qqs9nEh+m0k+E5VMkw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyc9AZS/KgpdR4YVRhmHUcIZYt3pz7x5Va8o4pyiUuSUZiRTOcv
-	fF5/+3wsXgh8A/XZqVoT9B6Th0DX4zUB/39JAQdY0mKi1QyVYqKMQ0fkBU9sH1c0BOw=
-X-Gm-Gg: AeBDieslznkbQMTKxtM/6/JFqKg8DYIlsc1NsrA0T40Y8u8YQ9aBsyJyMjuVNr2g4sG
-	2zV4Iue7m5rZICw34GythtyZ+oF1GiZwDMyppVxTkLeqX+BjonHFTh5HNWimUq5R3iRuJ7ioj0Z
-	XY+ORgqhD5CA4tGqE+gwetcnbRMIhW1ExpKQNw2pxSAQ2SExZEulLcalKTCav95SYwtaSw9rV+j
-	0JPfOD6GWjADk4UzCGxECQ84sIXe7JYnOop35gOdYSFelQOjPqOdoDezNxDjzcRsULABJUul6sz
-	ssOd6Qre32T72yT5bzfEwM02p8Z4oWbSyQFweY86Xp8YLWg1uOuWCAhR1zv8CYR6l+QjpiX4UTU
-	a2HH3ojvF9WspCU0ifOtAtQtXd1Fee5yhcTJtFLMcSWkcsaJ7raevWXVnOQD3d9V+CIHNVTl8rt
-	tNGhFPu3Mxt32bOYfA0Kjn0+ArU18eCa0aZZmkSeJ/2TJYXPE1c2U5frG5R7kMMcGWCyB4I1fuN
-	hSQmBIggL1Qq/8VExJ69yg5DRrYJ2zCZSsu
-X-Received: by 2002:a05:600c:6091:b0:489:19e9:b139 with SMTP id 5b1f17b1804b1-48a9852e435mr181848855e9.1.1777907530015;
-        Mon, 04 May 2026 08:12:10 -0700 (PDT)
-Received: from localhost (p200300f65f114e08197264a4bf9e813f.dip0.t-ipconnect.de. [2003:f6:5f11:4e08:1972:64a4:bf9e:813f])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-48a8fea68b4sm82719845e9.9.2026.05.04.08.12.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 May 2026 08:12:09 -0700 (PDT)
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20=28The=20Capable=20Hub=29?= <u.kleine-koenig@baylibre.com>
-To: Chas Williams <3chas3@gmail.com>
-Cc: linux-atm-general@lists.sourceforge.net,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Markus Schneider-Pargmann <msp@baylibre.com>
-Subject: [PATCH net-next] atm: solos-pci: Simplify initialisation of pci_device_id array
-Date: Mon,  4 May 2026 17:12:01 +0200
-Message-ID: <20260504151202.2139919-2-u.kleine-koenig@baylibre.com>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (1024-bit key) header.d=nic.cz header.i=@nic.cz header.b="RQZeF6mi"
+Received: from solitude (unknown [172.20.8.17])
+	by mail.nic.cz (Postfix) with ESMTPS id 771CE1C1024;
+	Mon,  4 May 2026 17:05:54 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nic.cz; s=default;
+	t=1777907154;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Bc9TalB+R1Lnx64bEIOBZEzXVkBwS4uS5dFf3lfuVJM=;
+	b=RQZeF6mimvc9Tu0Pm5D96FtoXy0gEXCWNp5b7q7hkvDeEqpqPwRdkDcRzJjtqkjQf5fke5
+	pU8zSoPsi08UzONgq/Jb2+5T3/SAg1lEuWz9pGJ2JK0HKyH0XC3EhFlmN8aXRvo3hSl38T
+	/Yzc0C2a1aNX+GmLCFtvDFiQlxSiaBw=
+Authentication-Results: mail.nic.cz;
+	none
+Date: Mon, 4 May 2026 17:05:49 +0200
+From: Marek =?utf-8?B?QmVow7pu?= <marek.behun@nic.cz>
+To: Fidan Aliyeva <fidan.aliyeva.ext@ericsson.com>
+Cc: andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, thomas.eckerman.ext@ericsson.com
+Subject: Re: [PATCH net-next v2 0/2] mv88e6xxx: SERDES on mv88e6321 letter
+Message-ID: <dxxmuzte6ntiimozgmafsx75at7zf4mm3kg5k5dgsnlnrfl3eh@yurunqpyb33p>
+References: <20260430124907.3533344-1-fidan.aliyeva.ext@ericsson.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1687; i=u.kleine-koenig@baylibre.com; h=from:subject; bh=GQicZ6yZ62pnjzm570OJWX3OWvGBTqzTvY8wkRH2lU4=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBp+LdC3j2lx1QGDBvEo78HvoMI7VnkL0aG6eqtI 9jmw243xYiJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCafi3QgAKCRCPgPtYfRL+ Tn/AB/9FCiYRSl7IgTxm9OSuFymEf9XBT0iAz42pGxBxUkQJRucXSXEadwf8gkQc+hxsHdHe6vG gAjirh9WW1boJVxULyzIbWvPT3cy/bDQfJoAUZ6nPpnI/WJ00zoHIkGmHtKspqObZREIEGHxRjk gUMhW0mZs9MMgcuAq4r5DSbmepqE99T5tOrOLlwumRTel+Hn5amLKzaX7niMdmjw4b7whp7qtvC PEYeoKXhjCGWePDUB9cvtFcUVS2jJfPCEuNsgHaaU/TrshN6LXH6Hr6oZNxEU98D2odIXvp/Wpp 4ZZj6S9iHOqpLux6CJE2ZoeLbfz6DXfqp5ibCTBRMKIkAyfK
-X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260430124907.3533344-1-fidan.aliyeva.ext@ericsson.com>
+X-Rspamd-Pre-Result: action=no action;
+	module=multimap;
+	Matched map: WHITELISTED_IP
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-0.10 / 16.00];
+	MIME_GOOD(-0.10)[text/plain];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ARC_NA(0.00)[];
+	WHITELISTED_IP(0.00)[172.20.8.17];
+	DKIM_SIGNED(0.00)[nic.cz:s=default];
+	FROM_EQ_ENVFROM(0.00)[];
+	LOCAL_OUTBOUND(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+]
+X-Spamd-Bar: /
+X-Rspamd-Server: mail
+X-Rspamd-Queue-Id: 771CE1C1024
 
-Use the convenience macro PCI_DEVICE to initialize .vendor, .device,
-.subvendor and .subdevice. Drop explicit zeros that the compiler also
-fills in.
+Hello Fidan, Andrew,
 
-Signed-off-by: Uwe Kleine-König (The Capable Hub) <u.kleine-koenig@baylibre.com>
----
-Hello,
+last year I worked on 6320+6321 serdes support, but never send it
+due to different workload.
 
-The secret plan is to make struct pci_device_id::driver_data an
-anonymous union (similar to
-https://lore.kernel.org/all/cover.1776579304.git.u.kleine-koenig@baylibre.com/)
-and that requires named initializers. But IMHO it's also a nice cleanup
-on its own.
+Quickly looking at your patches, there are some things I think are
+missing in comparison to what I did - I have 5 patches:
 
-The anonymous union will allow changes like the following:
+1/5: drops serdes methods for 88E6172, which does not have serdes
 
--       { PCI_DEVICE(0x8086, 0x8108), .driver_data = (long) &psb_chip_ops },
-+       { PCI_DEVICE(0x8086, 0x8108), .driver_data_ptr = &psb_chip_ops },
+2/5: is similar to your patch 1/2, adding serdes_get_lane to 6352 family.
+     The difference is the implementation of mv88e6352_serdes_get_lane(),
+     which does not read scratch register. Yours is probably better in
+     this regard, but mv88e6352_g2_scratch_port_has_serdes() is also
+     called in mv88e6352_pcs_init(). So maybe this is redundant?
 
-(together with the respective change in the code when the value is
-used). This gets rid of a bunch of casts and thus slightly improves
-type safety. But that doesn't affect drivers/atm as here no pointers
-are used as driver data. Still this driver needs adaption to work with
-the changed definition of pci_device_id.
+     Also, I rename MV88E6352_ADDR_SERDES macro to MV88E6352_SERDES_LANE
+     to be in line with other such macros in serdes.h
 
-Best regards
-Uwe
+3/5: extends 6352 serdes pcs for 6320 family.
+     In addition to your code I also implement .serdes_irq_mapping().
 
- drivers/atm/solos-pci.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+     These depend on other mv88e6xxx fixes I forgot to send, which I
+     will do now.
 
-diff --git a/drivers/atm/solos-pci.c b/drivers/atm/solos-pci.c
-index 24c764664c24..bcb1353877e4 100644
---- a/drivers/atm/solos-pci.c
-+++ b/drivers/atm/solos-pci.c
-@@ -1464,8 +1464,8 @@ static void fpga_remove(struct pci_dev *dev)
- }
- 
- static const struct pci_device_id fpga_pci_tbl[] = {
--	{ 0x10ee, 0x0300, PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0 },
--	{ 0, }
-+	{ PCI_DEVICE(0x10ee, 0x0300) },
-+	{ }
- };
- 
- MODULE_DEVICE_TABLE(pci,fpga_pci_tbl);
+4/5: Add hidden register access methods for 6320 and 6352 family.
+     These can be used to change SerDes modes.
 
-base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
--- 
-2.47.3
+5/5: Add support for changing between sgmii and 1000base-x on 6320 family
+     via hidden register acces.
 
+     This was done by reverse engineering hidden registers (trying
+     different values), since it is not documented correctly.
+
+Would you prefer for your patches to be applied first and then I can
+rebase, or would you rather like to look at my code first?
+
+Marek
+
+On Thu, Apr 30, 2026 at 02:49:05PM +0200, Fidan Aliyeva wrote:
+> This patch series add code support to be able to use SERDES feature of
+> mv88e6321 version of Marvel mv88e6xxx series. mv88e6321 has 2 ports to
+> support high speed SERDES but the support is lacking in the driver.
+> 
+> mv88e6321 version has a similar architecture to mv88e6352 version making it
+> possible to reuse its pcs functions. That's why the patch series consist of
+> 2 parts:
+> 1. Refactor the serdes functions and pcs_init of mv88e6352 to be more
+> generic
+> 2. Add the SERDES support for mv88e6321 reusing 6352's pcs functions
+> 
+> The final code has been built on top of net-next tree and tested on
+> mv88e6321 ethernet device directly by ip ping tests, performance tests and
+> also verifying the switch's expected register values.
+> 
+> Referred document: 88E6321/88E6320 Functional Specification
+> 
+> Code has been built with allmodconfig and allyesconfig. checkpatch.pl was
+> also run
+> 
+> ---
+> Changes in v2:
+>   - Removed 6321-specific pcs_init and made 6352's pcs_init more generic
+>   as suggested by Andrew Lunn
+>   - Added the correct mailing list
+> 
+> ---
+> Fidan Aliyeva (2):
+>   mv88e6xxx: Refactor 6352's serdes functions
+>   mv88e6xxx: Add SERDES Support for mv88e6321
+> 
+>  drivers/net/dsa/mv88e6xxx/chip.c     |  8 +++
+>  drivers/net/dsa/mv88e6xxx/pcs-6352.c | 12 ++--
+>  drivers/net/dsa/mv88e6xxx/serdes.c   | 87 ++++++++++++++++++++++------
+>  drivers/net/dsa/mv88e6xxx/serdes.h   |  5 ++
+>  4 files changed, 86 insertions(+), 26 deletions(-)
+> 
+> --
+> 2.36.0
+> 
+> 
