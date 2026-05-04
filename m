@@ -1,30 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 742BE3A5E92
-	for <netdev@vger.kernel.org>; Mon,  4 May 2026 15:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 880DF3DEAFA
+	for <netdev@vger.kernel.org>; Mon,  4 May 2026 15:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777908753; cv=none; b=BTGT+U30tRI90OqKzu+BJtlA9ZTD7kl3x5eCFBbjUyyGka39bp9Q78iMUy4ZeaxYj5+fN8a2hHzSmpeHCBwd7Ulxqarmyp8dyl9G4BCwwv3zY0uOhcIMiwB6KL4Of/fzRU3dGUIgV361r7UqAY513pmxKBZY4JS9npiyu27E3Dc=
+	t=1777908755; cv=none; b=EdtAE93m3xF6LpHsRuq7IlKBOYsfC0zhYGbzNsyAVcLi1enOJAtp5Rv0t4Ax7T4NS8ZC/4kfMvEBLqdomIbdnppw5FmekSrejzrQWED9TYzg9kkBGOUEFG4kzvSudD3OhRtpDtR2h4WzbmCPIDBbHGdRdZ6GLCuFkeFm/44025c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777908753; c=relaxed/simple;
-	bh=k1ewJ1roSUoSNejuZkGXBC145lI54uDg4itlUu+kA8o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dRnxg/pA0RJ+8fniVjm9qYjNgGsIxU/qU1Kaj1thCO5P8xfpprP2+jra/dG+rM877OURSSnicZLzBtIMhNR5RDBm2PuGx+jv8c4HmEds4EqWElbiFlHVdvw9rTgAzCshLBzHoSo4BYdQcjhuMMYVsSPM7aPyCsyFq6Z0YzpK2yI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R+ub/wuF; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777908755; c=relaxed/simple;
+	bh=Q01NYYjB7tIzrEQzmiH+Q27/WCTAb+U9QlejmVmiFkQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bUjzfYyEDtQ6Bw4QpuP+UiyJu6nF51oA4scFHUJl5uXlSaXmynmrv5hqKadsGcM5j3Z0LhEK3EA8XalUOE53zZFDVVAXHvC0Fws2px54MHGyhp/Tavizyu9XbaXwJGVw+mvm0i7WNkJTu7lvREXmLrMpSG5gp8aZ8eFjZt/GJhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xf2q2FDy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R+ub/wuF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B40DCC2BCB8;
-	Mon,  4 May 2026 15:32:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xf2q2FDy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C6E4C2BCF6;
+	Mon,  4 May 2026 15:32:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777908752;
-	bh=k1ewJ1roSUoSNejuZkGXBC145lI54uDg4itlUu+kA8o=;
-	h=From:To:Cc:Subject:Date:From;
-	b=R+ub/wuF40u3t90N422uJPdUP3NU92XMSDWcoS7vRSf91BUIYrVXJcy1KA4NqpeQC
-	 HYUo0GpJs51oO71j+37BVbG8HgmHGjhuUIzpXgCu9bo1RuxRyVXZqAC0PhaKwbj7c4
-	 F9jhtSHERUGocpNi9qRgYxO6ZdspkQDRU14BkPFuc/xTe6saQPN63A0TaCsH7xlZCe
-	 KOcXEQOcuYffMaqWvITi63UonkbJULRdsx4qp1lGLtGgO3vWmOBzRHrcQRGLQqooPZ
-	 cG/x+kCVOhV3uH9nzZrr4x4LUNIaKAX4sH3MXPxK2gNFVsR3yRazlIOoN+8UJHtozy
-	 x4QHMyeXs+kwA==
+	s=k20201202; t=1777908755;
+	bh=Q01NYYjB7tIzrEQzmiH+Q27/WCTAb+U9QlejmVmiFkQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Xf2q2FDyyl42rOW7PIwn11SDtWDtc5E7rupg3SwIn5LOKI+cRHkl5TWj7FeqoEPe9
+	 jtWpL12vfSHEGGeqZ2/0jhYn/r8kA6472mmep6DK3MlttMQ+iBrCpRW4Dz7QnPDFKl
+	 DBu0kUvy3SZTLOSd7U2qronqMvyNgN4I0PNPxIk6PXG84hYJ+KgUZ4JXpP/TY1rAS6
+	 jnpOMwRdxKHRSvvSt7/fO6kAHxFtQrlAqYeSLSK1JJJM4XR8Q4ohcJ/SMt8K/uLgLK
+	 5kIc/otfKVeHWNUtsLof1GUsLCXpflf36gkRmeZp3Ly5QQ+AvuGXhmoX9D/v3zMaJR
+	 u7bHWymZWRiAg==
 From: =?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>
 To: Andrew Lunn <andrew@lunn.ch>,
 	Vladimir Oltean <olteanv@gmail.com>,
@@ -35,10 +36,12 @@ To: Andrew Lunn <andrew@lunn.ch>,
 	Fidan Aliyeva <fidan.aliyeva.ext@ericsson.com>
 Cc: Lev Olshvang <lev_o@rad.com>,
 	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>
-Subject: [PATCH net-next 0/5] Fixes for mv88e6xxx for 6320/6321 family
-Date: Mon,  4 May 2026 17:32:22 +0200
-Message-ID: <20260504153227.1390546-1-kabel@kernel.org>
+Subject: [PATCH net-next 1/5] net: dsa: mv88e6xxx: fix number of g1 interrupts for 6320 family
+Date: Mon,  4 May 2026 17:32:23 +0200
+Message-ID: <20260504153227.1390546-2-kabel@kernel.org>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260504153227.1390546-1-kabel@kernel.org>
+References: <20260504153227.1390546-1-kabel@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,23 +51,35 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Five fixes for mv88e6xxx for 6320/6321 family, for net-next, without
-Fixes tags, as per Andrew's request last year, see
-https://lore.kernel.org/netdev/20250313134146.27087-1-kabel@kernel.org/
+The 6320 family has 9 global1 interrupt, not 8. Fix it.
 
-Marek Behún (5):
-  net: dsa: mv88e6xxx: fix number of g1 interrupts for 6320 family
-  net: dsa: mv88e6xxx: allow SPEED_200 for 6320 family on supported
-    ports
-  net: dsa: mv88e6xxx: define .pot_clear() for 6321
-  net: dsa: mv88e6xxx: enable .rmu_disable() for 6320 family
-  net: dsa: mv88e6xxx: enable devlink ATU hash param for 6320 family
+Signed-off-by: Marek Behún <kabel@kernel.org>
+---
+ drivers/net/dsa/mv88e6xxx/chip.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
- drivers/net/dsa/mv88e6xxx/chip.c | 15 +++++++++++----
- drivers/net/dsa/mv88e6xxx/port.c | 15 +++++++++++++++
- drivers/net/dsa/mv88e6xxx/port.h |  2 ++
- 3 files changed, 28 insertions(+), 4 deletions(-)
-
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index c618abc75ebb..338cba0c8364 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -6280,7 +6280,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.global1_addr = 0x1b,
+ 		.global2_addr = 0x1c,
+ 		.age_time_coeff = 15000,
+-		.g1_irqs = 8,
++		.g1_irqs = 9,
+ 		.g2_irqs = 10,
+ 		.stats_type = STATS_TYPE_BANK0 | STATS_TYPE_BANK1,
+ 		.atu_move_port_mask = 0xf,
+@@ -6308,7 +6308,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.global1_addr = 0x1b,
+ 		.global2_addr = 0x1c,
+ 		.age_time_coeff = 15000,
+-		.g1_irqs = 8,
++		.g1_irqs = 9,
+ 		.g2_irqs = 10,
+ 		.stats_type = STATS_TYPE_BANK0 | STATS_TYPE_BANK1,
+ 		.atu_move_port_mask = 0xf,
 -- 
 2.53.0
 
