@@ -1,148 +1,101 @@
-Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22434202963;
-	Mon,  4 May 2026 14:30:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 834BD34F483;
+	Mon,  4 May 2026 14:41:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777905062; cv=none; b=rArVq+9K5bk3uN89DUR+M+gCspIGwzPvXHrmtI1DpBxGn7jAPIG3bIUyzErtw/f6jqQXZtP0c4VUuTyAQQ02OxHxez6yZpks11jMfiUdhRb0mZ2FxymNnm1Pjo/QpUhWvgZY4zRm9kqL4kAg7EzjaZ8pVuAUV5SHfjj0qZw5GEQ=
+	t=1777905683; cv=none; b=frbn5SyF5aJCr/zQZfdzPCHKLS91EM/4/xdgQaTy6z1xSRi2gyIEkWWaaV2+ll/QYkYxVRpYVZBEm6HyFJTC3YH/IG2DwC47QSKcI2So1AOdMP/laKRNcmvkc00pbLUg87Fi00XAsqwKvRbNElWRQeFSYtfQ9cFKuvanxKrIzuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777905062; c=relaxed/simple;
-	bh=nZoBjIez/Vl2E5L1bHRv5PYHbPJxJ30C4EztBDlQ694=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ctpUecSXOiQO9SQTkjXKCaEckqmhsMQEYggsTbCMUcFgUOYHwEOVA1RwD2vwOaOKOKwLOaV9ZYBPMoMw70ydlhPQgy3QsTRcOg+9+KSQbtWFeUdvZugaY2AKLd9lLcYA7ZQVgYujjL+swgtqvTqbskMOiy45AjoVqNEMDU3cm00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alyssa.is; spf=pass smtp.mailfrom=alyssa.is; dkim=pass (2048-bit key) header.d=alyssa.is header.i=@alyssa.is header.b=ZyT34O6U; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=FAcRtxgF; arc=none smtp.client-ip=202.12.124.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alyssa.is
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alyssa.is
+	s=arc-20240116; t=1777905683; c=relaxed/simple;
+	bh=HhFh0Y8oSLMdmoTCiqbD0O0IMho8tTieWXvFaDViqyo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Jygp7HAW16QAsj1Ey5l91VyqREbovlQZT6oQggy9aAsQmD295MKdc0RjMq+QhP2jyjC4EcQWdG1atbfet2oxOM0PyqR/whL47qyAuGY3m+dI3ZsDXZopek4al9DqZJQlqnlqHC94FfuL7qr6cB5M1M5T8raJjVcU6VhifY2T4Us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FDlh6Lrw; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=alyssa.is header.i=@alyssa.is header.b="ZyT34O6U";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="FAcRtxgF"
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfout.stl.internal (Postfix) with ESMTP id D689F1D000D0;
-	Mon,  4 May 2026 10:30:58 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Mon, 04 May 2026 10:30:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alyssa.is; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1777905058; x=1777991458; bh=WuazV6TJ6v
-	iKYbAxIlD1RDkT/kBkM0+QnMk1N1i/atA=; b=ZyT34O6UlXvgeDU11g090OIrdo
-	SqXpJ709Xz4Jr2GPl4YtF23/KJbRH0XhvWF/eS1suGlqG4IanIp4CAsRtPW/FCu2
-	SyfpMNa2GN6hiIR00zjCIi+57N5zDyl8owzjNAY+otr+c4q8Ji5yG85Jfz55IR2Q
-	Ys1R4+BglsF29yhKEb5VbWdcWMHUNW+6K/K0BO0/+Qjl54oMXHtjR4yOczfL5Fi/
-	cyLQIEyNavMs7Zl6Uzj46yTpNWPfErocb0YM0y9Yz2yKRcEIT03kmzryoNCcAjoP
-	zZBKD8GwoySVIXSpbJ1V4sKYVYp1nFILUtElaAzmfHJUXXWTL0PF9l4/mv3Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1777905058; x=1777991458; bh=WuazV6TJ6viKYbAxIlD1RDkT/kBkM0+QnMk
-	1N1i/atA=; b=FAcRtxgFUTBUOifh70JiNb6Tblxum3Wiwe9DJOGajy3n5MKiFDK
-	qBfnh89tx64OjTNQZEtttYYTKIVsCsmlm82hx765q9n7Q5qVxTxKV8TgISa/tgW+
-	KucWh6D13PMbHSi/78tAZgFZDSwGflgbUl/KKq3Y27E5gSskS4IYbkkuxQOI4s5A
-	SGu/AEyP1ihp46zaz3D5z6SWwrxjB57OCrCUO/PI06mrqiKxwmra0XvDZ6qvDi2B
-	kRH0PXDN1M2cRhMiXH5lOpkW9ZMyWqwN7+1a4XGuhAzbLx2EG7xfdiUHp6Ul5UV+
-	jW3QWSmb/SWghRL1qvJyvyG2/WpFYBs8lRQ==
-X-ME-Sender: <xms:oq34aXz0YFgCVbV9x0MwLjSmkjhHYnUQQhnw5pCooIFJy0XMTvF15Q>
-    <xme:oq34adgGuAkbpOuzPNvYVdE_uqvb_wmvezqEK3wzo0JJdq5_ZXhQYsoJPqzvUIRbM
-    Y8u83MrIV4Jhw4zM9A56zJFPY5rAkrjDrANLFpTTnuMfQH3Lj3X3w>
-X-ME-Received: <xmr:oq34aao97w8iP34C-bumb8hRjd8bwEsLW31CmxAh0tGbtN0QAYxS3qpWba1ThfOR_OPygZG1urV9mulrhgtZYGoqBQJGHipkRp2idkg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdelledtkecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefhvfevufgjfhffkfggtgesghdtreertddttdenucfhrhhomheptehlhihsshgrucft
-    ohhsshcuoehhihesrghlhihsshgrrdhisheqnecuggftrfgrthhtvghrnhepieduffeuie
-    elgfetgfdttddtkeekheekgfehkedufeevteegfeeiffetvdetueevnecuvehluhhsthgv
-    rhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhephhhisegrlhihshhsrgdrih
-    hspdhnsggprhgtphhtthhopeduuddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohep
-    uggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopegvughumhgriigvth
-    esghhoohhglhgvrdgtohhmpdhrtghpthhtohepughsrghhvghrnheskhgvrhhnvghlrdho
-    rhhgpdhrtghpthhtohephhhorhhmsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkh
-    hriihksehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdho
-    rhhgpdhrtghpthhtohepphgrsggvnhhisehrvgguhhgrthdrtghomhdprhgtphhtthhope
-    hrsghmsehsuhhsvgdrtghomhdprhgtphhtthhopehfmhgrnhgtvghrrgesshhushgvrdgu
-    vg
-X-ME-Proxy: <xmx:oq34aUjQ4PVlIOmtWqao7bOcQ6-uMcYPaT2AdwvuYGwRbHwoQN7lPA>
-    <xmx:oq34acN5BO7SO-vu79-AAJCwojKsHRSMEzt9JAF-aTZUgff0NAsWgg>
-    <xmx:oq34aex0QnQHgTiQYy4MJz8TE3qf0MlrMK8IV0i3cR0mYOQFI6U6cA>
-    <xmx:oq34aeoJOW-EPpKdcKsf2o65YljDZLbwzZZsade_BdN1AAvVzFXi7Q>
-    <xmx:oq34aY277pOWuTyXEREkpAsbJV7NJpna7MZ5bWhnzSBqTC2frasLgPPw>
-Feedback-ID: i12284293:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 4 May 2026 10:30:57 -0400 (EDT)
-Received: by mbp.qyliss.net (Postfix, from userid 1000)
-	id 4DC267E81A08; Mon, 04 May 2026 16:30:55 +0200 (CEST)
-From: Alyssa Ross <hi@alyssa.is>
-To: Fernando Fernandez Mancera <fmancera@suse.de>, "David S. Miller"
- <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, =?utf-8?Q?Ricard?=
- =?utf-8?Q?o_B_=2E_Marli=C3=A8re?= <rbm@suse.com>, Krzysztof Kozlowski
- <krzk@kernel.org>
-Subject: Re: [PATCH v2] ipv6: default IPV6_SIT to m
-In-Reply-To: <5f676587-fcdd-4704-9523-07a7fd98455a@suse.de>
-References: <20260503192515.290900-2-hi@alyssa.is>
- <5f676587-fcdd-4704-9523-07a7fd98455a@suse.de>
-Date: Mon, 04 May 2026 16:30:51 +0200
-Message-ID: <878q9zdz6s.fsf@alyssa.is>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FDlh6Lrw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777905682; x=1809441682;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=HhFh0Y8oSLMdmoTCiqbD0O0IMho8tTieWXvFaDViqyo=;
+  b=FDlh6Lrw60H+AS70sNssbVTQXxKBJQnhffSi2Z6NeEvntnIKHfWfTa6Y
+   kSf6HbKlEJmqppl61VRbafaxBt+toSE/f1PDSrWzbuKXaMlyfSKXcBREj
+   uWf6ksjRNMkLyajyjgz6I8HkCy7bcgg8Re29mk0rDI9wh7z3oXFfFa9iF
+   NGNzIZrx6N0Z4ljEzYGQ7rEzZpPQIEHKYImsnXN1D743/0I6f+Bgi2rL4
+   CX60WJN/rVgmeJ0WkDWbog9+8g+QilUgtP227IR2ogklNEespO1KtPJT6
+   b9ligzb6uiotdg8H+Ljxhd7YU7TbcyJPCRcgca3wMe8iPFKwLn0W714p+
+   A==;
+X-CSE-ConnectionGUID: yeT6kS1TQOCW+ZHBUv/7SQ==
+X-CSE-MsgGUID: 9WcsYLX/Tp2IB1XZ4XOqwQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11776"; a="96189578"
+X-IronPort-AV: E=Sophos;i="6.23,215,1770624000"; 
+   d="scan'208";a="96189578"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2026 07:41:21 -0700
+X-CSE-ConnectionGUID: 54UoR6i8QVO2wnwTG6nxHg==
+X-CSE-MsgGUID: YVLDxv33TEmGg+zjLiGLzg==
+X-ExtLoop1: 1
+Received: from ettammin-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.245.198])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2026 07:41:18 -0700
+Date: Mon, 4 May 2026 17:41:16 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Victor Nogueira <victor@mojatatu.com>
+Cc: linux-kernel@vger.kernel.org,
+	Linux Kernel Network Developers <netdev@vger.kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>
+Subject: Re: [PATCH net-next v1 1/5] net: mdiobus: Provide
+ fwnode_mdiobus_register()
+Message-ID: <afiwDFilK2fgUoVb@ashevche-desk.local>
+References: <CA+NMeC-VCxWfzwHQTiY-eGA=FEmLY7_7AHgBrZ+dK+LC-d7pUw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
-	micalg=pgp-sha512; protocol="application/pgp-signature"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CA+NMeC-VCxWfzwHQTiY-eGA=FEmLY7_7AHgBrZ+dK+LC-d7pUw@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
---=-=-=
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
+On Mon, May 04, 2026 at 11:16:00AM -0300, Victor Nogueira wrote:
+> On 04/05/2026 04:29, Andy Shevchenko wrote:
+> > Provide an agnostic helper to register MDIO bus independently on
+> > the firmware node provider.
 
-Fernando Fernandez Mancera <fmancera@suse.de> writes:
+[...]
 
-> On 5/3/26 9:25 PM, Alyssa Ross wrote:
->> This basically defaulted to m until recently, since IPV6 defaulted to
->> m.  Since IPV6 was changed to a boolean with a default of y, IPV6_SIT
->> started defaulting to built-in as well.  This results in a surprise
->> sit0 device by default for defconfig (and defconfig-derived config)
->> users at boot.  For me, this broke an (admittedly non-robust) script.
->> Preserve the behaviour of most configs by avoiding building this
->> module, that's probably overall seldom used compared to IPv6 as a
->> whole, into the kernel.
->>=20
->> Fixes: 309b905deee59 ("ipv6: convert CONFIG_IPV6 to built-in only and cl=
-ean up Kconfigs")
->> Signed-off-by: Alyssa Ross <hi@alyssa.is>
->
-> Hi, I am not sure about this. IPV6_SIT was already defaulting to 'y' for=
-=20
-> most distributions (except for ARM). Sure, if you had CONFIG_IPV6=3Dm the=
-n=20
-> CONFIG_IPV6_SIT was defaulting to 'm'.
->
-> Hm. Maybe we can aim this for net-next tree instead of net? I just don't=
-=20
-> think this is a fix but a change in behavior. FWIW, it makes sense to me=
-=20
-> to have this as a module by default.
->
-> Let's see what do others think.
+> > +     if (is_of_node(fwnode))
+> > +             return __of_mdiobus_register(mdio, to_of_node(fwnode), owner);
+> 
+> Build seems to break when CONFIG_OF_MDIO is not defined:
+> 
+> drivers/net/mdio/fwnode_mdio.c: In function ‘__fwnode_mdiobus_register’:
+> drivers/net/mdio/fwnode_mdio.c:198:24: error: implicit declaration of
+> function ‘__of_mdiobus_register’; did you mean ‘of_mdiobus_register’?
+> [-Wimplicit-function-declaration]
+>   198 |                 return __of_mdiobus_register(mdio,
+> to_of_node(fwnode), owner);
 
-Yes, it appears you're right.  I had only tested on ARM.  In that case,
-perhaps it make sense to instead set this to m in the arm64 defconfig, to
-preserve the previous situation, but I can also see the value in
-reducing platform discongruity by letting it change to y on arm64 too.
+Ah, thanks for a good catch. I haven't checked OF case to be off.
+Yeah, with __acpi_mdiobus_register the compiler sees the prototype
+independently on the configuration option. I will think about OF
+case (like I said it can also be hidden, the problem is that there
+is a huge amount of users, that's why I haven't touched it).
 
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
+-- 
+With Best Regards,
+Andy Shevchenko
 
------BEGIN PGP SIGNATURE-----
 
-iHUEARYKAB0WIQRV/neXydHjZma5XLJbRZGEIw/wogUCafitmwAKCRBbRZGEIw/w
-or0EAQDFdUqaDgVAWzQCvBcq5MeKTpoMcu8P9q0+TsR4I249TwD/XWXc+Y1bp3To
-BCuHzMnUih5DCohtUAXHZ+cz+O1N0gM=
-=uL/Y
------END PGP SIGNATURE-----
---=-=-=--
