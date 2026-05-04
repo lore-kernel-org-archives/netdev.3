@@ -1,44 +1,47 @@
-Received: from mail.nic.cz (mail.nic.cz [217.31.204.67])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8DA3D75D7;
-	Mon,  4 May 2026 15:12:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.31.204.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A277E212FAD;
+	Mon,  4 May 2026 15:17:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777907570; cv=none; b=HIZ9jqwGip/8tuWFfN9Zd+zC/Lta7DxaMmGPQu4m3K/6OibhEIZpfAm9TzK9Ikv245O/srrr4Sokb2PC0troWrf1CCILQI8d/Jpjs54sstl3a8x9GvGxuK5VAsmf/KWBjRI0CEH3JZwFkOiPGE1gRq6KlJFcaydnhdtfaoZcvTM=
+	t=1777907825; cv=none; b=lMwPZCoAH9kdZ8isR0POsU/emZbC1UaETyGk6osfX7YraYH9LOAgfLiAj/wZlSe0RSUPwiuvHJncRhnqFb+Bp3voIb774SbIRhBnFZPS/njrM1BYoC1vS5MLKRiOY1G7Vu4Tp7yc3EgzC3ZVk/U2PA61zmP7kTrCalxDO8vW6Ts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777907570; c=relaxed/simple;
-	bh=PEPiYfzwHxVC8iWBrgru/8Omh1AEpiov7/LLxgkS4qg=;
+	s=arc-20240116; t=1777907825; c=relaxed/simple;
+	bh=Sa2svEuLBLZ8KH/j6RQ4fA5zFnL3S+2a01dYu7BXg3I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FcVT25KuIDb+bFwwA6Q7eju2F/+0gX3tpO55uEQimJ5XcfF6DgqxZzZjRlnR35GovislqmzDZ+liGm8zhqYR7jFDjRHAhdnPTbefun+yVKX546qCVMEMAOPyMwybMEDPiggAhrsVzKnek9UCEkDXo6TnnA4FatVIl0ChyrKnIxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nic.cz; spf=pass smtp.mailfrom=nic.cz; dkim=pass (1024-bit key) header.d=nic.cz header.i=@nic.cz header.b=RQZeF6mi; arc=none smtp.client-ip=217.31.204.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nic.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nic.cz
+	 Content-Type:Content-Disposition:In-Reply-To; b=m4fuQEWo2YG/j5gH8wzWd5IgXYW6O6SPoUESF14ZVzqHlVI0Xduc/qJcHCr3D1iaQfLlRiextC2SYwLfqTBeXE35hKUXMHbOfF28p+eIZ2oSdMNXe9ORbDToEaaOo48oRWweoAdauJRtvhrzc3CuI9h08UAoCNEikCWrscHWNe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=v8EOGJNf; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nic.cz header.i=@nic.cz header.b="RQZeF6mi"
-Received: from solitude (unknown [172.20.8.17])
-	by mail.nic.cz (Postfix) with ESMTPS id 771CE1C1024;
-	Mon,  4 May 2026 17:05:54 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nic.cz; s=default;
-	t=1777907154;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Bc9TalB+R1Lnx64bEIOBZEzXVkBwS4uS5dFf3lfuVJM=;
-	b=RQZeF6mimvc9Tu0Pm5D96FtoXy0gEXCWNp5b7q7hkvDeEqpqPwRdkDcRzJjtqkjQf5fke5
-	pU8zSoPsi08UzONgq/Jb2+5T3/SAg1lEuWz9pGJ2JK0HKyH0XC3EhFlmN8aXRvo3hSl38T
-	/Yzc0C2a1aNX+GmLCFtvDFiQlxSiaBw=
-Authentication-Results: mail.nic.cz;
-	none
-Date: Mon, 4 May 2026 17:05:49 +0200
-From: Marek =?utf-8?B?QmVow7pu?= <marek.behun@nic.cz>
-To: Fidan Aliyeva <fidan.aliyeva.ext@ericsson.com>
-Cc: andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, thomas.eckerman.ext@ericsson.com
-Subject: Re: [PATCH net-next v2 0/2] mv88e6xxx: SERDES on mv88e6321 letter
-Message-ID: <dxxmuzte6ntiimozgmafsx75at7zf4mm3kg5k5dgsnlnrfl3eh@yurunqpyb33p>
-References: <20260430124907.3533344-1-fidan.aliyeva.ext@ericsson.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="v8EOGJNf"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=t5mOwJSbOKVmcddoujovssiEkLg2+KNjkUu/7AIUfk4=; b=v8EOGJNfTFTqkEbMl40D58wnNP
+	0OVyx4oJ9ioxV6r29xmzi/ohoTWDxEtBZFj4+U9j6oQFFzs0LZErYH/TQ1rrAh0wb/1Q33lklgNTA
+	dbWilQeoz0xgbzgILqbZIsC5HB7V6nFBNP4M94NW6oe8uqgzePJd31QCIV+qDCsOLvC8=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wJv2X-001I3F-HC; Mon, 04 May 2026 17:16:57 +0200
+Date: Mon, 4 May 2026 17:16:57 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>
+Subject: Re: [PATCH net-next v1 0/5] net: mdiobus: HIde ACPI implementation
+Message-ID: <28a4ebd7-2670-439d-836b-14559a916ed0@lunn.ch>
+References: <20260504074610.40799-1-andriy.shevchenko@linux.intel.com>
+ <aee27459-387c-46ce-9c06-3de66309c8d6@lunn.ch>
+ <afij7wOkQUGUN0kM@ashevche-desk.local>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,104 +50,47 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260430124907.3533344-1-fidan.aliyeva.ext@ericsson.com>
-X-Rspamd-Pre-Result: action=no action;
-	module=multimap;
-	Matched map: WHITELISTED_IP
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.10 / 16.00];
-	MIME_GOOD(-0.10)[text/plain];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	WHITELISTED_IP(0.00)[172.20.8.17];
-	DKIM_SIGNED(0.00)[nic.cz:s=default];
-	FROM_EQ_ENVFROM(0.00)[];
-	LOCAL_OUTBOUND(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+]
-X-Spamd-Bar: /
-X-Rspamd-Server: mail
-X-Rspamd-Queue-Id: 771CE1C1024
+In-Reply-To: <afij7wOkQUGUN0kM@ashevche-desk.local>
 
-Hello Fidan, Andrew,
-
-last year I worked on 6320+6321 serdes support, but never send it
-due to different workload.
-
-Quickly looking at your patches, there are some things I think are
-missing in comparison to what I did - I have 5 patches:
-
-1/5: drops serdes methods for 88E6172, which does not have serdes
-
-2/5: is similar to your patch 1/2, adding serdes_get_lane to 6352 family.
-     The difference is the implementation of mv88e6352_serdes_get_lane(),
-     which does not read scratch register. Yours is probably better in
-     this regard, but mv88e6352_g2_scratch_port_has_serdes() is also
-     called in mv88e6352_pcs_init(). So maybe this is redundant?
-
-     Also, I rename MV88E6352_ADDR_SERDES macro to MV88E6352_SERDES_LANE
-     to be in line with other such macros in serdes.h
-
-3/5: extends 6352 serdes pcs for 6320 family.
-     In addition to your code I also implement .serdes_irq_mapping().
-
-     These depend on other mv88e6xxx fixes I forgot to send, which I
-     will do now.
-
-4/5: Add hidden register access methods for 6320 and 6352 family.
-     These can be used to change SerDes modes.
-
-5/5: Add support for changing between sgmii and 1000base-x on 6320 family
-     via hidden register acces.
-
-     This was done by reverse engineering hidden registers (trying
-     different values), since it is not documented correctly.
-
-Would you prefer for your patches to be applied first and then I can
-rebase, or would you rather like to look at my code first?
-
-Marek
-
-On Thu, Apr 30, 2026 at 02:49:05PM +0200, Fidan Aliyeva wrote:
-> This patch series add code support to be able to use SERDES feature of
-> mv88e6321 version of Marvel mv88e6xxx series. mv88e6321 has 2 ports to
-> support high speed SERDES but the support is lacking in the driver.
+On Mon, May 04, 2026 at 04:49:35PM +0300, Andy Shevchenko wrote:
+> On Mon, May 04, 2026 at 03:02:54PM +0200, Andrew Lunn wrote:
+> > On Mon, May 04, 2026 at 09:29:51AM +0200, Andy Shevchenko wrote:
+> > > This mini-series is dedicated to hiding ACPI implementation details
+> > > from the wider users as they (as of today) do not need to know that.
+> > 
+> > Please could you expand on that. ACPI != OF. They have different
+> > bindings, so you need different implementations.
 > 
-> mv88e6321 version has a similar architecture to mv88e6352 version making it
-> possible to reuse its pcs functions. That's why the patch series consist of
-> 2 parts:
-> 1. Refactor the serdes functions and pcs_init of mv88e6352 to be more
-> generic
-> 2. Add the SERDES support for mv88e6321 reusing 6352's pcs functions
-> 
-> The final code has been built on top of net-next tree and tested on
-> mv88e6321 ethernet device directly by ip ping tests, performance tests and
-> also verifying the switch's expected register values.
-> 
-> Referred document: 88E6321/88E6320 Functional Specification
-> 
-> Code has been built with allmodconfig and allyesconfig. checkpatch.pl was
-> also run
-> 
-> ---
-> Changes in v2:
->   - Removed 6321-specific pcs_init and made 6352's pcs_init more generic
->   as suggested by Andrew Lunn
->   - Added the correct mailing list
-> 
-> ---
-> Fidan Aliyeva (2):
->   mv88e6xxx: Refactor 6352's serdes functions
->   mv88e6xxx: Add SERDES Support for mv88e6321
-> 
->  drivers/net/dsa/mv88e6xxx/chip.c     |  8 +++
->  drivers/net/dsa/mv88e6xxx/pcs-6352.c | 12 ++--
->  drivers/net/dsa/mv88e6xxx/serdes.c   | 87 ++++++++++++++++++++++------
->  drivers/net/dsa/mv88e6xxx/serdes.h   |  5 ++
->  4 files changed, 86 insertions(+), 26 deletions(-)
-> 
-> --
-> 2.36.0
-> 
-> 
+> As of today the users that want ACPI also have the OF support. Even without
+> that if the device is pure ACPI supported one (and somehow never going to DT)
+> the proposed API (see the first patch) will be no-op in case when CONFIG_ACPI=n
+> or when it's a non-ACPI platform with no support of the device. Hence, the
+> pure ACPI (and actually OF as well) do not need to be exposed. The decision is
+> made based on the type of firmware node.
+
+I see two different things here:
+
+You are refactoring code into a helper, so reducing the amount of
+duplicated code. That in itself is good.
+
+However, we have the problem in general that developers think that OF
+and ACPI do the same thing. And that is not true. OF MDIO busses have
+support for a GPIO used as a reset. In retrospect, that was a bad
+idea. The documented ACPI binding does not have this, and if anybody
+was to suggest adding it, i want to NACK it.
+
+Having OF code and ACPI code to instantiate the MDIO bus makes it
+clearer they are different things. fwnode gives the impression they
+are the same, which is not true. Hence i don't like fwnode at this
+level.
+
+Where fwnode makes sense is deeper down in the implementation of the
+bindings, for properties which are the same in both bindings.  Then
+you can use fwnode_ for the shared properties, of_ for the OF only
+properties, and acpi_ for the ACPI only properties.
+
+So although i like the reduction in duplicated code, i think overall
+it makes the code worse because developers are more likely to wrongly
+understand it.
+
+	    Andrew
