@@ -1,81 +1,63 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00190b01.pphosted.com (mx0a-00190b01.pphosted.com [67.231.149.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D5838C423
-	for <netdev@vger.kernel.org>; Mon,  4 May 2026 10:13:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B771239B4AE;
+	Mon,  4 May 2026 10:18:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.149.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777889631; cv=none; b=WiX9lt8k6/e8X/VH2UTWhX5KML2U69KhsE2fnmpqj1PJnmruXg0W/hiXiY3CDHhEd3PmO0oCnwp1EAjjfjJOJ126/bqbIxXKTARl+wQCRCkJBrtX98j/66KM/bR06W6NLyX/EA+TQqoTVceWeCkqU/xOY5TWkOVDVh74UNYUVeQ=
+	t=1777889925; cv=none; b=Ax217CMSjTvnVAFNdAHQKD0gsDoumfb4iTpRgoNqjzEOhw9yeSWxpMAXf2xPz0hsDnJj8vY9cmgFq3ud5Cc7WR0x4vl+vIccsC3GUnapkl1/A7Kt9D7fx0+VjQLjOiLNjVT7q39MPJTBKKSIsps9KDI8m8/uk6YvTZBkFERONSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777889631; c=relaxed/simple;
-	bh=QrxzpA0GiXoHm7RCzoHPdzDiRzt9hYqD8UzCVTFrFuo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gk4bjRn+TMuNzT5s/wXkyjd70Ua/KjKYBjwlEe8hkCqakMMeOkC3QfaSNzN5ZCVAir9yfnJPETgyk090qU8N7sHa1OXKEeBo+B+pAOXh3MpUPiYzVYsKlbVLYZFX7Zj3kxYl8hBMf6mJp712wMPgM1kNSQ7ilbA5aM2+e1+CaWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JC8JV9DD; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1777889925; c=relaxed/simple;
+	bh=g/kHGK6gNkmvMbW+pgFF5YPLMuDW93pf3DI9OeSYaV0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=EeZ8VQoNFmqORSej0xLb160sWS1jX5HATuTDvmivyhnWNBagFMfOhSUVSPfhgMRl2a/8U+qvtM+prPv9yB9AcDa6gIGDn1j5Mm6Oeh90KSR1FNuCKrsUUtNusDn0LOUp2ESp2z7czSJsS2zeGTgoI3mPkkJAsCutKxar0s1lM2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=akamai.com; spf=pass smtp.mailfrom=akamai.com; dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b=mvmNFzx3; arc=none smtp.client-ip=67.231.149.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=akamai.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=akamai.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JC8JV9DD"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-8296d553142so2746418b3a.3
-        for <netdev@vger.kernel.org>; Mon, 04 May 2026 03:13:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777889629; x=1778494429; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SKiZYwrOXmYbchKN5aqn3H9VsvZ64UWqf0h7N9kmfHc=;
-        b=JC8JV9DDtgM3Gc0VzNBTAC5QeHj0bzjLm6Kq736XCtLMwQDbY0xVwBSM124kuhW0fY
-         oa9qK76mgU0lZdPoKUmdLMbmDGEc/tT3SDIevr+5yKuXVZllM3UOyNTbyrGWoBbvvrW2
-         GfwgbpLTW4D6+y30AYCdSwMVestbFsuuOzPhCzczPrOTR5Rw0sGJeERfzg9YZd32yHz6
-         4aCSs33rNx4TfhxHDqIPLtxkY7A4tfcPLQxSUboRatafDM7quDKv93t/e9lGjyYiMpAc
-         2ZxZi1rF0IkMsazuPppX51awxPVDbCSOsACiXCp8cB2wGbpc15dfypQnmucDtJYHKsds
-         ZiLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777889629; x=1778494429;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=SKiZYwrOXmYbchKN5aqn3H9VsvZ64UWqf0h7N9kmfHc=;
-        b=pF5gmtCj0/FSjpfErgeunWnbDbimWcFJATcPxGFDSXJpzUjBOdyWEOo5exvM3tqIGx
-         qOS6C6iXL8C4AiCSV7qFjPghyaeih35h82zxE82BdGKM1i6VAp/cF1CMly6lnIbYqXSz
-         Nrwno6JIwnWzXCIy8WQ4pMFn89t7da5tMPAAY0iAerPpthMuMcQStC3VGkbvZmXFDvwG
-         kXOUxkdoTLvyhlba7ANWhT5rIhD/3vczY58eDMO60F25+fjj2TdDSg+HzUBOQSvX8Z5w
-         eZ7Ya6M8Yoh86tViUc1G+DpMk8+4os9OPRYBgWM1fEYHpIkD8LvSqu+FLquSlshIvPEp
-         KoXw==
-X-Gm-Message-State: AOJu0YwYYPz3Y9APrDbrCxmBWdmsoypQljFRbf3yQeWoV9Av6k5wnc26
-	uZu01wZESD/vSc3Mq8k5CfOFYNuiH8ImfL+Sb5lhBecKahP4Nroxk9bRnLjcfPtb
-X-Gm-Gg: AeBDievP/3/jajNhi46GgVykFPrFb7UmjwnltaFkAC5TYW6z+B7sIUQqY/ql/YmEjiA
-	tY0lwDP1/ua5uY9uHTF8wQ0jUqz3F6eTJL+X1IKrw/aBbTXoXMmYND1gyYbWK8Nz9UaN0Y3NvWp
-	soLPFieO1A0bwO/pS7cLAWQ+1dqso3IKyx2h76p2G6uxons9Da+TzVKQcVVaUA8K42zTpksd6Wh
-	9/PJno3kP4juvP8AiXMLC0923pFhzKOOe428/lnO4vvMVF41uqE0VOxbKeLUgOUK79/Wm7gPKPv
-	iVqxoKGGFELTTk+01M/CnqH//OsD0N3vCjvLVmmgZr6NSbAAW0izwEEMZpZgil7HSOTTxomWZ7E
-	Dub27oZzpr1/dDHQzyzT+OlKLOq9pZnOV11/2WKGB18/UKAAh7g+IF5DAEjomgyNe63vXVgKPxY
-	5mIQmEmREpNMZLKUZ+0UrygaMXgNnpkPzB8SvJnTvUIp21XNnx+GP8kwkHx6y5
-X-Received: by 2002:a05:6a00:3a15:b0:824:9bc5:e946 with SMTP id d2e1a72fcca58-8352d2ac213mr8324730b3a.46.1777889629282;
-        Mon, 04 May 2026 03:13:49 -0700 (PDT)
-Received: from d.home.yangfl.dn42 ([2a09:bac5:6619:3046::4cf:90])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-835158bd62fsm10813486b3a.24.2026.05.04.03.13.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 May 2026 03:13:48 -0700 (PDT)
-From: David Yang <mmyangfl@gmail.com>
-To: netdev@vger.kernel.org
-Cc: David Yang <mmyangfl@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Simon Horman <horms@kernel.org>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v2 3/3] net: dsa: yt921x: Add port qdisc tbf support
-Date: Mon,  4 May 2026 18:12:55 +0800
-Message-ID: <20260504101258.1608004-4-mmyangfl@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260504101258.1608004-1-mmyangfl@gmail.com>
-References: <20260504101258.1608004-1-mmyangfl@gmail.com>
+	dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b="mvmNFzx3"
+Received: from pps.filterd (m0122332.ppops.net [127.0.0.1])
+	by mx0a-00190b01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6441K7Nb2086247;
+	Mon, 4 May 2026 11:18:16 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=akamai.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=jan2016.eng; bh=7v1hZfrJd
+	ZqHLDyRyZvoUqYTyz1P37PEbE1tEyF6GX8=; b=mvmNFzx3a3bRzO6jST13sHxhi
+	Gf0ulM9BL7fpznQ5EjMk3p7mkjnbF3i25XiK8UDohheK+Wt5ls+bqXrmpF9TdiBE
+	Xwimr5lvKg+J06lpOb/Wu8+BFnYDpHLwiLBUSYWhbt9/epjt6YyAYDveIIEUc6Jz
+	hbPhgMerWiupFiHLj5KJjoXwFg+MxvTNJhkqI8/GkhPTRk+rQxhg4luF4R5ZKhu5
+	rAw3rdsAr/l/JP/ZZsPVloCTZl5ki7nEUFVgMh1NM3Po8uQivfrZpvOyhUnzZUOu
+	jtGu+LjCR4N6swJ15fy9giL0JbsUL3AA91pHtgJEsb2dYubdEOBY3cFJC/zJA==
+Received: from prod-mail-ppoint1 (prod-mail-ppoint1.akamai.com [184.51.33.18])
+	by mx0a-00190b01.pphosted.com (PPS) with ESMTPS id 4dw9affjsp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 04 May 2026 11:18:15 +0100 (BST)
+Received: from pps.filterd (prod-mail-ppoint1.akamai.com [127.0.0.1])
+	by prod-mail-ppoint1.akamai.com (8.18.1.7/8.18.1.7) with ESMTP id 644ACGaJ005922;
+	Mon, 4 May 2026 06:18:14 -0400
+Received: from prod-mail-relay01.akamai.com ([172.27.118.31])
+	by prod-mail-ppoint1.akamai.com (PPS) with ESMTP id 4dwckwq08v-1;
+	Mon, 04 May 2026 06:18:14 -0400 (EDT)
+Received: from muc-lhvdhd.munich.corp.akamai.com (muc-lhvdhd.munich.corp.akamai.com [172.29.0.147])
+	by prod-mail-relay01.akamai.com (Postfix) with ESMTP id 1405484;
+	Mon,  4 May 2026 10:18:12 +0000 (UTC)
+From: Nick Hudson <nhudson@akamai.com>
+To: bpf@vger.kernel.org, netdev@vger.kernel.org,
+        Willem de Bruijn <willemb@google.com>,
+        Martin KaFai Lau <martin.lau@linux.dev>
+Cc: Nick Hudson <nhudson@akamai.com>, Andrii Nakryiko <andrii@kernel.org>,
+        Eduard Zingerman <eddyz87@gmail.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+        Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v6 6/6] selftests/bpf: tc_tunnel - validate decap GSO and encapsulation state
+Date: Mon,  4 May 2026 11:17:59 +0100
+Message-Id: <20260504101759.3319427-7-nhudson@akamai.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260504101759.3319427-1-nhudson@akamai.com>
+References: <20260504101759.3319427-1-nhudson@akamai.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,223 +65,256 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-04_03,2026-04-30_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ adultscore=0 mlxlogscore=999 malwarescore=0 lowpriorityscore=0 suspectscore=0
+ phishscore=0 bulkscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2604200000 definitions=main-2605040108
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA0MDEwOSBTYWx0ZWRfX1dxjUmeM1R9A
+ /O1/686YIwiV6uoBwOt7LNPLqnJrLg0SOcW8Qx99iX7Gb9Gxv09xWfNPLdvI+wsq5T72/VvNaLB
+ 878onvt0A2fWYK0WBVEL1hLdwUTvGE+onVia/He78WGUFM7DOXt1+Xy9uATF9EsAxvtTS+d89sN
+ 65fdxg+7Nhb2OVA3WcPRlAENGIWj+PpMR/7ds5IBcC3sYoZJ6PU8cXujLVD2VgX7VRnP9VAdLDM
+ 5vp7Kmzmcvjk8Gz9B3sXn1+q7rSTzqHP/ByEHrRnu05TnLYlAWKsjdDmcfxgWLp7di0N0QJ3AT6
+ wHDuEhzYIc1TYK5kdkuTcoA5Smzt1nV101VmYfIiCWx4irkLHO+Bo/NIMOM9zkL9qp2sgfV87A4
+ qSqVwAyVX5E4Wva/Uy/IfIeVR5abE5J33UOc+TAUf0qX5B3Q3p0/N9zoKLYj7qpIE7/NLPZJTSo
+ HnjE5fL4KPRkPVFapKg==
+X-Proofpoint-GUID: 5hbf47s9HXzXTwJ18NrRKGh0PTIgm2tk
+X-Authority-Analysis: v=2.4 cv=Pf7PQChd c=1 sm=1 tr=0 ts=69f87267 cx=c_pps
+ a=StLZT/nZ0R8Xs+spdojYmg==:117 a=StLZT/nZ0R8Xs+spdojYmg==:17
+ a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=Ifg-1AOnLHOf1gn6spyb:22
+ a=4OENtXgxWbduB0e82o7S:22 a=X7Ea-ya5AAAA:8 a=2QDB-QWHral9ImwuqTYA:9
+X-Proofpoint-ORIG-GUID: 5hbf47s9HXzXTwJ18NrRKGh0PTIgm2tk
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-04_03,2026-04-30_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1015
+ lowpriorityscore=0 priorityscore=1501 spamscore=0 phishscore=0 malwarescore=0
+ impostorscore=0 suspectscore=0 bulkscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605040109
 
-Enable port shaping and support limiting the rate of outgoing traffic.
+tc_tunnel only partially validated decap state and missed some tunnel
+cases. In particular, IPXIP decap checks were not exercised for
+IPIP/SIT paths, and non-GSO decap encapsulation state was not
+verified.
 
-Signed-off-by: David Yang <mmyangfl@gmail.com>
+Tighten the test by:
+
+- setting DECAP_IPXIP4/6 flags for IPIP/SIT/IP6 decap paths based on
+  the outer tunnel header family;
+- requiring needed DECAP enum values via CO-RE enum existence checks
+  so missing kernel support fails fast;
+- validating post-decap tunnel state for both GSO and non-GSO packets:
+  expected gso_type bits must be cleared and skb->encapsulation must
+  match remaining tunnel flags;
+- removing forced TSO disable in the test harness so GSO validation is
+  exercised.
+
+This improves coverage for decap tunnel-state regressions and ensures
+sit_none/ipip-style paths are checked correctly.
+
+Signed-off-by: Nick Hudson <nhudson@akamai.com>
 ---
- drivers/net/dsa/yt921x.c | 126 +++++++++++++++++++++++++++++++++++++++
- drivers/net/dsa/yt921x.h |  18 ++++++
- 2 files changed, 144 insertions(+)
+ .../selftests/bpf/prog_tests/test_tc_tunnel.c |  1 -
+ .../selftests/bpf/progs/test_tc_tunnel.c      | 91 +++++++++++++++++--
+ 2 files changed, 84 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/dsa/yt921x.c b/drivers/net/dsa/yt921x.c
-index fd1fdcd5f9a3..fd77e1ef53bb 100644
---- a/drivers/net/dsa/yt921x.c
-+++ b/drivers/net/dsa/yt921x.c
-@@ -24,6 +24,7 @@
- #include <net/dsa.h>
- #include <net/dscp.h>
- #include <net/ieee8021q.h>
-+#include <net/pkt_cls.h>
+diff --git a/tools/testing/selftests/bpf/prog_tests/test_tc_tunnel.c b/tools/testing/selftests/bpf/prog_tests/test_tc_tunnel.c
+index 1aa7c9463980..67ba27d69347 100644
+--- a/tools/testing/selftests/bpf/prog_tests/test_tc_tunnel.c
++++ b/tools/testing/selftests/bpf/prog_tests/test_tc_tunnel.c
+@@ -438,7 +438,6 @@ static int setup(void)
+ 	SYS(fail_close_ns_client, "ip link add %s type veth peer name %s",
+ 	    "veth1 mtu 1500 netns " CLIENT_NS " address " MAC_ADDR_VETH1,
+ 	    "veth2 mtu 1500 netns " SERVER_NS " address " MAC_ADDR_VETH2);
+-	SYS(fail_close_ns_client, "ethtool -K veth1 tso off");
+ 	SYS(fail_close_ns_client, "ip link set veth1 up");
+ 	nstoken_server = open_netns(SERVER_NS);
+ 	if (!ASSERT_OK_PTR(nstoken_server, "open server ns"))
+diff --git a/tools/testing/selftests/bpf/progs/test_tc_tunnel.c b/tools/testing/selftests/bpf/progs/test_tc_tunnel.c
+index 7376df405a6b..853bca962910 100644
+--- a/tools/testing/selftests/bpf/progs/test_tc_tunnel.c
++++ b/tools/testing/selftests/bpf/progs/test_tc_tunnel.c
+@@ -6,6 +6,7 @@
  
- #include "yt921x.h"
+ #include <bpf/bpf_helpers.h>
+ #include <bpf/bpf_endian.h>
++#include <bpf/bpf_core_read.h>
+ #include "bpf_tracing_net.h"
+ #include "bpf_compiler.h"
  
-@@ -1272,6 +1273,17 @@ yt921x_marker_tfm_police(struct yt921x_marker *marker,
- 				 priv, port, extack);
+@@ -37,6 +38,22 @@ struct vxlanhdr___local {
+ 
+ #define	EXTPROTO_VXLAN	0x1
+ 
++#define SKB_GSO_UDP_TUNNEL_MASK	(SKB_GSO_UDP_TUNNEL |			\
++				 SKB_GSO_UDP_TUNNEL_CSUM)
++
++#define SKB_GSO_TUNNEL_MASK	(SKB_GSO_UDP_TUNNEL_MASK |		\
++				 SKB_GSO_GRE |				\
++				 SKB_GSO_GRE_CSUM |			\
++				 SKB_GSO_IPXIP4 |			\
++				 SKB_GSO_IPXIP6 |			\
++				 SKB_GSO_ESP)
++
++#define BPF_F_ADJ_ROOM_DECAP_L4_MASK	(BPF_F_ADJ_ROOM_DECAP_L4_UDP |	\
++					 BPF_F_ADJ_ROOM_DECAP_L4_GRE)
++
++#define BPF_F_ADJ_ROOM_DECAP_IPXIP_MASK	(BPF_F_ADJ_ROOM_DECAP_IPXIP4 |	\
++					 BPF_F_ADJ_ROOM_DECAP_IPXIP6)
++
+ #define	VXLAN_FLAGS     bpf_htonl(1<<27)
+ #define	VNI_ID		1
+ #define	VXLAN_VNI	bpf_htonl(VNI_ID << 8)
+@@ -589,9 +606,12 @@ int __encap_ip6vxlan_eth(struct __sk_buff *skb)
+ 		return TC_ACT_OK;
  }
  
-+static int
-+yt921x_marker_tfm_shape(struct yt921x_marker *marker, u64 rate, u64 burst,
-+			unsigned int flags, struct yt921x_priv *priv, int port,
-+			struct netlink_ext_ack *extack)
-+{
-+	return yt921x_marker_tfm(marker, rate, burst, flags,
-+				 priv->port_shape_slot_ns, YT921X_SHAPE_CIR_MAX,
-+				 YT921X_SHAPE_CBS_MAX, YT921X_SHAPE_UNIT_MAX,
-+				 priv, port, extack);
-+}
-+
- static int
- yt921x_police_validate(const struct flow_action_police *police,
- 		       const struct flow_action *action,
-@@ -1378,6 +1390,112 @@ yt921x_dsa_port_policer_add(struct dsa_switch *ds, int port,
- 	return res;
- }
- 
-+static int
-+yt921x_tbf_validate(struct yt921x_priv *priv,
-+		    const struct tc_tbf_qopt_offload *qopt)
-+{
-+	struct netlink_ext_ack *extack = qopt->extack;
-+
-+	if (qopt->parent != TC_H_ROOT) {
-+		NL_SET_ERR_MSG_MOD(extack, "Parent should be \"root\"");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	switch (qopt->command) {
-+	case TC_TBF_REPLACE: {
-+		const struct tc_tbf_qopt_offload_replace_params *p;
-+
-+		p = &qopt->replace_params;
-+
-+		if (p->mtu || p->peak.rate_bytes_ps) {
-+			NL_SET_ERR_MSG_MOD(extack,
-+					   "Offload not supported when mtu/peakrate is configured");
-+			return -EOPNOTSUPP;
-+		}
-+
-+		if (!p->rate.mpu) {
-+			NL_SET_ERR_MSG_MOD(extack, "Assuming mpu = 64");
-+		} else if (p->rate.mpu != 64) {
-+			NL_SET_ERR_MSG_MOD(extack,
-+					   "Offload not supported when mpu is other than 64");
-+			return -EOPNOTSUPP;
-+		}
-+
-+		break;
-+	}
-+	default:
-+		break;
-+	}
-+
-+	return 0;
-+}
-+
-+static int
-+yt921x_dsa_port_setup_tc_tbf_port(struct dsa_switch *ds, int port,
-+				  const struct tc_tbf_qopt_offload *qopt)
-+{
-+	struct yt921x_priv *priv = to_yt921x_priv(ds);
-+	struct netlink_ext_ack *extack = qopt->extack;
-+	u32 ctrls[2];
-+	int res;
-+
-+	switch (qopt->command) {
-+	case TC_TBF_DESTROY:
-+		ctrls[0] = 0;
-+		ctrls[1] = 0;
-+		break;
-+	case TC_TBF_REPLACE: {
-+		const struct tc_tbf_qopt_offload_replace_params *p;
-+		struct yt921x_marker marker;
-+
-+		p = &qopt->replace_params;
-+
-+		res = yt921x_marker_tfm_shape(&marker, p->rate.rate_bytes_ps,
-+					      p->max_size,
-+					      YT921X_MARKER_SINGLE_BUCKET,
-+					      priv, port, extack);
-+		if (res)
-+			return res;
-+
-+		ctrls[0] = YT921X_PORT_SHAPE_CTRLa_CIR(marker.cir) |
-+			   YT921X_PORT_SHAPE_CTRLa_CBS(marker.cbs);
-+		ctrls[1] = YT921X_PORT_SHAPE_CTRLb_UNIT(marker.unit) |
-+			   YT921X_PORT_SHAPE_CTRLb_EN;
-+		break;
-+	}
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+
-+	mutex_lock(&priv->reg_lock);
-+	res = yt921x_reg64_write(priv, YT921X_PORTn_SHAPE_CTRL(port), ctrls);
-+	mutex_unlock(&priv->reg_lock);
-+
-+	return res;
-+}
-+
-+static int
-+yt921x_dsa_port_setup_tc(struct dsa_switch *ds, int port,
-+			 enum tc_setup_type type, void *type_data)
-+{
-+	struct yt921x_priv *priv = to_yt921x_priv(ds);
-+	int res;
-+
-+	switch (type) {
-+	case TC_SETUP_QDISC_TBF: {
-+		const struct tc_tbf_qopt_offload *qopt = type_data;
-+
-+		res = yt921x_tbf_validate(priv, qopt);
-+		if (res)
-+			return res;
-+
-+		return yt921x_dsa_port_setup_tc_tbf_port(ds, port, qopt);
-+	}
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+}
-+
- static int
- yt921x_mirror_del(struct yt921x_priv *priv, int port, bool ingress)
+-static int decap_internal(struct __sk_buff *skb, int off, int len, char proto)
++static int decap_internal(struct __sk_buff *skb, int off, int len, char proto,
++			  __u64 ipxip_flag)
  {
-@@ -3524,6 +3642,13 @@ static int yt921x_chip_setup_tc(struct yt921x_priv *priv)
- 		return res;
- 	priv->meter_slot_ns = ctrl * op_ns;
+ 	__u64 flags = BPF_F_ADJ_ROOM_FIXED_GSO;
++	struct sk_buff *kskb;
++	struct skb_shared_info *shinfo;
+ 	struct ipv6_opt_hdr ip6_opt_hdr;
+ 	struct gre_hdr greh;
+ 	struct udphdr udph;
+@@ -599,10 +619,12 @@ static int decap_internal(struct __sk_buff *skb, int off, int len, char proto)
  
-+	ctrl = max(priv->port_shape_slot_ns / op_ns,
-+		   YT921X_PORT_SHAPE_SLOT_MIN);
-+	res = yt921x_reg_write(priv, YT921X_PORT_SHAPE_SLOT, ctrl);
-+	if (res)
-+		return res;
-+	priv->port_shape_slot_ns = ctrl * op_ns;
+ 	switch (proto) {
+ 	case IPPROTO_IPIP:
+-		flags |= BPF_F_ADJ_ROOM_DECAP_L3_IPV4;
++		flags |= BPF_F_ADJ_ROOM_DECAP_L3_IPV4 |
++			 ipxip_flag;
+ 		break;
+ 	case IPPROTO_IPV6:
+-		flags |= BPF_F_ADJ_ROOM_DECAP_L3_IPV6;
++		flags |= BPF_F_ADJ_ROOM_DECAP_L3_IPV6 |
++			 ipxip_flag;
+ 		break;
+ 	case NEXTHDR_DEST:
+ 		if (bpf_skb_load_bytes(skb, off + len, &ip6_opt_hdr,
+@@ -610,10 +632,12 @@ static int decap_internal(struct __sk_buff *skb, int off, int len, char proto)
+ 			return TC_ACT_OK;
+ 		switch (ip6_opt_hdr.nexthdr) {
+ 		case IPPROTO_IPIP:
+-			flags |= BPF_F_ADJ_ROOM_DECAP_L3_IPV4;
++			flags |= BPF_F_ADJ_ROOM_DECAP_L3_IPV4 |
++				 ipxip_flag;
+ 			break;
+ 		case IPPROTO_IPV6:
+-			flags |= BPF_F_ADJ_ROOM_DECAP_L3_IPV6;
++			flags |= BPF_F_ADJ_ROOM_DECAP_L3_IPV6 |
++				 ipxip_flag;
+ 			break;
+ 		default:
+ 			return TC_ACT_OK;
+@@ -621,6 +645,11 @@ static int decap_internal(struct __sk_buff *skb, int off, int len, char proto)
+ 		break;
+ 	case IPPROTO_GRE:
+ 		olen += sizeof(struct gre_hdr);
++		if (!bpf_core_enum_value_exists(enum bpf_adj_room_flags,
++						BPF_F_ADJ_ROOM_DECAP_L4_GRE))
++			return TC_ACT_SHOT;
++		flags |= BPF_F_ADJ_ROOM_DECAP_L4_GRE;
 +
- 	return 0;
+ 		if (bpf_skb_load_bytes(skb, off + len, &greh, sizeof(greh)) < 0)
+ 			return TC_ACT_OK;
+ 		switch (bpf_ntohs(greh.protocol)) {
+@@ -634,6 +663,10 @@ static int decap_internal(struct __sk_buff *skb, int off, int len, char proto)
+ 		break;
+ 	case IPPROTO_UDP:
+ 		olen += sizeof(struct udphdr);
++		if (!bpf_core_enum_value_exists(enum bpf_adj_room_flags,
++						BPF_F_ADJ_ROOM_DECAP_L4_UDP))
++			return TC_ACT_SHOT;
++		flags |= BPF_F_ADJ_ROOM_DECAP_L4_UDP;
+ 		if (bpf_skb_load_bytes(skb, off + len, &udph, sizeof(udph)) < 0)
+ 			return TC_ACT_OK;
+ 		switch (bpf_ntohs(udph.dest)) {
+@@ -655,6 +688,40 @@ static int decap_internal(struct __sk_buff *skb, int off, int len, char proto)
+ 	if (bpf_skb_adjust_room(skb, -olen, BPF_ADJ_ROOM_MAC, flags))
+ 		return TC_ACT_SHOT;
+ 
++	kskb = bpf_cast_to_kern_ctx(skb);
++	shinfo = bpf_core_cast(kskb->head + kskb->end, struct skb_shared_info);
++	if (shinfo->gso_size) {
++		if ((flags & BPF_F_ADJ_ROOM_DECAP_L4_UDP) &&
++		    (shinfo->gso_type & SKB_GSO_UDP_TUNNEL_MASK))
++			return TC_ACT_SHOT;
++
++		if ((flags & BPF_F_ADJ_ROOM_DECAP_L4_GRE) &&
++		    (shinfo->gso_type & (SKB_GSO_GRE | SKB_GSO_GRE_CSUM)))
++			return TC_ACT_SHOT;
++
++		if ((flags & BPF_F_ADJ_ROOM_DECAP_IPXIP4) &&
++		    (shinfo->gso_type & SKB_GSO_IPXIP4))
++			return TC_ACT_SHOT;
++
++		if ((flags & BPF_F_ADJ_ROOM_DECAP_IPXIP6) &&
++		    (shinfo->gso_type & SKB_GSO_IPXIP6))
++			return TC_ACT_SHOT;
++
++		if (flags & (BPF_F_ADJ_ROOM_DECAP_L4_MASK |
++			     BPF_F_ADJ_ROOM_DECAP_IPXIP_MASK)) {
++			if ((shinfo->gso_type & SKB_GSO_TUNNEL_MASK) &&
++			    !kskb->encapsulation)
++				return TC_ACT_SHOT;
++			if (!(shinfo->gso_type & SKB_GSO_TUNNEL_MASK) &&
++			    kskb->encapsulation)
++				return TC_ACT_SHOT;
++		}
++	} else if ((flags & (BPF_F_ADJ_ROOM_DECAP_L4_MASK |
++			     BPF_F_ADJ_ROOM_DECAP_IPXIP_MASK)) &&
++		   kskb->encapsulation) {
++		return TC_ACT_SHOT;
++	}
++
+ 	return TC_ACT_OK;
  }
  
-@@ -3680,6 +3805,7 @@ static const struct dsa_switch_ops yt921x_dsa_switch_ops = {
- 	/* rate */
- 	.port_policer_del	= yt921x_dsa_port_policer_del,
- 	.port_policer_add	= yt921x_dsa_port_policer_add,
-+	.port_setup_tc		= yt921x_dsa_port_setup_tc,
- 	/* hsr */
- 	.port_hsr_leave		= dsa_port_simple_hsr_leave,
- 	.port_hsr_join		= dsa_port_simple_hsr_join,
-diff --git a/drivers/net/dsa/yt921x.h b/drivers/net/dsa/yt921x.h
-index 546b12a8994a..70fa780c337f 100644
---- a/drivers/net/dsa/yt921x.h
-+++ b/drivers/net/dsa/yt921x.h
-@@ -531,6 +531,19 @@ enum yt921x_app_selector {
- #define  YT921X_MIRROR_PORT_M			GENMASK(3, 0)
- #define   YT921X_MIRROR_PORT(x)				FIELD_PREP(YT921X_MIRROR_PORT_M, (x))
+@@ -662,6 +729,10 @@ static int decap_ipv4(struct __sk_buff *skb)
+ {
+ 	struct iphdr iph_outer;
  
-+#define YT921X_PORT_SHAPE_SLOT		0x34000c
-+#define  YT921X_PORT_SHAPE_SLOT_SLOT_M		GENMASK(11, 0)
-+#define YT921X_PORTn_SHAPE_CTRL(port)	(0x354000 + 8 * (port))
-+#define  YT921X_PORT_SHAPE_CTRLb_EN		BIT(4)
-+#define  YT921X_PORT_SHAPE_CTRLb_PKT_MODE	BIT(3)	/* 0: byte rate mode */
-+#define  YT921X_PORT_SHAPE_CTRLb_UNIT_M		GENMASK(2, 0)
-+#define   YT921X_PORT_SHAPE_CTRLb_UNIT(x)		FIELD_PREP(YT921X_PORT_SHAPE_CTRLb_UNIT_M, (x))
-+#define  YT921X_PORT_SHAPE_CTRLa_CBS_M		GENMASK(31, 18)
-+#define   YT921X_PORT_SHAPE_CTRLa_CBS(x)		FIELD_PREP(YT921X_PORT_SHAPE_CTRLa_CBS_M, (x))
-+#define  YT921X_PORT_SHAPE_CTRLa_CIR_M		GENMASK(17, 0)
-+#define   YT921X_PORT_SHAPE_CTRLa_CIR(x)		FIELD_PREP(YT921X_PORT_SHAPE_CTRLa_CIR_M, (x))
-+#define YT921X_PORTn_SHAPE_STAT(port)	(0x356000 + 4 * (port))
++	if (!bpf_core_enum_value_exists(enum bpf_adj_room_flags,
++					BPF_F_ADJ_ROOM_DECAP_IPXIP4))
++		return TC_ACT_SHOT;
 +
- #define YT921X_EDATA_EXTMODE	0xfb
- #define YT921X_EDATA_LEN	0x100
+ 	if (bpf_skb_load_bytes(skb, ETH_HLEN, &iph_outer,
+ 			       sizeof(iph_outer)) < 0)
+ 		return TC_ACT_OK;
+@@ -670,19 +741,25 @@ static int decap_ipv4(struct __sk_buff *skb)
+ 		return TC_ACT_OK;
  
-@@ -556,6 +569,10 @@ enum yt921x_fdb_entry_status {
- #define YT921X_METER_UNIT_MAX	((1 << 3) - 1)
- #define YT921X_METER_CIR_MAX	((1 << 18) - 1)
- #define YT921X_METER_CBS_MAX	((1 << 16) - 1)
-+#define YT921X_PORT_SHAPE_SLOT_MIN	80
-+#define YT921X_SHAPE_UNIT_MAX	((1 << 3) - 1)
-+#define YT921X_SHAPE_CIR_MAX	((1 << 18) - 1)
-+#define YT921X_SHAPE_CBS_MAX	((1 << 14) - 1)
+ 	return decap_internal(skb, ETH_HLEN, sizeof(iph_outer),
+-			      iph_outer.protocol);
++			      iph_outer.protocol,
++			      BPF_F_ADJ_ROOM_DECAP_IPXIP4);
+ }
  
- #define YT921X_LAG_NUM		2
- #define YT921X_LAG_PORT_NUM	4
-@@ -652,6 +669,7 @@ struct yt921x_priv {
+ static int decap_ipv6(struct __sk_buff *skb)
+ {
+ 	struct ipv6hdr iph_outer;
  
- 	const struct yt921x_info *info;
- 	unsigned int meter_slot_ns;
-+	unsigned int port_shape_slot_ns;
- 	/* cache of dsa_cpu_ports(ds) */
- 	u16 cpu_ports_mask;
- 	unsigned char cycle_ns;
++	if (!bpf_core_enum_value_exists(enum bpf_adj_room_flags,
++					BPF_F_ADJ_ROOM_DECAP_IPXIP6))
++		return TC_ACT_SHOT;
++
+ 	if (bpf_skb_load_bytes(skb, ETH_HLEN, &iph_outer,
+ 			       sizeof(iph_outer)) < 0)
+ 		return TC_ACT_OK;
+ 
+ 	return decap_internal(skb, ETH_HLEN, sizeof(iph_outer),
+-			      iph_outer.nexthdr);
++			      iph_outer.nexthdr,
++			      BPF_F_ADJ_ROOM_DECAP_IPXIP6);
+ }
+ 
+ SEC("tc")
 -- 
-2.53.0
+2.34.1
 
