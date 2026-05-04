@@ -1,195 +1,137 @@
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80FB5379973
-	for <netdev@vger.kernel.org>; Mon,  4 May 2026 16:30:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E94E23E4C7A
+	for <netdev@vger.kernel.org>; Mon,  4 May 2026 16:30:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777912223; cv=none; b=lScjWbf5f0GXyLGH2ERC7Pz+38TxQ11mFjkZVDMMrIG9sfTlOEicJozsD6ytBP14e0wC/SSBrm0u6dBdVpdDnqXjJxvwHXeiphC8jg/9H3cPnoeoq11RP+LEAxhjb76+3cf/JflVDm6Iw51TcL5XbGDET4LwFlwVFP8oTppAN4s=
+	t=1777912227; cv=none; b=aapHzhObnV6xyVS51L70jX3I0jMaA5vBiB9M2OnHkhE+tqN/uou4K6OxFNr0tRN2sPt1QLxPSaWAP63gSs/H0tkZ2XGqVj/rgAio0KN+eAM5PtUyb+xmzniBCMdezpt5irgjfuAYokmm52Lk/4vSmmHuAR5QogZsNZJKDpaBCBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777912223; c=relaxed/simple;
-	bh=t/WDX834jlVF7DP9Ia8VfOzsGAXwCxpfBKZASbwEbQI=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=jsUOQL03G3PPLaReWZSPBC9brU5rAU8qQ5yrVAwlWVsXZ4lQISz/3BUoEwWyJqzpjgUUaOMKAKjW5tb0mZWVCC405yUTign2YBiF+MtiAOZGqJNUO/dUaHArziybOJEE9t7q9uGV9/6kIcqMw9F2fF4QDOdWVMplnQxe1DFi+0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dqp/CT2o; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1777912227; c=relaxed/simple;
+	bh=Zr0FSOeNg/otAI19G7/HBdtSNwFcpJA+mlAvGORJG1c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=g05gy2ikWgIi3Jv6L0KZVoBCCe0xXZaGhabV7DL3Kb7gOHpF6f2wpQg7F2pLhIZRyfRrQPEbnWdRRFjYmQOZWKctQ1mqku8UE7RmJA3TTvB/4Ao9Dtk3mjoPYpkUv0rFu3fTxGgILlgebeLE1GjudpIfG/jSr/FwxsH/jyaIrwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JYnyKAKN; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dqp/CT2o"
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-82418b0178cso2081413b3a.1
-        for <netdev@vger.kernel.org>; Mon, 04 May 2026 09:30:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777912218; x=1778517018; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=3qM+FJU1H6+E/i7TldQkDydNXf9wDxrZlqG3KlzPKhQ=;
-        b=dqp/CT2oVY/cprtvk0NRc4TNsmnl6ojCgqBHJxBkXedqee7k5lUTf9I8F4DGHNAYZo
-         vRcJyMGqATpYngx+p6gnjPggxMFlD+ckIAoL5BeXB1z5WQRw1rvOiGNwvXpxO0YLXSh4
-         jqI+8vvJSK2zmgNG0BJT4rCtCYmCtxuvvhbhwxbAXlKfpHoYvsoWY9O1IXhxE8pYzFXJ
-         o7VzgdOu393T+zXVAlNOETDfqlnfARVtIcsGkiWUlex81kLzokZcpW0SlVHOxM4+5dZX
-         MlhTMhic/S8ImWFOjhU4k5VE0CBrtJG9I+dXDcbG/kJ0pZBmCtdVMy/gIe/NvKrLFYKw
-         kc7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777912218; x=1778517018;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3qM+FJU1H6+E/i7TldQkDydNXf9wDxrZlqG3KlzPKhQ=;
-        b=XAiAlHXkkZspPeoNu0SRGLbZzV2BE8+YeIFrA/DcckHeJSYj5V8lXCoV5R8382S9rG
-         7O83M88DDrLZxw5oqU3wq10OfCLfxQbkaw0KB56RTkV2ksfyO960kk6yi/8a4dwDgcGj
-         /TSdxr7QjKyNgHP+na+RZ8j2PTS8FOHsDZmPTpsmz4mpgAsZEjaJxqNtXE0NGpiztr+A
-         l85Sy613OHgFaj6ru8HxKJ4z33dykKwHLh9A1vkz7uZXpvscp3OuoI4c2Z4PlYOvQogK
-         LYgQ/W4r7+TFWJnfTOEcLzky5mXHk37z3D9Z8KQ+Mx2zrY+VG1R94Z4z0OvWsDfIXklU
-         81rg==
-X-Forwarded-Encrypted: i=1; AFNElJ+NdWb/o7sSnLpfx0ch5qYwZ5V/Lukaeo1u/fzJuAVP7V7//1SCtMs0ZWB5isKsRY6RxXroaaQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZbq3YqESKoal2HxaIzJYNzJarvIy0+RFG+pamBES15Q/nleOr
-	MdwPvF/0kylDHXc31C4H9EK5VMmo8L6VFoohbnNbS5UnNk6wyVCj1Enl
-X-Gm-Gg: AeBDievZQr6uDMFP/0MEWehTDOLf5/MpjzqYolcSbhBQxbkx5oSMnZLEfbyOajjfOcm
-	kNMd1rH5cAI2PK7Sox8EBJg+k/O7a3FR6hzTxq88ujpcDWHZODym6hSskjfzjjsOSmiyxcVIhrI
-	nW0l1OW3xswetw070VZCbJOxoY9t5//Xhya9f+2cVYoHaYuImevXxspPJuSoimQo1KG3hJNsjJU
-	lutLyQVvrAHFbfSr7FjuMovbXl8jpQrV8xgiTcFwLssOL+3VFnAO/evM6aY5Q28Wxe9IwlG6Wte
-	FNzfUA5zlkIlomFdTYzji6mRx7e8V3lP1MDX2qwAw8nx/+G1ajC2sN1uM8UJ8xQP7j76q13EiFC
-	nIMiTNx7gy/mXRjNzlg/bLhHrFO3vPfuEXDSIQ87g47G15gMydUNM33t3w9YvbjkDWBB1uYTnOC
-	l5LJ9DdJasWIDJw3wagYhllv8RH2RJH8dGoFa4nvBpiAME
-X-Received: by 2002:a05:6a00:1826:b0:82c:9f7e:518c with SMTP id d2e1a72fcca58-8352d2029a7mr11070469b3a.25.1777912217603;
-        Mon, 04 May 2026 09:30:17 -0700 (PDT)
-Received: from [163.43.103.131] ([163.43.103.131])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-837081abadfsm4998663b3a.42.2026.05.04.09.30.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 May 2026 09:30:16 -0700 (PDT)
-From: Yuya Kusakabe <yuya.kusakabe@gmail.com>
-Subject: [PATCH v2 0/7] seg6: add SRv6 Mobile User Plane (RFC 9433)
- behaviors
-Date: Tue, 05 May 2026 01:30:10 +0900
-Message-Id: <20260505-seg6-mobile-v2-0-9e8022bdfdb6@gmail.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JYnyKAKN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777912223;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bK5U80438IEpWRoTKF0zE1rtE23u+leDsGkKv8PM3+A=;
+	b=JYnyKAKNWaEPLoRQWW42j+xUZwfpEFVgYWNPs8ZlHWLHokVu7Oy4jBpxdI1Y+UcRC2lTfg
+	1Jl2zGfuj9k7k8u8Esd70IevYeoUAucue8J/WGy9KdsFjrPYTZ4apvVryAsQ+FXwaRWtMX
+	rr8LYeozxBh8tzXlLBF1f8oqIHBYzCU=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-542-Ab_Z1JHYOnCWcfUR6jPySg-1; Mon,
+ 04 May 2026 12:30:20 -0400
+X-MC-Unique: Ab_Z1JHYOnCWcfUR6jPySg-1
+X-Mimecast-MFC-AGG-ID: Ab_Z1JHYOnCWcfUR6jPySg_1777912219
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 54A521800265;
+	Mon,  4 May 2026 16:30:19 +0000 (UTC)
+Received: from p16v.luc.cera.cz (unknown [10.44.32.88])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B631819560A6;
+	Mon,  4 May 2026 16:30:17 +0000 (UTC)
+From: Ivan Vecera <ivecera@redhat.com>
+To: netdev@vger.kernel.org
+Cc: Petr Oros <poros@redhat.com>,
+	David Ahern <dsahern@kernel.org>,
+	Stephen Hemminger <stephen@networkplumber.org>
+Subject: [PATCH iproute2-next v3 1/2] dpll: add ps unit to phase-related pin attributes
+Date: Mon,  4 May 2026 18:30:13 +0200
+Message-ID: <20260504163014.416317-2-ivecera@redhat.com>
+In-Reply-To: <20260504163014.416317-1-ivecera@redhat.com>
+References: <20260504163014.416317-1-ivecera@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAJLJ+GkC/02NQQ6CMBREr0L+2pq2sQVdeQ/DotQPfAOUtNBoC
- He3xY3JbF4y82aDgJ4wwK3YwGOkQG5KIE8F2N5MHTJ6JgbJpeaKX1jATrPRNTQga8sKZSVRC2U
- hLWaPLb0P26P+cVibF9olK3Kjp7A4/znuosi9P7OPybzOLIoczpAbXV6FKpVt7t1oaDhbN0K97
- /sXNrrPNLgAAAA=
-X-Change-ID: 20260504-seg6-mobile-f78e282e615c
-To: "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Andrea Mayer <andrea.mayer@uniroma2.it>, Shuah Khan <shuah@kernel.org>, 
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org, 
- Yuya Kusakabe <yuya.kusakabe@gmail.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4494;
- i=yuya.kusakabe@gmail.com; h=from:subject:message-id;
- bh=t/WDX834jlVF7DP9Ia8VfOzsGAXwCxpfBKZASbwEbQI=;
- b=owEBbQKS/ZANAwAIASrX0XUqXRtNAcsmYgBp+MmUQ4uOSFqsLABgLmDA8N1QVqzEsjuuzcydr
- OUus2wHYGSJAjMEAAEIAB0WIQTaB7usAfxNKMeqa6Yq19F1Kl0bTQUCafjJlAAKCRAq19F1Kl0b
- Td83D/9GDmmQ/cP9O1v5vS9LMuoKdTKQR+f0681wFU1mdnXDZ06hGhkVw1X4bAxCXfNcVN7dtVX
- H/d3CLCYXEf69WAKByDWhE32nRCiEu+YhfT1J/8DxHQrrIC5UBfG3V3tLSHRhk1Pwu8gfY97/sT
- J+0hhla376kMaRymSW28ZzV0qEd3euKLipVgYakvf9NPZVgFy54NTdjLRoL+enROqSx1Ge4Xt02
- frxwNRaPNcvUL2PpZ1eRTRVeaudwRKm0Rv+0WK3P/FvpZnpbUPLidt+3LcjVLaNRTigCqXStCmA
- vQq5SVYv3+i1OBNvSKUs3CtvEmvD6nndY92/z20OErmG/r10QlYJro5+iOs3b9MeuQKaOoO0dfE
- wsKUps2XJK/j+SBUKGHCibJ/XkiVQMMBsXe30NPRrmIMo0KNuf4AYcjDWhIeIHvj+OCp1nPhjum
- vDZLGtqOnE/UtmarlQx9pFzJrlyP3T9NmcPhT8Xm4bp3qsTF4e1Htr5iJaOmHDvuuoVwM75uFSp
- vUY2fJv6WD09narTNivy8rG7RsGe5douEBRiW/jd0ykyD/bgEBMBFnl0gbO6mlahIy4VUQptPMV
- 5B9jP4de03ndLKS80KD9kv2HSPbluxsyCDm7WJV22/kWe3F2jpu6WVbaRivkFzeAztPRNH8mkJ+
- ZJ4APW8Grq+4LWg==
-X-Developer-Key: i=yuya.kusakabe@gmail.com; a=openpgp;
- fpr=DA07BBAC01FC4D28C7AA6BA62AD7D1752A5D1B4D
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-This series adds the in-kernel data path for the SRv6 Mobile User
-Plane (MUP) architecture defined in RFC 9433.  SRv6 MUP integrates
-GTP-U mobile traffic into an SRv6 transport domain by mapping the
-5-tuple (TEID, QFI, R, U, PDU Session ID) into a single SID, allowing
-operators to replace the GTP-U overlay between the gNB and the
-upstream UPF with native SRv6 forwarding while keeping the radio side
-unchanged.
+Display phase-adjust-min, phase-adjust-max and phase-adjust values
+with ps unit. Add DPLL_PR_PHASE_OFFSET macro that properly formats
+phase-offset as fractional picoseconds by dividing the raw kernel
+value by DPLL_PHASE_OFFSET_DIVIDER.
 
-The series implements the six MUP behaviors that an SRv6 MUP gateway
-typically needs:
-
-  End.MAP         (RFC 9433 Section 6.2) -- swap DA with the next SID
-                                            without consuming the SRH
-  End.M.GTP6.D    (Section 6.3) -- IPv6/GTP-U to SRv6 headend encap
-  End.M.GTP6.D.Di (Section 6.4) -- drop-in mode variant of the above
-                                   (preserves the original outer DA at
-                                   SRH[0] and discards TEID/QFI)
-  End.M.GTP6.E    (Section 6.5) -- SRv6 to IPv6/GTP-U egress encap
-  End.M.GTP4.E    (Section 6.6) -- SRv6 to IPv4/GTP-U egress encap
-  H.M.GTP4.D      (Section 6.7) -- IPv4/GTP-U to SRv6 headend encap
-
-End.Limit (RFC 9433 Section 6.8) is intentionally out of scope.
-
-All behaviors plug into the existing seg6_local lwtunnel framework, so
-they are configurable through the standard "ip route ... encap
-seg6local action ..." interface.  No new netlink families are
-introduced -- the new SEG6_LOCAL_MOBILE_* attributes extend
-SEG6_LOCAL_MAX in an add-only way, and the new SEG6_LOCAL_ACTION_*
-values are appended.
-
-The egress behaviors (End.M.GTP4.E and End.M.GTP6.E) accept an
-optional per-route pdu_type attribute that is the sole control
-for inserting the GTP-U PDU Session Container (3GPP TS 38.415 Section
-5.5.2).  When pdu_type is set (dl/ul/0..15), every emitted GTP-U
-packet carries the container with that PDU Type and the QFI extracted
-from Args.Mob.Session.  When pdu_type is unset, the egress emits
-a short GTPv1-U header with no container.  pdu_type must be
-configured on egress routes serving 5G N3 traffic; omitting it is
-intended only for LTE-only / S1-U-style deployments where no PDU
-Session Container is exchanged.
-
-The matching iproute2 patch series has been posted to iproute2-next:
-https://lore.kernel.org/netdev/20260505-seg6-mobile-v2-0-93291b7b0134@gmail.com/
-
-Link: https://www.rfc-editor.org/rfc/rfc9433
-
-Signed-off-by: Yuya Kusakabe <yuya.kusakabe@gmail.com>
+Reviewed-by: Petr Oros <poros@redhat.com>
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
 ---
-Changes in v2 (all reported by netdev CI, except the End.MAP one
-which was caught while reviewing v1):
-- patch 1 (End.MAP): drop the explicit hop_limit decrement and
-  the hop_limit <= 1 ICMPv6 Time Exceeded check; ip6_forward()
-  on the way out already does both, so the explicit ones caused
-  a double decrement (verified hlim=64 -> 62 instead of 63).
-  Now consistent with End / End.X / End.M.GTP*.
-- patch 3 (End.M.GTP6.E): add missing #include
-  <net/ip6_checksum.h> to fix clang / allmodconfig build.
-- selftests: silence shellcheck false positives (SC2034/SC2154)
-  and sort TEST_PROGS entries alphabetically.
-- Link to v1: https://lore.kernel.org/netdev/20260504-srv6-mup-v1-v1-0-e0a6791575cb@gmail.com
-
+Changes:
+v3 - macro DPLL_PR_PHASE_OFFSET replaced by function
+     dpll_pr_phase_offset
 ---
-Yuya Kusakabe (7):
-      seg6: add End.MAP behavior
-      seg6: add End.M.GTP4.E behavior
-      seg6: add End.M.GTP6.E behavior
-      seg6: add End.M.GTP6.D behavior
-      seg6: add End.M.GTP6.D.Di behavior
-      seg6: add H.M.GTP4.D behavior
-      Documentation: networking: add seg6_mobile guide
+ dpll/dpll.c | 30 +++++++++++++++++++++++++-----
+ 1 file changed, 25 insertions(+), 5 deletions(-)
 
- Documentation/networking/index.rst                 |    1 +
- Documentation/networking/seg6_mobile.rst           |  236 ++
- include/net/dropreason-core.h                      |   40 +
- include/uapi/linux/seg6_local.h                    |   17 +
- net/ipv6/seg6_local.c                              | 2660 ++++++++++++++++++--
- tools/testing/selftests/net/Makefile               |    6 +
- .../selftests/net/srv6_end_m_gtp4_e_test.sh        |  486 ++++
- .../selftests/net/srv6_end_m_gtp6_d_di_test.sh     |  427 ++++
- .../selftests/net/srv6_end_m_gtp6_d_test.sh        |  497 ++++
- .../selftests/net/srv6_end_m_gtp6_e_test.sh        |  402 +++
- tools/testing/selftests/net/srv6_end_map_test.sh   |  103 +
- .../testing/selftests/net/srv6_h_m_gtp4_d_test.sh  |  487 ++++
- 12 files changed, 5155 insertions(+), 207 deletions(-)
----
-base-commit: 98878ed91b68a3150126fccef125ee7b1bb86ab2
-change-id: 20260504-seg6-mobile-f78e282e615c
-
-Best regards,
---  
-Yuya Kusakabe <yuya.kusakabe@gmail.com>
+diff --git a/dpll/dpll.c b/dpll/dpll.c
+index b6ba3283e0ba..1c5d2b1b7f28 100644
+--- a/dpll/dpll.c
++++ b/dpll/dpll.c
+@@ -455,6 +455,24 @@ static void dpll_pr_multi_enum_str(const struct nlmsghdr *nlh, int attr_id,
+ 	print_nl();
+ }
+ 
++/* Phase offset - JSON prints raw sub-ps value, FP prints fractional ps */
++static void dpll_pr_phase_offset(struct nlattr *attr)
++{
++	__s64 val;
++	lldiv_t d;
++
++	if (!attr)
++		return;
++
++	val = mnl_attr_get_sint(attr);
++	d = lldiv(llabs(val), DPLL_PHASE_OFFSET_DIVIDER);
++	print_s64(PRINT_JSON, "phase-offset", NULL, val);
++	print_string(PRINT_FP, NULL, " phase-offset %s",
++		     val < 0 ? "-" : "");
++	print_s64(PRINT_FP, NULL, "%lld.", d.quot);
++	print_s64(PRINT_FP, NULL, "%03lld ps", d.rem);
++}
++
+ /* Print frequency range (or single value if min==max) */
+ static void dpll_pr_freq_range(__u64 freq_min, __u64 freq_max)
+ {
+@@ -1507,8 +1525,7 @@ static void dpll_pin_print_parent_devices(struct nlattr *attr)
+ 				 " prio %u");
+ 		DPLL_PR_ENUM_STR_FMT(tb_parent, DPLL_A_PIN_STATE, "state",
+ 				     " state %s", dpll_pin_state_name);
+-		DPLL_PR_SINT_FMT(tb_parent, DPLL_A_PIN_PHASE_OFFSET,
+-				 "phase-offset", " phase-offset %" PRId64);
++		dpll_pr_phase_offset(tb_parent[DPLL_A_PIN_PHASE_OFFSET]);
+ 
+ 		print_nl();
+ 		close_json_object();
+@@ -1592,10 +1609,13 @@ static void dpll_pin_print_attrs(struct nlattr **tb)
+ 
+ 	dpll_pin_print_capabilities(tb[DPLL_A_PIN_CAPABILITIES]);
+ 
+-	DPLL_PR_INT(tb, DPLL_A_PIN_PHASE_ADJUST_MIN, "phase-adjust-min");
+-	DPLL_PR_INT(tb, DPLL_A_PIN_PHASE_ADJUST_MAX, "phase-adjust-max");
++	DPLL_PR_INT_FMT(tb, DPLL_A_PIN_PHASE_ADJUST_MIN, "phase-adjust-min",
++			"  phase-adjust-min: %d ps\n");
++	DPLL_PR_INT_FMT(tb, DPLL_A_PIN_PHASE_ADJUST_MAX, "phase-adjust-max",
++			"  phase-adjust-max: %d ps\n");
+ 	DPLL_PR_UINT(tb, DPLL_A_PIN_PHASE_ADJUST_GRAN, "phase-adjust-gran");
+-	DPLL_PR_INT(tb, DPLL_A_PIN_PHASE_ADJUST, "phase-adjust");
++	DPLL_PR_INT_FMT(tb, DPLL_A_PIN_PHASE_ADJUST, "phase-adjust",
++			"  phase-adjust: %d ps\n");
+ 
+ 	if (json || !tb[DPLL_A_PIN_FRACTIONAL_FREQUENCY_OFFSET_PPT])
+ 		DPLL_PR_SINT(tb, DPLL_A_PIN_FRACTIONAL_FREQUENCY_OFFSET,
+-- 
+2.53.0
 
