@@ -1,197 +1,164 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F0F29E116
-	for <netdev@vger.kernel.org>; Mon,  4 May 2026 14:20:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 959A03DE44F;
+	Mon,  4 May 2026 14:23:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904441; cv=none; b=iakVEXvh2a4wFzE+zv9VfT78dYeIzGzDa1HybfzwvO45E1viHzxuKFk1JzCII/5OrgqNQ6QVf8nBdJX+xFmO0byy46Mx26YVcdOrZ20Eu1Ztk24FrVMzd17njFLYTUPXfh1MLK0RN3hsrdx6La9rTUWcZwpkvIwvGtaKwqrGcQE=
+	t=1777904633; cv=none; b=Q+E8Xw5qcO1taUkheaEAslrrHjkQsSn9GTmmPepXF+DM1MbStOiIWtizZmZsnMQK4jbJWDeCPnhQx/6A0z0piKosgTxNwjgyOHNIE8n/nGhmgooLfo7zTqCvhXe8Hv5l/aohsEWJqjJWQEj2lgEWgyd/zsX49iY/fWXcjknGMSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904441; c=relaxed/simple;
-	bh=9OUajsvoVYdXpMybKSG/0NvwqxgowwKsta8AaAO2Zbo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QHo/5Clp3oXHbXJbqrP0sy4oOutmXDxuQNDVyMj6maRSfei71RIPWiRVZMEe4jQeUEc38W4cs0hd5Ul/T10To3fpS52xOx8pti4naiiBsuBa/xf99ZWgu+iKpRWDH99dLdz3cR9Z7tbVT+wz855KoUyANP3FYxkxYDiISZxils8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=ZivXVeQ7; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
+	s=arc-20240116; t=1777904633; c=relaxed/simple;
+	bh=3kvxwpgdMQiXmQKOEsF6fyhQKPZdd1FaKeFuVx6Aywg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
+	 In-Reply-To:To:CC; b=pIzyznmNtKAZqrdNaisdBE61PWK66GiKnSsk3+3GM4f9VjMxP2gpqlXkLvMiV73UkOvM4ruiuDt7EZze7OK6rQIZyb4ne65GRTeq+frp39coQHOH0Aua39qy37LB3RrG2PkNoAwJU0fvzR+EDqhFZUHlhgkwTerWyoDuwATKEHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=Mzj3XLlj; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="ZivXVeQ7"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4852a9c6309so33561225e9.0
-        for <netdev@vger.kernel.org>; Mon, 04 May 2026 07:20:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openvpn.net; s=google; t=1777904437; x=1778509237; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=eIwRzJNBGP4qpF839RJR539plQuxlG2HBX9ojRw93ys=;
-        b=ZivXVeQ7xHjY61ZT0O3MqC9DMtIwIJCZ3EomDi92DIULRjSmrQtxWK4e2n7Yx2GHpT
-         dpDBs3vl7Rqq4M/ni7hOtzvbAftM2+e2OlnwsC/xlmTAADqOFt/6FFxJlFjf6g2djanR
-         AHafBW7xteLU9bLLHUda9MqUBLwP0xS1oEb/V47aWySlt69HOOPmqbe0TO7iDHYF9xEo
-         liBsGhfB7eLSmE2C20dlmpnWASWLs8+uGaINk4iHnUkt9ltixQnfsOgd5fvrshHF871z
-         ZF70NyL/f4v2NAL4Gc1bYly5M1Pbx9jSNaURRfKlbJErJIQyveU/mdDDfrVnrh9ow040
-         elYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777904437; x=1778509237;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eIwRzJNBGP4qpF839RJR539plQuxlG2HBX9ojRw93ys=;
-        b=s8BPCucRy+jx5qbQl8awV80DmPOLrKsPNQ/lNk9JN/dUxghO6GoWArRSN9woFA/8V/
-         VC+m5+H7Kps+enTlU/NspDG8sgjUOYCcxdRwkM1TYeF8OiYT2/nh6qwy9slKm+ODz11c
-         CNmytOlk9K1UbE2OUKYl0ngQ1ufAmjpkJ3PdrDJExdXfCwu59TAE5poXajSBRF/LafXq
-         qpwXRs7BbDbpW2hULv1c4kP6koRQS7lrdsnlNdmK1rZaYy1FnSXwiWTPqsBcpnDfr8Hz
-         4zWe3hP3VMcfc2BrgTTH0T/yQsUFzj+/A56G7u6IZjM/0N+Ue/JfXUKEgV8zGH6rBudG
-         RVWA==
-X-Gm-Message-State: AOJu0YyzXxHqNedHCUTanNCfSjUnEGShGozXQPWRh4kV0BMVe0s6ZcA1
-	v7IRbkGv/jwnrRkvAKwqNJiQcT9Eze92AXekXciO9pGaF1JjZvUEKuxQ9RcFK2J2bO9SwgIhhDX
-	uLpZvus3Gy2q2V1YHixrSpSpjN5bfFg+X1GoncTuMaHnFznmVnCGvl2ZTA3xfzAD6hgU=
-X-Gm-Gg: AeBDietwSt9tI0mnz15M+jMgeDRHFSjsBMWJwbAqg2XGijIFEay0LJueVSspq9He9aj
-	vDU/jMIDf2cZKmrpQs9dCmsTNpofGqYchGUNm3Coo3CiFQric+VWnVo2jWf7PiVWIPu6D9ROh7i
-	IwtZ2DcOf7ryTto0qA6xO1NDvDxV7iD/zzXeCtXfzKJxFqzT+8CudxvSMW5gAF6paRORSkw4xZX
-	DEV4ZpTUqMANkQON7NZuErJf5AVAFJgOd+8SwHkZ6l1myviThORR8YrH6TWwZaa52gZh7kDXP1y
-	3pA0lS6mT49sY80L4vt8gwyxFGG5VUTxDU6DbCGyf6tAdyW03vn0rdngVxMKlFgfI88CMfKBzMH
-	3Mp65xRYyrL16TMrjuiC9D78J7EVQLcY7iujGU7kyPxt3llVBjkCHGmNxKtTF3HGxN1k2dgnI8A
-	2+n/Y1R+2X5tuApfeCDCzslKybxjouUwP+sNcpPYow9w1m/Lc=
-X-Received: by 2002:a05:600d:f:b0:488:904b:f31 with SMTP id 5b1f17b1804b1-48a9866a9a3mr130488175e9.22.1777904437271;
-        Mon, 04 May 2026 07:20:37 -0700 (PDT)
-Received: from inifinity.mandelbit.com ([2001:67c:2fbc:1:4b13:4164:f406:ce59])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a8ebb2fa5sm237782595e9.12.2026.05.04.07.20.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 May 2026 07:20:36 -0700 (PDT)
-From: Antonio Quartulli <antonio@openvpn.net>
-To: netdev@vger.kernel.org
-Cc: kuba@kernel.org,
-	ralf@mandelbit.com,
-	Antonio Quartulli <antonio@openvpn.net>,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Sabrina Dubroca <sd@queasysnail.net>
-Subject: [RFC net] ovpn: fix race between deleting interface and adding new peer
-Date: Mon,  4 May 2026 16:20:33 +0200
-Message-ID: <20260504142033.2327646-1-antonio@openvpn.net>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="Mzj3XLlj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1777904631; x=1809440631;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:references:in-reply-to:to:cc;
+  bh=3kvxwpgdMQiXmQKOEsF6fyhQKPZdd1FaKeFuVx6Aywg=;
+  b=Mzj3XLljY9zoihKjbQl3tbJh0XU/HxrSMZnvTRqk41iD6zTyRg3QUlrD
+   vCpIO+mzjp3RaoIe2LoEQUXPd3kcbPrKUKd+AA0UhUi9Cj0bGFEoYbnKe
+   J7pdGOO93WQ16zM+gX7JbCVs7GVZ2HB7QxEjUwnO94fqwEsAZmglfcJaM
+   kEAaPZNThof9h0E2kW/eiaPJEGQSFi/1nJy9gyebLXef0gK30/AI95ibl
+   AXq/cdgXW6ujnTRyTSJt6kbaAlVlfXrjiRFcZvqtS9QUhCXo3BbvQleWF
+   blaKuuH2wlaPUFduwnVF7en3MGvguzCacWr+aagdHjGNnXJVuOXhfqFxP
+   Q==;
+X-CSE-ConnectionGUID: +jH7nhy1SJmKH/F7PkkBwQ==
+X-CSE-MsgGUID: lbyuZs6UQROMwHP2ti7vFg==
+X-IronPort-AV: E=Sophos;i="6.23,215,1770620400"; 
+   d="scan'208";a="224241158"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 04 May 2026 07:23:50 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Mon, 4 May 2026 07:23:50 -0700
+Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Mon, 4 May 2026 07:23:46 -0700
+From: Daniel Machon <daniel.machon@microchip.com>
+Date: Mon, 4 May 2026 16:23:17 +0200
+Subject: [PATCH net-next v3 04/13] net: lan966x: add FDMA LLP register
+ write helper
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20260504-lan966x-pci-fdma-v3-4-a56f5740d870@microchip.com>
+References: <20260504-lan966x-pci-fdma-v3-0-a56f5740d870@microchip.com>
+In-Reply-To: <20260504-lan966x-pci-fdma-v3-0-a56f5740d870@microchip.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Horatiu Vultur
+	<horatiu.vultur@microchip.com>, Steen Hegelund
+	<steen.hegelund@microchip.com>, <UNGLinuxDriver@microchip.com>, "Alexei
+ Starovoitov" <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+	"Jesper Dangaard Brouer" <hawk@kernel.org>, John Fastabend
+	<john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, Herve
+ Codina <herve.codina@bootlin.com>, Arnd Bergmann <arnd@arndb.de>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Mohsin Bashir
+	<mohsin.bashr@gmail.com>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<bpf@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>
+X-Mailer: b4 0.14.3
 
-While deleting an existing ovpn interface, there is a very
-narrow window where adding a new peer via netlink may cause
-the netdevice to hang and prevent its unregistration.
+The FDMA Link List Pointer (LLP) register points to the first DCB in the
+chain and must be written before the channel is activated. This tells
+the FDMA engine where to begin DMA transfers.
 
-It may happen during ovpn_dellink(), when all existing peers are
-freed and the device is queued for deregistration, but a
-CMD_PEER_NEW message comes in adding a new peer that takes again
-a reference to the netdev.
+Move the LLP register writes from the channel start/activate functions
+into the allocation functions and introduce a shared
+lan966x_fdma_llp_configure() helper. This is needed because the upcoming
+PCIe FDMA path writes ATU-translated addresses to the LLP registers
+instead of DMA addresses. Keeping the writes in the shared
+start/activate path would overwrite these translated addresses.
 
-At this point there is no way to release the device because we are
-under the assumption that all peers were already released.
-
-Fix the race condition by releasing all peers in ndo_uninit(),
-when the netdevice has already been removed from the netdev
-list.
-
-Also ovpn_peer_add() has now an extra check that forces the
-function to bail out if the device reg_state is not REGISTERED.
-This way any incoming CMD_PEER_NEW racing with the interface
-deletion routine will simply stop before adding the peer.
-
-Note that the above check happens while holding the netdev_lock
-to prevent racing netdev state changes.
-
-ovpn_dellink() is now empty and can be removed.
-
-Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
-Closes: https://lore.kernel.org/netdev/aaVgJ16edTfQkYbx@v4bel/
-Suggested-by: Sabrina Dubroca <sd@queasysnail.net>
-Fixes: 80747caef33d ("ovpn: introduce the ovpn_peer object")
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
+Tested-by: Herve Codina <herve.codina@bootlin.com>
+Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
 ---
+ .../net/ethernet/microchip/lan966x/lan966x_fdma.c  | 29 ++++++++++------------
+ 1 file changed, 13 insertions(+), 16 deletions(-)
 
-This patch is sent as RFC to give the AI a chance to review it once
-again, since it was able to spot a new race condition in its
-previous version.
-
-
- drivers/net/ovpn/main.c | 12 ++----------
- drivers/net/ovpn/peer.c | 21 ++++++++++++++++++---
- 2 files changed, 20 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/net/ovpn/main.c b/drivers/net/ovpn/main.c
-index 2e0420febda0..9993c1dfe471 100644
---- a/drivers/net/ovpn/main.c
-+++ b/drivers/net/ovpn/main.c
-@@ -92,6 +92,8 @@ static void ovpn_net_uninit(struct net_device *dev)
- {
- 	struct ovpn_priv *ovpn = netdev_priv(dev);
- 
-+	disable_delayed_work_sync(&ovpn->keepalive_work);
-+	ovpn_peers_free(ovpn, NULL, OVPN_DEL_PEER_REASON_TEARDOWN);
- 	gro_cells_destroy(&ovpn->gro_cells);
+diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
+index f8ce735a7fc0..6c5761e886d4 100644
+--- a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
++++ b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
+@@ -109,6 +109,13 @@ static int lan966x_fdma_rx_alloc_page_pool(struct lan966x_rx *rx)
+ 	return PTR_ERR_OR_ZERO(rx->page_pool);
  }
  
-@@ -208,15 +210,6 @@ static int ovpn_newlink(struct net_device *dev,
- 	return register_netdevice(dev);
- }
- 
--static void ovpn_dellink(struct net_device *dev, struct list_head *head)
--{
--	struct ovpn_priv *ovpn = netdev_priv(dev);
--
--	cancel_delayed_work_sync(&ovpn->keepalive_work);
--	ovpn_peers_free(ovpn, NULL, OVPN_DEL_PEER_REASON_TEARDOWN);
--	unregister_netdevice_queue(dev, head);
--}
--
- static int ovpn_fill_info(struct sk_buff *skb, const struct net_device *dev)
- {
- 	struct ovpn_priv *ovpn = netdev_priv(dev);
-@@ -235,7 +228,6 @@ static struct rtnl_link_ops ovpn_link_ops = {
- 	.policy = ovpn_policy,
- 	.maxtype = IFLA_OVPN_MAX,
- 	.newlink = ovpn_newlink,
--	.dellink = ovpn_dellink,
- 	.fill_info = ovpn_fill_info,
- };
- 
-diff --git a/drivers/net/ovpn/peer.c b/drivers/net/ovpn/peer.c
-index c02dfab51a6e..7bf912e40ee2 100644
---- a/drivers/net/ovpn/peer.c
-+++ b/drivers/net/ovpn/peer.c
-@@ -1034,14 +1034,29 @@ static int ovpn_peer_add_p2p(struct ovpn_priv *ovpn, struct ovpn_peer *peer)
-  */
- int ovpn_peer_add(struct ovpn_priv *ovpn, struct ovpn_peer *peer)
- {
-+	int ret = -ENODEV;
++static void lan966x_fdma_llp_configure(struct lan966x *lan966x, u64 addr,
++				       u8 channel_id)
++{
++	lan_wr(lower_32_bits(addr), lan966x, FDMA_DCB_LLP(channel_id));
++	lan_wr(upper_32_bits(addr), lan966x, FDMA_DCB_LLP1(channel_id));
++}
 +
-+	/* Prevent adding new peers while destroying the ovpn interface.
-+	 * Failing to do so would end up holding the device reference
-+	 * endlessly hostage of the new peer object with no chance of
-+	 * release..
-+	 */
-+	netdev_lock(ovpn->dev);
-+	if (ovpn->dev->reg_state != NETREG_REGISTERED)
-+		goto out;
-+
- 	switch (ovpn->mode) {
- 	case OVPN_MODE_MP:
--		return ovpn_peer_add_mp(ovpn, peer);
-+		ret = ovpn_peer_add_mp(ovpn, peer);
-+		break;
- 	case OVPN_MODE_P2P:
--		return ovpn_peer_add_p2p(ovpn, peer);
-+		ret = ovpn_peer_add_p2p(ovpn, peer);
-+		break;
- 	}
-+out:
-+	netdev_unlock(ovpn->dev);
+ static int lan966x_fdma_rx_alloc(struct lan966x_rx *rx)
+ {
+ 	struct lan966x *lan966x = rx->lan966x;
+@@ -127,6 +134,9 @@ static int lan966x_fdma_rx_alloc(struct lan966x_rx *rx)
+ 	fdma_dcbs_init(fdma, FDMA_DCB_INFO_DATAL(fdma->db_size),
+ 		       FDMA_DCB_STATUS_INTR);
  
--	return -EOPNOTSUPP;
-+	return ret;
++	lan966x_fdma_llp_configure(lan966x, (u64)fdma->dma,
++				   fdma->channel_id);
++
+ 	return 0;
  }
  
- /**
+@@ -136,14 +146,6 @@ static void lan966x_fdma_rx_start(struct lan966x_rx *rx)
+ 	struct fdma *fdma = &rx->fdma;
+ 	u32 mask;
+ 
+-	/* When activating a channel, first is required to write the first DCB
+-	 * address and then to activate it
+-	 */
+-	lan_wr(lower_32_bits((u64)fdma->dma), lan966x,
+-	       FDMA_DCB_LLP(fdma->channel_id));
+-	lan_wr(upper_32_bits((u64)fdma->dma), lan966x,
+-	       FDMA_DCB_LLP1(fdma->channel_id));
+-
+ 	lan_wr(FDMA_CH_CFG_CH_DCB_DB_CNT_SET(fdma->n_dbs) |
+ 	       FDMA_CH_CFG_CH_INTR_DB_EOF_ONLY_SET(1) |
+ 	       FDMA_CH_CFG_CH_INJ_PORT_SET(0) |
+@@ -214,6 +216,9 @@ static int lan966x_fdma_tx_alloc(struct lan966x_tx *tx)
+ 
+ 	fdma_dcbs_init(fdma, 0, 0);
+ 
++	lan966x_fdma_llp_configure(lan966x, (u64)fdma->dma,
++				   fdma->channel_id);
++
+ 	return 0;
+ 
+ out:
+@@ -235,14 +240,6 @@ static void lan966x_fdma_tx_activate(struct lan966x_tx *tx)
+ 	struct fdma *fdma = &tx->fdma;
+ 	u32 mask;
+ 
+-	/* When activating a channel, first is required to write the first DCB
+-	 * address and then to activate it
+-	 */
+-	lan_wr(lower_32_bits((u64)fdma->dma), lan966x,
+-	       FDMA_DCB_LLP(fdma->channel_id));
+-	lan_wr(upper_32_bits((u64)fdma->dma), lan966x,
+-	       FDMA_DCB_LLP1(fdma->channel_id));
+-
+ 	lan_wr(FDMA_CH_CFG_CH_DCB_DB_CNT_SET(fdma->n_dbs) |
+ 	       FDMA_CH_CFG_CH_INTR_DB_EOF_ONLY_SET(1) |
+ 	       FDMA_CH_CFG_CH_INJ_PORT_SET(0) |
+
 -- 
-2.53.0
+2.34.1
 
