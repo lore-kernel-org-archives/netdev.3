@@ -1,424 +1,284 @@
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70433D812B
-	for <netdev@vger.kernel.org>; Mon,  4 May 2026 13:07:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACC623D669C;
+	Mon,  4 May 2026 13:08:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777900077; cv=none; b=YSbhP50jY2I64JIuG4Nu3lrjPJ36VIsB2J6KB/D7mf1VetuWmZPIhha2VWOJ1rM2jieR2tIchIb8Nv3CUCxNwmbbs+acneEsnz3Ut3vk23FJlaLRyIP7TEpIjExoppdjDvzpvTg5uxkVUXtDGLH58lIScUojfKb0fk08XJ0RlaI=
+	t=1777900091; cv=none; b=YQU0O7UDAcq5H0PsEzOg42Jcn22gWobG5m4Xxc2/MOcxBYrOvzt26M+zpVZyUwzXEkBJKXVg0DZ4JZayJNBuwtj2y6xvBxv76w5TKUd4qoHEiNN3eV+++AAf7a2B9Jjoi+hON1+n21Ab5irob/h/Br6najOiODR+MlO1Fy3ysGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777900077; c=relaxed/simple;
-	bh=SfrLhYfvia58mIrqMwiqY24xvyzZfeN95GCFj9Ymlu8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eHtFqFkTDDTWs1OJsyPVP7tvD2j+HdS8TEWwOiBdVHVLwzBbqULBmw7y2zwSy+zsBZILiDKqfnNFMhXkQJzwTh2zScKtw+fwovYttY7+/CdapN17YEnzZh8vBP0vFu3vBHtTXAKVwILnEhtly/oV6Kpfp+mjVtoPaQFBQb5nfeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b=vRzD39VN; arc=none smtp.client-ip=209.85.219.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
+	s=arc-20240116; t=1777900091; c=relaxed/simple;
+	bh=sPshYyIxcAz8hrfwqvpPNCj9qnX2JlIamswsK1wX4Ro=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=GzUDBgqtP+3XXApkAmaF5s0jwJcQmmQa6PwmfAlqq7hafHt6fh8cZUtjIHWJU/LW0Kto6apAvBC9fczSICvInfTjWdul5A+7kD2dYyBgNfTihN6SKdbPeFHwMpEtPMG5D2mzL1Boe1oL9V5Z/n+BBwlq1C/nNHQHrckQKyR+tw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jyy3fLIH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b="vRzD39VN"
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-8b6c9fdb68cso17006166d6.2
-        for <netdev@vger.kernel.org>; Mon, 04 May 2026 06:07:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=riscstar-com.20251104.gappssmtp.com; s=20251104; t=1777900075; x=1778504875; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=orEuFxihbtCw78bb0MGSYlMJ0pgE+offZfO0F9CrVb0=;
-        b=vRzD39VN3deczejGqt9SufnxB8wHk6NHfv9oYhWXRya1NwOOjMIr9pvl/sNUvMCl9H
-         FOi1wFLMGpO1uG+7ISWuUgc9msPeJIczmqB/JK/kknw36JtsV1Iog4u/ZSQcDuZcwLdW
-         3crdaBslFVDS7hgCZcj0Ga1++6O3wReejN6gK2qSHNq0CB2w8thMmsCPbk37852ToJev
-         W14PGnDaI6D/WpVMtBJJILy2gxHKuZh2ppEJq3aRW9hwUJ9+G+JTC/mf9DX7+06Y/fl7
-         qq9mCTQYjdFGU+GBx6FzsXtT+MCOhrPDHsqpdEwrGLNgfM69naPCqIzNylOrB/g52E+E
-         GfUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777900075; x=1778504875;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=orEuFxihbtCw78bb0MGSYlMJ0pgE+offZfO0F9CrVb0=;
-        b=VqtRYMI8d4AF+6zHRK/xUxzjdfm+ogGyKxCJl8En9JioRalIspdyoJl5utxRQq48hz
-         L2prr6HIad8QPZoaXWazcVAMTSbTaKOm+/S4yYtiVqMQoSc6ls3Be+Pk1PE5/ky6AMok
-         NIRJ3+n7EgIyl0HV+RtTiP5UDJG2eq6Ihg8uUjl73avsC7gr8xzK1GfwqbDyK0r69pYI
-         X0ysjZfYvVi/1N6oHofht9K21oquFIdvm35eVvX9OkYnHBTy6dAbRKDIbcGQgbc2j4q2
-         +fZ1deu442ZjPQVkynTjbQTfW9NoouTl2fBjJOakXKzqUGDwiqGqamf763oNChOUcIHs
-         EpfA==
-X-Forwarded-Encrypted: i=1; AFNElJ+O8uvqkeu0FFWEl9G4cnGnAhm0qG8bOS+Qou8P5uRQxW0H9H+qDj6sB2lCoyjnC9cMNUhdGKg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8gzDcfJ57AeQk0B7Q54Dz3fy2rquOBo+YuAz4ynurnSpAzRyO
-	JPHHLvrXXFbCG1EChvBrUEPZwrFKzVliItuxWngTlP3fT3VLmdGtGE70jHGE0kgGUZU=
-X-Gm-Gg: AeBDieuFCychG+KQ5sMSte+IuueJPg+OrtaZpyAYiORiwKmtZbSmyMxnL+0gxooVZlB
-	yRZvX1yWSIeuSWR7pfIidr4/4CrKV46FcZZ/Xsg9qcmifN2BC4yG4+nuls1LhRSfejswDjMGZb1
-	I/W2+bpRhI+8T3A6tzx1foSQ3SYkoSq5TmrALqE3jtHZfBCnkGSSfWlg/xUUl2N/rwPGaxw04md
-	tQcya/J61DlptkrbcxgHErQ9XqA9tYut6JGmFGjH2u30oVM4AHC2Nab2kG7ciljyxvVowmyix3m
-	OD2Q1BH/zwbcsv5fEl2v5OyFUKKSReqrb7hnJ3Pz43CLV264adFE3ExnV0dj+jIYT8lu5MPqjAC
-	INA4dXszUvVQMSOTPurzxouJdOit3mKaE06Lrp7M8C7bE3X9BdGzBVvwfta1tC9N7QXu7QujDkt
-	INVTfmyjGqGhE4Q++7w7EJuA2ci0OCpM8KN/O7Ph3kt12GL5sjumVim6X80ViefESdOsGoij0+w
-	Q==
-X-Received: by 2002:a05:6214:5342:b0:8ac:b4d5:50ec with SMTP id 6a1803df08f44-8b668a1fafbmr160317526d6.38.1777900074368;
-        Mon, 04 May 2026 06:07:54 -0700 (PDT)
-Received: from [172.22.22.28] (c-75-72-117-212.hsd1.mn.comcast.net. [75.72.117.212])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b53c6b8398sm130363776d6.37.2026.05.04.06.07.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 May 2026 06:07:53 -0700 (PDT)
-Message-ID: <53fb87c9-25f3-4da1-aa7b-104c10c92a06@riscstar.com>
-Date: Mon, 4 May 2026 08:07:50 -0500
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jyy3fLIH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4141C2BCB8;
+	Mon,  4 May 2026 13:07:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777900091;
+	bh=sPshYyIxcAz8hrfwqvpPNCj9qnX2JlIamswsK1wX4Ro=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Jyy3fLIHTWcF7GqZHsoGTNOmvbdNHKnWeAllxFkcFFHqhGmkE5OVSTU0BUzKZV1jo
+	 kpsBhaDMDuc8mDEKxVA7Ye42o6ybbv/tlDSOcK7cCX/Nf3KojZpWsJdKH6a/hJyqby
+	 F1zavLDGDil7/M1JClL3JxCsw2rLTmE/9CS8s45mIQeLNeAQNFw7ZlLODrUwxjl2P8
+	 cViNwHWMhwak4+YeU3Qeb2fWdwMNmdE/s7ALuuF+sDXe7rqD7NExKI1RnlR0G2kjq6
+	 MfkFD5OP+MlxyBQvh8G5CfkMzaGV0/N0N0UJhcTzC2BA60nwausPsmmiinhXhtQgOL
+	 KhU7R3COkK5Ag==
+From: Sumit Garg <sumit.garg@kernel.org>
+To: andersson@kernel.org,
+	konradybcio@kernel.org
+Cc: linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	freedreno@lists.freedesktop.org,
+	linux-media@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	ath12k@lists.infradead.org,
+	linux-remoteproc@vger.kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	robin.clark@oss.qualcomm.com,
+	sean@poorly.run,
+	akhilpo@oss.qualcomm.com,
+	lumag@kernel.org,
+	abhinav.kumar@linux.dev,
+	jesszhan0024@gmail.com,
+	marijn.suijten@somainline.org,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	vikash.garodia@oss.qualcomm.com,
+	dikshita.agarwal@oss.qualcomm.com,
+	bod@kernel.org,
+	mchehab@kernel.org,
+	elder@kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	jjohnson@kernel.org,
+	mathieu.poirier@linaro.org,
+	trilokkumar.soni@oss.qualcomm.com,
+	mukesh.ojha@oss.qualcomm.com,
+	pavan.kondeti@oss.qualcomm.com,
+	jorge.ramirez@oss.qualcomm.com,
+	tonyh@qti.qualcomm.com,
+	vignesh.viswanathan@oss.qualcomm.com,
+	srinivas.kandagatla@oss.qualcomm.com,
+	amirreza.zarrabi@oss.qualcomm.com,
+	jens.wiklander@linaro.org,
+	op-tee@lists.trustedfirmware.org,
+	apurupa@qti.qualcomm.com,
+	skare@qti.qualcomm.com,
+	linux-kernel@vger.kernel.org,
+	Sumit Garg <sumit.garg@oss.qualcomm.com>
+Subject: [PATCH v5 05/16] remoteproc: qcom_q6v5_pas: Switch over to generic PAS TZ APIs
+Date: Mon,  4 May 2026 18:35:52 +0530
+Message-ID: <20260504130603.1474043-6-sumit.garg@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260504130603.1474043-1-sumit.garg@kernel.org>
+References: <20260504130603.1474043-1-sumit.garg@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 09/12] gpio: tc956x: add TC956x/QPS615 support
-To: Bartosz Golaszewski <brgl@kernel.org>
-Cc: daniel@riscstar.com, mohd.anwar@oss.qualcomm.com, a0987203069@gmail.com,
- alexandre.torgue@foss.st.com, ast@kernel.org, boon.khai.ng@altera.com,
- chenchuangyu@xiaomi.com, chenhuacai@kernel.org, daniel@iogearbox.net,
- hawk@kernel.org, hkallweit1@gmail.com, inochiama@gmail.com,
- john.fastabend@gmail.com, julianbraha@gmail.com, livelycarpet87@gmail.com,
- matthew.gerlach@altera.com, mcoquelin.stm32@gmail.com, me@ziyao.cc,
- prabhakar.mahadev-lad.rj@bp.renesas.com, richardcochran@gmail.com,
- rohan.g.thomas@altera.com, sdf@fomichev.me, siyanteng@cqsoftware.com.cn,
- weishangjuan@eswincomputing.com, wens@kernel.org, netdev@vger.kernel.org,
- bpf@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-gpio@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, maxime.chevallier@bootlin.com,
- rmk+kernel@armlinux.org.uk, andersson@kernel.org, konradybcio@kernel.org,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, linusw@kernel.org,
- arnd@arndb.de, gregkh@linuxfoundation.org
-References: <20260501155421.3329862-1-elder@riscstar.com>
- <20260501155421.3329862-10-elder@riscstar.com>
- <CAMRc=McWXCqyv1LmWMuEMmE3HqaURx_eMD8rkDs9AJT+7W2aYw@mail.gmail.com>
-Content-Language: en-US
-From: Alex Elder <elder@riscstar.com>
-In-Reply-To: <CAMRc=McWXCqyv1LmWMuEMmE3HqaURx_eMD8rkDs9AJT+7W2aYw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 5/4/26 7:46 AM, Bartosz Golaszewski wrote:
-> On Fri, 1 May 2026 17:54:17 +0200, Alex Elder <elder@riscstar.com> said:
->> Toshiba TC956x is an Ethernet-AVB/TSN bridge and is essentially
->> a small and highly-specialized SoC.  TC956x includes a GPIO block that
->> can be accessed, alongside several other peripherals, via two PCIe
->> endpoint functions.  The PCIe function driver creates an auxiliary
->> device for the GPIO block, and that device gets bound to this auxiliary
->> device driver.
->>
->> Co-developed-by: Daniel Thompson <daniel@riscstar.com>
->> Signed-off-by: Daniel Thompson <daniel@riscstar.com>
->> Signed-off-by: Alex Elder <elder@riscstar.com>
+From: Sumit Garg <sumit.garg@oss.qualcomm.com>
 
-Thanks Bartosz, I've got some responses below.
+Switch qcom_q6v5_pas client driver over to generic PAS TZ APIs. Generic PAS
+TZ service allows to support multiple TZ implementation backends like QTEE
+based SCM PAS service, OP-TEE based PAS service and any further future TZ
+backend service.
 
->> ---
->>   drivers/gpio/Kconfig       |  11 ++
->>   drivers/gpio/Makefile      |   1 +
->>   drivers/gpio/gpio-tc956x.c | 209 +++++++++++++++++++++++++++++++++++++
->>   3 files changed, 221 insertions(+)
->>   create mode 100644 drivers/gpio/gpio-tc956x.c
->>
->> diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
->> index 020e51e30317a..746cedea7e91d 100644
->> --- a/drivers/gpio/Kconfig
->> +++ b/drivers/gpio/Kconfig
->> @@ -1646,6 +1646,17 @@ config GPIO_TC3589X
->>   	  This enables support for the GPIOs found on the TC3589X
->>   	  I/O Expander.
->>
->> +config GPIO_TC956X
->> +	tristate "Toshiba TC956X GPIO support"
->> +	depends on TOSHIBA_TC956X_PCI
->> +	default m if TOSHIBA_TC956X_PCI
->> +	help
->> +	  This enables support for the GPIO controller embedded in the Toshiba
->> +	  TC956X (and Qualcomm QPS615).  This device connects to the host
->> +	  via PCIe port, which is the upstream port on an internal PCIe
->> +	  switch.  On some platforms, a few of the GPIO lines are used to
->> +	  manage external resets.
->> +
->>   config GPIO_TIMBERDALE
->>   	bool "Support for timberdale GPIO IP"
->>   	depends on MFD_TIMBERDALE
->> diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
->> index b267598b517de..c3584e7cba9b4 100644
->> --- a/drivers/gpio/Makefile
->> +++ b/drivers/gpio/Makefile
->> @@ -178,6 +178,7 @@ obj-$(CONFIG_GPIO_SYSCON)		+= gpio-syscon.o
->>   obj-$(CONFIG_GPIO_TANGIER)		+= gpio-tangier.o
->>   obj-$(CONFIG_GPIO_TB10X)		+= gpio-tb10x.o
->>   obj-$(CONFIG_GPIO_TC3589X)		+= gpio-tc3589x.o
->> +obj-$(CONFIG_GPIO_TC956X)		+= gpio-tc956x.o
->>   obj-$(CONFIG_GPIO_TEGRA186)		+= gpio-tegra186.o
->>   obj-$(CONFIG_GPIO_TEGRA)		+= gpio-tegra.o
->>   obj-$(CONFIG_GPIO_THUNDERX)		+= gpio-thunderx.o
->> diff --git a/drivers/gpio/gpio-tc956x.c b/drivers/gpio/gpio-tc956x.c
->> new file mode 100644
->> index 0000000000000..12221d8f812d9
->> --- /dev/null
->> +++ b/drivers/gpio/gpio-tc956x.c
->> @@ -0,0 +1,209 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +
->> +/*
->> + * Copyright (C) 2026 by RISCstar Solutions Corporation.  All rights reserved.
->> + */
->> +
->> +/*
->> + * The Toshiba TC956X implements a PCIe Gen 3 switch that connects an
->> + * upstream x4 port to two downstream PCIe x2 ports.  It incorporates
->> + * an internal endpoint on a internal PCIe port that implements two
->> + * Synopsys XGMAC Ethernet interfaces.
->> + *
->> + * 35 GPIOs are also implemented by an embedded GPIO controller.  Three
->> + * registers control the first 32 GPIOs (other than 20 and 21, which are
->> + * reserved).  Three other registers control GPIOs 32 through 36. GPIOs
->> + * 22-24, 27-28, 31, and 34 are treated as "input only".
->> + *
->> + * There is a TC956X PCI power controller driver that accesses the
->> + * direction and output value registers for GPIOs 2 and 3.  These
->> + * GPIOs control the reset signal for the two downstream PCIe ports.
->> + * Their values will never change during operation of this driver, and
->> + * this driver reserves these two GPIOS.
->> + */
->> +
->> +#include <linux/auxiliary_bus.h>
->> +#include <linux/dev_printk.h>
-> 
-> This is implied by device.h which is guarnteed by platform_device.h. Please
-> drop it.
+Reviewed-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+Tested-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com> # Lemans
+Signed-off-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
+---
+ drivers/remoteproc/qcom_q6v5_pas.c | 51 +++++++++++++++---------------
+ 1 file changed, 26 insertions(+), 25 deletions(-)
 
-OK, I'll drop it.
-
->> +#include <linux/gpio/driver.h>
->> +#include <linux/module.h>
->> +#include <linux/platform_device.h>
->> +#include <linux/regmap.h>
->> +
->> +#define DRIVER_NAME		"tc956x-gpio"
->> +
->> +#define TC956X_GPIO_COUNT	37	/* Number of GPIOs (20-21 reserved) */
->> +
->> +/* The GPIO offsets are relative to 0x1200 in TC956X SFR space */
->> +#define GPIO_IN0_OFFSET		0x00		/* Input value (0-31) */
->> +#define GPIO_EN0_OFFSET		0x08		/* 0: out; 1: in (0-31) */
->> +#define GPIO_OUT0_OFFSET	0x10		/* Output value (0-31) */
->> +
->> +#define GPIO_IN1_OFFSET		0x04		/* Input value (32-36) */
->> +#define GPIO_EN1_OFFSET		0x0c		/* 0: out; 1: in (32-36) */
->> +#define GPIO_OUT1_OFFSET	0x14		/* Output value (32-36) */
->> +
->> +/*
->> + * struct tc956x_gpio - Information related to the embedded GPIO controller
->> + * @chip:		GPIO chip structure
->> + * @regmap:		MMIO register map for SFR GPIO region access
->> + * @input_only:		Bitmap indicating which GPIOs are input-only
->> + */
->> +struct tc956x_gpio {
->> +	struct gpio_chip chip;
->> +	struct regmap *regmap;
->> +	DECLARE_BITMAP(input_only, TC956X_GPIO_COUNT);
->> +};
->> +
->> +static int tc956x_gpio_get_direction(struct gpio_chip *gc, unsigned int offset)
->> +{
->> +	struct tc956x_gpio *gpio = gpiochip_get_data(gc);
->> +	u32 reg;
->> +	u32 val;
->> +
->> +	if (test_bit(offset, gpio->input_only))
->> +		return GPIO_LINE_DIRECTION_IN;
->> +
->> +	reg = offset < 32 ? GPIO_EN0_OFFSET : GPIO_EN1_OFFSET;
->> +
->> +	regmap_read(gpio->regmap, reg, &val);
->> +	if (val & BIT(offset % 32))
->> +		return GPIO_LINE_DIRECTION_IN;
->> +
->> +	return GPIO_LINE_DIRECTION_OUT;
->> +}
->> +
->> +static int tc956x_gpio_direction_input(struct gpio_chip *gc,
->> +				       unsigned int offset)
->> +{
->> +	u32 reg = offset < 32 ? GPIO_EN0_OFFSET : GPIO_EN1_OFFSET;
->> +	struct tc956x_gpio *gpio = gpiochip_get_data(gc);
->> +	u32 mask = BIT(offset % 32);
->> +
->> +	return regmap_update_bits(gpio->regmap, reg, mask, mask);
->> +}
->> +
->> +static int tc956x_gpio_direction_output(struct gpio_chip *gc,
->> +					unsigned int offset, int value)
->> +{
->> +	struct tc956x_gpio *gpio = gpiochip_get_data(gc);
->> +	u32 vreg;
->> +	u32 dreg;
->> +	u32 mask;
->> +
->> +	if (test_bit(offset, gpio->input_only))
->> +		return -EINVAL;
->> +
->> +	if (offset < 32) {
->> +		vreg = GPIO_OUT0_OFFSET;
->> +		dreg = GPIO_EN0_OFFSET;
->> +	} else {
->> +		vreg = GPIO_OUT1_OFFSET;
->> +		dreg = GPIO_EN1_OFFSET;
->> +	}
->> +	mask = BIT(offset % 32);
->> +
->> +	/* Set output value first, then direction */
->> +	regmap_update_bits(gpio->regmap, vreg, mask, value ? mask : 0);
->> +
->> +	return regmap_update_bits(gpio->regmap, dreg, mask, 0);
->> +}
->> +
->> +static int tc956x_gpio_get(struct gpio_chip *gc, unsigned int offset)
->> +{
->> +	u32 reg = offset < 32 ? GPIO_IN0_OFFSET : GPIO_IN1_OFFSET;
->> +	struct tc956x_gpio *gpio = gpiochip_get_data(gc);
->> +	u32 val;
->> +
->> +	regmap_read(gpio->regmap, reg, &val);
->> +
->> +	return val & BIT(offset % 32) ? 1 : 0;
->> +}
->> +
->> +static int tc956x_gpio_set(struct gpio_chip *gc, unsigned int offset, int value)
->> +{
->> +	u32 reg = offset < 32 ? GPIO_OUT0_OFFSET : GPIO_OUT1_OFFSET;
->> +	struct tc956x_gpio *gpio = gpiochip_get_data(gc);
->> +	u32 mask = BIT(offset % 32);
->> +
->> +	return regmap_update_bits(gpio->regmap, reg, mask, value ? mask : 0);
->> +}
->> +
->> +static int tc956x_gpio_init_valid_mask(struct gpio_chip *gc,
->> +				       unsigned long *valid_mask,
->> +				       unsigned int ngpios)
->> +{
->> +	/*
->> +	 * GPIOs 2 and 3 are used by the PCI power control driver, and
->> +	 * we don't allow them to be used.  GPIOs 20 and 21 are reserved
->> +	 * (and not usable).
->> +	 */
->> +	bitmap_fill(valid_mask, ngpios);
->> +	bitmap_clear(valid_mask, 2, 2);
->> +	bitmap_clear(valid_mask, 20, 2);
->> +
->> +	return 0;
->> +}
->> +
->> +static int tc956x_gpio_probe(struct auxiliary_device *adev,
->> +			     const struct auxiliary_device_id *id)
->> +{
->> +	struct device *dev = &adev->dev;
->> +	struct tc956x_gpio *gpio;
->> +	struct gpio_chip *gc;
->> +
->> +	if (!dev->platform_data)
->> +		return -EINVAL;
->> +
->> +	gpio = devm_kzalloc(dev, sizeof(*gpio), GFP_KERNEL);
->> +	if (!gpio)
->> +		return -ENOMEM;
-> 
-> Add newline.
-
-I will add a newline here.
-
-> 
->> +	gpio->regmap = dev->platform_data;
-> 
-> It's not clear whether this is an mmio regmap or a slow-bus one that can fail.
-> In the code above you're checking the return values of regmap operations quite
-> inconsistently. Could you please verify if you need it and either always check
-> them or not at all?
-
-You're right.  I'm returning the result of regmap_update_bits()
-from two callback functions.  But yes, this is an MMIO regmap.
-
-I will return 0 and ignore the return value of regmap_update_bits()
-in those spots, and will add some comments that make it clear that
-this is an MMIO regmap.
-
->> +
->> +	/* Mark GPIOs 22, 23, 24, 27, 28, 31, and 34 as input only */
->> +	bitmap_set(gpio->input_only, 22, 3);
->> +	bitmap_set(gpio->input_only, 27, 2);
->> +	set_bit(31, gpio->input_only);
->> +	set_bit(34, gpio->input_only);
->> +
->> +	gc = &gpio->chip;
->> +
->> +	gc->label = DRIVER_NAME;
->> +	gc->parent = dev->parent;
->> +
->> +	gc->get_direction = tc956x_gpio_get_direction;
->> +	gc->direction_input = tc956x_gpio_direction_input;
->> +	gc->direction_output = tc956x_gpio_direction_output;
->> +	gc->get = tc956x_gpio_get;
->> +	gc->set = tc956x_gpio_set;
->> +	gc->init_valid_mask = tc956x_gpio_init_valid_mask;
->> +
->> +	gc->base = -1;
->> +	gc->ngpio = TC956X_GPIO_COUNT;
->> +	gc->can_sleep = false;
-> 
-> This makes me think this is an MMIO regmap after all.
-
-You are correct.
-
-> 
->> +
->> +	dev_set_drvdata(dev, gpio);
-> 
-> There's no corresponding dev_get_drvdata().
-
-I hadn't noticed that.  We're only using the GPIO chip data
-field (gc->gpiodev->data) instead.  I'll drop this call.
-
->> +
->> +	return devm_gpiochip_add_data(dev, gc, gpio);
->> +}
->> +
->> +static const struct auxiliary_device_id tc956x_gpio_ids[] = {
->> +	{ .name = "tc956x_pci.tc9564-gpio", },
->> +	{ }
->> +};
->> +MODULE_DEVICE_TABLE(auxiliary, tc956x_gpio_ids);
->> +
->> +static struct auxiliary_driver tc956x_gpio_driver = {
->> +	.name		= DRIVER_NAME,
->> +	.probe          = tc956x_gpio_probe,
->> +	.id_table       = tc956x_gpio_ids,
->> +	.driver = {
->> +		.name		= DRIVER_NAME,
->> +		.owner		= THIS_MODULE,
->> +		.probe_type	= PROBE_PREFER_ASYNCHRONOUS,
->> +	},
->> +};
->> +module_auxiliary_driver(tc956x_gpio_driver);
->> +
->> +MODULE_DESCRIPTION("Toshiba TC956X PCIe GPIO Driver");
->> +MODULE_LICENSE("GPL");
->> +MODULE_ALIAS("auxiliary:" DRIVER_NAME);
->> --
->> 2.51.0
->>
->>
-> 
-> There are a few minor issues but overall looks good!
-
-Thank you very much for the review Bartosz.  I'll implement
-all of your suggestions in the next version.
-
-					-Alex
-
-
-> 
-> Bart
+diff --git a/drivers/remoteproc/qcom_q6v5_pas.c b/drivers/remoteproc/qcom_q6v5_pas.c
+index da27d1d3c9da..847249c28c1b 100644
+--- a/drivers/remoteproc/qcom_q6v5_pas.c
++++ b/drivers/remoteproc/qcom_q6v5_pas.c
+@@ -20,6 +20,7 @@
+ #include <linux/platform_device.h>
+ #include <linux/pm_domain.h>
+ #include <linux/pm_runtime.h>
++#include <linux/firmware/qcom/qcom_pas.h>
+ #include <linux/firmware/qcom/qcom_scm.h>
+ #include <linux/regulator/consumer.h>
+ #include <linux/remoteproc.h>
+@@ -118,8 +119,8 @@ struct qcom_pas {
+ 	struct qcom_rproc_ssr ssr_subdev;
+ 	struct qcom_sysmon *sysmon;
+ 
+-	struct qcom_scm_pas_context *pas_ctx;
+-	struct qcom_scm_pas_context *dtb_pas_ctx;
++	struct qcom_pas_context *pas_ctx;
++	struct qcom_pas_context *dtb_pas_ctx;
+ };
+ 
+ static void qcom_pas_segment_dump(struct rproc *rproc,
+@@ -196,7 +197,7 @@ static int qcom_pas_shutdown_poll_decrypt(struct qcom_pas *pas)
+ 
+ 	do {
+ 		msleep(QCOM_PAS_DECRYPT_SHUTDOWN_DELAY_MS);
+-		ret = qcom_scm_pas_shutdown(pas->pas_id);
++		ret = qcom_pas_shutdown(pas->pas_id);
+ 	} while (ret == -EINVAL && --retry_num);
+ 
+ 	return ret;
+@@ -212,9 +213,9 @@ static int qcom_pas_unprepare(struct rproc *rproc)
+ 	 * auth_and_reset() was successful, but in other cases clean it up
+ 	 * here.
+ 	 */
+-	qcom_scm_pas_metadata_release(pas->pas_ctx);
++	qcom_pas_metadata_release(pas->pas_ctx);
+ 	if (pas->dtb_pas_id)
+-		qcom_scm_pas_metadata_release(pas->dtb_pas_ctx);
++		qcom_pas_metadata_release(pas->dtb_pas_ctx);
+ 
+ 	return 0;
+ }
+@@ -228,9 +229,9 @@ static int qcom_pas_load(struct rproc *rproc, const struct firmware *fw)
+ 	pas->firmware = fw;
+ 
+ 	if (pas->lite_pas_id)
+-		qcom_scm_pas_shutdown(pas->lite_pas_id);
++		qcom_pas_shutdown(pas->lite_pas_id);
+ 	if (pas->lite_dtb_pas_id)
+-		qcom_scm_pas_shutdown(pas->lite_dtb_pas_id);
++		qcom_pas_shutdown(pas->lite_dtb_pas_id);
+ 
+ 	if (pas->dtb_pas_id) {
+ 		ret = request_firmware(&pas->dtb_firmware, pas->dtb_firmware_name, pas->dev);
+@@ -250,7 +251,7 @@ static int qcom_pas_load(struct rproc *rproc, const struct firmware *fw)
+ 	return 0;
+ 
+ release_dtb_metadata:
+-	qcom_scm_pas_metadata_release(pas->dtb_pas_ctx);
++	qcom_pas_metadata_release(pas->dtb_pas_ctx);
+ 	release_firmware(pas->dtb_firmware);
+ 
+ 	return ret;
+@@ -310,7 +311,7 @@ static int qcom_pas_start(struct rproc *rproc)
+ 		if (ret)
+ 			goto disable_px_supply;
+ 
+-		ret = qcom_scm_pas_prepare_and_auth_reset(pas->dtb_pas_ctx);
++		ret = qcom_pas_prepare_and_auth_reset(pas->dtb_pas_ctx);
+ 		if (ret) {
+ 			dev_err(pas->dev,
+ 				"failed to authenticate dtb image and release reset\n");
+@@ -329,7 +330,7 @@ static int qcom_pas_start(struct rproc *rproc)
+ 	if (ret)
+ 		goto release_pas_metadata;
+ 
+-	ret = qcom_scm_pas_prepare_and_auth_reset(pas->pas_ctx);
++	ret = qcom_pas_prepare_and_auth_reset(pas->pas_ctx);
+ 	if (ret) {
+ 		dev_err(pas->dev,
+ 			"failed to authenticate image and release reset\n");
+@@ -339,13 +340,13 @@ static int qcom_pas_start(struct rproc *rproc)
+ 	ret = qcom_q6v5_wait_for_start(&pas->q6v5, msecs_to_jiffies(5000));
+ 	if (ret == -ETIMEDOUT) {
+ 		dev_err(pas->dev, "start timed out\n");
+-		qcom_scm_pas_shutdown(pas->pas_id);
++		qcom_pas_shutdown(pas->pas_id);
+ 		goto unmap_carveout;
+ 	}
+ 
+-	qcom_scm_pas_metadata_release(pas->pas_ctx);
++	qcom_pas_metadata_release(pas->pas_ctx);
+ 	if (pas->dtb_pas_id)
+-		qcom_scm_pas_metadata_release(pas->dtb_pas_ctx);
++		qcom_pas_metadata_release(pas->dtb_pas_ctx);
+ 
+ 	/* firmware is used to pass reference from qcom_pas_start(), drop it now */
+ 	pas->firmware = NULL;
+@@ -355,9 +356,9 @@ static int qcom_pas_start(struct rproc *rproc)
+ unmap_carveout:
+ 	qcom_pas_unmap_carveout(rproc, pas->mem_phys, pas->mem_size);
+ release_pas_metadata:
+-	qcom_scm_pas_metadata_release(pas->pas_ctx);
++	qcom_pas_metadata_release(pas->pas_ctx);
+ 	if (pas->dtb_pas_id)
+-		qcom_scm_pas_metadata_release(pas->dtb_pas_ctx);
++		qcom_pas_metadata_release(pas->dtb_pas_ctx);
+ 
+ unmap_dtb_carveout:
+ 	if (pas->dtb_pas_id)
+@@ -406,7 +407,7 @@ static int qcom_pas_stop(struct rproc *rproc)
+ 	if (ret == -ETIMEDOUT)
+ 		dev_err(pas->dev, "timed out on wait\n");
+ 
+-	ret = qcom_scm_pas_shutdown(pas->pas_id);
++	ret = qcom_pas_shutdown(pas->pas_id);
+ 	if (ret && pas->decrypt_shutdown)
+ 		ret = qcom_pas_shutdown_poll_decrypt(pas);
+ 
+@@ -414,7 +415,7 @@ static int qcom_pas_stop(struct rproc *rproc)
+ 		dev_err(pas->dev, "failed to shutdown: %d\n", ret);
+ 
+ 	if (pas->dtb_pas_id) {
+-		ret = qcom_scm_pas_shutdown(pas->dtb_pas_id);
++		ret = qcom_pas_shutdown(pas->dtb_pas_id);
+ 		if (ret)
+ 			dev_err(pas->dev, "failed to shutdown dtb: %d\n", ret);
+ 
+@@ -484,11 +485,11 @@ static int qcom_pas_parse_firmware(struct rproc *rproc, const struct firmware *f
+ 	 *
+ 	 * Here, we call rproc_elf_load_rsc_table() to check firmware binary has resources
+ 	 * or not and if it is not having then we pass NULL and zero as input resource
+-	 * table pointer and size respectively to the argument of qcom_scm_pas_get_rsc_table()
++	 * table pointer and size respectively to the argument of qcom_pas_get_rsc_table()
+ 	 * and this is even true for Qualcomm remote processor who does follow remoteproc
+ 	 * framework.
+ 	 */
+-	output_rt = qcom_scm_pas_get_rsc_table(pas->pas_ctx, table, table_sz, &output_rt_size);
++	output_rt = qcom_pas_get_rsc_table(pas->pas_ctx, table, table_sz, &output_rt_size);
+ 	ret = IS_ERR(output_rt) ? PTR_ERR(output_rt) : 0;
+ 	if (ret) {
+ 		dev_err(pas->dev, "Error in getting resource table: %d\n", ret);
+@@ -746,7 +747,7 @@ static int qcom_pas_probe(struct platform_device *pdev)
+ 	if (!desc)
+ 		return -EINVAL;
+ 
+-	if (!qcom_scm_is_available())
++	if (!qcom_pas_is_available())
+ 		return -EPROBE_DEFER;
+ 
+ 	fw_name = desc->firmware_name;
+@@ -838,16 +839,16 @@ static int qcom_pas_probe(struct platform_device *pdev)
+ 
+ 	qcom_add_ssr_subdev(rproc, &pas->ssr_subdev, desc->ssr_name);
+ 
+-	pas->pas_ctx = devm_qcom_scm_pas_context_alloc(pas->dev, pas->pas_id,
+-						       pas->mem_phys, pas->mem_size);
++	pas->pas_ctx = devm_qcom_pas_context_alloc(pas->dev, pas->pas_id,
++						   pas->mem_phys, pas->mem_size);
+ 	if (IS_ERR(pas->pas_ctx)) {
+ 		ret = PTR_ERR(pas->pas_ctx);
+ 		goto remove_ssr_sysmon;
+ 	}
+ 
+-	pas->dtb_pas_ctx = devm_qcom_scm_pas_context_alloc(pas->dev, pas->dtb_pas_id,
+-							   pas->dtb_mem_phys,
+-							   pas->dtb_mem_size);
++	pas->dtb_pas_ctx = devm_qcom_pas_context_alloc(pas->dev, pas->dtb_pas_id,
++						       pas->dtb_mem_phys,
++						       pas->dtb_mem_size);
+ 	if (IS_ERR(pas->dtb_pas_ctx)) {
+ 		ret = PTR_ERR(pas->dtb_pas_ctx);
+ 		goto remove_ssr_sysmon;
+-- 
+2.51.0
 
