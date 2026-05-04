@@ -1,43 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C21653630A8;
-	Mon,  4 May 2026 23:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82A72264A9;
+	Mon,  4 May 2026 23:53:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777938545; cv=none; b=j5aTPfkGYuqYmWTaDi/3mPtjL/F4+E2NrR3o5mWnrapXsrBPhHN2i/czvUsFThSJzrlvmQeVY8slKUz8xqSQpwtjJAjqsUZZBCkW0T4A7blbMh72CWWcKWv9Or1xF9Y2EfFXV60RT1iQ0ytCODd6N5H1fQxmdykwQrookhDjYOY=
+	t=1777938781; cv=none; b=H1e6OCL7FPH68jyjpRbEDgKdcgacTs75WYbUFhL7O3XQB4DPxpP0BTlG6+Khr5NUlM1gQX35HsfHVX2ILDiqWJMT5En6jorvBeUrph1MP9yXrUisUoCLtTNw7J/2zjFSxJOL5llxyt2EVZzE0Q7fzR28JazCI+UiAcf/LzN1QW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777938545; c=relaxed/simple;
-	bh=1YEgTXFnNhsezPKG1SL44lFyIWkcrIRXOaIiyF2/U/I=;
+	s=arc-20240116; t=1777938781; c=relaxed/simple;
+	bh=KAOd1V9M6ZWqHCSjDNjv4F8nmp8wTumJhk0Vw3mgNZc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=k6CNCowatv9NZmMOVYiBmczlRWbXoBR1YV6M+BXceFkLjneoqqSQ18Y+x5qHUjTkupBkDprq/tJFnh7cjtpZQj33B6GXH0pfYutgFS9kho//n+bn05D5Hb0n438EgcVBOIcNfDG32yZtVcoUEcyf+Xz4A1a4sacSD6HuZrxYTds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=olEPb3Bk; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=hFk+6mTWv9GLivU29MSNSHy3YQ1r7RIMCdXgWE+U7BLDXAqeNVOEJgFZkYtwCv0kDuqo8GUYn25gO8tx8qRrgAXLTXrrGuyTRmfRgRYYINlobdTv0TRCljy0fhdr4tKtkFyEqGw60i0CXEExursSmtyO0KK2rrTAAKK89HPOx+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u8uWwS7Q; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="olEPb3Bk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2479C2BCB9;
-	Mon,  4 May 2026 23:49:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u8uWwS7Q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6C2FC2BCB8;
+	Mon,  4 May 2026 23:52:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777938545;
-	bh=1YEgTXFnNhsezPKG1SL44lFyIWkcrIRXOaIiyF2/U/I=;
+	s=k20201202; t=1777938781;
+	bh=KAOd1V9M6ZWqHCSjDNjv4F8nmp8wTumJhk0Vw3mgNZc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=olEPb3BkVZSMdwvb8IksdtZmYho7UQAw/qi3eGEGkFvEXIcFdKAb5a9heqA2UxJXQ
-	 Pgtx3l6JBOZZs+U2A7Eq6gUFuCrvnWoOlrcfTZKgC4mANd0kINogsaJBjgMfBDyQkx
-	 KcwM1yqw41GiCipWVyHOrsbnxMDxz/4FXOpyh69dt3nH/hxUjADAp/3jgmNO8pmnvF
-	 /1ntDLWbav4ikzuuQpSpzFotHxIIHiU9pwAN9u7ONp4SZbfLm0V1QRh1EaUhqZgj9a
-	 vMa/3wLzdMDxZv3ifTkmxxfxylh9VemKeQScdxkTdzHN2xmbucBZwL1RgdPko6lE2F
-	 seY27d5owCHBg==
-Date: Mon, 4 May 2026 16:49:01 -0700
+	b=u8uWwS7Qzn6wA7JSIKsO0sKF2G+VlRXqBQsxSe4/fk6fahgfaVOW656JguZiNUqKS
+	 5DI3BzNywNszZ40oGTo4QRBrzSBkYXrkofQAgNUt2mCNgeNas0njNZz69IMCg65Btp
+	 mvTgVaMcx5+wQXbFZagAhoVv/l+WlDwpF3KelSs+X2TRsa00lydA4dz1J5jsuqSA4T
+	 4vkf6nMFPbzHSA/66+CjKd0leHCoJmWc3K1cWmQ/2Skquvu0YHLt6PCdDmQF96DxlQ
+	 RROPDH/Gp1CrLd8pZryGatPE9Oy76gKptmGL6wQXWBrPjdo0MaA0bLXfeptNxCvEAR
+	 QcwJBcsO5earw==
+Date: Mon, 4 May 2026 16:52:58 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Jon Kohler <jon@nutanix.com>
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel
- <przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, intel-wired-lan@lists.osuosl.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] e1000e: ethtool: add get_channels support
-Message-ID: <20260504164901.7b3a737b@kernel.org>
-In-Reply-To: <20260504154823.2535612-1-jon@nutanix.com>
-References: <20260504154823.2535612-1-jon@nutanix.com>
+To: Daniel Machon <daniel.machon@microchip.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Steen Hegelund <Steen.Hegelund@microchip.com>,
+ <UNGLinuxDriver@microchip.com>, "Sebastian Andrzej Siewior"
+ <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, Steven
+ Rostedt <rostedt@goodmis.org>, Bjarni Jonasson
+ <bjarni.jonasson@microchip.com>, Lars Povlsen <lars.povlsen@microchip.com>,
+ Philipp Zabel <p.zabel@pengutronix.de>, <linux-kernel@vger.kernel.org>,
+ <netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+ <linux-rt-devel@lists.linux.dev>
+Subject: Re: [PATCH net 2/4] net: sparx5: fix sleep in atomic context in MAC
+ table access
+Message-ID: <20260504165258.30b81158@kernel.org>
+In-Reply-To: <20260504-misc-fixes-sparx5-lan969x-v1-2-6604306b5743@microchip.com>
+References: <20260504-misc-fixes-sparx5-lan969x-v1-0-6604306b5743@microchip.com>
+	<20260504-misc-fixes-sparx5-lan969x-v1-2-6604306b5743@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,10 +54,11 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon,  4 May 2026 08:48:23 -0700 Jon Kohler wrote:
-> e1000e hardware supports a single RX/TX queue pair, add basic support
-> for ethtool -l (i.e. get_channels), so that callers indeed see a single
-> queue.
+On Mon, 4 May 2026 16:43:43 +0200 Daniel Machon wrote:
+> sparx5_mact_learn() is called from .ndo_set_rx_mode with
+> netif_addr_lock_bh held, but takes sparx5->lock which is a mutex.
+> A mutex may block, which is not allowed from atomic context.
 
-Why? Isn't EOPNOTSUP from ethtool -l implicitly saying that there's
-only one queue?
+Could you try to switch to the recently added ndo_set_rx_mode_async?
+We added it exactly because most drivers have to sleep / wait for FW
+to do something.
