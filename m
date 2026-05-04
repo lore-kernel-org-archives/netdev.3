@@ -1,173 +1,127 @@
-Received: from mx0a-00190b01.pphosted.com (mx0a-00190b01.pphosted.com [67.231.149.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f48.google.com (mail-yx1-f48.google.com [74.125.224.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFF3E168BD;
-	Mon,  4 May 2026 11:15:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.149.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777893343; cv=none; b=aUygSPMjegtI74U3M+RQDyl0UMjjADkOmwCX/woMf/aqJwL4Isk/IwpXvt5cWE4QL+6Cr3Ud36GXCamd6QI/UoJZpbLb9gVtO13sLj3h7U8fGbWMddwOguC4e3gq1v+JUlG8Te/vo0EMs/LUPYkJLf179Qsrj3pxtXArS6nxqrI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777893343; c=relaxed/simple;
-	bh=4osoaC9ULRt+4TLmPswqg2KcCVPsZe/vyQEqG0SoY1U=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=uQfcJAKW99S7vYBk/D+uMN0cfoPKsenbbEW2Jz+ho/+6mi3jFzJ5CcCH6dzUuj8GkNLYF7nxnKHqMoKnbLWrKOXwlr7AatSIWV/EnGiuDO7xIrT3bxOEv6Az3KH/viTDeR0TTbbaECTNCOO93Bs7dZT//n0YWUCd959zTf1fxG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=akamai.com; spf=pass smtp.mailfrom=akamai.com; dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b=etnPPRaE; arc=none smtp.client-ip=67.231.149.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=akamai.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=akamai.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED0937E2EF
+	for <netdev@vger.kernel.org>; Mon,  4 May 2026 11:19:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777893551; cv=pass; b=tBA+UzAekTlC0V41ehDp4AgHtk5h6Q7N+iXX7XdkVe7HTIeE2Rql3FB6Dsy6fVd2nHatxWj+LozS7ADgGdcBanwxXdGvWrmyiYlx03NI+7vh/Fzkypt4vPNlqXl8WoPQ+1wrhPkRjshZ3IRcCxLaj/bhXwGxCY11fkSLwCMi8SM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777893551; c=relaxed/simple;
+	bh=ZzvoZyDaV+9GQ9a6TuOYJKQ0Evbo9uBsNcTG1aZxwVY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sKFrgaf+gGdIXzFyuptQ3Hy972Irid3AgUPk4yArcUdi6RMQSrgV1zYMNTmWlZmimQb7irDrnDfmd0HZo/gZ0eFrCcZGat9+E593XfdLtZPfS5dqYNQIOQoWwFUfwlQKjNDNgPYMypfrvOoW75Ot5VXKgJXHm9YkB9peMQvk//U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L2eGRh8z; arc=pass smtp.client-ip=74.125.224.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b="etnPPRaE"
-Received: from pps.filterd (m0050093.ppops.net [127.0.0.1])
-	by m0050093.ppops.net-00190b01. (8.18.1.11/8.18.1.11) with ESMTP id 643MqLk02006127;
-	Mon, 4 May 2026 11:18:04 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=akamai.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=jan2016.eng; bh=pvoGKj2RPkl+IEzPTmKy0HEr6NZA0fp/3
-	u8yXbIUFOw=; b=etnPPRaEaRAALa0gxqZLGS1byuCzA3bkCT+CrjcIm8RLO3e/t
-	lT7vtJ319g1wf4ZR1r0OteqKrgIE6VQzWA9fK0pD62rYazcOC7EXvVeC+w6fkgY4
-	akvZ+5BJg+/l+WtSH6q+IgEH18v86YT3gDkzVwTgTa7Bxsq4k+BNW8iQV0Ey84Ym
-	0cXzUcvgq4M/NaoE2OHoz/V90MpyQkYEKiXnBMb6pD4eaYChtMziFMv23Qn1fdoH
-	8iefVFC3RA3gkNdLSWQbR9FTOZ9PYHb8kws7gYCz1+xzmPjYYRI8cAcq+4yfrtqz
-	Zib1GniI4cw/qpOugrUE0QmVCvTk9d5AW8ttw==
-Received: from prod-mail-ppoint6 (prod-mail-ppoint6.akamai.com [184.51.33.61])
-	by m0050093.ppops.net-00190b01. (PPS) with ESMTPS id 4dw8hp8vd0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 04 May 2026 11:18:03 +0100 (BST)
-Received: from pps.filterd (prod-mail-ppoint6.akamai.com [127.0.0.1])
-	by prod-mail-ppoint6.akamai.com (8.18.1.7/8.18.1.7) with ESMTP id 644ACCZm014212;
-	Mon, 4 May 2026 06:18:02 -0400
-Received: from prod-mail-relay01.akamai.com ([172.27.118.31])
-	by prod-mail-ppoint6.akamai.com (PPS) with ESMTP id 4dwckxf3fu-1;
-	Mon, 04 May 2026 06:18:02 -0400 (EDT)
-Received: from muc-lhvdhd.munich.corp.akamai.com (muc-lhvdhd.munich.corp.akamai.com [172.29.0.147])
-	by prod-mail-relay01.akamai.com (Postfix) with ESMTP id 5113984;
-	Mon,  4 May 2026 10:18:01 +0000 (UTC)
-From: Nick Hudson <nhudson@akamai.com>
-To: bpf@vger.kernel.org, netdev@vger.kernel.org,
-        Willem de Bruijn <willemb@google.com>,
-        Martin KaFai Lau <martin.lau@linux.dev>
-Cc: Nick Hudson <nhudson@akamai.com>, Max Tottenham <mtottenh@akamai.com>,
-        Anna Glasgall <aglasgal@akamai.com>
-Subject: [PATCH bpf-next v6 0/6] bpf: decap flags and GSO state updates
-Date: Mon,  4 May 2026 11:17:53 +0100
-Message-Id: <20260504101759.3319427-1-nhudson@akamai.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L2eGRh8z"
+Received: by mail-yx1-f48.google.com with SMTP id 956f58d0204a3-65c305f381eso2560366d50.3
+        for <netdev@vger.kernel.org>; Mon, 04 May 2026 04:19:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777893549; cv=none;
+        d=google.com; s=arc-20240605;
+        b=XEornxXFYnIVzo0ISYodTr4JfElZmN19GIAyR5YW78GJDPCcWqMJcWjvdn8x2hcgE/
+         6eJDNHZIm9kfwhYhVHqOdW7Q7t4vDm2XDNi0Cu735GoUYwbvo+JEIhvO+jPfK0pxsV2L
+         /AKoPVwdP3DqDNEcTOQVqVX4qA1cjMOXEJ/IQNzNbD7izN3YdsYzPtFvNu9yY3csuyZz
+         VeF1MY/oqFfsAyFVk73qgVneBn7RCgTGTRTznr0j96LKAgST6bAWe9qvW2f4pIpDYkeQ
+         GfAdMGU54fF55607qUlqpAhNOWXj8kuuqw7FbEHhcZtTyOocJdzGOc6nwk5xGFlH4MvS
+         pgDw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=GUktrT8GuU0q956SxbwjSrFItR1lGCQYJxE8ZlZEKXc=;
+        fh=9hlgN5zvPeNufJrx7ubzI881Hbl40jgy6tGq0Y7VdCg=;
+        b=deNHS4kKZuAXJ/IDwHBlc/mVaPIzUFTbeTEfEXIm/mqNVK4NoAcn9K9T3In2iEePF5
+         ntpzaThhVcdbUUQxEUyWUSsa9F+woQMM9dbNwRh+CnyDRwHS8EupAkJRSQBj6XosXd+u
+         DsK1BAqm7L8qf2bJ6kW1bPZeLK4DUPHtCWd5c9v3TBVAxp6Werg4tXyMcuCZZdMAnBKw
+         Vzwp2sTFAnqd9PKoyWZNqSEZIkuR3HYXCfsrpyd/aYbDi2GkOBwmay3FU7Ha6zUVPZHJ
+         5PxLG28EtDXqd/3L/9cvI4H624cdJVm5G6csi/teRFBQXfjmUBnaW4VRzsbMw7kDjDrX
+         EMyA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777893549; x=1778498349; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GUktrT8GuU0q956SxbwjSrFItR1lGCQYJxE8ZlZEKXc=;
+        b=L2eGRh8zHnK1Ed00MAOaMxx7Setfh4ohIzZspAHSkdMRHG7ougdq94LTquV5beH+e5
+         YkSx2oEwDYi45SYxc0VkorpcHIYbp4UCOddj1CiHPP2a573cjoKtVc3aXIig701ZsoFW
+         s2KnRxH9yv5aH1JSLLBOmDZHYkfH4CLBN43pcz13uxN/KIdtX7yFULS1ytCqW/eQTc34
+         DftcYU0HFUm07+j3DY14XUZ1gmlp5yFhqkIE8UoSvo89AwF/HrRm0oYBI6Y+r3AlTZCB
+         3dFeCnSAgWM4pg61FVNramO89OM2tMjhY+VdVxpaNgOOoGH/mpUp9mH2wsNaFwDMi/kq
+         e9Rw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777893549; x=1778498349;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=GUktrT8GuU0q956SxbwjSrFItR1lGCQYJxE8ZlZEKXc=;
+        b=j4p8LnTGUeKvISck0D+OaSGlKwtcuBjU7fDgPEFEoKEvikla2DpIzKgK8egk5Dt9XU
+         ZYbMdBwCNncYg/JVPWt1i1lDvaXFAZIPIowD/B0WBoRHywLaOtxVLhuH6BvQod89WyCT
+         WNIx8QfEXzVrygUCemfF+B0oZZIGm8b1n2VhQavsz8ECOKehav70ezvo3kSmYrWnTf1l
+         MzNjhPb4+6CL3f3Euvcu2v2lsS2LAlDeq318RaY7h/H0RGZNI8yWaYKeHZc7ziOcdbhy
+         VPcqzyi1wCaBRcX4Wj0gvbFwR5LE2p51S5ZFrl499+cSdy0qt1cFrR/dMvcT+vl8OX3q
+         g7Jg==
+X-Forwarded-Encrypted: i=1; AFNElJ9s7GIGOezBE9hcE+eVBP9cV5uqt6ZJE0W+tVOtnEut0zt4Wk3qptHiyLAo2f0eWYWmTZFzFxE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yytbto1uph5nk8EenjaZPY5RDojSpcXCPiFg6JYtP/kpVZL0XYu
+	lBXlzfldB3eIYaWeyL/jEbRjSWw044vZgAEVHRkzKcD7fg9gIcP+mFnM39gE2gawAj2W/ONzDEP
+	YhkNJa74Zj9awRt2+zYHIjaxCi8WOltc=
+X-Gm-Gg: AeBDieuGVa59pdU8n+SfpRDHlJTGxDGdXcvFpq8ZCHCmlRsjDg+LuWig+HZB39YmpKJ
+	8BMwPacbvE4gHw8z213b+1gKAa1PxaQLqQu0oA0KwmF/3RVMhm02yq/k0VGeTlQVhIk1QHEziI4
+	0uexzPBvCGroXgFgEowtW1afrGEIB9sIdn7qsZRL+qIaDY95QiytYmG0sS9+xzsLRcpsLqjgKtZ
+	R3l1Av+nUibgAOTuVVq9c8bE5rChH8skQEyvYgDwzYwODvY0bma29NJjbu6ZRWZzbzOgghCo7k6
+	oxOcIL6LVzFungkXq18=
+X-Received: by 2002:a05:690e:43d0:b0:652:f423:47e5 with SMTP id
+ 956f58d0204a3-65c3dafd73fmr7032604d50.42.1777893549046; Mon, 04 May 2026
+ 04:19:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-04_03,2026-04-30_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
- lowpriorityscore=0 malwarescore=0 mlxscore=0 adultscore=0 bulkscore=0
- mlxlogscore=785 suspectscore=0 spamscore=0 phishscore=0 classifier=spam
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2604200000
- definitions=main-2605040108
-X-Authority-Analysis: v=2.4 cv=Z8fc2nRA c=1 sm=1 tr=0 ts=69f8725b cx=c_pps
- a=WPLAOKU3JHlOa4eSsQmUFQ==:117 a=WPLAOKU3JHlOa4eSsQmUFQ==:17
- a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=Ifg-1AOnLHOf1gn6spyb:22
- a=d4nn1RXdvEacMIURMw2s:22 a=X7Ea-ya5AAAA:8 a=g1FTZKP8ERfPk9Mz4Y4A:9
-X-Proofpoint-ORIG-GUID: HldOv0ZmmUBAEeajCSKNNNl7l0Wnxj4r
-X-Proofpoint-GUID: HldOv0ZmmUBAEeajCSKNNNl7l0Wnxj4r
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA0MDEwOSBTYWx0ZWRfX+UviPLXiPnkD
- fsvAgZdwzQfzHm6qn9xQOjP+XKUh7Plr9b83Z9QELBrunks8Ra9Kc5oAKyOd9rXlrGDMt2HCYg6
- ok+8zJMj2FghDHEztixRtsJUwFUzBs5oG1215ODs1LNuQkuzvfvUEX3bYXUpidNg4o0W1L3oXkF
- /zzAJ4ZvpAnzQTlGTn0wfVSojpP6pTvfNTO9uspKzfiF6npfU+5ttdKkjqziqTJfv7Ie6R0Ba6q
- dcqmGzngPirxiBcXY1JgiWPji4CCcP480Y5D00ZtUH8ieJVmH2X5q473nJzQO4wXd9mxo/16bQn
- OisaRE5MlwLL6uKVPvWz3Xk78AKsVkTEmY5rg2d3oOfO3FMnkJrAgfvI6aNT7m8vmZR5BFxKZGZ
- pHNpvRnDj5phFxfNDVf7Vu39gwhTFFGLgDGPMtpHn5Yfp1RqvCHV6a1drRzqpm21aoOBlbH44Oa
- S01QZqqhvNAYehNfvlw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-04_03,2026-04-30_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
- suspectscore=0 phishscore=0 clxscore=1015 adultscore=0 spamscore=0
- lowpriorityscore=0 priorityscore=1501 impostorscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605040109
+References: <20260324204016.2089193-1-anzaki@gmail.com>
+In-Reply-To: <20260324204016.2089193-1-anzaki@gmail.com>
+From: Ahmed Zaki <anzaki@gmail.com>
+Date: Mon, 4 May 2026 05:18:32 -0600
+X-Gm-Features: AVHnY4IY0lLYrd3lltgEmZEsaExiL_o12SlXBsrcMKQ_K6GyfdPRWP-pijiOczM
+Message-ID: <CANczwAH0_RZqdi+XheKzwviwvDJeXm98pt7Ki0SkcfWVAWKsaw@mail.gmail.com>
+Subject: Re: [PATCH nf-next v2 0/2] Update (DSA) netdev stats with offloaded flows
+To: netfilter-devel@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com, 
+	pablo@netfilter.org, fw@strlen.de, kuba@kernel.org, pabeni@redhat.com, 
+	edumazet@google.com
+Cc: coreteam@netfilter.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Tue, Mar 24, 2026 at 2:41=E2=80=AFPM Ahmed Zaki <anzaki@gmail.com> wrote=
+:
+>
+> Some devices (notably DSA) delegate the nft flowtable HW offloaded flows
+> to a parent drivers. The delegating drivers cannot collect or report
+> the offloaded flows stats since they have no access to the underlying
+> hardware. This breaks SNMP-based network monitoring systems that rely on
+> netdev stats to report the network traffic.
+>
+> Fix by moving the offloaded flow stat reporting to the nft flowtable
+> subsystem. The first patch adds a new stats field "fstats" to net_device
+> that is allocated and updated by the nft subsystem only if the new
+> flag "flow_offload_via_parent" is set by the driver. It also report these
+> stats back to the user in dev_get_stats().
+>
+> Patch 2 sets the new flag "flow_offload_via_parent" for the DSA driver.
+> ---
+> v2: - added the new "net_device->fstats" field since the existing
+>       tstats cannot be used since it would double-count on devices that
+>       already use tstats for hardware MIBs (P1).
+>     - fixed the outdev ifindex logic based. See new func
+>       "flow_offload_egress_ifidx()" in P1.
+>
 
-This series extends bpf_skb_adjust_room() with decapsulation-specific
-flags and tunnel GSO state updates for decap use cases.
+Hello,
 
-Motivation
-----------
+This series has been marked as "Needs Review" on patchwork for about 6
+weeks. Anything I can do to help?
 
-When BPF decapsulates tunneled packets, skb GSO state needs to be
-updated to match the removed tunnel layer. This includes clearing the
-corresponding tunnel GSO type bits and resetting encapsulation state
-once no tunnel GSO flags remain.
-
-Series Overview
----------------
-
-- Name the adjust_room flag enum for CO-RE lookups.
-- Refactor adjust_room helper masks for maintainable validation logic.
-- Add new DECAP flags to UAPI.
-- Add guard rails for incompatible/invalid decap flag combinations.
-- Implement decap GSO state clearing on shrink.
-- Add selftests to validate decap GSO and encapsulation state.
-
-Changes v5 -> v6:
-- Patch 5: extend decap-state handling for the new L4/IPXIP decap
-  flags to non-GSO packets as well: when decapsulation is requested
-  on a non-GSO skb, clear skb->encapsulation directly so behavior is
-  consistent with the GSO path.
-- Patch 6: broaden tc_tunnel coverage to exercise and validate both
-  GSO and non-GSO decapsulation paths. This includes selecting
-  IPXIP decap flags from the outer tunnel header family, adding
-  explicit post-decap encapsulation checks for non-GSO packets,
-  and removing forced TSO disable so GSO cases are exercised in
-  the test harness.
-
-Changes v4 -> v5:
-- Patch 5: Remove explicit clearing of encap_hdr_csum and
-  remcsum_offload on UDP decap, per review feedback.
-- Patch 6: Remove SKB_GSO_TUNNEL_REMCSUM from SKB_GSO_UDP_TUNNEL_MASK
-  in selftests, and minor test improvements.
-
-Changes v3 -> v4:
-- Patch 5: drop SKB_GSO_TUNNEL_REMCSUM handling from this series.
-- Patch 5: clear encap_hdr_csum and remcsum_offload directly on UDP
-  decap.
-
-Changes v2 -> v3:
-- Add a new selftests patch to validate decap GSO state behavior.
-- Reorder the series so helper-mask refactoring precedes UAPI DECAP
-  flag additions.
-- Refresh patch 2 and patch 3 split to keep refactoring
-  behavior-neutral.
-- Patch 5: add decap tunnel GSO-state checks in "bpf: clear decap
-  tunnel GSO state in skb_adjust_room" (per Gemini/sashiko).
-
-Changes v1 -> v2:
-- Patch 3: decap flag acceptance intentionally remains L3-only while
-  adding helper masks.
-- Patch 4: decap with L4/IPXIP support enabled with guard rails.
-
-Co-developed-by: Max Tottenham <mtottenh@akamai.com>
-Signed-off-by: Max Tottenham <mtottenh@akamai.com>
-Co-developed-by: Anna Glasgall <aglasgal@akamai.com>
-Signed-off-by: Anna Glasgall <aglasgal@akamai.com>
-Signed-off-by: Nick Hudson <nhudson@akamai.com>
-
-Nick Hudson (6):
-  bpf: name the enum for BPF_FUNC_skb_adjust_room flags
-  bpf: refactor masks for ADJ_ROOM flags and encap validation
-  bpf: add BPF_F_ADJ_ROOM_DECAP_* flags for tunnel decapsulation
-  bpf: allow new DECAP flags and add guard rails
-  bpf: clear decap state on skb_adjust_room shrink path
-  selftests/bpf: tc_tunnel - validate decap GSO and encapsulation state
-
- include/uapi/linux/bpf.h                                |  36 ++++++++++-
- net/core/filter.c                                       | 119 ++++++++++++++++++++++++++++++-----
- tools/include/uapi/linux/bpf.h                          |  36 ++++++++++-
- tools/testing/selftests/bpf/prog_tests/test_tc_tunnel.c |   1 -
- tools/testing/selftests/bpf/progs/test_tc_tunnel.c      |  91 ++++++++++++++++++++++++---
- 5 files changed, 252 insertions(+), 31 deletions(-)
-
--- 
-2.34.1
-
+Thanks.
