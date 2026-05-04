@@ -1,124 +1,112 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A88F23DF003;
-	Mon,  4 May 2026 14:24:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE6E03DEAED
+	for <netdev@vger.kernel.org>; Mon,  4 May 2026 14:24:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904692; cv=none; b=K79CkRAS5Rxv95pRkSTKcKM7a31IhktVyZWZjNJxT6PgPxcQWEwwGFzE6F6TGdGvfjDb4IZgLG50tydsah2q1xpivXAc+KSVwpChEJIqnPnWdgzO+k3QZgjNW8AByYIky17X0wvHKbrj6q0Wtl6AAaCdJkf+FJxC+LyttPH0dFU=
+	t=1777904696; cv=none; b=QUoCdpf2mqvBEb9t3qeebgFpjGjnzGH1DpgrV9OWC25UZYDu525QRwRzLdbIfAVUZN3xq+CJ+fCwB+z7hl6LtnBoLpSoC3VINaaFelWiIgCkarfbdOJHWAc+hBNDrRyhiIbqlyq+u6P6gwpef1Vnvf87FLTTSmWLfzneTN5hWjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904692; c=relaxed/simple;
-	bh=EDw2BFUuUKmnY7vXM3KNgnA7TAgDYmQg1lhPInRD5kg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=hRJYDT5AoHX8YPQrFf+argaycQ0nznADd5G5l1Kt1Nhx7zyH5rudxu2QvhxEMcALcmb0SlWqj4P41zUZANu+o5uRaLi4M01HCmNO/fBKwEPpZ9TAGgqNUKdalwfPm8qmIHkp27IozSAWSQexIezqd0vBTpVn0dURM2QskQv/6lE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=XK8xjYzq; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1777904696; c=relaxed/simple;
+	bh=u9QAqbxxkv4Jyk8sMgNMipr0e8IzMMKRqQwmVEF/39c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XUmcXp/TtEp/OXY5oFI8eLj4PW2UTiURohRTAJkuU61qpE4i60W7hGbQLz/Ww+k55idBT8+yb1Hmy9c3D7zXWxOf7AkE/RgvcBxiULJIbGZYx5rttg6gzJ3vaki3nUmUEZSijrJGEixr8MiFpl1pK6rLyNuInr/wFJYX634lMQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MTxx6nna; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="XK8xjYzq"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MTxx6nna"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1777904691; x=1809440691;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=EDw2BFUuUKmnY7vXM3KNgnA7TAgDYmQg1lhPInRD5kg=;
-  b=XK8xjYzqo50HW5jcjEKuo74rt5eC3iFN5B+sUEAIaeO3rTkUbWkoT6RT
-   GhyAO0KiJOYGpB9tSe2LGTp+vunBOUAGC4Ta6TzTMhv6P0Dp8ScEXx96K
-   FNcNt1djCrfoFPv6ls8XfKgGOoGOhHikn6foHEa5A6g35DtEhJwIV5y9d
-   eZLmyMt/MS+XoBQx+OL3oaMBd2cFPho8Vj7trnISSgVLVoJGfJEU7DHnv
-   kJmNrAUi6t8nc+pdPoOi7n949xEf7pi6zUEWGF4KZ0o+CHThtP4fx5zJj
-   i3A5lx2bib9OgomcAjj1EsgqHOq/N8rqmQacIX1FQknQwqjRAx1qq9js1
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777904695; x=1809440695;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=u9QAqbxxkv4Jyk8sMgNMipr0e8IzMMKRqQwmVEF/39c=;
+  b=MTxx6nnauuEZuK01NPdvcga41j4/O3Tyc6nWj8SCl+UbwBv0haLEL/n2
+   NqTc6UKozm7zruplnC8uJYC2ckUoRp2I9LT0aq9aQnxNxIhgARqc0vmXw
+   Gt3MGngexx3eCUReKPztZ7MI+DZ35jtGQ9Aw0OvL3XJLCqT0g5a0mYY5/
+   I9u0X1B+g9gGB+yNsE9QHkB/qCtFBaLEmx++QjaNysB2YAT6Gb8t35lhI
+   VRfrFsJ/LmYB1ya/BCR3QvrKSjn70yP0X03VDYBz7y3Wzj8L/vlEg+KTp
+   INlb7cTlI0pjwRPRhY6FXameciswshEU72D9ewvFvRsmPJySOA0Qm7Jnz
    g==;
-X-CSE-ConnectionGUID: OMN5V5VDQOeMFS8+c/zjaw==
-X-CSE-MsgGUID: kPf2qkyRQQq29VHbyz6EDg==
-X-IronPort-AV: E=Sophos;i="6.23,215,1770620400"; 
-   d="scan'208";a="57408601"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2026 07:23:43 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.87.71) by
- chn-vm-ex1.mchp-main.com (10.10.87.30) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.37; Mon, 4 May 2026 07:23:42 -0700
-Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Mon, 4 May 2026 07:23:39 -0700
-From: Daniel Machon <daniel.machon@microchip.com>
-Date: Mon, 4 May 2026 16:23:15 +0200
-Subject: [PATCH net-next v3 02/13] net: microchip: fdma: rename contiguous
- dataptr helpers
+X-CSE-ConnectionGUID: RBgjHAxzQqmcUuqSwyVIhQ==
+X-CSE-MsgGUID: IB/IcDZhTGK6cu+HsmWKAA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11776"; a="78691602"
+X-IronPort-AV: E=Sophos;i="6.23,215,1770624000"; 
+   d="scan'208";a="78691602"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2026 07:24:55 -0700
+X-CSE-ConnectionGUID: oNwi77ReRvqctkNN1Sebzg==
+X-CSE-MsgGUID: b0dDRgZsRYmfnpDjojkztQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,215,1770624000"; 
+   d="scan'208";a="230935394"
+Received: from amlin-019-225.igk.intel.com ([10.102.19.225])
+  by fmviesa006.fm.intel.com with ESMTP; 04 May 2026 07:24:53 -0700
+From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+To: intel-wired-lan@lists.osuosl.org,
+	anthony.l.nguyen@intel.com,
+	aleksandr.loktionov@intel.com
+Cc: netdev@vger.kernel.org
+Subject: [PATCH iwl-next v2 0/5] ice: five small fixes and cleanups
+Date: Mon,  4 May 2026 16:24:46 +0200
+Message-ID: <20260504142451.4161845-1-aleksandr.loktionov@intel.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20260504-lan966x-pci-fdma-v3-2-a56f5740d870@microchip.com>
-References: <20260504-lan966x-pci-fdma-v3-0-a56f5740d870@microchip.com>
-In-Reply-To: <20260504-lan966x-pci-fdma-v3-0-a56f5740d870@microchip.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Horatiu Vultur
-	<horatiu.vultur@microchip.com>, Steen Hegelund
-	<steen.hegelund@microchip.com>, <UNGLinuxDriver@microchip.com>, "Alexei
- Starovoitov" <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
-	"Jesper Dangaard Brouer" <hawk@kernel.org>, John Fastabend
-	<john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, Herve
- Codina <herve.codina@bootlin.com>, Arnd Bergmann <arnd@arndb.de>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Mohsin Bashir
-	<mohsin.bashr@gmail.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<bpf@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>
-X-Mailer: b4 0.14.3
+Content-Transfer-Encoding: 8bit
 
-When the FDMA library was introduced [1], two helpers to get the DMA and
-virtual address of a DCB, in contiguous memory, were added. These
-helpers have had no callers until this series. I found the naming I
-initially used confusing and inconsistent.
+Three correctness fixes and two cleanups for the ice driver.
 
-Rename fdma_dataptr_get_contiguous() and
-fdma_dataptr_virt_get_contiguous() to fdma_dataptr_dma_addr_contiguous()
-and fdma_dataptr_virt_addr_contiguous(). This makes the pair symmetric
-and clarifies what type of address each returns.
+Patch 1 corrects a kernel-doc comment in ice_ptp_hw.h that described the
+ETH56G MAC Rx offset field as unsigned when it is signed (trivial doc fix,
+no functional change).
 
-[1]: commit 30e48a75df9c ("net: microchip: add FDMA library")
+Patch 2 removes the PF_SB_REM_DEV_CTL sideband register write from
+ice_ptp_init_phc_e82x().  PHY access is enabled by default on E82X and
+the register write was a leftover from an earlier SWITCH_MODE workaround
+that is no longer needed.
 
-Tested-by: Herve Codina <herve.codina@bootlin.com>
-Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
----
- drivers/net/ethernet/microchip/fdma/fdma_api.h | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+Patch 3 renames ICE_SMA2_UFL2_RX_DIS to ICE_SMA2_UFL2_RX_EN to match
+the actual active-high hardware semantics and inverts the three use sites
+in ice_dpll.c so that the logic remains correct.
 
-diff --git a/drivers/net/ethernet/microchip/fdma/fdma_api.h b/drivers/net/ethernet/microchip/fdma/fdma_api.h
-index d91affe8bd98..94f1a6596097 100644
---- a/drivers/net/ethernet/microchip/fdma/fdma_api.h
-+++ b/drivers/net/ethernet/microchip/fdma/fdma_api.h
-@@ -197,8 +197,9 @@ static inline int fdma_nextptr_cb(struct fdma *fdma, int dcb_idx, u64 *nextptr)
-  * if the dataptr addresses and DCB's are in contiguous memory and the driver
-  * supports XDP.
-  */
--static inline u64 fdma_dataptr_get_contiguous(struct fdma *fdma, int dcb_idx,
--					      int db_idx)
-+static inline u64 fdma_dataptr_dma_addr_contiguous(struct fdma *fdma,
-+						   int dcb_idx,
-+						   int db_idx)
- {
- 	return fdma->dma + (sizeof(struct fdma_dcb) * fdma->n_dcbs) +
- 	       (dcb_idx * fdma->n_dbs + db_idx) * fdma->db_size +
-@@ -209,8 +210,8 @@ static inline u64 fdma_dataptr_get_contiguous(struct fdma *fdma, int dcb_idx,
-  * applicable if the dataptr addresses and DCB's are in contiguous memory and
-  * the driver supports XDP.
-  */
--static inline void *fdma_dataptr_virt_get_contiguous(struct fdma *fdma,
--						     int dcb_idx, int db_idx)
-+static inline void *fdma_dataptr_virt_addr_contiguous(struct fdma *fdma,
-+						      int dcb_idx, int db_idx)
- {
- 	return (u8 *)fdma->dcbs + (sizeof(struct fdma_dcb) * fdma->n_dcbs) +
- 	       (dcb_idx * fdma->n_dbs + db_idx) * fdma->db_size +
+Patch 4 replaces the static per-type frequency tables for CGU pins with a
+single DPLL_PIN_FREQUENCY_RANGE(1, 25 MHz) entry.  The firmware defines
+an any_freq capability for configurable CGU inputs, but the old tables
+restricted users to 1 PPS or 10 MHz.  GNSS pins retain a 1 PPS-only
+entry since they are physically constrained.
+
+Patch 5 exports ice_dcb_need_recfg() and calls it in the four SW LLDP
+netlink setters instead of memcmp() on a non-packed struct, which is
+undefined behaviour due to uninitialised padding bytes.  The redundant
+memcmp in ice_pf_dcb_cfg() is removed since callers now guard it.
+
+Aleksandr Loktionov (2):
+  ice: add correct handling of SMA/u.FL states
+  ice: use element-by-element comparison for DCB config changes
+
+Arkadiusz Kubalewski (1):
+  ice: fix DPLL pin frequency range in CGU pin descriptors
+
+Karol Kolacinski (2):
+  ice: fix ETH56G Rx offset type description in kernel-doc comment
+  ice: remove unnecessary PF_SB_REM_DEV_CTL write for E82X
+
+v1 -> v2 updated mail subject with PATCH iwl-next
+
+
+ drivers/net/ethernet/intel/ice/ice_dcb_lib.c |  13 +-
+ drivers/net/ethernet/intel/ice/ice_dcb_lib.h |   2 +
+ drivers/net/ethernet/intel/ice/ice_dcb_nl.c  |  30 +++-
+ drivers/net/ethernet/intel/ice/ice_dpll.c    |   6 +-
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.c  | 141 ++++++++++---------
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.h  |   8 +-
+ 6 files changed, 113 insertions(+), 87 deletions(-)
 
 -- 
-2.34.1
+2.52.0
 
