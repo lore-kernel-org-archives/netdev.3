@@ -1,50 +1,50 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED86730F52B;
-	Mon,  4 May 2026 07:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F6A4313283;
+	Mon,  4 May 2026 07:46:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777880778; cv=none; b=ADhmSpE2yoIWkMzJwc7OLftIn8J9xHCbRrJQ14k/WDmcV5hrBEdegv3ClMWBdTM3uNoQs64ZY7Q5PinT0p7khlbdLWBUDNa803CtL/4BlhVn03yCtXt+5QLpK7e7XA1QRJLvVQu56CT92Np3ZaU1PrkHcU47ECvP8SvLDFdckSo=
+	t=1777880779; cv=none; b=JJxFp08uR8AuV9LLngdgx9T0kwqgT/y9nT/HHxpU8x0WcbksiamzvlJfJ4QBJDSGdTYS0BECF0hOO5If10SVR88IzxQt94DqxXPi1Qlq24QOz7ituIM51yj3rsHvrGEW8CGKvsWBTSUtXZZsUkCTTpl26uEyUHqXEBQlKbcXdEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777880778; c=relaxed/simple;
-	bh=RkNWOK1O3+B+djujvd45woxQHnvTBC9apbGki4tNSWs=;
+	s=arc-20240116; t=1777880779; c=relaxed/simple;
+	bh=hRoH7UJKUSaguJukQsRvVJDD5jLQpLyatbwN1cfqG1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d4q5b5+ah1drcyBUtXXbp0eWOj2MISXbJY26pbXr8JgouLRXhyIClUSaquFuj3ANZhQ9YPh2ltb6D1QmNmV459kKGaJPRL3AAM0+1al0i3pUs36mW4wo5BeOUHBnxKnCuQx4YLhQGWHoZPulz/UTWX+qGMYM3sK8HlJNP+/V0Uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T6mRKpQJ; arc=none smtp.client-ip=198.175.65.20
+	 MIME-Version; b=dYY/uhfz5yV85opJR5/EeGhMZCN9AdHMGn6C3R9NzG2cKNrqgR6qi5o+8hT6rdqMPdQULazCsO7ARe2uNCDDtXxjcMgZOL7C4eEkf23Jg6qUyB0k3Bn9w5jN20ZqrG8MEJ4NF07GLYEzq3JI5/QRCne6DmK4NibmhuboQCX4zE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CidCTsQp; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T6mRKpQJ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CidCTsQp"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777880777; x=1809416777;
+  t=1777880778; x=1809416778;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=RkNWOK1O3+B+djujvd45woxQHnvTBC9apbGki4tNSWs=;
-  b=T6mRKpQJ49IOQ9AwnUfRGCJzcTiki7cbtXFyB5gy4lu8yF8cd98tF494
-   CJzYVQJkgtdxj5tTuvVair7PiLTVYFCDWJ/zdRc2qgwRD/gd6ltghR2i6
-   x3/CRuShoDZWcownFII2HOyWUUrPX/xfZso/d0HmfLFHColwHFKGzlFdw
-   V0SWOVaikHcCmfh22Rxx7WduU6t8fhXMEgLmORffeMvMrEVRtfkwe/4i9
-   A+D3GATGvyJ5aRXTTJ38JgouEB3iXoUjq/Wy0XAdDPzLqBeiiftq29ZUt
-   neI9FIy+3Xs9edinbONNqIClPkqnB+C6BAIeqE+gjfczN2R0ABmg9hLdT
-   w==;
-X-CSE-ConnectionGUID: UZEjpPgITYCzSX4Expb4yg==
-X-CSE-MsgGUID: mIGQBWE3RLWb6fCqQCtkHg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11775"; a="78440496"
+  bh=hRoH7UJKUSaguJukQsRvVJDD5jLQpLyatbwN1cfqG1Y=;
+  b=CidCTsQpMPTTORu33ZTwMcPk0Nx1w8scLnO6Xh39QLbjgmK/t8Hd9aMo
+   XEZjXKtqmkamLWCmVMQOh7nS3cdVwe0oLy7HZ5o53jsv1KwWOJ/0ktnV0
+   5Zjzy/meMaWA/5sqMHn/JPxtJxLcQ67WNJK6ckbDpm2jiBykaCF9JfaNu
+   zwSgLI84ecKlxIAf63lRHOrqczTW+YFgCHizH1gt80X8/RGxysPJQ/VbL
+   DddeEcLalo/LuHESYi4ejjUSNc+0z1Yrhm7T2CfBqG2XuqFCsWx/0j3H5
+   88AD1Ci5AcVX4Fn7fvIFAhqgb91uvtSBVHijHj41F8805dO3psfcPir37
+   A==;
+X-CSE-ConnectionGUID: qMPoVrPsTfat0HUXhLugeA==
+X-CSE-MsgGUID: 5tKSovcSTwGYovaRzSdhTQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11775"; a="78440514"
 X-IronPort-AV: E=Sophos;i="6.23,215,1770624000"; 
-   d="scan'208";a="78440496"
+   d="scan'208";a="78440514"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
   by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2026 00:46:15 -0700
-X-CSE-ConnectionGUID: u7rkxLouSY+0BhTIFpCu/g==
-X-CSE-MsgGUID: G+nAB4BmTY+RKZjDTo+8Lg==
+X-CSE-ConnectionGUID: WzO3z+zRTMq8iFFQ8/O+Rw==
+X-CSE-MsgGUID: X7ptk3A1RlKYVpEhnn0Gnw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,215,1770624000"; 
-   d="scan'208";a="235704822"
+   d="scan'208";a="235704824"
 Received: from black.igk.intel.com ([10.91.253.5])
   by orviesa007.jf.intel.com with ESMTP; 04 May 2026 00:46:12 -0700
 Received: by black.igk.intel.com (Postfix, from userid 1003)
-	id 0FFF49B; Mon, 04 May 2026 09:46:11 +0200 (CEST)
+	id 0B72099; Mon, 04 May 2026 09:46:11 +0200 (CEST)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	linux-kernel@vger.kernel.org,
@@ -56,9 +56,9 @@ Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Heiner Kallweit <hkallweit1@gmail.com>,
 	Russell King <linux@armlinux.org.uk>
-Subject: [PATCH net-next v1 2/5] net: mvmdio: Switch to using fwnode_mdiobus_register()
-Date: Mon,  4 May 2026 09:29:53 +0200
-Message-ID: <20260504074610.40799-3-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH net-next v1 1/5] net: mdiobus: Provide fwnode_mdiobus_register()
+Date: Mon,  4 May 2026 09:29:52 +0200
+Message-ID: <20260504074610.40799-2-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260504074610.40799-1-andriy.shevchenko@linux.intel.com>
 References: <20260504074610.40799-1-andriy.shevchenko@linux.intel.com>
@@ -70,50 +70,83 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Replace custom implementation of fwnode_mdiobus_register().
+Provide an agnostic helper to register MDIO bus independently on
+the firmware node provider.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/net/ethernet/marvell/mvmdio.c | 11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+ drivers/net/mdio/fwnode_mdio.c | 15 +++++++++++++++
+ include/linux/fwnode_mdio.h    | 17 +++++++++++++++++
+ 2 files changed, 32 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/mvmdio.c b/drivers/net/ethernet/marvell/mvmdio.c
-index 3f4447e68888..62fbe22c01cb 100644
---- a/drivers/net/ethernet/marvell/mvmdio.c
-+++ b/drivers/net/ethernet/marvell/mvmdio.c
-@@ -18,16 +18,15 @@
+diff --git a/drivers/net/mdio/fwnode_mdio.c b/drivers/net/mdio/fwnode_mdio.c
+index ba7091518265..7541df43ba6d 100644
+--- a/drivers/net/mdio/fwnode_mdio.c
++++ b/drivers/net/mdio/fwnode_mdio.c
+@@ -7,9 +7,11 @@
   */
  
  #include <linux/acpi.h>
--#include <linux/acpi_mdio.h>
- #include <linux/clk.h>
- #include <linux/delay.h>
-+#include <linux/fwnode_mdio.h>
- #include <linux/interrupt.h>
- #include <linux/io.h>
- #include <linux/iopoll.h>
- #include <linux/kernel.h>
- #include <linux/mod_devicetable.h>
- #include <linux/module.h>
--#include <linux/of_mdio.h>
++#include <linux/acpi_mdio.h>
+ #include <linux/dev_printk.h>
+ #include <linux/fwnode_mdio.h>
+ #include <linux/of.h>
++#include <linux/of_mdio.h>
  #include <linux/phy.h>
- #include <linux/platform_device.h>
- #include <linux/sched.h>
-@@ -379,13 +378,7 @@ static int orion_mdio_probe(struct platform_device *pdev)
- 		goto out_mdio;
- 	}
+ #include <linux/pse-pd/pse.h>
  
--	/* For the platforms not supporting DT/ACPI fall-back
--	 * to mdiobus_register via of_mdiobus_register.
--	 */
--	if (is_acpi_node(pdev->dev.fwnode))
--		ret = acpi_mdiobus_register(bus, pdev->dev.fwnode);
--	else
--		ret = of_mdiobus_register(bus, pdev->dev.of_node);
-+	ret = fwnode_mdiobus_register(bus, dev_fwnode(&pdev->dev));
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "Cannot register MDIO bus (%d)\n", ret);
- 		goto out_mdio;
+@@ -187,3 +189,16 @@ int fwnode_mdiobus_register_phy(struct mii_bus *bus,
+ 	return rc;
+ }
+ EXPORT_SYMBOL(fwnode_mdiobus_register_phy);
++
++int __fwnode_mdiobus_register(struct mii_bus *mdio, struct fwnode_handle *fwnode,
++			      struct module *owner)
++{
++	if (is_of_node(fwnode))
++		return __of_mdiobus_register(mdio, to_of_node(fwnode), owner);
++
++	if (is_acpi_node(fwnode))
++		return __acpi_mdiobus_register(mdio, fwnode, owner);
++
++	return mdiobus_register(mdio);
++}
++EXPORT_SYMBOL(__fwnode_mdiobus_register);
+diff --git a/include/linux/fwnode_mdio.h b/include/linux/fwnode_mdio.h
+index faf603c48c86..c316b738333a 100644
+--- a/include/linux/fwnode_mdio.h
++++ b/include/linux/fwnode_mdio.h
+@@ -16,6 +16,14 @@ int fwnode_mdiobus_phy_device_register(struct mii_bus *mdio,
+ int fwnode_mdiobus_register_phy(struct mii_bus *bus,
+ 				struct fwnode_handle *child, u32 addr);
+ 
++int __fwnode_mdiobus_register(struct mii_bus *mdio, struct fwnode_handle *fwnode,
++			      struct module *owner);
++
++static inline int
++fwnode_mdiobus_register(struct mii_bus *mdio, struct fwnode_handle *fwnode)
++{
++	return __fwnode_mdiobus_register(mdio, fwnode, THIS_MODULE);
++}
+ #else /* CONFIG_FWNODE_MDIO */
+ int fwnode_mdiobus_phy_device_register(struct mii_bus *mdio,
+ 				       struct phy_device *phy,
+@@ -30,6 +38,15 @@ static inline int fwnode_mdiobus_register_phy(struct mii_bus *bus,
+ {
+ 	return -EINVAL;
+ }
++
++static inline int fwnode_mdiobus_register(struct mii_bus *mdio, struct
++					  fwnode_handle *fwnode)
++{
++	/* Fall back to mdiobus_register() function to register a bus.
++	 * This way, we don't have to keep compat bits around in drivers.
++	 */
++	return mdiobus_register(mdio);
++}
+ #endif
+ 
+ #endif /* __LINUX_FWNODE_MDIO_H */
 -- 
 2.50.1
 
