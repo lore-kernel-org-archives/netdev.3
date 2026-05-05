@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2AC3AA4F2;
-	Tue,  5 May 2026 02:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E46E248CFC;
+	Tue,  5 May 2026 02:40:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777948270; cv=none; b=lX+qGj+m16yvmLFSsBSYoNGlunlIfQrQFkGVvsYp3gcmOrT1TlHtrUjbD/174EinNTX4AnBnc5eTnyS3NwQlqpn1TT7P4VMZbtNqSoAebU4SD4aetMQjZzDzd0WgDNSYLVSKSa3phrAq+6Z9prHrfBGdNmWO7/CyRAAnrcdO+n8=
+	t=1777948860; cv=none; b=b5L9bkI7HH4qT/bPVFoWWfzKJaqGkZUAYKU4UzoHfOytA4qgbpgaGDTwJe9Hd65DS5S71AY3eu/X1pElT20L7gy8A0ckdWE2VGRPuL/sxgl3gzGu7QL6sjD4tNA66x+fkOn1mnewd+2oL0Z+bdyperXKnpewxKgYh7j0/ZuSCdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777948270; c=relaxed/simple;
-	bh=M/p16af5Ln1fL6+e6QEP7Sj9701xNucASUan+tM7aRc=;
+	s=arc-20240116; t=1777948860; c=relaxed/simple;
+	bh=kewYXfUzdIkeNWsN6MjHUy9OQ1CKVy2bRDBrUaweY6Y=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=gQ9H1HL9xjzuQkxVVojLwdC1Cl+NSltEO6+jiTsvkt02Il9Fxrnu2hUx+qVwtO9aUF/0K4UDeMUsA8aDjzI6CCz9BzJ04hVdu8fgrD89odyVx3FWlLyr6yrdRmduuDeLOyXLYsgBKK3G/IZhjoV8Nh3EfdrVd0tNC7r9SXCSJ1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BcRNPZP6; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=H3UQt0ipkw2QB4+ZgZHbuXQZXtWJq0Z/OL0GAMmyF1rfCCBt0gi2NpJTPS4FJ0AMHcZmJjaKrTh/TR3amEvEOzNZC/sv1xF3jQRYtrsqWSOCBqXZVI7YkDklfmMV33xPLNGD8uJsiuSAZL6OdLvFdXJXAfSu8MnLYLZVYRnZjsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KcH6LH1v; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BcRNPZP6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3816C2BCB8;
-	Tue,  5 May 2026 02:31:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KcH6LH1v"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EE63C2BCB8;
+	Tue,  5 May 2026 02:40:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777948270;
-	bh=M/p16af5Ln1fL6+e6QEP7Sj9701xNucASUan+tM7aRc=;
+	s=k20201202; t=1777948859;
+	bh=kewYXfUzdIkeNWsN6MjHUy9OQ1CKVy2bRDBrUaweY6Y=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=BcRNPZP6Q6mGDgVWXnOvAplprohg+mbn+Q7BP7T4UUes4shZmzGrlotOzEwjRw/0u
-	 Bd6Ga3JR9cFP++KIVCaYgq8KpJzW9BlFCA95QqfPwJg+Z2K7S3FQQuo32GMQO/IQa9
-	 RDg8HmyHjOXhO3aXj5PKc6FvNaj37HDxwirEL3KHW5etdMvQzUK9Nd7KfZqHnbYNrn
-	 8TEtMtJEJQ2yrgQS3aMtcGXJaecs0VoR+yYGCa9P1ZGaNjr0W2lsQJCV/vTGxu+7PL
-	 0cVzTP3AaDTdLgqvS7aE7qK1pGtFNdQPxk9ygYCIuY+UF1zg6nVbKAXaoK8F5aliyC
-	 mPiLdOwVgeCaQ==
+	b=KcH6LH1vxypoAbWZ4XTBQfo4AOouGKAaOxNJ5uH7KDDGU9bhFhxIiPN3WXQYS/CNi
+	 eyIMIfreSjKmFfhvmdC/FkKpEzUKnuXQYqmNmDxX28W/GQyfiXOdWatV7+p6n3Qw8A
+	 m6L5T0OPmpRzxIdWghf7DkNeXpLa2omm3rLkbj9iUY8ht3M2BxtUTb1ns0HDIZprtO
+	 gyJLDuqHr1ygfo/NmhMiXn8+hljieXSmcJ0EE7l7pBXsqGLd9KCJLLB6MG5iBzmUxg
+	 w1Pa8bvUhV/Tb5xN0Jb2MkGjof2MrV8GO5BB2g+0okh3l8KckpMhmpJ5h8AjatVRWP
+	 XkgCztRK8FjUw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9DC939301A2;
-	Tue,  5 May 2026 02:30:22 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CE8A39301A2;
+	Tue,  5 May 2026 02:40:11 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,39 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: phy: realtek: replace magic number with
- register bit macros
+Subject: Re: [PATCH net v3] psp: strip variable-length PSP header in
+ psp_dev_rcv()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177794822129.1394832.3566254923812339895.git-patchwork-notify@kernel.org>
-Date: Tue, 05 May 2026 02:30:21 +0000
-References: <20260502092857.156831-1-olek2@wp.pl>
-In-Reply-To: <20260502092857.156831-1-olek2@wp.pl>
-To: Aleksander Jan Bajkowski <olek2@wp.pl>
-Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- daniel@makrotopia.org, vladimir.oltean@nxp.com, michael@fossekall.de,
- ih@simonwunderlich.de, rmk+kernel@armlinux.org.uk, marek.vasut@mailbox.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+ <177794881030.1397274.16980111626733324367.git-patchwork-notify@kernel.org>
+Date: Tue, 05 May 2026 02:40:10 +0000
+References: <20260502141945.14484-1-devnexen@gmail.com>
+In-Reply-To: <20260502141945.14484-1-devnexen@gmail.com>
+To: David CARLIER <devnexen@gmail.com>
+Cc: daniel.zahka@gmail.com, kuba@kernel.org, willemdebruijn.kernel@gmail.com,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ horms@kernel.org, raeds@nvidia.com, kees@kernel.org, cratiu@nvidia.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, willemb@google.com,
+ stable@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net-next.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sat,  2 May 2026 11:28:47 +0200 you wrote:
-> Replace magic number with register bit macros. The description of the
-> RTL8211B interrupt register is obtained from publicly available
-> datasheet[1].
-> 
-> 1. RTL8211B(L) Rev. 1.5 Datasheet
-> Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
+On Sat,  2 May 2026 15:19:45 +0100 you wrote:
+> psp_dev_rcv() unconditionally removes a fixed PSP_ENCAP_HLEN, even
+> when psph->hdrlen indicates that the PSP header carries optional
+> fields. A frame whose PSP header advertises a non-zero VC or any
+> extension would therefore be silently mis-decapsulated: option bytes
+> would spill into the inner packet head and downstream parsing would
+> fail on a corrupted skb.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next] net: phy: realtek: replace magic number with register bit macros
-    https://git.kernel.org/netdev/net-next/c/052065add1b5
+  - [net,v3] psp: strip variable-length PSP header in psp_dev_rcv()
+    https://git.kernel.org/netdev/net/c/30cb24f97d44
 
 You are awesome, thank you!
 -- 
