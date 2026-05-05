@@ -1,179 +1,230 @@
-Received: from e3i439.smtp2go.com (e3i439.smtp2go.com [158.120.85.183])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABF9B18DF80
-	for <netdev@vger.kernel.org>; Tue,  5 May 2026 12:43:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=158.120.85.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C0C436375
+	for <netdev@vger.kernel.org>; Tue,  5 May 2026 12:44:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777985009; cv=none; b=emdw1IT4s4yw36YHX0BEQ+pnpkhz8WcYzWjL3zw5KRwaBq85KmiE7lDJfg8QGxKUclpRsTyUYU3H6jt1Omb1qpYYR5WcRGfQV+Ks/0T0b+FY/fjH8JGE11ufdSZhBTtqIVjZDr+O0W7xFzSOEAs4W8xcqypioGRrxqoMKbNAG5E=
+	t=1777985069; cv=none; b=mlNy+Asp1CXeyKLVaY0IvoY1jR1YUChmBf65dKyyY3/joH5bD/j58nT5Iotkm3NMpaIUDF+v2V/WphCvw92TOF6OlJ/WGRGyxnlnNmsqbpbeqEjb9YET7aOKoD+vZ2hgaR5UiyDYWq80gQL3UvBLcPuroUHvnp9ue4ISNpMnWdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777985009; c=relaxed/simple;
-	bh=mk+rFQLU+jQ2sP/cds/Xv011r7PxGkbieb1wnjY/+7A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kOiauFN7QWrsw1Ef0hmF7Gnt4EudOU1grAKdDqywXyKqOvUXPk+QTrfcl5t8M4yi/srr7fIemAXEZW0sKGJJmfiWHLi5WP5aU/k9uiUqhR8JL+/HxVSXKBa7+Qf5bUnCpYGSN9bFQRxVuLG9CK0DWehDTbtkfpLLcCnG67d8uZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=asem.it; spf=pass smtp.mailfrom=em1174574.asem.it; dkim=pass (2048-bit key) header.d=asem.it header.i=@asem.it header.b=Rs4UWtQi; arc=none smtp.client-ip=158.120.85.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=asem.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em1174574.asem.it
+	s=arc-20240116; t=1777985069; c=relaxed/simple;
+	bh=hz98aOu66uNVwuTZiRLja0C8i6pImQOrnxxcY7S6SyA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pD9oEfzm5XR1aN0pv0tDdu8rpAovSKeTYWf/WgbOXQWdBvq5cavmOst2oWh8ynx+qcp42GQr+P+h/OR6rcqmFHddvLS/ssyDclz3cQmhHhLf4jXDTd8Si64GqJz1jeYmZ1jdrolF8SeoG2Le31+Vkf12jwwrFwBLdxn6jRwNSFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NT6bdEek; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=byF3Z4NU; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=asem.it header.i=@asem.it header.b="Rs4UWtQi"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=asem.it;
- i=@asem.it; q=dns/txt; s=s1174574; t=1777984097; h=from : subject : to
- : message-id : date; bh=LX0JgHkYWsWkuj5Lnu48cQL8XdFDHKX3eJL79r215z0=;
- b=Rs4UWtQihllawG5JVljxTHzKe8wZiIDsWwk3SaVPt0STW5QxbsegXfNJB4/m7b/+boL6s
- 2eMdWflFLt/5ec0qQgav77cKUhtoUf0cfYIIQca/nmmwlPdFbrSPwFFD69cHmVfKyBE+HFY
- oXr5SiS86YW+9tqJsQisF05hnQmwnCqOBleSHKTCHk+nZgw3kSaf8+Cacy1sNeggcEY2r00
- LOpjetTQ8FUNxUQwcVegPl4NYkZ9isE5N0Pv7FTjftbZypuuIOMaLzuZo8OaOfM51WbZSbJ
- Xclth2DMxm45155/RNnyJo9d2XbCUeVkMlu4mkiN1M0U+PEAymy3X9hbUyOQ==
-Received: from [10.86.249.198] (helo=asas054.asem.intra)
-	by smtpcorp.com with esmtpa (Exim 4.99.1-S2G)
-	(envelope-from <l.ellero@asem.it>)
-	id 1wKEsn-4o5NDgrm55y-ur0n;
-	Tue, 05 May 2026 12:28:13 +0000
-Received: from asem-ThinkStation-P330.asem.intra ([172.16.23.8]) by asas054.asem.intra with Microsoft
- SMTPSVC(10.0.14393.4169);	 Tue, 5 May 2026 14:28:11 +0200
-From: Luca Ellero <l.ellero@asem.it>
-To:
-Cc: Luca Ellero <l.ellero@asem.it>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] net: phy: dp83867: add MDI-X management
-Date: Tue,  5 May 2026 14:27:30 +0200
-Message-ID: <20260505122751.233764-1-l.ellero@asem.it>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NT6bdEek";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="byF3Z4NU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777985067;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jwSGsuiyqii/zr4WOQ6nXZFN/nOITIhLrEP6HdZcP9o=;
+	b=NT6bdEekw1okQrCR1uzL8Yen8nDqQ/hawt0PlK7pVz9870RqXlKnbt+3UWdRKB8wWxuOyC
+	ea6jxGY6OVbj8bH6Vf2oTU39dul3dlEQGuYKwGJWt5P83KOyJ4LumP5rX6gtqsdnuoau99
+	1FfOyT1lqCHZcC/wOH+BSmWYZTmaMwA=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-593-QPXYnTEUPTakciYJn7_iAA-1; Tue, 05 May 2026 08:44:23 -0400
+X-MC-Unique: QPXYnTEUPTakciYJn7_iAA-1
+X-Mimecast-MFC-AGG-ID: QPXYnTEUPTakciYJn7_iAA_1777985062
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-44d68ed8f95so1650239f8f.1
+        for <netdev@vger.kernel.org>; Tue, 05 May 2026 05:44:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1777985062; x=1778589862; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=jwSGsuiyqii/zr4WOQ6nXZFN/nOITIhLrEP6HdZcP9o=;
+        b=byF3Z4NUEDg841ZEoHUmvCNTzJvR+1RkguBk03pNuHAPFut56h3rF3Z6rhBy2M2/eX
+         lRTxHBSTOsp4B/F3py0jWUuB2T/cKWiYEpLTKy+/TIzX7dVwjQ+Wc3C2JB3ZYWjBVknz
+         SI/14BsPswu07ortmuBvosS9Ez7gWvWwCYNEtICF3vGPjcaWnzYvYEFz/MwPrCP2psuc
+         /npu9MKC28KazhFdInaG6A1hvbGCnGNDQqOI7Y72O8lPmddseVK3aIWgeuJM1QIE6j3j
+         ideBFHaIwZX5xoIOMB8UngkTaBjOutOb8vj1uzAC9skDJp2LWXr6upb4zspNsSSa2ssY
+         nHog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777985062; x=1778589862;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jwSGsuiyqii/zr4WOQ6nXZFN/nOITIhLrEP6HdZcP9o=;
+        b=m8AF+znJiGZSjv/JaTYuyt9t0ebh4/Sr9A8NLQBfI3gOu0Nahrmc9pgFbOfDiNdLyY
+         axH0npWddI4Y8NUHXEcQgCoQ7ZwppZSgUEMPWuG8rYP3avJ6aJmYbOip+qYTwDPQcTcK
+         WM9W9nGc9EsUVKe3kEaZHJMlrN2HJ7H8qinB+giyqa1v1W3eh2ZQ2P3a7JlkL3tminzN
+         0p4HxKeF8rNXL4VuYuSzO+JkS4ik4rY2UEEvNbjOwRLYzD4a8biPorKDBsBdRyOccxau
+         Aow5ic8s+FyaxclXWmjiocb8ng8xBmhKcME+0cWhbzadwCdvUNRvAPOfuoz6fRJ4SW66
+         L7oA==
+X-Forwarded-Encrypted: i=1; AFNElJ/BlUs66UTto/deeAK94dxTX9Rqkwuq9hzn2cePiZ0UaMbqGlZbZpeKhp43Fn1FbdRtV9ahoA4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx9sbq6WgJttXTZWpaquUIGvSFXcMnmwlv5W8qbvEiEsI+oScfp
+	nORLzNCXFQdq3kV1/r6kSZTwiKm5C4dwfBL7uTOnxCkmVkZ9Pn9xfgbulj82mLPT/+olrMot07+
+	8MKU4I7Z+kD4enB2WcbwFHsbn3IndJD0IgyKcEGC5sYYP6ckpOFMRYZTAXQ==
+X-Gm-Gg: AeBDiesOzjeSqLzp7Q/0h3bHyg/OQ0moKg2NswmUo7hzd/730/pB3VCq6ltV4QSgyqT
+	jJamUSfJYjDhDEiy70dQKWbktqy56ngHUd/juFr01ZDScmARPP6JZHwlARM7xwY1kzT2my+t35L
+	wsPl078XdeidWOSn6RJnlFmS/n5GKRp+kURtCABhI/u7t4XTnLRsLmZoBhTZBL1eQSLtuEyzNDd
+	N0SKtXuZR45xONTXcoRoxeIyupGdsQsFPEqT+CcPnvysEFpJn85dIYmesYmpSmeW/cJkOFWPouA
+	oBhrTuH41cTQvyEha6a5FfwcCVrf/JvcSzWA/Yp9n9h49VOy6IYZL8nVP18UKt8UgsGformIRGC
+	//VJO76q9wkjqusIeHxJat2xksF81LgXjg26JMZyNqC8g75SUCKRtmo85NwnoQZqeWnpdcuZ6iQ
+	==
+X-Received: by 2002:a05:6000:186b:b0:449:b7dd:4a75 with SMTP id ffacd0b85a97d-44fdee4405cmr6456582f8f.20.1777985062387;
+        Tue, 05 May 2026 05:44:22 -0700 (PDT)
+X-Received: by 2002:a05:6000:186b:b0:449:b7dd:4a75 with SMTP id ffacd0b85a97d-44fdee4405cmr6456485f8f.20.1777985061805;
+        Tue, 05 May 2026 05:44:21 -0700 (PDT)
+Received: from sgarzare-redhat (host-87-11-6-2.retail.telecomitalia.it. [87.11.6.2])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4505238e6e0sm4243514f8f.6.2026.05.05.05.44.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 May 2026 05:44:21 -0700 (PDT)
+Date: Tue, 5 May 2026 14:44:16 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Paolo Abeni <pabeni@redhat.com>, 
+	Arseniy Krasnov <avkrasnov@salutedevices.com>, Bobby Eshleman <bobbyeshleman@meta.com>
+Cc: stefanha@redhat.com, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, mst@redhat.com, jasowang@redhat.com, xuanzhuo@linux.alibaba.com, 
+	eperezma@redhat.com, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	horms@kernel.org, Yiqi Sun <sunyiqixm@gmail.com>, kvm@vger.kernel.org, 
+	virtualization@lists.linux.dev
+Subject: Re: [PATCH] vsock/virtio: fix vsockmon info leak in non-linear tap
+ copy
+Message-ID: <afnXIGtswspSEk8x@sgarzare-redhat>
+References: <20260430071110.380509-1-sunyiqixm@gmail.com>
+ <f4e52dcd-59ba-4c2e-9936-49cf27528b21@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-OriginalArrivalTime: 05 May 2026 12:28:11.0853 (UTC) FILETIME=[A35B27D0:01DCDC8A]
-X-Report-Abuse: Please forward a copy of this message, including all headers, to <abuse-report@smtp2go.com>
-Feedback-ID: 1174574m:1174574aXfMg4B:1174574s4bGKX1ra-
-X-smtpcorp-track: tYRSZz6a2PdU.h1WAbzruMo_K.ZkgqHgPBKM-
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <f4e52dcd-59ba-4c2e-9936-49cf27528b21@redhat.com>
 
-ethtool on this phy device always reports "MDI-X: Unknown" and doesn't
-support forcing it to on or off.
-This patch adds support for reading/forcing MDI-X mode from ethtool
-properly.
+CCing Arseniy and Bobby.
 
-Signed-off-by: Luca Ellero <l.ellero@asem.it>
----
- drivers/net/phy/dp83867.c | 60 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 60 insertions(+)
+On Tue, May 05, 2026 at 12:26:21PM +0200, Paolo Abeni wrote:
+>On 4/30/26 9:11 AM, Yiqi Sun wrote:
+>> vsockmon mirrors packets through virtio_transport_build_skb(), which
+>> builds a new skb and copies the payload into it. For non-linear skbs,
+>> this goes through virtio_transport_copy_nonlinear_skb().
+>>
+>> Helper manually initializes a iov_iter, but leaves iov_iter.count unset.
+>> As a result, skb_copy_datagram_iter() sees zero writable bytes
+>> in the destination iterator and copies no payload data.
+>>
+>> This becomes an info leak because virtio_transport_build_skb() has
+>> already reserved payload_len bytes in the new skb with skb_put(). The
+>> skb is then returned to the tap path with that payload area still
+>> uninitialized, so userspace reading from a vsockmon device can observe
+>> heap contents and potentially kernel address.
+>>
+>> Fix it by initializing iov_iter.count to the number of bytes to copy.
+>>
+>> Fixes: 4b0bf10eb077 ("vsock/virtio: non-linear skb handling for tap")
+>> Signed-off-by: Yiqi Sun <sunyiqixm@gmail.com>
+>> ---
+>>  net/vmw_vsock/virtio_transport_common.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+>> index 416d533f493d..6b26ee57ccab 100644
+>> --- a/net/vmw_vsock/virtio_transport_common.c
+>> +++ b/net/vmw_vsock/virtio_transport_common.c
+>> @@ -152,7 +152,7 @@ static void virtio_transport_copy_nonlinear_skb(const struct sk_buff *skb,
+>>  	iov_iter.nr_segs = 1;
+>>
+>>  	to_copy = min_t(size_t, len, skb->len);
+>> -
+>> +	iov_iter.count = to_copy;
+>>  	skb_copy_datagram_iter(skb, VIRTIO_VSOCK_SKB_CB(skb)->offset,
+>>  			       &iov_iter, to_copy);
+>
+>@Stefano, @Stefan, the patch LGTM, but sashiko pointed out to a
+>pre-existing issue you should probably want to address:
+>
+>>  	to_copy = min_t(size_t, len, skb->len);
+>Does this length calculation account for the offset when a packet is
+>split across multiple transmissions?
+>If a packet is requeued, VIRTIO_VSOCK_SKB_CB(skb)->offset is increased,
+>but to_copy still evaluates to the full length of the skb.
 
-diff --git a/drivers/net/phy/dp83867.c b/drivers/net/phy/dp83867.c
-index 3fb2293f568f..88255e92b4cd 100644
---- a/drivers/net/phy/dp83867.c
-+++ b/drivers/net/phy/dp83867.c
-@@ -103,6 +103,10 @@
- #define DP83867_PHYCR_RX_FIFO_DEPTH_MASK	GENMASK(13, 12)
- #define DP83867_PHYCR_SGMII_EN			BIT(11)
- #define DP83867_PHYCR_FORCE_LINK_GOOD		BIT(10)
-+#define DP83867_PHYCR_MDIX_MASK			GENMASK(6, 5)
-+#define DP83867_PHYCR_MDIX_MDI			(0x0 << 5)
-+#define DP83867_PHYCR_MDIX_MDIX			(0x1 << 5)
-+#define DP83867_PHYCR_MDIX_AUTO			(0x3 << 5)
- 
- /* RGMIIDCTL bits */
- #define DP83867_RGMII_TX_CLK_DELAY_MAX		0xf
-@@ -123,6 +127,10 @@
- #define DP83867_PHYSTS_100			BIT(14)
- #define DP83867_PHYSTS_DUPLEX			BIT(13)
- #define DP83867_PHYSTS_LINK			BIT(10)
-+#define DP83867_PHYSTS_MDIX_CD			BIT(9)
-+#define DP83867_PHYSTS_MDIX_AB			BIT(8)
-+#define DP83867_PHYSTS_MDIX_MASK		(DP83867_PHYSTS_MDIX_AB | \
-+						DP83867_PHYSTS_MDIX_CD)
- 
- /* CFG2 bits */
- #define DP83867_DOWNSHIFT_EN		(BIT(8) | BIT(9))
-@@ -391,6 +399,22 @@ static int dp83867_read_status(struct phy_device *phydev)
- 	else
- 		phydev->speed = SPEED_10;
- 
-+	if (!(status & DP83867_PHYSTS_LINK)) {
-+		phydev->mdix = ETH_TP_MDI_INVALID;
-+	} else {
-+		switch (status & DP83867_PHYSTS_MDIX_MASK) {
-+		case 0:
-+			phydev->mdix = ETH_TP_MDI;
-+			break;
-+		case DP83867_PHYSTS_MDIX_MASK:
-+			phydev->mdix = ETH_TP_MDI_X;
-+			break;
-+		default:
-+			phydev->mdix = ETH_TP_MDI_INVALID;
-+			break;
-+		}
-+	}
+Yep, I just checked and vhost-vsock is the only place where we call 
+virtio_transport_deliver_tap_pkt() wiht an offset != 0, but I agree that 
+we should also fix it.
+
+Looking better in net/vmw_vsock/virtio_transport_common.c I think this 
+is a regression, indeed we have this comment in 
+virtio_transport_build_skb():
+
+	/* A packet could be split to fit the RX buffer, so we can retrieve
+	 * the payload length from the header and the buffer pointer taking
+	 * care of the offset in the original packet.
+	 */
+	pkt_hdr = virtio_vsock_hdr(pkt);
+
+Before commit 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with 
+sk_buff") we read the payload lenght from the header that is always set 
+to the right value before delivering the packet to the tap.
+
+ From that commit, we don't to consider the offset anymore since we 
+started to use `len` from the skb, so IMO we should go back to what we 
+did before it, I mean:
+
+	payload_len = le32_to_cpu(pkt->hdr.len);
+
+@Bobby do you remember why we did that change? Or if you see any issue 
+going back to what we did initially?
+
+
+Also IMO we should avoid to set all the iov_iter fields by hand and 
+start to use iov_iter_kvec(). Plus, we can just use 
+skb_copy_datagram_iter() in any case, like we already do in vhost-vsock, 
+since it already handles linear vs non linear.
+
+At the end I mean something like this:
+
+@@ -171,7 +150,7 @@ static struct sk_buff *virtio_transport_build_skb(void *opaque)
+  	 * care of the offset in the original packet.
+  	 */
+  	pkt_hdr = virtio_vsock_hdr(pkt);
+-	payload_len = pkt->len;
++	payload_len = le32_to_cpu(pkt_hdr->len);
+
+  	skb = alloc_skb(sizeof(*hdr) + sizeof(*pkt_hdr) + payload_len,
+  			GFP_ATOMIC);
+@@ -214,13 +193,17 @@ static struct sk_buff *virtio_transport_build_skb(void *opaque)
+  	skb_put_data(skb, pkt_hdr, sizeof(*pkt_hdr));
+
+  	if (payload_len) {
+-		if (skb_is_nonlinear(pkt)) {
+-			void *data = skb_put(skb, payload_len);
++		struct iov_iter iov_iter;
++		struct kvec kvec;
++		void *data = skb_put(skb, payload_len);
+
+-			virtio_transport_copy_nonlinear_skb(pkt, data, payload_len);
+-		} else {
+-			skb_put_data(skb, pkt->data, payload_len);
+-		}
++		kvec.iov_base = data;
++		kvec.iov_len = payload_len;
++		iov_iter_kvec(&iov_iter, READ, &kvec, 1, payload_len);
 +
- 	return 0;
- }
- 
-@@ -714,6 +738,8 @@ static int dp83867_config_init(struct phy_device *phydev)
- 	struct dp83867_private *dp83867 = phydev->priv;
- 	int ret, val, bs;
- 
-+	phydev->mdix_ctrl = ETH_TP_MDI_AUTO;
-+
- 	/* Force speed optimization for the PHY even if it strapped */
- 	ret = phy_modify(phydev, DP83867_CFG2, DP83867_DOWNSHIFT_EN,
- 			 DP83867_DOWNSHIFT_EN);
-@@ -873,6 +899,39 @@ static int dp83867_config_init(struct phy_device *phydev)
- 	return 0;
- }
- 
-+static int dp83867_config_mdix(struct phy_device *phydev, u8 ctrl)
-+{
-+	int val;
-+
-+	switch (ctrl) {
-+	case ETH_TP_MDI:
-+		val = DP83867_PHYCR_MDIX_MDI;
-+		break;
-+	case ETH_TP_MDI_X:
-+		val = DP83867_PHYCR_MDIX_MDIX;
-+		break;
-+	case ETH_TP_MDI_AUTO:
-+		val = DP83867_PHYCR_MDIX_AUTO;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return phy_modify(phydev, MII_DP83867_PHYCTRL,
-+			  DP83867_PHYCR_MDIX_MASK, val);
-+}
-+
-+static int dp83867_config_aneg(struct phy_device *phydev)
-+{
-+	int ret;
-+
-+	ret = dp83867_config_mdix(phydev, phydev->mdix_ctrl);
-+	if (ret)
-+		return ret;
-+
-+	return genphy_config_aneg(phydev);
-+}
-+
- static int dp83867_phy_reset(struct phy_device *phydev)
- {
- 	int err;
-@@ -1127,6 +1186,7 @@ static struct phy_driver dp83867_driver[] = {
- 
- 		.probe          = dp83867_probe,
- 		.config_init	= dp83867_config_init,
-+		.config_aneg	= dp83867_config_aneg,
- 		.soft_reset	= dp83867_phy_reset,
- 
- 		.read_status	= dp83867_read_status,
--- 
-2.43.0
++		skb_copy_datagram_iter(pkt,
++				       VIRTIO_VSOCK_SKB_CB(pkt)->offset,
++				       &iov_iter, payload_len);
+  	}
+
+  	return skb;
+
+And removing virtio_transport_copy_nonlinear_skb().
+
+If you agree, I can send a proper series with these changes that should 
+fix the issue reported by Yiqi Sun introduced by commit 4b0bf10eb077 
+("vsock/virtio: non-linear skb handling for tap") and the issue 
+introduced by commit 71dc9ec9ac7d ("virtio/vsock: replace 
+virtio_vsock_pkt with sk_buff").
+
+Thanks,
+Stefano
 
