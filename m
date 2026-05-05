@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73BE83932CC
-	for <netdev@vger.kernel.org>; Tue,  5 May 2026 02:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC8D39DBC4
+	for <netdev@vger.kernel.org>; Tue,  5 May 2026 02:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777948866; cv=none; b=ugkzAR6FMYvf/SY9UL0lOWm2F9EQb+TaA7Gv3W0jmFF0IHg2Lu0hRPBlIurBTGgCkamkTiUUj7xqioCWZPSqKDZuHvwYxV0Pe5lSXh/KMFPQSFUYsjsrl4UYVMqRN5YjPnOXYJYrm02EBuPkXHUPl7UnPWzZQ5CZA9xk1OMv+p8=
+	t=1777948869; cv=none; b=GemkxD+EO5LY9Ec0eYGr86pz7vfeH9z2watHHaOXOTqqGh7Z1c5zFxC5W4ze//RjtgGI8HzkXqU/NGeoSE2Gem4Dt0Wmx1y+/XhPySw5TPqhLcPTxbNw2vSnot7RVcnJji1t00kGnPCRTLluuitjkmcVb1o8LydWnexCxX4M3xk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777948866; c=relaxed/simple;
-	bh=JPA34X8gT60efwV2x2+oQQcQFxFTT5boWVyrp/QWQXM=;
+	s=arc-20240116; t=1777948869; c=relaxed/simple;
+	bh=EdqPuaDiqOxiu4Pm1cc9IkgEx+MzC9d6COE2s0kE8+A=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=m1gHt9TdbRq7yRUxuGbrCiro0Uw9p2csYB+2ZFdEnJs/uwYVUuteWgZ4Xzy4Nw+ov7mm+QrsKXZxYBZxN/LzakQw29pDj75SZMGj7zxM4JQlXOVJEXM5qYAUl/jPfY1rA3bBs/fowX0kPDMH3B7TRg+eGVenbb5xlncFXGaqtvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FQ69q06G; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=gi6xlMBNnzHp8Ky9NZRKUqzzXl5/QBt65PlCQ6raKGyWO2pvzNlL3SYvXKqSENxLgZYAXLY1fNPhdKO/HCAfVYo6Ka/aRQuK/uty12QwmJDU1g7JGV9pdWtkUPL6Jg6o//YwsAZEogJFg+d/bjzYap2jNig+DNW+XtzXNqAOLhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jr9jNaSp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FQ69q06G"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06F1CC2BCC4;
-	Tue,  5 May 2026 02:41:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jr9jNaSp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F3A5C2BCB8;
+	Tue,  5 May 2026 02:41:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777948864;
-	bh=JPA34X8gT60efwV2x2+oQQcQFxFTT5boWVyrp/QWQXM=;
+	s=k20201202; t=1777948869;
+	bh=EdqPuaDiqOxiu4Pm1cc9IkgEx+MzC9d6COE2s0kE8+A=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=FQ69q06G/VxxedFes0lOE9O9i+3RTuCNVx1XUyOXd0XC69+bZ9uXmflquTvaNxQuS
-	 hcmFWxs4pm1w+p+aemCfjJ4x5sidd4zPmDyRvkbPgHFG7Bc74+L6wyDMXjs74UBp0g
-	 3dVPTigGe7F3VohUyS/H8WqHCaH7jtPH6+nyrDVqbaz/LDV0uXobU1vqSWMzzxhlf6
-	 53ea64s3izvffgqe/1iROl5w+fE2Co0OxqY5MbZq9IWd8xfEmZ1tLd3iD2Gi+ik53y
-	 Dn1vAzNpO6w7zDYPEUNV0EKOmi26ls7BE8avcY11bgCS96DlFK8VKkkeLWc2t2WHSK
-	 zIh6iVNQfY4dQ==
+	b=Jr9jNaSpOBH5p/6Iu+iulmmt9QBt+8/gw3b88tVRIV1k+97SI191IWIfQBQ+SOJ/5
+	 ecqJskcaOPLFSbm+YMOlehFNHvVg5pWd4UBBoUjPVrxz+dGtN7hqAEN01YcmWbUR5s
+	 kU4hXy559PhXQ5PR6gFsdMxcB2C0KsvnjOzFop4t7rEskzCAFm4W9CdywPof1ogmcP
+	 yBHfoFw6wk1kDhUC3O3li75arLh2GY4LV1oDsiOqUsVFsDdI2l45XK3XcqX8w+gNiP
+	 Lg7SUDDyPFVoV6OtApJwcaNnHIXi6VE8GnrGsr9NUQTsHt9/vYT5u+WM2INIzctqh5
+	 sWbWupCY7K2fA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02C4939301A2;
-	Tue,  5 May 2026 02:40:16 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FBFE39301A2;
+	Tue,  5 May 2026 02:40:21 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,37 +37,39 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: prevent possible UAF in rtnl_prop_list_size()
+Subject: Re: [PATCH net-next] net/sched: speedup tc_dump_qdisc() when
+ tcm_handle
+ is provided
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177794881454.1397274.9486403503330101886.git-patchwork-notify@kernel.org>
-Date: Tue, 05 May 2026 02:40:14 +0000
-References: <20260502124102.499204-1-edumazet@google.com>
-In-Reply-To: <20260502124102.499204-1-edumazet@google.com>
+ <177794882004.1397274.13628832774580358402.git-patchwork-notify@kernel.org>
+Date: Tue, 05 May 2026 02:40:20 +0000
+References: <20260503114515.2460477-1-edumazet@google.com>
+In-Reply-To: <20260503114515.2460477-1-edumazet@google.com>
 To: Eric Dumazet <edumazet@google.com>
 Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, eric.dumazet@gmail.com
+ jhs@mojatatu.com, jiri@resnulli.us, netdev@vger.kernel.org,
+ eric.dumazet@gmail.com
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sat,  2 May 2026 12:41:02 +0000 you wrote:
-> I was mistaken by synchronize_rcu() [1] call in netdev_name_node_alt_destroy(),
-> giving a false sense of RCU safety at delete times.
+On Sun,  3 May 2026 11:45:15 +0000 you wrote:
+> "tc qdisc show ... handle xxx" filtering can be done by the kernel.
 > 
-> We have to use list_del_rcu() to not confuse potential readers
-> in rtnl_prop_list_size().
+> A followup patch can do the same for tcm_parent.
 > 
-> [1] This synchronize_rcu() call was later removed in commit 723de3ebef03
-> ("net: free altname using an RCU callback").
+> iproute2/tc needs a small companion patch.
+> 
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net: prevent possible UAF in rtnl_prop_list_size()
-    https://git.kernel.org/netdev/net/c/ac0841d7d202
+  - [net-next] net/sched: speedup tc_dump_qdisc() when tcm_handle is provided
+    https://git.kernel.org/netdev/net-next/c/c1e5127b577c
 
 You are awesome, thank you!
 -- 
