@@ -1,77 +1,35 @@
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 450FB40DFC9
-	for <netdev@vger.kernel.org>; Tue,  5 May 2026 13:16:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E11342538;
+	Tue,  5 May 2026 13:20:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777986981; cv=none; b=PqqQbtCwjX9JQbprwz77hZINqxueVPmO16wPWoy3u8gbvLhDAREy86Oly9VIcP5oqji+doQ+mRk/FQsOqUsO0QZcJ1eT24hXQ08j4SzlFvMak/1xIlkRaDC59N54UriymTa9ZYH+B8UYYpRJ15NT1x8nTyOGfWEdB4P4rBztHD0=
+	t=1777987258; cv=none; b=XZNfLfqv0PiLJOk66Wm2r9PCBcXE9R7LF7K0JqkUvq6vQzRVvlhqbnmL0XvIrVfitsc9QAVEIYev4eMRs3Hcml9JwaB1EbWnQjdIdeR9x4yERKE/iTKXj0SoVy5v96Mns8JLeE2WTA1TF6Htyj4zP5GZQOkRmVXInFjEyF3HKFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777986981; c=relaxed/simple;
-	bh=NuTkhQb/yaFpEfsB/uWznsZvvXPiwya/XdiQX2zly0M=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Zizu+N46eh3qotBU+Fa7ACRqC016u3TjtCtcfSueeZcnpXQiKinG/wa7ZGdvFP7srMvJJ9sRXoamTroIXNQULXoR8fi3iafQjtT4UH34qV2XL2Z3WS0soVU57pUEnJ53+hBko1KgXiXEbuNb/j8+p03sbVpW4ZDklTbw8hqWVAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20251104.gappssmtp.com header.i=@mojatatu-com.20251104.gappssmtp.com header.b=DcY6VX2G; arc=none smtp.client-ip=209.85.222.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	s=arc-20240116; t=1777987258; c=relaxed/simple;
+	bh=ocaOKYX2DXY98GY3ZLZ7TSXAEE2pFhNyFqWr2vc53ao=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Bow1B4TvtGaxHmBjnYZUl1feS6eGHN+sNxy+fi2LqT8I0Qvg+ZqlNdya93NLz3AiWWbalTDZUj1/YRkyGmiYzFCUL8WlhxeWwnSbtEp7lWsEQWJ1DPSVwc6mtYse648SjaY/JJ4o4BQ2xgccnwU2kiE59I8rxEuOJlE7pSce8L8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dvdFj7IZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mojatatu-com.20251104.gappssmtp.com header.i=@mojatatu-com.20251104.gappssmtp.com header.b="DcY6VX2G"
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-8f15e900586so257320885a.1
-        for <netdev@vger.kernel.org>; Tue, 05 May 2026 06:16:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20251104.gappssmtp.com; s=20251104; t=1777986979; x=1778591779; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=QYFiRoBcIxqbrWqZ6izWXMuYp7YAiDi6q8KNXqhIvLM=;
-        b=DcY6VX2GxACNKFSw9fXNMDKxblOEMkvJ+kp9LE0jeszlTXjJ4Dezija12EdmJH2tKc
-         op3BR1MkyL+TjTUkoH2jlfWDBANSW+durzzEGA6wLlA2nZYY7PJ8AKM/0/yD9mfWeDyv
-         5ua18zTXnvJ3lj8x4zUDGkTbSI/JX0YtpXrpvN0czwbE/j5AyHOKYjFHcqSvuPY4ZqsG
-         F70ov6SiQf5BaInZCI9oCQRq5vLtYu297nc5uXcfFLi0VndPJVvIhsPegmbXcnnAlHmQ
-         83JSc3KiO8731tsDRh5GN49d/VZfaXkn23R3LVUmi5Ik7tWdeW1BT/nA7Dx9pJDdKzpQ
-         ecdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777986979; x=1778591779;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QYFiRoBcIxqbrWqZ6izWXMuYp7YAiDi6q8KNXqhIvLM=;
-        b=M9nV3sVAvocdANLBLGfxVbT4r0ppBnbxjGlgIuM2+KzWFnvKMJBDgYayCgDmIIYBXU
-         EGx9rMPFDqJEXCMU6uRihosxIk79cjgnr6qnHqegiJYSV4+ToRL0H40gr4Q11v3F2z7x
-         d2e3/eyOm7WWNLhJC/uk9r+Ljgn1cpgbGWJX423oq0G3KuF6nF052GO6YD4e8Pp83jDH
-         osNOB5/bX50xUlC2osUSyqb1jmnCA1uhs6TPyDdr1BXeYPb6Ow5D0uA8MrbyN6jJvDfW
-         VC868H0yOIGSSoHhH6383qX2t9xMXMVNBhYOnm+E4hXcH+qezMuDbC//IzuSAY5uddiw
-         dwjA==
-X-Gm-Message-State: AOJu0YyJvwyeYySbDpkcRBGr0twv1ssKwhY7hmeYV6iiw0myUMJ9/vCy
-	GuRxwz6V9F3mR7btH6x0KgJ6RUAe8svNXnPJ9hrOB4dV/VG7G8UmTBhdMR98FL195+1ytZmKIBm
-	PlVA=
-X-Gm-Gg: AeBDieseG8jr1wm0Dee/s+SEcdk1pIv4VcfsrZvie9nQukkYB+ewTjmuafEXBROSWH3
-	Z+UnlcOwVSaE3BvIxDFikTkO30FhEd3c9G+nrKUjmZCSfLKIBaSz4rrn1sXTydNY6BSxBs40eGY
-	rcH2gM+IudIi9XnAn/0UwyigmYs0pE5+a4CxUl6VEV0ju5MEUJUxJFD3H3+L/3C6ewpW8b900kn
-	VOW1P6DskwqTI5P4fgJcpvwvQuTZ6l3coHImbgp0pAlGmA4pLFNoK/YwCrp46wnLnoGOxUCv7uf
-	F/zThWrz/tytSXwYgmNqoBhLhjNTGulG423Y+iMyYR7tsk54Qy5ckq0a5e3nLxO/Ts+Em3cVpdl
-	9537sPZza10HwXDeZVrT5P4xtsWsDJ1T+TQ9JeGrgyWU4Y2RdOFkuUO5UhSiEsFhQ5AW17JF0n0
-	XhEY/jB6vL5up0IGb0NEWmDMAMo9np3KBfARGAYQ==
-X-Received: by 2002:a05:620a:2996:b0:8ee:dc47:3b70 with SMTP id af79cd13be357-8fd18137bb2mr2122395785a.39.1777986978678;
-        Tue, 05 May 2026 06:16:18 -0700 (PDT)
-Received: from majuu.waya ([184.144.29.222])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8fc2cd06f16sm1364219285a.42.2026.05.05.06.16.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 May 2026 06:16:17 -0700 (PDT)
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-To: netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	jiri@resnulli.us,
-	horms@kernel.org,
-	vinicius.gomes@intel.com,
-	graypanda.inzag@gmail.com,
-	victor@mojatatu.com
-Subject: [PATCH net 0/2] Introduce CBS reset ops
-Date: Tue,  5 May 2026 09:16:02 -0400
-Message-Id: <20260505131604.128605-1-jhs@mojatatu.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dvdFj7IZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AC32C2BCB9;
+	Tue,  5 May 2026 13:20:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777987257;
+	bh=ocaOKYX2DXY98GY3ZLZ7TSXAEE2pFhNyFqWr2vc53ao=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=dvdFj7IZSy1caS7Xwj5TUKjRHcBBqi1OXOopVQhJdW23O7UbgrB5sCBTzaBisVvby
+	 jqWXmsLV9JIh/+3QeYkyrptt8p+/JzVUDwQcVq9jnScM1EUlJnUT+gzJk+ua9VjV0g
+	 vUdFFLYhQ5EYfRsy2zfvgrgYKn+PWnNlmEnfVgsgDjcBygzt+JV9SCQhh50P49rV8E
+	 VkAKgnkXbDCybWGQuXz1bSqIeZ6m1QKN5Nhjc4il3gklZ/i8ufrKRgvrmmBRxeI8zc
+	 pgHp14Xd2VGFcgn4MLvlLg3CpothY2JyQeMKCWxp+uil4EAPZKA1skbIo+bjLWh0wc
+	 7GlKVUFZBbtyw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02C473930232;
+	Tue,  5 May 2026 13:20:09 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,22 +37,50 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] openvswitch: vport: fix race between tunnel creation
+ and
+ linking
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177798720755.2051666.6281717577088605401.git-patchwork-notify@kernel.org>
+Date: Tue, 05 May 2026 13:20:07 +0000
+References: <20260430213349.407991-1-i.maximets@ovn.org>
+In-Reply-To: <20260430213349.407991-1-i.maximets@ovn.org>
+To: Ilya Maximets <i.maximets@ovn.org>
+Cc: netdev@vger.kernel.org, aconole@redhat.com, echaudro@redhat.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, dev@openvswitch.org, linux-kernel@vger.kernel.org,
+ tanyuan98@outlook.com, yifanwucs@gmail.com, tomapufckgml@gmail.com,
+ bird@lzu.edu.cn, n05ec@lzu.edu.cn
 
-QFQ uses qlen to check whether it should reset pointer q->in_serv_agg.
-When QFQ has a CBS child which has a netem child it is possible to create a
-scenario where QFQ's qlen goes to 0 but the computation makes it underflow.
-This then aggrevates a null pointer deref.
+Hello:
 
-Jamal Hadi Salim (1):
-  net/sched: sch_cbs: Call qdisc_reset for child qdisc
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-Victor Nogueira (1):
-  selftests/tc-testing: Add QFQ/CBS qlen underflow test
+On Thu, 30 Apr 2026 23:32:50 +0200 you wrote:
+> When a tunnel vport is created it first creates the tunnel device, e.g.,
+> with geneve_dev_create_fb(), then it calls ovs_netdev_link() to take a
+> reference and link it to the device that represents openvswitch datapath.
+> 
+> The creation of the device is happening under RTNL, but then RTNL is
+> released and re-acquired to find the device by name.  It is technically
+> possible for the tunnel device to be re-named or deleted within that
+> window while RTNL is not held, and some other device created in its
+> place.  This will cause a non-tunnel device to be referenced in the
+> vport and tunnel-specific functions used on it, e.g. vxlan_get_options()
+> that directly casts the private netdev data into a struct vxlan_dev
+> causing an invalid memory access:
+> 
+> [...]
 
- net/sched/sch_cbs.c                           | 12 +++++-
- .../tc-testing/tc-tests/infra/qdiscs.json     | 41 +++++++++++++++++++
- 2 files changed, 52 insertions(+), 1 deletion(-)
+Here is the summary with links:
+  - [net] openvswitch: vport: fix race between tunnel creation and linking
+    https://git.kernel.org/netdev/net/c/83861c48ba12
 
+You are awesome, thank you!
 -- 
-2.34.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
