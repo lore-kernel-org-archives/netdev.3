@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7FAC3A6B74;
-	Tue,  5 May 2026 02:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2AC3AA4F2;
+	Tue,  5 May 2026 02:31:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777948269; cv=none; b=A68BUjyJJjnmp+/dXTWLwiDXjGN5CAAOhpjAPxOVga7NSnL0AnrM1OUceRxVgUj8WkE3SDTDagxhxftXzVmy/YmjBdgmAW5D8YvB8W7ON14xpEa9Mvt3TnsiV+ZOyfa28Ip9TsVqamjWndFsMK01SJcRgq24fI79zqjhh4e74+4=
+	t=1777948270; cv=none; b=lX+qGj+m16yvmLFSsBSYoNGlunlIfQrQFkGVvsYp3gcmOrT1TlHtrUjbD/174EinNTX4AnBnc5eTnyS3NwQlqpn1TT7P4VMZbtNqSoAebU4SD4aetMQjZzDzd0WgDNSYLVSKSa3phrAq+6Z9prHrfBGdNmWO7/CyRAAnrcdO+n8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777948269; c=relaxed/simple;
-	bh=Z6Gbevj3t94Bn8F2V+JHzP+LoO9va/htSsbzoxc88b8=;
+	s=arc-20240116; t=1777948270; c=relaxed/simple;
+	bh=M/p16af5Ln1fL6+e6QEP7Sj9701xNucASUan+tM7aRc=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=L3xtR1rX6otpGW9Xq4+JOQsJ82Nhq+0OgivWHtroxz2uuIpS+d21s52fz9DffqMNBgNpIh5xy/oe8DPLcRn5Vki6ss3cDpe/bf045PuJcah1/mW+32nWQP0j0fLAy89MexHNlDJKOSPp30BXzhsZut00c0uGyfTBeCEsqyZ5WnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZZkcg8/M; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=gQ9H1HL9xjzuQkxVVojLwdC1Cl+NSltEO6+jiTsvkt02Il9Fxrnu2hUx+qVwtO9aUF/0K4UDeMUsA8aDjzI6CCz9BzJ04hVdu8fgrD89odyVx3FWlLyr6yrdRmduuDeLOyXLYsgBKK3G/IZhjoV8Nh3EfdrVd0tNC7r9SXCSJ1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BcRNPZP6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZZkcg8/M"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DDC7C2BCB8;
-	Tue,  5 May 2026 02:31:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BcRNPZP6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3816C2BCB8;
+	Tue,  5 May 2026 02:31:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777948269;
-	bh=Z6Gbevj3t94Bn8F2V+JHzP+LoO9va/htSsbzoxc88b8=;
+	s=k20201202; t=1777948270;
+	bh=M/p16af5Ln1fL6+e6QEP7Sj9701xNucASUan+tM7aRc=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=ZZkcg8/MDq4ggWvXVe5fWN39VF7E10+mkp6SqLE47HP4A7M/lxFUjcBEagN65C7xM
-	 L0RIa6NrWQnkEkIJaPstQCErHi7pgHIj4RRE35hhfj/jIoRBDfsxXXDLmTSQyESbTh
-	 OrmnTbP463LFLhG1eUYGRonjRGbGuihWvmVq+MXKbDHYMEARfnS6ChhQ/DdYrF6b6b
-	 BDxD5ZRM8nt2uiaugL/+6TwfUFevrqyvv70kSjFvfK8Vqkiflhm+6Wh8QjB0FpUH4S
-	 FYZ+X80BcnvEcS9N90/zu801SlFAqJcHf1Whmq9ew1u9Lm+u0AFInDEG3nGvwSf+7k
-	 sDbpfIl9LZTAg==
+	b=BcRNPZP6Q6mGDgVWXnOvAplprohg+mbn+Q7BP7T4UUes4shZmzGrlotOzEwjRw/0u
+	 Bd6Ga3JR9cFP++KIVCaYgq8KpJzW9BlFCA95QqfPwJg+Z2K7S3FQQuo32GMQO/IQa9
+	 RDg8HmyHjOXhO3aXj5PKc6FvNaj37HDxwirEL3KHW5etdMvQzUK9Nd7KfZqHnbYNrn
+	 8TEtMtJEJQ2yrgQS3aMtcGXJaecs0VoR+yYGCa9P1ZGaNjr0W2lsQJCV/vTGxu+7PL
+	 0cVzTP3AaDTdLgqvS7aE7qK1pGtFNdQPxk9ygYCIuY+UF1zg6nVbKAXaoK8F5aliyC
+	 mPiLdOwVgeCaQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FCCB39301A2;
-	Tue,  5 May 2026 02:30:21 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9DC939301A2;
+	Tue,  5 May 2026 02:30:22 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,47 +37,39 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2] net: mana: hardening: Reject zero
- max_num_queues
- from GDMA_QUERY_MAX_RESOURCES
+Subject: Re: [PATCH net-next] net: phy: realtek: replace magic number with
+ register bit macros
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177794822004.1394832.4803471358610574659.git-patchwork-notify@kernel.org>
-Date: Tue, 05 May 2026 02:30:20 +0000
-References: <20260430083627.1873757-1-ernis@linux.microsoft.com>
-In-Reply-To: <20260430083627.1873757-1-ernis@linux.microsoft.com>
-To: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
- decui@microsoft.com, longli@microsoft.com, andrew+netdev@lunn.ch,
+ <177794822129.1394832.3566254923812339895.git-patchwork-notify@kernel.org>
+Date: Tue, 05 May 2026 02:30:21 +0000
+References: <20260502092857.156831-1-olek2@wp.pl>
+In-Reply-To: <20260502092857.156831-1-olek2@wp.pl>
+To: Aleksander Jan Bajkowski <olek2@wp.pl>
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
  davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, shradhagupta@linux.microsoft.com,
- dipayanroy@linux.microsoft.com, yury.norov@gmail.com,
- linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+ daniel@makrotopia.org, vladimir.oltean@nxp.com, michael@fossekall.de,
+ ih@simonwunderlich.de, rmk+kernel@armlinux.org.uk, marek.vasut@mailbox.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 30 Apr 2026 01:36:21 -0700 you wrote:
-> In a CVM environment, hardware responses cannot be trusted. The
-> GDMA_QUERY_MAX_RESOURCES command returns resource limits used to
-> determine the maximum number of queues.
+On Sat,  2 May 2026 11:28:47 +0200 you wrote:
+> Replace magic number with register bit macros. The description of the
+> RTL8211B interrupt register is obtained from publicly available
+> datasheet[1].
 > 
-> In mana_gd_query_max_resources(), gc->max_num_queues is initialized
-> from num_online_cpus() and successively clamped by the hardware-reported
-> max_eq, max_cq, max_sq, max_rq, and num_msix_usable values. If any of
-> these hardware values is zero, gc->max_num_queues becomes zero and the
-> function returns success. This leads to a confusing failure later when
-> alloc_etherdev_mq() is called with zero queues, returning NULL and
-> producing a misleading -ENOMEM error.
+> 1. RTL8211B(L) Rev. 1.5 Datasheet
+> Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v2] net: mana: hardening: Reject zero max_num_queues from GDMA_QUERY_MAX_RESOURCES
-    https://git.kernel.org/netdev/net-next/c/f7622e58e802
+  - [net-next] net: phy: realtek: replace magic number with register bit macros
+    https://git.kernel.org/netdev/net-next/c/052065add1b5
 
 You are awesome, thank you!
 -- 
