@@ -1,116 +1,116 @@
-Received: from sonic308-56.consmr.mail.ne1.yahoo.com (sonic308-56.consmr.mail.ne1.yahoo.com [66.163.187.31])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E113E868E
-	for <netdev@vger.kernel.org>; Tue,  5 May 2026 14:59:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.187.31
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81DFE175A87;
+	Tue,  5 May 2026 15:01:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777993200; cv=none; b=X9mN2ryGNu7sqwvDN2ffr7UxGxfL6/l7DJEyxmnZXClhDzJtt6cQsxEAQ3p7IXcJcbRJQO6aJwfTVSARnc87d/gHvDLd7MJ4T81KU1m0v0RHBzNttrkHBF+faQBg5g5BB+fS2NSdfgIDQ1FQ+fV8EdItypHDi7Av5KYNgDE37nw=
+	t=1777993287; cv=none; b=kxZo0kiK5nTVks1wSV0OnmQ4bML71PR3zcb9A7bFGKQ8Y5dGLSpDtx10GsRQ8MDfFJ0iPIy9rSUytwrcBLokD3U+ZLyejpZdPMT/qhb2jE2d0sT4CjMQ3tMQtfWtMBUDgJtFdT8sWgebOyNKAx6q9wzhfNooye/oN8FSDQR4WX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777993200; c=relaxed/simple;
-	bh=8ZvHiRf4z8++p3P+aibZvYTARv7s/QIDad/VcQq9u9A=;
-	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type:
-	 References; b=FHAxHJc8O9LHuczJRrVMlhA6pHUktSx3KXWa2NRlngCxGXtN0JkUD0jhQa2KEX57KXUXsu1B6Yz5svMFbsIUXeONnXOxzpBIek/qRZMKUdXeu1KYEmv5FERk4NjF+EWqJ61bszygans/2uujxN/cxO1seFnQUbhnuNlzCKK/Obc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=E+8bQDAu; arc=none smtp.client-ip=66.163.187.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+	s=arc-20240116; t=1777993287; c=relaxed/simple;
+	bh=RfIY+/4lIX0lJsO9zD2c8kAfjhuWI0FcPTJxp5L6K2c=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Br50WjpHGy5uNO9GKE++EeGYCXNISJTwmNpGq15nRePA0Hc41tGEkZTzY4yUL6kGVMmkZ9N+iwRkm9EEqJu21fztGLJNbYDk+BTPIUQR7qD7Tb2EWh31vmbSrrUmlz3CAGwlAs+gMzOPCFUl+H/DjySKpw4Z3t8pzoQX7XFDI+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DK2k94Zd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="E+8bQDAu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1777993198; bh=GaCB3dkZrFSDuqe/NVRFFWp4LwsBt1eBcyvZB+LlCj8=; h=Date:To:From:Subject:References:From:Subject:Reply-To; b=E+8bQDAupgf2Y5kxUUsVaVmmR1O5x912iGPzGYxGJcuczPGwywCUMd3ukAgFpXHNRJSSjwaYqo6KYmjD1ZJ2RbbCD3WnZGr4aMcbh53AgR7m3sBQJFpnmGuirquo5nq4Ikqb8V2VZeSd8tu5McC3Bu9L7YP7adltEBHIouWrEz835Gsc+aNbH/6BzTcRUpb6gEDF7bAR7n72FqNZKH2G3NdokM0zOLqcEtiUdmiDphEnnK6FufqoKg0vlHpRKRlhmdj0COK42XNl68D7jBxu8D/o7TcUSfNzTmBel5e3r8cA4L8m88SaHbk8jXdUI/NzdprOAmjrfN1eerGVzrgo4Q==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1777993198; bh=UBrtZ7nnrUr2vctV8fcau/2SncT/VMtJ9Yd7tV4ZNVh=; h=X-Sonic-MF:Date:To:From:Subject:From:Subject; b=Kpv8EURg0JW1bJNQgt/RcITAf2Vico7Bl1QMy3FvUY3Euohj0gtEQ7DmjBhPb5V0DgqPowQdgTNGyHhBAU7gTQVqn7DEK6WkBpd04vqjSdBWRUbpIzhAkCi4qH8lrQfV6cvnpNihL9PB/Ilz18urX2TBoggexNdE63cEmAwy6m9t71hmpJjuqxoO5IKWivA+QpJzrv3QRW8CCvbyE1eSCLfYAsGLPVE8J9AKPipTFv57r77CSrkurqD6fIwxCeWY2loKwqRI1rVeAji29mF/D1Is3we6bHG0NaRT2+dM/nxCKJsuWEc0bPFWlpWtx1R2u/jEfye4qXzUTX7KEJlFGw==
-X-YMail-OSG: 7YOYRpgVM1lfEUv6n02KljxHjADMr9yKxJjJnIQCFT8iJBQ1J.dM4a0yDemC5Un
- Ny6KJGY1u_03tR2OB6Kg31UCDZQRrT.pLbZG_YELypiuWceXiiUl84SzLc16N56s_Ox08Laqy_tP
- VSvwYaTSUe2J3YejAAQ8my_P6ivbjIfL7rUSP3f0XmHm.gr_6.ta2jr3aQOHpcjp1JyFVXl45TEA
- 2f9v9XMN98HpxhPkshZpUX5c44ySkp7ic8Xj7fDbjauTb2kNj8lCvFAHGFtkqpI.2EPay4zF0K5X
- O9r9NSwhopmJblBVm3YpjdcnRsDQyJJ1r4vJbWEhnIN7JPvXpMHaIpa.x5ZEFO9QaAN6YiRnU5wP
- n9KpgfYGeplhnEHoTkQ2RYBvdgg9nwdapz2a6QahtCvb5OJv9NBU7LoEMMTfjToD.xZVLvolySQY
- Vd2.dUT4Wz3Ayqop.jpsZCbsPnnotJTuNpu1uxFU81F8QAQo4PlMKPbmR2M0jmYdBSSZcituiL4F
- AQ45LjjG5bECQx6tHUSvCVBdHrURZK6fb5rlor2HbvPyQpKk0fOPzZiVamhSmXJktHM.g_Cp1Ws1
- ohFyDuNvC59lrjcjfxBlftFuik9ug7UE81nEAEDbNNVbRt5jrIw8sKvgCYIOMGsXlPC2aj8r.z9Z
- dOoQpyYmwtZOVjXBFNTT3y0pFogH8UakPPm56rux_i.Q9ULFdVoqrHFE.ITvf4Zsg24zJ4rTkvqV
- cKzouk9u7Wj1PSlWB9j8viaUs1ks71yt_t8BEqoFeBhXLvS5YxYG1KPjoML5uLJR8V5kM4zIaMOk
- pK_NWUGOJPRLGjONqYeJ.nvyA3pQY6Dkvy6hty4qA6NseFFvOSOrCzyVwB95R4lWer4naTGNS9Bo
- SvmquPj.kxdHE.HNfd_y55SvVRkZhN.1_AaJ0_NDycrg_Q.AC1dRvlbrVwj7sWbCl2uwcwIlqUaI
- H3oRYF7QuAp2HhKwe9BWF8nnB6EZMEpXqfZCvhsD9P0OIyc30Jm2BsP.76tJ9eUN4.TSLmukaT0l
- cVlvYFw6OUzJ46paXNvJvAKM6.4ZEuCQhqQxnVP4of1Q_AveD1GoR.33XGfJS_gIExhAsdKWjMDw
- GNij3W2zz895ndoX0nYMKzzGNM6fQDM828sSAMCeu8Sl1jPMTmvpneQK0g.y2OrEmaIjbb1hjrup
- 6RMvCpyXz1Oybu3R3xUYlwi7p64D4y8cC48Yp0kmtBp7ww17irtzD7BNXgbqnLsKXjeBvkVYKfBK
- Yx1MmEI..Vt6Y4nn2iYt35B9Pr6Xjj.78vvroEMgC78RLDM3Rwzocu9ybERTP4pq_p90v7KPPnAH
- 9tgWiTvLomu5MtUUOVQhzstU1E4UUyXdqVSdYrMZAWar7HwwZlfkn5qamSY5nGdy60GqyKlJ0J53
- Fda9lABqccZCNUVyJxdFHQfuPgQQIb.ClskX4rne2oP70ROqKzPkA.Hb..sSXB7ZoDRpU5k7.0iQ
- nTrcPnSfeqeWPdgcqF.fcAWVwDmbv1YrZk7GlSzDGeeJ4PYobuspND7T9Q1qHp5LxV00vkbLBrnc
- vn8fuCiCIJaI2UejdDwcuRYULey31YReaXGSwEKegkhsXlAksRpZIc0LDypt7DwY.6lq9SNK0Qj6
- 95ojRMJ2vN7miAamVYLKDQmkSdJFMIxyeZj1qBYE9gP.pdDlTzuLqtmK5gCbXxGbr6TgiY3pfYV9
- pMuNUH8KXrIen7GyRV1xsirYLmWrfTTpV0nWRgkQ1rsF.XK_xu_osnPTttP1Hpw0hpiObVr6fyvE
- xiOeIBit4Wf5zZ7DvgdjR9IJuHQg1toALZKh8utXHr8fesdxTIPiaF10_t9R6OpScVVY37TxCmfJ
- jrI119BlGdUHT6uRH7i8RWRLvBQyVlu333.fzsMWoqmNss0yua88btg608Y6DETDB5qRU7w58WMS
- jgQsH_vkWqEz3TNxuf3s6QMAw7adGgLtA4xeI51bn8dJojqACJp9ET2g_DX0MKU9BjZCUgY9s5jc
- bs3TPqwVIdReIMHhe2hReKfAcB69HRGk3I0_GdT2Jgg8f1c7m7mCVeMMzxSz_vUstRHcYwKt.Bbh
- _nI1XsuhwicHn4Q5N1RHSWckvqziXouWDfOyRhVeAcScRac.G0OHI_.ChG.UZMCl2kb0X5rbKjML
- UHRLT5OaagMVpFhnRCcsCsjjMeBiLRuU4hEjLZjWPOcGtrfPoMs942mNQnoF3BCMmuqV1vUtAxW_
- B3Q..5XITuzStpnKiSw87yz1I1UUaJkr4MhXjlqO1AmA5xX1SzC2PXjPhmj7yH3Tyd9L.9iWp8Rk
- yqIaHQsW7zbwVPo6DWVxfxAh8
-X-Sonic-MF: <namiltd@yahoo.com>
-X-Sonic-ID: c7639cf0-ab2d-4378-94ea-92c2562fe143
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic308.consmr.mail.ne1.yahoo.com with HTTP; Tue, 5 May 2026 14:59:58 +0000
-Received: by hermes--production-ir2-89844b765-6g7zf (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 8cc2601c87302dd76303eb395609c9f4;
-          Tue, 05 May 2026 14:17:22 +0000 (UTC)
-Message-ID: <05921e1f-693b-4322-a762-c8f03c386a78@yahoo.com>
-Date: Tue, 5 May 2026 16:17:19 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DK2k94Zd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A13F4C2BCC7;
+	Tue,  5 May 2026 15:01:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777993287;
+	bh=RfIY+/4lIX0lJsO9zD2c8kAfjhuWI0FcPTJxp5L6K2c=;
+	h=From:Subject:Date:To:Cc:From;
+	b=DK2k94Zdh8M4TXW65NOS8s4UF/jQ3lKoUwgV+0371pKtdcTZlWDS36CQt2f8g04y2
+	 ngv4ztlii5cfRu1vHcKycRsAaTXjEQy0qUAmNtGjlsRMQmV3tE9n4XEgYoojmWuiAB
+	 3qnd42mwqFL0W8tzMTUOmYnHe1VHQ2QnR4AvsuY6BvWFQuV3zq7oYnNCX+Uzx+/VH+
+	 ucaYyjK7vexqcdUIBqBbxm4sqtSNuMfQO9pFZ4kWCB5lufWqGvNVpgJrYDObwaSrpc
+	 8OiC5xhtQwo6E8Xh/xOPDQ0VmCAYR3ucMq3pacO2Y7MdQlquk9yrOTmglrpLsIBNv/
+	 mYMCunvr4qT5Q==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH net 00/11] mptcp: pm: misc. fixes for v7.1-rc3
+Date: Tue, 05 May 2026 17:00:48 +0200
+Message-Id: <20260505-net-mptcp-pm-fixes-7-1-rc3-v1-0-fca8091060a4@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: pl
-To: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, =?UTF-8?Q?Alvin_=C5=A0ipraga?=
- <alsi@bang-olufsen.dk>, Yury Norov <yury.norov@gmail.com>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org
-From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-Subject: [PATCH v2] net: dsa: realtek: rtl8365mb: add support for RTL8367SB
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-References: <05921e1f-693b-4322-a762-c8f03c386a78.ref@yahoo.com>
-X-Mailer: WebService/1.1.25559 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWM0QrCMBAEf6XcswdJW03xV8QHm656QmPIRSmU/
+ runPs6yMyspikDp2KxU8BaVZzLwu4bi/ZJuYJmMqXXtwe1dzwmV51xj5jzzVRYoB/ZcYsfop8G
+ HIXTOgSyQC34H809kHp3/o77GB2L9ZmnbPnXE0AaDAAAA
+X-Change-ID: 20260504-net-mptcp-pm-fixes-7-1-rc3-e4d81787300e
+To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Christoph Paasch <cpaasch@openai.com>
+Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, 
+ stable@vger.kernel.org, Shuah Khan <shuah@kernel.org>, 
+ linux-kselftest@vger.kernel.org
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2096; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=RfIY+/4lIX0lJsO9zD2c8kAfjhuWI0FcPTJxp5L6K2c=;
+ b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDJ/sVmtTQ7qefTggk1ry2n+B4+9mLduuSC5qlii5OQao
+ adSTa3CHaUsDGJcDLJiiizSbZH5M59X8ZZ4+VnAzGFlAhnCwMUpABNp+83wP3BXlmmV4DoePpOl
+ 11gvPz0pouR/MMSye97puzWMFdqy/xgZdvM/CX6k37rR8+WPb8+0sxoi0/kKF4QWvT7a1vPMc9E
+ iXgA=
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-Add chip info entry for the Realtek RTL8367SB switch. This device has
-chip ID 0x6367 and version 0x0010. It exposes two external interfaces:
-port 6 supports SGMII and HSGMII, while port 7 supports MII, TMII,
-RMII and RGMII. Use the existing 8365MB-VC jam table for initialization.
+Here are various fixes, mainly related to ADD_ADDRs:
 
-Signed-off-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+- Patch 1: save ADD_ADDR for rtx with ID0 when needed. A fix for v6.1.
+
+- Patch 2: remove unneeded exception for ID 0. A fix for v5.10.
+
+- Patches 3-5: fix potential data-race and leaks during ADD_ADDR rtx. A
+  fix for v5.10.
+
+- Patch 6: resched blocked ADD_ADDR rtx after a more appropriated
+  timeout, not after 15 seconds. A fix for v5.10.
+
+- Patch 7: skip inactive subflows when when looking at the max RTO. A
+  fix for v6.18.
+
+- Patch 8: avoid iterating over all subflows when there is no need to. A
+  fix for v6.18.
+
+- Patch 9: skip closed subflows when looking at sending MP_PRIO. A fix
+  for v5.17.
+
+- Patch 10: properly catch errors when using check_output() in the
+  selftests. A fix for v6.9.
+
+- Patch 11: skip the 'unknown' flag test when 'ip mptcp' is used. A fix
+  for v6.10.
+
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
- drivers/net/dsa/realtek/rtl8365mb.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+Matthieu Baerts (NGI0) (11):
+      mptcp: pm: kernel: correctly retransmit ADD_ADDR ID 0
+      mptcp: pm: ADD_ADDR rtx: allow ID 0
+      mptcp: pm: ADD_ADDR rtx: fix potential data-race
+      mptcp: pm: ADD_ADDR rtx: always decrease sk refcount
+      mptcp: pm: ADD_ADDR rtx: free sk if last
+      mptcp: pm: ADD_ADDR rtx: resched blocked ADD_ADDR quicker
+      mptcp: pm: ADD_ADDR rtx: skip inactive subflows
+      mptcp: pm: ADD_ADDR rtx: return early if no retrans
+      mptcp: pm: prio: skip closed subflows
+      selftests: mptcp: check output: catch cmd errors
+      selftests: mptcp: pm: restrict 'unknown' check to pm_nl_ctl
 
-diff --git a/drivers/net/dsa/realtek/rtl8365mb.c b/drivers/net/dsa/realtek/rtl8365mb.c
-index 073f12ca8028..84d6fdb94a96 100644
---- a/drivers/net/dsa/realtek/rtl8365mb.c
-+++ b/drivers/net/dsa/realtek/rtl8365mb.c
-@@ -545,6 +545,18 @@ static const struct rtl8365mb_chip_info
- 		.jam_size = ARRAY_SIZE(rtl8365mb_init_jam_8365mb_vc),
- 	},
- 	{
-+		.name = "RTL8367SB",
-+		.chip_id = 0x6367,
-+		.chip_ver = 0x0010,
-+		.extints = {
-+			{ 6, 1, PHY_INTF(SGMII) | PHY_INTF(HSGMII) },
-+			{ 7, 2, PHY_INTF(MII) | PHY_INTF(TMII) |
-+				PHY_INTF(RMII) | PHY_INTF(RGMII) },
-+		},
-+		.jam_table = rtl8365mb_init_jam_8365mb_vc,
-+		.jam_size = ARRAY_SIZE(rtl8365mb_init_jam_8365mb_vc),
-+	},
-+	{
- 		.name = "RTL8367RB-VB",
- 		.chip_id = 0x6367,
- 		.chip_ver = 0x0020,
--- 
-2.53.0
+ net/mptcp/pm.c                                  | 62 +++++++++++++++++--------
+ net/mptcp/pm_kernel.c                           | 13 ++++--
+ tools/testing/selftests/net/mptcp/mptcp_lib.sh  | 16 ++++---
+ tools/testing/selftests/net/mptcp/pm_netlink.sh | 20 +++++---
+ 4 files changed, 73 insertions(+), 38 deletions(-)
+---
+base-commit: 07d99587396024932e02474c3a5bede71d108454
+change-id: 20260504-net-mptcp-pm-fixes-7-1-rc3-e4d81787300e
+
+Best regards,
+--  
+Matthieu Baerts (NGI0) <matttbe@kernel.org>
+
