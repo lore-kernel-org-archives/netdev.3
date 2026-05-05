@@ -1,97 +1,123 @@
-Received: from retry-chloe4.scw-tem.cloud (retry-chloe4.scw-tem.cloud [51.159.124.110])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 025382C030E
-	for <netdev@vger.kernel.org>; Tue,  5 May 2026 04:53:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.159.124.110
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B3D3B38BD;
+	Tue,  5 May 2026 04:54:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777956831; cv=none; b=oRUi4/Aas3ryP/xVZErhbSPugEmb1bpIIyinxTkZa/EN96Tcm901B+SByYFkTkTDa2ESZOLqAERtyu9f685nJu+wC+kJBSMOE0gOJnx07ROYhHHqBu4mLUZkXmmHgcpLNisPtiTTSeVV/oC8Z9+7Om6f5wd58rQdNBm8fdXCizM=
+	t=1777956874; cv=none; b=p18GyeHOnBv6LYXJgOJdh3uHUUXej1XaQnRk2dlVSGYKsnTe7R9keQKy0F7S637+QZ8NaGzjIXJDZH+UNi0gxNr0AA/r0hLXSqwhWs5YBCA866P6YDhBx4PXuk4ZZxrI/HKd+23bcARtVnkhuwqnZbKnYMM2xrb0v2HjL4BZr2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777956831; c=relaxed/simple;
-	bh=ILXk0ypioXXQWbJScoB2L5GBzoLlSBom5ksLwV4yPQ0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=uJf+nTV6+obISP+oRZbalveHSNBn5V4bQ5/05EWwAeRKYt5Khkk2/VrjSc2yZPIxHWfI8q2JB9Yxe+aHZC8N2Prjna6+i0IAyWdye56OF1BoO94jlx+XklqTa/vJSz6Wa6nv8du7xRnfXPG/QbdwxGfYbCZNDSty0G2pLe0LmEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=leavitt.info; spf=pass smtp.mailfrom=leavitt.info; dkim=pass (2048-bit key) header.d=leavitt.info header.i=@leavitt.info header.b=i8j0bxXQ; arc=none smtp.client-ip=51.159.124.110
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=leavitt.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leavitt.info
+	s=arc-20240116; t=1777956874; c=relaxed/simple;
+	bh=haGfBtENmV6eMb2MDh7r4FacDapZcB1kOYJ0JXEc/T0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ONWLFcEXjXRe2nkldu6In03vecLn/aOSr6TMQhMaYsnVXtbV6y2Hy5fqZwqzubLIx5SuoyJiE6WY9dM6bbXcQRfJupw7vCV7Y42Om2oyMPUJM04CCWLYAPPI7OFf3yQFE0kMb5VS0EOHVYxh2V9MSSEpQP7Z0E+XKwxcTxQreOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gY4ssn3Z; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leavitt.info header.i=@leavitt.info header.b="i8j0bxXQ"
-From: Corey Leavitt <corey@leavitt.info>
-To: Carlo Szelinsky <github@szelinsky.de>
-Cc: Kory Maincent <kory.maincent@bootlin.com>, 
- Oleksij Rempel <o.rempel@pengutronix.de>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, Andrew Lunn <andrew@lunn.ch>, 
- Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, Jakub Kicinski <kuba@kernel.org>, 
- "David S . Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RFC net-next 0/4] net: pse-pd: decouple controller
- lookup from MDIO probe
-Date: Mon, 04 May 2026 22:36:55 -0600
-Message-ID: <177795581584.12433.14568712745388778289@leavitt.info>
-In-Reply-To: <20260502201016.2215520-1-github@szelinsky.de>
-References: <20260424144124.131837c7@kmaincent-XPS-13-7390>
- <20260502201016.2215520-1-github@szelinsky.de>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gY4ssn3Z"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777956873; x=1809492873;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=haGfBtENmV6eMb2MDh7r4FacDapZcB1kOYJ0JXEc/T0=;
+  b=gY4ssn3Z8J+99dIKHCt3SGuoswykZe9LnFgBPl1WXM6Z3QK192k/KeuE
+   9bTtRKRFGClGLmUsHOmDaZAZIpsoY+xb1iRTR4kr10vbWUFpcZvQJkT/S
+   Z1TpQJl65F2qDhzCAvRusKqaMqi+T1/14FXFUps/xjY0QHW4UcwtoVl9t
+   24GEJP4ZMFBMU1LLLCCNSXw6jL/JOPz8BMsT3uv/P0vOXYACEoEY8XS45
+   LwSKh0CitNzLb9hODsDJk+KB8jpPPmnLZn2beYw6Woq5oJ9hntqZaw9TQ
+   ZxNNu7XQTt9B8rkZsM/vjn4aLshLL4xQLDIR4SOss7DFHCjEAp5rnwhtA
+   g==;
+X-CSE-ConnectionGUID: PjoD6E8uRtW+wyYkC6fkqw==
+X-CSE-MsgGUID: UmvSDB8hTYOASVmrT7dHZA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11776"; a="78811204"
+X-IronPort-AV: E=Sophos;i="6.23,216,1770624000"; 
+   d="scan'208";a="78811204"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2026 21:54:33 -0700
+X-CSE-ConnectionGUID: Vqp4Pl8nRO6OlvbL2x0gwg==
+X-CSE-MsgGUID: CZ9rPXnqRk6R00egKJMMGw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,216,1770624000"; 
+   d="scan'208";a="273829281"
+Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost) ([10.245.244.5])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2026 21:54:29 -0700
+Date: Tue, 5 May 2026 07:54:27 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>
+Subject: Re: [PATCH net-next v1 0/5] net: mdiobus: HIde ACPI implementation
+Message-ID: <afl4A48uIZPJmMeG@ashevche-desk.local>
+References: <20260504074610.40799-1-andriy.shevchenko@linux.intel.com>
+ <aee27459-387c-46ce-9c06-3de66309c8d6@lunn.ch>
+ <afij7wOkQUGUN0kM@ashevche-desk.local>
+ <28a4ebd7-2670-439d-836b-14559a916ed0@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mailer: f4 0.1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777955815; l=1407;
- i=corey@leavitt.info; s=default; h=from:subject:message-id;
- bh=ILXk0ypioXXQWbJScoB2L5GBzoLlSBom5ksLwV4yPQ0=;
- b=1aJk2u42VoHWqshhOATuCgfJ4lEVOv6hLmHMSR9OHdI22TUMMYbMrYlA+m0g6qUsK2G2Zw+zd
- 9MTklTSvXRiCjTZbjh7/cmhjiCrCuuTmEzIwp8bkXjl+G4yIzt60aG9
-X-Developer-Key: i=corey@leavitt.info; a=ed25519;
- pk=Q3mmZT+4CRYT8qp8RWvab30X2v2JnLdhHuK7YIHKzpI=
-X-Scw-Domain: leavitt.info
-X-Scw-Tem-Message-Id: 23460af5-d1b3-472d-84fe-b434f4bc2804
-DKIM-Signature: a=rsa-sha256; bh=ILXk0ypioXXQWbJScoB2L5GBzoLlSBom5ksLwV4yPQ0=;
- c=relaxed/relaxed; d=leavitt.info; h=from:to:cc:subject:date:message-id;
- s=cdc8a02d-c0a1-45e0-85cc-a48257446c17; t=1777955821; v=1;
- b=i8j0bxXQi3eNvzpMM+X6FO3fu2xCFffm8vuo4K2JiRMEdDHNWfZPi4RtvxE4BiNaGG/Xo1yW
- 39dHvEfTi4v4cXMeNmkCw/13qUe9Fv6WmzHBGLCeQx+z2L7HMskqGohKfKeBTW/iiCczf1j2aQF
- 5o6sSHAy3i05nmMZUts4XTDYGsrT07ZW6vrzWeUeXyu4uTBV53rrw3XNFGPykHQeG5N1X5cXoqN
- /bI0DiIDWeLQN4fWudT3dCZuMefc+aW4Izy6GWjbwQK4KB9MKjbhhAf71J01tuirpeKirEywyR/
- B4WTHzsykREqjAnMOo4ODn5tAo+7dlKkbHcIdvZQ2Xh2Q==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <28a4ebd7-2670-439d-836b-14559a916ed0@lunn.ch>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Hi Carlo,
+On Mon, May 04, 2026 at 05:16:57PM +0200, Andrew Lunn wrote:
+> On Mon, May 04, 2026 at 04:49:35PM +0300, Andy Shevchenko wrote:
+> > On Mon, May 04, 2026 at 03:02:54PM +0200, Andrew Lunn wrote:
+> > > On Mon, May 04, 2026 at 09:29:51AM +0200, Andy Shevchenko wrote:
+> > > > This mini-series is dedicated to hiding ACPI implementation details
+> > > > from the wider users as they (as of today) do not need to know that.
+> > > 
+> > > Please could you expand on that. ACPI != OF. They have different
+> > > bindings, so you need different implementations.
+> > 
+> > As of today the users that want ACPI also have the OF support. Even without
+> > that if the device is pure ACPI supported one (and somehow never going to DT)
+> > the proposed API (see the first patch) will be no-op in case when CONFIG_ACPI=n
+> > or when it's a non-ACPI platform with no support of the device. Hence, the
+> > pure ACPI (and actually OF as well) do not need to be exposed. The decision is
+> > made based on the type of firmware node.
+> 
+> I see two different things here:
+> 
+> You are refactoring code into a helper, so reducing the amount of
+> duplicated code. That in itself is good.
+> 
+> However, we have the problem in general that developers think that OF
+> and ACPI do the same thing. And that is not true. OF MDIO busses have
+> support for a GPIO used as a reset. In retrospect, that was a bad
+> idea. The documented ACPI binding does not have this, and if anybody
+> was to suggest adding it, i want to NACK it.
+> 
+> Having OF code and ACPI code to instantiate the MDIO bus makes it
+> clearer they are different things. fwnode gives the impression they
+> are the same, which is not true. Hence i don't like fwnode at this
+> level.
+> 
+> Where fwnode makes sense is deeper down in the implementation of the
+> bindings, for properties which are the same in both bindings.  Then
+> you can use fwnode_ for the shared properties, of_ for the OF only
+> properties, and acpi_ for the ACPI only properties.
+> 
+> So although i like the reduction in duplicated code, i think overall
+> it makes the code worse because developers are more likely to wrongly
+> understand it.
 
-Thanks for testing, and for the clear writeup of the rmmod path.
-Will add your Tested-by to v2.
+OK.
+Thanks for review.
 
-On the rmmod / module_get question: I think you are right that the
-per-consumer try_module_get is structurally redundant once the
-notifier exists, since PSE_UNREGISTERED already gives us a
-synchronous invalidation point at unregister time. The reason I
-did not strip it in v1 was caution: I want to walk every
-pse_control_get / pse_control_put consumer and confirm no path
-holds a transient reference outside of rtnl-lock (or some
-equivalent serialization) such that an in-flight use could race
-the unregister notifier.
+-- 
+With Best Regards,
+Andy Shevchenko
 
-That audit is on my plate now. I will share findings on this
-thread before v2, and let the result drive whether the removal
-lands in v2 or as a separate discussion.
-
-Glad to hear the probe loop is gone on your bench and that ethtool
-plus PD power are behaving. I expect to have an SFP-capable board
-on my own bench later this week, so I will cover the sfp.c path
-change before sending v2; a retest from you on the SFP chassis
-whenever it is convenient is still very welcome as independent
-confirmation.
-
-Kory, Jakub, Russell, others: input welcome on whether dropping
-try_module_get in favor of pure notifier-based invalidation is the
-direction you would prefer here, or whether the belt-and-suspenders
-refcount is worth keeping.
-
-Thanks,
-Corey
 
