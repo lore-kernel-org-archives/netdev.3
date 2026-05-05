@@ -1,57 +1,57 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D49D466B55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9782C478E2B
 	for <netdev@vger.kernel.org>; Tue,  5 May 2026 13:23:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777987425; cv=none; b=mbm5ryXFgybLKndQXrMTIeEakREQfjMkwylD3Lgopl4p/yIHLe7ATz3FLDey5BvoIi18cP/t+rxa0QZ8UbpNhpyjSJZl49H8bJgwucpSxhLUb/xLBcaioniLJATkUhoiYIJOP3ByQ7Z8Ae58qCrLR7+s0iNVbm5yLaDR+GkED1Y=
+	t=1777987426; cv=none; b=Hw3rGxo9igIMVJhIzpNM2axfX9cLvIU3BkV4xqUovXwJIXN/xu13LaKCEDAeyWwMFFENGx3XyhdXiAeDq1rolCF6mJcKNolOhPIzxZscItjYf3TKxMfU11kC2mJVfBcdVoAUJKzh9NOyKSjjAZQXJGHR6Bkqne2a0GHtKwTGFwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777987425; c=relaxed/simple;
-	bh=rCB6DgsShyJygfa//P35LwjvJhkXabk9of/YaR+1F7U=;
+	s=arc-20240116; t=1777987426; c=relaxed/simple;
+	bh=HWH4dl72mPi6B11UCcb4Z2m1jUYKI2uo8URUpshCi4Q=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lw5mIvYZbzHAazbXFuX23oAT3tlg7vtgxTtx4er/5uXqqfgL1YrqKLZpBQcdiQz+lV3ZnnrBGKAv0HHvlBTV/HG/RQbQ01iOG/rTYMXO+Pd9SctGgbEXhO/Uz51l+PpeNnOsgltrzx2QxJOx0AzIIzp6fX3EnCzSLLoBc2U4gMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=PfUiPzki; arc=none smtp.client-ip=62.96.220.36
+	 MIME-Version:Content-Type; b=h9qMOaOPTi4TQ4BCRcfBOs9JoDOjLzyx6GM+gY+7ZOYyb2qC7iayyIPI8NbEJoDefBtVJM+AwKAKx+wshGMyedNA5J62V6Pse/+yNdbBsFZYfOLom0ADhxVwMAZrgZ9azs0mUt8L+WUZMH/a5rmSyoEF/mapve3xzbj9iDY8I9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=dXDM+NDv; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="PfUiPzki"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="dXDM+NDv"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id F25B820728;
-	Tue,  5 May 2026 15:23:39 +0200 (CEST)
+	by mx1.secunet.com (Postfix) with ESMTP id 54D42206E9;
+	Tue,  5 May 2026 15:23:42 +0200 (CEST)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id wCywqX1-5zMM; Tue,  5 May 2026 15:23:39 +0200 (CEST)
+ with ESMTP id 0xNLNPfjEm6O; Tue,  5 May 2026 15:23:41 +0200 (CEST)
 Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 2B23F206E9;
-	Tue,  5 May 2026 15:23:39 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 2B23F206E9
+	by mx1.secunet.com (Postfix) with ESMTPS id 96205201CC;
+	Tue,  5 May 2026 15:23:41 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 96205201CC
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1777987419;
-	bh=EPzZvc/63O4SMrBt7XZZ4zy/2MrbFT43W69zfvBdQWo=;
+	s=202301; t=1777987421;
+	bh=Yh8cdCJW6JbpP02sOW4GJp3eJFc68TZzJsLF8UhLsFw=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=PfUiPzkiLaL+S4DJfL842+KLflPOQF9++iLsLoaJkvdmJkVSdjOiDzaY04qEm5rL/
-	 6ZOJvBsHkgZy7W5Am9LpXzL4j/sd6pHgmTnhZCds/RPWmYX8UqAojhy/HWvueZYmeJ
-	 pnrgWykjfhnkX/Hm5GrKCXmGRpSDYR/mpib0ti8x8y29rs+kR1sFNv5XbxdhJdQU3l
-	 eOsEQlSnz0OMrCTq8Kkt2+/EcfhWT2gCMtuOqagpIGxcF1N0ZdhZAF/XvzR1nNPlQv
-	 fGoURbRxppMPHaF3QxSR1/qSOmkumMylT94h6+/KbkDEUYsDfbmrEF0hE0q8mx3uu6
-	 xPN4fk8V0Ryzg==
+	b=dXDM+NDvv/h7AooOSxkNEc9V8fk5QBh2/KEWIZ1UUIdDq9ntNpOBzFlakX/6DOkGY
+	 FVTPrLdhEORPqfI/SEGhiHYzo3ptdp8K7853BvP4RPaHIbyaN6QMdvcOkUncRLzJrL
+	 Z+o3BcRrWgh+Mvapu0IN/rIg5lMa+euw01D9QqumGwZyUHqKB5zUrNCqo1lTPq4Ffj
+	 fkMef4vSjP53Tc2DuKZUtuUebRZTcv1t8kgYMvpz99t4WbO+5jUz+GSslx08U5qilk
+	 Elu3Xe8icax61FQ/UecCDoXvp9DxjdGqaDN8EpqqCUAsch6cQJFoFkUP+i2t4pUgDN
+	 dsMUAI0ZROi0w==
 Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 5 May
- 2026 15:23:38 +0200
-Received: (nullmailer pid 1364095 invoked by uid 1000);
+ 2026 15:23:41 +0200
+Received: (nullmailer pid 1364101 invoked by uid 1000);
 	Tue, 05 May 2026 13:23:30 -0000
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 6/8] xfrm: provide message size for XFRM_MSG_MAPPING
-Date: Tue, 5 May 2026 15:23:02 +0200
-Message-ID: <20260505132326.1362733-7-steffen.klassert@secunet.com>
+Subject: [PATCH 8/8] xfrm: esp: avoid in-place decrypt on shared skb frags
+Date: Tue, 5 May 2026 15:23:04 +0200
+Message-ID: <20260505132326.1362733-9-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260505132326.1362733-1-steffen.klassert@secunet.com>
 References: <20260505132326.1362733-1-steffen.klassert@secunet.com>
@@ -63,43 +63,105 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EXCH-01.secunet.de (10.32.0.171) To EXCH-01.secunet.de
+X-ClientProxiedBy: EXCH-02.secunet.de (10.32.0.172) To EXCH-01.secunet.de
  (10.32.0.171)
 
-From: Ruijie Li <ruijieli51@gmail.com>
+From: Kuan-Ting Chen <h3xrabbit@gmail.com>
 
-The compat 64=>32 translation path handles XFRM_MSG_MAPPING, but
-xfrm_msg_min[] does not provide the native payload size for this
-message type.
+MSG_SPLICE_PAGES can attach pages from a pipe directly to an skb. TCP
+marks such skbs with SKBFL_SHARED_FRAG after skb_splice_from_iter(),
+so later paths that may modify packet data can first make a private
+copy. The IPv4/IPv6 datagram append paths did not set this flag when
+splicing pages into UDP skbs.
 
-Add the missing XFRM_MSG_MAPPING entry so compat translation can size
-and translate mapping notifications correctly.
+That leaves an ESP-in-UDP packet made from shared pipe pages looking
+like an ordinary uncloned nonlinear skb. ESP input then takes the no-COW
+fast path for uncloned skbs without a frag_list and decrypts in place
+over data that is not owned privately by the skb.
 
-Fixes: 5461fc0c8d9f ("xfrm/compat: Add 64=>32-bit messages translator")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Ruijie Li <ruijieli51@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Mark IPv4/IPv6 datagram splice frags with SKBFL_SHARED_FRAG, matching
+TCP. Also make ESP input fall back to skb_cow_data() when the flag is
+present, so ESP does not decrypt externally backed frags in place.
+Private nonlinear skb frags still use the existing fast path.
+
+This intentionally does not change ESP output. In esp_output_head(),
+the path that appends the ESP trailer to existing skb tailroom without
+calling skb_cow_data() is not reachable for nonlinear skbs:
+skb_tailroom() returns zero when skb->data_len is nonzero, while ESP
+tailen is positive. Thus ESP output will either use the separate
+destination-frag path or fall back to skb_cow_data().
+
+Fixes: cac2661c53f3 ("esp4: Avoid skb_cow_data whenever possible")
+Fixes: 03e2a30f6a27 ("esp6: Avoid skb_cow_data whenever possible")
+Fixes: 7da0dde68486 ("ip, udp: Support MSG_SPLICE_PAGES")
+Fixes: 6d8192bd69bb ("ip6, udp6: Support MSG_SPLICE_PAGES")
+Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
+Reported-by: Kuan-Ting Chen <h3xrabbit@gmail.com>
+Tested-by: Hyunwoo Kim <imv4bel@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Kuan-Ting Chen <h3xrabbit@gmail.com>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 ---
- net/xfrm/xfrm_user.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/ipv4/esp4.c       | 3 ++-
+ net/ipv4/ip_output.c  | 2 ++
+ net/ipv6/esp6.c       | 3 ++-
+ net/ipv6/ip6_output.c | 2 ++
+ 4 files changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index d56450f61669..38a90e5ee3d9 100644
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -3323,6 +3323,7 @@ const int xfrm_msg_min[XFRM_NR_MSGTYPES] = {
- 	[XFRM_MSG_GETSADINFO  - XFRM_MSG_BASE] = sizeof(u32),
- 	[XFRM_MSG_NEWSPDINFO  - XFRM_MSG_BASE] = sizeof(u32),
- 	[XFRM_MSG_GETSPDINFO  - XFRM_MSG_BASE] = sizeof(u32),
-+	[XFRM_MSG_MAPPING     - XFRM_MSG_BASE] = XMSGSIZE(xfrm_user_mapping),
- 	[XFRM_MSG_SETDEFAULT  - XFRM_MSG_BASE] = XMSGSIZE(xfrm_userpolicy_default),
- 	[XFRM_MSG_GETDEFAULT  - XFRM_MSG_BASE] = XMSGSIZE(xfrm_userpolicy_default),
- };
+diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
+index 6dfc0bcdef65..6a5febbdbee4 100644
+--- a/net/ipv4/esp4.c
++++ b/net/ipv4/esp4.c
+@@ -873,7 +873,8 @@ static int esp_input(struct xfrm_state *x, struct sk_buff *skb)
+ 			nfrags = 1;
+ 
+ 			goto skip_cow;
+-		} else if (!skb_has_frag_list(skb)) {
++		} else if (!skb_has_frag_list(skb) &&
++			   !skb_has_shared_frag(skb)) {
+ 			nfrags = skb_shinfo(skb)->nr_frags;
+ 			nfrags++;
+ 
+diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
+index e4790cc7b5c2..5bcd73cbdb41 100644
+--- a/net/ipv4/ip_output.c
++++ b/net/ipv4/ip_output.c
+@@ -1233,6 +1233,8 @@ static int __ip_append_data(struct sock *sk,
+ 			if (err < 0)
+ 				goto error;
+ 			copy = err;
++			if (!(flags & MSG_NO_SHARED_FRAGS))
++				skb_shinfo(skb)->flags |= SKBFL_SHARED_FRAG;
+ 			wmem_alloc_delta += copy;
+ 		} else if (!zc) {
+ 			int i = skb_shinfo(skb)->nr_frags;
+diff --git a/net/ipv6/esp6.c b/net/ipv6/esp6.c
+index 9f75313734f8..9c06c5a1419d 100644
+--- a/net/ipv6/esp6.c
++++ b/net/ipv6/esp6.c
+@@ -915,7 +915,8 @@ static int esp6_input(struct xfrm_state *x, struct sk_buff *skb)
+ 			nfrags = 1;
+ 
+ 			goto skip_cow;
+-		} else if (!skb_has_frag_list(skb)) {
++		} else if (!skb_has_frag_list(skb) &&
++			   !skb_has_shared_frag(skb)) {
+ 			nfrags = skb_shinfo(skb)->nr_frags;
+ 			nfrags++;
+ 
+diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
+index 7e92909ab5be..1f2a33fbed6e 100644
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -1794,6 +1794,8 @@ static int __ip6_append_data(struct sock *sk,
+ 			if (err < 0)
+ 				goto error;
+ 			copy = err;
++			if (!(flags & MSG_NO_SHARED_FRAGS))
++				skb_shinfo(skb)->flags |= SKBFL_SHARED_FRAG;
+ 			wmem_alloc_delta += copy;
+ 		} else if (!zc) {
+ 			int i = skb_shinfo(skb)->nr_frags;
 -- 
 2.43.0
 
