@@ -1,57 +1,57 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB1633343C
-	for <netdev@vger.kernel.org>; Tue,  5 May 2026 13:23:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6143B439007
+	for <netdev@vger.kernel.org>; Tue,  5 May 2026 13:23:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777987424; cv=none; b=IWxqRp/qrFm9UAkJRl4LS/ybchFnlnpP4mp6HTBDzoBEP2+1Fyl8jp8eLN3AeISXKuDoajetY4CirCDchrBXHJ0Jb+B2uvO/KT+LxpAtv6Abtn5lsW28u/XoMKhduujJ8zvaWBm/8tPH+mIOzMaaZ6ewzRDdWxN/s+79tzhuwEQ=
+	t=1777987425; cv=none; b=RNwqlPdKOenJNEUtiAHXgqcXI1UYTATnnJeXmU9QfNk23H6Q/uFLeTy4ulwjRRHhznVJQzoUw2mYCKyFA7HhtvDFpKts8R0/QkBFz51nU2jSSgKs/ThuM8sCE4B20VNzUJDaCE7Uj3FqcaxKwfoYiXGxzMP0HsUvpsrV95qeLRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777987424; c=relaxed/simple;
-	bh=bshQs1T4vcWynZkH4cc0udK8pzmlWOJz6aH5XGBW1uw=;
+	s=arc-20240116; t=1777987425; c=relaxed/simple;
+	bh=oggTH0nKwQiYXcoQPAv97OgoLIuqE5ovdxMITfnvsD8=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oBeq0BKaUyuZONmls6lkw9vA4oR2/6VHwS98YhuLjjbFJomM7f1SRdn/CfnwK2VtIWwVpZ9/wthFoyMqSRIlGygYbZi8Yo9jMIlz6WNdmUo604uJdQ5g6DCALHGrms5D4nfOtXv7paS1VtRgaPk5HvRwcX7UIsofTq1TDMLFvu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=BXgEBxws; arc=none smtp.client-ip=62.96.220.36
+	 MIME-Version:Content-Type; b=KORXYIxsDAkqRuGVfwo1GkO/hZjZSI4zyf6JYFK9LkbpZD18MEFlv6Xik94fTj4Jp213RcDxM+AIVQe2W1vxPqQjg5ASpFvuBXWkB+ZUSombkBQUx9rbFjESvMJDbtvmUVIKgnZ5sDUtEGltPwLtFvF424SmrQZrw8wGg0JYwkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=fYzRD3Ul; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="BXgEBxws"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="fYzRD3Ul"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id A3B7D20743;
-	Tue,  5 May 2026 15:23:34 +0200 (CEST)
+	by mx1.secunet.com (Postfix) with ESMTP id A1B5920663;
+	Tue,  5 May 2026 15:23:36 +0200 (CEST)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id wgI6DfUDxWKj; Tue,  5 May 2026 15:23:34 +0200 (CEST)
+ with ESMTP id B-v-UNSrgoon; Tue,  5 May 2026 15:23:35 +0200 (CEST)
 Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id E6D65206E9;
-	Tue,  5 May 2026 15:23:33 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com E6D65206E9
+	by mx1.secunet.com (Postfix) with ESMTPS id CF61B201CC;
+	Tue,  5 May 2026 15:23:35 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com CF61B201CC
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1777987413;
-	bh=pUHY7aOXlt1mS76NWVKlJpNjKRUiEZtLk1hf7BrsxiU=;
+	s=202301; t=1777987415;
+	bh=wDLDHw934kv9mEMTwg+COoFnjTJDrPrXtGpBTszKtrY=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=BXgEBxws6Lf7i6VW7kAih+A1ZDhD7jD2D6xHBRy9CTzNSoDLeuGBkWy7WYk3nmGYe
-	 HD/0WwEEd/2egjdR2f3x0tfuN/hE1eu2m87XtdYsVZwE/ESqxRQ3hosNllcJZgr0tb
-	 tG1T8RJD/RXgELiRKXktL0JsbOZccf6iRoxVGdg8TfVRwEAsb7Rv39HkE9Wz9wU0N1
-	 fG3NtdZoIvcoFprIvAihKxnkad9rSYFrdLbnxk7qmE1fLuyhmxPifRITlg7YXGH6q7
-	 uGlUMdebFPVtVOoCkeF0FKPoesI3dq4+91LASvCiJXW8ZcOFfkIRyeD6hJj+GwfXYh
-	 mnDE0f+j89KKg==
+	b=fYzRD3UlVg2B7+J+pxmbDHxB1kdk/2L78VQ2xL0KLn+hanNiFW6HhvUeg9IlOlJY5
+	 4A6V1nbAuE+zW8lSTFGEPF6XeyXqCgleFxgE+f2cpauS7ywuOYJSmggiC5+2LR7Te2
+	 206sC/mXu+pRt0gjhy7bBR4IBJX58fV5QKa5b1cdSna7Pquntnjl1ZxLP44Z2lUTzW
+	 jdqnGNs6hU5go0skUT7HfBPyLrirIfe0st4+/ur1bmjQAoog62q4iFggpHcRRi8IEI
+	 CJQLLF4XKCGSDiqyW/k0VJQZIkbR9clMZZTsw4E+SRYzgndJK8rvcV/rRD/OaU6VDM
+	 q0AAyZ4LKShVg==
 Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 5 May
- 2026 15:23:33 +0200
-Received: (nullmailer pid 1364098 invoked by uid 1000);
+ 2026 15:23:35 +0200
+Received: (nullmailer pid 1364083 invoked by uid 1000);
 	Tue, 05 May 2026 13:23:30 -0000
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 7/8] xfrm: defensively unhash xfrm_state lists in __xfrm_state_delete
-Date: Tue, 5 May 2026 15:23:03 +0200
-Message-ID: <20260505132326.1362733-8-steffen.klassert@secunet.com>
+Subject: [PATCH 2/8] xfrm: ah: account for ESN high bits in async callbacks
+Date: Tue, 5 May 2026 15:22:58 +0200
+Message-ID: <20260505132326.1362733-3-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260505132326.1362733-1-steffen.klassert@secunet.com>
 References: <20260505132326.1362733-1-steffen.klassert@secunet.com>
@@ -63,122 +63,133 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EXCH-01.secunet.de (10.32.0.171) To EXCH-01.secunet.de
+X-ClientProxiedBy: EXCH-03.secunet.de (10.32.0.183) To EXCH-01.secunet.de
  (10.32.0.171)
 
-From: Michal Kosiorek <mkosiorek121@gmail.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-KASAN reproduces a slab-use-after-free in __xfrm_state_delete()'s
-hlist_del_rcu calls under syzkaller load on linux-6.12.y stable
-(reproduced on 6.12.47, also reachable via the same code path on
-torvalds/master and on the ipsec tree). Nine unique signatures cluster
-in the xfrm_state lifecycle, the load-bearing one being:
+AH allocates its temporary auth/ICV layout differently when ESN is enabled:
+the async ahash setup appends a 4-byte seqhi slot before the ICV or
+auth_data area, but the async completion callbacks still reconstruct the
+temporary layout as if seqhi were absent.
 
-  BUG: KASAN: slab-use-after-free in __hlist_del include/linux/list.h:990 [inline]
-  BUG: KASAN: slab-use-after-free in hlist_del_rcu include/linux/rculist.h:516 [inline]
-  BUG: KASAN: slab-use-after-free in __xfrm_state_delete net/xfrm/xfrm_state.c
-  Write of size 8 at addr ffff8881198bcb70 by task kworker/u8:9/435
+With an async AH implementation selected, that makes AH copy or compare
+the wrong bytes on both the IPv4 and IPv6 paths. In UML repro on IPv4 AH
+with ESN and forced async hmac(sha1), ping fails with 100% packet loss,
+and the callback logs show the pre-fix drift:
 
-  Workqueue: netns cleanup_net
-  Call Trace:
-   __hlist_del / hlist_del_rcu
-   __xfrm_state_delete
-   xfrm_state_delete
-   xfrm_state_flush
-   xfrm_state_fini
-   ops_exit_list
-   cleanup_net
+  ah4 output_done: esn=1 err=0 icv_off=20 expected_off=24
+  ah4 input_done: esn=1 auth_off=20 expected_auth_off=24 icv_off=32 expected_icv_off=36
 
-The other observed signatures hit the same slab object from
-__xfrm_state_lookup, xfrm_alloc_spi, __xfrm_state_insert and an OOB
-write variant of __xfrm_state_delete, all on the byseq/byspi
-hash chains.
+Reconstruct the callback-side layout the same way the setup path built it
+by skipping the ESN seqhi slot before locating the saved auth_data or ICV.
+Per RFC 4302, the ESN high-order 32 bits participate in the AH ICV
+computation, so the async callbacks must account for the seqhi slot.
 
-__xfrm_state_delete() guards its byseq and byspi unhashes with
-value-based predicates:
+Post-fix, the same IPv4 AH+ESN+forced-async-hmac(sha1) UML repro shows
+the corrected offset (ah4 output_done: esn=1 err=0 icv_off=24
+expected_off=24) and ping succeeds; net/ipv4/ah4.o and net/ipv6/ah6.o
+build clean at W=1. IPv6 AH+ESN was not exercised at runtime, and the
+change has not been tested against a real async hardware AH engine.
 
-	if (x->km.seq)
-		hlist_del_rcu(&x->byseq);
-	if (x->id.spi)
-		hlist_del_rcu(&x->byspi);
-
-while everywhere else in the file (e.g. state_cache, state_cache_input)
-the safer hlist_unhashed() check is used. xfrm_alloc_spi() sets
-x->id.spi = newspi inside xfrm_state_lock and then immediately inserts
-into byspi, but a path that observes x->id.spi != 0 outside of
-xfrm_state_lock can still skip-or-hit the byspi unhash inconsistently
-with whether x is actually on the list. The same holds for x->km.seq
-versus byseq, and the bydst/bysrc unhashes have no predicate at all,
-so a second __xfrm_state_delete() on the same object writes through
-LIST_POISON pprev.
-
-The defensive change here:
-
-  - Use hlist_del_init_rcu() instead of hlist_del_rcu() on bydst,
-    bysrc, byseq and byspi so a second deletion is a no-op rather
-    than a write through LIST_POISON pprev. The byseq/byspi nodes
-    are already initialised in xfrm_state_alloc().
-  - Test hlist_unhashed() rather than the value predicate for
-    byseq/byspi, so the unhash decision tracks list state rather than
-    mutable scalar fields.
-
-Empirical verification: applied this patch on top of v6.12.47, rebuilt,
-and re-ran the same syzkaller harness for 1h16m on a previously-crashy
-configuration that produced ~100 hits each of slab-use-after-free
-Read in xfrm_alloc_spi / Read in __xfrm_state_lookup / Write in
-__xfrm_state_delete. After the patch, 7.1M execs across 32 VMs at
-~1550 exec/sec produced zero xfrm_state UAF/OOB hits. /proc/slabinfo
-confirms the xfrm_state slab is actively allocated and freed during
-the run (~143 KiB resident), so the fuzzer is still exercising those
-code paths -- they just no longer crash.
-
-Reproduction:
-
-  - Linux 6.12.47 x86_64 + KASAN_GENERIC + KASAN_INLINE + KCOV
-  - syzkaller @ 746545b8b1e4c3a128db8652b340d3df90ce61db
-  - 32 QEMU/KVM VMs x 2 vCPU on AWS c5.metal bare metal
-  - 9 unique signatures collected in ~9h, all within xfrm_state
-    lifecycle
-
-Fixes: fe9f1d8779cb ("xfrm: add state hashtable keyed by seq")
-Fixes: 7b4dc3600e48 ("[XFRM]: Do not add a state whose SPI is zero to the SPI hash.")
-Reported-by: Michal Kosiorek <mkosiorek121@gmail.com>
-Tested-by: Michal Kosiorek <mkosiorek121@gmail.com>
+Fixes: d4d573d0334d ("{IPv4,xfrm} Add ESN support for AH egress part")
+Fixes: d8b2a8600b0e ("{IPv4,xfrm} Add ESN support for AH ingress part")
+Fixes: 26dd70c3fad3 ("{IPv6,xfrm} Add ESN support for AH egress part")
+Fixes: 8d6da6f32557 ("{IPv6,xfrm} Add ESN support for AH ingress part")
 Cc: stable@vger.kernel.org
-Signed-off-by: Michal Kosiorek <mkosiorek121@gmail.com>
+Assisted-by: Codex:gpt-5-4
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 ---
- net/xfrm/xfrm_state.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ net/ipv4/ah4.c | 14 ++++++++++++--
+ net/ipv6/ah6.c | 14 ++++++++++++--
+ 2 files changed, 24 insertions(+), 4 deletions(-)
 
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index 1748d374abca..686014d39429 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -818,17 +818,17 @@ int __xfrm_state_delete(struct xfrm_state *x)
+diff --git a/net/ipv4/ah4.c b/net/ipv4/ah4.c
+index 5fb812443a08..4366cbac3f06 100644
+--- a/net/ipv4/ah4.c
++++ b/net/ipv4/ah4.c
+@@ -124,9 +124,14 @@ static void ah_output_done(void *data, int err)
+ 	struct iphdr *top_iph = ip_hdr(skb);
+ 	struct ip_auth_hdr *ah = ip_auth_hdr(skb);
+ 	int ihl = ip_hdrlen(skb);
++	int seqhi_len = 0;
++	__be32 *seqhi;
  
- 		spin_lock(&net->xfrm.xfrm_state_lock);
- 		list_del(&x->km.all);
--		hlist_del_rcu(&x->bydst);
--		hlist_del_rcu(&x->bysrc);
--		if (x->km.seq)
--			hlist_del_rcu(&x->byseq);
-+		hlist_del_init_rcu(&x->bydst);
-+		hlist_del_init_rcu(&x->bysrc);
-+		if (!hlist_unhashed(&x->byseq))
-+			hlist_del_init_rcu(&x->byseq);
- 		if (!hlist_unhashed(&x->state_cache))
- 			hlist_del_rcu(&x->state_cache);
- 		if (!hlist_unhashed(&x->state_cache_input))
- 			hlist_del_rcu(&x->state_cache_input);
++	if (x->props.flags & XFRM_STATE_ESN)
++		seqhi_len = sizeof(*seqhi);
+ 	iph = AH_SKB_CB(skb)->tmp;
+-	icv = ah_tmp_icv(iph, ihl);
++	seqhi = (__be32 *)((char *)iph + ihl);
++	icv = ah_tmp_icv(seqhi, seqhi_len);
+ 	memcpy(ah->auth_data, icv, ahp->icv_trunc_len);
  
--		if (x->id.spi)
--			hlist_del_rcu(&x->byspi);
-+		if (!hlist_unhashed(&x->byspi))
-+			hlist_del_init_rcu(&x->byspi);
- 		net->xfrm.state_num--;
- 		xfrm_nat_keepalive_state_updated(x);
- 		spin_unlock(&net->xfrm.xfrm_state_lock);
+ 	top_iph->tos = iph->tos;
+@@ -270,12 +275,17 @@ static void ah_input_done(void *data, int err)
+ 	struct ip_auth_hdr *ah = ip_auth_hdr(skb);
+ 	int ihl = ip_hdrlen(skb);
+ 	int ah_hlen = (ah->hdrlen + 2) << 2;
++	int seqhi_len = 0;
++	__be32 *seqhi;
+ 
+ 	if (err)
+ 		goto out;
+ 
++	if (x->props.flags & XFRM_STATE_ESN)
++		seqhi_len = sizeof(*seqhi);
+ 	work_iph = AH_SKB_CB(skb)->tmp;
+-	auth_data = ah_tmp_auth(work_iph, ihl);
++	seqhi = (__be32 *)((char *)work_iph + ihl);
++	auth_data = ah_tmp_auth(seqhi, seqhi_len);
+ 	icv = ah_tmp_icv(auth_data, ahp->icv_trunc_len);
+ 
+ 	err = crypto_memneq(icv, auth_data, ahp->icv_trunc_len) ? -EBADMSG : 0;
+diff --git a/net/ipv6/ah6.c b/net/ipv6/ah6.c
+index cb26beea4398..de1e68199a01 100644
+--- a/net/ipv6/ah6.c
++++ b/net/ipv6/ah6.c
+@@ -317,14 +317,19 @@ static void ah6_output_done(void *data, int err)
+ 	struct ipv6hdr *top_iph = ipv6_hdr(skb);
+ 	struct ip_auth_hdr *ah = ip_auth_hdr(skb);
+ 	struct tmp_ext *iph_ext;
++	int seqhi_len = 0;
++	__be32 *seqhi;
+ 
+ 	extlen = skb_network_header_len(skb) - sizeof(struct ipv6hdr);
+ 	if (extlen)
+ 		extlen += sizeof(*iph_ext);
+ 
++	if (x->props.flags & XFRM_STATE_ESN)
++		seqhi_len = sizeof(*seqhi);
+ 	iph_base = AH_SKB_CB(skb)->tmp;
+ 	iph_ext = ah_tmp_ext(iph_base);
+-	icv = ah_tmp_icv(iph_ext, extlen);
++	seqhi = (__be32 *)((char *)iph_ext + extlen);
++	icv = ah_tmp_icv(seqhi, seqhi_len);
+ 
+ 	memcpy(ah->auth_data, icv, ahp->icv_trunc_len);
+ 	memcpy(top_iph, iph_base, IPV6HDR_BASELEN);
+@@ -471,13 +476,18 @@ static void ah6_input_done(void *data, int err)
+ 	struct ip_auth_hdr *ah = ip_auth_hdr(skb);
+ 	int hdr_len = skb_network_header_len(skb);
+ 	int ah_hlen = ipv6_authlen(ah);
++	int seqhi_len = 0;
++	__be32 *seqhi;
+ 
+ 	if (err)
+ 		goto out;
+ 
++	if (x->props.flags & XFRM_STATE_ESN)
++		seqhi_len = sizeof(*seqhi);
+ 	work_iph = AH_SKB_CB(skb)->tmp;
+ 	auth_data = ah_tmp_auth(work_iph, hdr_len);
+-	icv = ah_tmp_icv(auth_data, ahp->icv_trunc_len);
++	seqhi = (__be32 *)(auth_data + ahp->icv_trunc_len);
++	icv = ah_tmp_icv(seqhi, seqhi_len);
+ 
+ 	err = crypto_memneq(icv, auth_data, ahp->icv_trunc_len) ? -EBADMSG : 0;
+ 	if (err)
 -- 
 2.43.0
 
