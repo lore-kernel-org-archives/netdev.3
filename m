@@ -1,347 +1,143 @@
-Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97725478E28
-	for <netdev@vger.kernel.org>; Tue,  5 May 2026 13:23:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EBBC30B50C;
+	Tue,  5 May 2026 13:24:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777987426; cv=none; b=qeABBFeyMvIQK5F1uPoAeJnQdBRY1Owc6IEoHU3milHsRbT36zNMYea0VYYwSdXyjIm9RMGp51wd0+vkvnxqZx+SggqA0lf+UXM8PNe+YUjxyHCJh5hth8NXMJyN1W7n6oqRNyYnhnd31i4xOWUjsYqBldwXzuZpUmLMHg2PrmU=
+	t=1777987446; cv=none; b=WDD0IiG/YFufUY9yooxCM0ZpMfEveftpWy+olGnDnh2Vp8aOscBM2m0vs0FoIhd3YUoED4bvuI89tBnqHUQ4/xbbwdoqj/C+BIah1qxqCNXwXTYPvODOCl75U011Xf97iLlrivqbptoPboRfgb2Y6vzUZPpQAxSVhntAGCrNaGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777987426; c=relaxed/simple;
-	bh=tB/5Uig6mcP84PKGeHAG1MZPlC1PO6yVeUo9Nmh8AkU=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YcyESF7QUygKRZe8nW3N8LyHsJbsglt0DLpFh6zYQuCWRmdo41VgNk0k+LkzPMVeabnpsRlPe1FRzXtQSKn1XuEUR2YilpdEgDItMd6Q+HDsCvGIda0xFXIX7o8P2K0UneHUg1S8MEhV7phclgBtnO4fvx4cgeTHZTu4VzOC6bE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=ntuXhJka; arc=none smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+	s=arc-20240116; t=1777987446; c=relaxed/simple;
+	bh=cJGE+uHkMo2XrKSdJQRlK06JSeRZS1FPVrMTVzfg3ck=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=W6PPS/3JMolW6iC2oX/46EsQvJDlguBcF3ag56ToXMkP/oNGIeVDaEsmu6puw/8KDnneE6kkmuBa02MYNReOjJa4TvQBmkNo+fLZGfW/XbUFXA7SCiq5K2Pkjfn8fYpzwZNbxUfmmYeKNHsOvXRlF4XzpnIdbgIFBLTpgaUMVRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=XJJEck8P; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="ntuXhJka"
-Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id CB42120704;
-	Tue,  5 May 2026 15:23:41 +0200 (CEST)
-X-Virus-Scanned: by secunet
-Received: from mx1.secunet.com ([127.0.0.1])
- by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id p4V6T4mwrm2D; Tue,  5 May 2026 15:23:40 +0200 (CEST)
-Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id A210C206E9;
-	Tue,  5 May 2026 15:23:40 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com A210C206E9
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1777987420;
-	bh=Jt5NishGy6ZKSgZPMuwBiy3Hlt3cgEZ70XiQ24jLCDA=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=ntuXhJkaY107WpzlLMv1uO30uE+JWRWK3phaNqo1vDi4KlDQxMRL5WDmEZRsXp34L
-	 WohuMOyGrOajJOV4Lf/+jzfxEVA6pPBe+PMRH8xi+SaqzLDmaFJ0eYyQNKWc3tSYWB
-	 y/hHAMLektPbHepPw4yC3RTBzELqxF1z9UbXZTNicfB9KTcI6X+dxwr/PXk8p3wNwD
-	 kCc+SyYnPnZt5NZJclGZHuk2dyqtdc3oFo5bQ+P7WMmdLibwF+VdMJ0nKgPCxlirfk
-	 2W6XyP2yILEd/J3r8MwzIlnREeeBgS08sMxh6TaDXn46EPJifB0C8d7nPV79Tc+1AT
-	 fOhYUzY5QE95g==
-Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 5 May
- 2026 15:23:40 +0200
-Received: (nullmailer pid 1364089 invoked by uid 1000);
-	Tue, 05 May 2026 13:23:30 -0000
-From: Steffen Klassert <steffen.klassert@secunet.com>
-To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
-CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
-	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 4/8] tools/selftests: Add a VXLAN+IPsec traffic test
-Date: Tue, 5 May 2026 15:23:00 +0200
-Message-ID: <20260505132326.1362733-5-steffen.klassert@secunet.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260505132326.1362733-1-steffen.klassert@secunet.com>
-References: <20260505132326.1362733-1-steffen.klassert@secunet.com>
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="XJJEck8P"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AC6991137E5;
+	Tue,  5 May 2026 15:23:58 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1777987442;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=1vizPUW0FlszOfHJLst6PwlnlTyCSMe3aajO8GaMzRc=;
+	b=XJJEck8PJkysg8ZavW/iEdtUH4t0zkIgMi86HcHzupwD4CWnoj4y3BVfgbUfjWnfmNb0PD
+	0HYfCl4jbFy9lpi36BPYlZGc7L51wR7j8+8Vw9+9SsiR4Nh3PnXr+SIXO5wjXacoZIhjDl
+	fFBPk3u23uguJUUI0r6al1UiEaL4YMCPWPHBn7gJFWfMTOnOMf+oOtGcsC8K6EJSZ5lrUX
+	madFIdeq9QYbMVTfP03jzl+eaAEvb4OjOeTNRroIvUyQQRpR3mlaWpei0DC14WFUQ4pIt8
+	CR2g7VU4r/Vguo+kneJ75/e28Urp1Q1pK7d/WHysur9Rau1cdUhWHmxJQ/P+XA==
+Message-ID: <6c3b4490-c618-4650-8b3d-7bb71da196d3@nabladev.com>
+Date: Tue, 5 May 2026 15:23:57 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EXCH-03.secunet.de (10.32.0.183) To EXCH-01.secunet.de
- (10.32.0.171)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 1/3] net: dsa: microchip: implement KSZ87xx Module 3
+ low-loss cable errata
+To: Fidelio Lawson <lawson.fidelio@gmail.com>,
+ Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com,
+ Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Marek Vasut <marex@denx.de>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ Simon Horman <horms@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, Tristram Ha <Tristram.Ha@microchip.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Fidelio Lawson <fidelio.lawson@exotec.com>
+References: <20260505-ksz87xx_errata_low_loss_connections-v5-0-da4002b21c42@exotec.com>
+ <20260505-ksz87xx_errata_low_loss_connections-v5-1-da4002b21c42@exotec.com>
+Content-Language: en-US
+From: Marek Vasut <marex@nabladev.com>
+In-Reply-To: <20260505-ksz87xx_errata_low_loss_connections-v5-1-da4002b21c42@exotec.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Cosmin Ratiu <cratiu@nvidia.com>
+On 5/5/26 1:42 PM, Fidelio Lawson wrote:
 
-There are VXLAN tests and IPsec tests, but there is no test that
-combines the two protocols and exercises the tunnel-over-ipsec code
-paths. Fix that by adding a traffic test with VXLAN and IPsec using
-crypto offload. This is runnable on HW which supports ESP offload (so no
-nsim unfortunately).
+[...]
 
-Traffic is done with iperf3 and the test validates that there are no
-packet drops and iperf3 can get to at least 100 Mbps (a very
-conservative value on today's crypto offload HW, as it can typically
-reach multi-Gbps rates).
+> @@ -2096,11 +2141,39 @@ int ksz8463_w_phy(struct ksz_device *dev, u16 phy, u16 reg, u16 val)
+>   	return 0;
+>   }
 
-Ran right now, the test fails due to a recently exposed bug in xfrm,
-which will be fixed in the next patch:
- # ./tools/testing/selftests/drivers/net/hw/ipsec_vxlan.py
- TAP version 13
- 1..4
- # Check| At ./tools/testing/selftests/drivers/net/hw/ipsec_vxlan.py,
- # line 161, in test_vxlan_ipsec_crypto_offload:
- # Check|     ksft_eq(drops_after - drops_before, 0,
- # Check failed 189 != 0 TX drops during VXLAN+IPsec
- # Check| At ./tools/testing/selftests/drivers/net/hw/ipsec_vxlan.py,
- # line 163, in test_vxlan_ipsec_crypto_offload:
- # Check|     ksft_ge(bw_gbps, 0.1,
- # Check failed 0.0015058278404812596 < 0.1 Minimum 100Mbps over
- # VXLAN+IPsec
- not ok 1 ipsec_vxlan.test_vxlan_ipsec_crypto_offload.outer_v4_inner_v4
- ...
+Nitpick, either turn the "Apply the Microchip..." code comment into a 
+kerneldoc for this function, or use netdev style multi-line comment.
 
-Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
----
- .../testing/selftests/drivers/net/hw/Makefile |   1 +
- tools/testing/selftests/drivers/net/hw/config |   5 +
- .../selftests/drivers/net/hw/ipsec_vxlan.py   | 204 ++++++++++++++++++
- 3 files changed, 210 insertions(+)
- create mode 100755 tools/testing/selftests/drivers/net/hw/ipsec_vxlan.py
+> +int ksz87xx_apply_low_loss_preset(struct ksz_device *dev, bool enable)
+> +{
+> +	/* Apply the Microchip erratum short-cable preset (LPF 62 MHz, EQ init 0) */
+> +	/* providing a conservative configuration for short or low-loss cables. */
+> +	u8 lpf_bw, eq_init;
+> +	int ret;
+> +
+> +	lpf_bw = KSZ87XX_PHY_LPF_62MHZ;
+> +	eq_init = KSZ87XX_DSP_EQ_INIT_LOW_LOSS;
+> +
+> +	if (!ksz_is_ksz87xx(dev))
+> +		return -EOPNOTSUPP;
 
-diff --git a/tools/testing/selftests/drivers/net/hw/Makefile b/tools/testing/selftests/drivers/net/hw/Makefile
-index 85ca4d1ecf9e..3b6ff4708005 100644
---- a/tools/testing/selftests/drivers/net/hw/Makefile
-+++ b/tools/testing/selftests/drivers/net/hw/Makefile
-@@ -30,6 +30,7 @@ TEST_PROGS = \
- 	gro_hw.py \
- 	hw_stats_l3.sh \
- 	hw_stats_l3_gre.sh \
-+	ipsec_vxlan.py \
- 	iou-zcrx.py \
- 	irq.py \
- 	loopback.sh \
-diff --git a/tools/testing/selftests/drivers/net/hw/config b/tools/testing/selftests/drivers/net/hw/config
-index dd50cb8a7911..ae0168c2bbe6 100644
---- a/tools/testing/selftests/drivers/net/hw/config
-+++ b/tools/testing/selftests/drivers/net/hw/config
-@@ -12,5 +12,10 @@ CONFIG_NET_IPGRE=y
- CONFIG_NET_IPGRE_DEMUX=y
- CONFIG_NETKIT=y
- CONFIG_NET_SCH_INGRESS=y
-+CONFIG_INET6_ESP=y
-+CONFIG_INET6_ESP_OFFLOAD=y
-+CONFIG_INET_ESP=y
-+CONFIG_INET_ESP_OFFLOAD=y
- CONFIG_UDMABUF=y
- CONFIG_VXLAN=y
-+CONFIG_XFRM_USER=y
-diff --git a/tools/testing/selftests/drivers/net/hw/ipsec_vxlan.py b/tools/testing/selftests/drivers/net/hw/ipsec_vxlan.py
-new file mode 100755
-index 000000000000..0740a4d85240
---- /dev/null
-+++ b/tools/testing/selftests/drivers/net/hw/ipsec_vxlan.py
-@@ -0,0 +1,204 @@
-+#!/usr/bin/env python3
-+# SPDX-License-Identifier: GPL-2.0
-+"""Traffic test for VXLAN + IPsec crypto-offload."""
-+
-+import os
-+
-+from lib.py import ksft_run, ksft_exit, ksft_eq, ksft_ge
-+from lib.py import ksft_variants, KsftNamedVariant, KsftSkipEx
-+from lib.py import CmdExitFailure, NetDrvEpEnv, cmd, defer, ethtool, ip
-+from lib.py import Iperf3Runner
-+
-+# Inner tunnel addresses - TEST-NET-2 (RFC 5737) / doc prefix (RFC 3849)
-+INNER_V4_LOCAL = "198.51.100.1"
-+INNER_V4_REMOTE = "198.51.100.2"
-+INNER_V6_LOCAL = "2001:db8:100::1"
-+INNER_V6_REMOTE = "2001:db8:100::2"
-+
-+# ESP parameters
-+SPI_OUT = "0x1000"
-+SPI_IN = "0x1001"
-+# 128-bit key + 32-bit salt = 20 bytes hex, 128-bit ICV
-+ESP_AEAD = "aead 'rfc4106(gcm(aes))' 0x" + "01" * 20 + " 128"
-+
-+
-+def xfrm(args, host=None):
-+    """Runs 'ip xfrm' via shell to preserve parentheses in algo names."""
-+    cmd(f"ip xfrm {args}", shell=True, host=host)
-+
-+
-+def check_xfrm_offload_support():
-+    """Skips if iproute2 lacks xfrm offload support."""
-+    out = cmd("ip xfrm state help", fail=False)
-+    if "offload" not in out.stdout + out.stderr:
-+        raise KsftSkipEx("iproute2 too old, missing xfrm offload")
-+
-+
-+def check_esp_hw_offload(cfg):
-+    """Skips if device lacks esp-hw-offload support."""
-+    check_xfrm_offload_support()
-+    try:
-+        feat = ethtool(f"-k {cfg.ifname}", json=True)[0]
-+    except (CmdExitFailure, IndexError) as e:
-+        raise KsftSkipEx(f"can't query features: {e}") from e
-+    if not feat.get("esp-hw-offload", {}).get("active"):
-+        raise KsftSkipEx("Device does not support esp-hw-offload")
-+
-+
-+def get_tx_drops(cfg):
-+    """Returns TX dropped counter from the physical device."""
-+    stats = ip("-s -s link show dev " + cfg.ifname, json=True)[0]
-+    return stats["stats64"]["tx"]["dropped"]
-+
-+
-+def setup_vxlan_ipsec(cfg, outer_ipver, inner_ipver):
-+    """Sets up VXLAN tunnel with IPsec transport-mode crypto-offload."""
-+    vxlan_name = f"vx{os.getpid()}"
-+    local_addr = cfg.addr_v[outer_ipver]
-+    remote_addr = cfg.remote_addr_v[outer_ipver]
-+
-+    if inner_ipver == "4":
-+        inner_local = f"{INNER_V4_LOCAL}/24"
-+        inner_remote = f"{INNER_V4_REMOTE}/24"
-+        addr_extra = ""
-+    else:
-+        inner_local = f"{INNER_V6_LOCAL}/64"
-+        inner_remote = f"{INNER_V6_REMOTE}/64"
-+        addr_extra = " nodad"
-+
-+    if outer_ipver == "6":
-+        vxlan_opts = "udp6zerocsumtx udp6zerocsumrx"
-+    else:
-+        vxlan_opts = "noudpcsum"
-+
-+    # VXLAN tunnel - local side
-+    ip(f"link add {vxlan_name} type vxlan id 100 dstport 4789 {vxlan_opts} "
-+       f"local {local_addr} remote {remote_addr} dev {cfg.ifname}")
-+    defer(ip, f"link del {vxlan_name}")
-+    ip(f"addr add {inner_local} dev {vxlan_name}{addr_extra}")
-+    ip(f"link set {vxlan_name} up")
-+
-+    # VXLAN tunnel - remote side
-+    ip(f"link add {vxlan_name} type vxlan id 100 dstport 4789 {vxlan_opts} "
-+       f"local {remote_addr} remote {local_addr} dev {cfg.remote_ifname}",
-+       host=cfg.remote)
-+    defer(ip, f"link del {vxlan_name}", host=cfg.remote)
-+    ip(f"addr add {inner_remote} dev {vxlan_name}{addr_extra}",
-+       host=cfg.remote)
-+    ip(f"link set {vxlan_name} up", host=cfg.remote)
-+
-+    # xfrm state - local outbound SA
-+    xfrm(f"state add src {local_addr} dst {remote_addr} "
-+         f"proto esp spi {SPI_OUT} "
-+         f"{ESP_AEAD} "
-+         f"mode transport offload crypto dev {cfg.ifname} dir out")
-+    defer(xfrm, f"state del src {local_addr} dst {remote_addr} "
-+                f"proto esp spi {SPI_OUT}")
-+
-+    # xfrm state - local inbound SA
-+    xfrm(f"state add src {remote_addr} dst {local_addr} "
-+         f"proto esp spi {SPI_IN} "
-+         f"{ESP_AEAD} "
-+         f"mode transport offload crypto dev {cfg.ifname} dir in")
-+    defer(xfrm, f"state del src {remote_addr} dst {local_addr} "
-+                f"proto esp spi {SPI_IN}")
-+
-+    # xfrm state - remote outbound SA (mirror, software crypto)
-+    xfrm(f"state add src {remote_addr} dst {local_addr} "
-+         f"proto esp spi {SPI_IN} "
-+         f"{ESP_AEAD} "
-+         f"mode transport",
-+         host=cfg.remote)
-+    defer(xfrm, f"state del src {remote_addr} dst {local_addr} "
-+                f"proto esp spi {SPI_IN}", host=cfg.remote)
-+
-+    # xfrm state - remote inbound SA (mirror, software crypto)
-+    xfrm(f"state add src {local_addr} dst {remote_addr} "
-+         f"proto esp spi {SPI_OUT} "
-+         f"{ESP_AEAD} "
-+         f"mode transport",
-+         host=cfg.remote)
-+    defer(xfrm, f"state del src {local_addr} dst {remote_addr} "
-+                f"proto esp spi {SPI_OUT}", host=cfg.remote)
-+
-+    # xfrm policy - local out
-+    xfrm(f"policy add src {local_addr} dst {remote_addr} "
-+         f"proto udp dport 4789 dir out "
-+         f"tmpl src {local_addr} dst {remote_addr} proto esp mode transport")
-+    defer(xfrm, f"policy del src {local_addr} dst {remote_addr} "
-+                f"proto udp dport 4789 dir out")
-+
-+    # xfrm policy - local in
-+    xfrm(f"policy add src {remote_addr} dst {local_addr} "
-+         f"proto udp dport 4789 dir in "
-+         f"tmpl src {remote_addr} dst {local_addr} proto esp mode transport")
-+    defer(xfrm, f"policy del src {remote_addr} dst {local_addr} "
-+                f"proto udp dport 4789 dir in")
-+
-+    # xfrm policy - remote out
-+    xfrm(f"policy add src {remote_addr} dst {local_addr} "
-+         f"proto udp dport 4789 dir out "
-+         f"tmpl src {remote_addr} dst {local_addr} proto esp mode transport",
-+         host=cfg.remote)
-+    defer(xfrm, f"policy del src {remote_addr} dst {local_addr} "
-+                f"proto udp dport 4789 dir out", host=cfg.remote)
-+
-+    # xfrm policy - remote in
-+    xfrm(f"policy add src {local_addr} dst {remote_addr} "
-+         f"proto udp dport 4789 dir in "
-+         f"tmpl src {local_addr} dst {remote_addr} proto esp mode transport",
-+         host=cfg.remote)
-+    defer(xfrm, f"policy del src {local_addr} dst {remote_addr} "
-+                f"proto udp dport 4789 dir in", host=cfg.remote)
-+
-+
-+def _vxlan_ipsec_variants():
-+    """Generates outer/inner IP version variants."""
-+    for outer in ["4", "6"]:
-+        for inner in ["4", "6"]:
-+            yield KsftNamedVariant(f"outer_v{outer}_inner_v{inner}", outer, inner)
-+
-+
-+@ksft_variants(_vxlan_ipsec_variants())
-+def test_vxlan_ipsec_crypto_offload(cfg, outer_ipver, inner_ipver):
-+    """Tests VXLAN+IPsec crypto-offload has no TX drops."""
-+    cfg.require_ipver(outer_ipver)
-+    check_esp_hw_offload(cfg)
-+
-+    setup_vxlan_ipsec(cfg, outer_ipver, inner_ipver)
-+
-+    if inner_ipver == "4":
-+        inner_local = INNER_V4_LOCAL
-+        inner_remote = INNER_V4_REMOTE
-+        ping = "ping"
-+    else:
-+        inner_local = INNER_V6_LOCAL
-+        inner_remote = INNER_V6_REMOTE
-+        ping = "ping -6"
-+
-+    cmd(f"{ping} -c 1 -W 2 {inner_remote}")
-+
-+    drops_before = get_tx_drops(cfg)
-+
-+    runner = Iperf3Runner(cfg, server_ip=inner_local,
-+                          client_ip=inner_remote)
-+    bw_gbps = runner.measure_bandwidth(reverse=True)
-+
-+    cfg.wait_hw_stats_settle()
-+    drops_after = get_tx_drops(cfg)
-+
-+    ksft_eq(drops_after - drops_before, 0,
-+            comment="TX drops during VXLAN+IPsec")
-+    ksft_ge(bw_gbps, 0.1,
-+            comment="Minimum 100Mbps over VXLAN+IPsec")
-+
-+
-+def main():
-+    """Runs VXLAN+IPsec crypto-offload GSO selftest."""
-+    with NetDrvEpEnv(__file__, nsim_test=False) as cfg:
-+        ksft_run([test_vxlan_ipsec_crypto_offload], args=(cfg,))
-+    ksft_exit()
-+
-+
-+if __name__ == "__main__":
-+    main()
--- 
-2.43.0
+Please add newline here.
 
+> +	if (!enable)
+> +		return 0;
+
+Please add newline here.
+
+> +	ret = ksz8_ind_write8(dev, TABLE_LINK_MD, KSZ87XX_REG_PHY_LPF, lpf_bw);
+> +	if (ret)
+> +		return ret;
+
+Please add newline here.
+
+> +	dev->lpf_bw = lpf_bw;
+> +	ret = ksz8_ind_write8(dev, TABLE_LINK_MD, KSZ87XX_REG_DSP_EQ, eq_init);
+> +	if (ret)
+> +		return ret;
+
+Please add newline here.
+
+> +	dev->eq_init = eq_init;
+> +
+> +	return ret;
+> +}
+> +
+
+[...]
+
+> diff --git a/drivers/net/dsa/microchip/ksz8_reg.h b/drivers/net/dsa/microchip/ksz8_reg.h
+> index 332408567b47..cd41214f874e 100644
+> --- a/drivers/net/dsa/microchip/ksz8_reg.h
+> +++ b/drivers/net/dsa/microchip/ksz8_reg.h
+
+[...]
+
+> @@ -729,6 +736,21 @@
+>   #define PHY_POWER_SAVING_ENABLE		BIT(2)
+>   #define PHY_REMOTE_LOOPBACK		BIT(1)
+>   
+> +/* Vendor-specific Clause 22 PHY registers (virtualized) */
+> +#define PHY_REG_KSZ87XX_SHORT_CABLE		0x1A
+> +#define PHY_REG_KSZ87XX_LPF_BW			0x1B
+> +#define PHY_REG_KSZ87XX_EQ_INIT			0x1C
+> +
+> +/* LPF bandwidth bits [7:6]: 00 = 90MHz (default), 01 = 62MHz, 10 = 55MHz, 11 = 44MHz  */
+> +#define KSZ87XX_PHY_LPF_90MHZ          0x00
+> +#define KSZ87XX_PHY_LPF_62MHZ          0x40
+> +#define KSZ87XX_PHY_LPF_55MHZ          0x80
+> +#define KSZ87XX_PHY_LPF_44MHZ          0xC0
+
+You could use GENMASK_U32() and FIELD_PREP() for these bitfields:
+
+#define KSZ87XX_PHY_LPF_MASK     GENMASK(7, 6)
+#define KSZ87XX_PHY_LPF_90MHZ    FIELD_PREP(KSZ87XX_PHY_LPF_MASK, 0)
+#define KSZ87XX_PHY_LPF_62MHZ    FIELD_PREP(KSZ87XX_PHY_LPF_MASK, 1)
+...
+
+[...]
