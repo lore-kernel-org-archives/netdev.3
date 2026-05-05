@@ -1,164 +1,150 @@
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011007.outbound.protection.outlook.com [40.107.208.7])
+Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E514848AE22
-	for <netdev@vger.kernel.org>; Tue,  5 May 2026 15:54:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.7
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777996493; cv=fail; b=LXyWzQfLAklkT1pozAedCL7j8APDwAzpZgpkXJ8bw8ow2BB6D1crV2QsrOMlFVFV1N32EUGRQ0lkm0Gf6eoROAdi/h7txGg1Lsni7uDqcx5jsRZw9ZsUXwRy+REJPGi+ltqvhRlkzXWVd6BFsVIJgG1HBL73KjcHvWA3LNf9YMc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777996493; c=relaxed/simple;
-	bh=HUmQZXkPcvXz/XHhgUP9yE1dKKlxp7feRKOmPNjGaY0=;
-	h=Message-ID:Date:From:Subject:To:Cc:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=DFP6sn7kw2SyPKq+wsOp+DNaumWcJaSRjw3s+3izzLMU1R0lYOCoqb+BN8kFaNXumfb02B7Z4UC/cWJqs8RfL6NRBtuiXtSQXGe2UtrsfpKmT3ZipuMBVvo9QzvOZbrS7zXjxPufyY0Od7d1IJ3x/DVervsJ6A56v9zTltSLtis=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=o0aESO0L; arc=fail smtp.client-ip=40.107.208.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 111CA365A1A;
+	Tue,  5 May 2026 15:56:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777996601; cv=none; b=kqb5VsUbYrSNreXl6wT7241Sp7jSXQSk2VdhjaFV7dofkFnrZuJw4GH7mA0cSLjF3yxKLZ/0Ff7IEx3cv89jAIreRTTfrbt2qFg3s0Q6xIbbSA+RDZF7hPaAzpcljWFylrlzfFLNx5ECcAjBKPA/7hraxt7CuzC29d+E5YxvQ4w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777996601; c=relaxed/simple;
+	bh=alsWWFsozKxA87f3+rU3VZeze2WtHL7ooX75HoJQIM0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=KutGhB0NyauBwipG2LUlUF1qBJAo5HCVde4Umnf6vdQiWxh1xyJ+dVSdLP17Vvcq57X3TPVqVCO6Zh8akc/VRIld5Rml6uzdr8yI2dF2yJgtgqiuZKN6kfaF7eRgdIDLVy9iNldA1toXObB8PNn8a0bCvpRoewMt9OUxo6MApuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=uGPLqxWH; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=ylmwI8p5; arc=none smtp.client-ip=23.88.97.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="o0aESO0L"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Jjw8eiJlQIx3MycQFzDL3SJ4aFvVQwCezvEEW0ZMOetq0dwbuMbjeZGcQS3UIG19tPHhLQ3pxyTbEz/po05bvr8qNaMP/lWRBJl3IhkwdHOMxbghoEobX1AqmwoKqQ2EqviWiMDbU/2o7P5QWxqOTTCXXS2EdM2ZhYKWxSG6yYN/v4urAj/Ec8sJTZej5FfEzIoRIAL2jHhoF+plBVN28+pzFjOjGeaMNQMrnqww4+iCu77ACIqmD/PQcEFNb/Ow4wCrh+42eZv/C7bdRdpXMRtq/n+N2MP0dqZ5o41E6nyarmV7NTq5jW2pf//IxtnwIMxiDPIwlsD76JCRteBtmg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=n8Jh6d5G17ktAMMZqoh8aZpoXKBm/Pt9u9akVEUJ/MU=;
- b=BLDxB9xNzgSTYEPkUhSGNTzA/vtEB5qJOb26xgEYkV6Pw+DlV1saMWYaZ9ce2o0YYpE4ze13KRueScQ+JzMIQ2+U6dqKTm7cWY6HWO+b4fTVldLFa+4bXhJquy9xVBbgS7CTciLVqudJBYXv1e4RC69jDYeISNwRQzcbcvlwM4Pf9UZLKZwRzK3tjbLYDSyMxWxFvyYnf51jVriPJF6fTVJN0g1IuGyw9z6vha2uZCL4TgtZ+O69WF0ctQWfDWsVQxvoMENdZMm8zXA9O6gg57L8O3h0BZd/bCjBAlVHoqgwR9edKTERFWgSAuemCqX9hVtvaLsGq/l5g0xFomsO+g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=n8Jh6d5G17ktAMMZqoh8aZpoXKBm/Pt9u9akVEUJ/MU=;
- b=o0aESO0LphnyYR5zrq2nUpW80r1OCL+SP7b8pd1AZLchpeLSjB9eLSlydJLMM+UfHc0M0IojL4sOPeEQfSN/aicEmHKB4uyzxC2KyEYs0RqQCzoSR7735OzXOZnObin+JD7ELZH8+ChxzT9IoSxipeUpz/HHKKwPk96sZFo05Yk=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DS4PR12MB9708.namprd12.prod.outlook.com (2603:10b6:8:278::7) by
- SA1PR12MB6679.namprd12.prod.outlook.com (2603:10b6:806:252::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.25; Tue, 5 May
- 2026 15:54:48 +0000
-Received: from DS4PR12MB9708.namprd12.prod.outlook.com
- ([fe80::8570:d817:2f81:c62a]) by DS4PR12MB9708.namprd12.prod.outlook.com
- ([fe80::8570:d817:2f81:c62a%6]) with mapi id 15.20.9870.023; Tue, 5 May 2026
- 15:54:48 +0000
-Message-ID: <808743e2-dfce-4793-85b0-fdb771763ffa@amd.com>
-Date: Tue, 5 May 2026 08:54:45 -0700
-User-Agent: Mozilla Thunderbird
-From: Eric Joyner <eric.joyner@amd.com>
-Subject: Re: [PATCH net-next 1/5] ionic: Small improvements in devcmd retry
- logic
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, Brett Creeley <brett.creeley@amd.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>
-References: <20260501031555.43259-1-eric.joyner@amd.com>
- <20260501031555.43259-2-eric.joyner@amd.com>
- <20260501163740.0f775e67@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20260501163740.0f775e67@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BY1P220CA0002.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:a03:59d::6) To DS4PR12MB9708.namprd12.prod.outlook.com
- (2603:10b6:8:278::7)
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="uGPLqxWH";
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="ylmwI8p5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1777996598;
+	bh=alsWWFsozKxA87f3+rU3VZeze2WtHL7ooX75HoJQIM0=;
+	h=From:Subject:Date:To:Cc:From;
+	b=uGPLqxWHsbdP8PNN9hvOz/MphCaZXruJh4YSor2+onAB+t2JaGUqiIWR2cgQMumQ/
+	 ONh3LTdSbKUR1X6ln5tWO/k5eW957bzwzkALJx/RDy6DdrG9sAOwkLA0GRYd4lV5fj
+	 N9SQ6cFVWPtSfmooLkm3r4KTLMRaqQLUQwUJEHaVJeMy5aRknyKQG9BhT3TNNsGfzt
+	 2wrNcPcTnneWP7XpuusoeVaGFj/k4B2QmxfVYxEnEBOmjolVyHaVDcKiQryQhXT7gp
+	 KwKMCI95m0XovKEOVQM1nUh4QCqjR4sR2dy5NQSEl96CKhx/ZVXmckfb/2qg9zuUb9
+	 EIMUzkODUPJIw==
+Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
+	id 51F6A42541; Tue,  5 May 2026 15:56:38 +0000 (UTC)
+X-Spam-Level: 
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1777996597;
+	bh=alsWWFsozKxA87f3+rU3VZeze2WtHL7ooX75HoJQIM0=;
+	h=From:Subject:Date:To:Cc:From;
+	b=ylmwI8p5Qi+9kY63t07VBAu+FuAw4wvxy2bataYNVbi9oixK+FaacFkcpifAzhyai
+	 5Z+UGIc1bzrxmoMavQMHTIyoINrD91q5QvCkSyKjSLlCbFoPByPEDAKEvZ4O/ea7qM
+	 XrasXe/Gmf6ddqJjQH7gzJXBrhxlAkaroTjAIxZkO2F0wnqC1CwzmNRQizaZHrNNpI
+	 IqHv3v+NJeler1Yf2oKwTTLrXVLzT7AcB8L8B1Tvx9Q1nAsyzTiSRfdE2Yfkt8XktP
+	 6DbnlOfZTNw+HYRwwskWkWgNfTGCMcW6woWd1NsG9eGMM03fhH8S13R6NzSaejz/wA
+	 mNYxXmB9Ypq6g==
+Received: from AMDDesktop.lan (unknown [IPv6:2a00:6020:47a3:e800:271c:c6c5:9fde:77cb])
+	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id E909542464;
+	Tue,  5 May 2026 15:56:36 +0000 (UTC)
+From: Birger Koblitz <mail@birger-koblitz.de>
+Subject: [PATCH net-next v4 0/3] r8152: Add support for the RTL8159 10Gbit
+ USB Ethernet chip
+Date: Tue, 05 May 2026 17:56:32 +0200
+Message-Id: <20260505-rtl8159_net_next-v4-0-1a648a9c4d8d@birger-koblitz.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS4PR12MB9708:EE_|SA1PR12MB6679:EE_
-X-MS-Office365-Filtering-Correlation-Id: ab4ecaae-849b-4861-1a4e-08deaabea283
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|1800799024|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	vnFECm5B37YCIoO4WZzTKNIWLIbOuMNgE4vLDFkGvf7HLWxP2G0QbB8N8rDjnZebKSTv3DF+lvm24rfnfKm96ATkC++eCCF9W7StI0zTD5f6M//luH+CF86WkHqzFXqYK7rRh8VXb0k9M9hXacp5i7GAJt46E6usSZnoSnKMw0CoeZvG/SlMaAC7G5iS5Y0lQ9AORaozb7s9CnjSaZIkgMh0GYxFcHB5ey2wh/XS9JQ0IvDU1BGdrxUVRDQEyCRev74BMosW7lUrcqEDHm+ahRKgm8WXkzyD0ZAUW7ZJ+tPlDv+55ZNm2EujVP21foL8bs11c+rqfnKGv3A/Q1XfX548Odl3+Qwdyta1Y9qXi5hrknN6CqQmxmhSLCNxQ0DLcelHIKQVcdhU5iwFGGVe4P/Xn9zq1k4yy0IlAU9A7NrgR35wI78MKCNnV6qjui9/Pq96u0mNUXE3SPpBZsu/IILj6qeCF9uD7wXVIJ5CWvI0LNzzFmJltLMUNrPZ4nw8iMoloNUyI8uJzadeT7kpbKiXF171b1gdkEcYKJj9CFe1dZVhcTZjTRgpcKoHh+dgnlum5JNPXcO9VnmpXTgi33EZbXklTyaWVScDaA+GxvCIOMXGLZfhuublL/KA2ujjm8rBMNASbJhvHX/gLbJ0a85H0uj29NnlpK+EuLfYlDo4DUqfuBBe6E80fyyFUiZiOxCS1Qc+lvp91WcqtbcMNg==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS4PR12MB9708.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TUVyQkd0OC9wM1Z1RnRaM1J3OVVLandxdHlBbWtka2RSYWQ4cmNhS2lFS1FC?=
- =?utf-8?B?VWZheEFkeWpjRGlRcXdpZUd0T3kyOGNId1lWeHUyUHpVSm13a1pXYXZMSUxr?=
- =?utf-8?B?RUhIM0Z5TEJobjRTNkdjbjFVT1oxWlBSRnhncy9WUU9iL2pqZUdKWjZRTWRF?=
- =?utf-8?B?dDJzU2F5dEdoVkRVSVA3SWw1Q21LcTFINnpaNytEbzk5NkVkR2JyWWc3SDRK?=
- =?utf-8?B?dlpIK1VXNmNycFQwa2daU0VpTjc2eFNGc2lWMG1UUDQrMW9WM0Z3OFg1R2NZ?=
- =?utf-8?B?YStVWTJJVE9UcjZoVHI3cXFOajdpWmZ0ZlhPdmtZY2hNK1dmaU5rZ0lxbjVH?=
- =?utf-8?B?UE1FeUE3RE1sbkFYaTAvbXRTcmhFYlF0aXZtdnFNQnJ1NFBKejU0eWdqMkdB?=
- =?utf-8?B?UDhVdTJJQlRKQ1QyclliTnhUemhzWVlMRUtkYVFtZkh6ZUdxZlo2R1BheHVu?=
- =?utf-8?B?enFjWmNBK2ZxY2NiYTF6NmFYM2NFN1VOdlh0VG1UMzVFSHloVkZlZUxJeGpO?=
- =?utf-8?B?MHhrank2TWNMUEFKa0pkSVYrYy9FK09pS29UQ1dKaS9IcldpMWtlQVYxREJq?=
- =?utf-8?B?am80cmNKd0lnQ25nZTlBMXRJbkR4citVTUJncUJwOG1rcWN2RFVOYnpTbVdL?=
- =?utf-8?B?UGIrbm9WQzJJMERuc01GbnF3TVhqd0tqRkRFRmNzOHYxd05EK3EwNi81NDdi?=
- =?utf-8?B?RzdmbGRjY2QzMHpSNUVjUFQ1VFkxTy9uNVM4czZLbU5SZE04RCthWmZZeU9t?=
- =?utf-8?B?YkVtR2VBbE0vZkJ4Uk14aG9zYjlPRnlMSUphTkJrTXlqdVVGVXVRVWtOQnhk?=
- =?utf-8?B?U1J1MDlJbXlJMnN6bHN5a0RPVkRCVGM1M01BY3JwWmptMHZ3Mno0OHZ0UnlM?=
- =?utf-8?B?dWcyWTJBV2ZoV1BNeXF4eSsycDN0UEpEMFZSVFdMaGlqUy8vbUFyVVJvRnNE?=
- =?utf-8?B?dXh2WjFDM29aNTVjM3oycE0vSGRGOFQraGhrVHFKTTlRRWxRUlRyQytPSGI0?=
- =?utf-8?B?TFlZREk3UE82c1BsV3pEcktzZ0hIWUd4S2RaNlFteENWVVNaQUZwdTgrTWZs?=
- =?utf-8?B?WDlwYjEvb2VPMkgrRHRuVFJpaDlDQVpVcm81SGxLNTVFZ2FaYTFWZy9UdWRH?=
- =?utf-8?B?MFpEMkNwQk92S0lTRUJzcmlWWHFIY2l4WHlZcyt4andIbDJUSXl2Sk5QcVly?=
- =?utf-8?B?dWl0amFld3o1Y3JtYzgzRGxHSDRWbmtodDVZdHNPdFQyb2xzMTVhOEl1ekQ3?=
- =?utf-8?B?OERCRWJhVmlvNjY2Kzl0dWNsRE9lZitrTVZwaHp0cHlaS2dyNFBDZHBRTEJz?=
- =?utf-8?B?ZVQ4K3YyUzdsakcycXIvdUx3YjN5bi8yaXM4aXZFU2JCWEgzanAzQnBNdGNB?=
- =?utf-8?B?N0w4RW5xZXdpUzFJV3R3QzBneUFJdU5DYXh1ancxUFlDZ0taSkdVbGE1VEZr?=
- =?utf-8?B?MzdJM3dFbkkwNGZZTVdtMVl6NG9SMFpOR3cyRGs0L1kxOG5Ma0NlNXd1eWps?=
- =?utf-8?B?QUhTenVDcW5IV2hXQWhXeFF5bU9Rc0tUQ1JkQXBFek9OU0tnbmhqY2lHL3p1?=
- =?utf-8?B?VE83L0JCQjZSRnlJSEd2NFliSStNbStzQ09ZbWFKV0tUTHVjSk5NeXpOL1I1?=
- =?utf-8?B?b045SHJBa1plOHVaSUpXaXFGV3U4SndVZlNaMFRZNDNsQ3F4Tk5KMlpTNWRj?=
- =?utf-8?B?SzdleDNDdkxib0l0VFc0cnZNemRrd2dyZ1dsSzJmOG5WOTRrdmtqNzl4QUZB?=
- =?utf-8?B?Sm1iOUM5RVZ3VWxYVjVqNzlrY2RLbDFwWDU5N3pDemRJUW01bGVocEJ0aFVV?=
- =?utf-8?B?WG9wY1lMKzVxV3Jma0Q4THBEa3FJRlBuZmI5dkhJWStrcU9OM1RNbWVyaHZv?=
- =?utf-8?B?eldRTlNzQ1VFR292VzRQWUt4ZGxuZG05NE4vVGhxRDlGb0hCcDI1NU1INXJU?=
- =?utf-8?B?a09OK3ZmaEhVOFBkL0NKZ3p2TTFrYTNneGNKTExJbmpOOUxQSERSVWRJWU1W?=
- =?utf-8?B?QWhqSGliNjB4R0xBZ3gyaXFieGpvMkdXeFhRSVprbHpDWERwQkF5QkVlbUNP?=
- =?utf-8?B?LzFOemlydVlSeW0zLzNwVnZCN0NUdVFPZ2FnWGpLYll3c21hSWRzT2sxVDZG?=
- =?utf-8?B?NUwvc3V3U243RXgvNkJYL0dISnp2OWw3VXBYdlp6VHd6K2JpV1hJbEc3YlBa?=
- =?utf-8?B?Q29aclBxRUxSWGtmd2dVWjZRZ3cyMFowNUZzK2RmbVNxaE5zSS9pdU9BaklJ?=
- =?utf-8?B?NDA1cVpKWVlVWDEyYjVWUS9acnBQMitraHlRSWxTMWp1WGxFTkFkWklNTG5L?=
- =?utf-8?Q?HUpPF5plpbCOb3j+dZ?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ab4ecaae-849b-4861-1a4e-08deaabea283
-X-MS-Exchange-CrossTenant-AuthSource: DS4PR12MB9708.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 May 2026 15:54:48.2005
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Wcr1MYe4MPxpEhqCnaw/4johVQx4kVw2vgPVaWAFhFQ8QCZ68Lq4uGfj+78USyfm
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6679
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADAT+mkC/3XN0QqCMBQG4FeRXbfYjnPTrnqPiHDbUUeiMYdY4
+ ru3JCjILs7Fz/nPd2YyoHc4kEMyE4+jG1zfxSB2CTFN2dVInY2ZAAPJBCjqQ5vzrLh0GOJMgYp
+ KqbyUXFSlIvHs5rFy00qeSGzRV4uc46ZxQ+j9ff018nX/ZvNfduSU0QwsSwtQWsjqqJ2v0dNrr
+ 1sXHnuLKzrCN1RsQBAhXerUWIHCSPkPSj9QxmADSiPEweRFZoU0dhNaluUJjNR4XFQBAAA=
+X-Change-ID: 20260427-rtl8159_net_next-4f778a614fa7
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Chih Kai Hsu <hsu.chih.kai@realtek.com>, 
+ Birger Koblitz <mail@birger-koblitz.de>, Andrew Lunn <andrew@lunn.ch>, 
+ Aleksander Jan Bajkowski <olek2@wp.pl>
+X-Mailer: b4 0.14.2
 
-On 5/1/2026 4:37 PM, Jakub Kicinski wrote:
-> Caution: This message originated from an External Source. Use proper caution when opening attachments, clicking links, or responding.
-> 
-> 
-> On Thu, 30 Apr 2026 20:15:51 -0700 Eric Joyner wrote:
->> If the timeout time is hit when the last attempt returned EAGAIN, the
->> driver returns -ETIMEDOUT. This causes the -EAGAIN result to be lost.
->> Fix this by returning -EAGAIN if the timeout time is hit and the
->> previous result matches.
->>
->> Also, reduce the sleep between the write to done and doorbell
->> registers. The msleep(1000) was initially added in an arbitrary
->> manner. However, this long of a sleep is problematic because
->> it reduces the number of retries when -EAGAIN is returned, which
->> may result in the devmcd giving up early due to the timeout. Fix
->> this by reducing the sleep to msleep(50).
-> 
-> It would be useful to explain the significance of the return value
-> to the callers. Are you trying to return EAGAIN to user space?
-> Or some kernel-internal function catches this?
+Add support for the RTL8159, which is a 10GBit USB-Ethernet adapter
+chip in the RTL815x family of chips.
 
-It looks like the -EAGAIN return value used here would have been used by
-"[PATCH net 1/7] ionic: Allow the first devcmd to trigger deferred probe" [1];
-this change got put in this series because we decided it was more of a net-next
-change rather than a net change, but didn't realize these two were more
-connected than what we saw at first glance.
+The RTL8159 re-uses the frame descriptor format and SRAM2 access introduced
+with the RTL8157 as well as most of the setup and PM logic of the RTL8157.
 
-1: https://lore.kernel.org/netdev/20260429210007.40015-2-eric.joyner@amd.com/
+The module was tested with a Lekuo DR59R11 USB-C 10GbE Ethernet Adapter:
+[ 2502.906947] usb 2-1: new SuperSpeed USB device number 3 using xhci_hcd
+[ 2502.927859] usb 2-1: New USB device found, idVendor=0bda, idProduct=815a, bcdDevice=30.00
+[ 2502.927867] usb 2-1: New USB device strings: Mfr=1, Product=2, SerialNumber=7
+[ 2502.927871] usb 2-1: Product: USB 10/100/1G/2.5G/5G/10G LAN
+[ 2502.927873] usb 2-1: Manufacturer: Realtek
+[ 2502.927875] usb 2-1: SerialNumber: 000388C9B3B5XXXX
+[ 2503.063745] r8152-cfgselector 2-1: reset SuperSpeed USB device number 3 using xhci_hcd
+[ 2503.123876] r8152 2-1:1.0: Requesting firmware: rtl_nic/rtl8159-1.fw
+[ 2503.126267] r8152 2-1:1.0: PHY firmware installed 0 to be loaded: 20
+[ 2503.156265] r8152 2-1:1.0: load rtl8159-1 v1 2026/01/01 successfully
+[ 2503.270729] r8152 2-1:1.0 eth0: v1.12.13
+[ 2503.289349] r8152 2-1:1.0 enx88c9b3b5xxxx: renamed from eth0
+[ 2507.777055] r8152 2-1:1.0 enx88c9b3b5xxxx: carrier on
 
- - Eric
+The RTL8159 adapter was tested against an AQC107 PCIe-card supporting
+10GBit/s and an RTL8157 5Gbit USB-Ethernet adapter supporting 5GBit/s for
+performance, link speed and EEE negotiation. Using USB3.2 Gen 2 (20GBit) with
+the RTL8159 USB adapter and running iperf3 against the AQC107 PCIe
+card resulted in 8.96 Gbits/sec transfer speed.
+
+The code is based on the out-of-tree r8152 driver published by Realtek under
+the GPL.
+
+The RTL8159 requires firmware for the PHY in order to achieve a 10GBit link
+speed. Without firmware, only 5GBit were achieved. The firmware can be
+extracted from the out-of-tree r8152 driver-code where it is stored in the
+ram17 u8-array. Code is added to use the existing firmware upload mechanism
+of the driver for the RTL8157/9 PHY firmware code. The firmware will be
+submitted separately to linux-firmware.
+
+Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
+---
+Changes in v4:
+- Fix formatting and spelling in r8157_hw_phy_cfg()
+- Set RTL8152_INACCESSIBLE when r8159_wait_backup_restore() times out
+- More documentation on RX aggregation/descriptor settings
+- Link to v3: https://lore.kernel.org/r/20260502-rtl8159_net_next-v3-0-12c895d46cd6@birger-koblitz.de
+
+Changes in v3:
+- Various references to RTL8157 in the commit description changed
+  to RTL8159
+- Fix incorrect use of OCP_EEE_ADV2 register for 10GBit 
+- Fix various instances where a gate on RTL_VER_16 was not extended
+  to RTL_VER_17, although RTL8159 needs the same code-path as RTL8157
+- Explain use of 0x815a device-ID for RTL8159 in commit message
+- Extend poll-timeout for backup-restore to 20ms
+- Drop patch for IRQ mitigation 
+- Link to v2: https://lore.kernel.org/r/20260429-rtl8159_net_next-v2-0-bab3cd4e4c66@birger-koblitz.de
+
+Changes in v2:
+- Correct formatting of comments
+- Order case statement values correctly
+- Add error message when backup-restore fails
+- Correct commit message of support for firmware upload
+- Link to v1: https://lore.kernel.org/r/20260428-rtl8159_net_next-v1-0-52d03927b46f@birger-koblitz.de
+
+---
+Birger Koblitz (3):
+      r8152: Add support for 10Gbit Link Speeds and EEE
+      r8152: Add support for the RTL8159 chip
+      r8152: Add firmware upload capability for RTL8157/RTL8159
+
+ drivers/net/usb/r8152.c | 345 +++++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 325 insertions(+), 20 deletions(-)
+---
+base-commit: 0f19519fdd22bc0f5429377da3a52327c5eee166
+change-id: 20260427-rtl8159_net_next-4f778a614fa7
+
+Best regards,
+-- 
+Birger Koblitz <mail@birger-koblitz.de>
+
