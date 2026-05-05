@@ -1,137 +1,108 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCB7D3A1A3B
-	for <netdev@vger.kernel.org>; Tue,  5 May 2026 08:59:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00376347BD4
+	for <netdev@vger.kernel.org>; Tue,  5 May 2026 09:10:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777971587; cv=none; b=Pue/6KS7mqNlbWcfA0nkv9eKA9JV7pastXoFo2eHl6ohR4SJWebxON77FYKEwNpHpRq3oXy/6GFVbTxJcRU1Nq7yo1Q/3DhvJT6RL1EqdM7cHxOhyRtgZJI0hGsEMN90eP46gY9pdT2gqOTF4wJxE+5B2iKotlAQVcaeawMTdk8=
+	t=1777972222; cv=none; b=IO4VPoYlfZbpXJmDACfmjcaLUU+W4LdR6iQeiuh+hSZvOaAOQSnSwYose4sayrmtB35bD0lVWmZCXbJ8anXGIb7sUI1cXKtYpMoZaUHkjn+sEJUtSpgmTcz7t/AxFYHBQyZ4Ni6YqUooonUNSzssPt6W75qk4dr5ibGQGLYSpAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777971587; c=relaxed/simple;
-	bh=GtnmXgWBnlVbum8VU82XoIoP2qzEtwowPEy/lSbUNBc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=petBoSw3tu3RHt8FgJE82TYtgGW+zlSyRZKW41l5m0gcgTG0RmRBHG0cObkA2o1cqI8o7KvWtLtKkyqY9jKE1vOzqf923VI/ik3ucCa2wUEQUJxizR1R2jS12kPQnnjyMt4Hhogi0e6g5tvyAnzpJFJHrqLH/XyDDZ5o7/o9e9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dPNbfl+m; arc=none smtp.client-ip=209.85.216.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1777972222; c=relaxed/simple;
+	bh=cRfHUAFGg57jog7PQsYBRdjiL7fC9Xj6KJYDTyDSrds=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=STTBHdaKBVrieZYBG3OKdW20fEmq/NIVX+EnjEotm+LSo30M0dx4bqu933+t/j0IhUchz3AZh/1c/Vnc0NFu65vlFPNinjfQNQmQGAl9gRXRZCTfJKNuEI70zc+2Ch5laRyZuitw5Nid4J01BshU3rb0iBZFcM/S3/ErP4QzvMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=A0jRbu6+; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dPNbfl+m"
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-365425c98c6so1383249a91.0
-        for <netdev@vger.kernel.org>; Tue, 05 May 2026 01:59:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="A0jRbu6+"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-48d144d3428so6639725e9.3
+        for <netdev@vger.kernel.org>; Tue, 05 May 2026 02:10:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777971585; x=1778576385; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=scgXwfpWRTztGmGbOBFzi2/rYTv6bkNqRVNUxAo7T3c=;
-        b=dPNbfl+mQfuF5iFuA4h/oDLdV+N6e39r4NeGUMHjBrQ8VpddRgowN/3bUgf73Xz0UQ
-         +EivlcGMfx2NMdJnxbGnkfZKH0oKpKd9lH1O3zEBueWHipWF2LW2vFu22kzwLD0xZXCE
-         IjJnS6mzDEEZzDHqrJoW5Aj/3PYMRO+qtiuEO6ffgCbeyFGftbbfiZt/EcrajVgrdfoO
-         Xp0d34QjvfonJnfdtp/ZvU6L6+bDDnUwlC+dkvCKnMlNaZ1iDDMD+53SECpP+oI8AWFH
-         kGywZY4KHbkQRd4O6AQ9XPx8fmIQcmu0NCE3B5Z6VEw+wk0N+CXbSk8bskdQcO9Dc9Fd
-         REnw==
+        d=google.com; s=20251104; t=1777972219; x=1778577019; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=TV+dGkVQMRpG1tcF9GVXKJzex3tlmHkPz/lBk9KZDnc=;
+        b=A0jRbu6+pPWzFS86kaDV13qbO63j0SSpWSf2CX2N22KmsOYqQ8COCXD3yQf1HzuiYx
+         WxFI5DNMThTA51oCC6q/LP1mFJ+U/H53/FMVUJwcvMIBLk7ELuwJc06zYmSG1s2TEyoV
+         ist3GW6FUH9ov6gAiPBHlInxWzoMGk2SY13G29KgvCpVSydgtAeQTTZK+7bD3UhxRqbv
+         TzKxrqyeY3WH/cDuHgp+iydE4ROR0gSOzTLCuciRFeqL+ZhFnq46lB8BI3lWCWACTHyS
+         oaBwGZh3v7gdJeiq2GdH75IBHHFQrnsB110o8hSN1C4YNOHhzHs+T1WFPWdB987TgQTJ
+         L4mA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777971585; x=1778576385;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=scgXwfpWRTztGmGbOBFzi2/rYTv6bkNqRVNUxAo7T3c=;
-        b=T6EGiiBGnu3lFpvB3Ntj5VSiKXKaIT8q0hOlHhqzKACP7BrGzsQ8WWkpdctj68X6eW
-         wxs7yM/mKlfiQP7i97rf/IrvOHJSCjGXyp2xa7V3c1XFuaNWcHVcV7RDRlxMe4fFnUZX
-         e4Ji3sMOcMzcsH3HYn4OHWyoF7C9iUIDmWd69n6R4aiVp14ieEQWzRgJX7RL9h1ZY+jM
-         XTQSFSvH/+y6Vz5qpM2wN8epfylhy31eZuaB0Kscn3xp9suZEsBvFjxzI9aa6c5Kiyg/
-         N1Pn62gFF+dGr8utoWA80hvxkeJK2wVpWrfoEqi2wMU9arMEK10u+AHfWeihMZAa7+W+
-         budg==
-X-Forwarded-Encrypted: i=1; AFNElJ/b9QAQuH3uffmDUgnpWaGntIhpRSkBsLcZiZ3DBpsbK8FvtBX+GDgM5pvSYGC3D923qRaqLes=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywf8q32F1aJSTyFnL598+ZW3RDaiBOmjllhd+Qkkh1w/25plY0v
-	HO1f8EXznNgJApqmB8XYHDIWcBQXTbWj6+OEVuZGcv37Cs5XT6QDbOtn
-X-Gm-Gg: AeBDietamV4f90jf8uLPMvglh1mv6pLpkpjXF4cHdRBeCWrIXL9wkFM1oz0HeF4dY72
-	ucYvxJGTJMjS/4wxklFPZAmTs9BAW5LjZa0ulczhFPFXNTULMRF24ONWJpMuZqEfMxY52t+583u
-	haBxZo16mMk5fx8+ey32K/rUSX6N8GPc5+l+8G9B82tQX4BPlSfQM3lbUb+PpXjXu4w3htnDpZ4
-	2cEjpo5aFUKymNVoMbFRN0XeBRMKSPVQjIxcE6eF+J1wM25kAucBAS1MAMpvuBZgimgi8CzPT4A
-	ENfjOGqsRqje4mHuMIV6cshJlIo9tyTqLl/lWMaD3ZbIvxNW0wkvp4dmdBtwysRX5fGSiEyfAs7
-	Y3GHVDSwZ0i8ra5GuRjDUNzmR/0LdLI9PjP0qf1vLbv0qziyaJOszJdN8dkcc2rjj1qiKXpC4xz
-	XTgqvwbe6rlwDEfugGdEaFmIboZVAL2hSvNrdSs4vZiz25hb3AYTPW1SsVmP6NVjR/rqP/t+Rl
-X-Received: by 2002:a17:90b:17d0:b0:35a:cf:64a6 with SMTP id 98e67ed59e1d1-3650ce552camr13753846a91.23.1777971585283;
-        Tue, 05 May 2026 01:59:45 -0700 (PDT)
-Received: from localhost.localdomain ([115.110.225.242])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-364dbeb2db0sm19293267a91.10.2026.05.05.01.59.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 May 2026 01:59:44 -0700 (PDT)
-From: Shitalkumar Gandhi <shital.gandhi45@gmail.com>
-X-Google-Original-From: Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>
-To: =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>
-Subject: [PATCH net v2] net: rtsn: fix mdio_node leak in rtsn_mdio_alloc()
-Date: Tue,  5 May 2026 14:28:40 +0530
-Message-Id: <20260505085840.352206-1-shitalkumar.gandhi@cambiumnetworks.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260504200356.3529873-1-shitalkumar.gandhi@cambiumnetworks.com>
-References: <20260504200356.3529873-1-shitalkumar.gandhi@cambiumnetworks.com>
+        d=1e100.net; s=20251104; t=1777972219; x=1778577019;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TV+dGkVQMRpG1tcF9GVXKJzex3tlmHkPz/lBk9KZDnc=;
+        b=MubQ0jFXZtxcWfvxy+EPW7Th3E5e/vDD8FC0x0zmk0fAeOjIKDGwUiaoZF3SD6IF9f
+         PiCLwI3J4++wUH03tWjNKzamT0tv/IKQ75a/BfQznd4zPA5iRS1t9vHXBloWkXGW+5It
+         nvzVYybfP1mmCC/7ujY6ldCssRykkyQihaLGdhLPI+vqrStF4onfCH2cTkB43C58LCf8
+         v8GGGP1AXUsthdE23Zo6OauGunzC00QHrjOTBpy21RLAc4quXsp1uPTpouw/rTigY7e/
+         Z+BuLCaT+7VxKDSxuJx6LGeVFtR9RMDRStwhvIh+JSZZz8Lux71dtfOBddUcGiQES6E+
+         yPVA==
+X-Forwarded-Encrypted: i=1; AFNElJ8A6ITJRpLBhcLE/Pc1RBAaxhdocnDWA6PpNOOYcE5j3njfIsSIXaZCF/7NCawlYRSjvkH6nQ4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8R3X4vX+sfx2Xrw5eRCs673N3UZmQJQKQ8GbxfFK+mPYU2oV9
+	JamSxT1zUgzTJjudepslhzxR5uBFaJG6RyLBC1RxOgkSf7WUYHHcqUjOJBcgcbgZQKCzDVof4G8
+	aFD3LJc9coARv61g8Ww==
+X-Received: from wmd22.prod.google.com ([2002:a05:600c:6056:b0:489:1c31:2982])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:3549:b0:48a:93d2:60d2 with SMTP id 5b1f17b1804b1-48a980fd5d4mr203597665e9.0.1777972218974;
+ Tue, 05 May 2026 02:10:18 -0700 (PDT)
+Date: Tue, 5 May 2026 09:10:17 +0000
+In-Reply-To: <20260504165858.4882730b@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20260504-binder-netlink-v4-0-601b41cd25b2@google.com>
+ <20260504-binder-netlink-v4-2-601b41cd25b2@google.com> <20260504165858.4882730b@kernel.org>
+Message-ID: <afmz-dgqXjuIntRM@google.com>
+Subject: Re: [PATCH v4 2/4] ynl_gen: generate Rust files from yaml files
+From: Alice Ryhl <aliceryhl@google.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Carlos Llamas <cmllamas@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Andrew Lunn <andrew@lunn.ch>, Donald Hunter <donald.hunter@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Matthew Maurer <mmaurer@google.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Christian Brauner <brauner@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-of_get_child_by_name() takes a reference. The rtsn_reset() and
-rtsn_change_mode() failure paths jump to out_free_bus and leak
-mdio_node.
+On Mon, May 04, 2026 at 04:58:58PM -0700, Jakub Kicinski wrote:
+> On Mon, 04 May 2026 09:04:55 +0000 Alice Ryhl wrote:
+> >  tools/net/ynl/pyynl/ynl_gen_c.py | 139 ++++++++++++++++++++++++++++++++++++++-
+> 
+> No. Rust. In. This. File.
+> 
+> Just commit the artifacts. I truly hope that this is the only Netlink
+> family we will have in Rust.
 
-Add out_put_node to drop it before falling through.
+There's no reason to react like this. I have not ignored your concern.
+Last time we discussed this, the discussion ended on splitting the file
+into ynl_gen_c.py and ynl_gen_rust.py, which you did not reply to, and I
+actually spent some time working on that. However, I felt the change was
+non-trivial and I wanted to discuss whether that was the correct way
+forward before spending more time on it. Therefore, I kept this patch
+as-is for now and noted why it was non-trivial (sharing of CodeWriter)
+in the commit message, until we could discuss further.
 
-Fixes: b0d3969d2b4d ("net: ethernet: rtsn: Add support for Renesas Ethernet-TSN")
-Signed-off-by: Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
----
-Changes in v2:
-- Restore blank line between `return 0;` and `out_put_node:` label (Geert)
-- Add Reviewed-by: Geert Uytterhoeven
+I think you are probably right that just comitting the artifacts is the
+simplest way forward for now. Especially since Donald is apparently
+working on splitting up the file for strace [1]. On the off-chance that
+a second Netlink family is ever added, hopefully Donald's work has
+already completed and we can easily add this support in a new file when
+the time comes.
 
-Link to v1: https://lore.kernel.org/netdev/20260504200356.3529873-1-shitalkumar.gandhi@cambiumnetworks.com/
+I guess another way forward is to commit a copy of the python script
+with the Rust support to drivers/android/binder/ and I can run it
+manually if the Binder yaml file is ever updated.
 
- drivers/net/ethernet/renesas/rtsn.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Alice
 
-diff --git a/drivers/net/ethernet/renesas/rtsn.c b/drivers/net/ethernet/renesas/rtsn.c
-index 03a2669f0518..ee8381b60b8d 100644
---- a/drivers/net/ethernet/renesas/rtsn.c
-+++ b/drivers/net/ethernet/renesas/rtsn.c
-@@ -797,11 +797,11 @@ static int rtsn_mdio_alloc(struct rtsn_private *priv)
- 	/* Enter config mode before registering the MDIO bus */
- 	ret = rtsn_reset(priv);
- 	if (ret)
--		goto out_free_bus;
-+		goto out_put_node;
- 
- 	ret = rtsn_change_mode(priv, OCR_OPC_CONFIG);
- 	if (ret)
--		goto out_free_bus;
-+		goto out_put_node;
- 
- 	rtsn_modify(priv, MPIC, MPIC_PSMCS_MASK | MPIC_PSMHT_MASK,
- 		    MPIC_PSMCS_DEFAULT | MPIC_PSMHT_DEFAULT);
-@@ -824,6 +824,8 @@ static int rtsn_mdio_alloc(struct rtsn_private *priv)
- 
- 	return 0;
- 
-+out_put_node:
-+	of_node_put(mdio_node);
- out_free_bus:
- 	mdiobus_free(mii);
- 	return ret;
--- 
-2.25.1
-
+[1]: https://lore.kernel.org/r/CAD4GDZxGo6p9A07rKAW4MZNdFOYrMVzjkYNjwTqKfFcqKkzU1g@mail.gmail.com
