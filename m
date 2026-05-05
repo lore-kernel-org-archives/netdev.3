@@ -1,57 +1,57 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D3874218A6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D49D466B55
 	for <netdev@vger.kernel.org>; Tue,  5 May 2026 13:23:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777987425; cv=none; b=DEWUoPvr4Yu1aAQWbkGNyp5FzrfYCa9M/FixkQ5DZy2s2S47P9iT30pgc/vgoKotAxKFi/8UdyJCY7FF9JGjDm9xhqg02SInDnZ6KXtyH/aaBeZEQlBTT71X1m/XC8ollnQ/vjpXyMHJHwsiV3rXy4ecfnrY/E4+jO/3ZzkZwoc=
+	t=1777987425; cv=none; b=mbm5ryXFgybLKndQXrMTIeEakREQfjMkwylD3Lgopl4p/yIHLe7ATz3FLDey5BvoIi18cP/t+rxa0QZ8UbpNhpyjSJZl49H8bJgwucpSxhLUb/xLBcaioniLJATkUhoiYIJOP3ByQ7Z8Ae58qCrLR7+s0iNVbm5yLaDR+GkED1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777987425; c=relaxed/simple;
-	bh=eSmL81SKr3T1B3gj/s8EhVodS2r87gUUwNvxEN494Iw=;
+	bh=rCB6DgsShyJygfa//P35LwjvJhkXabk9of/YaR+1F7U=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PREsHv3nDB4i93O2nU0rfpNUCLVezdCQObxjjOOdlpgNx7IGknNwVJlKRkWAV1INq19knVqBghP8l580C9+iQGyzrDygY11PNNZlGXpTWBAn2sLzeuDHHGtt6OaDPaVn5WVidUKujlKSdB5QjyZo3WIeOVJiTvr0zAUU7wZWdfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=dYjteNy8; arc=none smtp.client-ip=62.96.220.36
+	 MIME-Version:Content-Type; b=lw5mIvYZbzHAazbXFuX23oAT3tlg7vtgxTtx4er/5uXqqfgL1YrqKLZpBQcdiQz+lV3ZnnrBGKAv0HHvlBTV/HG/RQbQ01iOG/rTYMXO+Pd9SctGgbEXhO/Uz51l+PpeNnOsgltrzx2QxJOx0AzIIzp6fX3EnCzSLLoBc2U4gMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=PfUiPzki; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="dYjteNy8"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="PfUiPzki"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 5150820748;
-	Tue,  5 May 2026 15:23:41 +0200 (CEST)
+	by mx1.secunet.com (Postfix) with ESMTP id F25B820728;
+	Tue,  5 May 2026 15:23:39 +0200 (CEST)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id l8uM6Nc0WGeO; Tue,  5 May 2026 15:23:37 +0200 (CEST)
+ with ESMTP id wCywqX1-5zMM; Tue,  5 May 2026 15:23:39 +0200 (CEST)
 Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 295A4201CC;
-	Tue,  5 May 2026 15:23:37 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 295A4201CC
+	by mx1.secunet.com (Postfix) with ESMTPS id 2B23F206E9;
+	Tue,  5 May 2026 15:23:39 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 2B23F206E9
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1777987417;
-	bh=lQo6bduM/S+XvcAgQte25csJl6+etYdvKi+QcuKar5U=;
+	s=202301; t=1777987419;
+	bh=EPzZvc/63O4SMrBt7XZZ4zy/2MrbFT43W69zfvBdQWo=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=dYjteNy8A7uLylrknc4+NuwPFQSeXJBQy4EgS8zjTGN7s6KRJIrxQFkumgDHw+cki
-	 SjvEQz+AySwm9wngADeNoAtL+p/8F+p6Y+d0T6LjTHNsMh7GOsifORE6Srlt8iMPn3
-	 asDSsED5H1IBDVgGOh1G/rfzUiCoke7z4NdWP4HfR3BrTZNUbs4faxtf53DMi8c1e0
-	 l+rc4TC+E+vTWLxt5kR0Iw4fls7/ztkrIAQrBiF7Rvkq2yhsERPZMfu5e6wlWltOkA
-	 NE9OTvwywzfKJ2UHJEXQPRXIZMA6CMs26NYUDq+bbCTG8J8XLG7N3AW31IZYd9qTS1
-	 htRToPMGwXNCQ==
+	b=PfUiPzkiLaL+S4DJfL842+KLflPOQF9++iLsLoaJkvdmJkVSdjOiDzaY04qEm5rL/
+	 6ZOJvBsHkgZy7W5Am9LpXzL4j/sd6pHgmTnhZCds/RPWmYX8UqAojhy/HWvueZYmeJ
+	 pnrgWykjfhnkX/Hm5GrKCXmGRpSDYR/mpib0ti8x8y29rs+kR1sFNv5XbxdhJdQU3l
+	 eOsEQlSnz0OMrCTq8Kkt2+/EcfhWT2gCMtuOqagpIGxcF1N0ZdhZAF/XvzR1nNPlQv
+	 fGoURbRxppMPHaF3QxSR1/qSOmkumMylT94h6+/KbkDEUYsDfbmrEF0hE0q8mx3uu6
+	 xPN4fk8V0Ryzg==
 Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 5 May
- 2026 15:23:36 +0200
-Received: (nullmailer pid 1364080 invoked by uid 1000);
+ 2026 15:23:38 +0200
+Received: (nullmailer pid 1364095 invoked by uid 1000);
 	Tue, 05 May 2026 13:23:30 -0000
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 1/8] ipv6: xfrm6: release dst on error in xfrm6_rcv_encap()
-Date: Tue, 5 May 2026 15:22:57 +0200
-Message-ID: <20260505132326.1362733-2-steffen.klassert@secunet.com>
+Subject: [PATCH 6/8] xfrm: provide message size for XFRM_MSG_MAPPING
+Date: Tue, 5 May 2026 15:23:02 +0200
+Message-ID: <20260505132326.1362733-7-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260505132326.1362733-1-steffen.klassert@secunet.com>
 References: <20260505132326.1362733-1-steffen.klassert@secunet.com>
@@ -63,53 +63,43 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-01.secunet.de
+X-ClientProxiedBy: EXCH-01.secunet.de (10.32.0.171) To EXCH-01.secunet.de
  (10.32.0.171)
 
-From: Yilin Zhu <zylzyl2333@gmail.com>
+From: Ruijie Li <ruijieli51@gmail.com>
 
-xfrm6_rcv_encap() performs an IPv6 route lookup when the skb does not
-already have a dst attached. ip6_route_input_lookup() returns a
-referenced dst entry even when the lookup resolves to an error route.
+The compat 64=>32 translation path handles XFRM_MSG_MAPPING, but
+xfrm_msg_min[] does not provide the native payload size for this
+message type.
 
-If dst->error is set, xfrm6_rcv_encap() drops the skb without attaching
-the dst to the skb and without releasing the reference returned by the
-lookup. Repeated packets hitting this path therefore leak dst entries.
+Add the missing XFRM_MSG_MAPPING entry so compat translation can size
+and translate mapping notifications correctly.
 
-Release the dst before jumping to the drop path.
-
-Fixes: 0146dca70b87 ("xfrm: add support for UDPv6 encapsulation of ESP")
+Fixes: 5461fc0c8d9f ("xfrm/compat: Add 64=>32-bit messages translator")
 Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
 Reported-by: Yifan Wu <yifanwucs@gmail.com>
 Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Tested-by: Ruide Cao <caoruide123@gmail.com>
-Signed-off-by: Yilin Zhu <zylzyl2333@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Ruijie Li <ruijieli51@gmail.com>
 Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 ---
- net/ipv6/xfrm6_protocol.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/xfrm/xfrm_user.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv6/xfrm6_protocol.c b/net/ipv6/xfrm6_protocol.c
-index ea2f805d3b01..9b586fcec485 100644
---- a/net/ipv6/xfrm6_protocol.c
-+++ b/net/ipv6/xfrm6_protocol.c
-@@ -88,8 +88,10 @@ int xfrm6_rcv_encap(struct sk_buff *skb, int nexthdr, __be32 spi,
- 
- 		dst = ip6_route_input_lookup(dev_net(skb->dev), skb->dev, &fl6,
- 					     skb, flags);
--		if (dst->error)
-+		if (dst->error) {
-+			dst_release(dst);
- 			goto drop;
-+		}
- 		skb_dst_set(skb, dst);
- 	}
- 
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index d56450f61669..38a90e5ee3d9 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -3323,6 +3323,7 @@ const int xfrm_msg_min[XFRM_NR_MSGTYPES] = {
+ 	[XFRM_MSG_GETSADINFO  - XFRM_MSG_BASE] = sizeof(u32),
+ 	[XFRM_MSG_NEWSPDINFO  - XFRM_MSG_BASE] = sizeof(u32),
+ 	[XFRM_MSG_GETSPDINFO  - XFRM_MSG_BASE] = sizeof(u32),
++	[XFRM_MSG_MAPPING     - XFRM_MSG_BASE] = XMSGSIZE(xfrm_user_mapping),
+ 	[XFRM_MSG_SETDEFAULT  - XFRM_MSG_BASE] = XMSGSIZE(xfrm_userpolicy_default),
+ 	[XFRM_MSG_GETDEFAULT  - XFRM_MSG_BASE] = XMSGSIZE(xfrm_userpolicy_default),
+ };
 -- 
 2.43.0
 
