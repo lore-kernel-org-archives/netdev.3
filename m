@@ -1,76 +1,78 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4F9630146C
-	for <netdev@vger.kernel.org>; Tue,  5 May 2026 00:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3570A3033FB;
+	Tue,  5 May 2026 01:00:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777942621; cv=none; b=c58b/91/K6bMbKa986D08tRl9489amXr8aHMkOsY2aIGCMkpT569ddbdkWIfT0GrwD5SKyVogw9q9Y6ivol+wDNt1C8a8Dd6BL+GcZD5UNPiX3GcYj1IugjCmRHn3VN/MowIGByWJNhQkQtiev8N389hEkrWW3nSe7WKLpRq7cY=
+	t=1777942806; cv=none; b=lnyqb9Zng3g5oBI6lg11ZqfMyQ8HPqM8PuNFzJS999fIoWW91qzgvtJl2xQnC8FbCmGRKLriaqtZqt4hH2z9VQzk/Vp2FFMQzxkwHhM45UNuv48kt9i4+RksU5OHD4ulYbuhjtmfT6oKvicSfRjlM2a6M3/ljW4w+qGBPGSq9oA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777942621; c=relaxed/simple;
-	bh=GunvcoKK1vnxkYVSR1GjMiJ6TZyG85mcvfb8XiJ1xvA=;
+	s=arc-20240116; t=1777942806; c=relaxed/simple;
+	bh=g6tcTCmX72/mt6i3cGWc4ykAaU8y/PHQF8yCU1Xwytw=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gZ0HtCfO0pz4tzFjZFyc2ttQEVTDG/pmPGogkp28B9tDXsLIRLHDUldNUX4/Y9x+WI/VQPJ/ZO75RrfCIVzcUphP6dxiZ1HFHDhHzJGVT2k/Sm9h2+0MWxa7t5sUrCrgcVth4dLLkGs8RQ/LDiLz4gysOcj7J67jMTtYC0pYHnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DccwTTyX; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=Ms9bPMdUaQH1XPGW+H1UH0SodXRgugrgXhjyZTv/eS76UlbE+cXqutuYpVVdb+cJEtRQ/Z251w1JkBwqeJyhgcNfH/utUpkCc9zixmh64WkUus00iqLMOrOD4m5iyeXCA3jh9oXuMzQYuH0JpvUc1HKjkFBwBbmsIFkzgT1PbpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BXjdjIIY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DccwTTyX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 198B4C2BCB8;
-	Tue,  5 May 2026 00:57:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BXjdjIIY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40C5DC2BCB8;
+	Tue,  5 May 2026 01:00:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777942621;
-	bh=GunvcoKK1vnxkYVSR1GjMiJ6TZyG85mcvfb8XiJ1xvA=;
+	s=k20201202; t=1777942805;
+	bh=g6tcTCmX72/mt6i3cGWc4ykAaU8y/PHQF8yCU1Xwytw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=DccwTTyX4pkOSufPSjf1PeSfyVY7HISulvN/lebzjX2SMNbVm0d33RIh6AFjKMu3G
-	 wBNuS436gmTOWV/lMvsMQp8WsSk4Cm765ZsIbpb6ttadQOQdSRtC4IC9nm0l+UtTwq
-	 Hsm/me/iOP7dwhkiObjvcBrTn1ELRZa7SUpRu4Wb7+eRSZ9V7WzaMAFhrK+4DPEErx
-	 J36avYsAAMlQyZtrIOxLOgKMieoS8mfQn3Q4zYyscW+GcQ/jh/t3rI67OGTjTn/mwt
-	 a5Ubn86EmQPbflvJesPPkMY69xTE9gfloZFGSovtraVH6uIjz4zuJsJUxU9W04P3lE
-	 1cXu74fes7ryQ==
-Date: Mon, 4 May 2026 17:57:00 -0700
+	b=BXjdjIIYhgHwE1BxltQQPlyBOw//sBtjYskv93QjKguAFSExJWH2k0/aJHyq3fUv0
+	 1AC10Mp/I9u4wOev+5/zWKtFw6ZufSvKNDqjURRP4NMMn9etk9/wEdNTFkTdeoLAEf
+	 JoYHtGGA8OY8XCTegy1w/mEnxtp8+tfwO0hH26V02vPuy6icDmRd1mOobbiUxBwf+t
+	 k4vRGZusC80IqenIatgryFfiN/LL+SxjDXdUPnrfV3bUM6B/pvPrCoQung8G0UtMmA
+	 AjNvKuFJGLtcx0gesYA/G1NeKhO5BONTK8uxyGNGbTIeAgkCyqFbwTp7cR2LgOt8pM
+	 fWO2neD/AOoSw==
+Date: Mon, 4 May 2026 18:00:04 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Ido Schimmel <idosch@nvidia.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, pabeni@redhat.com,
- edumazet@google.com, andrew+netdev@lunn.ch, horms@kernel.org,
- petrm@nvidia.com
-Subject: Re: [PATCH net-next 2/3] macvlan: Do not transfer operational state
- when protodown is enabled
-Message-ID: <20260504175700.44619b2f@kernel.org>
-In-Reply-To: <20260503181934.GB269092@shredder>
-References: <20260429124624.835335-1-idosch@nvidia.com>
-	<20260429124624.835335-3-idosch@nvidia.com>
-	<20260501180948.1f68c43f@kernel.org>
-	<20260503181934.GB269092@shredder>
+To: Dragos Tatulea <dtatulea@nvidia.com>
+Cc: =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Daniel Borkmann
+ <daniel@iogearbox.net>, Martin Karsten <mkarsten@uwaterloo.ca>, Gal
+ Pressman <gal@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, Joe Damato
+ <joe@dama.to>, Frederik Deweerdt <fdeweerdt@fastly.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH net-next 1/2] net: napi: Fix interrupts permanently
+ disabled during busy poll
+Message-ID: <20260504180004.7b9955eb@kernel.org>
+In-Reply-To: <4onzzvtgdyj5k4himhtv4dsga4dnunk4ppjyqgam6us44biear@7vvozjz2ywrr>
+References: <20260428175134.1197036-2-dtatulea@nvidia.com>
+	<20260428175134.1197036-3-dtatulea@nvidia.com>
+	<20260428173844.1354aabe@kernel.org>
+	<36csl4lgsy3psknzdpssq4zc2zsy36negybhhvfhozthhnmfl4@c6y75w6udaiv>
+	<87o6j2hslk.fsf@all.your.base.are.belong.to.us>
+	<bq662gcnuk3yltgzg4q5w672xsbsdf3abqrej2mrg6rl74ts2v@5uv5a35jrlp7>
+	<4onzzvtgdyj5k4himhtv4dsga4dnunk4ppjyqgam6us44biear@7vvozjz2ywrr>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sun, 3 May 2026 21:19:34 +0300 Ido Schimmel wrote:
-> On Fri, May 01, 2026 at 06:09:48PM -0700, Jakub Kicinski wrote:
-> > On Wed, 29 Apr 2026 15:46:23 +0300 Ido Schimmel wrote: =20
-> > > -		list_for_each_entry(vlan, &port->vlans, list)
-> > > +		list_for_each_entry(vlan, &port->vlans, list) {
-> > > +			if (vlan->dev->proto_down)
-> > > +				continue;
-> > >  			netif_stacked_transfer_operstate(vlan->lowerdev,
-> > >  							 vlan->dev); =20
-> >=20
-> > Doesn't feel particularly macvlan-specific?
-> > Other simple upper devs don't support protodown
-> > but when they do presumably they'll have to add
-> > this exact condition, too, so why not add it in
-> > netif_stacked_transfer_operstate()? =20
->=20
-> It seemed more consistent with patch #1 that invokes
-> netif_stacked_transfer_operstate() from the driver. I can move it to the
-> core in v2 [1] assuming we go for a solution that doesn't involve the
-> driver at all.
->=20
-> [1] https://github.com/idosch/linux/commit/1d86acbf0affc9004fad79820bbb21=
-72aeb305a4.patch
+On Mon, 4 May 2026 11:30:47 +0000 Dragos Tatulea wrote:
+> > > That would also follow the scheme in napi_schedule_done(). (Note that
+> > > swapping arm/clear does mean that we can get a wasted-timer outcome.)
+> > >  
+> > If it is wasted is fine. I figured that this could end up with a timer
+> > scheduled after the napi deletion:
+> > 
+> > 1. busy_poll_stop(): clears SCHED bit.
+> > 2. napi_disable() runs past SCHED wait, cancels timer and caller
+> >    deletes napi mem.
+> > 3. busy_poll_stop(): napi->timer is armed but napi is freed memory
+> >    by now.
+> > 
+> > What am I missing here?
+> >  
+> Gentle ping. Once I understand how/why the above is incorrect I can
+> update the patch and send it.
 
-=F0=9F=91=8D
+Eh, I didn't respond cause I got depressed. Look around for the pattern
+you are calling incorrect in existing code and you'll figure out why...
