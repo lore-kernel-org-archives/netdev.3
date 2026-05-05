@@ -1,57 +1,57 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9782C478E2B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97725478E28
 	for <netdev@vger.kernel.org>; Tue,  5 May 2026 13:23:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777987426; cv=none; b=Hw3rGxo9igIMVJhIzpNM2axfX9cLvIU3BkV4xqUovXwJIXN/xu13LaKCEDAeyWwMFFENGx3XyhdXiAeDq1rolCF6mJcKNolOhPIzxZscItjYf3TKxMfU11kC2mJVfBcdVoAUJKzh9NOyKSjjAZQXJGHR6Bkqne2a0GHtKwTGFwA=
+	t=1777987426; cv=none; b=qeABBFeyMvIQK5F1uPoAeJnQdBRY1Owc6IEoHU3milHsRbT36zNMYea0VYYwSdXyjIm9RMGp51wd0+vkvnxqZx+SggqA0lf+UXM8PNe+YUjxyHCJh5hth8NXMJyN1W7n6oqRNyYnhnd31i4xOWUjsYqBldwXzuZpUmLMHg2PrmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777987426; c=relaxed/simple;
-	bh=HWH4dl72mPi6B11UCcb4Z2m1jUYKI2uo8URUpshCi4Q=;
+	bh=tB/5Uig6mcP84PKGeHAG1MZPlC1PO6yVeUo9Nmh8AkU=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h9qMOaOPTi4TQ4BCRcfBOs9JoDOjLzyx6GM+gY+7ZOYyb2qC7iayyIPI8NbEJoDefBtVJM+AwKAKx+wshGMyedNA5J62V6Pse/+yNdbBsFZYfOLom0ADhxVwMAZrgZ9azs0mUt8L+WUZMH/a5rmSyoEF/mapve3xzbj9iDY8I9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=dXDM+NDv; arc=none smtp.client-ip=62.96.220.36
+	 MIME-Version:Content-Type; b=YcyESF7QUygKRZe8nW3N8LyHsJbsglt0DLpFh6zYQuCWRmdo41VgNk0k+LkzPMVeabnpsRlPe1FRzXtQSKn1XuEUR2YilpdEgDItMd6Q+HDsCvGIda0xFXIX7o8P2K0UneHUg1S8MEhV7phclgBtnO4fvx4cgeTHZTu4VzOC6bE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=ntuXhJka; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="dXDM+NDv"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="ntuXhJka"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 54D42206E9;
-	Tue,  5 May 2026 15:23:42 +0200 (CEST)
+	by mx1.secunet.com (Postfix) with ESMTP id CB42120704;
+	Tue,  5 May 2026 15:23:41 +0200 (CEST)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 0xNLNPfjEm6O; Tue,  5 May 2026 15:23:41 +0200 (CEST)
+ with ESMTP id p4V6T4mwrm2D; Tue,  5 May 2026 15:23:40 +0200 (CEST)
 Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 96205201CC;
-	Tue,  5 May 2026 15:23:41 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 96205201CC
+	by mx1.secunet.com (Postfix) with ESMTPS id A210C206E9;
+	Tue,  5 May 2026 15:23:40 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com A210C206E9
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1777987421;
-	bh=Yh8cdCJW6JbpP02sOW4GJp3eJFc68TZzJsLF8UhLsFw=;
+	s=202301; t=1777987420;
+	bh=Jt5NishGy6ZKSgZPMuwBiy3Hlt3cgEZ70XiQ24jLCDA=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=dXDM+NDvv/h7AooOSxkNEc9V8fk5QBh2/KEWIZ1UUIdDq9ntNpOBzFlakX/6DOkGY
-	 FVTPrLdhEORPqfI/SEGhiHYzo3ptdp8K7853BvP4RPaHIbyaN6QMdvcOkUncRLzJrL
-	 Z+o3BcRrWgh+Mvapu0IN/rIg5lMa+euw01D9QqumGwZyUHqKB5zUrNCqo1lTPq4Ffj
-	 fkMef4vSjP53Tc2DuKZUtuUebRZTcv1t8kgYMvpz99t4WbO+5jUz+GSslx08U5qilk
-	 Elu3Xe8icax61FQ/UecCDoXvp9DxjdGqaDN8EpqqCUAsch6cQJFoFkUP+i2t4pUgDN
-	 dsMUAI0ZROi0w==
+	b=ntuXhJkaY107WpzlLMv1uO30uE+JWRWK3phaNqo1vDi4KlDQxMRL5WDmEZRsXp34L
+	 WohuMOyGrOajJOV4Lf/+jzfxEVA6pPBe+PMRH8xi+SaqzLDmaFJ0eYyQNKWc3tSYWB
+	 y/hHAMLektPbHepPw4yC3RTBzELqxF1z9UbXZTNicfB9KTcI6X+dxwr/PXk8p3wNwD
+	 kCc+SyYnPnZt5NZJclGZHuk2dyqtdc3oFo5bQ+P7WMmdLibwF+VdMJ0nKgPCxlirfk
+	 2W6XyP2yILEd/J3r8MwzIlnREeeBgS08sMxh6TaDXn46EPJifB0C8d7nPV79Tc+1AT
+	 fOhYUzY5QE95g==
 Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 5 May
- 2026 15:23:41 +0200
-Received: (nullmailer pid 1364101 invoked by uid 1000);
+ 2026 15:23:40 +0200
+Received: (nullmailer pid 1364089 invoked by uid 1000);
 	Tue, 05 May 2026 13:23:30 -0000
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 8/8] xfrm: esp: avoid in-place decrypt on shared skb frags
-Date: Tue, 5 May 2026 15:23:04 +0200
-Message-ID: <20260505132326.1362733-9-steffen.klassert@secunet.com>
+Subject: [PATCH 4/8] tools/selftests: Add a VXLAN+IPsec traffic test
+Date: Tue, 5 May 2026 15:23:00 +0200
+Message-ID: <20260505132326.1362733-5-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260505132326.1362733-1-steffen.klassert@secunet.com>
 References: <20260505132326.1362733-1-steffen.klassert@secunet.com>
@@ -63,105 +63,285 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EXCH-02.secunet.de (10.32.0.172) To EXCH-01.secunet.de
+X-ClientProxiedBy: EXCH-03.secunet.de (10.32.0.183) To EXCH-01.secunet.de
  (10.32.0.171)
 
-From: Kuan-Ting Chen <h3xrabbit@gmail.com>
+From: Cosmin Ratiu <cratiu@nvidia.com>
 
-MSG_SPLICE_PAGES can attach pages from a pipe directly to an skb. TCP
-marks such skbs with SKBFL_SHARED_FRAG after skb_splice_from_iter(),
-so later paths that may modify packet data can first make a private
-copy. The IPv4/IPv6 datagram append paths did not set this flag when
-splicing pages into UDP skbs.
+There are VXLAN tests and IPsec tests, but there is no test that
+combines the two protocols and exercises the tunnel-over-ipsec code
+paths. Fix that by adding a traffic test with VXLAN and IPsec using
+crypto offload. This is runnable on HW which supports ESP offload (so no
+nsim unfortunately).
 
-That leaves an ESP-in-UDP packet made from shared pipe pages looking
-like an ordinary uncloned nonlinear skb. ESP input then takes the no-COW
-fast path for uncloned skbs without a frag_list and decrypts in place
-over data that is not owned privately by the skb.
+Traffic is done with iperf3 and the test validates that there are no
+packet drops and iperf3 can get to at least 100 Mbps (a very
+conservative value on today's crypto offload HW, as it can typically
+reach multi-Gbps rates).
 
-Mark IPv4/IPv6 datagram splice frags with SKBFL_SHARED_FRAG, matching
-TCP. Also make ESP input fall back to skb_cow_data() when the flag is
-present, so ESP does not decrypt externally backed frags in place.
-Private nonlinear skb frags still use the existing fast path.
+Ran right now, the test fails due to a recently exposed bug in xfrm,
+which will be fixed in the next patch:
+ # ./tools/testing/selftests/drivers/net/hw/ipsec_vxlan.py
+ TAP version 13
+ 1..4
+ # Check| At ./tools/testing/selftests/drivers/net/hw/ipsec_vxlan.py,
+ # line 161, in test_vxlan_ipsec_crypto_offload:
+ # Check|     ksft_eq(drops_after - drops_before, 0,
+ # Check failed 189 != 0 TX drops during VXLAN+IPsec
+ # Check| At ./tools/testing/selftests/drivers/net/hw/ipsec_vxlan.py,
+ # line 163, in test_vxlan_ipsec_crypto_offload:
+ # Check|     ksft_ge(bw_gbps, 0.1,
+ # Check failed 0.0015058278404812596 < 0.1 Minimum 100Mbps over
+ # VXLAN+IPsec
+ not ok 1 ipsec_vxlan.test_vxlan_ipsec_crypto_offload.outer_v4_inner_v4
+ ...
 
-This intentionally does not change ESP output. In esp_output_head(),
-the path that appends the ESP trailer to existing skb tailroom without
-calling skb_cow_data() is not reachable for nonlinear skbs:
-skb_tailroom() returns zero when skb->data_len is nonzero, while ESP
-tailen is positive. Thus ESP output will either use the separate
-destination-frag path or fall back to skb_cow_data().
-
-Fixes: cac2661c53f3 ("esp4: Avoid skb_cow_data whenever possible")
-Fixes: 03e2a30f6a27 ("esp6: Avoid skb_cow_data whenever possible")
-Fixes: 7da0dde68486 ("ip, udp: Support MSG_SPLICE_PAGES")
-Fixes: 6d8192bd69bb ("ip6, udp6: Support MSG_SPLICE_PAGES")
-Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
-Reported-by: Kuan-Ting Chen <h3xrabbit@gmail.com>
-Tested-by: Hyunwoo Kim <imv4bel@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Kuan-Ting Chen <h3xrabbit@gmail.com>
+Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 ---
- net/ipv4/esp4.c       | 3 ++-
- net/ipv4/ip_output.c  | 2 ++
- net/ipv6/esp6.c       | 3 ++-
- net/ipv6/ip6_output.c | 2 ++
- 4 files changed, 8 insertions(+), 2 deletions(-)
+ .../testing/selftests/drivers/net/hw/Makefile |   1 +
+ tools/testing/selftests/drivers/net/hw/config |   5 +
+ .../selftests/drivers/net/hw/ipsec_vxlan.py   | 204 ++++++++++++++++++
+ 3 files changed, 210 insertions(+)
+ create mode 100755 tools/testing/selftests/drivers/net/hw/ipsec_vxlan.py
 
-diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
-index 6dfc0bcdef65..6a5febbdbee4 100644
---- a/net/ipv4/esp4.c
-+++ b/net/ipv4/esp4.c
-@@ -873,7 +873,8 @@ static int esp_input(struct xfrm_state *x, struct sk_buff *skb)
- 			nfrags = 1;
- 
- 			goto skip_cow;
--		} else if (!skb_has_frag_list(skb)) {
-+		} else if (!skb_has_frag_list(skb) &&
-+			   !skb_has_shared_frag(skb)) {
- 			nfrags = skb_shinfo(skb)->nr_frags;
- 			nfrags++;
- 
-diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
-index e4790cc7b5c2..5bcd73cbdb41 100644
---- a/net/ipv4/ip_output.c
-+++ b/net/ipv4/ip_output.c
-@@ -1233,6 +1233,8 @@ static int __ip_append_data(struct sock *sk,
- 			if (err < 0)
- 				goto error;
- 			copy = err;
-+			if (!(flags & MSG_NO_SHARED_FRAGS))
-+				skb_shinfo(skb)->flags |= SKBFL_SHARED_FRAG;
- 			wmem_alloc_delta += copy;
- 		} else if (!zc) {
- 			int i = skb_shinfo(skb)->nr_frags;
-diff --git a/net/ipv6/esp6.c b/net/ipv6/esp6.c
-index 9f75313734f8..9c06c5a1419d 100644
---- a/net/ipv6/esp6.c
-+++ b/net/ipv6/esp6.c
-@@ -915,7 +915,8 @@ static int esp6_input(struct xfrm_state *x, struct sk_buff *skb)
- 			nfrags = 1;
- 
- 			goto skip_cow;
--		} else if (!skb_has_frag_list(skb)) {
-+		} else if (!skb_has_frag_list(skb) &&
-+			   !skb_has_shared_frag(skb)) {
- 			nfrags = skb_shinfo(skb)->nr_frags;
- 			nfrags++;
- 
-diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index 7e92909ab5be..1f2a33fbed6e 100644
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -1794,6 +1794,8 @@ static int __ip6_append_data(struct sock *sk,
- 			if (err < 0)
- 				goto error;
- 			copy = err;
-+			if (!(flags & MSG_NO_SHARED_FRAGS))
-+				skb_shinfo(skb)->flags |= SKBFL_SHARED_FRAG;
- 			wmem_alloc_delta += copy;
- 		} else if (!zc) {
- 			int i = skb_shinfo(skb)->nr_frags;
+diff --git a/tools/testing/selftests/drivers/net/hw/Makefile b/tools/testing/selftests/drivers/net/hw/Makefile
+index 85ca4d1ecf9e..3b6ff4708005 100644
+--- a/tools/testing/selftests/drivers/net/hw/Makefile
++++ b/tools/testing/selftests/drivers/net/hw/Makefile
+@@ -30,6 +30,7 @@ TEST_PROGS = \
+ 	gro_hw.py \
+ 	hw_stats_l3.sh \
+ 	hw_stats_l3_gre.sh \
++	ipsec_vxlan.py \
+ 	iou-zcrx.py \
+ 	irq.py \
+ 	loopback.sh \
+diff --git a/tools/testing/selftests/drivers/net/hw/config b/tools/testing/selftests/drivers/net/hw/config
+index dd50cb8a7911..ae0168c2bbe6 100644
+--- a/tools/testing/selftests/drivers/net/hw/config
++++ b/tools/testing/selftests/drivers/net/hw/config
+@@ -12,5 +12,10 @@ CONFIG_NET_IPGRE=y
+ CONFIG_NET_IPGRE_DEMUX=y
+ CONFIG_NETKIT=y
+ CONFIG_NET_SCH_INGRESS=y
++CONFIG_INET6_ESP=y
++CONFIG_INET6_ESP_OFFLOAD=y
++CONFIG_INET_ESP=y
++CONFIG_INET_ESP_OFFLOAD=y
+ CONFIG_UDMABUF=y
+ CONFIG_VXLAN=y
++CONFIG_XFRM_USER=y
+diff --git a/tools/testing/selftests/drivers/net/hw/ipsec_vxlan.py b/tools/testing/selftests/drivers/net/hw/ipsec_vxlan.py
+new file mode 100755
+index 000000000000..0740a4d85240
+--- /dev/null
++++ b/tools/testing/selftests/drivers/net/hw/ipsec_vxlan.py
+@@ -0,0 +1,204 @@
++#!/usr/bin/env python3
++# SPDX-License-Identifier: GPL-2.0
++"""Traffic test for VXLAN + IPsec crypto-offload."""
++
++import os
++
++from lib.py import ksft_run, ksft_exit, ksft_eq, ksft_ge
++from lib.py import ksft_variants, KsftNamedVariant, KsftSkipEx
++from lib.py import CmdExitFailure, NetDrvEpEnv, cmd, defer, ethtool, ip
++from lib.py import Iperf3Runner
++
++# Inner tunnel addresses - TEST-NET-2 (RFC 5737) / doc prefix (RFC 3849)
++INNER_V4_LOCAL = "198.51.100.1"
++INNER_V4_REMOTE = "198.51.100.2"
++INNER_V6_LOCAL = "2001:db8:100::1"
++INNER_V6_REMOTE = "2001:db8:100::2"
++
++# ESP parameters
++SPI_OUT = "0x1000"
++SPI_IN = "0x1001"
++# 128-bit key + 32-bit salt = 20 bytes hex, 128-bit ICV
++ESP_AEAD = "aead 'rfc4106(gcm(aes))' 0x" + "01" * 20 + " 128"
++
++
++def xfrm(args, host=None):
++    """Runs 'ip xfrm' via shell to preserve parentheses in algo names."""
++    cmd(f"ip xfrm {args}", shell=True, host=host)
++
++
++def check_xfrm_offload_support():
++    """Skips if iproute2 lacks xfrm offload support."""
++    out = cmd("ip xfrm state help", fail=False)
++    if "offload" not in out.stdout + out.stderr:
++        raise KsftSkipEx("iproute2 too old, missing xfrm offload")
++
++
++def check_esp_hw_offload(cfg):
++    """Skips if device lacks esp-hw-offload support."""
++    check_xfrm_offload_support()
++    try:
++        feat = ethtool(f"-k {cfg.ifname}", json=True)[0]
++    except (CmdExitFailure, IndexError) as e:
++        raise KsftSkipEx(f"can't query features: {e}") from e
++    if not feat.get("esp-hw-offload", {}).get("active"):
++        raise KsftSkipEx("Device does not support esp-hw-offload")
++
++
++def get_tx_drops(cfg):
++    """Returns TX dropped counter from the physical device."""
++    stats = ip("-s -s link show dev " + cfg.ifname, json=True)[0]
++    return stats["stats64"]["tx"]["dropped"]
++
++
++def setup_vxlan_ipsec(cfg, outer_ipver, inner_ipver):
++    """Sets up VXLAN tunnel with IPsec transport-mode crypto-offload."""
++    vxlan_name = f"vx{os.getpid()}"
++    local_addr = cfg.addr_v[outer_ipver]
++    remote_addr = cfg.remote_addr_v[outer_ipver]
++
++    if inner_ipver == "4":
++        inner_local = f"{INNER_V4_LOCAL}/24"
++        inner_remote = f"{INNER_V4_REMOTE}/24"
++        addr_extra = ""
++    else:
++        inner_local = f"{INNER_V6_LOCAL}/64"
++        inner_remote = f"{INNER_V6_REMOTE}/64"
++        addr_extra = " nodad"
++
++    if outer_ipver == "6":
++        vxlan_opts = "udp6zerocsumtx udp6zerocsumrx"
++    else:
++        vxlan_opts = "noudpcsum"
++
++    # VXLAN tunnel - local side
++    ip(f"link add {vxlan_name} type vxlan id 100 dstport 4789 {vxlan_opts} "
++       f"local {local_addr} remote {remote_addr} dev {cfg.ifname}")
++    defer(ip, f"link del {vxlan_name}")
++    ip(f"addr add {inner_local} dev {vxlan_name}{addr_extra}")
++    ip(f"link set {vxlan_name} up")
++
++    # VXLAN tunnel - remote side
++    ip(f"link add {vxlan_name} type vxlan id 100 dstport 4789 {vxlan_opts} "
++       f"local {remote_addr} remote {local_addr} dev {cfg.remote_ifname}",
++       host=cfg.remote)
++    defer(ip, f"link del {vxlan_name}", host=cfg.remote)
++    ip(f"addr add {inner_remote} dev {vxlan_name}{addr_extra}",
++       host=cfg.remote)
++    ip(f"link set {vxlan_name} up", host=cfg.remote)
++
++    # xfrm state - local outbound SA
++    xfrm(f"state add src {local_addr} dst {remote_addr} "
++         f"proto esp spi {SPI_OUT} "
++         f"{ESP_AEAD} "
++         f"mode transport offload crypto dev {cfg.ifname} dir out")
++    defer(xfrm, f"state del src {local_addr} dst {remote_addr} "
++                f"proto esp spi {SPI_OUT}")
++
++    # xfrm state - local inbound SA
++    xfrm(f"state add src {remote_addr} dst {local_addr} "
++         f"proto esp spi {SPI_IN} "
++         f"{ESP_AEAD} "
++         f"mode transport offload crypto dev {cfg.ifname} dir in")
++    defer(xfrm, f"state del src {remote_addr} dst {local_addr} "
++                f"proto esp spi {SPI_IN}")
++
++    # xfrm state - remote outbound SA (mirror, software crypto)
++    xfrm(f"state add src {remote_addr} dst {local_addr} "
++         f"proto esp spi {SPI_IN} "
++         f"{ESP_AEAD} "
++         f"mode transport",
++         host=cfg.remote)
++    defer(xfrm, f"state del src {remote_addr} dst {local_addr} "
++                f"proto esp spi {SPI_IN}", host=cfg.remote)
++
++    # xfrm state - remote inbound SA (mirror, software crypto)
++    xfrm(f"state add src {local_addr} dst {remote_addr} "
++         f"proto esp spi {SPI_OUT} "
++         f"{ESP_AEAD} "
++         f"mode transport",
++         host=cfg.remote)
++    defer(xfrm, f"state del src {local_addr} dst {remote_addr} "
++                f"proto esp spi {SPI_OUT}", host=cfg.remote)
++
++    # xfrm policy - local out
++    xfrm(f"policy add src {local_addr} dst {remote_addr} "
++         f"proto udp dport 4789 dir out "
++         f"tmpl src {local_addr} dst {remote_addr} proto esp mode transport")
++    defer(xfrm, f"policy del src {local_addr} dst {remote_addr} "
++                f"proto udp dport 4789 dir out")
++
++    # xfrm policy - local in
++    xfrm(f"policy add src {remote_addr} dst {local_addr} "
++         f"proto udp dport 4789 dir in "
++         f"tmpl src {remote_addr} dst {local_addr} proto esp mode transport")
++    defer(xfrm, f"policy del src {remote_addr} dst {local_addr} "
++                f"proto udp dport 4789 dir in")
++
++    # xfrm policy - remote out
++    xfrm(f"policy add src {remote_addr} dst {local_addr} "
++         f"proto udp dport 4789 dir out "
++         f"tmpl src {remote_addr} dst {local_addr} proto esp mode transport",
++         host=cfg.remote)
++    defer(xfrm, f"policy del src {remote_addr} dst {local_addr} "
++                f"proto udp dport 4789 dir out", host=cfg.remote)
++
++    # xfrm policy - remote in
++    xfrm(f"policy add src {local_addr} dst {remote_addr} "
++         f"proto udp dport 4789 dir in "
++         f"tmpl src {local_addr} dst {remote_addr} proto esp mode transport",
++         host=cfg.remote)
++    defer(xfrm, f"policy del src {local_addr} dst {remote_addr} "
++                f"proto udp dport 4789 dir in", host=cfg.remote)
++
++
++def _vxlan_ipsec_variants():
++    """Generates outer/inner IP version variants."""
++    for outer in ["4", "6"]:
++        for inner in ["4", "6"]:
++            yield KsftNamedVariant(f"outer_v{outer}_inner_v{inner}", outer, inner)
++
++
++@ksft_variants(_vxlan_ipsec_variants())
++def test_vxlan_ipsec_crypto_offload(cfg, outer_ipver, inner_ipver):
++    """Tests VXLAN+IPsec crypto-offload has no TX drops."""
++    cfg.require_ipver(outer_ipver)
++    check_esp_hw_offload(cfg)
++
++    setup_vxlan_ipsec(cfg, outer_ipver, inner_ipver)
++
++    if inner_ipver == "4":
++        inner_local = INNER_V4_LOCAL
++        inner_remote = INNER_V4_REMOTE
++        ping = "ping"
++    else:
++        inner_local = INNER_V6_LOCAL
++        inner_remote = INNER_V6_REMOTE
++        ping = "ping -6"
++
++    cmd(f"{ping} -c 1 -W 2 {inner_remote}")
++
++    drops_before = get_tx_drops(cfg)
++
++    runner = Iperf3Runner(cfg, server_ip=inner_local,
++                          client_ip=inner_remote)
++    bw_gbps = runner.measure_bandwidth(reverse=True)
++
++    cfg.wait_hw_stats_settle()
++    drops_after = get_tx_drops(cfg)
++
++    ksft_eq(drops_after - drops_before, 0,
++            comment="TX drops during VXLAN+IPsec")
++    ksft_ge(bw_gbps, 0.1,
++            comment="Minimum 100Mbps over VXLAN+IPsec")
++
++
++def main():
++    """Runs VXLAN+IPsec crypto-offload GSO selftest."""
++    with NetDrvEpEnv(__file__, nsim_test=False) as cfg:
++        ksft_run([test_vxlan_ipsec_crypto_offload], args=(cfg,))
++    ksft_exit()
++
++
++if __name__ == "__main__":
++    main()
 -- 
 2.43.0
 
