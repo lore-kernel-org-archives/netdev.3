@@ -1,133 +1,85 @@
-Received: from c2682.mx.srv.dfn.de (c2682.mx.srv.dfn.de [194.95.239.80])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E40E4014A4;
-	Tue,  5 May 2026 10:33:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.95.239.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F4430C637
+	for <netdev@vger.kernel.org>; Tue,  5 May 2026 10:37:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777977238; cv=none; b=iK88Uqao6R+tF71cZ/g6tA0b7ruG36tUs2PDfwt95LlVTD2yls0HPFCORfYIK0ZWUgVV+Vpo5vJt8L/FGEpx+4dP9VPUccGoaLQkKqqfhfkG3bvTUCoMcdUenhrWLvqRlqtK49uWNl+Kv5nuAWGjFiLmej7WdS2l8tKPDB+VFjY=
+	t=1777977448; cv=none; b=rvimUOnxM52BBRb97lIa8RJAHZGe8WP1g89ss94etJtCV9LhBQwo59VqAEbywqEGP/s/1Lyy8sZiDFU/eZJDXdxA+k+zr+uQ6bGRIDKDuVZySBjjiBdRyhsB0m2M9J9S9YgZk/mHsldMpkRA0GK1zSQHht5epHkwelw6jfMbdr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777977238; c=relaxed/simple;
-	bh=+2czFlzCh+SQgyKoPRClNsySUQVwrE9NfB5DFlDGPCU=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=RBqfcX/BdyH5hxnl8iBElRTNHRcqzm57n4G8gFsYcIslwgcIoy1V6Zo0kzsz9tg9pQf1tzm+9XaqUNE884YhU9YlnVqEZLAUPr9SKLwzxPs4XRIGe1msZLJDsplgRL9sT68l5Kq64G2D2RJo6K1UCCGGMjQVsZJdJ//4ALOL48k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-darmstadt.de; spf=pass smtp.mailfrom=tu-darmstadt.de; dkim=pass (1024-bit key) header.d=tu-darmstadt.de header.i=@tu-darmstadt.de header.b=VRYSxgak; arc=none smtp.client-ip=194.95.239.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-darmstadt.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-darmstadt.de
+	s=arc-20240116; t=1777977448; c=relaxed/simple;
+	bh=O1k9EcQ6FxBoy0l3c2OuSS9sgdShv8hsm/6tH6dR92Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CPpW4OKs8MCGP0FrOgKfvvW4rdtqpxGz4rhsqM6XC0hwr4JDjJ43XsPRoYhi6czdWyjrq6BUQGwUtUVvp2JzAzuxgpzDD7Uv55y0a6RHRVUjNr+yOPIy7XA7O4Fj+HBAh6akZ7RV/NWPxUn5dTxkTNwFG85miT5ciYeELm503LY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ThXqo6e1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=tu-darmstadt.de header.i=@tu-darmstadt.de header.b="VRYSxgak"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tu-darmstadt.de;
-	 h=mime-version:content-transfer-encoding:content-type
-	:content-type:content-language:accept-language:in-reply-to
-	:references:message-id:date:date:subject:subject:from:from
-	:received; s=s1; t=1777977233; x=1779791634; bh=+2czFlzCh+SQgyKo
-	PRClNsySUQVwrE9NfB5DFlDGPCU=; b=VRYSxgakPQZ7Ysc5ZefAPTKLYpa00HGU
-	kbiCY0z0W/CKt4r4Db/N9xK8V/YhMabDjz+zO8dnAjkmTMLHvr7E6KuVAx1SnENw
-	9Xjukf0cvY5ifqbPKQg760dHS+dNAyCOUVgC58iFam9+BybdeTw9xpdUnCEQfTxN
-	VRLe0ttC8k4=
-Received: from mail-relay150.hrz.tu-darmstadt.de (mailout.hrz.tu-darmstadt.de [IPv6:2001:41b8:83f:1611::150])
-	by c2682.mx.srv.dfn.de (Postfix) with ESMTPS id 95731289;
-	Tue,  5 May 2026 12:33:53 +0200 (CEST)
-Received: from TU-EX074.ads.tu-darmstadt.de (tu-ex074.ads.tu-darmstadt.de [IPv6:2001:41b8:815:404::8:74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(Client CN "mail.tu-darmstadt.de", Issuer "GEANT TLS RSA 1" (not verified))
-	by mail-relay150.hrz.tu-darmstadt.de (Postfix) with ESMTPS id 4g8vxq5V5wz43hZ;
-	Tue,  5 May 2026 12:33:51 +0200 (CEST)
-From: "Baier, Markus" <markus.baier@tu-darmstadt.de>
-To: "patchwork-bot+netdevbpf@kernel.org" <patchwork-bot+netdevbpf@kernel.org>
-CC: "o.rempel@pengutronix.de" <o.rempel@pengutronix.de>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
-	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"linux@armlinux.org.uk" <linux@armlinux.org.uk>, "enelsonmoore@gmail.com"
-	<enelsonmoore@gmail.com>, "linmq006@gmail.com" <linmq006@gmail.com>,
-	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net] net: usb: asix: ax88772: re-add usbnet_link_change()
- in phylink callbacks
-Thread-Topic: [PATCH net] net: usb: asix: ax88772: re-add usbnet_link_change()
- in phylink callbacks
-Thread-Index: AQHc2YkltM5mqFPK80iXo0Hdlkli/7X+lsiAgACqzzc=
-Date: Tue, 5 May 2026 10:33:50 +0000
-Message-ID: <6e63dac58f044e158a4ffb63d9e73fdd@tu-darmstadt.de>
-References: <20260501163941.107668-1-Markus.Baier@soslab.tu-darmstadt.de>,<177794760791.1391894.7472938774024727243.git-patchwork-notify@kernel.org>
-In-Reply-To: <177794760791.1391894.7472938774024727243.git-patchwork-notify@kernel.org>
-Accept-Language: de-DE, en-US
-Content-Language: de-DE
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ThXqo6e1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9987FC2BCFB
+	for <netdev@vger.kernel.org>; Tue,  5 May 2026 10:37:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777977447;
+	bh=O1k9EcQ6FxBoy0l3c2OuSS9sgdShv8hsm/6tH6dR92Y=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ThXqo6e1rU/ERqtjJ0/iY65yI8g5OKLcudnQZ3mErUhAINOrMK1kRvatSEjw/aymI
+	 tyz8uJRT1H94QGgZgJpAmZBEKhwt+k5rgNB1+fkpLK6nLklda575BySe/kvkxgxrPi
+	 4W4L5829nXgbOk8BtTeUl/Z1/JKX8WvgnQyTT/G/C2RqdSFvkvX15ABfdQAGXz0o+b
+	 D/ZCmpEQgi4ZUdCkmV11FwMv4ggLphaQeEJBgZf95MrOsV40mnU3Z3cVRoeVPy2qze
+	 cR69WrZjNFzSklu/jNHQ4VFhLVhhXLbkcI7VGXwzxbLWJ0Wa6iULmA64C8/m9NpmJ3
+	 T6+DsTjTPuThg==
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5a40b2bc96dso5601923e87.3
+        for <netdev@vger.kernel.org>; Tue, 05 May 2026 03:37:27 -0700 (PDT)
+X-Gm-Message-State: AOJu0YxT0GlkOy0+nxlVnvi/UzLf2MHX66GLV8loOF0NotK5VFtLwHO3
+	CW20XeXFp80LlOy3tf6SUL7Z6jS07qF33T4rTzUZ7Y5eBQ8aseZBiMh+akHK6Di2x41Hc0FLtOo
+	j7KcvOYR4SkyLffhUa5AbKJ5ZYSXgZt0=
+X-Received: by 2002:a05:6512:3095:b0:5a8:8222:7fbb with SMTP id
+ 2adb3069b0e04-5a882228046mr652967e87.34.1777977446254; Tue, 05 May 2026
+ 03:37:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Header-TUDa: <c2ClD7SZAmloVwti6jYOuMAwlXHaiRM7bRSsQmbODRqzyy9RpgWUjvYBAE8ql2INDT9XtkFpHRJfxOjxINGyYVKA77bvXq7NoB.1777977233>
-X-TUDa-Umlauf: 8
+References: <20260430081242.3686993-1-arnd@kernel.org> <20260430081242.3686993-3-arnd@kernel.org>
+In-Reply-To: <20260430081242.3686993-3-arnd@kernel.org>
+From: Linus Walleij <linusw@kernel.org>
+Date: Tue, 5 May 2026 12:37:12 +0200
+X-Gmail-Original-Message-ID: <CAD++jL=tgW74cF_e+4Ak7cV_pUCYo3koqmZ6vNR9SQiUsb2zUA@mail.gmail.com>
+X-Gm-Features: AVHnY4Kta7CTuYHDE7Wgt7oimq4LNXS-PqBiYhrkb4K1P_cfZhJR-Ui5oKw0IfI
+Message-ID: <CAD++jL=tgW74cF_e+4Ak7cV_pUCYo3koqmZ6vNR9SQiUsb2zUA@mail.gmail.com>
+Subject: Re: [PATCH v4 2/3 net-next] p54spi: convert to devicetree
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: netdev@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, 
+	Aaro Koskinen <aaro.koskinen@iki.fi>, Andreas Kemnade <andreas@kemnade.info>, 
+	Bartosz Golaszewski <brgl@kernel.org>, =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>, 
+	"David S. Miller" <davem@davemloft.net>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+	Eric Dumazet <edumazet@google.com>, Felipe Balbi <balbi@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+	Johannes Berg <johannes@sipsolutions.net>, Kevin Hilman <khilman@baylibre.com>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh+dt@kernel.org>, 
+	Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>, linux-wireless@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org, 
+	linux-omap@vger.kernel.org, Christian Lamparter <chunkeey@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello,
+On Thu, Apr 30, 2026 at 10:13=E2=80=AFAM Arnd Bergmann <arnd@kernel.org> wr=
+ote:
 
-
-for your information,=A0the current version of the patch goes a bit too far=
-,
-as using the "usbnet_link_change" function in this context.
-called from the "mac_link_up" or "mac_link_down" functions, works but
-is not ideal.
-
-With Oleksij's help, I have since been able to create a new patch
-that specifically enables or disables only the RX URB submission.
-I will submit the new patch as v2 of the current patch later today
-or tomorrow at the latest.
-I have completed testing of the new patch, and the results were positive.
-
-PS: Sorry that I sent the first email in HTML format
-
-Best regards
-Markus=20
-
-
-Von: patchwork-bot+netdevbpf@kernel.org <patchwork-bot+netdevbpf@kernel.org=
+> From: Arnd Bergmann <arnd@arndb.de>
 >
-Gesendet: Dienstag, 5. Mai 2026 04:20:07
-An: Baier, Markus
-Cc: o.rempel@pengutronix.de; andrew+netdev@lunn.ch; davem@davemloft.net; ed=
-umazet@google.com; kuba@kernel.org; pabeni@redhat.com; linux@armlinux.org.u=
-k; enelsonmoore@gmail.com; linmq006@gmail.com; linux-usb@vger.kernel.org; n=
-etdev@vger.kernel.org; linux-kernel@vger.kernel.org
-Betreff: Re: [PATCH net] net: usb: asix: ax88772: re-add usbnet_link_change=
-() in phylink callbacks
-=A0  =20
-Hello:
+> The Prism54 SPI driver hardcodes GPIO numbers and expects users to
+> pass them as module parameters, apparently a relic from its life as a
+> staging driver. This works because there is only one user, the Nokia
+> N8x0 tablet.
+>
+> Convert this to the gpio descriptor interface and DT based probing
+> to improve this and simplify the code at the same time.
+>
+> Acked-by: Christian Lamparter <chunkeey@gmail.com>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Reviewed-by: Linus Walleij <linusw@kernel.org>
 
-On Fri,=A0 1 May 2026 18:39:41 +0200 you wrote:
-> Commit e0bffe3e6894 ("net: asix: ax88772: migrate to phylink") replaced
-> the asix_adjust_link() PHY callback with phylink's mac_link_up() and
-> mac_link_down() handlers, but did not carry over the usbnet_link_change()
-> notification that commit 805206e66fab ("net: asix: fix "can't send until
-> first packet is send" issue") had added.
->=20
-> As a result, the original symptom returns: when the link comes up,
-> usbnet is never notified, so the RX URB submission stays dormant until
-> some other event (e.g. a transmitted packet triggering the status
-> endpoint interrupt) wakes it up.
->=20
-> [...]
-
-Here is the summary with links:
-=A0 - [net] net: usb: asix: ax88772: re-add usbnet_link_change() in phylink=
- callbacks
-=A0=A0=A0 https://git.kernel.org/netdev/net/c/36bdc0e815b4
-
-You are awesome, thank you!
---=20
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
-    =
+Yours,
+Linus Walleij
