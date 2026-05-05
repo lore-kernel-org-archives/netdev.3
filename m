@@ -1,57 +1,60 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A25EC30B50C
-	for <netdev@vger.kernel.org>; Tue,  5 May 2026 13:23:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB9D343D63
+	for <netdev@vger.kernel.org>; Tue,  5 May 2026 13:23:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777987423; cv=none; b=c8wUMQeBwZgxRTer4nlFdUdutNN2btX+RaMD7g/nn8MtJuRp7MpgIklIVBozWvn0IpTuRo5XxbcTTFsF+aVP8KEWmiu/+aA41MFAf41/6PQ5fSH/Hazz2IC7gfRc7JZzqSHUI37Dpigj95CAXjgPOtT6P6d1EOQSh2p7uxAxQPg=
+	t=1777987423; cv=none; b=P7vHziN52x0df06CwANlXyAizMuOAnaccS/wHCn5jf8Ai1qFeyKoXgRsadx8n07VPZjXZJACO/tamx6xyUDI+4GLkKXSMVG9iYJmQZmhe2frC2/llNbTSyeOM5m6z2BsjWcpQmR0HfGYQI8xAyQbsTO5KToAy6y82eVL0ycHiSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777987423; c=relaxed/simple;
-	bh=+urY9G6Qvsi7lMQsxDY4J7yLdt3L1IfMo9POajoOpXs=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=FmFC0wAEosyqL9bQAs/e4PVbv02pdtXGIlE3wpLB147aya0pPlPRN49lFzkHjuHmTwkUZQ9io4aicjRC3ncsCTEBSAUG6CA7yOnQViJDVj+RcwNYf2+kXWybXV9Ww3sfYEZk0yollshBDXUMhuAeY7ILkwINvVcVhu0/eKiWCbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=JRg6o3tU; arc=none smtp.client-ip=62.96.220.36
+	bh=nf5zPxGYnlzVD67cFEFW/cc3yfMtCRD8Vsfcy9fXOY0=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=atlzkqOC6slre6SjhEi5bbZrxgalZQTPaJXFLQei1UrjBcmU0uG3KYYLAiM7+zO+r9kX60g2thOdRDWIAJhkxlbZlAsnrIEnc+Fxu8OacRBjVJ0+khU82iD2pZvjpUHfxTSIttqmDIEmCrEsZrBc5FGSHnlHS2kJ6QdwVGhZhI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=Vpq9uLbh; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="JRg6o3tU"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="Vpq9uLbh"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id A19082067A;
+	by mx1.secunet.com (Postfix) with ESMTP id E27662067F;
 	Tue,  5 May 2026 15:23:33 +0200 (CEST)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id DZF9AteIrgRv; Tue,  5 May 2026 15:23:32 +0200 (CEST)
+ with ESMTP id MmyEzv5zvZdc; Tue,  5 May 2026 15:23:33 +0200 (CEST)
 Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 39C2A201CC;
+	by mx1.secunet.com (Postfix) with ESMTPS id E3D1820663;
 	Tue,  5 May 2026 15:23:32 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 39C2A201CC
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com E3D1820663
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
 	s=202301; t=1777987412;
-	bh=54Ht+tyk91Yp2V+KcAUa91dlbt37TCoj+3tBgXmNg/I=;
-	h=From:To:CC:Subject:Date:From;
-	b=JRg6o3tULq2DvdkIrnK6tbG3GDY7PxsdahRUxsDyDRVA7db8jbspCBJFWy/jO/RdT
-	 AWuSMWaRPpGiv34hygGcVc5DjWmBH07BbsOpG/RRrOVnoMlVhIJGc0yskmjmsIFocD
-	 DbaKS5lVfcGN/r3mbcM+CkWKEU+uZDd1nejxr1UrBFtPFqQvvOA9SV1NiKT3DNE+KL
-	 sAomRrOuvN9hKkALEQlFPDWZqPSsA7a+sBLDATwT11U00MoQYC4GtS2HS2WPXNzp5V
-	 ReD/TaWj1TYl7hL09Nx5GMgUvTmk28TrFtYbQn8MdkhAbFBfw8cnGRRXy6yQxSBnrb
-	 yIWQ9GzkUCDfQ==
+	bh=ayS9Aep8sc+bKZo796lC77mWyY9UbN0N12T5PI1Pl3g=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
+	b=Vpq9uLbhJ09M0FH5xTDoCOEuL0x/ttzinj+WxekcVp5S3+70ML5XwpZJ7Q/j5tzC6
+	 Hd+blzE8HKxbuNxgLwgYXQ8kwHoQLDDUdjsiArzNGod/jVX4tXsNVRK2skT4t3M2XH
+	 gKn+yqFZgD5Xmm/YxZ7o/hwMve1/a8MZuYL9qtHVzcDP6PYJ+Icu5ZI/8wmH51mmvH
+	 eokVI5amFeo9aiI7SWXAhXTEKx4+yHQFlhHurNORSZHVRifPZpB8uwk38OcSgul2wq
+	 IdlHUGUh+obRsTaJhEIfnmFYMPUxiT4Hv3gSTJVvu6LfeAtA4AyeiHEIG1VEC6onlo
+	 1hFU8iJ24zkpQ==
 Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 5 May
- 2026 15:23:31 +0200
-Received: (nullmailer pid 1364076 invoked by uid 1000);
+ 2026 15:23:32 +0200
+Received: (nullmailer pid 1364092 invoked by uid 1000);
 	Tue, 05 May 2026 13:23:30 -0000
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 0/8] pull request (net): ipsec 2026-05-05
-Date: Tue, 5 May 2026 15:22:56 +0200
-Message-ID: <20260505132326.1362733-1-steffen.klassert@secunet.com>
+Subject: [PATCH 5/8] xfrm: Don't clobber inner headers when already set
+Date: Tue, 5 May 2026 15:23:01 +0200
+Message-ID: <20260505132326.1362733-6-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260505132326.1362733-1-steffen.klassert@secunet.com>
+References: <20260505132326.1362733-1-steffen.klassert@secunet.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,86 +63,114 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-01.secunet.de
+X-ClientProxiedBy: EXCH-02.secunet.de (10.32.0.172) To EXCH-01.secunet.de
  (10.32.0.171)
 
-1. Fix an IPv6 encapsulation error path that leaked route references
-   when UDPv6 ESP decapsulation resolved to an error route. 
-   From Yilin Zhu.
+From: Cosmin Ratiu <cratiu@nvidia.com>
 
-2. Fix AH with ESN on async crypto paths by accounting for the extra
-   high-order sequence number when reconstructing the temporary
-   authentication layout in the completion callbacks.
-   From Michael Bomarito.
+On VXLAN over IPsec egress, xfrm{4,6}_transport_output() blindly
+overwrite inner_transport_header (== the inner TCP header saved in VXLAN
+iptunnel_handle_offloads() -> skb_reset_inner_headers()) with the
+current transport_header (== the VXLAN outer UDP header set by
+udp_tunnel_xmit_skb()).
 
-3. Fix XFRM output so it does not overwrite already-correct inner header
-   pointers when a tunnel layer such as VXLAN has already saved them.
-   The fix comes with new selftests. From Cosmin Ratiu.
+This was a latent bug, harmless until commit [1] added a doff validation
+check in qdisc_pkt_len_segs_init() for encapsulated GSO packets. With
+the wrong inner_transport_header set by xfrm, qdisc_pkt_len_segs_init()
+interprets inner_transport_header as a TCP header, reads doff=0 from the
+upper byte of the VNI and drops the packet with DROP_REASON_SKB_BAD_GSO.
 
-4. Add the missing native payload size entry for XFRM_MSG_MAPPING in the
-   compat translation path. From Ruijie Li.
+Besides the use in GSO to determine the header size of segmented
+packets, inner_transport_header might be used by drivers to set up
+inner checksum offloading by pointing the HW to the inner transport
+header. A quick browse through available drivers shows that mlx5 uses
+skb->csum_start specifically for this scenario, while others either
+don't support VXLAN over IPsec crypto offload (ixgbe) or the HW is
+capable of parsing the packets itself (nfp, Chelsio).
 
-5. Harden __xfrm_state_delete() against repeated or inconsistent unhashing
-   of state list nodes by keying the removal on actual list membership and
-   using delete-and-init helpers. From Michal Kosiorek.
+But in all cases, it is more correct to let the inner_transport_header
+point to the innermost header instead of overwriting it in xfrm.
 
-6. Prevent ESP from decrypting shared splice-backed skb fragments in place
-   by marking UDP splice frags as shared and forcing copy-on-write in ESP
-   input when needed. From Kuan-Ting Chen.
+So fix this by guarding all four inner header save sites in
+xfrm_output.c (xfrm{4,6}_transport_output, xfrm{4,6}_tunnel_encap_add)
+with a check for skb->inner_protocol. When inner_protocol is set, a
+tunnel layer (VXLAN, Geneve, GRE, etc.) has already saved the correct
+inner header offsets and they must not be overwritten. When
+inner_protocol is zero, no prior tunnel encapsulation exists and xfrm
+must save the inner headers itself. The tunnel mode checks are only
+added for completion, since they aren't strictly required, as
+xfrm_output() forces software GSO in tunnel mode before encap.
 
-Please pull or let me know if there are problems.
+This makes the previously added test pass:
+ # ./tools/testing/selftests/drivers/net/hw/ipsec_vxlan.py
+ TAP version 13
+ 1..4
+ ok 1 ipsec_vxlan.test_vxlan_ipsec_crypto_offload.outer_v4_inner_v4
+ ok 2 ipsec_vxlan.test_vxlan_ipsec_crypto_offload.outer_v4_inner_v6
+ ok 3 ipsec_vxlan.test_vxlan_ipsec_crypto_offload.outer_v6_inner_v4
+ ok 4 ipsec_vxlan.test_vxlan_ipsec_crypto_offload.outer_v6_inner_v6
+ # Totals: pass:4 fail:0 xfail:0 xpass:0 skip:0 error:0
 
-Thanks!
+[1] commit 7fb4c1967011 ("net: pull headers in qdisc_pkt_len_segs_init()")
+Fixes: f1bd7d659ef0 ("xfrm: Add encapsulation header offsets while SKB is not encrypted")
+Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+---
+ net/xfrm/xfrm_output.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-The following changes since commit 1f5ffc672165ff851063a5fd044b727ab2517ae3:
+diff --git a/net/xfrm/xfrm_output.c b/net/xfrm/xfrm_output.c
+index a9652b422f51..cc35c2fcbbe0 100644
+--- a/net/xfrm/xfrm_output.c
++++ b/net/xfrm/xfrm_output.c
+@@ -66,7 +66,9 @@ static int xfrm4_transport_output(struct xfrm_state *x, struct sk_buff *skb)
+ 	struct iphdr *iph = ip_hdr(skb);
+ 	int ihl = iph->ihl * 4;
+ 
+-	skb_set_inner_transport_header(skb, skb_transport_offset(skb));
++	if (!skb->inner_protocol)
++		skb_set_inner_transport_header(skb,
++					       skb_transport_offset(skb));
+ 
+ 	skb_set_network_header(skb, -x->props.header_len);
+ 	skb->mac_header = skb->network_header +
+@@ -167,7 +169,9 @@ static int xfrm6_transport_output(struct xfrm_state *x, struct sk_buff *skb)
+ 	int hdr_len;
+ 
+ 	iph = ipv6_hdr(skb);
+-	skb_set_inner_transport_header(skb, skb_transport_offset(skb));
++	if (!skb->inner_protocol)
++		skb_set_inner_transport_header(skb,
++					       skb_transport_offset(skb));
+ 
+ 	hdr_len = xfrm6_hdr_offset(x, skb, &prevhdr);
+ 	if (hdr_len < 0)
+@@ -276,8 +280,10 @@ static int xfrm4_tunnel_encap_add(struct xfrm_state *x, struct sk_buff *skb)
+ 	struct iphdr *top_iph;
+ 	int flags;
+ 
+-	skb_set_inner_network_header(skb, skb_network_offset(skb));
+-	skb_set_inner_transport_header(skb, skb_transport_offset(skb));
++	if (!skb->inner_protocol) {
++		skb_set_inner_network_header(skb, skb_network_offset(skb));
++		skb_set_inner_transport_header(skb, skb_transport_offset(skb));
++	}
+ 
+ 	skb_set_network_header(skb, -x->props.header_len);
+ 	skb->mac_header = skb->network_header +
+@@ -321,8 +327,10 @@ static int xfrm6_tunnel_encap_add(struct xfrm_state *x, struct sk_buff *skb)
+ 	struct ipv6hdr *top_iph;
+ 	int dsfield;
+ 
+-	skb_set_inner_network_header(skb, skb_network_offset(skb));
+-	skb_set_inner_transport_header(skb, skb_transport_offset(skb));
++	if (!skb->inner_protocol) {
++		skb_set_inner_network_header(skb, skb_network_offset(skb));
++		skb_set_inner_transport_header(skb, skb_transport_offset(skb));
++	}
+ 
+ 	skb_set_network_header(skb, -x->props.header_len);
+ 	skb->mac_header = skb->network_header +
+-- 
+2.43.0
 
-  Fix mismerge of the arm64 / timer-core interrupt handling changes (2026-04-14 23:03:02 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/klassert/ipsec.git tags/ipsec-2026-05-05
-
-for you to fetch changes up to f4c50a4034e62ab75f1d5cdd191dd5f9c77fdff4:
-
-  xfrm: esp: avoid in-place decrypt on shared skb frags (2026-05-05 06:38:30 +0200)
-
-----------------------------------------------------------------
-ipsec-2026-05-05
-
-----------------------------------------------------------------
-Cosmin Ratiu (3):
-      tools/selftests: Use a sensible timeout value for iperf3 client
-      tools/selftests: Add a VXLAN+IPsec traffic test
-      xfrm: Don't clobber inner headers when already set
-
-Kuan-Ting Chen (1):
-      xfrm: esp: avoid in-place decrypt on shared skb frags
-
-Michael Bommarito (1):
-      xfrm: ah: account for ESN high bits in async callbacks
-
-Michal Kosiorek (1):
-      xfrm: defensively unhash xfrm_state lists in __xfrm_state_delete
-
-Ruijie Li (1):
-      xfrm: provide message size for XFRM_MSG_MAPPING
-
-Yilin Zhu (1):
-      ipv6: xfrm6: release dst on error in xfrm6_rcv_encap()
-
- net/ipv4/ah4.c                                     |  14 +-
- net/ipv4/esp4.c                                    |   3 +-
- net/ipv4/ip_output.c                               |   2 +
- net/ipv6/ah6.c                                     |  14 +-
- net/ipv6/esp6.c                                    |   3 +-
- net/ipv6/ip6_output.c                              |   2 +
- net/ipv6/xfrm6_protocol.c                          |   4 +-
- net/xfrm/xfrm_output.c                             |  20 +-
- net/xfrm/xfrm_state.c                              |  12 +-
- net/xfrm/xfrm_user.c                               |   1 +
- tools/testing/selftests/drivers/net/hw/Makefile    |   1 +
- tools/testing/selftests/drivers/net/hw/config      |   5 +
- .../selftests/drivers/net/hw/ipsec_vxlan.py        | 204 +++++++++++++++++++++
- tools/testing/selftests/drivers/net/lib/py/load.py |   5 +-
- 14 files changed, 270 insertions(+), 20 deletions(-)
- create mode 100755 tools/testing/selftests/drivers/net/hw/ipsec_vxlan.py
