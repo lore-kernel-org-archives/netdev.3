@@ -1,203 +1,215 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012052.outbound.protection.outlook.com [40.107.200.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C73B3603C0;
-	Tue,  5 May 2026 01:58:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777946281; cv=none; b=krjXx4RYz/gbktPOHxax/UvTPyieBfgEsL+gX+0pq/v+ra0howxeOwnCu3fdEaJChKB5//rTmDsK3IidU/DfQKqDb3nTscqTNUC4k88NMXcufQgBo0g+dGwzmcwdQEQUSMetEttXtj9y/9PjKFARQrZ9rl28ocUBHsco3G2XUCg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777946281; c=relaxed/simple;
-	bh=XrGa0jeT1NNmKT1hqZ/4WdmXOGRVamulJd8DWdE7XkY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mBku+ZeqTYUq89fPi14TnZbIuytd23zzEYdR0/u67pTeXOvjBEwypKynUw1pobD7pYe5hJpZfxFelZ9kmwYl15rq0DyQFXyZTyxsb1N9BKNTVw+xdhSh2+rg7H9WowR59MJYrmYR0cmC4kVMumNOoZND+GKtMEP2Gju2cG6qN1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mxNlxZLF; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128A217BA6;
+	Tue,  5 May 2026 02:00:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777946429; cv=fail; b=Y6TTAhVbnhhY2leCiK7b97gJhNvyTIQ7YbvbUJGIiVbYj9p2L2d19o0Tz9QEK1Qf7nBmX1FC1CfPYE0dgh00TTIT1SE5Ifm2AOwQTcRURHUHJ1CIjmUHw9CIq7reH2v7ckTdL8D1pA9PQ9VceLhQY1zZqdBMULo12K8zQLGvnzM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777946429; c=relaxed/simple;
+	bh=tSK7otiJQAHi4rUHxTYBIAu/CeRuOk3cOG82w2tr4zc=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=IKcySDXZTB9AyxwZf804tvfDqbMDwGQik2g/G07edXylg5bRp2wfqc/Ug5q6yWiTKLJX1/sFR71e1JsCtisDqUZZIND/FXTCqNywqF32LzxkmpbvDUeFXe/og0m6xoUN7VmHFQBTIAU1h5eVmq6kpkpgNCn5kv+y4EsP58YuEP8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=DCPDZonI; arc=fail smtp.client-ip=40.107.200.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mxNlxZLF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C0C0C2BCB8;
-	Tue,  5 May 2026 01:58:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777946280;
-	bh=XrGa0jeT1NNmKT1hqZ/4WdmXOGRVamulJd8DWdE7XkY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mxNlxZLFbwpggoGJWmzn6FaEGfFLTY4Y35idjv+ta0NUmB1B3B+XJN2yZQ+mKd5Ps
-	 zzmZxWJqs/TB9XGaHo+WSmn3n4INR1SlSUFntKC+5VURwlcg4a9NhnHv0xzASY9hQT
-	 K9evC+Ekg61vU1JIMWYrhLHyMHyi0JcxIYmpAPV48/JOix5of0F9Sevp21ROGWeqov
-	 kWt8ZQd+ucRK303juIhxI9ww0nSb18csQ4g7/jz9bHlRmnbmLWF9/a++7RIG8rG5fX
-	 GJFMzh90e2ny4lCSO7GqTJQ+jqRuL/QdoaOoYjdCq7Xzm1YXO5v1HV1Ix2x4S7AvIb
-	 HU4rGMeUtphzw==
-From: Jakub Kicinski <kuba@kernel.org>
-To: github@szelinsky.de
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	o.rempel@pengutronix.de,
-	kory.maincent@bootlin.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	krzk@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-leds@vger.kernel.org
-Subject: Re: [PATCH net-next v5 2/2] net: pse-pd: add LED trigger support via notification path
-Date: Mon,  4 May 2026 18:57:59 -0700
-Message-ID: <20260505015759.831393-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260429213224.1747410-3-github@szelinsky.de>
-References: <20260429213224.1747410-3-github@szelinsky.de>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="DCPDZonI"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=warsFdt/8tGCouFISRsJlZRz1ICVucW4aZp1EXaMDm9BzuWxkOy+QAN61RI/2D+Pf32wBTZVrxEFVZUXyJinzSRLEX1fVmRk+a5AbrD/r9Qzc+Ax6y1FG9jgr4Hdcf5u5kfBLvsflromJfWPV67xjHBJzeVwCE43auJUoX65BaRQ8exSH6P6OZ4ir9wH5ravDkJOUmIEtS5QsUi2maJT7hmbfw6qOE2l2kFdbAmQ8jqntmyGac0G2ahjRWox4BNJMbJNGGyC1/63uSJkHheI3xX2fZL4tFupEbziaDCEm2iusuG8oVhS9cEUuHw4K4A0qIw3aghK5m5a+3Q7u0JjhQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tGzUAZiJjBc5oyYN/o2oslefisn1Mad3AM9z4/sn6TI=;
+ b=WvLXQG342STlX32Piyvk3kqXrwBHQXucBCmDArOtWShaJPT7S8CkaCdlj203+Atgi0pZ+7N2a8hqG1Frk5m2UN0IawLmu5naqbR/Rvme/sGHr7K+gGoGPJXSWV00nt+jFQf45ReCsJsPDSmGI3gZdjvZJu2J0VixHPCvyaZtX2dMaxszKxAkxl5Hg/NKXpRK9M+0n2bYj7/47/80WH0dxkryXLM9q3J6qXIfp9WgYHfVdFydvvqv2c6LzSJE9DwBulS5S4CTrXVk0L3n2BAwgUUh4cAuTXOfoWfvFDUuCjfvz735XSkxwk21FPLziZrGs5yfbF8skvtY02rXx8snhw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tGzUAZiJjBc5oyYN/o2oslefisn1Mad3AM9z4/sn6TI=;
+ b=DCPDZonI/nlJ4Pox2xjA/fPPLmyyKlAnc3z10/1/O1ae0dj/bb795D50Q2xf0CIVrxlrqmVfJ3/qGyrvTcS5anqPqjckePdfU9RxJovfmM8c0TCzvetF2G/IflQ3+ae6opiEuhZKKRVtTq3nvxBv5N2iQCiurfKYXQYYHwWZ/eER8DduBPt9p+wGqw2jSXAtsyGHDLqnqlAqw2GrkiEtAPK9LT4XPJsubUsO7usbWNyN83CST7mdoRfTrvELI7IjbJQPevPQwAHy8Dr7Lv59rV+vdzuGbso67E+l5+iLdAz/x8jWogxPVrg6DrJyXj6b9rpC6h7gkNq7SbYFCpcadw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB7548.namprd12.prod.outlook.com (2603:10b6:610:144::12)
+ by PH7PR12MB7796.namprd12.prod.outlook.com (2603:10b6:510:275::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.25; Tue, 5 May
+ 2026 02:00:23 +0000
+Received: from CH3PR12MB7548.namprd12.prod.outlook.com
+ ([fe80::b710:d6a1:ab16:76de]) by CH3PR12MB7548.namprd12.prod.outlook.com
+ ([fe80::b710:d6a1:ab16:76de%6]) with mapi id 15.20.9870.023; Tue, 5 May 2026
+ 02:00:23 +0000
+Message-ID: <9f73036e-32a8-4060-a347-cae05269b85f@nvidia.com>
+Date: Tue, 5 May 2026 05:00:15 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next V2 7/7] net/mlx5: Add profile to auto-enable
+ switchdev mode at device init
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Tariq Toukan <tariqt@nvidia.com>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Leon Romanovsky <leon@kernel.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Saeed Mahameed <saeedm@nvidia.com>,
+ Shay Drory <shayd@nvidia.com>, Or Har-Toov <ohartoov@nvidia.com>,
+ Edward Srouji <edwards@nvidia.com>, Maher Sanalla <msanalla@nvidia.com>,
+ Simon Horman <horms@kernel.org>, Gerd Bayer <gbayer@linux.ibm.com>,
+ Moshe Shemesh <moshe@nvidia.com>, Kees Cook <kees@kernel.org>,
+ Patrisious Haddad <phaddad@nvidia.com>, Parav Pandit <parav@nvidia.com>,
+ Carolina Jubran <cjubran@nvidia.com>, Cosmin Ratiu <cratiu@nvidia.com>,
+ linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, Gal Pressman <gal@nvidia.com>,
+ Dragos Tatulea <dtatulea@nvidia.com>
+References: <20260501041633.231662-1-tariqt@nvidia.com>
+ <20260501041633.231662-8-tariqt@nvidia.com>
+ <421e8885-5849-4390-8956-9bc344fa0bf0@nvidia.com>
+ <20260502184153.4fd8d06f@kernel.org>
+ <cc01cca2-0e5d-4db2-81e4-7ea9fe525320@nvidia.com>
+ <20260504182122.08efb41e@kernel.org>
+Content-Language: en-US
+From: Mark Bloch <mbloch@nvidia.com>
+In-Reply-To: <20260504182122.08efb41e@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: FR0P281CA0121.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:97::19) To CH3PR12MB7548.namprd12.prod.outlook.com
+ (2603:10b6:610:144::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB7548:EE_|PH7PR12MB7796:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9335bbf3-c9f3-42ab-11e5-08deaa4a113a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	jMgMB47wwp2O+maRsmPMkBTaZge5iwV1UwIRtShZBobzTgKCDoCCbt0QzAKw511U58IMhEoPQULDf9i9Nor1M/10MOicJaLWGqozg6NAnNk649XIuAuEP78QatWGw3z8yMCvyaMK5GIQ34BJIEm9ZdqDuBjrxac9GYF29BF4Zp6Y2TuahAx5heiviD3EAo//sl3VL4PoLOG7wVCCw/8uAYLiHtv+j6t8VguVRmfgxUvTIvIerLNelBL0pH3PsGOpx78Sl0vpdA1wPDqjewkgOYbGWI3I2pN13m2YMUe8pOFtnU1fmvt8zChe/hdvNquqjOkXzB2DWKar+BU31b26lDlIQcuF1PcHisgl+eqn4pvcgT03OvE6ei9LZg3BPZ9de0D0Oo8meEWPqOr3cZVVPzqpr+tiL0UQ+Sa6toifgWVZ+Mf9rRP4YJiji8girUqbK9rWOY1OUwc3Edn+ES7nxNDQVWc7fVsDS1UvvOf7x7ap6u/18EPYKP1kmJiqAaTeLoC/F/5yI8v1mC+qCNyUiTZ0g3XBkBpl6iP6ie0P6UuKwV+FeBC9MITGAiH+3NqYvl8Sjf+toO8s0MxegTVI35f7A41wd0fKhpZt4vB1a6nzTVgabi/4w/BlAqccLsDL31DNNzZt180vUcUf1XaQLtB4ZF0RBM1yhOwUUh8sQxHkMMYONZoysKr1eiqJttlj
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB7548.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WVF1TUVrc2Iyc05kRUdUNjNJRlpXMEVtM0JZdEo3MXMxS0pwQWM4ZTlaMThJ?=
+ =?utf-8?B?Sk02TWlJQzl2emFxSnZjbDNTdWRhTnBJVU5pdWZiYkNvTzhPT3ZTZ1JRWDRu?=
+ =?utf-8?B?eWtDdTZKenBTaUpCMUhURFdBY2hwd1prZ3N2Y0xjR3luY3lqQ2hRcllFa1Fu?=
+ =?utf-8?B?USt0WU1NUWIwNkdKWVJ3UTBocnVaSUNGN2tndHVwR1phenJFSmh1WDZsYWhH?=
+ =?utf-8?B?V1VrWVJKU3I1NllKZVMxU2E2d1AxTWNtMi81aTdGMjd5MWJRUlh3NTJzdStn?=
+ =?utf-8?B?Y051SEQwNWlIQ0dBVEFyM0k5dExTQUhXOUZEdVFhb1Y1eDU0eHY0UU8xM0F6?=
+ =?utf-8?B?MDNpQ2lYUXk2T0ZaT3BNZDlzVGZVb0d6TEk3MTJYbzFkQUdsYlZ1R0tQTm1O?=
+ =?utf-8?B?UmRyeE9UazU5VFUxZzZoYXN0QUEvckpMRTJJa3ZNck1DZUZpNlJxUFNoNFZh?=
+ =?utf-8?B?RVF2VGovc2lZVHBHYzBLTU9wT2hiZFo1ZllSTXMrWEkyOWJmVnFTSVBWcHJ0?=
+ =?utf-8?B?YktrYWhzRytySnl1UmxvZkFRbnY5TlVVNGNweEdSd3hCNXFYTzg4ajB6QVVI?=
+ =?utf-8?B?L0dHU1cxU1dNU3M5YVBTNCtMQ202eHBlY0tWVS90TGlsNHZnWTY2cUJlL2Uz?=
+ =?utf-8?B?V1Q0Z0FnYVQvalc1cUd5Q0gwazBkK2xBekxwamQwczhnWG55MkREeVg2OUhW?=
+ =?utf-8?B?QTZoV2Nlc0hHbWtnTXRkaHpKb2ppQmRCRG9RVFp6eVBoeDBYaGlsckhtK2tY?=
+ =?utf-8?B?NVVkTEhuQmducGo0R0lTNFlCQm1sTE5tMFp1bi9nZEx4QVpxcmlWQXczekxG?=
+ =?utf-8?B?NWZhZ1pScG9NbXBDak4zTUFkaHh0Q3hBeEhIb243MktmWkJJSlFncWRXUFRQ?=
+ =?utf-8?B?MUpLZzNSNHd1NnlLTmo3K21yZGx5aG9Da3hOaWFuZmZsU0NNVXorSnQ4TUdH?=
+ =?utf-8?B?NjdEbkpkTFNJZlNEd3licWVYbXNPUXdTSGthVkkvek0wNlIzZnl5dWZ6cmhQ?=
+ =?utf-8?B?cGhFaGRvMmhkdktDbmE4RHY1TGhVSEVGRkZqQk9nYlBSTlE0ZnlCMTNMYmYz?=
+ =?utf-8?B?U0VtNFF0Y2VpZXpVUDRSRktYZXFQTm5XZXpnVW4xQVFkMHdTd0xCQWNlT2Fo?=
+ =?utf-8?B?bzgwMWNWVmR4L0lqeU1aTGJnRmFZWHpQQUdBTzZMNG9hMG13Q3BKdlRnZWpp?=
+ =?utf-8?B?dGlpTzVlRXBaeUJtV2tkMUc1bzFJYVAvWjF2Ujc4OE4yTVlYcWZjS3JSNmNk?=
+ =?utf-8?B?T3o5K2JSY0JpTDYyQkk0Uml6RkdibDF4cmVKaGgySERuZkhZdXNuZGtBL25G?=
+ =?utf-8?B?NnZDaDVocmNLbnFMNUxlaUtScjlvTWowTDRzMDJHWlhMVDdETmpDREVBdWhz?=
+ =?utf-8?B?TUJpaGt2ekhRYk16L1k1NWt6S2FseU5NL3BzbEJEOTgvRFZUK2FFTEFjWDY0?=
+ =?utf-8?B?SmkzTUt3V2EydlRXakZVQmNyYU1uYXNPbnpMZGN3UlZrdDZQYUo2YUMzS0NS?=
+ =?utf-8?B?a1pCNkpMazZHYjl3dHRNQXhtR0JvdDdrd25BV1VTMDNZSmZ2TkRQMmR0T21y?=
+ =?utf-8?B?R25JREtPSDNnd1JmREVIaUFTZFd3blVnOUhDYm02WDdFWWI1TXZPRVY1N3p0?=
+ =?utf-8?B?QmNNbVgrQ29SaDJva0pta3NVYTl0TUlIc29vM3BSckloa3Fud1BxSkNteFRB?=
+ =?utf-8?B?QjlDK1Z5RDljc0xJU0VlMHo1czJ2Nk4wcE85V1VaTlBtd09qR3cyZ0QwdW9D?=
+ =?utf-8?B?MTFKUmM4OVIzbmJRdjNHei9ScTdaWC9EUzdvUmxOK01DYXNxMmZLamtSbTFh?=
+ =?utf-8?B?U0I4bFR5RkZiaWJzSmpmNGljTnI2MFZUaDRqT1c2US9ORFF3dkxza0FBelFS?=
+ =?utf-8?B?T3dYYUlMYVNnM3ptYUdqdk9KckR0K3drTVlJUDF2V2Z5NFdaMy9jd0NqeFhO?=
+ =?utf-8?B?TU5mRlZtUDVYbjdxeWkyMGJSUExvVmRXVThEYk1kcXduYkovOFkrNE42ZGRT?=
+ =?utf-8?B?L29RVnRQZHJmNm5BRlBYTTZSQWpkUmJmd2I2VHl0c3JBYTZUQU1kYXE1MTlh?=
+ =?utf-8?B?Y2h6N1IrSzhpMUFselMyWE9aa21MVkMvWUVOZS81bGJBRXFiMVd1N1pZMWor?=
+ =?utf-8?B?TWt1R1E0VWhBZ1l0RDBoSVBTZy9aSUxrSU9MRlhYc1VoZWVsTVBoSzFMUlBn?=
+ =?utf-8?B?cXl6YlpTR0FpKy9WZk1wSTVRa1BkcDVTWC9nNFgwRWJCVWVrVTR6REtGWW1O?=
+ =?utf-8?B?S0xDM2xEN0Y0TFl0T21WRVNqSDU5dDNyMDhienhrKytXM1dqZURqZkdzSEln?=
+ =?utf-8?B?M0VsVE9CaHdycHc1YXU5QUNDcWk5R2xHSHg1Mk04aDZpbzdhcmU4dz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9335bbf3-c9f3-42ab-11e5-08deaa4a113a
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB7548.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 May 2026 02:00:22.8920
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: WXFD9V7SQMKXjAo9LC7hd+oENAplC4J8WUo/5NlNUPMfAedUFsQWgbxAQCP8bkyx/tuHBEGGFQxsXmUG5yZWWg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7796
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-net: pse-pd: add LED trigger support via notification path
 
-This commit adds per-PI LED triggers to the PSE core subsystem to reflect
-delivering and enabled states. The LED state is updated during hardware
-events and administrative state changes via ethtool.
 
-Link: https://lore.kernel.org/oe-kbuild-all/202603251254.o5PqMBRU-lkp@intel.com/
-Link: https://lore.kernel.org/oe-kbuild-all/202603251250.cuMCk5Yv-lkp@intel.com/
+On 05/05/2026 4:21, Jakub Kicinski wrote:
+> On Sun, 3 May 2026 10:51:06 +0300 Mark Bloch wrote:
+>> On 03/05/2026 4:41, Jakub Kicinski wrote:
+>>> On Sat, 2 May 2026 23:08:43 +0300 Mark Bloch wrote:  
+>>>> Before I respin for the unrelated MR_CACHE cleanup, I’d like to confirm
+>>>> whether the opt-in profile approach is acceptable at all. Regardless
+>>>> of this last patch, the first 6 patches fix real representor/LAG locking
+>>>> issues and are needed independently, so I’d like to keep those moving toward
+>>>> acceptance as soon as possible.  
+>>>
+>>> For probe-time config module param is probably our only option.
+>>> I'd obviously prefer to have a devlink-level knob for this, instead 
+>>> of a mlx5 specific one. Can we come up with some format that'd apply
+>>> more broadly? devlink=[$bfd:]flag1 ? so devlink=[$bdf:]switchdev-mode ?  
+>>
+>> I’m not convinced this is really a generic devlink knob problem.
+> 
+> I'm surprised you say that. Anyone using switchdev mode could benefit.
+> Having the probe in one mode and switch adds to boot time. Whether it's
+> a DPU or not is quite secondary.
+> 
+> Unless there's another deeper reason which makes the DPU incapable of
+> running in the non-switchdev mode. But not sure that squares with the
+> code you posted AFAICT.
 
-> diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
-> index b7ffec0c942c..bff97211ae22 100644
-> --- a/drivers/net/pse-pd/pse_core.c
-> +++ b/drivers/net/pse-pd/pse_core.c
+No, there is no deeper DPU limitation. The device can probe in
+non switchdev mode, this is only about the desired default for those
+deployments, and avoiding the extra boot-time cost of probing in one mode
+and then switching to another.
 
-[ ... ]
+What I meant is that I am wary of putting too much policy into the kernel
+command line. A generic devlink level switchdev probe mode knob sounds
+reasonable to me if we keep the scope narrow. More complex policy, such as
+changing multiple defaults still seems better handled by userspace.
 
-> @@ -669,6 +670,168 @@ static int _pse_pi_delivery_power_sw_pw_ctrl(struct pse_controller_dev *pcdev,
->  	return 0;
->  }
->  
-> +#if IS_ENABLED(CONFIG_LEDS_TRIGGERS)
+Would adding only switchdev/switchdev_inactive for now be acceptable?
+I will try to keep the code generic enough so it can be extended later if
+we want.
 
-[ ... ]
+Let's continue with v3 as posted and please give me a few days to put
+together an RFC for the devlink part.
 
-> +static int pse_led_triggers_register(struct pse_controller_dev *pcdev)
-> +{
-> +	struct device *dev = pcdev->dev;
-> +	const char *dev_id;
-> +	int i, ret;
-> +
-> +	dev_id = dev_name(dev);
-> +
-> +	pcdev->pi_led_trigs = devm_kcalloc(dev, pcdev->nr_lines,
-> +					   sizeof(*pcdev->pi_led_trigs),
-> +					   GFP_KERNEL);
+Mark
 
-Since devm resources are released in strict LIFO order, and pi_led_trigs
-is allocated here after the regulators are registered in
-pse_controller_register(), will the pi_led_trigs array be freed before
-the regulators are unregistered on driver unbind?
 
-When the regulator core later unregisters the regulators and flushes
-pending disables, could it invoke pse_pi_disable() and call pse_led_update(),
-dereferencing the dangling pcdev->pi_led_trigs pointer?
+> 
+>> A device should probe in its selected/default configuration. For DPU
+>> deployments switchdev is the expected operating mode. mlx5 just made the
+>> wrong default choice historically, and this profile is a way to move away
+>> from that without forcing it on everyone at once. I expect/hope to move
+>> quickly from this flag to simply making switchdev the driver default for
+>> all DPU configs.
+>>
+>> A generic cmdline format also gets complicated quickly: vendor-specific
+>> flags, ordering/dependencies between flags, hotplug timing, and whether a
+>> BDF rule should apply when a device is passed into a VM after boot.
+>> Userspace scripts are probably better for that kind of policy because
+>> they can carry real site specific logic.
+>>
+>> I’ll drop this last patch from the series for now so the representor/LAG
+>> locking fixes can move independently and we can continue the default
+>> switchdev discussion separately. I can always submit that as a standalone
+>> patch later in the cycle if needed.
+> 
+> SG
 
-> +	if (!pcdev->pi_led_trigs)
-> +		return -ENOMEM;
-> +
-> +	for (i = 0; i < pcdev->nr_lines; i++) {
-> +		struct pse_pi_led_triggers *trigs = &pcdev->pi_led_trigs[i];
-> +
-> +		/* Skip PIs not described in device tree */
-> +		if (!pcdev->no_of_pse_pi && !pcdev->pi[i].np)
-> +			continue;
-> +
-> +		trigs->delivering.name = devm_kasprintf(dev, GFP_KERNEL,
-> +							"pse-%s:port%d:delivering",
-> +							dev_id, i);
-> +		if (!trigs->delivering.name)
-> +			return -ENOMEM;
-> +		trigs->delivering.activate = pse_led_delivering_activate;
-> +
-> +		ret = devm_led_trigger_register(dev, &trigs->delivering);
-
-Regulators are exposed before this code runs in pse_controller_register().
-What happens if a consumer calls regulator_enable() concurrently?
-
-If a concurrent pse_pi_enable() calls pse_led_update() right after
-trigs->delivering.name is set but before devm_led_trigger_register() executes:
-
-pse_led_update() sees pcdev->pi_led_trigs and trigs->delivering.name are
-both non-NULL, and proceeds to call led_trigger_event().
-
-Since devm_led_trigger_register() hasn't initialized the trigger's internal
-led_cdevs list head yet, will led_trigger_event() attempt to iterate a
-zeroed memory list and cause a NULL pointer dereference?
-
-> +		if (ret) {
-> +			trigs->delivering.name = NULL;
-> +			return ret;
-> +		}
-
-[ ... ]
-
-> @@ -1107,6 +1273,31 @@ int pse_controller_register(struct pse_controller_dev *pcdev)
->  	if (ret)
->  		return ret;
->  
-> +	ret = pse_led_triggers_register(pcdev);
-> +	if (ret) {
-> +		/* LED triggers are non-essential for power delivery; warn
-> +		 * and continue. NULL out the array so pse_led_update()'s
-> +		 * early-return guard short-circuits any later calls onto
-> +		 * partially-registered triggers.
-> +		 */
-> +		dev_warn(pcdev->dev, "Failed to register LED triggers: %d\n",
-> +			 ret);
-> +		pcdev->pi_led_trigs = NULL;
-> +	}
-
-If pse_led_triggers_register() fails halfway through, the device probe still
-succeeds, which means devm cleanup will not run. Could the successfully
-registered LED triggers from earlier loop iterations remain registered
-indefinitely with the LED subsystem?
-
-Since pcdev->pi_led_trigs is NULLed, pse_led_update() will short-circuit.
-Does this leave these globally visible triggers permanently orphaned without
-ever receiving state updates?
-
-> +
-> +	/* Query initial LED state for all PIs so already-active ports
-> +	 * are reflected immediately without waiting for a hardware event.
-> +	 * Hold pcdev->lock: regulators are already exposed and a
-> +	 * concurrent regulator_enable() would race on the hw callbacks
-> +	 * and on last_delivering / last_enabled.
-> +	 */
-> +	mutex_lock(&pcdev->lock);
-
-[ ... ]
-
-> @@ -1267,7 +1458,14 @@ static void pse_handle_events(struct pse_controller_dev *pcdev,
->  		struct pse_ntf ntf = {};
->  		int ret;
->  
-> -		/* Do nothing PI not described */
-> +		/* Update LEDs for described PIs regardless of consumer state.
-> +		 * LED triggers are registered at controller init, before any
-> +		 * PHY claims a PSE control, so rdev may still be NULL here.
-> +		 */
-> +		if (pcdev->no_of_pse_pi || pcdev->pi[i].np)
-> +			pse_led_update(pcdev, i);
-
-The docstring for pse_led_update() requires it to be called with pcdev->lock
-held. Does calling it here locklessly inside the event handler violate
-that locking contract?
-
-Could this lack of synchronization cause data races on the cached state
-variables, or allow concurrent execution of the hardware callbacks
-(pi_get_pw_status and pi_get_admin_state) if they are invoked at the same
-time by other paths?
-
-> +
-> +		/* Skip regulator/netlink path for PIs without consumers */
->  		if (!pcdev->pi[i].rdev)
->  			continue;
