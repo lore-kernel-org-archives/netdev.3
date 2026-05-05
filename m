@@ -1,151 +1,175 @@
-Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net (zg8tmtyylji0my4xnjqumte4.icoremail.net [162.243.164.118])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDBC82DF138
-	for <netdev@vger.kernel.org>; Tue,  5 May 2026 08:53:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.164.118
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0541D38AC90
+	for <netdev@vger.kernel.org>; Tue,  5 May 2026 08:59:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777971212; cv=none; b=hSxChmdJwcvGO4oFSTk8ldTmr9WQVq15YggqA/fmi+5K9/SU1rrXpC9uWdI5lG8Mg3bpnOLcsYoIUkFL7ZKXGR5hwsWy9JdbxqeMh6GJZwRn97jjq70ZLxPp3vF6U3bctI0Rl1ISqkx/qbQfUV7uVzKOo9H1DZhLJDjcJKixeN4=
+	t=1777971561; cv=none; b=fG5+slVtxZsXwUvCkxyfcFIuQBss8dJfPZRpQaSz3rhaxy6y+uIYrhEynNV0SPRDs5JM1ORv0ZHu4FHkiFH8JIOW0icYQp1nDGcavbYM3cSFGI4TykEOB1N0y5zgTtBOS3/LE31Q2SbRbavO4+PCJsXH8Wt9ZXpoVwFuU5RfLr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777971212; c=relaxed/simple;
-	bh=d5I8vqzyHFczPZXouYwzWRXXl+9hXZKXZKhOayo59hA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YA3OYVNk/gssY9QJVLwE+lqCrr2G5Nni8E6+CEFRxG/jzlgjGTSHjFzBTKto/gj5Zj2gpHMYWhkbzNGfJof8ZukQ4TvafqjNHUTwLopw9MWwjy0ll6NyfIZVP+kfudG9ISRzCakpeI7343lpakN/EkcmyLhSN6WDoPk47thYTuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn; spf=pass smtp.mailfrom=lzu.edu.cn; arc=none smtp.client-ip=162.243.164.118
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lzu.edu.cn
-Received: from enjou-Legion-Y7000P-2019.coin-barley.ts.net (unknown [172.23.56.36])
-	by app2 (Coremail) with SMTP id zQmowADHYIfpr_lpFHVKAA--.39790S3;
-	Tue, 05 May 2026 16:53:02 +0800 (CST)
-From: Ren Wei <n05ec@lzu.edu.cn>
-To: netdev@vger.kernel.org
-Cc: steffen.klassert@secunet.com,
-	herbert@gondor.apana.org.au,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	yuantan098@gmail.com,
-	yifanwucs@gmail.com,
-	tomapufckgml@gmail.com,
-	bird@lzu.edu.cn,
-	ronbogo@outlook.com,
-	zylzyl2333@gmail.com,
-	n05ec@lzu.edu.cn
-Subject: [PATCH net 1/1] xfrm: ipcomp: Free destination pages on acomp errors
-Date: Tue,  5 May 2026 16:52:59 +0800
-Message-ID: <8c304d9250d947b94cebc1cb1f85c73aa2bf0414.1777923646.git.zylzyl2333@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1777923646.git.zylzyl2333@gmail.com>
-References: <cover.1777923646.git.zylzyl2333@gmail.com>
+	s=arc-20240116; t=1777971561; c=relaxed/simple;
+	bh=CHfzsbBBWkt442uo449ObgtnuSTM8h9Xz+UeThmzFOg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UKMhYtCjtJ1yWE8WK3Ba4gyngVjDL3MSaOKyZK49fC8ztfT5dpt5MyQakIHbTppbsXrF/r+Przh2bs9czeY2wd2408SSecjKdWJdA5xxkiAQoo+0PRMuCkHExCviHmzo2aTF12g1gHi/He4bHMIHMW9p8rey0h8ZwAVyqgeiV3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gAd/ep8C; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=OGTbNZVA; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gAd/ep8C";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="OGTbNZVA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777971558;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=F0r85uYEBvFZwjw3nY1w+QDsZrIZzp0BkVyYOYWi2dY=;
+	b=gAd/ep8CUNH7HQwq8zUjoU7MeyNPlL6R4xPaaiV3HAQq8fi/pAHNW7rhwHYc+jGxovA+uF
+	giaTaxTFHFFks0NPoyadeXRkM5t3Z8png268IMxGRzWwHfZDDadJePFDaN8zzdCI9bwSiC
+	O53+kdG7zTrA0dGBT9QwLROC9OzBrTo=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-498-y5pASOb_NaKD5IBiPUn-Ag-1; Tue, 05 May 2026 04:59:16 -0400
+X-MC-Unique: y5pASOb_NaKD5IBiPUn-Ag-1
+X-Mimecast-MFC-AGG-ID: y5pASOb_NaKD5IBiPUn-Ag_1777971556
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-48d035e8593so12934215e9.0
+        for <netdev@vger.kernel.org>; Tue, 05 May 2026 01:59:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1777971555; x=1778576355; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=F0r85uYEBvFZwjw3nY1w+QDsZrIZzp0BkVyYOYWi2dY=;
+        b=OGTbNZVAbvXa0QCpzGF/gEd1atRftGjJVX9OniclUCDeDPa7vxtlr/RAgg7DuJkzgy
+         GfD6vMwMjCk0T2G+e3EEavpbEsUJbRlgulmg2vfLouNsDwV054jTkRlGz9DPz0xTJQNa
+         yXcciymXL4/9Qh2BeCA5Q/R8cGs0jMZhS/TbG+bs5KiZloB6194W/zwIfobTSgK0eVpG
+         oaAJ4IOfr2paYH85vjhdOMb6EMrrOZ7kl6hgk3Ns7BRJbE5NtgQzAhVTBz1xKNcUP294
+         PGuF1M4rTT1G49ngdsSEz6BFaDCe1piheWYhB68UFz4Wnt8OkW0o/eaxpPuWav1zP0wD
+         3BJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777971555; x=1778576355;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=F0r85uYEBvFZwjw3nY1w+QDsZrIZzp0BkVyYOYWi2dY=;
+        b=fy4zNysaShMUNxdq4NHb4LtcaM6n14X9mUoYfXjyKjTvPDTn/y/KpT69MOT6SezICs
+         oDtV5MLaEJBDcBI8q51Z53v1quNd3sIavkwV8PUqxr6cEAZmBuVmI8ko7i4C1q/9y/2M
+         6Jan7gjlQAm+Prp/AjP6eS33cpWWUM4uI2HDyjFvclhSZNiSUWrK4+9vx59uA6I9so8c
+         ORVYk9E91fiS6yq9BGp7ZmTN4O5tiQc1RrrAM4/j979kOfM7C7v5MIP+KFWrKtI1wEqp
+         I5OXO51EioPoWRtrtjEihwggy89BsRgdwcvnsAj1+KNoOTCpJDL/g7dFBLjAf/L9KK1r
+         C1zw==
+X-Gm-Message-State: AOJu0YxivwE5c85LtOpTcCQXC73CY2aMCo0iRxHLFYiPM9iS+IpGYjNP
+	gQNdPWPaaI5gR8Eu8FMJUSgtFKYew935rmvIr7rAOxoGP32T6CtNlHTprCE0rAeMtT8GWSgTBhy
+	LjxiOdbO19OXi6glBe8McHwnoZIveqpijApSJYYGcw0nyy0CrHMJ8uCgkaQ==
+X-Gm-Gg: AeBDievAHVMvqhJG7utcgC5qOrsBoXVTsnjMAKROtHI3DWYVl6uPAkceZwsqHryETPa
+	GPhZDni2XCN32zLd3ow+jLRHN3zMNldxOzslSl8h+S/S0RWsnl4sf1F4G2IZh1GJ4zWGbSshFUI
+	Tpzr/QWRfC4YxYSqHgNa4ymcahPTfa23K5bURZcqkgdyDOunffLGT4ikTbRil0xJWiBtStEpvO4
+	Z0rpyVVbLBI1RwjyuUd1ci6PkMkP8/wibWSxE0gVeFKzVtotbFJeiNpdXVL4sIiAxDPXKiLEsKq
+	Sb2zYKT6SmC36fovftjuSlbttmIGu0tI7e+KJMD1clcK5lwm5omZmnUiI+e6HhTcKInVPTnReLR
+	rTe/ozN7ZN3nvpqySrAv6jwG3Q13Lf6Gxg8w7tTAk0dqizLoAE42yywXrEL+I2S/eiBs=
+X-Received: by 2002:a05:600c:5308:b0:48a:5565:ec3d with SMTP id 5b1f17b1804b1-48d03b401f5mr161071335e9.22.1777971555628;
+        Tue, 05 May 2026 01:59:15 -0700 (PDT)
+X-Received: by 2002:a05:600c:5308:b0:48a:5565:ec3d with SMTP id 5b1f17b1804b1-48d03b401f5mr161070775e9.22.1777971555194;
+        Tue, 05 May 2026 01:59:15 -0700 (PDT)
+Received: from [192.168.88.32] ([212.105.155.47])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48d184ed3b0sm12329145e9.34.2026.05.05.01.59.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 05 May 2026 01:59:14 -0700 (PDT)
+Message-ID: <6324783e-b5c8-462d-8cf7-f6cc9c01ea89@redhat.com>
+Date: Tue, 5 May 2026 10:59:12 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQmowADHYIfpr_lpFHVKAA--.39790S3
-X-Coremail-Antispam: 1UD129KBjvJXoWxZr1ruw1xKryxXryfGrWDCFg_yoW5GF4kpF
-	W3G3WqkFyDXF9rGF18tFW8u3W3KrZ2gFW7Gw43Kw1agF43trWFvFZ5tryjgrW8AFy8CF15
-	Jr4qyFy7K3yqvrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUB01xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
-	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
-	IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1l84ACjcxK6I8E
-	87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c
-	8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_
-	Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwI
-	xGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAa
-	w2AFwI0_Jw0_GFylc2xSY4AK6svPMxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY2
-	0_Gr4l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8G
-	jcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2I
-	x0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK
-	8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I
-	0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUonmRUUUUU
-X-CM-SenderInfo: zqqvvuo6o23hxhgxhubq/1tbiAQ0SCWn5ruQAGQAAsU
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 net-next 04/15] net: enetc: add basic operations to the
+ FDB table
+To: Wei Fang <wei.fang@nxp.com>, claudiu.manoil@nxp.com,
+ vladimir.oltean@nxp.com, xiaoning.wang@nxp.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, f.fainelli@gmail.com,
+ frank.li@nxp.com, chleroy@kernel.org, horms@kernel.org, linux@armlinux.org.uk
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
+References: <20260430024945.3413973-1-wei.fang@nxp.com>
+ <20260430024945.3413973-5-wei.fang@nxp.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260430024945.3413973-5-wei.fang@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Yilin Zhu <zylzyl2333@gmail.com>
+On 4/30/26 4:49 AM, Wei Fang wrote:
+> The FDB table is used for MAC learning lookups and MAC forwarding lookups.
+> Each table entry includes information such as a FID and MAC address that
+> may be unicast or multicast and a forwarding destination field containing
+> a port bitmap identifying the associated port(s) with the MAC address.
+> FDB table entries can be static or dynamic. Static entries are added from
+> software whereby dynamic entries are added either by software or by the
+> hardware as MAC addresses are learned in the datapath.
+> 
+> The FDB table can only be managed by the command BD ring using table
+> management protocol version 2.0. Table management command operations Add,
+> Delete, Update and Query are supported. And the FDB table supports three
+> access methods: Entry ID, Exact Match Key Element and Search. This patch
+> adds the following basic supports to the FDB table.
+> 
+> ntmp_fdbt_update_entry() - update the configuration element data of a
+> specified FDB entry
+> 
+> ntmp_fdbt_delete_entry() - delete a specified FDB entry
+> 
+> ntmp_fdbt_add_entry() - add an entry into the FDB table
+> 
+> ntmp_fdbt_search_port_entry() - Search the FDB entry on the specified
+> port based on RESUME_ENTRY_ID.
+> 
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> ---
+>  drivers/net/ethernet/freescale/enetc/ntmp.c   | 203 +++++++++++++++++-
+>  .../ethernet/freescale/enetc/ntmp_private.h   |  61 +++++-
+>  include/linux/fsl/ntmp.h                      |  44 +++-
+>  3 files changed, 305 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/freescale/enetc/ntmp.c b/drivers/net/ethernet/freescale/enetc/ntmp.c
+> index c94a928622fd..4ed8d783a9a2 100644
+> --- a/drivers/net/ethernet/freescale/enetc/ntmp.c
+> +++ b/drivers/net/ethernet/freescale/enetc/ntmp.c
+> @@ -1,7 +1,7 @@
+>  // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
+>  /*
+>   * NETC NTMP (NETC Table Management Protocol) 2.0 Library
+> - * Copyright 2025 NXP
+> + * Copyright 2025-2026 NXP
+>   */
+>  
+>  #include <linux/dma-mapping.h>
+> @@ -21,11 +21,15 @@
+>  /* Define NTMP Table ID */
+>  #define NTMP_MAFT_ID			1
+>  #define NTMP_RSST_ID			3
+> +#define NTMP_FDBT_ID			15
+>  
+>  /* Generic Update Actions for most tables */
+>  #define NTMP_GEN_UA_CFGEU		BIT(0)
+>  #define NTMP_GEN_UA_STSEU		BIT(1)
+>  
+> +/* Query Action: 0: Full query, 1: Only query entry ID */
+> +#define NTMP_QA_ENTRY_ID		1
 
-ipcomp_setup_req() allocates destination pages for the acomp output
-scatterlist. On successful completion, ipcomp_post_acomp() attaches the
-used pages to the skb and frees any unused pages.
+Sashiko noted that the above comments looks inconsistent with the update
+code, where NTMP_QA_ENTRY_ID apparently uses a full query, and 0 just
+the entry ID.
 
-On an acomp error, ipcomp_post_acomp() skips directly to freeing the
-request. acomp_request_free() only releases the request itself, so the
-caller-allocated destination pages are left allocated.
+If you have to repost for other reasons, please fix this. Note that you
+should reply on the ML to sashiko reviews ruling out invalid comments.
 
-Track the number of destination pages allocated for the request and free
-them on the error path before releasing the request.
+Thanks,
 
-Fixes: eb2953d26971 ("xfrm: ipcomp: Use crypto_acomp interface")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Co-developed-by: Peihan Liu <ronbogo@outlook.com>
-Signed-off-by: Peihan Liu <ronbogo@outlook.com>
-Signed-off-by: Yilin Zhu <zylzyl2333@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
----
- net/xfrm/xfrm_ipcomp.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
-
-diff --git a/net/xfrm/xfrm_ipcomp.c b/net/xfrm/xfrm_ipcomp.c
-index 5f38dff16177..1e0080300ec7 100644
---- a/net/xfrm/xfrm_ipcomp.c
-+++ b/net/xfrm/xfrm_ipcomp.c
-@@ -33,6 +33,7 @@ struct ipcomp_data {
- 
- struct ipcomp_req_extra {
- 	struct xfrm_state *x;
-+	int dpages;
- 	struct scatterlist sg[];
- };
- 
-@@ -44,6 +45,12 @@ static inline struct ipcomp_skb_cb *ipcomp_cb(struct sk_buff *skb)
- 	return cb;
- }
- 
-+static void ipcomp_free_dpages(struct scatterlist *dsg, int dpages)
-+{
-+	while (dpages--)
-+		__free_page(sg_page(dsg++));
-+}
-+
- static int ipcomp_post_acomp(struct sk_buff *skb, int err, int hlen)
- {
- 	struct acomp_req *req = ipcomp_cb(skb)->req;
-@@ -51,8 +58,13 @@ static int ipcomp_post_acomp(struct sk_buff *skb, int err, int hlen)
- 	struct scatterlist *dsg;
- 	int len, dlen;
- 
--	if (unlikely(err))
-+	if (unlikely(err)) {
-+		if (req) {
-+			extra = acomp_request_extra(req);
-+			ipcomp_free_dpages(extra->sg, extra->dpages);
-+		}
- 		goto out_free_req;
-+	}
- 
- 	extra = acomp_request_extra(req);
- 	dsg = extra->sg;
-@@ -167,6 +179,7 @@ static struct acomp_req *ipcomp_setup_req(struct xfrm_state *x,
- 
- 	extra = acomp_request_extra(req);
- 	extra->x = x;
-+	extra->dpages = 0;
- 
- 	dsg = extra->sg;
- 	sg = dsg + dnfrags;
-@@ -184,6 +197,7 @@ static struct acomp_req *ipcomp_setup_req(struct xfrm_state *x,
- 		if (!page)
- 			break;
- 		sg_set_page(dsg + i, page, PAGE_SIZE, 0);
-+		extra->dpages++;
- 		total += PAGE_SIZE;
- 	}
- 	if (!i)
--- 
-2.47.3
+Paolo
 
