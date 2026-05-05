@@ -1,107 +1,75 @@
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A463931F999
-	for <netdev@vger.kernel.org>; Tue,  5 May 2026 13:54:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
+Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F236C17A31E;
+	Tue,  5 May 2026 14:00:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.133.224.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777989291; cv=none; b=HazvUAYibhGL5/M5s+NFohSY1OSLzjqkTzoSpdy3NFPPrOt1EcO6bh8lfCYYXJhVIBUQQLpASmZw3KWYEjVq8iTjSYJLVwYF6DPBUMsekZL7MsH7QS9sDCATAqAaon4GrfWyR8yjE5U/Ann0ApfSU2nMO6G16ZGVqE4hEnC5SS8=
+	t=1777989661; cv=none; b=WTcLgv4B7uDoGTcPIiy2/rdHcJc2hsv5qxcbEbGu0csZicvnwx6v9QGcSteQqb5UEcwSKn0aBW0Z8rw1ZEs96oh4WOYFC1/hm/zM+xZPJWIHq6aFq1VSv06/HJCc9PAZY6ROSIcx5DuTUAlb6aDf2mnC9ajXGtEv4iRyzzSDIvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777989291; c=relaxed/simple;
-	bh=MTvK9+C21xuIA06FzqrnqdYZc1ukHj+rWyuwu3V7EXA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eplwCw3CZS12d0zkxKbniWkeA/Bk8Rqqk+Hr4tQ/WFXjtjVzAg04UQ9nuVpOaEgqedqYo6wn8jZQiqqPBQVnzEH0cJPYKhldD/u9XDRcO5ZN9bkxP/bOhDBX+BwNdEwJmJu2wqjWhKOZQP+6E5iBkGHUJM9UiQp4XHppiLTd2Uw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=mfvJ8Zmx; arc=none smtp.client-ip=91.218.175.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="mfvJ8Zmx"
-Message-ID: <6eabe3df-08b2-4237-a989-a8e3a9bdf37f@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777989287;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SI4lfLI8eYyem0NJxVJ2GIm6PJT/ZtNkHhHLajT+gFs=;
-	b=mfvJ8Zmx8olWsWDB/KpPcbRH3P2bve65awZzrMbCe6iGMVhvJcsINe7HiHohP+u+4nHaO9
-	JL6jKtiuUCxlafG2S8orKQR8JvefShsXASjq7m9h3vDccVss6CksL8qzJvsUclk65/pjoa
-	1T/LFchapCz/gz/ey6ZdxFgeMJOdANU=
-Date: Tue, 5 May 2026 14:54:43 +0100
+	s=arc-20240116; t=1777989661; c=relaxed/simple;
+	bh=A99Lwb/EVkzUM3n7icopGBnxN59R2q53tEB1r7fxhkY=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=HqtFKKwbgO97NTrPMw58owOotGYNXykWOegsf1O+8eFXy+0YRRP9G+xYzLXFGpJnZUrvHEkuP3LwN2nFNP43t9ImDtNq+vJlSwX3Vufz4jmgDr0JVmxQT0P9dlsk0EIHR3QddDP/7weN/L8uwHe/YOUh6ieq6Un/3p2SJsU+lmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk; spf=none smtp.mailfrom=orcam.me.uk; arc=none smtp.client-ip=78.133.224.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=orcam.me.uk
+Received: by angie.orcam.me.uk (Postfix, from userid 500)
+	id 1B4DD92009C; Tue,  5 May 2026 16:00:57 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by angie.orcam.me.uk (Postfix) with ESMTP id 14B5092009B;
+	Tue,  5 May 2026 15:00:57 +0100 (BST)
+Date: Tue, 5 May 2026 15:00:56 +0100 (BST)
+From: "Maciej W. Rozycki" <macro@orcam.me.uk>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+cc: netdev@vger.kernel.org, linux-mips@vger.kernel.org, 
+    Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+    "David S. Miller" <davem@davemloft.net>, 
+    Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH net-next v2] declance: Remove IRQF_ONESHOT
+In-Reply-To: <20260505123203.jifiaxEL@linutronix.de>
+Message-ID: <alpine.DEB.2.21.2605051410280.46195@angie.orcam.me.uk>
+References: <20260127135334.qUEaYP9G@linutronix.de> <alpine.DEB.2.21.2601271508160.40317@angie.orcam.me.uk> <20260127165430.7ui_LGkg@linutronix.de> <alpine.DEB.2.21.2601271739250.40317@angie.orcam.me.uk> <alpine.DEB.2.21.2603292037020.60268@angie.orcam.me.uk>
+ <alpine.DEB.2.21.2605042332070.46195@angie.orcam.me.uk> <20260505072954.Ov2t-FGt@linutronix.de> <alpine.DEB.2.21.2605051233210.46195@angie.orcam.me.uk> <20260505123203.jifiaxEL@linutronix.de>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net-next 5/5] ionic: Add .get_fec_stats ethtool handler
-To: Eric Joyner <eric.joyner@amd.com>, netdev@vger.kernel.org
-Cc: Brett Creeley <brett.creeley@amd.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>
-References: <20260501031555.43259-1-eric.joyner@amd.com>
- <20260501031555.43259-6-eric.joyner@amd.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <20260501031555.43259-6-eric.joyner@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=US-ASCII
 
-On 01/05/2026 04:15, Eric Joyner wrote:
-> Several FEC error statistics being collected can be reported in a
-> dedicated ethtool callback for FEC errors, so implement the handler that
-> does so. This includes 802.3ck FEC histogram data that some newer
-> hardware collects.
+On Tue, 5 May 2026, Sebastian Andrzej Siewior wrote:
+
+> > > With force-threading enabled, the interrupt handler is masked in the
+> > > IRQ-chip until after the threaded-handler run. See the cond_unmask_irq()
+> > > in handle_level_irq() or the mask_irq() & cond_unmask_eoi_irq() in
+> > > handle_fasteoi_ack_irq(). That means the hw-IRQ is done, the thread is
+> > > running with interrupts enabled but the hw-IRQ will not trigger again.
+> > > The cited commit 5a4a4ad851dd8 ("MIPS: Mark cascade and low level
+> > > interrupts IRQF_NO_THREAD") is different as it acts on cascading
+> > > interrupts which is not what we have here.
+> > 
+> >  Not with the current handle_fasteoi_irq() handler.
 > 
-> Assisted-by: Claude:claude-4.6-sonnet
-> Signed-off-by: Eric Joyner <eric.joyner@amd.com>
-> ---
->   .../ethernet/pensando/ionic/ionic_ethtool.c   | 51 +++++++++++++++++++
->   1 file changed, 51 insertions(+)
+> Why? There is a mask_irq() in the ONESHOT case.
+
+ Yes, in that case there is.
+
+> > > If you request a threaded interrupt you must either provide two handler
+> > > and the primary must mask the interrupt so it does not fire again or you
+> > > pass a flag such as IRQF_ONESHOT and which point the IRQ subsystem will
+> > > mask the IRQ within the irqchip so it does not fire again.
+> > 
+> >  Well, yes, but you've just removed the flag from this driver, so either 
+> > the flag has to reinstated or the driver adjusted differently for the 
+> > threaded case to be handled correctly.
 > 
-> diff --git a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
-> index 78a802eb159f..fe1f753b6115 100644
-> --- a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
-> +++ b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
-> @@ -418,6 +418,56 @@ static int ionic_get_fecparam(struct net_device *netdev,
->   	return 0;
->   }
->   
-> +static const struct ethtool_fec_hist_range ionic_fec_ranges[] = {
-> +	{ 0, 0},
-> +	{ 1, 1},
-> +	{ 2, 2},
-> +	{ 3, 3},
-> +	{ 4, 4},
-> +	{ 5, 5},
-> +	{ 6, 6},
-> +	{ 7, 7},
-> +	{ 8, 8},
-> +	{ 9, 9},
-> +	{ 10, 10},
-> +	{ 11, 11},
-> +	{ 12, 12},
-> +	{ 13, 13},
-> +	{ 14, 14},
-> +	{ 15, 15},
-> +	{ 0, 0},
-> +};
-> +
-> +static void
-> +ionic_fill_fec_hist(const struct ionic_port_extra_stats *extra_stats,
-> +		    struct ethtool_fec_hist *hist)
-> +{
-> +	int i;
-> +
-> +	hist->ranges = ionic_fec_ranges;
-> +	for (i = 0; i < ETHTOOL_FEC_HIST_MAX - 1; i++)
-> +		hist->values[i].sum = extra_stats->fec_codeword_error_bin[i];
-> +}
+> But there is a plain request_irq() so the handler is invoked directly in
+> hardirq context with disabled interrupts. In forced-threaded context,
+> such as on PREEMPT_RT, the IRQF_ONESHOT is added.
 
-ETHTOOL_FEC_HIST_MAX = 17, you defined 16 bins, but iterating over 15 of
-them. Looks like bin {15, 15} will be lost in stats.
+ Ah, I missed that IRQF_ONESHOT bit in irq_setup_forced_threading().  So 
+it seems like we're good.  I'll proceed with the original change then to 
+just amend IOASIC DMA IRQ documentation.  Thank you for patience again.
 
-
+  Maciej
