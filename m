@@ -1,103 +1,103 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1593B27FF
-	for <netdev@vger.kernel.org>; Tue,  5 May 2026 04:39:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B572C392C28;
+	Tue,  5 May 2026 04:46:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777955944; cv=none; b=mi3mPaLM0nTSemyqZBOJ3hvwGE110GSmAoj7WMsUAsvNzN/PRtgQoE0rD4jzYfoLlgL6di8SFHa0b1+/28N0sDmi5bzubJJdlpgiq/nUy2bsZR7NXDtMOK0kkckj7a7suhe9CeOCkJm6Tmow2iNjjNXwo9l41wDhd72pv/KzJlo=
+	t=1777956388; cv=none; b=tg7YPe1zQ4jywmV1i3JT3ScghgD9xb7Xfj82t7Gv1E7hmYGqNdGUSgEiuccyzbhEMb2UEbzGWtvfQOms9Ejm9ADIWn8jREU7FnM0TQa8tk8eYk0BskPsV5oxUT02d5jfwSmz70S4o4i0ZQO3/g0V67JbSPP7fR5iLHwYSVb5VP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777955944; c=relaxed/simple;
-	bh=c1HpKxmZh/vDAAxMnUvYiCbMKTHqUgCr6R7N3XfmFAQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SiCNpI9zoQLTHtpqhpIOio9Afnpv/dUHzP6LHrG97W9xb5F/SjhlXdxJ7kEAS1Bg7DRnUYZg1tFpdmbIuLY0G6VMmbExXj4NrfwUu0xkW0LmXboimDLgXtfbjUEZyzVxgvDBazVSKww4UUDo2s1+tRsakia73K1C7FHbUBYb1zM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T6q5fPql; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1777956388; c=relaxed/simple;
+	bh=Q4JxA29skf0GIQSLZ8ul5/f8J9TVzHjReQZqn3sXZTY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jwOREHMi0hYlOQdAxaUOxyE2a4zHwu5YUQGNfCQIE7r62CXUnTMQXzjDFlvbwuRUFfxM28QArtpKgfUmzeKPNbamYGRk1ZNTPY3wbzJbi9e9mF3IvesYqZ5L5qCC1G9rI+ju2r1BalIuQJbFQn5kBr61gtNOyk3EbhA0Kx0S6WY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=YzV3P21e; arc=none smtp.client-ip=213.160.73.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T6q5fPql"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777955943; x=1809491943;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=c1HpKxmZh/vDAAxMnUvYiCbMKTHqUgCr6R7N3XfmFAQ=;
-  b=T6q5fPqlcaCOX4BPX0ZCuxtRVbOCU0s2QkW4uw6+YsmfOqfN1HsvKlw7
-   gS5+PxSSRZHaLVFb43/qMDXKtQtv62IxccF2zs9KsFoautnHrfW++nfzD
-   heR7FMTiCQk430RJHserRMjrpAgjMN4MGvJkQ5mjrYA8eXYCCTd6r6Gcz
-   h2ySABupro9h9Hy9NWzQbJMxPbtdIHoLhIQ9CdpCbuZclfpR9MOIwkJoP
-   Se1KPwKjTe/4bJ8HmuQ8T3Vyc7j0B3xXUY5rbIMPOmm5VFt5tVYT/02+5
-   nq9Hz4iBXyT8yQlCo0cO9ckULuMpFfBwYiz6zWcnbVTAkMdGpD9ko03XZ
-   g==;
-X-CSE-ConnectionGUID: wDr+3NYKST64OSNUnAhnOQ==
-X-CSE-MsgGUID: JTKiwD7nRYejjypaSrFVVQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11776"; a="89124588"
-X-IronPort-AV: E=Sophos;i="6.23,216,1770624000"; 
-   d="scan'208";a="89124588"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2026 21:39:03 -0700
-X-CSE-ConnectionGUID: Zp/RDczkSni7GBS1NKqqlw==
-X-CSE-MsgGUID: gUFZaRRZTXaFArHJjVG8Hg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,216,1770624000"; 
-   d="scan'208";a="259369989"
-Received: from mev-dev.igk.intel.com ([10.237.112.144])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2026 21:39:00 -0700
-Date: Tue, 5 May 2026 06:35:04 +0200
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: Jacob Keller <jacob.e.keller@intel.com>
-Cc: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
-	jramaseu@redhat.com, anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com, aleksandr.loktionov@intel.com
-Subject: Re: [Intel-wired-lan] [PATCH iwl-net v1 2/2] ice: use
- NETIF_F_HW_CSUM instead of IP/IPV6
-Message-ID: <aflzeKTaOUBy2Xsn@mev-dev.igk.intel.com>
-References: <20260428070647.777141-1-michal.swiatkowski@linux.intel.com>
- <20260428070647.777141-3-michal.swiatkowski@linux.intel.com>
- <44623db1-8b86-4e8e-82a3-46d65b055ebc@intel.com>
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="YzV3P21e"
+Received: by dvalin.narfation.org (Postfix) id B2E581FF78;
+	Tue, 05 May 2026 04:46:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+	s=20121; t=1777956384;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Lq6R9rd8X8jTXmZ6W1O/me6//zs6LOkcxvOUChwvpvw=;
+	b=YzV3P21eoDduZjvYFi0AM/ra7GXV2nL0o9zDwbJ3Kf5/T7DyxoTghKEAsmG6i/YBr0okZA
+	Mez7utpOKU+kOVcERyy6N506CIzLvD5n4euF8FkHFy78T1arp0V++P3Xcu3sOxkqDb+1R7
+	2ayjrGbRh+CBLVXFdagVe2eh3/uH0m8=
+From: Sven Eckelmann <sven@narfation.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Marek Lindner <marek.lindner@mailbox.org>,
+ Simon Wunderlich <sw@simonwunderlich.de>,
+ Antonio Quartulli <antonio@mandelbit.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ b.a.t.m.a.n@lists.open-mesh.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Ao Zhou <n05ec@lzu.edu.cn>,
+ Haoze Xie <royenheart@gmail.com>, Jiexun Wang <wangjiexun2025@gmail.com>,
+ Juefei Pu <tomapufckgml@gmail.com>, Luxing Yin <tr0jan@lzu.edu.cn>,
+ Ruide Cao <caoruide123@gmail.com>, Xin Liu <bird@lzu.edu.cn>,
+ Yifan Wu <yifanwucs@gmail.com>, Yuan Tan <yuantan098@gmail.com>,
+ stable@kernel.org
+Subject: Re: [PATCH batadv 0/8] batman-adv: follow up fixes
+Date: Tue, 05 May 2026 06:46:11 +0200
+Message-ID: <5990011.DvuYhMxLoT@sven-l14>
+In-Reply-To: <20260504171051.2b3e47ef@kernel.org>
+References:
+ <20260503-fixes-followup-v1-0-4313278918d3@narfation.org>
+ <20260504171051.2b3e47ef@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <44623db1-8b86-4e8e-82a3-46d65b055ebc@intel.com>
+Content-Type: multipart/signed; boundary="nextPart6264035.lOV4Wx5bFT";
+ micalg="pgp-sha512"; protocol="application/pgp-signature"
 
-On Mon, May 04, 2026 at 04:53:12PM -0700, Jacob Keller wrote:
-> On 4/28/2026 12:06 AM, Michal Swiatkowski wrote:
-> > The hardware is capable of calculating checksum for IPV6 packets with
-> > extension header. To not drop such packets switch from IP/IPV6 checksum
-> > to HW_CSUM.
-> > 
-> > HW_CSUM is also used in previous generation (i40e).
-> > 
-> > Previously HW_CSUM was used to indicate that hardware supports general
-> > checksum. Drop it assuming that if the hardware supports it, it is used.
-> > 
-> > Disabling offload for E830 in case of TSO isn't needed anymore as the
-> > check for TSO is done in Tx path just before preparation of the special
-> > GCS descriptor.
-> > 
-> > The commit from Fixes didn't introduce a bug, it just shown that the
-> > driver is doing sth wrong with the checksum features.
-> > 
-> > Suggested-by: Jakub Ramaseuski <jramaseu@redhat.com>
-> > Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-> > Fixes: 04c20a9356f2 ("net: skip offload for NETIF_F_IPV6_CSUM if ipv6 header contains extension")
-> > Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-> > ---
-> Am I correct in thinking that this supersedes (really, properly fixes)
-> the patch "ice: enable NETIF_F_HW_CSUM for GSO packets" at
-> https://patchwork.ozlabs.org/project/intel-wired-lan/patch/20260310150557.1138437-1-jramaseu@redhat.com/
-> ?
+--nextPart6264035.lOV4Wx5bFT
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
+From: Sven Eckelmann <sven@narfation.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Subject: Re: [PATCH batadv 0/8] batman-adv: follow up fixes
+Date: Tue, 05 May 2026 06:46:11 +0200
+Message-ID: <5990011.DvuYhMxLoT@sven-l14>
+In-Reply-To: <20260504171051.2b3e47ef@kernel.org>
+MIME-Version: 1.0
+
+On Tuesday, 5 May 2026 02:10:51 CEST Jakub Kicinski wrote:
+> On Sun, 03 May 2026 14:22:33 +0200 Sven Eckelmann wrote:
+> > While reviewing the fixes submitted to batman-adv in the recent weeks,
+> > further problems in similar or adjecent code was identified. This was either
+> > noticed in the manual review or reported by sashiko.dev.
 > 
-> Thanks,
-> Jake
+> Are you CCing netdev to get this reviewed by Sashiko?
+> Please don't..
+> We delegate code to sub-sub-systems to lower the patch volume :(
+> 
 
-Yes, exactly. I think I linked it in cover letter, but maybe I should do
-it also here.
+Because of `b4 prep --auto-to-cc`. Will now manually remove you.
 
-Thanks
+Regards,
+	Sven
+
+--nextPart6264035.lOV4Wx5bFT
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCafl2FAAKCRBND3cr0xT1
+y7meAP46UTEv5pX9jnioel/mvqL1JOLHs7Mw9LA1N0MojSw4rAD+ImjhYl7DEAgI
+5WdexqiK2V/tFuzPyqNBbcYevZJK7wc=
+=U/YX
+-----END PGP SIGNATURE-----
+
+--nextPart6264035.lOV4Wx5bFT--
+
+
+
