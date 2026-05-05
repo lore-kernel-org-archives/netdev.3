@@ -1,576 +1,184 @@
-Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE46F48B376;
-	Tue,  5 May 2026 15:56:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777996604; cv=none; b=OEWWdH3oWmm5aKYobuV5MHrMghtb4vz4tgoMAvuXPFQf4wvsxqKcoI0c1bge5s7kS5sDctnMai7TIkgn94S/1LAj5Ibsv2Pq4PQeujK1/NFs+YL8Q03qHq+Cyz3g9jRALHYw860t4F65tRMYhAeL4ZdmgeSLNJyBYpWOUxIHUh4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777996604; c=relaxed/simple;
-	bh=66sxBnO9qBeG5Q6k5q85z09IobaOPTQJpY8pPfYANoc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=bljSK6wJfR1llFfMyGm4TUCJlD/JJNFHd0xKowDAo3ojqEQ24sgCe29z7YAF1zpodT1MI83TgmLfxAD8Dzj2tcZDMTQO1C2wk6QqQr9R29aa5UlM6DKu17ec0u+m2yKaoe3bgkzh4RAhFZYkns3QCNeyRLaaO9vEyAJTMhdkIyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=WI4hNCAJ; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=fyfN55D/; arc=none smtp.client-ip=23.88.97.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47C6248AE00
+	for <netdev@vger.kernel.org>; Tue,  5 May 2026 15:56:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777996619; cv=fail; b=KbT8e6ncfslKAyk+C1WDokvvaNov/dc+qrmaUGWJU2ZS0YPTLrEK92IYfksWysoSf2KY27omXcBgAuAEhPwPw+05Wv5PhFR1D/7uti0nehKeAv3StRp4r8E1TwiBmQic0WOnADiHG9MP53PhO+n5iPNqMBi7NCghbwrM9JvpfQo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777996619; c=relaxed/simple;
+	bh=OX6Uy4+Se8mdnb8UJUjqyKp1ToJcTbfIO78KBfmFeJU=;
+	h=Message-ID:Date:Subject:To:References:CC:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=q5thhkPBo/ZqKdBHTUroT+b3Ivv5RYZpo1wxUIW2ZHyW2SwFF80iJ1QV4wgKPYjCzo5xmUqMqlinEQlR+TDZpeqy0/78g7NNqI31Z7wZ2nzO7WqLF9P57GQ3kTHWv1EjliGFNxh9ZQOrvHFv8xjDeVvyHRZxkWuAdGWONdPb1EQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BYJ6HmM1; arc=fail smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="WI4hNCAJ";
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="fyfN55D/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1777996601;
-	bh=66sxBnO9qBeG5Q6k5q85z09IobaOPTQJpY8pPfYANoc=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=WI4hNCAJwPtA2g8rRFnleeEe7IDvsgBqzeROqhBqRCSiL8SbAQB5F4JGDTdDL8IIA
-	 q9oA/jIZcr9jIFcF1IxhXnRkoWg7YCewT7gojs6UxVBI2v1gOHH9PlwNkPft5ZjjAb
-	 26yGxkVjDyAqD9Pcf9OTDSb0HaLjt+2gLDgYXLe1B47Wv5DS1b1jSVFSQ6uqIc31h2
-	 j0Tj/KK5GJX8ATE2MODU0oqPwQGdtenaLPowt1yyBs+gSIvsh8b3sMD41R9KmEn3lO
-	 y3WNKlVo65AGtZdJJT5xA/NXEZGX5RNPB3KudelTF4RhnA1IdoAmi87ceEbj9TGkwz
-	 PLmIavIn0fqQA==
-Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id 6FADA42498; Tue,  5 May 2026 15:56:41 +0000 (UTC)
-X-Spam-Level: 
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1777996598;
-	bh=66sxBnO9qBeG5Q6k5q85z09IobaOPTQJpY8pPfYANoc=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=fyfN55D/UbTqJvfEaDtMX0sr4fFw6kC/jcZ0OAPnRcqYmZAlvNiGxOO3JAyiOF8CO
-	 jlJeEbaX+nPxnpNf7d0JJzFLvHBLAYUxMZ0n/tx6zeV0WAkr9pQ5p7SbNYcTI/xTIn
-	 tyJ08u0JIYHGxjDDTdacYNXoBMcG5up4V6n9gHmEra3kdtqDKvsbRADhu7uk263ztc
-	 BvLc62JlkGSocW/tFGahxuQz2boaIriVML79d1oegfa6NiYNmOzkkeeBnijTW+1IkI
-	 JPmO7zGrredN2ro2zJmOB7GDElKaTyQFZ7qBf/YOCOtCJBh+pxhdln7jaSWNnGED0T
-	 8VrQmgjiD2IvQ==
-Received: from AMDDesktop.lan (unknown [IPv6:2a00:6020:47a3:e800:271c:c6c5:9fde:77cb])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id A8FB242466;
-	Tue,  5 May 2026 15:56:37 +0000 (UTC)
-From: Birger Koblitz <mail@birger-koblitz.de>
-Date: Tue, 05 May 2026 17:56:34 +0200
-Subject: [PATCH net-next v4 2/3] r8152: Add support for the RTL8159 chip
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BYJ6HmM1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777996617; x=1809532617;
+  h=message-id:date:subject:to:references:cc:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=OX6Uy4+Se8mdnb8UJUjqyKp1ToJcTbfIO78KBfmFeJU=;
+  b=BYJ6HmM1jIczy5s3L9EmLjBm3A9U6ZtWsf34y6uUjIy5ikaQcqgCjBxU
+   A2ahpg5kKcL/YQRPaYZqWwJgGtB9gX5ZubuHL1UWHm9I0xWr/wbRgtzue
+   FWhdPfRrJs5PZIPgJA4m27kzfi285AUa/ofzQzNvdMmbqzxHdcBhIfDIa
+   SGEXMeqRfHC3qt+2YVUDqkmyzFQIj98UaU9A1Qy9GW5P0Le9MHvSJ4Ne+
+   jwtLqSm0Dtgj8mCQpRjI2jQqj4+sdJYTBqunAhF+EZu2awbogFL/xw57n
+   /VwznWCZeE+2EeVovRDOXVERTPpCjJa7HcIfdaHyYrYzALbIq6MuzBaRn
+   g==;
+X-CSE-ConnectionGUID: ox85h4ugTTuZcZvfktM6/Q==
+X-CSE-MsgGUID: kVVIG7vOTE2WdpAkYflYiQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11777"; a="78731494"
+X-IronPort-AV: E=Sophos;i="6.23,217,1770624000"; 
+   d="scan'208";a="78731494"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2026 08:56:56 -0700
+X-CSE-ConnectionGUID: O1JtFtNnQPqtDgtpQWyhwg==
+X-CSE-MsgGUID: o9P0Q95YRJSwTQ2XrrkXnw==
+X-ExtLoop1: 1
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2026 08:56:56 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 5 May 2026 08:56:55 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Tue, 5 May 2026 08:56:55 -0700
+Received: from MW6PR02CU001.outbound.protection.outlook.com (52.101.48.46) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 5 May 2026 08:56:55 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=heVX3utt/XIWH438lVqyQDwoiqxkbiFMoyixieAj8PiTmgM37mSZNclcRKO0tJidX3vsM+hgBPs8xs/QEPDk1bsTXaeFi4FZId6gVLdcq8GgzLXyzyMWrKpnoEI5WPaZg7iX2kXScoYDMEJAMOxlaoOaihBlRzJPdf4LerzsKCUK5RxlqPmpib9nDuIEZiigcNDha3wXYVm0XZnJyLAAzTHzZYtavoJ7PxA7BJIG4Md05GNRcmLC4Cay0tmYYAasWH0sWZp5XMiJ3EBvJXER731ukvnqhEZ94jtXtM1iJntPG2M/AfJ6EmN3SLKqMLqX/RY+4b4qjrWtz04A7f79lg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=MQ7l42bemXU+4+ixQ3aB/z+F36HD2v6RZW/mB5ihWmU=;
+ b=BtSK8306b8q63DstbqC9LnF1e2GXkmu1jnRRH3SJt8exO2XdLur4M/ThFaoCsxvH2+uyDS9BWXkqV1TJ5xdedzmqFta0ZhHJgQYmw5NW3SO1Uw3CecX8dDfBFiiYaILlLAlgwoLYTvloFVRhVDU0R0+1DLAQglwx14EyjbAdkEP4yLwoiae0z4FlEstkIBnJ0aL+fHWsaJexuO4+pwbKMrjMAwtxMALxtMYZ5CpI3zeuB+MyZVABDdAXnWAMX09yshIilufVb4n2tVu93oiEwW6+GeWSHq7wQgWoxc+4BtxJLIM1qcX3CVdb0x+6aKVfhNCkyH1ls45OdG9M8whbTw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB8718.namprd11.prod.outlook.com (2603:10b6:8:1b9::20)
+ by CO1PR11MB4771.namprd11.prod.outlook.com (2603:10b6:303:9f::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.25; Tue, 5 May
+ 2026 15:56:48 +0000
+Received: from DS0PR11MB8718.namprd11.prod.outlook.com
+ ([fe80::6aa:411d:4bfa:619c]) by DS0PR11MB8718.namprd11.prod.outlook.com
+ ([fe80::6aa:411d:4bfa:619c%5]) with mapi id 15.20.9891.008; Tue, 5 May 2026
+ 15:56:48 +0000
+Message-ID: <61378b55-af99-479f-8b28-94cb2d18563c@intel.com>
+Date: Tue, 5 May 2026 17:55:43 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] net: dsa: realtek: rtl8365mb: add support for
+ RTL8367SB
+To: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+References: <05921e1f-693b-4322-a762-c8f03c386a78.ref@yahoo.com>
+ <05921e1f-693b-4322-a762-c8f03c386a78@yahoo.com>
+Content-Language: en-US
+CC: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>, =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
+	Yury Norov <yury.norov@gmail.com>, Rasmus Villemoes
+	<linux@rasmusvillemoes.dk>, Russell King <linux@armlinux.org.uk>,
+	<netdev@vger.kernel.org>
+From: Alexander Lobakin <aleksander.lobakin@intel.com>
+In-Reply-To: <05921e1f-693b-4322-a762-c8f03c386a78@yahoo.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: VI5PEPF00000919.AUTP296.PROD.OUTLOOK.COM
+ (2603:10a6:808:1::927) To DS0PR11MB8718.namprd11.prod.outlook.com
+ (2603:10b6:8:1b9::20)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260505-rtl8159_net_next-v4-2-1a648a9c4d8d@birger-koblitz.de>
-References: <20260505-rtl8159_net_next-v4-0-1a648a9c4d8d@birger-koblitz.de>
-In-Reply-To: <20260505-rtl8159_net_next-v4-0-1a648a9c4d8d@birger-koblitz.de>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Chih Kai Hsu <hsu.chih.kai@realtek.com>, 
- Birger Koblitz <mail@birger-koblitz.de>, 
- Aleksander Jan Bajkowski <olek2@wp.pl>
-X-Mailer: b4 0.14.2
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB8718:EE_|CO1PR11MB4771:EE_
+X-MS-Office365-Filtering-Correlation-Id: ca7683c7-76c6-48eb-bd9d-08deaabeea3b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info: ly5v6SLv+fxhAqafGaB+JCF41TfTP39/KHKFhonzCVJQJNg238gs2+wTeREI40NEETmvTq88LcdUE6YflFGgySh7hqu4bFPaZsTftsxxtEjiMjOHwXeDsHcTvOVpYnwFhR3Jtqrl/iLDFZTUyUdCCd3O1TxsHHoqTzfCpeuVHy0eYNUIyitTwjTYlulKpG6IeFpDW6t3gZ3H0Srt7nO4PLhZkZAHRdydrFvJBvpZcV07K3JGH73EPFKz4OUc99Up/miQuyPQx7/7iIswxw45+x2VorfmUH8RUEF5B7B/1YzCygzTBk2yjNgBhbp/Z+ABDNvGDPWnesDywcM3gwkLCsooDYQWiJ6u67SwluQVRu7B88RxdMdubqR0t2C/ATNrwCaCygWyoTQvhMSSQIa7eB1VkfxYPp0SKG0CfGjyU5ZbNbZPXCvMkSLZ7TgxN6gquP9kuHVoe6TmCr+MIB18E4rh7mFSZcN8TSRYD3DsPOGLVRQnGQ6bgQh0DRsozXGL4BPfPVxjVcNRjE3NMJiC0hhzZHDz9CfD+EPogR6pReV9ETCz+xSo2Mb7PBnTyvvHxmAJWjPl71XVicPvKXQAJflKY3kjX+MsIAJ8F5AnZzQ7CzmLdd4RHdeU07SR32RjfX66KvkXt7GFbfGQpdCBYgd1w66gSOoq8Pf2pWDihDQni9ZGNxf0cvdWz7QT7ovp
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8718.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TXl0c3BrRzBQa2cxamlSNlA4SC9DNXBxcFo4L0dOWlN4OVdVVGZQa214Zlo1?=
+ =?utf-8?B?SElOY3pDWjA1R0RiMjd0WmhkOFg3NWRUZEMvUkdreVZLb0NGY0VCNnhTNTM4?=
+ =?utf-8?B?RW1VTklDZjIzSHYxTHcxNmFvWS9vdXJrSGlIREZjV252ZEVsTmJMSDZuK1ZE?=
+ =?utf-8?B?Q1NzUnRPY2VuYklWNy9GYjBidkZycDVNR3BOTG5PeFZsOXBKOVYvVVp6OGlG?=
+ =?utf-8?B?UVl0OGMxTnAzTGJObWJEVkJhdElVNW9RNDRWOWZxazdLWVFKUWhtQlJmbi9l?=
+ =?utf-8?B?cVoyL1l1aXFHOHAxenRaS2JBZTN0eklpcXQ1K1JYYkZyeDMxUXpXbGtPSmph?=
+ =?utf-8?B?d002bUNJaXI5Vy95QVVkWGJQN055RHdXUWlBeFluVVU1QjZvYUdMbncwYTZk?=
+ =?utf-8?B?UVZadkZObWZLcGxobW5nQ1FiQzMzdGg2Z0lYKzMvOFZkREpDeFlQU043blY1?=
+ =?utf-8?B?a2N0V1ZXVi9RWXRvbURZQXZDbUhqd0hERXlteXpwN3daa2EvZ2pDYlVaak9U?=
+ =?utf-8?B?dzI3RzgzTHJjVUpHN2prRTJuV0N3UEFqRTEwVkI3bE9VUVhaNWI2Y2NHNktK?=
+ =?utf-8?B?NWVPY1hLV0drcWdUS3FNL0duT0dJQ2FWTHJQUTk0eUpLSUxaZzNsSWh5S29P?=
+ =?utf-8?B?TXNkYXgzZ3BGRXF2NnU0aFFHTVlaRzQwU2MvNkFtSkNZUVYzT1VwNHZ2RnhU?=
+ =?utf-8?B?Tkhsa0ZmcWRzTS84SmloYnViR1hNdU83NDFNSWNsUVI5aWtrMHRYWTFXZE5S?=
+ =?utf-8?B?YWwxRzJKOVpqeTdTSHZ0ZnZwN1JJMlNaT245L3pzRFRzK1MxT21EUFZoZjN6?=
+ =?utf-8?B?NkRTU1hPSjE3V0gyTkF1MStqYmpWeC9vUzRBMGs2cmJvcUNma0FuRXdWV1Ra?=
+ =?utf-8?B?L295TmYrYjhNNFp6S1RmbVh5dkoxZWZVZWdJVjY5ZXIyTEJRcnowc0ZYME9n?=
+ =?utf-8?B?UlZyRVFqcE9pM3JEanZqMjNuQlRZNDZoalpGVmgxYWlUY3FBRWlsd3hJU25t?=
+ =?utf-8?B?SVhYS2xjS21CNzROUjY1blRzYjNmSmNyYVdjbXIxZ0F1VEppODFWUUxpUisx?=
+ =?utf-8?B?cWFhMDZnSUdzVnV1UVMxZXlJOGVONzBHMDhCTnMvbzdQN2JIL01jVUhSamlN?=
+ =?utf-8?B?b2lpUEs0aENiMzlmNW5mMTlXYkdlbTEzcnFLZ2V6ZGcxbDhmMWpLVjVIVTc5?=
+ =?utf-8?B?S21lQUM0MDAxczJ0Q3pEbGdqNTQrU3poRFdnU2JIeDJQWHBqZEpPS1psSWd1?=
+ =?utf-8?B?RzJXdUlzczFBbFVBVHNlQlRFdmVSdTZKVENZSjN3K1hBaERWQzhYTmJOZEZh?=
+ =?utf-8?B?a2xhMzNha2o1SHZVZzEvdFFuNldVS2YxK3BoU1E0cy9qV2JjUWZUaGd3YlFG?=
+ =?utf-8?B?R1IzZW1jWUFaWUUzTE1FaTQ5YzZjbUNWOG9pbUxDMUF6RkFFbVdqOWFlWUhQ?=
+ =?utf-8?B?VE9nZks5M3VTZUZkR3dnclliOEMvNEZoejIxVXlTOFZmVCs1Y052N0ovS1oz?=
+ =?utf-8?B?S3V1MHdkbmQ5T0l1SkQ5alBVVEIxSVo3SGMxYVUwUWJ4WGpmTmpKd3RIZ2Ja?=
+ =?utf-8?B?SndNdHhveTZRbTdpajkrZCtZd3hBNXVFbENmTnNjYUJxbGc0Y1I1MXhuSURI?=
+ =?utf-8?B?NnlqTWVKaHl3bnBDWXR2dlZOQkx1TFFHS0l1SUoxbnZDaXZmbVJFRW1KWTRu?=
+ =?utf-8?B?bm1sWHBCZ1I1NVdOenZoS3VwNHFueThlZ1Y1V0I4dnNTbUdUYlhjQm9uWEN4?=
+ =?utf-8?B?QUM0MWpsN1dIZUt4QmlVMmk0ZEJCWUdiQllNdjVxSHNtTGxMTzlFMWlZMnZQ?=
+ =?utf-8?B?TlN2alBHQndYWERWWk8xRGJHc2NrekVCcXJBR1BpY013WFAzMWlqTk00UHFS?=
+ =?utf-8?B?eEV5bjYzVUdHd1R0V3RJMlRXc0psNzJFbGgyN2dtNzBjb0NRaDRqamNRb3Vv?=
+ =?utf-8?B?cGpEVC9obHJYalg4YlFyd0ZWUHFsbkhGZndTdVpEUHVNR1gyUnhSYUhLeWVL?=
+ =?utf-8?B?TE5DOGZFWTlKTXFBdnVVaXNjV3JwK3p3WlFhK0wxV0Q3WjRIUUlpZzBGd1JY?=
+ =?utf-8?B?VXhubFdnWHZxUFlCNXNSZHJrd1hDa09tbW8wN3FXTDg2dk83ay9kdFprVXFz?=
+ =?utf-8?B?djRId25wczdHUUpOMmVFN09yZzlYek8wVkk0QlFzVkZhSjBleGFEdDBoNUpO?=
+ =?utf-8?B?cnlPRC9nVlhlc1FzdWhrY0FSc0h2YzY2NjFleURFVDZwWWNmT1dJY3ZMc1Ax?=
+ =?utf-8?B?dVZiSWZoOG1LZEtaQ3E0c3VIaDNIOU5wVUZhcnpBQXFiZmdNMTI3WDg1Wkpt?=
+ =?utf-8?B?Rm5pMjdGQnVlT0lSUWN2aDFGU1VOUGlyQXhGZGV2WHNXczNBMStaYWpwem9T?=
+ =?utf-8?Q?cq6LgeguW5/BFuXM=3D?=
+X-Exchange-RoutingPolicyChecked: QYhdac3xG81CyR9FH34kFaMW9T/R/nD3MbOs06z/WEpZkO9NBBRvc9pvFl8unCBAIjKHSxA7LtJsst4+c2h0lhdB0L1wTSglZqAJ0ExC8b0/AW3YXbdqnBt3l4wtkQfSH609RsHbnvrd66sVEvPZ+ejXCg1Faj5+xVqZHTtZYYV4YuZvdnQh+CRyWO82oNRQjcenih27p/fQOsnq4yfrb0riU0oCU5L86SeRTMrs8WV9sYSOQlyqDb8HBTMMjpCB87mfH0bowag5lXVgkZqo5rFKWTsRtCFnnuehow5b3M/Ze2l3t1EtdA7gdCBNMSS2H9mh/75CryM4PuyWohgY6Q==
+X-MS-Exchange-CrossTenant-Network-Message-Id: ca7683c7-76c6-48eb-bd9d-08deaabeea3b
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8718.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 May 2026 15:56:48.6586
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: IAFzH2yRfhr+qAsidEwoVZMFEFAZsVPDNoKj+An2mTuWuFbtBNiGyzJ6Qyta9joJTsNxpm7T1okc5uVeYutcd5hpkCj/VTkljZfLBep3phU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB4771
+X-OriginatorOrg: intel.com
 
-The RTL8159 re-uses the packet descriptor format introduced with the
-RTL8157 and other hardware features of the RTL8157 (RTL_VER_16) such
-as the SRAM access. The support therefore consists in expanding the
-existing RTL8157 code for initialization and USB power management
-to also be used for the RTL8159 (RTL_VER_17).
+From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+Date: Tue, 5 May 2026 16:17:19 +0200
 
-Most of the additional code is added in r8157_hw_phy_cfg() to configure
-the RTL8159 PHY.
+> Add chip info entry for the Realtek RTL8367SB switch. This device has
+> chip ID 0x6367 and version 0x0010. It exposes two external interfaces:
+> port 6 supports SGMII and HSGMII, while port 7 supports MII, TMII,
+> RMII and RGMII. Use the existing 8365MB-VC jam table for initialization.
+> 
+> Signed-off-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
 
-Add support for the USB device ID of Realtek RTL8159-based adapters,
-for which the product ID is 0x815a. Detect the RTL8159 as RTL_VER_17
-and set it up.
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
 
-Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
-Tested-by: Aleksander Jan Bajkowski <olek2@wp.pl>
----
- drivers/net/usb/r8152.c | 277 +++++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 261 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index 05abfab1df94a571347196bfce7c232865e1058e..1e7f20348ac6def85106f1e8bab93a377980c77d 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -1247,6 +1247,7 @@ enum rtl_version {
- 	RTL_VER_14,
- 	RTL_VER_15,
- 	RTL_VER_16,
-+	RTL_VER_17,
- 
- 	RTL_VER_MAX
- };
-@@ -3432,6 +3433,7 @@ static void rtl8152_nic_reset(struct r8152 *tp)
- 		break;
- 
- 	case RTL_VER_16:
-+	case RTL_VER_17:
- 		ocp_byte_clr_bits(tp, MCU_TYPE_PLA, PLA_CR, CR_RE | CR_TE);
- 		break;
- 
-@@ -3471,6 +3473,9 @@ static void rtl_eee_plus_en(struct r8152 *tp, bool enable)
- 
- static void rtl_set_eee_plus(struct r8152 *tp)
- {
-+	if (tp->version == RTL_VER_17)
-+		return rtl_eee_plus_en(tp, false);
-+
- 	if (rtl8152_get_speed(tp) & _10bps)
- 		rtl_eee_plus_en(tp, true);
- 	else
-@@ -3656,6 +3661,7 @@ static void r8153_set_rx_early_timeout(struct r8152 *tp)
- 	case RTL_VER_13:
- 	case RTL_VER_15:
- 	case RTL_VER_16:
-+	case RTL_VER_17:
- 		ocp_write_word(tp, MCU_TYPE_USB, USB_RX_EARLY_TIMEOUT,
- 			       640 / 8);
- 		ocp_write_word(tp, MCU_TYPE_USB, USB_RX_EXTRA_AGGR_TMR,
-@@ -3700,6 +3706,7 @@ static void r8153_set_rx_early_size(struct r8152 *tp)
- 			       ocp_data / 8);
- 		break;
- 	case RTL_VER_16:
-+	case RTL_VER_17:
- 		ocp_write_word(tp, MCU_TYPE_USB, USB_RX_EARLY_SIZE,
- 			       ocp_data / 16);
- 		break;
-@@ -4548,6 +4555,7 @@ static void rtl_clear_bp(struct r8152 *tp, u16 type)
- 		break;
- 	case RTL_VER_14:
- 	case RTL_VER_16:
-+	case RTL_VER_17:
- 	default:
- 		ocp_write_word(tp, type, USB_BP2_EN, 0);
- 		bp_num = 16;
-@@ -5818,6 +5826,7 @@ static void rtl_eee_enable(struct r8152 *tp, bool enable)
- 	case RTL_VER_13:
- 	case RTL_VER_15:
- 	case RTL_VER_16:
-+	case RTL_VER_17:
- 		if (enable) {
- 			r8156_eee_en(tp, true);
- 			ocp_reg_write(tp, OCP_EEE_ADV, tp->eee_adv);
-@@ -6408,7 +6417,7 @@ static int rtl8156_enable(struct r8152 *tp)
- 	set_tx_qlen(tp);
- 	rtl_set_eee_plus(tp);
- 
--	if (tp->version >= RTL_VER_12 && tp->version <= RTL_VER_16)
-+	if (tp->version >= RTL_VER_12 && tp->version <= RTL_VER_17)
- 		ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_RX_AGGR_NUM, RX_AGGR_NUM_MASK);
- 
- 	r8153_set_rx_early_timeout(tp);
-@@ -6817,7 +6826,7 @@ static void rtl8156_up(struct r8152 *tp)
- 		return;
- 
- 	r8153b_u1u2en(tp, false);
--	if (tp->version != RTL_VER_16)
-+	if (tp->version < RTL_VER_16)
- 		r8153_u2p3en(tp, false);
- 	r8153_aldps_en(tp, false);
- 
-@@ -6831,7 +6840,7 @@ static void rtl8156_up(struct r8152 *tp)
- 
- 	ocp_byte_clr_bits(tp, MCU_TYPE_PLA, PLA_OOB_CTRL, NOW_IS_OOB);
- 
--	if (tp->version == RTL_VER_16)
-+	if (tp->version >= RTL_VER_16)
- 		ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_RCR1, BIT(3));
- 
- 	ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_SFF_STS_7, MCU_BORW_EN);
-@@ -6856,7 +6865,7 @@ static void rtl8156_up(struct r8152 *tp)
- 
- 	ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_MAC_PWR_CTRL3, PLA_MCU_SPDWN_EN);
- 
--	if (tp->version != RTL_VER_16)
-+	if (tp->version < RTL_VER_16)
- 		ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_SPEED_OPTION,
- 				  RG_PWRDN_EN | ALL_SPEED_OFF);
- 
-@@ -6868,10 +6877,10 @@ static void rtl8156_up(struct r8152 *tp)
- 	}
- 
- 	r8153_aldps_en(tp, true);
--	if (tp->version != RTL_VER_16)
-+	if (tp->version < RTL_VER_16)
- 		r8153_u2p3en(tp, true);
- 
--	if (tp->version != RTL_VER_16 && tp->udev->speed >= USB_SPEED_SUPER)
-+	if (tp->version < RTL_VER_16 && tp->udev->speed >= USB_SPEED_SUPER)
- 		r8153b_u1u2en(tp, true);
- }
- 
-@@ -6886,7 +6895,7 @@ static void rtl8156_down(struct r8152 *tp)
- 			  PLA_MCU_SPDWN_EN);
- 
- 	r8153b_u1u2en(tp, false);
--	if (tp->version != RTL_VER_16) {
-+	if (tp->version < RTL_VER_16) {
- 		r8153_u2p3en(tp, false);
- 		r8153b_power_cut_en(tp, false);
- 	}
-@@ -7996,7 +8005,7 @@ static void r8157_hw_phy_cfg(struct r8152 *tp)
- 	/* Advanced Power Saving parameter */
- 	ocp_reg_set_bits(tp, 0xa430, BIT(0) | BIT(1));
- 
--	/* aldpsce force mode */
-+	/* Disable ALDPS force mode */
- 	ocp_reg_clr_bits(tp, 0xa44a, BIT(2));
- 
- 	switch (tp->version) {
-@@ -8120,6 +8129,190 @@ static void r8157_hw_phy_cfg(struct r8152 *tp)
- 		sram2_write_w0w1(tp, 0x807c, 0xff00, 0x5000);
- 		sram2_write_w0w1(tp, 0x809d, 0xff00, 0x5000);
- 		break;
-+
-+	case RTL_VER_17:
-+		/* Disable bypass turn off clk in ALDPS */
-+		ocp_byte_clr_bits(tp, MCU_TYPE_PLA, 0xd3c8, BIT(0));
-+
-+		/* Power level tuning
-+		 * test mode power level
-+		 */
-+		sram_write_w0w1(tp, 0x8415, 0xff00, 0x9300);
-+		/* normal link power level 10G, 5G, 2.5G */
-+		sram_write_w0w1(tp, 0x81a3, 0xff00, 0x0f00);
-+		sram_write_w0w1(tp, 0x81ae, 0xff00, 0x0f00);
-+		sram_write_w0w1(tp, 0x81b9, 0xff00, 0xb900);
-+		/* normal link TX filter */
-+		sram2_write_w0w1(tp, 0x83b0, 0x0e00, 0);
-+		sram2_write_w0w1(tp, 0x83c5, 0x0e00, 0);
-+		sram2_write_w0w1(tp, 0x83da, 0x0e00, 0);
-+		sram2_write_w0w1(tp, 0x83ef, 0x0e00, 0);
-+
-+		/* AFE power saving for 2.5G & 5G */
-+		sram_write(tp, 0x8173, 0x8620);
-+		sram_write(tp, 0x8175, 0x8671);
-+
-+		sram_write_w0w1(tp, 0x817c, 0, BIT(13));
-+		sram_write_w0w1(tp, 0x8187, 0, BIT(13));
-+		sram_write_w0w1(tp, 0x8192, 0, BIT(13));
-+		sram_write_w0w1(tp, 0x819d, 0, BIT(13));
-+		sram_write_w0w1(tp, 0x81a8, BIT(13), 0);
-+		sram_write_w0w1(tp, 0x81b3, BIT(13), 0);
-+		sram_write_w0w1(tp, 0x81be, 0, BIT(13));
-+
-+		sram_write_w0w1(tp, 0x817d, 0xff00, 0xa600);
-+		sram_write_w0w1(tp, 0x8188, 0xff00, 0xa600);
-+		sram_write_w0w1(tp, 0x8193, 0xff00, 0xa600);
-+		sram_write_w0w1(tp, 0x819e, 0xff00, 0xa600);
-+		sram_write_w0w1(tp, 0x81a9, 0xff00, 0x1400);
-+		sram_write_w0w1(tp, 0x81b4, 0xff00, 0x1400);
-+		sram_write_w0w1(tp, 0x81bf, 0xff00, 0xa600);
-+
-+		/* RFI parameter
-+		 * disable preset FBE
-+		 */
-+		ocp_reg_clr_bits(tp, 0xaeaa, BIT(5) | BIT(3));
-+		/* modify PGA for 5G&10G */
-+		sram2_write(tp, 0x84f0, 0x201c);
-+		sram2_write(tp, 0x84f2, 0x3117);
-+		/* RFI parameter */
-+		ocp_reg_write(tp, 0xaec6, 0x0000);
-+		ocp_reg_write(tp, 0xae20, 0xffff);
-+		ocp_reg_write(tp, 0xaece, 0xffff);
-+		ocp_reg_write(tp, 0xaed2, 0xffff);
-+		ocp_reg_write(tp, 0xaec8, 0x0000);
-+		ocp_reg_clr_bits(tp, 0xaed0, BIT(0));
-+		ocp_reg_write(tp, 0xadb8, 0x0150);
-+		sram2_write_w0w1(tp, 0x8197, 0xff00, 0x5000);
-+		sram2_write_w0w1(tp, 0x8231, 0xff00, 0x5000);
-+		sram2_write_w0w1(tp, 0x82cb, 0xff00, 0x5000);
-+		sram2_write_w0w1(tp, 0x82cd, 0xff00, 0x5700);
-+		sram2_write_w0w1(tp, 0x8233, 0xff00, 0x5700);
-+		sram2_write_w0w1(tp, 0x8199, 0xff00, 0x5700);
-+
-+		sram2_write(tp, 0x815a, 0x0150);
-+		sram2_write(tp, 0x81f4, 0x0150);
-+		sram2_write(tp, 0x828e, 0x0150);
-+		sram2_write(tp, 0x81b1, 0x0000);
-+		sram2_write(tp, 0x824b, 0x0000);
-+		sram2_write(tp, 0x82e5, 0x0000);
-+
-+		sram2_write_w0w1(tp, 0x84f7, 0xff00, 0x2800);
-+		ocp_reg_set_bits(tp, 0xaec2, BIT(12));
-+		sram2_write_w0w1(tp, 0x81b3, 0xff00, 0xad00);
-+		sram2_write_w0w1(tp, 0x824d, 0xff00, 0xad00);
-+		sram2_write_w0w1(tp, 0x82e7, 0xff00, 0xad00);
-+		ocp_reg_w0w1(tp, 0xae4e, 0x000f, 0x0001);
-+		sram2_write_w0w1(tp, 0x82ce, 0xf000, 0x4000);
-+
-+		/* 5G shift sel, default = '04'
-+		 * 10G shift sel, default = '03'
-+		 */
-+		sram2_write_w0w1(tp, 0x83a5, 0xff00, 0x0400);
-+		sram2_write_w0w1(tp, 0x83a6, 0xff00, 0x0400);
-+		sram2_write_w0w1(tp, 0x83a7, 0xff00, 0x0400);
-+		sram2_write_w0w1(tp, 0x83a8, 0xff00, 0x0400);
-+
-+		/* XG INRX parameters
-+		 * RC coefficients
-+		 */
-+		sram2_write(tp, 0x84ac, 0x0000);
-+		sram2_write(tp, 0x84ae, 0x0000);
-+		sram2_write(tp, 0x84b0, 0xf818);
-+		sram2_write_w0w1(tp, 0x84b2, 0xff00, 0x6000);
-+		/* Training AAGC PAR (with uc2 patch) */
-+		sram2_write(tp, 0x8ffc, 0x6008);
-+		sram2_write(tp, 0x8ffe, 0xf450);
-+		/* DAC BGK */
-+		sram2_write_w0w1(tp, 0x8015, 0, BIT(9));
-+		sram2_write_w0w1(tp, 0x8016, 0, BIT(11));
-+		sram2_write_w0w1(tp, 0x8fe6, 0xff00, 0x0800);
-+		sram2_write(tp, 0x8fe4, 0x2114);
-+		/* 10G PBO table */
-+		sram2_write(tp, 0x8647, 0xa7b1);
-+		sram2_write(tp, 0x8649, 0xbbca);
-+		sram2_write_w0w1(tp, 0x864b, 0xff00, 0xdc00);
-+		/* 2.5G ado power window size */
-+		sram2_write_w0w1(tp, 0x8154, 0xc000, 0x4000);
-+		sram2_write_w0w1(tp, 0x8158, 0xc000, 0);
-+		/* 10G lock far */
-+		sram2_write(tp, 0x826c, 0xffff);
-+		sram2_write(tp, 0x826e, 0xffff);
-+		/* XG INRX parameter */
-+		sram2_write_w0w1(tp, 0x8872, 0xff00, 0x0e00);
-+		sram_write_w0w1(tp, 0x8012, 0, BIT(11));
-+		sram_write_w0w1(tp, 0x8012, 0, BIT(14));
-+		ocp_reg_set_bits(tp, 0xb576, BIT(0));
-+		sram_write_w0w1(tp, 0x834a, 0xff00, 0x0700);
-+		sram2_write_w0w1(tp, 0x8217, 0x3f00, 0x2a00);
-+		sram_write_w0w1(tp, 0x81b1, 0xff00, 0x0b00);
-+		sram2_write_w0w1(tp, 0x8fed, 0xff00, 0x4e00);
-+		/* Slave about EC mu of datamode AAGC  and DAC BG */
-+		sram2_write_w0w1(tp, 0x88ac, 0xff00, 0x2300);
-+		/* improve UBE */
-+		ocp_reg_set_bits(tp, 0xbf0c, 0x7 << 11);
-+		/* close Sparse NEC, improve connect 5EUU cable performance */
-+		sram2_write_w0w1(tp, 0x88de, 0xff00, 0);
-+		/* 5G slave compatibility issue */
-+		sram2_write(tp, 0x80b4, 0x5195);
-+
-+		/* XG Test Mode
-+		 * xgtstm_map_tbl for mdi_cap_sel
-+		 */
-+		sram_write(tp, 0x8370, 0x8671);
-+		sram_write(tp, 0x8372, 0x86c8);
-+		/* xgtstm_amp_map_tbl for  REG_IBX_UP_SHIFT_L */
-+		sram_write(tp, 0x8401, 0x86c8);
-+		sram_write(tp, 0x8403, 0x86da);
-+		sram_write_w0w1(tp, 0x8406, 0x1800, 0x1000);
-+		sram_write_w0w1(tp, 0x8408, 0x1800, 0x1000);
-+		sram_write_w0w1(tp, 0x840a, 0x1800, 0x1000);
-+		sram_write_w0w1(tp, 0x840c, 0x1800, 0x1000);
-+		sram_write_w0w1(tp, 0x840e, 0x1800, 0x1000);
-+		sram_write_w0w1(tp, 0x8410, 0x1800, 0x1000);
-+		sram_write_w0w1(tp, 0x8412, 0x1800, 0x1000);
-+		sram_write_w0w1(tp, 0x8414, 0x1800, 0x1000);
-+		sram_write_w0w1(tp, 0x8416, 0x1800, 0x1000);
-+
-+		/* Cable Test Patch */
-+		sram_write(tp, 0x82bd, 0x1f40);
-+
-+		/* Thermal sensor parameters */
-+		ocp_reg_w0w1(tp, 0xbfb4, 0x07ff, 0x0328);
-+		ocp_reg_write(tp, 0xbfb6, 0x3e14);
-+
-+		/* spdchg_gtx_shape_100M */
-+		ocp_reg_write(tp, OCP_SRAM_ADDR, 0x81c4);
-+		ocp_reg_write(tp, OCP_SRAM_DATA, 0x003b);
-+		ocp_reg_write(tp, OCP_SRAM_DATA, 0x0086);
-+		ocp_reg_write(tp, OCP_SRAM_DATA, 0x00b7);
-+		ocp_reg_write(tp, OCP_SRAM_DATA, 0x00db);
-+		ocp_reg_write(tp, OCP_SRAM_DATA, 0x00fe);
-+		ocp_reg_write(tp, OCP_SRAM_DATA, 0x00fe);
-+		ocp_reg_write(tp, OCP_SRAM_DATA, 0x00fe);
-+		ocp_reg_write(tp, OCP_SRAM_DATA, 0x00fe);
-+		ocp_reg_write(tp, OCP_SRAM_DATA, 0x00c3);
-+		ocp_reg_write(tp, OCP_SRAM_DATA, 0x0078);
-+		ocp_reg_write(tp, OCP_SRAM_DATA, 0x0047);
-+		ocp_reg_write(tp, OCP_SRAM_DATA, 0x0023);
-+
-+		/* lsbmsk_parameters
-+		 * RL6961_lsbmsk_parameter_250207
-+		 */
-+		sram2_write(tp, 0x88d7, 0x01a0);
-+		sram2_write(tp, 0x88d9, 0x01a0);
-+		sram2_write(tp, 0x8ffa, 0x002a);
-+
-+		sram2_write(tp, 0x8fee, 0xffdf);
-+		sram2_write(tp, 0x8ff0, 0xffff);
-+		sram2_write(tp, 0x8ff2, 0x0a4a);
-+		sram2_write(tp, 0x8ff4, 0xaa5a);
-+		sram2_write(tp, 0x8ff6, 0x0a4a);
-+		sram2_write(tp, 0x8ff8, 0xaa5a);
-+
-+		sram2_write_w0w1(tp, 0x88d5, 0xff00, 0x0200);
-+		break;
-+
- 	default:
- 		break;
- 	}
-@@ -8155,6 +8348,18 @@ static void r8157_hw_phy_cfg(struct r8152 *tp)
- 	set_bit(PHY_RESET, &tp->flags);
- }
- 
-+static int r8159_wait_backup_restore(struct r8152 *tp)
-+{
-+	u32 ocp_data;
-+
-+	ocp_data = ocp_read_word(tp, MCU_TYPE_USB, USB_MISC_0);
-+	if (!(ocp_data & PCUT_STATUS))
-+		return 0;
-+
-+	return poll_timeout_us(ocp_data = ocp_read_word(tp, MCU_TYPE_USB, USB_GPHY_CTRL),
-+			       ocp_data & BACKUP_RESTRORE, 200, 20000, false);
-+}
-+
- static void r8156_init(struct r8152 *tp)
- {
- 	u32 ocp_data;
-@@ -8164,14 +8369,14 @@ static void r8156_init(struct r8152 *tp)
- 	if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
- 		return;
- 
--	if (tp->version == RTL_VER_16) {
-+	if (tp->version == RTL_VER_16 || tp->version == RTL_VER_17) {
- 		ocp_byte_set_bits(tp, MCU_TYPE_USB, 0xcffe, BIT(3));
- 		ocp_byte_clr_bits(tp, MCU_TYPE_USB, 0xd3ca, BIT(0));
- 	}
- 
- 	ocp_byte_clr_bits(tp, MCU_TYPE_USB, USB_ECM_OP, EN_ALL_SPEED);
- 
--	if (tp->version != RTL_VER_16)
-+	if (tp->version < RTL_VER_16)
- 		ocp_write_word(tp, MCU_TYPE_USB, USB_SPEED_OPTION, 0);
- 
- 	ocp_word_set_bits(tp, MCU_TYPE_USB, USB_ECM_OPTION, BYPASS_MAC_RESET);
-@@ -8185,6 +8390,7 @@ static void r8156_init(struct r8152 *tp)
- 	case RTL_VER_13:
- 	case RTL_VER_15:
- 	case RTL_VER_16:
-+	case RTL_VER_17:
- 		r8156b_wait_loading_flash(tp);
- 		break;
- 	default:
-@@ -8201,6 +8407,12 @@ static void r8156_init(struct r8152 *tp)
- 			return;
- 	}
- 
-+	if (tp->version == RTL_VER_17 && r8159_wait_backup_restore(tp)) {
-+		rtl_set_inaccessible(tp);
-+		dev_err(&tp->intf->dev, "init failed, backup-restore timed out\n");
-+		return;
-+	}
-+
- 	data = r8153_phy_status(tp, 0);
- 	if (data == PHY_STAT_EXT_INIT) {
- 		ocp_reg_clr_bits(tp, 0xa468, BIT(3) | BIT(1));
-@@ -8216,7 +8428,7 @@ static void r8156_init(struct r8152 *tp)
- 
- 	data = r8153_phy_status(tp, PHY_STAT_LAN_ON);
- 
--	if (tp->version == RTL_VER_16)
-+	if (tp->version >= RTL_VER_16)
- 		r8157_u2p3en(tp, false);
- 	else
- 		r8153_u2p3en(tp, false);
-@@ -8227,7 +8439,7 @@ static void r8156_init(struct r8152 *tp)
- 	/* U1/U2/L1 idle timer. 500 us */
- 	ocp_write_word(tp, MCU_TYPE_USB, USB_U1U2_TIMER, 500);
- 
--	if (tp->version == RTL_VER_16)
-+	if (tp->version >= RTL_VER_16)
- 		r8157_power_cut_en(tp, false);
- 	else
- 		r8153b_power_cut_en(tp, false);
-@@ -8260,7 +8472,7 @@ static void r8156_init(struct r8152 *tp)
- 
- 	r8156_mac_clk_spd(tp, true);
- 
--	if (tp->version != RTL_VER_16)
-+	if (tp->version < RTL_VER_16)
- 		ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_MAC_PWR_CTRL3, PLA_MCU_SPDWN_EN);
- 
- 	ocp_data = ocp_read_word(tp, MCU_TYPE_PLA, PLA_EXTRA_STATUS);
-@@ -8273,8 +8485,13 @@ static void r8156_init(struct r8152 *tp)
- 
- 	set_bit(GREEN_ETHERNET, &tp->flags);
- 
--	/* rx aggregation / 16 bytes Rx descriptor */
--	if (tp->version == RTL_VER_16)
-+	/* RX aggregation / 16 bytes RX descriptor
-+	 * BIT(11) is specific to RTL8159, with unknown meaning
-+	 */
-+	if (tp->version == RTL_VER_17)
-+		ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_USB_CTRL,
-+				  RX_AGG_DISABLE | RX_DESC_16B | BIT(11));
-+	else if (tp->version == RTL_VER_16)
- 		ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_USB_CTRL, RX_AGG_DISABLE | RX_DESC_16B);
- 	else
- 		ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_USB_CTRL, RX_AGG_DISABLE | RX_ZERO_EN);
-@@ -8282,7 +8499,7 @@ static void r8156_init(struct r8152 *tp)
- 	if (tp->version < RTL_VER_12)
- 		ocp_byte_set_bits(tp, MCU_TYPE_USB, USB_BMU_CONFIG, ACT_ODMA);
- 
--	if (tp->version == RTL_VER_16) {
-+	if (tp->version >= RTL_VER_16) {
- 		/* Disable Rx Zero Len */
- 		rtl_bmu_clr_bits(tp, 0x2300, BIT(3));
- 		/* TX descriptor Signature */
-@@ -9670,6 +9887,29 @@ static int rtl_ops_init(struct r8152 *tp)
- 		r8157_desc_init(tp);
- 		break;
- 
-+	case RTL_VER_17:
-+		tp->eee_en		= true;
-+		tp->eee_adv		= MDIO_EEE_100TX | MDIO_EEE_1000T | MDIO_EEE_10GT;
-+		tp->eee_adv2		= MDIO_EEE_2_5GT | MDIO_EEE_5GT;
-+		ops->init		= r8156_init;
-+		ops->enable		= rtl8156_enable;
-+		ops->disable		= rtl8153_disable;
-+		ops->up			= rtl8156_up;
-+		ops->down		= rtl8156_down;
-+		ops->unload		= rtl8153_unload;
-+		ops->eee_get		= r8153_get_eee;
-+		ops->eee_set		= r8152_set_eee;
-+		ops->in_nway		= rtl8153_in_nway;
-+		ops->hw_phy_cfg		= r8157_hw_phy_cfg;
-+		ops->autosuspend_en	= rtl8157_runtime_enable;
-+		ops->change_mtu		= rtl8156_change_mtu;
-+		tp->rx_buf_sz		= 48 * 1024;
-+		tp->support_2500full	= 1;
-+		tp->support_5000full	= 1;
-+		tp->support_10000full	= 1;
-+		r8157_desc_init(tp);
-+		break;
-+
- 	default:
- 		ret = -ENODEV;
- 		dev_err(&tp->intf->dev, "Unknown Device\n");
-@@ -9823,6 +10063,9 @@ static u8 __rtl_get_hw_ver(struct usb_device *udev)
- 	case 0x1030:
- 		version = RTL_VER_16;
- 		break;
-+	case 0x2020:
-+		version = RTL_VER_17;
-+		break;
- 	default:
- 		version = RTL_VER_UNKNOWN;
- 		dev_info(&udev->dev, "Unknown version 0x%04x\n", ocp_data);
-@@ -9975,6 +10218,7 @@ static int rtl8152_probe_once(struct usb_interface *intf,
- 	case RTL_VER_13:
- 	case RTL_VER_15:
- 	case RTL_VER_16:
-+	case RTL_VER_17:
- 		netdev->max_mtu = size_to_mtu(16 * 1024);
- 		break;
- 	case RTL_VER_01:
-@@ -10140,6 +10384,7 @@ static const struct usb_device_id rtl8152_table[] = {
- 	{ USB_DEVICE(VENDOR_ID_REALTEK, 0x8155) },
- 	{ USB_DEVICE(VENDOR_ID_REALTEK, 0x8156) },
- 	{ USB_DEVICE(VENDOR_ID_REALTEK, 0x8157) },
-+	{ USB_DEVICE(VENDOR_ID_REALTEK, 0x815a) },
- 
- 	/* Microsoft */
- 	{ USB_DEVICE(VENDOR_ID_MICROSOFT, 0x07ab) },
-
--- 
-2.47.3
-
+> ---
+>  drivers/net/dsa/realtek/rtl8365mb.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+Thanks,
+Olek
