@@ -1,74 +1,104 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15D074657FD;
-	Wed,  6 May 2026 12:57:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2786144E047
+	for <netdev@vger.kernel.org>; Wed,  6 May 2026 12:58:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778072261; cv=none; b=TkWLL+l6W1ZWhRfP5WCm8OQlwRr18bbmMjEr9xYqtf6H7PuDZnqMeo7VjibI1wi/zl9u+BkW/uM1fJ4633IgORdnVVJ2LSu9Kulk7aa769pfRrbetnarPEE9N1xNmSdi666PFoab+5YFSMICcFqA1cv0XDAKyAe7lBXWEaNMvoY=
+	t=1778072326; cv=none; b=ifsRYdDRkfk+w8MGlNerjqGq1lU2sc+HHQgej5tyZ6D5+8GT21xpv3fxPEuYXkwhYDYp7606pkpJvR+1bQ52bRy58hufEWnNaFw1hrIWxq5YoMCnXS44vQuB1Wg6eUx4cbt46P9wQqV8gSRBvRgta8E5s6eA+hlfGVJjEqoNpRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778072261; c=relaxed/simple;
-	bh=5dPQLPM8bePoFuXo+KMMdUNyGhXMyhns/oXbNrLi3L0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JvmDxjxRM+rlGWrj/ua8UHYnH+WfjzlHXHJSQzVUFRPXyY0uzjuodR7ke3P9kXBOgdPB2vJiWTy5xEtBvp4T0rFK8HhaM4+QvbdIuEI7Ch3KVeLEl79axCpURpJHAWt7m0euqe3PIhCsUhqTNiGWOExdbLxOTVGrOTPRDzAdJxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=kP/2qPFj; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="kP/2qPFj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=fd
-	TXVm9S9X4vRIBnFq17gJB4n13kBeVsfjlElxdlkpw=; b=kP/2qPFjNKSA3k6Itz
-	T67eU19jyWyARd8xtBTBYD82xhsOymC0dl4N3V5GxIZFQoY6NeI/sVI28q8qaysM
-	K8YflLLlKLGJr2iP3oLhHKpdbVaXocKZr+GmM+enXXkJuMiZcNYzpJ+KxsqtlgJc
-	HmlrRt5mQBRe/zs0dcZIV1ZmQ=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wD3_2l3OvtpM4PaDg--.47018S2;
-	Wed, 06 May 2026 20:56:24 +0800 (CST)
-From: albin_yang@163.com
-To: alexjlzheng@gmail.com
-Cc: alexjlzheng@tencent.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	horms@kernel.org,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	sd@queasysnail.net,
-	shenyangyang4@huawei.com,
-	Wei Yang <albinwyang@tencent.com>
-Subject: Re: [PATCH] macsec: defer RX SA cleanup from RCU callback to workqueue
-Date: Wed,  6 May 2026 20:56:15 +0800
-Message-ID: <20260506125615.3078625-1-albin_yang@163.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20260506100107.388184-1-alexjlzheng@tencent.com>
-References: <20260506100107.388184-1-alexjlzheng@tencent.com>
+	s=arc-20240116; t=1778072326; c=relaxed/simple;
+	bh=z9jqkhW0V6ud7bKJ/0boSGhrhI5MbHlXZNIajKm0+1E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Vd/wIYutHF4nRdeMnuxR8jSuAbkdAVGnnnPE9a9tSs5/ctyd4CsebiiqMAy5q3lUumYmfBSRhgDyqWCmkemZmIsLedDQq8/lw8RweRaOyvM2h54v3mONXnrt+KPm9Iq8xmk7UUa3tM7vfSGp+WtHpidl30XZoPUqJagbPfP2PhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1wKbpO-0001SE-Jy; Wed, 06 May 2026 14:58:14 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1wKbpL-000kKR-1k;
+	Wed, 06 May 2026 14:58:11 +0200
+Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <ore@pengutronix.de>)
+	id 1wKbpL-00000003UPo-3cWl;
+	Wed, 06 May 2026 14:58:11 +0200
+Date: Wed, 6 May 2026 14:58:11 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Markus Baier <Markus.Baier@soslab.tu-darmstadt.de>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	Miaoqian Lin <linmq006@gmail.com>, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net] net: usb: asix: ax88772: replace
+ usbnet_link_change() with queue_work() and usbnet_unlink_rx_urbs()
+Message-ID: <afs6467DFTQ35e9b@pengutronix.de>
+References: <20260506010344.184636-1-Markus.Baier@soslab.tu-darmstadt.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3_2l3OvtpM4PaDg--.47018S2
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU173vDUUUU
-X-CM-SenderInfo: pdoex0xb1d0wi6rwjhhfrp/xtbCzhkGqGn7Onk-XQAA3K
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260506010344.184636-1-Markus.Baier@soslab.tu-darmstadt.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-On Wed, May 06, 2026 at 10:01:07AM +0800, alexjlzheng@tencent.com wrote:
-> crypto_free_aead() can call vunmap() internally (e.g. via
-> dma_free_attrs() in hardware crypto drivers like hisi_sec2), which
-> must not be called from softirq context.
+On Wed, May 06, 2026 at 03:03:44AM +0200, Markus Baier wrote:
+> Commit 36bdc0e815b4 ("net: usb: asix: ax88772: re-add usbnet_link_change()
+> in phylink callbacks") restored the link-change notification that was
+> lost during the phylink migration, by calling usbnet_link_change() from
+> the phylink mac_link_up() / mac_link_down() callbacks.
 > 
-> free_rxsa() is an RCU callback and therefore runs in softirq context,
-> causing a kernel crash when the underlying AEAD implementation
-> performs DMA unmapping during tfm destruction:
+> While this fixed the original symptom (RX URB submission not being
+> initiated after link up), usbnet_link_change() also calls
+> netif_carrier_off() on link-down, which is redundant in a phylink-based
+> driver because phylink manages the carrier state itself.
 > 
-> [...]
+> Replace the usbnet_link_change() calls with the minimal operations:
+> 
+>   - In ax88772_mac_link_up(), schedule dev->bh_work directly via
+>     queue_work(system_bh_wq, &dev->bh_work). This is the same
+>     mechanism usbnet_open() uses to schedule the bottom-half
+>     that submits RX URBs.
+> 
+>   - In ax88772_mac_link_down(), call usbnet_unlink_rx_urbs() to
+>     return any in-flight RX URBs to the host controller.
+>     This releases USB bandwidth and avoids keeping unused buffers
+>     queued while the link is down. This is the symmetric
+>     counterpart to scheduling new RX URBs on link up.
+> 
+> Tested with the Apple A1277 USB Ethernet Adapter (05ac:1402,
+> AX88772A based) on a Banana Pro (Allwinner A20).
+> 
+> Fixes: 36bdc0e815b4 ("net: usb: asix: ax88772: re-add usbnet_link_change() in phylink callbacks")
+> Assisted-by: Claude:claude-opus-4-7
+> Signed-off-by: Markus Baier <Markus.Baier@soslab.tu-darmstadt.de>
 
-Looks good to me.
+Tested on AX88772C. Thx!
 
-Reviewed-by: Wei Yang <albinwyang@tencent.com>
+Tested-by: Oleksij Rempel <o.rempel@pengutronix.de> 
 
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
