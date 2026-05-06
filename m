@@ -1,204 +1,204 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42DD92E975E;
-	Wed,  6 May 2026 06:25:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DEAC19E97B;
+	Wed,  6 May 2026 06:32:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778048731; cv=none; b=guw8pxNDxYk9jxeXn7o0ZTu6ERrBBpteuGgiS/+Pmnwdhn8m+6zUvJYCf8Sb9AZCs8SLIoYRAr9eTeF5kpa7CjsIy/Zp9HLwTB82u1r5A5DRZ54TG8dFdb2N86AxafrPP2OMyr94rs6Q88TGNmde0Daq4ZPuDF8batiSWFJKkfo=
+	t=1778049124; cv=none; b=GuNxvfM2ncWma9U/VjesfGbPdMybPwporLS6GbGSyK4B84eMbl/wmvE07YdqxrON/jHZumgkOFWESDcPVh9GHDKcfCoD4XsbxdnrkYSSPn4If+A7b/sextUpi5uOeQ0vuiI4AA+wRKZR/2pzNVX61BBu/aj+j6SGfSl/WUpf4VY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778048731; c=relaxed/simple;
-	bh=R4bPcjPlqNPWP683/yZmV5MoC5B7pmWZIA6XXvjemv0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Atl8Be4hiI2lStOD8tp832kHmUReS1lyJVGv4te4WFr801XchpfmUvf797P+j2sucV/itGHl3qlkGe7mrkfOas/yzkS4rCbKIu89S8rOJ9IhYOSKpy/tu3EO588GkTvaWgvEadElRCnFoFh503wWaBKV6AykT+StMgfuJy/8mTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AY8Q68c9; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1778049124; c=relaxed/simple;
+	bh=SB5tDwl8GpNdeE6O/6YQk+V4Mr/UoFQkPrb3axoem68=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=G0W2TS22r5uBhOpsNXqhTddNTvC61Hcvn++iLnpGFZF9uow2+obmMWlu8j7CpuWUJAqYbA3FI0546+xFkI9O+UxA5RdxL4Jynx1ck2FReh1u8znKvbom4JLn/YyQrXh8eLy6oJPJbpMHO/mKsyJ14ACTKVljgSB/0Bjn3h/ImRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fF3bycpX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AY8Q68c9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778048730; x=1809584730;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=R4bPcjPlqNPWP683/yZmV5MoC5B7pmWZIA6XXvjemv0=;
-  b=AY8Q68c9doVXd8zmzG/6L0aL9GFlGi1ze8HbxfG0N0+drf0uXmpmLf9E
-   m6mZUiRX60HmxInI7e+zXI1nHihrMotg6ElcXwS+7yUiD+JNKolIsUN1g
-   P7kfnuTPE9uAxI0j/kShw5Ahb2cAMaD+RLG28e2mChXeNPY7isMGUw/vS
-   ABFIb8QsvtWhK0ssqAyrOveKXIIk1ItVNMSO6UxAT1rq5ZUY6eW7HeyUg
-   s98rEivzbLMWdIUo+sRnGvGLLjSjzaAX2o//KP17SixrjEATKGqtHtBps
-   18HFcmF/NlrMV5XLL0Nh84KFKAdWJlT4usyw8hvd1Qr5gYnpNUkO7Dh29
-   Q==;
-X-CSE-ConnectionGUID: W5QUSzJFTsenp3oLLP7QbA==
-X-CSE-MsgGUID: Am2bs66qQGOWllYyn/GiIg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11777"; a="78995681"
-X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; 
-   d="scan'208";a="78995681"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2026 23:25:29 -0700
-X-CSE-ConnectionGUID: HrPAXSirRGapphNQmPPsnQ==
-X-CSE-MsgGUID: nrdfDvlkRbupitL8MziVjQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,219,1770624000"; 
-   d="scan'208";a="235181845"
-Received: from mohdfai2-mobl.gar.corp.intel.com (HELO [10.247.37.237]) ([10.247.37.237])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2026 23:25:26 -0700
-Message-ID: <16b18088-8fe3-4a38-9eb9-d39842e6b94f@linux.intel.com>
-Date: Wed, 6 May 2026 14:25:23 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fF3bycpX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C28CC2BCB8;
+	Wed,  6 May 2026 06:32:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778049123;
+	bh=SB5tDwl8GpNdeE6O/6YQk+V4Mr/UoFQkPrb3axoem68=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fF3bycpXWafr2E6qk4jaQsRplkyTXsst0PRy82bGKoHCkbGw5g55yRzCrynQZrzSc
+	 lYaMvU0ovlHM96IMGqQ8UiJlXcxZQgufTf8zhcbBL5SI9TdNCaBL2+KgSAAb+fSrMY
+	 BZIJCpMEMPwVlNs/BBLTqSaB7boxgxCYH3lLSyyy3+r/SybHOg11xhMNc4t52yxmjZ
+	 yDIfF8tEAWfK2HS5pjFirlhbQXRy2txnNcm4TTRiQUsbThXjrpkvmu4NeMjVm1tIxh
+	 RD3VVd4bWsnrwfkRUCOvP8hJS5VwyVAsHHRjNLyAbTLGCAnrQZuBqOyTTRKv2IbwxY
+	 2iwODr94mwEbg==
+Date: Tue, 5 May 2026 23:30:43 -0700
+From: Eric Biggers <ebiggers@kernel.org>
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Yury Norov <ynorov@nvidia.com>, Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Yury Norov <yury.norov@gmail.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Ruan Jinjie <ruanjinjie@huawei.com>, linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	Linux-Arch <linux-arch@vger.kernel.org>,
+	Netdev <netdev@vger.kernel.org>, bpf@vger.kernel.org,
+	Nathan Chancellor <nathan@kernel.org>
+Subject: Re: [PATCH 1/6] lib: include crc32.h conditionally on CONFIG_CRC32
+Message-ID: <20260506063043.GB16204@sol>
+References: <20260430211351.658193-1-ynorov@nvidia.com>
+ <20260430211351.658193-2-ynorov@nvidia.com>
+ <ec4ed7f5-b1c8-49e4-b83d-e29c5414b9de@app.fastmail.com>
+ <afjNaToyptiMogV4@yury>
+ <9d45acd1-667b-4acf-9e2e-bcd79630d726@app.fastmail.com>
+ <afjmIK4mlCWeywuS@yury>
+ <abf4a586-b675-4e29-9570-fd3ed4158f58@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iwl-next v4 3/3] igc: add support for forcing link speed
- without autonegotiation
-To: Simon Horman <horms@kernel.org>, khai.wen.tan@linux.intel.com
-Cc: anthony.l.nguyen@intel.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, faizal.abdul.rahim@intel.com,
- hong.aun.looi@intel.com, khai.wen.tan@intel.com
-References: <20260428060009.311393-4-khai.wen.tan@linux.intel.com>
- <20260430135057.1653330-1-horms@kernel.org>
-Content-Language: en-US
-From: "Abdul Rahim, Faizal" <faizal.abdul.rahim@linux.intel.com>
-In-Reply-To: <20260430135057.1653330-1-horms@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <abf4a586-b675-4e29-9570-fd3ed4158f58@app.fastmail.com>
 
+On Mon, May 04, 2026 at 09:05:30PM +0200, Arnd Bergmann wrote:
+> On Mon, May 4, 2026, at 20:32, Yury Norov wrote:
+> > On Mon, May 04, 2026 at 07:18:49PM +0200, Arnd Bergmann wrote:
+> >> On Mon, May 4, 2026, at 18:46, Yury Norov wrote:
+> >> > Never heard about such a thing like "optional interface". And git grep
+> >> > tends to second that...
+> >> 
+> >> I meant any library interface that can be turned on or off
+> >
+> > So? If I disable CRC32, can I use the either_crc()? In case of that
+> > networking header, the answer is yes. In some other piece of code
+> > the answer is no. Is that correct?
+> 
+> Since it's a macro defiend in terms of both bitref32 and
+> crc32_le, you can only call it from dead code, such as an
+> inline function that is not itself used, or from inside of
+> a block that is protected with IS_ENABLED(CONFIG_CRC32) etc.
+>   
+> >> >> 
+> >> >> Don't add #ifdef blocks around headers. If the header cannot
+> >> >> be included without side-effects, change the linux/crc32.h
+> >> >> file instead of its users.
+> >> >
+> >> > linux/acpi.h does that like many othes. What exactly is wrong with
+> >> > protecting headers inclusion?
+> >> 
+> >> There is no "protecting" here, you just add complexity to the
+> >> build when headers are sometimes included indirectly and but
+> >> other times are not, depending on kernel configuration.
+> >
+> > Sorry, don't understand... I use the 'protecting' term with the meaning:
+> > the functionality that is explicitly disabled should be never used.
+> > Otherwise, what for we disable it?
+> 
+> Arguably, both configuration symbols are at the point of not actually
+> saving enough object code size to actually be worth the Kconfig
+> dependencies.
+> 
+> As long as we have CONFIG_CRC32 and CONFIG_BITREVERSE, the
+> point of having the Kconfig symbols is to let drivers request
+> the inclusion of the library helpers.
+> 
+> >> It's unlikely to cause problems for the crc32.h header, but
+> >> the acpi example definitely risks running into circular
+> >> inclusions when you end up with some other header that depending
+> >> on configuration ends up including linux/acpi.h while also
+> >> bring included indirectly from that one.
+> >> 
+> >> >> It looks like the problem is the check for CONFIG_GENERIC_BITREVERSE
+> >> >> in include/asm-generic/bitops/__bitrev.h, which ends up
+> >> >> hinding the generic___bitrev32() helper without need.
+> >> >> 
+> >> >> Simply removing the #ifdef there should avoid the build failure.
+> >> >
+> >> > OK, it seems like this is what I don't understand.
+> >> >
+> >> > We've got an optional feature, like CRC32, which is enabled by
+> >> > CONFIG_CRC32. The most conservative way is to declare everything
+> >> > CRC32-related in the corresponding header, and then protect the header
+> >> > with IS_ENABLED(CONFIG_CRC32).
+> >> >
+> >> > I understand that from practical perspective, we can declare some simple
+> >> > macros, like header size, unprotected. But what we've got now is a sort
+> >> > of mess: all CRC32-related functions are declared unprotected, and
+> >> > generic headers are good to use them. Compiler is happy while those
+> >> > functions are actually unused. Next, CRC32 depends on BITREVERSE, which
+> >> > is again unprotected, and it may optionally have an arch implementation.
+> >> >
+> >> > So if arch bitrev() is implemented, you can use part of bitreverse and
+> >> > crc32 APIs despite that they are explicitly disabled - just because they
+> >> > are implemented as macros in unprotected headers. And you cannot use some
+> >> > others - because they are implemented differently, as a real functions.
+> >> 
+> >> I think you trying to solve a non-problem here.
+> >
+> > This was reported by Nathan for tinyconfig. At least x86 and s390 are
+> > affected.
+> >
+> > https://lore.kernel.org/all/20260429202922.GA3575295@ax162/
+> >
+> > Is tinyconfig important?
+> 
+> Nathan reported a build regression caused by a small mistake
+> in 596a9ea9015b ("bitops: Define generic __bitrev8/16/32 for reuse"),
+> which is of course needs to be fixed.
+> 
+> What I meant is that there is no reason to not use the obvious
+> fix and do
+> 
+> --- a/include/asm-generic/bitops/__bitrev.h
+> +++ b/include/asm-generic/bitops/__bitrev.h
+> @@ -2,7 +2,6 @@
+>  #ifndef _ASM_GENERIC_BITOPS___BITREV_H_
+>  #define _ASM_GENERIC_BITOPS___BITREV_H_
+>  
+> -#ifdef CONFIG_GENERIC_BITREVERSE
+>  #include <asm/types.h>
+>  
+>  extern u8 const byte_rev_table[256];
+> @@ -20,6 +19,5 @@ static __always_inline __attribute_const__ u32 generic___bitrev32(u32 x)
+>  {
+>         return (generic___bitrev16(x & 0xffff) << 16) | generic___bitrev16(x >> 16);
+>  }
+> -#endif /* CONFIG_GENERIC_BITREVERSE */
+>  
+>  #endif /* _ASM_GENERIC_BITOPS___BITREV_H_ */
+> 
+> > Right now half CRC32 is available if CONFIG_CRC32 is on, and half is
+> > not available. The bitreverse is the same. If HAVE_ARCH_BITREVERSE is
+> > enabled, one can use the API, bypassing the BITREVERSE. This doesn't
+> > sound right to me long-term.
+> >
+> > Whatever this ends up, let's figure out a consistent solution please?
+> 
+> I really don't think we need any sort of solution here, aside from
+> the trivial regression fix that returns it to the previous working
+> state.
 
+I agree with Arnd.  The standard practice in the kernel is for headers
+to be includeable even when the associated kconfig (if any) isn't
+enabled.  In such a case usually the inline functions, macros, and the
+declarations of out-of-line functions and global variables are still
+made available in the header.
 
-On 30/4/2026 9:50 pm, Simon Horman wrote:
-> From: 'Simon Horman' <horms@kernel.org>
-> 
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> Full review at: https://sashiko.dev
-> ---
-> igc: add support for forcing link speed without autonegotiation
-> 
-> This commit allows users to force 10/100 Mb/s link speed and duplex via
-> ethtool when autonegotiation is disabled. Previously, the driver rejected
-> these requests.
-> 
->> diff --git a/drivers/net/ethernet/intel/igc/igc_ethtool.c b/drivers/net/ethernet/intel/igc/igc_ethtool.c
->> index cfcbf2fdad6e..9997ebbdf778 100644
->> --- a/drivers/net/ethernet/intel/igc/igc_ethtool.c
->> +++ b/drivers/net/ethernet/intel/igc/igc_ethtool.c
-> [ ... ]
->> @@ -2000,6 +2013,41 @@ static int igc_ethtool_get_link_ksettings(struct net_device *netdev,
->>  	return 0;
->>  }
->>  
->> +/**
->> + * igc_handle_autoneg_disabled - Configure forced speed/duplex settings
->> + * @adapter: private driver structure
->> + * @speed: requested speed (must be SPEED_10 or SPEED_100)
->> + * @duplex: requested duplex
->> + *
->> + * Records forced speed/duplex when autoneg is disabled.
->> + * Caller must validate speed before calling this function.
->> + */
->> +static void igc_handle_autoneg_disabled(struct igc_adapter *adapter, u32 speed,
->> +					u8 duplex)
->> +{
->> +	struct igc_mac_info *mac = &adapter->hw.mac;
->> +
->> +	switch (speed) {
->> +	case SPEED_10:
->> +		mac->forced_speed_duplex = (duplex == DUPLEX_FULL) ?
->> +			IGC_FORCED_10F : IGC_FORCED_10H;
->> +		break;
->> +	case SPEED_100:
->> +		mac->forced_speed_duplex = (duplex == DUPLEX_FULL) ?
->> +			IGC_FORCED_100F : IGC_FORCED_100H;
->> +		break;
->> +	default:
->> +		WARN_ONCE(1, "Unsupported speed %u\n", speed);
->> +		return;
->> +	}
->> +
->> +	mac->autoneg_enabled = false;
->> +
->> +	/* Half-duplex cannot support flow control per IEEE 802.3 */
->> +	if (duplex != DUPLEX_FULL)
->> +		adapter->hw.fc.requested_mode = igc_fc_none;
-> 
-> Does this permanently overwrite the user's flow control preference?
-> 
-> If half-duplex is requested, requested_mode is set to igc_fc_none. Because
-> requested_mode represents the persistent state for the user's flow control
-> preference, the user might permanently lose their configuration. If they later
-> switch back to full-duplex, requested_mode remains igc_fc_none, and flow
-> control stays disabled.
-> 
-> Would it be better to dynamically override hw->fc.current_mode to
-> igc_fc_none during link configuration instead of mutating requested_mode?
-> 
+The point of the kconfig symbol is just to build the file containing the
+definitions of out-of-line functions and global variables.
 
-Yes you're right, thanks, will update.
+Yes, when those definitions are needed and calling code forgets to
+select that kconfig symbol, a build error results.  But it's "only" a
+build error; those get found and fixed relatively easily.  The
+alternative of hiding everything would mean a lot more #ifdefs in other
+code, which ends up being very messy.
 
->> +}
-> [ ... ]
->> @@ -2071,14 +2126,20 @@ igc_ethtool_set_link_ksettings(struct net_device *netdev,
->>  		}
->>  	}
->>  
->> +	if (cmd->base.autoneg == AUTONEG_DISABLE &&
->> +	    cmd->base.speed != SPEED_10 && cmd->base.speed != SPEED_100) {
->> +		netdev_info(dev, "Unsupported speed for forced link\n");
->> +		return -EINVAL;
->> +	}
->> +
-> 
-> Should we also validate cmd->base.duplex here to prevent a fallback to
-> half-duplex?
-> 
-> If a user runs a command like "ethtool -s eth0 speed 100 autoneg off" while
-> the link is down, ethtool queries and preserves the current duplex value,
-> which is DUPLEX_UNKNOWN (0xff).
-> 
-> In igc_handle_autoneg_disabled(), the code checks if duplex == DUPLEX_FULL,
-> which evaluates to false, and forces the interface to 100 Mbps half-duplex.
-> 
-> Could we explicitly check that cmd->base.duplex is either DUPLEX_HALF or
-> DUPLEX_FULL and return -EINVAL otherwise?
-
-Will update.
-
-> 
->>  	while (test_and_set_bit(__IGC_RESETTING, &adapter->state))
->>  		usleep_range(1000, 2000);
-> 
-> This isn't a bug introduced by this patch, but does this ad-hoc
-> synchronization loop reimplement locking without fairness or lockdep support?
-> 
-> According to the Networking Subsystem Guidelines, using bit operations as a
-> substitute for real locks violates core kernel locking rules and introduces
-> potential races.
-> 
-> Could this be replaced with a proper concurrency mechanism such as a mutex?
-> 
-
-Hi Simon, you've raised this issue in v2, and after discussion, you've
-agreed that this change doesn't belong in this patch series.
-
-Not sure if I missed anything?
-
->>  
->> -	if (cmd->base.autoneg == AUTONEG_ENABLE) {
->> +	if (cmd->base.autoneg == AUTONEG_ENABLE)
->>  		igc_handle_autoneg_enabled(adapter, cmd);
->> -	} else {
->> -		netdev_info(dev, "Force mode currently not supported\n");
->> -	}
->> +	else
->> +		igc_handle_autoneg_disabled(adapter, cmd->base.speed,
->> +					    cmd->base.duplex);
->>  
->>  	/* MDI-X => 2; MDI => 1; Auto => 3 */
->>  	if (cmd->base.eth_tp_mdix_ctrl) {
-> 
-
+- Eric
