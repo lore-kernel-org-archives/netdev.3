@@ -1,81 +1,121 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5AF33ED5DB
-	for <netdev@vger.kernel.org>; Wed,  6 May 2026 13:18:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 312D636405E
+	for <netdev@vger.kernel.org>; Wed,  6 May 2026 13:20:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778073540; cv=none; b=rm8quto3GfGJg79dlaioH209RKKg15NpC3kbaFqGHw+IIqC7bcgWu1VZAIKTqWYnHeFbe2Lwso2fBwcbrg1Hof11vyOdci60VWgQZ358RwgMXac5N9NzdIXFkRnXBSOx7Qdurq5lxJDV3Qt4naOBpzZL4gkGEXNftrFUeqBLt+4=
+	t=1778073645; cv=none; b=MEPD5Db0OJmyYASAJxfcC7JEni3FD5yaWDGOHb9NF7NEu9u4qRdCeIHFf2Eyf1VPyXyXcTL/QRntMjBHl22hoNiYu9bGT+fY3yiXJfjUaygyzhXcRg3yGDSu8UHbWfcTTHrTiJ6a4LcCx1PS069cWVQ39Ng8tTPht+V+VAnrRnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778073540; c=relaxed/simple;
-	bh=Te8iS31aRN7ekU4dd4OwyidmIsQfc2BPjBnd6crZ66M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=me8z4Hu/R4tL/Kr4JYwxqKfFLrboTq58FPf6ULD9YaGWzDdJIauI5OIxhxMKqbe28OkD8mV8qRKafzUTxDVYuwJe5jtkztbc9a25QxL97D2p2pBdfCIdbkVjaxCUpAZTOmfmZG7SRCqs4TIRnstzsCEuJHHf8pITLflJvQD2KGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=iv80cOR4; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1778073645; c=relaxed/simple;
+	bh=f4qI1HnRSrCJ0gyE3xQbeXLVu4tMvNsOgwG6DEf1w0Q=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=f0yHuEYM914MoJBJSmvXQUgHJfBWwFDSxhAqgo4nD699NhOmRRDNS48jdOGCqAzzx4Wp7opesbsCZFiciZ2BOnOBVquzL+2ksqrkRWMGOvj2rMqDEEZW6x2HlLtLxuF6Q2eMy6xSNLCDN5Ynyns3KMpqRVyAS201cMTyFjSRWXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qOLZ3cQs; arc=none smtp.client-ip=209.85.128.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="iv80cOR4"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=vz3X3eta1IiSJY+7oVvLp9p9/Ff4G0CsduoWUS4/7dA=; b=iv80cOR4j2e5HMldf7g5DX6mxm
-	hg1YsjFoKckwBwUcXZwMzIUnwgTACWG/z+zGOKSZsZxGEvogJTNAhkZgzEI3K3Y/RtVrFwa2n73oh
-	aZ69GxaNr0124bkqzvM2M5/CizelQviSqCrELshrlrGT7u/yrMvwRgOatsfAxR/pBHGk=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wKc9P-001doI-M4; Wed, 06 May 2026 15:18:55 +0200
-Date: Wed, 6 May 2026 15:18:55 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Sven Schuchmann <schuchmann@schleissheimer.de>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: assert in phylink.c with lan7801 and dp83tc811 since kernel 6.18
-Message-ID: <eba96f21-78e6-42bf-938a-6d4037d0a305@lunn.ch>
-References: <BEZP281MB224533D524B27CFC6E47B447D93E2@BEZP281MB2245.DEUP281.PROD.OUTLOOK.COM>
- <57fb63c2-7a05-4bbe-ba2d-fc61ce1e3ba1@lunn.ch>
- <BEZP281MB22458F571CC8251C141D933CD93F2@BEZP281MB2245.DEUP281.PROD.OUTLOOK.COM>
- <7778cd41-cf36-4524-a347-408a8fb0bde0@lunn.ch>
- <f9b8840d-94ba-4bde-9ace-fb81eb733ff9@bootlin.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qOLZ3cQs"
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-79885f4a8ffso61818267b3.3
+        for <netdev@vger.kernel.org>; Wed, 06 May 2026 06:20:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778073643; x=1778678443; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rOFUa+pTryMGHy3DzUaJrzcZH0mpKNqsNoKrNDnAedQ=;
+        b=qOLZ3cQsnusst8p18gZ8yg0BjmmYLmrEV/YIu/X+eGrh5QinjbjTCdVL0EV3v/EoNR
+         7YHRkvxLcCP640IZ8JDJtPS2G2rRlWxfsaCl+BKQR8cDAxjCbXr9aHNwLzpiXuIBtNUq
+         LjaBA48SwUlUBTt8eSwkOkCGpokaTMuvM4KYVKgGiGVY2RLtg8jy0U4S0tF1Qa7WsXRp
+         2EYylX1fLMxS12Vp+AD9Aqy7JXpjIl4GU/lUonA7R2fcR1mvHXJJSj/y4paaSymZ7SYf
+         7FDysvNcIPR0vrr3iZSueRXfWgjDZV3k0ZHT1kZHPEvEzyTifMgLSIOIOQSbFYMu2TLZ
+         3YJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778073643; x=1778678443;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=rOFUa+pTryMGHy3DzUaJrzcZH0mpKNqsNoKrNDnAedQ=;
+        b=DFwmnw9jIypx1vYIdEMe9ILo4JykWdazd6pVD8NoIqi1IEJwpvDRHSY+OOH+D1UyZs
+         iu6Kxz6eNO/dw/a9IthrGGot1WkCUaPCd+H8FYjpxXC5uA9D3DmJWQFAa3B6zu/Iy6kT
+         uUFHjJsGixOY5AZIXWavILWktYSeyCZG6UqTCLVAhINqs57ZckF5Ze7pyB53H+JltpqI
+         AdcAkLQ5GFewr/cp01Gyod2Q7S3A7VGgVXQR4chGTBWRoPmLOMVNSLy/Z74/p8PmgKaf
+         bOl9MCANOyOeABhJtPPzZp7zcH2RiWJOZk64jePeyjB2oYmwDz9TOccW/9BPsrYtyFUc
+         YJcg==
+X-Gm-Message-State: AOJu0Yz8G8yU5Ucygnjdpl/OpxpVo8LZrVKPvRsUEA6AUQx7wDZlU/md
+	0V7wDDyZzvJRhR2RjLOl/WlmTEZJA4jSgkd7MZdW6zDb/MMnUs4cusMX
+X-Gm-Gg: AeBDiev0XaeASX2qlPZkW4SmNpEA3kaDz8HUtlskHDbUj5icP6cbEQP9PfsLIs8cpcw
+	du7bBJPC72mEvbTb8d7RATb7ZhkTPNdN3OQu3C9UiMqumt3kbBN3j0AII5M/ikZdI+6NvTrDkHt
+	jBuG2/0kNKNfunIhuDLB0TkjI8sK9+GmtoN0kihAnOfO1uvO+tFVO1e4H4kH5Q+QNFXQOHV2mB1
+	MTkfsc2MZWosJUH8wYDNf6R0QoE5+n2fIZ04UcfbkEFrFnxxQ+jtM48Nc0g64dGq2v+LdD72AkV
+	ezT3+1s5h7oxoML06s79gE65/ByrSg8YfSLbWTXgeGZWmhm2wGBukP9db7G4FA11ypTqLTWqMvf
+	AhlbpTf1BJwYhDHJS1V4hnzVrlvUlh5ImxP1N+p65rupXHFn65Cl0JjNasOLiZtMiZWf86tyz57
+	hAZywgD+3+vbvOXrf25lAREGMe6xZWdk4MmU5WyzMSfZ5qPkVu7BLGQj5bkxmqEeHWEwOSOlNT4
+	JWwInvr3K7Ip9M=
+X-Received: by 2002:a05:690c:c4f1:b0:7b2:1bf1:800d with SMTP id 00721157ae682-7bdf5d7e353mr37246767b3.4.1778073643045;
+        Wed, 06 May 2026 06:20:43 -0700 (PDT)
+Received: from gmail.com (172.235.85.34.bc.googleusercontent.com. [34.85.235.172])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7bd66896398sm77476297b3.48.2026.05.06.06.20.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 May 2026 06:20:41 -0700 (PDT)
+Date: Wed, 06 May 2026 09:20:41 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: netdev@vger.kernel.org, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ Chintan Vankar <c-vankar@ti.com>, 
+ Danish Anwar <danishanwar@ti.com>, 
+ Daolin Qiu <d-qiu@ti.com>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, 
+ Felix Maurer <fmaurer@redhat.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Neelima Muralidharan <neelima@ti.com>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ Praneeth Bajjuri <praneeth@ti.com>, 
+ Pratheesh Gangadhar TK <pratheesh@ti.com>, 
+ Richard Cochran <richardcochran@gmail.com>, 
+ Simon Horman <horms@kernel.org>, 
+ Vignesh Raghavendra <vigneshr@ti.com>
+Message-ID: <willemdebruijn.kernel.b7832f991167@gmail.com>
+In-Reply-To: <20260506070928.hr8uavhJ@linutronix.de>
+References: <20260429-hsr_ptp-v3-1-afbf8f200f48@linutronix.de>
+ <willemdebruijn.kernel.31592d82701e5@gmail.com>
+ <20260504085911.nLZLRjPF@linutronix.de>
+ <willemdebruijn.kernel.22897601ad5fe@gmail.com>
+ <20260505095216.T02Z4R1T@linutronix.de>
+ <willemdebruijn.kernel.8d257bcbe351@gmail.com>
+ <20260506070928.hr8uavhJ@linutronix.de>
+Subject: Re: [PATCH RFC net-next v3] hsr: Allow to send a specific port and
+ with HSR header
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f9b8840d-94ba-4bde-9ace-fb81eb733ff9@bootlin.com>
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, May 06, 2026 at 03:04:42PM +0200, Maxime Chevallier wrote:
-> 
-> 
-> On 06/05/2026 14:39, Andrew Lunn wrote:
-> >> So for me it somewhere happens in phylink_validate_mac_and_pcs()
+Sebastian Andrzej Siewior wrote:
+> On 2026-05-05 12:14:58 [-0400], Willem de Bruijn wrote:
+> > > But I can't expect that the header is always there. A random ping/ arp
+> > > packet goes via the same flow. At the same time I don't want to make it
+> > > mandatory for all AF_PACKET users by checking the skb's socket.
 > > 
-> > I was expecting to see more debug output, but reading the code, i was
-> > also thinking we need to look at phylink_validate_mac_and_pcs().
-> > 
-> > You are going in the correct direction putting lots of printk() in the
-> > code. We need to find where it returns EINVAL:
+> > I thought skb->protocol is the unambiguous signal whether this custom
+> > header is present?
 > 
-> [...]
-> 
-> > 
-> > In the end, we are probably going to find that what the MAC says its
-> > capabilities are don't match what the PCS says it can do.
-> > 
-> > Thinking about that, it says phy mode RGMII. You generally don't use a
-> > PCS with RGMII, so that is suspicious.
-> > 
-> 
-> Another thing to consider is that in this case, we're attaching to a
-> dp83tc811, so a 100BaseT1 PHY. Does the PHY driver correctly populates
-> the supported features ?
+> No, I parse the header. As far as I can tell this set based on the
+> header bits from data passed to af_packet. Even if I could change this
+> to something else, these 16bit should better not collide with anything
+> else so I think used the eth-type and expecting nobody sending a PTP
+> packet is good.
 
-Using RGMII to connect to a 100BaseT is also odd. It does happen, but
-it is a bit of a corner case, and something could be going wrong here.
+Is that more fragile than a specific protocol? And introduces that
+dependency on mirroring the Ethernet format. But your call.
 
-   Andrew
+Ethernet does have requirements on MAC address format, so a layout
+that corresponds to an invalid address could be a signal.
