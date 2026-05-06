@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF71C26CE2C;
-	Wed,  6 May 2026 01:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D5527E056;
+	Wed,  6 May 2026 01:46:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778031978; cv=none; b=GMcnLOvT28RXsi57P9/5HqMCIj53t98j0W1w/MYmxw4SmaDLUzhXsGmzNZrn7oRCj8nW/5IltnY5+eTnEK7/zCdie/AjnYwGoSCOSGwxbtzyla03NB9qVCOyjVbUvPCLzbiCmubLpmMFWiInz90Q7Rc5rZ/8Nl25/acYb3GQtxU=
+	t=1778031980; cv=none; b=oA6D5lv9faha9mpn6lCMSnts8k4MNRu5AC8oy56jjD3YbO/MUiOaigPPCpmk4kgSdbdf9EphpMPiNMtVBKErjkuLZC4GL0wEDLXt8kD9X0GOaWneLYTxYBkyDlHNK1Rnq5nVKyog7b5P4zeviAAVG3uLL2uaxdOWrhfuus8RjIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778031978; c=relaxed/simple;
-	bh=JC0cvTZZgqEs/UPOYBoj1eskFq+qoMwoWN6REo/8dlo=;
+	s=arc-20240116; t=1778031980; c=relaxed/simple;
+	bh=ajK/2ALniFAv2I10bYvLOXAbvpyPHkHkekEnWZ4LHgM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cyTGPCWS+uji3A0GJGn+Qys9Ta2wLoysMZ7I5f81jW1mf+uOdiU2QJIv0zrVkaqLHFx7f0yCGrNenqN6GdrYRl/r8nJdKY4PdoRAXKagWlwj4mvw9v8XYFgy3vD7YDiMG8BIaTlQaBjeQJO6cWRbLAsOydYFyTRkXJO487YRGZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F0eeGVlv; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=uyxf0U1hAutG8j8i4DDwIVLkqm1hIoj/honrtLBX4fns0rvt3whc+GZmdnQcKnPHyWBMz1NoWl3sFkgClyGYabVYkGkE3zp3LW/X0w1MHRgsiYbjN8Yvhi/2vBC7hswR8gLHgwvnhNUbbkOszxc6Qv3WOVZaZhUgdUxOKf0YA78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iBob+eX7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F0eeGVlv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA494C2BCC9;
-	Wed,  6 May 2026 01:46:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iBob+eX7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35931C2BCF4;
+	Wed,  6 May 2026 01:46:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778031976;
-	bh=JC0cvTZZgqEs/UPOYBoj1eskFq+qoMwoWN6REo/8dlo=;
+	s=k20201202; t=1778031979;
+	bh=ajK/2ALniFAv2I10bYvLOXAbvpyPHkHkekEnWZ4LHgM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F0eeGVlvDVcD3Qib47PzTGwYCI9eo4JpSL3rwnX9A4FSjRmfkL2ZIki0G4Gu1zXdU
-	 J0S+n2V29U9wx1t1CGScFMrHuRVGFdxlj2v4c8vmM7d+biM3oc+Kw7Lq8yzm+yiIqs
-	 eFAh6kuOWJGg0NMkTUzifi6Zu1AMGX+FNktEgjEkXuspXK7/cmaE3sWNM2NKmz+a2I
-	 gr/fNcYmBcsKe7CaNGxnZrrPdWamXCLiQ65CzbnMrcFxFiy5jIiGrC0uGIZ0aCzgFw
-	 DF8QId18IZHbva+hvvUSDVivUGP7ZOulcEqTioEvlloRk6ucVy1yeV+2W+4nhhf4vl
-	 UwBVlUMg8AxbA==
+	b=iBob+eX77LxtMnqQt/2VSlP2EQRCvVQQtGddkfvLUFBlXPW6woxPJHKzSCWhAWNMz
+	 E6F/7gTNm8PSW68R6isMLK0rCrFfD/hFzV57Dxs/q5YUNlqTx/KMF4IvK8cUWEAbDB
+	 cvcNGfWmkIn6qSvx5bo6wdsFPhWBSaz6KbS9+/3CH/sY7GwuYtbdS6wTmR4epW52MS
+	 6Wkeyb+/Uo1S1bjx3C0FkGSzd9o4rqHrRez5DH+YM4yVfJyZ7gDNBzdS4sB6N9dh+v
+	 H+MR3B/ATY7d8BQPUqus4r80D9MpjBRzdCgvlzFKkRhEnDt+7K/rlcapOerCDk5itv
+	 ucDHAz8F8qiwg==
 From: Jakub Kicinski <kuba@kernel.org>
 To: jensemil.schulzostergaard@microchip.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -46,12 +46,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org,
 	devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next v4 7/9] net: dsa: lan9645x: add mac table integration
-Date: Tue,  5 May 2026 18:46:14 -0700
-Message-ID: <20260506014614.1616825-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next v4 9/9] net: dsa: lan9645x: add port statistics
+Date: Tue,  5 May 2026 18:46:18 -0700
+Message-ID: <20260506014618.1616861-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260430-dsa_lan9645x_switch_driver_base-v4-7-f1b6005fa8b7@microchip.com>
-References: <20260430-dsa_lan9645x_switch_driver_base-v4-7-f1b6005fa8b7@microchip.com>
+In-Reply-To: <20260430-dsa_lan9645x_switch_driver_base-v4-9-f1b6005fa8b7@microchip.com>
+References: <20260430-dsa_lan9645x_switch_driver_base-v4-9-f1b6005fa8b7@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,160 +63,193 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-net: dsa: lan9645x: add mac table integration
+net: dsa: lan9645x: add port statistics
 
-This patch adds MAC table support and hooks it into the DSA FDB callbacks
-(port_fdb_add, port_fdb_del, port_fdb_dump, port_fast_age), along with a
-port-filtered flush path and a GET_NEXT-based dump helper.
-
-> diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_mac.c b/drivers/net/dsa/microchip/lan9645x/lan9645x_mac.c
-> new file mode 100644
-> index 000000000000..7ae23d3464f8
-> --- /dev/null
-> +++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_mac.c
-
-[ ... ]
-
-> +void lan9645x_mac_init(struct lan9645x *lan9645x)
-> +{
-> +	u32 val;
-> +
-> +	mutex_init(&lan9645x->mact_lock);
-> +
-> +	/* Clear the MAC table */
-> +	lan_wr(ANA_MACACCESS_MAC_TABLE_CMD_SET(CMD_INIT),
-> +	       lan9645x, ANA_MACACCESS);
-> +
-> +	if (lan9645x_rd_poll_timeout(lan9645x, ANA_MACACCESS, val,
-> +				     ANA_MACACCESS_MAC_TABLE_CMD_GET(val) ==
-> +				     CMD_IDLE))
-> +		dev_err(lan9645x->dev, "mac init timeout\n");
-> +}
-
-Should lan9645x_mac_init() propagate the CMD_INIT timeout instead of
-logging and returning?
-
-It is declared void and the only timeout handling is a dev_err().  The
-caller in lan9645x_setup() invokes it without a return value and then
-proceeds to configure flooding PGIDs, per-port CPU forwarding, and
-register the dsa_switch_ops callbacks (.port_fdb_add, .port_fdb_del,
-.port_fast_age, .port_fdb_dump) while the MAC table command engine may
-still be busy.
-
-For comparison, lan9645x_vlan_init() (called just above in setup) treats
-the structurally identical clear-table timeout as fatal:
-
-	lan_wr(ANA_VLANACCESS_VLAN_TBL_CMD_SET(VLANACCESS_CMD_INIT),
-	       lan9645x, ANA_VLANACCESS);
-
-	err = lan9645x_vlan_wait_for_completion(lan9645x);
-	if (err) {
-		dev_err(lan9645x->dev, "Vlan clear table failed\n");
-		return err;
-	}
-
-Would returning an int from lan9645x_mac_init() and checking it in
-lan9645x_setup() be more consistent?
-
-[ ... ]
-
-> +int lan9645x_mact_dsa_dump(struct lan9645x *lan9645x, int port,
-> +			   dsa_fdb_dump_cb_t *cb, void *data)
-> +{
-> +	u8 mac[ETH_ALEN] __aligned(2);
-> +	u32 mach, macl, maca;
-> +	int err = 0;
-> +	u32 autoage;
-> +	u64 addr;
-> +	u16 vid;
-> +	u8 type;
-
-[ ... ]
-
-> +		type = ANA_MACACCESS_ENTRYTYPE_GET(maca);
-> +		mach = lan_rd(lan9645x, ANA_MACHDATA);
-> +		macl = lan_rd(lan9645x, ANA_MACLDATA);
-> +
-> +		if (ANA_MACACCESS_DEST_IDX_GET(maca) == port &&
-> +		    type == ENTRYTYPE_NORMAL) {
-> +			addr = (u64)ANA_MACHDATA_MACHDATA_GET(mach) << 32 |
-> +			       macl;
-> +			u64_to_ether_addr(addr, mac);
-> +			vid = ANA_MACHDATA_VID_GET(mach);
-> +			if (vid > VLAN_MAX)
-> +				vid = 0;
-> +
-> +			err = cb(mac, vid, false, data);
-> +			if (err)
-> +				break;
-> +		}
-> +	}
-
-Does this filter cause user-added FDB entries to be invisible to
-'bridge fdb show'?
-
-lan9645x_fdb_add() unconditionally programs entries as ENTRYTYPE_LOCKED:
-
-	return lan9645x_mact_learn(lan9645x, dest, addr, vid, ENTRYTYPE_LOCKED);
-
-but the dump above only reports entries matching ENTRYTYPE_NORMAL, so any
-entry installed via 'bridge fdb add dev swpN <mac> self [static]' is
-present in hardware and not reported through port_fdb_dump.
-
-For NTF_SELF entries the DSA core path
-(net/dsa/user.c:dsa_user_port_fdb_do_dump) depends on port_fdb_dump to
-surface entries that are not tracked in the bridge software FDB.
-
-Separately, the callback hardcodes is_static=false for every reported
-entry:
-
-	err = cb(mac, vid, false, data);
-
-If the ENTRYTYPE_LOCKED filter is relaxed, would is_static need to be
-derived from the entry type, similar to ocelot_fdb_dump() in
-drivers/net/ethernet/mscc/ocelot.c which uses
-(entry.type == ENTRYTYPE_LOCKED)?
+This patch wires up ethtool -S, standard ethtool group stats,
+and ndo_get_stats64 for the lan9645x DSA driver. A delayed work
+polls the 32-bit hardware counters every 3 seconds and accumulates
+them into a 64-bit software cache to handle hardware wraparound.
 
 > diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
-> index c99189ce586e..b21e1bf25b0c 100644
+> index 15a493c1f215..cea46bfe729e 100644
 > --- a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
 > +++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
-> @@ -139,6 +140,7 @@ static int lan9645x_setup(struct dsa_switch *ds)
->  	err = lan9645x_vlan_init(lan9645x);
->  	if (err)
->  		return err;
-> +	lan9645x_mac_init(lan9645x);
-
-Related to the lan9645x_mac_init() comment above, should this call
-check a return value and abort setup on failure rather than continuing
-to register switch ops with a potentially wedged MAC table engine?
 
 [ ... ]
 
-> +static int lan9645x_fdb_add(struct dsa_switch *ds, int port,
-> +			    const unsigned char *addr, u16 vid,
-> +			    struct dsa_db db)
+> @@ -255,6 +257,12 @@ static int lan9645x_setup(struct dsa_switch *ds)
+>  	if (!lan9645x->owq)
+>  		return -ENOMEM;
+>  
+> +	err = lan9645x_stats_init(lan9645x);
+> +	if (err) {
+> +		dev_err(dev, "Failed to init stats.\n");
+> +		goto owq_destroy;
+> +	}
+> +
+>  	ds->mtu_enforcement_ingress = true;
+>  	ds->assisted_learning_on_cpu_port = true;
+>  	ds->fdb_isolation = true;
+> @@ -265,6 +273,10 @@ static int lan9645x_setup(struct dsa_switch *ds)
+>  		 lan9645x->num_phys_ports - lan9645x->num_port_dis);
+>  
+>  	return 0;
+> +
+> +owq_destroy:
+> +	destroy_workqueue(lan9645x->owq);
+> +	return err;
+>  }
+
+Is this owq_destroy error path reachable today?
+
+Looking at lan9645x_stats_init():
+
+    int lan9645x_stats_init(struct lan9645x *lan9645x)
+    {
+        struct lan9645x_stats *stats = lan9645x->stats;
+
+        queue_delayed_work(stats->queue, &stats->work,
+                           LAN9645X_STATS_CHECK_DELAY);
+
+        return 0;
+    }
+
+it unconditionally returns 0, so the goto owq_destroy branch is dead.
+
+If a future change either makes lan9645x_stats_init() return an error, or
+adds any fallible step after it in lan9645x_setup(), the cleanup would
+fall through owq_destroy without calling lan9645x_stats_deinit(), leaving
+the self-requeuing delayed work armed on stats->queue.
+
+Also, dsa_switch_setup() in net/dsa/dsa.c does not invoke ds->ops->teardown
+when ops->setup() itself fails, so lan9645x_teardown (which is where
+lan9645x_stats_deinit is called today) will not run in that scenario.
+
+Then in lan9645x_remove() -> lan9645x_stats_free() -> destroy_workqueue(),
+the queue would be drained with a chained self-requeue still live. Would
+adding a dedicated label that calls lan9645x_stats_deinit() before falling
+through to owq_destroy be safer for future edits?
+
+[ ... ]
+
+> diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_stats.c b/drivers/net/dsa/microchip/lan9645x/lan9645x_stats.c
+> new file mode 100644
+> index 000000000000..46ac62b4016f
+> --- /dev/null
+> +++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_stats.c
+
+[ ... ]
+
+> +static const struct lan9645x_ethtool_stat lan9645x_port_ethtool_stats[] = {
+> +	{ "rx_cat_drop",        SCNT_RX_CAT_DROP },
+> +	{ "rx_red_prio_0",      SCNT_RX_RED_PRIO_0 },
+
+Per Documentation/networking/statistics.rst and the netdev stats hierarchy,
+counters that have a standard uAPI must not be duplicated in ethtool -S.
+
+The rx_cat_drop counter is summed into stats->rx_dropped in
+lan9645x_stats_get_stats64():
+
+    stats->rx_dropped = c[SCNT_RX_LONG] +
+                        c[SCNT_DR_LOCAL] +
+                        c[SCNT_DR_TAIL] +
+                        c[SCNT_RX_CAT_DROP] +
+                        ...
+
+Since rtnl_link_stats64.rx_dropped is reachable via "ip -s link show",
+does exposing rx_cat_drop here duplicate a value already covered by the
+standard uAPI?
+
+[ ... ]
+
+> +	{ "tx_drop",            SCNT_TX_DROP },
+
+Similarly, tx_drop feeds stats->tx_dropped:
+
+    stats->tx_dropped = c[SCNT_TX_DROP] + c[SCNT_TX_AGED];
+
+Should tx_drop be dropped from the ethtool -S list for the same reason?
+
+[ ... ]
+
+> +	{ "tx_aged",            SCNT_TX_AGED },
+> +	{ "tx_bufdrop",         SCNT_TX_BUFDROP },
+
+tx_aged is also summed into stats->tx_dropped in
+lan9645x_stats_get_stats64(), so does it fall under the same duplicate-uAPI
+concern as tx_drop?
+
+A related question about tx_bufdrop: if SCNT_TX_BUFDROP represents transmit
+frames dropped due to buffer exhaustion, why is it not included in
+stats->tx_dropped alongside SCNT_TX_DROP and SCNT_TX_AGED?
+
+    stats->tx_dropped = c[SCNT_TX_DROP] + c[SCNT_TX_AGED];
+
+If tx_bufdrop is in fact a transmit-drop cause, would users of
+ip -s link show see an under-reported tx_dropped relative to the private
+ethtool counter?
+
+> +	{ "dr_local",           SCNT_DR_LOCAL },
+> +	{ "dr_tail",            SCNT_DR_TAIL },
+
+dr_local and dr_tail are also fed into stats->rx_dropped:
+
+    stats->rx_dropped = c[SCNT_RX_LONG] +
+                        c[SCNT_DR_LOCAL] +
+                        c[SCNT_DR_TAIL] +
+                        ...
+
+Would it be appropriate to drop these from the ethtool -S list as well,
+given they are already aggregated into the standard rx_dropped counter?
+
+[ ... ]
+
+> +};
+
+[ ... ]
+
+> +static void lan9645x_check_stats_work(struct work_struct *work)
 > +{
-> +	struct net_device *br = lan9645x_db2bridge(db);
-> +	struct dsa_port *dp = dsa_to_port(ds, port);
-> +	struct lan9645x *lan9645x = ds->priv;
-> +	int dest;
+> +	struct delayed_work *del_work = to_delayed_work(work);
+> +	struct lan9645x_stats *stats;
 > +
-> +	if (IS_ERR(br))
-> +		return PTR_ERR(br);
+> +	stats = container_of(del_work, struct lan9645x_stats, work);
 > +
-> +	if (dsa_port_is_cpu(dp) && !br &&
-> +	    dsa_fdb_present_in_other_db(ds, port, addr, vid, db))
-> +		return 0;
+> +	lan9645x_stats_update(stats->lan9645x);
 > +
-> +	if (!vid)
-> +		vid = lan9645x_vlan_unaware_pvid(!!br);
-> +
-> +	dest = dsa_port_is_cpu(dp) ? PGID_CPU : port;
-> +
-> +	return lan9645x_mact_learn(lan9645x, dest, addr, vid, ENTRYTYPE_LOCKED);
+> +	queue_delayed_work(stats->queue, &stats->work,
+> +			   LAN9645X_STATS_CHECK_DELAY);
 > +}
 
-See the question above about lan9645x_mact_dsa_dump() filtering on
-ENTRYTYPE_NORMAL: entries created here with ENTRYTYPE_LOCKED do not
-appear to be reported by port_fdb_dump.
+The commit message says this worker "update[s] it frequently to handle
+overflows in hardware."
+
+Looking at lan9645x_stats_add_cnt():
+
+    static inline void lan9645x_stats_add_cnt(u64 *cnt, u32 val)
+    {
+        if (val < (*cnt & U32_MAX))
+            *cnt += (u64)1 << 32; /* value has wrapped */
+
+        *cnt = (*cnt & ~(u64)U32_MAX) + val;
+    }
+
+this compensates for at most one 32-bit wrap per polling interval. If two
+or more wraps happen between reads, the low-half comparison no longer
+detects the missed wrap and the 64-bit counter silently loses 2^32 per
+missed wrap.
+
+At the chip's 2.5 Gbps line rate (LAN9645X_SPEED_2500 in lan9645x_main.h),
+a 32-bit byte counter wraps roughly every 13.7 s, so two wraps happen in
+about 27.5 s. The polling interval is LAN9645X_STATS_CHECK_DELAY = 3 * HZ,
+but there is no upper bound on the actual elapsed time between reads:
+delayed work can be stretched by system suspend/resume, heavy CPU load, or
+regmap/SPI contention.
+
+Would it be worthwhile to either bound the worst-case polling gap
+(e.g. a suspend/resume hook that forces a read, or a timestamp-based
+sanity check that detects a stretched interval and logs a warning) so
+that rx_bytes/tx_bytes reported to ndo_get_stats64 and ethtool cannot
+silently undercount by multiples of 2^32?
+
+[ ... ]
