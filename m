@@ -1,62 +1,64 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C767376466
-	for <netdev@vger.kernel.org>; Wed,  6 May 2026 08:46:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 783633E559B
+	for <netdev@vger.kernel.org>; Wed,  6 May 2026 08:46:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778057182; cv=none; b=uRHuW37DSzc49/ME00171IObe47rEQlGRDoUonZsib4wVKSDX81qebgkxbHlosbtfGP2BhdUT2bpF+aleDJ5e2EY3NJHsjnc18ksDaJTiEEVRJkcO6+awU++7Z6NpGWYo2dlrWmrf1FWayaYwfu5YS2U1ZVkwMLPPvAgs3R0eTc=
+	t=1778057186; cv=none; b=VKj4MoO3lrf7LBuuqTainiIhqSHAT/UAnUPt9wYn9w+KlbO1buhSzgxX5LKbBqMd9kVeB0vzNT1fU8F27zCZswcCycAYrfYH35ERHgprDkwJKpTX3wklmjrkBEzGrzGjDPBnyqMeaK5Ul/8i7gfaQC5Vck4g1T6oXMd9tTlXcCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778057182; c=relaxed/simple;
-	bh=szoDOqUzU2bOU29+oChWEEh+cZc0HHzEKqtTD9+8r2g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hwYaKcJKQhgeS5XdLQ88ATrxbMjjTd8OjOrvHzXc3i8/hKgzjz0QctPpnCe5nzC0CmRZDDApqW3WFzpJJGLIFqZFtj9kwcLGsOrWj4cH5USBuQdPlLMppVgp85TOYnKuNcmaVKR7fc+mfivvNK9euOr706Ox6ua14pXHtQf7dCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rUuYoN2x; arc=none smtp.client-ip=209.85.214.174
+	s=arc-20240116; t=1778057186; c=relaxed/simple;
+	bh=bUp7CVn30qUQD1WzOH67S84aqhWLyceTvkcN5eDW3+4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=WJ0opbZEJASOeEWE6GiqM+DWLUP7706B7Mx+pInHK8F1EOYXoRVhZ6nMT7iahDSh/uA1hLEns/ljzqZ3WeRuOaKChf0v5cRkzEsOj7nnYZlfo28Xt1VMXj7actqR+ZPVLUp6xnm3FthCOlkmDpYsuaF4UMYF2km/kZAg3Jof75A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TD0iegDL; arc=none smtp.client-ip=209.85.214.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rUuYoN2x"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2ad21f437eeso5433235ad.0
-        for <netdev@vger.kernel.org>; Wed, 06 May 2026 01:46:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TD0iegDL"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2a7a9b8ed69so53832855ad.2
+        for <netdev@vger.kernel.org>; Wed, 06 May 2026 01:46:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778057181; x=1778661981; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=SbqEMIRZJlHc6JKkwETPU4424MlqTlraWGTdcFOX+ew=;
-        b=rUuYoN2xTbGY5lRrA7EJ6DoVSOfZgX18GJHUo7OnXaagRUo5PWjM1Hml2sVaE3VyKj
-         X2BLcHY9BZQqdXDo7FdIt6sVprg8p6su02Oclhtt7HVlelRrA3z4EWcFWDvXuGAH61a9
-         /+HlzRYB9vMzPYOB6KVf+eQeaA0UdvIv0szCHmYLZFi188PSK575Et4j8BFx6FvjW0u4
-         MGNMZsm9tZtllVlxtcCTu/SRgeMWHkIntMHvUAa/4ntvybb1P8M84WWfQ6G0Engj9lut
-         97gcutzd6lcBVG3Fc9aJIp3mHFcRHtkrniHXYtMRqoVMjUG/ZawN3I0wRYWHA7tiEXRf
-         9uQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778057181; x=1778661981;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1778057183; x=1778661983; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=SbqEMIRZJlHc6JKkwETPU4424MlqTlraWGTdcFOX+ew=;
-        b=LU729XvhnHOU/KaPV2u9rE9kMyYVfCP2ugDuvIMQxKl0ZYMk65AoM847xMqpGAdSv6
-         /fdDav6tHkwfGf/+z7wX2yvXGbjzzRI3GTfdKBXQJQ+G196dfH6kyNmHdlPKl4TMQIhZ
-         dPw7pqTlC/YDGTjP+HfbYytR2O8jOUvYIZ7L3QIUNdynGF/D0K1vUdENYHM0qsaL5USI
-         MERpbZldSlGFhu0wjNf/1CztCnX7oTtN/KxNgDfu1kRSYJFen5EPVG2tQ0x1MpHy+l6M
-         TaryZuw72CWW48G1Q84+SC0YXsbbuZnI9OoJiMDeecQT73lawgVqqLZi93XVydWOIUej
-         DjhA==
-X-Forwarded-Encrypted: i=1; AFNElJ9P5zNnhVilcxwsQUr889A2vG4XUPrj7IXlObi5fYyk7q0OWnSQBLSg/3VVwkngr9jVOCHwrAM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6NY1TRjCDHfkIBf78N6r1Q4OrDD2xrEKbSGk/3Kt3CfZ0o0ov
-	mgshXLyWU1Mxc1JywlQOrszuRoug7Esj0oVhSj5LvnyOoAVifjDW+kpG
-X-Gm-Gg: AeBDieu6nzP57Es6pFiHDrd44CrdDkbR7WJXhQoXFZ0lTzNHDda0Z2VCTNb5gdLJNBB
-	2VKsY9/O7Nyfof73tGQElfXdz3ktfcljjgx8y46UUO6mK0c+4KdJGkqmgkOXTSxTCI7QCdxY6si
-	5+thzlyZ7HJBx2mYRhcm2hrffKJU4pBDfETKDGtuKIcyjMXU0jZ+4H6ufqUtSXFb8kJxem56tz6
-	Tezy0b+DhYVkls6RYhaJkCoPp5DNi9nqIunUyiAmP5lJqEzx43ltGC9uzXGShDmiqR7b9V7xxwn
-	Nsrwszed3pQ5F3XnbkcNQvcQfyzWGJ6GFMOwmwUkVMkuD9+8+fXEmL9qbcPkUAeSIqyszYnK1Zc
-	sjpF/UIHv+89Eb/mGCsGPdHM9eGDIP6Mu+eXW1g/Jd2felQx5VFbRM95YDM5ahitbB0kHPyT18n
-	7baLMaV+P9jPr+IIkpuBjxKb+NpRvwmbYavvksEGLTDgiJiJ0GafDyBqku/vzqDnBNg/8eV5GLb
-	XU+SD4bSfZvX4xsj2PKBPQ=
-X-Received: by 2002:a17:902:c949:b0:2ba:1c2b:4d9d with SMTP id d9443c01a7336-2ba7908a658mr19665375ad.17.1778057180790;
-        Wed, 06 May 2026 01:46:20 -0700 (PDT)
+        bh=jUSdR9R631N14alNwqa0GqPMI72JdY9A7cqHTS5tg5U=;
+        b=TD0iegDL7Mga0ASjr2/6pXaglrfpEvT7aVK4Jfi/33FzjpuMqVTubRrIpw8rIAkOlq
+         Kxj0umSUzdrGNiZ5BlaFDAf0Sw87UHNmfLRLXPewdEPAVBBdbnoLGdw0sAew3yKhF9/1
+         tXHzbAIET7xq4YnFr1ePGrL0w9MojjfF3fOkjnYM8z9CVxd4zg6yMvBSa1o2GSdwkndZ
+         yF0Lcocq6SMS1IzrrkIY1jFkTWUUHkxkivN0lt4rccaoEQGo06LavhJ/BiXNBpT+d9lw
+         GoZ5sSqCfy/9THCtzMBjnvrSj3mv4L6ncGCrZ4ziusx1MJxrfkPc9A8o7L96Vip7Ooyu
+         dc1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778057183; x=1778661983;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=jUSdR9R631N14alNwqa0GqPMI72JdY9A7cqHTS5tg5U=;
+        b=Hk5686sZffCMQYtHAPEGgvM3jnyvJ7v4EzwOztvO0sAxVSP/wJJpPEarOA1f02onxR
+         X2bMxa1meVyt/AI/ZHD1Q0ZU29w5+CGGc0mmPkG1dpGt1L0xSjJCrkuS4oT+myEgaibd
+         PqR5vrL+7SMFCMwkM/y7zZI47KxYNENzn/E8YYR4ggf3OjCrnojW6X/mfhyYRL2Xq6v6
+         igVBtnWGGMV0/A4I/hJ25DCpKBwEGa999MXPD5V1P61wcdRSOlWI+VkFOvLLchF7JSuk
+         3mXoinUx428NcIapeVDkLaRGNiT604sGf+BoADE81x7EXlVjtxdd0bW/ubvvqllGOBV3
+         Jv+w==
+X-Forwarded-Encrypted: i=1; AFNElJ+RhFmFBRXF/eQFbuQv5i4VitOyI+yjRuaLPebngcT8h1mLTqS7KQWWxvK9iL4YBtCGLMuNa8E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzWMjqTw7xpHz8IvNuAnHmVdace29FYgcZrh0xjNEPq8nmHoSI3
+	Ia2BfN+yzVDwDka8/rtzABz5UFwwblclsup8xMuHTk1O/WQsxPksqjyK
+X-Gm-Gg: AeBDievm+tG1hEPBkTGSQdt4uCu5BdJNYo9WP8U1p2YXZ++64KQS+AhGw+81Jf9fMhK
+	5YUSoK96YqyvqLqHEfU4FtE0Hs1ZhTg0mfLBYZYlDnGsBn8POhc+Dxzj3hr6Ig33oGnanhVloUf
+	Eu8ThKmWs1dKaOWx4DrbHl5cksTAIC7+wBZfKZHyu4XnZJaxRpKQJwNLW9XGSw4ebtv9Ld3cTp8
+	/J00+8bUkVMqGBHM4X6XaIpTGxKvgVe894L9S+01TvPbss5oBbYc6pasvwuLjPGqbdkX/ygutyR
+	2huP2XGZZSLjZWJ3zkrZuC1PhYEQEm64nWwy17lVdM3yI4eIZgeGei0wGKlhXPfLcpTYELGYqns
+	11iKDUZFiW8mF8IkbiKgMdJ5IcJd2qpdwV5cXsq2qTAJSBu0Gfqab/OA4s8qlH+R7Cpk2Qxi7WW
+	gA8w874R9vlA0AUfe/ZPZKRquRGTYglEH4R07ZYd+XS70W+RzQcThHk8PdxFaoYwW7mjlBa0Adi
+	9rtkRxMeT6u/NYfDb4vOUQ=
+X-Received: by 2002:a17:902:f650:b0:2b9:87e0:1f80 with SMTP id d9443c01a7336-2ba79c2301dmr26131495ad.24.1778057183288;
+        Wed, 06 May 2026 01:46:23 -0700 (PDT)
 Received: from localhost.localdomain (60-250-196-139.hinet-ip.hinet.net. [60.250.196.139])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ba7bf2d72dsm18985145ad.25.2026.05.06.01.46.18
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ba7bf2d72dsm18985145ad.25.2026.05.06.01.46.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 May 2026 01:46:20 -0700 (PDT)
+        Wed, 06 May 2026 01:46:22 -0700 (PDT)
 From: Joey Lu <a0987203069@gmail.com>
 To: andrew+netdev@lunn.ch,
 	davem@davemloft.net,
@@ -70,10 +72,12 @@ Cc: alexandre.torgue@foss.st.com,
 	linux-stm32@st-md-mailman.stormreply.com,
 	linux-kernel@vger.kernel.org,
 	Joey Lu <a0987203069@gmail.com>
-Subject: [PATCH net 0/1] net: stmmac: dwmac-nuvoton: fix NULL pointer dereference in nvt_set_phy_intf_sel()
-Date: Wed,  6 May 2026 16:46:12 +0800
-Message-ID: <20260506084614.192894-1-a0987203069@gmail.com>
+Subject: [PATCH net 1/1] net: stmmac: dwmac-nuvoton: fix NULL pointer dereference in nvt_set_phy_intf_sel()
+Date: Wed,  6 May 2026 16:46:13 +0800
+Message-ID: <20260506084614.192894-2-a0987203069@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260506084614.192894-1-a0987203069@gmail.com>
+References: <20260506084614.192894-1-a0987203069@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,20 +86,32 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This series fixes a NULL pointer dereference bug introduced in the
-initial dwmac-nuvoton glue driver. The struct nvt_priv_data::dev field
-was never initialized after devm_kzalloc(), leaving it NULL. When
-phylink later calls nvt_set_phy_intf_sel() for interface selection,
-the callback dereferences priv->dev via nvt_gmac_get_delay(), triggering
-a NULL pointer dereference.
+priv->dev was never initialized after devm_kzalloc() allocates the
+private data structure. When nvt_set_phy_intf_sel() is later invoked
+via the phylink interface_select callback, it calls
+nvt_gmac_get_delay(priv->dev, ...) which dereferences the NULL pointer.
 
-Joey Lu (1):
-  net: stmmac: dwmac-nuvoton: fix NULL pointer dereference in
-    nvt_set_phy_intf_sel()
+Fix this by assigning priv->dev = dev immediately after allocation.
 
+Fixes: 4d7c557f58ef ("net: stmmac: dwmac-nuvoton: Add dwmac glue for Nuvoton MA35 family")
+Signed-off-by: Joey Lu <a0987203069@gmail.com>
+---
  drivers/net/ethernet/stmicro/stmmac/dwmac-nuvoton.c | 2 ++
  1 file changed, 2 insertions(+)
 
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-nuvoton.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-nuvoton.c
+index e2240b68ad98..2ab6ecac6422 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-nuvoton.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-nuvoton.c
+@@ -100,6 +100,8 @@ static int nvt_gmac_probe(struct platform_device *pdev)
+ 	if (!priv)
+ 		return dev_err_probe(dev, -ENOMEM, "Failed to allocate private data\n");
+ 
++	priv->dev = dev;
++
+ 	priv->regmap = syscon_regmap_lookup_by_phandle_args(dev->of_node, "nuvoton,sys",
+ 							    1, &priv->macid);
+ 	if (IS_ERR(priv->regmap))
 -- 
 2.43.0
 
