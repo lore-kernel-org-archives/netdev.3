@@ -1,115 +1,167 @@
-Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f201.google.com (mail-oi1-f201.google.com [209.85.167.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 754B144D682;
-	Wed,  6 May 2026 16:01:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.92.39.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1593481AA2
+	for <netdev@vger.kernel.org>; Wed,  6 May 2026 16:06:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778083295; cv=none; b=iyd4xx3gXYcY2s7ep8qYJfwnaEVpkAKWdJxCYHuTeeOuX6rIXj22hb0OD96aW+Y/Fe4jxLAd9Z/kog8t17/yOHFlpMpLjB/YxhNWzdpU6P+Loew3yT8wHxv2lebBEGOjv6w5zwzX44sizJ4OAC/usMLd4mvkLYq8RIFKsul+Sbw=
+	t=1778083627; cv=none; b=CpyKd9ozKIaBMltlY7efiMFpkMO81CEU2BqJmMbETr0O3j5cNh9jR8NqaHjNoF/4yusTubAdEAYwb8VMLsywDr1j8Ey0V53DcQFRhIpNzHofjf326qgwcLqgvlWiJUfRIFzr228xbJTN6V19mbkeh0GeDceo0Wkg9uDek+6s4Tk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778083295; c=relaxed/simple;
-	bh=Pdxjh+MVY+S12i6fbEKZTJUUsYrxu+Bd2Br0RkMq47U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=l0Msx8eXSDrBN4AJmq8L71P/Wl0Jxk+NOas0yt+5+4dJsCKFuMNEHgL9gql0wwHdUkAbnVY/baUJtJCCNkW6oGTOQF12jEfMw+4QNby9k3C8SPeg6cZcTNp6pT4T/5AVQ21bbU1tDNTO1ti5sFRVB4IyibzACc/NRORdk2dJEUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=radxa.com; spf=pass smtp.mailfrom=radxa.com; arc=none smtp.client-ip=54.92.39.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=radxa.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=radxa.com
-X-QQ-mid: esmtpgz16t1778083257t46dc08ae
-X-QQ-Originating-IP: G9YZKnrl1p0wXA0Vy0+oySRdc1VRx/a+D0I73RMqFHw=
-Received: from [127.0.0.1] ( [116.234.74.217])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 07 May 2026 00:00:52 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 8386846045021828038
-Message-ID: <EE8A30342A260FB4+57795644-675f-45b1-995d-48de28b14a34@radxa.com>
-Date: Thu, 7 May 2026 00:00:50 +0800
+	s=arc-20240116; t=1778083627; c=relaxed/simple;
+	bh=ykwMHUEd0hsIyfIsVZwiYaZbec66DLJgY2YZ0eTBX1g=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=RDfBicAl7eIWdG/AKW/Dq6I1y3odMDNFOBA/1G71saJ41ONM16QJsvACjzfBOuaCeR2RMeYAWNriePQ8yMmxDV29rDmRIH8Ixw9JLwI3YgBBmFy/gN29tjP/9Y5o3iy2WcYbHpGSynzbLWzEUmtJQxlvN8fqieiWB1whUsbdMiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CMxz76PW; arc=none smtp.client-ip=209.85.167.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CMxz76PW"
+Received: by mail-oi1-f201.google.com with SMTP id 5614622812f47-4718a1723a5so9455221b6e.3
+        for <netdev@vger.kernel.org>; Wed, 06 May 2026 09:06:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778083617; x=1778688417; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=+4NHUHEJqF969q6P59ZGW3RHrZHMnY13I01mZVqdn1Q=;
+        b=CMxz76PWKLXCtZrpelQPn+p8Lf4ATWa4EaKeJhmUq7CFMCImE+t4a86LSRRmdaQASY
+         xGIGTeKPi5ftmVow6mNRgmV3mPWFBOJWALMI8cTAKLkqZ7whCjf+iROTYQqDAH3yVT6b
+         kM0EysVMn1Z4viShL9JZYNdlDKu8gfRWraRhDmt/keNDmlkMn9dERuv2QEWcSnz0HxOr
+         GNz0JOMBOgrldW3gb+Xo81LoYtbdKiuB13HdvvQmuIkbz2zJJYRFQ7ezmQWLFfvKUNEB
+         lod+Qlyk96yIi4nzKeETjUyv4j/NPYhJDLEFy12qGX5phdY6ibAFicVkwcrVOkSin5Xe
+         qOXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778083617; x=1778688417;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+4NHUHEJqF969q6P59ZGW3RHrZHMnY13I01mZVqdn1Q=;
+        b=AtAK9OvtJeWl3wioMpJpPpsLTwP/pBrXdfIgs4lhEYbXomKRd0pq+iAxYMkJKjNnsX
+         Rwd95/7XR6vb2zFsd052CwGqtfdvLRq9M/SGbghLkm25NZCxJIqLXppobu5jrx8kDyQf
+         rJPqh8tgdR78J2Xw2Ob81Ki2PXiIP0fr7yjfqb4+kqBTVt9xjeuhgsQcGWwCFJ4+F8Gu
+         J82v4CZa4VNkBHPb6KKGVkBFEXLxgeVsm0q5vK8lip4xBDQ/R+udj2EAq/boX/mHdu7O
+         OHqMwfNaaR/AfPIfvfHbO+5WpVlqSgOZVdTuQan6kuNr5lVeZG/5HIJwxccCBcuff3T9
+         Y93w==
+X-Forwarded-Encrypted: i=1; AFNElJ/+RuReNoP+3/MmCCAthKxgsQ6zSi7mcnALgWMRTlJW/vg9aAomNtgH7+W/is++y/DeWTWvDq0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxfaxFFSLfGA0zpg5MLI5xlRizAruOkFEZPbjnn9rcDyLSmU0Nd
+	BliyeOX8rXK2o6rczCq48VHX2E7T8OLW1FYMJMSAD5BNdQrx8oV1/8fjTL4mn8qgSUDxl2j6r+w
+	vrVIZKul9SOHBCg==
+X-Received: from qthg9.prod.google.com ([2002:ac8:709:0:b0:50e:5ae2:8868])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6808:4e8e:b0:46a:d8b7:1101 with SMTP id 5614622812f47-480424aa8damr1575613b6e.41.1778083617189;
+ Wed, 06 May 2026 09:06:57 -0700 (PDT)
+Date: Wed,  6 May 2026 16:06:56 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 10/12] net: stmmac: tc956x: add TC956x/QPS615
- support
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Daniel Thompson <daniel@riscstar.com>, Alex Elder <elder@riscstar.com>,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, maxime.chevallier@bootlin.com,
- rmk+kernel@armlinux.org.uk, andersson@kernel.org, konradybcio@kernel.org,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, linusw@kernel.org,
- brgl@kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org,
- mohd.anwar@oss.qualcomm.com, a0987203069@gmail.com,
- alexandre.torgue@foss.st.com, ast@kernel.org, boon.khai.ng@altera.com,
- chenchuangyu@xiaomi.com, chenhuacai@kernel.org, daniel@iogearbox.net,
- hawk@kernel.org, hkallweit1@gmail.com, inochiama@gmail.com,
- john.fastabend@gmail.com, julianbraha@gmail.com, livelycarpet87@gmail.com,
- matthew.gerlach@altera.com, mcoquelin.stm32@gmail.com, me@ziyao.cc,
- prabhakar.mahadev-lad.rj@bp.renesas.com, richardcochran@gmail.com,
- rohan.g.thomas@altera.com, sdf@fomichev.me, siyanteng@cqsoftware.com.cn,
- weishangjuan@eswincomputing.com, wens@kernel.org, netdev@vger.kernel.org,
- bpf@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-gpio@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20260501155421.3329862-1-elder@riscstar.com>
- <20260501155421.3329862-11-elder@riscstar.com>
- <224E233C593EF171+8c8a43dd-5061-40f8-9eb7-f360eabf2ecc@radxa.com>
- <4015f47a-af62-441d-b1b8-a8598f963970@lunn.ch>
- <4C0D95BC59F1A4ED+53f3be85-2cdd-4058-8950-57970027d481@radxa.com>
- <aftgorkah-Hjrvq2@aspen.lan>
- <549BE66F62F1470F+a489d4fd-10ab-484c-9b55-6aecfd05d383@radxa.com>
- <a8b5d96b-3c8f-4ec5-b205-bbacafbf47aa@lunn.ch>
-Content-Language: en-US
-From: Xilin Wu <sophon@radxa.com>
-In-Reply-To: <a8b5d96b-3c8f-4ec5-b205-bbacafbf47aa@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpgz:radxa.com:qybglogicsvrsz:qybglogicsvrsz3b-0
-X-QQ-XMAILINFO: NYlggeZuI0UG5ceJbvnRxJWvN8cJfwrOSkmij5dH1qZMj0vYN4/mkdbk
-	Iqo46RtHaNQup3gfYG3N/fW/GEqEdBaJmBUv9f28xfLpysM4DWtxo2wV53MmIqhnJzgXnU7
-	PGk55JDkJ9LxlDwX60+kcTO+iv7TOZmstjBKNdHnsdhc4R6jXEREuX1eeGdUMMGGe4rYWmx
-	fO5TDyTaxdYIbcbpERvOCA3xuy0x43jM3inNC0C7ppGhILRI7dZP72q2fcj6Gr+rO7psQwx
-	/O5XIXQwHB0LG7VYHvCj8KSMiHXtzJY0eyR7qritmMcnuvSxhO0ERIznKVJ0g+m3tGrLf3A
-	EFdq5tVI/AIkjE3m6xSZUu3GoCzZZlrl1HYG8mrcvJy2OzlBkN/GeAkyJeR1R5D293NvVSz
-	mHb27v3iEEYS4MAnV3gy2xxCdV7ynPPUFiP+54/TVqAlJHDI8FK1c93Al4WBPNpdIl2dQ+o
-	2OPAYrIrSs9Jhmv65nhGHajAO85nccy+kdmBMjkw3Wh6v5U1mg1gnFvnX1Bo99kcT9WPHia
-	rylWDq4At4A0+xRk/uK/4QKlnipmo0151IlTv0ZSLEeTZRsvC2cgxinq6DdzjzfKrYaSLJb
-	0OtRlbAtYA0EkypuOkC+b3FquIdJwLGZ3hH2fC8+2T9vW/LZBNndwXZ4zB5oTmbTiuoKhNK
-	2QxDSOg8J0K9tOI0PDA2PDcO3UB3hqhSQVMzLvnh5qKSQ0yhi4L/bm0rAZYOzC5PR8WzQy9
-	HWWtccenfAiNTcfQOBpZ16w5unSa8zPNjhAYs5RCtouHfMuvFmpXh8yJ2kD5X13uJv3wOQx
-	jBjCdH2B7qfV7NfJtdYfdSXsO6KUqu+szmAS7OvRrjRPitzWxm7jh48Vo4zlkFwbMMW22lm
-	hVQXVrJ/TkOOaZ9KvkJ5SpFWhjwGXE21Uu//pEtQSIid0FwwOldiWmcL98vmeekB5HvoNYE
-	VaGcdYzrpnkPIMoezsM9GQVHz67Fj8MQsqJlRnD5vChR41Re1ZHmX2j2CYj49yfefvqD5XL
-	TGy7podOffB2BONmomlVKIcDSkYbw=
-X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
-X-QQ-RECHKSPAM: 0
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
+Message-ID: <20260506160656.1226077-1-edumazet@google.com>
+Subject: [PATCH iproute2-next] tc/class: use rtnl_dump_request_n() in tc_class_list()
+From: Eric Dumazet <edumazet@google.com>
+To: David Ahern <dsahern@kernel.org>, Stephen Hemminger <stephen@networkplumber.org>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>, Jamal Hadi Salim <jhs@mojatatu.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On 5/6/2026 11:56 PM, Andrew Lunn wrote:
->>> Does that mean you don't get phy interrupts reported in /proc/interrupts
->>> before any suspend happens?
->>>
->>
->> No. The phy works in polling mode AFAIK.
-> 
-> You should be able to tell from dmesg:
-> 
-> Generic FE-GE Realtek PHY r8169-0-600:00: attached PHY driver (mii_bus:phy_addr=r8169-0-600:00, irq=MAC)
-> 
-> irq= can be MAC, POLL, or the interrupt number if interrupts are used.
-> 
-> If PHY WoL is used, i would expect interrupts to be used, otherwise
-> how is the PHY waking the system?
-> 
->       Andrew
-> 
+strace tc -s class sh dev eth1 parent 2:
 
-Yeah I know, it's indeed POLL. The phy is now waking the system using 
-the INTN_WOL pin directly connected to the SoC GPIO, instead of the INTN 
-pin connected to the QPS615.
+strace is fooled with rtnl_dump_request() way:
 
+sendmsg(3, {msg_name={sa_family=AF_NETLINK, nl_pid=0, nl_groups=00000000},
+        msg_namelen=12,
+	msg_iov=[{iov_base={nlmsg_len=36,
+			nlmsg_type=RTM_GETTCLASS,
+			nlmsg_flags=NLM_F_REQUEST|NLM_F_DUMP,
+			nlmsg_seq=1778082626, nlmsg_pid=0},
+			iov_len=16},
+		{iov_base={nlmsg_len=0, nlmsg_type=NLMSG_NOOP, nlmsg_flags=0, nlmsg_seq=0, nlmsg_pid=131072},
+		        iov_len=20}],
+		msg_iovlen=2, msg_controllen=0, msg_flags=0}, 0) = 36
+
+With rtnl_dump_request_n() we get instead:
+
+sendmsg(3, {msg_name={sa_family=AF_NETLINK, nl_pid=0, nl_groups=00000000},
+	msg_namelen=12,
+	msg_iov=[{iov_base=[{nlmsg_len=36,
+			nlmsg_type=RTM_GETTCLASS,
+			nlmsg_flags=NLM_F_REQUEST|NLM_F_DUMP,
+			nlmsg_seq=1778082790, nlmsg_pid=0},
+		{tcm_family=AF_UNSPEC,
+		 tcm_ifindex=if_nametoindex("eth1"), tcm_handle=0, tcm_parent=131072, tcm_info=0}],
+		iov_len=36}], msg_iovlen=1, msg_controllen=0, msg_flags=0}, 0) = 36
+
+This will also permit future attribute additions, like skip stats.
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>
+---
+ tc/tc_class.c | 25 ++++++++++++++++---------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
+
+diff --git a/tc/tc_class.c b/tc/tc_class.c
+index 310514ce560ab6c1b42665cb6c75314e45b84cd6..82f0f85ee39a335bc7e1c3bea2e3ea9571ea155f 100644
+--- a/tc/tc_class.c
++++ b/tc/tc_class.c
+@@ -386,7 +386,14 @@ int print_class(struct nlmsghdr *n, void *arg)
+ 
+ static int tc_class_list(int argc, char **argv)
+ {
+-	struct tcmsg t = { .tcm_family = AF_UNSPEC };
++	struct {
++		struct nlmsghdr n;
++		struct tcmsg t;
++	} req = {
++		.n.nlmsg_type = RTM_GETTCLASS,
++		.n.nlmsg_len = NLMSG_LENGTH(sizeof(struct tcmsg)),
++		.t.tcm_family = AF_UNSPEC,
++	};
+ 	char d[IFNAMSIZ] = {};
+ 	char buf[1024] = {0};
+ 
+@@ -412,20 +419,20 @@ static int tc_class_list(int argc, char **argv)
+ 			if (get_tc_classid(&filter_classid, *argv))
+ 				invarg("invalid class ID", *argv);
+ 		} else if (strcmp(*argv, "root") == 0) {
+-			if (t.tcm_parent) {
++			if (req.t.tcm_parent) {
+ 				fprintf(stderr, "Error: \"root\" is duplicate parent ID\n");
+ 				return -1;
+ 			}
+-			t.tcm_parent = TC_H_ROOT;
++			req.t.tcm_parent = TC_H_ROOT;
+ 		} else if (strcmp(*argv, "parent") == 0) {
+ 			__u32 handle;
+ 
+-			if (t.tcm_parent)
++			if (req.t.tcm_parent)
+ 				duparg("parent", *argv);
+ 			NEXT_ARG();
+ 			if (get_tc_classid(&handle, *argv))
+ 				invarg("invalid parent ID", *argv);
+-			t.tcm_parent = handle;
++			req.t.tcm_parent = handle;
+ 		} else if (matches(*argv, "help") == 0) {
+ 			usage();
+ 		} else {
+@@ -437,13 +444,13 @@ static int tc_class_list(int argc, char **argv)
+ 	}
+ 
+ 	if (d[0]) {
+-		t.tcm_ifindex = ll_name_to_index(d);
+-		if (!t.tcm_ifindex)
++		req.t.tcm_ifindex = ll_name_to_index(d);
++		if (!req.t.tcm_ifindex)
+ 			return -nodev(d);
+-		filter_ifindex = t.tcm_ifindex;
++		filter_ifindex = req.t.tcm_ifindex;
+ 	}
+ 
+-	if (rtnl_dump_request(&rth, RTM_GETTCLASS, &t, sizeof(t)) < 0) {
++	if (rtnl_dump_request_n(&rth, &req.n) < 0) {
+ 		perror("Cannot send dump request");
+ 		return 1;
+ 	}
 -- 
-Best regards,
-Xilin Wu <sophon@radxa.com>
+2.54.0.545.g6539524ca2-goog
+
