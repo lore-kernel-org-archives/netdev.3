@@ -1,117 +1,136 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E94303EE1F4
-	for <netdev@vger.kernel.org>; Wed,  6 May 2026 15:22:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4984132A3C9
+	for <netdev@vger.kernel.org>; Wed,  6 May 2026 15:27:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778080934; cv=none; b=gR+i08OfNEeRWTW7fHkjWSSbkDZSEmYOqSfakoUbFOiwwlNc6pnNqfF4/yCR3DC3Bfpm6Bte2VGKDLXdfoxv38A2/OpObK8KfjYtZzn8rVDmsNlwQ53bvquJeMwkCHztEef4BCNyidJBm3TJIxi8a41DC1BDS4SfQvC9e6D5XNg=
+	t=1778081233; cv=none; b=pDY+AgAUEk7kyA9OhLWPUujCddU/5gRJCqz/uO2fFsJYH5N1qQ0sfoP4KEN6hc1/xYPrf3x8j+HPj3S02rwyPG97SW2AhLtVvjeKKwka9DqD5NuiyS6dPjZPE7AG0j5Awg+h3Vq+ExuBUOsO4LVlsJ5ddNbexRmOSQo0sopO6ZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778080934; c=relaxed/simple;
-	bh=GU+rpeFvu/c+ECLaLtY3bH6GaOKIvSDEkZsrPMB5ACQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kNjsva3obqqUKzYFEu2MA1jJvupBUpbKgFxZgaLXupokIrFfZdKJOy1G1QI56eiNbiYCoupfzrp1dyrRxhyx58eJ58CYx/0SPFMiX2q5Pdz5fCU0IKLbV2DgmyJyejKF40djehzoKauxuVK+ByhqULuvbg0O2VT5jaGHOssXebk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=au/g5mo3; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=RMpeRqDx; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1778081233; c=relaxed/simple;
+	bh=SkBOX6fDWuILt3NDIue2RThsK+F/RfZ0aMZvoLyOuwU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=V5neseK9WlOhwJ0LyPmyGXGWttH9Sxt8rAHQkKDVyTangx6L4SHi/QtKT6WrTMi/YQVo2eE9DXPybsM4VoEWiYmxLxmq6NGzXADSVXP+DcipGFTmJsfmQnaroG9G/1lSmHzgiPKXY88GXEArzBvNsDqJvPjSde0Zl+q6t4Qgk4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UfeYdcQX; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="au/g5mo3";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="RMpeRqDx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778080927;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4lOFmECujKVw6rBnTfWmHI4ViWK6rRKv7cPq5umz4ds=;
-	b=au/g5mo3wwUH5JtNwtC6kqWLpNlEzZ7IP+HpbJ5WZyck36AyC/4Vbn5otneUdRhZ8CXLlK
-	HpnRGFEE6JYhrszD0BNMR2KaatQ/3gTQiZBLYMboWN8+Qy6h6sV+zUQ+jD7jFvWkNu/O6S
-	F5mAvJBBPVs7+TpogNvyzhuOBYm5vjU=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-99-5J8OdfCSNWiD3Ye5wp9UFw-1; Wed, 06 May 2026 11:22:05 -0400
-X-MC-Unique: 5J8OdfCSNWiD3Ye5wp9UFw-1
-X-Mimecast-MFC-AGG-ID: 5J8OdfCSNWiD3Ye5wp9UFw_1778080924
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-43d7730e9e3so4127230f8f.2
-        for <netdev@vger.kernel.org>; Wed, 06 May 2026 08:22:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UfeYdcQX"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-36534668247so3879956a91.1
+        for <netdev@vger.kernel.org>; Wed, 06 May 2026 08:27:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1778080924; x=1778685724; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4lOFmECujKVw6rBnTfWmHI4ViWK6rRKv7cPq5umz4ds=;
-        b=RMpeRqDx0Xyi0yMSuDMb74nxP20oXt5s7Il9R9RJ401qSOz11FkQz3HwsywimuMjCc
-         IaGxpyUItI7pcHXEJkF6sFHiD+Jl5bsq/WNgJ4VqPj9QNAMSaEYKJDanSGyHc7s78lAe
-         Z9iuO4szijc7nf7AKzuds7QJ+iNr3vipUR1qc3LAkcB5rNFPK0fcm2Xyl6qQIuxQKelf
-         oIMr24vVJzkcLf92uU8dq6yTUWuzzmFFEhKxsb0EKc3bKb31VlHom+4IVwcF2++5qQim
-         otyssSgKXl7dQRPb56d9dhZI4HMjTONVAo0pSmkYdjU5JbR84s8o8w6ulgk7OP15ikJl
-         Q6BQ==
+        d=gmail.com; s=20251104; t=1778081232; x=1778686032; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZC6Xht6xACWuhXxwl0DvhLfosR4WdiVXz/heDFGTozk=;
+        b=UfeYdcQXldx8Jbc3SVMOcnl1Q4v4/tLKcsmlYXHXP6AtsFOeKZP+kweeSo904BC64I
+         7jMoj9DC0HbddB7dH/tOmoLBr2VIfmCUxgB+Jopo08SKxCa68//XPhlgoTNdc044pq5p
+         FGAR8nOidpMHWS9G7I7x7eOrL1fgUA/SNoKyLcBbe/u+zEaZ7/ShCJKO6pNHncoU+SQ8
+         GmF6g6dH+bcmY5oE1VVB23AJLgwVtA8+AGtIH0l9toESPvS5oyAGxcWdwR0fiRA6Zb1P
+         Ejqdb1n0qRuF1snk8f8BGnUMwtXBr4hZbLjHk4pjfWZ9oQlPoqsXrjYMkWLS9cYHQwNs
+         +yxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778080924; x=1778685724;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4lOFmECujKVw6rBnTfWmHI4ViWK6rRKv7cPq5umz4ds=;
-        b=mVkJfkctZQ83gWC2ywlTJLpjMUgtqKFOV+SiNuUuWRxJQSZIa6fQcRwoWDEEf9/8Nl
-         Jq877f76Tfitb4VZAzi2W/CRb2VvzuuRd28q9CCP4jtlY6bGjLFIMXUPjGfWjZm2iNv+
-         QW4VOIyctVKGcjurZQ64h/qAKSKlIvK1nntkDsPv95ToCCI12zdqvP3TeYUUfF+fFJZX
-         swt+mkW77pOiVnbVv7RL1H1N5RvxeSi9Jb31H+uxHrgkB0G4hsG4feQmRwbxhcuWdBYp
-         mR996vU8k1qYA8ic5jNA/TzlPqrwb1Fr2bA5qVAbXJwgzvHWrMhFCjekqIKwcLtSz+Ka
-         ryRg==
-X-Gm-Message-State: AOJu0Yz1n0VnW/Osx1e+Rs6eJzwSB+ne7XbrYQA/JZzA4dpxfRqSJXv9
-	jb3gxTUpr8DwTvJ95+Yv5SIAzGYbqSIHPJDP21+oY9gfNNPQ3TMzXRHpvsTRgV8SJUtj9Jk24SD
-	q8/0B3OxhQcxq39+t9SiL6L3B8oRibJUGR8/dv78jiUwLieZPJQ0shZx1Vg==
-X-Gm-Gg: AeBDietL6zfuiKMFa+zibSL7yKKrQyQLS38i8KYedRaR+ojAd6sJHP7/uPn53Z9qDO/
-	l4dGrUaXtjymr6rqoTchvczomenvEwwpuMF5ORME4CKbeLggrQN6Z2JpRyCVAMQV9r4dU5ObWMp
-	KyybAvzgiMwjaxkBh8PlA4gJrJC40uO3iONvkTSvRbMSvRCIlVJhyI5GdH8x+4Df5DprKIguarW
-	4ScjvqfR5NN7M6X7FXl+ETlFT6EChgYzEHuvkA0ndzURuuXwdeI6QXZEJMSZn9tjLs0gA35NoQl
-	E4JB+pD2UJZVxm7sbO4aCljs3ag2Uac4QzqEDXoLDyqmyXkZQ17REPDkCJKZkGdVOkcv0uSraas
-	VYNzaBXRaAjoI0aiE5mY0OqUEwe0ELJ+RysSRShKMJntxIlfrrjMBbUjFk/7r77b3G6c=
-X-Received: by 2002:a05:6000:4010:b0:441:1fa5:457c with SMTP id ffacd0b85a97d-4515a6c2a13mr6722866f8f.5.1778080924406;
-        Wed, 06 May 2026 08:22:04 -0700 (PDT)
-X-Received: by 2002:a05:6000:4010:b0:441:1fa5:457c with SMTP id ffacd0b85a97d-4515a6c2a13mr6722802f8f.5.1778080923927;
-        Wed, 06 May 2026 08:22:03 -0700 (PDT)
-Received: from [192.168.88.32] ([150.228.25.151])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4504f4857ffsm12837888f8f.0.2026.05.06.08.22.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 06 May 2026 08:22:03 -0700 (PDT)
-Message-ID: <59b26f1e-efd5-488e-8738-15e96b9c79e4@redhat.com>
-Date: Wed, 6 May 2026 17:22:01 +0200
+        d=1e100.net; s=20251104; t=1778081232; x=1778686032;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZC6Xht6xACWuhXxwl0DvhLfosR4WdiVXz/heDFGTozk=;
+        b=Y0Aei0sQ1Y+aa76INjxsRLfbN0mEWnTTE7v1urLqpPu+RJOfPCj4Y+BzjKB0stJc4J
+         uPH8yBewiodY9DNfN5oxgiHHA4XawIahI56d9dVJtBYB4inL+7PYS4xMqSZN8qRGO/Ny
+         drDPRWWvOBcNUPBO5go6Szp3LsUzlc8aGiy0DohL3RPTUKe7GLvBErIHWXW35tZoCNkN
+         yraTVLFETReldIH5a5+AmCt4LVnG+m3wafrUhhe5/7WPSewlKGcjWiWaygO7wdJBgVSr
+         4cqiyrhdxkSwzGglvxQCnSNuNKmiv3gA5uZLFPbro8yBw1NidYpkyRsMk4oDyaHZWMym
+         seGw==
+X-Forwarded-Encrypted: i=1; AFNElJ8P7vkiGdGvWRrrR56ZtBX9Rm0Dfd3VjdcA8kQUtU5U8T1JFYzfGk+7rrNWFlYeDHZ5F0eor3w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzlhI/2UyAozg5jGVXCVy+bZPNH0skhvKGkI6LIuU+nEHhNgyha
+	dSAeB4rLs5DnoYHWNq7rWx/5nFrnAd2nwhIfl4Ae2MTN5pLsCezSS+er
+X-Gm-Gg: AeBDieuxy9rLFypBt0vTMBnkwx7VJYPX3yDtAmJC9E/5gGuwTU+L6RPSVJuTL2vkkNb
+	O54nekQMdxutb5Tr1LqQYjaYgeL1P1gi4YB+dubzkQcbO+zYimh1lqMcoiFS8evbWpJJFXlELrF
+	zhkspSrUYxBu6JZyfpWm4N6Ue3ESgxAmgPc+DcsjCevuvxoCByd4yojtldapxjnrPdI64FyZr/J
+	fZu+VwcLHo4XAKAg7mZdL7Bt3sSAZEC/NTHFq7wjWnHYUhUDY7CqNx7L0y+VCwBRWHgdo0PGEc/
+	lAUt4C+AxuJVmx8ePy75W1Dh6zdaptM32axHg7epVCal7+KSa7Bok1XjOcoHW1cufHpNEv8/RIh
+	+336ZfHdQcnAP05WCZn5IcbTbYg/xzoF1dkaAYco7K/LjpWpenAcjF6AzVbEYt8c6Y6lHcDuEh/
+	N9DoSjN/H2T8ftlJN6okFEkt7LsJEsZMUJtnfEDihlmzU/BqNY3sU=
+X-Received: by 2002:a17:90b:4b87:b0:35c:1f29:712f with SMTP id 98e67ed59e1d1-365ac76bae1mr3949539a91.24.1778081231591;
+        Wed, 06 May 2026 08:27:11 -0700 (PDT)
+Received: from localhost.localdomain ([106.0.57.242])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c8242ab8bf4sm2484894a12.4.2026.05.06.08.27.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 May 2026 08:27:10 -0700 (PDT)
+From: Sajal Gupta <sajal2005gupta@gmail.com>
+To: petkan@nucleusys.com
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Sajal Gupta <sajal2005gupta@gmail.com>
+Subject: [PATCH net-next] net: usb: pegasus: replace simple_strtoul with kstrtouint
+Date: Wed,  6 May 2026 20:56:36 +0530
+Message-ID: <20260506152653.52329-1-sajal2005gupta@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 04/12] net: shaper: try to avoid violating RCU
-To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
-Cc: netdev@vger.kernel.org, edumazet@google.com, andrew+netdev@lunn.ch,
- horms@kernel.org, shuah@kernel.org, linux-kselftest@vger.kernel.org
-References: <20260506000628.1501691-1-kuba@kernel.org>
- <20260506000628.1501691-5-kuba@kernel.org>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20260506000628.1501691-5-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 5/6/26 2:06 AM, Jakub Kicinski wrote:
-> net_shaper_commit() overrides nodes which may be concurrently read
-> under RCU. This is not a huge deal since the entries only contain
-> config, worst case user will see inconsistent config params. But
-> we should try to avoid this obvious RCU violation. Try to allocate
-> a new node. Since commit() can't fail fall back to overriding.
-> 
-> Full fix is probably not worth the complexity, struct net_shaper
-> is around 80B, and the allocation is with GFP_KERNEL.
+simple_strtoul() is deprecated as it has no error checking. Replace it
+with kstrtouint() which returns an error code on invalid input, and add
+appropriate error handling.
 
-I'm not sure if even this variant is worthy?!? The scheduler tree dump
-could be still inconsistent, as the dump is not atomic. IMHO e.g.
-inconsistent weights in the same WRR group would be as bad as
-inconsistent values inside the single shaper.
+Also add a NULL check before parsing flags, since strsep() can set id
+to NULL if the input has fewer tokens than expected.
 
-/P
+Signed-off-by: Sajal Gupta <sajal2005gupta@gmail.com>
+---
+ drivers/net/usb/pegasus.c | 26 ++++++++++++++++++++------
+ 1 file changed, 20 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/usb/pegasus.c b/drivers/net/usb/pegasus.c
+index db85f40734d7..d45f08f8f22e 100644
+--- a/drivers/net/usb/pegasus.c
++++ b/drivers/net/usb/pegasus.c
+@@ -1327,15 +1327,29 @@ static void __init parse_id(char *id)
+ {
+ 	unsigned int vendor_id = 0, device_id = 0, flags = 0, i = 0;
+ 	char *token, *name = NULL;
++	int err;
+ 
+-	if ((token = strsep(&id, ":")) != NULL)
++	token = strsep(&id, ":");
++	if (token)
+ 		name = token;
+ 	/* name now points to a null terminated string*/
+-	if ((token = strsep(&id, ":")) != NULL)
+-		vendor_id = simple_strtoul(token, NULL, 16);
+-	if ((token = strsep(&id, ":")) != NULL)
+-		device_id = simple_strtoul(token, NULL, 16);
+-	flags = simple_strtoul(id, NULL, 16);
++	token = strsep(&id, ":");
++	if (token) {
++		err = kstrtouint(token, 16, &vendor_id);
++		if (err)
++			return;
++	}
++	token = strsep(&id, ":");
++	if (token) {
++		err = kstrtouint(token, 16, &device_id);
++		if (err)
++			return;
++	}
++	if (id) {
++		err = kstrtouint(id, 16, &flags);
++		if (err)
++			return;
++	}
+ 	pr_info("%s: new device %s, vendor ID 0x%04x, device ID 0x%04x, flags: 0x%x\n",
+ 		driver_name, name, vendor_id, device_id, flags);
+ 
+-- 
+2.54.0
 
