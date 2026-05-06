@@ -1,85 +1,65 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5FF2C11FD;
-	Wed,  6 May 2026 02:31:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C050A1DDC35;
+	Wed,  6 May 2026 02:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778034683; cv=none; b=D5sDq89GJ4O26Bhkr/ouXNWYOCMjA99AAPh2O22p05FYc6ZohnzyJHKn+7Lr3KJfw+GPK9RvCD5a8PXjZX5ryX85SjVd37XNXLLZvGMm2+HbC5L/mUffvbTfjIltGAnXzTY2Tn6aF4pQRxrGfRA9UrNXHzZt0/2G7zyFpcmKZRU=
+	t=1778034743; cv=none; b=EAZK+wTDVQ6vwvcJVwVUQETSdO0yza/wpRzzwBuzvVmdAgwi4XQpA65/BW7re/I+ISQvpehjbDwQ3TthThYghF3bIjtwy6Q/nte2wwgIj+ZCa2Rh2j13cVVYPegkmRP67yoJ+CeQ+CSoe48r5JRlcJL6tmSHA7X8ZRprBnuLUm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778034683; c=relaxed/simple;
-	bh=kL7gjYEt+3pamSHe4Z8BP9Yb1oQFZ0WCVB+SU02m5p4=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=R/smYd0OMvSsSmL6/7xkQVJHR9NY9BWT4Vv4oVVPKuhJdnbwL+oPFL+aKBulZVzRBs0UJKc8ovZRvnSsGM3qw/ElCmszxwALilOB91YXKUbwwS9wi/1M42YAtCE04ln+7TQjsagSQAUACRqLwIOV2buJcGB3Re4yoQa6iq54ugY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qhg85Uzs; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778034743; c=relaxed/simple;
+	bh=XAALec+F4V6oORieFTH2XbQUd3O3ztDg2MoeA6kyey0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=u+gMdeQ12ZxuN1IAXJJPuLmMevhHMY2JBiJaUVDX3GIGynyENqFx/XMtVKAEqgdOhAAVb2hnaaHGosCAqsR1s1xPLosUvQeGeWpNmuthfOUfLFztgINybTCqQitM/cwWlxF72Xg+J7BJACDyHgKw3xUMsse3c6bZG9qEDpCChiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jYoCjKh+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qhg85Uzs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 285B5C2BCB4;
-	Wed,  6 May 2026 02:31:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jYoCjKh+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 099E1C2BCB4;
+	Wed,  6 May 2026 02:32:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778034683;
-	bh=kL7gjYEt+3pamSHe4Z8BP9Yb1oQFZ0WCVB+SU02m5p4=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Qhg85UzsjUnFYVUa5dH5iPIC+mXntIm0WUlsqPHBjM8Vn9xvbILWXS7C5aZPt+o5i
-	 D1tvVEVtPLUTE15Q1MVE5UfFKFc3EgtEktk8i7y3vaVVeDdPwYqJM+r3bF5SKStFIq
-	 SPHT8xmqJuJ88aJTOk20DOiiuOi+AYtg18wj89PwXIerDXrF+3dLdDR0xzcFD3b1Lm
-	 KjPqhGmWB29H17+iVx/4aWBvSlLTmtFpOds3yUsY7q7jXLVbjWXcjaDjLN3yBaJlpe
-	 c7ovrRyhX+kEuSzdf0O9nHXPkIc0eBT7yo7e3XE45a2jAJqFzsVMxOR7Dxd185f+ho
-	 a77yqCUxvJbGg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CF703930780;
-	Wed,  6 May 2026 02:30:34 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1778034743;
+	bh=XAALec+F4V6oORieFTH2XbQUd3O3ztDg2MoeA6kyey0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=jYoCjKh+yENrUeIcM548KfhXbSq03G353XXnRZ9OfisrRW1q0jFbfAIjXgiCgGWhI
+	 f4hB2zGoHDEVQfJn65iLWRhL9f9aK33haeQ/fZjImo9XhH65Cm/0v1m7biTqdKhpBL
+	 udepx0cSuCVzDRMpF3URovl6CPpWqo11IdHaHVpM9olZ1a3jVVIKqYVkC3+eHxd/4A
+	 bp/Enq2/HtHOGQpmj95znown/gQE0dc34XNTEtXhJRV1V6DIG3qxPkNKuk1ZllRSeb
+	 Mmt+jLB3SHR6ZuZQwzF4qmtCreT494D3KAnIxnqFuIB/RFNqNzut/7/9ZrHZALEZOM
+	 zrpeSM59zjeTw==
+Date: Tue, 5 May 2026 19:32:22 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+ andrew+netdev@lunn.ch, horms@kernel.org, shuah@kernel.org,
+ linux-kselftest@vger.kernel.org, donald.hunter@gmail.com, ast@fiberby.net
+Subject: Re: [PATCH net 09/12] tools: ynl: add scope qualifier for
+ definitions
+Message-ID: <20260505193222.429a3ad3@kernel.org>
+In-Reply-To: <20260506000628.1501691-10-kuba@kernel.org>
+References: <20260506000628.1501691-1-kuba@kernel.org>
+	<20260506000628.1501691-10-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v3 0/2] net: mana: Avoid queue struct allocation
- failure under memory fragmentation
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177803463304.2357425.6242248508065592109.git-patchwork-notify@kernel.org>
-Date: Wed, 06 May 2026 02:30:33 +0000
-References: <20260502074552.23857-1-gargaditya@linux.microsoft.com>
-In-Reply-To: <20260502074552.23857-1-gargaditya@linux.microsoft.com>
-To: Aditya Garg <gargaditya@linux.microsoft.com>
-Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
- decui@microsoft.com, longli@microsoft.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- kotaranov@microsoft.com, horms@kernel.org, ssengar@linux.microsoft.com,
- jacob.e.keller@intel.com, dipayanroy@linux.microsoft.com,
- ernis@linux.microsoft.com, shirazsaleem@microsoft.com, kees@kernel.org,
- sbhatta@marvell.com, leitao@debian.org, netdev@vger.kernel.org,
- linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-rdma@vger.kernel.org, bpf@vger.kernel.org, gargaditya@microsoft.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Tue,  5 May 2026 17:06:25 -0700 Jakub Kicinski wrote:
+> +          description: |
+> +            Visibility of this definition. "uapi" (default) renders into
+> +            the uAPI header, "kernel" renders into the kernel-side
+> +            generated header, "user" renders into the user-side
+> +            generated header. When combined with `header:`, the
+> +            definition is not rendered, and the named header is
+> +            included only by code matching the scope.
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Sat,  2 May 2026 00:45:32 -0700 you wrote:
-> The MANA driver can fail to load on systems with high memory
-> utilization because several allocations in the queue setup paths
-> require large physically contiguous blocks via kmalloc. Under memory
-> fragmentation these high-order allocations may fail, preventing the
-> driver from creating queues when opening the interface or when
-> reconfiguring channels, ring parameters or MTU at runtime.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net-next,v3,1/2] net: mana: Use per-queue allocation for tx_qp to reduce allocation size
-    https://git.kernel.org/netdev/net-next/c/d07efe5a6e64
-  - [net-next,v3,2/2] net: mana: Use kvmalloc for large RX queue and buffer allocations
-    https://git.kernel.org/netdev/net-next/c/3af0820c878e
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Clashiko says I'm not implementing enum handling even tho 
+the param is generic. True, but intentional. Since this is 
+primarily for policies I don't think we'll need an enum. 
+We tend not to implement things we don't use in the code gen. 
+I implemented header handling here (even tho it's not used)
+because I think that part is tricky (read: I would have forgotten 
+the plan/thinking if I didn't just implement it right away).
