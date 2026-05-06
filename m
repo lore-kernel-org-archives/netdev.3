@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D885E19F40B
-	for <netdev@vger.kernel.org>; Wed,  6 May 2026 00:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8CCF175A60
+	for <netdev@vger.kernel.org>; Wed,  6 May 2026 00:57:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778028545; cv=none; b=iVqH4wJD/GqEXvI/XvKfrDN3b8dL2E5ACyBd0ydPRcgcvpTDNM1vY4nDiE9pkJtoi+5qJHZvCblhZ2gtjT4qHWw/FbsdjVM0VSstnzt9ByXnn/gEVHjw99yOOTD4KdSe5KzclSg5OKrnjndVky3G/rRGOBgcsmeq/zzewa2MpHQ=
+	t=1778029049; cv=none; b=vGlUp9SXBm/tf+6q5hV4Fo98cJb1qtH0hQZ3YZ5651xBoX5tjKo7GZHxvGevdl5037MA4WVweIb/RjzGLgjZkE6pPXMn1WQLR5VMDxXs/ZB3w0Iomsd83PwNS/BliThzisyVUN7kj86uHWWTQG7bVMqml3h0hazv1OcZ8Q8hbRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778028545; c=relaxed/simple;
-	bh=ca62F4uGkdzsX/Jw5lr5LSYquoMOT+qVDd37fpoT8q8=;
+	s=arc-20240116; t=1778029049; c=relaxed/simple;
+	bh=70Z5kUEk//V7YOS3AiCB41vLCXf/xXrGw+6TBYaTx+I=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D5StKvzKqTwEiwyXibeC483mUtyfwuebS+TX92f09zmJQMuT/1MIukrF2Caq8Al8QE7aT6B9jcySJjYCwWoyZgXki9mUegEpk4bLx1tcJlDHfFpwcgRAYdFTh2/IstIQ3l97YXuUWqygD1tWfVptqawKsSTl3fy9PK8TW8Lsnhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PYgb3l+Y; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=GSGtJSPYJqcZIJg0TBhSmLz9Nh1PHq+z4TioJOhBEkPH2YhWi6vWkkBS23AlAI+u6reBEmJA/Kmx4N0+fy4QNXC5/9NjvMjUzaV9P54cL+KMjQ4+aZDyJ67ua0Dl034btNaEgtA6GqFMBjWYQkQYP/2NfoRJPBIS1FbkAew91LI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OfZSZ6ZG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PYgb3l+Y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B56EC2BCB4;
-	Wed,  6 May 2026 00:49:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OfZSZ6ZG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E78AEC2BCB4;
+	Wed,  6 May 2026 00:57:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778028545;
-	bh=ca62F4uGkdzsX/Jw5lr5LSYquoMOT+qVDd37fpoT8q8=;
+	s=k20201202; t=1778029049;
+	bh=70Z5kUEk//V7YOS3AiCB41vLCXf/xXrGw+6TBYaTx+I=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=PYgb3l+YflHvn4hZqYa8w8hTS0dTMcOnqbMxe7S/EWLjDKakRONrLniqglC65cdV0
-	 hKUKxPGYPcAjTtdXYMxLGzZiV96R1SzP7tdnRQrWadDCEBG2BxKQ+yxJ6IY147Bb7j
-	 khf6qfVZZfQ1DN045FVjfCaMDaa73UgIZGTBuSFegndjqmVuRhV+AElkM4UM+51aAl
-	 ARqKNZXd8wShhwhV852CcgvDK/zqNVrSNdl6QVc86+pacOChh2u1oQJsuRh9GHjMWr
-	 +GjN3v5A2AeE2Dr41zqRtxUmgJMW0DJzQ3guF+ehTTmThhzhCqo14WRrbT5+FqF0KO
-	 oZEWUF9aw0NCQ==
-Date: Tue, 5 May 2026 17:49:04 -0700
+	b=OfZSZ6ZGvpiyaa5HESV08okekpkBoea4N8jtpw+DJ+zRVN9uSOhKe0eDlHwv7oI/C
+	 9qQIpm4/LaOy3hxZ0QkzaZ2gxgbwVmeERDO32N1MdNvlJ8A2vfrv+crojqR0cr4vv/
+	 Apz+EJQhwS0yKeZQkafEjC4zj2zQyC7sXkGyV3a08Srl/wQ32punn+gZ9DKrby09HI
+	 szWecVAckwSXdywzOa2TCsvwW0x75D2oCvkP/X9Ij9ymrdRsKEfsl7sDTqJGlvhOIu
+	 Cdpe1PjqvlqWclIn55FhcT48+px2aDLZv3QWC0SmQ8iR/uxTn+7mn1KqmDAZbI9KPS
+	 emXC/XrL2lyBA==
+Date: Tue, 5 May 2026 17:57:28 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, Simon Horman <horms@kernel.org>, Kuniyuki Iwashima
- <kuni1840@gmail.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH v1 net-next 00/15] udp_tunnel: Speed up UDP tunnel
- device destruction (Part I)
-Message-ID: <20260505174904.52b20741@kernel.org>
-In-Reply-To: <20260502031401.3557229-1-kuniyu@google.com>
-References: <20260502031401.3557229-1-kuniyu@google.com>
+To: Michael Chan <michael.chan@broadcom.com>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, pavan.chebbi@broadcom.com,
+ andrew.gospodarek@broadcom.com
+Subject: Re: [PATCH net-next 10/15] bnxt_en: Add MPC transmit and completion
+ functions
+Message-ID: <20260505175728.001f2122@kernel.org>
+In-Reply-To: <20260504235836.3019499-11-michael.chan@broadcom.com>
+References: <20260504235836.3019499-1-michael.chan@broadcom.com>
+	<20260504235836.3019499-11-michael.chan@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,22 +47,12 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat,  2 May 2026 03:12:53 +0000 Kuniyuki Iwashima wrote:
-> Kuniyuki Iwashima (15):
->   udp_tunnel: Pass struct sock to udp_tunnel_sock_release().
->   udp_tunnel: Pass struct sock to setup_udp_tunnel_sock().
->   udp_tunnel: Pass struct sock to udp_tunnel6_dst_lookup().
->   udp_tunnel: Pass struct sock to udp_tunnel_{push,drop}_rx_port().
->   udp_tunnel: Pass struct sock to udp_tunnel_notify_{add,del}_rx_port().
->   vxlan: Fix potential null-ptr-deref in vxlan_gro_prepare_receive().
->   vxlan: Store struct sock in struct vxlan_sock.
->   vxlan: Free vxlan_sock with kfree_rcu().
->   geneve: Store struct sock in struct geneve_sock.
->   bareudp: Store struct sock in struct bareudp_dev.
->   fou: Store struct sock in struct fou.
->   amt: Store struct sock in struct amt_dev.
->   pfcp: Store struct sock in struct pfcp_dev.
->   tipc: Store struct sock in struct udp_bearer.
->   udp_tunnel: Remove synchronize_rcu() in udp_tunnel_sock_release().
+On Mon,  4 May 2026 16:58:31 -0700 Michael Chan wrote:
+> Add transmit, ring selection, and completion functions for midpath rings.
+> These will be used to send control data to the crypto engines.
 
-Excellent job splitting this into patches, pleasure to read!
+drivers/net/ethernet/broadcom/bnxt/bnxt_mpc.c:488:16: warning: variable 'handle' set but not used [-Wunused-but-set-variable]
+  488 |         unsigned long handle = 0;
+      |                       ^
+-- 
+pw-bot: cr
