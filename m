@@ -1,94 +1,130 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5886F19DF6A;
-	Wed,  6 May 2026 02:41:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0B523C51D
+	for <netdev@vger.kernel.org>; Wed,  6 May 2026 02:55:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778035270; cv=none; b=KoPqguy5ikA0AuMtibKQaZDgqZhw4ziKtOzPW2t00pCChM31xMB8JQTZQB84D94Yc/MojaCRA6W1NI0CyzFb+9IHweh5ZCh3Sk5CIfzq48HRv2ysF9BxCUGwoR9gBnK6QH20W7a19ks2Jw83CLiF9IXz9Nr5SoS90nj6Rb+FUWI=
+	t=1778036120; cv=none; b=I5TbeWLY0ukEELkaW2jh4uhoXD3JoNne4lcBAdFDefFmo8BsnU3CvAdACLeUInHQFe0SFUz39AwMW5/LPRjvFvTVy9EpS5rztQPJzcN4N5BcwJfmB+Ahxkmrh8uWkTZHv3YNGHYrep3Ew/O3AuOKvGteA5HU/Wa8wDOyVJMMbvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778035270; c=relaxed/simple;
-	bh=IkxOXtRLYbotdLbeMtXS+vv1w5C3LFWIhoGMflXAMXo=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=YXbH4PJy8IAQWTJ+Gv/l4ip7cql/osX6k2vYEbsx6B+110veDrR6WiTRjHFG9hevOqE6mdhB+Xocpr7SpCrj+0mqWP6B4mtEEtrn+L1nmPzEvnHl8+BrR0ApJOpcK6Q++X6/Cn24244OmlSXeanI3BnmKVvQNNu8+P/KV/53f48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tN9ih2V1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778036120; c=relaxed/simple;
+	bh=JdEAyxCJZ5++nKooF6LFXwVbsX4GYl00OAoHEELZrbk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=dKpof1gqT4nJrVRxRMsyouH7CyEM2jCBOQOvi59dBk598A0gpGtli8Lkc51oa8adGTy923+fBbaF6pVRHpIqgJgsTUTh7YQ70VgZnAgh2bBZxSDIXnzUonEoVCFmvPd8PGRdM4rgL3zdaQNR9Twu5CXRqD8qlWCiCjCdzjtoeA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=w00Y0kG4; arc=none smtp.client-ip=95.215.58.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tN9ih2V1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27F59C2BCB4;
-	Wed,  6 May 2026 02:41:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778035270;
-	bh=IkxOXtRLYbotdLbeMtXS+vv1w5C3LFWIhoGMflXAMXo=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=tN9ih2V1KisYZw+RL+JTqGsvA3xx1v6HhRyx7tGxWqrdUgAtNw7yKBZapVohBLjWA
-	 cxLlJanA8RGcdV4oqwKE4OCAbANg6wj7gMxOpCwFiHrIkbPESwGtfYiM2S7E2remsd
-	 jtWiMbLT/ahXWXkxCeR1mSozr1IeyaU8hSXgFPqd9uPk32ZNy9u8SFrHeRavxswTA9
-	 k+H9U9boIOMMefTjCFJ7G+hGVsEyFZ+OzO3QHv+FnHIpz8hhwjbcsrXE/dkcXzeXd1
-	 /4WTTqUCics2YYK2yDB8ppkpDvt39yTjcb/5+3Qofq/+ngei7e5z8e4ax2OPJQI8qx
-	 Xmbo2wecX/L6w==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CEEC3930780;
-	Wed,  6 May 2026 02:40:21 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="w00Y0kG4"
+Message-ID: <10c0d8f6-4f3c-4f35-a3cc-19ceb82dd750@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1778036107;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gp4JzgH2pt3Dzh+cDIL4drktCo5KZW8uwvAsJAFLDZU=;
+	b=w00Y0kG4RKFQWdvbgNqwWY4lbc8XNBBenZh2PjgW59/jjSmgnvPgCrdvW4LFr5AdN2ih84
+	AsQB3uY734KZ8F1TuUq07QYVMGiI0Ihta6PocQjKnzKjOUvxXMMDuM+QqRQQOcr2rfb4RO
+	rV4ovfr570T0CJkV1sznfIAO7JIHeFE=
+Date: Wed, 6 May 2026 10:54:50 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v5 0/8] xsk: fix bugs around xsk skb allocation
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177803522005.2360305.17775705141386636622.git-patchwork-notify@kernel.org>
-Date: Wed, 06 May 2026 02:40:20 +0000
-References: <20260502200722.53960-1-kerneljasonxing@gmail.com>
-In-Reply-To: <20260502200722.53960-1-kerneljasonxing@gmail.com>
-To: Jason Xing <kerneljasonxing@gmail.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, bjorn@kernel.org, magnus.karlsson@intel.com,
- maciej.fijalkowski@intel.com, jonathan.lemon@gmail.com, sdf@fomichev.me,
- ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
- john.fastabend@gmail.com, horms@kernel.org, andrew+netdev@lunn.ch,
- bpf@vger.kernel.org, netdev@vger.kernel.org, kernelxing@tencent.com
-
-Hello:
-
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Sat,  2 May 2026 23:07:14 +0300 you wrote:
-> From: Jason Xing <kernelxing@tencent.com>
-> 
-> There are rare issues around xsk_build_skb(). Some of them
-> were founded by Sashiko[1][2].
-> 
-> [1]: https://lore.kernel.org/all/20260415082654.21026-1-kerneljasonxing@gmail.com/
-> [2]: https://lore.kernel.org/all/20260418045644.28612-1-kerneljasonxing@gmail.com/
-> 
-> [...]
-
-Here is the summary with links:
-  - [net,v5,1/8] xsk: reject sw-csum UMEM binding to IFF_TX_SKB_NO_LINEAR devices
-    https://git.kernel.org/netdev/net/c/d73a9a63f9f7
-  - [net,v5,2/8] xsk: free the skb when hitting the upper bound MAX_SKB_FRAGS
-    https://git.kernel.org/netdev/net/c/0bb7a9caf5c1
-  - [net,v5,3/8] xsk: handle NULL dereference of the skb without frags issue
-    https://git.kernel.org/netdev/net/c/8cd3c1c6e7d9
-  - [net,v5,4/8] xsk: fix use-after-free of xs->skb in xsk_build_skb() free_err path
-    https://git.kernel.org/netdev/net/c/0f3776583d28
-  - [net,v5,5/8] xsk: prevent CQ desync when freeing half-built skbs in xsk_build_skb()
-    https://git.kernel.org/netdev/net/c/3dec153ae484
-  - [net,v5,6/8] xsk: avoid skb leak in XDP_TX_METADATA case
-    https://git.kernel.org/netdev/net/c/8c2cff50afdd
-  - [net,v5,7/8] xsk: fix xsk_addrs slab leak on multi-buffer error path
-    https://git.kernel.org/netdev/net/c/e0f229025a8e
-  - [net,v5,8/8] xsk: fix u64 descriptor address truncation on 32-bit architectures
-    https://git.kernel.org/netdev/net/c/203cee647f55
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Subject: Re: [PATCH net-next] ppp: consolidate RX skb queueing
+To: Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Guillaume Nault <gnault@redhat.com>,
+ Breno Leitao <leitao@debian.org>, Taegu Ha <hataegu0826@gmail.com>,
+ Kees Cook <kees@kernel.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ linux-ppp@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260428024426.48605-1-qingfang.deng@linux.dev>
+ <410c814a-399a-4eb9-a39a-d1e5fecd6b33@redhat.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qingfang Deng <qingfang.deng@linux.dev>
+In-Reply-To: <410c814a-399a-4eb9-a39a-d1e5fecd6b33@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
 
+On 2026/4/30 16:54, Paolo Abeni wrote:
+>
+> On 4/28/26 4:44 AM, Qingfang Deng wrote:
+>> In ppp_input() and ppp_receive_nonmp_frame(), received skbs are queued
+>> for userspace delivery using the same open-coded pattern:
+>>
+>> 	skb_queue_tail(&pf->rq, skb);
+>> 	while (pf->rq.qlen > PPP_MAX_RQLEN &&
+>> 	       (skb = skb_dequeue(&pf->rq)))
+>> 		kfree_skb(skb);
+>> 	wake_up_interruptible(&pf->rwait);
+>>
+>> This has a potential race: skb_queue_tail() releases the queue lock,
+>> then qlen is read locklessly before skb_dequeue() re-acquires it.
+>> Another CPU enqueueing concurrently could cause the length check to see
+>> stale data. This race is benign, as it only causes extra skbs to be
+>> freed in the worst case.
+>>
+>> Introduce ppp_file_queue_rx_skb() to perform the enqueue, length check,
+>> and trim atomically under a single pf->rq.lock critical section. As both
+>> callers have softirq disabled, plain spin_lock() can be used instead of
+>> _bh()/_irqsave() variants. Since only one skb is enqueued at a time, the
+>> queue can exceed PPP_MAX_RQLEN by at most one frame, so replace the
+>> while-loop with an if-statement. While at it, use skb_queue_len()
+>> instead of open-coding the qlen access.
+>>
+>> Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
+>> ---
+>>   drivers/net/ppp/ppp_generic.c | 37 ++++++++++++++++++++++-------------
+>>   1 file changed, 23 insertions(+), 14 deletions(-)
+>>
+>> diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
+>> index 57c68efa5ff8..6ab5011540a0 100644
+>> --- a/drivers/net/ppp/ppp_generic.c
+>> +++ b/drivers/net/ppp/ppp_generic.c
+>> @@ -2307,6 +2307,27 @@ static bool ppp_channel_bridge_input(struct channel *pch, struct sk_buff *skb)
+>>   	return !!pchb;
+>>   }
+>>   
+>> +/* Queue up and deliver a received skb to userspace.
+>> + * Must be called in softirq.
+>> + */
+>> +static void ppp_file_queue_rx_skb(struct ppp_file *pf, struct sk_buff *skb)
+>> +{
+>> +	spin_lock(&pf->rq.lock);
+>> +	__skb_queue_tail(&pf->rq, skb);
+>> +	/* limit queue length by dropping old frames */
+>> +	if (unlikely(skb_queue_len(&pf->rq) > PPP_MAX_RQLEN)) {
+>> +		struct sk_buff *old = __skb_peek(&pf->rq);
+>> +
+>> +		__skb_unlink(old, &pf->rq);
+>> +		spin_unlock(&pf->rq.lock);
+>> +		kfree_skb(old);
+>> +	} else {
+>> +		spin_unlock(&pf->rq.lock);
+> Note that after __skb_queue_tail(), skb_queue_len(&pf->rq) could be ==
+> PPP_MAX_RQLEN + 2, due to the slightly different check in
+> ppp_prepare_tx_skb().
+
+The check in ppp_prepare_tx_skb() is for demand dialing mode. As the 
+name and comment suggest, when waiting for traffic a ppp interface is 
+not able to receive packets, until we see a tx packet and then do the 
+actual dial-up to resume normal operation, so that can't happen.
+
+>
+> I think the above it could/should be simplified to:
+> 	while (unlikely(skb_queue_len(&pf->rq) > PPP_MAX_RQLEN))
+> 		kfree_skb(__skb_dequeue(&pf->rq));
+> 	spin_unlock(&pf->rq.lock);
+>
+> And possibly it would make sense to consolidate the test in
+> ppp_prepare_tx_skb(), too for consistency - in that case an `if`
+> statement should become enough.
+I could consolidate this, but it tail-drops the skb instead of 
+head-dropping.
