@@ -1,60 +1,77 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 034723F9F4F;
-	Wed,  6 May 2026 09:56:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 539E03FFAD6
+	for <netdev@vger.kernel.org>; Wed,  6 May 2026 10:01:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778061405; cv=none; b=RZ3LkyE6HoQfW/BhEa5GF6DQCCSt0aG7siLumOJ93g4eCgYThnrIoz7xuYXFePiH8PnwdfYzoSDcsoLcU7zkdnOc1K4Yup5UPGEk65R85D92BahajLq577gfYbpYU5g5iGFMuXEA+Kh3bCrD8FjxsixgkOM9m1Z5uGrGELsHVqo=
+	t=1778061691; cv=none; b=EUrn11IsBvRtvnjN4YzDUFTQxeVosAjN/H6AHFRTHi02V19iLQQ8prYY5sGQSNVO61lp/igmos2uPPFTZcfavCDcq4aE1WOw6EIxx1jspRtmBIyjlyqEaN/ShlogQblUBOn6wag7QkTC2o2TuV/TA9FprnmfSJ7IXAyemz4XDbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778061405; c=relaxed/simple;
-	bh=i4b29kb5a/XMebP4vH5gtQdeyfZIpvycSMwV1kmFiYM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gBZHWHOtlaRa16Kqeig1DNT1gD6tRlT/ZJPLG65kyP5FzYqVSF0JUm9A2z3KVniMGiKonmhoybQLoNLbeGVnyIekX/LMDxBWEOWtzEnyjhrk0TcdWHLFQSqZNKlyqsL8u9c9gjS5//5246tx8myrRIKQ/5qte9WglkO3LfPzePs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=VdFNn7mO; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1778061691; c=relaxed/simple;
+	bh=vB+hpqwAuJSsSh1PVEzvz0BztCBRmFa72QGJZzXSVsk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Tt77UNfUSnjk0saVJKsgZ3gjPHpC2CdKtf8prJP+biEYOi0oufJhjqDxMiTjHE0K8w9YEnLsYQeQBqLktz0k3zBHZlh40EWIzOv3iKYLFLzLydCVKcJIPNCgDfStG0p+oSMLrWl+Eu4OYATowjS1lx7D5RQsuk0yncEa4X8GeaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N6Eg62y0; arc=none smtp.client-ip=74.125.82.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="VdFNn7mO"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1F9CCA50CD;
-	Wed,  6 May 2026 11:56:10 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1778061371; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=1gBHfWci9FiNcluIaLhYXqnpOD0nhtzCOMGm24dX1Ic=;
-	b=VdFNn7mOwU8hq9o4KWTKiS//BdbhYw5GatZTxFjYwk64TKL4OTgSpct3oJye0xbSkROatK
-	m60mJZPblsnmjbL+bbFXqabj71pZTqB819c6kLwnFgjJwennXtQxHxy3WtmoG1Xv7yKsMf
-	Mfi/r4Ig7oNpBjvbMf7xsaDgrTpFsM7mtsUnesuMhoibay3Seqhmeg2niP94RuVuHq0AYC
-	JLVa3DIAX1PNha05494CWKxHbnq9LT0R1QMzUMi+rs1DnwKfEHj2as2WCI6BvMdfelzPqI
-	+0KZskbIczCidUCx3F1NuFMwk/nfPiKlfq6PbdGqiIMcB1qyoR02N4HpOCvRKg==
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: netdev@vger.kernel.org
-Cc: Justin Chen <justin.chen@broadcom.com>,
-	Simon Horman <horms@kernel.org>,
-	Mohsin Bashir <mohsin.bashr@gmail.com>,
-	Doug Berger <opendmb@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Nicolai Buchwitz <nb@tipi-net.de>,
-	Mohsin Bashir <hmohsin@meta.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N6Eg62y0"
+Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-12e332315a8so1772299c88.0
+        for <netdev@vger.kernel.org>; Wed, 06 May 2026 03:01:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778061671; x=1778666471; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=hD4J81dj9SOxPXQuOmqvf+HfpPOudwaP/8n72hj3Yi8=;
+        b=N6Eg62y0OI6AgS8s6dkddZnybCoDWPMb+Gef3i+FJNbTe9dVfyCjXfyw470MwwUKnU
+         VTLAb13oylqaGSPtJrO/ycWtejD09q4kcWELnUDa6xjnomiMpXPbBtvQhBbxz0+zovk9
+         ZRn9wxB/YYV+Aq00QrlSDKGb/TsrfzYNp8s9OfEb3DyxOUyzLeeJgDP3uDYyfsEM/V61
+         foRsKyRNXHjhfmjcBw0bi5FodRww86vWGemVp/rsEe47bWORGqou5wIKb12BlsBcDcYQ
+         lfLOFjsIj/2DBHUW0+XubEhPtjPM6paP6bhisXFA+FlnwFlYnlc72x3/RjsdYNsH+KD2
+         V0Aw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778061671; x=1778666471;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hD4J81dj9SOxPXQuOmqvf+HfpPOudwaP/8n72hj3Yi8=;
+        b=aYpSfV+u7mRmVHbO248HrlfufRiSpe11Bzjd8fM7EwGjlwklJFHNQghoO/0WRxrPcX
+         j4G1qLyXgjeoY3n5Tr7Le37kTTWoRGKkZJJJ28lBZ9n1gFRjWv7WuScaoMBHtg2uE5m2
+         tqqSjofLxDi8qddLkza5Lw6KCsJbRAaV5OZEpwQgU+BeUMuZvbvI4NOLUrdwaEdoYDyu
+         C3NHT8i+BOw5bUFftAPZrkRuHvuRV3QbbXSE7aBi+gPpxNqXt2sn+C6tynXDo/6L0u2+
+         tHPmalP22lW+Krq4WohvoM8yzoPDLcXb6W6S1UtIaULnh/f7g4GaVqdVdZol1D6sC0G6
+         E0nQ==
+X-Gm-Message-State: AOJu0YyzZ+F/mJvhq+2Ju/Cx7IDjgocWKSuRu3qSJTshpL/6w5r0a0XU
+	EHvO3YvHq6G51qm8K/vWYtLldPNNw7aIYbv3gOeCA2ojgTLMiCKg1hti
+X-Gm-Gg: AeBDietNjfHtd0rsgFlANx/wNnY/IjaP/cGbkuhp9KrlXoei2ETaHY3iv107tqinOrj
+	zxZdKIXzd+o7IAy04VdZsxuhUZ1jvMW6TQmQpNLD+fSZFuXagnqYg9HplvVe15hd1AjfHLvqGt+
+	ZXpyusc4synxq1Dc6QVn0tTFvp7F7q6iLobeu2Vqv5hzpjHNz26Emwx3POkf440aPvWVC42DyaB
+	qYPDisq6MUCGsD7hJxemdxtaAtwrx3yM8E6J5qynOfLACOdKa6xeThkNzsdHOGUT4yVRYA47WEy
+	S+duokrkftr2A5HAtkJBmh4ubdim9KpIasuIi+wXeGS+zC2Iwnc9jtD7nVOVYMSgv+2a38ZuGVt
+	IBx5c48yU5cB1Dx783McW7qPrrJky0w3sHzXZuQ+EAwJKbtq9DdsRjga3Xf1sdWtY95zL3T47j0
+	dCrLOlKbAMRhOSLUVdYMVJUt0CuIKZWdy8IBBUkzCkww83Qw==
+X-Received: by 2002:a05:7022:1a83:b0:127:33e0:ea44 with SMTP id a92af1059eb24-1318e8185c4mr1567525c88.29.1778061670732;
+        Wed, 06 May 2026 03:01:10 -0700 (PDT)
+Received: from VM-16-24-fedora.. ([43.153.32.141])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-131f9679db9sm2608829c88.1.2026.05.06.03.01.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 May 2026 03:01:10 -0700 (PDT)
+From: alexjlzheng@gmail.com
+X-Google-Original-From: alexjlzheng@tencent.com
+To: sd@queasysnail.net,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	shenyangyang4@huawei.com
+Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org
-Subject: [PATCH net-next v9 7/7] net: bcmgenet: reject MTU changes incompatible with XDP
-Date: Wed,  6 May 2026 11:55:50 +0200
-Message-ID: <20260506095553.55357-8-nb@tipi-net.de>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260506095553.55357-1-nb@tipi-net.de>
-References: <20260506095553.55357-1-nb@tipi-net.de>
+	alexjlzheng@tencent.com
+Subject: [PATCH] macsec: defer RX SA cleanup from RCU callback to workqueue
+Date: Wed,  6 May 2026 18:01:07 +0800
+Message-ID: <20260506100107.388184-1-alexjlzheng@tencent.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,55 +79,99 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-Add a minimal ndo_change_mtu that rejects MTU values too large for
-single-page XDP buffers when an XDP program is attached. Without this,
-users could change the MTU at runtime and break the XDP buffer layout.
+From: Jinliang Zheng <alexjlzheng@tencent.com>
 
-When no XDP program is attached, any MTU change is accepted, matching
-the existing behavior without ndo_change_mtu.
+crypto_free_aead() can call vunmap() internally (e.g. via
+dma_free_attrs() in hardware crypto drivers like hisi_sec2), which
+must not be called from softirq context.
 
-Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Mohsin Bashir <hmohsin@meta.com>
+free_rxsa() is an RCU callback and therefore runs in softirq context,
+causing a kernel crash when the underlying AEAD implementation
+performs DMA unmapping during tfm destruction:
+
+  vunmap+0x4c/0x70
+  __iommu_dma_free+0xd0/0x138
+  dma_free_attrs+0xf4/0x100
+  sec_aead_exit+0x64/0xb8 [hisi_sec2]
+  crypto_destroy_tfm+0x98/0x110
+  free_rxsa+0x28/0x50 [macsec]
+  rcu_do_batch+0x184/0x460
+  rcu_core+0xf4/0x1f8
+  handle_softirqs+0x118/0x330
+
+Fix this by splitting free_rxsa() into two parts: the RCU callback
+now only schedules a work item, and the actual resource release
+(crypto_free_aead, free_percpu, kfree) is done in a workqueue
+handler running in process context.
+
+Add a destroy_work field to struct macsec_rx_sa and initialize it
+in init_rx_sa().
+
+Signed-off-by: Jinliang Zheng <alexjlzheng@tencent.com>
 ---
- drivers/net/ethernet/broadcom/genet/bcmgenet.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/net/macsec.c | 13 +++++++++++--
+ include/net/macsec.h |  2 ++
+ 2 files changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index 359a297a25e6..6ef76e93d9ad 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -4095,6 +4095,20 @@ static int bcmgenet_xdp_xmit(struct net_device *dev, int num_frames,
- 	return sent;
+diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
+index f6cad0746a02..dabd3d2598ae 100644
+--- a/drivers/net/macsec.c
++++ b/drivers/net/macsec.c
+@@ -174,15 +174,23 @@ static void macsec_rxsc_put(struct macsec_rx_sc *sc)
+ 		call_rcu(&sc->rcu_head, free_rx_sc_rcu);
  }
  
-+static int bcmgenet_change_mtu(struct net_device *dev, int new_mtu)
+-static void free_rxsa(struct rcu_head *head)
++static void free_rxsa_work(struct work_struct *work)
+ {
+-	struct macsec_rx_sa *sa = container_of(head, struct macsec_rx_sa, rcu);
++	struct macsec_rx_sa *sa = container_of(work, struct macsec_rx_sa,
++					       destroy_work);
+ 
+ 	crypto_free_aead(sa->key.tfm);
+ 	free_percpu(sa->stats);
+ 	kfree(sa);
+ }
+ 
++static void free_rxsa(struct rcu_head *head)
 +{
-+	struct bcmgenet_priv *priv = netdev_priv(dev);
++	struct macsec_rx_sa *sa = container_of(head, struct macsec_rx_sa, rcu);
 +
-+	if (priv->xdp_prog && new_mtu > PAGE_SIZE - GENET_RX_HEADROOM -
-+	    SKB_DATA_ALIGN(sizeof(struct skb_shared_info))) {
-+		netdev_warn(dev, "MTU too large for single-page XDP buffer\n");
-+		return -EINVAL;
-+	}
-+
-+	WRITE_ONCE(dev->mtu, new_mtu);
-+	return 0;
++	schedule_work(&sa->destroy_work);
 +}
 +
- static const struct net_device_ops bcmgenet_netdev_ops = {
- 	.ndo_open		= bcmgenet_open,
- 	.ndo_stop		= bcmgenet_close,
-@@ -4105,6 +4119,7 @@ static const struct net_device_ops bcmgenet_netdev_ops = {
- 	.ndo_eth_ioctl		= phy_do_ioctl_running,
- 	.ndo_set_features	= bcmgenet_set_features,
- 	.ndo_get_stats64	= bcmgenet_get_stats64,
-+	.ndo_change_mtu		= bcmgenet_change_mtu,
- 	.ndo_change_carrier	= bcmgenet_change_carrier,
- 	.ndo_bpf		= bcmgenet_xdp,
- 	.ndo_xdp_xmit		= bcmgenet_xdp_xmit,
+ static void macsec_rxsa_put(struct macsec_rx_sa *sa)
+ {
+ 	if (refcount_dec_and_test(&sa->refcnt))
+@@ -1407,6 +1415,7 @@ static int init_rx_sa(struct macsec_rx_sa *rx_sa, char *sak, int key_len,
+ 	rx_sa->next_pn = 1;
+ 	refcount_set(&rx_sa->refcnt, 1);
+ 	spin_lock_init(&rx_sa->lock);
++	INIT_WORK(&rx_sa->destroy_work, free_rxsa_work);
+ 
+ 	return 0;
+ }
+diff --git a/include/net/macsec.h b/include/net/macsec.h
+index bc7de5b53e54..aeacd361f686 100644
+--- a/include/net/macsec.h
++++ b/include/net/macsec.h
+@@ -9,6 +9,7 @@
+ 
+ #include <linux/u64_stats_sync.h>
+ #include <linux/if_vlan.h>
++#include <linux/workqueue.h>
+ #include <uapi/linux/if_link.h>
+ #include <uapi/linux/if_macsec.h>
+ 
+@@ -137,6 +138,7 @@ struct macsec_rx_sa {
+ 	struct macsec_rx_sa_stats __percpu *stats;
+ 	struct macsec_rx_sc *sc;
+ 	struct rcu_head rcu;
++	struct work_struct destroy_work;
+ };
+ 
+ struct pcpu_rx_sc_stats {
 -- 
-2.51.0
+2.39.3
 
