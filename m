@@ -1,35 +1,54 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from b2682.mx.srv.dfn.de (b2682.mx.srv.dfn.de [194.95.235.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E4DC2FF
-	for <netdev@vger.kernel.org>; Wed,  6 May 2026 01:01:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BC25C2FF;
+	Wed,  6 May 2026 01:10:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.95.235.80
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778029277; cv=none; b=snWM+VmWBjMauPHES5sxaci5+6n15CDUEGKQYNsO85sYp++FVFAbIpmMx/pOcA50j6BTkGP3rG4JlKlcw+6aN4pyWC6Awji5FLcgQXHyfPX4YAO0ansL8HXbmYBn0VT5u7PBEDyHRr+teSmpHr2jv+VuCmYX80ZfDStofJquuuM=
+	t=1778029810; cv=none; b=O4V0wbPindy1qd8F3sD7kIxRUIPO2yVAOZBOmy/C8ylHVzWSgzgIfHZGv9QoS/+SVQuEgGdUgPGkLP3ovB8uIvL6rmVKC/frp7caU7vO0MBWvFvmx0mEsf5IULLA8h/WkSNHfMYFvoIf7ayy7sUH4EguPYS+G6b6hX8tdx7/KeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778029277; c=relaxed/simple;
-	bh=xAVs+yZzELYDzcohDpcCD3pqLgclVEks0P9GxssIc+E=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=CkMeD48T1Xp2VFbvn3bKlZU1Ro4Pa39uJUoihBi6EGNDv7uzVbVQXBLW3IPJ6PN6Y47H4b0WRz6Rc5Zn7qd9xTclPLCRcLFWjYZsWalUbbKqO4m6Pf445FPz+YzMej6RMM8Jpm++4zXqyO1DpRNaIiCAiDm5V/OozRuxBRh6Ch4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JOukrArX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778029810; c=relaxed/simple;
+	bh=KRBLQQniWdVBGFlggN0DOG8w40a6ggoj4/AvXMfCcMc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sF3+mzpm4glv28+RO6Gt6ywhfXPcItmBXFfnX1veF1YrkoioKkjkzXZT9e8pj2OaFIeHIE44tXxtkrY7MjJiImQ+LbR7yvbO6dHsqv19n1PrAUUZJ5rYnaKyXY6znSH1veoLEfIpLPcOtcop/hONuU/6DqXm7lN+e8RkPLMsk6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=soslab.tu-darmstadt.de; spf=pass smtp.mailfrom=soslab.tu-darmstadt.de; dkim=pass (1024-bit key) header.d=soslab.tu-darmstadt.de header.i=@soslab.tu-darmstadt.de header.b=Jj+1HVRm; arc=none smtp.client-ip=194.95.235.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=soslab.tu-darmstadt.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=soslab.tu-darmstadt.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JOukrArX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E082EC2BCB4;
-	Wed,  6 May 2026 01:01:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778029276;
-	bh=xAVs+yZzELYDzcohDpcCD3pqLgclVEks0P9GxssIc+E=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=JOukrArX3oYu5toTrUDhC5U55Il7mxfQGx+j49A76EmytM2u+IdNRzS73HRQ30J1b
-	 sek/ULZVYUBHLCFQySz65+9o8o7x0Gf+kAwN4rmL07yHW3glVqTlmrmThQtLRll6ex
-	 yRXXWwCWBvx3ZbQxuKmWELeQoCJTEef8DquSHKafBAFvUARzBXPNvTnWKj6lxi+YAC
-	 1bG9RS6XyXFuGmjXC0suSeoRuzM7E/IxyiDIHCiC/EBe5zocPXTEPxNUg/tUA5QB5X
-	 bbo0EsUjoHQYRmmmfFKMXO+uuJC+cUsKN17NC7ge8dnH5CbRayVp0mDUqPcvmuPKnG
-	 bg+8mYZuhSEjQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FDE13930780;
-	Wed,  6 May 2026 01:00:28 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=soslab.tu-darmstadt.de header.i=@soslab.tu-darmstadt.de header.b="Jj+1HVRm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
+	soslab.tu-darmstadt.de; h=content-transfer-encoding:mime-version
+	:message-id:date:date:subject:subject:from:from:received; s=s1;
+	 t=1778029459; x=1779843860; bh=KRBLQQniWdVBGFlggN0DOG8w40a6ggoj
+	4/AvXMfCcMc=; b=Jj+1HVRm8vZmN5SI4kGnjBjN6m4vGjZU9EIG5XmKkQQXzX/G
+	S3nvcnku+i9FDEqCFlFOV8qBQzW2Ha6AYAYjfJrRTwHgl8GzY4lU7xtzMf8qFrJE
+	8OSlDg6NpNpSjhFjwJTf4jFVIbhMBxuqK225hFpp3YU1d0NM5PHw78d2p5M=
+Received: from mail-relay152.hrz.tu-darmstadt.de (mail-relay152.hrz.tu-darmstadt.de [130.83.252.152])
+	by b2682.mx.srv.dfn.de (Postfix) with ESMTPS id BCAC63A0112;
+	Wed,  6 May 2026 03:04:16 +0200 (CEST)
+Received: from smtp.tu-darmstadt.de (mail-relay238.hrz.tu-darmstadt.de [130.83.156.238])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits)
+	 client-signature RSA-PSS (4096 bits))
+	(Client CN "mail-relay238.hrz.tu-darmstadt.de", Issuer "GEANT TLS RSA 1" (not verified))
+	by mail-relay152.hrz.tu-darmstadt.de (Postfix) with ESMTPS id 4g9HG70TbSz442D;
+	Wed,  6 May 2026 03:04:15 +0200 (CEST)
+From: Markus Baier <Markus.Baier@soslab.tu-darmstadt.de>
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Markus Baier <Markus.Baier@soslab.tu-darmstadt.de>
+Subject: [PATCH net] net: usb: asix: ax88772: replace usbnet_link_change() with queue_work() and usbnet_unlink_rx_urbs()
+Date: Wed,  6 May 2026 03:03:44 +0200
+Message-ID: <20260506010344.184636-1-Markus.Baier@soslab.tu-darmstadt.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,69 +56,90 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v1 net-next 00/15] udp_tunnel: Speed up UDP tunnel device
- destruction (Part I)
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177802922680.2330352.4228235075044391782.git-patchwork-notify@kernel.org>
-Date: Wed, 06 May 2026 01:00:26 +0000
-References: <20260502031401.3557229-1-kuniyu@google.com>
-In-Reply-To: <20260502031401.3557229-1-kuniyu@google.com>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- kuni1840@gmail.com, netdev@vger.kernel.org
+X-Header-TUDa: <X1qhTH9GVSVqlQq3atM0WKFwVN9uDwkBY9TBSEJJNbxcGN2t4lQ1ds1dJw5lITIP7ddAtyOj9zJBY2o2FpFo1I2i6zXYZmJS54q5.1778029456>
+X-TUDa-Umlauf: 1
 
-Hello:
+Commit 36bdc0e815b4 ("net: usb: asix: ax88772: re-add usbnet_link_change()
+in phylink callbacks") restored the link-change notification that was
+lost during the phylink migration, by calling usbnet_link_change() from
+the phylink mac_link_up() / mac_link_down() callbacks.
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+While this fixed the original symptom (RX URB submission not being
+initiated after link up), usbnet_link_change() also calls
+netif_carrier_off() on link-down, which is redundant in a phylink-based
+driver because phylink manages the carrier state itself.
 
-On Sat,  2 May 2026 03:12:53 +0000 you wrote:
-> Most of the UDP tunnel devices call synchronize_rcu() twice
-> during destruction, for example, vxlan has
-> 
->   1) synchronize_rcu() in udp_tunnel_sock_release()
-> 
->   2) synchronize_net() in vxlan_sock_release()
-> 
-> [...]
+Replace the usbnet_link_change() calls with the minimal operations:
 
-Here is the summary with links:
-  - [v1,net-next,01/15] udp_tunnel: Pass struct sock to udp_tunnel_sock_release().
-    https://git.kernel.org/netdev/net-next/c/944bfc1b1c6f
-  - [v1,net-next,02/15] udp_tunnel: Pass struct sock to setup_udp_tunnel_sock().
-    https://git.kernel.org/netdev/net-next/c/2cba193628fe
-  - [v1,net-next,03/15] udp_tunnel: Pass struct sock to udp_tunnel6_dst_lookup().
-    https://git.kernel.org/netdev/net-next/c/9333d5ff28bd
-  - [v1,net-next,04/15] udp_tunnel: Pass struct sock to udp_tunnel_{push,drop}_rx_port().
-    https://git.kernel.org/netdev/net-next/c/8d0012ce1b41
-  - [v1,net-next,05/15] udp_tunnel: Pass struct sock to udp_tunnel_notify_{add,del}_rx_port().
-    https://git.kernel.org/netdev/net-next/c/af3f903fbb70
-  - [v1,net-next,06/15] vxlan: Fix potential null-ptr-deref in vxlan_gro_prepare_receive().
-    https://git.kernel.org/netdev/net-next/c/30a45c0bffdd
-  - [v1,net-next,07/15] vxlan: Store struct sock in struct vxlan_sock.
-    https://git.kernel.org/netdev/net-next/c/027bffa1ad19
-  - [v1,net-next,08/15] vxlan: Free vxlan_sock with kfree_rcu().
-    https://git.kernel.org/netdev/net-next/c/4f71dd1b421d
-  - [v1,net-next,09/15] geneve: Store struct sock in struct geneve_sock.
-    https://git.kernel.org/netdev/net-next/c/82720c6196dc
-  - [v1,net-next,10/15] bareudp: Store struct sock in struct bareudp_dev.
-    https://git.kernel.org/netdev/net-next/c/bc773b15eb19
-  - [v1,net-next,11/15] fou: Store struct sock in struct fou.
-    https://git.kernel.org/netdev/net-next/c/173a79f6966a
-  - [v1,net-next,12/15] amt: Store struct sock in struct amt_dev.
-    https://git.kernel.org/netdev/net-next/c/65c6e06d5aba
-  - [v1,net-next,13/15] pfcp: Store struct sock in struct pfcp_dev.
-    https://git.kernel.org/netdev/net-next/c/fe57adbe0dac
-  - [v1,net-next,14/15] tipc: Store struct sock in struct udp_bearer.
-    https://git.kernel.org/netdev/net-next/c/1ae552c7b665
-  - [v1,net-next,15/15] udp_tunnel: Remove synchronize_rcu() in udp_tunnel_sock_release().
-    https://git.kernel.org/netdev/net-next/c/72d3b9a4c2b1
+  - In ax88772_mac_link_up(), schedule dev->bh_work directly via
+    queue_work(system_bh_wq, &dev->bh_work). This is the same
+    mechanism usbnet_open() uses to schedule the bottom-half
+    that submits RX URBs.
 
-You are awesome, thank you!
+  - In ax88772_mac_link_down(), call usbnet_unlink_rx_urbs() to
+    return any in-flight RX URBs to the host controller.
+    This releases USB bandwidth and avoids keeping unused buffers
+    queued while the link is down. This is the symmetric
+    counterpart to scheduling new RX URBs on link up.
+
+Tested with the Apple A1277 USB Ethernet Adapter (05ac:1402,
+AX88772A based) on a Banana Pro (Allwinner A20).
+
+Fixes: 36bdc0e815b4 ("net: usb: asix: ax88772: re-add usbnet_link_change() in phylink callbacks")
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Markus Baier <Markus.Baier@soslab.tu-darmstadt.de>
+---
+
+Transparency notice: The English formulation of this commit message
+was prepared with AI assistance. The actual system testing and
+verification of the issue were performed manually without AI
+involvement.
+
+This is a follow-up to commit 36bdc0e815b4 (just applied to net.git).
+While that patch correctly restored the missing RX URB submission,
+I realized during further analysis that usbnet_link_change() carries
+side effects (notably calling netif_carrier_off() on link-down) that
+are redundant in a phylink-based driver. After studying how
+usbnet_open() handles the same task (direct queue_work() call), this
+minimal approach better matches the existing usbnet patterns.
+
+I am sending this now rather than waiting, because the previous patch
+just landed and I would like the cleanup to be considered before it
+propagates further into stable kernels via the Fixes: tag.
+
+ drivers/net/usb/asix_devices.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/usb/asix_devices.c b/drivers/net/usb/asix_devices.c
+index 293ef80c4e30..4230ff611c4b 100644
+--- a/drivers/net/usb/asix_devices.c
++++ b/drivers/net/usb/asix_devices.c
+@@ -756,7 +756,11 @@ static void ax88772_mac_link_down(struct phylink_config *config,
+ 	struct usbnet *dev = netdev_priv(to_net_dev(config->dev));
+ 
+ 	asix_write_medium_mode(dev, 0, 0);
+-	usbnet_link_change(dev, false, false);
++
++	/* Phylink will call netif_carrier_off(), but we should explicitly
++	 * stop RX URBs to save USB bandwidth.
++	 */
++	usbnet_unlink_rx_urbs(dev);
+ }
+ 
+ static void ax88772_mac_link_up(struct phylink_config *config,
+@@ -787,7 +791,11 @@ static void ax88772_mac_link_up(struct phylink_config *config,
+ 		m |= AX_MEDIUM_RFC;
+ 
+ 	asix_write_medium_mode(dev, m, 0);
+-	usbnet_link_change(dev, true, false);
++
++	/* Phylink will call netif_carrier_on(), but we need to explicitly
++	 * kick off RX URB submission in usbnet.
++	 */
++	queue_work(system_bh_wq, &dev->bh_work);
+ }
+ 
+ static const struct phylink_mac_ops ax88772_phylink_mac_ops = {
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.52.0
 
