@@ -1,242 +1,360 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175B84657E7
-	for <netdev@vger.kernel.org>; Wed,  6 May 2026 14:01:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778076066; cv=none; b=blmj+hnOXGkCYhPxb0gjuCEpSTJ001owq7xHH7WRuYmzSs8vYIeV8GLBDdFaKZZqjNz1HmeMvbwDZx0PkH+BRZGWQ31PVDSXQhpwimqdT2KSLtNk2E8ztTnMJ5uNgLQ88PqCpnGomFAgE7RjXTTTv8E2jR8MCz8luUFqbNCL4NU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778076066; c=relaxed/simple;
-	bh=SFiFDucNaRObAcaMrKWI6BPwF1qadwuDj2Vt2SN+ha0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cU6FNrO4+O9yJ2p1N19o/wgQHY+kyDhpofAdsFNT6nd8IAAXJW/bnY0k02IL9/yKYvjyL31/oiOCo6KoEQa54A5XDheuaFEuFEkcPPdU4qQEqosWrQAIWxUBOS23qIfPv04tAcGrfvJ3m9DNh6zS85Nxirhi6hR2xYIgATBYBkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VnG++F4+; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=pZZEr8ZU; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9D283EC2DB
+	for <netdev@vger.kernel.org>; Wed,  6 May 2026 14:02:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778076165; cv=pass; b=eG55kh1ZYWRFTZ9ciW2X6OvU5HNxivdBZsIErW5pL1XhR7IJTtUmw770OO9G2tMPFsgV8/lyBLkSQ7XTglmuhPwEx1F3/PDBdnMcPdgqMzvYUEmOSFWTYsUu8/TVK06c8U5/houEs90n2/vY1Z6On8Oz4c3NHfHlADbTQGqmbHM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778076165; c=relaxed/simple;
+	bh=fgAwzIJcDQ8eNqIftM+Ys2qYzkhzF8+UPWzFGRtBbTk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bVmtB0ls8wO+/lVyOaWkSuWadrBWq/AnZgvXMRZt9YWVx90FTrad0ry4l2jBTLZ7cAzDOr6UcL4C/q62jVM0ENR9VIbzo5sZPYYSVMwSEoyIqp/wBGNfU0gdj1FRvxxg+VSpuY1AohpeNXfBw+xx2HOT58M+Kwb5y8AElLqOshU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SwYPWgFe; arc=pass smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VnG++F4+";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="pZZEr8ZU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778076063;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cCRVTBZQDAEVaqanV0j4+1ERDgnWXkjidry1aEHpyPY=;
-	b=VnG++F4+qAcUHowyf+uyrQVrnL8vykawaSgup+HVcPu2jqO/unY195F++DD+W6t5O/clJf
-	WW6M68ILLdcjIuY0x9jK0648YWFw37GMfVYgU+jkfBUiOu9C0Gq5Tt7N1F7j5c76I2p/0f
-	Vp/nDhz77bn4EqZNk3PnbjgoUJVRgCk=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-629-dYYeidc_NiC0QmhH1wB2lg-1; Wed, 06 May 2026 10:01:00 -0400
-X-MC-Unique: dYYeidc_NiC0QmhH1wB2lg-1
-X-Mimecast-MFC-AGG-ID: dYYeidc_NiC0QmhH1wB2lg_1778076058
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-441243ba35fso6374503f8f.0
-        for <netdev@vger.kernel.org>; Wed, 06 May 2026 07:00:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SwYPWgFe"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-36525730172so4033889a91.1
+        for <netdev@vger.kernel.org>; Wed, 06 May 2026 07:02:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778076163; cv=none;
+        d=google.com; s=arc-20240605;
+        b=XrlQazDbTPdrV4WqAEnzZbN70H5OE72u4cM5dHcuivoqJI7PuS7jDOJQoO52K7R942
+         Sp2fa3dG/lVJ66cple103KI+rA0O6ClffzyMVfF8TLu26i3E1Y4PpKS3GFGFZHuLfSNk
+         qVK/LMLnh0uxnomRF3wik8Gzbr8fQVPl/znbIFY17g1HUBK5DQEYGBBR1x4uhs27VKHr
+         jkPjz/mC9lVCozUXWu4nSvcjaZftQDVs5ZiMDOufu6/TEzT8rGqTADI9V0ahTgSbZoFh
+         4s/cCaepzYzv5brdjOTjACByhmGOW0QqN8dqqYbZJC4YiWpQd7l8/gFz6G116121XR0c
+         +10A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=UdovNLCYq0IbWq5PxDP9Dzxis1pH8PCkS+QQzY6zAqE=;
+        fh=jYJDHi4NdICWqQzg5Jurx0EQskNgPT427lGzYVi3h+k=;
+        b=YDKE8IXVgQq0tsbfR+3WviP6RLcn4LTIcu0f5PgkDoAXHV3JTPEcJi8iQ0E67sQqR8
+         VaAOT2H9j9Wj5tfffaVN6oBnkQjEgTok3A3x2vKPMcLIdciqkIVedZG67hV3X69ZC3aD
+         WR+hjFrsDCAroJeh7kLXM+SlfiGoKhYfDBQVX2+2FTOCTGmnQrm2zk4BnKdLs3W/L/JA
+         4gpGS0W0od13wQsnpfkLpIc8bGY7MfDNcW9hZSbKIhA9W+S/D5LMBWGc3S1qgZkdgQho
+         o8ySomZUjUSmTwqB70UXkoyxykDAYw/NTXUlM6SY8rcqZRI4brqj5iQXIfzRePEo4SYI
+         Z4Mg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1778076058; x=1778680858; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=cCRVTBZQDAEVaqanV0j4+1ERDgnWXkjidry1aEHpyPY=;
-        b=pZZEr8ZUKt2sr1INjD0Sm9EtriSKQNlCpHIS84lbTd+LIPrO0R1DpQTu443WJ8fq2H
-         oN37ucg/iahrMowB4k+1FzkQJPmlHPBXKjCjyn7rbb38qA8QpfrZlqmu6UpnHe1OwxRp
-         IlL1I+cqWexEkstWGU+llVhEdHY/4y0ToAVWNq7HfpOlIE8ieocFhND3XyN2PBBLo9mU
-         AiUpwTUsB3zcj23MxZ0N4G87uw067bRdsVzZX1w+NPII5TQdA1naUTtWNrIdhwO+fpT9
-         yyYY5SAQ1PGiz74ZAOjmaRZ1syPFPA/ncOaDpXy8GEXO+KFi4O+a+8Gs5ZjWGZKcyXTm
-         vUiA==
+        d=gmail.com; s=20251104; t=1778076163; x=1778680963; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UdovNLCYq0IbWq5PxDP9Dzxis1pH8PCkS+QQzY6zAqE=;
+        b=SwYPWgFe0htU6QIOL81aMLf4m6nnXCSdz9e42eoWi+cnAXmvdvfaXmlQm/1XDoaEuj
+         EKNlLj0ur7okd91Q0p8wRRbKNR1FzExkBfWnohoBkdPrNR0enufNr+ROJY6dGalTwu1j
+         huUFpZEQcH2A5Zq44g4vn/OGy/FOIBCPE3ieWeZCKU2s+p8UbFGIc9Ujmmb2uTdF/MY6
+         mCOXIQqMrWabeGircrlAJyeMAOv3elEptNHdP8Xq5NItdh5ne/XTJz3VxcHhIXVibfMo
+         EJVfYddaZs+K47QZgMDkYsdTTfMTBb8GGipGXMnbDHbg60wA7Xt+hXM8qa6HsB/pzgMF
+         XTOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778076058; x=1778680858;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cCRVTBZQDAEVaqanV0j4+1ERDgnWXkjidry1aEHpyPY=;
-        b=XU0lnYtH3AaoFpOZrpoZM0tDsI7EFfPvHQFCridiiBmtRo8Qtu0LhSFEKQhluZhPjq
-         X/12Ev8i/WoiT4Nz1OtKVTivfFsyometfGQGX8PhAFWKw2EUDwvrbcjAY4mBsuNnndZx
-         Zkm3REbJ1+EettlWQ5Zlpy6I1OJB1oiPBBOPTvqS7v7dG2Euj27cusKBS9CuTXrVMfxQ
-         9xro41IEdi7zVZMUVCuUdOdopn9WpCK1yE8WUzxdHeCdjZ59c8jDDME2CHL8v4EOCTSR
-         axheOv+nGPlLq6/f7g6u3t9aB9d5hldOXh0yzogJ6CriCfBKPurARJlDDg+JST5Jh97O
-         Jigw==
-X-Forwarded-Encrypted: i=1; AFNElJ8TbQ/5Q9ILhSPKeaIZxFohrb9oW5vTacbpmiDpo4QsQUo89wBL8mDPVWH77mkXw0ZxMWs+8tE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy2NtWoryI2WmuNlTKMEGZolWa7CA2erJgzh7egBIzoDVqgGz2b
-	jfIjoMz6p0VSdwAhQL+2IgZAPtR8wQ+nVnArUNKr1A6xQC2uRzKsTDpH8L7yVd1tcbwwIqsHPqJ
-	QLNqib9+5e123BOLzFJMOdRvrIfZGiXuiGVKP77Hj88eHUuLEf59Wh1cbVQ==
-X-Gm-Gg: AeBDieujR65JxLeI1sc46Qw/jJCJCX31M48bY+311UarpEdqTECVxLg/bH2nWeoE3Z/
-	xiEdqXfELGXB/T9952X0KlLhK8VvxbEHQNnN8+X/rUCdvFGPNj1Fa4KY7OVmG73c1NTxden4zM7
-	p1ykIKNQZoWVlyFAO1jHIvXh+ZKauQLXWx1wcbZRyxna/pbRPzK5YkViPHYPdHJuu0/w+X6A4Vb
-	YxiybwzA/NMbu2gqEZecO4IgamkmpUDqdv5m0/i/Oj61ypcnglzm0tATMXpnaAOjISPUErdLGFT
-	jlPq68PSUsQIn426O2G8isfCW/LV/PyoiKw8tWSlGd/U3TwcsQQr5t3XTCJLW15R9rK37g9wEZ5
-	/XJNKt8khXGgBCnxM4E/d+dWHMV85iAq43WMBeTQr2TsxuF7vuJIA3X7zQBa9nyBFCk3IBBJcaQ
-	==
-X-Received: by 2002:a05:6000:2c03:b0:43d:21a:9a3e with SMTP id ffacd0b85a97d-4515d5c54c0mr5877762f8f.32.1778076057291;
-        Wed, 06 May 2026 07:00:57 -0700 (PDT)
-X-Received: by 2002:a05:6000:2c03:b0:43d:21a:9a3e with SMTP id ffacd0b85a97d-4515d5c54c0mr5877593f8f.32.1778076056142;
-        Wed, 06 May 2026 07:00:56 -0700 (PDT)
-Received: from sgarzare-redhat (host-87-11-6-2.retail.telecomitalia.it. [87.11.6.2])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45055d36dacsm12654112f8f.32.2026.05.06.07.00.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 May 2026 07:00:55 -0700 (PDT)
-Date: Wed, 6 May 2026 16:00:48 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Arseniy Krasnov <avkrasnov@salutedevices.com>
-Cc: Bobby Eshleman <bobbyeshleman@gmail.com>, 
-	Eric Dumazet <edumazet@google.com>, Bobby Eshleman <bobbyeshleman@meta.com>, 
-	Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
-	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com, Arseniy Krasnov <AVKrasnov@sberdevices.ru>, 
-	Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev
-Subject: Re: [PATCH net] vsock/virtio: fix potential unbounded skb queue
-Message-ID: <afs9FsY51D3zRA5N@sgarzare-redhat>
-References: <20260430122653.554058-1-edumazet@google.com>
- <afn0ZdvZWswBuDMm@sgarzare-redhat>
- <CANn89iLs8DOWJwDpf_ARoMrV+6b2tbhEJ=VVzeC8gCm5dRGaig@mail.gmail.com>
- <afoF_cHfl6ygcupM@sgarzare-redhat>
- <afocwkfBHJ5u10rx@devvm29614.prn0.facebook.com>
- <e1f32df5-b6a1-47a8-a783-fcc8e3c91f25@salutedevices.com>
+        d=1e100.net; s=20251104; t=1778076163; x=1778680963;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=UdovNLCYq0IbWq5PxDP9Dzxis1pH8PCkS+QQzY6zAqE=;
+        b=YxlgSFsrRSEBNoZkFf1SAGw8InVcGgI9maSbYsKDt5BmV+O9G9KnldgSzJGW6aZU/K
+         VBG5J0FqydNwxDEu6XJ1kCU38ewd7H+KKM92jjSVVpT+U3AvheN8e3l7Sv8cVVGsDBht
+         vmDR6uUDPCM9ZpXHWlwrw/LbSFoAbPFMHKelYYm+jZ2Z4roL+QJmdFj7frNBm5UCNsQI
+         DtD04CscfsJXMOSGwWNw2ACC9GpEUn0WYQH7Bwuj3t5CxOuAQEfmogXyUPBZPXBXWHX/
+         oMiP8IiAzFmX9570wh4yY9HZckXq9eUi+Xsw0oIHxpj5rslPpEORzemswXTz5VG7qitV
+         ek0A==
+X-Forwarded-Encrypted: i=1; AFNElJ/Q+tyt+soVJvlrpU4ypPLehRn4bni9R7XINP4ZPsNavRREK9WDgIt4daWT7gl+y1oNgoxl0yQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw59ZDsZgdKt31wWGxhM9/mJ6MRV/hiYI166xjRMGJIa8gpP/vw
+	aGPaunAYqLhpl6G0ksQmVf057gF8H/kUB/7AOvjzOumeRDNaVPSljduknI3BxCCsQ+x6qEGRlsA
+	U/ai0WBR6JO3bXVmcwKQesUpQHLpn1QI=
+X-Gm-Gg: AeBDievGateePtrN3epRa5ySHTDoyUZNuzWX2GpIVsolhNPj267EI4WuhV3vnHBdvm4
+	R948qhgySfucFsNGgX8dn9ZnGJgXrAzg7Zfea4AK8q1NdBjWNabkBpKsAI//PB8qd+87kVsRd0w
+	eA1YeDtxZjBhWAFEn1r+etZ0qNn1jSRwHtzO8KjtMhKaoiWsL8FK1nkZUrrNLx+N/AQU+OCGJfQ
+	i1aPa8naVasAgE4H86/iaJ4jS3Seu0ONIUgWqFyytpSiWEe/B/fXp79+/+ls5rAdBZDhuZ6Al06
+	3UhI2qFzrhcUBJByOxlzy75xvlQ2aQ==
+X-Received: by 2002:a17:90a:d886:b0:35b:8d89:719b with SMTP id
+ 98e67ed59e1d1-365ab3e592amr3779857a91.1.1778076161345; Wed, 06 May 2026
+ 07:02:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <e1f32df5-b6a1-47a8-a783-fcc8e3c91f25@salutedevices.com>
+References: <20260428025505.768-1-nashuiliang@gmail.com> <CANn89i+H=gPo22v0ApLges0ScjMOgAcVsDQLwkr2iAEu+M7B7w@mail.gmail.com>
+In-Reply-To: <CANn89i+H=gPo22v0ApLges0ScjMOgAcVsDQLwkr2iAEu+M7B7w@mail.gmail.com>
+From: chuang <nashuiliang@gmail.com>
+Date: Wed, 6 May 2026 22:02:30 +0800
+X-Gm-Features: AVHnY4KdFSvevuoRYT8lkecAzuDQZ98GwOODC3CPttbJ3x58n9wJ11HQfYS9GCA
+Message-ID: <CACueBy7PGP6YG8cM8ZJP8bU9TMa0OZPXg8sVSdZVuzyMKNo-xw@mail.gmail.com>
+Subject: Re: [PATCH net-next v3] net: reduce RFS/ARFS flow updates by checking
+ LLC affinity
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Samiullah Khawaja <skhawaja@google.com>, Hangbin Liu <liuhangbin@gmail.com>, 
+	Krishna Kumar <krikku@gmail.com>, Neal Cardwell <ncardwell@google.com>, 
+	Martin KaFai Lau <martin.lau@kernel.org>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, May 06, 2026 at 12:50:04PM +0300, Arseniy Krasnov wrote:
+On Tue, Apr 28, 2026 at 1:09=E2=80=AFPM Eric Dumazet <edumazet@google.com> =
+wrote:
 >
+> On Mon, Apr 27, 2026 at 7:56=E2=80=AFPM Chuang Wang <nashuiliang@gmail.co=
+m> wrote:
+> >
+> > The current implementation of rps_record_sock_flow() updates the flow
+> > table every time a socket is processed on a different CPU. In high-load
+> > scenarios, especially with Accelerated RFS (ARFS), this triggers
+> > frequent flow steering updates via ndo_rx_flow_steer.
+> >
+> > For drivers like mlx5 that implement hardware flow steering, these
+> > constant updates lead to significant contention on internal driver lock=
+s
+> > (e.g., arfs_lock). This contention often becomes a performance
+> > bottleneck that outweighs the steering benefits.
+> >
+> > This patch introduces a cache-aware update strategy: the flow record is
+> > only updated if the flow migrates across Last Level Cache (LLC)
+> > boundaries. This minimizes expensive hardware reconfigurations while
+> > preserving cache locality for the application. A new sysctl,
+> > net.core.rps_feat_llc_affinity, is added to toggle this feature.
+> >
+> > Performance Test Results:
+> > The patch was tested in a K8s environment (AMD CPU 128*2, 16-core Pod
+> > with CPU pinning, mlx5 NIC) using brpc[1] echo_server and rpc_press.
+> >
+> > rpc_press Commands:
+> >
+> >   for i in {1..8}; do
+> >     ./rpc_press -proto=3D./echo.proto -method=3Dexample.EchoService.Ech=
+o
+> >     -server=3D<IP>:8000 -input=3D'{"message":"hello"}'
+> >     -qps=3D0 -thread_num=3D512 -connection_type=3Dpooled &
+> >   done
+> >
+> > Monitor mlx5e_rx_flow_steer frequency:
+> >
+> >   /usr/share/bcc/tools/funccount -i 1 mlx5e_rx_flow_steer
+> >
+> > Frequency of mlx5e_rx_flow_steer (via funccount[2]):
+> >
+> >   Before: ~335,000 counts/sec
+> >   After:   ~23,000 counts/sec (reduced by ~93%)
+> >
+> > System Metrics (after enabling rps_feat_llc_affinity):
+> >
+> >   CPU Utilization: 38% -> 32%
+> >   CPU PSI (Pressure Stall Information): 20% -> 10%
+> >
+> > These results demonstrate that filtering updates by LLC affinity
+> > significantly reduces driver lock contention and improves overall
+> > CPU efficiency under heavy network load.
+> >
+> > [1] https://github.com/apache/brpc/
+> > [2] https://github.com/iovisor/bcc/blob/master/tools/funccount.py
+> >
+> > Signed-off-by: Chuang Wang <nashuiliang@gmail.com>
+> > ---
+> > v2 -> v3: patch net -> net-next
+> > v1 -> v2: add rps_feat_llc_affinity; add brpc tests
+> >
+> >  include/net/rps.h          | 18 ++--------
+> >  net/core/dev.c             | 72 ++++++++++++++++++++++++++++++++++++++
+> >  net/core/sysctl_net_core.c | 34 ++++++++++++++++++
+> >  3 files changed, 108 insertions(+), 16 deletions(-)
+> >
+> > diff --git a/include/net/rps.h b/include/net/rps.h
+> > index e33c6a2fa8bb..37bbb7009c36 100644
+> > --- a/include/net/rps.h
+> > +++ b/include/net/rps.h
+> > @@ -12,6 +12,7 @@
+> >
+> >  extern struct static_key_false rps_needed;
+> >  extern struct static_key_false rfs_needed;
+> > +extern struct static_key_false rps_feat_llc_affinity;
+> >
+> >  /*
+> >   * This structure holds an RPS map which can be of variable length.  T=
+he
+> > @@ -55,22 +56,7 @@ struct rps_sock_flow_table {
+> >
+> >  #define RPS_NO_CPU 0xffff
+> >
+> > -static inline void rps_record_sock_flow(rps_tag_ptr tag_ptr, u32 hash)
+> > -{
+> > -       unsigned int index =3D hash & rps_tag_to_mask(tag_ptr);
+> > -       u32 val =3D hash & ~net_hotdata.rps_cpu_mask;
+> > -       struct rps_sock_flow_table *table;
+> > -
+> > -       /* We only give a hint, preemption can change CPU under us */
+> > -       val |=3D raw_smp_processor_id();
+> > -
+> > -       table =3D rps_tag_to_table(tag_ptr);
+> > -       /* The following WRITE_ONCE() is paired with the READ_ONCE()
+> > -        * here, and another one in get_rps_cpu().
+> > -        */
+> > -       if (READ_ONCE(table[index].ent) !=3D val)
+> > -               WRITE_ONCE(table[index].ent, val);
+> > -}
+> > +void rps_record_sock_flow(rps_tag_ptr tag_ptr, u32 hash);
+> >
+> >  static inline void _sock_rps_record_flow_hash(__u32 hash)
+> >  {
+> > diff --git a/net/core/dev.c b/net/core/dev.c
+> > index 203dc36aaed5..630a7f21d8de 100644
+> > --- a/net/core/dev.c
+> > +++ b/net/core/dev.c
+> > @@ -4964,6 +4964,8 @@ struct static_key_false rps_needed __read_mostly;
+> >  EXPORT_SYMBOL(rps_needed);
+> >  struct static_key_false rfs_needed __read_mostly;
+> >  EXPORT_SYMBOL(rfs_needed);
+> > +struct static_key_false rps_feat_llc_affinity __read_mostly;
+> > +EXPORT_SYMBOL(rps_feat_llc_affinity);
+> >
+> >  static u32 rfs_slot(u32 hash, rps_tag_ptr tag_ptr)
+> >  {
+> > @@ -5175,6 +5177,76 @@ static int get_rps_cpu(struct net_device *dev, s=
+truct sk_buff *skb,
+> >         return cpu;
+> >  }
+> >
+> > +/**
+> > + * rps_record_cond - Determine if RPS flow table should be updated
+> > + * @old_val: Previous flow record value
+> > + * @new_val: Target flow record value
+> > + *
+> > + * Returns true if the record needs an update.
+> > + */
+> > +static inline bool rps_record_cond(u32 old_val, u32 new_val)
+> > +{
+> > +       u32 old_cpu =3D old_val & ~net_hotdata.rps_cpu_mask;
+> > +       u32 new_cpu =3D new_val & ~net_hotdata.rps_cpu_mask;
+> > +
+> > +       if (old_val =3D=3D new_val)
+> > +               return false;
+> > +
+> > +       /*
+> > +        * RPS LLC Affinity Feature:
+> > +        * Reduce RFS/ARFS flow updates by checking LLC affinity.
+> > +        *
+> > +        * Frequent flow table updates can trigger constant hardware st=
+eering
+> > +        * reconfigurations (e.g., ndo_rx_flow_steer), leading to signi=
+ficant
+> > +        * contention on driver internal locks (like mlx5's arfs_lock).
+> > +        *
+> > +        * This strategy only updates the flow record if it migrates ac=
+ross LLC
+> > +        * boundaries. This minimizes expensive hardware updates while =
+preserving
+> > +        * cache locality for the application.
+> > +        */
+> > +       if (static_branch_unlikely(&rps_feat_llc_affinity)) {
+> > +               /* Force update if the recorded CPU is invalid or has g=
+one offline */
+> > +               if (old_cpu >=3D nr_cpu_ids || !cpu_active(old_cpu))
+> > +                       return true;
+> > +
+> > +               /*
+> > +                * Force an update if the current task is no longer per=
+mitted
+> > +                * to run on the old_cpu.
+> > +                */
+> > +               if (!cpumask_test_cpu(old_cpu, current->cpus_ptr))
+> > +                       return true;
+> > +
+> > +               /*
+> > +                * If CPUs do not share a cache, allow the update to pr=
+event
+> > +                * expensive remote memory accesses and cache misses.
+> > +                */
+> > +               if (!cpus_share_cache(old_cpu, new_cpu))
+> > +                       return true;
+> > +
+> > +               return false;
+> > +       }
+> > +
+> > +       return true;
+> > +}
+> > +
+> > +void rps_record_sock_flow(rps_tag_ptr tag_ptr, u32 hash)
+> > +{
+> > +       unsigned int index =3D hash & rps_tag_to_mask(tag_ptr);
+> > +       u32 val =3D hash & ~net_hotdata.rps_cpu_mask;
+> > +       struct rps_sock_flow_table *table;
+> > +
+> > +       /* We only give a hint, preemption can change CPU under us */
+> > +       val |=3D raw_smp_processor_id();
+> > +
+> > +       table =3D rps_tag_to_table(tag_ptr);
+> > +       /* The following WRITE_ONCE() is paired with the READ_ONCE()
+> > +        * here, and another one in get_rps_cpu().
+> > +        */
+> > +       if (rps_record_cond(READ_ONCE(table[index].ent), val))
+> > +               WRITE_ONCE(table[index].ent, val);
+> > +}
+> > +EXPORT_SYMBOL(rps_record_sock_flow);
 >
->05.05.2026 19:37, Bobby Eshleman wrote:
->> On Tue, May 05, 2026 at 06:11:13PM +0200, Stefano Garzarella wrote:
->>> On Tue, May 05, 2026 at 07:14:36AM -0700, Eric Dumazet wrote:
->>>> On Tue, May 5, 2026 at 6:52 AM Stefano Garzarella <sgarzare@redhat.com> wrote:
->>>>>
->>>>> On Thu, Apr 30, 2026 at 12:26:52PM +0000, Eric Dumazet wrote:
->>>>>> virtio_transport_inc_rx_pkt() checks vvs->rx_bytes + len > vvs->buf_alloc.
->>>>>>
->>>>>> virtio_transport_recv_enqueue() skips coalescing for packets
->>>>>> with VIRTIO_VSOCK_SEQ_EOM.
->>>>>>
->>>>>> If fed with packets with len == 0 and VIRTIO_VSOCK_SEQ_EOM,
->>>>>> a very large number of packets can be queued
->>>>>> because vvs->rx_bytes stays at 0.
->>>>>>
->>>>>> Fix this by estimating the skb metadata size:
->>>>>>
->>>>>>       (Number of skbs in the queue) * SKB_TRUESIZE(0)
->>>>>>
->>>>>> Fixes: 077706165717 ("virtio/vsock: don't use skbuff state to account credit")
->>>>>> Signed-off-by: Eric Dumazet <edumazet@google.com>
->>>>>> Cc: Arseniy Krasnov <AVKrasnov@sberdevices.ru>
->>>>>> Cc: Stefan Hajnoczi <stefanha@redhat.com>
->>>>>> Cc: Stefano Garzarella <sgarzare@redhat.com>
->>>>>> Cc: "Michael S. Tsirkin" <mst@redhat.com>
->>>>>> Cc: Jason Wang <jasowang@redhat.com>
->>>>>> Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
->>>>>> Cc: "Eugenio Pérez" <eperezma@redhat.com>
->>>>>> Cc: kvm@vger.kernel.org
->>>>>> Cc: virtualization@lists.linux.dev
->>>>>> ---
->>>>>> net/vmw_vsock/virtio_transport_common.c | 4 +++-
->>>>>> 1 file changed, 3 insertions(+), 1 deletion(-)
->>>>>>
->>>>>> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
->>>>>> index 416d533f493d7b07e9c77c43f741d28cfcd0953e..9b8014516f4fb1130ae184635fbba4dfee58bd64 100644
->>>>>> --- a/net/vmw_vsock/virtio_transport_common.c
->>>>>> +++ b/net/vmw_vsock/virtio_transport_common.c
->>>>>> @@ -447,7 +447,9 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
->>>>>> static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
->>>>>>                                       u32 len)
->>>>>> {
->>>>>> -      if (vvs->buf_used + len > vvs->buf_alloc)
->>>>>> +      u64 skb_overhead = (skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0);
->>>>>> +
->>>>>> +      if (skb_overhead + vvs->buf_used + len > vvs->buf_alloc)
->>>>>>               return false;
->>>>>
->>>>> I'm not sure about this fix, I mean that maybe this is incomplete.
->>>>> In virtio-vsock, there is a credit mechanism between the two peers:
->>>>> https://docs.oasis-open.org/virtio/virtio/v1.3/csd01/virtio-v1.3-csd01.html#x1-4850003
->>>>>
->>>>> This takes only the payload into account, so it’s true that this problem
->>>>> exists; however, perhaps we should also inform the other peer of a lower
->>>>> credit balance, otherwise the other peer will believe it has much more
->>>>> credit than it actually does, send a large payload, and then the packet
->>>>> will be discarded and the data lost (there are no retransmissions,
->>>>> etc.).
->>>>
->>>> I dunno, perhaps revert 077706165717 ("virtio/vsock: don't use skbuff
->>>> state to account credit")
->>>> and find a better fix then?
->>>
->>> IIRC the same issue was there before the commit fixed by that one (commit
->>> 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with sk_buff")), so
->>> not sure about reverting it TBH.
->>>
->>> CCing Arseniy and Bobby.
->
->Thanks!
->
->>>
->>>>
->>>> There is always a discrepancy between skb->len and skb->truesize.
->>>> You will not be able to announce a 1MB window, and accept one milliion
->>>> skb of 1-byte each.
->>>>
->>>> This kind of contract is broken.
->>>>
->>>
->>> Yep, I agree, but before we start discarding data (and losing it), IMHO we
->>> should at least inform the other peer that we're out of space.
->>>
->>> @Stefan, @Michael, do you think we can do something in the spec to avoid
->>> this issue and in some way take into account also the metadata in the
->>> credit. I mean to avoid the 1-byte packets flooding.
->>>
->>> Thanks,
->>> Stefano
->>>
->>>
->>
->> Indeed the old pre-fix skb code would have the same issue.
->>
->> I can't think of any way around this without extending the spec.
->
->Hi, thanks, agree with Bobby, that accounting metadata (e.g. skb size here) was not implemented "by
->design" in credit logic - another side of data exchange knows nothing about that. Also the same
->situation was before skb implementation was added by Bobby. So looks like need to update spec may be.
+> We do not want to put rps_record_sock_flow out of line.
+> rps_llc_check() is probably fine, it should not be called often.
 >
 
-Even if we change the specifications, we still need to work with older 
-devices, so we should find a solution for this as well.
+The same issue reported in:
+https://lore.kernel.org/netdev/CACueBy4KyU8DjwtLM6pzjQNTbiy2M+ZhZdO7Ag=3Dss=
+qWq00CJ7w@mail.gmail.com/
+The reason is that 'tun' uses sock_rps_record_flow_hash() in
+tun_flow_update(), which triggers the following compilation error due
+to symbol visibility when CONFIG_TUN is built as a module:
 
-My main concern is data loss, so I'm considering the following options:
+ERROR: modpost: "rps_llc_check" [drivers/net/tun.ko] undefined!
+make[2]: *** [scripts/Makefile.modpost:147: Module.symvers] Error 1
 
-1. Notify the other peer of a smaller buf_alloc from the start, leave 
-some room for overhead, and when it's running out, notify them that 
-buf_alloc = 0. This way, the peer realizes it can’t send anything else.
+To resolve this, it seems more appropriate to export
+sock_rps_record_flow_hash in net/core/dev.c:
 
-2. Or update buf_alloc each time by removing the overhead, similar to 
-what’s currently done in virtio_transport_inc_rx_pkt(), but also do it 
-in virtio_transport_inc_tx_pkt().
++void sock_rps_record_flow_hash(__u32 hash)
++{
++#ifdef CONFIG_RPS
++       if (!rfs_is_needed())
++               return;
++
++       _sock_rps_record_flow_hash(hash);
++#endif
++}
++EXPORT_SYMBOL(sock_rps_record_flow_hash);
++
 
-As I said, IMO this patch alone is incomplete; we need to communicate 
-with the peer somehow regarding space. I don’t think including the 
-overhead in fwd_cnt is spec compliant, since the other peer has no idea 
-how much overhead is needed, but reducing buf_alloc should be okay, even 
-though I’m concerned about packets in flight.
-
-As a quick fix, I think option 2 might be the easiest; I’ll run some 
-tests and send over a patch.
-
-But in the long run, I think we absolutely need to improve memory 
-management in vsock, perhaps by avoiding custom solutions.
-
-Thanks,
-Stefano
-
+> diff --git a/include/net/rps.h b/include/net/rps.h
+> index e33c6a2fa8bbca3555ecccbbf9132d01cc433c36..7e98918d8751eb824b7057cca=
+9e5d40c28e5f18a
+> 100644
+> --- a/include/net/rps.h
+> +++ b/include/net/rps.h
+> @@ -55,10 +55,12 @@ struct rps_sock_flow_table {
+>
+>  #define RPS_NO_CPU 0xffff
+>
+> +bool rps_llc_check(u32 old_val, u32 new_val);
+> +
+>  static inline void rps_record_sock_flow(rps_tag_ptr tag_ptr, u32 hash)
+>  {
+>         unsigned int index =3D hash & rps_tag_to_mask(tag_ptr);
+> -       u32 val =3D hash & ~net_hotdata.rps_cpu_mask;
+> +       u32 old_val, val =3D hash & ~net_hotdata.rps_cpu_mask;
+>         struct rps_sock_flow_table *table;
+>
+>         /* We only give a hint, preemption can change CPU under us */
+> @@ -68,7 +70,8 @@ static inline void rps_record_sock_flow(rps_tag_ptr
+> tag_ptr, u32 hash)
+>         /* The following WRITE_ONCE() is paired with the READ_ONCE()
+>          * here, and another one in get_rps_cpu().
+>          */
+> -       if (READ_ONCE(table[index].ent) !=3D val)
+> +       old_val =3D READ_ONCE(table[index].ent);
+> +       if (old_val !=3D val && rps_llc_check(old_val, val))
+>                 WRITE_ONCE(table[index].ent, val);
+>  }
