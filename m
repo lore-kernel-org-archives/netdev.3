@@ -1,38 +1,48 @@
-Received: from zg8tmja2lje4os4yms4ymjma.icoremail.net (zg8tmja2lje4os4yms4ymjma.icoremail.net [206.189.21.223])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03F4C47ECDE
-	for <netdev@vger.kernel.org>; Wed,  6 May 2026 14:08:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.21.223
+Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D9FD492508;
+	Wed,  6 May 2026 14:11:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778076531; cv=none; b=FOx/f3FI0aqlu6kVKT9URVj/8IthYlDkLD+d4SmkAUqizDWOgalL55+B2rcGiYQ64ZBWE/VO9bqAHBYD9yh6x9Yki/q8bnr0NyClcoou0l4cYqPeIHIK8YsJax918yb7YmXmEVQoNd9DS/g4BxjuZ61r0kjPie0Ukoqy72UR/Yo=
+	t=1778076664; cv=none; b=C2H60RQKet+9Nu4OU1N4uZ8/OMahw2/Odgw/JJIuZB2slHPdS+d7m/lniOn6Ht+DjBBr8YydPnobUOwbZ3lelL9v4vVA9XyZq+EIYt0m1hEMIYhtFJIVYEfx1Zx9mOeX91vPzUSYFNeEMVr2kEckqtafCO1AE1Y2TTGt3MUpVmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778076531; c=relaxed/simple;
-	bh=ROOk0w9SKEEAK9ff07zoJzjD3NY6bKpCEg+mSClqRwI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SSBy9BMIHr/20PCj9s1oTSlc4aEjzLjU49e6mMADfHa0JByOywY1P3ACOXEJsRGn99gKnyfPQf1ZUZPkM/jco5C67k97Hn7J4hiNbS6zC0aXXzChP6EjNDNpYNNYfRvEPFUJHzL2VyDsFcXP6bvOrBH23bRHRJa4Bljcv/heZSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn; spf=pass smtp.mailfrom=lzu.edu.cn; arc=none smtp.client-ip=206.189.21.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lzu.edu.cn
-Received: from enjou-Legion-Y7000P-2019.coin-barley.ts.net (unknown [172.23.56.36])
-	by app1 (Coremail) with SMTP id ygmowADHO_xZS_tpFV36AA--.1198S2;
-	Wed, 06 May 2026 22:08:26 +0800 (CST)
-From: Ren Wei <n05ec@lzu.edu.cn>
-To: netdev@vger.kernel.org
-Cc: kuniyu@google.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	rao.shoaib@oracle.com,
-	yuantan098@gmail.com,
-	yifanwucs@gmail.com,
-	tomapufckgml@gmail.com,
-	bird@lzu.edu.cn,
-	wangjiexun2025@gmail.com,
-	n05ec@lzu.edu.cn
-Subject: [PATCH net v3] af_unix: Reject SIOCATMARK on non-stream sockets
-Date: Wed,  6 May 2026 22:08:23 +0800
-Message-ID: <20260506140825.2987635-1-n05ec@lzu.edu.cn>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1778076664; c=relaxed/simple;
+	bh=jdku3lwlGP7dIt/wFobLtUxMN8c01eAC84JHaTYMDnc=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=bgPeflzK4VAuSJlQewsppJGtLFd0oIyCKrCp3YD4ThhSDb/X8XdsSkjDTuYxn8AFhyRAJj3dCaIEOvGTVGfpVzsDtc3XXabBReqOkaUEMq2fOHH31F/QSbtPWy517P8VCN9b55rx9BN97kPAYOlKvmZQt9+MdA1Kkzi+nGCV+WA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b=MhEJGJvp; arc=none smtp.client-ip=129.217.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b="MhEJGJvp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tu-dortmund.de;
+	s=unimail; t=1778076651;
+	bh=jdku3lwlGP7dIt/wFobLtUxMN8c01eAC84JHaTYMDnc=;
+	h=From:To:Subject:Date:In-Reply-To:References;
+	b=MhEJGJvpNHj0h83819p10Z5MQG3MxCjKfOYyC8ozLq9tq2QyTm0PTY8hZoi/EROMw
+	 xKCY5PSR72L1Vg7uiI/1z7IBaVEughGGwI8ujOKh/qD0x9N6xydC8mChSFh4OUoFmr
+	 GUNOq9L4g/xtQ3nW4b5ivM+QlciRHIKqKChGV6hU=
+Received: from simon-Latitude-5450.cni.e-technik.tu-dortmund.de ([129.217.186.46])
+	(authenticated bits=0)
+	by unimail.uni-dortmund.de (8.19.0.1/8.19.0.1) with ESMTPSA id 646EAnWa015408
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 6 May 2026 16:10:51 +0200 (CEST)
+From: Simon Schippers <simon.schippers@tu-dortmund.de>
+To: willemdebruijn.kernel@gmail.com, jasowang@redhat.com,
+        andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, mst@redhat.com,
+        eperezma@redhat.com, leiyang@redhat.com, stephen@networkplumber.org,
+        jon@nutanix.com, tim.gebauer@tu-dortmund.de,
+        simon.schippers@tu-dortmund.de, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        virtualization@lists.linux.dev
+Subject: [PATCH net-next v10 2/4] vhost-net: wake queue of tun/tap after ptr_ring consume
+Date: Wed,  6 May 2026 16:10:31 +0200
+Message-ID: <20260506141033.180450-3-simon.schippers@tu-dortmund.de>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260506141033.180450-1-simon.schippers@tu-dortmund.de>
+References: <20260506141033.180450-1-simon.schippers@tu-dortmund.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,74 +50,146 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:ygmowADHO_xZS_tpFV36AA--.1198S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7AF1fAw18Gw43Gw45JFW8Zwb_yoW8Cr1Upa
-	yak3WqyrZ0yr40v3ykta4F9r43JFs7GrWxK3s7Gas5ZF4qgw43XasYgF1DZr1DXFWDGFW8
-	XrnF9F4qvw4DZrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBj1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
-	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
-	IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2
-	jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52
-	x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWU
-	GwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI4
-	8JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kK
-	e7AKxVWUtVW8ZwCY02Avz4vE-syl42xK82IYc2Ij64vIr41l42xK82IY6x8ErcxFaVAv8V
-	W8GwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480
-	Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7
-	IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k2
-	6cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxV
-	AFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUd-B_UUUUU=
-X-CM-SenderInfo: zqqvvuo6o23hxhgxhubq/1tbiAQETCWn7AGQGuQABsS
 
-From: Jiexun Wang <wangjiexun2025@gmail.com>
+Add tun_wake_queue() to tun.c and export it for use by vhost-net. The
+function validates that the file belongs to a tun/tap device,
+dereferences the tun_struct under RCU, and delegates to
+__tun_wake_queue().
 
-SIOCATMARK reports whether the receive queue is at the urgent mark for
-MSG_OOB.
+vhost_net_buf_produce() now calls tun_wake_queue() after a successful
+batched consume of the ring to allow the netdev subqueue to be woken up.
+The point is to allow the queue to be stopped when it gets full, which
+is required for traffic shaping - implemented by the following
+"avoid ptr_ring tail-drop when a qdisc is present".
 
-In AF_UNIX, MSG_OOB is supported only for SOCK_STREAM sockets.
-SOCK_DGRAM and SOCK_SEQPACKET reject MSG_OOB in sendmsg() and recvmsg(),
-so they should not support SIOCATMARK either.
+Without the corresponding queue stopping, this patch alone causes no
+throughput regression for a tap+vhost-net setup sending to a qemu VM:
+3.857 Mpps to 3.891 Mpps.
 
-Return -EOPNOTSUPP for non-stream sockets before checking the receive
-queue.
+Details: AMD Ryzen 5 5600X at 4.3 GHz, 3200 MHz RAM, isolated QEMU
+threads, XDP drop program active in VM, pktgen sender; Avg over
+50 runs @ 100,000,000 packets. SRSO and spectre v2 mitigations disabled.
 
-Fixes: 314001f0bf92 ("af_unix: Add OOB support")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Suggested-by: Kuniyuki Iwashima <kuniyu@google.com>
-Signed-off-by: Jiexun Wang <wangjiexun2025@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Co-developed-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
+Signed-off-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
+Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
 ---
-Changes in v3:
-- Update trailers.
-- v2 Link: https://lore.kernel.org/all/20260413122916.1479959-1-n05ec@lzu.edu.cn/
+ drivers/net/tun.c      | 23 +++++++++++++++++++++++
+ drivers/vhost/net.c    | 21 +++++++++++++++------
+ include/linux/if_tun.h |  3 +++
+ 3 files changed, 41 insertions(+), 6 deletions(-)
 
-Changes in v2:
-- Rework the fix based on maintainer feedback.
-- Drop the receive-queue locking approach and reject SIOCATMARK on
-  non-stream sockets instead, since it is only meaningful for MSG_OOB.
-- v1 Link: https://lore.kernel.org/netdev/f6cbbc8da90e95584847b5ceb60aae830d1631c2.1775731983.git.wangjiexun2025@gmail.com/
-
- net/unix/af_unix.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index e2d787ca3e74..1cbf36ea043b 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -3323,6 +3323,9 @@ static int unix_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
- 			struct sk_buff *skb;
- 			int answ = 0;
+diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+index 00ecf128fe8e..fc358c4c355b 100644
+--- a/drivers/net/tun.c
++++ b/drivers/net/tun.c
+@@ -3776,6 +3776,29 @@ struct ptr_ring *tun_get_tx_ring(struct file *file)
+ }
+ EXPORT_SYMBOL_GPL(tun_get_tx_ring);
  
-+			if (sk->sk_type != SOCK_STREAM)
-+				return -EOPNOTSUPP;
++/* Callers must hold ring.consumer_lock */
++void tun_wake_queue(struct file *file, int consumed)
++{
++	struct tun_file *tfile;
++	struct tun_struct *tun;
 +
- 			mutex_lock(&u->iolock);
++	if (file->f_op != &tun_fops)
++		return;
++
++	tfile = file->private_data;
++	if (!tfile)
++		return;
++
++	rcu_read_lock();
++
++	tun = rcu_dereference(tfile->tun);
++	if (tun)
++		__tun_wake_queue(tun, tfile, consumed);
++
++	rcu_read_unlock();
++}
++EXPORT_SYMBOL_GPL(tun_wake_queue);
++
+ module_init(tun_init);
+ module_exit(tun_cleanup);
+ MODULE_DESCRIPTION(DRV_DESCRIPTION);
+diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
+index 80965181920c..ee583d6cc0fa 100644
+--- a/drivers/vhost/net.c
++++ b/drivers/vhost/net.c
+@@ -176,13 +176,21 @@ static void *vhost_net_buf_consume(struct vhost_net_buf *rxq)
+ 	return ret;
+ }
  
- 			skb = skb_peek(&sk->sk_receive_queue);
+-static int vhost_net_buf_produce(struct vhost_net_virtqueue *nvq)
++static int vhost_net_buf_produce(struct sock *sk,
++				 struct vhost_net_virtqueue *nvq)
+ {
++	struct file *file = sk->sk_socket->file;
+ 	struct vhost_net_buf *rxq = &nvq->rxq;
+ 
+ 	rxq->head = 0;
+-	rxq->tail = ptr_ring_consume_batched(nvq->rx_ring, rxq->queue,
+-					      VHOST_NET_BATCH);
++	spin_lock(&nvq->rx_ring->consumer_lock);
++	rxq->tail = __ptr_ring_consume_batched(nvq->rx_ring, rxq->queue,
++					       VHOST_NET_BATCH);
++
++	if (rxq->tail)
++		tun_wake_queue(file, rxq->tail);
++
++	spin_unlock(&nvq->rx_ring->consumer_lock);
+ 	return rxq->tail;
+ }
+ 
+@@ -209,14 +217,15 @@ static int vhost_net_buf_peek_len(void *ptr)
+ 	return __skb_array_len_with_tag(ptr);
+ }
+ 
+-static int vhost_net_buf_peek(struct vhost_net_virtqueue *nvq)
++static int vhost_net_buf_peek(struct sock *sk,
++			      struct vhost_net_virtqueue *nvq)
+ {
+ 	struct vhost_net_buf *rxq = &nvq->rxq;
+ 
+ 	if (!vhost_net_buf_is_empty(rxq))
+ 		goto out;
+ 
+-	if (!vhost_net_buf_produce(nvq))
++	if (!vhost_net_buf_produce(sk, nvq))
+ 		return 0;
+ 
+ out:
+@@ -995,7 +1004,7 @@ static int peek_head_len(struct vhost_net_virtqueue *rvq, struct sock *sk)
+ 	unsigned long flags;
+ 
+ 	if (rvq->rx_ring)
+-		return vhost_net_buf_peek(rvq);
++		return vhost_net_buf_peek(sk, rvq);
+ 
+ 	spin_lock_irqsave(&sk->sk_receive_queue.lock, flags);
+ 	head = skb_peek(&sk->sk_receive_queue);
+diff --git a/include/linux/if_tun.h b/include/linux/if_tun.h
+index 80166eb62f41..5f3e206c7a73 100644
+--- a/include/linux/if_tun.h
++++ b/include/linux/if_tun.h
+@@ -22,6 +22,7 @@ struct tun_msg_ctl {
+ #if defined(CONFIG_TUN) || defined(CONFIG_TUN_MODULE)
+ struct socket *tun_get_socket(struct file *);
+ struct ptr_ring *tun_get_tx_ring(struct file *file);
++void tun_wake_queue(struct file *file, int consumed);
+ 
+ static inline bool tun_is_xdp_frame(void *ptr)
+ {
+@@ -55,6 +56,8 @@ static inline struct ptr_ring *tun_get_tx_ring(struct file *f)
+ 	return ERR_PTR(-EINVAL);
+ }
+ 
++static inline void tun_wake_queue(struct file *f, int consumed) {}
++
+ static inline bool tun_is_xdp_frame(void *ptr)
+ {
+ 	return false;
 -- 
-2.34.1
+2.43.0
 
