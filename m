@@ -1,179 +1,108 @@
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47D89481649
-	for <netdev@vger.kernel.org>; Wed,  6 May 2026 14:28:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D11D347F2FA;
+	Wed,  6 May 2026 14:28:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778077711; cv=none; b=ho7k3N8fWhug4aKsee1LPldCtfHb+MLF62x8CvddrsxosebEbvvV5sH2BE2A5588NprvqfxFUios8yZZrbHyvYeaRSNPXfy5uX5eHkf2ozcvVV5L20JrsMN5CVjhd0Sr+MB0a6ytdW5Q4j5W4u0RKmWw+SykGvokKWHOEARCTfo=
+	t=1778077738; cv=none; b=JOl+DqzUibW3bB1hN+Jg7mQ5UgbsN9J6RM605+cQTmKilQ7khqxszdLCmk1ghEYbBB6G6ZDy+VQfly0zpanrmP87HRiJgSrkA/egC/mA730srvhSN3JwpaMPHAadgcTsixTwfti3kBsn3yGilKk50+uz5ZCHguJYiGKSGNL6q0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778077711; c=relaxed/simple;
-	bh=5ZU21tRIlqXoH9jIFxronPOEdmNOHwLE03547/Jek1U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
-	 In-Reply-To:Content-Type; b=VNBAElfJPoQiDgf9trL9+6FGdifDRgOFuyeGmzh6mhA2XYYDmH9xjYTHQa/3jkWfwPNpYtvdDqs7A82vPZP3jaO7KzemJivjPFLMDaK5JG2Uyl44fKpUlXeqL4ss9KXJnAhHQGxYo3Es3xk9JNQRsUwjugJB+ShBzB8GntYm0M4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ZmrxhBnP; arc=none smtp.client-ip=91.218.175.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1778077738; c=relaxed/simple;
+	bh=tlLa/cxGUfOgP/XWmgapLBcOqCG5atwBn4y/P+VjazM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=F0cpzGKHlirnNDyvS2naqwZBne1KCbcbiCSQpMUamQac1nGrv4QJUMNpoVKb86/3ESPoljedzs1Hn4z++kvIOfQt3CRCv5KolHwoFfUKJyMNZ68GK463mOdRyAywXTFcWHbhBqgejiGW0PsxQ/KDgvihgK38DCE+QVUqvzvLX+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f7rs4Y4z; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ZmrxhBnP"
-Message-ID: <78183562-ff83-4b7a-9c7b-b3cb92676ee8@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1778077696;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Vuoq7yYRR946Z2PaAByJyOtutD5hvIdtunJIHpdgfA8=;
-	b=ZmrxhBnP6yTe33insjP4W9UIy+jxXJFkVZPd54uf85RoC/rbEvobOZhrLa6t/KPtTAr91/
-	v5n3n4meLok1Wh7lBsWjmu2JCRD6ERfbRu9u4uuwtB0uTWFlSbD5I1tLxDrzwR4KHI9nD8
-	iJn4H7Q5zmwuLCjpVxDI+Iu5T13XxDA=
-Date: Wed, 6 May 2026 07:28:10 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f7rs4Y4z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4E04C2BCB0;
+	Wed,  6 May 2026 14:28:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778077738;
+	bh=tlLa/cxGUfOgP/XWmgapLBcOqCG5atwBn4y/P+VjazM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=f7rs4Y4z0OtJOw2ksbAOEAVsrLKw/xaWSlvknjBDx304G6r1mZ9H2o53DsxZR999N
+	 8At6YZAPS/E26d59H7pxqjnRqgNUoP3oC4UgLuJdAJBCLZ2O0QKFLg7Sk5mSolV6aj
+	 RcnsIndBoaxk8/EW9aaOEDTevYrjRn4hNpopRmdg4UQ/SAcxxCEr2tZvlcppMVDbuQ
+	 /sFNqFwcWs3PrdWHQX1CJHC4wV7sCxOE5sQNRxOh/sSu0L+p0i6ktGb2zzcNs1RMzW
+	 Hb0GfRSEiTAO6JENbC5zrx+tuqaW6DoWyHl1J35wbyA/L0R+70314EdHC3LC2RVuH3
+	 mJ4DD4yK5vJcA==
+From: Greg Ungerer <gerg@kernel.org>
+To: linux-m68k@lists.linux-m68k.org
+Cc: linux-kernel@vger.kernel.org,
+	arnd@kernel.org,
+	Greg Ungerer <gerg@linux-m68k.org>,
+	nico@fluxnic.net,
+	netdev@vger.kernel.org
+Subject: [RFC 2/4] net: smc91x: do not use readw()/writew() on ColdFire platforms
+Date: Thu,  7 May 2026 00:26:44 +1000
+Message-ID: <20260506142644.3234270-4-gerg@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260506142644.3234270-2-gerg@kernel.org>
+References: <20260506142644.3234270-2-gerg@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [syzbot] [rdma] general protection fault in kernel_sock_shutdown
- (4)
-To: syzbot <syzbot+d8f76778263ab65c2b21@syzkaller.appspotmail.com>,
- akpm@linux-foundation.org, arjan@linux.intel.com, davem@davemloft.net,
- dsahern@kernel.org, edumazet@google.com, horms@kernel.org, jgg@ziepe.ca,
- kuba@kernel.org, kuni1840@gmail.com, kuniyu@google.com, leon@kernel.org,
- linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
- netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com,
- zyjzyj2000@gmail.com
-References: <69fb46ae.a00a0220.387fc1.0002.GAE@google.com>
-Cc: Kuniyuki Iwashima <kuniyu@google.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
-In-Reply-To: <69fb46ae.a00a0220.387fc1.0002.GAE@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
+From: Greg Ungerer <gerg@linux-m68k.org>
 
-在 2026/5/6 6:48, syzbot 写道:
-> syzbot has found a reproducer for the following issue on:
->
-> HEAD commit:    74fe02ce122a Merge tag 'wq-for-7.1-rc2-fixes' of git://git..
-> git tree:       upstream
-> console output: https://syzkaller.appspot.com/x/log.txt?x=16e895ce580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=59da38148f3a3d24
-> dashboard link: https://syzkaller.appspot.com/bug?extid=d8f76778263ab65c2b21
-> compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=13a613ba580000
->
-> Downloadable assets:
-> disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-74fe02ce.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/c0a591d96864/vmlinux-74fe02ce.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/9f94fb623cd1/bzImage-74fe02ce.xz
->
-> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> Reported-by: syzbot+d8f76778263ab65c2b21@syzkaller.appspotmail.com
->
-> Oops: general protection fault, probably for non-canonical address 0xdffffc000000000d: 0000 [#1] SMP KASAN NOPTI
-> KASAN: null-ptr-deref in range [0x0000000000000068-0x000000000000006f]
+Modify the access macros and functions used to access the smsc hardware
+registers when used on ColdFire SoC platforms so they do not use readw()
+or writew(), or derived functions like ioread16be() and iowrite16be().
 
-Thanks a lot. IIRC, this problem is in process. The link is 
-https://patchwork.kernel.org/project/linux-rdma/patch/20260424013759.728288-1-kuniyu@google.com/
+The current set of readX()/writeX() access methods for ColdFire have
+historically been non-standard, in that they mostly access memory
+big-endian instead of the expected little-endian. Before fixing the
+ColdFire readX() and writeX() supporting code to properly work with
+little-endian data existing driver uses need to be fixed. Convert the
+smsc driver ColdFire uses of these to use the raw access macros - which
+are well defined to be (native) big-endian on ColdFire. This change
+requires some byte swapping at time of access to retain existing correct
+behavior.
 
-Hi, Kuniyuki Iwashima
+Signed-off-by: Greg Ungerer <gerg@linux-m68k.org>
+---
+ drivers/net/ethernet/smsc/smc91x.h | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-I think you are fixing this problem. I hope that we can see your commit 
-very soon.
-
-Zhu Yanjun
-
-> CPU: 3 UID: 0 PID: 5986 Comm: syz.3.20 Not tainted syzkaller #0 PREEMPT(full)
-> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-> RIP: 0010:kernel_sock_shutdown+0x47/0x70 net/socket.c:3785
-> Code: fc ff df 48 89 fa 48 c1 ea 03 80 3c 02 00 75 33 48 b8 00 00 00 00 00 fc ff df 4c 8b 63 20 49 8d 7c 24 68 48 89 fa 48 c1 ea 03 <80> 3c 02 00 75 1a 49 8b 44 24 68 89 ee 48 89 df 5b 5d 41 5c ff e0
-> RSP: 0018:ffffc9000391f180 EFLAGS: 00010202
-> RAX: dffffc0000000000 RBX: ffff88802a2a0040 RCX: ffffffff8b8b72bd
-> RDX: 000000000000000d RSI: ffffffff89553b32 RDI: 0000000000000068
-> RBP: 0000000000000002 R08: 0000000000000001 R09: fffff52000723dfc
-> R10: ffffc9000391efe7 R11: 0000000000000000 R12: 0000000000000000
-> R13: ffff8880311b8000 R14: 0000000000000002 R15: 0000000000000018
-> FS:  00007f602d1fe6c0(0000) GS:ffff8880d6675000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 0000561c522a6000 CR3: 000000002e99e000 CR4: 0000000000352ef0
-> Call Trace:
->   <TASK>
->   udp_tunnel_sock_release+0x68/0x80 net/ipv4/udp_tunnel_core.c:202
->   rxe_release_udp_tunnel drivers/infiniband/sw/rxe/rxe_net.c:294 [inline]
->   rxe_sock_put+0xae/0x130 drivers/infiniband/sw/rxe/rxe_net.c:639
->   rxe_net_del+0x83/0x120 drivers/infiniband/sw/rxe/rxe_net.c:660
->   rxe_dellink+0x15/0x20 drivers/infiniband/sw/rxe/rxe.c:254
->   nldev_dellink+0x289/0x3c0 drivers/infiniband/core/nldev.c:1849
->   rdma_nl_rcv_msg+0x392/0x6f0 drivers/infiniband/core/netlink.c:195
->   rdma_nl_rcv_skb.constprop.0.isra.0+0x2cb/0x410 drivers/infiniband/core/netlink.c:239
->   netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
->   netlink_unicast+0x585/0x850 net/netlink/af_netlink.c:1344
->   netlink_sendmsg+0x8b0/0xda0 net/netlink/af_netlink.c:1894
->   sock_sendmsg_nosec net/socket.c:787 [inline]
->   __sock_sendmsg net/socket.c:802 [inline]
->   ____sys_sendmsg+0x9e1/0xb70 net/socket.c:2698
->   ___sys_sendmsg+0x190/0x1e0 net/socket.c:2752
->   __sys_sendmsg+0x170/0x220 net/socket.c:2784
->   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->   do_syscall_64+0x10b/0xf80 arch/x86/entry/syscall_64.c:94
->   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> RIP: 0033:0x7f602db9cdd9
-> Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-> RSP: 002b:00007f602d1fe028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-> RAX: ffffffffffffffda RBX: 00007f602de16090 RCX: 00007f602db9cdd9
-> RDX: 0000000000000000 RSI: 00002000000002c0 RDI: 0000000000000007
-> RBP: 00007f602dc32d69 R08: 0000000000000000 R09: 0000000000000000
-> R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-> R13: 00007f602de16128 R14: 00007f602de16090 R15: 00007ffc1d89c428
->   </TASK>
-> Modules linked in:
-> ---[ end trace 0000000000000000 ]---
-> RIP: 0010:kernel_sock_shutdown+0x47/0x70 net/socket.c:3785
-> Code: fc ff df 48 89 fa 48 c1 ea 03 80 3c 02 00 75 33 48 b8 00 00 00 00 00 fc ff df 4c 8b 63 20 49 8d 7c 24 68 48 89 fa 48 c1 ea 03 <80> 3c 02 00 75 1a 49 8b 44 24 68 89 ee 48 89 df 5b 5d 41 5c ff e0
-> RSP: 0018:ffffc9000391f180 EFLAGS: 00010202
->
-> RAX: dffffc0000000000 RBX: ffff88802a2a0040 RCX: ffffffff8b8b72bd
-> RDX: 000000000000000d RSI: ffffffff89553b32 RDI: 0000000000000068
-> RBP: 0000000000000002 R08: 0000000000000001 R09: fffff52000723dfc
-> R10: ffffc9000391efe7 R11: 0000000000000000 R12: 0000000000000000
-> R13: ffff8880311b8000 R14: 0000000000000002 R15: 0000000000000018
-> FS:  00007f602d1fe6c0(0000) GS:ffff8880d6675000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 0000561c522a6000 CR3: 000000002e99e000 CR4: 0000000000352ef0
-> ----------------
-> Code disassembly (best guess):
->     0:	fc                   	cld
->     1:	ff                   	lcall  (bad)
->     2:	df 48 89             	fisttps -0x77(%rax)
->     5:	fa                   	cli
->     6:	48 c1 ea 03          	shr    $0x3,%rdx
->     a:	80 3c 02 00          	cmpb   $0x0,(%rdx,%rax,1)
->     e:	75 33                	jne    0x43
->    10:	48 b8 00 00 00 00 00 	movabs $0xdffffc0000000000,%rax
->    17:	fc ff df
->    1a:	4c 8b 63 20          	mov    0x20(%rbx),%r12
->    1e:	49 8d 7c 24 68       	lea    0x68(%r12),%rdi
->    23:	48 89 fa             	mov    %rdi,%rdx
->    26:	48 c1 ea 03          	shr    $0x3,%rdx
-> * 2a:	80 3c 02 00          	cmpb   $0x0,(%rdx,%rax,1) <-- trapping instruction
->    2e:	75 1a                	jne    0x4a
->    30:	49 8b 44 24 68       	mov    0x68(%r12),%rax
->    35:	89 ee                	mov    %ebp,%esi
->    37:	48 89 df             	mov    %rbx,%rdi
->    3a:	5b                   	pop    %rbx
->    3b:	5d                   	pop    %rbp
->    3c:	41 5c                	pop    %r12
->    3e:	ff e0                	jmp    *%rax
->
->
-> ---
-> If you want syzbot to run the reproducer, reply with:
-> #syz test: git://repo/address.git branch-or-commit-hash
-> If you attach or paste a git patch, syzbot will apply it before testing.
-
+diff --git a/drivers/net/ethernet/smsc/smc91x.h b/drivers/net/ethernet/smsc/smc91x.h
+index 38aa4374e813..1290335629c1 100644
+--- a/drivers/net/ethernet/smsc/smc91x.h
++++ b/drivers/net/ethernet/smsc/smc91x.h
+@@ -142,22 +142,26 @@ static inline void _SMC_outw_align4(u16 val, void __iomem *ioaddr, int reg,
+ #define SMC_CAN_USE_32BIT	0
+ #define SMC_NOWAIT		1
+ 
++/*
++ * Access SMSC device registers using raw IO access primitives. Byte
++ * swap as required for device registers, but not data.
++ */
+ static inline void mcf_insw(void __iomem *a, unsigned char *p, int l)
+ {
+ 	u16 *wp = (u16 *) p;
+ 	while (l-- > 0)
+-		*wp++ = readw(a);
++		*wp++ = __raw_readw(a);
+ }
+ 
+ static inline void mcf_outsw(void __iomem *a, unsigned char *p, int l)
+ {
+ 	u16 *wp = (u16 *) p;
+ 	while (l-- > 0)
+-		writew(*wp++, a);
++		__raw_writew(*wp++, a);
+ }
+ 
+-#define SMC_inw(a, r)		ioread16be((a) + (r))
+-#define SMC_outw(lp, v, a, r)	iowrite16be(v, (a) + (r))
++#define SMC_inw(a, r)		swab16(__raw_readw((a) + (r)))
++#define SMC_outw(lp, v, a, r)	__raw_writew(swab16(v), (a) + (r))
+ #define SMC_insw(a, r, p, l)	mcf_insw(a + r, p, l)
+ #define SMC_outsw(a, r, p, l)	mcf_outsw(a + r, p, l)
+ 
 -- 
-Best Regards,
-Yanjun.Zhu
+2.54.0
 
