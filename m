@@ -1,64 +1,64 @@
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+Received: from mail-yx1-f46.google.com (mail-yx1-f46.google.com [74.125.224.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101AA275B03
-	for <netdev@vger.kernel.org>; Wed,  6 May 2026 19:30:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B317318ED6
+	for <netdev@vger.kernel.org>; Wed,  6 May 2026 19:31:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778095811; cv=none; b=Zhi0rsRgztfDib3BQ1jKIdWFJGSkVBrIfqYBwZuSTee7EebOj6z/1lZZQkDI3YfzfqQQTtwxfMDyNmKA81tXLJBLoqHTPddHnaWk7eb2jzY1jMOIhn2HvMaADhpoX+09z8G6D4sh5r2fBNRuTI6gGi4kOhFVsIvSHWDGoRSlu+Q=
+	t=1778095912; cv=none; b=XUOQ1VAgudEPdG2UBrDWXCcvHxsLZDT7kVaXK2tIs3XeMG5K8VIqRnKyqxllfLIgD7++X1whHOsrL+o4ZN263WiWF0vWejEzexyr+hWOSZHsnWvi02D3Yx58f87c8PgwVAY+Vd3UEMr5mtJXnGF/gu9ks6UCSU9G9Ijstyr5BgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778095811; c=relaxed/simple;
-	bh=T/Z0ue1NjRjnHIwvygpPdlK10J9GktOfORG2BaFoOP8=;
+	s=arc-20240116; t=1778095912; c=relaxed/simple;
+	bh=iZSa9x+NGfYe7SE7VaqLueKdW2vGNSge+YaCCBwijLA=;
 	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=Cg3Z3TcgXc94unohgxWgozuHGJvRD+WGeNoMt4qiP/KoaWcfsYxQya9QbC8k89lech3KUXIuWLial9tpK74kNYNrcozwvrudAdScq2wppWnBV2DAelmLXAUloWJZsXS1o9y7TnQyg/AXPls+rzjRR/yJbC3ga88nCMz6uiysUUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OyCe8NJD; arc=none smtp.client-ip=209.85.128.175
+	 Mime-Version:Content-Type; b=XryeRb9Hb8jZzp/krKj5qSK9DoO7WOEFZmoZFHnbWG1lsnrLvRN3n1umjb1ARxcB3ods1l9FxNaOTS1hxy853uMhBKWautVDKj4RzFIg7ETwfEpa0VeGk4/IVwA5rtjun733w3BLFaz23oNZAZKtbz6tR6Lt5RYPCnVxqIFffII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rvd+kKoJ; arc=none smtp.client-ip=74.125.224.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OyCe8NJD"
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-7bb0d18c7f9so197727b3.0
-        for <netdev@vger.kernel.org>; Wed, 06 May 2026 12:30:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rvd+kKoJ"
+Received: by mail-yx1-f46.google.com with SMTP id 956f58d0204a3-65c37eafcbeso9544d50.1
+        for <netdev@vger.kernel.org>; Wed, 06 May 2026 12:31:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778095809; x=1778700609; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1778095910; x=1778700710; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:subject:references
          :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/PObqSo3yI/weBtZ6Fr+3JYSL4ynGoc1gJ3FrdqU23g=;
-        b=OyCe8NJDhKG+n/pZc7dWnp6m1nfSIu5MPq33xP3SCXVD41LLstakkV96WP+zY5de6O
-         25dhc67NFcBvrfVVPH6tEQXqWs86SNPz8fORCJtulgTzKpMvktzGdX4u7awITY6oYeBS
-         vmSXd/BH3eh+I/8cPIflDI/9khdlPvFhujWBV77O4Oi+OsVTKLwpMX5sQtKcaqYlfFGg
-         YDVC98oUi7kd35TRd4mkou1ztHlccc2zGw6o5iKKHerwZSMvtBtkZyWmx/GCkWZ1CGGj
-         jJVNPqeU9b03yEnt7Kdcn9wudIS7lPfBqi/tj6Q0n4qTxglMk5eSl00edsIO80fNYV6p
-         Vg5w==
+        bh=x8BkpSYgNobLaOaccEcCmnUd9ThyuPsAjj7zXcBaElY=;
+        b=Rvd+kKoJdTQ4aR/2xY+py7GZxaMbX/XPcT8pMnU32n7xeqKD2R2fX/rpTViSiwjFQA
+         btDmcTQ+ZeP74PhNeErtuH30JgQmYPhuH96dYb0BhRVs+xrkxH2Ybi8qxLeQo2Pq+CX8
+         aolZ+CH2zWFEIUJXY+d/l1gANVoews6JuzylEBl43wWQnkquF+FAYhBhYl9ZyO2qH075
+         ePsjh0KvVBxdv80g18fe2KocpivbFTtrM6FlTdJ6GaK7vQhmduscUvmTTc9WQW2uJacw
+         DdOHkXb74AQYcnkW7a8UMDdLhnEXth14GnUZWIdX1l+oBnVjpNKW/+KiDlUKQlnWqYiP
+         TMwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778095809; x=1778700609;
+        d=1e100.net; s=20251104; t=1778095910; x=1778700710;
         h=content-transfer-encoding:mime-version:subject:references
          :in-reply-to:message-id:cc:to:from:date:x-gm-gg:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=/PObqSo3yI/weBtZ6Fr+3JYSL4ynGoc1gJ3FrdqU23g=;
-        b=lnjAML21h+n2g7eCkkL1Lhc+cfceDWN+dU9zYLqEY/Kb9vpgnAeY4zjpxJzZMyNByd
-         5X4pVMZkjeNgE3dwZGZurxgmcBWCNaNsmA+BpqiH/2Epx4+jz9uq6/2OE24Q2ip9SdQj
-         bASyufTvQHOMaESMNys5eF5jDUg8EeRNq6hF84rBV8wnhR/db0fDiecTjRf2A8tdO4ar
-         TQmejexCQg2FvaNgKO8wchhwikpTNSzLA82wnrKkOn3VOYF5J/mUXH00WzC8BxnL00zz
-         Lc7TBLNl8SKCf7pNI3LfJ3wXLDBfYtQpuIRfmMCfrMA/EO4OIRfZDfM8J8F75Laf8RH/
-         KMZw==
-X-Gm-Message-State: AOJu0YwL56xgN3T0iR6jFgodpzOjRVo77/9/PzBsck78+rnIyU48Cf7h
-	wZ4FXIP/W+26LSx6Y+FT4E2eBAZlnoXEZuIzVuCC1Wkj5cShXIveDkgO
-X-Gm-Gg: AeBDiesgnpU/pD1FEWMjpiVhZO9uBb1ncNBa0Zu2tdx/wKr8LI6pozjBAeQFXqCMG6U
-	AXB2peb7nk6745zWn/kHch2lC26gaXddFrDJSLvW4wBf0HnZoyVAIac2cMydsXs2ZkGEhG/R56M
-	bMV2kCO4ZaXLn7KECiAzOO5T+YJjXrFbRJ8kQXHtBGTC1U0lxzUXWSLsVnEhgo5wrloujWdQgi6
-	GPlFbe7UCPA2QL98yGuDyA8987jFWdVoPx711hGhheT88Z5G+NfcEJAcD59zRchvH1Q2LKUdAF3
-	QVMGVHORuD77Zz6kjKiLzLf0jK62L8nltKF/6MsFjgj+/qMV3BF0dJBGJaual19ht0QMZm1yeum
-	POovnKS+F8tEZLxkxG0t9OdTSpKoErTTRLoiqWx/Pj8zm40HDjkVWBwAJDSCpxvNUEh1H9WTn8E
-	1lXG6/kaAHRXoRviF9KQ9LxSZMhKjcrdEe4Idjeyz1Cy0kCHHSn8acyI/fORK2tKvyBK9WBnZQk
-	HtxwqnsXiovYPQ=
-X-Received: by 2002:a05:690c:4510:b0:7bf:27e:66ae with SMTP id 00721157ae682-7bf027e70acmr4609997b3.30.1778095808985;
-        Wed, 06 May 2026 12:30:08 -0700 (PDT)
+        bh=x8BkpSYgNobLaOaccEcCmnUd9ThyuPsAjj7zXcBaElY=;
+        b=tN1pzI1I8F8v0TsFSaBC8BpxLEYN83kpp6jHZhHh0OS2891euJhM/6GYx/K09bfMz3
+         8tw42k0bkAqozWuY5Q4oKUv8f0NFgvwuy1G0GulADAib6SqlMt0C7QL1+nO5EHB4qMY9
+         udsyrWApcL2K19JFAjklfOGuZCQy2wpQoiJwvi/erUSmnWRPZJFwOE6b2rb9mFxkmB/m
+         PO+E0mH+E5QqrZiO5KOrhZYYtrr8WujzvDoZCk9HnUJUdLQoM/EXNBGuZcS+3TfDVn2c
+         ikT4SEc8YX68Bs6xaRVLPOlWPXg2XD0zjXnvUp0rwYjcY4qfPNd8R7IVDi0ksjkpYeXV
+         ca5g==
+X-Gm-Message-State: AOJu0YzRrzpZTUifOh79k9A85LO14CmjvDeL0d4krYQHx2xrRcgloVXA
+	G6I+lgiR0k568TRsNdmwn+ud+aXTFrMA8Q51jv005+T7U8xISui+s/qw
+X-Gm-Gg: AeBDievk09DGHNp8WTglz2LJNv4jVYxEc0aVwAUZxGg/cYLoziaD/i6+KQp9Qzbwkam
+	/CFJ6fdvYnBtyZvRybSxIUBgFmVEtSmIQcpgeHZO3LOlv0CO0T4Ku6n1xmqRi7MP++k1AnoAvIG
+	4xx6yn0PKntk1nM3lnmn/1ame2kBustZgNcyfl1btIuhDzLV0aUqc7zuJHYqksPxWik6+6aq4NU
+	1qbomOT6dkP/0MaZazrtfa9DnT/X6hUpfbb1OtdzeImO+II6+kbPaNNnOix92Wk6XXLq8iAlF9R
+	6TRW0o53BXn/VmybdwaN7Er/7OFDl9AfHml7aAt8fT6XPXiQdhfL7RvfwPr5nCDBHzLetDKZMm/
+	xd0keXWe4yV87zbvzLUa//xV06whU5vH2euzrFy3ihixyX7uLkCxkWVoVl5iDxxyBPiogd7hkpO
+	hdkS58qZhmnKHnkyAOwsuJboVsn93hN5cGDmTdA3GA4Le8MvlFO3fjd6oArG86JP9/ljfvzSJso
+	oYOrjYnE2Bj+Z8=
+X-Received: by 2002:a53:cf0a:0:b0:651:97ba:8507 with SMTP id 956f58d0204a3-65c79a2e692mr3769937d50.59.1778095910361;
+        Wed, 06 May 2026 12:31:50 -0700 (PDT)
 Received: from gmail.com (172.235.85.34.bc.googleusercontent.com. [34.85.235.172])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7bd66527421sm82466277b3.2.2026.05.06.12.30.06
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-65c7af99a95sm1524615d50.12.2026.05.06.12.31.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 May 2026 12:30:07 -0700 (PDT)
-Date: Wed, 06 May 2026 15:30:06 -0400
+        Wed, 06 May 2026 12:31:49 -0700 (PDT)
+Date: Wed, 06 May 2026 15:31:49 -0400
 From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
 To: Daniel Zahka <daniel.zahka@gmail.com>, 
  Jakub Kicinski <kuba@kernel.org>, 
@@ -70,12 +70,12 @@ To: Daniel Zahka <daniel.zahka@gmail.com>,
  Willem de Bruijn <willemdebruijn.kernel@gmail.com>
 Cc: netdev@vger.kernel.org, 
  linux-kernel@vger.kernel.org
-Message-ID: <willemdebruijn.kernel.1dcf55066b2e@gmail.com>
-In-Reply-To: <20260505-psd-rcu-v1-1-a8f69ec1ab96@gmail.com>
+Message-ID: <willemdebruijn.kernel.15fa63687b81@gmail.com>
+In-Reply-To: <20260505-psd-rcu-v1-2-a8f69ec1ab96@gmail.com>
 References: <20260505-psd-rcu-v1-0-a8f69ec1ab96@gmail.com>
- <20260505-psd-rcu-v1-1-a8f69ec1ab96@gmail.com>
-Subject: Re: [PATCH net 1/3] netdevsim: psp: only call nsim_psp_uninit() on
- PFs
+ <20260505-psd-rcu-v1-2-a8f69ec1ab96@gmail.com>
+Subject: Re: [PATCH net 2/3] netdevsim: psp: serialize calls to
+ nsim_psp_uninit()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -87,32 +87,27 @@ Content-Type: text/plain;
 Content-Transfer-Encoding: 7bit
 
 Daniel Zahka wrote:
-> VFs go through nsim_init_netdevsim_vf() which never calls
-> nsim_psp_init(), so ns->psp.dev stays NULL. nsim_psp_uninit() guards
-> with !IS_ERR(ns->psp.dev), so destroying a VF reaches
-> psp_dev_unregister(NULL) and dereferences NULL on the first
-> mutex_lock(&psd->lock):
+> The debugfs write handler, nsim_psp_rereg_write(), can race against
+> nsim_destroy() and against itself, causing nsim_psp_uninit() to run
+> more than once concurrently. Two complementary changes serialize all
+> callers:
+
+nit: sounds and looks as if this would be simpler as two patches.
+but no need to respin just for that.
+
 > 
->   BUG: kernel NULL pointer dereference, address: 0000000000000020
->   RIP: 0010:mutex_lock+0x1c/0x30
->   Call Trace:
->    psp_dev_unregister+0x2a/0x1a0
->    nsim_psp_uninit+0x1f/0x40 [netdevsim]
->    nsim_destroy+0x61/0x1e0 [netdevsim]
->    __nsim_dev_port_del+0x47/0x90 [netdevsim]
->    nsim_drv_configure_vfs+0xc9/0x130 [netdevsim]
->    nsim_bus_dev_numvfs_store+0x79/0xb0 [netdevsim]
+> 1. Delete the psp_rereg debugfs file from nsim_psp_uninit() before
+>    doing the actual teardown. debugfs_remove() drains any in-flight
+>    writers and prevents new ones from starting.
 > 
-> Gate nsim_psp_uninit() on nsim_dev_port_is_pf(), matching the pattern
-> already used for nsim_exit_netdevsim() and the bpf/ipsec/macsec/queue
-> teardowns.
+> 2. Add a mutex around the body of nsim_psp_rereg_write() so that two
+>    concurrent userspace writers cannot both enter the teardown path
+>    at once.
 > 
-> Reproducer:
->   modprobe netdevsim
->   echo "10 1" > /sys/bus/netdevsim/new_device
->   echo 1 > /sys/bus/netdevsim/devices/netdevsim10/sriov_numvfs
->   devlink dev eswitch set netdevsim/netdevsim10 mode switchdev
->   echo 0 > /sys/bus/netdevsim/devices/netdevsim10/sriov_numvfs
+> The teardown work itself is moved into a new __nsim_psp_uninit() that
+> the rereg handler calls under the mutex, while the public
+> nsim_psp_uninit() wraps it with the debugfs_remove()/mutex_destroy()
+> pair so nsim_destroy() doesn't have to know about the psp internals.
 > 
 > Fixes: f857478d6206 ("netdevsim: a basic test PSP implementation")
 > Assisted-by: Claude:claude-opus-4.6
