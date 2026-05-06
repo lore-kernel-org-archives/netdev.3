@@ -1,195 +1,150 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013048.outbound.protection.outlook.com [40.107.159.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC99C44D682;
-	Wed,  6 May 2026 15:16:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EABE3EF65A
+	for <netdev@vger.kernel.org>; Wed,  6 May 2026 15:19:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.52
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778080618; cv=fail; b=oNK2vbea610EIqY7hCyfEAiSX+gmw4EZ+myKOekgbUNFuzt/Sw62wGKNuKX219N4RW5fRyL+Nkz8XgjilMyFN5EDGIWWz4gFBxv1iY0mZUMqfLnMzuUWgDotV7MWiDw5fYEkzweJfXz/PKzOshtsHvv4Zh6uZR4qdny2glufEfE=
+	t=1778080798; cv=pass; b=P8NmAjSOMqCDsEs9YZ5647dYlqeiJPaH1cuQ4Sbcfn4dzeGwSfmNpZ4kFT7oZGQ2PdjqopC1TfFfoUIpI1V3aAOAmVOPJdzOPjbQgX+2Xi1e9+YCm7NSyvVUhQ39LHHT3nawVNx/hR5h36zJ8+z/6vJUsuIWTCRzYyqjokLWJAY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778080618; c=relaxed/simple;
-	bh=kaCVpVisCRnXRpMOlsx/LRSJjpaWC15a6PgtYCfRUmM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=S0XxoZIJ4vE9/YLXwtIlt9AmEPiLgHUTaGVaUYTHsQlvpfKvFfUEN4kY9U/zyUMsJIDPFPJfZOHOxRY8SfJ7gnpH6xDXytiBK1HJsrORvD05sCTsyiDjo9KJTDxdVrGONNT7UdmoWEz+zxiwAiUXRIe4iYGe10S5kaGeKETPweg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=QPg3RxdE; arc=fail smtp.client-ip=40.107.159.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1778080798; c=relaxed/simple;
+	bh=m16fKxmhGhuJ7B3jLust56D9Y0CJQn0MnszLnnO7hjo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=keZPYukNTiswiH8oBUJJR2Hj4V5+SJGT/LcXYuvEhEl7rF9WxcRqxiZ7LP9JAkF367FrgO0D+O52bPOCK0vtm8MVgzu+Plp4oAdnQTqZGqwYZD9MyL5TSDOeumVEqc3ms3TRkXL0XwL6kVmuqX819SbVAlV51W59dmOgGtdgB6c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DYhBgUta; arc=pass smtp.client-ip=74.125.82.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="QPg3RxdE"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NHOpiJIfHKysxdK611uL1Zq7SPJp+K2pvlCii9Ett3I+77lORUt4C4RMCkt1Ndd29688CrAK3sPp5Q6n5pJjuNeLwq0dyFkYoyut/q2ns2eImqpfuUQkNbrWptmWAXgOS2ixoOhUN1qqfbJsxI3IsmYqc2WXMt/U6ERC0HvJPeFcc46OhT5SZy7SMjvwjSPp+pTWRZr8w7Y9iOx0BG7Q0sXI/MkmyO5HdPd9AFPuGO8s3jsaeUz+wmWGPTQBqKCmLjSkc7Lf2ykZpa6w+RLOZqQYNyQLbiMKPsegly0pETE7wlmVn+LFdhcWP5CyPfH46k+ddUiNstEe7cRbQ8zKKw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lsQI5sNqmaWyFD8qYkVhIibUwIAgjyJnYZUFCIgncQg=;
- b=tLCTCapiHuvXDXRadqAlz3SfJvVEmv4orD92hYPZcCBNf2TEnT31NmbDpl36QY1cmfSzzdFI9VL5gMx/9YzKwfYhLBjNDKglGUCChFflQsoJ0eaR7WEbIahS4chnI7efxX8jhv+qJXizoGf1JomIrOZpuQ9NIEvtcd57rfbU3EKnuWpiOjeYEl2nCkmupTaeu/XysEv4c4jAUkj6LfQcGSuW1uw905OREY7Ks0qqE8ZPa38u4hnhCMvM/Q/QRXBUrCFfhoV04igONGq87bZxLfmrbXbe6tXquSNz9wYG6F3szjnmuNVeDgt19vP3MOiojDg7JdfPa6muOVxW9E57AQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lsQI5sNqmaWyFD8qYkVhIibUwIAgjyJnYZUFCIgncQg=;
- b=QPg3RxdEw2uSTb+ctGBHZ1qybGsrzmJJL9B8n7pvg165UOT7iqrPr14zOB9pxmxvMDV+Fzok9Fr9I5AjrxrN7Faxrq+737uzBV5amBe/PQHZ2n10Oe4gVtJHdDgbYPrrtawGx9KZjRdX8aPNGDsR8qnCBBTLLunP3Lbfs6Jrmru3LElaOHwx2M5OSfGMpb6SfUPmvSD4uDrHifKLXRev9m2lEZe0HvhNhsdSlRcTZHFvAvrul1tX3PpkjfO8gNFcCaM8Mq7q1jgoO30H7vmcyrQnEkoCCC1h1wNEFf5VooTlTQeY/4mRhe2DKW1EkTFu3JfOmYjaRgd1k+pVKDct0A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from VI0PR04MB11503.eurprd04.prod.outlook.com
- (2603:10a6:800:2c7::16) by AS8PR04MB8277.eurprd04.prod.outlook.com
- (2603:10a6:20b:3fc::15) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.25; Wed, 6 May
- 2026 15:16:29 +0000
-Received: from VI0PR04MB11503.eurprd04.prod.outlook.com
- ([fe80::cbe9:4c03:71b6:359f]) by VI0PR04MB11503.eurprd04.prod.outlook.com
- ([fe80::cbe9:4c03:71b6:359f%6]) with mapi id 15.20.9870.023; Wed, 6 May 2026
- 15:16:29 +0000
-From: Ioana Ciornei <ioana.ciornei@nxp.com>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 13/13] dpaa2-switch: do not error out when the same VLAN is installed multiple times
-Date: Wed,  6 May 2026 18:15:40 +0300
-Message-Id: <20260506151540.1242997-14-ioana.ciornei@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260506151540.1242997-1-ioana.ciornei@nxp.com>
-References: <20260506151540.1242997-1-ioana.ciornei@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: AS4PR09CA0024.eurprd09.prod.outlook.com
- (2603:10a6:20b:5d4::12) To VI0PR04MB11503.eurprd04.prod.outlook.com
- (2603:10a6:800:2c7::16)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DYhBgUta"
+Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-130b2295ed0so5382788c88.0
+        for <netdev@vger.kernel.org>; Wed, 06 May 2026 08:19:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778080794; cv=none;
+        d=google.com; s=arc-20240605;
+        b=N3Y5b+rUDggAMUhmCLBgq+qljSkJCG0ek3XqC8FMCkKnYgOa036w5BFoWbSOUrNXba
+         Auy05fhEHoCVe5VYS7rvtgCyMl71rvt0K7yi66cENb6JSu/3ccnzvTEXbCVPceE7h7Od
+         NOu80pmZyfF4R/OcIaL99FDrE5GrClGUtW07RAwvGYFuOKCrrcPsYpXuJmKaFehu1exI
+         /o3KGda8SgBTQ83k1V2stJSP5J3QdxBRdpi3xYk/LSQiLAyEHRpibwKrDguDtkRb3Kxk
+         2rLMF536uuXSNiiy8MYK2Tzti2vZqmJJNqTLY3eXUJouAcm20EcgEffGXCLAb+NeIzyc
+         /p2w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=cpQKErwL5v1PeRSLbaPmQhFKaI4koIGbE+JbuMQEurY=;
+        fh=xtKgKhSJJ8y/W/WTYafv5o47e7kQ1sqAQLnim4AhCIA=;
+        b=Cabk/Yneihn7z4Q2sWo4CwqjYC89VtQQz77vGjMuaMcnlTFNGJW9DP6Ji/bvJbYOMH
+         ySln8RFxjyv/4HjmUkMt7wFqG4mx2P4J7/lRvZa4UC58O7iHPcsGkMMWRmsC2v5QzYVE
+         ObzCA3NtQqmowUUTqlJBmajhAq0AFRS+sJ260jT4EzevuRYHDsUCxrtAVsdEeUD9ji5g
+         1IcSrFskYPvKpyphQhlLBkqAbLB7vbnhkh6dl7RfACFjvTDkXBFaiuwz1zvqKfHkBTiJ
+         xJ6k3NHlAnmbkyl3OlBdeluJn/4j1DmhxEevSudRMI03wzmEq6v9IcEyguYqutAQ8HSK
+         AGKg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778080794; x=1778685594; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cpQKErwL5v1PeRSLbaPmQhFKaI4koIGbE+JbuMQEurY=;
+        b=DYhBgUtapbuhKALL/2Ur/l1TYokrH3fgOa0B5vNdjOgrGm61JISOg7vgDxd7CdvoOY
+         AlOFP1K03mWPj1xJlIbj6sJoXcVeKvka53xHccbiBfjxKe9KiN4X+p2kSz5VxXeN7fxr
+         XJizDK9FWetAV31OFDo6wO0GeCXg8l6brJ4olPPE0XAc+78i/71C6OkJrjWCPhS+OOv7
+         ulh+/l96quRD4MdQ0GdbgI3hgppCZOk8KNnNhVw3Izg1YAtUq4KfV9XlUmV17/nomLNl
+         5s1qPWq7HEWOdLTr/47TcfJjKo4nhzKU4zvyGLEBen4tRotV+kkJ8Adl9X0X7nnxmsiX
+         X3Pw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778080794; x=1778685594;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=cpQKErwL5v1PeRSLbaPmQhFKaI4koIGbE+JbuMQEurY=;
+        b=DtkGYytMyvv8LK5RSySjQDQ92lMufwyZHy2zQ4Fu2wKWod7aAQrrrPnJyKruPLOD1z
+         WBMFw7NHzEG6G+BjU9tvGcty/sGUn+8oNGsQ4hu6AQdsS9eCK8V9fr8rLGsZ+voOdR0Y
+         mMUxRBLr2W8rXl6826cXH7/5ivKvWVY3AGnfj70JpI/tC3IwVbKTVu+LrLG0N6aR+s0a
+         gbTIY+9Kdw0wwIYcmqWVQY209rMOFDulhmOhzV50B+U/Z1XLfVbGG0gv5JQ/4cZUoERg
+         8xcpXJleEi4FCGpuW3j8Y45719nGEzHqvXjoTCRQLUxJKMZmJ7GSg/3C6HNcWhn/ShC2
+         Cvpg==
+X-Forwarded-Encrypted: i=1; AFNElJ8IrDZ9DyidmZDk3QBJGQJt0MWx/7wy7RzuYOarwRZunsTw1jBdppb+d7GyoQJdiNOoFaumAZ0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyio1dD3hGru7gtf01YXQ+g10cXDj0r/LufYE0i4vVAfZchZzsP
+	sD/0aEZkBeCKzz0F6JwUh7qrDEs3ihX1ODl5Ydp+zplnK5w/lrxrQiwUgR/J0iwCaRkjz7pBqva
+	+pkhjfmwk0CYAP2u/onOQxvGwFtqHI+jn/lK8Jqjq
+X-Gm-Gg: AeBDievuVBOl2dKhlgI3+T5YnONoFOQoZ/smGLC2cdRF0YttgVD7mIumKSod7ktMdVT
+	60F07voAfLy96AaUmbYYUhWVsMrkb+St7oZTSRWr3GKC1tM3hOIslxVN9n7Q5xbRRxdgOwqF1ft
+	S/OqF5dzHHAujfOss6Z4nsQh7MJDz4uKaLOqSNHNey/Bh/oewq8NFgSmkrVk408BH+qcYIAzsny
+	7aBjqJcoMHSqSZyOnDOXya6ORAA5FUsyTPT3D310Aa6eiz6PlHQD0xPKXLH2cKnEsyVhupPyryP
+	RbQOUVSoSwaSEBqU3otK11vasNUCcvd8hduEIm62MgW8F9F4Af1VfxwgqR28ChfTnHwmDrSD9V3
+	hhfwTC08g3M/oAuy3NsMoBF9wpGAJBurt/5kyahlPtBr3mHqc4yGSKomAhrAAK7GGmOikFZTghQ
+	==
+X-Received: by 2002:a05:7022:1b0e:b0:12a:72af:83d1 with SMTP id
+ a92af1059eb24-131852e2bb5mr2101729c88.11.1778080793272; Wed, 06 May 2026
+ 08:19:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VI0PR04MB11503:EE_|AS8PR04MB8277:EE_
-X-MS-Office365-Filtering-Correlation-Id: a501dc6b-507e-43f4-6eaf-08deab827282
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|19092799006|18002099003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	4K7e2BxPZklPiGX3yC3YmbaGV4LDekdFPO1TFazzgZ4k4QxNLJrWbfPj11ZJX9R55XlgtKTiZLA//xrX4s23JwjRJobnkqCqk0OAnpaou4DrroEP7g6OHm8AWsg0baFndXEI1xdAlLQszs+DFtj6r7P/U+zFBpL/bz/5cFEFwb56hbUo/+gG7yvjeW0uWLjUzA/B0qX1QyUfb2ttPU/da0eApHW5OmxyjvcfdasLrARysi6wQ3BhIeGRRxwnlUogIA/OdtSZZSeg5Ub2DC9vNIfze/+hhoW3r2FXWZ3TFzCa8fYaQNv8a+lrZfzOwIYTrdLx9/So79eb8tWyn2aHy3/gKQfg2dTTuKDbaGzwPAtwLt/HVE7Ii5iwUM/nJmFnb0Sso2kTn1Eb3+LXO+Kt2kyS+/93JwlNpFjvhMVSJ/Wz4RhuxwLCx/cAge+Jqw7CxlFyIq2KZ43q+vKdGYNhnr+8rmgLy/XhZ/K0TOTzIc7IxxlPqRN1U2+ZpXt2Db9Rx5U2i1uuJoWyosbgJfjH40+SWPojD6G8SJEP7gMW5+7YG7aHdNoNUGDyUeXKOmGFQRoE8p67/6ifBpBD2lo1Qxw7DJt3qL2GFcEMfmjfscIWvUCE4dk3p8N3pkj3Szov2dVMWDleVKSec4gsGsFyfcGLDdxcHgxmU6OGVmmpHwDPQPFFZuGcG6ZbKfBj0ndg
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI0PR04MB11503.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(19092799006)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?jxl13nVTlA3XwvjJxAcc9w7//59L/XrDs4Eiezht18uyCWgiRelR4gOdCtgv?=
- =?us-ascii?Q?D70+AdcUznGY2ZhHztD6/1RMQo7zRFtUJi4R1Fq6MUEHzdNrKJ2BfYowIZBq?=
- =?us-ascii?Q?hnnUB1EtltZ/DGnmIF1XoQDQltSKqOBYMlWIdSq+1v4aqxyDg2e0PF9sgbw5?=
- =?us-ascii?Q?ZcbuAoOZo88SFkT7WeDcbe6JR1NzLk5izTJdssbHOPvSzrpmLGHbio/g23dh?=
- =?us-ascii?Q?CdIbd4TKJrqz6QoOlrpSAO/bCyHNXV7zoKZEjaXb1WQPdwEpXRpI8V1ZRt+K?=
- =?us-ascii?Q?gWwmCqVGLoO9fCll1Vj6YgG1IHMc7sciHROr0kgjf637caOQ1Ca3ZGMsaiQe?=
- =?us-ascii?Q?ZkBPXv5grH05sxcfuqTR4YhajavalJ2ntaSg89RudfoUzYfMfRi6zRBBjmUl?=
- =?us-ascii?Q?cno94Ee5H62Nbn0RCUinOeyZowBWbtCTqW89cTGV338MrFDolHqyg1jVNqxe?=
- =?us-ascii?Q?prhlYKxFpDjdLxwljix3RWFQUKPGPXBekgp9pn/Kb46lkfOd+v2bB6VT/qvE?=
- =?us-ascii?Q?VrNHkJ+eDw+VnDL6oQKQ+OPRrha8HCKtKE3aO0WC7hBzgrCfJl5gA2/IpNkV?=
- =?us-ascii?Q?rnsO/ebC7Yy57lQNVuI/YEf+vd1cn0fuD00b2pI9/5xk6XhHFXbOZiTdgZjM?=
- =?us-ascii?Q?Ir7uu2LYzq413UJGaeBEYr+Gap77JTE+ssEgnRH3uyqwUs6z31kRCyrt6Dnk?=
- =?us-ascii?Q?lFhDkY9aQ2bE5d2Aq8mA8tuGHMOcBqGk2IDPwlUFF1C2HLuwrVtD5vrWGgiS?=
- =?us-ascii?Q?xSw2dkiYS/6+HQbpskUBje5rZPhpT8nq8oJ/TUgZ45uXIaxywERXbo5QupTg?=
- =?us-ascii?Q?8KFW8GzBm4EQLE6zsLm8zJfIXdcIevJYJxcd9rfwprshyVqdoiJdTbqKru0/?=
- =?us-ascii?Q?cFEVxkII5WJN+lpPrdrBPq/IoUUGM//zC87Mz0Q+YUfQRbfTti2JGOVtnRKA?=
- =?us-ascii?Q?5Ll39+5td6vHF9qbR1oEOOdZOMwk1TVWglIlL0y9Ow1KQJwEq3uOoa2h2i/B?=
- =?us-ascii?Q?cCnwHO4iQcvXi/+UF3ONKXC/is2MuduWvZaUh0SnYH+ixNCAkxsepQrqAcL6?=
- =?us-ascii?Q?AZgHAFEbKf6FH2LL1PbHMpPGRelYlNGhIAREnl0ALdXd/E3R0GKxZiMlzDU2?=
- =?us-ascii?Q?jplUlVFqreNNBb/TJImIrZ2UAviVgUKIDLEKXUctSZI/ghBn6IzqHsaucDLi?=
- =?us-ascii?Q?P/eroVo6RQwCRi3gnPX/iK9oKYcJRypY6QKMsGLVzWD/NfQS86xhPjmeKFMW?=
- =?us-ascii?Q?7ex1/+g1DHv489B4I+PmUT7lIEXxOdzZ+Hox7hv/Sdcn7Pt0BQHbqSp5VrMN?=
- =?us-ascii?Q?Atrz/pmQQn6yX4qGeKOYUKSUOyzVrTQIoRiwc0FDmwTaXAmzybetfqXo1ITY?=
- =?us-ascii?Q?g/U1WDA0xdPNpEgRfbmaaym9BMulzzXUgG1ftO+jbTbOEmr+vDB6iR/wKikq?=
- =?us-ascii?Q?4cRO0v1srr6ghzdq94g58C7LE5omiFyaIW47aqN4XvxcckBmomi0DMydg4Zn?=
- =?us-ascii?Q?mX0cbqH0qmh5L2pbpQng3dTEKz6+XB7xvmEmOebUC+v7x+jhlVPuTIIhj9U+?=
- =?us-ascii?Q?KcYZ1vfHjdn9w6hN2LXD3ETjBv0kLHHq6kv0MMOMNDj8Pzst07Cn3EpKI67z?=
- =?us-ascii?Q?l6P8UffS1vAni+X9G//F3FNsd8qgJn45Xy3IpdRdtPieUtV96DCLxkLc+FYN?=
- =?us-ascii?Q?gA1bHAmBuzhcD6aVBhRljm/oHVMBsIeasM7UoWvBwnWK/dMUL+J13tx+5th0?=
- =?us-ascii?Q?UERQzPIUbw=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a501dc6b-507e-43f4-6eaf-08deab827282
-X-MS-Exchange-CrossTenant-AuthSource: VI0PR04MB11503.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 May 2026 15:16:29.0872
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ACU3hJYqTyXD4sij7kJsYqsGNWEjG9IS2/OF/wZakiJUrdBb7OgLxRX/quGRDs5tTiOtSMkBSqXyfnu8fXvGZA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8277
+References: <69fb46ae.a00a0220.387fc1.0002.GAE@google.com> <78183562-ff83-4b7a-9c7b-b3cb92676ee8@linux.dev>
+In-Reply-To: <78183562-ff83-4b7a-9c7b-b3cb92676ee8@linux.dev>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Wed, 6 May 2026 08:19:41 -0700
+X-Gm-Features: AVHnY4JNtxJaB1nXkXSeADYgjNWogJRVGksEMWkM3mg3pHcGlY2h7MbXmMCHH2A
+Message-ID: <CAAVpQUA4kYQ0KTxdJ=xtWp6u7uBUR2B8ZcvwHNV7FDDRu0OHvA@mail.gmail.com>
+Subject: Re: [syzbot] [rdma] general protection fault in kernel_sock_shutdown (4)
+To: Zhu Yanjun <yanjun.zhu@linux.dev>
+Cc: syzbot <syzbot+d8f76778263ab65c2b21@syzkaller.appspotmail.com>, 
+	akpm@linux-foundation.org, arjan@linux.intel.com, davem@davemloft.net, 
+	dsahern@kernel.org, edumazet@google.com, horms@kernel.org, jgg@ziepe.ca, 
+	kuba@kernel.org, kuni1840@gmail.com, leon@kernel.org, 
+	linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, 
+	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com, 
+	zyjzyj2000@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-With the addition of the LAG offload support it has become apparent that
-depending on the order in which a bridged bond setup is created, the
-driver could be requested to add the same VLAN twice, once through the
-802.1q filters and then through switchdev.
+On Wed, May 6, 2026 at 7:28=E2=80=AFAM Zhu Yanjun <yanjun.zhu@linux.dev> wr=
+ote:
+>
+>
+> =E5=9C=A8 2026/5/6 6:48, syzbot =E5=86=99=E9=81=93:
+> > syzbot has found a reproducer for the following issue on:
+> >
+> > HEAD commit:    74fe02ce122a Merge tag 'wq-for-7.1-rc2-fixes' of git://=
+git..
+> > git tree:       upstream
+> > console output: https://syzkaller.appspot.com/x/log.txt?x=3D16e895ce580=
+000
+> > kernel config:  https://syzkaller.appspot.com/x/.config?x=3D59da38148f3=
+a3d24
+> > dashboard link: https://syzkaller.appspot.com/bug?extid=3Dd8f76778263ab=
+65c2b21
+> > compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for=
+ Debian) 2.44
+> > syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=3D13a613ba5=
+80000
+> >
+> > Downloadable assets:
+> > disk image (non-bootable): https://storage.googleapis.com/syzbot-assets=
+/d900f083ada3/non_bootable_disk-74fe02ce.raw.xz
+> > vmlinux: https://storage.googleapis.com/syzbot-assets/c0a591d96864/vmli=
+nux-74fe02ce.xz
+> > kernel image: https://storage.googleapis.com/syzbot-assets/9f94fb623cd1=
+/bzImage-74fe02ce.xz
+> >
+> > IMPORTANT: if you fix the issue, please add the following tag to the co=
+mmit:
+> > Reported-by: syzbot+d8f76778263ab65c2b21@syzkaller.appspotmail.com
+> >
+> > Oops: general protection fault, probably for non-canonical address 0xdf=
+fffc000000000d: 0000 [#1] SMP KASAN NOPTI
+> > KASAN: null-ptr-deref in range [0x0000000000000068-0x000000000000006f]
+>
+> Thanks a lot. IIRC, this problem is in process. The link is
+> https://patchwork.kernel.org/project/linux-rdma/patch/20260424013759.7282=
+88-1-kuniyu@google.com/
+>
+> Hi, Kuniyuki Iwashima
+>
+> I think you are fixing this problem. I hope that we can see your commit
+> very soon.
 
-This is because any VLANs already installed on the bond device when the
-bond_enslave() operation happens will also be installed on the switch
-port through the .ndo_vlan_rx_add_vid() callback. Once the bond device
-becomes offloaded, the same VLANs will get replayed and installed
-through switchdev.
-
- $ ip link set dev eth4 master bond1
- [  165.008131] fsl_dpaa2_switch dpsw.0 eth4: configuring for inband/usxgmii link mode
- [  165.021020] 8021q: adding VLAN 0 to HW filter on device eth4
- [  165.083351] fsl_dpaa2_switch dpsw.0 eth4: VLAN 100 already configured
- RTNETLINK answers: File exists
-
-Avoid this by not erroring out when the same VLAN is installed or
-removed multiple times so that we avoid the above issue. Also remove the
-netdev_err() since there isn't anything that the user can do to prevent
-this behavior.
-
-Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
----
- .../net/ethernet/freescale/dpaa2/dpaa2-switch.c | 17 +++++------------
- 1 file changed, 5 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-index 8353d2230c72..644f720a7ec7 100644
---- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-+++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-@@ -372,10 +372,8 @@ static int dpaa2_switch_port_add_vlan(struct ethsw_port_priv *port_priv,
- 	struct dpsw_vlan_if_cfg vcfg = {0};
- 	int err;
- 
--	if (port_priv->vlans[vid]) {
--		netdev_err(netdev, "VLAN %d already configured\n", vid);
--		return -EEXIST;
--	}
-+	if (port_priv->vlans[vid])
-+		return 0;
- 
- 	/* If hit, this VLAN rule will lead the packet into the FDB table
- 	 * specified in the vlan configuration below
-@@ -1993,13 +1991,8 @@ int dpaa2_switch_port_vlans_add(struct net_device *netdev,
- 	struct dpsw_attr *attr = &ethsw->sw_attr;
- 	int err = 0;
- 
--	/* Make sure that the VLAN is not already configured
--	 * on the switch port
--	 */
--	if (port_priv->vlans[vlan->vid] & ETHSW_VLAN_MEMBER) {
--		netdev_err(netdev, "VLAN %d already configured\n", vlan->vid);
--		return -EEXIST;
--	}
-+	if (port_priv->vlans[vlan->vid] & ETHSW_VLAN_MEMBER)
-+		return 0;
- 
- 	/* Check if there is space for a new VLAN */
- 	err = dpsw_get_attributes(ethsw->mc_io, 0, ethsw->dpsw_handle,
-@@ -2115,7 +2108,7 @@ static int dpaa2_switch_port_del_vlan(struct ethsw_port_priv *port_priv, u16 vid
- 	int i, err;
- 
- 	if (!port_priv->vlans[vid])
--		return -ENOENT;
-+		return 0;
- 
- 	if (port_priv->vlans[vid] & ETHSW_VLAN_PVID) {
- 		/* If we are deleting the PVID of a port, use VLAN 4095 instead
--- 
-2.25.1
-
+Yes, I was sidetracked but will respin v3 this week.
