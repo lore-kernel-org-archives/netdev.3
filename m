@@ -1,131 +1,146 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC40481240
-	for <netdev@vger.kernel.org>; Wed,  6 May 2026 15:39:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ECED3F7869
+	for <netdev@vger.kernel.org>; Wed,  6 May 2026 15:43:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778081964; cv=none; b=O7wJN+9Km4D6nW3LVyEtNfLrHqtPscOaPcUz6/IkVur8NMAARh7h+vOM9IqPhfZ6Y/7sdO0iHMdD/lqgcChUWF2UW2NSjQkqGDG046al73FBOm0CAdGVdOFBNraWgnH2kIE7AOVt/rWXYJbDrRkKEEgU2eduVy+AXucDVr7ds9k=
+	t=1778082189; cv=none; b=KF8CSOdFg8GEBvrwCtFCyNE96XBOrnIH4+lIo0uKAodvJeA4WbcEBqydMHWdB6i/lBxb4PGB8gGR2xLTlHJBG4Aw1oKsQXQmHGGssOm6VX1PNeD9vRNCwbrXOYhU1Aa0lTPWi5lTw/p8X3nyoMsRD9nt41/vnQJWgtNP5kmsOcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778081964; c=relaxed/simple;
-	bh=jb8PaiYBstonzXIxPzDVwI9v+hNrkI1jfouilqdCaWk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=TYsmVFXb4B4kGW2ZRe8C49rZi+sYnIJeVAbUS5kkE22k3TgymlWDixxlHxRe9ZHB4sw638zI2mvQy51HWOea9IHX5SqRLR80EMUr4VHCUYg/299FIqRiVwzoMH9RDeVTsf8jAQ32toq5E++46sp/O2arRPVD7lHLlG0CM4kSBxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Yl4eatdz; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1778082189; c=relaxed/simple;
+	bh=xsmzwdd1MBKsPgxT0f3M2DbdqDto8wvtJ7iL924KG3w=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=RGi4HIS8hslpcsWYXi2kv+rZARre65VFHH1+1j4JvdvcTlRPptPCVkICsUuGjgFExuWu1lPm8K/Z0Ay/GEJdQ6+Lc5gOpDQVBu57y/+JlwAGNnWh+RDgSPlcbSsOwtR8qlEyOKwax7du7RPiMPSuNgVSq1KO02+eApZ/Sck4MuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b=S07HY8zE; arc=none smtp.client-ip=74.125.82.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Yl4eatdz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778081960;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JqaVWLxDMt7hNWZ0g/JqJQZyuPyDy7odCawJjhc620E=;
-	b=Yl4eatdzVgY/2xxmhBvTEry2pMceYAvio0Yx0zRiN7exmuoD8ovWMtLX+3OHtU/GwNp7BT
-	mCo7V6S83+qi8oQB3kw3FEOHwfRyJfxSnGKenluFn1Hnbf8fPAPH+XBJJK6h4Td6xr/zcV
-	d2UUnbtdprw5oe51W+RVwxnt7vTi0pQ=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-102-GMFQ7vkEOb-vQwWfQe80Vw-1; Wed,
- 06 May 2026 11:39:16 -0400
-X-MC-Unique: GMFQ7vkEOb-vQwWfQe80Vw-1
-X-Mimecast-MFC-AGG-ID: GMFQ7vkEOb-vQwWfQe80Vw_1778081955
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A80DD195608C;
-	Wed,  6 May 2026 15:39:14 +0000 (UTC)
-Received: from RHTRH0061144 (unknown [10.22.65.142])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D94B219560A2;
-	Wed,  6 May 2026 15:39:11 +0000 (UTC)
-From: Aaron Conole <aconole@redhat.com>
-To: Minxi Hou <houminxi@gmail.com>
-Cc: netdev@vger.kernel.org,  echaudro@redhat.com,  i.maximets@ovn.org,
-  davem@davemloft.net,  edumazet@google.com,  kuba@kernel.org,
-  pabeni@redhat.com,  horms@kernel.org,  shuah@kernel.org,
-  dev@openvswitch.org,  linux-kselftest@vger.kernel.org,
-  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v6 0/2] selftests: openvswitch: add pop_vlan test
-In-Reply-To: <20260506131218.1880852-1-houminxi@gmail.com> (Minxi Hou's
-	message of "Wed, 6 May 2026 21:12:16 +0800")
-References: <20260506131218.1880852-1-houminxi@gmail.com>
-Date: Wed, 06 May 2026 11:39:09 -0400
-Message-ID: <f7tbjestun6.fsf@redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b="S07HY8zE"
+Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-12c8f9846c8so9097127c88.0
+        for <netdev@vger.kernel.org>; Wed, 06 May 2026 08:43:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=networkplumber-org.20251104.gappssmtp.com; s=20251104; t=1778082186; x=1778686986; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:subject:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=DVcF1pwCeCEpXjOB2ycJimgmvFvZxkVUxlvxYda7Z2E=;
+        b=S07HY8zEm6Sadb19c/Bu3wx0hHVfcby8HPQ98m1Q7l1DI1OrVEjJp6OG0l9gwybvjY
+         xeJQPqCW6qMlwaBFqdN5BNEOrK5OP5SdK8NIpJbHY7zFJfWjY6E7JuraRHKFsHYCgSuX
+         d5P+g++MBLf+gCRIl/eCWteEt0+De7Vl0GHgPXIzQ7ROWFfXjL6EKxuvOI2bgD3CQFrK
+         GVW15wAIjnlvj/F4Sip904J2/FZFh8oZuZwwSt/4nwETN0B0NhN509XAT478nW6DZZF/
+         xkAS1gDk74ZL5cjnjyyILjio3QBQwOK0oQmy9wEgbCXzReGtBFefI2/GEyaUAarpMQz7
+         81jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778082186; x=1778686986;
+        h=content-transfer-encoding:mime-version:message-id:subject:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DVcF1pwCeCEpXjOB2ycJimgmvFvZxkVUxlvxYda7Z2E=;
+        b=KakvZDPYfSt1Mz8TLb1uy2cNq0nTIHeuz4eV89QqXbBKqH146xRFzXf3Hg/2dx+UsA
+         LlPdxuTSjB51NcXhnsA+IFkB5FZFO8U1Qc4nnlWqOUr1QynvpDIP6Ki1mv631IWlJlqR
+         YBQgwzIAAL/p6IpNa/E3e3ktVDruttAYiyq696XQwTKM7D7FSmY4bkjihKkY5dOK5Lqr
+         20u2ivHrgiPY0V2uLVty8D4aoRm6hhgCQM69OAdQUjuzX6Lc2CHtkfs2r9udjcQQHBA3
+         NLLwA6sr8lDGvhGAVRrpEFtEQwKYaMlAnfWa40RQcacl1Nw8z29ikgs/h+VJWIq3heI5
+         Emhw==
+X-Gm-Message-State: AOJu0YyRpVekCNkGO6mqUGdQGYs42B+E8f8uK/K51pl5gCDw1hHtSPKq
+	tuKL3vdNCfPV41LQaoETS54aJB8l4NsfSqu0iDC7msgOp/I9jOUgce4FLcTzaRCm+rWIt/y4szE
+	eFWli
+X-Gm-Gg: AeBDietlJpCYKGvpbvrSvQFZQ56DqGs76pFNX3iBLZjHNf8CR/ohLjTBuWVixaXUp2n
+	aVZn98TnrOv67uk5Dt3j+3q1MLvRKdpjWn5eTgQejZjgKIe/PBeFHjJZhS7IgCx3zarqYJKqlKi
+	blGF98mlshjhUhgWe6ZVT3Os8oA6UW6nkeOrKYQSXGlsfVcwGhqav08m0HPVMKcie5Q/ByxwnBG
+	IYmOUnI0NWqPLMNDEduVbLcpN9ujuwSfuOo5rQTklylicem923taQNuPIaqQ9OWbIZNvD0ZTm8r
+	OFO4l/I6krtPlLxmAwjscPlsKR668YNHUlHyRhKcwVilZJAFb4rAivSwQlh3KSU3ymzL1LxBxmm
+	LpXu3s8JtQkGO1o5lYEELd9pIf0csca0zeA8D109uAZFxmdALr073njOpoaEQzEaDFHuG6QfrUi
+	NAsywnbwuhXYiraqksZkgSHhoD4Ku7dA9gJj1PjlW8uY9aQg==
+X-Received: by 2002:a05:7022:6191:b0:12d:ca31:f1b4 with SMTP id a92af1059eb24-1318e92854fmr1995792c88.24.1778082185652;
+        Wed, 06 May 2026 08:43:05 -0700 (PDT)
+Received: from phoenix.local ([104.202.41.210])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-131f9679db9sm3757328c88.1.2026.05.06.08.43.05
+        for <netdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 May 2026 08:43:05 -0700 (PDT)
+Date: Wed, 6 May 2026 08:43:03 -0700
+From: Stephen Hemminger <stephen@networkplumber.org>
+To: netdev@vger.kernel.org
+Subject: Fw: [Bug 221470] New: ARP reply received at MAC level but neighbor
+ entry not resolved (Linux 5.15, automotive BSP) for vlan interface
+Message-ID: <20260506084303.0fd0632b@phoenix.local>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi Minxi,
 
-Minxi Hou <houminxi@gmail.com> writes:
 
-> Add test_pop_vlan() to verify OVS kernel datapath pop_vlan action
-> correctly strips 802.1Q VLAN tags from frames.
->
-> Patch 1 extends ovs-dpctl.py with vlan(vid=X,pcp=Y,cfi=Z) formatting
-> and parsing, plus an encap_ovskey subclass for safe ENCAP NLA decoding.
-> It changes OVS_KEY_ATTR_VLAN type from uint16 to be16 to match
-> the kernel __be16 wire format.
-> It also adds push_vlan action support (parse/format with range
-> validation) and removes the unnecessary MAX_ENCAP_DEPTH limit.
-> Patch 2 adds the selftest using purely ping-based verification with
-> a push_vlan return flow for symmetric bidirectional testing.
->
-> Tested with vng on x86_64, all OVS selftests pass (including new
-> test_pop_vlan).
->
-> v6:
->   - fix non-ASCII characters (em dashes) in comments and commit
->     messages
+Begin forwarded message:
 
-I just commented on v5, and I think those comments still apply.
+Date: Wed, 06 May 2026 05:29:26 +0000
+From: bugzilla-daemon@kernel.org
+To: stephen@networkplumber.org
+Subject: [Bug 221470] New: ARP reply received at MAC level but neighbor ent=
+ry not resolved (Linux 5.15, automotive BSP) for vlan interface
 
-In the future, if you will respin a series that hasn't gotten comments
-yet, it would be preferable to reply to that series somewhere saying
-that you will respin so we can make sure to always reply to the latest.
 
-> v5: https://lore.kernel.org/netdev/20260505124957.1239812-1-houminxi@gmail.com/
->   - add push_vlan action class, dpstr format and parse with range
->     validation (vid 0-4095, pcp 0-7, tpid 0-0xFFFF, CFI forced to 1)
->   - remove MAX_ENCAP_DEPTH constant and depth tracking (bracket-depth
->     counter in encap parser already handles nesting)
->   - remove start_capture/stop_capture helpers and tcpdump/pcap
->     verification -- use ping success/failure instead
->   - remove modprobe/netns pre-flight checks (other tests don't do this)
->   - remove ethtool VLAN offload disable (unnecessary for veth)
->   - add push_vlan return flow for symmetric bidirectional ping
->   - use ovs_sbx wrapper for ping commands (consistent with siblings)
-> v4: https://lore.kernel.org/netdev/20260504123713.555461-1-houminxi@gmail.com/
->   - fix all checkpatch line-length warnings in new code
->   - fix pylint W0707: use explicit exception chaining (from exc)
-> v3: https://lore.kernel.org/netdev/20260503120946.51869-1-houminxi@gmail.com/
->   - encap_ovskey: MPLS type "ovs_key_mpls" -> "array(ovs_key_mpls)"
->   - encap_ovskey: PRIORITY/IN_PORT set to "none" (metadata, not in ENCAP)
->   - _vlan_dpstr: cfi=0 falls back to tci=0x%04x for round-trip safety
->   - encap parse(): check return value for unrecognized trailing content
->   - vlan parser: boundary check + raise-from for exception chaining
->   - start_capture: || return $? to propagate ksft_skip correctly
->   - on_exit: moved after resource creation, not before
->   - ping success: changed from NOTE to FAIL + return 1
->   - VLAN interface creation: added || return 1 error propagation
->   - netns probe: distinguish EEXIST from missing CONFIG_NET_NS
->   - sbx_add: || return $ksft_skip -> || return $? (match sibling tests)
-> v2: https://lore.kernel.org/netdev/20260501133924.3100680-1-houminxi@gmail.com/
->
-> Minxi Hou (2):
->   selftests: openvswitch: add vlan() and encap() flow string parsing
->   selftests: openvswitch: add pop_vlan test
->
->  .../selftests/net/openvswitch/openvswitch.sh  |  77 +++++
->  .../selftests/net/openvswitch/ovs-dpctl.py    | 322 +++++++++++++++++-
->  2 files changed, 389 insertions(+), 10 deletions(-)
+https://bugzilla.kernel.org/show_bug.cgi?id=3D221470
 
+            Bug ID: 221470
+           Summary: ARP reply received at MAC level but neighbor entry not
+                    resolved (Linux 5.15, automotive BSP) for vlan
+                    interface
+           Product: Networking
+           Version: 2.5
+          Hardware: ARM
+                OS: Linux
+            Status: NEW
+          Severity: high
+          Priority: P3
+         Component: IPV4
+          Assignee: stephen@networkplumber.org
+          Reporter: rajkumar.veer@harman.com
+        Regression: No
+
+Observed behavior: -
+During a system suspend=E2=80=93resume cycle, ARP requests are transmitted =
+successfully
+from the target. Corresponding ARP replies are continuously received at the
+EMAC/MAC level, as confirmed through driver debug logs and hardware RX
+statistics.
+However, the ARP entry is not being resolved in the kernel neighbor table (=
+ip
+neigh), resulting in failure of communication on a specific VLAN interface.
+This issue is sporadic and observed only on a particular VLAN interface.
+Recovery currently requires a full reboot of the system to restore proper A=
+RP
+functionality for particular vlan interface
+
+Environment: - Kernel version: Linux 5.15.x (vanilla, with automotive BSP
+integrations)
+Architecture: ARM64 & Exynosv920 soc
+Ethernet MAC driver: Sxgmac EMAC controller
+PHY: Macsec marvell phy/fixed phy switch =20
+Network stack: mainline Linux networking stack
+
+What we verified: - ARP reply frame is valid and well formed.
+Destination MAC matches the interface MAC.
+No RX errors or CRC issues at the hardware level.
+ARP reply is visible via driver-level logging but not via tcpdump.
+Neighbor entry remains in INCOMPLETE state.
+
+Questions: -
+Are there any known issues in Linux 5.15 where ARP replies are dropped befo=
+re
+reaching the neighbor subsystem?
+Could RX offloading, VLAN filtering, checksum offload, or NAPI GRO/LRO affe=
+ct
+ARP processing in this scenario?
+Has anyone encountered similar issues on automotive BSPs or embedded Ethern=
+et
+MAC drivers?
+
+--=20
+You may reply to this email to add a comment.
+
+You are receiving this mail because:
+You are the assignee for the bug.
