@@ -1,69 +1,117 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A524C97
-	for <netdev@vger.kernel.org>; Wed,  6 May 2026 00:58:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8822E1A683F;
+	Wed,  6 May 2026 01:00:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778029103; cv=none; b=G0GZIuyIWvwSBfWaV5uZ467RHqiBlg94F3Tyl7CcwGwQQ89ghSmD/ZeIG0oHdV9ow/80Aza1FfGu2tc1fNGbH1eUghJFq8dH0lYHZoDB561HwUPwJLSc6VHqt3i6oI6GWOAuM/1VXaDvegkkps/k2D8WwFK5nFm45dbVSZbacw0=
+	t=1778029237; cv=none; b=JQbZKHpiXcXJpaMyUgiCGvFvDJz1v9oO42h/cdhFz6ZhbhII/JG9WRi5/LdQHZ5LSS80kKKSqB9PDcQTxEEHbM5HCo5ciUiXVLUPBZ+UANWVu2abNKRGM5khZG9LNyfw0YZiPR+FFAhEJD870ykuzxIXW7GLrA+0ZVaBrZ4s8Xk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778029103; c=relaxed/simple;
-	bh=+JAxaUx7UjoHVnOTmI+xdaE+Svq3/qAHj2vs9aT850I=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fDSziTR0AhwQoUf+edlQrnjMNbEtbJ2ltk3qVz7QZ6+SbNOflzHpD75gI9GtLqZ1lVDAyROKTeaHQGFEoBRA+ay3I2h+g2e19i8Fqb7LI3dLbC2G0oIwP5uPTpePgc408qHTumhzpAxFMFXcV/pQ4tV+hfTQYfon4Qn+D3Toj2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vHxInPX+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778029237; c=relaxed/simple;
+	bh=5HENGzZkN4GkNqTCb3WRp2m8uqHpquztXJ3hV0fm0aw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=IMCNoCDE9hItISBrsIi/t7rp4XiR30KTd1xyXU0RI/5n05FCIXfjiQs7wc2ibuQu/KtCenemlrc37A4/2WhiFWQfkaO/BFXQ3Tzd5petPWXwmIFI48j4+32UBXWwHc5gRHdJvrzpYyVomQPW3FpenzNFDe8m5R55uxYKyjz747k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JMViL6P2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vHxInPX+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 699F6C2BCB4;
-	Wed,  6 May 2026 00:58:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JMViL6P2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCC74C2BCB4;
+	Wed,  6 May 2026 01:00:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778029102;
-	bh=+JAxaUx7UjoHVnOTmI+xdaE+Svq3/qAHj2vs9aT850I=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=vHxInPX+q5s/mIk+Uc+bDLwpbKN2yORUkwZfq4ez/5TEYLALSQWrdRBvksORInXOV
-	 Y35ldDfYMgEVvJN/VxDcOW/bHCnTE82dj338XfDi12dYw6VFPa4ABe+MFkUTffcxOG
-	 HzzaubA1Of5yJQh2TYn0FbUk4PyObtNVy7hjwTNsStE89dMeBjSk1dWToeq0ulLVZj
-	 TiousA9Hm4veN5X8ghQWn2072LP/oC1HfsMeOd7yaJdKBxuH/zpbX2AaL4ckWAhGm1
-	 Ta2E2vF7LylDjM1WpD2RLPS3Y31xHOyQW+vRmEr+MH3fvTpehfIxPO3uQZ7XRfnmZz
-	 Ul+13frI4Xe8Q==
-Date: Tue, 5 May 2026 17:58:21 -0700
+	s=k20201202; t=1778029237;
+	bh=5HENGzZkN4GkNqTCb3WRp2m8uqHpquztXJ3hV0fm0aw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=JMViL6P24NIVjuyYPDBUcN71ndJz2VRzZgp+FMAHpWJxQmhJ61iHLv1FhVW2utEoU
+	 +dQ+9gODkVE9IbzACxVckg3PkzNiVSARxJB90xkU+nZ1frQCAbY5xf+tvFs0Luy6Wt
+	 c2PPHS7O5b+Yhz6RVQkiVS9ApLKaqAFuUnqpzDLQ0qCq5eu3FxUkKFk/iAtkuYoGL4
+	 gVt/gG9Axd1X5lynpguWCqBgR0dB9ATzyYKQwBm1a5B4BvXdE4sifDPwl/k1ze8Dm7
+	 36qlsXmrCi3UmKf+DpwLNisFWq2uI7FiseGQE71uNNwbTk25ZIlz/LF3qTEVvpZ8jJ
+	 c9FsmSfreWJZg==
 From: Jakub Kicinski <kuba@kernel.org>
-To: Michael Chan <michael.chan@broadcom.com>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, pavan.chebbi@broadcom.com,
- andrew.gospodarek@broadcom.com
-Subject: Re: [PATCH net-next 12/15] bnxt_en: Support kTLS TX offload by
- implementing .tls_dev_add/del()
-Message-ID: <20260505175821.5cfd800d@kernel.org>
-In-Reply-To: <20260504235836.3019499-13-michael.chan@broadcom.com>
-References: <20260504235836.3019499-1-michael.chan@broadcom.com>
-	<20260504235836.3019499-13-michael.chan@broadcom.com>
+To: antonio@openvpn.net
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org,
+	edumazet@google.com,
+	sd@queasysnail.net,
+	davem@davemloft.net,
+	pabeni@redhat.com,
+	ralf@mandelbit.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	shuah@kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net 2/3] ovpn: ensure packet delivery happens with BH disabled
+Date: Tue,  5 May 2026 18:00:35 -0700
+Message-ID: <20260506010035.1563280-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260504230305.2681646-3-antonio@openvpn.net>
+References: <20260504230305.2681646-3-antonio@openvpn.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Mon,  4 May 2026 16:58:33 -0700 Michael Chan wrote:
-> Add basic infrastructure to allocate and free kTLS context IDs (KIDs)
-> to support kTLS TX offload.  To offload a connection in .tls_dev_add(),
-> the first step is to allocate a KID.  After that the kTLS offload
-> command is sent to the HW via MPC using the function
-> bnxt_xmit_crypto_cmd() introduced in the last patch.
-> 
-> In .tls_dev_del(), we send the delete command to the HW using the
-> same bnxt_xmit_crypto_cmd().  After that we free the KID, making it
-> available for new offload.
-> 
-> bnxt_ktls_ops will be assigned to the netdev and the TLS features will
-> be enabled in the next patch.
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+ovpn: ensure packet delivery happens with BH disabled
 
-drivers/net/ethernet/broadcom/bnxt/bnxt_ktls.c:269:32: warning: unused variable 'bnxt_ktls_ops' [-Wunused-const-variable]
-  269 | static const struct tlsdev_ops bnxt_ktls_ops = {
-      |                                ^~~~~~~~~~~~~
+This commit wraps gro_cells_receive() and dev_dstats_rx_add() with
+local_bh_disable() and local_bh_enable() in ovpn_netdev_write(). This
+prevents deadlocks and per-cpu state corruption when packet delivery occurs
+in process context for TCP connections.
 
-Warning: drivers/net/ethernet/broadcom/bnxt/bnxt_ktls.c:24 No description found for return value of 'bnxt_alloc_ktls_info'
-Warning: drivers/net/ethernet/broadcom/bnxt/bnxt_ktls.c:24 No description found for return value of 'bnxt_alloc_ktls_info'
+> diff --git a/drivers/net/ovpn/io.c b/drivers/net/ovpn/io.c
+> --- a/drivers/net/ovpn/io.c
+> +++ b/drivers/net/ovpn/io.c
+> @@ -91,12 +91,18 @@ static void ovpn_netdev_write(struct ovpn_peer *peer, struct sk_buff *skb)
+>  
+>  	/* cause packet to be "received" by the interface */
+>  	pkt_len = skb->len;
+> +	/* we may get here in process context in case of TCP connections,
+> +	 * therefore we have to disable BHs to ensure gro_cells_receive()
+> +	 * and dev_dstats_rx_add() do not get corrupted or enter deadlock
+> +	 */
+> +	local_bh_disable();
+>  	ret = gro_cells_receive(&peer->ovpn->gro_cells, skb);
+>  	if (likely(ret == NET_RX_SUCCESS)) {
+>  		/* update RX stats with the size of decrypted packet */
+>  		ovpn_peer_stats_increment_rx(&peer->vpn_stats, pkt_len);
+>  		dev_dstats_rx_add(peer->ovpn->dev, pkt_len);
+>  	}
+> +	local_bh_enable();
+>  }
+
+This protects the success path, but do the error and drop paths also need
+BH protection?
+
+If ovpn_decrypt_post() is called in process context for TCP connections, an
+error condition jumps to the drop label:
+
+ovpn_decrypt_post() {
+        ...
+        if (unlikely(ret < 0))
+                goto drop;
+        ...
+drop:
+        if (unlikely(skb))
+                dev_dstats_rx_dropped(peer->ovpn->dev);
+        ...
+}
+
+Since dev_dstats_rx_dropped() updates the same per-CPU dstats structure
+without disabling bottom halves, could it still be vulnerable to softirq
+preemption and stat corruption?
+
+Additionally, do the TX paths in the TCP implementation have similar issues?
+It looks like ovpn_tcp_send_skb() and ovpn_tcp_send_sock_skb() might call
+dev_dstats_tx_dropped() without disabling bottom halves.
+
+Similarly, ovpn_tcp_send_sock() uses preempt_disable() around
+dev_dstats_tx_add(), which does not prevent softirqs from running upon
+return from a hardware interrupt on the same CPU. Does this leave a similar
+race window open?
+-- 
+pw-bot: cr
