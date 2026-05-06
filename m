@@ -1,121 +1,76 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C4F3161A1
-	for <netdev@vger.kernel.org>; Wed,  6 May 2026 22:49:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D213D33E368;
+	Wed,  6 May 2026 22:51:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778107782; cv=none; b=YroTqtNlktwOQms/qCWaNciq9EAG24Noo3cK8JVo92n80q+eGtSX4Wrj2NR1xNpASm7iIPIQ89yR/gdAjkDElihOCGgBy45nmrx/uKrbCRQNPzxKyfsf4F2ZDc5D7oHrwJbK7M+2Mc0bWFlWyAKFibZDn97l/9zYDdScbvgVOXU=
+	t=1778107871; cv=none; b=mOP6+hi/HJxsjj9m4KlPtwnUXGQZ+WrVx5Q40VbzJktFFDQB5IlBVEubBk+6OL9ePXA6KMqb/3rSbREEV2KdPf9vaCZ3laFutw5ABpOMxTttbn53GEsWLfQ+4QUXHi/m0kpVIpVlv1bl7FQqzTJd8A0Ntm65vqX6TRMyhsqtqtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778107782; c=relaxed/simple;
-	bh=W2bOwmgBgbRPOFoHwIWTGbgslfjmN0yKNnT3yBKu9PY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=luoFeJKAZXJXE6r6YYMmIN49KTjlFLd8ioO/g7P7aRPgB8PSp+bwY5n09rCVXm/FqLWUwF0bBKr0YRpMQ1+jSJpllE2DvzSHNyA8F/dqMQpmkTQ6W5WY5Wbp3/oszi2k9GlC+EZKsF/1QNnwIqfg256tdBlsiTVAl2tYxfhe+zM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=purestorage.com; spf=fail smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=LPByxj0j; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=purestorage.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=purestorage.com
+	s=arc-20240116; t=1778107871; c=relaxed/simple;
+	bh=YNZgcxcpwiX7lYht35LCUTAq4XuT2pfJrlPdXlaF1pg=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=hg7FTeEq+KnFv2wDrsAGGoWjAcw5F67KktCLrEztMwzSlXLEDsxI9GIKvn6gcKcwR9TPG5c6BscpJGUmoN2HRU3WmjKiOCcWg9Omh9FCjZuK4FIzSk9/9hqUMKxCWTtZIssv2V1szGORCINijDFePTrhHrV6mfcG3IV1sm41Jsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hPGvzIOH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="LPByxj0j"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2bab82d75fdso1092735ad.2
-        for <netdev@vger.kernel.org>; Wed, 06 May 2026 15:49:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=purestorage.com; s=google2022; t=1778107781; x=1778712581; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=wB9Jbl6OwNsn+HVcduUaP/1MdPcWg7cvGBqOaohDZOA=;
-        b=LPByxj0jry93gsoWzoEAYFKLLpeHZrQgXuvjVOXb5uqOEHTsRW1dput8oG/77Dmy2t
-         xWAkcXsoiEcDv8z3ybnEWP4tnp/v3KJEh203mjWslrxq/dsnvVpGU9Id4kNWQOMHc8ij
-         WeChbpFENQ4tscumo8QXimNOA/m1IBIzkae+lJM0zAsst0ORIi9iLK84+Ll+u2CJn4YK
-         lc382p/iTJAT7sjV/ikjcAAMHcQDXJL1oQjg9kIoFliLty1Q97/dzJvFgfccfAhr5o8J
-         KmY8Hms2rm1bu+d2Po3P0MG8WOuwM7OdFidmHFdCGMMf8i/EjSwHDhfzUSUhieyVqO2I
-         g1hw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778107781; x=1778712581;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wB9Jbl6OwNsn+HVcduUaP/1MdPcWg7cvGBqOaohDZOA=;
-        b=c9zswPFc2FXIwzBq0wue8ut/UnShYGf4NodGSy2WfMYTfqDja0kuX/zNQJVhkCn3BO
-         HUecvXh8ZqFObrfysIgr6Jk/+tI9EuodsbT+Y0Rc6L9gRWkxzk+PesR4/F30poyfDm6O
-         SOSjqhz9Thn/P1JeNybh1E07hH3fh+Ma+OfchDroeD7aCX2kDlld8bVWRUbLJ/9k2azc
-         3kA7NIHfrDYrwwESVnVCMCry2T1PKVPAFoKmz+xnXCztEyvwm77vYqwupOkQh/+uIgHz
-         aFptkVQbxXr/XVUyAPpDZtIPkxqiyuIF1y3xQPvGoHEw9gfwjzF1UW30F2df17CWRoGY
-         85Qg==
-X-Forwarded-Encrypted: i=1; AFNElJ+ARyzrw7ErjKS+IR9CW4vRQyz08puQGa3gsg8XcaeRqSI8sW3uUksoPZ3qHeYNa2VWENzoGyY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJRornAKXNJMEkokW3Yb5SbnqBvhdXLBXo6/CzksDYnMy6mrWF
-	TH8H0tp7pGGpQbyPr+6dnxWWnQ5RNPkE3GcD833ENaxoQGTzphhvvSyI1JMAILNj3EM=
-X-Gm-Gg: AeBDiesytqoHDeYFJsVF1j03XAeHVtxEBO83Muv4WuvBIbpUxi/4GTOXJZ5V6k25oPC
-	EPp3Xne+9y7fTeAWpUTdFOzbAdO3nsxOW7x7dokJQrFSN77pbSxOfC2aHwFQVn+ukQL85INuf8j
-	yjs5dmfHDZ8yWbL4RPEptRX4Xtn5eOtAcjsj3dzxNF8o7OECaBvfQGaPujjOvS3jGpQV8aLgSWU
-	QzppmGvEtZEtvwAleMiOVJ0KHglEpwD6c4b5ivM6tkPEFvSYkiZdp7LeRxBeRrRCjTqR7qSvjaZ
-	6ul5h30eSGiB1fKMIlKDqNtkgK0FLfyGDrz8hBqmjugzKH6e6hRndOY59dS/5nEHFEJTAg+3IGn
-	PZefHqL0BWmEuhby7uKCVWAe2Zshvaf6Mu2oPwOFdcyJ9VpfzwtKrXP6qFUDAw4ibjWzYGRWGO4
-	Ozeg806QXzTOQFEpUwol7rVRFQbJOLeMQQtP3LWQWW6QA79xg2P5lCVPHsZZvZrt6iiQ==
-X-Received: by 2002:a17:903:187:b0:2b2:be01:5532 with SMTP id d9443c01a7336-2ba799d4662mr61394475ad.35.1778107780763;
-        Wed, 06 May 2026 15:49:40 -0700 (PDT)
-Received: from medusa.lab.kspace.sh ([208.88.152.253])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-2babaaed237sm2689955ad.27.2026.05.06.15.49.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 May 2026 15:49:40 -0700 (PDT)
-Date: Wed, 6 May 2026 15:49:35 -0700
-From: Mohamed Khalfella <mkhalfella@purestorage.com>
-To: Jacob Keller <jacob.e.keller@intel.com>
-Cc: Paul Menzel <pmenzel@molgen.mpg.de>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [Intel-wired-lan] [PATCH] i40e: Fix i40e_debug() to use struct
- i40e_hw argument
-Message-ID: <20260506224935.GD10532-mkhalfella@purestorage.com>
-References: <20260428181450.2622899-1-mkhalfella@purestorage.com>
- <558971b7-caea-471a-8fe2-73ba6cc0790a@molgen.mpg.de>
- <20260429165229.GF2686-mkhalfella@purestorage.com>
- <10637b35-766c-454b-b9fc-ac9e6df36da5@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hPGvzIOH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3056EC2BCB0;
+	Wed,  6 May 2026 22:51:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778107871;
+	bh=YNZgcxcpwiX7lYht35LCUTAq4XuT2pfJrlPdXlaF1pg=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=hPGvzIOHbEgFkF4WuUImsaA99RpMttR/MqgwOApGl7cVkvNGBNpS7yWB6XN8fui5N
+	 PkxhoDNvAvAs9l4DBBTGlwnqp084nVjbW62HtHEJ+Z5QRoshJJzLPf/ABIo6IXlveO
+	 0ks+6ViUqv5ueqvnPYXIwrDgDu02SPD451bjTIJx4SMGh1oI7TzjeXxe3JgDMX6A2K
+	 RaSDfdTlOnTif++b1j6jOrORGJCxjhoeWShFu/AvJz6Y6LxdfZhyUxBWX+cCQxtoOu
+	 O9WhwXAd3mqVUb0BK7lmRzVVeQ8IWOCmHKkRBFcxZEQp3o5FAtTn2+i6RhxJdLxD2T
+	 wraOpHQk5EgAA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02C78393089F;
+	Wed,  6 May 2026 22:50:22 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <10637b35-766c-454b-b9fc-ac9e6df36da5@intel.com>
+Subject: Re: [GIT PULL] bluetooth 2026-05-06
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177810782080.3254192.15839017764164025740.git-patchwork-notify@kernel.org>
+Date: Wed, 06 May 2026 22:50:20 +0000
+References: <20260506204553.58686-1-luiz.dentz@gmail.com>
+In-Reply-To: <20260506204553.58686-1-luiz.dentz@gmail.com>
+To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: davem@davemloft.net, kuba@kernel.org, linux-bluetooth@vger.kernel.org,
+ netdev@vger.kernel.org
 
-On Wed 2026-05-06 14:57:26 -0700, Jacob Keller wrote:
-> On 4/29/2026 9:52 AM, Mohamed Khalfella wrote:
-> > On Wed 2026-04-29 13:02:00 +0200, Paul Menzel wrote:
-> >> Dear Mohamed,
-> >>
-> >>
-> >> Thank you for your patch.
-> >>
-> >> Am 28.04.26 um 20:14 schrieb Mohamed Khalfella:
-> >>> i40e_debug() macro takes struct i40e_hw *h as first argument. But the
-> >>> macro body uses hw instead of h. This has been working so far because hw
-> >>> happen to be the name of the variable in the context where the marco is
-> >>
-> >> marco → ma*cr*o
-> > 
-> > Good catch. Also 'happen' should be 'happens'
-> > 
-> >>
-> >>> expanded. Fix the macro to use the passed argument.
-> >>
-> >> I’d add a Fixes: tag, but the maintainers might have more input.
-> > 
-> > Yes, I should have added Fixes: tag. I will leave it to the maintainer
-> > to decide if v2 is needed to fix the spelling mistakes and add Fixes
-> > tag.
-> > 
-> > Fixes: 5dfd37c37a44 ("i40e: Split i40e_osdep.h")
-> > 
-> Please send a v2 with the fixes tag and typo. It will make it easier to
-> avoid losing this data.
+Hello:
 
-Done https://lore.kernel.org/all/20260506224123.691160-1-mkhalfella@purestorage.com/
+This pull request was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Wed,  6 May 2026 16:45:53 -0400 you wrote:
+> The following changes since commit b89e0100a5f6885f9748bbacc3f4e3bcff654e4c:
+> 
+>   Merge tag 'wireless-2026-05-06' of https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless (2026-05-06 07:29:31 -0700)
+> 
+> are available in the Git repository at:
+> 
+>   git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git tags/for-net-2026-05-06
+> 
+> [...]
+
+Here is the summary with links:
+  - [GIT,PULL] bluetooth 2026-05-06
+    https://git.kernel.org/netdev/net/c/bd75e1003d3e
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
