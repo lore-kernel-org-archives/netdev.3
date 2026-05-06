@@ -1,179 +1,92 @@
-Received: from fout-a3-smtp.messagingengine.com (fout-a3-smtp.messagingengine.com [103.168.172.146])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 806C14ADD89;
-	Wed,  6 May 2026 17:55:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C01934A2E0E
+	for <netdev@vger.kernel.org>; Wed,  6 May 2026 18:05:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778090114; cv=none; b=MRjp+GTn3moOaMXudXF+j2AgXSHAlr3Dh0csw09kkqBFotilsjrILtZk17DD+kiQQ+JBraXK46MBCTh00LsDQureabIhvhbcnd334frmMxqV8v5qmTR5OwMaZscyAliUpW+Z2S69NI+rTsvlmunW09w22uqmTS1xNcDHsnurYeE=
+	t=1778090705; cv=none; b=l9Jy8WJyEdsbcJklpRGXUIvr22ZyEWgnIca2HsLcTxSc51C1/cUD6wSFwFOueXrlQwQ9TPckqNs1D6bxpIWep45n9dESrgk61JsikM7QBuhNvbztD9qDJpzmdAQDKgS1a/OwMFi2DK2/O4+HEevlQ7/DneMpnXjhQu8bgZO8ucE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778090114; c=relaxed/simple;
-	bh=UvGzjB9e6II4OV2P6M+tCQNE8RjC2PTuEdYebG8fLUY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YRLb+ZIMHQReWdMIB0h4xfpIZOja0PsQa2kj6Fdy1DuEVhL43EQNYU8CZderRkIMpZAzgdsAIuHu2i1T6kvOzkVDxF2J3PVD+683hBY6wFxmvjFUmGf6jg2qP4uEwjBh+l9PNPvtCoWK3vZe5XK8IjK5SKZolo1CZL3zZ3uuSoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=O9PgqXFQ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=h2d0UTaV; arc=none smtp.client-ip=103.168.172.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	s=arc-20240116; t=1778090705; c=relaxed/simple;
+	bh=W2RikdlCpHwS4MbcOM6rCR1SkRh2XHbp2hTUxvONnFA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=odjH5YFCIqMwWIQPbOpSKngxGcv710EYW/0eBUCDLXsezBzCyGe5V93GjGUuoEZvwhRkMByPu/b5nu7jLO1wUX5N7xf4QSBAgd2iqv3xL3yWNr9F0kHIV2dh31+r8Yp8FV0bE+NEvEacx78ktLL2GOQI9IDPI+OBjVq4hWdOq7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aJhQSJJF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="O9PgqXFQ";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="h2d0UTaV"
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfout.phl.internal (Postfix) with ESMTP id 1CAFEEC003D;
-	Wed,  6 May 2026 13:55:08 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Wed, 06 May 2026 13:55:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1778090108; x=
-	1778176508; bh=DPTcjFZ65zVQVyT0o+Z8OC8XMHP4Q4wnDNqmSpzZzWc=; b=O
-	9PgqXFQAKKFqsn+5kb06l/+ffz44+UnvZ0o12VoYHLEufsPqyAFk0Aqzym1Wm4zY
-	SE0ymGjFCFqTXmKmOALXx9B4rM9WgqG9dDFIYKOu9FCPCQkjOpJ6ONPRLJrN0I2N
-	0aWFLdhQW0hN1iilenGgEQz6tEIjKF4aB+nm/oT+Id1y670l3nwIpnsF93J/apPm
-	yEJZldZLh6Wgkn5R6EkeIxyFFFr9RCNBGqCR4N1tls40+VfQgShFktfvWp99YA48
-	TEiagq2ESSk455TxybPzSiGHQpZQu40FgjMj3lOYfdZG8tfV4rlEOGLo2Qvym3fi
-	RoZ+3g51rQLzEgqdkIhAQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1778090108; x=1778176508; bh=DPTcjFZ65zVQVyT0o+Z8OC8XMHP4Q4wnDNq
-	mSpzZzWc=; b=h2d0UTaVd2QYRLSn4rEND0Js9af+9gtlU61VANmaqlQE8lYzbGs
-	dSXVzEKmvI/hDbXnm/WKxGwt6UjdBTwfpwUvRR39flrwostGUI8Y6LScTvn0kQPu
-	tkO/Adh1oLCD22fLUoxYmARB/81WEAhXGeZHFU1TxJ5AqY6sUbDgkPd5/lLIE6+D
-	oWj0dExmdNpyQQ0uI0R3GTQjpbgaO8xm6LWJf9LElleYhgiYgap6P0IgM+Xksh3S
-	Aj1p0EfgOibQ0fIQNgwe3XSnEknWnrtbGJUGYwDPck2uHaO61wLnR4FDF7+CH9Jd
-	Lxhp0xUSdItBSwNH3Y8H+0whcuRpa1KyGQQ==
-X-ME-Sender: <xms:e4D7aTp0xUGDgsB83yIDJcpkLQRod1maW3DCiXOOsdqiIw6uU5gTEg>
-    <xme:e4D7ab4ebzu3FaxhaP838j-9OsAbtYk9IbWQLd5OdxrNPfIvCTV0pBBot7pV5mD_D
-    jC6Eyf7P2-2sPGbJyVOUS5qBR3A0_ecrnfpN6O8DyjpSZPDyiC8SQxT>
-X-ME-Received: <xmr:e4D7aZgOZTa2TDgZT-EsFNG1ujgcaBD1Z3j2bxkVoH4nfkEKgajsSjIBDj8U>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddutdehvdegucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfhfgggtuggjsehttdertd
-    dttdejnecuhfhrohhmpefurggsrhhinhgrucffuhgsrhhotggruceoshgusehquhgvrghs
-    hihsnhgrihhlrdhnvghtqeenucggtffrrghtthgvrhhnpeeuhffhfffgfffhfeeuieduge
-    dtfefhkeegteehgeehieffgfeuvdeuffefgfduffenucevlhhushhtvghrufhiiigvpedt
-    necurfgrrhgrmhepmhgrihhlfhhrohhmpehsugesqhhuvggrshihshhnrghilhdrnhgvth
-    dpnhgspghrtghpthhtohepuddupdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegr
-    lhgvgihjlhiihhgvnhhgsehgmhgrihhlrdgtohhmpdhrtghpthhtoheprghnughrvgifod
-    hnvghtuggvvheslhhunhhnrdgthhdprhgtphhtthhopegurghvvghmsegurghvvghmlhho
-    fhhtrdhnvghtpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomhdprh
-    gtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgrsggvnhhi
-    sehrvgguhhgrthdrtghomhdprhgtphhtthhopehhohhrmhhssehkvghrnhgvlhdrohhrgh
-    dprhgtphhtthhopehshhgvnhihrghnghihrghnghegsehhuhgrfigvihdrtghomhdprhgt
-    phhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:e4D7aZ6ZKC_Irme7YFi_ZcQyp7m98eeU2MetqYPEtYVZgUllv-UqTQ>
-    <xmx:e4D7aWF3wP97DrJvGdrnWR1X24Sq1rnKDNGx-vZiT0TwdsnKZccpmA>
-    <xmx:e4D7aTJl0bh4gncf0tljph7FnNMEVP72gcrRkjAm-RO0lCGLw7ZKBQ>
-    <xmx:e4D7abg7fECMIM_v0XSVB-7u2w8jg0yFJbhgIRFbUn5bZVLGaj3Hpg>
-    <xmx:fID7aZIUncab5tQXGaJ18yTvVfpGvNTYKXaXczfrOrjc6bMINwAIQCcm>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 6 May 2026 13:55:06 -0400 (EDT)
-Date: Wed, 6 May 2026 19:55:04 +0200
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: alexjlzheng@gmail.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	shenyangyang4@huawei.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, alexjlzheng@tencent.com
-Subject: Re: [PATCH] macsec: defer RX SA cleanup from RCU callback to
- workqueue
-Message-ID: <afuAePPNaufo-9Bl@krikkit>
-References: <20260506100107.388184-1-alexjlzheng@tencent.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aJhQSJJF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2600AC2BCB0;
+	Wed,  6 May 2026 18:05:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778090704;
+	bh=W2RikdlCpHwS4MbcOM6rCR1SkRh2XHbp2hTUxvONnFA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=aJhQSJJFE5JUQvF9ep/JOJ3sgtRUiFBzRjOg8LtHSQVXWAAQoKRX3kLCCsZ98NmfR
+	 6nkCQh9t4c4oQWrwUQqyO4Yt/tU/KB4/LPIjG0UX3fWOpadB7l4eg3Qf5Bl+4oa5pK
+	 DU5PcHev2TaWuQaRTafeztsoWuDdbwOfi1I8RS+QTBXSXEtaKniFpY4fbFp4ol6R8j
+	 F5mDs2+Wd9XGU8M2AIv3cdMmBj9+kxZUwzZw2yVTSLZNmLPAuAqvgPiwUZ58wgEqku
+	 aOcq/tnszTUzamX7FD3Tl/39nPC2v2zmZuFSNvj+SItstbCpn86K7DAqg98I7vEEYx
+	 NgIqBQiGQOJcw==
+Message-ID: <b6ac0dbe-190e-4d71-9f8d-14ad57082110@kernel.org>
+Date: Wed, 6 May 2026 12:05:03 -0600
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260506100107.388184-1-alexjlzheng@tencent.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2] ipv4: Flush the FIB once per dev nexthop
+ removal
+Content-Language: en-US
+To: Cosmin Ratiu <cratiu@nvidia.com>, Ido Schimmel <idosch@nvidia.com>
+Cc: "horms@kernel.org" <horms@kernel.org>,
+ "edumazet@google.com" <edumazet@google.com>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "davem@davemloft.net" <davem@davemloft.net>,
+ "pabeni@redhat.com" <pabeni@redhat.com>, "kuba@kernel.org" <kuba@kernel.org>
+References: <20260506092704.150349-1-cratiu@nvidia.com>
+ <20260506130129.GA665477@shredder>
+ <8fea4084-c9ec-472a-b8ab-ecc87e537216@kernel.org>
+ <3db4a02d61809143cc19a20cd6ff4086bb06b65b.camel@nvidia.com>
+From: David Ahern <dsahern@kernel.org>
+In-Reply-To: <3db4a02d61809143cc19a20cd6ff4086bb06b65b.camel@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-2026-05-06, 18:01:07 +0800, alexjlzheng@gmail.com wrote:
-> From: Jinliang Zheng <alexjlzheng@tencent.com>
+On 5/6/26 11:53 AM, Cosmin Ratiu wrote:
+> On Wed, 2026-05-06 at 10:26 -0600, David Ahern wrote:
+>> On 5/6/26 7:01 AM, Ido Schimmel wrote:
+>>> ... it would have been easier to review if split into
+>>> multiple patches (not saying you should do it). Something like:
+>>>
+>>> 1. Change the various nexthop remove functions to return an
+>>> indication if
+>>> flushing is required, but keep doing the flushing in
+>>> __remove_nexthop_fib(). Referring to these functions:
+>>>
+>>> remove_nexthop()
+>>> __remove_nexthop()
+>>> __remove_nexthop_fib()
+>>> remove_nexthop_from_groups()
+>>> remove_nh_grp_entry()
+>>>
+>>> 2. Act upon the flushing indication in the various callers of
+>>> remove_nexthop() and remove the flushing from
+>>> __remove_nexthop_fib().
+>>>
+>>> 3. Add __must_check annotations.
+>>>
+>>
+>> +1. Always send the smallest patches possible to evolve the code.
+>> Make
+>> it easy for reviewers - and yourself should you introduce an intended
+>> side effect.
 > 
-> crypto_free_aead() can call vunmap() internally (e.g. via
-> dma_free_attrs() in hardware crypto drivers like hisi_sec2), which
-> must not be called from softirq context.
+> I didn't split it as the whole thing is tightly coupled across multiple
+> functions,
 
-Ok.
+The authors of this code are telling you made a choice, and we are
+asking for something easier to review. I spent more time than I should
+have to reviewing this patch and trying to recall why I did the code the
+way it is.
 
-> free_rxsa() is an RCU callback and therefore runs in softirq context,
-> causing a kernel crash when the underlying AEAD implementation
-> performs DMA unmapping during tfm destruction:
-> 
->   vunmap+0x4c/0x70
->   __iommu_dma_free+0xd0/0x138
->   dma_free_attrs+0xf4/0x100
->   sec_aead_exit+0x64/0xb8 [hisi_sec2]
->   crypto_destroy_tfm+0x98/0x110
->   free_rxsa+0x28/0x50 [macsec]
->   rcu_do_batch+0x184/0x460
->   rcu_core+0xf4/0x1f8
->   handle_softirqs+0x118/0x330
-> 
-> Fix this by splitting free_rxsa() into two parts: the RCU callback
-> now only schedules a work item, and the actual resource release
-> (crypto_free_aead, free_percpu, kfree) is done in a workqueue
-> handler running in process context.
-> 
-> Add a destroy_work field to struct macsec_rx_sa and initialize it
-> in init_rx_sa().
-
-TXSAs go through exactly the same process (destruct via RCU and call
-crypto_free_aead). I guess they would need exactly the same fix.
-
-
-> Signed-off-by: Jinliang Zheng <alexjlzheng@tencent.com>
-
-Missing a Fixes tag (most likely c09440f7dcb3 ("macsec: introduce IEEE
-802.1AE driver")).
-
->  drivers/net/macsec.c | 13 +++++++++++--
->  include/net/macsec.h |  2 ++
->  2 files changed, 13 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
-> index f6cad0746a02..dabd3d2598ae 100644
-> --- a/drivers/net/macsec.c
-> +++ b/drivers/net/macsec.c
-> @@ -174,15 +174,23 @@ static void macsec_rxsc_put(struct macsec_rx_sc *sc)
->  		call_rcu(&sc->rcu_head, free_rx_sc_rcu);
->  }
->  
-> -static void free_rxsa(struct rcu_head *head)
-> +static void free_rxsa_work(struct work_struct *work)
->  {
-> -	struct macsec_rx_sa *sa = container_of(head, struct macsec_rx_sa, rcu);
-> +	struct macsec_rx_sa *sa = container_of(work, struct macsec_rx_sa,
-> +					       destroy_work);
->  
->  	crypto_free_aead(sa->key.tfm);
->  	free_percpu(sa->stats);
->  	kfree(sa);
->  }
->  
-> +static void free_rxsa(struct rcu_head *head)
-> +{
-> +	struct macsec_rx_sa *sa = container_of(head, struct macsec_rx_sa, rcu);
-> +
-> +	schedule_work(&sa->destroy_work);
-> +}
-
-This is quite ugly. I'd prefer to change the call_rcu() in
-macsec_rxsa_put() to the schedule_work(), and then add a
-synchronize_rcu() (to replace the current call_rcu()'s effects) at the
-start of free_rxsa_work().
-
-In addition, you need to modify macsec_exit() so that it waits on the
-free_rxsa_work() calls. Otherwise, if they happen after the module has
-finished unloading, the kernel will crash. Currently there's an
-rcu_barrier() that waits for free_rxsa() running as RCU callback, but
-it won't wait for the new work.
-
--- 
-Sabrina
