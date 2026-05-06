@@ -1,48 +1,48 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA31947F2FE;
-	Wed,  6 May 2026 13:59:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B119A480DE1;
+	Wed,  6 May 2026 13:59:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778075943; cv=none; b=RbMHFLEOHp51UmYzGklSx7Jx6Xw+rxIH/DCiTJVnUcWa2I+NizUpK477Yxyj28h3jScL5MisjcbMZM4pOk8CmqX16mZuVk4IBgd6e30AgxA6cqTegEVwbRtN3tzeh7t0dUz76ha3+ZjDBV0b8KVKO95XKywyvIfy5rr1QpvqDK4=
+	t=1778075946; cv=none; b=QtGI197SSxhCe0yIaZxGnamfjF2t5hEaH5S2QFGpn77biq1BDlgW7PSmbeG120i6DcaaQpVApumj79a7/842HIvZqNtvwglV7xPqiiy2iTep8Ytps1VgpJ626pz+Q54B4N5Isd0lSD7wHKCDvrQW7Ry6xI016cbwOH9S27VNYqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778075943; c=relaxed/simple;
-	bh=pS/NHo26KR2yadceDNjzTfzVGimQ19p7OFFeFhgzV3E=;
+	s=arc-20240116; t=1778075946; c=relaxed/simple;
+	bh=ztja0mEiadKt1ZyOXBgkzR+1THc5X8M+0eJvreWX3P4=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ngBje9Vq4eJo+nRy9ou0OTyRcxPulmjrrWhwmhE+emWk/7Py/Cc5HZ3SfHbWemyltsd5XOv8c950Y4V/KviwPl0He+z8cQHgF3Bb248IM6bpnz147PSlYlb2ONy9dxxm2ShYHEvLNdN1s1LVLAD8HRRur1R/Xq+c6JB0ByS32aA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=YxY9m+O2; arc=none smtp.client-ip=67.231.156.173
+	 MIME-Version:Content-Type; b=j1KnpCpOvuXY/31I76IoMTYgdEbVuEoPtxuRdCZPFWToDeYWBnou/GZTNMvn/HY6iTDBJ5cXxKCVj6zTAG0pXxvYuasaKyfPtkXzUbQ4e+GmYIbnCmcTIXx5hlI48Z3DGfK4mTDP7lFPQ2W+ZzPhEBfznQ5b5Uz/VCSWvp2Llm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=gpjhTUpW; arc=none smtp.client-ip=67.231.148.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="YxY9m+O2"
-Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6466o68a2472841;
-	Wed, 6 May 2026 06:58:40 -0700
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="gpjhTUpW"
+Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 646BrSjb3902995;
+	Wed, 6 May 2026 06:58:55 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=i
-	3Jd3g4sORASzHea+bl+InX+uYPD+wDaCnDHFG6mwDI=; b=YxY9m+O2DLNXIj55M
-	E67zrpBoXW2uW0lUtK1DaikrBkuCxkREYppR7YsK9Gv00roK66zwvOGwrFAfjF56
-	WBAGgAEWRDHEZiSLUqdw7lrhRTkAkFvuXxZs8qZG6oBhe+vmDFxhnq7ERvvUM+z+
-	I9RNE8Av4vi0M+zE9hnrSRDJc5V/yQ6AP8pTMSguIG8xGpdW/Mddk7DjNAZKNHiR
-	YJioaHmDIvA9Fe304NQa2R+ViqJ9E6/pGjTJ843vtsW2KPZf9S3jc0yNz0gaj+xt
-	MD9uH3EPAuYsyMJUxT22x2uWOtXSP6oLTRi7MD3+0EopwBTukFpQtW+3Euss1MKC
-	FOoOg==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4e00qjh3ah-1
+	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=S
+	tC0aX4znzx5pOhy2xcatdgVjUjoH1fQHnAw4FDLmdc=; b=gpjhTUpWl89Y0vKbZ
+	ST1G1nyzocWvC/Kwu9yqIBmvrlgjasBChay2sKbfj9e7K9dZePQJdCh9fOztr38Z
+	Fr22xxjwFzHkNjysLlR3qrPtW6W2hRXwyJTsrBypdKYMAqNgKeCtTiaDVV1C3euz
+	G8AZ9iuhF8dsUzzR5TC8uKF4plhF4vLtkLqAgVpcz8sf37sG5GwV6GqvUu78m7Q3
+	Cte1w2Eq7e2kb7z8Nxi2zaubSX9TS8REfpGHcqnqudOmCYa6ykdMTIT6b6gdasOr
+	KVQmAWUoSbeqgjGxAq80A5cadLp60xNXDGY6OLxgnlCfmsyF4wJ6mC3Tkaz1e0IG
+	+L6Yw==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4e026pgm8x-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 06 May 2026 06:58:39 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+	Wed, 06 May 2026 06:58:55 -0700 (PDT)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Wed, 6 May 2026 06:58:38 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Wed, 6 May 2026 06:58:38 -0700
+ 15.2.1544.25; Wed, 6 May 2026 06:58:54 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Wed, 6 May 2026 06:58:54 -0700
 Received: from BG-LT92649.marvell.com (BG-LT92649.marvell.com [10.28.166.218])
-	by maili.marvell.com (Postfix) with ESMTP id 29ACE3F708A;
-	Wed,  6 May 2026 06:58:33 -0700 (PDT)
+	by maili.marvell.com (Postfix) with ESMTP id A84863F708A;
+	Wed,  6 May 2026 06:58:49 -0700 (PDT)
 From: <sukhdeeps@marvell.com>
 To: <netdev@vger.kernel.org>
 CC: <irusskikh@marvell.com>, <epomozov@marvell.com>,
@@ -50,9 +50,9 @@ CC: <irusskikh@marvell.com>, <epomozov@marvell.com>,
         <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
         <pabeni@redhat.com>, <linux-kernel@vger.kernel.org>,
         Sukhdeep Singh <sukhdeeps@marvell.com>
-Subject: [PATCH net-next 5/9] net: atlantic: add AQC113 filter data structures and firmware query and firmware query firmware query
-Date: Wed, 6 May 2026 19:27:02 +0530
-Message-ID: <20260506135706.2834-6-sukhdeeps@marvell.com>
+Subject: [PATCH net-next 7/9] net: atlantic: add AQC113 PTP traffic class and TX path setup TX path setup
+Date: Wed, 6 May 2026 19:27:04 +0530
+Message-ID: <20260506135706.2834-8-sukhdeeps@marvell.com>
 X-Mailer: git-send-email 2.52.0.windows.1
 In-Reply-To: <20260506135706.2834-1-sukhdeeps@marvell.com>
 References: <20260506135706.2834-1-sukhdeeps@marvell.com>
@@ -64,273 +64,177 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA2MDEzNyBTYWx0ZWRfX2aYGRPTvAmiy
- jSGIi/+jIlhFHXDQx53VGPOpjwhF1NTfjDjuWj6jtv0/xNNVL8yCR604bDzGti/xDypTdflx82N
- pu0dqX1/bglW8uvTu6Bn5dGkkF8K2l8i+iaFHFxKbCVrftlm+YQQGKGBdGwAWEo6otdvvYhvMOD
- lyIootxY7lRUkOM+ikpRFk/WNAGX6IuUMVv0fRohubIr/m7+BrxrS4/Y6z3BGchp8fnQMiKs8Wc
- vTjLgAV6ctSLvOUPxwxQTNt2Zt5KJNTCk0fTAm6CqniBxHRTfZiEBUnQQ/pfk02SWqRcZ5iR5+b
- H+AnmDWSUGjPQ2FMIAwtV5w9p/GEfKk0SLAhFsSFtfaUcwTKbnXHFQqZOWuyOgMNnNQUQDyeQTY
- aEOd0S8TH3kKvoElyHuxy4HkjIXA0pW3tjQCYKhsq437DgmpT/p9v7y/HZbylqDo4Ud0ESE/DpU
- 3eLPNTsEaq6akRvXafQ==
-X-Proofpoint-GUID: r09YMBi032K5a3qWcYaojnAZL7rolDva
-X-Proofpoint-ORIG-GUID: r09YMBi032K5a3qWcYaojnAZL7rolDva
-X-Authority-Analysis: v=2.4 cv=ZMHnX37b c=1 sm=1 tr=0 ts=69fb490f cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
+X-Authority-Analysis: v=2.4 cv=Y/LIdBeN c=1 sm=1 tr=0 ts=69fb491f cx=c_pps
+ a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
  a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=QXcCYyLzdtTjyudCfB6f:22 a=M5GUcnROAAAA:8 a=3QfP4igTxnc4TM591i8A:9
+ a=EAYMVhzMl8SCOHhVQcBL:22 a=M5GUcnROAAAA:8 a=wn5G0mF7TSBqfe3wV-wA:9
  a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-GUID: WCyvz2MbHQ5LBb9xk96-aumjG0-2p0O4
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA2MDEzNyBTYWx0ZWRfX8JNjm1GCdbck
+ YBgNcVFuzhKXRyiMlLD2toznOZBQBNie+nIGzQeBvUnTTdEo7iK1KvCZFbZzBRkCwfMov19Uben
+ TJlnU+IVNeVwBRSohPtIn5mrjBQRmPJMQKgR++JWrVCopFNPslTlhDHn9uZrS+5iWTUSuhEzbcr
+ PGtI6buDf0fz2ARh/rJxLS3DHyDErR6+GxVcbN9I/HWdF1/Bwql/rzGsrCO7c8HzUf+vXNwgkF/
+ m8jiPOL59543uT9H1EyY5vbWh0XXIzNaNEADuwbu7Ic3tIkZ8Z8dfoY80EqoYWDmKENdgse6GmZ
+ KWu/vMnjXP+tCX+Qp8eCm4k6DndmekYdqewigz2w8dMKGC4tXCqmOtb8YNq64FH9Nmu3BapxjGh
+ g4YruaT/miJ91fHrqvlKZToWOyT7PPglgWa2CA+xPtFA+BRO8KPCPsWLxmJeSzvJwQOTldGAKi8
+ mnkN5QkfTbwGHMsMANA==
+X-Proofpoint-ORIG-GUID: WCyvz2MbHQ5LBb9xk96-aumjG0-2p0O4
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-05-05_03,2026-05-06_01,2025-10-01_01
 
 From: Sukhdeep Singh <sukhdeeps@marvell.com>
 
-Add filter infrastructure for AQC113 hardware:
+Add PTP traffic class (TC) buffer reservation and TX path
+improvements for AQC113:
 
-- Define L3 (IPv4/IPv6), L4 (TCP/UDP/SCTP), and combined L3L4 filter
-  structures with reference-counted sharing support.
-- Define tag policy structure for ethertype filter management.
-- Add RPF L3/L4 command bit definitions for filter programming.
-- Add filter count constants for L3L4, L3V4, L4, VLAN, and ethertype.
-- Extend hw_atl2_priv with filter arrays, base indices, and counts
-  discovered from firmware.
+- Reserve dedicated TX and RX buffer space for PTP TC when PTP is
+  enabled, reducing user TC buffers accordingly (TX: 8KB, RX: 16KB).
+- Configure PTP TC with no flow control and highest priority
+  scheduling to ensure timely PTP packet transmission.
+- Enable multicast frame tagging (accept_all_mc_packets) so the
+  Action Resolver Table (ART) can match and steer PTP multicast
+  traffic to the correct TC/queue based on RPF input tags.
 
-Query filter capabilities from firmware shared memory at init time
-to discover available L2/L3/L4/VLAN/ethertype filter resources and
-ART (Action Resolver Table) configuration.
+TX path improvements:
+- Enable extended PCIe tag mode (32-255) when hardware supports it,
+  with increased TX data and descriptor read request limits for
+  improved throughput.
 
-Add hardware register dump utility for AQC113 debug support.
+Also simplify RSS queue calculation in hw_atl2_hw_rss_set() by
+extracting to a local variable and use unsigned types for loop
+variables to match their usage.
 
 Signed-off-by: Sukhdeep Singh <sukhdeeps@marvell.com>
 ---
- .../atlantic/hw_atl2/hw_atl2_internal.h       | 63 +++++++++++++++++++
- .../aquantia/atlantic/hw_atl2/hw_atl2_utils.c | 33 ++++++++++
- .../aquantia/atlantic/hw_atl2/hw_atl2_utils.h |  5 ++
- .../atlantic/hw_atl2/hw_atl2_utils_fw.c       | 52 +++++++++++++++
- 4 files changed, 153 insertions(+)
+ .../aquantia/atlantic/hw_atl2/hw_atl2.c       | 52 ++++++++++++++++---
+ .../atlantic/hw_atl2/hw_atl2_internal.h       |  4 +-
+ 2 files changed, 49 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_internal.h b/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_internal.h
-index 5a89bb8722f9..fc086d84fb91 100644
---- a/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_internal.h
-+++ b/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_internal.h
-@@ -84,6 +84,18 @@ enum HW_ATL2_RPF_ART_INDEX {
- 					  HW_ATL_VLAN_MAX_FILTERS,
- };
- 
-+#define HW_ATL2_RPF_L3_CMD_EN       BIT(0)
-+#define HW_ATL2_RPF_L3_CMD_SA_EN    BIT(1)
-+#define HW_ATL2_RPF_L3_CMD_DA_EN    BIT(2)
-+#define HW_ATL2_RPF_L3_CMD_PROTO_EN BIT(3)
-+#define HW_ATL2_RPF_L3_V6_CMD_EN       BIT(0x10)
-+#define HW_ATL2_RPF_L3_V6_CMD_SA_EN    BIT(0x11)
-+#define HW_ATL2_RPF_L3_V6_CMD_DA_EN    BIT(0x12)
-+#define HW_ATL2_RPF_L3_V6_CMD_PROTO_EN BIT(0x13)
-+#define HW_ATL2_RPF_L4_CMD_EN       BIT(0)
-+#define HW_ATL2_RPF_L4_CMD_DP_EN    BIT(1)
-+#define HW_ATL2_RPF_L4_CMD_SP_EN    BIT(2)
-+
- #define HW_ATL2_ACTION(ACTION, RSS, INDEX, VALID) \
- 	((((ACTION) & 0x3U) << 8) | \
- 	(((RSS) & 0x1U) << 7) | \
-@@ -94,6 +106,12 @@ enum HW_ATL2_RPF_ART_INDEX {
- #define HW_ATL2_ACTION_DISABLE HW_ATL2_ACTION(0, 0, 0, 0)
- #define HW_ATL2_ACTION_ASSIGN_QUEUE(QUEUE) HW_ATL2_ACTION(1, 0, (QUEUE), 1)
- #define HW_ATL2_ACTION_ASSIGN_TC(TC) HW_ATL2_ACTION(1, 1, (TC), 1)
-+#define HW_ATL2_RPF_L3L4_FILTERS 8
-+#define HW_ATL2_RPF_L3V4_FILTERS 8
-+#define HW_ATL2_RPF_L4_FILTERS 8
-+#define HW_ATL2_RPF_VLAN_FILTERS 16
-+#define HW_ATL2_RPF_ETYPE_FILTERS 16
-+#define HW_ATL2_RPF_ETYPE_TAGS 7
- 
- enum HW_ATL2_RPF_RSS_HASH_TYPE {
- 	HW_ATL2_RPF_RSS_HASH_TYPE_NONE = 0,
-@@ -119,9 +137,54 @@ enum HW_ATL2_RPF_RSS_HASH_TYPE {
- 
- #define HW_ATL_MCAST_FLT_ANY_TO_HOST 0x00010FFFU
- 
-+struct hw_atl2_l3_filter {
-+	u8 proto;
-+	u8 usage;
-+	u32 cmd;
-+	u32 srcip[4];
-+	u32 dstip[4];
-+};
-+
-+struct hw_atl2_l4_filter {
-+	u8 usage;
-+	u32 cmd;
-+	u16 sport;
-+	u16 dport;
-+};
-+
-+struct hw_atl2_l3l4_filter {
-+	s8 l3_index;
-+	s8 l4_index;
-+	u8 ipv6;
-+};
-+
-+struct hw_atl2_tag_policy {
-+	u16 action;
-+	u16 usage;
-+};
-+
- struct hw_atl2_priv {
-+	struct hw_atl2_l3_filter l3_v4_filters[HW_ATL2_RPF_L3L4_FILTERS];
-+	struct hw_atl2_l3_filter l3_v6_filters[HW_ATL2_RPF_L3L4_FILTERS];
-+	struct hw_atl2_l4_filter l4_filters[HW_ATL2_RPF_L3L4_FILTERS];
-+	struct hw_atl2_l3l4_filter l3l4_filters[HW_ATL2_RPF_L3L4_FILTERS];
-+	struct hw_atl2_tag_policy etype_policy[HW_ATL2_RPF_ETYPE_FILTERS];
- 	struct statistics_s last_stats;
- 	unsigned int art_base_index;
-+	unsigned int art_count;
-+	unsigned int l2_filters_base_index;
-+	unsigned int l2_filter_count;
-+	unsigned int etype_filter_base_index;
-+	unsigned int etype_filter_count;
-+	unsigned int etype_filter_tag_top;
-+	unsigned int vlan_filter_base_index;
-+	unsigned int vlan_filter_count;
-+	unsigned int l3_v4_filter_base_index;
-+	unsigned int l3_v4_filter_count;
-+	unsigned int l3_v6_filter_base_index;
-+	unsigned int l3_v6_filter_count;
-+	unsigned int l4_filter_base_index;
-+	unsigned int l4_filter_count;
- };
- 
- #endif /* HW_ATL2_INTERNAL_H */
-diff --git a/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_utils.c b/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_utils.c
-index 0fe6257d9c08..ffd723dcfb63 100644
---- a/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_utils.c
-+++ b/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_utils.c
-@@ -128,3 +128,36 @@ int hw_atl2_utils_soft_reset(struct aq_hw_s *self)
- err_exit:
+diff --git a/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2.c b/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2.c
+index e58bfff38670..c71e8d1adfc9 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2.c
++++ b/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2.c
+@@ -151,6 +151,24 @@ static int hw_atl2_hw_reset(struct aq_hw_s *self)
  	return err;
  }
-+
-+static const u32 hw_atl2_utils_hw_mac_regs[] = {
-+	0x00005580U, 0x00005590U, 0x000055B0U, 0x000055B4U,
-+	0x000055C0U, 0x00005B00U, 0x00005B04U, 0x00005B08U,
-+	0x00005B0CU, 0x00005B10U, 0x00005B14U, 0x00005B18U,
-+	0x00005B1CU, 0x00005B20U, 0x00005B24U, 0x00005B28U,
-+	0x00005B2CU, 0x00005B30U, 0x00005B34U, 0x00005B38U,
-+	0x00005B3CU, 0x00005B40U, 0x00005B44U, 0x00005B48U,
-+	0x00005B4CU, 0x00005B50U, 0x00005B54U, 0x00005B58U,
-+	0x00005B5CU, 0x00005B60U, 0x00005B64U, 0x00005B68U,
-+	0x00005B6CU, 0x00005B70U, 0x00005B74U, 0x00005B78U,
-+	0x00005B7CU, 0x00007C00U, 0x00007C04U, 0x00007C08U,
-+	0x00007C0CU, 0x00007C10U, 0x00007C14U, 0x00007C18U,
-+	0x00007C1CU, 0x00007C20U, 0x00007C40U, 0x00007C44U,
-+	0x00007C48U, 0x00007C4CU, 0x00007C50U, 0x00007C54U,
-+	0x00007C58U, 0x00007C5CU, 0x00007C60U, 0x00007C80U,
-+	0x00007C84U, 0x00007C88U, 0x00007C8CU, 0x00007C90U,
-+	0x00007C94U, 0x00007C98U, 0x00007C9CU, 0x00007CA0U,
-+	0x00007CC0U, 0x00007CC4U, 0x00007CC8U, 0x00007CCCU,
-+	0x00007CD0U, 0x00007CD4U, 0x00007CD8U, 0x00007CDCU,
-+};
-+
-+int hw_atl2_utils_hw_get_regs(struct aq_hw_s *self,
-+			      const struct aq_hw_caps_s *aq_hw_caps,
-+			      u32 *regs_buff)
+ 
++static int hw_atl2_tc_ptp_set(struct aq_hw_s *self)
 +{
-+	unsigned int i;
++	/* Init TC2 for PTP_TX */
++	hw_atl_tpb_tx_pkt_buff_size_per_tc_set(self, HW_ATL2_PTP_TXBUF_SIZE,
++					       AQ_HW_PTP_TC);
 +
-+	for (i = 0; i < aq_hw_caps->mac_regs_count; i++)
-+		regs_buff[i] = aq_hw_read_reg(self,
-+					      hw_atl2_utils_hw_mac_regs[i]);
-+	return 0;
++	/* Init TC2 for PTP_RX */
++	hw_atl_rpb_rx_pkt_buff_size_per_tc_set(self, HW_ATL2_PTP_RXBUF_SIZE,
++					       AQ_HW_PTP_TC);
++
++	/* No flow control for PTP */
++	hw_atl_rpb_rx_xoff_en_per_tc_set(self, 0U, AQ_HW_PTP_TC);
++
++	hw_atl2_tpb_tps_highest_priority_tc_set(self, AQ_HW_PTP_TC);
++
++	return aq_hw_err_from_flags(self);
 +}
-diff --git a/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_utils.h b/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_utils.h
-index 6bad64c77b87..c84955bc14ae 100644
---- a/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_utils.h
-+++ b/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_utils.h
-@@ -626,10 +626,15 @@ int hw_atl2_utils_initfw(struct aq_hw_s *self, const struct aq_fw_ops **fw_ops);
- 
- int hw_atl2_utils_soft_reset(struct aq_hw_s *self);
- 
-+int hw_atl2_utils_hw_get_regs(struct aq_hw_s *self,
-+			      const struct aq_hw_caps_s *aq_hw_caps,
-+			      u32 *regs_buff);
 +
- u32 hw_atl2_utils_get_fw_version(struct aq_hw_s *self);
+ static int hw_atl2_hw_queue_to_tc_map_set(struct aq_hw_s *self)
+ {
+ 	struct aq_nic_cfg_s *cfg = self->aq_nic_cfg;
+@@ -209,6 +227,11 @@ static int hw_atl2_hw_qos_set(struct aq_hw_s *self)
+ 	unsigned int prio = 0U;
+ 	u32 tc = 0U;
  
- int hw_atl2_utils_get_action_resolve_table_caps(struct aq_hw_s *self,
- 						u8 *base_index, u8 *count);
-+int hw_atl2_utils_get_filter_caps(struct aq_hw_s *self);
- 
- extern const struct aq_fw_ops aq_a2_fw_ops;
- 
-diff --git a/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_utils_fw.c b/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_utils_fw.c
-index 7370e3f76b62..546b48f897d3 100644
---- a/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_utils_fw.c
-+++ b/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_utils_fw.c
-@@ -121,6 +121,10 @@ static int aq_a2_fw_init(struct aq_hw_s *self)
- 	u32 val;
- 	int err;
- 
-+	err = hw_atl2_utils_get_filter_caps(self);
-+	if (err)
-+		return err;
++	if (cfg->is_ptp) {
++		tx_buff_size -= HW_ATL2_PTP_TXBUF_SIZE;
++		rx_buff_size -= HW_ATL2_PTP_RXBUF_SIZE;
++	}
 +
- 	hw_atl2_shared_buffer_get(self, link_control, link_control);
- 	link_control.mode = AQ_HOST_MODE_ACTIVE;
- 	hw_atl2_shared_buffer_write(self, link_control, link_control);
-@@ -606,6 +610,54 @@ u32 hw_atl2_utils_get_fw_version(struct aq_hw_s *self)
- 	       version.bundle.build;
+ 	/* TPS Descriptor rate init */
+ 	hw_atl_tps_tx_pkt_shed_desc_rate_curr_time_res_set(self, 0x0U);
+ 	hw_atl_tps_tx_pkt_shed_desc_rate_lim_set(self, 0xA);
+@@ -242,6 +265,9 @@ static int hw_atl2_hw_qos_set(struct aq_hw_s *self)
+ 		hw_atl_b0_set_fc(self, self->aq_nic_cfg->fc.req, tc);
+ 	}
+ 
++	if (cfg->is_ptp)
++		hw_atl2_tc_ptp_set(self);
++
+ 	/* QoS 802.1p priority -> TC mapping */
+ 	for (prio = 0; prio < 8; ++prio)
+ 		hw_atl_rpf_rpb_user_priority_tc_map_set(self, prio,
+@@ -259,8 +285,9 @@ static int hw_atl2_hw_rss_set(struct aq_hw_s *self,
+ 	u8 *indirection_table = rss_params->indirection_table;
+ 	const u32 num_tcs = aq_hw_num_tcs(self);
+ 	u32 rpf_redir2_enable;
+-	int tc;
+-	int i;
++	u32 queue;
++	u32 tc;
++	u32 i;
+ 
+ 	rpf_redir2_enable = num_tcs > 4 ? 1 : 0;
+ 
+@@ -268,10 +295,9 @@ static int hw_atl2_hw_rss_set(struct aq_hw_s *self,
+ 
+ 	for (i = HW_ATL2_RSS_REDIRECTION_MAX; i--;) {
+ 		for (tc = 0; tc != num_tcs; tc++) {
+-			hw_atl2_new_rpf_rss_redir_set(self, tc, i,
+-						      tc *
+-						      aq_hw_q_per_tc(self) +
+-						      indirection_table[i]);
++			queue = tc * aq_hw_q_per_tc(self) +
++				indirection_table[i];
++			hw_atl2_new_rpf_rss_redir_set(self, tc, i, queue);
+ 		}
+ 	}
+ 
+@@ -415,9 +441,20 @@ static int hw_atl2_hw_init_tx_path(struct aq_hw_s *self)
+ 
+ 	hw_atl2_tpb_tx_buf_clk_gate_en_set(self, 0U);
+ 
++	if (hw_atl2_phi_ext_tag_get(self)) {
++		hw_atl2_tdm_tx_data_read_req_limit_set(self, 0x7F);
++		hw_atl2_tdm_tx_desc_read_req_limit_set(self, 0x0F);
++	}
++
+ 	return aq_hw_err_from_flags(self);
  }
  
-+int hw_atl2_utils_get_filter_caps(struct aq_hw_s *self)
-+{
-+	struct hw_atl2_priv *priv = self->priv;
-+	struct filter_caps_s filter_caps;
-+	u32 tag_top;
-+	int err;
-+
-+	err = hw_atl2_shared_buffer_read_safe(self, filter_caps, &filter_caps);
-+	if (err)
-+		return err;
-+
-+	priv->art_base_index = filter_caps.rslv_tbl_base_index * 8;
-+	priv->art_count = filter_caps.rslv_tbl_count * 8;
-+	if (priv->art_count == 0)
-+		priv->art_count = 128;
-+	priv->l2_filters_base_index = filter_caps.l2_filters_base_index;
-+	priv->l2_filter_count = filter_caps.l2_filter_count;
-+	priv->etype_filter_base_index = filter_caps.ethertype_filter_base_index;
-+	priv->etype_filter_count = filter_caps.ethertype_filter_count;
-+	priv->etype_filter_tag_top =
-+		(priv->etype_filter_count >= HW_ATL2_RPF_ETYPE_TAGS) ?
-+		 (HW_ATL2_RPF_ETYPE_TAGS) : (HW_ATL2_RPF_ETYPE_TAGS >> 1);
-+	priv->vlan_filter_base_index = filter_caps.vlan_filter_base_index;
-+	/* 0 - no tag, 1 - reserved for vlan-filter-offload filters */
-+	tag_top =
-+		  (filter_caps.vlan_filter_count == HW_ATL2_RPF_VLAN_FILTERS) ?
-+		  (HW_ATL2_RPF_VLAN_FILTERS - 2) :
-+		  (HW_ATL2_RPF_VLAN_FILTERS / 2 - 2);
-+
-+	if (filter_caps.vlan_filter_count > 2)
-+		priv->vlan_filter_count = min_t(u32,
-+						filter_caps.vlan_filter_count - 2,
-+						tag_top);
-+	else
-+		priv->vlan_filter_count = 0;
-+
-+	priv->l3_v4_filter_base_index = filter_caps.l3_ip4_filter_base_index;
-+	priv->l3_v4_filter_count = min_t(u32, filter_caps.l3_ip4_filter_count,
-+					 HW_ATL2_RPF_L3V4_FILTERS - 1);
-+	priv->l3_v6_filter_base_index = filter_caps.l3_ip6_filter_base_index;
-+	priv->l3_v6_filter_count = filter_caps.l3_ip6_filter_count;
-+	priv->l4_filter_base_index = filter_caps.l4_filter_base_index;
-+	priv->l4_filter_count = min_t(u32, filter_caps.l4_filter_count,
-+				      HW_ATL2_RPF_L4_FILTERS - 1);
-+
-+	return 0;
-+}
-+
- int hw_atl2_utils_get_action_resolve_table_caps(struct aq_hw_s *self,
- 						u8 *base_index, u8 *count)
++/* Initialise new rx filters
++ * L2 promisc OFF
++ * VLAN promisc OFF
++ *
++ * User priority to TC
++ */
+ static void hw_atl2_hw_init_new_rx_filters(struct aq_hw_s *self)
  {
+ 	u8 *prio_tc_map = self->aq_nic_cfg->prio_tc_map;
+@@ -429,6 +466,9 @@ static void hw_atl2_hw_init_new_rx_filters(struct aq_hw_s *self)
+ 	u8 index;
+ 	int i;
+ 
++	/* tag MC frames always */
++	hw_atl_rpfl2_accept_all_mc_packets_set(self, 1);
++
+ 	/* Action Resolver Table (ART) is used by RPF to decide which action
+ 	 * to take with a packet based upon input tag and tag mask, where:
+ 	 *  - input tag is a combination of 3-bit VLan Prio (PTP) and
+diff --git a/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_internal.h b/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_internal.h
+index fc086d84fb91..31d7cae6641a 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_internal.h
++++ b/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_internal.h
+@@ -27,8 +27,10 @@
+ #define HW_ATL2_INT_MASK  (0xFFFFFFFFU)
+ 
+ #define HW_ATL2_TXBUF_MAX              128U
+-#define HW_ATL2_RXBUF_MAX              192U
++#define HW_ATL2_PTP_TXBUF_SIZE           8U
+ 
++#define HW_ATL2_RXBUF_MAX              192U
++#define HW_ATL2_PTP_RXBUF_SIZE          16U
+ #define HW_ATL2_RSS_REDIRECTION_MAX 64U
+ 
+ #define HW_ATL2_TC_MAX 8U
 -- 
 2.43.0
 
