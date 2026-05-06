@@ -1,1015 +1,179 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E345948097F;
-	Wed,  6 May 2026 14:28:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47D89481649
+	for <netdev@vger.kernel.org>; Wed,  6 May 2026 14:28:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778077684; cv=none; b=rG7Z7oVAphMfawh7919fqhDOB+nk0j8NYBYkoxH+nNvvLyB5EORQGiVlJmTXKn+3WsJUXdDpuzUDPED4rCjB4zhERqg0mldKXM7r0jWv+fTvH2S/IUsR+sh7laadu3pVacipYGCyOleGF8b0e66qAXGwteSadBhvZDJViywp4Io=
+	t=1778077711; cv=none; b=ho7k3N8fWhug4aKsee1LPldCtfHb+MLF62x8CvddrsxosebEbvvV5sH2BE2A5588NprvqfxFUios8yZZrbHyvYeaRSNPXfy5uX5eHkf2ozcvVV5L20JrsMN5CVjhd0Sr+MB0a6ytdW5Q4j5W4u0RKmWw+SykGvokKWHOEARCTfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778077684; c=relaxed/simple;
-	bh=lPrx42RACK+GeT23UASoRe6ghMCp3GwM3fpSshPXlb8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Dux0yB5tHukGllorRKaxRcBrPCZP59p4v8ooHMx2rfy8K1Oh6230a/x7afp7lr6h3nkSGRQF/mSzpQVGM1H4CfIRruAiSuIGtBHy9jPbXRzr+87WRaP5JI4UimCH+6U3vL+M+91VDXpnnY6TGjiL8QCxREtNj+pOaDO/rK5yRaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qq2L62gk; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778077711; c=relaxed/simple;
+	bh=5ZU21tRIlqXoH9jIFxronPOEdmNOHwLE03547/Jek1U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
+	 In-Reply-To:Content-Type; b=VNBAElfJPoQiDgf9trL9+6FGdifDRgOFuyeGmzh6mhA2XYYDmH9xjYTHQa/3jkWfwPNpYtvdDqs7A82vPZP3jaO7KzemJivjPFLMDaK5JG2Uyl44fKpUlXeqL4ss9KXJnAhHQGxYo3Es3xk9JNQRsUwjugJB+ShBzB8GntYm0M4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ZmrxhBnP; arc=none smtp.client-ip=91.218.175.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qq2L62gk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B6D7C2BCB0;
-	Wed,  6 May 2026 14:28:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778077683;
-	bh=lPrx42RACK+GeT23UASoRe6ghMCp3GwM3fpSshPXlb8=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Qq2L62gk61ZnmBgHBAYUC7vxXdrwUze7mO1gVZlbOgNTvIc9aERnXHURUy1pSMP1g
-	 +Xzycffy/X5Dd01ax5JF3ULQoJDrrOifvWjqjDShAXwUoSnjs0QLSadunsP/88TCD3
-	 87nRk9xepXfj/8jdoElfIWoRSeVPe4eVQ0DFwtLmctBAczaLIlY++ZDFpW28cGwfXy
-	 qOnyqCCDNAWigjvbZkUFYLFUfGHWOJbodpAt+L5ENitMGS5fNXlswIYbOIIhhqoE2K
-	 8I6auDn8FAluAsBpGlnKnYKQqgG4x2yivEjpRUVLMoqcihYjebC4yqilNOm0ky1hnc
-	 PQkxRD8n5D4RQ==
-From: Greg Ungerer <gerg@kernel.org>
-To: linux-m68k@lists.linux-m68k.org
-Cc: linux-kernel@vger.kernel.org,
-	arnd@kernel.org,
-	Greg Ungerer <gerg@linux-m68k.org>,
-	wei.fang@nxp.com,
-	frank.li@nxp.com,
-	shenwei.wang@nxp.com,
-	netdev@vger.kernel.org
-Subject: [RFC 1/4] net: fec: do not use readl()/writel() for ColdFire
-Date: Thu,  7 May 2026 00:26:42 +1000
-Message-ID: <20260506142644.3234270-2-gerg@kernel.org>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ZmrxhBnP"
+Message-ID: <78183562-ff83-4b7a-9c7b-b3cb92676ee8@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1778077696;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Vuoq7yYRR946Z2PaAByJyOtutD5hvIdtunJIHpdgfA8=;
+	b=ZmrxhBnP6yTe33insjP4W9UIy+jxXJFkVZPd54uf85RoC/rbEvobOZhrLa6t/KPtTAr91/
+	v5n3n4meLok1Wh7lBsWjmu2JCRD6ERfbRu9u4uuwtB0uTWFlSbD5I1tLxDrzwR4KHI9nD8
+	iJn4H7Q5zmwuLCjpVxDI+Iu5T13XxDA=
+Date: Wed, 6 May 2026 07:28:10 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Subject: Re: [syzbot] [rdma] general protection fault in kernel_sock_shutdown
+ (4)
+To: syzbot <syzbot+d8f76778263ab65c2b21@syzkaller.appspotmail.com>,
+ akpm@linux-foundation.org, arjan@linux.intel.com, davem@davemloft.net,
+ dsahern@kernel.org, edumazet@google.com, horms@kernel.org, jgg@ziepe.ca,
+ kuba@kernel.org, kuni1840@gmail.com, kuniyu@google.com, leon@kernel.org,
+ linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
+ netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com,
+ zyjzyj2000@gmail.com
+References: <69fb46ae.a00a0220.387fc1.0002.GAE@google.com>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Zhu Yanjun <yanjun.zhu@linux.dev>
+In-Reply-To: <69fb46ae.a00a0220.387fc1.0002.GAE@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-From: Greg Ungerer <gerg@linux-m68k.org>
 
-Modify the FEC driver to not directly use readl() and writel() to access
-hardware registers but instead local fec_readl() and fec_writel() methods.
-This allows for different architecture users of this driver to have
-different underlying access functions - to support both little and big
-endian hardware.
+在 2026/5/6 6:48, syzbot 写道:
+> syzbot has found a reproducer for the following issue on:
+>
+> HEAD commit:    74fe02ce122a Merge tag 'wq-for-7.1-rc2-fixes' of git://git..
+> git tree:       upstream
+> console output: https://syzkaller.appspot.com/x/log.txt?x=16e895ce580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=59da38148f3a3d24
+> dashboard link: https://syzkaller.appspot.com/bug?extid=d8f76778263ab65c2b21
+> compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=13a613ba580000
+>
+> Downloadable assets:
+> disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-74fe02ce.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/c0a591d96864/vmlinux-74fe02ce.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/9f94fb623cd1/bzImage-74fe02ce.xz
+>
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+d8f76778263ab65c2b21@syzkaller.appspotmail.com
+>
+> Oops: general protection fault, probably for non-canonical address 0xdffffc000000000d: 0000 [#1] SMP KASAN NOPTI
+> KASAN: null-ptr-deref in range [0x0000000000000068-0x000000000000006f]
 
-The FEC hardware block in ColdFire SoC parts is accessed big-endian.
-The usual kernel readl()/writel() IO memory access methods are defined to
-access little endian data. Change access for ColdFire to use __raw_readl()
-and __raw_writel() access methods - which do not modify or swap bytes
-on access.
+Thanks a lot. IIRC, this problem is in process. The link is 
+https://patchwork.kernel.org/project/linux-rdma/patch/20260424013759.728288-1-kuniyu@google.com/
 
-The FEC driver works today because the m68k architecture io.h has a
-kludge in the definitions of the readl() and writel() functions for
-ColdFire that allow big-endian access if the address of the register to
-access is within the SoC's internal peripheral registers. This is being
-fixed in the near future to define readl() and writel() correctly - with
-no byte swapping. Thus the motivation for this fix here.
+Hi, Kuniyuki Iwashima
 
-__raw_readl()/__raw_writel() access methods are used instead of the more
-commonly used ioread32be()/iowrite32be() here because those are broken too,
-because of the current readl()/writel() kludge. They are implemented in
-asm-generic/io.h in terms of readl()/writel().
+I think you are fixing this problem. I hope that we can see your commit 
+very soon.
 
-Note that even when readl() and writel() are fixed on ColdFire they will
-not be the right thing to use within the FEC driver on ColdFire hardware.
+Zhu Yanjun
 
-Signed-off-by: Greg Ungerer <gerg@linux-m68k.org>
----
- drivers/net/ethernet/freescale/fec.h      |  15 ++
- drivers/net/ethernet/freescale/fec_main.c | 254 +++++++++++-----------
- drivers/net/ethernet/freescale/fec_ptp.c  |  78 +++----
- 3 files changed, 181 insertions(+), 166 deletions(-)
+> CPU: 3 UID: 0 PID: 5986 Comm: syz.3.20 Not tainted syzkaller #0 PREEMPT(full)
+> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+> RIP: 0010:kernel_sock_shutdown+0x47/0x70 net/socket.c:3785
+> Code: fc ff df 48 89 fa 48 c1 ea 03 80 3c 02 00 75 33 48 b8 00 00 00 00 00 fc ff df 4c 8b 63 20 49 8d 7c 24 68 48 89 fa 48 c1 ea 03 <80> 3c 02 00 75 1a 49 8b 44 24 68 89 ee 48 89 df 5b 5d 41 5c ff e0
+> RSP: 0018:ffffc9000391f180 EFLAGS: 00010202
+> RAX: dffffc0000000000 RBX: ffff88802a2a0040 RCX: ffffffff8b8b72bd
+> RDX: 000000000000000d RSI: ffffffff89553b32 RDI: 0000000000000068
+> RBP: 0000000000000002 R08: 0000000000000001 R09: fffff52000723dfc
+> R10: ffffc9000391efe7 R11: 0000000000000000 R12: 0000000000000000
+> R13: ffff8880311b8000 R14: 0000000000000002 R15: 0000000000000018
+> FS:  00007f602d1fe6c0(0000) GS:ffff8880d6675000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 0000561c522a6000 CR3: 000000002e99e000 CR4: 0000000000352ef0
+> Call Trace:
+>   <TASK>
+>   udp_tunnel_sock_release+0x68/0x80 net/ipv4/udp_tunnel_core.c:202
+>   rxe_release_udp_tunnel drivers/infiniband/sw/rxe/rxe_net.c:294 [inline]
+>   rxe_sock_put+0xae/0x130 drivers/infiniband/sw/rxe/rxe_net.c:639
+>   rxe_net_del+0x83/0x120 drivers/infiniband/sw/rxe/rxe_net.c:660
+>   rxe_dellink+0x15/0x20 drivers/infiniband/sw/rxe/rxe.c:254
+>   nldev_dellink+0x289/0x3c0 drivers/infiniband/core/nldev.c:1849
+>   rdma_nl_rcv_msg+0x392/0x6f0 drivers/infiniband/core/netlink.c:195
+>   rdma_nl_rcv_skb.constprop.0.isra.0+0x2cb/0x410 drivers/infiniband/core/netlink.c:239
+>   netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
+>   netlink_unicast+0x585/0x850 net/netlink/af_netlink.c:1344
+>   netlink_sendmsg+0x8b0/0xda0 net/netlink/af_netlink.c:1894
+>   sock_sendmsg_nosec net/socket.c:787 [inline]
+>   __sock_sendmsg net/socket.c:802 [inline]
+>   ____sys_sendmsg+0x9e1/0xb70 net/socket.c:2698
+>   ___sys_sendmsg+0x190/0x1e0 net/socket.c:2752
+>   __sys_sendmsg+0x170/0x220 net/socket.c:2784
+>   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+>   do_syscall_64+0x10b/0xf80 arch/x86/entry/syscall_64.c:94
+>   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> RIP: 0033:0x7f602db9cdd9
+> Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+> RSP: 002b:00007f602d1fe028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+> RAX: ffffffffffffffda RBX: 00007f602de16090 RCX: 00007f602db9cdd9
+> RDX: 0000000000000000 RSI: 00002000000002c0 RDI: 0000000000000007
+> RBP: 00007f602dc32d69 R08: 0000000000000000 R09: 0000000000000000
+> R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+> R13: 00007f602de16128 R14: 00007f602de16090 R15: 00007ffc1d89c428
+>   </TASK>
+> Modules linked in:
+> ---[ end trace 0000000000000000 ]---
+> RIP: 0010:kernel_sock_shutdown+0x47/0x70 net/socket.c:3785
+> Code: fc ff df 48 89 fa 48 c1 ea 03 80 3c 02 00 75 33 48 b8 00 00 00 00 00 fc ff df 4c 8b 63 20 49 8d 7c 24 68 48 89 fa 48 c1 ea 03 <80> 3c 02 00 75 1a 49 8b 44 24 68 89 ee 48 89 df 5b 5d 41 5c ff e0
+> RSP: 0018:ffffc9000391f180 EFLAGS: 00010202
+>
+> RAX: dffffc0000000000 RBX: ffff88802a2a0040 RCX: ffffffff8b8b72bd
+> RDX: 000000000000000d RSI: ffffffff89553b32 RDI: 0000000000000068
+> RBP: 0000000000000002 R08: 0000000000000001 R09: fffff52000723dfc
+> R10: ffffc9000391efe7 R11: 0000000000000000 R12: 0000000000000000
+> R13: ffff8880311b8000 R14: 0000000000000002 R15: 0000000000000018
+> FS:  00007f602d1fe6c0(0000) GS:ffff8880d6675000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 0000561c522a6000 CR3: 000000002e99e000 CR4: 0000000000352ef0
+> ----------------
+> Code disassembly (best guess):
+>     0:	fc                   	cld
+>     1:	ff                   	lcall  (bad)
+>     2:	df 48 89             	fisttps -0x77(%rax)
+>     5:	fa                   	cli
+>     6:	48 c1 ea 03          	shr    $0x3,%rdx
+>     a:	80 3c 02 00          	cmpb   $0x0,(%rdx,%rax,1)
+>     e:	75 33                	jne    0x43
+>    10:	48 b8 00 00 00 00 00 	movabs $0xdffffc0000000000,%rax
+>    17:	fc ff df
+>    1a:	4c 8b 63 20          	mov    0x20(%rbx),%r12
+>    1e:	49 8d 7c 24 68       	lea    0x68(%r12),%rdi
+>    23:	48 89 fa             	mov    %rdi,%rdx
+>    26:	48 c1 ea 03          	shr    $0x3,%rdx
+> * 2a:	80 3c 02 00          	cmpb   $0x0,(%rdx,%rax,1) <-- trapping instruction
+>    2e:	75 1a                	jne    0x4a
+>    30:	49 8b 44 24 68       	mov    0x68(%r12),%rax
+>    35:	89 ee                	mov    %ebp,%esi
+>    37:	48 89 df             	mov    %rbx,%rdi
+>    3a:	5b                   	pop    %rbx
+>    3b:	5d                   	pop    %rbp
+>    3c:	41 5c                	pop    %r12
+>    3e:	ff e0                	jmp    *%rax
+>
+>
+> ---
+> If you want syzbot to run the reproducer, reply with:
+> #syz test: git://repo/address.git branch-or-commit-hash
+> If you attach or paste a git patch, syzbot will apply it before testing.
 
-diff --git a/drivers/net/ethernet/freescale/fec.h b/drivers/net/ethernet/freescale/fec.h
-index 7176803146f3..af31d946a638 100644
---- a/drivers/net/ethernet/freescale/fec.h
-+++ b/drivers/net/ethernet/freescale/fec.h
-@@ -701,5 +701,20 @@ int fec_ptp_set(struct net_device *ndev, struct kernel_hwtstamp_config *config,
- 		struct netlink_ext_ack *extack);
- void fec_ptp_get(struct net_device *ndev, struct kernel_hwtstamp_config *config);
- 
-+/*
-+ * ColdFire SoC peripheral blocks are big-endian, so use the raw IO access
-+ * functions for them.
-+ */
-+#ifdef CONFIG_COLDFIRE
-+#define fec_readl __raw_readl
-+#define fec_writel __raw_writel
-+#define fec_readl_poll_timeout_atomic(addr, val, cond, delay_us, timeout_us) \
-+	readx_poll_timeout_atomic(__raw_readl, addr, val, cond, delay_us, timeout_us)
-+#else
-+#define fec_readl readl
-+#define fec_writel writel
-+#define fec_readl_poll_timeout_atomic readl_poll_timeout_atomic
-+#endif
-+
- /****************************************************************************/
- #endif /* FEC_H */
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index f89aa94ce020..c29c434b8626 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -497,11 +497,11 @@ static void fec_txq_trigger_xmit(struct fec_enet_private *fep,
- 				 struct fec_enet_priv_tx_q *txq)
- {
- 	if (!(fep->quirks & FEC_QUIRK_ERR007885) ||
--	    !readl(txq->bd.reg_desc_active) ||
--	    !readl(txq->bd.reg_desc_active) ||
--	    !readl(txq->bd.reg_desc_active) ||
--	    !readl(txq->bd.reg_desc_active))
--		writel(0, txq->bd.reg_desc_active);
-+	    !fec_readl(txq->bd.reg_desc_active) ||
-+	    !fec_readl(txq->bd.reg_desc_active) ||
-+	    !fec_readl(txq->bd.reg_desc_active) ||
-+	    !fec_readl(txq->bd.reg_desc_active))
-+		fec_writel(0, txq->bd.reg_desc_active);
- }
- 
- static struct bufdesc *
-@@ -1069,7 +1069,7 @@ static void fec_enet_active_rxring(struct net_device *ndev)
- 	int i;
- 
- 	for (i = 0; i < fep->num_rx_queues; i++)
--		writel(0, fep->rx_queue[i]->bd.reg_desc_active);
-+		fec_writel(0, fep->rx_queue[i]->bd.reg_desc_active);
- }
- 
- static void fec_enet_enable_ring(struct net_device *ndev)
-@@ -1081,23 +1081,23 @@ static void fec_enet_enable_ring(struct net_device *ndev)
- 
- 	for (i = 0; i < fep->num_rx_queues; i++) {
- 		rxq = fep->rx_queue[i];
--		writel(rxq->bd.dma, fep->hwp + FEC_R_DES_START(i));
--		writel(fep->max_buf_size, fep->hwp + FEC_R_BUFF_SIZE(i));
-+		fec_writel(rxq->bd.dma, fep->hwp + FEC_R_DES_START(i));
-+		fec_writel(fep->max_buf_size, fep->hwp + FEC_R_BUFF_SIZE(i));
- 
- 		/* enable DMA1/2 */
- 		if (i)
--			writel(RCMR_MATCHEN | RCMR_CMP(i),
--			       fep->hwp + FEC_RCMR(i));
-+			fec_writel(RCMR_MATCHEN | RCMR_CMP(i),
-+				   fep->hwp + FEC_RCMR(i));
- 	}
- 
- 	for (i = 0; i < fep->num_tx_queues; i++) {
- 		txq = fep->tx_queue[i];
--		writel(txq->bd.dma, fep->hwp + FEC_X_DES_START(i));
-+		fec_writel(txq->bd.dma, fep->hwp + FEC_X_DES_START(i));
- 
- 		/* enable DMA1/2 */
- 		if (i)
--			writel(DMA_CLASS_EN | IDLE_SLOPE(i),
--			       fep->hwp + FEC_DMA_CFG(i));
-+			fec_writel(DMA_CLASS_EN | IDLE_SLOPE(i),
-+				   fep->hwp + FEC_DMA_CFG(i));
- 	}
- }
- 
-@@ -1112,15 +1112,15 @@ static void fec_ctrl_reset(struct fec_enet_private *fep, bool allow_wol)
- 	if (!allow_wol || !(fep->wol_flag & FEC_WOL_FLAG_SLEEP_ON)) {
- 		if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES ||
- 		    ((fep->quirks & FEC_QUIRK_NO_HARD_RESET) && fep->link)) {
--			writel(0, fep->hwp + FEC_ECNTRL);
-+			fec_writel(0, fep->hwp + FEC_ECNTRL);
- 		} else {
--			writel(FEC_ECR_RESET, fep->hwp + FEC_ECNTRL);
-+			fec_writel(FEC_ECR_RESET, fep->hwp + FEC_ECNTRL);
- 			udelay(10);
- 		}
- 	} else {
--		val = readl(fep->hwp + FEC_ECNTRL);
-+		val = fec_readl(fep->hwp + FEC_ECNTRL);
- 		val |= (FEC_ECR_MAGICEN | FEC_ECR_SLEEP);
--		writel(val, fep->hwp + FEC_ECNTRL);
-+		fec_writel(val, fep->hwp + FEC_ECNTRL);
- 	}
- }
- 
-@@ -1128,11 +1128,11 @@ static void fec_set_hw_mac_addr(struct net_device *ndev)
- {
- 	struct fec_enet_private *fep = netdev_priv(ndev);
- 
--	writel(ndev->dev_addr[3] | (ndev->dev_addr[2] << 8) |
--	       (ndev->dev_addr[1] << 16) | (ndev->dev_addr[0] << 24),
--	       fep->hwp + FEC_ADDR_LOW);
--	writel((ndev->dev_addr[5] << 16) | (ndev->dev_addr[4] << 24),
--	       fep->hwp + FEC_ADDR_HIGH);
-+	fec_writel(ndev->dev_addr[3] | (ndev->dev_addr[2] << 8) |
-+		   (ndev->dev_addr[1] << 16) | (ndev->dev_addr[0] << 24),
-+		   fep->hwp + FEC_ADDR_LOW);
-+	fec_writel((ndev->dev_addr[5] << 16) | (ndev->dev_addr[4] << 24),
-+		   fep->hwp + FEC_ADDR_HIGH);
- }
- 
- /*
-@@ -1162,7 +1162,7 @@ fec_restart(struct net_device *ndev)
- 	fec_set_hw_mac_addr(ndev);
- 
- 	/* Clear any outstanding interrupt, except MDIO. */
--	writel((0xffffffff & ~FEC_ENET_MII), fep->hwp + FEC_IEVENT);
-+	fec_writel((0xffffffff & ~FEC_ENET_MII), fep->hwp + FEC_IEVENT);
- 
- 	fec_enet_bd_init(ndev);
- 
-@@ -1171,19 +1171,19 @@ fec_restart(struct net_device *ndev)
- 	/* Enable MII mode */
- 	if (fep->full_duplex == DUPLEX_FULL) {
- 		/* FD enable */
--		writel(0x04, fep->hwp + FEC_X_CNTRL);
-+		fec_writel(0x04, fep->hwp + FEC_X_CNTRL);
- 	} else {
- 		/* No Rcv on Xmit */
- 		rcntl |= FEC_RCR_DRT;
--		writel(0x0, fep->hwp + FEC_X_CNTRL);
-+		fec_writel(0x0, fep->hwp + FEC_X_CNTRL);
- 	}
- 
- 	/* Set MII speed */
--	writel(fep->phy_speed, fep->hwp + FEC_MII_SPEED);
-+	fec_writel(fep->phy_speed, fep->hwp + FEC_MII_SPEED);
- 
- #if !defined(CONFIG_M5272)
- 	if (fep->quirks & FEC_QUIRK_HAS_RACC) {
--		u32 val = readl(fep->hwp + FEC_RACC);
-+		u32 val = fec_readl(fep->hwp + FEC_RACC);
- 
- 		/* align IP header */
- 		val |= FEC_RACC_SHIFT16;
-@@ -1192,8 +1192,8 @@ fec_restart(struct net_device *ndev)
- 			val |= FEC_RACC_OPTIONS;
- 		else
- 			val &= ~FEC_RACC_OPTIONS;
--		writel(val, fep->hwp + FEC_RACC);
--		writel(min(fep->rx_frame_size, fep->max_buf_size), fep->hwp + FEC_FTRL);
-+		fec_writel(val, fep->hwp + FEC_RACC);
-+		fec_writel(min(fep->rx_frame_size, fep->max_buf_size), fep->hwp + FEC_FTRL);
- 	}
- #endif
- 
-@@ -1227,8 +1227,8 @@ fec_restart(struct net_device *ndev)
- 		if (fep->quirks & FEC_QUIRK_USE_GASKET) {
- 			u32 cfgr;
- 			/* disable the gasket and wait */
--			writel(0, fep->hwp + FEC_MIIGSK_ENR);
--			while (readl(fep->hwp + FEC_MIIGSK_ENR) & 4)
-+			fec_writel(0, fep->hwp + FEC_MIIGSK_ENR);
-+			while (fec_readl(fep->hwp + FEC_MIIGSK_ENR) & 4)
- 				udelay(1);
- 
- 			/*
-@@ -1240,10 +1240,10 @@ fec_restart(struct net_device *ndev)
- 				? BM_MIIGSK_CFGR_RMII : BM_MIIGSK_CFGR_MII;
- 			if (ndev->phydev && ndev->phydev->speed == SPEED_10)
- 				cfgr |= BM_MIIGSK_CFGR_FRCONT_10M;
--			writel(cfgr, fep->hwp + FEC_MIIGSK_CFGR);
-+			fec_writel(cfgr, fep->hwp + FEC_MIIGSK_CFGR);
- 
- 			/* re-enable the gasket */
--			writel(2, fep->hwp + FEC_MIIGSK_ENR);
-+			fec_writel(2, fep->hwp + FEC_MIIGSK_ENR);
- 		}
- #endif
- 	}
-@@ -1256,25 +1256,25 @@ fec_restart(struct net_device *ndev)
- 		rcntl |= FEC_RCR_FLOWCTL;
- 
- 		/* set FIFO threshold parameter to reduce overrun */
--		writel(FEC_ENET_RSEM_V, fep->hwp + FEC_R_FIFO_RSEM);
--		writel(FEC_ENET_RSFL_V, fep->hwp + FEC_R_FIFO_RSFL);
--		writel(FEC_ENET_RAEM_V, fep->hwp + FEC_R_FIFO_RAEM);
--		writel(FEC_ENET_RAFL_V, fep->hwp + FEC_R_FIFO_RAFL);
-+		fec_writel(FEC_ENET_RSEM_V, fep->hwp + FEC_R_FIFO_RSEM);
-+		fec_writel(FEC_ENET_RSFL_V, fep->hwp + FEC_R_FIFO_RSFL);
-+		fec_writel(FEC_ENET_RAEM_V, fep->hwp + FEC_R_FIFO_RAEM);
-+		fec_writel(FEC_ENET_RAFL_V, fep->hwp + FEC_R_FIFO_RAFL);
- 
- 		/* OPD */
--		writel(FEC_ENET_OPD_V, fep->hwp + FEC_OPD);
-+		fec_writel(FEC_ENET_OPD_V, fep->hwp + FEC_OPD);
- 	} else {
- 		rcntl &= ~FEC_RCR_FLOWCTL;
- 	}
- #endif /* !defined(CONFIG_M5272) */
- 
--	writel(rcntl, fep->hwp + FEC_R_CNTRL);
-+	fec_writel(rcntl, fep->hwp + FEC_R_CNTRL);
- 
- 	/* Setup multicast filter. */
- 	set_multicast_list(ndev);
- #ifndef CONFIG_M5272
--	writel(0, fep->hwp + FEC_HASH_TABLE_HIGH);
--	writel(0, fep->hwp + FEC_HASH_TABLE_LOW);
-+	fec_writel(0, fep->hwp + FEC_HASH_TABLE_HIGH);
-+	fec_writel(0, fep->hwp + FEC_HASH_TABLE_LOW);
- #endif
- 
- 	if (fep->quirks & FEC_QUIRK_ENET_MAC) {
-@@ -1290,9 +1290,9 @@ fec_restart(struct net_device *ndev)
- 		 */
- 		if ((fep->quirks & FEC_QUIRK_JUMBO_FRAME) &&
- 		    (ndev->mtu > (PKT_MAXBUF_SIZE - VLAN_ETH_HLEN - ETH_FCS_LEN)))
--			writel(0xF, fep->hwp + FEC_X_WMRK);
-+			fec_writel(0xF, fep->hwp + FEC_X_WMRK);
- 		else
--			writel(FEC_TXWMRK_STRFWD, fep->hwp + FEC_X_WMRK);
-+			fec_writel(FEC_TXWMRK_STRFWD, fep->hwp + FEC_X_WMRK);
- 	}
- 
- 	if (fep->bufdesc_ex)
-@@ -1307,11 +1307,11 @@ fec_restart(struct net_device *ndev)
- 
- #ifndef CONFIG_M5272
- 	/* Enable the MIB statistic event counters */
--	writel(0 << 31, fep->hwp + FEC_MIB_CTRLSTAT);
-+	fec_writel(0 << 31, fep->hwp + FEC_MIB_CTRLSTAT);
- #endif
- 
- 	/* And last, enable the transmit and receive processing */
--	writel(ecntl, fep->hwp + FEC_ECNTRL);
-+	fec_writel(ecntl, fep->hwp + FEC_ECNTRL);
- 	fec_enet_active_rxring(ndev);
- 
- 	if (fep->bufdesc_ex) {
-@@ -1321,9 +1321,9 @@ fec_restart(struct net_device *ndev)
- 
- 	/* Enable interrupts we wish to service */
- 	if (fep->link)
--		writel(FEC_DEFAULT_IMASK, fep->hwp + FEC_IMASK);
-+		fec_writel(FEC_DEFAULT_IMASK, fep->hwp + FEC_IMASK);
- 	else
--		writel(0, fep->hwp + FEC_IMASK);
-+		fec_writel(0, fep->hwp + FEC_IMASK);
- 
- 	/* Init the interrupt coalescing */
- 	if (fep->quirks & FEC_QUIRK_HAS_COALESCE)
-@@ -1384,29 +1384,29 @@ static void fec_irqs_disable(struct net_device *ndev)
- {
- 	struct fec_enet_private *fep = netdev_priv(ndev);
- 
--	writel(0, fep->hwp + FEC_IMASK);
-+	fec_writel(0, fep->hwp + FEC_IMASK);
- }
- 
- static void fec_irqs_disable_except_wakeup(struct net_device *ndev)
- {
- 	struct fec_enet_private *fep = netdev_priv(ndev);
- 
--	writel(0, fep->hwp + FEC_IMASK);
--	writel(FEC_ENET_WAKEUP, fep->hwp + FEC_IMASK);
-+	fec_writel(0, fep->hwp + FEC_IMASK);
-+	fec_writel(FEC_ENET_WAKEUP, fep->hwp + FEC_IMASK);
- }
- 
- static void
- fec_stop(struct net_device *ndev)
- {
- 	struct fec_enet_private *fep = netdev_priv(ndev);
--	u32 rmii_mode = readl(fep->hwp + FEC_R_CNTRL) & FEC_RCR_RMII;
-+	u32 rmii_mode = fec_readl(fep->hwp + FEC_R_CNTRL) & FEC_RCR_RMII;
- 	u32 val;
- 
- 	/* We cannot expect a graceful transmit stop without link !!! */
- 	if (fep->link) {
--		writel(1, fep->hwp + FEC_X_CNTRL); /* Graceful transmit stop */
-+		fec_writel(1, fep->hwp + FEC_X_CNTRL); /* Graceful transmit stop */
- 		udelay(10);
--		if (!(readl(fep->hwp + FEC_IEVENT) & FEC_ENET_GRA))
-+		if (!(fec_readl(fep->hwp + FEC_IEVENT) & FEC_ENET_GRA))
- 			netdev_err(ndev, "Graceful transmit stop did not complete!\n");
- 	}
- 
-@@ -1414,20 +1414,20 @@ fec_stop(struct net_device *ndev)
- 		fec_ptp_save_state(fep);
- 
- 	fec_ctrl_reset(fep, true);
--	writel(fep->phy_speed, fep->hwp + FEC_MII_SPEED);
--	writel(FEC_DEFAULT_IMASK, fep->hwp + FEC_IMASK);
-+	fec_writel(fep->phy_speed, fep->hwp + FEC_MII_SPEED);
-+	fec_writel(FEC_DEFAULT_IMASK, fep->hwp + FEC_IMASK);
- 
- 	/* We have to keep ENET enabled to have MII interrupt stay working */
- 	if (fep->quirks & FEC_QUIRK_ENET_MAC &&
- 		!(fep->wol_flag & FEC_WOL_FLAG_SLEEP_ON)) {
--		writel(FEC_ECR_ETHEREN, fep->hwp + FEC_ECNTRL);
--		writel(rmii_mode, fep->hwp + FEC_R_CNTRL);
-+		fec_writel(FEC_ECR_ETHEREN, fep->hwp + FEC_ECNTRL);
-+		fec_writel(rmii_mode, fep->hwp + FEC_R_CNTRL);
- 	}
- 
- 	if (fep->bufdesc_ex) {
--		val = readl(fep->hwp + FEC_ECNTRL);
-+		val = fec_readl(fep->hwp + FEC_ECNTRL);
- 		val |= FEC_ECR_EN1588;
--		writel(val, fep->hwp + FEC_ECNTRL);
-+		fec_writel(val, fep->hwp + FEC_ECNTRL);
- 
- 		fec_ptp_start_cyclecounter(ndev);
- 		fec_ptp_restore_state(fep);
-@@ -1713,8 +1713,8 @@ static int fec_enet_tx_queue(struct fec_enet_private *fep,
- 
- 	/* ERR006358: Keep the transmitter going */
- 	if (bdp != txq->bd.cur &&
--	    readl(txq->bd.reg_desc_active) == 0)
--		writel(0, txq->bd.reg_desc_active);
-+	    fec_readl(txq->bd.reg_desc_active) == 0)
-+		fec_writel(0, txq->bd.reg_desc_active);
- 
- 	if (txq->xsk_pool) {
- 		struct xsk_buff_pool *pool = txq->xsk_pool;
-@@ -1923,7 +1923,7 @@ static int fec_enet_rx_queue(struct fec_enet_private *fep,
- 			break;
- 		pkt_received++;
- 
--		writel(FEC_ENET_RXF_GET(queue), fep->hwp + FEC_IEVENT);
-+		fec_writel(FEC_ENET_RXF_GET(queue), fep->hwp + FEC_IEVENT);
- 
- 		/* Check for errors. */
- 		status ^= BD_ENET_RX_LAST;
-@@ -1991,7 +1991,7 @@ static int fec_enet_rx_queue(struct fec_enet_private *fep,
- 		 * incoming frames.  On a heavily loaded network, we should be
- 		 * able to keep up at the expense of system resources.
- 		 */
--		writel(0, rxq->bd.reg_desc_active);
-+		fec_writel(0, rxq->bd.reg_desc_active);
- 	}
- 	rxq->bd.cur = bdp;
- 
-@@ -2053,7 +2053,7 @@ static int fec_enet_rx_queue_xdp(struct fec_enet_private *fep, int queue,
- 			break;
- 		pkt_received++;
- 
--		writel(FEC_ENET_RXF_GET(queue), fep->hwp + FEC_IEVENT);
-+		fec_writel(FEC_ENET_RXF_GET(queue), fep->hwp + FEC_IEVENT);
- 
- 		/* Check for errors. */
- 		status ^= BD_ENET_RX_LAST;
-@@ -2166,7 +2166,7 @@ static int fec_enet_rx_queue_xdp(struct fec_enet_private *fep, int queue,
- 		 * incoming frames. On a heavily loaded network, we should be
- 		 * able to keep up at the expense of system resources.
- 		 */
--		writel(0, rxq->bd.reg_desc_active);
-+		fec_writel(0, rxq->bd.reg_desc_active);
- 	}
- 
- 	rxq->bd.cur = bdp;
-@@ -2296,7 +2296,7 @@ static int fec_enet_rx_queue_xsk(struct fec_enet_private *fep, int queue,
- 		if (unlikely(pkt_received >= budget))
- 			break;
- 
--		writel(FEC_ENET_RXF_GET(queue), fep->hwp + FEC_IEVENT);
-+		fec_writel(FEC_ENET_RXF_GET(queue), fep->hwp + FEC_IEVENT);
- 
- 		index = fec_enet_get_bd_index(bdp, &rxq->bd);
- 		xsk = rxq->rx_buf[index].xdp;
-@@ -2428,7 +2428,7 @@ static int fec_enet_rx_queue_xsk(struct fec_enet_private *fep, int queue,
- 		 * incoming frames. On a heavily loaded network, we should be
- 		 * able to keep up at the expense of system resources.
- 		 */
--		writel(0, rxq->bd.reg_desc_active);
-+		fec_writel(0, rxq->bd.reg_desc_active);
- 	}
- 
- 	rxq->bd.cur = bdp;
-@@ -2475,12 +2475,12 @@ static bool fec_enet_collect_events(struct fec_enet_private *fep)
- {
- 	uint int_events;
- 
--	int_events = readl(fep->hwp + FEC_IEVENT);
-+	int_events = fec_readl(fep->hwp + FEC_IEVENT);
- 
- 	/* Don't clear MDIO events, we poll for those */
- 	int_events &= ~FEC_ENET_MII;
- 
--	writel(int_events, fep->hwp + FEC_IEVENT);
-+	fec_writel(int_events, fep->hwp + FEC_IEVENT);
- 
- 	return int_events != 0;
- }
-@@ -2497,7 +2497,7 @@ fec_enet_interrupt(int irq, void *dev_id)
- 
- 		if (napi_schedule_prep(&fep->napi)) {
- 			/* Disable interrupts */
--			writel(0, fep->hwp + FEC_IMASK);
-+			fec_writel(0, fep->hwp + FEC_IMASK);
- 			__napi_schedule(&fep->napi);
- 		}
- 	}
-@@ -2520,7 +2520,7 @@ static int fec_enet_rx_napi(struct napi_struct *napi, int budget)
- 
- 	if (max_done < budget) {
- 		napi_complete_done(napi, max_done);
--		writel(FEC_DEFAULT_IMASK, fep->hwp + FEC_IMASK);
-+		fec_writel(FEC_DEFAULT_IMASK, fep->hwp + FEC_IMASK);
- 		return max_done;
- 	}
- 
-@@ -2576,9 +2576,9 @@ static int fec_get_mac(struct net_device *ndev)
- 	 */
- 	if (!is_valid_ether_addr(iap)) {
- 		*((__be32 *) &tmpaddr[0]) =
--			cpu_to_be32(readl(fep->hwp + FEC_ADDR_LOW));
-+			cpu_to_be32(fec_readl(fep->hwp + FEC_ADDR_LOW));
- 		*((__be16 *) &tmpaddr[4]) =
--			cpu_to_be16(readl(fep->hwp + FEC_ADDR_HIGH) >> 16);
-+			cpu_to_be16(fec_readl(fep->hwp + FEC_ADDR_HIGH) >> 16);
- 		iap = &tmpaddr[0];
- 	}
- 
-@@ -2630,8 +2630,8 @@ static int fec_enet_eee_mode_set(struct net_device *ndev, u32 lpi_timer,
- 		wake_cycle = 0;
- 	}
- 
--	writel(sleep_cycle, fep->hwp + FEC_LPI_SLEEP);
--	writel(wake_cycle, fep->hwp + FEC_LPI_WAKE);
-+	fec_writel(sleep_cycle, fep->hwp + FEC_LPI_SLEEP);
-+	fec_writel(wake_cycle, fep->hwp + FEC_LPI_WAKE);
- 
- 	return 0;
- }
-@@ -2701,11 +2701,11 @@ static int fec_enet_mdio_wait(struct fec_enet_private *fep)
- 	uint ievent;
- 	int ret;
- 
--	ret = readl_poll_timeout_atomic(fep->hwp + FEC_IEVENT, ievent,
--					ievent & FEC_ENET_MII, 2, 30000);
-+	ret = fec_readl_poll_timeout_atomic(fep->hwp + FEC_IEVENT, ievent,
-+					    ievent & FEC_ENET_MII, 2, 30000);
- 
- 	if (!ret)
--		writel(FEC_ENET_MII, fep->hwp + FEC_IEVENT);
-+		fec_writel(FEC_ENET_MII, fep->hwp + FEC_IEVENT);
- 
- 	return ret;
- }
-@@ -2726,9 +2726,9 @@ static int fec_enet_mdio_read_c22(struct mii_bus *bus, int mii_id, int regnum)
- 	frame_addr = regnum;
- 
- 	/* start a read op */
--	writel(frame_start | frame_op |
--	       FEC_MMFR_PA(mii_id) | FEC_MMFR_RA(frame_addr) |
--	       FEC_MMFR_TA, fep->hwp + FEC_MII_DATA);
-+	fec_writel(frame_start | frame_op |
-+		   FEC_MMFR_PA(mii_id) | FEC_MMFR_RA(frame_addr) |
-+		   FEC_MMFR_TA, fep->hwp + FEC_MII_DATA);
- 
- 	/* wait for end of transfer */
- 	ret = fec_enet_mdio_wait(fep);
-@@ -2737,7 +2737,7 @@ static int fec_enet_mdio_read_c22(struct mii_bus *bus, int mii_id, int regnum)
- 		goto out;
- 	}
- 
--	ret = FEC_MMFR_DATA(readl(fep->hwp + FEC_MII_DATA));
-+	ret = FEC_MMFR_DATA(fec_readl(fep->hwp + FEC_MII_DATA));
- 
- out:
- 	pm_runtime_put_autosuspend(dev);
-@@ -2759,10 +2759,10 @@ static int fec_enet_mdio_read_c45(struct mii_bus *bus, int mii_id,
- 	frame_start = FEC_MMFR_ST_C45;
- 
- 	/* write address */
--	writel(frame_start | FEC_MMFR_OP_ADDR_WRITE |
--	       FEC_MMFR_PA(mii_id) | FEC_MMFR_RA(devad) |
--	       FEC_MMFR_TA | (regnum & 0xFFFF),
--	       fep->hwp + FEC_MII_DATA);
-+	fec_writel(frame_start | FEC_MMFR_OP_ADDR_WRITE |
-+		   FEC_MMFR_PA(mii_id) | FEC_MMFR_RA(devad) |
-+		   FEC_MMFR_TA | (regnum & 0xFFFF),
-+		   fep->hwp + FEC_MII_DATA);
- 
- 	/* wait for end of transfer */
- 	ret = fec_enet_mdio_wait(fep);
-@@ -2774,9 +2774,9 @@ static int fec_enet_mdio_read_c45(struct mii_bus *bus, int mii_id,
- 	frame_op = FEC_MMFR_OP_READ_C45;
- 
- 	/* start a read op */
--	writel(frame_start | frame_op |
--	       FEC_MMFR_PA(mii_id) | FEC_MMFR_RA(devad) |
--	       FEC_MMFR_TA, fep->hwp + FEC_MII_DATA);
-+	fec_writel(frame_start | frame_op |
-+		   FEC_MMFR_PA(mii_id) | FEC_MMFR_RA(devad) |
-+		   FEC_MMFR_TA, fep->hwp + FEC_MII_DATA);
- 
- 	/* wait for end of transfer */
- 	ret = fec_enet_mdio_wait(fep);
-@@ -2785,7 +2785,7 @@ static int fec_enet_mdio_read_c45(struct mii_bus *bus, int mii_id,
- 		goto out;
- 	}
- 
--	ret = FEC_MMFR_DATA(readl(fep->hwp + FEC_MII_DATA));
-+	ret = FEC_MMFR_DATA(fec_readl(fep->hwp + FEC_MII_DATA));
- 
- out:
- 	pm_runtime_put_autosuspend(dev);
-@@ -2809,10 +2809,10 @@ static int fec_enet_mdio_write_c22(struct mii_bus *bus, int mii_id, int regnum,
- 	frame_addr = regnum;
- 
- 	/* start a write op */
--	writel(frame_start | FEC_MMFR_OP_WRITE |
--	       FEC_MMFR_PA(mii_id) | FEC_MMFR_RA(frame_addr) |
--	       FEC_MMFR_TA | FEC_MMFR_DATA(value),
--	       fep->hwp + FEC_MII_DATA);
-+	fec_writel(frame_start | FEC_MMFR_OP_WRITE |
-+		   FEC_MMFR_PA(mii_id) | FEC_MMFR_RA(frame_addr) |
-+		   FEC_MMFR_TA | FEC_MMFR_DATA(value),
-+		   fep->hwp + FEC_MII_DATA);
- 
- 	/* wait for end of transfer */
- 	ret = fec_enet_mdio_wait(fep);
-@@ -2838,10 +2838,10 @@ static int fec_enet_mdio_write_c45(struct mii_bus *bus, int mii_id,
- 	frame_start = FEC_MMFR_ST_C45;
- 
- 	/* write address */
--	writel(frame_start | FEC_MMFR_OP_ADDR_WRITE |
--	       FEC_MMFR_PA(mii_id) | FEC_MMFR_RA(devad) |
--	       FEC_MMFR_TA | (regnum & 0xFFFF),
--	       fep->hwp + FEC_MII_DATA);
-+	fec_writel(frame_start | FEC_MMFR_OP_ADDR_WRITE |
-+		   FEC_MMFR_PA(mii_id) | FEC_MMFR_RA(devad) |
-+		   FEC_MMFR_TA | (regnum & 0xFFFF),
-+		   fep->hwp + FEC_MII_DATA);
- 
- 	/* wait for end of transfer */
- 	ret = fec_enet_mdio_wait(fep);
-@@ -2851,10 +2851,10 @@ static int fec_enet_mdio_write_c45(struct mii_bus *bus, int mii_id,
- 	}
- 
- 	/* start a write op */
--	writel(frame_start | FEC_MMFR_OP_WRITE |
--	       FEC_MMFR_PA(mii_id) | FEC_MMFR_RA(devad) |
--	       FEC_MMFR_TA | FEC_MMFR_DATA(value),
--	       fep->hwp + FEC_MII_DATA);
-+	fec_writel(frame_start | FEC_MMFR_OP_WRITE |
-+		   FEC_MMFR_PA(mii_id) | FEC_MMFR_RA(devad) |
-+		   FEC_MMFR_TA | FEC_MMFR_DATA(value),
-+		   fep->hwp + FEC_MII_DATA);
- 
- 	/* wait for end of transfer */
- 	ret = fec_enet_mdio_wait(fep);
-@@ -3132,13 +3132,13 @@ static int fec_enet_mii_init(struct platform_device *pdev)
- 		 * - writing MMFR:
- 		 *	- mscr[7:0]_not_zero
- 		 */
--		writel(0, fep->hwp + FEC_MII_DATA);
-+		fec_writel(0, fep->hwp + FEC_MII_DATA);
- 	}
- 
--	writel(fep->phy_speed, fep->hwp + FEC_MII_SPEED);
-+	fec_writel(fep->phy_speed, fep->hwp + FEC_MII_SPEED);
- 
- 	/* Clear any pending transaction complete indication */
--	writel(FEC_ENET_MII, fep->hwp + FEC_IEVENT);
-+	fec_writel(FEC_ENET_MII, fep->hwp + FEC_IEVENT);
- 
- 	fep->mii_bus = mdiobus_alloc();
- 	if (fep->mii_bus == NULL) {
-@@ -3320,7 +3320,7 @@ static void fec_enet_get_regs(struct net_device *ndev,
- 			continue;
- 
- 		off >>= 2;
--		buf[off] = readl(&theregs[off]);
-+		buf[off] = fec_readl(&theregs[off]);
- 	}
- 
- 	pm_runtime_put_autosuspend(dev);
-@@ -3487,7 +3487,7 @@ static void fec_enet_update_ethtool_stats(struct net_device *dev)
- 	int i;
- 
- 	for (i = 0; i < ARRAY_SIZE(fec_stats); i++)
--		fep->ethtool_stats[i] = readl(fep->hwp + fec_stats[i].offset);
-+		fep->ethtool_stats[i] = fec_readl(fep->hwp + fec_stats[i].offset);
- }
- 
- static void fec_enet_get_xdp_stats(struct fec_enet_private *fep, u64 *data)
-@@ -3588,10 +3588,10 @@ static void fec_enet_clear_ethtool_stats(struct net_device *dev)
- 	int i, j;
- 
- 	/* Disable MIB statistics counters */
--	writel(FEC_MIB_CTRLSTAT_DISABLE, fep->hwp + FEC_MIB_CTRLSTAT);
-+	fec_writel(FEC_MIB_CTRLSTAT_DISABLE, fep->hwp + FEC_MIB_CTRLSTAT);
- 
- 	for (i = 0; i < ARRAY_SIZE(fec_stats); i++)
--		writel(0, fep->hwp + fec_stats[i].offset);
-+		fec_writel(0, fep->hwp + fec_stats[i].offset);
- 
- 	for (i = fep->num_rx_queues - 1; i >= 0; i--) {
- 		rxq = fep->rx_queue[i];
-@@ -3600,7 +3600,7 @@ static void fec_enet_clear_ethtool_stats(struct net_device *dev)
- 	}
- 
- 	/* Don't disable MIB statistics counters */
--	writel(0, fep->hwp + FEC_MIB_CTRLSTAT);
-+	fec_writel(0, fep->hwp + FEC_MIB_CTRLSTAT);
- }
- 
- #else	/* !defined(CONFIG_M5272) */
-@@ -3649,13 +3649,13 @@ static void fec_enet_itr_coal_set(struct net_device *ndev)
- 		tx_itr |= FEC_ITR_ICTT(tx_ictt);
- 	}
- 
--	writel(tx_itr, fep->hwp + FEC_TXIC0);
--	writel(rx_itr, fep->hwp + FEC_RXIC0);
-+	fec_writel(tx_itr, fep->hwp + FEC_TXIC0);
-+	fec_writel(rx_itr, fep->hwp + FEC_RXIC0);
- 	if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES) {
--		writel(tx_itr, fep->hwp + FEC_TXIC1);
--		writel(rx_itr, fep->hwp + FEC_RXIC1);
--		writel(tx_itr, fep->hwp + FEC_TXIC2);
--		writel(rx_itr, fep->hwp + FEC_RXIC2);
-+		fec_writel(tx_itr, fep->hwp + FEC_TXIC1);
-+		fec_writel(rx_itr, fep->hwp + FEC_RXIC1);
-+		fec_writel(tx_itr, fep->hwp + FEC_TXIC2);
-+		fec_writel(rx_itr, fep->hwp + FEC_RXIC2);
- 	}
- }
- 
-@@ -4281,22 +4281,22 @@ static void set_multicast_list(struct net_device *ndev)
- 	unsigned int hash_high = 0, hash_low = 0;
- 
- 	if (ndev->flags & IFF_PROMISC) {
--		tmp = readl(fep->hwp + FEC_R_CNTRL);
-+		tmp = fec_readl(fep->hwp + FEC_R_CNTRL);
- 		tmp |= 0x8;
--		writel(tmp, fep->hwp + FEC_R_CNTRL);
-+		fec_writel(tmp, fep->hwp + FEC_R_CNTRL);
- 		return;
- 	}
- 
--	tmp = readl(fep->hwp + FEC_R_CNTRL);
-+	tmp = fec_readl(fep->hwp + FEC_R_CNTRL);
- 	tmp &= ~0x8;
--	writel(tmp, fep->hwp + FEC_R_CNTRL);
-+	fec_writel(tmp, fep->hwp + FEC_R_CNTRL);
- 
- 	if (ndev->flags & IFF_ALLMULTI) {
- 		/* Catch all multicast addresses, so set the
- 		 * filter to all 1's
- 		 */
--		writel(0xffffffff, fep->hwp + FEC_GRP_HASH_TABLE_HIGH);
--		writel(0xffffffff, fep->hwp + FEC_GRP_HASH_TABLE_LOW);
-+		fec_writel(0xffffffff, fep->hwp + FEC_GRP_HASH_TABLE_HIGH);
-+		fec_writel(0xffffffff, fep->hwp + FEC_GRP_HASH_TABLE_LOW);
- 
- 		return;
- 	}
-@@ -4317,8 +4317,8 @@ static void set_multicast_list(struct net_device *ndev)
- 			hash_low |= 1 << hash;
- 	}
- 
--	writel(hash_high, fep->hwp + FEC_GRP_HASH_TABLE_HIGH);
--	writel(hash_low, fep->hwp + FEC_GRP_HASH_TABLE_LOW);
-+	fec_writel(hash_high, fep->hwp + FEC_GRP_HASH_TABLE_HIGH);
-+	fec_writel(hash_low, fep->hwp + FEC_GRP_HASH_TABLE_LOW);
- }
- 
- /* Set a MAC change in hardware. */
-@@ -5003,7 +5003,7 @@ static int fec_enet_init(struct net_device *ndev)
- 	ndev->netdev_ops = &fec_netdev_ops;
- 	ndev->ethtool_ops = &fec_enet_ethtool_ops;
- 
--	writel(FEC_RX_DISABLED_IMASK, fep->hwp + FEC_IMASK);
-+	fec_writel(FEC_RX_DISABLED_IMASK, fep->hwp + FEC_IMASK);
- 	netif_napi_add(ndev, &fep->napi, fec_enet_rx_napi);
- 
- 	if (fep->quirks & FEC_QUIRK_HAS_VLAN)
-@@ -5606,9 +5606,9 @@ static int fec_resume(struct device *dev)
- 				enable_irq(fep->wake_irq);
- 			}
- 
--			val = readl(fep->hwp + FEC_ECNTRL);
-+			val = fec_readl(fep->hwp + FEC_ECNTRL);
- 			val &= ~(FEC_ECR_MAGICEN | FEC_ECR_SLEEP);
--			writel(val, fep->hwp + FEC_ECNTRL);
-+			fec_writel(val, fep->hwp + FEC_ECNTRL);
- 			fep->wol_flag &= ~FEC_WOL_FLAG_SLEEP_ON;
- 		} else {
- 			pinctrl_pm_select_default_state(&fep->pdev->dev);
-diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
-index 56801c2009d5..07062599b522 100644
---- a/drivers/net/ethernet/freescale/fec_ptp.c
-+++ b/drivers/net/ethernet/freescale/fec_ptp.c
-@@ -102,14 +102,14 @@ static u64 fec_ptp_read(struct cyclecounter *cc)
- 		container_of(cc, struct fec_enet_private, cc);
- 	u32 tempval;
- 
--	tempval = readl(fep->hwp + FEC_ATIME_CTRL);
-+	tempval = fec_readl(fep->hwp + FEC_ATIME_CTRL);
- 	tempval |= FEC_T_CTRL_CAPTURE;
--	writel(tempval, fep->hwp + FEC_ATIME_CTRL);
-+	fec_writel(tempval, fep->hwp + FEC_ATIME_CTRL);
- 
- 	if (fep->quirks & FEC_QUIRK_BUG_CAPTURE)
- 		udelay(1);
- 
--	return readl(fep->hwp + FEC_ATIME);
-+	return fec_readl(fep->hwp + FEC_ATIME);
- }
- 
- /**
-@@ -142,17 +142,17 @@ static int fec_ptp_enable_pps(struct fec_enet_private *fep, uint enable)
- 	if (enable) {
- 		/* clear capture or output compare interrupt status if have.
- 		 */
--		writel(FEC_T_TF_MASK, fep->hwp + FEC_TCSR(fep->pps_channel));
-+		fec_writel(FEC_T_TF_MASK, fep->hwp + FEC_TCSR(fep->pps_channel));
- 
- 		/* It is recommended to double check the TMODE field in the
- 		 * TCSR register to be cleared before the first compare counter
- 		 * is written into TCCR register. Just add a double check.
- 		 */
--		val = readl(fep->hwp + FEC_TCSR(fep->pps_channel));
-+		val = fec_readl(fep->hwp + FEC_TCSR(fep->pps_channel));
- 		do {
- 			val &= ~(FEC_T_TMODE_MASK);
--			writel(val, fep->hwp + FEC_TCSR(fep->pps_channel));
--			val = readl(fep->hwp + FEC_TCSR(fep->pps_channel));
-+			fec_writel(val, fep->hwp + FEC_TCSR(fep->pps_channel));
-+			val = fec_readl(fep->hwp + FEC_TCSR(fep->pps_channel));
- 		} while (val & FEC_T_TMODE_MASK);
- 
- 		/* Dummy read counter to update the counter */
-@@ -194,31 +194,31 @@ static int fec_ptp_enable_pps(struct fec_enet_private *fep, uint enable)
- 		 * is bigger than fep->cc.mask would be a error.
- 		 */
- 		val &= fep->cc.mask;
--		writel(val, fep->hwp + FEC_TCCR(fep->pps_channel));
-+		fec_writel(val, fep->hwp + FEC_TCCR(fep->pps_channel));
- 
- 		/* Calculate the second the compare event timestamp */
- 		fep->next_counter = (val + fep->reload_period) & fep->cc.mask;
- 
- 		/* * Enable compare event when overflow */
--		val = readl(fep->hwp + FEC_ATIME_CTRL);
-+		val = fec_readl(fep->hwp + FEC_ATIME_CTRL);
- 		val |= FEC_T_CTRL_PINPER;
--		writel(val, fep->hwp + FEC_ATIME_CTRL);
-+		fec_writel(val, fep->hwp + FEC_ATIME_CTRL);
- 
- 		/* Compare channel setting. */
--		val = readl(fep->hwp + FEC_TCSR(fep->pps_channel));
-+		val = fec_readl(fep->hwp + FEC_TCSR(fep->pps_channel));
- 		val |= (1 << FEC_T_TF_OFFSET | 1 << FEC_T_TIE_OFFSET);
- 		val &= ~(1 << FEC_T_TDRE_OFFSET);
- 		val &= ~(FEC_T_TMODE_MASK);
- 		val |= (FEC_HIGH_PULSE << FEC_T_TMODE_OFFSET);
--		writel(val, fep->hwp + FEC_TCSR(fep->pps_channel));
-+		fec_writel(val, fep->hwp + FEC_TCSR(fep->pps_channel));
- 
- 		/* Write the second compare event timestamp and calculate
- 		 * the third timestamp. Refer the TCCR register detail in the spec.
- 		 */
--		writel(fep->next_counter, fep->hwp + FEC_TCCR(fep->pps_channel));
-+		fec_writel(fep->next_counter, fep->hwp + FEC_TCCR(fep->pps_channel));
- 		fep->next_counter = (fep->next_counter + fep->reload_period) & fep->cc.mask;
- 	} else {
--		writel(0, fep->hwp + FEC_TCSR(fep->pps_channel));
-+		fec_writel(0, fep->hwp + FEC_TCSR(fep->pps_channel));
- 	}
- 
- 	fep->pps_enable = enable;
-@@ -258,26 +258,26 @@ static int fec_ptp_pps_perout(struct fec_enet_private *fep)
- 	compare_val = fep->perout_stime - curr_time + ptp_hc;
- 	compare_val &= fep->cc.mask;
- 
--	writel(compare_val, fep->hwp + FEC_TCCR(fep->pps_channel));
-+	fec_writel(compare_val, fep->hwp + FEC_TCCR(fep->pps_channel));
- 	fep->next_counter = (compare_val + fep->reload_period) & fep->cc.mask;
- 
- 	/* Enable compare event when overflow */
--	temp_val = readl(fep->hwp + FEC_ATIME_CTRL);
-+	temp_val = fec_readl(fep->hwp + FEC_ATIME_CTRL);
- 	temp_val |= FEC_T_CTRL_PINPER;
--	writel(temp_val, fep->hwp + FEC_ATIME_CTRL);
-+	fec_writel(temp_val, fep->hwp + FEC_ATIME_CTRL);
- 
- 	/* Compare channel setting. */
--	temp_val = readl(fep->hwp + FEC_TCSR(fep->pps_channel));
-+	temp_val = fec_readl(fep->hwp + FEC_TCSR(fep->pps_channel));
- 	temp_val |= (1 << FEC_T_TF_OFFSET | 1 << FEC_T_TIE_OFFSET);
- 	temp_val &= ~(1 << FEC_T_TDRE_OFFSET);
- 	temp_val &= ~(FEC_T_TMODE_MASK);
- 	temp_val |= (FEC_TMODE_TOGGLE << FEC_T_TMODE_OFFSET);
--	writel(temp_val, fep->hwp + FEC_TCSR(fep->pps_channel));
-+	fec_writel(temp_val, fep->hwp + FEC_TCSR(fep->pps_channel));
- 
- 	/* Write the second compare event timestamp and calculate
- 	 * the third timestamp. Refer the TCCR register detail in the spec.
- 	 */
--	writel(fep->next_counter, fep->hwp + FEC_TCCR(fep->pps_channel));
-+	fec_writel(fep->next_counter, fep->hwp + FEC_TCCR(fep->pps_channel));
- 	fep->next_counter = (fep->next_counter + fep->reload_period) & fep->cc.mask;
- 	spin_unlock_irqrestore(&fep->tmreg_lock, flags);
- 
-@@ -314,13 +314,13 @@ void fec_ptp_start_cyclecounter(struct net_device *ndev)
- 	spin_lock_irqsave(&fep->tmreg_lock, flags);
- 
- 	/* 1ns counter */
--	writel(inc << FEC_T_INC_OFFSET, fep->hwp + FEC_ATIME_INC);
-+	fec_writel(inc << FEC_T_INC_OFFSET, fep->hwp + FEC_ATIME_INC);
- 
- 	/* use 31-bit timer counter */
--	writel(FEC_COUNTER_PERIOD, fep->hwp + FEC_ATIME_EVT_PERIOD);
-+	fec_writel(FEC_COUNTER_PERIOD, fep->hwp + FEC_ATIME_EVT_PERIOD);
- 
--	writel(FEC_T_CTRL_ENABLE | FEC_T_CTRL_PERIOD_RST,
--		fep->hwp + FEC_ATIME_CTRL);
-+	fec_writel(FEC_T_CTRL_ENABLE | FEC_T_CTRL_PERIOD_RST,
-+		   fep->hwp + FEC_ATIME_CTRL);
- 
- 	memset(&fep->cc, 0, sizeof(fep->cc));
- 	fep->cc.read = fec_ptp_read;
-@@ -397,11 +397,11 @@ static int fec_ptp_adjfine(struct ptp_clock_info *ptp, long scaled_ppm)
- 
- 	spin_lock_irqsave(&fep->tmreg_lock, flags);
- 
--	tmp = readl(fep->hwp + FEC_ATIME_INC) & FEC_T_INC_MASK;
-+	tmp = fec_readl(fep->hwp + FEC_ATIME_INC) & FEC_T_INC_MASK;
- 	tmp |= corr_ns << FEC_T_INC_CORR_OFFSET;
--	writel(tmp, fep->hwp + FEC_ATIME_INC);
-+	fec_writel(tmp, fep->hwp + FEC_ATIME_INC);
- 	corr_period = corr_period > 1 ? corr_period - 1 : corr_period;
--	writel(corr_period, fep->hwp + FEC_ATIME_CORR);
-+	fec_writel(corr_period, fep->hwp + FEC_ATIME_CORR);
- 	/* dummy read to update the timer. */
- 	timecounter_read(&fep->tc);
- 
-@@ -493,7 +493,7 @@ static int fec_ptp_settime(struct ptp_clock_info *ptp,
- 	counter = ns & fep->cc.mask;
- 
- 	spin_lock_irqsave(&fep->tmreg_lock, flags);
--	writel(counter, fep->hwp + FEC_ATIME);
-+	fec_writel(counter, fep->hwp + FEC_ATIME);
- 	timecounter_init(&fep->tc, &fep->cc, ns);
- 	spin_unlock_irqrestore(&fep->tmreg_lock, flags);
- 	mutex_unlock(&fep->ptp_clk_mutex);
-@@ -508,7 +508,7 @@ static int fec_ptp_pps_disable(struct fec_enet_private *fep, uint channel)
- 
- 	spin_lock_irqsave(&fep->tmreg_lock, flags);
- 	fep->perout_enable = false;
--	writel(0, fep->hwp + FEC_TCSR(channel));
-+	fec_writel(0, fep->hwp + FEC_TCSR(channel));
- 	spin_unlock_irqrestore(&fep->tmreg_lock, flags);
- 
- 	return 0;
-@@ -701,15 +701,15 @@ static irqreturn_t fec_pps_interrupt(int irq, void *dev_id)
- 	u8 channel = fep->pps_channel;
- 	struct ptp_clock_event event;
- 
--	val = readl(fep->hwp + FEC_TCSR(channel));
-+	val = fec_readl(fep->hwp + FEC_TCSR(channel));
- 	if (val & FEC_T_TF_MASK) {
- 		/* Write the next next compare(not the next according the spec)
- 		 * value to the register
- 		 */
--		writel(fep->next_counter, fep->hwp + FEC_TCCR(channel));
-+		fec_writel(fep->next_counter, fep->hwp + FEC_TCCR(channel));
- 		do {
--			writel(val, fep->hwp + FEC_TCSR(channel));
--		} while (readl(fep->hwp + FEC_TCSR(channel)) & FEC_T_TF_MASK);
-+			fec_writel(val, fep->hwp + FEC_TCSR(channel));
-+		} while (fec_readl(fep->hwp + FEC_TCSR(channel)) & FEC_T_TF_MASK);
- 
- 		/* Update the counter; */
- 		fep->next_counter = (fep->next_counter + fep->reload_period) &
-@@ -813,8 +813,8 @@ void fec_ptp_save_state(struct fec_enet_private *fep)
- 	fep->ptp_saved_state.ns_phc = timecounter_read(&fep->tc);
- 	fep->ptp_saved_state.ns_sys = ktime_get_ns();
- 
--	fep->ptp_saved_state.at_corr = readl(fep->hwp + FEC_ATIME_CORR);
--	atime_inc_corr = readl(fep->hwp + FEC_ATIME_INC) & FEC_T_INC_CORR_MASK;
-+	fep->ptp_saved_state.at_corr = fec_readl(fep->hwp + FEC_ATIME_CORR);
-+	atime_inc_corr = fec_readl(fep->hwp + FEC_ATIME_INC) & FEC_T_INC_CORR_MASK;
- 	fep->ptp_saved_state.at_inc_corr = (u8)(atime_inc_corr >> FEC_T_INC_CORR_OFFSET);
- 
- 	spin_unlock_irqrestore(&fep->tmreg_lock, flags);
-@@ -823,7 +823,7 @@ void fec_ptp_save_state(struct fec_enet_private *fep)
- /* Restore PTP functionality after a reset */
- void fec_ptp_restore_state(struct fec_enet_private *fep)
- {
--	u32 atime_inc = readl(fep->hwp + FEC_ATIME_INC) & FEC_T_INC_MASK;
-+	u32 atime_inc = fec_readl(fep->hwp + FEC_ATIME_INC) & FEC_T_INC_MASK;
- 	unsigned long flags;
- 	u32 counter;
- 	u64 ns;
-@@ -833,13 +833,13 @@ void fec_ptp_restore_state(struct fec_enet_private *fep)
- 	/* Reset turned it off, so adjust our status flag */
- 	fep->pps_enable = 0;
- 
--	writel(fep->ptp_saved_state.at_corr, fep->hwp + FEC_ATIME_CORR);
-+	fec_writel(fep->ptp_saved_state.at_corr, fep->hwp + FEC_ATIME_CORR);
- 	atime_inc |= ((u32)fep->ptp_saved_state.at_inc_corr) << FEC_T_INC_CORR_OFFSET;
--	writel(atime_inc, fep->hwp + FEC_ATIME_INC);
-+	fec_writel(atime_inc, fep->hwp + FEC_ATIME_INC);
- 
- 	ns = ktime_get_ns() - fep->ptp_saved_state.ns_sys + fep->ptp_saved_state.ns_phc;
- 	counter = ns & fep->cc.mask;
--	writel(counter, fep->hwp + FEC_ATIME);
-+	fec_writel(counter, fep->hwp + FEC_ATIME);
- 	timecounter_init(&fep->tc, &fep->cc, ns);
- 
- 	spin_unlock_irqrestore(&fep->tmreg_lock, flags);
 -- 
-2.54.0
+Best Regards,
+Yanjun.Zhu
 
