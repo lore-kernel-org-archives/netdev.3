@@ -1,87 +1,134 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpbg150.qq.com (smtpbg150.qq.com [18.132.163.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14F6A19DF6A;
-	Wed,  6 May 2026 02:31:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2FFA19DF6A;
+	Wed,  6 May 2026 02:31:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.132.163.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778034661; cv=none; b=M2D7R9c4s82o2mo7z9/WlMH8l3LDYsQ3YUy7mShoKziKzHFkU3EUtfX+oG2qAVk85f2M5bp0IZgTa38VEfSDRwhdNtsEPhnpQ0JBnEyeusZabJBBkq8PiYyafqjSzEIGHR9EnlGBPWuKklzSBuDTlmCUJ3918J/W9nr9xLqXZmY=
+	t=1778034671; cv=none; b=hrGXYl2nZSDtICYm+qnGAY2ZnV/YtcYrCyafKk7wtXkoWbvXyVYK8iZnVw0ExwL2x4ZmpqDIuFTUfy5reHkprnjPp4FP2DZPztHPei5bZ9VEYaSKDh1yMP/2ckJ59khsoxI8EuDdV1z/v0UgqMjrKRqyTBvZtyw/DLtfvCEpIvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778034661; c=relaxed/simple;
-	bh=aRNF0MttjKGeMswGVKR1Otyfp+656r3vb961sULCtVQ=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=hfSCTTv/7NF1cqHpsv1/Ief+TBLQYqeRr8YGi/Yy3tEa/tAUgJl1mr1DIqP59ijPZmkUZPKmf7lPSpk+fcUQjhjLMD4vfkhb9I3n+2NfOtojbDwagugAkQ+nOnkWiYlGH/gYhR5d5MXrvOQgnkr6DXeHsNIDQgE7BmYNjtIkHG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oJhI8GRi; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oJhI8GRi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5D2AC2BCB9;
-	Wed,  6 May 2026 02:31:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778034660;
-	bh=aRNF0MttjKGeMswGVKR1Otyfp+656r3vb961sULCtVQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=oJhI8GRiDyN94gO0I2xDHM9Irwe/fTNVEAWX4kU97l6i/yzjdX4tSPf2NQl2VOmVB
-	 q8ejkQrRlCJPYVphVx1TYPVRggFtXTSjfqsGztk9EvbWp7HbaDQQf8BNc+Q9h7xYrh
-	 SADNwhOiZxK5avBB5iX4Co9u5EsrM2toJ7+LXicrpogg4rK6LrF/l7AsXpIBR/0Q7+
-	 fU6n9+xEGz5TAaEVoTCa8FnqySkIHrouK+Pr+7XUtnbXI8Zm16Zr+C/VXKB6ie6xD2
-	 ltCkOcdrkcCyBkKd094PrSW0aQyy4ywSSTYHwZgtBK1qqpwvjFI2P6MBRRRIzngpvU
-	 WLOl+dX+lewkQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02BB93930780;
-	Wed,  6 May 2026 02:30:12 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1778034671; c=relaxed/simple;
+	bh=g5oNCXLIrRB8Peo+P5aiq5oeMf2uwLyTTn+a4i74TPs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IHwgMEfwmu39wnwoy2cCxvvZAAOV0IyBIomipSx26bkFue+J/1dJ4wozFzkdDYPLWnzaw5cegee1NhcIf2T0tOIcmOBmGT/MKCMCpZ0CN0p65AuuuISAC//nmPfGpe4p8NZXDIi7+fZ0FLlARmD+sRxnjhw7iMQNFzeafqgdF2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=radxa.com; spf=pass smtp.mailfrom=radxa.com; arc=none smtp.client-ip=18.132.163.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=radxa.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=radxa.com
+X-QQ-mid: esmtpsz16t1778034653t405f70b0
+X-QQ-Originating-IP: 4meMtvNm/og9G0fVM/ycSpSa183Qcv1XH6iFoe6ZdSA=
+Received: from [127.0.0.1] ( [116.234.74.217])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Wed, 06 May 2026 10:30:47 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 2498618263695594642
+Message-ID: <DD71CDEABC7C16D5+02d052ff-13bb-4712-a847-91416f76c578@radxa.com>
+Date: Wed, 6 May 2026 10:30:46 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net V5 0/4] net/mlx5: Fixes for Socket-Direct
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177803461080.2357425.13693913770775968233.git-patchwork-notify@kernel.org>
-Date: Wed, 06 May 2026 02:30:10 +0000
-References: <20260504180206.268568-1-tariqt@nvidia.com>
-In-Reply-To: <20260504180206.268568-1-tariqt@nvidia.com>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, saeedm@nvidia.com,
- mbloch@nvidia.com, leon@kernel.org, shayd@nvidia.com, horms@kernel.org,
- phaddad@nvidia.com, parav@nvidia.com, kees@kernel.org, gal@nvidia.com,
- netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
- linux-kernel@vger.kernel.org, dtatulea@nvidia.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 10/12] net: stmmac: tc956x: add TC956x/QPS615
+ support
+To: Alex Elder <elder@riscstar.com>, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, maxime.chevallier@bootlin.com,
+ rmk+kernel@armlinux.org.uk, andersson@kernel.org, konradybcio@kernel.org,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, linusw@kernel.org,
+ brgl@kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org
+Cc: Daniel Thompson <daniel@riscstar.com>, mohd.anwar@oss.qualcomm.com,
+ a0987203069@gmail.com, alexandre.torgue@foss.st.com, ast@kernel.org,
+ boon.khai.ng@altera.com, chenchuangyu@xiaomi.com, chenhuacai@kernel.org,
+ daniel@iogearbox.net, hawk@kernel.org, hkallweit1@gmail.com,
+ inochiama@gmail.com, john.fastabend@gmail.com, julianbraha@gmail.com,
+ livelycarpet87@gmail.com, matthew.gerlach@altera.com,
+ mcoquelin.stm32@gmail.com, me@ziyao.cc,
+ prabhakar.mahadev-lad.rj@bp.renesas.com, richardcochran@gmail.com,
+ rohan.g.thomas@altera.com, sdf@fomichev.me, siyanteng@cqsoftware.com.cn,
+ weishangjuan@eswincomputing.com, wens@kernel.org, netdev@vger.kernel.org,
+ bpf@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-gpio@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20260501155421.3329862-1-elder@riscstar.com>
+ <20260501155421.3329862-11-elder@riscstar.com>
+Content-Language: en-US
+From: Xilin Wu <sophon@radxa.com>
+In-Reply-To: <20260501155421.3329862-11-elder@riscstar.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpsz:radxa.com:qybglogicsvrsz:qybglogicsvrsz3b-0
+X-QQ-XMAILINFO: MxdW4jxL6NvXsbtSC0sdkRTYslY/wd+PTnnOEmueE64hCrFI+earuJRV
+	hgNg2Ceej//UIQfd+2Wlk//epUITPXjjocchjWHEZMcdfNK1LLNLFyz0ZfXIRI3td8fvLcg
+	ioV78ncJzF7+KQCzQK9t0u73IRt2vWCCO0ElFvy14O+nJcxgQpZdBKTQ9TxTIcZUoaAwD4Q
+	xxzCEbjkDEoZxLTSeuiKoMKu+9qsf2zYfVwTd4hlpiDd5MHlm0CJzfCfSSoeI2FKWi3VgWo
+	9CEexip17TssKCTg8w/buxu5ytVm0435turBile67gA71cUUxk7zTng8zNvMjJmNoMxOCli
+	SSSo40gjI+GpvWoeF8JpMycBvTtnwXL8DvuC8k18EOcCQq+lv2FwbMqMBWph7sa7gSjdkCp
+	O8jkqB5fGOO5vVNzg/eaRrs7biPOkQy44iN36TDJx0Wb03IkHOXbWxOab453acDV/JxVNOl
+	uN9OScd0yczqaUxHJhVCBUC6AHGRz92UcT3bVSvvvD+L9qnUx3msHzghPxpppLzzOOcG0xw
+	n79UGEvdQpwNrII1tgGEiLdYEYaUqmKTtnlD19HdD5uYy9GBUatNcBJtzhbCH9ijDsGrDTy
+	sIre1iDEw9SwHlD/oFtCYBgrgyS6IHnf2+zt/3HEx1OgJOH5rlUg03KJ4BOL5bmDkOOdVtg
+	hV3z89018f9IgXo2HO9E26kHWJoIdXlggavuQIQ/xNcS8GyZ973bAYpcbARpt/R5eHrlGKt
+	yYmwp6EciINtFp7rAHahigqRc7OkhTAYteXoLX+w13hrYAAbpmbGo7nyIQh6eVXWksTovTp
+	DNCclkxdoVXVsPuZuHvdsyeAiCuxOhLSqYwUXbeLg/0vNJMLPsFFK1MyzNaPPLIFuwuERmM
+	W0BM4I5HB7dilQPZZyLzEFCaY2yOLQxcMxwiwF8R32kA1J4gqGyz16Qs8HzIVHG3H24Vu5H
+	bSaoBbcHAZIxNn+BUYUmS+plXKCWKlZWHhqmJJh7mvJXe92jRy1l2J4fKNglrg3Cni9s=
+X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
+X-QQ-RECHKSPAM: 0
 
-Hello:
-
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Mon, 4 May 2026 21:02:02 +0300 you wrote:
-> Hi,
+On 5/1/2026 11:54 PM, Alex Elder wrote:
+> From: Daniel Thompson <daniel@riscstar.com>
 > 
-> This series fixes several race conditions and bugs in the mlx5
-> Socket-Direct (SD) single netdev flow.
+> Toshiba TC956x is an Ethernet AVB/TSN bridge and is essentially a
+> small and highly-specialized SoC. TC956x includes an "eMAC" subsystem
+> that can be accessed, along with several other peripherals, via two
+> PCIe endpoint functions. There is a main driver for the endpoint that
+> decomposes things and creates auxiliary bus devices to model the SoC.
 > 
-> Patch 1 serializes mlx5_sd_init()/mlx5_sd_cleanup() with
-> mlx5_devcom_comp_lock() and tracks the SD group state on the primary
-> device, preventing concurrent or duplicate bring-up/tear-down.
+> The eMAC consists of a Designware XGMAC, XPCS and PMA. Each eMAC is
+> supported by an MSIGEN that bridges TC956x level interrupts to PCIe
+> MSIs.
 > 
-> [...]
+> Add a driver for the eMAC/MSIGEN combination.
+> 
+> Co-developed-by: Alex Elder <elder@riscstar.com>
+> Signed-off-by: Alex Elder <elder@riscstar.com>
+> Signed-off-by: Daniel Thompson <daniel@riscstar.com>
+> ---
+>   drivers/net/ethernet/stmicro/stmmac/Kconfig   |  13 +
+>   drivers/net/ethernet/stmicro/stmmac/Makefile  |   2 +
+>   .../ethernet/stmicro/stmmac/dwmac-tc956x.c    | 791 ++++++++++++++++++
+>   include/soc/toshiba/tc956x-dwmac.h            |  84 ++
+>   4 files changed, 890 insertions(+)
+>   create mode 100644 drivers/net/ethernet/stmicro/stmmac/dwmac-tc956x.c
+>   create mode 100644 include/soc/toshiba/tc956x-dwmac.h
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/Kconfig b/drivers/net/ethernet/stmicro/stmmac/Kconfig
+> index e3dd5adda5aca..66bcfaccbe21f 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/Kconfig
+> +++ b/drivers/net/ethernet/stmicro/stmmac/Kconfig
+> @@ -404,6 +404,19 @@ config DWMAC_MOTORCOMM
+>   	  This enables glue driver for Motorcomm DWMAC-based PCI Ethernet
+>   	  controllers. Currently only YT6801 is supported.
+>   
+> +config DWMAC_TC956X
+> +	tristate "Toshiba TC956X DWMAC support"
+> +	depends on PCI
+> +	depends on COMMON_CLK
+> +	depends on TOSHIBA_TC956X_PCI
+> +	default m if TOSHIBA_TC956X_PCI
 
-Here is the summary with links:
-  - [net,V5,1/4] net/mlx5: SD: Serialize init/cleanup
-    https://git.kernel.org/netdev/net/c/3abcedfdfd31
-  - [net,V5,2/4] net/mlx5: SD, Keep multi-pf debugfs entries on primary
-    https://git.kernel.org/netdev/net/c/05217e4ffbb2
-  - [net,V5,3/4] net/mlx5e: SD, Fix missing cleanup on probe error
-    https://git.kernel.org/netdev/net/c/3564222cfdde
-  - [net,V5,4/4] net/mlx5e: SD, Fix race condition in secondary device probe/remove
-    https://git.kernel.org/netdev/net/c/d466ddda5500
+Hi Alex,
 
-You are awesome, thank you!
+I think GENERIC_IRQ_CHIP should be selected here.
+
+Thank you for the driver.
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+Best regards,
+Xilin Wu <sophon@radxa.com>
 
