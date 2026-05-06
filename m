@@ -1,51 +1,52 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 542E53B3C08;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7744B3B3C13;
 	Wed,  6 May 2026 21:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778104162; cv=none; b=GQkDK2IaxFuPXGhIdzd+lFHkCslzGm6ZN75vs1+WlkejGLCp1eU6r3n47YMP8kXLiaa+OvxkeWczIf0JubXpHdTLEp5sPmjnfa2qhcKdDWGYJnlG5XzyHQgdYPN013wcZYgEEXrVib/oP9zdhcH+6fUer7sBkB4tTtroDoreRkc=
+	t=1778104163; cv=none; b=T6Oa75Efr1K10lsKlwTvUMrsdGwLIh+PhTjiK5+LWu+CtLU9hDtyaPS88+7xJT5Z7K/zI7lEido/v5rWUnsWpeSvhNga20SQLnrz1A8FrEEkTIQtW48UiFk4i7XGSGmeMLF7upbgjmT5lmqJLAMUpq1Ocd4z77fx87Ar5MdNMTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778104162; c=relaxed/simple;
-	bh=wY+GZStVgveeM4dDJUttYbOKSr5LYkYnE1B29ZaMNt0=;
+	s=arc-20240116; t=1778104163; c=relaxed/simple;
+	bh=XRWPwr6l1RtNzlOmlm4Rrmc0k4vQSq0Aasb1nYRLfZQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Ey6R+uDVM90kc4LCFjXDOe+ZsNTqms+V6UtK/EQdfWIgfTjJmWuZJi1CIwhcMWBdPrnIMg3ElKgXriOISu7rE2PGioJwhhRbg9WggFz1IUo6FJmRtON2I7Mhyom0D5T494s1NEYDLy227tGmUqZssL5F8q7cN7LWM6tzw9qyd4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ITiipXyx; arc=none smtp.client-ip=198.175.65.19
+	 In-Reply-To:To:Cc; b=qj2f80FGKlyjgjBLtH1CjNCztnXpcKBKP9R/uOadKJELDxef9ISZCuHjbyQxmo8wGd+Jbev0fi/FypHyPlvFffpDSiadzhPCxHkkFiOFNKYsk7059yfZzePNIhya+Mxjd2DpuYyTeWHEbOMunIbwXkMFY61HtNxxdnDyNIC2vww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=F7iCvLGE; arc=none smtp.client-ip=198.175.65.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ITiipXyx"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="F7iCvLGE"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1778104161; x=1809640161;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=wY+GZStVgveeM4dDJUttYbOKSr5LYkYnE1B29ZaMNt0=;
-  b=ITiipXyx0hM7LvPwIGF67wzcylvtWNBBLT6ANY2wZAGGCPF+6flqi9Yr
-   aoyNSFGM7e8m1mEurfmPSt6bfcTDJ92GXPO9nmrlpNxkMPjxcmUeGf7Uj
-   HkdU0+7fhQsgqYM0VZoYS7RvySVVlcQbpsXUYB3hGLqKOBotNQ7UySRhj
-   GlaCfI0ikg+wFwa5WnzAfsETAJt9Oby4WHQOuFNqmC9RwjYX148rAuA79
-   P4pohdVYr6aTN4mEup4pZcF5oFk9mDqPsSqWduFTQkZMlgPQi4hII9cM8
-   6rwyKzy5WjhtDpNLqjzlu8In7KRoSomMK6ky2nF4wYPHR7ZTbu4DDiE7F
+  bh=XRWPwr6l1RtNzlOmlm4Rrmc0k4vQSq0Aasb1nYRLfZQ=;
+  b=F7iCvLGEhAduuYjd2k7R5gHmkD9b0MMa/t5Wyu4Gay8Z1dX/mYEldEUY
+   PFpGoJY+6od2uoFhCwV1KYzREu4ljadsQA9N+hnJj8LtyR1ls6YUVaDzI
+   gCXvEzg8YG0TlPrHkas+JPFVjUj7hGaEkMOGYTXN1wzI1SDKhiO9NU+wf
+   TH92xvU9yBqW9NEZ19lSG63tjLdo5yS5Dud2W6ydvhKyQowo1awf+fA59
+   KEXK68rlMO3Vspgz16FEAYYmfHfnm9OO26raG825tSj177LXli0aElp0E
+   sIo+PDDcbTprwLE5iTCsfWHKxKfAeKKQ/9teNRtysZwV3qrzxBf7x/9qa
    Q==;
-X-CSE-ConnectionGUID: i+zugux+Tq+PLJnw3DGDnA==
-X-CSE-MsgGUID: /SCCh/FjSmiMDUs13Iaebw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11778"; a="78982494"
+X-CSE-ConnectionGUID: ZkDjRk/CSpukuHULbje/pA==
+X-CSE-MsgGUID: Brv3t2PnQk+6m+nNWcHvow==
+X-IronPort-AV: E=McAfee;i="6800,10657,11778"; a="78982508"
 X-IronPort-AV: E=Sophos;i="6.23,220,1770624000"; 
-   d="scan'208";a="78982494"
+   d="scan'208";a="78982508"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2026 14:49:19 -0700
-X-CSE-ConnectionGUID: sthBe0vFTo+osdqAbOzg3A==
-X-CSE-MsgGUID: B4GnvSXCRBiOlCmE7f9BTQ==
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2026 14:49:20 -0700
+X-CSE-ConnectionGUID: Qn+o2goMQbiMx6z7wkFMxg==
+X-CSE-MsgGUID: 0yy8dFR6Sz293DgtCHLaOA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,220,1770624000"; 
-   d="scan'208";a="259698612"
+   d="scan'208";a="259698623"
 Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.109]) ([10.166.28.109])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2026 14:49:18 -0700
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2026 14:49:19 -0700
 From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Wed, 06 May 2026 14:48:11 -0700
-Subject: [PATCH net v2 2/8] i40e: Cleanup PTP pins on probe failure
+Date: Wed, 06 May 2026 14:48:13 -0700
+Subject: [PATCH net v2 4/8] idpf: fix double free and use-after-free in aux
+ device error paths
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,7 +55,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260506-jk-iwl-net-2026-05-04-v2-2-a5ea4dc837a9@intel.com>
+Message-Id: <20260506-jk-iwl-net-2026-05-04-v2-4-a5ea4dc837a9@intel.com>
 References: <20260506-jk-iwl-net-2026-05-04-v2-0-a5ea4dc837a9@intel.com>
 In-Reply-To: <20260506-jk-iwl-net-2026-05-04-v2-0-a5ea4dc837a9@intel.com>
 To: Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
@@ -71,89 +72,83 @@ To: Przemek Kitszel <przemyslaw.kitszel@intel.com>,
  Dave Ertman <david.m.ertman@intel.com>, Ivan Vecera <ivecera@redhat.com>, 
  Grzegorz Nitka <grzegorz.nitka@intel.com>
 Cc: netdev@vger.kernel.org, stable@vger.kernel.org, 
- Jacob Keller <jacob.e.keller@intel.com>, Matt Vollrath <tactii@gmail.com>, 
- Kohei Enju <kohei@enjuk.jp>, Paul Menzel <pmenzel@molgen.mpg.de>, 
- Sunitha Mekala <sunithax.d.mekala@intel.com>
+ Jacob Keller <jacob.e.keller@intel.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Tony Nguyen <anthony.l.nguyen@intel.com>, stable@kernel.org, 
+ Paul Menzel <pmenzel@molgen.mpg.de>
 X-Mailer: b4 0.16-dev-ea14f
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2912;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2558;
  i=jacob.e.keller@intel.com; h=from:subject:message-id;
- bh=QNjr6uUakcnLHlPppRVsn2hnfyH4eY5JOQgkwstJsQg=;
- b=owGbwMvMwCWWNS3WLp9f4wXjabUkhszf26MdIv/u+RWdt2qV5cFrD2+WaJY6r5m0s6Fg1slXV
- w1/3f2t1VHKwiDGxSArpsii4BCy8rrxhDCtN85yMHNYmUCGMHBxCsBE/qQzMhzt9jj+sLJDNe/U
- nY0XJ0xhMeTsitjYZMc2Qa1/gjKL7HtGht5ni1+3BLTccgz95vo9QqnqsObaHfmrtzXty2w0n6x
- rzAYA
+ bh=lcLWqa/kFQH155bW9j70SjcRR4tEHBtxdzaVazPjqAA=;
+ b=owGbwMvMwCWWNS3WLp9f4wXjabUkhszf22ME7554w/OxnTfyzJLyo9u2phUph19PMv/PI//rR
+ oew+HGvjlIWBjEuBlkxRRYFh5CV140nhGm9cZaDmcPKBDKEgYtTACaiosDI8P/6ZNl/Cm/62j2/
+ BYruu8u0qbM8tv3i0sPXXu09lFYg1c/wP7Erw2GjuKXVrXob1dMv6ra2fuizTjmS+OxMKHPnKp0
+ J/AA=
 X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
  fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
 
-From: Matt Vollrath <tactii@gmail.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-PTP pin structs are allocated early in probe, but never cleaned up.
+When auxiliary_device_add() fails in idpf_plug_vport_aux_dev() or
+idpf_plug_core_aux_dev(), the err_aux_dev_add label calls
+auxiliary_device_uninit() and falls through to err_aux_dev_init.  The
+uninit call will trigger put_device(), which invokes the release
+callback (idpf_vport_adev_release / idpf_core_adev_release) that frees
+iadev.  The fall-through then reads adev->id from the freed iadev for
+ida_free() and double-frees iadev with kfree().
 
-Fix this by calling i40e_ptp_free_pins in the error path.
+Free the IDA slot and clear the back-pointer before uninit, while adev
+is still valid, then return immediately.
 
-To support this, i40e_ptp_free_pins is added to the header and
-pin_config is correctly nullified after being freed.
+Commit 65637c3a1811 ("idpf: fix UAF in RDMA core aux dev deinitialization")
+fixed the same use-after-free in the matching unplug path in this file but
+missed both probe error paths.
 
-This has been an issue since i40e_ptp_alloc_pins was introduced.
-
-Fixes: 1050713026a08 ("i40e: add support for PTP external synchronization clock")
-Reported-by: Kohei Enju <kohei@enjuk.jp>
-Cc: stable@vger.kernel.org
-Signed-off-by: Matt Vollrath <tactii@gmail.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: stable@kernel.org
+Fixes: be91128c579c ("idpf: implement RDMA vport auxiliary dev create, init, and destroy")
+Fixes: f4312e6bfa2a ("idpf: implement core RDMA auxiliary dev create, init, and destroy")
+Assisted-by: gregkh_clanker_t1000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Kohei Enju <kohei@enjuk.jp>
-Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
 Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
- drivers/net/ethernet/intel/i40e/i40e.h      | 1 +
- drivers/net/ethernet/intel/i40e/i40e_main.c | 1 +
- drivers/net/ethernet/intel/i40e/i40e_ptp.c  | 3 ++-
- 3 files changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/idpf/idpf_idc.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e.h b/drivers/net/ethernet/intel/i40e/i40e.h
-index dcb50c2e1aa2..83e780919ac9 100644
---- a/drivers/net/ethernet/intel/i40e/i40e.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e.h
-@@ -1318,6 +1318,7 @@ void i40e_ptp_restore_hw_time(struct i40e_pf *pf);
- void i40e_ptp_init(struct i40e_pf *pf);
- void i40e_ptp_stop(struct i40e_pf *pf);
- int i40e_ptp_alloc_pins(struct i40e_pf *pf);
-+void i40e_ptp_free_pins(struct i40e_pf *pf);
- int i40e_update_adq_vsi_queues(struct i40e_vsi *vsi, int vsi_offset);
- int i40e_is_vsi_uplink_mode_veb(struct i40e_vsi *vsi);
- int i40e_get_partition_bw_setting(struct i40e_pf *pf);
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index f06fcef644e5..6d4f9218dc68 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -16112,6 +16112,7 @@ static int i40e_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	i40e_clear_interrupt_scheme(pf);
- 	kfree(pf->vsi);
- err_switch_setup:
-+	i40e_ptp_free_pins(pf);
- 	i40e_reset_interrupt_capability(pf);
- 	timer_shutdown_sync(&pf->service_timer);
- err_mac_addr:
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_ptp.c b/drivers/net/ethernet/intel/i40e/i40e_ptp.c
-index 404a716db8da..7d07c389bb23 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_ptp.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_ptp.c
-@@ -940,12 +940,13 @@ int i40e_ptp_hwtstamp_get(struct net_device *netdev,
-  *
-  * Release memory allocated for PTP pins.
-  **/
--static void i40e_ptp_free_pins(struct i40e_pf *pf)
-+void i40e_ptp_free_pins(struct i40e_pf *pf)
- {
- 	if (i40e_is_ptp_pin_dev(&pf->hw)) {
- 		kfree(pf->ptp_pins);
- 		kfree(pf->ptp_caps.pin_config);
- 		pf->ptp_pins = NULL;
-+		pf->ptp_caps.pin_config = NULL;
- 	}
- }
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_idc.c b/drivers/net/ethernet/intel/idpf/idpf_idc.c
+index 7e4f4ac92653..b7d6b08fc89e 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_idc.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_idc.c
+@@ -90,7 +90,10 @@ static int idpf_plug_vport_aux_dev(struct iidc_rdma_core_dev_info *cdev_info,
+ 	return 0;
  
+ err_aux_dev_add:
++	ida_free(&idpf_idc_ida, adev->id);
++	vdev_info->adev = NULL;
+ 	auxiliary_device_uninit(adev);
++	return ret;
+ err_aux_dev_init:
+ 	ida_free(&idpf_idc_ida, adev->id);
+ err_ida_alloc:
+@@ -228,7 +231,10 @@ static int idpf_plug_core_aux_dev(struct iidc_rdma_core_dev_info *cdev_info)
+ 	return 0;
+ 
+ err_aux_dev_add:
++	ida_free(&idpf_idc_ida, adev->id);
++	cdev_info->adev = NULL;
+ 	auxiliary_device_uninit(adev);
++	return ret;
+ err_aux_dev_init:
+ 	ida_free(&idpf_idc_ida, adev->id);
+ err_ida_alloc:
 
 -- 
 2.54.0.rc2.531.gaf818d63126a
