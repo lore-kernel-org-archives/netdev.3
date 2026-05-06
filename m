@@ -1,264 +1,137 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7120D449EC3
-	for <netdev@vger.kernel.org>; Wed,  6 May 2026 12:39:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E75943E4A9
+	for <netdev@vger.kernel.org>; Wed,  6 May 2026 12:39:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778071186; cv=none; b=qWeH6NOpSXOMdlzPdUagsmPFPdPom9L8em/PJ49Pc8WiGdDqb8Won4mx9+JviUE6O2SicU9Ji4eMZG1OXlYDsF5qMUHrJG6S33x8wlkYXLgspNg3YvWGxKUfuyQtj9pa2/sfSm9uk7B37a3PS0ZJmj/0zLV1NQtwtIs4thG5HWA=
+	t=1778071193; cv=none; b=kXv6ODGpRh7X4ZTfIeIO65eqCJR7aDWM9YKtHyDVs0zhYjsjBYEe6U66PKdrEDfFFhKb74C4BReqrvcX5DwxctDjln2Cj+i9yTy4JDawKpLTDDVGxAc9zD8zphj+Z/SCsDFhHpBly1yf1j+4mlPPhnSQBj60igsEkBG0gYI1SNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778071186; c=relaxed/simple;
-	bh=k2OsgyNizxusADUde0S14UIFkxXaowbHk4UidSMtIxM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YwnCxZq2Wz1BCvTHhY40OhX08DQfBcrAVX97BEv2MSydf19tnAnRoNqPjYbfeFcf3FJwTYIBnynMZRc9ZuUbwKgaSkCeloi3eHX2c6Fkq1ECw3WlPO1u9k3AgyUcGDkQyvZ2NxKp26i4ebeBPviAbeUp2qZ6tdZ9wXZ2pOw1qp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linbit.com; spf=pass smtp.mailfrom=linbit.com; dkim=pass (2048-bit key) header.d=linbit-com.20251104.gappssmtp.com header.i=@linbit-com.20251104.gappssmtp.com header.b=kN7alnMn; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linbit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linbit.com
+	s=arc-20240116; t=1778071193; c=relaxed/simple;
+	bh=dcUsp3eDN08mhGEPEOKTdjFKeAPZPYk4Eevrg96/aMw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Hsqljs5196yoPOdcs1o470tqfvYk+PucFxyQEtHmsNdClyj6WrNZeu6mEk6s1+1sPjegsyWo7YxCvVXPs32SrRZkLccD4gEjWfclXXZzqJnTCdaSxRcabAI7ZwGfWI0KFioU/FMIm8QPKQFe2myysXcGaLFVl9+2jXoNtv4/7C4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=uUkmLDnR; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linbit-com.20251104.gappssmtp.com header.i=@linbit-com.20251104.gappssmtp.com header.b="kN7alnMn"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-488a14c31eeso48023795e9.0
-        for <netdev@vger.kernel.org>; Wed, 06 May 2026 05:39:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linbit-com.20251104.gappssmtp.com; s=20251104; t=1778071183; x=1778675983; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=H+J3XqbnCoYpAGIzRu85OxjjRlSoL1F1apznBZBvmL0=;
-        b=kN7alnMnOMyXU4H482oQdv3HwPLilXiX6/vOa8/br9j7nTSO+cqGJbeyP1q3tTVKyZ
-         LntjB2EcJskhXPIl9j3l6ngvnvFznYYOyLQ25P/7F9LfDua/bRX/mH4vtpcOleOllU3X
-         HDBx5FSFns6a/zmXf5mg5gl1aklov8GhB46olnWuSyg3q9Khau7HhjOls4GLzeEbnobm
-         iru73HNrQZyh51wttt0DxeLBXgYHevosQs/Q34f0VfIC3xFF5AicBEm9ek65jsb2fxaw
-         p7rRekdub/ZwjgEXmNkTjEkKmOwcveUT7lE7/vv9kEsDNPexTu9kP9oLU1yaHRFuId2v
-         +C1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778071183; x=1778675983;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=H+J3XqbnCoYpAGIzRu85OxjjRlSoL1F1apznBZBvmL0=;
-        b=RBR+K9Kg9pamHAqAEGhv6xujI/B4T7XZs6YpieC522TwG1GUdt0ZfVF+ADIstl6Ota
-         vQ9jowGaE4EPZd3u0Um4FJUgztxE0zuhUlko1iFcweKO7ONMeHpdjU3tFhVxNcIGkg1m
-         9Vj3z1Wrj1Pan4BDt4hpmZmv5IZNx0dJHDFX0AF/yZA+d8S8xTShfJjHJnSmvABasBQI
-         dwSAQUz1cX+iOFjIfF0qfPjbACPEV6W1EC7Rrt6tRYo4xxwI65N4yZpZAB/89gjp0yEZ
-         FAUq3gc2fQx8mpSy7bogtwXcKlDU0q0Ve5BYUQTZ3nsgOrAw0Wuzw6fuA5tYiR/v8Sce
-         Up4Q==
-X-Forwarded-Encrypted: i=1; AFNElJ++nv0gW+NlqpB8bccifyc6XXV99m6uHHwkUjoMlfDuNxpfXgJL0PEmFLjzHTgqUN+lCBSuVZ0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzeLgs6JeQoSFefgfP6bZVdpwXpOvHDzQbOVNwWBij1fmi93ukp
-	LsfzF6/80+joSwtzNCk+pQGstBmHW0a4PHMJ1i7eC6qMBpX5qfgVR/b+yrfV6OMZroU=
-X-Gm-Gg: AeBDievYLECFx4xLS6Dx4DOWLG5D2KCGb6ZppaFOaArtLQ51x9/flfDPHxT8BR5ZWCG
-	lhgmUpZFmLlnFuUykm16/MpKblpNkAFBhgoVb3skE2AQyUJ0uWkTTOSVmk0tN108ZfxretanBAn
-	94PY5hCRwT/i3XnQj5abX1qUfzejgaLopSKHYhUu8QhPu5qhZ7A7Z6EDvDf5D/OtaZGlusqAoFW
-	b5/iljvn332iRlxYxpy3QCufKPlFiltL9wW4l2oIZX6NiSk9xkdON1aI4uHcSJDoqoOWborDIw7
-	oKmBquJfq1RWH9MpsGvR+o6nc5W1lMuUpV1n63PVYB5bobJHAgYLdIgh8lAL6bOzOLEAY7P3Xc5
-	wSVvKSX0kjwrctDDuDHbxamxkwRwjm5fG/CQtwJYvIH7q2TorDRp4qCQx7rKRDeuYHZqu+J6hue
-	bEArUQw3QwrqsKXbqqnvrBLXAVbNLTtG4dHYuBltW+Xa7JeKMvFiN365bhfJhKhg+rsuYAQLaut
-	zRqbjVKeqm8WyPPnV829NkrZ/HM273A
-X-Received: by 2002:a05:600d:8408:b0:489:fec9:a17e with SMTP id 5b1f17b1804b1-48e51f30534mr42486405e9.12.1778071182844;
-        Wed, 06 May 2026 05:39:42 -0700 (PDT)
-Received: from localhost.localdomain (h082218028181.host.wavenet.at. [82.218.28.181])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e53891d62sm76399015e9.1.2026.05.06.05.39.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 May 2026 05:39:42 -0700 (PDT)
-From: =?UTF-8?q?Christoph=20B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>
-To: Jens Axboe <axboe@kernel.dk>
-Cc: drbd-dev@lists.linbit.com,
-	linux-kernel@vger.kernel.org,
-	Lars Ellenberg <lars.ellenberg@linbit.com>,
-	Philipp Reisner <philipp.reisner@linbit.com>,
-	linux-block@vger.kernel.org,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org,
-	=?UTF-8?q?Christoph=20B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>
-Subject: [PATCH v2 1/2] drbd: move UAPI headers to include/uapi/linux/
-Date: Wed,  6 May 2026 14:39:25 +0200
-Message-ID: <20260506123926.1944290-2-christoph.boehmwalder@linbit.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260506123926.1944290-1-christoph.boehmwalder@linbit.com>
-References: <20260506123926.1944290-1-christoph.boehmwalder@linbit.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="uUkmLDnR"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=UCfwcMyYej1X3CdP6H1s2pU7FOACwOy/8EFy1L1nI8A=; b=uUkmLDnRpg0eEui8UmYyeN3aTj
+	TcljOrlBnchvjbKQqFtH58ctrtunfdADJIW/RLul9y71GKHOipU/p0Z1HyxgwOtQe9ZuBmAQCLqnT
+	uoJTKYGKxgN81kECwlRceAn49cv1S2Rj3k3m27Jn2S8IgIq1rYVtZtmiBxWnZpWaYSkA=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wKbXU-001dVG-Gz; Wed, 06 May 2026 14:39:44 +0200
+Date: Wed, 6 May 2026 14:39:44 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Sven Schuchmann <schuchmann@schleissheimer.de>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: Re: assert in phylink.c with lan7801 and dp83tc811 since kernel 6.18
+Message-ID: <7778cd41-cf36-4524-a347-408a8fb0bde0@lunn.ch>
+References: <BEZP281MB224533D524B27CFC6E47B447D93E2@BEZP281MB2245.DEUP281.PROD.OUTLOOK.COM>
+ <57fb63c2-7a05-4bbe-ba2d-fc61ce1e3ba1@lunn.ch>
+ <BEZP281MB22458F571CC8251C141D933CD93F2@BEZP281MB2245.DEUP281.PROD.OUTLOOK.COM>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <BEZP281MB22458F571CC8251C141D933CD93F2@BEZP281MB2245.DEUP281.PROD.OUTLOOK.COM>
 
-drbd.h and drbd_limits.h contain only type definitions, enums, and
-constants shared between kernel and userspace. These should be part of
-UAPI.
+> So for me it somewhere happens in phylink_validate_mac_and_pcs()
 
-Split the genl_api header into two: the genlmsghdr and the enums are
-UAPI, the rest stays there for now (it will be removed by one of the
-next commits in this series).
+I was expecting to see more debug output, but reading the code, i was
+also thinking we need to look at phylink_validate_mac_and_pcs().
 
-drbd_config.h is clearly DRBD-internal, so move it there.
+You are going in the correct direction putting lots of printk() in the
+code. We need to find where it returns EINVAL:
 
-Signed-off-by: Christoph Böhmwalder <christoph.boehmwalder@linbit.com>
----
- drivers/block/drbd/drbd_buildtag.c            |  2 +-
- .../block/drbd}/drbd_config.h                 |  0
- drivers/block/drbd/drbd_int.h                 |  2 +-
- include/linux/drbd_genl_api.h                 | 40 ------------------
- include/{ => uapi}/linux/drbd.h               | 42 ++++++++++++++++++-
- include/{ => uapi}/linux/drbd_limits.h        |  2 +-
- 6 files changed, 44 insertions(+), 44 deletions(-)
- rename {include/linux => drivers/block/drbd}/drbd_config.h (100%)
- rename include/{ => uapi}/linux/drbd.h (87%)
- rename include/{ => uapi}/linux/drbd_limits.h (99%)
+static int phylink_validate_mac_and_pcs(struct phylink *pl,
+					unsigned long *supported,
+					struct phylink_link_state *state)
+{
+	struct phylink_pcs *pcs = NULL;
+	unsigned long capabilities;
+	int ret;
 
-diff --git a/drivers/block/drbd/drbd_buildtag.c b/drivers/block/drbd/drbd_buildtag.c
-index cb1aa66d7d5d..cd0389488f63 100644
---- a/drivers/block/drbd/drbd_buildtag.c
-+++ b/drivers/block/drbd/drbd_buildtag.c
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0-only
--#include <linux/drbd_config.h>
-+#include "drbd_config.h"
- #include <linux/module.h>
- 
- const char *drbd_buildtag(void)
-diff --git a/include/linux/drbd_config.h b/drivers/block/drbd/drbd_config.h
-similarity index 100%
-rename from include/linux/drbd_config.h
-rename to drivers/block/drbd/drbd_config.h
-diff --git a/drivers/block/drbd/drbd_int.h b/drivers/block/drbd/drbd_int.h
-index f6d6276974ee..f3d746a6d6fd 100644
---- a/drivers/block/drbd/drbd_int.h
-+++ b/drivers/block/drbd/drbd_int.h
-@@ -34,7 +34,7 @@
- #include <linux/prefetch.h>
- #include <linux/drbd_genl_api.h>
- #include <linux/drbd.h>
--#include <linux/drbd_config.h>
-+#include "drbd_config.h"
- #include "drbd_strings.h"
- #include "drbd_state.h"
- #include "drbd_protocol.h"
-diff --git a/include/linux/drbd_genl_api.h b/include/linux/drbd_genl_api.h
-index 70682c058027..19d263924852 100644
---- a/include/linux/drbd_genl_api.h
-+++ b/include/linux/drbd_genl_api.h
-@@ -2,46 +2,6 @@
- #ifndef DRBD_GENL_STRUCT_H
- #define DRBD_GENL_STRUCT_H
- 
--/**
-- * struct drbd_genlmsghdr - DRBD specific header used in NETLINK_GENERIC requests
-- * @minor:
-- *     For admin requests (user -> kernel): which minor device to operate on.
-- *     For (unicast) replies or informational (broadcast) messages
-- *     (kernel -> user): which minor device the information is about.
-- *     If we do not operate on minors, but on connections or resources,
-- *     the minor value shall be (~0), and the attribute DRBD_NLA_CFG_CONTEXT
-- *     is used instead.
-- * @flags: possible operation modifiers (relevant only for user->kernel):
-- *     DRBD_GENL_F_SET_DEFAULTS
-- * @volume:
-- *     When creating a new minor (adding it to a resource), the resource needs
-- *     to know which volume number within the resource this is supposed to be.
-- *     The volume number corresponds to the same volume number on the remote side,
-- *     whereas the minor number on the remote side may be different
-- *     (union with flags).
-- * @ret_code: kernel->userland unicast cfg reply return code (union with flags);
-- */
--struct drbd_genlmsghdr {
--	__u32 minor;
--	union {
--	__u32 flags;
--	__s32 ret_code;
--	};
--};
--
--/* To be used in drbd_genlmsghdr.flags */
--enum {
--	DRBD_GENL_F_SET_DEFAULTS = 1,
--};
--
--enum drbd_state_info_bcast_reason {
--	SIB_GET_STATUS_REPLY = 1,
--	SIB_STATE_CHANGE = 2,
--	SIB_HELPER_PRE = 3,
--	SIB_HELPER_POST = 4,
--	SIB_SYNC_PROGRESS = 5,
--};
--
- /* hack around predefined gcc/cpp "linux=1",
-  * we cannot possibly include <1/drbd_genl.h> */
- #undef linux
-diff --git a/include/linux/drbd.h b/include/uapi/linux/drbd.h
-similarity index 87%
-rename from include/linux/drbd.h
-rename to include/uapi/linux/drbd.h
-index 5468a2399d48..7930a972d8a4 100644
---- a/include/linux/drbd.h
-+++ b/include/uapi/linux/drbd.h
-@@ -1,4 +1,4 @@
--/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/* SPDX-License-Identifier: GPL-2.0-or-later WITH Linux-syscall-note */
- /*
-   drbd.h
-   Kernel module for 2.6.x Kernels
-@@ -389,4 +389,44 @@ enum write_ordering_e {
- 
- #define DRBD_CPU_MASK_SIZE 32
- 
-+/**
-+ * struct drbd_genlmsghdr - DRBD specific header used in NETLINK_GENERIC requests
-+ * @minor:
-+ *     For admin requests (user -> kernel): which minor device to operate on.
-+ *     For (unicast) replies or informational (broadcast) messages
-+ *     (kernel -> user): which minor device the information is about.
-+ *     If we do not operate on minors, but on connections or resources,
-+ *     the minor value shall be (~0), and the attribute DRBD_NLA_CFG_CONTEXT
-+ *     is used instead.
-+ * @flags: possible operation modifiers (relevant only for user->kernel):
-+ *     DRBD_GENL_F_SET_DEFAULTS
-+ * @volume:
-+ *     When creating a new minor (adding it to a resource), the resource needs
-+ *     to know which volume number within the resource this is supposed to be.
-+ *     The volume number corresponds to the same volume number on the remote side,
-+ *     whereas the minor number on the remote side may be different
-+ *     (union with flags).
-+ * @ret_code: kernel->userland unicast cfg reply return code (union with flags);
-+ */
-+struct drbd_genlmsghdr {
-+	__u32 minor;
-+	union {
-+		__u32 flags;
-+		__s32 ret_code;
-+	};
-+};
-+
-+/* To be used in drbd_genlmsghdr.flags */
-+enum {
-+	DRBD_GENL_F_SET_DEFAULTS = 1,
-+};
-+
-+enum drbd_state_info_bcast_reason {
-+	SIB_GET_STATUS_REPLY = 1,
-+	SIB_STATE_CHANGE = 2,
-+	SIB_HELPER_PRE = 3,
-+	SIB_HELPER_POST = 4,
-+	SIB_SYNC_PROGRESS = 5,
-+};
-+
- #endif
-diff --git a/include/linux/drbd_limits.h b/include/uapi/linux/drbd_limits.h
-similarity index 99%
-rename from include/linux/drbd_limits.h
-rename to include/uapi/linux/drbd_limits.h
-index 5b042fb427e9..a72a102d1ca7 100644
---- a/include/linux/drbd_limits.h
-+++ b/include/uapi/linux/drbd_limits.h
-@@ -1,4 +1,4 @@
--/* SPDX-License-Identifier: GPL-2.0-only */
-+/* SPDX-License-Identifier: GPL-2.0-only WITH Linux-syscall-note */
- /*
-   drbd_limits.h
-   This file is part of DRBD by Philipp Reisner and Lars Ellenberg.
--- 
-2.53.0
+	/* Get the PCS for this interface mode */
+	if (pl->mac_ops->mac_select_pcs) {
+		pcs = pl->mac_ops->mac_select_pcs(pl->config, state->interface);
+		if (IS_ERR(pcs))
+			return PTR_ERR(pcs);
+Possibly.
 
+
+	}
+
+	if (pcs) {
+		/* The PCS, if present, must be setup before phylink_create()
+		 * has been called. If the ops is not initialised, print an
+		 * error and backtrace rather than oopsing the kernel.
+		 */
+		if (!pcs->ops) {
+			phylink_err(pl, "interface %s: uninitialised PCS\n",
+				    phy_modes(state->interface));
+			dump_stack();
+We don't see a stack dump, so not here.
+
+			return -EINVAL;
+		}
+
+		/* Ensure that this PCS supports the interface which the MAC
+		 * returned it for. It is an error for the MAC to return a PCS
+		 * that does not support the interface mode.
+		 */
+		if (!phy_interface_empty(pcs->supported_interfaces) &&
+		    !test_bit(state->interface, pcs->supported_interfaces)) {
+			phylink_err(pl, "MAC returned PCS which does not support %s\n",
+				    phy_modes(state->interface));
+No error message....				    
+			return -EINVAL;
+		}
+
+		/* Validate the link parameters with the PCS */
+		if (pcs->ops->pcs_validate) {
+			ret = pcs->ops->pcs_validate(pcs, supported, state);
+			if (ret < 0 || phylink_is_empty_linkmode(supported))
+Could be...			
+				return -EINVAL;
+
+			/* Ensure the advertising mask is a subset of the
+			 * supported mask.
+			 */
+			linkmode_and(state->advertising, state->advertising,
+				     supported);
+		}
+	}
+
+	/* Then validate the link parameters with the MAC */
+	if (pl->mac_ops->mac_get_caps)
+		capabilities = pl->mac_ops->mac_get_caps(pl->config,
+							 state->interface);
+	else
+		capabilities = pl->config->mac_capabilities;
+
+	phylink_validate_mask_caps(supported, state, capabilities);
+
+	return phylink_is_empty_linkmode(supported) ? -EINVAL : 0;
+
+Also possible.
+
+}
+
+In the end, we are probably going to find that what the MAC says its
+capabilities are don't match what the PCS says it can do.
+
+Thinking about that, it says phy mode RGMII. You generally don't use a
+PCS with RGMII, so that is suspicious.
+
+    Andrew
