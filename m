@@ -1,166 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA2B4A341B;
-	Wed,  6 May 2026 17:28:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E844BC02C
+	for <netdev@vger.kernel.org>; Wed,  6 May 2026 17:28:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778088512; cv=none; b=GXyoqeRAEBpz/kdq4Wm9Ui/sDq6SoWmYg3GyoEuoGRIHvMnvIfXBS56hnzsiHn/FETbtTnSMdGY8TAvdWShsyKQatEzsZ3R6zATS8KghsGrvfMuoizEy4MqZgj/MdWCXFZEHR5C/wY0k/MMg4LhdFu5smLmKqnhcJ+hEXaQqOEc=
+	t=1778088515; cv=none; b=kUxhTyCCFj1qQXw10rBtzJMXHkz50cNap8v3Z3T0arRSfh4G2aNHdsCAwKhRjGv/8Qv0IRzAvoNIug+OgyxNi8KoDogh8+joqC73gLQjxaW7DV17hAXQV2GV1sxHw3c0cVU8UO8kL0GrZzFTcFpFzSLXIQpjKC2sHNn5PKiuN6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778088512; c=relaxed/simple;
-	bh=92G/hBpoy+tgBOS2x/I53r2sZ5pAyr7z2fg9vOcfHhA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=JRDFcCXW9S/B5r+9gbS2MkD7xVvO0pwUu/pXyrlrkwew5JvrbJzwZ0cbQCUd2iZLqDiCHqqyNp2ZYcxthpx5S6D3ueYG9ddUU/preE88YukD0Ukipvkg1SSUE3TuhPiG0uNt9wOcANZjyWyX1KrjAR0jV+9cUR9nayY8hqQsSEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nW5iorN8; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778088515; c=relaxed/simple;
+	bh=+JAXBcfFApk6Q1vHjE+qSmpo8KhHDmH9Knu8S6+KEc8=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Fgw3LAHW9w9Vwp6c9ISp2+XfYbep7/I7Oj9b0PGbNKrcpDTnEQR1bxfagxPeFtWSM+eLDVsYQp8i7NXL2EDH6+stPHO8Q3P7mjsyBknwrDX959YEX7pgvZScg2clZD5BkN30SoNeHfS7POr32EUOrP8EFGFSjLTV35d3wVAJLoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Y0+XbFPC; arc=none smtp.client-ip=209.85.215.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nW5iorN8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CED60C2BCC7;
-	Wed,  6 May 2026 17:28:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778088512;
-	bh=92G/hBpoy+tgBOS2x/I53r2sZ5pAyr7z2fg9vOcfHhA=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=nW5iorN8zo9zHmNiZtkpPQSPEpszJXeTyBJtFAJ58AfTX1he5a8WxWlQWqChNjJSS
-	 NUfWnoDt4HkL+Qe4Tz77gnbHlBwOxX0sgi3JSo36l52vgmGfzGaJjam06eDef7MyEv
-	 tIix+Gy1L1gRhvnnP9T/MTJ9vOS4vrpWe7OZla+9yz5fLKs1oGlYQvMyqomx812/kY
-	 rR5NmSbD0P9cFDV3dB4GaVB4BhgcEVrUhZ2clcfLJRPX38yGgkSkEeArqwVkL1gdLA
-	 e2HqEMTVpBBNEYnmetDBL6+3lKdLR9oSwYxaL4fJGG8r8qtS9MduHA5nwzy3XUsHBF
-	 8Lxr9MFt6Bj0Q==
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Wed, 06 May 2026 19:27:33 +0200
-Subject: [PATCH nf-next v2 2/6] net: netfilter: Add encap_proto to
- flow_offload_tunnel
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Y0+XbFPC"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c81ed67fcbcso1449694a12.3
+        for <netdev@vger.kernel.org>; Wed, 06 May 2026 10:28:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778088512; x=1778693312; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=9kWUktZAxModxM8jEbJ03797Z+amFhbRsI8XzY9spwk=;
+        b=Y0+XbFPCzQrgLsjkMGy0ocYFcjC2CGBmkWXC71YA7ceGN8wHRnyMHIR53FT740cTFY
+         N+NvJC3RX6P1snMmGCX3tMDLIoyyuhSC4/R3t9gNqvBYhtgsXA58lMAs+laB6/b+w7zt
+         f5a1do03CUyNVAdLDIHy4VzkDQbzSJsbRqTZcBtV1tn4cahSEbzVCaILDfjLuP02G66F
+         qAyuYsPCz2H5Hj4iQU44UZwov3bsl6c1dMQvhMIvmBAJUOyvlZa7A5Acr7IF9SZn5fQ8
+         yKXuzBxK/IGEii/Z54rIHKS7sA95XUjzxnHYL+AA1Razk1JvPn1qxChJY/6RPtJOsEyn
+         4kZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778088512; x=1778693312;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9kWUktZAxModxM8jEbJ03797Z+amFhbRsI8XzY9spwk=;
+        b=d+fvVbrjSX9MJZnX12Y1M77d8AWNY/FL1LZEWZqlEZEIQEOj4b7+6pJgF/XQQ52sTW
+         QYQ6CyLuoSLCKfHvo4BhduY3mb+Te1HAlueokiWNhwWwAIxdk9CpeLuIkVhTDAOFEiu2
+         9XyHlQUde2mcoZUKUGIfubqQ0hHgg0+RlRXPpJnjYIR73pG+8JnG9GZR2twPwv9qR02D
+         U3qoFw1XjoXhT5gCi1OWCCWRHNj48xbdXa0BhQpjg458DY85IYJkw52rM9BWCqjGkIOK
+         FozamxZEM/Tar3E0BI8/Q2BLjk7pFPui2zcSrnO04/IxY4gdPy2c2vFkjtYX1JUhbXu5
+         t0PA==
+X-Forwarded-Encrypted: i=1; AFNElJ8/pTunbgwj+Fw+pIcHrBGExCVnPozjloDhhwn25Nf7FP6wHFXopZhwyGH+oAmsvlYPRJV1UKY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyvHo6MaYTXxoBMVN4fxoygfdbSQ/fAPE1bzY8o5Zd5WeWxBcPK
+	8BSRFK1V4M4Ef0bT+s9bbAqLYL7wHarbUnsyYkarN8R4wENtqMW2DYQYEtVGoFJc2TUliBW4vr0
+	kplyY1A==
+X-Received: from pfbim15.prod.google.com ([2002:a05:6a00:8d8f:b0:835:3df8:d72])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:938c:b0:398:bda8:d8cd
+ with SMTP id adf61e73a8af0-3aa5a6e9281mr4801432637.7.1778088511969; Wed, 06
+ May 2026 10:28:31 -0700 (PDT)
+Date: Wed,  6 May 2026 17:28:28 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260506-b4-flowtable-sw-accel-ip6ip-v2-2-439fd427726e@kernel.org>
-References: <20260506-b4-flowtable-sw-accel-ip6ip-v2-0-439fd427726e@kernel.org>
-In-Reply-To: <20260506-b4-flowtable-sw-accel-ip6ip-v2-0-439fd427726e@kernel.org>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Felix Fietkau <nbd@nbd.name>, Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, 
- Ido Schimmel <idosch@nvidia.com>, Pablo Neira Ayuso <pablo@netfilter.org>, 
- Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>, 
- Shuah Khan <shuah@kernel.org>, Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org, 
- linux-mediatek@lists.infradead.org, netdev@vger.kernel.org, 
- netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
- linux-kselftest@vger.kernel.org
-X-Mailer: b4 0.14.3
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
+Message-ID: <20260506172830.2237574-1-kuniyu@google.com>
+Subject: [PATCH v1 net] tcp: Fix out-of-bounds access for twsk in tcp_ao_established_key().
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: Eric Dumazet <edumazet@google.com>, Neal Cardwell <ncardwell@google.com>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Dmitry Safonov <0x7f454c46@gmail.com>, Simon Horman <horms@kernel.org>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
+	Damiano Melotti <melotti@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Add encap_proto (AF_INET or AF_INET6) to struct flow_offload_tunnel
-to allow its use as part of the hash table key during flowtable entry
-lookup.
-This is a preliminary change to support IPv4 over IPv6 tunneling via
-the flowtable infrastructure for software acceleration.
+lockdep_sock_is_held() was added in tcp_ao_established_key()
+by the cited commit.
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+It can be called from tcp_v[46]_timewait_ack() with twsk.
+
+Since it does not have sk->sk_lock, the lockdep annotation
+results in out-of-bound access.
+
+  $ pahole -C tcp_timewait_sock vmlinux | grep size
+  	/* size: 288, cachelines: 5, members: 8 */
+  $ pahole -C sock vmlinux | grep sk_lock
+  	socket_lock_t              sk_lock;              /*   440   192 */
+
+Let's not use lockdep_sock_is_held() for TCP_TIME_WAIT.
+
+Fixes: 6b2d11e2d8fc ("net/tcp: Add missing lockdep annotations for TCP-AO hlist traversals")
+Reported-by: Damiano Melotti <melotti@google.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 ---
- include/linux/netdevice.h             | 1 +
- include/net/netfilter/nf_flow_table.h | 1 +
- net/ipv4/ipip.c                       | 1 +
- net/ipv6/ip6_tunnel.c                 | 1 +
- net/netfilter/nf_flow_table_ip.c      | 2 ++
- net/netfilter/nf_flow_table_path.c    | 2 ++
- 6 files changed, 8 insertions(+)
+ net/ipv4/tcp_ao.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 85bd9d46b5a0..02f593397fad 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -902,6 +902,7 @@ struct net_device_path {
- 			};
+diff --git a/net/ipv4/tcp_ao.c b/net/ipv4/tcp_ao.c
+index a97cdf3e6af4..e2720233e36b 100644
+--- a/net/ipv4/tcp_ao.c
++++ b/net/ipv4/tcp_ao.c
+@@ -116,7 +116,9 @@ struct tcp_ao_key *tcp_ao_established_key(const struct sock *sk,
+ {
+ 	struct tcp_ao_key *key;
  
- 			u8	l3_proto;
-+			u8	encap_proto;
- 		} tun;
- 		struct {
- 			enum {
-diff --git a/include/net/netfilter/nf_flow_table.h b/include/net/netfilter/nf_flow_table.h
-index b09c11c048d5..96e8ecf0f530 100644
---- a/include/net/netfilter/nf_flow_table.h
-+++ b/include/net/netfilter/nf_flow_table.h
-@@ -118,6 +118,7 @@ struct flow_offload_tunnel {
- 	};
- 
- 	u8	l3_proto;
-+	u8	encap_proto;
- };
- 
- struct flow_offload_tuple {
-diff --git a/net/ipv4/ipip.c b/net/ipv4/ipip.c
-index ff95b1b9908e..5425af051d5a 100644
---- a/net/ipv4/ipip.c
-+++ b/net/ipv4/ipip.c
-@@ -369,6 +369,7 @@ static int ipip_fill_forward_path(struct net_device_path_ctx *ctx,
- 	path->tun.src_v4.s_addr = tiph->saddr;
- 	path->tun.dst_v4.s_addr = tiph->daddr;
- 	path->tun.l3_proto = IPPROTO_IPIP;
-+	path->tun.encap_proto = AF_INET;
- 	path->dev = ctx->dev;
- 
- 	ctx->dev = rt->dst.dev;
-diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-index 3d64e672eeee..c99ed41bfc99 100644
---- a/net/ipv6/ip6_tunnel.c
-+++ b/net/ipv6/ip6_tunnel.c
-@@ -1851,6 +1851,7 @@ static int ip6_tnl_fill_forward_path(struct net_device_path_ctx *ctx,
- 		path->type = DEV_PATH_TUN;
- 		path->tun.src_v6 = t->parms.laddr;
- 		path->tun.dst_v6 = t->parms.raddr;
-+		path->tun.encap_proto = AF_INET6;
- 		if (ctx->ether_type == cpu_to_be16(ETH_P_IP))
- 			path->tun.l3_proto = IPPROTO_IPIP;
- 		else
-diff --git a/net/netfilter/nf_flow_table_ip.c b/net/netfilter/nf_flow_table_ip.c
-index fd56d663cb5b..9efd76b57847 100644
---- a/net/netfilter/nf_flow_table_ip.c
-+++ b/net/netfilter/nf_flow_table_ip.c
-@@ -198,6 +198,7 @@ static void nf_flow_tuple_encap(struct nf_flowtable_ctx *ctx,
- 			tuple->tun.dst_v4.s_addr = iph->daddr;
- 			tuple->tun.src_v4.s_addr = iph->saddr;
- 			tuple->tun.l3_proto = IPPROTO_IPIP;
-+			tuple->tun.encap_proto = AF_INET;
- 		}
- 		break;
- 	case htons(ETH_P_IPV6):
-@@ -206,6 +207,7 @@ static void nf_flow_tuple_encap(struct nf_flowtable_ctx *ctx,
- 			tuple->tun.dst_v6 = ip6h->daddr;
- 			tuple->tun.src_v6 = ip6h->saddr;
- 			tuple->tun.l3_proto = IPPROTO_IPV6;
-+			tuple->tun.encap_proto = AF_INET6;
- 		}
- 		break;
- 	default:
-diff --git a/net/netfilter/nf_flow_table_path.c b/net/netfilter/nf_flow_table_path.c
-index df4e180ed3c2..5a5774d9b6f5 100644
---- a/net/netfilter/nf_flow_table_path.c
-+++ b/net/netfilter/nf_flow_table_path.c
-@@ -127,6 +127,7 @@ static void nft_dev_path_info(const struct net_device_path_stack *stack,
- 				info->tun.src_v6 = path->tun.src_v6;
- 				info->tun.dst_v6 = path->tun.dst_v6;
- 				info->tun.l3_proto = path->tun.l3_proto;
-+				info->tun.encap_proto = path->tun.encap_proto;
- 				info->num_tuns++;
- 			} else {
- 				if (info->num_encaps >= NF_FLOW_TABLE_ENCAP_MAX) {
-@@ -270,6 +271,7 @@ static void nft_dev_forward_path(const struct nft_pktinfo *pkt,
- 		route->tuple[!dir].in.tun.src_v6 = info.tun.dst_v6;
- 		route->tuple[!dir].in.tun.dst_v6 = info.tun.src_v6;
- 		route->tuple[!dir].in.tun.l3_proto = info.tun.l3_proto;
-+		route->tuple[!dir].in.tun.encap_proto = info.tun.encap_proto;
- 		route->tuple[!dir].in.num_tuns = info.num_tuns;
- 	}
- 
-
+-	hlist_for_each_entry_rcu(key, &ao->head, node, lockdep_sock_is_held(sk)) {
++	hlist_for_each_entry_rcu(key, &ao->head, node,
++				 sk->sk_state == TCP_TIME_WAIT ||
++				 lockdep_sock_is_held(sk)) {
+ 		if ((sndid >= 0 && key->sndid != sndid) ||
+ 		    (rcvid >= 0 && key->rcvid != rcvid))
+ 			continue;
 -- 
-2.54.0
+2.54.0.545.g6539524ca2-goog
 
