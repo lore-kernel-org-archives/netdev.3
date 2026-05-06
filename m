@@ -1,101 +1,112 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [13.75.44.102])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAFF1274B28;
-	Wed,  6 May 2026 02:11:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.75.44.102
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61E0C2459EA
+	for <netdev@vger.kernel.org>; Wed,  6 May 2026 02:18:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778033517; cv=none; b=CZVMpEQDkWjYQEmYC2wZ70JMUlk1/jNFXxGqOsA9+07NaeLwqOFD2MAA1eFmlTD/ILgwrcXgtD5AMurSa8nslIXfC/A+FQOJGFssJWyaDOPFc4pXgAPDsBGSxEm+szzCgJ4fH+HPfIO0gvGs1q2lOp7uRbXApmH+FF+T4O+DikE=
+	t=1778033919; cv=none; b=tqigKI0aKT1mN2gg3tNHvqWBX4Te3ucFAXi0t9YfXReiUBGg5cZo6qjx7+tzwJm0oj1kUUTZ6U8dhnDeoY6+cycIRQTr6ciBwfN8ZIkqAwm5O3xLd1RnNp6cUO+Pqo1rIzCq+y9LSvsfqAi/BPB5agsitciR6GSblzrrVSkInAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778033517; c=relaxed/simple;
-	bh=OyJWM5q8wlnOqWx5bMCl7ppdv5LJ0QqOaQ1SST/zF5s=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=D62sqxB8Vnf1kBkNJLx9noxpIqqAH3ixx1m8FZ2Bdr50molSokDO5GIcu0TRzxPSRlf7ssiMyb5BLtOv03CLU77CQw7IB7sUkSoyXnqRTLr99v0qMduC2P0XEPYzq1N8so5mHZkkpuWChFDLMGg6FqVUCFjsOBQPy0NpwO+W/UE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=eswincomputing.com; spf=pass smtp.mailfrom=eswincomputing.com; arc=none smtp.client-ip=13.75.44.102
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=eswincomputing.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=eswincomputing.com
-Received: from lizhi2$eswincomputing.com ( [10.11.96.26] ) by
- ajax-webmail-app1 (Coremail) ; Wed, 6 May 2026 10:10:57 +0800 (GMT+08:00)
-Date: Wed, 6 May 2026 10:10:57 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From: =?UTF-8?B?5p2O5b+X?= <lizhi2@eswincomputing.com>
-To: "Jakub Kicinski" <kuba@kernel.org>
-Cc: andrew+netdev@lunn.ch, devicetree@vger.kernel.org, davem@davemloft.net,
-	edumazet@google.com, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
-	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
-	rmk+kernel@armlinux.org.uk, pjw@kernel.org, palmer@dabbelt.com,
-	aou@eecs.berkeley.edu, alex@ghiti.fr,
-	linux-riscv@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	maxime.chevallier@bootlin.com, ningyu@eswincomputing.com,
-	linmin@eswincomputing.com, pinkesh.vaghela@einfochips.com,
-	pritesh.patel@einfochips.com, weishangjuan@eswincomputing.com,
-	horms@kernel.org
-Subject: Re: Re: [PATCH net-next v7 2/4] net: stmmac: eic7700: enable clocks
- before syscon access and correct RX sampling timing
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2024.2-cmXT6 build
- 20241203(6b039d88) Copyright (c) 2002-2026 www.mailtech.cn
- mispb-72143050-eaf5-4703-89e0-86624513b4ce-eswincomputing.com
-In-Reply-To: <20260430163551.7491407a@kernel.org>
-References: <20260427072353.1114-1-lizhi2@eswincomputing.com>
- <20260427072508.1151-1-lizhi2@eswincomputing.com>
- <20260428180625.738223cf@kernel.org>
- <2117464.7991.19ddd2125d1.Coremail.lizhi2@eswincomputing.com>
- <20260430163551.7491407a@kernel.org>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+	s=arc-20240116; t=1778033919; c=relaxed/simple;
+	bh=bpKuTDWLrq9nRB2Uy83zrkgw+0T+HWieTx8p+YwRkoE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ICLeLCjodUb4DlL5aXkMl4VRzouCf7v5ZhzTNpx7NxIfwfUR6aSc0WGH9BznCF36WLOy0o2yWWfyEZLPIhZzSzgAGuHzlXBLypoW/zZE6UwFJMIBFSZcCesuR61Gg+WUodXYuGiIgIA7whLbCvgF4Uh/0ZBNU/wW49IgjIx4684=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iLEswJx0; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iLEswJx0"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2b9fcf7c91bso32379375ad.0
+        for <netdev@vger.kernel.org>; Tue, 05 May 2026 19:18:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778033918; x=1778638718; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vZ8xQG/pi2YZ94Wyif4WkSnUaUizpmS2aclrnUnSYok=;
+        b=iLEswJx0Kz1me2GcAqmFCKYvEnNaOKQOXFkWPHJPm3kXwAPzEId3NuY7C8CEDmNGqF
+         EIyIFFh9BH2BMa6+9c2H+bw+UOfHVmfMmiR5zUdhQfIjoztgjbMJdg5gz4RVtfccDXbD
+         4UpwLpWUz5GpcldKbFVZ1pe7jBetiCNpS0O/a1qWRw1i4FwLP1CNlXj44YWfKbbZr1A9
+         ZkJ5tmBt1+ajwFCptseAfW5GlfkcxJfqyZuJurHbfV0Hz7SsMg7uQ6VJhXHd9fcA3tbE
+         cYv/1kNrEKgY1pY6C2WxpeOZqSYkJqZef1c9CVi/2hBkgwvcyZXKFbxcP4E1lpUGYPA5
+         C/Jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778033918; x=1778638718;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vZ8xQG/pi2YZ94Wyif4WkSnUaUizpmS2aclrnUnSYok=;
+        b=s4Bz3I1YWdcxa7GHiHzSpGbYqwFQK1ewEYXsne7DBTBlkhtSNMlyJfcuCfszPnNXGP
+         UCEFoFQLTlaZS50SYARjUggL71RhVcpRajb1ugGMqOnU6JtbWxZqUXO9nSmisD8n/NXj
+         y5VhaD4LLeaRxVPUv4M+Lh4BKkTCUeAejHBwdSJF6c8Y49kbtmofajoVhPUWFY1a2Dse
+         YiusYIvvRE7100FApIyBEJDJCZzSCN82DValZ7ttUS8P+pernA9jhKjThk+Y4EF0a0mL
+         1lFrP9eoiLkfLUvjDFDpoyA326OPk4yjaQTaoIoUcEQWXtmmPopvrEkvJD1M79dALxX1
+         n44A==
+X-Gm-Message-State: AOJu0YzmXOtrc4PisrSHM3FZsjisUcKp4ts+sUo9+FzcyyZoUBpJaOQ2
+	EPDzZ+sJ+lX9RKI3qbsfLvJ3AVRAXxDza3w50RP7nRD2SNFunDjCbyHa7MWO3Zfp
+X-Gm-Gg: AeBDieuI2lJgSTrbq5A+Fey7g2nXCbme7L6crAh9pZLEBJ5D4A5VjL1lVAvSO2BmntP
+	JEfHfHh7z8QdIjAai4hBTiYvjSFSytWRgjoOxJC8uny/SPZYK8uXOWeDDgVFELzp+Ojse9TKo4F
+	N9Zwrpe+NsicS7EPHGXLI+L/MCZqGVQtYYEgpCdL9fcmYSJwGKoDuE6m6VLsFVxDImjTCBs/IKD
+	P7umVH0um15eCxxDI9rqL1ua1XvGArw5RzdmjYHupftLSd3s48xV6GDGeSQXA/xYuJBpks9zSvz
+	YYExSZlHfEiSXf8hz6dzjqTpPCX6t3aImfZRM5rx4mpvHgiWmWcn4xyy2gErTAdZZsBC8F/Md2+
+	3yAhQyHkLsKsGoz0IB8yIuFwtPiG1OP/VV10ua1d1TsWagaqiruRSSLT5uxuZonFGAZAcO/1UTk
+	wv6z5wIOjhwvmzWJYw5LwULrG9UucRLiqRzR3axC9l6/2513z9/xWl+A==
+X-Received: by 2002:a17:902:e54e:b0:2ba:4e84:966 with SMTP id d9443c01a7336-2ba7a358d4amr14644345ad.36.1778033917583;
+        Tue, 05 May 2026 19:18:37 -0700 (PDT)
+Received: from ampere-server.example.org ([103.68.183.118])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ba7c9e1ac6sm6319525ad.42.2026.05.05.19.18.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 May 2026 19:18:37 -0700 (PDT)
+From: "chunzhi.lin" <linchunzhi0@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Frank.Sae@motor-comm.com,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	davem@davemloft.net,
+	linux-acpi@vger.kernel.org,
+	rafael@kernel.org,
+	lenb@kernel.org,
+	"chunzhi.lin" <linchunzhi0@gmail.com>
+Subject: [PATCH net-next 0/2] net: phy: motorcomm: add ACPI _DSD property support
+Date: Wed,  6 May 2026 10:18:11 +0800
+Message-Id: <20260506021813.3658669-1-linchunzhi0@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <38d052b7.7a70.19dfb0d782b.Coremail.lizhi2@eswincomputing.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:TAJkCgDHaXMyo_ppwzEXAA--.6613W
-X-CM-SenderInfo: xol2xx2s6h245lqf0zpsxwx03jof0z/1tbiAQETDGn6G5we7wACs4
-X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
-	CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
-	daVFxhVjvjDU=
+Content-Transfer-Encoding: 8bit
 
-CgoKPiAtLS0tLeWOn+Wni+mCruS7ti0tLS0tCj4g5Y+R5Lu25Lq6OiAiSmFrdWIgS2ljaW5za2ki
-IDxrdWJhQGtlcm5lbC5vcmc+Cj4g5Y+R6YCB5pe26Ze0OjIwMjYtMDUtMDEgMDc6MzU6NTEgKOaY
-n+acn+S6lCkKPiDmlLbku7bkuro6IOadjuW/lyA8bGl6aGkyQGVzd2luY29tcHV0aW5nLmNvbT4K
-PiDmioTpgIE6IGFuZHJldytuZXRkZXZAbHVubi5jaCwgZGV2aWNldHJlZUB2Z2VyLmtlcm5lbC5v
-cmcsIGRhdmVtQGRhdmVtbG9mdC5uZXQsIGVkdW1hemV0QGdvb2dsZS5jb20sIHJvYmhAa2VybmVs
-Lm9yZywga3J6aytkdEBrZXJuZWwub3JnLCBjb25vcitkdEBrZXJuZWwub3JnLCBuZXRkZXZAdmdl
-ci5rZXJuZWwub3JnLCBwYWJlbmlAcmVkaGF0LmNvbSwgbWNvcXVlbGluLnN0bTMyQGdtYWlsLmNv
-bSwgYWxleGFuZHJlLnRvcmd1ZUBmb3NzLnN0LmNvbSwgcm1rK2tlcm5lbEBhcm1saW51eC5vcmcu
-dWssIHBqd0BrZXJuZWwub3JnLCBwYWxtZXJAZGFiYmVsdC5jb20sIGFvdUBlZWNzLmJlcmtlbGV5
-LmVkdSwgYWxleEBnaGl0aS5mciwgbGludXgtcmlzY3ZAbGlzdHMuaW5mcmFkZWFkLm9yZywgbGlu
-dXgtc3RtMzJAc3QtbWQtbWFpbG1hbi5zdG9ybXJlcGx5LmNvbSwgbGludXgtYXJtLWtlcm5lbEBs
-aXN0cy5pbmZyYWRlYWQub3JnLCBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnLCBtYXhpbWUu
-Y2hldmFsbGllckBib290bGluLmNvbSwgbmluZ3l1QGVzd2luY29tcHV0aW5nLmNvbSwgbGlubWlu
-QGVzd2luY29tcHV0aW5nLmNvbSwgcGlua2VzaC52YWdoZWxhQGVpbmZvY2hpcHMuY29tLCBwcml0
-ZXNoLnBhdGVsQGVpbmZvY2hpcHMuY29tLCB3ZWlzaGFuZ2p1YW5AZXN3aW5jb21wdXRpbmcuY29t
-LCBob3Jtc0BrZXJuZWwub3JnCj4g5Li76aKYOiBSZTogW1BBVENIIG5ldC1uZXh0IHY3IDIvNF0g
-bmV0OiBzdG1tYWM6IGVpYzc3MDA6IGVuYWJsZSBjbG9ja3MgYmVmb3JlIHN5c2NvbiBhY2Nlc3Mg
-YW5kIGNvcnJlY3QgUlggc2FtcGxpbmcgdGltaW5nCj4gCj4gT24gVGh1LCAzMCBBcHIgMjAyNiAx
-NDo0Mzo1MCArMDgwMCAoR01UKzA4OjAwKSDmnY7lv5cgd3JvdGU6Cj4gPiA+IFdoeSBGaXhlcz8g
-SWYgZXRoMSBuZXZlciB3b3JrZWQgdGhpcyBpcyBub3QgYSBmaXggYnV0IG5ldyBmdW5jdGlvbmFs
-aXR5Cj4gPiA+IElmIHlvdSB3YW50IHRvIG1ha2UgdGhpcyBhIGZpeCB0byBwcmV2ZW50IGluY29t
-cGF0aWJpbGl0eSAtIGN1dCBpdCBkb3duCj4gPiA+IGp1c3QgdG8gdGhlIGV0aDAgY2hhbmdlcy4K
-PiA+ID4gICAKPiA+IFRoYW5rIHlvdSBmb3IgdGhlIHN1Z2dlc3Rpb24uCj4gPiAKPiA+IFlvdSdy
-ZSByaWdodCB0aGF0IGV0aDEgbmV2ZXIgd29ya2VkIGF0IEdpZ2FiaXQgc3BlZWQsIHNvIHRoaXMg
-c2hvdWxkCj4gPiBub3QgYmUgdHJlYXRlZCBhcyBhIGZpeC4KPiA+IAo+ID4gSW4gdjgsIEkgd2ls
-bCBzcGxpdCB0aGUgY2hhbmdlcyBpbnRvIHR3byBwYXRjaGVzIHdpdGhpbiB0aGUgc2FtZSBzZXJp
-ZXM6Cj4gPiAtIFBhdGNoIDEgd2lsbCBjb250YWluIG9ubHkgdGhlIGZpeGVzIGFmZmVjdGluZyB0
-aGUgZXhpc3RpbmcgZXRoMAo+ID4gZnVuY3Rpb25hbGl0eSwgYW5kIHdpbGwga2VlcCB0aGUgRml4
-ZXMgdGFnLgo+ID4gLSBQYXRjaCAyIHdpbGwgYWRkIHRoZSBldGgxIHN1cHBvcnQgKFJYIGNsb2Nr
-IGludmVyc2lvbiB3b3JrYXJvdW5kKQo+ID4gYXMgbmV3IGZ1bmN0aW9uYWxpdHksIHdpdGhvdXQg
-YSBGaXhlcyB0YWcuCj4gPiAKPiA+IFBsZWFzZSBsZXQgbWUga25vdyBpZiB5b3Ugd291bGQgcHJl
-ZmVyIGEgZGlmZmVyZW50IHNwbGl0IG9yIG9yZGVyaW5nLgo+IAo+IElmIHlvdSB3YW50IHRvIGNv
-bnNpZGVyIHNvbWUgcGFydCBvZiB0aGlzIGNvbW1pdCBhIGZpeCBpdCBoYXMgdG8gYmUKPiBwb3N0
-ZWQgc2VwYXJhdGVseSB0byB0aGUgbmV0IHRyZWUgKHJhdGhlciB0aGFuIG5ldC1uZXh0KS4KPiBP
-bmNlIGl0J3MgbWVyZ2VkIGFuZCBtYWtlcyBpdCB3YXkgb3ZlciB0byB0aGUgbmV0LW5leHQgdHJl
-ZSAoZWFjaAo+IFRodXJzZGF5KSB5b3UgY2FuIHBvc3QgdGhlIG5ldC1uZXh0IGNobmFnZXMgZm9y
-IGV0aDEKClRoYW5rcywgdW5kZXJzdG9vZC4KCkkgd2lsbCBzcGxpdCB0aGUgY2hhbmdlcyBhY2Nv
-cmRpbmdseToKLSBTZW5kIHRoZSBldGgwIGZpeGVzIGFzIGEgbmV3IHYxIHNlcmllcyB0YXJnZXRp
-bmcgbmV0LgotIFNlbmQgdGhlIGV0aDEgZW5hYmxlbWVudCBhcyBhIG5ldyB2MSBzZXJpZXMgdGFy
-Z2V0aW5nIG5ldC1uZXh0LgoKVGhhbmtzIGZvciB0aGUgZ3VpZGFuY2UuCg==
+Hi,
+
+This series makes the Motorcomm PHY driver parse firmware properties via
+device_property_*() so the same property set can be provided by either
+Devicetree or ACPI _DSD.
+
+Patch 1 switches drivers/net/phy/motorcomm.c from of_property_*() to
+device_property_*() on &phydev->mdio.dev.
+
+Patch 2 documents Motorcomm yt8xxx PHY ACPI _DSD properties under
+Documentation/firmware-guide/acpi/dsd and links the new document from
+the ACPI index.
+
+Thanks,
+chunzhi.lin
+
+chunzhi.lin (2):
+  net: phy: motorcomm: use device properties for firmware tuning
+  docs: acpi: dsd: add Motorcomm yt8xxx PHY properties
+
+ .../acpi/dsd/motorcomm-yt8xxx-phy.rst         | 107 ++++++++++++++++++
+ Documentation/firmware-guide/acpi/index.rst   |   1 +
+ drivers/net/phy/motorcomm.c                   |  41 ++++---
+ 3 files changed, 128 insertions(+), 21 deletions(-)
+ create mode 100644 Documentation/firmware-guide/acpi/dsd/motorcomm-yt8xxx-phy.rst
+
+-- 
+2.34.1
+
