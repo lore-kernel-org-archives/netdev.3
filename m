@@ -1,52 +1,52 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90DA6239085;
-	Wed,  6 May 2026 21:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288983B3BF5;
+	Wed,  6 May 2026 21:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778104161; cv=none; b=TYiBn3O+02jazcVLABQlviH77FZ9kWThYzVMLzvTniJL5LYLRlEwPX+nYv339pOqO/gZQpc7i9v0mMx9c5F4wNezKNue0f2ZSsfn21t64jDu8+4z6x0fntAxSTgi52pRE71sSgdHMEQ+uYJBfsX6mWyU2KluZ/8wMZDgXKO0gtk=
+	t=1778104162; cv=none; b=AJIaud0P+rQz+0xAa9gb606hyo+Gk9yYM90HEY9vp4P1slDQd56n91kFb+QkpFbxeuEFB1DZhJNolPm071hZceP0N7RBIy4WT1AKrDvQTt7d077e33f96kWzx71wsisYny0wkxYHH33lJeg8heFdUpO48VdYmAuCYuWRKRUmMeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778104161; c=relaxed/simple;
-	bh=UCMx9KGLx0pU5Z3g8AUDAOyv1zy/CnZ5A9pStdcQe+Y=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=kZ9IOizQNIJxIJ1n9NzezbFHjCMya99Ecvc7w9A/Q1ziaCSwPYHI0XM2pF9/9IK94eZn6x+cs3HgdAfd2/SrSKOI/3cf6L3DfCzGJZMqpRXnuagj3rj3sGzT14B2x3fmGRNmiS+DfIalb08djGGlaAuCt/9hePxfKClEKE4utgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H/brE9vW; arc=none smtp.client-ip=198.175.65.19
+	s=arc-20240116; t=1778104162; c=relaxed/simple;
+	bh=1gopt3oD1vgDGMa0QCAACurSZyWc49vnCmFC5wKhI1M=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=kOnXQ/Wl8VI/H+xvSTq4znRYaddYFrnGDM43jegHziLfvsDKHAG+2e3SD1qbzF0KirI84piJzA6R++atz/sFzOVSwAfYZ1Do1wWA2bSDO/notfI8zRx+ONC5UdfIwiqAgV3TMgt5jB5DZmoHWXW38+3XMVjZu089ddep726X+Do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IhZ1F+76; arc=none smtp.client-ip=198.175.65.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H/brE9vW"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IhZ1F+76"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778104159; x=1809640159;
-  h=from:subject:date:message-id:mime-version:
-   content-transfer-encoding:to:cc;
-  bh=UCMx9KGLx0pU5Z3g8AUDAOyv1zy/CnZ5A9pStdcQe+Y=;
-  b=H/brE9vWsKYsrph1pzFrIuYBJbBEYF5HVGq/Vm6vmP0aXwgjc7OSuGS+
-   sCAOIe31tHhNpyWvgUDp3sFn6ETbrH5kzg7oMvxeqvLSWoh2Dbx6FhOEM
-   btst9GTFNqPt27wWA9tTg+sp12RIvJrvrHfcCVanf1xAoEe7dq7yyMGYB
-   MitAvCyuvEU7ls4ywS33VlEbliSL/QzNveL3SAK+4/U+uxZnWcNj8Uf95
-   hm5GquuWRjBYiGMandoVk88wOcBYuednyxZGVluEXY02XYl6PfgZ2vzOG
-   XAKWosp+PNd9a3+K3frF5bo/qsJHHCQLSRgZTg3L5jUcnhH2AFoY8hQcV
-   w==;
-X-CSE-ConnectionGUID: Vg+aIy8NTRiJq+nSGCbatg==
-X-CSE-MsgGUID: P9robEFAQTOJixfNUeEFnQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11778"; a="78982482"
+  t=1778104161; x=1809640161;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:references:in-reply-to:to:cc;
+  bh=1gopt3oD1vgDGMa0QCAACurSZyWc49vnCmFC5wKhI1M=;
+  b=IhZ1F+76PYFLhHE5B0ZGsffm/85t1pbI+lYjXEh8F0z7vcEi4Rta7Yil
+   R4taqRE/yqrmUPG6GE36/7MJAip8NiezNw0XAjXnLZ+xMeVeSJa4u/DJ/
+   N587y0oIfI98g6S7OiSI/nKzcg4TVZWSBVYi5Kpd99plmNi9RwiC4ElFI
+   6cUKF36F4+TAFjjdBBiRiIQtRO2/MGGcKKcU9CrgGWrH+lAfdtrIqAPTE
+   jlFf+o/jzpkTRtVTws4Xeemk8t/XvProD2jWqe+HcE4P+CDimf+1IV62/
+   rLHH/W3u0KWAFP2HUug25ha3iBB1GFAbgzr4rTf1cveFxabXTwswlEGYO
+   Q==;
+X-CSE-ConnectionGUID: TBO8jjmzTk6Wl0u6VqBPXQ==
+X-CSE-MsgGUID: di4fEU6cRkyP9B3DdCLkgg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11778"; a="78982501"
 X-IronPort-AV: E=Sophos;i="6.23,220,1770624000"; 
-   d="scan'208";a="78982482"
+   d="scan'208";a="78982501"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2026 14:49:18 -0700
-X-CSE-ConnectionGUID: fFM+kkj7QVmpDoQdPxdvHQ==
-X-CSE-MsgGUID: P6bq3gwlQLO5BZSe8Wzjlw==
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2026 14:49:19 -0700
+X-CSE-ConnectionGUID: D5uBUZVjScqOpKEysrrvog==
+X-CSE-MsgGUID: NWp3zmeWRiG0WHAewAeSZw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,220,1770624000"; 
-   d="scan'208";a="259698605"
+   d="scan'208";a="259698616"
 Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.109]) ([10.166.28.109])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2026 14:49:17 -0700
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2026 14:49:19 -0700
 From: Jacob Keller <jacob.e.keller@intel.com>
-Subject: [PATCH net v2 0/8] Intel Wired LAN Driver Updates 2026-05-04
- (i40e, ice, idpf)
-Date: Wed, 06 May 2026 14:48:09 -0700
-Message-Id: <20260506-jk-iwl-net-2026-05-04-v2-0-a5ea4dc837a9@intel.com>
+Date: Wed, 06 May 2026 14:48:12 -0700
+Subject: [PATCH net v2 3/8] idpf: fix read_dev_clk_lock spinlock init in
+ idpf_ptp_init()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,11 +55,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4WNSw6CQBBEr0J6bZuhdfi48h6GBZ9GGnEwMyNqC
- Hd3wAO4rJdXVTM4tsIOTtEMlidxMpoQaBdB3ZXmyihNyECKEqXVEfsbymtAwx5XhkpjoG2uKcn
- ooNO0hdB9WG7lve1eILhQ/KB7Vj3Xfl1ctU6cH+1ne5/iTf5zNMWosCSiMsuqJk/oLMbzsK/HO
- xTLsnwBrLXYs9EAAAA=
-X-Change-ID: 20260504-jk-iwl-net-2026-05-04-f9526823577f
+Message-Id: <20260506-jk-iwl-net-2026-05-04-v2-3-a5ea4dc837a9@intel.com>
+References: <20260506-jk-iwl-net-2026-05-04-v2-0-a5ea4dc837a9@intel.com>
+In-Reply-To: <20260506-jk-iwl-net-2026-05-04-v2-0-a5ea4dc837a9@intel.com>
 To: Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
  Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
@@ -74,97 +72,99 @@ To: Przemek Kitszel <przemyslaw.kitszel@intel.com>,
  Dave Ertman <david.m.ertman@intel.com>, Ivan Vecera <ivecera@redhat.com>, 
  Grzegorz Nitka <grzegorz.nitka@intel.com>
 Cc: netdev@vger.kernel.org, stable@vger.kernel.org, 
- Jacob Keller <jacob.e.keller@intel.com>, Matt Vollrath <tactii@gmail.com>, 
- Sunitha Mekala <sunithax.d.mekala@intel.com>, Kohei Enju <kohei@enjuk.jp>, 
- Paul Menzel <pmenzel@molgen.mpg.de>, 
+ Jacob Keller <jacob.e.keller@intel.com>, 
  Emil Tantilov <emil.s.tantilov@intel.com>, Simon Horman <horms@kernel.org>, 
- Samuel Salin <Samuel.salin@intel.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Tony Nguyen <anthony.l.nguyen@intel.com>, stable@kernel.org, 
- Marcin Szycik <marcin.szycik@linux.intel.com>, 
- Bart Van Assche <bvanassche@acm.org>, intel-wired-lan@lists.osuosl.org, 
- Arpana Arland <arpanax.arland@intel.com>
+ Samuel Salin <Samuel.salin@intel.com>
 X-Mailer: b4 0.16-dev-ea14f
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2786;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3217;
  i=jacob.e.keller@intel.com; h=from:subject:message-id;
- bh=UCMx9KGLx0pU5Z3g8AUDAOyv1zy/CnZ5A9pStdcQe+Y=;
- b=owGbwMvMwCWWNS3WLp9f4wXjabUkhszf28O54v7FL5kj9ypx8TX/KxzfZz1apm6z7dk6lpYjP
- /m6rhz631HKwiDGxSArpsii4BCy8rrxhDCtN85yMHNYmUCGMHBxCsBEntkxMjzvZ9D727bk54qN
- q+UaZgtcnZbx0j6rNHrupVNuBu62z0IYGf7N+JzG5PW5biIvk/L2mx5Wz5e0R3n6ln688Mnm2I0
- HFqwA
+ bh=mR3J8kkDD6WAkR1aCGRoQIePnlsi1xMHs5/yWSCQUUg=;
+ b=owGbwMvMwCWWNS3WLp9f4wXjabUkhszf26Mbtky9sVZnU/jmx5ZBccsuPiyWOh3S25rO+uKEn
+ pWC7Nb6jlIWBjEuBlkxRRYFh5CV140nhGm9cZaDmcPKBDKEgYtTACby9yfDP71in0VHPu39ssfe
+ 7lx08rV8uZKM4xl/nlp82MjCoHdmXyQjw+yG1wxTWPaocp6vCzi514XPSFe2qrbxxLGMXVsy1+7
+ hZgMA
 X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
  fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
 
-Matt Volrath fixes two issues with the i40e driver probe routine, ensuring
-that PTP is properly cleaned up if the probe fails.
+From: Emil Tantilov <emil.s.tantilov@intel.com>
 
-Emil corrects the initialization of the read_dev_clk_lock spinlock in
-idpf_ptp_init, ensuring it is initialized prior to when the
-ptp_schedule_worker() is called.
+In idpf_ptp_init(), read_dev_clk_lock is initialized after
+ptp_schedule_worker() had already been called (and after
+idpf_ptp_settime64() could reach the lock). The PTP aux worker
+fires immediately upon scheduling and can call into
+idpf_ptp_read_src_clk_reg_direct(), which takes
+spin_lock(&ptp->read_dev_clk_lock) on an uninitialized lock, triggering
+the lockdep "non-static key" warning:
 
-Greg KH fixes a double free and use-after free in the idpf auxiliary device
-error paths.
+[12973.796587] idpf 0000:83:00.0: Device HW Reset initiated
+[12974.094507] INFO: trying to register non-static key.
+...
+[12974.097208] Call Trace:
+[12974.097213]  <TASK>
+[12974.097218]  dump_stack_lvl+0x93/0xe0
+[12974.097234]  register_lock_class+0x4c4/0x4e0
+[12974.097249]  ? __lock_acquire+0x427/0x2290
+[12974.097259]  __lock_acquire+0x98/0x2290
+[12974.097272]  lock_acquire+0xc6/0x310
+[12974.097281]  ? idpf_ptp_read_src_clk_reg+0xb7/0x150 [idpf]
+[12974.097311]  ? lockdep_hardirqs_on_prepare+0xde/0x190
+[12974.097318]  ? finish_task_switch.isra.0+0xd2/0x350
+[12974.097330]  ? __pfx_ptp_aux_kworker+0x10/0x10 [ptp]
+[12974.097343]  _raw_spin_lock+0x30/0x40
+[12974.097353]  ? idpf_ptp_read_src_clk_reg+0xb7/0x150 [idpf]
+[12974.097373]  idpf_ptp_read_src_clk_reg+0xb7/0x150 [idpf]
+[12974.097391]  ? kthread_worker_fn+0x88/0x3d0
+[12974.097404]  ? kthread_worker_fn+0x4e/0x3d0
+[12974.097411]  idpf_ptp_update_cached_phctime+0x26/0x120 [idpf]
+[12974.097428]  ? _raw_spin_unlock_irq+0x28/0x50
+[12974.097436]  idpf_ptp_do_aux_work+0x15/0x20 [idpf]
+[12974.097454]  ptp_aux_kworker+0x20/0x40 [ptp]
+[12974.097464]  kthread_worker_fn+0xd5/0x3d0
+[12974.097474]  ? __pfx_kthread_worker_fn+0x10/0x10
+[12974.097482]  kthread+0xf4/0x130
+[12974.097489]  ? __pfx_kthread+0x10/0x10
+[12974.097498]  ret_from_fork+0x32c/0x410
+[12974.097512]  ? __pfx_kthread+0x10/0x10
+[12974.097519]  ret_from_fork_asm+0x1a/0x30
+[12974.097540]  </TASK>
 
-Marcin fixes ice_set_rss_hfunc() to use the correct q_opt_flags field,
-correcting the assignment and preventing submission of invalid data to the
-firmware.
+Move the call to spin_lock_init() up a bit to make sure read_dev_clk_lock
+is not touched before it's been initialized.
 
-Bart corrects the locking in ice_dcb_rebuild(), ensuring that the tc_mutex
-is held over the entire operation.
-
-Ivan fixes the rclk pin state get for E810 devices, ensuring the index is
-properly offset by the base_rclk_idx value. This ensures that the correct
-pin index is used to look up recovered clock state. He additionally adds
-bounds checking to prevent attempting to access pins outside of the pin
-state array.
-
-Ivan also moves the CGU register macros to the top of ice_dpll.h, inside
-the header guard to avoid duplicate macro definitions should the ice_dpll.h
-header is included multiple times.
-
+Fixes: 5cb8805d2366 ("idpf: negotiate PTP capabilities and get PTP clock")
+Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
+Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Samuel Salin <Samuel.salin@intel.com>
 Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
-Changes in v2:
-- Dropped patches which had comments from Sashiko pointing out issues that
-  need to be addressed.
-- Link to v1: https://patch.msgid.link/20260504-jk-iwl-net-2026-05-04-v1-0-a222a88bd962@intel.com
+ drivers/net/ethernet/intel/idpf/idpf_ptp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
----
-Bart Van Assche (1):
-      ice: fix locking in ice_dcb_rebuild()
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_ptp.c b/drivers/net/ethernet/intel/idpf/idpf_ptp.c
+index eec91c4f0a75..4a51d2727547 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_ptp.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_ptp.c
+@@ -952,6 +952,8 @@ int idpf_ptp_init(struct idpf_adapter *adapter)
+ 		goto free_ptp;
+ 	}
+ 
++	spin_lock_init(&adapter->ptp->read_dev_clk_lock);
++
+ 	err = idpf_ptp_create_clock(adapter);
+ 	if (err)
+ 		goto free_ptp;
+@@ -977,8 +979,6 @@ int idpf_ptp_init(struct idpf_adapter *adapter)
+ 			goto remove_clock;
+ 	}
+ 
+-	spin_lock_init(&adapter->ptp->read_dev_clk_lock);
+-
+ 	pci_dbg(adapter->pdev, "PTP init successful\n");
+ 
+ 	return 0;
 
-Emil Tantilov (1):
-      idpf: fix read_dev_clk_lock spinlock init in idpf_ptp_init()
-
-Greg Kroah-Hartman (1):
-      idpf: fix double free and use-after-free in aux device error paths
-
-Ivan Vecera (2):
-      ice: dpll: fix rclk pin state get for E810
-      ice: dpll: fix misplaced header macros
-
-Marcin Szycik (1):
-      ice: fix setting RSS VSI hash for E830
-
-Matt Vollrath (2):
-      i40e: Cleanup PTP registration on probe failure
-      i40e: Cleanup PTP pins on probe failure
-
- drivers/net/ethernet/intel/i40e/i40e.h       |  1 +
- drivers/net/ethernet/intel/ice/ice_dpll.h    | 32 ++++++++++++++--------------
- drivers/net/ethernet/intel/i40e/i40e_main.c  |  2 ++
- drivers/net/ethernet/intel/i40e/i40e_ptp.c   |  3 ++-
- drivers/net/ethernet/intel/ice/ice_dcb_lib.c |  4 ++--
- drivers/net/ethernet/intel/ice/ice_dpll.c    |  5 +++++
- drivers/net/ethernet/intel/ice/ice_main.c    |  2 +-
- drivers/net/ethernet/intel/idpf/idpf_idc.c   |  6 ++++++
- drivers/net/ethernet/intel/idpf/idpf_ptp.c   |  4 ++--
- 9 files changed, 37 insertions(+), 22 deletions(-)
----
-base-commit: bd3a4795d5744f59a1f485379f1303e5e606f377
-change-id: 20260504-jk-iwl-net-2026-05-04-f9526823577f
-
-Best regards,
---  
-Jacob Keller <jacob.e.keller@intel.com>
+-- 
+2.54.0.rc2.531.gaf818d63126a
 
