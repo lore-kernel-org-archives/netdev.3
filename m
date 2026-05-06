@@ -1,439 +1,746 @@
-Received: from mail-qv1-f100.google.com (mail-qv1-f100.google.com [209.85.219.100])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11023112.outbound.protection.outlook.com [40.93.196.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B91826159E
-	for <netdev@vger.kernel.org>; Wed,  6 May 2026 21:31:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.100
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778103091; cv=none; b=ZwffZNdhOTOHJXsjViv3RAwLvFiH5ZxBDfMHgs2uv718NclY7UYSpFaeHL/zsMG8nS3ibv7tcJ/rCgypujpBRcDs5NexWPeogptOaJKsFpWtqOvgtOFE+ucQcDc1acBBBvtP0nwV+GBd6IQdIWW5au9D7bXPoM0YNHlklYAYQg0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778103091; c=relaxed/simple;
-	bh=Ui/a5F2G8d/cX9WBCEzI6ekd2e0mrplyC9OL96YPJqg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=oMB7LNCBbLUk/TCYUFRh0z6HjA9z/FSMICkRLeux5al98Uosh05Ao/b3FLwe+djHRG7In3+1Buuf9N56WEii3O7QCACEZfKlKsx2b+4w+yZrvB8bHRZWiQZBnJ/nb4NRLX0iOxH20twGpOBRI7NV1rIArUYocCRY6TMXvymgt/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=bIRfppaa; arc=none smtp.client-ip=209.85.219.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F24393B2FE7;
+	Wed,  6 May 2026 21:43:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778103820; cv=fail; b=ftHjiyPAA2EmduPOM4047/zxm2+hn351gkXsIgFDBP29UVgz+vlddBYdfOXKKq/vqDM83JJ3vr/kUzDu2ieT9KsRSKa/IzqzHDEarRAfBat9qBM7WOSGBRnWBfH5LKNr/oevkNJkN+Uf/j0zyvNY93iaMT8Y633z0asgk4F/ThU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778103820; c=relaxed/simple;
+	bh=CAj/YC0cm5miOsYKrp2Hch0ABj3dF4S90in1a+V3X6k=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=X9yMO4A2PsDGGRddZ+/bqxarcW79BK5Qjofj1i/R94PBiTTiu5SyvIgr+SImv2gS3hClLWMqGIbwthgjOrLRIFw8GXoouMV0F6OdfZPr5sSFl5J2C6UADOSDdpZlc1T8OlSJytm37lwwC9GGvq6abpwjxCdmNJxFx7+SDDssrA0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com; spf=pass smtp.mailfrom=os.amperecomputing.com; dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b=ZL4uI0Ve; arc=fail smtp.client-ip=40.93.196.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=os.amperecomputing.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="bIRfppaa"
-Received: by mail-qv1-f100.google.com with SMTP id 6a1803df08f44-8bc012c6984so912216d6.3
-        for <netdev@vger.kernel.org>; Wed, 06 May 2026 14:31:30 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778103089; x=1778707889;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ehG6BOiPQVvqwEHvRgF7jTXPjzwkZZAXLOt2kGg/iPA=;
-        b=A6RHL8Sngnj7Xwwd7rZ8I2N5co9D3X0ExQ70F3/4+pxVVCCjblxCVNfolJJwr1CccZ
-         9xx1O1SRTMHZp6kWSEybQs3X2zEVlO1Ig2/HY4BrDPTtmVhrmtsR2kP+En5o3KJ74XiO
-         4is6KYkJi/lkEvFRVQrOdOUk6hnsDZoEqZH6U/W5ZakCtJGAzfOTZxM/IscPx8nGhOqM
-         geDIQ3ZS91rJWSMZkvrk8xS6p9FfTKr00XwpvVSA9uwtSIt+WKgg40ugx7GnL5nuRQhc
-         pPR6WIrh1MwATHMxBAGu1smojD0Xwa5yIctXPZPlX4/wL1CxLBlsNCKLcu+fpE3k3rby
-         LNDQ==
-X-Gm-Message-State: AOJu0YyJfL8HEQwn5v0uF66jXn00I5qlJNrZMk0VAxKd9BZEy6ch5yst
-	DIT8BC5vbXsHElk32peZz6kv3BV6gwW+CtMf/PIV9Zt5l0jQzN69mqNn+Vb7loVKOXak36BKgm/
-	/HCDcQh59AYGSgSf8HXovXNGtIMF/h1t7aPq/v7xUsWnlbmmq7tafeurEQD8JNXP6zyK9Rsf9kw
-	0AtRGF8yPR4P0aFcx/5qjorYCfgcbpfymBjeb18rA1MInSP51W8vEklOUQIlVODnWq9LR71e3s5
-	5Bm13zXtg==
-X-Gm-Gg: AeBDiesJs7tbCdSwxB9y725qt+btU5c6NcfTrCBMzP2G1OCNalDHt61yf9YUmQBoB7Z
-	s0Iwup6CmcLEX4xZOeRbl9rmUFbDezC36LodvxSJiIcXEGPZl6AB9zc4zfo03ujyKhs0Y8Klx8W
-	H3UEiSAihKwA8gHJ6RVQ2e7SxWhzuUQ/we/Lc6YGSim2RaJZ5hWhGHPcleWb6uuTbqdmMylPuxH
-	nREeqYI8JVOasN0ttjtCLx6h0DMRo44cEjC1jKDp3CdSzv3xTx4s6CZ+8YQfTH0KM1UMNj2N4qX
-	uhD68d4GuXS0So4SEmCDg3lU4DGK3LI31421W34aLkYmtP1lxVlrvEz6buzfcmt8AFUN0+gt3MR
-	tpIGjniaxSLQ4Bsi69xoarkLZ+/5LxBwA+ezM6vAUSDQVZuetcwh6enP2pwAWi41xNPfZ2KgoFS
-	ERf1mV9WrSN0FJag==
-X-Received: by 2002:a05:6214:4891:b0:8ac:ab3b:39f7 with SMTP id 6a1803df08f44-8bc42492c34mr75539016d6.4.1778103088805;
-        Wed, 06 May 2026 14:31:28 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com ([144.49.247.127])
-        by smtp-relay.gmail.com with ESMTPS id 6a1803df08f44-8b53b33a818sm14940206d6.15.2026.05.06.14.31.28
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 06 May 2026 14:31:28 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-2c16233ee11so230518eec.1
-        for <netdev@vger.kernel.org>; Wed, 06 May 2026 14:31:28 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b="ZL4uI0Ve"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YQLhtUgYPvz4tNBZ5LElm+s1eeRkG9Q8E/M24k5MEwt7g+vK7C1ocJ/hUBD+W9x6HSz9ipODjbsPdHaIE/y/cpGxwZ4zV2SiPS3DOrycLsELedBjwb/T4gY2xue13eKf7RAjkU7pp/e4V6qIQ73deV/b0UjpvVO+nDxmchrHcLcHWDFHjQ9Pu3gPx1VkoDiEyFkjM08lqzBUbfKfserJ6htvw6DQH4Iq7CA1HQrVqhq/3ojDO6m10oY+k9Ka+q0Y4DtDIS/hGcUApPd+gNjHNPTSkVBuOoHb+wgXLeC4m7SWXSlQGVXrlCix7YaShhVbcMrv9H7FJos0x3FDJqjyFg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VK/jpYPIS/hkJyDVFvW9zbDN1VcAdc6yUnciLtGcdRE=;
+ b=Y//Kw3gKBQny3QTxrLQKj9WfpgZBE+7JlG70LUHeHG48brB0T9mERkKHwcaMKGYle0wSdvrRcB7mZNMr0EOCamj9hor9FB03vqe1Sw4IavP4g8GrgxhifNPYlfXhLJ0wyGQwLpf3I5WlegMe2k2kH9pntImUMjKnVJSHR0CGpE5bXZHrLASBxD6hdCxDy2CryMjA5SamwdI2KwJQ3d2tdXKxbCAozPchL0LEWUTWarWUa+eXBXPZkDan/0tMm/A6cjOFb8CzGmJ4XY37xdkmKdDsnuPSswzzeS2JCXTsOhjFtLPkks/Htp8ZQxinioR25+0lSJBPOSZm8ucfaMrDDA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
+ header.from=os.amperecomputing.com; dkim=pass
+ header.d=os.amperecomputing.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1778103087; x=1778707887; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ehG6BOiPQVvqwEHvRgF7jTXPjzwkZZAXLOt2kGg/iPA=;
-        b=bIRfppaacQ0v3nUS0jftP8WIz1zM0OBQPIQ+zcIR3b/LOBwv//nq2fMaG4S5EsXQ/j
-         4aXwrN18MH6ufkdS7ixKQrBBs30XuqCJm7vDNHLeMiWAk1OuX/A5KJ1xJgDYVqtR5Tsi
-         zfMMl9pD2dBalbz8sK8eMX8E8VxILv1/xMCDY=
-X-Received: by 2002:a05:7300:818d:b0:2df:7882:1ce0 with SMTP id 5a478bee46e88-2f54b364cd2mr2559415eec.29.1778103086726;
-        Wed, 06 May 2026 14:31:26 -0700 (PDT)
-X-Received: by 2002:a05:7300:818d:b0:2df:7882:1ce0 with SMTP id 5a478bee46e88-2f54b364cd2mr2559397eec.29.1778103086040;
-        Wed, 06 May 2026 14:31:26 -0700 (PDT)
-Received: from stbsdo-bld-1.sdg.broadcom.net ([192.19.161.248])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2f56fd909e3sm5234089eec.20.2026.05.06.14.31.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 May 2026 14:31:25 -0700 (PDT)
-From: Justin Chen <justin.chen@broadcom.com>
-To: netdev@vger.kernel.org
-Cc: bcm-kernel-feedback-list@broadcom.com,
-	pabeni@redhat.com,
-	kuba@kernel.org,
-	edumazet@google.com,
-	davem@davemloft.net,
-	andrew+netdev@lunn.ch,
-	florian.fainelli@broadcom.com,
-	Justin Chen <justin.chen@broadcom.com>
-Subject: [PATCH net-next v3 1/2] net: bcmasp: Divide init to allow partial bring up
-Date: Wed,  6 May 2026 14:31:13 -0700
-Message-Id: <20260506213114.2002886-2-justin.chen@broadcom.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260506213114.2002886-1-justin.chen@broadcom.com>
-References: <20260506213114.2002886-1-justin.chen@broadcom.com>
+ d=os.amperecomputing.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VK/jpYPIS/hkJyDVFvW9zbDN1VcAdc6yUnciLtGcdRE=;
+ b=ZL4uI0Vem6R4hRPp0DvhopNI1VpsC6EXLMCqesjfgkx8s+vS0zcpl1fslvMhs0PlNKljMNElHPbxDZ/sIWxvN+UhorOWKs5vAdUOJWG9TWHca+IdeqwxINGxP7BiNelhNRt9Tsb+4WiawSwivp5l74whVOeI5F7nRi7xAIHHeyo=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=os.amperecomputing.com;
+Received: from CY3PR01MB9194.prod.exchangelabs.com (2603:10b6:930:109::7) by
+ PH0PR01MB6151.prod.exchangelabs.com (2603:10b6:510:18::7) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9870.27; Wed, 6 May 2026 21:43:32 +0000
+Received: from CY3PR01MB9194.prod.exchangelabs.com
+ ([fe80::4005:a1db:71b8:dc8c]) by CY3PR01MB9194.prod.exchangelabs.com
+ ([fe80::4005:a1db:71b8:dc8c%5]) with mapi id 15.20.9891.008; Wed, 6 May 2026
+ 21:43:32 +0000
+From: Adam Young <admiyo@os.amperecomputing.com>
+To: Jeremy Kerr <jk@codeconstruct.com.au>,
+	Matt Johnston <matt@codeconstruct.com.au>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Huisong Li <lihuisong@huawei.com>
+Subject: [net-next v39] mctp pcc: Implement MCTP over PCC Transport
+Date: Wed,  6 May 2026 17:43:26 -0400
+Message-ID: <20260506214327.276069-1-admiyo@os.amperecomputing.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: CY8PR12CA0069.namprd12.prod.outlook.com
+ (2603:10b6:930:4c::14) To CY3PR01MB9194.prod.exchangelabs.com
+ (2603:10b6:930:109::7)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY3PR01MB9194:EE_|PH0PR01MB6151:EE_
+X-MS-Office365-Filtering-Correlation-Id: 45834f9a-9ef4-4acd-184b-08deabb884b0
+X-MS-Exchange-AtpMessageProperties: SA
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|7416014|366016|1800799024|376014|13003099007|56012099003|18002099003|55112099003|3023799003;
+X-Microsoft-Antispam-Message-Info:
+	5/7wtTYJo1wQSIDGAL+9a5wwlmKrGebV2pz5rLGqrTOlFc8AXI/mtKK00OxSidxFLEpoFcdCCcQt9+SW0g7CM/3jUdR3yP+Lti7MRbsojpWCXZ6v6657PN1aqbZfgcAj4hYKiZKEBL7ctYNrnK0pHLFTFEkRXj1fKIa9WNlDkIKpKfASrgBBjDowb9CVWbFftPmJN2SftktQB8S+i2Y8tJEGcj1Eq6yewDWYpMjRfg3KSebZ46/bqirFxVZZ/Zd0XnL72A8fyfxHAXxL+11H1tmhQWryPKJZE7YiaPhDOINRyZbzDKOgUZPh0n2KFGP5cycWDJgCKhZqk8r8hpy5kWAtELuJ1+X37lLM3GSuxowHkTQXxXTj5/A7gqt+Mie+JYXNc8TVubA0F8ZKCipZ3mBMVxkdpNqNRb2CuU6HF6NulBf9JCMJsVwwYPNj+F+PbZvy2mYNmXTUW0gJdZ2UbIC8PKZn0qJOH+fZyKvca6huAQugreowNT5cCWN5Vs6Q2SXxXc2q9KJ24R6q/o39qPl/iZhZOTwN+wsBZZ7d+k6jegHijgfCyF+TDX5EXbpc4I7TQEehjVDTrK+Cgot/6rnE4wVvOwffygsijwOb2zjo9ZLapx34qC9huh3KbgzsG5T+XiPlVXlJ4ahDNd/3FmHI5OrRyylaBBZkZpmxW4HDIcKXdfShmNQG8yN8k3vA1AGCabJZBHAqGKDKWeGCeA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY3PR01MB9194.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(7416014)(366016)(1800799024)(376014)(13003099007)(56012099003)(18002099003)(55112099003)(3023799003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?UKkFz80v9KswjSsn1a3ExHXuD3UniJ2rv9muNYcBuWojT488tf8I+vvOCyMQ?=
+ =?us-ascii?Q?I2onOqIt7trAfTVevEEHiwI7SwNSuMsrpKz+4JHnQYCDWBwYAT3AU3eZyXq9?=
+ =?us-ascii?Q?5t14CwZ0Impaj+UDU3R+fUvZ+sWDN0LGPR5i24XoR6nxIdoZs0Ra34a9L3mZ?=
+ =?us-ascii?Q?k92EYjjRd1eAvFOMjRHO6SJ+aG8LWd9dUDEuGaP+O8zzMbrAKCD/w4/Hyhqa?=
+ =?us-ascii?Q?sQKuM8xneBFddFAFgWZYYq9tn954NyA0yd61ubJLqZcDBt/rtykpUdY8e5Co?=
+ =?us-ascii?Q?q2Iw4ar3HVNjR7TbWWWxOxoIqjxKBccQtCD1c5AbXe+9X9NHWx+qZudrmzyA?=
+ =?us-ascii?Q?QSbr1P2tg5L1gAytim1SxJLqwcDxczh0+5FhPluaSwuXiVaDlDywShoNvLlc?=
+ =?us-ascii?Q?+9Jpa3mqaO+UIlXPvrxL56nb13i0NnwAiibLUVWuGTAOQkXo+q0XB8ZZV6Ok?=
+ =?us-ascii?Q?lgbLGs1c8SRsgnHqAINXHDQau3oP8ETSic5lvtr85GmAkVJcuNyrCq+4Zv4q?=
+ =?us-ascii?Q?ytO9vqT3O6nws9k8OZ6bgk4mnTfdbDCpUaRACrGlYO5Z/QdjXNBFpvNDVrpx?=
+ =?us-ascii?Q?JUkV4whUI1vKcmycjyorXqhObSThrsHj1P+aWVvRrSXbbip4bMg3IB8LNGQ6?=
+ =?us-ascii?Q?kDPlZAsh4FwT6hV2Onq+bJgodcLAu/E0N+KNTsiDdKz7/4o/kz3c73Q3hGUP?=
+ =?us-ascii?Q?qbD9+Xx9ZH9INw6B4CsflLEtTZxmDDwqjL9vgZtUsvUkHfS4619nbzih8XxK?=
+ =?us-ascii?Q?ySzr0q++CiY6QLSuFEIUj2aNwwACF119/DhAgVb/Y+5FuApdKcpf5ZbYyeCM?=
+ =?us-ascii?Q?FOc6wy8PKCdvnqFuakT/Rg3eJiMDyxAgcb4Qbo3IJuSrYeGHWAe5bctBOaDx?=
+ =?us-ascii?Q?yj0qmhecQG2uxMggD1rTV+tTDYZ3vNp66woqRLUGqHZAoNkVwa7YDA7fh3Hc?=
+ =?us-ascii?Q?lspcpL4tEF7d5v/Zs9QXaUdjH0jzHsdaVhglGvZanmVF91389J1pu4AQNvyp?=
+ =?us-ascii?Q?zvB2jfZAVW+B9M/RP3j6FPrJFgasSDGT/9lsL9mXn2LhkQFjQ2Dp4CDK/c2u?=
+ =?us-ascii?Q?4J3PIvJSViNVdY7TZHiSWXZZYPeVl6sShI08kllo3NSe77uCg3B+g0l4ekEB?=
+ =?us-ascii?Q?MnntdCGimqtOcDIsjvmhfgPjSYIb7BeQl5LmvT47T9CbfcTs6dmYZT9hU3Pt?=
+ =?us-ascii?Q?BJOxXWIJizyy6+eq/piMMatuarNdVLOmWJh9NJHRYdjOyJhG2NnWon3IIZyf?=
+ =?us-ascii?Q?wIaN5XVwYJYq2dzDY9GMXQyk2IcIvAXxhPH6mRrIWWrYhKXtBmQYtqwI+v1U?=
+ =?us-ascii?Q?ns7C2ddFW5KclmeYzrUKJzy3MZ9eA7CNEMucboNYcrJi3Qd1i4Upld9AD1Qq?=
+ =?us-ascii?Q?xUYwdaTj50MS/s9Lr3vIcZGr4BlQmWY2V16jcdY+IYSEDEdmsli75Brr9YyK?=
+ =?us-ascii?Q?x202X/5igUwBMj+eg/nQCsaNQ2epHq++G8ZuDvG8Tm36w/dYSktGsyDALrM8?=
+ =?us-ascii?Q?XK8mlUyf4MO3oBDg0JKjxsgbjyPPlR+wET6syOteaJppgZLdHJyPS3xcckTs?=
+ =?us-ascii?Q?qum84u0xkNio+rI3ZBcIE1XWJK8VojxEyDjCbLvOtrUqie5t2VwY0VTXMysQ?=
+ =?us-ascii?Q?kvH7jAb8X2imEprWpMMYVJ7uqYd0dEs9BK3uEixZdiECK0tlwl8pWBGvML7q?=
+ =?us-ascii?Q?ZoDvlh0CuaNGuL7EB+SyLAQpZPsw20r6DtvsPUVfP8uSCdeNByKFbvTNhlUn?=
+ =?us-ascii?Q?fuo1QeCjGko4lU0thG/THYs2i7szUHtm6IxboUJe1l9pJ/zTjQs2O7JrS52N?=
+X-MS-Exchange-AntiSpam-MessageData-1:
+	3ZZlmAJCCmw5eWUMMsqVNX1UN2Rv0iFlfT/72/AVVlWPbsE+acKdO/ht
+X-OriginatorOrg: os.amperecomputing.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 45834f9a-9ef4-4acd-184b-08deabb884b0
+X-MS-Exchange-CrossTenant-AuthSource: CY3PR01MB9194.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 May 2026 21:43:32.4362
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: e6gg929UUZyLgQTqTkzrJaMmhgCzR1jQyroKPQdm52xJNmJYG89cqt6hXuBZ0UqXtmBbBBL6y+zOjNYQQIpJgzLtOkVKMUTqc9lYi+gWnGJafsxKFTEnYwArD+nefwXS
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR01MB6151
 
-To prepare for a partial bring up of the interface during resume,
-we break apart the bcmasp_netif_init() function into smaller chunks
-that can be called as necessary. Also consolidate some functions that
-do not need to be standalone.
+Implementation of network driver for
+Management Component Transport Protocol(MCTP)
+over Platform Communication Channel(PCC)
 
-Signed-off-by: Justin Chen <justin.chen@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+DMTF DSP:0292
+Link: https://www.dmtf.org/sites/default/files/standards/documents/DSP0292_1.0.0WIP50.pdf
+
+The transport mechanism is called Platform Communication Channels (PCC)
+is part of the ACPI spec:
+
+Link: https://uefi.org/htmlspecs/ACPI_Spec_6_4_html/14_Platform_Communications_Channel/Platform_Comm_Channel.html
+
+The PCC mechanism is managed via a mailbox implemented at
+drivers/mailbox/pcc.c
+
+MCTP devices are specified via ACPI by entries in DSDT/SSDT and
+reference channels specified in the PCCT. Messages are sent on a type
+3 and received on a type 4 channel.  Communication with other devices
+use the PCC based doorbell mechanism; a shared memory segment with a
+corresponding interrupt and a memory register used to trigger remote
+interrupts.
+
+The shared buffer must be at least 68 bytes long as that is the minimum
+MTU as defined by the MCTP specification.
+
+Unlike the existing PCC Type 2 based drivers, the mssg parameter to
+mbox_send_msg is actively used. The data section of the struct sk_buff
+that contains the outgoing packet is sent to the mailbox, already
+properly formatted as a PCC exctended message.
+
+If the mailbox ring buffer is full, the driver stops the incoming
+packet queues until a message has been sent, freeing space in the
+ring buffer.
+
+When the Type 3 channel outbox receives a txdone response interrupt,
+it consumes the outgoing sk_buff, allowing it to be freed.
+
+Bringing up an interface creates the channel between the network driver
+and the mailbox driver. This enables communication with the remote
+endpoint, to include the receipt of new messages. Bringing down an
+interface removes the channel, and no new messages can be delivered.
+Stopping the interface will leave any packets that are cached in the
+mailbox ringbuffer. They cannot safely be freed until the PCC mailbox
+attempts to deliver them and has removed them from the ring buffer.
+
+PCC is based on a shared buffer and a set of I/O mapped memory locations
+that the Spec calls registers.  This mechanism exists regardless of the
+existence of the driver. If the user has the ability to map these
+physical location to virtual locations, they have the ability to drive the
+hardware.  Thus, there is a security aspect to this mechanism that extends
+beyond the responsibilities of the operating system.
+
+If the hardware does not expose the PCC in the ACPI table, this device
+will never be enabled. Thus it is only an issue on hardware that does
+support PCC. In that case, it is up to the remote controller to sanitize
+communication; MCTP will be exposed as a socket interface, and userland
+can send any crafted packet it wants. It would also be incumbent on
+the hardware manufacturer to allow the end user to disable MCTP over PCC
+communication if they did not want to expose it.
+
+Link: https://www.dmtf.org/sites/default/files/standards/documents/DSP0292_1.0.0WIP50.pdf
+Link: https://uefi.org/htmlspecs/ACPI_Spec_6_4_html/14_Platform_Communications_Channel/Platform_Comm_Channel.html
+Signed-off-by: Adam Young <admiyo@os.amperecomputing.com>
+
 ---
-v2
-- Moved tx_lpi_timer read to only bcmasp_open(). We don't want to overwrite
-  the SW ctx with the HW default in the resume/suspend case.
 
- .../net/ethernet/broadcom/asp2/bcmasp_intf.c  | 210 ++++++++----------
- 1 file changed, 98 insertions(+), 112 deletions(-)
+Several rounds of code review have gone into this update.  The changes
+are listed roughly in the order they were made.  Additional issues have
+been found but require changes in the mailbox/pcc.c and the
+corresponding header file.  These will be submitted in a separate series
+of reviews.  The driver works without those changes, and any issues are
+pre-existing in all PCC extended memory drivers.
 
-diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
-index ec63f50a849e..e2b51ec903af 100644
---- a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
-+++ b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
-@@ -344,40 +344,35 @@ static netdev_tx_t bcmasp_xmit(struct sk_buff *skb, struct net_device *dev)
- 	return NETDEV_TX_OK;
- }
+Previous Version: https://lore.kernel.org/lkml/20260405180741.1496198-1-admiyo@os.amperecomputing.com/
+
+Changes from Previous version
+
+check that returned message length is smaller than the size of the shared buffer.
+remove space after // in mctp_pcc_tx
+don't say ndo in function names
+don't use capital letter in MTU function name
+
+move dev_dstats_tx_add outside of irq processing
+Note AI Generated Code Review comment which seems legit:
+        mctp_pcc_tx() runs in process or softirq context and calls
+        dev_dstats_tx_dropped(). mctp_pcc_tx_done() runs in the controller's hardirq
+        context and calls dev_dstats_tx_add().
+        The generic dev_dstats_* macros use u64_stats_update_begin(), which does not
+        disable interrupts. If a hardware interrupt fires while the softirq path is
+        inside u64_stats_update_begin(), the hardirq path will re-enter the lock.
+
+while technically there are still possible ways that the SKB send might fail
+	we cannot report them any later than prep_tx.  In tx complete,
+	we are in interupt context and it is not safe to update the stats then.
+
+mctp-pcc use little-endian conversion for shared buffer header values
+explain why we test for a null SKB in mctp_pcc_tx_prepare and warn once
+Deal with fragmented outbound packets
+Cleanup the active message when tearing down the driver
+        the active message may have been sent to the backend just prior to clean up
+        we want to free it during cleanup, and thus make sure that the null pointer
+        set as the active message is not passed to the callback if the message
+        response interrupt gets triggered.
+
+return PTR_ERR and EINVAL for initialization error cases
+Fail initialization if there are not exactly 2 channels: an outbox and an inbox
+don't advance msg_free when freeing skbs
+use PCC_EXTRA_LEN  to clarify and standardize length comparisons between value from buffer and size of shmem.
+ensure the shared buffer is large enough to hold MCTP-PCC messages
+ensure there is an active message when clearing the ring buffer
+start teardown process by disabling rx
+        Avoid a race condition where the teardown
+        process frees the active req, but an interupt
+        resets it, leaking memory.  Ensure active_req
+        stays clear By closing the channel first.
+
+CONFIG option to ensure mctp is 64bit only
+compare inbox MTU with Outbox MTU and take the smaller value
+add mctp_pcc_change_mtu
+use ACPI constant for u32 data type
+default case for switch in testing PCC channels
+---
+ MAINTAINERS                 |   5 +
+ drivers/net/mctp/Kconfig    |  15 ++
+ drivers/net/mctp/Makefile   |   1 +
+ drivers/net/mctp/mctp-pcc.c | 427 ++++++++++++++++++++++++++++++++++++
+ 4 files changed, 448 insertions(+)
+ create mode 100644 drivers/net/mctp/mctp-pcc.c
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index cb0f2bf6fe2e..7a064e326f0a 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -15398,6 +15398,11 @@ F:	include/net/mctpdevice.h
+ F:	include/net/netns/mctp.h
+ F:	net/mctp/
  
--static void bcmasp_netif_start(struct net_device *dev)
-+static void umac_reset_and_init(struct bcmasp_intf *intf,
-+				const unsigned char *addr)
- {
--	struct bcmasp_intf *intf = netdev_priv(dev);
--
--	bcmasp_set_rx_mode(dev);
--	napi_enable(&intf->tx_napi);
--	napi_enable(&intf->rx_napi);
--
--	bcmasp_enable_rx_irq(intf, 1);
--	bcmasp_enable_tx_irq(intf, 1);
--	bcmasp_enable_phy_irq(intf, 1);
--
--	phy_start(dev->phydev);
--}
-+	struct phy_device *phydev = intf->ndev->phydev;
-+	u32 mac0, mac1;
- 
--static void umac_reset(struct bcmasp_intf *intf)
--{
- 	umac_wl(intf, 0x0, UMC_CMD);
- 	umac_wl(intf, UMC_CMD_SW_RESET, UMC_CMD);
- 	usleep_range(10, 100);
- 	/* We hold the umac in reset and bring it out of
- 	 * reset when phy link is up.
- 	 */
--}
- 
--static void umac_set_hw_addr(struct bcmasp_intf *intf,
--			     const unsigned char *addr)
--{
--	u32 mac0 = (addr[0] << 24) | (addr[1] << 16) | (addr[2] << 8) |
--		    addr[3];
--	u32 mac1 = (addr[4] << 8) | addr[5];
-+	umac_wl(intf, 0x800, UMC_FRM_LEN);
-+	umac_wl(intf, 0xffff, UMC_PAUSE_CNTRL);
-+	umac_wl(intf, 0x800, UMC_RX_MAX_PKT_SZ);
++MANAGEMENT COMPONENT TRANSPORT PROTOCOL (MCTP) over PCC (MCTP-PCC) Driver
++M:	Adam Young <admiyo@os.amperecomputing.com>
++S:	Maintained
++F:	drivers/net/mctp/mctp-pcc.c
 +
-+	mac0 = (addr[0] << 24) | (addr[1] << 16) | (addr[2] << 8) |
-+		addr[3];
-+	mac1 = (addr[4] << 8) | addr[5];
+ MAPLE TREE
+ M:	Liam R. Howlett <Liam.Howlett@oracle.com>
+ R:	Alice Ryhl <aliceryhl@google.com>
+diff --git a/drivers/net/mctp/Kconfig b/drivers/net/mctp/Kconfig
+index cf325ab0b1ef..9c1d228e5ad7 100644
+--- a/drivers/net/mctp/Kconfig
++++ b/drivers/net/mctp/Kconfig
+@@ -47,6 +47,21 @@ config MCTP_TRANSPORT_I3C
+ 	  A MCTP protocol network device is created for each I3C bus
+ 	  having a "mctp-controller" devicetree property.
  
- 	umac_wl(intf, mac0, UMC_MAC0);
- 	umac_wl(intf, mac1, UMC_MAC1);
++config MCTP_TRANSPORT_PCC
++	tristate "MCTP PCC transport"
++	depends on ACPI
++	depends on PCC
++	depends on 64BIT
++	help
++	  Provides a driver to access MCTP devices over PCC transport,
++	  A MCTP protocol network device is created via ACPI for each
++	  entry in the DSDT/SSDT that matches the identifier. The Platform
++	  communication channels are selected from the corresponding
++	  entries in the PCCT.
 +
-+	/* Reset shadow values since we reset the umac */
-+	intf->old_duplex = -1;
-+	intf->old_link = -1;
-+	intf->old_pause = -1;
-+	phydev->eee_cfg.tx_lpi_timer = umac_rl(intf, UMC_EEE_LPI_TIMER);
- }
- 
- static void umac_enable_set(struct bcmasp_intf *intf, u32 mask,
-@@ -401,13 +396,6 @@ static void umac_enable_set(struct bcmasp_intf *intf, u32 mask,
- 		usleep_range(1000, 2000);
- }
- 
--static void umac_init(struct bcmasp_intf *intf)
--{
--	umac_wl(intf, 0x800, UMC_FRM_LEN);
--	umac_wl(intf, 0xffff, UMC_PAUSE_CNTRL);
--	umac_wl(intf, 0x800, UMC_RX_MAX_PKT_SZ);
--}
--
- static int bcmasp_tx_reclaim(struct bcmasp_intf *intf)
- {
- 	struct bcmasp_intf_stats64 *stats = &intf->stats64;
-@@ -927,6 +915,14 @@ static void bcmasp_rgmii_mode_en_set(struct bcmasp_intf *intf, bool enable)
- 	rgmii_wl(intf, reg, RGMII_OOB_CNTRL);
- }
- 
-+static void bcmasp_phy_hw_unprepare(struct bcmasp_intf *intf)
++	  Say y here if you need to connect to MCTP endpoints over PCC. To
++	  compile as a module, use m; the module will be called mctp-pcc.
++
+ config MCTP_TRANSPORT_USB
+ 	tristate "MCTP USB transport"
+ 	depends on USB
+diff --git a/drivers/net/mctp/Makefile b/drivers/net/mctp/Makefile
+index c36006849a1e..0a591299ffa9 100644
+--- a/drivers/net/mctp/Makefile
++++ b/drivers/net/mctp/Makefile
+@@ -1,4 +1,5 @@
+ obj-$(CONFIG_MCTP_SERIAL) += mctp-serial.o
+ obj-$(CONFIG_MCTP_TRANSPORT_I2C) += mctp-i2c.o
+ obj-$(CONFIG_MCTP_TRANSPORT_I3C) += mctp-i3c.o
++obj-$(CONFIG_MCTP_TRANSPORT_PCC) += mctp-pcc.o
+ obj-$(CONFIG_MCTP_TRANSPORT_USB) += mctp-usb.o
+diff --git a/drivers/net/mctp/mctp-pcc.c b/drivers/net/mctp/mctp-pcc.c
+new file mode 100644
+index 000000000000..de644c188f3e
+--- /dev/null
++++ b/drivers/net/mctp/mctp-pcc.c
+@@ -0,0 +1,427 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * mctp-pcc.c - Driver for MCTP over PCC.
++ * Copyright (c) 2024-2026, Ampere Computing LLC
++ *
++ */
++
++/* Implementation of MCTP over PCC DMTF Specification DSP0256
++ * https://www.dmtf.org/sites/default/files/standards/documents/DSP0292_1.0.0WIP50.pdf
++ */
++
++#include <linux/acpi.h>
++#include <linux/hrtimer.h>
++#include <linux/if_arp.h>
++#include <linux/init.h>
++#include <linux/kernel.h>
++#include <linux/mailbox_client.h>
++#include <linux/module.h>
++#include <linux/netdevice.h>
++#include <linux/platform_device.h>
++#include <linux/skbuff.h>
++#include <linux/string.h>
++
++#include <acpi/acpi_bus.h>
++#include <acpi/acpi_drivers.h>
++#include <acpi/acrestyp.h>
++#include <acpi/actbl.h>
++#include <acpi/pcc.h>
++#include <net/mctp.h>
++#include <net/mctpdevice.h>
++
++#define MCTP_SIGNATURE          "MCTP"
++#define MCTP_SIGNATURE_LENGTH   (sizeof(MCTP_SIGNATURE) - 1)
++#define MCTP_MIN_MTU            68
++#define PCC_HEADER_SIZE         sizeof(struct acpi_pcct_ext_pcc_shared_memory)
++#define MCTP_PCC_MIN_SIZE       (PCC_HEADER_SIZE + MCTP_MIN_MTU)
++#define PCC_EXTRA_LEN           (PCC_HEADER_SIZE - sizeof(pcc_header.command))
++struct mctp_pcc_mailbox {
++	u32 index;
++	struct pcc_mbox_chan *chan;
++	struct mbox_client client;
++};
++
++/* The netdev structure. One of these per PCC adapter. */
++struct mctp_pcc_ndev {
++	struct net_device *ndev;
++	struct acpi_device *acpi_device;
++	struct mctp_pcc_mailbox inbox;
++	struct mctp_pcc_mailbox outbox;
++};
++
++static void mctp_pcc_client_rx_callback(struct mbox_client *cl, void *mssg)
 +{
-+	if (intf->internal_phy)
-+		bcmasp_ephy_enable_set(intf, false);
-+	else
-+		bcmasp_rgmii_mode_en_set(intf, false);
++	struct acpi_pcct_ext_pcc_shared_memory pcc_header;
++	struct mctp_pcc_ndev *mctp_pcc_ndev;
++	struct mctp_pcc_mailbox *inbox;
++	struct mctp_skb_cb *cb;
++	struct sk_buff *skb;
++	u32 header_length;
++	int size;
++
++	mctp_pcc_ndev = container_of(cl, struct mctp_pcc_ndev, inbox.client);
++	inbox = &mctp_pcc_ndev->inbox;
++	memcpy_fromio(&pcc_header, inbox->chan->shmem, sizeof(pcc_header));
++
++	// The message must at least have the PCC command indicating it is an MCTP
++	// message followed by the MCTP header, or we have a malformed message.
++	// This may be run on big endian system, but the data in the buffer is
++	// explicitly little endian.
++	header_length = le32_to_cpu(pcc_header.length);
++	if (header_length < sizeof(pcc_header.command) + sizeof(struct mctp_hdr)) {
++		dev_dstats_rx_dropped(mctp_pcc_ndev->ndev);
++		return;
++	}
++	// If the reported size is larger than the shared memory minus headers,
++	// something is wrong and treat the buffer as corrupted data.
++	if (header_length > inbox->chan->shmem_size - PCC_EXTRA_LEN) {
++		dev_dstats_rx_dropped(mctp_pcc_ndev->ndev);
++		return;
++	}
++	if (memcmp(&pcc_header.command, MCTP_SIGNATURE, MCTP_SIGNATURE_LENGTH) != 0) {
++		dev_dstats_rx_dropped(mctp_pcc_ndev->ndev);
++		return;
++	}
++
++	size = header_length + PCC_EXTRA_LEN;
++	skb = netdev_alloc_skb(mctp_pcc_ndev->ndev, size);
++	if (!skb) {
++		dev_dstats_rx_dropped(mctp_pcc_ndev->ndev);
++		return;
++	}
++	skb_put(skb, size);
++	skb->protocol = htons(ETH_P_MCTP);
++	memcpy_fromio(skb->data, inbox->chan->shmem, size);
++	dev_dstats_rx_add(mctp_pcc_ndev->ndev, size);
++	skb_pull(skb, sizeof(pcc_header));
++	skb_reset_mac_header(skb);
++	skb_reset_network_header(skb);
++	cb = __mctp_cb(skb);
++	cb->halen = 0;
++	netif_rx(skb);
 +}
 +
- static void bcmasp_netif_deinit(struct net_device *dev)
- {
- 	struct bcmasp_intf *intf = netdev_priv(dev);
-@@ -984,11 +980,7 @@ static int bcmasp_stop(struct net_device *dev)
- 
- 	phy_disconnect(dev->phydev);
- 
--	/* Disable internal EPHY or external PHY */
--	if (intf->internal_phy)
--		bcmasp_ephy_enable_set(intf, false);
--	else
--		bcmasp_rgmii_mode_en_set(intf, false);
-+	bcmasp_phy_hw_unprepare(intf);
- 
- 	/* Disable the interface clocks */
- 	bcmasp_core_clock_set_intf(intf, false);
-@@ -998,10 +990,15 @@ static int bcmasp_stop(struct net_device *dev)
- 	return 0;
- }
- 
--static void bcmasp_configure_port(struct bcmasp_intf *intf)
-+static void bcmasp_phy_hw_prepare(struct bcmasp_intf *intf)
- {
- 	u32 reg, id_mode_dis = 0;
- 
-+	if (intf->internal_phy)
-+		bcmasp_ephy_enable_set(intf, true);
-+	else
-+		bcmasp_rgmii_mode_en_set(intf, true);
-+
- 	reg = rgmii_rl(intf, RGMII_PORT_CNTRL);
- 	reg &= ~RGMII_PORT_MODE_MASK;
- 
-@@ -1036,26 +1033,8 @@ static void bcmasp_configure_port(struct bcmasp_intf *intf)
- 	rgmii_wl(intf, reg, RGMII_OOB_CNTRL);
- }
- 
--static int bcmasp_netif_init(struct net_device *dev, bool phy_connect)
-+static phy_interface_t bcmasp_phy_iface_for_connect(phy_interface_t mode)
- {
--	struct bcmasp_intf *intf = netdev_priv(dev);
--	phy_interface_t phy_iface = intf->phy_interface;
--	u32 phy_flags = PHY_BRCM_AUTO_PWRDWN_ENABLE |
--			PHY_BRCM_DIS_TXCRXC_NOENRGY |
--			PHY_BRCM_IDDQ_SUSPEND;
--	struct phy_device *phydev = NULL;
--	int ret;
--
--	/* Always enable interface clocks */
--	bcmasp_core_clock_set_intf(intf, true);
--
--	/* Enable internal PHY or external PHY before any MAC activity */
--	if (intf->internal_phy)
--		bcmasp_ephy_enable_set(intf, true);
--	else
--		bcmasp_rgmii_mode_en_set(intf, true);
--	bcmasp_configure_port(intf);
--
- 	/* This is an ugly quirk but we have not been correctly
- 	 * interpreting the phy_interface values and we have done that
- 	 * across different drivers, so at least we are consistent in
-@@ -1081,46 +1060,43 @@ static int bcmasp_netif_init(struct net_device *dev, bool phy_connect)
- 	 * affected because they use different phy_interface_t values
- 	 * or the Generic PHY driver.
- 	 */
--	switch (phy_iface) {
-+	switch (mode) {
- 	case PHY_INTERFACE_MODE_RGMII:
--		phy_iface = PHY_INTERFACE_MODE_RGMII_ID;
--		break;
-+		return PHY_INTERFACE_MODE_RGMII_ID;
- 	case PHY_INTERFACE_MODE_RGMII_TXID:
--		phy_iface = PHY_INTERFACE_MODE_RGMII_RXID;
--		break;
-+		return PHY_INTERFACE_MODE_RGMII_RXID;
- 	default:
--		break;
-+		return mode;
- 	}
-+}
- 
--	if (phy_connect) {
--		phydev = of_phy_connect(dev, intf->phy_dn,
--					bcmasp_adj_link, phy_flags,
--					phy_iface);
--		if (!phydev) {
--			ret = -ENODEV;
--			netdev_err(dev, "could not attach to PHY\n");
--			goto err_phy_disable;
--		}
--
--		if (intf->internal_phy)
--			dev->phydev->irq = PHY_MAC_INTERRUPT;
--
--		/* Indicate that the MAC is responsible for PHY PM */
--		phydev->mac_managed_pm = true;
--
--		/* Set phylib's copy of the LPI timer */
--		phydev->eee_cfg.tx_lpi_timer = umac_rl(intf, UMC_EEE_LPI_TIMER);
-+static int bcmasp_phy_attach(struct bcmasp_intf *intf)
++static netdev_tx_t mctp_pcc_tx(struct sk_buff *skb, struct net_device *ndev)
 +{
-+	u32 phy_flags = PHY_BRCM_AUTO_PWRDWN_ENABLE |
-+			PHY_BRCM_DIS_TXCRXC_NOENRGY |
-+			PHY_BRCM_IDDQ_SUSPEND;
-+	struct phy_device *phydev;
-+	phy_interface_t phy_iface;
++	struct acpi_pcct_ext_pcc_shared_memory *pcc_header;
++	struct mctp_pcc_ndev *mpnd = netdev_priv(ndev);
++	int len = skb->len;
 +
-+	phy_iface = bcmasp_phy_iface_for_connect(intf->phy_interface);
-+	phydev = of_phy_connect(intf->ndev, intf->phy_dn,
-+				bcmasp_adj_link, phy_flags,
-+				phy_iface);
-+	if (!phydev) {
-+		netdev_err(intf->ndev, "could not attach to PHY\n");
-+		return -ENODEV;
- 	}
-+	if (intf->internal_phy)
-+		intf->ndev->phydev->irq = PHY_MAC_INTERRUPT;
- 
--	umac_reset(intf);
--
--	umac_init(intf);
-+	phydev->mac_managed_pm = true;
- 
--	umac_set_hw_addr(intf, dev->dev_addr);
++	/* Consolidated a fragmented packet into contiguous memory */
++	if (skb_is_nonlinear(skb)) {
++		if (skb_linearize(skb))
++			goto error;
++	}
++
++	if (skb_cow_head(skb, sizeof(*pcc_header)))
++		goto error;
++
++	/**
++	 * This code could potentially be run on A Big Endian
++	 * System.  The ACPI specification requires that values
++	 * in the shared buffer be little endian.
++	 */
++	pcc_header = skb_push(skb, sizeof(*pcc_header));
++	pcc_header->signature = cpu_to_le32(PCC_SIGNATURE | mpnd->outbox.index);
++	pcc_header->flags = cpu_to_le32(PCC_CMD_COMPLETION_NOTIFY);
++	memcpy(&pcc_header->command, MCTP_SIGNATURE, MCTP_SIGNATURE_LENGTH);
++	pcc_header->length =  cpu_to_le32(len + MCTP_SIGNATURE_LENGTH);
++
++	if (mbox_send_message(mpnd->outbox.chan->mchan, skb) < 0) {
++		// Remove the header in case it gets sent again
++		skb_pull(skb, sizeof(*pcc_header));
++		netif_stop_queue(ndev);
++		return NETDEV_TX_BUSY;
++	}
++
++	return NETDEV_TX_OK;
++error:
++	dev_dstats_tx_dropped(ndev);
++	kfree_skb(skb);
++	return NETDEV_TX_OK;
++}
++
++static void mctp_pcc_tx_prepare(struct mbox_client *cl, void *mssg)
++{
++	struct mctp_pcc_ndev *mctp_pcc_ndev;
++	struct mctp_pcc_mailbox *outbox;
++	struct sk_buff *skb = mssg;
++
++	mctp_pcc_ndev = container_of(cl, struct mctp_pcc_ndev, outbox.client);
++	outbox = &mctp_pcc_ndev->outbox;
++
++	/* The PCC Mailbox typically does not make use of the mssg pointer
++	 * The mctp-over pcc driver is the only client that uses it.
++	 * This value should always be non-null; it is possible
++	 * that a change in the Mailbox level will break that assumption.
++	 */
++	if (!skb) {
++		WARN_ONCE(!skb, "%s called with null message.\n", __func__);
++		return;
++	}
++
++	if (skb->len > outbox->chan->shmem_size) {
++		dev_dstats_tx_dropped(mctp_pcc_ndev->ndev);
++		return;
++	}
++	memcpy_toio(outbox->chan->shmem,  skb->data, skb->len);
++	dev_dstats_tx_add(mctp_pcc_ndev->ndev, skb->len);
++}
++
++static void mctp_pcc_tx_done(struct mbox_client *c, void *mssg, int r)
++{
++	struct mctp_pcc_ndev *mctp_pcc_ndev;
++	struct sk_buff *skb = mssg;
++
++	/*
++	 * If there is a packet in flight during driver cleanup
++	 * It may have been freed already.
++	 */
++	if (!mssg)
++		return;
++	/*
++	 * If the return code is non-zero, we should not report the packet
++	 * as transmitted.  However, we are in IRQ context right now, and we
++	 * cannot safely write transmission statistics.
++	 */
++	mctp_pcc_ndev = container_of(c, struct mctp_pcc_ndev, outbox.client);
++	dev_consume_skb_any(skb);
++	netif_wake_queue(mctp_pcc_ndev->ndev);
++}
++
++static int mctp_pcc_open(struct net_device *ndev)
++{
++	struct mctp_pcc_ndev *mctp_pcc_ndev = netdev_priv(ndev);
++	struct mctp_pcc_mailbox *outbox, *inbox;
++
++	outbox = &mctp_pcc_ndev->outbox;
++	inbox = &mctp_pcc_ndev->inbox;
++
++	outbox->chan = pcc_mbox_request_channel(&outbox->client, outbox->index);
++	if (IS_ERR(outbox->chan))
++		return PTR_ERR(outbox->chan);
++
++	if (outbox->chan->shmem_size  <  MCTP_PCC_MIN_SIZE) {
++		pcc_mbox_free_channel(outbox->chan);
++		return -EINVAL;
++	}
++
++	inbox->client.rx_callback = mctp_pcc_client_rx_callback;
++	inbox->chan = pcc_mbox_request_channel(&inbox->client, inbox->index);
++	if (IS_ERR(inbox->chan)) {
++		pcc_mbox_free_channel(outbox->chan);
++		return PTR_ERR(inbox->chan);
++	}
++	if (inbox->chan->shmem_size < MCTP_PCC_MIN_SIZE) {
++		pcc_mbox_free_channel(outbox->chan);
++		pcc_mbox_free_channel(inbox->chan);
++		return -EINVAL;
++	}
 +	return 0;
 +}
- 
--	intf->old_duplex = -1;
--	intf->old_link = -1;
--	intf->old_pause = -1;
-+static void bcmasp_netif_init(struct net_device *dev)
++
++static int mctp_pcc_stop(struct net_device *ndev)
 +{
-+	struct bcmasp_intf *intf = netdev_priv(dev);
- 
- 	bcmasp_init_tx(intf);
- 	netif_napi_add_tx(intf->ndev, &intf->tx_napi, bcmasp_tx_poll);
-@@ -1132,18 +1108,13 @@ static int bcmasp_netif_init(struct net_device *dev, bool phy_connect)
- 
- 	intf->crc_fwd = !!(umac_rl(intf, UMC_CMD) & UMC_CMD_CRC_FWD);
- 
--	bcmasp_netif_start(dev);
--
--	netif_start_queue(dev);
--
--	return 0;
-+	bcmasp_set_rx_mode(dev);
-+	napi_enable(&intf->tx_napi);
-+	napi_enable(&intf->rx_napi);
- 
--err_phy_disable:
--	if (intf->internal_phy)
--		bcmasp_ephy_enable_set(intf, false);
--	else
--		bcmasp_rgmii_mode_en_set(intf, false);
--	return ret;
-+	bcmasp_enable_rx_irq(intf, 1);
-+	bcmasp_enable_tx_irq(intf, 1);
-+	bcmasp_enable_phy_irq(intf, 1);
- }
- 
- static int bcmasp_open(struct net_device *dev)
-@@ -1161,14 +1132,30 @@ static int bcmasp_open(struct net_device *dev)
- 	if (ret)
- 		goto err_free_mem;
- 
--	ret = bcmasp_netif_init(dev, true);
--	if (ret) {
--		clk_disable_unprepare(intf->parent->clk);
--		goto err_free_mem;
--	}
-+	bcmasp_core_clock_set_intf(intf, true);
++	struct mctp_pcc_ndev *mctp_pcc_ndev;
++	unsigned int count, idx;
++	struct mbox_chan *chan;
++	struct sk_buff *skb;
 +
-+	bcmasp_phy_hw_prepare(intf);
++	mctp_pcc_ndev = netdev_priv(ndev);
++	chan = mctp_pcc_ndev->outbox.chan->mchan;
++	pcc_mbox_free_channel(mctp_pcc_ndev->inbox.chan);
++	scoped_guard(spinlock_irqsave, &chan->lock) {
++		skb = chan->active_req;
++		chan->active_req = NULL;
++		if (skb) {
++			dev_dstats_tx_dropped(ndev);
++			dev_consume_skb_any(skb);
++		}
++		while (chan->msg_count > 0) {
++			count = chan->msg_count;
++			idx = chan->msg_free;
++			if (idx >= count)
++				idx -= count;
++			else
++				idx += MBOX_TX_QUEUE_LEN - count;
++			skb = chan->msg_data[idx];
++			dev_dstats_tx_dropped(ndev);
++			dev_consume_skb_any(skb);
++			chan->msg_count--;
++		}
++	}
++	pcc_mbox_free_channel(mctp_pcc_ndev->outbox.chan);
++	return 0;
++}
 +
-+	ret = bcmasp_phy_attach(intf);
-+	if (ret)
-+		goto err_phy_attach;
++static int mctp_pcc_change_mtu(struct net_device *dev, int new_mtu)
++{
++	if (new_mtu > dev->max_mtu)
++		return -EINVAL;
++	if (new_mtu < MCTP_MIN_MTU)
++		return -EINVAL;
++	return 0;
++}
 +
-+	umac_reset_and_init(intf, dev->dev_addr);
++static const struct net_device_ops mctp_pcc_netdev_ops = {
++	.ndo_open = mctp_pcc_open,
++	.ndo_stop = mctp_pcc_stop,
++	.ndo_start_xmit = mctp_pcc_tx,
++	.ndo_change_mtu = mctp_pcc_change_mtu,
++};
 +
-+	dev->phydev->eee_cfg.tx_lpi_timer = umac_rl(intf, UMC_EEE_LPI_TIMER);
++static void mctp_pcc_setup(struct net_device *ndev)
++{
++	ndev->type = ARPHRD_MCTP;
++	ndev->hard_header_len = sizeof(struct acpi_pcct_ext_pcc_shared_memory);
++	ndev->tx_queue_len = 0;
++	ndev->flags = IFF_NOARP;
++	ndev->netdev_ops = &mctp_pcc_netdev_ops;
++	ndev->needs_free_netdev = true;
++	ndev->pcpu_stat_type = NETDEV_PCPU_STAT_DSTATS;
++}
 +
-+	bcmasp_netif_init(dev);
++struct mctp_pcc_lookup_context {
++	int index;
++	u32 inbox_index;
++	u32 outbox_index;
++};
 +
-+	phy_start(dev->phydev);
++static acpi_status lookup_pcct_indices(struct acpi_resource *ares,
++				       void *context)
++{
++	struct mctp_pcc_lookup_context *luc = context;
++	struct acpi_resource_address32 *addr;
 +
-+	netif_start_queue(dev);
- 
- 	return ret;
- 
-+err_phy_attach:
-+	bcmasp_phy_hw_unprepare(intf);
-+	bcmasp_core_clock_set_intf(intf, false);
-+	clk_disable_unprepare(intf->parent->clk);
- err_free_mem:
- 	bcmasp_reclaim_free_buffers(intf);
- 
-@@ -1407,10 +1394,7 @@ int bcmasp_interface_suspend(struct bcmasp_intf *intf)
- 	bcmasp_netif_deinit(dev);
- 
- 	if (!intf->wolopts) {
--		if (intf->internal_phy)
--			bcmasp_ephy_enable_set(intf, false);
--		else
--			bcmasp_rgmii_mode_en_set(intf, false);
-+		bcmasp_phy_hw_unprepare(intf);
- 
- 		/* If Wake-on-LAN is disabled, we can safely
- 		 * disable the network interface clocks.
-@@ -1454,17 +1438,19 @@ int bcmasp_interface_resume(struct bcmasp_intf *intf)
- 	if (ret)
- 		return ret;
- 
--	ret = bcmasp_netif_init(dev, false);
--	if (ret)
--		goto out;
-+	bcmasp_core_clock_set_intf(intf, true);
- 
- 	bcmasp_resume_from_wol(intf);
- 
-+	bcmasp_phy_hw_prepare(intf);
++	if (ares->type != ACPI_RESOURCE_TYPE_ADDRESS32)
++		return AE_OK;
 +
-+	umac_reset_and_init(intf, dev->dev_addr);
++	addr = ACPI_CAST_PTR(struct acpi_resource_address32, &ares->data);
++	switch (luc->index) {
++	case 0:
++		luc->outbox_index = addr[0].address.minimum;
++		break;
++	case 1:
++		luc->inbox_index = addr[0].address.minimum;
++		break;
++	default:
++		return AE_ERROR;
++	}
++	luc->index++;
++	return AE_OK;
++}
 +
-+	bcmasp_netif_init(dev);
++static void mctp_cleanup_netdev(void *data)
++{
++	struct net_device *ndev = data;
 +
-+	phy_start(dev->phydev);
++	mctp_unregister_netdev(ndev);
++}
 +
- 	netif_device_attach(dev);
- 
- 	return 0;
--
--out:
--	clk_disable_unprepare(intf->parent->clk);
--	return ret;
- }
++static int initialize_mtu(struct net_device *ndev)
++{
++	struct mctp_pcc_ndev *mctp_pcc_ndev;
++	struct mctp_pcc_mailbox *outbox;
++	struct pcc_mbox_chan *pchan;
++	int mctp_pcc_max_mtu;
++
++	mctp_pcc_ndev = netdev_priv(ndev);
++	outbox = &mctp_pcc_ndev->outbox;
++	pchan = pcc_mbox_request_channel(&outbox->client, outbox->index);
++	if (IS_ERR(pchan))
++		return PTR_ERR(pchan);
++	if (pchan->shmem_size < MCTP_MIN_MTU + sizeof(struct acpi_pcct_ext_pcc_shared_memory)) {
++		pcc_mbox_free_channel(pchan);
++		return -EINVAL;
++	}
++	mctp_pcc_max_mtu = pchan->shmem_size - sizeof(struct acpi_pcct_ext_pcc_shared_memory);
++	pcc_mbox_free_channel(pchan);
++
++	ndev->mtu = MCTP_MIN_MTU;
++	ndev->max_mtu = mctp_pcc_max_mtu;
++	ndev->min_mtu = MCTP_MIN_MTU;
++
++	return 0;
++}
++
++static int mctp_pcc_driver_add(struct acpi_device *acpi_dev)
++{
++	struct mctp_pcc_lookup_context context = {0};
++	struct mctp_pcc_ndev *mctp_pcc_ndev;
++	struct device *dev = &acpi_dev->dev;
++	struct net_device *ndev;
++	acpi_handle dev_handle;
++	acpi_status status;
++	char name[32];
++	int rc;
++
++	dev_dbg(dev, "Adding mctp_pcc device for HID %s\n",
++		acpi_device_hid(acpi_dev));
++	dev_handle = acpi_device_handle(acpi_dev);
++	status = acpi_walk_resources(dev_handle, "_CRS", lookup_pcct_indices,
++				     &context);
++	if (!ACPI_SUCCESS(status)) {
++		dev_err(dev, "FAILED to lookup PCC indexes from CRS\n");
++		return -EINVAL;
++	}
++
++	/*
++	 * Ensure we have exactly 2 channels: an outbox and an inbox.
++	 */
++	if (context.index != 2)
++		return -EINVAL;
++
++	snprintf(name, sizeof(name), "mctppcc%d", context.inbox_index);
++	ndev = alloc_netdev(sizeof(*mctp_pcc_ndev), name, NET_NAME_PREDICTABLE,
++			    mctp_pcc_setup);
++	if (!ndev)
++		return -ENOMEM;
++
++	mctp_pcc_ndev = netdev_priv(ndev);
++
++	mctp_pcc_ndev->inbox.index = context.inbox_index;
++	mctp_pcc_ndev->inbox.client.dev = dev;
++	mctp_pcc_ndev->outbox.index = context.outbox_index;
++	mctp_pcc_ndev->outbox.client.dev = dev;
++
++	mctp_pcc_ndev->outbox.client.tx_prepare = mctp_pcc_tx_prepare;
++	mctp_pcc_ndev->outbox.client.tx_done = mctp_pcc_tx_done;
++	mctp_pcc_ndev->acpi_device = acpi_dev;
++	mctp_pcc_ndev->ndev = ndev;
++	acpi_dev->driver_data = mctp_pcc_ndev;
++
++	rc = initialize_mtu(ndev);
++	if (rc)
++		goto free_netdev;
++
++	rc = mctp_register_netdev(ndev, NULL, MCTP_PHYS_BINDING_PCC);
++	if (rc)
++		goto free_netdev;
++
++	return devm_add_action_or_reset(dev, mctp_cleanup_netdev, ndev);
++free_netdev:
++	free_netdev(ndev);
++	return rc;
++}
++
++static const struct acpi_device_id mctp_pcc_device_ids[] = {
++	{ "DMT0001" },
++	{}
++};
++
++static struct acpi_driver mctp_pcc_driver = {
++	.name = "mctp_pcc",
++	.class = "Unknown",
++	.ids = mctp_pcc_device_ids,
++	.ops = {
++		.add = mctp_pcc_driver_add,
++	},
++};
++
++module_acpi_driver(mctp_pcc_driver);
++
++MODULE_DEVICE_TABLE(acpi, mctp_pcc_device_ids);
++
++MODULE_DESCRIPTION("MCTP PCC ACPI device");
++MODULE_LICENSE("GPL");
++MODULE_AUTHOR("Adam Young <admiyo@os.amperecomputing.com>");
 -- 
-2.34.1
+2.43.0
 
