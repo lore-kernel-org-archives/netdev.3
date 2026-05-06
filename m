@@ -1,131 +1,119 @@
-Received: from fout-a3-smtp.messagingengine.com (fout-a3-smtp.messagingengine.com [103.168.172.146])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50EFC41B355
-	for <netdev@vger.kernel.org>; Wed,  6 May 2026 17:20:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A8930595B;
+	Wed,  6 May 2026 17:27:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778088034; cv=none; b=MS4v6RuL9/kvnmrN8sp/CPTZ0Y9vnmx/Byh6QMo+1rSozlnteEebwr0fGMbRpLeNgcdl234w3vzGhiOjlXtWKQG6Lp37+LgQJclDoIdaqUYPaBSVzBsRqiz31L/IzaX8NUWmqXIcxvmH82MoiaZvllxMJkh5SNpSwl2mVS47ZXc=
+	t=1778088436; cv=none; b=H9ZuIZjmvSx/0Ne0K0wDwZapW7RLE5j0Ombfx5v2Qn5cjy+65g3pLV4cKeIER7w0QTYjEwaGbOOi9iHGOmeetAS7EJE9JS1nZk3WRdDb8Q3WuKdy68Qkdr97Fh83NmzNCkt3OYXwx0Gzj0SzCWG8bOfkQXeEOvBOyxLgUTYRPsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778088034; c=relaxed/simple;
-	bh=xAAgnYgLlSXFxR0cxBA1qh6iw/0Tn3Xeue9/SbE/mwU=;
+	s=arc-20240116; t=1778088436; c=relaxed/simple;
+	bh=HmDSB8RGwVj0i6+IcLEKJKC3r5SqoF2IF/ST6ULFU5k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D8zcfk1BHqL9m0Y7xesPg3AVZffTeWOLnO+Z+h+QX9+xPXyo/85OY0CKYL/YRuR6GzGfFHxdSwGB5cG4QTXK0nKlNw9oFvOOZNlYzee9J6+80v3k/h3/jlsgZXIheY42YRpFHKe6To/wRJHs8RhKBcdTehy727ZYfa6e2krki7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=cSHvfrm+; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=BSyfcY2o; arc=none smtp.client-ip=103.168.172.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	 Content-Type:Content-Disposition:In-Reply-To; b=qzE50hlTUwwHiiUHA1BaopqHBIZpq5++QqnJfzadlsUgUJPe12Ax08v8zx+wDPkYxbJZT/VRVDA/nGzUjKJdXcVxEH4DBHsQzRkuuRwo+7Jn/nlunfWKxeIoxLEsnhyra+NrNklPyyW3IQXg+O+oJXcVnF2bso8NRql4GkDXTnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LsoZapBs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="cSHvfrm+";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="BSyfcY2o"
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfout.phl.internal (Postfix) with ESMTP id 0EE04EC0128;
-	Wed,  6 May 2026 13:20:25 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Wed, 06 May 2026 13:20:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1778088025; x=
-	1778174425; bh=qivrMLBxM/dU85KxqKwVVx87J+0cqXSf/AT00ICCzu0=; b=c
-	SHvfrm+lgh7CQys39c6YiPiX9dVWo4OryGKDGlRUNm7SnvudrXejg8IjtkUdukrA
-	OQFOlHS/O354EFe80X9Z2tT3OJsbvCmIEy8M3PsOr8Fs5T0DzNehu9hNWptKy/jr
-	pjbQ0lPJpuwHmKCvFRUdj85JWW4ZdVT/do0oY9bW2s4zptyXbXftaP5pbLFJscmM
-	XE/MX+eXs/6FQ7k8HDW9q7quQKuWZKigHJX+atHqa/M3q+byGXawnNUaFtIcvPbL
-	sbY4/0vbQZw0TZO9s8PoeB3PSFAnqJqV1/qwF4WmZMgjKShFoeoYFmbzT8pCobMr
-	bXzdWVzjRP3eXnX2KFMug==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1778088025; x=1778174425; bh=qivrMLBxM/dU85KxqKwVVx87J+0cqXSf/AT
-	00ICCzu0=; b=BSyfcY2ows4dNBLgGjUfzQsON9KzYB8fz6oA8c+LJIkRfZOzfqC
-	YGFh+VxxOCpKC5zNajM3Gi9wukEopP5aEz+HWsvLXJGe+Y5moF7suSi+vkoTqi01
-	E+IhtmOMat50m/s6voF9FsDY+ILZD7qBX/qAUwViTPy2lyB6H/uoZoDWckj6O8ah
-	6P5jaXmMgijD2UcgEXqSxKiVetHJcjbbU5tFIerY++myE4QieZhWlLl1FDL62obr
-	/fnynwOKzrkXEFOijeyoFy3Q2Qfk/HDboocpUX+UBBkH3D4l2L6rdYRTD1XBa+fU
-	/iLj74JpltcdE7q8C4oOKklLBufeu6oc6MQ==
-X-ME-Sender: <xms:WHj7abA4l27-UCh-w4gGuu9_0_aark0tjw_EFukMZs8TYdULPfQWHg>
-    <xme:WHj7aY86Y4dG1MfiXA64rq3TzOZiQlBrFwdxhH0UXMu9Xh0jmHCx8Mocxk7RudMYy
-    OeFmJYY2ENYJVK4OZYFalKf1sxIzCf-a66pvYhEUHh2mliryrLNIQlH>
-X-ME-Received: <xmr:WHj7aT9xLv4i3WFjEIiHOHVoTilNeb5x0pX2rRHC4kBSTM9jPymOtjO6cu71>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddutdehudejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtjeenucfhrhhomhepufgrsghrihhn
-    rgcuffhusghrohgtrgcuoehsugesqhhuvggrshihshhnrghilhdrnhgvtheqnecuggftrf
-    grthhtvghrnhepuefhhfffgfffhfefueeiudegtdefhfekgeetheegheeifffguedvueff
-    fefgudffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epshgusehquhgvrghshihsnhgrihhlrdhnvghtpdhnsggprhgtphhtthhopeefpdhmohgu
-    vgepshhmthhpohhuthdprhgtphhtthhopehsthgvfhhfvghnrdhklhgrshhsvghrthessh
-    gvtghunhgvthdrtghomhdprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgv
-    lhdrohhrghdprhgtphhtthhopeguvghvvghlsehlihhnuhigqdhiphhsvggtrdhorhhg
-X-ME-Proxy: <xmx:WHj7aXdVY-THI37nHOyJBS4KDRoDQw4blCfCGhCqjKu_IyDhlGxcNg>
-    <xmx:WHj7aUHJKePNfmsRtwuoIb8PX_-ZelrEIwyq4C2_lsZk56zBUy6_Og>
-    <xmx:WHj7adeXGDQljD9EnsSJ79ygO5CzXkQwow2nwf5XOaelWqfHUgVL7Q>
-    <xmx:WHj7aWHa6iC4BM-MYEztTuyh3XAY96U5fZVcnfuKhGbmp95nMf4miw>
-    <xmx:WXj7aVJldhMULQhRzU9iKTTfdIFsvpoz59oi8YXd9OqY_O_UASKZ_GKe>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 6 May 2026 13:20:23 -0400 (EDT)
-Date: Wed, 6 May 2026 19:20:22 +0200
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Steffen Klassert <steffen.klassert@secunet.com>
-Cc: netdev@vger.kernel.org, devel@linux-ipsec.org
-Subject: Re: [PATCH ipsec-next] xfrm: Use regular error handling instead of
- BUG_ON() in the netlink API.
-Message-ID: <aft4VvklN84f0xX8@krikkit>
-References: <aftnl6d59WUM_Dfm@secunet.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LsoZapBs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 476CBC2BCB0;
+	Wed,  6 May 2026 17:27:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778088435;
+	bh=HmDSB8RGwVj0i6+IcLEKJKC3r5SqoF2IF/ST6ULFU5k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LsoZapBs6yowkuRKg3FX+deiQgEzzTuVpKSya3Hw5fH4WGu+0t8FG7x973zAJvwLF
+	 uW96m0AIo55ILZk0w0aZzRmUvKVPJtzU0EIuooGlelpMH8pJiJgpC1MNmnE3x3nIB3
+	 Hy02Z9T1nV3l6yxG2pmg30zRB4PymXqWVkakE0uvj0APBkKmoDfExIDpbJ5/hn3Ndg
+	 9VLTh7QGvc07UgZglJOPiuVzr57E4UFs19x1zGmp/Ly3TUmii020ROS9/BWTCQT3iE
+	 xagDUUYZj3GXds47tcDWufFyuz8Zq/hibafbcyBswon8WIA3wk+NTPmINtJzRCpyG7
+	 sRX2DVPbukHgQ==
+Date: Wed, 6 May 2026 19:27:13 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Felix Fietkau <nbd@nbd.name>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
+	Shuah Khan <shuah@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
+	netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH nf-next 0/4] Add IPv4 over IPv6 flowtable SW acceleration
+Message-ID: <aft58U5Y0iQGi2JS@lore-desk>
+References: <20260505-b4-flowtable-sw-accel-ip6ip-v1-0-9ac39ccc9ea9@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="dBWX7q7eS4V4GZda"
 Content-Disposition: inline
-In-Reply-To: <aftnl6d59WUM_Dfm@secunet.com>
+In-Reply-To: <20260505-b4-flowtable-sw-accel-ip6ip-v1-0-9ac39ccc9ea9@kernel.org>
 
-2026-05-06, 18:08:55 +0200, Steffen Klassert wrote:
-> The xfrm netlink API uses BUG_ON() on failures since it exists.
-> However all these error are uncritical and can be handled
-> with regular error handling. This fixes machine crashes
-> in situations where an emergency break is not needed.
 
-Nice clean up!
+--dBWX7q7eS4V4GZda
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-[...]
-> @@ -1794,7 +1797,11 @@ static int xfrm_get_sadinfo(struct sk_buff *skb, struct nlmsghdr *nlh,
->  		return -ENOMEM;
->  
->  	err = build_sadinfo(r_skb, net, sportid, seq, *flags);
-> -	BUG_ON(err < 0);
-> +	if (err < 0) {
-> +		kfree_skb(r_skb);
-> +		return err;
-> +	}
-> +
+> Similar to IPIP and IP6I6 tunnels, introduce sw acceleration for IPv4 over
+> IPv6 tunnels in the netfilter flowtable infrastructure.
 
-nit: extra blank line
+Please drop this revision, I spotted a bug in MTU configuration in
+nf_flow_offload_forward(). I will post v2 fixing the issue and adding
+SIT support.
 
->  
->  	return nlmsg_unicast(xfrm_net_nlsk(net, skb), r_skb, sportid);
->  }
+Regards,
+Lorenzo
 
-[...]
-> @@ -4151,7 +4170,8 @@ static int xfrm_send_report(struct net *net, u8 proto,
->  		return -ENOMEM;
->  
->  	err = build_report(skb, proto, sel, addr);
-> -	BUG_ON(err < 0);
-> +	if (err < 0)
-> +		return err;
+>=20
+> ---
+> Lorenzo Bianconi (4):
+>       net: netfilter: Add ether_type to net_device_path_ctx
+>       net: netfilter: Add encap_proto to flow_offload_tunnel
+>       net: netfilter: Add IPv4 over IPv6 tunnel flowtable acceleration
+>       selftests: netfilter: nft_flowtable.sh: Add IPv4 over IPv6 flowtabl=
+e selftest
+>=20
+>  drivers/net/ethernet/airoha/airoha_ppe.c           |  14 ++-
+>  drivers/net/ethernet/mediatek/mtk_ppe_offload.c    |  13 ++-
+>  include/linux/netdevice.h                          |   5 +-
+>  include/net/netfilter/nf_flow_table.h              |   1 +
+>  net/core/dev.c                                     |   6 +-
+>  net/ipv4/ipip.c                                    |   1 +
+>  net/ipv6/ip6_tunnel.c                              |   6 +-
+>  net/netfilter/nf_flow_table_core.c                 |  14 ++-
+>  net/netfilter/nf_flow_table_ip.c                   | 129 +++++++++++++++=
++-----
+>  net/netfilter/nf_flow_table_path.c                 |  16 +--
+>  .../selftests/net/netfilter/nft_flowtable.sh       |  26 +++++
+>  11 files changed, 174 insertions(+), 57 deletions(-)
+> ---
+> base-commit: c1e5127b577c6b88fa48e532616932ae978528d5
+> change-id: 20260505-b4-flowtable-sw-accel-ip6ip-7101034cd147
+>=20
+> Best regards,
+> --=20
+> Lorenzo Bianconi <lorenzo@kernel.org>
+>=20
 
-This one is missing the kfree_skb(skb).
+--dBWX7q7eS4V4GZda
+Content-Type: application/pgp-signature; name=signature.asc
 
->  
->  	return xfrm_nlmsg_multicast(net, skb, 0, XFRMNLGRP_REPORT);
->  }
+-----BEGIN PGP SIGNATURE-----
 
--- 
-Sabrina
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaft58QAKCRA6cBh0uS2t
+rLWvAP99BJDDX3b8y2+zfNm18ZUstMl46XX8mPMDwCOvVThzcgD+N51Qsadb2Qk5
+NtKNQbi/t3ChjT3OgvGfw//o+PK0rwg=
+=93pw
+-----END PGP SIGNATURE-----
+
+--dBWX7q7eS4V4GZda--
