@@ -1,107 +1,102 @@
-Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net (zg8tmtyylji0my4xnjqumte4.icoremail.net [162.243.164.118])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 120E932860B
-	for <netdev@vger.kernel.org>; Wed,  6 May 2026 12:02:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.164.118
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D163E43E48A;
+	Wed,  6 May 2026 12:13:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778068957; cv=none; b=kbWJmB4DKEqIIM6ArrLRDODINOnesIeGDETs8yG3amHMUfeURggjzO/gTnCfeyMZ5yhlBZlvJBbCNfvXeU5K3tCRaz3B5DAueKNpiFKZd8HK9fSLNHLXnjatQKASbLMkRNEgrqxRrk/3IGR7oKMJH8rpXILcFaCnOAz4Ow6Eg30=
+	t=1778069604; cv=none; b=s7vuK9eNo5SwvNVxQiYTB5VRTuZ5zrqZ19/J7g2184U0MmHl8bHMRcvwEIuo3agQOhdqyBFrUwf5hI2iisRHpBV6aMyrp4DfONEwpBi/OViogLtXqxyKCGcnV/VtY/U0HVfUNEV9lg0wNUuZAHkWLvWpbjSTXlKNl+uO1bmP3OQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778068957; c=relaxed/simple;
-	bh=JevKvqEoCV5HOOmeRsFLrsJ/B/S3ZF7ioy1uOuAeA5U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uu2ZgACl4ROC8OerU8AW/pPP0ly0hj5qRPryKgfPJdrnyuwYa8HXLU8ublmWnpqLgtpcuuk4rS7BrM6RFzlYi2bCJS7laDxdg6XMEi9Eb0j5++a2UX0DZInVk0huSOBM1W8qgfXsKLtId01XvCLsPg5oeICWYcO9aUBof8+p83c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=std.uestc.edu.cn; spf=pass smtp.mailfrom=std.uestc.edu.cn; dkim=fail (0-bit key) header.d=std.uestc.edu.cn header.i=@std.uestc.edu.cn header.b=ZVk0Z7gS reason="key not found in DNS"; arc=none smtp.client-ip=162.243.164.118
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=std.uestc.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=std.uestc.edu.cn
+	s=arc-20240116; t=1778069604; c=relaxed/simple;
+	bh=AbgaqMlY8wz59xHBG2bGUq3n4kCOawW5putw5NBuBb0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=vB4P54aLUy2MzG4ogKwEAq6bciZ31xjxf9bIJmwZeyxjiJMXyZtQuRAWrkrCSwrUbp6tVOOSgOtcC8L974B9my0dj1ffOcsSp1zpAN98imvDt2OSBF1CqkwqCTxbhumnUpCnkOXZHDyQF1dKEpHfqTzqx8Upxibfw/Fu7mJnRZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=YYomtWi+; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=std.uestc.edu.cn header.i=@std.uestc.edu.cn header.b="ZVk0Z7gS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=std.uestc.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:Date:
-	Message-ID:MIME-Version:Content-Transfer-Encoding; bh=YCH4/Oh1h7
-	ugBA6on6GNy/JNOCllkQ7/BlsuNW96NkU=; b=ZVk0Z7gS0L/4t9eVt3A/Klsrvu
-	QKPsOpkS0vVuVt+3oNgGjUy1I2MLsjt1Wfuu8BtxwH8MlrQLQNUnD7rtAE6tgqHO
-	LS55AqeB8sQg9Cptdi+D28eQt2YW+Su84c2R1A5gK3hs+/fP9nM6gbmXsMdEHiMP
-	ZcuFbX3ICfYKk11gM=
-Received: from hotaru.tailb307d0.ts.net (unknown [183.94.22.109])
-	by hzbj-edu-front-4.icoremail.net (Coremail) with SMTP id BrQMCkAmzLe1LftporfvAQ--.14752S2;
-	Wed, 06 May 2026 20:01:58 +0800 (CST)
-From: Quan Sun <2022090917019@std.uestc.edu.cn>
-To: netdev@vger.kernel.org,
-	maxime.chevallier@bootlin.com,
-	andrew@lunn.ch
-Cc: kuba@kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	Quan Sun <2022090917019@std.uestc.edu.cn>
-Subject: [PATCH net] net: ethtool: fix NULL pointer dereference in phy_reply_size
-Date: Wed,  6 May 2026 20:01:31 +0800
-Message-ID: <20260506120131.767679-1-2022090917019@std.uestc.edu.cn>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="YYomtWi+"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 8A48A1A3541;
+	Wed,  6 May 2026 12:13:21 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 5FD2C6053C;
+	Wed,  6 May 2026 12:13:21 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3AB4B102F24CF;
+	Wed,  6 May 2026 14:13:18 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1778069600; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=BediO3/S4l8G16E9hVv9C+1Tjoz4d/x+7MVR9kWDJF0=;
+	b=YYomtWi+mfVKhj/kqvcvf9ofTPciHa4WBhrKSFyo++2sZ17ZdZC6lwq8nYfkbOqE9tlJRB
+	QLafsoeC45+OXHbcGKv+O3KoZk13a4vGiIOakz3tTP9zWbZkKbP5dtOMh7Ho13t/ayXuIB
+	pwtzTQUrE43fX+DiDYbvrKNc/fbiru8BMYsor5IoVsYtGG0te9tH2PqmH8C7qblsl6v2Rf
+	0QHf3ftmZcYJLk9bVvdE/lFwbS/t+WoPZO8UBmTu8oc6S1GFvfSBPreop9nZJInM/XfP7o
+	pinMhhXBKZStZhyMSDQv/V3wzAdMuFcykOf57u5EB2miZPk9pcm6qsBbrJaD9Q==
+From: Thomas Richard <thomas.richard@bootlin.com>
+Date: Wed, 06 May 2026 14:13:04 +0200
+Subject: [PATCH v2 2/2] ARM: dts: ti: var-som-om44: Add USB Ethernet
+ controller node
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:BrQMCkAmzLe1LftporfvAQ--.14752S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7AFyDZFW3ZFWkWFyrZFyUtrb_yoW8XFWxpr
-	W5AFWFqr97twnrXr17Jw4rCryYkFs7C3W3ta4jkw1fZr13WrW8Xr45Kr10gayrZrZ5ua4j
-	qF4Fqas0v3ZrCFUanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9G14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
-	0_GcWlnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
-	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r
-	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
-	648v4I1lc7CjxVAaw2AFwI0_JF0_Jw1lc2xSY4AK67AK6ryUMxAIw28IcxkI7VAKI48JMx
-	C20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAF
-	wI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20x
-	vE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v2
-	0xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxV
-	W8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbFksDUUUUU==
-X-CM-SenderInfo: asqsjiyzqzilqqrzq21wgo3vxvwfhvlgxou0/
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260506-b4-var-som-om44-lan7500-v2-2-b8af59ab877c@bootlin.com>
+References: <20260506-b4-var-som-om44-lan7500-v2-0-b8af59ab877c@bootlin.com>
+In-Reply-To: <20260506-b4-var-som-om44-lan7500-v2-0-b8af59ab877c@bootlin.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
+ Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>, 
+ Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>, 
+ Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-omap@vger.kernel.org, Thomas Richard <thomas.richard@bootlin.com>, 
+ Nicolai Buchwitz <nb@tipi-net.de>
+X-Mailer: b4 0.14.3
+X-Last-TLS-Session-Version: TLSv1.3
 
-In phy_prepare_data(), the strings rep_data->name and rep_data->drvname
-are allocated using kstrdup(). However, the return values of these
-allocations are not checked.
+Add USB tree description, including the Gigabit Ethernet controller
+(LAN7500). Adding the LAN7500 node will allow the bootloader to patch the
+devicetree and set the MAC address.
 
-If kstrdup() fails to allocate memory, it returns NULL. The function
-phy_prepare_data() will still return 0 (success). Subsequently, the
-handler ethnl_default_doit() continues the execution flow and calls
-phy_reply_size() to calculate the size of the reply message. This
-unconditionally executes strlen(rep_data->name), leading to a kernel
-NULL pointer dereference and panic.
-
-Fix this by properly checking the return values of kstrdup() for both
-`name` and `drvname`, and returning -ENOMEM if the allocation fails.
-
-Signed-off-by: Quan Sun <2022090917019@std.uestc.edu.cn>
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+Signed-off-by: Thomas Richard <thomas.richard@bootlin.com>
 ---
- net/ethtool/phy.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/arm/boot/dts/ti/omap/omap4-var-som-om44.dtsi | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/net/ethtool/phy.c b/net/ethtool/phy.c
-index d4e6887055ab1..6cf3df1df8659 100644
---- a/net/ethtool/phy.c
-+++ b/net/ethtool/phy.c
-@@ -88,8 +88,17 @@ static int phy_prepare_data(const struct ethnl_req_info *req_info,
- 		return -EOPNOTSUPP;
+diff --git a/arch/arm/boot/dts/ti/omap/omap4-var-som-om44.dtsi b/arch/arm/boot/dts/ti/omap/omap4-var-som-om44.dtsi
+index 37d56b3010cf..9e04aa70f982 100644
+--- a/arch/arm/boot/dts/ti/omap/omap4-var-som-om44.dtsi
++++ b/arch/arm/boot/dts/ti/omap/omap4-var-som-om44.dtsi
+@@ -322,4 +322,18 @@ &usbhshost {
  
- 	rep_data->phyindex = phydev->phyindex;
+ &usbhsehci {
+ 	phys = <&hsusb1_phy>;
++	#address-cells = <1>;
++	#size-cells = <0>;
 +
- 	rep_data->name = kstrdup(dev_name(&phydev->mdio.dev), GFP_KERNEL);
-+	if (!rep_data->name)
-+		return -ENOMEM;
++	usbhub: hub@1 {
++		compatible = "usb424,2514";
++		reg = <1>;
++		#address-cells = <1>;
++		#size-cells = <0>;
 +
- 	rep_data->drvname = kstrdup(phydev->drv->name, GFP_KERNEL);
-+	if (!rep_data->drvname) {
-+		kfree(rep_data->name);
-+		return -ENOMEM;
-+	}
-+
- 	rep_data->upstream_type = pdn->upstream_type;
- 
- 	if (pdn->upstream_type == PHY_UPSTREAM_PHY) {
++		ethernet: ethernet@3 {
++			compatible = "usb424,7500";
++			reg = <3>;
++		};
++	};
+ };
+
 -- 
-2.43.0
+2.53.0
 
