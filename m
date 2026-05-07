@@ -1,217 +1,82 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 178EE31715F;
-	Thu,  7 May 2026 14:53:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778165582; cv=pass; b=qN3sZJP8djz+1mPzGDfjJFZwbnoDde/eBJ8W1OeT2OG3d7lbJJ9NLn7K4qF64f3AAL6xDPfMiTNiF7fnhFU8OennslbyFX3nrRPL1AA+E6F8rtPdhdQVXCVSxdaseBK8n/uhmBVQu7OktKRo1qx6hio9EQY0E4lxJtvvScc/lyM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778165582; c=relaxed/simple;
-	bh=j5a4eQdwTuHiYaO1bzwW5AlyiL1sg8LGVa9SISVvtmI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ZKWd75P8P+kFmZBYQLo6KBK0uSnUT9/GFJhzhFMDBEcdDjOia9ErANJbIFsWqswMzhz/Ow0zdSiEwXDiqBsglBE1fVIAwVILR4abR/nByh/8N2pFsXbQ6hBMOY9uD6RUSWyaj43n9HlJhoe5mzNWWYthJF+lfzLWrXd1IdEkaRY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=louisalexis.eyraud@collabora.com header.b=fOdineQx; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDBB3306B37
+	for <netdev@vger.kernel.org>; Thu,  7 May 2026 14:57:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778165827; cv=none; b=JhAHyB/ANmbm0cO5EX8x1Mb3pwBJyJbQMDLG3rOpOG8lKD+V0YA74kIzQPsnPzpJl/XK9TITHI054wzdXl5iWWGARji98Z4+WdCpTsJMKIOkduK0Wh/Kql6DzPc6fMQmGyahGKF/bmE+3qIiXnd3zvU/IWxF+tqmR/jva6kYXAY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778165827; c=relaxed/simple;
+	bh=PvLSEysbifg565g3DA6jS+loymliEvUT/DPan/JtIj8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fxWgVq+VGV+bc/J1j8YcSLt2N7syBBaFIP/37y21zFx6I88lwjO8gO0CGlKC07hodoAHradFyJtHrLc07q5zjSqKe+5hTX+yac/DuNWphGIeXU0smlsb12p2ifedZ5aGZb4EDpKrPjMhBJiRYNNmfZ6XhyxE9ZwzXcu0YRkzBCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eDs9EUZ8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=louisalexis.eyraud@collabora.com header.b="fOdineQx"
-ARC-Seal: i=1; a=rsa-sha256; t=1778165549; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=gnoQamEnOtplYB0I+IAslgQbn8pbGYB69jQehTFsGfodQdyEq9N8s+8IaNQKwXL/NDNsawSM/Z24cn1OYsoIL42X1HyPLDQRnaqTCp8EbXe1KuvMvk5LtH+mEi7GRXP3W5KPsCWtActawG/STVReMfEy/yqHt7lFbvRLBwzGCUM=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1778165549; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=mD80HyVHazAI7zY5u5ppiXiv/kRQLmFGurqGNhp1Zzg=; 
-	b=AhxTDMRqMIdHYGdQlIxOWo/w5Yz5yPQybWfRB7KQ1G+XgIQR5AJA3uWTDk39YfBwadzwFfM+oo75B9ALzq5a14hn5rLGvoIvrTx3fI+FWIlw96uB17G4kVkwssUehgccD4OFIVq/EeR8ESEfE98d1Z0/BybHWz4mqdIF6H4BYTo=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=louisalexis.eyraud@collabora.com;
-	dmarc=pass header.from=<louisalexis.eyraud@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1778165549;
-	s=zohomail; d=collabora.com; i=louisalexis.eyraud@collabora.com;
-	h=Message-ID:Subject:Subject:From:From:To:To:Cc:Cc:Date:Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-Id:Reply-To;
-	bh=mD80HyVHazAI7zY5u5ppiXiv/kRQLmFGurqGNhp1Zzg=;
-	b=fOdineQxBdsWNaByWoVgw199d+7PDlanFfm3mIwEsyWRlUH/RmGfoI/q97LzGnFF
-	Pmgf2QzTPK0zhkSxGjMMGx7TbjLzXoS0N7L2tSBhWBqurBEKHhmumI2uDwqlYmkXsm6
-	ki/LIERCJEAVU8uJ1GOsXQbZSpcwpdfMack/cvjY=
-Received: by mx.zohomail.com with SMTPS id 1778165548105701.1379238259724;
-	Thu, 7 May 2026 07:52:28 -0700 (PDT)
-Message-ID: <2c441d51f6a865ddb6e67b63cd26a651ed3ff058.camel@collabora.com>
-Subject: Re: [PATCH net-next v2 4/4] net: phy: Introduce Airoha AN8801/R
- Gigabit Ethernet PHY driver
-From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley	
- <conor+dt@kernel.org>, AngeloGioacchino Del Regno	
- <angelogioacchino.delregno@collabora.com>, Heiner Kallweit	
- <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	kevin-kw.huang@airoha.com, macpaul.lin@mediatek.com,
- matthias.bgg@gmail.com, 	kernel@collabora.com, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, 	linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org, 	linux-kernel@vger.kernel.org
-Date: Thu, 07 May 2026 16:52:22 +0200
-In-Reply-To: <3688a285-7f98-4afa-80ad-697094cd7b97@lunn.ch>
-References: 
-	<20260326-add-airoha-an8801-support-v2-0-1a42d6b6050f@collabora.com>
-	 <20260326-add-airoha-an8801-support-v2-4-1a42d6b6050f@collabora.com>
-	 <3688a285-7f98-4afa-80ad-697094cd7b97@lunn.ch>
-Organization: Collabora Ltd
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eDs9EUZ8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F36CEC2BCB2;
+	Thu,  7 May 2026 14:57:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778165827;
+	bh=PvLSEysbifg565g3DA6jS+loymliEvUT/DPan/JtIj8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=eDs9EUZ8Bz5yN1EJbllC0ymG+SIounyLI9S/E36E1dOqlrM0/AwtfhYrbVrnK6ipt
+	 AJMYDS9kkYC7YKl2V8qdS3U8E1uhQgZ2ct+wGA+MjeVVH8HglufD9xsowrUyRNN/FX
+	 pJPXrr5gqFqYDyccCOp9ZGMhOEMDtO4KLYPhvOpVurKyduhJfCMGdtQsuue0Y36S5K
+	 lLDtJ4kCRyVKiVSB0N9H4mx1asfASuX7woi1Td0GA/3iKC73ydLJeWLrrJQr+6mbID
+	 qrtsRE/bbjhem2h7KMJ6+ObLWDIfM/CP5vOcqsdLrPXinPUd58PSuJ9o0p0gRdF9LC
+	 Iko+KIE65J3rg==
+Message-ID: <749c97fa-9836-47af-a7ee-76b15bf54e21@kernel.org>
+Date: Thu, 7 May 2026 08:57:06 -0600
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ZohoMailClient: External
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3 0/3] ipv4: Flush the FIB once on multiple
+ nexthop removal
+Content-Language: en-US
+To: Cosmin Ratiu <cratiu@nvidia.com>, netdev@vger.kernel.org
+Cc: Ido Schimmel <idosch@nvidia.com>, Kuniyuki Iwashima <kuniyu@google.com>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Simon Horman <horms@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+References: <20260507075606.322405-1-cratiu@nvidia.com>
+From: David Ahern <dsahern@kernel.org>
+In-Reply-To: <20260507075606.322405-1-cratiu@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Andrew,
+On 5/7/26 1:56 AM, Cosmin Ratiu wrote:
+> This series optimizes multiple nexthop removal performance from having
+> to do a FIB flush for each nexthop being removed to only doing a single
+> FIB flush after all nexthops are removed.
+> 
+> This dramatically improves performance in scenarios where there are
+> many nexthops and many ipv4 routes. Please see individual patches for
+> more details and for a test scenario.
+> 
+> V2 -> V3: https://lore.kernel.org/netdev/8fea4084-c9ec-472a-b8ab-ecc87e537216@kernel.org/T/#t
+> - Split the patch into 3 (Ido Schimmel, David Ahern)
+> - Used WARN_ON_ONCE instead of WARN_ON (Ido Schimmel)
+> 
+> V1 -> V2:
+> - Fixes xmas tree in a couple places (Kuniyuki Iwashima)
+> - Added __must_check to remove_nexthop_from_groups() (Kuniyuki Iwashima)
+> 
+> Cosmin Ratiu (3):
+>   ipv4: Provide a FIB flushing signal from nexthop removal functions
+>   ipv4: Flush the FIB once on multiple nexthop removal
+>   ipv4: Add __must_check to nexthop removal functions
+> 
+>  net/ipv4/nexthop.c | 88 +++++++++++++++++++++++++++++-----------------
+>  1 file changed, 56 insertions(+), 32 deletions(-)
+> 
 
-On Thu, 2026-03-26 at 13:47 +0100, Andrew Lunn wrote:
-> > +static int an8801r_led_blink_set(struct phy_device *phydev, u8
-> > index,
-> > +				 unsigned long *delay_on,
-> > +				 unsigned long *delay_off)
-> > +{
->=20
-> ...
->=20
-> > +	ret =3D phy_modify_mmd(phydev, MDIO_MMD_VEND2,
-> > LED_ON_CTRL(index),
-> > +			=C2=A0=C2=A0=C2=A0=C2=A0 LED_ON_EN, blink ? LED_ON_EN : 0);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	return 0;
->=20
-> Just
->=20
->=20
-> 	return phy_modify_mmd(phydev, MDIO_MMD_VEND2,
-> LED_ON_CTRL(index),
-> 			=C2=A0=C2=A0=C2=A0=C2=A0 LED_ON_EN, blink ? LED_ON_EN : 0);
->=20
-> > +		if (!led_trigger)
-> > +			continue;
-> > +
-> > +		ret =3D an8801r_led_hw_control_set(phydev, led_id,
-> > led_trigger);
-> > +		if (ret)
-> > +			return ret;
-> > +	}
-> > +	return 0;
-> > +}
->=20
->=20
-> Please take a look at all your functions. Can the last error check be
-> removed and just use return ret, etc.
-I'll fix this in the next version.
+Much easier to follow. Thank you.
 
->=20
-> > +static int an8801r_of_init_leds(struct phy_device *phydev, u8
-> > *led_cfg)
-> > +{
-> > +	struct device *dev =3D &phydev->mdio.dev;
-> > +	struct device_node *np =3D dev->of_node;
-> > +	struct device_node *leds;
-> > +	u32 function_enum_idx;
-> > +	int ret;
-> > +
-> > +	if (!np)
-> > +		return 0;
-> > +
-> > +	/* If devicetree is present, leds configuration is
-> > required */
-> > +	leds =3D of_get_child_by_name(np, "leds");
-> > +	if (!leds)
-> > +		return 0;
-> > +
-> > +	for_each_available_child_of_node_scoped(leds, led) {
-> > +		u32 led_idx;
-> > +
-> > +		ret =3D of_property_read_u32(led, "reg", &led_idx);
-> > +		if (ret)
-> > +			goto out;
-> > +
-> > +		if (led_idx >=3D AN8801R_NUM_LEDS) {
-> > +			ret =3D -EINVAL;
-> > +			goto out;
-> > +		}
-> > +
-> > +		ret =3D of_property_read_u32(led, "function-
-> > enumerator",
-> > +					=C2=A0=C2=A0 &function_enum_idx);
-> > +		if (ret)
-> > +			function_enum_idx =3D AN8801R_LED_FN_NONE;
-> > +
->=20
-> What is this doing? Is this documented in the binding?
-The `function-enumerator` property is only documented in the led common
-dt-binding file. The an8801 dt-bindings inherits this property from the
-ethernet-phy dt-bindings.
+For the set:
+Reviewed-by: David Ahern <dsahern@kernel.org>
 
-We aimed to have this PHY have its led behaviour (how many to enable
-and what their role shall be) configurable using devicetree and not to
-rely on a default configuration, hard-coded in the driver (like the
-air_en8811h driver did) and also make use of the led hardware
-offloading (for functions like 100/1000, activity blinking, and others)
-that this PHY is capable of.
-
-From the available property list for the led node, this one seems to be
-appropriate to distinguish between the possible LAN functions, that=20
-would mean that a specific LED has either a link or RX/Tx activity=20
-role.=C2=A0That is why we used it but we could be wrong.
-
-The an8801 dt-bindings (in patch 1) misses the possible values and
-should improved in that regard and I'll fix them in next version if
-this implementation seems acceptable to you.
->=20
-> > +		if (function_enum_idx >=3D AN8801R_LED_FN_MAX) {
-> > +			ret =3D -EINVAL;
-> > +			goto out;
-> > +		}
-> > +
-> > +		led_cfg[led_idx] =3D function_enum_idx;
-> > +	}
-> > +out:
-> > +	of_node_put(leds);
-> > +	return ret;
-> > +}
->=20
-> > +static int an8801r_read_status(struct phy_device *phydev)
-> > +{
-> > +	int prev_speed, ret;
-> > +	u32 val;
-> > +
-> > +	prev_speed =3D phydev->speed;
-> > +
-> > +	ret =3D genphy_read_status(phydev);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	if (phydev->link && prev_speed !=3D phydev->speed) {
-> > +		val =3D phydev->speed =3D=3D SPEED_1000 ?
-> > +		=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 AN8801_BPBUS_LINK_MODE_1000 : 0;
-> > +
-> > +		return an8801_buckpbus_reg_rmw(phydev,
-> > +					=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
-> > AN8801_BPBUS_REG_LINK_MODE,
-> > +					=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
-> > AN8801_BPBUS_LINK_MODE_1000,
-> > +					=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 val);
-> > +	};
->=20
-> This is unusual. What is it doing? Please add a comment.
-This call is to ensure that the PHY switches to the expected 1Gbps=20
-speed when available.=C2=A0
-I'll confirm it and add a comment in v3.
-
-Best regards,
-Louis-Alexis
->=20
-> 	Andrew
