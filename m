@@ -1,127 +1,132 @@
-Received: from smtp1.cs.Stanford.EDU (smtp1.cs.stanford.edu [171.64.64.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF7A731E84F
-	for <netdev@vger.kernel.org>; Thu,  7 May 2026 18:39:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=171.64.64.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA5F3C2761
+	for <netdev@vger.kernel.org>; Thu,  7 May 2026 18:44:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778179175; cv=none; b=PpAhtTjabPU2RlUZJ6SGCuUPkA0NIUAjWxwIz46Ju+04fquQDRcJ6g8CLYhWpzZepfg7jxV38Lq2MJ24wxEs08YQ1FDQ66YxInvCeACdEWbwsgsmjN4Rp7Sb2BousFrQmQGNAYlpK4nrY4Nvc0AoKJGqQtJaoVkmDekINhYOzwU=
+	t=1778179455; cv=none; b=k0IHxCRRPPzjkF1KYY5Ur3gI34lN029dPWPSJiJLkta9qW8yn4sGq+R4OpdY8W58P81fqDckrAiA1/6tPdE+dXtxvIO9cJSy00ceoTjCmAOm8XpHr6eRshdFXGqkSKfRj2K/VSD8vRqf4h6XY1mZL7G+8eYDhjGlDdt/1fywZJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778179175; c=relaxed/simple;
-	bh=0keX8Rib2M0LVysEgEmwfygEi6g47NPnZe2hGTRoE6E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=j9yr8XIrzr8zu5EZa3uYwsPRi9utxHCE7ail3UL8RDBUvUBqz7H/UhSqnrhTaHXOOPPkHa5E2HvZfvXspZB8rMCVcv07XPI55VpXVtl11g5XUZoAiTpyRKjxnM8dMIi9DjJH1APQqXt1HT8GVNcGa/SVNc+XjDbJYY6fobbuXY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=dCqt+h8M; arc=none smtp.client-ip=171.64.64.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.stanford.edu
+	s=arc-20240116; t=1778179455; c=relaxed/simple;
+	bh=OSzlYQw2h6gcRQVmUKR53Ckl2/E4R/U/cGa1oPYYTlM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hw++V2YIa3FrBy46ixke1djHhGZFtJ+TjYcCefcEc/GKHvJ5EJJtDYwXN5oZTvjbkYSTnU2r0joiSlEr7kc1wq4+vEPbxzOvoC21/w94oRX7M73DCIEm+Wf5xqbn/dZtJ/kIQRX4PPNRkYlSGE/BUVaRY9av8BFhJweDSnX2Rqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b=XxFN21KK; arc=none smtp.client-ip=209.85.160.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="dCqt+h8M"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=cs.stanford.edu; s=cs2308; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=P55pzkwiy0A9H3D7tbqLFDnUSO+K24Ompedf4SSCp/o=; t=1778179174; x=1779043174; 
-	b=dCqt+h8MvDGeLizvFfNjiLPUtFuMRHt01ww943OYjnPRRGg4Qm62NK+/AYq4FEG2yfAZ6xJAlXk
-	hjlSBlVf10RpywTFG9DYpQFJPR5VLOT/2J1hz36XM0NgskN9+aJTU2NGaD/d+cMkTqumpJH0sC0M1
-	w90VeOzIPH7swRmhdzmO/8G9aQ0wQxFPcUhf1a6fXO3iAEdJsEI+RVDZjqpLCuK4pQljm6+QKCOeZ
-	ETNttpj6utyAzrgGsw7Pde8f1nrkuSASYpuyXBB4EJqyw6yHOpeVCQXk8+0c02em1PF5FLrDrmi+o
-	9WfSc/EM8CTLesxHYWRnlHkm8aj4HSGnS/jg==;
-Received: from [70.228.78.207] (port=50044 helo=cs.stanford.edu)
-	by smtp1.cs.Stanford.EDU with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ouster@cs.stanford.edu>)
-	id 1wL3dF-0005rO-4r; Thu, 07 May 2026 11:39:33 -0700
-From: John Ousterhout <ouster@cs.stanford.edu>
-To: anthony.l.nguyen@intel.com
-Cc: intel-wired-lan@lists.osuosl.org,
-	przemyslaw.kitszel@intel.com,
-	netdev@vger.kernel.org,
-	John Ousterhout <ouster@cs.stanford.edu>
-Subject: [PATCH net v2] ice: fix packet corruption due to extraneous page flip
-Date: Thu,  7 May 2026 11:38:43 -0700
-Message-ID: <20260507183843.1457-1-ouster@cs.stanford.edu>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b="XxFN21KK"
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-51306c9f2a8so11012481cf.1
+        for <netdev@vger.kernel.org>; Thu, 07 May 2026 11:44:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=riscstar-com.20251104.gappssmtp.com; s=20251104; t=1778179453; x=1778784253; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1OHugVXwVYl4EIQGFzGx4AQVN+wMQGiAhztZolIIb7Q=;
+        b=XxFN21KKeIEUXbAGo/6Ib+7hUGTlZX/8XuZzfJbo4yl6PSap3BZOrtaZqZvc1Woa0x
+         0TvN9aEcZ4+js8z68j+MUt90r3LhtiXIbw6GBdwg9q24mniraMXZ0Vvge1WjQqtz8mQc
+         wnb4NwKJ2So0FhLQ4UU9Ej5D+YrrYrDhweEMM4rfVO5sA+1tuVk7/V+5x72FaCnYpwSY
+         xkoc5EHJoWePAMfv2RAHc4k2vsCVzgkDN8jl02GAzFudANcX7iezGiutl4yi5yWunYrI
+         9pNxEHt5AqTVXWNcfG7GvuP8sOJHtqUQbxIWRmTus46EYlpu0w9nrzY9OcsAahURAauT
+         CcyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778179453; x=1778784253;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1OHugVXwVYl4EIQGFzGx4AQVN+wMQGiAhztZolIIb7Q=;
+        b=C/PvVcPkAggjPv4uvgrBxQC6o6uWnKhfFbZ2HHJ2+NSIxLA/T37utbdgtJuGhwZeJU
+         z/Vb8gunk+hZmew6hsn0SuDcIYMyEsaHktguofokZ/fE2FPpdxSkWAdGC6y3Cye6ZOTK
+         FEYDytLgyjS550eytLDaMx3u9F/aX+YLvmgimpfSM2Z3FTpDpm1td690iIC9MxUhM9Mn
+         gsfht1ioM/XcMY+cUraAN60Oe3qPEkCSbC4HmkZXtNgGuvo3Or9HSrP6gerWzBLdsaoC
+         8hJ/v7a8GeZhB9hst+jQi3JNG7CiNAiGrW4rBGMz4qNon4zJkAtqnGELH7ikuYM0Vk/X
+         MfNw==
+X-Forwarded-Encrypted: i=1; AFNElJ8/CmnnAhHM9cTvXSakv2a1mp+XCfhaoF1+rD8Xo/yF1QjrWI+ubsl1li2ZDgaf0qzbxd03gUY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJeXzjAbXAe7Ff1a98IWRFml1E/waSmViBjtsPP2KbaDJM5piw
+	Nc9pkQByLivSB6XGLEZBy+clV34wNw6wz9EzLJBOrD55jqjQhJr6Gd36y0HNLt8Ti6Y=
+X-Gm-Gg: AeBDies1QFBt9n2lXZtmUalZvYPDtXUDs8jNFc1EOWrMkg41fSnwS534twb2qYgkI3W
+	72dOjzc/2nT1lL2zT0oyOAZ7WqZtQsCzWr1lKlDabIqMVLp1ATfziIh032VKvbcpqfWrgxk6ET/
+	35IqvpyXT+g+ts9ROjJQx+qwHy8MzOJaMhyHYara4978JKy14jxEnVd4f9mk0J+cYr5okE44i2C
+	/9EhdU22DK2v6dBxNNnMXZCle5AK/sUIKMC8HpM8ced+i8ZRdGkXS7JGL/ENYYkY3iuk5NJyZLg
+	fcLchmMOMLVewQhQoCFdsydvHzFSM5HhosZRIYi7LRvkjLAysGRAs3kKVw/E9Yj8tDV07t3kPeU
+	yFx+tylkRyBJ2K+M0sHaDO2YvKfpID5uHXQ7oTuJUYDKaLgXFhCt+PPZL7nBfAHn2yBsNZzHES2
+	25GYY+1H6MCDZNAh2F1eJYp4jJSgFEZbM7nnQatfXVCYXl8+Pcc4WqFXwPAkbl2R61WSbr8jLs4
+	AM=
+X-Received: by 2002:a05:622a:8c7:b0:50e:5fe2:83a9 with SMTP id d75a77b69052e-51461bf0515mr133144421cf.5.1778179453134;
+        Thu, 07 May 2026 11:44:13 -0700 (PDT)
+Received: from [172.22.22.234] (c-75-72-117-212.hsd1.mn.comcast.net. [75.72.117.212])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-514850d0d82sm5022531cf.5.2026.05.07.11.44.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 07 May 2026 11:44:12 -0700 (PDT)
+Message-ID: <ae90a4c9-f027-4373-a378-d0d4b7796ff3@riscstar.com>
+Date: Thu, 7 May 2026 13:44:09 -0500
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 10/12] net: stmmac: tc956x: add TC956x/QPS615
+ support
+To: Xilin Wu <sophon@radxa.com>, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ maxime.chevallier@bootlin.com, rmk+kernel@armlinux.org.uk,
+ andersson@kernel.org, konradybcio@kernel.org, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, linusw@kernel.org, brgl@kernel.org,
+ arnd@arndb.de, gregkh@linuxfoundation.org
+Cc: Daniel Thompson <daniel@riscstar.com>, mohd.anwar@oss.qualcomm.com,
+ a0987203069@gmail.com, alexandre.torgue@foss.st.com, ast@kernel.org,
+ boon.khai.ng@altera.com, chenchuangyu@xiaomi.com, chenhuacai@kernel.org,
+ daniel@iogearbox.net, hawk@kernel.org, hkallweit1@gmail.com,
+ inochiama@gmail.com, john.fastabend@gmail.com, julianbraha@gmail.com,
+ livelycarpet87@gmail.com, matthew.gerlach@altera.com,
+ mcoquelin.stm32@gmail.com, me@ziyao.cc,
+ prabhakar.mahadev-lad.rj@bp.renesas.com, richardcochran@gmail.com,
+ rohan.g.thomas@altera.com, sdf@fomichev.me, siyanteng@cqsoftware.com.cn,
+ weishangjuan@eswincomputing.com, wens@kernel.org, netdev@vger.kernel.org,
+ bpf@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-gpio@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20260501155421.3329862-1-elder@riscstar.com>
+ <20260501155421.3329862-11-elder@riscstar.com>
+ <224E233C593EF171+8c8a43dd-5061-40f8-9eb7-f360eabf2ecc@radxa.com>
+Content-Language: en-US
+From: Alex Elder <elder@riscstar.com>
+In-Reply-To: <224E233C593EF171+8c8a43dd-5061-40f8-9eb7-f360eabf2ecc@radxa.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -1.1
-X-Scan-Signature: 143d975f4418483bad6282b216f6b212
 
-Consider the following sequence of events:
-* The bottom half of a buffer page is filled with data from
-  packet A. The page has a net reference count (reference count
-  - bias) of 1. The page is returned to the NIC, flipped to
-  use the top half.
-* Before the reference on the page is released, the NIC returns
-  the page with no data in it ('size' is zero in ice_clean_rx_irq).
-  In this case the bias does not get decremented. The page still
-  has a net reference count of 1, so it gets returned to the NIC.
-  However, ice_put_rx_mbuf flipped the page so that the bottom
-  half is active.
-* If the NIC stores another packet in the page before packet A
-  has released its reference, the data in packet A will be
-  overwritten with data from the new packet.
-The fix is for ice_put_rx_mbuf not to flip pages that have a
-size of 0.
+On 5/6/26 7:59 AM, Xilin Wu wrote:
+> On 5/1/2026 11:54 PM, Alex Elder wrote:
+>> +    /* AXI Configuration */
+>> +    axi = &td->axi;
+>> +    axi->axi_lpi_en = 1;
+>> +    axi->axi_wr_osr_lmt = 31;
+>> +    axi->axi_rd_osr_lmt = 31;
+>> +    /* All sizes (2^2..2^8) are supported */
+>> +    axi->axi_blen_regval = DMA_AXI_BLEN_MASK;
+>> +    plat->axi = axi;
+>> +
+>> +    plat->mac_port_sel_speed = speed;
+>> +    plat->flags = STMMAC_FLAG_MULTI_MSI_EN | STMMAC_FLAG_TSO_EN;
+> 
+> I got WoL working only after adding STMMAC_FLAG_USE_PHY_WOL here. I 
+> guess it's required, since the driver clocks down the MAC/PMA/XPCS in 
+> its suspend hook?
 
-Note: major revisions to the ice driver make this patch irrelevant
-for recent versions. It applies to longterm stable versions
-6.18.27 and 6.12.86; it also seems relevant for 6.6.137, but would
-need modifications for that version. I have not examined earlier
-versions
+I just want to respond to this with a summary of our plans.
 
-Signed-off-by: John Ousterhout <ouster@cs.stanford.edu>
----
- drivers/net/ethernet/intel/ice/ice_txrx.c | 23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+We will *not* be implementing wake-on-LAN (WoL) initially.  We
+will work to get support for the eMACs upstream for TC956x, and
+then as a separate step, we will enable WoL.
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
-index 51c459a3e722..081c7a7392b7 100644
---- a/drivers/net/ethernet/intel/ice/ice_txrx.c
-+++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
-@@ -1215,6 +1215,13 @@ static void ice_put_rx_mbuf(struct ice_rx_ring *rx_ring, struct xdp_buff *xdp,
- 		xdp_frags = xdp_get_shared_info_from_buff(xdp)->nr_frags;
- 
- 	while (idx != ntc) {
-+		union ice_32b_rx_flex_desc *rx_desc;
-+		unsigned int size;
-+
-+		rx_desc = ICE_RX_DESC(rx_ring, idx);
-+		size = le16_to_cpu(rx_desc->wb.pkt_len) &
-+		       ICE_RX_FLX_DESC_PKT_LEN_M;
-+
- 		buf = &rx_ring->rx_buf[idx];
- 		if (++idx == cnt)
- 			idx = 0;
-@@ -1224,10 +1231,20 @@ static void ice_put_rx_mbuf(struct ice_rx_ring *rx_ring, struct xdp_buff *xdp,
- 		 * To do this, only adjust pagecnt_bias for fragments up to
- 		 * the total remaining after the XDP program has run.
- 		 */
--		if (verdict != ICE_XDP_CONSUMED)
--			ice_rx_buf_adjust_pg_offset(buf, xdp->frame_sz);
--		else if (i++ <= xdp_frags)
-+		if (verdict != ICE_XDP_CONSUMED) {
-+			/* Don't "flip" the page if size is 0: in this case
-+			 * the data in the current half will not be used so
-+			 * it's OK to reuse that half. And, since the bias
-+			 * didn't get decremented for this half, the page can
-+			 * be returned to the NIC even if the other half is
-+			 * still in use, so flipping the page could cause
-+			 * live packet data to be overwritten.
-+			 */
-+			if (size != 0)
-+				ice_rx_buf_adjust_pg_offset(buf, xdp->frame_sz);
-+		} else if (i++ <= xdp_frags) {
- 			buf->pagecnt_bias++;
-+		}
- 
- 		ice_put_rx_buf(rx_ring, buf);
- 	}
--- 
-2.43.0
+It's great to know you have it working, and our plan is to
+implement it via the PHYs and not involve the MAC.  It seems
+it will be relatively easy, but we have no plans to add it to
+the current series.
 
+					-Alex
