@@ -1,148 +1,69 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE7E3F0763
-	for <netdev@vger.kernel.org>; Thu,  7 May 2026 14:32:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABB823FBEDE;
+	Thu,  7 May 2026 14:33:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778164366; cv=none; b=NpZK+Nw9tWEvZAYgVSQCNJ+thJhkAw8/a8+I7HeYUm+KxLAkh0RstwiGvuOitVIOa63Ou9IiY6+5/C8W9Q5FfoxNhIJAE25pbRAVlE21anVxPDqNBGTNlrVV7LITGtl+rips7waZDLyFCbByIJ7JKCMlXlvIeOj7jkRbYS6AZLA=
+	t=1778164422; cv=none; b=WZuDx9zLJd9/PZpB1WFzxo+ByFd6KTDcSSmbp9aH3wtNDF8deOAsMS3MKQTKrBZ2TDiUpl1S0e7RmAqqGP86pz0LY42M4YxdmvgWWpfLVPmmK1t/TA5Oiue+x1MAvCiW8umKf6ma+zcZ00L7dTXYLD+m4vWaKPmmVFfW9ZffZtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778164366; c=relaxed/simple;
-	bh=5uGawXoDlc4k/fCjW/6XYBM2eIyS0AzpHJoJ1pMOp10=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TN6YoXB6ZEjMD8pqI+TfkDzR9Qfg2YhCkoDlicy1QNFNapNN76ifDDdyv7kVwai91mTDWmn+VWq2MPT4ZSTQ+D4Eu70ajWmzZAJtEU6q0mlD25i8HqNajHOyZ54K9uCwGpSChARMHd4gbqT32pU0/jPGQzOxHIcze2AFf/Gcaao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=rNbvERez; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=Z8BrZ14T; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=eoDh41dn; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=fl5WbAZA; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	s=arc-20240116; t=1778164422; c=relaxed/simple;
+	bh=/t+4zQkWn+b1kcYj0Bb28t9/uAuXIPLVUIWHdyAexWQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Z2/ubBGFKcMVraImtiC5fo12gMq4bvxBdxIpTe625wBDhER3OhrDBKt8UvFz8axjSdMbPLatArYqReN2LpzWzVXglDcpE1w4gWIjBP5kZdjCMbaQ4KnoHRsUm46W8TLJ0ugXeGXZOYbcHzLttK2sw+1R6wX3EMhPi35Ocsq5cyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iVeZCQjb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="rNbvERez";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="Z8BrZ14T";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="eoDh41dn";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="fl5WbAZA"
-Received: from lion.mk-sys.cz (unknown [10.149.218.202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id D64116AAEF;
-	Thu,  7 May 2026 14:32:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1778164361; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5uGawXoDlc4k/fCjW/6XYBM2eIyS0AzpHJoJ1pMOp10=;
-	b=rNbvERezM+K8w521bOSWpKmY4Di2BkGfFOIUQ9fWBSIT/ZI7mB3LTQrRusYm9oMld5+I09
-	TpfXQHU1MrPU7uJr/vAuCtthUAm5Dmm9WSoEfCnJK+m/fBX6ryp8TMSI4JDAdYcUBlfCOz
-	I3tjDndh0/FDTvZsn6EgivJvtJNf7hk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1778164361;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5uGawXoDlc4k/fCjW/6XYBM2eIyS0AzpHJoJ1pMOp10=;
-	b=Z8BrZ14TGH7r4Q2Aq9BYT/4nl1pFa1LOX80uf3VQbMT8WfC6R0AVXpgPHe+QDtFiMMABiq
-	oKSlvcbOv0kk0eDA==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1778164360; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5uGawXoDlc4k/fCjW/6XYBM2eIyS0AzpHJoJ1pMOp10=;
-	b=eoDh41dn/9oDTzvTQtZTCpZgVpY1RGdvnZcRekTFAJEAX9UYXSxVc1wkBQh9OFD/ffy6EN
-	G2LHAlgmr+fyBo+TQ7LSQ05C6djogQVptzLjp1eWJqlNfu2W2X0ceg9xxVYBQ4sKxrlfnD
-	kjejVShCZQxcipl4LvtzRurdqXoYmOs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1778164360;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5uGawXoDlc4k/fCjW/6XYBM2eIyS0AzpHJoJ1pMOp10=;
-	b=fl5WbAZA5O6/nJn0cjzFWR2FpfmQtQGZNSvDhc5iXsrYGZG+H9Dnz7PtGlO1fvt06AjTw0
-	+4QL2ZQ+1swQh3DA==
-Received: by lion.mk-sys.cz (Postfix, from userid 1000)
-	id B87202008C; Thu, 07 May 2026 16:32:40 +0200 (CEST)
-Date: Thu, 7 May 2026 16:32:40 +0200
-From: Michal Kubecek <mkubecek@suse.cz>
-To: Danielle Ratson <danieller@nvidia.com>
-Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
-	Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>
-Subject: Re: [PATCH ethtool-next 0/5] ethtool: Add 'pages on|off' option for
- module EEROM hex dump
-Message-ID: <a3hwbnaaomurr7mwbq2xnykaytwp6eblfflkg3mwihkkybnake@wkdxsrodzl5h>
-References: <20260507114721.3409128-1-danieller@nvidia.com>
- <4chkrvenxrbc2tylrbob6vdo3uyjzbwbhbup25yvnohrccvotv@fd7rqasq4btv>
- <DM6PR12MB4516FAE7C203C652E10BE801D83C2@DM6PR12MB4516.namprd12.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iVeZCQjb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC739C2BCB2;
+	Thu,  7 May 2026 14:33:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778164422;
+	bh=/t+4zQkWn+b1kcYj0Bb28t9/uAuXIPLVUIWHdyAexWQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=iVeZCQjbp4+zTNKDZMoScR+tglVXbaMAq1Hlfhxc1a+Bv67yNMqCbwz8SKT1RhE0q
+	 robHo62cHFjzq+l2aivUo5E8e8+ExQI2rh+4+CJMaRTs8pueXvBwI/n6Uv0N91Y5lx
+	 cjDGnjTa+IkuvaoNy+ubhjScTMg9sj3MSvZMKBSq2ZDP8yt5jSC/x/wMLclZ1nT3Lh
+	 X64USyisalBaO7HMFihJk1R2l5SlUHcPymd9ZqgV9huXl1bUoEJS5+3WLP30KKm9jC
+	 Mc097tK8lFoHnrIxwa9JrZ4V5KU6dzp4JwZfxbBlAfDAEKgGNBx05TFwtrNxwk58lh
+	 ufOvqmaz1KfoQ==
+Date: Thu, 7 May 2026 07:33:40 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Eric Dumazet
+ <edumazet@google.com>, Arseniy Krasnov <avkrasnov@salutedevices.com>, Bobby
+ Eshleman <bobbyeshleman@meta.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ "David S . Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+ eric.dumazet@gmail.com, Arseniy Krasnov <AVKrasnov@sberdevices.ru>, Jason
+ Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio
+ =?UTF-8?B?UMOpcmV6?= <eperezma@redhat.com>, kvm@vger.kernel.org,
+ virtualization@lists.linux.dev
+Subject: Re: [PATCH net] vsock/virtio: fix potential unbounded skb queue
+Message-ID: <20260507073340.0604667d@kernel.org>
+In-Reply-To: <afyMCyBvZpzWrLtO@sgarzare-redhat>
+References: <20260430122653.554058-1-edumazet@google.com>
+	<afn0ZdvZWswBuDMm@sgarzare-redhat>
+	<CANn89iLs8DOWJwDpf_ARoMrV+6b2tbhEJ=VVzeC8gCm5dRGaig@mail.gmail.com>
+	<afoF_cHfl6ygcupM@sgarzare-redhat>
+	<20260506113554-mutt-send-email-mst@kernel.org>
+	<afxVH2So9BbZ3Gta@sgarzare-redhat>
+	<20260507074113-mutt-send-email-mst@kernel.org>
+	<afyMCyBvZpzWrLtO@sgarzare-redhat>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="w7toz5yyfyvw5uuf"
-Content-Disposition: inline
-In-Reply-To: <DM6PR12MB4516FAE7C203C652E10BE801D83C2@DM6PR12MB4516.namprd12.prod.outlook.com>
-X-Spam-Flag: NO
-X-Spam-Score: -5.90
-X-Spamd-Result: default: False [-5.90 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	SIGNED_PGP(-2.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	NEURAL_HAM_SHORT(-0.20)[-0.999];
-	RCVD_COUNT_ONE(0.00)[1];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	TO_DN_SOME(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	ARC_NA(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4]
-X-Spam-Level: 
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Thu, 7 May 2026 14:59:13 +0200 Stefano Garzarella wrote:
+> >well if you want to support pathological cases such as 1 byte messages
+> >that would mean like 100x reduction no?
+> 
+> Yep, but since this patch is already merged, IMHO that is better than 
+> losing data in those pathological cases.
 
---w7toz5yyfyvw5uuf
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Thu, May 07, 2026 at 12:37:25PM GMT, Danielle Ratson wrote:
-> The reason for keeping the switch is backward compatibility: today's
-> ethtool -m hex on produces a single flat hex dump, while the
-> page-organized output has a different shape - per-page headers, blank
-> lines and repeated column headers interleaved between hex rows.
-> Scripts that parse today's output could break.
-[...]
-> Since the format changes shape and not just size, we kept it opt-in via pages on so existing consumers are unaffected.
-> Are you OK with this even so it might break some existing usage?
-
-Good point, there may indeed be existing scripts that would not handle
-changed (default) output format. While I would personally prever the
-binary dump for machine processing, people often parse text outputs that
-were never meant to be used that way.
-
-I suppose your approach is a safer choice then.
-
-Michal
-
---w7toz5yyfyvw5uuf
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEWN3j3bieVmp26mKO538sG/LRdpUFAmn8ooQACgkQ538sG/LR
-dpWjoQf/Ta7SNVab2BnWNo88gK0hE7kdHaiKOpRMo6dK4E5pHwpI48wrW+QZ1OeM
-qMHPrKj6aD1u3doxqOCiJrrvSZrdLgqGXPlfg0bOGIaURDRPkHukDSdS+7iCAY9/
-u5hm326r6IXwDq4Dg2yKzd6M6wYatVoPtGqy5sMqkKE4PaOeiYmcVZskkbWrqjxf
-LThglJ2o8hj5a+g16vhDsRijQsGRj+MjdjbKaVGnY+hbMgryzIO6ZXK3Opzi+s9P
-8H/T9aQKFJs4dxi2JWjaqta9r2S9E6d4g4m4pNWcuQf5NT3Yiyi40oZ2YbPPplUI
-Rn4MTATZY2Tw0Dej2kEI2TJ3ITA7Uw==
-=EAsM
------END PGP SIGNATURE-----
-
---w7toz5yyfyvw5uuf--
+We can revert if you think that the risk of regression is high..
+Please LMK soon, we can do it before patch reaches Linus.
