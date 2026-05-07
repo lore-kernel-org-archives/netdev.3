@@ -1,228 +1,173 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AEF03CA487
-	for <netdev@vger.kernel.org>; Thu,  7 May 2026 11:23:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778153027; cv=none; b=Iie0P32Lc4ydB74siF7nCy34ogtFYQTTgDY/vf+wLTh1GEmFw6PykIsNoyEbFYKN750SsNhZf1OaAslNGzUmj0+6GIDEdjfz7mCZXCe14svqTYS5ND+JsF9ks3PKeRPhJyhl6wT2jWpxW2/azFy4T6rtBp9ZN2bm7qGotRSlwu0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778153027; c=relaxed/simple;
-	bh=Pkq/BDOjNe9hNPvfxWkn84cA+kV3vsRmaPmix8Qgv5I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u3JIi7kbUWAX9eC4iFOo6lQxVH+oFJpDxsj0Sdznja4idJ/CihFvI/sXkSrUH75KKVwPRxc/fCS5Hz8/my8soh/7g837P7OMCksCL74IFT06zpMfiKEmIktr564s3KUMg39DD7m0c/VnJE2wHpslApb30iNdCJNNzwAE23i2S78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1wKwpA-0002vj-69; Thu, 07 May 2026 13:23:24 +0200
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1wKwp8-000ufd-2w;
-	Thu, 07 May 2026 13:23:23 +0200
-Received: from blackshift.org (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 096DC530406;
-	Thu, 07 May 2026 11:23:23 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	linux-can@vger.kernel.org,
-	kernel@pengutronix.de,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	Eulgyu Kim <eulgyukim@snu.ac.kr>,
-	Vincent Mailhol <mailhol@kernel.org>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net 1/6] can: raw: add locking for raw flags bitfield
-Date: Thu,  7 May 2026 10:22:23 +0200
-Message-ID: <20260507112321.439968-2-mkl@pengutronix.de>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260507112321.439968-1-mkl@pengutronix.de>
-References: <20260507112321.439968-1-mkl@pengutronix.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4103C061D
+	for <netdev@vger.kernel.org>; Thu,  7 May 2026 11:23:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.180
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778153033; cv=pass; b=Itvt2Cza2GqNkCVwIO9/1+Sutg816Qn1DzliUJ4es3Obj8M/nAkZaJYTa3ovb1sElsmWLqL3pi48TLXN37SC+MJXwCBmA60TeWcbwzHA4vkKmw0CHHyuFO6mIfQrvNKPsHKjn1OVDRbqhG8wnERWD8v78pmH3rJyyEDsQbdtlCc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778153033; c=relaxed/simple;
+	bh=lUcXItKAzkLwbUQNbeI9J1RqdnwcBz/ibVSw0fQS32o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hkDOvvtjXJCBuIfzBlyI7fN+So+A1Z4oYYd94v6TH1MXE7RqlAoZ69LTHawkRtG3V8B9nYHEWZI8VwyLbSnPiCOZaf9GZLmEikHCcZJ5n0EQFHxZfxvHlejF/SP/dJ35VbpQN71vFE+IEeYA+zR7sJqJjLOMY32nq5kLr7BdxtQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=D+Y7CuWt; arc=pass smtp.client-ip=209.85.222.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="D+Y7CuWt"
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-8ec9f099fc6so82362685a.0
+        for <netdev@vger.kernel.org>; Thu, 07 May 2026 04:23:51 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778153031; cv=none;
+        d=google.com; s=arc-20240605;
+        b=fqJbeg5/gGC7MQdMI1ILXzBreewXSiEBnspdTlCcLyVUCfA0smc5PleJREDedlHkDx
+         Yx581whH60LaGavuCzsMW+KoH0i6yGhHXQjJspUCBO4zn5EGUpHMjIygBY0cjsFr4NMY
+         MBRz/lJ3xwCzWgvVLoSZWBXwckvQJ9aDKP2ujj5rxFfPxXmghkomkcDDBie9lqKY66rx
+         AfyhpRJHJDO8VQblZiQQTyA2UIHSXdQzfHOdJpkTKwk7MYY8RI9OYpQvRzuCpN4OkpHf
+         nucuvSvv/UvHxPGECRn9cSXO7GlSwLaJxIxJaH65EH+8NSN7QQ2qcMAkp4PVMuxUdilI
+         Y/gw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=r7h7XmqglP41BdFNbEQk9rwblD7SshsHQhUCVyrl82k=;
+        fh=ItqZ38b9H5LKtulkjXopdt8a9EUfiM8/1zqto7UNN40=;
+        b=fEfUrqohRrqlC9zqJ2mJW/9rRuXoAiR271Kpqgf4sVVrONCUCADxRM1DOkzGUk/gMc
+         tuXmxJF31kmv666ussyJLqRVlXtFm6EHgX20Wx5Z0eNEpGm6i3NfOaU4zgmWVw8wIAzt
+         S3a1oXqZyjBJoF3ZMJpQL0Q+o5izgkCY5G5Z5YdaT5hPetOq37nthBq89B8gzvyv0yZd
+         Cw/mYna4KTIsiZaJ6hRK0zr3Y8qGGwaP4nEMTwr8lyBH2FnDZNnDfrl0Q8A7m7WV49DM
+         jHkvngOD1bdPmSUT76wbszILiBttz81wWBKxpGXokJwl0x6I0YwC2QD2Qv8jjgAa8sEk
+         qj7A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778153031; x=1778757831; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=r7h7XmqglP41BdFNbEQk9rwblD7SshsHQhUCVyrl82k=;
+        b=D+Y7CuWtVYrP0pa6A0QzsZ1quUD+Q1Q+eK+3y3tAVt06pO5BsoS8OHCSIOj0aWWDlg
+         QyzX1wZXIHqur01rlYGBT4v6OKV7BboEfL4pnkFEklUlqxyDxGoRECgKETd0aLudCo2+
+         fI6l2zWt3rkULCnjOk9xYv9ti5GnDXc39ToG5ymaLo2iaOHpB1pNpm7SPmUxmHvbYOef
+         a5CQox3DQgkZXThYj7gO3P2nkGtFL0/hl13MvmYK0FJeagS2mATgrEci1AQiP1Mv7dbj
+         K7f01C/eYUYP5GLmkx9TPQ2OL1sYCYvuLzas8Ox3b8e0ahwhxm8N6WfCPyX5+nrNoV/N
+         DivA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778153031; x=1778757831;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=r7h7XmqglP41BdFNbEQk9rwblD7SshsHQhUCVyrl82k=;
+        b=LcIwXPQf2sDBohTCGGOJseXU4EShBhnUTM42GaBEmR+wg7+dasQpHibaKXgkTZTQmZ
+         N8IOiLLrCR2dYOE4wjXZsbzfKnBk/Ypnmu+fQmdOeJAgITCrXJNf4JvCG3rAE+x3C77w
+         Wew0PnDI/CZzKSsyPZo32uj3Re9P3TzhBWIjglxY+h6B3APIfyTuKf1kjwwFZ253Taz2
+         10cDgOhz0gHc0Xk+l/bxDHTM0pUbYsco//wHI60B0p7aLw0s8ZN6QzWLGwvB2sdylBhD
+         d4T28UiMZ4CkkAgrJDbYegNHRHMa9VY9m2vOlDph5YT+CFAPKQ43xZpsfjlBTkbs1oJn
+         axVQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9E7evHmAqzfmhK/xenQaJWtvSbLqus58giNR9Lq+ccnAEfLj7Wu8LaaBwlzsJP5daCXOhyPic=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzV//aBVQU241yBPIEsJ4HeTj7Zu8fckVnV52rP1/Cs3F8RXtjM
+	ToJwGBuJDstaXZ9IS9bS3F5b3MaqB7PuXE8t/adgcOZm3raeAjwqbqPnpMXU7doClV3KxGmBapB
+	TwZjv0fllYIpSPkiw2tEByn1a1q9/8NuEgQn3hdfE
+X-Gm-Gg: AeBDieu6GqV52f/c+DXgpL4KSX/D8oBS7K+aFjKZFKrs2gThDiS9IQ1r58aB6IXiNY8
+	LIzaQ6rV8XKhAiQPREBueoly6DSZbQf5kUomj2OGYxAlb4/eeb1VPE/Ti5QaeY1MNGjhnzMr2Xm
+	JnJyRTvzFSiRlxqA5Rsi/SmaeFfaW6OJPenTesNcoiTrjjk/AnL5vTs51FRA0n70Acvuf0Xan0S
+	Hr5Qkh2fWrT0G/hYWv7jfr3Z2s58I0E3VVkVLCF80v07eQ92Q94jxTQ42q9uFfOILmK+cgcRj4x
+	34ko7YJMyUztC+FNj/qP1ZVw/t6+1DU4Ry+IxPkXUXc7uXm1kxRWRGbzCSKA9Ik/sIhr0NhVFiF
+	ak7FdprV8IZ8ardLvizsn7DTq81j58J6C0C7y2OwG9mjsLwklkgK2
+X-Received: by 2002:a05:622a:352:b0:50d:8db0:7abb with SMTP id
+ d75a77b69052e-51461fc4f53mr99410211cf.42.1778153030058; Thu, 07 May 2026
+ 04:23:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+References: <20260506172830.2237574-1-kuniyu@google.com>
+In-Reply-To: <20260506172830.2237574-1-kuniyu@google.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Thu, 7 May 2026 04:23:38 -0700
+X-Gm-Features: AVHnY4JAbHRUWR3w7dzRQ8QodojnytK_wqCoMW-FNYxXPp1Kv5QI0LVTOIMGQp8
+Message-ID: <CANn89iJawd-gi4qoCZLA_mB6c-gLaqF5dirALS-ZSsFWpEB6Qw@mail.gmail.com>
+Subject: Re: [PATCH v1 net] tcp: Fix out-of-bounds access for twsk in tcp_ao_established_key().
+To: Kuniyuki Iwashima <kuniyu@google.com>, "Paul E. McKenney" <paulmck@kernel.org>
+Cc: Neal Cardwell <ncardwell@google.com>, "David S. Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Dmitry Safonov <0x7f454c46@gmail.com>, Simon Horman <horms@kernel.org>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
+	Damiano Melotti <melotti@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Oliver Hartkopp <socketcan@hartkopp.net>
+On Wed, May 6, 2026 at 10:28=E2=80=AFAM Kuniyuki Iwashima <kuniyu@google.co=
+m> wrote:
+>
+> lockdep_sock_is_held() was added in tcp_ao_established_key()
+> by the cited commit.
+>
+> It can be called from tcp_v[46]_timewait_ack() with twsk.
+>
+> Since it does not have sk->sk_lock, the lockdep annotation
+> results in out-of-bound access.
+>
+>   $ pahole -C tcp_timewait_sock vmlinux | grep size
+>         /* size: 288, cachelines: 5, members: 8 */
+>   $ pahole -C sock vmlinux | grep sk_lock
+>         socket_lock_t              sk_lock;              /*   440   192 *=
+/
+>
+> Let's not use lockdep_sock_is_held() for TCP_TIME_WAIT.
+>
+> Fixes: 6b2d11e2d8fc ("net/tcp: Add missing lockdep annotations for TCP-AO=
+ hlist traversals")
+> Reported-by: Damiano Melotti <melotti@google.com>
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+> ---
+>  net/ipv4/tcp_ao.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/net/ipv4/tcp_ao.c b/net/ipv4/tcp_ao.c
+> index a97cdf3e6af4..e2720233e36b 100644
+> --- a/net/ipv4/tcp_ao.c
+> +++ b/net/ipv4/tcp_ao.c
+> @@ -116,7 +116,9 @@ struct tcp_ao_key *tcp_ao_established_key(const struc=
+t sock *sk,
+>  {
+>         struct tcp_ao_key *key;
+>
+> -       hlist_for_each_entry_rcu(key, &ao->head, node, lockdep_sock_is_he=
+ld(sk)) {
+> +       hlist_for_each_entry_rcu(key, &ao->head, node,
+> +                                sk->sk_state =3D=3D TCP_TIME_WAIT ||
+> +                                lockdep_sock_is_held(sk)) {
+>                 if ((sndid >=3D 0 && key->sndid !=3D sndid) ||
+>                     (rcvid >=3D 0 && key->rcvid !=3D rcvid))
+>                         continue;
 
-With commit 890e5198a6e5 ("can: raw: use bitfields to store flags in
-struct raw_sock") the formerly separate integer values have been integrated
-into a single bitfield. This led to a read-modify-write operation when
-changing a flag in raw_setsockopt() which now needs a locking to prevent
-concurrent access.
+I wonder if a better fix would be to change __list_check_rcu() evaluation o=
+rder.
 
-Instead of adding a lock/unlock hell in each of the flag manipulations this
-patch introduces a wrapper for a new raw_setsockopt_locked() function
-analogue to the isotp_setsockopt[_locked]() approach in net/can/isotp.c
+Otherwise, this would mean that a TIME_WAIT socket would evade RCU
+LOCKDEP checks.
 
-Fixes: 890e5198a6e5 ("can: raw: use bitfields to store flags in struct raw_sock")
-Reported-by: Eulgyu Kim <eulgyukim@snu.ac.kr>
-Closes: https://lore.kernel.org/linux-can/20260503112200.22727-1-eulgyukim@snu.ac.kr/
-Tested-by: Eulgyu Kim <eulgyukim@snu.ac.kr>
-Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Reviewed-by: Vincent Mailhol <mailhol@kernel.org>
-Tested-by: Vincent Mailhol <mailhol@kernel.org>
-Link: https://patch.msgid.link/20260504111928.41856-1-socketcan@hartkopp.net
-[mkl: use Closes tag instead of Link]
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- net/can/raw.c | 66 +++++++++++++++++++++++----------------------------
- 1 file changed, 30 insertions(+), 36 deletions(-)
+If a fix in tcp_ao.c is te way to go, I would suggest the opposite of
+what you did.
 
-diff --git a/net/can/raw.c b/net/can/raw.c
-index a26942e78e68..82d9c0499c95 100644
---- a/net/can/raw.c
-+++ b/net/can/raw.c
-@@ -562,8 +562,8 @@ static int raw_getname(struct socket *sock, struct sockaddr *uaddr,
- 	return RAW_MIN_NAMELEN;
- }
- 
--static int raw_setsockopt(struct socket *sock, int level, int optname,
--			  sockptr_t optval, unsigned int optlen)
-+static int raw_setsockopt_locked(struct socket *sock, int optname,
-+				 sockptr_t optval, unsigned int optlen)
+diff --git a/net/ipv4/tcp_ao.c b/net/ipv4/tcp_ao.c
+index a97cdf3e6af4cf1ee1cd8c6361944536056543e6..0a4b38b315fed40899901ea5f66=
+fbdffd776df38
+100644
+--- a/net/ipv4/tcp_ao.c
++++ b/net/ipv4/tcp_ao.c
+@@ -116,7 +116,8 @@ struct tcp_ao_key *tcp_ao_established_key(const
+struct sock *sk,
  {
- 	struct sock *sk = sock->sk;
- 	struct raw_sock *ro = raw_sk(sk);
-@@ -575,9 +575,6 @@ static int raw_setsockopt(struct socket *sock, int level, int optname,
- 	int flag;
- 	int err = 0;
- 
--	if (level != SOL_CAN_RAW)
--		return -EINVAL;
--
- 	switch (optname) {
- 	case CAN_RAW_FILTER:
- 		if (optlen % sizeof(struct can_filter) != 0)
-@@ -598,17 +595,11 @@ static int raw_setsockopt(struct socket *sock, int level, int optname,
- 				return -EFAULT;
- 		}
- 
--		rtnl_lock();
--		lock_sock(sk);
--
- 		dev = ro->dev;
--		if (ro->bound && dev) {
--			if (dev->reg_state != NETREG_REGISTERED) {
--				if (count > 1)
--					kfree(filter);
--				err = -ENODEV;
--				goto out_fil;
--			}
-+		if (ro->bound && dev && dev->reg_state != NETREG_REGISTERED) {
-+			if (count > 1)
-+				kfree(filter);
-+			return -ENODEV;
- 		}
- 
- 		if (ro->bound) {
-@@ -622,7 +613,7 @@ static int raw_setsockopt(struct socket *sock, int level, int optname,
- 			if (err) {
- 				if (count > 1)
- 					kfree(filter);
--				goto out_fil;
-+				return err;
- 			}
- 
- 			/* remove old filter registrations */
-@@ -642,11 +633,6 @@ static int raw_setsockopt(struct socket *sock, int level, int optname,
- 		}
- 		ro->filter = filter;
- 		ro->count  = count;
--
-- out_fil:
--		release_sock(sk);
--		rtnl_unlock();
--
- 		break;
- 
- 	case CAN_RAW_ERR_FILTER:
-@@ -658,16 +644,9 @@ static int raw_setsockopt(struct socket *sock, int level, int optname,
- 
- 		err_mask &= CAN_ERR_MASK;
- 
--		rtnl_lock();
--		lock_sock(sk);
--
- 		dev = ro->dev;
--		if (ro->bound && dev) {
--			if (dev->reg_state != NETREG_REGISTERED) {
--				err = -ENODEV;
--				goto out_err;
--			}
--		}
-+		if (ro->bound && dev && dev->reg_state != NETREG_REGISTERED)
-+			return -ENODEV;
- 
- 		/* remove current error mask */
- 		if (ro->bound) {
-@@ -676,7 +655,7 @@ static int raw_setsockopt(struct socket *sock, int level, int optname,
- 						   err_mask);
- 
- 			if (err)
--				goto out_err;
-+				return err;
- 
- 			/* remove old err_mask registration */
- 			raw_disable_errfilter(sock_net(sk), dev, sk,
-@@ -685,11 +664,6 @@ static int raw_setsockopt(struct socket *sock, int level, int optname,
- 
- 		/* link new err_mask to the socket */
- 		ro->err_mask = err_mask;
--
-- out_err:
--		release_sock(sk);
--		rtnl_unlock();
--
- 		break;
- 
- 	case CAN_RAW_LOOPBACK:
-@@ -769,6 +743,26 @@ static int raw_setsockopt(struct socket *sock, int level, int optname,
- 	return err;
- }
- 
-+static int raw_setsockopt(struct socket *sock, int level, int optname,
-+			  sockptr_t optval, unsigned int optlen)
-+{
-+	struct sock *sk = sock->sk;
-+	int err;
-+
-+	if (level != SOL_CAN_RAW)
-+		return -EINVAL;
-+
-+	rtnl_lock();
-+	lock_sock(sk);
-+
-+	err = raw_setsockopt_locked(sock, optname, optval, optlen);
-+
-+	release_sock(sk);
-+	rtnl_unlock();
-+
-+	return err;
-+}
-+
- static int raw_getsockopt(struct socket *sock, int level, int optname,
- 			  sockopt_t *opt)
- {
+        struct tcp_ao_key *key;
 
-base-commit: b266bacba796ff5c4dcd2ae2fc08aacf7ab39153
--- 
-2.53.0
-
+-       hlist_for_each_entry_rcu(key, &ao->head, node,
+lockdep_sock_is_held(sk)) {
++       hlist_for_each_entry_rcu(key, &ao->head, node,
++                                sk_fullsock(sk) && lockdep_sock_is_held(sk=
+)) {
+                if ((sndid >=3D 0 && key->sndid !=3D sndid) ||
+                    (rcvid >=3D 0 && key->rcvid !=3D rcvid))
+                        continue;
