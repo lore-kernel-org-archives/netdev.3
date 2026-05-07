@@ -1,165 +1,145 @@
-Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [185.244.194.184])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AADD826AF4;
-	Thu,  7 May 2026 13:45:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.244.194.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BAAD3ECBD1
+	for <netdev@vger.kernel.org>; Thu,  7 May 2026 13:48:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778161543; cv=none; b=sr8oZo5G1auM16n1X6M4c/8IQgfnC2fgvu6fFglczdFAorNbdBJ8gRQOaD02B8wucwGrI7+oL1smi7vP/Zz4zw/FWloD7nIndZY4dz1SkASa7ShdQ2TmGPAdg1Tsiu9NSl5uAgESr8onDy3JNAHdpd1ekrekRXYt53ppyiWwpPw=
+	t=1778161708; cv=none; b=GFb0tCbxNk56p7XUAe+KfU4DbBe20jJlMpcKmNRE3kHPFHKdl1e1Gj56lYB2bx81zBj4WstfiYlZxq0KQz8zN3QryedL9DOjfo5KLjZ0slqitudwDmbcwnQkvehY5SwG7oCNP5KL5UAj8HxS4/RuJW5zGm8kg+u8mSXRP3Vzsy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778161543; c=relaxed/simple;
-	bh=iahk48ROHqEubuzP/daBlbyZpbAXB6goRutnC/S6tvo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MN8VKI8Pt9S89eyIRZxNbSUPk/maf4/IWvZfzB2V5pfZmagPeNl+Zfko+Wz+NfOI+zUTb42lUPFQm1wskNaGsvCjK1Cf220yIai3alUqsTTYEw299H/eVyu4PHJlqVRd8Y/KSJ2MQoj0z1ukOeJXL5IgWqcobS5Jx1TZh1qc6bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=WAztdomc; arc=none smtp.client-ip=185.244.194.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+	s=arc-20240116; t=1778161708; c=relaxed/simple;
+	bh=6FCpXzCgtsfJ36cDnFBKkSwFAtcNCjtbMR1qFUr9W8A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Mc21T0Pqb+S/laR5Y6bneFNJjYVB55dQTMyuac2XSpvfdvTHqn9VGSoawaSQm9tPC5IdodZ7/QTeR5Z0GyKQxRyvuqzsnNWs+wGPVMoDEAuOU9AKND6Ape1hs6lmhTjOx4M8wjz+iFXZ6FTRZsJwUfqgtOGOz8O1gasJmuN4mfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nTk91Nnn; arc=none smtp.client-ip=209.85.222.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="WAztdomc"
-Received: from relay01-mors.netcup.net (localhost [127.0.0.1])
-	by relay01-mors.netcup.net (Postfix) with ESMTPS id 4gBCT93mLWz8trZ;
-	Thu,  7 May 2026 15:16:58 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
-	s=key2; t=1778159821;
-	bh=iahk48ROHqEubuzP/daBlbyZpbAXB6goRutnC/S6tvo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=WAztdomcU3bGdVVYxKQ7Xv5salF0mGYCKTw0BHeuCVIUb6v4A7o6q0A/JheCKvqoi
-	 4/wXvWHeoo0jO0OGe3IpDd7Kr8hFyaCdzu+x16GX7PcPJ7EqLuI1BB/l5DEoVs40CG
-	 aOShkamkKYorCkE9UVl3qaNJxDuC0g6hoZX2yE49GfVUpkjHDAw4Fpu/TrpgpgFVA5
-	 sn1NicWqtkG8Hou0t+pSSaIBtPPDnYLIpTv1wbuQRygtLy5tWb3DFYJ5XGdFFuibyM
-	 2YN6Nv1zER/cstsNW7N43CGHPpT25kAVF1lysv/QracEPOFeXH+0B2zqkZN/6hagaT
-	 8TdAHdBnvZHfw==
-Received: from policy01-mors.netcup.net (unknown [46.38.225.35])
-	by relay01-mors.netcup.net (Postfix) with ESMTPS id 4gBCP95jpyz7w8s;
-	Thu,  7 May 2026 15:13:30 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at policy01-mors.netcup.net
-X-Spam-Flag: NO
-X-Spam-Score: -2.898
-X-Spam-Level: 
-Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by policy01-mors.netcup.net (Postfix) with ESMTPS id 4gBCNq5YRJz8tdv;
-	Thu,  7 May 2026 15:13:15 +0200 (CEST)
-Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
-	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 3254D5FBF7;
-	Thu,  7 May 2026 15:13:14 +0200 (CEST)
-Authentication-Results: mxe9fb;
-        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
-Received-SPF: pass (mxe9fb: connection is authenticated)
-Message-ID: <5308c658-7d4c-4292-b091-a51546ea4d23@leemhuis.info>
-Date: Thu, 7 May 2026 15:13:12 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nTk91Nnn"
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-8ee7ffd738dso223428285a.1
+        for <netdev@vger.kernel.org>; Thu, 07 May 2026 06:48:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778161706; x=1778766506; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=jXL04VQFG198TFjRMjSGYT+UyBqd1kYAypcPiKoL5QI=;
+        b=nTk91NnnxrcM3VfyWZAywNQiRRa9jaHv+Uv3VxSzwaw9j1yxqnsQ1VyKVXYDpXG3bL
+         NLx9uFd6mOnQyGZaRs9EXYMVrRdW+2vCPu0pEWvDEztw4vhCqdBsOuIthobOXdc175j5
+         yabv8at0emneg2SVUqBNTvhsNOuIXbOjVQQzFD/QWMtYAXN83WnebeJHuM5JlWt3IQdj
+         gvr6gvZ9gx6IApaOZXJxW7R//YsMgvlFab08G7cAeeoaz8qaiV5kXchetjm2yfpGUwZQ
+         5+GZLEFnFvMjFlrWoL9VWNkKz3TmBUuKGXU1AZFuZPh4Cl/Mlw4zFDtkc16DpIKCCfWQ
+         4S3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778161706; x=1778766506;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jXL04VQFG198TFjRMjSGYT+UyBqd1kYAypcPiKoL5QI=;
+        b=s9WPMm6moJfUaaERaZz4F7nfVIKuDUMb5ERYX1uumDXbpYF6u3oQbUTFhtDU3/aiqB
+         zAn6GFN+zTu3T2IfiIbBXCf6YNZrLQA1kA6K1pfMJVZNetG88/lRdzo1mnBAiBnuYPsC
+         YQfIiSQE4kTyVI7iIFX5Zz/72T1Uy6DnTK63D00uH+ssKHZQeRE7u4dJsrFU4AHAkLKL
+         2rOwojE1r9S51apkfAcULx/oT29O+eCMoFu2mWSPpHYsQOXNuiZHlB2usRB17NE6Pou3
+         OZbdCXl83S/Ov9ZhrxRCYTsBX6bPu0rUxYXedxL0DxG3/V8T40q2yh/DEBws5cjeb1hP
+         r/Nw==
+X-Forwarded-Encrypted: i=1; AFNElJ8Dghtouf2iR8KBUOoG3rdR8GPWXgK4LN8L+oAldRSAmjjn0Tiy25H8Gltils+Hdz/aM7/bHfI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7LMW4v1cThzlvjWf7hgNqsjQOg/Ld5MIMgOrfKemzRqyBezWy
+	7Wbosjf+DHHbF15h+/DbbzJbqOIxgxKAfNrpkDNm/7ZlgBdyBeaESui0
+X-Gm-Gg: AeBDieuvfGR/+uuGtZQQUNtKyj91HTQVjn9WrHx0N3l1qJKENrstWrPtRuWS2tCY+pA
+	u/EtUndZ4gFnpvMqzW6sCJpqNBn4rVl72DO3kIJuFg7lDaz0EnhA7rlISyyYgStq3GhufpouR9n
+	FukgF90io3wvamN9bGYLG4oJDIt0K0PH6Qd8A/TMlCOpaGoNc6Egut98JB0B2IMqTCAGZJrHNtC
+	kn2VdmX8/cNibEKFFscW1x+VdahntE6Ctr1dqKV5U/0CbtknoSJzhzs+Kx9s6Fx9xHIX5mxlVcp
+	nsLzFF6nxsx2kn03xte/+nMLZOxgbEtk6V6V75YwO9esVWO3SLhKfUkl7viDJrnBBcfTtTn88XM
+	HOVyBm3Rbcx9thOaWIBtp5LItY/cn81MrwJ2kMXVjhbeU89tLaTEdcOFhjoejCN5uMTjLsAr7yr
+	F1Sa5oT73AH8zW+aQsFwfcXrpGOL2IS4dSjFFLS2nhI35AN/IE8xxFMc0HCFgDF/wYzlk=
+X-Received: by 2002:a05:620a:2905:b0:8cd:b024:114d with SMTP id af79cd13be357-9065324a116mr357701785a.40.1778161706134;
+        Thu, 07 May 2026 06:48:26 -0700 (PDT)
+Received: from PF5YBGDS.localdomain ([163.114.130.6])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8fc29a8161csm1890105985a.13.2026.05.07.06.48.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 May 2026 06:48:25 -0700 (PDT)
+Date: Thu, 7 May 2026 09:48:23 -0400
+From: Mike Marciniszyn <mike.marciniszyn@gmail.com>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	Alexander Duyck <alexanderduyck@fb.com>, kernel-team@meta.com,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Mohsin Bashir <mohsin.bashr@gmail.com>,
+	Simon Horman <horms@kernel.org>, Lee Trager <lee@trager.us>,
+	Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v3 1/4] net: eth: fbnic: Fix addr validation in
+ pcs write
+Message-ID: <afyYJ9-qW_QG6f7_@PF5YBGDS.localdomain>
+References: <20260504135815.44226-1-mike.marciniszyn@gmail.com>
+ <20260504135815.44226-2-mike.marciniszyn@gmail.com>
+ <20260506185819.1c68a71b@kernel.org>
+ <1cd8256c-286a-4a73-b0a0-89233cb3c2d0@redhat.com>
+ <afyRrWW8XVeO55Ob@PF5YBGDS.localdomain>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] stmmac: Random DMA reset failure on RK3399 since
- v6.18
-To: Ovidiu Panait <ovidiu.panait.rb@renesas.com>,
- Jensen Huang <jensenhuang@friendlyarm.com>
-Cc: Russell King <linux@armlinux.org.uk>,
- Heiner Kallweit <hkallweit1@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
- regressions@lists.linux.dev, netdev@vger.kernel.org,
- LKML <linux-kernel@vger.kernel.org>
-References: 
- <CAMpZ1qEwNOqR-KQD4kEqd93aB-TpHnG6WdQc2tXUF0aXMmw_SA@mail.gmail.com>
- <198e2ce4-07e1-46c0-818d-1eb18645aca0@leemhuis.info>
- <CAMpZ1qGEOiPj7cApnWJnojSyEpDmXfco=No5n1VfyTCoNyCyFQ@mail.gmail.com>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: de-DE, en-US
-In-Reply-To: 
- <CAMpZ1qGEOiPj7cApnWJnojSyEpDmXfco=No5n1VfyTCoNyCyFQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-PPP-Message-ID: <177815959488.33597.6466634683394731939@mxe9fb.netcup.net>
-X-Rspamd-Server: rspamd-worker-8404
-X-Rspamd-Queue-Id: 3254D5FBF7
-X-NC-CID: IBN/mSWKxNoJwMBcFpQeKstCk/dAkTAf0eUmoE0TLKkEBHFk3lA=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <afyRrWW8XVeO55Ob@PF5YBGDS.localdomain>
 
-[+Ovidiu Panait]
-
-On 5/7/26 14:49, Jensen Huang wrote:
-> On Tue, May 5, 2026 at 4:26 PM Thorsten Leemhuis
-> <regressions@leemhuis.info> wrote:
->> On 4/29/26 14:53, Jensen Huang wrote:
+On Thu, May 07, 2026 at 09:20:45AM -0400, Mike Marciniszyn wrote:
+> On Thu, May 07, 2026 at 09:20:53AM +0200, Paolo Abeni wrote:
+> > On 5/7/26 3:58 AM, Jakub Kicinski wrote:
+> > > On Mon,  4 May 2026 09:58:12 -0400 mike.marciniszyn@gmail.com wrote:
+> > >> From: "Mike Marciniszyn (Meta)" <mike.marciniszyn@gmail.com>
+> > >>
+> > >> The DW IP has two distinct PCS address ranges cooresponding
+> > >> to the C45 PCS registers.
+> > >>
+> > >> The shim translates the PCS addr/regno into specific CSR writes
+> > >> into one of those two zero-relative.
+> > >>
+> > >> This patch fixes a one off in the test that could allow an invalid
+> > >> CSR write if an addr == 2 was called.
+> > >>
+> > >> This patch contains a fix for addr validation in fbnic_mdio_write_pcs()
+> > >> to only return actual CSR reads for addr 0 and 1.
+> > >>
+> > >> There are as of yet, no real impact for the bug as no PCS writes are
+> > >> not yet present.
+> > >
+> > > Hi Paolo! Was there a reason / do you recall why this was not applied?
+> > > (I dropped it from patchwork now. If the omission was accidental it has
+> > > to be reposted)
+> >
+> > Darn, limited capacity here plus re-submission glitch: v3 had a slightly
+> > different cover title (due to typo) WRT v2 so PW did not mark v2 as
+> > superseded. I process patches via PW in sequence, when I reached v2 I
+> > considered the sashiko comment not blocking and I apply it. I was unable
+> > to reach v3 until now.
+> >
+> > TL;DR: @Mike: please re-submit 1/4 and double check there are not other
+> > differences between v2 and v3 - otherwise more patches needed. Also
+> > please ensure you keep the series title consistent among revision, or at
+> > least manually remove old revisions from PW upon resubmission.
+> >
+> > Thanks,
+> >
+> > Paolo
+> >
 >
->>> I'm reporting a regression on RK3399 (stmmac) observed in v6.18.24.
->>> When a network cable is connected during boot, the DMA reset
->>> occasionally fails with the error message: "Failed to reset the dma".
->>>
->>> This appears to be a timing issue related to the EEE RX clock-stop
->>> logic. Based on my investigation with the RTL8211E PHY, I monitored
->>> the PHY register PS1R (MMD device 3, address 0x01) and observed a
->>> value of 0x0f40. This indicates that the PHY is in LPI mode and the RX
->>> clock may have already stopped.
->>>
->>> While commit dd557266cf5f ("net: stmmac: block PHY RXC clock-stop")
->>
->> Just wondering: have you tried if mainline (e.g. 7.1-rc1) is still
->> affected? This is something that is always a good advisable (some people
->> would call it required). In this case even more, as it since a while
->> contains a fix for the change you mentioned, that wasn't backported:
->> c171e679ee66d7 ("net: stmmac: Disable EEE RX clock stop when VLAN is
->> enabled"). But this is not my area of expertise (and in different area
->> of the code), so that fix might be unrelated to your issue.
-> 
-> Thanks for the pointer.
-> As you suggested, I have tested the mainline and confirmed that the
-> issue is not present in v7.1-rc2, nor as early as v6.19-rc1. However,
-> I verified that the issue persists in the latest stable v6.18.26.
-> I performed a git bisect and the result pointed exactly to the commit
-> you mentioned: c171e679ee66d7 ("net: stmmac: Disable EEE RX clock stop
-> when VLAN is enabled").
+> I double checked v2 -> v3 for the other patches are ok.
+>
+> I'm just now resending 1/4 of the series.  I reworded the commit message
+> to fix the AI review comment.
+>
+> Mike
 
-Great! Could you please cherry-pick c171e679ee66d7 to 6.18.y and see if
-that fixes things? It sounds like it should.
+The patch isn't showing up on either lore or patchwork.
 
-@Ovidiu Panait: c171e679ee66d7 is a commit of yours. If Jensen confirms
-that cherry-picking fixed the problem, I'd say we ask Greg to pick it up
-for 6.18.y -- unless you see any reasons why that might be a bad idea.
+I may need to bump the rev?
 
-> Additionally, I tested the case where CONFIG_VLAN_8021Q is not set,
-> and the DMA reset issue occurs again.
-
-I'd say that is likely best discussed in a new thread you might want to
-start. Also wondering if it was like that earlier. Or iow: if that is a
-regression or not.
-
-Ciao, Thorsten
-
->>> ensures the clock is running before the DMA reset, my tests suggest
->>> that the phylink_rx_clk_stop_block() call might not provide a
->>> sufficiently stable RX clock in time for the immediate DMA reset that
->>> follows.
->>>
->>> Since stmmac already sets mac_requires_rxc = true, I modified
->>> phylink_bringup_phy() to honor this flag. This avoids toggling the
->>> PHY's clk_stop_enable during the initialization sequence, ensuring the
->>> RX clock remains active and stable throughout.
->>> With the change below, I achieved 200/200 successful reboots with the
->>> cable connected (previously ~50% failure rate).
->>>
->>> --- a/drivers/net/phy/phylink.c
->>> +++ b/drivers/net/phy/phylink.c
->>> @@ -2171,7 +2171,7 @@ static int phylink_bringup_phy(struct phylink
->>> *pl, struct phy_device *phy,
->>>      /* Allow the MAC to stop its clock if the PHY has the capability */
->>>      pl->mac_tx_clk_stop = phy_eee_tx_clock_stop_capable(phy) > 0;
->>>
->>> -    if (pl->mac_supports_eee_ops) {
->>> +    if (pl->mac_supports_eee_ops && !pl->config->mac_requires_rxc) {
->>>          /* Explicitly configure whether the PHY is allowed to stop it's
->>>           * receive clock.
->>>           */
->>>
->>> Any feedback/testing on this would be appreciated.
->>>
->>> Best regards,
->>> Jensen Huang
->>>
->>
-
+Mike
