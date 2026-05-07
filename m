@@ -1,148 +1,205 @@
-Received: from CHN02-SH0-obe.outbound.protection.partner.outlook.cn (mail-sh0chn02on2128.outbound.protection.partner.outlook.cn [139.219.146.128])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5F035F8C5;
-	Thu,  7 May 2026 12:17:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.146.128
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778156255; cv=fail; b=u3p7CyHShbkWBscx0RE4REU4MLn2MTdjVec3Sa2fc9x/hUd/7couPRGSHYvOdotzh3sJr3A+qmlHds5r0zhVK9KwfaZS44+2HTf0m4vxO0e7AaupyJTJoUPxmTSF6JpAOnPPrEd7r9rdMqQreKD3xDtw+WGVjZQAMX+hJtmeZWw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778156255; c=relaxed/simple;
-	bh=WDfi3GrItk+nIdBwGgl5JNfzQQoCO4uajg+G2yluUMo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=RjEPv9qK4lbYpmVf3wT+2s2/zRjtR4Lrt7cDilVE1OeSsGN4TbmNTr9d6+RmE1vIY9f0Hwybms0zqJ0D6H7aIzKlYeJxRS4rJD4/eBSSQaLlyV148E1tXVqd8d1LZg6emluh6PmhS5FcqdRrM/IoIkM59V6Mu7XIbrtdj4YkJbg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.146.128
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=PZZWyrCgmY9RgU7bhpds/JhE8tGp8QvQ7GYnTJi8RMhHN+qfQfZWO5dR7DtiaYu9Aiag/WZGX72w1qts8vS7KlC/LuOuJxHdgAeWWT+MALWReY6kfV3OUn0ZvmVJGZ7dlD4xOKOBWYQ6QW+azQI6fCB6rDGnRVzw4ypvxBdQbsrGd4/T7bgAEj6J7bi+3pRxnxk6F9DroBDYc3bRf+qFjFpaCIpNXZwKnEvN+tu1XrXaZn+R6wbHoAU0ApQerBNbKTXIm76Iy4aL+5Z20xYo8ufDmA33CStCoY14URvFgsVrXd8WkDvwAudlOivNekZsYOKRMz/VStXuGQcjMbKSlw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3wve0yqKAnwC7Y0OQAQZUCEndcyLS/ujIG5e1M+Qtoc=;
- b=c3tSETA0al32blsv8hQ2UUiFWwJWJDs2zatVx97Pv/sbDHbHIlDnfX3QbLcUC8dT79r15fFG6SIXWtiAggeRGiyUOMBnQK2280Su1PLqs3CcR6YDInIURDqxBpppYazX5hE7bM4vhs7u5xKgbS48Khd2boAZXRWQEzO/IzbgDhjj5hogirJcTBgLM5RTDrC13OFr0yzyKN4cHs+Tmcsv4FpLwhYpSKHQWyhDTerya8fFIY++YrVkiIA/zBM/t58ZvKT82eNQ42q3m/TbeTAzb+CDTWOv284ANxciR+NOL+tJ30mgo1roYJbv1r+tIdika5qBsa2f7vde1xSnD2ryOQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=starfivetech.com; dmarc=pass action=none
- header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=starfivetech.com;
-Received: from BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c211:18::12) by BJXPR01MB0870.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c211:14::13) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.17; Thu, 7 May
- 2026 09:41:30 +0000
-Received: from BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn
- ([fe80::e2de:92aa:4c1c:a829]) by
- BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn ([fe80::e2de:92aa:4c1c:a829%6])
- with mapi id 15.20.9846.025; Thu, 7 May 2026 09:41:30 +0000
-From: Minda Chen <minda.chen@starfivetech.com>
-To: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Emil Renner Berthing <emil.renner.berthing@canonical.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor@kernel.org>,
-	netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	devicetree@vger.kernel.org,
-	Minda Chen <minda.chen@starfivetech.com>
-Subject: [net-next v3 5/5] net: stmmac: starfive: Add STMMAC_FLAG_SPH_DISABLE flag
-Date: Thu,  7 May 2026 17:41:15 +0800
-Message-Id: <20260507094115.8355-6-minda.chen@starfivetech.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20260507094115.8355-1-minda.chen@starfivetech.com>
-References: <20260507094115.8355-1-minda.chen@starfivetech.com>
-Content-Type: text/plain
-X-ClientProxiedBy: SHXPR01CA0013.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c311:1b::22) To BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c211:18::12)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5986E39EF12
+	for <netdev@vger.kernel.org>; Thu,  7 May 2026 12:21:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778156466; cv=none; b=VwD974MfdwNTYlC/sEhxZTNsxXKNQ66QJGiUN/djQDB6lDm+/mO0yDF+msHnpStUz+WG8/AytXvvRNxxzyISBA+E+mN4fi7gEclDGd+ORD5p7ZlShUIzdtuPD59ETlXfrJcJEvZPGsh0Kn9R3QggKKrWaqhT5ogk/AG6gsz0YlY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778156466; c=relaxed/simple;
+	bh=LxG5akUKcO5BBA86ktVgP/4+ojKCeM1Tc78y1CrcuTY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Fx8GEkssLO/PgzSkQg994decy9MYvc08DBuvnfTlBkexAuuxgEiAns1ft7ip/PpvihKWqSNJ/1yHdefxB8e0Hyb/qlnsokP+ErZG3GmC1Uz3ah4bRoGEvpj9BVNpt0VtLXm2Ts8WVulByu5+h6FhPBTvwSjTblH6IddY83EsZWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b=zdjslWwz; arc=none smtp.client-ip=209.85.222.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b="zdjslWwz"
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-8ee7ffd738dso214368285a.1
+        for <netdev@vger.kernel.org>; Thu, 07 May 2026 05:21:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=riscstar-com.20251104.gappssmtp.com; s=20251104; t=1778156461; x=1778761261; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jhz8KoocXZc3ctaarL47fHWQ++aFEBdyNLqthbCRIEs=;
+        b=zdjslWwzdcCgnr4aPFXk+/sg8nEfRfdHNLBL5BCbwUKq8v+mVgy+rE1YY84EOGp36J
+         RxhqNzd48l/nmbnnHztARhUUjxNoHdgnYxZeskwF5pHC37Wce5L+7uKdeARW3ApIHFgv
+         5nPvyPOJ1kK7kkvWPN+Pm8IawZpLD3GaQOYlar7Xl3SXhyD9/7DltL8qllvQRx2TSAI4
+         19BsvPDlMp+vZ4Lip+C9cJ+Cx/fqNtgEgYiVYtU0SOplxBj9WfBNZU0y6ifnlSWosrBa
+         6fWZbxatVadjVH5XCoW6F1Ym5yeYRrsjO9mAIS7eH4+o3azRniE1SjTMm8iklncBdH+L
+         b59w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778156461; x=1778761261;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jhz8KoocXZc3ctaarL47fHWQ++aFEBdyNLqthbCRIEs=;
+        b=U/IXqzHCP/r9pNtsNPSDp6B95KgXzVNw/NnuEI1jfIBWrBKlh/A6i/aUNlfLMxHdGJ
+         IADUU6TaGS7+prdoF324ioojU9P3ZEITJGUirQRtRNXoSuLYiqqxex2yRTnv/eHZBDrQ
+         /nenVwAHkVqJpWk3/7XEBg0RuVxU1S68VbKN0SClpzT2SQlL/cJq3ZCElLStSk4KUA66
+         cdx5WwQvgCJgzw6Paq68E+VwSJ4VGdl7LofPlFbIBqs92cFSAygD3PvkJ8eEHrhu4/QC
+         c3jv8IZpgFagRXtWQfFg9paAGQz1F807iZFA3j/QR8fvfkfqsaQYY6pnYwowoAZIhuz0
+         Doow==
+X-Forwarded-Encrypted: i=1; AFNElJ/GVXnWerULAQzz5dUBHxhLeDc7PLFKkb2zJkZhVowmxArk0OfN2FOHgf38XPmQDzZiVkZJFxw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxM4kyWJWxbi7zTqYQWtSJNuDGmS1+flD62aqeC2iHfL2lF1g4x
+	ynylQxB9gaXvI1u6ZAuQ6fbIcGx1flGBQR5TuNdt7puYpMjajuspws6Sy04ws46ezYg=
+X-Gm-Gg: AeBDieuJA3oueEwBAQZabUkrUyqCBEIUIYxmuugWlj87GM7GMUorL2cNyGzF6SSq0t+
+	+m9+wFELrumFMzm55Bq/N9YoIRwWJ/6+B4a2JiskEVRR/bbWZuvsSfYI9I/bt4XqFvtsbT/gbIT
+	L8RpG/vV/ABBOK9Iw0qUc36qHE2PpOw99AodZA6RQzy86srdkDi1FKIP+pCcH89jOyV3/KICy1u
+	8tJce3VFdH6IZVAnKhrPahjEQ9VtgRrvJhi/Sw+cQ5ljjQr7w1LI28dOAmlChWdBE0D4dZscZ9+
+	4B6L6JEmb/hCIYkrSgCoUvebQdRbZ4vx9Bn/DxFWjeH50ooPBhQaxktGfc4zRv93Qjx+ztZxF+4
+	hr3SJVLfIK6dW8QC5BhFy35GpGF5t/gOynou5D+QWMichTIfp8Yj4aIBNdlksYYPOVJ+k/l/Plp
+	cgPuzM2uFrMy59ub5PJz/e+ednsStmzwGlL8HWNJIEKpP26sSU0mQ2V107yocmRuqJ7tHVPwr1t
+	Q==
+X-Received: by 2002:a05:620a:469f:b0:8cf:dd93:aca5 with SMTP id af79cd13be357-90652c64f39mr328497885a.34.1778156461028;
+        Thu, 07 May 2026 05:21:01 -0700 (PDT)
+Received: from [172.22.22.28] (c-75-72-117-212.hsd1.mn.comcast.net. [75.72.117.212])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b53c1dc62csm226235066d6.23.2026.05.07.05.20.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 07 May 2026 05:21:00 -0700 (PDT)
+Message-ID: <cb788638-7cb0-469e-9c38-13452103f7c4@riscstar.com>
+Date: Thu, 7 May 2026 07:20:58 -0500
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BJXPR01MB0855:EE_|BJXPR01MB0870:EE_
-X-MS-Office365-Filtering-Correlation-Id: b52ea212-2d94-493d-4f28-08deac1cd142
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|52116014|921020|38350700014|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	sx9YUrgXBSUhW2O/oXemz8UvNchd5bh0HXNK6qGJMvmfG/tphxa4gHVIrtcENgK0514JCjp+i0OthOrmZ18D+7XAlWnTP9lYTc/IW77KnzRXvTIE/NrzVSCRyzqC6ty3ZDw/03hFm6gjk4JilRyzp2uf/cAZKPg5l54CuQC44q3z5YuHJprrU6lqrlH/g36eq97Vass7yzCMLFzhCq705eHIbAZKhrL5UPu0RthUG87950PqY2r9FRC28eV9+kwNW71PpaV3cRPJgVUgLQX53m+Ulf/D/DFXF0hm8pnDgofCCblJxGfKX1f76MhZ/jM7TVnDek5eIMPobZ7EdKmftf0zYDAMY+ofLtHWv8zNw27PmB6c+PpMdKh9N8UxJCKkifVgYXkbu9jdJUlLOu22Y5WJX3/Lxnvxw4TjVZRZQ60/lpgVm9zm3wLI/RsGpgeSuwZR2AFigXRoc/bxEvwJ99VJTWhdIB8vfCk+bxMwI/4UAa8qTM4oNvrl1yqqNbwZAKWusvbq9BmxF+aPZAXoTlZl+6K2177JalpOUiJArk4iZ9I2OXKIDKu246TXe5IJKlIgJ7YRWtc/QdG7G2FROQ==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(52116014)(921020)(38350700014)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ROJcXeR1IvyHQurkKLZFYzGJGIi/SpX9BO4CWeidnJFnIs1PrFu8zVty96gu?=
- =?us-ascii?Q?L2bLeJlDRucNXBur2fyHyV+tCAjsCAZMWG+HmnmvEcNAhcHBXlBJESh87iJT?=
- =?us-ascii?Q?ZsnNMp0Ietk3lOLN3akPCiSd6DlH4LsP/jt6GMc07k2M88Unh0MFMOdGZ2IS?=
- =?us-ascii?Q?NbsNAMKfOZpyAJ7BuH80Ql7zTzPl6pjWX6M1iAbtFwb2SLbq1o8yKVzLxeOJ?=
- =?us-ascii?Q?3IGPz2N+GJYYoQS4PCKC5w/Ai//MP0KBWFpNlTyJ9lUnPB2PVgVqdP2trKBH?=
- =?us-ascii?Q?qK5MwvwWW8g9A/VadgOprl3p/EqGF0FwW/Y87VEoVHUPxqvXBSbCxv8Yf+CN?=
- =?us-ascii?Q?eWbvRjhjWjQJLIeQDOCAJ2xB+KzaZxUsxgdk2MUYkBnxRw4L8RcxE8IWSUtA?=
- =?us-ascii?Q?2NxAKuZyavYQLb+lfrSILl5Q6slZryQ6b8jMYTYEy3cC/Uv+S8HIvmhH3UBz?=
- =?us-ascii?Q?9RoUFyLm6Gk4mv14PKIQR3xfZrYS46c7nhC4w9K4RhbGwB+rIjq+uVGQSXhD?=
- =?us-ascii?Q?w1r4pPqrm18ytr7XSGCu/dKOHddSK8/knWrepcxfE/NdE8wwc7011Nb4yVss?=
- =?us-ascii?Q?cXYHA5ZmAvjUcS6lVez8R6oglj4ZwBNoYksSlxCQr8EbpRAjFTrA525goM/s?=
- =?us-ascii?Q?xueswUsTY4Zkce0veBZQVNlsTCq14rIfgVsUwJoN0i8QkoVxIIrgfZAi6V1c?=
- =?us-ascii?Q?xB3PYcZTcISbMx2jHbtkM71DFJINMs3UjAq83+m/lrJSMh3xESF4ZffKbucH?=
- =?us-ascii?Q?MW8eM0KIQilbPp6fob+u+sdNE5eg++ma7xxveVLMF/nonPzZDwAtqA5fxe29?=
- =?us-ascii?Q?a4nyOgFKq8o9f+amkHztvg4s9470/dpMp2pz1EtBmRO+hqq8MK4TFHExmxoC?=
- =?us-ascii?Q?RLKL1KSf8ygUzIgpUo40i1OD0W7Nx8UQ/PziU9gCaxKNR0f68crcxSbx9COt?=
- =?us-ascii?Q?K/wOl5CG07jIoIoWJqOURWOaFQR6j9v13QLFEGCSGhMZSO4IO4HCcxTa/Jvd?=
- =?us-ascii?Q?MPmN/wTm4yEnhtscfVwW5BJiGY4Ue8itX7zQSRuxQxiG4RKxZK7d9Bpm9qnP?=
- =?us-ascii?Q?G5IvLPNsxBLWBZmYguoWHE0h+WQKG0Ua3oc0E8zB9wSitQlhn/av16wAmzKt?=
- =?us-ascii?Q?ozXP1vGARGSwGwQRH6eRD4GW3lKgx0elU3fdcjW3GtP2qGqGh54Vvg6gPOOG?=
- =?us-ascii?Q?zwHdfUhuXtGSz+mdlXTLL13uxKvp6sL/MMgjQLckrZQdgslKhgXv6UcCOgfY?=
- =?us-ascii?Q?VKtxkAzrUxKIP/jrZndnuAgNcRP75WA4CC9Kl8TkibI/ELdZBP8dXP/X9Mat?=
- =?us-ascii?Q?KVdHh1KEIDYRUPv5CK/WOPAaexjhpRmwpVhzOOe0HoBZhVhuR9GvBNf2JKzf?=
- =?us-ascii?Q?3lugfX6X7kGbOxVbIr/Hob0jh/wBc0VPCQ+l9OqPiMJCo7h0OeT6UXWvoc1Z?=
- =?us-ascii?Q?hPq6Jod4mX3DYCc+CLpbs6Xf4Vu1Uj3VemeTrVwxBRNQpVmxg1pcLSQdXrbL?=
- =?us-ascii?Q?WkhHzYWJMTh5KiFVyXJck7RT/cWPxFnswLWkrHJFfFTPrhTIQ3ppOxQqmFHM?=
- =?us-ascii?Q?78LyKiuD3qDAg35nw4mhbSSAt7nx3pc4Bm7V7D8HA2CsAyyO31RWI00NGJ6N?=
- =?us-ascii?Q?g02FYJcBLU8q5rTcgUgEd16uJzRhksjFg3jRBdac791hNVQMQMue1izR5lFb?=
- =?us-ascii?Q?gep9w2Q/XWEKKyyEezNb6X3F0Xw/AwAHuS3gK4uw8TPLQb7/qB9lvKRrZH32?=
- =?us-ascii?Q?/0QPw3wG7TL2TaySp9GPJdKM1mI7aco=3D?=
-X-OriginatorOrg: starfivetech.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b52ea212-2d94-493d-4f28-08deac1cd142
-X-MS-Exchange-CrossTenant-AuthSource: BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2026 09:41:30.4622
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: J2D6wxp9bECn8Y2C/yl85Zw7zF9DfU0/JAX8nJKF9F/izHJUHedXcb+XXe5/IxsAFvcUlrsqvN+rC1GKEZB5lOgwaYaDGlvq7oI10a/3oPk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BJXPR01MB0870
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 09/12] gpio: tc956x: add TC956x/QPS615 support
+To: Linus Walleij <linusw@kernel.org>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, maxime.chevallier@bootlin.com,
+ andersson@kernel.org, konradybcio@kernel.org, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, brgl@kernel.org, arnd@arndb.de,
+ gregkh@linuxfoundation.org, daniel@riscstar.com, wens@kernel.org,
+ netdev@vger.kernel.org, bpf@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+References: <20260501155421.3329862-1-elder@riscstar.com>
+ <20260501155421.3329862-10-elder@riscstar.com>
+ <CAD++jLkm4qn9hxQ9HjjnTWjvAiS+A+x1ATy7wamnm_YSP_qPEg@mail.gmail.com>
+Content-Language: en-US
+From: Alex Elder <elder@riscstar.com>
+In-Reply-To: <CAD++jLkm4qn9hxQ9HjjnTWjvAiS+A+x1ATy7wamnm_YSP_qPEg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Add default disable split header flag in all the starfive
-soc.
+On 5/7/26 7:15 AM, Linus Walleij wrote:
+> Hi Alex,
+> 
+> thanks for your patch!
 
-Signed-off-by: Minda Chen <minda.chen@starfivetech.com>
----
- drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thank you for your excellent feedback.  I will plan to use
+regmap-gpio (already suggested strongly by Andrew Lunn) and
+that will be included in the next version of the series.
+Once I've done this and tried your other patch I'll provide
+a Tested-by for it.
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c
-index bd86a39b79f0..935c4fc4c29f 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c
-@@ -147,7 +147,7 @@ static int starfive_dwmac_probe(struct platform_device *pdev)
- 			return err;
- 	}
- 
--	plat_dat->flags |= STMMAC_FLAG_EN_TX_LPI_CLK_PHY_CAP;
-+	plat_dat->flags |= (STMMAC_FLAG_EN_TX_LPI_CLK_PHY_CAP | STMMAC_FLAG_SPH_DISABLE);
- 	plat_dat->dma_cfg->dche = true;
- 
- 	return stmmac_dvr_probe(&pdev->dev, plat_dat, &stmmac_res);
--- 
-2.17.1
+					-Alex
+
+
+> 
+> On Fri, May 1, 2026 at 5:55 PM Alex Elder <elder@riscstar.com> wrote:
+> 
+>> Toshiba TC956x is an Ethernet-AVB/TSN bridge and is essentially
+>> a small and highly-specialized SoC.  TC956x includes a GPIO block that
+>> can be accessed, alongside several other peripherals, via two PCIe
+>> endpoint functions.  The PCIe function driver creates an auxiliary
+>> device for the GPIO block, and that device gets bound to this auxiliary
+>> device driver.
+>>
+>> Co-developed-by: Daniel Thompson <daniel@riscstar.com>
+>> Signed-off-by: Daniel Thompson <daniel@riscstar.com>
+>> Signed-off-by: Alex Elder <elder@riscstar.com>
+> (...)
+> 
+>> +config GPIO_TC956X
+>> +       tristate "Toshiba TC956X GPIO support"
+>> +       depends on TOSHIBA_TC956X_PCI
+>> +       default m if TOSHIBA_TC956X_PCI
+> 
+> I think this driver can
+> 
+> select GPIO_REGMAP
+> 
+>> +#include <linux/auxiliary_bus.h>
+>> +#include <linux/dev_printk.h>
+>> +#include <linux/gpio/driver.h>
+>> +#include <linux/module.h>
+>> +#include <linux/platform_device.h>
+>> +#include <linux/regmap.h>
+> 
+> #include <linux/gpio/regmap.h>
+> 
+>> +#define TC956X_GPIO_COUNT      37      /* Number of GPIOs (20-21 reserved) */
+> 
+> I would just do 64 and flag > 37 as invalid.
+> 
+>> +/*
+>> + * struct tc956x_gpio - Information related to the embedded GPIO controller
+>> + * @chip:              GPIO chip structure
+>> + * @regmap:            MMIO register map for SFR GPIO region access
+>> + * @input_only:                Bitmap indicating which GPIOs are input-only
+>> + */
+>> +struct tc956x_gpio {
+>> +       struct gpio_chip chip;
+>> +       struct regmap *regmap;
+>> +       DECLARE_BITMAP(input_only, TC956X_GPIO_COUNT);
+> 
+>> +static int tc956x_gpio_get_direction(struct gpio_chip *gc, unsigned int offset)
+>> +static int tc956x_gpio_direction_input(struct gpio_chip *gc,
+>> +                                      unsigned int offset)
+>> +static int tc956x_gpio_direction_output(struct gpio_chip *gc,
+>> +                                       unsigned int offset, int value)
+>> +static int tc956x_gpio_get(struct gpio_chip *gc, unsigned int offset)
+>> +static int tc956x_gpio_set(struct gpio_chip *gc, unsigned int offset, int value)
+> 
+> REGMAP_GPIO can handle all of this for you with the right
+> parameterization, study the drivers using this already such as
+> those that appear when you type
+> git grep 'gpio\/regmap\.h'
+> 
+> 
+>> +static int tc956x_gpio_init_valid_mask(struct gpio_chip *gc,
+>> +                                      unsigned long *valid_mask,
+>> +                                      unsigned int ngpios)
+>> +{
+>> +       /*
+>> +        * GPIOs 2 and 3 are used by the PCI power control driver, and
+>> +        * we don't allow them to be used.  GPIOs 20 and 21 are reserved
+>> +        * (and not usable).
+>> +        */
+>> +       bitmap_fill(valid_mask, ngpios);
+>> +       bitmap_clear(valid_mask, 2, 2);
+>> +       bitmap_clear(valid_mask, 20, 2);
+>> +
+>> +       return 0;
+>> +}
+> 
+> That's good use of this facility.
+> 
+> I would say the chip has 64 lines and just
+> bitmap_clear(valid_mask, 37, 64 - 37);
+> but that's your pick. This probably works too.
+> 
+>> +       /* Mark GPIOs 22, 23, 24, 27, 28, 31, and 34 as input only */
+>> +       bitmap_set(gpio->input_only, 22, 3);
+>> +       bitmap_set(gpio->input_only, 27, 2);
+>> +       set_bit(31, gpio->input_only);
+>> +       set_bit(34, gpio->input_only);
+> 
+> regmap-gpio can't currently handle selective input-only or
+> output-only lines, but we can
+> very easily make it.
+> 
+> So I sent a patch for that (now in your inbox).
+> 
+> Check if this fixed_direction_sparse bitmap will do the trick
+> for you and provide Tested-by if it does, thanks!
+> 
+> Yours,
+> Linus Walleij
 
