@@ -1,117 +1,133 @@
-Received: from oak.phenome.org (oak.phenome.org [193.110.157.52])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D67314B72
-	for <netdev@vger.kernel.org>; Fri,  8 May 2026 03:44:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.110.157.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F028635D;
+	Fri,  8 May 2026 03:48:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778211872; cv=none; b=Out9oRTsn+Og84t3HJESrxZOH5U7ItHaQxI6LCdqIN7cuBAi7BXbztxut2Nr8ciqepdULBhfPO1M5rjVX9Vd5MDeB9YEAN4HLOZ2psv//MD0rl2gC0vcwB43aGD41r2gYNXWac8U+2ZJyG9cyLJAyl+KkfCG7l3hFrfq5iWAsCo=
+	t=1778212118; cv=none; b=UBLC+W89ReG/CX9oCRpNDut0VqJflwAZirVU3+PHf+eARx8mDL0sQmgBBQ80Rj+jf2e60CDE2CGJwLQV1D3nGx869jIeIrvPzCrI/M4SjALs35bCCUbzUWQ60+0mfq26rdSbCk5m8om8NAj9TYEm8uHwoYJbXRGqi2AaK8L8mjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778211872; c=relaxed/simple;
-	bh=t1BGEajc5T/kBapN6HEi/t1JscU6arGyElBAiSR/eng=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ooVgj5wEtAmqJae7LV7mM72pxYyzC6HxDSKU58sBIlkzsjLhsKrvg/67McGf4+fgYERGy24YdRg3aLyLagzVSpRU8MQBTSOKvkoR2BNTDHGMPJGUv9LrPp90HxdwNpPj24z0Wi2V10GSGYykdOuEBqB5kHFAqdoQrKXwlsfPp0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=phenome.org; spf=pass smtp.mailfrom=phenome.org; dkim=pass (2048-bit key) header.d=phenome.org header.i=@phenome.org header.b=CKbff5eJ; arc=none smtp.client-ip=193.110.157.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=phenome.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phenome.org
+	s=arc-20240116; t=1778212118; c=relaxed/simple;
+	bh=9sJ6IMJ5LymCVMvZk1BOFaSeUfznGdj4PM9e7IORzXI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=F7NHfvynempVK4FPjR6lhu7gS5h5/R0fJ8N5lKDoXmKALWkuYQR9JoKJQUDQlZyJ5dKFfv/2ks6Jc6AFq0/W9lPJChUbPsJ6SKuqh8yu7oGdXOVW1yMpESiBGOhnG5QlGRuOFxuJV184DorYl8/ja5+ZP2vzHB2cujkuWIzd31o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BstbNkEo; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=phenome.org header.i=@phenome.org header.b="CKbff5eJ"
-Authentication-Results: oak.phenome.org (amavisd); dkim=pass (2048-bit key)
- reason="pass (just generated, assumed good)" header.d=phenome.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=phenome.org; h=
-	in-reply-to:content-disposition:content-type:content-type
-	:mime-version:references:message-id:subject:subject:from:from
-	:date:date:received; s=oak1; t=1778211867; x=1779075868; bh=t1BG
-	Eajc5T/kBapN6HEi/t1JscU6arGyElBAiSR/eng=; b=CKbff5eJYf0cJweYMs55
-	u5n/6i1aMmts9h60L3t/iH22fX7FfEhQ5zVRjSZVgEVQaAV2eVlGZX803fR/gG5Q
-	g6kupaIQZDw5fkLsgwqYMyMWv7fpICNAQBXKmeAWccG5nIIw6moMe92v3VlMqYnw
-	v+8LOHPgA2ojYVdZuVlYH5TRlHf43Bb5FNbbuOBM/kdNd9uTADt7Y4ADn1bGffUI
-	vhv+HIcz6K4n8zON7s3QcSZwge+ngPCT33VQnVBtK9PnUbmuQ+x8d2u2oXzYyWyS
-	qIK1dzqOz5DGzYsCNpcROt4PeZscoYQV6kDlk2BeBa2xcVrIaWblM0sTY2MJmAcW
-	1Q==
-X-Virus-Scanned: amavisd at oak.phenome.org
-Received: by oak.phenome.org (Postfix);
-	Fri, 08 May 2026 05:44:26 +0200 (CEST)
-Date: Fri, 8 May 2026 05:44:24 +0200
-From: Antony Antony <antony@phenome.org>
-To: Sabrina Dubroca <sd@queasysnail.net>
-Cc: Antony Antony <antony@phenome.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	netdev@vger.kernel.org, devel@linux-ipsec.org
-Subject: Re: [PATCH ipsec-next] xfrm: Use regular error handling instead of
- BUG_ON() in the netlink API.
-Message-ID: <af1cGISaaBmQQfqJ@Antony2201.local>
-References: <aftnl6d59WUM_Dfm@secunet.com>
- <afwhdRPx-Mko28yM@Antony2201.local>
- <afxJOGtMkRK5FrvG@krikkit>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BstbNkEo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778212117; x=1809748117;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=9sJ6IMJ5LymCVMvZk1BOFaSeUfznGdj4PM9e7IORzXI=;
+  b=BstbNkEol6PKFvwo4roml50on75yx8RovZSbl3bPqXdl3VkNOdu2RWvt
+   s+BTp9QBZGlj/4Z+dBIvr4oElmqkv5hKXCNgKU0iW2YNDwzAQ379KN94G
+   Xnwt8iK4NZTIfQHc9txC8IAXLHsEgw26gWcesI1PvAoFzwjPNXH7t5W52
+   HglkDQHjnjBtzFN+uCPT1ko/tLWacwSBM6SeAI0mY852RRXu2GDyXJ8Lf
+   qL7JZXD1b+H/DRvtNdmVMZgaoSTId0mm8ofxMZjXXRco8zZ0KFY2pOnVM
+   vrbfOMnBwztDONQ2YuPTG+yeNf+AVOPt6A95y6sXR+LFhrT3yzboL6BWN
+   w==;
+X-CSE-ConnectionGUID: cfxDBxSIT6eTumH+R4z6pA==
+X-CSE-MsgGUID: vylcYzYGS9iT+utoGioAig==
+X-IronPort-AV: E=McAfee;i="6800,10657,11779"; a="90278832"
+X-IronPort-AV: E=Sophos;i="6.23,222,1770624000"; 
+   d="scan'208";a="90278832"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 20:48:36 -0700
+X-CSE-ConnectionGUID: 3/Z9CBXmTRSYCygsnAIrvw==
+X-CSE-MsgGUID: JiV19TWjR6mRUIHunpGUFg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,222,1770624000"; 
+   d="scan'208";a="236767290"
+Received: from unknown (HELO localhost.png.intel.com) ([10.107.255.61])
+  by orviesa009.jf.intel.com with ESMTP; 07 May 2026 20:48:32 -0700
+From: KhaiWenTan <khai.wen.tan@linux.intel.com>
+To: anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	faizal.abdul.rahim@intel.com,
+	hong.aun.looi@intel.com,
+	hector.blanco.alcaine@intel.com,
+	khai.wen.tan@intel.com,
+	Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
+Subject: [PATCH iwl-next v5 0/4] igc: add support for forcing link speed without autonegotiation
+Date: Fri,  8 May 2026 05:47:02 +0800
+Message-ID: <20260507214706.309984-1-khai.wen.tan@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <afxJOGtMkRK5FrvG@krikkit>
+Content-Transfer-Encoding: 8bit
 
-On Thu, May 07, 2026 at 10:11:36AM +0200, Sabrina Dubroca via Devel wrote:
-> 2026-05-07, 06:21:57 +0100, Antony Antony wrote:
-> > wHi Steffen,
-> > 
-> > Thanks Steffen, I was hit by this in the new XFRM_MIGRATE_STATE I am adding.
-> > I am glad to see we are addressing this.
-> > 
-> > On Wed, May 06, 2026 at 06:08:55PM +0200, Steffen Klassert via Devel wrote:
-> > > The xfrm netlink API uses BUG_ON() on failures since it exists.
-> > > However all these error are uncritical and can be handled
-> > > with regular error handling. This fixes machine crashes
-> > > in situations where an emergency break is not needed.
-> > 
-> > While BUG_ON is an extreme measure for a recoverable netlink error, it does
-> > have diagnostic value: it leaves a stack trace. The patch trades
-> > a crash + stack trace for a silent error return, which loses observability.
-> > 
-> > Would you consider using WARN_ONCE instead of a bare if (err < 0)?
-> > 
-> > -     BUG_ON(err < 0);
-> > +     if (WARN_ONCE(err < 0, "xfrm: build_spdinfo failed: %d\n", err)) {
-> > +         kfree_skb(r_skb);
-> > +         return err;
-> > +     }
-> 
-> OTOH we already have a bunch of functions doing something similar
-> without using BUG_ON/WARN_ON, so at least with this patch it becomes
-> consistent.
-> 
-> xfrm_notify_userpolicy
-> xfrm_get_default
-> xfrm_get_ae
-> xfrm_exp_state_notify
-> xfrm_notify_sa_flush
-> xfrm_notify_sa
-> xfrm_notify_policy
-> xfrm_notify_policy_flush
-> 
-> 
-> (I'm looking into generic ways to avoid this split getsize/fill that
-> always becomes inconsistent in areas where new attributes are added
-> frequently, but nothing to share yet)
-> 
-> > Something like the above would preserve the "shouldn't happen" signal with a 
-> > stack trace on first occurrence, without panicking the machine.
-> > Or are there better signaling  styles in Kernel?
-> 
-> Maybe DEBUG_NET_WARN_ON_ONCE so that only developers see those messages.
+From: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
 
+This series adds support for forcing 10/100 Mb/s link speed via ethtool
+when autonegotiation is disabled on the igc driver.
 
-I would discourage DEBUG_NET_* here, because these situations are not often
-caught by testing or by developers. Typically IPsec builds disable debug 
-completely - and I would even speculate that is why it was BUG_ON in the 
-early days. If IPsec failed, halting was justified back then. While these 
-days it is less so.
+Changes in v5:
+- add removal justification to include copper context in commit
+  description for igc: remove unused autoneg_failed field (Paul)
+- check that cmd->base.duplex is either DUPLEX_HALF or DUPLEX_FULL
+  in igc_ethtool_set_link_ksettings() (Simon)
+- dynamically override hw->fc.current_mode to igc_fc_none during
+  link configuration instead of mutating requested_mode (Simon)
 
-I vote for something along the lines of WARN_*. That has a higher chance of gathering better diagnostics for developers.
+Changes in v4:
+- Validate that autoneg is AUTONEG_ENABLE or AUTONEG_DISABLE early
+  in igc_ethtool_set_link_ksettings() to avoid passing unexpected
+  values to igc_handle_autoneg_disabled(). (Simon Horman)
 
-Would other IKE userspace developers like to chime in?
+Changes in v3:
+- Modify condition from "if (duplex == DUPLEX_HALF)" to
+  "if (duplex != DUPLEX_FULL)". (Simon Horman)
 
--antony
+Changes in v2:
+- When forcing half-duplex, set hw->fc.requested_mode = igc_fc_none,
+  since half-duplex cannot support flow control per IEEE 802.3.
+  (Simon Horman)
+- Split the original single patch into three patches for clarity:
+  patches 1 and 2 are preparatory cleanups; patch 3 carries the
+  functional change.
+
+v4 at:
+https://patchwork.ozlabs.org/project/intel-wired-lan/cover/20260428060009.311393-1-khai.wen.tan@linux.intel.com/
+
+v3 at:
+https://patchwork.ozlabs.org/project/intel-wired-lan/cover/20260422155701.7420-1-khai.wen.tan@linux.intel.com/
+
+v2 at:
+https://patchwork.kernel.org/project/netdevbpf/patch/20260416015520.6090-4-khai.wen.tan@linux.intel.com/
+
+v1 at:
+https://patchwork.ozlabs.org/project/intel-wired-lan/patch/20260409072747.217836-1-khai.wen.tan@linux.intel.com/
+
+Faizal Rahim (4):
+  igc: remove unused autoneg_failed field
+  igc: move autoneg-enabled settings into igc_handle_autoneg_enabled()
+  igc: replace goto out with direct returns in
+    igc_config_fc_after_link_up()
+  igc: add support for forcing link speed without autonegotiation
+
+ drivers/net/ethernet/intel/igc/igc_base.c    |  35 +++-
+ drivers/net/ethernet/intel/igc/igc_defines.h |   9 +-
+ drivers/net/ethernet/intel/igc/igc_ethtool.c | 210 +++++++++++++------
+ drivers/net/ethernet/intel/igc/igc_hw.h      |  10 +-
+ drivers/net/ethernet/intel/igc/igc_mac.c     |  35 ++--
+ drivers/net/ethernet/intel/igc/igc_main.c    |   2 +-
+ drivers/net/ethernet/intel/igc/igc_phy.c     |  65 +++++-
+ drivers/net/ethernet/intel/igc/igc_phy.h     |   1 +
+ 8 files changed, 268 insertions(+), 99 deletions(-)
+
+--
+2.43.0
