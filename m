@@ -1,62 +1,65 @@
 Received: from mail-qk1-f201.google.com (mail-qk1-f201.google.com [209.85.222.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71CDB35DA6E
-	for <netdev@vger.kernel.org>; Thu,  7 May 2026 08:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F742392C57
+	for <netdev@vger.kernel.org>; Thu,  7 May 2026 08:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778143395; cv=none; b=B1G8+RWByPHhBCE2hK6rLPL3a+oq7JAYemafAT7Ia8xOhbTJ7u7YTvOe+rJeftkwTTk/5gwovq80b43k4SbKq9hurDysjZsWJZQQK6exgI5rXzn8kRHYv5x2D7iUYQly4vU3Jq/crHn85qz3GCidY7XOpfbZ+87Mh4F/Ksb4B54=
+	t=1778143400; cv=none; b=HEiVq5I2veVvES8WMm5AMjLvbMU95nPBffGwnRv84D8dx2LhxQdH5Nq/XFW0ohmlSgsl8KTY1SKNJ9rHAb8jMXTIcIguHreQdn7IpPxrWGGfVU5m8E4j3gEeo9QE4VC39E6SFrdcj11RQL1vSCtpzyqW+02yLyT9sUxDWt4xSdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778143395; c=relaxed/simple;
-	bh=qUqJNVV3Wb9QmpH0NEX/AWIjhGzeN8ylxAobTrJbbXY=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Mo9sSZ+LDLMvm9ySNhH0tgOglkyYiMfznOWrVAuIw6yOCeZCKEYS9HfUP2e19nrX6gyjSvPB3nS1oh4OB0Z1Knf2PMSbD2wGUsu3KXIrklMf56NrQvZmD6RThu6IqM1AgtfWbMA4M3PXqbzdSHv9rrl74U+QPIq7yHhKMVmLEes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vjUIttSA; arc=none smtp.client-ip=209.85.222.201
+	s=arc-20240116; t=1778143400; c=relaxed/simple;
+	bh=/YJ5ZlLhsjx3W/bnw+G9mm567SkVlYapVpFQo7O6bmg=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=W3aIR14qtkQIQGdTrOpVlg3Z0RqzPTpTnLj/025l4QCpAcvGM9P/Wu1LOZ7jaKWwmcLJX4gVeG19uzTuGuxdYaZSn1lvt2oyOM07ok+vruKS2yb+jK9+gTPS4pwFvWOHgwQvHxSig6ecz9T72/1oX7rMc/3KGhWLynzT1WfwXRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pxxr2ZIA; arc=none smtp.client-ip=209.85.222.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vjUIttSA"
-Received: by mail-qk1-f201.google.com with SMTP id af79cd13be357-8fcc3e2a3baso98214385a.0
-        for <netdev@vger.kernel.org>; Thu, 07 May 2026 01:43:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pxxr2ZIA"
+Received: by mail-qk1-f201.google.com with SMTP id af79cd13be357-9012b756f76so131707685a.0
+        for <netdev@vger.kernel.org>; Thu, 07 May 2026 01:43:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778143387; x=1778748187; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=IbLl5ruVbHNJWZ4th1uX1TQ2PaF1IxlXSxks7sS10hI=;
-        b=vjUIttSA37cEyKPTIQ+0ppXVAD/6r79samq+r5WI9/5f1PVsxPhZgUSdd3NxZFmCHQ
-         RWif8AZBDHs1vh1Y5qjALy5ECmacZSBI17PgjXnRbInZKkotT/GJZy99AgNKpfpwnF4g
-         /OFzQ29jLh/zpBcBy+FrO1qrDipXQNGKbRE1i0ucpBr9sjOfmUVSx4fT0eeeh6VUHp/r
-         ZAbjGHDEO+ORkZCQg+g52sBmaegqC8MIlEM39pzzvtYM0gw3ErwnCKRlCq9Q4sVFxoV9
-         35HAzdicn4G4FAc1VvbWOgyUy5MsCxLIeuQDr3S3NK3VUKc3Xa8AQKIrMfJ54Fkg5t6g
-         e8lA==
+        d=google.com; s=20251104; t=1778143390; x=1778748190; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ldNX4hjnqPv+69PJqK5nA8PHBAP3lHPK+0x1ATXTw+I=;
+        b=pxxr2ZIAX+Cca+9wLbzAHbFdcA9TOFs0vM5gqgE3Z85aZE+2N1wcrUJq1lA1uq+NNy
+         dWge4noSvd2gL71ZBHMY6UMx+sY6+uD3BR/G9leaE7MFDI4Vs8lVVD9RtD8qzlBsNpD1
+         uYYdhnF4aSy34imrXO/JJdwmNCiuq3iy6GiFCuYhRULYreLz45KZRrgN9iRKmQrx3VD6
+         SRYjhPEobYGMI59othK5Affjb7eJS3eiSlQRnRGYUnuW5oRIdsuoymC/C/lb4bKH4RPm
+         yRkQXxqEVYgyVNn6kr5318OQqty1whu1JjuxYT8nhhMz2yRS3qyIf3zePMxqJtz6PWWw
+         3oUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778143387; x=1778748187;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=IbLl5ruVbHNJWZ4th1uX1TQ2PaF1IxlXSxks7sS10hI=;
-        b=mXttpbZYoMYpUHUd4sKfSFJlbOaRsjUjTaPhAp306Mm7ns+BPAAz51lUBzDK1RqFkp
-         jq4+e1P/UYTuiMDN/U2HE7yWOj9YLcYYo53qxe9PXkeAdoajLzlBUa+GBSvWmI7x6sH8
-         1qk16x7Ztw22LwIhfaLttPU5iu2/SnHi4X36R7kSGZo4utc0BhZjHecIWFSQpPW8+JDi
-         Ah+K+H9EcfTnzhXDu1RT3vGIQ9gEURyC4EgfgbHVJ6755ylBfSJ804S9paSWNY6s6PVH
-         fqjm1e9bcK00HbfRzMtPUvzm6Eny4xEllzVA/s3olqKjYGqHD60jvKtsjCvUbjAyLhLM
-         bfYA==
-X-Forwarded-Encrypted: i=1; AFNElJ/9LNjiNt8rkg1b01UUsH6YgtmS4H0qk/c3nqxEn3HIVwZmtLLj6dmXWgMdXOQufJoFvJrvyW4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxhumHHKLRikqQQ5TrlVxGl/bkdEUdxg6RZX2BZqZaJQk3kyi5/
-	ggACZ1891ywRvvuTAvmogYAjBGFb0NkXholAfmcFf8Mh52Gd6ZnPWNLZnEX6VoPoIW5hweGIUy8
-	6419oCiKXhHQJvQ==
-X-Received: from qkhx9.prod.google.com ([2002:ae9:f809:0:b0:8cd:7d21:ea76])
+        d=1e100.net; s=20251104; t=1778143390; x=1778748190;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ldNX4hjnqPv+69PJqK5nA8PHBAP3lHPK+0x1ATXTw+I=;
+        b=bewa2WWXBMDBd6Iv5kJpXEi+9oFoFYzbAMU7GC9doK3fXCdmq4vk80k7v958ZJznrS
+         oRYpHJkZATXeWUl1dMjN0a5E+DJ8pe/LF/urny8JCa9+Z1zxiNL+53pCXtgmxSP1ig/4
+         C3cqOzDvZrrEna+9N1xKDKwaqC7u/yTi4+YsCR6iasmYkHjqrh2XwPDfj9rZ5Ef8kMFn
+         9IoymLku2n4Mi+v+mkyfsfWhLHrHWLLMAnaStxTpXWCNbNXlgUWzotV9V6E7B4t2JZwS
+         RtzRVDacGUMqJ+ItbgIIuSf5RtDPthW0B7IrKOaZosjo1Yw0mYPMdxtdX+RTxm16yeVt
+         9SrQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/oqqurZH56KE1EHZrnhZ1mHHFsKOmSf2p1N5XT3xIHRlHtwHhvT7DkK5vBFq+laRIjacG7EAw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw19gUDh//DbcxlGbT0GxcY6wRTkw8CXvbdRDlQDz/H2g1Mv1Eq
+	5lM6rdhQv2wQatjsAhprIlw9GR07tX3CbPBPxRLsZSvU3wknNXhMOaEsF6EpkMj96JYWPEEloCL
+	v2V48R1mU8ErScA==
+X-Received: from qknto14.prod.google.com ([2002:a05:620a:4c8e:b0:8eb:29c3:b17b])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:280e:b0:8cd:b626:cdf1 with SMTP id af79cd13be357-904d69d9de7mr1037133385a.46.1778143387136;
- Thu, 07 May 2026 01:43:07 -0700 (PDT)
-Date: Thu,  7 May 2026 08:43:02 +0000
+ 2002:a05:620a:2905:b0:8dc:218b:db92 with SMTP id af79cd13be357-904d5ff953bmr1015226185a.40.1778143390242;
+ Thu, 07 May 2026 01:43:10 -0700 (PDT)
+Date: Thu,  7 May 2026 08:43:04 +0000
+In-Reply-To: <20260507084305.2506115-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260507084305.2506115-1-edumazet@google.com>
 X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <20260507084305.2506115-1-edumazet@google.com>
-Subject: [PATCH net-next 0/3] net: use IP_OUTNOROUTES drop reason
+Message-ID: <20260507084305.2506115-3-edumazet@google.com>
+Subject: [PATCH net-next 2/3] tcp: use SKB_DROP_REASON_IP_OUTNOROUTES in tcp_v6_send_response()
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>, Neal Cardwell <ncardwell@google.com>
@@ -65,23 +68,27 @@ Cc: Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
 	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-First patch changes sk_skb_reason_drop() sock to be const.
+Replace a bare kfree_skb() with a modern sk_skb_reason_drop() call,
+and provide IP_OUTNOROUTES drop reason.
 
-Second and last patch add SKB_DROP_REASON_IP_OUTNOROUTES
-to both tcp_v6_send_response() and inet6_csk_xmit().
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+---
+ net/ipv6/tcp_ipv6.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Eric Dumazet (3):
-  net: constify sk_skb_reason_drop() sock parameter
-  tcp: use SKB_DROP_REASON_IP_OUTNOROUTES in tcp_v6_send_response()
-  ipv6: use SKB_DROP_REASON_IP_OUTNOROUTES in inet6_csk_xmit()
-
- include/linux/skbuff.h           | 3 ++-
- include/trace/events/skb.h       | 4 ++--
- net/core/skbuff.c                | 5 +++--
- net/ipv6/inet6_connection_sock.c | 3 ++-
- net/ipv6/tcp_ipv6.c              | 2 +-
- 5 files changed, 10 insertions(+), 7 deletions(-)
-
+diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
+index 2c3f7a739709d7b89f376f79b71173e5f2d8e64e..3574b2c28a55182d46657cfcca528a0ac0de99b7 100644
+--- a/net/ipv6/tcp_ipv6.c
++++ b/net/ipv6/tcp_ipv6.c
+@@ -980,7 +980,7 @@ static void tcp_v6_send_response(const struct sock *sk, struct sk_buff *skb, u32
+ 		return;
+ 	}
+ 
+-	kfree_skb(buff);
++	sk_skb_reason_drop(sk, buff, SKB_DROP_REASON_IP_OUTNOROUTES);
+ }
+ 
+ static void tcp_v6_send_reset(const struct sock *sk, struct sk_buff *skb,
 -- 
 2.54.0.563.g4f69b47b94-goog
 
