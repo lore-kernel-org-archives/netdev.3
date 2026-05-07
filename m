@@ -1,178 +1,66 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B42463A1A3C
-	for <netdev@vger.kernel.org>; Thu,  7 May 2026 14:49:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95AB5392814;
+	Thu,  7 May 2026 14:52:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778165366; cv=none; b=s2WWjZCMSjMzqUaN3V1/2qKseoWWu03QvJmtQbdX1D9BLMdsBR97pPHE/ph+lXTn7+NlGZWA2wLKmpQ0tQZV/H/9493eLxWOSfW9+I+00l2dEsglgksOWVJdI2KOkxxhzzTcQYKeBfS64fwrmt9IShw2NndWnZ3RBB9ee0MjWA0=
+	t=1778165556; cv=none; b=Li1sbLJUUf+EAEmhb2DZKAR23MH4W2hlgyFAJlLoevatEOaZxe2IUiD7FZpdJLkikWquWsnkUZntw6I7JVccO89GJnOGGuJM/Iok/XHOJgYj0sqg5ACP4YzUXuOyxKV6IwnHjb8nJ550rkWhBh7AbU4h1Lg2Ds2evBo8N/0fUsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778165366; c=relaxed/simple;
-	bh=0UEQFqnl250j7u4bGJcBxutylZ1Mf5pF7DjU6CUdE8M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DkuoSp4sySwIRSHkqtaQzITdoPWHnZre32xbSSgzuEhKXWZYGlP4TWFY2AubMji3RTfS/E0tWv06MX57ALq1KmzL2tBSanAITWTZSZfjziQMkn67yP26NR1cwV+LGCRCfLOnnpE6lLDuNSs3j+56LaoH5RWakkHjt+9G/ax3bpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1wL01i-0001Vq-3i; Thu, 07 May 2026 16:48:34 +0200
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1wL01Z-000wEM-1k;
-	Thu, 07 May 2026 16:48:26 +0200
-Received: from pengutronix.de (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 264265306B3;
-	Thu, 07 May 2026 14:48:25 +0000 (UTC)
-Date: Thu, 7 May 2026 16:48:24 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>
-Cc: Michael Grzeschik <mgr@kernel.org>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Vincent Mailhol <mailhol@kernel.org>, 
-	Krzysztof Halasa <khc@pm.waw.pl>, Johannes Berg <johannes@sipsolutions.net>, 
-	Steffen Klassert <klassert@kernel.org>, David Dillow <dave@thedillows.org>, 
-	Ion Badulescu <ionut@badula.org>, Mark Einon <mark.einon@gmail.com>, 
-	Rasesh Mody <rmody@marvell.com>, GR-Linux-NIC-Dev@marvell.com, 
-	Manish Chopra <manishc@marvell.com>, Potnuri Bharat Teja <bharat@chelsio.com>, 
-	Denis Kirjanov <kirjanov@gmail.com>, Jijie Shao <shaojijie@huawei.com>, 
-	Jian Shen <shenjian15@huawei.com>, Cai Huoqing <cai.huoqing@linux.dev>, 
-	Fan Gong <gongfan1@huawei.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, 
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>, Tariq Toukan <tariqt@nvidia.com>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
-	Mark Bloch <mbloch@nvidia.com>, Ido Schimmel <idosch@nvidia.com>, 
-	Petr Machata <petrm@nvidia.com>, Yibo Dong <dong100@mucse.com>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, nic_swsd@realtek.com, Jiri Pirko <jiri@resnulli.us>, 
-	Francois Romieu <romieu@fr.zoreil.com>, Daniele Venzano <venza@brownhat.org>, 
-	Samuel Chessman <chessman@tux.org>, Jiawen Wu <jiawenwu@trustnetic.com>, 
-	Mengyuan Lou <mengyuanlou@net-swift.com>, Kevin Curtis <kevin.curtis@farsite.co.uk>, 
-	Arend van Spriel <arend.vanspriel@broadcom.com>, Stanislav Yakovlev <stas.yakovlev@gmail.com>, 
-	Richard Cochran <richardcochran@gmail.com>, Kees Cook <kees@kernel.org>, 
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Jacob Keller <jacob.e.keller@intel.com>, Thomas Fourier <fourier.thomas@gmail.com>, 
-	Ingo Molnar <mingo@kernel.org>, Kory Maincent <kory.maincent@bootlin.com>, 
-	Zilin Guan <zilin@seu.edu.cn>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
-	Marco Crivellari <marco.crivellari@suse.com>, Bjorn Helgaas <bhelgaas@google.com>, 
-	David Arinzon <darinzon@amazon.com>, Yeounsu Moon <yyyynoom@gmail.com>, 
-	Denis Benato <benato.denis96@gmail.com>, Yonglong Liu <liuyonglong@huawei.com>, 
-	Andy Shevchenko <andriy.shevchenko@intel.com>, Randy Dunlap <rdunlap@infradead.org>, 
-	Yicong Hui <yiconghui@gmail.com>, MD Danish Anwar <danishanwar@ti.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Ethan Nelson-Moore <enelsonmoore@gmail.com>, 
-	Larysa Zaremba <larysa.zaremba@intel.com>, Ian Lin <ian.lin@infineon.com>, 
-	Colin Ian King <colin.i.king@gmail.com>, Double Lo <double.lo@cypress.com>, 
-	Markus Schneider-Pargmann <msp@baylibre.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-can@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	intel-wired-lan@lists.osuosl.org, linux-rdma@vger.kernel.org, oss-drivers@corigine.com, 
-	linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com
-Subject: Re: [PATCH net-next v2 1/2] net: Consistently define pci_device_ids
- using named initializers
-Message-ID: <20260507-dangerous-manipulative-guan-bfd474-mkl@pengutronix.de>
-X-AI: stop_reason: "refusal"
-References: <cover.1778149923.git.u.kleine-koenig@baylibre.com>
- <76da4f44d48bdde84580963862bf9616bee5c9e9.1778149923.git.u.kleine-koenig@baylibre.com>
- <20260507-healthy-gainful-fox-500552-mkl@pengutronix.de>
- <afyfa4E4rNbkMYTk@monoceros>
+	s=arc-20240116; t=1778165556; c=relaxed/simple;
+	bh=uEufh4i4Xf8A8Ma1I31xNuq9nvx5pNtqY1KijnCuKww=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RrJlGZoia2D9wffaMFc323CXzjp6zvm73r+b1LuKrTz6QLhx3ogeKXBHxxnpdLc16o+6PHfwYorg7/tP074/IFvfWJqvGFKdT/B5epa/AsfCet8IPnOybUy7y8Tc3l5mcrm2Y0jIzdbnJvA1ppiqVmyyXhNHgBU+WM6CLcJg/Sw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nQkSR2Ic; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nQkSR2Ic"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A842FC2BCB2;
+	Thu,  7 May 2026 14:52:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778165556;
+	bh=uEufh4i4Xf8A8Ma1I31xNuq9nvx5pNtqY1KijnCuKww=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=nQkSR2IcsXxuXbEKyP5uKEqFvmJ6tWLQHwnQKUIqwhhIjM5AzRutXx/kcx4RRQ0TY
+	 E2L+Bj6y0V36UNUo6xQ99hV9poiATNjc5aFk1oLzSNVnJpPMXB7AtP1fhTKbCES7he
+	 /q3h/FN/1VjcsYt4xWGhn1QJ8lnsoEk7W5TlgozhRXcmojIy5BFxQQv8/M+WWg3vyT
+	 Zi7Mki+Q7OmABjPrZ74Jtxkc/aDhUGo8YzFnYQwvVjzeUTWUfDMo6HY0COPJaTAXSQ
+	 wNsNAomYE4D3RRuDobvfeZtiHudTvLBSSx+zX6njbi858vGTmGK1sTfMa0NtmUFd+v
+	 auaKcKmoDkPUw==
+Date: Thu, 7 May 2026 07:52:34 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: David Laight <david.laight.linux@gmail.com>
+Cc: =?UTF-8?B?w4FsdmFybw==?= Costa <alvaroc.dev@gmail.com>,
+ jiri@resnulli.us, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, netdev@vger.kernel.org (open list:DEVLINK),
+ linux-kernel@vger.kernel.org (open list)
+Subject: Re: [PATCH] devlink/param: replace deprecated strcpy() with
+ strscpy()
+Message-ID: <20260507075234.1630060f@kernel.org>
+In-Reply-To: <20260507090445.3448d536@pumpkin>
+References: <20260506211415.16343-1-alvaroc.dev@gmail.com>
+	<20260507090445.3448d536@pumpkin>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="3r5cznssyoe7scuq"
-Content-Disposition: inline
-In-Reply-To: <afyfa4E4rNbkMYTk@monoceros>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Thu, 7 May 2026 09:04:45 +0100 David Laight wrote:
+> >  	case DEVLINK_PARAM_TYPE_STRING:
+> > -		len = strnlen(nla_data(param_data), nla_len(param_data));
+> > -		if (len == nla_len(param_data) ||
+> > -		    len >= __DEVLINK_PARAM_MAX_STRING_VALUE)
+> > +		len = strscpy(value->vstr, nla_data(param_data));
+> > +		if (len < 0)
+> >  			return -EINVAL;
+> > -		strcpy(value->vstr, nla_data(param_data));  
+> 
+> The only sensible thing here is to replace the strcpy() with:
+> 		memcpy(value->vstr, nla_data(param_data), len + 1);
 
---3r5cznssyoe7scuq
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH net-next v2 1/2] net: Consistently define pci_device_ids
- using named initializers
-MIME-Version: 1.0
-
-On 07.05.2026 16:23:43, Uwe Kleine-K=C3=B6nig (The Capable Hub) wrote:
-> Hello Marc,
->
-> On Thu, May 07, 2026 at 12:55:45PM +0200, Marc Kleine-Budde wrote:
-> > > +	}, {
-> > >  		/* ASEM Dual CAN raw -new model */
-> > > -		ASEM_RAW_CAN_VENDOR_ID, ASEM_RAW_CAN_DEVICE_ID,
-> > > -		ASEM_RAW_CAN_SUB_VENDOR_ID, ASEM_RAW_CAN_SUB_DEVICE_ID_BIS,
-> > > -		0, 0,
-> > > -		(kernel_ulong_t)&plx_pci_card_info_asem_dual_can
-> > > +		PCI_DEVICE_SUB(ASEM_RAW_CAN_VENDOR_ID, ASEM_RAW_CAN_DEVICE_ID,
-> > > +			       ASEM_RAW_CAN_SUB_VENDOR_ID, ASEM_RAW_CAN_SUB_DEVICE_ID_BIS=
-),
-> > > +		.driver_data =3D (kernel_ulong_t)&plx_pci_card_info_asem_dual_can,
-> > >  	},
-> > > -	{ 0,}
-> > > +	{ }
-> >
-> > Nitpick: can you convert the terminating entry to follow the same style
-> > as the rest of the driver:
-> >
-> > diff --git a/drivers/net/can/sja1000/plx_pci.c b/drivers/net/can/sja100=
-0/plx_pci.c
-> > index a03553b80a5d..d69ff0ccfd94 100644
-> > --- a/drivers/net/can/sja1000/plx_pci.c
-> > +++ b/drivers/net/can/sja1000/plx_pci.c
-> > @@ -353,8 +353,8 @@ static const struct pci_device_id plx_pci_tbl[] =3D=
- {
-> >                  PCI_DEVICE_SUB(ASEM_RAW_CAN_VENDOR_ID, ASEM_RAW_CAN_DE=
-VICE_ID,
-> >                                 ASEM_RAW_CAN_SUB_VENDOR_ID, ASEM_RAW_CA=
-N_SUB_DEVICE_ID_BIS),
-> >                  .driver_data =3D (kernel_ulong_t)&plx_pci_card_info_as=
-em_dual_can,
-> > -        },
-> > -        { }
-> > +        }, {
-> > +        }
-> >  };
-> >  MODULE_DEVICE_TABLE(pci, plx_pci_tbl);
->
-> After the conversation in the v1 thread it was unclear to me if you
-> stand by your opinion, so I kept the format as it was. I interpret your
-> repetition of the nitpick as request to rework the can drivers for the
-> next revision (if that happens).
-
-Doh - Yes, right, we discussed this already. Keep it as is and add my:
-
-Acked-by: Marc Kleine-Budde <mkl@pengutronix.de> # for drivers/net/can
-
-regards,
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---3r5cznssyoe7scuq
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCafymNgAKCRDMOmT6rpmt
-0nq+AQDxBatA6k3wbRiLlE0iYqFi1UszWzbE6VspAxP9GaL27AEAvpxnHmYAF7Ba
-NGRZfHI9sLbcPJXvBj/FLuPCtchoBwQ=
-=GAHD
------END PGP SIGNATURE-----
-
---3r5cznssyoe7scuq--
+That'd probably be a good move, to avoid getting the broken strscpy()
+conversion submissions. Care to send a patch?
