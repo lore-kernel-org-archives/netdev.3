@@ -1,161 +1,119 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0222F326942
-	for <netdev@vger.kernel.org>; Thu,  7 May 2026 23:43:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26FC23191D0;
+	Thu,  7 May 2026 23:45:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778197399; cv=none; b=gx6hZWuKQTmf23CEmUtjRkxqE03PGcnocKXtX5hgMxy4d6GbxftGPZFPSZDDPm+pHx5Bikh1bOe8/hKgrq6fcyYBBV5tMaNcHtUHjZwZzAJ0ULCR4vGKcRiYAQ/y9fMNvIKIomriUiv0Ry2ZhOEhPeNSPMQC1yT5vIeSmIaRqN4=
+	t=1778197524; cv=none; b=I+zsNxSdSEz9a38me85iGqxvt85tizVk9xQqygaYtkdRjT3qAnr+LxQAWElgD8Z39TqhEVJ0DcsOglp5pRdcWr//kDfZ7VdrwQAMiUaPrg0MlHGsqrl2T70Iwz21NkvjyJmEKtDUQTUSgHnDd3UGgaktLjQHm2eM9GUp0bYHt1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778197399; c=relaxed/simple;
-	bh=qkkBF3RQ7Ixw5ubxnV9KnZdzbMduZO2yaLLmTe4UUp8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=f5FBq7spliEnBt5gOWWlI+DUT/Xw+o8bqHmQomeN6TCPPRA1Q8/ufYWhZ1hhRGOKuLrXRCB4qDccreR4XiUot+3wZ7v1SuAdLq3wN4Cplk1b5ZufHJ1KsGt5wiPh7gyEx8TeZRpLXCeyOfpcjjSB947gvxAQ7XWEyec457bfqqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HrnB57p0; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1778197524; c=relaxed/simple;
+	bh=Rwx2dyJN5OeIwY2b0MS6uB5ze7XT8RLvUe1M5pAl+Sc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=toVlubQFst0u7NpQO6VUXzmrMPetQ3wpv8+UqtcYlbRI8omMMg5Mi1qeTJMKEMSrZiUQSIdFw2nnyrvxTS6H5XIUjMCJnLCbYz929Uh+JTnvJcQJc4KNEfJVlb6imzwbUngVw50kV31FC/F2SCktFQJQlpddZfUkUqpf8cCo5fI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=iM3kaQfd; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HrnB57p0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778197398; x=1809733398;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:to:cc;
-  bh=qkkBF3RQ7Ixw5ubxnV9KnZdzbMduZO2yaLLmTe4UUp8=;
-  b=HrnB57p0F0Ab0ULmC6Xv4M72Xe/V9QByspdYMQ9mB8BTG5QjZC7vxnkO
-   bUH3bb+uvywTdhR3SJjxebgbuYz+nNCW0jImz/lPMiK7lStNZxjQKxmbD
-   lpsEE95AO3zzGzBWUMVK0ThZ+7IgxQuEsCuqhW3lxWM+bdt2U+oRUkMeL
-   iY4CzvVYk0JaG3Rocz+p71SsrWMAjRdEw23dIBqEJQUaQOEFc2xXeT847
-   P1djXCQ8SWAOUO7iw9/Uqb/qX/7S/ZzcTmZoBG30KkjWe1Q2ua5B+Tl0p
-   iZ494hTfRqoG35EftWVAAlNVOgh05yOFGhC8FZdIvJr/a0EcAQCTnm4+u
-   w==;
-X-CSE-ConnectionGUID: kuvDSzfWSM6/k4wGfxxOTQ==
-X-CSE-MsgGUID: C9J5V1r1SR+tGZ46HwzN9w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11779"; a="96731672"
-X-IronPort-AV: E=Sophos;i="6.23,222,1770624000"; 
-   d="scan'208";a="96731672"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 16:43:17 -0700
-X-CSE-ConnectionGUID: T2szzNHETRyDLJMrNKxu5Q==
-X-CSE-MsgGUID: +LgbT6PPQiWCt0i2uah7ug==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,222,1770624000"; 
-   d="scan'208";a="241616007"
-Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.109]) ([10.166.28.109])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 16:43:18 -0700
-From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Thu, 07 May 2026 16:42:42 -0700
-Subject: [PATCH net-next] ixgbe: E610: do not fill EEE lp_advertised from
- local PHY caps
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="iM3kaQfd"
+Received: from localhost.localdomain (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with ESMTPSA id 6C6CD60251;
+	Fri,  8 May 2026 01:45:14 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1778197514;
+	bh=KHvdJb6vxqHy5YtM29r/lP1H4y+EHXhBx9V1uFnpTg4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=iM3kaQfdtpObPSXbF8i7p34MD0Et2xFIafV+7EInMcz8LLawmuyeUF0MTnaMLQGt7
+	 /2eTNBustVCH8s0ClmtIYsxjPhJ1U2X8J78BNAFAQfHSPRouXwpfZr0Y+F8820/puJ
+	 HjfxI6U3MNHvqSWqDqXsulfEVDTtqUG7hP+v7LtzUE3bFfvWbIhgjQ811YdGzwebdL
+	 yLg0mGgi+Aj+n28GN+3Ei9ECk79euyXgGAJ3egbhbNpUib2KaY6Yoj6NpzfjecHKEF
+	 cD6vwHyvTEfGJF6oz8mYS5VDglPBAjI/SIRK3xxmqESfzS7Kimtr0YZ537QuCj+nfi
+	 w8Co6zKY/qRAQ==
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: netfilter-devel@vger.kernel.org
+Cc: davem@davemloft.net,
+	netdev@vger.kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	fw@strlen.de,
+	horms@kernel.org
+Subject: [PATCH net 01/13] netfilter: x_tables: allow initial table replace without emitting audit log message
+Date: Fri,  8 May 2026 01:44:57 +0200
+Message-ID: <20260507234509.603182-2-pablo@netfilter.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260507234509.603182-1-pablo@netfilter.org>
+References: <20260507234509.603182-1-pablo@netfilter.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260507-jk-iwl-next-fix-eee-ixgbe-v1-1-62bc1d197d1d@intel.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWM0Q6CMBAEf4Xcs5cUCCD+ivEB6oKHppq2QhPCv
- 3vC42RndqUALwh0yVbymCXI2ynkp4zso3MjWO7KVJiiNpVpeHqyLC92SJEHSQyoksYeXJq2zWt
- bocGZtP94qLB/X8kh7g3djiV8+wk2/q9p237aQrOlhwAAAA==
-X-Change-ID: 20260507-jk-iwl-next-fix-eee-ixgbe-309916c5e7e8
-To: Tony Nguyen <anthony.l.nguyen@intel.com>, 
- Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Jedrzej Jagielski <jedrzej.jagielski@intel.com>, 
- Jacob Keller <jacob.e.keller@intel.com>
-Cc: netdev@vger.kernel.org, David Carlier <devnexen@gmail.com>
-X-Mailer: b4 0.16-dev-ea14f
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3205;
- i=jacob.e.keller@intel.com; h=from:subject:message-id;
- bh=AR4mTTPloZw3fj31XNVXYIZcxf5GESK0zZLITIJsQGg=;
- b=owGbwMvMwCWWNS3WLp9f4wXjabUkhsy/yhP3zNLsUl66fkoAW7p/dnWUnuSOUzHiXcavAlYu/
- BH2WGZ3RykLgxgXg6yYIouCQ8jK68YTwrTeOMvBzGFlAhnCwMUpABM56cbwT3dKr+YdjvqXiieW
- f9mv6N9y9D9DjNyj7rDznK03uN4KPmD4nyOxTb3yd95OXdvK2+yb2x/NrvjvaCRUzXtx8gpO6c0
- 1XAA=
-X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
- fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
+Content-Transfer-Encoding: 8bit
 
-From: David Carlier <devnexen@gmail.com>
+From: Florian Westphal <fw@strlen.de>
 
-ixgbe_get_eee_e610() fills kedata->lp_advertised from pcaps.eee_cap
-returned by ixgbe_aci_get_phy_caps() with IXGBE_ACI_REPORT_ACTIVE_CFG.
-That report mode (and the other IXGBE_ACI_REPORT_* modes) describe the
-local PHY only, not the link partner. The X550 path uses a separate
-FW_PHY_ACT_UD_2 activity for partner data; the E610 ACI has no
-equivalent.
+At the moment we emit the audit log a bit too early, which makes it
+necessary to also emit an unregister log in case we have to unwind
+errors after possible hook register failure.
 
-Leave lp_advertised zeroed via the existing linkmode_zero() and drop
-the now-unused ixgbe_eee_cap_map[]. eee_active/eee_enabled are
-unaffected (sourced from link.eee_status).
+Followup patch will be slightly simpler if we can delay the
+register message until after the hooks have been wired up.
 
-Fixes: b61dbdeff3a9 ("ixgbe: E610: add EEE support")
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Reviewed-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 ---
-I'm sending this to next now since it fixes the recently merged EEE support
-for ixgbe, which was merged last week (see [1]). It is a fix, but the
-offending code is only on net-next currently.
+ net/netfilter/x_tables.c | 29 ++++++++++++++++++++---------
+ 1 file changed, 20 insertions(+), 9 deletions(-)
 
-[1]: https://lore.kernel.org/netdev/177777482779.3993534.10771712863528181433.git-patchwork-notify@kernel.org/
----
- drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c | 20 --------------------
- 1 file changed, 20 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-index 6990fe53f049..36e43b5e88d1 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-@@ -3558,17 +3558,6 @@ static const struct {
- 	{ FW_PHY_ACT_UD_2_10G_KR_EEE, ETHTOOL_LINK_MODE_10000baseKR_Full_BIT},
- };
+diff --git a/net/netfilter/x_tables.c b/net/netfilter/x_tables.c
+index 2c67c2e6b132..bb0cb3959551 100644
+--- a/net/netfilter/x_tables.c
++++ b/net/netfilter/x_tables.c
+@@ -1472,11 +1472,9 @@ struct xt_counters *xt_counters_alloc(unsigned int counters)
+ }
+ EXPORT_SYMBOL(xt_counters_alloc);
  
--static const struct {
--	u16 eee_cap_bit;
--	u32 link_mode;
--} ixgbe_eee_cap_map[] = {
--	{ IXGBE_ACI_PHY_EEE_EN_100BASE_TX, ETHTOOL_LINK_MODE_100baseT_Full_BIT },
--	{ IXGBE_ACI_PHY_EEE_EN_1000BASE_T, ETHTOOL_LINK_MODE_1000baseT_Full_BIT },
--	{ IXGBE_ACI_PHY_EEE_EN_10GBASE_T, ETHTOOL_LINK_MODE_10000baseT_Full_BIT },
--	{ IXGBE_ACI_PHY_EEE_EN_5GBASE_T, ETHTOOL_LINK_MODE_5000baseT_Full_BIT },
--	{ IXGBE_ACI_PHY_EEE_EN_2_5GBASE_T, ETHTOOL_LINK_MODE_2500baseT_Full_BIT },
--};
--
- static int ixgbe_validate_keee(struct net_device *netdev,
- 			       struct ethtool_keee *keee_requested)
+-struct xt_table_info *
+-xt_replace_table(struct xt_table *table,
+-	      unsigned int num_counters,
+-	      struct xt_table_info *newinfo,
+-	      int *error)
++static struct xt_table_info *
++do_replace_table(struct xt_table *table, unsigned int num_counters,
++		 struct xt_table_info *newinfo, int *error)
  {
-@@ -3645,7 +3634,6 @@ static int ixgbe_get_eee_e610(struct net_device *netdev,
- 	struct ixgbe_aci_cmd_get_phy_caps_data pcaps;
- 	struct ixgbe_hw *hw = &adapter->hw;
- 	struct ixgbe_link_status link;
--	u16 eee_cap;
- 	int err;
+ 	struct xt_table_info *private;
+ 	unsigned int cpu;
+@@ -1531,10 +1529,23 @@ xt_replace_table(struct xt_table *table,
+ 		}
+ 	}
  
- 	linkmode_zero(kedata->lp_advertised);
-@@ -3670,14 +3658,6 @@ static int ixgbe_get_eee_e610(struct net_device *netdev,
- 	if (kedata->eee_enabled)
- 		kedata->tx_lpi_timer = le16_to_cpu(pcaps.eee_entry_delay);
- 
--	eee_cap = le16_to_cpu(pcaps.eee_cap);
--
--	for (int i = 0; i < ARRAY_SIZE(ixgbe_eee_cap_map); i++) {
--		if (eee_cap & ixgbe_eee_cap_map[i].eee_cap_bit)
--			linkmode_set_bit(ixgbe_eee_cap_map[i].link_mode,
--					 kedata->lp_advertised);
--	}
--
- 	for (int i = 0; i < ARRAY_SIZE(ixgbe_ls_map); i++) {
- 		if (hw->phy.eee_speeds_supported &
- 		    ixgbe_ls_map[i].mac_speed)
-
----
-base-commit: 6a4c4656b0d2d4056a1f0c35442db4e8a5cf8021
-change-id: 20260507-jk-iwl-next-fix-eee-ixgbe-309916c5e7e8
-
-Best regards,
---  
-Jacob Keller <jacob.e.keller@intel.com>
+-	audit_log_nfcfg(table->name, table->af, private->number,
+-			!private->number ? AUDIT_XT_OP_REGISTER :
+-					   AUDIT_XT_OP_REPLACE,
+-			GFP_KERNEL);
++	return private;
++}
++
++struct xt_table_info *
++xt_replace_table(struct xt_table *table, unsigned int num_counters,
++		 struct xt_table_info *newinfo,
++		 int *error)
++{
++	struct xt_table_info *private;
++
++	private = do_replace_table(table, num_counters, newinfo, error);
++	if (private)
++		audit_log_nfcfg(table->name, table->af, private->number,
++				!private->number ? AUDIT_XT_OP_REGISTER :
++				AUDIT_XT_OP_REPLACE,
++				GFP_KERNEL);
++
+ 	return private;
+ }
+ EXPORT_SYMBOL_GPL(xt_replace_table);
+-- 
+2.47.3
 
