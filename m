@@ -1,133 +1,127 @@
-Received: from flow-b2-smtp.messagingengine.com (flow-b2-smtp.messagingengine.com [202.12.124.137])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F7E37BE66;
-	Thu,  7 May 2026 12:56:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.137
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374792DF136;
+	Thu,  7 May 2026 12:58:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778158621; cv=none; b=SPbO1SO2oLw1aeO7sEqTtMvueYE3AmlqErRjPoRKF21MpS7469gOTGbMtkA37sv9fD+sLMSystrqw2h9NUhhHYgtqEbvmMY/lxyViojI6YWNMzMYe3OhEVpUPfaztVfguFstYZF2ewUf+yKEMCdEXcUA90Bc3gjw243h37Z2J7Y=
+	t=1778158690; cv=none; b=SVF/g2VzDg7/i8l3r1p4tU9xHt+NA211FNStVLQEcnJaxlZfzI8oK+b1gBOKzytmjnXOkUaa+JHlXQsbZntEKuXYfVW6dmNpdFeS4vYm+yEvRGJyqgB8igoC8I/D9M45PE6Nk+V07zUwhCo4XWrZ60JJGlhRxKKasmxanENu8b0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778158621; c=relaxed/simple;
-	bh=YeBSOjoQJst5vxg1qThBdYEONOm6zcnWolc0/DZvzKo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r2+/vJNNceQADPOCJ9OOkCA5ukooGVVQ9yO1C0PTCad+axMofwch/fWo/qkSneXCoD0GoXYz2izcMHFDOAUjZgzaRX9xOkHiB+1cWGQS7E02ey9jxyOxjbqxZ+Y7mDi+LYOfG+NYgSTPFCDvqBw2v8BII6OpAKTiiZrhWDRN0yo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=Kw2PvHUe; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=QL3RCSL+; arc=none smtp.client-ip=202.12.124.137
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	s=arc-20240116; t=1778158690; c=relaxed/simple;
+	bh=WDjhH006pjr7DO1odgRVIbkbsVw1XbJABURX23J9bC8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ksOsKFyHv0mB+ggVJ6QalOQ8iIX07bJWHu2Daqqma0h1g6Xgo4wq3+r0VZrhZ7rlmaZk6CsXF/W3btu5DNOuXsQ+8O4uwSEBd9ZkQFUkqz7KPAJoMQEsUdwoa6BhjpWcUJ9nRm4J1NVjHInQSscaxSMPlwgQ78/5LIvQ6vnR4KM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MC5yDTjV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="Kw2PvHUe";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="QL3RCSL+"
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailflow.stl.internal (Postfix) with ESMTP id 74E361300336;
-	Thu,  7 May 2026 08:56:54 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Thu, 07 May 2026 08:56:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1778158614; x=
-	1778165814; bh=T/0q7vYOuuf9zCnxo2miOS7GAZBPCeln6tzioafOeXc=; b=K
-	w2PvHUeqpJar2J8oCETYKNcmwhl3rZx2TO9hvu6Y9nO7ZiM5N+CsreSF520sY8P8
-	XqdU5VCXxiMyl7r4qQQ2nHzl6027cBt1yADAH6Fir4SWTteVWxy+rGy2fwNZ+iof
-	bOenzpHXwxvbmU2H3gugltiLVBeM/fAtEA2OV+/bw3XiLP6VJOchiiXRJL456C9P
-	NuzTcz6t0txto6VVFS3adLb7XrNvuBs2hN/lpdOVLo5chfO+tc2ybOj9GN1ji8Jj
-	3saY005Hww7jSLDWH4bwYDVVGjgd05sPZU5kACXl9kREeewymGT22b1Jj+mwo4kA
-	xw9ob4Y4I52ZsgiOFJyew==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1778158614; x=1778165814; bh=T/0q7vYOuuf9zCnxo2miOS7GAZBPCeln6tz
-	ioafOeXc=; b=QL3RCSL+Uu+mgaxp8WZAlqHCqVA3SCsk8vLP4BxCwbNk1VGdl5n
-	m5kiFAYwAuoGy1zsthRmZVlbKwHAtM2X8/ssiyRtRL/zXPxK0jZQDnsyFxtulFgr
-	9OVEgYiuyv/HUeZb0MIGrzvY//25K9On2uF/IH0c0yUbtpZpjloSb3aryapJWcb6
-	aaYs25AgdDI6Ty0ncalPonBB7sg6PDKd+VJyNPSDvQHpVxvzu9B10BTYH/qVwbA5
-	h9M/FCocmI3nd1S86dm+1uENK37O7HZXYImWTo3NrZoxiIyR7aqQOBSejSZ4RZyR
-	nLF8DCeDNA0CXOsJjy1+iRZk53QTHLcxkQQ==
-X-ME-Sender: <xms:FIz8abCYt4tJ7DItpoFjtoXLOKJbOuoPODRGi-HJUjcd7ROc3iaaiQ>
-    <xme:FIz8aTIqY-g7_YX_xQM6SmjKsYX7GB0-DUxB0jmLxarWk9PHuiDwstonGaPoH3qFw
-    aXPBMLbmnXeEgkXZrQNCFCLGLaguh0Ijjo3sBOk5PCms7gCWF6Z33A>
-X-ME-Received: <xmr:FIz8aarI-7KpFZEBKp_yq3UHO2QwL8xOjPcyT8EGOP7Mk2lbcp1xfKDdS976>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddutdejheefucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtjeenucfhrhhomhepufgrsghrihhn
-    rgcuffhusghrohgtrgcuoehsugesqhhuvggrshihshhnrghilhdrnhgvtheqnecuggftrf
-    grthhtvghrnhepuefhhfffgfffhfefueeiudegtdefhfekgeetheegheeifffguedvueff
-    fefgudffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epshgusehquhgvrghshihsnhgrihhlrdhnvghtpdhnsggprhgtphhtthhopedvvddpmhho
-    uggvpehsmhhtphhouhhtpdhrtghpthhtoheprghnthhonhihrdgrnhhtohhnhiesshgvtg
-    hunhgvthdrtghomhdprhgtphhtthhopehsthgvfhhfvghnrdhklhgrshhsvghrthesshgv
-    tghunhgvthdrtghomhdprhgtphhtthhopehhvghrsggvrhhtsehgohhnughorhdrrghprg
-    hnrgdrohhrghdrrghupdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgv
-    thdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhmpdhrtghpthhtoh
-    epkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehprggsvghnihesrhgvughh
-    rghtrdgtohhmpdhrtghpthhtohephhhorhhmsheskhgvrhhnvghlrdhorhhgpdhrtghpth
-    htohepughsrghhvghrnheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:FIz8aUPTRpoxBBkb2Hgc7iRRmFYVtM9HO663HWtkxdt6rvVLATfRjg>
-    <xmx:FIz8afPBtPtoWFnC7KDxbbBzmgRnEMXdSjiWOfWE2rvtzVlEKZJaLQ>
-    <xmx:FIz8ae3ZixrKMDQQvZujjx8mQAj0OS-thmSDSiTynsTZ3mNAdbzrRw>
-    <xmx:FIz8ab3I_rdMEmL9tmnxAKsgIfWke2tzQubHc6ri7Q3XgYtHvjwAlg>
-    <xmx:Foz8adEXXa7JlyYj4-GvkWWN5QUKToFEQ5iXRJK1lgKdIARnVho319tu>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 7 May 2026 08:56:52 -0400 (EDT)
-Date: Thu, 7 May 2026 14:56:50 +0200
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Antony Antony <antony.antony@secunet.com>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>,
-	Masahide NAKAMURA <nakam@linux-ipv6.org>,
-	Paul Moore <paul@paul-moore.com>,
-	Stephen Smalley <stephen.smalley.work@gmail.com>,
-	Ondrej Mosnacek <omosnace@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, selinux@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	Chiachang Wang <chiachangwang@google.com>,
-	Yan Yan <evitayan@google.com>, devel@linux-ipsec.org
-Subject: Re: [PATCH ipsec-next v8 09/14] xfrm: add error messages to state
- migration
-Message-ID: <afyMEvHebp4VFxE4@krikkit>
-References: <migrate-state-v8-0-4578fb016965@secunet.com>
- <migrate-state-v8-9-4578fb016965@secunet.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MC5yDTjV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA6BDC2BCB2;
+	Thu,  7 May 2026 12:58:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778158689;
+	bh=WDjhH006pjr7DO1odgRVIbkbsVw1XbJABURX23J9bC8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=MC5yDTjVffa9Vy/D/mKcZft6etWRgTFNpxHsSa0fT7lqvB3QMgusLbDCsNCtSg0EB
+	 gSb87FVTAcrr+15ntAazrE5yIZhnLooOS6iakT9MpNTPWg2hOnaLsrHKltGCh9hRaa
+	 DCWNCqjrUgPK6WCGspntCMOxg+52vSM5n/ZkQ29NgTeOPBGy+ztBrCWZSxR4PWyyaX
+	 6ML3pW0OnLGr7//mffaVCCzcdDGx7r4L1FYpZjb8/AaQPYWjnuXlj0cHozXbt2tGNh
+	 VHMvXJSO50Y9W4H7UjKo1bmNuOZxVgaX08zSw34NhZmdq+2rVa2FlCWEfQxW393Ggz
+	 2MQlN2Ap+VCyQ==
+From: Simon Horman <horms@kernel.org>
+To: larysa.zaremba@intel.com
+Cc: 'Simon Horman' <horms@kernel.org>,
+	intel-wired-lan@lists.osuosl.org,
+	jacob.e.keller@intel.com,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	joshua.a.hay@intel.com,
+	willemb@google.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	aleksandr.loktionov@intel.com,
+	anthony.l.nguyen@intel.com
+Subject: Re: [PATCH iwl-net v2] idpf: fix RSS LUT memcpy size
+Date: Thu,  7 May 2026 13:54:32 +0100
+Message-ID: <20260507125431.947371-2-horms@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260504144345.293219-1-larysa.zaremba@intel.com>
+References: <20260504144345.293219-1-larysa.zaremba@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <migrate-state-v8-9-4578fb016965@secunet.com>
+Content-Transfer-Encoding: 8bit
 
-2026-05-05, 06:33:49 +0200, Antony Antony wrote:
-> Add descriptive(extack) error messages for all error paths
-> in state migration. This improves diagnostics by
-> providing clear feedback when migration fails.
-> 
-> After xfrm_init_state() use NL_SET_ERR_MSG_WEAK() as fallback for
-> error paths not yet propagating extack e.g. mode_cbs->init_state()
-> 
-> No functional change.
-> 
-> Signed-off-by: Antony Antony <antony.antony@secunet.com>
-> 
-> ---
-> v5->v6: - in case dev_state_add() extack already set
-> 	- after xfrm_init_state() use NL_SET_ERR_MSG_WEAK() as fallback
-> v4->v5: - added this patch
-> ---
->  net/xfrm/xfrm_state.c | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
+From: 'Simon Horman' <horms@kernel.org>
 
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://sashiko.dev
+---
+idpf: fix RSS LUT memcpy size
 
--- 
-Sabrina
+This commit increases the memcpy size when retrieving the RSS lookup table
+to account for the full buffer size rather than just the number of entries.
+It also adjusts the required Rx buffer size check to include the structure
+size.
+
+Link: https://sashiko.dev/#/patchset/20260323174052.5355-1-larysa.zaremba%40intel.com?part=8
+
+> diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+> index be66f9b2e101c..0fc7c68447f83 100644
+> --- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+> +++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+> @@ -2915,8 +2915,9 @@ int idpf_send_get_set_rss_lut_msg(struct idpf_adapter *adapter,
+>  	if (reply_sz < sizeof(struct virtchnl2_rss_lut))
+>  		return -EIO;
+>  
+> -	lut_buf_size = le16_to_cpu(recv_rl->lut_entries) * sizeof(u32);
+> -	if (reply_sz < lut_buf_size)
+> +	lut_buf_size = flex_array_size(recv_rl, lut,
+> +				       le16_to_cpu(recv_rl->lut_entries));
+> +	if (reply_sz < lut_buf_size + sizeof(struct virtchnl2_rss_lut))
+>  		return -EIO;
+
+Could this cause an out-of-bounds read if the message size exceeds the
+allocated buffer?
+
+Looking at the allocation of recv_rl earlier in this function, it has a
+fixed size:
+
+    recv_rl = kzalloc(IDPF_CTLQ_MAX_BUF_LEN, GFP_KERNEL);
+
+If the hardware-controlled recv_rl->lut_entries yields a calculated structure
+size larger than IDPF_CTLQ_MAX_BUF_LEN, reply_sz may also exceed
+IDPF_CTLQ_MAX_BUF_LEN.
+
+While this check ensures reply_sz is large enough for lut_buf_size, does it
+ensure we don't read past the end of the IDPF_CTLQ_MAX_BUF_LEN allocation
+during the memcpy?
+
+[ ... ]
+> @@ -2933,7 +2934,7 @@ int idpf_send_get_set_rss_lut_msg(struct idpf_adapter *adapter,
+>  	}
+>  
+>  do_memcpy:
+> -	memcpy(rss_data->rss_lut, recv_rl->lut, rss_data->rss_lut_size);
+> +	memcpy(rss_data->rss_lut, recv_rl->lut, lut_buf_size);
+
+Does this copy skip necessary byte-order conversions?
+
+The hardware response recv_rl->lut contains __le32 (little-endian) values,
+but the destination rss_data->rss_lut is an array of host-order u32
+integers.
+
+The set path correctly applies cpu_to_le32() to elements before sending
+them:
+
+    rl->lut[i] = rxhash_ena ? cpu_to_le32(rss_data->rss_lut[i]) : 0;
+
+On big-endian architectures, copying little-endian bytes directly with
+memcpy() will result in byte-swapped queue indices. Does the driver need to
+iterate over the entries and convert each using le32_to_cpu() instead?
