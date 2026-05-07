@@ -1,196 +1,184 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013028.outbound.protection.outlook.com [40.93.201.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F953ACA43;
-	Thu,  7 May 2026 11:47:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778154471; cv=none; b=bB7I4dTZNKTOLazt8No1H2IgqPclTZakiYWK1PrMdTFt9lWAAmW1RRi66meyt0yOr6TA7fzI/sZzrRm2JEJx7Yc5EvOWTnP7NxGTZdkXLMs+7pM8M25jzKP1plVBwWHnGORdMbwZ8gPE1rJ9VbaZlTEWEFFr4qdo9u3544H37OM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778154471; c=relaxed/simple;
-	bh=hOh+VaLLck43nAplkfF92iG+/ppyrDVDliM63RnV7OY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uCD+y+Nl6/pa6oG4Q6VtWnf8BojPc4ZBv8rf2B0auRfieTSY/1e26hUEOIZ6O6PluDLT0HqsSuekzzlRzZJd0Q8DVTunwYRJAXtB7jigNvAjjs6i0MvPLYMfbAm2EmQHOFSsAh8qy0tWfe+PPUf3ZPY88KzlKs3OJ1Lcdc+9JFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ijihpFcH; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D3C306B3B
+	for <netdev@vger.kernel.org>; Thu,  7 May 2026 11:48:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.28
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778154484; cv=fail; b=O21wByuNxGiMT58DVUZjVMRjR6Ys3Ma+dvQ+KHTV5GaspBV7mHFhKnj5EEpVGZ+r/oNnP4k/Ae4LDKKLrPqGS+WjkanbiF9fZBX2sVDRRx51xX9c7cnYn1Rye0MCN6YAyvN3k471SeCNzn71trZK2d0xsBjWCMJiC0MpNh8mkRU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778154484; c=relaxed/simple;
+	bh=jPa/MKf/cd7iNPT1N+Z6iJL3JAyP7FuohwsOLK+bjqo=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=uj1L2AoIYa+8Zxxx0pCsrK7/+acgYX3pzClxHNA355zj7MUgyAb3eL6f0k9u4rmqBO49itSBGwXScV+w8WWL0Hm96IO3VPQVlgLrgFPkcY9rL+HvuM86I0gRb3Pz6eHSqUu3Gqob0oX2Bg4eXfUDOhteeFabbu2zz87+CgSQck4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=lAP8zSvh; arc=fail smtp.client-ip=40.93.201.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ijihpFcH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778154470; x=1809690470;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=hOh+VaLLck43nAplkfF92iG+/ppyrDVDliM63RnV7OY=;
-  b=ijihpFcH1q4q83uBoszUQgqQK2FqE9W0M+6pday1FBAFX9/YBRrCp/aU
-   L1u1C6WJunEUmllD4YGdS/e2N3Jw561flzoLPtxohKeTZgefmQ5K5DiHH
-   VkSEuLwPqDEFl2iAnC1dkDScRPmpogSoy59We/zY1Hf8gDBYPmivxNSGu
-   EAhS9/GZLVgVuC5+wDGzepCfT7LgCxaUI7A5MNeJIp2393IhMhAH/AeeM
-   jNBh5rwF4y5tQ3u1b0wV30d/i7069t9J/o3Pe6w7yjLTxXJF7ShjgidBd
-   L8r0U6rvVIImdqW4hUHpUDa4uicLRNwWdsenTFQ6fqikhIhT3L9q3ZAlT
-   Q==;
-X-CSE-ConnectionGUID: VeFPtGnPTYiIHODQo1uj4A==
-X-CSE-MsgGUID: JvGSnzwoRv6EkZmjjkhgyw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11778"; a="101777097"
-X-IronPort-AV: E=Sophos;i="6.23,221,1770624000"; 
-   d="scan'208";a="101777097"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 04:47:49 -0700
-X-CSE-ConnectionGUID: tYFjJU1JQcuWUN7kr3tsmA==
-X-CSE-MsgGUID: BkOZ65goQ9q8cJxW3piOLQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,221,1770624000"; 
-   d="scan'208";a="236355898"
-Received: from mszycik-mobl1.ger.corp.intel.com (HELO [10.246.20.168]) ([10.246.20.168])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 04:47:45 -0700
-Message-ID: <56e52628-d029-4919-95dd-aa6da13f3b08@linux.intel.com>
-Date: Thu, 7 May 2026 13:47:38 +0200
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="lAP8zSvh"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rlYXffgdtheC2MKUqc3cjxjSu6Sy2rwwtNH+qeq0xgAPoUpN4c/Uu5BC4y7gGeRbSPcSLg+CWEpQRmtHC13dCDX5jsIvxPbgbPw5TAL0kWsQ71oWYqLUD7YZ9L/cAyKBxKtw/AhIZnpY6HZXlzPUvSNc+iZj+pq5T+/j3NN24MozwsxHVQb3dQgPwea2PtjcxZzwYTZOjcX4Fa19Rh3IxvM6V2kVBwMdEGfZxYF+DDFvaolsIaoVqjJe00EpWugk1cP1ZrJ33SLgE8L3LfBe3FJOZNOjWH3HIf153v9v2tsRDCjlygaUlkruwm2Dve53o13qqhGOsf6x+IV3uibWOw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5uRDw0hpUgHhDzFSWsJJX5qDiYY3v5g0av+Z6Y8VSTo=;
+ b=LQJV3uP9/vdodxTVQL0dgyN60yDZAeYady8wm+dzzmFWIZsgmEOhUIZoQTRBIdPcslrCC4f3sX4+zwpafEo7D5t6uvQese/J0Fw0ssMMhvl3VTW73hv2+7pTpyIavESVrY6JCp7rmvDAjNqz68loqzIIg+xyUxHk7Ci3M4TlMnqNGKdxAiB/EkDesjXuGZdO18XX0CHTX45xX6rgxPmhWYXKuKGZImzPAyCDvONtNPi6VBckmsgg9uknf+G+S08bpXR121uXi83gVZXeI1+X23JZ77MjZY1/ZpbjBMJ7D557EU9d57kysU4ZO+ykc5YD/oFfLg+bGeSI1qJAiaOGXA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5uRDw0hpUgHhDzFSWsJJX5qDiYY3v5g0av+Z6Y8VSTo=;
+ b=lAP8zSvhvM6+r8mIt3lPTw44UWoYdkuNG6VAQGylZ1IxHl2bFlreTvWPPyb+W7VAYr4WNGPxrFAHrbzQfN59ezEd5aB1Iw7SV4S4dF4kMnx0VZEnqXYIRipOyArU7udWsC/wZoVlpr9h1UYYcqgaiGwBo8ZllX4WQFSpy0nJXhandcW0ZsxL3SmlFUH/8MKHQWcKPodA5t1RxSV6RXm8TTW3iT87zP520hkkjGp17W/9MHblxB552QdmW84o2ehVWesS9BHrfHPLMyKagtxCDGuZ4VpgEFFml3cu4CT1O1yDFo1amsfF41VtBc9R5zy5ZifyvhJ5zCP+by+u4v6DMQ==
+Received: from BN9PR03CA0307.namprd03.prod.outlook.com (2603:10b6:408:112::12)
+ by MW4PR12MB6849.namprd12.prod.outlook.com (2603:10b6:303:20d::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.15; Thu, 7 May
+ 2026 11:47:57 +0000
+Received: from BN2PEPF000044A0.namprd02.prod.outlook.com
+ (2603:10b6:408:112:cafe::d6) by BN9PR03CA0307.outlook.office365.com
+ (2603:10b6:408:112::12) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9891.15 via Frontend Transport; Thu,
+ 7 May 2026 11:47:57 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ BN2PEPF000044A0.mail.protection.outlook.com (10.167.243.151) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9891.9 via Frontend Transport; Thu, 7 May 2026 11:47:57 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 7 May
+ 2026 04:47:43 -0700
+Received: from dev-r-vrt-155.mtr.labs.mlnx (10.126.231.37) by
+ rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Thu, 7 May 2026 04:47:41 -0700
+From: Danielle Ratson <danieller@nvidia.com>
+To: <netdev@vger.kernel.org>
+CC: <mkubecek@suse.cz>, <idosch@nvidia.com>, <petrm@nvidia.com>, "Danielle
+ Ratson" <danieller@nvidia.com>
+Subject: [PATCH ethtool-next 0/5] ethtool: Add 'pages on|off' option for module EEROM hex dump
+Date: Thu, 7 May 2026 14:47:16 +0300
+Message-ID: <20260507114721.3409128-1-danieller@nvidia.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 09/13] ice: fix setting RSS VSI hash for E830
-To: Jacob Keller <jacob.e.keller@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Piotr Kwapulinski <piotr.kwapulinski@intel.com>,
- Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
- Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
- Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
- Joshua Hay <joshua.a.hay@intel.com>, Madhu Chittim
- <madhu.chittim@intel.com>, Willem de Bruijn <willemb@google.com>,
- Dave Ertman <david.m.ertman@intel.com>, Ivan Vecera <ivecera@redhat.com>,
- Grzegorz Nitka <grzegorz.nitka@intel.com>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org
-References: <20260504-jk-iwl-net-2026-05-04-v1-0-a222a88bd962@intel.com>
- <20260504-jk-iwl-net-2026-05-04-v1-9-a222a88bd962@intel.com>
- <068a5266-4721-4496-b027-3b32da3e02ea@intel.com>
-Content-Language: en-US
-From: Marcin Szycik <marcin.szycik@linux.intel.com>
-In-Reply-To: <068a5266-4721-4496-b027-3b32da3e02ea@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN2PEPF000044A0:EE_|MW4PR12MB6849:EE_
+X-MS-Office365-Filtering-Correlation-Id: 636a8de6-b51f-4829-a84c-08deac2e7b9b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|36860700016|82310400026|18002099003|56012099003|3023799003;
+X-Microsoft-Antispam-Message-Info:
+	cIXihY0hsRcrBkPIlJ8cyyH6FmI4kjWTceP0wS1fbGjp1vLfrLOO3kJtsDPNJy3+ZAzu4hA2xbIXUkSEdvGDvnOhrqNqBugP7jesbE7rMba2f+AEKY5kQxHmnFPsUKTAHpKoiMjVVu6n2+QdTQGNGOxs6zGyMkIyjaFQUPuEoCHt6eeFwgOuJch41O1QqvlGLUlwo3YoHEJc12wvC8C2Ho1auORC+TRQZM+9UrADCqDydED2sA9SbGMRF8oC5v6tMQISPhMBoZzXkmYumq3/s/kVR73Vv3aH8JO+LmJ1agpO1fqOR7JVCht5cQUglRkDbDlNDHHO/973tOwJefhUDVmj9TkOLmrqfLc6rx8aeaHJYJpJJ0jk087etvgKpV/W+3A5CcHBF1v40o7jcUH9OHuqJMY7CK3/HLIh9F/Z96y7e62ZIb7S7pRXtDZ7YGIR/aTYuyioxX/DkSAXW4H/l8IrSCkglqtkviw954pWHqUvx/0zmfyS8pSEYUX6ARvRi/5KvkUKSktq8pv3ek5WhrkUWeSKio7lFHvXpPhzAoggneleT0swnR0MTetBhyYJYAKkk6LKw0o0CoXbd7xm2LqW1WDDdk9xqnxZeSnOoFg44TttzINV8Ng8xABYXAm0tclCqhmf+ugieVUVXe7b6rE6V8Kr22qwVz/z1nNfwSY7URqPhi2G6UXY55TQXFaZwJ5b9Au/VKFffyT/SZPwert+cZPj2ikQPui2VEU/o+I=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(1800799024)(36860700016)(82310400026)(18002099003)(56012099003)(3023799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	XbWHzYpa7esd75fUQeCIJpGl24lmvKcl36knKS/k6HASRKHG1uvuWc6wzk0y51PkcxGP3hrMCpsHdoIMuAFUJHHoALrI7PzrQ6UECjntWGHruTIlLuJrfLOqG5flv9TbTfz+jBYeAgRuL5MH1vzzc758JvGIQpm9e4TMCr1Jev5hMhxRggaH4amEwQ18rBOiB1kZ6RRpQul3UupLiMt6zIkGZVTMVYH+Ii2/rHrXVGMrqXzA0SRysvmLmOEWr7pF7gp9ufJ++g/36CAGE8zgC1tqrKA4rw4tID2xLuath80+bUORLtP0m4/cm8BssPpPbLcEjGofrN5oCkRCzaQZyAKUaMPOVOKsj/NHpyWRAu9tkBjuAtH8uicuQ7jFtlk4lIhWJwmOmaBIyIZB6WyCrXVCZPi3eFvOZstBCEvvFfx1OIywiXxuHDFM99uNivq/
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2026 11:47:57.3578
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 636a8de6-b51f-4829-a84c-08deac2e7b9b
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN2PEPF000044A0.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6849
 
+The existing 'ethtool -m' command can dump module EEPROM data either as
+a parsed pretty-print or as a raw/hex dump. The pretty-printer reads
+multiple pages per module type, but decodes only specific fields from them.
 
+In practice, both outputs are often needed together for offline debugging:
+the pretty-print to identify the module type and decoded fields, and the
+hex dump for fields the pretty-printer does not decode. However, there is
+no single command that provides the raw hex dump of all relevant pages,
+organized by page boundary. This is especially problematic for CMIS
+transceivers where the existing hex dump does not provide Upper Pages
+beyond Page 02h, let alone banked pages.
 
-On 06.05.2026 23:06, Jacob Keller wrote:
-> On 5/4/2026 10:14 PM, Jacob Keller wrote:
->> From: Marcin Szycik <marcin.szycik@linux.intel.com>
->>
->> ice_set_rss_hfunc() performs a VSI update, in which it sets hashing
->> function, leaving other VSI options unchanged. However, ::q_opt_flags is
->> mistakenly set to the value of another field, instead of its original
->> value, probably due to a typo. What happens next is hardware-dependent:
->>
->> On E810, only the first bit is meaningful (see
->> ICE_AQ_VSI_Q_OPT_PE_FLTR_EN) and can potentially end up in a different
->> state than before VSI update.
->>
->> On E830, some of the remaining bits are not reserved. Setting them
->> to some unrelated values can cause the firmware to reject the update
->> because of invalid settings, or worse - succeed.
->>
->> Reproducer:
->>   sudo ethtool -X $PF1 equal 8
->>
->> Output in dmesg:
->>   Failed to configure RSS hash for VSI 6, error -5
->>
->> Fixes: 352e9bf23813 ("ice: enable symmetric-xor RSS for Toeplitz hash function")
->> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
->> Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
->> Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
->> Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
->> ---
->>  drivers/net/ethernet/intel/ice/ice_main.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
->> index 1d1947a7fe11..c52c465280f7 100644
->> --- a/drivers/net/ethernet/intel/ice/ice_main.c
->> +++ b/drivers/net/ethernet/intel/ice/ice_main.c
->> @@ -8046,7 +8046,7 @@ int ice_set_rss_hfunc(struct ice_vsi *vsi, u8 hfunc)
->>  	ctx->info.q_opt_rss |=
->>  		FIELD_PREP(ICE_AQ_VSI_Q_OPT_RSS_HASH_M, hfunc);
->>  	ctx->info.q_opt_tc = vsi->info.q_opt_tc;
->> -	ctx->info.q_opt_flags = vsi->info.q_opt_rss;
->> +	ctx->info.q_opt_flags = vsi->info.q_opt_flags;
->>  
->>  	err = ice_update_vsi(hw, vsi->idx, ctx, NULL);
->>  	if (err) {
->>
-> 
-> Sashiko complains about ice_set_rss_hfunc() but it is unrelated to this fix:
-> 
->> While looking at this function, I noticed a pre-existing issue regarding the
->> hardware cache. Does calling ice_update_vsi() with a local context leave the
->> global hw->vsi_ctx[vsi->idx] out of sync?
->> If ice_update_vsi() succeeds, vsi->info.q_opt_rss is updated, but
->> hw->vsi_ctx[vsi->idx]->info.q_opt_rss is not.
->> When an unrelated feature such as RDMA filtering is subsequently toggled via
->> ice_cfg_rdma_fltr(), could it retrieve this stale cached context via
->> ice_get_vsi_ctx() and copy the stale q_opt_rss value back into its command
->> buffer?
+This series adds 'pages on|off' sub-option to 'hex on|off' for
+'ethtool -m':
+$ ethtool -m hex on pages on
 
-Yes.
+That produces a hex dump organized by page, matching exactly the pages read
+by the pretty-printer for each module type.
 
->> Could this cause the firmware to silently revert the RSS hash function to its
->> previous configuration during the next ice_update_vsi() call?
+Each page is preceded by a header identifying the page number and, for
+banked modules, the bank number. For SFP, where the two memory regions
+are separate I2C addresses rather than pages, the header shows the I2C
+address instead.
 
-No, because the context object passed to ice_update_vsi() only sets
-ctx->info.valid_sections for the sections it wants to update, so unrelated
-values are not updated in HW.
+Output example (values zeroed to omit vendor-specific identifiers):
 
-Looking at other ice_update_vsi() calls, most of the times the context object is
-being allocated, not taken from cache. It's not immediately clear to me what
-purpose does hw->vsi_ctx[] serve - it only appears to be used in
-ice_cfg_rdma_fltr() (correct me if I'm wrong), where options from the cached
-context are being read to fill the unchanged fields in the updated section.
-This seems to be the equivalent of keeping track of context values in vsi->info,
-which is what almost all ice_update_vsi() callers do.
-If I had to guess, I'd say hw->vsi_ctx[] could probably be removed and vsi->info
-used instead, but maybe I'm missing something.
+$ ethtool -m swp61 hex on pages on
+Page: 0x0
 
-TLDR I think this is just old, inconsistent code that could be improved, but it
-needs some investigation. Until we don't have a clear signal that there's a bug,
-I wouldn't touch it.
+Offset          Values
+------          ------
+0x0000:         00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+0x0010:         00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+0x0020:         00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+0x0030:         00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+0x0040:         00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+0x0050:         00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+0x0060:         00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+0x0070:         00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 
->> There also appears to be a pre-existing issue with state desynchronization
->> when handling failures. After ice_update_vsi() succeeds, vsi->rss_hfunc
->> is updated, but ice_set_rss_hfunc() then calls ice_set_rss_cfg_symm() at the
->> end of the function:
->> ice_set_rss_hfunc() {
->>         ...
->>         err = ice_update_vsi(hw, vsi->idx, ctx, NULL);
->>         if (err) {
->>                 ...
->>         } else {
->>                 vsi->info.q_opt_rss = ctx->info.q_opt_rss;
->>                 vsi->rss_hfunc = hfunc;
->>                 ...
->>         }
->>         ...
->>         return ice_set_rss_cfg_symm(hw, vsi, symm);
->> }
->> If ice_set_rss_cfg_symm() fails, the error is returned but vsi->rss_hfunc
->> remains updated. If the user retries the command, the early check:
->> if (hfunc == vsi->rss_hfunc)
->>         return 0;
->> evaluates to true and returns success immediately.
->> Could this skip the ice_set_rss_cfg_symm() retry entirely, leaving the
->> hardware's flow director rules in a non-symmetric state permanently while
->> falsely reporting success?
+Page: 0x0
 
-This looks valid.
+Offset          Values
+------          ------
+0x0080:         00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+0x0090:         00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+0x00a0:         00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+0x00b0:         00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+0x00c0:         00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+0x00d0:         00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+0x00e0:         00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+0x00f0:         00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 
-Thanks,
-Marcin
+Danielle Ratson (5):
+  module-common: Add module_dump_eeprom_page_hex() helper
+  sfpid: Refactor sff8079_show_all_nl() to separate page retrieval from
+    display
+  module: Add per-type EEPROM page hex dump functions
+  netlink: module-eeprom: Add 'hex on pages on' option for
+    page-organized hex dump
+  ethtool: Add man page and bash completion for 'pages on|off'
 
-> Someone from the ice team should look into this and determine whether or
-> not its valid.
+ cmis.c                        | 49 +++++++++++++++++++++++----
+ cmis.h                        |  2 +-
+ ethtool.8.in                  | 14 ++++++++
+ ethtool.c                     |  1 +
+ internal.h                    |  4 +--
+ module-common.c               | 16 +++++++++
+ module-common.h               |  3 ++
+ netlink/module-eeprom.c       | 43 ++++++++++++++++++++----
+ qsfp.c                        | 48 +++++++++++++++++++++++----
+ sfpid.c                       | 62 +++++++++++++++++++++++++----------
+ shell-completion/bash/ethtool |  2 ++
+ 11 files changed, 202 insertions(+), 42 deletions(-)
+
+-- 
+2.51.0
 
