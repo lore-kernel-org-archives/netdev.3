@@ -1,69 +1,231 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 942C0303A32
-	for <netdev@vger.kernel.org>; Thu,  7 May 2026 13:27:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68C643AB29D
+	for <netdev@vger.kernel.org>; Thu,  7 May 2026 13:28:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778160441; cv=none; b=lZrIzycL4rX9CLRtVRrMMK/WWC1wKubETiy4o3deSd1OF1KcByC5VciYMvITSZ5nOO5sbW9EAeTzss/mwu7i06LYHLtvTqV8PwFVqJFhx+rAvUVwjxxIxqSoCZO/0gCBdKSkwFeQDBZYnqW1Tw/iZMV3tmSleHL1Lrp0B2+8OG0=
+	t=1778160520; cv=none; b=WMF0KpawnpLM482lhLzqdOyhmQuvF7glgPEu+5RmjTmOQCJcLuYv1fOGwlbTzML3/itd4J43oPIXU63OfgdykH0OVLw1daPzDvA3WojsU18Xxh4QkCjFxkqMRTYA4/mH3AWHcMRvAKoDiQ1zF6vUFLsVSMu/RfJZNPtWo5HcUHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778160441; c=relaxed/simple;
-	bh=pnozHAu5um8aElu5YBlscoAHncbZsDdf4Y/7avuRxAg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bdACAgtVdc2YTzN58Audw6WGnZOBjZ4Rnha2NgxYSCy7x37i2AU2S2CZMoQLeJIz7acB6H+CRxyUVhNGOz67Hvb3u76KOBtoRB+9vLldWoNwmP+79G4KmyKgkQ/BW0xwEF+TSMRlTRIbxIZlfBIEsD53gvRwZz+akfXahZYPCy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=FJFzLqgJ; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1778160520; c=relaxed/simple;
+	bh=cwMc54ufcXVXOk/tW0pv6MkyqKI/SdktGjhz5NTy69s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZWc7FgsjePnqkd8Kr6Va+iaKKnruL+DoYuWBjUVk2s/1ktgxkDWB2WqW+65TWptFXAAJPxThzJU73Nwzqfh3JLXU3owSKxQa4laQ2G6DJ5f78dnVAqyfk6cRtcNnTeaYGPjUf7DJYi5CnWvTCJqid6H1k1qqy/xuFNk093jCHE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=f1KAz6/B; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=nNm36Yuk; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=f1KAz6/B; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=nNm36Yuk; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="FJFzLqgJ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=9d7QB9xDc8rz/bPiIbkfq7vPbbB2ty+zoX6QKTewx0U=; b=FJFzLqgJAapQ8COdDXY8kcyFnP
-	1/DCKPIWKKncvBPWsMRf7jRyoEjoseqBJNyZz0GtpKCEO5GWHlwK3VpFLpmw7bBgQShXWbrMDfwV+
-	nKJiy6VQ5XxR78qgJOG69unvNm5ZZRCuOs3c2gmcMrsTDpqiwpM7kWf7NJwrboTVnJ8Q=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wKyA3-001oRL-Nn; Thu, 07 May 2026 14:49:03 +0200
-Date: Thu, 7 May 2026 14:49:03 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Sven Schuchmann <schuchmann@schleissheimer.de>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: assert in phylink.c with lan7801 and dp83tc811 since kernel 6.18
-Message-ID: <9a25bf08-9c13-49de-b15d-dc8ae464bdfd@lunn.ch>
-References: <BEZP281MB224533D524B27CFC6E47B447D93E2@BEZP281MB2245.DEUP281.PROD.OUTLOOK.COM>
- <57fb63c2-7a05-4bbe-ba2d-fc61ce1e3ba1@lunn.ch>
- <BEZP281MB22458F571CC8251C141D933CD93F2@BEZP281MB2245.DEUP281.PROD.OUTLOOK.COM>
- <7778cd41-cf36-4524-a347-408a8fb0bde0@lunn.ch>
- <f9b8840d-94ba-4bde-9ace-fb81eb733ff9@bootlin.com>
- <eba96f21-78e6-42bf-938a-6d4037d0a305@lunn.ch>
- <BEZP281MB22457317618130F28E84E3B4D93F2@BEZP281MB2245.DEUP281.PROD.OUTLOOK.COM>
- <24815161-68ff-4f3e-b0e1-286871b9686a@lunn.ch>
- <BEZP281MB2245BB0FC7DA18B285BD564CD93C2@BEZP281MB2245.DEUP281.PROD.OUTLOOK.COM>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="f1KAz6/B";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="nNm36Yuk";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="f1KAz6/B";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="nNm36Yuk"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id C4CEB6C36C;
+	Thu,  7 May 2026 13:28:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1778160511; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=UDiHM9wKTQrjv/o67ZAcDUt1uVwWbZEaMH3sFEnFl0M=;
+	b=f1KAz6/BqPXk4pL8v0P8Yjenl3prX0ukYY7IRXBLHn0OIcU+vx1sP7Og48XWsf/wWMoN+q
+	aH6RT0aYBZaV3lDFqBqFGkw+AAMYxefSVliOTVFret5ie3QYdyxFE5PUNXjuVu6favVE+Y
+	vnzgx7HDbfCTYO+TeOi1untz+c48DO8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1778160511;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=UDiHM9wKTQrjv/o67ZAcDUt1uVwWbZEaMH3sFEnFl0M=;
+	b=nNm36YuknXpfw5eg58xV9ad/YLwZOA5AtMHzXAUguSdBrVxpE1kXavaXIghovPwK6fmB9I
+	W+XWDYuE0pUKSxBQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1778160511; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=UDiHM9wKTQrjv/o67ZAcDUt1uVwWbZEaMH3sFEnFl0M=;
+	b=f1KAz6/BqPXk4pL8v0P8Yjenl3prX0ukYY7IRXBLHn0OIcU+vx1sP7Og48XWsf/wWMoN+q
+	aH6RT0aYBZaV3lDFqBqFGkw+AAMYxefSVliOTVFret5ie3QYdyxFE5PUNXjuVu6favVE+Y
+	vnzgx7HDbfCTYO+TeOi1untz+c48DO8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1778160511;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=UDiHM9wKTQrjv/o67ZAcDUt1uVwWbZEaMH3sFEnFl0M=;
+	b=nNm36YuknXpfw5eg58xV9ad/YLwZOA5AtMHzXAUguSdBrVxpE1kXavaXIghovPwK6fmB9I
+	W+XWDYuE0pUKSxBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2685A593A7;
+	Thu,  7 May 2026 13:28:31 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id KykBBn+T/GlAdgAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Thu, 07 May 2026 13:28:31 +0000
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+To: netdev@vger.kernel.org
+Cc: linux-kselftest@vger.kernel.org,
+	horms@kernel.org,
+	pabeni@redhat.com,
+	kuba@kernel.org,
+	edumazet@google.com,
+	davem@davemloft.net,
+	idosch@nvidia.com,
+	dsahern@kernel.org,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	=?UTF-8?q?=C5=81ukasz=20Stelmach?= <steelman@post.pl>
+Subject: [PATCH 1/2 net v3] ipv6: addrconf: fix temp address generation after prefix deprecation
+Date: Thu,  7 May 2026 15:28:27 +0200
+Message-ID: <20260507132828.3923-1-fmancera@suse.de>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <BEZP281MB2245BB0FC7DA18B285BD564CD93C2@BEZP281MB2245.DEUP281.PROD.OUTLOOK.COM>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Spam-Score: -3.30
+X-Spamd-Result: default: False [-3.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[post.pl:email,imap1.dmz-prg2.suse.org:helo,suse.de:email,suse.de:mid]
+X-Spam-Level: 
 
-> I think it is worth doing a patch on this also?
-> I am not that experienced in sending kernel patches but I could try...
+When a router temporarily deprecates an IPv6 prefix (either by sending a
+Router Advertisement with Preferred Lifetime = 0 or by letting the
+lifetime expire) and later restores it, the kernel permanently loses its
+ability to generate temporary privacy addresses (RFC 8981) for that
+prefix.
 
-Please try, and i will help you.
+This happens because the address worker attempts to generate a
+replacement temporary address when the current one nears expiration. As
+the base prefix is deprecated already, the generation fails after
+marking the temporary address already having spawned a replacement
+(ifp->regen_count++).
 
-A good place to start is:
+When the router eventually restores the prefix, the temporary address
+becomes active again. However, once it naturally expires, the address
+worker sees this temporary address already tried to generate one and
+skips the regeneration.
 
-https://docs.kernel.org/process/submitting-patches.html
+Fix this by verifying that the base prefix has sufficient preferred
+lifetime remaining before attempting to generate a new temporary
+address. In addition, make ipv6_create_tempaddr() return meaningful
+error codes. This way, we can catch if a 0-lft RA arrived just after we
+passed the verification mentioned above. If we don't have sufficient
+preferred lifetime remaining, the worker will keep the next timer as it
+is.
 
-and
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Łukasz Stelmach <steelman@post.pl>
+Closes: https://lore.kernel.org/netdev/87340td30q.fsf%25steelman@post.pl/
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+---
+v2: adjusted commit message, adjusted the implementation to cover all
+race conditions
+v3: regen now if ipv6_create_tempaddr failed due to timer to avoid an
+infinite loop as we restart the loop and we need to check now against
+prefered_lft again.
+---
+ net/ipv6/addrconf.c | 28 ++++++++++++++++++++++------
+ 1 file changed, 22 insertions(+), 6 deletions(-)
 
-https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index 5476b6536eb7..d54737b5610d 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -1379,7 +1379,7 @@ static int ipv6_create_tempaddr(struct inet6_ifaddr *ifp, bool block)
+ 		write_unlock_bh(&idev->lock);
+ 		pr_info("%s: use_tempaddr is disabled\n", __func__);
+ 		in6_dev_put(idev);
+-		ret = -1;
++		ret = -EOPNOTSUPP;
+ 		goto out;
+ 	}
+ 	spin_lock_bh(&ifp->lock);
+@@ -1390,7 +1390,7 @@ static int ipv6_create_tempaddr(struct inet6_ifaddr *ifp, bool block)
+ 		pr_warn("%s: regeneration time exceeded - disabled temporary address support\n",
+ 			__func__);
+ 		in6_dev_put(idev);
+-		ret = -1;
++		ret = -EADDRNOTAVAIL;
+ 		goto out;
+ 	}
+ 	in6_ifa_hold(ifp);
+@@ -1466,7 +1466,7 @@ static int ipv6_create_tempaddr(struct inet6_ifaddr *ifp, bool block)
+ 		    cfg.preferred_lft > if_public_preferred_lft) {
+ 			in6_ifa_put(ifp);
+ 			in6_dev_put(idev);
+-			ret = -1;
++			ret = -EINVAL;
+ 			goto out;
+ 		}
+ 	}
+@@ -4655,8 +4655,17 @@ static void addrconf_verify_rtnl(struct net *net)
+ 				/* This is a non-regenerated temporary addr. */
+ 
+ 				unsigned long regen_advance = ipv6_get_regen_advance(ifp->idev);
++				unsigned long pub_tstamp = READ_ONCE(ifp->ifpub->tstamp);
++				unsigned long pub_age = 0;
++				bool pub_expired = false;
++
++				if (time_after(now, pub_tstamp))
++					pub_age = (now - pub_tstamp) / HZ;
+ 
+-				if (age + regen_advance >= ifp->prefered_lft) {
++				if (pub_age + regen_advance >= READ_ONCE(ifp->ifpub->prefered_lft))
++					pub_expired = true;
++
++				if (age + regen_advance >= ifp->prefered_lft && !pub_expired) {
+ 					struct inet6_ifaddr *ifpub = ifp->ifpub;
+ 					if (time_before(ifp->tstamp + ifp->prefered_lft * HZ, next))
+ 						next = ifp->tstamp + ifp->prefered_lft * HZ;
+@@ -4670,12 +4679,19 @@ static void addrconf_verify_rtnl(struct net *net)
+ 					ifpub->regen_count = 0;
+ 					spin_unlock(&ifpub->lock);
+ 					rcu_read_unlock_bh();
+-					ipv6_create_tempaddr(ifpub, true);
++
++					if (ipv6_create_tempaddr(ifpub, true) == -EINVAL) {
++						spin_lock_bh(&ifp->lock);
++						ifp->regen_count = 0;
++						spin_unlock_bh(&ifp->lock);
++						now = jiffies;
++					}
+ 					in6_ifa_put(ifpub);
+ 					in6_ifa_put(ifp);
+ 					rcu_read_lock_bh();
+ 					goto restart;
+-				} else if (time_before(ifp->tstamp + ifp->prefered_lft * HZ - regen_advance * HZ, next))
++				} else if (time_before(ifp->tstamp + ifp->prefered_lft * HZ - regen_advance * HZ, next) &&
++					   !pub_expired)
+ 					next = ifp->tstamp + ifp->prefered_lft * HZ - regen_advance * HZ;
+ 			}
+ 
+-- 
+2.53.0
 
-	Andrew
