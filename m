@@ -1,335 +1,175 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012053.outbound.protection.outlook.com [40.107.200.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DE3B3E92BF;
-	Thu,  7 May 2026 10:58:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778151524; cv=none; b=ZiBbs/c0j2zxTwKHu8+FUKMGTZhp+zjo5KfHcAQF53Ykm/9TfL/4GQFxLmFfmeq3n1v2X+cmk4Al9N2KbEdSdtrSGuI2sVaWepoW3NxlrzfRHce3MgQtWFsf5D+uHaGUKhvAgBTGaSvGy0DMLyLUALLIhH9ZwzZqk4ztFfpfC58=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778151524; c=relaxed/simple;
-	bh=l18IGkzGKUG05f5QZQid8OMan7Jey+HSy4shswzlQO4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=vFBwIeT5t9yfHhh7HFGvLj/AOX2kee+IhVeqf1WeKepgu32tRdA/EYKRswUB7IyJf/iQInjHGzbmvkG7VcNMj2h7sDzOaFU7J/ZajfFkwxuoxybHkmM4wmrgzPDDU+QGEGJ7sjX61NBmuLffFVfRCLWtoAHQZW84dlMS3jAxwkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=dA4RCFVK; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE2803A9DA5
+	for <netdev@vger.kernel.org>; Thu,  7 May 2026 11:00:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778151607; cv=fail; b=sSO93gVZEa+y3J5avpd+LsXQAW2pfmUFTFjAOqxSdfZGHpFPbq/PUsWFbucIZZ6pPxTbU4b398790T1sRwXN69PTYHl72gm2fUoX/ZrKYT9QH+SWcGDIPK1zwalFMXzGTCh348eQ1CCBlo8fZxHnVFv6H8gKO0pcJZGUT2MvBuE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778151607; c=relaxed/simple;
+	bh=jjV6gZaq5SvvxYG+RW16KtIcsS3aSEKMWgjtMDbsPnU=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=mY4QicxUutE7NYV/VcYpScB2DUsJ1iNneFP41fyOJ7Ov7MFFaXsCk+gOMso8iL0GUZpEHMb9+9jeQaJFnKJlmDsYtztIUw2BL8/m+h8JNYnirOwMG5WJUn8LgBuofKV1tnPhueBDH+r50RQxrFJC+vMlYOTzqgtJSzknGI3uE7k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Z5XIwOlx; arc=fail smtp.client-ip=40.107.200.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="dA4RCFVK"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description;
-	bh=8MF4f0bUeK5/+4FQOcifNfCRHuJo7/exyM7nIjJOTI0=; b=dA4RCFVK8vwrGxosswytdt8yVx
-	tGtYiShl/FoauJR31PE+rDndukvsLbsSwrRUkm1WIiGW/5ujRI+3t93YAyqNkJCI7/dOkjPx1YkcU
-	FA71jewEA6hIAqIjWUFbxKtFC62bd72Sz4m8bsUgrOOMWdFwaV+cV0F0szhKiQIRUUIBqcd4Ee4s6
-	aMFImpO9fF+KHM7y03vjOJCRdxYn0ghgvn3lWVpz9ATO6oSSqH3cV1L0+K5lx5k9IyMzOTZ8eAegp
-	Pw4gUBJQHPblQXcdxznUt2jjU+kRLZiTwksyx3nEAY0ghmBYX7/k0N0qBbFDiLYTbxxhk/HAQE/zZ
-	7CiwJSAg==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wKwQv-004Job-0l;
-	Thu, 07 May 2026 10:58:21 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Thu, 07 May 2026 03:57:54 -0700
-Subject: [PATCH net-next v2 5/5] selftests: net: getsockopt_iter: cleanup
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Z5XIwOlx"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=OwxrsiAFzWJEU8FuAlC/J9zhd/gCe12idzxQc7AUYM7DWUlzcF+HvXOHk9X1zKiufN7fk/iH+8ndN4M8lMUDds40IDmNeSZh0r0hFpw07HK0uWMzmjnymMHc6YWxl8CHPbTZ3stbfUYW/OSklTeWGuADbxPn8BWuWOwP1xInHlDSF7I9tZLhgbC0GaCI4XqsD59740EauhZ2vgVVKWB4Um0zlEERaKRXG1BtEr4LCbW6+Evu0CkqiuI/2yepI/J4AMFLzfOzOg/0/IS5b9p5V6nLFgz7YH++waK0MolJi+47dHiCgT7IUbauvNlb6TqpdZcm02Kej/dFlFnS0szhgA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rEurFSoj3enI1Zd6Ow8V1aEH4mBhiYMgKkC9B5+T0Ho=;
+ b=X8wI2vTchsccx/cMuaga7hEG+fU8iP65smbGx6IfRe1TRzyZ1KEMgf1FQWF/q6UVFRkhB5lZsodUqrfqww6/w1pGlpMt9br4g3o2Q2RBYBvbLyHgB9SJ6IyI9jmO/8KIN2B0c2IYtRkmWt8WoON6V7wxQzchtsikPHZUTOiwEpeVi6QZKfrzX2W5apu04lKwS0vSxDClqnGkzqpDn9JfDqIIcce29juyFGSeRsZGox4g9EmAYpSZ4xJj784/lO9LowZmYSfq+PrGxCQgenZDlLyrsORcgGlzcRPQDS4cxp/8BlOY+ArZKlVqfYQbCFuKZUrpkiVMoenl03Qx5XdsiQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rEurFSoj3enI1Zd6Ow8V1aEH4mBhiYMgKkC9B5+T0Ho=;
+ b=Z5XIwOlxKDBT/7KrW/jyGyG3zJ/R2zsJaotq2Sq4gTxtvczfnjese4bQqBMe/XxWaBJr6c+hT49PO5O25oMxspopPDBHQAKEx6EKi2FPkm6KtByVz1x2B84fv/FSxreFILH3MTp9vynoLHe8K7J2Hsb4OijKiMF4EzzghkJtDrsUpffIxL0knAS8nQa0gg9O/SPqOZPojaI09/Kil0LzrdDhgsjyK+xH5FAtyFfuuIyfc6ciMKbZ52Bh7WBHdeaT1I2RZZ5fCXcT1bg8i199NKGC4t0Pn7IaqGm7lqWYUYEXmBaEiMmewDmvWmM01UpA8djzrWT+bXMJKDO6/cF+EA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
+ by DM6PR12MB4483.namprd12.prod.outlook.com (2603:10b6:5:2a2::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.15; Thu, 7 May
+ 2026 10:59:56 +0000
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2%6]) with mapi id 15.20.9891.017; Thu, 7 May 2026
+ 10:59:56 +0000
+From: Ido Schimmel <idosch@nvidia.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	horms@kernel.org,
+	petrm@nvidia.com,
+	Ido Schimmel <idosch@nvidia.com>
+Subject: [PATCH net-next v3 0/4] net: Fix protodown with macvlan
+Date: Thu,  7 May 2026 13:59:02 +0300
+Message-ID: <20260507105906.891817-1-idosch@nvidia.com>
+X-Mailer: git-send-email 2.54.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: TL0P290CA0007.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:5::11) To SA3PR12MB7901.namprd12.prod.outlook.com
+ (2603:10b6:806:306::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260507-getsock_two-v2-5-5873111d9c12@debian.org>
-References: <20260507-getsock_two-v2-0-5873111d9c12@debian.org>
-In-Reply-To: <20260507-getsock_two-v2-0-5873111d9c12@debian.org>
-To: Jeremy Kerr <jk@codeconstruct.com.au>, 
- Matt Johnston <matt@codeconstruct.com.au>, Martin Schiller <ms@dev.tdt.de>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>
-Cc: linux-x25@vger.kernel.org, linux-kernel@vger.kernel.org, 
- netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- Breno Leitao <leitao@debian.org>, kernel-team@meta.com, 
- Stanislav Fomichev <sdf@fomichev.me>, 
- Bobby Eshleman <bobbyeshleman@meta.com>
-X-Mailer: b4 0.16-dev-453a6
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7235; i=leitao@debian.org;
- h=from:subject:message-id; bh=l18IGkzGKUG05f5QZQid8OMan7Jey+HSy4shswzlQO4=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBp/HAwhrfvgmmY2faAwRXUM+RTtqagW8egcMBoM
- bSNwPd0S5uJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCafxwMAAKCRA1o5Of/Hh3
- bbmsD/4rl/NIg1L4BK66/k1oS5ZySRtEAE1DxNa5dsRE7xC7fxNyG6BVbCo1koI344Df6qe4Fr6
- GaXIWi4QouQgj09hglpTi2e0Gtr+XM4UDu4acZ5lkC05m7CBcO+VC2R9ADovQpc7j27edI02IQ+
- /hKyyVCYblOweqC5bHPr+qIbQ69EjSPWpz+ampRkUUJLTJqkwEInlaUZuXeYBkfZVSfM6t4J1a3
- HO/6Fvs2DPRWZpOJlm5qgzTmuXEp5etebT9CpcY+Pe2mDlVXolpbF+X1OqycimtaoJhLzSHdEbl
- NNNuVGvuSLMcBHVu0Y8CpbDiw4kJ3nKCXJ82uYgO571RsWNcfC1IRlax1FOpK000f8neKiDyXYS
- eRurPtIofxkbgshhchTDoeDGjFpn9X9tboHMPX12iW6kX4aZZtewifd0vsV/lvAaNT17fk/m/Pa
- 3mLgtQE0SZ94E6vzFa9p7nalCYvGXw1daaPWQ5MqoT15Kjt/pFXgCZbvHjqq8wHL5vj4g6lr0W6
- dL5cPJFdo1I43Uhs67rPiCBUbbSmCL4PS5x1cDhOeP9UM+Mte3rTT/s/dEomOmo2ft/ZBqcc5EP
- RKTL7xEBnalP1ejf2F3f/fKV6fBLOoWDZTW0GMbRYXUSi56fTuLJPemx9OdDdQIGYMIt7i6GQa1
- D4kMxg6ADXWliBA==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|DM6PR12MB4483:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5deac0cb-1b19-478f-7e1a-08deac27c60e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|1800799024|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	Xs+eOXOKXG8dszNNpZ4UFcgqiFGj7LPS4nGmrawUeoCexTqDvMTVNjt/u/pVGVpHhz370AZmTXmd2+B+XDLZksYBjPFq1ZTwTYsRkMyuHEi6mrCOaaXoojURrZ8sw44yKTiaoTCe2ob8mhQXsHJj99I3TF7wP+U3xwzUPrEQOYKj2+BW4arCHjhgbnW3NnW+fkIfyKQs8W5R5DEV4w7UB1VQ+wbutcNEwL0LdVa11CNTG3SNc5alg66PGu45u8Xm5YbCSeFntnsFQJAWSxgMLqxDX/ocKoMp9hmfox6lK9joyRnnVMWJyaS4Ttkq7jh5L4mxO5VeO73G1kEv99bbjbv0BmyfmnRjEh2vsuqShRW/Mif2v+Z/1VhUC1qwvXexybetOWGNEdkmne5Sph5R43DNQi7BgdfSH2Rn9bJw74lBNKdRHssTuI5rZRj+M1pZLgAcBs7jU0F5LGdAMXIT6QhkKn/Q3wLMUPz10VRqvar1RJjtraBnMItN66YbDo/g+mAdvUPKkTswcKc+8U4kEOgnVHahQqXHMZO7Xc82giKUMphi7uqPIBRs/BZFqtZfYQ3wXFokAdbHpF4XoZlMo7i9OhyevXqI7fNqnr/zkp7rENoTXLV3snnrfrBRumWSeEeZ4HBA1kYCIjHLbSlXt+RKjJwKGfvDAGe9mUD19jc/qWKuiog9iiHaqotOl2c7CxjR/k5QM0l2WhZQKUo6JQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?IJijfvaBATQQ3frtR49kwwgumdZPcHxDOUm/Ejfxq8qQqNFt0k7A6PKMlra4?=
+ =?us-ascii?Q?NJIYnyK+nwHdxny048xX2TD9zfttHXEei3xRMjlsW5VaTG9P/0vWaW7VOLMg?=
+ =?us-ascii?Q?WPgEWyOcGySEjjoe4dyguFEMcZBHxswPPp09/VhRFMyu/BjIKSvgkqJJf/PN?=
+ =?us-ascii?Q?qVp5ZdbGExJ1WAsMFIdE2wiSWkhqBD5n+Eq55s+d7ExVvWFnMkqpYNUjv5qG?=
+ =?us-ascii?Q?Mj9iCQ02y4dXypricY6WX8+jkY+L1QnWbtCytUxUpK6dKH0FWAvsxN+Wgb65?=
+ =?us-ascii?Q?crs8HEKfB57tTylAgagpQCa1Y7WxrYTXFes4Hc71vqc5/0ZIYvoV6Ez/16es?=
+ =?us-ascii?Q?VG51tzCgIArNxBayRvnPk5tz06tipLWCY4kOVHF9LY4WTKywP2ElU1KYE6p1?=
+ =?us-ascii?Q?NWzq0Jmi859Rhevs+T17wta8zhuVfegZIhLy8qGHo2SQV9GCA5KhZLkmyL8t?=
+ =?us-ascii?Q?L4uu6B64iilDmCO9/dBhDw1xhF1tbj0AuV1PTplSFD9zUyiOo46DqckyjQbA?=
+ =?us-ascii?Q?NSNe7gN1CpteNDjZ5OVGG8wB/SMFfYyW7I2Qe2QbYfO4n1hyOiYWGZGgMIt8?=
+ =?us-ascii?Q?5cECiCBkBDReO/ybohDKlUixHakADVtGxs+4EJzKgkwT4I431Ji4rEGASJj+?=
+ =?us-ascii?Q?q0pLKKDI0lXYphBBiPKUB0QnTDMF3h76+slxYsjX9xHylWlAoRHBCfsr9r8d?=
+ =?us-ascii?Q?vFBciaAlAg6q/FGzgAuMCN4bjP3T1RtRhLu/pVZdLAR2ZZOgwxM19oXanOyA?=
+ =?us-ascii?Q?OsgsZum3Owg0yhofXHKmzUkjX4NzS2dRxiJ1bA0CWX7Ksm6ZbpXQzqbD5Ywz?=
+ =?us-ascii?Q?nk+w0ODL7/nDgr/TBwpbLh8SqpRY4ZyemnSIShkKYuk9EiIUKyEqtzIqBoEW?=
+ =?us-ascii?Q?xdM0fgiNwON3aBvt09gxEcP4sYp1uUe1dWaKDdbu0/dFK3CevPe2qDcNWnFl?=
+ =?us-ascii?Q?iPAiY5e17JIpe+YpCPkY3tgQE1VYsYmtHIo93Qbe9wlD1CtRnvm1a22WHJ83?=
+ =?us-ascii?Q?L9RrGbuc6qZiz0cNQpCHKvd4s6cLGcid5h/n09qXPdLewHZhaJSnvhzDG2GJ?=
+ =?us-ascii?Q?SFuDCGbejk0QQfdFBAPQdYZ8CTzwaRHewMWh0PdJW1AIYH8VEd7pHwym2V7M?=
+ =?us-ascii?Q?CWcz4LrstuWJxWyTuZFYnv3tY8w1PFC+nvk3HCGj6C4pxG3X1TlI1gaZXAUl?=
+ =?us-ascii?Q?4NcY0fVoKZNshEQ4fUcGJ2dXuZf6tZSCoHqxvMXhlnDhU9C0F/Lqa6FbzOQk?=
+ =?us-ascii?Q?PnpakmmecmxMVAqYsQStMu4EEfB4MdqveNtmJgXumPIuC0c0POWJy53cWqcB?=
+ =?us-ascii?Q?R2CuNYwrc+ZV28fCjrvoI31lv95uV0brpvcZcDzIv/DcyABGyPFfDHBb/kIP?=
+ =?us-ascii?Q?+XXK4WCOgx7mR5oqlWwlZgrk1UfGpNU8YFWQ6+CVQXtEMZGMIhniUwbgesjN?=
+ =?us-ascii?Q?F409ImDI7LtUhREL0FONsJqaZ6k8RjDMHMqOtVFBaXttjkKyHIIb03WgexXe?=
+ =?us-ascii?Q?D1KnC90eLZRYzV6VYLnFgLwXnqELGtGBGsOzcTtsubTHrRRTEfh8+znz46Ad?=
+ =?us-ascii?Q?uGHOpARUA3XPYIrADqogFCsPcodS5h3li1i1X8l5bEntu53B2B5NEahad2tQ?=
+ =?us-ascii?Q?shPOeRFjCOlJoxoG1p1JJVnqm9K0snXF9s9HP89KqxGTx3zbU29qXmUekLXX?=
+ =?us-ascii?Q?XuChQ16UrY6gmFbYsFl5MQAQKTk373WnxHIW2V/bHx+lb2GE?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5deac0cb-1b19-478f-7e1a-08deac27c60e
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2026 10:59:56.1260
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7bV3ymWVdpAH1ztFJoEwphj7pDbBbPKrDOPjSvwUartz4gOFF6kSWi2ENbcm+hNl+v+fmLhPxxPs8/+vzNDH5w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4483
 
-Apply two cleanups suggested by Stanislav and bobby on the original
-selftest series:
+When protodown is enabled on a macvlan, two bugs cause the macvlan to
+incorrectly gain carrier:
 
-- Reorder local variable declarations into reverse christmas-tree
-  order (longest line first). Because that ordering puts socklen_t
-  optlen before the variable whose size it stores, the
-  "optlen = sizeof(...)" initializer is moved out of the declaration
-  to a plain assignment in the test body, as Stanislav suggested.
+1. Toggling the lower device's carrier while protodown is enabled on the
+macvlan causes the macvlan to gain carrier, effectively bypassing the
+protodown mechanism.
 
-- Add ASSERT_EQ(optlen, ...) on every error path so the value the
-  kernel writes back to the userspace optlen is pinned down even
-  when the syscall returns -1. With do_sock_getsockopt() now writing
-  opt->optlen back to userspace unconditionally, asserting that the
-  netlink/vsock error paths leave the original input length untouched
-  guards against future regressions.
+2. Toggling protodown on and then off on the macvlan while the lower
+device has no carrier causes the macvlan to gain carrier, since
+netif_change_proto_down() unconditionally turns the carrier on.
 
-Bobby Eshleman pointed out that
-SO_VM_SOCKETS_CONNECT_TIMEOUT_NEW/OLD return a sock_timeval-shaped
-payload (16 bytes on 64-bit), which is wider than the u64 case
-already covered. Add four tests that exercise this path:
+Patch #1 is a preparation.
 
-- connect_timeout_new_exact         exact-size buffer
-- connect_timeout_new_oversize_clamped  oversize buffer, clamped
-- connect_timeout_new_undersize     undersize -> -EINVAL, optlen
-                                    untouched
-- connect_timeout_old_exact         exact-size buffer for OLD optname
+Patch #2 solves the first problem by making netif_carrier_on() return
+early when protodown is on.
 
-Suggested-by: Stanislav Fomichev <sdf@fomichev.me>
-Suggested-by: Bobby Eshleman <bobbyeshleman@meta.com>
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- tools/testing/selftests/net/getsockopt_iter.c | 109 +++++++++++++++++++++++---
- 1 file changed, 98 insertions(+), 11 deletions(-)
+Patch #3 solves the second problem by only calling netif_carrier_on()
+when protodown is turned off if there is no linked net device or if the
+linked net device has a carrier.
 
-diff --git a/tools/testing/selftests/net/getsockopt_iter.c b/tools/testing/selftests/net/getsockopt_iter.c
-index 179f9e84926fd..209569354d0e3 100644
---- a/tools/testing/selftests/net/getsockopt_iter.c
-+++ b/tools/testing/selftests/net/getsockopt_iter.c
-@@ -22,6 +22,7 @@
- #include <unistd.h>
- #include <linux/netlink.h>
- #include <linux/rtnetlink.h>
-+#include <linux/time_types.h>
- #include <linux/vm_sockets.h>
- #include <sys/socket.h>
- #include "kselftest_harness.h"
-@@ -61,8 +62,10 @@ FIXTURE_TEARDOWN(netlink)
- 
- TEST_F(netlink, pktinfo_exact)
- {
-+	socklen_t optlen;
- 	int val = -1;
--	socklen_t optlen = sizeof(val);
-+
-+	optlen = sizeof(val);
- 
- 	ASSERT_EQ(0, getsockopt(self->fd, SOL_NETLINK, NETLINK_PKTINFO,
- 				&val, &optlen));
-@@ -73,7 +76,9 @@ TEST_F(netlink, pktinfo_exact)
- TEST_F(netlink, pktinfo_oversize_clamped)
- {
- 	char buf[16] = {};
--	socklen_t optlen = sizeof(buf);
-+	socklen_t optlen;
-+
-+	optlen = sizeof(buf);
- 
- 	ASSERT_EQ(0, getsockopt(self->fd, SOL_NETLINK, NETLINK_PKTINFO,
- 				buf, &optlen));
-@@ -83,11 +88,14 @@ TEST_F(netlink, pktinfo_oversize_clamped)
- TEST_F(netlink, pktinfo_undersize)
- {
- 	char buf[2] = {};
--	socklen_t optlen = sizeof(buf);
-+	socklen_t optlen;
-+
-+	optlen = sizeof(buf);
- 
- 	ASSERT_EQ(-1, getsockopt(self->fd, SOL_NETLINK, NETLINK_PKTINFO,
- 				 buf, &optlen));
- 	ASSERT_EQ(EINVAL, errno);
-+	ASSERT_EQ(sizeof(buf), optlen);
- }
- 
- TEST_F(netlink, list_memberships_size_discovery)
-@@ -105,7 +113,9 @@ TEST_F(netlink, list_memberships_size_discovery)
- TEST_F(netlink, list_memberships_full_read)
- {
- 	__u32 buf[64] = {};
--	socklen_t optlen = sizeof(buf);
-+	socklen_t optlen;
-+
-+	optlen = sizeof(buf);
- 
- 	ASSERT_EQ(0, getsockopt(self->fd, SOL_NETLINK,
- 				NETLINK_LIST_MEMBERSHIPS,
-@@ -117,22 +127,28 @@ TEST_F(netlink, list_memberships_full_read)
- 
- TEST_F(netlink, bad_level)
- {
-+	socklen_t optlen;
- 	int val;
--	socklen_t optlen = sizeof(val);
-+
-+	optlen = sizeof(val);
- 
- 	ASSERT_EQ(-1, getsockopt(self->fd, SOL_SOCKET + 1, NETLINK_PKTINFO,
- 				 &val, &optlen));
- 	ASSERT_EQ(ENOPROTOOPT, errno);
-+	ASSERT_EQ(sizeof(val), optlen);
- }
- 
- TEST_F(netlink, bad_optname)
- {
-+	socklen_t optlen;
- 	int val;
--	socklen_t optlen = sizeof(val);
-+
-+	optlen = sizeof(val);
- 
- 	ASSERT_EQ(-1, getsockopt(self->fd, SOL_NETLINK, 0x7fff,
- 				 &val, &optlen));
- 	ASSERT_EQ(ENOPROTOOPT, errno);
-+	ASSERT_EQ(sizeof(val), optlen);
- }
- 
- /* ---------- vsock ---------- */
-@@ -157,8 +173,10 @@ FIXTURE_TEARDOWN(vsock)
- 
- TEST_F(vsock, buffer_size_exact)
- {
-+	socklen_t optlen;
- 	uint64_t val = 0;
--	socklen_t optlen = sizeof(val);
-+
-+	optlen = sizeof(val);
- 
- 	ASSERT_EQ(0, getsockopt(self->fd, AF_VSOCK,
- 				SO_VM_SOCKETS_BUFFER_SIZE,
-@@ -170,7 +188,9 @@ TEST_F(vsock, buffer_size_exact)
- TEST_F(vsock, buffer_size_oversize_clamped)
- {
- 	char buf[16] = {};
--	socklen_t optlen = sizeof(buf);
-+	socklen_t optlen;
-+
-+	optlen = sizeof(buf);
- 
- 	ASSERT_EQ(0, getsockopt(self->fd, AF_VSOCK,
- 				SO_VM_SOCKETS_BUFFER_SIZE,
-@@ -181,33 +201,100 @@ TEST_F(vsock, buffer_size_oversize_clamped)
- TEST_F(vsock, buffer_size_undersize)
- {
- 	char buf[4] = {};
--	socklen_t optlen = sizeof(buf);
-+	socklen_t optlen;
-+
-+	optlen = sizeof(buf);
- 
- 	ASSERT_EQ(-1, getsockopt(self->fd, AF_VSOCK,
- 				 SO_VM_SOCKETS_BUFFER_SIZE,
- 				 buf, &optlen));
- 	ASSERT_EQ(EINVAL, errno);
-+	ASSERT_EQ(sizeof(buf), optlen);
- }
- 
- TEST_F(vsock, bad_level)
- {
-+	socklen_t optlen;
- 	uint64_t val;
--	socklen_t optlen = sizeof(val);
-+
-+	optlen = sizeof(val);
- 
- 	ASSERT_EQ(-1, getsockopt(self->fd, SOL_SOCKET + 1,
- 				 SO_VM_SOCKETS_BUFFER_SIZE,
- 				 &val, &optlen));
- 	ASSERT_EQ(ENOPROTOOPT, errno);
-+	ASSERT_EQ(sizeof(val), optlen);
- }
- 
- TEST_F(vsock, bad_optname)
- {
-+	socklen_t optlen;
- 	uint64_t val;
--	socklen_t optlen = sizeof(val);
-+
-+	optlen = sizeof(val);
- 
- 	ASSERT_EQ(-1, getsockopt(self->fd, AF_VSOCK, 0x7fff,
- 				 &val, &optlen));
- 	ASSERT_EQ(ENOPROTOOPT, errno);
-+	ASSERT_EQ(sizeof(val), optlen);
-+}
-+
-+/* SO_VM_SOCKETS_CONNECT_TIMEOUT_{NEW,OLD} return a sock_timeval-shaped
-+ * payload, which is wider than u64 on 64-bit. They exercise the path
-+ * where the protocol's reported lv (16 bytes) is larger than the
-+ * common 8-byte u64 case covered above.
-+ */
-+TEST_F(vsock, connect_timeout_new_exact)
-+{
-+	struct __kernel_sock_timeval tv = {};
-+	socklen_t optlen;
-+
-+	optlen = sizeof(tv);
-+
-+	ASSERT_EQ(0, getsockopt(self->fd, AF_VSOCK,
-+				SO_VM_SOCKETS_CONNECT_TIMEOUT_NEW,
-+				&tv, &optlen));
-+	ASSERT_EQ(sizeof(tv), optlen);
-+}
-+
-+TEST_F(vsock, connect_timeout_new_oversize_clamped)
-+{
-+	char buf[sizeof(struct __kernel_sock_timeval) * 2] = {};
-+	socklen_t optlen;
-+
-+	optlen = sizeof(buf);
-+
-+	ASSERT_EQ(0, getsockopt(self->fd, AF_VSOCK,
-+				SO_VM_SOCKETS_CONNECT_TIMEOUT_NEW,
-+				buf, &optlen));
-+	ASSERT_EQ(sizeof(struct __kernel_sock_timeval), optlen);
-+}
-+
-+TEST_F(vsock, connect_timeout_new_undersize)
-+{
-+	socklen_t optlen;
-+	uint64_t val;
-+
-+	optlen = sizeof(val);
-+
-+	ASSERT_EQ(-1, getsockopt(self->fd, AF_VSOCK,
-+				 SO_VM_SOCKETS_CONNECT_TIMEOUT_NEW,
-+				 &val, &optlen));
-+	ASSERT_EQ(EINVAL, errno);
-+	ASSERT_EQ(sizeof(val), optlen);
-+}
-+
-+TEST_F(vsock, connect_timeout_old_exact)
-+{
-+	struct __kernel_old_timeval tv = {};
-+	socklen_t optlen;
-+
-+	optlen = sizeof(tv);
-+
-+	ASSERT_EQ(0, getsockopt(self->fd, AF_VSOCK,
-+				SO_VM_SOCKETS_CONNECT_TIMEOUT_OLD,
-+				&tv, &optlen));
-+	ASSERT_EQ(sizeof(tv), optlen);
- }
- 
- TEST_HARNESS_MAIN
+Patch #4 adds a selftest covering both bugs and the basic protodown
+functionality.
+
+Targeting at net-next since these are not regressions (i.e., never
+worked).
+
+Note that while these changes are in the core, they should only affect
+macvlan as protodown is only supported by macvlan and vxlan and only the
+former has a linked net device.
+
+v3:
+- Keep protodown restricted to carrier state and avoid changing /
+  calling netif_stacked_transfer_operstate().
+v2: https://lore.kernel.org/netdev/20260505081656.463158-1-idosch@nvidia.com/
+- Move protodown handling away from drivers to the core (Jakub).
+- Add a new test case for vxlan.
+v1: https://lore.kernel.org/netdev/20260429124624.835335-1-idosch@nvidia.com/
+
+Ido Schimmel (4):
+  net: Set dev->proto_down before changing carrier state
+  net: Do not turn on carrier when protodown is on
+  net: Do not unconditionally turn on carrier when turning off protodown
+  selftests: net: Add protodown tests
+
+ net/core/dev.c                           |  23 ++-
+ net/sched/sch_generic.c                  |   3 +
+ tools/testing/selftests/net/Makefile     |   1 +
+ tools/testing/selftests/net/protodown.sh | 182 +++++++++++++++++++++++
+ 4 files changed, 207 insertions(+), 2 deletions(-)
+ create mode 100755 tools/testing/selftests/net/protodown.sh
 
 -- 
-2.52.0
+2.54.0
 
