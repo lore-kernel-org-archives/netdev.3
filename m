@@ -1,314 +1,380 @@
-Received: from FR6P281CU001.outbound.protection.outlook.com (mail-germanywestcentralazon11020102.outbound.protection.outlook.com [52.101.171.102])
+Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08B7929898B
-	for <netdev@vger.kernel.org>; Thu,  7 May 2026 06:52:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.171.102
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778136729; cv=fail; b=lqBGCNBqWvEm8/Im0qxFGcEYvqMyzRhBWY3r5c4dT/O3IYZ15n3E+sFVx3phYvN+UXGN8X2iuXVleWF2AczgaRgTOTN5baNk3uTwOIv4hcAN797s2fz1i63Tjuf4d9QSVFbOX0u23KK3XLEbSSAKDMUMYK2X+LzqBstDeXJdpnU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778136729; c=relaxed/simple;
-	bh=XNWSpF9q5nlFgAOJWv38DCAEiUAO6YblPaaquNc+jyw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=nuQzMUxMk38sX7o9zOu9O+5YDd19E5KJa07WtwvLzY8zRIijUxBMifrFYGf+0zy7cWb3erxEPwMQ1zyQU4In69gBGywD0GoznJNlrEEg+cAIFBpkc0/A0NmTe/Rz+4A+P64BgyU1GSY/Jtqb8tfVbgXpJCCqOzwaSTs1dJvVuhI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=schleissheimer.de; spf=pass smtp.mailfrom=schleissheimer.de; dkim=pass (1024-bit key) header.d=schleissheimer.onmicrosoft.com header.i=@schleissheimer.onmicrosoft.com header.b=GCJloFyn; arc=fail smtp.client-ip=52.101.171.102
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=schleissheimer.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=schleissheimer.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBD752F12DA;
+	Thu,  7 May 2026 06:54:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.75
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778136871; cv=none; b=Fcmx56ljmwJ+2DG/U8zVgLqoa8I3CW3nlsKIBEQZ5Eh1nK98ardalHcLFEChUVkxUMqLUzE5ouQa/d4UddA9KXjPGs+pHcEJSlcs7DI6IRvNo6ViEEGcs+d1cuNhlXJxuP6Sg24xT0eixOVLB2WkgKq4JBNzx0FyYx1hne9xn7Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778136871; c=relaxed/simple;
+	bh=8SAmx8Ok1JK3fepgR6uqWCUWeULEgKNuV0+B6q85Fj8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hUAQ48A/grOWKyST4pnolyjdAJ94XvfiLUkN+FMya9ngS6zGoyxcboCe6zy1cqnTMZkTMC5lHbwfgEuUarKpE8HAzqYy96oSETYHmbAYGXP+Brdq5N0/J6/v5i7nSDeTMMe8Phuq2xXnbxpqQp68AJSnPV8CXO7kOCcNj0icAjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=schippers-hamm.de; spf=pass smtp.mailfrom=schippers-hamm.de; dkim=pass (2048-bit key) header.d=schippers-hamm.de header.i=simon@schippers-hamm.de header.b=iJnVQPgO; arc=none smtp.client-ip=217.72.192.75
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=schippers-hamm.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=schippers-hamm.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=schleissheimer.onmicrosoft.com header.i=@schleissheimer.onmicrosoft.com header.b="GCJloFyn"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jlPF3T17peEM8A107snng2ewguSC62bgfVdEn/3eMTaYjGcWkE54xsvyi4UkkSgxHe/js9AyWT2KHtz+bfLFg2z7oAm8f9oQzy8pQs4NhklPLxescVhF3FxLHtz9NcrlVOwJk6OPHETr83R1tU6QqsIqVwKeTNYJddI7jTOG+5u7USNKoHZdvn+Rh0Ma63tkkRUZrJnTKsItAgBmMf4gUi0yIUZVVx/v/iVMVB/zMQaM0W/qakBY5+BEgThfAINkuWtNYSo+HAaQB34MUNtFsyvD8Pww/k3D9CtgngoqKWW2Fi4Q9yL2jWLpSTnCY5A5SnjP30NJshIJZqcmv/BNLw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Bx9+RXYNESx3nBQTPxbXgDED1v6vWAgNqbZ7aUriAw0=;
- b=nDlFYmnvE9Y02XgXRiwokVMX6OnuqnYAMiLF4rPWD2f1RwEHTv6HEVkBxFD2H+7F59WiHO2yyhrdpGZCMigMtjTOprZGOsiKCoK25heQPwgxNwR4CE6Qp1FG85rNfD2BS27ySWUNzb6rtPgVCRTrjqh9coXDtB9HMAOBjNIzh5Kb3nC8ZM+H61yuU6AeBfwDpZsPyLYWhP1WFHwVxNosfJ+zXeJ10TuDpOV7kTalD0AbwdLVP1S1ADQqcGGQ1HuEfXbt2Jg4Bcmhi4aKGnEIgpQ9+VA1jCvXafJuCZDDkKwRTspCfSoFjrPfrFkVqmUQFznZkid48BseSjNKvZoAVA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=schleissheimer.de; dmarc=pass action=none
- header.from=schleissheimer.de; dkim=pass header.d=schleissheimer.de; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=schleissheimer.onmicrosoft.com; s=selector1-schleissheimer-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Bx9+RXYNESx3nBQTPxbXgDED1v6vWAgNqbZ7aUriAw0=;
- b=GCJloFynkhPDr/kWAAi2wCKwxYg0GzplVm5O82WjGdv55s3XwBswudcu1F/RwUZlWWHPDm1MDxXIUZHoJVII/dakBV85m3mbudCrUGydxfdcQkjCWdaqS5aRckchzcIQdxszp1FjpH735D2HaH7D7uqzVNeWGVRcf7UBEMM5LxY=
-Received: from BEZP281MB2245.DEUP281.PROD.OUTLOOK.COM (2603:10a6:b10:52::10)
- by FR4P281MB4956.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:193::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.17; Thu, 7 May
- 2026 06:52:03 +0000
-Received: from BEZP281MB2245.DEUP281.PROD.OUTLOOK.COM
- ([fe80::2bc1:32a6:153:c3e9]) by BEZP281MB2245.DEUP281.PROD.OUTLOOK.COM
- ([fe80::2bc1:32a6:153:c3e9%4]) with mapi id 15.20.9891.016; Thu, 7 May 2026
- 06:52:03 +0000
-From: Sven Schuchmann <schuchmann@schleissheimer.de>
-To: Andrew Lunn <andrew@lunn.ch>
-CC: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: AW: assert in phylink.c with lan7801 and dp83tc811 since kernel 6.18
-Thread-Topic: assert in phylink.c with lan7801 and dp83tc811 since kernel 6.18
-Thread-Index:
- AQHc3HSt2FaNRg+Hc0Clgdk/8rilD7X/aQMAgAEuzo+AAFoaAIAABvoAgAAD+ICAACpjCYAADeQAgADrfv4=
-Date: Thu, 7 May 2026 06:52:03 +0000
-Message-ID:
- <BEZP281MB2245BB0FC7DA18B285BD564CD93C2@BEZP281MB2245.DEUP281.PROD.OUTLOOK.COM>
-References:
- <BEZP281MB224533D524B27CFC6E47B447D93E2@BEZP281MB2245.DEUP281.PROD.OUTLOOK.COM>
- <57fb63c2-7a05-4bbe-ba2d-fc61ce1e3ba1@lunn.ch>
- <BEZP281MB22458F571CC8251C141D933CD93F2@BEZP281MB2245.DEUP281.PROD.OUTLOOK.COM>
- <7778cd41-cf36-4524-a347-408a8fb0bde0@lunn.ch>
- <f9b8840d-94ba-4bde-9ace-fb81eb733ff9@bootlin.com>
- <eba96f21-78e6-42bf-938a-6d4037d0a305@lunn.ch>
- <BEZP281MB22457317618130F28E84E3B4D93F2@BEZP281MB2245.DEUP281.PROD.OUTLOOK.COM>
- <24815161-68ff-4f3e-b0e1-286871b9686a@lunn.ch>
-In-Reply-To: <24815161-68ff-4f3e-b0e1-286871b9686a@lunn.ch>
-Accept-Language: de-DE, en-US
-Content-Language: de-DE
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=schleissheimer.de;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BEZP281MB2245:EE_|FR4P281MB4956:EE_
-x-ms-office365-filtering-correlation-id: 1f6b0b3c-0f3e-40a0-c919-08deac052524
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|1800799024|366016|18002099003|38070700021|56012099003|22082099003;
-x-microsoft-antispam-message-info:
- o60QFQuNC6IMN+QRbRBjz4ap5ok0OC5hdbzrclukPJZJmjM79iWDlRuJIAIEVeUkQqdhgqJHQtDdvIa85ppa9S2P3FWIq6GmWpJLg0xkwkp6qbG9W65nVm3tx2vVtkkMh7Av26Ql1x7bpckogoPGFvzKJdut6+IKdSpeooNqDbIMzohuDrbhRl+1cjG4r0R3ox76lnzDEo70C3TnMoTgEHA20tQITnnzjVAtHsIQxUobjP64zC72Lq7fs0ODvmt/o/duQ2oCK+3C6+SJft04S2AliOLK2LcDOomH8AaiAfeYByGy0XX+WGy/cGmNYmguwSBhQe9yU5O9t2tbGDJY6MAwI/lyjoJsJbXffCrCL4To8E2s2iq4i1yuKqT6K87R6/44YVxJ4n1Vg8A9vTHTmrlbCvCYV4AiOhs8n6zmmKuhdMM1+feF7FI3r3LecDjVTWYaduzpV8ABVyrtD8rmscjm47f0MvsUzlBkJhdcJJrY75akG9derdf8tOGd0SG9ASAj3ubEua/FYaq/OyXRxS0sBSU2fKI3OKRALA6K5R0DB5sgJGVDvq2Oc9gITMWZJPuQeCiUp3W5wJZ7EcYRKE0cBPerortwNpiplTEfjPyFJwpmk2eOownfYVDiFjjgJlfzB5hHGovM50PRLWwR+2D4Unsk/I9D7kzBBcVBb9TTc+GL6PreNYlMsGdTjSSjlcCYoaWKqIC4jx+FuFBkNw==
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BEZP281MB2245.DEUP281.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(18002099003)(38070700021)(56012099003)(22082099003);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?gV0RTSj4Y5LfBCthzNPeh+u5JkLfSxWS/gu5jXEUpaJWBIHTwAlN9VeAE+?=
- =?iso-8859-1?Q?4vjpBcqgKu2RhzkCESQlDXK9IIcoYQlF2s+JbblW6yFJfTBf2qfHy2fAlE?=
- =?iso-8859-1?Q?jBy0QfNnZqvwUutSVTAL/0CglnzrAdh4woMtyhLReQUvppEERQ3Pp/dX2Z?=
- =?iso-8859-1?Q?L5IYUR6pCJOPcKNdPQVnMAGFP+nvArmPZNC91Wa0LH0X3Xq4lCzjMYZKCQ?=
- =?iso-8859-1?Q?/2MZtxUpB59R7i1+0WAyZjTPVAFNzFDpO7Kv2F+TdHruFJZvEXsvb6KxMt?=
- =?iso-8859-1?Q?GCFBlKzq13xSO+aqX/AJqD0yUGWJpbtdGD8oGcMqQG8Ve0gHdaPMR6bGNI?=
- =?iso-8859-1?Q?3xg/XyhFbxRaN8xNOAbFcqF7lUTPo46rmHTbWBaWdDgxSwRCKeic618cE1?=
- =?iso-8859-1?Q?SpvlnO7bRH0xABDSVF4xwVRfugGhY8KL8UGkwSUn2/ZBtRdw1YLGP1AJJX?=
- =?iso-8859-1?Q?Ncm+5XFXpsc9jh1HNArtYqYDhajktCdsD6gWnpuiM+Po9ma75EfkUryoNw?=
- =?iso-8859-1?Q?zKF6wbCrbpz42/H3QhhbAQNPm0H4POBB0C9Z7bOEuPupUG3C9/HVtHA3pn?=
- =?iso-8859-1?Q?abIfrDXR7JtSL3GUIvNt/9WOG35JLofA4oAvjwmdJZ19RxBvgQaO1ZWyEv?=
- =?iso-8859-1?Q?AgaalD6bIJkdyZzpTH84jOQkEQ7xGkFwbXbS+s7eurWMVOenZD8IRqVTJZ?=
- =?iso-8859-1?Q?Ur7giZQoKwaCUXALW0NhSaBG0AvSb9Gqv8W25zA6p1M8XI2HYd7F4QFqKW?=
- =?iso-8859-1?Q?lEtG8pyWuw5FORhub6pKyzqQy7YzMrNvY3G8i/oUV/V+ghF8FmFaxdyuQy?=
- =?iso-8859-1?Q?Ibx6liVmHrM1RP/IPNIlwuxm7ry6P9kQsUH1blhN7UHFvCGdcNVes0hcOO?=
- =?iso-8859-1?Q?6wgLbqNWd9hgXKM0K+AoKm0VMdhcvpJD53tfx2fg+sb9eZOD3kzEVbFy/0?=
- =?iso-8859-1?Q?vHNSyI3sqLMBE6RxbucOvaEpD0pzOmd3yQwCA0nzPluEwYv+4VAJOp/R1z?=
- =?iso-8859-1?Q?nDXK8h2U34UzPHcTZBmJABjUBAimTGmI0U1PqVIPadRL2L+xMlWxOzOUoL?=
- =?iso-8859-1?Q?/ArAmkgJZt9HBSlJsmpgyZ+/cIDFvZ0OMsnmTqLhw7HI0ye4IfFAWAuyPH?=
- =?iso-8859-1?Q?NeD8hc+sFlKSOxos+a+P2qsOHGCa9w+8iM7VfFe5CExAqaARy4/wYIGDst?=
- =?iso-8859-1?Q?iBEvszAcLJASWf+xKMKpb1ExLuCobyZkBPT6VM0s0qNHkfd0Z6+X8kZNaA?=
- =?iso-8859-1?Q?BMj8FRtFBQszVOvawweHSImQhtZ/MpQPdmOY/oMRo/CuhHQ+TCuWBSAvPz?=
- =?iso-8859-1?Q?8AyOKIYRyYE8K/TY86lEHdQOgQIT8i0x3dnoIEeN05pBrFS3lylxgekVAw?=
- =?iso-8859-1?Q?GwBYlG9TzaszMa6Ow+OO/Ai3EpJfbS/lPfeIMEw4FI3Fv7RY+nObf3TtZr?=
- =?iso-8859-1?Q?evOkO9mqxcqC1kUhJ0K6z0uaWDZeRfIHFqm+9tvjNgBHuHf7BA1y3A3dMQ?=
- =?iso-8859-1?Q?k3KwDUTYVBPbdmcd7LfJbL4H5C6kC4tq561Jc3UChxS4WlqL0kCxr9b/70?=
- =?iso-8859-1?Q?obrT9OVwOTiN43rnymCBneuJzSwH55lCdtBGUMPgXfseQiP4BAhDEe4Af8?=
- =?iso-8859-1?Q?E/ppqUVdUC/XIhloJ+mEFsrg2s3dgy+g6Hpvvj8Hy4MgiTPyS7lM8o2PrQ?=
- =?iso-8859-1?Q?mTCHBriZbu+F233b0nD+m9QLI5Mrp3xAsLp02XZEIDPPyriDw9h+PoI8hx?=
- =?iso-8859-1?Q?7ZXLtDZ8c0PX9KpQejhPpk0puba/fGsC5+Cg+LLWyK57YyzkJ9OhfhMPy9?=
- =?iso-8859-1?Q?6yudBaUtkQ=3D=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=schippers-hamm.de header.i=simon@schippers-hamm.de header.b="iJnVQPgO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=schippers-hamm.de;
+	s=s1-ionos; t=1778136860; x=1778741660; i=simon@schippers-hamm.de;
+	bh=0s0anbYrKCWTkGQXUN0hZBGeLkkRLnTSX3TgI/yhcOQ=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=iJnVQPgOqVgBmY1TqYIQPJ7Qz7pSX2b+qV7vzJaL8oE9j2opwz8e8BTC91H7zwb0
+	 6r3aLpRlbiGMZGODWfSV2B2jKvCOh+7kAN+UxSAQ4F3RBkRpS/yhvZKH98dd0LHfF
+	 liEOt6OFsE91fuqYjt8I7gtRTxx8kubj8od5gQwnTcwlleyup+TVV59mGAH/XoHNh
+	 e/Ee9eSe6Sxuoxdm2KK5sAob4EoovZ9Oyb/N7+GmyxMxpLMCAXiFU3alioZHhFlAU
+	 +zAKEom8eVsv7WL9DSTEYvLReURnvnxJO4TWvgOT+qDiksCwo4PUo1bHKcOdle/ia
+	 WR3TJAZa7JMhCXcIYQ==
+X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
+Received: from client.hidden.invalid by mrelayeu.kundenserver.de (mreue107
+ [212.227.15.152]) with ESMTPSA (Nemesis) id 1MJn4B-1w1QtZ2xtR-00MMe9; Thu, 07
+ May 2026 08:54:20 +0200
+Message-ID: <ee275aa6-af27-4dac-9afa-da88abde312b@schippers-hamm.de>
+Date: Thu, 7 May 2026 08:54:13 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: schleissheimer.de
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BEZP281MB2245.DEUP281.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1f6b0b3c-0f3e-40a0-c919-08deac052524
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 May 2026 06:52:03.0403
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: ba05321a-a007-44df-8805-c7e62d5887b5
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 384t2avI8daHW/JD4NMe6V6mixwlWEpAPqzhEQMk09t3gVQ6kJfGvPurrY0rmSw0jHjqghml6yUodGxes3MMGCyT56lcrlMp9VfI6NoN+Vc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: FR4P281MB4956
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v5 3/5] veth: implement Byte Queue Limits (BQL)
+ for latency reduction
+To: hawk@kernel.org, netdev@vger.kernel.org
+Cc: kernel-team@cloudflare.com, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Stanislav Fomichev <sdf@fomichev.me>, linux-kernel@vger.kernel.org,
+ bpf@vger.kernel.org
+References: <20260505132159.241305-1-hawk@kernel.org>
+ <20260505132159.241305-4-hawk@kernel.org>
+Content-Language: en-US
+From: Simon Schippers <simon@schippers-hamm.de>
+In-Reply-To: <20260505132159.241305-4-hawk@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:xLLwt4XY0mBO0B//rPm46MMNitIhIIuGJyuK0d+Zp3/COd9D3Yq
+ NsBVD6qoAjX3cSbdQIl74TEWkl7khC4qfI3/A1sY/9pUPJXCrNetbNNm3Ipd9xxE0OxW8PL
+ PVy18dwRVll2/hls2fcJiKzEU9X4yCrPGqalZKFNqElUd8iuqyDcY+Qv5bEl8eomGuh3sLu
+ 0h56njnwzcE0har0sI9NA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:+GwmJoW9sDc=;QLbKVJXyZlf0ZOP4Y51en+Ojso5
+ 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
+ WDP4j21AFHuNykPlkCSqvLQfhKZwgFaR
 
-Hi Andew,=0A=
-=0A=
-thanks for the detailed explanation! Indeed adding  =0A=
-.get_features=A0=A0 =3D genphy_c45_pma_read_ext_abilities,=0A=
-to "dp83tc811.c" makes the network work again:=0A=
-=0A=
-[    2.253619] usb 1-1.3: new high-speed USB device number 3 using dwc2=0A=
-[    2.342774] usb 1-1.3: New USB device found, idVendor=3D0424, idProduct=
-=3D7801, bcdDevice=3D 3.00=0A=
-[    2.342810] usb 1-1.3: New USB device strings: Mfr=3D1, Product=3D2, Ser=
-ialNumber=3D3=0A=
-[    2.342820] usb 1-1.3: Product: LAN7801=0A=
-[    2.342828] usb 1-1.3: Manufacturer: Microchip=0A=
-[    2.342835] usb 1-1.3: SerialNumber: 00800F780100=0A=
-[    2.353766] lan78xx 1-1.3:1.0 (unnamed net_device) (uninitialized): defe=
-rred multicast write 0x00007ca0=0A=
-[    2.466961] systemd[1]: System time advanced to timestamp on /var/lib/sy=
-stemd/timesync/clock: Thu 2026-05-07 08:03:39 CEST=0A=
-[    2.500632] lan78xx 1-1.3:1.0 (unnamed net_device) (uninitialized): regi=
-stered mdiobus bus usb-001:003=0A=
-[    2.500675] lan78xx 1-1.3:1.0 (unnamed net_device) (uninitialized): int =
-urb period 64=0A=
-[    2.500877] lan78xx 1-1.3:1.0 (unnamed net_device) (uninitialized): phyd=
-ev->irq =3D 37=0A=
-[    2.511949] lan78xx 1-1.3:1.0 (unnamed net_device) (uninitialized): PHY =
-usb-001:003:00 doesn't supply possible interfaces=0A=
-[    2.511990] lan78xx 1-1.3:1.0 (unnamed net_device) (uninitialized): PHY =
-[usb-001:003:00] driver [TI DP83TC811] (irq=3D37)=0A=
-[    2.512005] lan78xx 1-1.3:1.0 (unnamed net_device) (uninitialized): phy:=
- rgmii-id setting supported 00000000,00000008,00000000,00006000 advertising=
- 00000000,00000008,00000000,00006000=0A=
-[...]=0A=
-[   10.336369] lan78xx 1-1.3:1.0 broadr1: configuring for phy/rgmii-id link=
- mode=0A=
-[   10.336397] lan78xx 1-1.3:1.0 broadr1: major config, requested phy/rgmii=
--id=0A=
-[   10.336422] lan78xx 1-1.3:1.0 broadr1: major config, active phy/none/rgm=
-ii-id=0A=
-[   10.336432] lan78xx 1-1.3:1.0 broadr1: phylink_mac_config: mode=3Dphy/rg=
-mii-id/none adv=3D00000000,00000000,00000000,00000000 pause=3D00=0A=
-[   10.337360] lan78xx 1-1.3:1.0 broadr1: PHY INTR: 0x00020000=0A=
-[   10.341302] lan78xx 1-1.3:1.0 broadr1: receive multicast hash filter=0A=
-[   10.341445] lan78xx 1-1.3:1.0 broadr1: receive multicast hash filter=0A=
-[   10.342409] lan78xx 1-1.3:1.0 broadr1: deferred multicast write 0x00007c=
-a2=0A=
-[   10.345161] lan78xx 1-1.3:1.0 broadr1: phy link up rgmii-id/100Mbps/Full=
-/none/off/nolpi=0A=
-[   10.347681] lan78xx 1-1.3:1.0 broadr1: start tx path=0A=
-[   10.348201] lan78xx 1-1.3:1.0 broadr1: start rx path=0A=
-[   10.348730] lan78xx 1-1.3:1.0 broadr1: Link is Up - 100Mbps/Full - flow =
-control off=0A=
-=0A=
-I think it is worth doing a patch on this also?=0A=
-I am not that experienced in sending kernel patches but I could try...=0A=
-=0A=
-Regards,=0A=
-=0A=
-    Sven=0A=
-=0A=
-=0A=
-________________________________________=0A=
-Von:=A0Andrew Lunn <andrew@lunn.ch>=0A=
-Gesendet:=A0Mittwoch, 06. Mai 2026 18:40=0A=
-An:=A0Sven Schuchmann <schuchmann@schleissheimer.de>=0A=
-Cc:=A0Maxime Chevallier <maxime.chevallier@bootlin.com>; netdev@vger.kernel=
-.org <netdev@vger.kernel.org>=0A=
-Betreff:=A0Re: assert in phylink.c with lan7801 and dp83tc811 since kernel =
-6.18=0A=
-=0A=
-=0A=
->=A0=A0=A0=A0=A0=A0=A0 phylink_dbg(pl, "phy: --3.4 supported=A0=A0=A0 0x%x\=
-n", supported);=0A=
-=0A=
-=0A=
-=0A=
-supported is a pointer, so you cannot get anything useful from=0A=
-=0A=
-printing its value.=0A=
-=0A=
-=0A=
-=0A=
-> [=A0=A0=A0 2.771616] lan78xx 1-1.4:1.0 (unnamed net_device) (uninitialize=
-d): validation of rgmii-id with support 00000000,00000000,00000000,00006280=
- and advertisement 00000000,00000000,00000000,00006280 failed: -EINVAL=0A=
-=0A=
-=A0=0A=
-=0A=
-> But I do not get what phylink_is_empty_linkmode() is doing...=0A=
-=0A=
-=0A=
-=0A=
-The supported value is a combination of a few things. It indicates if=0A=
-=0A=
-the PHY supports auto negotiation, pause, asym pause, if the link is=0A=
-=0A=
-using twisted pair, fibre etc. It also lists the speeds the PHY=0A=
-=0A=
-supports. There is a list here:=0A=
-=0A=
-=0A=
-=0A=
-https://elixir.bootlin.com/linux/v7.0.1/source/include/uapi/linux/ethtool.h=
-#L1963=0A=
-=0A=
-=0A=
-=0A=
-Decoding 00006280 we get:=0A=
-=0A=
-=0A=
-=0A=
-ETHTOOL_LINK_MODE_TP_BIT,=0A=
-=0A=
-ETHTOOL_LINK_MODE_MII_BIT,=0A=
-=0A=
-ETHTOOL_LINK_MODE_Pause_BIT,=0A=
-=0A=
-ETHTOOL_LINK_MODE_Asym_Pause_BIT=0A=
-=0A=
-=0A=
-=0A=
-So Maxime was correct, it is not listing any link speeds. From what i=0A=
-=0A=
-understand, it is a 100BaseT1? So you would expect to see:=0A=
-=0A=
-=0A=
-=0A=
-ETHTOOL_LINK_MODE_100baseT1_Full_BIT=0A=
-=0A=
-=0A=
-=0A=
-which is bit 67.=0A=
-=0A=
-=0A=
-=0A=
-phylib asks the PHY what it can do. For BaseT1 that would be=0A=
-=0A=
-genphy_c45_pma_baset1_read_abilities()=0A=
-=0A=
-=0A=
-=0A=
-https://elixir.bootlin.com/linux/v7.0.1/source/drivers/net/phy/phy-c45.c#L9=
-71=0A=
-=0A=
-=0A=
-=0A=
-either the PHY has the wrong value in its register, or the function is=0A=
-=0A=
-not getting called.=0A=
-=0A=
-=0A=
-=0A=
-The PHY is an dp83tc811?=0A=
-=0A=
-=0A=
-=0A=
-https://elixir.bootlin.com/linux/v7.0.1/source/drivers/net/phy/dp83tc811.c#=
-L387=0A=
-=0A=
-=0A=
-=0A=
-It does not set .get_features. However, dp83tg720.c does:=0A=
-=0A=
-=0A=
-=0A=
-https://elixir.bootlin.com/linux/v7.0.1/source/drivers/net/phy/dp83tg720.c#=
-L654=0A=
-=0A=
-=0A=
-=0A=
-So try adding:=0A=
-=0A=
-=0A=
-=0A=
-=A0=A0=A0=A0=A0=A0=A0 .get_features=A0=A0 =3D genphy_c45_pma_read_ext_abili=
-ties,=0A=
-=0A=
-=0A=
-=0A=
-=A0=A0=A0=A0=A0=A0=A0 Andrew=0A=
-=0A=
+On 5/5/26 15:21, hawk@kernel.org wrote:
+> From: Jesper Dangaard Brouer <hawk@kernel.org>
+>=20
+> Commit dc82a33297fc ("veth: apply qdisc backpressure on full ptr_ring to
+> reduce TX drops") gave qdiscs control over veth by returning
+> NETDEV_TX_BUSY when the ptr_ring is full (DRV_XOFF).  That commit noted
+> a known limitation: the 256-entry ptr_ring sits in front of the qdisc as
+> a dark buffer, adding base latency because the qdisc has no visibility
+> into how many bytes are already queued there.
+>=20
+> Add BQL support so the qdisc gets feedback and can begin shaping traffic
+> before the ring fills.  In testing with fq_codel, BQL reduces ping RTT
+> under UDP load from ~6.61ms to ~0.36ms (18x).
+>=20
+> Charge a fixed VETH_BQL_UNIT (1) per packet rather than skb->len, so
+> the DQL limit tracks packets-in-flight.  Unlike a physical NIC, veth
+> has no link speed -- the ptr_ring drains at CPU speed and is
+> packet-indexed, not byte-indexed, so bytes are not the natural unit.
+> With byte-based charging, small packets sneak many more entries into
+> the ring before STACK_XOFF fires, deepening the dark buffer under
+> mixed-size workloads.  Testing with a concurrent min-size packet flood
+> shows 3.7x ping RTT degradation with skb->len charging versus no
+> change with fixed-unit charging.
+>=20
+> Charge BQL inside veth_xdp_rx() under the ptr_ring producer_lock, after
+> confirming the ring is not full.  The charge must precede the produce
+> because the NAPI consumer can run on another CPU and complete the SKB
+> the instant it becomes visible in the ring.  Doing both under the same
+> lock avoids a pre-charge/undo pattern -- BQL is only charged when
+> produce is guaranteed to succeed.
+>=20
+> BQL is enabled only when a real qdisc is attached (guarded by
+> !qdisc_txq_has_no_queue), as HARD_TX_LOCK provides serialization
+> for TXQ modification like dql_queued(). For lltx devices, like veth,
+> this HARD_TX_LOCK serialization isn't provided.  The ptr_ring
+> producer_lock provides additional serialization that would allow
+> BQL to work correctly even with noqueue, though that combination
+> is not currently enabled, as the netstack will drop and warn.
+>=20
+> Track per-SKB BQL state via a VETH_BQL_FLAG pointer tag in the ptr_ring
+> entry.  This is necessary because the qdisc can be replaced live while
+> SKBs are in-flight -- each SKB must carry the charge decision made at
+> enqueue time rather than re-checking the peer's qdisc at completion.
+>=20
+> Complete per-SKB in veth_xdp_rcv() rather than in bulk, so STACK_XOFF
+> clears promptly when producer and consumer run on different CPUs.
+>=20
+> BQL introduces a second independent queue-stop mechanism (STACK_XOFF)
+> alongside the existing DRV_XOFF (ring full).  Both must be clear for
+> the queue to transmit.  Reset BQL state in veth_napi_del_range() after
+> synchronize_net() to avoid racing with in-flight veth_poll() calls.
+> Clamp the reset loop to the peer's real_num_tx_queues, since the peer
+> may have fewer TX queues than the local device has RX queues (e.g. when
+> veth is enslaved to a bond with XDP attached).
+>=20
+> Signed-off-by: Jesper Dangaard Brouer <hawk@kernel.org>
+> ---
+>  drivers/net/veth.c | 86 ++++++++++++++++++++++++++++++++++++++++------
+>  1 file changed, 75 insertions(+), 11 deletions(-)
+>=20
+> diff --git a/drivers/net/veth.c b/drivers/net/veth.c
+> index 0cfb19b760dd..86b78900c48e 100644
+> --- a/drivers/net/veth.c
+> +++ b/drivers/net/veth.c
+> @@ -34,9 +34,13 @@
+>  #define DRV_VERSION	"1.0"
+> =20
+>  #define VETH_XDP_FLAG		BIT(0)
+> +#define VETH_BQL_FLAG		BIT(1)
+>  #define VETH_RING_SIZE		256
+>  #define VETH_XDP_HEADROOM	(XDP_PACKET_HEADROOM + NET_IP_ALIGN)
+> =20
+> +/* Fixed BQL charge: DQL limit tracks packets-in-flight, not bytes */
+> +#define VETH_BQL_UNIT		1
+> +
+>  #define VETH_XDP_TX_BULK_SIZE	16
+>  #define VETH_XDP_BATCH		16
+> =20
+> @@ -280,6 +284,21 @@ static bool veth_is_xdp_frame(void *ptr)
+>  	return (unsigned long)ptr & VETH_XDP_FLAG;
+>  }
+> =20
+> +static bool veth_ptr_is_bql(void *ptr)
+> +{
+> +	return (unsigned long)ptr & VETH_BQL_FLAG;
+> +}
+> +
+> +static struct sk_buff *veth_ptr_to_skb(void *ptr)
+> +{
+> +	return (void *)((unsigned long)ptr & ~VETH_BQL_FLAG);
+> +}
+> +
+> +static void *veth_skb_to_ptr(struct sk_buff *skb, bool bql)
+> +{
+> +	return bql ? (void *)((unsigned long)skb | VETH_BQL_FLAG) : skb;
+> +}
+> +
+>  static struct xdp_frame *veth_ptr_to_xdp(void *ptr)
+>  {
+>  	return (void *)((unsigned long)ptr & ~VETH_XDP_FLAG);
+> @@ -295,7 +314,7 @@ static void veth_ptr_free(void *ptr)
+>  	if (veth_is_xdp_frame(ptr))
+>  		xdp_return_frame(veth_ptr_to_xdp(ptr));
+>  	else
+> -		kfree_skb(ptr);
+> +		kfree_skb(veth_ptr_to_skb(ptr));
+>  }
+> =20
+>  static void __veth_xdp_flush(struct veth_rq *rq)
+> @@ -309,19 +328,33 @@ static void __veth_xdp_flush(struct veth_rq *rq)
+>  	}
+>  }
+> =20
+> -static int veth_xdp_rx(struct veth_rq *rq, struct sk_buff *skb)
+> +static int veth_xdp_rx(struct veth_rq *rq, struct sk_buff *skb, bool do=
+_bql,
+> +		       struct netdev_queue *txq)
+>  {
+> -	if (unlikely(ptr_ring_produce(&rq->xdp_ring, skb)))
+> +	struct ptr_ring *ring =3D &rq->xdp_ring;
+> +
+> +	spin_lock(&ring->producer_lock);
+> +	if (unlikely(!ring->size) || __ptr_ring_full(ring)) {
+> +		spin_unlock(&ring->producer_lock);
+>  		return NETDEV_TX_BUSY; /* signal qdisc layer */
+> +	}
+> +
+> +	/* BQL charge before produce; consumer cannot see entry yet */
+> +	if (do_bql)
+> +		netdev_tx_sent_queue(txq, VETH_BQL_UNIT);
+> +
+> +	__ptr_ring_produce(ring, veth_skb_to_ptr(skb, do_bql));
+> +	spin_unlock(&ring->producer_lock);
+> =20
+>  	return NET_RX_SUCCESS; /* same as NETDEV_TX_OK */
+>  }
+> =20
+>  static int veth_forward_skb(struct net_device *dev, struct sk_buff *skb=
+,
+> -			    struct veth_rq *rq, bool xdp)
+> +			    struct veth_rq *rq, bool xdp, bool do_bql,
+> +			    struct netdev_queue *txq)
+>  {
+>  	return __dev_forward_skb(dev, skb) ?: xdp ?
+> -		veth_xdp_rx(rq, skb) :
+> +		veth_xdp_rx(rq, skb, do_bql, txq) :
+>  		__netif_rx(skb);
+>  }
+> =20
+> @@ -348,10 +381,11 @@ static netdev_tx_t veth_xmit(struct sk_buff *skb, =
+struct net_device *dev)
+>  {
+>  	struct veth_priv *rcv_priv, *priv =3D netdev_priv(dev);
+>  	struct veth_rq *rq =3D NULL;
+> -	struct netdev_queue *txq;
+> +	struct netdev_queue *txq =3D NULL;
+>  	struct net_device *rcv;
+>  	int length =3D skb->len;
+>  	bool use_napi =3D false;
+> +	bool do_bql =3D false;
+>  	int ret, rxq;
+> =20
+>  	rcu_read_lock();
+> @@ -375,8 +409,12 @@ static netdev_tx_t veth_xmit(struct sk_buff *skb, s=
+truct net_device *dev)
+>  	}
+> =20
+>  	skb_tx_timestamp(skb);
+> -
+> -	ret =3D veth_forward_skb(rcv, skb, rq, use_napi);
+> +	if (rxq < dev->real_num_tx_queues) {
+> +		txq =3D netdev_get_tx_queue(dev, rxq);
+> +		/* BQL charge happens inside veth_xdp_rx() under producer_lock */
+> +		do_bql =3D use_napi && !qdisc_txq_has_no_queue(txq);
+> +	}
+> +	ret =3D veth_forward_skb(rcv, skb, rq, use_napi, do_bql, txq);
+>  	switch (ret) {
+>  	case NET_RX_SUCCESS: /* same as NETDEV_TX_OK */
+>  		if (!use_napi)
+> @@ -412,6 +450,7 @@ static netdev_tx_t veth_xmit(struct sk_buff *skb, st=
+ruct net_device *dev)
+>  		net_crit_ratelimited("%s(%s): Invalid return code(%d)",
+>  				     __func__, dev->name, ret);
+>  	}
+> +
+>  	rcu_read_unlock();
+> =20
+>  	return ret;
+> @@ -900,7 +939,8 @@ static struct sk_buff *veth_xdp_rcv_skb(struct veth_=
+rq *rq,
+> =20
+>  static int veth_xdp_rcv(struct veth_rq *rq, int budget,
+>  			struct veth_xdp_tx_bq *bq,
+> -			struct veth_stats *stats)
+> +			struct veth_stats *stats,
+> +			struct netdev_queue *peer_txq)
+>  {
+>  	int i, done =3D 0, n_xdpf =3D 0;
+>  	void *xdpf[VETH_XDP_BATCH];
+> @@ -928,9 +968,13 @@ static int veth_xdp_rcv(struct veth_rq *rq, int bud=
+get,
+>  			}
+>  		} else {
+>  			/* ndo_start_xmit */
+> -			struct sk_buff *skb =3D ptr;
+> +			bool bql_charged =3D veth_ptr_is_bql(ptr);
+> +			struct sk_buff *skb =3D veth_ptr_to_skb(ptr);
+> =20
+>  			stats->xdp_bytes +=3D skb->len;
+> +			if (peer_txq && bql_charged)
+> +				netdev_tx_completed_queue(peer_txq, 1, VETH_BQL_UNIT);
+
+In the discussion with Jonas [1], I left a comment explaining why I think
+this doesn=E2=80=99t work.
+
+I still think first that adding an option to modify the hard-coded
+VETH_RING_SIZE is the way to go.
+
+Thanks!
+
+[1] Link: https://lore.kernel.org/netdev/e8cdba04-aa9a-45c6-9807-8274b6292=
+0df@tu-dortmund.de/
+
+> +
+>  			skb =3D veth_xdp_rcv_skb(rq, skb, bq, stats);
+>  			if (skb) {
+>  				if (skb_shared(skb) || skb_unclone(skb, GFP_ATOMIC))
+> @@ -976,7 +1020,7 @@ static int veth_poll(struct napi_struct *napi, int =
+budget)
+>  		   netdev_get_tx_queue(peer_dev, queue_idx) : NULL;
+> =20
+>  	xdp_set_return_frame_no_direct();
+> -	done =3D veth_xdp_rcv(rq, budget, &bq, &stats);
+> +	done =3D veth_xdp_rcv(rq, budget, &bq, &stats, peer_txq);
+> =20
+>  	if (stats.xdp_redirect > 0)
+>  		xdp_do_flush();
+> @@ -1074,6 +1118,7 @@ static int __veth_napi_enable(struct net_device *d=
+ev)
+>  static void veth_napi_del_range(struct net_device *dev, int start, int =
+end)
+>  {
+>  	struct veth_priv *priv =3D netdev_priv(dev);
+> +	struct net_device *peer;
+>  	int i;
+> =20
+>  	for (i =3D start; i < end; i++) {
+> @@ -1092,6 +1137,24 @@ static void veth_napi_del_range(struct net_device=
+ *dev, int start, int end)
+>  		ptr_ring_cleanup(&rq->xdp_ring, veth_ptr_free);
+>  	}
+> =20
+> +	/* Reset BQL and wake stopped peer txqs.  A concurrent veth_xmit()
+> +	 * may have set DRV_XOFF between rcu_assign_pointer(napi, NULL) and
+> +	 * synchronize_net(), and NAPI can no longer clear it.
+> +	 * Only wake when the device is still up.
+> +	 */
+> +	peer =3D rtnl_dereference(priv->peer);
+> +	if (peer) {
+> +		int peer_end =3D min_t(int, end, peer->real_num_tx_queues);
+> +
+> +		for (i =3D start; i < peer_end; i++) {
+> +			struct netdev_queue *txq =3D netdev_get_tx_queue(peer, i);
+> +
+> +			netdev_tx_reset_queue(txq);
+> +			if (netif_running(dev))
+> +				netif_tx_wake_queue(txq);
+> +		}
+> +	}
+> +
+>  	for (i =3D start; i < end; i++) {
+>  		page_pool_destroy(priv->rq[i].page_pool);
+>  		priv->rq[i].page_pool =3D NULL;
+> @@ -1741,6 +1804,7 @@ static void veth_setup(struct net_device *dev)
+>  	dev->priv_flags |=3D IFF_PHONY_HEADROOM;
+>  	dev->priv_flags |=3D IFF_DISABLE_NETPOLL;
+>  	dev->lltx =3D true;
+> +	dev->bql =3D true;
+> =20
+>  	dev->netdev_ops =3D &veth_netdev_ops;
+>  	dev->xdp_metadata_ops =3D &veth_xdp_metadata_ops;
