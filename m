@@ -1,94 +1,84 @@
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E80E83FB7D9;
-	Thu,  7 May 2026 14:12:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89BB73FCB1C;
+	Thu,  7 May 2026 14:12:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778163140; cv=none; b=eSNBU7vbGkzhNh4qo2g6K3Q8ZcrWCQ0E4Bej4+vOFm00sKYjgWNiNulHfrOcMBh1v37ljxRK4RiflZtre5bJVFto1rAUZwnX8AKW28E0keQCFfScyv4S3xOMaZlFPu299s0mcF+3WBMLU/yK8TrJvfSYmKSDpFSyKfUbJa6swHU=
+	t=1778163162; cv=none; b=u09N4nL2LIaF2GFF/kauL43UZp4cb9nQQzMjjYMtvOPivgeaNNSZ55FCjqr/345e7mGeM0vcnV+n/1qUeqjK0BIvc8MS+wZd+fusUUrkbCQ7y7xezT3wDM2AB2jGyy29Vea3ntg2ry71hBnIfhtbOTTkspfP7A7VyQr1Q91Fjd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778163140; c=relaxed/simple;
-	bh=IfPdZLxkx4Se/6l+tDdfRRRtJTUpSWKEiidzy0SmIDI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PfechpPhbo2Jiu/0bf+1AwiVECskfylrp124Y4iz0Fi9u51rrJ3BpNNbt5tUhXN3WwiSJZdJ2HygBqAJcAQ99QqrU4rkAtZigB/B64bV2hwmI74snQU8P2kaPD9LHptjKCQ+OhvbaCLOIlkxUuMcPWlZVZ5w5cDSPxX73BlRURs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=O6hBsj6g; arc=none smtp.client-ip=95.215.58.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1778163162; c=relaxed/simple;
+	bh=huVUPART2jTXeXW7K4I2VW/dRB4xvecgCc0kX0CTQBc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fkQ0XrdqQ4ndLTcWXslhnmkB1va8KJaommv/VcPCVhLWWASxCOorVJ2xW4qvZTYRtQaPWM62bhKyvhzSPjfhtfAq0VK95cqHOO7dVEUF3sBxDDrTRbOar/aA+W8JxypFxflFQ3J/Nw6wOvLo6Uy6I0VpXqL+Lbjf80yJJCkQFrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pci39C5h; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="O6hBsj6g"
-Message-ID: <7688543c-b2c3-477c-b894-643995af08bd@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1778163127;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JE0MIr1dxYT1PjuTUSJgptucJ/9w1unHy1nCM1mXmt0=;
-	b=O6hBsj6g0S5ocjN2nip6oPyTTlQl5P2zLsr2Xg41JzHb+sfWatttJqPI0eqEDmjPXSeQ+i
-	tqa5JthzG8eNbe9OLX5oDhMq3xH243sB0tJ3FIexw2H4UQxsBtzoEkS+5BTTMV/kobqxUj
-	OXnqXNmMAMLadmqPHKDkTYIGCayGRlg=
-Date: Thu, 7 May 2026 07:11:38 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pci39C5h"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C85F3C2BCF6;
+	Thu,  7 May 2026 14:12:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778163162;
+	bh=huVUPART2jTXeXW7K4I2VW/dRB4xvecgCc0kX0CTQBc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pci39C5h/cOMDDSO2oyymDLmiaq4ZXMfTibB/Yg4C+bcbVk+Q7SOTDWci19669I7T
+	 9DRuDg+kLVm26zNKDuYWGMP56moGFlMngR20Oc2KrpjuGsyRYA39Ya97CyZ0dOD6Yr
+	 kKs5XXs7HqJ7YCnnDiONnBAWOLXw83TvgY3+OgRwNdz54SXaZvtieYsBZ/EsRBvx8X
+	 TkEtq++dws3GH2BDJewPUQajhV+rRb1OtYZCisTi27/2lezWaedJa3IfS2WWcwju3t
+	 1MvkDZX8t/0H9nMbeMR/1+xrr8P31LyvlRcDl+Q8C/vPoKzp2V2543XWpdh1c46d3P
+	 B9j8Hy77aZRfA==
+Date: Thu, 7 May 2026 09:12:33 -0500
+From: Bjorn Andersson <andersson@kernel.org>
+To: Alex Elder <elder@riscstar.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, maxime.chevallier@bootlin.com, 
+	rmk+kernel@armlinux.org.uk, konradybcio@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, linusw@kernel.org, brgl@kernel.org, arnd@arndb.de, 
+	gregkh@linuxfoundation.org, Daniel Thompson <daniel@riscstar.com>, 
+	mohd.anwar@oss.qualcomm.com, a0987203069@gmail.com, alexandre.torgue@foss.st.com, 
+	ast@kernel.org, boon.khai.ng@altera.com, chenchuangyu@xiaomi.com, 
+	chenhuacai@kernel.org, daniel@iogearbox.net, hawk@kernel.org, hkallweit1@gmail.com, 
+	inochiama@gmail.com, john.fastabend@gmail.com, julianbraha@gmail.com, 
+	livelycarpet87@gmail.com, matthew.gerlach@altera.com, mcoquelin.stm32@gmail.com, 
+	me@ziyao.cc, prabhakar.mahadev-lad.rj@bp.renesas.com, 
+	richardcochran@gmail.com, rohan.g.thomas@altera.com, sdf@fomichev.me, 
+	siyanteng@cqsoftware.com.cn, weishangjuan@eswincomputing.com, wens@kernel.org, 
+	netdev@vger.kernel.org, bpf@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 08/12] dt-bindings: net: toshiba,tc965x-dwmac:
+ add TC956x Ethernet bridge
+Message-ID: <afycOwz5TpkegkZd@baldur>
+References: <20260501155421.3329862-1-elder@riscstar.com>
+ <20260501155421.3329862-9-elder@riscstar.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] RDMA/nldev: add mutual exclusion in nldev_dellink()
-To: Edward Adam Davis <eadavis@qq.com>,
- "yanjun.zhu@linux.dev" <yanjun.zhu@linux.dev>
-Cc: akpm@linux-foundation.org, arjan@linux.intel.com, davem@davemloft.net,
- dsahern@kernel.org, edumazet@google.com, hdanton@sina.com, horms@kernel.org,
- jgg@ziepe.ca, kuba@kernel.org, kuni1840@gmail.com, kuniyu@google.com,
- leon@kernel.org, linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
- netdev@vger.kernel.org, pabeni@redhat.com,
- syzbot+d8f76778263ab65c2b21@syzkaller.appspotmail.com,
- syzkaller-bugs@googlegroups.com, zyjzyj2000@gmail.com
-References: <3c4264e6-2e93-4121-a8ec-5ac20e5cc213@linux.dev>
- <tencent_D175A964A3A32452D77DB76B66C2B3730305@qq.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
-In-Reply-To: <tencent_D175A964A3A32452D77DB76B66C2B3730305@qq.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260501155421.3329862-9-elder@riscstar.com>
 
+On Fri, May 01, 2026 at 10:54:16AM -0500, Alex Elder wrote:
+> diff --git a/Documentation/devicetree/bindings/net/toshiba,tc956x-dwmac.yaml b/Documentation/devicetree/bindings/net/toshiba,tc956x-dwmac.yaml
+[..]
+> +
+> +  gpio-controller: true
 
-在 2026/5/7 6:40, Edward Adam Davis 写道:
-> On Thu, 7 May 2026 06:25:54 -0700, Zhu Yanjun wrote:
->>> We must serialize calls to nldev_dellink() or risk a crash as syzbot
->>> reported:
->>>
->>> KASAN: null-ptr-deref in range [0x0000000000000020-0x0000000000000027]
->>> Call Trace:
->>>    udp_tunnel_sock_release+0x6d/0x80 net/ipv4/udp_tunnel_core.c:197
->>>    rxe_release_udp_tunnel drivers/infiniband/sw/rxe/rxe_net.c:294 [inline]
->>>    rxe_sock_put drivers/infiniband/sw/rxe/rxe_net.c:639 [inline]
->>>    rxe_net_del+0xfb/0x290 drivers/infiniband/sw/rxe/rxe_net.c:660
->>>    rxe_dellink+0x15/0x20 drivers/infiniband/sw/rxe/rxe.c:254
->>>
->>> Fixes: a60e3f3d6fba ("RDMA/nldev: Add dellink function pointer")
->>> Reported-by: syzbot+d8f76778263ab65c2b21@syzkaller.appspotmail.com
->>> Closes: https://syzkaller.appspot.com/bug?extid=d8f76778263ab65c2b21
->>> Tested-by: syzbot+d8f76778263ab65c2b21@syzkaller.appspotmail.com
->>> Signed-off-by: Edward Adam Davis <eadavis@qq.com>
->> Thanks a lot. This looks like a good solution. Since the issue is
->> reproducible,
->>
->> have you sent this commit to syzbot for verification?
-> The patch has been verified by syzbot.
+I don't have any concern with the use of a proper gpio driver to model
+the implementation, but if I understand correctly this relationship
+between gpio controller and gpio consumer is strictly internal to "the
+PCI device".
 
-Thanks a lot.
+Is this connection variable or is the link merely expressed in
+DeviceTree to mitigate the fact that you choose to implement the
+responsibilities of the two parts split into two device drivers?
 
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Are there other consumers of these TC956x gpios which would result in a
+board designer (and hence dts author) to ever reference this
+gpio-controller in a different way?
 
-Zhu Yanjun
-
->
-> BR,
-> Edward
->
--- 
-Best Regards,
-Yanjun.Zhu
-
+Regards,
+Bjorn
