@@ -1,178 +1,126 @@
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out203-205-221-221.mail.qq.com (out203-205-221-221.mail.qq.com [203.205.221.221])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF9A83CAE76
-	for <netdev@vger.kernel.org>; Thu,  7 May 2026 12:49:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778158156; cv=pass; b=pqDrXv69G/4auoCthKeXUv5p5ZtGMClqD+z8sH0meYmIkFpJkLG9jAdIu7Qjfcqr6MauwerzLkT8FwkM159StnpO+KozrSMJ8dndnVMzJXsa9wE+jOrIW9KRs1aPPUIBEyrDepEQWDvElG1STN6ONtf9iftXCJ2m1QtlSGo5/Pw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778158156; c=relaxed/simple;
-	bh=sz903DbfArP+QiHkxTXsqT3ZPy4O+2XviQY6sg+gQmQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GfJpbBvL3FqWd2EMmrZ0EBsiz4+u/Xb3z9exrm1OX7GxQwUQHSq2J9m0v2wbkswcknMSHtzcTQHwSgbDvInF1BCr/FzuB6mw1dI44E3b5vOiBDXhgN6akCnrFGwWNzQfESonLIpG7IrtVQM78wdGH/ru0qy+klhmVOEYou0jSCM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=friendlyarm.com; spf=none smtp.mailfrom=friendlyarm.com; dkim=pass (2048-bit key) header.d=friendlyarm-com.20251104.gappssmtp.com header.i=@friendlyarm-com.20251104.gappssmtp.com header.b=iukFb2oD; arc=pass smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=friendlyarm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=friendlyarm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45483B6BF0;
+	Thu,  7 May 2026 12:50:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.221
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778158241; cv=none; b=hhhbHWLTpNlg8eCtBObYuU3L/ZvXMol4sIgbfm2JRs/5RODkNhVjZ0LM4KJAN59B40bwK9EZni3vCBzIEt7dX854AqJS6xPkpwH9Sv+WRgSAk0IELUOXeAxNFBoXgSJ0SnVBXWTRe9tly0mSl1r9cVAw+iwLFxi8RLOMdTVsF9o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778158241; c=relaxed/simple;
+	bh=uHD2uCjN1UTQoraWvVy/fg6kCqbQLIutJoDWTGlKUVM=;
+	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
+	 MIME-Version; b=SmadXXDsSGY/h09N5atpi6bhJeVDM4g8MnccMAR0R9dn+FBv8JhEQBY0/j1sTPvb1qROOiR+qGxwfYQRM5I3eCXJBg1Bs2V9UsUqA6nyTpEfq+2R/8bO1Wo69LbFk8VWMh1WzOCCDIEsyvdQtjLdFWIooHTrXrTuO1ee2e8cRc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=rr7OduyM; arc=none smtp.client-ip=203.205.221.221
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=friendlyarm-com.20251104.gappssmtp.com header.i=@friendlyarm-com.20251104.gappssmtp.com header.b="iukFb2oD"
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-67e43a8996fso588475a12.0
-        for <netdev@vger.kernel.org>; Thu, 07 May 2026 05:49:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778158153; cv=none;
-        d=google.com; s=arc-20240605;
-        b=LARlDZK+Sr6ktbNSbuzqXAMfUheJU6GxEaI5x45EJxS/M9RsloLwclG+gM65cusVee
-         eyfwyAfC8aiAYBLfh9EKOZXxKQq+P6IDnrPJqvHLNPstYDtdfMhMYd+G0yP8GfUZXmVe
-         M/rGcLdwvvHbFb5Nrg+WsTM9lRLj9BzaFii6WC+sBYH5LeavTJS8jgfZyr2HgVHgioiz
-         xGkD+4HcUKt61NEeJVWPm+wogeaDjhWI4VqmohdngdtirWgPSUXroh9ssJoI37498o/1
-         jpR9YDMArHaIAtOEf6hKalvdu5TLVgQ4rePI/jC99Owwt3IXIUYiGCEUmNNQkjlBjlJL
-         uHaw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=T5GvoPtWelUk7+7MNNsj2fIFZyWFICYszMdYegWkkxI=;
-        fh=sB7nu4XOPzOMy2NyE0y/MPXFGvFzzBsZTPerQZjfQmk=;
-        b=Ahe00LCAsvCbNl/Rs9lSXv6YQEeeKuqWhXOlnZu9o1zxKfde0nKyWJQbtVwqdTuqSz
-         meGw1BFEbrvvTkey8HvylPkb82DSu2nJnZ3rZ9gs6/1+HQOV32GGKd7sg3zUd5C1awal
-         2oyL3bervO36SCuq03E6J4+deyjjbhQPXTR25lZz2YCYaIMJ6tkFkchlxEf8hy0HhF4A
-         NgkMumPzhakQA6Y0sjasgxQMXUIKQnWIlNMUK86hkBIkrRlpQbZeNcMgV7cVsTDPa5lR
-         eMPAlovX1E4HVGc38a2u4K4QbDy/dMgTeXuyiPF9hDBZzI5MiohYxCK4VvSh1IYB/FYc
-         7B6A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=friendlyarm-com.20251104.gappssmtp.com; s=20251104; t=1778158153; x=1778762953; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T5GvoPtWelUk7+7MNNsj2fIFZyWFICYszMdYegWkkxI=;
-        b=iukFb2oDP+zLkOTwwgBmLvn4C+RPxnpEJ9vixQRPCgcejlfhk9GGne6y69PxIDbgxc
-         tR2IjIeTkrtstmN4O7soIkECm0DdrCYfNwBHg0zy1BkonUCQrZ7T9uZCvALEAOllygcR
-         ZM7efWjelnACSM8IkmGMdudI8wGbO+E21N6u2vmvjlkc5eME4UTXClZxFr3en6ae205R
-         DVvGdO110S+zKoo1czxZVJIw7J1ZuMtOwtSQG01F4+jMvwOGP+LDCWsiQewBsk8vdiSi
-         Yh4gnE/NeBoc/N/3WN1YF9/+AkoGo4XpuyDUbjxToUEMkeZc5ugggT3ORK8YVSYMQPyc
-         /uXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778158153; x=1778762953;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=T5GvoPtWelUk7+7MNNsj2fIFZyWFICYszMdYegWkkxI=;
-        b=s3jAuNKelix/PQ/fAtO03t8w6/gqe6WXK2iYRaoRertAJLCRauVEPkKc8a1Jesxoir
-         RPGhuYImbzD0Fu6AbjkpBo13Dom7XvyIb8ugT/j3X1OA9qwT3ZKA1dZCh2pinZyObOZ0
-         EsuqFtvTEaJK6JOHCmm9XB1WtzATta/OsydL8luSO0ldmaWgLKx9/KeSI6oenJDjdMML
-         32bACZM8/NdpYyQKHcBXFael96f8lkYyK2JZkuGPMAOtxosWICSlRloSveNyCphGJvgq
-         mv9P8Pqj9lqUYWHC387MiyxJyXXkYsROvDVVB8S5T911CyQkByRtrkGEqiuQ1Nvv9OIT
-         mqlw==
-X-Forwarded-Encrypted: i=1; AFNElJ+/BwUewdo2lXZg91zQ0JlrYX+SJCBD6JGB0paCLvTYZpd3yS1COwtknIp0oJcbhmjOA68Zj0k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwtVPYX5LXs8QCHfMOGG1bUM4dHNRCv3YXGpoGWS9BMq5T0RO38
-	mMn41eWRGEFmmwQVjC/7cAS84XNOpgtwC4Yc/8989BTauqSdZ7w8rk2Ss6n/rWW0DjbdeJwWzhd
-	gif2tR5CtG6JXa1dqaAAmgcVwuu9Q0aIuEr2Qh7QWvA==
-X-Gm-Gg: AeBDievdCJHaok/bibbNpigmssUA62uVOFPXIkliGtZg7RCl0BqDnGtmqedhptISr8F
-	Rmq6jSluXcSf0+tNteA6C3sOxHxCnv3N3UioACY8REEvDGDlBUinUJol4lfU5DP/Sq9zDr/Qng5
-	cYtXjCkC9pNkKTRLpex9Mwr8WuLeuhO41NAS/LAHEqy7MHqSubXHMV3RGchYu+iyxD6c5z0UktC
-	pnmuMRfMGmFPh9BL9n0tg7T3LEwCqiuc3r5j+SGV+5bhBVgH0mSu3a77WeBNlqCiglAgh/pz0Jm
-	qIwPO+Jg8GUGd8n9zSefKF73Sgcjr+eqxRe4Xxvy
-X-Received: by 2002:aa7:d9cc:0:b0:678:f81a:76a1 with SMTP id
- 4fb4d7f45d1cf-67d63d8f13fmr2850093a12.10.1778158152619; Thu, 07 May 2026
- 05:49:12 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="rr7OduyM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1778158214; bh=5ub2YWhxmtbkh6ASBeqDgX465/eiGKDulnfevlmT57E=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=rr7OduyMYU4DXf7DmYjESFygDNWM7qnufZc27RENxNvqlkwpby6oIZhvSGbd1KB5+
+	 OBtwMjCn8gjiOiRK8iN/KvdQgP0fgUXd42ryHHfR7CJM6/aQwelZUJ/uNqxBMMoL20
+	 yHYJxVI3WSmrSxLf3MY/isKmbZY6DVOiJdY3mr7s=
+Received: from lxu-ped-host.. ([111.198.231.89])
+	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
+	id C8A1B40D; Thu, 07 May 2026 20:50:10 +0800
+X-QQ-mid: xmsmtpt1778158210t5p0eskuj
+Message-ID: <tencent_611BEB4B141B1A2526BAA3BBB2335F9E9108@qq.com>
+X-QQ-XMAILINFO: OPDQNGCUQ3qLkaFh7YH4cP0ef7dTVev+OCC4NTAATZsdIfJe5MGyfHz+BKAuMe
+	 25RPII7oaKWNy97i06WpbHAUvoC5MxYIU5A3cshYS3tpyIPgpZZxsKICdfDMRSll03lCGDV4iH3h
+	 PeGYuJJGMbuhytycfvHEhmMorKD/h9ol3uLQUe0yiBhp9ptEzUS9wb15obY0FGrJ0B+5fGGhkOL0
+	 zpgFd+TJZ1BtJ2loj2+jiQ6hrCzDeJJnA5Z14C03O+Fsvgpsp0CNOqyLhmGahbZxktH83MJJBGEp
+	 ZyfBmNOHxAiv14RkSg4YiDlKoAa3uAPbwxPLdg/oF3WIdcLmL5S1vlvM6AP9aQaYaD2iF/hSJ2VG
+	 9C7O4DDZl2j6AfCEuekmU7c5ifXjGaZuaOeMhm5ifKc51s1SLZIXw6M4JeLQMTK0/sYrPyGfazMe
+	 IBzI+KOc2uWkP3Ka+LQyu62pdFcplBjlWWX0Q/2Hk/cGhuKVVj9ZgAKtY+4fxmeWkTVGsWHnzMmA
+	 j7Xa4kdm/7XkSqpC2iGBgo/3BZBdLAxuvInt8SKB+l5SSoyyX2VGen9ieUlxnoFrXpcHdu2++/dp
+	 +H1JlYMZTzEoAihrdgLN7hrrwS4dT+RDH/fXtFyarOvYxYWIvrpH5dAKP7B2/rbVPbzwsCnNl6gF
+	 AieCei0FZM34dGFURjSUPV4rZgR8ML3qrnptpvXhwFWmA30UOYnYrOglUo8efGEh4uymIeXaTx+L
+	 CJYUgTibcL4yI3cLXcqqXfcR01CnQMf4VsKRDHkHoDZlMfM53ZvvAGTVG2NhEpVK+JuxRsAyIA08
+	 +aaw5Lbv8wirV6EkLYzKPZG+HEezhBbmJbuyWnGUt4QTNwjUDro84KjM1tM6NeTq2nxzKMiZZ9EV
+	 XfyZSEofBSj7rG7zUKjEWRTpFfxydNLWBemMntq75imA+ZzEt/cERcStm5evq2yXQ+IkfH1U74Ns
+	 nsc7H5afldZoonbXWX3veCwtAFW6CO9h8yUKgT092qSz7Jlw2ti1E7HyEdH3HuXuQ8u3qu7ebAUJ
+	 EypQS8rYRR2AItdtmlOYlSl4qUKwI=
+X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
+From: Edward Adam Davis <eadavis@qq.com>
+To: syzbot+d8f76778263ab65c2b21@syzkaller.appspotmail.com
+Cc: akpm@linux-foundation.org,
+	arjan@linux.intel.com,
+	davem@davemloft.net,
+	dsahern@kernel.org,
+	edumazet@google.com,
+	hdanton@sina.com,
+	horms@kernel.org,
+	jgg@ziepe.ca,
+	kuba@kernel.org,
+	kuni1840@gmail.com,
+	kuniyu@google.com,
+	leon@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	syzkaller-bugs@googlegroups.com,
+	yanjun.zhu@linux.dev,
+	zyjzyj2000@gmail.com
+Subject: [PATCH] RDMA/nldev: add mutual exclusion in nldev_dellink()
+Date: Thu,  7 May 2026 20:50:10 +0800
+X-OQ-MSGID: <20260507125009.109737-2-eadavis@qq.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <69fc0c7c.a00a0220.387fc1.0006.GAE@google.com>
+References: <69fc0c7c.a00a0220.387fc1.0006.GAE@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAMpZ1qEwNOqR-KQD4kEqd93aB-TpHnG6WdQc2tXUF0aXMmw_SA@mail.gmail.com>
- <198e2ce4-07e1-46c0-818d-1eb18645aca0@leemhuis.info>
-In-Reply-To: <198e2ce4-07e1-46c0-818d-1eb18645aca0@leemhuis.info>
-From: Jensen Huang <jensenhuang@friendlyarm.com>
-Date: Thu, 7 May 2026 20:49:01 +0800
-X-Gm-Features: AVHnY4JIhFDYsewcoPMz6YubfqI0BrloS9P8SD1uRPJjDpD8UVEZ2b6XKnlXN4w
-Message-ID: <CAMpZ1qGEOiPj7cApnWJnojSyEpDmXfco=No5n1VfyTCoNyCyFQ@mail.gmail.com>
-Subject: Re: [REGRESSION] stmmac: Random DMA reset failure on RK3399 since v6.18
-To: Thorsten Leemhuis <regressions@leemhuis.info>
-Cc: Russell King <linux@armlinux.org.uk>, Heiner Kallweit <hkallweit1@gmail.com>, 
-	Andrew Lunn <andrew@lunn.ch>, regressions@lists.linux.dev, netdev@vger.kernel.org, 
-	LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, May 5, 2026 at 4:26=E2=80=AFPM Thorsten Leemhuis
-<regressions@leemhuis.info> wrote:
->
-> [Jumping in here, as there are no replies yet]
->
-> BTW, Russel, just in case you missed this: looks like this regressions
-> caused by a change of yours.
->
-> On 4/29/26 14:53, Jensen Huang wrote:
-> >
-> > I'm reporting a regression on RK3399 (stmmac) observed in v6.18.24.
-> > When a network cable is connected during boot, the DMA reset
-> > occasionally fails with the error message: "Failed to reset the dma".
-> >
-> > This appears to be a timing issue related to the EEE RX clock-stop
-> > logic. Based on my investigation with the RTL8211E PHY, I monitored
-> > the PHY register PS1R (MMD device 3, address 0x01) and observed a
-> > value of 0x0f40. This indicates that the PHY is in LPI mode and the RX
-> > clock may have already stopped.
-> >
-> > While commit dd557266cf5f ("net: stmmac: block PHY RXC clock-stop")
->
-> Just wondering: have you tried if mainline (e.g. 7.1-rc1) is still
-> affected? This is something that is always a good advisable (some people
-> would call it required). In this case even more, as it since a while
-> contains a fix for the change you mentioned, that wasn't backported:
-> c171e679ee66d7 ("net: stmmac: Disable EEE RX clock stop when VLAN is
-> enabled"). But this is not my area of expertise (and in different area
-> of the code), so that fix might be unrelated to your issue.
+We must serialize calls to nldev_dellink() or risk a crash as syzbot
+reported:
 
-Thanks for the pointer.
-As you suggested, I have tested the mainline and confirmed that the
-issue is not present in v7.1-rc2, nor as early as v6.19-rc1. However,
-I verified that the issue persists in the latest stable v6.18.26.
-I performed a git bisect and the result pointed exactly to the commit
-you mentioned: c171e679ee66d7 ("net: stmmac: Disable EEE RX clock stop
-when VLAN is enabled").
-Additionally, I tested the case where CONFIG_VLAN_8021Q is not set,
-and the DMA reset issue occurs again.
+KASAN: null-ptr-deref in range [0x0000000000000020-0x0000000000000027]
+Call Trace:
+ udp_tunnel_sock_release+0x6d/0x80 net/ipv4/udp_tunnel_core.c:197
+ rxe_release_udp_tunnel drivers/infiniband/sw/rxe/rxe_net.c:294 [inline]
+ rxe_sock_put drivers/infiniband/sw/rxe/rxe_net.c:639 [inline]
+ rxe_net_del+0xfb/0x290 drivers/infiniband/sw/rxe/rxe_net.c:660
+ rxe_dellink+0x15/0x20 drivers/infiniband/sw/rxe/rxe.c:254
+ 
+Fixes: a60e3f3d6fba ("RDMA/nldev: Add dellink function pointer")
+Reported-by: syzbot+d8f76778263ab65c2b21@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d8f76778263ab65c2b21
+Tested-by: syzbot+d8f76778263ab65c2b21@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+---
+ drivers/infiniband/core/nldev.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
+diff --git a/drivers/infiniband/core/nldev.c b/drivers/infiniband/core/nldev.c
+index 96c745d5bac4..3cb3cb7629fe 100644
+--- a/drivers/infiniband/core/nldev.c
++++ b/drivers/infiniband/core/nldev.c
+@@ -1816,6 +1816,8 @@ static int nldev_newlink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	return err;
+ }
+ 
++static DEFINE_MUTEX(nldev_dellink_mutex);
++
+ static int nldev_dellink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 			  struct netlink_ext_ack *extack)
+ {
+@@ -1846,7 +1848,9 @@ static int nldev_dellink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	 * implicitly scoped to the driver supporting dynamic link deletion like RXE.
+ 	 */
+ 	if (device->link_ops && device->link_ops->dellink) {
++		mutex_lock(&nldev_dellink_mutex);
+ 		err = device->link_ops->dellink(device);
++		mutex_unlock(&nldev_dellink_mutex);
+ 		if (err)
+ 			return err;
+ 	}
+-- 
+2.43.0
 
-Best regards,
-Jensen Huang
-
->
-> Ciao, Thorsten
->
-> > ensures the clock is running before the DMA reset, my tests suggest
-> > that the phylink_rx_clk_stop_block() call might not provide a
-> > sufficiently stable RX clock in time for the immediate DMA reset that
-> > follows.
-> >
-> > Since stmmac already sets mac_requires_rxc =3D true, I modified
-> > phylink_bringup_phy() to honor this flag. This avoids toggling the
-> > PHY's clk_stop_enable during the initialization sequence, ensuring the
-> > RX clock remains active and stable throughout.
-> > With the change below, I achieved 200/200 successful reboots with the
-> > cable connected (previously ~50% failure rate).
-> >
-> > --- a/drivers/net/phy/phylink.c
-> > +++ b/drivers/net/phy/phylink.c
-> > @@ -2171,7 +2171,7 @@ static int phylink_bringup_phy(struct phylink
-> > *pl, struct phy_device *phy,
-> >      /* Allow the MAC to stop its clock if the PHY has the capability *=
-/
-> >      pl->mac_tx_clk_stop =3D phy_eee_tx_clock_stop_capable(phy) > 0;
-> >
-> > -    if (pl->mac_supports_eee_ops) {
-> > +    if (pl->mac_supports_eee_ops && !pl->config->mac_requires_rxc) {
-> >          /* Explicitly configure whether the PHY is allowed to stop it'=
-s
-> >           * receive clock.
-> >           */
-> >
-> > Any feedback/testing on this would be appreciated.
-> >
-> > Best regards,
-> > Jensen Huang
-> >
->
