@@ -1,126 +1,133 @@
-Received: from out203-205-221-221.mail.qq.com (out203-205-221-221.mail.qq.com [203.205.221.221])
+Received: from flow-b2-smtp.messagingengine.com (flow-b2-smtp.messagingengine.com [202.12.124.137])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45483B6BF0;
-	Thu,  7 May 2026 12:50:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.221
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F7E37BE66;
+	Thu,  7 May 2026 12:56:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.137
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778158241; cv=none; b=hhhbHWLTpNlg8eCtBObYuU3L/ZvXMol4sIgbfm2JRs/5RODkNhVjZ0LM4KJAN59B40bwK9EZni3vCBzIEt7dX854AqJS6xPkpwH9Sv+WRgSAk0IELUOXeAxNFBoXgSJ0SnVBXWTRe9tly0mSl1r9cVAw+iwLFxi8RLOMdTVsF9o=
+	t=1778158621; cv=none; b=SPbO1SO2oLw1aeO7sEqTtMvueYE3AmlqErRjPoRKF21MpS7469gOTGbMtkA37sv9fD+sLMSystrqw2h9NUhhHYgtqEbvmMY/lxyViojI6YWNMzMYe3OhEVpUPfaztVfguFstYZF2ewUf+yKEMCdEXcUA90Bc3gjw243h37Z2J7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778158241; c=relaxed/simple;
-	bh=uHD2uCjN1UTQoraWvVy/fg6kCqbQLIutJoDWTGlKUVM=;
-	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version; b=SmadXXDsSGY/h09N5atpi6bhJeVDM4g8MnccMAR0R9dn+FBv8JhEQBY0/j1sTPvb1qROOiR+qGxwfYQRM5I3eCXJBg1Bs2V9UsUqA6nyTpEfq+2R/8bO1Wo69LbFk8VWMh1WzOCCDIEsyvdQtjLdFWIooHTrXrTuO1ee2e8cRc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=rr7OduyM; arc=none smtp.client-ip=203.205.221.221
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	s=arc-20240116; t=1778158621; c=relaxed/simple;
+	bh=YeBSOjoQJst5vxg1qThBdYEONOm6zcnWolc0/DZvzKo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=r2+/vJNNceQADPOCJ9OOkCA5ukooGVVQ9yO1C0PTCad+axMofwch/fWo/qkSneXCoD0GoXYz2izcMHFDOAUjZgzaRX9xOkHiB+1cWGQS7E02ey9jxyOxjbqxZ+Y7mDi+LYOfG+NYgSTPFCDvqBw2v8BII6OpAKTiiZrhWDRN0yo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=Kw2PvHUe; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=QL3RCSL+; arc=none smtp.client-ip=202.12.124.137
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="rr7OduyM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1778158214; bh=5ub2YWhxmtbkh6ASBeqDgX465/eiGKDulnfevlmT57E=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rr7OduyMYU4DXf7DmYjESFygDNWM7qnufZc27RENxNvqlkwpby6oIZhvSGbd1KB5+
-	 OBtwMjCn8gjiOiRK8iN/KvdQgP0fgUXd42ryHHfR7CJM6/aQwelZUJ/uNqxBMMoL20
-	 yHYJxVI3WSmrSxLf3MY/isKmbZY6DVOiJdY3mr7s=
-Received: from lxu-ped-host.. ([111.198.231.89])
-	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
-	id C8A1B40D; Thu, 07 May 2026 20:50:10 +0800
-X-QQ-mid: xmsmtpt1778158210t5p0eskuj
-Message-ID: <tencent_611BEB4B141B1A2526BAA3BBB2335F9E9108@qq.com>
-X-QQ-XMAILINFO: OPDQNGCUQ3qLkaFh7YH4cP0ef7dTVev+OCC4NTAATZsdIfJe5MGyfHz+BKAuMe
-	 25RPII7oaKWNy97i06WpbHAUvoC5MxYIU5A3cshYS3tpyIPgpZZxsKICdfDMRSll03lCGDV4iH3h
-	 PeGYuJJGMbuhytycfvHEhmMorKD/h9ol3uLQUe0yiBhp9ptEzUS9wb15obY0FGrJ0B+5fGGhkOL0
-	 zpgFd+TJZ1BtJ2loj2+jiQ6hrCzDeJJnA5Z14C03O+Fsvgpsp0CNOqyLhmGahbZxktH83MJJBGEp
-	 ZyfBmNOHxAiv14RkSg4YiDlKoAa3uAPbwxPLdg/oF3WIdcLmL5S1vlvM6AP9aQaYaD2iF/hSJ2VG
-	 9C7O4DDZl2j6AfCEuekmU7c5ifXjGaZuaOeMhm5ifKc51s1SLZIXw6M4JeLQMTK0/sYrPyGfazMe
-	 IBzI+KOc2uWkP3Ka+LQyu62pdFcplBjlWWX0Q/2Hk/cGhuKVVj9ZgAKtY+4fxmeWkTVGsWHnzMmA
-	 j7Xa4kdm/7XkSqpC2iGBgo/3BZBdLAxuvInt8SKB+l5SSoyyX2VGen9ieUlxnoFrXpcHdu2++/dp
-	 +H1JlYMZTzEoAihrdgLN7hrrwS4dT+RDH/fXtFyarOvYxYWIvrpH5dAKP7B2/rbVPbzwsCnNl6gF
-	 AieCei0FZM34dGFURjSUPV4rZgR8ML3qrnptpvXhwFWmA30UOYnYrOglUo8efGEh4uymIeXaTx+L
-	 CJYUgTibcL4yI3cLXcqqXfcR01CnQMf4VsKRDHkHoDZlMfM53ZvvAGTVG2NhEpVK+JuxRsAyIA08
-	 +aaw5Lbv8wirV6EkLYzKPZG+HEezhBbmJbuyWnGUt4QTNwjUDro84KjM1tM6NeTq2nxzKMiZZ9EV
-	 XfyZSEofBSj7rG7zUKjEWRTpFfxydNLWBemMntq75imA+ZzEt/cERcStm5evq2yXQ+IkfH1U74Ns
-	 nsc7H5afldZoonbXWX3veCwtAFW6CO9h8yUKgT092qSz7Jlw2ti1E7HyEdH3HuXuQ8u3qu7ebAUJ
-	 EypQS8rYRR2AItdtmlOYlSl4qUKwI=
-X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
-From: Edward Adam Davis <eadavis@qq.com>
-To: syzbot+d8f76778263ab65c2b21@syzkaller.appspotmail.com
-Cc: akpm@linux-foundation.org,
-	arjan@linux.intel.com,
-	davem@davemloft.net,
-	dsahern@kernel.org,
-	edumazet@google.com,
-	hdanton@sina.com,
-	horms@kernel.org,
-	jgg@ziepe.ca,
-	kuba@kernel.org,
-	kuni1840@gmail.com,
-	kuniyu@google.com,
-	leon@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	syzkaller-bugs@googlegroups.com,
-	yanjun.zhu@linux.dev,
-	zyjzyj2000@gmail.com
-Subject: [PATCH] RDMA/nldev: add mutual exclusion in nldev_dellink()
-Date: Thu,  7 May 2026 20:50:10 +0800
-X-OQ-MSGID: <20260507125009.109737-2-eadavis@qq.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <69fc0c7c.a00a0220.387fc1.0006.GAE@google.com>
-References: <69fc0c7c.a00a0220.387fc1.0006.GAE@google.com>
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="Kw2PvHUe";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="QL3RCSL+"
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailflow.stl.internal (Postfix) with ESMTP id 74E361300336;
+	Thu,  7 May 2026 08:56:54 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Thu, 07 May 2026 08:56:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm1; t=1778158614; x=
+	1778165814; bh=T/0q7vYOuuf9zCnxo2miOS7GAZBPCeln6tzioafOeXc=; b=K
+	w2PvHUeqpJar2J8oCETYKNcmwhl3rZx2TO9hvu6Y9nO7ZiM5N+CsreSF520sY8P8
+	XqdU5VCXxiMyl7r4qQQ2nHzl6027cBt1yADAH6Fir4SWTteVWxy+rGy2fwNZ+iof
+	bOenzpHXwxvbmU2H3gugltiLVBeM/fAtEA2OV+/bw3XiLP6VJOchiiXRJL456C9P
+	NuzTcz6t0txto6VVFS3adLb7XrNvuBs2hN/lpdOVLo5chfO+tc2ybOj9GN1ji8Jj
+	3saY005Hww7jSLDWH4bwYDVVGjgd05sPZU5kACXl9kREeewymGT22b1Jj+mwo4kA
+	xw9ob4Y4I52ZsgiOFJyew==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1778158614; x=1778165814; bh=T/0q7vYOuuf9zCnxo2miOS7GAZBPCeln6tz
+	ioafOeXc=; b=QL3RCSL+Uu+mgaxp8WZAlqHCqVA3SCsk8vLP4BxCwbNk1VGdl5n
+	m5kiFAYwAuoGy1zsthRmZVlbKwHAtM2X8/ssiyRtRL/zXPxK0jZQDnsyFxtulFgr
+	9OVEgYiuyv/HUeZb0MIGrzvY//25K9On2uF/IH0c0yUbtpZpjloSb3aryapJWcb6
+	aaYs25AgdDI6Ty0ncalPonBB7sg6PDKd+VJyNPSDvQHpVxvzu9B10BTYH/qVwbA5
+	h9M/FCocmI3nd1S86dm+1uENK37O7HZXYImWTo3NrZoxiIyR7aqQOBSejSZ4RZyR
+	nLF8DCeDNA0CXOsJjy1+iRZk53QTHLcxkQQ==
+X-ME-Sender: <xms:FIz8abCYt4tJ7DItpoFjtoXLOKJbOuoPODRGi-HJUjcd7ROc3iaaiQ>
+    <xme:FIz8aTIqY-g7_YX_xQM6SmjKsYX7GB0-DUxB0jmLxarWk9PHuiDwstonGaPoH3qFw
+    aXPBMLbmnXeEgkXZrQNCFCLGLaguh0Ijjo3sBOk5PCms7gCWF6Z33A>
+X-ME-Received: <xmr:FIz8aarI-7KpFZEBKp_yq3UHO2QwL8xOjPcyT8EGOP7Mk2lbcp1xfKDdS976>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddutdejheefucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtjeenucfhrhhomhepufgrsghrihhn
+    rgcuffhusghrohgtrgcuoehsugesqhhuvggrshihshhnrghilhdrnhgvtheqnecuggftrf
+    grthhtvghrnhepuefhhfffgfffhfefueeiudegtdefhfekgeetheegheeifffguedvueff
+    fefgudffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    epshgusehquhgvrghshihsnhgrihhlrdhnvghtpdhnsggprhgtphhtthhopedvvddpmhho
+    uggvpehsmhhtphhouhhtpdhrtghpthhtoheprghnthhonhihrdgrnhhtohhnhiesshgvtg
+    hunhgvthdrtghomhdprhgtphhtthhopehsthgvfhhfvghnrdhklhgrshhsvghrthesshgv
+    tghunhgvthdrtghomhdprhgtphhtthhopehhvghrsggvrhhtsehgohhnughorhdrrghprg
+    hnrgdrohhrghdrrghupdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgv
+    thdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhmpdhrtghpthhtoh
+    epkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehprggsvghnihesrhgvughh
+    rghtrdgtohhmpdhrtghpthhtohephhhorhhmsheskhgvrhhnvghlrdhorhhgpdhrtghpth
+    htohepughsrghhvghrnheskhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:FIz8aUPTRpoxBBkb2Hgc7iRRmFYVtM9HO663HWtkxdt6rvVLATfRjg>
+    <xmx:FIz8afPBtPtoWFnC7KDxbbBzmgRnEMXdSjiWOfWE2rvtzVlEKZJaLQ>
+    <xmx:FIz8ae3ZixrKMDQQvZujjx8mQAj0OS-thmSDSiTynsTZ3mNAdbzrRw>
+    <xmx:FIz8ab3I_rdMEmL9tmnxAKsgIfWke2tzQubHc6ri7Q3XgYtHvjwAlg>
+    <xmx:Foz8adEXXa7JlyYj4-GvkWWN5QUKToFEQ5iXRJK1lgKdIARnVho319tu>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 7 May 2026 08:56:52 -0400 (EDT)
+Date: Thu, 7 May 2026 14:56:50 +0200
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: Antony Antony <antony.antony@secunet.com>
+Cc: Steffen Klassert <steffen.klassert@secunet.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>,
+	Masahide NAKAMURA <nakam@linux-ipv6.org>,
+	Paul Moore <paul@paul-moore.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Ondrej Mosnacek <omosnace@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, selinux@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	Chiachang Wang <chiachangwang@google.com>,
+	Yan Yan <evitayan@google.com>, devel@linux-ipsec.org
+Subject: Re: [PATCH ipsec-next v8 09/14] xfrm: add error messages to state
+ migration
+Message-ID: <afyMEvHebp4VFxE4@krikkit>
+References: <migrate-state-v8-0-4578fb016965@secunet.com>
+ <migrate-state-v8-9-4578fb016965@secunet.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <migrate-state-v8-9-4578fb016965@secunet.com>
 
-We must serialize calls to nldev_dellink() or risk a crash as syzbot
-reported:
+2026-05-05, 06:33:49 +0200, Antony Antony wrote:
+> Add descriptive(extack) error messages for all error paths
+> in state migration. This improves diagnostics by
+> providing clear feedback when migration fails.
+> 
+> After xfrm_init_state() use NL_SET_ERR_MSG_WEAK() as fallback for
+> error paths not yet propagating extack e.g. mode_cbs->init_state()
+> 
+> No functional change.
+> 
+> Signed-off-by: Antony Antony <antony.antony@secunet.com>
+> 
+> ---
+> v5->v6: - in case dev_state_add() extack already set
+> 	- after xfrm_init_state() use NL_SET_ERR_MSG_WEAK() as fallback
+> v4->v5: - added this patch
+> ---
+>  net/xfrm/xfrm_state.c | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
 
-KASAN: null-ptr-deref in range [0x0000000000000020-0x0000000000000027]
-Call Trace:
- udp_tunnel_sock_release+0x6d/0x80 net/ipv4/udp_tunnel_core.c:197
- rxe_release_udp_tunnel drivers/infiniband/sw/rxe/rxe_net.c:294 [inline]
- rxe_sock_put drivers/infiniband/sw/rxe/rxe_net.c:639 [inline]
- rxe_net_del+0xfb/0x290 drivers/infiniband/sw/rxe/rxe_net.c:660
- rxe_dellink+0x15/0x20 drivers/infiniband/sw/rxe/rxe.c:254
- 
-Fixes: a60e3f3d6fba ("RDMA/nldev: Add dellink function pointer")
-Reported-by: syzbot+d8f76778263ab65c2b21@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d8f76778263ab65c2b21
-Tested-by: syzbot+d8f76778263ab65c2b21@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
----
- drivers/infiniband/core/nldev.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
 
-diff --git a/drivers/infiniband/core/nldev.c b/drivers/infiniband/core/nldev.c
-index 96c745d5bac4..3cb3cb7629fe 100644
---- a/drivers/infiniband/core/nldev.c
-+++ b/drivers/infiniband/core/nldev.c
-@@ -1816,6 +1816,8 @@ static int nldev_newlink(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	return err;
- }
- 
-+static DEFINE_MUTEX(nldev_dellink_mutex);
-+
- static int nldev_dellink(struct sk_buff *skb, struct nlmsghdr *nlh,
- 			  struct netlink_ext_ack *extack)
- {
-@@ -1846,7 +1848,9 @@ static int nldev_dellink(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	 * implicitly scoped to the driver supporting dynamic link deletion like RXE.
- 	 */
- 	if (device->link_ops && device->link_ops->dellink) {
-+		mutex_lock(&nldev_dellink_mutex);
- 		err = device->link_ops->dellink(device);
-+		mutex_unlock(&nldev_dellink_mutex);
- 		if (err)
- 			return err;
- 	}
 -- 
-2.43.0
-
+Sabrina
