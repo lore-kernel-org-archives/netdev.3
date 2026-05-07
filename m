@@ -1,54 +1,54 @@
-Received: from mail-qk1-f201.google.com (mail-qk1-f201.google.com [209.85.222.201])
+Received: from mail-qv1-f73.google.com (mail-qv1-f73.google.com [209.85.219.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3817238A711
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82962371D1E
 	for <netdev@vger.kernel.org>; Thu,  7 May 2026 08:43:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.201
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778143397; cv=none; b=X6TEay5U4MTZkoK6bBAxxPtgk0udYoCxjBhBz437fIasMuODLuCX2d9CXTjwqXBfJ+huwOAarSdq7N3/fg7RFLOQJGkI+rOTxQXb6tbOsmR4SlaZyimvHUpB+epT+GuB3fPWioV6dvHBQ7V/yv5ljIhd7lScl9fV5pXtX9r975Y=
+	t=1778143400; cv=none; b=RUj83ijQF2fTb9TsuYxZn1Cfs4WAtJEjNPieOMebJE0ig9hdKqE+sIy+0+B+EIg9CS9TbJ8ejcunqJBG0vUJLMlVTn/HUkVqO67nMBhMmH0DRgk0NodHqqkk7utzBCOlj9OJT4r4qkXW22Ps+tlsC6bbqPeq4w3C8+TX97GOzYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778143397; c=relaxed/simple;
-	bh=ZMAU549aj2S6PZnpoM5zmF/BB8sp9vi6fV00BpWoeUE=;
+	s=arc-20240116; t=1778143400; c=relaxed/simple;
+	bh=SHw5P0LAa/XsxtWPaiSpgyWkEZk4GrFd5GvP11BsyU4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=kkwZh1kFZJLR05XeZxAUthyzzpMA7Rlpx8n6V2AlWlVWXPyGrqwbldPEeonpd1aWkc7idqvaF02bomkJy2TDu5aq5qtUsOIBYy3HSk1KNbGAiUZQJ2dkM7U/aDjBGq5A6+BCpxwR1roiciy5D1T5HQSCqm9t83hwLsb5Y6iEc8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=g3kAySoN; arc=none smtp.client-ip=209.85.222.201
+	 To:Cc:Content-Type; b=gz0skdmHVIv94bGkpfOyWxrDP1Akhk+3eHv7LCqUUnWKrundZZK3ReK4Xx1xX8uSoH2LV1a8U8BRwnS30xrKjn2A9q3WW+8TgYD1V+WECM/T499m7GkZKmgcH2ay7731ZSztxOPsVNCNWnvpTqq0eKQjohcIYQETSY4NUxpAgl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eMjipYNi; arc=none smtp.client-ip=209.85.219.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="g3kAySoN"
-Received: by mail-qk1-f201.google.com with SMTP id af79cd13be357-8e8950b3ee1so179401085a.3
-        for <netdev@vger.kernel.org>; Thu, 07 May 2026 01:43:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eMjipYNi"
+Received: by mail-qv1-f73.google.com with SMTP id 6a1803df08f44-8acb85a973cso6539686d6.3
+        for <netdev@vger.kernel.org>; Thu, 07 May 2026 01:43:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778143389; x=1778748189; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1778143392; x=1778748192; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tIpd9DJUk1AnIU7fkmU+5m29Sz2tmvPVJ0G7Dh1iZQQ=;
-        b=g3kAySoNZ19P+5DnqqyIPZS1MOUf2IjYVSodsXwYi3VbM4+bJhnA71Hv5XpW0wyQrN
-         3Fcw27ff5GaS2oVegZUvweDBU5wbnW04esfbDOo8IWSH2aSWth0aRsEZQ7jI9Xe8A+Zb
-         LgaQv90+dtzUAo6fyMPurUdPXpjMMcLITmL/hz/x7ZNQWcYjTAP88kskq7YmqQhTviuH
-         dJNVEvi9rQvIE8Kg/ZErDCTu6rHjkweQs+oDhqu1EIRY1G/o59FqgpJ5Kdh8YOSIDXDn
-         4iC98z6HgW2olE9wW5zlt1LdQlms5nqJvO4K5tBNFrmpSLYbbpYuaNGnEMU6Ro3LT4v/
-         AQcw==
+        bh=lRu1fN5aPR4iVOTELoZmdLrAmJwJZXGrgcEXhq13bEY=;
+        b=eMjipYNiDhemQvhFfIzKOawCZBLy5qjWVFZMXcWrZLG9t2b/XSPhe7R1Ij4qZSaFqZ
+         hiOph8MQ70ivKrqJTkUtMqn65UNbqtogm59P7EW21bfcQjehz5HbKVHBF+FCQcBA/c33
+         54tk2pCzXIh3dUn1DZGcl1TtpPMy67fZvYJsD0nHye9eT/ia+PLgAJ3hAdH3SbFIzN1Z
+         /1hPLF3tjHr79HMfK/NAq+eMy6Z6p0VO3EjuGbhJpWF4LPQx4sDccp/d59bqE9TcOht9
+         ISNRFzAxZhO0cCiQNz/xl6LcPVswR2Gw/ldRYRun1eOiB9Lmeb1DKGayaSR4kkxlG1un
+         /23Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778143389; x=1778748189;
+        d=1e100.net; s=20251104; t=1778143392; x=1778748192;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tIpd9DJUk1AnIU7fkmU+5m29Sz2tmvPVJ0G7Dh1iZQQ=;
-        b=V/4Ew/tUNJOrEFMp0mbAx9dAPYrbRZ0t0gcDRk81kvWp+j79gqEZteO9no+tYFhyrc
-         ad1eAe7IsT5rTtfrWqdbSNvQqp6cnsbvX2UPF9aPHyZG2FvOse04yWT2xkJtDqsQ391w
-         wL37a8/HfprKjaTmUruh/3yELdFjN9KezNOyfrX8908l2ClT1FJdJ57n57aIhqplTZmi
-         UIfa3h9XcdhwN+XQATG3bdL6mwZjlmpsCmvbPyX5+cB8Trj9hZgrFpr2oS6eKEjHfSwO
-         w4GG45g//pU3MczF2bQ4RfuFGl3F/F5NbKRR2Ul1U2YTjREmMmpJlb/bIcO/SCprxUTI
-         YJEg==
-X-Forwarded-Encrypted: i=1; AFNElJ/xAgp640pbdZxoBfLtoObp+oGs07dNAzf21jNTkAjK4sppEsLfbQraGmjvZlaQ4kjh697oGc8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+biD79yTjOx1vStVRn+mKN6R1oj4lZu0fSFMzGCm7aRzE5BrZ
-	npDKohoM6fKmgo6onplAiakBrug8HfIlpp45G26HM5UhCN2dGAuZs/PvWjzR+Fw6fUfNX4oWVFS
-	FZoAIlsoYSJiHxw==
-X-Received: from qkww18.prod.google.com ([2002:a05:620a:952:b0:8ec:481e:ba3a])
+        bh=lRu1fN5aPR4iVOTELoZmdLrAmJwJZXGrgcEXhq13bEY=;
+        b=ju6K/ZAjdS1s3lh+NAJgZK/nEg0gfnAUiPNQ9Fyi+ghxxLoCwLVKgp/ml6j50Mk3Kj
+         RjrerfH7ScYBSKNXzH2V7pjabWg1Jt76cTWWoaqc3aJ1+15DSFz//Y5MBXxJOAwbCF+U
+         foCC70GTP3vc8BB5Cskd1tQ8oYEPLYAdRR//oFbLLUfVF9gDl5tTXm37pOJUVCDUmjHa
+         wEP/VM7Z5f/PAl/8MMzW0gmcoXp7ut4smuDcM/vDYl/OGuriZDFMsD9TDnYSpoM6qhks
+         //b49DP1emc3o+a1Tw3nGpu+OLBztN9lojVP0C9Xof8U3Fxg1ZXAsIYDvpRC32NQyrde
+         AK/w==
+X-Forwarded-Encrypted: i=1; AFNElJ8GQSxOlERwFFE1pMptOPNQPbOkKvmZdC3RIJ2K4RUSb6DPe14zN2X4cVsGcYQxaCM1F5DG2/4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywsix9A1tqV8TgO1eSSZpgTG0e1Ak0QdpjcgmaVCAgiZO/T1qMY
+	O6Y4NvV65wDFeHh3tcc3QW9p8mz51tgbGG7EhSqyTA7OmBq6iZTxBlwGb7HQL/Ge1Pi2RhgsyAs
+	ezI1JZif5WTfZiA==
+X-Received: from qvsm5.prod.google.com ([2002:a0c:ee45:0:b0:89c:e5f0:8f32])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:40d0:b0:8ee:630e:3507 with SMTP id af79cd13be357-904d4391035mr1001209585a.1.1778143388784;
- Thu, 07 May 2026 01:43:08 -0700 (PDT)
-Date: Thu,  7 May 2026 08:43:03 +0000
+ 2002:ad4:5d4e:0:b0:8b3:f911:c1df with SMTP id 6a1803df08f44-8bd8ec82cd8mr42417856d6.21.1778143391772;
+ Thu, 07 May 2026 01:43:11 -0700 (PDT)
+Date: Thu,  7 May 2026 08:43:05 +0000
 In-Reply-To: <20260507084305.2506115-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -58,8 +58,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260507084305.2506115-1-edumazet@google.com>
 X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <20260507084305.2506115-2-edumazet@google.com>
-Subject: [PATCH net-next 1/3] net: constify sk_skb_reason_drop() sock parameter
+Message-ID: <20260507084305.2506115-4-edumazet@google.com>
+Subject: [PATCH net-next 3/3] ipv6: use SKB_DROP_REASON_IP_OUTNOROUTES in inet6_csk_xmit()
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>, Neal Cardwell <ncardwell@google.com>
@@ -68,75 +68,28 @@ Cc: Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
 	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-sk_skb_reason_drop() does not change sock parameter, make it
-const so that we can call it from TCP stack without a cast
-on a (const) listener socket.
+Replace a bare kfree_skb() with a modern sk_skb_reason_drop() call,
+and provide IP_OUTNOROUTES drop reason.
 
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
- include/linux/skbuff.h     | 3 ++-
- include/trace/events/skb.h | 4 ++--
- net/core/skbuff.c          | 5 +++--
- 3 files changed, 7 insertions(+), 5 deletions(-)
+ net/ipv6/inet6_connection_sock.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-index 2bcf78a4de7b9edb0d1342319d4340c0a9997eeb..746e741a8ef99b3052ad581650e5d0db2a95dbb3 100644
---- a/include/linux/skbuff.h
-+++ b/include/linux/skbuff.h
-@@ -1313,7 +1313,8 @@ static inline bool skb_data_unref(const struct sk_buff *skb,
- 	return true;
- }
- 
--void __fix_address sk_skb_reason_drop(struct sock *sk, struct sk_buff *skb,
-+void __fix_address sk_skb_reason_drop(const struct sock *sk,
-+				      struct sk_buff *skb,
- 				      enum skb_drop_reason reason);
- 
- static inline void
-diff --git a/include/trace/events/skb.h b/include/trace/events/skb.h
-index b877133cd93a80f6b130fab64f334ecdeab8c8fd..2945aa7fe9a7ded5bdec5be3a67382de95239517 100644
---- a/include/trace/events/skb.h
-+++ b/include/trace/events/skb.h
-@@ -24,14 +24,14 @@ DEFINE_DROP_REASON(FN, FN)
- TRACE_EVENT(kfree_skb,
- 
- 	TP_PROTO(struct sk_buff *skb, void *location,
--		 enum skb_drop_reason reason, struct sock *rx_sk),
-+		 enum skb_drop_reason reason, const struct sock *rx_sk),
- 
- 	TP_ARGS(skb, location, reason, rx_sk),
- 
- 	TP_STRUCT__entry(
- 		__field(void *,		skbaddr)
- 		__field(void *,		location)
--		__field(void *,		rx_sk)
-+		__field(const void *,	rx_sk)
- 		__field(unsigned short,	protocol)
- 		__field(enum skb_drop_reason,	reason)
- 	),
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 7dad68e3b5186cf622a3ed5a6e87c09d46bc3fd6..acca1365672c4f98b004c2548133d70c9cf5ddc1 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -1206,7 +1206,7 @@ void __kfree_skb(struct sk_buff *skb)
- EXPORT_SYMBOL(__kfree_skb);
- 
- static __always_inline
--bool __sk_skb_reason_drop(struct sock *sk, struct sk_buff *skb,
-+bool __sk_skb_reason_drop(const struct sock *sk, struct sk_buff *skb,
- 			  enum skb_drop_reason reason)
- {
- 	if (unlikely(!skb_unref(skb)))
-@@ -1235,7 +1235,8 @@ bool __sk_skb_reason_drop(struct sock *sk, struct sk_buff *skb,
-  *	'kfree_skb' tracepoint.
-  */
- void __fix_address
--sk_skb_reason_drop(struct sock *sk, struct sk_buff *skb, enum skb_drop_reason reason)
-+sk_skb_reason_drop(const struct sock *sk, struct sk_buff *skb,
-+		   enum skb_drop_reason reason)
- {
- 	if (__sk_skb_reason_drop(sk, skb, reason))
- 		__kfree_skb(skb);
+diff --git a/net/ipv6/inet6_connection_sock.c b/net/ipv6/inet6_connection_sock.c
+index 37534e1168992c44e1400dacab87e79d04c64a41..4665d84a7380d90b7d180a429017f577fcb6936a 100644
+--- a/net/ipv6/inet6_connection_sock.c
++++ b/net/ipv6/inet6_connection_sock.c
+@@ -102,7 +102,8 @@ int inet6_csk_xmit(struct sock *sk, struct sk_buff *skb, struct flowi *fl_unused
+ 		if (IS_ERR(dst)) {
+ 			WRITE_ONCE(sk->sk_err_soft, -PTR_ERR(dst));
+ 			sk->sk_route_caps = 0;
+-			kfree_skb(skb);
++			sk_skb_reason_drop(sk, skb,
++					   SKB_DROP_REASON_IP_OUTNOROUTES);
+ 			return PTR_ERR(dst);
+ 		}
+ 		/* Restore final destination back after routing done */
 -- 
 2.54.0.563.g4f69b47b94-goog
 
