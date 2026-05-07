@@ -1,125 +1,135 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84F9B2D0292;
-	Thu,  7 May 2026 11:21:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B7637D13E
+	for <netdev@vger.kernel.org>; Thu,  7 May 2026 11:23:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778152915; cv=none; b=bXjzjilILSLf9SH+dX5CLuU5m1MRwX4b3XlhidDLbDf50GMe36E6aWLRXCULyoKr/YbfUbMFWxpXuYYoKsn7YzBQThubm1jbvPwkb0aZQFz4hnn98OBswg+DkTM1vxYGSxxqm7HuJjr77M6+RZW00McyJx9PNnytD1LDWZNB/a8=
+	t=1778153010; cv=none; b=SI+BhVISPGKVfoH3HXYEQJvsKy064hO4m3+FhNy39y0llMflQCrFIkuldn++EF7LDKGsMhSWmbFLgjKCsqDp4xq6w7oGnZLCR4cPRq4acwAZqpWATrwreMexRwzfYjzQbITpWIAQ9QhG3dIbyCLChbv+zyWxfdh1rcwmxofXY6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778152915; c=relaxed/simple;
-	bh=3Szgn/0DuLvW/n82i9gfRAo6eVjUS2gMuzayZpXSQTs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aOSZbvEGnlZuEjmVDDQECdzSMnSqH56jmiM/iGv+8ICYDa9gNSCVFo8ueINJyYnpv3xHmjJNAbIafCGEqeR9VrDoFBuvUziYKPsPDyxnlTxSn5tEPB7DRvms+S336FepX+R9xtiyopQt/NM+EAGIdTwbfnGbzFtsTcKvMqPLivg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=p2LEdreK; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="p2LEdreK"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id A4CAEC5DC60;
-	Thu,  7 May 2026 11:22:40 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id E50F860495;
-	Thu,  7 May 2026 11:21:52 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DC49A102F24D0;
-	Thu,  7 May 2026 13:21:42 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1778152911; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=FomEAYdAik4HwDQHklL8rlVv12AzA09UWLuUsHpy4Ts=;
-	b=p2LEdreKQU9Whuz9NS1a6llAszhUVywcfElxsQhXyjSxrqKsBjxbAtFgzNMmfqBMzG2wZr
-	BvS6WoISuifX3s2eZ6aXvN262FR8oQcSQ2PkS2T1bddy6fKB46af9iGx3uaDztsTwj9u6G
-	U0Cc/uQv8Hv8xhVA/hpU5q7Tys/j8iPb/jH5EjQl9JZJG4b6Z8HKV5u7mHa22zWXEPiohv
-	KlxXxNfUZmP7MT+nFc2Kiw5ooZtKj/fQNjXR4Jw0gxzwAEFLUVB5stoEnfSusJVeWM+VUW
-	QdG6GRC5qTR6gdf5GwcqnFkub93PVMMKtJDOHeBeFqvmdv1Py2YvDa7MAmAdAg==
-Message-ID: <92e8a3dd-a46a-499f-b5f6-99f7b99f45f5@bootlin.com>
-Date: Thu, 7 May 2026 13:21:41 +0200
+	s=arc-20240116; t=1778153010; c=relaxed/simple;
+	bh=mUOYDX69Yo2Cey6LzU6C+AKQLmkzTJl6hjB+pZR5lyk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lI2qLP2IOmkf4GXjn+KN86K6f9Ldm5iBiOjIJcSymKfa29W6+Xqy2rj3y/h0VDpuhMR8xDNhIFAiqgy88zF2POTbRfmktbyQybza8fG6OqbFmGZU0/NI1c1yflnmbIPqzZ87pNO745gcj9u7lCtpjW8QB45Z+PmsInzWXHBJoeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1wKwp9-0002vi-Kp; Thu, 07 May 2026 13:23:23 +0200
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1wKwp8-000ufc-2Z;
+	Thu, 07 May 2026 13:23:23 +0200
+Received: from blackshift.org (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id F3CCB530405;
+	Thu, 07 May 2026 11:23:22 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	linux-can@vger.kernel.org,
+	kernel@pengutronix.de
+Subject: [PATCH net 0/6] pull-request: can 2026-05-07
+Date: Thu,  7 May 2026 10:22:22 +0200
+Message-ID: <20260507112321.439968-1-mkl@pengutronix.de>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v1 2/2] net: stmmac: eic7700: fix delay step
- calculation and ensure safe register initialization
-To: lizhi2@eswincomputing.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- rmk+kernel@armlinux.org.uk, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org
-Cc: ningyu@eswincomputing.com, linmin@eswincomputing.com,
- pinkesh.vaghela@einfochips.com, pritesh.patel@einfochips.com,
- weishangjuan@eswincomputing.com
-References: <20260507083037.152-1-lizhi2@eswincomputing.com>
- <20260507083214.192-1-lizhi2@eswincomputing.com>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <20260507083214.192-1-lizhi2@eswincomputing.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Hi,
+Hello netdev-team,
 
-On 07/05/2026 10:32, lizhi2@eswincomputing.com wrote:
-> From: Zhi Li <lizhi2@eswincomputing.com>
-> 
-> Fix several issues in the EIC7700 DWMAC glue driver related to delay
-> configuration and register initialization.
-> 
-> The hardware implements TX/RX delay with a granularity of 20 ps per
-> step, but the driver previously assumed a 100 ps step. Update the
-> definitions to match the actual hardware behaviour and align with
-> the binding constraints.
-> 
-> Introduce explicit definitions for the maximum programmable delay
-> range based on the hardware limits.
-> 
-> Move HSP CSR configuration into the initialization path after clocks
-> are enabled. This ensures that all register accesses occur with the
-> required clocks active, avoiding undefined behaviour.
-> 
-> Clear the TXD and RXD delay control registers during initialization
-> to override any residual configuration left by the bootloader. This
-> ensures deterministic RGMII timing and prevents unintended delay
-> being applied.
-> 
-> The MAC RGMII delay programming is only required for 100Mbps and
-> 1000Mbps modes, where precise clock-to-data alignment is necessary for
-> reliable sampling.
-> 
-> For 10Mbps operation, timing margins are sufficiently relaxed and no
-> additional delay compensation is required. In this case, the driver
-> falls back to a safe default configuration with delay disabled.
-> 
-> For unsupported or unexpected link speeds, the driver avoids
-> programming invalid delay values and falls back to a safe default
-> state by explicitly clearing the delay configuration.
-> 
-> Explicitly programming zero ensures that no residual delay settings
-> from previous configurations or bootloader state remain active.
-> 
-> These changes fix incorrect delay programming and initialization
-> ordering for existing users.
-> 
-> This also aligns the driver implementation with the updated device
-> tree binding.
+this is a pull request of 6 patches for net/main.
 
-There's a lot going on in this patch, can you split this into patches
-that solves each of these individual issues ?
+The first patch is by Oliver Hartkopp and adds missing locking to the
+raw_setsockopt() function in the CAN raw protocol.
 
-It's a mix of fixes (the reg access moved after clk config for example)
-and non-fixes (the RGMII timings, you're improving the granularity of
-the delays, is this required to fix existing setups, or is it a generic
-improvement ?), splitting this would make it both easier to review, and
-easier to bisect should problems arise in the future.
+A patch by Lee Jones fixes a hrtimer Use-After-Free in the CAN
+broadcast manager protocol.
 
-Thanks,
+Alexander Hölzl's patch fixes the RX timeout for CTS holds messages in
+the CAN J1939 protocol.
 
-Maxime
+Shuhao Fu contributes a patch that adds missing locking to the
+local-destination check in the CAN J1939 protocol.
 
+Stéphane Grosjean's patch updates his email address.
 
+The last patch is by Ciprian Marian Costea and consistently
+disables/enables the all IRQ lines while writing the IRQ enable
+registers.
+
+regards,
+Marc
+
+---
+
+The following changes since commit b266bacba796ff5c4dcd2ae2fc08aacf7ab39153:
+
+  net: ethernet: cortina: Drop half-assembled SKB (2026-05-06 18:43:41 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/mkl/linux-can.git tags/linux-can-fixes-for-7.1-20260507
+
+for you to fetch changes up to f22a636357d5ff4fd2bb10d8079d851ccb320438:
+
+  can: flexcan: disable all IRQ lines in flexcan_chip_interrupts_enable() (2026-05-07 10:05:55 +0200)
+
+----------------------------------------------------------------
+linux-can-fixes-for-7.1-20260507
+
+----------------------------------------------------------------
+Alexander Hölzl (1):
+      can: j1939: fix wrong RX timeout for CTS hold messages
+
+Ciprian Marian Costea (1):
+      can: flexcan: disable all IRQ lines in flexcan_chip_interrupts_enable()
+
+Lee Jones (1):
+      can: bcm: prevent thrtimer UAF in rx path by checking RX_NO_AUTOTIMER
+
+Oliver Hartkopp (1):
+      can: raw: add locking for raw flags bitfield
+
+Shuhao Fu (1):
+      can: j1939: fix lockless local-destination check
+
+Stéphane Grosjean (1):
+      can: peak: Modification of references to email accounts being deleted
+
+ .mailmap                                      |  4 +-
+ drivers/net/can/flexcan/flexcan-core.c        | 14 ++++++
+ drivers/net/can/peak_canfd/peak_canfd.c       |  2 +-
+ drivers/net/can/peak_canfd/peak_canfd_user.h  |  2 +-
+ drivers/net/can/peak_canfd/peak_pciefd_main.c |  4 +-
+ drivers/net/can/sja1000/peak_pci.c            |  4 +-
+ drivers/net/can/sja1000/peak_pcmcia.c         |  4 +-
+ drivers/net/can/usb/peak_usb/pcan_usb.c       |  2 +-
+ drivers/net/can/usb/peak_usb/pcan_usb_core.c  |  4 +-
+ drivers/net/can/usb/peak_usb/pcan_usb_core.h  |  2 +-
+ drivers/net/can/usb/peak_usb/pcan_usb_fd.c    |  2 +-
+ drivers/net/can/usb/peak_usb/pcan_usb_pro.c   |  2 +-
+ drivers/net/can/usb/peak_usb/pcan_usb_pro.h   |  2 +-
+ include/linux/can/dev/peak_canfd.h            |  2 +-
+ net/can/bcm.c                                 |  6 +++
+ net/can/j1939/transport.c                     | 20 ++++++--
+ net/can/raw.c                                 | 66 ++++++++++++---------------
+ 17 files changed, 83 insertions(+), 59 deletions(-)
