@@ -1,147 +1,217 @@
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.130])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FEA03BD643;
-	Thu,  7 May 2026 14:52:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.130
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778165570; cv=none; b=a59V8N7LZUYX9pAWziARNHP1lT1XLZEz7/wfTrFh1LF9nF60K+A1urChwo5zqJD5iijrcK7LfR6uhlzSFaqWPp7z9AFVZ4uES3mELdW1UneZWpH5Rk796Czt9AMen53C+gPk8uDMPe43LVeD+37lAfsb0bBbvt3TmHqV+OQ85zc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778165570; c=relaxed/simple;
-	bh=FpYeOAyis8m6Y2Clv0tM7NciA1U9CPYpox8KmfiFYIs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WmGFHEQGZDGdaZy43vP7/MfOeUzVQoXjysY38gNnTJ6DG68ohLKWI0ltLklutrsCMb3gidm9ChIopGoO6bWGuqW7OMlCJckiNWVkRlW4y9AIXJlHwZNkMhHNyhGsBRSn59Waqv7azOOTk9uTAeQtdfsrugIpEGYElbLpi+Rj3X8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=schippers-hamm.de; spf=pass smtp.mailfrom=schippers-hamm.de; dkim=pass (2048-bit key) header.d=schippers-hamm.de header.i=simon@schippers-hamm.de header.b=xXKDUTPl; arc=none smtp.client-ip=212.227.126.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=schippers-hamm.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=schippers-hamm.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 178EE31715F;
+	Thu,  7 May 2026 14:53:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778165582; cv=pass; b=qN3sZJP8djz+1mPzGDfjJFZwbnoDde/eBJ8W1OeT2OG3d7lbJJ9NLn7K4qF64f3AAL6xDPfMiTNiF7fnhFU8OennslbyFX3nrRPL1AA+E6F8rtPdhdQVXCVSxdaseBK8n/uhmBVQu7OktKRo1qx6hio9EQY0E4lxJtvvScc/lyM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778165582; c=relaxed/simple;
+	bh=j5a4eQdwTuHiYaO1bzwW5AlyiL1sg8LGVa9SISVvtmI=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ZKWd75P8P+kFmZBYQLo6KBK0uSnUT9/GFJhzhFMDBEcdDjOia9ErANJbIFsWqswMzhz/Ow0zdSiEwXDiqBsglBE1fVIAwVILR4abR/nByh/8N2pFsXbQ6hBMOY9uD6RUSWyaj43n9HlJhoe5mzNWWYthJF+lfzLWrXd1IdEkaRY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=louisalexis.eyraud@collabora.com header.b=fOdineQx; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=schippers-hamm.de header.i=simon@schippers-hamm.de header.b="xXKDUTPl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=schippers-hamm.de;
-	s=s1-ionos; t=1778165561; x=1778770361; i=simon@schippers-hamm.de;
-	bh=SCuXleXqrC6ZPqhNX1oQ525cQB6TaYVm/6eDNN0AOKE=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=xXKDUTPlCmVLxFj77VKeKnWV0cEWpObauI28cfewl/N1mNCaWUXODqHy7VVdP8ze
-	 gbKOa6i69e/ctAYMhZQO+5EfyE5tkJUr07vUZ2JU/qqrXMfLjQFtylwxQoCtfXQX7
-	 rz1tOcEOKKbEYS1bbzQ1K5d3RCgsiYaN3kTKugdBvupmNsogihVWXOVCfguwfJ0Pq
-	 qmjILW+qFXEFeIdv4vuLS7HrFLxLQmsLn85L0SvouFLzD+8IZi0C6KsOFWSOomuiS
-	 iLETPG0uIK/jNGdT5LjZtBaOfXf+dG4mHmySjBoSGpI0gn748jzYJ2ExOp5uQjYt4
-	 zu9728NOlFW9pbmSEg==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from client.hidden.invalid by mrelayeu.kundenserver.de (mreue011
- [212.227.15.136]) with ESMTPSA (Nemesis) id 1MDQRy-1wBc503KOU-00Fay7; Thu, 07
- May 2026 16:46:40 +0200
-Message-ID: <e3a91545-13cd-4f87-8375-d707865bdbca@schippers-hamm.de>
-Date: Thu, 7 May 2026 16:46:33 +0200
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=louisalexis.eyraud@collabora.com header.b="fOdineQx"
+ARC-Seal: i=1; a=rsa-sha256; t=1778165549; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=gnoQamEnOtplYB0I+IAslgQbn8pbGYB69jQehTFsGfodQdyEq9N8s+8IaNQKwXL/NDNsawSM/Z24cn1OYsoIL42X1HyPLDQRnaqTCp8EbXe1KuvMvk5LtH+mEi7GRXP3W5KPsCWtActawG/STVReMfEy/yqHt7lFbvRLBwzGCUM=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1778165549; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=mD80HyVHazAI7zY5u5ppiXiv/kRQLmFGurqGNhp1Zzg=; 
+	b=AhxTDMRqMIdHYGdQlIxOWo/w5Yz5yPQybWfRB7KQ1G+XgIQR5AJA3uWTDk39YfBwadzwFfM+oo75B9ALzq5a14hn5rLGvoIvrTx3fI+FWIlw96uB17G4kVkwssUehgccD4OFIVq/EeR8ESEfE98d1Z0/BybHWz4mqdIF6H4BYTo=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=louisalexis.eyraud@collabora.com;
+	dmarc=pass header.from=<louisalexis.eyraud@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1778165549;
+	s=zohomail; d=collabora.com; i=louisalexis.eyraud@collabora.com;
+	h=Message-ID:Subject:Subject:From:From:To:To:Cc:Cc:Date:Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-Id:Reply-To;
+	bh=mD80HyVHazAI7zY5u5ppiXiv/kRQLmFGurqGNhp1Zzg=;
+	b=fOdineQxBdsWNaByWoVgw199d+7PDlanFfm3mIwEsyWRlUH/RmGfoI/q97LzGnFF
+	Pmgf2QzTPK0zhkSxGjMMGx7TbjLzXoS0N7L2tSBhWBqurBEKHhmumI2uDwqlYmkXsm6
+	ki/LIERCJEAVU8uJ1GOsXQbZSpcwpdfMack/cvjY=
+Received: by mx.zohomail.com with SMTPS id 1778165548105701.1379238259724;
+	Thu, 7 May 2026 07:52:28 -0700 (PDT)
+Message-ID: <2c441d51f6a865ddb6e67b63cd26a651ed3ff058.camel@collabora.com>
+Subject: Re: [PATCH net-next v2 4/4] net: phy: Introduce Airoha AN8801/R
+ Gigabit Ethernet PHY driver
+From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley	
+ <conor+dt@kernel.org>, AngeloGioacchino Del Regno	
+ <angelogioacchino.delregno@collabora.com>, Heiner Kallweit	
+ <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	kevin-kw.huang@airoha.com, macpaul.lin@mediatek.com,
+ matthias.bgg@gmail.com, 	kernel@collabora.com, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, 	linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, 	linux-kernel@vger.kernel.org
+Date: Thu, 07 May 2026 16:52:22 +0200
+In-Reply-To: <3688a285-7f98-4afa-80ad-697094cd7b97@lunn.ch>
+References: 
+	<20260326-add-airoha-an8801-support-v2-0-1a42d6b6050f@collabora.com>
+	 <20260326-add-airoha-an8801-support-v2-4-1a42d6b6050f@collabora.com>
+	 <3688a285-7f98-4afa-80ad-697094cd7b97@lunn.ch>
+Organization: Collabora Ltd
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v5 3/5] veth: implement Byte Queue Limits (BQL)
- for latency reduction
-To: Paolo Abeni <pabeni@redhat.com>, hawk@kernel.org, netdev@vger.kernel.org
-Cc: kernel-team@cloudflare.com, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
- John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org
-References: <20260505132159.241305-1-hawk@kernel.org>
- <20260505132159.241305-4-hawk@kernel.org>
- <ee275aa6-af27-4dac-9afa-da88abde312b@schippers-hamm.de>
- <8f2f7f2e-6aa2-4e5b-b52d-0025b2525579@redhat.com>
-Content-Language: en-US
-From: Simon Schippers <simon@schippers-hamm.de>
-In-Reply-To: <8f2f7f2e-6aa2-4e5b-b52d-0025b2525579@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:sNPBPySUhNmmnBE6atM+k+bbsLAB6+xRJMmtae7kiZ0Cntv9b8j
- IbGCzldlSRJ/+O2RdBvTsuM9cCjiZGFP4i3oXIssD6eVHIJRIGZ/qBYip82yK2MbXnw6uYf
- VjOz84ku0JPpbKDdaA8LbSN20DzvL4TU5FhGlA3JFUZ1CY5Q2G79QE98o5yxRgbbDyg7Haj
- 3R3ef0pT+EdEB5F/UXlZg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:GKx629lf1hA=;6wDalD/MxFjWiE/j36A6Pubvo16
- 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
- nlDRg9ZEEbi8YF2Ihq2kemZV+CnXQSoC
+X-ZohoMailClient: External
 
+Hi Andrew,
 
-
-On 5/7/26 16:34, Paolo Abeni wrote:
-> On 5/7/26 8:54 AM, Simon Schippers wrote:
->> On 5/5/26 15:21, hawk@kernel.org wrote:
->>> @@ -928,9 +968,13 @@ static int veth_xdp_rcv(struct veth_rq *rq, int b=
-udget,
->>>  			}
->>>  		} else {
->>>  			/* ndo_start_xmit */
->>> -			struct sk_buff *skb =3D ptr;
->>> +			bool bql_charged =3D veth_ptr_is_bql(ptr);
->>> +			struct sk_buff *skb =3D veth_ptr_to_skb(ptr);
->>> =20
->>>  			stats->xdp_bytes +=3D skb->len;
->>> +			if (peer_txq && bql_charged)
->>> +				netdev_tx_completed_queue(peer_txq, 1, VETH_BQL_UNIT);
->>
->> In the discussion with Jonas [1], I left a comment explaining why I thi=
-nk
->> this doesn=E2=80=99t work.
->>
->> I still think first that adding an option to modify the hard-coded
->> VETH_RING_SIZE is the way to go.
->>
->> Thanks!
->>
->> [1] Link: https://lore.kernel.org/netdev/e8cdba04-aa9a-45c6-9807-8274b6=
-2920df@tu-dortmund.de/
-> In the above discussion a 20% regression is reported, which IMHO can't
-> be ignored. Still the tput figures in the data are extremely low,
-> something is possibly off?!? I would expect a few Mpps with pktgen on
-> top of veth, while the reported data is ~20-30Kpps.
+On Thu, 2026-03-26 at 13:47 +0100, Andrew Lunn wrote:
+> > +static int an8801r_led_blink_set(struct phy_device *phydev, u8
+> > index,
+> > +				 unsigned long *delay_on,
+> > +				 unsigned long *delay_off)
+> > +{
 >=20
-> /P
+> ...
 >=20
+> > +	ret =3D phy_modify_mmd(phydev, MDIO_MMD_VEND2,
+> > LED_ON_CTRL(index),
+> > +			=C2=A0=C2=A0=C2=A0=C2=A0 LED_ON_EN, blink ? LED_ON_EN : 0);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	return 0;
+>=20
+> Just
+>=20
+>=20
+> 	return phy_modify_mmd(phydev, MDIO_MMD_VEND2,
+> LED_ON_CTRL(index),
+> 			=C2=A0=C2=A0=C2=A0=C2=A0 LED_ON_EN, blink ? LED_ON_EN : 0);
+>=20
+> > +		if (!led_trigger)
+> > +			continue;
+> > +
+> > +		ret =3D an8801r_led_hw_control_set(phydev, led_id,
+> > led_trigger);
+> > +		if (ret)
+> > +			return ret;
+> > +	}
+> > +	return 0;
+> > +}
+>=20
+>=20
+> Please take a look at all your functions. Can the last error check be
+> removed and just use return ret, etc.
+I'll fix this in the next version.
 
-The ~20-30Kpps occur when thousands of iptables rules are applied and
-an UDP userspace application is sending.
+>=20
+> > +static int an8801r_of_init_leds(struct phy_device *phydev, u8
+> > *led_cfg)
+> > +{
+> > +	struct device *dev =3D &phydev->mdio.dev;
+> > +	struct device_node *np =3D dev->of_node;
+> > +	struct device_node *leds;
+> > +	u32 function_enum_idx;
+> > +	int ret;
+> > +
+> > +	if (!np)
+> > +		return 0;
+> > +
+> > +	/* If devicetree is present, leds configuration is
+> > required */
+> > +	leds =3D of_get_child_by_name(np, "leds");
+> > +	if (!leds)
+> > +		return 0;
+> > +
+> > +	for_each_available_child_of_node_scoped(leds, led) {
+> > +		u32 led_idx;
+> > +
+> > +		ret =3D of_property_read_u32(led, "reg", &led_idx);
+> > +		if (ret)
+> > +			goto out;
+> > +
+> > +		if (led_idx >=3D AN8801R_NUM_LEDS) {
+> > +			ret =3D -EINVAL;
+> > +			goto out;
+> > +		}
+> > +
+> > +		ret =3D of_property_read_u32(led, "function-
+> > enumerator",
+> > +					=C2=A0=C2=A0 &function_enum_idx);
+> > +		if (ret)
+> > +			function_enum_idx =3D AN8801R_LED_FN_NONE;
+> > +
+>=20
+> What is this doing? Is this documented in the binding?
+The `function-enumerator` property is only documented in the led common
+dt-binding file. The an8801 dt-bindings inherits this property from the
+ethernet-phy dt-bindings.
 
-And there is a 20% pktgen regression (no iptables rules applied).
+We aimed to have this PHY have its led behaviour (how many to enable
+and what their role shall be) configurable using devicetree and not to
+rely on a default configuration, hard-coded in the driver (like the
+air_en8811h driver did) and also make use of the led hardware
+offloading (for functions like 100/1000, activity blinking, and others)
+that this PHY is capable of.
 
-I am pretty sure the reason is because the BQL limit is stuck at 2
-packets (because the completed queue is always called with 1 packet
-and not in a interrupt/timer with multiple packets...).
+From the available property list for the led node, this one seems to be
+appropriate to distinguish between the possible LAN functions, that=20
+would mean that a specific LED has either a link or RX/Tx activity=20
+role.=C2=A0That is why we used it but we could be wrong.
 
+The an8801 dt-bindings (in patch 1) misses the possible values and
+should improved in that regard and I'll fix them in next version if
+this implementation seems acceptable to you.
+>=20
+> > +		if (function_enum_idx >=3D AN8801R_LED_FN_MAX) {
+> > +			ret =3D -EINVAL;
+> > +			goto out;
+> > +		}
+> > +
+> > +		led_cfg[led_idx] =3D function_enum_idx;
+> > +	}
+> > +out:
+> > +	of_node_put(leds);
+> > +	return ret;
+> > +}
+>=20
+> > +static int an8801r_read_status(struct phy_device *phydev)
+> > +{
+> > +	int prev_speed, ret;
+> > +	u32 val;
+> > +
+> > +	prev_speed =3D phydev->speed;
+> > +
+> > +	ret =3D genphy_read_status(phydev);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	if (phydev->link && prev_speed !=3D phydev->speed) {
+> > +		val =3D phydev->speed =3D=3D SPEED_1000 ?
+> > +		=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 AN8801_BPBUS_LINK_MODE_1000 : 0;
+> > +
+> > +		return an8801_buckpbus_reg_rmw(phydev,
+> > +					=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
+> > AN8801_BPBUS_REG_LINK_MODE,
+> > +					=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
+> > AN8801_BPBUS_LINK_MODE_1000,
+> > +					=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 val);
+> > +	};
+>=20
+> This is unusual. What is it doing? Please add a comment.
+This call is to ensure that the PHY switches to the expected 1Gbps=20
+speed when available.=C2=A0
+I'll confirm it and add a comment in v3.
+
+Best regards,
+Louis-Alexis
+>=20
+> 	Andrew
