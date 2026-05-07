@@ -1,148 +1,99 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ABC22EC571
-	for <netdev@vger.kernel.org>; Thu,  7 May 2026 16:15:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B92D439FCCC
+	for <netdev@vger.kernel.org>; Thu,  7 May 2026 16:20:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778170513; cv=none; b=gcVyq/8Oiub6gkS55rzL8yD0sWbGY2XdvJLiuRe3dHmmteDwWCaauDRE0jaAA1fAZLMViIMhIJvo2ygKhItX6lW6x5F/0oOK4Lmm4tgg4QvyNVp25JgN7y2txvYU6jIFTluNykCLNrMq3zO+rIUWI9JosmrlbiTxqgBwitXfoRY=
+	t=1778170853; cv=none; b=PJ++Xo8txLO8lOZKLCJhqF690ujzpi1FCQASqOqYXUyMkTCDYQz55vCEHGr+EDXTWL/bFON+N2f119x3/6eYN2u03iwdypxLrvUmOJQfUu0Ropqg8LsEjyiiYZpjl3Z7QqymeNSKqlvlvuDugyUlt+G+1ZLUP6jsdCPFBqgGZhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778170513; c=relaxed/simple;
-	bh=1lg58qmFpF+kSN6JNvbxcvJqXwne0vEgzC4GRZZQXvU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PeZxSJ+8ohJ8GPamIrm9MpqXutQXrhfQuvBbEve7CLgybnI+ONBPAncOx5F/qWwbeGMulHuMLSXCiSlpGF0XQ2U+lSXWxOR3CclG0SiJ7WidUqaS+snUH3dp/dOV5N22DJ2VXhhjgZaQp4GYuCli0LU4GIa++vIgGgMuOg6SQlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DdR6O75I; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1778170853; c=relaxed/simple;
+	bh=zkf1WUEwq0NJqP7pNprYQYYYZC5d0HmnjXBi/YyVyEw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cycFIhFcusNdP/g4yIMPvBaVWE/6J6K1IhgcwaBoqZYrSZ5ACuSeqbZS+gdg11wufotOMxdC2pkt+5R/Rn/+A6EMP/dPO73inNJ6LxWb+8/PwOZT/xyjCjZaJM9NuVPY/cgujZAl7sEcUajZPR3IDG2PEcPI62OGKiebTkADZdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EM3sTvvw; arc=none smtp.client-ip=209.85.167.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DdR6O75I"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778170510;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=Pz6cMtzSSg94cOdnzxQctNDQk5hNgCfAncL9FfAgrvc=;
-	b=DdR6O75Ij576XUqA0ECX4vNaV5yy78XsSWMrPQef7ltKpmq3D7TsvNONsW9hWFUuVyWLvi
-	tOqxZ5282XA3hi73O/h63MuGpazxY3ZXnqbH1KPohXKcFCGOmA8ogdBlM/vmSHQc6VbfwC
-	kVWD0P6pbb44SNFJAydW9TdVJ6LlrSo=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-587-cwGTs_B4P16PhRHW9V8EKg-1; Thu,
- 07 May 2026 12:15:06 -0400
-X-MC-Unique: cwGTs_B4P16PhRHW9V8EKg-1
-X-Mimecast-MFC-AGG-ID: cwGTs_B4P16PhRHW9V8EKg_1778170505
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id ADABB195608F;
-	Thu,  7 May 2026 16:15:04 +0000 (UTC)
-Received: from dcaratti.users.ipa.redhat.com (unknown [10.44.49.163])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CC7E6300019F;
-	Thu,  7 May 2026 16:15:01 +0000 (UTC)
-From: Davide Caratti <dcaratti@redhat.com>
-To: Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org
-Subject: [PATCH net] net/sched: dualpi2: initialize timer earlier in dualpi2_init()
-Date: Thu,  7 May 2026 18:14:10 +0200
-Message-ID: <54f091e66a0aadeaf7ed72e7d1cabde1273a5cc6.1778170196.git.dcaratti@redhat.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EM3sTvvw"
+Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-479d37e7d7fso357905b6e.1
+        for <netdev@vger.kernel.org>; Thu, 07 May 2026 09:20:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778170851; x=1778775651; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zkf1WUEwq0NJqP7pNprYQYYYZC5d0HmnjXBi/YyVyEw=;
+        b=EM3sTvvwaE48pwBN7Qrw4Kkjl+Q2zByQrdWiRoHghhHRX6udpNWWMgWjCkeWC6uL1/
+         kuf3iRiCWsTP/pvUrmKqjhgolGohLwZm0rdRHePvJOvcMdOAikzCVbsX+3sIiNhZ/pkk
+         jDp9hK2J0KRlx5vMXWdHvwRp6pbOs/m9E/d0WCYOWyA89pFMrnydIdDanfMGu48pT6rk
+         nP8LsjbFkl7TWJVJeqHW4vfuNMdseFnK3r1ZfAW8PBL96hlfUE/5iQyGkjmFA9/kdmTA
+         BlykieDzHVAJaATTGSzqyNB2Byg9DP41RB/1D1NLDU7aTv2ejun+beZUqrc8HD4ca2jb
+         Z6Pw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778170851; x=1778775651;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zkf1WUEwq0NJqP7pNprYQYYYZC5d0HmnjXBi/YyVyEw=;
+        b=Lw8zgrHK1VsIGJy+z0bHx9rHH1IyVSWc1q6QERTslV55aw1SOGo4U9RfDF4IJviVHp
+         oP1V97H4hGHnd0HJYj2z8Nb84Ch+q24GOpYvZXT4em+wdqg0JeSa5JiaPWL4i3l4yw2O
+         m8zLSYmUlVxWAYZan65Um2/EBbBVOwgeE5sGZ8RNkEaZI40qjOlCmVivqqm7ozMqVVK6
+         JuCy/tKNPDs7TiKrUtjyoEsWQLXoMJCvAhxWKislNJOt8si0LhGmVHYtk4tXsqWMzR5P
+         YCabMwjD9T8sMI3jWimMKI0JimY64iain3c/TAatmUbWdnjwBh2SwIalxo5K3PI9Z+xB
+         qLGQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9K0mekLbqiJdoEMEvoR2b5QYbJHKNkqlE0boQn31RSjLowOwK1OA7HZdwSskN92KUQ9fVMDUA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWwt+6okbsU+DuSd2w5y8eQdZk4U5yREeROkpQqKK8hpriBQGL
+	YGQwMlcZkbPMNIYlW6aDQZ6vBt6Eqpe+N8zdrso1biPJAkQy5f/mJxLF
+X-Gm-Gg: AeBDiesr0s9R+mXDXdzYwwG1FgLRDgozMa0Sm/GQDubqLQn7bExifLK6tbyPyPTQLR0
+	Ss7ZEnWCMHtoAwqDj4S7jPogMwZS1mmdTOTqi+VGo3mxM7DJK1DVbAI4Z2hN0ou51DLdPAWyOst
+	gBlcGPA7xulKKcS3spUKBmXxP/ufl/eq9BP9fREyjH/3psNtwr7+sLjS49SolhBsyuZP/3cfqD5
+	SzPDLg3IMzemwbP1ODQtnqUGv4hZxTcXfdwkAfx9KN4FPK4muI3tP2qHOhClgAEAcZEjeC1rtAe
+	Np6fpHUUDK4c8ST6I0SWhG9lxTyxPfN1mBFBTjs8Y3408ICHS5mi/jtc/tD4M48RkOuV/8CvdpT
+	uw3tGd+FaYHD1JC3ec667h1zaihtDCX+gBYO1rsRoD/L2pVCruGyl38zPAF1z3ugbYljX2ZU7M2
+	g0MBa4DPMP7UeKy5nxY2oyF+PDuRMZOdf0IWNS6XJQQuUZnvR+B7FkSAVY54cFdsIvReQ4B+Eh9
+	EWcXRmSTECGxsZaweeWsxX5y7bb
+X-Received: by 2002:a05:6808:d4b:b0:479:e7c7:dc71 with SMTP id 5614622812f47-4804251eb3amr4874509b6e.38.1778170851608;
+        Thu, 07 May 2026 09:20:51 -0700 (PDT)
+Received: from ?IPV6:2601:282:1e02:1040:44c7:fa6e:bd21:8ab6? ([2601:282:1e02:1040:44c7:fa6e:bd21:8ab6])
+        by smtp.googlemail.com with ESMTPSA id 5614622812f47-48061e6eb84sm1599617b6e.0.2026.05.07.09.20.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 07 May 2026 09:20:50 -0700 (PDT)
+Message-ID: <3cf0dcca-9a3f-4cee-83d7-f058f33bcc04@gmail.com>
+Date: Thu, 7 May 2026 10:20:49 -0600
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 iproute2-next 1/4] rdma: Update headers
+Content-Language: en-US
+To: Chiara Meiohas <cmeiohas@nvidia.com>,
+ Stephen Hemminger <stephen@networkplumber.org>
+Cc: leon@kernel.org, michaelgur@nvidia.com, jgg@nvidia.com,
+ linux-rdma@vger.kernel.org, netdev@vger.kernel.org,
+ Patrisious Haddad <phaddad@nvidia.com>
+References: <20260330173118.766885-1-cmeiohas@nvidia.com>
+ <20260330173118.766885-2-cmeiohas@nvidia.com>
+ <20260427112505.684c21f3@phoenix.local>
+ <77e1a762-e204-497b-b7cb-40d5a93f8ec7@gmail.com>
+ <98c17c60-6747-4c2b-bfe4-ce9bbe560f6d@nvidia.com>
+From: David Ahern <dsahern@gmail.com>
+In-Reply-To: <98c17c60-6747-4c2b-bfe4-ce9bbe560f6d@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-'pi2_timer' needs to be initialized in all error paths of dualpi2_init():
-otherwise, a failure in qdisc_create_dflt() causes the following crash in
-dualpi2_destroy():
+On 4/28/26 4:05 AM, Chiara Meiohas wrote:
+> We will prepare a sync patch to align the names with the kernel and send
+> it shortly.
 
-  # tc qdisc add dev crash0 handle 1: root dualpi2
-  BUG: kernel NULL pointer dereference, address: 0000000000000010
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 0 P4D 0
-  Oops: Oops: 0000 [#1] SMP PTI
-  CPU: 4 UID: 0 PID: 471 Comm: tc Tainted: G            E       7.1.0-rc1-virtme #2 PREEMPT(full)
-  Tainted: [E]=UNSIGNED_MODULE
-  Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
-  RIP: 0010:hrtimer_active+0x39/0x60
-  Code: f9 eb 23 0f b6 41 38 3c 01 0f 87 87 64 c0 ff 83 e0 01 75 33 48 39 4a 50 74 28 44 3b 42 10 75 06 48 3b 51 30 74 21 48 8b 51 30 <44> 8b 42 10 41 f6 c0 01 74 cf f3 90 44 8b 42 10 41 f6 c0 01 74 c3
-  RSP: 0018:ffffd0db80b93620 EFLAGS: 00010282
-  RAX: ffffffffc0400320 RBX: ffff8cf24a4c86b8 RCX: ffff8cf24a4c86b8
-  RDX: 0000000000000000 RSI: ffff8cf2429c2ab0 RDI: ffff8cf24a4c86b8
-  RBP: 00000000fffffff4 R08: 0000000000000003 R09: 0000000000000000
-  R10: 0000000000000001 R11: ffff8cf24a39c500 R12: ffff8cf24822c000
-  R13: ffffd0db80b936c0 R14: ffffffffc02cf360 R15: 00000000ffffffff
-  FS:  00007fbc01706580(0000) GS:ffff8cf2dc759000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 0000000000000010 CR3: 0000000008e02003 CR4: 0000000000172ef0
-  Call Trace:
-   <TASK>
-   hrtimer_cancel+0x15/0x40
-   dualpi2_destroy+0x20/0x40 [sch_dualpi2]
-   qdisc_create+0x230/0x570
-   tc_modify_qdisc+0x716/0xc10
-   rtnetlink_rcv_msg+0x188/0x780
-   netlink_rcv_skb+0xcd/0x150
-   netlink_unicast+0x1ba/0x290
-   netlink_sendmsg+0x242/0x4d0
-   ____sys_sendmsg+0x39e/0x3e0
-   ___sys_sendmsg+0xe1/0x130
-   __sys_sendmsg+0xad/0x110
-   do_syscall_64+0x14f/0xf80
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-  RIP: 0033:0x7fbc0188b08e
-  Code: 4d 89 d8 e8 94 bd 00 00 4c 8b 5d f8 41 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 11 c9 c3 0f 1f 80 00 00 00 00 48 8b 45 10 0f 05 <c9> c3 83 e2 39 83 fa 08 75 e7 e8 03 ff ff ff 0f 1f 00 f3 0f 1e fa
-  RSP: 002b:00007fff593260e0 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
-  RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007fbc0188b08e
-  RDX: 0000000000000000 RSI: 00007fff59326190 RDI: 0000000000000003
-  RBP: 00007fff593260f0 R08: 0000000000000000 R09: 0000000000000000
-  R10: 0000000000000000 R11: 0000000000000202 R12: 000055f06124f260
-  R13: 0000000069fca043 R14: 000055f061255640 R15: 000055f06124d3f8
-   </TASK>
-  Modules linked in: sch_dualpi2(E)
-  CR2: 0000000000000010
+what happened to this request? I see that Stephen had to post a patch
+(not yet applied) to address this problem:
 
-[1] https://lore.kernel.org/netdev/2e78e01c504c633ebdff18d041833cf2e079a3a4.1607020450.git.dcaratti@redhat.com/
-[2] https://lore.kernel.org/netdev/20200725201707.16909-1-xiyou.wangcong@gmail.com/
+https://patchwork.kernel.org/project/netdevbpf/patch/20260505181045.748088-1-stephen@networkplumber.org/
 
-Signed-off-by: Davide Caratti <dcaratti@redhat.com>
----
- net/sched/sch_dualpi2.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/net/sched/sch_dualpi2.c b/net/sched/sch_dualpi2.c
-index 6d7e6389758d..dbe4b99955ab 100644
---- a/net/sched/sch_dualpi2.c
-+++ b/net/sched/sch_dualpi2.c
-@@ -917,6 +917,9 @@ static int dualpi2_init(struct Qdisc *sch, struct nlattr *opt,
- 	struct dualpi2_sched_data *q = qdisc_priv(sch);
- 	int err;
- 
-+	hrtimer_setup(&q->pi2_timer, dualpi2_timer, CLOCK_MONOTONIC,
-+		      HRTIMER_MODE_ABS_PINNED_SOFT);
-+
- 	q->l_queue = qdisc_create_dflt(sch->dev_queue, &pfifo_qdisc_ops,
- 				       TC_H_MAKE(sch->handle, 1), extack);
- 	if (!q->l_queue)
-@@ -928,8 +931,6 @@ static int dualpi2_init(struct Qdisc *sch, struct nlattr *opt,
- 
- 	q->sch = sch;
- 	dualpi2_reset_default(sch);
--	hrtimer_setup(&q->pi2_timer, dualpi2_timer, CLOCK_MONOTONIC,
--		      HRTIMER_MODE_ABS_PINNED_SOFT);
- 
- 	if (opt && nla_len(opt)) {
- 		err = dualpi2_change(sch, opt, extack);
--- 
-2.52.0
-
+We allow rdma to have separate uapi headers for convenience. Responses
+to mistakes need to be timely.
