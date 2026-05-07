@@ -1,228 +1,85 @@
-Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A820743DA2D;
-	Thu,  7 May 2026 15:20:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12C863B775E
+	for <netdev@vger.kernel.org>; Thu,  7 May 2026 15:20:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778167212; cv=none; b=T+sn7ZjDIyX/uM8NxBp/SD3jtdjgcRfJa9BBWhGEY2dcL0GqUuotW/dAI6/I63+vw3oKjbuVu/7J/rNvXq4J5J21HS2uCvm4l+1mIwImfwHPbCbztJQMm7OnsqbaZjxPrJg7d38qhiXBfcRxj4RiMoj7/cOomrRzJKRu8rGNuLw=
+	t=1778167256; cv=none; b=AkL1SPuQdl7yWrKfstVQWAhVQMmpO5oqX5C5tLoIphmGINerIUEu3330yRmXzbSyADZ1XJ74m7uYpGTYdPkxHwVzMJgSwxK6YEoWYlqh51dodtJ5rEUYL+Cc7QNdnl+RN0+02m2pHnjrZwlM6QT6ueBUXqIOjhTFbOMk9UTcleo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778167212; c=relaxed/simple;
-	bh=pH+m4CbKXg8EGYoMm/o3QnZ38KyQXrcHhYW5W+nMDP4=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=NW8SANsScZ3bwK4w9FGh+g3QwtwBH8yOHo171BcrizhxjCC0dWIVN6O0JLoWkTf8pV04rkeAsuosNwm9suQLmCr+/I+xjqi36vkzc2fiIowArv064ZhjDHdCswF2qeqvVSf0KZ8XWSg08eBcxvoV2unMHC5inWxZK57y8hgc/Zw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b=sHUwFqXA; arc=none smtp.client-ip=129.217.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
+	s=arc-20240116; t=1778167256; c=relaxed/simple;
+	bh=OF+vlZlvOL9KKG8lwA0Gv/nZ28zzQP39fJfh9ulYM64=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Vh7xLkhLmR2rnIeWDCNWWkgfS1Q1yvgTJ2Hipg1fWytvZlc+5hN+pSwsv3UkiRU5qYk2nFpwZp7OH4sSywUyXSmbIe0+nO7OxplfEcvk+cR/D1S/59g0+aD/XvTGozd5TEsAi96waY4IHzvxN6ewUUBDdEBq4lGUh9SyzzEUwcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FOUOEleg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b="sHUwFqXA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tu-dortmund.de;
-	s=unimail; t=1778167194;
-	bh=pH+m4CbKXg8EGYoMm/o3QnZ38KyQXrcHhYW5W+nMDP4=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To;
-	b=sHUwFqXAmCc07AEtA4s871B9gGTvOWmY0J/cC2aCLOxnHmUIi0CbUxFuScjRkKvaN
-	 kxpQHqecAUTyZW+4AWwKF9L5HWk+yDmakKl+HYCD/NXH8KENLZ7GeC9zuiHLQMeuYK
-	 vKqH8+pyP3nbqcK46EC7xpxWFSn30IBhUEcA+LF0=
-Received: from [129.217.186.46] ([129.217.186.46])
-	(authenticated bits=0)
-	by unimail.uni-dortmund.de (8.19.0.1/8.19.0.1) with ESMTPSA id 647FJqDW013345
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 7 May 2026 17:19:52 +0200 (CEST)
-Message-ID: <81f2d6e8-5138-495a-9efb-1d6ad9c6072b@tu-dortmund.de>
-Date: Thu, 7 May 2026 17:19:52 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FOUOEleg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B2DBC2BCB2;
+	Thu,  7 May 2026 15:20:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778167255;
+	bh=OF+vlZlvOL9KKG8lwA0Gv/nZ28zzQP39fJfh9ulYM64=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=FOUOElego3BPYUy5r1oZshVIvrfsEsXglseShWDzSd7N+iqiNYOwcUZi0S6FAe2qC
+	 erbZ+jBp6aMUVVbPp2k7oJIOY0CAsMUNVIj91MgaEU9uot/FghJnfv53/3hdN7PpZr
+	 AeXAjbYlXmtQZUSYACKY+ujChqCnQ2JGnMISNFy4rqM1ABaTActGxvRmknT9N/sEDd
+	 rJAb6XwgwL3AppaDSXvIg5tav9jdS7h4xpjUlivuh5S3uSoTnN65ZplsuGK8bBUDEP
+	 ol6gXacf2XhaUBSmtJbtxAIh+Qto/XtFkblv280mvZaBOmAFCTFEy0ds3sK/r0fH88
+	 UFC6oJ27QVueg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02C5C3930906;
+	Thu,  7 May 2026 15:20:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v10 4/4] tun/tap & vhost-net: avoid ptr_ring
- tail-drop when a qdisc is present
-From: Simon Schippers <simon.schippers@tu-dortmund.de>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: willemdebruijn.kernel@gmail.com, jasowang@redhat.com,
-        andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, eperezma@redhat.com,
-        leiyang@redhat.com, stephen@networkplumber.org, jon@nutanix.com,
-        tim.gebauer@tu-dortmund.de, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        virtualization@lists.linux.dev
-References: <20260506141033.180450-1-simon.schippers@tu-dortmund.de>
- <20260506141033.180450-5-simon.schippers@tu-dortmund.de>
- <20260506181909-mutt-send-email-mst@kernel.org>
- <20260506185515-mutt-send-email-mst@kernel.org>
- <c9fc9e0a-0837-49b4-91b9-4adb54c1a037@tu-dortmund.de>
-Content-Language: en-US
-In-Reply-To: <c9fc9e0a-0837-49b4-91b9-4adb54c1a037@tu-dortmund.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH iproute2-next] tc/class: use rtnl_dump_request_n() in
+ tc_class_list()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177816720480.4034455.16026111878922440843.git-patchwork-notify@kernel.org>
+Date: Thu, 07 May 2026 15:20:04 +0000
+References: <20260506160656.1226077-1-edumazet@google.com>
+In-Reply-To: <20260506160656.1226077-1-edumazet@google.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: dsahern@kernel.org, stephen@networkplumber.org, davem@davemloft.net,
+ kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+ eric.dumazet@gmail.com, jhs@mojatatu.com
 
-On 5/7/26 08:32, Simon Schippers wrote:
-> On 5/7/26 00:56, Michael S. Tsirkin wrote:
->> On Wed, May 06, 2026 at 06:28:06PM -0400, Michael S. Tsirkin wrote:
->>> On Wed, May 06, 2026 at 04:10:33PM +0200, Simon Schippers wrote:
->>>> This commit prevents tail-drop when a qdisc is present and the ptr_ring
->>>> becomes full. Once an entry is successfully produced and the ptr_ring
->>>> reaches capacity, the netdev queue is stopped instead of dropping
->>>> subsequent packets. If no qdisc is present, the previous tail-drop
->>>> behavior is preserved.
->>>>
->>>> If producing an entry fails anyways due to a race, tun_net_xmit() drops
->>>> the packet. Such races are expected because LLTX is enabled and the
->>>> transmit path operates without the usual locking.
->>>>
->>>> The __tun_wake_queue() function of the consumer races with the producer
->>>> for waking/stopping the netdev queue, which could result in a stalled
->>>> queue. Therefore, an smp_mb__after_atomic() is introduced that pairs
->>>> with the smp_mb() of the consumer. It follows the principle of store
->>>> buffering described in tools/memory-model/Documentation/recipes.txt:
->>>>
->>>> - The producer in tun_net_xmit() first sets __QUEUE_STATE_DRV_XOFF,
->>>>   followed by an smp_mb__after_atomic() (= smp_mb()), and then reads the
->>>>   ring with __ptr_ring_produce_peek().
->>>>
->>>> - The consumer in __tun_wake_queue() first writes zero to the ring in
->>>>   __ptr_ring_consume(), followed by an smp_mb(), and then reads the queue
->>>>   status with netif_tx_queue_stopped().
->>>>
->>>> => Following the aforementioned principle, it is impossible for the
->>>>    producer to see a full ring (and therefore not wake the queue on the
->>>>    re-check) while the consumer simultaneously fails to see a stopped
->>>>    queue (and therefore also does not wake it).
->>>>
->>>> Benchmarks:
->>>> The benchmarks show a slight regression in raw transmission performance
->>>> when using two sending threads. Packet loss also occurs only in the
->>>> two-thread sending case; no packet loss was observed with a single
->>>> sending thread.
->>>>
->>>> Test setup:
->>>> AMD Ryzen 5 5600X at 4.3 GHz, 3200 MHz RAM, isolated QEMU threads;
->>>> Average over 50 runs @ 100,000,000 packets. SRSO and spectre v2
->>>> mitigations disabled.
->>>>
->>>> Note for tap+vhost-net:
->>>> XDP drop program active in VM -> ~2.5x faster; slower for tap due to
->>>> more syscalls (high utilization of entry_SYSRETQ_unsafe_stack in perf)
->>>>
->>>> +--------------------------+--------------+----------------+----------+
->>>> | 1 thread                 | Stock        | Patched with   | diff     |
->>>> | sending                  |              | fq_codel qdisc |          |
->>>> +------------+-------------+--------------+----------------+----------+
->>>> | TAP        | Received    | 1.132 Mpps   | 1.133 Mpps     | +0.1%    |
->>>> |            +-------------+--------------+----------------+----------+
->>>> |            | Lost/s      | 3.765 Mpps   | 0 pps          |          |
->>>> +------------+-------------+--------------+----------------+----------+
->>>> | TAP        | Received    | 3.857 Mpps   | 3.905 Mpps     | +1.2%    |
->>>> |            +-------------+--------------+----------------+----------+
->>>> | +vhost-net | Lost/s      | 0.802 Mpps   | 0 pps          |          |
->>>> +------------+-------------+--------------+----------------+----------+
->>>>
->>>> +--------------------------+--------------+----------------+----------+
->>>> | 2 threads                | Stock        | Patched with   | diff     |
->>>> | sending                  |              | fq_codel qdisc |          |
->>>> +------------+-------------+--------------+----------------+----------+
->>>> | TAP        | Received    | 1.115 Mpps   | 1.092 Mpps     | -2.1%    |
->>>> |            +-------------+--------------+----------------+----------+
->>>> |            | Lost/s      | 8.490 Mpps   | 359 pps        |          |
->>>> +------------+-------------+--------------+----------------+----------+
->>>> | TAP        | Received    | 3.664 Mpps   | 3.549 Mpps     | -3.1%    |
->>>> |            +-------------+--------------+----------------+----------+
->>>> | +vhost-net | Lost/s      | 5.330 Mpps   | 832 pps        |          |
->>>> +------------+-------------+--------------+----------------+----------+
->>>>
->>>> Co-developed-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
->>>> Signed-off-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
->>>> Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
->>>> ---
->>>>  drivers/net/tun.c | 25 +++++++++++++++++++++++--
->>>>  1 file changed, 23 insertions(+), 2 deletions(-)
->>>>
->>>> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
->>>> index fc358c4c355b..d9ffbf88cfd8 100644
->>>> --- a/drivers/net/tun.c
->>>> +++ b/drivers/net/tun.c
->>>> @@ -1018,6 +1018,7 @@ static netdev_tx_t tun_net_xmit(struct sk_buff *skb, struct net_device *dev)
->>>>  	struct netdev_queue *queue;
->>>>  	struct tun_file *tfile;
->>>>  	int len = skb->len;
->>>> +	int ret;
->>>>  
->>>>  	rcu_read_lock();
->>>>  	tfile = rcu_dereference(tun->tfiles[txq]);
->>>> @@ -1072,13 +1073,33 @@ static netdev_tx_t tun_net_xmit(struct sk_buff *skb, struct net_device *dev)
->>>>  
->>>>  	nf_reset_ct(skb);
->>>>  
->>>> -	if (ptr_ring_produce(&tfile->tx_ring, skb)) {
->>>> +	queue = netdev_get_tx_queue(dev, txq);
->>>> +
->>>> +	spin_lock(&tfile->tx_ring.producer_lock);
->>>> +	ret = __ptr_ring_produce(&tfile->tx_ring, skb);
->>>> +	if (!qdisc_txq_has_no_queue(queue) &&
->>>> +	    (__ptr_ring_produce_peek(&tfile->tx_ring) || ret)) {
->>>> +		netif_tx_stop_queue(queue);
->>>> +		/* Paired with smp_mb() in __tun_wake_queue() */
->>>> +		smp_mb__after_atomic();
->>>> +		if (!__ptr_ring_produce_peek(&tfile->tx_ring))
->>>> +			netif_tx_wake_queue(queue);
->>>> +	}
->>>> +	spin_unlock(&tfile->tx_ring.producer_lock);
->>>> +
->>>
->>> There's a weird corner case here when tx_queue_len is 0
->>> but a qdisc has been configured - it looks like that
->>> currently it just drops all packets, with this change,
->>> the qdisc will get stuck permanently.
->>>
->>> I suspect just checking tx_ring.size should fix it.
->>> Or if you feel adventurous, change return code for __ptr_ring_produce
->>> to distinguish between "no ring" and "no space".
->>
->>
->> __ptr_ring_produce_peek really.
->>
+Hello:
+
+This patch was applied to iproute2/iproute2-next.git (main)
+by David Ahern <dsahern@kernel.org>:
+
+On Wed,  6 May 2026 16:06:56 +0000 you wrote:
+> strace tc -s class sh dev eth1 parent 2:
 > 
-> Yes, I like the approach of returning this from
-> __ptr_ring_produce_peek(). Then I will do a switch on the return value
-> in tun_net_xmit().
-
-Sashiko reports the same :)
-
-
-So for the v11 I will:
-
-- Change __ptr_ring_produce_peek() to return -ENOSPC / -EINVAL? (for 0
-  sized ring) / 0
-
-- Lock the ring.consumer_lock in __tun_detach() to avoid a race with
-  consumer (Sashiko).
-
+> strace is fooled with rtnl_dump_request() way:
 > 
-> Additionally, I should wake up in tun_queue_resize() after calling
-> ptr_ring_resize_multiple_bh(). For a new dev->tx_queue_len > 0, it
-> should be fine without waking, but for 0 it is not.
+> sendmsg(3, {msg_name={sa_family=AF_NETLINK, nl_pid=0, nl_groups=00000000},
+>         msg_namelen=12,
+> 	msg_iov=[{iov_base={nlmsg_len=36,
+> 			nlmsg_type=RTM_GETTCLASS,
+> 			nlmsg_flags=NLM_F_REQUEST|NLM_F_DUMP,
+> 			nlmsg_seq=1778082626, nlmsg_pid=0},
+> 			iov_len=16},
+> 		{iov_base={nlmsg_len=0, nlmsg_type=NLMSG_NOOP, nlmsg_flags=0, nlmsg_seq=0, nlmsg_pid=131072},
+> 		        iov_len=20}],
+> 		msg_iovlen=2, msg_controllen=0, msg_flags=0}, 0) = 36
 > 
->>
->>>
->>>> +	if (ret) {
->>>> +		/* This should be a rare case if a qdisc is present, but
->>>> +		 * can happen due to lltx.
->>>> +		 * Since skb_tx_timestamp(), skb_orphan(),
->>>> +		 * run_ebpf_filter() and pskb_trim() could have tinkered
->>>> +		 * with the SKB, returning NETDEV_TX_BUSY is unsafe and
->>>> +		 * we must drop instead.
->>>> +		 */
->>>>  		drop_reason = SKB_DROP_REASON_FULL_RING;
->>>>  		goto drop;
->>>>  	}
->>>>  
->>>>  	/* dev->lltx requires to do our own update of trans_start */
->>>> -	queue = netdev_get_tx_queue(dev, txq);
->>>>  	txq_trans_cond_update(queue);
->>>>  
->>>>  	/* Notify and wake up reader process */
->>>> -- 
->>>> 2.43.0
->>
+> [...]
+
+Here is the summary with links:
+  - [iproute2-next] tc/class: use rtnl_dump_request_n() in tc_class_list()
+    https://git.kernel.org/pub/scm/network/iproute2/iproute2-next.git/commit/?id=eff6e4dad32c
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
