@@ -1,173 +1,270 @@
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011047.outbound.protection.outlook.com [52.101.57.47])
+Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91B0134104B;
-	Thu,  7 May 2026 06:55:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778136902; cv=fail; b=O7xgC4OECLq7qAuZXAJknt4sjOErm98nE+vWh2s2qvfpIulrdvw1dqhJ5qZis7hDtTQ1UGOmJQa3Vqsdiog0Va4cXNkcbgr5fKAkbk9mdCXiuBk7xKzsY3cE2suP6MnrZHejcvmPDjo63AFautJXM8WmxrvYHVI+xQLJcIStaoE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778136902; c=relaxed/simple;
-	bh=WRZLf4BLH0w7STBzRSOfxkB9QvW53gQdpxap2mm+29c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Kb5I6FpLgPNVvTHhrCGudIf1D4Y+nz3RNVof2X28mKyRkNXG50b7YELngKR3Q4oBVJyIbIkQ8l2d8ot8WcKJs/wHOTve3rU2HBEfmj6HpkVnnvAYFk/ZRkUx6eFiG4eLzg1GFXwLzWeryoYt2I70e4DccC/kSOu8w8HAlSbykfc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=a5FRYbvu; arc=fail smtp.client-ip=52.101.57.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 396972DEA9D
+	for <netdev@vger.kernel.org>; Thu,  7 May 2026 07:00:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.158
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778137228; cv=none; b=lmXlxH/jgjcqN9AmTQG3F0rYhVCNGK0D6uX5ULsML1qfJ44hFHHspHLYlyK/IIo8SmDSJvXSuD6+8IbNXMkCepB7vA2hA+QNZ8MpSXECrBwzASHpp56oh2XGzHnNZ8u0IgdojFdovlp+jgxZD5MYSgiDDIttieICJyC5BI3eynw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778137228; c=relaxed/simple;
+	bh=jWn7QH3jWZ/H1/i6kYSqDI5OjW9j7M2oJvWYRhiMMMA=;
+	h=From:To:cc:Subject:In-reply-to:References:MIME-Version:
+	 Content-Type:Date:Message-ID; b=jj3Orwa7f4Ui0KrcGwv0EY5+GSwViE6USIbOTQSd27z4fq7nqBEYjipdMJLPIcW1LmvRepaaZymvoSfK1vHeSxwQB0q7xiYoOJPLBnufX31gbOI9Zym3JGML9uWqrwn9N4A+aa+dHG2bg4Rf9rhb9ELQlaTGaDz1kCzvUfeBjso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jvosburgh.net; spf=pass smtp.mailfrom=jvosburgh.net; dkim=pass (2048-bit key) header.d=jvosburgh.net header.i=@jvosburgh.net header.b=M2P/kzS4; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=HS4l9RL1; arc=none smtp.client-ip=202.12.124.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jvosburgh.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jvosburgh.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="a5FRYbvu"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=X1NGqUbdHfQtRaKSgRbGTE4EMd+pstymxDPuDDKy/1sSuAdDNgSCGvegiu70kxT0LZ9wWhYdAOLvcFyX6U/lbhfG2A7MhY5RLd4QCXiv/x7e4JCSJZxXTtGWFx3GOlFpZkjjXHcQDVufwuf+dadmbA863ABMMYe0dPdaDZnmdYBBfcThn/W4aBzdr1ZZj0/1gjdIVVt0XKhQtP7X79AomYWM9GpehHTPKXfDcsJq10Ig5ICiuTTJnI+GYq+YinOMr27UEgeLoY2EvfUomZpRpZKVXS1plHq390rItyJfGKePcIsLLmP3Ai73v7+EkS4QxHnnBQa5/uJ7XrblS4F6BA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=flpPY0ChfI3UoWYIspv8MaxGIljScFMnzNPU6ygroww=;
- b=WMzvYaXOPbtez4aKMP26L67OIj8oHVncKurZMx1hdiC+VYsrVDvuevJxeQYliH2NaI/HS1G9D7VslVp2uFabENaumhfdFEN2GZ73XASbgZS6+LcP6fNqDeCkxDSXOCW1ND3v9UL0X2nHz5zl91K7xCzP96tPAW21onu9XGVn/Uviqs2ZwE7FgbH2Y5tA8k/RaR0KEBwf3z8TMEl5+YuEnUAb0GiuNTyYvPrVTQCqGxKqNMgpj3YpWtd+oX+BM8nQQmCZ2bDfuS3WYCNhZxN/MzIU9m78g+UH1701WckH12me3GBg3O0cLxo2VWHNOw9dxBi13gh75tzWHfum6XTy7w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=flpPY0ChfI3UoWYIspv8MaxGIljScFMnzNPU6ygroww=;
- b=a5FRYbvupO2dxk1NRGbXOqcK8VuaIH/ObeGznlqND7Ja6duVms0uEe823vAVqpb18Yai/o7jRyGUJziM7zuHAAY0LvIoQGl2DnZxYBr1oBlq8Myur2IiSB0VTaJzWMHTdrsuq6prURiM8dKzi6LF8ZZpBycqt9TagBNh9T8zodVFDG3VHNxCXwTLUDaoCw24Ba8lpf5NqUQtZ7ybfTiZyV3ZJvpBeAIWjDLUi4GWdrXICbm9HQGLGHjrULZFSnKIR5y3RQf7sEPkTDY8p5ZPPlbvcGgn6mrsMbW+20B1v1vRuN8HyORg0ZfgLXh74C4iEgjEku1/WqJSPtVmFDjtHQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB7900.namprd12.prod.outlook.com (2603:10b6:8:14e::10)
- by MW3PR12MB4347.namprd12.prod.outlook.com (2603:10b6:303:2e::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.15; Thu, 7 May
- 2026 06:54:57 +0000
-Received: from DS0PR12MB7900.namprd12.prod.outlook.com
- ([fe80::3033:67fc:3646:c62f]) by DS0PR12MB7900.namprd12.prod.outlook.com
- ([fe80::3033:67fc:3646:c62f%5]) with mapi id 15.20.9891.016; Thu, 7 May 2026
- 06:54:57 +0000
-Date: Thu, 7 May 2026 09:54:03 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Danielle Ratson <danieller@nvidia.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"donald.hunter@gmail.com" <donald.hunter@gmail.com>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"horms@kernel.org" <horms@kernel.org>,
-	"razor@blackwall.org" <razor@blackwall.org>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"shuah@kernel.org" <shuah@kernel.org>,
-	"ast@fiberby.net" <ast@fiberby.net>,
-	"liuhangbin@gmail.com" <liuhangbin@gmail.com>,
-	"daniel@iogearbox.net" <daniel@iogearbox.net>,
-	Andy Roulin <aroulin@nvidia.com>,
-	"fmaurer@redhat.com" <fmaurer@redhat.com>,
-	"sdf.kernel@gmail.com" <sdf.kernel@gmail.com>,
-	"sd@queasysnail.net" <sd@queasysnail.net>,
-	"kees@kernel.org" <kees@kernel.org>,
-	"nickgarlis@gmail.com" <nickgarlis@gmail.com>,
-	"amorenoz@redhat.com" <amorenoz@redhat.com>,
-	"alasdair@mcwilliam.dev" <alasdair@mcwilliam.dev>,
-	"johannes.wiesboeck@aisec.fraunhofer.de" <johannes.wiesboeck@aisec.fraunhofer.de>,
-	Petr Machata <petrm@nvidia.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"bridge@lists.linux.dev" <bridge@lists.linux.dev>,
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>
-Subject: Re: [PATCH net-next 1/6] bridge: uapi: Add neigh_forward_grat
- netlink attributes
-Message-ID: <20260507065403.GA815358@shredder>
-References: <20260503073532.2138165-1-danieller@nvidia.com>
- <20260503073532.2138165-2-danieller@nvidia.com>
- <20260505190044.0608dfb1@kernel.org>
- <20260506070334.GA617302@shredder>
- <DM6PR12MB45167562767CFC70DA9AE8D0D83F2@DM6PR12MB4516.namprd12.prod.outlook.com>
- <20260506150556.4e540854@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260506150556.4e540854@kernel.org>
-X-ClientProxiedBy: FR2P281CA0005.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:a::15) To SA3PR12MB7901.namprd12.prod.outlook.com
- (2603:10b6:806:306::12)
+	dkim=pass (2048-bit key) header.d=jvosburgh.net header.i=@jvosburgh.net header.b="M2P/kzS4";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="HS4l9RL1"
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id E77B17A0100;
+	Thu,  7 May 2026 03:00:22 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Thu, 07 May 2026 03:00:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jvosburgh.net;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=fm1;
+	 t=1778137222; x=1778223622; bh=WCdUX2LcYj8Hha2V70a7X7svVtDv9eR0
+	XR5VIzhyMmU=; b=M2P/kzS4MfSJj4Rub2+jCIqNpsAcULDtAhxYHKib4YAz15Kg
+	s1K4iRwhDNHmmmlOzN3JvqrHjWLp3N1P0Q2fKida/LLu/WwxeB3yGF3q+OSgEj80
+	qR/0ZhTAQnJhNRDNZ5imjwmMV1+5UFBXZd93rSm/keKABxX2n3sE4i3n3fiqltOF
+	hKioWEbpJHjjpFhoOH5ocvVw80jNe2JHWYdgCks2kn4zgKR7vok8WGVTuWTS8xGZ
+	lO9L8xx3fSGnXOvWNW2eqHCRabpt9IYCZ0RmM99IPeP0ILT3zdAH9HcTH6W3Dd37
+	kizJsB55o+6mjgL8VvR3reYqUR7zmhh9h3vkpg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1778137222; x=
+	1778223622; bh=WCdUX2LcYj8Hha2V70a7X7svVtDv9eR0XR5VIzhyMmU=; b=H
+	S4l9RL1dRt5rBu44ja687MhXG7YWnEhB3P0qKhvQESpis+92RPluA/lNDW1QUptB
+	0N4wHflrEHl9atEY2KdhCFr0me/y4W+woNfU7b5upkr0tHK7nqnIxrYf/PNjx0TL
+	Kz9t4X6NYHtUPdSsenCiFSvxUgCFEZIjxNbwhfv4geJOqEKs9duInFuveG0GtvNR
+	zmmKvHJyQu0wZy8SVgWBg1FIqlP6ImIlQ5qqIHdCWavO9HXZSnH3AC9DIScUgFEB
+	MXzOndg5sPW8zM3kG5MGLdEiUNUjWLFYGGp3EBuZbBxH7mLNT1vNEqeWLBhmk6Xx
+	0lvaYWFCPvfxyXsr0+zYQ==
+X-ME-Sender: <xms:hjj8afwJR_eOBdvxviVpbrvTF38FhhJttHzFU2oairNa9HRXwJ4n-g>
+    <xme:hjj8aW9qAmKFQ8eKEyka4KFJ0ock_siphorr5PyWDQzaPt0pEYezwsavaGDAnBY8j
+    SZTwRIxeJ_4eQQ55f_tSI0O3SfKPEVl3L4wepaOqq8jcPdgq-H71DQ>
+X-ME-Received: <xmr:hjj8aU-Rc6mFHQAQixm1cQsFortcjyw3dJCiZOjq3jV9J6xCVkPAkxjEkrr7GDht9YOnfkl8gg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddutdeikedvucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhephffvvefujghfofggtgfgfffksehtqhertdertdejnecuhfhrohhmpeflrgihucgg
+    ohhssghurhhghhcuoehjvhesjhhvohhssghurhhghhdrnhgvtheqnecuggftrfgrthhtvg
+    hrnheptdektdetteelveektdevtefhleeljedtvedtieejtdehgeekffetkedtffehtefg
+    necuffhomhgrihhnpehivggvvgektddvrdhorhhgnecuvehluhhsthgvrhfuihiivgeptd
+    enucfrrghrrghmpehmrghilhhfrhhomhepjhhvsehjvhhoshgsuhhrghhhrdhnvghtpdhn
+    sggprhgtphhtthhopeduuddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheplhhouh
+    hishdrshgtrghlsggvrhhtseeifihinhgurdgtohhmpdhrtghpthhtohepvgguuhhmrgii
+    vghtsehgohhoghhlvgdrtghomhdprhgtphhtthhopehmrghhvghshhgssehgohhoghhlvg
+    drtghomhdprhgtphhtthhopegrnhguhiesghhrvgihhhhouhhsvgdrnhgvthdprhgtphht
+    thhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghnughrvgifodhnvg
+    htuggvvheslhhunhhnrdgthhdprhgtphhtthhopehsthgvphhhvghnsehnvghtfihorhhk
+    phhluhhmsggvrhdrohhrghdprhgtphhtthhopehfsghlsehrvgguhhgrthdrtghomhdprh
+    gtphhtthhopehprggsvghnihesrhgvughhrghtrdgtohhm
+X-ME-Proxy: <xmx:hjj8aVUc5Gip5Dg4u9MzLYrtibssSNDYQ8VtWj53uMNKP5S3RTMAbw>
+    <xmx:hjj8aRdB1WUT4HR1iciCphgDfQ_pTYALFXTi1Prw16BKXwqRlOLFeg>
+    <xmx:hjj8aeZ7RrdbuLO-ABcwMf3vdMQ073Nl9P8u3sjtj7XkLZHNixM8qg>
+    <xmx:hjj8adPPjMWBpoQ5BQ3B6jWFZyem4ERR9VfHBm1kOn634lI_0qCRoA>
+    <xmx:hjj8acfpcQ7sRlnbezkg_CafkAUR_ARZOLjsw6_GketNPQV4fSEfp5gE>
+Feedback-ID: i53714940:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 7 May 2026 03:00:21 -0400 (EDT)
+Received: by vermin.localdomain (Postfix, from userid 1000)
+	id BDE2D1C0373; Wed,  6 May 2026 23:58:37 -0700 (PDT)
+Received: from vermin (localhost [127.0.0.1])
+	by vermin.localdomain (Postfix) with ESMTP id BBA6E1C001F;
+	Thu,  7 May 2026 08:58:37 +0200 (CEST)
+From: Jay Vosburgh <jv@jvosburgh.net>
+To: Louis Scalbert <louis.scalbert@6wind.com>
+cc: netdev@vger.kernel.org, stephen@networkplumber.org,
+    andrew+netdev@lunn.ch, edumazet@google.com, kuba@kernel.org,
+    pabeni@redhat.com, fbl@redhat.com, andy@greyhouse.net,
+    shemminger@vyatta.com, maheshb@google.com
+Subject: Re: [PATCH net v4 3/4] bonding: 3ad: fix mux port state on oper down
+In-reply-to: <CAJ5u_OdCjZJLYr8OhfskTxavuW83dYSFx1_bTto9wezTn60nfA@mail.gmail.com>
+References: <20260417140505.3860237-1-louis.scalbert@6wind.com> <20260417140505.3860237-4-louis.scalbert@6wind.com> <1142168.1776974419@famine> <CAJ5u_OdCjZJLYr8OhfskTxavuW83dYSFx1_bTto9wezTn60nfA@mail.gmail.com>
+Comments: In-reply-to Louis Scalbert <louis.scalbert@6wind.com>
+   message dated "Tue, 05 May 2026 18:10:04 +0200."
+X-Mailer: MH-E 8.6+git; nmh 1.7+dev; Emacs 29.0.50
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB7900:EE_|MW3PR12MB4347:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8abc5bd5-8e1d-42a0-40d6-08deac05848b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|22082099003|56012099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	SPoeygqzgmp2jUqzpsXTDKGXnCpDi1kfZQwqn8E9H+XiJsUqv7VN7WI/KpiLvfo0dttBDdYnthZ+vadW1W0IFZ7WVsojocvEvc+C2MvkjJn0k69mlzo5Y+Qfwe3Y9T6NMJ9kKVm6ULhO8kAZvrFwmpP0Iq4kh/abMmBCVPFw5nG/Gez+UJw7gZngAiNozVNVSif5Xn6rrmWre1yf9XFVFMD6EoDZdlTO2hLpcCtTsTJu8Z68W0tKJQiL49M61PQdbZp0hwI2dCivT6nRmlb9jrhtuYJ4yCH47HAQm2PTDoD5srqFwbHSLg3uYlh9ueCOt48uh2dkECAtQj7Fwa2lI4a/Jgee4CJOy6WdO3wobnjP/RzqHQtJHHja48CadSZfHN/YzePqj6/YWcRq7ZrOOaRgj2sGLhFvVFrfxdSUle71ETgMR15r18CGqyz8n5HfKvUHL+5PJN8yiYfQR6QG/sTypMvYNeuk1xtRdR8qSZt1PZg7ol3RMFZmoDuN0/mfHMTOqqreWRJeJbLrihSmS+C0mlus+ngFXb0OYxLTesI1I/UhNRsupN7NTQPX5s5JW4K/jPXSfN7s3GeQbloxlxw9bdRP9Z5DKxodiYXBBDvc7AGEq2nmGYIuRTBFZ6L/wEE3sRUplx0r+syPYE9sZrfqjJfF9783kLgG7xBvA06ofB7hwkbEznzLpwRopbfm
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7900.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?vBQ759M2iUAT9p2lOCQm+VjkUh3eZSjE+LNz9dHdRetTKFUnzv/HnBgCni9Z?=
- =?us-ascii?Q?mtRB0zevxDdrIC50sqlc61I5OQi2q3wAZPj1giTaPuR3TL+z1tS40OZd9gJk?=
- =?us-ascii?Q?m5BzAEwCqTI148HwZsClKf7Aj+zKzGPO3hbyylE/r7EsdX49QxXYOBGnNd/c?=
- =?us-ascii?Q?gxDZIYdMdQV2HbK7WAWsz3nn2+RFcbPQou3BtdEeb+t1egmzXpUGA6HOc0YK?=
- =?us-ascii?Q?iCPJeL2a+HLKsBI6V/MFgsbU6tf4ywpCtyoVQWe+gvdGzqqq7MMmrZTFTElN?=
- =?us-ascii?Q?jA9MplOp3Ps1AwipsPe2qXqI2ePzT0gnUAU3EQ2L3pGYRwh9b2y+IVqdL2h3?=
- =?us-ascii?Q?CpHj93T+3k3PVukRUlhZ8GzUUR/rtzt3E7z4K9iB2eXNRqRLIm8ve1Bk1jqw?=
- =?us-ascii?Q?Ytg0DGE2c9Z1d61NveqoRj8DYt54fB1mqlZOBEMeg/aqdhhdnZScYr4cHDp/?=
- =?us-ascii?Q?sY1hoZFTR6evnY0+NPgldIl8QLUHB44exSHoOK5wMhygDDpsLIgCHjywfNFK?=
- =?us-ascii?Q?BgL9d+5vz9BJUzE7o5JMRojEXqz+jVS2eBR/ggAH8tkG//7RDDPnT+gnrddv?=
- =?us-ascii?Q?FcEtUakE8a3jOSaoXQYjbS2D1KgysQ4l7Y7q3ofojh4CpVyLn9iNUm10PBeL?=
- =?us-ascii?Q?uzZX0DgHQEqD767ZhklvWWXOaN6IStO9v2PwC3ZdghSxluQr5k3wNgDPdiL2?=
- =?us-ascii?Q?PKFFnxVHuPH0+lLIdyX+UO/mLuzSb4VDNGn+lryokjhdGl6HrNj3g8vIqMvy?=
- =?us-ascii?Q?Kh3ekTfGHK+Uhpg62grh1YvznoRL9zbPerHDVdOEZkNTGP+REq1rfr35kOR/?=
- =?us-ascii?Q?eqz540Afv01KsFTLcsTItCiIeyfA2ofH3AwQHgbMvB2DH/G4ltoZzXNw+IxZ?=
- =?us-ascii?Q?MpIasB41xwnz4U0AMDMXiYSZtzPs0pdPxMbbCxBPkmV/sbJpo76hMOPMmZtm?=
- =?us-ascii?Q?Mo//ikAwCCh36qG7/Hg2ejSAX67m0RjLkQhbbZWA88QuKbzgQzoem2e90y5u?=
- =?us-ascii?Q?h8M3AlDuuuqVj/WkkcG5Ptt6njGP+rM+mzdi3Uc77KOqX5+gh7uLhYmxXYP+?=
- =?us-ascii?Q?FXoUin2kx4yIyN3VLwtk43hN3B6gM70uygBoJwFsbIpHJGwOxhQe5JWyaeu5?=
- =?us-ascii?Q?h4tCqgvdKOd3K7GwPOAhfZvZTSV42550SGxj8vaDIAjXu0eAcKRdJwnsoo0S?=
- =?us-ascii?Q?i5I38XfIbyXBomsrDugO9oVFWWx3XD6XhrLahz0z21S7OYIKl9uET4WB410U?=
- =?us-ascii?Q?BNjC1I7eQFtTkfW8ssvZJsLFega0Sg20b4hmx1WRuk3xam1iIfMNJv9mcaIK?=
- =?us-ascii?Q?iOHzVnM0Xnd2XDJHPKpjfdzfYcUZ24uPeGaHWvS2qQ6gKV651XLkysG0IYcr?=
- =?us-ascii?Q?7NX1hJ9aiHvIO68H3TcGW/5QmPfVFO8bQ5WszZoM/v7IecPetOHJYgpUScA/?=
- =?us-ascii?Q?fYNsVgCWxOn/bhuDPWpAWVEvoTJb5S+XYh9v2dHMDHnd/OhTVtSZiKf7VyMs?=
- =?us-ascii?Q?F2yWdzh6VnK6kIFxwtGzXof745q3g6wI8E1lRO4IGv44FKexIpEk5lV6Zr/U?=
- =?us-ascii?Q?Eirian4pD6UDo8i4DhzXS7bFikRANwr/cEq0YjTu0qOGn3lnL1lGJz9wvMFz?=
- =?us-ascii?Q?IpeZ1uW6tl0PqzGWMk+3G74+hz6CgpwRQqGlNBoGp+7R4je9tHoj9ekNp/v9?=
- =?us-ascii?Q?uV4UozcU45M1C9yBNwLMerKKva9LuHzDSW1ETYxHjlZWtTJ/?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8abc5bd5-8e1d-42a0-40d6-08deac05848b
-X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2026 06:54:57.4782
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zyUkb1/cjjpUWWtxt06XjnH0EHJ5YH/uNImDr7XlK072dSYrGKtTqpxuml0DL4vm3Bfc1xnBouvNly7e+A1k2g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR12MB4347
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 07 May 2026 08:58:37 +0200
+Message-ID: <97981.1778137117@vermin>
 
-On Wed, May 06, 2026 at 03:05:56PM -0700, Jakub Kicinski wrote:
-> > > Related: The AI also did not catch that the spec was missing (easy
-> > > to forget for rtnetlink). Do you think it's worth adding to
-> > > review-prompts?  
-> 
-> I assumed Sashiko missed this because it doesn't spent too much time on
-> the series as a whole right now (I was going to tweak that but looks
-> like Claude is having another meltdown, crazy inference latency,
-> patches backlogging for review..)
-> 
-> Are you saying that the review prompts-based test is also not catching
-> this even if you give it the range of commits that form the series?
+Louis Scalbert <louis.scalbert@6wind.com> wrote:
 
-Yes. I noticed this during the STP mode review:
+>Hello Jay,
+>
+>Sorry for the late reply. I=E2=80=99ve been busy with another project these
+>past few days.
+>
+>Le jeu. 23 avr. 2026 =C3=A0 22:00, Jay Vosburgh <jv@jvosburgh.net> a =C3=
+=A9crit :
+>>
+>> Louis Scalbert <louis.scalbert@6wind.com> wrote:
+>>
+>> >When the bonding interface has carrier down due to the absence of
+>> >usable slaves and a slave transitions from down to up, the bonding
+>> >interface briefly goes carrier up, then down again, and finally up
+>> >once LACP negotiates collecting and distributing on the port.
+>> >
+>> >When lacp_strict mode is on, the interface should not transition to
+>> >carrier up until LACP negotiation is complete.
+>> >
+>> >This happens because the actor and partner port states remain in
+>> >Collecting_Distributing when the port goes down. When the port
+>> >comes back up, it temporarily remains in this state until LACP
+>> >renegotiation occurs.
+>> >
+>> >Previously this was mostly cosmetic, but since the bonding carrier
+>> >state may depend on the LACP negotiation state, it causes the
+>> >interface to flap.
+>> >
+>> >Move an operationally down port to the Mux WAITING state and clear the
+>> >Synchronization, Collecting, and Distributing states, in accordance with
+>> >the 802.1AX Mux state machine diagram.
+>> >
+>> >Fixes: 655f8919d549 ("bonding: add min links parameter to 802.3ad")
+>> >Signed-off-by: Louis Scalbert <louis.scalbert@6wind.com>
+>> >---
+>> > drivers/net/bonding/bond_3ad.c | 7 +++++++
+>> > 1 file changed, 7 insertions(+)
+>> >
+>> >diff --git a/drivers/net/bonding/bond_3ad.c b/drivers/net/bonding/bond_=
+3ad.c
+>> >index 9cf064243d58..bc2964ea11f5 100644
+>> >--- a/drivers/net/bonding/bond_3ad.c
+>> >+++ b/drivers/net/bonding/bond_3ad.c
+>> >@@ -1053,6 +1053,8 @@ static void ad_mux_machine(struct port *port, boo=
+l *update_slave_arr)
+>> >
+>> >       if (port->sm_vars & AD_PORT_BEGIN) {
+>> >               port->sm_mux_state =3D AD_MUX_DETACHED;
+>> >+      } else if (!port->is_enabled && port->sm_mux_state !=3D AD_MUX_D=
+ETACHED) {
+>> >+              port->sm_mux_state =3D AD_MUX_WAITING;
+>>
+>>         Technically, this is not exactly following the state machines.
+>>
+>>         The mux machine should transition to WAITING from DETACHED when
+>> Selected =3D=3D SELECTED or STANDBY, not for !is_enabled ("port_enabled"=
+ in
+>> the standard).
+>
+>The MUX machine still transitions from DETACHED to WAITING; this
+>happens a few lines later and is unchanged.
+>
+>The relevant code is:
+>
+>} else if (!port->is_enabled && port->sm_mux_state !=3D AD_MUX_DETACHED) {
+>    port->sm_mux_state =3D AD_MUX_WAITING;
+>} else {
+>     switch (port->sm_mux_state) {
+>     case AD_MUX_DETACHED:
+>          if ((port->sm_vars & AD_PORT_SELECTED)
+>              || (port->sm_vars & AD_PORT_STANDBY))
+>          /* if SELECTED or STANDBY */
+>          port->sm_mux_state =3D AD_MUX_WAITING;
+>          break;
+>
+>My change is for NOT is_enabled AND NOT AD_MUX_DETACHED.
+>
+>> The check for !is_enabled happens in the receive
+>> machine, and it would transition to PORT_DISABLED state (which clears
+>> Synchronization).
+>
+>I agree with that statement. However, clearing Synchronization is not
+>sufficient: the purpose of the fix is to clear Collecting and
+>Distributing.
+>
+>I noticed that is_enabled is defined in the 802.3ad-2000 standard, while
+>Port_Operational is defined in 802.1AX-2020. I am not sure about
+>802.1AX-2014, as I do not have access to that version.
 
-https://lore.kernel.org/netdev/20260324200051.GA572287@shredder/
+	Did you mean 802.1AX-2014 instead of 802.3ad-2000 here?
 
-Where the entire code changes are in a single patch.
+>The 802.1AX-2020 standard uses a different MUX state diagram. Compared to
+>802.3ad, the ATTACHED state has been split into ATTACH and ATTACHED.
+>There is no longer a WAITING state; it has been replaced by
+>ATTACHED_WTR.
+>
+>The new standard says that the MUX machine should transition to
+>ATTACHED_WTR when Port_Operational is FALSE and the current state is
+>not DETACHED.
+>
+>So, in my opinion, the change is correct, at least with respect to
+>802.1AX-2020.
 
-AI review of this patch:
+	I'm concerned that mixing versions of the standard will cause
+issues, precisely because the state machines vary between the 2014 and
+2020 versions.
 
-https://sashiko.dev/#/patchset/20260324184942.2828691-1-aroulin%40nvidia.com
-https://netdev-ai.bots.linux.dev/ai-review.html?id=d0cd7a7e-a803-45df-8121-555484a45315#patch-0
+	As the standards are not explicitly backwards compatible,
+bonding should conform to one version, and in my opinion the version
+that makes the most sense is the 2014 edition.  Bonding is already very
+close to the 2014 version, while compliance with the 2020 version would
+require significant changes.
 
-We can try to add this to the review-prompts and see if it helps.
+	The 2014 edition is freely available from the IEEE, for example at:
+
+https://1.ieee802.org/tsn/802-1ax-2014/
+
+>>
+>>         I'm not sure if this is actually an issue or not; I need to read
+>> the relevant bits again to make sure I understand how it's supposed to
+>> work.
+>
+>Please confirm what you want me to do: should I keep the fix as it is ?
+
+	I see that you've reposted the patch series, I'll reply there
+later when I've had a chance to study the details.
+
+	-J
+
+>best regards,
+>
+>Louis Scalbert
+>>
+>>         -J
+>>
+>> >       } else {
+>> >               switch (port->sm_mux_state) {
+>> >               case AD_MUX_DETACHED:
+>> >@@ -1200,6 +1202,11 @@ static void ad_mux_machine(struct port *port, bo=
+ol *update_slave_arr)
+>> >                       break;
+>> >               case AD_MUX_WAITING:
+>> >                       port->sm_mux_timer_counter =3D __ad_timer_to_tic=
+ks(AD_WAIT_WHILE_TIMER, 0);
+>> >+                      port->actor_oper_port_state &=3D ~LACP_STATE_SYN=
+CHRONIZATION;
+>> >+                      ad_disable_collecting_distributing(port,
+>> >+                                                         update_slave_=
+arr);
+>> >+                      port->actor_oper_port_state &=3D ~LACP_STATE_COL=
+LECTING;
+>> >+                      port->actor_oper_port_state &=3D ~LACP_STATE_DIS=
+TRIBUTING;
+>> >                       break;
+>> >               case AD_MUX_ATTACHED:
+>> >                       if (port->aggregator->is_active)
+>> >--
+>> >2.39.2
+>> >
+>>
+>> ---
+>>         -Jay Vosburgh, jv@jvosburgh.net
+
+---
+	-Jay Vosburgh, jv@jvosburgh.net
