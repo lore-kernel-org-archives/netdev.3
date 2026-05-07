@@ -1,62 +1,49 @@
-Received: from sonic306-20.consmr.mail.ne1.yahoo.com (sonic306-20.consmr.mail.ne1.yahoo.com [66.163.189.82])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 688F328313D
-	for <netdev@vger.kernel.org>; Thu,  7 May 2026 06:01:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.189.82
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AE7F222597
+	for <netdev@vger.kernel.org>; Thu,  7 May 2026 06:12:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778133674; cv=none; b=S1wV8kdFC5d8ilyIEnXWmkfQIlde0RcZc5wXFCan3mYuANQHK8hw2zz83Tad17m0sR6ulqJtoyy4b4nhiFsMGAUfukciFzVEQKM+8XL/3CEpuYZ96qC951MOMuk97oCHJ17G/4SsopCOVE03OjkvLKOKpO497i0GSk1Sg2IkOD0=
+	t=1778134339; cv=none; b=p8DacGX0yQSKvdbR/hIODjF2OlAx1r++3t6eOM9zClohuVrAfNcYgVEfNxDbgSx7oPxe8uHWl47/3fUqCkT9b4HGhEkdEiIOBOnJ79nPRByI6+hyeO4CCVKWyauLbYyFzqQ6F5TtWHkCaMBE7PpB/G9jzUL7k39W0ZP6lPTBeM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778133674; c=relaxed/simple;
-	bh=uDO26NzXRe0w7VaaIgivvtebDqr+B0rKbSXqyVrNtQw=;
-	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type:
-	 References; b=emdxrhoyfggFblDcKLnIIFA34qVmfXGIYpCqEJdLMurxX1A4QNrPM/kiUaYX0S+8BJmqXfQAZ0zTGgnlolG94KNu8N1YvF2jyvUOAH7RYzT1i/JfWTnEp1+6cSIcqZsVodLCKA45jUvLJnsAvogn5gWcNNNIvV7fRJQQK8j2n7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=g4FnWQOI; arc=none smtp.client-ip=66.163.189.82
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+	s=arc-20240116; t=1778134339; c=relaxed/simple;
+	bh=1zyYR98aRtky49y+0ToQ6v4Qbh4/TzygLpF1ZcyWWaI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ruZ5Jvvw0HK/a5BeZ4ozBG2JPlp3LQ7nZ63PlGOkQqholAt0jvED1HvQCRRtgE2auq1md6m72nrJGndinjm78Alk7wL7isHEHuhDKu+EmA9qA80UYgt+PGGA1MwnoHgN34C+yWWc3/5iUVTXZ43KY2/mMVA0AqNkX/MZGCfP9m4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gj5J/LnS; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="g4FnWQOI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1778133672; bh=1eExD8fXvtg0MiD2e4A+S35UIIDK1vkajP07rKHNXuk=; h=Date:To:From:Subject:References:From:Subject:Reply-To; b=g4FnWQOIiVuGb6nhfPgXVnrD/wawBS+bwVUC7jur8K0m/F3wPaqN4WIn0Fc0VwzwSzbWQWDFQMzqfBOaBDtzHNzMAO/UfJpUDnL/GNbMFRzfjMzAej93PcEskDFwMEsnW7Fu2SlUyl+Rch0zBGz2NsOZlCYBLZu45PSMktBHHSTTafJwllwBXECNlV55rZ4C0AZN9SA8zcBIyAPD5F9xfVfkG7RwWpvgzr/NxOdmDyhZiYCtinyhu0o1bcUauBI6rtcu9JuqD+i/GR8ZUfRbSIQ+Z3ezeupfsIGR9x4oQsd9+aCgF8Z00YudwGbCSUzdkVoAsQvDQ1Q9Q9F5WM2ZPA==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1778133672; bh=LXr8HzlAZ+z9xxLQYjh/Ay7hxSAToseoJ1MS00M1yPs=; h=X-Sonic-MF:Date:To:From:Subject:From:Subject; b=Yni/Vfx3qQf4Z6ebBGaBuAs5bL/Z5+9OFXnA2MMDgEBk/hcaqzjKxwYm5wn4Zi237+xoyAjbpSjee4BGdQKPah2iUOy6kP1uUthZCN9vuAONoF3oxrHyl+iNhpm2YpV60cj1l39l8JXTYxVNd94C57uQya2BfoBwp68GiRWuhmlnHfffJD9lxioDm0LOcuzaRRNTLkWyfmKv2u4pP7zeyIdgfwN2GB3S0puCyZGtoYdz9JDZHlRFa6azYq4AssQ8OBel5zwe45X6pafdr3DId2jECtPfC9Kfbi+yqCRCNEyA+51w8FuRRSS+bCiVgeNcsaRXwXjmDczCOXNTXz+Niw==
-X-YMail-OSG: rK9k4PIVM1kxEkq_Mm1hLICOO4T.CXvVzqINlpA9jhraBEZKPNbv8dh60m3_.HW
- NeZHaCQB5UYN88Hqp2V1h3C6TjCZBeJQkZ3FZeCnXHCOZapcsb1Yp5CpwVEvaRXRSQNw.kvNMmWH
- o33z_G2hg1ciWWirxPdWamWTUrEBQIeJl3EhrT.sFRasvxgwsbBdn9PclMSR5WuWq_5Fn4q8u5ve
- N_Tj7iKNAmsh1rS.A2W9O1AO6tl9fFQccbG7GdTj_oP3eEqcK3jXgDI1Nroy_hzCEGdQH307a2XR
- Ggp7Z2dyhmcVDPDdXuJ8.zBs1K5tZna8dxuaw3.t3KgSLw6L2z.8Kl7HiNzqHq9TeQfiMeHPr8qx
- VpPzxouM_snPqHk3VgdmuVLOl1uG0rN4BD02n3n6qwHJvDpYHlVtUazDYU48UvWEuw4Zl8CFu7pE
- LD7m.josFroJ9OtE6B.CCzuj2QDW3q3unfTAMdMImjEEFKGFKK4Bun_2nqzKGcmhjDtpxEgtICda
- zOb7hEpXxOkDlBQJfHcyDPO4pyBb6lRvsyFDWVJyZWD88qwdjxLdjU4qP8glW0Y3DrOjC7QAl9iX
- Yp6.Z0Db_GdN8YWYoOCZpOUgA.Gfl.dAeeQOwrS.Olbioh.lR95VvleoFO1RG324VCinhHSJHpkt
- ziX2Cn9MNBn6g2mMZgQ6KpfmrSCUAywr3IBUejgx6penUVGrYmWYr0sqGqi6uSuumadV_BEPaERu
- l7WvWkzY6MzwOHcPNASQtrrP0ZMOlmAm.fX3dDfapWaZvpCzjcVbTbH7pxjWrbhEub0K49PVBP68
- mE0IxrjpiV_WQ.pOn6MRgpjphVJ2RuthEtt68htpp6iz4jw22XRHdQrWhITl9f.Z7_AFRXXzRJSq
- mB9shdSnTyOyFQDuCQjnwfDIg3EtHNgs3cNw.v4nZ2dBEXZw6CBOE.rkiuouQttvdSD7LGEBXQNw
- eVESzJnZxuKeIrekhyL2y4FTOhKM_eJYlgef1vqHepZsQt4NkqMWM._1bEMTSsbMkrwh49AMJeNq
- .YFTNRoKoMk2flvFfUpFExnVUntBO3_gd52gxRQpjI8J2x79cIFBahWoW48bS9vicARmtYBcq4wg
- rj2PrxsiXhhFgBX.J6xNqoVSkbYyKZuQW25iWIN1dt204DSWWdX9m4uh6pBYCzOpmzP6wxxnna2r
- zlGvczBR4pYlORc7MPezwq4OtTRMUC3dE3yH9LcOHp2QWr4U7hD8wRbB5ls4XbbIulTGF4kDh42I
- c1lhS8AKUYMT_1ZiIAh4sEof6J_7kwtCxGRslPXFcLZm4yW0pupMnc.dcmI7yKhFBpAVqa1L5C3H
- upUaPMReLL2Sp1vs2n52bTu9jg69Cq6ADb0nDEKNNNdVp1MAgrzUiXpbOWiAsFQowJaXY1piFL9B
- ikrwbOZYvZDe.SNmSXjtDIpN9wLdWkk1d8GNLfbxt8jX73O1bUfIkeJIWUMQAucT8_e8Q8BzM_Bd
- m3Pu0BaPyPll1mtN9uyFTGO7uqbDjUJb7RqLYZ_SF6nSgPqyf3x8Mlx.ISfu3PqfU7avzq7fV5qo
- 0vJF67dxCLFj5KZJif1gVifPDckibvHZ6KfQazzbQHuUYBKkjDj4HOWNi4viJAf1y0BhADy24FpX
- mi4paWtkoHt3G7cot4vGpxlKzhOOnuEiPk4bXpRjXNxKm9ToWAdsYtEzOTv8jTSxMrpMdZl9IBgJ
- jfk1RmHrM6WUoupMYP.u4N6Byub5Bi5Hc_ssZDhnef.V5N_kVWTvIbYeS3gb4sw2naXRCUV_KuBH
- K9AdzoydbwWXfKNKMaURTXpSW8Y4bWiDzQhQijcM0dwXNGS_93Q0DTzIVcgKS3BiKiy_DCnXeQVZ
- 4N_H1VueeIBx6uTa4XkwqJmz65IcDWdm3YUUYtazKZU2gwAQz5n6QdwfuCkqaQ.J8qGYN35nYFUN
- apRuSLYa6Fd6Bat4XR.KmeED8Qp.8fSr.tl7GH7.Llud1qUhLnzlm7FAQRUQvMXJzn6G1ofuoUGf
- RBc0ZNvfzLmfd3EnQ74vBeSWd6K6.2EUID79dWDIYqPcPhXxx4frooUWr5GbM8RcquSjPx7bjvVQ
- Dl4OSjDo5L727yuxnwes5vOas.oiNIQ_JDMmyoQx6Kr6rfWH.UpUaLaE6.OldEJeo1e7OB2xyN.L
- 5ICnamAGIbZQlcoV_uf6AMcdDMVJH6XhgR.97DYqf9b8Mm46LOc0Zpf1R3tY2DqKj6zxRAIGAwFY
- KGOZveWUyMpEWmGIJd4amJ2TQ8IpDoME9fWiWND1TdBTETSX2rjdJyxP7VzRjrRtK8L_Q8AGBf1B
- Mv0WHbuoOPQSkPyin1ymBl2t72pZt_.w-
-X-Sonic-MF: <namiltd@yahoo.com>
-X-Sonic-ID: 86ba1ad8-339b-47e6-b1bc-118530bd6420
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic306.consmr.mail.ne1.yahoo.com with HTTP; Thu, 7 May 2026 06:01:12 +0000
-Received: by hermes--production-ir2-89844b765-p4qxl (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 6fae3b7e8c85ce631e8b1256ad265239;
-          Thu, 07 May 2026 05:18:38 +0000 (UTC)
-Message-ID: <2a52d7a8-3a39-4dd5-a0d5-c746122a9f73@yahoo.com>
-Date: Thu, 7 May 2026 07:18:31 +0200
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gj5J/LnS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778134336;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=A+7yZVAPKgBe5zd8mBYO+jhWo6nMd/MCriq7JgRzg1k=;
+	b=gj5J/LnShPd3GDIGPpMZoQ8OVU3JtMWxdDBo4zPpVEf23QU0Nb5oYvvb2/TQmvS3lfKH7j
+	s16Ln60CB1t6flJu3Y3GKQwIviTJMGN9hFnQd6xC5JSzAbTYcNvvc8cXw0TH3Oi1Ed/DqR
+	fIyJBQdHNcu4ob8Q+cnoQia8Y++xdX8=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-21-BtlojZnwMyiT6rXL9Gd5bA-1; Thu,
+ 07 May 2026 02:12:12 -0400
+X-MC-Unique: BtlojZnwMyiT6rXL9Gd5bA-1
+X-Mimecast-MFC-AGG-ID: BtlojZnwMyiT6rXL9Gd5bA_1778134330
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4D41218002E9;
+	Thu,  7 May 2026 06:12:09 +0000 (UTC)
+Received: from [10.44.32.223] (unknown [10.44.32.223])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id EDA93300019F;
+	Thu,  7 May 2026 06:12:02 +0000 (UTC)
+Message-ID: <541f767d-222b-4dfa-a95a-19a5ed7a46bf@redhat.com>
+Date: Thu, 7 May 2026 08:12:01 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -64,55 +51,80 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Content-Language: pl
-To: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, =?UTF-8?Q?Alvin_=C5=A0ipraga?=
- <alsi@bang-olufsen.dk>, Yury Norov <yury.norov@gmail.com>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org
-From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-Subject: [PATCH v3] net: dsa: realtek: rtl8365mb: add support for RTL8367SB
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-References: <2a52d7a8-3a39-4dd5-a0d5-c746122a9f73.ref@yahoo.com>
-X-Mailer: WebService/1.1.25559 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+Subject: Re: [PATCH net-next v3 1/2] dpll: add fractional frequency offset to
+ pin-parent-device
+To: Jakub Kicinski <kuba@kernel.org>, Jiri Pirko <jiri@resnulli.us>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Donald Hunter <donald.hunter@gmail.com>, Eric Dumazet <edumazet@google.com>,
+ Jonathan Corbet <corbet@lwn.net>, Leon Romanovsky <leon@kernel.org>,
+ Mark Bloch <mbloch@nvidia.com>, Michal Schmidt <mschmidt@redhat.com>,
+ Paolo Abeni <pabeni@redhat.com>, Pasi Vaananen <pvaanane@redhat.com>,
+ Petr Oros <poros@redhat.com>, Prathosh Satish
+ <Prathosh.Satish@microchip.com>, Saeed Mahameed <saeedm@nvidia.com>,
+ Shuah Khan <skhan@linuxfoundation.org>, Simon Horman <horms@kernel.org>,
+ Tariq Toukan <tariqt@nvidia.com>, Vadim Fedorenko
+ <vadim.fedorenko@linux.dev>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org
+References: <20260504155340.411063-1-ivecera@redhat.com>
+ <20260504155340.411063-2-ivecera@redhat.com>
+ <20260506183342.767b5fbc@kernel.org>
+Content-Language: en-US
+From: Ivan Vecera <ivecera@redhat.com>
+In-Reply-To: <20260506183342.767b5fbc@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Add chip info entry for the Realtek RTL8367SB switch. This device has
-chip ID 0x6367 and version 0x0010. It exposes two external interfaces:
-port 6 supports MII, TMII, RMII, RGMII, SGMII and HSGMII, while port 7
-supports MII, TMII, RMII and RGMII. Use the existing 8365MB-VC jam table
-for initialization.
+On 5/7/26 3:33 AM, Jakub Kicinski wrote:
+> On Mon,  4 May 2026 17:53:39 +0200 Ivan Vecera wrote:
+>> +          At top level this represents the RX vs TX symbol rate
+>> +          offset on the media associated with the pin.
+> 
+> Isn't this a hacky hack? I'd think that pin is in or out.
+> Having a freq offset between two pins or pin and parent's
+> ref lock makes sense. This new interpretation sounds like
+> we are trying to shove a difference between two pins into one?
 
-Signed-off-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
----
- drivers/net/dsa/realtek/rtl8365mb_main.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+The "RX vs TX symbol rate offset" description is not something I
+introduced — it is the original documentation of the
+fractional-frequency-offset attribute as defined by Jiri. The -ppt
+variant was added later purely for higher precision. This patch just
+unifies the documentation of both attributes.
 
-diff --git a/drivers/net/dsa/realtek/rtl8365mb.c b/drivers/net/dsa/realtek/rtl8365mb.c
-index 05412c4aa976..6451e8a31452 100644
-+++ b/drivers/net/dsa/realtek/rtl8365mb.c
-@@ -545,6 +545,20 @@ static const struct rtl8365mb_chip_info
- 		.jam_size = ARRAY_SIZE(rtl8365mb_init_jam_8365mb_vc),
- 	},
- 	{
-+		.name = "RTL8367SB",
-+		.chip_id = 0x6367,
-+		.chip_ver = 0x0010,
-+		.extints = {
-+			{ 6, 1, PHY_INTF(MII) | PHY_INTF(TMII) |
-+				PHY_INTF(RMII) | PHY_INTF(RGMII) |
-+				PHY_INTF(SGMII) | PHY_INTF(HSGMII) },
-+			{ 7, 2, PHY_INTF(MII) | PHY_INTF(TMII) |
-+				PHY_INTF(RMII) | PHY_INTF(RGMII) },
-+		},
-+		.jam_table = rtl8365mb_init_jam_8365mb_vc,
-+		.jam_size = ARRAY_SIZE(rtl8365mb_init_jam_8365mb_vc),
-+	},
-+	{
- 		.name = "RTL8367RB-VB",
- 		.chip_id = 0x6367,
- 		.chip_ver = 0x0020,
--- 
-2.53.0
+I'm not sure I fully understand what the original "RX vs TX" semantics
+were meant to capture. Jiri, could you clarify what you had in mind
+and whether we should keep or change that description?
+
+>> @@ -299,6 +299,10 @@ zl3073x_dpll_input_pin_ffo_get(const struct dpll_pin *dpll_pin, void *pin_priv,
+>>   {
+>>   	struct zl3073x_dpll_pin *pin = pin_priv;
+>>   
+>> +	/* Only rx vs tx symbol rate FFO is supported */
+>> +	if (dpll)
+>> +		return -ENODATA;
+>> +
+>>   	*ffo = pin->freq_offset;
+> 
+> It's easy for driver authors to forget this sort of validation.
+> We should fail close, so it's better to have some "capability"
+> bits or something for the driver to opt into getting given format
+> of the call.
+
+Regarding the fail-close concern — I agree that relying on drivers
+to check dpll==NULL is fragile. A capability bit alone wouldn't help
+though, since the driver still needs to distinguish which FFO context
+is being requested.
+
+I can think of two approaches:
+1. An explicit bool parameter (e.g. `bool per_parent`) instead of
+    overloading the dpll pointer for context distinction.
+2. Separate callbacks for each FFO context (e.g. ffo_get for the
+    top-level and ffo_parent_get for the per-parent).
+
+Do you have a preference, or something else in mind?
+
+Thanks,
+Ivan
+
