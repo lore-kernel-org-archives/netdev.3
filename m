@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 980D83F23B7
-	for <netdev@vger.kernel.org>; Thu,  7 May 2026 15:59:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E4ED3F23B7
+	for <netdev@vger.kernel.org>; Thu,  7 May 2026 15:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778169566; cv=none; b=QvsEzhutl7SmJllbMqby2wIwGwzPEKenQDZb3pjrHVuW3S0xBw4KB92NMk6g/LXbH80uNYyPGFF4P2CcxdBF1axydWoxoXeeJZ1ew5FHdCdBcSKq4WtIodqnOLqWpvWnO3lyoqBSVVwDZsSVvPxKRTwcSHIte7elq6EUBLzCDho=
+	t=1778169568; cv=none; b=b8oknriLwL40xTcthNg/Y2NeBpW3j9a2x5D3IwkXW8Ml2gy9i4vrAVW6Z6h2s50ej7moKUSeJLuSJQbC9dxk/4Au9NICRuXH8JTm69qbp5aoMXLKkcxLS5v0yLahndk0DoGrCl7btioK+q1pfdrWoJ4HHVhMardkJvki7j0Be9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778169566; c=relaxed/simple;
-	bh=xbxW6AsscEAmZUeI5ulw6eIW4rrXbesUfF5YumpoOzo=;
+	s=arc-20240116; t=1778169568; c=relaxed/simple;
+	bh=Cqq1ulybOatcnQMsBQMsXkfLDTs7l10YZ9ZqKHf/bxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mtQsdM/2bdVHbJSijLkVjYECZgrIsP0af8ExcScellAlmIXhWpeSYyIKTLlOty9hkC7mmujUj3B5O1bArqyfgRbQsc17HBDF1JM8MU8UH2umqk01K2qLjM9YAzPdyNhNZeXqPqndk/kckjD2Uq5jrW9VERd8gVJfwTtaRX43ksw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b55gFo+C; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=i2e21U71Hb8b7F82T388kJlUcSzN4IcsGG2FCejbdFZdN4DTfzPJFpPZvffyM1LnpHrgQf3zSDg5O2fkmEMWfOxw04YmKdGiG4QeggqvIYU88AA8IWsgeqkinTv6AKC55q+5l9G9onclj5Qg58dmM8Uq3EhqaLgu/KnHgnulzPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X6aNjOFV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b55gFo+C"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D356BC2BCB2;
-	Thu,  7 May 2026 15:59:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X6aNjOFV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90C29C2BCB2;
+	Thu,  7 May 2026 15:59:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778169566;
-	bh=xbxW6AsscEAmZUeI5ulw6eIW4rrXbesUfF5YumpoOzo=;
+	s=k20201202; t=1778169568;
+	bh=Cqq1ulybOatcnQMsBQMsXkfLDTs7l10YZ9ZqKHf/bxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b55gFo+CXPYb7NCMlRsisvQmeJJAf8d4VosspMIScjQs4e4sAP09lQH0jWCmFFmN3
-	 bOHRGUr/yr/lgC8DyapqFFxoXX4dB8AhjqIpeJjKpNlVoZ3D2xmXgLFHz2DCva4Xd7
-	 ENPwnPgTsuZUjrzpKlV8raqAYPLBIo0Ex2TtN2wPzYwJYKMSPd/BkQLFL6KjxyOSpj
-	 +nUQMkPOIhOgwGj9gVnkSsvrCEcKWQPsdS7PuRKokRsDtJ71NoNPzmgyACqnSBtPzf
-	 7UJGlmsifXbtDNiYQ3o3Cg7C9D8blJCuljoUVZ3oN0osVuduvQezQAvU7P29w/nsw9
-	 mpVXp8INx+T4Q==
+	b=X6aNjOFVQWBkH9dki5JyutsDSH5IH0hA91pfGlh36lLsseJJOLWPyjyKJi17KSdau
+	 qj4a6KkOvKimiGRqujnIaRIDRfqkhS2tkz6UVpEoTOjieD4378cMUqH3IgnL6coqyA
+	 j0eIrelMgsxeosQwgxOPPqXSZTK7AzGBe4KsBBkp9f1lRAf6uA7Zf5aisFnPxQ3aN6
+	 nk2h5bBzSrQfm1jTs+hM3df4mzW0Uo8kYBg4GiLkEa+FMGISRrjqp8V4XnqCoFXWrS
+	 B8qHhfm8kaC9WzrvsHM3LoogMV5Zo34zMaayg7GvkRL14AatkvGAvX3dJcUkUvRJmn
+	 c3ZHpmsrPDeqA==
 From: Jakub Kicinski <kuba@kernel.org>
 To: eric.joyner@amd.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -36,12 +36,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	edumazet@google.com,
 	pabeni@redhat.com,
 	prabu.ponrajthayalan@amd.com
-Subject: Re: [PATCH net v2 1/5] ionic: Allow the first devcmd to trigger deferred probe
-Date: Thu,  7 May 2026 08:59:23 -0700
-Message-ID: <20260507155923.2537888-1-kuba@kernel.org>
+Subject: Re: [PATCH net v2 3/5] ionic: Fix unexpected dev_cmd failures
+Date: Thu,  7 May 2026 08:59:26 -0700
+Message-ID: <20260507155926.2537908-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260506035706.12373-2-eric.joyner@amd.com>
-References: <20260506035706.12373-2-eric.joyner@amd.com>
+In-Reply-To: <20260506035706.12373-4-eric.joyner@amd.com>
+References: <20260506035706.12373-4-eric.joyner@amd.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,100 +53,52 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-    ionic: Allow the first devcmd to trigger deferred probe
-    
-    There's a chance the register signature value is set before the
-    firmware is ready to respond to the driver. This doesn't mean the
-    device isn't there, but just means it's not yet ready. If the first
-    devcmd fails, then return -EPROBE_DEFER so the device can be probed
-    at a later time. As part of this make sure the reset devcmd, which
-    is the first devcmd, is not so alarming when it fails by printing
-    an information message instead of the standard devcmd failure
-    messages.
+ionic: Fix unexpected dev_cmd failures
 
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c b/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
-> index 05f19489ec5c8..59ce35404e532 100644
-> --- a/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
-> +++ b/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
-> @@ -260,7 +260,8 @@ static int ionic_setup_one(struct ionic *ionic)
->  	/* Configure the device */
->  	err = ionic_setup(ionic);
->  	if (err) {
-> -		dev_err(dev, "Cannot setup device: %d, aborting\n", err);
-> +		if (err != -EPROBE_DEFER)
-> +			dev_err(dev, "Cannot setup device: %d, aborting\n", err);
->  		goto err_out_clear_pci;
-
-Does this code leak the workqueue?
-
-ionic_setup() first calls ionic_dev_setup(), which allocates the workqueue
-via ionic_watchdog_init(). If ionic_reset() then fails and returns
--EPROBE_DEFER, the goto here jumps to err_out_clear_pci.
-
-This bypasses err_out_teardown and skips ionic_dev_teardown(), which is
-responsible for calling destroy_workqueue(ionic->wq). Because -EPROBE_DEFER
-will cause the kernel to retry probing, could this leak a new workqueue on
-every failed probe attempt?
-
->  	}
-
-[ ... ]
+This commit adds a final check of the done bit after exiting the dev_cmd
+poll loop. It attempts to prevent timing out commands that have actually
+completed.
 
 > diff --git a/drivers/net/ethernet/pensando/ionic/ionic_main.c b/drivers/net/ethernet/pensando/ionic/ionic_main.c
-> index 3c5200e2fdb7d..91f89b9ff8075 100644
 > --- a/drivers/net/ethernet/pensando/ionic/ionic_main.c
 > +++ b/drivers/net/ethernet/pensando/ionic/ionic_main.c
-> @@ -603,7 +603,11 @@ int ionic_setup(struct ionic *ionic)
->  	err = ionic_dev_setup(ionic);
->  	if (err)
->  		return err;
-> -	ionic_reset(ionic);
-> +
-> +	err = ionic_reset(ionic);
-> +	/* firmware may not be ready to respond yet */
-> +	if (err == -EAGAIN || err == -ETIMEDOUT)
-> +		return -EPROBE_DEFER;
+> @@ -541,6 +541,10 @@ static int __ionic_dev_cmd_wait(struct ionic *ionic, unsigned long max_seconds,
+>  	}
+>  	duration = jiffies - start_time;
+>  
+> +	/* one final check to prevent unexpected timeout */
+> +	if (!done)
+> +		done = ionic_dev_cmd_done(idev);
 
-Will this permanently fail the probe with -ENXIO if the firmware is so early
-in its boot process that the IONIC_FW_STS_F_RUNNING bit isn't set yet?
+If the polling loop exits early because the firmware crashed or the device
+was hot-removed, fw_up evaluates to false. Will this final check then read
+from a dead device?
 
-If ionic_is_fw_running() is false, ionic_reset() skips execution and
-returns 0:
+On a disconnected device, MMIO reads typically return all 1s (0xffffffff).
+Looking at ionic_dev_cmd_done():
 
-drivers/net/ethernet/pensando/ionic/ionic_main.c:ionic_reset() {
-	if (!ionic_is_fw_running(idev))
-		return 0;
-    ...
+drivers/net/ethernet/pensando/ionic/ionic_dev.c:ionic_dev_cmd_done() {
+        ...
+        return ioread32(&idev->dev_cmd_regs->done) & IONIC_DEV_CMD_DONE;
 }
 
-If this happens, ionic_setup() returns success, and the driver proceeds to
-ionic_identify(). When it issues a command and calls __ionic_dev_cmd_wait(),
-the wait loop is skipped entirely because the firmware isn't running,
-returning -ENXIO. This bypasses the -EPROBE_DEFER logic here and causes a
-permanent probe failure.
+Since IONIC_DEV_CMD_DONE is 0x1, the bitwise AND with 0xffffffff evaluates
+to true, making done = true.
 
->  
->  	return 0;
->  }
-> @@ -687,7 +691,7 @@ int ionic_reset(struct ionic *ionic)
->  
->  	mutex_lock(&ionic->dev_cmd_lock);
->  	ionic_dev_cmd_reset(idev);
-> -	err = ionic_dev_cmd_wait(ionic, DEVCMD_TIMEOUT);
-> +	err = ionic_dev_cmd_wait_nomsg(ionic, DEVCMD_TIMEOUT);
+If done becomes true on a dead device, does it bypass the firmware down
+error path further down in this function?
 
-Does this actually suppress the timeout warning?
+__ionic_dev_cmd_wait() {
+        ...
+        if (!done && !fw_up) {
+                ionic_dev_cmd_clean(ionic);
+                dev_warn(ionic->dev, "DEVCMD %s (%d) interrupted - FW is down\n",
+                         ionic_opcode_to_str(opcode), opcode);
+                return -ENXIO;
+        }
+        ...
+}
 
-The commit message says this aims to make the first devcmd failure "not so
-alarming" by suppressing standard devcmd failure messages. However,
-ionic_dev_cmd_wait_nomsg() passes do_msg = false to __ionic_dev_cmd_wait(),
-which only suppresses firmware-returned error codes parsed by
-ionic_dev_cmd_dev_err_print().
-
-If the command times out, __ionic_dev_cmd_wait() will still unconditionally
-print the dev_warn() for the timeout, so the alarming message might still be
-printed.
-
->  	mutex_unlock(&ionic->dev_cmd_lock);
+It appears the driver will instead proceed to ionic_dev_cmd_status(), read
+0xff from the status register, log an unknown error, and return -EIO rather
+than correctly handling the device removal with -ENXIO.
