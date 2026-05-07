@@ -1,225 +1,81 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D546C311959
-	for <netdev@vger.kernel.org>; Thu,  7 May 2026 11:45:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5D983D812C;
+	Thu,  7 May 2026 11:45:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.133.224.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778154321; cv=none; b=dR4CvhnR3MeLx/NteVACVIzApjOvvzHcoUM8Md0iuCn6f2X49cr9T5WiTB8C0Q6CKzvjeHrHG9BH+IUxeyriPm/P/F8fCz6P3BnUalHgAeZK2a2vr8bgZTAHziRv8EXH9voXSe74fCY0GSrHTuTj9mvfQnYK2LX3dMxR+Je3ljY=
+	t=1778154327; cv=none; b=t2aXhxx1h9trNdniZdeZgDnLch7rNp87T3Qd+b76Un8BT/KWEd1WPE22cTAKzvIyeugzCd3Gm3l8wNjRzDEVOrbGkTCSZhGvV46PE7CPCJfIUqeQQ6qgwqk5QU+f8BpNgoQN4ggEkzP//tJtKCJp/7S4voiAfGF581letJzwyOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778154321; c=relaxed/simple;
-	bh=lvuRrcMHuxAF9URp6OhLBiPGZ+f4f+w8cDaxKKzlWH0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k73670l6S2XvH2kjwES5YPfyLWOKGwUgS3DfhnhsyRs3qO1YHAhB1o8GKSwLAw/XnB3nF4u4tHaPdW2wOdlajaqFaoitI3Il0jBff0mIlVqD4+HNMTBiPTII5I6J1Yhc332FRRzlENim4XiSGQV0SgkdXBnqLTpCwfBKqvR18H8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=M7Yiu727; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=MNhdAlWq; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="M7Yiu727";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="MNhdAlWq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778154318;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3XB8uKgfriwIOrN1HH+uQzFZrRsNz6/XjSTKr5IkjkA=;
-	b=M7Yiu727hNp03W51NM/iY+wvZKynYmQ/PukJUHOhrsWNDN7XxlukYCCS5zs31in12jWjI5
-	kGJojC0Bjo7RdEsCKKuj98nFlsOZhEKm0tcDwGlKg5wnu78jS26LkZJPqRB/uNaYUIRJcG
-	F4dq98ZnmwkKhTx6vCDHRiMWJc4S6UM=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-257-b4CDeESeOzGcWw5KyfJbow-1; Thu, 07 May 2026 07:45:16 -0400
-X-MC-Unique: b4CDeESeOzGcWw5KyfJbow-1
-X-Mimecast-MFC-AGG-ID: b4CDeESeOzGcWw5KyfJbow_1778154315
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-44f56d5523eso612001f8f.1
-        for <netdev@vger.kernel.org>; Thu, 07 May 2026 04:45:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1778154315; x=1778759115; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=3XB8uKgfriwIOrN1HH+uQzFZrRsNz6/XjSTKr5IkjkA=;
-        b=MNhdAlWqr/A9z8eNgbbotqQHpSYXSAwOKVmAZFEJl6n7MJ8HA0JfURdrImmJqiJM4B
-         WHnDI7MUySwIPt++D05HvpDmW+tBiDpqL67h9eAutI5m4zVJFj07hsaiQTfLUdMTy/Jh
-         UoJG/FcAKmBIwveKbk3T/gdoGBTzKv1eiyyjkz7HPuKxWmj/X5Y3kauS/RE/wc9Op6kF
-         Bup+csZIgeiJIN6ly/Yj2zfrty7ojbTHZ48AAuHNm+wtyQDOZAQ5SVnunJWy6hCz00nq
-         IGaLP0opY27jZe787tTAnonpNMSMEv71mfuLjo6Xq2aLfF6tbx8rnPgG0BcEphjdoEvU
-         1fHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778154315; x=1778759115;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3XB8uKgfriwIOrN1HH+uQzFZrRsNz6/XjSTKr5IkjkA=;
-        b=B7j3Z/wTf1LPt8ehahvJURO134TyNIm1aensM6nkngFQkpOAzyTr7D+tpD6mMtSkoC
-         ifTQ1A4sbAa3Gz5rRsV7RApnb3B8/DIfcugDgWX0eoEF52z7GpRRmQTIaKJXNQO+kk+w
-         h84Zyz8qTtDXwp8Gi3b8DYD3PXWqua3eYsz7GSQp8hX/55qwZtREBFdX5v9VPfwG4G05
-         i+T57r9ha19IxFDnJOxeN5pwBmB/xVUBKrajSWfY6dLbt6rMsXMcBLCLJMsPeOasxz/k
-         35u2hmnF4ydl4eLY8orjSm4spiCI4xjnvMcNuUsmEz/aThQ5NqJB++2XIZ9C9DsMmUsq
-         +RnQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/YGBpz8AJiEAp+BimtXm5Z0CgFodjxKUOVRQlUFzOXGREXDnNCcjWlq2kpWforUcvaL0V8Rqo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxl0soL/dXEirK8fjkEsgopHp9Fozm5tS2SDjKtsJ+CBhWzz9uZ
-	U7nzaI9lCfFhHoG/Nm1ATisTGEf6KsRyKlCoUD3gc2S7dU0EZ47eCTgA+kkLeFDXmlSTyZw3oQ4
-	3Ufd2qc1uGihBE6rvCIrkkWqk21Bsy5XNiFsllz3gthDUY1LHSN7TMEuAyA==
-X-Gm-Gg: AeBDiesQcyizh+zmzA2xuVlq7sTQSIGwi6oWIdT08KSQhw9cMCkdxb4l18k9oq9Bz8D
-	A+npNrTTvwmAtBDjbehdHnQjaZ+CQKOdOOZ045vnaHJnKF9FC4/wCeKK9lAlwt4ojdCGWe1Uhta
-	nlMQlfz5f96YUKtBLcBXLAgPd8sWxqWPxXlyJLsv+FHKO8w1IZDJCZ/iCNnMxS7YMsF1/78QeSQ
-	pb/62qa2/AKqGqpLsqC4M9LAPH3G6cFhvdKP+bFKnZrJyvMVdkZ9FGj+XO52jp6FK94LTOQK22T
-	TYwNjiLhLMMvXbiljauTjGfkFHBhjnafl10vRTTsXlpmgc6B/PG54HiA8hjBvs1aprJDbNuTiip
-	Pa6Kou/FnOHaEdjtPjlabMShY5DTsehiKXKyjbTM6JyCNe/w0pSs=
-X-Received: by 2002:a05:6000:200b:b0:43d:7b85:6c95 with SMTP id ffacd0b85a97d-4515d5c567emr12448720f8f.33.1778154315111;
-        Thu, 07 May 2026 04:45:15 -0700 (PDT)
-X-Received: by 2002:a05:6000:200b:b0:43d:7b85:6c95 with SMTP id ffacd0b85a97d-4515d5c567emr12448641f8f.33.1778154314419;
-        Thu, 07 May 2026 04:45:14 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-48-7.inter.net.il. [80.230.48.7])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45055960fd6sm20870119f8f.31.2026.05.07.04.45.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 May 2026 04:45:13 -0700 (PDT)
-Date: Thu, 7 May 2026 07:45:10 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: Eric Dumazet <edumazet@google.com>,
-	Arseniy Krasnov <avkrasnov@salutedevices.com>,
-	Bobby Eshleman <bobbyeshleman@meta.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
-	eric.dumazet@gmail.com, Arseniy Krasnov <AVKrasnov@sberdevices.ru>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	kvm@vger.kernel.org, virtualization@lists.linux.dev
-Subject: Re: [PATCH net] vsock/virtio: fix potential unbounded skb queue
-Message-ID: <20260507074113-mutt-send-email-mst@kernel.org>
-References: <20260430122653.554058-1-edumazet@google.com>
- <afn0ZdvZWswBuDMm@sgarzare-redhat>
- <CANn89iLs8DOWJwDpf_ARoMrV+6b2tbhEJ=VVzeC8gCm5dRGaig@mail.gmail.com>
- <afoF_cHfl6ygcupM@sgarzare-redhat>
- <20260506113554-mutt-send-email-mst@kernel.org>
- <afxVH2So9BbZ3Gta@sgarzare-redhat>
+	s=arc-20240116; t=1778154327; c=relaxed/simple;
+	bh=y88ANMEB1Rz96O0OTRK0xxZCVFv7ypteibGlSq5EQks=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=brPyksKMI4bY2cU9XOxg+f37JW0U5BFBBwZGR9hUI6CEYcgdjcvq7PAQClPKfOdraV1KoEJ7HJcPf8xsts0WpJ2pwQ5Zmpca6ibjArgjri/Wmu61WIh5p9OvDugG4HWZFIp+TlJsd17tpXj8LNMp54kMPlcBRY8ZjzIVDJIvXNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk; spf=none smtp.mailfrom=orcam.me.uk; arc=none smtp.client-ip=78.133.224.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=orcam.me.uk
+Received: by angie.orcam.me.uk (Postfix, from userid 500)
+	id 4E42692009C; Thu,  7 May 2026 13:45:22 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by angie.orcam.me.uk (Postfix) with ESMTP id 4B0C192009B;
+	Thu,  7 May 2026 12:45:22 +0100 (BST)
+Date: Thu, 7 May 2026 12:45:22 +0100 (BST)
+From: "Maciej W. Rozycki" <macro@orcam.me.uk>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+cc: netdev@vger.kernel.org, linux-mips@vger.kernel.org, 
+    Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+    "David S. Miller" <davem@davemloft.net>, 
+    Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH net-next v2] declance: Remove IRQF_ONESHOT
+In-Reply-To: <20260507073427.atoJ5zsY@linutronix.de>
+Message-ID: <alpine.DEB.2.21.2605071211350.46195@angie.orcam.me.uk>
+References: <20260127165430.7ui_LGkg@linutronix.de> <alpine.DEB.2.21.2601271739250.40317@angie.orcam.me.uk> <alpine.DEB.2.21.2603292037020.60268@angie.orcam.me.uk> <alpine.DEB.2.21.2605042332070.46195@angie.orcam.me.uk> <20260505072954.Ov2t-FGt@linutronix.de>
+ <alpine.DEB.2.21.2605051233210.46195@angie.orcam.me.uk> <20260505123203.jifiaxEL@linutronix.de> <alpine.DEB.2.21.2605051410280.46195@angie.orcam.me.uk> <20260505152450.1KYVS2pr@linutronix.de> <alpine.DEB.2.21.2605060040230.46195@angie.orcam.me.uk>
+ <20260507073427.atoJ5zsY@linutronix.de>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <afxVH2So9BbZ3Gta@sgarzare-redhat>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 
-On Thu, May 07, 2026 at 11:09:47AM +0200, Stefano Garzarella wrote:
-> On Wed, May 06, 2026 at 11:37:45AM -0400, Michael S. Tsirkin wrote:
-> > On Tue, May 05, 2026 at 06:11:13PM +0200, Stefano Garzarella wrote:
-> > > On Tue, May 05, 2026 at 07:14:36AM -0700, Eric Dumazet wrote:
-> > > > On Tue, May 5, 2026 at 6:52 AM Stefano Garzarella <sgarzare@redhat.com> wrote:
-> > > > >
-> > > > > On Thu, Apr 30, 2026 at 12:26:52PM +0000, Eric Dumazet wrote:
-> > > > > >virtio_transport_inc_rx_pkt() checks vvs->rx_bytes + len > vvs->buf_alloc.
-> > > > > >
-> > > > > >virtio_transport_recv_enqueue() skips coalescing for packets
-> > > > > >with VIRTIO_VSOCK_SEQ_EOM.
-> > > > > >
-> > > > > >If fed with packets with len == 0 and VIRTIO_VSOCK_SEQ_EOM,
-> > > > > >a very large number of packets can be queued
-> > > > > >because vvs->rx_bytes stays at 0.
-> > > > > >
-> > > > > >Fix this by estimating the skb metadata size:
-> > > > > >
-> > > > > >       (Number of skbs in the queue) * SKB_TRUESIZE(0)
-> > > > > >
-> > > > > >Fixes: 077706165717 ("virtio/vsock: don't use skbuff state to account credit")
-> > > > > >Signed-off-by: Eric Dumazet <edumazet@google.com>
-> > > > > >Cc: Arseniy Krasnov <AVKrasnov@sberdevices.ru>
-> > > > > >Cc: Stefan Hajnoczi <stefanha@redhat.com>
-> > > > > >Cc: Stefano Garzarella <sgarzare@redhat.com>
-> > > > > >Cc: "Michael S. Tsirkin" <mst@redhat.com>
-> > > > > >Cc: Jason Wang <jasowang@redhat.com>
-> > > > > >Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-> > > > > >Cc: "Eugenio Pérez" <eperezma@redhat.com>
-> > > > > >Cc: kvm@vger.kernel.org
-> > > > > >Cc: virtualization@lists.linux.dev
-> > > > > >---
-> > > > > > net/vmw_vsock/virtio_transport_common.c | 4 +++-
-> > > > > > 1 file changed, 3 insertions(+), 1 deletion(-)
-> > > > > >
-> > > > > >diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-> > > > > >index 416d533f493d7b07e9c77c43f741d28cfcd0953e..9b8014516f4fb1130ae184635fbba4dfee58bd64 100644
-> > > > > >--- a/net/vmw_vsock/virtio_transport_common.c
-> > > > > >+++ b/net/vmw_vsock/virtio_transport_common.c
-> > > > > >@@ -447,7 +447,9 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
-> > > > > > static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
-> > > > > >                                       u32 len)
-> > > > > > {
-> > > > > >-      if (vvs->buf_used + len > vvs->buf_alloc)
-> > > > > >+      u64 skb_overhead = (skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0);
-> > > > > >+
-> > > > > >+      if (skb_overhead + vvs->buf_used + len > vvs->buf_alloc)
-> > > > > >               return false;
-> > > > >
-> > > > > I'm not sure about this fix, I mean that maybe this is incomplete.
-> > > > > In virtio-vsock, there is a credit mechanism between the two peers:
-> > > > > https://docs.oasis-open.org/virtio/virtio/v1.3/csd01/virtio-v1.3-csd01.html#x1-4850003
-> > > > >
-> > > > > This takes only the payload into account, so it’s true that this problem
-> > > > > exists; however, perhaps we should also inform the other peer of a lower
-> > > > > credit balance, otherwise the other peer will believe it has much more
-> > > > > credit than it actually does, send a large payload, and then the packet
-> > > > > will be discarded and the data lost (there are no retransmissions,
-> > > > > etc.).
-> > > >
-> > > > I dunno, perhaps revert 077706165717 ("virtio/vsock: don't use skbuff
-> > > > state to account credit")
-> > > > and find a better fix then?
-> > > 
-> > > IIRC the same issue was there before the commit fixed by that one (commit
-> > > 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with sk_buff")), so
-> > > not sure about reverting it TBH.
-> > > 
-> > > CCing Arseniy and Bobby.
-> > > 
-> > > >
-> > > > There is always a discrepancy between skb->len and skb->truesize.
-> > > > You will not be able to announce a 1MB window, and accept one milliion
-> > > > skb of 1-byte each.
-> > > >
-> > > > This kind of contract is broken.
-> > > >
-> > > 
-> > > Yep, I agree, but before we start discarding data (and losing it), IMHO we
-> > > should at least inform the other peer that we're out of space.
-> > > 
-> > > @Stefan, @Michael, do you think we can do something in the spec to avoid
-> > > this issue and in some way take into account also the metadata in the
-> > > credit. I mean to avoid the 1-byte packets flooding.
-> > > 
-> > > Thanks,
-> > > Stefano
-> > 
-> > Why do we need the metadata? Just don't keep it around if you begin
-> > running low on memory.
+On Thu, 7 May 2026, Sebastian Andrzej Siewior wrote:
+
+> >  The interrupt is exceedingly rare, I've only seen it actually fire maybe 
+> > a dozen times across all my systems in 25+ years.  It happens when there 
+> > is a memory read error on DMA, such as an uncorrected ECC or parity error 
+> > (depending on the system variant), or a bus timeout.
 > 
-> I don't think removing the skuffs will be easy; we added them for ebpf,
-> zero-copy, and seqpacket as well.
+> I assumed you have other interrupts on that hw, cascaded/ operating the
+> same way. But otherwise…
 
-You do not need to remove them completely.
+ Hardware does have such stuff, but we don't make use of any other sources 
+right now.
 
-> For now, we're already doing something:
-> merging the skuffs if they don't have EOM set.
+ We don't use DMA with the SCC serial ports -- I've had plans to wire that 
+even for asynchronous operation, because with the 3-entry only input FIFO 
+it's quite easy for characters to get lost at higher baud rates; we have 
+no driver support for the synchronous modes with these systems although 
+hardware has all the necessary circuitry and external port connections.
 
+ And the driver for the ESP SCSI interface was sadly lost in a conversion 
+many years ago when I got stuck due to a peculiarity with the hardware and 
+never completed it, which is a shame, but there you go -- I still hope to 
+do that one day, and that I consider much higher priority than DMA for the 
+SCC.
 
-Right that's good. You could go further and merge with EOM too
-if you stick the info about message boundaries somewhere else.
+ Another system model, the Personal DECstation, also has ISDN and sound 
+interfaces wired for DMA, but no driver was ever written/ported for either 
+and no one running Linux seems to have a specimen available anymore.  I 
+think NetBSD guys have full support for that system.
 
-> As a quick fix, I'm thinking of reducing the `buf_alloc` value to account
-> for the overhead and notifying the other peer, at least until we find a
-> better solution.
-> 
-> Stefano
+ So yeah, right now it's only LANCE that makes use of any of the DMA IRQs, 
+and it's actually the least complext arrangement of all the devices: LANCE 
+makes use of 1 DMA IRQ, ESP makes use of 3 and the SCC ports make use of 4 
+each.  Each has one IRQ dedicated to memory read errors, and ESP and SCC 
+also have one each for overrun errors.  The remaining IRQs are for regular 
+DMA operation, i.e. buffer flipping, which LANCE does not do as it makes 
+use of the usual DMA descriptor ring arrangement instead.
 
-well if you want to support pathological cases such as 1 byte messages
-that would mean like 100x reduction no?
-
+  Maciej
