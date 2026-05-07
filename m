@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B97E417A309;
-	Thu,  7 May 2026 00:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 695551A681E
+	for <netdev@vger.kernel.org>; Thu,  7 May 2026 00:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778115062; cv=none; b=gYuysLuUE+QdBcE7hWJFItTNDb6d2aOuv4zBCDWTz8LrmKRSlbM5izPJ2z2tp0HMuPRuxF+xVQQWTJq8igpXg3hda4C1wI1Yrpj1RXFxPumHsLHTNk2h4+Ni4Kj/ldEUG4wMX4pQrmKZx9D9Obukyj2da7LhzLOebgkc2KESua4=
+	t=1778115064; cv=none; b=iFA3TD7HkYIkpWL95R4nZgOs0LeopCnBB/y0vWFF4GlxOixkwp/C61RihC6IAJIwiGp3BtJSK3Q2ssho09DOOW2xsYpAWHCKd1Iat4vIWOklWCER8zZg75bh73/1rB0EKX2ILe9qaE11UH6ut3ruceSEgMxkIoP2XAYNoKfWtA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778115062; c=relaxed/simple;
-	bh=Ykm/CgbNs4dvp5FgawGmX6mMnfMSO588L6pSP8onnqw=;
+	s=arc-20240116; t=1778115064; c=relaxed/simple;
+	bh=Xo43drVsLS4+XOyNDFa9TU2lA/j2NxmwmhAdwh3rg7M=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=srsk3N+yGyyP71MaEvdAqDfjm1kD5er+KiYcc9uJ4u2J7KJ9XpYLdo0qKF8SkfKH4nUFko/yRFMa+tID55g4I1UOueQY4zkGjI+HkMrJBwHEUIzj4MY7sV+uw6LbohYMJRW9baJMTXxHs0gA4/1qGGRU4x72mkWpPpSBWZnW2Ac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EZ5EOniB; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=huzdFCZZy4XpO7wYp8gD88QS2Q0qlFFeEmFkkPF24sBQ21mgvE3YAXCNnsGEAL0M4ipvrv4tpOTFLFEj4462iRECrY4gQtnl30CR9wwVvXtMtWJaRzLsM69+gCvFbdjFIah63YcHIfXpnS7o4oQmQRKXZArmv1LrBIh4sGYHOJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fZ5fYRQG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EZ5EOniB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74963C2BCB0;
-	Thu,  7 May 2026 00:51:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fZ5fYRQG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB4BAC2BCC4;
+	Thu,  7 May 2026 00:51:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778115062;
-	bh=Ykm/CgbNs4dvp5FgawGmX6mMnfMSO588L6pSP8onnqw=;
+	s=k20201202; t=1778115064;
+	bh=Xo43drVsLS4+XOyNDFa9TU2lA/j2NxmwmhAdwh3rg7M=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=EZ5EOniB8JPJGfEi9EpSRXcTYnJdQLAs9INpsSm6NtHeCF6636ljw9b3D9FHNLuBy
-	 05h7fyoGKzbom7KZfXFcE41wjou/O+LogDClebcehfC9DMEVXIOCdtF3rj6JXl0vVL
-	 JsHH8qwkhiihKd5RY1TNEi2QCI2E02yEgnCwdsNrdKhUd/FGevsnYVjpHBZ8ac7z0p
-	 CQcFtlxrP18nMfKmmUbp9E6GTCG9NStHKmA44p0ot3dmZ+KFhUUhAxyG8LQ7evAJDD
-	 1DJ86DC4MyikynHkDTjH9csq59EaQPi5WR44oi6BUBjqbRB98exAVG2cNF0gSq1nLp
-	 /y1JKu1b75ffg==
+	b=fZ5fYRQGfa8mGRWHYOwyi0jwziXjMy6Qau+pJgZRMTgcvXBfL3EUtysCjaYPmawVX
+	 vH96BJfOwK/ZFMlElJQS022t+5n9sAEcqzCsYaQRhthYr+yYlW5aVG+5ehZfVudxoN
+	 9C1xBDOIHYvLySMIzFTReHZuMfHvVQpD3ufDVGNMj8Ba+UeYg722mJVyB15NEUOvgO
+	 XM5gaDQpyOjBbCIuB53P1JMlSLWY20agro3P4BMOjvB3Y65x6yHofIoS8ybBft7lOx
+	 xEqq9WFn19xPXkeQ6ZXflbp6u3k1GZUpR0F9oFC68YtXxfzW4oM/uzGYHHMJpIzrcL
+	 sQqJpHgBLwaYQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FF27393089F;
-	Thu,  7 May 2026 00:50:13 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9E57393089F;
+	Thu,  7 May 2026 00:50:14 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,44 +37,39 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/3] netdevsim: psp: fix init and uninit bugs
+Subject: Re: [PATCH net] inetpeer: add a missing read_seqretry() in
+ inet_getpeer()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177811501205.3280886.6057406571576753588.git-patchwork-notify@kernel.org>
-Date: Thu, 07 May 2026 00:50:12 +0000
-References: <20260505-psd-rcu-v1-0-a8f69ec1ab96@gmail.com>
-In-Reply-To: <20260505-psd-rcu-v1-0-a8f69ec1ab96@gmail.com>
-To: Daniel Zahka <daniel.zahka@gmail.com>
-Cc: kuba@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, willemb@google.com,
- willemdebruijn.kernel@gmail.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+ <177811501329.3280886.4810044066570088478.git-patchwork-notify@kernel.org>
+Date: Thu, 07 May 2026 00:50:13 +0000
+References: <20260505133233.3039575-1-edumazet@google.com>
+In-Reply-To: <20260505133233.3039575-1-edumazet@google.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, eric.dumazet@gmail.com, melotti@google.com
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 05 May 2026 03:42:22 -0700 you wrote:
-> This series has three fixes. The first is a straightforward NULL
-> pointer dereference that is reachable by creating and destroying some
-> vfs on a kernel with INET_PSP enabled.
+On Tue,  5 May 2026 13:32:33 +0000 you wrote:
+> When performing a lockless lookup over the inet_peer rbtree,
+> if a matching node is found, inet_getpeer() returns it immediately
+> without validating the seqlock sequence.
 > 
-> The last two patches deal with nsim_psp_rereg_write(), which is a
-> debugfs handler that reregisters netdevsim's psp_dev without
-> aquiescing and disabling tx/rx processing. This was added to enable
-> some tests in psp.py where a psp device is unregistered while it still
-> referenced by tcp socket state.
+> This missing check introduces a race condition:
+> 
+> Trigger Path: When a host receives an incoming fragmented IPv4 packet,
+> ip4_frag_init() (in net/ipv4/ip_fragment.c) calls inet_getpeer_v4()
+> to track the peer.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,1/3] netdevsim: psp: only call nsim_psp_uninit() on PFs
-    https://git.kernel.org/netdev/net/c/7ce3f1bedaac
-  - [net,2/3] netdevsim: psp: serialize calls to nsim_psp_uninit()
-    https://git.kernel.org/netdev/net/c/24c96a42006e
-  - [net,3/3] netdevsim: psp: rcu protect psp_dev reference
-    https://git.kernel.org/netdev/net/c/07bdec3fc737
+  - [net] inetpeer: add a missing read_seqretry() in inet_getpeer()
+    https://git.kernel.org/netdev/net/c/67ef49047d31
 
 You are awesome, thank you!
 -- 
