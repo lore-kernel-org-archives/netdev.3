@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D05EC3C9ECF
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D292A3C9ED6
 	for <netdev@vger.kernel.org>; Thu,  7 May 2026 11:23:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778153015; cv=none; b=Xc+0kfK6y+qWswV/8QLrusf7Vb0qML40zQr1LGkIzEoLFb4fFabW6Jd73k1s4X3Qr0Ku4gnajXuzaco6jRb0eSaSvszPehwd5qBhwdumaa28SBebosgXfDpZWf/i3PmvL4KzFktXr5AJ9fDIEbvJ3w6cUQ0AuLtXW0GpabPvx4I=
+	t=1778153015; cv=none; b=pPqhCEFFFDinZ67EJlVs6e7DVyMylbXTw9B+sGasvrBkSdE7xmuGIhEEv6pMTMU2OyTGP58856fmxdeDcmDAZHIgzHqtq/BsQmr1H93mnZ/oWCod7qTshbb12b+rYqmCwfgzSWWki6IUaJpaWfWmaoQxcKCTczWiG6hMQS3f8t8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1778153015; c=relaxed/simple;
-	bh=AXqnKFwPhagRw4/AFW8BZoUlS1dCiO0WVwVT7qeTPFY=;
+	bh=bVYrqeAxyL/Twjn2fFQBa5p1kkETeUtUl9sUV//mpxE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A1xNCHmLI+XKR5M+WNOGYJ/yg+4SrQjJlxb0MbGzGUxupNhEdUCbEz9lC8Rnx+dKWpYS4vCQDwRdd4jpEdfqMAdtXzhE31GYHp+diNAKgN73Ug0Us4S+kyDc6M5kHsc5HRXGFUeVkq8HcQH3FDjjP5CTGEa5GMEFnJXIzk0YWfc=
+	 MIME-Version; b=qu/j1v42ODPT6v+Xyb3gzoFzg8Cv7j07+RkAkLgNhqVY83GxdKbyPz8kAQztlpx+9Pv22b550f1nV5SRnJBqGo1hUUWJNGsG37OecECamdEU1weDbjy584RPRxPhpkecKQn7T/6vKssvLixQDZvrZ2wU7L//5aoUgxyDUEOnrfE=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,19 +18,19 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1wKwp9-0002vk-NS; Thu, 07 May 2026 13:23:23 +0200
+	id 1wKwpB-0002vm-13; Thu, 07 May 2026 13:23:25 +0200
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1wKwp8-000ufe-39;
+	id 1wKwp9-000ufi-0K;
 	Thu, 07 May 2026 13:23:23 +0200
 Received: from blackshift.org (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 20FB4530407;
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 3A401530409;
 	Thu, 07 May 2026 11:23:23 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
@@ -38,12 +38,12 @@ Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	Lee Jones <lee@kernel.org>,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Shuhao Fu <sfual@cse.ust.hk>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net 2/6] can: bcm: prevent thrtimer UAF in rx path by checking RX_NO_AUTOTIMER
-Date: Thu,  7 May 2026 10:22:24 +0200
-Message-ID: <20260507112321.439968-3-mkl@pengutronix.de>
+Subject: [PATCH net 4/6] can: j1939: fix lockless local-destination check
+Date: Thu,  7 May 2026 10:22:26 +0200
+Message-ID: <20260507112321.439968-5-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260507112321.439968-1-mkl@pengutronix.de>
 References: <20260507112321.439968-1-mkl@pengutronix.de>
@@ -59,50 +59,76 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: Lee Jones <lee@kernel.org>
+From: Shuhao Fu <sfual@cse.ust.hk>
 
-Commit f1b4e32aca08 ("can: bcm: use call_rcu() instead of costly
-synchronize_rcu()") removed the synchronize_rcu() call from
-bcm_delete_rx_op() and introduced the RX_NO_AUTOTIMER flag to prevent
-timers from being rearmed during deletion.  However, it only applied
-this check to op->timer via bcm_rx_starttimer().
+j1939_priv.ents[].nusers is documented as protected by priv->lock, and
+its updates already happen under that lock. j1939_can_recv() also reads
+it under read_lock_bh(). However, j1939_session_skb_queue() and
+j1939_tp_send() still read priv->ents[da].nusers without taking the
+lock.
 
-It missed the fact that op->thrtimer can also be rearmed by an
-in-flight bcm_rx_handler() (which runs as an RCU reader) via
-bcm_rx_update_and_send().  This allows op->thrtimer to be queued after
-bcm_remove_op() has already cancelled it, leading to a use-after-free
-when the timer fires on the deferred-freed struct bcm_op.
+Those transport-side checks decide whether to set J1939_ECU_LOCAL_DST, so
+they can race with j1939_local_ecu_get() and j1939_local_ecu_put() while
+userspace is binding or releasing sockets concurrently with TP traffic.
+This can misclassify TP/ETP sessions as local or remote and take the wrong
+transport path.
 
-Address the omission by checking the RX_NO_AUTOTIMER flag
-in bcm_rx_update_and_send() before starting op->thrtimer, effectively
-preventing it from being rearmed concurrently with teardown.
+Fix both transport paths by routing the destination-locality check through
+a helper that reads ents[].nusers under read_lock_bh(&priv->lock).
 
-Signed-off-by: Lee Jones <lee@kernel.org>
-Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Fixes: f1b4e32aca08 ("can: bcm: use call_rcu() instead of costly synchronize_rcu()")
-Link: https://patch.msgid.link/20260422102239.948594-1-lee@kernel.org
+Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
+Signed-off-by: Shuhao Fu <sfual@cse.ust.hk>
+Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/20260419140614.GA4041240@chcpu16
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- net/can/bcm.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ net/can/j1939/transport.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/net/can/bcm.c b/net/can/bcm.c
-index a4bef2c48a55..67e5b3149a8f 100644
---- a/net/can/bcm.c
-+++ b/net/can/bcm.c
-@@ -539,6 +539,12 @@ static void bcm_rx_update_and_send(struct bcm_op *op,
- 	if (hrtimer_active(&op->thrtimer))
- 		return;
+diff --git a/net/can/j1939/transport.c b/net/can/j1939/transport.c
+index 7ad56b5f17b9..25d96976d9d0 100644
+--- a/net/can/j1939/transport.c
++++ b/net/can/j1939/transport.c
+@@ -351,6 +351,18 @@ static void j1939_session_skb_drop_old(struct j1939_session *session)
+ 	}
+ }
  
-+	/* bcm_remove_op() may have cancelled thrtimer concurrently with this
-+	 * RCU-protected handler; do not rearm it. Mirrors bcm_rx_starttimer().
-+	 */
-+	if (op->flags & RX_NO_AUTOTIMER)
-+		return;
++static bool j1939_address_is_local(struct j1939_priv *priv, u8 addr)
++{
++	bool local = false;
 +
- 	/* first reception with enabled throttling mode */
- 	if (!op->kt_lastmsg)
- 		goto rx_changed_settime;
++	read_lock_bh(&priv->lock);
++	if (j1939_address_is_unicast(addr) && priv->ents[addr].nusers)
++		local = true;
++	read_unlock_bh(&priv->lock);
++
++	return local;
++}
++
+ void j1939_session_skb_queue(struct j1939_session *session,
+ 			     struct sk_buff *skb)
+ {
+@@ -359,8 +371,7 @@ void j1939_session_skb_queue(struct j1939_session *session,
+ 
+ 	j1939_ac_fixup(priv, skb);
+ 
+-	if (j1939_address_is_unicast(skcb->addr.da) &&
+-	    priv->ents[skcb->addr.da].nusers)
++	if (j1939_address_is_local(priv, skcb->addr.da))
+ 		skcb->flags |= J1939_ECU_LOCAL_DST;
+ 
+ 	skcb->flags |= J1939_ECU_LOCAL_SRC;
+@@ -2038,8 +2049,7 @@ struct j1939_session *j1939_tp_send(struct j1939_priv *priv,
+ 		return ERR_PTR(ret);
+ 
+ 	/* fix DST flags, it may be used there soon */
+-	if (j1939_address_is_unicast(skcb->addr.da) &&
+-	    priv->ents[skcb->addr.da].nusers)
++	if (j1939_address_is_local(priv, skcb->addr.da))
+ 		skcb->flags |= J1939_ECU_LOCAL_DST;
+ 
+ 	/* src is always local, I'm sending ... */
 -- 
 2.53.0
 
