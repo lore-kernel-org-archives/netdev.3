@@ -1,148 +1,87 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA8353E6DE4
-	for <netdev@vger.kernel.org>; Thu,  7 May 2026 10:50:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5D473ED12B
+	for <netdev@vger.kernel.org>; Thu,  7 May 2026 10:50:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778151049; cv=none; b=qdRTmpPw7xCPOrTC6za2g9x4CY1A4xZVyhiz6PX+INmKQIvNLJLjPhDqE8fmzew7haBFvxqfY/DmcyKmORR3KOdB9Di3WoztVzSHZvWEajZ0UfQfsI9NgAUuuK17RW2UGA5zewg0k67d9woh1dg2gdYoD4VfoXWaK1A0MjcRvOA=
+	t=1778151051; cv=none; b=HQdrTGkSWfpR6yowSulIv8u5OFwD3leeuNlpMJx5bCtxDZe3tIBPH3Xnnayephdy+vFrbLNBzTQrIN+XXG16oU5G3p/o9Cngm8rIfW7ilsHWclK539kF+h9spJnFwVolur6gzSxn4tyf7pGl8TK9nuihYQ02b6hTwwDhYB3oG4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778151049; c=relaxed/simple;
-	bh=F0wkHe4/N6VROpz2ZLwqmJpO+q0ZH2sv57Ij/hqtPPo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SM+hL+Z7+zA6m0X8aSBd2EWd+nOLNU+xQCZE4d6bbExrTSKQtId9IyKTGWZPnzZXgrI37TmkCq+kZ407Bx8mIgCUkunF7S9J6MfjXryETdWG46F0m/9T9IVjqQ3uJGTJBRh4WT9RiD9U0S56f1WB6Sfkx/IkvtNZIXrtG/FOKSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20251104.gappssmtp.com header.i=@baylibre-com.20251104.gappssmtp.com header.b=hP88p06D; arc=none smtp.client-ip=209.85.128.54
+	s=arc-20240116; t=1778151051; c=relaxed/simple;
+	bh=QBDRVKMHiC38ua/WqXZfu2WimUgpapC8UXjmRJjp8tY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fUDFNozE7UvkY83ET9fWa2zZGIDJjrRIGZzJtmuzTkPtavhp00Z3+LzYosDieV02tehG5lI08QQf2M9PGauuAIrnhRAjJ6pXAdkxydaR1Ot2VYFLynSUk1t1bm5s5VOlzDH44CPlLZQNIbxMBGBOEgVrmqbNjtcZxDfhjAu7B9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20251104.gappssmtp.com header.i=@baylibre-com.20251104.gappssmtp.com header.b=VuLnmV1m; arc=none smtp.client-ip=209.85.128.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20251104.gappssmtp.com header.i=@baylibre-com.20251104.gappssmtp.com header.b="hP88p06D"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-48984d29fe3so8664825e9.0
-        for <netdev@vger.kernel.org>; Thu, 07 May 2026 03:50:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20251104.gappssmtp.com header.i=@baylibre-com.20251104.gappssmtp.com header.b="VuLnmV1m"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-488e1a8ac40so6686285e9.2
+        for <netdev@vger.kernel.org>; Thu, 07 May 2026 03:50:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20251104.gappssmtp.com; s=20251104; t=1778151031; x=1778755831; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=MEhC5xMmaOs+y5n/VqJ8Hh4e41dVt9Y1cZDrJx+29QQ=;
-        b=hP88p06DLAcfHlV3tPKDAAvNOwmePKO5B+yqNHkpjgnZS+JRmwfqF5n474l8wIpKxx
-         zMvcy/+9Zz3ypnMPkO/luFiUXPAjb+gdoHjHYIHw//gIzdpgUM/Je/hqODhg/+Zmjri1
-         XlfqjsBaj4eVmFWRhsM9D7rRGzHVsle5YkEkrKyJPgcQuuuPcMMN+gvPD0H4g+pXoOG+
-         CGFoifwWM7FswChHKpYL4wTAvYeUAgeO6y98kDrhqHGv9o8qjtdFBzBY53Nq+9v2zUIa
-         Leno41xV1X5RPxgGtowNFF1AJUmc0Z20nuGH+shIRnYB+uvKXCStv7Lyh4BNLEYw/APl
-         Eb0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778151031; x=1778755831;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=baylibre-com.20251104.gappssmtp.com; s=20251104; t=1778151034; x=1778755834; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=MEhC5xMmaOs+y5n/VqJ8Hh4e41dVt9Y1cZDrJx+29QQ=;
-        b=eQHbanGT4qGjZy6BTZNYLAfYSimUdLMG/qg01NFaVP9aPNRYTCIExsKLrlHtXk7tIN
-         YlPp/zLPEEGhpHTqNxphFd7XhysRG7dKv6+llQ/0BuhqHy0sumlwFzQiWW6dTL8PK2wg
-         WmpPUPt0zIUl7Q8vkioXKkrhxTAhHtMScLMzA94ugKfCjOxuHoJqg9m46wcCj/4hKQHm
-         3J48LC7FZOI4apAcOtYIKb5XqXgdtOAPA8rEJUImh5jbmUsuQcBRnQLGwWIWnTag1VnD
-         kfz67GH6PaRlUa9vvdqSNJLRuscVBdf0gizFxli59ko98bmoekAagCk4gstF4sfvK8jP
-         0Nrg==
-X-Forwarded-Encrypted: i=1; AFNElJ+WHQ/vBroAfy1fePLzKPSBUJEkpdP4BqT1/u6GBfohm01mKtPCO3uS5WkGkKv9kkN5qpbXin4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxIw+xstU2lQqcnV0yczVM8qExnxyHiFJof0sojRLPb0NKbHvaB
-	G13Ox2CkfKJ6PA/cqPn1Xt4QrBElS8fSU8LI0Q/o/YjoKgyH+yhhrcwq2oGBsmrAdy0=
-X-Gm-Gg: AeBDieungBPJvqRcYCuCfPf+CMga1vJOq/tRO167jtNDITcp3ZiQ9i0tmLYHGLRmuSk
-	C1CLngG2ExsrUTsbt1QcEIm2mCfla7TibxwFbgG7athx/0lQTAY349N30cLsMfiYq38QEyIPWDG
-	hu4CNz4ev59PMhei/byWJOsAx3LcLPCHZc9iFfzzX9kEOxAI1agxs43N9DYAZcnsnTTcXRtgbXL
-	IgdgqPkbZXeQ3Aky+yFdq7pyOIwHmgQ2/XssKq4SlVdiT5pplrNSrAdlQfGFpy2IpeCW1FQ/sO6
-	0OJ5hCWkfFv4RH8qfl1n3PlbqQKTyHCHQtBC+2yrcqWmiZjWRxv05+STc3dkfB5asWVSv6sHI77
-	GEbRM/2RSBaZQd25zpVkapiV79S31YWgdiXTHogofFEM6+TDZSg/QrDITvR80BaXIEfneHoBf1W
-	wYTMqm8OV83EnXERk2kGarboXEqHQlqWmJihTJ4QSjsNIY2XmmCAizegDjLtSQn4ufg3zGLtjL6
-	LNHm8vH3mgD+xB7gPw5LqzZeA==
-X-Received: by 2002:a05:600c:8485:b0:489:1f3e:5f6f with SMTP id 5b1f17b1804b1-48e51f327f0mr123646755e9.12.1778151031239;
-        Thu, 07 May 2026 03:50:31 -0700 (PDT)
+        bh=OKPIZuTHrD4PJDRdCBm3rauwc6LXlrUOHX/U9Kam4Uc=;
+        b=VuLnmV1mnDHKKFGC0xBoyTtgclWAKs5Be6MWs+tLY/A2nqzNoC6IMXSG0bWH4He4FZ
+         IK4BORmn+XJTDrT52MaUXyKspkDWGy3ckaCRgG6xBPz6px1qjVKbRive8QSAOdmWSjt5
+         ep40EtjBj08VxnVU/zzYT/o6H3TE+BgBmSWntuH0+uJcYXU3z0b5CS6zPQDV3TE4tine
+         PIYWGkGF09kh/RwaZ1BU6Stp3qUwdDclqIt+8RYcRV6VBcBI2xZqXEMc6Z8U/74JU+o0
+         0DSYh3NRc+gv0+A5FVLEkZISHTqKa8apy4p6ycAXTKm4X1SGDGacCkTIAgdt9evJz9fV
+         DD2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778151034; x=1778755834;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=OKPIZuTHrD4PJDRdCBm3rauwc6LXlrUOHX/U9Kam4Uc=;
+        b=CexVKesuiq3yGQZv2BmZ1bywCOpk4t/K6WzaO34ag4NUqgSD+spXEEGDPUthj326fm
+         n2hmKm8gK6F/IzUdGw8RpPJuUACjLonRnkLvGlmGY3aR7RlSAJHah0NaW2kD2aHJDbM0
+         Qn+rmwdgKb99lVjvVf/ppg5d8xIN3K+45FaAnyMeixHQcYgmXQwDz2TpDHnzHZh/3EJ/
+         n5QTlVUf05xR1qAvoog2H+rs2FG/pXKxY8etUNqKLcDWXmzLg1V1LrIeCWzhcZuClHjd
+         cbnMhAT+itfq5/lFIkngkUFZONpvwrRrWTVgoixW5TZeKaiJQaVMfVDB7GOvSa1GQLmH
+         kTJA==
+X-Forwarded-Encrypted: i=1; AFNElJ85TRoDb9DdqZxnwmYo4BUE7GHGiKWsbE6zY8BFhHvZLD4I7XQu+S9H+kQtFw82s0rB5E9aSOM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzRZ3eKgW/8LJLM8QpMCCe+aIKFebJDKenZFRZORZauwV/UjsQX
+	RUVJNY6v7rU5zbbjuDQMer6cxqtw9VL+Ich90/h5yT5nzFQfWg4BZUbCjiyVxiyK1LE=
+X-Gm-Gg: AeBDieuJ0lNM9PBa8rXSNO/VQxtZqNp+WbXDHMzeoD3OVOPmr1HaBPEqvS7i8j3bM09
+	pQef1sN1u1b9HVdVy94KG3/Y5JmmZvCjz5BrJrxwS4XuyPopJhUXYV7woK7No5vd9eoGS0WeVcq
+	Dqjn8j0IkD+ZQDL9oD+qlWxQ36jOH/9xQTikbLZ7jCskOOOlLrJTd4Kz/PMKxNntIQ9Zrb14Qef
+	Sj4VhaeHbHWxx4ECpdYV0KinP9sDL4SoGsAz5R4NmCjDsdS1Wv0bUby2VY+cy5+voXSEr6YApYx
+	uwjTNFbc3iK+Cq/em8FLXNE3qZt4lDcwBCG66VCKkiz9cjLMCb8aez8HxPx3E/ZoFVk96fsYuPK
+	hRXg3y5aeXtjhPO/m1pFdOfleWS8SP/bFba/a/30jPhlXHAnXNmLy64IMcUJ93J7PR0rQDAC1ZT
+	nuMU7CbupICUyYzwo8me0IWVOgzSeAndCfOicJzBAT6oDEqml4sKTgv7SJriNJe+w72rxf6x1a2
+	cA9GE8cErBv0HKh+oILVpUDxWc/jVdBRDKE
+X-Received: by 2002:a05:600c:c11c:b0:488:9e54:94c0 with SMTP id 5b1f17b1804b1-48e51f2a79bmr87390495e9.8.1778151034179;
+        Thu, 07 May 2026 03:50:34 -0700 (PDT)
 Received: from localhost (p200300f65f114e08ac341e0bb79e5496.dip0.t-ipconnect.de. [2003:f6:5f11:4e08:ac34:1e0b:b79e:5496])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-48e52f5c1cfsm74709765e9.0.2026.05.07.03.50.30
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-48e530b05d9sm52669025e9.3.2026.05.07.03.50.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 May 2026 03:50:30 -0700 (PDT)
+        Thu, 07 May 2026 03:50:33 -0700 (PDT)
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20=28The=20Capable=20Hub=29?= <u.kleine-koenig@baylibre.com>
-To: Michael Grzeschik <mgr@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Vincent Mailhol <mailhol@kernel.org>,
-	Krzysztof Halasa <khc@pm.waw.pl>,
-	Johannes Berg <johannes@sipsolutions.net>
-Cc: Steffen Klassert <klassert@kernel.org>,
-	David Dillow <dave@thedillows.org>,
-	Ion Badulescu <ionut@badula.org>,
-	Mark Einon <mark.einon@gmail.com>,
-	Rasesh Mody <rmody@marvell.com>,
-	GR-Linux-NIC-Dev@marvell.com,
-	Manish Chopra <manishc@marvell.com>,
-	Potnuri Bharat Teja <bharat@chelsio.com>,
-	Denis Kirjanov <kirjanov@gmail.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Jian Shen <shenjian15@huawei.com>,
-	Cai Huoqing <cai.huoqing@linux.dev>,
-	Fan Gong <gongfan1@huawei.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
 	Petr Machata <petrm@nvidia.com>,
-	Yibo Dong <dong100@mucse.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	nic_swsd@realtek.com,
-	Jiri Pirko <jiri@resnulli.us>,
-	Francois Romieu <romieu@fr.zoreil.com>,
-	Daniele Venzano <venza@brownhat.org>,
-	Samuel Chessman <chessman@tux.org>,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	Mengyuan Lou <mengyuanlou@net-swift.com>,
-	Kevin Curtis <kevin.curtis@farsite.co.uk>,
+	Johannes Berg <johannes@sipsolutions.net>,
 	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Stanislav Yakovlev <stas.yakovlev@gmail.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Kees Cook <kees@kernel.org>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
 	Marco Crivellari <marco.crivellari@suse.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	David Arinzon <darinzon@amazon.com>,
-	Yeounsu Moon <yyyynoom@gmail.com>,
-	Denis Benato <benato.denis96@gmail.com>,
-	Yonglong Liu <liuyonglong@huawei.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Yicong Hui <yiconghui@gmail.com>,
-	MD Danish Anwar <danishanwar@ti.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	Ian Lin <ian.lin@infineon.com>,
-	Colin Ian King <colin.i.king@gmail.com>,
-	Double Lo <double.lo@cypress.com>,
-	Markus Schneider-Pargmann <msp@baylibre.com>,
+	Kees Cook <kees@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Simon Horman <horms@kernel.org>,
+	oss-drivers@corigine.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-can@vger.kernel.org,
-	linux-parisc@vger.kernel.org,
-	intel-wired-lan@lists.osuosl.org,
-	linux-rdma@vger.kernel.org,
-	oss-drivers@corigine.com,
-	linux-wireless@vger.kernel.org,
-	brcm80211@lists.linux.dev,
-	brcm80211-dev-list.pdl@broadcom.com
-Subject: [PATCH net-next v2 0/2] Rework pci_device_id initialisation
-Date: Thu,  7 May 2026 12:50:18 +0200
-Message-ID: <cover.1778149923.git.u.kleine-koenig@baylibre.com>
+	Markus Schneider-Pargmann <msp@baylibre.com>
+Subject: [PATCH net-next v2 2/2] net: nfp: Drop PCI class entries with .class_mask = 0
+Date: Thu,  7 May 2026 12:50:20 +0200
+Message-ID:  <e853a41d232ca831a93a84545dab322cbe5d49f9.1778149923.git.u.kleine-koenig@baylibre.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <cover.1778149923.git.u.kleine-koenig@baylibre.com>
+References: <cover.1778149923.git.u.kleine-koenig@baylibre.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -150,108 +89,115 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4997; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=F0wkHe4/N6VROpz2ZLwqmJpO+q0ZH2sv57Ij/hqtPPo=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBp/G5qFf+kwY1/C2tNsDu68NrEVCGT2LoojUm6u vB+DhdxBCOJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCafxuagAKCRCPgPtYfRL+ ThFhB/9Ez2Dcmcpa/NhWkEdoeFtCQpUSu198LS4+VzPV9EdL+/XzefS25l1M0IrceOE5nZvPQin 8PPeETGae282bLzXMlNHBjdiUzvMDpqRdzOGC58be7Gz/ifz4P9bWwvku+LAARTI4BqWD5itQdY lW6g7KjElH6oo6lmYarLW+mG55TSQQw5saxghG2zuvdG2pInp5obAmIWhCWdT0lDnNwXx0JDRCx IpeXpWeh5zmLqMCkWlOv0R22LTIdhKikJeJIFiKlpiOJ6cqZfn2tPQFUgRBIo5RnBBsyh99aLwX xcivYIzJoLo/aGXX+8avDoPmzCKP5DN4BCd3+qrRJR1skzlP
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3859; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=QBDRVKMHiC38ua/WqXZfu2WimUgpapC8UXjmRJjp8tY=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBp/G5vd/uWszppDdCGFbGwoudF8gIUzzL0bwcRn 94WxpDvJTWJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCafxubwAKCRCPgPtYfRL+ TqdxCAC2/jElg2cWBDtgrUyOeGF/xeGQNVHpIDiGLPUPtE2h3ImAtHV7qzYD9HCcmyS1JglkUBf tPQds3Y6QhMrIjEz9dBHXyI8sPn6nSSp8IYNom5/yxSvwvmcGav3UMaQ8HRur9OCGjhGAsGPV2G yD+47PKTTJYPiUhB36WhhHOAPV66lr6Wf+hhG/xC0vA2Lltb9NcfUX7qhMo2t/NX+xTk5BeyrQJ c5f2xLyPXetEjnWrUkp+GihEbylLHcvKC1bTnruWN/M2srdEBZKGcht6qvWHZ7bRs3ZgPkxfWWY 5zSKiTEouZ70vF4qfKVwEY4/vJJGq0UGQhyCRU/4wiFofoth
 X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 
-Hello,
+With .class_mask being zero the value of .class doesn't matter because
+to check if a pci_device_id entry matches a given device the expression
 
-(implicit) v1 is available at
-https://lore.kernel.org/netdev/20260428171845.2288395-2-u.kleine-koenig@baylibre.com/.
+	(id->class ^ dev->class) & id->class_mask
 
-Changes since then is mostly addressing feedback by Andy Shevchenko
-about trailing commas, 4-digit PCI device ids. I did some more minor
-reformatting.
+is checked for being zero (see pci_match_one_device()). So drop the
+useless assignment for .class and .class_mask to match what (I think)
+all other drivers are doing.
 
-Patch #2 is new. I considered putting that one first because the
-conversion for the affected driver introduces the ambiguity that I
-mentioned in the commit log, but decided to keep it after the rework
-because only with the rework you can properly see the issue that .class
-and .class_mask hold strange values.
+This also resolves an ambiguity because PCI_VDEVICE_SUB() already
+contains values for .class and .class_mask (which gcc ignores in the
+presence of the named initializer).
 
-I consider the changes to patch #1 minor enough to carry over all the
-tags given to v1 to this v2.
+Signed-off-by: Uwe Kleine-König (The Capable Hub) <u.kleine-koenig@baylibre.com>
+---
+ drivers/net/ethernet/netronome/nfp/nfp_main.c    | 16 ----------------
+ .../net/ethernet/netronome/nfp/nfp_netvf_main.c  |  8 --------
+ 2 files changed, 24 deletions(-)
 
-Best regards
-Uwe
-
-Uwe Kleine-König (The Capable Hub) (2):
-  net: Consistently define pci_device_ids using named initializers
-  net: nfp: Drop PCI class entries with .class_mask = 0
-
- drivers/net/arcnet/com20020-pci.c             | 242 +++------
- drivers/net/can/m_can/m_can_pci.c             |   6 +-
- drivers/net/can/sja1000/plx_pci.c             | 167 +++----
- drivers/net/ethernet/3com/3c59x.c             |  80 +--
- drivers/net/ethernet/3com/typhoon.c           |  75 ++-
- drivers/net/ethernet/8390/ne2k-pci.c          |  24 +-
- drivers/net/ethernet/adaptec/starfire.c       |   4 +-
- drivers/net/ethernet/agere/et131x.c           |   6 +-
- drivers/net/ethernet/broadcom/bnx2.c          |  62 ++-
- .../net/ethernet/broadcom/bnx2x/bnx2x_main.c  |  50 +-
- .../net/ethernet/cavium/liquidio/lio_main.c   |  10 +-
- .../ethernet/cavium/liquidio/lio_vf_main.c    |   7 +-
- drivers/net/ethernet/chelsio/cxgb/common.h    |   2 +-
- drivers/net/ethernet/chelsio/cxgb/subr.c      |   2 +-
- .../net/ethernet/chelsio/cxgb3/cxgb3_main.c   |   4 +-
- .../net/ethernet/chelsio/cxgb4/cxgb4_main.c   |   4 +-
- .../ethernet/chelsio/cxgb4vf/cxgb4vf_main.c   |   4 +-
- drivers/net/ethernet/dec/tulip/de2104x.c      |   6 +-
- drivers/net/ethernet/dec/tulip/dmfe.c         |  12 +-
- drivers/net/ethernet/dec/tulip/tulip_core.c   |  78 +--
- drivers/net/ethernet/dec/tulip/uli526x.c      |   6 +-
- drivers/net/ethernet/dec/tulip/winbond-840.c  |  13 +-
- drivers/net/ethernet/dlink/dl2k.h             |  12 +-
- drivers/net/ethernet/dlink/sundance.c         |  14 +-
- drivers/net/ethernet/fealnx.c                 |   8 +-
- .../net/ethernet/hisilicon/hibmcge/hbg_main.c |   2 +-
- .../net/ethernet/hisilicon/hns3/hns3_enet.c   |  50 +-
- .../hisilicon/hns3/hns3pf/hclge_main.c        |  18 +-
- .../hisilicon/hns3/hns3vf/hclgevf_main.c      |  12 +-
- .../net/ethernet/huawei/hinic/hinic_main.c    |  12 +-
- .../net/ethernet/huawei/hinic3/hinic3_lld.c   |   7 +-
- drivers/net/ethernet/intel/e100.c             |   9 +-
- drivers/net/ethernet/intel/e1000e/netdev.c    | 471 +++++++++++++-----
- drivers/net/ethernet/intel/fm10k/fm10k_pci.c  |  10 +-
- drivers/net/ethernet/intel/i40e/i40e_main.c   |  59 +--
- drivers/net/ethernet/intel/iavf/iavf_main.c   |  10 +-
- drivers/net/ethernet/intel/igb/igb_main.c     |  66 +--
- drivers/net/ethernet/intel/igbvf/netdev.c     |   4 +-
- drivers/net/ethernet/intel/igc/igc_main.c     |  34 +-
- drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 106 ++--
- .../net/ethernet/intel/ixgbevf/ixgbevf_main.c |  49 +-
- drivers/net/ethernet/mellanox/mlx4/main.c     |   6 +-
- .../net/ethernet/mellanox/mlx5/core/main.c    |  26 +-
- .../net/ethernet/mellanox/mlxsw/spectrum.c    |  16 +-
- drivers/net/ethernet/micrel/ksz884x.c         |   8 +-
- .../net/ethernet/mucse/rnpgbe/rnpgbe_main.c   |  10 +-
- drivers/net/ethernet/natsemi/natsemi.c        |   4 +-
- drivers/net/ethernet/netronome/nfp/nfp_main.c |  65 +--
- .../ethernet/netronome/nfp/nfp_netvf_main.c   |  33 +-
- drivers/net/ethernet/qlogic/qede/qede_main.c  |  20 +-
- drivers/net/ethernet/realtek/8139too.c        |  52 +-
- drivers/net/ethernet/realtek/r8169_main.c     |   8 +-
- drivers/net/ethernet/rocker/rocker_main.c     |   4 +-
- drivers/net/ethernet/sis/sis190.c             |   6 +-
- drivers/net/ethernet/sis/sis900.c             |  10 +-
- drivers/net/ethernet/smsc/epic100.c           |  18 +-
- drivers/net/ethernet/sun/cassini.c            |   8 +-
- drivers/net/ethernet/sun/sungem.c             |  26 +-
- drivers/net/ethernet/ti/tlan.c                |  41 +-
- drivers/net/ethernet/wangxun/ngbe/ngbe_main.c |  26 +-
- .../net/ethernet/wangxun/ngbevf/ngbevf_main.c |  26 +-
- .../net/ethernet/wangxun/txgbe/txgbe_main.c   |  18 +-
- .../ethernet/wangxun/txgbevf/txgbevf_main.c   |  18 +-
- drivers/net/wan/farsync.c                     |  24 +-
- drivers/net/wan/pc300too.c                    |  14 +-
- drivers/net/wan/pci200syn.c                   |   6 +-
- drivers/net/wan/wanxl.c                       |  11 +-
- .../broadcom/brcm80211/brcmfmac/pcie.c        |  17 +-
- drivers/net/wireless/intel/ipw2x00/ipw2200.c  |  52 +-
- 69 files changed, 1288 insertions(+), 1102 deletions(-)
-
-
-base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
+diff --git a/drivers/net/ethernet/netronome/nfp/nfp_main.c b/drivers/net/ethernet/netronome/nfp/nfp_main.c
+index e8e4b84d505a..5a9fb5bad405 100644
+--- a/drivers/net/ethernet/netronome/nfp/nfp_main.c
++++ b/drivers/net/ethernet/netronome/nfp/nfp_main.c
+@@ -36,50 +36,34 @@ static const struct pci_device_id nfp_pci_device_ids[] = {
+ 	{
+ 		PCI_VDEVICE_SUB(NETRONOME, PCI_DEVICE_ID_NFP3800,
+ 				PCI_VENDOR_ID_NETRONOME, PCI_ANY_ID),
+-		.class = PCI_ANY_ID,
+-		.class_mask = 0,
+ 		.driver_data = NFP_DEV_NFP3800,
+ 	}, {
+ 		PCI_VDEVICE_SUB(NETRONOME, PCI_DEVICE_ID_NFP4000,
+ 				PCI_VENDOR_ID_NETRONOME, PCI_ANY_ID),
+-		.class = PCI_ANY_ID,
+-		.class_mask = 0,
+ 		.driver_data = NFP_DEV_NFP6000,
+ 	}, {
+ 		PCI_VDEVICE_SUB(NETRONOME, PCI_DEVICE_ID_NFP5000,
+ 				PCI_VENDOR_ID_NETRONOME, PCI_ANY_ID),
+-		.class = PCI_ANY_ID,
+-		.class_mask = 0,
+ 		.driver_data = NFP_DEV_NFP6000,
+ 	}, {
+ 		PCI_VDEVICE_SUB(NETRONOME, PCI_DEVICE_ID_NFP6000,
+ 				PCI_VENDOR_ID_NETRONOME, PCI_ANY_ID),
+-		.class = PCI_ANY_ID,
+-		.class_mask = 0,
+ 		.driver_data = NFP_DEV_NFP6000,
+ 	}, {
+ 		PCI_VDEVICE_SUB(CORIGINE, PCI_DEVICE_ID_NFP3800,
+ 				PCI_VENDOR_ID_CORIGINE, PCI_ANY_ID),
+-		.class = PCI_ANY_ID,
+-		.class_mask = 0,
+ 		.driver_data = NFP_DEV_NFP3800,
+ 	}, {
+ 		PCI_VDEVICE_SUB(CORIGINE, PCI_DEVICE_ID_NFP4000,
+ 				PCI_VENDOR_ID_CORIGINE, PCI_ANY_ID),
+-		.class = PCI_ANY_ID,
+-		.class_mask = 0,
+ 		.driver_data = NFP_DEV_NFP6000,
+ 	}, {
+ 		PCI_VDEVICE_SUB(CORIGINE, PCI_DEVICE_ID_NFP5000,
+ 				PCI_VENDOR_ID_CORIGINE, PCI_ANY_ID),
+-		.class = PCI_ANY_ID,
+-		.class_mask = 0,
+ 		.driver_data = NFP_DEV_NFP6000,
+ 	}, {
+ 		PCI_VDEVICE_SUB(CORIGINE, PCI_DEVICE_ID_NFP6000,
+ 				PCI_VENDOR_ID_CORIGINE, PCI_ANY_ID),
+-		.class = PCI_ANY_ID,
+-		.class_mask = 0,
+ 		.driver_data = NFP_DEV_NFP6000,
+ 	},
+ 	{ } /* Required last entry. */
+diff --git a/drivers/net/ethernet/netronome/nfp/nfp_netvf_main.c b/drivers/net/ethernet/netronome/nfp/nfp_netvf_main.c
+index cf557e0ce011..6c8f3321048a 100644
+--- a/drivers/net/ethernet/netronome/nfp/nfp_netvf_main.c
++++ b/drivers/net/ethernet/netronome/nfp/nfp_netvf_main.c
+@@ -41,26 +41,18 @@ static const struct pci_device_id nfp_netvf_pci_device_ids[] = {
+ 	{
+ 		PCI_VDEVICE_SUB(NETRONOME, PCI_DEVICE_ID_NFP3800_VF,
+ 				PCI_VENDOR_ID_NETRONOME, PCI_ANY_ID),
+-		.class = PCI_ANY_ID,
+-		.class_mask = 0,
+ 		.driver_data = NFP_DEV_NFP3800_VF,
+ 	}, {
+ 		PCI_VDEVICE_SUB(NETRONOME, PCI_DEVICE_ID_NFP6000_VF,
+ 				PCI_VENDOR_ID_NETRONOME, PCI_ANY_ID),
+-		.class = PCI_ANY_ID,
+-		.class_mask = 0,
+ 		.driver_data = NFP_DEV_NFP6000_VF,
+ 	}, {
+ 		PCI_VDEVICE_SUB(CORIGINE, PCI_DEVICE_ID_NFP3800_VF,
+ 				PCI_VENDOR_ID_CORIGINE, PCI_ANY_ID),
+-		.class = PCI_ANY_ID,
+-		.class_mask = 0,
+ 		.driver_data = NFP_DEV_NFP3800_VF,
+ 	}, {
+ 		PCI_VDEVICE_SUB(CORIGINE, PCI_DEVICE_ID_NFP6000_VF,
+ 				PCI_VENDOR_ID_CORIGINE, PCI_ANY_ID),
+-		.class = PCI_ANY_ID,
+-		.class_mask = 0,
+ 		.driver_data = NFP_DEV_NFP6000_VF,
+ 	},
+ 	{ } /* Required last entry. */
 -- 
 2.47.3
 
