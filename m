@@ -1,56 +1,65 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89BB73FCB1C;
-	Thu,  7 May 2026 14:12:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F79E3F1655;
+	Thu,  7 May 2026 14:15:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778163162; cv=none; b=u09N4nL2LIaF2GFF/kauL43UZp4cb9nQQzMjjYMtvOPivgeaNNSZ55FCjqr/345e7mGeM0vcnV+n/1qUeqjK0BIvc8MS+wZd+fusUUrkbCQ7y7xezT3wDM2AB2jGyy29Vea3ntg2ry71hBnIfhtbOTTkspfP7A7VyQr1Q91Fjd0=
+	t=1778163334; cv=none; b=ZPRIXC3v+dORADT6m6+KmmSciUeEGzsowWH4W43sq3EH6VPWpmdab5k+dsaqBayQLDSIsOH/IHNm48qENrfVLN8HhBCrIyciAuKWPJnWl/Z90yr1WYoEFq+5ZIOgYA4hCQcDW3gcaNIEWRuresOFYPWSuLxlcZhs/3Y9Zk3LID4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778163162; c=relaxed/simple;
-	bh=huVUPART2jTXeXW7K4I2VW/dRB4xvecgCc0kX0CTQBc=;
+	s=arc-20240116; t=1778163334; c=relaxed/simple;
+	bh=70KuMfzku9PDiHjjD3qQPJ/Ug0jo/by7mUF2gnZbFd4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fkQ0XrdqQ4ndLTcWXslhnmkB1va8KJaommv/VcPCVhLWWASxCOorVJ2xW4qvZTYRtQaPWM62bhKyvhzSPjfhtfAq0VK95cqHOO7dVEUF3sBxDDrTRbOar/aA+W8JxypFxflFQ3J/Nw6wOvLo6Uy6I0VpXqL+Lbjf80yJJCkQFrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pci39C5h; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=rjTrlhpP3TDesRbHqyRsRgSODvB6Xdr5DSg/kPeZBWoGb434raHAadAt8Nttg7CQqhDvEodOmCJFSGmWm3g6WDi4YQlkwsriwKyhDVVMebUKuDMakxSYgfE7lXjV7GvFCQSYCzXU71NMC9WvdJuunvhS+ZlHas0f1CNaucSi+yo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=oUE8EmsR; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pci39C5h"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C85F3C2BCF6;
-	Thu,  7 May 2026 14:12:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778163162;
-	bh=huVUPART2jTXeXW7K4I2VW/dRB4xvecgCc0kX0CTQBc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pci39C5h/cOMDDSO2oyymDLmiaq4ZXMfTibB/Yg4C+bcbVk+Q7SOTDWci19669I7T
-	 9DRuDg+kLVm26zNKDuYWGMP56moGFlMngR20Oc2KrpjuGsyRYA39Ya97CyZ0dOD6Yr
-	 kKs5XXs7HqJ7YCnnDiONnBAWOLXw83TvgY3+OgRwNdz54SXaZvtieYsBZ/EsRBvx8X
-	 TkEtq++dws3GH2BDJewPUQajhV+rRb1OtYZCisTi27/2lezWaedJa3IfS2WWcwju3t
-	 1MvkDZX8t/0H9nMbeMR/1+xrr8P31LyvlRcDl+Q8C/vPoKzp2V2543XWpdh1c46d3P
-	 B9j8Hy77aZRfA==
-Date: Thu, 7 May 2026 09:12:33 -0500
-From: Bjorn Andersson <andersson@kernel.org>
-To: Alex Elder <elder@riscstar.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, maxime.chevallier@bootlin.com, 
-	rmk+kernel@armlinux.org.uk, konradybcio@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, linusw@kernel.org, brgl@kernel.org, arnd@arndb.de, 
-	gregkh@linuxfoundation.org, Daniel Thompson <daniel@riscstar.com>, 
-	mohd.anwar@oss.qualcomm.com, a0987203069@gmail.com, alexandre.torgue@foss.st.com, 
-	ast@kernel.org, boon.khai.ng@altera.com, chenchuangyu@xiaomi.com, 
-	chenhuacai@kernel.org, daniel@iogearbox.net, hawk@kernel.org, hkallweit1@gmail.com, 
-	inochiama@gmail.com, john.fastabend@gmail.com, julianbraha@gmail.com, 
-	livelycarpet87@gmail.com, matthew.gerlach@altera.com, mcoquelin.stm32@gmail.com, 
-	me@ziyao.cc, prabhakar.mahadev-lad.rj@bp.renesas.com, 
-	richardcochran@gmail.com, rohan.g.thomas@altera.com, sdf@fomichev.me, 
-	siyanteng@cqsoftware.com.cn, weishangjuan@eswincomputing.com, wens@kernel.org, 
-	netdev@vger.kernel.org, bpf@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 08/12] dt-bindings: net: toshiba,tc965x-dwmac:
- add TC956x Ethernet bridge
-Message-ID: <afycOwz5TpkegkZd@baldur>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="oUE8EmsR"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=Jd92XsB5WE/g/etZHxA6nzPWEIbD+MK9uEeWSt6AGi4=; b=oUE8EmsRYnljUPNuD/yv/W2iSf
+	ILVAFslXORF0Xh0CDF17xDATwzEFAIR5bBKd5RsG3TIfePMBbH3P5BwJP1jwprPfhpstyU8Byr5e/
+	fw8Xeh94ss0mEpQtJUlhJmGqmRYdPO3xQTBFk0ctWwU6uCuKIXfm6us/azi5sDIAGxh8=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wKzUx-001p6o-HA; Thu, 07 May 2026 16:14:43 +0200
+Date: Thu, 7 May 2026 16:14:43 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Xilin Wu <sophon@radxa.com>
+Cc: Alex Elder <elder@riscstar.com>, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, maxime.chevallier@bootlin.com,
+	rmk+kernel@armlinux.org.uk, andersson@kernel.org,
+	konradybcio@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, linusw@kernel.org, brgl@kernel.org,
+	arnd@arndb.de, gregkh@linuxfoundation.org,
+	Daniel Thompson <daniel@riscstar.com>, mohd.anwar@oss.qualcomm.com,
+	a0987203069@gmail.com, alexandre.torgue@foss.st.com, ast@kernel.org,
+	boon.khai.ng@altera.com, chenchuangyu@xiaomi.com,
+	chenhuacai@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
+	hkallweit1@gmail.com, inochiama@gmail.com, john.fastabend@gmail.com,
+	julianbraha@gmail.com, livelycarpet87@gmail.com,
+	matthew.gerlach@altera.com, mcoquelin.stm32@gmail.com, me@ziyao.cc,
+	prabhakar.mahadev-lad.rj@bp.renesas.com, richardcochran@gmail.com,
+	rohan.g.thomas@altera.com, sdf@fomichev.me,
+	siyanteng@cqsoftware.com.cn, weishangjuan@eswincomputing.com,
+	wens@kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 10/12] net: stmmac: tc956x: add TC956x/QPS615
+ support
+Message-ID: <fd839de4-0312-45aa-8e6a-4c7c199d9264@lunn.ch>
 References: <20260501155421.3329862-1-elder@riscstar.com>
- <20260501155421.3329862-9-elder@riscstar.com>
+ <20260501155421.3329862-11-elder@riscstar.com>
+ <DD71CDEABC7C16D5+02d052ff-13bb-4712-a847-91416f76c578@radxa.com>
+ <7f3a0f16-5159-4bbc-8b15-9b5841603bf6@riscstar.com>
+ <3A5C0389E7C0D241+21a4f16b-1af8-46ac-8831-0c1b49694df0@radxa.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -59,26 +68,37 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260501155421.3329862-9-elder@riscstar.com>
+In-Reply-To: <3A5C0389E7C0D241+21a4f16b-1af8-46ac-8831-0c1b49694df0@radxa.com>
 
-On Fri, May 01, 2026 at 10:54:16AM -0500, Alex Elder wrote:
-> diff --git a/Documentation/devicetree/bindings/net/toshiba,tc956x-dwmac.yaml b/Documentation/devicetree/bindings/net/toshiba,tc956x-dwmac.yaml
-[..]
+> Hi Alex,
+> 
+> Do you think if a shutdown callback like this is required? It looks like the
+> driver sometimes does a MDIO MMIO read when the PCIe link is down, causing
+> the board to reset due to SoC side PCIe NoC timeout.
+> 
+> After this change, the board can always shutdown gracefully.
+> 
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-tc956x.c
+> b/drivers/net/ethernet/stmicro/stmmac/dwmac-tc956x.c
+> index 4e8b4a185583..34b8e3fe1b51 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-tc956x.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-tc956x.c
+> @@ -767,6 +767,17 @@ static void tc956x_dwmac_remove(struct auxiliary_device
+> *adev)
+>         tc956x_mac_disable(td);
+>  }
+> 
+> +static void tc956x_dwmac_shutdown(struct auxiliary_device *adev)
+> +{
+> +       struct device *dev = &adev->dev;
+> +       int ret;
 > +
-> +  gpio-controller: true
+> +       ret = stmmac_suspend(dev);
 
-I don't have any concern with the use of a proper gpio driver to model
-the implementation, but if I understand correctly this relationship
-between gpio controller and gpio consumer is strictly internal to "the
-PCI device".
+It seems odd to do a suspend in shutdown.
 
-Is this connection variable or is the link merely expressed in
-DeviceTree to mitigate the fact that you choose to implement the
-responsibilities of the two parts split into two device drivers?
+But lets backtrack. Why is the PCIe link down?
 
-Are there other consumers of these TC956x gpios which would result in a
-board designer (and hence dts author) to ever reference this
-gpio-controller in a different way?
+	Andrew
 
-Regards,
-Bjorn
