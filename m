@@ -1,99 +1,89 @@
-Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B92D439FCCC
-	for <netdev@vger.kernel.org>; Thu,  7 May 2026 16:20:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70559284B4F;
+	Thu,  7 May 2026 16:20:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778170853; cv=none; b=PJ++Xo8txLO8lOZKLCJhqF690ujzpi1FCQASqOqYXUyMkTCDYQz55vCEHGr+EDXTWL/bFON+N2f119x3/6eYN2u03iwdypxLrvUmOJQfUu0Ropqg8LsEjyiiYZpjl3Z7QqymeNSKqlvlvuDugyUlt+G+1ZLUP6jsdCPFBqgGZhg=
+	t=1778170858; cv=none; b=fG9qjvsj7vS/aqeMRdjhYOWcMnhOTrNs3JGGSSQ2V79EAyaGANL8XLauBRbH9moOBOrqlzaZIudem8qNqTmOQlP0AbpSGIuHsAtD+AemWLXwk9o4dAOi8ON9GljxXTRF6izHXwpou6ZDCEQacgsn8g2A3NQHHRrah0ALJiDxqCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778170853; c=relaxed/simple;
-	bh=zkf1WUEwq0NJqP7pNprYQYYYZC5d0HmnjXBi/YyVyEw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cycFIhFcusNdP/g4yIMPvBaVWE/6J6K1IhgcwaBoqZYrSZ5ACuSeqbZS+gdg11wufotOMxdC2pkt+5R/Rn/+A6EMP/dPO73inNJ6LxWb+8/PwOZT/xyjCjZaJM9NuVPY/cgujZAl7sEcUajZPR3IDG2PEcPI62OGKiebTkADZdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EM3sTvvw; arc=none smtp.client-ip=209.85.167.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1778170858; c=relaxed/simple;
+	bh=urDw1WgtuawgHybQYaJY9BK5m5+/xhvBD524RXgulv4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Ar+zKJj2mR0kKHtDX0YZQhI5yrd8qgkT2uR0vAKVP4kGagp007i54IVOt6/SZIvE/7oOnx4tu9ZbFKhlaMjYDTpKM4B3Cw5zeqseCr1ugBTIq+si0kRu0omZbYcirvJ1GC/80zE4+Vu4PS38w3oIvvuPGt2Cj38y8Rlz/6hV458=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lc/oZkr1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EM3sTvvw"
-Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-479d37e7d7fso357905b6e.1
-        for <netdev@vger.kernel.org>; Thu, 07 May 2026 09:20:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778170851; x=1778775651; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zkf1WUEwq0NJqP7pNprYQYYYZC5d0HmnjXBi/YyVyEw=;
-        b=EM3sTvvwaE48pwBN7Qrw4Kkjl+Q2zByQrdWiRoHghhHRX6udpNWWMgWjCkeWC6uL1/
-         kuf3iRiCWsTP/pvUrmKqjhgolGohLwZm0rdRHePvJOvcMdOAikzCVbsX+3sIiNhZ/pkk
-         jDp9hK2J0KRlx5vMXWdHvwRp6pbOs/m9E/d0WCYOWyA89pFMrnydIdDanfMGu48pT6rk
-         nP8LsjbFkl7TWJVJeqHW4vfuNMdseFnK3r1ZfAW8PBL96hlfUE/5iQyGkjmFA9/kdmTA
-         BlykieDzHVAJaATTGSzqyNB2Byg9DP41RB/1D1NLDU7aTv2ejun+beZUqrc8HD4ca2jb
-         Z6Pw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778170851; x=1778775651;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zkf1WUEwq0NJqP7pNprYQYYYZC5d0HmnjXBi/YyVyEw=;
-        b=Lw8zgrHK1VsIGJy+z0bHx9rHH1IyVSWc1q6QERTslV55aw1SOGo4U9RfDF4IJviVHp
-         oP1V97H4hGHnd0HJYj2z8Nb84Ch+q24GOpYvZXT4em+wdqg0JeSa5JiaPWL4i3l4yw2O
-         m8zLSYmUlVxWAYZan65Um2/EBbBVOwgeE5sGZ8RNkEaZI40qjOlCmVivqqm7ozMqVVK6
-         JuCy/tKNPDs7TiKrUtjyoEsWQLXoMJCvAhxWKislNJOt8si0LhGmVHYtk4tXsqWMzR5P
-         YCabMwjD9T8sMI3jWimMKI0JimY64iain3c/TAatmUbWdnjwBh2SwIalxo5K3PI9Z+xB
-         qLGQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9K0mekLbqiJdoEMEvoR2b5QYbJHKNkqlE0boQn31RSjLowOwK1OA7HZdwSskN92KUQ9fVMDUA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxWwt+6okbsU+DuSd2w5y8eQdZk4U5yREeROkpQqKK8hpriBQGL
-	YGQwMlcZkbPMNIYlW6aDQZ6vBt6Eqpe+N8zdrso1biPJAkQy5f/mJxLF
-X-Gm-Gg: AeBDiesr0s9R+mXDXdzYwwG1FgLRDgozMa0Sm/GQDubqLQn7bExifLK6tbyPyPTQLR0
-	Ss7ZEnWCMHtoAwqDj4S7jPogMwZS1mmdTOTqi+VGo3mxM7DJK1DVbAI4Z2hN0ou51DLdPAWyOst
-	gBlcGPA7xulKKcS3spUKBmXxP/ufl/eq9BP9fREyjH/3psNtwr7+sLjS49SolhBsyuZP/3cfqD5
-	SzPDLg3IMzemwbP1ODQtnqUGv4hZxTcXfdwkAfx9KN4FPK4muI3tP2qHOhClgAEAcZEjeC1rtAe
-	Np6fpHUUDK4c8ST6I0SWhG9lxTyxPfN1mBFBTjs8Y3408ICHS5mi/jtc/tD4M48RkOuV/8CvdpT
-	uw3tGd+FaYHD1JC3ec667h1zaihtDCX+gBYO1rsRoD/L2pVCruGyl38zPAF1z3ugbYljX2ZU7M2
-	g0MBa4DPMP7UeKy5nxY2oyF+PDuRMZOdf0IWNS6XJQQuUZnvR+B7FkSAVY54cFdsIvReQ4B+Eh9
-	EWcXRmSTECGxsZaweeWsxX5y7bb
-X-Received: by 2002:a05:6808:d4b:b0:479:e7c7:dc71 with SMTP id 5614622812f47-4804251eb3amr4874509b6e.38.1778170851608;
-        Thu, 07 May 2026 09:20:51 -0700 (PDT)
-Received: from ?IPV6:2601:282:1e02:1040:44c7:fa6e:bd21:8ab6? ([2601:282:1e02:1040:44c7:fa6e:bd21:8ab6])
-        by smtp.googlemail.com with ESMTPSA id 5614622812f47-48061e6eb84sm1599617b6e.0.2026.05.07.09.20.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 07 May 2026 09:20:50 -0700 (PDT)
-Message-ID: <3cf0dcca-9a3f-4cee-83d7-f058f33bcc04@gmail.com>
-Date: Thu, 7 May 2026 10:20:49 -0600
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lc/oZkr1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1870EC2BCB2;
+	Thu,  7 May 2026 16:20:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778170858;
+	bh=urDw1WgtuawgHybQYaJY9BK5m5+/xhvBD524RXgulv4=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=Lc/oZkr1J3RO7L9WW+piFQVUzmBZLF0kAGruYarVuSGl73lhSYPulgQ/sfC7wtoEl
+	 M0naWeCAuDbwxLvPsAcuEDBH2hMPEWGXa3I3oyL82dM0hCETxmj2+xRZHIwIIrcJsu
+	 L90ddb3Nn9UAL60bftHBcGgIQZTVhMajYlwbnn9nE7NSLMlcWYcC1yb2vrd69gqe0q
+	 JjXxG9xmumoOI9K99+ElPKz/ZqdgxzWh2bOm6ijRuq0PJJ3H+ITn/UhOpVRXEUmz03
+	 HEBGs41iaVlauZ3LL+/eYMxW9WTg445KJWBDRiLMgRdYG0XOxQRVtABkXXxbi0mrpB
+	 biIvnpeoL15mQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CE043930909;
+	Thu,  7 May 2026 16:20:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 iproute2-next 1/4] rdma: Update headers
-Content-Language: en-US
-To: Chiara Meiohas <cmeiohas@nvidia.com>,
- Stephen Hemminger <stephen@networkplumber.org>
-Cc: leon@kernel.org, michaelgur@nvidia.com, jgg@nvidia.com,
- linux-rdma@vger.kernel.org, netdev@vger.kernel.org,
- Patrisious Haddad <phaddad@nvidia.com>
-References: <20260330173118.766885-1-cmeiohas@nvidia.com>
- <20260330173118.766885-2-cmeiohas@nvidia.com>
- <20260427112505.684c21f3@phoenix.local>
- <77e1a762-e204-497b-b7cb-40d5a93f8ec7@gmail.com>
- <98c17c60-6747-4c2b-bfe4-ce9bbe560f6d@nvidia.com>
-From: David Ahern <dsahern@gmail.com>
-In-Reply-To: <98c17c60-6747-4c2b-bfe4-ce9bbe560f6d@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2 0/4] net: sparx5: misc fixes for sparx5 and lan969x
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177817080728.4064915.505121017219538235.git-patchwork-notify@kernel.org>
+Date: Thu, 07 May 2026 16:20:07 +0000
+References: 
+ <20260506-misc-fixes-sparx5-lan969x-v2-0-fb236aa96908@microchip.com>
+In-Reply-To: 
+ <20260506-misc-fixes-sparx5-lan969x-v2-0-fb236aa96908@microchip.com>
+To: Daniel Machon <daniel.machon@microchip.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, Steen.Hegelund@microchip.com,
+ UNGLinuxDriver@microchip.com, bigeasy@linutronix.de, clrkwllms@kernel.org,
+ rostedt@goodmis.org, bjarni.jonasson@microchip.com,
+ lars.povlsen@microchip.com, p.zabel@pengutronix.de, kees@kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, steen.hegelund@microchip.com,
+ linux-rt-devel@lists.linux.dev, andrew@lunn.ch
 
-On 4/28/26 4:05 AM, Chiara Meiohas wrote:
-> We will prepare a sync patch to align the names with the kernel and send
-> it shortly.
+Hello:
 
-what happened to this request? I see that Stephen had to post a patch
-(not yet applied) to address this problem:
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-https://patchwork.kernel.org/project/netdevbpf/patch/20260505181045.748088-1-stephen@networkplumber.org/
+On Wed, 6 May 2026 09:25:35 +0200 you wrote:
+> This series fixes various issues in the sparx5 driver, which also
+> serves lan969x.
+> 
+> Details are in the individual commit descriptions.
+> 
+> Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
+> 
+> [...]
 
-We allow rdma to have separate uapi headers for convenience. Responses
-to mistakes need to be timely.
+Here is the summary with links:
+  - [net,v2,1/4] net: sparx5: defer VCAP debugfs creation until after netdev registration
+    (no matching commit)
+  - [net,v2,2/4] net: sparx5: fix sleep in atomic context in MAC table access
+    (no matching commit)
+  - [net,v2,3/4] net: sparx5: fix wrong chip ids for TSN SKUs
+    https://git.kernel.org/netdev/net/c/b131dc93f7bf
+  - [net,v2,4/4] net: sparx5: configure serdes for 1000BASE-X in sparx5_port_init()
+    https://git.kernel.org/netdev/net/c/41ae14071cd7
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
