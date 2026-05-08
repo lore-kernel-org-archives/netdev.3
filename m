@@ -1,108 +1,79 @@
-Received: from smtp1.cs.Stanford.EDU (smtp1.cs.stanford.edu [171.64.64.25])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A43A6244687
-	for <netdev@vger.kernel.org>; Fri,  8 May 2026 22:00:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=171.64.64.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26E129B8CF
+	for <netdev@vger.kernel.org>; Fri,  8 May 2026 22:01:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778277616; cv=none; b=AKm71wajeawX3yqhj5WKVZSWjntNrEGyYT7eFX6VPx75N76/ETZEb3/jJSZnWSH6szJ32tSUzSs1Fze9ArCnjXHkDgYhic5noMHa4eJnjEdRtCCdxlbKwMCNeGyIT3l2WW//hy+8dcsD1clbOc2y62laCJf92LK8mAETLvg/kRQ=
+	t=1778277667; cv=none; b=mEeF4Z5sQ9Si/kOivIU0XrrRSgjlaAYxigwItp1hj8XsPggbfeJaHFtlR9TaDZseHkTmZnECXM2m9Czzxnq38U70AhfoLxaP0YIrKukyhOYAlR18ed9Tr5oTVOAF1mUvAx4Blr9r/Yu1mZYBL6Tee2WbXeZ1I3lZ/5Bc1s7BhIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778277616; c=relaxed/simple;
-	bh=YvUyJVIIJnigpcUTciBeubD93lBY3xgoK9qBgnLvnzk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jUdq1h6OQ+jaZVh/vMJ4WQNjvKQl8Q53KgVi09c0ypUtUI0smx6ikGLg7IUpQzfldefLmFQZ8/p5tMdGEPsLiAAkR3hwHq+oQYnyJ9oH0PbfIMjAkAJUZPECYlP2KOhD4qZYs1xfOpJ7xy83SiaQG+WLiqwAlvGTC52VX6m9bVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=aY5zb8qA; arc=none smtp.client-ip=171.64.64.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.stanford.edu
+	s=arc-20240116; t=1778277667; c=relaxed/simple;
+	bh=tq4A+KtcmkiGy3nu79OqZUF9FgzI52yQoK9ZBne2J3g=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Q7N9gIlX0fyOtzRytmh5K9qROzaFyC078clICtNNUhNBZklEgOPpIp96JypVFpdZzo+VGEq5rHiaS9zJyxcT3TwNNBENXfkn1swzwL9f1mW1BC1QkdL3Z/vcALkGxa1R5GVIPPwyD6GggHYB47EhtnPtNeesPMT2jTjkD8gx2rI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TKZ+SNCa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="aY5zb8qA"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=cs.stanford.edu; s=cs2308; h=Content-Transfer-Encoding:Content-Type:Cc:To:
-	Subject:Message-ID:Date:From:In-Reply-To:References:MIME-Version:Sender:
-	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
-	:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=YvUyJVIIJnigpcUTciBeubD93lBY3xgoK9qBgnLvnzk=; t=1778277615; x=1779141615; 
-	b=aY5zb8qA5qFjElhbhgSMewZEbSebUEzbQyjRCnt3NDGPsQLxWshtcW/huy/GEOVw3wUYG+5UYYT
-	/FSbBu00aa+s8CZMkUCVVoJBERoFBVyU3iqazyuI+OuJBjNqzeUd1LpXruKIzm3OOy074NCMint32
-	0Duc3eJ2/his7ZTrL9uUZPG/U7gVCPGvdFkFB3CbQ1jdp/TiUejyqISdltsvnY20GLyMvUr8afBMF
-	Achlp9XDfhMuf20FI1HMEypki3Zglm8AvoaIxc9qNOV35OSbAUQst4YdiOyecsDx0VgfHRjGBhDvK
-	QeL5U0PI02QOR4RMulseVVMukM9idZqkpZpg==;
-Received: from mail-yw1-f170.google.com ([209.85.128.170]:49258)
-	by smtp1.cs.Stanford.EDU with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.94.2)
-	(envelope-from <ouster@cs.stanford.edu>)
-	id 1wLTEt-00058N-QS
-	for netdev@vger.kernel.org; Fri, 08 May 2026 15:00:09 -0700
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-7c0dea734bcso1989287b3.2
-        for <netdev@vger.kernel.org>; Fri, 08 May 2026 15:00:07 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ/Apj0QgpdtY6RvacLws2wVdsbWBxldSxXry3yl3J4D59E8W89K1noeUSS48oSCyY2B+9ueKm0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwXtHrGFVQx+lIEt8mr3qJ3F8faAbM6s8UfS6uatQsKOtF0Cn8+
-	2L0PxvtljidxdUivhZ2jUSwIEXQd3mcXKZ6I/IjVH143fEByl+XMOucXTD+W/dNnjb9809vl/k1
-	Tu+i5uXzqemHV+/h48q6tg7wtDXNiQ2E=
-X-Received: by 2002:a05:690c:f06:b0:7bd:4a12:f08b with SMTP id
- 00721157ae682-7c10255cc5fmr3388507b3.3.1778277607075; Fri, 08 May 2026
- 15:00:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TKZ+SNCa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AC61C2BCC9;
+	Fri,  8 May 2026 22:01:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778277667;
+	bh=tq4A+KtcmkiGy3nu79OqZUF9FgzI52yQoK9ZBne2J3g=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=TKZ+SNCaQH1mTWh7rFZV3ZTXH2csxmJVJNinwg/C5MzponySrVjUZjdAs/ni1fI5N
+	 PD1/kLaoYITZwm/vrYBXAvWjXP9mmTZoH70Mnnwv6RNkVVcnyarCCRa73lz7dAslpU
+	 zLFm1Q3VBRgYmjc7pTifkH2SnIYvYZbQgTxxLleSRFRjjJMKcxBn0d2yastKhoWdFE
+	 z7ATiliTH8nfvFzSrRze/LFnjTkfPOitJ7J5QbHfvxbfP0ykOGQ9hhwW/xsxutbT9x
+	 rTuUG3BCxmk5idReajgyi5WQG/E5qth5CcyMeZN8Mu0bL1iU/fjnK8bu65V1ZIhLiv
+	 272jJ4PMGMHUQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02E8238119CC;
+	Fri,  8 May 2026 22:00:17 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260507183843.1457-1-ouster@cs.stanford.edu> <379cd3dc-aff5-4fcd-bf9f-4878ae21ee74@intel.com>
- <CAGXJAmzqBQha+XRu12ZpLTDBSMgAEANffD2uGKZ+VVdkMk6OVA@mail.gmail.com> <3de05bb6-2cae-470f-8b8d-8ada1cd0a0f4@intel.com>
-In-Reply-To: <3de05bb6-2cae-470f-8b8d-8ada1cd0a0f4@intel.com>
-From: John Ousterhout <ouster@cs.stanford.edu>
-Date: Fri, 8 May 2026 14:59:31 -0700
-X-Gmail-Original-Message-ID: <CAGXJAmxKw-85-=0CX=s33CbfUmJA32=oqpDM=SeV5ZLi04fCOg@mail.gmail.com>
-X-Gm-Features: AVHnY4JwMwFAqhZa5I5X9osjxt-s62Punjr1W9agb-27xSB4PVgjKpQPNdeAu50
-Message-ID: <CAGXJAmxKw-85-=0CX=s33CbfUmJA32=oqpDM=SeV5ZLi04fCOg@mail.gmail.com>
-Subject: Re: [PATCH net v2] ice: fix packet corruption due to extraneous page flip
-To: Jacob Keller <jacob.e.keller@intel.com>
-Cc: anthony.l.nguyen@intel.com, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, intel-wired-lan@lists.osuosl.org, 
-	przemyslaw.kitszel@intel.com, netdev@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Score: -1.0
-X-Scan-Signature: 993826b9125cbf1b907f71dc54053338
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v1 net 0/2] tcp: Two fixes for socket migration in
+ reqsk_timer_handler().
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177827761580.865600.8944840782684836883.git-patchwork-notify@kernel.org>
+Date: Fri, 08 May 2026 22:00:15 +0000
+References: <20260506035954.1563147-1-kuniyu@google.com>
+In-Reply-To: <20260506035954.1563147-1-kuniyu@google.com>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: edumazet@google.com, ncardwell@google.com, davem@davemloft.net,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, kuni1840@gmail.com,
+ netdev@vger.kernel.org
 
-On Fri, May 8, 2026 at 2:55=E2=80=AFPM Jacob Keller <jacob.e.keller@intel.c=
-om> wrote:
->
-> On 5/7/2026 7:37 PM, John Ousterhout wrote:
-> > Correct: this patch only applies to the ice driver before its conversio=
-n.
-> >
-> > The patch applies to versions 6.18.27 and 6.12.86. I believe the bug
-> > may also be present in 6.6.137, but the code has a slightly different
-> > structure there (the function ice_put_rx_mbuf doesn't yet exist in
-> > that version) so the patch would need to be reworked a bit.
-> >
-> > This situation isn't all that rare. It isn't a zero-length packet that
-> > triggers it; it seems to happen if a packet uses every available byte
-> > in a buffer, ending precisely at the end of the buffer. When this
-> > happens, the NIC seems to generate an extra zero-length "buffer". This
-> > happens quite frequently (thousands of times per second in some of my
-> > workloads).
-> >
-> > What keeps corruption from happening constantly is that there is only
-> > a problem if the "other half" of the buffer page is still active when
-> > the 0-length buffer is received from the NIC. I suspect that with TCP
-> > this is pretty unlikely: packet buffers get recycled quickly. If the
-> > other half is not in use, then it doesn't matter whether the page gets
-> > "flipped" while processing the 0-length buffer. I ran into this
-> > problem because I was testing Homa under conditions that caused some
-> > packet buffers to stay alive for longer periods of time.
-> >
-> > -John-
-> Right. So I think we need to make sure the patch is cc'd to stable.
-> Technically it doesn't strictly follow any of the 3 rules, but its
-> closest to 3 with a clarification that there is no upstream equivalent
-> due to the libeth Rx refactor.
+Hello:
 
-It looks like messages on this chain have been cc-ed to stable since
-your first message. Is that sufficient, or do I need to resubmit (e.g.
-v3) with stable in the cc list?
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
--John-
+On Wed,  6 May 2026 03:59:17 +0000 you wrote:
+> The series fixes two bugs in the error path of socket migration
+> in reqsk_timer_handler().
+> 
+> Patch 1 fixes a potential UAF in reqsk_timer_handler().
+> 
+> Patch 2 fixes imbalanced icsk_accept_queue count.
+> 
+> [...]
+
+Here is the summary with links:
+  - [v1,net,1/2] tcp: Fix potential UAF in reqsk_timer_handler().
+    https://git.kernel.org/netdev/net/c/97c8a3c1f73d
+  - [v1,net,2/2] tcp: Fix imbalanced icsk_accept_queue count.
+    https://git.kernel.org/netdev/net/c/7eca3292cac7
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
