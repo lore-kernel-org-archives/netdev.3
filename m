@@ -1,133 +1,125 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D18E3093DB
-	for <netdev@vger.kernel.org>; Fri,  8 May 2026 15:54:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [13.75.44.102])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 234F73FE669
+	for <netdev@vger.kernel.org>; Fri,  8 May 2026 15:58:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.75.44.102
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778255700; cv=none; b=uSZ3o7gIkNPfL1Jj8cg+WPC751JX564fMJPTAPjRHts2aHp6Ao8QeZAFieynuD5VmknVcOlVmjIA5KIGM/7V+oHeyP06H6BErEcsngbkG8oW1I2lZBsZDYKwtzzUq/Qm++4C5I/6CMxAm4SyFHcLgONDVr84GUL3wHD4wB9PXc4=
+	t=1778255932; cv=none; b=eZWMgZFmHL06gzBjZfpnp/DyurZv/4NeMHS3HJOLq1T8E+Gzl9oMq+9+ALj0lWBBuOP+ZBj2SVjstljJP6YsUp/GR6xNP3qKIIvPvjma/cHxlNji8t6BD96M+9zLLCb8GgSAkK67bi2+bTuyN2645i521Ktr1uxj3rMuNVVQD4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778255700; c=relaxed/simple;
-	bh=beGQbSohbqovdwuat6nKIVAFYzmFCR8PUrxcs94i44o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FGN25t4IyuBt2EZPlspRBfZk3/+FgBmH145ixqwfUC74hoeNEBqcFwrIuNY/ALIURlW4nI3zw1xLRTYg1uDyR/wF/OjDUPe901BLoC9t+oeGDhXvFGxJzmblPorT8HM7MvPnqYPFjipgwW1HR2hkt5yPmCADGBb7Kmzodvm38DI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b=r+qYdjAF; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b="r+qYdjAF"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-43d73352cf2so1754367f8f.1
-        for <netdev@vger.kernel.org>; Fri, 08 May 2026 08:54:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=riscstar-com.20251104.gappssmtp.com; s=20251104; t=1778255698; x=1778860498; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=beGQbSohbqovdwuat6nKIVAFYzmFCR8PUrxcs94i44o=;
-        b=r+qYdjAFZkJSnq1CvRGaZ/LI0eK8QVoWEZ9b1iPl9bQ4fUagPkJ5pED9ioSpKvlsoO
-         DrvL7Bh6e3tvTGaMBZXU0PYwKOPjbw7Sxw8y8vdeE77aWvjecDLGUuyegp7slaeFmOFc
-         m8b3MlNirSpcUJr7Z89UYmFHcLpaWwjHk3JoHle6AcfeIevgB9PUjiGrTg/M1Lqj8hxx
-         PjZvZhERjKUMRpg7w0l/re/UGKYWkC3uMKgNovGFMng5MGmX24mwGtoGrEHnwpwLAyrb
-         /RbxexjnFUp6MOGJNDbI6hH+pNv1l2PtOczm5KPhE+ZYhNqqtd0WXLpNUXVKFjvbIaXe
-         H2ZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778255698; x=1778860498;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=beGQbSohbqovdwuat6nKIVAFYzmFCR8PUrxcs94i44o=;
-        b=iBRndzQJIv9JRC3omkIRLtOI+oztAWDOLj7oAIR51WH80tgfVvRU2J7uwYqO5OjY6F
-         W0LogsPVBBg8kn9FdurhYyC19EcrdCaO5BgTxWWhCrP2EHya2l9TakJEj6hoieU5I/MA
-         7w+Hee4cNXI/mCgYY5OMrWBERA2bc41AaTTYp0T9hZVNeH1wBvih31xunygI/Ff06Rnh
-         eidnAMUJS1KQZjhhqymGanCcReEGH6Rh4K4yv1elAzo7hKBjpgYxnMAN1j62fK8Tawqm
-         moq6Yx2F+9RcSnJxE7zyK297N8i8+da9bYTKS/7VN38PZZ/zbKotQCcsQ4lWJe8K2na9
-         nt+w==
-X-Forwarded-Encrypted: i=1; AFNElJ9D1fSjz0LeoBFuL2Zzcts+IEqGEvbhsXqU/BUYxE6y4nHfbHvqdJsnxzySqBcJtV5TY1oBChA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx1b38+h8mKpjg08PzkqCltJG5+UaOvCddFwQexl2V71tbpFVh0
-	HNBYWEMkhpAec8po1/JJDEGKS6WPhyA/8+ADfnl3W1mLr7QIB5jTMqvHmbykrpbOn0E=
-X-Gm-Gg: Acq92OGj6zypafq//ga036Gt2hY70H/vk74otRln2UTJ9JvQg+40eMZCt77oQvyezsB
-	kr1o+LHgYLSuj9lF0OFoCpRGJ5E4kH/utEikXSQMYBWJHDn5JU8twSw79fEZY7pOZ5/VlfXdmdS
-	FXePEssrrolPHtOiC0Z3LQnCkDJpFjkWc7x85UIWdKytmuOP1/uP7zVBDGavpS2B8WIw89RUnI5
-	ZXE2wsSSl70pdRxZd7i3E10vQri+pC+TMxEc3inaHONffUKkF40nj3WHlfHg5rcZ4fXrbC/RhC6
-	8uyutk1N0QKCYOZaWgkSwtHGYTshfdC+J6vHq36NvQKXJcmkVWSCNZN66KqXx3spdfyHurlkC1j
-	d7cCQ0b/sTOCLgj8DWgg6PrCclrXNNLW1oEU8jZvc9ZYIINuMAVrV6IAJ3qmae/cMuC+3igSIVu
-	ZvDVK5n5h0/Z2CyaW3xa1pAgjuopvmrvFHwqM0hY+W21J1YNhX9gVyTA3KzKLPv5C22qsGoDh3N
-	cliIf7RvzvA6I7hZsVORjl76FhptEKumEWm2juaLxRORZ2jeFd6nQPXxLHJ6E7OYYH1IXVBujoS
-	BeXiWL8/
-X-Received: by 2002:a05:6000:22c4:b0:43d:1c21:ead5 with SMTP id ffacd0b85a97d-4515ce1c6bcmr21753628f8f.22.1778255697345;
-        Fri, 08 May 2026 08:54:57 -0700 (PDT)
-Received: from aspen.lan (aztw-34-b2-v4wan-166919-cust780.vm26.cable.virginm.net. [82.37.195.13])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4548eb75c29sm5680163f8f.9.2026.05.08.08.54.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 May 2026 08:54:56 -0700 (PDT)
-Date: Fri, 8 May 2026 16:54:54 +0100
-From: Daniel Thompson <daniel@riscstar.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Alex Elder <elder@riscstar.com>, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, maxime.chevallier@bootlin.com,
-	rmk+kernel@armlinux.org.uk, andersson@kernel.org,
-	konradybcio@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, linusw@kernel.org, brgl@kernel.org,
-	arnd@arndb.de, gregkh@linuxfoundation.org,
-	mohd.anwar@oss.qualcomm.com, a0987203069@gmail.com,
-	alexandre.torgue@foss.st.com, ast@kernel.org,
-	boon.khai.ng@altera.com, chenchuangyu@xiaomi.com,
-	chenhuacai@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
-	hkallweit1@gmail.com, inochiama@gmail.com, john.fastabend@gmail.com,
-	julianbraha@gmail.com, livelycarpet87@gmail.com,
-	matthew.gerlach@altera.com, mcoquelin.stm32@gmail.com, me@ziyao.cc,
-	prabhakar.mahadev-lad.rj@bp.renesas.com, richardcochran@gmail.com,
-	rohan.g.thomas@altera.com, sdf@fomichev.me,
-	siyanteng@cqsoftware.com.cn, weishangjuan@eswincomputing.com,
-	wens@kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-gpio@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 10/12] net: stmmac: tc956x: add TC956x/QPS615
- support
-Message-ID: <af4HTg5P3j0GsNvt@aspen.lan>
-References: <20260501155421.3329862-1-elder@riscstar.com>
- <20260501155421.3329862-11-elder@riscstar.com>
- <2ce5897d-5bbb-486a-b0f0-0e30e54b451a@lunn.ch>
- <afy34kj2hPxIlArO@aspen.lan>
- <ef6df85f-11ac-404d-958a-8cf69b3b6bb6@lunn.ch>
- <af3IKKkjl0jK8GGB@aspen.lan>
- <f15e2fe2-88c9-409d-b953-cdc94aee4e16@lunn.ch>
+	s=arc-20240116; t=1778255932; c=relaxed/simple;
+	bh=nck0kZqjMkMaMsNTUP0Bx8WarBnSNZnz+rfVXMAaHpA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=WH4lbvV9KxmPRQPJ7NJAZlljyhGCL5lfwqoLkGLzID6wUR3w+moHNjoHuSl/u0KT1CJGKYrbdF22RU8WYMwJMSpgXuMS/64l41NcDXkvlIkFoCqqguXFuj4iYD+EFZnJc9j9BVBWeUViCdWFMmNT8pzcZfv9lPCWDWQziLq2ZP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn; spf=pass smtp.mailfrom=lzu.edu.cn; arc=none smtp.client-ip=13.75.44.102
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lzu.edu.cn
+Received: from enjou-Legion-Y7000P-2019.coin-barley.ts.net (unknown [172.23.56.36])
+	by app1 (Coremail) with SMTP id ygmowADXRfYoCP5pHIP+AA--.2636S3;
+	Fri, 08 May 2026 23:58:35 +0800 (CST)
+From: Ren Wei <n05ec@lzu.edu.cn>
+To: linux-afs@lists.infradead.org,
+	netdev@vger.kernel.org
+Cc: dhowells@redhat.com,
+	marc.dionne@auristor.com,
+	yuantan098@gmail.com,
+	yifanwucs@gmail.com,
+	tomapufckgml@gmail.com,
+	bird@lzu.edu.cn,
+	d4n.for.sec@gmail.com,
+	n05ec@lzu.edu.cn
+Subject: [PATCH net 1/1] rxrpc: serialize kernel accept preallocation with socket teardown
+Date: Fri,  8 May 2026 23:58:28 +0800
+Message-ID: <4e9e2d92be94ed4bcb43b70b36fcc3863414d61e.1778230563.git.d4n.for.sec@gmail.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <cover.1778230563.git.d4n.for.sec@gmail.com>
+References: <cover.1778230563.git.d4n.for.sec@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f15e2fe2-88c9-409d-b953-cdc94aee4e16@lunn.ch>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:ygmowADXRfYoCP5pHIP+AA--.2636S3
+X-Coremail-Antispam: 1UD129KBjvJXoW7ArykWrW3GFyDCF4kWry3urg_yoW8try8pF
+	WfGw1ftrWkXr1fuFnaqr40grW5Wa18Jr1UJ397Z3ZYkrn29a4aqry8tay2vr15Z3s5GrW3
+	Ar1qka4v9w4xZFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBj1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
+	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
+	IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2
+	jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52
+	x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWU
+	GwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI4
+	8JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kK
+	e7AKxVWUtVW8ZwCY02Avz4vE-syl42xK82IYc2Ij64vIr41l42xK82IY6x8ErcxFaVAv8V
+	W8GwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480
+	Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7
+	IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k2
+	6cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxV
+	AFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUd-B_UUUUU=
+X-CM-SenderInfo: zqqvvuo6o23hxhgxhubq/1tbiAQEBCWn9o2QIWgAAsJ
 
-On Fri, May 08, 2026 at 03:34:42PM +0200, Andrew Lunn wrote:
-> > BTW if you are bothered by SP_SEL_SGMII_2500M, that name comes directly
-> > from the TRM and I'd prefer to keep it if I can. The enumerated value
-> > we have to write into the SP_SEL for 2500base-X is "SGMII 2500M".
->
-> We try to avoid anything to do with SGMII and 2500 because it is
-> technically wrong. Cisco never defined SGMII for 2500, it is something
-> silicon vendors have made up, without any foundation in any
-> standardisation. We much prefer to refer to it as 2500BaseX with
-> broken signalling, which is a much more accurate description.
->
-> The TRM is also not a public document. If it was, i could see some
-> value in keeping with the naming, but since ~0 developers have the
-> document, this is less useful.
+From: Li Daming <d4n.for.sec@gmail.com>
 
-This is a pretty obscure register buried on some of the TC956x glue
-logic (e.g. it's not part of the DWMAC's register set). I take the view
-that if someone is debugging the hardware interactions deeply enough to
-care what this is called then the odds of them having access to the TRM
-are actually pretty good.
+rxrpc_kernel_charge_accept() reads rx->backlog without any
+socket/backlog synchronization and passes that raw pointer into
+rxrpc_service_prealloc_one(). A concurrent rxrpc_discard_prealloc()
+sets rx->backlog = NULL and frees the backlog rings, so a kernel
+preallocation worker can keep using a freed struct rxrpc_backlog
+while updating *_backlog_head/tail and array slots.
 
-However having a different name would be only a minor irritant to the
-poor soul trying to debug the thing! I'll rename to SP_SEL_2500BASEX
-in the next rev of the patchset.
+Serialize the state check and backlog lookup with the socket lock,
+and reject kernel preallocation once teardown has disabled
+listening or discarded the service backlog.
 
+Fixes: 00e907127e6f ("rxrpc: Preallocate peers, conns and calls for incoming service requests")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Li Daming <d4n.for.sec@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+---
+ net/rxrpc/call_accept.c | 25 +++++++++++++++++++------
+ 1 file changed, 19 insertions(+), 6 deletions(-)
 
-Daniel.
+diff --git a/net/rxrpc/call_accept.c b/net/rxrpc/call_accept.c
+index ee2d131..4782412 100644
+--- a/net/rxrpc/call_accept.c
++++ b/net/rxrpc/call_accept.c
+@@ -471,13 +471,26 @@ int rxrpc_kernel_charge_accept(struct socket *sock, rxrpc_notify_rx_t notify_rx,
+ 			       unsigned long user_call_ID, gfp_t gfp,
+ 			       unsigned int debug_id)
+ {
+-	struct rxrpc_sock *rx = rxrpc_sk(sock->sk);
+-	struct rxrpc_backlog *b = rx->backlog;
++	struct rxrpc_backlog *b;
++	struct rxrpc_sock *rx;
++	struct sock *sk;
++	int ret;
+ 
+-	if (sock->sk->sk_state == RXRPC_CLOSE)
+-		return -ESHUTDOWN;
++	sk = sock->sk;
++	rx = rxrpc_sk(sk);
++
++	lock_sock(sk);
++	if (sk->sk_state != RXRPC_SERVER_LISTENING || !rx->backlog) {
++		ret = -ESHUTDOWN;
++		goto out;
++	}
++
++	b = rx->backlog;
++	ret = rxrpc_service_prealloc_one(rx, b, notify_rx, user_call_ID,
++					 gfp, debug_id);
+ 
+-	return rxrpc_service_prealloc_one(rx, b, notify_rx, user_call_ID,
+-					  gfp, debug_id);
++out:
++	release_sock(sk);
++	return ret;
+ }
+ EXPORT_SYMBOL(rxrpc_kernel_charge_accept);
+-- 
+2.43.0
+
