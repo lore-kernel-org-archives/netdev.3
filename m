@@ -1,299 +1,243 @@
-Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 895302F99BD
-	for <netdev@vger.kernel.org>; Fri,  8 May 2026 15:50:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E14F1DF25C
+	for <netdev@vger.kernel.org>; Fri,  8 May 2026 15:50:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778255431; cv=none; b=T+2JJh2FqqD6en8lZmpFj2AZPJ3X2rKpIR7g9AoDXCPi+bBimCR8YizcktWHtbpYlihMlmH5srlIUn3vCRs/0i/TDxAgbOpbLcynOS4N6VIDTRV9uoJXnh+VsMSvbUg5uPWD1/ALkeRJHj7YVA6GunN4z3ZzGPEIVCcGMNrdzv4=
+	t=1778255454; cv=none; b=MhBYu1W0jC7+EFC8cnAc3d1lw91g4yd7IbiSfDMyq0aJkItizx22OcWRnkksR0SpSqZ3x6RrcfnGQvj2WxVML2a2+CMI411BdV9c5wE+nXq3gEoWHqP+eOJzvV2HAST+m6UsQRIyQSeHSeXeKF14oWo5RrnoRcBmRiOZSUGQn34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778255431; c=relaxed/simple;
-	bh=PGvmEwkLWXPgygIrC96y+COtXQa4YDf8mz56xLa8W5g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mp0k4OSiVcCLEbUwtqDq0rC0l9z2dkRp7qTc4HO7U0Nr0LMSnHgn2NFsHDuaXdcuwLPSK5c9/kfEm38a/O9rx87jhK/E+J5t1DBuueBYGjDwRQpqRQEh0UJT7/NoXpJmLoJaqc4YMkdx67P/xiuVrTg3fUNvJggLnT4VXKnQEIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=CFAOfkSp; arc=none smtp.client-ip=23.88.38.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
+	s=arc-20240116; t=1778255454; c=relaxed/simple;
+	bh=rdDtrTgIi+rN4hhDCNeEhPYuXlZ/J2y+H8n1qLpmtsY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TiqIBl1Mokpwf8v7OGBznGbDUvmlm7WX/nuxHh7DwELFsoIZtO5Amre6BdMq+aU3NBjbfUageN7Zg0CkDlS0EMcxVGNkLDg1OsLGYj+EbOCns19KAs5ILhvozUJ4u5c/9ELaaA4hBOkqKfHjnXj1Iw/rlM5QXY0Plyn95/KjL5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aoG6h6uw; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=h/xX9xUM; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="CFAOfkSp"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1778255009;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aoG6h6uw";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="h/xX9xUM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778255449;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/C4VTQQ2znN8LdH45GpQQcLnQ3TRxQ3MYwjIBnQbm/w=;
-	b=CFAOfkSpK1fBvvEFGHd8VOCKI2ih4i6aEeAtYXwY0lfZK3u0JBmtpIESaTjAAEyrinZqfw
-	BrJGvCsiblBDcbTj7a2X8Hbi22BEvbsX7sZylt8t3MJPqInNgpBuMoWyPJKr3yhENwS42W
-	L1s4X3eW26N9++rNgxVlkENjMlS++/5h1m3dNBCXfxReMURXUcnlNywm6/2UaIiSwv+wXN
-	yVABfDloIu4iookXUhN7q4rUOpSZd1wYyasXKi2SP/KQzGmLVFTTY2pTxbAfwX/AAHeZ86
-	GxVoQ7sTlv3vEBeIAZ67oAnfHAdcAKvdPfzTVzVGDSBFseEN0iN+AfvH9DIxdQ==
-From: Simon Wunderlich <sw@simonwunderlich.de>
-To: netdev@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	b.a.t.m.a.n@lists.open-mesh.org,
-	Jiexun Wang <wangjiexun2025@gmail.com>,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Luxing Yin <tr0jan@lzu.edu.cn>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net 3/8] batman-adv: stop tp_meter sessions during mesh teardown
-Date: Fri,  8 May 2026 17:43:09 +0200
-Message-ID: <20260508154314.12817-4-sw@simonwunderlich.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260508154314.12817-1-sw@simonwunderlich.de>
-References: <20260508154314.12817-1-sw@simonwunderlich.de>
+	bh=ZdBAwN+ZE1eYNiJtu0H0OHxl4J/6xgxxgGUcknEIPjk=;
+	b=aoG6h6uwWfwPj4Oa7tfZ84TXZPd6AtyEmI8NiLKu8gKOShX/BqNkcKajnizu4aU/VigkYo
+	O24rQeO9AtgTGt6t2ZzJzbDkAPxxz8O+adKaswWd9quzmy99cz7cF9Xcr2BkZerIRHS18X
+	aSTCZygcYaIzd6WHVJn8MblQGo7ps6w=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-533-buUCzh9cPk6eHozNJ_kiuQ-1; Fri, 08 May 2026 11:50:48 -0400
+X-MC-Unique: buUCzh9cPk6eHozNJ_kiuQ-1
+X-Mimecast-MFC-AGG-ID: buUCzh9cPk6eHozNJ_kiuQ_1778255447
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-43efc93e4f6so1439734f8f.3
+        for <netdev@vger.kernel.org>; Fri, 08 May 2026 08:50:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1778255447; x=1778860247; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZdBAwN+ZE1eYNiJtu0H0OHxl4J/6xgxxgGUcknEIPjk=;
+        b=h/xX9xUM74SzCTbQX9lL8fxCmC6PCt4VBk+g/rJkH6oufrX7DWFPgLsaXL9Ez+15fM
+         LbfWbE7PczTQWI69WJLC5OQxbxB/utrtJ91C40HEmubhhj1CqeZedJrxYXbr4zTckvoj
+         gqXmoYgZcFy4fL5PVM/F31+8Pr46AtV6MBZ71DPRJ/YVvgALiP5jFVqCGXW7Ym5cpPu7
+         lfUvxmScpW3IpeHhzOzNeqcEf9n/BAqk5zgsVuv5VYIRmpbwdreJYavfOT7IBCfOEsKA
+         8u/Urd/ew/pRWj3ZSN1r+tyhskEGgm4CMORpRygM+uUjbL4T5SD/O90f0jx1vYxQ8yRK
+         hfcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778255447; x=1778860247;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZdBAwN+ZE1eYNiJtu0H0OHxl4J/6xgxxgGUcknEIPjk=;
+        b=KQ3ANrDyjwhwGPdWx/AQlCnUZxErGlGSuU5Ok2dJ6Gq3Ds58jZcpqgWzRaSbqqX5HO
+         eFZzXSfFHzhQ3agIr3rlMU82pITuJdldTwotF+5sqdOceWpIKVxshDegaLSqz5RX/bV2
+         lox5zfCmKxnCzveqsSHy1VkziyXEtzBmurcWKrxrD+A3u1zqcjhuuZ1ObEkdTf+G0rwA
+         HECXLrTehuo0xfBU0NJo5VxY1yqFBEQcPjq2sDT2MrBTBzhAVjbxMyDBlqPNZ0KpIZNS
+         UjzJgwOxik5RhJj8vkWSUYXj3c/1zC1giX9s6ldDDXjfeCRvRKvLMpJQpJvZmkYhfF8i
+         0lgg==
+X-Forwarded-Encrypted: i=1; AFNElJ+A/eTt+Vrriu1uZ5N5Y7x/vJArHhLoldTHoXN0wdmulTYPnt5L+bVsxi22pMKQ5f9X8d+e2jI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxBW20VemkkOtbRkPndEJr4q0ELD7F3CrpFLa2HFzdUhfWAUTHS
+	TzpB8fejN+y2X0lNKxQWt1cYtVSp72+6c/8EoHOwFWJgj19Oih46h0bGiNJh9fuSDj/7oyQF5BU
+	+7GMakeLxaXty/iHPDfZYvtUfVyACKdSdKa1yetpm5bLqgzkJ3F7i2mAnBA==
+X-Gm-Gg: AeBDieuoJIi25L+jDfUakBT0RYIkrTrbUq4foj+o07r65oQ1tx9ilHQf+HHPGUnv8BP
+	U8Cn5Ke+AoLY+LB5DjXn+s0fMK7L0FbfSse0nsuQe9I77GOSpYwXxrWzThqeB2oHEU2MKN8nn0/
+	row8rMbcf7t0+FCRwAi7mXZriajwJVIZ0gt1umWrEhtPiGVyjPymmbs6yEfovKNWE7X+Q30NLOx
+	FINGeXsuKnZvwT9EYDvLI9gsCvFLoCe6hz8XYE1s4UvYmZ4uP9MR9are+CnkfPKyphftVIWFI5C
+	/hKEUHORITMUm+JBSlxi5yUwhxyx7KbpjuJ87xHHgwye+v4AiliF3PVSMIkZTfVczckWyw9+aEc
+	E7BbEGtBsGvhXztr/c6FrEqPVrcOY06s5QAEfwbUmIeUVhv3BVHLbWc7/U5H0eYU=
+X-Received: by 2002:a05:600c:8485:b0:48a:58ae:9933 with SMTP id 5b1f17b1804b1-48e51f32806mr210416035e9.18.1778255446890;
+        Fri, 08 May 2026 08:50:46 -0700 (PDT)
+X-Received: by 2002:a05:600c:8485:b0:48a:58ae:9933 with SMTP id 5b1f17b1804b1-48e51f32806mr210415475e9.18.1778255446303;
+        Fri, 08 May 2026 08:50:46 -0700 (PDT)
+Received: from sgarzare-redhat (host-87-11-6-2.retail.telecomitalia.it. [87.11.6.2])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e6db11fc4sm2280025e9.27.2026.05.08.08.50.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 May 2026 08:50:45 -0700 (PDT)
+Date: Fri, 8 May 2026 17:50:24 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Arseniy Krasnov <avkrasnov@salutedevices.com>
+Cc: Paolo Abeni <pabeni@redhat.com>, 
+	Bobby Eshleman <bobbyeshleman@meta.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Yiqi Sun <sunyiqixm@gmail.com>, kvm@vger.kernel.org, 
+	virtualization@lists.linux.dev
+Subject: Re: [PATCH] vsock/virtio: fix vsockmon info leak in non-linear tap,
+ copy
+Message-ID: <af4GIeSEQ_65V5C2@sgarzare-redhat>
+References: <afnXIGtswspSEk8x@sgarzare-redhat>
+ <a7b95294-3aa6-4bca-9eab-a4bcd0202ae2@salutedevices.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <a7b95294-3aa6-4bca-9eab-a4bcd0202ae2@salutedevices.com>
 
-From: Jiexun Wang <wangjiexun2025@gmail.com>
+On Thu, May 07, 2026 at 11:03:57PM +0300, Arseniy Krasnov wrote:
+>>CCing Arseniy and Bobby.
+>
+>Thanks!
+>
+>>
+>>On Tue, May 05, 2026 at 12:26:21PM +0200, Paolo Abeni wrote:
+>>>On 4/30/26 9:11 AM, Yiqi Sun wrote:
+>>>> vsockmon mirrors packets through virtio_transport_build_skb(), which
+>>>> builds a new skb and copies the payload into it. For non-linear skbs,
+>>>> this goes through virtio_transport_copy_nonlinear_skb().
+>>>>
+>>>> Helper manually initializes a iov_iter, but leaves iov_iter.count unset.
+>>>> As a result, skb_copy_datagram_iter() sees zero writable bytes
+>>>> in the destination iterator and copies no payload data.
+>>>>
+>>>> This becomes an info leak because virtio_transport_build_skb() has
+>>>> already reserved payload_len bytes in the new skb with skb_put(). The
+>>>> skb is then returned to the tap path with that payload area still
+>>>> uninitialized, so userspace reading from a vsockmon device can observe
+>>>> heap contents and potentially kernel address.
+>>>>
+>>>> Fix it by initializing iov_iter.count to the number of bytes to copy.
+>>>>
+>>>> Fixes: 4b0bf10eb077 ("vsock/virtio: non-linear skb handling for tap")
+>>>> Signed-off-by: Yiqi Sun <sunyiqixm@gmail.com>
+>>>> ---
+>>>>  net/vmw_vsock/virtio_transport_common.c | 2 +-
+>>>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+>>>> index 416d533f493d..6b26ee57ccab 100644
+>>>> --- a/net/vmw_vsock/virtio_transport_common.c
+>>>> +++ b/net/vmw_vsock/virtio_transport_common.c
+>>>> @@ -152,7 +152,7 @@ static void virtio_transport_copy_nonlinear_skb(const struct sk_buff *skb,
+>>>>  	iov_iter.nr_segs = 1;
+>>>>
+>>>>  	to_copy = min_t(size_t, len, skb->len);
+>>>> -
+>>>> +	iov_iter.count = to_copy;
+>>>>  	skb_copy_datagram_iter(skb, VIRTIO_VSOCK_SKB_CB(skb)->offset,
+>>>>  			       &iov_iter, to_copy);
+>>>
+>>>@Stefano, @Stefan, the patch LGTM, but sashiko pointed out to a
+>>>pre-existing issue you should probably want to address:
+>>>
+>>>>  	to_copy = min_t(size_t, len, skb->len);
+>>>Does this length calculation account for the offset when a packet is
+>>>split across multiple transmissions?
+>>>If a packet is requeued, VIRTIO_VSOCK_SKB_CB(skb)->offset is increased,
+>>>but to_copy still evaluates to the full length of the skb.
+>>
+>>Yep, I just checked and vhost-vsock is the only place where we call
+>>virtio_transport_deliver_tap_pkt() wiht an offset != 0, but I agree that
+>>we should also fix it.
+>
+>Yes, looks like the only place where offset could be non zero is 'vhost_transport_do_send_pkt()'.
+>And we set valid length in header every attempt to send it:
+>
+>                /* Set the correct length in the header */
+>                hdr->len = cpu_to_le32(payload_len);
+>
+>In all other places we call 'virtio_transport_deliver_tap_pkt()' with offset == 0. And thus
+>skb->len == hdr->len.
+>
+>So for me looks ok. E.g. len in header is actual data.
+>
+>>
+>>Looking better in net/vmw_vsock/virtio_transport_common.c I think this
+>>is a regression, indeed we have this comment in
+>>virtio_transport_build_skb():
+>>
+>>	/* A packet could be split to fit the RX buffer, so we can retrieve
+>>	 * the payload length from the header and the buffer pointer taking
+>>	 * care of the offset in the original packet.
+>>	 */
+>>	pkt_hdr = virtio_vsock_hdr(pkt);
+>>
+>>Before commit 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with
+>>sk_buff") we read the payload lenght from the header that is always set
+>>to the right value before delivering the packet to the tap.
+>>
+>> From that commit, we don't to consider the offset anymore since we
+>>started to use `len` from the skb, so IMO we should go back to what we
+>>did before it, I mean:
+>>
+>>	payload_len = le32_to_cpu(pkt->hdr.len);
+>>
+>>@Bobby do you remember why we did that change? Or if you see any issue
+>>going back to what we did initially?
+>>
+>>
+>>Also IMO we should avoid to set all the iov_iter fields by hand and
+>>start to use iov_iter_kvec(). Plus, we can just use
+>>skb_copy_datagram_iter() in any case, like we already do in vhost-vsock,
+>>since it already handles linear vs non linear.
+>>
+>>At the end I mean something like this:
+>>
+>>@@ -171,7 +150,7 @@ static struct sk_buff *virtio_transport_build_skb(void *opaque)
+>>  	 * care of the offset in the original packet.
+>>  	 */
+>>  	pkt_hdr = virtio_vsock_hdr(pkt);
+>>-	payload_len = pkt->len;
+>>+	payload_len = le32_to_cpu(pkt_hdr->len);
+>>
+>>  	skb = alloc_skb(sizeof(*hdr) + sizeof(*pkt_hdr) + payload_len,
+>>  			GFP_ATOMIC);
+>>@@ -214,13 +193,17 @@ static struct sk_buff *virtio_transport_build_skb(void *opaque)
+>>  	skb_put_data(skb, pkt_hdr, sizeof(*pkt_hdr));
+>>
+>>  	if (payload_len) {
+>>-		if (skb_is_nonlinear(pkt)) {
+>>-			void *data = skb_put(skb, payload_len);
+>>+		struct iov_iter iov_iter;
+>>+		struct kvec kvec;
+>>+		void *data = skb_put(skb, payload_len);
+>>
+>>-			virtio_transport_copy_nonlinear_skb(pkt, data, payload_len);
+>>-		} else {
+>>-			skb_put_data(skb, pkt->data, payload_len);
+>>-		}
+>>+		kvec.iov_base = data;
+>>+		kvec.iov_len = payload_len;
+>>+		iov_iter_kvec(&iov_iter, READ, &kvec, 1, payload_len);
+>>+
+>>+		skb_copy_datagram_iter(pkt,
+>>+				       VIRTIO_VSOCK_SKB_CB(pkt)->offset,
+>>+				       &iov_iter, payload_len);
+>>  	}
+>>
+>>  	return skb;
+>>
+>>And removing virtio_transport_copy_nonlinear_skb().
+>
+>Yes, this looks shorter and better.
 
-TP meter sessions remain linked on bat_priv->tp_list after the netlink
-request has already finished. When the mesh interface is removed,
-batadv_mesh_free() currently tears down the mesh without first draining
-these sessions.
+Thanks for confirming, I'll send a series soon and CC you.
+Please review it :-)
 
-A running sender thread or a late incoming tp_meter packet can then keep
-processing against a mesh instance which is already shutting down.
-Synchronize tp_meter with the mesh lifetime by stopping all active
-sessions from batadv_mesh_free() and waiting for sender threads to exit
-before teardown continues.
-
-Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Co-developed-by: Luxing Yin <tr0jan@lzu.edu.cn>
-Signed-off-by: Luxing Yin <tr0jan@lzu.edu.cn>
-Signed-off-by: Jiexun Wang <wangjiexun2025@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
----
- net/batman-adv/main.c     |  1 +
- net/batman-adv/tp_meter.c | 94 +++++++++++++++++++++++++++++++--------
- net/batman-adv/tp_meter.h |  1 +
- net/batman-adv/types.h    |  4 ++
- 4 files changed, 82 insertions(+), 18 deletions(-)
-
-diff --git a/net/batman-adv/main.c b/net/batman-adv/main.c
-index 3a35aadd8b419..a4d33ee0fda59 100644
---- a/net/batman-adv/main.c
-+++ b/net/batman-adv/main.c
-@@ -249,6 +249,7 @@ void batadv_mesh_free(struct net_device *mesh_iface)
- 	atomic_set(&bat_priv->mesh_state, BATADV_MESH_DEACTIVATING);
- 
- 	batadv_purge_outstanding_packets(bat_priv, NULL);
-+	batadv_tp_stop_all(bat_priv);
- 
- 	batadv_gw_node_free(bat_priv);
- 
-diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
-index d9a80e459c2e4..58ca59a2799ed 100644
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -12,6 +12,7 @@
- #include <linux/byteorder/generic.h>
- #include <linux/cache.h>
- #include <linux/compiler.h>
-+#include <linux/completion.h>
- #include <linux/container_of.h>
- #include <linux/err.h>
- #include <linux/etherdevice.h>
-@@ -365,23 +366,38 @@ static void batadv_tp_vars_put(struct batadv_tp_vars *tp_vars)
- }
- 
- /**
-- * batadv_tp_sender_cleanup() - cleanup sender data and drop and timer
-- * @bat_priv: the bat priv with all the mesh interface information
-- * @tp_vars: the private data of the current TP meter session to cleanup
-+ * batadv_tp_list_detach() - remove tp session from mesh session list once
-+ * @tp_vars: the private data of the current TP meter session
-  */
--static void batadv_tp_sender_cleanup(struct batadv_priv *bat_priv,
--				     struct batadv_tp_vars *tp_vars)
-+static void batadv_tp_list_detach(struct batadv_tp_vars *tp_vars)
- {
--	cancel_delayed_work(&tp_vars->finish_work);
-+	bool detached = false;
- 
- 	spin_lock_bh(&tp_vars->bat_priv->tp_list_lock);
--	hlist_del_rcu(&tp_vars->list);
-+	if (!hlist_unhashed(&tp_vars->list)) {
-+		hlist_del_init_rcu(&tp_vars->list);
-+		detached = true;
-+	}
- 	spin_unlock_bh(&tp_vars->bat_priv->tp_list_lock);
- 
-+	if (!detached)
-+		return;
-+
-+	atomic_dec(&tp_vars->bat_priv->tp_num);
-+
- 	/* drop list reference */
- 	batadv_tp_vars_put(tp_vars);
-+}
- 
--	atomic_dec(&tp_vars->bat_priv->tp_num);
-+/**
-+ * batadv_tp_sender_cleanup() - cleanup sender data and drop and timer
-+ * @tp_vars: the private data of the current TP meter session to cleanup
-+ */
-+static void batadv_tp_sender_cleanup(struct batadv_tp_vars *tp_vars)
-+{
-+	cancel_delayed_work_sync(&tp_vars->finish_work);
-+
-+	batadv_tp_list_detach(tp_vars);
- 
- 	/* kill the timer and remove its reference */
- 	timer_delete_sync(&tp_vars->timer);
-@@ -886,7 +902,8 @@ static int batadv_tp_send(void *arg)
- 	batadv_orig_node_put(orig_node);
- 
- 	batadv_tp_sender_end(bat_priv, tp_vars);
--	batadv_tp_sender_cleanup(bat_priv, tp_vars);
-+	batadv_tp_sender_cleanup(tp_vars);
-+	complete(&tp_vars->finished);
- 
- 	batadv_tp_vars_put(tp_vars);
- 
-@@ -918,7 +935,8 @@ static void batadv_tp_start_kthread(struct batadv_tp_vars *tp_vars)
- 		batadv_tp_vars_put(tp_vars);
- 
- 		/* cleanup of failed tp meter variables */
--		batadv_tp_sender_cleanup(bat_priv, tp_vars);
-+		batadv_tp_sender_cleanup(tp_vars);
-+		complete(&tp_vars->finished);
- 		return;
- 	}
- 
-@@ -1024,6 +1042,7 @@ void batadv_tp_start(struct batadv_priv *bat_priv, const u8 *dst,
- 	tp_vars->start_time = jiffies;
- 
- 	init_waitqueue_head(&tp_vars->more_bytes);
-+	init_completion(&tp_vars->finished);
- 
- 	spin_lock_init(&tp_vars->unacked_lock);
- 	INIT_LIST_HEAD(&tp_vars->unacked_list);
-@@ -1126,14 +1145,7 @@ static void batadv_tp_receiver_shutdown(struct timer_list *t)
- 		   "Shutting down for inactivity (more than %dms) from %pM\n",
- 		   BATADV_TP_RECV_TIMEOUT, tp_vars->other_end);
- 
--	spin_lock_bh(&tp_vars->bat_priv->tp_list_lock);
--	hlist_del_rcu(&tp_vars->list);
--	spin_unlock_bh(&tp_vars->bat_priv->tp_list_lock);
--
--	/* drop list reference */
--	batadv_tp_vars_put(tp_vars);
--
--	atomic_dec(&bat_priv->tp_num);
-+	batadv_tp_list_detach(tp_vars);
- 
- 	spin_lock_bh(&tp_vars->unacked_lock);
- 	list_for_each_entry_safe(un, safe, &tp_vars->unacked_list, list) {
-@@ -1496,6 +1508,52 @@ void batadv_tp_meter_recv(struct batadv_priv *bat_priv, struct sk_buff *skb)
- 	consume_skb(skb);
- }
- 
-+/**
-+ * batadv_tp_stop_all() - stop all currently running tp meter sessions
-+ * @bat_priv: the bat priv with all the mesh interface information
-+ */
-+void batadv_tp_stop_all(struct batadv_priv *bat_priv)
-+{
-+	struct batadv_tp_vars *tp_vars[BATADV_TP_MAX_NUM];
-+	struct batadv_tp_vars *tp_var;
-+	size_t count = 0;
-+	size_t i;
-+
-+	spin_lock_bh(&bat_priv->tp_list_lock);
-+	hlist_for_each_entry(tp_var, &bat_priv->tp_list, list) {
-+		if (WARN_ON_ONCE(count >= BATADV_TP_MAX_NUM))
-+			break;
-+
-+		if (!kref_get_unless_zero(&tp_var->refcount))
-+			continue;
-+
-+		tp_vars[count++] = tp_var;
-+	}
-+	spin_unlock_bh(&bat_priv->tp_list_lock);
-+
-+	for (i = 0; i < count; i++) {
-+		tp_var = tp_vars[i];
-+
-+		switch (tp_var->role) {
-+		case BATADV_TP_SENDER:
-+			batadv_tp_sender_shutdown(tp_var,
-+						  BATADV_TP_REASON_CANCEL);
-+			wake_up(&tp_var->more_bytes);
-+			wait_for_completion(&tp_var->finished);
-+			break;
-+		case BATADV_TP_RECEIVER:
-+			batadv_tp_list_detach(tp_var);
-+			if (timer_shutdown_sync(&tp_var->timer))
-+				batadv_tp_vars_put(tp_var);
-+			break;
-+		}
-+
-+		batadv_tp_vars_put(tp_var);
-+	}
-+
-+	synchronize_net();
-+}
-+
- /**
-  * batadv_tp_meter_init() - initialize global tp_meter structures
-  */
-diff --git a/net/batman-adv/tp_meter.h b/net/batman-adv/tp_meter.h
-index f0046d366eac6..4e97cd10cd025 100644
---- a/net/batman-adv/tp_meter.h
-+++ b/net/batman-adv/tp_meter.h
-@@ -17,6 +17,7 @@ void batadv_tp_start(struct batadv_priv *bat_priv, const u8 *dst,
- 		     u32 test_length, u32 *cookie);
- void batadv_tp_stop(struct batadv_priv *bat_priv, const u8 *dst,
- 		    u8 return_value);
-+void batadv_tp_stop_all(struct batadv_priv *bat_priv);
- void batadv_tp_meter_recv(struct batadv_priv *bat_priv, struct sk_buff *skb);
- 
- #endif /* _NET_BATMAN_ADV_TP_METER_H_ */
-diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
-index 8fc5fe0e9b053..daa06f4211542 100644
---- a/net/batman-adv/types.h
-+++ b/net/batman-adv/types.h
-@@ -14,6 +14,7 @@
- #include <linux/average.h>
- #include <linux/bitops.h>
- #include <linux/compiler.h>
-+#include <linux/completion.h>
- #include <linux/if.h>
- #include <linux/if_ether.h>
- #include <linux/kref.h>
-@@ -1328,6 +1329,9 @@ struct batadv_tp_vars {
- 	/** @finish_work: work item for the finishing procedure */
- 	struct delayed_work finish_work;
- 
-+	/** @finished: completion signaled when a sender thread exits */
-+	struct completion finished;
-+
- 	/** @test_length: test length in milliseconds */
- 	u32 test_length;
- 
--- 
-2.47.3
+Thanks,
+Stefano
 
