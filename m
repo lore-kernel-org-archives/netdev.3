@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8742536494B;
-	Fri,  8 May 2026 23:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAFB5365A1D
+	for <netdev@vger.kernel.org>; Fri,  8 May 2026 23:51:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778283661; cv=none; b=qYmd4PxB7oQw0+klIVR8rUlOSVrvyF3JcU8aguIL3zcyJyzK/p0YzLvxlD6zUxwRa52fW/f/db+d1tjoAkXvEHSt+GGJIavAgqMWmkP7YwAc9j05wq/ZeyfeAYka6+ICzru1nOIwYj/MWeB3gb7VMLGppiwjyWnUJ3ZQHaVHNV8=
+	t=1778284260; cv=none; b=PiJLfA5xKYLZW9C+5Nlw6Fytjr4V/4i+HJG3URqCmglimLg+Q4PpWed2PE98XUF75NlBvstF/m+kdj8nsPZqSmKshEysMjKQnt339OxThERk9a7izCspOgiK5pJ9URNZ6pz2KFOyzjQwH3ct0ieMCkhAATtFZI8TGQc6+7dX7qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778283661; c=relaxed/simple;
-	bh=Z/8KTR3j+ve+V99wkggaNMSNth3+9ByymkKWAYxhruQ=;
+	s=arc-20240116; t=1778284260; c=relaxed/simple;
+	bh=jI7ggsmfwTWZBeaQARu01YK8qfNkufFgYOFEVZKHRn0=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=YEJFJ4OC7nd44V6QTEbi1DVI1py79YuH/AXPfMlW8+wwzzM7i+0P59IPdLd+GiFjgSpBptPncV+lhayFYFhcuqV/ckPeBFNWPE6umAV+WeBURcWfumoRJBkJt+0/YhJuvJLnk2BFstGAi1oxIOJ7C9v0wRlEq7V/E1x9DT8agXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dvfl50An; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=ooNq+ET8LmrjqqMQtyoIby3o5ibrNWIETJaIHevbvlATxGpuM6Btx8TeClyH7WHdgGALq0OcV2Efqu/SS7xzIQ/8QKj5l5IHp6vZnuYFDJN+i6M4GLgq6o6nEeNjNiRMkM9vXOJ3bIFPE8mEMCCyEVPZaJmhauT2BxNdTn4uSpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QblvcMzS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dvfl50An"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2141FC2BCB0;
-	Fri,  8 May 2026 23:41:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QblvcMzS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A687C2BCC9;
+	Fri,  8 May 2026 23:51:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778283661;
-	bh=Z/8KTR3j+ve+V99wkggaNMSNth3+9ByymkKWAYxhruQ=;
+	s=k20201202; t=1778284260;
+	bh=jI7ggsmfwTWZBeaQARu01YK8qfNkufFgYOFEVZKHRn0=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Dvfl50AnyAJgNyA/he+IRvFoDyWrWecB0Az4Vig0+vX74ZwitTku1NQBbbYhFE9np
-	 CT2+V5WiFQ3zmCsEwj3PuQqJwjNsCETj5T8cC9qU1IEl8jwW0jug5Ba0VxKLwujjjv
-	 2JMagvng++bLEiM8+dYEsZTVY2RUgAFoMhDjx4aYYSSEWJLDBs9SPOwamYje+Iumuz
-	 EMT7bp9ttkoPNU/USVReeu0ksQqGuXdmBnoUQClWpGshv/TzyBbwcr9dndTv2iJbOc
-	 IpI/P/Jsb2YgO0zH6KxpOc4dZgR4BGrHTxV8PfWzRehWz+GgMT5KmrexAdcqUXsrX5
-	 IBpWaL5RN3LVw==
+	b=QblvcMzSjVgUv4EotvmVEQbXenAageFuAgKGG8YJ0we7tPVFI1Ugupof+MSaofjHC
+	 I5pouJBFUbSDkmz9hxPvN7rkb5W5zvFL53fjZwzqPEidRgC3K0qz4kPteC4B4+6N4C
+	 AQshmZdlWAXHyLuxsCwrqibiA9x41JZU4AsbU8UgzZYnHSPSfh6HVXHm61os0PfUkW
+	 9zzYXA+3OoEZccXZSMP8MxZzR2rB0VgUoA1EWOhsaSySdy1FpAAvMoQZvbwFd3MySX
+	 P+1S+xUFqt8fn9fYTFb7qJb3Y5hshLbJpgXtmb70MU6Es9PNE6kQ7nqKL+KYy6o4nm
+	 3VGy+RS/FsBIQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9EA438119DF;
-	Fri,  8 May 2026 23:40:10 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FD1338119E1;
+	Fri,  8 May 2026 23:50:10 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,48 +37,41 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 0/2] Add USB Ethernet controller (LAN7500) node in
- VAR-SOM-OM44 devicetree
+Subject: Re: [PATCH net-next v3 0/2] Keep PHY link during WoL sleep cycle
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177828360953.897985.17310434488861318624.git-patchwork-notify@kernel.org>
-Date: Fri, 08 May 2026 23:40:09 +0000
-References: <20260506-b4-var-som-om44-lan7500-v2-0-b8af59ab877c@bootlin.com>
-In-Reply-To: <20260506-b4-var-som-om44-lan7500-v2-0-b8af59ab877c@bootlin.com>
-To: Thomas Richard <thomas.richard@bootlin.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, aaro.koskinen@iki.fi, andreas@kemnade.info,
- khilman@baylibre.com, rogerq@kernel.org, tony@atomide.com,
- o.rempel@pengutronix.de, thomas.petazzoni@bootlin.com,
- netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org, nb@tipi-net.de
+ <177828420904.900660.8009057314618437924.git-patchwork-notify@kernel.org>
+Date: Fri, 08 May 2026 23:50:09 +0000
+References: <20260506213114.2002886-1-justin.chen@broadcom.com>
+In-Reply-To: <20260506213114.2002886-1-justin.chen@broadcom.com>
+To: Justin Chen <justin.chen@broadcom.com>
+Cc: netdev@vger.kernel.org, bcm-kernel-feedback-list@broadcom.com,
+ pabeni@redhat.com, kuba@kernel.org, edumazet@google.com, davem@davemloft.net,
+ andrew+netdev@lunn.ch, florian.fainelli@broadcom.com
 
 Hello:
 
 This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 06 May 2026 14:13:02 +0200 you wrote:
-> In this second version I added LAN7500 and LAN7505 definitions in
-> microchip,lan95xx.yaml as requested by Krzysztof. I also added Nicolai's RB
-> tag in devicetree patch.
+On Wed,  6 May 2026 14:31:12 -0700 you wrote:
+> First we divide the init/deinit path to allow for a partial init/deinit
+> during a sleep cycle. We also remove some unnecessary small functions at
+> the same time.
 > 
-> Signed-off-by: Thomas Richard <thomas.richard@bootlin.com>
-> ---
-> Changes in v2:
-> - add Nicolai's RB tag in patch 2/2.
-> - add LAN7500 and LAN7505 in microchip,lan95xx.yaml instead of creating a
->   new file.
-> - Link to v1: https://lore.kernel.org/r/20260403-b4-var-som-om44-lan7500-v1-0-0dadde850143@bootlin.com
+> Then we modify the suspend and resume path to allow for a partial bring
+> down and bring up. This allow us to keep the PHY link up and to resume
+> network traffic much quicker. Note we only do this when WoL is enabled
+> since the PHY is already powered. In the non-WoL case we want to follow
+> the same flow.
 > 
 > [...]
 
 Here is the summary with links:
-  - [v2,1/2] dt-bindings: net: microchip: Add LAN7500 and LAN7505 devices
-    https://git.kernel.org/netdev/net-next/c/f3fd582d1705
-  - [v2,2/2] ARM: dts: ti: var-som-om44: Add USB Ethernet controller node
-    (no matching commit)
+  - [net-next,v3,1/2] net: bcmasp: Divide init to allow partial bring up
+    https://git.kernel.org/netdev/net-next/c/e97ffa4e975c
+  - [net-next,v3,2/2] net: bcmasp: Keep phy link during WoL sleep cycle
+    https://git.kernel.org/netdev/net-next/c/e447b677bb26
 
 You are awesome, thank you!
 -- 
