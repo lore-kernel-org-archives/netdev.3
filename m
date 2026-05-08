@@ -1,83 +1,91 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 589753314AC;
-	Fri,  8 May 2026 23:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 507E5363C5B
+	for <netdev@vger.kernel.org>; Fri,  8 May 2026 23:32:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778282535; cv=none; b=NKL+W+hBRbynAjiHNNRIJa+hKyiWXX36mtc55Qu6WIuJWaUeaTwHTXOnwf89bueBQr1QNgCGxYOYQVnhEmN1Tzo5uPGfkBEuC7TxWydZAe8o2bU8/aJf9Za3/bgit+e6GFvfLeW4o6cCxR6Gb6dOr/4UsTnefn5mhY+JgzORMOw=
+	t=1778283161; cv=none; b=L+RPfcNmNXPqP8KOkobCneJTle2tJpIS8b4KrKUVzEEvuyI1m306sWWr9ace6zq9IlJOlNQY+53odmcdQ4CXnd8cnz8g5TUuOCpGI78Yd1HcDs9dTpXcfuk2DR8KepGLuKe7CTrSEATy+3+dC1r0SWeuNCCY7YAl+79g6x/VLh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778282535; c=relaxed/simple;
-	bh=2AevTr3shap19RUwMMlENTSD4YYHTePzbIvM0R5o1lo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dCiDY0JiYI0unbWFx15mS6GTnMXm6nor8iuEG6FgPEOFAwWz8lpjatFLdUVq5+us727D+fv0A1OJvAHhQH4Zv18qn8+Ai5pIXrpuoa8qci+2FhvAAs7JRLf7u95Jfjhjq+cgWdreWQjQQh6Bu95uqzDLSd69v9eO5GKh06n4MNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U006x1Qi; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778283161; c=relaxed/simple;
+	bh=0I+fkCToHqIr2+f+LzKA2vRDbcF4Rd9EbtdBi7pBXfU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TOa6G9L6vrpVhseWPRUnKiiaY+YMYuAoJhDwa5KNQiXKrLIbk6g5seS6tEiGiBCHHJBchrCDsDfYttxY4RlT+yjt7yZFKJ8dvhiCw3i2YEXhISvyhyggT3fqM+RIhMNJ51pahgqiyjFcyvnb6LtrOBx4+730IHpWpgP6WwQyHlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dZmKyuEl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U006x1Qi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DAAAC2BCB0;
-	Fri,  8 May 2026 23:22:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dZmKyuEl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0146C2BCB4
+	for <netdev@vger.kernel.org>; Fri,  8 May 2026 23:32:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778282535;
-	bh=2AevTr3shap19RUwMMlENTSD4YYHTePzbIvM0R5o1lo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=U006x1Qi5eQV8i9yrksMub0wobOaVX5RjUJq+keDQ64c+l16x5WSvWiE4KFcC/+vJ
-	 roHBlJI3OkPAJJA39d2ejeHLi0IISw5fbcqZccAwDh7PRzjRDwWyeENAZvGeaMsclr
-	 RPDbwOtvr6Wv2cyXplNKOlJw1UdcYSp88opgx/WQ+rpBrJ9uJSiXthYLwMtnqzR3RU
-	 OCBYCis4bgVvbE1Pufq5fptFH6tEj1GmoT2/x/dMCB0lwB94aDGGR/mwMnWbWO0Ddb
-	 vKU6yPeBieS4Y1flyyZjEQ8dztxlSJwdSabxUL/iJqKYO6aic98zhe8C4Kdb7VGmsM
-	 J/SLZDHVmTz6w==
-Date: Fri, 8 May 2026 16:22:13 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Daniel Machon <daniel.machon@microchip.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Steen Hegelund <Steen.Hegelund@microchip.com>,
- <UNGLinuxDriver@microchip.com>, Sebastian Andrzej Siewior
- <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, "Steven
- Rostedt" <rostedt@goodmis.org>, Bjarni Jonasson
- <bjarni.jonasson@microchip.com>, Lars Povlsen <lars.povlsen@microchip.com>,
- Philipp Zabel <p.zabel@pengutronix.de>, <kees@kernel.org>,
- <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
- <linux-arm-kernel@lists.infradead.org>, <linux-rt-devel@lists.linux.dev>
-Subject: Re: [PATCH net v2 1/4] net: sparx5: defer VCAP debugfs creation
- until after netdev registration
-Message-ID: <20260508162213.6b755d8c@kernel.org>
-In-Reply-To: <20260507184714.joyobsh6ydjzrkc4@DEN-DL-M70577.microsemi.net>
-References: <20260506-misc-fixes-sparx5-lan969x-v2-0-fb236aa96908@microchip.com>
-	<20260506-misc-fixes-sparx5-lan969x-v2-1-fb236aa96908@microchip.com>
-	<20260507090810.53e66ef6@kernel.org>
-	<20260507184714.joyobsh6ydjzrkc4@DEN-DL-M70577.microsemi.net>
+	s=k20201202; t=1778283160;
+	bh=0I+fkCToHqIr2+f+LzKA2vRDbcF4Rd9EbtdBi7pBXfU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=dZmKyuElmGuyA/3oDvQmz9EgAMkjUutPOWdSs/N00pzwJNud4fB5ObIY58lGJq1u6
+	 5gM8YdFGpZx0646Zuk6CqiAZUyZruUWM03a6njDnKP7UyyppVoyXTbnXbvQsreEqJP
+	 Ykw5xyHeaTZMKtsOCLYqU1rjKag8p2M6rWP19k65IuFUZDdu9GUonIuKkQk8YmqX5U
+	 lyz3horAL8j+TJB1YOffh8A3Lz67PBZ8P9h5aKoknJCK5RzZke+cUv1kqn5ea75m+X
+	 dnRziY2c64d01qaQKCWItXTyGsnwI0dh4ws4yHqB3h20ZvxhaXr4YDC0kxx6tEJjXw
+	 RMSUtLSxDbtrQ==
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-8b6c9fdb68cso22387116d6.2
+        for <netdev@vger.kernel.org>; Fri, 08 May 2026 16:32:40 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+N3cp4vHYUIq5S8bNq+xNomVW9OShu1LddLd3bLnWij8B4UZ1uSEoSdt+66Qm3mAgT7UMSua0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUOfdhBhA/maNtJMPLAbIMKuo50H00cxLUwg6CbxIOlNE+8TlY
+	R2eEsRDzwt0osbYq6QfE8BHX+rn2OVVLMmbSGTwPDv4ZRTwSNfkhoz05EF8P8bIRbu2i8YiEmRo
+	psrEQ/om6bNyhWxNKHLvIKBHvOXTvOUA=
+X-Received: by 2002:a05:6214:458a:b0:8ac:7e8d:8599 with SMTP id
+ 6a1803df08f44-8bc43338135mr216982416d6.20.1778283160040; Fri, 08 May 2026
+ 16:32:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20250108010728.207536-1-houtao@huaweicloud.com>
+ <20250108010728.207536-2-houtao@huaweicloud.com> <CAPhsuW6hMX9LqnD-0tc=t+TDUFA7j8WUgNEshnYtUwwCDX-J5w@mail.gmail.com>
+In-Reply-To: <CAPhsuW6hMX9LqnD-0tc=t+TDUFA7j8WUgNEshnYtUwwCDX-J5w@mail.gmail.com>
+From: Song Liu <song@kernel.org>
+Date: Sat, 9 May 2026 01:32:28 +0200
+X-Gmail-Original-Message-ID: <CAPhsuW7YYRD-AbJvhFEMyEGgui6Hxoasuhp7Bm1OdxP0iLNgFw@mail.gmail.com>
+X-Gm-Features: AVHnY4IYVrKN3_F6Ka1qodmDkhDqpOTHVwYgQvENWBogWoZ-8iNupslAgfu9_Sw
+Message-ID: <CAPhsuW7YYRD-AbJvhFEMyEGgui6Hxoasuhp7Bm1OdxP0iLNgFw@mail.gmail.com>
+Subject: Re: [PATCH bpf-next v2 01/16] bpf: Remove migrate_{disable|enable}
+ from LPM trie
+To: Hou Tao <houtao@huaweicloud.com>
+Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Alexei Starovoitov <alexei.starovoitov@gmail.com>, 
+	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, Hao Luo <haoluo@google.com>, 
+	Yonghong Song <yonghong.song@linux.dev>, Daniel Borkmann <daniel@iogearbox.net>, 
+	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Jiri Olsa <jolsa@kernel.org>, 
+	John Fastabend <john.fastabend@gmail.com>, houtao1@huawei.com, xukuohai@huawei.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 7 May 2026 20:47:14 +0200 Daniel Machon wrote:
-> > On Wed, 6 May 2026 09:25:36 +0200 Daniel Machon wrote:  
-> > > Move the debugfs setup into a new sparx5_debugfs() helper in
-> > > sparx5_debugfs.c, invoked after sparx5_register_notifier_blocks()
-> > > succeeds so the netdev names are finalized. sparx5_vcap_init() now
-> > > only deals with VCAP state. The sparx5/ debugfs root is created in
-> > > the new helper as well.  
-> > 
-> > netdev names are never final :( User can change them at any time.
-> > The best practice is to name the debugfs file by some stable hw-related
-> > property, bus, port number etc.  
-> 
-> Right, but they are finalized in the sense that we have a name we can use for the
-> debugfs files (which we dont pre-patch).
-> 
-> Hmm. I think this patch fixes an actual issue, where you cannot query the
-> debugfs files, because a previous patch broke the ordering. I agree that the
-> names chosen (netdev_name()) for the files were poor, but is that really a fix
-> for this series? Should that not be adressed in a future patch for net-next (it
-> involves changing an VCAP API function that is not only used by Sparx5/lan969x,
-> but also lan966x.).
+On Fri, May 8, 2026 at 2:33=E2=80=AFPM Song Liu <song@kernel.org> wrote:
+>
+> On Tue, Jan 7, 2025 at 4:55=E2=80=AFPM Hou Tao <houtao@huaweicloud.com> w=
+rote:
+> >
+> > From: Hou Tao <houtao1@huawei.com>
+> >
+> > Both bpf program and bpf syscall may invoke ->update or ->delete
+> > operation for LPM trie. For bpf program, its running context has alread=
+y
+> > disabled migration explicitly through (migrate_disable()) or implicitly
+> > through (preempt_disable() or disable irq). For bpf syscall, the
+> > migration is disabled through the use of bpf_disable_instrumentation()
+> > before invoking the corresponding map operation callback.
+> >
+> > Therefore, it is safe to remove the migrate_{disable|enable){} pair fro=
+m
+> > LPM trie.
+>
+> We got some ENOMEM from bpf_map_update_batch() on LPM_TRIE.
+> I suspect, this is the trigger, as we are missing
+> bpf_disable_instrumentation() in bpf_map_do_batch(). IOW, I think we
+> need something like the following.
 
-Dunno, if we are aiming to switch to a different naming scheme we can
-just do it now, I reckon. It will not make the fix much longer.
-And presumably it will alleviate the need to reshuffle the ordering.
+Please ignore this... I misread the code.
+
+Sorry for the noise.
+Song
