@@ -1,244 +1,217 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f99.google.com (mail-pj1-f99.google.com [209.85.216.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 476A82C0303;
-	Fri,  8 May 2026 04:07:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EB42AD24
+	for <netdev@vger.kernel.org>; Fri,  8 May 2026 04:09:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778213269; cv=none; b=eh+Ib0wKDYcVi2fBurnK6DLkTTNVIl0QsNBo7xgYGlEgtBRzfz1sR5tb8dWmaEisVpcpiWUPHI2ii8cuJwdqVCKMBSlbV6ESnF6LqJwmETsEHJ2pv51FwxL0DWDCd1BfsteDy+CMnzH3+4tmgkMa7RJJc0apKZ90X0p9RSSPSXQ=
+	t=1778213353; cv=none; b=dOpxqHI+MqIHl4tZ0gKITCb4s4tqyoYUjIcL4bxeaZlVPOJa+0/Iwr6MEeCV8kmtLx9dgF8VxS7UPZbZP5tvkZdFrDDIbQv+6pRbWqmv+wYlyZAmEs4RkVlMYMAa5QNORd1RmZd/ALoeTDm6ndY8r1C4bQFmrZ9XJZ+eYAHZ6rM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778213269; c=relaxed/simple;
-	bh=Q4znTjMiJFyAYrK6NXvXEhhDqPwMgkZ63u8A5BbH1N4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=FlgyZbWvBjJd+2LHq/9PXaOOK/t105iPa+vPiM9rZop814rlkK5OxoSAfqWI0PVkv7qnoypMznuhhLsiNr9sBPgzkMk/ebaWAAZ8jkcSQTBv4pUG5sgrQpQlStOxVXcPoP9m6yuqISRJJfX16DHCgwNchqABkGUhZONceyrPopU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=Ua0S++r0; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1778213353; c=relaxed/simple;
+	bh=ABi7TzWHSPiGGZneQ7YN1dKrCIIFNNWLxcvz3iWhlis=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CWTynZ582yRyNuVwfsj1L6JjGZbCVqE9lU2c8HHzMPKrtvV85NJpbUMsXYoxn5RreaBMqd+zaJd6IYRrH+WC8IJ5sfTGydE2SlsUvgQr+QhlsDH/99AKKtf6zLAe5e+QpdeBdwQ1kgq0s2Eg9Lur7iGw9txI+5ftly86OxAHxAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=fFvU5/K7; arc=none smtp.client-ip=209.85.216.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="Ua0S++r0"
-Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 647NVKu02841680;
-	Thu, 7 May 2026 20:49:30 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=uLHzQyOPEJEJGkFH5l7eU5x
-	ubxmYqwO7MmVfMNTLNB4=; b=Ua0S++r0z8AicZemFOkhatok6BTIgGAzvWmBC/O
-	4/OgIAlOKfGewnxyFd6OARXp2nnBuse44bfnDS2rP/QouO34gALJA2fN+5nHgBtq
-	PVvAL8mdSbT4aX8L49a6auT/oGFeUfF27ztmq7Sbp4jZvRViClKcys/UCG4ZqR8p
-	9nyoCNpX/pVNC2rbA6HrSw22dC05JJZb2KdDLP3RLxakKAjWbdutvgVIywzhh6BX
-	FZ4LP+ZewXcqhCZV5u4QoN9EGwX8PV3B/V+dnt7F1kTNDTUi5ilNG7ibTBeK8uEH
-	3hA+WwV062FlrdieqEDpU6yyJW29ukHmRdchR0MOD6Lr7hA==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4e14g0gjd3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 May 2026 20:49:30 -0700 (PDT)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Thu, 7 May 2026 20:49:29 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Thu, 7 May 2026 20:49:29 -0700
-Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with ESMTP id 840263F7041;
-	Thu,  7 May 2026 20:49:18 -0700 (PDT)
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: <intel-wired-lan@lists.osuosl.org>, <linux-kernel@vger.kernel.org>,
-        <linux-rdma@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <oss-drivers@corigine.com>
-CC: <akiyano@amazon.com>, <andrew+netdev@lunn.ch>,
-        <anthony.l.nguyen@intel.com>, <arkadiusz.kubalewski@intel.com>,
-        <brett.creeley@amd.com>, <darinzon@amazon.com>, <davem@davemloft.net>,
-        <donald.hunter@gmail.com>, <edumazet@google.com>, <horms@kernel.org>,
-        <idosch@nvidia.com>, <ivecera@redhat.com>, <jiri@resnulli.us>,
-        <kuba@kernel.org>, <leon@kernel.org>, <mbloch@nvidia.com>,
-        <michael.chan@broadcom.com>, <pabeni@redhat.com>,
-        <pavan.chebbi@broadcom.com>, <petrm@nvidia.com>,
-        <Prathosh.Satish@microchip.com>, <przemyslaw.kitszel@intel.com>,
-        <saeedm@nvidia.com>, <sgoutham@marvell.com>, <tariqt@nvidia.com>,
-        <vadim.fedorenko@linux.dev>, Ratheesh Kannoth <rkannoth@marvell.com>
-Subject: [PATCH v12 net-next 0/9] octeontx2-af: npc: Enhancements.
-Date: Fri, 8 May 2026 09:19:03 +0530
-Message-ID: <20260508034912.4082520-1-rkannoth@marvell.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="fFvU5/K7"
+Received: by mail-pj1-f99.google.com with SMTP id 98e67ed59e1d1-36505450d0dso1700367a91.1
+        for <netdev@vger.kernel.org>; Thu, 07 May 2026 21:09:12 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778213352; x=1778818152;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zobcmcqsqtmnfO6sLkvaVmCSAQQjNSdqWSSkkomlmF4=;
+        b=X1CbZ+aa0AnaVzA29kq+S9pQKSoU3tZpNhNr5mqLZn4GsBCNKmEYqezKFc+1Kj0DxK
+         l6CW68VO9gWs/zZJtRxFS3JCYJrKHu7kgr+Rm2nw3F1s5t9TeTL9J1TOuUWfXna0bgJG
+         wrwv58kPFktPRLGt+giENoVsl/QgZ33bGpok4PiMBijI9izX+WIfe+gHiV+XIat7dhjk
+         90ojPQ3T2EYvINzjlek/m9tlN2zAPGlyasBC3bcIF3kMq4GVaXc+6A75KuqLqIiS6atS
+         9MDEwo/PU3TqYoZ3OwanUxGzBtbgJglKYbWcz0e5aCrZMenTDRpvbEwyzYF9QqQxiwW+
+         Zijw==
+X-Forwarded-Encrypted: i=1; AFNElJ9SNlZ9maQWzjb5wZjjqbbcoTRH+kO6wNkb8zPMKAeC7A9WfYfN99B7u/cYbcb9KthzTdUGgRw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz/qEDsYJs+T47j/SSU9k3GAROHnZiRVk5hjTyOP+3t5HBk+PEM
+	TISrUxm7EpI7LX2gJqalNxebZxchx06+qvuj89nTNh2WWuggjj7dKhEFOvKTsix8TbQ2ttEeCwt
+	26zCe/P4wDyS1wb5DF07ks3Tr25Dys4yUDfR++72QPFNlR8lmHfKZ3Z019Fa+cEY5+tKebXBM6L
+	zoJorMIBflItjWvNp3kwxNr8KngIdtRq2w++fdD4ZsYRnCmCumEBUaDimHINcHSOC5fqTZhkOl4
+	N0dB/fBxwmL+g==
+X-Gm-Gg: Acq92OFu9cIbbm+AoLlRUsgqJE8seBIeOcrTEksJH0J5d9dEUZOZAL+G2hC97z8Io7/
+	ecFBu2Ne2JF83kwyclx+uRTHdyHyemdxp7wDvQXRR5e0J+BNXpx2+DEvmxZ8KvnFlVwURdbNTC7
+	mPNuTXN8m8zcJfiTK+HjoVeLNMBwFeshKDR4AF/v6lRuh4L/vhjcOgrIRkJZPRKuvbJc6UHMrCf
+	C0ztWl4CNUBsUoVo3IH37gRQmViFJ1BlF4XIsLdFUM18y5z3gm4A281E3T0bnCKB0Q5ETIHFt+F
+	3xNhOruA48jcSi+oKV+zDBWE5k0fQYfFwTEKLKVd3aa0LEBpJ/wuJtYiO3EtuXSeVDChIKKSPK/
+	rKI3lim4S/UxRdSj3LKGrfjbvFBTvOY0nc23EHbX9eyYFuGpWb4AVpEXy6YtwbhnoiCSzsl5f/3
+	Ujv8dS
+X-Received: by 2002:a17:90b:4a4c:b0:366:41ba:5486 with SMTP id 98e67ed59e1d1-36641ba5661mr2642166a91.23.1778213351559;
+        Thu, 07 May 2026 21:09:11 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com ([144.49.247.127])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3664daf40f3sm46843a91.4.2026.05.07.21.09.11
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 07 May 2026 21:09:11 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-82fa7c6699fso2041484b3a.1
+        for <netdev@vger.kernel.org>; Thu, 07 May 2026 21:09:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1778213349; x=1778818149; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=zobcmcqsqtmnfO6sLkvaVmCSAQQjNSdqWSSkkomlmF4=;
+        b=fFvU5/K7QMoLbwkCjCVO59IWXd7NM6TtPP/czNysYEyrpLN13CFO48ehApkyaYeMKE
+         CRgmmBRIFHsNhgQvMkvIqbOiQfPU1KXhjWv/1SuisXEHz5TwzXad6IoLmP8r2ZmdLGZx
+         19L4I6BfOrF1smT8uA/pcMMnzKWW07++YEMYs=
+X-Forwarded-Encrypted: i=1; AFNElJ8Yhnw1k/VoFw7lmdEraa4Ijr3ylXCj0SDRmQGVMuKLvbovD4f0YyU7UUW+kLY1YTO5q3QkOmY=@vger.kernel.org
+X-Received: by 2002:a05:6a00:198c:b0:829:9a7b:db84 with SMTP id d2e1a72fcca58-83a5ea44134mr10598555b3a.49.1778213349710;
+        Thu, 07 May 2026 21:09:09 -0700 (PDT)
+X-Received: by 2002:a05:6a00:198c:b0:829:9a7b:db84 with SMTP id
+ d2e1a72fcca58-83a5ea44134mr10598520b3a.49.1778213349261; Thu, 07 May 2026
+ 21:09:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: 5XpSRK9UP1TGNbEpxu0D60bRyAkmyrqH
-X-Authority-Analysis: v=2.4 cv=bMUm5v+Z c=1 sm=1 tr=0 ts=69fd5d4a cx=c_pps
- a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
- a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=qit2iCtTFQkLgVSMPQTB:22 a=VwQbUJbxAAAA:8 a=M5GUcnROAAAA:8
- a=1rdZWFfAsYpIarNArpIA:9 a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA4MDAzMyBTYWx0ZWRfX0obWHJ2emugt
- AVXQQfpG3hallSw2k2v/eUGF6kBD7WYzN8Lr4L6Irl7LfI/sE30VAU2mICRbFYQR7BNYdMInfng
- HU4AbGcGedhuppQHjgYeoRMUpC5IRxbKDcLkUwcmpPuIW2gvw3wDA6CJkVXSnRTqhAPhyP1BvGy
- f0p+ntvnehab0AmLR2sJt9BFcKZuOjq1PLX/kkfBxSdGj6+rEYNUfuy2mBGW308fSIfp/Q8h/ns
- JFoTihTjxTz37k8oKBK+s9Vj8HLz5FoV5Ck/4JfXbgMMgQCRqRakq4F/861JoxE2/3J9iKSlcdG
- poos7BYGByATjXTeOkYwipaVT3Rld2Zkv0uhYF5n6Sg3dQP2e+uPZCIrlyxo0ZC8fKUn7TrekRB
- GJHwmn348ljWKp8DFmNtXIIctRGib6SZH8ZRJvhmd3I5MTeA7vYAmSYVg6tGlrsGchYx/m/GUep
- saBw3cCgXm4Gw1rKKuQ==
-X-Proofpoint-GUID: 5XpSRK9UP1TGNbEpxu0D60bRyAkmyrqH
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-07_02,2026-05-06_01,2025-10-01_01
+References: <39de1b025928d9a457976010b2324e7e99baa92a.1778158755.git.lukas@wunner.de>
+In-Reply-To: <39de1b025928d9a457976010b2324e7e99baa92a.1778158755.git.lukas@wunner.de>
+From: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Date: Fri, 8 May 2026 09:38:57 +0530
+X-Gm-Features: AVHnY4K3_Q01w7S0gHU8JeC5hcgt1W8WvNKASH3SpjVnhIacW9h5WQGBybVH9n8
+Message-ID: <CALs4sv24tQZxo7-cK+vGynNH1R7Yxv2i91kOarsf5NL--bYVyA@mail.gmail.com>
+Subject: Re: [PATCH net-next] bnxt_en: Drop pci_save_state() after pci_restore_state()
+To: Lukas Wunner <lukas@wunner.de>
+Cc: Michael Chan <michael.chan@broadcom.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Vasundhara Volam <vasundhara-v.volam@broadcom.com>, netdev@vger.kernel.org
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="0000000000000f27be0651468fd6"
 
-This series extends Marvell octeontx2-af support for CN20K NPC (MCAM
-debuggability, allocation policy, default-rule lifetime, optional KPU
-profiles from firmware files, X2/X4 MCAM keyword handling in flows and
-defaults, and dynamic CN20K NPC private state), adds a devlink mechanism
-for multi-value parameters, and adjusts devlink param netlink helpers
-and mlx5 so stack usage stays within -Wframe-larger-than limits once union
-devlink_param_value grows.
+--0000000000000f27be0651468fd6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Patch 1 improves CN20K MCAM visibility in debugfs: mcam_layout marks
-enabled entries, dstats reports per-entry hit deltas, and mismatch lists
-enabled entries without a PF mapping. MCAM enable state is tracked in a
-bitmap updated from the CN20K enable path.
+On Thu, May 7, 2026 at 6:34=E2=80=AFPM Lukas Wunner <lukas@wunner.de> wrote=
+:
+>
+> Commit 383d89699c50 ("treewide: Drop pci_save_state() after
+> pci_restore_state()") sought to purge all superfluous invocations of
+> pci_save_state() from the tree.
+>
+> Unfortunately the commit missed one invocation in the Broadcom
+> NetXtreme-C/E driver.  Drop it.
+>
+> Signed-off-by: Lukas Wunner <lukas@wunner.de>
+> ---
+>  drivers/net/ethernet/broadcom/bnxt/bnxt.c | 1 -
+>  1 file changed, 1 deletion(-)
+>
 
-Patch 2 reduces stack usage in mlx5e_pcie_cong_get_thresh_config() by
-reusing a single union devlink_param_value and a local result struct
-instead of holding a large array of unions on the stack, so the helper
-stays under the frame-size warning limit as the union grows (patches 3-4).
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
 
-Patch 3 changes devlink_nl_param_value_put() and
-devlink_nl_param_value_fill_one() to pass union devlink_param_value by
-pointer instead of by value. Passing two copies of the union by value in
-the param netlink path consumes over 500 bytes of argument stack and risks
-CONFIG_FRAME_WARN as the union grows beyond its historical size (patch 4).
+--0000000000000f27be0651468fd6
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
-Patch 4 (Saeed) introduces DEVLINK_PARAM_TYPE_U64_ARRAY and nested
-DEVLINK_ATTR_PARAM_VALUE_DATA attributes so drivers and user space can
-exchange bounded u64 arrays; YAML, uapi, and netlink validation are
-updated.
-
-Patch 5 adds a runtime devlink parameter srch_order to reorder CN20K
-subbank search during MCAM allocation.
-
-Patch 6 ties default MCAM entries to NIX LF alloc/free on CN20K, adds
-NIX_LF_DONT_FREE_DFT_IDXS for PF teardown paths that must not drop default
-NPC indexes while the driver still owns state, and tightens nix_lf_alloc
-error propagation.
-
-Patch 7 allows loading a custom KPU profile from /lib/firmware/kpu via
-module parameter kpu_profile, with cam2 / ptype_mask wiring and helpers
-that share firmware-sourced vs filesystem-sourced profile layouts.
-
-Patch 8 makes default-rule allocation, AF flow install, and PF-side RSS,
-defaults, and ethtool flows respect the active CN20K MCAM keyword width
-(X2 vs X4), including X4 reference-index masking and -EOPNOTSUPP when a
-flow needs X4 keys on an X2-only profile.
-
-Patch 9 replaces file-scope npc_priv and static dstats with allocation
-sized from discovered bank/subbank geometry, threads npc_priv_get()
-through CN20K NPC paths, and allocates dstats via devm_kzalloc for the
-debugfs helper.
-
-The mlx5 change sits immediately before the devlink patches so the series
-applies cleanly and stays warning-free when built incrementally;
-pass-by-pointer precedes the U64 array type so helpers are not copying an
-even larger union by value. The CN20K patches keep srch_order ahead of
-NIX LF coordination, KPU-from-filesystem, X2/X4 handling, and the npc_priv
-refactor that touches the same files heavily.
-
-Ratheesh Kannoth (8):
-  octeontx2-af: npc: cn20k: debugfs enhancements
-  net/mlx5e: trim stack use in PCIe congestion threshold helper
-  devlink: pass param values by pointer
-  octeontx2-af: npc: cn20k: add subbank search order control
-  octeontx2: cn20k: Coordinate default rules with NIX LF lifecycle
-  octeontx2-af: npc: Support for custom KPU profile from filesystem
-  octeontx2: cn20k: Respect NPC MCAM X2/X4 profile in flows and DFT
-    alloc
-  octeontx2-af: npc: cn20k: Allocate npc_priv and dstats dynamically.
-
-Saeed Mahameed (1):
-  devlink: Implement devlink param multi attribute nested data values
-
- Documentation/netlink/specs/devlink.yaml          |   4 +
- drivers/dpll/zl3073x/devlink.c                    |   6 ++-
- drivers/net/ethernet/amazon/ena/ena_devlink.c     |   8 ++-
- drivers/net/ethernet/amd/pds_core/core.h          |   2 ++-
- drivers/net/ethernet/amd/pds_core/devlink.c       |   2 ++-
- drivers/net/ethernet/broadcom/bnxt/bnxt_devlink.c |   6 ++-
- drivers/net/ethernet/intel/ice/devlink/devlink.c  |  30 ++-
- .../ethernet/marvell/octeontx2/af/cn20k/debugfs.c | 175 ++++-
- .../net/ethernet/marvell/octeontx2/af/cn20k/npc.c | 545 ++++++++-----
- .../net/ethernet/marvell/octeontx2/af/cn20k/npc.h |  13 +++-
- drivers/net/ethernet/marvell/octeontx2/af/mbox.h  |   1 +
- drivers/net/ethernet/marvell/octeontx2/af/npc.h   |  17 +
- drivers/net/ethernet/marvell/octeontx2/af/rvu.h   |  12 ++-
- ...et/ethernet/marvell/octeontx2/af/rvu_devlink.c | 114 ++-
- ...rs/net/ethernet/marvell/octeontx2/af/rvu_nix.c |  69 ++-
- ...rs/net/ethernet/marvell/octeontx2/af/rvu_npc.c | 478 +++++++++--
- ...rs/net/ethernet/marvell/octeontx2/af/rvu_npc.h |  17 +
- ...net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c |  12 +++-
- ...rs/net/ethernet/marvell/octeontx2/af/rvu_reg.h |   1 +
- .../ethernet/marvell/octeontx2/nic/otx2_devlink.c |   4 ++-
- ...et/ethernet/marvell/octeontx2/nic/otx2_flows.c |  48 ++-
- ...s/net/ethernet/marvell/octeontx2/nic/otx2_pf.c |   6 +--
- drivers/net/ethernet/mellanox/mlx4/main.c         |  14 ++-
- drivers/net/ethernet/mellanox/mlx5/core/devlink.c |  72 ++-
- ...hernet/mellanox/mlx5/core/en/pcie_cong_event.c |  36 ++-
- ...ethernet/mellanox/mlx5/core/eswitch_offloads.c |   2 ++-
- drivers/net/ethernet/mellanox/mlx5/core/fs_core.c |   4 ++-
- ...net/ethernet/mellanox/mlx5/core/lib/nv_param.c |  12 ++-
- drivers/net/ethernet/mellanox/mlxsw/core.c        |   8 ++-
- ...ers/net/ethernet/netronome/nfp/devlink_param.c |   6 ++-
- drivers/net/netdevsim/dev.c                       |   4 ++-
- include/net/devlink.h                             |  12 ++-
- include/uapi/linux/devlink.h                      |   1 +
- net/devlink/netlink_gen.c                         |   2 +
- net/devlink/param.c                               | 120 ++-
-
- 35 files changed, 1315 insertions(+), 548 deletions(-)
-
---
-
-v11 -> v12: Addressed Paolo,Jiri comments.
-	https://lore.kernel.org/netdev/20260409025055.1664053-1-rkannoth@marvell.com/
-	Added one patch which was rejected by simon in net (as it was kind of enhancement rather than a bug)
-	Added one more patch- which allocates two variables from heap.
-
-v10 -> v11: Addressed Paolo comments.
-	https://lore.kernel.org/netdev/20260403025533.6250-1-rkannoth@marvell.com/
-
-v9 -> v10: Addressed Paolo comments
-	https://lore.kernel.org/netdev/
-	20260330053105.2722453-1-rkannoth@marvell.com/
-
-v8 -> v9: Addressed Simon comments
-	https://lore.kernel.org/netdev/
-	20260325072159.1126964-1-rkannoth@marvell.com/
-
-v7 -> v8: Addressed Simon comments
-	https://lore.kernel.org/netdev/
-	20260323035110.3908741-1-rkannoth@marvell.com/T/#t
-
-v6 -> v7: Addressed Simon comments
-	https://lore.kernel.org/netdev/20260320165432.98832-1-horms@kernel.org/
-
-v5 -> v6: Addressed Jakub,Jiri comments
-	https://lore.kernel.org/netdev/
-	20260317045623.250187-1-rkannoth@marvell.com/
-
-v4 -> v5: Addressed Jakub comments
-	https://lore.kernel.org/netdev/
-	20260312022754.2029595-6-rkannoth@marvell.com/
-
-v3 -> v4: Addressed Simon comments
-	https://lore.kernel.org/netdev/abDeXLpMMxp7G1v3@rkannoth-OptiPlex-7090/#t
-
-v2 -> v3: Addressed Simon comments.
-	https://lore.kernel.org/netdev/
-	20260304043032.3661647-1-rkannoth@marvell.com/
-
-v1 -> v2: Addressed Jakub comments.
-	https://lore.kernel.org/netdev/
-	20260302085803.2449828-1-rkannoth@marvell.com/#t
-
-2.43.0
+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
+/HTPxpDrr4vzZL0yoc9XefyCbdiwfyFl99oBekp+1ZxXc5bZsVhRPVyEWFtCys66nqu5cU2GPT3a
+ySQEHOtIKyGGgzMVvitOzO2suQkoMvu/swsftfgCY/PObdlBZhv0BD97+WwR6CQJh/YEuDDEHYCy
+NDeiVtF3/jwT04bHB7lR9n+AiCSLr9wlgBHGdBFIOmT/XMX3K8fuMMGLq9PpGQEMvYa9QTkE9+zc
+MddiNNh1xtCTG0+kC7KIttdXTnffisXKsX44B8ECAwEAAaOCAd0wggHZMA4GA1UdDwEB/wQEAwIF
+oDAMBgNVHRMBAf8EAjAAMIGTBggrBgEFBQcBAQSBhjCBgzBGBggrBgEFBQcwAoY6aHR0cDovL3Nl
+Y3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyNnNtaW1lY2EyMDIzLmNydDA5BggrBgEF
+BQcwAYYtaHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyNnNtaW1lY2EyMDIzMGUGA1Ud
+IAReMFwwCQYHZ4EMAQUDAzALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgoDAjA0MDIGCCsGAQUFBwIB
+FiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzBBBgNVHR8EOjA4MDagNKAy
+hjBodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMy5jcmwwJAYDVR0R
+BB0wG4EZcGF2YW4uY2hlYmJpQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
+HSMEGDAWgBQAKTaeXHq6D68tUC3boCOFGLCgkjAdBgNVHQ4EFgQUxJ6fps/yOGneJRYDWUKPuLPk
+miYwDQYJKoZIhvcNAQELBQADggIBAI2j2qBMKYV8SLK1ysjOOS54Lpm3geezjBYrWor/BAKGP7kT
+QN61VWg3QlZqiX21KLNeBWzJH7r+zWiS8ykHApTnBlTjfNGF8ihZz7GkpBTa3xDW5rT/oLfyVQ5k
+Wr2OZ268FfZPyAgHYnrfhmojupPS4c7bT9fQyep3P0sAm6TQxmhLDh/HcsloIn7w1QywGRyesbRw
+CFkRbTnhhTS9Tz3pYs5kHbphHY5oF3HNdKgFPrfpF9ei6dL4LlwvQgNlRB6PhdUBL80CJ0UlY2Oz
+jIAKPusiSluFH+NvwqsI8VuId34ug+B5VOM2dWXR/jY0as0Va5Fpjpn1G+jG2pzr1FQu2OHR5GAh
+6Uw50Yh3H77mYK67fCzQVcHrl0qdOLSZVsz/T3qjRGjAZlIDyFRjewxLNunJl/TGtu1jk1ij7Uzh
+PtF4nfZaVnWJowp/gE+Hr21BXA1nj+wBINHA0eufDHd/Y0/MLK+++i3gPTermGBIfadXUj8NGCGe
+eIj4fd2b29HwMCvfX78QR4JQM9dkDoD1ZFClV17bxRPtxhwEU8DzzcGlLfKJhj8IxkLoww9hqNul
+Md+LwA5kUTLPBBl9irP7Rn3jfftdK1MgrNyomyZUZSI1pisbv0Zn/ru3KD3QZLE17esvHAqCfXAZ
+a2vE+o+ZbomB5XkihtQpb/DYrfjAMYICVzCCAlMCAQEwYjBSMQswCQYDVQQGEwJCRTEZMBcGA1UE
+ChMQR2xvYmFsU2lnbiBudi1zYTEoMCYGA1UEAxMfR2xvYmFsU2lnbiBHQ0MgUjYgU01JTUUgQ0Eg
+MjAyMwIMClwVCDIzIfrgd31IMA0GCWCGSAFlAwQCAQUAoIHHMC8GCSqGSIb3DQEJBDEiBCBVrX0C
+vZAIACL/OCDbUgI4cioRQ2/lvKXiqteOAEfmUTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwG
+CSqGSIb3DQEJBTEPFw0yNjA1MDgwNDA5MDlaMFwGCSqGSIb3DQEJDzFPME0wCwYJYIZIAWUDBAEq
+MAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEHMAsGCWCG
+SAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQCJHa16oCcCgwcdbDKrcZ/Qt/ZI6T5K0OY0u5noVPaf
+sbPDXwzCEUSCZj0vVxiBxrGqWl/Igi7veqPnuXykO2FT40QZp5Pp5UTiL2B4hH+CKI6T2gFVM2ng
+7AP2W0nmIACGif97LHyUWTr6mQ2RvilYAD09yKK3vr+g2UK6tRpPkXJqv8mB9fM9sFVIQ5hl91Z0
+B4OLIjpeKeSXKqyJ7nGcgnRWT6JNR0adfzWe04UQVjYrexooFS81eEHlWKfqukOrH2Y35n/ikK/v
+AKyhfDUcDEM6Dp1WUg7AsCZgEHPTrOWNXTUfZRJpItF3GBh7DJv9MDwKIgFeWzNgcm6mBSIa
+--0000000000000f27be0651468fd6--
