@@ -1,41 +1,40 @@
 Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB313E9585;
-	Fri,  8 May 2026 13:29:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1F1A3E558C;
+	Fri,  8 May 2026 13:29:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778246992; cv=none; b=B7sM9zKLbGWbI7+W60zrTxXEe6EVe7lbQm5R5u2WxmWcF6VI2lf6NEuL4e9B77SXNUWnXCo+qLGWS8BWJR3VyUlIkUgduj+neHyJh9W4vmmKzMjld3Gws3hcpE4P8XfobfySVW8rr3Z75Y/Luw2ytfPp1VevFNeg/OLlzoopT0s=
+	t=1778247003; cv=none; b=tAeIDuOpACU6PPS5qlkMoExayfUe9a+teSzu9idu0QDil66D1t/0ZU7qGIp0eGsFdmowbwtPMes1w7VAjQpXOOS2ALWb1Kyj4KoUpD6l95govQKfva0NXXmYV5rGK89BkuKNU0iyjgy0Om/egtJTlMGl+I+xRAdcdEnSk1tKYKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778246992; c=relaxed/simple;
-	bh=07fpaNueP6L3dRf3qAgX/iGIbF3PMuZyCj3Rbbal+1s=;
+	s=arc-20240116; t=1778247003; c=relaxed/simple;
+	bh=cLO+HVbzM/630mHJi4qoFZSolx/5RGQx4SlxSfx1DMg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=AO0Owcm5FWQsKjO7knw3tHjw4Zk89DBg8vDLZViTkZxx9fv/e6fyUPjSQdZnrWBnqnogAjEyJGaGuRQeLivShpfHBQvJDssZOi2xCTLGaj0jE2SVp5ujyga0nSY+/pJe1zBcWSmTiHMo3nvujqRFPJBqoN0b0dwko9Ywz8soWz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=ZSas3fhX; arc=none smtp.client-ip=82.195.75.108
+	 In-Reply-To:To:Cc; b=fC3mAzRSUbZcRfILZit8g5GLAaLMmSlQA5RQxag4xCINCJ261sw5IwFl2pvrD3d+hg/wDaNG5MEXu/qAGk5XtTkJFzN6Rb+Wb02xCTTE7f+YGg0pPaUXIvfkHneIOpYRZJ4xalwg8uX3TKi7s1jYFgL2pExxWDUjafSpkJCNECI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=ngtZBMWo; arc=none smtp.client-ip=82.195.75.108
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="ZSas3fhX"
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="ngtZBMWo"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
 	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description;
-	bh=yVdjh0Hy07tpCUlFlB396VlkTSHh7UpPORhLbR9du7k=; b=ZSas3fhXG908aNMP6bmMS53MwG
-	YbdgOkq80Fe+LvYNBJI3JUGTpmMxplgeHe8L1pVXfMGFi4hbIRwmP+2+2I1KzK7sxS9/68GUKsGb8
-	qbJUfeQySPHB6JT4WnjTQ4gs/ViMqvM7JoCG15uMBWq/+P6px+6dbX7HmnWGk/lYRKNOlr/Ukc4ON
-	7heVUAf72POGUs6TM54RCA1bMbS4loX1P7JWw4bwD28bhqam9t7dkHPvlgD4yhRNKT9YyFtdh8mwm
-	RXAlI7myLxLrfSh0xwbBIOXcak6zem2nrlte6UA2Og5nAKhoM9Etr4WdoIu8q/xNBQSlajz7dfsRy
-	bEkbHWCA==;
+	bh=NzIMdK4kCc1Qj9zvLOEZvz2a+qMp6//MJYzsoIv7p4Q=; b=ngtZBMWom30HGkjAZkxWnHDQas
+	deGrEW7sntHh8FxLbdkVcXqHzWZv7WCaSPtVcJmMRBivyEC5a9HdvWQqqVzbK5bSG94mP897ZLHht
+	BhZM+hEdC7mziIRWADDzjyNG2QFN9fmZewiop/2OTPGWQLmWSJq66lLaHVlKRluy28APThPjuvlxH
+	LU9JCttJBqnuLPVM06wXjlFjIroCMEM5fO9e80U/6U5OHi8V3fwS1gkx2whm42w9K/3cgiJTtHk4n
+	hp/p8aucbpDT68fQXmoJ74gYLDh9daGbHs11hOzz2PM7+b6ttqQJWVQ0Fk+cLsYaBld8tsmq0S8ku
+	xV0nTTxw==;
 Received: from authenticated user
 	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.96)
 	(envelope-from <leitao@debian.org>)
-	id 1wLLGr-005AyM-2q;
-	Fri, 08 May 2026 13:29:38 +0000
+	id 1wLLH5-005Az5-1K;
+	Fri, 08 May 2026 13:29:51 +0000
 From: Breno Leitao <leitao@debian.org>
-Date: Fri, 08 May 2026 06:29:15 -0700
-Subject: [PATCH net-next 1/8] netpoll: expose UDP packet builder helpers
- for netconsole
+Date: Fri, 08 May 2026 06:29:18 -0700
+Subject: [PATCH net-next 4/8] netconsole: move push_ipv4() from netpoll
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -44,7 +43,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260508-netconsole_split-v1-1-0f660e62841f@debian.org>
+Message-Id: <20260508-netconsole_split-v1-4-0f660e62841f@debian.org>
 References: <20260508-netconsole_split-v1-0-0f660e62841f@debian.org>
 In-Reply-To: <20260508-netconsole_split-v1-0-0f660e62841f@debian.org>
 To: "David S. Miller" <davem@davemloft.net>, 
@@ -57,146 +56,145 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-rt-devel@lists.linux.dev, Breno Leitao <leitao@debian.org>, 
  kernel-team@meta.com
 X-Mailer: b4 0.16-dev-453a6
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4355; i=leitao@debian.org;
- h=from:subject:message-id; bh=07fpaNueP6L3dRf3qAgX/iGIbF3PMuZyCj3Rbbal+1s=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBp/eU47sGMolPJNBSSBobjrnMcdaXOpGp7LLDl5
- +sPwMIo+cSJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaf3lOAAKCRA1o5Of/Hh3
- bcBbD/9gdHWhs269033hwtj66YQM6yjYXRhfDJkgzKujiEUP92Z2xBUsdUNYPj9gTOgxRxTsrkw
- +uSvCUusHbuBemnYUvvOD+noWtrivHHBkFGafpGIBXa7RZF1MThVyFLYkLH9YOVMfM9upNAn7YK
- nOXVyLY2XYIdzNF5Pfsltlsp54eg1piNfzUxP0C489ucTniPx2u84LgKloj4+7s9792fxCFNiJ8
- eYxrH2aMnAMW84wtYvDlXiPeAXaUQY53FAXFynVPbSSmEmXYx2k30h/U3zZ/2nUopDVufhw86U7
- OiiZOR2Iq9g2lKt7l6ZqDJIFe/otEvKbV6txf3EYpcYKZ6OhM465y0BtWE+Z5GIxk9THjomakYL
- 4yn2L2EIln/XcVHmWy17hgRVABNz8WduGZYtGeppNA4xi6JllKswhmicX8Tru3g/dMKtqAqPaXu
- 8t7fJGbCTOjmkoMbAAdVVRCGU7XqrPJXGLyJ7hlOAp8TrlhwNiyttrVmhtZFzM4BqiZcyYZleBZ
- Ded7Y/KMDy51l52+v6nfa8jVS/DeLx70oy4fyw3mpDvCHWOxLGhCNKIeL/jwuZUl17XCgPHYoL9
- Zxnrd2oiQbgMgwyScnnwiUhZeFSaYB1k4mR6mYHBEBJaQ7t8CwUnql+EB2stERfJKt3mahB4rhe
- tQWv+hkiNDykARw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4161; i=leitao@debian.org;
+ h=from:subject:message-id; bh=cLO+HVbzM/630mHJi4qoFZSolx/5RGQx4SlxSfx1DMg=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBp/eU4IDpVsW4ak1nC20cT4i8r04XSioEqp/XPT
+ ibyMK9SSzKJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaf3lOAAKCRA1o5Of/Hh3
+ bcHHD/wN0XcvmygMg/HKxlEbdrs/XKGkEc4G64dySeOqjK8U6g+HRa0aiT6CvdrrnuuOXDzSfGb
+ S8ClRT/y+3Ac7agPlqqB0Md2B46o9BsuxVgBBqJThqRY6LMcbodx9ETfBLdW4Tv8hyFcIoJchfw
+ MOtpiEbRFz2AR3+Vu/d0uI8MRcb9HpzcypUt37eO9I9joPDXsyFy/uluQfi3I1odvWysgFSdWVq
+ g1hTq0YogO7//Fu3r9ncy8oAWqU3Yyz3oJnHqYkY5UX7wZHhacP3sIdfoNj902wBpCNffsEP88C
+ Gr8azVHAmAw3/IYRya7P4XZwa9Lxpg6yDCAm9LDi5kmNQVKYBmtFHSjLeOIdz9zuzcEXUOk7g6k
+ qYJ0Qyd409YqL17Li4po4bhKW8pwH8OHxWMz0glVwHv0CoLOg3sJzKXA+cB8qbyK1ktIOfqNph2
+ Izgtee+tqhP2WWFOwIZWVsIUKKb4JJHtxmmu3FuX21qYLnUR00eqzkqUriTkE/2pDO7lveDWod5
+ CTzP9z+wt8MFOgWuOZW0uLUdQ7LelGBDyEytcpuVcNwDZGY7X8K/n4NETi/KVp/qWY7XSdGp7en
+ /oibJRg3G/eoxqSnqP4hyKFo5zVnE+9FLFPlSXrncDNfNaUQPHk7px9cIv3CbATNe5GPgWQrXxI
+ 5LjiCan6qzasBMg==
 X-Developer-Key: i=leitao@debian.org; a=openpgp;
  fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 X-Debian-User: leitao
 
-Promote each from file-static to EXPORT_SYMBOL_GPL and forward-
-declare them in include/linux/netpoll.h so netconsole can call
-them once netpoll_send_udp() moves out.
+push_ipv4() builds the IPv4 header for netconsole's UDP packets.
+Move it into drivers/net/netconsole.c as a file-static helper; drop
+its EXPORT_SYMBOL_GPL and remove the prototype from
+include/linux/netpoll.h.
 
-These exports are kept until the end of the series, when
-al of them move into netconsole.
-
-No functional change.
+put_unaligned() is no longer used in net/core/netpoll.c, so drop
+the now-stale <linux/unaligned.h> include from there. Pull it into
+netconsole.c so the moved code keeps building.
 
 Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
- include/linux/netpoll.h |  6 ++++++
- net/core/netpoll.c      | 20 +++++++++++++-------
- 2 files changed, 19 insertions(+), 7 deletions(-)
+ drivers/net/netconsole.c | 28 ++++++++++++++++++++++++++++
+ include/linux/netpoll.h  |  1 -
+ net/core/netpoll.c       | 29 -----------------------------
+ 3 files changed, 28 insertions(+), 30 deletions(-)
 
+diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
+index f805ae95ce7b1..84f90b53a10f7 100644
+--- a/drivers/net/netconsole.c
++++ b/drivers/net/netconsole.c
+@@ -37,6 +37,7 @@
+ #include <linux/udp.h>
+ #include <linux/netpoll.h>
+ #include <linux/inet.h>
++#include <linux/unaligned.h>
+ #include <linux/configfs.h>
+ #include <linux/etherdevice.h>
+ #include <linux/hex.h>
+@@ -1651,6 +1652,33 @@ static struct notifier_block netconsole_netdev_notifier = {
+ 	.notifier_call  = netconsole_netdev_event,
+ };
+ 
++static void push_ipv4(struct netpoll *np, struct sk_buff *skb, int len)
++{
++	static atomic_t ip_ident;
++	struct iphdr *iph;
++	int ip_len;
++
++	ip_len = len + sizeof(struct udphdr) + sizeof(struct iphdr);
++
++	skb_push(skb, sizeof(struct iphdr));
++	skb_reset_network_header(skb);
++	iph = ip_hdr(skb);
++
++	/* iph->version = 4; iph->ihl = 5; */
++	*(unsigned char *)iph = 0x45;
++	iph->tos = 0;
++	put_unaligned(htons(ip_len), &iph->tot_len);
++	iph->id = htons(atomic_inc_return(&ip_ident));
++	iph->frag_off = 0;
++	iph->ttl = 64;
++	iph->protocol = IPPROTO_UDP;
++	iph->check = 0;
++	put_unaligned(np->local_ip.ip, &iph->saddr);
++	put_unaligned(np->remote_ip.ip, &iph->daddr);
++	iph->check = ip_fast_csum((unsigned char *)iph, iph->ihl);
++	skb->protocol = htons(ETH_P_IP);
++}
++
+ static void push_ipv6(struct netpoll *np, struct sk_buff *skb, int len)
+ {
+ 	struct ipv6hdr *ip6h;
 diff --git a/include/linux/netpoll.h b/include/linux/netpoll.h
-index f22eec4660405..e68c80b329411 100644
+index 7f57bd0eac66d..1fcde9c87b8c2 100644
 --- a/include/linux/netpoll.h
 +++ b/include/linux/netpoll.h
-@@ -74,6 +74,12 @@ void __netpoll_free(struct netpoll *np);
- void netpoll_cleanup(struct netpoll *np);
- void do_netpoll_cleanup(struct netpoll *np);
+@@ -75,7 +75,6 @@ void do_netpoll_cleanup(struct netpoll *np);
  netdev_tx_t netpoll_send_skb(struct netpoll *np, struct sk_buff *skb);
-+struct sk_buff *find_skb(struct netpoll *np, int len, int reserve);
-+void netpoll_udp_checksum(struct netpoll *np, struct sk_buff *skb, int len);
-+void push_ipv6(struct netpoll *np, struct sk_buff *skb, int len);
-+void push_ipv4(struct netpoll *np, struct sk_buff *skb, int len);
-+void push_udp(struct netpoll *np, struct sk_buff *skb, int len);
-+void push_eth(struct netpoll *np, struct sk_buff *skb);
+ struct sk_buff *find_skb(struct netpoll *np, int len, int reserve);
+ void netpoll_udp_checksum(struct netpoll *np, struct sk_buff *skb, int len);
+-void push_ipv4(struct netpoll *np, struct sk_buff *skb, int len);
+ void push_udp(struct netpoll *np, struct sk_buff *skb, int len);
+ void push_eth(struct netpoll *np, struct sk_buff *skb);
  
- #ifdef CONFIG_NETPOLL
- static inline void *netpoll_poll_lock(struct napi_struct *napi)
 diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index 84faace50ac28..41305056c56ff 100644
+index 6a10ca5eaa093..030424e43bfb4 100644
 --- a/net/core/netpoll.c
 +++ b/net/core/netpoll.c
-@@ -268,7 +268,7 @@ static void zap_completion_queue(void)
- 	put_cpu_var(softnet_data);
- }
+@@ -34,7 +34,6 @@
+ #include <net/addrconf.h>
+ #include <net/ndisc.h>
+ #include <net/ip6_checksum.h>
+-#include <linux/unaligned.h>
+ #include <trace/events/napi.h>
+ #include <linux/kconfig.h>
  
--static struct sk_buff *find_skb(struct netpoll *np, int len, int reserve)
-+struct sk_buff *find_skb(struct netpoll *np, int len, int reserve)
- {
- 	int count = 0;
- 	struct sk_buff *skb;
-@@ -294,6 +294,7 @@ static struct sk_buff *find_skb(struct netpoll *np, int len, int reserve)
- 	skb_reserve(skb, reserve);
- 	return skb;
- }
-+EXPORT_SYMBOL_GPL(find_skb);
- 
- static int netpoll_owner_active(struct net_device *dev)
- {
-@@ -369,8 +370,8 @@ static netdev_tx_t __netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
- 	return ret;
- }
- 
--static void netpoll_udp_checksum(struct netpoll *np, struct sk_buff *skb,
--				 int len)
-+void netpoll_udp_checksum(struct netpoll *np, struct sk_buff *skb,
-+			  int len)
- {
- 	struct udphdr *udph;
- 	int udp_len;
-@@ -393,6 +394,7 @@ static void netpoll_udp_checksum(struct netpoll *np, struct sk_buff *skb,
- 	if (udph->check == 0)
- 		udph->check = CSUM_MANGLED_0;
- }
-+EXPORT_SYMBOL_GPL(netpoll_udp_checksum);
- 
- netdev_tx_t netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
- {
-@@ -411,7 +413,7 @@ netdev_tx_t netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
+@@ -413,34 +412,6 @@ netdev_tx_t netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
  }
  EXPORT_SYMBOL(netpoll_send_skb);
  
--static void push_ipv6(struct netpoll *np, struct sk_buff *skb, int len)
-+void push_ipv6(struct netpoll *np, struct sk_buff *skb, int len)
- {
- 	struct ipv6hdr *ip6h;
- 
-@@ -433,8 +435,9 @@ static void push_ipv6(struct netpoll *np, struct sk_buff *skb, int len)
- 
- 	skb->protocol = htons(ETH_P_IPV6);
- }
-+EXPORT_SYMBOL_GPL(push_ipv6);
- 
--static void push_ipv4(struct netpoll *np, struct sk_buff *skb, int len)
-+void push_ipv4(struct netpoll *np, struct sk_buff *skb, int len)
- {
- 	static atomic_t ip_ident;
- 	struct iphdr *iph;
-@@ -460,8 +463,9 @@ static void push_ipv4(struct netpoll *np, struct sk_buff *skb, int len)
- 	iph->check = ip_fast_csum((unsigned char *)iph, iph->ihl);
- 	skb->protocol = htons(ETH_P_IP);
- }
-+EXPORT_SYMBOL_GPL(push_ipv4);
- 
--static void push_udp(struct netpoll *np, struct sk_buff *skb, int len)
-+void push_udp(struct netpoll *np, struct sk_buff *skb, int len)
+-void push_ipv4(struct netpoll *np, struct sk_buff *skb, int len)
+-{
+-	static atomic_t ip_ident;
+-	struct iphdr *iph;
+-	int ip_len;
+-
+-	ip_len = len + sizeof(struct udphdr) + sizeof(struct iphdr);
+-
+-	skb_push(skb, sizeof(struct iphdr));
+-	skb_reset_network_header(skb);
+-	iph = ip_hdr(skb);
+-
+-	/* iph->version = 4; iph->ihl = 5; */
+-	*(unsigned char *)iph = 0x45;
+-	iph->tos = 0;
+-	put_unaligned(htons(ip_len), &iph->tot_len);
+-	iph->id = htons(atomic_inc_return(&ip_ident));
+-	iph->frag_off = 0;
+-	iph->ttl = 64;
+-	iph->protocol = IPPROTO_UDP;
+-	iph->check = 0;
+-	put_unaligned(np->local_ip.ip, &iph->saddr);
+-	put_unaligned(np->remote_ip.ip, &iph->daddr);
+-	iph->check = ip_fast_csum((unsigned char *)iph, iph->ihl);
+-	skb->protocol = htons(ETH_P_IP);
+-}
+-EXPORT_SYMBOL_GPL(push_ipv4);
+-
+ void push_udp(struct netpoll *np, struct sk_buff *skb, int len)
  {
  	struct udphdr *udph;
- 	int udp_len;
-@@ -478,8 +482,9 @@ static void push_udp(struct netpoll *np, struct sk_buff *skb, int len)
- 
- 	netpoll_udp_checksum(np, skb, len);
- }
-+EXPORT_SYMBOL_GPL(push_udp);
- 
--static void push_eth(struct netpoll *np, struct sk_buff *skb)
-+void push_eth(struct netpoll *np, struct sk_buff *skb)
- {
- 	struct ethhdr *eth;
- 
-@@ -492,6 +497,7 @@ static void push_eth(struct netpoll *np, struct sk_buff *skb)
- 	else
- 		eth->h_proto = htons(ETH_P_IP);
- }
-+EXPORT_SYMBOL_GPL(push_eth);
- 
- int netpoll_send_udp(struct netpoll *np, const char *msg, int len)
- {
 
 -- 
 2.53.0-Meta
