@@ -1,90 +1,213 @@
-Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7D8C3101B6
-	for <netdev@vger.kernel.org>; Fri,  8 May 2026 12:56:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CADB43E0C6F
+	for <netdev@vger.kernel.org>; Fri,  8 May 2026 12:59:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778245000; cv=none; b=QAR95aYCGJ99hcWzjyBwoGuWVKmOuxyQvEZzERBrZNfXuBSm94FDbrUrewy1+gKrRjQPqBPhbDF7UczrVR/9I3gijQRCA0AY2O3oCnHs88lTp4Dvy5SMw+DvqrhYFkS/5gZ3BkhXLmz/nb7VO0tYX259pTR8ODW3fxU1gBQjKp0=
+	t=1778245185; cv=none; b=nVOuCD4EomqZy1vmI+xC8DOhuAUyQP6v+SChiW6cYQaVIj1JmgChGs3f+u1fwhDXIANVyDzNsPZc/RrKxEYr98a6+daHC+FAE/Tv+bqjx6+vrgwzCFvV3RkkqiJX5b2QW0P1XNqE5RSwnmldYpDajDVaJJjdA3ng75JJzRQfzQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778245000; c=relaxed/simple;
-	bh=Xx4Zr4sTJ4+K6Kd5DzHQIS8+LLlutTzxBDdT3APyyuo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QNVy7ly9D4sfr6MVT/AapAwaRoDAcT+2ctCFqrUUYoufPtuQYwnIxpdEGFonE7zOxX1mWcd/GNt6+yLzuYF15hKnX8rO+uSDlpaoeuLfAUmK0vj83DQK7/ovFYg380/YGzLYKOWENIUbF918JRR2+s4l1UWqgQGA5WrqcuqJOn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EvqUiqYq; arc=none smtp.client-ip=209.85.210.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1778245185; c=relaxed/simple;
+	bh=Cecj/jI4Hf3y5GjyNmlPt5sbEVv1v3dHbPozo7/APAo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nRQrkrMqKQP3k6PrmrIF9+rVadBr97LU4CyKcbX4nmXeVJA8xaIxs/YGZfogzgnXZpaBWTBUTFYO/URBt1W7UMmuiwL80tSYggHfQgp8wuMSbgZs+C77m66xOeLkCwUHgVeQpOuIJ89aeTg/q7qDY3/GGrPZ4qZJv0LNWQp62YY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EZoTwqiL; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EvqUiqYq"
-Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-7e363c6141dso629390a34.2
-        for <netdev@vger.kernel.org>; Fri, 08 May 2026 05:56:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778244997; x=1778849797; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+Bb6HPtRsGBp0YLqSkmO5CXUhsqKPg0jNt7PVf1qNJQ=;
-        b=EvqUiqYqeQom6RFmx8lJbfRf/Hg1Bv3mdz4tgOsm9N50/MF1LZ7PS3sOgvmNgDvqoI
-         +7hu/MC3O53G/SbC8/TaWgoO9lJriVAZScgSNdH9Wlqm0ibs/Bb2hqhE6BAsunZnJmd5
-         MK74YD2jqAkmTR1Na397eGMgg0Rrscf5WZfNR5Tjd0GEsq3NwWpxP3IulClSJFxHc07D
-         BaqBq68ROkw8SQRw+H17bSGWS+T9LpkbTpWhAFZUzyYYvh9AZ4KIJhY0sCtKkEvKJruV
-         5kslhKHJE7ZT9OR0SpeJWrLlOJ+h6F6bGPE8pRyyt1I0wIGs0rStes4VbEMFM2WV4UvQ
-         3zdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778244997; x=1778849797;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=+Bb6HPtRsGBp0YLqSkmO5CXUhsqKPg0jNt7PVf1qNJQ=;
-        b=MHdrEgEJK/orbS2c4xvAdqC4XG1j5HRoHXiWjVFizTSXCCMl4yNYkm7cGXAwA4mUyI
-         RiCUEsTJ8mZONX8t3ll/pH5asyvJw1OvRtY1MA1uGM3a7qOxlg+WvkpC/HyyGXkqjDN7
-         MP6Lg40PGPJwrew+nvVEwNvbKyL+0K+0Ni5tx5IByRaOTE4p5XxiozRxcfpKoa04/qY0
-         biBnC+xOC6Nj+HEM/QaMzjBBZmcpnIUeaV+bM+ACtohl4go19Oo1y1Ajg+4Ft+sxsNI1
-         09Ea4yHNpaY98dZm24qyeydpNxxrkTdW6J2dE2yTBplobtCTFoIlCouL2JHcPErgItpo
-         HQKQ==
-X-Gm-Message-State: AOJu0Yy8DjCD4+Ra4qBjZ0AmMW/grgS0C9Hea/Eb1CC4ecrYJO68speY
-	hxTepalW76VN925yrsdPKKZ9bKzg/oRCB+x8jLkPeorva/PLuuu18cLpfVXhB74wIqw=
-X-Gm-Gg: AeBDievJOWK+fHiwHX36W7HaNVcxu9w4wMJKAGQm7aAd0o9QLsCjqKVjiA4ZDAQHJOo
-	mPHKLJX3JJ7y1e8A3cWfKPkr1uMLG56chiaH+pyWgTgj5Hw7n3ZDndkpo7qEFrfJUeU3LQAyRjo
-	AJdUtN1AA3L0gx0XVo5kAqpmQrx4WeS6DiT/rlHxYERY8eUEM5w9awOsdqrH5m+6KRKTy30gVod
-	8a97ETLBYDLu1nTfc0N8AlAWN8nehudhA/6wFu00MRErkwAtarka1LpkLvFvdTCVYno+mwRyq1O
-	3BYnzifV+DFpeDSm2DT6cc9I2BjCC/gEy4x6N9Fq9bvVxZk+ij6krXaIAL4h3gvyLrBEVMzgQlG
-	BuF2ZdUzz46SEFDnhgUt/hJwx7/qXldhw3t6Ct8Ah+GQa3ET2Ag458k3M0risQgVtf7DM3kXx0G
-	u4hUhQIRl7Bsu8C/4=
-X-Received: by 2002:a05:6830:67e3:b0:7db:a184:2b39 with SMTP id 46e09a7af769-7e1def3fe88mr7605656a34.11.1778244997466;
-        Fri, 08 May 2026 05:56:37 -0700 (PDT)
-Received: from houminxi ([72.244.37.221])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7e367d4fe15sm1081925a34.18.2026.05.08.05.56.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 May 2026 05:56:36 -0700 (PDT)
-From: Minxi Hou <houminxi@gmail.com>
-To: netdev@vger.kernel.org
-Cc: aconole@redhat.com,
-	Minxi Hou <houminxi@gmail.com>
-Subject: Re: [PATCH net-next v7 0/2] selftests: openvswitch: add pop_vlan test
-Date: Fri,  8 May 2026 20:56:26 +0800
-Message-ID: <20260508125626.2791111-1-houminxi@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260507131541.2331771-1-houminxi@gmail.com>
-References: <20260507131541.2331771-1-houminxi@gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EZoTwqiL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778245183; x=1809781183;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Cecj/jI4Hf3y5GjyNmlPt5sbEVv1v3dHbPozo7/APAo=;
+  b=EZoTwqiL4W58eQ1jRddb5zfEAd77kIhEtL+lqbOFgItFle/SCQgAuCeo
+   Ikl77gOvz7G3992rZG8DwtjiM4FhKdy3txCyox9NhZU5iuayC4ALsJi1C
+   OgxuEhwr4jbnRakYXt7wZbjl1S5zxdxVzkEbCtuc7FTuwQ9eQoCk9u2UV
+   LQeTDwDmsI5Bf5O7c/A/kqwZsbXmW6x+bsfWQbTQBZo5ohG7P5VEAOEjs
+   8Fa4SbRoLtfter13KDRwelON1pGyBA7o2vZ+WbJFahmCpd9gZHfv/ZK7B
+   w4PkVvEkriYY2xEwhCVV8Dm1dtzgm0f1zWGGKY1pEzcmry2X/QtpCzcSJ
+   g==;
+X-CSE-ConnectionGUID: 5k4Qx7TMRAe4Ia1OShCKYg==
+X-CSE-MsgGUID: oiU+tLglTXimtY4tGYSfkg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11779"; a="79199845"
+X-IronPort-AV: E=Sophos;i="6.23,223,1770624000"; 
+   d="scan'208";a="79199845"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2026 05:59:43 -0700
+X-CSE-ConnectionGUID: 71w7MdL8REmoYuq4rRbu+Q==
+X-CSE-MsgGUID: KgGuZ4MPQ825zBvYOvUa1w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,223,1770624000"; 
+   d="scan'208";a="241730090"
+Received: from irvmail002.ir.intel.com ([10.43.11.120])
+  by fmviesa005.fm.intel.com with ESMTP; 08 May 2026 05:59:36 -0700
+Received: from vecna.igk.intel.com (vecna.igk.intel.com [10.123.220.17])
+	by irvmail002.ir.intel.com (Postfix) with ESMTP id 58E6F28795;
+	Fri,  8 May 2026 13:59:34 +0100 (IST)
+From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+To: intel-wired-lan@lists.osuosl.org,
+	Michal Schmidt <mschmidt@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jiri Pirko <jiri@resnulli.us>
+Cc: netdev@vger.kernel.org,
+	Simon Horman <horms@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	bruce.richardson@intel.com,
+	Vladimir Medvedkin <vladimir.medvedkin@intel.com>,
+	padraig.j.connolly@intel.com,
+	ananth.s@intel.com,
+	timothy.miskell@intel.com,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Lukasz Czapnik <lukasz.czapnik@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Subject: [PATCH iwl-next v1 00/15] devlink, mlx5, iavf, ice: XLVF for iavf
+Date: Fri,  8 May 2026 14:41:53 +0200
+Message-Id: <20260508124208.11622-1-przemyslaw.kitszel@intel.com>
+X-Mailer: git-send-email 2.39.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Hi Aaron,
+Code is also available here:
+https://github.com/pkitszel/linux/tree/xlvf-iwl
 
-Thanks for the review. I'll respin with the following changes:
+There are two dependecies:
+https://patchwork.ozlabs.org/project/intel-wired-lan/patch/20260429102426.210750-4-jtornosm@redhat.com
+https://patchwork.ozlabs.org/project/intel-wired-lan/patch/20260427151827.43342-1-mschmidt@redhat.com
 
-  - Consistent error messages: all use "function(): missing ')'"
-  - push_vlan error prefix changed from "push_vlan:" to "push_vlan():"
-  - Added empty-string guard for ns1veth10mac and ns2mac
+The purpose of this series is to allow iavf to use more than 16 queue pairs,
+in two modes, up to 64 and up to 256 queue pairs.
 
-Will send v8 shortly.
+Devlink changes:
+1. Extend devlink by two callbacks used by shared devlink.
+   Callbacks provide option for the driver to have constructor/destructor
+   for the priv data attached to the shared devlink instance.
+   Use the callbacks from ice.
+   mlx5 is just touched to have additional param passed.
+   Non-null additional param for the constructor is used in: "ice: represent RSS
+   LUTs as devlink resources"
+2. Extend devlink resources API to allow user to assign resources.
+   Before it was only the driver to assign resources, without any way for user
+   to interact. ice' RSS LUTs are exposed that way.
 
-Thanks,
-Minxi
+More about the interface:
+In order to support more queues for VF, we must give it a bigger RSS table
+(GLOBAL LUT or PF LUT). There are 16 GLOBAL LUTs on E810, and there is one
+PF LUT for every PF on given card. Both kinds of the mentioned LUTs could
+be (re)assigned to VF. PF must hold at least one of the mentioned LUTs at
+any given moment. GLOBAL LUT allows VF to use up to 64 queues, PF LUT lets
+it to use up to 256 queues.
+
+RSS LUTs are exposed for the user for assignment via devlink resources
+API, which I have extended to make it possible.
+
+We have also some "little cleanup" patches, Admin Queue extension
+for GLOBAL RSS alloc/free, and two rather big "new opcodes" patches by Ahmed
+and Brett.
+
+I introduce also a "whole device" aggregate over all PFs on
+given card, via shared devlink instance.
+
+I also extend devlink resources to have custom occupancy setters, that allow
+user to modify PF device LUTs assignment.
+
+Finally there is a patch that adds devlink instance for VF and registers
+devlink resources on it, combined with all the glue code to make actual
+use of the whole series and desired larger number of queues accepted to VF
+This (the last) patch contains usage examples.
+
+There is one resource added that just groups GLOBAL and PF LUTs under it -
+there are 3 rows of data for each device (PF/VF/whole-dev):
+$ devlink resource show pci/0000:18:00.0
+pci/0000:18:00.0:
+  name rss size 1 unit entry size_min 0 size_max 2 size_gran 1 dpipe_tables none
+    resources:
+      name lut_512 size 0 unit entry size_min 0 size_max 1 size_gran 1 dpipe_tables none
+      name lut_2048 size 1 unit entry size_min 0 size_max 1 size_gran 1 dpipe_tables none
+technically the aggregate "name rss" line could be eliminated with just
+the two last ones kept (then renamed to "rss_lut_2048" form current
+"rss/lut_2048"), I like it like this, but this was just an opinion.
+The rest of the series is rather much needed, but I'm always open to
+discussion.
+
+Devlink resource changes were RFC-proposed a year ago, link in the patch.
+
+Ahmed Zaki (1):
+  iavf: use new opcodes to request more than 16 queues
+
+Brett Creeley (2):
+  ice: add VF queue ena/dis helper functions
+  ice: introduce handling of virtchnl LARGE VF opcodes
+
+Przemek Kitszel (12):
+  devlink, mlx5: add init/fini ops for shared devlink
+  ice: use shared devlink to store ice_adapters instead of custom xarray
+  ice: simplify ice_vc_dis_qs_msg() a little
+  ice: add helpers for Global RSS LUT alloc, free, vsi_update
+  ice: rename ICE_MAX_RSS_QS_PER_VF to ICE_MAX_QS_PER_VF_VCV1
+  ice: bump to 256qs for VF
+  iavf: extend iavf_configure_queues() to support more queues
+  iavf: temporary rename of IAVF_MAX_REQ_QUEUES to
+    IAVF_MAX_REQ_QUEUES_VCV1
+  iavf: increase max number of queues to 256
+  devlink: give user option to allocate resources
+  ice: represent RSS LUTs as devlink resources
+  ice: support up to 256 VF queues
+
+ drivers/net/ethernet/intel/ice/Makefile       |   1 +
+ drivers/net/ethernet/intel/iavf/iavf.h        |  18 +-
+ .../net/ethernet/intel/ice/devlink/resource.h |  22 +
+ drivers/net/ethernet/intel/ice/ice.h          |   1 +
+ drivers/net/ethernet/intel/ice/ice_adapter.h  |  52 +-
+ .../net/ethernet/intel/ice/ice_adminq_cmd.h   |   1 +
+ drivers/net/ethernet/intel/ice/ice_common.h   |   1 +
+ drivers/net/ethernet/intel/ice/ice_lag.h      |   2 +-
+ drivers/net/ethernet/intel/ice/ice_lib.h      |   5 +-
+ drivers/net/ethernet/intel/ice/ice_switch.h   |   2 +
+ drivers/net/ethernet/intel/ice/ice_vf_lib.h   |  26 +-
+ drivers/net/ethernet/intel/ice/virt/queues.h  |   3 +
+ drivers/net/ethernet/intel/ice/virt/rss.h     |   1 +
+ .../net/ethernet/intel/ice/virt/virtchnl.h    |   4 +
+ include/linux/intel/virtchnl.h                | 136 ++++-
+ include/net/devlink.h                         |  33 +
+ .../net/ethernet/intel/iavf/iavf_ethtool.c    |   7 +-
+ drivers/net/ethernet/intel/iavf/iavf_main.c   | 125 +++-
+ .../net/ethernet/intel/iavf/iavf_virtchnl.c   | 262 +++++++-
+ .../net/ethernet/intel/ice/devlink/devlink.c  |   3 +
+ .../net/ethernet/intel/ice/devlink/resource.c | 572 ++++++++++++++++++
+ drivers/net/ethernet/intel/ice/ice_adapter.c  | 105 ++--
+ drivers/net/ethernet/intel/ice/ice_common.c   |   2 +-
+ drivers/net/ethernet/intel/ice/ice_lib.c      |  78 ++-
+ drivers/net/ethernet/intel/ice/ice_main.c     |  43 +-
+ drivers/net/ethernet/intel/ice/ice_sriov.c    |  14 +-
+ drivers/net/ethernet/intel/ice/ice_switch.c   |  41 ++
+ drivers/net/ethernet/intel/ice/ice_vf_lib.c   |  54 +-
+ .../net/ethernet/intel/ice/virt/allowlist.c   |   8 +
+ drivers/net/ethernet/intel/ice/virt/queues.c  | 480 +++++++++++++--
+ drivers/net/ethernet/intel/ice/virt/rss.c     |  36 +-
+ .../net/ethernet/intel/ice/virt/virtchnl.c    |  47 +-
+ .../ethernet/mellanox/mlx5/core/sh_devlink.c  |   2 +-
+ net/devlink/resource.c                        |  98 ++-
+ net/devlink/sh_dev.c                          |  38 +-
+ 35 files changed, 2102 insertions(+), 221 deletions(-)
+ create mode 100644 drivers/net/ethernet/intel/ice/devlink/resource.h
+ create mode 100644 drivers/net/ethernet/intel/ice/devlink/resource.c
+
+-- 
+2.39.3
+
