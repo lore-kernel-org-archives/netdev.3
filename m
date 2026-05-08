@@ -1,144 +1,231 @@
-Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2130.outbound.protection.partner.outlook.cn [139.219.17.130])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 429533D3CF0;
-	Fri,  8 May 2026 09:51:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.130
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778233894; cv=fail; b=eUPrIMLz+a5qbc68mAAaeCVyuXl9xKNu48tL2WQDrxvhUX2BZYVIUorACbruDs1Pe4k4BUp4hK4E2zgz0v9uLMPE+vu9RfkyizH3tlKYkR4C069HCPZwk0Q3G7VankWmx7rVPbYvApJQRYQ6Y8SyJ1dWlv32tcdPd5UG52nMa+s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778233894; c=relaxed/simple;
-	bh=pRcOUTg/kdubmNx4RAui8HRL9NBjBqdaBx6JycmogJw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Y1DHt/cV1t8F7lGtqzu+12pnrzA+7PwIHDV/p5axW8nsR55IW+x01VAhgMFArCtnBiPhs/DZV/bKC1eSwG4E8s9rk9TrggMF6azHjUm0ZW5dMgoMSWkjuguJQ5vZhhtgDGGHQmAksXNIId/WMqVaDxU6EvRDcIxW8TbB9fv9H1A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.17.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lqTifxNsWHUXNCJ1IAgLAuOBCyndAGr26ucOwWeqdFygPDhdniT1DLhRa2tS8qnwmknXqRQyTDio7JAWQA+Yl4m26t6pusy/20yy1o0xp7xr8PrUHoZP7M1jLkaBoOhu5tUNhvvHe6jsGirYsYFQNY6jQFc1doij0E2Cj8VU522HixFzfxU3w+q8H9S3QbsXe7cLDQSUz4VHxHeeR1yRyFcOQO2vpyxnhlFsb4OrO3VR+QYmv1Y0QX9gVWpO97vPakP2IisxlxwxbargbzpLkAXyLw/2BjaaRxJdp1r3PSk3QmvRBY+GJLuOfqvf8skEBY0JykOLGqRFUQp/vtumjA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RdcggGXgqX82T4dEsn9KBakHmtDSEx6ZEOs7Q8sU9es=;
- b=EmL5z02RLgbPyYjg+UKoyHXvKWxD6xyowRDla8ueduk89yI4dI+C9kivpsNz8+1W43EZTzrHjp9Rjzh4L0PXBGfsFPJWbcJ3GNKmtvEvnjEnKsnWVfqntAZ9KpqxJS9eUxU3vTInBhOsgoJtclDONCFKUEHCzc+ox3eCYh+ApA2wK5SWQZWaYjCboez8jSZZ6WJebF2Uuqz1/K5k+O10eO/fb3yLhHbL+nFbLQmYpB6ocndxsLnrZvsENdGCX9Yti2FYBgq3NDYiUiE+e+7t2FE/rpiRlD7521tIMhjkOReLU8he5RyK4NZsRW5Z6vwI/VTdTnpjWbDAqg1lRxeB2g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=starfivetech.com; dmarc=pass action=none
- header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
-Received: from BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c211:18::12) by BJXPR01MB0598.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c211:16::16) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.25; Fri, 8 May
- 2026 09:35:53 +0000
-Received: from BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn
- ([fe80::e2de:92aa:4c1c:a829]) by
- BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn ([fe80::e2de:92aa:4c1c:a829%6])
- with mapi id 15.20.9846.025; Fri, 8 May 2026 09:35:53 +0000
-From: Minda Chen <minda.chen@starfivetech.com>
-To: Andrew Lunn <andrew@lunn.ch>
-CC: Alexandre Torgue <alexandre.torgue@foss.st.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Emil Renner
- Berthing <emil.renner.berthing@canonical.com>, Rob Herring
-	<robh+dt@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
-	<conor@kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-stm32@st-md-mailman.stormreply.com"
-	<linux-stm32@st-md-mailman.stormreply.com>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>
-Subject: Re: [net-next v3 4/5] net: stmmac: starfive: Add jhb100 SGMII
- interface
-Thread-Topic: [net-next v3 4/5] net: stmmac: starfive: Add jhb100 SGMII
- interface
-Thread-Index: AQHc3gWu27xAIUUW2EqhzN2fefZh5rYCga8AgAFeZbA=
-Date: Fri, 8 May 2026 09:35:53 +0000
-Message-ID:
- <BJXPR01MB0855A212B808321E3AD2B76EE63D2@BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn>
-References: <20260507094115.8355-1-minda.chen@starfivetech.com>
- <20260507094115.8355-5-minda.chen@starfivetech.com>
- <98266e3a-a23b-4283-a493-65deb8c2a1e7@lunn.ch>
-In-Reply-To: <98266e3a-a23b-4283-a493-65deb8c2a1e7@lunn.ch>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=starfivetech.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BJXPR01MB0855:EE_|BJXPR01MB0598:EE_
-x-ms-office365-filtering-correlation-id: fe92b3cb-4cf9-4f42-c82a-08deace53310
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|1800799024|7416014|376014|38070700021|56012099003|22082099003|18002099003;
-x-microsoft-antispam-message-info:
- CkGeLYsLb14qPNGtwr7vsZCOYz2dHYkyV7p41tNhMwhxCJJ7DndxfD+twhonR+kuZVlRVotAn4NOBPgFnmuoKC8YMau4062GWdwWBgzZcea3YH9JtFe4tDXA9rSDUpffU7r41SQRDEE7fcbHpXZAyszVMYYzQexvef9KUrDOm5hI0lT2Kp9LA3Q3dJE99VX3EG+JrpEMaGZbNCmQ1Cc97HWdtiXr/IYpKb5CCL+rfx2kMbzeLOlefEpL+AbctBDgiowBbJqGVOb035oCinpqHMbXRHfoGYgdr+5mjmvrBYbnfE2Np3gKsJMUxLtUE/buj5MhmRzM9YDRK+RthSVGJUaiUmyqyI6sJ2IRyCUvWIakyxBU/jn2m86ypOrLn2i8ff9N89kZiSELGzajgiei8QrhmfeLJ0wHzn70hADIsWu+ke1McnURJh9VZ902CpH6Llr2hHQb+qRklTu/nmmG0JiCGBYI/nL5p+Ofx6oezO4tx9Ao52BSbLVXsV8UsL4df/TeAHiVX+iWhwVJeNs4ZPr6wFFSpBjXxdfUjGjDtpv4cbh/S1k8NfmfHIMB7ji4
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(38070700021)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?mXb2anoXzVRFpuxUES4+FodRKPFCgrldgDUHCAyTJg6c4+hfzg26QJ9ZfFnv?=
- =?us-ascii?Q?68X05RsqTyfqAQG/ftuSvDS/opo1U8GWLokJwAXeT9N8l4EULWOHRQqnVUvc?=
- =?us-ascii?Q?OwPYmXvDmDRRytd8TdNETzypytfqgTSA6oVM7GwDeIjxMNw6VvFkfkuKCU5B?=
- =?us-ascii?Q?XMB0MWvXCOCq90KD0bprpyRPNa+7HTeZ0lDEkpmRsWwDjhyhnFfKyAtWCo5Y?=
- =?us-ascii?Q?2my9VP9C5DggusGFXaFFFxd5ZBjsk6njohVmvE8zpR/yEArJka2nX/ZCEpOE?=
- =?us-ascii?Q?irq2L9R1WkJBJzPMu7+PCLWj07FTwA2yyihyav+xC1DKMo3Gylof80MJ2evB?=
- =?us-ascii?Q?yeGfzZBK4ni13a7UP7QtDDS8Jx9Nv/yDqP63wxuUKEIMbunI+8YSGMytuxPx?=
- =?us-ascii?Q?0CHC6E2M0BkpRzUCARpt+/kIJagn0cxISZHD2PdId1+ZFiaphVKmjfbZONpt?=
- =?us-ascii?Q?NBO+i2t5PAHHFsAEYmsezd63JXpkhP4Y4Qb0qBLjgTXos3k52bWs0Q14xvTw?=
- =?us-ascii?Q?GJosriSCHibsAEIU71mXyVN+bXcsOO2LHvF/hIbFYT9B2kADWBwcNtNktbBs?=
- =?us-ascii?Q?P3Ef9pFvvLGBi+EtcpaNSEUtcfJma+bqhTveU1oM+5A2qXI+Xwt9O/yQKSFN?=
- =?us-ascii?Q?VSFEhU8c0bgvtfzWmyg4mm2PJwULNoXU7ndztJug3aUtbZrjSVoA0GpAoxbY?=
- =?us-ascii?Q?fej3GSzmdVQcJc1uwSDHOsUGUlW16kSn5gzHcM9IJfs4UL7pG73v/BawsQ79?=
- =?us-ascii?Q?eCnuFsvh+hZ7nN/ED9iA4P7DbAMVOZAUJdh0a49aRTjhbLMbAW7kWWNPynlK?=
- =?us-ascii?Q?fTfc04FDPQpoG5jiBx1Hc06hJF/gFPeoziFe/BnoLRzzZdFtt0zAccAu16Nk?=
- =?us-ascii?Q?Z80WOPbYBtoqADTFqMvetw7IVQ+PJvCso/etQCr8acu1eyfiGEqW9aJE3tKh?=
- =?us-ascii?Q?unzMjkWyE4rL3zVtrb/QyoWBqGWjHRU5FcG6mvT/+JqqEDqFud7PWF1363Nu?=
- =?us-ascii?Q?oLXPEyvOMflsMA8MEHNQ0gYskgG+p1mLGw1k+Eiy+Yq14QDIh1Z235vu1np4?=
- =?us-ascii?Q?RHOQKxKNnWD8p/qTMXzGYKqsdMQMU1m3nX5baRpQUCrXJ4eQsNYAVAmlFSUL?=
- =?us-ascii?Q?gqmbMA1OkMxXMkzVBVwh3ms1bq3tA3IsnCmNe+Yne5vYCOsSRKyWCPLbumjc?=
- =?us-ascii?Q?rCIluPHSRBc4Y/poipPkeXAtI6ylvE1PbjHuBSzn1TZUor0MPnLHcRnNaATJ?=
- =?us-ascii?Q?gmJXJR+rshuTeXVSJ4dXgILmctr2jyFY4irRVjaixQPmK5ezZN0YIykYlndH?=
- =?us-ascii?Q?sNdrgG08O7omwSx8IIRjnzG9hRqkBEGQ7MLTarbcgZXQLuDODEk6ckYQtl3t?=
- =?us-ascii?Q?c/z+vE7y/UHbV42mPdwdgcFgA+GElx2vVNEsXY9zT7MzwkpEhz4dyLYXMPdG?=
- =?us-ascii?Q?hoQm42m8kjdoXrdkdIUM2U3K//QewRPsQKIsQ/cUyYFwHKVbQ0OEjZfXFyAK?=
- =?us-ascii?Q?LwjogDUXi/6oTNQBcpcTm/gW/qp9K7GxOBbk+cBIS9uvBlgzDbuEscQfe9/8?=
- =?us-ascii?Q?RHXrbzroykcuPsd2gisPK1VJo8gntClQWWgQHPfVbCSxJbBlQtdEASq1jZsm?=
- =?us-ascii?Q?6/izr7OjbQiVPsOPKm+fGTGJyS8FR4R8lKYAYUseTK6ZCxJ+y5rvFWRDqJcy?=
- =?us-ascii?Q?fZ4Aq26z44s28eePudqbFlJnnve3mCPgRy4DRKUpJ+8eVmJbc3IMsjVlVehf?=
- =?us-ascii?Q?kka36B8zyg=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 405D33815C2
+	for <netdev@vger.kernel.org>; Fri,  8 May 2026 09:53:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778233999; cv=none; b=eGmN1Xj/AiMouJyHLiRsKNrSLRRnvzPEb/gWPH90LUecVyX21mymPt8oiTwFLGXCiW2qj01TqSctbfi5CSmYpmRpbVoJj/lr6JKHFK/CFqCqVAdW+Fy4nnFQMPFYErlZHk9lLqQLbXELGsqR8JgQZbYTaR6BIXWx9p5JaFPmWsQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778233999; c=relaxed/simple;
+	bh=/OQGL9Ug5guHVsgSUU3ndeXFHMMS3syMhC0ocsSKEXc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iz4I9XAAcj0PfNZRB+IA1n8hz9gtBxq1o0lnuKzfbjSG0mOkm5rGYr5vgZF0u+D4ajQWh/0w+oAjdUeJ1DXoSClpau0OzV4PDwcT8pQdP67X566ci/HwCOoEu2OaAVpPJG1utQDGmCm0UwM1jkQWs8iSPpmIE+jQr7rSRTJHTYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WyBJviON; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Q7IyCD+C; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WyBJviON";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Q7IyCD+C"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778233994;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ClGJlcvL8tePgqMC/W/O2L5Yb8uwFAsbIWgSrr8FGUs=;
+	b=WyBJviONYowjwS0T+S5sg2WMb0VuXuU54Ui9vuE0mo3RM27WqYdgIDt6/IaTiwzH+w2W5o
+	VvFz5zWd3KAkoYk2G6MFWrwlTcAwyJXDqmEFXIJQEd0/Tv9UNGaqyovQlQczclI0Zio8Km
+	zqdJc5uPWA9e6CDDlyzTfb6+tC1VT0g=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-220-hAVaLRyBOpORgj2cr-eNQA-1; Fri, 08 May 2026 05:53:13 -0400
+X-MC-Unique: hAVaLRyBOpORgj2cr-eNQA-1
+X-Mimecast-MFC-AGG-ID: hAVaLRyBOpORgj2cr-eNQA_1778233993
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-44b2b38648eso1428595f8f.3
+        for <netdev@vger.kernel.org>; Fri, 08 May 2026 02:53:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1778233992; x=1778838792; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ClGJlcvL8tePgqMC/W/O2L5Yb8uwFAsbIWgSrr8FGUs=;
+        b=Q7IyCD+CUyZ8g895Wu2sFa3+JI+jqnAcrSDpEd02FBmshjmRKhw/UOhMhCCLVjXn+K
+         ik+Dw30++0HSdM/Rgcsi5q2YaxPlQeHYdIdYD4M4I9wYtj9JC1SeBQeAfjVJkhGpa5qJ
+         rZ0qDOvtBep/Jm6+0Dr1x6VKor6FNRac2SBQiFq6tSydACZRv79xzPT90mCt/BIDLSvr
+         OQFyjdp8ZV0ZWPpEGO2Dj2ON7hCvONU3NYvf8VALzupN6cNSRhO+rY5/nr8TO7h/uHw4
+         HDwgcpEh3KIYXoe5W17H6KI05dU+xUoX1+ICxEVqMRSwio5dq3/WY9Jgvn/xcj1pxPED
+         LW/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778233992; x=1778838792;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ClGJlcvL8tePgqMC/W/O2L5Yb8uwFAsbIWgSrr8FGUs=;
+        b=KRzlssaqkCS7BLyf0zVXPTkHwtuihKoH1Ww4tt9mCuFB+eHM4dlLMOjHHKqtlIPXC+
+         t346S9DKsNssUfJS1lA5diTqm+SMlJKR7wYZWYR6yWZVXTVPo6+FR0Hk/e/t6S9P2WaQ
+         ofQQic7t4wFjym0fvjkJ8I8/UAv26VPR2wPw04NBFq7UOJnSSg41tA0m+ubY32ibpKrq
+         sbkaXhsrOgcBCCw+QGy2oVsxSX5ntzVUE9Wwo9+g27CFVLVHs//0EH8zlurvrG4OXhFm
+         PZdoD6kriNGhRFgAjqCIcs/zpsLcR0/9vO4r+SfLjNotnTp0KamoQKwW0Eiwi3w9TNgX
+         hufg==
+X-Gm-Message-State: AOJu0YwEafpN9VdoG9dzOkdzJpszN9BmYvN6rbaQiK0jLBIK/eyXpI7O
+	WohI3JULO3u9WdCbMvTBIj+91nZ7zHwPW/KRUUjIDVvwz3xg1liBa5EBgpf7AEmb2ROq+mzl45T
+	SrSYGCXqVsWaaxjNlF5qI5WhLAk0Hju2ewfsg+qV97uljgUEEdF3i1QggBZCLmudXYw==
+X-Gm-Gg: Acq92OEo9zz7t52yzSJorWqRg0sozBQqYPXWZl4xcuFDpnbMZNJ2W/OGMWFVTSOK18r
+	ad1zFo9XRnN9F2Of8D3e83zdvBh3qPLWvVa2zgWAKjNVXqnQEsZQXOBNGUUhKW6XqvA40SulLK0
+	stb1pxsBQOE48h6io2aSKT6yLWcCZJNQnFs/zFkO/R1/dAHu4RsaMfDqhaTOLieXKDhD4D2xEJJ
+	UMSc4uqX70VzKRDfjh7pAvBOZkQ6xJGVVI/U3FXX5exvWb0hqYbCB+1aiHpcsLjbV/whD4I1Yk2
+	SHHERjJJJzU40OMI2qVJivdYY4X0fNN7MKsOsl3A7O5jvN3ql0zxrx6Jy64CwEy0XxwAINOUfLB
+	TOhZrWVvOOw/l2wLV/wkpjFfdm85rkGJpFb+MF103
+X-Received: by 2002:a5d:5f48:0:b0:43f:e43a:f4a6 with SMTP id ffacd0b85a97d-4515b056ca6mr18864527f8f.6.1778233991930;
+        Fri, 08 May 2026 02:53:11 -0700 (PDT)
+X-Received: by 2002:a5d:5f48:0:b0:43f:e43a:f4a6 with SMTP id ffacd0b85a97d-4515b056ca6mr18864455f8f.6.1778233991308;
+        Fri, 08 May 2026 02:53:11 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-48-7.inter.net.il. [80.230.48.7])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4548ec6b071sm3110679f8f.14.2026.05.08.02.53.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 May 2026 02:53:10 -0700 (PDT)
+Date: Fri, 8 May 2026 05:53:07 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	virtualization@lists.linux.dev,
+	"David S. Miller" <davem@davemloft.net>,
+	Jason Wang <jasowang@redhat.com>, Simon Horman <horms@kernel.org>,
+	linux-kernel@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, kvm@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>
+Subject: Re: [PATCH net] vsock/virtio: fix skb overhead accounting to
+ preserve full buf_alloc
+Message-ID: <20260508055125-mutt-send-email-mst@kernel.org>
+References: <20260508092330.69690-1-sgarzare@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: starfivetech.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BJXPR01MB0855.CHNPR01.prod.partner.outlook.cn
-X-MS-Exchange-CrossTenant-Network-Message-Id: fe92b3cb-4cf9-4f42-c82a-08deace53310
-X-MS-Exchange-CrossTenant-originalarrivaltime: 08 May 2026 09:35:53.6470
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: fPhtqMwWmuZELTvYQZVLMv1MVPh6G4ZnYVO673BwqOO9KJyH0RsbF1HbE4NThIUJvr30eJFhp/8BseFqfC7Um/32ds8huaPJ1MBoHTzfT2Y=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BJXPR01MB0598
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260508092330.69690-1-sgarzare@redhat.com>
+
+On Fri, May 08, 2026 at 11:23:30AM +0200, Stefano Garzarella wrote:
+> From: Stefano Garzarella <sgarzare@redhat.com>
+> 
+> After commit 059b7dbd20a6 ("vsock/virtio: fix potential unbounded skb
+> queue"), virtio_transport_inc_rx_pkt() subtracts per-skb overhead from
+> buf_alloc when checking whether a new packet fits. This reduces the
+> effective receive buffer below what the user configured via
+> SO_VM_SOCKETS_BUFFER_SIZE, causing legitimate data packets to be
+> silently dropped and applications that rely on the full buffer size
+> to deadlock.
+> 
+> Also, the reduced space is not communicated to the remote peer, so
+> its credit calculation accounts more credit than the receiver will
+> actually accept, causing data loss (there is no retransmission).
+> 
+> This also causes failures in tools/testing/vsock/vsock_test.c.
+> Test 18 sometimes fails, while test 22 always fails in this way:
+>     18 - SOCK_STREAM MSG_ZEROCOPY...hash mismatch
+> 
+>     22 - SOCK_STREAM virtio credit update + SO_RCVLOWAT...send failed:
+>     Resource temporarily unavailable
+> 
+> Fix this by introducing virtio_transport_rx_buf_size() to calculate the
+> size of the RX buffer based on the overhead. Using it in the acceptance
+> check, the advertised buf_alloc, and the credit update decision.
+> Use buf_alloc * 2 as total budget (payload + overhead), similar to how
+> SO_RCVBUF is doubled to reserve space for sk_buff metadata.
+> The function returns buf_alloc as long as overhead fits within the
+> reservation, then gradually reduces toward 0 as overhead exceeds
+> buf_alloc (e.g. under small-packet flooding), informing the peer to
+> slow down.
+> 
+> Fixes: 059b7dbd20a6 ("vsock/virtio: fix potential unbounded skb queue")
+> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
 
 
+unfortunately, this is a bit of a spec violation and there is no guarantee
+it helps.
 
->=20
-> > +static int stmmac_starfive_sgmii_set_clk_rate(void *bsp_priv, struct c=
-lk
-> *clk_tx_i,
-> > +					      phy_interface_t __maybe_unused interface,
-> > +					      int speed)
-> > +{
-> > +	struct starfive_dwmac *dwmac =3D (void *)bsp_priv;
->=20
-> Why (void *) when it is already a void *?
->=20
->     Andrew
->=20
-Okay, Thanks.
+a spec violation because the spec says:
+Only payload bytes are counted and header bytes are not
+included
+
+and the implication is that a side can not reduce its own buf_alloc.
+
+no guarantee because the other side is not required to process your
+packets, so it might not see your buf alloc reduction.
+
+as designed in the current spec, you can only increase your buf alloc,
+not decrease it.
+
+what can be done:
+- more efficient storage for small packets (poc i posted)
+- reduce buf alloc ahead of the time
+
+> ---
+>  net/vmw_vsock/virtio_transport_common.c | 31 +++++++++++++++++++++----
+>  1 file changed, 27 insertions(+), 4 deletions(-)
+> 
+> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+> index 9b8014516f4f..94a4beb8fd61 100644
+> --- a/net/vmw_vsock/virtio_transport_common.c
+> +++ b/net/vmw_vsock/virtio_transport_common.c
+> @@ -444,12 +444,32 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+>  	return ret;
+>  }
+>  
+> +/* vvs->rx_lock held by the caller */
+> +static u32 virtio_transport_rx_buf_size(struct virtio_vsock_sock *vvs)
+> +{
+> +	u64 skb_overhead = (skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0);
+> +	/* Use buf_alloc * 2 as total budget (payload + overhead), similar to
+> +	 * how SO_RCVBUF is doubled to reserve space for sk_buff metadata.
+> +	 */
+> +	u64 total_budget = (u64)vvs->buf_alloc * 2;
+> +
+> +	/* Overhead within buf_alloc: full buf_alloc available for payload */
+> +	if (skb_overhead < vvs->buf_alloc)
+> +		return vvs->buf_alloc;
+> +
+> +	/* Overhead exceeded buf_alloc: gradually reduce to bound skb queue */
+> +	if (skb_overhead < total_budget)
+> +		return total_budget - skb_overhead;
+> +
+> +	return 0;
+> +}
+> +
+>  static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
+>  					u32 len)
+>  {
+> -	u64 skb_overhead = (skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0);
+> +	u32 rx_buf_size = virtio_transport_rx_buf_size(vvs);
+>  
+> -	if (skb_overhead + vvs->buf_used + len > vvs->buf_alloc)
+> +	if (!rx_buf_size || vvs->buf_used + len > rx_buf_size)
+>  		return false;
+>  
+>  	vvs->rx_bytes += len;
+> @@ -472,7 +492,7 @@ void virtio_transport_inc_tx_pkt(struct virtio_vsock_sock *vvs, struct sk_buff *
+>  	spin_lock_bh(&vvs->rx_lock);
+>  	vvs->last_fwd_cnt = vvs->fwd_cnt;
+>  	hdr->fwd_cnt = cpu_to_le32(vvs->fwd_cnt);
+> -	hdr->buf_alloc = cpu_to_le32(vvs->buf_alloc);
+> +	hdr->buf_alloc = cpu_to_le32(virtio_transport_rx_buf_size(vvs));
+>  	spin_unlock_bh(&vvs->rx_lock);
+>  }
+>  EXPORT_SYMBOL_GPL(virtio_transport_inc_tx_pkt);
+> @@ -594,6 +614,7 @@ virtio_transport_stream_do_dequeue(struct vsock_sock *vsk,
+>  	bool low_rx_bytes;
+>  	int err = -EFAULT;
+>  	size_t total = 0;
+> +	u32 rx_buf_size;
+>  	u32 free_space;
+>  
+>  	spin_lock_bh(&vvs->rx_lock);
+> @@ -639,7 +660,9 @@ virtio_transport_stream_do_dequeue(struct vsock_sock *vsk,
+>  	}
+>  
+>  	fwd_cnt_delta = vvs->fwd_cnt - vvs->last_fwd_cnt;
+> -	free_space = vvs->buf_alloc - fwd_cnt_delta;
+> +	rx_buf_size = virtio_transport_rx_buf_size(vvs);
+> +	free_space = rx_buf_size > fwd_cnt_delta ?
+> +		     rx_buf_size - fwd_cnt_delta : 0;
+>  	low_rx_bytes = (vvs->rx_bytes <
+>  			sock_rcvlowat(sk_vsock(vsk), 0, INT_MAX));
+>  
+> -- 
+> 2.54.0
+
