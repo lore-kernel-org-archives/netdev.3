@@ -1,33 +1,33 @@
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E6F83ECBD4
-	for <netdev@vger.kernel.org>; Fri,  8 May 2026 15:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E7933F2110
+	for <netdev@vger.kernel.org>; Fri,  8 May 2026 15:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778255018; cv=none; b=eKEcE289OUi2CLcTvj6IBclqBoYftoYEDfzNd08z7JnD/CLqyAW4l3UVMWSEWJ6Zzv+uXgRfGJdi/BTtzY/wfdAyFEBSTPZbEekdv0FjUmkbBKAyK74DLfkAAEbCNvz4MQ2del+qKoD0Jh1zgCaHgRF+j3lgHDFkYFxAK2cr+5U=
+	t=1778255019; cv=none; b=LCdRv/57P9b4k7kznz5jPCUGDpmUTLfrucwccpHyFAeqCkaGYtCIkS1vooyYav0Cax/s7QjnYRtjTg4MIKfJaqPe8aoT2OX+3x3Sx9rMM9NoyN5rv/3YmclHu6IIYs9UdYiWWWVKxOKULJGag/DKTc0/1byxHEONYP8+XJvdLW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778255018; c=relaxed/simple;
-	bh=aM96A/PwexjmIOEwzQZrcCaq75cyO/pwf1gKvG3DcK4=;
+	s=arc-20240116; t=1778255019; c=relaxed/simple;
+	bh=HMkUWeQX9FSZ8Awke4lJ+bZaxsMKQ1spLqNUHqMZh54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d/GOlvUdD9d1TSpGjr2+O2dpXB7Pc196QCHxOOZ5iEWCvxqOOiPgYiqGqEcuE4otBEyfFGnwYU4T+c+qwgDVzvJ4emYIArvXm1DxH2NQlGNET+l7tqr32Rmt+G6ubjKqnK1JtAHyhmHb9608OD7TgTEF4KTRTN9Ex7SN1s3Q/us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=GRrctEcg; arc=none smtp.client-ip=23.88.38.48
+	 MIME-Version; b=D/XoGTXKcsBEcxSvgIuLeanouE0skAH7CCBRpnEx5ogcrSgRWqlGvMfA3GLeO/ba7s+g2TMbUV1JIB8e1BaI6uAX2TM9Bf8kZYl/lQxx4eZ69yNECUbqjjdhKdYGEIK5oganxwvvfmrAp2UPdjb72x4VYhzG/mH+Ltq8a7N050M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=HekLV+e3; arc=none smtp.client-ip=23.88.38.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="GRrctEcg"
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="HekLV+e3"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1778255012;
+	s=09092022; t=1778255014;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=gT0WzvsqKfNLDNGa8/igrkbGhshlJ0I9ZNwvbkIgM3Y=;
-	b=GRrctEcgVJDPJ99svo8+dnPotaofCSBXBk/gSWYVq1f9CT5kApRniSZH1+q6+kNvzPI3aE
-	UsYAEEGLEywUaWtnfW64x/rhY4lcFuBf7j16xij9I5AzgEK59Zy1e4vNjgs4LIauGnZBAD
-	5y8YUH8DXA+biMYB4oHMVd8Zwk5nIomaip40JJeTei4LEDs+ottKnF9oEKiTapD25/QxfS
-	xPtavNgHeTDUzTR39H27DgdsqNA+C3gDpPe45Ns0jnsSrA5PLcjYccLEs1QoQ9hZyHN5NG
-	KiPxWSoQz/I/4VMoTraUjpLxEgoZIddlCMDPG04OY2rT58r8AQvwfX1+kq5F4w==
+	bh=t2WVnKodF7OA43BNZg/AbdNpLnEVxLugYisgg7uXA3A=;
+	b=HekLV+e3twos4FvXcDO/PZmGKBhyVJ5u+/IWhNtiWCQeyYwvIYa6Bya9gdOVId7tQ3ZFMW
+	HibHj3QhsCoq2OpA19T7ED93XQuJbrTiiYIFaRv4TA3SaIOiFKKEsUqY53yrkzKuRSkCAL
+	CAxgIg+tCpM+31PzcQ8LfvIAr0VqnjUl8xGxmfwubFMKc1rGE1Gwx7RPqAPK2E/ShpUYx+
+	pjIYgJ/ZadC+RfWwEtPsJkyvZOuQQ2wpBgMoVpy7B25Y8X03fYbSYHaF4rG6Vd5qT5i2I3
+	7RzMIv6AncAu1KKdUy2/TeIk7LqVECu71CRaa2un37U+oviBx/K8Eq3UQpVzvw==
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -39,9 +39,9 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Sven Eckelmann <sven@narfation.org>,
 	stable@kernel.org,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net 6/8] batman-adv: bla: prevent use-after-free when deleting claims
-Date: Fri,  8 May 2026 17:43:12 +0200
-Message-ID: <20260508154314.12817-7-sw@simonwunderlich.de>
+Subject: [PATCH net 8/8] batman-adv: bla: put backbone reference on failed claim hash insert
+Date: Fri,  8 May 2026 17:43:14 +0200
+Message-ID: <20260508154314.12817-9-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260508154314.12817-1-sw@simonwunderlich.de>
 References: <20260508154314.12817-1-sw@simonwunderlich.de>
@@ -55,37 +55,31 @@ Content-Transfer-Encoding: 8bit
 
 From: Sven Eckelmann <sven@narfation.org>
 
-When batadv_bla_del_backbone_claims() removes all claims for a backbone, it
-does this by dropping the link entry in the hash list. This list entry
-itself was one of the references which need to be dropped at the same time
-via batadv_claim_put().
-
-But the batadv_claim_put() must not be done before the last access to the
-claim object in this function. Otherwise the claim might be freed already
-by the batadv_claim_release() function before the list entry was dropped.
+When batadv_bla_add_claim() fails to insert a new claim into the hash, it
+leaked a reference to the backbone_gw for which the claim was intended.
+Call batadv_backbone_gw_put() on the error path to release the reference
+and avoid leaking the backbone_gw object.
 
 Cc: stable@kernel.org
-Fixes: 23721387c409 ("batman-adv: add basic bridge loop avoidance code")
+Fixes: 3db0decf1185 ("batman-adv: Fix non-atomic bla_claim::backbone_gw access")
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 ---
- net/batman-adv/bridge_loop_avoidance.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/batman-adv/bridge_loop_avoidance.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/net/batman-adv/bridge_loop_avoidance.c b/net/batman-adv/bridge_loop_avoidance.c
-index 51fe028b90881..8b77dd2ecfa41 100644
+index 879ab043d57a9..cec11f1251d66 100644
 --- a/net/batman-adv/bridge_loop_avoidance.c
 +++ b/net/batman-adv/bridge_loop_avoidance.c
-@@ -318,8 +318,8 @@ batadv_bla_del_backbone_claims(struct batadv_bla_backbone_gw *backbone_gw)
- 			if (claim->backbone_gw != backbone_gw)
- 				continue;
+@@ -723,6 +723,7 @@ static void batadv_bla_add_claim(struct batadv_priv *bat_priv,
  
--			batadv_claim_put(claim);
- 			hlist_del_rcu(&claim->hash_entry);
-+			batadv_claim_put(claim);
+ 		if (unlikely(hash_added != 0)) {
+ 			/* only local changes happened. */
++			batadv_backbone_gw_put(backbone_gw);
+ 			kfree(claim);
+ 			return;
  		}
- 		spin_unlock_bh(list_lock);
- 	}
 -- 
 2.47.3
 
