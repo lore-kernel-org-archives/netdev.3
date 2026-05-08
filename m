@@ -1,265 +1,139 @@
-Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f193.google.com (mail-pl1-f193.google.com [209.85.214.193])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 665683FAE14;
-	Fri,  8 May 2026 15:11:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A1023FB7F1
+	for <netdev@vger.kernel.org>; Fri,  8 May 2026 15:15:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778253077; cv=none; b=aqkmVPNt9o+NfMGQtTmon/7v8Fa8aMtI6YAh3HjigoBtzvs1XWc9j9A3/hOvtRJgPQE+QbgcqXwm+2BQykRAQVPmFo881hYGf29YWYoTxJYPx38yFo9Ip9W7Vzq/VrsrCo9zDuIWnefOiYgqIcLtZdgy8i5iefSTDdDv7ruKRf8=
+	t=1778253349; cv=none; b=WkmNl5tTGWk6SoBtz3wdcxevoinnUd+ljgCcftU+uDs1++Jh0N45p9CW4EQqHaTj3rqhkdk5wuMDlJ/3VGf3c7b+yTw+55rS+Y9qf7p5wJ9wV78sqpNrtoEF8cPxiXbPejO/tRiiBe45g7CD6MHFbKiBiKEiST4upDcaOilLWgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778253077; c=relaxed/simple;
-	bh=I2O0T2eYFulZKylEoO0v4gBamN5yaUKK+tD29ErWUNQ=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oQKotYkHPCHvtNmIROwvDWNa1j21JkjKIBmZyR5vfMNpDMNtaYzuCJFV83GTDZQOG8qvBEILobGy07gAJ+KbV2JHP6ZXOjOeo1q52d4V0KrkdwkeYcyvjEsDMI7wLi6n6Wy1efWxc2k3sVVRgolR6+PeVNUfl/Edb6STVyOoiiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b=q1tZP+Dk; arc=none smtp.client-ip=129.217.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
+	s=arc-20240116; t=1778253349; c=relaxed/simple;
+	bh=QTCFy54J5oT0q57ktVfbNPWs/6RQUoT+/yIYyo5bzkQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PTgP1ab8OjrPTHWGNtXbveeW19VkRxb3TeBHYCxMVhYk9P/F+1LdM/QrXhqhwxnUWX3gshn5uGSH60of56dADaqggKvpmAKN4MEeWPwX7tNiJwl7wvCnXrttD362TR/BeZ+ocAhQRI8wJKLwgmlhQKe51soj+LPZ5tMoWY/5D/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ir6HEYxu; arc=none smtp.client-ip=209.85.214.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b="q1tZP+Dk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tu-dortmund.de;
-	s=unimail; t=1778253064;
-	bh=I2O0T2eYFulZKylEoO0v4gBamN5yaUKK+tD29ErWUNQ=;
-	h=From:To:Subject:Date:In-Reply-To:References;
-	b=q1tZP+DkfNZfNBIU3ATSMuh9IeG+zoDcPPjaBULS4ITMq9KnFun29T0bwcY3dX4kR
-	 gU1sozq2l1nudBz8M2IU/dqyjz+62XyrvOg5ITrVKi7vSaYXi9SnxnZB6O+V/+3QHh
-	 9adeXhR3KQEpFS/rsQ0/euiAIpRNLWvYbBlPaM18=
-Received: from simon-Latitude-5450.cni.e-technik.tu-dortmund.de ([129.217.186.131])
-	(authenticated bits=0)
-	by unimail.uni-dortmund.de (8.19.0.1/8.19.0.1) with ESMTPSA id 648FB26u013311
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 8 May 2026 17:11:04 +0200 (CEST)
-From: Simon Schippers <simon.schippers@tu-dortmund.de>
-To: willemdebruijn.kernel@gmail.com, jasowang@redhat.com,
-        andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, mst@redhat.com,
-        eperezma@redhat.com, leiyang@redhat.com, stephen@networkplumber.org,
-        jon@nutanix.com, tim.gebauer@tu-dortmund.de,
-        simon.schippers@tu-dortmund.de, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        virtualization@lists.linux.dev
-Subject: [PATCH net-next v11 1/4] tun/tap: add ptr_ring consume helper with netdev queue wakeup
-Date: Fri,  8 May 2026 17:10:45 +0200
-Message-ID: <20260508151048.183125-2-simon.schippers@tu-dortmund.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260508151048.183125-1-simon.schippers@tu-dortmund.de>
-References: <20260508151048.183125-1-simon.schippers@tu-dortmund.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ir6HEYxu"
+Received: by mail-pl1-f193.google.com with SMTP id d9443c01a7336-2ad4d639db3so11372435ad.0
+        for <netdev@vger.kernel.org>; Fri, 08 May 2026 08:15:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778253346; x=1778858146; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Oaliql9sqskgI8tL8intOqmIn9GbCLcLJL3l5R2zxMM=;
+        b=Ir6HEYxuF1jD8KFdAzUHcMEimZ1BXDVOpgBTRRLDBQirqFxoxf361jYpidJsQ9+zk6
+         0uDJWJWY85YTTLH/YGn9IV9VY4EYlStRliUCAjGUoUNZoN/kQXEQmEzmNtQnOIlrsXCb
+         LtGV/5HRS8STmeFefz6uu1yy/7PgnHL3j+NUs8AjFq9LzR+6AllyiO+36ADvCT/VtGVw
+         bzK26DRnZvGWCWohogjVOanoEIDlqvnjmgR6SbCf2NeI38l2N2xa3J8tBFuNsj+C9HTp
+         xmYjgEl5XpBBj/F+PUBsvlx1Npiq4FILa+ZpSV73OE1v3nnqIR3JOSCzWOEZypYGhlNM
+         nlmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778253346; x=1778858146;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Oaliql9sqskgI8tL8intOqmIn9GbCLcLJL3l5R2zxMM=;
+        b=B8OcVQR9jCakgUnGXmEvaZLi3R8GdoF7Y4JwctDb5mVCG1pfkz1lRYTrWPNIbbDG2s
+         70whIJCVMSMnTxpHHlAtqZglft2UcRN2wf63Af4jz5Cjsbl/KuuwYHptkQ3OUH5X/Dbd
+         19lTXmIX5z4e3SpA6XRjjREqmZ5Erqqh0ty8QBHdBAvKlidbqMT7dakIMbxGGFHAtCW8
+         sMK3Yj3GPeILNW76QICAdRbhZvpo3AWdws+J/IiQFJBvjJ4kAwkbGQOLslWr9FYQ0d1Y
+         pyZ18AlZTQ1llHV2kVAnUt5ALU4ujzNqfBD89EY4BaId8Mz5+wrFcvAGEpA4JLJM0yQJ
+         9twQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8xjK6VkCnPKOqoWdgEMPNqeTI5W03+Wzn+SNv3s5I8qOVRu8rcoIANsn8Bhoax/Hz1wT3yprY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxm0WFj9Zq2awFUDRGQz2YUugfp/RZLxb04+pYpADk3zjx8NH1D
+	myjbIj8X/CjenXbKvNloAAMf9yQA/fcO985SHX4skXYs3cGsZTnOcV43
+X-Gm-Gg: Acq92OGr1Cqv9vKW709UT/yuVEIKveYPq8/Iisz665rrhXaFs73j6KaXiCPXVwnpFo9
+	luDU6uFXAu4GM9Pu+VEKBMSqLYN6HZpzVjDzO3h7tPaKu3bT6Fq6ocNpoMwsTQ/Jjgji9vcsgkv
+	bUJpx9myuQwpDcL0aTFyBGrNXumjL2CNOrtBA1uGq1P6xyNCOzuHbLDhREb1YUyPOSKNelJ7vf9
+	XAo9kqklfDKtt1QBzjNksT+6iVNq4B7Ym1pD+0K0wNqKTooZMhGA9/aiD+X2/pPf7/8rg7Liglh
+	hn3V7ipCDstclCqnKVLC672xEwQ/2BDt7PLSV0emwQp/NaYSzq6XFph7MqG/chC/UX1EaMSL3JQ
+	vn4wgLDZXjyeofCAMXp5ssALtPm+B0/e/Blku+GiRXasaQ3PeZ/EXkNc8E+0hUHuf+Xt351/59G
+	v6eJX+ZQtDI25dyoyx0xqK/asQ29o=
+X-Received: by 2002:a17:902:8b84:b0:2b4:6d92:b002 with SMTP id d9443c01a7336-2ba7a343404mr94812295ad.37.1778253346416;
+        Fri, 08 May 2026 08:15:46 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:72::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2baf1ec232esm26222665ad.81.2026.05.08.08.15.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 May 2026 08:15:45 -0700 (PDT)
+Date: Fri, 8 May 2026 08:15:45 -0700
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Yonghong Song <yonghong.song@linux.dev>, 
+	John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, 
+	Eric Dumazet <edumazet@google.com>, Neal Cardwell <ncardwell@google.com>, 
+	Willem de Bruijn <willemb@google.com>, Tenzin Ukyab <ukyab@berkeley.edu>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, bpf@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v1 bpf-next 3/8] bpf: tcp: Support bpf_skb_load_bytes()
+ for BPF_SOCK_OPS_RCVLOWAT_CB.
+Message-ID: <af390TgIj5sDABvi@devvm7509.cco0.facebook.com>
+References: <20260508073355.3916746-1-kuniyu@google.com>
+ <20260508073355.3916746-4-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260508073355.3916746-4-kuniyu@google.com>
 
-Introduce tun_ring_consume() that wraps ptr_ring_consume() and calls
-__tun_wake_queue(). The latter wakes the stopped netdev subqueue once
-half of the ring capacity has been consumed, tracked via the new
-cons_cnt field in tun_file. As a safety net, the queue is also woken on
-the last consumed entry if it leaves the ring empty. The point is to
-allow the queue to be stopped when it gets full, which is required for
-traffic shaping - implemented by the following "avoid ptr_ring tail-drop
-when a qdisc is present".
+On 05/08, Kuniyuki Iwashima wrote:
+> When a TCP skb is queued to sk->sk_receive_queue, BPF SOCK_OPS
+> prog can be called with BPF_SOCK_OPS_RCVLOWAT_CB.
+> 
+> In this hook, we want to parse the RPC descriptor in the skb
+> and adjust sk->sk_rcvlowat based on the RPC frame size.
+> 
+> However, we cannot access payload via bpf_sock_ops.data on
+> modern NICs with TCP header/data split on as the payload is
+> not placed in the linear area.
+> 
+> Let's support bpf_skb_load_bytes() for BPF_SOCK_OPS_RCVLOWAT_CB.
+> 
+> Two notes:
+> 
+>   1) bpf_sock_ops_kern.skb will be NULL when the BPF prog is
+>       invoked from recvmsg().
+> 
+>   2) Access to bpf_sock_ops.data will be disabled by passing
+>       0 end_offset to bpf_skops_init_skb().
+> 
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+> ---
+>  net/core/filter.c | 34 ++++++++++++++++++++++++++++++++++
+>  1 file changed, 34 insertions(+)
+> 
+> diff --git a/net/core/filter.c b/net/core/filter.c
+> index 5fa9189eb772..94d07a15b2ab 100644
+> --- a/net/core/filter.c
+> +++ b/net/core/filter.c
+> @@ -7718,6 +7718,38 @@ static const struct bpf_func_proto bpf_sk_assign_proto = {
+>  	.arg3_type	= ARG_ANYTHING,
+>  };
+>  
+> +BPF_CALL_4(bpf_sock_ops_skb_load_bytes, struct bpf_sock_ops_kern *, bpf_sock,
+> +	   u32, offset, void *, to, u32, len)
+> +{
+> +	int err;
+> +
+> +	if (bpf_sock->op != BPF_SOCK_OPS_RCVLOWAT_CB) {
+> +		err = -EOPNOTSUPP;
+> +		goto err_clear;
+> +	}
+> +
+> +	if (!bpf_sock->skb) {
+> +		err = -EPERM;
+> +		goto err_clear;
+> +	}
+> +
+> +	return ____bpf_skb_load_bytes(bpf_sock->skb, offset, to, len);
 
-Some implementation details:
-- tun_ring_recv() replaces ptr_ring_consume() with tun_ring_consume()
-  to properly wake the queue on purge.
-- tun_queue_purge() also replaces ptr_ring_consume()
-  with tun_ring_consume().
-- __tun_detach() locks the tx_ring.consumer_lock to avoid races with
-  the consumer on the queue_index.
-- Reset cons_cnt in tun_attach() so the half-ring wake threshold is
-  valid for the new ring size after ptr_ring_resize().
-- The upcoming patch explains the pairing of the smp_mb() of
-  __tun_wake_queue().
-- tun_queue_resize() wakes all queues after resizing with the proper
-  tx_ring.consumer_lock and resets the cons_cnt to avoid a possible
-  stale queue.
-
-Without the corresponding queue stopping, this patch alone causes no
-regression for a tap setup sending to a qemu VM: 1.132 Mpps
-to 1.134 Mpps.
-
-Details: AMD Ryzen 5 5600X at 4.3 GHz, 3200 MHz RAM, isolated QEMU
-threads, pktgen sender; Avg over 50 runs @ 100,000,000 packets;
-SRSO and spectre v2 mitigations disabled.
-
-Co-developed-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
-Signed-off-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
-Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
----
- drivers/net/tun.c | 73 +++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 64 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index b183189f1853..b24cc899a890 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -145,6 +145,8 @@ struct tun_file {
- 	struct list_head next;
- 	struct tun_struct *detached;
- 	struct ptr_ring tx_ring;
-+	/* Protected by tx_ring.consumer_lock */
-+	int cons_cnt;
- 	struct xdp_rxq_info xdp_rxq;
- };
- 
-@@ -557,11 +559,43 @@ void tun_ptr_free(void *ptr)
- }
- EXPORT_SYMBOL_GPL(tun_ptr_free);
- 
--static void tun_queue_purge(struct tun_file *tfile)
-+/* Callers must hold ring.consumer_lock */
-+static void __tun_wake_queue(struct tun_struct *tun,
-+			     struct tun_file *tfile, int consumed)
-+{
-+	struct netdev_queue *txq = netdev_get_tx_queue(tun->dev,
-+						tfile->queue_index);
-+
-+	/* Paired with smp_mb__after_atomic() in tun_net_xmit() */
-+	smp_mb();
-+	if (netif_tx_queue_stopped(txq)) {
-+		tfile->cons_cnt += consumed;
-+		if (tfile->cons_cnt >= tfile->tx_ring.size / 2 ||
-+		    __ptr_ring_empty(&tfile->tx_ring)) {
-+			netif_tx_wake_queue(txq);
-+			tfile->cons_cnt = 0;
-+		}
-+	}
-+}
-+
-+static void *tun_ring_consume(struct tun_struct *tun, struct tun_file *tfile)
-+{
-+	void *ptr;
-+
-+	spin_lock(&tfile->tx_ring.consumer_lock);
-+	ptr = __ptr_ring_consume(&tfile->tx_ring);
-+	if (ptr)
-+		__tun_wake_queue(tun, tfile, 1);
-+
-+	spin_unlock(&tfile->tx_ring.consumer_lock);
-+	return ptr;
-+}
-+
-+static void tun_queue_purge(struct tun_struct *tun, struct tun_file *tfile)
- {
- 	void *ptr;
- 
--	while ((ptr = ptr_ring_consume(&tfile->tx_ring)) != NULL)
-+	while ((ptr = tun_ring_consume(tun, tfile)) != NULL)
- 		tun_ptr_free(ptr);
- 
- 	skb_queue_purge(&tfile->sk.sk_write_queue);
-@@ -588,8 +622,10 @@ static void __tun_detach(struct tun_file *tfile, bool clean)
- 		rcu_assign_pointer(tun->tfiles[index],
- 				   tun->tfiles[tun->numqueues - 1]);
- 		ntfile = rtnl_dereference(tun->tfiles[index]);
-+		spin_lock(&ntfile->tx_ring.consumer_lock);
- 		ntfile->queue_index = index;
- 		ntfile->xdp_rxq.queue_index = index;
-+		spin_unlock(&ntfile->tx_ring.consumer_lock);
- 		rcu_assign_pointer(tun->tfiles[tun->numqueues - 1],
- 				   NULL);
- 
-@@ -605,7 +641,7 @@ static void __tun_detach(struct tun_file *tfile, bool clean)
- 		synchronize_net();
- 		tun_flow_delete_by_queue(tun, tun->numqueues + 1);
- 		/* Drop read queue */
--		tun_queue_purge(tfile);
-+		tun_queue_purge(tun, tfile);
- 		tun_set_real_num_queues(tun);
- 	} else if (tfile->detached && clean) {
- 		tun = tun_enable_queue(tfile);
-@@ -670,14 +706,14 @@ static void tun_detach_all(struct net_device *dev)
- 		tfile = rtnl_dereference(tun->tfiles[i]);
- 		tun_napi_del(tfile);
- 		/* Drop read queue */
--		tun_queue_purge(tfile);
-+		tun_queue_purge(tun, tfile);
- 		xdp_rxq_info_unreg(&tfile->xdp_rxq);
- 		sock_put(&tfile->sk);
- 	}
- 	list_for_each_entry_safe(tfile, tmp, &tun->disabled, next) {
- 		tun_napi_del(tfile);
- 		tun_enable_queue(tfile);
--		tun_queue_purge(tfile);
-+		tun_queue_purge(tun, tfile);
- 		xdp_rxq_info_unreg(&tfile->xdp_rxq);
- 		sock_put(&tfile->sk);
- 	}
-@@ -687,6 +723,13 @@ static void tun_detach_all(struct net_device *dev)
- 		module_put(THIS_MODULE);
- }
- 
-+static void tun_reset_cons_cnt(struct tun_file *tfile)
-+{
-+	spin_lock(&tfile->tx_ring.consumer_lock);
-+	tfile->cons_cnt = 0;
-+	spin_unlock(&tfile->tx_ring.consumer_lock);
-+}
-+
- static int tun_attach(struct tun_struct *tun, struct file *file,
- 		      bool skip_filter, bool napi, bool napi_frags,
- 		      bool publish_tun)
-@@ -730,6 +773,7 @@ static int tun_attach(struct tun_struct *tun, struct file *file,
- 		goto out;
- 	}
- 
-+	tun_reset_cons_cnt(tfile);
- 	tfile->queue_index = tun->numqueues;
- 	tfile->socket.sk->sk_shutdown &= ~RCV_SHUTDOWN;
- 
-@@ -2115,13 +2159,14 @@ static ssize_t tun_put_user(struct tun_struct *tun,
- 	return total;
- }
- 
--static void *tun_ring_recv(struct tun_file *tfile, int noblock, int *err)
-+static void *tun_ring_recv(struct tun_struct *tun, struct tun_file *tfile,
-+			   int noblock, int *err)
- {
- 	DECLARE_WAITQUEUE(wait, current);
- 	void *ptr = NULL;
- 	int error = 0;
- 
--	ptr = ptr_ring_consume(&tfile->tx_ring);
-+	ptr = tun_ring_consume(tun, tfile);
- 	if (ptr)
- 		goto out;
- 	if (noblock) {
-@@ -2133,7 +2178,7 @@ static void *tun_ring_recv(struct tun_file *tfile, int noblock, int *err)
- 
- 	while (1) {
- 		set_current_state(TASK_INTERRUPTIBLE);
--		ptr = ptr_ring_consume(&tfile->tx_ring);
-+		ptr = tun_ring_consume(tun, tfile);
- 		if (ptr)
- 			break;
- 		if (signal_pending(current)) {
-@@ -2170,7 +2215,7 @@ static ssize_t tun_do_read(struct tun_struct *tun, struct tun_file *tfile,
- 
- 	if (!ptr) {
- 		/* Read frames from ring */
--		ptr = tun_ring_recv(tfile, noblock, &err);
-+		ptr = tun_ring_recv(tun, tfile, noblock, &err);
- 		if (!ptr)
- 			return err;
- 	}
-@@ -3622,6 +3667,16 @@ static int tun_queue_resize(struct tun_struct *tun)
- 					  dev->tx_queue_len, GFP_KERNEL,
- 					  tun_ptr_free);
- 
-+	if (!ret) {
-+		for (i = 0; i < tun->numqueues; i++) {
-+			tfile = rtnl_dereference(tun->tfiles[i]);
-+			spin_lock(&tfile->tx_ring.consumer_lock);
-+			netif_wake_subqueue(tun->dev, tfile->queue_index);
-+			tfile->cons_cnt = 0;
-+			spin_unlock(&tfile->tx_ring.consumer_lock);
-+		}
-+	}
-+
- 	kfree(rings);
- 	return ret;
- }
--- 
-2.43.0
-
+nit: wondering whether it's better to use __bpf_skb_load_bytes (which
+wraps BPF_CALL_4's ____bpf_skb_load_bytes) here? Seems a bit less
+magic and used already by dynptr?
