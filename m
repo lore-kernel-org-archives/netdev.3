@@ -1,190 +1,257 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f42.google.com (mail-vs1-f42.google.com [209.85.217.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B663CF671
-	for <netdev@vger.kernel.org>; Fri,  8 May 2026 15:58:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A02B33D3339
+	for <netdev@vger.kernel.org>; Fri,  8 May 2026 16:11:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778255938; cv=none; b=SP/iJ6FFqG5OWvIuJedQl9MRXXCz/leiTql0LKreeKLif8CyDi7aQJ/+turmtr0/x61/GG7IKIDOnGiAXHkkxDtnK3HK6x5P2PfAI3iqyANy9lOQ+NAsaSCFSgqmJktRspkNunJOo038Wk1P1gNQhpPjHnHgqLMagKrMfaSXGS4=
+	t=1778256682; cv=none; b=l+SWOhJD1djTRxFwxDIaBzeqeSJzqXoJjuK39l5aEnrmRSsVqb4yZbDWzI200fgcajE10DicIop5/reeBEv8G11BUFo3txj6Ej0fV3SWuVXsxv6qlhWeJ06qsbgx3uurhp5EmVrcm4L/8tIosFLPiV58pVR31JFXM2E7zTlDddA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778255938; c=relaxed/simple;
-	bh=4F7maXO0a9FkT9euxBuc8PxcpOM2bW3TZJpMRTTqC3w=;
+	s=arc-20240116; t=1778256682; c=relaxed/simple;
+	bh=H6Z+8CT3KjwWjNMFY6XYXNpX9S3GKUwrUsjc+V6VlCE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=omloMPbX6z8QMPv1GwGxjCntJvWn/IxZ6q0KHEyI0pUVYZhwpxmvCdkNcyqZdeBRfmujGsmhu+syib2wNoTUoYFOPAPY6UF+7ok0Wm0uYyKDGF7oHXvXHqMUN6uoY7K9HuodpoWQgy0qeLmAe+w2GsayQkVvKiygFk64cPizYuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YzvUgbr7; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=cWfezEw0; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=lk+OX9umkJHZL0zeHRwQTo9/9CJJKBxhkZdZoLF0Qvhyohfzf7jaCiHC+PDpnqirIigvcEW/3M+d419YPTN+t0K0ua+20G9gmRCy0d5wSrpkqc7KQqpQX38WehWc8sGaTr5eO0WT2fsV3FIGNGDjlDaxH2+3KDW41W/RpBqjZuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GqbVe/7Y; arc=none smtp.client-ip=209.85.217.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YzvUgbr7";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="cWfezEw0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778255929;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Gt9PkZ1udEZB7A5kTfc6cLitnqLtrOlHUOEwVlvJ/vE=;
-	b=YzvUgbr7oOL7kNHXFkflXdraEvyM5AwgBrrWC23MfbZXtg3XTqy17DivbbWw5D7q08KJGB
-	hhrFFUudUfAX0Dh/6wmB/3J1O05sIfoUZJPCiSUtKvJkYc+eXuMYdvVkNLfUmYpL+GfAna
-	NwSrB5fzdwDGJ7K85ZA5GMD6IyKyf3g=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-375-pHK5sepxNAyRCojP_9p8mQ-1; Fri, 08 May 2026 11:58:47 -0400
-X-MC-Unique: pHK5sepxNAyRCojP_9p8mQ-1
-X-Mimecast-MFC-AGG-ID: pHK5sepxNAyRCojP_9p8mQ_1778255927
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-4518f777225so1406962f8f.1
-        for <netdev@vger.kernel.org>; Fri, 08 May 2026 08:58:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GqbVe/7Y"
+Received: by mail-vs1-f42.google.com with SMTP id ada2fe7eead31-6313c800372so684386137.0
+        for <netdev@vger.kernel.org>; Fri, 08 May 2026 09:11:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1778255926; x=1778860726; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Gt9PkZ1udEZB7A5kTfc6cLitnqLtrOlHUOEwVlvJ/vE=;
-        b=cWfezEw0FCvu+CqDWzSBR2snnV9vd5blKlgtKebCOl5J8NJ/L9CWTG7A4n8zkj287B
-         lGas1OdPtyjXgm2mFzfTcT9HVonoxyGx7Vr/3POpFcdTh9PLL7+w5GtcUEpV1lRp72YJ
-         D27HP98xD3BvdyjTCbs48VE/PIqh/YEvPjYvvLgv3d/RkV3Kuf2DAbeIYGcZP2ULJBtN
-         tRY2Qm+vdCLaFeeBFsIWz75Clf2Sk+Dy/YwGe15BPbtdzSNHtECDkkrJUtQQt5KGmCbN
-         G5C+42PmzKb1kp06zNG423a6kXtP3sjJI13imUWzi5FbAD41JzpG2emXMiB+TBerpbPR
-         iz2w==
+        d=gmail.com; s=20251104; t=1778256679; x=1778861479; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=6vdBcradM8S03iinDWnSXeMPjIWLpbzTHbnVlnltxq4=;
+        b=GqbVe/7YgabRsfx+ARki2K+jqMFHzQAg5niJlng8/wpcze/h3pTF4SoatmMJPyHB7D
+         /qNTHu1lVyE7mH9yKgbdm4ooIC2WUCq3XMpaXC6iH4j5k/vDldGibNvEIqbVNdLxqiPi
+         YH9fqJiGwTGW11itHd7LpOvvPKE1KAXrZK+HUNX6ClakxuHMEw1TnirPzvAhClx7ngGa
+         QtNxIliGYzFR29HuAe1iYaPfpSiaUrMr4e92u35Ne0L/R9XWJpz7nJxbNXKfGFNmiofw
+         QuowoaDCgsZ7lo7H+UD3MPNCMkZKODcRWgr3UT8n2AnLaBFagpAprzK5tjrQKe1dT9Kj
+         d1Kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778255926; x=1778860726;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Gt9PkZ1udEZB7A5kTfc6cLitnqLtrOlHUOEwVlvJ/vE=;
-        b=KKp08VX/QFVKEu7qHxpQoQAaWsxf8NAUwHRy8c8y1Ep4ZG8GJfygVuAieqtJe7lWUm
-         bm67wCBN6Va7HnuxI3sBDsZb9JQd02R232Y96AYKkvfy8+V21LBjygK/9nfJMzhsEI3q
-         lUw83k0qvFaVZRwIMCfT1WRJBWdOZ9F9q9iq5rjNYAnfDqUSNzH4whALZszbbXSJZqnD
-         EEc5hyi42Q6th7WU3cx8ksSb8mt15fzdpP/NcngcGWtSzl9oNWpssB7dhNq1XCiCkCfa
-         fIl3FE2FHTYL/Q9olAeyLKgS64TUrfCYSJ9bbGnfVHkB0wuvB1BUnLYkHTKXwV74/RaX
-         g6zw==
-X-Forwarded-Encrypted: i=1; AFNElJ/OZXWXL/FHbadae0aSWqrklXFThbRtndYTIBdahZBN/bP5f0DHkxyGBTEIZ6xnsMKuPU+gp1g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwztlvfRaRnSjOMN0u6NQ6fx+vR2NlJb5gyMm04uDUVY/07afCN
-	LvyuH0d0ucbq1l1edi7kxywySgyyxmBC4YUm3mIaI49SEI0LF9wyy3hviUj7IQPEtcIlBiJH0BH
-	ED5QmTRNHrGgLQciwNR4os1xuTgVui2T9ZLlhXKGjhRZmz91jJ08HN0j4uQ==
-X-Gm-Gg: Acq92OExZl9FoOr+B65LIi5f8fgFI0l0/HCeI3+Af+2L+HcdCpu2WgNhF1EQwyJajmH
-	jQfBUGbKEf/aA06CO85PVTU9O/JzK97U0ZtPHUlVaqgHxnxErFvMRYnnQMXSJVFvNosa3KLProC
-	m0n8JYL80t3dGE43cNBnNW9NHh/B2fbzyYr8UpC7vFVf3fOXJgyVg6T/djRyk03QiVYgLC3DPd9
-	4pacta/TJ/aoBr0G4/mHLPjj5omoLERSSlpP5uYYhR7Cghz6Th/TqMMgMwOZJbqoKZWeExTHvj8
-	pxWzKbDM57ucQt2bsL8rKTSzrDnMepKV/9QZZIoKn00RWS8YtOvXPzxPhFTRtBGn6vlijzpKhYS
-	f3SuOfezAOEw0Bu26xUVoftmhWH/fRn46djiF44T1UOajiR9+xXteof2szpRRCYA4Biv2vK9aPQ
-	==
-X-Received: by 2002:a5d:588b:0:b0:43d:71f4:7ed4 with SMTP id ffacd0b85a97d-4515b525075mr22331108f8f.15.1778255926221;
-        Fri, 08 May 2026 08:58:46 -0700 (PDT)
-X-Received: by 2002:a5d:588b:0:b0:43d:71f4:7ed4 with SMTP id ffacd0b85a97d-4515b525075mr22331047f8f.15.1778255925539;
-        Fri, 08 May 2026 08:58:45 -0700 (PDT)
-Received: from sgarzare-redhat (host-87-11-6-2.retail.telecomitalia.it. [87.11.6.2])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4548ec6c79fsm5529634f8f.15.2026.05.08.08.58.44
+        d=1e100.net; s=20251104; t=1778256679; x=1778861479;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6vdBcradM8S03iinDWnSXeMPjIWLpbzTHbnVlnltxq4=;
+        b=RQVhyPkOCA2A85NXZIk5amEF2u/GfXlZ4B8swGR4JAHmRysD8d9ekXjFX8pQiEqgqw
+         t16iSW+WLrRDuuMwlRlHFDOBTNh8dfqzE2QwyeTr8bKpxRGDBed6BEcPPNyRS2Gt/y60
+         h49JwjjS+NCCFNPsGamkBMKeFFeY5X8KYEWWGxwlcveWoUnUisj2/y9rU/8zLo8Gm1D8
+         X5AehHgkqZWBC7kt0fQWNqMCjIAUMF9aNp0cHfmMPHL0TYU4c4Fbv//bX/I2rbWexrsn
+         DT1kciFslybBBWbbwicO4Wc+i98C1VsYTpKX2qr0TpBF1lZYOmIoMnleBEwabFlEmk5B
+         XIGQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9Ls8aOy1IHVMnkyJonJybYotK7HbE4hXpPuICiDZd00ctcWs+UYC9UgNPnj4AcSpm9chDmXSY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyK/+Da/zrqfVkRdBdGOBGdbiWqrNV0M+YJ+4O/N69PRD1Hm8Nh
+	L1dloL0XEGqXX98rdyUPk3a25zfNjbAFjbDSko4l8VRxUJ1k1KrdCkyP
+X-Gm-Gg: Acq92OHrFnHH8+h5U3q2MBBed2lqECfNOG/+eq3DrzqLxX7e6CggcqWxiGvHDhSi7Bh
+	G/IVTluzvGne3lGrV+5Vs/D5RFs9ONQh1KkplDIxP4da2ZJFRfc9D2/+6jkehyK4DZD1BH6j5ZN
+	mm2+ZH94YW72cxTBJV0QePYcsA+oG8URPwE+rdzL70ScWz0eMvl1D0kZWrlgLbUP47V6meUuLs5
+	qZgwYPhgSNfO5I/Tk3hxuSftZC7gA4qZZFmZ9LNGSSDzlGUZIu8IGOiw0+d0vI17qcwAGN5t7Lw
+	odoo9LCzy2wD8U4bYI9DlF9RvUb4uejvjD/yEHBknsRtOuQ51QT6uZdNljyRMxDvhdHiSvX7QK0
+	cEzTjRovCNg2IJyYxEEBUjC3WiT0JACWj65Mk8n0j5VymRdkl4Iqt3DRnrl0q5TKneB8U9QpfoF
+	IOgbte07xO+3rmVOvK4ZsjQuWQ9u/6CxLPnoGT4nI9wPs2nu4=
+X-Received: by 2002:a67:e114:0:b0:631:4e9a:ba3 with SMTP id ada2fe7eead31-6314e9a142fmr1065827137.21.1778256679486;
+        Fri, 08 May 2026 09:11:19 -0700 (PDT)
+Received: from devvm29614.prn0.facebook.com ([2a03:2880:f800:35::])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-907b8bae450sm239133785a.21.2026.05.08.09.11.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 May 2026 08:58:44 -0700 (PDT)
-Date: Fri, 8 May 2026 17:58:23 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Bobby Eshleman <bobbyeshleman@gmail.com>
-Cc: Paolo Abeni <pabeni@redhat.com>, 
-	Arseniy Krasnov <avkrasnov@salutedevices.com>, Bobby Eshleman <bobbyeshleman@meta.com>, stefanha@redhat.com, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, mst@redhat.com, 
-	jasowang@redhat.com, xuanzhuo@linux.alibaba.com, eperezma@redhat.com, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, horms@kernel.org, 
-	Yiqi Sun <sunyiqixm@gmail.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev
-Subject: Re: [PATCH] vsock/virtio: fix vsockmon info leak in non-linear tap
- copy
-Message-ID: <af4IAzRUFZdYKvaq@sgarzare-redhat>
-References: <20260430071110.380509-1-sunyiqixm@gmail.com>
- <f4e52dcd-59ba-4c2e-9936-49cf27528b21@redhat.com>
- <afnXIGtswspSEk8x@sgarzare-redhat>
- <afzyM6fTTAl0Hnvm@devvm29614.prn0.facebook.com>
+        Fri, 08 May 2026 09:11:18 -0700 (PDT)
+Date: Fri, 8 May 2026 09:11:12 -0700
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+To: Stanislav Fomichev <sdf.kernel@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>, Alex Shi <alexs@kernel.org>,
+	Yanteng Si <si.yanteng@linux.dev>, Dongliang Mu <dzm91@hust.edu.cn>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Joshua Washington <joshwash@google.com>,
+	Harshitha Ramamurthy <hramamurthy@google.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Alexander Duyck <alexanderduyck@fb.com>, kernel-team@meta.com,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Shuah Khan <shuah@kernel.org>, dw@davidwei.uk,
+	mohsin.bashr@gmail.com, willemb@google.com, jiang.kun2@zte.com.cn,
+	xu.xin16@zte.com.cn, wang.yaxin@zte.com.cn, netdev@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-rdma@vger.kernel.org, bpf@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Mina Almasry <almasrymina@google.com>,
+	Bobby Eshleman <bobbyeshleman@meta.com>
+Subject: Re: [PATCH net-next v3 1/8] net: convert netmem_tx flag to enum
+Message-ID: <af4LILMY6qEav7Ul@devvm29614.prn0.facebook.com>
+References: <20260507-tcp-dm-netkit-v3-0-52821445867c@meta.com>
+ <20260507-tcp-dm-netkit-v3-1-52821445867c@meta.com>
+ <af35ekIjYDXIDWVR@devvm7509.cco0.facebook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <afzyM6fTTAl0Hnvm@devvm29614.prn0.facebook.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <af35ekIjYDXIDWVR@devvm7509.cco0.facebook.com>
 
-On Thu, May 07, 2026 at 01:12:35PM -0700, Bobby Eshleman wrote:
->On Tue, May 05, 2026 at 02:44:16PM +0200, Stefano Garzarella wrote:
->> CCing Arseniy and Bobby.
->>
->> On Tue, May 05, 2026 at 12:26:21PM +0200, Paolo Abeni wrote:
->> > On 4/30/26 9:11 AM, Yiqi Sun wrote:
->> > > vsockmon mirrors packets through virtio_transport_build_skb(), which
->> > > builds a new skb and copies the payload into it. For non-linear skbs,
->> > > this goes through virtio_transport_copy_nonlinear_skb().
->> > >
->> > > Helper manually initializes a iov_iter, but leaves iov_iter.count unset.
->> > > As a result, skb_copy_datagram_iter() sees zero writable bytes
->> > > in the destination iterator and copies no payload data.
->> > >
->> > > This becomes an info leak because virtio_transport_build_skb() has
->> > > already reserved payload_len bytes in the new skb with skb_put(). The
->> > > skb is then returned to the tap path with that payload area still
->> > > uninitialized, so userspace reading from a vsockmon device can observe
->> > > heap contents and potentially kernel address.
->> > >
->> > > Fix it by initializing iov_iter.count to the number of bytes to copy.
->> > >
->> > > Fixes: 4b0bf10eb077 ("vsock/virtio: non-linear skb handling for tap")
->> > > Signed-off-by: Yiqi Sun <sunyiqixm@gmail.com>
->> > > ---
->> > >  net/vmw_vsock/virtio_transport_common.c | 2 +-
->> > >  1 file changed, 1 insertion(+), 1 deletion(-)
->> > >
->> > > diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
->> > > index 416d533f493d..6b26ee57ccab 100644
->> > > --- a/net/vmw_vsock/virtio_transport_common.c
->> > > +++ b/net/vmw_vsock/virtio_transport_common.c
->> > > @@ -152,7 +152,7 @@ static void virtio_transport_copy_nonlinear_skb(const struct sk_buff *skb,
->> > >  	iov_iter.nr_segs = 1;
->> > >
->> > >  	to_copy = min_t(size_t, len, skb->len);
->> > > -
->> > > +	iov_iter.count = to_copy;
->> > >  	skb_copy_datagram_iter(skb, VIRTIO_VSOCK_SKB_CB(skb)->offset,
->> > >  			       &iov_iter, to_copy);
->> >
->> > @Stefano, @Stefan, the patch LGTM, but sashiko pointed out to a
->> > pre-existing issue you should probably want to address:
->> >
->> > >  	to_copy = min_t(size_t, len, skb->len);
->> > Does this length calculation account for the offset when a packet is
->> > split across multiple transmissions?
->> > If a packet is requeued, VIRTIO_VSOCK_SKB_CB(skb)->offset is increased,
->> > but to_copy still evaluates to the full length of the skb.
->>
->> Yep, I just checked and vhost-vsock is the only place where we call
->> virtio_transport_deliver_tap_pkt() wiht an offset != 0, but I agree that we
->> should also fix it.
->>
->> Looking better in net/vmw_vsock/virtio_transport_common.c I think this is a
->> regression, indeed we have this comment in virtio_transport_build_skb():
->>
->> 	/* A packet could be split to fit the RX buffer, so we can retrieve
->> 	 * the payload length from the header and the buffer pointer taking
->> 	 * care of the offset in the original packet.
->> 	 */
->> 	pkt_hdr = virtio_vsock_hdr(pkt);
->>
->> Before commit 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with
->> sk_buff") we read the payload lenght from the header that is always set to
->> the right value before delivering the packet to the tap.
->>
->> From that commit, we don't to consider the offset anymore since we started
->> to use `len` from the skb, so IMO we should go back to what we did before
->> it, I mean:
->>
->> 	payload_len = le32_to_cpu(pkt->hdr.len);
->>
->> @Bobby do you remember why we did that change? Or if you see any issue going
->> back to what we did initially?
->
->I think this was just one that made it through the cracks. I vaguely
->recall a few other instances where I assumed skb->len could stand-in for
->hdr.len, but it didn't hold.
->
->Using hdr.len like the original looks correct to me.
+On Fri, May 08, 2026 at 07:56:42AM -0700, Stanislav Fomichev wrote:
+> On 05/07, Bobby Eshleman wrote:
+> > From: Bobby Eshleman <bobbyeshleman@meta.com>
+> > 
+> > Devices that support netmem TX previously set dev->netmem_tx = true.
+> > This was checked in validate_xmit_unreadable_skb() to drop unreadable
+> > skbs (skbs with dmabuf-backed frags) before they reach drivers that
+> > would mishandle them or devices that would not have the iommu mappings
+> > for them.
+> > 
+> > A subsequent patch will introduce a third state for virtual devices
+> > that forward unreadable skbs without ever performing DMA on them. To
+> > prepare for that, convert the boolean dev->netmem_tx into an enum:
+> > 
+> > NETMEM_TX_NONE   - no netmem TX support (drop unreadable skbs)
+> > NETMEM_TX_DMA    - full support, device does DMA
+> > 
+> > Update the existing NIC drivers (bnxt, gve, mlx5, fbnic) and the
+> > validators in net/core to use the new enum. No functional change.
+> > 
+> > Acked-by: Harshitha Ramamurthy <hramamurthy@google.com>
+> > Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
+> > ---
+> > Changes in v3:
+> > - Split NO_DMA changes into subsequent commit (Jakub)
+> > - Move !netdev->netmem_tx -> netdev->netmem_tx ==
+> >   NETMEM_TX_NONE conversions to this patch (Jakub)
+> > 
+> > Changes in v2:
+> > - Squash driver conversion patches (2-5) into patch 1 (Jakub)
+> > ---
+> >  Documentation/networking/netmem.rst                    | 5 ++++-
+> >  Documentation/translations/zh_CN/networking/netmem.rst | 4 +++-
+> >  drivers/net/ethernet/broadcom/bnxt/bnxt.c              | 2 +-
+> >  drivers/net/ethernet/google/gve/gve_main.c             | 2 +-
+> >  drivers/net/ethernet/mellanox/mlx5/core/en_main.c      | 2 +-
+> >  drivers/net/ethernet/meta/fbnic/fbnic_netdev.c         | 2 +-
+> >  include/linux/netdevice.h                              | 8 +++++++-
+> >  net/core/dev.c                                         | 2 +-
+> >  net/core/netdev-genl.c                                 | 2 +-
+> >  9 files changed, 20 insertions(+), 9 deletions(-)
+> > 
+> > diff --git a/Documentation/networking/netmem.rst b/Documentation/networking/netmem.rst
+> > index b63aded46337..5ccadba4f373 100644
+> > --- a/Documentation/networking/netmem.rst
+> > +++ b/Documentation/networking/netmem.rst
+> > @@ -95,4 +95,7 @@ Driver TX Requirements
+> >     netdev@, or reach out to the maintainers and/or almasrymina@google.com for
+> >     help adding the netmem API.
+> >  
+> > -2. Driver should declare support by setting `netdev->netmem_tx = true`
+> > +2. Driver should declare support by setting `netdev->netmem_tx` to the
+> > +   appropriate mode:
+> > +
+> > +   - `NETMEM_TX_DMA`: for physical devices that perform DMA.
+> > diff --git a/Documentation/translations/zh_CN/networking/netmem.rst b/Documentation/translations/zh_CN/networking/netmem.rst
+> > index fe351a240f02..9c84423b7528 100644
+> > --- a/Documentation/translations/zh_CN/networking/netmem.rst
+> > +++ b/Documentation/translations/zh_CN/networking/netmem.rst
+> > @@ -89,4 +89,6 @@ dma-mapping API 去处理。
+> >  使用某个还不存在的 netmem API，你可以自行添加并提交到 netdev@，也可以联系维护
+> >  人员或者发送邮件至 almasrymina@google.com 寻求帮助。
+> >  
+> > -2. 驱动程序应通过设置 netdev->netmem_tx = true 来表明自身支持 netmem 功能。
+> > +2. 驱动程序应将 `netdev->netmem_tx` 设置为适当的模式：
+> > +
+> > +   - `NETMEM_TX_DMA`：适用于执行 DMA 的物理设备。
+> > diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> > index 8c55874f44ca..ed9c22dc4a5a 100644
+> > --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> > +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> > @@ -17120,7 +17120,7 @@ static int bnxt_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+> >  	dev->queue_mgmt_ops = &bnxt_queue_mgmt_ops_unsupp;
+> >  	if (BNXT_SUPPORTS_QUEUE_API(bp))
+> >  		dev->queue_mgmt_ops = &bnxt_queue_mgmt_ops;
+> > -	dev->netmem_tx = true;
+> > +	dev->netmem_tx = NETMEM_TX_DMA;
+> >  
+> >  	rc = register_netdev(dev);
+> >  	if (rc)
+> > diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
+> > index 424d973c97f2..dd2b8f087163 100644
+> > --- a/drivers/net/ethernet/google/gve/gve_main.c
+> > +++ b/drivers/net/ethernet/google/gve/gve_main.c
+> > @@ -2894,7 +2894,7 @@ static int gve_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+> >  		goto abort_with_wq;
+> >  
+> >  	if (!gve_is_gqi(priv) && !gve_is_qpl(priv))
+> > -		dev->netmem_tx = true;
+> > +		dev->netmem_tx = NETMEM_TX_DMA;
+> >  
+> >  	err = register_netdev(dev);
+> >  	if (err)
+> > diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+> > index 5a46870c4b74..fc49aae38807 100644
+> > --- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+> > +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+> > @@ -5924,7 +5924,7 @@ static void mlx5e_build_nic_netdev(struct net_device *netdev)
+> >  
+> >  	netdev->priv_flags       |= IFF_UNICAST_FLT;
+> >  
+> > -	netdev->netmem_tx = true;
+> > +	netdev->netmem_tx = NETMEM_TX_DMA;
+> >  
+> >  	netif_set_tso_max_size(netdev, GSO_MAX_SIZE);
+> >  	mlx5e_set_xdp_feature(priv);
+> > diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
+> > index c406a3b56b37..138e522ef9b9 100644
+> > --- a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
+> > +++ b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
+> > @@ -752,7 +752,7 @@ struct net_device *fbnic_netdev_alloc(struct fbnic_dev *fbd)
+> >  	netdev->netdev_ops = &fbnic_netdev_ops;
+> >  	netdev->stat_ops = &fbnic_stat_ops;
+> >  	netdev->queue_mgmt_ops = &fbnic_queue_mgmt_ops;
+> > -	netdev->netmem_tx = true;
+> > +	netdev->netmem_tx = NETMEM_TX_DMA;
+> >  
+> >  	fbnic_set_ethtool_ops(netdev);
+> >  
+> > diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+> > index 0e1e581efc5a..580bccb118a0 100644
+> > --- a/include/linux/netdevice.h
+> > +++ b/include/linux/netdevice.h
+> > @@ -1788,6 +1788,11 @@ enum netdev_stat_type {
+> >  	NETDEV_PCPU_STAT_DSTATS, /* struct pcpu_dstats */
+> >  };
+> >  
+> > +enum netmem_tx_mode {
+> > +	NETMEM_TX_NONE,		/* no netmem TX support */
+> > +	NETMEM_TX_DMA,		/* DMA-capable netmem TX (real HW) */
+> > +};
+> > +
+> >  enum netdev_reg_state {
+> >  	NETREG_UNINITIALIZED = 0,
+> >  	NETREG_REGISTERED,	/* completed register_netdevice */
+> > @@ -1809,7 +1814,8 @@ enum netdev_reg_state {
+> >   *	@lltx:		device supports lockless Tx. Deprecated for real HW
+> >   *			drivers. Mainly used by logical interfaces, such as
+> >   *			bonding and tunnels
+> > - *	@netmem_tx:	device support netmem_tx.
+> > + *	@netmem_tx:	device netmem TX mode (NETMEM_TX_NONE or
+> > + *			NETMEM_TX_DMA).
+> 
+> 
+> nit: if you happen to repost, listing enum values here seems too much?
+> 
+> "device netmem TX mode" should be enough
 
-Thanks for confirming, I'll fix it.
+Will do!
 
-Stefano
-
+Thanks,
+Bobby
