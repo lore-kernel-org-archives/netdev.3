@@ -1,33 +1,33 @@
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8F93F7A91
-	for <netdev@vger.kernel.org>; Fri,  8 May 2026 15:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E85A3F23A3
+	for <netdev@vger.kernel.org>; Fri,  8 May 2026 15:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778255019; cv=none; b=LqUYTZT2lXRPU7xrlDAthS37WpiyFeBciizvzY/s77/+ITBWt+nzIx3nwyLskfXu25GHQeRGFH9mrfDV3uostjnwCSYUmRtXYf1rFoZpVJIZt13eXc+qYTp2JKwq47PsR6OXx1v/39Ml14cDE37UKVLKk2Qm1hwh+eVTq/Rt1AA=
+	t=1778255019; cv=none; b=nJ9orggTAdSeWsVpXpXSWQfIOkdsyLwy4ubNBo1x2DoX7EPRp7naIHDuhNOKDxnGwiCnzA2LlD/sdQ2oMP2jW/DczQs2J2NjZY733+9G+MnFYgvrJA74HMda2W+KHanf78Dqye2FQecE1VBDtlvMlQ9cCTIjQJh+FXeLKrNpBKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1778255019; c=relaxed/simple;
-	bh=M65G7ywCUgEGkx1nUdPlycUJUzXTTzHTpHl6LOwOoxA=;
+	bh=g18DOxyTZtZ2JF9jGtFI09lwdjz82kuvR3W5ytMwUoc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hwDijsHicqCycnL3f18nxACZHkhR60/rNRHp0nc2Cb2rljaCpP8GkZV0RVHjwGydY/QvWgrYIJwKiHiUmROmJuAemE5+8LBvfe0Hix7MHSSsFlG92Ndyztf4i74IB1hIKMv8hpv+mMqOr02XWFvA63BEuOQW2UmzgzWWBkRkQZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=G+0CeM6p; arc=none smtp.client-ip=23.88.38.48
+	 MIME-Version; b=dPRH4yA0aAr2SlO+mfrSl56JDATOBE2xJ56DexPf2topNf/u8MGdHficcvATad3M8pvv4W12FLCnbR0dTw3Amjt1Q0EvfrG1xGJiMhGTTkVK8Qfzo3+J9qlP7z9Zt8/YuaPFlcLIVWkPnQBeaIrtvj0/Dh2nfuRQXZWTiZp/RZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=v/+GCSlx; arc=none smtp.client-ip=23.88.38.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="G+0CeM6p"
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="v/+GCSlx"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1778255011;
+	s=09092022; t=1778255013;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KIfU73idM0J1qzjECasosBqZBJk4pqnhj27Zo4ddO7U=;
-	b=G+0CeM6plJnRHWOvUcmV4tCJpiTCzBilPRDg+jYUcTLI8svm4r88XQ1nd43WAmgMZo9TWc
-	WReTRlx7SKD8fvnT0RTbJpiHkvQkyg3HuaUkuw3XDrspSMUNZFbqtgJ0L0PykFlzeWf16W
-	QK2HJh0/JlsS3QsnsyljINvLBnQ3Se13MPz4HrYCb6JBrwq9NsET1koXulmhcYFtYteo6s
-	YKK0O40DVDskc6N0Fo9ZguC2cj/lNHiHR5bdyZnfNMS50qsuGHn/7Fp33c66EYB7C9DIjh
-	WV29BVMuiTXwJO0zJLbzA/flmnwBgkpAf7qQx+PQiqc+hoy0VVEiyFYc2KkEdA==
+	bh=rKkYdkKDVA6gC80Vrr+hLi2juPjpTi5IVGhvcsqIlUU=;
+	b=v/+GCSlxpizvDw965L+ZXXx+0bNpP5FzqyVAiNCADni4gXVh0xStkeJrCChaRphD2jIxPS
+	fUiRhAaIDeOhSn8XqfULs5ENFRYxPMr1XMpzJv2XlFJYTjgD0660SXTvQn4SWV7J9C0lSk
+	PcQpTz9hzRmeoiyUv4Kp6F4bg3k2Er//Ow59Cyd+2Svhb0LjtfEAwL8JTpUnYcVCQbYxTI
+	RewF1G6z1ww5+L0v5YeZFHN+bioQBBje1O9Evo/NGKrDfXFdSAGvqrufpe77yGdf+I1VI+
+	/ozebiq7NTjWSDsZnT2+vAj3ywb5+M+ryTjnrghoxyeWuaVBTUjPJFHklKWgpw==
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -39,9 +39,9 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Sven Eckelmann <sven@narfation.org>,
 	stable@kernel.org,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net 5/8] batman-adv: tp_meter: fix tp_num leak on kmalloc failure
-Date: Fri,  8 May 2026 17:43:11 +0200
-Message-ID: <20260508154314.12817-6-sw@simonwunderlich.de>
+Subject: [PATCH net 7/8] batman-adv: bla: only purge non-released claims
+Date: Fri,  8 May 2026 17:43:13 +0200
+Message-ID: <20260508154314.12817-8-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260508154314.12817-1-sw@simonwunderlich.de>
 References: <20260508154314.12817-1-sw@simonwunderlich.de>
@@ -55,49 +55,51 @@ Content-Transfer-Encoding: 8bit
 
 From: Sven Eckelmann <sven@narfation.org>
 
-When batadv_tp_start() or batadv_tp_init_recv() fail to allocate a new
-tp_vars object, the previously incremented bat_priv->tp_num counter is
-never decremented. This causes tp_num to drift upward on each allocation
-failure. Since only BATADV_TP_MAX_NUM sessions can be started and the count
-is never reduced for these failed allocations, it causes to an exhaustion
-of throughput meter sessions. In worst case, no new throughput meter
-session can be started until the mesh interface is removed.
+When batadv_bla_purge_claims() goes through the list of claims, it is only
+traversing the hash list with an rcu_read_lock(). Due to a potential
+parallel batadv_claim_put(), it can happen that it encounters a claim which
+was actually in the process of being released+freed by
+batadv_claim_release(). In this case, backbone_gw is set to NULL before the
+delayed RCU kfree is started. Calling batadv_bla_claim_get_backbone_gw() is
+then no longer allowed because it would cause a NULL-ptr derefence.
 
-The error handling must decrement tp_num releasing the lock and aborting
-the creation of an throughput meter session
+To avoid this, only claims with a valid reference counter must be purged.
+All others are already taken care of.
 
 Cc: stable@kernel.org
-Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
+Fixes: 23721387c409 ("batman-adv: add basic bridge loop avoidance code")
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 ---
- net/batman-adv/tp_meter.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/batman-adv/bridge_loop_avoidance.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
-index 58ca59a2799ed..066c76113fc43 100644
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -994,6 +994,7 @@ void batadv_tp_start(struct batadv_priv *bat_priv, const u8 *dst,
+diff --git a/net/batman-adv/bridge_loop_avoidance.c b/net/batman-adv/bridge_loop_avoidance.c
+index 8b77dd2ecfa41..879ab043d57a9 100644
+--- a/net/batman-adv/bridge_loop_avoidance.c
++++ b/net/batman-adv/bridge_loop_avoidance.c
+@@ -1288,6 +1288,13 @@ static void batadv_bla_purge_claims(struct batadv_priv *bat_priv,
  
- 	tp_vars = kmalloc_obj(*tp_vars, GFP_ATOMIC);
- 	if (!tp_vars) {
-+		atomic_dec(&bat_priv->tp_num);
- 		spin_unlock_bh(&bat_priv->tp_list_lock);
- 		batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
- 			   "Meter: %s cannot allocate list elements\n",
-@@ -1366,8 +1367,10 @@ batadv_tp_init_recv(struct batadv_priv *bat_priv,
+ 		rcu_read_lock();
+ 		hlist_for_each_entry_rcu(claim, head, hash_entry) {
++			/* only purge claims not currently in the process of being released.
++			 * Such claims could otherwise have a NULL-ptr backbone_gw set because
++			 * they already went through batadv_claim_release()
++			 */
++			if (!kref_get_unless_zero(&claim->refcount))
++				continue;
++
+ 			backbone_gw = batadv_bla_claim_get_backbone_gw(claim);
+ 			if (now)
+ 				goto purge_now;
+@@ -1313,6 +1320,7 @@ static void batadv_bla_purge_claims(struct batadv_priv *bat_priv,
+ 					      claim->addr, claim->vid);
+ skip:
+ 			batadv_backbone_gw_put(backbone_gw);
++			batadv_claim_put(claim);
+ 		}
+ 		rcu_read_unlock();
  	}
- 
- 	tp_vars = kmalloc_obj(*tp_vars, GFP_ATOMIC);
--	if (!tp_vars)
-+	if (!tp_vars) {
-+		atomic_dec(&bat_priv->tp_num);
- 		goto out_unlock;
-+	}
- 
- 	ether_addr_copy(tp_vars->other_end, icmp->orig);
- 	tp_vars->role = BATADV_TP_RECEIVER;
 -- 
 2.47.3
 
