@@ -1,77 +1,65 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4225E35E549
-	for <netdev@vger.kernel.org>; Fri,  8 May 2026 22:11:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C19A2F8EAA;
+	Fri,  8 May 2026 22:12:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778278267; cv=none; b=K2pIf9c+jNSaYrN6rTENHcXNcRYw4/R2SQ6zLwnRJvnwmzTWGy+cOs1XBGbchlKkN6JxFWEUnrN1DWpJzuE6MlCkUXnj8A3WkbI0KLTFLZhb8N9jY5CISbwRfHQqzXEY0j55kXUgBDvg0AHM8aR+ntSk3obZL6AASTy7xhSm+BM=
+	t=1778278321; cv=none; b=Oy2mGyVR/sOD1s+lPmwPKtk8oO83FUVxe6bJgy0h732cBuj3tHEug6wW6W2wrXRCDWMMP5d4SfxRgPKbF0aXp7ufn9errGZnEL5eugX2QnZaa7lHqNksrZzV9z4rpt/r1MTj6ym3+odpbEP6IUANCdiQ/yXPLJNV5VpCWOIdB4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778278267; c=relaxed/simple;
-	bh=ZP59YedXZ3l35+IhyoNPek8+v//hmeH+lVKjMUmB6jw=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=iYs/yo2mDqSwaEBIZ7OxSqsEk+UX9qTC2E+enwKcSigONplw1vNbz9Z4jrCsyMUrNCb2/Oy1V54B6vNz+6KuY6bhR4/KJmwmzYmMyF0dUf1E6uQJHETQ/DZkcXb2bsmLj3CK8eiR6d8KcyBv+xGP/SzSkHBeNA5/PFrqMQ/pr3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jWVYJkYq; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778278321; c=relaxed/simple;
+	bh=LkeV/ALn0czsawBXiy7GAAtm0EMvNk/rpiQrvEi75D4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=j7uAyM0P2YtoqFqaLwOxVNUX0AgcfLfT8Zoh/dad6LKDWlo1yfWnjLI05wTCQYueaIR2JN4ZbbQZWh9CSuohIIfZf+7lxypc/BU30KpHoR9qK3nI1xjCwO8uCaYHHOEtQsNAWxTRYbuHBRKccuCjc9Q1xCzVPyE4UuUrAv94ph0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dx84vVH1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jWVYJkYq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 220E3C2BCB0;
-	Fri,  8 May 2026 22:11:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dx84vVH1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F230C2BCB0;
+	Fri,  8 May 2026 22:12:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778278267;
-	bh=ZP59YedXZ3l35+IhyoNPek8+v//hmeH+lVKjMUmB6jw=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=jWVYJkYqkg686PVMDmu7LQCtqkPhxcgEwCjhjdK0OEsKmzPLvEVKO+j84ernFpHDk
-	 4Doz/3HMGJeio4ZXB+cflRVAiqR079qRs1oRATkuunsBODh0dTWsDSV6ONzIga2c+q
-	 r1LnoL638ivx9Z3fNVw1qC25OonKkxI43pu3DagprvgZuFepzGcVcTU/rAbzkKwvmI
-	 /BVJHxqScf3asEXkDoe5Nxa5q5e6Xee8ireOxZ96cCEZMUAQ8gCNyQWNP94H1Lh7kz
-	 70EImd8MEd+ipKNy8/+gxfnuAv9ReTDYDWMYbU9UNK9UbgMuHHdaQLOjad1ovMJlZx
-	 a3OB/xowJiD0g==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BA08538119CC;
-	Fri,  8 May 2026 22:10:16 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1778278320;
+	bh=LkeV/ALn0czsawBXiy7GAAtm0EMvNk/rpiQrvEi75D4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Dx84vVH1FnHKECcH0UJeTZo/O7KIixErG/2sJodC4mdU1dvDtEcg8x8CjJYcaUVNy
+	 UkNx2hLhgH90V/RsKDWHriPrG3mzHA4tjLp3mlkV5D9oIu3Qlfl+d0al45gChQx4l9
+	 K9zKclZ6/RqLTx6JVjMSEhksWdiCpQZ0MiVeUutD0yH16dE9oXEago7GfIN4+mNvMf
+	 mq0E0068ST86xgtLR/FX6fOdsuSuTtC2aFhjj0SGv/gWyNbjStlGQowPIss92Z10Ug
+	 hA2OxGmbma/5DORT4hlxBzLvkBLPbdIVVczI5DVJc975l2t8s+JNUcKvKgZkzG5uXM
+	 E+dV9ZGqSNy+A==
+Date: Fri, 8 May 2026 15:11:59 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, linux-can@vger.kernel.org,
+ kernel@pengutronix.de, Ciprian Marian Costea
+ <ciprianmarian.costea@oss.nxp.com>
+Subject: Re: [PATCH net 6/6] can: flexcan: disable all IRQ lines in
+ flexcan_chip_interrupts_enable()
+Message-ID: <20260508151159.71fa563a@kernel.org>
+In-Reply-To: <20260507112321.439968-7-mkl@pengutronix.de>
+References: <20260507112321.439968-1-mkl@pengutronix.de>
+	<20260507112321.439968-7-mkl@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: ethernet: atheros: atl2: remove kernel
- backward-compatibility code
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177827821529.868876.16899896123456516633.git-patchwork-notify@kernel.org>
-Date: Fri, 08 May 2026 22:10:15 +0000
-References: <20260506054035.23710-1-enelsonmoore@gmail.com>
-In-Reply-To: <20260506054035.23710-1-enelsonmoore@gmail.com>
-To: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Cc: netdev@vger.kernel.org, chris.snook@gmail.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- mingo@kernel.org, tglx@kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Tue,  5 May 2026 22:40:27 -0700 you wrote:
-> The atl2 driver contains code for compatibility with old kernels that
-> do not support module_param_array. Backward compatibility is
-> irrelevant because this driver is in-tree. Remove this unreachable
-> code to simplify the driver's handling of module parameters.
+On Thu,  7 May 2026 10:22:28 +0200 Marc Kleine-Budde wrote:
+> flexcan_chip_interrupts_enable() disables only the primary IRQ line while
+> writing to the IMASK and CTRL registers.
 > 
-> Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+> On multi-IRQ platforms (S32G2, MCF5441X), the additional IRQ lines (boff,
+> err, secondary-mb) remain active so their handlers can fire while
+> registers are inconsistent.
 > 
-> [...]
+> Disable all registered IRQ lines around the IMASK/CTRL writes. This
+> also fixes the resume path, which calls this function.
 
-Here is the summary with links:
-  - [net-next] net: ethernet: atheros: atl2: remove kernel backward-compatibility code
-    https://git.kernel.org/netdev/net-next/c/ae5c3718aeec
+Sashiko points out that the driver is requesting those IRQs with
+IRQF_SHARED, I think you should also clear that flag if the QUIRK
+is necessary.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Marc, sorry for the delay LMK if you prefer follow up or respin
