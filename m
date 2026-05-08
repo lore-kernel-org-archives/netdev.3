@@ -1,65 +1,144 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C19A2F8EAA;
-	Fri,  8 May 2026 22:12:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6918733121F;
+	Fri,  8 May 2026 22:12:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778278321; cv=none; b=Oy2mGyVR/sOD1s+lPmwPKtk8oO83FUVxe6bJgy0h732cBuj3tHEug6wW6W2wrXRCDWMMP5d4SfxRgPKbF0aXp7ufn9errGZnEL5eugX2QnZaa7lHqNksrZzV9z4rpt/r1MTj6ym3+odpbEP6IUANCdiQ/yXPLJNV5VpCWOIdB4o=
+	t=1778278339; cv=none; b=Hq5X53ifAtr1ky9Zp9JeX3/+SmK19Nl0LXZJF3M4nORaS+kiwC7Pel+FT/ueieI2GtLKV6dQbvGCGYb6a4OCkXvn81MWNUv1UYdj0QFhsPGtyQ+iQkYXRzC/ZUJKibEAdfFHX+qrjzogOJXXHbvJzjdy8Xaa7XLjCNP+2Us4Qp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778278321; c=relaxed/simple;
-	bh=LkeV/ALn0czsawBXiy7GAAtm0EMvNk/rpiQrvEi75D4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j7uAyM0P2YtoqFqaLwOxVNUX0AgcfLfT8Zoh/dad6LKDWlo1yfWnjLI05wTCQYueaIR2JN4ZbbQZWh9CSuohIIfZf+7lxypc/BU30KpHoR9qK3nI1xjCwO8uCaYHHOEtQsNAWxTRYbuHBRKccuCjc9Q1xCzVPyE4UuUrAv94ph0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dx84vVH1; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dx84vVH1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F230C2BCB0;
-	Fri,  8 May 2026 22:12:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778278320;
-	bh=LkeV/ALn0czsawBXiy7GAAtm0EMvNk/rpiQrvEi75D4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Dx84vVH1FnHKECcH0UJeTZo/O7KIixErG/2sJodC4mdU1dvDtEcg8x8CjJYcaUVNy
-	 UkNx2hLhgH90V/RsKDWHriPrG3mzHA4tjLp3mlkV5D9oIu3Qlfl+d0al45gChQx4l9
-	 K9zKclZ6/RqLTx6JVjMSEhksWdiCpQZ0MiVeUutD0yH16dE9oXEago7GfIN4+mNvMf
-	 mq0E0068ST86xgtLR/FX6fOdsuSuTtC2aFhjj0SGv/gWyNbjStlGQowPIss92Z10Ug
-	 hA2OxGmbma/5DORT4hlxBzLvkBLPbdIVVczI5DVJc975l2t8s+JNUcKvKgZkzG5uXM
-	 E+dV9ZGqSNy+A==
-Date: Fri, 8 May 2026 15:11:59 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, linux-can@vger.kernel.org,
- kernel@pengutronix.de, Ciprian Marian Costea
- <ciprianmarian.costea@oss.nxp.com>
-Subject: Re: [PATCH net 6/6] can: flexcan: disable all IRQ lines in
- flexcan_chip_interrupts_enable()
-Message-ID: <20260508151159.71fa563a@kernel.org>
-In-Reply-To: <20260507112321.439968-7-mkl@pengutronix.de>
-References: <20260507112321.439968-1-mkl@pengutronix.de>
-	<20260507112321.439968-7-mkl@pengutronix.de>
+	s=arc-20240116; t=1778278339; c=relaxed/simple;
+	bh=rWXn8kZoCAfuI+9t6avOlyzcNEoHjXZd4IWN+0mlLlE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=h15iYq/6sXn9/0nJpMvfGQcijBvlqamLLj3KZahhlI9cX0B/lExiRpNQGc6q6XBCrR/d8uHtgN9GAJlL6GoUovf5cntE8sedveIuqvYeDpwTAXg6TWbk+hiI4ivVx6i4OuEQ92WzuV+8ksk0SLS9o0nhnZi42W6Q6JNefKkjOZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1202)
+	id 14BED20B7168; Fri,  8 May 2026 15:12:18 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 14BED20B7168
+From: Long Li <longli@microsoft.com>
+To: Long Li <longli@microsoft.com>,
+	Konstantin Taranov <kotaranov@microsoft.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	"K . Y . Srinivasan" <kys@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	shradhagupta@linux.microsoft.com
+Cc: Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v8 0/6] net: mana: Per-vPort EQ and MSI-X interrupt management
+Date: Fri,  8 May 2026 15:11:56 -0700
+Message-ID: <20260508221202.15725-1-longli@microsoft.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Thu,  7 May 2026 10:22:28 +0200 Marc Kleine-Budde wrote:
-> flexcan_chip_interrupts_enable() disables only the primary IRQ line while
-> writing to the IMASK and CTRL registers.
-> 
-> On multi-IRQ platforms (S32G2, MCF5441X), the additional IRQ lines (boff,
-> err, secondary-mb) remain active so their handlers can fire while
-> registers are inconsistent.
-> 
-> Disable all registered IRQ lines around the IMASK/CTRL writes. This
-> also fixes the resume path, which calls this function.
+This series moves EQ ownership from the shared mana_context to per-vPort
+mana_port_context, enabling each vPort to have dedicated MSI-X vectors
+when the hardware provides enough vectors. When vectors are limited, the
+driver falls back to sharing MSI-X among vPorts.
 
-Sashiko points out that the driver is requesting those IRQs with
-IRQF_SHARED, I think you should also clear that flag if the QUIRK
-is necessary.
+The series introduces a GDMA IRQ Context (GIC) abstraction with reference
+counting to manage interrupt context lifecycle. This allows both Ethernet
+and RDMA EQs to dynamically acquire dedicated or shared MSI-X vectors at
+vPort creation time rather than pre-allocating all vectors at probe time.
 
-Marc, sorry for the delay LMK if you prefer follow up or respin
+Key changes:
+- Per-vPort EQ allocation with exported lifecycle functions for RDMA use
+- Device capability query to determine dedicated vs shared MSI-X mode
+- GIC context with refcounting for flexible interrupt management
+- On-demand interrupt context allocation when creating vPort EQs
+- RDMA EQ integration with the GIC framework
+
+Changes in v8:
+- Fix comment to reference per-vPort queue count instead of
+  gc->max_num_queues (patch 2)
+- Remove duplicate irq_update_affinity_hint() calls from error paths
+  and mana_gd_remove_irqs(); the clearing is now centralized in
+  mana_gd_put_gic() (patch 4)
+- Note the IRQ name change (mana_q -> mana_msi) in the commit
+  message (patch 4)
+- Remove dead conditional write to spec.eq.msix_index (patch 5)
+- Document GIC ownership contract and msix_index invariant change
+  in commit message (patch 5)
+- Populate eq.irq on RDMA EQs for consistency with the Ethernet
+  path (patch 6)
+- Document BIT(6) relocation and capability flag semantics in
+  commit message (patch 6)
+- Fix checkpatch --strict alignment and line length warnings
+
+Changes in v7:
+- Use rounddown_pow_of_two() instead of roundup_pow_of_two() when
+  computing per-vPort queue count to avoid unnecessarily forcing shared
+  MSI-X mode (patch 2)
+- Call mana_gd_setup_remaining_irqs() unconditionally to ensure
+  irq_contexts are populated in both dedicated and shared MSI-X modes,
+  fixing bisectability between patches 2 and 5 (patch 2)
+- Guard ibdev_dbg() in mana_ib_cfg_vport() with error check so the
+  vport handle is not logged on the failure path (patch 1)
+- Use cached gic->irq instead of pci_irq_vector() lookup in
+  mana_gd_put_gic() for consistency with the allocation path (patch 3)
+- Fix unsigned int* to int* pointer type mismatch when calling
+  mana_gd_get_gic() by using a local int variable for the MSI index
+  (patches 5, 6)
+
+Changes in v6:
+- Rebased on net-next/main (v7.1-rc1)
+
+Changes in v5:
+- Rebased on net-next/main
+
+Changes in v4:
+- Rebased on net-next/main 7.0-rc4
+- Patch 2: Use MANA_DEF_NUM_QUEUES instead of hardcoded 16 for
+  max_num_queues clamping
+- Patch 3: Track dyn_msix in GIC context instead of re-checking
+  pci_msix_can_alloc_dyn() on each call; improved remove_irqs iteration
+  to skip unallocated entries
+
+Changes in v3:
+- Rebased on net-next/main
+- Patch 1: Added NULL check for mpc->eqs in mana_ib_create_qp_rss() to
+  prevent NULL pointer dereference when RSS QP is created before a raw QP
+  has configured the vport and allocated EQs
+
+Changes in v2:
+- Rebased on net-next/main (adapted to kzalloc_objs/kzalloc_obj macros,
+  new GDMA_DRV_CAP_FLAG definitions)
+- Patch 2: Fixed misleading comment for max_num_queues vs
+  max_num_queues_vport in gdma.h
+- Patch 3: Fixed spelling typo in gdma_main.c ("difference" -> "different")
+
+Long Li (6):
+  net: mana: Create separate EQs for each vPort
+  net: mana: Query device capabilities and configure MSI-X sharing for
+    EQs
+  net: mana: Introduce GIC context with refcounting for interrupt
+    management
+  net: mana: Use GIC functions to allocate global EQs
+  net: mana: Allocate interrupt context for each EQ when creating vPort
+  RDMA/mana_ib: Allocate interrupt contexts on EQs
+
+ drivers/infiniband/hw/mana/main.c             |  62 +++-
+ drivers/infiniband/hw/mana/qp.c               |  16 +-
+ .../net/ethernet/microsoft/mana/gdma_main.c   | 316 +++++++++++++-----
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 169 ++++++----
+ include/net/mana/gdma.h                       |  33 +-
+ include/net/mana/mana.h                       |   7 +-
+ 6 files changed, 434 insertions(+), 169 deletions(-)
+
+-- 
+2.43.0
