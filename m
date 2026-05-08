@@ -1,53 +1,35 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DD8A33342C;
-	Fri,  8 May 2026 22:04:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE94F33121F;
+	Fri,  8 May 2026 22:11:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778277872; cv=none; b=jADq8I0FJCJkUBH+moKFjI0FqZ2UDG1Rmi0m+4WqhCFlffD0T+Ob2LDIcmxdwpeSnWE4AnXZjmBE7+J+EHP8SD4hy8xwXeUMfD7oplMdqJ5CO23YBECRjVUjMoh4/RHSTEdy4VsS4LPHOQtEx+dY3PVoXQJ7jPHD0BFOF3Wiel0=
+	t=1778278261; cv=none; b=F2lbb3IXZ4E60wrUFLPmp77hlY0DPJ4JCzmby9QcHQrOg2xvtfEBU3BKaaVQfprOu/MAXHvQTLuHvlSDu3jjCcd4IiscEy7PRAV8JrEYbogMg2hpZpJJ6wDF9eLl7YG4X6VlZb5aLUQOkSh4AoaaR5Kf4Wlm2WM5vv80z3HV++o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778277872; c=relaxed/simple;
-	bh=sVxh7KZEWfqvP0gD45P4kR5hPU+/5A7LrdRH+d7OyNU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CVm/Hy4HcI4qsxJz9kwJgw5RiSMZHMZf40vM+0lAtmCCBkiilNj9nL/FxqDhLoMBkA6/eSvNaHXRNLy64xDnxCjGipIxTNx6VWC4lpmNPzRp5dHZj3do27a6Wvx/7Dkbx4DJAdGejdlTSmTh4wnNTqBn4zEdn/CHIUvhDnDleM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=JzLPJfVf; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1778278261; c=relaxed/simple;
+	bh=ydAR8V+7zevaxXw8m1Yxudzwidzt7WxufB1JAXPlRdo=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=kPOjuOwq3sG+qcnPZnUH86EcoicwrG5syKtlwUYhJBpjQru7lrj3vbxLvzvUCZqoi1XiuE4kBSbWwihErhzYgIzDHMSKn3A5rjwcygfBv6kPHg5VGuzo3SLXb5snXBtnqdF8jNqfD8HUoyCIw8GnDQRms9l2z30BmvOr4j3jbgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a94oXeY5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="JzLPJfVf"
-Received: by linux.microsoft.com (Postfix, from userid 1006)
-	id 1327020B7166; Fri,  8 May 2026 15:04:30 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 1327020B7166
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1778277870;
-	bh=GUfY60yumu3zuHpreYxIjGZCb6P35LC9IeB0Uemy/2A=;
-	h=From:To:Cc:Subject:Date:From;
-	b=JzLPJfVflxJA7ipuxf2JNvCbJLurRH9WoGScaDYxFMBLOc/UixJ57F4mOvBcXPTHG
-	 JdY9XclifvXj/UUQWuvuLCWtAErgI6o3vCneycCWmChuuqvVsG7Kaf+kKXTvIcBdZL
-	 jbWNNmp8qihwpYjXomnRTujqXAE5eYd8hF8sGEOA=
-From: Haiyang Zhang <haiyangz@linux.microsoft.com>
-To: linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Shradha Gupta <shradhagupta@linux.microsoft.com>,
-	Dipayaan Roy <dipayanroy@linux.microsoft.com>,
-	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
-	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Cc: paulros@microsoft.com
-Subject: [PATCH net-next] net: mana: Add handler for sriov configure
-Date: Fri,  8 May 2026 15:04:06 -0700
-Message-ID: <20260508220412.15138-1-haiyangz@linux.microsoft.com>
-X-Mailer: git-send-email 2.43.7
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a94oXeY5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56E7FC2BCB0;
+	Fri,  8 May 2026 22:11:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778278261;
+	bh=ydAR8V+7zevaxXw8m1Yxudzwidzt7WxufB1JAXPlRdo=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=a94oXeY5hW+PC0+RERYUlkB761eDdVddearB9x2dNVjco4pftkuzV3njHJsZJkgHz
+	 wGGjiY4/SBp1X6lZ9BgePe6YKRyClgh5wjxvdaO5CXa4CZm5Y/ZvQj8sZp/RrJ2isX
+	 Lud/tihHlFyjn+0LHS+uF7vLS2avbN+7029fjo1kTerTwPJ5+JPV8OqWhHUgeFdYsD
+	 Rv0O8qyA5AuZG4qTe6mnFKI5VCdHkgDRjCjpcrZASOaUIkYS1ynr6D8R9OjKeMfGOW
+	 Gqgw2Zv/BW5pDSaDTpEUp8apYf19qYK6uW1j7EsZ2sZUYMCINDvixcAe0SZt86Igy/
+	 2dHSFXGJJcTQA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id E7CE438119CC;
+	Fri,  8 May 2026 22:10:10 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,80 +37,46 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v8 0/2] ipv6: flowlabel: per-netns budget for
+ unprivileged
+ callers
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177827820980.868876.13043664849343604381.git-patchwork-notify@kernel.org>
+Date: Fri, 08 May 2026 22:10:09 +0000
+References: <20260506082416.2259567-1-maoyixie.tju@gmail.com>
+In-Reply-To: <20260506082416.2259567-1-maoyixie.tju@gmail.com>
+To: Maoyi Xie <maoyixie.tju@gmail.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, dsahern@kernel.org, kuznet@ms2.inr.ac.ru,
+ willemb@google.com, willemdebruijn.kernel@gmail.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, maoyi.xie@ntu.edu.sg
 
-From: Haiyang Zhang <haiyangz@microsoft.com>
+Hello:
 
-Add callback function for the pci_driver, sriov_configure.
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Also disable VF autoprobe when it runs as PF driver on bare metal,
-since the hardware side may not have the VF ready immediately.
+On Wed,  6 May 2026 16:24:14 +0800 you wrote:
+> From: Maoyi Xie <maoyi.xie@ntu.edu.sg>
+> 
+> This series fixes the cross-tenant DoS in net/ipv6/ip6_flowlabel.c.
+> v1 through v6 were single-patch postings, each in its own thread.
+> v6 review pointed out that the existing fl_size read in
+> mem_check() and the corresponding write in fl_intern() are not in
+> the same critical section. v7 split the work into 2 patches.
+> 
+> [...]
 
-Export pci_vf_drivers_autoprobe() so the driver can toggle the VF
-autoprobe flag.
+Here is the summary with links:
+  - [net,v8,1/2] ipv6: flowlabel: take ip6_fl_lock across mem_check and fl_intern
+    https://git.kernel.org/netdev/net/c/7ce5556f255a
+  - [net,v8,2/2] ipv6: flowlabel: enforce per-netns limit for unprivileged callers
+    https://git.kernel.org/netdev/net/c/e68eadffb724
 
-Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
----
- .../net/ethernet/microsoft/mana/gdma_main.c   | 20 +++++++++++++++++++
- drivers/pci/iov.c                             |  1 +
- 2 files changed, 21 insertions(+)
-
-diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-index 3bc3fff55999..767f11d5b351 100644
---- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-+++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-@@ -2094,6 +2094,11 @@ static int mana_gd_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 
- 	gc->numa_node = dev_to_node(&pdev->dev);
- 	gc->is_pf = mana_is_pf(pdev->device);
-+
-+	/* Disable VF autoprobe on BM */
-+	if (gc->is_pf)
-+		pci_vf_drivers_autoprobe(pdev, false);
-+
- 	gc->bar0_va = bar0_va;
- 	gc->dev = &pdev->dev;
- 	xa_init(&gc->irq_contexts);
-@@ -2262,6 +2267,20 @@ static void mana_gd_shutdown(struct pci_dev *pdev)
- 	pci_disable_device(pdev);
- }
- 
-+static int mana_sriov_configure(struct pci_dev *pdev, int numvfs)
-+{
-+	int err = 0;
-+
-+	dev_info(&pdev->dev, "Requested num VFs: %d\n", numvfs);
-+
-+	if (numvfs > 0)
-+		err = pci_enable_sriov(pdev, numvfs);
-+	else
-+		pci_disable_sriov(pdev);
-+
-+	return err ? err : numvfs;
-+}
-+
- static const struct pci_device_id mana_id_table[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MICROSOFT, MANA_PF_DEVICE_ID) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MICROSOFT, MANA_VF_DEVICE_ID) },
-@@ -2276,6 +2295,7 @@ static struct pci_driver mana_driver = {
- 	.suspend	= mana_gd_suspend,
- 	.resume		= mana_gd_resume,
- 	.shutdown	= mana_gd_shutdown,
-+	.sriov_configure = mana_sriov_configure,
- };
- 
- static int __init mana_driver_init(void)
-diff --git a/drivers/pci/iov.c b/drivers/pci/iov.c
-index 91ac4e37ecb9..5a701f44b8fd 100644
---- a/drivers/pci/iov.c
-+++ b/drivers/pci/iov.c
-@@ -1127,6 +1127,7 @@ void pci_vf_drivers_autoprobe(struct pci_dev *dev, bool auto_probe)
- 	if (dev->is_physfn)
- 		dev->sriov->drivers_autoprobe = auto_probe;
- }
-+EXPORT_SYMBOL_GPL(pci_vf_drivers_autoprobe);
- 
- /**
-  * pci_iov_bus_range - find bus range used by Virtual Function
+You are awesome, thank you!
 -- 
-2.34.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
