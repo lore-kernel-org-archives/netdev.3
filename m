@@ -1,104 +1,197 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31E373FCB07;
-	Fri,  8 May 2026 15:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8DD41862A;
+	Fri,  8 May 2026 15:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778252737; cv=none; b=bv8HJcTybJo2vJ5ncoR5UHn3mAMosFcMZ7pJugdpA+xGjdvsEE2ItyGvaf6+3DpgZSkrnmi2dAYuS7dAEsawpvthZ4dJkzdGURRKDlJL5Q5UsmFNjOuN6D++QZqRYhSQaRXz8YsRzCyRHZp3ZbCwILw9kUHOZYdH0EK5bU/IcHA=
+	t=1778252871; cv=none; b=onIzaMAgj/gkME6Ci4mCJhDRmIPpa2xsKGw1XFW4nlAzZMDqkm0bLxeq8r9moNOpL9WdFFCuau7fAQOQOTkexH4J+kH5O9SJbyiMTOuhzRcO52CHQLhkrB3JGJiwxDwVl68hRPaIlSqFbqbKA2s6L2umTQmuVKHjGNLXrQcoNlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778252737; c=relaxed/simple;
-	bh=OOQd0UMMFkRrNcFfS9FsyDJqwFkrX5CUEdPtG78I3bA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i9mom331FUfUVinr1JJyx+9uASk/RvqS2KOdrOEu1RSubpoK2PmpI7DLIgBGHt+p5L+ECgTJjQH3PaHdTkzMSVGliUgHdYNCBLSPgNVDWnaf38rHhcZQNgKs+Qm9AyyhiHifxPwROLBWNcitHY09LQC8/fJZsnj/2kFZSzR1900=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dqgdNCrL; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778252871; c=relaxed/simple;
+	bh=Pv3FTZ9ATrmxysMyOtkuTpnXuq4GVIFE10nmL33sesA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=IP/bc400z8EZIg6zevpjOQED8gBC7znJ2SyJjr3I32abi7bseT7IeUHebB9eGeQyeIQ0pO8Mdw5WM3wE/ci3igRyfX24XsCQmlmxAKzikaI+7fw+qce5WxCKtTc3sHvCzxZJye7j1Ya4XZCcR6l9npP9wIY3kdWbWO5zrtiCyPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s3I1Uqus; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dqgdNCrL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F930C2BCB0;
-	Fri,  8 May 2026 15:05:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s3I1Uqus"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8181EC2BCC7;
+	Fri,  8 May 2026 15:07:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778252736;
-	bh=OOQd0UMMFkRrNcFfS9FsyDJqwFkrX5CUEdPtG78I3bA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dqgdNCrLdSouZfJ+cBochVg4l+EW0ZgYzTKTnY+8lfJwURJnvrQoDR8dHkAg1w6KY
-	 AyN3Hf65eqfBRv8gYPmM+gf4ozqEjaUYro9FAepWWvAz64TouBzwx9KhCg4RFdGeRN
-	 hYOLow1zMj2TpvMiIdWvfbxw0bRFvg9o5yu4of1acn9hFZJ/TlFM9i2KoLVdNmMrGZ
-	 usVMoCcXMdt4NxHl//jzljbEF/G9cgYk+r4st0G8HfgLwv1UBW2EHS2yNu8bcvvook
-	 rOhy9fKW2BU7RfhhfyVTJ2xmF7+s81zo0NSKJVwOgUO3TZpnXQMjp9bgD5LcReWfXf
-	 +dJ2T/gaMu8jA==
-Date: Fri, 8 May 2026 16:05:30 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Arnd Bergmann <arnd@kernel.org>
-Cc: netdev@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	=?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Eric Dumazet <edumazet@google.com>, Felipe Balbi <balbi@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Linus Walleij <linusw@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh+dt@kernel.org>, Roger Quadros <rogerq@kernel.org>,
-	Tony Lindgren <tony@atomide.com>, linux-wireless@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
-	linux-omap@vger.kernel.org,
-	Christian Lamparter <chunkeey@gmail.com>
-Subject: Re: [PATCH 1/3] [v5 net-next] dt-bindings: net: add
- st,stlc4560/p54spi binding
-Message-ID: <20260508-matchless-easily-80421ce426fe@spud>
-References: <20260507212451.3333185-1-arnd@kernel.org>
- <20260507212451.3333185-2-arnd@kernel.org>
+	s=k20201202; t=1778252871;
+	bh=Pv3FTZ9ATrmxysMyOtkuTpnXuq4GVIFE10nmL33sesA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=s3I1UqusQTbPx2G0/KhCqg7Z6bstEV0lYpshgjIf6OeKxRcnAr4zjJiT3GCzG8apZ
+	 HfuKbe3KnUUtxyXJ2Xyw3vpr120w0NsOXZ+0rwNp2Wal+LFGL6Z4dA8UT5Z9SHA90H
+	 7DKSqJVcPB6MYQA4qmW+6VR/K1EagTlaNPbohLchPhU8f+JwDU0EyCO/lNdGz4L8tn
+	 e+VM1PNU93ptdxVFbQlucNJcQ0+jpb1oPJoZyg7WOKdu5KK/aQtXkYxwBN8Wso/8F5
+	 wvkI+esKEc/2O/lLcdo46oNSttsgrvJeGytiB2ckPLG7FymOCpDDTzGAgG8+I28hwo
+	 3T0I9mMENSkZw==
+From: Simon Horman <horms@kernel.org>
+To: aleksander.lobakin@intel.com
+Cc: 'Simon Horman' <horms@kernel.org>,
+	intel-wired-lan@lists.osuosl.org,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	kohei@enjuk.jp,
+	jacob.e.keller@intel.com,
+	aleksandr.loktionov@intel.com,
+	nxne.cnse.osdt.itp.upstreaming@intel.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH iwl-next v5 4/5] ice: implement Rx queue management ops
+Date: Fri,  8 May 2026 15:25:06 +0100
+Message-ID: <20260508142505.1210977-2-horms@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260505152923.1040589-5-aleksander.lobakin@intel.com>
+References: <20260505152923.1040589-5-aleksander.lobakin@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="726aSvgIIJD5Swc6"
-Content-Disposition: inline
-In-Reply-To: <20260507212451.3333185-2-arnd@kernel.org>
+Content-Transfer-Encoding: 8bit
 
+From: 'Simon Horman' <horms@kernel.org>
 
---726aSvgIIJD5Swc6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://sashiko.dev
+---
+    ice: implement Rx queue management ops
+    
+    Now ice is ready to get queue_mgmt_ops support. It already has API
+    to disable/reconfig/enable one particular queue (for XSk). Reuse as
+    much of its code as possible to implement Rx queue management
+    callbacks and vice versa -- ice_queue_mem_{alloc,free}() can be
+    reused during ifup/ifdown to elide code duplication.
+    With this, ice passes the io_uring zcrx selftests, meaning the Rx
+    part of netmem/MP support is done.
 
-On Thu, May 07, 2026 at 11:24:49PM +0200, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
->=20
-> The SPI version of Prism54 was sold under a couple of different
-> names and supported by the Linux p54spi driver, but there was
-> never a DT binding for it.
->=20
-> Document the four known names of this device and the properties
-> that are sufficient for its use on the Nokia N8x0 tablet.
->=20
-> As I don't have this hardware or documentation for it, this is
-> purely based on existing usage in the driver.
->=20
-> Link: https://lore.kernel.org/all/e8dc9acb-6f85-e0a9-a145-d101ca6da201@gm=
-ail.com/
-> Acked-by: Christian Lamparter <chunkeey@gmail.com>
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> diff --git a/drivers/net/ethernet/intel/ice/ice_base.c b/drivers/net/ethernet/intel/ice/ice_base.c
+> index 1add82d894bbe..4e0b8895c303a 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_base.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_base.c
+> @@ -653,6 +653,43 @@ static int ice_rxq_pp_create(struct ice_rx_ring *rq)
+>  	return err;
+>  }
+>  
+> +static int ice_queue_mem_alloc(struct net_device *dev,
+> +			       struct netdev_queue_config *qcfg,
+> +			       void *per_queue_mem, int idx)
+> +{
+> +	const struct ice_netdev_priv *priv = netdev_priv(dev);
+> +	const struct ice_rx_ring *real = priv->vsi->rx_rings[idx];
+> +	struct ice_rx_ring *new = per_queue_mem;
+> +	int ret;
+> +
+> +	new->count = real->count;
+> +	new->netdev = real->netdev;
+> +	new->q_index = real->q_index;
+> +	new->q_vector = real->q_vector;
+> +	new->vsi = real->vsi;
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Is it safe to assume netdev_priv(dev) returns the correct VSI here? For a
+loopback VSI (ICE_VSI_LB), it shares the PF's netdev, so priv->vsi resolves
+to the PF VSI.
 
---726aSvgIIJD5Swc6
-Content-Type: application/pgp-signature; name="signature.asc"
+Could this copy the PF VSI pointers to the loopback ring and cause hardware
+context corruption later?
 
------BEGIN PGP SIGNATURE-----
+[ ... ]
+> -/**
+> - * ice_qp_dis - Disables a queue pair
+> - * @vsi: VSI of interest
+> - * @q_idx: ring index in array
+> - *
+> - * Returns 0 on success, negative on failure.
+> - */
+> -int ice_qp_dis(struct ice_vsi *vsi, u16 q_idx)
+> +static int __ice_qp_dis(struct ice_vsi *vsi, u16 q_idx)
+>  {
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaf37uQAKCRB4tDGHoIJi
-0oiDAP9VBMZj2YyfB3P9bwsTD4wv5yB5Cq6x3NFuws40Zkv4XgD/WBo5/f2CnmON
-jgQaqwIoJVKNq6INibHJqFWUwarKLQ4=
-=ikRz
------END PGP SIGNATURE-----
+Could this cause TX data corruption? This function appears to call
+synchronize_net() before netif_tx_stop_queue(), meaning the RCU barrier
+completes before the queue actually stops.
 
---726aSvgIIJD5Swc6--
+Concurrent transmissions might then race with ring modifications.
+
+[ ... ]
+> +static int ice_queue_start(struct net_device *dev,
+> +			   struct netdev_queue_config *qcfg,
+> +			   void *per_queue_mem, int idx)
+> +{
+> +	const struct ice_netdev_priv *priv = netdev_priv(dev);
+> +	struct ice_rx_ring *real = priv->vsi->rx_rings[idx];
+> +	struct ice_rx_ring *new = per_queue_mem;
+> +	struct napi_struct *napi;
+> +	int ret;
+[ ... ]
+> +	ret = ice_alloc_rx_bufs(real, ICE_DESC_UNUSED(real));
+> +
+> +	return __ice_qp_ena(priv->vsi, idx, ret);
+> +}
+
+Does this cause a use-after-free via hardware DMA?
+
+ice_alloc_rx_bufs() returns a boolean true (1) on success. This is passed to
+__ice_qp_ena() as the fail argument, which returns it back. Since
+ice_queue_start() returns a non-zero value, the core networking stack assumes
+failure and frees the queue memory, while the hardware queue remains active and
+DMAs into freed memory.
+
+> +
+> +static int ice_queue_stop(struct net_device *dev, void *per_queue_mem,
+> +			  int idx)
+> +{
+> +	const struct ice_netdev_priv *priv = netdev_priv(dev);
+> +	struct ice_rx_ring *real = priv->vsi->rx_rings[idx];
+> +	int ret;
+> +
+> +	ret = __ice_qp_dis(priv->vsi, idx);
+
+Does calling __ice_qp_dis() from ice_queue_stop() disrupt the global interface
+carrier state and TX queues?
+
+__ice_qp_dis() calls netif_carrier_off() and cleans TX rings, but
+ice_queue_stop() is intended to be a granular, per-RX-queue operation.
+
+> +	if (ret)
+> +		return ret;
+> +
+> +	page_pool_disable_direct_recycling(real->pp);
+
+Can this dereference a NULL pointer if the queue is configured with an AF_XDP
+zero-copy socket?
+
+In that case, a standard page pool is not created and real->pp might be NULL,
+causing a panic in page_pool_disable_direct_recycling().
+
+> +	if (real->hdr_pp)
+> +		page_pool_disable_direct_recycling(real->hdr_pp);
+> +
+> +	ice_zero_rx_ring(real);
+> +	memcpy(per_queue_mem, real, sizeof(*real));
+
+Could this lead to a memory leak of RX ring buffers?
+
+ice_zero_rx_ring() clears the next_to_clean and next_to_use indices to 0
+before the memcpy(). When the stack calls ice_queue_mem_free(per_queue_mem),
+it skips cleaning because next_to_clean == next_to_use, leaking all active
+skbs and page pool buffers.
+
+Also, does this memcpy() leave dangling pointers in real that can lead to a
+double-free?
+
+The dynamically allocated pointers like rx_fqes and pp are not set to NULL
+in real. When the interface is brought down later, ice_clean_rx_ring(real)
+may attempt to destroy the already-freed page pools again.
+
+> +
+> +	return 0;
+> +}
