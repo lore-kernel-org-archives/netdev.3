@@ -1,92 +1,105 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA5F82ECE93
-	for <netdev@vger.kernel.org>; Fri,  8 May 2026 15:45:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EA943002DD
+	for <netdev@vger.kernel.org>; Fri,  8 May 2026 15:50:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778255158; cv=none; b=k0vwVbUAs39PlTkafQLKAwQHfdx3bV0IJkCgg3EptNdQuwgrnLmjWAlgcyVBys7H1h7PRkeWQrBb4NrOGslQ07ysFyZ6/HU5ZhTlmIE+IkJ2Q0KiugaM0i7HeBBlA1yaay4ygsdfFi6XE716AfZHU4a/QIR9mLrNi9nd1QNnjhE=
+	t=1778255430; cv=none; b=Q5oVzagDyMQJB1A1p2K7WxuxksqLBhim2KzJPadRgSD6YJmmtf584zOP5WCKNqx5+8I1kp9y5hU5yN+Esti46rSHR08FleSwQYmVM94lOG+vVltgDhWdlk0GOVtFx9Wsd/czFWURe30EXgduu27T6tUFYbZ0FQ6e9JO+fKVjGUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778255158; c=relaxed/simple;
-	bh=oEl33Z/vw9llxa/Yt3MmVWX3MitGrgbvbnrf7MvkUuY=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=bgSpV2Z7MLgKApy3WBhXeW24I4Q/f10k8BwpK5QP6UJdC0LI6OirgXactdO3FLsxtcNJH1gPSBb2l/nyBxjO9Y01n5xUdMrLygG2Y/L9XovIrgiSlif5204eKA6EHafTT9DDt28A5XTgoSteE3tU8fZHncj6oKRg4+ewEB/UBs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gOfSSsOh; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1778255430; c=relaxed/simple;
+	bh=EV9pyTwVgtQ8OQAfRIcWb0vGF3HesC5dvxiqueUXGNg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Uo26BIzo2Aq9juQ1iwPGGQ6gp31taWlKQiPSMhwonKoT1IomUUYzYpLq6IbTMIlyU5CN9llLnkGDHkcBg91iaOfs0SC0ycVIZ8QfvtlfDm+8OrdsDQ0R9Q0Y8JT168yo5R4H1BCCvy6AqwSuIIMbFiCg2cw/gl0yicvllCSZu6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=eMQSS70w; arc=none smtp.client-ip=23.88.38.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gOfSSsOh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778255155;
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="eMQSS70w"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
+	s=09092022; t=1778255006;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DoqUW4Ab7C8hyJZDCA7GvuscNtP71DqUE4zEpURuA34=;
-	b=gOfSSsOh7BjthZiKF05dTSk+8oKqQrdRL9h7Imi3OIYPPm0MEEo8DR/GTdUT307xVDK3wS
-	Z18oH8rEGW/dn1iUUQz/pDJDwC8BisZDwro80SwxMVIImjJnEl68gIO+dDdpnXhCeMLgOf
-	gRBCrSLiPy60QFa07/BUILU8QBrdTNQ=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-517-Y9P6IGaIOF6YZO5TtyiREg-1; Fri,
- 08 May 2026 11:45:54 -0400
-X-MC-Unique: Y9P6IGaIOF6YZO5TtyiREg-1
-X-Mimecast-MFC-AGG-ID: Y9P6IGaIOF6YZO5TtyiREg_1778255152
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4E0AC180035D;
-	Fri,  8 May 2026 15:45:52 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.44.48.83])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 91A9F19560A2;
-	Fri,  8 May 2026 15:45:48 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <af2kdW2F1gJ9U-Gg@v4bel>
-References: <af2kdW2F1gJ9U-Gg@v4bel>
-To: Hyunwoo Kim <imv4bel@gmail.com>
-Cc: dhowells@redhat.com, marc.dionne@auristor.com, davem@davemloft.net,
-    edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-    horms@kernel.org, qingfang.deng@linux.dev, jiayuan.chen@linux.dev,
-    linux-afs@lists.infradead.org, netdev@vger.kernel.org,
-    stable@vger.kernel.org
-Subject: Re: [PATCH net v3] rxrpc: Also unshare DATA/RESPONSE packets when paged frags are present
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=8zhRPnfLe2NDUY+iSHXVns7vYjJltQ03OVMAkw18IsM=;
+	b=eMQSS70w0o8Hxn0SN1KG+7odxp01shVyfDXNODrtYMZWnf2If0W19IfQ9EVzbHACsHuHU9
+	DvSM2KX39r5gtgTs4g7zex5T7uGXw48/XScBjk0jv137ceubkYzDqrscSX3SptKyyRlMD6
+	Ij1Rer/hNkJsbPusM3sFnj4UYylMqJSWuLorp8tIqaQHu1zxtVlJyEseBTyfqLmECR0jy7
+	ozMGnLj3QCU2iY9PZdLsCdt2nZm94YuGixFSzUOqnxeiTrLmbXi4QLhWkw6wDaDrcBlDwM
+	f2kTbsr8vLDRhw4u1jXe9qyYaO/9KQIPpXTAW+3T4GW79KOf3Rn2vkP2T2VlJw==
+From: Simon Wunderlich <sw@simonwunderlich.de>
+To: netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	b.a.t.m.a.n@lists.open-mesh.org,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH net 0/8] pull request: batman-adv 2026-05-08
+Date: Fri,  8 May 2026 17:43:06 +0200
+Message-ID: <20260508154314.12817-1-sw@simonwunderlich.de>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <195757.1778255147.1@warthog.procyon.org.uk>
-Date: Fri, 08 May 2026 16:45:47 +0100
-Message-ID: <195758.1778255147@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Content-Transfer-Encoding: 8bit
 
-Hyunwoo Kim <imv4bel@gmail.com> wrote:
+Dear net maintainers,
 
-> The DATA-packet handler in rxrpc_input_call_event() and the RESPONSE
-> handler in rxrpc_verify_response() copy the skb to a linear one before
-> calling into the security ops only when skb_cloned() is true.  An skb
-> that is not cloned but still carries externally-owned paged fragments
-> (e.g. SKBFL_SHARED_FRAG set by splice() into a UDP socket via
-> __ip_append_data, or a chained skb_has_frag_list()) falls through to
-> the in-place decryption path, which binds the frag pages directly into
-> the AEAD/skcipher SGL via skb_to_sgvec().
-> 
-> Extend the gate to also unshare when skb_has_frag_list() or
-> skb_has_shared_frag() is true.  This catches the splice-loopback vector
-> and other externally-shared frag sources while preserving the
-> zero-copy fast path for skbs whose frags are kernel-private (e.g. NIC
-> page_pool RX, GRO).  The OOM/trace handling already in place is reused.
-> 
-> Fixes: d0d5c0cd1e71 ("rxrpc: Use skb_unshare() rather than skb_cow_data()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+here are a couple of bugfixes for batman-adv which we would like to have integrated into net.
 
-Acked-by: David Howells <dhowells@redhat.com>
+Please pull or let me know of any problem!
 
+Thank you,
+      Simon
+
+The following changes since commit 1f5ffc672165ff851063a5fd044b727ab2517ae3:
+
+  Fix mismerge of the arm64 / timer-core interrupt handling changes (2026-04-14 23:03:02 -0700)
+
+are available in the Git repository at:
+
+  https://git.open-mesh.org/batadv.git tags/batadv-net-pullrequest-20260508
+
+for you to fetch changes up to ba9d20ee9076dac32c371116bacbe72480eb356c:
+
+  batman-adv: bla: put backbone reference on failed claim hash insert (2026-05-08 14:29:02 +0200)
+
+----------------------------------------------------------------
+Here are some batman-adv bugfixes:
+
+- fix integer overflow on buff_pos, by Lyes Bourennani
+
+- fix invalid tp_meter access during teardown, by Jiexun Wang (2 patches)
+
+- stop caching unowned originator pointers in BAT IV, by Jiexun Wang
+
+- tp_meter: fix tp_num leak on kmalloc failure, by Sven Eckelmann
+
+- fix BLA refcounting issues, by Sven Eckelmann (3 patches)
+
+----------------------------------------------------------------
+Jiexun Wang (3):
+      batman-adv: reject new tp_meter sessions during teardown
+      batman-adv: stop tp_meter sessions during mesh teardown
+      batman-adv: stop caching unowned originator pointers in BAT IV
+
+Lyes Bourennani (1):
+      batman-adv: fix integer overflow on buff_pos
+
+Sven Eckelmann (4):
+      batman-adv: tp_meter: fix tp_num leak on kmalloc failure
+      batman-adv: bla: prevent use-after-free when deleting claims
+      batman-adv: bla: only purge non-released claims
+      batman-adv: bla: put backbone reference on failed claim hash insert
+
+ net/batman-adv/bat_iv_ogm.c            |  85 +++++++++++++++++-------
+ net/batman-adv/bridge_loop_avoidance.c |  11 +++-
+ net/batman-adv/main.c                  |   1 +
+ net/batman-adv/tp_meter.c              | 116 +++++++++++++++++++++++++++------
+ net/batman-adv/tp_meter.h              |   1 +
+ net/batman-adv/types.h                 |   4 ++
+ 6 files changed, 172 insertions(+), 46 deletions(-)
