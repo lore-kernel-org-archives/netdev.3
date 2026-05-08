@@ -1,105 +1,92 @@
-Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E85A3F23A3
-	for <netdev@vger.kernel.org>; Fri,  8 May 2026 15:43:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA5F82ECE93
+	for <netdev@vger.kernel.org>; Fri,  8 May 2026 15:45:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778255019; cv=none; b=nJ9orggTAdSeWsVpXpXSWQfIOkdsyLwy4ubNBo1x2DoX7EPRp7naIHDuhNOKDxnGwiCnzA2LlD/sdQ2oMP2jW/DczQs2J2NjZY733+9G+MnFYgvrJA74HMda2W+KHanf78Dqye2FQecE1VBDtlvMlQ9cCTIjQJh+FXeLKrNpBKs=
+	t=1778255158; cv=none; b=k0vwVbUAs39PlTkafQLKAwQHfdx3bV0IJkCgg3EptNdQuwgrnLmjWAlgcyVBys7H1h7PRkeWQrBb4NrOGslQ07ysFyZ6/HU5ZhTlmIE+IkJ2Q0KiugaM0i7HeBBlA1yaay4ygsdfFi6XE716AfZHU4a/QIR9mLrNi9nd1QNnjhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778255019; c=relaxed/simple;
-	bh=g18DOxyTZtZ2JF9jGtFI09lwdjz82kuvR3W5ytMwUoc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dPRH4yA0aAr2SlO+mfrSl56JDATOBE2xJ56DexPf2topNf/u8MGdHficcvATad3M8pvv4W12FLCnbR0dTw3Amjt1Q0EvfrG1xGJiMhGTTkVK8Qfzo3+J9qlP7z9Zt8/YuaPFlcLIVWkPnQBeaIrtvj0/Dh2nfuRQXZWTiZp/RZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=v/+GCSlx; arc=none smtp.client-ip=23.88.38.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
+	s=arc-20240116; t=1778255158; c=relaxed/simple;
+	bh=oEl33Z/vw9llxa/Yt3MmVWX3MitGrgbvbnrf7MvkUuY=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=bgSpV2Z7MLgKApy3WBhXeW24I4Q/f10k8BwpK5QP6UJdC0LI6OirgXactdO3FLsxtcNJH1gPSBb2l/nyBxjO9Y01n5xUdMrLygG2Y/L9XovIrgiSlif5204eKA6EHafTT9DDt28A5XTgoSteE3tU8fZHncj6oKRg4+ewEB/UBs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gOfSSsOh; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="v/+GCSlx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1778255013;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gOfSSsOh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778255155;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rKkYdkKDVA6gC80Vrr+hLi2juPjpTi5IVGhvcsqIlUU=;
-	b=v/+GCSlxpizvDw965L+ZXXx+0bNpP5FzqyVAiNCADni4gXVh0xStkeJrCChaRphD2jIxPS
-	fUiRhAaIDeOhSn8XqfULs5ENFRYxPMr1XMpzJv2XlFJYTjgD0660SXTvQn4SWV7J9C0lSk
-	PcQpTz9hzRmeoiyUv4Kp6F4bg3k2Er//Ow59Cyd+2Svhb0LjtfEAwL8JTpUnYcVCQbYxTI
-	RewF1G6z1ww5+L0v5YeZFHN+bioQBBje1O9Evo/NGKrDfXFdSAGvqrufpe77yGdf+I1VI+
-	/ozebiq7NTjWSDsZnT2+vAj3ywb5+M+ryTjnrghoxyeWuaVBTUjPJFHklKWgpw==
-From: Simon Wunderlich <sw@simonwunderlich.de>
-To: netdev@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	b.a.t.m.a.n@lists.open-mesh.org,
-	Sven Eckelmann <sven@narfation.org>,
-	stable@kernel.org,
-	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net 7/8] batman-adv: bla: only purge non-released claims
-Date: Fri,  8 May 2026 17:43:13 +0200
-Message-ID: <20260508154314.12817-8-sw@simonwunderlich.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260508154314.12817-1-sw@simonwunderlich.de>
-References: <20260508154314.12817-1-sw@simonwunderlich.de>
+	bh=DoqUW4Ab7C8hyJZDCA7GvuscNtP71DqUE4zEpURuA34=;
+	b=gOfSSsOh7BjthZiKF05dTSk+8oKqQrdRL9h7Imi3OIYPPm0MEEo8DR/GTdUT307xVDK3wS
+	Z18oH8rEGW/dn1iUUQz/pDJDwC8BisZDwro80SwxMVIImjJnEl68gIO+dDdpnXhCeMLgOf
+	gRBCrSLiPy60QFa07/BUILU8QBrdTNQ=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-517-Y9P6IGaIOF6YZO5TtyiREg-1; Fri,
+ 08 May 2026 11:45:54 -0400
+X-MC-Unique: Y9P6IGaIOF6YZO5TtyiREg-1
+X-Mimecast-MFC-AGG-ID: Y9P6IGaIOF6YZO5TtyiREg_1778255152
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4E0AC180035D;
+	Fri,  8 May 2026 15:45:52 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.44.48.83])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 91A9F19560A2;
+	Fri,  8 May 2026 15:45:48 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <af2kdW2F1gJ9U-Gg@v4bel>
+References: <af2kdW2F1gJ9U-Gg@v4bel>
+To: Hyunwoo Kim <imv4bel@gmail.com>
+Cc: dhowells@redhat.com, marc.dionne@auristor.com, davem@davemloft.net,
+    edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+    horms@kernel.org, qingfang.deng@linux.dev, jiayuan.chen@linux.dev,
+    linux-afs@lists.infradead.org, netdev@vger.kernel.org,
+    stable@vger.kernel.org
+Subject: Re: [PATCH net v3] rxrpc: Also unshare DATA/RESPONSE packets when paged frags are present
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <195757.1778255147.1@warthog.procyon.org.uk>
+Date: Fri, 08 May 2026 16:45:47 +0100
+Message-ID: <195758.1778255147@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-From: Sven Eckelmann <sven@narfation.org>
+Hyunwoo Kim <imv4bel@gmail.com> wrote:
 
-When batadv_bla_purge_claims() goes through the list of claims, it is only
-traversing the hash list with an rcu_read_lock(). Due to a potential
-parallel batadv_claim_put(), it can happen that it encounters a claim which
-was actually in the process of being released+freed by
-batadv_claim_release(). In this case, backbone_gw is set to NULL before the
-delayed RCU kfree is started. Calling batadv_bla_claim_get_backbone_gw() is
-then no longer allowed because it would cause a NULL-ptr derefence.
+> The DATA-packet handler in rxrpc_input_call_event() and the RESPONSE
+> handler in rxrpc_verify_response() copy the skb to a linear one before
+> calling into the security ops only when skb_cloned() is true.  An skb
+> that is not cloned but still carries externally-owned paged fragments
+> (e.g. SKBFL_SHARED_FRAG set by splice() into a UDP socket via
+> __ip_append_data, or a chained skb_has_frag_list()) falls through to
+> the in-place decryption path, which binds the frag pages directly into
+> the AEAD/skcipher SGL via skb_to_sgvec().
+> 
+> Extend the gate to also unshare when skb_has_frag_list() or
+> skb_has_shared_frag() is true.  This catches the splice-loopback vector
+> and other externally-shared frag sources while preserving the
+> zero-copy fast path for skbs whose frags are kernel-private (e.g. NIC
+> page_pool RX, GRO).  The OOM/trace handling already in place is reused.
+> 
+> Fixes: d0d5c0cd1e71 ("rxrpc: Use skb_unshare() rather than skb_cow_data()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
 
-To avoid this, only claims with a valid reference counter must be purged.
-All others are already taken care of.
-
-Cc: stable@kernel.org
-Fixes: 23721387c409 ("batman-adv: add basic bridge loop avoidance code")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
----
- net/batman-adv/bridge_loop_avoidance.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/net/batman-adv/bridge_loop_avoidance.c b/net/batman-adv/bridge_loop_avoidance.c
-index 8b77dd2ecfa41..879ab043d57a9 100644
---- a/net/batman-adv/bridge_loop_avoidance.c
-+++ b/net/batman-adv/bridge_loop_avoidance.c
-@@ -1288,6 +1288,13 @@ static void batadv_bla_purge_claims(struct batadv_priv *bat_priv,
- 
- 		rcu_read_lock();
- 		hlist_for_each_entry_rcu(claim, head, hash_entry) {
-+			/* only purge claims not currently in the process of being released.
-+			 * Such claims could otherwise have a NULL-ptr backbone_gw set because
-+			 * they already went through batadv_claim_release()
-+			 */
-+			if (!kref_get_unless_zero(&claim->refcount))
-+				continue;
-+
- 			backbone_gw = batadv_bla_claim_get_backbone_gw(claim);
- 			if (now)
- 				goto purge_now;
-@@ -1313,6 +1320,7 @@ static void batadv_bla_purge_claims(struct batadv_priv *bat_priv,
- 					      claim->addr, claim->vid);
- skip:
- 			batadv_backbone_gw_put(backbone_gw);
-+			batadv_claim_put(claim);
- 		}
- 		rcu_read_unlock();
- 	}
--- 
-2.47.3
+Acked-by: David Howells <dhowells@redhat.com>
 
