@@ -1,89 +1,178 @@
-Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.74])
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB8D7256C84;
-	Fri,  8 May 2026 12:02:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 727EE256C84;
+	Fri,  8 May 2026 12:03:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778241774; cv=none; b=DyVe1fZLE/z7iTEeLGSp7fYB43ku6Zq43W6Ie+K0+6/FxLpyxQPQz3b0GdzsQYYdq4Nt1Cpzcm8nId9YDoB9k0h6RcaWc2dqB7K5b6/AYeC5BnbPLspEs8L+I8+SMX9Bjh1T2kx3Gw/76fTkNBmOnUeIA0lNOOfKvh1KHCZy0yE=
+	t=1778241804; cv=none; b=AfEH6ateml8HMHUhWIbtMTrP7pVUvIj/C9WO41YFTMJoIxl6doBCUjb98vBO5+GlSohVh976GCg6z79c6QZ1ShcHh+DMUQrSv4fJ/GmqqbxdNf/rwkRkEXaAg0ueQYZ4AUJUb7tQVoD1RBR5Z//hreZdzaDqKqUDshgntZ8WvtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778241774; c=relaxed/simple;
-	bh=IbfMGtNlgyWaWV4deyaJ80OvIp5WFMnDGOmztr5Ab9A=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:Content-Type; b=qmuBgel5W0Sv8wYorb06PBNHq+mwGs9DkGg+9GPmkQgrcWiEk8Z3R6IRnT06t7eF54m6GL1evG73nHbURl8in4v+0YSTJuVryFVXw7vnR6G50QGiMr1iwg/qc+3+e3d0YNDNw6H1hm+nwPa8he0AdXD52WeW1Oag30IkkYhE1Kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=desarrollaria.com; spf=pass smtp.mailfrom=desarrollaria.com; dkim=pass (2048-bit key) header.d=desarrollaria.com header.i=y2k@desarrollaria.com header.b=AgwaEzUr; arc=none smtp.client-ip=217.72.192.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=desarrollaria.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=desarrollaria.com
+	s=arc-20240116; t=1778241804; c=relaxed/simple;
+	bh=g6fPHPIaMrimEkluU7Nv9VTxJMFe2QqLzA63QAt/Z0U=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EPbgFQrCZh9mgK7cdv4u1bj4t3xOSW4lOf/qtgLxgqOWgl2xv3tVN9/17iit9KadBCPpkrwXyfa9QWgIqhqFl7x3MdRIlzGVEEdveEqr6gxp5bevfnBVAPfMLMeNZGrWm7UJvNHK7luz2GJjoeAE/zWaIl/Yxvsn7SZOtZ98+OU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=bY5WhrWY; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=desarrollaria.com header.i=y2k@desarrollaria.com header.b="AgwaEzUr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=desarrollaria.com;
-	s=s1-ionos; t=1778241755; x=1778846555; i=y2k@desarrollaria.com;
-	bh=IbfMGtNlgyWaWV4deyaJ80OvIp5WFMnDGOmztr5Ab9A=;
-	h=X-UI-Sender-Class:Date:Message-ID:From:To:Cc:Subject:In-Reply-To:
-	 Content-Type:cc:content-transfer-encoding:content-type:date:from:
-	 message-id:mime-version:reply-to:subject:to;
-	b=AgwaEzUrDzvruxCm+Gp4K9umfcOcruCjAYexhxmXp+oWyCE1AVkU5RIcALrMMoGt
-	 Gj2L5v12eoFKz2T2mBQifbNigpQ64AdqYFWKxXlM8Mq/0yMthNuLZibXFkWllHFyn
-	 I8Du03LgsCvjzF+01ebkZAFNtd8RfnQUyiQMVGyEFrx01bZb/Fyw1AFBZgGW5MlpZ
-	 LJFD7vJVx1hh1z2xT+lkap+AUAD1u4GIi3izogenc0WtI+MS9XqDzHt0hvE9mjxvy
-	 NIjYXbJtPPZ3/wKQnXSxGzny64alP4L8OibvJF2xnGi8id9dwr/McK3FyGcQ1WD0F
-	 2wRRybpPzchDoTEuaw==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from client.hidden.invalid by mrelayeu.kundenserver.de (mreue109
- [212.227.15.152]) with ESMTPSA (Nemesis) id 1N49Yt-1vLHHG0QAD-014KaK; Fri, 08
- May 2026 14:02:35 +0200
-Date: Fri, 08 May 2026 14:02:30 +0200
-Message-ID: <27ab1dab62e7cd9d8f85c59db88d8fc2.y2k@desarrollaria.com>
-From: y2k <y2k@desarrollaria.com>
-To: kuniyu@google.com
-Cc: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com, idosch@nvidia.com, kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com
-Subject: Re: ipv6: ip6mr: Call ip6mr_fib_lookup() under RCU in pim6_rcv() and reg_vif6_xmit()
-In-Reply-To: <20260508115204.4068686-1-kuniyu@google.com>
-Content-Type: text/plain; charset=UTF-8
-X-Provags-ID: V03:K1:Rh5c7ZvJRgJbDecFAT8sZagSTgdS7qegMMQUe6wDr/JwLP2uRPM
- 9UGbdJykdxjB47hhk9iqlBw4G8Lthxk94A4MrPi+Ul3LOtprw7nRkM5Sx1jaakt7l4WvocG
- 4l2HY/vWbPKZzD7IlJTdyVgBgVCX1Rf1n/TnmSasjJsQLmvhqGFjf8yYdTLXssvIDhKXh8m
- 9YKklrH5fKLxJQKpWmYlA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:CoiiSczY/rY=;oO+zyCu9Lg9bLlzr8Ir5ewa3Xyn
- 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
- wnUpwcn5XgofttyNwl5w6MFhhPdJU4V3
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="bY5WhrWY"
+Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 648B8TYt2841686;
+	Fri, 8 May 2026 05:02:57 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=s
+	ftJk20xYEKv2SoQ3gqS0JXxBE1+inAABxct5Pr9YIg=; b=bY5WhrWY0RA5FDnrt
+	46VcBaQixiBiL4hdiQ2WYJD1j1atPJxFFXLhDn/xKq2zA6Bqp3An79H7O2/dK1Cw
+	8Rbnk5ZfgyLAWUh2+BbDnzpHH8egYQu01JTzG0jDjhSyL2JaqfBwR8ehtjmusHbE
+	sptiGqJrUoYUnKfFGJBZQp4Qrit/G2qlfKOwY52RFcSN40qcRgV3niJ+Vz5xw343
+	5zz/ghgINzTfu0tFWTR0qsRwxnBAi4C+s+NmaUKRvfUZprHgY84cKzgGY3G6PZ5t
+	8eaSxab6eRiY1cNLbMW52KCt62iWOVArlob9yn5DEZvFUMPxH9i72p3HixyR//4l
+	wQJMA==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4e14g0hqtk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 08 May 2026 05:02:56 -0700 (PDT)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Fri, 8 May 2026 05:02:55 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Fri, 8 May 2026 05:02:55 -0700
+Received: from BG-LT92649.marvell.com (BG-LT92649.marvell.com [10.28.166.218])
+	by maili.marvell.com (Postfix) with ESMTP id E8BA63F706D;
+	Fri,  8 May 2026 05:02:50 -0700 (PDT)
+From: <sukhdeeps@marvell.com>
+To: <netdev@vger.kernel.org>
+CC: <irusskikh@marvell.com>, <epomozov@marvell.com>,
+        <richardcochran@gmail.com>, <andrew+netdev@lunn.ch>,
+        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <vadim.fedorenko@linux.dev>,
+        <linux-kernel@vger.kernel.org>,
+        Sukhdeep Singh
+	<sukhdeeps@marvell.com>
+Subject: [PATCH net-next v2 0/9] net: atlantic: add PTP support for AQC113 (Antigua)
+Date: Fri, 8 May 2026 17:31:47 +0530
+Message-ID: <20260508120156.3060-1-sukhdeeps@marvell.com>
+X-Mailer: git-send-email 2.52.0.windows.1
+In-Reply-To: <20260506135706.2834-1-sukhdeeps@marvell.com>
+References: <20260506135706.2834-1-sukhdeeps@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-ORIG-GUID: yC1KXo58hFLpQ9pRIB4kdd7_cU3svRa0
+X-Authority-Analysis: v=2.4 cv=bMUm5v+Z c=1 sm=1 tr=0 ts=69fdd0f0 cx=c_pps
+ a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
+ a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
+ a=qit2iCtTFQkLgVSMPQTB:22 a=M5GUcnROAAAA:8 a=D6WJUydZfyHhnkMUwaQA:9
+ a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA4MDEyNSBTYWx0ZWRfX/1DjNePbS0P9
+ 1gZcJAolBee6Cca95Jg/wXk9sRSOEIgxqzvnbB7BUMMAwX9Si7VP+HhOo4dV1M8VwwSLqyJW180
+ oafO22LbofLiL2lHkym+ey4W5fMK53dL4i66lse1li2Pzu+oBTyGNOeQNxGAq9kgUegkRX3DtI8
+ AnCapFgBV9cHeTQRySaumFK08EdMBtRXtO6I0Ol7zjxImHFjRhWe1aLX06y8dtpOF7f9DGCYcyb
+ NxzfDg6I7v4pEyB6Wq+cM6TpT8dLxtxEw9+V+HP5wV6gt3rWgn5H6HGJicGBeLtE3L6FZkfc4su
+ fRtjoYfpGNc0LS4/vPYz6xcxnsT5EjjcjOjGCvoFKMqClQ855Latnq7o3aV/rodZZlgyUvBwBPz
+ ZQxga3T0uZ3Kif+vLy27iX+a705gw5QjLxMC1T24kP2y7ART0Wcxt2BLYSauSDDHf6llh6BMJNI
+ H6fj4tJJdc92/r3gbbQ==
+X-Proofpoint-GUID: yC1KXo58hFLpQ9pRIB4kdd7_cU3svRa0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-07_02,2026-05-06_01,2025-10-01_01
 
-Thank you for the clarification. I missed that IP6MR is not yet
-converted to ->exit_rtnl() and therefore does not need this change.
+From: Sukhdeep Singh <sukhdeeps@marvell.com>
 
-I appreciate the quick response.
+This series adds IEEE 1588 PTP support for the AQC113 (Antigua) network
+controller. AQC113 is the successor to the existing AQC107 (Atlantic)
+chip already supported by the atlantic driver.
 
-y2k
+AQC113 uses a substantially different hardware architecture for PTP
+compared to AQC107:
+
+  - Dual on-chip TSG clocks with direct register access instead of
+    PHY-based timestamping via firmware
+  - TX timestamps via descriptor writeback instead of firmware mailbox
+  - Hardware L3/L4 RX filters for PTP multicast steering with both
+    IPv4 and IPv6 support
+  - Reference-counted shared filter slots managed through an Action
+    Resolver Table (ART), allowing multiple rules to share L3/L4
+    hardware filters when their match criteria are identical
+
+The series is structured in three parts:
+
+Patches 1-3 prepare the existing L3/L4 filter path:
+
+  Patch 1 corrects flow_type masking and IPv6 address handling in
+  aq_set_data_fl3l4(). Patch 2 moves the active_ipv4/ipv6 bitmap
+  updates to after the hardware write succeeds. Patch 3 decouples
+  the function from driver-internal structures so it can be called
+  directly by the AQC113 PTP filter setup code.
+
+Patches 4-6 add the AQC113 hardware infrastructure:
+
+  Patch 4 adds the low-level register definitions and accessor
+  functions. Patch 5 adds filter data structures and firmware
+  capability query. Patch 6 implements the complete L2/L3/L4 RX
+  filter management layer including the reference-counted sharing
+  and ART integration.
+
+Patches 7-9 add the AQC113 PTP feature:
+
+  Patch 7 reserves the dedicated PTP traffic class buffer and
+  configures the TX path. Patch 8 extends the hw_ops interface
+  with PTP-specific function pointers and updates AQC107 to the
+  new signatures. Patch 9 implements the full PTP subsystem
+  integration for AQC113.
+
+The existing AQC107 PTP implementation is not functionally changed
+by this series; AQC113-specific code paths are gated on chip
+detection throughout.
+
+Tested on AQC113 at 1G, 2.5G, 5G, and 10G link speeds using
+ptp4l/phc2sys with hardware timestamping in both L2 and L4
+(IPv4/IPv6) modes.
+
+Changes in v2:
+- Patch 6: Remove redundant variable initializers for art_mask, h, l
+  and err as suggested by Vadim Fedorenko
+
+Sukhdeep Singh (9):
+  net: atlantic: correct L3L4 filter flow_type masking and IPv6 handling
+  net: atlantic: move active_ipv4/ipv6 bitmap updates after HW write
+  net: atlantic: decouple aq_set_data_fl3l4() from driver internals
+  net: atlantic: add AQC113 hardware register definitions and accessors
+  net: atlantic: add AQC113 filter data structures and firmware query
+  net: atlantic: implement AQC113 L2/L3/L4 RX filter management
+  net: atlantic: add AQC113 PTP traffic class and TX path setup
+  net: atlantic: extend hw_ops and TX descriptor for AQC113 PTP
+  net: atlantic: add PTP support for AQC113 (Antigua)
+
+ drivers/net/ethernet/aquantia/atlantic/aq_filters.c          |  64 +-
+ drivers/net/ethernet/aquantia/atlantic/aq_filters.h          |   3 +
+ drivers/net/ethernet/aquantia/atlantic/aq_hw.h               |  37 +-
+ drivers/net/ethernet/aquantia/atlantic/aq_main.c             |  33 +-
+ drivers/net/ethernet/aquantia/atlantic/aq_nic.c              |  51 +-
+ drivers/net/ethernet/aquantia/atlantic/aq_pci_func.c         |   4 +-
+ drivers/net/ethernet/aquantia/atlantic/aq_ptp.c              | 531 +++++++--
+ drivers/net/ethernet/aquantia/atlantic/aq_ptp.h              |  15 +-
+ drivers/net/ethernet/aquantia/atlantic/aq_ring.c             |  42 +-
+ drivers/net/ethernet/aquantia/atlantic/aq_ring.h             |   4 +-
+ drivers/net/ethernet/aquantia/atlantic/hw_atl/hw_atl_b0.c   |  15 +-
+ drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2.c    | 813 +++++++++++-
+ drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2.h    |  12 +
+ drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_internal.h | 69 +-
+ drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_llh.c | 360 ++++++
+ drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_llh.h | 107 +-
+ drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_llh_internal.h | 204 ++-
+ drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_utils.c |  33 +
+ drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_utils.h |  15 +
+ drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_utils_fw.c |  52 +
+ 20 files changed, 2244 insertions(+), 224 deletions(-)
+
+-- 
+2.43.0
