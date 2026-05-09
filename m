@@ -1,161 +1,160 @@
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A29D3164BB
-	for <netdev@vger.kernel.org>; Sat,  9 May 2026 11:01:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.173
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778324476; cv=pass; b=uXi9mGsvLUc+DVNfXYauysU2l9c/pdwcnA+8DcHKURM6ES9Q/J5DVSpMDddfSuHo8XXGOz/MrhcbQ0uwaPeaKLEpo0CCTGGnMf5V6jysEuPSUZfeo3870Y8bzEnDh8UxhfZRVvdQFinv10Kdwr63RauWf0i+lVxKGqa+Ze/WUl8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778324476; c=relaxed/simple;
-	bh=9zJ/Jp0AIo86B4ZPDMd67viV7ao0qHIhk0miTEb1P1Y=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=E+Y2mOc1/iyPtGUEmg0uXBZaev63SbADaAXMY4lcAbJTjyVK5xwuim3U5pVtpbb/DVxOQMAX1YpncCH/gtsgcehtSQ6HnX8PZJYrV3Y4oYZAnbLYPKoarWR7WLDe46vaZR/Bq6OSSB+lyEiBK3sKYnAs9DXhw7SvoK7xBw5VxEQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YAeTUw7R; arc=pass smtp.client-ip=209.85.128.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YAeTUw7R"
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-7bf1eaba464so21347677b3.1
-        for <netdev@vger.kernel.org>; Sat, 09 May 2026 04:01:15 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778324474; cv=none;
-        d=google.com; s=arc-20240605;
-        b=DQjDdNIYtDItVO0Z104BsJT3VuSARgzGK6DIWdK1zHTHUsn0I8MnaUyKTDpwO3Fupy
-         dKt3hlM1kV0wS/stXu7W/Ktwx5PULRVCrACX6G4NGan8UmMkzUFiwznF05IeoPwNv+v4
-         uuH9GGIWuSf1qFMhu8wOYbf3QQufxPx3e+4RHv47pgQCizIyAR20qJDgRvnFLFuVAwEi
-         hrCADAPY06aO1m99wX6o7nQIWumnOhrGdlLdNvC6blw/YKWqhzd36+uOGURTzGYBqsm7
-         JIjUY1+7g6GM6BFZKFnOSDc7EpvZvgLBY3DLIQJutuTP5M8cVuAGwYUnhYROixKGLUQg
-         45Uw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:dkim-signature;
-        bh=iIt0P0A7yVCeb9NAEa3+HLFnhyLLlsPvHqZAy7iz+x8=;
-        fh=3Etnd0lWGNCzgDGAo6Q8H87CXivA1zRdTbczi3nPIKA=;
-        b=C5bNh4IJH8bKfTulNkI6Yi2zLZa1EgiIJtK/CVCkOTNRG2zz37TYgLEHruB/4TyPOq
-         heUCzAXAq0VzoGC9ghLrNX31hv8RH+ak03lgmSoHy2NIZhBR4/FgnX8qzu6bovdkZCfH
-         ZS5j4X5bB5rwMKWkHRwCxxC3goDJDcc4Om5YQEKkU/MDvDfu1Yl+mC4JstJqZZMu5erJ
-         S0AD4+WYMWRMdLbkMGWxAhABIwIbwwNNAo8RnuYfXhd5WLb/35Qv3F60Yal/UfAOyTHg
-         62HGtHZGCBsXsbVC3SG9ho0woGeCvquUecHxA3tDRsYNEAcc/HYLP0lKa6R1v0wNVZsA
-         IT6Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778324474; x=1778929274; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=iIt0P0A7yVCeb9NAEa3+HLFnhyLLlsPvHqZAy7iz+x8=;
-        b=YAeTUw7RdhE+KGH22BJXrVVDLE+iBu3X6MApbDMeMbMfUJF02/AgJ34216Ad9y03mg
-         3u5h8QCUUPB7Jd9/v2hcH+R/gGBrPzSSkCXXt1n97Z5q4+tHorLGWCAJvEG9NxCdO8we
-         uvI3POV4DDGpHkNM1Fk+LiAiIh5GTc78XpiD0h2Gux1jHC/oIxf0Y8hsRR76aNLKgNfU
-         YSRTIhyRfg/jeROS7kWvfn7kXVHfmbs5yY2POhy/Qd/QW7gq+daGRS2OsMRcJmey8hJE
-         AEImZxhq5gLKFoId6lAQw3XfTJ7M9iMELP1gg7dSPKiRIbzeRQOngIUyxQ/ewtV/PJUv
-         Ah6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778324474; x=1778929274;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iIt0P0A7yVCeb9NAEa3+HLFnhyLLlsPvHqZAy7iz+x8=;
-        b=sSbZDP47VJLoK8pfqrykyk6XgAY9HXgqDYydDxPYGKl1bFKayPFxtICzC8ye4yEK8d
-         D3/WsQxKWVUVk8pNOL7GDet0CmwD2v+46+wahmLX7G7Zuf20fGvPOpba/CYuVnryZGCv
-         ddbAhJBloRBM2Sa5wmFVL+kqQkEeqdOrxDnQjaiAbI6EHN9pZxFCWK5bQLwYMk9PWPaV
-         pjVhgumy5kNeQbHNOcLrLS3kJu/A+Wzgk/o7BnL3mNfoBlaVW8SGnH7s2IFX2epVvW+3
-         xb+daaYdPgstGq6SV9W/yoQ1eBdWmopTvT7DhGoCpmpTsDOIlK8+OUNXPPMTlrT97p12
-         /Nrg==
-X-Forwarded-Encrypted: i=1; AFNElJ+9G8cJPCaIOcO9Fb34bYJBnPizQ2QJWN9daH2bMn3/kgu83M/OD4MN/UjVnVeQsiQw1rqNTaI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw3KWCtCQpuYmWDYPsTSKtPzw8eirQUzuQy1vUt4pNUcr6igPjh
-	5f+jMm94VbQVtL7Htr8/aeiK3LiJn/lqUiBRYfdYVxZU+FI8M+5pn2F6u6UaEutBclOiNB32hUT
-	i2HLzcQzKZMyscw8liRR5jtJFK/LnFy0=
-X-Gm-Gg: Acq92OGE8ZlHG324UHfse9aKa4z/pBmihhmhRmWv+/kBzBu/+N29Z4QfT9ZRCs1qJZX
-	Nh1IbcD1yusF42mDtPu3Dw5e2JJmZbWHcylPmFWtTEzEulf0MC4k/p067UuIJ3vh2fyXYWvfiew
-	b/pn28jEy7k6xIuYb6SKGCAXrNzIK2E1ZFvrOBaWWhIlaN4U9N48FkAkTe4lJyllce5wV6RINnI
-	0ZZmhPmphPcmcNKevlN2/MXodkIcaAM7MAzm9tQRfhxKGjyEIDyxabxfwxK1PhCQZKqvbKvhcDf
-	pPmMfNE=
-X-Received: by 2002:a05:690c:e3ed:b0:7bd:6a98:58e4 with SMTP id
- 00721157ae682-7c104bb091emr20425757b3.27.1778324474394; Sat, 09 May 2026
- 04:01:14 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C7EB35B63D
+	for <netdev@vger.kernel.org>; Sat,  9 May 2026 11:06:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.30.148.34
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778324783; cv=none; b=sVUYB6IwfvTaXewLpZ79DyFS/DmnEcqtS6RscF9MiA1mLOkdMSPBFLvWgm8uiwY5SH8i98uVQY3C+jhbRWf9Mr4z+Xymyqved8atjlRV11NUOtMtFBhHs6vAARkWrOQISGIAkvc/UP35WnFNmGzKnrSFsLBP8XGRG25niF+ZRAg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778324783; c=relaxed/simple;
+	bh=yzot4h43WPl5avDZCWvjdktyZAY+2T74QFGAmTDAPJ4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bKXW8ifgJWnTg8zPMSvDLGUVX/trBF6nwKDU2wMii4/TSwthBNsxpVYxsVl8+8xqOKKXFsVfDO8HShnrr8pY7Tru6bzJ5rp8Vp2ubw/RSeEOtbZ6AlnfJWQNgwWKQbGCaBGL6bgiN0RfgI1hVaEY040wVt9QSO4xWtCTKO6z98s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=160.30.148.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gCNTG26SNz5BNS0;
+	Sat, 09 May 2026 19:06:10 +0800 (CST)
+Received: from szxlzmapp04.zte.com.cn ([10.5.231.166])
+	by mse-fl1.zte.com.cn with SMTP id 649B5x5M067046;
+	Sat, 9 May 2026 19:05:59 +0800 (+08)
+	(envelope-from han.junyang@zte.com.cn)
+Received: from localhost.localdomain (unknown [192.168.6.15])
+	by smtp (Zmail) with SMTP;
+	Sat, 9 May 2026 19:06:02 +0800
+X-Zmail-TransId: 3e8169ff1505001-648a6
+X-Zmail-LocalSMTP: 1
+X-Zmail-RealSender: han.junyang@zte.com.cn
+From: Junyang Han <han.junyang@zte.com.cn>
+To: andrew+netdev@lunn.ch
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, han.junyang@zte.com.cn,
+        ran.ming@zte.com.cn, han.chengfei@zte.com.cn, zhang.yanze@zte.com.cn
+Subject: Re: [PATCH net-next v3 1/3] net/ethernet: add ZTE network driver support
+Date: Sat,  9 May 2026 18:34:48 +0800
+Message-ID: <20260509103448.3263890-1-han.junyang@zte.com.cn>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <eabcb0c3-324f-4fd7-992e-8d517980ea27@lunn.ch>
+References: <eabcb0c3-324f-4fd7-992e-8d517980ea27@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: =?UTF-8?Q?Nicol=C3=B2_Coccia?= <n.coccia96@gmail.com>
-Date: Sat, 9 May 2026 07:01:02 -0400
-X-Gm-Features: AVHnY4JmYlXDKdj4Xp-aA7FtSfefy9b28FYyhJ4KqsK6_4gIiVDKucQbACylHK8
-Message-ID: <CALSA8UZaE8FR2K-60fPYE6uSUvUNuLnH=8pPq0Hak2ADQpp1Qw@mail.gmail.com>
-Subject: [PATCH net] net/smc: fix sleep-inside-lock in __smc_setsockopt()
- causing local DoS
-To: alibuda@linux.alibaba.com, dust.li@linux.alibaba.com, 
-	sidraya@linux.ibm.com, Wenjia Zhang <wenjia@linux.ibm.com>
-Cc: Tony Lu <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>, 
-	linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, mjambigi@linux.ibm.com, 
-	=?UTF-8?Q?Nicol=C3=B2_Coccia?= <nicolo.coccia@leonardo.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: multipart/mixed;
+	boundary="=====_001_next====="
+X-MAIL:mse-fl1.zte.com.cn 649B5x5M067046
+X-TLS: YES
+X-SPF-DOMAIN: zte.com.cn
+X-ENVELOPE-SENDER: han.junyang@zte.com.cn
+X-SPF: None
+X-SOURCE-IP: 10.5.228.132 unknown Sat, 09 May 2026 19:06:10 +0800
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 69FF1522.000/4gCNTG26SNz5BNS0
 
-A logic flaw in __smc_setsockopt() allows a local unprivileged user to
-cause a Denial of Service (DoS) by holding the socket lock indefinitely.
 
-The function __smc_setsockopt() calls copy_from_sockptr() while holding
-lock_sock(sk). By passing a userfaultfd-monitored memory page (or
-FUSE-backed memory on systems where unprivileged userfaultfd is disabled)
-as the optval, an attacker can halt execution during the copy operation,
-keeping the lock held.
 
-Combined with asynchronous tear-down operations like shutdown(), this
-exhausts the kernel wq (kworkers) and triggers the hung task watchdog.
+--=====_001_next=====
+Content-Type: multipart/related;
+	boundary="=====_002_next====="
 
-[  240.123456] INFO: task kworker/u8:2 blocked for more than 120 seconds.
-[  240.123489] Call Trace:
-[  240.123501]  smc_shutdown+...
-[  240.123512]  lock_sock_nested+...
 
-This patch moves the user-space copy outside the lock_sock() critical
-section to prevent the issue.
+--=====_002_next=====
+Content-Type: multipart/alternative;
+	boundary="=====_003_next====="
 
-Fixes: a6a6fe27bab4 ("net/smc: Dynamic control handshake limitation by
-socket options")
-Signed-off-by: Nicol=C3=B2 Coccia <n.coccia96@gmail.com>
----
-v1 -> v2:
- - Rebased against netdev/net tree
- - Added Fixes tag
 
- net/smc/af_smc.c | 17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
+--=====_003_next=====
+Content-Type: text/plain;
+	charset="UTF-8"
+Content-Transfer-Encoding: base64
 
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index 185dbed7de5d..da28652f6810 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -3054,18 +3054,17 @@ static int __smc_setsockopt(struct socket
-*sock, int level, int optname,
+SGkgQW5kcmV3LA0KDQpUaGFuayB5b3UgZm9yIHRha2luZyB0aGUgdGltZSB0byByZXZpZXcuDQoN
+Cj4gKyAgICBzdHJ1Y3QgZGV2bGluayAqZGV2bGluazsNCg0KPiArICAgIGludCByZXQ7DQo+ICsN
+Cj4gKyAgICBkZXZsaW5rID0gZGV2bGlua19hbGxvYygmZGhfcGZfZGV2bGlua19vcHMsIHNpemVv
+ZihzdHJ1Y3QgZGhfY29yZV9kZXYpLA0KPiArICAgICAgICAgICAgICAgICZwZGV2LT5kZXYpOw0K
+DQo+IFdyb25nIGluZGVudGF0aW9uLiBJbiBmYWN0LCB0aGlzIHNlZW1zIHRvIGhhdmUgc3BhY2Vz
+IG5vdCB0YWJzLiBXaGF0DQo+IGRvZXMgY2hlY2twYXRjaCBzYXkgYWJvdXQgdGhlc2UgZmlsZXM/
+IE9yIGlzIHlvdSBlbWFpbCBzdGlsbCBicm9rZW4/DQoNCg0KSSBkb3VibGUtY2hlY2tlZCB0aGUg
+cGF0Y2ggZmlsZSBsb2NhbGx5LiBUaGUgaW5kZW50YXRpb24gZG9lcyB1c2UNCnRhYnMsIG5vdCBz
+cGFjZXM6DQoNCiAgJCBjYXQgLUEgdjMtMDAwMS0qLnBhdGNoIHwgZ3JlcCAtQTMgImRldmxpbmtf
+YWxsb2MiDQogICteSWRldmxpbmsgPSBkZXZsaW5rX2FsbG9jKCZkaF9wZl9kZXZsaW5rX29wcywg
+c2l6ZW9mKHN0cnVjdCBkaF9jb3JlX2RldiksJA0KICArXkleSV5JXkkmcGRldi0+ZGV2KTskDQog
+ICteSWlmICghZGV2bGluaykkDQogICteSV5JcmV0dXJuIC1FTk9NRU07JA0KDQpBbmQgY2hlY2tw
+YXRjaC5wbCAtLXN0cmljdCBhbHNvIHJlcG9ydHMgMCBlcnJvcnMsIDAgd2FybmluZ3M6DQoNCiAg
+dG90YWw6IDAgZXJyb3JzLCAwIHdhcm5pbmdzLCA0IGNoZWNrcywgMzIwIGxpbmVzIGNoZWNrZWQN
+Cg0KSSBjaGVja2VkIHRoZSByYXcgZW1haWwgb24gbG9yZS5rZXJuZWwub3JnIGFuZCBmb3VuZCB0
+aGF0IG91cg0KY29ycG9yYXRlIG1haWwgc3lzdGVtIGlzIGNvbnZlcnRpbmcgdGhlIG9yaWdpbmFs
+IHRleHQvcGxhaW4gZW1haWwNCmludG8gYSBtdWx0aXBhcnQgTUlNRSBtZXNzYWdlIHdpdGggYm90
+aCB0ZXh0L3BsYWluIGFuZCB0ZXh0L2h0bWwNCmFsdGVybmF0aXZlcy4gSW4gdGhlIEhUTUwgcGFy
+dCwgYWxsIHRhYnMgYXJlIHJlcGxhY2VkIHdpdGgNCm5vbi1icmVha2luZyBzcGFjZXMgKEhUTUwg
+Jm5ic3A7IGVudGl0eSkuIFRoaXMgaXMgbGlrZWx5IHdoYXQNCnlvdSBhcmUgc2VlaW5nLg0KDQpJ
+IHdpbGwgZml4IHRoZSBtYWlsIHNlcnZlciBjb25maWd1cmF0aW9uIGFuZCByZXNlbmQgdGhlIHNl
+cmllcy4NCg0KU29ycnkgZm9yIHRoZSBpbmNvbnZlbmllbmNlLCBhbmQgdGhhbmtzIGFnYWluIGZv
+ciB5b3VyIHBhdGllbmNlLg0KDQpCZXN0IHJlZ2FyZHMsDQpKdW55YW5nIEhhbg==
 
-     smc =3D smc_sk(sk);
 
-+    /* pre-fetch user data outside the lock */
-+    if (optname =3D=3D SMC_LIMIT_HS) {
-+        if (optlen < sizeof(int))
-+            return -EINVAL;
-+        if (copy_from_sockptr(&val, optval, sizeof(int)))
-+            return -EFAULT;
-+    }
-+
-     lock_sock(sk);
-     switch (optname) {
-     case SMC_LIMIT_HS:
--        if (optlen < sizeof(int)) {
--            rc =3D -EINVAL;
--            break;
--        }
--        if (copy_from_sockptr(&val, optval, sizeof(int))) {
--            rc =3D -EFAULT;
--            break;
--        }
--
-         smc->limit_smc_hs =3D !!val;
-         rc =3D 0;
-         break;
---=20
-2.51.0
+--=====_003_next=====
+Content-Type: text/html ;
+	charset="UTF-8"
+Content-Transfer-Encoding: base64
+
+SGkmbmJzcDtBbmRyZXcsPGJyIC8+DTxiciAvPlRoYW5rJm5ic3A7eW91Jm5ic3A7Zm9yJm5ic3A7
+dGFraW5nJm5ic3A7dGhlJm5ic3A7dGltZSZuYnNwO3RvJm5ic3A7cmV2aWV3LjxiciAvPg08YnIg
+Lz4mZ3Q7Jm5ic3A7KyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwO3N0cnVjdCZuYnNwO2Rldmxpbmsm
+bmJzcDsqZGV2bGluazs8YnIgLz4NPGJyIC8+Jmd0OyZuYnNwOysmbmJzcDsmbmJzcDsmbmJzcDsm
+bmJzcDtpbnQmbmJzcDtyZXQ7PGJyIC8+Jmd0OyZuYnNwOys8YnIgLz4mZ3Q7Jm5ic3A7KyZuYnNw
+OyZuYnNwOyZuYnNwOyZuYnNwO2RldmxpbmsmbmJzcDs9Jm5ic3A7ZGV2bGlua19hbGxvYygmYW1w
+O2RoX3BmX2Rldmxpbmtfb3BzLCZuYnNwO3NpemVvZihzdHJ1Y3QmbmJzcDtkaF9jb3JlX2Rldiks
+PGJyIC8+Jmd0OyZuYnNwOysmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJz
+cDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsm
+YW1wO3BkZXYtJmd0O2Rldik7PGJyIC8+DTxiciAvPiZndDsmbmJzcDtXcm9uZyZuYnNwO2luZGVu
+dGF0aW9uLiZuYnNwO0luJm5ic3A7ZmFjdCwmbmJzcDt0aGlzJm5ic3A7c2VlbXMmbmJzcDt0byZu
+YnNwO2hhdmUmbmJzcDtzcGFjZXMmbmJzcDtub3QmbmJzcDt0YWJzLiZuYnNwO1doYXQ8YnIgLz4m
+Z3Q7Jm5ic3A7ZG9lcyZuYnNwO2NoZWNrcGF0Y2gmbmJzcDtzYXkmbmJzcDthYm91dCZuYnNwO3Ro
+ZXNlJm5ic3A7ZmlsZXM/Jm5ic3A7T3ImbmJzcDtpcyZuYnNwO3lvdSZuYnNwO2VtYWlsJm5ic3A7
+c3RpbGwmbmJzcDticm9rZW4/PGJyIC8+DTxiciAvPg08YnIgLz5JJm5ic3A7ZG91YmxlLWNoZWNr
+ZWQmbmJzcDt0aGUmbmJzcDtwYXRjaCZuYnNwO2ZpbGUmbmJzcDtsb2NhbGx5LiZuYnNwO1RoZSZu
+YnNwO2luZGVudGF0aW9uJm5ic3A7ZG9lcyZuYnNwO3VzZTxiciAvPnRhYnMsJm5ic3A7bm90Jm5i
+c3A7c3BhY2VzOjxiciAvPg08YnIgLz4mbmJzcDsmbmJzcDskJm5ic3A7Y2F0Jm5ic3A7LUEmbmJz
+cDt2My0wMDAxLSoucGF0Y2gmbmJzcDt8Jm5ic3A7Z3JlcCZuYnNwOy1BMyZuYnNwOyZxdW90O2Rl
+dmxpbmtfYWxsb2MmcXVvdDsNPGJyIC8+Jm5ic3A7Jm5ic3A7K15JZGV2bGluayZuYnNwOz0mbmJz
+cDtkZXZsaW5rX2FsbG9jKCZhbXA7ZGhfcGZfZGV2bGlua19vcHMsJm5ic3A7c2l6ZW9mKHN0cnVj
+dCZuYnNwO2RoX2NvcmVfZGV2KSwkPGJyIC8+Jm5ic3A7Jm5ic3A7K15JXkleSV5JJmFtcDtwZGV2
+LSZndDtkZXYpOyQ8YnIgLz4mbmJzcDsmbmJzcDsrXklpZiZuYnNwOyghZGV2bGluaykkPGJyIC8+
+Jm5ic3A7Jm5ic3A7K15JXklyZXR1cm4mbmJzcDstRU5PTUVNOyQ8YnIgLz4NPGJyIC8+QW5kJm5i
+c3A7Y2hlY2twYXRjaC5wbCZuYnNwOy0tc3RyaWN0Jm5ic3A7YWxzbyZuYnNwO3JlcG9ydHMmbmJz
+cDswJm5ic3A7ZXJyb3JzLCZuYnNwOzAmbmJzcDt3YXJuaW5nczo8YnIgLz4NPGJyIC8+Jm5ic3A7
+Jm5ic3A7dG90YWw6Jm5ic3A7MCZuYnNwO2Vycm9ycywmbmJzcDswJm5ic3A7d2FybmluZ3MsJm5i
+c3A7NCZuYnNwO2NoZWNrcywmbmJzcDszMjAmbmJzcDtsaW5lcyZuYnNwO2NoZWNrZWQ8YnIgLz4N
+PGJyIC8+SSZuYnNwO2NoZWNrZWQmbmJzcDt0aGUmbmJzcDtyYXcmbmJzcDtlbWFpbCZuYnNwO29u
+Jm5ic3A7bG9yZS5rZXJuZWwub3JnJm5ic3A7YW5kJm5ic3A7Zm91bmQmbmJzcDt0aGF0Jm5ic3A7
+b3VyPGJyIC8+Y29ycG9yYXRlJm5ic3A7bWFpbCZuYnNwO3N5c3RlbSZuYnNwO2lzJm5ic3A7Y29u
+dmVydGluZyZuYnNwO3RoZSZuYnNwO29yaWdpbmFsJm5ic3A7dGV4dC9wbGFpbiZuYnNwO2VtYWls
+PGJyIC8+aW50byZuYnNwO2EmbmJzcDttdWx0aXBhcnQmbmJzcDtNSU1FJm5ic3A7bWVzc2FnZSZu
+YnNwO3dpdGgmbmJzcDtib3RoJm5ic3A7dGV4dC9wbGFpbiZuYnNwO2FuZCZuYnNwO3RleHQvaHRt
+bDxiciAvPmFsdGVybmF0aXZlcy4mbmJzcDtJbiZuYnNwO3RoZSZuYnNwO0hUTUwmbmJzcDtwYXJ0
+LCZuYnNwO2FsbCZuYnNwO3RhYnMmbmJzcDthcmUmbmJzcDtyZXBsYWNlZCZuYnNwO3dpdGg8YnIg
+Lz5ub24tYnJlYWtpbmcmbmJzcDtzcGFjZXMmbmJzcDsoSFRNTCZuYnNwOyZhbXA7bmJzcDsmbmJz
+cDtlbnRpdHkpLiZuYnNwO1RoaXMmbmJzcDtpcyZuYnNwO2xpa2VseSZuYnNwO3doYXQ8YnIgLz55
+b3UmbmJzcDthcmUmbmJzcDtzZWVpbmcuPGJyIC8+DTxiciAvPkkmbmJzcDt3aWxsJm5ic3A7Zml4
+Jm5ic3A7dGhlJm5ic3A7bWFpbCZuYnNwO3NlcnZlciZuYnNwO2NvbmZpZ3VyYXRpb24mbmJzcDth
+bmQmbmJzcDtyZXNlbmQmbmJzcDt0aGUmbmJzcDtzZXJpZXMuPGJyIC8+DTxiciAvPlNvcnJ5Jm5i
+c3A7Zm9yJm5ic3A7dGhlJm5ic3A7aW5jb252ZW5pZW5jZSwmbmJzcDthbmQmbmJzcDt0aGFua3Mm
+bmJzcDthZ2FpbiZuYnNwO2ZvciZuYnNwO3lvdXImbmJzcDtwYXRpZW5jZS48YnIgLz4NPGJyIC8+
+QmVzdCZuYnNwO3JlZ2FyZHMsPGJyIC8+SnVueWFuZyZuYnNwO0hhbg==
+
+
+--=====_003_next=====--
+
+--=====_002_next=====--
+
+--=====_001_next=====--
+
