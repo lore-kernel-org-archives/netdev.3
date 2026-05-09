@@ -1,95 +1,88 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A93C439DBE4;
-	Sat,  9 May 2026 19:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B968C2DB79F;
+	Sat,  9 May 2026 19:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778355613; cv=none; b=eGMUel8CC7kPxbtcNk4d+dbo+A0HYA6OJATqWCh3pa4qhZOnE9qaS305JfaPZuaebI12IcDyaUGGlCCm4D3xhZ1+hcm0TFbEM2oWUqf6sxqu5kUFT3Cjs9U9PtLcCpocS0Sp8WVUVzJlnAfWRcWwsFmASkAxIyO8vW1UM6peP6Q=
+	t=1778355817; cv=none; b=f+VtxUK+nYb4PmbJD12G1H4LEK8TV4/TvYP6ckzY8/56ZJCKzLZ4dt6vY1vtMJKgt2nn2pU9xv4i3SjIu/Xlq3lFMO3QG7jNbL1mwYd6hy2JXdSTxohjN2rhcghX9JLJ+jwdQamjMnn3YRcp8onOAQ8+XRvC96iyJgbO8QuU8i0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778355613; c=relaxed/simple;
-	bh=C2S0N5RnhH/2vct1Y/2IEjCnbP2zJTdvkWAdLDK1SP4=;
+	s=arc-20240116; t=1778355817; c=relaxed/simple;
+	bh=FHZ6Od0X5fZc57mS2ulH4kYBV/NGDrHi+Ez6WkWuRnw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dgbFDDJ+Wz14rJS60MNOkf1I8b1e+aNxQWcXguG54lez50+HfbjmVuYNpOR7OoUmNgIVQYSBSdF/i2mTnGZ3hbw0knxWI+jNaR+wVjIH2edtvlqzn7QOb3onyVtjV5eUQGRehrj39sc3LG5eLMBP17Zco47tumJ+U8D4w2H2Hiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=FvLj6KOM; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=NiWjAjPK3Sk1I2Tgatue88iJkkVnEEcVHMLo8Nk7kEUOMgs4aQamzWj/xscOpZqxhPV2cBBfOCs9dRPxv2YFh64mtmNAU95F+NVN2l7uvybA/6xWHfi7JiTqMKU28AboyyvoonHIsN7GfiOX3JWtjYkTOwcHUX1lKNpex+YGazc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=rdEHE2/F; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="FvLj6KOM"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="rdEHE2/F"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=apx2itl6ido/GDl3BMcfRXwcHiMC7anhmX6nWBT36b4=; b=FvLj6KOMbWMxDi06MfXhf1T4Db
-	gOGH3pxNNBEqVPUNxs+pZzjJdIqkGaamay5kH9Bu3yRxyIHMTOW9/T1sHDUn8uZURXPvaH9WElPm8
-	rmxQam/srjIgPv1mISpW8wJ7NA2Ld/bmhZERgs2DwA8rT7TmcJGBuOwyYBTckIrB3pLw=;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=jciCmPafrQJc8P0lqfJxu/JWuFjCcvpFpjFvymBX9Uk=; b=rd
+	EHE2/FfULvb68lmwWW7cDL8/4X8OHfz/tTxdC0sJpTTZ0VUMTtP9ak77xyNTqv4fjiIx0xSrhisgp
+	Xwt8fa4J448k3y3AHPMut0OJqNHmSPcYtaZSkLC62Mo2W9XGpl5+JdElSwr7bhfxyVzwT4xUBV5Q8
+	4/0CMSZ8qcLukHs=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1wLnWa-00287z-6L; Sat, 09 May 2026 21:39:44 +0200
-Date: Sat, 9 May 2026 21:39:44 +0200
+	id 1wLna2-00289a-9c; Sat, 09 May 2026 21:43:18 +0200
+Date: Sat, 9 May 2026 21:43:18 +0200
 From: Andrew Lunn <andrew@lunn.ch>
-To: Randy Dunlap <rdunlap@infradead.org>
-Cc: Shuah Khan <skhan@linuxfoundation.org>,
-	Adrien Reynard <reynard.adrien.08@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	"open list:KASAN" <kasan-dev@googlegroups.com>,
-	"open list:DOCUMENTATION PROCESS" <workflows@vger.kernel.org>,
-	"open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>,
-	"open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
-	"open list:USER-MODE LINUX (UML)" <linux-um@lists.infradead.org>
-Subject: Re: [PATCH 4/5] docs: fix repeated prepositions across documentation
-Message-ID: <3b4357a7-f70d-41b0-a75d-c30f9fb7dd98@lunn.ch>
-References: <20260508163804.16267-1-reynard.adrien.08@gmail.com>
- <2b771350-0562-4cb1-b9b3-cc3ce59b1a63@linuxfoundation.org>
- <3c6cde1a-9ce0-4d63-ba89-820c596cff3e@lunn.ch>
- <27c61395-f04f-420c-9a84-7e27773f2027@infradead.org>
+To: Illusion Wang <Illusion.Wang@nebula-matrix.com>
+Cc: Paolo Abeni <pabeni@redhat.com>, Dimon <dimon.zhao@nebula-matrix.com>,
+	Alvin <alvin.wang@nebula-matrix.com>,
+	Sam <sam.chen@nebula-matrix.com>, netdev <netdev@vger.kernel.org>,
+	andrew+netdev <andrew+netdev@lunn.ch>, corbet <corbet@lwn.net>,
+	kuba <kuba@kernel.org>, linux-doc <linux-doc@vger.kernel.org>,
+	lorenzo <lorenzo@kernel.org>, horms <horms@kernel.org>,
+	"vadim.fedorenko" <vadim.fedorenko@linux.dev>,
+	"lukas.bulwahn" <lukas.bulwahn@redhat.com>,
+	edumazet <edumazet@google.com>,
+	enelsonmoore <enelsonmoore@gmail.com>,
+	skhan <skhan@linuxfoundation.org>,
+	hkallweit1 <hkallweit1@gmail.com>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: =?utf-8?B?5Zue5aSN77ya5Zue5aSN77yaW1BB?=
+ =?utf-8?Q?TCH_v13_net-nex?= =?utf-8?Q?t?= 03/11] net/nebula-matrix: add chip
+ related definitions
+Message-ID: <ba0d1a60-3d56-4053-a4e9-e47fda0c450a@lunn.ch>
+References: <20260428114910.2616-1-illusion.wang@nebula-matrix.com>
+ <20260428114910.2616-4-illusion.wang@nebula-matrix.com>
+ <e41adaad-8937-4b5d-bdbf-d57d3efe2855@redhat.com>
+ <b240b971-81b8-4325-80b6-5352e1515f07.Illusion.Wang@nebula-matrix.com>
+ <bdaf51a9-66d1-4469-960f-d5ec74f870de@lunn.ch>
+ <e35c8cf4-73f0-4847-b1b1-8f424a805a71.Illusion.Wang@nebula-matrix.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <27c61395-f04f-420c-9a84-7e27773f2027@infradead.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <e35c8cf4-73f0-4847-b1b1-8f424a805a71.Illusion.Wang@nebula-matrix.com>
 
-> > Can we get the tool changed to add a warning, something like:
-> > 
-> >   WARNING: This tool uses very simple pattern matching to look for
-> >   repeated words. It does not understand the complexity of English,
-> >   and will often result in false positive reports. Please assume it is
-> >   wrong until proven otherwise.
+On Sat, May 09, 2026 at 11:38:27AM +0800, Illusion Wang wrote:
 > 
-> There was no commit log and no cover letter AFAIK.
-> Do we know what tool was used?
+> >> But I printed out the results: 
+> >> ARRAY_SIZE(nbl_sec009_data) equals NBL_SEC009_SIZE,
+> >> ARRAY_SIZE(nbl_sec025_data) equals NBL_SEC025_SIZE,
+> >> and ARRAY_SIZE(nbl_sec022_data) equals NBL_SEC022_SIZE.
+> >> 
+> >> Is the AI making a mistake here?
 > 
-> Adrien, how did you discover these repeated words?
+> >Just a guess, i've not looked at this patch at all.
 > 
-> (If it's my script from 2021, I'll gladly update it.)
+> >Are you doing this on a 32 bit build? Maybe the AI is?
+> 
+>  >   Andrew
+> 
+>  We are using this on a 64 bit build.
 
-Thinking about it some more, i think the warning might actually need
-to be different.
-
-If this tool has been around since 2021, all the real problems have
-been solved, leaving only the false positives. So the warning probably
-needs to be much stronger, saying that it probably only reports false
-positives, unless the code is new.
-
-Maybe we also want to extend the tool to have a list all the known
-false positives?
+And what happens with a 32 bit build? Try think of all the ways the AI
+could be correct., and disprove them.
 
       Andrew
