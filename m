@@ -1,83 +1,99 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 284932B2D7;
-	Sat,  9 May 2026 02:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9466D8C1F;
+	Sat,  9 May 2026 02:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778292662; cv=none; b=L4vEaAmoGm08P3ffJ2dX8tSiTLTtECP7g/KHxReEsZUjVE7RKx2di3wS6+UpDvuVRN+ihiue4HZbQNODCbZ/FmF+c22sHG6izNWyPcRUnf9FNhYab1ljvvxTVN42bYp7iW8jA7Ykpxc5frsp5Rna46dMIqijjKqqxtSjWQXudjg=
+	t=1778293165; cv=none; b=FwR+XbJCmG9JUurifomIs13pVHXMh1sqyFbF8KZfjFIBPm5Oki9C+gzRGU0fhyACZChKbRb3w65CLEeJkWu1W+ZRkitoPt/QabqywtHT3Z+qXumoVGAdg5TO7k+RoUMxJXzcO1FURsMfEvUN7lQwOgb0SB7YuSDmYNTZH5j0vIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778292662; c=relaxed/simple;
-	bh=gpjiOZlTziOhBtPXoUAAQ13idW3W8B4lBEcXF09hAC8=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=fRKXOh1S0F8C+Ib4KmWSfxZ92KeKo09l/zjouxiA0FDn/35Lot781Jfp9FxjodeJ1Ntm2lnfpC4Rd0fuw/YKHqHv799eHajQ/5OcfVK9xOV7JA1vV2bWf39C5u2m3OXaGdX7igOtBX3pS9RxSJlCxYXTOuV8o8GStx3/R+Hbb60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DV2d1VHJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778293165; c=relaxed/simple;
+	bh=peQPwtsbF0J5WcKTmoVjs+sG+xMxuFfAxqz2R6XPIq8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Of8nTD6XkrziQud9yTGKK8ZZWNRIfoloqAVp2oKtp7kM/RNKOSmf7J8sqI7LI2PKbwJNR0LW7V9RxF/+mXwu60oNZTKRVUS7+UKjVzTLjhmxS7WRyxfjs6uM2tJE/Q+btzP+s4Lgws/ggfYsBEAsijKBqJGmLZkmq0s//mb8AQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ea2r84bm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DV2d1VHJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE158C2BCB0;
-	Sat,  9 May 2026 02:11:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ea2r84bm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BB11C2BCC7;
+	Sat,  9 May 2026 02:19:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778292661;
-	bh=gpjiOZlTziOhBtPXoUAAQ13idW3W8B4lBEcXF09hAC8=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=DV2d1VHJF5a4M5SxoMObg/BKN0kkxJsO4+3ndHyps1JB160cf5AHKlhbn9tYl0zrG
-	 zRFBj0k4DOoB3JEsgaZrsaHkfMs8+KWPjFpS3IB+z9/mnBLtpQY7GFUmPzs/1y7SCp
-	 3v8VxjHvcQKk4lTqYbAsDmJLCrHQifvT8Wacs9ZUYBtfL6ssUFKNCMpfn4BasloAnj
-	 kFb6Ry6KZiyr+8pB8eopPkFU9NiUNKQqJnJtblS+O6fQ2HsgRgZUk2sQFp8zs58CzJ
-	 rTpQ4zur9jgHRDa9V+7qTSZKH+8NW3gCCnZqqXLUFDjXnuJwbUFd1K6cMOQWomCBFk
-	 MpqjmczRQvH8w==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FE6738119E7;
-	Sat,  9 May 2026 02:10:11 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1778293165;
+	bh=peQPwtsbF0J5WcKTmoVjs+sG+xMxuFfAxqz2R6XPIq8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ea2r84bmqJ7zyzWOPmYNlh4/w6Zsre0az7vgiRIXOvgCcM4hjOtNBwiS1XmkQ96VA
+	 7UrmN9C/BUvlEm4kgFDwVRt1R+Jf5EVEMS9TNV6XlRa8oIGP6TvcZxU+C+ji1IqJBg
+	 8Xw7My2QGHxJuAqLPGGXX3iEF4Ub/OKoS2KUvNijrqmrNsVjpNBFVyBgulp7RMjZT1
+	 6qnr9aA+3BcwC43mtUDj930SWN0V7d54uG3aSQfaLebgWDGmasN6rfn9hX8/f7zF6N
+	 p9OhphqjsBfeKrGuM0rtLsURreKC82Qtg/HGogkNePltKS8kbqbm8m0NC21uQ/czFo
+	 CM0l4WNEFKPVg==
+Date: Fri, 8 May 2026 19:19:23 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: alexjlzheng@gmail.com
+Cc: albinwyang@tencent.com, alexjlzheng@tencent.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, hannes@stressinduktion.org,
+ horms@kernel.org, kuniyu@google.com, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, pabeni@redhat.com, sd@queasysnail.net,
+ shenyangyang4@huawei.com
+Subject: Re: [PATCH net v2 1/3] macsec: introduce dedicated workqueue for SA
+ crypto cleanup
+Message-ID: <20260508191923.3978b8fa@kernel.org>
+In-Reply-To: <20260509020054.1792674-1-alexjlzheng@tencent.com>
+References: <20260508154243.3ce21bee@kernel.org>
+	<20260509020054.1792674-1-alexjlzheng@tencent.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next V2 0/3] net/mlx5: ICM page management in VHCA_ID
- mode
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177829261005.938343.11783726495806061348.git-patchwork-notify@kernel.org>
-Date: Sat, 09 May 2026 02:10:10 +0000
-References: <20260506133239.276237-1-tariqt@nvidia.com>
-In-Reply-To: <20260506133239.276237-1-tariqt@nvidia.com>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, saeedm@nvidia.com,
- leon@kernel.org, mbloch@nvidia.com, moshe@nvidia.com, agoldberger@nvidia.com,
- netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
- linux-kernel@vger.kernel.org, gal@nvidia.com, dtatulea@nvidia.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Wed, 6 May 2026 16:32:36 +0300 you wrote:
-> Hi,
+On Sat,  9 May 2026 10:00:54 +0800 alexjlzheng@gmail.com wrote:
+> From: Jinliang Zheng <alexjlzheng@tencent.com>
 > 
-> Find detailed description by Moshe below.
+> On Fri, 8 May 2026 15:42:43 -0700, Jakub Kicinski wrote:
+> > > +wq:
+> > > +	destroy_workqueue(macsec_wq);
+> > > +	return err;  
+> >
+> > nit: err_destroy_wq: would be a better label name
+> >
+> > rcu_barrier() is needed before this  
 > 
-> Regards,
-> Tariq
+> Thanks for the review.
 > 
-> [...]
+> Regarding the label name: "wq:" follows the existing naming convention
+> in macsec_init(), where the other error labels are also named after the
+> resource they clean up ("rtnl:", "notifier:") rather than using the
+> "err_xxx:" style. I kept it consistent with that local convention, but
+> happy to switch to "err_destroy_wq:" if you prefer uniformity with the
+> broader codebase.
 
-Here is the summary with links:
-  - [net-next,V2,1/3] net/mlx5: Relax capability check for eswitch query paths
-    https://git.kernel.org/netdev/net-next/c/8ca32460815f
-  - [net-next,V2,2/3] net/mlx5: Make debugfs page counters by function type dynamic
-    https://git.kernel.org/netdev/net-next/c/5796d9fe0b88
-  - [net-next,V2,3/3] net/mlx5: Add VHCA_ID page management mode support
-    https://git.kernel.org/netdev/net-next/c/1fba57c91416
+I can see that, but we have to start somewhere.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+> Regarding rcu_barrier(): in the error path of macsec_init(), the
+> workqueue has just been created and no MACsec interface has been
+> registered yet.  queue_rcu_work(macsec_wq, ...) is only reachable
+> from macsec_rxsa_put() and macsec_txsa_put(), which require an SA
+> object to exist. No SA can be created before macsec_init() succeeds,
+> so macsec_wq is guaranteed to be empty at this point and
+> rcu_barrier() is not needed here.
+> 
+> The rcu_barrier() in macsec_exit() is necessary for a different
+> reason: at that point live interfaces may have been destroyed and
+> their SAs may be in-flight through the rcu_work mechanism, so we
+> must wait for all rcu_work_rcufn callbacks to finish enqueuing their
+> work items before destroy_workqueue() drains them.
+> 
+> Does that reasoning make sense, or am I missing a path where work
+> could be queued onto macsec_wq during the init error unwind?
 
+TBH I didn't check the code, you may be right that until the genl
+family is registered there's no way to an SA to exist (even tho
+macsec devices may have already gotten created).
 
+Either way, I'd just add that barrier. We're basically leaving
+a trap for whoever tries to add another piece of code to this function.
+The error unwind path and the remove path should generally be kept
+the same.
