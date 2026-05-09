@@ -1,554 +1,287 @@
-Received: from smtpbguseast2.qq.com (smtpbguseast2.qq.com [54.204.34.130])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79A3E208D0
-	for <netdev@vger.kernel.org>; Sat,  9 May 2026 10:06:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 627DE208D0;
+	Sat,  9 May 2026 10:08:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778321200; cv=none; b=KyEiWyWJruYZidsPfgIXOkHQIM1jeEETZpAxWIaraPSaMNGpbmFD7f3Wji8tlQw+rDoGTCQZpYRmegEnfOsZHPg2gnag9+Bj4R5Lo2L+1NJz/QMd89sK8meQuHH4NMkmBFFvCRpwlH+VgiwLX478jwXJ+bLRS/oJgZ8vSWONEEQ=
+	t=1778321281; cv=none; b=gSIL08X5mGCPAiAXCWBEEkWNUKOYUl/19es9/cCcQ01flfR1oHDykK0ijjaLZYDHA86eAFlRRfpVBRQe4zDxhz379+BWhBNO6mNts2YYt0e8ZBBMDgEN1FdHaqEmHoZPeEshApL8/IuwRSAvV7m98M4c/7Vm5gXYOi4Wz23iu6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778321200; c=relaxed/simple;
-	bh=ZLnIgCUx9Piw/lJDtsCOeYoiPGzfCL7rhO9IEb5CWwA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=lQ1PjZSMN3UvrLcJE2dbQDsp5sayXakkqssgR32gUFPRJ2OqEiahGdFe7+seKldHNO0lv4XuA448QwxuoH3vgQ0vJJqqTpBUpws9frqu0r6IF6Nw8DFpEEGOCkVZxBW76bdFsbT7dB32ZOu2IRH2NBjquqHgp0pmqYh5/khvIoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.204.34.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: esmtpsz17t1778321152t60769a04
-X-QQ-Originating-IP: BrPZXB+Y3uCBFAAYf1lVEWMWLdTihyTbhFvD0TShHQg=
-Received: from lap-jiawenwu.trustnetic.com ( [115.204.251.157])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Sat, 09 May 2026 18:05:50 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 15497190481867195217
-EX-QQ-RecipientCnt: 17
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: netdev@vger.kernel.org
-Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Simon Horman <horms@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	Breno Leitao <leitao@debian.org>,
-	Joe Damato <joe@dama.to>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Fabio Baltieri <fabio.baltieri@gmail.com>,
-	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net-next v3 2/5] net: wangxun: add Tx timeout process
-Date: Sat,  9 May 2026 18:05:37 +0800
-Message-Id: <20260509100540.32612-3-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.21.0.windows.1
-In-Reply-To: <20260509100540.32612-1-jiawenwu@trustnetic.com>
-References: <20260509100540.32612-1-jiawenwu@trustnetic.com>
+	s=arc-20240116; t=1778321281; c=relaxed/simple;
+	bh=DrVObXvVSvJ6Qh3ggMiOeo7pce3nKF+OLq2GUfFw0YE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QD7b0STLYD/XUwPb7ScKJdK1cuNZ4vzuuiEBQMW/idtyPpFczmc5aMx8JSin4ZFyxsQCYjCmeJQY6HQn48ZgaIL6PM4dxH/hkjv8QB3CMHLHO1uzLUWFXlqmn/4A/zCZLIPTt1k3Shl/QPY2GubJ/4wUM+PZeIu25wF/tsZezkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=leuQxIIG; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="leuQxIIG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEB13C2BCB2;
+	Sat,  9 May 2026 10:08:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778321281;
+	bh=DrVObXvVSvJ6Qh3ggMiOeo7pce3nKF+OLq2GUfFw0YE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=leuQxIIGtL3ySmiM8r5mjMlZARE6dzdT/vnEblM99cn6q33QGI+M//l8mhH1tVRik
+	 qW44qun4uM4o9P/wQC8aR7XEPNxLiuxUZR+d1RuachQXa97iWgYAfgt5YHTbzpcX7c
+	 KCzR/czetJFcaiBkWeZjfaDLql0F4scJzYDwQxGUDDcLi2TwHrM+p4Utk2WSPdleY8
+	 jCl5i119bdw/3KvuZRhJxETpB3xUK+QDCSXShe32v65GNbScFKbxUSyJCP/3K3mIyQ
+	 DasZs8wAvGZ1hQLVr63crBdR95qNDS3JhiIBHWnu0iWTdFMcypVu6Zr4YPLG2Q7frZ
+	 8B1qWoWZEUpeA==
+Date: Sat, 9 May 2026 12:07:58 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, ansuelsmth@gmail.com,
+	benjamin.larsson@genexis.eu, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, madhur.agrawal@airoha.com
+Subject: Re: [PATCH net-next v4 10/10] net: airoha: Support multiple LAN/WAN
+ interfaces for hw MAC address configuration
+Message-ID: <af8HfuSZ1hkJGA2O@lore-desk>
+References: <20260507-airoha-eth-multi-serdes-v4-10-af613b61ae02@kernel.org>
+ <20260509014617.3558185-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: Ncpnai4dwVTHEI2zJfHo1+3qyIAOJWDBY0lJ5D0BA/5dy1VmTGL+ovsg
-	WLnYSnjsjYi66+NEyxIhGVtPyScYJkxbp2PxPt5iVR0S7XmUD4ZRh7J7zEw/79Tm3YXV4EX
-	L/DgAJV/ra03OgqVallbkSckxmD5TjqWwge0etuCABfC7uJIk2rlVHwhB4RKK01drPlCj7E
-	ewbEfXOWeFxPI1qYevkevmBVnEGuM9YuI1JhgaVtDYjy/JQt0ZF7z4GaKjrUigWSTZoynli
-	G9OUOaV87+xwDA5BrPRgwVAO4VZVzNoc45l0Mxtaf4ZbcKaAPmGjB8rnvSH3KMUR3734Djr
-	emkVRkrrHq6oz07arlSCDZf2A81n5CBKMhy+YF19sku2GLmZfothh+lUEE2tJRuo4GA5wa0
-	lyNJ/C6fGJf4DAfCeyj8NNH0SDDOqUE6OOki1E68YkF0YmmWC27N/cguum1WrOFDUWpULeH
-	HeHSC5cENTPdEeouosnbBXqIPJtgaCPNPNNgAJwACHtqM9dSVHZYbmguDTlEIXYXy0od/dY
-	LZIOu9F8Dvo6L7UuBfGitykDLXwSPgyxyynKsVyn5GQw7nVwDuZ2OInked7tpZ2JYRiWcNj
-	EleQACH8p44YcoWiiFR0GKDVaYcn7hvh5MHJ4dbzcTssdGOyXd7uNyQcGUZoahVYPpF8GF8
-	XftkbRQPHNJOdRDqn7vfaQgUkPpYtT07pcg14BsDWIyMaxobXLhnCL8x1MBRITqLI37g3sB
-	eONvELBoY8D1P3Cp6eyrFrAwWA4UNmAfNESIFUl29oZzWg9N5HINhQ7dFTABZbf8h7A6hND
-	0683O+tdTlksWpxfA9KjKPf2zPr111zd5ZLR98+S/+9/FQYsVn1zONdCUAdOZLGyIPxno1s
-	KqgEsSnZ5CwPklPzqAQjqgDoYMlvxqPyjjpntRMATabkiZXpT+deZY1RX3s9qRkaCGdec3I
-	WQoNvJOlk0VPH5ex69F+VRVkhjgcWO4XimPY5TCbErzPH4z1acfdNxbVIFWdUxVDMzih9eU
-	VvxTNI0hq1nRbVYnXS9WE9hFvF8H8UAvVkU5QWMlkIthX0hI7VPJSnEreT2dM=
-X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
-X-QQ-RECHKSPAM: 0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="lg/EUJE1MTlDMtub"
+Content-Disposition: inline
+In-Reply-To: <20260509014617.3558185-1-kuba@kernel.org>
 
-Implement .ndo_tx_timeout to handle Tx side timeout event. When Tx
-timeout event occur, it will triger driver into reset process.
 
-The WX_HANG_CHECK_ARMED bit is set to indicate a potential hang. It will
-be cleared if a pause frame is received to remove false hang detection
-due to 802.3 frames.
+--lg/EUJE1MTlDMtub
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
----
- drivers/net/ethernet/wangxun/libwx/Makefile   |   2 +-
- drivers/net/ethernet/wangxun/libwx/wx_err.c   | 154 ++++++++++++++++++
- drivers/net/ethernet/wangxun/libwx/wx_err.h   |  15 ++
- drivers/net/ethernet/wangxun/libwx/wx_hw.c    |  17 +-
- drivers/net/ethernet/wangxun/libwx/wx_lib.c   |  37 +++++
- drivers/net/ethernet/wangxun/libwx/wx_type.h  |  17 +-
- drivers/net/ethernet/wangxun/ngbe/ngbe_main.c |   6 +
- .../net/ethernet/wangxun/txgbe/txgbe_main.c   |   6 +
- 8 files changed, 249 insertions(+), 5 deletions(-)
- create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_err.c
- create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_err.h
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> ---
+> net: airoha: Support multiple LAN/WAN interfaces for hw MAC address confi=
+guration
+>=20
+> This patch extends airoha_set_macaddr() to derive REG_FE_MAC_LMIN and
+> REG_FE_MAC_LMAX by iterating over all sibling LAN/WAN net_devices, and
+> rejects addresses whose upper 3 bytes do not match the already-registered
+> peers. airoha_dev_set_macaddr() is also changed to split eth_mac_addr()
+> into eth_prepare_mac_addr_change() and eth_commit_mac_addr_change() around
+> the hardware programming step.
+>=20
+> > diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/eth=
+ernet/airoha/airoha_eth.c
+> > index 8617dd4f7932..fbfefd0ec355 100644
+> > --- a/drivers/net/ethernet/airoha/airoha_eth.c
+> > +++ b/drivers/net/ethernet/airoha/airoha_eth.c
+> > @@ -71,20 +71,67 @@ static void airoha_qdma_irq_disable(struct airoha_i=
+rq_bank *irq_bank,
+> >  	airoha_qdma_set_irqmask(irq_bank, index, mask, 0);
+> >  }
+> > =20
+> > -static void airoha_set_macaddr(struct airoha_gdm_dev *dev, const u8 *a=
+ddr)
+> > +static int airoha_set_macaddr(struct airoha_gdm_dev *dev, const u8 *ad=
+dr)
+> >  {
+> >  	struct airoha_eth *eth =3D dev->eth;
+> > -	u32 val, reg;
+> > +	u8 ref_addr[ETH_ALEN] =3D {};
+> > +	u32 reg, val, lmin, lmax;
+> > +	int i;
+> > +
+> > +	lmin =3D (addr[3] << 16) | (addr[4] << 8) | addr[5];
+> > +	lmax =3D lmin;
+> > +
+> > +	for (i =3D 0; i < ARRAY_SIZE(eth->ports); i++) {
+> > +		struct airoha_gdm_port *port =3D eth->ports[i];
+> > +		int j;
+> > +
+> > +		if (!port)
+> > +			continue;
+> > +
+> > +		for (j =3D 0; j < ARRAY_SIZE(port->devs); j++) {
+> > +			struct airoha_gdm_dev *iter_dev;
+> > +			struct net_device *netdev;
+> > +
+> > +			iter_dev =3D port->devs[j];
+> > +			if (!iter_dev || iter_dev =3D=3D dev)
+> > +				continue;
+> > +
+> > +			if (airoha_is_lan_gdm_dev(iter_dev) !=3D
+> > +			    airoha_is_lan_gdm_dev(dev))
+> > +				continue;
+> > +
+> > +			netdev =3D iter_dev->dev;
+> > +			if (netdev->reg_state !=3D NETREG_REGISTERED)
+> > +				continue;
+> > +
+> > +			ether_addr_copy(ref_addr, netdev->dev_addr);
+> > +			val =3D (netdev->dev_addr[3] << 16) |
+> > +			      (netdev->dev_addr[4] << 8) | netdev->dev_addr[5];
+> > +			if (val < lmin)
+> > +				lmin =3D val;
+> > +			if (val > lmax)
+> > +				lmax =3D val;
+> > +		}
+> > +	}
+> > +
+> > +	if (!is_zero_ether_addr(ref_addr) && memcmp(ref_addr, addr, 3)) {
+> > +		/* According to the HW design, hw mac address MS bits
+> > +		 * must be the same for each net_device with the same
+> > +		 * LAN/WAN configuration.
+> > +		 */
+> > +		return -EINVAL;
+> > +	}
+>=20
+> [Medium]
+> The NETREG_REGISTERED filter here means the check only sees peers that
+> have already completed register_netdev(). airoha_dev_init() is invoked
+> as ndo_init from register_netdev() before dev->reg_state transitions
+> to NETREG_REGISTERED, so the constraint is only enforced across
+> already-registered siblings.
+>=20
+> When the device tree does not supply a mac-address property,
+> airoha_alloc_gdm_device() falls back to eth_hw_addr_random() and each
+> sibling gets an independently generated random MAC. With two or more
+> LAN (or two or more WAN) net_devices going through this fallback, the
+> second and later siblings' upper 3 bytes will almost always differ
+> from the first, so airoha_set_macaddr() returns -EINVAL:
+>=20
+> 	if (!is_zero_ether_addr(ref_addr) && memcmp(ref_addr, addr, 3))
+> 		return -EINVAL;
+>=20
+> airoha_dev_init() now propagates that error, which fails
+> register_netdev() and airoha_register_gdm_devices(), aborting probe.
+>=20
+> Before this patch the same configuration still came up (with the single
+> REG_FE_{LAN,WAN}_MAC_H being last-writer-wins). Should the random
+> fallback path derive sibling MACs from a shared base, or should the
+> upper-3-bytes constraint only be enforced for user-triggered
+> ndo_set_mac_address rather than for init-time programming?
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/Makefile b/drivers/net/ethernet/wangxun/libwx/Makefile
-index a71b0ad77de3..c8724bb129aa 100644
---- a/drivers/net/ethernet/wangxun/libwx/Makefile
-+++ b/drivers/net/ethernet/wangxun/libwx/Makefile
-@@ -4,5 +4,5 @@
- 
- obj-$(CONFIG_LIBWX) += libwx.o
- 
--libwx-objs := wx_hw.o wx_lib.o wx_ethtool.o wx_ptp.o wx_mbx.o wx_sriov.o
-+libwx-objs := wx_hw.o wx_lib.o wx_ethtool.o wx_ptp.o wx_mbx.o wx_sriov.o wx_err.o
- libwx-objs += wx_vf.o wx_vf_lib.o wx_vf_common.o
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_err.c b/drivers/net/ethernet/wangxun/libwx/wx_err.c
-new file mode 100644
-index 000000000000..bb61355447a8
---- /dev/null
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_err.c
-@@ -0,0 +1,154 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright (c) 2015 - 2026 Beijing WangXun Technology Co., Ltd. */
-+/* Copyright (c) 1999 - 2026 Intel Corporation. */
-+
-+#include <linux/netdevice.h>
-+#include <linux/pci.h>
-+
-+#include "wx_type.h"
-+#include "wx_lib.h"
-+#include "wx_err.h"
-+
-+void wx_reset_subtask(struct wx *wx)
-+{
-+	if (!test_bit(WX_FLAG_NEED_PF_RESET, wx->flags))
-+		return;
-+
-+	rtnl_lock();
-+
-+	if (!netif_running(wx->netdev) ||
-+	    test_bit(WX_STATE_RESETTING, wx->state))
-+		goto out;
-+
-+	wx_warn(wx, "Reset adapter.\n");
-+
-+	if (test_and_clear_bit(WX_FLAG_NEED_PF_RESET, wx->flags)) {
-+		if (wx->do_reset)
-+			wx->do_reset(wx->netdev);
-+	}
-+
-+out:
-+	rtnl_unlock();
-+}
-+EXPORT_SYMBOL(wx_reset_subtask);
-+
-+static bool wx_ring_tx_pending(struct wx *wx)
-+{
-+	int i;
-+
-+	for (i = 0; i < wx->num_tx_queues; i++) {
-+		struct wx_ring *tx_ring = wx->tx_ring[i];
-+
-+		if (tx_ring->next_to_use != tx_ring->next_to_clean)
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
-+static bool wx_vf_tx_pending(struct wx *wx)
-+{
-+	struct wx_ring_feature *vmdq = &wx->ring_feature[RING_F_VMDQ];
-+	u32 q_per_pool = __ALIGN_MASK(1, ~vmdq->mask);
-+	u32 i, j;
-+
-+	if (!wx->num_vfs)
-+		return false;
-+
-+	for (i = 0; i < wx->num_vfs; i++) {
-+		for (j = 0; j < q_per_pool; j++) {
-+			u32 h, t;
-+
-+			h = rd32(wx, WX_PX_TR_RP_PV(q_per_pool, i, j));
-+			t = rd32(wx, WX_PX_TR_WP_PV(q_per_pool, i, j));
-+
-+			if (h != t)
-+				return true;
-+		}
-+	}
-+
-+	return false;
-+}
-+
-+static void wx_watchdog_flush_tx(struct wx *wx)
-+{
-+	if (netif_carrier_ok(wx->netdev))
-+		return;
-+
-+	if (wx_ring_tx_pending(wx) || wx_vf_tx_pending(wx)) {
-+		/* We've lost link, so the controller stops DMA,
-+		 * but we've got queued Tx work that's never going
-+		 * to get done, so reset controller to flush Tx.
-+		 * (Do the reset outside of interrupt context).
-+		 */
-+		wx_warn(wx, "initiating reset due to lost link with pending Tx work\n");
-+		set_bit(WX_FLAG_NEED_PF_RESET, wx->flags);
-+	}
-+}
-+
-+/*
-+ * wx_check_tx_hang - check for hung queues and dropped interrupts
-+ * @wx - pointer to the device wx structure
-+ *
-+ * This function serves two purposes.  First it strobes the interrupt lines
-+ * in order to make certain interrupts are occurring.  Secondly it sets the
-+ * bits needed to check for TX hangs.  As a result we should immediately
-+ * determine if a hang has occurred.
-+ */
-+static void wx_check_tx_hang(struct wx *wx)
-+{
-+	int i;
-+
-+	/* If we're down or resetting, just bail */
-+	if (!netif_running(wx->netdev) ||
-+	    test_bit(WX_STATE_RESETTING, wx->state))
-+		return;
-+
-+	/* Force detection of hung controller */
-+	if (netif_carrier_ok(wx->netdev)) {
-+		for (i = 0; i < wx->num_tx_queues; i++)
-+			set_bit(WX_TX_DETECT_HANG, wx->tx_ring[i]->state);
-+	}
-+}
-+
-+void wx_check_tx_hang_subtask(struct wx *wx)
-+{
-+	wx_watchdog_flush_tx(wx);
-+	wx_check_tx_hang(wx);
-+}
-+EXPORT_SYMBOL(wx_check_tx_hang_subtask);
-+
-+static void wx_tx_timeout_reset(struct wx *wx)
-+{
-+	if (!netif_running(wx->netdev))
-+		return;
-+
-+	set_bit(WX_FLAG_NEED_PF_RESET, wx->flags);
-+	wx_warn(wx, "initiating reset due to tx timeout\n");
-+	wx_service_event_schedule(wx);
-+}
-+
-+void wx_tx_timeout(struct net_device *netdev, unsigned int __always_unused txqueue)
-+{
-+	struct wx *wx = netdev_priv(netdev);
-+
-+	wx_tx_timeout_reset(wx);
-+}
-+EXPORT_SYMBOL(wx_tx_timeout);
-+
-+void wx_handle_tx_hang(struct wx_ring *tx_ring, unsigned int next)
-+{
-+	struct wx *wx = netdev_priv(tx_ring->netdev);
-+
-+	wx_warn(wx,
-+		"Detected Tx Unit Hang: Queue %d, TDH %x, TDT %x, ntu %x, ntc %x, ntc.time_stamp %lx, jiffies %lx\n",
-+		tx_ring->queue_index,
-+		rd32(wx, WX_PX_TR_RP(tx_ring->reg_idx)),
-+		rd32(wx, WX_PX_TR_WP(tx_ring->reg_idx)),
-+		tx_ring->next_to_use, next,
-+		tx_ring->tx_buffer_info[next].time_stamp, jiffies);
-+
-+	netif_stop_subqueue(tx_ring->netdev, tx_ring->queue_index);
-+
-+	wx_tx_timeout_reset(wx);
-+}
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_err.h b/drivers/net/ethernet/wangxun/libwx/wx_err.h
-new file mode 100644
-index 000000000000..594e70bce229
---- /dev/null
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_err.h
-@@ -0,0 +1,15 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * WangXun Gigabit PCI Express Linux driver
-+ * Copyright (c) 2015 - 2026 Beijing WangXun Technology Co., Ltd.
-+ */
-+
-+#ifndef _WX_ERR_H_
-+#define _WX_ERR_H_
-+
-+void wx_reset_subtask(struct wx *wx);
-+void wx_check_tx_hang_subtask(struct wx *wx);
-+void wx_tx_timeout(struct net_device *netdev, unsigned int txqueue);
-+void wx_handle_tx_hang(struct wx_ring *tx_ring, unsigned int next);
-+
-+#endif /* _WX_ERR_H_ */
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-index 2451f6b20b11..5ef5590c0664 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-@@ -1932,6 +1932,7 @@ static void wx_configure_tx_ring(struct wx *wx,
- 	else
- 		ring->atr_sample_rate = 0;
- 
-+	bitmap_zero(ring->state, WX_RING_STATE_NBITS);
- 	/* reinitialize tx_buffer_info */
- 	memset(ring->tx_buffer_info, 0,
- 	       sizeof(struct wx_tx_buffer) * ring->count);
-@@ -2850,16 +2851,26 @@ EXPORT_SYMBOL(wx_fc_enable);
- static void wx_update_xoff_rx_lfc(struct wx *wx)
- {
- 	struct wx_hw_stats *hwstats = &wx->stats;
-+	u64 data;
-+	int i;
- 
- 	if (wx->fc.mode != wx_fc_full &&
- 	    wx->fc.mode != wx_fc_rx_pause)
- 		return;
- 
- 	if (wx->mac.type >= wx_mac_aml)
--		hwstats->lxoffrxc += rd32_wrap(wx, WX_MAC_LXOFFRXC_AML,
--					       &wx->last_stats.lxoffrxc);
-+		data = rd32_wrap(wx, WX_MAC_LXOFFRXC_AML,
-+				 &wx->last_stats.lxoffrxc);
- 	else
--		hwstats->lxoffrxc += rd64(wx, WX_MAC_LXOFFRXC);
-+		data = rd64(wx, WX_MAC_LXOFFRXC);
-+	hwstats->lxoffrxc += data;
-+
-+	/* refill credits (no tx hang) if we received xoff */
-+	if (!data)
-+		return;
-+
-+	for (i = 0; i < wx->num_tx_queues; i++)
-+		clear_bit(WX_HANG_CHECK_ARMED, wx->tx_ring[i]->state);
- }
- 
- /**
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-index 746623fa59b4..610183496632 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-@@ -14,6 +14,7 @@
- 
- #include "wx_type.h"
- #include "wx_lib.h"
-+#include "wx_err.h"
- #include "wx_ptp.h"
- #include "wx_hw.h"
- #include "wx_vf_lib.h"
-@@ -742,6 +743,37 @@ static struct netdev_queue *wx_txring_txq(const struct wx_ring *ring)
- 	return netdev_get_tx_queue(ring->netdev, ring->queue_index);
- }
- 
-+static u32 wx_get_tx_pending(struct wx_ring *ring)
-+{
-+	unsigned int head, tail;
-+
-+	head = ring->next_to_clean;
-+	tail = ring->next_to_use;
-+
-+	return ((head <= tail) ? tail : tail + ring->count) - head;
-+}
-+
-+static bool wx_check_tx_hang(struct wx_ring *ring)
-+{
-+	u32 tx_done_old = ring->tx_stats.tx_done_old;
-+	u32 tx_pending = wx_get_tx_pending(ring);
-+	u32 tx_done = ring->stats.packets;
-+
-+	if (!test_and_clear_bit(WX_TX_DETECT_HANG, ring->state))
-+		return false;
-+
-+	if (tx_done_old == tx_done && tx_pending)
-+		/* make sure it is true for two checks in a row */
-+		return test_and_set_bit(WX_HANG_CHECK_ARMED, ring->state);
-+
-+	/* update completed stats and continue */
-+	ring->tx_stats.tx_done_old = tx_done;
-+	/* reset the countdown */
-+	clear_bit(WX_HANG_CHECK_ARMED, ring->state);
-+
-+	return false;
-+}
-+
- /**
-  * wx_clean_tx_irq - Reclaim resources after transmit completes
-  * @q_vector: structure containing interrupt and ring information
-@@ -866,6 +898,11 @@ static bool wx_clean_tx_irq(struct wx_q_vector *q_vector,
- 	netdev_tx_completed_queue(wx_txring_txq(tx_ring),
- 				  total_packets, total_bytes);
- 
-+	if (wx_check_tx_hang(tx_ring)) {
-+		wx_handle_tx_hang(tx_ring, i);
-+		return true;
-+	}
-+
- #define TX_WAKE_THRESHOLD (DESC_NEEDED * 2)
- 	if (unlikely(total_packets && netif_carrier_ok(tx_ring->netdev) &&
- 		     (wx_desc_unused(tx_ring) >= TX_WAKE_THRESHOLD))) {
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-index 0da5565ee4ff..91c6db7e8e40 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-@@ -450,6 +450,11 @@ enum WX_MSCA_CMD_value {
- #define WX_PX_TR_CFG_THRE_SHIFT      8
- #define WX_PX_TR_CFG_HEAD_WB         BIT(27)
- 
-+#define WX_PX_TR_RP_PV(q_per_pool, vf_number, vf_q_index) \
-+		(WX_PX_TR_RP((q_per_pool) * (vf_number) + (vf_q_index)))
-+#define WX_PX_TR_WP_PV(q_per_pool, vf_number, vf_q_index) \
-+		(WX_PX_TR_WP((q_per_pool) * (vf_number) + (vf_q_index)))
-+
- /* Receive DMA Registers */
- #define WX_PX_RR_BAL(_i)             (0x01000 + ((_i) * 0x40))
- #define WX_PX_RR_BAH(_i)             (0x01004 + ((_i) * 0x40))
-@@ -1039,6 +1044,7 @@ struct wx_queue_stats {
- struct wx_tx_queue_stats {
- 	u64 restart_queue;
- 	u64 tx_busy;
-+	u32 tx_done_old;
- };
- 
- struct wx_rx_queue_stats {
-@@ -1054,6 +1060,12 @@ struct wx_rx_queue_stats {
- #define wx_for_each_ring(posm, headm) \
- 	for (posm = (headm).ring; posm; posm = posm->next)
- 
-+enum wx_ring_state {
-+	WX_TX_DETECT_HANG,
-+	WX_HANG_CHECK_ARMED,
-+	WX_RING_STATE_NBITS
-+};
-+
- struct wx_ring_container {
- 	struct wx_ring *ring;           /* pointer to linked list of rings */
- 	unsigned int total_bytes;       /* total bytes processed this int */
-@@ -1073,6 +1085,7 @@ struct wx_ring {
- 		struct wx_tx_buffer *tx_buffer_info;
- 		struct wx_rx_buffer *rx_buffer_info;
- 	};
-+	DECLARE_BITMAP(state, WX_RING_STATE_NBITS);
- 	u8 __iomem *tail;
- 	dma_addr_t dma;                 /* phys. address of descriptor ring */
- 	dma_addr_t headwb_dma;
-@@ -1273,6 +1286,7 @@ enum wx_pf_flags {
- 	WX_FLAG_NEED_DO_RESET,
- 	WX_FLAG_RX_MERGE_ENABLED,
- 	WX_FLAG_TXHEAD_WB_ENABLED,
-+	WX_FLAG_NEED_PF_RESET,
- 	WX_PF_FLAGS_NBITS               /* must be last */
- };
- 
-@@ -1503,7 +1517,8 @@ rd32_wrap(struct wx *wx, u32 reg, u32 *last)
- 
- #define wx_err(wx, fmt, arg...) \
- 	dev_err(&(wx)->pdev->dev, fmt, ##arg)
--
-+#define wx_warn(wx, fmt, arg...) \
-+	dev_warn(&(wx)->pdev->dev, fmt, ##arg)
- #define wx_dbg(wx, fmt, arg...) \
- 	dev_dbg(&(wx)->pdev->dev, fmt, ##arg)
- 
-diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-index bd905e267575..c45f5770b722 100644
---- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-+++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-@@ -14,6 +14,7 @@
- #include "../libwx/wx_type.h"
- #include "../libwx/wx_hw.h"
- #include "../libwx/wx_lib.h"
-+#include "../libwx/wx_err.h"
- #include "../libwx/wx_ptp.h"
- #include "../libwx/wx_mbx.h"
- #include "../libwx/wx_sriov.h"
-@@ -147,7 +148,9 @@ static void ngbe_service_task(struct work_struct *work)
- {
- 	struct wx *wx = container_of(work, struct wx, service_task);
- 
-+	wx_reset_subtask(wx);
- 	wx_update_stats(wx);
-+	wx_check_tx_hang_subtask(wx);
- 
- 	wx_service_event_complete(wx);
- }
-@@ -390,6 +393,7 @@ static void ngbe_disable_device(struct wx *wx)
- 	netif_tx_stop_all_queues(netdev);
- 	netif_tx_disable(netdev);
- 
-+	clear_bit(WX_FLAG_NEED_PF_RESET, wx->flags);
- 	timer_delete_sync(&wx->service_timer);
- 	cancel_work_sync(&wx->service_task);
- 
-@@ -642,6 +646,7 @@ static const struct net_device_ops ngbe_netdev_ops = {
- 	.ndo_stop               = ngbe_close,
- 	.ndo_change_mtu         = wx_change_mtu,
- 	.ndo_start_xmit         = wx_xmit_frame,
-+	.ndo_tx_timeout         = wx_tx_timeout,
- 	.ndo_set_rx_mode        = wx_set_rx_mode,
- 	.ndo_set_features       = wx_set_features,
- 	.ndo_fix_features       = wx_fix_features,
-@@ -731,6 +736,7 @@ static int ngbe_probe(struct pci_dev *pdev,
- 	wx->driver_name = ngbe_driver_name;
- 	ngbe_set_ethtool_ops(netdev);
- 	netdev->netdev_ops = &ngbe_netdev_ops;
-+	netdev->watchdog_timeo = 5 * HZ;
- 
- 	netdev->features = NETIF_F_SG | NETIF_F_IP_CSUM |
- 			   NETIF_F_TSO | NETIF_F_TSO6 |
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-index 8b7c3753bb6a..ba55a17da3b8 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-@@ -14,6 +14,7 @@
- 
- #include "../libwx/wx_type.h"
- #include "../libwx/wx_lib.h"
-+#include "../libwx/wx_err.h"
- #include "../libwx/wx_ptp.h"
- #include "../libwx/wx_hw.h"
- #include "../libwx/wx_mbx.h"
-@@ -128,9 +129,11 @@ static void txgbe_service_task(struct work_struct *work)
- {
- 	struct wx *wx = container_of(work, struct wx, service_task);
- 
-+	wx_reset_subtask(wx);
- 	txgbe_module_detection_subtask(wx);
- 	txgbe_link_config_subtask(wx);
- 	wx_update_stats(wx);
-+	wx_check_tx_hang_subtask(wx);
- 
- 	wx_service_event_complete(wx);
- }
-@@ -228,6 +231,7 @@ static void txgbe_disable_device(struct wx *wx)
- 	wx_irq_disable(wx);
- 	wx_napi_disable_all(wx);
- 
-+	clear_bit(WX_FLAG_NEED_PF_RESET, wx->flags);
- 	timer_delete_sync(&wx->service_timer);
- 
- 	if (wx->bus.func < 2)
-@@ -659,6 +663,7 @@ static const struct net_device_ops txgbe_netdev_ops = {
- 	.ndo_stop               = txgbe_close,
- 	.ndo_change_mtu         = wx_change_mtu,
- 	.ndo_start_xmit         = wx_xmit_frame,
-+	.ndo_tx_timeout         = wx_tx_timeout,
- 	.ndo_set_rx_mode        = wx_set_rx_mode,
- 	.ndo_set_features       = wx_set_features,
- 	.ndo_fix_features       = wx_fix_features,
-@@ -750,6 +755,7 @@ static int txgbe_probe(struct pci_dev *pdev,
- 	wx->driver_name = txgbe_driver_name;
- 	txgbe_set_ethtool_ops(netdev);
- 	netdev->netdev_ops = &txgbe_netdev_ops;
-+	netdev->watchdog_timeo = 5 * HZ;
- 	netdev->udp_tunnel_nic_info = &txgbe_udp_tunnels;
- 
- 	/* setup the private structure */
--- 
-2.51.0
+Hw design requires that if two (or more) net_devices are configured as LAN
+(or theoretically as WAN), they need to share the mac address upper-3-bytes.
+If the user wants to use multiple devices with the same LAN/WAN configurati=
+on,
+he/she will need to properly store the net_device mac address int the device
+eeprom/nvme or in the dts.
+Please note this series is not introducing any regression since the user was
+not able to run this configuration before this series.
 
+>=20
+> > =20
+> >  	reg =3D airoha_is_lan_gdm_dev(dev) ? REG_FE_LAN_MAC_H : REG_FE_WAN_MA=
+C_H;
+> >  	val =3D (addr[0] << 16) | (addr[1] << 8) | addr[2];
+> >  	airoha_fe_wr(eth, reg, val);
+> > =20
+> > -	val =3D (addr[3] << 16) | (addr[4] << 8) | addr[5];
+> > -	airoha_fe_wr(eth, REG_FE_MAC_LMIN(reg), val);
+> > -	airoha_fe_wr(eth, REG_FE_MAC_LMAX(reg), val);
+> > +	airoha_fe_wr(eth, REG_FE_MAC_LMIN(reg), lmin);
+> > +	airoha_fe_wr(eth, REG_FE_MAC_LMAX(reg), lmax);
+> > =20
+> >  	airoha_ppe_init_upd_mem(dev);
+> > +
+> > +	return 0;
+> >  }
+> > =20
+> >  static void airoha_set_gdm_port_fwd_cfg(struct airoha_eth *eth, u32 ad=
+dr,
+> > @@ -1792,13 +1839,18 @@ static int airoha_dev_stop(struct net_device *n=
+etdev)
+> >  static int airoha_dev_set_macaddr(struct net_device *netdev, void *p)
+> >  {
+> >  	struct airoha_gdm_dev *dev =3D netdev_priv(netdev);
+> > +	struct sockaddr *addr =3D p;
+> >  	int err;
+> > =20
+> > -	err =3D eth_mac_addr(netdev, p);
+> > +	err =3D eth_prepare_mac_addr_change(netdev, p);
+> >  	if (err)
+> >  		return err;
+> > =20
+> > -	airoha_set_macaddr(dev, netdev->dev_addr);
+> > +	err =3D airoha_set_macaddr(dev, addr->sa_data);
+> > +	if (err)
+> > +		return err;
+> > +
+> > +	eth_commit_mac_addr_change(netdev, p);
+> > =20
+> >  	return 0;
+> >  }
+>=20
+> [High]
+> After this reordering, does airoha_ppe_init_upd_mem() end up
+> programming the PPE update memory with the old MAC rather than the new
+> one?
+>=20
+> eth_prepare_mac_addr_change() only validates the sockaddr and does not
+> touch netdev->dev_addr; the actual write to netdev->dev_addr happens in
+> eth_commit_mac_addr_change() via eth_hw_addr_set():
+>=20
+> net/ethernet/eth.c:eth_prepare_mac_addr_change() {
+> 	if (!(dev->priv_flags & IFF_LIVE_ADDR_CHANGE) && netif_running(dev))
+> 		return -EBUSY;
+> 	if (!is_valid_ether_addr(addr->sa_data))
+> 		return -EADDRNOTAVAIL;
+> 	return 0;
+> }
+>=20
+> net/ethernet/eth.c:eth_commit_mac_addr_change() {
+> 	eth_hw_addr_set(dev, addr->sa_data);
+> }
+>=20
+> airoha_set_macaddr() is invoked between those two, so when it reaches
+> airoha_ppe_init_upd_mem(dev) the commit has not yet run. That helper
+> reads netdev->dev_addr directly rather than using the addr argument:
+>=20
+> drivers/net/ethernet/airoha/airoha_ppe.c:airoha_ppe_init_upd_mem() {
+> 	const u8 *addr =3D netdev->dev_addr;
+> 	...
+> 	val =3D (addr[2] << 24) | (addr[3] << 16) | (addr[4] << 8) | addr[5];
+> 	airoha_fe_wr(eth, REG_UPDMEM_DATA(0), val);
+> 	...
+> 	val =3D (addr[0] << 8) | addr[1];
+> 	airoha_fe_wr(eth, REG_UPDMEM_DATA(0), val);
+> 	...
+> }
+>=20
+> So the FE registers REG_FE_{LAN,WAN}_MAC_H / REG_FE_MAC_LMIN /
+> REG_FE_MAC_LMAX are written from the new addr parameter, but the PPE
+> REG_UPDMEM_DATA/REG_UPDMEM_CTRL entries are written from the still-old
+> netdev->dev_addr.
+>=20
+> Previously eth_mac_addr() (prepare + commit combined) ran first, so
+> netdev->dev_addr was the new MAC by the time airoha_set_macaddr() and
+> airoha_ppe_init_upd_mem() ran, keeping the two blocks in sync.
+>=20
+> Would it be cleaner to either pass addr through to
+> airoha_ppe_init_upd_mem(), or invoke eth_commit_mac_addr_change() before
+> airoha_set_macaddr() (with a rollback path if the hardware programming
+> fails)?
+
+ack, I will fix it in v5.
+
+Regards,
+Lorenzo
+
+>=20
+> > @@ -1903,6 +1955,7 @@ static int airoha_dev_init(struct net_device *net=
+dev)
+> [ ... ]
+
+--lg/EUJE1MTlDMtub
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaf8HfgAKCRA6cBh0uS2t
+rCrFAQC4cypXPyLYpkfCjZ+8fARSlLo1SxcqMz7kvKN7sd0RnAEAx5U4W8tYhksn
+GK2mSoplDd6MwDsxrrEmtIg5gaY9ogw=
+=61qR
+-----END PGP SIGNATURE-----
+
+--lg/EUJE1MTlDMtub--
