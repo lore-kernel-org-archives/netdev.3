@@ -1,28 +1,28 @@
 Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3CC92046BA;
-	Sat,  9 May 2026 09:06:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5BB39281E;
+	Sat,  9 May 2026 09:06:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778317610; cv=none; b=V3uUhgtsRhgML/rdEF/OWYssOlldEqr7aa86zHQI04wVPw7UdCBh1/rb6Am2t/EGGYnklNxG/pBfg3LQYuhbVy/yVHWJkcce0kv2rx+oHTswnDP9e2jWMaYbBk0YWt8gvywSmz3ZdHNVAdvxDRFybvv3b1IXUTO0/tP4xxw/MxI=
+	t=1778317612; cv=none; b=ifWv9qa1ONF7ubgoz0mOw8UcVrm6rc7V1lZRs5+O6wHFyNGi3oQ4sowSBfhm7SLopbXAdZGhvcsH7IkJHjJSMciAwqL1Zdpm3iwIWtjzRLAAmzFbJC1Z9P9VQwn9wAP+/aLQ9U+4sEdm/j8P9aE0UkluaOYzJU+xEwwJL0vLZ0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778317610; c=relaxed/simple;
-	bh=qSCsA/sYeQew9IeiwAKUuFOND5/wLU5A/6y583TGt3E=;
+	s=arc-20240116; t=1778317612; c=relaxed/simple;
+	bh=Fz4ADg+K4qmCWYFW7qc3UchBZSZ2z45B62tKJrsbPBE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V56f9oynLR37w/xVmYO5gL8sdlvWh+PE5is8ufeKqmKUBiBQKXLaCHIGK90JWKC+q25pwaMDyWr4JqkiD/SecckJk3+5izOiz8b9l94hgE7AXw1MWV/vFEFoRm8661o0W0hYkmUX5DtCEWsyajmFxY7z0TtrR4D/IiILXbvTZyU=
+	 MIME-Version; b=cdiYeFxLSSN5/Rk8fHNU1M1CUBzBmbiRyYLV2e643ZnQTNbaD5lahV3M1FFWm/avlH2/xhKJUC7sMNH/sxd2ppwrd8M7M5o6Cu7z4BZc3KMOcE8gT1tcCnqdOLaEtt30pE0iicI5DujEOm9gagXK1ci6cVwMKu7DYbd9BhjQ+cg=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 5FA77203A21;
-	Sat,  9 May 2026 11:06:46 +0200 (CEST)
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 67752203A25;
+	Sat,  9 May 2026 11:06:49 +0200 (CEST)
 Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id F408320232C;
-	Sat,  9 May 2026 11:06:45 +0200 (CEST)
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 07FCE203A24;
+	Sat,  9 May 2026 11:06:49 +0200 (CEST)
 Received: from lsvm11u0000621.swis.ap-northeast-2.aws.nxp.com (lsvm11u0000621.swis.ap-northeast-2.aws.nxp.com [10.52.8.159])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 19F2C18002DC;
-	Sat,  9 May 2026 17:06:44 +0800 (+08)
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 22BE818002DC;
+	Sat,  9 May 2026 17:06:47 +0800 (+08)
 From: Minghuan Lian <minghuan.lian@nxp.com>
 To: netdev@vger.kernel.org
 Cc: devicetree@vger.kernel.org,
@@ -36,9 +36,9 @@ Cc: devicetree@vger.kernel.org,
 	krzk+dt@kernel.org,
 	conor+dt@kernel.org,
 	Minghuan Lian <minghuan.lian@nxp.com>
-Subject: [PATCH net-next 2/4] net: dsa: tag_hms: Add HMS tag protocol
-Date: Sat,  9 May 2026 18:06:30 +0900
-Message-ID: <20260509090632.2959553-3-minghuan.lian@nxp.com>
+Subject: [PATCH net-next 4/4] net: dsa: hms: Add ethtool statistics support
+Date: Sat,  9 May 2026 18:06:32 +0900
+Message-ID: <20260509090632.2959553-5-minghuan.lian@nxp.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260509090632.2959553-1-minghuan.lian@nxp.com>
 References: <20260509090632.2959553-1-minghuan.lian@nxp.com>
@@ -51,499 +51,417 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Virus-Scanned: ClamAV using ClamSMTP
 
-Add a DSA tagger for NXP Heterogeneous Multi-SoC (HMS) switches.
+Add ethtool statistics support for the HMS switch. This provides
+per-port statistics including:
+  - RX/TX byte and frame counters
+  - Frame size distribution counters
+  - Error and discard counters
+  - Per-queue statistics for all 8 traffic classes
 
-HMS is used by systems where the Ethernet switch is managed by firmware
-running on a companion SoC or MCU, while Linux runs on the host SoC and
-exposes the switch ports through DSA. The host data path uses a regular
-Ethernet controller as the DSA conduit port.
-
-The HMS tag protocol has two frame formats. Regular data traffic is
-identified using DSA tag_8021q VLAN IDs, which provide the source and
-destination port information needed by DSA without requiring a custom
-Ethernet header on every packet.
-
-Link-local and control traffic uses an HMS meta frame format with
-EtherType ETH_P_HMS_META. This is needed for frames where explicit
-metadata must be exchanged with the switch firmware, such as slow
-protocols, PTP-over-Ethernet traffic and in-band control notifications.
-The tagger parses received meta frames, resolves the source switch and
-port, and provides a callback hook for the switch driver to handle meta
-commands.
-
-The tagger therefore supports both:
-  - tag_8021q based transmit and receive handling for regular data
-    traffic
-  - HMS meta frame transmit and receive handling for link-local and
-    control traffic
+Statistics are retrieved from the RT1180 MCU via the SPI command
+interface using HMS_CMD_PORT_ETHTOOL_STATS_GET.
 
 Signed-off-by: Minghuan Lian <minghuan.lian@nxp.com>
 ---
- include/linux/dsa/tag_hms.h |  28 +++
- include/net/dsa.h           |   2 +
- net/dsa/Kconfig             |   9 +
- net/dsa/Makefile            |   1 +
- net/dsa/tag_hms.c           | 366 ++++++++++++++++++++++++++++++++++++
- 5 files changed, 406 insertions(+)
- create mode 100644 include/linux/dsa/tag_hms.h
- create mode 100644 net/dsa/tag_hms.c
+ drivers/net/dsa/hms/Makefile      |   1 +
+ drivers/net/dsa/hms/hms_ethtool.c | 346 ++++++++++++++++++++++++++++++
+ drivers/net/dsa/hms/hms_main.c    |   4 +
+ drivers/net/dsa/hms/hms_switch.h  |   6 +
+ 4 files changed, 357 insertions(+)
+ create mode 100644 drivers/net/dsa/hms/hms_ethtool.c
 
-diff --git a/include/linux/dsa/tag_hms.h b/include/linux/dsa/tag_hms.h
+diff --git a/drivers/net/dsa/hms/Makefile b/drivers/net/dsa/hms/Makefile
+index acf6a8f2d953b..11bb215b270c6 100644
+--- a/drivers/net/dsa/hms/Makefile
++++ b/drivers/net/dsa/hms/Makefile
+@@ -5,4 +5,5 @@ obj-$(CONFIG_NET_DSA_HMS_SWITCH) += hms.o
+ hms-objs := \
+ 	hms_spi.o \
+ 	hms_config.o \
++	hms_ethtool.o \
+ 	hms_main.o
+diff --git a/drivers/net/dsa/hms/hms_ethtool.c b/drivers/net/dsa/hms/hms_ethtool.c
 new file mode 100644
-index 0000000000000..180e969dc06f4
+index 0000000000000..00c8406b12862
 --- /dev/null
-+++ b/include/linux/dsa/tag_hms.h
-@@ -0,0 +1,28 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Copyright 2025-2026 NXP
-+ */
-+
-+#ifndef _NET_DSA_TAG_HMS_H
-+#define _NET_DSA_TAG_HMS_H
-+
-+#include <linux/dsa/8021q.h>
-+#include <net/dsa.h>
-+
-+#define ETH_P_HMS_8021Q	ETH_P_8021Q /* 0x8100 */
-+
-+#define HMS_META_ETYPE	0xDADC /* HMS internal meta frame EtherType */
-+
-+/* IEEE 802.3 Annex 57A: Slow Protocols PDUs (01:80:C2:xx:xx:xx) */
-+#define HMS_LINKLOCAL_FILTER_A		0x0180C2000000ull
-+#define HMS_LINKLOCAL_FILTER_A_MASK	0xFFFFFF000000ull
-+/* IEEE 1588 Annex F: Transport of PTP over Ethernet (01:1B:19:xx:xx:xx) */
-+#define HMS_LINKLOCAL_FILTER_B		0x011B19000000ull
-+#define HMS_LINKLOCAL_FILTER_B_MASK	0xFFFFFF000000ull
-+
-+struct hms_tagger_data {
-+	void (*meta_cmd_handler)(struct dsa_switch *ds, int port,
-+				 void *buf, size_t len);
-+};
-+
-+#endif /* _NET_DSA_TAG_HMS_H */
-diff --git a/include/net/dsa.h b/include/net/dsa.h
-index 4cc67469cf2ec..625dee53488dc 100644
---- a/include/net/dsa.h
-+++ b/include/net/dsa.h
-@@ -58,6 +58,7 @@ struct tc_action;
- #define DSA_TAG_PROTO_YT921X_VALUE		30
- #define DSA_TAG_PROTO_MXL_GSW1XX_VALUE		31
- #define DSA_TAG_PROTO_MXL862_VALUE		32
-+#define DSA_TAG_PROTO_HMS_VALUE			33
- 
- enum dsa_tag_protocol {
- 	DSA_TAG_PROTO_NONE		= DSA_TAG_PROTO_NONE_VALUE,
-@@ -93,6 +94,7 @@ enum dsa_tag_protocol {
- 	DSA_TAG_PROTO_YT921X		= DSA_TAG_PROTO_YT921X_VALUE,
- 	DSA_TAG_PROTO_MXL_GSW1XX	= DSA_TAG_PROTO_MXL_GSW1XX_VALUE,
- 	DSA_TAG_PROTO_MXL862		= DSA_TAG_PROTO_MXL862_VALUE,
-+	DSA_TAG_PROTO_HMS		= DSA_TAG_PROTO_HMS_VALUE,
- };
- 
- struct dsa_switch;
-diff --git a/net/dsa/Kconfig b/net/dsa/Kconfig
-index 5ed8c704636dd..3f0295a364f18 100644
---- a/net/dsa/Kconfig
-+++ b/net/dsa/Kconfig
-@@ -211,4 +211,13 @@ config NET_DSA_TAG_YT921X
- 	  Say Y or M if you want to enable support for tagging frames for
- 	  Motorcomm YT921x switches.
- 
-+config NET_DSA_TAG_HMS
-+	tristate "Tag driver for NXP Heterogeneous Multi-SoC switches"
-+	select NET_DSA_TAG_8021Q
-+	help
-+	  Say Y or M if you want to enable support for tagging frames for
-+	  NXP Heterogeneous Multi-SoC switch family. This driver uses a
-+	  custom 802.1Q VLAN header for injection and extraction of frames
-+	  between the host and the NXP i.MX RT1180 NETC switch.
-+
- endif
-diff --git a/net/dsa/Makefile b/net/dsa/Makefile
-index bf7247759a64a..5f9dbbe782381 100644
---- a/net/dsa/Makefile
-+++ b/net/dsa/Makefile
-@@ -42,6 +42,7 @@ obj-$(CONFIG_NET_DSA_TAG_TRAILER) += tag_trailer.o
- obj-$(CONFIG_NET_DSA_TAG_VSC73XX_8021Q) += tag_vsc73xx_8021q.o
- obj-$(CONFIG_NET_DSA_TAG_XRS700X) += tag_xrs700x.o
- obj-$(CONFIG_NET_DSA_TAG_YT921X) += tag_yt921x.o
-+obj-$(CONFIG_NET_DSA_TAG_HMS) += tag_hms.o
- 
- # for tracing framework to find trace.h
- CFLAGS_trace.o := -I$(src)
-diff --git a/net/dsa/tag_hms.c b/net/dsa/tag_hms.c
-new file mode 100644
-index 0000000000000..ea485b7088ce7
---- /dev/null
-+++ b/net/dsa/tag_hms.c
-@@ -0,0 +1,366 @@
++++ b/drivers/net/dsa/hms/hms_ethtool.c
+@@ -0,0 +1,346 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
++ * NXP HMS (Heterogeneous Multi-SoC) DSA Switch ethtool Statistics
++ *
 + * Copyright 2025-2026 NXP
 + */
 +
-+#include <linux/if_vlan.h>
-+#include <linux/dsa/tag_hms.h>
-+#include <linux/packing.h>
-+#include <linux/slab.h>
-+#include "tag.h"
-+#include "tag_8021q.h"
-+
-+#define HMS_TAG_NAME		"hms"
-+
-+/*
-+ * HMS meta header inserted after the source MAC address.
-+ *
-+ * |     2B      |     2B      |   0 / 4B / 8B / 12B / 16B / 20B |
-+ * +------------ +-------------+---------------------------------+
-+ * |    0xDADC   |   HEADER    |               DATA              |
-+ * +------------ +------------ +---------------------------------+
-+ */
-+
-+#define HMS_HEADER_LEN			4
-+
-+#define HMS_HEADER_HOST_TO_SWITCH	BIT(15)
-+
-+/* Binary structure of the HMS Header ETH_P_HMS_META:
-+ *
-+ * |   15      |  14  |     13    |   12  |  11   | 10 - 9 |   7 - 4   |  3 - 0  |
-+ * +-----------+------+-----------+-------+-------+--------+-----------+---------+
-+ * | TO HOST 0 | META | HOST Only |       |       |        | Switch ID | Port ID |
-+ * +-----------+------+-----------+-------+-------+--------+-----------+---------+
-+ */
-+#define HMS_RX_HEADER_IS_METADATA	BIT(14)
-+#define HMS_RX_HEADER_HOST_ONLY		BIT(13)
-+
-+#define HMS_HEADER_PORT_MASK		0x0F
-+#define HMS_HEADER_SWITCH_MASK		0xF0
-+#define HMS_HEADER_SWITCH_OFFSET	4
-+#define HMS_RX_HEADER_PORT_ID(x)	((x) & HMS_HEADER_PORT_MASK)
-+#define HMS_RX_HEADER_SWITCH_ID(x)	(((x) & HMS_HEADER_SWITCH_MASK) >> HMS_HEADER_SWITCH_OFFSET)
-+
-+/* TX header */
-+
-+/*
-+ * Binary structure of the HMS Header ETH_P_HMS_META:
-+ *
-+ * |   15      |  14  |   13   |   12  |  11     | 10 - 9 |  7 - 4    |  3 - 0  |
-+ * +-----------+------+--------+-------+---------+--------+-----------+---------+
-+ * |  To SW 1  | META |        |       |         |        | SWITCH ID | PORT ID |
-+ * +-----------+------+--------+-------+------  -+--------+-----------+---------+
-+ */
-+
-+#define HMS_TX_HEADER_SWITCHID(x)	(((x) << HMS_HEADER_SWITCH_OFFSET) & HMS_HEADER_SWITCH_MASK)
-+#define HMS_TX_HEADER_DESTPORTID(x)	((x) & HMS_HEADER_PORT_MASK)
-+
-+/* Similar to is_link_local_ether_addr(hdr->h_dest) but also covers PTP */
-+static inline bool hms_is_link_local(const struct sk_buff *skb)
-+{
-+	const struct ethhdr *hdr = eth_hdr(skb);
-+	u64 dmac = ether_addr_to_u64(hdr->h_dest);
-+
-+	if (ntohs(hdr->h_proto) == HMS_META_ETYPE)
-+		return true;
-+
-+	if ((dmac & HMS_LINKLOCAL_FILTER_A_MASK) ==
-+	     HMS_LINKLOCAL_FILTER_A)
-+		return true;
-+
-+	if ((dmac & HMS_LINKLOCAL_FILTER_B_MASK) ==
-+	     HMS_LINKLOCAL_FILTER_B)
-+		return true;
-+
-+	return false;
-+}
-+
-+/* Send VLAN tags with a TPID that blends in with whatever VLAN protocol a
-+ * bridge spanning ports of this switch might have.
-+ */
-+static u16 hms_xmit_tpid(struct dsa_port *dp)
-+{
-+	struct dsa_switch *ds = dp->ds;
-+	struct dsa_port *other_dp;
-+	u16 proto;
-+
-+	if (!dsa_port_is_vlan_filtering(dp))
-+		return ETH_P_HMS_8021Q;
-+
-+	/* Port is VLAN-aware, so there is a bridge somewhere (a single one,
-+	 * we're sure about that). It may not be on this port though, so we
-+	 * need to find it.
-+	 */
-+	dsa_switch_for_each_port(other_dp, ds) {
-+		struct net_device *br = dsa_port_bridge_dev_get(other_dp);
-+
-+		if (!br)
-+			continue;
-+
-+		/* Error is returned only if CONFIG_BRIDGE_VLAN_FILTERING,
-+		 * which seems pointless to handle, as our port cannot become
-+		 * VLAN-aware in that case.
-+		 */
-+		br_vlan_get_proto(br, &proto);
-+
-+		return proto;
-+	}
-+
-+	WARN_ONCE(1, "Port is VLAN-aware but cannot find associated bridge!\n");
-+
-+	return ETH_P_HMS_8021Q;
-+}
-+
-+static struct sk_buff *hms_imprecise_xmit(struct sk_buff *skb,
-+					  struct net_device *netdev)
-+{
-+	struct dsa_port *dp = dsa_user_to_port(netdev);
-+	unsigned int bridge_num = dsa_port_bridge_num_get(dp);
-+	struct net_device *br = dsa_port_bridge_dev_get(dp);
-+	u16 tx_vid;
-+
-+	/* If the port is under a VLAN-aware bridge, just slide the
-+	 * VLAN-tagged packet into the FDB and hope for the best.
-+	 * This works because we support a single VLAN-aware bridge
-+	 * across the entire dst, and its VLANs cannot be shared with
-+	 * any standalone port.
-+	 */
-+	if (br_vlan_enabled(br))
-+		return skb;
-+
-+	/* If the port is under a VLAN-unaware bridge, use an imprecise
-+	 * TX VLAN that targets the bridge's entire broadcast domain,
-+	 * instead of just the specific port.
-+	 */
-+	tx_vid = dsa_tag_8021q_bridge_vid(bridge_num);
-+
-+	if (unlikely(skb_vlan_tag_present(skb))) {
-+		skb = __vlan_hwaccel_push_inside(skb);
-+		if (!skb) {
-+			WARN_ONCE(1, "Failed to push VLAN tag to payload!\n");
-+			return NULL;
-+		}
-+	}
-+
-+	return dsa_8021q_xmit(skb, netdev, hms_xmit_tpid(dp), tx_vid);
-+}
-+
-+static struct sk_buff *hms_meta_xmit(struct sk_buff *skb,
-+				     struct net_device *netdev)
-+{
-+	struct dsa_port *dp = dsa_user_to_port(netdev);
-+	int len = HMS_HEADER_LEN;
-+	__be16 *tx_header;
-+
-+	skb_push(skb, len);
-+
-+	dsa_alloc_etype_header(skb, len);
-+
-+	tx_header = dsa_etype_header_pos_tx(skb);
-+
-+	tx_header[0] = htons(HMS_META_ETYPE);
-+	tx_header[1] = htons(HMS_HEADER_HOST_TO_SWITCH |
-+			     HMS_TX_HEADER_SWITCHID(dp->ds->index) |
-+			     HMS_TX_HEADER_DESTPORTID(dp->index));
-+
-+	return skb;
-+}
-+
-+static struct sk_buff *hms_8021q_xmit(struct sk_buff *skb,
-+				      struct net_device *netdev)
-+{
-+	struct dsa_port *dp = dsa_user_to_port(netdev);
-+	u16 queue_mapping = skb_get_queue_mapping(skb);
-+	u8 pcp = netdev_txq_to_tc(netdev, queue_mapping);
-+	u16 tx_vid = dsa_tag_8021q_standalone_vid(dp);
-+
-+	return dsa_8021q_xmit(skb, netdev, hms_xmit_tpid(dp),
-+			      ((pcp << VLAN_PRIO_SHIFT) | tx_vid));
-+}
-+
-+static struct sk_buff *hms_xmit(struct sk_buff *skb,
-+				struct net_device *netdev)
-+{
-+	if (skb->offload_fwd_mark)
-+		return hms_imprecise_xmit(skb, netdev);
-+
-+	if (unlikely(hms_is_link_local(skb)))
-+		return hms_meta_xmit(skb, netdev);
-+
-+	return hms_8021q_xmit(skb, netdev);
-+}
-+
-+static bool hms_skb_has_tag_8021q(const struct sk_buff *skb)
-+{
-+	u16 tpid = ntohs(eth_hdr(skb)->h_proto);
-+
-+	return tpid == ETH_P_8021AD || tpid == ETH_P_8021Q ||
-+	       skb_vlan_tag_present(skb);
-+}
-+
-+static bool hms_skb_has_inband_control_extension(const struct sk_buff *skb)
-+{
-+	return ntohs(eth_hdr(skb)->h_proto) == HMS_META_ETYPE;
-+}
-+
-+static struct sk_buff *hms_rcv_meta_cmd(struct sk_buff *skb, u16 rx_header)
-+{
-+	u8 *buf = dsa_etype_header_pos_rx(skb) + HMS_HEADER_LEN;
-+	int switch_id = HMS_RX_HEADER_SWITCH_ID(rx_header);
-+	int source_port = HMS_RX_HEADER_PORT_ID(rx_header);
-+	struct hms_tagger_data *tagger_data;
-+	struct net_device *master = skb->dev;
-+	struct dsa_port *cpu_dp;
-+	struct dsa_switch *ds;
-+
-+	cpu_dp = master->dsa_ptr;
-+	ds = dsa_switch_find(cpu_dp->dst->index, switch_id);
-+	if (!ds) {
-+		net_err_ratelimited("%s: cannot find switch id %d\n",
-+				    master->name, switch_id);
-+		return NULL;
-+	}
-+
-+	tagger_data = ds->tagger_data;
-+	if (!tagger_data->meta_cmd_handler)
-+		return NULL;
-+
-+	if (skb_is_nonlinear(skb))
-+		if (skb_linearize(skb))
-+			return NULL;
-+
-+	tagger_data->meta_cmd_handler(ds, source_port, buf,
-+				skb->len - HMS_HEADER_LEN - 2 * ETH_ALEN);
-+
-+	/* Discard the meta frame */
-+	return NULL;
-+}
-+
-+static struct sk_buff *hms_rcv_inband_control_extension(struct sk_buff *skb,
-+							int *source_port,
-+							int *switch_id,
-+							bool *host_only)
-+{
-+	u16 rx_header;
-+	int len = 0;
-+
-+	if (unlikely(!pskb_may_pull(skb, HMS_HEADER_LEN)))
-+		return NULL;
-+
-+	rx_header = ntohs(*(__be16 *)skb->data);
-+	if (rx_header & HMS_RX_HEADER_HOST_ONLY)
-+		*host_only = true;
-+
-+	if (rx_header & HMS_RX_HEADER_IS_METADATA)
-+		return hms_rcv_meta_cmd(skb, rx_header);
-+
-+	*source_port = HMS_RX_HEADER_PORT_ID(rx_header);
-+	*switch_id = HMS_RX_HEADER_SWITCH_ID(rx_header);
-+
-+	len += HMS_HEADER_LEN;
-+
-+	/* Advance skb->data past the DSA header */
-+	skb_pull_rcsum(skb, len);
-+
-+	dsa_strip_etype_header(skb, len);
-+
-+	/* With skb->data in its final place, update the MAC header
-+	 * so that eth_hdr() continues to works properly.
-+	 */
-+	skb_set_mac_header(skb, -ETH_HLEN);
-+
-+	return skb;
-+}
-+
-+/* If the VLAN in the packet is a tag_8021q one, set @source_port and
-+ * @switch_id and strip the header. Otherwise set @vid and keep it in the
-+ * packet.
-+ */
-+static void hms_vlan_rcv(struct sk_buff *skb, int *source_port,
-+			 int *switch_id, int *vbid, int *vid)
-+{
-+	dsa_8021q_rcv(skb, source_port, switch_id, vbid, vid);
-+}
-+
-+static struct sk_buff *hms_rcv(struct sk_buff *skb,
-+			       struct net_device *netdev)
-+{
-+	int src_port = -1, switch_id = -1, vbid = -1, vid = -1;
-+	bool host_only = false;
-+
-+	if (hms_skb_has_inband_control_extension(skb)) {
-+		skb = hms_rcv_inband_control_extension(skb, &src_port,
-+						       &switch_id,
-+						       &host_only);
-+		if (!skb)
-+			return NULL;
-+	}
-+
-+	/* Packets with in-band control extensions might still have RX VLANs */
-+	if (likely(hms_skb_has_tag_8021q(skb)))
-+		hms_vlan_rcv(skb, &src_port, &switch_id, &vbid, &vid);
-+
-+	if (src_port == -1) /* Need to check it - bridge mode */
-+		return NULL;
-+
-+	skb->dev = dsa_tag_8021q_find_user(netdev, src_port, switch_id,
-+					   vid, vbid);
-+	if (!skb->dev) {
-+		/* netdev_warn(netdev, "Couldn't decode source port\n"); */
-+		return NULL;
-+	}
-+
-+	if (!host_only)
-+		dsa_default_offload_fwd_mark(skb);
-+
-+	return skb;
-+}
-+
-+static void hms_disconnect(struct dsa_switch *ds)
-+{
-+	struct hms_tagger_data *tagger_data = ds->tagger_data;
-+
-+	kfree(tagger_data);
-+	ds->tagger_data = NULL;
-+}
-+
-+static int hms_connect(struct dsa_switch *ds)
-+{
-+	struct hms_tagger_data *data;
-+
-+	data = kzalloc_obj(*data, GFP_KERNEL);
-+	if (!data)
-+		return -ENOMEM;
-+
-+	ds->tagger_data = data;
-+
-+	return 0;
-+}
-+
-+static void hms_flow_dissect(const struct sk_buff *skb, __be16 *proto,
-+			     int *offset)
-+{
-+	/* No tag added for management frames, all ok */
-+	if (unlikely(hms_is_link_local(skb)))
-+		return;
-+
-+	dsa_tag_generic_flow_dissect(skb, proto, offset);
-+}
-+
-+static const struct dsa_device_ops hms_netdev_ops = {
-+	.name			= HMS_TAG_NAME,
-+	.proto			= DSA_TAG_PROTO_HMS,
-+	.xmit			= hms_xmit,
-+	.rcv			= hms_rcv,
-+	.connect		= hms_connect,
-+	.disconnect		= hms_disconnect,
-+	.needed_headroom	= VLAN_HLEN,
-+	.flow_dissect		= hms_flow_dissect,
-+	.promisc_on_conduit	= true,
++#include "hms_switch.h"
++
++enum hms_stat_index {
++	/* RX stats */
++	HMS_STAT_RX_BYTES,
++	HMS_STAT_RX_VALID_BYTES,
++	HMS_STAT_RX_PAUSE_FRAMES,
++	HMS_STAT_RX_VALID_FRAMES,
++	HMS_STAT_RX_VLAN_FRAMES,
++	HMS_STAT_RX_UC_FRAMES,
++	HMS_STAT_RX_MC_FRAMES,
++	HMS_STAT_RX_BC_FRAMES,
++	HMS_STAT_RX_FRAMES,
++	HMS_STAT_RX_MIN_FRAMES,
++	HMS_STAT_RX_64_FRAMES,
++	HMS_STAT_RX_65_127_FRAMES,
++	HMS_STAT_RX_128_255_FRAMES,
++	HMS_STAT_RX_256_511_FRAMES,
++	HMS_STAT_RX_512_1023_FRAMES,
++	HMS_STAT_RX_1024_1522_FRAMES,
++	HMS_STAT_RX_1523_MAX_FRAMES,
++	HMS_STAT_RX_CONTROL_FRAMES,
++
++	/* TX stats */
++	HMS_STAT_TX_BYTES,
++	HMS_STAT_TX_VALID_BYTES,
++	HMS_STAT_TX_PAUSE_FRAMES,
++	HMS_STAT_TX_VALID_FRAMES,
++	HMS_STAT_TX_VLAN_FRAMES,
++	HMS_STAT_TX_UC_FRAMES,
++	HMS_STAT_TX_MC_FRAMES,
++	HMS_STAT_TX_BC_FRAMES,
++	HMS_STAT_TX_FRAMES,
++	HMS_STAT_TX_MIN_FRAMES,
++	HMS_STAT_TX_64_FRAMES,
++	HMS_STAT_TX_65_127_FRAMES,
++	HMS_STAT_TX_128_255_FRAMES,
++	HMS_STAT_TX_256_511_FRAMES,
++	HMS_STAT_TX_512_1023_FRAMES,
++	HMS_STAT_TX_1024_1522_FRAMES,
++	HMS_STAT_TX_1523_MAX_FRAMES,
++	HMS_STAT_TX_CONTROL_FRAMES,
++
++	HMS_STAT_RX_VALID_REASSEMBLED_FRAMES,
++	HMS_STAT_RX_ADDITIONAL_MPACKETS,
++	HMS_STAT_RX_ERROR_FRAME_REASSEMBLY,
++	HMS_STAT_RX_ERROR_FRAME_SMD,
++	HMS_STAT_TX_ADDITIONAL_MPACKETS,
++	HMS_STAT_TX_HOLD_TRANSITIONS,
++
++	/* Error stats */
++	HMS_STAT_RX_ERROR,
++	HMS_STAT_RX_ERROR_UNDERSIZE,
++	HMS_STAT_RX_ERROR_OVERSIZE,
++	HMS_STAT_RX_ERROR_FCS,
++	HMS_STAT_RX_ERROR_FRAGMENT,
++	HMS_STAT_RX_ERROR_JABBER,
++	HMS_STAT_RX_ERROR_DISCARD,
++	HMS_STAT_RX_ERROR_NO_TRUNCATED,
++	HMS_STAT_TX_ERROR_FCS,
++	HMS_STAT_TX_ERROR_UNDERSIZE,
++
++	/* Discard stats */
++	HMS_STAT_RX_DISCARD_COUNT,
++	HMS_STAT_RX_DISCARD_REASON0,
++	HMS_STAT_RX_DISCARD_TABLE_ID,
++	HMS_STAT_RX_DISCARD_ENTRY_ID,
++	HMS_STAT_TX_DISCARD_COUNT,
++	HMS_STAT_TX_DISCARD_REASON0,
++	HMS_STAT_TX_DISCARD_TABLE_ID,
++	HMS_STAT_TX_DISCARD_ENTRY_ID,
++	HMS_STAT_BRIDGE_DISCARD_COUNT,
++	HMS_STAT_BRIDGE_DISCARD_REASON0,
++	HMS_STAT_BRIDGE_DISCARD_TABLE_ID,
++	HMS_STAT_BRIDGE_DISCARD_ENTRY_ID,
++
++	/* Q0 stats */
++	HMS_STAT_Q0_REJECTED_BYTES,
++	HMS_STAT_Q0_REJECTED_FRAMES,
++	HMS_STAT_Q0_DEQUEUE_BYTES,
++	HMS_STAT_Q0_DEQUEUE_FRAMES,
++	HMS_STAT_Q0_DROPPED_BYTES,
++	HMS_STAT_Q0_DROPPED_FRAMES,
++	HMS_STAT_Q0_FRAMES,
++
++	/* Q1 stats */
++	HMS_STAT_Q1_REJECTED_BYTES,
++	HMS_STAT_Q1_REJECTED_FRAMES,
++	HMS_STAT_Q1_DEQUEUE_BYTES,
++	HMS_STAT_Q1_DEQUEUE_FRAMES,
++	HMS_STAT_Q1_DROPPED_BYTES,
++	HMS_STAT_Q1_DROPPED_FRAMES,
++	HMS_STAT_Q1_FRAMES,
++
++	/* Q2 stats */
++	HMS_STAT_Q2_REJECTED_BYTES,
++	HMS_STAT_Q2_REJECTED_FRAMES,
++	HMS_STAT_Q2_DEQUEUE_BYTES,
++	HMS_STAT_Q2_DEQUEUE_FRAMES,
++	HMS_STAT_Q2_DROPPED_BYTES,
++	HMS_STAT_Q2_DROPPED_FRAMES,
++	HMS_STAT_Q2_FRAMES,
++
++	/* Q3 stats */
++	HMS_STAT_Q3_REJECTED_BYTES,
++	HMS_STAT_Q3_REJECTED_FRAMES,
++	HMS_STAT_Q3_DEQUEUE_BYTES,
++	HMS_STAT_Q3_DEQUEUE_FRAMES,
++	HMS_STAT_Q3_DROPPED_BYTES,
++	HMS_STAT_Q3_DROPPED_FRAMES,
++	HMS_STAT_Q3_FRAMES,
++
++	/* Q4 stats */
++	HMS_STAT_Q4_REJECTED_BYTES,
++	HMS_STAT_Q4_REJECTED_FRAMES,
++	HMS_STAT_Q4_DEQUEUE_BYTES,
++	HMS_STAT_Q4_DEQUEUE_FRAMES,
++	HMS_STAT_Q4_DROPPED_BYTES,
++	HMS_STAT_Q4_DROPPED_FRAMES,
++	HMS_STAT_Q4_FRAMES,
++
++	/* Q5 stats */
++	HMS_STAT_Q5_REJECTED_BYTES,
++	HMS_STAT_Q5_REJECTED_FRAMES,
++	HMS_STAT_Q5_DEQUEUE_BYTES,
++	HMS_STAT_Q5_DEQUEUE_FRAMES,
++	HMS_STAT_Q5_DROPPED_BYTES,
++	HMS_STAT_Q5_DROPPED_FRAMES,
++	HMS_STAT_Q5_FRAMES,
++
++	/* Q6 stats */
++	HMS_STAT_Q6_REJECTED_BYTES,
++	HMS_STAT_Q6_REJECTED_FRAMES,
++	HMS_STAT_Q6_DEQUEUE_BYTES,
++	HMS_STAT_Q6_DEQUEUE_FRAMES,
++	HMS_STAT_Q6_DROPPED_BYTES,
++	HMS_STAT_Q6_DROPPED_FRAMES,
++	HMS_STAT_Q6_FRAMES,
++
++	/* Q7 stats */
++	HMS_STAT_Q7_REJECTED_BYTES,
++	HMS_STAT_Q7_REJECTED_FRAMES,
++	HMS_STAT_Q7_DEQUEUE_BYTES,
++	HMS_STAT_Q7_DEQUEUE_FRAMES,
++	HMS_STAT_Q7_DROPPED_BYTES,
++	HMS_STAT_Q7_DROPPED_FRAMES,
++	HMS_STAT_Q7_FRAMES,
++	HMS_STAT_NUM,
 +};
 +
-+MODULE_DESCRIPTION("DSA tag driver for Heterogeneous Multi-SoC switches");
-+MODULE_LICENSE("GPL");
-+MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROTO_HMS, HMS_TAG_NAME);
++static const char hms_stat_name[][ETH_GSTRING_LEN] = {
++	/* RX stats */
++	[HMS_STAT_RX_BYTES] = "in-bytes",
++	[HMS_STAT_RX_VALID_BYTES] = "in-valid-bytes",
++	[HMS_STAT_RX_PAUSE_FRAMES] = "in-pause-frames",
++	[HMS_STAT_RX_VALID_FRAMES] = "in-valid-frames",
++	[HMS_STAT_RX_VLAN_FRAMES] = "in-vlan-frames",
++	[HMS_STAT_RX_UC_FRAMES] = "in-uc-frames",
++	[HMS_STAT_RX_MC_FRAMES] = "in-mc-frames",
++	[HMS_STAT_RX_BC_FRAMES] = "in-bc-frames",
++	[HMS_STAT_RX_FRAMES] = "in-frames",
++	[HMS_STAT_RX_MIN_FRAMES] = "in-min-frames",
++	[HMS_STAT_RX_64_FRAMES] = "in-64-frames",
++	[HMS_STAT_RX_65_127_FRAMES] = "in-65-127-frames",
++	[HMS_STAT_RX_128_255_FRAMES] = "in-128-255-frames",
++	[HMS_STAT_RX_256_511_FRAMES] = "in-256-511-frames",
++	[HMS_STAT_RX_512_1023_FRAMES] = "in-512-1023-frames",
++	[HMS_STAT_RX_1024_1522_FRAMES] = "in-1024-1522-frames",
++	[HMS_STAT_RX_1523_MAX_FRAMES] = "in-1523-max-frames",
++	[HMS_STAT_RX_CONTROL_FRAMES] = "in-control-frames",
 +
-+module_dsa_tag_driver(hms_netdev_ops);
++	/* TX stats */
++	[HMS_STAT_TX_BYTES] = "out-bytes",
++	[HMS_STAT_TX_VALID_BYTES] = "out-valid-bytes",
++	[HMS_STAT_TX_PAUSE_FRAMES] = "out-pause-frames",
++	[HMS_STAT_TX_VALID_FRAMES] = "out-valid-frames",
++	[HMS_STAT_TX_VLAN_FRAMES] = "out-vlan-frames",
++	[HMS_STAT_TX_UC_FRAMES] = "out-uc-frames",
++	[HMS_STAT_TX_MC_FRAMES] = "out-mc-frames",
++	[HMS_STAT_TX_BC_FRAMES] = "out-bc-frames",
++	[HMS_STAT_TX_FRAMES] = "out-frames",
++	[HMS_STAT_TX_MIN_FRAMES] = "out-min-frames",
++	[HMS_STAT_TX_64_FRAMES] = "out-64-frames",
++	[HMS_STAT_TX_65_127_FRAMES] = "out-65-127-frames",
++	[HMS_STAT_TX_128_255_FRAMES] = "out-128-255-frames",
++	[HMS_STAT_TX_256_511_FRAMES] = "out-256-511-frames",
++	[HMS_STAT_TX_512_1023_FRAMES] = "out-512-1023-frames",
++	[HMS_STAT_TX_1024_1522_FRAMES] = "out-1024-1522-frames",
++	[HMS_STAT_TX_1523_MAX_FRAMES] = "out-1523-max-frames",
++	[HMS_STAT_TX_CONTROL_FRAMES] = "out-control-frames",
++
++	[HMS_STAT_RX_VALID_REASSEMBLED_FRAMES] = "in-valid-reassembled-frames",
++	[HMS_STAT_RX_ADDITIONAL_MPACKETS] = "in-additional-mPackets",
++	[HMS_STAT_RX_ERROR_FRAME_REASSEMBLY] = "in-error-frame-reassembly",
++	[HMS_STAT_RX_ERROR_FRAME_SMD] = "in-error-frame-smd",
++	[HMS_STAT_TX_ADDITIONAL_MPACKETS] = "out-additional-mPackets",
++	[HMS_STAT_TX_HOLD_TRANSITIONS] = "out-hold-transitions",
++
++	/* Error stats */
++	[HMS_STAT_RX_ERROR] = "in-error",
++	[HMS_STAT_RX_ERROR_UNDERSIZE] = "in-error-undersize",
++	[HMS_STAT_RX_ERROR_OVERSIZE] = "in-error-oversize",
++	[HMS_STAT_RX_ERROR_FCS] = "in-error-fcs",
++	[HMS_STAT_RX_ERROR_FRAGMENT] = "in-error-fragment",
++	[HMS_STAT_RX_ERROR_JABBER] = "in-error-jabber",
++	[HMS_STAT_RX_ERROR_DISCARD] = "in-error-discard",
++	[HMS_STAT_RX_ERROR_NO_TRUNCATED] = "in-error-dicard-no-truncated",
++	[HMS_STAT_TX_ERROR_FCS] = "out-error-fcs",
++	[HMS_STAT_TX_ERROR_UNDERSIZE] = "out-error-undersize",
++
++	/* Discard stats */
++	[HMS_STAT_RX_DISCARD_COUNT] = "in-discard-count",
++	[HMS_STAT_RX_DISCARD_REASON0] = "in-discard-reason0",
++	[HMS_STAT_RX_DISCARD_TABLE_ID] = "in-discard-table-id",
++	[HMS_STAT_RX_DISCARD_ENTRY_ID] = "in-discard-entry-id",
++	[HMS_STAT_TX_DISCARD_COUNT] = "out-discard-count",
++	[HMS_STAT_TX_DISCARD_REASON0] = "out-discard-reason0",
++	[HMS_STAT_TX_DISCARD_TABLE_ID] = "out-discard-table-id",
++	[HMS_STAT_TX_DISCARD_ENTRY_ID] = "out-discard-entry-id",
++	[HMS_STAT_BRIDGE_DISCARD_COUNT] = "bridge-discard-count",
++	[HMS_STAT_BRIDGE_DISCARD_REASON0] = "bridge-discard-reason0",
++	[HMS_STAT_BRIDGE_DISCARD_TABLE_ID] = "bridge-discard-table-id",
++	[HMS_STAT_BRIDGE_DISCARD_ENTRY_ID] = "bridge-discard-entry-id",
++
++	/* Q0 stats */
++	[HMS_STAT_Q0_REJECTED_BYTES] = "q0-rejected-bytes",
++	[HMS_STAT_Q0_REJECTED_FRAMES] = "q0-rejected-frames",
++	[HMS_STAT_Q0_DEQUEUE_BYTES] = "q0-dequeue-bytes",
++	[HMS_STAT_Q0_DEQUEUE_FRAMES] = "q0-dequeue-frames",
++	[HMS_STAT_Q0_DROPPED_BYTES] = "q0-dropped-bytes",
++	[HMS_STAT_Q0_DROPPED_FRAMES] = "q0-dropped-frames",
++	[HMS_STAT_Q0_FRAMES] = "q0-frames",
++
++	/* Q1 stats */
++	[HMS_STAT_Q1_REJECTED_BYTES] = "q1-rejected-bytes",
++	[HMS_STAT_Q1_REJECTED_FRAMES] = "q1-rejected-frames",
++	[HMS_STAT_Q1_DEQUEUE_BYTES] = "q1-dequeue-bytes",
++	[HMS_STAT_Q1_DEQUEUE_FRAMES] = "q1-dequeue-frames",
++	[HMS_STAT_Q1_DROPPED_BYTES] = "q1-dropped-bytes",
++	[HMS_STAT_Q1_DROPPED_FRAMES] = "q1-dropped-frames",
++	[HMS_STAT_Q1_FRAMES] = "q1-frames",
++
++	/* Q2 stats */
++	[HMS_STAT_Q2_REJECTED_BYTES] = "q2-rejected-bytes",
++	[HMS_STAT_Q2_REJECTED_FRAMES] = "q2-rejected-frames",
++	[HMS_STAT_Q2_DEQUEUE_BYTES] = "q2-dequeue-bytes",
++	[HMS_STAT_Q2_DEQUEUE_FRAMES] = "q2-dequeue-frames",
++	[HMS_STAT_Q2_DROPPED_BYTES] = "q2-dropped-bytes",
++	[HMS_STAT_Q2_DROPPED_FRAMES] = "q2-dropped-frames",
++	[HMS_STAT_Q2_FRAMES] = "q2-frames",
++
++	/* Q3 stats */
++	[HMS_STAT_Q3_REJECTED_BYTES] = "q3-rejected-bytes",
++	[HMS_STAT_Q3_REJECTED_FRAMES] = "q3-rejected-frames",
++	[HMS_STAT_Q3_DEQUEUE_BYTES] = "q3-dequeue-bytes",
++	[HMS_STAT_Q3_DEQUEUE_FRAMES] = "q3-dequeue-frames",
++	[HMS_STAT_Q3_DROPPED_BYTES] = "q3-dropped-bytes",
++	[HMS_STAT_Q3_DROPPED_FRAMES] = "q3-dropped-frames",
++	[HMS_STAT_Q3_FRAMES] = "q3-frames",
++
++	/* Q4 stats */
++	[HMS_STAT_Q4_REJECTED_BYTES] = "q4-rejected-bytes",
++	[HMS_STAT_Q4_REJECTED_FRAMES] = "q4-rejected-frames",
++	[HMS_STAT_Q4_DEQUEUE_BYTES] = "q4-dequeue-bytes",
++	[HMS_STAT_Q4_DEQUEUE_FRAMES] = "q4-dequeue-frames",
++	[HMS_STAT_Q4_DROPPED_BYTES] = "q4-dropped-bytes",
++	[HMS_STAT_Q4_DROPPED_FRAMES] = "q4-dropped-frames",
++	[HMS_STAT_Q4_FRAMES] = "q4-frames",
++
++	/* Q5 stats */
++	[HMS_STAT_Q5_REJECTED_BYTES] = "q5-rejected-bytes",
++	[HMS_STAT_Q5_REJECTED_FRAMES] = "q5-rejected-frames",
++	[HMS_STAT_Q5_DEQUEUE_BYTES] = "q5-dequeue-bytes",
++	[HMS_STAT_Q5_DEQUEUE_FRAMES] = "q5-dequeue-frames",
++	[HMS_STAT_Q5_DROPPED_BYTES] = "q5-dropped-bytes",
++	[HMS_STAT_Q5_DROPPED_FRAMES] = "q5-dropped-frames",
++	[HMS_STAT_Q5_FRAMES] = "q5-frames",
++
++	/* Q6 stats */
++	[HMS_STAT_Q6_REJECTED_BYTES] = "q6-rejected-bytes",
++	[HMS_STAT_Q6_REJECTED_FRAMES] = "q6-rejected-frames",
++	[HMS_STAT_Q6_DEQUEUE_BYTES] = "q6-dequeue-bytes",
++	[HMS_STAT_Q6_DEQUEUE_FRAMES] = "q6-dequeue-frames",
++	[HMS_STAT_Q6_DROPPED_BYTES] = "q6-dropped-bytes",
++	[HMS_STAT_Q6_DROPPED_FRAMES] = "q6-dropped-frames",
++	[HMS_STAT_Q6_FRAMES] = "q6-frames",
++
++	/* Q7 stats */
++	[HMS_STAT_Q7_REJECTED_BYTES] = "q7-rejected-bytes",
++	[HMS_STAT_Q7_REJECTED_FRAMES] = "q7-rejected-frames",
++	[HMS_STAT_Q7_DEQUEUE_BYTES] = "q7-dequeue-bytes",
++	[HMS_STAT_Q7_DEQUEUE_FRAMES] = "q7-dequeue-frames",
++	[HMS_STAT_Q7_DROPPED_BYTES] = "q7-dropped-bytes",
++	[HMS_STAT_Q7_DROPPED_FRAMES] = "q7-dropped-frames",
++	[HMS_STAT_Q7_FRAMES] = "q7-frames",
++};
++
++void hms_get_ethtool_stats(struct dsa_switch *ds, int port, u64 *data)
++{
++	struct hms_private *priv = ds->priv;
++	struct hms_cmd_port_ethtool_stats stats;
++	int rc;
++	enum hms_stat_index i;
++
++	rc = hms_xfer_get_cmd(priv, HMS_CMD_PORT_ETHTOOL_STATS_GET,
++			      port, &stats, sizeof(stats));
++
++	if (rc) {
++		memset(data, 0, sizeof(u64) * HMS_STAT_NUM);
++		dev_err(ds->dev, "Failed to get port %d stats\n", port);
++		return;
++	}
++
++	for (i = 0; i < HMS_STAT_NUM; i++)
++		data[i] = stats.values[i];
++}
++
++void hms_get_strings(struct dsa_switch *ds, int port,
++		     u32 stringset, u8 *data)
++{
++	enum hms_stat_index i;
++	char *p = (char *)data;
++
++	if (stringset != ETH_SS_STATS)
++		return;
++
++	for (i = 0; i < HMS_STAT_NUM; i++) {
++		strscpy(p, hms_stat_name[i], ETH_GSTRING_LEN);
++		p += ETH_GSTRING_LEN;
++	}
++}
++
++int hms_get_sset_count(struct dsa_switch *ds, int port, int sset)
++{
++	if (sset != ETH_SS_STATS)
++		return -EOPNOTSUPP;
++
++	return HMS_STAT_NUM;
++}
+diff --git a/drivers/net/dsa/hms/hms_main.c b/drivers/net/dsa/hms/hms_main.c
+index b7f7c3a7d3667..cfe0095fcdb32 100644
+--- a/drivers/net/dsa/hms/hms_main.c
++++ b/drivers/net/dsa/hms/hms_main.c
+@@ -761,6 +761,10 @@ static const struct dsa_switch_ops hms_switch_ops = {
+ 	.port_vlan_add		= hms_bridge_vlan_add,
+ 	.port_vlan_del		= hms_bridge_vlan_del,
+ 
++	.get_strings		= hms_get_strings,
++	.get_ethtool_stats	= hms_get_ethtool_stats,
++	.get_sset_count		= hms_get_sset_count,
++
+ 	.tag_8021q_vlan_add	= hms_8021q_vlan_add,
+ 	.tag_8021q_vlan_del	= hms_8021q_vlan_del,
+ 	.port_prechangeupper	= hms_prechangeupper,
+diff --git a/drivers/net/dsa/hms/hms_switch.h b/drivers/net/dsa/hms/hms_switch.h
+index 8f9e3035374b1..eee0b822f769d 100644
+--- a/drivers/net/dsa/hms/hms_switch.h
++++ b/drivers/net/dsa/hms/hms_switch.h
+@@ -64,4 +64,10 @@ int hms_xfer_get_cmd(struct hms_private *priv,
+ 		     enum hms_cmd cmd, u32 id,
+ 		     void *resp, size_t resp_len);
+ 
++/* From hms_ethtool.c */
++void hms_get_ethtool_stats(struct dsa_switch *ds, int port, u64 *data);
++void hms_get_strings(struct dsa_switch *ds, int port,
++		     u32 stringset, u8 *data);
++int hms_get_sset_count(struct dsa_switch *ds, int port, int sset);
++
+ #endif /* _HMS_SWITCH_H */
 -- 
 2.43.0
 
