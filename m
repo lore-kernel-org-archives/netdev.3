@@ -1,77 +1,35 @@
-Received: from mail-dl1-f66.google.com (mail-dl1-f66.google.com [74.125.82.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B059030F533
-	for <netdev@vger.kernel.org>; Sat,  9 May 2026 23:06:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D09CA2EC57C;
+	Sat,  9 May 2026 23:20:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778367969; cv=none; b=eT7UFnBVMaQAESD266ul47fKLbzWhba/g3zloLEpY8b0nCY1ZdEMNKy1JbwC9RBkYamcFq8JNsGixWm39yvqpdON724Vs2SDggf3tGZ6ZUcKIEuQBqTjah66ddy1Wda1Syx8xsdIoiS8Xu9PnXwTSs6MOzdzsm8A4hF9z1jN6dE=
+	t=1778368859; cv=none; b=XyoiVrKR08kVB70r8tZNiHUO1E/whPW9jsFh0oDzf0601PS9OfoPXzocdYlY2wvv0aQNKcT0pz/GwmBPXHEzm98pduYrHekmXlppxv3WnodFwTtiG2MqOB6fV6BT/vRGFEALPw5DpG+R7qB2G7H2oZqfP5P8d3G5orfLStxK2F0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778367969; c=relaxed/simple;
-	bh=75RjdTFycC4KsbDdIrwUkIEJa2dRZft2gS3g6Gm0uUQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ODHhMiwfn9CY4N5BJ/nIiFUamFokCUhC/rTX9SvakowfWmCNHfKbwyepkOvkjY1k/iZtDZkI3NZXLX/qqs5zwBzhoqiRdULfW2aLXkUDzxhtgREuP9SJFV9dQtLcHgGyZhzyX+h25FOYsPdLKBx8cBI5vBJDf2hQtBxNK2JCR6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Iww0/cew; arc=none smtp.client-ip=74.125.82.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1778368859; c=relaxed/simple;
+	bh=nfKeovBbfRTcfLaExtvN2cMkkog5MgHyOOaIBcOtZBU=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=LZjWQnyjiFrfEBk4X3c+A0SaKYEpxM3im3hpfIZYyHFTGaKpYrsVelNAjRmbPAjNkXtIvSXfrhrveXreKs4ad0PXOF4XXBhey8eVZFjm1D5aeT/pWjA51RIf8rBuWWU4Y3g0678xXGUdoTglHGaUyiea9wKY+URJoJQMF0/yRYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ERnWJXff; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Iww0/cew"
-Received: by mail-dl1-f66.google.com with SMTP id a92af1059eb24-1309f4ee97fso4055397c88.1
-        for <netdev@vger.kernel.org>; Sat, 09 May 2026 16:06:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778367968; x=1778972768; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YA3AvmC5tkbvB9c/fedU8uwKljV9TMh+PEnHBUwxSPQ=;
-        b=Iww0/cew91tPieGFqBkrBMihSRrsE7TNu2JcbGP+vk+QnnFPWmLPVmgwBuGFdIx4Xv
-         tJibTh2E6yVuc8NpzLPmyAJhbGaJ65InnkVDQ0ZifeajZ/YEMOOS1WiCYUichQ4/y5Hq
-         fC4XBVb2lapVy2KWxkfVbXt9lUQThATWFZ/B1kBXGxX42APcKXjhePejZ3th3kNKgQ6H
-         oK3n+46T57cMDd2CwiNvBAH+oU7hMikcmxNRxqr/aylaJ+WsIdz7KGiEV126h/Rl8IR2
-         fvPuM8NkVXdDLkHHK2itPWKb/vtu9WlX2kWQwWoVUAS3W/WcOKVWscaJv8sO6zIIE2cX
-         bl/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778367968; x=1778972768;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=YA3AvmC5tkbvB9c/fedU8uwKljV9TMh+PEnHBUwxSPQ=;
-        b=b0Yg2CgnNe9J6XIlTCUloJDePQGOhWaQbV8rMjf+L5LU/rOd81Dc0wBgb0YBqAODRn
-         5IxYpTAyF0GK8oT5GSeLVzUAHmtf/nmA7hZB6xE035W8FxE2fZmx1I6+kKHIZNrvbj64
-         Hj5IsyrJmI21LGrqVJjemFeuJyp4xaUkzQi9pIfAbAZ+bVjMUhTuX/XnM8j2t4nnTSmW
-         G4zdDxkyKjKmD8nOTCnuevH1M2TAdR1TF8Uztr6yua73m0WRWBzEY/6A4MN3eVbD/xFY
-         TPsiGrc4KNOCiYjnqr2LcoPan14qrlPak134tM2HoP9Y+boutTT37g+ssEcB/mZ12R/V
-         OSCw==
-X-Forwarded-Encrypted: i=1; AFNElJ+0EC++t/eNZngyg1Ex4dS/NQ24iNi2kqdAEpjblbXS0w8PEE572NdFhVMxXPg+XSdzDnzYSDA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YweJhDT/IuGnUPcJyEHVR1/gkN4o9l9sVdvdwJ03FoF3s3vtYCh
-	sgmv18692BLmOE/A9ohW7BkiHFfwnyoW5XmTzUVdVnTUFuQNfni7bz4L
-X-Gm-Gg: Acq92OFzEl92s0sNdyu2IuTJ2+W1qrY1JbjFabUSm126e/JRxnRz4dHkUfHDFkG+69k
-	NVDoWD87jBtpiTooZ7xq+rc/tv2Zcw1JqUOwSKf3iYm5OjfrvA0cQcTyv8yimfVYQAxSrGJgAXH
-	7goHgWexYt27V98JbP4X/qRXo6cSKbbGQuR1DE/DDTefuijIj/p3I2Ieti37Hmc7hRVmXZJIlPt
-	+YnwwzCQDBfv3szQ0XEygR3/8M1RY92uQ/ppTSgFkq1pvDosZtGKQfMfWcoLULlQn1d90DhRbbB
-	LV6LmqZXjedx4q5an0mAVKQ1w+EnPIRBaj8GO5t3t6EWn1MKmA14tZDJsgqu73Gpjnzw6QGWoCR
-	JS68mPfVQ5xkvT8c9AezDKHCTSa8wj5Chz+1h5QiL5jIghLb5+7jt8MsjCvYe92669NM34cGGmA
-	/znblXFSODU9v9Op/D5JKlcmMwFZiSkZhO2q1/htou6RtDRq606E8Mf4b86GjbhFjJPB/3ZKSeD
-	ch+cZDs3GUMjM/OWX9QVKfCxGwx5pKxCsu6HKml2MN4SpSncEfKyJCaYODsGVQ1LaRB1VXb5Ndi
-	Vnqxy92uwHM2E55dcw==
-X-Received: by 2002:a05:7300:748b:b0:2f2:5726:db31 with SMTP id 5a478bee46e88-2f54e77e505mr8831359eec.35.1778367967491;
-        Sat, 09 May 2026 16:06:07 -0700 (PDT)
-Received: from ethan-latitude5420.. (host-127-24.cafrjco.fresno.ca.us.clients.pavlovmedia.net. [68.180.127.24])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2f888e4016asm7702136eec.28.2026.05.09.16.06.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 09 May 2026 16:06:07 -0700 (PDT)
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-To: patchwork-bot+netdevbpf@kernel.org
-Cc: kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	macro@orcam.me.uk,
-	netdev@vger.kernel.org
-Subject: Re: MAINTAINERS: Add self for the 3c509 network driver
-Date: Sat,  9 May 2026 16:05:20 -0700
-Message-ID: <20260509230519.57607-2-enelsonmoore@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <177827761704.865600.12887598979033208728.git-patchwork-notify@kernel.org>
-References: <177827761704.865600.12887598979033208728.git-patchwork-notify@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ERnWJXff"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77DCCC2BCB2;
+	Sat,  9 May 2026 23:20:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778368859;
+	bh=nfKeovBbfRTcfLaExtvN2cMkkog5MgHyOOaIBcOtZBU=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=ERnWJXffJ+hR1rQ/YTcvgtf9fPK+1FGpzyIeiYxtWYJnwshXj+rw293/yaSwhiBSS
+	 +pri6W7e5qrw4V7SSA+dUHeubGBIi2e2aZZbfloI94w2I316yCKxICoAIJlicbjPd8
+	 RojO1fuBO/zUXQxhmm1wsHLZGFlqhzw9ka5kVpLr7VAwkmN04urmz95sUiQlno4nZt
+	 1qZKZHHX78DpvL05xbl1xPxuJDaOAcnLaCgkq5Jfp6xqaGDJwJnMzeIm3LQzNuNJ1b
+	 w/A17+TMc2R8Ybd3g6mb69RdzvFn5uOeZdHWGQW/lpPa6YaOw72V8mfO3hdvRRV2t/
+	 C7k1mcUDVhxRw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CF663811A7B;
+	Sat,  9 May 2026 23:20:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,15 +37,44 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH bpf v4] xskmap: reject TX-only AF_XDP sockets
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177836880730.1203938.10346076460528713605.git-patchwork-notify@kernel.org>
+Date: Sat, 09 May 2026 23:20:07 +0000
+References: <20260508144344.694-1-linpu5433@gmail.com>
+In-Reply-To: <20260508144344.694-1-linpu5433@gmail.com>
+To: Linpu Yu <linpu5433@gmail.com>
+Cc: kerneljasonxing@gmail.com, magnus.karlsson@intel.com,
+ maciej.fijalkowski@intel.com, netdev@vger.kernel.org, bpf@vger.kernel.org,
+ sdf@fomichev.me, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, ast@kernel.org, daniel@iogearbox.net,
+ hawk@kernel.org, john.fastabend@gmail.com, bjorn@kernel.org,
+ linux-kernel@vger.kernel.org, tanyuan98@outlook.com, yifanwucs@gmail.com
 
-> This patch was applied to netdev/net.git (main)
-> by Jakub Kicinski <kuba@kernel.org>:
-[...]
->   - MAINTAINERS: Add self for the 3c509 network driver
+Hello:
 
-Hi, Jakub,
+This patch was applied to bpf/bpf.git (master)
+by Alexei Starovoitov <ast@kernel.org>:
 
-Did you forget to revert the driver removal, or have you just not gotten
-around to it yet?
+On Fri,  8 May 2026 22:43:43 +0800 you wrote:
+> XSKMAP entries are used as redirect targets for incoming XDP frames.
+> A TX-only AF_XDP socket lacks an Rx ring and cannot handle redirected
+> traffic, but xsk_map_update_elem() currently allows such sockets to
+> be inserted into the map.
+> 
+> Redirecting packets to such a socket on the veth generic-XDP path
+> causes a kernel crash in xsk_generic_rcv().
+> 
+> [...]
 
-Ethan
+Here is the summary with links:
+  - [bpf,v4] xskmap: reject TX-only AF_XDP sockets
+    https://git.kernel.org/bpf/bpf/c/bf6d507f7e3c
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
