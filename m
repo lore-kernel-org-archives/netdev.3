@@ -1,120 +1,80 @@
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE1A2B2D7;
-	Sat,  9 May 2026 01:26:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5515A145B27;
+	Sat,  9 May 2026 01:30:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778290013; cv=none; b=S1jqjZmMAbH92HmJx0ZHcnSshf87Ijgi/r1i3cluIoXPNTs5g6o+5s0FojZcrL0se+HIhEVQBlsKuyDvb6vmFn+5taiCGQ7W/vVEtNf94I3eapodZlf7RqA7tXaCcFocmCEnNrsRUkU+xwV7+56qHxTLfysHjx4Ba6ypaWSxa8s=
+	t=1778290258; cv=none; b=sJgQeg/I2ms8++fE7OFghZ09AEnyCNuyx+15ZqOA+a+YQJVdomOZnolDhSxcSSUcBbYju9z1ABOj8bcYeC9ajA4Db+TL66tSBlYpcFogCrOSF1N7tpfiqO+vlkb0jnanGLCKjIk2FL2gZRUCzVmUkwkyf++vlC2HyhI39YQ0pr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778290013; c=relaxed/simple;
-	bh=o/pgEhujTgFW9ZrLOfE0EEkoxNHPRtp/uayciKrbSy8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ItRa1GQEaf6KtPLfh42MPSHTlgXcNUJN8Y5LW1lQNlsyk8T2GOFz9WpYIOnzrjXIznxTbK8nQ/eJDNYNgPszmnLPdQjhpiKcB2qzXoqChAcdB0sox/I2Bp77iNP/e7KKBL+/kJhqOgawaZkDpj5snYKuxeHHyMMUlwx9/Rm5S+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=MzHKQbEN; arc=none smtp.client-ip=115.124.30.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1778290258; c=relaxed/simple;
+	bh=HtXbw8Tdfb3ugmr2Reo1Vein4WL5+C7pziG06U8Q2Yk=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=V/ygSMaxuUxE5EJFrasj2/UJcX8ogVLnmPJfmBGj69Y+a9b8MvtfyYkmxzdwtjvIu9ZAacm6Tg/5tqrgTxzErw1rvYQ3NZBirFru06t+azRebgPNbBbIQvdRJNAJvmj2d70jmQhvzRf8S/WB1bZv0SIjAQlyt3/YsRiAx7GrfIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pRQ7T6cw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="MzHKQbEN"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1778290008; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=9UtXgVP0JZ98tn0yJorMvY+odKuLJcc0wOsPfDynW4E=;
-	b=MzHKQbENAHOKa+E4dz8w525oX9uUTE5vKK4/EsjO0pyAu4rm4lp7CLGjBk2U2jJIDaaRwGI2iWNlR4HZ+yxjBCw26a5ccdmbnHM6RS9GTOSscqfgwYLUhquN2HcfVGEv/UoN3TLXwAiiJjpAyhXs+6k+7FGCK1PUAXiFWy0I1pE=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=dust.li@linux.alibaba.com;NM=1;PH=DS;RN=12;SR=0;TI=SMTPD_---0X2YvkY1_1778290006;
-Received: from localhost(mailfrom:dust.li@linux.alibaba.com fp:SMTPD_---0X2YvkY1_1778290006 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Sat, 09 May 2026 09:26:47 +0800
-Date: Sat, 9 May 2026 09:26:46 +0800
-From: Dust Li <dust.li@linux.alibaba.com>
-To: =?iso-8859-1?Q?Nicol=F2?= Coccia <n.coccia96@gmail.com>,
-	alibuda@linux.alibaba.com, sidraya@linux.ibm.com,
-	Wenjia Zhang <wenjia@linux.ibm.com>
-Cc: Tony Lu <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>,
-	linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	mjambigi@linux.ibm.com,
-	=?iso-8859-1?Q?Nicol=F2?= Coccia <nicolo.coccia@leonardo.com>
-Subject: Re: [PATCH net] net/smc: fix sleep-inside-lock in __smc_setsockopt()
- causing local DoS
-Message-ID: <af6NVrIetbLkENvu@linux.alibaba.com>
-Reply-To: dust.li@linux.alibaba.com
-References: <CALSA8UaEKUHRqYaYqKFYbUQb4KHipDBDHfgMZHj2Tq0D1Ah7zw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pRQ7T6cw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDB21C2BCB0;
+	Sat,  9 May 2026 01:30:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778290258;
+	bh=HtXbw8Tdfb3ugmr2Reo1Vein4WL5+C7pziG06U8Q2Yk=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=pRQ7T6cwr4NT71Nq0VFbxgMhDrPHWtGoMoplqMbwtTFPXd6sERzRpNt6YlYr5uNYW
+	 E7YHvtjS/vd03d1qd00jR4FJGzLovMeQ7fyBXYYPxXiQfiZZ7MkCqzEcnOi7XXcygt
+	 wVDzuHRt8dMhm43tGb+h/6qgTVMO9HT1z29R3n9X9idy289CpxHKKmQRk06Z+yJVHP
+	 HWMG4TQXesAjlR1zXlZjYD8zWEnYE6J/HCKQjfUYNHsGGXIeFV5o1Wfzt+2TYUrjf6
+	 fAJ5/DXt9oJGPh1qT8vCMWxnDfmG1vz4C+90f73IF19/hM/MZMC+HJ8lInLDHhJlBw
+	 c+WDmIirK9p1Q==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7D0B238119E4;
+	Sat,  9 May 2026 01:30:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CALSA8UaEKUHRqYaYqKFYbUQb4KHipDBDHfgMZHj2Tq0D1Ah7zw@mail.gmail.com>
+Subject: Re: [PATCH net] sctp: revalidate list cursor after
+ sctp_sendmsg_to_asoc()
+ in SCTP_SENDALL
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177829020630.925974.4773311620023474680.git-patchwork-notify@kernel.org>
+Date: Sat, 09 May 2026 01:30:06 +0000
+References: <20260508001455.3137-1-joycathacker@gmail.com>
+In-Reply-To: <20260508001455.3137-1-joycathacker@gmail.com>
+To: None <joycathacker@gmail.com>
+Cc: marcelo.leitner@gmail.com, lucien.xin@gmail.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ linux-sctp@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, security@kernel.org, bmorris@anthropic.com,
+ stable@vger.kernel.org
 
-On 2026-05-08 21:33:10, Nicolò Coccia wrote:
+Hello:
 
-Hi Nicolò,
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-This patch doesn't apply on net/main
+On Thu,  7 May 2026 17:14:55 -0700 you wrote:
+> From: Ben Morris <bmorris@anthropic.com>
+> 
+> The SCTP_SENDALL path in sctp_sendmsg() iterates ep->asocs with
+> list_for_each_entry_safe(), which caches the next entry in @tmp before
+> the loop body runs.  The body calls sctp_sendmsg_to_asoc(), which may
+> drop the socket lock inside sctp_wait_for_sndbuf().
+> 
+> [...]
 
->A logic flaw in __smc_setsockopt() allows a local unprivileged user to
->cause a Denial of Service (DoS) by holding the socket lock indefinitely.
->
->The function __smc_setsockopt() calls copy_from_sockptr() while holding
->lock_sock(sk). By passing a userfaultfd-monitored memory page (or
->FUSE-backed memory on systems where unprivileged userfaultfd is disabled)
->as the optval, an attacker can halt execution during the copy operation,
->keeping the lock held.
->
->Combined with asynchronous tear-down operations like shutdown(), this
->exhausts the kernel wq (kworkers) and triggers the hung task watchdog.
->
->[  240.123456] INFO: task kworker/u8:2 blocked for more than 120 seconds.
->[  240.123489] Call Trace:
->[  240.123501]  smc_shutdown+...
->[  240.123512]  lock_sock_nested+...
->
->This patch moves the user-space copy outside the lock_sock() critical
->section to prevent the issue.
->
+Here is the summary with links:
+  - [net] sctp: revalidate list cursor after sctp_sendmsg_to_asoc() in SCTP_SENDALL
+    https://git.kernel.org/netdev/net/c/abb5f36771cc
 
-You should add a Fixes tag here.
->Signed-off-by: Nicolò Coccia nicolo.coccia@leonardo.com>
->---
-> net/smc/af_smc.c | 16 ++++++++--------
-> 1 file changed, 8 insertions(+), 8 deletions(-)
->
->diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
->--- a/net/smc/af_smc.c
->+++ b/net/smc/af_smc.c
->@@ -XXXX,X +XXXX,X @@ static int __smc_setsockopt(struct socket *sock,
->int level, int optname,
->
->  smc = smc_sk(sk);
->
->+ /* pre-fetch user data outside the lock */
->+ if (optname == SMC_LIMIT_HS) {
->+ if (optlen < sizeof(int))
->+ return -EINVAL;
->+ if (copy_from_sockptr(&val, optval, sizeof(int)))
->+ return -EFAULT;
->+ }
->+
->  lock_sock(sk);
->  switch (optname) {
->  case SMC_LIMIT_HS:
->- if (optlen < sizeof(int)) {
->- rc = -EINVAL;
->- break;
->- }
->- if (copy_from_sockptr(&val, optval, sizeof(int))) {
->- rc = -EFAULT;
->- break;
->- }
->-
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-The indenting is all messed up
-
-Best regards,
-Dust
 
