@@ -1,96 +1,150 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F6E539658D;
-	Sun, 10 May 2026 16:33:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A32235E922
+	for <netdev@vger.kernel.org>; Sun, 10 May 2026 16:35:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778430807; cv=none; b=LEfQPSjuHFOosW1a0wzgdo3924SAiSjjmcnOoaT/aZBvEk64iq39DmQNsYcInKHdZHkQxVPgyEYL/75ybiPdpmRxuh8ItD2zcpRQ4mHnSC67Zc5KUsrGyK2WXo+MH5jOwR1l5+BG8MxRCRUII6V/5u9LBkwqSrJdRpNd8t+retk=
+	t=1778430928; cv=none; b=FJvn3SfyUiSBKXLiXQNou/guHNDvWLOHQGRmMar4D8m74FKwYTxr/KD4vqt85HlTi8Jf6P1G9CZfOj1f/6Gvswj70w0oCevE/cCTMybyPr+e8ctG10doUf4eB03dboWag31y9YNqgf5aAHc8OTKHjvaSC3z9PyvEwfZIWB4jkPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778430807; c=relaxed/simple;
-	bh=nbare1FdefnkVW8yewuFEqWuJW6U5UvIzCIysMaWq6M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FFFOfVm6gXfguBd9t+uw4vB0azqjmblx8r3p9wr9we6gKO6Vu3M3Y33LO8cMu0HV7E36Gj5fYWZ5X12Kzn9VK8YROrfI55fDLXz4XObDx/tO4e0H2b7q077o1QVj0UbuSnj1ab7YrjiunxNMvsx1Vg8WU6h5B69o7WVtlHJ6piw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PnyJuS7I; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778430928; c=relaxed/simple;
+	bh=dD6l8VmKuNQkIv7tvRgwMxIbtAjjBGjAsfRUM+v1bss=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=I342JU7WhN3xQtrsBTwcrmlJB6pzPgCCc1L8gdWEZymMVWalOLaAhLn50F38uXMfrhHTp1nhG7yf+r6jaGkskMTL8bqci+YrJEEYAMNTJYJxA58fsnY2qwr63A5hz3AAHpRGaxwWmoLE1hjbueDV2MVxRDJCKTVRnnm31aebMcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Byym8Uok; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PnyJuS7I"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9F9BC2BCB8;
-	Sun, 10 May 2026 16:33:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778430807;
-	bh=nbare1FdefnkVW8yewuFEqWuJW6U5UvIzCIysMaWq6M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PnyJuS7II6dp4uUypc2q3F3TusH0ne2VErre5ysCo/UcdwkLw8fLC6ARCHyIRhqip
-	 tyQnorZpF3KySK3fwgPQoaDvuvRSh59RwICtNFCOTtAywhDnMa+BVZtJFtDCQLJ/Tv
-	 BvNs+fHPADJQnDGL6o7IXidHuhATGBvpK/bd3DaTh8tUMhYE6jWJ4uQP5uE2mI7M79
-	 7JJkrZlUzaQPNT8vosKCHFAq+qI8/IMAji+TiWZrKX6nh0+zDYENoqApV9OoE/7ggh
-	 XSEGEzmHdixzSvP9uSZIif9IUmnleY4SR4kh0fdPgrr6wIVvbktv0CxOCcrakFcjBJ
-	 +mAcEI1SXWPlg==
-Date: Sun, 10 May 2026 09:32:04 -0700
-From: Eric Biggers <ebiggers@kernel.org>
-To: Kamran Khan <kz@inspirated.com>
-Cc: Jeff Barnes <jeffbarnes@linux.microsoft.com>,
-	Andy Lutomirski <luto@amacapital.net>,
-	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"linux-api@vger.kernel.org" <linux-api@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [PATCH] crypto: af_alg - Document the deprecation of AF_ALG
-Message-ID: <20260510163204.GA2279@sol>
-References: <CALCETrVqG+1yErRJjkxvJrf=A+Vu84HTR4Bx1Pcd8G1C0PJcMA@mail.gmail.com>
- <14A441D8-5370-44BE-8732-99BF8107C3FD@getmailspring.com>
- <0b8bba44-f6bb-4d69-b9d4-5787c276d41a@inspirated.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Byym8Uok"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-488a8ca4aadso31703225e9.3
+        for <netdev@vger.kernel.org>; Sun, 10 May 2026 09:35:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778430925; x=1779035725; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=66E1wRA9xWgEOR2dqWlyPjo6zh/YZ58R9fKD8OAxMUY=;
+        b=Byym8UokMGbCigue6+UHQHftxYr4A1Ck8dCM5TM6lCjSw3uQm8fA4UducmVbErqPUd
+         v1JvAcihawzU3zCdgZbLkVMM1/Ez/0OHe2/AaKqt5Y6LeYKfjxqD2CtVsQrqOiOApgos
+         8hPsNmDq8ByqJ2re1VN//bpUTFteTHa6CDdbl1X7elx3XZuuoItbwx6qhPT3LLm7OpuB
+         qrBFoAI2SGdmCKzdqwjlT7FSptud5jn2Wdl7KMbSdsLjeN4A9hzAc5KjpsyWFRpJRgP3
+         bMfp73Q/ZzVbSCtJmVZYgbwr5vSK4NLTSurMKWQlMHsP+DKh077e14ZlKWlleUN84ksV
+         226w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778430925; x=1779035725;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=66E1wRA9xWgEOR2dqWlyPjo6zh/YZ58R9fKD8OAxMUY=;
+        b=T1Iqw4yBbk3BTTFSXfBNZv91InDJwMZheV/5o8ctUydhMYWBdfxaNPzjEAXpjyTjbk
+         CTsn4qSK+YAnpHvnW3dzOVKcQjEx7LD5sPe1xtS+fUfuJqTHDib0cktrjimL1bXARo+t
+         qvW7SoPsWi0GBhQB6tbveDnsOwOKrvYbcUNOLDFv7VYpXULJBc7PlypWXSS7fBgI3miC
+         2v42QLggAdkCeqwbPvB/GgpnIm/KFvPjU6Ogc2B5ioHRsRK1ZF1Yak5t9TyuY9hYEJbN
+         xst977Fi5qH/g4LsIuVojIE94QXm28CfEh8uRADTfMhfSxJncDQSmxblt+UjcHGwtoHF
+         gaAA==
+X-Forwarded-Encrypted: i=1; AFNElJ/MuB7q1h/c2KrhbwcE2JtqFHBL5UrEUs9EjHYq26KAiynMXlg80wgy2ZURu898mIen7Wjoykk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw10Nj5Moh1gWUNE7CTv/d0Jcdin9dbkei/APDgeP9DR5O7Tw+n
+	sUF+Iwwrsthu0QfKd3UZygFYLC/RfOiQ88DIYODD3BhtW0REdJQKDUZ0
+X-Gm-Gg: Acq92OGxOzY8DdIaLagAGiUx20oK7JV9otit/X9gy+B4cKquUWoszUi7c1dQu//ikd9
+	1ScF7iR9QfZ4Eu0UUIyBdp9YX+eck5v90k34NOBCEkF+7prqxW/PGJkgiWtFt1vs/HcpNZwTuVm
+	mLxgxlxvKDThnA4jr8Gwswgj5Uki8POcE2AngIyjuzek3EFyh/pINO5am2jTPhEMWAfhltvSTDl
+	IkF/wQMiYD7uvNLv3+Ok3ZL3u5hsG+2pQPC2bj45+aiHjApX474z21BcbEDXnzsZgGS3mnHnrfc
+	hEDQxI4vaWFbsRvUYvY4kvxM7/nC2EP+AShm7I63motDhDZbbeG2+SNmluWjWeUsDu4ljPSGlqj
+	126wRC00WP62wBBzXMb95IsLgfmiWFbn+accQSgEjkLT6uZ/PbAfenVJA7x8ZmSngs3D1EXQQL7
+	tCxJg6J8QfADtXTZWTfN9zl/ixZBY6EH65qgt/6p2v7GKer/0IsRUfaaW8Snk=
+X-Received: by 2002:a05:600c:696:b0:489:1c1f:35df with SMTP id 5b1f17b1804b1-48e51e215a4mr190222805e9.10.1778430924757;
+        Sun, 10 May 2026 09:35:24 -0700 (PDT)
+Received: from kali (93-41-117-77.ip81.fastwebnet.it. [93.41.117.77])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e6fffba52sm143706015e9.3.2026.05.10.09.35.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 10 May 2026 09:35:24 -0700 (PDT)
+From: =?UTF-8?q?Nicol=C3=B2=20Coccia?= <n.coccia96@gmail.com>
+To: alibuda@linux.alibaba.com,
+	dust.li@linux.alibaba.com,
+	sidraya@linux.ibm.com,
+	wenjia@linux.ibm.com
+Cc: mjambigi@linux.ibm.com,
+	tonylu@linux.alibaba.com,
+	guwen@linux.alibaba.com,
+	linux-rdma@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	nicolo.coccia@leonardo.com,
+	=?UTF-8?q?Nicol=C3=B2=20Coccia?= <n.coccia96@gmail.com>
+Subject: [PATCH v3] net/smc: fix sleep-inside-lock in __smc_setsockopt() causing local DoS
+Date: Sun, 10 May 2026 12:34:13 -0400
+Message-ID: <20260510163414.16651-1-n.coccia96@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0b8bba44-f6bb-4d69-b9d4-5787c276d41a@inspirated.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Sun, May 10, 2026 at 08:54:07AM -0700, Kamran Khan wrote:
-> Hi,
-> 
-> AF_ALG is useful not just for hardware-offloading, but also for memory
-> isolation so that applications only get oracle access to the crypto keys and
-> a memory-safety vulnerability in user applications would not immediately put
-> the secret key material at risk.
+A logic flaw in __smc_setsockopt() allows a local unprivileged user to
+cause a Denial of Service (DoS) by holding the socket lock indefinitely.
 
-Note that if that memory-safety vulnerability leads to code execution in
-the application, then it doesn't matter that it "only" has oracle
-access.  It can still decrypt any data encrypted by that key.
+The function __smc_setsockopt() calls copy_from_sockptr() while holding
+lock_sock(sk). By passing a userfaultfd-monitored memory page (or
+FUSE-backed memory on systems where unprivileged userfaultfd is disabled)
+as the optval, an attacker can halt execution during the copy operation,
+keeping the lock held.
 
-The relevant threat model would be arbitrary reads, not any
-"memory-safety vulnerability".
+Combined with asynchronous tear-down operations like shutdown(), this
+exhausts the kernel wq (kworkers) and triggers the hung task watchdog.
 
-> I understand and appreciate the concern with complex attack surface and the
-> increased frequency of attacks in this area. But I fear that completely
-> removing AF_ALG increases the risk for userspace applications relying on it
-> for memory isolation.
-> 
-> What alternatives do userspace applications have on Linux for ensuring
-> crypto keys are not exposed in user memory? That is, FreeBSD and NetBSD
-> natively provide /dev/crypto; removing AF_ALG would kill the only equivalent
-> option on the Linux side for kernel-delegated cryptography.
+[  240.123456] INFO: task kworker/u8:2 blocked for more than 120 seconds.
+[  240.123489] Call Trace:
+[  240.123501]  smc_shutdown+...
+[  240.123512]  lock_sock_nested+...
 
-The standard solution is simply to use an isolated userspace process
-like ssh-agent.  Yes, the keys will be in "user memory".  But "not
-exposed in user memory" is *not* a correct statement of the problem.
+This patch moves the user-space copy outside the lock_sock() critical
+section to prevent the issue.
 
-(Also note that protecting not-actively-in-use data from arbitrary read
-primitives doesn't require cryptography at all.  That can be done simply
-by using mprotect() to remove read permission from the memory, then
-temporarily adding it back when it needs to be accessed.)
+Fixes: a6a6fe27bab4 ("net/smc: Dynamic control handshake limitation by socket options")
 
-In any case, any hypothetical security benefit provided by AF_ALG would
-have to be *very high* to outweigh the continuous stream of
-vulnerabilities in it.  I understand that people using AF_ALG might not
-be familiar with that continuous stream of vulnerabilities, but it would
-be worth spending some time researching what has been going on.
+Signed-off-by: Nicolò Coccia <n.coccia96@gmail.com>
+---
+ v1 -> v3:
+ - Resend via git send-email to fix webmail whitespace corruption
+ - Rebased against netdev/net tree
+ - Added Fixes tag
+ net/smc/af_smc.c | 17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
-- Eric
+diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+index 185dbed7de5d..da28652f6810 100644
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -3054,18 +3054,17 @@ static int __smc_setsockopt(struct socket *sock, int level, int optname,
+ 
+ 	smc = smc_sk(sk);
+ 
++	/* pre-fetch user data outside the lock */
++	if (optname == SMC_LIMIT_HS) {
++		if (optlen < sizeof(int))
++			return -EINVAL;
++		if (copy_from_sockptr(&val, optval, sizeof(int)))
++			return -EFAULT;
++	}
++
+ 	lock_sock(sk);
+ 	switch (optname) {
+ 	case SMC_LIMIT_HS:
+-		if (optlen < sizeof(int)) {
+-			rc = -EINVAL;
+-			break;
+-		}
+-		if (copy_from_sockptr(&val, optval, sizeof(int))) {
+-			rc = -EFAULT;
+-			break;
+-		}
+-
+ 		smc->limit_smc_hs = !!val;
+ 		rc = 0;
+ 		break;
+-- 
+2.53.0
+
