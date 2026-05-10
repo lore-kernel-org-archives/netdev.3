@@ -1,62 +1,62 @@
-Received: from sonic306-21.consmr.mail.ne1.yahoo.com (sonic306-21.consmr.mail.ne1.yahoo.com [66.163.189.83])
+Received: from sonic314-20.consmr.mail.ne1.yahoo.com (sonic314-20.consmr.mail.ne1.yahoo.com [66.163.189.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EBDE22A4E9
-	for <netdev@vger.kernel.org>; Sun, 10 May 2026 15:23:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.189.83
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C53D36654F
+	for <netdev@vger.kernel.org>; Sun, 10 May 2026 15:24:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.189.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778426595; cv=none; b=C11CEcdyiXBC4fa6kCfOXnThkJKU2jBK3uaBsR4H8ioPqcMI8x7K8+VFPACzqPgKAC45pfP41aiMDJN+vFz6TDpzQwV6H2AJgVfASZhhlXyYSjoM/bEOfDfEddBFgmIS2YIpKvtnlF3N595wtYFfGhVwGT/726jmnwAWNhNFrnk=
+	t=1778426665; cv=none; b=TYv3HBGKKM3y2qKfFhZwL4xzrzQc1vqE2QxmmhPR4bK6XJ47mAiQv4IVoPRsUKizsnkjQJai4+PPxcP+hgriCKrNCG4sI90ekNUmcR3qlqj4rUyFNDnRKjMiruLdkFnPvm86OljcrrtsKAn/u7lrJ4aUZyfDdH9QviTr/1AmUno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778426595; c=relaxed/simple;
-	bh=0Pii6v0mt8yThc1QJqpAmJjIq7tSFTASnnUObmMVxOg=;
+	s=arc-20240116; t=1778426665; c=relaxed/simple;
+	bh=8sHFJaSgDlaC8CzgGGCreeRg1+wsVXqeMmKY3IvKkqo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LZhTIjBnonRuMvrRoKwMqVHJpAI8lhKsZjwEzq+lbyd0tOANIBuc3A6xXjAZ6BDfegHUzgzU++8nl1gZpHnSPd2lQbRLUcqKE9/PeJLeUjfke3jCM27Wb0OOM2UvPME9LdU91OeZqkkMFH8KvL45yCDYnTtWAYVigQdlwseTz+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=Ch6g/VT4; arc=none smtp.client-ip=66.163.189.83
+	 In-Reply-To:Content-Type; b=s2LeVCphIGTr0YYUeJbCfsVXZa8L/1Cm9SMGdD5fjL5LEKxnl1594Sl64o1Wgt2EsTbYhMIKuQ1q6xx5qc8T53HFz59DqV0w+qlr4/CEIAbyTjF8iHWB4hKt34c6ZNPjC14t1hNARFQlndNIl30tUykBYWW9KhEr9U+cg8C4jIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=LGwWWtbK; arc=none smtp.client-ip=66.163.189.146
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="Ch6g/VT4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1778426587; bh=7ullgjSU4d0AIDFIxXODm9U4fFmynE/YZqJVBDMPJmw=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=Ch6g/VT4H4r3ew9odglwpBBf+BAGmA8z0RyhrSeG9bdX8rBSu7AS+f0tcbh4uYXWquZ4aw6PrpO4aE7GIXo0pfWHUWGjh6QLgyskr6ZXTAXpQFO5f4BiKxU8HiqvN+EmXiaEB5P1ly3s1kpACnZCCkXuShLn3Dd7NpqdZBEwMDYwKLL1HriJb0YkINhkoiLMaTfVRNlioQtsldJkdz514VDUIb9hysnD0njxCEDdK2P9quP2Opq84vsigj/++amw5KW97/UfezeRL+TPmkcGHAURawkJgx+3oxFzGC1JlDLLCsCeHtUe+GAaxNTQhMczjKmQ3XrlQF7QBrfVhDSRtA==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1778426587; bh=U6JPI7c1YFnieLogLbZ27hJB/i+eogRJrBUAdHStrsN=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=ZuSsYE2M/am+jRUsHow1pR5neqHoRbz0tiGy289zOh0pd07al978HeIEF2dX793FFO/K3vKPto1NsSB3EaoEeRidemBP+YaomJgaEqTJniaXcYmVlzUSOPanajBrSPZz12GtUza92IQEgHBzv6xDHKEjlu45wv0rj9q1aMo/a/7Bqhy9LG06mi3t7FXjH0q4jNTzR3SP+mJGRvh2vtWS8+N1BYNKGIszBFnKqDvlKWquyucgRtEYZ0s3JgqaeKGiIFQ8z/+sJriiKiQI+aDUI6YiXGZA8alNIOnC4IEya7+1Eqbx3fz8Jf+V64cv/mrW6I7PjFZVxZCLPLwFAt7DQA==
-X-YMail-OSG: .i9G2gMVM1lvlFimleMOwCefvzUxaZHpU7Sec_rr.zIJ6cfWnkxCBkyWBwJMX.m
- wUnLvCGZ4Lq83PrtEm9rxzezom9xDDFM3kJ4g0FCUghDuNVbAUXfG.y_zHIecqyMNQYxbNkzbg4S
- hQ0ZudOJ5XyddGO1xp5NjNywaBXEzVHQ.ovBZwgKBHyQbrXE0baUK3nhxtyV3Uxf31e3JLyt_e0i
- 5rGxaHYJq6uO907ZYxB8H8wHeHTB.f65H3SwPs_NOdrpvkDoKpx4x.gIoKrcL0VlyQEwAWSVWody
- n4wbHN.hcH4f0no99uBj56b13fchmg.UQuGZtgwFA09S3aN18eCqtPmvomn4SNCuXRF_zzkRejYQ
- jM6HTyb6Z0OO1LplCrU794Ic_407gtBHLLNaPnCe9RrS1HM3trNDvvVEdWHp0JhxOICxdnTH.svb
- zAlnl.tOngh134bB5Fwy41vLENaUNLFR8263VMGRnmELR_3zrc3mi4HPMr7LClMtW_zVlRCKkuzW
- mGCskv4JaHeswbOp6cQMoLaLhlNaeMH.n7UmFFKRXtyYtDDJWJaAWr1_Iu77PjX.7_ozrKb06qWI
- dfAaVrrjvM5DWoV9cYfl70yJj5u3AipO_dJOkJKIp_i28DvLe989XNsSVhubTvasWZL1DZZQmINS
- lDwv.srPcm5bVFJ7F3oZU6di7OxhATHGHcfRQj8feTt2NLeYVLz1wQQnIUS_et7RhVrPWkBAGHf0
- ciXEMKs7okDY_FlrTy6XUoSBlJimOyza_y8nvt341YvnZinTyGXroDsAhH8hjMFT4jxHjn8PZKah
- UGWkkTkC2vJChbPFrZHgB9NN8W2me3sIOhqJqGMP5ndwp5O59Wbxwr_KhVtMBeQvBbE_hraFHFXi
- jL.yu31mJeyfQxn9vZC2syH3htQ09mgJOoxVLjS28o.TaFVReNq21SflUb58J68_G7_xzdXalNkP
- V6AwGIyp46gjI03yF3g7EJgEQEG3tCkZWcnKPFJl8pGM0C3S281Ucie_8.ZmFiKunccNT073WTLD
- WkNWDk2RsFF_O9cAL2h3onvFY1l3tdPl0vZ8hZui3EgZ.tZZpOyYPGQxxmdehIfEHTBSSD4O4I76
- uCHgIEkS86P9q76i5ODIUXgXuW32Nvwra.p3Fw.puOcsohIGJSC72JtLOQ_XYKL9OaTFR6E0bmrf
- 8PkXC5tPQeE0tNAqX.aFXVc.Jos68GchodfOQ3LG8CJ.wogcnVVzAa383.0num_UAGrwHwEXKsOS
- QFGVGOFyRa8FuuLdZRc.SWNBaG2hpRvzcFeiBW2ZNoSKUh0DR5KAcwA3SqzWTGw684EgERy5Ev_5
- cPdt7GbuA2rmrtca0WsiqP.YT6YPBBJZAdKi6k60zFeOf_PUHyrqESsa0XH2JxmcXFEhy3UG3lb3
- uG.wSkJoyhDGrQ.qc_2EdhYFgsli9QoWGVioW.3szE1Ncgo82aCu5nn_MWqA2u1NrdSjeU8hkM0Z
- 1ou3xH3eoVsbj5bxxjKczza0IyrxiLr38KnLGpyh9lUCaFtkfFvkt1rTQTcKMfV.csi9QtPxiIJe
- M2MC4QjHTndUq8rdS.iw2cGBfANWYeZ5FXtasHjeT51sSMAL_CgQRZPWgbzlYh9ZsISdVKsMeFzO
- ATqh6fcDuQwWZMjNlUJkNBUxHGF99LW_E6Fyrz2_6XMoOBLs3h0qkZj3kYBsk2eNWlR35rRMEvmU
- FUXvJieYAUdTe_Sqz24P1P0Grc3AVBwhblw53X8npRuq8TqMB9Q9WaAxBAkT1lq2gh70V_Hdcm4E
- eOVw5pEpMOtf02qbrl50qbghKXTUVQfnyfj8YAcPdwOBo54sOM0ezZ.sz9qrJHRXezzb_W9por77
- rSE_wglGqB79I2VPzyLvoK2Rm6uZRvoUzvTzqwPcUNo6JTVRqWmdaQ9bZ_LQZVmcfEQ9hd6QEZn8
- OA9gAS2geQcPnmnVj12fqWrcTe0qchwYzvvq_btpKPTnq9LSKoPiiV8KVANOwAQs8nBELmTp4xRF
- TxNcO6jXYA.TVj2RKHpiqnBwUurUP0PwZyEWO7vrMDdoSRIcxx1wowrgBYGyyS6X5eR095q.HOrg
- nsmGJutPOhLW2f9I_4USlQAQoxj8K7wTJ4tIg7n.IMn9nxdgvE_YGu48_zGlLFp6mr2WEEVjQDb3
- 8kWluVKMAakUuTH7ZSuTokVeC3zOssbROYjxXeb8JPPQhVf2BTMP5.Iio6.Ce6oL_I_MadN99jN3
- 8.2bGgesnlvaxlJvK9IdUFXaMFcLS3EppUDWTkqiQJNjRZHiq.k_YnU9lO6flHp6WNqCtJmSJHOY
- RE1B6ZnItH1fBmjHtnT4x7q8dunlzrc0jL6Ibp_65
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="LGwWWtbK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1778426663; bh=l+1QEi/Mva+3X4theDqFltvXMsW45Bosop6RAImaxRU=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=LGwWWtbKS+p120LpwUfR/vuJVxLGpeUMChNFJzpZkW/+Dw0KQKpQn4uS+cvmoA2Yv5KzLiauB+N9CmxUpkEkgWp+4BNWHyv+GNUiInFf8LDGtH3Lrx9ZrWwkiZM7diuhx1VRKHl0OTplJ4rP8HgCWxGJkTvRm/vg804d2qe/XFzLYWo9H/0vQi+IfHA5bYMzGSx+li+DFcXKXZL3Icob3V9/GPwXT8y9OzLOb/e//72Ahidmt/5CDbUrrqMkHsmUGjfRUeK/XL/1Q6fTFrAJY+QL3bSseRTAPBNzYTLhqUQXEkB7hqyXpdLsqJbmLV/27bz1leRKF3zQc7kFSKEhKA==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1778426663; bh=bS55AGuA5w/I0RKcLYEc5wmlRpfecPlQHf+ZpOLWGmW=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=G9XGILlEIGpsCtqjsKhbtYLHksMTM/q5vAUQZM5EsHonOkLapST8Fm9gLjdgdE6RQD0zAcxuEaliRkZTX/W4bUr6S0lCC5GwByVdwl0d5egoG1t3iuvI8nLSBQDfXRUHQHRAodCw1ixgJ5vIsJ5bEFKej6/NDEiohrqI5HjCQFoymFAFup26WcIxPzT5qLf+IZ2+jL15yc4IJiHn93FU8+kMEyg5AqdI/srQ29kiJzETzYndlw/kmam0StnrzImHDGB9hTbBLDe2nr79RCN0inIfPLdUfDlic7Y6fvthKnGGmMqJLQyVuDsDkN8+1i1Z8B7LGyBk/HT/CL05QXTdHw==
+X-YMail-OSG: _UukBQMVM1kOkI9sk1.h1S0vSh2DIoMBmvcenpFMx_odtyI.fXx8_zP4biC0jIt
+ a7.7RDO4clKBKHFRb1E0gsAQkNojHqJZ6cUn8zyQp0.l5Q8FurNksvJxu1MOsn_gvWCpPVLtYU6_
+ rDkFAuRjklzOEpe78.r_18GKiTah3PvUS8WxHXZhM9kYM.WgFbZ8bIpsxvU3.R2LVDkXaoTteXhK
+ NgvBR_LRPtoR9pwkjtBDhz5YMA22z8KzLEzQkswtbF0dCQlly89OIaWHvMnSrxu0p8ZwBGUU.ghh
+ YZ8Adr.YUkEIX75Bdq4iQXLKK.IlTdlw92E280YVBZ1T9N8z8kvWOlvYSUx1Fh1f4w2xGdPSGS8G
+ eRXGIJO.FH.nkkb4.8AYPQnbqWpizGu49kD.FK0BxuZIzbpYJzEA_nKSwXtDaJ4.qVX3FLVxs.Ii
+ GDSGED8_mYwOlWFnD6xgomLnWDdRRAZSOlHObqgcuCROq4nMTqG6nyM2D2SvA15xeonyO.Oisv.M
+ 3kYgPivNYOK_NZ.mi1QQQyvkeL2JLWc4psU3ClvqWiRxtFFuj1jgRz.2JsZztkLwOeUBXzd8oNBo
+ n_JRzeCwSaCRqq_QReqgmkbsGVjDKeuIaQeNhyXXjuIkaCMWwDdbJd2lmzthIR2Nz2.mnA_oNBmb
+ 6Uq5gUj6dMDnyZP2p_eo9XxPRQ8vOn3FFIvxtyGTNy1drNMtGUVrlhpyFYAo3zlXIcFlvzeSWzvm
+ sVqt.lZIqo8Lockusln7notR7rm4Fv.oy3L2IG5hvWT8cPquOp3SuPNBXw4_Nwg4aZ_5yLimxHut
+ dZ38wdxpw9PpHOebGcPZdjthSBA7yQiSY6bh0GqoEbA63E4m2JwqFkJ2felhjFcmGjsxsO90HKrJ
+ YKcA_5JcTszn4y6rJlRFgXVHvG8ZdsywRq6hxu0Ll4xdW1GWaFrIFayQM_GhDEegoHzr5E3BgzPl
+ BBK8vZsI6qGFF5rTT31mQcKfFCNbA2V3h9mxi6rlw8rBDlkrbKb6WbARKcoB6ZI.ESYhyNsI6mOu
+ kBQvBShyckmgBEXSG.ITN7m7iY11UOIaxjsq9pmdCx5qCUJSpQ0o9TPCExEtgUD0_G.f7XT0otTv
+ lxi4okf6ZzZ4wQNf1uQXD7Ejny5OLKghOdMjaVxAScP74GsJwKeBGGcE_MNdcVdNyK5BnvYCHcyZ
+ .90i2HQEbOFbXxA7ILCR1vrFXsbtQqntOZ8KfKSAHaRZUKxAom.hReTwztC.xdMXfajpKYYFZldH
+ z0Ndy2YkQiilE09mYQCDrlkDv_Gs0golMW4NlA1JAFo0Wm_4nic1IyY91uUV6U.gzCro48vD9n08
+ ZpCDqZsbLBGfrWZ1lJJm9kt0vT9Vikm1qgiCgOP_Z9oLUwUcodG5CnujPM2I7fIzBXbg1a4dVTeG
+ wgsVej02P4bCy0dfaoxWDYQ2s_GmG_QBWZhGvgQ8SHhmJ4HW7x2y07viJRXxTMAysdrhrqFiMEJU
+ WbABJdlwW6SG6Z_ejAjnyztTewSreOAl6xxH9YMF8TBQHVOVyQK9HWG2SGmHG97BdpstYBhYrxxq
+ f9.471FrFtBg6ZAE4z8AmyUC_Y2eE9hEBpZ0wgN6Vmd4DtIBVOf4Wn1tCqtSYPCIEXhiDZ5wigXQ
+ FBdW2TqD6XCJmy0TCKETsBttROGc0NfbSEWw4_8sUa.a5yqzArI8cXen1aPA3znawCYXRcDLqN95
+ XKO9VeSKrhBDpte5e7vLcNFAtkoiHw_4rrFisdu4IjzPIq9XF7hGbtESrRlYSYkzEWA7oL9iZ.v7
+ ZRUGsPYOj_i9rPgD.aPXob1GXMSKQxEjgXXmbbhxzy8BkXYRbGlJCCtyA2jIeHTW1UQkYRVG06R5
+ ySzoYpHyZUX6cbuPaqaAFktHWaK8nPlHixpeqk0Qod.R5dDVdv_2JzQVF3J5or5GcfqyNLDi7SwR
+ p8d.WEIey3qGDMLbkJpaI3uMPKGVbXaw.LgnftbgsVae3zrJBxE4M0eqRFSwnLHQ7lb1hBl56pYG
+ clhLwcbHO9XOfQ6fy.VzR.VxUD0GbZmilsCJ4UvXAouHfnz_YMXLGy3aBG_3Iv.BK5mO5ef3KNuf
+ bAE7HzINWh1wPDQTXdueRwhl1BASKu4rJfRG2Au5Qbi2M921l2itOSpvAEjtid_E4mnsJ1wd_BVD
+ JIr0QJkzOynX1qRP5dbwJ30ALvpKhYq1f2OD5etW6ZSC_qnVvrO5DGL0uW4Kk.gEYcxd_Bjo2_ks
+ LQFvAB9TEOyEojB._SuLt5IMKEE.jH0cysqzKmOWfc9rAwZVB0usz8WHqiQO9cfWc0smD6cymcFa
+ AHHCokg1VfK6WvzqluE48wV_6o4KYe0hB12MdCjuuOptipHOmcB0-
 X-Sonic-MF: <namiltd@yahoo.com>
-X-Sonic-ID: ce3321a9-839b-49da-9acb-75d29dc8d261
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic306.consmr.mail.ne1.yahoo.com with HTTP; Sun, 10 May 2026 15:23:07 +0000
-Received: by hermes--production-ir2-89844b765-d82gs (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID f3639f5c1fe4ec784ed7d3f74052cb74;
-          Sun, 10 May 2026 15:23:04 +0000 (UTC)
-Message-ID: <41728b05-7274-44f4-860e-649ad416c72b@yahoo.com>
-Date: Sun, 10 May 2026 17:23:02 +0200
+X-Sonic-ID: c2a5d1d1-f6d3-475f-9727-9a02a2de2b3b
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic314.consmr.mail.ne1.yahoo.com with HTTP; Sun, 10 May 2026 15:24:23 +0000
+Received: by hermes--production-ir2-89844b765-z964p (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 0acf49e2957b7929d0ab6747174a46e5;
+          Sun, 10 May 2026 15:24:16 +0000 (UTC)
+Message-ID: <03a6a16e-0510-4c99-84cc-a816f96f7617@yahoo.com>
+Date: Sun, 10 May 2026 17:24:14 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -64,7 +64,8 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next PATCH v3 1/8] net: dsa: realtek: rtl8365mb: use ERR_PTR
+Subject: Re: [net-next PATCH v3 4/8] net: dsa: realtek: rtl8365mb: add table
+ lookup interface
 To: Luiz Angelo Daros de Luca <luizluca@gmail.com>,
  Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
@@ -76,18 +77,26 @@ To: Luiz Angelo Daros de Luca <luizluca@gmail.com>,
  Russell King <linux@armlinux.org.uk>
 Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20260506-realtek_forward-v3-0-1d87c5f85a3b@gmail.com>
- <20260506-realtek_forward-v3-1-1d87c5f85a3b@gmail.com>
+ <20260506-realtek_forward-v3-4-1d87c5f85a3b@gmail.com>
 Content-Language: pl
 From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-In-Reply-To: <20260506-realtek_forward-v3-1-1d87c5f85a3b@gmail.com>
+In-Reply-To: <20260506-realtek_forward-v3-4-1d87c5f85a3b@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Mailer: WebService/1.1.25725 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
 On 5/7/2026 4:58 AM, Luiz Angelo Daros de Luca wrote:
-> Convert numeric error codes into human-readable strings by
-> using %pe together with ERR_PTR() in dev_err() messages.
+> From: Alvin Šipraga <alsi@bang-olufsen.dk>
 > 
+> Add a generic table lookup interface to centralize access to
+> the RTL8365MB internal tables.
+> 
+> This interface abstracts the low-level table access logic and
+> will be used by subsequent commits to implement FDB and VLAN
+> operations.
+> 
+> Co-developed-by: Alvin Šipraga <alsi@bang-olufsen.dk>
+> Signed-off-by: Alvin Šipraga <alsi@bang-olufsen.dk>
 > Reviewed-by: Linus Walleij <linusw@kernel.org>
 > Signed-off-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
 Reviewed-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
