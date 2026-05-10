@@ -1,108 +1,91 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 308073B2FFC
-	for <netdev@vger.kernel.org>; Sun, 10 May 2026 17:05:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD9493822A1;
+	Sun, 10 May 2026 17:11:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778432725; cv=none; b=De9WJwWNfT3nXajP1yAu1/w1DiF3LV9yjRTao3wklL3X791LOj0BUbdBpr5IGmhXbMNZMQ/bnsxANav4q2YaWyYbDkMHTmkGKf5eRAiLdSUgLbgg+NHsSwbJ4XuAo1C2cExJyQr59KwW5KJCGj3iBIfl7QTeOAvAaJVeuZeZd/o=
+	t=1778433069; cv=none; b=o/gtpJdZl/eE8EbvU/LcAyOHk+FxSOjGsyeGDTyYKFfFrThqlFZoI90xYD0c6rGoOtkioHy7Hyz8S5N5MNqdSs55Y6HYrni4oVZ6O+kpoCxQwpKU3J/XVAAoiZ/kX2wUI9LL7BdsZsi7SmQRwIL2nz4PkPS5zzOSyiRifxIJyXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778432725; c=relaxed/simple;
-	bh=njvUjJYapm4Evggff9XsbWKk1pd6mVJCB4SLimX+gPY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K4fRgzdAKaQzWVo2IjdVMUBxuo1giNXDGaXIrL2vPcu+vnF/I3nH7VKp05oRnngPXATMLj0I9HwvHkSpSJi4lX71hLr1qSdOE66AJEalze23kQtDJ3t/Ks+ffaHbu03k/SU+VME6CakLTYTlTDrrSsOS3CH0U2Vi6/ynMa2hc40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DCKSS2ss; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1778433069; c=relaxed/simple;
+	bh=uWkCMdpb0fYzHgP/nseR1GXrOlMzTE9gaiu7Q4LlA5M=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=uFUELuIS/twQckxwl/LeK02Vonb6xH2sXG1JP36S1zOiiXcPU/3V2nxBTyqPT5RPeyLzSJigqFLidsw7pQcFd5qghS1y/Mc/e3nBE3zpaBc+yvdU4bvQJDst0J+SmkhVZ7TyEcTkare5f1ojEdYiqgHoEtfcmRtVDS+AZ2F8kEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PgozvB4x; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DCKSS2ss"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-36608b2f2dcso2215322a91.2
-        for <netdev@vger.kernel.org>; Sun, 10 May 2026 10:05:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778432723; x=1779037523; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rt7DZxBgxaqgF3EaEv3GbAdygrDAfwMu6OaO3VKjDZM=;
-        b=DCKSS2ssq6fExUr1i4GUtPTyD5DDOv3gAVHNaLOShmpx2cL8briDTWV+qvgv/0c4yl
-         GPVKxkwT71oA8uJ2eBLNCHNsTUjNefcMZVvow2q5SB8VLq5LU90LCqvW02mTfFp1W6ha
-         GT1yNdX6dLVubE0Aj9KzaClK9afbKYlgdmZuLsE9ItVKaWD6cmFaEncPhUuSJhMwx8Y9
-         CW+Xvn6MWVlK/7sr/FzkrUoxzITcsVnwts6UNOxgD8xQ62ComAXn34WZZVc2poNLNAxT
-         KaEVuNyH1sAAugF/H7EbGPUQXVXMHm4pr6Ka3P4jCZE+SwU7B06e3MaKqGYnppCE61Eo
-         ikJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778432723; x=1779037523;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rt7DZxBgxaqgF3EaEv3GbAdygrDAfwMu6OaO3VKjDZM=;
-        b=DPNZ3GAlIMGQgY+x0NIba/GL46PLi2iesr6ZAGHbgT31xfuIc9U78k3Sp9xembTWTi
-         h59YMqzILqlF6/eZmr6h8RE8CS6kk52uXGQx3ADsP09hup0xXnGrO2F0MQqykAxOye1n
-         WJNzGQYWJ1Mf7mJUcmvVMH+Ghe/GAf0GjiCJVMnLsX20ZMWKMjGMLBhlEVERabzeUcxB
-         WmGmZ/UaJ9zeEtZW1WCcKaSJen4W1DHQ2UKItnf/6U5XqZeDYYd8L2kKBmO2XhIlJ5IO
-         muqINNpdn8ex8Gp1g7QYhFyqzZiIvoKnteKfjBe4fzIXNJrTg6ndhFArMn+ZhBJlSuHz
-         waAg==
-X-Forwarded-Encrypted: i=1; AFNElJ+zu1QRnrEBYl8jaDTku54rKsuNjmXxX000kL+cxjAsY9Zn2b+S1qG3q9Is/DugXvqE8p8cyao=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxebVYgZtqIPVMjdt6nc6Z75+0WCyrLNsqRhwaISJzMmRz56pRB
-	qSiaDVAAqgg6mU1JjXEBkprQa51GsU0TVqYB2WwnDco/KpKz1/eTDu5p
-X-Gm-Gg: Acq92OFMjtrfyGdr5VQuh3jLlVHy62aV21l+9rjvwtga7LuoS8N5+BRlKwdBvyLqg8v
-	GZ3ZzqrxpmI4XDT+sD/b3RU1cA0HeQcE5qDTwdxdRQiyj1MRVnpIP2Net8EveqMEiIR8ZFtLUPg
-	3BHVWwNPIzN692tUNAAFtZF4crlOxjlPA/ow6fgtZjEAOSgB/7SIXitEYa0HCAwQY6a+XSMcvUy
-	E083bgCAKgun26jHBuaFDXjEy1JVlwcl/B2vmgMp0HFRVlDiPZ4+eU+Hi+ku8/zZPyn00RsDdkz
-	F48uNZ4FQVJEZCm2HoWcymtWY9Mjt6gztpEVyLZLYa11mXyCnS2ZWOzABw8wgBpK+HxFcRrbM1C
-	c6kPuulyjAbiW46Z1uNOKP04xHHA5MqoyRzlkSIm7YYMxiW4RUfH6KoApyxHRfINOdVSTVJ8JjI
-	44JS2qTEeh3DDEcjY3PLN8oR97P4mS9enQu89iuBOPiw0O3rk53YuFwQ==
-X-Received: by 2002:a17:90b:3bc8:b0:35f:b3fe:18dc with SMTP id 98e67ed59e1d1-365ac47ab2fmr21925302a91.19.1778432723423;
-        Sun, 10 May 2026 10:05:23 -0700 (PDT)
-Received: from v4bel ([58.123.110.97])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-367d625f126sm5653554a91.3.2026.05.10.10.05.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 May 2026 10:05:23 -0700 (PDT)
-Date: Mon, 11 May 2026 02:05:19 +0900
-From: Hyunwoo Kim <imv4bel@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: dhowells@redhat.com, marc.dionne@auristor.com, davem@davemloft.net,
-	edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
-	qingfang.deng@linux.dev, jiayuan.chen@linux.dev,
-	linux-afs@lists.infradead.org, netdev@vger.kernel.org,
-	stable@vger.kernel.org, imv4bel@gmail.com
-Subject: Re: [PATCH net v3] rxrpc: Also unshare DATA/RESPONSE packets when
- paged frags are present
-Message-ID: <agC6z1FeEN6jMjyk@v4bel>
-References: <af2kdW2F1gJ9U-Gg@v4bel>
- <20260510084520.476745b5@kernel.org>
- <agC256wVYa4Gnvy1@v4bel>
- <20260510100310.230b15ed@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PgozvB4x"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E811C2BCB8;
+	Sun, 10 May 2026 17:11:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778433069;
+	bh=uWkCMdpb0fYzHgP/nseR1GXrOlMzTE9gaiu7Q4LlA5M=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=PgozvB4xMsa5xQ2J2CmGLTA7DB3MlAmS4wKfwEqbECDp2dDmW1BybGKL5KQs7OlqW
+	 lWUQuX0jzq2CsG3PWLaCI0LvisMaadxc7D2kNKLQmQgfzB3Qz9AhQMxg7LY6QzzWHv
+	 bCTv4TjMurOETsuy2HAXofb3CwfUvwgLmUPwYA0LWqcR7M6lrVU4Li7D68/plhu/bJ
+	 1JDp7Fp2iT7PGSD8ypt6o1UgfFp3WVHWrEQWZ+SQStByri+hXkFUMddBq3AAwbddud
+	 yNkWIgGRaW7Qvb4qzvDHAWixSAPFIy0ADjZaaZ4ixo7pGxeLy5sJjbhUAKLDFFvK+9
+	 j9NinvjLYZ4qA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02CFC393001F;
+	Sun, 10 May 2026 17:10:18 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260510100310.230b15ed@kernel.org>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 1/8] batman-adv: fix integer overflow on buff_pos
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177843301655.1434286.16917643691644742198.git-patchwork-notify@kernel.org>
+Date: Sun, 10 May 2026 17:10:16 +0000
+References: <20260508154314.12817-2-sw@simonwunderlich.de>
+In-Reply-To: <20260508154314.12817-2-sw@simonwunderlich.de>
+To: Simon Wunderlich <sw@simonwunderlich.de>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ b.a.t.m.a.n@lists.open-mesh.org, lbourennani@fuzzinglabs.com,
+ stable@vger.kernel.org, apinson@fuzzinglabs.com, sven@narfation.org
 
-On Sun, May 10, 2026 at 10:03:10AM -0700, Jakub Kicinski wrote:
-> On Mon, 11 May 2026 01:48:39 +0900 Hyunwoo Kim wrote:
-> > On Sun, May 10, 2026 at 08:45:20AM -0700, Jakub Kicinski wrote:
-> > > On Fri, 8 May 2026 17:53:09 +0900 Hyunwoo Kim wrote:  
-> > > >  			    sp->hdr.securityIndex != 0 &&
-> > > > -			    skb_cloned(skb)) {
-> > > > +			    (skb_cloned(skb) ||
-> > > > +			     skb_has_frag_list(skb) ||
-> > > > +			     skb_has_shared_frag(skb))) {  
-> > > 
-> > > We seem to be getting a lot of fixes for this issue, and this one is
-> > > incorrect :| Writing to _any_ frags is incorrect. You have to copy
-> > > if skb is not linear. skb_ensure_writable()  
-> > 
-> > I was testing a patch based on skb_ensure_writable() but it seems v3
-> > has just been merged to mainline...
-> > 
-> > What would be the best way to proceed?
+Hello:
+
+This series was applied to netdev/net.git (main)
+by Sven Eckelmann <sven@narfation.org>:
+
+On Fri,  8 May 2026 17:43:07 +0200 you wrote:
+> From: Lyes Bourennani <lbourennani@fuzzinglabs.com>
 > 
-> Depends on the tree. Where was it merged?
+> Fixing an integer overflow present in batadv_iv_ogm_send_to_if. The size
+> check is done using the int type in batadv_iv_ogm_aggr_packet whereas the
+> buff_pos variable uses the s16 type. This could lead to an out-of-bound
+> read.
+> 
+> [...]
 
-That's the torvalds tree:
+Here is the summary with links:
+  - [net,1/8] batman-adv: fix integer overflow on buff_pos
+    https://git.kernel.org/netdev/net/c/0799e5943611
+  - [net,2/8] batman-adv: reject new tp_meter sessions during teardown
+    https://git.kernel.org/netdev/net/c/324354359242
+  - [net,3/8] batman-adv: stop tp_meter sessions during mesh teardown
+    https://git.kernel.org/netdev/net/c/3d3cf6a7314a
+  - [net,4/8] batman-adv: stop caching unowned originator pointers in BAT IV
+    https://git.kernel.org/netdev/net/c/f03e85835329
+  - [net,5/8] batman-adv: tp_meter: fix tp_num leak on kmalloc failure
+    https://git.kernel.org/netdev/net/c/ce425dd05d0f
+  - [net,6/8] batman-adv: bla: prevent use-after-free when deleting claims
+    https://git.kernel.org/netdev/net/c/4ae1709a3140
+  - [net,7/8] batman-adv: bla: only purge non-released claims
+    https://git.kernel.org/netdev/net/c/cf6b60401159
+  - [net,8/8] batman-adv: bla: put backbone reference on failed claim hash insert
+    https://git.kernel.org/netdev/net/c/ba9d20ee9076
 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=aa54b1d27fe0c2b78e664a34fd0fdf7cd1960d71
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
