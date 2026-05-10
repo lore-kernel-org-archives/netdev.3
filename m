@@ -1,100 +1,106 @@
-Received: from mx1.riseup.net (mx1.riseup.net [198.252.153.129])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EE1E3ACF15;
-	Sun, 10 May 2026 16:44:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.252.153.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 054623A0B38;
+	Sun, 10 May 2026 16:47:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778431464; cv=none; b=iBTIoe3n4NOj/azTCp3FrCT72QSeKaPW4izKupZfzbu+FfJNM3fGSPLi7LOAodcOsdl6baVsy1YCLLXpB8V78jprYkOYXJ4i0AZEEQGRbuRF0GN+mFaf9nScAxOhuj8nGpAyr65M8skDcfJBMeQs3Mv7Qb64krErlh3A6d7OT7Y=
+	t=1778431661; cv=none; b=KAJIqjKL03N0YE7AVv72T3KlHdSIu4B8Y4VVOZumsUnzo55qBdmtbv0Y2nZYyKWReDvNwwjuhkLFcz5ma+xjijnoptaHYCDnfC/6XE+cdKBOtE0QL7PcP4CwkrUIBfUUkbvaxBLwozDN/Li51QoKVlnEkMOMHhB+2jgJxh/XbrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778431464; c=relaxed/simple;
-	bh=RpmaRYY3PJernLi+mHT5wcbgojVG+s9emQiFmp8vQRE=;
+	s=arc-20240116; t=1778431661; c=relaxed/simple;
+	bh=NpbM4MnTQhnnHyItdeUqXfUQBKE0GeuFMoiQJPWJ5/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EdW8rtyWjzCM3JsseVeonTAksJQYBShhc/wqiYlGPC8z/WcT/xB3blNom6fTFKrRqkqT/Aph/wBLhlyq8j6MMFiOKZy//hvl0LrB1c+dNwdC7jOlvCVdvozlhtfh54iqq/2+83Nuum1KAH0Y444VHuVCLiKfB/Tnvsg1b6sjV3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riseup.net; spf=pass smtp.mailfrom=riseup.net; dkim=pass (1024-bit key) header.d=riseup.net header.i=@riseup.net header.b=lqk3pod7; arc=none smtp.client-ip=198.252.153.129
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riseup.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riseup.net
+	 MIME-Version; b=oMemiFIf216Gp55CJXYz1oJ7pyGux4nuOfaY0GQtk89gS7Iigjzu3/NtCu9KRc/bmCcpQVjoCsL+88c1cfaBlKjlmMUPMOhQGpo82ZZ5P1+awVWAT5/Bc3kiRxX697ZmXeGa/cX76UoLiuedUz00YcwsrCisUeP+OKr6hxzYmxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sl2I6zaP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=riseup.net header.i=@riseup.net header.b="lqk3pod7"
-Received: from fews01-sea.riseup.net (fews01-sea-pn.riseup.net [10.0.1.109])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx1.riseup.net (Postfix) with ESMTPS id 4gD7x10FkKzDqSf;
-	Sun, 10 May 2026 16:44:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=riseup.net; s=squak;
-	t=1778431461; bh=5T6leDP8tmF3XvpwD7l+rnfsgJdFuQTS47BKmtBbf7E=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sl2I6zaP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52396C2BCB8;
+	Sun, 10 May 2026 16:47:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778431660;
+	bh=NpbM4MnTQhnnHyItdeUqXfUQBKE0GeuFMoiQJPWJ5/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lqk3pod7Nf5wp43CXQJ6MYEpIucBqZQvSc8kOWAV4yDkUSlZ3gX8L0J9cQbwgk2wu
-	 b00OY6SujXnDN8JgP5bODlIMuV/jVeO3XvMuN4Jc/hEOCgQ3lRwbpd/5x/O/xD0WrC
-	 z5rpH/miZT1VDYMppByY34X9WaL1XQMVmFojnsjQ=
-X-Riseup-User-ID: EA9A6AE0E301AC6588F85268079748D01CA43CB25B8D93121CAEFDF9351872E6
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	 by fews01-sea.riseup.net (Postfix) with ESMTPSA id 4gD7wx6jfRz1yDs;
-	Sun, 10 May 2026 16:44:17 +0000 (UTC)
-From: =?UTF-8?q?=C3=8D=C3=B1igo=20Huguet?= <ihuguet@riseup.net>
-To: Jakub Kicinski <kuba@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Shuah Khan <shuah@kernel.org>
-Cc: Sabrina Dubroca <sd@queasysnail.net>,
-	Filip Pokryvka <fpokryvk@redhat.com>,
+	b=Sl2I6zaP9xMePXw+Z0TPBhlyV40vc07WexRrdhzbAZ7U4A8wUG+l7/CJRAoiqYghO
+	 9p+1muYitvib+ld4pxUHXUUYnVCQGpHBUhZ2E5g5mTmzuUD2kS/tGIycIey4cdaQM9
+	 OKJfhCvQcPQ+mQ3LG00VqgYo7cQXiadACa5GUWHBTrX/tl9603EMPszKt0HxKcQXl5
+	 Dc55SJvvXuI9AP/KsjQYey6s+mKoZOfJCfgMYfBYpfIA1fRuw04aHP/9NuK2AsYK6j
+	 7KfGqLWlCGyDuDpIOpBxh2xpNCC762dY8WoJy46U8r5VgB3sbS1qb8dPTuL6YKBMWT
+	 uii8moO6qEDLg==
+From: Simon Horman <horms@kernel.org>
+To: jelonek.jonas@gmail.com
+Cc: 'Simon Horman' <horms@kernel.org>,
+	linux@armlinux.org.uk,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	maxime.chevallier@bootlin.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	=?UTF-8?q?=C3=8D=C3=B1igo=20Huguet?= <ihuguet@riseup.net>
-Subject: [PATCH net-next 5/5] selftest: netdevsim: suppress socat warnings
-Date: Sun, 10 May 2026 18:43:37 +0200
-Message-ID: <20260510164337.7611-6-ihuguet@riseup.net>
-In-Reply-To: <20260510164337.7611-1-ihuguet@riseup.net>
-References: <20260510164337.7611-1-ihuguet@riseup.net>
+	bjorn@mork.no
+Subject: Re: [PATCH net-next v7 1/2] net: sfp: apply I2C adapter quirks to limit block size
+Date: Sun, 10 May 2026 17:47:26 +0100
+Message-ID: <20260510164726.1401317-1-horms@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260507093301.1144740-2-jelonek.jonas@gmail.com>
+References: <20260507093301.1144740-2-jelonek.jonas@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-When executing the peer.sh selftest, socat emits these 2 warnings:
-  socat[116839] W address is opened in read-write mode but only supports read-only
-  socat[116833] W exiting on signal 15
+From: 'Simon Horman' <horms@kernel.org>
 
-The first one is because socat tries to open in read-write mode by
-default, but STDIN can only be opened in read mode. Fix it by adding the
--u option (unidirectional left-to-right).
-
-The second is because 'kill' is used to terminate the first socat process.
-Suppress this warning by redirecting its stderr to /dev/null
-
-Signed-off-by: Íñigo Huguet <ihuguet@riseup.net>
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://sashiko.dev
 ---
- tools/testing/selftests/drivers/net/netdevsim/peer.sh | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+net: sfp: apply I2C adapter quirks to limit block size
 
-diff --git a/tools/testing/selftests/drivers/net/netdevsim/peer.sh b/tools/testing/selftests/drivers/net/netdevsim/peer.sh
-index ec96015bc9eb..183a130c6e4b 100755
---- a/tools/testing/selftests/drivers/net/netdevsim/peer.sh
-+++ b/tools/testing/selftests/drivers/net/netdevsim/peer.sh
-@@ -210,13 +210,13 @@ assert_carrier_up nscl "$NSIM_DEV_2_NAME"
- # send/recv packets
- 
- tmp_file=$(mktemp)
--ip netns exec nssv socat TCP-LISTEN:1234,fork $tmp_file &
-+ip netns exec nssv socat TCP-LISTEN:1234,fork $tmp_file 2>/dev/null &
- pid=$!
- res=0
- 
- wait_local_port_listen nssv 1234 tcp
- 
--echo "HI" | ip netns exec nscl socat STDIN TCP:192.168.1.1:1234
-+echo "HI" | ip netns exec nscl socat -u STDIN TCP:192.168.1.1:1234
- 
- count=$(cat $tmp_file | wc -c)
- if [[ $count -ne 3 ]]; then
--- 
-2.53.0
+This commit limits the SFP I2C block size based on the I2C adapter's
+max_read_len and max_write_len quirks.
 
+> diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
+> --- a/drivers/net/phy/sfp.c
+> +++ b/drivers/net/phy/sfp.c
+[ ... ]
+> @@ -807,21 +807,29 @@ static int sfp_smbus_byte_write(struct sfp *sfp, bool a2, u8 dev_addr,
+>  
+>  static int sfp_i2c_configure(struct sfp *sfp, struct i2c_adapter *i2c)
+>  {
+[ ... ]
+> +	if (i2c->quirks && i2c->quirks->max_read_len)
+> +		max_block_size = min(max_block_size, i2c->quirks->max_read_len);
+> +	if (i2c->quirks && i2c->quirks->max_write_len)
+> +		max_block_size = min(max_block_size, i2c->quirks->max_write_len);
+
+Does applying max_write_len to max_block_size inadvertently throttle reads
+and break hardware monitoring?
+
+The max_block_size dictates sfp->i2c_max_block_size, which subsequently sets
+sfp->i2c_block_size. This block size is exclusively used by sfp_i2c_read()
+to chunk read transfers. The write message in a chunked sfp_i2c_read()
+operation is always exactly 1 byte (the register address), irrespective of
+the read payload size. Restricting the read chunk size based on
+max_write_len appears to cause unintended side effects.
+
+If an adapter has a max_write_len of 1, the i2c_block_size becomes 1. This
+forces 1-byte read chunking and explicitly skips hwmon device registration
+since sfp_hwmon_probe() requires an i2c_block_size >= 2.
+
+Will this change actually protect writes against the max_write_len quirk?
+
+Looking at sfp_i2c_write(), it ignores sfp->i2c_block_size and does not
+implement chunking. It unconditionally allocates 1 + len bytes and submits
+a single i2c_msg. Any write where 1 + len > max_write_len will still be
+rejected by the I2C core.
+
+> +
+> +	sfp->i2c_max_block_size = max_block_size;
+>  	return 0;
+>  }
