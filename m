@@ -1,154 +1,101 @@
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012064.outbound.protection.outlook.com [40.107.200.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sonic307-9.consmr.mail.ne1.yahoo.com (sonic307-9.consmr.mail.ne1.yahoo.com [66.163.190.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A28C36403A;
-	Sun, 10 May 2026 15:54:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.64
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778428492; cv=fail; b=guTXh6dfCkuvfKxOlL7qlTukKPY36XOibUYybFcfpdK/yuIG8bhndhPKtfHiWFj7BPjVK9hyqjckB9s0uz9N2hxwTdm66DjCTq9H6AWbSeo/05mg4wefegMcYTIcaJEwVVjF+VW+aCwO6a8XraqVt9lbraZh8IsI0kUbxSnTVi4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778428492; c=relaxed/simple;
-	bh=9xvVBu7V+tOGbQZ1GomLWJrWTIhJmw/ERYWljJ0zueE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=V4KBY691mYCz/Z2hbve2Tw7yBurCBhgbopymBAXkoV7E6bEwz+IRSNPfeFMxqpuIEtisEMN3hVQEnbJviEM4T91oZr64dYY83rXOXHsaaJvSu250tIR1v50ThVJQQS6zZtP/U2soejZ0+RkeZ1G2WH57tanFBVUP2gf8CERJp5s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=fail (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=iwsFfPBx reason="signature verification failed"; arc=fail smtp.client-ip=40.107.200.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F2B43A16A0
+	for <netdev@vger.kernel.org>; Sun, 10 May 2026 15:55:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.190.32
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778428524; cv=none; b=IGrSwEEEIuRSLAAc1/0vXTPUwXKYxfNElqxBDdn8DyStttEJfXtemvkP8b/rZmBq1iewW2xJEKsE+C8H4i+1J05/TnglQs6ncrwEyBphC7JIhyfnhh0s7/b1++R9pI2gRBZLE5VqkkABSdSwrIaJyC4wjCKMWcXf0vurs0o2VQU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778428524; c=relaxed/simple;
+	bh=g4k4u6m04DhUSjPh1mhPfzKvCQerd6paV22r9q400Z4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DjJ13/GHCjluAIaq6qrAfk6T2fwsu6C81JcVm7OJi7xYROdItRXh9BJTXgdyNB0gor5sVDXMxRoMnZm8UR0mka1+qtTHSdDgP0P//puw9djYuWE3gI9uGGiVkKA59vBTIPuYG0vf4b9nSz5j7fxSyn9V7Q4ACuzwZpxsn3E300E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=qrmp+C5D; arc=none smtp.client-ip=66.163.190.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="iwsFfPBx"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aH3qf/maaWDqr01mPVqlZhcSlpLktfVzyprcfHHGeUS4tYt82JEDw0mPkqo9ZuZfNhjQQyeRfKcR3sQ66Ta5wz0UtmJA5GwGMZ9NPAmFhvoodbWIvg241K8QPGyqgEV+i3t/veTyVIJ7qbiFaEcXeSh+0swsM7gyFpEI92unrXS9As66Ya9bzQ6P3GYKGhOVq8sdvmOAF49TiDe25hyh5kb476PSCQS7lWMTrZx9xffvamvDP5MPT3VPH32zJh0DQS1fAWWOsmRM8/idzLwA+QKmxw8ljvFIVMlqjHRHSiu7GgtzuR+qDElsNNbz8vAl+AUTaZXtam17bEkJeWPXZg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=H4nF6EoLDWrtoYygUPOvzGNXFnWEGln4+00ssuNWV1U=;
- b=fj5nJk10guvlf80Nln98HpXmb3qamupN3Xg7mT8uFfvPVLTBeJPQWIBilC5ipFlWvWXqyaFBaX/ODXoISjmWChYFQQ8qhcI14jICbt+K3HZy8NWwbvrRZJvXXxy1SRWJNWnbWeLb+mUgUqwUHrGdXjGhdkfx9+Qf+bPWYn0O0nss2B40YTD6X8SCad4p32r4n1eBgYHxaiJn/PCmArDJG3bR5OMBq1YyR/64rrWncK+Gt75q+4vNInLQtQMBRk92S1SiRJl1vwKr3A7WgDwYpz1osMbkp9zp7teWLnwD2fVzfxyRPhU7eom7w+0du7R61L2VHTgxPpxofIG7VNz82A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=H4nF6EoLDWrtoYygUPOvzGNXFnWEGln4+00ssuNWV1U=;
- b=iwsFfPBxxnCbSSXB9VcBjB0KCe8pERQE1SUAinaF0mI7reipO8IeGjlXr0SlsSqR2AUme42Cuh32xpg0Oh6kV+sztMXt/SeOdBueEPVm67PkavtROew8oFSeFqYbAzPIfnynFMSRc1fXFbIE8Armb+yChJzRbkucF6x0TL/FmEllXe3eRIlULb2t9zoLk+W6od8CvtNwUrkZDW8DORDGTSmDAo7uwZjky9EVJPMkW445TK5wM5EAGoP7SsAFqgo7ujZLzsEetMfuGHHlee5aEJVbdfdoqiR++BfYxe5Q9Dq66WvHhAN6+HaEEtcgXg2P1JZAH554PrICmk1T6upnUg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
- by IA0PR12MB7774.namprd12.prod.outlook.com (2603:10b6:208:430::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.22; Sun, 10 May
- 2026 15:54:47 +0000
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2%6]) with mapi id 15.20.9891.021; Sun, 10 May 2026
- 15:54:47 +0000
-Date: Sun, 10 May 2026 18:54:38 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Marco Crivellari <marco.crivellari@suse.com>
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	bridge@lists.linux.dev, Tejun Heo <tj@kernel.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Michal Hocko <mhocko@suse.com>, Simon Horman <horms@verge.net.au>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>
-Subject: Re: [RFC PATCH net-next] net: bridge: Move long delayed work on
- system_dfl_long_wq
-Message-ID: <20260510155438.GA122361@shredder>
-References: <20260507134815.295588-1-marco.crivellari@suse.com>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260507134815.295588-1-marco.crivellari@suse.com>
-X-ClientProxiedBy: FR4P281CA0062.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:ce::19) To SA3PR12MB7901.namprd12.prod.outlook.com
- (2603:10b6:806:306::12)
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="qrmp+C5D"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1778428514; bh=CLF8Stt78rXSXeACu+BeLNBQO3i7AY0m49DGgIS+Q+c=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=qrmp+C5DELA7zp5+CLKwETe2jbMALsoF2IaT2qHmoR4l9YiN/efXBjWYQ/xtrQXl8udSLjj/L37VJr/EFS7fmufy9yI4JhRYtAgEF+7jeCBSS2vvJl6fWSplQXM4gVGTUraG23kTSdJQ0crt1a5zSDXHO9ABYS7PZOrZ32I41qTRTmo5TLVVH3UXl32M3mPCYV7+zsHcmpBFJGZ8ytZl1+9/jnepljGxsXXs2yE6XksI2uwNvCfD8Cl6cMhEYj7nA0WNRvXdAa7baJqbteQkgmIqsgqY8iNiYYZQqJdFnUgC4pFAUtklDqlKeg0Xp5QbKUQn+zdHx8/gQin5/jCkoA==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1778428514; bh=qA1FTVw/qvYNkz8+6LCs2CyxY5IOuE+n1mbaoy5GzW1=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=HSOTaq5rjSOMMyVTUeijq0X99SAgYFlCVp7S1SgIbRFN0xeU6N66B4ICd2EH80zP9BVUObK0Z50WQvdTQY/O5piEbXDmCrH4XjVYZO4gyiEspjJI7uJW9ORszRJJrcrp0fVD69lfxOD39zvTdV7pwzAoCEhfvBYRf48uEqYVy1a0Y5MJsOCs7dOZkHBQr71Jli9V2a6Jwyg9IZyM/+Tk51GU6rsvGMDdG3nwqIRviA5HgxZ3wE0KyKz8OU139NakCz5Rs2QB8gcnjR+4ZtQhLXj3/yGz/3DIF0V0JLhtByWYdDnLyhHlVQD7dPzQV0kF1nyaCbaaDddUBP75H2HC6w==
+X-YMail-OSG: ocBdVXYVM1lGJHKGrYGw8OJpRzUOlEBLUhEO8FpLEEvCbH7r0dOT_yADAE9Y7aS
+ GnB4qwZgRJzOcFJCzWorj7PihKMFdN2UZyuAT1InmXsbUKSziQdAd6kk8Xy3QbKmkYFd.ojRjPjm
+ 9lMPngx46.d1pkXluTsHImOB48B8HUjm93.jJtQZpmdZWhoehCltYc6GvpH8HgE79o3gpJ8Ogg6i
+ oSEOHCKWy54RpvlMyBBpD5Sojl49XKwr2SkLG0hIBX0OHWK5PlCFq2XCB92ppbq7qucB.zTp6YyQ
+ e4a2.vBmYVs4g60WJsXHAEDDZtOMFgzkxbROaAhJzbmpoGvNKV9eViE3PJayRTF8JptAFitqPvuj
+ 4FuaLHOYqB7RQi2UKX4pvUzcwqPgVSdTCvseNKUvtUDDIEOAiZlzgF23alR93Cocz0XawszDIKTn
+ 50XskmE8aMThlvP5nFXFJwxss7D9dq3p50LO4gSJKTgMV1e8bwoVk7QCuhz4U_.DAfXjqnjVaBWS
+ laV.gGX6b2SLRmGN6QtrE4i2dn3t_srGWc8bnfBnvqL87Y8izXv.A40E4eRaNNWhMRj3PuANEzju
+ mton9DgtMEIcdjlh9KMtoa0S9V7pm18C.L0Ne2GX95QJUDKHCMqCImxEXiPmKlYGV_JAkbhO5AEJ
+ ..1GzrYVhln9xFbqvDnrCU20FI63ZIDCGpz8Zcwe5E9lphFa_X7cWHeC_Yn1SIhzmwKA8z2YfqXJ
+ 9RAVlaWa8NszHqqjtr7Je3wi2mAiRgyP0TyZqPElt40Qc_8niKPBMr.kLO0.tMqBC6TTCcI.cH6a
+ hj3SO0N4NS_mTP1rZLGp2shdXSa7xfmX2u8Lb._xKKObTrm85NBU_aDtGVn_EzXeNUwb83MaYebA
+ z9rKCbFou3gb8yBGyDoyHzgTenbFsGSlFsep3CprLVvzKI5qmSTd.MvfEcSq6K7_Cg1gx1o9CGcy
+ ij00qEUbk3li_3tEYzL7qSTjIVd.lirXxQf1MJBdr7jzUohbwKMi8OH1JAxiXZCg1mXATKZon2m4
+ pYNMzB4QkmtOL.OCYfi5xJytktWvNTYyZn0I7RXeghWsgfJnaM5QbnXNqG8xvamWFmBhyH4iO9wp
+ 9NuVI_SvseS8qWCNPyUf0sJLfH342fYP_yDr.AiuulLlfKDVoAoiX7bMlzjTcXxtYk5uuJc.AuFM
+ 9N2MfNSAWL7QRg2hNRu1Gya3zBuboxrc.Fet.zDR2Hh2NBxsTvlzdqthAW_eaf9_o3t0MGNVKXsa
+ MRagwYD_lScU2oHj17z04Fllf2hNonYunO3H9srK4jeIGuw9dKG2bzFqdIXoDo9EuH.AYffoknMZ
+ ohqqdrAJdz3Wyp7Q105lppD7LNm9H_OHpgHh4AIQeOlbZ0yjMzNYwa5ybBHIZb6peNf5IaGM75pV
+ 0Ab0rTTr.Y8huEXGZKmAbLrv3tZnrsMR6tGbddL7HlbdLwdWkJEUbSRDEP4id.zuf3OfHlzYl1rb
+ 2r1i_A0SmE7hJXsVIsv8JwcgS07RDOu.QIzFDq.hkXIYBxhMP2Mad5It82T9wth.s62UOt7OOHNx
+ a9.x3UwPu2wjXL7yWxqp_hFiX.fHIc3RJ5noL4LLgTKWqSyTBn2JRKtOJ2_pYG2QhFXAGdmEl3Hl
+ 1gZYQVrZ9js7c9E7Jtfd0ADJfO.DRc6wnkmMWQLzpLzrb8qWoZt9GBY9O4HgsOTbAJCU.PeMccv8
+ qbSgMbDGNH3tzBICqHD7uwvyh4eLbdQS6SyBfHnosUpHKnN8iVYBRKagGRR3uU25XxI5QKRtTTzU
+ GT2bqgEjch5VJowYzsoZZr6ppCGQcrSNoOGP9JYozinrK.VLszbtiF09rXMMl8xabGxmyvpmK_rj
+ QadQojBfOADXKPWfZKZSjiNSdpKqLnEpn_qgYMmmuCSsD3Fc0D_8nC0xir1a.TC_Oc.86jD7HEX4
+ hZ8bdyG7yI__gOrQc1vvqXjb..MKJCSl7egsV1yZA_WycLC71yt.DvtPDIXNX_PHAnHkxxQldntl
+ tlpRtYDphVZ5lauWvKKAu82UiJA4wmDtkN42w9kIwPb_EKIpt_CiolKBH6KjSgOkaG7igyPa4DsH
+ RjhVh78OIeGBPSJB5lXKiBShm7dHTzmYqKEk.XILLk_L7yNXA3_xUbOAUTN4E2Y7z1xlWLyah_Am
+ 1smR9fHT0q2eb88E9RaLvanNdd4rHXb_2Fj69hpwPJqJ.RAo38.7NLnf5Is_9_mjUmdiHppzv0RQ
+ gre_dgPFokA_wlXAW9B0IC1Lvm6FOahdGr3a4I7Z0SDTtF6p5hWAZc8xYkURnigVNz8N6vjAdWzi
+ 24ecezdWQPuwbxz2858ct.b1VyOHBrvlwYN9T3.gYOoN_n5TlEas-
+X-Sonic-MF: <namiltd@yahoo.com>
+X-Sonic-ID: 42de1e4e-06e0-4fbe-94c3-4cdea29ce3fa
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic307.consmr.mail.ne1.yahoo.com with HTTP; Sun, 10 May 2026 15:55:14 +0000
+Received: by hermes--production-ir2-89844b765-l4vp4 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 3c551618ddcd45599741f93af78935f4;
+          Sun, 10 May 2026 15:23:53 +0000 (UTC)
+Message-ID: <1c4596b5-a4c2-49fc-a774-bc1f38afaf8e@yahoo.com>
+Date: Sun, 10 May 2026 17:23:51 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|IA0PR12MB7774:EE_
-X-MS-Office365-Filtering-Correlation-Id: de5a4598-c994-42d8-ac3d-08deaeac763b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	SVgjePjz/0YdDgO7QGZ9YnMQ+P0cFYn9A08iWD0NtG8BEiWqmBju6R4CoDo5Thaf7yTrfJ7FZ2tLqvwOBB0fMeU3fHTTA+bWiCWmKD5j/ndmvU54U2mLi2kwCc7IBpXqVAyddbMmwufGN7NLTylZ7/hDW/DIj1oMHfZq90AmKfB/euAED5yg3X/S6Lfi2jO1X2klN1lMf9kGv87sSW4pVQ/gH8SIqvh/iZFLFyBqe7XQgBI7StRNZEAZmNCan9n0O3KVU5hxl4Y3I4XgBgEOXGVDF4UQcnBLH2pTgpycL769AaXNu6DCAT13mBP4BDSZDhQIjz52ylXCpwoypbkJoazhO4y3cz8TIiH24LsVGiOlST7FuWZvR/DsvYNHBGbfrYvlNggNPB6gDqpkR6HebtP1WFFx0G3NCsauD6F4b7KNeQNHtHMv3fmBTit07RC94AaFJJ0HLSGt1z2O3j9Zw5Bi7ISnz0Z3ungB2yQfXezvQP+VMLKs1Y/dgrgAeHEk/0HquVPJ4jJFqV35nTEA8b9pkxwnAZblD5mnsmhjj3ck3mNRDwwLckUha85gFoU2ACRaX6Oh7Lg0FL8lvDSVqaSeA2ah0kWrjx/VIYj0v47vYKpjGkYHMzhjyvDXp+uCvDRuSEVid5gJZCuHZJkZisIsO3us3QEkO1/pmn1igTM/CWiHpd3wl6XPDA1LDtaT
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?nPmJhUGfDCnUg9dv4Yrp/FR/8JcUFRRlB4BT51R5ApNB85FHvmzLzRdRe2?=
- =?iso-8859-1?Q?dSFt8Uh6jmNdhhmC27Dp3j4KhjHs7egTrD9GlARRr2LkrjBd32fz1xNG4M?=
- =?iso-8859-1?Q?OwdCA1CBIXm9HgwH0zsl/JCYJFq5gvrgOXwzERvI78cNzPDKrbHN+3H9xB?=
- =?iso-8859-1?Q?m/eJaNQTEHRgQUx24B3ZGzNwfWoIySaGy1X9GM+a4HmG/nBY27GrB/K7jP?=
- =?iso-8859-1?Q?tNnakQZ5kFSIbLbETbpd7bgrxW3DPG+QofHPaSimVl0SU1C4RBfhPXvZrJ?=
- =?iso-8859-1?Q?qrDBKcDZHbtk/WusjiEEXPKVLC4fDWbVVJXsiQiKmW5Zm6ZLrf9PjGgvYH?=
- =?iso-8859-1?Q?JVHo7opYjHZHMksgiTMqilrU5Rw+jtWbw2utcgU+E+K0j5wzhnRIs9ElRu?=
- =?iso-8859-1?Q?nU/yEZLokpXsJrA7HuABV8ZrdA9Tc4wqXUwcmoaxNTQbA4ZyyNpBNAC4Wz?=
- =?iso-8859-1?Q?uXQV04LEZPfbhTOH86Mv8XgDVHzg3Zw7XXkg/UmCxj73fSj1UwcZKqoGdH?=
- =?iso-8859-1?Q?zlChzeC2f/36lVEogooc5B0OjEkGXDhpdKvh6INJeHpx0PHVfC7aQDuxDQ?=
- =?iso-8859-1?Q?QiLYFfyStdEnpBEKpbfvZn1DYfkDuJtV+zSfCeG3cLTfjDRPRLXWnGA+Dm?=
- =?iso-8859-1?Q?1x8Aa4ZcpUCjEUccYdD3thLuC4aRmauGfulWwpOlIV2lnLVeJM91lRdDsI?=
- =?iso-8859-1?Q?ZBfWsHmlIEqNRqoQSufdVMhlOzd/fGVhJdKLAvqxyN+CCQMgg6SWcm2sbV?=
- =?iso-8859-1?Q?jsQKUc1tEu0zokd6hjqGGdegE8B//lar36c7q3bdJbymKLhVAxgKLtoSHL?=
- =?iso-8859-1?Q?1XqdLr2zBvjhTPweqf9xWv+ipt15C2aMMuQNK+vDvrAuYctq6GGBJRFdXH?=
- =?iso-8859-1?Q?fVoqKT304ZGMFvxx5zg8KgicABYwp6Fou8HmEJGG1/XvIKyESx8RvppPK4?=
- =?iso-8859-1?Q?V4D8+To9gJ45pqgkEkKC4AgbmSI+UvDSq1yP3U/hkH/KiVuKF5kXJ5Dlcg?=
- =?iso-8859-1?Q?e6s3RrsOlwfFVMM2vWWMOLIAbKRPcVNErpUMzYvlDU5kg4XWlWMed5H0kX?=
- =?iso-8859-1?Q?ZRUZng/6LI4pPqcH4noa5pcrc+PLCA6cavNH9U5ghpTvPmW2uTl3CgqnLs?=
- =?iso-8859-1?Q?i8YIoXHtmfJZCK0h8uSzNVEHiwbZWA+S3D8rwkL8cut5P1uIh0S3IMtN9A?=
- =?iso-8859-1?Q?RBRJ5/CX/YDWVfvpLVYH2gzwgWlaBUSMULOE3EgEiynSBQ425XBLp/1lr5?=
- =?iso-8859-1?Q?++hQvWs8UvWIMfptC8URpr1JjbfTW10gbFGYdylQNSZ1uAKKGPq8TeNlaz?=
- =?iso-8859-1?Q?g+RegG3xldwIgaXAfzova9AkYSYyPy7oxBE2HeKs3SpzQ9ZCEoUzQS1G41?=
- =?iso-8859-1?Q?vf3XBi4jEzdDI7o8RW8CIM4RWq4TfmWiLmtUpP9rklg7KAYYaVlYWBX3Zy?=
- =?iso-8859-1?Q?yoiruZEP1iQcuNdiFT2xzgOaS0MVgSrsMrh3UTPyuLBQH+BY5U52Ndkwyk?=
- =?iso-8859-1?Q?MJSMVhYYnkx+hIaxyO1GO+/+8gkY/mtNa3a73onK+uZ9h3UvJ4cGJGGpsj?=
- =?iso-8859-1?Q?YL11N8BaxNTnoPwCMqcIGpnYCRY8ni7S2RsuVR0apyExiLPhWMG9wJDo2V?=
- =?iso-8859-1?Q?wJzz8Wise35Wo7O1HC/Ej6USae2tY3edbKPLfgzqea1a5WtDcxwuBqulP5?=
- =?iso-8859-1?Q?CYOcDuIiWhyLJElZwynSD4Mfe2oO1rypO+R9zEtDm7QcRfpEYI9uoWxAwr?=
- =?iso-8859-1?Q?6TpOrdwXrJ5pZBdo4whQRyFgr5mKSC2tJneGXnYOis8PEU?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: de5a4598-c994-42d8-ac3d-08deaeac763b
-X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 May 2026 15:54:47.6601
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mJ5rp/yQSga/VBsv8UoMDSJOl9KqKZjMNSIWRDuA8ReGE6/HV3O2d9mQkBl+iFH9xKuhENVKbiI1oqOwYe7kLg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7774
+User-Agent: Mozilla Thunderbird
+Subject: Re: [net-next PATCH v3 3/8] net: dsa: realtek: rtl8365mb: prepare for
+ multiple source files
+To: Luiz Angelo Daros de Luca <luizluca@gmail.com>,
+ Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Linus Walleij <linusw@kernel.org>,
+ =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
+ Yury Norov <yury.norov@gmail.com>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Russell King <linux@armlinux.org.uk>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260506-realtek_forward-v3-0-1d87c5f85a3b@gmail.com>
+ <20260506-realtek_forward-v3-3-1d87c5f85a3b@gmail.com>
+Content-Language: pl
+From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+In-Reply-To: <20260506-realtek_forward-v3-3-1d87c5f85a3b@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Mailer: WebService/1.1.25725 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-On Thu, May 07, 2026 at 03:48:15PM +0200, Marco Crivellari wrote:
-> Currently the code enqueue work items using {queue|mod}_delayed_work(),
-> using system_long_wq. This workqueue should be used when long works are
-> expected and it is a per-cpu workqueue.
+On 5/7/2026 4:58 AM, Luiz Angelo Daros de Luca wrote:
+> From: Alvin Å ipraga <alsi@bang-olufsen.dk>
 > 
-> The function(s) end up calling __queue_delayed_work(), which set a global
-> timer that could fire anywhere, enqueuing the work where the timer fired.
+> Rename rtl8365mb.c to rtl8365mb_main.c in preparation for subsequent
+> commits which add additional source files to the driver.
 > 
-> Unbound works could benefit from scheduler task placement, to optimize
-> performance and power consumption. Long work shouldn't stick to a single
-> CPU.
+> The trailing backslash in the Makefile is deliberate. It allows for new
+> files to be added without clobbering git history.
 > 
-> Recently, a new unbound workqueue specific for long running work has
-> been added:
-> 
->     c116737e972e ("workqueue: Add system_dfl_long_wq for long unbound works")
-> 
-> Since the workqueue work doesn't rely on per-cpu variables, there is no
-> obvious reason that justify the use of a per-cpu workqueue. So change
-> system_long_wq with system_dfl_long_wq so that the work may benefit from
-> scheduler task placement.
-> 
-> Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
-
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+> Co-developed-by: Alvin Å ipraga <alsi@bang-olufsen.dk>
+> Signed-off-by: Alvin Å ipraga <alsi@bang-olufsen.dk>
+> Reviewed-by: Linus Walleij <linusw@kernel.org>
+> Signed-off-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
+Reviewed-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
