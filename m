@@ -1,51 +1,45 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F290234CFD0;
-	Sun, 10 May 2026 14:57:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CBC039EF1A;
+	Sun, 10 May 2026 15:17:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778425051; cv=none; b=qvO8/E+/JUa3z6vDGPFwu72E2pUPFDxwy6Y5u5kML9yqioSPBdQEWaspmu8UykV/xpqPoTulB3dgxGF+SL6rWvp2Jx63HHXHPUsOHYKOEpvS0WJV8FcKD+H5gl2QOqYs/2fUe2affpHp3QeXP34ELUIna1VGHy3rfEQk3JLSomA=
+	t=1778426276; cv=none; b=JfMiWagJL6vq9oMC0oBSQJl7QhLtSedGWaP2jWmA+zz08ygRftuBt1Nzu2HYhOY0cG7l7yZRvpvgzyDGDfSgbhob5ONVDXnjcsz3Ad3s7uHH4E7uD0gw+SNHGS3Yj3nzo35TCEE6dq5upD8QlSMwhKBLbHrJ5SFZ+svdV8OjW5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778425051; c=relaxed/simple;
-	bh=wOtHkB9Mlz3SS+ubzxZDx0L04GF9pzB1MyoMiNKCABA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EVwW5dNOSziCNq14P8zEDaSjcm9zmXl0ai3kkbCmYwKRchjpY+SSdGPp0lBfFLqYeQM1FKWvyrXgTHGrx93iQEDj1BfbvIEEftz1smA01flu+EP44cfHBG65tBppFKC/QSZxaN0qZErjvlg8OVUN32ig9CexsxbamgV/oZTmBDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vKQwM30Q; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778426276; c=relaxed/simple;
+	bh=kgUtIdmSmQrv9eOIVZgv1f+W5y415aK1wJ6VOR/nZyw=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=KlcvyqC5kgkG2JuR7NbCPPYvNPNycWlOt7vrFyJAirTpPClvZKZp8WX0Okt1Q/PCPR14neK21YGgvslmb6vh1ijsbRCslsbRGPO390X/0JIynMrL7/YfUb9BeeBMv7nGWsGJg62fSfBf/pC/vpcWm5UvO/orgLEcGVI8CYa32ns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b=qtB+4LQj; arc=none smtp.client-ip=129.217.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vKQwM30Q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E960C2BCB8;
-	Sun, 10 May 2026 14:57:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778425050;
-	bh=wOtHkB9Mlz3SS+ubzxZDx0L04GF9pzB1MyoMiNKCABA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vKQwM30QdHOP1Fqk81Ma/ZM4UMWfbKRsCYZ+AF735XLG3/yZ/YKYKtEBzHrcrXDKx
-	 KNESAXQTaLEjjhSFdZHu7tWbWJKxPe91VpFHmjK5PdFCv1xN+q0wMjTviV5yWQxOK4
-	 3rrgRc4fB+5H8GXp2a8aRJlfexlrsUiirCLZq60YBcYgRafaEk+jMLQPkNZBTLg57U
-	 Vanp9RyWXtQ4Am5mIKFWSNWEf4cCMYC3R6f1arrjvJnVWdfWfb0vzIpYfkYoOWEdE5
-	 mUokus49hpx1WVcPAmDPG4dJpbaOaUv0KFSRC/93CFpSaorC1EfrxFPk/7Y0i/edqB
-	 NFsNlgaBTtg0Q==
-From: Simon Horman <horms@kernel.org>
-To: maoyixie.tju@gmail.com
-Cc: 'Simon Horman' <horms@kernel.org>,
-	achender@kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	rds-devel@oss.oracle.com,
-	linux-kernel@vger.kernel.org,
-	maoyi.xie@ntu.edu.sg,
-	praveen.kakkolangara@aumovio.com
-Subject: Re: [PATCH net v2] rds: filter RDS_INFO_* getsockopt by caller's netns
-Date: Sun, 10 May 2026 15:54:27 +0100
-Message-ID: <20260510145425.1372018-3-horms@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260507081332.2868770-1-maoyixie.tju@gmail.com>
-References: <20260507081332.2868770-1-maoyixie.tju@gmail.com>
+	dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b="qtB+4LQj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tu-dortmund.de;
+	s=unimail; t=1778426258;
+	bh=kgUtIdmSmQrv9eOIVZgv1f+W5y415aK1wJ6VOR/nZyw=;
+	h=From:To:Subject:Date;
+	b=qtB+4LQj7cD/K60MTODPDCK+s05YD3Xe8htid9R+B3Jn7LiWQ9SZeO1wHAeCwu+Zi
+	 yg02PzyqbcjGplvUdggxKoYNNEbTYKDYZCGw7Ipi2LeLZsCZXZzLRZzak/E6v+1SKR
+	 fyU6WQClDx8saTyp9pgffF+zJ6pZhNcl5CJdM9RI=
+Received: from simon-Latitude-5450.fritz.box (pd9eaa57d.dip0.t-ipconnect.de [217.234.165.125])
+	(authenticated bits=0)
+	by unimail.uni-dortmund.de (8.19.0.1/8.19.0.1) with ESMTPSA id 64AFHaT8009831
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Sun, 10 May 2026 17:17:37 +0200 (CEST)
+From: Simon Schippers <simon.schippers@tu-dortmund.de>
+To: willemdebruijn.kernel@gmail.com, jasowang@redhat.com,
+        andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, mst@redhat.com,
+        eperezma@redhat.com, leiyang@redhat.com, stephen@networkplumber.org,
+        jon@nutanix.com, tim.gebauer@tu-dortmund.de,
+        simon.schippers@tu-dortmund.de, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        virtualization@lists.linux.dev
+Subject: [PATCH net-next v12 0/4] tun/tap & vhost-net: apply qdisc backpressure on full ptr_ring to reduce TX drops
+Date: Sun, 10 May 2026 17:15:25 +0200
+Message-ID: <20260510151529.43895-1-simon.schippers@tu-dortmund.de>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,106 +48,116 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: 'Simon Horman' <horms@kernel.org>
+This patch series deals with tun/tap & vhost-net which drop incoming
+SKBs whenever their internal ptr_ring buffer is full. Instead, with this 
+patch series, the associated netdev queue is stopped - but only when a
+qdisc is attached. If no qdisc is present the existing behavior is
+preserved. The XDP transmit path is not affected. This patch series
+touches tun/tap and vhost-net, as they share common logic and must be
+updated together. Modifying only one of them would break the other.
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev
+By applying proper backpressure, this change allows the connected qdisc to 
+operate correctly, as reported in [1], and significantly improves
+performance in real-world scenarios, as demonstrated in our paper [2]. For 
+example, we observed a 36% TCP throughput improvement for an OpenVPN 
+connection between Germany and the USA.
+
+Synthetic pktgen benchmarks indicate a slight regression, and packet
+loss is reduced to near zero. Pktgen benchmarks are provided per commit,
+with the final commit showing the overall performance.
+
+Thanks!
+
+[1] Link: https://unix.stackexchange.com/questions/762935/traffic-shaping-ineffective-on-tun-device
+[2] Link: https://cni.etit.tu-dortmund.de/storages/cni-etit/r/Research/Publications/2025/Gebauer_2025_VTCFall/Gebauer_VTCFall2025_AuthorsVersion.pdf
+
 ---
-rds: filter RDS_INFO_* getsockopt by caller's netns
+Changelog:
+v12:
+Patch 1: 
+- Revert tun_queue_purge() to plain ptr_ring_consume() and instead
+  explicitly wake the queue in __tun_detach() for the ntfile taking
+  over the queue slot (if its ring is empty).
+- Inlined tun_reset_cons_cnt(), because only tun_attach() uses it.
 
-This commit updates the RDS_INFO_* getsockopt handlers to filter sockets and
-connections by the caller's network namespace. This prevents users in
-isolated namespaces from reading host-wide socket state.
+- Patches 2-4 and cover letter unchanged.
+- Compiled and short pktgen test.
 
-> diff --git a/net/rds/af_rds.c b/net/rds/af_rds.c
-> index 76f625986a7f2..98f3cfd48b813 100644
-> --- a/net/rds/af_rds.c
-> +++ b/net/rds/af_rds.c
-[ ... ]
-> @@ -847,17 +859,24 @@ static void rds6_sock_info(struct socket *sock, unsigned int len,
->  			   struct rds_info_iterator *iter,
->  			   struct rds_info_lengths *lens)
->  {
-> +	struct net *net = sock_net(sock->sk);
->  	struct rds6_info_socket sinfo6;
-> +	unsigned int cnt = 0;
->  	struct rds_sock *rs;
->  
->  	len /= sizeof(struct rds6_info_socket);
->  
->  	spin_lock_bh(&rds_sock_lock);
->  
-> -	if (len < rds_sock_count)
-> +	if (len < rds_sock_count) {
-> +		cnt = rds_sock_count;
->  		goto out;
-> +	}
+v11:
+- Renamed __ptr_ring_produce_peek() to __ptr_ring_check_produce()
+  (Sashiko)
+- Add return code -EINVAL to __ptr_ring_check_produce() which lets
+  tun_net_xmit() stop the queue only on -ENOSPC. (MST)
+- Resolve race on tfile->queue_index by locking tx_ring.consumer_lock
+  in __tun_detach(). (Sashiko)
+- Wake the queue in tun_queue_resize() to avoid possible stalls.
+- Other minor adjustments & reran the benchmarks.
 
-Does this early-out check using the global rds_sock_count break the namespace
-isolation and force callers to over-allocate memory?
+v10: https://lore.kernel.org/netdev/20260506141033.180450-1-simon.schippers@tu-dortmund.de/
+- Changed the term "Transmitted" to "Received" in the benchmarks,
+  as correctly pointed out by MST, and reran the benchmarks.
 
-If a user in an isolated network namespace provides a 0-length buffer to probe
-the required size, len < rds_sock_count evaluates to true and the global count
-is returned to userspace. Could this allow a user to track the exact host-wide
-number of RDS sockets?
+Addressed the Sashiko AI review:
+- Avoid a data race on tfile->cons_cnt by always locking.
+- Correctly count the number of consumed packets for vhost-net.
+- Corrected a typo in the commit message of commit 3.
+- Added a missing barrier on the consumer side.
+--> The barriers now follow the "store buffering" principle.
+- No longer return NETDEV_TX_BUSY at all, because it is unsafe.
+--> Result: There are still a few drops with multiple senders, which
+            would be avoided by disabling LLTX.
 
-Additionally, if an isolated container has 1 socket but the host system has
-thousands, the kernel might reject a correctly sized buffer with -ENOSPC and
-demand a buffer large enough for all system-wide sockets. Is it possible to
-remove this global counter check and always iterate the list to return the
-exact netns-filtered count?
+V9: https://lore.kernel.org/netdev/20260428123859.19578-1-simon.schippers@tu-dortmund.de/
+- Addressed minor nit by MST in patches 1 and 2.
+- Rebased patch 3 because of commit d748047
+  ("ptr_ring: disable KCSAN warnings").
+- Documented the pair of the smp_mb__after_atomic() in tun_net_xmit()
+  with tun_ring_consume().
+  --> It simply pairs with the test_and_clear_bit() inside of
+      netif_wake_subqueue().
+- Use 1 ptr_ring consumer spinlock instead of 2.
+- Ran pktgen benchmarks with pg_set SHARED for 50 iterations on
+  latest kernel
+  --> No significant performance difference noticed
 
-Simon says: I'm not convinced that the issue flagged above is a bug.
-            But it does seem suboptimal to me.
+V8: https://lore.kernel.org/netdev/20260312130639.138988-1-simon.schippers@tu-dortmund.de/
+- Drop code changes in drivers/net/tap.c; The code there deals with
+  ipvtap/macvtap which are unrelated to the goal of this patch series
+  and I did not realize that before
+-> Greatly simplified logic, 4 instead of 9 commits
+-> No more duplicated logics and distinction in vhost required
+- Only wake after the queue stopped and half of the ring was consumed
+  as suggested by MST
+-> Performance improvements for TAP, but still slightly slower
+- Better benchmarking with pinned threads, XDP drop program for
+  tap+vhost-net and disabling CPU mitigations (and newer Ryzen 5 5600X
+  processor) as suggested by Jason Wang
 
->  	list_for_each_entry(rs, &rds_sock_list, rs_item) {
-> +		/* Only show sockets in the caller's netns. */
-> +		if (!net_eq(sock_net(rds_rs_to_sk(rs)), net))
-> +			continue;
-[ ... ]
-> diff --git a/net/rds/tcp.c b/net/rds/tcp.c
-> index 654e23d13e3df..ef9e958cafb4f 100644
-> --- a/net/rds/tcp.c
-> +++ b/net/rds/tcp.c
-[ ... ]
-> @@ -235,20 +235,27 @@ static void rds_tcp_tc_info(struct socket *rds_sock, unsigned int len,
->  			    struct rds_info_iterator *iter,
->  			    struct rds_info_lengths *lens)
->  {
-[ ... ]
->  	list_for_each_entry(tc, &rds_tcp_tc_list, t_list_item) {
->  		struct inet_sock *inet = inet_sk(tc->t_sock->sk);
+V7: https://lore.kernel.org/netdev/20260107210448.37851-1-simon.schippers@tu-dortmund.de/
+- Switch to an approach similar to veth (excluding the recently fixed 
+variant), as suggested by MST, with minor adjustments discussed in V6
+- Rename the cover-letter title
+- Add multithreaded pktgen and iperf3 benchmarks, as suggested by Jason 
+Wang
+- Rework __ptr_ring_consume_created_space() so it can also be used after 
+batched consume
 
-Simon says: As a pre-existing issue I don't think this needs to block
-            progress of this patch. But it does seem worth investigating
-	    (perhaps that is already happening?).
+...
 
-Can concurrent getsockopt calls trigger a NULL pointer dereference here?
+---
 
-While this isn't a regression introduced by this patch, it appears there is
-a race condition during list traversal. Looking at rds_tcp_set_callbacks(), a
-newly allocated connection tc is added to rds_tcp_tc_list under the lock, but
-the lock is released before tc->t_sock is assigned:
+Simon Schippers (4):
+  tun/tap: add ptr_ring consume helper with netdev queue wakeup
+  vhost-net: wake queue of tun/tap after ptr_ring consume
+  ptr_ring: move free-space check into separate helper
+  tun/tap & vhost-net: avoid ptr_ring tail-drop when a qdisc is present
 
-rds_tcp_set_callbacks() {
-    spin_lock(&rds_tcp_tc_list_lock);
-    list_add_tail(&tc->t_list_item, &rds_tcp_tc_list);
-    ...
-    spin_unlock(&rds_tcp_tc_list_lock);
-    ...
-    tc->t_sock = sock;
-}
+ drivers/net/tun.c        | 109 ++++++++++++++++++++++++++++++++++++---
+ drivers/vhost/net.c      |  21 +++++---
+ include/linux/if_tun.h   |   3 ++
+ include/linux/ptr_ring.h |  20 ++++++-
+ 4 files changed, 139 insertions(+), 14 deletions(-)
 
-If a caller concurrently executes this getsockopt handler during that window,
-it would acquire the lock, observe the new entry, and attempt to evaluate
-inet_sk(tc->t_sock->sk). Since tc->t_sock is still NULL, would dereferencing
-NULL->sk result in a panic?
+-- 
+2.43.0
 
->  		if (tc->t_cpath->cp_conn->c_isv6)
->  			continue;
-> +		/* Only show connections in the caller's netns. */
-> +		if (!net_eq(rds_conn_net(tc->t_cpath->cp_conn), net))
-> +			continue;
->  
->  		tsinfo.local_addr = inet->inet_saddr;
