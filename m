@@ -1,91 +1,70 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A1AF355F28;
-	Sun, 10 May 2026 17:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E9C3B2FCE;
+	Sun, 10 May 2026 17:23:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778433677; cv=none; b=dkhFMP4obx5yzRRGPggUNNJV3h8dp4sTWUTadxeIlSmpZgzxb142EbOxKJ+zJH92QMObm7I3V0kxkOiW7IeL02EuH5p3z4XenMk/vRYwyFyEeaSqO4AQmy01cb57z9DnOYrCMoR0R3uhd25NiViziB7W/1HxonCGaEyLaqijLGk=
+	t=1778433838; cv=none; b=s69gE1xvibez5GjHVS6rcYIv+BhArXHFMFG9Q1pyCvJoU3eBFi9L9gj8vro+amUJnrQ31nBHJekrGrI9exd7CZd7DwjodZNW5NApmW0qk6mHienQGmz2nM0U3b5P7pZNw8uXzeo+FxHN8AT4vv7hFF0Iewgr7DhEeV9rLf7thu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778433677; c=relaxed/simple;
-	bh=iMNBtNMM6qK67zwkQsw5VnancBPqyT2EurscxBqQCOw=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=BPJ/iFdU8nuXIb6UlecHyoevQ2Yn0PA4MxRjhY5jOZfjgN9FaU3g+mV9OUtlCKmpoLkOdSEpSlYciLjKoft6LpDw5bDJLzdXpA/aQ/QfQ5o7jWQybrGJqvos6LVVjhQGvTJIESFlrF2HaN5QqRFdYRhJNo4n4+VfK1egDL9jPqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I0N4qA7Q; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778433838; c=relaxed/simple;
+	bh=QoVU76Cp0NVeUsf1JdZme8c40qs7HpiOp/24ZpvsO9M=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Hgq4dhuddHqd2fqo+6nPOawkYLv6KwyEBvW7b9ppfa2tULmzQfue4n1uGJY8BxWBWF2tWx7LU2xZ1hsgHWlVfbTBcr4DUUpXA9QGxSOdvXba9R9qWN35tOWrDZHaIUDfYkDXLKMJLz29jGlFDfV9d/FLJ60sZ4fcmYdOxj7emho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U3zjhobr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I0N4qA7Q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34ED6C2BCB8;
-	Sun, 10 May 2026 17:21:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U3zjhobr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ED70C2BCB8;
+	Sun, 10 May 2026 17:23:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778433677;
-	bh=iMNBtNMM6qK67zwkQsw5VnancBPqyT2EurscxBqQCOw=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=I0N4qA7QbwGWoD4CtVz456cj0a70u7R//UibTHhRrXuth7qeqE3okkXArNkFTS8oV
-	 x4jOgYU6Lz42HeUSy5K2EmnxSy7r2lrSIQQPD+7NjUML3N5x8r4J05fua4DDIdsHjD
-	 rms6Dx9Bq/cFAcj4lAAhPCQ3ThnN8lHM0H9grtdYUHw/2/BaGzgcmL2XrOtXJY8MUK
-	 PA3lk5+RxPGd1Z8BtmFPq4S6vD6q8dVw8OHRzTpjbgizKCA48bmJNRHaWMpwfZDce2
-	 QHnbuSTDPnurupjPVAclG2ncdHUKnU5mKCeKV7OhvBKSCPXVUOa0wSOIzKoP8v0a+I
-	 qDkr/6veUYpqw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9EE93930020;
-	Sun, 10 May 2026 17:20:25 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1778433837;
+	bh=QoVU76Cp0NVeUsf1JdZme8c40qs7HpiOp/24ZpvsO9M=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=U3zjhobr0p0caeMJq7kgKzz5Dt7+ZmgQeGmbBtivyNKSNcDHUObRCk1DbwAEPSm/0
+	 VRHsbVdCCGF9g/6m44cEWuQd/N17rIS70zg5kjXcFOU4/YKEi4Bjlc62GbcyHeV5sO
+	 fjpgpIRURAVsM/zPB2Mtn/EzQfCu1wUmdl/sHVHb+fg+8Dx9apb5b3HXLgdz4Pylab
+	 maJuzsZIraHYFVVRdN1lgfhP8D5UoiSHh4GODh10M09AIG0KpZ8UvUVqPbyc9/6j3U
+	 xJHt0uiXVAW+lr9uz1sr3SZjOf7xJr6Cn9Ri2AVqUhjXnIbSTlWJqMLejvqWzqrvLy
+	 BIVeyGK6CFF8g==
+Date: Sun, 10 May 2026 10:23:56 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Hyunwoo Kim <imv4bel@gmail.com>
+Cc: dhowells@redhat.com, marc.dionne@auristor.com, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
+ qingfang.deng@linux.dev, jiayuan.chen@linux.dev,
+ linux-afs@lists.infradead.org, netdev@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH net v3] rxrpc: Also unshare DATA/RESPONSE packets when
+ paged frags are present
+Message-ID: <20260510102356.1e41ac6d@kernel.org>
+In-Reply-To: <agC6z1FeEN6jMjyk@v4bel>
+References: <af2kdW2F1gJ9U-Gg@v4bel>
+	<20260510084520.476745b5@kernel.org>
+	<agC256wVYa4Gnvy1@v4bel>
+	<20260510100310.230b15ed@kernel.org>
+	<agC6z1FeEN6jMjyk@v4bel>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2 0/5] net: convert four more protocols to
- getsockopt_iter
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177843362429.1437390.7026110472657102659.git-patchwork-notify@kernel.org>
-Date: Sun, 10 May 2026 17:20:24 +0000
-References: <20260507-getsock_two-v2-0-5873111d9c12@debian.org>
-In-Reply-To: <20260507-getsock_two-v2-0-5873111d9c12@debian.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: jk@codeconstruct.com.au, matt@codeconstruct.com.au, ms@dev.tdt.de,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, shuah@kernel.org, linux-x25@vger.kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linux-kselftest@vger.kernel.org, kernel-team@meta.com, sdf@fomichev.me,
- bobbyeshleman@meta.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Thu, 07 May 2026 03:57:49 -0700 you wrote:
-> Continue the work to convert protocols to the new getsockopt_iter API.
+On Mon, 11 May 2026 02:05:19 +0900 Hyunwoo Kim wrote:
+> On Sun, May 10, 2026 at 10:03:10AM -0700, Jakub Kicinski wrote:
+> > On Mon, 11 May 2026 01:48:39 +0900 Hyunwoo Kim wrote:  
+> > > On Sun, May 10, 2026 at 08:45:20AM -0700, Jakub Kicinski wrote:  
+> > > I was testing a patch based on skb_ensure_writable() but it seems v3
+> > > has just been merged to mainline...
+> > > 
+> > > What would be the best way to proceed?  
+> > 
+> > Depends on the tree. Where was it merged?  
 > 
-> Convert four additional getsockopt implementations to the new
-> sockopt_t/getsockopt_iter callback:
+> That's the torvalds tree:
 > 
->   - MCTP
->   - LLC
->   - X.25
->   - KCM
-> 
-> [...]
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=aa54b1d27fe0c2b78e664a34fd0fdf7cd1960d71
 
-Here is the summary with links:
-  - [net-next,v2,1/5] mctp: convert to getsockopt_iter
-    https://git.kernel.org/netdev/net-next/c/85f22f66f303
-  - [net-next,v2,2/5] llc: convert to getsockopt_iter
-    https://git.kernel.org/netdev/net-next/c/e0a917bca147
-  - [net-next,v2,3/5] x25: convert to getsockopt_iter
-    https://git.kernel.org/netdev/net-next/c/447edcb0e4be
-  - [net-next,v2,4/5] kcm: convert to getsockopt_iter
-    https://git.kernel.org/netdev/net-next/c/8aaaa32a7965
-  - [net-next,v2,5/5] selftests: net: getsockopt_iter: cleanup
-    https://git.kernel.org/netdev/net-next/c/c8c2bd2bcf67
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Send an incremental patch on top of that, pls
