@@ -1,62 +1,62 @@
-Received: from sonic309-20.consmr.mail.ne1.yahoo.com (sonic309-20.consmr.mail.ne1.yahoo.com [66.163.184.146])
+Received: from sonic317-32.consmr.mail.ne1.yahoo.com (sonic317-32.consmr.mail.ne1.yahoo.com [66.163.184.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD153368B6
-	for <netdev@vger.kernel.org>; Sun, 10 May 2026 15:33:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.184.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A7339FCCD
+	for <netdev@vger.kernel.org>; Sun, 10 May 2026 15:35:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.184.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778427232; cv=none; b=iCM/XsSwj4ZSw0UwtVIUjyU4XlfD51C/ijiThh0zDmCozfAO0jrmAkrk9R+0Q5SSptJ3gXJAWK+NsT3ZIHH8zNgfw0PHMY8uSqNZg1Tc0rhSLbYs1Y5DP/SfXdzLE1EM7et/+BtSgJL9MWT2dJP7VvxRnzi+bKXuGoiMn7L0LEs=
+	t=1778427311; cv=none; b=SncLqG6LcUNBOY/ITA7ZWduSDKwLPJdazV2WFJVdWbTdCDTnHuOQuV1o0wxCpUbqh6v09ZyP0J49Q5xSkXaNlXY8akujAAyUxMW7+Hcw6hjjQvPoj4czLZ/2sIXg5jP/Ze1W++QA/ZWKjuxi+Y/4AqYaOEXdlY4WQxHQEX41emE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778427232; c=relaxed/simple;
-	bh=0XNrj3KVYYAViBnynH2CLdVegqpjuZ0tR6aFNZPM0ec=;
+	s=arc-20240116; t=1778427311; c=relaxed/simple;
+	bh=E0WX8QyW3WFecpS+zkgRHz2p4cWAhBdbu9Oty9/8Hvc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VOtUKhnGHxfEGbcnZJMAQw69eOvNbC7Vcm4yisLQ8ZBEO958wCXMjdMBY85zCWbYO92Ni91EJud4sdq9c/5Uqm6fPTS//NqAS+/XjpWvjeP3Dq3qBCr8wkoSAhEFV/Uj5HKp2BeCPrfB+BFiVNOQKM7jB3mLHTPuzfArhag1HdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=qFaSa/ra; arc=none smtp.client-ip=66.163.184.146
+	 In-Reply-To:Content-Type; b=uWMpdphWBzv595nbcbDaLsC4ak4lxvsg27xlYSF2HZDdZAry1kUqwbagoMeHRlK/KXe5nmRiSQn7k9ySWpy2aMsxv66l6X2QEMNNRno+Uj6sZ4SwgHZ/qMzqMNjgcLLL9Xwbxe3DqPc/YrikJN1AbW5FO0EIA65coG0CCMe8YO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=Ief0CCpq; arc=none smtp.client-ip=66.163.184.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="qFaSa/ra"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1778427230; bh=/GrFhv8KNgfofnsczsBQh4X3Q/PoTxOC9GDrVxhIcn0=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=qFaSa/raHAsL/3vBUlacjEmsl6o3rfSyzOnLgY/orCkY5ucAXNgUiXcMOtSCDcywVxcQpTzlbmjWdsWVQRVRYO/1pyKsQx4IlGT2T1y0WvNkTprNN56cB01ATA2sM9viA27y9iOZyaflrS2VRVOdb696mSLb/KTyM+5uYjJbNlbBG/Ay+zy3Iov9VWbLXsawHU4v2GbQzJihdccxholfOkqOhbPWEBFDJjDIKL5WoRzq1mhnvUvJWwBbZiqaK0LSOhwZrr9p0ZNwq3HVRJj61kTn7rx4sXtUPKtw1Icoz62rW0uq2DRXBgqEfU3Wql1jPOIG9ChjcEruBY+06KITWQ==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1778427230; bh=e7Z2MGFHdt5D9icYSKsGFr8tD7XukYul4I91MtcItbn=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=ow1ekIUUp6ib13do0ON6KwdnHfF52lPOlEHyy50V6gXtXTAFYbR1vTHixhqU7sG+2PSc+Vg3Ok1EbX5piz8QoeMwkmMsW0xu3fGB7KpGa+K2lYXelQJSN5O7lOd1CsErzcTqick9Zz1rAl0jCjugg90MvD0NcSv7BQ1R4gbqH4hohNd+6OT1P4LypZfXduDdELVPoy4x8Rbn1Gtga+yVZpG9X3BGWMc40b6QvpQFKgX67Q+IuCcjutQlELJHQFpMRfHcQsYK/4+JTtBWa89ifVPj4/20rYQdvrmmHVgnkRSv8GRKQL5BeBSrhcqZjDkcKBLpSpVuZmQzm1zsFOttGA==
-X-YMail-OSG: CxemiO4VM1kvExZkKL.bNhoKKEVax4OXuV9nOQlLgV5THNzu6tjNIpaKbypPgdu
- OpyY0j1PE5XVQqwrwniBn0IVPbCRilqt6KDWjvsg68G8EG9rhsOMD7uUq4Ht.hIdZIMl59Lc3Pdw
- Kwz_hvXz5EN3J9iqvuC6.Z4bXcwLUp4Rtr.mtm.7fpmcEBsWjFmUMZxB38guwVHMvkQvx_THMgF5
- 2k9WgmJCYVOgdGWGffLUYKTjh5zuD8ZcsNu4sewXqeC3EL7VMsttBotGZVmjfZ3TivIo5vzjH8cZ
- 7tgPdDBdc3uasUoykUwerTQ6LrianDcKp40Js5kGEpTEK3YMkGJGTgxDnCA8dUtQHPLlzcxz9_ZM
- 9VnmO.xrBNmKZX3cyc5gBrfa2KEYefULZs2btmErJD14s4vUkWRmOPv0zscpfB7.zaFqpZcGmhZo
- j0aG_LT9utw5fZ3X7643EUWhWdXB4.tpmn7lFOKzrQJHCLrPjftulQMKktmu2oc2WE8Z6ZhbhSY_
- A7YXCWi.oTnj.6pdGVD7QQ46wyJ4GeAIYT0KJaowFStPbddrXlTU0g5lYGfgTsK2OA4DxPsoeiBt
- fzPWarL.DounMrgom2VLg_JQIY1d_JIpiKT_5DxbnuCZy7nDZi30y7rU_ePuyExc8rJahJvQmELc
- MjxHcd58A1ji.pXhQhNqmmr_duPKf3jlPs9fl0hNJY30jczk3X54tW8MGKK2Y8bMtcjpHTGxJK99
- XHWK4vSLGSlxp18_eb8QKJifm9GlAzXHUrydRZ1OBphWNgQqFBUK7cfBP8rCRTNxIyrO068Z2X2l
- UMrB.EWk7ydJRgzUJ1RLJ4pI5Te4KbVRK72ctvO1mUnRj.HLhGDJXMl7_qQssrqcpkPYRss2hWA_
- IrgHfKsCkqzO.RAo.YoKwRyiqAU9VlUZhPWqwPGMwI9UZ9LWUsFv8sqnqdnZFKFPlX9C838A.RTQ
- L4M7epZND4nNB6tz6x5Or.DDQqUzTgFMf8Pwjb09r0q9ppM1ZNA.6Hp9xrMrmE7S1pp43h1Ajjf3
- STgZirWNdDAW2z.hVk9DbebyPQXag_cRA_JnJ9K.uyYUwbpH1m9.0b757XGv3kRd5z92P2mDteNA
- MLEt6pKk0JzrDt_PFlmHhpGNOeO2n6l6gZGF9PebE.42jB7NECFMRBdZvBMfgWQ7St6sWwcNRxPL
- _Ji80VnY8Jz81n8Upss.q4SJMy3XSWTUyzbcQ7Etieowx9BzVooySofEdurd_T4w2iuy1O0RjiCj
- k1zU9p1Zr3QyJW90Xr4pkVc775eXcQ7v5riBt7GaNQM26tipqFRTHN3PvGNOJEz_9fdoB.6CCG6d
- KXSRxqEXG_NadEVwiExyD8590PcVyYG_pTlcOWKyD5_rAjuTI_ceM3ZhPMpYNldJB9a5eAwFvfXc
- nEG5Wq1na1GuQIFpzDw72VbVWGBAZJ.W3tqFXoP5EHcwd37Cq7IsfpEOhdbBWMgRUl0geix35S37
- 72Rp6rRNRxYjFxsoLzaZ1adBxuzBytiIaJMvbGyve0elbpjBXGXhtEOVZCtMurvBQ.yc8dcV4Yz6
- 3QsEijWk9MDS.4NktNW31v._uMledIWzAmxnyT1atO8NnB0duOjYTYLvbYF6wHimrRtV3jKymGtX
- CnxIihdYvFtMkkRvYybB4.pJbyPODIze8snC39UrszatpOmd3xF_QAVNO6VmRq4gwsODzlQ9ggKF
- ojIM5QZqVEjp3GgY.6zQeFFKgXuj2fyt474RmVU85qbOBMo7MI.wSBJQzQUrBWpVzsv4Q2hAH8cr
- a.R4Y8iSchzg7RN59RcAVei4scSE3YHS0BrYrqwKP9lfZLIuYCA97n_XRSRvcUwjxDy4W0cD16A1
- 4qjn_mw3xEvsbDEQmxEyYMBvyb8GgZLTFDXM_PxjYdLrValCymSjtKeKugIyH3KWkqJJKa2pbG4g
- yUfU7kZCJg1P7MetOhZMFQL_eF6xjxq.S8OPvzAYL8t22iBSiGR0RIhDjPDxqIRKRbBATkFFPbA_
- uvUXby8Ms2Dx2xytDNLlzbwerTQcb4MDIRof1iIGQqkULnkVmyV9TQ0LkJTkBT2b93yeVmRU4Eji
- XG9vmqqNSFz.NICeolDXUtVHvDj_wV2Krybk_rTg2mAu1ur4oEOyDU5fCWFdA2kLsveiVb77PyQM
- CizMJ54PGGQjdjZTYzeppVE7LMwrbFf3Xfzmf89DB0Crr5Tho3lUrcjpAKfqboYtWzcCXxsLZrOu
- pllfZqZfJ_1t540lMF49lyzPhyjSGvVOwk0IM3nhS..SDqQPA.meyWvO3HIQ7Gjtyf9i_34SDDL.
- 3jiiECenL9xaCdXBGnAO4FYUWtL72ucEvhbMytMXMenCfgSs-
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="Ief0CCpq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1778427307; bh=BgApuCRjqNx62hDmMa4sxFesVRknbQ1cHFpoz/FRJ5g=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=Ief0CCpquHG4/qky2jyA67udBdYSlo9H9rg8Dg8dGq61POX+oIiJQJgzgHw7yQyAcMH6ZJpKzOea4bC731r1Cj+P2V6k2iXpSp1eUzfxEyMpOZp/PQxVGc3F/3kY3EnNTm2Fjz7thbVvZNqPhqjNSZ4zNiKM8BSoX6fslWwyXpX7HOzLgyI0nYF1oUY06YqfRnTwwvDYAFibZaGMBUH2Iopbma10LNQIc2OQ4byQmmrCnRz3VTBotW70dj7+TT43I+/WnqV+stBQOcdxZZzQ7HRouoiMI+LNPkOUm9UhR0mZIl/oQ/ZtZvvFJ8CKGQWOpzK5SSF3Tdvt2QIRpel8SA==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1778427307; bh=ADH1t9fvQ5RxWC1TBMMvTfPpiTAMk8P4Kk8MOaH3H7G=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=SYCRyon4e0xwSehAqPFTiqthoURjJ9lmOOQrq+lFTj/2Lxa8PWkBYX9lE+qmaAnsEKTcJb6/tvEkdLLzkQuJ6M/MbfzL/aE1BKxbH3ffO8Q91JEfjvRK0OJ0iihrxOZoGlDpp1HjpGO2Mkn1nnhVfSHGidIyb86GUC49kqCfJYbXZA+3pK5Hi4Ser6/f6VPTQctqSn/CKs2NkkHkBqUtQXeaY7Hyk+eaZC5myNq0UB1/K430LubztGwYbkP+F1gI9M3mcw9o+mc3JNAQnhNyxML+CXGEWW3fFi3h7VaMiofurv090GOfD5VTIVnYO2A8YA/rvIjLZM6vQkWBjpZVXw==
+X-YMail-OSG: 1XUMlg0VM1lwk3VuQvoqmWElPN4sFgyvg8_.KqRfPItcwxH_rf0O0aDsTzBedMZ
+ go.9ZxDAmQLSwhGBuH3z4gFhBFPEIM.cl4lChLGkYfFNB.L7Cbu2tAoTjHqlz8YrmigdMT_B5c94
+ QNWWavq5x2.fyGeUQPEtmhxXWOX3L.gQQpdVoQbIcn0aYudP0oq9wiZcsOqlg6n9l20daeiS9efK
+ tyJDSkquLipxeWMZhiXdpjjWAl8TOyAS5UHZfB6y0KluguO.fRImQZRfoWIsvApaO.sR7.rLB_YG
+ gHF6ge1XnzHPsuueUlTNT10XJeLcnGMlizgWcvGhsPCMhN99b18JQKFIMzn7QWzat.Sv1RnatgvM
+ J_jiPeKZxppidOnoLgjypCc1j65Bcs5irXEu65mu6j_rIN2PnygS_TCLzFCM0z_BhJpo56FNg6rd
+ Z7SRr1RJvKWu0Zx50Vxm2K1DXVzCaRip.ur1r_5gKbC5b3t1SKxPPn_teeT8hzHafeReqoPjMgfH
+ G9j_7H_tE_hcJVJA3G0zwnJp9ClAMaLHXo4kFk_yZTIXu2NAzWqdPGjmNyhpUlAfb4FspDU6sU6z
+ aIWHXzZwhOW6eOINCfDSvtNTOgjl39Y4kJVaHVvesEiYsAzB0zFqTZX6.cnexuaKe4ehUJV_gqq4
+ Wab.KvV1n_lHzQVDQAp9ZLdVHqIfvwBmpYAKx_QmbpQY79TiN3cp4SeAgll4Hr2C7ocfVTbuk7sh
+ jQAmPhdIEJCzXok6DzBHNlIJXUxyrrK27eMohKePEuoX4hGp4QSIU8ScMUc4wLNcKU_aiBnlv1.L
+ OfdYC7rQ_CngYs4W6FW5H.khwr1UQNyvVZfM1z4YTTnCWQY7UTRfbismNusRhTa9oe4A18RTNw0F
+ aw0hhaBxyFOSg60yAHji6jiWvS5oMZfuOHTsAthGF4l6hENernj1j4y2S_C8IZUtwRMBdekoh1UA
+ XTh70aZt3AAyQUng.DnA2QyXrybwkmhHl6P4xRndBzoqmUV7BihTLL0SQtK2aDe.PnTiNQb8noQo
+ EFVktJAubsItO3tmM.lUM_Pxhzj21f5xFaV2psIEnLDikd1vBi4wm54LsVVEQ59goT7fHoSFTdtk
+ A2GM9X6lBfkK5yHsDWZIPAhBsPk06z9NgC9UlIsw6z_6rMSyb7ecjLrr3lmVGhou.icAfv_QrMyJ
+ l.AcK.YA3keBAz2Ku3gvP4rFRVR9zLDff5IWns_V16Od8hKga0yRL6BO4bVm662XQuxmnejik6kb
+ psqK_.IdCtz5B3nwv08gAuMqS8.hrkvLyyl8NolYO2hQlkvMWxmEWEqXg4D0GdNuzNOb4V99N9mi
+ LlVSSzh.HrMqTWJQVOuUujWMiw3KfPHARZU1xfWsulBImZx9YwOoP7gYd_zL.uNxC4rsunUyKM9e
+ JSx3kl7JVr5zGLOFGWGhowoB_f4yIsPirkmD3Q4VfOOpNBeFczShtkeGylIh2ejqRJ7zIEv6QNZk
+ BjN2H7ySZ0rSWQ1EpUyVRSaT3s.YuEx2p3XwWgwKQsWgGlI7MJqDVNq9BQdPiPFgVyK8sedd.uRx
+ EyxXMYaReKNqJ0ONA.DYgzeZrVyM0Q3zsFidTpXunQxGWolNy9eHbXQkixrXeb6FgEyi_9o7Oyzm
+ pr8jAkerSpRiZjf7FeADn9arHfVWBXsfuxy.C7NqPzpSDGflKgXeTx_Mjx4LC7cdGuw2GpgnQHUO
+ o3o23GgCRMJfyveAliMnsYlBxgbACUpBQgRj8j_7QX96CoJ44.5YRbapmMs_ESvSyjWAHtDNxfu5
+ vNMv6KgjWJKwZ90j8nJmHN7avNjzGUe6abcyLNMLwo6z.XIrX6BFHtDs16VaHmLYdmxzg4z6W0dV
+ xd.6JgzO3Tf0s1hOHWsFKijcqiHEViCZ7Ku0LMfawniNXOanB0EIRKBOlRNhLoHZxcnGmJlj29xP
+ erkK3dxYMKGrIv9Z1vrN2nTqlXyPPskVEBmHPLTwQJ726qqclGwFe.hl7orBYtaMFcNbhBbLbR70
+ exV69rmJSxnul7b521I4tt.oes6Gaw7Za_jq65EZvo7gkxlz72NGEm_YSMPArNE9Z0UIPSZ.GKam
+ O1Rx62kQAqtcokdtUPI1zNkib.Egqjn5QkZY9t8r1iNXsLyWCkfhFRoGaAPFYI.J2KHDDrExSJ_0
+ dvm27u2J85jMXxKGSPWed_Lh22KVQ6idnnrpoJUjJ.kr__f3JcFt3k6M8n8F2hC15BN5iNiu25hd
+ RpiOO3ibbv.XF4.pl6Ap_1GPCE1oFjBISz8jxwuPLiHUrTfrBysnddtyYo9ePu.BFanZPlG1c6vF
+ TtOhPCeGzrrbXjEBHoX77nG4DpKKk8O6cVsLqFVKaTjiXerJ13Xg-
 X-Sonic-MF: <namiltd@yahoo.com>
-X-Sonic-ID: 438b7af0-e302-4e68-bfc4-cf4caf84b5d1
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic309.consmr.mail.ne1.yahoo.com with HTTP; Sun, 10 May 2026 15:33:50 +0000
-Received: by hermes--production-ir2-89844b765-pm5kn (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID c03192a3bb317eb6d5227ddfdbf19791;
-          Sun, 10 May 2026 15:23:30 +0000 (UTC)
-Message-ID: <37aab627-b1e4-47ae-9b51-96b7e51f6b81@yahoo.com>
-Date: Sun, 10 May 2026 17:23:27 +0200
+X-Sonic-ID: 36f58c25-3f1c-46e5-a43d-7da807e96455
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic317.consmr.mail.ne1.yahoo.com with HTTP; Sun, 10 May 2026 15:35:07 +0000
+Received: by hermes--production-ir2-89844b765-6g7zf (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID f3a60c2a7e4c7c2f524555c20c3c538a;
+          Sun, 10 May 2026 15:24:49 +0000 (UTC)
+Message-ID: <4402ff35-ee1a-4e9a-9160-611c32e4c710@yahoo.com>
+Date: Sun, 10 May 2026 17:24:47 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -64,8 +64,8 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next PATCH v3 2/8] net: dsa: realtek: rtl8365mb: use dsa
- helpers for port iteration
+Subject: Re: [net-next PATCH v3 5/8] net: dsa: realtek: rtl8365mb: add VLAN
+ support
 To: Luiz Angelo Daros de Luca <luizluca@gmail.com>,
  Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
@@ -76,26 +76,65 @@ To: Luiz Angelo Daros de Luca <luizluca@gmail.com>,
  Rasmus Villemoes <linux@rasmusvillemoes.dk>,
  Russell King <linux@armlinux.org.uk>
 Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Yury Norov <ynorov@nvidia.com>,
  Abdulkader Alrezej <abdulkader.alrezej@gmail.com>
 References: <20260506-realtek_forward-v3-0-1d87c5f85a3b@gmail.com>
- <20260506-realtek_forward-v3-2-1d87c5f85a3b@gmail.com>
+ <20260506-realtek_forward-v3-5-1d87c5f85a3b@gmail.com>
 Content-Language: pl
 From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-In-Reply-To: <20260506-realtek_forward-v3-2-1d87c5f85a3b@gmail.com>
+In-Reply-To: <20260506-realtek_forward-v3-5-1d87c5f85a3b@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Mailer: WebService/1.1.25725 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
 On 5/7/2026 4:58 AM, Luiz Angelo Daros de Luca wrote:
-> Use dsa_switch_for_each_*() whenever possible.
+> From: Alvin Šipraga <alsi@bang-olufsen.dk>
 > 
-> For port setup(), a new blocking setup phase was added for all ports,
-> including unused ones, before the user and CPU port setup.
+> Realtek RTL8365MB switches (a.k.a. RTL8367C family) use two different
+> structures for VLANs:
 > 
-> CPU isolation now includes all user ports as traffic was being blocked in
-> some scenarios (suggested by Abdulkader Alrezej).
+> - VLAN4K: A full table with 4096 entries defining port membership and
+>   tagging.
+> - VLANMC: A smaller table with 32 entries used primarily for PVID
+>   assignment.
 > 
+> In this hardware, a port's PVID must point to an index in the VLANMC
+> table rather than a VID directly. Since the VLANMC table is limited to
+> 32 entries, the driver implements a dynamic allocation scheme to
+> maximize resource usage:
+> 
+> - VLAN4K is treated by the driver as the source of truth for membership.
+> - A VLANMC entry is only allocated when a port is configured to use a
+>   specific VID as its PVID.
+> - VLANMC entries are deleted when no longer needed as a PVID by any port.
+> 
+> Although VLANMC has a members field, the switch only checks membership
+> in the VLAN4K table. However, when a corresponding VLAN entry also exists
+> in VLANMC, this driver keeps both membership configurations in sync.
+> 
+> VLANMC index 0, although a valid entry, is reserved in this driver as a
+> neutral PVID value for ports not using a specific PVID.
+> 
+> In the subsequent RTL8367D switch family, VLANMC table was
+> removed and PVID assignment was delegated to a dedicated set of
+> registers.
+> 
+> All ports start isolated, forwarding exclusively to CPU ports, and
+> with VLAN transparent, ignoring VLAN membership. Once a member in a
+> bridge, the port isolation is expanded to include the bridge members.
+> When that bridge enables VLAN filtering, the VLAN transparent feature is
+> disabled, letting the switch filter based on VLAN setup.
+> 
+> The use of FIELD_PREP for reconstructing LO/HI values was suggested by
+> Yury Norov.
+> 
+> Fix for vlan_setup and vlan_filtering was suggested by Abdulkader
+> Alrezej.
+> 
+> Suggested-by: Yury Norov <ynorov@nvidia.com>
 > Suggested-by: Abdulkader Alrezej <abdulkader.alrezej@gmail.com>
+> Co-developed-by: Alvin Šipraga <alsi@bang-olufsen.dk>
+> Signed-off-by: Alvin Šipraga <alsi@bang-olufsen.dk>
 > Reviewed-by: Linus Walleij <linusw@kernel.org>
 > Signed-off-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
 Reviewed-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
