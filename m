@@ -1,165 +1,165 @@
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013013.outbound.protection.outlook.com [40.107.201.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 095643BD63A;
-	Mon, 11 May 2026 08:53:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778489616; cv=fail; b=L0e2VnmQxKH00fmIoetJK2v2yHjp8V9q3r6Rrh17KjRbG6r9LEUzXX363q9fXtXNIAcPN10Tr49K9p+VZU6jjn17cGAZhRUxJBQXnjnmOhMQ956tYwyuZjeiHV6cxKJYm0Enlsqz1156cVJ2huHkzKgDIb6a2KUR3AVzsM0wlww=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778489616; c=relaxed/simple;
-	bh=amCW6mSlhZzSBBzUYAUIu0z7pjdMGi/GimaxwN9Bd4M=;
-	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=nE9vS/hVk9DCN1KBTvlPiN/3u/pNpK/CJrB0qjBQWMhvUWnZ2m+wwKPBD9oJaVVZrstSEjoOkLkuHgHd9d/KaIG3QeEPZkUDbbNntZPHHQzdC5tZjITqaw8rKt630OJqOihgDZLshzOtad5WNiSL31/6IsqInazxplq2PYo4Cyw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=NQUq2ezw; arc=fail smtp.client-ip=40.107.201.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="NQUq2ezw"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xqmqC4kA4MZBMMOZtRAVzCiYQXvy3kJIkvw6/rHJUJWM2IMmQzRSX1hFwf/6h8SeKXqNnXQ0jV3jFGogBQW6sxhrc96jjtOi8Bxs22DRY0Ywq85li+kXmefHFYE1VDkUacNh8F8/Vsg+3keiUcwxOZxQjSBNuFBBiFDUSIThrVpKOr5Wk7osP93e3BGOro7EWvKFwXMq8H9DteZy3kJYPfeoY2d0mek2C3etyGumTkHXA9qlPHt/KFJ5VxreIQhC4P3oORUKUxaJLIm3rXb2kGjt525zO8j5TgIIbBfbzpP+w68igB9GYX1xKOWtsbIu+goUetts8/zt2ZkK72CaEQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1wgzCjs4oUlH1HTnxOUFAu9W2rMh9dV+Wbcp8gTlzZQ=;
- b=MmVFzQ03Kq7AYjtg0aUUpfKH2hUNzvLJE2uUt9r4bcNiJoG14AWZSopdIx9j2QPpKpV5zTQdhBq1Q1ApLqEBnTUrMx+149XW7PPBHk1KmOk32sCFldvY+ffgI/01Sx764rFMQrytbNhjteKYHxAbEO5U2IeDA1O5Nzr/zNT4/I306bivW6mF/ECSeQHgk5Bg+VJSh6dEpGIMXW/vQfpd+MjL+kWG4r/89QAcpnILcNCzXmR/7WN2ZAScdhsOTm8EKMt3z98D4eW1xxFRQMd8AjSfy0Tgb2n9xTIDABNFQGi67gvJclhnTM0nr7DE1dQj+Ge3/bOY1SOY8IOjVKEzlQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=linux.dev smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1wgzCjs4oUlH1HTnxOUFAu9W2rMh9dV+Wbcp8gTlzZQ=;
- b=NQUq2ezwTHNuFVyUYoL6WuecfrYQR1QheYIvZzzY+rKTiwXYsgmq9WSMlzf62/EIRQX8fXbUfDAlLV8qRk8Vp8hCahfnd3FN/Oq+rBJWI08MSy/PxdmYI7PGjxKxCGYmNODMF3IIFG76I7GHVW4l+6+chIuDg0oMfFVXIKN9YBNoCm9xeqpelD8HUwdx1nkEthdILDnKYaqjogc5NDWmpUizLfvwvkRpy7AysZa6vwKJj8iWANrt5d4GyfPUuSAWm/NLV/+gmUmLoZXbRx9Qb9aLIZQkldlnjCVB6cMoLYm3seWFZ0WrsGeL0xoCnyud3y8BSYX4CdfWz7mtfmp+YA==
-Received: from SJ0PR03CA0156.namprd03.prod.outlook.com (2603:10b6:a03:338::11)
- by CH3PR12MB7596.namprd12.prod.outlook.com (2603:10b6:610:14b::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.22; Mon, 11 May
- 2026 08:53:24 +0000
-Received: from BY1PEPF0001AE19.namprd04.prod.outlook.com
- (2603:10b6:a03:338:cafe::fe) by SJ0PR03CA0156.outlook.office365.com
- (2603:10b6:a03:338::11) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9891.21 via Frontend Transport; Mon,
- 11 May 2026 08:53:23 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- BY1PEPF0001AE19.mail.protection.outlook.com (10.167.242.101) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.25.13 via Frontend Transport; Mon, 11 May 2026 08:53:22 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 11 May
- 2026 01:53:09 -0700
-Received: from fedora (10.126.231.37) by rnnvmail201.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 11 May
- 2026 01:52:56 -0700
-References: <20260511033923.1301976-1-rkannoth@marvell.com>
- <20260511033923.1301976-4-rkannoth@marvell.com>
-User-agent: mu4e 1.8.14; emacs 30.2
-From: Petr Machata <petrm@nvidia.com>
-To: Ratheesh Kannoth <rkannoth@marvell.com>
-CC: <linux-kernel@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <oss-drivers@corigine.com>, <akiyano@amazon.com>,
-	<andrew+netdev@lunn.ch>, <anthony.l.nguyen@intel.com>,
-	<arkadiusz.kubalewski@intel.com>, <brett.creeley@amd.com>,
-	<darinzon@amazon.com>, <davem@davemloft.net>, <donald.hunter@gmail.com>,
-	<edumazet@google.com>, <horms@kernel.org>, <idosch@nvidia.com>,
-	<ivecera@redhat.com>, <jiri@resnulli.us>, <kuba@kernel.org>,
-	<leon@kernel.org>, <mbloch@nvidia.com>, <michael.chan@broadcom.com>,
-	<pabeni@redhat.com>, <pavan.chebbi@broadcom.com>, <petrm@nvidia.com>,
-	<Prathosh.Satish@microchip.com>, <przemyslaw.kitszel@intel.com>,
-	<saeedm@nvidia.com>, <sgoutham@marvell.com>, <tariqt@nvidia.com>,
-	<vadim.fedorenko@linux.dev>
-Subject: Re: [PATCH v13 net-next 3/9] devlink: pass param values by pointer
-Date: Mon, 11 May 2026 10:52:09 +0200
-In-Reply-To: <20260511033923.1301976-4-rkannoth@marvell.com>
-Message-ID: <875x4upbtn.fsf@nvidia.com>
+Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5C843BF676;
+	Mon, 11 May 2026 08:57:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778489859; cv=none; b=Snn0SlKOw0XCm88dwDkgR+js2ar0dDrcgAnWjxjtLrDKw2g/pcRfJBJuuM/S50reS0okoP6p+f4shmrHXvwjRcNZ2XwvCiEI92AtYE+AxotqbrOF2tn3YlDG1OT4ypbh/ATJ0yDvR8HFrpNdpJdBvpccUS1aR+ffor4h/2QEgRo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778489859; c=relaxed/simple;
+	bh=/0K7mDA6mWO2Krk49Aj3svhN7vMdjMYf1EwQKpjkh1w=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Ow3nRvKWl0WR3DuKOlZZi7LL9donEYzFmESLhTAUFxjr4WkgTO+CcdL0DEUQ9UmidH3dnl6lEsfgp5f3bYil3CN2glxXBkgy/SzZIY1RUR1V5cs2QvBJiojL9U6y4vpoUCSK7lbN3yuEQwPGFJ84sWn4Tgq+wZXgxj8cacqNtlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; arc=none smtp.client-ip=210.160.252.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
+X-CSE-ConnectionGUID: Vy5kvGYnTYu2mBwG9W4Aow==
+X-CSE-MsgGUID: 0vv5tZ40QJOmHxujn72bTw==
+Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
+  by relmlie6.idc.renesas.com with ESMTP; 11 May 2026 17:52:28 +0900
+Received: from [127.0.1.1] (unknown [10.226.78.135])
+	by relmlir5.idc.renesas.com (Postfix) with ESMTP id 1331F4009A31;
+	Mon, 11 May 2026 17:52:24 +0900 (JST)
+From: Michael Dege <michael.dege@renesas.com>
+Subject: [net-next PATCH v4 00/13] net: renesas: rswitch: R-Car S4 add VLAN
+ aware switching
+Date: Mon, 11 May 2026 10:52:03 +0200
+Message-Id: <20260511-rswitch_add_vlans-v4-0-a5a225f8faae@renesas.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BY1PEPF0001AE19:EE_|CH3PR12MB7596:EE_
-X-MS-Office365-Filtering-Correlation-Id: 292b0bb3-4b8b-41e1-4a8b-08deaf3ac1be
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|36860700016|82310400026|18002099003|3023799003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	zxd+WsW+5DLWx8RPzCfBexSf0ODcBNhmpS/ASt1Ie4mUueWA0kWJKz2shxACKLdgZLgvW42YlEzuGDWiiVKYZ9MkfevJ3Bj6x1jWDWsfjE8azcQpLWl79SwBY5EagmBBc8b7s9uE+3XuuRvVRSg1Y5qjBP8s/V8lIWOHmJyqCNuFn4Sbc2YEhTvYKxeQNB5lL8/Yu9QxK5YPknZVCUAZOMtLtiDXxY+g4Iinl7q8q76Eg+Xy7Jq3ae9ahhbWQuqGDCGPNFXDE8tKPqrpzSnC+85Hsf6sMpoxleBPgX77Ae+eEq3RaX47gW+yvj2DaVMHGwvnmxP9VmM5u40kdUqKYxQsVYgsPea/F31TwKSYNXwk2QlYAUJPmQ0Wo8mTIF/s/qql3AKEFvz1jY6gpTT1Eq0W8l03sSgGMWhFTeLZ4r4Npc9wKQHqd7heLvJTvjX6YPlV3pxZrBLcl3XkQY5Ey4zB4rdcaaeDhLyLY3I6pIGlB6d9Tjj01Pj8yZq0Mvb4JWOOeOGM3s2qZT+1ePK2vUcJ9FVLQ1qVdhQrdK5abNbqOQw+m4Bl5UhdZrm+JEUe306mbSW+6A1y/dAt6G2UkuptWklQDfmnk9S1sDt0rSniJMptzkg8+7xij5geD2B02+6wRRi6PQhaA4P1ueHuUUhY662MK9jtzzi4BLl8QnjsZaJcX2czsR094pcRz21GwCZPae1QuErh7IxGIMpQf2abhCnT2QrwK592zbUfJ1k=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(36860700016)(82310400026)(18002099003)(3023799003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	iq4uFMI/omVAf/HEIf4geZj5Q4M3F0nBQoaIPwM/vJFllToWK/5avJlILiO2uB/UjwvfA3AG62fNKgzetGu7XDU3ABXaUcEm/SFmjqsulnMhEBIfM4SAfr/S7YducH7r6Dhg8Hh8QBk94IO4ewZZpsAur0pr7xHddwutY0/IneUah6RTS2mBJX7vrQzt8eXadvIAHtaNPWxUQaDF/mkqhYvQQZUND+HNs1DvpH4wFTW6+QGRsV74TKWacYD+koL20TFUH3tK4hlulkzsb+EOoRpnRcaKcd40CkJYA/ldqcFXTTv7iIUHGaV5HPeGs9d7KtfRWgqvUhrs5OimSAM1PmMDawRfIdtJ5hEMoN2mnS8Sy0r/kd6ilIZaybX1utVqELn+qiB6cvWL6/3XBksYGtzYbwMfN2w9xtlDxNHWBsHzuClQfy37Tt6o643Dggnl
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 May 2026 08:53:22.6186
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 292b0bb3-4b8b-41e1-4a8b-08deaf3ac1be
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BY1PEPF0001AE19.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7596
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALSYAWoC/23NSwrCMBSF4a1IxkaSm6YPR+5DpORpA5pKUqJSu
+ nfTOqnY4X/gfndE0QRnIjruRhRMctH1Pkex3yHVCX812OncCAiUhALBIT7doLpWaN2mm/ARs6a
+ oa2klNKVC+e4RjHWvxTxfcncuDn14Ly8Sndevxmi1oSWKCWaCV9IKYkHTUzDeRBEPqr+j2UuwM
+ mDTgGzoyhaM1ypT4t9gK4PRLYNlQ7GMUEkV5+WvMU3TBxjr0nA8AQAA
+X-Change-ID: 20260120-rswitch_add_vlans-39488bfb296c
+To: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ =?utf-8?q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>, 
+ Paul Barker <paul@pbarker.dev>
+Cc: netdev@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Michael Dege <michael.dege@renesas.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1778489544; l=4440;
+ i=michael.dege@renesas.com; s=20251023; h=from:subject:message-id;
+ bh=/0K7mDA6mWO2Krk49Aj3svhN7vMdjMYf1EwQKpjkh1w=;
+ b=ummxGXkJ3a6z4BO+EEGtqwj8cCSQvji807TImBVu4Kka8OKjK5valrs9T84eInDPBOrAmSiVM
+ kEl/QwAmdonBvugGA2blX+w8SAyszvz5f1dvLzcuZ4EGMhUF8T2EZNF
+X-Developer-Key: i=michael.dege@renesas.com; a=ed25519;
+ pk=gu1rwIcCrAxNMv2I8fIfiQvt51xzZwnQy4Ua/DscQt8=
 
+Hello!
 
-Ratheesh Kannoth <rkannoth@marvell.com> writes:
+The current R-Car S4 rswitch driver only supports basic HW offloading
+for L2 switching/bridgeing. This patchset extends the driver with
+support for VLAN aware switching.
 
-> union devlink_param_value grows substantially once U64 array
-> parameters are added to devlink (from 32 bytes to over 264 bytes).
-> devlink_nl_param_value_fill_one() and devlink_nl_param_value_put()
-> copy the union by value in several places. Passing two instances as
-> value arguments alone consumes over 528 bytes of stack; combined with
-> deeper call chains the parameter stack can approach 800 bytes and trip
-> CONFIG_FRAME_WARN more easily.
->
-> Switch internal helpers and exported driver APIs to pass pointers to
-> union devlink_param_value rather than passing the union by value.
->
-> Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+1. For every port mode change from configuration to operation and
+   vice-versa you need to change to disabled mode first. The
+   functions rswitch_<port>_change_mode now take care of this. 
 
-Reviewed-by: Petr Machata <petrm@nvidia.com> # for mlxsw
+2. In upcomming changes for adding vlan support struct net_device
+   will not be available in all cases, therefore use struct device
+   instead.
 
-> diff --git a/drivers/net/ethernet/mellanox/mlxsw/core.c b/drivers/net/ethernet/mellanox/mlxsw/core.c
-> index d76246301f67..308d8a94865f 100644
-> --- a/drivers/net/ethernet/mellanox/mlxsw/core.c
-> +++ b/drivers/net/ethernet/mellanox/mlxsw/core.c
-> @@ -1306,11 +1306,11 @@ static int mlxsw_core_fw_flash_update(struct mlxsw_core *mlxsw_core,
->  }
->  
->  static int mlxsw_core_devlink_param_fw_load_policy_validate(struct devlink *devlink, u32 id,
-> -							    union devlink_param_value val,
-> +							    union devlink_param_value *val,
->  							    struct netlink_ext_ack *extack)
->  {
-> -	if (val.vu8 != DEVLINK_PARAM_FW_LOAD_POLICY_VALUE_DRIVER &&
-> -	    val.vu8 != DEVLINK_PARAM_FW_LOAD_POLICY_VALUE_FLASH) {
-> +	if (val->vu8 != DEVLINK_PARAM_FW_LOAD_POLICY_VALUE_DRIVER &&
-> +	    val->vu8 != DEVLINK_PARAM_FW_LOAD_POLICY_VALUE_FLASH) {
->  		NL_SET_ERR_MSG_MOD(extack, "'fw_load_policy' must be 'driver' or 'flash'");
->  		return -EINVAL;
->  	}
-> @@ -1337,7 +1337,7 @@ static int mlxsw_core_fw_params_register(struct mlxsw_core *mlxsw_core)
->  	value.vu8 = DEVLINK_PARAM_FW_LOAD_POLICY_VALUE_DRIVER;
->  	devl_param_driverinit_value_set(devlink,
->  					DEVLINK_PARAM_GENERIC_ID_FW_LOAD_POLICY,
-> -					value);
-> +					&value);
->  	return 0;
->  }
->  
+3. Fix typo in register define macro and remove duplicate macro.
+
+4. Add register definitions needed fo vlan support.
+
+5. Add exception path for packets with unknown destitination MAC
+   addresses.
+
+6. Make the helper functions rswitch_reg_wait(),
+   rswitch_etha_change_mode() and rswitch_etha_change_mode()
+   available to the whole driver.
+
+7. Add basic start-up time initialization needed to support VLANs.
+
+8. Update ETHA and GWCA port HW initializations.
+
+9. Clean up is_rdev() rswitch_device checking.
+
+10. Provide struct rswitch_private to notifiers.
+
+11. Add handler for FDB notifications to configure bridge MAC address
+    to GWCA registers and update static MAC table entry.
+
+12. Add vlan support to L2 HW bridge.
+
+Configuration example:
+ip link add name br0 type bridge vlan_filtering 1
+ip link set dev tsn0 master br0
+ip link set dev tsn1 master br0
+ip link set dev br0 up
+ip link set dev tsn0 up
+ip link set dev tsn1 up
+bridge vlan add dev tsn0 vid 4
+bridge vlan add dev tsn1 vid 4
+bridge vlan add dev br0 vid 4 self
+ip a a 192.168.1.20/24 dev br0
+ip l a link br0 name br0.1 type vlan id 1
+ip l a link br0 name br0.4 type vlan id 4
+ip a a 192.168.2.20/24 dev br0.1
+ip a a 192.168.4.20/24 dev br0.4
+ip link set dev br0.1 up
+ip link set dev br0.4 up
+
+Signed-off-by: Michael Dege <michael.dege@renesas.com>
+---
+Changes in v4:
+- fixed error checking in rswitch_gwca_change_mode() and rswitch_etha_change_mode().
+- fixed typo in use of GENMASK macro.
+- fixed comments from // to /* */.
+- fixed shared queue ussage in rx interrupt.
+- fixed assingment of fwpc2_clr in false branch.
+- moved PORT_ATR_SET to rswitch_switchdev_blocking_event() to remove dead code.
+- changed from dev_put/dev_hold to netdev_put/netdev_hold.
+- reordered code to make sure the correct type is accessed with info->obj->id in
+  rswitch_port_obj_add()/rswitch_port_obj_del().
+- Link to v3: https://lore.kernel.org/r/20260331-rswitch_add_vlans-v3-0-c37f41b1c556@renesas.com
+
+Changes in v3:
+- Fixed findings made by coccicheck
+- Fixed missing 'depends on BRIDGE' in Kconfig found by test robot.
+- Link to v2: https://lore.kernel.org/r/20260327-rswitch_add_vlans-v2-0-d7f4358ca57a@renesas.com
+
+Changes in v2:
+- Reworked reswitch_update_l2_hw_forwarding_gwca() as suggested.
+- Fixed missing initialization found by test robot.
+- Link to v1: https://lore.kernel.org/r/20260317-rswitch_add_vlans-v1-0-3a57bfa0f2d1@renesas.com
+
+---
+Michael Dege (13):
+      net: renesas: rswitch: improve port change mode functions
+      net: renesas: rswitch: use device instead of net_device
+      net: renesas: rswitch: fix FWPC2 register access macros
+      net: renesas: rswitch: add register definitions for vlan support
+      net: renesas: rswitch: add exception path for packets with unknown dst MAC
+      net: renesas: rswitch: add forwarding rules for gwca
+      net: renesas: rswitch: make helper functions available to whole driver
+      net: renesas: rswitch: add basic vlan init to rswitch_fwd_init
+      net: renesas: rswitch: update port HW init
+      net: renesas: rswitch: clean up is_rdev rswitch_device checking
+      net: renesas: rswitch: add passing of rswitch_private into notifiers
+      net: renesas: rswitch: add handler for FDB notification
+      net: renesas: rswitch: add vlan aware switching
+
+ drivers/net/ethernet/renesas/Kconfig        |   1 +
+ drivers/net/ethernet/renesas/rswitch.h      | 183 +++++++-
+ drivers/net/ethernet/renesas/rswitch_l2.c   | 645 ++++++++++++++++++++++++----
+ drivers/net/ethernet/renesas/rswitch_l2.h   |   6 +-
+ drivers/net/ethernet/renesas/rswitch_main.c | 219 +++++++---
+ 5 files changed, 899 insertions(+), 155 deletions(-)
+---
+base-commit: 1f318b96cc84d7c2ab792fcc0bfd42a7ca890681
+change-id: 20260120-rswitch_add_vlans-39488bfb296c
+
+Best regards,
+-- 
+Michael Dege <michael.dege@renesas.com>
+
