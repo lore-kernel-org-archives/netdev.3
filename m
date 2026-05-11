@@ -1,41 +1,39 @@
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.131])
+Received: from ixit.cz (ixit.cz [185.100.197.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 926C42FFDE3;
-	Mon, 11 May 2026 10:10:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C413345CCA;
+	Mon, 11 May 2026 10:11:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778494242; cv=none; b=sxn8v92D0vXbXbARt3tL54I7GXyA5BtcUlKBiuPppVLabrdERoH/bg91kO23D5gcKXtOwC1HENxnlefHJU9jKo0e6WKUHXb/EOnmPQBCpo7A4M793DzOTnOnkx8jFP5ekDy6MFFGk3IVH/UYKwSsjUcg3iAIIBu/FcpYOw2J0Pw=
+	t=1778494300; cv=none; b=mTtWzlUga51LBjIn7xLb8gfd5jqtIkeQKoynvyH/6ZsUSax165TGcFi+QuhvFCLKArAusH6PZgxxLVK/HE7RiTudV2P/JdNJ0ojkXYuHCQvrRwDMRPMxg9XM9yKzNY+7NWGStzjdDe1WmDtWNA4UBFse7e3k2FbWJTWNswC1fK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778494242; c=relaxed/simple;
-	bh=Qz9kpg/HS0cFlZE/TwFxVNmoXERLtHXlJY68fxjj6qA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EbIw102oXrjN/BE94TcFd1Gb8rUi5iW7aC6kuLlmFWEEFJQdYPcuG8WaKD/qVkMvwHJ9f05RPli6qScgyKfu3uMXD5RKPitpuhTAPGUFy3UzSmGOCX7MBcSmdxExA3LQ0Z3DK0fgH/Yoid9t3FscvBsjfjv6v0m0cNCw4ZDXiHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=schippers-hamm.de; spf=pass smtp.mailfrom=schippers-hamm.de; dkim=pass (2048-bit key) header.d=schippers-hamm.de header.i=simon@schippers-hamm.de header.b=tcPPCTrc; arc=none smtp.client-ip=212.227.126.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=schippers-hamm.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=schippers-hamm.de
+	s=arc-20240116; t=1778494300; c=relaxed/simple;
+	bh=l0vdGhOqLyVutzl2nQHDvNJoUQY+JXv11i7MQz25Ncc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
+	 In-Reply-To:Content-Type; b=umDCaJDxwXm6fhui6ZKpeHd+3ojXRxUIUxCqDvUX3CsQRJdKtLEswB0XpHFtTRc2EqkAN2KP3xXLbAYyLT0+sdjS8DO+H2KoS7fo/QIKFI6wEmrTHjKdmesFF01x3Z4+3+D5djo/Rsu7pqAVhGkuHb16o6z8jsnYuy0DA7BcCkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=JXICqYXC; arc=none smtp.client-ip=185.100.197.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=schippers-hamm.de header.i=simon@schippers-hamm.de header.b="tcPPCTrc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=schippers-hamm.de;
-	s=s1-ionos; t=1778494222; x=1779099022; i=simon@schippers-hamm.de;
-	bh=UkLOFwSIv0ZeMA04rMv1O9GYe4NK09leTU5z8PTBxOU=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=tcPPCTrcSfTJgiq3ZVeonnCyXGftoGWAOmpOOL7S9698YfkKOlO2kyn5TDKRXEpq
-	 bsMdhnbUJ2Z1/xUAsgHgyrtsNRfeo7tDqPEcIeyERpryxvMufsOIDVE/+/sk995c9
-	 A1hdE2aXdvuItcWPOKyWw08hHm2P3+MMmyJZg4vWmY5m6ujK+ewtB02L/5iLPqOf/
-	 /8SAAehlhfhvwRsLkIMFXn8w9NNgjMMnKUTfw3LpNiHknTiowTeAnJdcv24DuJq1m
-	 M2x7aN8a+nn9yKqphT72aPvJ48vqcLGUPkNqk4vfyqRLIbsI4ZdcwaztM+ztPrbn2
-	 H0u8f9hfYGDtj4cG3w==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from client.hidden.invalid by mrelayeu.kundenserver.de (mreue012
- [212.227.15.136]) with ESMTPSA (Nemesis) id 1Mq1GE-1x9AJB0U9C-00pEe9; Mon, 11
- May 2026 11:55:51 +0200
-Message-ID: <41023c34-87a3-4e4f-b3ab-3ed53d171910@schippers-hamm.de>
-Date: Mon, 11 May 2026 11:55:46 +0200
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="JXICqYXC"
+Received: from [192.168.230.16] (194-212-160-78.customers.tmcz.cz [194.212.160.78])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 56AB7534055F;
+	Mon, 11 May 2026 12:11:27 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1778494287;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=FNm7lzgEeE2l+/HbF+uWAtHsdZruB7aUCVyJrgiyDsE=;
+	b=JXICqYXCsgDFp/KM+qcer/8Ch5Q4YzBDidj2ABZRmorYdDxeS/4YiifUM/xWH2kmwVShvM
+	KZxySczEm3ZAnTWSn2u/Hu9xG3NlDYwBzTxCGGNDFhWuSpEF3tWb6MAfMOK7UbHsnCWdzx
+	/35glsB1etgKkWSfCa9ZXy4JTnzGXYE=
+Message-ID: <862b37a1-a25b-49d0-902d-cbb082e2822d@ixit.cz>
+Date: Mon, 11 May 2026 12:11:25 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -43,180 +41,137 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v5 3/5] veth: implement Byte Queue Limits (BQL)
- for latency reduction
-To: Jesper Dangaard Brouer <hawk@kernel.org>, Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
- kernel-team@cloudflare.com, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org
-References: <20260505132159.241305-1-hawk@kernel.org>
- <20260505132159.241305-4-hawk@kernel.org>
- <ee275aa6-af27-4dac-9afa-da88abde312b@schippers-hamm.de>
- <8f2f7f2e-6aa2-4e5b-b52d-0025b2525579@redhat.com>
- <e3a91545-13cd-4f87-8375-d707865bdbca@schippers-hamm.de>
- <6a597dbd-70bf-4b14-b495-2f7248fd3220@kernel.org>
- <20260508190626.4285fac0@kernel.org>
- <f459b95c-80d5-4e05-84b2-f574c92724de@kernel.org>
- <20260510085602.57c7a081@kernel.org>
- <daa05c21-dcfc-4cc4-aa22-9e25c7f6c743@kernel.org>
+Subject: Re: [PATCH] nfc: nxp-nci: i2c: restore IRQ trigger fallback
+To: Luca Stefani <luca.stefani.ge1@gmail.com>, Carl Lee <carl.lee@amd.com>,
+ netdev@vger.kernel.org, krzk@kernel.org, peter.shen@amd.com,
+ colin.huang2@amd.com
+References: <20260311-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-v1-1-9e20714411d7@amd.com>
+ <824cb117-1676-4a82-b77c-8908efdffa0e@gmail.com>
 Content-Language: en-US
-From: Simon Schippers <simon@schippers-hamm.de>
-In-Reply-To: <daa05c21-dcfc-4cc4-aa22-9e25c7f6c743@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:ooYqc/zrl1aUI/C0NK5cJ8I5Ix6X2RKup/9iRqBAMhsFc2c1ciN
- d06pIv4q+1GQtF1C7815sHLqpU44X5Zi0YZp94iibLKFHR6MR/lOnAyBFwNasYzoi0CQUK8
- xwQU6Bsrd3i3jHGIxBkk5Lu0+gJfx1gCJ0pytst4zdLP5vkq5DG/CqK6692hLh5v1HDMVrx
- LG2HJ/7NpmqNujlliiQAg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:x9YASn3Q0N8=;pRVWsaTwVHJbKS4ZMMM+1J75ABr
- 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
- d8NRx/zGRhhrS3AvMS+iXqSH57WvGx0j
+Cc: linux-kernel@vger.kernel.org, oe-linux-nfc@lists.linux.dev
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <824cb117-1676-4a82-b77c-8908efdffa0e@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 5/11/26 10:11, Jesper Dangaard Brouer wrote:
->=20
->=20
-> On 10/05/2026 17.56, Jakub Kicinski wrote:
->> On Sat, 9 May 2026 11:09:51 +0200 Jesper Dangaard Brouer wrote:
->>> On 09/05/2026 04.06, Jakub Kicinski wrote:
->>>> On Thu, 7 May 2026 21:09:09 +0200 Jesper Dangaard Brouer wrote:
->>>>> Not against being able to modify VETH_RING_SIZE, but I don't think i=
-t is
->>>>> the solution here.
->>>>
->>>> Was it evaluated, tho?
->>>>
->>>> It's obviously super easy these days have AI spew no end of complex
->>>> code. So it'd be great to have some solid, ideally production-like
->>>> data to back this all up.
->>>>
->>>> VETH_RING_SIZE seems trivial, ethtool set ringparam
->>>
->>> No, unfortunately we cannot just decrease the VETH_RING_SIZE.
+On 11/03/2026 12:08, Luca Stefani wrote:
+> 
+> On 11/03/2026 10:26, Carl Lee wrote:
+>> The driver previously relied on IRQF_TRIGGER_RISING when requesting
+>> the interrupt. This was removed to rely on the trigger type provided
+>> by firmware.
 >>
->> To be clear - I said may it configurable with ethtool -G
->> not change the default.
+>> However, some platforms do not propagate the interrupt trigger type
+>> to the IRQ descriptor, resulting in interrupts not being triggered.
 >>
->=20
-> Sure, I understand the desire to make VETH_RING_SIZE configurable.
-> If doing so we are making Linux network stack harder to tune and setup
-> correctly. E.g. adding a qdisc to veth would also require changing the
-> ring size, but if system also uses XDP then tuning below 64 (likely 128)
-> will lead to hard-to-find packet drops.
-
-I mean 64 still could be a 4x improvement at least.
-
->=20
-> I prefer adding something (like BQL) that auto-tune how much of the ring
-> queue we are using.  Good queues function as shock absorbers when
-> concurrent processes in the OS have scheduling noise.
->=20
-> I acknowledge that Simon Schippers found that the BQL implementation was
-> actually not auto-tuning.  We need to work on this, my prototype
-> implementation [1] [2] works surprisingly well.
->=20
->=20
-> - [1] https://lore.kernel.org/all/3e43117f-356d-4086-a176-abd7fe2e6f0a@k=
-ernel.org/2-09-veth-time-based-bql-coalescing.patch
-> - [2] https://lore.kernel.org/all/3e43117f-356d-4086-a176-abd7fe2e6f0a@k=
-ernel.org/
->=20
->=20
->>> The reason is that XDP-redirect into veth don't have any
->>> back-pressure and would simply drop packets if queue size becomes
->>> less than the NAPI budget (64). (Yes, we use both normal path and
->>> XDP-redirect in production).
+>> Use the trigger type provided by firmware when available and fall
+>> back to the historically used rising-edge trigger otherwise.
 >>
->> Doesn't this mean you have a queue which is not under BQL control?
+>> Signed-off-by: Carl Lee<carl.lee@amd.com>
+>> ---
+>>   drivers/nfc/nxp-nci/i2c.c | 11 ++++++++++-
+>>   1 file changed, 10 insertions(+), 1 deletion(-)
 >>
->=20
-> It is a matter of perspective. BQL needs between 17-55 elements in the
-> 256 queue.  At the same time we handle if the ring runs full, e.g. due
-> to a sudden burst of XDP redirected packets, which pushes packets into
-> the qdisc layer.
-
-You are checking inflight/limit in /sys directory to get the 17-55
-number, right?
-
-I think those elements are not really in the queue.
-
-As written before:
-The weird thing in this implementation is that is that BQL's inflight
-!=3D number of packets in the ring and BQL's limit !=3D "current ring size=
-".
-Instead the BQL limit describes the number of maximal allowed packets
-between calls of netdev_sent_queue().
-And in our case here we do not complete (in our case forward) the
-packets when calling netdev_sent_queue() but instead immediately and
-therefore they are not in the queue anymore when netdev_sent_queue() is
-called.
-
-Also that means that the number strongly depends on the
-VETH_BQL_COAL_TX_USECS parameter.
-For a fixed PPS the limit should be approx.:
-
-Limit =3D VETH_BQL_COAL_TX_USECS * PPS
-
-Assuming the default 10us coal and a fixed 1 MPPS:
-
-Limit =3D 0.00001s * 1_000_000 =3D 10 packet
-
-Can you follow my theory?
-
-Judging from that I personally think VETH_BQL_COAL_TX_USECS needs to
-bigger. More like 100us/1ms. With 10us the bql limit gets adjusted
-very often I think..
-
-Thanks.
-
->=20
->=20
->>> My benchmarking shows that an optimal BQL limit is dynamically
->>> adjusted between 17-55 depending on veth consumer namespace
->>> overhead/speed, when balancing throughput and latency.
+>> diff --git a/drivers/nfc/nxp-nci/i2c.c b/drivers/nfc/nxp-nci/i2c.c
+>> index 6a5ce8ff91f0..6339586a6a1b 100644
+>> --- a/drivers/nfc/nxp-nci/i2c.c
+>> +++ b/drivers/nfc/nxp-nci/i2c.c
+>> @@ -268,6 +268,7 @@ static int nxp_nci_i2c_probe(struct i2c_client *client)
+>>       struct device *dev = &client->dev;
+>>       struct nxp_nci_i2c_phy *phy;
+>>       int r;
+>> +    unsigned long irqflags;
+>>       if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C)) {
+>>           nfc_err(&client->dev, "Need I2C_FUNC_I2C\n");
+>> @@ -303,9 +304,17 @@ static int nxp_nci_i2c_probe(struct i2c_client *client)
+>>       if (r < 0)
+>>           return r;
+>> +    /* Prefer the trigger type configured by firmware.
+>> +     * Some platforms do not provide it, so fall back to the
+>> +     * historically used rising-edge trigger.
+>> +     */
+>> +    irqflags = irq_get_trigger_type(client->irq);
+> Doesn't build, needs #include <linux/irq.h>
+>> +    if (!irqflags)
+>> +        irqflags = IRQF_TRIGGER_RISING;
+>> +
+>>       r = request_threaded_irq(client->irq, NULL,
+>>                    nxp_nci_i2c_irq_thread_fn,
+>> -                 IRQF_ONESHOT,
+>> +                 irqflags | IRQF_ONESHOT,
+>>                    NXP_NCI_I2C_DRIVER_NAME, phy);
+>>       if (r < 0)
+>>           nfc_err(&client->dev, "Unable to register IRQ handler\n");
 >>
->> Testing with prod-approximating traffic pattern and load would be great=
-.
->=20
-> That is what I'm doing.  I'm testing with prod-approximating traffic
-> pattern and changing the number of iptables rules to simulate the
-> overhead I measured from production.  I think I explained this in the
-> cover letter. We are going to use this in a production environment (to
-> be clear).
->=20
-> Simon found an issue testing the overload scenario.
->=20
-> --Jesper
->=20
+>> ---
+>> base-commit: 7109a2155340cc7b21f27e832ece6df03592f2e8
+>> change-id: 20260311-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-cda942530c60
+>>
+>> Best regards,
+> 
+> My ACPI NXP1001 table specifies ActiveHigh that properly gets translated into 
+> IRQF_TRIGGER_HIGH.
+
+Hello Luca,
+
+I'm looking into the issue, I wonder
+would make sense to provide ACPI quirk then?
+
+David
+> 
+> Sadly this seems to just show the same storm as before, I played a bit with the 
+> driver and noticed that it is simply broken on my device, all I get are timeouts 
+> if I read the NCI device.
+> 
+> I could get it working (reading tags) by hacking the driver a bit, first of all 
+> I disable the irq as soon as I get it, otherwise I keep getting interrupts when 
+> the device is in MODE_COLD that would end up setting hard_fault to EREMOTEIO. 
+> With that in place I re-implemented the enable/disable routine in 
+> nxp_nci_i2c_set_mode, and that seems to be enough to make it working.
+
+-- 
+David Heidelberg
+
