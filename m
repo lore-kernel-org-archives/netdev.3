@@ -1,542 +1,165 @@
-Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D0233C3BFD;
-	Mon, 11 May 2026 08:53:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778489597; cv=none; b=krbBI6pLdI93zcG7dPltuUkMz97+LLr8ulovEq1xS0TKGB9BcqpVUNTEbI3wK0CU95cZ7cw/trT7Z9/i/SPMmZf/WGRt4fVgSrd82SKXkoWZ+JiGc8o1V73CSXqQAq+zSoA8cINna+bBIhmaj8TstK5L10gBf2KUUm9wEXv25MU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778489597; c=relaxed/simple;
-	bh=TAmFOBdr1Rt5ExUPKR62ytPWrMHoG+d/2Rm6lG2Yd8s=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=LaG9KOw2WLRq/wV1X2/ljAzmfgEq25gW03pMrASq1zPoffgt5CIZBwa7fBimlnNkyxmgJpXdfU7G9SI8I0T7VPPd/M7+m+h4trm7rWZqHmSxWxusbCoSLhTsC6Af1upvE/cVX/LXqDLrztDg98H3kJD5AYFZnGkukPLQdk0NKgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; arc=none smtp.client-ip=210.160.252.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
-X-CSE-ConnectionGUID: LHvZVxjgQuKGRe5iM1c+Ag==
-X-CSE-MsgGUID: xk4J3WRfT+Km/L4EqHHBbA==
-Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
-  by relmlie6.idc.renesas.com with ESMTP; 11 May 2026 17:53:14 +0900
-Received: from [127.0.1.1] (unknown [10.226.78.135])
-	by relmlir5.idc.renesas.com (Postfix) with ESMTP id 5982A4009A31;
-	Mon, 11 May 2026 17:53:11 +0900 (JST)
-From: Michael Dege <michael.dege@renesas.com>
-Date: Mon, 11 May 2026 10:52:16 +0200
-Subject: [PATCH net-next v4 13/13] net: renesas: rswitch: add vlan aware
- switching
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013013.outbound.protection.outlook.com [40.107.201.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 095643BD63A;
+	Mon, 11 May 2026 08:53:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778489616; cv=fail; b=L0e2VnmQxKH00fmIoetJK2v2yHjp8V9q3r6Rrh17KjRbG6r9LEUzXX363q9fXtXNIAcPN10Tr49K9p+VZU6jjn17cGAZhRUxJBQXnjnmOhMQ956tYwyuZjeiHV6cxKJYm0Enlsqz1156cVJ2huHkzKgDIb6a2KUR3AVzsM0wlww=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778489616; c=relaxed/simple;
+	bh=amCW6mSlhZzSBBzUYAUIu0z7pjdMGi/GimaxwN9Bd4M=;
+	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=nE9vS/hVk9DCN1KBTvlPiN/3u/pNpK/CJrB0qjBQWMhvUWnZ2m+wwKPBD9oJaVVZrstSEjoOkLkuHgHd9d/KaIG3QeEPZkUDbbNntZPHHQzdC5tZjITqaw8rKt630OJqOihgDZLshzOtad5WNiSL31/6IsqInazxplq2PYo4Cyw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=NQUq2ezw; arc=fail smtp.client-ip=40.107.201.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="NQUq2ezw"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xqmqC4kA4MZBMMOZtRAVzCiYQXvy3kJIkvw6/rHJUJWM2IMmQzRSX1hFwf/6h8SeKXqNnXQ0jV3jFGogBQW6sxhrc96jjtOi8Bxs22DRY0Ywq85li+kXmefHFYE1VDkUacNh8F8/Vsg+3keiUcwxOZxQjSBNuFBBiFDUSIThrVpKOr5Wk7osP93e3BGOro7EWvKFwXMq8H9DteZy3kJYPfeoY2d0mek2C3etyGumTkHXA9qlPHt/KFJ5VxreIQhC4P3oORUKUxaJLIm3rXb2kGjt525zO8j5TgIIbBfbzpP+w68igB9GYX1xKOWtsbIu+goUetts8/zt2ZkK72CaEQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1wgzCjs4oUlH1HTnxOUFAu9W2rMh9dV+Wbcp8gTlzZQ=;
+ b=MmVFzQ03Kq7AYjtg0aUUpfKH2hUNzvLJE2uUt9r4bcNiJoG14AWZSopdIx9j2QPpKpV5zTQdhBq1Q1ApLqEBnTUrMx+149XW7PPBHk1KmOk32sCFldvY+ffgI/01Sx764rFMQrytbNhjteKYHxAbEO5U2IeDA1O5Nzr/zNT4/I306bivW6mF/ECSeQHgk5Bg+VJSh6dEpGIMXW/vQfpd+MjL+kWG4r/89QAcpnILcNCzXmR/7WN2ZAScdhsOTm8EKMt3z98D4eW1xxFRQMd8AjSfy0Tgb2n9xTIDABNFQGi67gvJclhnTM0nr7DE1dQj+Ge3/bOY1SOY8IOjVKEzlQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=linux.dev smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1wgzCjs4oUlH1HTnxOUFAu9W2rMh9dV+Wbcp8gTlzZQ=;
+ b=NQUq2ezwTHNuFVyUYoL6WuecfrYQR1QheYIvZzzY+rKTiwXYsgmq9WSMlzf62/EIRQX8fXbUfDAlLV8qRk8Vp8hCahfnd3FN/Oq+rBJWI08MSy/PxdmYI7PGjxKxCGYmNODMF3IIFG76I7GHVW4l+6+chIuDg0oMfFVXIKN9YBNoCm9xeqpelD8HUwdx1nkEthdILDnKYaqjogc5NDWmpUizLfvwvkRpy7AysZa6vwKJj8iWANrt5d4GyfPUuSAWm/NLV/+gmUmLoZXbRx9Qb9aLIZQkldlnjCVB6cMoLYm3seWFZ0WrsGeL0xoCnyud3y8BSYX4CdfWz7mtfmp+YA==
+Received: from SJ0PR03CA0156.namprd03.prod.outlook.com (2603:10b6:a03:338::11)
+ by CH3PR12MB7596.namprd12.prod.outlook.com (2603:10b6:610:14b::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.22; Mon, 11 May
+ 2026 08:53:24 +0000
+Received: from BY1PEPF0001AE19.namprd04.prod.outlook.com
+ (2603:10b6:a03:338:cafe::fe) by SJ0PR03CA0156.outlook.office365.com
+ (2603:10b6:a03:338::11) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9891.21 via Frontend Transport; Mon,
+ 11 May 2026 08:53:23 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ BY1PEPF0001AE19.mail.protection.outlook.com (10.167.242.101) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.25.13 via Frontend Transport; Mon, 11 May 2026 08:53:22 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 11 May
+ 2026 01:53:09 -0700
+Received: from fedora (10.126.231.37) by rnnvmail201.nvidia.com (10.129.68.8)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 11 May
+ 2026 01:52:56 -0700
+References: <20260511033923.1301976-1-rkannoth@marvell.com>
+ <20260511033923.1301976-4-rkannoth@marvell.com>
+User-agent: mu4e 1.8.14; emacs 30.2
+From: Petr Machata <petrm@nvidia.com>
+To: Ratheesh Kannoth <rkannoth@marvell.com>
+CC: <linux-kernel@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <oss-drivers@corigine.com>, <akiyano@amazon.com>,
+	<andrew+netdev@lunn.ch>, <anthony.l.nguyen@intel.com>,
+	<arkadiusz.kubalewski@intel.com>, <brett.creeley@amd.com>,
+	<darinzon@amazon.com>, <davem@davemloft.net>, <donald.hunter@gmail.com>,
+	<edumazet@google.com>, <horms@kernel.org>, <idosch@nvidia.com>,
+	<ivecera@redhat.com>, <jiri@resnulli.us>, <kuba@kernel.org>,
+	<leon@kernel.org>, <mbloch@nvidia.com>, <michael.chan@broadcom.com>,
+	<pabeni@redhat.com>, <pavan.chebbi@broadcom.com>, <petrm@nvidia.com>,
+	<Prathosh.Satish@microchip.com>, <przemyslaw.kitszel@intel.com>,
+	<saeedm@nvidia.com>, <sgoutham@marvell.com>, <tariqt@nvidia.com>,
+	<vadim.fedorenko@linux.dev>
+Subject: Re: [PATCH v13 net-next 3/9] devlink: pass param values by pointer
+Date: Mon, 11 May 2026 10:52:09 +0200
+In-Reply-To: <20260511033923.1301976-4-rkannoth@marvell.com>
+Message-ID: <875x4upbtn.fsf@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260511-rswitch_add_vlans-v4-13-a5a225f8faae@renesas.com>
-References: <20260511-rswitch_add_vlans-v4-0-a5a225f8faae@renesas.com>
-In-Reply-To: <20260511-rswitch_add_vlans-v4-0-a5a225f8faae@renesas.com>
-To: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- =?utf-8?q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>, 
- Paul Barker <paul@pbarker.dev>
-Cc: netdev@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Michael Dege <michael.dege@renesas.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778489544; l=14831;
- i=michael.dege@renesas.com; s=20251023; h=from:subject:message-id;
- bh=TAmFOBdr1Rt5ExUPKR62ytPWrMHoG+d/2Rm6lG2Yd8s=;
- b=MXlQtajnTlgzLz/UiyR+To7yBsB7KEPr7Q0vg8U7Mo5PYyUfiypPnFXYVQwZAI88RIAXVNJ6M
- IaCs7HaCLCYDUwvaOkd1qlSFe7wQHyo3x+OvicSUqvZ0JAxe9ULsnia
-X-Developer-Key: i=michael.dege@renesas.com; a=ed25519;
- pk=gu1rwIcCrAxNMv2I8fIfiQvt51xzZwnQy4Ua/DscQt8=
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BY1PEPF0001AE19:EE_|CH3PR12MB7596:EE_
+X-MS-Office365-Filtering-Correlation-Id: 292b0bb3-4b8b-41e1-4a8b-08deaf3ac1be
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|36860700016|82310400026|18002099003|3023799003|56012099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	zxd+WsW+5DLWx8RPzCfBexSf0ODcBNhmpS/ASt1Ie4mUueWA0kWJKz2shxACKLdgZLgvW42YlEzuGDWiiVKYZ9MkfevJ3Bj6x1jWDWsfjE8azcQpLWl79SwBY5EagmBBc8b7s9uE+3XuuRvVRSg1Y5qjBP8s/V8lIWOHmJyqCNuFn4Sbc2YEhTvYKxeQNB5lL8/Yu9QxK5YPknZVCUAZOMtLtiDXxY+g4Iinl7q8q76Eg+Xy7Jq3ae9ahhbWQuqGDCGPNFXDE8tKPqrpzSnC+85Hsf6sMpoxleBPgX77Ae+eEq3RaX47gW+yvj2DaVMHGwvnmxP9VmM5u40kdUqKYxQsVYgsPea/F31TwKSYNXwk2QlYAUJPmQ0Wo8mTIF/s/qql3AKEFvz1jY6gpTT1Eq0W8l03sSgGMWhFTeLZ4r4Npc9wKQHqd7heLvJTvjX6YPlV3pxZrBLcl3XkQY5Ey4zB4rdcaaeDhLyLY3I6pIGlB6d9Tjj01Pj8yZq0Mvb4JWOOeOGM3s2qZT+1ePK2vUcJ9FVLQ1qVdhQrdK5abNbqOQw+m4Bl5UhdZrm+JEUe306mbSW+6A1y/dAt6G2UkuptWklQDfmnk9S1sDt0rSniJMptzkg8+7xij5geD2B02+6wRRi6PQhaA4P1ueHuUUhY662MK9jtzzi4BLl8QnjsZaJcX2czsR094pcRz21GwCZPae1QuErh7IxGIMpQf2abhCnT2QrwK592zbUfJ1k=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(36860700016)(82310400026)(18002099003)(3023799003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	iq4uFMI/omVAf/HEIf4geZj5Q4M3F0nBQoaIPwM/vJFllToWK/5avJlILiO2uB/UjwvfA3AG62fNKgzetGu7XDU3ABXaUcEm/SFmjqsulnMhEBIfM4SAfr/S7YducH7r6Dhg8Hh8QBk94IO4ewZZpsAur0pr7xHddwutY0/IneUah6RTS2mBJX7vrQzt8eXadvIAHtaNPWxUQaDF/mkqhYvQQZUND+HNs1DvpH4wFTW6+QGRsV74TKWacYD+koL20TFUH3tK4hlulkzsb+EOoRpnRcaKcd40CkJYA/ldqcFXTTv7iIUHGaV5HPeGs9d7KtfRWgqvUhrs5OimSAM1PmMDawRfIdtJ5hEMoN2mnS8Sy0r/kd6ilIZaybX1utVqELn+qiB6cvWL6/3XBksYGtzYbwMfN2w9xtlDxNHWBsHzuClQfy37Tt6o643Dggnl
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 May 2026 08:53:22.6186
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 292b0bb3-4b8b-41e1-4a8b-08deaf3ac1be
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BY1PEPF0001AE19.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7596
 
-Add vlan support to L2 HW bridge.
 
-On R-Car S4 there is limited vlan support, which is not fully
-802.1Q compliant. The aim of this driver addition is to get as
-close as possible to the correct behavior. Limitations are:
-- all ports should be in the same default vlan
-- default vlans are not stripped on egress.
+Ratheesh Kannoth <rkannoth@marvell.com> writes:
 
-Signed-off-by: Michael Dege <michael.dege@renesas.com>
----
- drivers/net/ethernet/renesas/Kconfig      |   1 +
- drivers/net/ethernet/renesas/rswitch_l2.c | 401 +++++++++++++++++++++++++++---
- 2 files changed, 364 insertions(+), 38 deletions(-)
+> union devlink_param_value grows substantially once U64 array
+> parameters are added to devlink (from 32 bytes to over 264 bytes).
+> devlink_nl_param_value_fill_one() and devlink_nl_param_value_put()
+> copy the union by value in several places. Passing two instances as
+> value arguments alone consumes over 528 bytes of stack; combined with
+> deeper call chains the parameter stack can approach 800 bytes and trip
+> CONFIG_FRAME_WARN more easily.
+>
+> Switch internal helpers and exported driver APIs to pass pointers to
+> union devlink_param_value rather than passing the union by value.
+>
+> Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
 
-diff --git a/drivers/net/ethernet/renesas/Kconfig b/drivers/net/ethernet/renesas/Kconfig
-index 9b7559c88bee..2494ff60e8c2 100644
---- a/drivers/net/ethernet/renesas/Kconfig
-+++ b/drivers/net/ethernet/renesas/Kconfig
-@@ -43,6 +43,7 @@ config RENESAS_ETHER_SWITCH
- 	tristate "Renesas Ethernet Switch support"
- 	depends on ARCH_RENESAS || COMPILE_TEST
- 	depends on PTP_1588_CLOCK
-+	depends on BRIDGE || BRIDGE=n
- 	select CRC32
- 	select MII
- 	select PHYLINK
-diff --git a/drivers/net/ethernet/renesas/rswitch_l2.c b/drivers/net/ethernet/renesas/rswitch_l2.c
-index 24d659576f62..5c16e204de45 100644
---- a/drivers/net/ethernet/renesas/rswitch_l2.c
-+++ b/drivers/net/ethernet/renesas/rswitch_l2.c
-@@ -7,6 +7,7 @@
- #include <linux/err.h>
- #include <linux/etherdevice.h>
- #include <linux/if_bridge.h>
-+#include <linux/if_vlan.h>
- #include <linux/kernel.h>
- #include <net/switchdev.h>
- 
-@@ -173,22 +174,6 @@ static void rswitch_port_update_brdev(struct net_device *ndev,
- 	rswitch_update_offload_brdev(rdev->priv);
- }
- 
--static int rswitch_port_update_stp_state(struct net_device *ndev, u8 stp_state)
--{
--	struct rswitch_device *rdev;
--
--	if (!is_rdev(ndev))
--		return -ENODEV;
--
--	rdev = netdev_priv(ndev);
--	rdev->learning_requested = (stp_state == BR_STATE_LEARNING ||
--				    stp_state == BR_STATE_FORWARDING);
--	rdev->forwarding_requested = (stp_state == BR_STATE_FORWARDING);
--	rswitch_update_l2_offload(rdev->priv);
--
--	return 0;
--}
--
- static int rswitch_netdevice_event(struct notifier_block *nb,
- 				   unsigned long event,
- 				   void *ptr)
-@@ -212,61 +197,401 @@ static int rswitch_netdevice_event(struct notifier_block *nb,
- 	return NOTIFY_OK;
- }
- 
--static int rswitch_update_ageing_time(struct net_device *ndev, clock_t time)
-+static int rswitch_port_update_stp_state(struct net_device *ndev, u8 stp_state)
- {
--	struct rswitch_device *rdev = netdev_priv(ndev);
--	u32 reg_val;
-+	struct rswitch_device *rdev;
- 
- 	if (!is_rdev(ndev))
- 		return -ENODEV;
- 
-+	rdev = netdev_priv(ndev);
-+	rdev->learning_requested = (stp_state == BR_STATE_LEARNING ||
-+				    stp_state == BR_STATE_FORWARDING);
-+	rdev->forwarding_requested = (stp_state == BR_STATE_FORWARDING);
-+	rswitch_update_l2_offload(rdev->priv);
-+
-+	return 0;
-+}
-+
-+static int rswitch_update_ageing_time(struct rswitch_private *priv, clock_t time)
-+{
-+	u32 reg_val;
-+
- 	if (!FIELD_FIT(FWMACAGC_MACAGT, time))
- 		return -EINVAL;
- 
- 	reg_val = FIELD_PREP(FWMACAGC_MACAGT, time);
- 	reg_val |= FWMACAGC_MACAGE | FWMACAGC_MACAGSL;
--	iowrite32(reg_val, rdev->priv->addr + FWMACAGC);
-+	iowrite32(reg_val, priv->addr + FWMACAGC);
- 
- 	return 0;
- }
- 
--static int rswitch_port_attr_set(struct net_device *ndev, const void *ctx,
--				 const struct switchdev_attr *attr,
--				 struct netlink_ext_ack *extack)
-+static void rswitch_update_vlan_filtering(struct rswitch_private *priv,
-+					  bool vlan_filtering)
- {
-+	if (vlan_filtering)
-+		rswitch_modify(priv->addr, FWPC0(AGENT_INDEX_GWCA),
-+			       0, FWPC0_VLANSA | FWPC0_VLANRU);
-+	else
-+		rswitch_modify(priv->addr, FWPC0(AGENT_INDEX_GWCA),
-+			       FWPC0_VLANSA | FWPC0_VLANRU, 0);
-+}
-+
-+static int rswitch_handle_port_attr_set(struct net_device *ndev,
-+					struct notifier_block *nb,
-+					struct switchdev_notifier_port_attr_info *info)
-+{
-+	const struct switchdev_attr *attr = info->attr;
-+	struct rswitch_private *priv;
-+	int err = 0;
-+
-+	priv = container_of(nb, struct rswitch_private, rswitch_switchdev_blocking_nb);
-+
- 	switch (attr->id) {
- 	case SWITCHDEV_ATTR_ID_PORT_STP_STATE:
--		return rswitch_port_update_stp_state(ndev, attr->u.stp_state);
-+		err = rswitch_port_update_stp_state(ndev, attr->u.stp_state);
-+
-+		break;
- 	case SWITCHDEV_ATTR_ID_BRIDGE_AGEING_TIME:
--		return rswitch_update_ageing_time(ndev, attr->u.ageing_time);
-+		err = rswitch_update_ageing_time(priv, attr->u.ageing_time);
-+
-+		break;
-+	case SWITCHDEV_ATTR_ID_BRIDGE_VLAN_FILTERING:
-+		rswitch_update_vlan_filtering(priv, attr->u.vlan_filtering);
-+
-+		break;
-+	case SWITCHDEV_ATTR_ID_BRIDGE_MC_DISABLED:
-+
-+		break;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+
-+	if (err < 0)
-+		return err;
-+
-+	info->handled = true;
-+
-+	return NOTIFY_DONE;
-+}
-+
-+static int rswitch_read_vlan_table(struct rswitch_private *priv, u16 vid,
-+				   u32 *vlanslvs, u32 *vlandvs)
-+{
-+	int err;
-+
-+	iowrite32(FIELD_PREP(VLANVIDS, vid), priv->addr + FWVLANTS);
-+	err = rswitch_reg_wait(priv->addr, FWVLANTSR0, VLANTS, 0);
-+	if (err < 0)
-+		return err;
-+
-+	/* check if vlans are present in table */
-+	if (!(ioread32(priv->addr + FWVLANTSR0) & VLANSNF)) {
-+		*vlanslvs = (ioread32(priv->addr + FWVLANTSR1) & VLANSLVS);
-+		*vlandvs = (ioread32(priv->addr + FWVLANTSR3) & VLANDVS);
-+	}
-+
-+	return 0;
-+}
-+
-+static int rswitch_write_vlan_table(struct rswitch_private *priv, u16 vid, u32 index)
-+{
-+	u32 vlancsdl = priv->gwca.l2_shared_rx_queue->index;
-+	u32 vlanslvs = 0, vlandvs = 0;
-+	int err;
-+
-+	err = rswitch_read_vlan_table(priv, vid, &vlanslvs, &vlandvs);
-+	if (err < 0)
-+		return err;
-+
-+	rswitch_modify(priv->addr, FWVLANTL0, VLANED, 0);
-+	iowrite32(FIELD_PREP(VLANVIDL, vid), priv->addr + FWVLANTL1);
-+
-+	vlanslvs |= BIT(index);
-+	vlandvs  |= BIT(index);
-+	iowrite32(FIELD_PREP(VLANSLVL, vlanslvs), priv->addr + FWVLANTL2);
-+	iowrite32(FIELD_PREP(VLANCSDL, vlancsdl), priv->addr + FWVLANTL3(GWCA_INDEX));
-+	iowrite32(FIELD_PREP(VLANDVL, vlandvs), priv->addr + FWVLANTL4);
-+
-+	return rswitch_reg_wait(priv->addr, FWVLANTLR, VLANTL, 0);
-+}
-+
-+static int rswitch_erase_vlan_table(struct rswitch_private *priv, u16 vid, u32 index)
-+{
-+	u32 vlanslvs = 0, vlandvs = 0;
-+	int err;
-+
-+	err = rswitch_read_vlan_table(priv, vid, &vlanslvs, &vlandvs);
-+	if (err < 0)
-+		return err;
-+
-+	vlanslvs &= ~BIT(index);
-+	vlandvs  &= ~BIT(index);
-+
-+	/* only erase empty vlan table entries */
-+	if (vlanslvs == 0)
-+		rswitch_modify(priv->addr, FWVLANTL0, 0, VLANED);
-+
-+	iowrite32(FIELD_PREP(VLANVIDL, vid), priv->addr + FWVLANTL1);
-+	iowrite32(FIELD_PREP(VLANSLVL, vlanslvs), priv->addr + FWVLANTL2);
-+	iowrite32(FIELD_PREP(VLANDVL, vlandvs), priv->addr + FWVLANTL4);
-+
-+	return rswitch_reg_wait(priv->addr, FWVLANTLR, VLANTL, 0);
-+}
-+
-+static int rswitch_port_set_vlan_tag(struct rswitch_etha *etha,
-+				     struct switchdev_obj_port_vlan *p_vlan,
-+				     bool delete)
-+{
-+	u32 vem_val;
-+	int err;
-+
-+	err = rswitch_etha_change_mode(etha, EAMC_OPC_CONFIG);
-+	if (err < 0)
-+		return err;
-+
-+	rswitch_modify(etha->addr, EAVCC, VIM, 0);
-+
-+	if (((ioread32(etha->addr + EAVTC) & CTV) == p_vlan->vid) && delete) {
-+		rswitch_modify(etha->addr, EAVTC, CTV, 0);
-+		rswitch_modify(etha->addr, EAVCC, VEM, 0);
-+	} else if (!delete) {
-+		if ((p_vlan->flags & BRIDGE_VLAN_INFO_PVID) &&
-+		    (p_vlan->flags & BRIDGE_VLAN_INFO_UNTAGGED))
-+			vem_val = FIELD_PREP(VEM, C_TAG_VLAN);
-+		else if (p_vlan->flags & BRIDGE_VLAN_INFO_PVID)
-+			vem_val = FIELD_PREP(VEM, HW_C_TAG_VLAN);
-+		else
-+			vem_val = 0;
-+		rswitch_modify(etha->addr, EAVCC, VEM, vem_val);
-+		rswitch_modify(etha->addr, EAVTC, CTV, FIELD_PREP(CTV, p_vlan->vid));
-+	}
-+
-+	return rswitch_etha_change_mode(etha, EAMC_OPC_OPERATION);
-+}
-+
-+static int rswitch_gwca_set_vlan_tag(struct rswitch_private *priv,
-+				     struct switchdev_obj_port_vlan *p_vlan,
-+				     bool delete)
-+{
-+	u32 vem_val;
-+	int err;
-+
-+	err = rswitch_gwca_change_mode(priv, GWMC_OPC_CONFIG);
-+	if (err < 0)
-+		return err;
-+
-+	rswitch_modify(priv->addr, GWVCC, VIM, 0);
-+
-+	if (((ioread32(priv->addr + GWVTC) & CTV) == p_vlan->vid) && delete) {
-+		rswitch_modify(priv->addr, GWVTC, CTV, 0);
-+		rswitch_modify(priv->addr, GWVCC, VEM, 0);
-+	} else  if (!delete) {
-+		if ((p_vlan->flags & BRIDGE_VLAN_INFO_PVID) &&
-+		    (p_vlan->flags & BRIDGE_VLAN_INFO_UNTAGGED))
-+			vem_val = FIELD_PREP(VEM, C_TAG_VLAN);
-+		else if (p_vlan->flags & BRIDGE_VLAN_INFO_PVID)
-+			vem_val = FIELD_PREP(VEM, HW_C_TAG_VLAN);
-+		else
-+			vem_val = 0;
-+		rswitch_modify(priv->addr, GWVCC, VEM, vem_val);
-+		rswitch_modify(priv->addr, GWVTC, CTV, FIELD_PREP(CTV, p_vlan->vid));
-+	}
-+
-+	return rswitch_gwca_change_mode(priv, GWMC_OPC_OPERATION);
-+}
-+
-+static int rswitch_port_obj_do_add(struct net_device *ndev,
-+				   struct switchdev_obj_port_vlan *p_vlan)
-+{
-+	struct rswitch_device *rdev = netdev_priv(ndev);
-+	struct rswitch_private *priv = rdev->priv;
-+	struct rswitch_etha *etha = rdev->etha;
-+	int err;
-+
-+	/* Set Rswitch VLAN mode */
-+	iowrite32(br_vlan_enabled(rdev->brdev) ? FIELD_PREP(FWGC_SVM, C_TAG) : 0,
-+		  priv->addr + FWGC);
-+
-+	err = rswitch_write_vlan_table(priv, p_vlan->vid, etha->index);
-+	if (err < 0)
-+		return err;
-+
-+	/* If the default vlan for this port has been set, don't overwrite it. */
-+	if (ioread32(etha->addr + EAVCC))
-+		return NOTIFY_DONE;
-+
-+	if (br_vlan_enabled(rdev->brdev))
-+		rswitch_modify(priv->addr, FWPC0(etha->index), 0, FWPC0_VLANSA | FWPC0_VLANRU);
-+
-+	rswitch_modify(priv->addr, FWPC2(AGENT_INDEX_GWCA),
-+		       FIELD_PREP(FWPC2_LTWFW, BIT(etha->index)),
-+		       0);
-+
-+	return rswitch_port_set_vlan_tag(etha, p_vlan, false);
-+}
-+
-+static int rswitch_port_obj_do_add_gwca(struct net_device *ndev,
-+					struct rswitch_private *priv,
-+					struct switchdev_obj_port_vlan *p_vlan)
-+{
-+	int err;
-+
-+	if (!(p_vlan->flags & BRIDGE_VLAN_INFO_BRENTRY))
-+		return NOTIFY_DONE;
-+
-+	/* Set Rswitch VLAN mode */
-+	iowrite32(br_vlan_enabled(ndev) ? FIELD_PREP(FWGC_SVM, C_TAG) : 0, priv->addr + FWGC);
-+
-+	err = rswitch_write_vlan_table(priv, p_vlan->vid, AGENT_INDEX_GWCA);
-+	if (err < 0)
-+		return err;
-+
-+	/* If the default vlan for this port has been set, don't overwrite it. */
-+	if (ioread32(priv->addr + GWVCC))
-+		return NOTIFY_DONE;
-+
-+	return rswitch_gwca_set_vlan_tag(priv, p_vlan, false);
-+}
-+
-+static int rswitch_port_obj_do_del(struct net_device *ndev,
-+				   struct switchdev_obj_port_vlan *p_vlan)
-+{
-+	struct rswitch_device *rdev = netdev_priv(ndev);
-+	struct rswitch_private *priv = rdev->priv;
-+	struct rswitch_etha *etha = rdev->etha;
-+	int err;
-+
-+	err = rswitch_port_set_vlan_tag(etha, p_vlan, true);
-+	if (err < 0)
-+		return err;
-+
-+	rswitch_modify(priv->addr, FWPC0(etha->index), FWPC0_VLANSA | FWPC0_VLANRU, 0);
-+	rswitch_modify(priv->addr, FWPC2(AGENT_INDEX_GWCA), 0,
-+		       FIELD_PREP(FWPC2_LTWFW, BIT(etha->index)));
-+	rswitch_modify(priv->addr, FWPC2(rdev->port),
-+		       0, FIELD_PREP(FWPC2_LTWFW, GENMASK(RSWITCH_NUM_AGENTS - 1, 0)));
-+
-+	return rswitch_erase_vlan_table(priv, p_vlan->vid, etha->index);
-+}
-+
-+static int rswitch_port_obj_do_del_gwca(struct net_device *ndev,
-+					struct rswitch_private *priv,
-+					struct switchdev_obj_port_vlan *p_vlan)
-+{
-+	int err;
-+
-+	err = rswitch_gwca_set_vlan_tag(priv, p_vlan, true);
-+	if (err < 0)
-+		return err;
-+
-+	rswitch_modify(priv->addr, FWPC0(AGENT_INDEX_GWCA),
-+		       FWPC0_VLANSA | FWPC0_VLANRU,
-+		       0);
-+
-+	return rswitch_erase_vlan_table(priv, p_vlan->vid, AGENT_INDEX_GWCA);
-+}
-+
-+static int rswitch_handle_port_obj_add(struct net_device *ndev,
-+				       struct notifier_block *nb,
-+				       struct switchdev_notifier_port_obj_info *info)
-+{
-+	struct switchdev_obj_port_vlan *p_vlan;
-+	struct rswitch_private *priv;
-+	int err;
-+
-+	switch (info->obj->id) {
-+	case SWITCHDEV_OBJ_ID_PORT_VLAN:
-+		p_vlan = SWITCHDEV_OBJ_PORT_VLAN(info->obj);
-+		if ((p_vlan->flags & BRIDGE_VLAN_INFO_MASTER) ||
-+		    (p_vlan->flags & BRIDGE_VLAN_INFO_RANGE_BEGIN) ||
-+		    (p_vlan->flags & BRIDGE_VLAN_INFO_RANGE_END) ||
-+		    (p_vlan->flags & BRIDGE_VLAN_INFO_ONLY_OPTS))
-+			return NOTIFY_DONE;
-+
-+		priv = container_of(nb, struct rswitch_private,
-+				    rswitch_switchdev_blocking_nb);
-+
-+		if (!is_rdev(ndev))
-+			err = rswitch_port_obj_do_add_gwca(ndev, priv, p_vlan);
-+		else
-+			err = rswitch_port_obj_do_add(ndev, p_vlan);
-+
-+		if (err < 0)
-+			return err;
-+
-+		break;
- 	default:
- 		return -EOPNOTSUPP;
- 	}
-+
-+	info->handled = true;
-+
-+	return NOTIFY_DONE;
-+}
-+
-+static int rswitch_handle_port_obj_del(struct net_device *ndev,
-+				       struct notifier_block *nb,
-+				       struct switchdev_notifier_port_obj_info *info)
-+{
-+	struct switchdev_obj_port_vlan *p_vlan;
-+	struct rswitch_private *priv;
-+	int err;
-+
-+	switch (info->obj->id) {
-+	case SWITCHDEV_OBJ_ID_PORT_VLAN:
-+		p_vlan = SWITCHDEV_OBJ_PORT_VLAN(info->obj);
-+		if ((p_vlan->flags & BRIDGE_VLAN_INFO_MASTER) ||
-+		    (p_vlan->flags & BRIDGE_VLAN_INFO_RANGE_BEGIN) ||
-+		    (p_vlan->flags & BRIDGE_VLAN_INFO_RANGE_END) ||
-+		    (p_vlan->flags & BRIDGE_VLAN_INFO_ONLY_OPTS))
-+			return NOTIFY_DONE;
-+
-+		priv = container_of(nb, struct rswitch_private,
-+				    rswitch_switchdev_blocking_nb);
-+
-+		if (!is_rdev(ndev))
-+			err = rswitch_port_obj_do_del_gwca(ndev, priv, p_vlan);
-+		else
-+			err = rswitch_port_obj_do_del(ndev, p_vlan);
-+
-+		if (err < 0)
-+			return err;
-+
-+		break;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+
-+	info->handled = true;
-+
-+	return NOTIFY_DONE;
- }
- 
- static int rswitch_switchdev_blocking_event(struct notifier_block *nb,
--					    unsigned long event, void *ptr)
-+					    unsigned long event,
-+					    void *ptr)
- {
- 	struct net_device *ndev = switchdev_notifier_info_to_dev(ptr);
--	int ret;
-+	int err;
- 
- 	switch (event) {
- 	case SWITCHDEV_PORT_OBJ_ADD:
--		return -EOPNOTSUPP;
-+		err = rswitch_handle_port_obj_add(ndev, nb, ptr);
-+
-+		return notifier_from_errno(err);
- 	case SWITCHDEV_PORT_OBJ_DEL:
--		return -EOPNOTSUPP;
-+		err = rswitch_handle_port_obj_del(ndev, nb, ptr);
-+
-+		return notifier_from_errno(err);
- 	case SWITCHDEV_PORT_ATTR_SET:
--		ret = switchdev_handle_port_attr_set(ndev, ptr,
--						     is_rdev,
--						     rswitch_port_attr_set);
--		break;
--	default:
--		if (!is_rdev(ndev))
--			return NOTIFY_DONE;
--		ret = -EOPNOTSUPP;
-+		err = rswitch_handle_port_attr_set(ndev, nb, ptr);
-+
-+		return notifier_from_errno(err);
- 	}
- 
--	return notifier_from_errno(ret);
-+	return NOTIFY_DONE;
- }
- 
- static int rswitch_gwca_write_mac_address(struct rswitch_private *priv, const u8 *mac)
+Reviewed-by: Petr Machata <petrm@nvidia.com> # for mlxsw
 
--- 
-2.43.0
-
+> diff --git a/drivers/net/ethernet/mellanox/mlxsw/core.c b/drivers/net/ethernet/mellanox/mlxsw/core.c
+> index d76246301f67..308d8a94865f 100644
+> --- a/drivers/net/ethernet/mellanox/mlxsw/core.c
+> +++ b/drivers/net/ethernet/mellanox/mlxsw/core.c
+> @@ -1306,11 +1306,11 @@ static int mlxsw_core_fw_flash_update(struct mlxsw_core *mlxsw_core,
+>  }
+>  
+>  static int mlxsw_core_devlink_param_fw_load_policy_validate(struct devlink *devlink, u32 id,
+> -							    union devlink_param_value val,
+> +							    union devlink_param_value *val,
+>  							    struct netlink_ext_ack *extack)
+>  {
+> -	if (val.vu8 != DEVLINK_PARAM_FW_LOAD_POLICY_VALUE_DRIVER &&
+> -	    val.vu8 != DEVLINK_PARAM_FW_LOAD_POLICY_VALUE_FLASH) {
+> +	if (val->vu8 != DEVLINK_PARAM_FW_LOAD_POLICY_VALUE_DRIVER &&
+> +	    val->vu8 != DEVLINK_PARAM_FW_LOAD_POLICY_VALUE_FLASH) {
+>  		NL_SET_ERR_MSG_MOD(extack, "'fw_load_policy' must be 'driver' or 'flash'");
+>  		return -EINVAL;
+>  	}
+> @@ -1337,7 +1337,7 @@ static int mlxsw_core_fw_params_register(struct mlxsw_core *mlxsw_core)
+>  	value.vu8 = DEVLINK_PARAM_FW_LOAD_POLICY_VALUE_DRIVER;
+>  	devl_param_driverinit_value_set(devlink,
+>  					DEVLINK_PARAM_GENERIC_ID_FW_LOAD_POLICY,
+> -					value);
+> +					&value);
+>  	return 0;
+>  }
+>  
