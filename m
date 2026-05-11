@@ -1,77 +1,61 @@
-Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2C3B3FB069
-	for <netdev@vger.kernel.org>; Mon, 11 May 2026 14:06:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2249C3E95BD
+	for <netdev@vger.kernel.org>; Mon, 11 May 2026 14:07:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778508376; cv=none; b=D4eYzskBvTadqUjCOCdxWDiaWbvfT3Fn2aSJXJ3dmzvh467pncrGM28Lmr9bitkoJjNQhKHVhri5j0qzkTlksvSeI6C0+p7h28c8EBtIfA4kxrK62xf+xe9DVukJxXbpOrHRTOASp9WXRgKbNUCvcdDAWivCqyV/43Gwaqnejp0=
+	t=1778508453; cv=none; b=n8TqtHeNCITINrbn5blN7A63e2IY0BjhAOucACGhpV1SQWbFY3t11pJPkASJXkalNgL/9hzyipj4d8gaqT3V1FOYKFOdvXZlNioeugePC+rjGDQJrDxqMpwKFEwzxI00bd0Ijr6khoWQdOkX1itQCDVEOTHLWwhdjAFbWoyIonY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778508376; c=relaxed/simple;
-	bh=F+AUqteAfAdB4EzjzusIXVnGPbxMlbEUCD4dKZHK0ow=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UZr5lf4yU98HMG4YSWtt8b369jhwQ9XivWpRDxCRmlNX2ox60oNoX1LsKS6CmLnehMNBZvhABl5KMod8hVQSwDvRwoLJuo7gewdRF8Usokf0oHsjM0q2cYo8eYP2K2cna20e6Kv/KIWnb+argIsWKaWcxxFxpUmARYlbsLmBegI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N0Sdcjyo; arc=none smtp.client-ip=74.125.82.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1778508453; c=relaxed/simple;
+	bh=Db/oBTpZ6iiUd+ZhRm7W0Xyps5oD0x3YXFFm6UzEu/I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=riCrIggXGRUXE7Vw+PPUnDERfcNJNWw6By0Efwbch5hWOUkpfiMkKhMC3TZtRHpxSCU5LVaPw7Xm5Nn2pbc6Id3L8S9JMlEia81xfjo8Va9ZuRL2zpbQaBjGN7HakWCZgaXkWkIS5GXeSkCF9Mu01lrsZsbjBH0Pjbt6LQfxsyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H+CHzD7f; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N0Sdcjyo"
-Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-2ff5472f263so191409eec.1
-        for <netdev@vger.kernel.org>; Mon, 11 May 2026 07:06:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778508374; x=1779113174; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=icORVuvXvQyOwUwE8vDHR4wpbRYBXsNZDnMyIZGl2Os=;
-        b=N0SdcjyoVxYK/H9zMm9vpkIv1Ss+4itdbGePbcoSpGVYxjo8IqzqUZPL+4VcBfhV0M
-         JIl+3TBjpacaOcOLjBLjIiNzG8sGlyZzTqF5/rZ3fBNVhyC3wWiwheHHa7wgJF/rkkby
-         KMcsuVSY3o2JvQ0mDhuk5K44Mvqmp0JH5WeZAmTc1yAXXZhpaHSH2x2DeTesH0jDy6zC
-         G9VUqyreVi0wAVI/k8Irzuv+WVyefbLX7Tj2WwXuqxebYhmFN1m8mf0B7Ds3ugwKru17
-         JzlGW81x5+vYZesUHdbhacTE48YaAMlXpg3oTsINWiCi945NBdMjfeNzlfb0pFxpnMAx
-         hqMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778508374; x=1779113174;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=icORVuvXvQyOwUwE8vDHR4wpbRYBXsNZDnMyIZGl2Os=;
-        b=dHSmjKhPB5J1s68QpoP9Y6/g+h0x3ntPW7U1dM2mW0mEqZLTfp8wxsVMANpEugwk3D
-         Inyaknrw2l2iMIwR9epRUgHbEg3OGmdKh454b+FiPXeHr79sT/DJTNgeFx3V6Q8ySOiv
-         mb0lwcoXi0+gi9Jn1c3xXCBkfh5hXlGOu713SkaqNh09CxLDjSXFShunXRnocVh6a6kJ
-         FulZwjzoOkIYlVrVU3GsGBQ3GN1vGsGVeta8nLN1GBn/Kg0P45oxWwksCO9F16hjrMkb
-         8C5rHkGo/49VD/exCq1rPsQ7qJXmNOlWCMQGzRlZxULq7qn0GQAmR6Xhn01GInlKg7tw
-         s6CA==
-X-Forwarded-Encrypted: i=1; AFNElJ/fDBPtEH5M0QHK4yyIKeC+ceNxLURAG6c59mk453qBzbTuQxGg2yBM9q8Rg+SRTxxOkz5qUbw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxONO5BlsPBJ3OmrtLLZ3UfxrykbP0lE4Tm3hFiBMAnRbH+9+Ho
-	U3GYe1DUPW3dTjyl8sWEeU7kkFKUBuAYsIuw6039wiZUCZ0YQwhH23qw
-X-Gm-Gg: Acq92OFmm/QkEjZa3Yb+1eTgv9oVnMO5KfTbzbmZRxGnbDEgiXekntbF6SwjmLDFxMk
-	Rpqtn/djRC6bXZdhkBV1aVAOvVdrZpkSRwS8VwLDnZnPchSVUBqDpegqk0OMcpAjabsqjh9CiCM
-	jj5uVHK1SAq6Fh2OXd/fBQvZJG1rEuVFSTpqSNMfS00OYmFaD1l3LA3uloT6jkRPp+D9s1tvsny
-	8wsFn63dbc0ecYw5NDJrXh8T5warTfI5PTEsXCGpE4y63eA9I4fXgVY2vWgYnWyAkdEYdOc/nc/
-	C097cVeHRipNVXz3ZFxUpLh3/qXAY+dW4d3k2dGJgOOP1SKKODJU4IwjW1EfvMKRQE4MoJFY4r0
-	FBVs9b76ThSwL38fR4LOLFaFledVerZWLrUYPEA5vOmkEJURZrodKcTlCKj0GBe/GCm2/wJGeS/
-	bW4hcZC/v8vN5CPOe75t+jQQ==
-X-Received: by 2002:a05:7301:578d:b0:2ed:935:aa33 with SMTP id 5a478bee46e88-2f5482684a9mr11634929eec.5.1778508373698;
-        Mon, 11 May 2026 07:06:13 -0700 (PDT)
-Received: from dev-ubuntu.. ([128.14.159.2])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2f88847502fsm16347837eec.14.2026.05.11.07.06.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 07:06:12 -0700 (PDT)
-From: faicker.mo@gmail.com
-To: faicker.mo@gmail.com
-Cc: Sridhar Samudrala <sridhar.samudrala@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v4] net: net_failover: Fix the deadlock in slave register
-Date: Mon, 11 May 2026 22:05:51 +0800
-Message-Id: <20260511140552.3284563-1-faicker.mo@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H+CHzD7f"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778508452; x=1810044452;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Db/oBTpZ6iiUd+ZhRm7W0Xyps5oD0x3YXFFm6UzEu/I=;
+  b=H+CHzD7fyU74x+BJ7sRN2MqMXntMxCGGpLWZPCs02DhnWqjrrW/hRpXm
+   aM5SFnBkRb9vXT8jsxaehyLDu6ErTaYKqcEUDffXNfCqdXw795Sj3qWWf
+   Kv7GeWj/pDzT5l7zHhoDNwYEaHUjjBnCeqAGoQUSd+cwzLJQSe3g14ser
+   9RivXsRzxR/eHJb8m3KywzVJd1ltgYPZ8AI3yaAKShrf8yC0wd+LwCNGW
+   GPW1gd9p1VBX/wbZrwSGhh+iv+sSAKKReN0X3o1T5QdPF9QSktaA2Sbnj
+   fWWq9A9G+PBr2O7eCuX50GRGKMY6Z6WFoJ9MavWoeXG5vSvwdQjA6Vhhb
+   Q==;
+X-CSE-ConnectionGUID: kOFkkcqnSeqOuOrMuQtEog==
+X-CSE-MsgGUID: kVQ8MgKfTemLkCDNrheztw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="90771752"
+X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; 
+   d="scan'208";a="90771752"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 07:07:31 -0700
+X-CSE-ConnectionGUID: iNhMYFJYSASjKTqdridUoA==
+X-CSE-MsgGUID: ulJuyrc1R86R1fI2JnhHXQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,229,1770624000"; 
+   d="scan'208";a="267820289"
+Received: from irvmail002.ir.intel.com ([10.43.11.120])
+  by orviesa002.jf.intel.com with ESMTP; 11 May 2026 07:07:29 -0700
+Received: from gond.igk.intel.com (gond.igk.intel.com [10.123.220.52])
+	by irvmail002.ir.intel.com (Postfix) with ESMTP id 617EB2FC4A;
+	Mon, 11 May 2026 15:07:28 +0100 (IST)
+From: Marcin Szycik <marcin.szycik@linux.intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	sandeep.penigalapati@intel.com,
+	ananth.s@intel.com,
+	alexander.duyck@gmail.com,
+	Marcin Szycik <marcin.szycik@linux.intel.com>
+Subject: [PATCH iwl-next v3 00/10] Add ACL support
+Date: Mon, 11 May 2026 15:06:59 +0200
+Message-ID: <20260511130710.38801-1-marcin.szycik@linux.intel.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -80,118 +64,117 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Faicker Mo <faicker.mo@gmail.com>
+E8xx hardware provides a Ternary Classifier block for implementing
+functions such as ACL (Access Control List). In this series it's simply
+referred to as "ACL".
 
-There is netdev_lock_ops() before the NETDEV_REGISTER notifier
-in register_netdevice(), so use the non-locking functions
-in net_failover_slave_register().
-failover_slave_register() in failover_existing_slave_register() adds lock
-and unlock ops too.
+Implement ACL filtering. This expands support of network flow classification
+rules for the ethtool ntuple command. ACL filtering allows for an ip or port
+field's optional mask to be specified.
 
-Call Trace:
- <TASK>
- __schedule+0x30d/0x7a0
- schedule+0x27/0x90
- schedule_preempt_disabled+0x15/0x30
- __mutex_lock.constprop.0+0x538/0x9e0
- __mutex_lock_slowpath+0x13/0x20
- mutex_lock+0x3b/0x50
- dev_set_mtu+0x40/0xe0
- net_failover_slave_register+0x24/0x280
- failover_slave_register+0x103/0x1b0
- failover_event+0x15e/0x210
- ? dropmon_net_event+0xac/0xe0
- notifier_call_chain+0x5e/0xe0
- raw_notifier_call_chain+0x16/0x30
- call_netdevice_notifiers_info+0x52/0xa0
- register_netdevice+0x5f4/0x7c0
- register_netdev+0x1e/0x40
- _mlx5e_probe+0xe2/0x370 [mlx5_core]
- mlx5e_probe+0x59/0x70 [mlx5_core]
- ? __pfx_mlx5e_probe+0x10/0x10 [mlx5_core]
+Example filters:
+  ethtool -N eth0 flow-type tcp4 dst-port 8880 m 0x00ff action 10
+  ethtool -N eth0 flow-type tcp4 src-ip 192.168.0.55 m 0.0.0.255 action -1
 
-Fixes: 4c975fd70002 ("net: hold instance lock during NETDEV_REGISTER/UP")
-Signed-off-by: Faicker Mo <faicker.mo@gmail.com>
----
-Changes since v1:
-  - Fix the space chars (Simon)
-  - Change the dev_close to netif_close (Simon)
-  - Change the label err_dev_open to err_netif_open
-Changes since v2:
-  - Add lock ops in failover_existing_slave_register (Jakub Kicinski)
-Changes since v3:
-  - Fix the lock ops implicit declaration (Jakub Kicinski)
----
- drivers/net/net_failover.c | 12 ++++++------
- net/core/failover.c        |  6 +++++-
- 2 files changed, 11 insertions(+), 7 deletions(-)
+This is a resurrection of an old series from 2020 [1] with several
+improvements, but the fundamental logic unchanged. v1 was almost pulled
+in, but ultimately it was decided to drop it [2] because of unresolved
+issues. One issue was too many defensive NULL checks. Second issue is
+about inconsistency when using multiple input sets. Both are addressed
+in this patchset.
 
-diff --git a/drivers/net/net_failover.c b/drivers/net/net_failover.c
-index d0361aaf25ef..3f7d31033bae 100644
---- a/drivers/net/net_failover.c
-+++ b/drivers/net/net_failover.c
-@@ -502,7 +502,7 @@ static int net_failover_slave_register(struct net_device *slave_dev,
- 
- 	/* Align MTU of slave with failover dev */
- 	orig_mtu = slave_dev->mtu;
--	err = dev_set_mtu(slave_dev, failover_dev->mtu);
-+	err = netif_set_mtu(slave_dev, failover_dev->mtu);
- 	if (err) {
- 		netdev_err(failover_dev, "unable to change mtu of %s to %u register failed\n",
- 			   slave_dev->name, failover_dev->mtu);
-@@ -512,11 +512,11 @@ static int net_failover_slave_register(struct net_device *slave_dev,
- 	dev_hold(slave_dev);
- 
- 	if (netif_running(failover_dev)) {
--		err = dev_open(slave_dev, NULL);
-+		err = netif_open(slave_dev, NULL);
- 		if (err && (err != -EBUSY)) {
- 			netdev_err(failover_dev, "Opening slave %s failed err:%d\n",
- 				   slave_dev->name, err);
--			goto err_dev_open;
-+			goto err_netif_open;
- 		}
- 	}
- 
-@@ -562,10 +562,10 @@ static int net_failover_slave_register(struct net_device *slave_dev,
- err_vlan_add:
- 	dev_uc_unsync(slave_dev, failover_dev);
- 	dev_mc_unsync(slave_dev, failover_dev);
--	dev_close(slave_dev);
--err_dev_open:
-+	netif_close(slave_dev);
-+err_netif_open:
- 	dev_put(slave_dev);
--	dev_set_mtu(slave_dev, orig_mtu);
-+	netif_set_mtu(slave_dev, orig_mtu);
- done:
- 	return err;
- }
-diff --git a/net/core/failover.c b/net/core/failover.c
-index 11bb183c7a1b..e43c59cd6868 100644
---- a/net/core/failover.c
-+++ b/net/core/failover.c
-@@ -12,6 +12,7 @@
- #include <uapi/linux/if_arp.h>
- #include <linux/rtnetlink.h>
- #include <linux/if_vlan.h>
-+#include <net/netdev_lock.h>
- #include <net/failover.h>
- 
- static LIST_HEAD(failover_list);
-@@ -221,8 +222,11 @@ failover_existing_slave_register(struct net_device *failover_dev)
- 	for_each_netdev(net, dev) {
- 		if (netif_is_failover(dev))
- 			continue;
--		if (ether_addr_equal(failover_dev->perm_addr, dev->perm_addr))
-+		if (ether_addr_equal(failover_dev->perm_addr, dev->perm_addr)) {
-+			netdev_lock_ops(dev);
- 			failover_slave_register(dev);
-+			netdev_unlock_ops(dev);
-+		}
- 	}
- 	rtnl_unlock();
- }
+More about the second issue:
+
+From [3]:
+>I would argue that you need to have some sort of logic that basically
+>checks to see if you are going to hit the input set issue and falls
+>back and applies the ACL rules. Otherwise you are significantly
+>hampering the usefulness of this filter type. It doesn't make sense
+>that dropping a field will cause a rule to fail to be added, but
+>masking a single bit in some field will make it valid. It would make
+>it a nightmare to use from the user point of view as the rules come
+>across as arbitrary.
+
+Flow Director (FD) has a hardware limitation where all filters for the same
+packet type must use identical input sets. Previously, attempting to add the
+second filter would fail.
+
+Patch 10 adds automatic fallback to ACL block when FD cannot accommodate a
+filter due to input set conflicts, which resolves this inconsistency.
+
+v3:
+* Various minor fixes, mostly reported by sashiko [4] - check individual
+  changelogs. Not all comments were addressed (some were irrelevant)
+v2:
+* Rebase. Notable conflicts were the removal of ice_status and the addition of
+  libie (which affected AdminQ communication)
+* Reduce the number of defensive NULL checks
+* Use = {} instead of memset for definitions
+* Use kzalloc_obj() instead of plain kzalloc()
+* Move from devm_ to plain allocation for objects that don't require it
+* Move iterator declaration to loop start
+* Move some defines out of structs
+* Fix kdoc (except untouched ice_ethtool_fdir.c functions)
+* Adjust style (err for return variable, spacing, rewrite some comments,
+* commit messages)
+* Remove overly verbose comments
+* Add patches 5, 6, 9 and 10
+* More changes listed in patches (if applicable)
+
+[1] https://lore.kernel.org/intel-wired-lan/20200914153720.48498-1-anthony.l.nguyen@intel.com
+[2] https://lore.kernel.org/netdev/7192efe4d27c93148b3205e65f37203c89170316.camel@intel.com/#t
+[3] https://lore.kernel.org/netdev/CAKgT0Ucxd5-gvEwWAdbL04ER2o++RX_oekUV3E0rYquEgFKj1w@mail.gmail.com
+[4] https://sashiko.dev/#/patchset/20260409120003.2719-1-marcin.szycik%40linux.intel.com
+
+Lukasz Czapnik (1):
+  ice: use ACL for ntuple rules that conflict with FDir
+
+Marcin Szycik (3):
+  Revert "ice: remove unused ice_flow_entry fields"
+  ice: use plain alloc/dealloc for ice_ntuple_fltr
+  ice: re-introduce ice_dealloc_flow_entry() helper
+
+Real Valiquette (5):
+  ice: initialize ACL table
+  ice: initialize ACL scenario
+  ice: create flow profile
+  ice: create ACL entry
+  ice: program ACL entry
+
+Tony Nguyen (1):
+  ice: rename shared Flow Director functions and structs
+
+ drivers/net/ethernet/intel/ice/Makefile       |    5 +-
+ drivers/net/ethernet/intel/ice/ice.h          |   21 +-
+ drivers/net/ethernet/intel/ice/ice_acl.h      |  170 +++
+ drivers/net/ethernet/intel/ice/ice_acl_main.h |    9 +
+ .../net/ethernet/intel/ice/ice_adminq_cmd.h   |  393 +++++-
+ drivers/net/ethernet/intel/ice/ice_arfs.h     |    2 +-
+ drivers/net/ethernet/intel/ice/ice_fdir.h     |   18 +-
+ .../net/ethernet/intel/ice/ice_flex_pipe.h    |    2 +
+ drivers/net/ethernet/intel/ice/ice_flow.h     |   39 +-
+ .../net/ethernet/intel/ice/ice_lan_tx_rx.h    |    3 +
+ drivers/net/ethernet/intel/ice/ice_type.h     |    5 +
+ drivers/net/ethernet/intel/ice/ice_acl.c      |  486 +++++++
+ drivers/net/ethernet/intel/ice/ice_acl_ctrl.c | 1127 +++++++++++++++
+ drivers/net/ethernet/intel/ice/ice_acl_main.c |  311 +++++
+ drivers/net/ethernet/intel/ice/ice_arfs.c     |    8 +-
+ drivers/net/ethernet/intel/ice/ice_ethtool.c  |    8 +-
+ ...ce_ethtool_fdir.c => ice_ethtool_ntuple.c} |  654 ++++++---
+ drivers/net/ethernet/intel/ice/ice_fdir.c     |   32 +-
+ .../net/ethernet/intel/ice/ice_flex_pipe.c    |   11 +-
+ drivers/net/ethernet/intel/ice/ice_flow.c     | 1234 ++++++++++++++++-
+ drivers/net/ethernet/intel/ice/ice_lib.c      |   10 +-
+ drivers/net/ethernet/intel/ice/ice_main.c     |   94 +-
+ drivers/net/ethernet/intel/ice/virt/fdir.c    |   32 +-
+ 23 files changed, 4420 insertions(+), 254 deletions(-)
+ create mode 100644 drivers/net/ethernet/intel/ice/ice_acl.h
+ create mode 100644 drivers/net/ethernet/intel/ice/ice_acl_main.h
+ create mode 100644 drivers/net/ethernet/intel/ice/ice_acl.c
+ create mode 100644 drivers/net/ethernet/intel/ice/ice_acl_ctrl.c
+ create mode 100644 drivers/net/ethernet/intel/ice/ice_acl_main.c
+ rename drivers/net/ethernet/intel/ice/{ice_ethtool_fdir.c => ice_ethtool_ntuple.c} (78%)
+
 -- 
-2.34.1
+2.49.0
 
