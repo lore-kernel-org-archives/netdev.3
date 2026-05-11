@@ -1,78 +1,60 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E36A4ADD9F
-	for <netdev@vger.kernel.org>; Mon, 11 May 2026 18:39:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE404ADD9C
+	for <netdev@vger.kernel.org>; Mon, 11 May 2026 18:43:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778524780; cv=none; b=jBrTn3GfPVmDTHqivLbOzLGowzqwcGYcWEbGUaToExWiCcM5kFRTRLyreo58cStLy24SRSCwhbPF6uPhVXHFvyjwNsShyVX2tZtmwOHtwv5Vxma3xuFHDVvnsfGuQa2EsgpLi0Wls4jyzCjUmjngzTR5te7VqYU6lM5DeKe6Iws=
+	t=1778525037; cv=none; b=LGWdQzc7CbRMxXWjO22tpeEm5bhx3AhfAP9+QTst+ZpstHtAM9GaZm66ACNIFc4qmMzpHbuayJKc5cVtvIDYqED2ShgmQVt3YJps4EtTugpXcQmnZ455i9n2e3Dt7tYgX2V+Zv6thzTSuM6NJ2QnEEcXfzxi987IKUM6uCdsSxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778524780; c=relaxed/simple;
-	bh=QOsEH2Mk03xrE0Y2qeaw1WUb3sTQHejstAgVAdwqytE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JIYeZhj7Cw7hSOCmZkCeEi//6h7K+b6KEcHu2l4uBzy6BEmcqOHI10ohfqvF0/MYVHZdf2/r+aB19M146eiXjN0FMX9PmLUtgXS+TGpm6LfnwmtgH3+D1e3p3V0W08EGiTSf98BRrDSP8bhsNwdo4P6hB6jUNVbIsbNc7ksBcuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B3MAV15D; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1778525037; c=relaxed/simple;
+	bh=uHbYBiaVX6StCVS3mjmgpdx/r0kZ5jpDITVdz4K5N0U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uHMmvD0k83xV927YmMpGUgkxqlFVX26UwuSD0ivou5peSle1GgLsLslK1aIO1qWxBP9EnBtuuMX9ULkaa2Ct6TGw86gdAwHjcPTsQu1F1wcIZr4//I/fQspP7p7TSOFhf3zjDJXMC5hD1DIH2u0rrh5scJHsytsjUE0mxhSlIxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TLkIgD5S; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B3MAV15D"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-48a563e4ef7so42557955e9.0
-        for <netdev@vger.kernel.org>; Mon, 11 May 2026 11:39:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778524768; x=1779129568; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HqYBJkFBn+dzBmQcLNGlSE6PnVzTozScXnJuF8YniTs=;
-        b=B3MAV15Dd0kIkufmcYtTaKIeZLJcxsHGOg4v/ECnRAzVwkDA7MXWkq0k6+4YUxzYBt
-         sERloZkivQlvVtWR4EaSZzFmAiiCY/I7ejF0IMT09dWhi+Xjt1fAGN75BnE0/tGOaNEj
-         gFIkOLzqQ0PKKCPR7d37OTYc42gCzVYHpezAu1zWMwjBYRnIBi8G758il0MKoTL7o7JH
-         RZjkmkMUOqCdD5znljaOSn/CkScvaaR/OPLiMBQqB+BrQr4O36aSbFMXXHc/aq6K6Ujk
-         eHgLtqxvssIY1tjd6TTbXdCmSc5Tu5AVa0NGzyFS039i8SdZ9IcM6JvkLpBVIkSxGN5K
-         f7Tg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778524768; x=1779129568;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=HqYBJkFBn+dzBmQcLNGlSE6PnVzTozScXnJuF8YniTs=;
-        b=WSJ5ZUNVQJ0QrotV4q5HRLxkHc3Q45gRveb6wCEcrSCPDyIOWmF/EMBdnuYpPXQkI/
-         nOc4YJuPzg3u0ehG8wuy1h+p+AVUJ6eGpQh3a0XOA/YXHFQfgwCycDgw0fU9MBy0M6nP
-         xl3SaqoiCSaY6K59alXwUIc9MgzvBlU9DDDvmmP6mW2hgaXV77BnhB6RXiiNQLEERALz
-         Qe75iPtaRXMwnRzJ59QxfQ9aBfOU0VKDfOEKnWeGabl1lpLOhWf66zHvqZq4GzYDzEyN
-         Ylrxc8zxdlfGFsLqwuZimVOm3y2Ds9uC8VkTZbobA31zzcT0ZhG3jOaiLstKTBRYghzu
-         136w==
-X-Gm-Message-State: AOJu0YzgmSfl7SGodtToansJQoSfci1uPYXcG/rmV05OaSKF6W+DD/R7
-	nPLET3Ms7Yd3xEWOT31ccBAke4/4qKwvxAgnv2NXUEj6lds/IICSaNhwxazM1yFS
-X-Gm-Gg: Acq92OGtBVVt3+6ocvvXGwUzS43PsHvkR9LnfEb0SJXtezzFV7jxMyHg+fPQjK6wIrl
-	3u4k4WnzPTZY7B9K7v0YgsQmhKP7UPDnWsaGapGCjxztv5EC9z9PjscHQapbNgr5tvlzJagmbP4
-	M0jr3kQVYxHKrfHO6vSgAtxN9n8c4h4hUoOP4saajtAxk5eYd3RHJFDIfpwpGWMrJAJIW7fZxCB
-	OnPZQmFKS/hgAd7QsYXsb1YUml3DkcorRLR31fnmTv3va84LRAUYlN2kcSxuMHpcCP0+xwX89S7
-	yiZg5R2RtL/Q0zjqms8Vq9BkMqcA2nJSgqfi/9sCDiPS7OvkdLUun0eg0RZ0oTaQaFK6s79YuAN
-	3wVE/n2/2BcT1oa2rk/VMTf7zX1WgQFI9ll/cnBqtr8vU2IByhXRr2rbwA1/NV1tH7crrdBWfHQ
-	4u3MahAMCIvjjf9ZMwsVs=
-X-Received: by 2002:a05:600c:3b17:b0:488:ffb1:494c with SMTP id 5b1f17b1804b1-48e51e1f0b2mr382504595e9.12.1778524768017;
-        Mon, 11 May 2026 11:39:28 -0700 (PDT)
-Received: from localhost ([2a03:2880:31ff:1::])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e8f410558sm467565e9.5.2026.05.11.11.39.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 11:39:27 -0700 (PDT)
-From: Mohsin Bashir <mohsin.bashr@gmail.com>
-To: netdev@vger.kernel.org
-Cc: dsahern@kernel.org,
-	stephen@networkplumber.org,
-	pabeni@redhat.com,
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TLkIgD5S"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778525034;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=KVNlHnyH6Pi2wnbn/0P75oyyCBRiJQi88SIInmQq+gA=;
+	b=TLkIgD5SZX4SD5UFPEDMtC15ZdowqRKBx+kIBAakAUddIeuaoWNUFO4sldBjFpQzMmc8vn
+	OCPeqXKVDeiwMjvavAHORI//weziTb6FGvi08RiUdjuykUsIixboJgpS3EpHHFhIKJltMd
+	6+LhqHnew5F2NYIIj4OuhaneT8Prblo=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-517-LUXBaevYOlu4Gt4qEaKMjQ-1; Mon,
+ 11 May 2026 14:43:50 -0400
+X-MC-Unique: LUXBaevYOlu4Gt4qEaKMjQ-1
+X-Mimecast-MFC-AGG-ID: LUXBaevYOlu4Gt4qEaKMjQ_1778525029
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8FA991800371;
+	Mon, 11 May 2026 18:43:49 +0000 (UTC)
+Received: from wsxc.redhat.com (unknown [10.96.134.165])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 03EA518004A3;
+	Mon, 11 May 2026 18:43:45 +0000 (UTC)
+From: Ricardo Robaina <rrobaina@redhat.com>
+To: audit@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: paul@paul-moore.com,
+	eparis@redhat.com,
+	edumazet@google.com,
 	kuba@kernel.org,
-	ernis@linux.microsoft.com,
-	mohsin.bashr@gmail.com,
-	alexanderduyck@gmail.com,
-	Claude Assistant <noreply@anthropic.com>
-Subject: [PATCH iproute2-next v3 4/6] netshaper: Extract struct shaper_args and parse_shaper_arg() helper
-Date: Mon, 11 May 2026 11:39:13 -0700
-Message-ID: <20260511183915.797792-5-mohsin.bashr@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260511183915.797792-1-mohsin.bashr@gmail.com>
-References: <20260511183915.797792-1-mohsin.bashr@gmail.com>
+	pabeni@redhat.com,
+	horms@kernel.org,
+	Ricardo Robaina <rrobaina@redhat.com>,
+	Steve Grubb <sgrubb@redhat.com>
+Subject: [PATCH] netlink, audit: prevent false ENOBUFS on timeout expiry
+Date: Mon, 11 May 2026 15:43:38 -0300
+Message-ID: <20260511184338.392420-1-rrobaina@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -80,180 +62,131 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-From: Mohsin Bashir <hmohsin@meta.com>
+When auditd is bottlenecked (e.g., by slow disk I/O), kauditd blocks on
+the netlink socket. If the wait timeout fully expires (timeo == 0),
+netlink mistakenly interprets the zeroed timeout as a non-blocking
+request. It then triggers netlink_overrun that drops the event,
+completely bypassing the audit subsystem's internal retry queue, and
+falsely returns ENOBUFS to user-space, resulting in the following error:
 
-Extract common shaper parameters (dev, bw-min, bw-max, weight) into
-struct shaper_args and add parse_shaper_arg() to parse them. This
-avoids duplicating argument parsing when the group command is added
-in the next patch.
+ auditd[]: Error receiving audit netlink packet (No buffer space available)
 
-Reviewed-by: Claude Assistant <noreply@anthropic.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Mohsin Bashir <hmohsin@meta.com>
+Convert the `nonblock` argument in netlink_unicast() into a `flags`
+bitmask and introduce NETLINK_UNICAST_TIMED. When a caller specifies
+this flag and exhausts its timeout budget, netlink intercepts the
+zeroed timeo state. Instead of defaulting to an overrun condition, it
+safely frees the skb and returns -EAGAIN, allowing the audit subsystem
+to gracefully enqueue the pending event into its internal backlog.
+
+Suggested-by: Steve Grubb <sgrubb@redhat.com>
+Signed-off-by: Ricardo Robaina <rrobaina@redhat.com>
 ---
- netshaper/netshaper.c | 111 +++++++++++++++++++++++++++---------------
- 1 file changed, 72 insertions(+), 39 deletions(-)
+ include/linux/netlink.h  |  5 ++++-
+ kernel/audit.c           |  8 ++++----
+ net/netlink/af_netlink.c | 17 +++++++++++++++--
+ 3 files changed, 23 insertions(+), 7 deletions(-)
 
-diff --git a/netshaper/netshaper.c b/netshaper/netshaper.c
-index 83bfd2f6..9ccd09f4 100644
---- a/netshaper/netshaper.c
-+++ b/netshaper/netshaper.c
-@@ -69,6 +69,54 @@ static int parse_rate(const char *str, __u64 *rate_bps)
+diff --git a/include/linux/netlink.h b/include/linux/netlink.h
+index 882e9c1b6c1d..1888c8ee416a 100644
+--- a/include/linux/netlink.h
++++ b/include/linux/netlink.h
+@@ -226,7 +226,10 @@ void netlink_ack(struct sk_buff *in_skb, struct nlmsghdr *nlh, int err,
+ int netlink_has_listeners(struct sock *sk, unsigned int group);
+ bool netlink_strict_get_check(struct sk_buff *skb);
+ 
+-int netlink_unicast(struct sock *ssk, struct sk_buff *skb, __u32 portid, int nonblock);
++/* Internal flags for netlink_unicast (do not overlap with MSG_* flags) */
++#define NETLINK_UNICAST_TIMED 0x80000
++
++int netlink_unicast(struct sock *ssk, struct sk_buff *skb, __u32 portid, int flags);
+ int netlink_broadcast(struct sock *ssk, struct sk_buff *skb, __u32 portid,
+ 		      __u32 group, gfp_t allocation);
+ 
+diff --git a/kernel/audit.c b/kernel/audit.c
+index e1d489bc2dff..005bfd9dc7a4 100644
+--- a/kernel/audit.c
++++ b/kernel/audit.c
+@@ -753,7 +753,7 @@ static int auditd_send_unicast_skb(struct sk_buff *skb)
+ 	portid = ac->portid;
+ 	rcu_read_unlock();
+ 
+-	rc = netlink_unicast(sk, skb, portid, 0);
++	rc = netlink_unicast(sk, skb, portid, NETLINK_UNICAST_TIMED);
+ 	put_net(net);
+ 	if (rc < 0)
+ 		goto err;
+@@ -811,7 +811,7 @@ static int kauditd_send_queue(struct sock *sk, u32 portid,
+ retry:
+ 		/* grab an extra skb reference in case of error */
+ 		skb_get(skb);
+-		rc = netlink_unicast(sk, skb, portid, 0);
++		rc = netlink_unicast(sk, skb, portid, NETLINK_UNICAST_TIMED);
+ 		if (rc < 0) {
+ 			/* send failed - try a few times unless fatal error */
+ 			if (++failed >= retry_limit ||
+@@ -967,7 +967,7 @@ int audit_send_list_thread(void *_dest)
+ 	audit_ctl_unlock();
+ 
+ 	while ((skb = __skb_dequeue(&dest->q)) != NULL)
+-		netlink_unicast(sk, skb, dest->portid, 0);
++		netlink_unicast(sk, skb, dest->portid, NETLINK_UNICAST_TIMED);
+ 
+ 	put_net(dest->net);
+ 	kfree(dest);
+@@ -1020,7 +1020,7 @@ static int audit_send_reply_thread(void *arg)
+ 
+ 	/* Ignore failure. It'll only happen if the sender goes away,
+ 	   because our timeout is set to infinite. */
+-	netlink_unicast(audit_get_sk(reply->net), reply->skb, reply->portid, 0);
++	netlink_unicast(audit_get_sk(reply->net), reply->skb, reply->portid, NETLINK_UNICAST_TIMED);
+ 	reply->skb = NULL;
+ 	audit_free_reply(reply);
  	return 0;
+diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
+index 2aeb0680807d..acaa96695981 100644
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -1325,14 +1325,17 @@ static int netlink_unicast_kernel(struct sock *sk, struct sk_buff *skb,
  }
  
-+struct shaper_args {
-+	__u64 bw_min_bps, bw_max_bps;
-+	__u32 weight;
-+	bool has_bw_min, has_bw_max, has_weight;
-+	int ifindex;
-+};
-+
-+#define SHAPER_ARGS_INIT { .ifindex = -1 }
-+
-+static int parse_shaper_arg(const char *key, int *argcp, char ***argvp,
-+			    struct shaper_args *args)
-+{
-+	int argc = *argcp;
-+	char **argv = *argvp;
-+
-+	if (strcmp(key, "dev") == 0) {
-+		NEXT_ARG();
-+		args->ifindex = ll_name_to_index(*argv);
-+		if (args->ifindex == 0) {
-+			fprintf(stderr, "Device \"%s\" not found\n", *argv);
-+			return -1;
-+		}
-+	} else if (strcmp(key, "bw-min") == 0) {
-+		NEXT_ARG();
-+		if (parse_rate(*argv, &args->bw_min_bps))
-+			return -1;
-+		args->has_bw_min = true;
-+	} else if (strcmp(key, "bw-max") == 0) {
-+		NEXT_ARG();
-+		if (parse_rate(*argv, &args->bw_max_bps))
-+			return -1;
-+		args->has_bw_max = true;
-+	} else if (strcmp(key, "weight") == 0) {
-+		NEXT_ARG();
-+		if (get_unsigned(&args->weight, *argv, 10)) {
-+			fprintf(stderr, "Invalid weight value\n");
-+			return -1;
-+		}
-+		args->has_weight = true;
-+	} else {
-+		return 0;
-+	}
-+
-+	*argcp = argc;
-+	*argvp = argv;
-+	return 1;
-+}
-+
- static void print_netshaper_attrs(struct nlmsghdr *answer)
+ int netlink_unicast(struct sock *ssk, struct sk_buff *skb,
+-		    u32 portid, int nonblock)
++		    u32 portid, int flags)
  {
- 	struct rtattr *handle_tb[NET_SHAPER_A_HANDLE_MAX + 1] = {};
-@@ -155,41 +203,25 @@ static int do_cmd(int argc, char **argv, int cmd)
- 	GENL_REQUEST(req, 1024, genl_family, 0, NET_SHAPER_FAMILY_VERSION, cmd,
- 		     NLM_F_REQUEST | NLM_F_ACK);
+ 	struct sock *sk;
+ 	int err;
+ 	long timeo;
++	int nonblock;
  
--	bool has_bw_min = false, has_bw_max = false, has_weight = false;
-+	struct shaper_args args = SHAPER_ARGS_INIT;
- 	int handle_scope = NET_SHAPER_SCOPE_UNSPEC;
--	__u64 bw_min_bps = 0, bw_max_bps = 0;
--	__u32 handle_id = 0, weight = 0;
- 	bool handle_present = false;
- 	bool has_handle_id = false;
- 	struct nlmsghdr *answer;
--	int err, ifindex = -1;
-+	__u32 handle_id = 0;
-+	int err, ret;
+ 	skb = netlink_trim(skb, gfp_any());
  
- 	while (argc > 0) {
--		if (strcmp(*argv, "dev") == 0) {
--			NEXT_ARG();
--			ifindex = ll_name_to_index(*argv);
--			if (ifindex == 0) {
--				fprintf(stderr, "Device \"%s\" not found\n", *argv);
--				return -1;
--			}
--		} else if (strcmp(*argv, "bw-min") == 0) {
--			NEXT_ARG();
--			if (parse_rate(*argv, &bw_min_bps))
--				return -1;
--			has_bw_min = true;
--		} else if (strcmp(*argv, "bw-max") == 0) {
--			NEXT_ARG();
--			if (parse_rate(*argv, &bw_max_bps))
--				return -1;
--			has_bw_max = true;
--		} else if (strcmp(*argv, "weight") == 0) {
--			NEXT_ARG();
--			if (get_unsigned(&weight, *argv, 10)) {
--				fprintf(stderr, "Invalid weight value\n");
--				return -1;
--			}
--			has_weight = true;
--		} else if (strcmp(*argv, "handle") == 0) {
-+		ret = parse_shaper_arg(*argv, &argc, &argv, &args);
-+		if (ret < 0)
-+			return -1;
-+		if (ret > 0) {
-+			argc--;
-+			argv++;
-+			continue;
++	/* Extract blocking mode: strip internal flags, preserve MSG_DONTWAIT */
++	nonblock = flags & ~NETLINK_UNICAST_TIMED;
+ 	timeo = sock_sndtimeo(ssk, nonblock);
+ retry:
+ 	sk = netlink_getsockbyportid(ssk, portid);
+@@ -1351,8 +1354,18 @@ int netlink_unicast(struct sock *ssk, struct sk_buff *skb,
+ 	}
+ 
+ 	err = netlink_attachskb(sk, skb, &timeo, ssk);
+-	if (err == 1)
++	if (err == 1) {
++		/* timeo may have been zeroed by schedule_timeout inside
++		 * netlink_attachskb. If the caller is a timed-blocking sender
++		 * (not genuinely nonblocking), don't re-enter with timeo=0 as
++		 * that would misfire netlink_overrun on the next iteration.
++		 */
++		if (!timeo && (flags & NETLINK_UNICAST_TIMED)) {
++			kfree_skb(skb);
++			return -EAGAIN;
 +		}
-+
-+		if (strcmp(*argv, "handle") == 0) {
- 			handle_present = true;
- 			NEXT_ARG();
+ 		goto retry;
++	}
+ 	if (err)
+ 		return err;
  
-@@ -241,16 +273,17 @@ static int do_cmd(int argc, char **argv, int cmd)
- 		argv++;
- 	}
- 
--	if (ifindex == -1)
-+	if (args.ifindex == -1)
- 		missarg("dev");
- 
- 	if (!handle_present)
- 		missarg("handle");
- 
--	if (cmd == NET_SHAPER_CMD_SET && !has_bw_min && !has_bw_max && !has_weight)
-+	if (cmd == NET_SHAPER_CMD_SET &&
-+	    !args.has_bw_min && !args.has_bw_max && !args.has_weight)
- 		missarg("bw-min, bw-max, or weight");
- 
--	addattr32(&req.n, sizeof(req), NET_SHAPER_A_IFINDEX, ifindex);
-+	addattr32(&req.n, sizeof(req), NET_SHAPER_A_IFINDEX, args.ifindex);
- 
- 	struct rtattr *handle = addattr_nest(&req.n, sizeof(req),
- 					     NET_SHAPER_A_HANDLE | NLA_F_NESTED);
-@@ -260,16 +293,16 @@ static int do_cmd(int argc, char **argv, int cmd)
- 	addattr_nest_end(&req.n, handle);
- 
- 	if (cmd == NET_SHAPER_CMD_SET) {
--		if (has_bw_min)
-+		if (args.has_bw_min)
- 			addattr64(&req.n, sizeof(req), NET_SHAPER_A_BW_MIN,
--				  bw_min_bps);
--		if (has_bw_max)
-+				  args.bw_min_bps);
-+		if (args.has_bw_max)
- 			addattr64(&req.n, sizeof(req), NET_SHAPER_A_BW_MAX,
--				  bw_max_bps);
--		if (has_weight)
-+				  args.bw_max_bps);
-+		if (args.has_weight)
- 			addattr32(&req.n, sizeof(req), NET_SHAPER_A_WEIGHT,
--				  weight);
--		if (has_bw_min || has_bw_max)
-+				  args.weight);
-+		if (args.has_bw_min || args.has_bw_max)
- 			addattr32(&req.n, sizeof(req), NET_SHAPER_A_METRIC,
- 				  NET_SHAPER_METRIC_BPS);
- 	}
 -- 
-2.53.0-Meta
+2.53.0
 
