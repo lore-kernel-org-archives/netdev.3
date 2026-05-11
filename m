@@ -1,205 +1,298 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C928373BFC;
-	Mon, 11 May 2026 15:50:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778514626; cv=pass; b=UGLVSkhmeJ4nwqPRxIhZRKHU0fdn4/i+pW3h/xFlaAVnW22IlWz9+p2C6WGueFdfheMZhBd9H+WufiUhiO7oSC+4X0Y/YuQgIKfbM+kQa5LbS/hlFRBvFFKYmi9Y+bsyKxNlb9Q8gjrcuZJ5Fvv/UYiP8pydJp/gLzQkFZPUgb4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778514626; c=relaxed/simple;
-	bh=Jev2YbVCoZFjEhOMq696YfzAJwCtgWiHcamd3Bfkrzg=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=j3znQPyVN82GHsGyig4FvitM4bNYAkriPAHOeiB5rBBjbFUCAsvDlLG/jsIOPzGPGKU97R4rWJwI+7AhPNVjRkCy9e4i2HUNKhIzmhEcyZjV+YMujgFrz7Jxs+OxbshjjenTy7obRlqksufuKUIkKvoTqlNpbN1Z9k7tBBau18g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=louisalexis.eyraud@collabora.com header.b=lXQwuqDE; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB0B33F591;
+	Mon, 11 May 2026 15:52:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778514733; cv=none; b=POMMRMhM2Q1TtH35LSyXZI1fwAPeg/7THS4jcrYF5vs9TsPgwcQuNiBa+uOadlwMSy08V8zNsgXGE6oWsk+/GYqepKtoBunPuPkQ9TTVOo9ve+eGTvFoUsxLznc/tiC29n8rTjH2FjI+kcgf7C3fsmXnrrgBxXsxVWaBVAS31b4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778514733; c=relaxed/simple;
+	bh=XYS35lpdlJ3jrEk4niYv2AaZDJVYdfxgOj96dHJ7nj0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cYuP3+nLM0j/i+GdWNBxAfyVM0OYCBKX7srGm62dmtqM2vdd68W4uWP0hZlWMQQbuO33IyitGQootYqqUpdWIAvqCo6GPkJ7EwAmBsORk0fJ4ga08qQY+AqOighKwW6hBh4uSKOMBXG3WpEOFcBaqmxD4X1XApKgLKgKAPGbHB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jXl1vx11; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=louisalexis.eyraud@collabora.com header.b="lXQwuqDE"
-ARC-Seal: i=1; a=rsa-sha256; t=1778514593; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=JtR96WeqT7mANZWYH5Oq/SrWkMVZMHEbjdysUv/IDO4KZwoDNDvREeBHkIj51zpAmurnQdC08F2XjOERSeMmOUucOa/EQHyhYMAf2nwLR+YpK/sv1eIXWC5lYuCs1C/2k61b9w7swjzlLd+nbhC4mkys+J5UDiJl5hYA2KK45lM=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1778514593; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=XLRqHHn0hwJYYFSTUINWa18jofeRC1qm9JrrGQiF80s=; 
-	b=gqVx98psmTKrKlqyPBaggNuqabHo96QX5RdambdyF9d0G93YbduIFF1ajBv0b3svQONPy+0P31NxXL9D6iwvqyjvpfc60hW7irJKOs0UMUGqOA7pOeSheMkBy6vNYmCxF9qNSTxRzBJQVJtmc+Nv6lHLNlNoEi8su71z/YDnZ/E=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=louisalexis.eyraud@collabora.com;
-	dmarc=pass header.from=<louisalexis.eyraud@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1778514593;
-	s=zohomail; d=collabora.com; i=louisalexis.eyraud@collabora.com;
-	h=Message-ID:Subject:Subject:From:From:To:To:Cc:Cc:Date:Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-Id:Reply-To;
-	bh=XLRqHHn0hwJYYFSTUINWa18jofeRC1qm9JrrGQiF80s=;
-	b=lXQwuqDEHkE93zSFEP0C/7F7bsb2cpIzNR+y4WCSN/TJXYD78zHt1AwDilCol32u
-	q9O+paBosqN1PAeJoIvEVFQwsiR/ZgvPKnIjEBYTbSjRHj+sgQmEIbN79VCs8BT75sq
-	9/iVOyqpkucv2LWwu2iJCgU5UqmYIJzriORdTJ7E=
-Received: by mx.zohomail.com with SMTPS id 1778514590556214.59633215458769;
-	Mon, 11 May 2026 08:49:50 -0700 (PDT)
-Message-ID: <7d5bcbe907456e4ada4401251eb05c3d5378dcb0.camel@collabora.com>
-Subject: Re: [PATCH net-next v2 4/4] net: phy: Introduce Airoha AN8801/R
- Gigabit Ethernet PHY driver
-From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley	
- <conor+dt@kernel.org>, AngeloGioacchino Del Regno	
- <angelogioacchino.delregno@collabora.com>, Heiner Kallweit	
- <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	kevin-kw.huang@airoha.com, macpaul.lin@mediatek.com,
- matthias.bgg@gmail.com, 	kernel@collabora.com, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, 	linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org, 	linux-kernel@vger.kernel.org
-Date: Mon, 11 May 2026 17:49:44 +0200
-In-Reply-To: <27ca6b71-18df-4e47-9117-0e503f7e7d5f@lunn.ch>
-References: 
-	<20260326-add-airoha-an8801-support-v2-0-1a42d6b6050f@collabora.com>
-	 <20260326-add-airoha-an8801-support-v2-4-1a42d6b6050f@collabora.com>
-	 <3688a285-7f98-4afa-80ad-697094cd7b97@lunn.ch>
-	 <2c441d51f6a865ddb6e67b63cd26a651ed3ff058.camel@collabora.com>
-	 <27ca6b71-18df-4e47-9117-0e503f7e7d5f@lunn.ch>
-Organization: Collabora Ltd
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jXl1vx11"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75E62C2BCB0;
+	Mon, 11 May 2026 15:52:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778514732;
+	bh=XYS35lpdlJ3jrEk4niYv2AaZDJVYdfxgOj96dHJ7nj0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jXl1vx11tudWu7CT5lGhKTW+9tTlMU51ZuUSHB8fmD2JmNq2k4yRJAcNUjNqPBYxL
+	 r1XIsxHhnd/3aZKnTwW5Bhap2jhLe7knhvL5IueBJ+Wye1beSdx0S0/med6U0Lqi1l
+	 fI/zRhmHGzoWCHXqOnpJZhbThVSGh7uxfjOUIJhKOevLBHUVjYURPQr3M90e68LwNX
+	 ir3bOZ5cKpD67uvm+yeYQy+MAGGWi7et17FnzwB0yyl9vIDT0ZYPJGY27JXXiC6t/F
+	 vJwXfvXXaEeS+9Etw2vLEosrY7fBbiY+W9vnmSTp5Ug47t/vrtNR1yfLTjRU1wuHnB
+	 89Di4rL5SNn5Q==
+Date: Mon, 11 May 2026 17:52:10 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Bart De Schuymer <bdschuym@pandora.be>,
+	Patrick McHardy <kaber@trash.net>, netdev@vger.kernel.org,
+	netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+	bridge@lists.linux.dev
+Subject: Re: [PATCH net] net: neigh: Reallocate headroom if necessary in
+ neigh_hh_bridge()
+Message-ID: <agH7Kv_zGu1Sh_zl@lore-desk>
+References: <20260508-nf-neigh_hh_bridge-fix-v1-1-a1464468d92e@kernel.org>
+ <20260510111405.GA78831@shredder>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ZohoMailClient: External
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="2hZyzmXD+ZbltuU1"
+Content-Disposition: inline
+In-Reply-To: <20260510111405.GA78831@shredder>
 
-Hi Andrew,
 
-On Thu, 2026-05-07 at 23:43 +0200, Andrew Lunn wrote:
-> > > > +static int an8801r_of_init_leds(struct phy_device *phydev, u8
-> > > > *led_cfg)
-> > > > +{
-> > > > +	struct device *dev =3D &phydev->mdio.dev;
-> > > > +	struct device_node *np =3D dev->of_node;
-> > > > +	struct device_node *leds;
-> > > > +	u32 function_enum_idx;
-> > > > +	int ret;
-> > > > +
-> > > > +	if (!np)
-> > > > +		return 0;
-> > > > +
-> > > > +	/* If devicetree is present, leds configuration is
-> > > > required */
-> > > > +	leds =3D of_get_child_by_name(np, "leds");
-> > > > +	if (!leds)
-> > > > +		return 0;
-> > > > +
-> > > > +	for_each_available_child_of_node_scoped(leds, led) {
-> > > > +		u32 led_idx;
-> > > > +
-> > > > +		ret =3D of_property_read_u32(led, "reg",
-> > > > &led_idx);
-> > > > +		if (ret)
-> > > > +			goto out;
-> > > > +
-> > > > +		if (led_idx >=3D AN8801R_NUM_LEDS) {
-> > > > +			ret =3D -EINVAL;
-> > > > +			goto out;
-> > > > +		}
-> > > > +
-> > > > +		ret =3D of_property_read_u32(led, "function-
-> > > > enumerator",
-> > > > +					=C2=A0=C2=A0
-> > > > &function_enum_idx);
-> > > > +		if (ret)
-> > > > +			function_enum_idx =3D
-> > > > AN8801R_LED_FN_NONE;
-> > > > +
-> > >=20
-> > > What is this doing? Is this documented in the binding?
-> > The `function-enumerator` property is only documented in the led
-> > common
-> > dt-binding file. The an8801 dt-bindings inherits this property from
-> > the
-> > ethernet-phy dt-bindings.
+--2hZyzmXD+ZbltuU1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+> On Fri, May 08, 2026 at 01:25:14PM +0200, Lorenzo Bianconi wrote:
+> > neigh_hh_bridge() assumes the skb always has sufficient headroom to copy
+> > the aligned  L2 header. This assumption can trigger the crash reported
+> > below using the following netfilter setup:
 > >=20
-> > We aimed to have this PHY have its led behaviour (how many to
-> > enable
-> > and what their role shall be) configurable using devicetree and not
-> > to
-> > rely on a default configuration, hard-coded in the driver (like the
-> > air_en8811h driver did) and also make use of the led hardware
-> > offloading (for functions like 100/1000, activity blinking, and
-> > others)
-> > that this PHY is capable of.
+> > $modprobe br_netfilter
+> > $sysctl -w net.bridge.bridge-nf-call-iptables=3D1
+> >=20
+> > $root@OpenWrt:~# nft list ruleset
+> > table ip nat {
+> >         chain prerouting {
+> >                 type nat hook prerouting priority dstnat; policy accept;
+> >                 ip daddr 192.168.83.123 dnat to 192.168.83.120
+> >         }
+> > }
+> >=20
+> > - iperf3 client (192.168.83.119) --> bridge (192.168.83.118) --> iperf3=
+ server (192.168.83.120)
+> >=20
+> > the iperf3 client is sending packet for 192.168.83.123 to the bridge de=
+vice.
+> >=20
+> > [ 1579.036575] Unable to handle kernel write to read-only memory at vir=
+tual address ffffff8004d76ffe
+> > [ 1579.045482] Mem abort info:
+> > [ 1579.048273]   ESR =3D 0x000000009600004f
+> > [ 1579.052024]   EC =3D 0x25: DABT (current EL), IL =3D 32 bits
+> > [ 1579.057363]   SET =3D 0, FnV =3D 0
+> > [ 1579.060417]   EA =3D 0, S1PTW =3D 0
+> > [ 1579.063550]   FSC =3D 0x0f: level 3 permission fault
+> > [ 1579.068345] Data abort info:
+> > [ 1579.071224]   ISV =3D 0, ISS =3D 0x0000004f, ISS2 =3D 0x00000000
+> > [ 1579.076720]   CM =3D 0, WnR =3D 1, TnD =3D 0, TagAccess =3D 0
+> > [ 1579.081770]   GCS =3D 0, Overlay =3D 0, DirtyBit =3D 0, Xs =3D 0
+> > [ 1579.087092] swapper pgtable: 4k pages, 39-bit VAs, pgdp=3D0000000080=
+dc4000
+> > [ 1579.093794] [ffffff8004d76ffe] pgd=3D180000009ffff003, p4d=3D1800000=
+09ffff003, pud=3D180000009ffff003, pmd=3D180000009ffe3003, pte=3D0060000084=
+d76787
+> > [ 1579.106343] Internal error: Oops: 000000009600004f [#1] SMP
+> > [ 1579.193824] CPU: 0 UID: 0 PID: 235 Comm: napi/qdma_eth-3 Tainted: G =
+          O       6.12.57 #0
 >=20
-> What other drivers do is leave the configuration with its reset
-> default. They are often sensible. When the netdev trigger loads, it
-> should ask the LED how it is configured, and the values in sysfs will
-> reflect it. After that you can change it, via udev rules, etc.
-When you say "reset default", do you mean the default PHY register
-values, the ones that may have been set by the bootloader or by the
-driver with a default hardcoded functional config?
->=20
-> You have to be careful about what you put in DT. DT describes
-> hardware, not configuration or policy. How the LED blinks is probably
-> configuration, so it does not belong in DT.
-I agree.
-What I meant as configuration was only the leds node presence and the
-led function properties, as the devicetree should describe what/how
-many LED are connected to the PHY and they represent (or mean) for a
-given board.
-Parameters like off/on delay or trigger events are indeed not really
-appropriate for devicetree and the AN8801 dt-bindings patch do not add
-any such property.
+> AFAICT this driver does not reserve any headroom in skbs that it's
+> injecting to the Rx path. Is there a reason for that?
 
-And even, if technically the LEDs are reconfigurable with netdev or any
-other LED trigger, the configuration is somehow hardware bound, because
-the different colors of LEDs do kind-of bind a specific function to a
-specific LED (amber vs green).
-
-This is why the an8801r_of_init_leds function read those LED-related
-properties (leds/led/function-enumerator) to set a default led config
-behaviour (that can of course be overridden by an user with a led
-trigger) rather than relying on bootloader or use a hardcoded led
-register config in the driver.
-
-What implementation would be preferred for this driver?
+yep, right. I have already proposed a fix for the driver here:
+https://lore.kernel.org/netdev/20260511-airoha-eth-multi-serdes-v6-2-c89946=
+2c4f75@kernel.org/
+but I guess it worths to fix neigh_hh_bridge() as well.
 
 >=20
-> > > > +static int an8801r_read_status(struct phy_device *phydev)
-> > > > +{
-> > > > +	int prev_speed, ret;
-> > > > +	u32 val;
-> > > > +
-> > > > +	prev_speed =3D phydev->speed;
-> > > > +
-> > > > +	ret =3D genphy_read_status(phydev);
-> > > > +	if (ret)
-> > > > +		return ret;
-> > > > +
-> > > > +	if (phydev->link && prev_speed !=3D phydev->speed) {
-> > > > +		val =3D phydev->speed =3D=3D SPEED_1000 ?
-> > > > +		=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 AN8801_BPBUS_LINK_MODE_1000 : 0;
-> > > > +
-> > > > +		return an8801_buckpbus_reg_rmw(phydev,
-> > > > +					=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
-> > > > AN8801_BPBUS_REG_LINK_MODE,
-> > > > +					=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
-> > > > AN8801_BPBUS_LINK_MODE_1000,
-> > > > +					=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 val);
-> > > > +	};
-> > >=20
-> > > This is unusual. What is it doing? Please add a comment.
-> > This call is to ensure that the PHY switches to the expected 1Gbps=20
-> > speed when available.=C2=A0
+> > [ 1579.202614] Tainted: [O]=3DOOT_MODULE
+> > [ 1579.206102] Hardware name: Airoha AN7581 Evaluation Board (DT)
+> > [ 1579.211929] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BT=
+YPE=3D--)
+> > [ 1579.218889] pc : br_nf_pre_routing_finish_bridge+0x1ac/0xcc8 [br_net=
+filter]
+> > [ 1579.225859] lr : br_nf_pre_routing_finish_bridge+0x18c/0xcc8 [br_net=
+filter]
+> > [ 1579.232822] sp : ffffffc0817cba20
+> > [ 1579.236128] x29: ffffffc0817cba20 x28: 0000000000000000 x27: ffffff8=
+002b89000
+> > [ 1579.243273] x26: ffffff8004d7700e x25: 0000000000000008 x24: 0000000=
+000000000
+> > [ 1579.250416] x23: ffffffc08179d4c0 x22: 0000000000000000 x21: ffffffc=
+08179d4c0
+> > [ 1579.257561] x20: ffffff8004d9b800 x19: ffffff8015010000 x18: 0000000=
+000000014
+> > [ 1579.264704] x17: ffffffbf9e930000 x16: ffffffc0817c8000 x15: 0000000=
+000000070
+> > [ 1579.271848] x14: 0000000000000080 x13: 0000000000000001 x12: 0000000=
+000000000
+> > [ 1579.278993] x11: ffffffc0798caae0 x10: ffffff8014db6fd8 x9 : 0000000=
+000000000
+> > [ 1579.286136] x8 : 0000000000000003 x7 : ffffffc08171f628 x6 : 0000000=
+01a3b83d3
+> > [ 1579.293281] x5 : 0000000000000000 x4 : 1beb76f22fee0000 x3 : ffffff8=
+004d7700e
+> > [ 1579.300425] x2 : 0000000000000000 x1 : ffffff8004d9b8bc x0 : ffffff8=
+0026ed000
+> > [ 1579.307570] Call trace:
+> > [ 1579.310018]  br_nf_pre_routing_finish_bridge+0x1ac/0xcc8 [br_netfilt=
+er]
+> > [ 1579.316632]  br_nf_hook_thresh+0xd4/0x14bc [br_netfilter]
+> > [ 1579.322032]  br_nf_hook_thresh+0x250/0x14bc [br_netfilter]
+> > [ 1579.327517]  br_nf_hook_thresh+0x76c/0x14bc [br_netfilter]
+> > [ 1579.333003]  br_handle_frame+0x180/0x480
+> > [ 1579.336935]  __netif_receive_skb_core.constprop.0+0x540/0xf40
+> > [ 1579.342682]  __netif_receive_skb_one_core+0x28/0x50
+> > [ 1579.347561]  process_backlog+0x98/0x1e0
+> > [ 1579.351398]  __napi_poll+0x34/0x1c4
+> > [ 1579.354887]  net_rx_action+0x178/0x330
+> > [ 1579.358638]  handle_softirqs+0x108/0x2d4
+> > [ 1579.362560]  __do_softirq+0x10/0x18
+> > [ 1579.366051]  ____do_softirq+0xc/0x20
+> > [ 1579.369627]  call_on_irq_stack+0x30/0x4c
+> > [ 1579.373550]  do_softirq_own_stack+0x18/0x20
+> > [ 1579.377734]  do_softirq+0x4c/0x60
+> > [ 1579.381050]  __local_bh_enable_ip+0x88/0x98
+> > [ 1579.385234]  napi_threaded_poll_loop+0x188/0x21c
+> > [ 1579.389853]  napi_threaded_poll+0x70/0x80
+> > [ 1579.393863]  kthread+0xd8/0xdc
+> > [ 1579.396918]  ret_from_fork+0x10/0x20
+> > [ 1579.400499] Code: 88dffc22 3707ffc2 f9406663 f9406684 (f81f0064)
+> > [ 1579.406589] ---[ end trace 0000000000000000 ]---
+> > [ 1579.411209] Kernel panic - not syncing: Oops: Fatal exception in int=
+errupt
+> > [ 1579.418083] SMP: stopping secondary CPUs
+> > [ 1579.422012] Kernel Offset: disabled
+> >=20
+> > Fix the issue reallocating the skb headroom if necessary in neigh_hh_br=
+idge routine.
+> >=20
+> > Fixes: e179e6322ac33 ("netfilter: bridge-netfilter: Fix MAC header hand=
+ling with IP DNAT")
+> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> > ---
+> >  include/net/neighbour.h         | 15 +++++++++++----
+> >  net/bridge/br_netfilter_hooks.c |  5 ++++-
+> >  2 files changed, 15 insertions(+), 5 deletions(-)
+> >=20
+> > diff --git a/include/net/neighbour.h b/include/net/neighbour.h
+> > index 2dfee6d4258a..4e1222968753 100644
+> > --- a/include/net/neighbour.h
+> > +++ b/include/net/neighbour.h
+> > @@ -487,16 +487,23 @@ static inline int neigh_event_send(struct neighbo=
+ur *neigh, struct sk_buff *skb)
+> >  }
+> > =20
+> >  #if IS_ENABLED(CONFIG_BRIDGE_NETFILTER)
+> > -static inline int neigh_hh_bridge(struct hh_cache *hh, struct sk_buff =
+*skb)
+> > +static inline struct sk_buff *
+> > +neigh_hh_bridge(struct hh_cache *hh, struct sk_buff *skb)
+> >  {
+> > -	unsigned int seq, hh_alen;
+> > +	unsigned int seq, hh_alen =3D HH_DATA_ALIGN(ETH_HLEN);
+> > +
+> > +	if (unlikely(skb_headroom(skb) < hh_alen)) {
+> > +		skb =3D skb_expand_head(skb, hh_alen);
+> > +		if (!skb)
+> > +			return NULL;
+> > +	}
 >=20
-> So this is an errata workaround? Please add this in a patch of its
-> own, described the problem in the commit message, list the errata
-> etc.
+> The comment from Sashiko looks relevant:
 >=20
-OK, I'll add this in a separate patch in v3.
+> Does this adequately protect against writing to shared or cloned SKBs?
+>=20
+> If a cloned SKB already has sufficient headroom, this check evaluates to
+> false, and the code proceeds to overwrite the MAC header via memcpy().
+> Modifying a cloned SKB without unsharing it could corrupt the data for
+> other users of the buffer, or still trigger the read-only memory panic
+> this patch aims to fix.
+>=20
+> Should this use skb_cow_head() or explicitly check skb_shared() and
+> skb_cloned() before modifying the buffer data?
 
-Best regards,
-Louis-Alexis
+ack, I will fix it in v2.
 
-> =C2=A0=C2=A0=C2=A0=C2=A0 Andrew
+>=20
+> > =20
+> >  	do {
+> >  		seq =3D read_seqbegin(&hh->hh_lock);
+> > -		hh_alen =3D HH_DATA_ALIGN(ETH_HLEN);
+> >  		memcpy(skb->data - hh_alen, hh->hh_data, ETH_ALEN + hh_alen - ETH_HL=
+EN);
+> >  	} while (read_seqretry(&hh->hh_lock, seq));
+> > -	return 0;
+> > +
+> > +	return skb;
+> >  }
+> >  #endif
+> > =20
+> > diff --git a/net/bridge/br_netfilter_hooks.c b/net/bridge/br_netfilter_=
+hooks.c
+> > index 0ab1c94db4b9..6b59d7eb7906 100644
+> > --- a/net/bridge/br_netfilter_hooks.c
+> > +++ b/net/bridge/br_netfilter_hooks.c
+> > @@ -297,7 +297,10 @@ int br_nf_pre_routing_finish_bridge(struct net *ne=
+t, struct sock *sk, struct sk_
+> >  				goto free_skb;
+> >  			}
+> > =20
+> > -			neigh_hh_bridge(&neigh->hh, skb);
+> > +			skb =3D neigh_hh_bridge(&neigh->hh, skb);
+> > +			if (!skb)
+> > +				return -ENOMEM;
+> > +
+>=20
+> Also from Sashiko:
+>=20
+> Does returning early here leak the neighbour reference?
+>=20
+> Earlier in br_nf_pre_routing_finish_bridge(), a reference to neigh is
+> obtained via dst_neigh_lookup_skb(dst, skb). By returning -ENOMEM here,
+> we bypass the neigh_release(neigh) call at the end of the if (neigh) bloc=
+k.
+>=20
+> Could this cause the neighbour reference count to leak, eventually preven=
+ting
+> the network device from being unregistered?
+
+ack, I will fix it in v2.
+
+Regards,
+Lorenzo
+
+>=20
+> >  			skb->dev =3D br_indev;
+> > =20
+> >  			ret =3D br_handle_frame_finish(net, sk, skb);
+> >=20
+> > ---
+> > base-commit: fcee7d82f27d6a8b1ddc5bbefda59b4e441e9bc0
+> > change-id: 20260508-nf-neigh_hh_bridge-fix-9ab775ee23c6
+> >=20
+> > Best regards,
+> > --=20
+> > Lorenzo Bianconi <lorenzo@kernel.org>
+> >=20
+
+--2hZyzmXD+ZbltuU1
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCagH7KgAKCRA6cBh0uS2t
+rHTWAP9GYQqZbf4QmPWHoKaysLc6RTTu5GcLv0EYyMXAb40t+QD9HqcCeRgp+A2/
+g9+D4efb05a5ogH4R6Jrs7ZitIJi5AE=
+=QZ9U
+-----END PGP SIGNATURE-----
+
+--2hZyzmXD+ZbltuU1--
