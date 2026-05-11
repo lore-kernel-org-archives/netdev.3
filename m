@@ -1,35 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D0ED3DB645;
-	Mon, 11 May 2026 10:50:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E89D83BB9F8;
+	Mon, 11 May 2026 10:50:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778496615; cv=none; b=d469wIFHgn+WCMnmPoVXtXSRZJYosOopH6XdNpKatCQAr+7GztEa2wGT1G1TPbUI2f6LuY4Ah3hRSkf/0Kmwb13jzvIEKCEEeDzq7Y2KCmKdhhBd2Kfn443nVmCWb6rpfMKfL9Als2GBvE2USDsXUcwwJ+1Ow3+8ptFDJOfdDSs=
+	t=1778496618; cv=none; b=qU1x3j/cLBQH4Ryst6KGOyq1zWr6UNUQmzz7cSLWOSg+0t8BqlNjD+xFId+x6jYSdKI9xQUf0Cit5TEPgLotXr9XUPQDKccjGp2sq+MkFySu7YkQKzoFkuifahSihj6Bb8uwp6C3IXceEyogISspVbLVRRG3L4MuA6eZw3UY9Tc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778496615; c=relaxed/simple;
-	bh=ANRAGlFa3UZi71IVWNXkiTzcg/j83rNOKzag+S8gWNI=;
+	s=arc-20240116; t=1778496618; c=relaxed/simple;
+	bh=ZZP7nGJimNWfzZFTltJLxulnLS7JtS0cVx0FFLyhLcA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=CHkD488eH+J+dVvsng+D9RJ8TkyYVBJYQHWdLyycoaXfXux5R2PtxtYmI6yoaUXaKoNrY4WD/ZjfmhdtSBKGC4DgFOiuAl3JedonePwEeXQDqHcI69WjVKFdZwTYOM/P5PnwmKNmuhrfojwCmUqtxG3qapkTJ3sKKsS4Dqv7IOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ppQ2ea5L; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=BaCFBaQGZcDoCoH49aJVQyTiI60rrVCWMGwcZSg/HYqd/G6snEcfnQntFoyydEd2WqfsU3/mHkO6EFpT++s91LYI1YaFnbvjha0ZtUQ3QyjGifeo42+mwRgAaNQsv2PCKEzgMaxAx4/WzMhMdX252CAdAbWkY4ALMEYSw3J1zhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ajz9Wkqx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ppQ2ea5L"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E7D1C2BCFC;
-	Mon, 11 May 2026 10:50:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ajz9Wkqx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F5ACC2BCF7;
+	Mon, 11 May 2026 10:50:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778496615;
-	bh=ANRAGlFa3UZi71IVWNXkiTzcg/j83rNOKzag+S8gWNI=;
+	s=k20201202; t=1778496617;
+	bh=ZZP7nGJimNWfzZFTltJLxulnLS7JtS0cVx0FFLyhLcA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=ppQ2ea5LrcLjQpZMl01MaxfZrV2wLm8vppZBRp7kvZokAt9TdVXJTfbCyYXVW0m9R
-	 MPUru/hCWUwqhRMrqfbYMv0F3H9r4eJMgFho/GdmbnPDwj5j9FM2ywgYe9Me0fxrOd
-	 dKCSlgRM/X+H19Ibn9rHwMX9zwi85Nu/mWjG/cv6tonPvPpax3F9Lwf1y4vMRNK9U8
-	 VhUOEJP/nPd6opLLsnkpy8e4fZNDT0nGb30i10ZdyIiFtpQgLUkv6gsMRqKuA5vYs0
-	 hB5pp9FR7ZnMhE+rKqPCSaDau9FG3R68TJHhFjcGw+sikZ6pCHxVSavlQ2PKNeEqby
-	 IvtB0SpDVyh3w==
+	b=Ajz9Wkqx/VQKfvMYSMpjvb4Aug9YN8g7qQBGTtCG+5ZSpEZkllv0irIkk0nqm0kD+
+	 Y73tVVz8dXdsj/QK94bITRVz0W8kh4N/PC+XsG3ail5zHMvvV1VkJ3PqlmPBQp9x+t
+	 9f1JuSkJ5WTZ4wMMZdmXRqiRCSsSO3vZbGJdC8VPJ9IVz1eW/8omTODUatvhwfDBXf
+	 a/qhyzhx6q9om6MIyeF+Xz2LDkbuT9rnYI+ek+dXLtBb2Nx0wLsv35vY39KIa9cfas
+	 R03aenNjMsJUtBDKKUhpKCGm716FUBt9Rp9FFqVttzSv5GyCIxBaW8DnCRxdMKsPUV
+	 Fo/TImkA1UUdg==
 From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Mon, 11 May 2026 12:49:35 +0200
-Subject: [PATCH net-next v6 09/12] net: airoha: Do not stop GDM port if it
- is shared
+Date: Mon, 11 May 2026 12:49:36 +0200
+Subject: [PATCH net-next v6 10/12] net: airoha: Introduce WAN device flag
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -38,7 +37,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260511-airoha-eth-multi-serdes-v6-9-c899462c4f75@kernel.org>
+Message-Id: <20260511-airoha-eth-multi-serdes-v6-10-c899462c4f75@kernel.org>
 References: <20260511-airoha-eth-multi-serdes-v6-0-c899462c4f75@kernel.org>
 In-Reply-To: <20260511-airoha-eth-multi-serdes-v6-0-c899462c4f75@kernel.org>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -53,126 +52,176 @@ Cc: Christian Marangi <ansuelsmth@gmail.com>,
  Xuegang Lu <xuegang.lu@airoha.com>
 X-Mailer: b4 0.14.3
 
-Theoretically, in the current codebase, two independent net_devices can
-be connected to the same GDM port so we need to check the GDM port is not
-used by any other running net_device before setting the forward
-configuration to FE_PSE_PORT_DROP.
+Introduce WAN flag to specify if a given device is used to transmit/receive
+WAN or LAN traffic. Current codebase supports specifying LAN/WAN device
+configuration in ndo_init() callback during device bootstrap.
+Please note after this patch, it will be possible to specify multiple LAN
+devices but just a single WAN one. Please note this change is not visible
+to the user since airoha_eth driver currently supports just the internal
+phy available via the MT7530 DSA switch and there are no WAN interfaces
+officially supported since PCS/external phy is not merged mainline yet
+(it will be posted with following patches).
 
 Tested-by: Xuegang Lu <xuegang.lu@airoha.com>
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/ethernet/airoha/airoha_eth.c | 53 +++++++++++++++++++++++++-------
- drivers/net/ethernet/airoha/airoha_eth.h |  1 +
- 2 files changed, 43 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/airoha/airoha_eth.c | 74 ++++++++++++++++++++++++++------
+ drivers/net/ethernet/airoha/airoha_eth.h | 13 +++---
+ drivers/net/ethernet/airoha/airoha_ppe.c |  2 +-
+ 3 files changed, 67 insertions(+), 22 deletions(-)
 
 diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-index 4efd36779453..aed182c7a5e1 100644
+index aed182c7a5e1..16c0ff9999da 100644
 --- a/drivers/net/ethernet/airoha/airoha_eth.c
 +++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -1718,8 +1718,8 @@ static int airoha_dev_open(struct net_device *netdev)
- 	int err, len = ETH_HLEN + netdev->mtu + ETH_FCS_LEN;
- 	struct airoha_gdm_dev *dev = netdev_priv(netdev);
- 	struct airoha_gdm_port *port = dev->port;
-+	u32 cur_len, pse_port = FE_PSE_PORT_PPE1;
- 	struct airoha_qdma *qdma = dev->qdma;
--	u32 pse_port = FE_PSE_PORT_PPE1;
+@@ -1885,36 +1885,82 @@ static int airoha_set_gdm2_loopback(struct airoha_gdm_dev *dev)
+ 	return 0;
+ }
  
- 	netif_tx_start_all_queues(netdev);
- 	err = airoha_set_vip_for_gdm_port(dev, true);
-@@ -1733,10 +1733,20 @@ static int airoha_dev_open(struct net_device *netdev)
- 		airoha_fe_clear(qdma->eth, REG_GDM_INGRESS_CFG(port->id),
- 				GDM_STAG_EN_MASK);
- 
--	airoha_fe_rmw(qdma->eth, REG_GDM_LEN_CFG(port->id),
--		      GDM_SHORT_LEN_MASK | GDM_LONG_LEN_MASK,
--		      FIELD_PREP(GDM_SHORT_LEN_MASK, 60) |
--		      FIELD_PREP(GDM_LONG_LEN_MASK, len));
-+	cur_len = airoha_fe_get(qdma->eth, REG_GDM_LEN_CFG(port->id),
-+				GDM_LONG_LEN_MASK);
-+	if (!port->users || len > cur_len) {
-+		/* Opening a sibling net_device with a larger MTU updates the
-+		 * MTU of already running devices. This is required to allow
-+		 * multiple net_devices wht different MTUs to share the same
-+		 * QDMA block.
-+		 */
-+		airoha_fe_rmw(qdma->eth, REG_GDM_LEN_CFG(port->id),
-+			      GDM_SHORT_LEN_MASK | GDM_LONG_LEN_MASK,
-+			      FIELD_PREP(GDM_SHORT_LEN_MASK, 60) |
-+			      FIELD_PREP(GDM_LONG_LEN_MASK, len));
-+	}
-+	port->users++;
- 
- 	airoha_qdma_set(qdma, REG_QDMA_GLOBAL_CFG,
- 			GLOBAL_CFG_TX_DMA_EN_MASK |
-@@ -1759,6 +1769,7 @@ static int airoha_dev_stop(struct net_device *netdev)
- 	struct airoha_gdm_dev *dev = netdev_priv(netdev);
- 	struct airoha_gdm_port *port = dev->port;
- 	struct airoha_qdma *qdma = dev->qdma;
-+	u32 len = 0;
- 	int i;
- 
- 	netif_tx_disable(netdev);
-@@ -1766,8 +1777,23 @@ static int airoha_dev_stop(struct net_device *netdev)
- 	for (i = 0; i < netdev->num_tx_queues; i++)
- 		netdev_tx_reset_subqueue(netdev, i);
- 
--	airoha_set_gdm_port_fwd_cfg(qdma->eth, REG_GDM_FWD_CFG(port->id),
--				    FE_PSE_PORT_DROP);
-+	for (i = 0; i < ARRAY_SIZE(port->devs); i++) {
-+		if (!port->devs[i])
+-static int airoha_dev_init(struct net_device *netdev)
++static struct airoha_gdm_dev *
++airoha_get_wan_gdm_dev(struct airoha_eth *eth)
++{
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(eth->ports); i++) {
++		struct airoha_gdm_port *port = eth->ports[i];
++		int j;
++
++		if (!port)
 +			continue;
 +
-+		netdev = port->devs[i]->dev;
-+		if (netif_running(netdev))
-+			len = max_t(u32, len, netdev->mtu);
++		for (j = 0; j < ARRAY_SIZE(port->devs); j++) {
++			struct airoha_gdm_dev *dev = port->devs[j];
++
++			if (dev && !airoha_is_lan_gdm_dev(dev))
++				return dev;
++		}
 +	}
-+	len += ETH_HLEN + ETH_FCS_LEN;
-+	airoha_fe_rmw(qdma->eth, REG_GDM_LEN_CFG(port->id),
-+		      GDM_LONG_LEN_MASK,
-+		      FIELD_PREP(GDM_LONG_LEN_MASK, len));
 +
-+	if (!--port->users)
-+		airoha_set_gdm_port_fwd_cfg(qdma->eth,
-+					    REG_GDM_FWD_CFG(port->id),
-+					    FE_PSE_PORT_DROP);
- 
- 	if (atomic_dec_and_test(&qdma->users)) {
- 		airoha_qdma_clear(qdma, REG_QDMA_GLOBAL_CFG,
-@@ -1919,13 +1945,18 @@ static void airoha_dev_get_stats64(struct net_device *netdev,
- static int airoha_dev_change_mtu(struct net_device *netdev, int mtu)
++	return NULL;
++}
++
++static void airoha_dev_set_qdma(struct airoha_gdm_dev *dev)
  {
- 	struct airoha_gdm_dev *dev = netdev_priv(netdev);
-+	u32 cur_len, len = ETH_HLEN + mtu + ETH_FCS_LEN;
- 	struct airoha_gdm_port *port = dev->port;
--	u32 len = ETH_HLEN + mtu + ETH_FCS_LEN;
+-	struct airoha_gdm_dev *dev = netdev_priv(netdev);
+-	struct airoha_gdm_port *port = dev->port;
  	struct airoha_eth *eth = dev->eth;
+ 	int i;
  
--	airoha_fe_rmw(eth, REG_GDM_LEN_CFG(port->id),
--		      GDM_LONG_LEN_MASK,
--		      FIELD_PREP(GDM_LONG_LEN_MASK, len));
-+	cur_len = airoha_fe_get(eth, REG_GDM_LEN_CFG(port->id),
-+				GDM_LONG_LEN_MASK);
-+	if (len > cur_len || !port->users ||
-+	    (port->users == 1 && netif_running(netdev)))
-+		airoha_fe_rmw(eth, REG_GDM_LEN_CFG(port->id),
-+			      GDM_LONG_LEN_MASK,
-+			      FIELD_PREP(GDM_LONG_LEN_MASK, len));
+ 	/* QDMA0 is used for lan ports while QDMA1 is used for WAN ports */
+ 	dev->qdma = &eth->qdma[!airoha_is_lan_gdm_dev(dev)];
+ 	dev->dev->irq = dev->qdma->irq_banks[0].irq;
+-	airoha_set_macaddr(dev, netdev->dev_addr);
 +
- 	WRITE_ONCE(netdev->mtu, mtu);
++	for (i = 0; i < eth->soc->num_ppe; i++)
++		airoha_ppe_set_cpu_port(dev, i, airoha_get_fe_port(dev));
++}
++
++static int airoha_dev_init(struct net_device *netdev)
++{
++	struct airoha_gdm_dev *dev = netdev_priv(netdev);
++	struct airoha_gdm_port *port = dev->port;
+ 
+ 	switch (port->id) {
+ 	case AIROHA_GDM3_IDX:
+-	case AIROHA_GDM4_IDX:
+-		/* If GDM2 is active we can't enable loopback */
+-		if (!eth->ports[1]) {
+-			int err;
++	case AIROHA_GDM4_IDX: {
++		struct airoha_eth *eth = dev->eth;
+ 
+-			err = airoha_set_gdm2_loopback(dev);
+-			if (err)
+-				return err;
+-		}
++		/* GDM2 supports a single net_device */
++		if (eth->ports[1] && eth->ports[1]->devs[0])
++			break;
++
++		if (airoha_get_wan_gdm_dev(eth))
++			break;
++
++		fallthrough;
++	}
++	case AIROHA_GDM2_IDX:
++		/* GDM2 is always used as wan */
++		dev->flags |= AIROHA_PRIV_F_WAN;
+ 		break;
+ 	default:
+ 		break;
+ 	}
+ 
+-	for (i = 0; i < eth->soc->num_ppe; i++)
+-		airoha_ppe_set_cpu_port(dev, i, airoha_get_fe_port(dev));
++	airoha_dev_set_qdma(dev);
++	airoha_set_macaddr(dev, netdev->dev_addr);
++
++	if (!airoha_is_lan_gdm_dev(dev) &&
++	    (port->id == AIROHA_GDM3_IDX || port->id == AIROHA_GDM4_IDX)) {
++		int err;
++
++		err = airoha_set_gdm2_loopback(dev);
++		if (err) {
++			dev->flags &= ~AIROHA_PRIV_F_WAN;
++			return err;
++		}
++	}
  
  	return 0;
+ }
 diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
-index fc49f0049983..32633d84f7d2 100644
+index 32633d84f7d2..a2241520f2e2 100644
 --- a/drivers/net/ethernet/airoha/airoha_eth.h
 +++ b/drivers/net/ethernet/airoha/airoha_eth.h
-@@ -555,6 +555,7 @@ struct airoha_gdm_dev {
- struct airoha_gdm_port {
- 	struct airoha_gdm_dev *devs[AIROHA_MAX_NUM_GDM_DEVS];
- 	int id;
-+	int users;
+@@ -538,6 +538,10 @@ struct airoha_qdma {
+ 	DECLARE_BITMAP(qos_channel_map, AIROHA_NUM_QOS_CHANNELS);
+ };
  
- 	struct airoha_hw_stats stats;
++enum airoha_priv_flags {
++	AIROHA_PRIV_F_WAN = BIT(0),
++};
++
+ struct airoha_gdm_dev {
+ 	struct airoha_gdm_port *port;
+ 	struct airoha_qdma *qdma;
+@@ -549,6 +553,7 @@ struct airoha_gdm_dev {
+ 	u64 cpu_tx_packets;
+ 	u64 fwd_tx_packets;
  
++	u32 flags;
+ 	int nbq;
+ };
+ 
+@@ -655,13 +660,7 @@ static inline u16 airoha_qdma_get_txq(struct airoha_qdma *qdma, u16 qid)
+ 
+ static inline bool airoha_is_lan_gdm_dev(struct airoha_gdm_dev *dev)
+ {
+-	struct airoha_gdm_port *port = dev->port;
+-
+-	/* GDM1 port on EN7581 SoC is connected to the lan dsa switch.
+-	 * GDM{2,3,4} can be used as wan port connected to an external
+-	 * phy module.
+-	 */
+-	return port->id == 1;
++	return !(dev->flags & AIROHA_PRIV_F_WAN);
+ }
+ 
+ static inline bool airoha_is_7581(struct airoha_eth *eth)
+diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ethernet/airoha/airoha_ppe.c
+index c4086d29d984..194cd50b2c74 100644
+--- a/drivers/net/ethernet/airoha/airoha_ppe.c
++++ b/drivers/net/ethernet/airoha/airoha_ppe.c
+@@ -350,7 +350,7 @@ static int airoha_ppe_foe_entry_prepare(struct airoha_eth *eth,
+ 				return -EINVAL;
+ 
+ 			port = dev->port;
+-			if (dsa_port >= 0 || eth->ports[1])
++			if (dsa_port >= 0 || airoha_is_lan_gdm_dev(dev))
+ 				pse_port = port->id == 4 ? FE_PSE_PORT_GDM4
+ 							 : port->id;
+ 			else
 
 -- 
 2.54.0
