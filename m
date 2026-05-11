@@ -1,86 +1,270 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D551372B4B
-	for <netdev@vger.kernel.org>; Mon, 11 May 2026 11:31:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778499063; cv=none; b=toij2R9JYAitRhkg9yZbdBDMXC6ccZIoUGbSHf27TQOVdtddN2SV+djnA+DLjQBGrdyxlJs02KOT2ukf7TimFDX9YC9exRvimJuo0dgSEyPY9Q77bcbqOwt8pxaJ1uUPfxylG2JjFEW+ffMcBOWOQ9l8kV/gGtQC225k+y3ulMc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778499063; c=relaxed/simple;
-	bh=EKKfwmDWueuzuiwLmDiqHwAUuKDTiRg25fPDMxAtu3I=;
-	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WVfqOl9hpy0o/l8VI4qiG6nZ8slEM+EN6SLf+bmtGwlnSHjY47OXlgDBT//whivKkxFm4Iu3GZYxOEbn7TVM41AsZpc2H0KavSymtgGGux29PCNYySdShENi2LhBo2+fd3grNIscV5JojfPj4fK4zoKcuEayswi3I53+T+/gsCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ndaf6Okb; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1022A2C0299
+	for <netdev@vger.kernel.org>; Mon, 11 May 2026 11:32:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.20
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778499169; cv=fail; b=FIEbFmj9RbYl7fy5Npzndmab1tU5JNhDEBZF6oGelN+Y90z2Gu9C64nqi0O/1LJXrsgLrgf2aWwbjFMbk6kF6x69S8w5TEaRPCaGopTdAEvEr/TleChQAPOAodXSFQWcByyERaj900hjX7XDDbyj/VViTJQRNxsIPpWvd57PCEc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778499169; c=relaxed/simple;
+	bh=m/bWhgukR6Vw/OZdqkEgPKHHHzEGt0H/EgtoTTOoKZA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=qEmr91NU74taGRnZr4Og1nmyre77eUuZyHIun/iqobZ2bvLjzih+5Qd2ROk70UysZRcM4Q/QoRYDoo+MKPGzS2LVH/KRtL6HSfZRlbug5y8tiTkGJXDRwafjKjHtmg7sYy7jkEpghwXfaAHTB3dSZfxG+BLKqsiLgzlBvFeH0yc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DeKUrLuU; arc=fail smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ndaf6Okb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 223DFC4AF0F
-	for <netdev@vger.kernel.org>; Mon, 11 May 2026 11:31:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778499063;
-	bh=EKKfwmDWueuzuiwLmDiqHwAUuKDTiRg25fPDMxAtu3I=;
-	h=From:In-Reply-To:References:Date:Subject:To:Cc:From;
-	b=Ndaf6Okb8sk0A8O7VL3aBsk0ONkOoBV714yHk6/dZQl1jlV/1eKAE9dRNOp9cBaRE
-	 oSicQNFzSi63gMWcQjyBj7ALHHOsKMQNy/DkmJBrk84C5kXsKd4iHdpoMiDNfEQR6m
-	 9T5ynO9CX+A67VySvl/YM891b+6++c0Cz3sDZc2ZZ/O8tbjI0h4kiBTJofBhkZuFvx
-	 zJcCXgj7y+afgvWRIKGS7D34JC29RgLIPoVv5TTP7rW6QNTfotzWaeBj8zkdteLjUN
-	 OegFcEWhkCYBg0KEZ6qCvAuruUlzQgbG7d19IO11CR5mBfMdoLVWiN/nAhSW1Q2TJ3
-	 eS3xMcJM1t8hw==
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5a40b2bc96dso3768528e87.3
-        for <netdev@vger.kernel.org>; Mon, 11 May 2026 04:31:03 -0700 (PDT)
-X-Gm-Message-State: AOJu0YwOSj/FTdaABTIoZSyRDDsX5vtID3t8MnyKKE+IF6w4sZ/9BjgC
-	80NDXfOmAec/7PKGV8fyhXnSoAN5iz8pIgkBeBSpoM6CdUfG24+/UIHkvpd04lOlTZbARNg91Ju
-	xQMw8t1lPAU6O2po5PllRwBFCWf4+33ZfbTs+vFYI3w==
-X-Received: by 2002:a05:6512:8013:20b0:5a8:9909:50a3 with SMTP id
- 2adb3069b0e04-5a8a94c1fc3mr3003771e87.32.1778499061711; Mon, 11 May 2026
- 04:31:01 -0700 (PDT)
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 11 May 2026 04:31:00 -0700
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 11 May 2026 04:30:59 -0700
-From: Bartosz Golaszewski <brgl@kernel.org>
-In-Reply-To: <20260507212451.3333185-3-arnd@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DeKUrLuU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778499167; x=1810035167;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=m/bWhgukR6Vw/OZdqkEgPKHHHzEGt0H/EgtoTTOoKZA=;
+  b=DeKUrLuUWLWUIzYwTYVdRySoJH9PVAVxpArE8lZAU+VdYvGUh0bwfj7G
+   8ftl0MNCZMrewIFq6Etvxpw4l0GXnVdHsXXobnenEqtHaxhAvnc4W5sRq
+   afSGZP/Gg/auc+zQy88189WuxfaZVhFSkhsZNLTXe8vplrX+Fod6AjybN
+   cdob8EHHxqZE5E+B2uy+Fy3Fb7jzabpzOwUKfR/94tr+mUj7a5K9yJwZ0
+   U7PwAwh4nVeSj/7/pph6P5JnLOkkKm54doBQehNJwjKcWUfMyIQ/3c+53
+   fW829gtxUuxrtfL7YCRgdAPzTaM8Q357SBFqnllljA37r/5fT4pN6h0hl
+   Q==;
+X-CSE-ConnectionGUID: XqLHuQoNSXS2kEsLddVtlQ==
+X-CSE-MsgGUID: OVyGEHYAQ9mmE+0JFmoDmw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11782"; a="79104001"
+X-IronPort-AV: E=Sophos;i="6.23,228,1770624000"; 
+   d="scan'208";a="79104001"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 04:32:47 -0700
+X-CSE-ConnectionGUID: Ze+iZebxTF+Pyatj/G22Jw==
+X-CSE-MsgGUID: WkUfzS5ESZi043ABFWTpqQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,228,1770624000"; 
+   d="scan'208";a="237385928"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 04:32:46 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 11 May 2026 04:32:46 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Mon, 11 May 2026 04:32:46 -0700
+Received: from BN8PR05CU002.outbound.protection.outlook.com (52.101.57.42) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 11 May 2026 04:32:44 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=iECqPNWT29IuizVZr0S1G9ycfzbN28J2xtoZYXgRYLfv68TLLmjtC069Mk9NJZlfSZB0k5s+ULhmfPulmq/ggvtPOj7e+ZLWi1SXjok+6s56LPKsaW6IecqfjeZCekITyuLRVGJ2PYpGW7sk3QXuPKfclgc3r2CXb3EvWQGMXEh9WpBPaAyeLmYE768/mH5FwDtfDylsEdGO1mprgbFYW44ILcqUAgE0dXte3H8cyuD+/u7zW2HOd1eg2Dw+L1nt17M0lgkfAt0BQbcF2mmCVDX1cyiqxFyAGCWoSiYwwkvAMXM9ExGjusIDQULvwWpmAqELZmMX9EFOoooUGdPyLA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8R/qDV0odrI16LgOEXX4d8OuACrpktTG4rzO6OUjvmc=;
+ b=Qj4dFfG07pCLFeUrDLAYe9Fl2tOSuY47eNwE3fgtpXCBKswLZNhfNznTwjZQvrELpz1DSckHJXcSuw38Oe1D1cwcu8s8QMl+h/CBeAt3whmGJ/CpFnM0Sv8vsneiGk/nK/Y5dvW2XRPa2d0TSA2Uja9T/RzcxTDaQ2jI+pqNpcsA2STcMU8MkdgXj+IsEIUtDyvqR+YlJEd7XmgB7dicHaW/GkP7gcLr4RBQbLgLGhsl3yz3cb4CV4D13lpLeqR66A12cFRVNRvLcJ2bcPSHbkRpy+C5muuFVfyC6qNikFLYZIxnA6nmsi+H7wiPSjc54q0o8PZRXZgtOYOZiQJq7w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from IA3PR11MB8986.namprd11.prod.outlook.com (2603:10b6:208:577::21)
+ by IA1PR11MB6492.namprd11.prod.outlook.com (2603:10b6:208:3a4::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.22; Mon, 11 May
+ 2026 11:32:41 +0000
+Received: from IA3PR11MB8986.namprd11.prod.outlook.com
+ ([fe80::e6f0:6afb:6ef9:ab5c]) by IA3PR11MB8986.namprd11.prod.outlook.com
+ ([fe80::e6f0:6afb:6ef9:ab5c%5]) with mapi id 15.20.9891.021; Mon, 11 May 2026
+ 11:32:41 +0000
+From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
+To: Simon Horman <horms@kernel.org>
+CC: "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+	"Nguyen, Anthony L" <anthony.l.nguyen@intel.com>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, Avinash Dayanand <avinash.dayanand@intel.com>
+Subject: RE: [PATCH iwl-net 4/5] iavf: fix TC boundary check in
+ iavf_handle_tclass
+Thread-Topic: [PATCH iwl-net 4/5] iavf: fix TC boundary check in
+ iavf_handle_tclass
+Thread-Index: AQHcyxdqccrCQQhT30evAxjdAuJvZrXgJmYAgCi2nqA=
+Date: Mon, 11 May 2026 11:32:40 +0000
+Message-ID: <IA3PR11MB898618EF7E25A4ED3F160723E5382@IA3PR11MB8986.namprd11.prod.outlook.com>
+References: <20260413073035.4082204-1-aleksandr.loktionov@intel.com>
+ <20260413073035.4082204-5-aleksandr.loktionov@intel.com>
+ <20260415134642.GJ772670@horms.kernel.org>
+In-Reply-To: <20260415134642.GJ772670@horms.kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA3PR11MB8986:EE_|IA1PR11MB6492:EE_
+x-ms-office365-filtering-correlation-id: 02fb1863-3287-4945-9ba1-08deaf5102f6
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|1800799024|366016|38070700021|56012099003|11063799002|18002099003|22082099003;
+x-microsoft-antispam-message-info: OYKl9Ga8S2NmCcym8MHK/95CuFdCT+nunTZKi6iLdO73nZXczhNRUnPh7xRAyrYCLN4im648Sau5DJrut8gnH9KHaL73ZM1erSYp6hf6siJz6FEbUDxI0DgngE2oeqh4tZARI0L0tDYJjTlW+AC5n8dfA2pZJr5caRkctTz7Iut1aVwyxcLal9w4BxaQ6T0AwXQ3cIdnkuMOsqibVwGgIMMbqwMCNjTuLuVmyJMJKv/m1nTB3rVwm2pARzMX49HnrOCYZ0COFvRPWfF5Kvwq3ttR+Yxq63tmmN8JPQ+RoIKRPInGRsKXz1r9Z5gc+znDdQMRvvd/gFmu7MtceXpMDqjx5UWeJAfKkuKSennHgrwTiVhXJOJt9CfmeDEK20cqbmRhTPGUKQ3yH6icHwL85GidVGn7qCm1Qur859ZTV43DvMWMWjzNs/7Jdrr5gK2YdpuWkGrS+RFDNQd8qPiSW0G5HoTFYIU8S09uCfmFTAwpf/Ypb043yon0aphpfaLoVjd94B28/Nv0PIykjLTYiuusrH2NYU1Q0bsC4crZMwm839moXFR6J7FTpwCmpUf/GBNUmt0ks3SJR26pO4iO1uXHBYaBpHbMzXD11eRDbL8KAPR4aKzB7ynvtqxNmnsIQ2P+CINONuB4xtZ9s1RCn+dn03qIDUW287v/vffaIFiiRE13+zm9UK6NJNGcgXWVPCgrFsB6Sw6t/weGBksCIFM119Xqxb55ucrxLJS8t/H5RZ16M66PT+Uk6bAUEdPl
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB8986.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(38070700021)(56012099003)(11063799002)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?i8edUGgVcpNmzv3ourWFsE4QZu2wfrc+GYdzWBKOTl6h1xdz4SZVKzrvmLae?=
+ =?us-ascii?Q?BjfHnnJTI1TlMaIfLeBm5+uxcVwuVI6322QeLRrakY1duf11cREPccBf6+FT?=
+ =?us-ascii?Q?2RrNEdsCIFBF+5nim3C0wKNM9o1/3s9UsTwzjMS5F0dUFXyc+TQBswdRnkcG?=
+ =?us-ascii?Q?d//ZupRj8n/gHNmZjliTj8r93yJGB434VosMxHY4YtRe3Y11XooraE6TbBc+?=
+ =?us-ascii?Q?+Cq3LE0UHRsnKry52RRN+1MP01AC1ZetJWP3sgEtqKvwEX/UxNe2k4EOo4lD?=
+ =?us-ascii?Q?UMn6Q2F4HpDkStHI7g1B8InUSsSlWCf84QEy5LEXUjVN7J064lTWM9pfp9+S?=
+ =?us-ascii?Q?7cleo7NWp/fggvdeu6p2X0uBxah49dlQHyI3Mt8fJ24vRkJDUe0fJXnQuLaN?=
+ =?us-ascii?Q?3TqdmaGfVHO2UO21K+bkYoCOrNw/HI8lXcBRxKCxkjoYWZffAgU/0i76wXSm?=
+ =?us-ascii?Q?XLI8pDwJHITkKiCI8Bs7p2FFtvlFZATUd/LO9Cms9Rowhf3Oe2S2wGvHs8hP?=
+ =?us-ascii?Q?THmgt5y0j9PduqsZLeDdNVha4kW0IdD/6LaGK/TX5AbiU2u5uDGJNiPzXcyv?=
+ =?us-ascii?Q?Pv6wInF7224nXksLPm5Mi/RopCqt6tDCAUhGk8Ceeg2w2xnjam9+jkjiGk5D?=
+ =?us-ascii?Q?o18TFtE/NFI3wbB6lK2gvMtazmqYyt+cYvudckEyxy7c4eRNthrhP3lNs5rL?=
+ =?us-ascii?Q?q7P1MSFvyq9Pw1IYehcXtPAYuNVzZ79kz+R2IIDPG04Ba4pJ+yBSUTaUJqmH?=
+ =?us-ascii?Q?9l/zIhQrLpYHQ/7R1bqwgi5Ni1j3KKT8rhVcqoCiP7+MPx+Wcr9awSpPVYla?=
+ =?us-ascii?Q?Tx28MAjwGYD1HNyxFVmGzPJCaPY3xRKaSCv8WPo5899ONL2i0NUWa9L46Z7b?=
+ =?us-ascii?Q?EehIkdfXauaMuiaXVADCk4gQw774SmUnKndMTS3DlABq4z0OyZbLg/zv4Ddb?=
+ =?us-ascii?Q?f2MdS9Bj07C1eSN7JT3ffl/FibGC15fsj1w4TTY0TrMpMnJ/0ZdgwXC4zrOW?=
+ =?us-ascii?Q?Sjfsuux3xTuaS6jSwdoVPIaL9DNjdErNUM8uR7YeKV1zYCB/kE0B7oL7hjLl?=
+ =?us-ascii?Q?hGMPquSxDeDMYr6Tci80yusV19Ki7V38fJ8g0y5eOPkPQFdC1MGhXlHS82Sd?=
+ =?us-ascii?Q?fjDbp90HhGF/02IdT1a1cCOeIMwlTFasT02ca79HpyjZDm4n7d6AsjbIuDuZ?=
+ =?us-ascii?Q?mQKOUxYXrlWLjpYuTwMysdKJyKW10ePV1loo8/a+Xm8ukycZrkb9cjR3CAeq?=
+ =?us-ascii?Q?N1Y+3P2KGAtypT/2gcVetZI2/jCW6rYKFUb50adX4ck7Sn0aTNG3JlTezKeo?=
+ =?us-ascii?Q?7YNeGG0QNa7ReQ4D8jDfUXE6q82VA3ss/pYYxRrcnG/jzDezX9hLcbovI/iZ?=
+ =?us-ascii?Q?b9Vb3oKgUV5gm+ZU9CV/EZI/hLOoAuHg9tfgV2H8X0jmJuocmC8osub/nZWn?=
+ =?us-ascii?Q?GlUFaUz7wkmJ8x68uMblitIiewn6bqR689u7G39zgdnSALgTR/wtxLmUnDxo?=
+ =?us-ascii?Q?nJKlX8A6EeZQwkbrH4XAs1DrG909crFkslSyygbXvcUmArvBXHFsvkE+PPIv?=
+ =?us-ascii?Q?ad+h/WEi15HrTLnIOBmMBcQAxV4WYVixEfCVbKHNuxzzsXH3TYDTZO12zd+V?=
+ =?us-ascii?Q?bDLVxHIirR4tlqMIfuIMoi4oxun/qKkkFFPo6bFVNYhQVfZ3XL+rv0Z5XjWd?=
+ =?us-ascii?Q?34I0uSsaWa6kBM/48K6670EI3IGe1mVMj9ItwK1GObVNQ3IBfk/VXQy6Oe29?=
+ =?us-ascii?Q?bFoL5XcMLqlj/zcOElh5NwRj4GWPIRw=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260507212451.3333185-1-arnd@kernel.org> <20260507212451.3333185-3-arnd@kernel.org>
-Date: Mon, 11 May 2026 04:30:59 -0700
-X-Gmail-Original-Message-ID: <CAMRc=McjwW-LfB8+jAF7zGkThCzSWgWWbgRR8_4UFCZLGjrGGA@mail.gmail.com>
-X-Gm-Features: AVHnY4JxFqpXMEt4_ocDaPjTOBgIpI7Eah18wC4y2ej7QetMh_kqZpgwKUVhjKE
-Message-ID: <CAMRc=McjwW-LfB8+jAF7zGkThCzSWgWWbgRR8_4UFCZLGjrGGA@mail.gmail.com>
-Subject: Re: [PATCH 2/3] [v5 net-next] p54spi: convert to devicetree
-To: Arnd Bergmann <arnd@kernel.org>
-Cc: netdev@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, 
-	Aaro Koskinen <aaro.koskinen@iki.fi>, Andreas Kemnade <andreas@kemnade.info>, 
-	Bartosz Golaszewski <brgl@kernel.org>, =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>, 
-	"David S. Miller" <davem@davemloft.net>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
-	Eric Dumazet <edumazet@google.com>, Felipe Balbi <balbi@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
-	Johannes Berg <johannes@sipsolutions.net>, Kevin Hilman <khilman@baylibre.com>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Linus Walleij <linusw@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Rob Herring <robh+dt@kernel.org>, Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>, 
-	linux-wireless@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-gpio@vger.kernel.org, linux-omap@vger.kernel.org, 
-	Christian Lamparter <chunkeey@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+X-Exchange-RoutingPolicyChecked: LGRacnJWUl1LabcWykH4HhskGeoLvxO/sZ3NP4XIvDAxitZFpRaUW/7hgQO1MwM68us5+nPWuTRazG1IgSjIGbiImPFL0D7YgB4A81P2d+HHifF3y0ekB1nLliBZYGxkRcHragIR3UuSDSbQB9NHmB6W9MPEYunfTY+qY/QVAoaM6ekO3ZlpbHgdik46yQeLONXaW5cC2O0LIxnYxG6bCKyzasFXksgO2/dgPJiBEmq7TxCydyjTKQaGyaoBhlb5jouhKhH2LKWkq1kaC35n1os/G7V0J3ecvrwhrLiSnSWlRQnHNVBe1gNoPJrdyygh+cAyAmcRdh0vrGTA6K+qJQ==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB8986.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 02fb1863-3287-4945-9ba1-08deaf5102f6
+X-MS-Exchange-CrossTenant-originalarrivaltime: 11 May 2026 11:32:40.9814
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: l9kSI6QvIe7BOzOau2PjBx57RyV5YIIIHJWStOzPM/jk2jJmwawe2v6feTqLfOvqfiurdk0EbeSbDki0kx6LISM2P5hcApR6sNiCTPEqWYg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB6492
+X-OriginatorOrg: intel.com
 
-On Thu, 7 May 2026 23:24:50 +0200, Arnd Bergmann <arnd@kernel.org> said:
-> From: Arnd Bergmann <arnd@arndb.de>
->
-> The Prism54 SPI driver hardcodes GPIO numbers and expects users to
-> pass them as module parameters, apparently a relic from its life as a
-> staging driver. This works because there is only one user, the Nokia
-> N8x0 tablet.
->
-> Convert this to the gpio descriptor interface and DT based probing
-> to improve this and simplify the code at the same time.
->
-> Acked-by: Christian Lamparter <chunkeey@gmail.com>
-> Reviewed-by: Linus Walleij <linusw@kernel.org>
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
 
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+
+> -----Original Message-----
+> From: Simon Horman <horms@kernel.org>
+> Sent: Wednesday, April 15, 2026 3:47 PM
+> To: Loktionov, Aleksandr <aleksandr.loktionov@intel.com>
+> Cc: intel-wired-lan@lists.osuosl.org; Nguyen, Anthony L
+> <anthony.l.nguyen@intel.com>; netdev@vger.kernel.org; Avinash Dayanand
+> <avinash.dayanand@intel.com>
+> Subject: Re: [PATCH iwl-net 4/5] iavf: fix TC boundary check in
+> iavf_handle_tclass
+>=20
+> On Mon, Apr 13, 2026 at 09:30:34AM +0200, Aleksandr Loktionov wrote:
+> > From: Avinash Dayanand <avinash.dayanand@intel.com>
+> >
+> > The condition `tc < adapter->num_tc` admits any tc value equal to or
+> > greater than num_tc, bypassing the destination-port validation and
+> > allowing traffic to be steered to a non-existent traffic class.
+> Change
+> > the comparison to `tc > adapter->num_tc` to correctly reject
+> > out-of-range TC values.
+> >
+> > Fixes: 0075fa0fadd0 ("i40evf: Add support to apply cloud filters")
+> > Signed-off-by: Avinash Dayanand <avinash.dayanand@intel.com>
+> > Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+>=20
+> I am a bit confused by this logic.
+>=20
+> With this patch applied:
+>=20
+> 1) For tc <=3D adapter->num_tc, which I assume is valid TCs (other than
+> 0,
+>    in which case the function returns earlier), the filter destination
+> port
+>    is skipped.
+>=20
+>    But the failure path for that checks logs:
+>    "Specify destination port to redirect to traffic class other than
+> TC0\n"
+>=20
+>    This does not seem consistent.
+>=20
+> 2) For tc > adapter->num_tc, which I assume is invalid TCs,
+>    the function will eventually assign fields of filter->f and succeed
+>    if filter has a valid destination port.
+>=20
+>    This doesn't seem to be in keeping with the patch description.
+>=20
+> 3) The above two points aside, is there an out by 1 condition in
+>    the condition tc > adapter->num_tc. It seems to imply
+>    that tc =3D=3D adapter->num_tc is a valid tc. But I suspect that
+>    is not hte case.
+>=20
+> In short, I'm wondering if the function should look something like
+> this (completely untested):
+>=20
+> /**
+>  * iavf_handle_tclass - Forward to a traffic class on the device
+>  * @adapter: board private structure
+>  * @tc: traffic class index on the device
+>  * @filter: pointer to cloud filter structure  */ static int
+> iavf_handle_tclass(struct iavf_adapter *adapter, u32 tc,
+> 			      struct iavf_cloud_filter *filter) {
+> 		if (tc =3D=3D 0)
+> 			return 0;
+>=20
+> 		if (tc >=3D adapter->num_tc) {
+Yes, it looks for me now '>=3D' fits better here.
+
+Thank you
+
+> 			// dev_err(...);
+> 			return -EINVAL;
+> 		}
+>=20
+> 		if (!filter->f.data.tcp_spec.dst_port) {
+> 			dev_err(&adapter->pdev->dev,
+> 				"Specify destination port to redirect to
+> traffic class other than TC0\n");
+> 			return -EINVAL;
+> 		}
+>=20
+> 		/* redirect to a traffic class on the same device */
+> 		filter->f.action =3D VIRTCHNL_ACTION_TC_REDIRECT;
+> 		filter->f.action_meta =3D tc;
+>=20
+> 		return 0;
+> }
+>=20
+> > ---
+> >  drivers/net/ethernet/intel/iavf/iavf_main.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c
+> > b/drivers/net/ethernet/intel/iavf/iavf_main.c
+> > index ab5f5adc..5e4035b 100644
+> > --- a/drivers/net/ethernet/intel/iavf/iavf_main.c
+> > +++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+> > @@ -4062,7 +4062,7 @@ static int iavf_handle_tclass(struct
+> > iavf_adapter *adapter, u32 tc,  {
+> >  	if (tc =3D=3D 0)
+> >  		return 0;
+> > -	if (tc < adapter->num_tc) {
+> > +	if (tc > adapter->num_tc) {
+> >  		if (!filter->f.data.tcp_spec.dst_port) {
+> >  			dev_err(&adapter->pdev->dev,
+> >  				"Specify destination port to redirect to
+> traffic class other than
+> > TC0\n");
+> > --
+> > 2.52.0
+> >
