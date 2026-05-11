@@ -1,124 +1,164 @@
-Received: from sonic306-21.consmr.mail.ne1.yahoo.com (sonic306-21.consmr.mail.ne1.yahoo.com [66.163.189.83])
+Received: from mail-yx1-f73.google.com (mail-yx1-f73.google.com [74.125.224.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA69230B50D
-	for <netdev@vger.kernel.org>; Mon, 11 May 2026 15:11:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.189.83
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF3D130ACEE
+	for <netdev@vger.kernel.org>; Mon, 11 May 2026 15:16:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778512271; cv=none; b=r4hpOLw96WqZb8Om3+PBP07Ib4qdygG2kCb1jlnoJRAgBktavQAV+qAiN2kLhM53uA9jmtbJpX5ELrrtrIHM5eAo1UbVbT/Z6Nmx7m08HodwFZYHylXZaqb2BQ29Rp4ewW1nfDzkAv8jtQ2bvqX6c/azEDBaNfJonJ5KC/oRka8=
+	t=1778512563; cv=none; b=EZcHKPmx7Xnl3Bc/Dj8gG/6kL/sKUrfgpN1xEvnvp3/JgKxDo0szHhHYWVuWbumiw14bSt1MERYssJx2+Uo9fD0QAc+SrwHsCtejHkfMSoZrW6rdNFu3nJuBCTsUFd13GGX5fLrqAVlfcA1g8/yqHKfinCaKpoIst9dPGdGYvSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778512271; c=relaxed/simple;
-	bh=UTpLUWY0PLHVyggN74BH3lvH1mcBQEdwDe35SUee7oY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=L2yLWuAjnVXwAcf06U7AhcozKUkXxPm9bBwVaNv2CgCW91tw/5AKXJK6V9VZVpVsn1MAz5OGh00p7B+FQoI30nM0HDook5LqPz1ZOIUL8UwrSFpczF3gjeJ898ezt/XFSAK2tIlM/tF3evEUcPxYSD2TbEj8guTUX140U+VAHcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=XSRk4jRo; arc=none smtp.client-ip=66.163.189.83
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+	s=arc-20240116; t=1778512563; c=relaxed/simple;
+	bh=VXlooWNppfL2ll9NFP8EA0T6EXdc5P6oVpolKunpd7M=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=S1XHe0tt9y1oKdKgSOLcisoDuDMMhoI5MpujqZQvQTllOpUO/t7aM8vI71h5P7THz9VoCaOdYwTQM7dzjBHgXoudIVHv0ys757j1GZB9u+kIu3CMB7XvNaUzYZC8YjwA6/y1GZrKxTrfIo96kroBmMfjHxuw9q5wq6a1g6qKnOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bxTuApMP; arc=none smtp.client-ip=74.125.224.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="XSRk4jRo"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1778512268; bh=GwV/Pp981p3PZ2NEIrad3TZrrjEUsmOviWa7paVVMdA=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=XSRk4jRoTvcvxnLK9FDTi+2am4YLEiL1guGAFk7ZZvcjp1WNxDo7S1Cq1sjBNHSqdsnrNgVGc+2a6VaGS2T1tJR84x1/T2z8kdIxrQ8t4dnv/cuZvYjhag8T8K3fveQ5N82Urtjw40luERnGCdI6Xx4+mkM0BfqenWLGeAUcTei4T93b9fBi+sUOxyQq0O2AgsrizwY8FsmDlmbSgSHjgfyMWmS+e4CEQ9Rv9ShC4+ITkldaAjWV0haWWmO84tMkC59DlksZxO6eFgBYRU1iE82U4oQ2orIzr3QUfbr+HEi6Y87DJeBPi+R2B1myzo5wUvwtj9K2h/tnf73140Nqgw==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1778512268; bh=NcSuvGU1iea043sjs5l6SsSjgW69Ajb16EOVwTFPCfT=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=IsLdbU/5IIAZtk6X7PkTstPzn30in63n4CxiHZtmjM9jLpP8PR9zs6KIXpzLRJ2OXGNo+JMEBSg5EZ4bpuEw9cSaAd2CukjL8fRvsCxvuBsUeqdfn+4pJ3Qvi1YyswELo5IztlNSLE7VkbBac13T92LsFFal/ByASP+/GYsDM6Y2ACiRwSAY5f0DeRdJ0bvQuSPjrsyrpBQz1odlcjKX1qpiizolI8e2piAOS8RpnNz8qgmWC4Mzwduqf/xYi1P8EodjAIJzHyJsEQpN71pJ1Tady3g8Pnux6e3d6i1GHiLvmrvsTXFT3m1sdn4L6S/AYqFnDT1JEgQhggcf3Ow8uw==
-X-YMail-OSG: XIpPMAcVM1l3jVYf9PNBpA1VzjJEj7C4ojG2jdvHh6fLH.YJMw9GsdJx8Y.vdXB
- 0XEOoSMvX_vrbiS506MwjF4DijsupBZ.djp.gowcfJep2Okj9jOeMULR1y2Z.YkB.W9SgFDHx5Pt
- uxbT8bcZ81vDrIE47_0ITytho7d_QbG88wUyiW.r5UBxXskvazpS1uFaTqL7KycJatkPS3ievwmz
- In3EQc27ZRj2wxWSX15Bi.tJZxPHWaTRI9lwyh0rcqVY5PNqonDy08dXKT8ARNw9SJDNeBx0vt4z
- esFRoAKNAWw9JPe2Z3ek7GjYImpZVBxLUFq.E9hL7JYB3gEhjbKTbQmbG4wtSpP4hsQgY1xL9u8p
- WodZarDLo._CAPwFmC9Aa.QldywUD1JOwGJ9fUW9rNeQuyhD_YAZc9f_fIFV4vE_SMwjCiCbrPv0
- Z6.GWJbkqbL1TZhxdW17zUOMz.s3JZhA44DGFkDTHdETJSKBn7eSw7EGTVk0WQ8H6fLHmdExIIWq
- kYYPZDx5kWX3KGeqwb1c5Ghoscoog0vyJ8tzh.pxm2iw7.R7YGbnGqi4VrOe.64tT6rQpRsAXiIj
- Xm7d38qnbA.K930LjemquGQUJJDJ4oMZyJnBgwgzZ6GlKso2bV4Ejmc1BXDLaULFCxWGR5v88z8s
- W_AA5UlKrN7_rx1jfPFuQWblvBL_0nz54XEQSUiTI1aJ3_hL7RUIwML.PfqTtUuVMfiGb9czTl08
- DardHCGO7vSEZ4oF7aAXseovV5R1l5fEnjkwbV6yNjap5TCH9Qx2qsx0m79oAC_fBlEYnweralk3
- Lcx4UF6Lh6k_nQrF4quuIigK6.5__8klkTK45Omh8rH24RTpATI_e500qiLFKQETw6dicEJqGtUc
- HToCa_7Or.kB0exHiSKC9QjornPY_AgnipsVufXsQHxc.xrHktUdHMPR3v8RaUhXIg7WMQkImFBK
- sJ7jTkov0yMf.rVM8ctfgrCQYoeR0UCSycvVlIr0Sq4GlJn8WgY.bo4kdx3D1cKpRcj5hhRUes8C
- qbdwvkfc4LqB4CLBx6UqI4VGG2nE5KaXeQjppzxTPP6_foJjv95j1cniW0QEkIblQ5afZZR7Qahx
- 0cFsYF9l_AouQeDWxQFLlMwppBY3yIBaJGW.lzH.sLxtak5_7tJBlzyOZ48uzKGO4pPbTm7X9XWg
- 58aYGMQs6fRxkIWbCrcVwZOQKxA_TZZ3CsraST6tGsP_zJ.lfET.EprCdoH8_Hw2KP35TmTnLT7s
- pxDeUEmdv_gEFgFFPkrMpmIQpHzHysGjj59pP5qpDta3jXlqLcIb1ZcQofRwhch.uauzVp0Y8inW
- OKTlEgty9.Ie0FrU60lz6LW6KSYFgrke4Mv.Aa2Owdo8H76nxgINNWbOwwIgegph1azhPTnSZFf3
- k_pssPaxaRWS_mdW_EJQVr5z3GlHmPQ1DuGKQvqvaOwWfXD.jP6AXRG9B_a1whto704ZP4pBtDXG
- KZfwKEPeeX57laoLIckbp6XGa0d2UbFuFl7cKbtOSVKhwipmENSi.kYGcMH7Do5a9dW.nJUhoUcU
- mvokYwOcVCltBPqSmN_qLzsrH8xp4Tk2zvEfNdCDhsIiAhqaqctevS24RjZV9ULZGZAT_2TLD4wW
- hnATWR_x5fwMVsMDu8dkDcKGldMrRLVVslnyeBDI10iNzgqt6l15HlNWDDFl7ZUkHkX6sKEOYalN
- A3.A6xpN2Blh6dcb29E.Vpdg3YsNRUgx4cVoAYitIvpRL74Ev25GM5dIZfvwq_QULzki4w2xZF8b
- 9eFuPRXz8.ma0rHicCD0H_iqBTzT3hBT4Z4XCINMtlb_F8pTOPAAX5EnThTFmB10yOU8rdjB.x3A
- TBQU3FVXxsTRr3ruVGyyphtKOtsEH1ris0HPS_KvwifsV7.5NDUi7jpsQXKbPYYPwFAJtROmGsme
- 9AhI_bO7718BBvd9Mk02U52D8RNmaVOs6r9JsN.dqGba1tXhDNnPTB7gQl2gLa0AunZWsiLSVD_1
- pJjmHekk1HaPAtDI1rMtUrcE0JuWhMHqb6iEvYg0o6bQsoeWJUswCwovvWFUvRjMd7QSXgi3vNEi
- DVYzZE.7rMnu7XtLFbyhr00oEWxXymhFhCMiQmtufXT2_zR9xjERNlVlaasoPZIS3Sa3dJ6KDNlb
- mQoZcYtdSa2hD1q__HhfiQaxo_zzQ.k0cmH6M7XssTtWx0PEB4v0ER2HfXsqsNMv0oGusxxXNSix
- KczH4VFNtvM0UpWGtH_7QQMQKoIKcqUto2zydrI9bJxtkY.LmlqoCTDpf46vgfLdV68UFW2mTtjC
- n1o4s1OBh6tSjCgtlDEQ_oTFrNwKUkZKEhE4DBxm15D6cZAH3zw--
-X-Sonic-MF: <namiltd@yahoo.com>
-X-Sonic-ID: 129feaf2-177d-4616-909f-380f16e48d43
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic306.consmr.mail.ne1.yahoo.com with HTTP; Mon, 11 May 2026 15:11:08 +0000
-Received: by hermes--production-ir2-89844b765-8tm6q (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 2caded2bb5d43f9c57b866e116ac8033;
-          Mon, 11 May 2026 15:00:51 +0000 (UTC)
-Message-ID: <0cbce7f4-e7e5-4a03-bde8-4a62556c3b12@yahoo.com>
-Date: Mon, 11 May 2026 17:00:47 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bxTuApMP"
+Received: by mail-yx1-f73.google.com with SMTP id 956f58d0204a3-65c41a9bc15so4635837d50.3
+        for <netdev@vger.kernel.org>; Mon, 11 May 2026 08:16:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778512561; x=1779117361; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=p8rebT/DTPMHWzhiu951i4v7Ko0S0eIrN9ALwkGkciw=;
+        b=bxTuApMPnNkQ++Lqz4mSVAUTIGO7npgCbN4+cemsJ4VVjGr1oM9UnS2cZC2ua1Q/kB
+         fNHRMqfA4tuyLTn+PFVSBlTfaImqeFFErgwXuchpM7SGV+HpCGXSod6ral9BTTb9WXZc
+         yHwcNXEeBbDIKX1N744Jt+c0Qfi23RJjOJYVbaLWt1hptjdnPr1idGO7NDahEfU8F/CV
+         pPykSOz55MVJv6DFBPj6jF/Kn397odTg/Cc3GNa9aeBYby9mAQbxeidxpPbAqjAmKs4Z
+         joTSPUX1rT8+lBPfi0RkSTmX9UhYzt0M5n+nx/YDwovgzOggNzSSWd4PWpZdNQgo7+02
+         ie0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778512561; x=1779117361;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=p8rebT/DTPMHWzhiu951i4v7Ko0S0eIrN9ALwkGkciw=;
+        b=UhldtHWNQXRck1pR1Hpi9r+Ud86KLtOjJMqIODqAWTS6t/L/VpaskCdbOHRBl9oxDh
+         oQTp02F2W7vIICHCqEHW9VCr30H0PTwYEXfqGHT+GlEAoaU8/+WQF4h0hyFP0I3fpswL
+         LHg3jUfu+R+3sbA6j8pZSBOaVHOBwglvnVtWb3HxAa9OG8MKfvrKH+Tg4WJSwHERnfQU
+         Ws0KIcNC+2NzkMSHteZKFMb18RKENpGZa/TIj5rFMuypP45hwHvbH7AMExh+VjZFoQnZ
+         vzhZwijPaH4GnscOTyJdSbzg6fYuoeU27hqavotlTI9Oy1unZYKqEt5CPdTjRr3mEYM2
+         W6Iw==
+X-Forwarded-Encrypted: i=1; AFNElJ+KB0QQZOP3Id92wWIrRp+Bd0GgRAAm0JzxY9xxgEDUADqMUmyXzFAmOwMT9Zmff3T8M9fVAZM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz+cWspjOPCOe7yI8ErCK1/usQuqjEupQHRnmcgqZ9DV6dgMCXW
+	IqsAK483SRWji7/U4KC7HiQsX0P+WfHuUlhxujSC6pSDlgndVWyaB7U9cH/PIGU/e0wJLqYdfhl
+	TNJ4eM1HKTpMWfQ==
+X-Received: from yxuj14.prod.google.com ([2002:a53:cd8e:0:b0:653:62c:b57])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a53:c944:0:b0:651:c160:1c06 with SMTP id 956f58d0204a3-65c79a2c909mr17795361d50.58.1778512560288;
+ Mon, 11 May 2026 08:16:00 -0700 (PDT)
+Date: Mon, 11 May 2026 15:15:59 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next PATCH v3 7/8] net: dsa: realtek: rtl8365mb: add FDB
- support
-To: luizluca@gmail.com
-Cc: andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, horms@kernel.org, linusw@kernel.org,
- alsi@bang-olufsen.dk, yury.norov@gmail.com, linux@rasmusvillemoes.dk,
- linux@armlinux.org.uk, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Jakub Kicinski <kuba@kernel.org>
-References: <20260506-realtek_forward-v3-7-1d87c5f85a3b@gmail.com>
- <20260510173516.3920093-1-kuba@kernel.org>
-Content-Language: pl
-From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-In-Reply-To: <20260510173516.3920093-1-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Mailer: WebService/1.1.25725 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
+Message-ID: <20260511151559.1916614-1-edumazet@google.com>
+Subject: [PATCH net] tcp: fix stale per-CPU tcp_tw_isn leak enabling ISN prediction
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On 5/10/2026 7:35 PM, Jakub Kicinski wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> ---
-> net: dsa: realtek: rtl8365mb: add FDB support
-> 
-> Implement support for FDB and MDB management for the RTL8365MB series
-> switches. Introduce a mutex lock (l2_lock) to protect concurrent L2 table
-> updates. Add support for forwarding database operations, including unicast
-> and multicast entry handling as well as fast aging support.
-> 
->> diff --git a/drivers/net/dsa/realtek/rtl8365mb_l2.c b/drivers/net/dsa/realtek/rtl8365mb_l2.c
->> --- /dev/null
->> +++ b/drivers/net/dsa/realtek/rtl8365mb_l2.c
-> 
-> [ ... ]
-> 
->> +static void rtl8365mb_l2_data_to_uc(const u16 *data, struct rtl8365mb_l2_uc *uc)
->> +{
-> 
-> [ ... ]
-> 
->> +	uc->key.efid = FIELD_GET(RTL8365MB_L2_UC_D4_EFID_MASK, data[4]);
->> +	uc->key.vid = FIELD_GET(RTL8365MB_L2_UC_D3_VID_MASK, data[3]);
->> +	uc->key.ivl = FIELD_GET(RTL8365MB_L2_UC_D3_IVL_MASK, data[3]);
->> +	uc->key.fid = FIELD_GET(RTL8365MB_L2_UC_D4_FID_MASK, data[4]);
-> 
-> Because vid and fid share the same union memory in struct rtl8365mb_l2_uc_key,
-> does setting fid immediately after vid overwrite the 12-bit vid value with
-> the 4-bit fid value?
+Blamed commit moved the TIME_WAIT-derived ISN from the skb control
+block to a per-CPU variable, assuming the value would always be consumed
+by tcp_conn_request() for the same packet that wrote it. That assumption
+is violated by multiple drop paths between the producer
+(__this_cpu_write(tcp_tw_isn, isn) in tcp_v{4,6}_rcv()) and the consumer
+(tcp_conn_request()):
 
-Change code to:
+ - min_ttl / min_hopcount check
+ - xfrm policy check
+ - tcp_inbound_hash() MD5/AO mismatch
+ - tcp_filter() eBPF/SO_ATTACH_FILTER drop
+ - th->syn && th->fin discard in tcp_rcv_state_process() TCP_LISTEN
+ - psp_sk_rx_policy_check() in tcp_v{4,6}_do_rcv()
+ - tcp_checksum_complete() in tcp_v{4,6}_do_rcv()
+ - tcp_v{4,6}_cookie_check() returning NULL
 
-uc->key.efid = FIELD_GET(RTL8365MB_L2_UC_D4_EFID_MASK, data[4]);
-uc->key.ivl  = FIELD_GET(RTL8365MB_L2_UC_D3_IVL_MASK, data[3]);
+When a packet is dropped on any of these paths, tcp_tw_isn is left set.
 
-if (uc->key.ivl)
-	uc->key.vid = FIELD_GET(RTL8365MB_L2_UC_D3_VID_MASK, data[3]);
-else
-	uc->key.fid = FIELD_GET(RTL8365MB_L2_UC_D4_FID_MASK, data[4]);
+The next SYN processed on the same CPU then consumes the non zero value in
+tcp_conn_request(), receiving a predictable ISN.
+
+We could fix this by clearing tcp_tw_isn at tcp_v{4,6}_do_rcv() start,
+at the expense of slower fast path.
+
+This patch clears tcp_tw_isn only when drops are happening.
+
+It also adds two DEBUG_NET_WARN_ON_ONCE() to detect if any drop paths
+are missed in the future, as they check the state of tcp_tw_isn at
+the beginning of processing a packet that could potentially be a new SYN.
+
+Fixes: 41eecbd712b7 ("tcp: replace TCP_SKB_CB(skb)->tcp_tw_isn with a per-cpu field")
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+---
+ net/ipv4/tcp_ipv4.c | 3 +++
+ net/ipv6/tcp_ipv6.c | 3 +++
+ 2 files changed, 6 insertions(+)
+
+diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+index c0526cc0398049fb34b5de20a1175d54942e80cd..529f10a768183f74b85fcfdbee94d35c88c55122 100644
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -1878,6 +1878,7 @@ int tcp_v4_do_rcv(struct sock *sk, struct sk_buff *skb)
+ reset:
+ 	tcp_v4_send_reset(sk, skb, sk_rst_convert_drop_reason(reason));
+ discard:
++	__this_cpu_write(tcp_tw_isn, 0);
+ 	sk_skb_reason_drop(sk, skb, reason);
+ 	/* Be careful here. If this function gets more complicated and
+ 	 * gcc suffers from register pressure on the x86, sk (in %ebx)
+@@ -2198,6 +2199,7 @@ int tcp_v4_rcv(struct sk_buff *skb)
+ 		}
+ 	}
+ 
++	DEBUG_NET_WARN_ON_ONCE(__this_cpu_read(tcp_tw_isn));
+ process:
+ 	if (static_branch_unlikely(&ip4_min_ttl)) {
+ 		/* min_ttl can be changed concurrently from do_ip_setsockopt() */
+@@ -2274,6 +2276,7 @@ int tcp_v4_rcv(struct sk_buff *skb)
+ 	}
+ 
+ discard_it:
++	__this_cpu_write(tcp_tw_isn, 0);
+ 	SKB_DR_OR(drop_reason, NOT_SPECIFIED);
+ 	/* Discard frame. */
+ 	sk_skb_reason_drop(sk, skb, drop_reason);
+diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
+index d13d49bfef19457cc5902cb556605a80f4c0ab2c..079f2324a3a777cfe30dd59777c9d3d6d9a6bae0 100644
+--- a/net/ipv6/tcp_ipv6.c
++++ b/net/ipv6/tcp_ipv6.c
+@@ -1641,6 +1641,7 @@ int tcp_v6_do_rcv(struct sock *sk, struct sk_buff *skb)
+ reset:
+ 	tcp_v6_send_reset(sk, skb, sk_rst_convert_drop_reason(reason));
+ discard:
++	__this_cpu_write(tcp_tw_isn, 0);
+ 	if (opt_skb)
+ 		__kfree_skb(opt_skb);
+ 	sk_skb_reason_drop(sk, skb, reason);
+@@ -1839,6 +1840,7 @@ INDIRECT_CALLABLE_SCOPE int tcp_v6_rcv(struct sk_buff *skb)
+ 		}
+ 	}
+ 
++	DEBUG_NET_WARN_ON_ONCE(__this_cpu_read(tcp_tw_isn));
+ process:
+ 	if (static_branch_unlikely(&ip6_min_hopcount)) {
+ 		/* min_hopcount can be changed concurrently from do_ipv6_setsockopt() */
+@@ -1913,6 +1915,7 @@ INDIRECT_CALLABLE_SCOPE int tcp_v6_rcv(struct sk_buff *skb)
+ 	}
+ 
+ discard_it:
++	__this_cpu_write(tcp_tw_isn, 0);
+ 	SKB_DR_OR(drop_reason, NOT_SPECIFIED);
+ 	sk_skb_reason_drop(sk, skb, drop_reason);
+ 	return 0;
+-- 
+2.54.0.563.g4f69b47b94-goog
 
