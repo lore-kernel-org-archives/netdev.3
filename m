@@ -1,126 +1,110 @@
-Received: from fhigh-a4-smtp.messagingengine.com (fhigh-a4-smtp.messagingengine.com [103.168.172.155])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D147A26FDBF;
-	Mon, 11 May 2026 14:37:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.155
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AEA73FADE9
+	for <netdev@vger.kernel.org>; Mon, 11 May 2026 14:50:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778510234; cv=none; b=EyWe7XILmJVtIIR9Xd9qi0jU2tfmvNI5fnXbpp2eAYuO+FyA0FVoOy/8B9Gqrr1cB47ZwAhxfkMZ+h8B3Oe8S2mxyc96HJf+kO6diFGREGOgiWzQts0on1/4YNnaaPOpJQsY1E+kItptZs3NO9hME5ZYzodfYDqwTcDn76KhLCk=
+	t=1778511003; cv=none; b=BoGXYf/06fhMoTlJREkR5E40Jmiag+DU9DDIDi4GU4EuBH/c8rVuQ/vFBL/gPXohdv2S7zQscaE+xFE4/PrS6JyYvuRoaNwxKaUqxMgj1Ef1pra6jj5Kw0npMqHXeCtt9CUVsfJbkQfvdjay1vGxMSQPIVg8VMiLkoDYp4W81CQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778510234; c=relaxed/simple;
-	bh=MHWR6PcI4v4xFWUM66sMRBlCTGkVqmXoACACvDyfhH8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EeysYlq0F6bAba65frcqb6Uni96ttP35UFJJ87McGT7U4oPj5LXcIB+4KEZwIJNUSWQkQaIHfSpYI+dKIhf5YwDttq5MzYzJ7yuGyaGujQA7RsAEyI77WGzYVhiooQg0GjzpONpFu764gmGnaX5frboWkqkyg7zqSeM2icl3WQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=lc725K2V; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=e681zYKF; arc=none smtp.client-ip=103.168.172.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	s=arc-20240116; t=1778511003; c=relaxed/simple;
+	bh=suoZL76nt2ElPZlpcTw5iNlihmCB/QTIZAIkZE01Xs4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Dmk2dNXTi9Lar+zl+KsLYyFjTSLOEsUf3fMVQJrfDw+WwDRwB0sLpVAm8qC9OHrHtM6ZScqi38D5XIavr5z4pbNAgabTMZ3gqdfbaspoUtfnv3umsJJnCgh8GykGfT6kgDZSJqxMBpivqwqPDVhoKXOkP3r90299S3NFKjJv67k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cMJLA5Jl; arc=none smtp.client-ip=74.125.82.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="lc725K2V";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="e681zYKF"
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id ED1D0140017A;
-	Mon, 11 May 2026 10:37:10 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Mon, 11 May 2026 10:37:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1778510230; x=
-	1778596630; bh=DraMNZxC4g0xYvI3vQ/+Pl5BNX6fpYIX5MbSgrxrC0o=; b=l
-	c725K2V4gvQiLVfBiGWwuKuzDBanFbFWtkxTwDYq8rbeJ//hDXVTSGtzzIe+VjD5
-	V0vwEa4q/PaDVbJBLG/6CtSOAFLcYi+128mM6HShWmaRwFIGEco/3rCDb1mwr01l
-	rXkcKu6eK7wXKneUvSfesOcyFNwmAR1xSBJ5TfCBre+lo07eL5DiDkfm1+QB0cXk
-	2tt6FeUMLb1nRZ6n+a1QMAh3SgtCuhDrRHHd/Y7daKo3gtB5MWZzf2pcOg+pdKUj
-	BF2x5xcRYL4xDJKfp2GcHr3xEXroRy+wIN1Es/7RkR4UfddIf7KEXZrQzVjlcbwY
-	95FpBz8OWc20aGH5ZLPhw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1778510230; x=1778596630; bh=DraMNZxC4g0xYvI3vQ/+Pl5BNX6fpYIX5Mb
-	SgrxrC0o=; b=e681zYKFbw3CZ1cyD9FV6+tshJn19OXmS0cQWa7Iy1xUb7+tLa1
-	s8fJjqdQMyGw26s1q0+tCd6h2xDwnBKtrPfkLKS6hUjVC9nhk3T2NWwNMKKY2pG6
-	PoLTEl6LrIPnDhaV+xh/7gXOhOJ14yuygnqbqYsOt6sdVE6aBBd6q3EkgoqYfKcP
-	JeWtbWRfAsPoaA9igRmVhtp10894MhZiR6dSTN+irZ6LUB9KZ0iz09dK0VMuzJPv
-	C9rJYfEf9jIEOHgsiUJHquWBxre6XwgN+Yq8fpomeBYoAcYyAIdXbCbp0ahvX9p9
-	rLcj4aCcFiHeh/xlE1vrSmXNJh1gLyyfpoQ==
-X-ME-Sender: <xms:lukBaubpWpbJL8zolUbKYZ0H95RezNK9pdO70VxvFp-jty2mWsQOSg>
-    <xme:lukBammCYvcn3LfMvMNiowtQbMGzasi0ItwbmQUh5lVtB4B6ctHTOmKiI_KxrDiCf
-    UC-ym9ZY3EysJ7zWMZ15ZoSD9xEx6KUsxA4IdLpgjvsjErOuYtZnSpV>
-X-ME-Received: <xmr:lukBasVkUjx2cVjPZTVXY7mTWAJB4FG50Pbi2CQAinz2fuzzxCbWjVYdEFdMuX7C97GRbGYFKavYa-GsiZHOeuE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduudeludelucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtjeenucfhrhhomhepufgrsghrihhn
-    rgcuffhusghrohgtrgcuoehsugesqhhuvggrshihshhnrghilhdrnhgvtheqnecuggftrf
-    grthhtvghrnhepuefhhfffgfffhfefueeiudegtdefhfekgeetheegheeifffguedvueff
-    fefgudffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epshgusehquhgvrghshihsnhgrihhlrdhnvghtpdhnsggprhgtphhtthhopedugedpmhho
-    uggvpehsmhhtphhouhhtpdhrtghpthhtoheprghlvgigjhhliihhvghnghesghhmrghilh
-    drtghomhdprhgtphhtthhopegrlhgsihhnfiihrghnghesthgvnhgtvghnthdrtghomhdp
-    rhgtphhtthhopegrlhgvgihjlhiihhgvnhhgsehtvghntggvnhhtrdgtohhmpdhrtghpth
-    htoheprghnughrvgifodhnvghtuggvvheslhhunhhnrdgthhdprhgtphhtthhopegurghv
-    vghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepvgguuhhmrgiivghtsehgoh
-    hoghhlvgdrtghomhdprhgtphhtthhopehhrghnnhgvshesshhtrhgvshhsihhnughukhht
-    ihhonhdrohhrghdprhgtphhtthhopehhohhrmhhssehkvghrnhgvlhdrohhrghdprhgtph
-    htthhopehkuhgsrgeskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:lukBagIlWA9Tjd-G4c-XL-jd1EDeQHMn36Gqa8uQpXWT0j0U7g8sQg>
-    <xmx:lukBakshG3bfU1HnUO-uvqzTsC_QaStIZKO78Gi1kmNCuEyFmPe1Nw>
-    <xmx:lukBat0Oe6Wgfr01qffJGHJEA5Kum3xSlDn8Ev0L92evvEX1E6hPyw>
-    <xmx:lukBakNzN6GVLDoq_YCrVn34GFkElTck7sF2aHiJZblsJT_sBdr_SQ>
-    <xmx:lukBarmAgUIVsicDm6sFU37eAbMqJ-Vcwcz2WT4Z-DxKHCl57ZEg5igu>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 11 May 2026 10:37:09 -0400 (EDT)
-Date: Mon, 11 May 2026 16:37:07 +0200
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Jinliang Zheng <alexjlzheng@gmail.com>
-Cc: albinwyang@tencent.com, alexjlzheng@tencent.com, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com,
-	hannes@stressinduktion.org, horms@kernel.org, kuba@kernel.org,
-	kuniyu@google.com, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, pabeni@redhat.com, shenyangyang4@huawei.com
-Subject: Re: [PATCH net v3 1/3] macsec: introduce dedicated workqueue for SA
- crypto cleanup
-Message-ID: <agHpk_g6rC194Q2I@krikkit>
-References: <agHahVF3yq9AuLmj@krikkit>
- <20260511140005.2619263-1-alexjlzheng@tencent.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cMJLA5Jl"
+Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-12c19d23b19so7295358c88.0
+        for <netdev@vger.kernel.org>; Mon, 11 May 2026 07:50:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778511001; x=1779115801; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=suoZL76nt2ElPZlpcTw5iNlihmCB/QTIZAIkZE01Xs4=;
+        b=cMJLA5JlH0bz9xg7JsJZ7ZGfu6XKhOVxjc3olxOgC23s8aN+QzrhSyNjq85q9Z/5GB
+         gja0h2LwUKLNAP4dDXyiTEnD1P/ug5TexMZHIdpCBZnmiEqxW2hGzWf4mTpTO/7lLT4N
+         YiSvi+x3kQdS/jc+T0o+R5tkhKrVvo2eXkB8PSn4/LCBBDgDivjWjsEb0C716tuiwUDu
+         qPyOam2QJjRvNt9TRZ2JxeYcFSaJ2wNw7cT3SWBVh4hE4Kl/mZlirBPS8aGkTrwkBEnu
+         hFM+gFHc1ECpq8pS4zSJJrACEDHBqtoJkxD8Xa81Iv6SmDzI1L7VWuWnb4ZRpp17fYxw
+         iLRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778511001; x=1779115801;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=suoZL76nt2ElPZlpcTw5iNlihmCB/QTIZAIkZE01Xs4=;
+        b=KzBHlZayoD0Y4Yw9fWOiJ1lLH1AWT0SDNyVcPky//nz4PM00tb/IVLuoLnaMh1nDBU
+         X3yRd4VEdda7BRM/q6/8RIUp0AyERHATdNc7s7dK1FlMi1v+nfjHX4EE1FaGXkfrPMIx
+         StzMb1vnh4hseDZjAiVwHISeTmRQbPqtRjQtWp6AaEB9ukMJikdwpHXxSib8Q2ybjZYt
+         DzCMX0x8prfmMOPvfFobLwwa46RdY4Pt++KxCFPehrw6A0jtSFahjsP7Z2QioNvIRGYg
+         ky7lJrJsrAXGkM+Zsn9hsfSoASzoWDzT98xxTQrxQDcinGhMjsYh0+ej4IvQXrLHf9I+
+         EDDA==
+X-Forwarded-Encrypted: i=1; AFNElJ/VIgkED9CxN9IFCYZ3/QbsSE0N7Z8gMMBCsP0cG1fkF/5ao6OgkCmBBLyHy4wDS9+bKxLpVbc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxhQTY5Qz8bv26hOGia8NjEFsaP5dpV75DjYkZoVQpu/m4aFN/p
+	E67JW/GSF+WgkR5U6jj9MaXq+wsJ+bR/wQKxYIAHIgxP/LDHqNKmgbiu
+X-Gm-Gg: Acq92OGNfqA55gytqTmjb7AbiDS1+zMSVCGQYf9ZFhbJ1hQQ/R/HUzdXy2wFtsyQEZ6
+	D2Vt4inIA9e8fD+GMSz28CtGWUlF+pcNc2fEQK4S5vABlNXOJTrTAwUJd9PWszmRlNNCAxlnxZZ
+	JKs45nKDuDSjALACMvuI1+2HVNJojfpUjGfodUTsrOzzCh7TNE4qtCU6un9EUETvehGBs+/K1j0
+	hHvYuOazfJv51pngAU6DL7pgg/CG+g6MMleK25AO8mC6BbeaYSFnCY0H8EfpqSmd3T9UCDmewq0
+	H1NrDw1IIEFvUfyW8QQpJWqphY1TL9OZ5c9DXDxadpX++R/n4rdF/kOuGNwSaYHt2U1KUdyEbRM
+	s8+IjkRPTLuYVzXpyCzS3nXvffX1kv6OkX4t+4UyOVI59YbarGf86wG6blcb1+Vj65luf1owuNK
+	yCsX7NfAnJkz5P4g4FmWWa920itQ7TaOXa9n0=
+X-Received: by 2002:a05:701b:2302:b0:132:f27:5302 with SMTP id a92af1059eb24-1320f27548bmr5896809c88.3.1778511001184;
+        Mon, 11 May 2026 07:50:01 -0700 (PDT)
+Received: from VM-16-24-fedora.. ([43.153.32.141])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1327810ffb9sm20487727c88.2.2026.05.11.07.50.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 May 2026 07:50:00 -0700 (PDT)
+From: Jinliang Zheng <alexjlzheng@gmail.com>
+X-Google-Original-From: Jinliang Zheng <alexjlzheng@tencent.com>
+To: sd@queasysnail.net
+Cc: albinwyang@tencent.com,
+	alexjlzheng@gmail.com,
+	alexjlzheng@tencent.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	hannes@stressinduktion.org,
+	horms@kernel.org,
+	kuba@kernel.org,
+	kuniyu@google.com,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	shenyangyang4@huawei.com
+Subject: Re: [PATCH net v3 1/3] macsec: introduce dedicated workqueue for SA crypto cleanup
+Date: Mon, 11 May 2026 22:49:58 +0800
+Message-ID: <20260511144958.2630644-1-alexjlzheng@tencent.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <agHpk_g6rC194Q2I@krikkit>
+References: <agHpk_g6rC194Q2I@krikkit>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260511140005.2619263-1-alexjlzheng@tencent.com>
+Content-Transfer-Encoding: 8bit
 
-2026-05-11, 22:00:05 +0800, Jinliang Zheng wrote:
-> On Sun, 11 May 2026, Sabrina Dubroca wrote:
-> > > +	macsec_wq = alloc_ordered_workqueue("macsec", 0);
-> >
-> > Why did you pick an ordered workqueue instead of a normal one?
-> 
-> I chose an ordered workqueue for its serialized execution, which
-> avoids potential ordering issues between concurrent SA destructions.
-> In hindsight, there is no actual ordering dependency between SA
-> cleanups, so a normal workqueue is sufficient here.
-> 
-> Should I send a v4 with that switched to alloc_workqueue()?
+On Sun, 11 May 2026, Sabrina Dubroca wrote:
+> > In hindsight, there is no actual ordering dependency between SA
+> > cleanups, so a normal workqueue is sufficient here. Should I send
+> > a v4 with that switched to alloc_workqueue()?
+>
+> It probably doesn't matter a lot, but since your cover letter
+> mentions "unnecessary latency", switching to a regular workqueue
+> would help avoid giving the wrong impression that the ordered
+> variant is needed.
+>
+> Either way, the patch looks ok to me
+>
+> Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
 
-Probably doesn't really matter, but since your cover letter mentions
-"unnecessary latency", maybe? Would it make a difference in your use
-case? I think it would mostly help when we try to unload the module
-with lots of SAs, otherwise the only difference will be that actual
-freeing of resources will be a bit slower. (OTOH it would avoid giving
-the "wrong impression", that the ordered variant of the WQ is needed,
-when it's not)
+Great, I'll switch to alloc_workqueue() in v4. Thanks a lot for
+the review and the Reviewed-by!
 
-
-Either way, the patch looks ok to me, so for this version:
-
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-
--- 
-Sabrina
+Thanks,
+Jinliang
