@@ -1,28 +1,28 @@
-Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F35583C552D;
-	Mon, 11 May 2026 08:57:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.171
+Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 235873CAE75;
+	Mon, 11 May 2026 08:57:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778489864; cv=none; b=ST/SqJLnkvzs5k/8xQToc/5PCA3hI2TQJxwwI4iyZqNCB1vsIAG2qWV+odKkcqWimUcz21oXiu+Mn8XqthegxCyETI24KfrPMjuKPixZbW/EE3Mr5yiBDhx66JLLBuSwzSOxlz/5eNADYML2vec6G68RtyMt9qZLajxYo8t+BDE=
+	t=1778489865; cv=none; b=n8YPYv4CtcF5feFKfrOISG38r/N2Hq4PiOeEXMGFFiE4LM+8Qh6ZxRWKHhYmr+DNMMu1J0yRoIbl7xCIUvl/Zik9+Eko/WNnhWgm6ZzHWfJLdLl4rtGvozPDT5IJP+UA5MzO268sr1pRIwyHP8ndLTp5d2AlqEcm+XYkN+AO+OM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778489864; c=relaxed/simple;
-	bh=NqiXDt44KexY4kBU8hsHB66tQB6ItpiVhLKQdkRX0/A=;
+	s=arc-20240116; t=1778489865; c=relaxed/simple;
+	bh=jxtflo7pqLz5vv2Og2F+NhedUGaL5nZobcZN5x5IYz4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=DIf+Qmd/aJiJvX54d+h5DF4YqxLIGoKagWR0i2YaGYBGBwrxAe1Uwptk3MkEoZsSotSECH43otlTOc5rA1SYWSJHuwxO72QKaKf+GceaAz2Lmxa0BKzGLnsKu220druOgL4frG+rU2iAPMPU512nr90D4dO8ikH3ptVfzGiaBoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; arc=none smtp.client-ip=210.160.252.171
+	 In-Reply-To:To:Cc; b=ULil7zae/adwFxbANfKHY5K1J1uIT18SB4JAwa/YlQr3cnRRpxgBW24Gbh22aL1ZxCnWx3hYbkFdYupDxP8rk4wPQAuBdSEGkrePZe+GATMkjNuuFIjOL8akUbw4GdkyR8jg2erUFkJeSoSshBzcfRN8FuJcLFmG6gyooevQ1so=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; arc=none smtp.client-ip=210.160.252.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
-X-CSE-ConnectionGUID: YM0Qp+gSTciBQmAqAsA0yw==
-X-CSE-MsgGUID: ZcJ0yWRCThulOt2opA0GDg==
+X-CSE-ConnectionGUID: XdOujXfpRpGzBYn0DGcwjw==
+X-CSE-MsgGUID: smNM0BcQRkur7ixIzSNV8w==
 Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
-  by relmlie5.idc.renesas.com with ESMTP; 11 May 2026 17:52:35 +0900
+  by relmlie6.idc.renesas.com with ESMTP; 11 May 2026 17:52:42 +0900
 Received: from [127.0.1.1] (unknown [10.226.78.135])
-	by relmlir5.idc.renesas.com (Postfix) with ESMTP id 2DAB14009A31;
-	Mon, 11 May 2026 17:52:31 +0900 (JST)
+	by relmlir5.idc.renesas.com (Postfix) with ESMTP id 487664010E3A;
+	Mon, 11 May 2026 17:52:39 +0900 (JST)
 From: Michael Dege <michael.dege@renesas.com>
-Date: Mon, 11 May 2026 10:52:05 +0200
-Subject: [PATCH net-next v4 02/13] net: renesas: rswitch: use device
- instead of net_device
+Date: Mon, 11 May 2026 10:52:07 +0200
+Subject: [PATCH net-next v4 04/13] net: renesas: rswitch: add register
+ definitions for vlan support
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -31,7 +31,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260511-rswitch_add_vlans-v4-2-a5a225f8faae@renesas.com>
+Message-Id: <20260511-rswitch_add_vlans-v4-4-a5a225f8faae@renesas.com>
 References: <20260511-rswitch_add_vlans-v4-0-a5a225f8faae@renesas.com>
 In-Reply-To: <20260511-rswitch_add_vlans-v4-0-a5a225f8faae@renesas.com>
 To: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, 
@@ -43,177 +43,250 @@ To: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
 Cc: netdev@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Michael Dege <michael.dege@renesas.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778489544; l=6218;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1778489544; l=6223;
  i=michael.dege@renesas.com; s=20251023; h=from:subject:message-id;
- bh=NqiXDt44KexY4kBU8hsHB66tQB6ItpiVhLKQdkRX0/A=;
- b=I54C62NeldiXEn+yeMBBqwPXz1NU2L4dzfv3EeLfzBR4HxCU6aLHgRhQYYyre+so+QuJMP/Au
- Wgy5uKbfYqkDzmtMrGEdzqzMBmMDzJPmVM33KMBkNxFjaeBv2P4pJDC
+ bh=jxtflo7pqLz5vv2Og2F+NhedUGaL5nZobcZN5x5IYz4=;
+ b=uBmKWw8wsb7W89oUUlX/upYSiE5oO11K1AAqKfJSDIw4RzgKSrsixrMrljoE1AZzzT+xS2sXv
+ OHc1zHmGffhB5NPTVTPVzn4T5zWDWjKO+u9Ka8hpgJXVdmJlK1s83Ui
 X-Developer-Key: i=michael.dege@renesas.com; a=ed25519;
  pk=gu1rwIcCrAxNMv2I8fIfiQvt51xzZwnQy4Ua/DscQt8=
 
-In upcomming changes for adding vlan support struct net_device
-will not be available in all cases, therefore use struct device
-instead.
+Add missing register and bit definitions for vlan support.
 
 Signed-off-by: Michael Dege <michael.dege@renesas.com>
 ---
- drivers/net/ethernet/renesas/rswitch_main.c | 34 ++++++++++++++---------------
- 1 file changed, 16 insertions(+), 18 deletions(-)
+ drivers/net/ethernet/renesas/rswitch.h | 156 ++++++++++++++++++++++++++++++++-
+ 1 file changed, 152 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/renesas/rswitch_main.c b/drivers/net/ethernet/renesas/rswitch_main.c
-index 9b739594cc02..3a2bc14e5bd7 100644
---- a/drivers/net/ethernet/renesas/rswitch_main.c
-+++ b/drivers/net/ethernet/renesas/rswitch_main.c
-@@ -304,13 +304,13 @@ static int rswitch_gwca_queue_alloc_rx_buf(struct rswitch_gwca_queue *gq,
- 	return -ENOMEM;
- }
+diff --git a/drivers/net/ethernet/renesas/rswitch.h b/drivers/net/ethernet/renesas/rswitch.h
+index 340524d995ac..e56c15dd4ecd 100644
+--- a/drivers/net/ethernet/renesas/rswitch.h
++++ b/drivers/net/ethernet/renesas/rswitch.h
+@@ -7,8 +7,10 @@
+ #ifndef __RSWITCH_H__
+ #define __RSWITCH_H__
  
--static void rswitch_gwca_queue_free(struct net_device *ndev,
-+static void rswitch_gwca_queue_free(struct device *dev,
- 				    struct rswitch_gwca_queue *gq)
- {
- 	unsigned int i;
++#include <linux/if_vlan.h>
+ #include <linux/platform_device.h>
+ #include <linux/phy.h>
++#include <net/switchdev.h>
  
- 	if (!gq->dir_tx) {
--		dma_free_coherent(ndev->dev.parent,
-+		dma_free_coherent(dev,
- 				  sizeof(struct rswitch_ext_ts_desc) *
- 				  (gq->ring_size + 1), gq->rx_ring, gq->ring_dma);
- 		gq->rx_ring = NULL;
-@@ -320,7 +320,7 @@ static void rswitch_gwca_queue_free(struct net_device *ndev,
- 		kfree(gq->rx_bufs);
- 		gq->rx_bufs = NULL;
- 	} else {
--		dma_free_coherent(ndev->dev.parent,
-+		dma_free_coherent(dev,
- 				  sizeof(struct rswitch_ext_desc) *
- 				  (gq->ring_size + 1), gq->tx_ring, gq->ring_dma);
- 		gq->tx_ring = NULL;
-@@ -359,7 +359,7 @@ static int rswitch_gwca_queue_alloc(struct net_device *ndev,
- 		if (rswitch_gwca_queue_alloc_rx_buf(gq, 0, gq->ring_size) < 0)
- 			goto out;
+ #include "rcar_gen4_ptp.h"
  
--		gq->rx_ring = dma_alloc_coherent(ndev->dev.parent,
-+		gq->rx_ring = dma_alloc_coherent(&priv->pdev->dev,
- 						 sizeof(struct rswitch_ext_ts_desc) *
- 						 (gq->ring_size + 1), &gq->ring_dma, GFP_KERNEL);
- 	} else {
-@@ -369,7 +369,7 @@ static int rswitch_gwca_queue_alloc(struct net_device *ndev,
- 		gq->unmap_addrs = kzalloc_objs(*gq->unmap_addrs, gq->ring_size);
- 		if (!gq->unmap_addrs)
- 			goto out;
--		gq->tx_ring = dma_alloc_coherent(ndev->dev.parent,
-+		gq->tx_ring = dma_alloc_coherent(&priv->pdev->dev,
- 						 sizeof(struct rswitch_ext_desc) *
- 						 (gq->ring_size + 1), &gq->ring_dma, GFP_KERNEL);
- 	}
-@@ -387,7 +387,7 @@ static int rswitch_gwca_queue_alloc(struct net_device *ndev,
- 	return 0;
+@@ -221,7 +223,7 @@ enum rswitch_reg {
+ 	FWMACTL1	= FWRO + 0x4634,
+ 	FWMACTL2	= FWRO + 0x4638,
+ 	FWMACTL3	= FWRO + 0x463c,
+-	FWMACTL4	= FWRO + 0x4640,
++	FWMACTL40	= FWRO + 0x4640,
+ 	FWMACTL5	= FWRO + 0x4650,
+ 	FWMACTLR	= FWRO + 0x4654,
+ 	FWMACTIM	= FWRO + 0x4660,
+@@ -249,7 +251,7 @@ enum rswitch_reg {
+ 	FWVLANTL0	= FWRO + 0x4910,
+ 	FWVLANTL1	= FWRO + 0x4914,
+ 	FWVLANTL2	= FWRO + 0x4918,
+-	FWVLANTL3	= FWRO + 0x4920,
++	FWVLANTL30	= FWRO + 0x4920,
+ 	FWVLANTL4	= FWRO + 0x4930,
+ 	FWVLANTLR	= FWRO + 0x4934,
+ 	FWVLANTIM	= FWRO + 0x4940,
+@@ -508,7 +510,7 @@ enum rswitch_reg {
+ 	EACTDQMLM	= TARO + 0x010c,
+ 	EAVCC		= TARO + 0x0130,
+ 	EAVTC		= TARO + 0x0134,
+-	EATTFC		= TARO + 0x0138,
++	EARTFC		= TARO + 0x0138,
+ 	EACAEC		= TARO + 0x0200,
+ 	EACC		= TARO + 0x0204,
+ 	EACAIVC0	= TARO + 0x0220,
+@@ -729,6 +731,41 @@ enum rswitch_etha_mode {
  
- out:
--	rswitch_gwca_queue_free(ndev, gq);
-+	rswitch_gwca_queue_free(&priv->pdev->dev, gq);
+ #define EAMS_OPS_MASK		EAMC_OPC_OPERATION
  
- 	return -ENOMEM;
- }
-@@ -469,12 +469,11 @@ static void rswitch_gwca_ts_queue_fill(struct rswitch_private *priv,
- 	}
- }
++/* bit field definitions for EAVCC and GWVCC */
++#define VEM			GENMASK(18, 16)
++#define VIM			BIT(0)
++
++/* bit field definitions for EAVTC and GWVTC */
++#define STD			BIT(31)
++#define STP			GENMASK(30, 28)
++#define STV			GENMASK(27, 16)
++#define CTD			BIT(15)
++#define CTP			GENMASK(14, 12)
++#define CTV			GENMASK(11, 0)
++
++/* bit field definitions for EARTFC and GWTTCF */
++#define UT			BIT(8)
++#define SCRT			BIT(7)
++#define SCT			BIT(6)
++#define CRT			BIT(5)
++#define CT			BIT(4)
++#define CSRT			BIT(3)
++#define CST			BIT(2)
++#define RT			BIT(1)
++#define NT			BIT(0)
++
++/* bit field definitions for EARDQDC and GWRDQDC */
++#define DQD			GENMASK(10, 0)
++#define DES_RAM_DP		0x400
++
++enum vlan_egress_mode {
++	NO_VLAN,
++	C_TAG_VLAN,
++	HW_C_TAG_VLAN,
++	SC_TAG_VLAN,
++	HW_SC_TAG_VLAN,
++};
++
+ #define EAVCC_VEM_SC_TAG	(0x3 << 16)
  
--static int rswitch_gwca_queue_ext_ts_fill(struct net_device *ndev,
-+static int rswitch_gwca_queue_ext_ts_fill(struct device *dev,
- 					  struct rswitch_gwca_queue *gq,
- 					  unsigned int start_index,
- 					  unsigned int num)
- {
--	struct rswitch_device *rdev = netdev_priv(ndev);
- 	struct rswitch_ext_ts_desc *desc;
- 	unsigned int i, index;
- 	dma_addr_t dma_addr;
-@@ -483,18 +482,17 @@ static int rswitch_gwca_queue_ext_ts_fill(struct net_device *ndev,
- 		index = (i + start_index) % gq->ring_size;
- 		desc = &gq->rx_ring[index];
- 		if (!gq->dir_tx) {
--			dma_addr = dma_map_single(ndev->dev.parent,
-+			dma_addr = dma_map_single(dev,
- 						  gq->rx_bufs[index] + RSWITCH_HEADROOM,
- 						  RSWITCH_MAP_BUF_SIZE,
- 						  DMA_FROM_DEVICE);
--			if (dma_mapping_error(ndev->dev.parent, dma_addr))
-+			if (dma_mapping_error(dev, dma_addr))
- 				goto err;
+ #define MPIC_PIS		GENMASK(2, 0)
+@@ -806,6 +843,22 @@ enum rswitch_gwca_mode {
+ #define CABPPFLC_INIT_VALUE	0x00800080
  
- 			desc->desc.info_ds = cpu_to_le16(RSWITCH_DESC_BUF_SIZE);
- 			rswitch_desc_set_dptr(&desc->desc, dma_addr);
- 			dma_wmb();
- 			desc->desc.die_dt = DT_FEMPTY | DIE;
--			desc->info1 = cpu_to_le64(INFO1_SPN(rdev->etha->index));
- 		} else {
- 			desc->desc.die_dt = DT_EEMPTY | DIE;
- 		}
-@@ -508,7 +506,7 @@ static int rswitch_gwca_queue_ext_ts_fill(struct net_device *ndev,
- 			index = (i + start_index) % gq->ring_size;
- 			desc = &gq->rx_ring[index];
- 			dma_addr = rswitch_desc_get_dptr(&desc->desc);
--			dma_unmap_single(ndev->dev.parent, dma_addr,
-+			dma_unmap_single(dev, dma_addr,
- 					 RSWITCH_MAP_BUF_SIZE, DMA_FROM_DEVICE);
- 		}
- 	}
-@@ -516,7 +514,7 @@ static int rswitch_gwca_queue_ext_ts_fill(struct net_device *ndev,
- 	return -ENOMEM;
- }
+ /* MFWD */
++#define FWGC_SVM		GENMASK(1, 0)
++
++enum switch_vlan_mode {
++	NO_VLAN_MODE,
++	C_TAG,
++	SC_TAG,
++};
++
++/* FWCEPRC2 */
++#define FDMACSLFEF		BIT(19)
++#define FDMACUFEF		BIT(3)
++
++/* FWCEPTC */
++#define EPCS			GENMASK(17, 16)
++#define EPCSD			GENMASK(6, 0)
++
+ #define FWPC0(i)		(FWPC00 + (i) * 0x10)
+ #define FWPC0_LTHTA		BIT(0)
+ #define FWPC0_IP4UE		BIT(3)
+@@ -816,10 +869,13 @@ enum rswitch_gwca_mode {
+ #define FWPC0_IPDSA		BIT(12)
+ #define FWPC0_IPHLA		BIT(18)
+ #define FWPC0_MACDSA		BIT(20)
++#define FWPC0_MACRUDA           BIT(21)
+ #define FWPC0_MACSSA		BIT(23)
+ #define FWPC0_MACHLA		BIT(26)
+ #define FWPC0_MACHMA		BIT(27)
+ #define FWPC0_VLANSA		BIT(28)
++#define FWPC0_VLANRU            BIT(29)
++#define FWPC0_VLANRUS           BIT(30)
  
--static int rswitch_gwca_queue_ext_ts_format(struct net_device *ndev,
-+static int rswitch_gwca_queue_ext_ts_format(struct device *dev,
- 					    struct rswitch_private *priv,
- 					    struct rswitch_gwca_queue *gq)
- {
-@@ -526,7 +524,7 @@ static int rswitch_gwca_queue_ext_ts_format(struct net_device *ndev,
- 	int err;
+ #define FWPC1(i)		(FWPC10 + (i) * 0x10)
+ #define FWCP1_LTHFW		GENMASK(16 + (RSWITCH_NUM_AGENTS - 1), 16)
+@@ -847,6 +903,98 @@ enum rswitch_gwca_mode {
+ #define FWMACAGC_MACAGOG	BIT(28)
+ #define FWMACAGC_MACDESOG	BIT(29)
  
- 	memset(gq->rx_ring, 0, ring_size);
--	err = rswitch_gwca_queue_ext_ts_fill(ndev, gq, 0, gq->ring_size);
-+	err = rswitch_gwca_queue_ext_ts_fill(dev, gq, 0, gq->ring_size);
- 	if (err < 0)
- 		return err;
++/* FWMACTL0 */
++#define FWMACTL0_ED		BIT(16)
++#define FWMACTL0_HLD		BIT(10)
++#define FWMACTL0_DE		BIT(9)
++#define FWMACTL0_SL		BIT(8)
++
++/* FWMACTL3 */
++#define FWMACTL3_DSLV		GENMASK(16 + RSWITCH_NUM_AGENTS - 1, 16)
++#define FWMACTL3_SSLV		GENMASK(RSWITCH_NUM_AGENTS - 1, 0)
++
++/* FWMACTL4 */
++#define FWMACTL4(i)		(FWMACTL40 + (i) * 4)
++#define FWMACTL4_CSDL		GENMASK(6, 0)
++
++/* FWMACTL5 */
++#define FWMACTL5_CME		BIT(21)
++#define FWMACTL5_EME		BIT(20)
++#define FWMACTL5_IPU		BIT(19)
++#define FWMACTL5_IPV		GENMASK(18, 16)
++#define FWMACTL5_DV		GENMASK(6, 0)
++
++/* FWMACTLR */
++#define FWMACTLR_L		BIT(31)
++#define FWMACTLR_LCN		GENMASK(25, 16)
++#define FWMACTLR_LO		BIT(3)
++#define FWMACTLR_LEF		BIT(2)
++#define FWMACTLR_LSF		BIT(1)
++#define FWMACTLR_LF		BIT(0)
++
++/* FWVLANTEC */
++#define VLANTMUE		GENMASK(28, 16)
++
++/* FWVLANTL0 */
++#define VLANED			BIT(16)
++#define VLANHLDL		BIT(10)
++#define VLANSLL			BIT(8)
++
++/* FWVLANTL1 */
++#define VLANVIDL		GENMASK(11, 0)
++
++/* FWVLANTL2 */
++#define VLANSLVL		GENMASK(6, 0)
++
++/* FWVLANTL3 */
++#define FWVLANTL3(i)		(FWVLANTL30 + (i) * 4)
++#define VLANCSDL		GENMASK(6, 0)
++
++/* FWVLANTL4 */
++#define VLANCMEL		BIT(21)
++#define VLANEMEL		BIT(20)
++#define VLANIPUL		BIT(19)
++#define VLANIPVL		GENMASK(18, 16)
++#define VLANDVL			GENMASK(6, 0)
++
++/* FWVLANTLR */
++#define VLANTL			BIT(31)
++#define VLANLO			BIT(3)
++#define VLANLEF			BIT(2)
++#define VLANLSF			BIT(1)
++#define VLANLF			BIT(0)
++
++/* FWVLANTIM */
++#define VLANTR			BIT(1)
++#define VLANTIOG		BIT(0)
++
++/* FWVLANTEM */
++#define VLANTUEN		GENMASK(28, 16)
++#define VLANTEN			GENMASK(12, 0)
++
++/* FWVLANTS */
++#define VLANVIDS		GENMASK(11, 0)
++
++/* FWVLANTSR0 */
++#define VLANTS			BIT(31)
++#define VLANHLDS		BIT(10)
++#define VLANSLS			BIT(8)
++#define VLANSNF			BIT(1)
++#define VLANSEF			BIT(0)
++
++/* FWVLANTSR1 */
++#define VLANSLVS		GENMASK(6, 0)
++
++/* FWVLANTSR2 */
++#define FWVLANTSR2(i)		(FWVLANTSR20 + (i) * 4)
++
++/* FWVLANTSR3 */
++#define VLANCMES		BIT(21)
++#define VLANEMES		BIT(20)
++#define VLANIPUS		BIT(19)
++#define VLANIPVS		GENMASK(18, 16)
++#define VLANDVS			GENMASK(6, 0)
++
+ #define RSW_AGEING_CLK_PER_US	0x140
+ #define RSW_AGEING_TIME		300
  
-@@ -638,7 +636,7 @@ static void rswitch_txdmac_free(struct net_device *ndev)
- {
- 	struct rswitch_device *rdev = netdev_priv(ndev);
+@@ -904,7 +1052,7 @@ enum DIE_DT {
+ #define INFO1_DV(port_vector)	((u64)(port_vector) << 48ULL)
  
--	rswitch_gwca_queue_free(ndev, rdev->tx_queue);
-+	rswitch_gwca_queue_free(ndev->dev.parent, rdev->tx_queue);
- 	rswitch_gwca_put(rdev->priv, rdev->tx_queue);
- }
+ /* For reception */
+-#define INFO1_SPN(port)		((u64)(port) << 36ULL)
++#define SPN			GENMASK_U64(38, 36)
  
-@@ -672,7 +670,7 @@ static void rswitch_rxdmac_free(struct net_device *ndev)
- {
- 	struct rswitch_device *rdev = netdev_priv(ndev);
- 
--	rswitch_gwca_queue_free(ndev, rdev->rx_queue);
-+	rswitch_gwca_queue_free(ndev->dev.parent, rdev->rx_queue);
- 	rswitch_gwca_put(rdev->priv, rdev->rx_queue);
- }
- 
-@@ -681,7 +679,7 @@ static int rswitch_rxdmac_init(struct rswitch_private *priv, unsigned int index)
- 	struct rswitch_device *rdev = priv->rdev[index];
- 	struct net_device *ndev = rdev->ndev;
- 
--	return rswitch_gwca_queue_ext_ts_format(ndev, priv, rdev->rx_queue);
-+	return rswitch_gwca_queue_ext_ts_format(ndev->dev.parent, priv, rdev->rx_queue);
- }
- 
- static int rswitch_gwca_hw_init(struct rswitch_private *priv)
-@@ -872,7 +870,7 @@ static bool rswitch_rx(struct net_device *ndev, int *quota)
- 	ret = rswitch_gwca_queue_alloc_rx_buf(gq, gq->dirty, num);
- 	if (ret < 0)
- 		goto err;
--	ret = rswitch_gwca_queue_ext_ts_fill(ndev, gq, gq->dirty, num);
-+	ret = rswitch_gwca_queue_ext_ts_fill(ndev->dev.parent, gq, gq->dirty, num);
- 	if (ret < 0)
- 		goto err;
- 	gq->dirty = rswitch_next_queue_index(gq, false, num);
+ /* For timestamp descriptor in dptrl (Byte 4 to 7) */
+ #define TS_DESC_TSUN(dptrl)	((dptrl) & GENMASK(7, 0))
 
 -- 
 2.43.0
