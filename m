@@ -1,139 +1,88 @@
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+Received: from mail-qt1-f201.google.com (mail-qt1-f201.google.com [209.85.160.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92E3936C9EC
-	for <netdev@vger.kernel.org>; Mon, 11 May 2026 07:19:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.177
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778483953; cv=pass; b=qAHGNBt6bLFUWlelvY7fWO8mLi+ThqpiTVwldG47G4TGd8Js1tLWfjeuuGIYnmLbbqHk5GxzM86OArnqrq66xg1NhGFxm6bfuYt1f1szZWA8rr1k7nCZa+kt5FSrHZ12nmzKW7bIEwllOvKUdUlaQgv2WL4oXhpZRnRG5cb5LX4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778483953; c=relaxed/simple;
-	bh=0tq7+QO/zX11vt1mSguxtzM29Iyxssr53gaIc8N/SOg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=c3BQk3gmCdVTw2Skcq0WWHeR1HRYLipFmsuEKBNFuIYZs9kR1rA8+YI0eiZC12IvKciP9cxHOW7mXf4MjhI0wKH1XMGWm0dLCuuoXOfZwsBynOOh6abKvKeEDw2H8RALsUnwwdEVlicxtFo9Pt0h76+ap/POq8csmt5FiqCbCS4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=igXfiYAU; arc=pass smtp.client-ip=209.85.160.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 421CF379EFE
+	for <netdev@vger.kernel.org>; Mon, 11 May 2026 07:23:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778484194; cv=none; b=P8/BgDEVgSaiQDrIN9OEjbCj7RBAE/mnKmaqGz+s0IuJuIQ4DIXQg+CC7BNW8nv9ZFSAPKXcvRrVRmtR6Fvz3wVIPbJmehPRc2W+mZSgbv/RAf+V8gQdw1kHWANeUqfJbJMV5SKkg/Ku84fnMRPzMEWyZph+n2ZeE93ePwJTFp0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778484194; c=relaxed/simple;
+	bh=xUHUA2brW+5Nwqxv9KImUvBUimvFJK4dmUvkhLv2zlA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=l9XLgzB6SauNfdnLiinioiNX7GmY029YU20q4OMgEne6S3M7OF850Okld0t4Bq+NYecy2rH7/a99lNMiNfQf1a12RC/7hBjLIAAkdAHfLXHYsvBaBE0J/ykUrakKPg8jH9bzH2503OscTD6sGlbRMElp5PjUD3yuW4ZJHU2iVAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=e4LQ6tg6; arc=none smtp.client-ip=209.85.160.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="igXfiYAU"
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-50fae4d1f85so47851721cf.3
-        for <netdev@vger.kernel.org>; Mon, 11 May 2026 00:19:12 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778483951; cv=none;
-        d=google.com; s=arc-20240605;
-        b=WWbekxCJZ1gCtFN5a0npPP5PiWUxgJdgPAmv2TMyE7WFVlYEvP7j55uY7td0eUNLcK
-         9dXBE1tB1DnUIz3N6Z6jAGf9Bg7/qVA34P1tKUBh11FPQhEQPli3ng237csI3OUsXwFl
-         hL/dF3sg7kGZCFsRKbh5Axv+7f6kiuXl5tomdPUfz+Dj6XDyg1RL4htDgfAhVCDyHiuR
-         NT0qV/HKlJv5b8Rp0vS9wkJpnBc214oU68h2MLCTc4KiOBPwjvf7Q/k5c5I3cdABQa+A
-         aAiTED5tZR9CjUpXBxCzNy3Us3j5kkN5CBf2ldqN1T17lhDoTtMJ2fsADnPZWeTmbpHF
-         se0Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=pzjX5aZytdYjc4ATBvAkFaDuhTJ/jrgQQEMmC6Ei6Yo=;
-        fh=G2DSwxLluPLqL6T47MaKC8+0ljKI0cNkqCj6fMUkYrU=;
-        b=R5G7+zrWH8m0zHTfXUd2DgibzYiSTKGvMeAtnDlPd1GIFFA/PV6+RZjAiB+3iGeN8A
-         f9b8ZFlBj8QQ2Jzlk5bRlWisKpoq6UZOvGGScP5rYtl9XrEUvcBCkbTFVihzAD6Rl9P5
-         hdBDcP9xJCiiCh1Ok+93vtyIu8dR0rbe6SGFvliD4xEwZV54fPKEQVxoH6ExSIjBUAXA
-         EtjsHKdCVHQesjrZYJTRu2tzgP+wLnH91wGvkP7IGdJ60nOpbsS9sARbL9HhrTKX4Eh0
-         +qt1Ce8VwQ46KE2Zyf+oKqyVpKPs+nAT8iS4wkzp7wC1yFgzr0ZTV/XEubzovu11W5LU
-         kxVg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="e4LQ6tg6"
+Received: by mail-qt1-f201.google.com with SMTP id d75a77b69052e-514a182b90dso17685041cf.1
+        for <netdev@vger.kernel.org>; Mon, 11 May 2026 00:23:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778483951; x=1779088751; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pzjX5aZytdYjc4ATBvAkFaDuhTJ/jrgQQEMmC6Ei6Yo=;
-        b=igXfiYAUbXEliRGqN8I7qjh56av/7yNp63Jtv8oxc2nu0ZVtTm6XT5FiX4yWztASS2
-         /961gPDdw+zGvR7R7CCkwWNQOF8M/a+pSs7vY/nM68KUioN+lXF/oNpCfFl26s8V8BHF
-         Ud4mpP87w4jdi6AsGa89ua7OAjg9Afg0R+2FYZvI9CFbWMFu6kVW6t3ba2MPrMgJa7DR
-         xgIqN+qlX8zydSv3SFnqCV2HvoKn6hFjr1w8VtcYRGnWiV7vuxTUA68t7bwFvFCOYCzU
-         y6iTJ+yXpZGEv48Ero6YCU3DAcvIPuigtJPJl3w0oGg4gEz0fNR4qLRSy5wyKcLVWNTf
-         1zAA==
+        d=google.com; s=20251104; t=1778484192; x=1779088992; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=LlyNPSemsWqYOzbnlrjFxW0A6vhDwmFk32vMhanLoHc=;
+        b=e4LQ6tg6T7hQ1putCXOR5MXz2E25qHmFPjwVh1rUHuSCvKrIrA0Cu8/AuVfaRS3Imb
+         /L1ICePSu5lqGVUzFR6co5AKeVykOXT577d2N1RwnUrMD4wPQQ+uKXm5fE8I5CvdS6av
+         EXud7krEFy1zuAqp6OitkPoKZ2DQwgnlz8c5CYRQ4OHnXW/TMgZDqzfR2PZq94l4+5ik
+         W6MyIpiq2Qbr1Fnig+eu/fcuXHxqF0QJzAz289xbyTDCgR5xRcA2eBJpywxQgcthwNbJ
+         6oCK00Z/61hbihD2KrGtr1A4mbs/AM37nw2oIj6Jqf1dwIulY9cFafG9rNC4Kov9/93u
+         grIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778483951; x=1779088751;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=pzjX5aZytdYjc4ATBvAkFaDuhTJ/jrgQQEMmC6Ei6Yo=;
-        b=j0xw0FVcj+1CdJM0E/64gjaAhtLRPf3G33f0YESPBnm6VwARyM5pSqpcBBlXeNZVbS
-         ZjLNpRVLge6PTfABYFJqB4Q2FaUg1FSpvX+6A6RILfQY/t5yO+53/WidMQ9A7G2diKkY
-         wZZY6yUU475F9rK8haceKld5Rsj38Iv/6StxRzE905um6JiQhUeJ0oEIHF6p1xMYyQ4e
-         fWMQdlvXA1+/WsK5FTwuI4Wyo8vaDRarvPE5r5DDVjrvYmfT9drsnJpd95j61vQ064mB
-         5wq/jMkL8JnIkvbNpOXaI2i4aexnzNlCpktWauHB2Nq2WSvTGcqbYwFFdHYCEd7e4UMe
-         KggQ==
-X-Gm-Message-State: AOJu0YxDwHEk9tv6GiCXmbg+OC3SI4aVzokx/hXG5qOXd7/bUHJC0ipA
-	HueJwWn/DyeKC3rcshSWEfj6IrnNdkusAREMsqyBaofS8hXSnVrSLzhtwdkSffkfWpdWzq6gEUr
-	oVZykkqe7pzMCd/kFgcSu4FXBN/tz1qnNnjKDuTm+
-X-Gm-Gg: Acq92OEFNDiz3DaKqbmDNVLhjCp3faAQ1pzE4TYNnVye1UmJeHr3w+nMEAr7+Y8gVHi
-	f1SH2FUeZQEJpfC+5wgV6E2Erm21htElYr3lIRxkoiVu7XD6Nn4e3hVg0iKe5fvDmxWfjdMB9e+
-	sEVYwqoUzb3aEHr2rRWxTw/ivvDvnov6d1q5WyVohReqv5G6lAG5nxf5WdblD9vObJmAMCM8Esg
-	wmbMWvMs/yuOfwIgJlNa4yRsutWGPWLObnRyDa2IZgdSI8VU3p8deqYHpB3//O7JOt6cxefe8B8
-	WvRfp0MPbM5UCrlyzqolweFnCC/rm9C6F2vMkJVWbcLtSVY/sPHl1OmwkbgFNy5pLyXkSDQ0Hq/
-	t+mK7GgOKGuja9naHq/d2gMWPin50p7oZOYi2mUM=
-X-Received: by 2002:a05:622a:647:b0:514:5d88:8296 with SMTP id
- d75a77b69052e-514621d0e45mr321046621cf.52.1778483950919; Mon, 11 May 2026
- 00:19:10 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1778484192; x=1779088992;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=LlyNPSemsWqYOzbnlrjFxW0A6vhDwmFk32vMhanLoHc=;
+        b=afw40idNqu8+C5SAuW+S5pWfebtw5wL0VLV22EhJCqKqNsR5qQnrAwTYf2UiSjghNt
+         xpGlWsbWdxic5U/nOYQwrsYaw7PQ7DLEgeM2s7nHxYgSf9NMLcWMewfWt7Qe9eg7IWe7
+         EMkJE5AMRYbzxlmAx0Kytjo1kcSTSwKn+/wKvdSOzFMoyUMtJreJZ3Pap7VGeYBwlVdJ
+         icQNlooK9KCffKSX9CkXCMNQzYMb1bvS70QRLg87S/5l47hrSc6G8Qu5tSZSbZKB67qs
+         jm9qtmzTmFfnTr6y0mg4zTAYGMhqYU9sO2hNESrzYzQhElpTmXc4cfe4/d1Ydd0uK5FV
+         CGhQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/tpFRmGPcKYQ3QhrpbNhL3lHKekPnd3MHP6h55sjwaZuQJ6oR4+og8IKDrHrGvExw+ijzYElM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw9D+6OnlkFP8Z/5elz07zM0r0dMVQpXHE6sBi8Faf+OLPdRKRn
+	a/lkBqVuJbzFOxaeHEJaJ2GLGNpB3yV8Zv1B7gq0VxQ/Y8ve9zoPQKDtEV/dFHHkT22ec4M4eFb
+	6DCxkTuZqhrUutQ==
+X-Received: from qvad17.prod.google.com ([2002:a0c:f111:0:b0:8c0:95b3:ebef])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:622a:2613:b0:50d:a8aa:8087 with SMTP id d75a77b69052e-51461f9fc6bmr325864001cf.38.1778484191917;
+ Mon, 11 May 2026 00:23:11 -0700 (PDT)
+Date: Mon, 11 May 2026 07:23:07 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260507154806.18635-1-ankit-aj.jain@broadcom.com> <20260507154806.18635-2-ankit-aj.jain@broadcom.com>
-In-Reply-To: <20260507154806.18635-2-ankit-aj.jain@broadcom.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
+Message-ID: <20260511072310.1094859-1-edumazet@google.com>
+Subject: [PATCH v2 net-next 0/3] net: use IP_OUTNOROUTES drop reason
 From: Eric Dumazet <edumazet@google.com>
-Date: Mon, 11 May 2026 00:18:59 -0700
-X-Gm-Features: AVHnY4IXty1C5WxwC6jVyVP7UV6kJQcgN3ykDWabEzHXjKxZoGtorArf6iJ-G9c
-Message-ID: <CANn89iKs3KLo=5hhUEH8OEG8p7_52g+fsrwYYNW=GzP+k7WW-Q@mail.gmail.com>
-Subject: Re: [PATCH net v3 1/2] tcp: protect locked SO_RCVBUF from Silly
- Window Syndrome
-To: Ankit Jain <ankit-aj.jain@broadcom.com>
-Cc: netdev@vger.kernel.org, kuba@kernel.org, davem@davemloft.net, 
-	pabeni@redhat.com, ncardwell@google.com, kuniyu@google.com, horms@kernel.org, 
-	shuah@kernel.org, quic_subashab@quicinc.com, quic_stranche@quicinc.com, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	karen.badiryan@broadcom.com, ajay.kaher@broadcom.com, 
-	alexey.makhalov@broadcom.com, vamsi-krishna.brahmajosyula@broadcom.com, 
-	yin.ding@broadcom.com, tapas.kundu@broadcom.com
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 7, 2026 at 8:51=E2=80=AFAM Ankit Jain <ankit-aj.jain@broadcom.c=
-om> wrote:
->
-> When an application locks SO_RCVBUF, it disables TCP window auto-tuning.
-> However, the kernel still applies dynamic truesize penalties to the
-> scaling_ratio.
->
-> For small packets, this penalty drops the scaling_ratio to 1. This
-> reduces the advertised window and causes Silly Window Syndrome (SWS)
-> along with 504 Gateway Timeouts in applications like Tomcat.
->
-> This patch bypasses the truesize penalty if SOCK_RCVBUF_LOCK is set.
-> To prevent memory exhaustion from large aggregate payloads, the penalty
-> is still applied for GRO packets (skb->len > len).
->
-> Fixes: a2cbb1603943 ("tcp: Update window clamping condition")
-> Reported-by: Karen Badiryan <karen.badiryan@broadcom.com>
-> Signed-off-by: Ankit Jain <ankit-aj.jain@broadcom.com>
+First patch changes sk_skb_reason_drop() sock to be const.
 
-I still do not see why the current behavior has a 'bug'. I think it is
-quite sane/reasonable.
+Second and last patch add SKB_DROP_REASON_IP_OUTNOROUTES
+to both tcp_v6_send_response() and inet6_csk_xmit().
 
-Your selftest does not show anything wrong IMO.
+Eric Dumazet (3):
+  net: constify sk_skb_reason_drop() sock parameter
+  tcp: use SKB_DROP_REASON_IP_OUTNOROUTES in tcp_v6_send_response()
+  ipv6: use SKB_DROP_REASON_IP_OUTNOROUTES in inet6_csk_xmit()
 
-If you want to avoid SWS, perhaps the application needs to _not_ use
-SO_RCVBUF with a value smaller than the device MTU?
+ include/linux/skbuff.h           | 3 ++-
+ include/trace/events/skb.h       | 4 ++--
+ net/core/drop_monitor.c          | 6 +++---
+ net/core/skbuff.c                | 5 +++--
+ net/ipv6/inet6_connection_sock.c | 3 ++-
+ net/ipv6/tcp_ipv6.c              | 2 +-
+ 6 files changed, 13 insertions(+), 10 deletions(-)
 
-Applications using SO_RCVBUF with tiny values can not expect kernel
-behavior to be stable,
-since rcvbuf management depends on metadata size, which can vary
-between kernels versions/options.
+-- 
+2.54.0.563.g4f69b47b94-goog
 
-If  a kernel change is needed, I would rather enforce a sane sk_rcvbuf
-floor when the MSS is learnt
-at accept()/connect() time.
-
-( TCP_SKB_MIN_TRUESIZE / SOCK_MIN_RCVBUF definitions )
