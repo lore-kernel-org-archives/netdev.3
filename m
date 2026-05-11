@@ -1,177 +1,253 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 983AD3A6EFE;
-	Mon, 11 May 2026 07:54:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0817A3B0AE5
+	for <netdev@vger.kernel.org>; Mon, 11 May 2026 08:08:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778486062; cv=none; b=VhyZfiQJ9PLC0jx9JU92ibahJrHHbu3WFAnpl0Zoay0fl3iaFKWY+/rgjIbBk/2wvP/Rwo5WZ2iLXEHGD28fxAhmdDapfXiXkZRjPiJg8RLH9CP03gulNi39gPmYrALjB/K4D48k4YXGCLSyvmr7cVydCjg93VkhFvw16ssVGB8=
+	t=1778486897; cv=none; b=S4IOVfLOBUjAjTCNfjB5P/b1l+B4D96i60dHrUMHiSTF+GsLH12ZHhK/lj49uv7CzmP85So9ley+iBqkFC1SyOcq6a+ATDxNNTWIYn9jbBb2JNuWQzGyWVCCjHzBH9K3vWHqV0QvloQlgffoFOPRUuDYFJXGnaohKwz6477OiBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778486062; c=relaxed/simple;
-	bh=E5OPf2SDqQ00xjJWpfbMQbDpFigCPNo4Of0MT3coKB8=;
+	s=arc-20240116; t=1778486897; c=relaxed/simple;
+	bh=NcjgQHe/X9C+SBudTsEkTDVrZL8ey9FSJwoVi7+nhtM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jfv15CpEIb9sWo/9F7S2dZ94DYSeVgKLpeixHpeL5jeOvn92f3KXR13KDTcr7dqtx3xmx7gLtraL3xsXCc/ZXNkAkYpvp4Y0emCIYNBRX916ct0X9d7BA8pCz4BHhxRxpI83JrDhOknHEop1EQvxkXShtg63Vxw8alkZIRGryLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D6J9hkPj; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=mhV6SnDZpb404ngr+cQ8DA+BG6JWPWsN44vfV0PNi9JHnNfyikvPGtafBbxmBl2hHc0CZ8ztqf1XVPUGSLtx07NosJaUFr42k9tDDrOvIqyv6aVMQUYsNN7P7aEKrdLgcbrS+/BzzejC7SbwCaAHHFPRY0TEGbTPu99KIEgSJ38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b=a++eeVQU; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D6J9hkPj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99B92C2BCB0;
-	Mon, 11 May 2026 07:54:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778486061;
-	bh=E5OPf2SDqQ00xjJWpfbMQbDpFigCPNo4Of0MT3coKB8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=D6J9hkPjKWEbNx+OsdlIBLga2ANasCWijD7hwSoJJZrC2Pbc7+kxM8y5gJvfEQC+1
-	 NUQ9gsky83wC01EmUHjv1a/xzsYbMLEsNj88y/0qAL1/3XR7cJQIQScz8Tj+6iM7rA
-	 ZEtBTjpSmjp8pJWvJ17IC4fnyoEV5580K30uEhFXtLo/YUJH1fVYbKeJ450F+WRc8i
-	 1igBevsIlSchptcloIi3h4TD6uqWnuVkHgbfU3RdZPpYC7qye0q/0e1PryZdUQhKVh
-	 PaWEzoK//2D8xlwSLWOcVP55o9BGX7dEtc1MLi07xUHxNYeYtA4vptPONsfiOd0sNQ
-	 xkNfoPrdnR7sw==
-Date: Mon, 11 May 2026 09:54:18 +0200
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: sashiko@lists.linux.dev
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	devicetree@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v5 08/12] net: airoha: Support multiple
- net_devices for a single FE GDM port
-Message-ID: <agGLKkphZ0VhIywY@lore-desk>
-References: <20260509-airoha-eth-multi-serdes-v5-8-805e38edc2aa@kernel.org>
- <20260510140503.958BDC2BCFF@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b="a++eeVQU"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-488a14c31eeso27072825e9.0
+        for <netdev@vger.kernel.org>; Mon, 11 May 2026 01:08:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli-us.20251104.gappssmtp.com; s=20251104; t=1778486881; x=1779091681; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=MdfA7aGOGSRQ1CILOc6Le7Ks8CyAnmg3KhzdGxgc+LI=;
+        b=a++eeVQUmQC2uhkhik86EDQ3+IQGTEIrbONafIIO/TsC1d+8CACT4Ow2ImXauiXmEy
+         iT6Z8dRk9jsko6OyvcVs3AllFEIzibqBGSrW5sVE77Zg9/XUA7JixvH6XspnXGO2NHRe
+         ChywALP9BUOB9fXsyBydSIkyJRq8oQMIngY4APhu48oxHhRoVawmNP2MvTrGPiCRpFXz
+         jXjRTp1B+d1MXBK2E1OHZCcB+hfX65rXRrJVbnNf4YZj1enyge5AbNrgFWRSrnlyCaQR
+         CkSAZQvG1cWTQI2PMsKjfAvC0axtBsDdSjjANZjjRY7JsCfdZ+2TKsPOkjZIBzDus2sS
+         PEhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778486881; x=1779091681;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MdfA7aGOGSRQ1CILOc6Le7Ks8CyAnmg3KhzdGxgc+LI=;
+        b=EBaHiGrNNpr/30Dj2oOImOMvgave3KP2mhIM5+WjVSRTcHjJdE6E0GYlTp0eJs6R53
+         T6GME7id2HeYah3O46nlfzg/O9OCpbsiXGiFM7W1EqywF4pTKIDUL0EklCbLgKf2ZoL5
+         vpMR6AwcI/N+OAu+gHMpSGCDcYelseIvq6Qc9WMIhe/pcWj3rNn7kBImzQ3kFx3PVgge
+         V4F8aXeqsTdNRQUlpqbFi6ylQuk3lCEKEePE1k1jAi3Z3QXemPlmpe4daRhw2YG+K0nE
+         Df1abeStzGHT+vWFA28FSmLk0S86UMRXzRmJ2M5RPSZ1L2oiUb41as6bcOh7cBj/C6AY
+         G9nw==
+X-Forwarded-Encrypted: i=1; AFNElJ9h1VTnlrgOFy1fcE8dLKNYFnIwX7c5NCzlKRLDZOugWYFgadpqtByApY79Z/1GVccLsrRUwSQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzk/TmIESJZFNP7CKGF1xa6pfUTPe9ZqgYaSdK+46HdTQN32thx
+	oox8RvDjeA4Ugd7nYWysiHS2arWeVldNfjdxvN0zkFXbWa9sbnZXurOrRfWpoa4ZAgg=
+X-Gm-Gg: Acq92OHWi9WYSq+9RKn47SCb/SBW3y/pTpS3Ml/lDoQ+740hPCSGg76DPHL8t8T/CtA
+	bTQelYZYtPi661TOeAEk8cgpVoGnOdBmaav6Gob/u7M4+mdISuCDqFPLTZs01QMElrGZxhGKdg9
+	ZXJ4QtHATfBXjWUeb9RG44GYndm6faQ+G0GNEMdFGgV2uNS0jX/IfT5qGivQwdQh4jHNUONEVqc
+	MxAdl5aLO2LyS3wWfnrvZ5yxdN2Y1iXTphMlM9ObtooI/mL5rL5HlYEm0vkWye8YEA0yyZDzjoC
+	5aK1636b95rBekI6IWMLrtohuzGZnt8E/52jUqSCeM91qnrcoUK6rAg/coCiFcUI5pcw8DVUBBm
+	UirEImTI2Z4W5S9k4ThEUp4xssoYZzpZ+dd0PzkfNW11WUz5rQ6gRBkdcQagnthNcBK/UaI72nA
+	WcCIrfdQFLgWX8ewc6cRiZWNiOMM/sM0NtEk8=
+X-Received: by 2002:a05:600d:8496:20b0:48e:86e6:c2f1 with SMTP id 5b1f17b1804b1-48e86e6c38fmr7387965e9.2.1778486881151;
+        Mon, 11 May 2026 01:08:01 -0700 (PDT)
+Received: from FV6GYCPJ69 ([140.209.217.212])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-454917d57aesm24147511f8f.26.2026.05.11.01.07.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 May 2026 01:08:00 -0700 (PDT)
+Date: Mon, 11 May 2026 10:07:57 +0200
+From: Jiri Pirko <jiri@resnulli.us>
+To: Mark Bloch <mbloch@nvidia.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Simon Horman <horms@kernel.org>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
+	Tariq Toukan <tariqt@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Borislav Petkov (AMD)" <bp@alien8.de>, Randy Dunlap <rdunlap@infradead.org>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Christian Brauner <brauner@kernel.org>, 
+	Petr Mladek <pmladek@suse.com>, "Peter Zijlstra (Intel)" <peterz@infradead.org>, 
+	Thomas Gleixner <tglx@kernel.org>, Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, 
+	Dapeng Mi <dapeng1.mi@linux.intel.com>, Kees Cook <kees@kernel.org>, Marco Elver <elver@google.com>, 
+	Eric Biggers <ebiggers@kernel.org>, Li RongQing <lirongqing@baidu.com>, 
+	"Paul E. McKenney" <paulmck@kernel.org>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-rdma@vger.kernel.org
+Subject: Re: [RFC net-next 0/4] devlink: Add boot-time defaults
+Message-ID: <agGNVmN9tpHh0K1P@FV6GYCPJ69>
+References: <20260506123739.1959770-1-mbloch@nvidia.com>
+ <aftaW-irGmkfA7FS@FV6GYCPJ69>
+ <3f9215c4-7c84-46d9-ba74-30dabe24db09@nvidia.com>
+ <afxvzOjqw-vxUAED@FV6GYCPJ69>
+ <b6a9b568-dd09-4414-be57-6b9cd282a43c@nvidia.com>
+ <af4lBIJdCuN5VKq_@FV6GYCPJ69>
+ <20260508175213.1952097f@kernel.org>
+ <af7Y4AYv-XDCbK_8@FV6GYCPJ69>
+ <580a774b-ba9e-4523-b43a-476f75dd5b12@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="I86ZFwpODncJaq/I"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260510140503.958BDC2BCFF@smtp.kernel.org>
+In-Reply-To: <580a774b-ba9e-4523-b43a-476f75dd5b12@nvidia.com>
+
+Sun, May 10, 2026 at 02:31:35PM +0200, mbloch@nvidia.com wrote:
+>
+>
+>On 09/05/2026 10:01, Jiri Pirko wrote:
+>> Sat, May 09, 2026 at 02:52:13AM +0200, kuba@kernel.org wrote:
+>>> On Fri, 8 May 2026 20:07:44 +0200 Jiri Pirko wrote:
+>>>>> I don't think switchdev by default should mean CX4+ in general. If we get
+>>>>> there, I would expect it to be limited to the DPU/BlueField/ECPF case, where
+>>>>> the host PF probe path can depend on the ECPF reaching switchdev. Changing the
+>>>>> default for regular host NIC deployments feels like a much larger compatibility
+>>>>> change.  
+>>>>
+>>>> We can't travel throught time, but if from CX5 onwards the default would
+>>>> be switchdev, nobody would feel broken in terms of compatibility. That
+>>>> is my point. Having "legacy" as default is simply wrong for never NIC
+>>>> generations. That is why it is called "legacy" and it should have been
+>>>> rotten through and out since CX4 times.
+>>>
+>>> legacy vs switchdev only describes the eswitch configuration.
+>>> As a non-SR-IOV user I really don't want to see the extra representors
+>>> hanging around my systems, confusing all daemons. IIRC mlx5 had some
+>>> limitations around the uplink representor. Maybe that's the disconnect.
+>>> But for a real, fully featured switchdev eswitches having the
+>>> PHY and PF representors on boot, always, will not make sense.
+>> 
+>> As "a non-SR-IOV user", what extra representors you talk about? When you
+>> have pfs only, you don't have anything extra. Just 1 netdev per-pf, one
+>> devlink port per-pf. What's extra about it? When you don't have VFs/SFs.
+>> Everyhing is the same:
+>
+>The netdev list looking similar is a bit misleading. What matters here is
+>not only how many netdevs show up, but what that netdev actually is.
+>
+>In legacy mode, a PF only user can just use the PF netdev as a regular NIC
+>and use ROCE on it directly.
+
+I don't see why we have this limitation. Sounds more like a bug to me.
+The netdev is still the same, capable of the same things no matter in
+which mode you have it. RoCE should work on it in both modes.
 
 
---I86ZFwpODncJaq/I
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+>
+>In switchdev mode, even if there are no VFs or SFs yet, the PF is moved into
+>the switchdev model and the visible netdev is the uplink representor. That is
+>not the same thing from a user point of view. The uplink representor is not a
+>ROCE capable endpoint. So a user who used to boot the machine and use ROCE on
+>the PF now has to create a VF or SF, use that as the roce endpoint, and also
+>set up the switchdev forwarding path with tc, bridge or OVS so traffic from
+>that function actually reaches the wire.
+>
+>That is why I don't think this is only a card generation question. It changes
+>the deployment model. It may be the right default for BlueField/ECPF style
+>systems, where the host is expected to sit behind a switchdev control plane,
+>but it is not a safe default for every regular host NIC setup.
 
-> Thank you for your contribution! Sashiko AI review found 2 potential issu=
-e(s) to consider:
-> - [High] Bringing up a device overwrites the global WAN port and GDM loop=
-back configuration of previously opened devices sharing the same port.
-> - [Medium] Standard netdev statistics and ethtool MAC/RMON stats return t=
-he combined hardware counters for the entire GDM port instead of per-interf=
-ace statistics.
-> --
->=20
-> commit 6b561eda8762bee9a19daa9304286dbd64cc6eac
-> Author: Lorenzo Bianconi <lorenzo@kernel.org>
->=20
-> net: airoha: Support multiple net_devices for a single FE GDM port
->=20
-> Introduce support for multiple net_devices connected to the same Frame En=
-gine
-> (FE) GDM port (GDM3 or GDM4) via an external hw arbiter.
->=20
-> > diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/eth=
-ernet/airoha/airoha_eth.c
-> > index 904f8da936005..be31f639f4be3 100644
-> > --- a/drivers/net/ethernet/airoha/airoha_eth.c
-> > +++ b/drivers/net/ethernet/airoha/airoha_eth.c
-> [ ... ]
-> > @@ -1829,7 +1833,7 @@ static int airoha_set_gdm2_loopback(struct airoha=
-_gdm_dev *dev)
-> >  	airoha_fe_clear(eth, REG_FE_VIP_PORT_EN, BIT(AIROHA_GDM2_IDX));
-> >  	airoha_fe_clear(eth, REG_FE_IFC_PORT_EN, BIT(AIROHA_GDM2_IDX));
-> > =20
-> > -	src_port =3D eth->soc->ops.get_sport(port, port->nbq);
-> > +	src_port =3D eth->soc->ops.get_sport(port, dev->nbq);
->=20
-> Does bringing up a device overwrite the global WAN port and GDM loopback
-> configuration of previously opened devices sharing the same port?
->=20
-> Since multiple devices can now share the same GDM port and each has a
-> different nbq (and therefore a different src_port), wouldn't the
-> initialization of the second device clobber the WAN port configuration of=
- the
-> first one, breaking its forwarding behavior?
->=20
-> I noticed this is fixed later in the series in commit 8e8f8223af5be ("net:
-> airoha: Introduce WAN device flag"), but wanted to confirm the regression
-> between commits.
+Yeah, the point is, not to change deployment model. The legacy/switchdev
+should only change behaviour for sriov/eswitch usecase. The rest
+(PF/uplink netdev and related objects) should stay the same.
 
-Correct, airoha_set_gdm2_loopback() is run just for WAN net_device and a
-subsequent patch limits the support to a single WAN device.
 
->=20
-> >  	if (src_port < 0)
-> >  		return src_port;
-> > =20
-> [ ... ]
-> > diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/eth=
-ernet/airoha/airoha_eth.h
-> > index 694e83bfd1e70..8d6887e334130 100644
-> > --- a/drivers/net/ethernet/airoha/airoha_eth.h
-> > +++ b/drivers/net/ethernet/airoha/airoha_eth.h
-> [ ... ]
-> > @@ -539,19 +540,20 @@ struct airoha_qdma {
-> >  struct airoha_gdm_dev {
-> >  	struct airoha_gdm_port *port;
-> >  	struct airoha_qdma *qdma;
-> > -	struct net_device *dev;
-> >  	struct airoha_eth *eth;
-> > +	struct net_device *dev;
-> > =20
-> >  	DECLARE_BITMAP(qos_sq_bmap, AIROHA_NUM_QOS_CHANNELS);
-> >  	/* qos stats counters */
-> >  	u64 cpu_tx_packets;
-> >  	u64 fwd_tx_packets;
-> > +
-> > +	int nbq;
-> >  };
-> > =20
-> >  struct airoha_gdm_port {
-> > -	struct airoha_gdm_dev *dev;
-> > +	struct airoha_gdm_dev *devs[AIROHA_MAX_NUM_GDM_DEVS];
-> >  	int id;
-> > -	int nbq;
-> > =20
-> >  	struct airoha_hw_stats stats;
->=20
-> Since standard netdev statistics and ethtool MAC/RMON stats are tied to t=
-he
-> hardware counters on the GDM port, do they now return the combined hardwa=
-re
-> counters for the entire GDM port instead of per-interface statistics?
->=20
-> Prior to this patch, each GDM port mapped to a single net_device, making
-> port-wide hardware stats accurate for the interface. With multiple net_de=
-vices
-> sharing a single GDM port, querying statistics for one interface might
-> incorrectly return the aggregated traffic of all interfaces connected to =
-that
-> port, violating standard rtnl_link_stats64 semantics.
->=20
-> I noticed this is fixed later in the series in commit 29334a9bde18f ("net:
-> airoha: Better handle MIB for GDM with multiple port attached").
->=20
+>
+>> 
+>> c-220-136-220-218:~$ sudo devlink dev eswitch show pci/0000:08:00.0
+>> pci/0000:08:00.0: mode switchdev inline-mode none encap-mode basic
+>> c-220-136-220-218:~$ sudo devlink dev eswitch show pci/0000:08:00.1
+>> pci/0000:08:00.1: mode legacy inline-mode none encap-mode basic
+>> c-220-136-220-218:~$ devlink dev
+>> pci/0000:08:00.0: index 0
+>>   nested_devlink:
+>>     auxiliary/mlx5_core.eth.0
+>> devlink_index/1: index 1
+>>   nested_devlink:
+>>     pci/0000:08:00.0
+>>     pci/0000:08:00.1
+>> auxiliary/mlx5_core.eth.0: index 2
+>> pci/0000:08:00.1: index 3
+>>   nested_devlink:
+>>     auxiliary/mlx5_core.eth.1
+>> auxiliary/mlx5_core.eth.1: index 4
+>> c-220-136-220-218:~$ devlink port
+>> auxiliary/mlx5_core.eth.0/65535: type eth netdev eth2 flavour physical port 0 splittable false
+>> auxiliary/mlx5_core.eth.1/131071: type eth netdev eth3 flavour physical port 1 splittable false
+>> c-220-136-220-218:~$ ip link
+>> ...
+>> 4: eth2: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+>>     link/ether b8:e9:24:f2:b7:6c brd ff:ff:ff:ff:ff:ff
+>>     altname enp8s0f0np0
+>> 5: eth3: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+>>     link/ether b8:e9:24:f2:b7:6d brd ff:ff:ff:ff:ff:ff
+>>     altname enp8s0f1np1
+>> 
+>> 
+>>>
+>>> IOW it's not a question of the generation of the card but of
+>>> the deployment type / use case.
+>> 
+>> I don't think so, not in the case of mlx5. The difference is only when
+>> you work with sr-iov, you either use legacy way (ip vf) or the new one.
+>> Same usecase.
+>> 
+>> 
+>>>
+>>>>> For the ASIC/NV bit: maybe technically possible, but it feels like the wrong
+>>>>> layer. This is boot/deployment policy, not a persistent hardware property, and
+>>>>> storing it in NV memory would make the state persist across kernels/hosts in a
+>>>>> surprising way.  
+>>>>
+>>>> Well, as any other nv config, it persists across kernels/hosts. Think
+>>>> about it as "unbreak-my-not-legacy-device" bit.
+>>>
+>>> For most devices the switchdev mode does not change anything
+>>> substantial about the device. It's purely a kernel / driver config. 
+>>> It changes what objects and default rules kernel / driver installs. 
+>>> So I don't get why it would make sense to flash into the device
+>>> nvmem a Linux SW stack specific config.
+>> 
+>> I look at it from the perspective that from some CX generation,
+>> switchdev mode should be default. So that is a device-based decision.
+>> I believe as such it can optionally be permanenty configured (nv config)
+>> on older device. Why not?
+>
+>This is a deployment policy decision, not a permanent property of the card.
+>The same adapter can be used in a regular host/RDMA setup or in a
+>switchdev/offload setup. If we store this in NVM, that Linux switchdev policy
+>follows the device across hosts, kernels and use cases, and can surprise the
+>next deployment that just expects a normal NIC.
 
-Correct, this is fixed by a subsequent patch.
+Yeah, from my perspective, there should be not surprise/behaviour_change
+for non-sriov/eswitch user. Then switchdev can be default and everyone
+is happy. Why to complicate things?
 
-Regards,
-Lorenzo
 
-> --=20
-> Sashiko AI review =B7 https://sashiko.dev/#/patchset/20260509-airoha-eth-=
-multi-serdes-v5-0-805e38edc2aa@kernel.org?part=3D8
-
---I86ZFwpODncJaq/I
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCagGLKgAKCRA6cBh0uS2t
-rMF3AP0RLVH1BUBktGa8mzV8rfg1YVHHkb0u2MSuklmwoqDnxwD/f21aDQk4lpzG
-k6fW/ysM0wQA78uX4Sh42xeIMjGA6wQ=
-=jThD
------END PGP SIGNATURE-----
-
---I86ZFwpODncJaq/I--
+>
+>I'll send another RFC v2 with support limited to:
+>devlink=[...]:esw:mode:{ switchdev | switchdev_inactive | legacy }
+>and let's see where we land with that.
+>
+>I still think a small kernel command line knob is the cleanest way to get to
+>"switchdev by default" without making the interface too broad. For more
+>complex boot-time configuration, I agree that a devlinkd or similar userspace
+>path is probably the better direction.
+>
+>The "pause probing until userspace configures devlink" idea feels less clear
+>to me. It is not quite the simple boot policy knob, and not quite the full
+>userspace policy manager either. It would add a new probe state and require
+>early userspace orchestration before the device is fully materialized. At
+>least for now, I would prefer either the small cmdline option for the simple
+>global/default case, or a proper devlinkd-like solution for more complex
+>policy. Between those, I still prefer the cmdline option for this specific
+>early eswitch mode default.
+>
+>Mark
+>
+>> 
+>> [...]
+>
