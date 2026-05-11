@@ -1,28 +1,28 @@
 Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5C843BF676;
-	Mon, 11 May 2026 08:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 148543C3C12;
+	Mon, 11 May 2026 08:57:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778489859; cv=none; b=Snn0SlKOw0XCm88dwDkgR+js2ar0dDrcgAnWjxjtLrDKw2g/pcRfJBJuuM/S50reS0okoP6p+f4shmrHXvwjRcNZ2XwvCiEI92AtYE+AxotqbrOF2tn3YlDG1OT4ypbh/ATJ0yDvR8HFrpNdpJdBvpccUS1aR+ffor4h/2QEgRo=
+	t=1778489862; cv=none; b=mlbjZsN8GAyVQjAggTZIOQwM30Hj4dqbkaWMB1YrQzRAMX8NAbggpNRZvNlkT6QzNHa0TmY8oiXSzQnVL2cs6SKBbcHbhTFu2I/8QUPBSm5M6TEEbp1+ubo7gQiwaO7MiZ4XkbwPSV97WPzKTYHOkUR0pVXAXD44fRWKqiM8mSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778489859; c=relaxed/simple;
-	bh=/0K7mDA6mWO2Krk49Aj3svhN7vMdjMYf1EwQKpjkh1w=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Ow3nRvKWl0WR3DuKOlZZi7LL9donEYzFmESLhTAUFxjr4WkgTO+CcdL0DEUQ9UmidH3dnl6lEsfgp5f3bYil3CN2glxXBkgy/SzZIY1RUR1V5cs2QvBJiojL9U6y4vpoUCSK7lbN3yuEQwPGFJ84sWn4Tgq+wZXgxj8cacqNtlo=
+	s=arc-20240116; t=1778489862; c=relaxed/simple;
+	bh=KjtGe1BQGxipfuBuOYFRkxY7t6hscTJYReI9p1EyeTo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=I4UXNYRTp2jR14Ehe29WJ0aX5IrzC8GhlSSaqo+mmS/XgH6ZchgbU9qiY5igkHGU9o6WgCUZ5l7U2ctDVkxjsvF5ZVl4/jawww9o5inaqwNkNgKWeSMlso8disLatH+2u0LvdRoxrTfmfpxuvaco7tkYk5G6In3BGilCMQE2G/I=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; arc=none smtp.client-ip=210.160.252.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
-X-CSE-ConnectionGUID: Vy5kvGYnTYu2mBwG9W4Aow==
-X-CSE-MsgGUID: 0vv5tZ40QJOmHxujn72bTw==
+X-CSE-ConnectionGUID: Gzr1SZuHQwCFh2L9ldp1Ug==
+X-CSE-MsgGUID: goS03OfaQiygx023Yb7gCA==
 Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
-  by relmlie6.idc.renesas.com with ESMTP; 11 May 2026 17:52:28 +0900
+  by relmlie6.idc.renesas.com with ESMTP; 11 May 2026 17:52:38 +0900
 Received: from [127.0.1.1] (unknown [10.226.78.135])
-	by relmlir5.idc.renesas.com (Postfix) with ESMTP id 1331F4009A31;
-	Mon, 11 May 2026 17:52:24 +0900 (JST)
+	by relmlir5.idc.renesas.com (Postfix) with ESMTP id B56734010DEB;
+	Mon, 11 May 2026 17:52:35 +0900 (JST)
 From: Michael Dege <michael.dege@renesas.com>
-Subject: [net-next PATCH v4 00/13] net: renesas: rswitch: R-Car S4 add VLAN
- aware switching
-Date: Mon, 11 May 2026 10:52:03 +0200
-Message-Id: <20260511-rswitch_add_vlans-v4-0-a5a225f8faae@renesas.com>
+Date: Mon, 11 May 2026 10:52:06 +0200
+Subject: [PATCH net-next v4 03/13] net: renesas: rswitch: fix FWPC2
+ register access macros
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -31,11 +31,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIALSYAWoC/23NSwrCMBSF4a1IxkaSm6YPR+5DpORpA5pKUqJSu
- nfTOqnY4X/gfndE0QRnIjruRhRMctH1Pkex3yHVCX812OncCAiUhALBIT7doLpWaN2mm/ARs6a
- oa2klNKVC+e4RjHWvxTxfcncuDn14Ly8Sndevxmi1oSWKCWaCV9IKYkHTUzDeRBEPqr+j2UuwM
- mDTgGzoyhaM1ypT4t9gK4PRLYNlQ7GMUEkV5+WvMU3TBxjr0nA8AQAA
-X-Change-ID: 20260120-rswitch_add_vlans-39488bfb296c
+Message-Id: <20260511-rswitch_add_vlans-v4-3-a5a225f8faae@renesas.com>
+References: <20260511-rswitch_add_vlans-v4-0-a5a225f8faae@renesas.com>
+In-Reply-To: <20260511-rswitch_add_vlans-v4-0-a5a225f8faae@renesas.com>
 To: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, 
  Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
@@ -45,121 +43,64 @@ To: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
 Cc: netdev@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Michael Dege <michael.dege@renesas.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778489544; l=4440;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1778489544; l=2272;
  i=michael.dege@renesas.com; s=20251023; h=from:subject:message-id;
- bh=/0K7mDA6mWO2Krk49Aj3svhN7vMdjMYf1EwQKpjkh1w=;
- b=ummxGXkJ3a6z4BO+EEGtqwj8cCSQvji807TImBVu4Kka8OKjK5valrs9T84eInDPBOrAmSiVM
- kEl/QwAmdonBvugGA2blX+w8SAyszvz5f1dvLzcuZ4EGMhUF8T2EZNF
+ bh=KjtGe1BQGxipfuBuOYFRkxY7t6hscTJYReI9p1EyeTo=;
+ b=oUxrm9hLrj2ijwUf308C2le5VQzOE/42ZTzau/IdEfTkoNz2BZGwofYTkg/z/GHm3YrGsoOIk
+ Fbbip/jmT82A9nwi04BZDe8O89UJYXio0VClixA/U6vp95qQ5F7Ob0Y
 X-Developer-Key: i=michael.dege@renesas.com; a=ed25519;
  pk=gu1rwIcCrAxNMv2I8fIfiQvt51xzZwnQy4Ua/DscQt8=
 
-Hello!
-
-The current R-Car S4 rswitch driver only supports basic HW offloading
-for L2 switching/bridgeing. This patchset extends the driver with
-support for VLAN aware switching.
-
-1. For every port mode change from configuration to operation and
-   vice-versa you need to change to disabled mode first. The
-   functions rswitch_<port>_change_mode now take care of this. 
-
-2. In upcomming changes for adding vlan support struct net_device
-   will not be available in all cases, therefore use struct device
-   instead.
-
-3. Fix typo in register define macro and remove duplicate macro.
-
-4. Add register definitions needed fo vlan support.
-
-5. Add exception path for packets with unknown destitination MAC
-   addresses.
-
-6. Make the helper functions rswitch_reg_wait(),
-   rswitch_etha_change_mode() and rswitch_etha_change_mode()
-   available to the whole driver.
-
-7. Add basic start-up time initialization needed to support VLANs.
-
-8. Update ETHA and GWCA port HW initializations.
-
-9. Clean up is_rdev() rswitch_device checking.
-
-10. Provide struct rswitch_private to notifiers.
-
-11. Add handler for FDB notifications to configure bridge MAC address
-    to GWCA registers and update static MAC table entry.
-
-12. Add vlan support to L2 HW bridge.
-
-Configuration example:
-ip link add name br0 type bridge vlan_filtering 1
-ip link set dev tsn0 master br0
-ip link set dev tsn1 master br0
-ip link set dev br0 up
-ip link set dev tsn0 up
-ip link set dev tsn1 up
-bridge vlan add dev tsn0 vid 4
-bridge vlan add dev tsn1 vid 4
-bridge vlan add dev br0 vid 4 self
-ip a a 192.168.1.20/24 dev br0
-ip l a link br0 name br0.1 type vlan id 1
-ip l a link br0 name br0.4 type vlan id 4
-ip a a 192.168.2.20/24 dev br0.1
-ip a a 192.168.4.20/24 dev br0.4
-ip link set dev br0.1 up
-ip link set dev br0.4 up
+Fix typo in macro name and remove duplicate macro definition.
 
 Signed-off-by: Michael Dege <michael.dege@renesas.com>
 ---
-Changes in v4:
-- fixed error checking in rswitch_gwca_change_mode() and rswitch_etha_change_mode().
-- fixed typo in use of GENMASK macro.
-- fixed comments from // to /* */.
-- fixed shared queue ussage in rx interrupt.
-- fixed assingment of fwpc2_clr in false branch.
-- moved PORT_ATR_SET to rswitch_switchdev_blocking_event() to remove dead code.
-- changed from dev_put/dev_hold to netdev_put/netdev_hold.
-- reordered code to make sure the correct type is accessed with info->obj->id in
-  rswitch_port_obj_add()/rswitch_port_obj_del().
-- Link to v3: https://lore.kernel.org/r/20260331-rswitch_add_vlans-v3-0-c37f41b1c556@renesas.com
+ drivers/net/ethernet/renesas/rswitch.h      | 3 +--
+ drivers/net/ethernet/renesas/rswitch_l2.c   | 2 +-
+ drivers/net/ethernet/renesas/rswitch_main.c | 2 +-
+ 3 files changed, 3 insertions(+), 4 deletions(-)
 
-Changes in v3:
-- Fixed findings made by coccicheck
-- Fixed missing 'depends on BRIDGE' in Kconfig found by test robot.
-- Link to v2: https://lore.kernel.org/r/20260327-rswitch_add_vlans-v2-0-d7f4358ca57a@renesas.com
+diff --git a/drivers/net/ethernet/renesas/rswitch.h b/drivers/net/ethernet/renesas/rswitch.h
+index aa605304fed0..340524d995ac 100644
+--- a/drivers/net/ethernet/renesas/rswitch.h
++++ b/drivers/net/ethernet/renesas/rswitch.h
+@@ -826,8 +826,7 @@ enum rswitch_gwca_mode {
+ #define FWPC1_DDE		BIT(0)
+ 
+ #define FWPC2(i)		(FWPC20 + (i) * 0x10)
+-#define FWCP2_LTWFW		GENMASK(16 + (RSWITCH_NUM_AGENTS - 1), 16)
+-#define FWCP2_LTWFW_MASK	GENMASK(16 + (RSWITCH_NUM_AGENTS - 1), 16)
++#define FWPC2_LTWFW		GENMASK(16 + (RSWITCH_NUM_AGENTS - 1), 16)
+ 
+ #define FWPBFC(i)		(FWPBFC0 + (i) * 0x10)
+ #define FWPBFC_PBDV		GENMASK(RSWITCH_NUM_AGENTS - 1, 0)
+diff --git a/drivers/net/ethernet/renesas/rswitch_l2.c b/drivers/net/ethernet/renesas/rswitch_l2.c
+index 9433cd8adced..709524c8a5c4 100644
+--- a/drivers/net/ethernet/renesas/rswitch_l2.c
++++ b/drivers/net/ethernet/renesas/rswitch_l2.c
+@@ -82,7 +82,7 @@ static void rswitch_update_l2_hw_forwarding(struct rswitch_private *priv)
+ 			 *
+ 			 * Do not allow L2 forwarding to self for hw port.
+ 			 */
+-			iowrite32(FIELD_PREP(FWCP2_LTWFW_MASK, fwd_mask | BIT(rdev->port)),
++			iowrite32(FIELD_PREP(FWPC2_LTWFW, fwd_mask | BIT(rdev->port)),
+ 				  priv->addr + FWPC2(rdev->port));
+ 		}
+ 
+diff --git a/drivers/net/ethernet/renesas/rswitch_main.c b/drivers/net/ethernet/renesas/rswitch_main.c
+index 3a2bc14e5bd7..e05c42db5f4c 100644
+--- a/drivers/net/ethernet/renesas/rswitch_main.c
++++ b/drivers/net/ethernet/renesas/rswitch_main.c
+@@ -129,7 +129,7 @@ static int rswitch_fwd_init(struct rswitch_private *priv)
+ 		iowrite32(FIELD_PREP(FWCP1_LTHFW, all_ports_mask),
+ 			  priv->addr + FWPC1(i));
+ 		/* Disallow L2 forwarding */
+-		iowrite32(FIELD_PREP(FWCP2_LTWFW, all_ports_mask),
++		iowrite32(FIELD_PREP(FWPC2_LTWFW, all_ports_mask),
+ 			  priv->addr + FWPC2(i));
+ 		/* Disallow port based forwarding */
+ 		iowrite32(0, priv->addr + FWPBFC(i));
 
-Changes in v2:
-- Reworked reswitch_update_l2_hw_forwarding_gwca() as suggested.
-- Fixed missing initialization found by test robot.
-- Link to v1: https://lore.kernel.org/r/20260317-rswitch_add_vlans-v1-0-3a57bfa0f2d1@renesas.com
-
----
-Michael Dege (13):
-      net: renesas: rswitch: improve port change mode functions
-      net: renesas: rswitch: use device instead of net_device
-      net: renesas: rswitch: fix FWPC2 register access macros
-      net: renesas: rswitch: add register definitions for vlan support
-      net: renesas: rswitch: add exception path for packets with unknown dst MAC
-      net: renesas: rswitch: add forwarding rules for gwca
-      net: renesas: rswitch: make helper functions available to whole driver
-      net: renesas: rswitch: add basic vlan init to rswitch_fwd_init
-      net: renesas: rswitch: update port HW init
-      net: renesas: rswitch: clean up is_rdev rswitch_device checking
-      net: renesas: rswitch: add passing of rswitch_private into notifiers
-      net: renesas: rswitch: add handler for FDB notification
-      net: renesas: rswitch: add vlan aware switching
-
- drivers/net/ethernet/renesas/Kconfig        |   1 +
- drivers/net/ethernet/renesas/rswitch.h      | 183 +++++++-
- drivers/net/ethernet/renesas/rswitch_l2.c   | 645 ++++++++++++++++++++++++----
- drivers/net/ethernet/renesas/rswitch_l2.h   |   6 +-
- drivers/net/ethernet/renesas/rswitch_main.c | 219 +++++++---
- 5 files changed, 899 insertions(+), 155 deletions(-)
----
-base-commit: 1f318b96cc84d7c2ab792fcc0bfd42a7ca890681
-change-id: 20260120-rswitch_add_vlans-39488bfb296c
-
-Best regards,
 -- 
-Michael Dege <michael.dege@renesas.com>
+2.43.0
 
