@@ -1,166 +1,255 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94C883BAD88
-	for <netdev@vger.kernel.org>; Mon, 11 May 2026 08:43:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D6F33689F;
+	Mon, 11 May 2026 08:47:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778488988; cv=none; b=NsQK5F/j9kwI2NscszNtWqxQgzWB7NPk3BaqO68FSSOZlyQJ09CRhY7wyFAIiYrhS1zZqJFQiq+cZsfJiyZ11z9486NDPC79vyr/fgCx8BkGXbA2ZmMck1b5TK71SeVriYpY3x3nCz9CYfGSGpz20tB4/ukoJyzkrH43UvHFjaI=
+	t=1778489244; cv=none; b=Evgv1QSy0wAoA/wvC/uNxFyCZxiezyuoLeHtr5CNkvEmZVv8X5hil9uWp3nyNIiIojiLI5PCNDdn1cye4G7nscpi/UhXlF+8/MFDwhcqD0zjrnxDCQK48hPIGmL5A1QFRtQeY+xD7sOkjs44L6Lq1x45UfsJMSi1EoT5SLbuEsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778488988; c=relaxed/simple;
-	bh=rnqKyqAfu/h9721iDp30KUlFrz/MOVxVgrsZpGVGphE=;
+	s=arc-20240116; t=1778489244; c=relaxed/simple;
+	bh=CXTt0tSeCFW4xBtUicag62EoWcQIhZ48Jxj24qD9sFY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sFWdWGX+HVF7qntaBxjtKQL6PniFmNt01ekDywytKprXl0l3SvT+2w+dY5oabrt5hIM6n/kO5wBmvuUtE37JWxGAfZL8mNGXq/0i1U5PSV37jU8npmLEgosCdyKC2rUafcBR8O5WCjs+VCKl8A6sBNfYbvECLvzjpyWA5ete/MQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b=ktiQUxXR; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+	 Content-Type:Content-Disposition:In-Reply-To; b=pzYutsZ+4QxlYwfawGhPO97Ok4R1DdQl5JcgoU6dL171o8Jnsi5BLNUG+fDv4wU4udoyhNU5lflaUiCtk/VqbEzcjXrx+jfaPXS1OuIirXSNTKI4dfA8FTziaC9EAh+Lxk4WCa+3fd2XLPsXBKZ+O6l0Zx7k9Crkv05koIbXiyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fy2DNjps; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b="ktiQUxXR"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-48a563e4ef7so36082505e9.0
-        for <netdev@vger.kernel.org>; Mon, 11 May 2026 01:43:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20251104.gappssmtp.com; s=20251104; t=1778488982; x=1779093782; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GrxhiHcULhrhQbh8qYDGvqX3AewbZL83TjIxu3B31co=;
-        b=ktiQUxXRaQMwJkSJ9yOuhOtr4p1E49ifu9C3Umkch59rYB+jcqNMi8UUpsR/e6J6G8
-         GnAMhiS+fHtuRwwmVgjqu8/U408Wa3GQrLtNGsYdcT5A7ieA3KIWhsjmRaLrsRgfW53D
-         +4gNO5+xIPlDZqKCUje6LcmNdafPMVezR9Kruxh5x3gKN1HwL3CG92mGNe11LNctPk5H
-         hatc0zIGab7+4DOl0JlzGcvzmQ+h7FBY0LqSYB76WqSt65x6D8OOWj+0/xTqhT/rFsmj
-         IulikLBtb2mXjYHLOIluxf576rn4LywXYGZYVeK3SowfbId2BNjs6EKbM5PJIwIX4dKj
-         K63Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778488982; x=1779093782;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GrxhiHcULhrhQbh8qYDGvqX3AewbZL83TjIxu3B31co=;
-        b=j9NHDqCK7W3tRJBNU5u9jUMldx5T8c3SCZihpnN1LztJ/nMTjGdwGNULHf84xervHb
-         YyEh6KQPQ/LzVwlu+20rfKvfOBCFMI5ODdPXwoGbcbfgLsg09FAIQxGKWXQRlG5dOjDj
-         voSeG3inLqDvqjOmbJU4QEgkk79XA0gcDTW3ji0w9KiZJfzFQOSRuq7keQvWWkYmKIUm
-         JsOO19UvRJGJgdZfZGKRRV5wbj377K2/sfyNp6X5ndMTAZvPSmXxhJrAm9p9JgoCBzDK
-         b+sG1Ez7h/CXB2+yfm8ygyzrWEb/CuN7voc5ZaaXle5kVd1cEpV8VAQ/3xdPlFnFypac
-         B2Yw==
-X-Forwarded-Encrypted: i=1; AFNElJ9CK7OzFkeTckT9gLBJusabljV+LJvvnDSERnP9yfBis9uytGzi91nY4VYrpJxxc+Ym4cvZWaM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKfSRNuWnOrqTz1TGLWwDtonc9DoQVwxkSPKvO+7psBem358Dk
-	g5nCUpzCiIw3wfScOIsdylQgkhIoxsU+NXSnc0n16nEXSdKDp/lnnhz37PKLTDBXUQM=
-X-Gm-Gg: Acq92OGPmRoFAO9qlJsdeV6RzFWjNDLbVpoK4RIiDXoLido/7HFHpVrZreqngnzyqw8
-	oWJQfJEcgxBEkzgNNod16n+XuGSjTV1ogwu+OiyaBqTUVUKgingBxXUuYhmrGSoA86Zs+2HRK3I
-	SbqjeP6qvMPk2INfExefkvlPocp0C4hcV1kHggQY+2gry8azjz+r+JH0p8sUic9+ivkO99Ov5ws
-	qes2V8l2h9eOEtbyU94u6EJ6mAwQHMKk6a+tjWxp8HqBJSD56P3zRhely2k94HU+CBdu0VyrQA9
-	YJ1l/EuW9lfw9Ad3FZfJaV/PVfX0aJL7BY2PwNamy9UOEfLaynjWTkKznRUJPPmpgmW4lDYOy2m
-	BSyZyxED+1MU/5sXGGmOe7tO1vSJSOFbNetpRi0B8bCZAnf3uncLpXYUbvdcCMCKE77JmbvFG0+
-	KTbJ/B2uiVbFHAMZeeHSQNqfwJDi2B3ybYRfc=
-X-Received: by 2002:a05:600c:3548:b0:488:c40b:c8a4 with SMTP id 5b1f17b1804b1-48e51e097a2mr361132135e9.1.1778488981777;
-        Mon, 11 May 2026 01:43:01 -0700 (PDT)
-Received: from FV6GYCPJ69 ([140.209.217.212])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e6d8f6fa0sm59170405e9.16.2026.05.11.01.42.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 01:43:01 -0700 (PDT)
-Date: Mon, 11 May 2026 10:42:56 +0200
-From: Jiri Pirko <jiri@resnulli.us>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Mark Bloch <mbloch@nvidia.com>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Simon Horman <horms@kernel.org>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
-	Tariq Toukan <tariqt@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Borislav Petkov (AMD)" <bp@alien8.de>, Randy Dunlap <rdunlap@infradead.org>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Christian Brauner <brauner@kernel.org>, 
-	Petr Mladek <pmladek@suse.com>, "Peter Zijlstra (Intel)" <peterz@infradead.org>, 
-	Thomas Gleixner <tglx@kernel.org>, Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, 
-	Dapeng Mi <dapeng1.mi@linux.intel.com>, Kees Cook <kees@kernel.org>, Marco Elver <elver@google.com>, 
-	Eric Biggers <ebiggers@kernel.org>, Li RongQing <lirongqing@baidu.com>, 
-	"Paul E. McKenney" <paulmck@kernel.org>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-rdma@vger.kernel.org
-Subject: Re: [RFC net-next 0/4] devlink: Add boot-time defaults
-Message-ID: <agGOeqeNwJGJ_-2A@FV6GYCPJ69>
-References: <20260506123739.1959770-1-mbloch@nvidia.com>
- <aftaW-irGmkfA7FS@FV6GYCPJ69>
- <3f9215c4-7c84-46d9-ba74-30dabe24db09@nvidia.com>
- <afxvzOjqw-vxUAED@FV6GYCPJ69>
- <b6a9b568-dd09-4414-be57-6b9cd282a43c@nvidia.com>
- <af4lBIJdCuN5VKq_@FV6GYCPJ69>
- <20260508175213.1952097f@kernel.org>
- <af7Y4AYv-XDCbK_8@FV6GYCPJ69>
- <20260510093732.6ba47e54@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fy2DNjps"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55008C2BCB0;
+	Mon, 11 May 2026 08:47:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778489243;
+	bh=CXTt0tSeCFW4xBtUicag62EoWcQIhZ48Jxj24qD9sFY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fy2DNjpsc6zpNJyyl8e+ziX2OC1dUkqm4wqEY0LGp+JhAkXtoFptptSuN3721jJ7I
+	 2qg9kRWqLW2GymTX6R4Y4ZdItM5EgRyXV3CUlYiwofwnnQjRmjJ220lFWBFNZ/mGfx
+	 12U+52KgO8QoiWP9J3GXyJ7rNppi+ZXNtxXB5QsQfN/vl7w86bP7M8oad16YkFOihz
+	 cDOSTWpkpAFlHI8ig0FAjGYwvH8KYJPu83ByqscnOWhJrknfiGoilQtD56ZA7V+LTz
+	 wfY8RjXUup7yS2xJYde7FDEQRC8ZoPFg38Tk+HEUhlvnX5yCLXd75WLHZoGGq6EuqE
+	 +maFGGDJcoD0Q==
+Date: Mon, 11 May 2026 10:47:21 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: sashiko@lists.linux.dev
+Cc: krzk+dt@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org,
+	robh@kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next v5 06/12] net: airoha: Move qos_sq_bmap in
+ airoha_gdm_dev struct
+Message-ID: <agGXmZ4mVqn8BPU8@lore-desk>
+References: <20260509-airoha-eth-multi-serdes-v5-6-805e38edc2aa@kernel.org>
+ <20260510140504.5D5A6C2BCC9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="EIdAEi/jQ2SpOuYP"
 Content-Disposition: inline
-In-Reply-To: <20260510093732.6ba47e54@kernel.org>
-
-Sun, May 10, 2026 at 06:37:32PM +0200, kuba@kernel.org wrote:
->On Sat, 9 May 2026 09:01:23 +0200 Jiri Pirko wrote:
->> Sat, May 09, 2026 at 02:52:13AM +0200, kuba@kernel.org wrote:
->> >On Fri, 8 May 2026 20:07:44 +0200 Jiri Pirko wrote:  
->> >legacy vs switchdev only describes the eswitch configuration.
->> >As a non-SR-IOV user I really don't want to see the extra representors
->> >hanging around my systems, confusing all daemons. IIRC mlx5 had some
->> >limitations around the uplink representor. Maybe that's the disconnect.
->> >But for a real, fully featured switchdev eswitches having the
->> >PHY and PF representors on boot, always, will not make sense.  
->> 
->> As "a non-SR-IOV user", what extra representors you talk about? When you
->> have pfs only, you don't have anything extra. Just 1 netdev per-pf, one
->> devlink port per-pf. What's extra about it? When you don't have VFs/SFs.
->> Everyhing is the same:
->
->Some devices have separate uplink ports and PF representors.
->As I said, what you're proposing isn't going to work for all drivers.
-
-Well, the point is, mlx5 appears to the the one needing this, not other
-drivers. What I'm trying to point at, mlx5 should not need this.
-It makes things compicated, adding a ugly knob for no good reason.
-Legacy/switchdev mode, in both, the non-sriov/eswitch user should not
-see different behaviour. The mode is an eswitch attribute.
-
-   devlink dev eswitch set - sets devlink device eswitch attributes
-       mode { legacy | switchdev }
-              Set eswitch mode
-
-              legacy - Legacy SRIOV
-
-              switchdev - SRIOV switchdev offloads
+In-Reply-To: <20260510140504.5D5A6C2BCC9@smtp.kernel.org>
 
 
-Briefly looking over other drivers, looks like ice, bnxt, octeon, sfc,
-there is no new entity created in case of switching to switchdev mode.
-The only driver that creates separate pf entities seems to be nfp,
-but the mode seems to be determined by the app being run (loaded
-firmware).
+--EIdAEi/jQ2SpOuYP
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Am I missing something?
+> Thank you for your contribution! Sashiko AI review found 2 potential issu=
+e(s) to consider:
+> - [High] HTB node modification unconditionally fails with -EBUSY and its =
+error path can silently corrupt global channel ownership.
+> - [High] Hardware teardown failures cause a permanent leak of shared QDMA=
+ channels.
+> --
+>=20
+> commit 1b146a034660fa016267e6a142564dd1ddeb17b1
+> Author: Lorenzo Bianconi <lorenzo@kernel.org>
+>=20
+> net: airoha: Move qos_sq_bmap in airoha_gdm_dev struct
+>=20
+> This commit moves the qos_sq_bmap field from airoha_gdm_port to airoha_gd=
+m_dev
+> to prevent configuration overwrites when multiple net_devices share a GDM=
+ port.
+> It also adds a qos_channel_map bitmap to airoha_qdma to track shared QDMA
+> channels.
+>=20
+> > diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/eth=
+ernet/airoha/airoha_eth.c
+> > index f9cb49f0529a0..33a0f7b98d52e 100644
+> > --- a/drivers/net/ethernet/airoha/airoha_eth.c
+> > +++ b/drivers/net/ethernet/airoha/airoha_eth.c
+> > @@ -2606,19 +2606,28 @@ static int airoha_tc_htb_alloc_leaf_queue(struc=
+t net_device *netdev,
+> >  	u32 rate =3D div_u64(opt->rate, 1000) << 3; /* kbps */
+> >  	int err, num_tx_queues =3D netdev->real_num_tx_queues;
+> >  	struct airoha_gdm_dev *dev =3D netdev_priv(netdev);
+> > -	struct airoha_gdm_port *port =3D dev->port;
+> > +	struct airoha_qdma *qdma =3D dev->qdma;
+> > =20
+> >  	if (opt->parent_classid !=3D TC_HTB_CLASSID_ROOT) {
+> >  		NL_SET_ERR_MSG_MOD(opt->extack, "invalid parent classid");
+> >  		return -EINVAL;
+> >  	}
+> > =20
+> > +	/* Here we need to check the requested QDMA channel is not already
+> > +	 * in use by another net_device running on the same QDMA block.
+> > +	 */
+> > +	if (test_and_set_bit(channel, qdma->qos_channel_map)) {
+> > +		NL_SET_ERR_MSG_MOD(opt->extack,
+> > +				   "qdma qos channel already in use");
+> > +		return -EBUSY;
+> > +	}
+> > +
+>=20
+> Since this function handles both TC_HTB_LEAF_ALLOC_QUEUE and
+> TC_HTB_NODE_MODIFY, won't the bit already be set in qdma->qos_channel_map
+> for modify operations?
+>=20
+> If so, will modify operations now always fail with -EBUSY here,
+> breaking HTB rate limit updates?
 
+ack, I will fix it in v6
 
->
->> >> Well, as any other nv config, it persists across kernels/hosts.
->> >> Think about it as "unbreak-my-not-legacy-device" bit.  
->> >
->> >For most devices the switchdev mode does not change anything
->> >substantial about the device. It's purely a kernel / driver config. 
->> >It changes what objects and default rules kernel / driver installs. 
->> >So I don't get why it would make sense to flash into the device
->> >nvmem a Linux SW stack specific config.  
->> 
->> I look at it from the perspective that from some CX generation,
->> switchdev mode should be default. So that is a device-based decision.
->> I believe as such it can optionally be permanenty configured (nv config)
->> on older device. Why not?
->
->Feels a bit arbitrary and won't cover all cases. The question should be
+>=20
+> >  	err =3D airoha_qdma_set_tx_rate_limit(netdev, channel, rate,
+> >  					    opt->quantum);
+> >  	if (err) {
+> >  		NL_SET_ERR_MSG_MOD(opt->extack,
+> >  				   "failed configuring htb offload");
+> > -		return err;
+> > +		goto error;
+> >  	}
+> > =20
+> >  	if (opt->command =3D=3D TC_HTB_NODE_MODIFY)
+> > @@ -2630,13 +2639,17 @@ static int airoha_tc_htb_alloc_leaf_queue(struc=
+t net_device *netdev,
+> >  					      opt->quantum);
+> >  		NL_SET_ERR_MSG_MOD(opt->extack,
+> >  				   "failed setting real_num_tx_queues");
+> > -		return err;
+> > +		goto error;
+> >  	}
+> > =20
+> > -	set_bit(channel, port->qos_sq_bmap);
+> > +	set_bit(channel, dev->qos_sq_bmap);
+> >  	opt->qid =3D AIROHA_NUM_TX_RING + channel;
+> > =20
+> >  	return 0;
+> > +error:
+> > +	clear_bit(channel, qdma->qos_channel_map);
+> > +
+> > +	return err;
+> >  }
+>=20
+> If a modify operation (TC_HTB_NODE_MODIFY) fails at
+> airoha_qdma_set_tx_rate_limit(), it jumps to the error label.
+>=20
+> Won't this unconditionally clear the bit in the shared qdma->qos_channel_=
+map?
+>=20
+> Could this accidentally release ownership of the shared QDMA channel while
+> the device is still using it, allowing another net_device to claim it?
 
-What cases it does not cover? I don't follow.
+ack, I will fix it in v6
 
+>=20
+> [ ... ]
+>=20
+> > @@ -2814,14 +2827,28 @@ static int airoha_dev_setup_tc_block(struct net=
+_device *dev,
+> >  	}
+> >  }
+> > =20
+> > -static void airoha_tc_remove_htb_queue(struct net_device *netdev, int =
+queue)
+> > +static int airoha_tc_remove_htb_queue(struct net_device *netdev, int q=
+ueue)
+> >  {
+> >  	struct airoha_gdm_dev *dev =3D netdev_priv(netdev);
+> > -	struct airoha_gdm_port *port =3D dev->port;
+> > +	struct airoha_qdma *qdma =3D dev->qdma;
+> > +	int err;
+> > =20
+> > -	netif_set_real_num_tx_queues(netdev, netdev->real_num_tx_queues - 1);
+> > -	airoha_qdma_set_tx_rate_limit(netdev, queue + 1, 0, 0);
+> > -	clear_bit(queue, port->qos_sq_bmap);
+> > +	err =3D netif_set_real_num_tx_queues(netdev,
+> > +					   netdev->real_num_tx_queues - 1);
+> > +	if (err)
+> > +		return err;
+> > +
+> > +	err =3D airoha_qdma_set_tx_rate_limit(netdev, queue + 1, 0, 0);
+> > +	if (err) {
+> > +		netif_set_real_num_tx_queues(netdev,
+> > +					     netdev->real_num_tx_queues + 1);
+> > +		return err;
+> > +	}
+> > +
+> > +	clear_bit(queue, qdma->qos_channel_map);
+> > +	clear_bit(queue, dev->qos_sq_bmap);
+> > +
+> > +	return 0;
+> >  }
+>=20
+> If a hardware teardown failure occurs and airoha_tc_remove_htb_queue()
+> returns early with an error, the bits in qdma->qos_channel_map and
+> dev->qos_sq_bmap are never cleared.
 
->why you are nacking a more reasonable solution. Keeping Linux config in
->Linux params.
+ack, I will fix it in v6
 
-What's reasonable about adding basically a module option (kernel cmdline
-is pretty much the same) for no reason?
+>=20
+> >  static int airoha_tc_htb_destroy(struct net_device *netdev)
+> >  {
+> >  	struct airoha_gdm_dev *dev =3D netdev_priv(netdev);
+> > -	struct airoha_gdm_port *port =3D dev->port;
+> >  	int q;
+> > =20
+> > -	for_each_set_bit(q, port->qos_sq_bmap, AIROHA_NUM_QOS_CHANNELS)
+> > -		airoha_tc_remove_htb_queue(netdev, q);
+> > +	for_each_set_bit(q, dev->qos_sq_bmap, AIROHA_NUM_QOS_CHANNELS) {
+> > +		int err;
+> > +
+> > +		err =3D airoha_tc_remove_htb_queue(netdev, q);
+> > +		if (err)
+> > +			return err;
+> > +	}
+> > =20
+> >  	return 0;
+> >  }
+>=20
+> In this loop, an error on a single queue immediately aborts the loop, lea=
+ving
+> any remaining queues unprocessed.
+>=20
+> Since the core networking stack (net/sched/sch_htb.c) ignores the return =
+value
+> of TC_HTB_DESTROY and fully destroys the software qdisc regardless, will =
+this
+> permanently leak the limited QDMA hardware channels?
+>=20
+> Could these bits remain set forever in the globally shared qdma->qos_chan=
+nel_map,
+> preventing other net_devices from using them until the driver is reloaded?
 
+ack, I will fix it in v6
+
+Regards,
+Lorenzo
+
+>=20
+> --=20
+> Sashiko AI review =B7 https://sashiko.dev/#/patchset/20260509-airoha-eth-=
+multi-serdes-v5-0-805e38edc2aa@kernel.org?part=3D6
+
+--EIdAEi/jQ2SpOuYP
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCagGXmQAKCRA6cBh0uS2t
+rJOjAP9rhs2kkxiegggDAlgI+bM+WZGoB/Xx5QWTbM9uCJ8DugD9EItJYotJxs5T
+Xb4rPMkMCQMxoSR3AqzGAxWEC/W21AM=
+=Oupv
+-----END PGP SIGNATURE-----
+
+--EIdAEi/jQ2SpOuYP--
