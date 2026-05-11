@@ -1,406 +1,90 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 184C71E834E;
-	Mon, 11 May 2026 11:58:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 437F537AA83
+	for <netdev@vger.kernel.org>; Mon, 11 May 2026 12:05:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778500686; cv=none; b=slMQseFraC212RSeLdIM9p9fvZvxJQ/FtPi+kCKuxANSc9dsZsr96SKRIPWiiCOeUPjmeYCyImHorwrZffh5NML5xmccrSAjmPJgHG04P6bO2R2EZKm4n2843Dgeiat/Gd/u+ywtKCWPuomcH/9vCOuYPEIy15N7D8K8L+2BKyM=
+	t=1778501157; cv=none; b=fOcN6NwQuzycdGoVv4g/FGPq5wFfWJ4tfBNF3XQ0DGPYB4w+IYSYCiyg3g3Ns3HFxEr1Y0v4Lp0gTxOuvmDXlK0e/0ZQteSRUviWKkhRYuh4CP1xO34nwqy1yk5SjP9DfJvxr7ntcl8OI9xv50dcn98GVJRRDd358iLWTwfr3ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778500686; c=relaxed/simple;
-	bh=KF1t/bRGs16yza3DBTgFCMGGOZGbS2ZRe4/jmsnl72o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FEE5iAV2SSMvZPOr5ybz+dZwffGpWCLRwkujJSnHj/O7LgeHZTejvl9D2oOPDHrDh+UqpNhoWfL2vS5gM5R/EmkkQ6lqjcTxMayz5+cNPs8s93R6ZXiQEQ5vMhmCdq9UQ5bfGEa5KCAbLMlQ8N05miZbgnd9SMohrzeixg+mQj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jvjdQJFh; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778501157; c=relaxed/simple;
+	bh=y4bazO79X2luP3aXo5Zu79w/2ssn3oIiVFWNhmrzfUQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=fxA2LAsY6eNYki0fNSd4AuA8ToSWovjXSvAF0rBVNBF49eOu19VhvjoX636CmIo2AYpRDTznn2ZLVwx/xtQjmMgDa7+sbDWt995jwLZYI992oufokKF81p1xhymgO3/vHpyXWoRlaFLEao+KMCcmehromlbWOsZtdsthDgs+4eY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PQ7AK+GV; arc=none smtp.client-ip=209.85.210.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jvjdQJFh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD16EC2BCF7;
-	Mon, 11 May 2026 11:57:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778500686;
-	bh=KF1t/bRGs16yza3DBTgFCMGGOZGbS2ZRe4/jmsnl72o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jvjdQJFhfyjs3E/5QNKeFp1jTRAOxDNvz4Mh8U1RxGbjks/gpXVIlmydk3WFacZhD
-	 l3f9a2vKk3bOmeWc34go+yHhoRM3iBRq3LZ8M7XZ59udEW1MqdS7mKupb4h1wVV4Do
-	 KkvCSR3C+uHG3tH2YS5uwHfM+9OpvFxe4qYtM2DSiMg7qYdP1QRCHem+lUwMYjOqmr
-	 X5gNyzzBOvSy7yuBJdyKREHmHjj5av7KbAFq6bfRiAEx+MwwD+2sRATPB1Q8jc1b4u
-	 FTEA9GZv56qYWosTkb/DEeuVpP3AGfbpItzeaDDDn/7i4IwntV9jTHGbBse/kGCO8p
-	 EO/cNlRqVgdlg==
-Date: Mon, 11 May 2026 13:57:49 +0200
-From: Michael Grzeschik <mgr@kernel.org>
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Vincent Mailhol <mailhol@kernel.org>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Steffen Klassert <klassert@kernel.org>,
-	David Dillow <dave@thedillows.org>,
-	Ion Badulescu <ionut@badula.org>, Mark Einon <mark.einon@gmail.com>,
-	Rasesh Mody <rmody@marvell.com>, GR-Linux-NIC-Dev@marvell.com,
-	Manish Chopra <manishc@marvell.com>,
-	Potnuri Bharat Teja <bharat@chelsio.com>,
-	Denis Kirjanov <kirjanov@gmail.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Jian Shen <shenjian15@huawei.com>,
-	Cai Huoqing <cai.huoqing@linux.dev>, Fan Gong <gongfan1@huawei.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>, Mark Bloch <mbloch@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>,
-	Yibo Dong <dong100@mucse.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>, nic_swsd@realtek.com,
-	Jiri Pirko <jiri@resnulli.us>,
-	Francois Romieu <romieu@fr.zoreil.com>,
-	Daniele Venzano <venza@brownhat.org>,
-	Samuel Chessman <chessman@tux.org>,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	Mengyuan Lou <mengyuanlou@net-swift.com>,
-	Kevin Curtis <kevin.curtis@farsite.co.uk>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Stanislav Yakovlev <stas.yakovlev@gmail.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Kees Cook <kees@kernel.org>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Marco Crivellari <marco.crivellari@suse.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	David Arinzon <darinzon@amazon.com>,
-	Yeounsu Moon <yyyynoom@gmail.com>,
-	Denis Benato <benato.denis96@gmail.com>,
-	Yonglong Liu <liuyonglong@huawei.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Yicong Hui <yiconghui@gmail.com>,
-	MD Danish Anwar <danishanwar@ti.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	Ian Lin <ian.lin@infineon.com>,
-	Colin Ian King <colin.i.king@gmail.com>,
-	Double Lo <double.lo@cypress.com>,
-	Markus Schneider-Pargmann <msp@baylibre.com>,
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-can@vger.kernel.org,
-	linux-parisc@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
-	linux-rdma@vger.kernel.org, oss-drivers@corigine.com,
-	linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
-	brcm80211-dev-list.pdl@broadcom.com
-Subject: Re: [PATCH net-next v3 2/2] net: Consistently define pci_device_ids
- using named initializers
-Message-ID: <agHEPQ5tLFKW0uum@pengutronix.de>
-References: <20260511090023.1634387-4-u.kleine-koenig@baylibre.com>
- <20260511090023.1634387-6-u.kleine-koenig@baylibre.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PQ7AK+GV"
+Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-7e363c6141dso2655497a34.2
+        for <netdev@vger.kernel.org>; Mon, 11 May 2026 05:05:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778501155; x=1779105955; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=V4XcVvpH9Ox3FvY9rNYp2Al5P5pekeYZiWZMMmvoOw0=;
+        b=PQ7AK+GVwCZ94XfbfgiuVnmKhUGeVxmCLix9GVJJoJHTdJrSoPqqM/UVjJoHdyG2m0
+         TbgMLn6mWOz8m+hfBomf7gj/F0gl/NfXaJWYQ5mfQs1wamLYpOZ7baXP9iQBMqwri6jg
+         LPTAgXxtAheE/hbQkL++PwLeSN/So0pN3sCd51PlVz+N/uacmID3OSS+6XSRU7G5wsLx
+         iWWKCUPnmTN1R33DqrZ6KwyaJ+Qbn4hmlOO+Ry+0y6UQqrmU0q3j9KPbDSxCSWAZiICN
+         2fndhVbZBmiI+2tYTOSWtp8BhjNprHdXfITEqGkEjAt8ubiE1AnsT73H3sB6yux2O48z
+         0bRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778501155; x=1779105955;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=V4XcVvpH9Ox3FvY9rNYp2Al5P5pekeYZiWZMMmvoOw0=;
+        b=EXwGOI+zysmOtX9aDGlQ+Upr57TFpg1NgxrrMst1rrPw3jNTHh4uz5goEhMzshEP1E
+         PT0DxwBu3LWtrKLrxAmz1CHP4TImsB8L+ooZ0ByFAE9EfUumwxzUofqk6ZGD9Sas2NZd
+         alSym30PrHwiIUsA2BKuy69AQU8ZwFvTJ0LNYx8ziXPkjcihMjIIlgyDhQ//Hp+xWgLo
+         0z8rJ7bwGCK/Ek8gwgV6c1NHEr0VkQyCUWJDRTRLR2FiFjaVS08MX+2fJtJXvfJO1mBX
+         yESAHeFi9fV2Ub80ETTcRVdW3f8/1yPyTChN16B3Kv1iD35ZMSleO12vqG9ljAQPKOv6
+         46HQ==
+X-Gm-Message-State: AOJu0YyFkHHxE+WyHqhkKgrtPvxuD4CFdaEPHoGP8urzrlJlPwIa2d6b
+	a0M1nUO2VSpmc1LKc/WGO/0/7xesqk0yFV0RCJbH07cK5Bh4Qa8V7ogUnglmKvX4d68=
+X-Gm-Gg: Acq92OFT3bNuGnACzwTSirRANqhK/fDZtTFN90g6fk95vVUooBMBHfYFrb+dJ+GuzkL
+	POqrOnMPFw9D14TsIdcrks9ln3RB6det3g5b1UCbBO4tRuNBZpgscdDYhFr8W8GEJgzfaLtskHC
+	OWkLrO0UkCRSKArsbnWlnFqUecSojneKLJ9lllucq/Tt2Atlsk+e+HI8ZIQSxaGFyqJuyJm9ILV
+	ekLEX02kkpG+j3nx2xc9MSGMIBOY87oQmZvJ76bdnPRIfLtw2j7QylzhC6dSKaZWkNTiYPcPGNK
+	E3Z4g28Uh5TY3pWmBZH8l2h1lKNIjccaRSZ8QCb9vU9zpemN0P213ve29aL1Eb76vE1LG7WT14o
+	ezfS59B70j3J3X6a3tMK2szMhJRWNEYE+Elha6EKqYlX+9FQCN5yeZNSGsO0bvzBqR45J7BRZ+J
+	2AVtHvpK4MnIDf4Fs=
+X-Received: by 2002:a05:6820:150d:b0:694:8b4d:5f8c with SMTP id 006d021491bc7-69998ca0697mr13574825eaf.12.1778501154591;
+        Mon, 11 May 2026 05:05:54 -0700 (PDT)
+Received: from houminxi ([72.244.37.221])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-69b25e0e79asm5608123eaf.14.2026.05.11.05.05.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 May 2026 05:05:54 -0700 (PDT)
+From: Minxi Hou <houminxi@gmail.com>
+To: netdev@vger.kernel.org
+Cc: aconole@redhat.com,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net-next v9 0/2] selftests: openvswitch: add pop_vlan test
+Date: Mon, 11 May 2026 20:05:43 +0800
+Message-ID: <20260511120543.390702-1-houminxi@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260509135423.3433910-1-houminxi@gmail.com>
+References: <20260509135423.3433910-1-houminxi@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260511090023.1634387-6-u.kleine-koenig@baylibre.com>
 
-On Mon, May 11, 2026 at 11:00:24AM +0200, Uwe Kleine-König (The Capable Hub) wrote:
-> ... and PCI device helpers.
-> 
-> The various struct pci_device_id arrays were initialized mostly by one
-> the PCI_DEVICE macros and then list expressions. The latter isn't easily
-> readable if you're not into PCI. Using named initializers is more
-> explicit and thus easier to parse.
-> 
-> Also use PCI_DEVICE* helper macros to assign .vendor, .device,
-> .subvendor and .subdevice where appropriate and skip explicit
-> assignments of 0 (which the compiler takes care of).
-> 
-> The secret plan is to make struct pci_device_id::driver_data an
-> anonymous union (similar to
-> https://lore.kernel.org/all/cover.1776579304.git.u.kleine-koenig@baylibre.com/)
-> and that requires named initializers. But it's also a nice cleanup on
-> its own.
-> 
-> This change doesn't introduce changes to the compiled pci_device_id
-> arrays. Tested on x86 and arm64.
-> 
-> Reviewed-by: Jijie Shao <shaojijie@huawei.com>
-> Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-> Reviewed-by: Petr Machata <petrm@nvidia.com> # for mlxsw
-> Acked-by: Jacob Keller <jacob.e.keller@intel.com>
-> Acked-by: Johannes Berg <johannes@sipsolutions.net>
-> Signed-off-by: Uwe Kleine-König (The Capable Hub) <u.kleine-koenig@baylibre.com>
-> Forwarded: id:76da4f44d48bdde84580963862bf9616bee5c9e9.1778149923.git.u.kleine-koenig@baylibre.com (v2)
-> ---
->  drivers/net/arcnet/com20020-pci.c             | 242 +++------
+Found a few issues in v9 that need fixing, will respin as v10:
 
-[...]
+- Commit message for patch 1 references removing MAX_ENCAP_DEPTH,
+  which was dropped in an earlier revision. Needs cleanup.
 
-> diff --git a/drivers/net/arcnet/com20020-pci.c b/drivers/net/arcnet/com20020-pci.c
-> index dbadda08dce2..6474c7be2992 100644
-> --- a/drivers/net/arcnet/com20020-pci.c
-> +++ b/drivers/net/arcnet/com20020-pci.c
-> @@ -459,168 +459,88 @@ static struct com20020_pci_card_info card_info_eae_fb2 = {
->  
->  static const struct pci_device_id com20020pci_id_table[] = {
->  	{
-> -		0x1571, 0xa001,
-> -		PCI_ANY_ID, PCI_ANY_ID,
-> -		0, 0,
-> -		0,
-> +		PCI_DEVICE(0x1571, 0xa001),
-> +		.driver_data = 0,
-> +	}, {
-> +		PCI_DEVICE(0x1571, 0xa002),
-> +		.driver_data = 0,
-> +	}, {
-> +		PCI_DEVICE(0x1571, 0xa003),
-> +		.driver_data = 0,
-> +	}, {
-> +		PCI_DEVICE(0x1571, 0xa004),
-> +		.driver_data = 0,
-> +	}, {
-> +		PCI_DEVICE(0x1571, 0xa005),
-> +		.driver_data = 0,
-> +	}, {
-> +		PCI_DEVICE(0x1571, 0xa006),
-> +		.driver_data = 0,
-> +	}, {
-> +		PCI_DEVICE(0x1571, 0xa007),
-> +		.driver_data = 0,
-> +	}, {
-> +		PCI_DEVICE(0x1571, 0xa008),
-> +		.driver_data = 0,
-> +	}, {
-> +		PCI_DEVICE(0x1571, 0xa009),
-> +		.driver_data = (kernel_ulong_t)&card_info_5mbit,
-> +	}, {
-> +		PCI_DEVICE(0x1571, 0xa00a),
-> +		.driver_data = (kernel_ulong_t)&card_info_5mbit,
-> +	}, {
-> +		PCI_DEVICE(0x1571, 0xa00b),
-> +		.driver_data = (kernel_ulong_t)&card_info_5mbit,
-> +	}, {
-> +		PCI_DEVICE(0x1571, 0xa00c),
-> +		.driver_data = (kernel_ulong_t)&card_info_5mbit,
-> +	}, {
-> +		PCI_DEVICE(0x1571, 0xa00d),
-> +		.driver_data = (kernel_ulong_t)&card_info_5mbit,
-> +	}, {
-> +		PCI_DEVICE(0x1571, 0xa00e),
-> +		.driver_data = (kernel_ulong_t)&card_info_5mbit,
-> +	}, {
-> +		PCI_DEVICE(0x1571, 0xa201),
-> +		.driver_data = (kernel_ulong_t)&card_info_10mbit,
-> +	}, {
-> +		PCI_DEVICE(0x1571, 0xa202),
-> +		.driver_data = (kernel_ulong_t)&card_info_10mbit,
-> +	}, {
-> +		PCI_DEVICE(0x1571, 0xa203),
-> +		.driver_data = (kernel_ulong_t)&card_info_10mbit,
-> +	}, {
-> +		PCI_DEVICE(0x1571, 0xa204),
-> +		.driver_data = (kernel_ulong_t)&card_info_10mbit,
-> +	}, {
-> +		PCI_DEVICE(0x1571, 0xa205),
-> +		.driver_data = (kernel_ulong_t)&card_info_10mbit,
-> +	}, {
-> +		PCI_DEVICE(0x1571, 0xa206),
-> +		.driver_data = (kernel_ulong_t)&card_info_10mbit,
-> +	}, {
-> +		PCI_DEVICE_SUB(0x10B5, 0x9030, 0x10B5, 0x2978),
-> +		.driver_data = (kernel_ulong_t)&card_info_sohard,
-> +	}, {
-> +		PCI_DEVICE_SUB(0x10B5, 0x9050, 0x10B5, 0x2273),
-> +		.driver_data = (kernel_ulong_t)&card_info_sohard,
-> +	}, {
-> +		PCI_DEVICE_SUB(0x10B5, 0x9050, 0x10B5, 0x3263),
-> +		.driver_data = (kernel_ulong_t)&card_info_eae_arc1,
-> +	}, {
-> +		PCI_DEVICE_SUB(0x10B5, 0x9050, 0x10B5, 0x3292),
-> +		.driver_data = (kernel_ulong_t)&card_info_eae_ma1,
-> +	}, {
-> +		PCI_DEVICE_SUB(0x10B5, 0x9050, 0x10B5, 0x3294),
-> +		.driver_data = (kernel_ulong_t)&card_info_eae_fb2,
-> +	}, {
-> +		PCI_DEVICE(0x14BA, 0x6000),
-> +		.driver_data = (kernel_ulong_t)&card_info_10mbit,
-> +	}, {
-> +		PCI_DEVICE(0x10B5, 0x2200),
-> +		.driver_data = (kernel_ulong_t)&card_info_10mbit,
->  	},
-> -	{
-> -		0x1571, 0xa002,
-> -		PCI_ANY_ID, PCI_ANY_ID,
-> -		0, 0,
-> -		0,
-> -	},
-> -	{
-> -		0x1571, 0xa003,
-> -		PCI_ANY_ID, PCI_ANY_ID,
-> -		0, 0,
-> -		0
-> -	},
-> -	{
-> -		0x1571, 0xa004,
-> -		PCI_ANY_ID, PCI_ANY_ID,
-> -		0, 0,
-> -		0,
-> -	},
-> -	{
-> -		0x1571, 0xa005,
-> -		PCI_ANY_ID, PCI_ANY_ID,
-> -		0, 0,
-> -		0
-> -	},
-> -	{
-> -		0x1571, 0xa006,
-> -		PCI_ANY_ID, PCI_ANY_ID,
-> -		0, 0,
-> -		0
-> -	},
-> -	{
-> -		0x1571, 0xa007,
-> -		PCI_ANY_ID, PCI_ANY_ID,
-> -		0, 0,
-> -		0
-> -	},
-> -	{
-> -		0x1571, 0xa008,
-> -		PCI_ANY_ID, PCI_ANY_ID,
-> -		0, 0,
-> -		0
-> -	},
-> -	{
-> -		0x1571, 0xa009,
-> -		PCI_ANY_ID, PCI_ANY_ID,
-> -		0, 0,
-> -		(kernel_ulong_t)&card_info_5mbit
-> -	},
-> -	{
-> -		0x1571, 0xa00a,
-> -		PCI_ANY_ID, PCI_ANY_ID,
-> -		0, 0,
-> -		(kernel_ulong_t)&card_info_5mbit
-> -	},
-> -	{
-> -		0x1571, 0xa00b,
-> -		PCI_ANY_ID, PCI_ANY_ID,
-> -		0, 0,
-> -		(kernel_ulong_t)&card_info_5mbit
-> -	},
-> -	{
-> -		0x1571, 0xa00c,
-> -		PCI_ANY_ID, PCI_ANY_ID,
-> -		0, 0,
-> -		(kernel_ulong_t)&card_info_5mbit
-> -	},
-> -	{
-> -		0x1571, 0xa00d,
-> -		PCI_ANY_ID, PCI_ANY_ID,
-> -		0, 0,
-> -		(kernel_ulong_t)&card_info_5mbit
-> -	},
-> -	{
-> -		0x1571, 0xa00e,
-> -		PCI_ANY_ID, PCI_ANY_ID,
-> -		0, 0,
-> -		(kernel_ulong_t)&card_info_5mbit
-> -	},
-> -	{
-> -		0x1571, 0xa201,
-> -		PCI_ANY_ID, PCI_ANY_ID,
-> -		0, 0,
-> -		(kernel_ulong_t)&card_info_10mbit
-> -	},
-> -	{
-> -		0x1571, 0xa202,
-> -		PCI_ANY_ID, PCI_ANY_ID,
-> -		0, 0,
-> -		(kernel_ulong_t)&card_info_10mbit
-> -	},
-> -	{
-> -		0x1571, 0xa203,
-> -		PCI_ANY_ID, PCI_ANY_ID,
-> -		0, 0,
-> -		(kernel_ulong_t)&card_info_10mbit
-> -	},
-> -	{
-> -		0x1571, 0xa204,
-> -		PCI_ANY_ID, PCI_ANY_ID,
-> -		0, 0,
-> -		(kernel_ulong_t)&card_info_10mbit
-> -	},
-> -	{
-> -		0x1571, 0xa205,
-> -		PCI_ANY_ID, PCI_ANY_ID,
-> -		0, 0,
-> -		(kernel_ulong_t)&card_info_10mbit
-> -	},
-> -	{
-> -		0x1571, 0xa206,
-> -		PCI_ANY_ID, PCI_ANY_ID,
-> -		0, 0,
-> -		(kernel_ulong_t)&card_info_10mbit
-> -	},
-> -	{
-> -		0x10B5, 0x9030,
-> -		0x10B5, 0x2978,
-> -		0, 0,
-> -		(kernel_ulong_t)&card_info_sohard
-> -	},
-> -	{
-> -		0x10B5, 0x9050,
-> -		0x10B5, 0x2273,
-> -		0, 0,
-> -		(kernel_ulong_t)&card_info_sohard
-> -	},
-> -	{
-> -		0x10B5, 0x9050,
-> -		0x10B5, 0x3263,
-> -		0, 0,
-> -		(kernel_ulong_t)&card_info_eae_arc1
-> -	},
-> -	{
-> -		0x10B5, 0x9050,
-> -		0x10B5, 0x3292,
-> -		0, 0,
-> -		(kernel_ulong_t)&card_info_eae_ma1
-> -	},
-> -	{
-> -		0x10B5, 0x9050,
-> -		0x10B5, 0x3294,
-> -		0, 0,
-> -		(kernel_ulong_t)&card_info_eae_fb2
-> -	},
-> -	{
-> -		0x14BA, 0x6000,
-> -		PCI_ANY_ID, PCI_ANY_ID,
-> -		0, 0,
-> -		(kernel_ulong_t)&card_info_10mbit
-> -	},
-> -	{
-> -		0x10B5, 0x2200,
-> -		PCI_ANY_ID, PCI_ANY_ID,
-> -		0, 0,
-> -		(kernel_ulong_t)&card_info_10mbit
-> -	},
-> -	{ 0, }
-> +	{ }
->  };
->  
->  MODULE_DEVICE_TABLE(pci, com20020pci_id_table);
+- Masked VLAN format string produces output that cannot be parsed
+  back (round-trip failure for vlan key with masks).
 
-For the com20020 arcnet driver:
+- Negative test in patch 2 lacks a return flow for in_port(2),
+  so ping fails regardless of whether pop_vlan works correctly.
+  Need to add a return flow to make the negative case meaningful.
 
-Reviewed-by: Michael Grzeschik <mgr@kernel.org>
+Minxi
