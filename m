@@ -1,104 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f201.google.com (mail-qt1-f201.google.com [209.85.160.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8771237CD46;
-	Mon, 11 May 2026 07:23:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3586379EFE
+	for <netdev@vger.kernel.org>; Mon, 11 May 2026 07:23:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778484198; cv=none; b=AlLYOufn9c/9qunjzV32X/z1Cdc0DYXEjvSBE8o5eYCIf8OVlq22dgfTxlObtkJVEnoqBisN2HraKsJxNioSDE+PQHBC9nd98R5Xk5D4eNi3Df4ixeMPViYEi3Qb47PTpUnvxvHdaKbLsTggMiLcTSqa7+g1jlzx7b1smOn7u+U=
+	t=1778484199; cv=none; b=b1OOzcGfwhKmcOsG6Ffu+Kh1wvSRuulvkfeGI8DdZPCZIMDuGQHywryky3Pblq0yKabJUMSIJMa7ULqidbN1JDYonz9GJ0gZYRA8gLQuGUv+1KyLkNUQLIx2bwn6fdZJT6GjlGUNCAkeXDtIpYDEwvrtmnacge06lYsW3Sj3BMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778484198; c=relaxed/simple;
-	bh=NXXybn+rY1CHv9Pdm6W9FBf9nazT/Mjk0vZ8z6N++Jo=;
-	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=omNPkl9vJFw1cgm8tIBE4pJGBLgxDXG4zDSU6HXqzw2BEiG66y/T7ME8lQCSMFex+twcZd5e07zl2c4HkOV0fXDpLHpPiMSAN+ORabVxtPyl0lsKgH2tHizhlo/O2UIAVXyG+LlbbNzLejDTJ5+2ahVQzsA5p+UvmXhX7WfOMa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TMp12znt; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778484199; c=relaxed/simple;
+	bh=SlPiywE9oP+373lgZkMih/CbPc0StHFjba2YFrhexgM=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=n1GTEwqpRQhWU50pLHGAfNaw4kKFAPmZG4ZRb2RVKaMkzZVIJTUoqZQQdFGm4LKKtoDIio0anyILu5McD79liXZa40MP915t0TfSeUC75Irzrn+CNb3glG+3JyVrOX0ihNW1bn+R9Qf7CMHxCFZdT7mAGC2l0zVt6HhwXdJ2HZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nukXE/Kt; arc=none smtp.client-ip=209.85.160.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TMp12znt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6223C2BCF5;
-	Mon, 11 May 2026 07:23:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778484198;
-	bh=NXXybn+rY1CHv9Pdm6W9FBf9nazT/Mjk0vZ8z6N++Jo=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=TMp12znt8KlFdcvGH1x9nmp72oHfyhKY6Hm//KkJI+fuXG2Xcf/8woURHjT1w+2ji
-	 QM9QSM+DEh8+BavJzUe1buHLB+TNewGWf+4Bd4i5ku4sGAbziP2YvEd3eE3dvc7sxH
-	 V0nRpX+kyY2g/mDtlLKuPQpte3gWq4D+qNJM622mPzy5AmrLZtihNsWa9DAQsDIZNW
-	 eXA/WzKmfeWyRZVUtYnH7s8xfSVJJunlBUz1fYhiSUXcQomQAoDfK0kZJBnRCa3jq5
-	 VR/W075S7eCmYjVziQq7viGT/9eofzq8TcBy2EuFC530ftCMava3AB6FPC3Pdqkdhe
-	 7TJd63SemTOjg==
-From: Allison Henderson <achender@kernel.org>
-To: netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	kuba@kernel.org,
-	horms@kernel.org,
-	linux-rdma@vger.kernel.org,
-	achender@kernel.org,
-	linux-kselftest@vger.kernel.org,
-	shuah@kernel.org
-Subject: [PATCH net-next v1 1/9] selftests: rds: Capitalize ret global in test.py
-Date: Mon, 11 May 2026 00:23:08 -0700
-Message-Id: <20260511072316.1174045-2-achender@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260511072316.1174045-1-achender@kernel.org>
-References: <20260511072316.1174045-1-achender@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nukXE/Kt"
+Received: by mail-qt1-f201.google.com with SMTP id d75a77b69052e-50e2592ea3bso13068841cf.2
+        for <netdev@vger.kernel.org>; Mon, 11 May 2026 00:23:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778484197; x=1779088997; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=DtM0IuQu1tVCiMQlaS7DuJFeWUv3S1qzexoLfam8uyM=;
+        b=nukXE/KtMpgF409R7jpWjAar0tMAO7DNw3i+U8E24PqKmZKF3+0qIPuePSvR+jFKgy
+         A+K6iNcPQyF3BMsfiB/Birttw0Ho02CWMK2K9HdeLY+UBbn3U7DmcDIOH8Ml42PefVkP
+         rSIqcOEzHrTURjhovN8N3902FJ26q6QK/vECFs5EMkKN5aQjWMUpP2NO/rgbHh3OrfEg
+         4Jx8TYcD1/Bclj7urgSPCnhm5P4zIL2lJpaDmmyDs6BMSQQTis0OFWNNFK3RffBOvLtP
+         9DQ1WYWEaBh+/EUURLqo1xE7d/J/Om5auVk9hp8jwUbRKLKcCbAjbq1EsxVFB6fSH+iH
+         L16Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778484197; x=1779088997;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DtM0IuQu1tVCiMQlaS7DuJFeWUv3S1qzexoLfam8uyM=;
+        b=U4SnEi8mhK18TkOcZcJxZur7uEdOmfHR7JwdPuNraga1STNMmgru7Zeud8olaGKuXi
+         jPF6rQxiTuzdFCbLscy/eSeu6FxqsucRub2TuNreA4j2P7X/8NPDWcEvs5d7RGIWMFNo
+         BQxdkXgmC3gy2PADpOAyWULTi1CwZLiK4guxAlG+F7b1o5KY7pdzk/3JZ5p2KDJ7NE1k
+         UJrTlW/2Zfw7lmflQD7nE/NQxU41dyCUwDY0R2l0PLJ2ZBOCp5OddqGx2quXl8PwAcQH
+         ovwpxV/xuCjtVsWZbl25ant4O0/7x2itmg5GmozmwfP2iGD+gS4t6VfqmlTNJ5qjHkTz
+         8BPg==
+X-Forwarded-Encrypted: i=1; AFNElJ8h/tulvbYX7lh2qNH9xF0cezLfGqhX6/SXxGHJAmKjb9a6Gukd9nKHoN2uP4TKDGMxhNamEqQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzACF6r6UbPIfbx7aYzyN8tENrON8AQhIXMjyZjdTCLss3J1pnY
+	T8yNJcaCGyP9roxsHEzTCrRILiwUoZrEH/+1sGEC2EO/gAj9CMOtndsi6he5quAr/YnGnZ5wkp/
+	0EtlbqyXMS4QBLg==
+X-Received: from qtxa11.prod.google.com ([2002:a05:622a:2cb:b0:510:4492:53])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:ac8:6f1b:0:b0:50f:ec27:5d05 with SMTP id d75a77b69052e-51461bea660mr366640651cf.10.1778484196688;
+ Mon, 11 May 2026 00:23:16 -0700 (PDT)
+Date: Mon, 11 May 2026 07:23:10 +0000
+In-Reply-To: <20260511072310.1094859-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20260511072310.1094859-1-edumazet@google.com>
+X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
+Message-ID: <20260511072310.1094859-4-edumazet@google.com>
+Subject: [PATCH v2 net-next 3/3] ipv6: use SKB_DROP_REASON_IP_OUTNOROUTES in inet6_csk_xmit()
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Global variables outside of functions should be capitalized to avoid
-pylint complaints.  Fix this before refactoring to avoid complaints
-later.
+Replace a bare kfree_skb() with a modern sk_skb_reason_drop() call,
+and provide IP_OUTNOROUTES drop reason.
 
-Signed-off-by: Allison Henderson <achender@kernel.org>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
 ---
- tools/testing/selftests/net/rds/test.py | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ net/ipv6/inet6_connection_sock.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/rds/test.py b/tools/testing/selftests/net/rds/test.py
-index 6db606779231..d78c00226e7b 100755
---- a/tools/testing/selftests/net/rds/test.py
-+++ b/tools/testing/selftests/net/rds/test.py
-@@ -291,29 +291,29 @@ stop_pcaps()
- 
- # We're done sending and receiving stuff, now let's check if what
- # we received is what we sent.
--ret = 0
-+RC = 0
- for (sender, receiver), send_hash in send_hashes.items():
-     recv_hash = recv_hashes.get((sender, receiver))
- 
-     if recv_hash is None:
-         ksft_pr("FAIL: No data received")
--        ret = 1
-+        RC = 1
-         break
- 
-     if send_hash.hexdigest() != recv_hash.hexdigest():
-         ksft_pr("FAIL: Send/recv mismatch")
-         ksft_pr("hash expected:", send_hash.hexdigest())
-         ksft_pr("hash received:", recv_hash.hexdigest())
--        ret = 1
-+        RC = 1
-         break
- 
-     ksft_pr(f"{sender}/{receiver}: ok")
- 
--if ret == 0:
-+if RC == 0:
-     ksft_pr("Success")
-     print("ok 1 rds selftest")
- else:
-     print("not ok 1 rds selftest")
- 
--ksft_pr(f"Totals: pass:{1-ret} fail:{ret} skip:0")
--sys.exit(ret)
-+ksft_pr(f"Totals: pass:{1-RC} fail:{RC} skip:0")
-+sys.exit(RC)
+diff --git a/net/ipv6/inet6_connection_sock.c b/net/ipv6/inet6_connection_sock.c
+index 37534e1168992c44e1400dacab87e79d04c64a41..4665d84a7380d90b7d180a429017f577fcb6936a 100644
+--- a/net/ipv6/inet6_connection_sock.c
++++ b/net/ipv6/inet6_connection_sock.c
+@@ -102,7 +102,8 @@ int inet6_csk_xmit(struct sock *sk, struct sk_buff *skb, struct flowi *fl_unused
+ 		if (IS_ERR(dst)) {
+ 			WRITE_ONCE(sk->sk_err_soft, -PTR_ERR(dst));
+ 			sk->sk_route_caps = 0;
+-			kfree_skb(skb);
++			sk_skb_reason_drop(sk, skb,
++					   SKB_DROP_REASON_IP_OUTNOROUTES);
+ 			return PTR_ERR(dst);
+ 		}
+ 		/* Restore final destination back after routing done */
 -- 
-2.25.1
+2.54.0.563.g4f69b47b94-goog
 
