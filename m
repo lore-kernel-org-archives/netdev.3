@@ -1,75 +1,59 @@
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013034.outbound.protection.outlook.com [40.93.196.34])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6C7C383C70
-	for <netdev@vger.kernel.org>; Mon, 11 May 2026 07:29:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.34
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778484584; cv=fail; b=pVdBhyV22IdS9JJJ7zjcSim+ST/ArmZxDAJyi60IHLCSygb+KVwXCMkX5Es5M71j+s2wMpfqo4qAubxt96B878yCfgUXCvJPCRccF7pSBLE0BU2V/xMZkO9mNBiRmt7usf+bwC/GRgkXTT7L+MSxFiR2c/2GPOuXZYilOetCNuM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778484584; c=relaxed/simple;
-	bh=DlMQWoGTTlWUHErPa5COkpy2/XWWbcsn9jmdzdFsvj0=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Nt4OSPs/ZhZKKhfMW1Vuekb2oWEpsR1nQ9VciZeckYlEI31977AFYvt8FdSsvfAN81vDEJg/SP5vII/K31ZEvvJBTvrIoFOxsRWUHL5/9pJSJDszqXJsp0xCdrLpqrpJpTJrUAa5Wvspvm4A5d5my44ufaQQh6DnHWPs/XiD6tQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=e+8a9x6d; arc=fail smtp.client-ip=40.93.196.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D673806CC
+	for <netdev@vger.kernel.org>; Mon, 11 May 2026 07:34:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778484899; cv=none; b=fdPHo6h3Oa30dU56nivX7/mQIDVKQvZH59OphIPwNpJzNZ6kdJ/4vZjw7QC8X4Iq+iqLdqizXm6NGw4VrXR1rZ7ph/w5btFA4hrlEHWEi56LyMGUMBPKnD2aLHW5JqbaDiMm2LdWHsfauJ6qqFIij2rAufyv6/gsbKFEXA3d+pw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778484899; c=relaxed/simple;
+	bh=V/FqnKuLf5ly7IGnIqtIrW8gjqh4B9YtBRmcrjcAOKg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=e2GhX4Y9tWATC+WDSTGwGqqOdY9zNVAzv0ShHP4vEDP+wMaMIRyfmuLGalRgvpNFx9QY04lFNKoDrH8PMZ1/S5IYxKwzUoGRmQJtORbIYRxfvShc0i1jaWNLpDwIwFzfIdVzpRoA0fyX4IHhcsVS1L/lv4fTRlqnO5KYMSUeY/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lI8EAFcD; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="e+8a9x6d"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ky9VLHGkwGynWg4VUMRBvwJpB6StApmIqyP7M5ptid0y1Bc3C64V3rtrA4eFob+ZGlGjT68OouaVdH+K1BBLuiBWkcPl4XhS2F2Zii7G10hxp/JsZPDgmfM0nylI3y0DNGZcnSROalqAOs5lOd9BCEOohqSyGrSxKMk53Jbe402Pn/mHkCc/jAMCJ/ZrVp7DMTKXAsMX3z8EEkFkimLmz47BKTytYNLR+/Mw+/sd9wmBDD8isZzP2TQlkRLsf8w9RizVCAYsnwBHZAdQy45F5ocq+IiP28AYC5LcRAjJq77vKVb2wnLnQx17J0JGzMAvbPkI9+ZPNY2vyvOnEMKQsg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xKqD51x+BzoCBZIDHtjAbjoFn+H65BXh1XpD5c3wTno=;
- b=lBlMxtjOfHnVVrdf6CgiOCdbQbiYTL680Rn09hzBrDU9HWM9TzmlI2BLZXWP9KNq3Syym19Lcc4ySh2RkVk+o4lp9MRwEa3wu2TtLWhwysfzltqoo/zIc9as0xZ7f6eIuOawnLTiIniI0ojrSGGL3fuzjxSWXT+bTsec6oWQoy4Thx4Dwz+kc0NGMxPfltJb5npkiAxchLMYGaZMBG7T1a54dzJuqlmQDEExptNJdDtJrvUXTaSetJsJV9F8CUefC0j9aiLZ4lRaKX4XCcK0lKNujjniuFxJWYxV0ICeoj78SuFThO3j0FzkOZbZ7opNzBDaxcL6qO72TBgXKVHSTA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xKqD51x+BzoCBZIDHtjAbjoFn+H65BXh1XpD5c3wTno=;
- b=e+8a9x6drHqH+tWC2XVBwvkjGsaRemDB/SzmXoCYnrsS9Ohs5rA4BdWfLLp7mLE0WAvKA+u1ne32+dWWnvFFXAYWpfs31K6pgo44UBgX6rjMcb7WhEi/DQnSfT4H9PwxmdacBuYXfTV/gHs85Q0VFkwziix23Un1D+iBNzRiU7jmbgXSaVWFR9Gpgi80TKV7Ey50VF98R3RmS1zvniy0V2VB5qe+VdonKq34bmTX0m69597pWSYf2krOyE0K/4FbKL4UZXP/3qZbW5n8bW7BBubvc6nWxQP5Thwu6Zd1+EsSqDmlhwamlprGm0hrzv/uLm1mabIwxwv4t4MHHtEa7w==
-Received: from DM6PR18CA0008.namprd18.prod.outlook.com (2603:10b6:5:15b::21)
- by LV2PR12MB5896.namprd12.prod.outlook.com (2603:10b6:408:172::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.23; Mon, 11 May
- 2026 07:29:38 +0000
-Received: from DM2PEPF00003FC7.namprd04.prod.outlook.com
- (2603:10b6:5:15b:cafe::e4) by DM6PR18CA0008.outlook.office365.com
- (2603:10b6:5:15b::21) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9891.23 via Frontend Transport; Mon,
- 11 May 2026 07:29:38 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- DM2PEPF00003FC7.mail.protection.outlook.com (10.167.23.24) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.25.13 via Frontend Transport; Mon, 11 May 2026 07:29:38 +0000
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 11 May
- 2026 00:29:24 -0700
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail204.nvidia.com
- (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 11 May
- 2026 00:29:23 -0700
-Received: from vdi.nvidia.com (10.127.8.12) by mail.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server id 15.2.2562.20 via Frontend Transport; Mon, 11
- May 2026 00:29:22 -0700
-From: Gal Pressman <gal@nvidia.com>
-To: <netdev@vger.kernel.org>
-CC: <mkubecek@suse.cz>, Gal Pressman <gal@nvidia.com>, Nimrod Oren
-	<noren@nvidia.com>
-Subject: [PATCH ethtool] ethtool: Add --disable-netlink to help output
-Date: Mon, 11 May 2026 10:29:16 +0300
-Message-ID: <20260511072916.1895384-1-gal@nvidia.com>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lI8EAFcD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778484898; x=1810020898;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=V/FqnKuLf5ly7IGnIqtIrW8gjqh4B9YtBRmcrjcAOKg=;
+  b=lI8EAFcDD918fQJu9pgIWA7bAH3lv1ko7wvP+m8mepqvVlOpEZ8VMYgc
+   VBOuSWAfWLycZBR/HfQdAYPLihiWsA3DVktcdAgxXLwCm1xkdf+IB07EH
+   1/fDoPlDCzPjtEdaQK6QaWAvj7hhqv3cKQoGx31x5jxInGCMqNiDJ1rPK
+   3Cb5waMgyCHfydvBgNFlKCHrl5Grz0krg51RY667MpmREZTY5Zmhts2xk
+   3jdzQViq+a5Ch35n93dhTLSKS86eEzBfhShOvHr4rl1eNmVnRqiN2Z9wW
+   9EKHPE/QNeyiaRtHGJ/HixErp0L88OB5VD1m5QHRXcd6fVeIoK661fFdX
+   Q==;
+X-CSE-ConnectionGUID: 2cVyJ0AjQxyokut/cIxfoQ==
+X-CSE-MsgGUID: lJ8o2EB3QeK02r7heFJO4g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11782"; a="102030053"
+X-IronPort-AV: E=Sophos;i="6.23,228,1770624000"; 
+   d="scan'208";a="102030053"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 00:34:57 -0700
+X-CSE-ConnectionGUID: zn7NNtibSluMa6GYVt0IrQ==
+X-CSE-MsgGUID: sE7shOsJSwi1A6usA1va/Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,228,1770624000"; 
+   d="scan'208";a="241735131"
+Received: from pae-d-dell-r7525-263.igk.intel.com ([172.28.191.240])
+  by orviesa004.jf.intel.com with ESMTP; 11 May 2026 00:34:56 -0700
+From: Przemyslaw Korba <przemyslaw.korba@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	aleksandr.loktionov@intel.com,
+	arkadiusz.kubalewski@intel.com,
+	Przemyslaw Korba <przemyslaw.korba@intel.com>
+Subject: [PATCH iwl-next] ice: add rx timestamp tracepoint for debugging
+Date: Mon, 11 May 2026 09:36:34 +0200
+Message-ID: <20260511073657.1073780-1-przemyslaw.korba@intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -77,59 +61,65 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM2PEPF00003FC7:EE_|LV2PR12MB5896:EE_
-X-MS-Office365-Filtering-Correlation-Id: 39c50278-117b-43da-a8b5-08deaf2f0eec
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700016|82310400026|376014|56012099003|3023799003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	cnrSXG7ZAyRKDgj5kyggvBx7DuqQZ+GinA3kN3pL5HkOkrZLsKZBjYQtebmbRjjb2sl5thStDbQ///nZIkahNFKoSyjuEYjRlviRkouqmPhITjdGXWAF4q8vvyKWPTTTJI3cIdjvimVBEKHQAA4eBXu66R+FlYNdzyC08uEx847g/4og2gBEOAzxAVjCBOAPpLzpuvyMmBoPGnL9BWiiWj8v//uaM2qMfxSVQddeZVcz8K88T79quRDpKtiiGHCvv4QWXO8qThGgQaFSVUJ7PGteNflyNRsL7kOy4uUfUdH+dJYDUCRv96njmNPbHjqSZABAWg8/XkKTOHDnTci5vY6xZ8PA8WNX39KGK7aVbiUndCP7AlaIwXq6QR1g2L4kbzfDi2LUjMNEoZrqxcO5jsic+xj5yJvUGmE3yBFmQahaeHlBLdXz+yg6+pQBz4njOq/CuYkFqq1TE/zKDjOXKbab0I0yMuI89XFRskZmy03N/I6Q1da2wQjiJ3UlEC3WFYyu6pj6Zze7j6GCpzp2MNUuctG/p5kWM1o6g9RZWBV/xxPXIN0GE4teq/uyPZZ6PmGF/Zj5L8oqAENs0Bl+5wAmg6ka8hlcYtxyoaazZ9KQqdkWUF2QOhzd1HvsHdqi8sIfL29Krr/MEPDjRvFnl4vr24mKaJdy2AFei39eTsX2FX6dZfNGnA+P6D0SC8iY1lF9Wkd+j20gIkAtQFK3Qf6VMfEktn37vbLmwjX5Q6Q=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(82310400026)(376014)(56012099003)(3023799003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	Lxzkt3eisPshWU966hrzr0aOL8nIudGjzqBMMLTofs05Qm4G4UNf0Stbc3eSJwNJOW4o0DSuTlc3OlAVuKZ5q70vPQsFyN8BoNLibIXx0bDAI9i0krx7Dhe4T4VhnPTvi+QFlGc7PO2bh4fbPX7siOcecStg1bKKLNUlHFRJUo81VbzoLj1Iz/DW0wSpg4sdm4nYHohyt3bY+9QTg/MzztbDuob3AT//W4iK/Bv4KIUswRQkMrYa9jp5FwslIsnvIRs0nfcF1r3BNM8Cagu9XePMObKgxRaIt1E7P/SvWXlZ4DaEOJCBkvWGk6Uy2SCxT1wrzi63+OTBGGZ3CZeJxyeQGxwgs6kqOY45rUN+5MfBtUwfP1AMiSNMlYeLgWtadcKdV18pLBYTOf5pk7rdvaar8XwlwZ/3QjQmqciPB8IcT36CkGwjMMdp5Imtda52
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 May 2026 07:29:38.0428
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 39c50278-117b-43da-a8b5-08deaf2f0eec
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DM2PEPF00003FC7.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB5896
 
-The --disable-netlink flag is documented in the man page but missing
-from the usage output shown by ethtool -h.
+Add ice_rx_hwtstamp trace event to help debug PTP rx timestamp issues.
+The trace captures cached_time, ts_high, and the extended ts_ns value in
+ice_ptp_get_rx_hwts().
 
-Add it to the FLAGS section.
+Enable with:
+echo 1 > /sys/kernel/debug/tracing/events/ice/ice_rx_hwtstamp/enable
+cat /sys/kernel/debug/tracing/trace_pipe
 
-Fixes: 6e3ac505bcc7 ("Add runtime support for disabling netlink")
-Reviewed-by: Nimrod Oren <noren@nvidia.com>
-Signed-off-by: Gal Pressman <gal@nvidia.com>
+Signed-off-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
 ---
- ethtool.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/intel/ice/ice_ptp.c   |  2 ++
+ drivers/net/ethernet/intel/ice/ice_trace.h | 18 ++++++++++++++++++
+ 2 files changed, 20 insertions(+)
 
-diff --git a/ethtool.c b/ethtool.c
-index 2444d858b125..97c06b85bf47 100644
---- a/ethtool.c
-+++ b/ethtool.c
-@@ -6416,6 +6416,7 @@ static int show_usage(struct cmd_context *ctx __maybe_unused)
- 	fprintf(stdout, "\n");
- 	fprintf(stdout, "FLAGS:\n");
- 	fprintf(stdout, "	--debug MASK	turn on debugging messages\n");
-+	fprintf(stdout, "	--disable-netlink	do not use netlink, fall back to ioctl interface\n");
- 	fprintf(stdout, "	-j|--json	enable JSON output format (not supported by all commands)\n");
- 	fprintf(stdout, "	-I|--include-statistics		request device statistics related to the command (not supported by all commands)\n");
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
+index 691f05c62d4e..07e621813ff5 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp.c
++++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
+@@ -2333,6 +2333,8 @@ u64 ice_ptp_get_rx_hwts(const union ice_32b_rx_flex_desc *rx_desc,
+ 	ts_high = le32_to_cpu(rx_desc->wb.flex_ts.ts_high);
+ 	ts_ns = ice_ptp_extend_32b_ts(cached_time, ts_high);
  
++	ice_trace(rx_hwtstamp, cached_time, ts_high, ts_ns);
++
+ 	return ts_ns;
+ }
+ 
+diff --git a/drivers/net/ethernet/intel/ice/ice_trace.h b/drivers/net/ethernet/intel/ice/ice_trace.h
+index 4f35ef8d6b29..3cb8c6ea03cf 100644
+--- a/drivers/net/ethernet/intel/ice/ice_trace.h
++++ b/drivers/net/ethernet/intel/ice/ice_trace.h
+@@ -241,6 +241,24 @@ DEFINE_TX_TSTAMP_OP_EVENT(ice_tx_tstamp_fw_req);
+ DEFINE_TX_TSTAMP_OP_EVENT(ice_tx_tstamp_fw_done);
+ DEFINE_TX_TSTAMP_OP_EVENT(ice_tx_tstamp_complete);
+ 
++/* Trace event for Rx timestamp */
++TRACE_EVENT(ice_rx_hwtstamp,
++	    TP_PROTO(u64 cached_time, u32 ts_high, u64 ts_ns),
++
++	    TP_ARGS(cached_time, ts_high, ts_ns),
++
++	    TP_STRUCT__entry(__field(u64, cached_time)
++			     __field(u32, ts_high)
++			     __field(u64, ts_ns)),
++
++	    TP_fast_assign(__entry->cached_time = cached_time;
++			   __entry->ts_high = ts_high;
++			   __entry->ts_ns = ts_ns;),
++
++	    TP_printk("cached_time=%llu ts_high=%u ts_ns=%llu",
++		      __entry->cached_time, __entry->ts_high, __entry->ts_ns)
++);
++
+ DECLARE_EVENT_CLASS(ice_esw_br_fdb_template,
+ 		    TP_PROTO(struct ice_esw_br_fdb_entry *fdb),
+ 		    TP_ARGS(fdb),
+
+base-commit: 5c0d2ac5900d689d422a31cd45073175150c0a39
 -- 
-2.52.0
+2.43.0
 
