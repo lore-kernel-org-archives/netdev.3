@@ -1,83 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED065383326;
-	Mon, 11 May 2026 23:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A98235AC3E
+	for <netdev@vger.kernel.org>; Mon, 11 May 2026 23:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778540978; cv=none; b=pmXw3lk/HAYZ85lDKj6lcDH63BBD++Y4QhK6NTBo1JKhcKgxgzXMFsWEckVUpRP9QX516o3SDgnEAfv2Cr+M43nhDz3tQIqO9NrMl396CDsLMG3Win8zf0QPDyzPhC/TNIJ47CLgc6oSJf7eZYqzCCLmfipS4awZ12sutn38Axo=
+	t=1778541203; cv=none; b=cVU0ex7l/j7pCjbnTsUTZFhZ/0omIgTwgNWOmbnGFsx1NfW41qQNxPIB12E/qzK2VI/JCPObFOuccRdYNHjcqTCvP4JtE9JtGozS3LEe5O6zmFRnmeZMzHA2adlvbzMHNiL08W9vGPiIai7v4BG86kfmJll/qGjPz1oeUuzLAzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778540978; c=relaxed/simple;
-	bh=oNHvi4oxjrwBg8WrHDE3QBzWxrrrcye8fddyPM6VQbA=;
+	s=arc-20240116; t=1778541203; c=relaxed/simple;
+	bh=eqDFIL3LHasiAUpc2StacM0GSiAdWYx9GeRQtsAuxvU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dQOaUuGeXqho+dz3KqLke3ln/mNV5X1o50kObxFzxbLjNwyNaguacJ3vpsIC1kysD1G407pu7EB1vBVoTJwR+cWG9+obvYWL3qbYP2KHXIWOh6XXxdjG6jRZdtUJ+MEfHDLJPd55jBNs6qEged4ylEWc5vifNKknfaUM2c7h+C0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tD+ZfEvW; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=EF11r4bQyLdIgGrKDFIpbUg7yhSFKq9ve5Qd6QuLGXNxaX7Kt8YZnu7+tfbFK2PldeD/hot3eWmQQh192XfabpMR5W1s1r6M9AVbHkHlg1WNu+pk7r+UfDNyDowy61BYkcJV1etF56U78tz97FIe+FG7L0z73zSUoWEow4e2ffg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cq9SfhzC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tD+ZfEvW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14A85C2BCB0;
-	Mon, 11 May 2026 23:09:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cq9SfhzC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4CB6C2BCB0;
+	Mon, 11 May 2026 23:13:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778540977;
-	bh=oNHvi4oxjrwBg8WrHDE3QBzWxrrrcye8fddyPM6VQbA=;
+	s=k20201202; t=1778541202;
+	bh=eqDFIL3LHasiAUpc2StacM0GSiAdWYx9GeRQtsAuxvU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=tD+ZfEvWY6zNN4Rotzj2Kp774to8Jqfnshu16QaCSxae/YvNmIW1jJarDiSqRocLW
-	 tVWXp2unxM4GrbwI8ccU9NuxPbVmKtlXWfhqTwPqsWIzA3IXkI6Mw7gvJarAMhhnav
-	 4w7IG99LKdnePjTd7/1hspEy91ix6y9dJ2WXOuUaT/ZHKcvtonxXqc5IM/OfHzcsXg
-	 Y5XTqNcIhhX5X1Vkal6gpxp4Idmf/UG1Ay+iIvry5nvDAEfdcLGJOquwRABQvM0l/v
-	 2AVlu3J20fhPTcD5ytxrwUBJ+Z/V4weIlqOdaX/2/EjzqbldOYkjqBKe+jZgv//gqd
-	 70uwh/Pbbat8Q==
-Date: Mon, 11 May 2026 16:09:32 -0700
+	b=Cq9SfhzC8w79S7qj6+7gcE7PAXBUMTCnAX2kgbah200Hcnfin/yV0Ez+5+PVFt/fq
+	 F9dBBwenT/FeXalEqziUre6vq/YTwtaPkITlEGcv60a6Dje4J0zoha2okc9yiM/pNh
+	 lzQd5WF6Ye7e5SnoqoB5CHIkLYMxx3IlNgiK7cTLsUo2ap4ZudtSR6MeV6svSdh/Eu
+	 882su12ik9LDQd7AK9iRnBCCeJuO/ko5z78o1ONdVqFTdl1aDOibsgwRr94hse3F9V
+	 7ReUp9J+bsHoAP1a9uMIkudlhoRtaaEwxNFJpJLO/b+v9L2qJVm+oVEiMkPWNyA3V0
+	 QVXBpsAP1UlcQ==
+Date: Mon, 11 May 2026 16:13:20 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Liu Ying <victor.liu@nxp.com>, Philipp Zabel <p.zabel@pengutronix.de>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
- <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Frank Li
- <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- Rob Clark <robin.clark@oss.qualcomm.com>, Sean Paul <sean@poorly.run>,
- Konrad Dybcio <konradybcio@kernel.org>, Akhil P Oommen
- <akhilpo@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>, Abhinav
- Kumar <abhinav.kumar@linux.dev>, Jessica Zhang <jesszhan0024@gmail.com>,
- Marijn Suijten <marijn.suijten@somainline.org>, Vinod Koul
- <vkoul@kernel.org>, Nas Chung <nas.chung@chipsnmedia.com>, Jackson Lee
- <jackson.lee@chipsnmedia.com>, Mauro Carvalho Chehab <mchehab@kernel.org>,
- Mirela Rabulea <mirela.rabulea@nxp.com>, Detlev Casanova
- <detlev.casanova@collabora.com>, Ezequiel Garcia
- <ezequiel@vanguardiasur.com.ar>, Heiko Stuebner <heiko@sntech.de>, Hugues
- Fruchet <hugues.fruchet@foss.st.com>, Alain Volmat
- <alain.volmat@foss.st.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, MD Danish
- Anwar <danishanwar@ti.com>, Roger Quadros <rogerq@kernel.org>, Parvathi
- Pudi <parvathi@couthit.com>, Mohan Reddy Putluru <pmohan@couthit.com>,
- Bjorn Andersson <andersson@kernel.org>, Mathieu Poirier
- <mathieu.poirier@linaro.org>, Neil Armstrong <neil.armstrong@linaro.org>,
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Michal Simek
- <michal.simek@amd.com>, Mark Brown <broonie@kernel.org>, Matthias Brugger
- <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
- <angelogioacchino.delregno@collabora.com>, Linus Walleij
- <linusw@kernel.org>, Lorenzo Bianconi <lorenzo@kernel.org>, Felix Fietkau
- <nbd@nbd.name>, "Andrew F. Davis" <afd@ti.com>, Hussain Khaja
- <basharath@couthit.com>, Suman Anna <s-anna@ti.com>, Ben Levinsky
- <ben.levinsky@amd.com>, Tanmay Shah <tanmay.shah@amd.com>, Erwan Leray
- <erwan.leray@foss.st.com>, Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
- Roger Quadros <rogerq@ti.com>, dri-devel@lists.freedesktop.org,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
- dmaengine@vger.kernel.org, linux-media@vger.kernel.org,
- linux-rockchip@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
- linux-remoteproc@vger.kernel.org, linux-amlogic@lists.infradead.org,
- linux-spi@vger.kernel.org, linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH] dt-bindings: Consolidate "sram" property definition
-Message-ID: <20260511160932.0e2cf50a@kernel.org>
-In-Reply-To: <20260511165942.2774868-1-robh@kernel.org>
-References: <20260511165942.2774868-1-robh@kernel.org>
+To: Xingwang Xiang <v3rdant.xiang@gmail.com>
+Cc: john.fastabend@gmail.com, jakub@cloudflare.com, sd@queasysnail.net,
+ davem@davemloft.net, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, mrpre@163.com
+Subject: Re: [PATCH net v4 0/2] net/tls: fix UAF when TLS_RX is set on
+ sockmap socket
+Message-ID: <20260511161320.358cfaad@kernel.org>
+In-Reply-To: <20260511155210.32926-1-v3rdant.xiang@gmail.com>
+References: <20260511155210.32926-1-v3rdant.xiang@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -87,8 +46,9 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 11 May 2026 11:59:36 -0500 Rob Herring (Arm) wrote:
->  .../bindings/net/ti,icssg-prueth.yaml         |  2 +-
->  .../bindings/net/ti,icssm-prueth.yaml         |  2 +-
+On Tue, 12 May 2026 00:52:07 +0900 Xingwang Xiang wrote:
+> This series fixes a use-after-free triggered by configuring TLS RX on a
+> socket that is already inserted into a sockmap (the reverse of the order
+> that is already guarded against by tcp_bpf_check_ulp).
 
-Acked-by: Jakub Kicinski <kuba@kernel.org>
+Just to check - how much of this code or the patch do you understand?
