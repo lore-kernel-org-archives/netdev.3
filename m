@@ -1,135 +1,63 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FE5C3B52E3;
-	Mon, 11 May 2026 08:13:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C47B3B6BF2;
+	Mon, 11 May 2026 08:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778487213; cv=none; b=I/+CnAef+PzUH7IMY6lDc83C7sfKZWWGiTVaka4uERagMJUhaptL0T0XUyT6zo/d1Qsaf0C//W7BU2YWN3d266eUrA6QEj5ISOMG8yBJDzvvTy9ij2atnsWktfaZy2yKcy/GFBnno18lP9ew6qn7nIglLixbI/CGFVOfqKO11F8=
+	t=1778487427; cv=none; b=a6g+AFuslXcCEORr5nwmz0AiODbS6szg1xr7QggdM0zwsOlLJPpdYg2334b/t6uDzhpDAe6AG3C0vW4EpW7hGstwqhw3u49DtPi3Q9vZkX84EQcYwuN7ftEGQUdOPOAUBtAnegQEL6Sil1gICT1/4TDmwrAR15PHyJzXq5jIMks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778487213; c=relaxed/simple;
-	bh=2dphLYFLCvVUOzZNHaPCmUqQfVBRlR+I9k+BZWO5l2k=;
+	s=arc-20240116; t=1778487427; c=relaxed/simple;
+	bh=KPcJ5hXTrwKnBFSf+/D3W3X1RxZdjdwGOBGpUyeY9+E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DfcF7SGUeeVOdO13A8QQIRmHkX7fOh57ZoMt/9VnRID80Sa4oT1r1EBc7tBkvM9E38b8H9QPx1lHxKrJuTzeR8X+IeqGG9UK9nG+bumghd2bReRvan62y4wX2zZXymTUp5Nt6XmuPDZoA+agkHSInL76/RMWXMPyIsCxYz25vE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tF/hmwi3; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q+KlNaa3kI5MVloT/4bPQQ9oW6Iz1SNGenItwuIx6uz7CbRMecbqqMdUJHzy2du8zh2lpVZv/1gm07VIcJ8cVQ/r/WlEOBeHzNW4BdImMYwudn5SLfPoEbt/+oUnPXwa/vWn3b15BYftQJ3WAzCbRh9lFramwpWIiuuYfjl3jhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rVobUHTG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tF/hmwi3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 857A8C2BCB0;
-	Mon, 11 May 2026 08:13:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778487211;
-	bh=2dphLYFLCvVUOzZNHaPCmUqQfVBRlR+I9k+BZWO5l2k=;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rVobUHTG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AB9EC2BCB0;
+	Mon, 11 May 2026 08:17:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1778487424;
+	bh=KPcJ5hXTrwKnBFSf+/D3W3X1RxZdjdwGOBGpUyeY9+E=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tF/hmwi3wxtVVGYtNUIUCxMAsZ8/d7Xk6yHYI/AISGSFV/PSFAL4P4ot3P0h18wxp
-	 jjGBz8s7T01LkT31rxLXgnEb8OszYNFb/dqj4RGT1DeS8B7rKK2oo96fKH289G3ixg
-	 Q7u+mCE4BrmrqPP7vWMu1CuHkDzZK2cedB+BHJrbLw+TGoif7QrJFERLb7fQgseAT/
-	 y7vkpy/nAoiq3Wbd+D5xB+TX/SUplURmO648NwZRWhqJHea6kQhkx8zriP4uaUnqmL
-	 RawiNji04HT9Jr37LdYRzguSUFXNi+aof7TAIM4k4qvSgUAoFa5P0xETeAQLR0cAKi
-	 ZJKg4389Oy2DQ==
-Date: Mon, 11 May 2026 10:13:29 +0200
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: sashiko@lists.linux.dev
-Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, krzk+dt@kernel.org,
-	robh@kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v5 02/12] net: airoha: Reserve RX headroom to
- avoid skb reallocation
-Message-ID: <agGPqVvwyCbVbROt@lore-desk>
-References: <20260509-airoha-eth-multi-serdes-v5-2-805e38edc2aa@kernel.org>
- <20260510140502.B244EC4AF0B@smtp.kernel.org>
+	b=rVobUHTGza6GZfg8w0UTZAMczYbMPQch/G+cyMGhEw7IXFraKAnGZANTLqWXuL0Zf
+	 2FyPwogC9dBiIJlQRlKNcE9Oipc2KvfuFWb8IXDATI2CV4gpSkdeH/xhtVFLIkOVL2
+	 NSgPzgiQZ90w1neSUehMWCn+yjRK5T4sZXygWOlo=
+Date: Mon, 11 May 2026 10:17:02 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Thorsten Leemhuis <regressions@leemhuis.info>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>, regressions@lists.linux.dev,
+	netdev@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+	Jensen Huang <jensenhuang@friendlyarm.com>,
+	Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+Subject: Re: [REGRESSION] stmmac: Random DMA reset failure on RK3399 since
+ v6.18
+Message-ID: <2026051154-region-handcart-09b6@gregkh>
+References: <CAMpZ1qEwNOqR-KQD4kEqd93aB-TpHnG6WdQc2tXUF0aXMmw_SA@mail.gmail.com>
+ <198e2ce4-07e1-46c0-818d-1eb18645aca0@leemhuis.info>
+ <CAMpZ1qGEOiPj7cApnWJnojSyEpDmXfco=No5n1VfyTCoNyCyFQ@mail.gmail.com>
+ <5308c658-7d4c-4292-b091-a51546ea4d23@leemhuis.info>
+ <f07da4c5-cdb9-42c8-b4e7-f5122254ed8a@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="qZEFo0epdC7n3CCp"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260510140502.B244EC4AF0B@smtp.kernel.org>
+In-Reply-To: <f07da4c5-cdb9-42c8-b4e7-f5122254ed8a@leemhuis.info>
 
+On Mon, May 11, 2026 at 09:35:37AM +0200, Thorsten Leemhuis wrote:
+> Greg, Sasha, could you please cherry-pick c171e679ee66d7 ("net: stmmac:
+> Disable EEE RX clock stop when VLAN is enabled") [v6.19-rc1] to 6.18.y?
+> It fixes a regression for Jensen Huang (for details see below; it was
+> later confirmed that c171e679ee66d7 really fixes this) caused by
+> dd557266cf5fb0 ("net: stmmac: block PHY RXC clock-stop") [v6.15-rc1]. tia!
 
---qZEFo0epdC7n3CCp
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Now queued up, thanks.
 
-On May 10, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issu=
-e(s) to consider:
-> - [High] Missing bounds check adjustment for RX packet length allows buff=
-er overflows
-> --
->=20
-> commit f34e8812cb62dd63f96801a39b0d65ee905cd258
-> Author: Lorenzo Bianconi <lorenzo@kernel.org>
->=20
-> net: airoha: Reserve RX headroom to avoid skb reallocation
->=20
-> This commit reserves NET_SKB_PAD + NET_IP_ALIGN bytes of headroom for
-> received packets to avoid skb head reallocation when pushing protocol
-> headers into the skb.
->=20
-> > diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/eth=
-ernet/airoha/airoha_eth.c
-> > --- a/drivers/net/ethernet/airoha/airoha_eth.c
-> > +++ b/drivers/net/ethernet/airoha/airoha_eth.c
-> [ ... ]
-> > @@ -627,10 +629,12 @@ static int airoha_qdma_rx_process(struct airoha_q=
-ueue *q, int budget)
-> > =20
-> >  		port =3D eth->ports[p];
-> >  		if (!q->skb) { /* first buffer */
-> > -			q->skb =3D napi_build_skb(e->buf, q->buf_size);
-> > +			q->skb =3D napi_build_skb(e->buf - AIROHA_RX_HEADROOM,
-> > +						q->buf_size);
-> >  			if (!q->skb)
-> >  				goto free_frag;
-> > =20
-> > +			skb_reserve(q->skb, AIROHA_RX_HEADROOM);
-> >  			__skb_put(q->skb, len);
->=20
-> Does this code overlook adjusting the bounds check for the RX packet
-> length?
->=20
-> Earlier in airoha_qdma_rx_process(), the software validation check
-> uses the unadjusted lengths:
->=20
->         data_len =3D q->skb ? q->buf_size
->                           : SKB_WITH_OVERHEAD(q->buf_size);
->         if (!len || data_len < len)
->                 goto free_frag;
->=20
-> If the hardware descriptor returns a len that is larger than the newly
-> adjusted dma_len but smaller than or equal to the old data_len, the
-> check will pass.
->=20
-> Since skb_reserve() shifts the skb->tail forward by AIROHA_RX_HEADROOM,
-> will calling __skb_put(q->skb, len) with this unvalidated oversized len
-> push skb->tail past skb->end and overflow the skb_shared_info structure?
->=20
-> Similarly for scattered fragments, could an oversized len passed to
-> skb_add_rx_frag() cause out-of-bounds memory accesses beyond the allocated
-> page fragment?
-
-ack, I will fix it in v6.
-
-Regards,
-Lorenzo
-
->=20
-> --=20
-> Sashiko AI review =B7 https://sashiko.dev/#/patchset/20260509-airoha-eth-=
-multi-serdes-v5-0-805e38edc2aa@kernel.org?part=3D2
-
---qZEFo0epdC7n3CCp
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCagGPqQAKCRA6cBh0uS2t
-rO72AQDvA7/niPO4yeyKs0rtSPk8+ow7Dxz9QLxaPhPQyzVw5QD/eRwgM68iCKuS
-xVwvKSRijfyXRKGUmKBzERC8c8PwHwg=
-=DNP2
------END PGP SIGNATURE-----
-
---qZEFo0epdC7n3CCp--
+greg k-h
