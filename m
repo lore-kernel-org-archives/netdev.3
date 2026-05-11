@@ -1,142 +1,163 @@
-Received: from BEUP281CU002.outbound.protection.outlook.com (mail-germanynorthazon11020098.outbound.protection.outlook.com [52.101.169.98])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013028.outbound.protection.outlook.com [52.101.72.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4687E3FBEC6;
-	Mon, 11 May 2026 14:57:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.169.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFE0A6FC5;
+	Mon, 11 May 2026 15:00:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.28
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778511431; cv=fail; b=l3JBFW/Ep53ZZwmHOfCP6jGdBdtCnZZiZaPDfCeO3N/VHep3ymD+xW9U/ThO2fJTwC4xDBK4DyjO9JIFFs0uv6dmgxStWLww8xMJ9p5uDoWhv2lPJl9kyjMy2Ghjp2wJosGx3/7tFulWsfqqH3nKM0Ezjui6M269/E8AF2dARzA=
+	t=1778511644; cv=fail; b=jqgY6q0y1b+HaYxPbTX8RxWtZcGzlDNjnZGbfRxCninFn2WfpigMZSj8xs0X1mB3775R8G5lzczVI6XHrjyjD8z+cK6uJMvm5fQtC/C0ty69uZYP3DoIq+jIMXMBtY1UWYbybk5nQM80TaVP62a1SuIB3S9+K4mwe6QaHdBjEVg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778511431; c=relaxed/simple;
-	bh=Zs4oaDULX71HvODIlH18YZ6V6DZ0PkVf3YwqSzJoQMI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JH2xpTGqYmK0wnFkv7iSsvRBYOnhglEgRYU1bk/W+EVTgoViMUsTwpLvsJQBOkCLeJvN+vkVana3nSFgE0MLWkIc3OlnrMTart7JW1b1UEvDukDYW2kTCh0hhobdmFfbhmDID/JBcmt6TYSGtANHJwZjrZ/WZaoWkLk9X/4ji8I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=schleissheimer.de; spf=pass smtp.mailfrom=schleissheimer.de; dkim=pass (1024-bit key) header.d=schleissheimer.onmicrosoft.com header.i=@schleissheimer.onmicrosoft.com header.b=Wxijt0zL; arc=fail smtp.client-ip=52.101.169.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=schleissheimer.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=schleissheimer.de
+	s=arc-20240116; t=1778511644; c=relaxed/simple;
+	bh=i86xPdiGWD9C/Np9F3vpD7lxYq5scuiPIXu/sXm4hWU=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=c+IUwZzkPlzJ7fqeoNidODmym2ndu5JqXhYmQXuWwsw3T0FeGIJCV2zfgm1xG+RQSsdYNahqmuejJ/F8hB/6pfocsdH9jhWiqgf13nsqiIT8h4Esc21SgMUbIl6NaOAOhdU9qH8rc7GV+GGTYbnKS2gfLs2ymmKVPkU01KJwx9U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=K00KYxN+; arc=fail smtp.client-ip=52.101.72.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=schleissheimer.onmicrosoft.com header.i=@schleissheimer.onmicrosoft.com header.b="Wxijt0zL"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="K00KYxN+"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=htO7ATblF85kBmWRt5MR4bxqaxRDva3F0LrYuOuZW1STbq2ehaMu9vokS9kSdtnjwP9Sqhqub8U3r7dgcZTvhLv4VoRlffTwfjXwqTBLDSawTGbopyD5T7dnxSSu9jSyfcufVi2Ox4oRTH13i0ZCdzeW+McEEr5N95Um6A6BDhEW9H5IyNh+m1A2BzZUtSZZCBsm8drRrAGDT/Tx1iWl+8VHU1RFX8Drq0YIkysNdDJA+HfEHVWDW73dQW7GwBJBUwZBaAYuW5SICiWlyJF95grSW0uAGHHUC8SrW6vwkCF11dMGUPesBzXhhLuX9rv6YZ8sJtU4V17QfIOcdwB9Iw==
+ b=cs4oM6yb82f8B1ASUHphtOxzFdyZZ8cbpFSOAO0119QIpx/GOMPNWz40o1XOQh1MLo8yk5htHfxqb+6AgcBLA/jXwo7kI3L1TiGULYr3l3c7jumKcUXyakY9zXDG1JzDNrGH8HL2ivYi4PQ2KTTc+TEkmVJ2Zc+2RbRBmyvDHDfau10//l9bhwdXnWYLFPT3cHM527ag8g3Kbp3Vl5Eesql19pg9HQ7O0bMo0WmhoEgIO3gINUPQHTjdcaw43bzC53sCQ0hyX9KFW0sRYeSrMnG1eLH7PHkWkte3jGc6TlUnvpmZGpst/agj+t21YND2HL0eZqJJ8KM0oMzJvHD+Bw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PkducTZr0IeH0DPt4Q2sOuN97JOzaG1MRFaz4jljH3U=;
- b=Vrb5P0XiXcOBdFfuBmAUwEn0jKea1zmKRg/In48qniLe8RKNZIslwPoMC6sPRRrlbzlzW8xqeLkcapviQGyEuYPnc1yaE75G8CK2ZirG+W3TIhS16HctIndy7k9uMqikjTZhNKCm7nBX8d9EMDOSztJ/Oc/tXWdQDMI3ltqwVJAZZBua4pgeT9mlLdehekb3tncCD1ZsUuA1e/e5TK2fSwNe42f/ore/nW8XVpMCziEkyHUaU+8Ympd6bm4Va4leXLBwwf+meRV28+msGSTUC7ZuO+B8jihMhfIcFUBxUDmBdt8lcgAe5GB9MoCbBaTzBxWdkD54vN1sFWvQijjnuQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
- 62.153.209.165) smtp.rcpttodomain=armlinux.org.uk
- smtp.mailfrom=schleissheimer.de; dmarc=fail (p=none sp=none pct=100)
- action=none header.from=schleissheimer.de; dkim=none (message not signed);
- arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=schleissheimer.onmicrosoft.com; s=selector1-schleissheimer-onmicrosoft-com;
+ bh=K/c5L4C46J010lGntMZWtzAw7NZ4ziyj95gT3oellxk=;
+ b=czq/Fk3IcVgOhXsoHZZW+Me0FUig4U9VkFFaYr2punVA31ekT1WjgbmtAG5hS10YPa60O3aQ7mwBKg2Vtp+fFSxbqHjYDklVk2ZG8DvU8NQhrN8M/AJAD/FJBvatjFAFtv//LnxYEMxBSWiDUY6EqLEroWKpxxhI/n2aewJnmFwB503QN95adRKhIHvAEHGVxbnq9Z7MBxTqjFXmrjVyuhEtZKOBWa3atbgQ5eRDViEELtTysP/3shmAWfiOEPkRSqMLFJY7IGPbt5sDUCnNsGJJ6qbuTshgQiqKkRXTrd5VD7syo9z+CTdHDVWPzXeakBoUJDQYNLhwdI6EvlowoQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PkducTZr0IeH0DPt4Q2sOuN97JOzaG1MRFaz4jljH3U=;
- b=Wxijt0zLxepCAyB0HOPftDl3a5JGM1s11BV83gaYzYESWFrF+8av3fUeZ4zG3AUcOEHaM70+GnnJfwOv7KNM7gpCmoMNHLQIgtt0xj5xc4aR15WFttAm8U/S9vErcGiVTdgo10AqGPRnhj/hkhF/FiGHdSErPyztt4NCsmXcp7I=
-Received: from CWLP265CA0270.GBRP265.PROD.OUTLOOK.COM (2603:10a6:401:5c::18)
- by FR5P281MB4764.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:151::5) with
+ bh=K/c5L4C46J010lGntMZWtzAw7NZ4ziyj95gT3oellxk=;
+ b=K00KYxN+AWH17XAiAPMSvOzrpvpog70iHGwCnuxWk5P7phvqYmCkd6IWC9E1A7z61j1wU26NnIET9N1+CHpsYfbsG60VFeXNwMj9oKJzGxAJB43zUI0zUAtCpcb3Cm7L30paUXF84t8/OlS6PnQQZJRPTvZqda8x0DfQXGpAYpavc5YQZ6FTu6e9puB2MiysN+jLHT7DDc7MrwR0GOuQx5yJ/eq+03mfa2n54OFucSBxp0Qk0q9cfzNir+6GCmIMI3MlOqqen3kVSv0V888LWZR6vkv4R38s3ec3jiyp0xjCHdi3AlkHaO8AHpmtXrislCU+KpfHJwYfiiZdw6Dl+Q==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM9PR04MB8585.eurprd04.prod.outlook.com (2603:10a6:20b:438::13)
+ by GVXPR04MB9976.eurprd04.prod.outlook.com (2603:10a6:150:117::13) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.23; Mon, 11 May
- 2026 14:57:04 +0000
-Received: from AM1PEPF000252DD.eurprd07.prod.outlook.com
- (2603:10a6:401:5c:cafe::a2) by CWLP265CA0270.outlook.office365.com
- (2603:10a6:401:5c::18) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9891.23 via Frontend Transport; Mon,
- 11 May 2026 14:57:04 +0000
-X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 62.153.209.165)
- smtp.mailfrom=schleissheimer.de; dkim=none (message not signed)
- header.d=none;dmarc=fail action=none header.from=schleissheimer.de;
-Received-SPF: Fail (protection.outlook.com: domain of schleissheimer.de does
- not designate 62.153.209.165 as permitted sender)
- receiver=protection.outlook.com; client-ip=62.153.209.165;
- helo=mailer.schleissheimer.de;
-Received: from mailer.schleissheimer.de (62.153.209.165) by
- AM1PEPF000252DD.mail.protection.outlook.com (10.167.16.55) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.25.13
- via Frontend Transport; Mon, 11 May 2026 14:57:04 +0000
-Received: from A1460-Ubuntu24.schleissheimer.de (A1460-Ubuntu24.schleissheimer.de [192.168.50.44])
-	by mailer.schleissheimer.de (Postfix) with ESMTP id D0606A005A;
-	Mon, 11 May 2026 16:57:03 +0200 (CEST)
-From: Sven Schuchmann <schuchmann@schleissheimer.de>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Dan Murphy <dmurphy@ti.com>,
-	netdev@vger.kernel.org,
+ 2026 15:00:35 +0000
+Received: from AM9PR04MB8585.eurprd04.prod.outlook.com
+ ([fe80::f010:fca8:7ef:62f4]) by AM9PR04MB8585.eurprd04.prod.outlook.com
+ ([fe80::f010:fca8:7ef:62f4%4]) with mapi id 15.20.9870.023; Mon, 11 May 2026
+ 15:00:35 +0000
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+To: linux-phy@lists.infradead.org
+Cc: netdev@vger.kernel.org,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Josua Mayer <josua@solid-run.com>,
 	linux-kernel@vger.kernel.org
-Cc: maxime.chevallier@bootlin.com,
-	Sven Schuchmann <schuchmann@schleissheimer.de>
-Subject: [PATCH net v3] net: phy: DP83TC811: add reading of abilities
-Date: Mon, 11 May 2026 16:56:30 +0200
-Message-ID: <20260511145630.31618-1-schuchmann@schleissheimer.de>
-X-Mailer: git-send-email 2.43.0
+Subject: [PATCH phy-next 0/5] Lynx 28G SerDes: 25GbE support
+Date: Mon, 11 May 2026 18:00:18 +0300
+Message-Id: <20260511150023.1903577-1-vladimir.oltean@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: AS4P189CA0022.EURP189.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5db::6) To AM9PR04MB8585.eurprd04.prod.outlook.com
+ (2603:10a6:20b:438::13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM1PEPF000252DD:EE_|FR5P281MB4764:EE_
-Content-Type: text/plain
-X-MS-Office365-Filtering-Correlation-Id: 86a5a3f6-ecb2-4df3-db2f-08deaf6d907c
+X-MS-TrafficTypeDiagnostic: AM9PR04MB8585:EE_|GVXPR04MB9976:EE_
+X-MS-Office365-Filtering-Correlation-Id: a5433286-2b24-4bae-b512-08deaf6e0e0f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|82310400026|36860700016|1800799024|18002099003|921020|56012099003;
+	BCL:0;ARA:13230040|19092799006|376014|1800799024|366016|3023799003|11063799003|56012099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	0uhxj2uo9B/s7XcQXwuncvLlk/Bal+UYG7zaN4Iop/Q3YJLQFCSIx8gHheZl7X4102WpBBnPlupl7YaL17yEaSfQtPe1O+MsZArZ8KVnhrw3NXzCzDmIaUJwzHo5OmNGO0TBnvOgHqSRP8bKDbzIr/nTNA7IUAgJJq0vVpz+Gg9mh70CqnxATUnUx0ge/UmdovWSziWeYqBnFB6/D6OOsAKlpeIuzEJz3R7DZH0JrT0fCJWUbZCBE92aVMc/xhm+ha6cdO713S9zbG85RQywIwfNozG6NVcF5OB2SntPJuL1pJp3E6ecMURey/Eio2Yw0Ryd7yMjl/vX2vLbIFqz0hh567g6BHdM5LvqUZlLWZrc8KqkD9EO8MjuqJyHjNrloB0DA/7S4YYwOZ7FpIw+NvArQe6CY4o8xTgJQqdB7Ulyvp+CBZONPY4B9uX4EJouO7/lGnv69jCavUIKkBxP4zHvlfsaRqkUooSID0O0EUM5qwo65946lNiDrlttEQ86GIM/APqnDizfb8FIcBvPWmZkHTwMGLKc/ZIBhM7jZcwD3G4C/8Od2JZod1QmpzX2SiUAoK41KU0lTsYlpSPFDjDWd5WVhphy6btxz9r6sC1ALJ/xgH3RCisDqSvO5ilWHKtjFShpxE4n3IzLL6PpaXq3+KJ5LrH9ZwPd18RwYqj6crUoO9X1d2A2WCBAsYBTOvpxz35wTGDiNre24xgYN4TAdxxwn13sCAl1MHV42rJ8kfyvgWkEEvzv9w6SEcYzam9QMddabI8HstuD6x3CXQ==
+	FkOpT92tw+vAz5f+TNCwooyGT77L9qowS0nanLlyHRRO9LBB3z56GE8W6o+x2Y107hwcItkEMAL9JDTjgtvwVAEs0tLu6IvXNuM6LGSLme15oh6uIUs7OnLeHufZJp/Uh5lRweEcNIVKOF4+l1baw9nT4HLkoTe922ix68rN2734pPW6+UzNxPS7yyYrbJdksjjzyjuEI32hUsN18vX3rDqyUxe2N1wDAVMqMPsL6yf5g5zqovY71G1KmcT1I6RcIqt6isMWU2bFKnAwAPQXWFzjE8awHj5uCBr4+CNzk7ts9FS6RG8MlX/RraeND6ZqpW7UWuM+RO19GZVIYvuE1W/4E9WJsX+uf4g2XuJQS2l9zUdmT/1hyPUmWkRMmkrSGKCwQ1O4r7DgwHCnlrsznbiAm9OPNxhfcuDbsgyluLSMhuFoKRJL14FkasvDdYNh74O/8ftyfSDhSi2vaWh6BwsgcCuPpeGNU6p/yambY+dGbw8LBtJFfrAFMiuY1XAqGdgtBk1nz9aY/Bhk7rNdkyxHGIJielYykVLuGUF2qfPOqdD5iVMBfQaFBvN57Qyimdk7zguk2DJ/xSFbsmyxEgjV+M4J0Qbq4jsbZTysTWfZlTGx7+FVWRpFVl4X62ncjWdOlla9XbmzTBIrqs5vtDEJWUZZ/6morGRG7avmS1wrT9B04Tzctj60B16V8VW27W1WjR9sCC4Pdl48wKrvZw==
 X-Forefront-Antispam-Report:
-	CIP:62.153.209.165;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mailer.schleissheimer.de;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(82310400026)(36860700016)(1800799024)(18002099003)(921020)(56012099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8585.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(1800799024)(366016)(3023799003)(11063799003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	43ll6x9Gi2rRGGGFs0oKa01E9BSzQv0k22/tWDPlwtUGAxCEC8PsgCRt4Y0L4dIe4qPJTYNzQ5skCKOAZh7A92LkCg4Y7AkcRC/yTfMoqtsS6CbnzQP+DBJ8hDmXz1dLWNwa+PJDnFkEJK+xtiIEqBe0tBMe06Mih8J5LYy6nm9bMlSFKfCyT5d+X8vu52v6p7MGddgxtZbx+UG+dHoS565D22VBv2YAQj89ACpjxGo1h7pnPzwRa6q8XN48hnamEwsWD0HAsAAKPkBoGuz168vGYCS++UUzYYcQPZk2YHCiaMXwFhV29dx+RP1tkLNy0v6vRIC1Og1bn6qMkzkxOUqEseU8j+qVLfWx9RjOeHljhU5TAcIImP83y4CdbXugpLzoQFIAq3X27IW+KkobonU+0b3wZZLRXDuLyJN9arwGHJLG4r/UTFhpwfLcr0Bj
-X-OriginatorOrg: schleissheimer.de
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 May 2026 14:57:04.2914
+	=?us-ascii?Q?0hQQ48PhKg9e3hRt8P3fYYzhh+6oqqW4f9s+2VIkSJ4wpRlVwsbAjSMYMy/d?=
+ =?us-ascii?Q?pIzLtGkByHubQtNU1NnZCDvJR+2Nzp+4m/GvZ2XnTjqHEt2QITIHCRL1XwTA?=
+ =?us-ascii?Q?n+fnZzkZRY+AV0REql7PwagrPSoX47V0DuQ+1aUvtni8FaqUn5LUerjbW58p?=
+ =?us-ascii?Q?iJY7UJHEhvL1hpZSZzmbJWAPggv8ho4BEvdJgDkRkKQO+JnPoEJP9uGL+WwW?=
+ =?us-ascii?Q?NgbbPfs5oBRLG1DT7nYwsAWoNHVlIdz7+b/63AlGUecEFLM/uQvtpnU94vIt?=
+ =?us-ascii?Q?SDdCZ6AXs79NIhK9O5VWg5Wo+g+Klq1/TOsbEMoFynAESFj6xD5oXa/KzYKU?=
+ =?us-ascii?Q?pAtroTic+VV0aYMta92MAt4oHsEJiAniNuniGVvD8zSNWTUwwAJ9MaHxEg5B?=
+ =?us-ascii?Q?KsQFFLU5uL2yMeDELiWoK4PlYO3HqHHz+nk1M0Y4k89HdfD1FTOpOYkjc0KY?=
+ =?us-ascii?Q?vNjcuk5jEWGY+0uVPSTiWEUFakyf1xplxtGK0GtjjxDwqrqvSW8TmKAEJKut?=
+ =?us-ascii?Q?cFdaJyZtlH0VIUocD+Lr9y4BpCnYFMFoYVNUECl/+E35xC8D/fxN9Fg+w8z0?=
+ =?us-ascii?Q?NTtYBe5QWFVor3fhzsOCCo6l2hYMTHZQTK+T8qgqm2OrtFNOONaKroXKa9uS?=
+ =?us-ascii?Q?hsfX+F2SyWmBJrF4isfLrLNavWVfuw1Kog3I4oipy0SilbkUDdV2vvE9sSAh?=
+ =?us-ascii?Q?yqO9YHrbabhJ02jVl3mOxrgy9+LTDzlxYokHWeZySjExi9FgcLSVohtvYZCf?=
+ =?us-ascii?Q?q7kb8h8CudCBEe4DVraIhFB+FY/Knj9fVzemDyRN77T66VfrPlp7taJeSdEN?=
+ =?us-ascii?Q?OXJljRmQEiGJ+NdPt04/ESAhcXQpUqiVznluUPtxj28h6nuJ340q+Pfj1sm5?=
+ =?us-ascii?Q?avqtKfSKxc+sf+LCCGLVAX1ApR/Fs4e88d6Qx9aw/YwhUmUMMccmnFbZCJRg?=
+ =?us-ascii?Q?ZI8p5HK45ECRHHy5XRmLBfHiWWdzz3ihxUwHVf5jFmFH0rLn0IGmAjKZMJHB?=
+ =?us-ascii?Q?90OwaZWu1vwq/RUaGeyJvE9VOISAjni4ywwg7zlfFU9uR4YfkQ/MTN82UyIO?=
+ =?us-ascii?Q?ZdgfBFTzZf+RHPEaiEseOx3Bwzpu8KhVaB0g/eohgEc0hmDbRcuSusflbl2c?=
+ =?us-ascii?Q?PVpJCiSwU3QStuw89ksRWy7vulIpIBr2v8bgqsjC07pR7Ywzi25pYitHlVwv?=
+ =?us-ascii?Q?9uMYVvzGRj6QCrEtplDR1lS7JfAZPp9we0DCmypcuIWlhDKilZ/SqyxunsKr?=
+ =?us-ascii?Q?UoB5kXRm1idXeaciA6QZ/mp3FW68JfbJO3mUQGaL7ZLtn1yIGnmfqqpxdIqI?=
+ =?us-ascii?Q?UnYNKRpANLRZcvdhdLeFOtrbHf5+LRSMpfPbgejNKSuhhpUO/Uu3/Q9QmtDR?=
+ =?us-ascii?Q?f0Ewj7kv36TcTMcL1yPyREOe1tCDbyy7JJwiq55FAW+BkHrVrdSb0r/WNQLr?=
+ =?us-ascii?Q?C4Y9Y1QfI5EX3VUVijzW+M2eXY1h3U9KN+N4ar7vuPUKZ3xYO8Ey+xQWKVgC?=
+ =?us-ascii?Q?FOwZ79vdY/SnBodFkwA1iLiOV0Dn372CCxOEYq06t83tZDwgWM/N73g9Pfm3?=
+ =?us-ascii?Q?6nNaM8A1PKw6lZh1FF+XkfhKMa2fpMO8o/LTO15GwCN5OCbcKhblgjE7W6xX?=
+ =?us-ascii?Q?/+EcmdQoJZY/Evmx9YAt/uFmhTj4ZWG7tsX5jO2U1cKuSPHC4hLNrkRHSzSw?=
+ =?us-ascii?Q?gaa9o8NSIsNxG2nrIcFNlyWbfbf67e8/71kLpog4RSBnRB+rIvDRKcOffcBQ?=
+ =?us-ascii?Q?WNfQz0UvXQ=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a5433286-2b24-4bae-b512-08deaf6e0e0f
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8585.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 May 2026 15:00:35.1581
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 86a5a3f6-ecb2-4df3-db2f-08deaf6d907c
-X-MS-Exchange-CrossTenant-Id: ba05321a-a007-44df-8805-c7e62d5887b5
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=ba05321a-a007-44df-8805-c7e62d5887b5;Ip=[62.153.209.165];Helo=[mailer.schleissheimer.de]
-X-MS-Exchange-CrossTenant-AuthSource:
-	AM1PEPF000252DD.eurprd07.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: FR5P281MB4764
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: CqQf/iUg86iLUKhoji6BewiAkUedRfUSK0AqgIWc4Jp5hLUPupHpNsklc9ATzX/eQcsreNcFly5ztoqidv5nMg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB9976
 
-At this time the driver is not listing any speeds
-it supports. This should be ETHTOOL_LINK_MODE_100baseT1_Full_BIT
-for DP83TC811. Add the missing call for phylib to read the abilities.
+This is the remainder of "Lynx 28G improvements part 2", previously
+submitted here:
+https://lore.kernel.org/linux-phy/176850672122.1082429.444623229961712368.robh@kernel.org/
 
-v3:
- - Fixed indentitation problems. no code changes.
-v2:
- - Fixed subject and added fixes tag. no code changes.
+but split up into smaller portions (merged separately):
+- https://lore.kernel.org/linux-phy/20260226182853.1103616-1-vladimir.oltean@nxp.com/
+- https://lore.kernel.org/linux-phy/20260321011451.1557091-1-vladimir.oltean@nxp.com/
 
-Fixes: b753a9faaf9a ("net: phy: DP83TC811: Introduce support for the DP83TC811 phy")
-Suggested-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Sven Schuchmann <schuchmann@schleissheimer.de>
----
- drivers/net/phy/dp83tc811.c | 1 +
- 1 file changed, 1 insertion(+)
+What remains is the highlight feature (patch 5/5): support for dynamic
+protocol changes to/from 25GBase-R, required by SFP28 modules. These are
+used with the NXP LX2160A and the (Ethernet) dpaa2-mac consumer.
 
-diff --git a/drivers/net/phy/dp83tc811.c b/drivers/net/phy/dp83tc811.c
-index e480c2a07450..252fb12b3e68 100644
---- a/drivers/net/phy/dp83tc811.c
-+++ b/drivers/net/phy/dp83tc811.c
-@@ -393,6 +393,7 @@ static struct phy_driver dp83811_driver[] = {
- 		.config_init = dp83811_config_init,
- 		.config_aneg = dp83811_config_aneg,
- 		.soft_reset = dp83811_phy_reset,
-+		.get_features = genphy_c45_pma_read_ext_abilities,
- 		.get_wol = dp83811_get_wol,
- 		.set_wol = dp83811_set_wol,
- 		.config_intr = dp83811_config_intr,
+Patches 1-4 handle the following situation: with current device trees,
+the driver will think 25GBase-R will work on a lane, but it may work or
+may not. This is because not all lanes support this protocol. So we
+modify the SerDes compatible strings to identify them, and we use a
+driver-internal database to figure out on which lanes does each SerDes
+instance support this protocol.
+
+On current device trees, 25GbE is not supported.
+
+Detailed change log in patches. Summary:
+- reworded commit messages
+- change match condition from dt-bindings change 2/5
+- patch 3/5 is new (reject probing on devices with no OF node)
+
+Ioana Ciornei (1):
+  phy: lynx-28g: add support for 25GBASER
+
+Vladimir Oltean (4):
+  dt-bindings: phy: lynx-28g: add compatible strings per SerDes and
+    instantiation
+  dt-bindings: phy: lynx-28g: add constraint on LX2162A lane indices
+  phy: lynx-28g: require an OF node to probe
+  phy: lynx-28g: probe on per-SoC and per-instance compatible strings
+
+ .../devicetree/bindings/phy/fsl,lynx-28g.yaml |  48 +++-
+ drivers/phy/freescale/phy-fsl-lynx-28g.c      | 221 +++++++++++++++++-
+ 2 files changed, 254 insertions(+), 15 deletions(-)
+
 -- 
-2.43.0
+2.34.1
 
