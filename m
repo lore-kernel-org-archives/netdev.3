@@ -1,62 +1,65 @@
-Received: from mail-qt1-f201.google.com (mail-qt1-f201.google.com [209.85.160.201])
+Received: from mail-qv1-f74.google.com (mail-qv1-f74.google.com [209.85.219.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 421CF379EFE
-	for <netdev@vger.kernel.org>; Mon, 11 May 2026 07:23:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDC6B3112BD
+	for <netdev@vger.kernel.org>; Mon, 11 May 2026 07:23:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778484194; cv=none; b=P8/BgDEVgSaiQDrIN9OEjbCj7RBAE/mnKmaqGz+s0IuJuIQ4DIXQg+CC7BNW8nv9ZFSAPKXcvRrVRmtR6Fvz3wVIPbJmehPRc2W+mZSgbv/RAf+V8gQdw1kHWANeUqfJbJMV5SKkg/Ku84fnMRPzMEWyZph+n2ZeE93ePwJTFp0=
+	t=1778484196; cv=none; b=QcL6hULn1UjmJQxymSPPkOAz2KygzpCMfuUKWOwucAfsTPwmzP7UDxtdDP5M4J7mhwXPX7dL79hk+XZ19k4WInAXbv+LWwY6pJE1zdzTy1Wf9AWXA9k6V4jf5vc5dV7hhBL6KRPHn/OYMTrGNXmvhzD5JWF9o7zI4f1qb+Lru4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778484194; c=relaxed/simple;
-	bh=xUHUA2brW+5Nwqxv9KImUvBUimvFJK4dmUvkhLv2zlA=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=l9XLgzB6SauNfdnLiinioiNX7GmY029YU20q4OMgEne6S3M7OF850Okld0t4Bq+NYecy2rH7/a99lNMiNfQf1a12RC/7hBjLIAAkdAHfLXHYsvBaBE0J/ykUrakKPg8jH9bzH2503OscTD6sGlbRMElp5PjUD3yuW4ZJHU2iVAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=e4LQ6tg6; arc=none smtp.client-ip=209.85.160.201
+	s=arc-20240116; t=1778484196; c=relaxed/simple;
+	bh=Rm6RZcqHKcLTttSJ4v0mPEkNwgXbeDarcF6QkEpXYwA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=OqLfEWKnDglKS9PLuoxODl3P6ccikN58sfWBe10Esfv+EfDJYbJtR8OkPWK2ESzSA+McsYY8OvCazqrzu6rLocorQKCic0nh1dTs7XuaipGw7P3kdT1wjhL5rEb8pMzWjbEEje2Fwu2ZqukjNdqFylxXESIwHjFI+iFkfJGWH5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sHipONY6; arc=none smtp.client-ip=209.85.219.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="e4LQ6tg6"
-Received: by mail-qt1-f201.google.com with SMTP id d75a77b69052e-514a182b90dso17685041cf.1
-        for <netdev@vger.kernel.org>; Mon, 11 May 2026 00:23:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sHipONY6"
+Received: by mail-qv1-f74.google.com with SMTP id 6a1803df08f44-8b3fe2f190bso101531666d6.2
+        for <netdev@vger.kernel.org>; Mon, 11 May 2026 00:23:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778484192; x=1779088992; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=LlyNPSemsWqYOzbnlrjFxW0A6vhDwmFk32vMhanLoHc=;
-        b=e4LQ6tg6T7hQ1putCXOR5MXz2E25qHmFPjwVh1rUHuSCvKrIrA0Cu8/AuVfaRS3Imb
-         /L1ICePSu5lqGVUzFR6co5AKeVykOXT577d2N1RwnUrMD4wPQQ+uKXm5fE8I5CvdS6av
-         EXud7krEFy1zuAqp6OitkPoKZ2DQwgnlz8c5CYRQ4OHnXW/TMgZDqzfR2PZq94l4+5ik
-         W6MyIpiq2Qbr1Fnig+eu/fcuXHxqF0QJzAz289xbyTDCgR5xRcA2eBJpywxQgcthwNbJ
-         6oCK00Z/61hbihD2KrGtr1A4mbs/AM37nw2oIj6Jqf1dwIulY9cFafG9rNC4Kov9/93u
-         grIw==
+        d=google.com; s=20251104; t=1778484194; x=1779088994; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=8gYaEYW/hA88xTrfwSY+r0JDbsFOmlIuXc+t9YihHbA=;
+        b=sHipONY6zf5Wrax000LbjCYNPER8dXWkbZlei5xsVRzEi8nMmRHXzcUiZQ13Oe0yZm
+         Zj02aRG8O9efx6NScvEvgWnYq0R2z3ZxOBeySwHiGluS6YhYx891SHkPXlChx1ugGOXH
+         kPYEmJAZDCaJ7FqU0fE92S3s79yOKL+M1X3FCvCL/+qUJAWnur7ChTb/gu2/492ZQ9XC
+         JYSBTrKeasS0Mt5L8ysyhzA8cdaEVO5avZmvsvhQmcoKtCAkEB6fOBQv2eP+zuDWuSuH
+         ZJE7D8b8U/o6IG5MsNGMDPtsKURGAXF4dKIOXLvSCrOB4tUBchsx5A73fRUpZvbAAoUz
+         lbZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778484192; x=1779088992;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=LlyNPSemsWqYOzbnlrjFxW0A6vhDwmFk32vMhanLoHc=;
-        b=afw40idNqu8+C5SAuW+S5pWfebtw5wL0VLV22EhJCqKqNsR5qQnrAwTYf2UiSjghNt
-         xpGlWsbWdxic5U/nOYQwrsYaw7PQ7DLEgeM2s7nHxYgSf9NMLcWMewfWt7Qe9eg7IWe7
-         EMkJE5AMRYbzxlmAx0Kytjo1kcSTSwKn+/wKvdSOzFMoyUMtJreJZ3Pap7VGeYBwlVdJ
-         icQNlooK9KCffKSX9CkXCMNQzYMb1bvS70QRLg87S/5l47hrSc6G8Qu5tSZSbZKB67qs
-         jm9qtmzTmFfnTr6y0mg4zTAYGMhqYU9sO2hNESrzYzQhElpTmXc4cfe4/d1Ydd0uK5FV
-         CGhQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/tpFRmGPcKYQ3QhrpbNhL3lHKekPnd3MHP6h55sjwaZuQJ6oR4+og8IKDrHrGvExw+ijzYElM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw9D+6OnlkFP8Z/5elz07zM0r0dMVQpXHE6sBi8Faf+OLPdRKRn
-	a/lkBqVuJbzFOxaeHEJaJ2GLGNpB3yV8Zv1B7gq0VxQ/Y8ve9zoPQKDtEV/dFHHkT22ec4M4eFb
-	6DCxkTuZqhrUutQ==
-X-Received: from qvad17.prod.google.com ([2002:a0c:f111:0:b0:8c0:95b3:ebef])
+        d=1e100.net; s=20251104; t=1778484194; x=1779088994;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8gYaEYW/hA88xTrfwSY+r0JDbsFOmlIuXc+t9YihHbA=;
+        b=e7UmYiZtCNvCdyrOGkCHwdEdLvtsLWWdscMy77Mv93IJAOiFGvz701mxT/5qQMp/VA
+         YdT/uYoDsGtvVNRiRUCm0vz7IewGRzKg8aa+uYEbdBhg+VnUcE36A72yqgnhKlZLUvcG
+         5EOcvLgD48l00zaoUz7neoqvZBiYGHdciUvc2+z+pk87+ygvxsFAr93F9tbbDwW/QD0Z
+         XT7ZJPK804gyDCp1eaxD/XAelvmFMDYxJFS7Kns7BYyfcW6HcWw7Q3XcF5eUzd7pu4xv
+         HJu0qGrjha+0qM0hCI6/08rBZ7TXphlN4SkK1TNdxbC2uD9qdCWcm91P6st99SjjqOTe
+         ivDw==
+X-Forwarded-Encrypted: i=1; AFNElJ9U42CEbv637fx2iQIN8/Bd2v6E3yEp/rI8dSABZ5l3U6H/rxo+V1LK0Kx+YgStIkfWda0LrjU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YySgp0vYgC4+QgH7IRzrq7FbGC/N5YjencbFapRKwb01Kx9YCR5
+	Xg01jQvaRv7kBbSEdGRZQ01eVS1f1a+tf21g08fK187lD8zgvWuwJlmvsCKCzawj8StShRlh+R1
+	Q7Hx0v7nXyy86EA==
+X-Received: from qtri20.prod.google.com ([2002:ac8:7654:0:b0:50b:4726:f15a])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:622a:2613:b0:50d:a8aa:8087 with SMTP id d75a77b69052e-51461f9fc6bmr325864001cf.38.1778484191917;
- Mon, 11 May 2026 00:23:11 -0700 (PDT)
-Date: Mon, 11 May 2026 07:23:07 +0000
+ 2002:a05:622a:1b1a:b0:50d:8c8f:f94d with SMTP id d75a77b69052e-514621eef47mr344430681cf.52.1778484193677;
+ Mon, 11 May 2026 00:23:13 -0700 (PDT)
+Date: Mon, 11 May 2026 07:23:08 +0000
+In-Reply-To: <20260511072310.1094859-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260511072310.1094859-1-edumazet@google.com>
 X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <20260511072310.1094859-1-edumazet@google.com>
-Subject: [PATCH v2 net-next 0/3] net: use IP_OUTNOROUTES drop reason
+Message-ID: <20260511072310.1094859-2-edumazet@google.com>
+Subject: [PATCH v2 net-next 1/3] net: constify sk_skb_reason_drop() sock parameter
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>
@@ -65,24 +68,111 @@ Cc: Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>,
 	Eric Dumazet <edumazet@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-First patch changes sk_skb_reason_drop() sock to be const.
+sk_skb_reason_drop() does not change sock parameter, make it
+const so that we can call it from TCP stack without a cast
+on a (const) listener socket.
 
-Second and last patch add SKB_DROP_REASON_IP_OUTNOROUTES
-to both tcp_v6_send_response() and inet6_csk_xmit().
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+---
+v2: includes changes to net/core/drop_monitor.c
 
-Eric Dumazet (3):
-  net: constify sk_skb_reason_drop() sock parameter
-  tcp: use SKB_DROP_REASON_IP_OUTNOROUTES in tcp_v6_send_response()
-  ipv6: use SKB_DROP_REASON_IP_OUTNOROUTES in inet6_csk_xmit()
+ include/linux/skbuff.h     | 3 ++-
+ include/trace/events/skb.h | 4 ++--
+ net/core/drop_monitor.c    | 6 +++---
+ net/core/skbuff.c          | 5 +++--
+ 4 files changed, 10 insertions(+), 8 deletions(-)
 
- include/linux/skbuff.h           | 3 ++-
- include/trace/events/skb.h       | 4 ++--
- net/core/drop_monitor.c          | 6 +++---
- net/core/skbuff.c                | 5 +++--
- net/ipv6/inet6_connection_sock.c | 3 ++-
- net/ipv6/tcp_ipv6.c              | 2 +-
- 6 files changed, 13 insertions(+), 10 deletions(-)
-
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index 2bcf78a4de7b9edb0d1342319d4340c0a9997eeb..746e741a8ef99b3052ad581650e5d0db2a95dbb3 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -1313,7 +1313,8 @@ static inline bool skb_data_unref(const struct sk_buff *skb,
+ 	return true;
+ }
+ 
+-void __fix_address sk_skb_reason_drop(struct sock *sk, struct sk_buff *skb,
++void __fix_address sk_skb_reason_drop(const struct sock *sk,
++				      struct sk_buff *skb,
+ 				      enum skb_drop_reason reason);
+ 
+ static inline void
+diff --git a/include/trace/events/skb.h b/include/trace/events/skb.h
+index b877133cd93a80f6b130fab64f334ecdeab8c8fd..2945aa7fe9a7ded5bdec5be3a67382de95239517 100644
+--- a/include/trace/events/skb.h
++++ b/include/trace/events/skb.h
+@@ -24,14 +24,14 @@ DEFINE_DROP_REASON(FN, FN)
+ TRACE_EVENT(kfree_skb,
+ 
+ 	TP_PROTO(struct sk_buff *skb, void *location,
+-		 enum skb_drop_reason reason, struct sock *rx_sk),
++		 enum skb_drop_reason reason, const struct sock *rx_sk),
+ 
+ 	TP_ARGS(skb, location, reason, rx_sk),
+ 
+ 	TP_STRUCT__entry(
+ 		__field(void *,		skbaddr)
+ 		__field(void *,		location)
+-		__field(void *,		rx_sk)
++		__field(const void *,	rx_sk)
+ 		__field(unsigned short,	protocol)
+ 		__field(enum skb_drop_reason,	reason)
+ 	),
+diff --git a/net/core/drop_monitor.c b/net/core/drop_monitor.c
+index f23cea9e1aafb1e98a17f75e6b9c10ce3e2b9d45..2bf3cab5e557a15dd3fa7197098d6b0abcc01fab 100644
+--- a/net/core/drop_monitor.c
++++ b/net/core/drop_monitor.c
+@@ -110,7 +110,7 @@ struct net_dm_alert_ops {
+ 	void (*kfree_skb_probe)(void *ignore, struct sk_buff *skb,
+ 				void *location,
+ 				enum skb_drop_reason reason,
+-				struct sock *rx_sk);
++				const struct sock *rx_sk);
+ 	void (*napi_poll_probe)(void *ignore, struct napi_struct *napi,
+ 				int work, int budget);
+ 	void (*work_item_func)(struct work_struct *work);
+@@ -266,7 +266,7 @@ static void trace_drop_common(struct sk_buff *skb, void *location)
+ static void trace_kfree_skb_hit(void *ignore, struct sk_buff *skb,
+ 				void *location,
+ 				enum skb_drop_reason reason,
+-				struct sock *rx_sk)
++				const struct sock *rx_sk)
+ {
+ 	trace_drop_common(skb, location);
+ }
+@@ -493,7 +493,7 @@ static void net_dm_packet_trace_kfree_skb_hit(void *ignore,
+ 					      struct sk_buff *skb,
+ 					      void *location,
+ 					      enum skb_drop_reason reason,
+-					      struct sock *rx_sk)
++					      const struct sock *rx_sk)
+ {
+ 	ktime_t tstamp = ktime_get_real();
+ 	struct per_cpu_dm_data *data;
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 7dad68e3b5186cf622a3ed5a6e87c09d46bc3fd6..acca1365672c4f98b004c2548133d70c9cf5ddc1 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -1206,7 +1206,7 @@ void __kfree_skb(struct sk_buff *skb)
+ EXPORT_SYMBOL(__kfree_skb);
+ 
+ static __always_inline
+-bool __sk_skb_reason_drop(struct sock *sk, struct sk_buff *skb,
++bool __sk_skb_reason_drop(const struct sock *sk, struct sk_buff *skb,
+ 			  enum skb_drop_reason reason)
+ {
+ 	if (unlikely(!skb_unref(skb)))
+@@ -1235,7 +1235,8 @@ bool __sk_skb_reason_drop(struct sock *sk, struct sk_buff *skb,
+  *	'kfree_skb' tracepoint.
+  */
+ void __fix_address
+-sk_skb_reason_drop(struct sock *sk, struct sk_buff *skb, enum skb_drop_reason reason)
++sk_skb_reason_drop(const struct sock *sk, struct sk_buff *skb,
++		   enum skb_drop_reason reason)
+ {
+ 	if (__sk_skb_reason_drop(sk, skb, reason))
+ 		__kfree_skb(skb);
 -- 
 2.54.0.563.g4f69b47b94-goog
 
