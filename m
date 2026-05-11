@@ -1,105 +1,76 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 335034779BC;
-	Mon, 11 May 2026 17:49:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A690235A387;
+	Mon, 11 May 2026 18:02:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778521769; cv=none; b=iOK7jD/FSQ7NwuIf0VzKSvIIQc9oUN+uebicWyOxedea1MzziTcfMh6Km3tlKkUaqwlJNnsVmDaU5bTGZmmRulr/5oQvU4KuR2yoKsAB8ofhjdKSDsXfkV/pV2uW4tGTyZVcFd3IBCftsDSkvHEtBLx9mRZqq7ywoFLpQhScQHw=
+	t=1778522543; cv=none; b=lHwbPrSBFz6fui9RtPQsJug7HLUcaAlzf6IQY7hUr7yOfhD8nnLlcmWfkqR9pKF4XvUXB6GoZyOT9Q+d/BxNgZimK1Qk0/j/TGaGmtDqXFbBEKarqmEnABItj64ODYbHxekasco3NfElnaYfWULaPKNWkVWO0TL4QYVp/MXe/Js=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778521769; c=relaxed/simple;
-	bh=LuGtlqw5vVLxLbc3qqnf2CeNPUGQ4Oq65Lm0HHnXG2k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FYGlIr0s4Pm8k6ANUrzJkpatM50gU5oJvU6VIHgqz1lcNEpNS5BSTL/wRxb29H9SSvKMK9s3JMNGnJh7L4jkEXJRUpLBR9ucOksurSIcYrWOPE82NRIWKegyQnDdVao6QJKJYx5t8Xmtv86579yBRn3tqvlhXQScEtuysafGaIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cwn9ggLD; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778522543; c=relaxed/simple;
+	bh=9Y68VwPkNI2fatbDkGtBJDAMWLyyp/LPtMfuCNkGVXc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZQwc9BVPABA7pj5pCrLgstWqqAQ1qldb9u8lyD7ZUnCQruKUbGx43zV+/mMSeRiu3bR49wiVmm1/bHyW83kRtuNpyRwYPzDbHe40hIibmxZ3/IZDW9qz4jHiLUYVY5h7AkvTDXBvvvZ6HiN518FnZDRabsz9yEftyZSKnxtICqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=yj1MP7Vo; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cwn9ggLD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C062C2BCC9;
-	Mon, 11 May 2026 17:49:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778521768;
-	bh=LuGtlqw5vVLxLbc3qqnf2CeNPUGQ4Oq65Lm0HHnXG2k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cwn9ggLDA4O+HNJpkjZJPoNQTOJNOnKr8tIUzy9hD6yJMJxImZznKQyrguSpG8oaL
-	 W95YkyfkdtJcHjAT+CToVvUzWo01SknaZwBHnYvhc48wQEEqKgtnQfhu00JO5hovFh
-	 IOZ5qjmktCVLagt/y5DVErYAQtjpFsCn0ouxviGS/wxK0Pmwx/DcdmDoo1z3IDCW8D
-	 3r8DomcSqUAC2/+C+aV4lD++stUdc0LStx674gzW1pmwTaQ1KjS9A0JtkLj/k2gwvG
-	 OCqH7rq68dOt7lRY0kpYkpaA19NVQG9mK367z0BId/+pGVehFogSZSnI4yVu0OjB8H
-	 aSHrRqrYr7pOw==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	sd@queasysnail.net,
-	john.fastabend@gmail.com,
-	bpf@vger.kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net v2 4/4] net: tls: remove bad rollback and UAF on ENOSPC
-Date: Mon, 11 May 2026 10:49:20 -0700
-Message-ID: <20260511174920.433155-5-kuba@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260511174920.433155-1-kuba@kernel.org>
-References: <20260511174920.433155-1-kuba@kernel.org>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="yj1MP7Vo"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=vsGS4vFF5QeO0IhCclm4fdwQEVJvfcIGnL1YjIGgI4w=; b=yj1MP7Vob7yZV2mosq/gmgdk+/
+	RZhkaLTFVn8MdJQ6SayK6iWnh+O9YF9u0Had9gK62lqdnbI8ibZVWHwFRCJa2VJ+nI7RSRTzp81w3
+	A0nboaaxxIht28zgF8fFY4hMowaci3mC7+XizmN2hPqf1sL6dLowjOHZm0R40TsGiEe0=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wMUxK-002Q5I-Om; Mon, 11 May 2026 20:02:14 +0200
+Date: Mon, 11 May 2026 20:02:14 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Jakub Raczynski <j.raczynski@samsung.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com, k.domagalski@samsung.com,
+	k.tegowski@samsung.com
+Subject: Re: [PATCH net-next 1/3] net/stmmac/dwxgmac: Modify DMA functions
+ for future hardware
+Message-ID: <5b94f49e-5f1a-40fb-af34-f4a9d4738502@lunn.ch>
+References: <20260511165416.3093015-1-j.raczynski@samsung.com>
+ <CGME20260511165431eucas1p1450bdea6486a72257f6463d5f40abc50@eucas1p1.samsung.com>
+ <20260511165416.3093015-2-j.raczynski@samsung.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260511165416.3093015-2-j.raczynski@samsung.com>
 
-As explained in commit 54a3ecaeeeae ("bpf: fix ktls panic with sockmap")
-once we call BPF there's no way for us to rollback the iter
-and copy data, since BPF may have modified the message.
-This is regardless of whether BPF set up cork or not.
+On Mon, May 11, 2026 at 06:54:14PM +0200, Jakub Raczynski wrote:
+> Datasheet for newer hardware of XGMAC (3.20a and 3.40a) list support for
+> up to 16 DMA/MTL queues. Currently maximum amount of queues in 8 set by
+> STMMAC_CH_MAX, MTL_MAX_TX_QUEUES, MTL_MAX_RX_QUEUES macros.
+> But before we set these to higher value there are changes to be made.
+> 
+> While newer hardware supports up to 16 MTL/DMA queues, there is support only
+> for 8 TC's (traffic control) entries. Current source assumes these are equal,
+> which might not be true. While in some cases it would be just incorrect value,
+> there are possible wrong memory accesses.
+> 
+> Fix this by saving number of TC supported by hardware in mac_device_info and
+> verify it in related functions. Also use TC count rather than MTL_MAX values
+> where it applies.
+> +	/* Newer XGMAC hardware does support up to 16 MTL/DMA queues but
+> +	 * only 8 traffic class queues. Redirect these, but this is error in
+> +	 * configuration.
+> +	 */
 
-Remove the attempt to roll back iter completely. This removes a UAF
-since BPF may have modified msg_pl and rec, so these pointers were
-stale.
+If this is an error in configuration why not return -EINVAL when the
+configuration is requested?
 
-Note that I'm entirely unsure what the expected behavior is here
-for BPF. Feels like this path must not be exercised by normal
-applications / existing deployments in the first place.
-
-Fixes: d3b18ad31f93 ("tls: add bpf support to sk_msg handling")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
- net/tls/tls_sw.c | 12 ++----------
- 1 file changed, 2 insertions(+), 10 deletions(-)
-
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 360f71fd7884..22b77840e35a 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -1164,11 +1164,8 @@ static int tls_sw_sendmsg_locked(struct sock *sk, struct msghdr *msg,
- 				else if (ret == -ENOMEM)
- 					goto wait_for_memory;
- 				else if (ctx->open_rec && ret == -ENOSPC) {
--					if (msg_pl->cork_bytes) {
--						ret = 0;
--						goto send_end;
--					}
--					goto rollback_iter;
-+					ret = 0;
-+					goto send_end;
- 				} else if (ret != -EAGAIN)
- 					goto send_end;
- 			}
-@@ -1180,11 +1177,6 @@ static int tls_sw_sendmsg_locked(struct sock *sk, struct msghdr *msg,
- 			}
- 
- 			continue;
--rollback_iter:
--			copied -= try_to_copy;
--			sk_msg_sg_copy_clear(msg_pl, first);
--			iov_iter_revert(&msg->msg_iter,
--					msg_pl->sg.size - orig_size);
- fallback_to_reg_send:
- 			sk_msg_trim(sk, msg_pl, orig_size);
- 		}
--- 
-2.54.0
-
+	Andrew
