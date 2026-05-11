@@ -1,33 +1,33 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8DF8382385;
-	Mon, 11 May 2026 20:28:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ECE638A722;
+	Mon, 11 May 2026 20:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778531308; cv=none; b=ABLQoVwVGG+eaDws1ZAE9AetkCdw7c69IayPvB6RLspGjh8tjnRQS/qsKiLs8mi+zFAqkKk5Ldnrn94aBP7ozWopBwHheQgoVxwP/brpQsFYRcABTICjfM5gBbdd4rSKj8osE35J8/D0MrM97TJRKZ/6PuWyu1vTWFcCw5qOvXg=
+	t=1778531438; cv=none; b=r2kYod/UAioTFByEh+1fu5n0+P6gtD/0EA8t/C5eyXgtRHgfj42QzBCkzEBphT4V2Q1PgWQU/ETHP3196SidIUwDIEH37Tu5oprtVGXE4Msn7qli/dgtBN41aYC9VdZhNQ6/7qMblmRJS8i6eSWAG/5m+lHYrkJZsAmxuMmYKXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778531308; c=relaxed/simple;
-	bh=yycbcmDmxJXZwdLlt46ayh/SzElwQ1ybZS6aPnUdLQo=;
+	s=arc-20240116; t=1778531438; c=relaxed/simple;
+	bh=nfKJ0vzhXUnn7BfPiJJPzqO2RcwE2OpWohS5n4ibfOM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CzRbbhdMCWb6USYXwoengt99xCDlONw1fCMqvU7XLiCEVGR3Ew4Jt5FmJ/I0b4+n4LAI14RXV5oSMi9igx/cr+gSBnslYUky3CX8KLm/2IyE3d9lWOb8Pdtg5pE1YFQ6LcW2RxvFzp3QLIfRUQ4paIZ8C7h6mSUVsRwMsvmJiQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=3KwT4xka; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=LiQ7UoJYVxbfXgU2lirGj6K5Uref3efbu+OhYOYnucDpxRb8k36A67HDfxEuTYaffqOl66LubRWq6JWMEkMH39kmnWbKymeLl0ab7oy9in6XKuYNoakEXkiKB6OsBgwJQ4Zv8tU3JoW1N1eB2vVRkjmaojszj2IRch4q2AeozTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=ciUG2hih; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="3KwT4xka"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="ciUG2hih"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=MsFdtNSy+qb1P2t0BGRgl9i/qVRg3tIpfrq6Xuu15eM=; b=3KwT4xka+2zoI8CWJ90+0RA8pZ
-	SOhW4mJWoqj3AgC8aL3DlwFZJucHY9yCgfJILH2gJHqlo7no1byHhjqHkcXo0LZeB5OenC4BfCOep
-	aQhI1qZFl8+IY7szjt7SSZbkboDFAZrjaTx68LYWoWjoLCPjLbiV5b4xYMtVsz0zMPL0=;
+	bh=ZTCRFOzf0DARAmyz4QqunhkiGwHKR59Rydj1SRY5VV4=; b=ciUG2hihcEyJu1iEO929MydgMJ
+	bHy/QUtui7h6W25EUTvSPz1+ET9nxJHbQg7xGSnxS0eHJyurMaLgaRs5cZrU3rTHcvDcUX2gbZWZ/
+	Eeenho2cfnkjI+gg5WKvbwZFtxfsDvIhykyLGMVxu6ttEMlFYM3SBes8vlLB6w0ng8MQ=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1wMXEZ-002R8t-Ga; Mon, 11 May 2026 22:28:11 +0200
-Date: Mon, 11 May 2026 22:28:11 +0200
+	id 1wMXGf-002RB7-Az; Mon, 11 May 2026 22:30:21 +0200
+Date: Mon, 11 May 2026 22:30:21 +0200
 From: Andrew Lunn <andrew@lunn.ch>
 To: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 Cc: Piergiorgio Beruto <Pier.Beruto@onsemi.com>,
@@ -39,12 +39,12 @@ Cc: Piergiorgio Beruto <Pier.Beruto@onsemi.com>,
 	"pabeni@redhat.com" <pabeni@redhat.com>,
 	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next v2 3/9] net: phy: ncn26000: Added PHY loopback
- and read/write MMD callbacks
-Message-ID: <0d61943d-0721-4189-a21e-5ddb50efe768@lunn.ch>
-References: <CY8PR02MB9249CDA8F2C560FDD0F662D883382@CY8PR02MB9249.namprd02.prod.outlook.com>
- <774d54e2-235c-4685-a582-f9714132923a@lunn.ch>
- <CY8PR02MB9249943F50B421C972FAEDE283382@CY8PR02MB9249.namprd02.prod.outlook.com>
+Subject: Re: [PATCH net-next v2 4/9] net: phy: ncn26000: Support for internal
+ phy for S2500
+Message-ID: <954b5b1e-2850-48ac-97f0-f9ac6e52d461@lunn.ch>
+References: <CY8PR02MB9249195FE5BD6D7FA31F4D1B83382@CY8PR02MB9249.namprd02.prod.outlook.com>
+ <b6af67df-1217-411c-ad47-f9c3e556d345@lunn.ch>
+ <CY8PR02MB92493D7EA2E83DA6FE73B10583382@CY8PR02MB9249.namprd02.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,62 +53,28 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CY8PR02MB9249943F50B421C972FAEDE283382@CY8PR02MB9249.namprd02.prod.outlook.com>
+In-Reply-To: <CY8PR02MB92493D7EA2E83DA6FE73B10583382@CY8PR02MB9249.namprd02.prod.outlook.com>
 
-On Mon, May 11, 2026 at 07:44:17PM +0000, Selvamani Rajagopal wrote:
-> [..]
+On Mon, May 11, 2026 at 07:35:15PM +0000, Selvamani Rajagopal wrote:
+> 
 > 
 > > 
-> > On Mon, May 11, 2026 at 06:19:11PM +0000, Selvamani Rajagopal wrote:
-> > > - PHY loopback has to set only BMCR_LOOPBACK bit. As a result, we can't
-> > > use generic, genphy_loopback.
-> > > - Direct MMD calls via Clause 45 read/write avoids indirect calls.
 > > 
-> > The threading of the patch appears to be broken.
-> 
-> I am not clear. I did apply all the patches in sequence on a fresh source tree. It applied cleanly. What kind of issues I should watch out for, for the issue of "threading is broken".
-
-Look at other patchsets on the list. All the emails are threaded
-together, and if you have a sensible mail client, it should show them
-as a tree, with replies extending the tree. 'git send-email' will
-thread them by default, so will 'b4'.
-
-> 
+> > This Message Is From an External Sender
+> > This message came from outside your organization.
 > > 
-> > Also, one patch, one type of change.
-> > 
-> > > Signed-off-by: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
-> > > ---
-> > > drivers/net/phy/ncn26000.c | 36 ++++++++++++++++++++++++++++++++++++
-> > > 1 file changed, 36 insertions(+)
-> > >
-> > > diff --git a/drivers/net/phy/ncn26000.c b/drivers/net/phy/ncn26000.c
-> > > index 68b0e4647..d302e04c8 100644
-> > > --- a/drivers/net/phy/ncn26000.c
-> > > +++ b/drivers/net/phy/ncn26000.c
-> > > @@ -162,6 +162,39 @@ static int ncn26000_config_intr(struct phy_device *phydev)
-> > > return 0;
+> > > @@ -163,7 +166,7 @@ static int ncn26000_config_intr(struct phy_device *phydev)
 > > > }
 > > >
-> > > +/* Directly accessing via Clause 45 read avoids the extra
-> > > + * SPI accesses required by indirect access.
-> > > + */
-> > > +static int ncn26000_read_mmd(struct phy_device *phydev, int dev, u16 reg)
-> > > +{
-> > > + struct mii_bus *bus = phydev->mdio.bus;
-> > > + int addr = phydev->mdio.addr;
-> > > +
-> > > + return __mdiobus_c45_read(bus, addr, dev, reg);
-> > > +}
+> > > /* Directly accessing via Clause 45 read avoids the extra
+> > > - * SPI accesses required by indirect access.
+> > > + * SPI transactions required by indirect access.
+> > > */
 > > 
-> > This needs more explanation. Maybe you need to look into
-> > phydev->is_c45.
+> > Please don't change things you added in the previous patch.
 > 
-> I just followed what is in the existing, similar 10base-t1s phy code, microchip_t1s.c. 
-> Certainly, I will investigate is_c45 flag.
+> I thought v1 is abandoned once v2 is submitted. Didn't realized we diff v1 -> v2 too. Will be careful in avoiding it in future.
 
-Look at is from a different direction. What other PHY drivers do what
-you do? In general, if you do something no other drivers do, it is
-often wrong.
+Wasn't this line added in a previous patch in this series? Patch 3/9 ?
 
-	 Andrew
+       Andrew
