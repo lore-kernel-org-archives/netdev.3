@@ -1,62 +1,62 @@
-Received: from fhigh-a4-smtp.messagingengine.com (fhigh-a4-smtp.messagingengine.com [103.168.172.155])
+Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 968EB3D9670
-	for <netdev@vger.kernel.org>; Tue, 12 May 2026 16:58:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.155
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BBB83D966A
+	for <netdev@vger.kernel.org>; Tue, 12 May 2026 16:58:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778605096; cv=none; b=End/d8LkBYFmwe62do6EwQXR6QcpbeJxf2WlJcPzqh0F26WpWafTTty1BcmnZpEifibXalNxHMR+WwtcaFBnFzkeR+b95FbV73wmsIo/0B35VoaLeRWXObDOs7e57MRSjRLTYtzO0YZFj7qQgMNOpH+36wbVkbiG+VJIqiR8gsc=
+	t=1778605098; cv=none; b=lrdPlUm1ZNzkv1xHJa78aBpStLzYH4fbqoeAS4/h7EDmNuwcxICTIe2fiZwO65qnczo8qxy2vwrYsmXA4E+zWbxgjva9gJa4tJE6mjP8ozHuvx5rlZHeIOd/x9Kcv6+rGEfHu4DvVCtcDqljwTwrGlejjuNKWgMa08jjSW80cTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778605096; c=relaxed/simple;
-	bh=hH8xDMECW/fEhQWQl0BD0CBVVHdPha29BqTgbOfF8xo=;
+	s=arc-20240116; t=1778605098; c=relaxed/simple;
+	bh=rUZrbdwHAwb7qWJQb4BsVCIuGGGQAGGDIxyzU2HxUiI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pIkXVgqapehamczGQIXYUJqiMFtF1ZBiR1AU8a9/a2LvQX509ZeU9gzMO3Jwkm1xy6STdXY+pLNrEyKgCY0g+YMWHU2dYXEyvczFdH3jhdXgLR6SvgX+n6nh+9iFGrNJ7rZ+TSRDKDaxDWCmo4/8oIqRWiyacXPpIxpesjrWx7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im; spf=pass smtp.mailfrom=fastmail.im; dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b=U8TQWrBV; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=c90EFjjC; arc=none smtp.client-ip=103.168.172.155
+	 MIME-Version; b=k9iVsXbcsBzT3hbLDytjHfw2njiUHNjctcwH6IeYsRDGAWBZpJL8nvUjLH3m1cnrGSmNETp4lv3P9WwgAOmbdBeH1k0zE6q7WGW9gX3oTg5WMuX4cry2gdwQvdwufIyePvBfj35BcBRNRk1RQTrKgMTcgxOoOtlgsjOLKdNrWD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im; spf=pass smtp.mailfrom=fastmail.im; dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b=d8j0mRvY; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=VwWS9AJ8; arc=none smtp.client-ip=103.168.172.151
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.im
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b="U8TQWrBV";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="c90EFjjC"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id CB0F414000A2;
-	Tue, 12 May 2026 12:58:13 -0400 (EDT)
+	dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b="d8j0mRvY";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="VwWS9AJ8"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfout.phl.internal (Postfix) with ESMTP id E9050EC021B;
+	Tue, 12 May 2026 12:58:16 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Tue, 12 May 2026 12:58:13 -0400
+  by phl-compute-06.internal (MEProxy); Tue, 12 May 2026 12:58:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.im; h=
 	cc:cc:content-transfer-encoding:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1778605093; x=
-	1778691493; bh=iBGaLdiFiGGZ2IDyp/NQ/f3pVsoq4KIs4s/fdV1SCPM=; b=U
-	8TQWrBV3Cmm1gCpzf6p8et9FCYW9CjtGcOProl7Njx6X0ciygQqD5pvTKD2kpva0
-	1gSqUxP5pJwwSkm0+1DTg6W9k4IaNGgA5/NB0ZLm0UbKRtWTEHI/aFrp7j7mTsPI
-	ODGZQJXQianQ+Pobiuq2TH1YdcMjc6dIPNI3AXC/7y8BgfingYiKJphQxlyrDXHy
-	Qvh8SESRKBH7vB0XyL7/sm8rrykZFUgP0DU/gwbMoAs3ieoG96T9+voSDGFzsqCy
-	WDCV2cu4IIWetLOqkt6SpDWQ3K4cN1Lc+JRH5yafBZJTW0/lHI7n9rAksa5LaXPa
-	MY/8x/Igc7FEPvDdHYnbA==
+	:reply-to:subject:subject:to:to; s=fm3; t=1778605096; x=
+	1778691496; bh=rfFyIvJs81dzmkJ3vIBIPvSyawjdHVpKW9tl4634oqU=; b=d
+	8j0mRvYrngDSyRPpS6OV+YQ9Xi6wZrfWXB4wHGjVZm+Cv6hcQuPfwCkcwn8fqVf9
+	BhvU0pUw2DQx3Sjw0pQ8VRr00Evy/z8WSuaksqy8aS5QgdWE1K04h705acP5ia54
+	UBLUAXk4AVY/dEdnmQ/HWDDoZ/5xiW4L3929Q8P9351t0dzHF1Z9UlaZPnRVcs8v
+	U0l53auFEL7X/GfO1+d2N2dKY+6MA7UafP0LeQ1UZcznKRSrUFz62BMUWVQSPLwX
+	WbZuXPnUnqbh7lfZOAMGhmk6DUZrNbZKIxAima4iWjGRBhzSEIEYrq6w3NkyT1my
+	WLz2/4izaqG5nXtYpx8GA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1778605093; x=1778691493; bh=i
-	BGaLdiFiGGZ2IDyp/NQ/f3pVsoq4KIs4s/fdV1SCPM=; b=c90EFjjCCl/53vWn2
-	boqy1SyrbbByHZfNr+O2dAKSu1/JzPIU0v3eZjvQ8RGsbh5MX7ndfUyKkIpN8QpY
-	rD+gd5m+GGTp2z7uDmG27Q3WY5k9Sayw8/Eh14rNQDDtr2eZSiqr2SM3zHr4JsLO
-	r6t5hK4pJkDyUYtOy71TmpblPtIDA3Cb5TEXrsXVHTMVDHmA22aXw+ZX33V4/0bh
-	LsOVGLNniGtV/QQs3noWJE7COxZu9coZysKKxx6Ns9YRJ7ENfUxZUA5m0UukmlWc
-	r87ZXyYSP0ADfPEHCUv5CPUlO91osTFSm2HC2kS04qoHdbgitlSnEGistcSfBNo7
-	0jkZA==
-X-ME-Sender: <xms:JVwDajtMm39EGY3V-rjuYxbjfygW3if6GmwlTuYG_tukfL2s82u1mg>
-    <xme:JVwDai-1hivmuYrUh8NLpgk95t4q_oxBQ5o89eHgB9A1G7vH1BItb1iiNnYyTHN3i
-    s2zUHndP43h3KqlrwI2wSMxekxOiA0z2Ycdd4RBe6c0WRdEFVZX_OE>
-X-ME-Received: <xmr:JVwDatl6c84uXPJz6anY18HkesHvNbz3W-1rSPvke-o8O38F1R5_1i0b1bgEtG6NFtXLRucbjR_5Ee5pjA>
+	:x-me-sender:x-sasl-enc; s=fm3; t=1778605096; x=1778691496; bh=r
+	fFyIvJs81dzmkJ3vIBIPvSyawjdHVpKW9tl4634oqU=; b=VwWS9AJ8ubloCSKfS
+	vhb92ByVbDUdWco5BGsApXYXWnDTGIWjagqVQpH7o4mB//bagOLBgXbgq16nArlF
+	yu0WAewMWdeu0L1mOZBU62HUU7omDv3cQdgt++a9BfiIOOoO01lp8DtO2zKTDSMB
+	WxPrXaOmqLxLAlZ6g6YI+GGu0Kz0UWAtKiXKFx84giQKOJFhIHHEfjm5Fk7Ei3K3
+	rjulwPvWP1DlcCDfsYzIpvEBCB7I8M437Z0o5TTK9QhojPa1DDgun1c584Lgry61
+	YJsxEjNfou7ztLaQDNjYAcuHWeDzQAiuo5MvE8EPrpazW6ZgxxNlA6hwJQ9LyFFS
+	sEwaQ==
+X-ME-Sender: <xms:KFwDaq_RZaPUFhjdsfKDpmo04d6-K39IREx3tALYjITTKecyzz1NQA>
+    <xme:KFwDapO_l_sqTEd_oq_uRnjK4ViL4EwYBUnmsadsh7QC21ciaZ1NE0D9Hh4Y6WLRp
+    OFKpe6r7F1cf7se7b0To0eRCNpS_o3pqmHZfT1-C8Y2yg8OSBiv3XM>
+X-ME-Received: <xmr:KFwDam2_OgHOBdCsoiSs0X7qxa9O49WGyesLGMbHIa1jbb4o2_RbMF4US75vrOQH7wmbTNhCi4b-y3FbLA>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduvddvfeegucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
     gurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomheptehlihgtvgcu
     ofhikhhithihrghnshhkrgcuoegrlhhitggvrdhkvghrnhgvlhesfhgrshhtmhgrihhlrd
     himheqnecuggftrfgrthhtvghrnhepteffleejfedvhfehieejlefgkeeljeevueeggeev
-    tefhgfeuhfduffegkedvtddtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
+    tefhgfeuhfduffegkedvtddtnecuvehluhhsthgvrhfuihiivgepvdenucfrrghrrghmpe
     hmrghilhhfrhhomheprghlihgtvgdrkhgvrhhnvghlsehfrghsthhmrghilhdrihhmpdhn
     sggprhgtphhtthhopedujedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepuggrnh
     hivghlsehiohhgvggrrhgsohigrdhnvghtpdhrtghpthhtohepuggrvhgvmhesuggrvhgv
@@ -66,14 +66,14 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduvddvfeegucetufdote
     grihhlrdgtohhmpdhrtghpthhtohepfihilhhlvghmuggvsghruhhijhhnrdhkvghrnhgv
     lhesghhmrghilhdrtghomhdprhgtphhtthhopeifihhllhgvmhgssehgohhoghhlvgdrtg
     homhdprhgtphhtthhopegushgrhhgvrhhnsehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:JVwDaiOQ_Obc4G1EXOYMaRLVyl4TMHmMET9gjct9UYt2ZAPWo5jNSg>
-    <xmx:JVwDasIOTE2CcIbhVAzIqCBG5WWC3LK1fZv7dYy9FcXT3bc5pYkF4w>
-    <xmx:JVwDatEStVFB7xWfWFJTCFZCN5MMQbnaMsZkUjOinFQ7Hu02Cop46w>
-    <xmx:JVwDatDOWe40VGfVHjMpIh4b56UjOJqXsXvw5TOnzYoi-nCunPQVlw>
-    <xmx:JVwDalYSfifnl5A57w96_SsVZlJHfRRLFewT8q9OVMZ15A4W4ZzA5PT8>
+X-ME-Proxy: <xmx:KFwDaie74R0hs4hoQu6N-WX0EH1RJl0drq_eeShk0O0CrV3lX_lduA>
+    <xmx:KFwDanb3NLGpUzVvpfFGeU0UHK0-4LMiBuuPbTXAQ2G0F6QHb1BL3g>
+    <xmx:KFwDanXf4boSIKkhPiUl4Jw-moGUuXU2FncVwGAVZ7WGWTuwavoZpw>
+    <xmx:KFwDaqRIeNXCfI6WGTZaQ_WIeSiateZA3jEIyk6bzaWf1IwuqwnNgA>
+    <xmx:KFwDauHhR_4TIftfpf9i14dmOEZ1eqM0ysfE3l5dvAwPIuY3p_1WnV-y>
 Feedback-ID: i559e4809:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 12 May 2026 12:58:12 -0400 (EDT)
+ 12 May 2026 12:58:16 -0400 (EDT)
 From: Alice Mikityanska <alice.kernel@fastmail.im>
 To: Daniel Borkmann <daniel@iogearbox.net>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -92,9 +92,9 @@ Cc: Shuah Khan <shuah@kernel.org>,
 	Florian Westphal <fw@strlen.de>,
 	netdev@vger.kernel.org,
 	Alice Mikityanska <alice@isovalent.com>
-Subject: [PATCH net-next v4 06/12] udp: Support gro_ipv4_max_size > 65536
-Date: Tue, 12 May 2026 18:56:42 +0200
-Message-ID: <20260512165648.386518-7-alice.kernel@fastmail.im>
+Subject: [PATCH net-next v4 07/12] udp: Support BIG TCP GSO packets where they can occur
+Date: Tue, 12 May 2026 18:56:43 +0200
+Message-ID: <20260512165648.386518-8-alice.kernel@fastmail.im>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260512165648.386518-1-alice.kernel@fastmail.im>
 References: <20260512165648.386518-1-alice.kernel@fastmail.im>
@@ -108,83 +108,90 @@ Content-Transfer-Encoding: 8bit
 
 From: Alice Mikityanska <alice@isovalent.com>
 
-Currently, gro_max_size and gro_ipv4_max_size can be set to values
-bigger than 65536, and GRO will happily aggregate UDP to the configured
-size (for example, with TCP traffic in VXLAN tunnels). However,
-udp_gro_complete uses the 16-bit length field in the UDP header to store
-the length of the aggregated packet. It leads to the packet truncation
-later in __udp4_lib_rcv.
-
-Fix this by storing 0 to the UDP length field and by restoring the real
-length from skb->len in __udp4_lib_rcv.
+Wherever a GSO packet can occur, and its length is used to fill the UDP
+header, use udp_set_len that assigns 0 if the length doesn't fit 16
+bits, so that the packet can be properly parsed and segmented later,
+instead of having truncated length.
 
 Signed-off-by: Alice Mikityanska <alice@isovalent.com>
 Reviewed-by: Willem de Bruijn <willemb@google.com>
 ---
- net/ipv4/udp.c         | 5 ++++-
- net/ipv4/udp_offload.c | 4 ++--
- net/ipv6/udp_offload.c | 2 +-
- 3 files changed, 7 insertions(+), 4 deletions(-)
+ net/ipv4/fou_core.c                    | 2 +-
+ net/ipv6/fou6.c                        | 2 +-
+ net/netfilter/ipvs/ip_vs_xmit.c        | 2 +-
+ net/netfilter/nf_conntrack_proto_udp.c | 4 +++-
+ net/psp/psp_main.c                     | 2 +-
+ 5 files changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-index 3e92575f1d55..856c23b9d6dd 100644
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -2583,8 +2583,8 @@ int udp_rcv(struct sk_buff *skb)
- 	struct rtable *rt = skb_rtable(skb);
- 	struct net *net = dev_net(skb->dev);
- 	struct sock *sk = NULL;
--	unsigned short ulen;
- 	__be32 saddr, daddr;
-+	unsigned int ulen;
- 	struct udphdr *uh;
- 	bool refcounted;
- 	int drop_reason;
-@@ -2605,6 +2605,9 @@ int udp_rcv(struct sk_buff *skb)
- 	if (ulen > skb->len)
- 		goto short_packet;
+diff --git a/net/ipv4/fou_core.c b/net/ipv4/fou_core.c
+index a50740d0f288..aef3ce1dec7a 100644
+--- a/net/ipv4/fou_core.c
++++ b/net/ipv4/fou_core.c
+@@ -1040,7 +1040,7 @@ static void fou_build_udp(struct sk_buff *skb, struct ip_tunnel_encap *e,
  
-+	if (!ulen)
-+		ulen = skb->len;
-+
- 	if (ulen < sizeof(*uh))
- 		goto short_packet;
+ 	uh->dest = e->dport;
+ 	uh->source = sport;
+-	udp_set_len_short(uh, skb->len);
++	udp_set_len(uh, skb->len);
+ 	udp_set_csum(!(e->flags & TUNNEL_ENCAP_FLAG_CSUM), skb,
+ 		     fl4->saddr, fl4->daddr, skb->len);
  
-diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-index 22acc80b12a4..23653872ca65 100644
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -916,7 +916,7 @@ int udp_gro_complete(struct sk_buff *skb, int nhoff,
- 	struct sock *sk;
- 	int err;
+diff --git a/net/ipv6/fou6.c b/net/ipv6/fou6.c
+index 588929409241..4b659ca60ba9 100644
+--- a/net/ipv6/fou6.c
++++ b/net/ipv6/fou6.c
+@@ -30,7 +30,7 @@ static void fou6_build_udp(struct sk_buff *skb, struct ip_tunnel_encap *e,
  
--	udp_set_len_short(uh, newlen);
-+	udp_set_len(uh, newlen);
+ 	uh->dest = e->dport;
+ 	uh->source = sport;
+-	udp_set_len_short(uh, skb->len);
++	udp_set_len(uh, skb->len);
+ 	udp6_set_csum(!(e->flags & TUNNEL_ENCAP_FLAG_CSUM6), skb,
+ 		      &fl6->saddr, &fl6->daddr, skb->len);
  
- 	sk = INDIRECT_CALL_INET(lookup, udp6_lib_lookup_skb,
- 				udp4_lib_lookup_skb, skb, uh->source, uh->dest);
-@@ -953,7 +953,7 @@ INDIRECT_CALLABLE_SCOPE int udp4_gro_complete(struct sk_buff *skb, int nhoff)
+diff --git a/net/netfilter/ipvs/ip_vs_xmit.c b/net/netfilter/ipvs/ip_vs_xmit.c
+index ae3ed2c00ec3..c51ebd83a476 100644
+--- a/net/netfilter/ipvs/ip_vs_xmit.c
++++ b/net/netfilter/ipvs/ip_vs_xmit.c
+@@ -1100,7 +1100,7 @@ ipvs_gue_encap(struct net *net, struct sk_buff *skb,
+ 	dport = cp->dest->tun_port;
+ 	udph->dest = dport;
+ 	udph->source = sport;
+-	udp_set_len_short(udph, skb->len);
++	udp_set_len(udph, skb->len);
+ 	udph->check = 0;
  
- 	/* do fraglist only if there is no outer UDP encap (or we already processed it) */
- 	if (NAPI_GRO_CB(skb)->is_flist && !NAPI_GRO_CB(skb)->encap_mark) {
--		udp_set_len_short(uh, skb->len - nhoff);
-+		udp_set_len(uh, skb->len - nhoff);
+ 	*next_protocol = IPPROTO_UDP;
+diff --git a/net/netfilter/nf_conntrack_proto_udp.c b/net/netfilter/nf_conntrack_proto_udp.c
+index 8a5675983e7c..0854f9e498e7 100644
+--- a/net/netfilter/nf_conntrack_proto_udp.c
++++ b/net/netfilter/nf_conntrack_proto_udp.c
+@@ -45,9 +45,11 @@ static bool udp_validate_len(struct sk_buff *skb,
+ 			     const struct udphdr *hdr,
+ 			     unsigned int dataoff)
+ {
+-	unsigned int udplen = udp_get_len_short(hdr);
++	unsigned int udplen = ntohs(hdr->len);
+ 	unsigned int skblen = skb->len - dataoff;
  
- 		skb_shinfo(skb)->gso_type |= (SKB_GSO_FRAGLIST|SKB_GSO_UDP_L4);
- 		skb_shinfo(skb)->gso_segs = NAPI_GRO_CB(skb)->count;
-diff --git a/net/ipv6/udp_offload.c b/net/ipv6/udp_offload.c
-index c92cf5ee3e6a..7370bcb80332 100644
---- a/net/ipv6/udp_offload.c
-+++ b/net/ipv6/udp_offload.c
-@@ -171,7 +171,7 @@ int udp6_gro_complete(struct sk_buff *skb, int nhoff)
++	if (!udplen && skblen >= GRO_LEGACY_MAX_SIZE)
++		return true;
+ 	if (udplen > skblen || udplen < sizeof(*hdr))
+ 		return false;
+ 	return true;
+diff --git a/net/psp/psp_main.c b/net/psp/psp_main.c
+index ce7a0ade450f..0475e680651d 100644
+--- a/net/psp/psp_main.c
++++ b/net/psp/psp_main.c
+@@ -211,7 +211,7 @@ static void psp_write_headers(struct net *net, struct sk_buff *skb, __be32 spi,
+ 		uh->source = udp_flow_src_port(net, skb, 0, 0, false);
+ 	}
+ 	uh->check = 0;
+-	udp_set_len_short(uh, udp_len);
++	udp_set_len(uh, udp_len);
  
- 	/* do fraglist only if there is no outer UDP encap (or we already processed it) */
- 	if (NAPI_GRO_CB(skb)->is_flist && !NAPI_GRO_CB(skb)->encap_mark) {
--		udp_set_len_short(uh, skb->len - nhoff);
-+		udp_set_len(uh, skb->len - nhoff);
- 
- 		skb_shinfo(skb)->gso_type |= (SKB_GSO_FRAGLIST|SKB_GSO_UDP_L4);
- 		skb_shinfo(skb)->gso_segs = NAPI_GRO_CB(skb)->count;
+ 	psph->nexthdr = IPPROTO_TCP;
+ 	psph->hdrlen = PSP_HDRLEN_NOOPT;
 -- 
 2.54.0
 
