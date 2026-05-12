@@ -1,134 +1,75 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29FF34BC023
-	for <netdev@vger.kernel.org>; Tue, 12 May 2026 09:31:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 991403A1696;
+	Tue, 12 May 2026 09:36:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778578280; cv=none; b=jT7ghEthsK4Wt1/UaSMjMQ9vGsgObXM3ftrnx3YO+ok+mfNsv2CxFCX3sh1r8DC2Sy7pk87H3UCQa7eVWOdNZH76sUWoiio8IfUUEoim4OPmUieq37ByH/8NanlQvct0XmMUTcHBTz0B50OGkm5g3kF7A0+Q5+uSptdR5KMuKQY=
+	t=1778578617; cv=none; b=WO/abBL0j3EbRYCbcUKYMdnr5ygUMn+wtrpsHHx/lVS/0pj1mO4xEFW6SR2gGeJulwCE2ZJ/N3mKIwIf+L22VjNaTnTZXx7j/hWfBD/5Nt0czE0XfDpxVt0VnRSI3j3Nvcj13GNz+eq41bPwYeHOh6r/WTf3fPbzB63WLD/i8FI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778578280; c=relaxed/simple;
-	bh=Wp9oJK+TQouTc/5MVS5LRf6gpBnWoPMk1KagdWAWwo0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N2QzMOxubx2RolLnTdXs9E17QQZkhqKGcnVdDfw9P34rxhnAmlLUS6KyU9XMMVx6+HbkHe/Bf1nUBoJxWASkG+riuqE3N+gxxCHgHhPHp8XEX+SR3BfGGtV18DWwUh5mTkS9yGwEVDtBTmC+AzsJcDqeJMKlF9oIXaBl4Wcejq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IJRRC4jW; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1778578617; c=relaxed/simple;
+	bh=1ZVb6JAsWhhlMn5EyFbfVxMNq4KaFAxjA1rVB+g0uV0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iKozFcoDYE8YmQ8e00v5+iVuzjxWzbh4G/kkNVJjo+GtC7ZAnXHWFvt4V04IdQ2VdkWV1olVWc0DoK++DR9ZK6sZeqNavHHumo/Nd5MkDPgCfY2jydHyQ4deARFFMxm2DcwFeh+N5fciqTJM5MZkQY2e+bUxo+Wg48wpQVu1QGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h3jLXEGW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IJRRC4jW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778578279; x=1810114279;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Wp9oJK+TQouTc/5MVS5LRf6gpBnWoPMk1KagdWAWwo0=;
-  b=IJRRC4jWMRNsrzCgyMLkurAouP6HTv6TZdltH3lns4TAJyIBoGuClCiX
-   c0rmXBRghzHFrDBX0stSjmrE2566sujtdDTdJ8E9tDabzPm9oqIpaAOK2
-   z3hZQybcEbFzzSdfs04YqRuDWJFoMJyLeLOxVUtPK7KaC/DY2tTU45cIE
-   lwcjDLmSHHSxVXZZkgcOpC/zGfHaoUTykL9zcbp5tVY7JqHjE5pMd+Ozr
-   e0+J0wyVGBhyjxJhbogukYlFavCgfzgYXgxP/X+soF4O59GjwVwIFO2D6
-   fVWXfvhdfMs8VQXrEoMNJ8b0kYy3T05mMOA3bi4QPQ+LJE9VRDzuaQWT0
-   A==;
-X-CSE-ConnectionGUID: wGUMekafRqyIpF8LDjtKgQ==
-X-CSE-MsgGUID: kDWv3R1AQZebSc07+R60iA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="79663252"
-X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; 
-   d="scan'208";a="79663252"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 02:31:18 -0700
-X-CSE-ConnectionGUID: V3CUeQEsRsWwvGUZVETVwQ==
-X-CSE-MsgGUID: LrPDCEucT/SS3ZE8dAO3Sw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; 
-   d="scan'208";a="231323233"
-Received: from os-delivery.igk.intel.com ([10.102.21.165])
-  by fmviesa009.fm.intel.com with ESMTP; 12 May 2026 02:31:17 -0700
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Subject: [PATCH iwl-next v2 4/4] idpf: pass the return value of skb_checksum_help()
-Date: Tue, 12 May 2026 10:47:29 +0200
-Message-ID: <20260512084729.1338557-5-michal.swiatkowski@linux.intel.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20260512084729.1338557-1-michal.swiatkowski@linux.intel.com>
-References: <20260512084729.1338557-1-michal.swiatkowski@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h3jLXEGW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C289C2BCF5;
+	Tue, 12 May 2026 09:36:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778578617;
+	bh=1ZVb6JAsWhhlMn5EyFbfVxMNq4KaFAxjA1rVB+g0uV0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=h3jLXEGWO1pyPRqN1yjNTRsWT5Wm/znlIJJwkr6HMjYCZ5UCPEE7od5EW4/bmV4ep
+	 lQv4ntBf0iLBS3wsd7LrSGMp0Cmpie0jvIyQ33Hma3nwHLCuUwmKZq4wGwyXI7nK1m
+	 aSwB0kkb23aarLs809yyjK5haWp+g3ROTOxrBGhaA7phP5D1dAl61qsxYrp2CfLCpP
+	 +88eP6SkrZMXBpApwswa3q7/2zVvSKNPC0NtYEb++I0wwQLIImRJrEoZdHE3DNaMwR
+	 xJPxzJi2sfIEjGqak1EQnQTmNzP8NFhcpENbtEo9zQ1aslub8AEHOU2s6l+NFDx8Zx
+	 rIKr/bskFQ47w==
+Date: Tue, 12 May 2026 10:36:51 +0100
+From: Simon Horman <horms@kernel.org>
+To: Luiz Angelo Daros de Luca <luizluca@gmail.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Alvin =?utf-8?Q?=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
+	Yury Norov <yury.norov@gmail.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Abdulkader Alrezej <abdulkader.alrezej@gmail.com>,
+	Yury Norov <ynorov@nvidia.com>
+Subject: Re: [net-next PATCH v2 0/8] net: dsa: realtek: rtl8365mb: bridge
+ offloading and VLAN support
+Message-ID: <20260512093651.GH27589@horms.kernel.org>
+References: <20260503-realtek_forward-v2-0-d064e220b391@gmail.com>
+ <20260510085426.GS15617@horms.kernel.org>
+ <CAJq09z7AUqUixR+jo=UFAbU9mTX0X50DuZJfRcmVwEWcHTZmQQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJq09z7AUqUixR+jo=UFAbU9mTX0X50DuZJfRcmVwEWcHTZmQQ@mail.gmail.com>
 
-skb_checksum_help() can fail. Pass its return value back to the caller.
+On Mon, May 11, 2026 at 01:53:14AM -0300, Luiz Angelo Daros de Luca wrote:
+> Hi Simon,
+> 
+> > There is somewhat overlapping AI-generated review of this patchset
+> > available at https://netdev-ai.bots.linux.dev/sashiko/ and
+> > https://sashiko.dev/
+> >
+> > I would appreciate it if you could look over that and address any issues
+> > which represent new bugs or regressions. While I think that, in general,
+> > any pre-existing problems that are flagged can be left as possible
+> > follow-up.
+> 
+> Thanks for the suggestion. However, it will take me some time to fix
+> all the issues. Most of them are real.
 
-Commonize this software path in goto.
-
-Instead of just returning error try calculating software checksum first.
-There is a check for TSO in checksum_sw_fb.
-
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
----
- .../ethernet/intel/idpf/idpf_singleq_txrx.c   | 22 ++++++++-----------
- 1 file changed, 9 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
-index e3ddf18dcbf5..dde986706a37 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
-@@ -78,12 +78,7 @@ static int idpf_tx_singleq_csum(struct sk_buff *skb,
- 			l4.hdr = skb_inner_network_header(skb);
- 			break;
- 		default:
--			if (is_tso)
--				return -1;
--
--			skb_checksum_help(skb);
--
--			return 0;
-+			goto checksum_sw_fb;
- 		}
- 		off->tx_flags |= IDPF_TX_FLAGS_TUNNEL;
- 
-@@ -138,7 +133,7 @@ static int idpf_tx_singleq_csum(struct sk_buff *skb,
- 					 sizeof(*ip.v6), &l4_proto,
- 					 &frag_off);
- 	} else {
--		return -1;
-+		goto checksum_sw_fb;
- 	}
- 
- 	/* compute inner L3 header size */
-@@ -163,12 +158,7 @@ static int idpf_tx_singleq_csum(struct sk_buff *skb,
- 		l4_len = sizeof(struct sctphdr) >> 2;
- 		break;
- 	default:
--		if (is_tso)
--			return -1;
--
--		skb_checksum_help(skb);
--
--		return 0;
-+		goto checksum_sw_fb;
- 	}
- 
- 	offset |= l4_len << IDPF_TX_DESC_LEN_L4_LEN_S;
-@@ -176,6 +166,12 @@ static int idpf_tx_singleq_csum(struct sk_buff *skb,
- 	off->hdr_offsets |= offset;
- 
- 	return 1;
-+
-+checksum_sw_fb:
-+	if (is_tso)
-+		return -1;
-+
-+	return skb_checksum_help(skb);
- }
- 
- /**
--- 
-2.49.0
-
+Thanks, much appreciated.
