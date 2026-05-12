@@ -1,55 +1,55 @@
-Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
+Received: from fout-a3-smtp.messagingengine.com (fout-a3-smtp.messagingengine.com [103.168.172.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BE53346AC4;
-	Tue, 12 May 2026 15:05:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.153
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0DA3ADB94;
+	Tue, 12 May 2026 15:13:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778598309; cv=none; b=U1xeXli55TxEBb9kspQNcHsWm1Peder2W6p9jNxrdGg2ECE+CZKRdmghULUIa/wBWu7ZOk5K9bJWDC8SMA3ut8W+heXL9ZqfggSN22qxr9mMdsxYD0jv0mGngSXWYE5x1vPmi58GwZrSqGfD3W7QUnv8xI5jv9X4pENr+AxEJ+g=
+	t=1778598832; cv=none; b=pJE9W0E+QxaG6SUYOCALSmAIHugw9AVBSwy9Yu2AwngocWW0DLUOEcGh+XcTzIz1Xve7g/eMhsk+4Xme92PNZgNQIlAuDvAPxm58647mKhhc3Ja8knts07UZEKMJAQQE0ZQ9RE8oBDjP4dhwDPH4m753m1KLVdVM58fPBhuHbZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778598309; c=relaxed/simple;
-	bh=VUqOtT28QtamBhTUI7hcF8tSInGIdl5ywozCPk2lkrk=;
+	s=arc-20240116; t=1778598832; c=relaxed/simple;
+	bh=n6He3MHOhl6b1jzMbiTQcxN/83zKOZ1lsUWQ1p+11Cw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X+LcHrGsbTOQMpKWANVWpPYNx6TDPbD948jqYgwIwBo8sWz23SIoLqingC4dRQXbx/LOxdndchUepXEjO03IE7uU7j23r0POX30b2S20k3feNR4DJiCbggcZVAQj2R3xApzYNEmj+yK4cHYd5VWjQgI7NvXV7DztNIFA5pzSBsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=AS9onW9l; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=WGi3imwL; arc=none smtp.client-ip=103.168.172.153
+	 Content-Type:Content-Disposition:In-Reply-To; b=iFwuz6PLCe6xUUM/xnIWPmrboJT7b9dzC3HFIZ2828T0qGxK1AAnUQuhsjtdkTSg2IL3iCXoRPkciM+wC7+dz/KgP0HHFb4r2Q4ZvVsa8MssHWpgd/O7PZeCB3JgrJ/cho9WGuwq1qEEBoiu3DzBUYFOOadKFAwjHXsP3iXzMJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=kt5h+Q+P; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=g99FBwDL; arc=none smtp.client-ip=103.168.172.146
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="AS9onW9l";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="WGi3imwL"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id B602C140020E;
-	Tue, 12 May 2026 11:05:05 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Tue, 12 May 2026 11:05:05 -0400
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="kt5h+Q+P";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="g99FBwDL"
+Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
+	by mailfout.phl.internal (Postfix) with ESMTP id 16DE5EC0206;
+	Tue, 12 May 2026 11:13:50 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-12.internal (MEProxy); Tue, 12 May 2026 11:13:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
 	 h=cc:cc:content-type:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1778598305; x=
-	1778684705; bh=UZIvXI70GG2eH5JwWXbZK5ECjIUULOELaOAAhDLAcYo=; b=A
-	S9onW9lMU7lHHTQAq/4mwGFI7BBYj4jYt2f9thwwMz+W1C6ngttcA6jMnUI1VW5N
-	Y+Of+i5TdX8uIcwB/L3+A5QcQPkfktsIbolw1Fy39iRwWDGM0uhjH37EQG2eoYcT
-	IcIleb9ixMIe1+Oqy6erdxcelygS19StpYtcIAu87LvYqtpHZsEyN8BDfKNaPMzV
-	whXp2ovMaiW1IgbTLjwHDzMQACFdwrSh6ct+WzRyCZgrkj1Dz2rsbnoONHf/+SeT
-	c4MJHxazQYYslCvwMgF01GUyr72/zMaejqKZWMgbsj8+Mq3ooGdMIErDKGZhE+s3
-	2AT5rYlQMBciXgaKS+0Jg==
+	:reply-to:subject:subject:to:to; s=fm1; t=1778598830; x=
+	1778685230; bh=x450cnHuAsSkugN6rsBxOaQ+GdojEN9A8YeAUH+BPUI=; b=k
+	t5h+Q+P2x1N9ZGO5m7E9vqlONRCaT+HTEVygiNRrmN2jlPXMmZSmUA11cKdCkczv
+	nDi+CiGkawupfFfiUmLjfWiSQGrZzcMlgs3XdK4esB4oa0bI+MvuK7gi3ayUlPFb
+	j8lT+1nCnu61IAN60rwHnOkCnCz6ECYyElsJ/pXjNaYcn35g1eWzQaRgJot1s2f1
+	qM+xn7zRrMDwgc8ou+zTKQmqnshHfNwIQorG7hySHvcym+crrgpCFCHzS9lhClfg
+	FH0X5B2bq7wWUABgnNg31/f9ntJooh5aNhPlhHnea179slb1mJ3OUcLi43Aoh3Go
+	uXHmughELB0XILkDlapkg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-type:content-type:date:date
 	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
 	:message-id:mime-version:references:reply-to:subject:subject:to
 	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1778598305; x=1778684705; bh=UZIvXI70GG2eH5JwWXbZK5ECjIUULOELaOA
-	AhDLAcYo=; b=WGi3imwLKWQcQOarF2fbzasGfN/tlWfRH58KKRelCpdcsg14Icg
-	2yoTZIUbpoZEVoIHofrnkaEOlAIyR6WVbxcAgj9bgG433dPty2th1bK2sPD6P6q8
-	EVZknawJtnU8lrhpc+Vst3yTGQEYkDNQJhKPwYCI8LBerrVrIbIrx6hSDC23m4GE
-	JEPFIXN0v37CPinghww1xBbYlkK6eAsJBAIydf8y0VfLIVkwTeY9z6o7KMGlXs6u
-	+pXPKpNID1CPBorI+v2RJlKHk2UGM90gYw19A5B5oLN1/BDU/r8wZdy14KyoTgm/
-	x1++TDii2pWcrdq2V9MvaXjeka4FMib35UA==
-X-ME-Sender: <xms:oUEDaid-uVXeaarOflC2klACKfcU-J7M7NayYGyqGcHeXZghnTQS7g>
-    <xme:oUEDahJ20lJQ0-HCDn1Iy0i5jsVn-rSu0etYCVNBuG6CqgDqE5qiepIGVnfYy84DC
-    5KpHqdS517Y_36ow7Y2XTZ4KHXoI0e-RUSZkTlQMlrWovgg_pB8-Z4>
-X-ME-Received: <xmr:oUEDanyhyE_7zCWapPrya8j0xRGSp89YM7AwvOgIkGqNWunOOga_7eSJxI2mLOc_ACIKJVgnla2leHzvqvqSNvA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduvddvudduucetufdoteggodetrf
+	1778598830; x=1778685230; bh=x450cnHuAsSkugN6rsBxOaQ+GdojEN9A8Ye
+	AUH+BPUI=; b=g99FBwDLp2sfBJbP3sOOn4Xr+RaLKurfRG1l6u45yxHgmLG5LhB
+	1dSle44sHDqzsQY/x3PPM4TN9GXEP2oqoBNeP5EPQwjcEVs6f5N9bpgya+dS3BE0
+	rgdd9kPAg0mnrFRBPs9LfWhzmdl/yjrgiC3+JglFfuDBO9gQrgxodmxZcaMS1Cnf
+	MsrPO8JpNvMny5POyxohQYDoyASQjr98e0m6xlzL1SaiDFOd2ePK5mPaInNb4L4R
+	LGApjxy9oXOWT7Z9W85SVq+o3+aJOf+Wlemr9MDI0ecgFIcUDvaZC+3X8QefD3il
+	ZIXQi7dW6oD3i7lfSUTmnVosQoEj3Tj+lvw==
+X-ME-Sender: <xms:rUMDap_HzlOdHzMS0f121DVfh49_1jlg-nIUb8Dov7wqUyB8ji8jNA>
+    <xme:rUMDaiqOhGwo18qxASPTI5FhM3srfrtZ56I67YUSLyv9U6IWR56Qv_98DdBDC_d0z
+    Wf-3VsETjIlCAJqrq9u8QWdxJCFAeKeaRDh8xsLCLLqVyE2nZAQpQ>
+X-ME-Received: <xmr:rUMDarRzYkgoc2KkVe2smsKq1h5JVf_XShwranuHXj9vF_AbFTMTPjD82dLz-DnfWNcyu7yq23YcJb1tkvor6Ow>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduvddvudefucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
     gurhepfffhvfevuffkfhggtggujgesthdtredttddtjeenucfhrhhomhepufgrsghrihhn
@@ -57,40 +57,36 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduvddvudduucetufdote
     grthhtvghrnhepuefhhfffgfffhfefueeiudegtdefhfekgeetheegheeifffguedvueff
     fefgudffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
     epshgusehquhgvrghshihsnhgrihhlrdhnvghtpdhnsggprhgtphhtthhopeelpdhmohgu
-    vgepshhmthhpohhuthdprhgtphhtthhopegrnhhtohhnihhosehophgvnhhvphhnrdhnvg
-    htpdhrtghpthhtohepuggvvhhnvgigvghnsehgmhgrihhlrdgtohhmpdhrtghpthhtohep
-    vgguuhhmrgiivghtsehgohhoghhlvgdrtghomhdprhgtphhtthhopehnvghtuggvvhesvh
-    hgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegrnhgurhgvfidonhgvthguvghv
-    sehluhhnnhdrtghhpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvth
+    vgepshhmthhpohhuthdprhgtphhtthhopeguvghvnhgvgigvnhesghhmrghilhdrtghomh
+    dprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphht
+    thhopegrnhhtohhnihhosehophgvnhhvphhnrdhnvghtpdhrtghpthhtoheprghnughrvg
+    ifodhnvghtuggvvheslhhunhhnrdgthhdprhgtphhtthhopegurghvvghmsegurghvvghm
+    lhhofhhtrdhnvghtpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomh
     dprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgrsggv
     nhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvh
     hgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:oUEDavvfc7EE7-MP08eVcizsgXxjkoZ1bsZY-HaL4CsrxVVgWjokIA>
-    <xmx:oUEDaiDc_Jc1Yb-79yvEilD0-3Cb4vWLm1EXca6MCwzNw7XmnG1v7g>
-    <xmx:oUEDapFgugn7-ca2nV1IeY6PX_UwLOMdwIzEjuGvg71ArB5wTcZkfw>
-    <xmx:oUEDaqCcb87DwQkOfGsZt-mx1oL9L7XtjEgSHemxVrn743ZUp_ehMQ>
-    <xmx:oUEDahuv-Pnq8gQ9szmqgFpUpAmpPTkAcL9H75R-2J2ycJqc3JDQxq0->
+X-ME-Proxy: <xmx:rUMDatOxcBne1nuUOCtci9Cu7xkB3KsLJWp5y5CCVaaHgSQD5VE4aQ>
+    <xmx:rUMDahhFSsZHypiYw4Em46L8L4n-yRrguqbCNyHka4yudt9ozVaMsA>
+    <xmx:rUMDaininiFHfTJMMiRow6oYOENZxCUzmTigiZSysqDxFI0qQpVzFA>
+    <xmx:rUMDalhaSY9qOJO4Vc7mjWcleTUwrMMT9EdrKaPlC2y3LaMyXnq9Yg>
+    <xmx:rkMDagO5UrWmWSR8arn6y46LpRhfK5LnN3DO522bBStLwQyEc1DL9SyM>
 Feedback-ID: i934648bf:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 12 May 2026 11:05:01 -0400 (EDT)
-Date: Tue, 12 May 2026 17:04:59 +0200
+ 12 May 2026 11:13:49 -0400 (EDT)
+Date: Tue, 12 May 2026 17:13:47 +0200
 From: Sabrina Dubroca <sd@queasysnail.net>
-To: Antonio Quartulli <antonio@openvpn.net>
-Cc: David CARLIER <devnexen@gmail.com>, Eric Dumazet <edumazet@google.com>,
-	netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+To: David Carlier <devnexen@gmail.com>
+Cc: netdev@vger.kernel.org, Antonio Quartulli <antonio@openvpn.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net 1/2] ovpn: tcp - use cached peer pointer in
- ovpn_tcp_close()
-Message-ID: <agNBm3vvxI15D7ib@krikkit>
+Subject: Re: [PATCH net 2/2] ovpn: respect peer refcount in CMD_NEW_PEER
+ error path
+Message-ID: <agNDqz_4aUnwkusN@krikkit>
 References: <20260512042036.19870-1-devnexen@gmail.com>
- <20260512042036.19870-2-devnexen@gmail.com>
- <CANn89i+qfzW_S-Z_vT3=UH00Qu2KodJf=V7O3o=yMVgfjK82xg@mail.gmail.com>
- <CA+XhMqy50a8zq1foi564r2niHzJo54E3TCpT-YmYa=r2n75Uyg@mail.gmail.com>
- <4ff6590a-6695-4c6c-b677-a7891b249165@openvpn.net>
- <agM1LMZ30jZDRqZ3@krikkit>
- <a2cbd426-cf71-40d5-9b5e-220758775660@openvpn.net>
+ <20260512042036.19870-3-devnexen@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -99,53 +95,37 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <a2cbd426-cf71-40d5-9b5e-220758775660@openvpn.net>
+In-Reply-To: <20260512042036.19870-3-devnexen@gmail.com>
 
-2026-05-12, 16:17:39 +0200, Antonio Quartulli wrote:
-> On 12/05/2026 16:11, Sabrina Dubroca wrote:
-> > 2026-05-12, 15:55:39 +0200, Antonio Quartulli wrote:
-> > > Hi,
-> > > 
-> > > On 12/05/2026 06:56, David CARLIER wrote:
-> > > >     Same multi-read pattern shows up in ovpn_tcp_recvmsg(),
-> > > >     ovpn_tcp_sendmsg(), ovpn_tcp_data_ready() and ovpn_tcp_write_space()
-> > > >     - happy to roll those into v2 as well, or punt to a follow-up,
-> > > >     whichever you'd prefer.
-> > > 
-> > > @Eric, if you have no objection, I'd pick this patch up in my tree and let
-> > > David follow with a new patch for net-next.
-> > 
-> > But this patch is not fixing any problem either, right?
-> 
-> Mh, because the sock outlives the peer, so there is no risk in accessing
-> sock->peer in this case, right?
+2026-05-12, 05:19:13 +0100, David Carlier wrote:
+> diff --git a/drivers/net/ovpn/netlink.c b/drivers/net/ovpn/netlink.c
+> index 291e2e5bb450..4c66c1ec497e 100644
+> --- a/drivers/net/ovpn/netlink.c
+> +++ b/drivers/net/ovpn/netlink.c
+> @@ -462,10 +462,12 @@ int ovpn_nl_peer_new_doit(struct sk_buff *skb, struct genl_info *info)
+>  sock_release:
+>  	ovpn_socket_release(peer);
+>  peer_release:
+> -	/* release right away because peer was not yet hashed, thus it is not
+> -	 * used in any context
+> +	/* For UDP, the peer is unreachable until added to the hashtables, so
+> +	 * dropping the initial reference is enough. For TCP, the peer may be
+> +	 * concurrently reachable via sk_user_data->peer until
+> +	 * ovpn_socket_release() detaches; rely on the refcount.
+>  	 */
+> -	ovpn_peer_release(peer);
+> +	ovpn_peer_put(peer);
+>  
+>  	return ret;
+>  }
 
-I guess I got distracted by some of the discussion. I thought this was
-only about "peer and sock->peer may differ", and not "sock may be gone
-so sock->peer is not valid".
+nit: after this change, ovpn_peer_release() is only used within
+peer.c, and can become static.
 
-sock->peer can't change behind our backs, because, as David said:
-
-    sock->peer is only assigned once, in ovpn_socket_new()
-
-
-But the sock doesn't outlive the peer. ovpn_socket_release() does
-ovpn_peer_put(), and frees the ovpn_socket immediately via
-kfree(sock). So if:
-
-   ovpn_tcp_close() starts, finds sk_user_data set and a peer, does peer_hold
-   the peer gets deleted in parallel, ovpn_socket_release() frees the ovpn_socket
-   ovpn_tcp_close() resumes and does ovpn_peer_del(sock->peer)
-
-we can indeed hit a UAF on sock.
-
-
-So this patch is needed as-is, sorry for my confusion earlier:
+I think it'd be nicer to do that now with a v2, but if Antonio wants
+to pick this patch up directly, the fix LGTM:
 
 Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-
-
-The refactoring of all those peer accesses can be done in -next.
 
 -- 
 Sabrina
