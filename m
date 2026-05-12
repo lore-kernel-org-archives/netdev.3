@@ -1,137 +1,71 @@
-Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38DB4397334;
-	Tue, 12 May 2026 12:37:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.217
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6F2F36A343
+	for <netdev@vger.kernel.org>; Tue, 12 May 2026 12:39:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778589458; cv=none; b=htZrl12F6crw/fk1Pbe4CaPA7r9VlS4EkZI4bICqqspY0IPU/+s5Yu9S5vuxHVPYtOujru7Ws/t0om8x84AvZTO3PIZi83MMQjvxz6g/kyfs5WSxVNd86bgFXlIZTZdnJgpbU0obfDMWI47DkgpiUguajktbpsZJ7QGo6GjYw/8=
+	t=1778589555; cv=none; b=VFfaCbu/7eeE4JVHifr76W0FoVgCN68/GBZNauXWeKLWPxz9EfNL9UiN7Y5PKbc3p6Jxi+n3kMOS+2eXQDmhdSZl5zpdJY7t+78MAhbnf275YmiymYwnloFmS6BWnqLeOuSuFpPpTOlCv1EZDM3pYbkx/3KoQRue8SAuS+c/ZG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778589458; c=relaxed/simple;
-	bh=FtHibDwf4diqOTLQfe/537XWA1YucT72UJL/lnnYIGc=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=IEyoy8LRROU0JqOd97PB22PquR7YG6mEwYa+k09XD9BieL3WhuiffwsLAhOkCMGyMHbpnpw/bvPtJ7m+1mA/8adAO55DncB0TUVNZo7VKdVI2zjiaryOC82SEQrRyedSXfju6EsVGIvUx3C1HBqDMEGkKSBPlM4B7KjVQCsxh7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=cUVxgbHk; arc=none smtp.client-ip=113.46.200.217
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1778589555; c=relaxed/simple;
+	bh=Rz/65pv7HQA4lh+u2l05XrHxcptLoi7N+HXifJUf99c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uf1y8vbPBHgB21/FJNUHjOKSBTEqyVtVQndd5nvR60cFUrcp5mEhKoReF8RswRXn4ISEQOLDI1XdUfXHvBy7fGzxEXw81yFkrrHDiahyLPeGJNoodeEXALzfRmxMFiXL76uqklP4FDqXNnB1L2rgMSyC36obpnL3FqAB1dfq/pg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=uKwpfeBp; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="cUVxgbHk"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=erlvBGRu2nXaiUh13OE6LqIxT/cq/tW3w2iP08op2gY=;
-	b=cUVxgbHkw1m8Z3DtSM8ObdSPwOXHlsearDaZ2dwlYTk+OdhFw/jsSYnE3dIIbI3Hkh2pkVub+
-	6MA/Nsv1Cp32SEizDxMC9i8KGlaeQiQWVrWsxD6W1rOgEBLymTzXgPZrKzEVk0pevsSTWikUJ/7
-	vy/nkqGibUOJspAx2RywUA8=
-Received: from mail.maildlp.com (unknown [172.19.163.104])
-	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4gFGBl6jRLzcZxn;
-	Tue, 12 May 2026 20:30:07 +0800 (CST)
-Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id A64B44048F;
-	Tue, 12 May 2026 20:37:27 +0800 (CST)
-Received: from localhost.localdomain (10.90.31.46) by
- kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Tue, 12 May 2026 20:37:27 +0800
-From: Jijie Shao <shaojijie@huawei.com>
-To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
-CC: <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
-	<chenhao418@huawei.com>, <huangdonghua3@h-partners.com>,
-	<yangshuaisong@h-partners.com>, <shiyongbang@huawei.com>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<shaojijie@huawei.com>
-Subject: [PATCH net] net: hibmcge: fix incorrect packets in the RX path issue
-Date: Tue, 12 May 2026 20:34:56 +0800
-Message-ID: <20260512123456.3786635-1-shaojijie@huawei.com>
-X-Mailer: git-send-email 2.30.0
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="uKwpfeBp"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=XcA6QnZVPpX6xEnYNB4CQPVgtp66izVY9T2pg47uM/Y=; b=uKwpfeBprf6rfhJBkMALS+HxNq
+	2zj4pNcygN0kOndGAC1N3LBFLwLcM4tQrZZ3y8EgTqFVteRm/qS//azjttnzNZTgNaILfykqQIT6R
+	4yxQb3FjwRZ+7kpxTXyEp3cQQXLu5v4qSJHYErLz807izAYobJhnanVNzREgh5zXsXVk=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wMmO8-002Xmq-0y; Tue, 12 May 2026 14:39:04 +0200
+Date: Tue, 12 May 2026 14:39:04 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Tiju Jacob <jacobtiju@gmail.com>
+Cc: netdev@vger.kernel.org, Vivien Didelot <vivien.didelot@gmail.com>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Vladimir Oltean <olteanv@gmail.com>
+Subject: Re: mv88e6xxx: 88E6320 =?utf-8?Q?external_?=
+ =?utf-8?Q?PHY_on_MDC=5FPHY=2FMDIO=5FPHY_-_=28GPIO_7=2F8=29_?=
+ =?utf-8?B?4oCU?= is mdio-gpio the right approach?
+Message-ID: <1b509630-5c2e-4763-af07-28cd165678fa@lunn.ch>
+References: <CADAg6uxK+xjPRgmSXeqfmbw1RgzOhUukkc-X72O61ywKhvx1_Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemk100013.china.huawei.com (7.202.194.61)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CADAg6uxK+xjPRgmSXeqfmbw1RgzOhUukkc-X72O61ywKhvx1_Q@mail.gmail.com>
 
-The test found that when the SMMU is disabled,
-the driver may receive the following error packet:
-note: The memory is initialized to 0xfe,
-and 0xbf is what we expect.
+On Tue, May 12, 2026 at 07:32:19AM -0400, Tiju Jacob wrote:
+> Hi All,
+> 
+> We have an 88E6320 (marvell,mv88e6085) with an 88E1512 PHY on Port 5.
+> 
+> The PHY's MDIO is wired to the switch's MDC_PHY/MDIO_PHY pins (52/53
+> =GPIO 7/8), which are separate physical pins from MDC_CPU/MDIO_CPU
+> (54/55) used by the CPU. GPIO 7/8 read HIGH as inputs confirming the
+> PHY is alive.
+> 
+> We tested exhaustively at runtime: marvell,mv88e6xxx-mdio-external,
 
-00000440: bf bf bf bf bf bf bf bf bf bf bf bf bf bf bf bf
-00000450: bf bf bf bf bf bf bf bf bf bf bf bf bf bf bf bf
-00000460: fe fe fe fe fe fe fe fe fe fe fe fe fe fe fe fe
-00000470: fe fe fe fe fe fe fe fe fe fe fe fe fe fe fe fe
-00000480: bf bf bf bf bf bf bf bf bf bf bf bf bf bf bf bf
-00000490: bf bf bf bf bf bf bf bf bf bf bf bf bf bf bf bf
+marvell,mv88e6xxx-mdio-external is for the 6390 family and newer. It
+is not relevant for the 6320.
 
-It seems that the packet is not completely written when the descriptor
-indicates that the packet is valid. According to the chip document,
-the chip writes packets first and then writes the descriptor.
-However, the actual sequence in which the packets and descriptor are
-written to the memory is incorrect.
+The 6320 has one MDIO bus, covering both the internal and external
+devices. What address do you have the 88E1512 PHY strapped to? You
+need to avoid the internal devices. Ideally you want it on address 5,
+but it can be other addresses.
 
-Each packet and descriptor of the hibmcge are in the same page.
-Therefore, when the Relaxed Ordering is enabled, the transactions for
-writing packets and writing descriptors may not be strictly ordered.
-As a result, the driver receives incorrect packets.
-
-Therefore, this patch disables the Relaxed Ordering to ensure the
-strict order of packets and descriptors.
-
-Additionally, during the process of analyzing the issue,
-it was discovered that the position of dma_rmb() was incorrect.
-It should first execute dma_sync_single_for_cpu(), and then dma_rmb().
-This patch has also made the corresponding modifications.
-
-Fixes: f72e25594061 ("net: hibmcge: Implement rx_poll function to receive packets")
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
----
- drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c | 4 +++-
- drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.c | 6 +++---
- 2 files changed, 6 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c
-index 068da2fd1fea..5b91b596349c 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c
-@@ -420,6 +420,8 @@ static int hbg_pci_init(struct pci_dev *pdev)
- 		return -ENOMEM;
- 
- 	pci_set_master(pdev);
-+	pcie_capability_clear_word(pdev, PCI_EXP_DEVCTL,
-+				   PCI_EXP_DEVCTL_RELAX_EN);
- 	return 0;
- }
- 
-@@ -525,4 +527,4 @@ module_exit(hbg_module_exit);
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR("Huawei Tech. Co., Ltd.");
- MODULE_DESCRIPTION("hibmcge driver");
--MODULE_VERSION("1.0");
-+MODULE_VERSION("2.0");
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.c
-index a4ea92c31c2f..0ae314994676 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.c
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.c
-@@ -452,12 +452,12 @@ static bool hbg_sync_data_from_hw(struct hbg_priv *priv,
- {
- 	struct hbg_rx_desc *rx_desc;
- 
--	/* make sure HW write desc complete */
--	dma_rmb();
--
- 	dma_sync_single_for_cpu(&priv->pdev->dev, buffer->page_dma,
- 				buffer->page_size, DMA_FROM_DEVICE);
- 
-+	/* make sure HW write desc complete */
-+	dma_rmb();
-+
- 	rx_desc = (struct hbg_rx_desc *)buffer->page_addr;
- 	return FIELD_GET(HBG_RX_DESC_W2_PKT_LEN_M, rx_desc->word2) != 0;
- }
--- 
-2.33.0
-
+	Andrew
