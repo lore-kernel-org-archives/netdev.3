@@ -1,101 +1,132 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9240739A047;
-	Tue, 12 May 2026 10:04:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E16AD39A047
+	for <netdev@vger.kernel.org>; Tue, 12 May 2026 10:04:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778580255; cv=none; b=OEMYRcJmW0ypK0c8Em7F1SAefXUeA9ZtwvCzcmSjwsxbi0KRPEpYB+W1palRSGSUrZCC38NXRbYfcrZ0hVnct13Vy7yQ2v+XcZ3pt5Qu6GIMQs47W+zr7iHx4025ZZiqELM0re5LeKur552qiVrvVlyefLRlvRcW6aGrbzAGAZQ=
+	t=1778580264; cv=none; b=GGuIMMUGnwCYgIDTNQkOT9Ezgg3hNemaNb1cs81mSWIXFFmHrxUsaC+nOyNSFUo+DxHwOgenknCKShblImVuy+TzzJQOHJq71Z1+aNyE2pgiUUR+Wpk2SzYcdZ7t1GPdMV39g74sQUOvO964yT/xMGKMC6oWMYMO4F5gZ9KMZv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778580255; c=relaxed/simple;
-	bh=4T7sBzDVIK9OOISmVLAv6YbgORhLKZfrSlJGZE2S7lg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To; b=SXaK62hJHQGLgAjOsn2d6S5k+izMVRM2f8q7A83J4AxDo1NS3eRPekSj2/6nyD3jwObO2G6hR0b+KxnvD3EM1W+JbQFrHrnOOl660IddHkOmKEM2whg99l2NSKE37C83O4b3j8P0mOq+LjmT88UsZn8mMnAbaLl7YVbZ+mXsd2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TUZ+Q55N; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778580264; c=relaxed/simple;
+	bh=dH3eSM7f8VLLe5f6yZnNnzgC0LVj3cFbdyIYlGPbtGA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bdt+YFGaJT89tm1YLXdbCpVxQ3mkIavSZaPE8h2LxArjAl5ywcZB8TZXSM0ezUnBnQEhffBTQb5D38Xgf6TopSgMHfMAB7Dfk2nTXePclgnxlv6DJtEqdcY4MfAHDFM4qGDPCz1s3Pv+l0YMy1EgLAF/LKiaCkAFZZIswubDbrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HTy4Z3r1; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=nlZ2S0R7; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TUZ+Q55N"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 19734C2BCF6;
-	Tue, 12 May 2026 10:04:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778580255;
-	bh=4T7sBzDVIK9OOISmVLAv6YbgORhLKZfrSlJGZE2S7lg=;
-	h=From:Date:Subject:To:Reply-To:From;
-	b=TUZ+Q55NdfOUKjlqXp/5QJE1PjIcN48PjgitbG2XKGVBYSQGIX804ASqEmSmFKCgF
-	 XA4ZUiMGLaIrAbCdAeE3JUwyrd4XhzctB7RDXVipdsPrf1twziBDT+Hzqs/tihWpfz
-	 UTLXZ7/OWXPXx/Fyov4BNAHVVIfu57ufUBxFaOFVv9OTiFpfvlAg5x7mxRBZHftfrN
-	 gASV/GXvLLY2rga7cFuj0V7GjcQge0rzJmZVdt9oVAv0sJEe/3OApReHCSy4p5afuy
-	 9Pxi6xA/8UoKNq5iPcG0w82pjYQvzkkCjK+keDW/lJmefLC36rYrA6TNMfoKXLNcGa
-	 zTODueVA4TRWw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 02B96CD4F21;
-	Tue, 12 May 2026 10:04:15 +0000 (UTC)
-From: Carl Lee via B4 Relay <devnull+carl.lee.amd.com@kernel.org>
-Date: Tue, 12 May 2026 17:55:11 +0800
-Subject: [PATCH] nfc: nxp-nci: Add ISO15693 support
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HTy4Z3r1";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="nlZ2S0R7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778580261;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LlMuA9hwdFTP8K3r6A3IXWZ/9PMdiv8SdKkIEgo6+cU=;
+	b=HTy4Z3r1cs0ih5AKTsNzQj9hAknzBxY15uK2Gz0wlI4dBA+uDv+P7scsCCmbtY2zhRFQWq
+	/didr6y1pSI5OrkZsx3wib+WOLn4ADy3rVHt54rxlEL0OTq67N9Yk7ToRBPD5k8icJCpF2
+	Gube0hxPuT4g36A4VVRaUhgaR8jgZO0=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-8-611rGCazMI6LZP54BfRIqA-1; Tue, 12 May 2026 06:04:20 -0400
+X-MC-Unique: 611rGCazMI6LZP54BfRIqA-1
+X-Mimecast-MFC-AGG-ID: 611rGCazMI6LZP54BfRIqA_1778580259
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-bcea6a87383so193820266b.0
+        for <netdev@vger.kernel.org>; Tue, 12 May 2026 03:04:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1778580259; x=1779185059; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=LlMuA9hwdFTP8K3r6A3IXWZ/9PMdiv8SdKkIEgo6+cU=;
+        b=nlZ2S0R7PKBll4SChjJASv6TTgx6jAgE/Ot6Trltd8yxt4Xk9hGtzQSUtdtUtWVB4C
+         +jqtPUmsW3Edg7uw0i4yUd/M4O3xR9wtn/v/bXHqSGXno2ZeAGr93nwjRhV72mfbOo6I
+         0kUk23Th7mHHp35UaLNf8hI0mtWpIZvRkNnFV+JMG2oCUIPYpGT6zx/NfSQZBYpFa+lb
+         Trek5EEqmWn2vYC3idP8zUKyCeBn9v18NCcHPcc2n5pvuNUphLR0qjnZkB+S6BjmpCfM
+         S8xPXSw2XFla1XNJ5jB2mkB3QCEFc5Xj4xjrUqdJ/VbhKAJZKABJiO3Gh4Bc3s6OolU8
+         Fykg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778580259; x=1779185059;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LlMuA9hwdFTP8K3r6A3IXWZ/9PMdiv8SdKkIEgo6+cU=;
+        b=Zs/tLNQ9GQcWAyfsT8ZE8Yev8K2+b2bsESXiIoyH4rsBrH3A6FUO3ewc9zGqrCHgWl
+         zMEIFuamvq+0Eb9edoA/EsnHo8KfLrehRrBJ7DCRDDhe43DVnawpZVdmi7rV9Zzdxmo/
+         xZkzLDfpPbQn6ED1V95IsHsJwoRRB9++uUZh7+GF1N+dQkyMOjAEbTCWfQc/U5q2Qyo+
+         BRhGp1JBgUSYAP9S7+DoIO2XC+FOtKKAlvL9L32xXaOU3odpn93KYEw/zeja+lMsT2eH
+         zMCPcSmTVp4AHsHZ0YogJ7KSJmpXtwWDzfe4TRcx+kVvMylWK/eLUg6XkkgW0thpGUk0
+         hVfA==
+X-Forwarded-Encrypted: i=1; AFNElJ9F9UqvPgitb2VVhqQL//mPYYcLnwoJ8CYI50YVRYOpVgA68M8xUpa5RREh8UgCmvnZBHSmQKU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPOOSNrxMAUWU5hdt1faOwwGNypy3vH/uz/6dehRhQ4Pc+S4yU
+	FaNBsyDWTffFQYONLHFHfXtefPhfxQ6LjkBxnqMDs9Kv0vsStguWGmG5sz6Boh+r8jZ8BTAI20U
+	MAbjB8zOdW/wTNrCzHLFvHghsdLOQGMqlP3FFxsHUXdfoBbr55C2LdpA2uw==
+X-Gm-Gg: Acq92OFwnNiZpRDHVsfqK1aJIGZv0wdAn3qzbf0dEH7DtIsXhN7HHcNYzeAqXA9l01j
+	JhhQE3AZOaPClNINZpRmPtWw9RnEwEHvXzYejQ9PqEPG5xFLgYxID12+b6YJ7sS854TonmXewNQ
+	llgmUWen2GFVjhp1o/GwUkSeYuSuwv4mheQYsSBCuSit276npNXgbC8BoOw+Ob/MRN0UUlzslFb
+	UlaIFZB+gBh/vfGEBw/H5diuMt7nE09Gh6uRD3R5X4/DUZ7TjMbaSr1yyuY9FQnNth2BGl4mZk6
+	fajtxYkY6HiSo1jxTvX7vwLvSkVUlpGMjzMZkMhKDxsISIPkieU5gWTzx6bKKeB/9Px23B6dXOL
+	Y42PptYMBU1eDp2QgeZC9ZL/N8r+WNuSzi2gL+/f7f2y8oq3ehva4jNM=
+X-Received: by 2002:a17:906:7310:b0:bd0:df77:98bb with SMTP id a640c23a62f3a-bd0df77c9d6mr433617166b.9.1778580259231;
+        Tue, 12 May 2026 03:04:19 -0700 (PDT)
+X-Received: by 2002:a17:906:7310:b0:bd0:df77:98bb with SMTP id a640c23a62f3a-bd0df77c9d6mr433615266b.9.1778580258752;
+        Tue, 12 May 2026 03:04:18 -0700 (PDT)
+Received: from [192.168.88.32] ([216.128.9.106])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bcac09c856asm656854166b.14.2026.05.12.03.04.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 12 May 2026 03:04:18 -0700 (PDT)
+Message-ID: <e6e4737e-e178-4d1a-a8d1-a45cea1db3a5@redhat.com>
+Date: Tue, 12 May 2026 12:04:16 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 6/9] net: atlantic: implement AQC113 L2/L3/L4
+ RX filter management filter management management
+To: sukhdeeps@marvell.com, netdev@vger.kernel.org
+Cc: irusskikh@marvell.com, epomozov@marvell.com, richardcochran@gmail.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, vadim.fedorenko@linux.dev, linux-kernel@vger.kernel.org
+References: <20260506135706.2834-1-sukhdeeps@marvell.com>
+ <20260508120156.3060-1-sukhdeeps@marvell.com>
+ <20260508120156.3060-7-sukhdeeps@marvell.com>
+From: Paolo Abeni <pabeni@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20260508120156.3060-7-sukhdeeps@marvell.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260512-nfc-nxp-nci-add-iso15693-support-v1-1-3394e5b9dba9@amd.com>
-X-B4-Tracking: v=1; b=H4sIAP74AmoC/x3NPQ7CMAxA4atUnrHUBNUFroIY8uOAFyeKAVWqe
- ncixm95bwfjLmxwm3bo/BWTqgPuNEF6BX0ySh4GP3uaF+dRS0LdGmoSDDmjWHULXc9on9ZqfyP
- FEiOtFNZLhpFpnYts/8X9cRw/CqmvuHIAAAA=
-X-Change-ID: 20260512-nfc-nxp-nci-add-iso15693-support-6bfbb676a78d
-To: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, krzk@kernel.org, 
- carl.lee@amd.com
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778579715; l=1156;
- i=carl.lee@amd.com; s=20260203; h=from:subject:message-id;
- bh=kGkeRYAHg70oAWwZuY//sniWB2ZJGuNwncL9XW7pfMA=;
- b=CPTRDl+CdKUptz9w2XaHxxn82KTCf/Rpa8uVCdSG2GyjZdV42HXxjHh9dghUbuSNCFxb35baf
- iax1syxQuw4DN0wGir8gLb+1svpuiEzkEW5o02/DPepj2WAdHDJIZZI
-X-Developer-Key: i=carl.lee@amd.com; a=ed25519;
- pk=pyq7QaQvoxMg806KVkRwpCbiah+7ncWr4MBpK1AEyjA=
-X-Endpoint-Received: by B4 Relay for carl.lee@amd.com/20260203 with
- auth_id=623
-X-Original-From: Carl Lee <carl.lee@amd.com>
-Reply-To: carl.lee@amd.com
 
-From: Carl Lee <carl.lee@amd.com>
+On 5/8/26 2:01 PM, sukhdeeps@marvell.com wrote:
+> @@ -530,6 +580,35 @@ static int hw_atl2_hw_init_rx_path(struct aq_hw_s *self)
+>  	return aq_hw_err_from_flags(self);
+>  }
+>  
+> +static int hw_atl2_hw_mac_addr_set(struct aq_hw_s *self, const u8 *mac_addr)
+> +{
+> +	struct hw_atl2_priv *priv = self->priv;
+> +	u32 location = priv->l2_filters_base_index;
+> +	unsigned int h;
+> +	unsigned int l;
+> +	int err;
 
-NXP NCI controllers such as PN7150 support ISO15693 Type 5
-tags, but the driver does not currently advertise this protocol.
+Minor nit: please respect the reverse christmas tree above (and elsewhere)
 
-Add NFC_PROTO_ISO15693_MASK so that ISO15693 tags can be
-detected through the Linux NFC stack.
+Side note: this patch is quite big, IMHO too much to be effectively
+reviewed without relying entirely on automated tools, please try split
+it into smaller chunks.
 
-Signed-off-by: Carl Lee <carl.lee@amd.com>
----
-This patch advertises ISO15693 Type 5 protocol support for
-the nxp-nci driver so that Type 5 tags can be detected.
+Also, when posting the next revision please on avoid send the patch in
+reply to the previous iteration: it will foul both the tools and the
+human behind them.
 
-Tested with PN7150 controller.
----
- drivers/nfc/nxp-nci/core.c | 1 +
- 1 file changed, 1 insertion(+)
+Finally please note that the patch subj contains repeated words, please
+drop them.
 
-diff --git a/drivers/nfc/nxp-nci/core.c b/drivers/nfc/nxp-nci/core.c
-index 66b198663387..448e5a4e7338 100644
---- a/drivers/nfc/nxp-nci/core.c
-+++ b/drivers/nfc/nxp-nci/core.c
-@@ -25,6 +25,7 @@
- 			       NFC_PROTO_FELICA_MASK | \
- 			       NFC_PROTO_ISO14443_MASK | \
- 			       NFC_PROTO_ISO14443_B_MASK | \
-+			       NFC_PROTO_ISO15693_MASK | \
- 			       NFC_PROTO_NFC_DEP_MASK)
- 
- #define NXP_NCI_RF_PLL_UNLOCKED_NTF nci_opcode_pack(NCI_GID_RF_MGMT, 0x21)
-
----
-base-commit: 7109a2155340cc7b21f27e832ece6df03592f2e8
-change-id: 20260512-nfc-nxp-nci-add-iso15693-support-6bfbb676a78d
-
-Best regards,
--- 
-Carl Lee <carl.lee@amd.com>
-
+/P
 
