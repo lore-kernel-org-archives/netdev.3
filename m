@@ -1,106 +1,134 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f227.google.com (mail-pl1-f227.google.com [209.85.214.227])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A2B3E1730
-	for <netdev@vger.kernel.org>; Tue, 12 May 2026 13:32:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFC223E1730
+	for <netdev@vger.kernel.org>; Tue, 12 May 2026 13:33:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778592743; cv=none; b=YF2aEugGmtAbJ80IQ8IuYgL7V+/O+JZuDiZlVHv5e6wxEySzzIADJneLAcg8z8EbLZeU0hQYhMmrSFgLDU8pi3cxEicK5Y2zId83pEcgu9dkKQhg6WjFw16+I4zMRYNCIjP3krSrcC4h6pt1NHaYilAykSAjqwGHAN9RloxL7q0=
+	t=1778592794; cv=none; b=LGpivVvkrCb4UKFthbkBzs/2LzP0gBLWYvWsale+IhXhLKcnpg44uSCp742GDqQJISx8Qv74bO8YnPztZA3fMW1GyvQGr6EGJAyb61pSAgXDloH8IH2qcWnBHL5MPrpnnjqBen83OLOA5gdd/h0w7ogAh7PiE64rVh7CsnXdTco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778592743; c=relaxed/simple;
-	bh=2a0VEEh++ToCnDM9Nu78zdEEiYidXVyrGVfaJTq+Q0E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FFDelYIhTOYo4Mx4JzRecEKq2x2cEY506ekcDUvgh0BF1QCeBXfKywViHj8PlflDjSBZ+16XLx36BZVMHFwGvvwd4JTiA+I0VPZfjihuizRhR6YqELDrKQavg5pOi6d398Fs+1WxOkarfXeQ83Yjq/lRl1WDmS2prHBNbFLoxy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=MdHX5i1Q; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1778592794; c=relaxed/simple;
+	bh=ulTqOnJ0/DOZtfwfiFl6Nx8CEJn66OQ5TqF7AqphWHg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=pRpv3t9iZH8vU212ed9sLOOX4mplBIHE816t/WhhB9twr0Bwurg6jbUcdOaxHjpod/PUyMHcQxMPcmgZQGxpOBDWKYuQw5Mq8Otucn6NYw/BdBFguwjj51RLlMVYlV/9z/UZxBayIaQ3/3irE8/bsqXGWVeBP0aYipxfRjKC/aA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=ULmquoS7; arc=none smtp.client-ip=209.85.214.227
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="MdHX5i1Q"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id B01A74E42C83;
-	Tue, 12 May 2026 13:32:20 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 7972F60646;
-	Tue, 12 May 2026 13:32:20 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id F14E311AF874F;
-	Tue, 12 May 2026 15:32:12 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1778592739; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=wbVp7XXps13Zl+aS41wr/B33E+sqORYJAXToq+Zs+Ik=;
-	b=MdHX5i1Q8NssOZq+1LruwkFS6kyKJ4OV8H3ot/+3hAFAfhsbunczThxiQWnNZxANw74X5V
-	zMeWluvrhl//mYxDzfVc8KUIEG2cgEtqxBQwRd0gum7+HWwrEWMcjbR3LxwWZRn+An5AOv
-	eeuWQ0VNbwCRZfnIFcvM662lvqfdPsCQX9dAGDMVPUSZwve68pLbzyUlgRxquewNv/5RiH
-	4YGuBgmUIvBzR3S+jXfVMHogC/zTTKUukH7tlUQMR4g51xa/K1Ip8GTmRM3oyN9gENMmKi
-	6V5o65XlpWme6f4JAQNwmcqu5B6Y2xvMozTc8Be7416H7/3k5w38FxkfDlI0zw==
-Message-ID: <91f86e6c-6013-42cc-8a4b-2b32093b9eae@bootlin.com>
-Date: Tue, 12 May 2026 15:32:12 +0200
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="ULmquoS7"
+Received: by mail-pl1-f227.google.com with SMTP id d9443c01a7336-2bad6226d1cso3375165ad.2
+        for <netdev@vger.kernel.org>; Tue, 12 May 2026 06:33:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778592793; x=1779197593;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=M43xE3rgAlqZemGJ9rIPU9yoPZP2zJ9KSuP357iBUFo=;
+        b=Pxp+8SQB/iCE2f2HQD7/kTgo/Da7pVs3djakasj+M+FqyBWTeYQqQ1coD1G+LGh/jK
+         3JIKjgxmAtW5mthpKw2lWZIEVPG+gWR4GExFv+W+Mosi5L2uwsefFwMEYVX3tGB+sF30
+         zHBiw/G/ZR2sPifz2UWGN8n/DtgJb/gYjz5l+taHL/+Bazqe3pDlAVZLEFSEwUtfEy8x
+         dbT6HhMuUU7PHZPj6C4MOIJqAL5O6WmTYaFqXJaIiivvZpIPtxNqeooABtc2O3vlrKCG
+         n5k8fwFaiiS4X7o1QyRf/pLEmjYuzcKIkka9CTHoeSXDIn198qZCukRo3RwZFFgmlUQe
+         eCNw==
+X-Gm-Message-State: AOJu0YyFgLbqVbwbVikcbIm6sSRsrfZtxjPplwTrolkh6rhKwXJr/ZzZ
+	VhcGJC/X+uYzNO/PiZHI1+dOt1t7U+B2YfbqqSoi3xOn8S3AsJtJz4GQUVWD1bCuXS1i9Gap1C3
+	SyhkIOlEh1sDLQteu0kWhcgGy4dRddlXAaeSF1EQnE4+/0QN97WlyhJI7ezBP645tp6U35aiG8a
+	YrgY7bLQzcbAukmMoyfwUiJnoPB8rrraAB0Hqc06P1su7aei0WPUYpRps7inPXYQUQr2gW/oy4z
+	B0VBXZh7q/n
+X-Gm-Gg: Acq92OE5g3ZhfVSLKa6gVH8MGQ8JaqXEb67a8aUMXQyRT3vM9EYJ4afIJesTjF4vm9n
+	BX7XBiBh2AmNrekFLtjg+JiDa0EpuOKrVBtAgGWT2liMVaZxDOC0dq7b5iGu7+psQND4quP2AbM
+	fL4JKmN/uK3M0781Sa706muauy/FAdTnrEaIC8jHz2TY/k8J0ZWVtKCRNNZO49aYyDAraK43uo/
+	fmRQGzzWevGNdXTtd+2pOErwtwqP2DFbbVTVhpJHel9vFZz1g/8BWlODYxSC/VktoVAcdU3qNEE
+	vnpYxfIvzYR0tQF6HnjSmDECYBKja4kDd7GAcSr1jnUr3Ai1/bWcECevMUdQqmYmW9dd4nRs9Ju
+	cuQDSJD/bB4jtYRD0EKoUe+5k63UQbE++TorSKGqU7rmtvxmkET0u01FcMTzo+KSRjVBlhgNv80
+	CJTMXQ7USOagoAM8E7Tq4y4N3AbhwbGC6W/q3DJJutY/HwyqugTi7ujs2Aiw==
+X-Received: by 2002:a17:903:4b03:b0:2ba:2333:8a53 with SMTP id d9443c01a7336-2ba79c311a8mr155615795ad.0.1778592793000;
+        Tue, 12 May 2026 06:33:13 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-16.dlp.protect.broadcom.com. [144.49.247.16])
+        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2baf1ead51dsm10208835ad.26.2026.05.12.06.33.12
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 12 May 2026 06:33:12 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-2f5145cd327so1021799eec.3
+        for <netdev@vger.kernel.org>; Tue, 12 May 2026 06:33:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1778592791; x=1779197591; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=M43xE3rgAlqZemGJ9rIPU9yoPZP2zJ9KSuP357iBUFo=;
+        b=ULmquoS7rMWPZo7vHyWDcNZRYD6tgjyATBRSU3TiwbHvRA573Lxg+q4jHumSdNVBpT
+         OpnjT335zJFR9C2oT7GMjt7NB6sqprnqLPNN0jxaty3b9uOhxur7eJVtsFGIBU4vzWEr
+         jamorsAEgJN7CG6oT5/LCMEaB9XSrne4tDvBg=
+X-Received: by 2002:a05:7022:6992:b0:119:e56b:c3f3 with SMTP id a92af1059eb24-13203e9654emr5811842c88.3.1778592790466;
+        Tue, 12 May 2026 06:33:10 -0700 (PDT)
+X-Received: by 2002:a05:7022:6992:b0:119:e56b:c3f3 with SMTP id a92af1059eb24-13203e9654emr5811823c88.3.1778592789838;
+        Tue, 12 May 2026 06:33:09 -0700 (PDT)
+Received: from photon-d7fac424c0d3 ([192.19.161.250])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13278210d40sm22957383c88.4.2026.05.12.06.33.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 May 2026 06:33:09 -0700 (PDT)
+From: Ankit Jain <ankit-aj.jain@broadcom.com>
+To: edumazet@google.com
+Cc: netdev@vger.kernel.org,
+	kuba@kernel.org,
+	davem@davemloft.net,
+	pabeni@redhat.com,
+	ncardwell@google.com,
+	kuniyu@google.com,
+	horms@kernel.org,
+	shuah@kernel.org,
+	quic_subashab@quicinc.com,
+	quic_stranche@quicinc.com,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	karen.badiryan@broadcom.com,
+	ajay.kaher@broadcom.com,
+	alexey.makhalov@broadcom.com,
+	vamsi-krishna.brahmajosyula@broadcom.com,
+	yin.ding@broadcom.com,
+	tapas.kundu@broadcom.com
+Subject: Re: [PATCH net v3 1/2] tcp: protect locked SO_RCVBUF from Silly Window Syndrome
+Date: Tue, 12 May 2026 13:28:12 +0000
+Message-ID: <20260512132812.25147-1-ankit-aj.jain@broadcom.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <CANn89iKs3KLo=5hhUEH8OEG8p7_52g+fsrwYYNW=GzP+k7WW-Q@mail.gmail.com>
+References: <CANn89iKs3KLo=5hhUEH8OEG8p7_52g+fsrwYYNW=GzP+k7WW-Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next v3 2/3] net: motorcomm: phy: set drive strength in
- YT8531s RGMII
-To: Minda Chen <minda.chen@starfivetech.com>, Frank
- <Frank.Sae@motor-comm.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- Heiner Kallweit <hkallweit1@gmail.com>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-References: <20260508094522.3952-1-minda.chen@starfivetech.com>
- <20260508094522.3952-3-minda.chen@starfivetech.com>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20260508094522.3952-3-minda.chen@starfivetech.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
+Hi Eric,
 
+Thanks for the detailed review and explanation.
 
-On 5/8/26 11:45, Minda Chen wrote:
-> Set RXD and RX CLK pin drive strength while in YT8531s connect
-> with RGMII.
-> 
-> Signed-off-by: Minda Chen <minda.chen@starfivetech.com>
-> ---
->   drivers/net/phy/motorcomm.c | 5 +++++
->   1 file changed, 5 insertions(+)
-> 
-> diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
-> index c66804537aa2..ebc24f51e626 100644
-> --- a/drivers/net/phy/motorcomm.c
-> +++ b/drivers/net/phy/motorcomm.c
-> @@ -1698,6 +1698,11 @@ static int yt8521_config_init(struct phy_device *phydev)
->   		if (ret < 0)
->   			goto err_restore_page;
->   	}
-> +
-> +	if (phydev->drv->phy_id == PHY_ID_YT8531S &&
-> +	    phy_interface_is_rgmii(phydev))
-> +		ret = yt8531_set_ds(phydev);
+> Applications using SO_RCVBUF with tiny values can not expect kernel
+> behavior to be stable,
+> since rcvbuf management depends on metadata size, which can vary
+> between kernels versions/options.
 
-Minor detail if you re-spin, there's already a check for the interface 
-being RGMII a bit above in the same function, but it's written as :
+I agree with your reasoning. Applications locking SO_RCVBUF to small
+values appear to be the primary trigger here, disabling auto-tuning
+against modern metadata overhead.
 
+> If  a kernel change is needed, I would rather enforce a sane sk_rcvbuf
+> floor when the MSS is learnt
+> at accept()/connect() time.
+>
+> ( TCP_SKB_MIN_TRUESIZE / SOCK_MIN_RCVBUF definitions )
 
-	/* set rgmii delay mode */
-	if (phydev->interface != PHY_INTERFACE_MODE_SGMII)
-            ...
+Enforcing a safe sk_rcvbuf floor based on the learned MSS and
+TCP_SKB_MIN_TRUESIZE at connect()/accept() time is a much cleaner
+and safer solution to protect such applications from SWS stalls.
 
-could be a good idea to change that check to a more explicit
-call to phy_interface_is_rgmii(), or even add the drive-strength
-configuration under the same block, provided the order of operation
-doesn't matter w.r.t the pll/auto-sleep configuration.
+I will implement this approach in v4 and update the packetdrill test.
 
-Maxime
-
-> +
->   err_restore_page:
->   	return phy_restore_page(phydev, old_page, ret);
->   }
-
+Thanks,
+Ankit
