@@ -1,307 +1,299 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012057.outbound.protection.outlook.com [52.101.43.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F7C62FE071;
-	Tue, 12 May 2026 08:47:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778575660; cv=none; b=oeCuVIeGAq+45CijIzwaYFH62us+34j1mqR3tWhb/ofgRupAEipP9rkKRlshOx/3fqipkJHI9Pripq6nG60MlvLbPBXasfCwukBx62u0wLfL096V+3VaLLKTtMteIphLY2c/PqVQnJsFF474ZTAuOiSE5zdJ2GKop/VSVOtzicc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778575660; c=relaxed/simple;
-	bh=yVj6qcAQtPfLOWXdwnIyMj6OCRTMuEdBo5PeKxLotsI=;
-	h=Message-ID:Subject:From:To:CC:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=GOpC0oEhPYAvg37HiWKpTqfmXsAPp5gDzvaVLyS+aOfubeLMwmNbP8+eQAmNAh8yR9cKi7tFTzdBI1ICGfGgRjZ16d8ZxLlLfM5LnjrVSB1SS1SZfeZwBBhTBH0eQsYb8wTxqSGplRcmWbZfbtr6RAbd/6Ks3XF8sR/Sw+ffSNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=Cd3enZ95; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBBC0386C28;
+	Tue, 12 May 2026 08:48:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.57
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778575695; cv=fail; b=LhW23U4t5S/UGXiBnzUIlkeuZWvqhLJBumn3JH9cxbJyxCxuR+zb8U2Fp1zeMRSL4awk0K1SlXp0nSIASIRfZjxtVfEnVpZUlEsc/JNAVrLsPf3oG+fF7uEoVHSKTikzxA8NZk9ssUJlCS5zopv8QMQRm93ZMH/SglpUbywS0JA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778575695; c=relaxed/simple;
+	bh=KzayNSdr3pdbIVDNjYD7WaaoLYIzNP6L/cS36iBAFQc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=c1jb+e+4w0SOdhjIKTTQ4xSUPHJ3CJJ4e4HDQFc7tobmgLd93tno66RZcKWNeWF5I8BiYk5lRjw0Wx61M+HrVqEFIFG/0DTurWy1b5PF8qKw1V+c3ztGYUDxbcig/PXnO0V89oDTLzmxvhsvh2Zna/mDSxQTmwb5ik7KGoQZ0jk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=cYm3+/Nl; arc=fail smtp.client-ip=52.101.43.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="Cd3enZ95"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1778575654; x=1810111654;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=yVj6qcAQtPfLOWXdwnIyMj6OCRTMuEdBo5PeKxLotsI=;
-  b=Cd3enZ95gY0e28+zXImIy8764kmU7oOIYe2PXXlg7Pvmz9o665eY4qNZ
-   HVKZiJblKC546pVgmZGRBwHzm9+I/o3x4EomU3zZAfSBebwdyMLJYui57
-   EaMleeIEvV1Bg3kzOOk5jdomlv5nMGnM7fZNjEzSpGGMw7YIyRYLeD2Do
-   YbatP2OkLgRMkfXSJr+QWGzFYdK4PCdWGcL3EABS36EbS3n+d2K8Iv0t9
-   2iNt4MvrQzdGCctNQ6lNnZuPAUNg+59rf/kbX+NycIifSHGaPDp7mhnzK
-   52kPfg0Bj6ffS/EycXD9BpBFEZrdV7e/cackCFEH3KG/UoUNh7j2h2TGx
-   Q==;
-X-CSE-ConnectionGUID: UxxL9zsTRgKgmDgezwKYWQ==
-X-CSE-MsgGUID: sjI6UnJoSPW1aPIkF8pclw==
-X-IronPort-AV: E=Sophos;i="6.23,230,1770620400"; 
-   d="scan'208";a="224614866"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 01:47:27 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.87.152) by
- chn-vm-ex1.mchp-main.com (10.10.87.30) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.37; Tue, 12 May 2026 01:47:26 -0700
-Received: from DEN-DL-M77643.microsemi.net (10.10.85.11) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Tue, 12 May 2026 01:47:23 -0700
-Message-ID: <c48f64d22429c1d4e10015033da4fff16c2a6d7d.camel@microchip.com>
-Subject: Re: [PATCH net-next v4 9/9] net: dsa: lan9645x: add port statistics
-From: Jens Emil Schulz Ostergaard <jensemil.schulzostergaard@microchip.com>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: <UNGLinuxDriver@microchip.com>, <andrew@lunn.ch>, <olteanv@gmail.com>,
-	<davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>,
-	<horms@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
-	<conor+dt@kernel.org>, <woojung.huh@microchip.com>, <linux@armlinux.org.uk>,
-	<Steen.Hegelund@microchip.com>, <daniel.machon@microchip.com>,
-	<linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<devicetree@vger.kernel.org>
-Date: Tue, 12 May 2026 10:47:22 +0200
-In-Reply-To: <20260506014618.1616861-1-kuba@kernel.org>
-References: <20260430-dsa_lan9645x_switch_driver_base-v4-9-f1b6005fa8b7@microchip.com>
-	 <20260506014618.1616861-1-kuba@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2.1 
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="cYm3+/Nl"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FlOPPvOqw42D/LXW3N3a4Ncs6PFv1a5mDVX8DVmeC0HBpxUlkzRY0K4j2+iJmqxPa9XnN85InXWPNrcrN8nq6Joefat6MdchoQx/UBS2qS5vLAvgmYF8kg6G1u7qCRoj1dSeK+oD001m+Uh2UaqMfqoP2+ES91zAIDrzf/Pi7V6jzZNG79qXlGsYdPWDQvlv4mVQbiTWptHZTAlDkpXkeDnIIQ9B/V4epNUaAEERYJ3id3Ux1ElsWoJrzEQDhgrR3w/3wjP5cCm1F1LZRwTPoehKSIgJcBI+z57yVOm62PiOEsJ0qnfkimPaNkOahxeXANfpne5+eJRdfD/e7LOZ9A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qwGCEbjD2TslDGEkdqlVFXdjPj19Be1kUjzH3fwHtZ4=;
+ b=HeGAA7WZQQOzRMlaynTuzDpOufX+/befUvxASnwlS5yuwQbOGAns1/MHjemvPxOiczGD4HVoTSNpF+l0fwH+1i0VBhpAwqdwSfc8BwvkkftwziJt8nHrpj17CYRrzSnp8FkNyqhqrlJgY4KLeabhjbtNp8UC7XGU+w3nATbCWuBK6zmGWob/FcjgP9+6UNINryMRvv6Mi6EwwgZR8Rr/HqCgpkeif5M7MPbom9yoxjvQ2yxBIbS8OMdsHNCuiPVULiw+nPBnxDPeOwf/kH3r7kJcfZYehVVs92V3jYL6/XqG9u1CXRe3H3HzTZljy0I+wQI5v/AehModD/kAM0FEJg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qwGCEbjD2TslDGEkdqlVFXdjPj19Be1kUjzH3fwHtZ4=;
+ b=cYm3+/Nl8a6ssUG1Jie6df7Klo53OPQT9BPZJVMy9UwzZ1ihoYTXCzvP001zeubwSx4N2zGIqZ+PestdQl1ujy7uob7QdvdqCn5dEhyuVWHeBaDjHAtWJvQvK/szstymbDN1W+hHavYfB1i1jZsuITTaW8gbTTzCIJR4sH3ZNUSBfN6FwgWU0vzN2kjwXoUACrReSev9LaATjc2trXx4Lk4CugcT8CHd5HT/2FYzXYWuEXSlsiwdcWY6tgS9hWgFttnNiiQcF2PGZxaGJzXaLg1gr6IKK1W5bgnzzaPz15HQ+FFKkQBUaNr1xek+10lTpDo31NLMAoKpDlAP56zY4w==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB7900.namprd12.prod.outlook.com (2603:10b6:8:14e::10)
+ by CH8PR12MB9816.namprd12.prod.outlook.com (2603:10b6:610:262::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.11; Tue, 12 May
+ 2026 08:48:04 +0000
+Received: from DS0PR12MB7900.namprd12.prod.outlook.com
+ ([fe80::3033:67fc:3646:c62f]) by DS0PR12MB7900.namprd12.prod.outlook.com
+ ([fe80::3033:67fc:3646:c62f%5]) with mapi id 15.20.9891.021; Tue, 12 May 2026
+ 08:48:04 +0000
+Date: Tue, 12 May 2026 11:47:54 +0300
+From: Ido Schimmel <idosch@nvidia.com>
+To: syzbot <syzbot+8b12fc6e0fb139765b58@syzkaller.appspotmail.com>,
+	urezki@gmail.com
+Cc: bridge@lists.linux.dev, davem@davemloft.net, edumazet@google.com,
+	horms@kernel.org, kuba@kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, pabeni@redhat.com, razor@blackwall.org,
+	syzkaller-bugs@googlegroups.com, fw@strlen.de
+Subject: Re: [syzbot] [bridge?] kernel BUG in __get_vm_area_node
+Message-ID: <20260512084754.GA181587@shredder>
+References: <69ff8c7c.050a0220.1036b8.000b.GAE@google.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <69ff8c7c.050a0220.1036b8.000b.GAE@google.com>
+X-ClientProxiedBy: TL2P290CA0017.ISRP290.PROD.OUTLOOK.COM (2603:1096:950:3::7)
+ To DS0PR12MB7900.namprd12.prod.outlook.com (2603:10b6:8:14e::10)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7900:EE_|CH8PR12MB9816:EE_
+X-MS-Office365-Filtering-Correlation-Id: a9c52b60-7033-43ed-d41c-08deb0032e4a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|3023799003|22082099003|18002099003|56012099003|11063799003;
+X-Microsoft-Antispam-Message-Info:
+	GPQjzsdzqsqQPnQYckDSyKe2lG+bCck0xcWLHwYGvaQVUz0nPlGtxd3x4FMagYx8bNc9VM8e2IV1cdOe/0IVnQL5nLB47oXqbateF38nTDGF4u2yHZTbA5HwEBl/6634DJVbRjsSBI7RTmrXjq9KBTpY65G3nnclPkAlqqtNwOuTTfzAciQJjMc0O3fIJ3Suh7CcMYrk33g+hSEkpmwkXtKSkfmpGOidcIkIwVn5Ps/NHvsOhLQwN1apoJUWsbJl2MsNBk/Lezs87elu1bnFh6bimxLb6MrC8PCukA9mdqE3SHbXAsm0Lx53T+vgu0spDmPPAO88RtUyv89/Xm7nTYRnSxdGvZrtpkHhOhhFTnUhHOaNNEEUOFRlxt7MijXiJ6+RPcCnwONqa+3oRjaOmgJasf1Wey6Ep4J9CqywDODGYVbdQliUYUhRqI5S3TpP+/gel2hs+Z+uagBeG2tflG9XXfOqtZKaFfoMNPkw30KYgoVFcrDJgfNyC94DeqZTr+7qTK21nYKd0tgycN5L3gdeSMau0HmuswStMZ5/pLamtGGKf/r46S1ubXIxCgp1ko5ut4cKJpjkICnZgyP+IyCgJM4Lb1up0/GA/wwXrM+WMocOC6ONfJjnQwCTP2Fd0EqDSD4qCxCEYz7dsmzF5589kX8yatRsr60X+4GJrjZrFs/Q2GX2QMv3Yaz52UwX
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7900.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(3023799003)(22082099003)(18002099003)(56012099003)(11063799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?q5uKwF2YEJm65vAbu56BWsqnKX1n7R8UvPBZR1wpfaN02cG1pxZZdE+xQCl1?=
+ =?us-ascii?Q?a4K7U9saZakVc0P5BAUZboWgtGFvVkQ6p5gv7h4gxSlO51PbxoD9ZqQFu7GB?=
+ =?us-ascii?Q?x5TTalnZz/n+sAdPzHQnmPP8yqIXCCwEa7mk7HgX+SaPNmQXahYcuY7iAchO?=
+ =?us-ascii?Q?bJe0Ne91Pc3bU11J9upUlQoDtERDHASOLNOqmW8DOHzzhF+Lvl0YS0x8QY4Z?=
+ =?us-ascii?Q?an/1wLyNlmJ80srF/ldEJYL8UsLgDWYbN1/qnt3TNMqV55DS0v6RYZRgxIbd?=
+ =?us-ascii?Q?VsxdnsnE+pTcdtVRgdwuWStpJfkV2ZsB7VWm2GzKYMXScbSQyXZ258RnDLoY?=
+ =?us-ascii?Q?4mpZIDa6Mafekbz/plUAkzz4Pp/V+3wOpvgPZtNafB2yeI7M8BPIjrt6dSUp?=
+ =?us-ascii?Q?Nd+BsQaTGrwT/95+xR9HZBzozDCjbziz235XPmNTyZMMdIWhBJhPzwsgMgV3?=
+ =?us-ascii?Q?9qqFrehMoN73mzW6FfO2/khi6u01vCzUscrbSDOZYoi+kW11q0426AuxCdXk?=
+ =?us-ascii?Q?FcjSVXbIaJcB3vavYqUm/A5HOnZZ0oABK0CE8LaOTF5xuX4wCXPtbLYGcbAB?=
+ =?us-ascii?Q?YXOB9I2NabZKL+QwQbNqOidHcsXBlbmPDuoZcPDYmcyI5PXPy6PjF7r+IO1c?=
+ =?us-ascii?Q?jowsLnaCq84dSHSkRnQE7y/udbv1UHM1ZBJoJUequeYopTrZQwi24vJplK9O?=
+ =?us-ascii?Q?YfiELXhCSm4JTLXPUWhTMhYoL7j4sUBP0d5Cdb5tzm2EwtUVUgC23je7kVnB?=
+ =?us-ascii?Q?PJ4wriygCu/pnnYoUAapI90nc3TyWdqxbkqi9dcosnOfB1gW4dguExVEOuNW?=
+ =?us-ascii?Q?zS886ZeU+63+rTjYA6hr+i1gkTJoUuCoIbFLuzRGVkGoBX//QiOfirk3ePk0?=
+ =?us-ascii?Q?PWYqyjOy8q/G0SC5H11XfRYOuTkpUJTxjF7ZFZOGiSM5wok0djwsawaQ/5u3?=
+ =?us-ascii?Q?Bqmfd/e+OpBjJcdKzimlUaLb0CBPCgqTimMDD62jDv78jI3874WqpjO/o/vn?=
+ =?us-ascii?Q?0piKUnbJC8yMytdFY2Yb22evQ6xn1LU/DSolFv3AEiZmuhhCbqMB2pUz2Nb6?=
+ =?us-ascii?Q?hCeSivzfdGQtRnB1ygmbqNvakiDeveQ1tItfwrAK+OnpwrzW1arMKbJYmrtR?=
+ =?us-ascii?Q?cIkW7DlTDcIEjJ1jQ23OW8cjw5zphDOWVVVrcyKOKnQPZkyWylqHG92xdeXq?=
+ =?us-ascii?Q?JeMOzGZz8rdu/d8gWFIRfsGluGHnwbK0AnRxzJtedDQhWFpNRlDPMaBrF2eD?=
+ =?us-ascii?Q?R+7trHZiJ0Of4zkQTi5Jew92NhpFeCgQsNrkL0rM64THg1LBXl6dvGfrBwgY?=
+ =?us-ascii?Q?G77Hy7jVfO7Ag3N3VykTw89ktc65W04BLkd5hQeR/CkfvTADLV+JecnKsUfr?=
+ =?us-ascii?Q?6OQQMghkiyR8PEII43Sr7jBBfElwJC+wMHBs62NOrsWiR4wXWsN4aPRvg7/Q?=
+ =?us-ascii?Q?W16L+iQLJhucV2twrfG5EV51eJ6daWZ6kvyGdnYF6vs6clMFTaov/+K/tSOp?=
+ =?us-ascii?Q?sXPn/QZQXTcx9ZHkrPsbwRMkNN/m434XFNmTO+AsWhlF8scmjiqvcKCd6DN4?=
+ =?us-ascii?Q?xUFUjfW5SXWxoXn29toIa9s4QlOBgs26UW464UqSckI0lqwzjlqA2pwLArcO?=
+ =?us-ascii?Q?gejnsPEkyVVD41RUTOge5P/85KR6ijdVcKNvKj+pGCgwAhYK/5wEjvWZGUqz?=
+ =?us-ascii?Q?w2TKrYb9dlwsGb2w5cJrkSEOMXvanH9VD8MwC3bN3AjemMHbDuds0BmpqqJ2?=
+ =?us-ascii?Q?veZ61EfhVg=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a9c52b60-7033-43ed-d41c-08deb0032e4a
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7900.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2026 08:48:04.3480
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: OjajOLnLtZ0y1sxJv0eK4QA47iU3Tg3mbEk8VJXPj0YlGBCnLW59TXsxOPDy54ESL0FckPcz+R6nigETQQ2zdA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH8PR12MB9816
 
-On Tue, 2026-05-05 at 18:46 -0700, Jakub Kicinski wrote:
-> EXTERNAL EMAIL: Do not click links or open attachments unless you know th=
-e content is safe
->=20
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
+On Sat, May 09, 2026 at 12:35:24PM -0700, syzbot wrote:
+> Hello,
+> 
+> syzbot found the following issue on:
+> 
+> HEAD commit:    9207d47f966b Merge tag 'for-linus' of git://git.kernel.org..
+> git tree:       upstream
+> console output: https://syzkaller.appspot.com/x/log.txt?x=17e44d06580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=d0f0911eedbc130a
+> dashboard link: https://syzkaller.appspot.com/bug?extid=8b12fc6e0fb139765b58
+> compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+> userspace arch: i386
+> 
+> Unfortunately, I don't have any reproducer for this issue yet.
+> 
+> Downloadable assets:
+> disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-9207d47f.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/6c5e883f31aa/vmlinux-9207d47f.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/19f3e863ae5c/bzImage-9207d47f.xz
+> 
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+8b12fc6e0fb139765b58@syzkaller.appspotmail.com
+> 
+> ------------[ cut here ]------------
+> kernel BUG at mm/vmalloc.c:3206!
+
+It seems that this bug was fixed by commit 30c19366636f ("mm: fix BUG
+splat with kvmalloc + GFP_ATOMIC"), but then commit c6307674ed82 ("mm:
+kvmalloc: add non-blocking support for vmalloc") re-introduced it.
+
+Uladzislau, can you please look into it?
+
+Note that the bridge is calling rhashtable_lookup_insert_fast() with BH
+disabled.
+
+Thanks
+
+> Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+> CPU: 1 UID: 0 PID: 8030 Comm: syz.6.9336 Tainted: G             L      syzkaller #0 PREEMPT(full) 
+> Tainted: [L]=SOFTLOCKUP
+> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+> RIP: 0010:__get_vm_area_node+0x2d2/0x330 mm/vmalloc.c:3206
+> Code: 03 80 3c 11 00 75 5c 48 89 43 08 e9 4b ff ff ff e8 43 a8 a4 ff 48 89 df e8 db 98 05 00 31 db e9 37 ff ff ff e8 2f a8 a4 ff 90 <0f> 0b e8 77 6b 11 00 e9 9e fe ff ff e8 6d 6b 11 00 e9 71 fe ff ff
+> RSP: 0018:ffffc90006f76860 EFLAGS: 00010246
+> RAX: 0000000000080000 RBX: 0000000000000200 RCX: ffffc90034405000
+> RDX: 0000000000080000 RSI: ffffffff82633fb1 RDI: ffff8880244b4a00
+> RBP: 000000000000000c R08: 0000000000000005 R09: 0000000000000000
+> R10: 0000000000000200 R11: 0000000000000000 R12: 0000000000000022
+> R13: 0000000000008080 R14: 0000000000000001 R15: 0000000000000000
+> FS:  0000000000000000(0000) GS:ffff88809727d000(0063) knlGS:00000000f4f61b40
+> CS:  0010 DS: 002b ES: 002b CR0: 0000000080050033
+> CR2: 00000000f73c4f50 CR3: 0000000055b77000 CR4: 0000000000352ef0
+> DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+> DR3: 000000000000000e DR6: 00000000ffff0ff0 DR7: 0000000000000400
+> Call Trace:
+>  <TASK>
+>  __vmalloc_node_range_noprof+0x228/0x1630 mm/vmalloc.c:4024
+>  __kvmalloc_node_noprof+0x3de/0xa00 mm/slub.c:6860
+>  bucket_table_alloc.isra.0+0x88/0x460 lib/rhashtable.c:186
+>  rhashtable_insert_rehash lib/rhashtable.c:493 [inline]
+>  rhashtable_try_insert lib/rhashtable.c:661 [inline]
+>  rhashtable_insert_slow+0x16ab/0x1de0 lib/rhashtable.c:674
+>  __rhashtable_insert_fast include/linux/rhashtable.h:788 [inline]
+>  rhashtable_lookup_insert_fast include/linux/rhashtable.h:965 [inline]
+>  fdb_create+0x13cf/0x1920 net/bridge/br_fdb.c:415
+>  fdb_add_local net/bridge/br_fdb.c:450 [inline]
+>  fdb_add_local+0x155/0x1c0 net/bridge/br_fdb.c:430
+>  br_fdb_add_local+0x39/0x60 net/bridge/br_fdb.c:960
+>  __vlan_add+0x17f3/0x2e10 net/bridge/br_vlan.c:340
+>  br_vlan_add+0x2dc/0xa00 net/bridge/br_vlan.c:810
+>  __vlan_add+0xf7c/0x2e10 net/bridge/br_vlan.c:297
+>  nbp_vlan_add+0x258/0x3e0 net/bridge/br_vlan.c:1348
+>  br_vlan_info+0x159/0x3d0 net/bridge/br_netlink.c:705
+>  br_process_vlan_info+0x404/0x8f0 net/bridge/br_netlink.c:768
+>  br_afspec+0x422/0x650 net/bridge/br_netlink.c:836
+>  br_setlink+0x376/0x630 net/bridge/br_netlink.c:1135
+>  rtnl_bridge_setlink+0x56d/0x740 net/core/rtnetlink.c:5571
+>  rtnetlink_rcv_msg+0x3c9/0xe90 net/core/rtnetlink.c:7004
+>  netlink_rcv_skb+0x159/0x420 net/netlink/af_netlink.c:2550
+>  netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
+>  netlink_unicast+0x585/0x850 net/netlink/af_netlink.c:1344
+>  netlink_sendmsg+0x8b0/0xda0 net/netlink/af_netlink.c:1894
+>  sock_sendmsg_nosec net/socket.c:787 [inline]
+>  __sock_sendmsg net/socket.c:802 [inline]
+>  ____sys_sendmsg+0x9e1/0xb70 net/socket.c:2698
+>  ___sys_sendmsg+0x190/0x1e0 net/socket.c:2752
+>  __sys_sendmsg+0x170/0x220 net/socket.c:2784
+>  do_syscall_32_irqs_on arch/x86/entry/syscall_32.c:83 [inline]
+>  __do_fast_syscall_32+0xe7/0x950 arch/x86/entry/syscall_32.c:307
+>  do_fast_syscall_32+0x32/0x70 arch/x86/entry/syscall_32.c:332
+>  entry_SYSENTER_compat_after_hwframe+0x84/0x8e
+> RIP: 0023:0xf7f08fcc
+> Code: d2 74 05 c1 e8 0c 89 02 8b 5d fc 31 c0 c9 c3 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 00 51 52 55 89 e5 0f 34 cd 80 <5d> 5a 59 c3 90 2e 8d b4 26 00 00 00 00 8d b4 26 00 00 00 00 58 b8
+> RSP: 002b:00000000f4f6150c EFLAGS: 00000292 ORIG_RAX: 0000000000000172
+> RAX: ffffffffffffffda RBX: 000000000000000c RCX: 0000000080000040
+> RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+> RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+> R10: 0000000000000000 R11: 0000000000000292 R12: 0000000000000000
+> R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+>  </TASK>
+> Modules linked in:
+> ---[ end trace 0000000000000000 ]---
+> RIP: 0010:__get_vm_area_node+0x2d2/0x330 mm/vmalloc.c:3206
+> Code: 03 80 3c 11 00 75 5c 48 89 43 08 e9 4b ff ff ff e8 43 a8 a4 ff 48 89 df e8 db 98 05 00 31 db e9 37 ff ff ff e8 2f a8 a4 ff 90 <0f> 0b e8 77 6b 11 00 e9 9e fe ff ff e8 6d 6b 11 00 e9 71 fe ff ff
+> RSP: 0018:ffffc90006f76860 EFLAGS: 00010246
+> RAX: 0000000000080000 RBX: 0000000000000200 RCX: ffffc90034405000
+> RDX: 0000000000080000 RSI: ffffffff82633fb1 RDI: ffff8880244b4a00
+> RBP: 000000000000000c R08: 0000000000000005 R09: 0000000000000000
+> R10: 0000000000000200 R11: 0000000000000000 R12: 0000000000000022
+> R13: 0000000000008080 R14: 0000000000000001 R15: 0000000000000000
+> FS:  0000000000000000(0000) GS:ffff88809727d000(0063) knlGS:00000000f4f61b40
+> CS:  0010 DS: 002b ES: 002b CR0: 0000000080050033
+> CR2: 00000000f73c4f50 CR3: 0000000055b77000 CR4: 0000000000352ef0
+> DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+> DR3: 000000000000000e DR6: 00000000ffff0ff0 DR7: 0000000000000400
+> ----------------
+> Code disassembly (best guess):
+>    0:	d2 74 05 c1          	shlb   %cl,-0x3f(%rbp,%rax,1)
+>    4:	e8 0c 89 02 8b       	call   0x8b028915
+>    9:	5d                   	pop    %rbp
+>    a:	fc                   	cld
+>    b:	31 c0                	xor    %eax,%eax
+>    d:	c9                   	leave
+>    e:	c3                   	ret
+>    f:	90                   	nop
+>   10:	90                   	nop
+>   11:	90                   	nop
+>   12:	90                   	nop
+>   13:	90                   	nop
+>   14:	90                   	nop
+>   15:	90                   	nop
+>   16:	90                   	nop
+>   17:	90                   	nop
+>   18:	90                   	nop
+>   19:	90                   	nop
+>   1a:	90                   	nop
+>   1b:	90                   	nop
+>   1c:	90                   	nop
+>   1d:	90                   	nop
+>   1e:	0f 1f 00             	nopl   (%rax)
+>   21:	51                   	push   %rcx
+>   22:	52                   	push   %rdx
+>   23:	55                   	push   %rbp
+>   24:	89 e5                	mov    %esp,%ebp
+>   26:	0f 34                	sysenter
+>   28:	cd 80                	int    $0x80
+> * 2a:	5d                   	pop    %rbp <-- trapping instruction
+>   2b:	5a                   	pop    %rdx
+>   2c:	59                   	pop    %rcx
+>   2d:	c3                   	ret
+>   2e:	90                   	nop
+>   2f:	2e 8d b4 26 00 00 00 	cs lea 0x0(%rsi,%riz,1),%esi
+>   36:	00
+>   37:	8d b4 26 00 00 00 00 	lea    0x0(%rsi,%riz,1),%esi
+>   3e:	58                   	pop    %rax
+>   3f:	b8                   	.byte 0xb8
+> 
+> 
 > ---
-> net: dsa: lan9645x: add port statistics
->=20
-> This patch wires up ethtool -S, standard ethtool group stats,
-> and ndo_get_stats64 for the lan9645x DSA driver. A delayed work
-> polls the 32-bit hardware counters every 3 seconds and accumulates
-> them into a 64-bit software cache to handle hardware wraparound.
->=20
-> > diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c b/drive=
-rs/net/dsa/microchip/lan9645x/lan9645x_main.c
-> > index 15a493c1f215..cea46bfe729e 100644
-> > --- a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
-> > +++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
->=20
-> [ ... ]
->=20
-> > @@ -255,6 +257,12 @@ static int lan9645x_setup(struct dsa_switch *ds)
-> >       if (!lan9645x->owq)
-> >               return -ENOMEM;
-> >=20
-> > +     err =3D lan9645x_stats_init(lan9645x);
-> > +     if (err) {
-> > +             dev_err(dev, "Failed to init stats.\n");
-> > +             goto owq_destroy;
-> > +     }
-> > +
-> >       ds->mtu_enforcement_ingress =3D true;
-> >       ds->assisted_learning_on_cpu_port =3D true;
-> >       ds->fdb_isolation =3D true;
-> > @@ -265,6 +273,10 @@ static int lan9645x_setup(struct dsa_switch *ds)
-> >                lan9645x->num_phys_ports - lan9645x->num_port_dis);
-> >=20
-> >       return 0;
-> > +
-> > +owq_destroy:
-> > +     destroy_workqueue(lan9645x->owq);
-> > +     return err;
-> >  }
->=20
-> Is this owq_destroy error path reachable today?
->=20
-> Looking at lan9645x_stats_init():
->=20
->     int lan9645x_stats_init(struct lan9645x *lan9645x)
->     {
->         struct lan9645x_stats *stats =3D lan9645x->stats;
->=20
->         queue_delayed_work(stats->queue, &stats->work,
->                            LAN9645X_STATS_CHECK_DELAY);
->=20
->         return 0;
->     }
->=20
-> it unconditionally returns 0, so the goto owq_destroy branch is dead.
->=20
-> If a future change either makes lan9645x_stats_init() return an error, or
-> adds any fallible step after it in lan9645x_setup(), the cleanup would
-> fall through owq_destroy without calling lan9645x_stats_deinit(), leaving
-> the self-requeuing delayed work armed on stats->queue.
->=20
-> Also, dsa_switch_setup() in net/dsa/dsa.c does not invoke ds->ops->teardo=
-wn
-> when ops->setup() itself fails, so lan9645x_teardown (which is where
-> lan9645x_stats_deinit is called today) will not run in that scenario.
->=20
-> Then in lan9645x_remove() -> lan9645x_stats_free() -> destroy_workqueue()=
-,
-> the queue would be drained with a chained self-requeue still live. Would
-> adding a dedicated label that calls lan9645x_stats_deinit() before fallin=
-g
-> through to owq_destroy be safer for future edits?
->=20
-
-
-I will make lan9645x_stats_init return void. There is nothing after
-lan9645x_stats_init which can fail, so at this point a label for=C2=A0
-lan9645x_stats_deinit would be dead also?
-
-> [ ... ]
->=20
-> > diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_stats.c b/driv=
-ers/net/dsa/microchip/lan9645x/lan9645x_stats.c
-> > new file mode 100644
-> > index 000000000000..46ac62b4016f
-> > --- /dev/null
-> > +++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_stats.c
->=20
-> [ ... ]
->=20
-> > +static const struct lan9645x_ethtool_stat lan9645x_port_ethtool_stats[=
-] =3D {
-> > +     { "rx_cat_drop",        SCNT_RX_CAT_DROP },
-> > +     { "rx_red_prio_0",      SCNT_RX_RED_PRIO_0 },
->=20
-> Per Documentation/networking/statistics.rst and the netdev stats hierarch=
-y,
-> counters that have a standard uAPI must not be duplicated in ethtool -S.
->=20
-> The rx_cat_drop counter is summed into stats->rx_dropped in
-> lan9645x_stats_get_stats64():
->=20
->     stats->rx_dropped =3D c[SCNT_RX_LONG] +
->                         c[SCNT_DR_LOCAL] +
->                         c[SCNT_DR_TAIL] +
->                         c[SCNT_RX_CAT_DROP] +
->                         ...
->=20
-> Since rtnl_link_stats64.rx_dropped is reachable via "ip -s link show",
-> does exposing rx_cat_drop here duplicate a value already covered by the
-> standard uAPI?
->=20
-> [ ... ]
->=20
-> > +     { "tx_drop",            SCNT_TX_DROP },
->=20
-> Similarly, tx_drop feeds stats->tx_dropped:
->=20
->     stats->tx_dropped =3D c[SCNT_TX_DROP] + c[SCNT_TX_AGED];
->=20
-> Should tx_drop be dropped from the ethtool -S list for the same reason?
->=20
-> [ ... ]
->=20
-> > +     { "tx_aged",            SCNT_TX_AGED },
-> > +     { "tx_bufdrop",         SCNT_TX_BUFDROP },
->=20
-> tx_aged is also summed into stats->tx_dropped in
-> lan9645x_stats_get_stats64(), so does it fall under the same duplicate-uA=
-PI
-> concern as tx_drop?
->=20
-> A related question about tx_bufdrop: if SCNT_TX_BUFDROP represents transm=
-it
-> frames dropped due to buffer exhaustion, why is it not included in
-> stats->tx_dropped alongside SCNT_TX_DROP and SCNT_TX_AGED?
->=20
->     stats->tx_dropped =3D c[SCNT_TX_DROP] + c[SCNT_TX_AGED];
->=20
-> If tx_bufdrop is in fact a transmit-drop cause, would users of
-> ip -s link show see an under-reported tx_dropped relative to the private
-> ethtool counter?
-
-
-Yes, I think this is a bug, and bufdrop should be added here. I will make s=
-ure
-there no overlap, and otherwise add it.
-
->=20
-> > +     { "dr_local",           SCNT_DR_LOCAL },
-> > +     { "dr_tail",            SCNT_DR_TAIL },
->=20
-> dr_local and dr_tail are also fed into stats->rx_dropped:
->=20
->     stats->rx_dropped =3D c[SCNT_RX_LONG] +
->                         c[SCNT_DR_LOCAL] +
->                         c[SCNT_DR_TAIL] +
->                         ...
->=20
-> Would it be appropriate to drop these from the ethtool -S list as well,
-> given they are already aggregated into the standard rx_dropped counter?
->=20
-> [ ... ]
->=20
-> > +};
->=20
-> [ ... ]
->=20
-> > +static void lan9645x_check_stats_work(struct work_struct *work)
-> > +{
-> > +     struct delayed_work *del_work =3D to_delayed_work(work);
-> > +     struct lan9645x_stats *stats;
-> > +
-> > +     stats =3D container_of(del_work, struct lan9645x_stats, work);
-> > +
-> > +     lan9645x_stats_update(stats->lan9645x);
-> > +
-> > +     queue_delayed_work(stats->queue, &stats->work,
-> > +                        LAN9645X_STATS_CHECK_DELAY);
-> > +}
->=20
-> The commit message says this worker "update[s] it frequently to handle
-> overflows in hardware."
->=20
-> Looking at lan9645x_stats_add_cnt():
->=20
->     static inline void lan9645x_stats_add_cnt(u64 *cnt, u32 val)
->     {
->         if (val < (*cnt & U32_MAX))
->             *cnt +=3D (u64)1 << 32; /* value has wrapped */
->=20
->         *cnt =3D (*cnt & ~(u64)U32_MAX) + val;
->     }
->=20
-> this compensates for at most one 32-bit wrap per polling interval. If two
-> or more wraps happen between reads, the low-half comparison no longer
-> detects the missed wrap and the 64-bit counter silently loses 2^32 per
-> missed wrap.
->=20
-> At the chip's 2.5 Gbps line rate (LAN9645X_SPEED_2500 in lan9645x_main.h)=
-,
-> a 32-bit byte counter wraps roughly every 13.7 s, so two wraps happen in
-> about 27.5 s. The polling interval is LAN9645X_STATS_CHECK_DELAY =3D 3 * =
-HZ,
-> but there is no upper bound on the actual elapsed time between reads:
-> delayed work can be stretched by system suspend/resume, heavy CPU load, o=
-r
-> regmap/SPI contention.
->=20
-> Would it be worthwhile to either bound the worst-case polling gap
-> (e.g. a suspend/resume hook that forces a read, or a timestamp-based
-> sanity check that detects a stretched interval and logs a warning) so
-> that rx_bytes/tx_bytes reported to ndo_get_stats64 and ethtool cannot
-> silently undercount by multiples of 2^32?
->=20
-
-It is true, and the timing is chosen so at most 1 wrap is supposed to occur=
-.
-I believe this is the exact pattern already used by ocelot, lan966x, sparx5
-and lan969x.
-
-Maybe I misunderstand the suspend/resume comment. We do not implement
-support to suspend/resume, but if we did, then I assume you can suspend
-for an arbitrary amount of time, so doing an additional read on=C2=A0
-suspend/resume will not solve this problem?
-
-The hw counters are 32bit. To stay synced they must never wrap more than
-once. I think the only way avoid this problem is if we can make absolute
-guarantees about how often the polling code runs?
-
-> [ ... ]
-
+> This report is generated by a bot. It may contain errors.
+> See https://goo.gl/tpsmEJ for more information about syzbot.
+> syzbot engineers can be reached at syzkaller@googlegroups.com.
+> 
+> syzbot will keep track of this issue. See:
+> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+> 
+> If the report is already addressed, let syzbot know by replying with:
+> #syz fix: exact-commit-title
+> 
+> If you want to overwrite report's subsystems, reply with:
+> #syz set subsystems: new-subsystem
+> (See the list of subsystem names on the web dashboard)
+> 
+> If the report is a duplicate of another one, reply with:
+> #syz dup: exact-subject-of-another-report
+> 
+> If you want to undo deduplication, reply with:
+> #syz undup
