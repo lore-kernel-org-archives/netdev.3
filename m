@@ -1,81 +1,101 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94244349CF8
-	for <netdev@vger.kernel.org>; Tue, 12 May 2026 10:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0709349CC0;
+	Tue, 12 May 2026 10:46:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778582460; cv=none; b=oR8mM+x/kYHQwsrSg3qjWsted7s+0wN2M3LmGc/BwAS6yEOX3t4yoT+hVWTHKVOc6fo7iXR972O0ZGqGfI3H/IR9Gn/Td17H9c8mbtwcybq7AFnvcN8rDoaAkHZwU32CvKyrOAa+f6XWepFKdV9Y+ivv3OVoKdfDDIJP1P8I1/0=
+	t=1778582811; cv=none; b=EhTSCVJdeBmwR1FO7922xrzJ/ppPCKJzXBp99D/Ftk7/U5ot8hCdVOpOqMCvRlgQ7O59d2Kq+EDo+0jShGCYaI3ks85PshYFOIydoljYBwtcXIbr+bPnxI96sxUdgWXEVqslA5ZAlM7j+NQV0NjjbzH+fGSTt+OfpvUSxlmaDiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778582460; c=relaxed/simple;
-	bh=KemSZ9bwOd8fBAANMIPARXqN/uZixY3Q9033+r2TlmI=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=GM+flooJR6VLJvX2SWni9ETxhYc7zak6Q84Bvb1/plFo5FoLotDcoeM6akH6JjcPpXXquLvBpVuNZYeAiqgmkyx6IT/xKBnsImucQajwq6MddJasnmXEZEKLvqCVIoT2CcUHbmK4efy38OBPYGp6BMXz50vhA1tAv9QHzfMWfqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r8OZbZBu; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778582811; c=relaxed/simple;
+	bh=CfTnm+NwfcKBfFp0bUW7Erh6C3aJPfKER4/xwdSZ/Vc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aZT5UY/gFjEAmsFFZkrVC2i95wauxKWj9APFVq4gwMPeZeF02qlXXA7An31xe613uC8mqaSPIQq0hO8izPSCPpFi5L7lSUE8JQQXx7gOymSyHbxhn42ep5lVTHdsGgKw9u2X2ygI6ZHfvjTlhs2qU4uMopbFlg56/tLksTRbf2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ccAFGbMN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r8OZbZBu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39722C2BCB0;
-	Tue, 12 May 2026 10:41:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ccAFGbMN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 717DCC2BCB0;
+	Tue, 12 May 2026 10:46:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778582460;
-	bh=KemSZ9bwOd8fBAANMIPARXqN/uZixY3Q9033+r2TlmI=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=r8OZbZBuWphHT5TTkYmmT1+p/51ZDw7rRom7+JDFHdyXxZGgQwD/ih77trLZOEr4H
-	 5vsY1Qj1Bxu1pyee5UGo97cu713H8L44YMeWZs2ClF6Djt4HFmveImaTCHGgi/jZC7
-	 CV8ohqRema19cVJkbCE+Q/zIEbp8XiPp9oapzAcIohDVXabJzCrIA0LMVrpqixlXdR
-	 O6O6uJ4P4xGyYbu8OHQ7ZxIUa/OBUwvhlc1rfMvdljme+G+gGDifFu5e67V0d3T1Ej
-	 k4DFT3AsiawNrsF3nSIEv60rcXRdA7jGDgUOjdiVqbMUn8m8FFusujq17o0PjMvLnh
-	 YqjLMBJ1TcayQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CDFA380A979;
-	Tue, 12 May 2026 10:40:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1778582811;
+	bh=CfTnm+NwfcKBfFp0bUW7Erh6C3aJPfKER4/xwdSZ/Vc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ccAFGbMNgzMK1PkjeUwVGBFpwMe+/f+2yMbP6VFLPkzL6VFb7QsHQBbRea1DFeJ7r
+	 BeMhzOWkUiomhq1oHzCMcChcLel2sGfTZ1zLBZ/uqEbI/MNQ7H5ZmJMnTDYbP71ZAl
+	 Xf6XU4gRMKWe6JYDz/NXvcJ5PDX6s+e4IPVAZIqLTu5qriTNPlBwyvOzq2jtzSfFyk
+	 pE1fyrfhtuopNYya+4lPoODtW9YwZrL8cCbCekO21CxHO+90tRIT6Go+j0bRQWjzQj
+	 KdfofwewjUXXDki54UNz1tOnWqGA+sphbv5kpu/Qnf8xSH7GBNUMl9JXumRzKkl+4U
+	 Pu1okX7RSn93w==
+Date: Tue, 12 May 2026 11:46:47 +0100
+From: Simon Horman <horms@kernel.org>
+To: Xiang Mei <xmei5@asu.edu>
+Cc: netdev@vger.kernel.org, fmaurer@redhat.com, kuba@kernel.org,
+	pabeni@redhat.com, edumazet@google.com, davem@davemloft.net,
+	linux-kernel@vger.kernel.org, bestswngs@gmail.com
+Subject: Re: [PATCH net] net: hsr: fix NULL deref in hsr_get_node_data
+Message-ID: <20260512104647.GK27589@horms.kernel.org>
+References: <20260511071517.3013445-1-xmei5@asu.edu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: hsr: fix NULL pointer dereference in
- hsr_get_node_data()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177858240630.2796465.7028277115824206441.git-patchwork-notify@kernel.org>
-Date: Tue, 12 May 2026 10:40:06 +0000
-References: <20260508124636.1462346-1-2022090917019@std.uestc.edu.cn>
-In-Reply-To: <20260508124636.1462346-1-2022090917019@std.uestc.edu.cn>
-To: Quan Sun <2022090917019@std.uestc.edu.cn>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, fmaurer@redhat.com,
- bigeasy@linutronix.de, luka.gejak@linux.dev, mingo@kernel.org,
- arvid.brodin@alten.se
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260511071517.3013445-1-xmei5@asu.edu>
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Fri,  8 May 2026 20:46:36 +0800 you wrote:
-> In the HSR (High-availability Seamless Redundancy) protocol, node
-> information is maintained in the node_db. When a supervision frame is
-> received, node->addr_B_port is updated to track the receiving port type
-> (e.g., HSR_PT_SLAVE_B).
+On Mon, May 11, 2026 at 12:15:17AM -0700, Xiang Mei wrote:
+> hsr_get_node_data() looks up a node's address-B port and dereferences
+> port->dev->ifindex without checking the return value of
+> hsr_port_get_hsr(), which returns NULL when no port of the requested
+> type is currently attached.
 > 
-> If the underlying physical interface associated with this slave port is
-> removed (e.g., via `ip link del`), hsr_del_port() frees the hsr_port
-> object. However, the stale node->addr_B_port reference is kept in the
-> node_db until the node ages out.
+> node->addr_B_port is set by hsr_handle_sup_frame() on every supervision
+> frame but is never cleared when the corresponding slave is removed.
+> If one slave of an HSR master is unregistered while the master stays
+> alive (the other slave keeps it up), node_db entries retain a stale
+> addr_B_port. An unprivileged HSR_C_GET_NODE_STATUS query (genl op has
+> .flags = 0) then crashes the kernel:
 > 
-> [...]
+>   Oops: general protection fault, probably for non-canonical address
+>   0xdffffc0000000002: 0000 [#1] SMP KASAN NOPTI
+>   KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
+>   RIP: 0010:hsr_get_node_data (net/hsr/hsr_framereg.c:892)
+>   Call Trace:
+>    hsr_get_node_status (net/hsr/hsr_netlink.c:366)
+>    genl_family_rcv_msg_doit (net/netlink/genetlink.c:1114)
+>    genl_rcv_msg (net/netlink/genetlink.c:1209)
+>    netlink_rcv_skb (net/netlink/af_netlink.c:2550)
+>    netlink_unicast (net/netlink/af_netlink.c:1344)
+>    netlink_sendmsg (net/netlink/af_netlink.c:1894)
+>    __sys_sendto (net/socket.c:2265)
+> 
+> Default *addr_b_ifindex to -1 and only overwrite it when the port
+> lookup succeeds. The caller hsr_get_node_status() already treats
+> addr_b_ifindex == -1 as "no address-B port" when emitting the
+> HSR_A_NODE_ADDR_B / HSR_A_ADDR_B_IFINDEX attributes, so behavior is
+> unchanged for valid setups.
+> 
+> Fixes: c5a759117210 ("net/hsr: Use list_head (and rcu) instead of array for slave devices.")
+> Reported-by: Weiming Shi <bestswngs@gmail.com>
+> Assisted-by: Claude:claude-opus-4-7
+> Signed-off-by: Xiang Mei <xmei5@asu.edu>
+
+Hi,
+
+Thanks for your patch.  It appears to address the same issue as the
+following commit which was recently added to net.
 
 Here is the summary with links:
   - [net] net: hsr: fix NULL pointer dereference in hsr_get_node_data()
     https://git.kernel.org/netdev/net/c/911f54771ca9
 
-You are awesome, thank you!
+Although that code-changes there differ from this patch,
+I believe the overall logic is the same.
+
+Please consider an incremental patch if you think the commit above
+is insufficient for some reason.
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: changes-requested
