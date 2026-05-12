@@ -1,187 +1,70 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C57233C09F0;
-	Tue, 12 May 2026 20:58:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 732643C5552;
+	Tue, 12 May 2026 21:05:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778619524; cv=none; b=U+aqU4VpehfckTv3ZiUgrwAOcjjafo1zKcg17gPQusaOhER1eCyPoLnJrjVeBRsaMa9JewFwd3S/t1Z38kW2u/z5lP8cjA+jAb+xVyizR61LAhrB8FEyu1NNftqU3ffiAmvGcrHosJXohiB0HVSoLJrl8XOBpDJgddsJETzSRZk=
+	t=1778619934; cv=none; b=n0W8THuakMHeHHuHiucWp4wYNgWjCw84UQEmj7xG4w4KIygczeBOXIl14LiV2dvEW4BS0RiVHjTwrgvO+aOtrS02Voz9aW0ZKk40EukKOTFeGtqQrOTx3Oq81SAuJZ3xqQQYmXXKG6ALR3IY99F8RCjK2aZlsTGTwUrv0CIT4gY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778619524; c=relaxed/simple;
-	bh=cwRYFJ8mo7xPr/Sm/kd6T4GfCK3h96cELX3tInSSqH4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qzGqhm1eAUi8JgtI9rgbJ02S0Dcn3tzTO+6ArhuvKea1hVSCJSGSxwR9pGGLIX3tklw1cM7EjheVzbpkMrYaYsPeFJZK+kJr5ATdxzZmi7HbiupkqLtCPatFS5yuv4IufbgqVJV7cUTH6OCXXGbWhdpiTw6C6uTYZ+VxSx3eUOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aew4b/4E; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778619934; c=relaxed/simple;
+	bh=mo6e8Tl7INL5treUcIkpAfOY+0nT4RQkp/YxRTbOF7A=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=k0exrYkNX3YgQ0ynKmlfLaz/7ifD0StfKWPYV3iP7EwXG85gbsiSN6P20TC1UBQr+bYkiG0qLxQBxyog8dcNos/pYzo462fAe8JiVnygcFka/uuG3vmxunmQ7Z14Jfl5rlbFJ8437+Ppk6JUFOswo3RF1sX+RHRV39sZttGnvhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=CsQIoHEB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aew4b/4E"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F35D8C2BCB0;
-	Tue, 12 May 2026 20:58:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778619524;
-	bh=cwRYFJ8mo7xPr/Sm/kd6T4GfCK3h96cELX3tInSSqH4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aew4b/4EDTRlqlXHmm4ka53FQbHCXwfJFmy8x01qQqfmuztLbaflyIT6Z3KXDXwK2
-	 b5JiZYNgRlvCID3NhkRx3KDtWb4nCuI6wimqtfnIwAD1mAAd9SVaDC/JSFiX7UdSOg
-	 nBygmXFpmJNoPfEnWc4ul/IPZDtPZbA/n6+FpygRh3jpuCEYeD5hipGFrI1gxOs8M5
-	 mYoOME7LP9wAWubUPs6q5f6D+bABmxyF5wfHBRa4huykaC9maPfJwfYzzR7HaVSHzw
-	 ec5dE7LMCOooljRryEym8Iy191vRpFMtPYVbUYxXGVvdndmQCEXS+vjoUznhhOb1qg
-	 Oq1FYLT8tvPNg==
-Date: Tue, 12 May 2026 22:58:41 +0200
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: Benjamin Larsson <benjamin.larsson@genexis.eu>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	Madhur Agrawal <madhur.agrawal@airoha.com>
-Subject: Re: [PATCH net-next v6 11/12] net: airoha: Support multiple LAN/WAN
- interfaces for hw MAC address configuration
-Message-ID: <agOUgVn24Ls5jiHq@lore-desk>
-References: <20260511-airoha-eth-multi-serdes-v6-0-c899462c4f75@kernel.org>
- <20260511-airoha-eth-multi-serdes-v6-11-c899462c4f75@kernel.org>
- <f4a11830-8a3f-4cc3-ab82-e6f02ca34ae8@genexis.eu>
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="CsQIoHEB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 508B2C2BCC7;
+	Tue, 12 May 2026 21:05:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1778619934;
+	bh=mo6e8Tl7INL5treUcIkpAfOY+0nT4RQkp/YxRTbOF7A=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=CsQIoHEB8oaEHcAMFfdBryz0a1eiebYrMmN+ZI44OCVnR6E+YcN/oFEnuMH+jF8mL
+	 +Edt3gUZ7QqMMLtvW3HlcoJSiNJNWZv+LWR2rt0xoSG0CV1D7QQvsc3ETwZmvXUkqm
+	 3q3WEw97mCEI6T1eJBIQMdOn0NalAzj1VojejrbI=
+Date: Tue, 12 May 2026 14:05:32 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Brendan Jackman <jackmanb@google.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+ <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
+ <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Stanislaw Gruszka
+ <stf_xl@wp.pl>, Alexander Potapenko <glider@google.com>, Marco Elver
+ <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>, Allison Henderson
+ <allison.henderson@oracle.com>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+ <linux-wireless@vger.kernel.org>, <kasan-dev@googlegroups.com>,
+ <linux-mm@kvack.org>, <netdev@vger.kernel.org>,
+ <linux-rdma@vger.kernel.org>, <rds-devel@oss.oracle.com>
+Subject: Re: [PATCH v2 0/4] treewide: fixup gfp_t printks
+Message-Id: <20260512140532.f16379be75ab006f2cca4747@linux-foundation.org>
+In-Reply-To: <DIGPS83BGEGA.5I7VLH8TV7XE@google.com>
+References: <20260326-gfp64-v2-0-d916021cecdf@google.com>
+	<DIGPS83BGEGA.5I7VLH8TV7XE@google.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Wnpl3sdvUPuniOKw"
-Content-Disposition: inline
-In-Reply-To: <f4a11830-8a3f-4cc3-ab82-e6f02ca34ae8@genexis.eu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Tue, 12 May 2026 12:58:20 +0000 Brendan Jackman <jackmanb@google.com> wrote:
 
---Wnpl3sdvUPuniOKw
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> On Thu Mar 26, 2026 at 12:31 PM UTC, Brendan Jackman wrote:
+> > This patchset used to be about switching gfp_t to unsigned long. That is
+> > probably not gonna happen any more but while writing it I found these
+> > cleanups that seem worthwhile regardless.
+> >
+> 
+> ...
+>
+> Any chance someone can take these?
 
-On May 12, Benjamin Larsson wrote:
-> Hi.
->=20
-> On 11/05/2026 12:49, Lorenzo Bianconi wrote:
-> > The EN7581 and AN7583 SoCs provide registers to configure hardware LAN/=
-WAN
-> > MAC addresses, used to determine whether received traffic is destined f=
-or
-> > this host or should be forwarded to another device.
-> > The SoC hardware design assumes all interfaces configured as LAN (or WA=
-N)
-> > share a common upper MAC address, which is programmed into the
-> > REG_FE_{LAN,WAN}_MAC_H register. The lower bytes of 'local' addresses c=
-an
-> > be expressed as a range via the REG_FE_MAC_LMIN and REG_FE_MAC_LMAX
-> > registers.
-> > Previously, only a single interface was considered when programming the=
-se
-> > registers. Extend the logic to derive the correct minimum and maximum
-> > values for REG_FE_MAC_LMIN/REG_FE_MAC_LMAX when two or more interfaces =
-are
-> > configured as LAN or WAN.
-> >=20
-> > Tested-by: Madhur Agrawal <madhur.agrawal@airoha.com>
-> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> > ---
-> >   drivers/net/ethernet/airoha/airoha_eth.c | 75 +++++++++++++++++++++++=
-++++-----
-> >   drivers/net/ethernet/airoha/airoha_eth.h |  2 +-
-> >   drivers/net/ethernet/airoha/airoha_ppe.c |  4 +-
-> >   3 files changed, 66 insertions(+), 15 deletions(-)
-> >=20
-> > diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/eth=
-ernet/airoha/airoha_eth.c
-> > index 16c0ff9999da..533ffe20f833 100644
-> > --- a/drivers/net/ethernet/airoha/airoha_eth.c
-> > +++ b/drivers/net/ethernet/airoha/airoha_eth.c
-> > @@ -71,20 +71,67 @@ static void airoha_qdma_irq_disable(struct airoha_i=
-rq_bank *irq_bank,
-> >   	airoha_qdma_set_irqmask(irq_bank, index, mask, 0);
-> >   }
-> > -static void airoha_set_macaddr(struct airoha_gdm_dev *dev, const u8 *a=
-ddr)
-> > +static int airoha_set_macaddr(struct airoha_gdm_dev *dev, const u8 *ad=
-dr)
-> >   {
-> >   	struct airoha_eth *eth =3D dev->eth;
-> > -	u32 val, reg;
-> > +	u8 ref_addr[ETH_ALEN] =3D {};
-> > +	u32 reg, val, lmin, lmax;
-> > +	int i;
-> > +
-> > +	lmin =3D (addr[3] << 16) | (addr[4] << 8) | addr[5];
-> > +	lmax =3D lmin;
-> > +
-> > +	for (i =3D 0; i < ARRAY_SIZE(eth->ports); i++) {
-> > +		struct airoha_gdm_port *port =3D eth->ports[i];
-> > +		int j;
-> > +
-> > +		if (!port)
-> > +			continue;
-> > +
-> > +		for (j =3D 0; j < ARRAY_SIZE(port->devs); j++) {
-> > +			struct airoha_gdm_dev *iter_dev;
-> > +			struct net_device *netdev;
-> > +
-> > +			iter_dev =3D port->devs[j];
-> > +			if (!iter_dev || iter_dev =3D=3D dev)
-> > +				continue;
-> > +
-> > +			if (airoha_is_lan_gdm_dev(iter_dev) !=3D
-> > +			    airoha_is_lan_gdm_dev(dev))
-> > +				continue;
-> > +
-> > +			netdev =3D iter_dev->dev;
-> > +			if (netdev->reg_state !=3D NETREG_REGISTERED)
-> > +				continue;
-> > +
-> > +			ether_addr_copy(ref_addr, netdev->dev_addr);
-> > +			val =3D (netdev->dev_addr[3] << 16) |
-> > +			      (netdev->dev_addr[4] << 8) | netdev->dev_addr[5];
-> > +			if (val < lmin)
-> > +				lmin =3D val;
-> > +			if (val > lmax)
-> > +				lmax =3D val;
-> > +		}
-> > +	}
-> > +
-> > +	if (!is_zero_ether_addr(ref_addr) && memcmp(ref_addr, addr, 3)) {
-> > +		/* According to the HW design, hw mac address MS bits
-> > +		 * must be the same for each net_device with the same
-> > +		 * LAN/WAN configuration.
-> > +		 */
-> > +		return -EINVAL;
-> > +	}
->=20
-> Maybe this information should be relayed to the user somehow?
+[2/4] is merged into the wireless tree (I assume) and the other three
+are in mm.git's mm-unstable branch.
 
-netdev_err()?
-
-Regards,
-Lorenzo
-
->=20
-> MvH
->=20
-> Benjamin Larsson
->=20
-
---Wnpl3sdvUPuniOKw
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCagOUgQAKCRA6cBh0uS2t
-rIn+APwKpb4qxMrPaC5ng4+5c/Ub1S62RXR68TIg3As8A6JbIwD/RGedQbqaS9xg
-zxmKutUfiYEtLPbAvGErfwePBAN6Gws=
-=JHOg
------END PGP SIGNATURE-----
-
---Wnpl3sdvUPuniOKw--
