@@ -1,181 +1,182 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45694480DC9;
-	Tue, 12 May 2026 07:45:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D8B036F8FE;
+	Tue, 12 May 2026 07:51:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778571944; cv=none; b=A5DhURcQuENJp59YF1JeVe/yZRwCID5awZH+KE9zSXHkIB86osOusUqbWeFv/ncXSoB2+nInu6KZLwRkeJvewwmElyha60wb2QZRDgx6V2H4mRSt6gI78mPdqdySUlkrLRpNEmAAtuLWPYZBgvBk1HZ5cIQM9D++vL58OfB1F+0=
+	t=1778572273; cv=none; b=kOQV6q2ro5mBYZRwyGQmz7Malox1h6/3IZzu4mRkzdks0+JGFAkVQAm0LK9/CV2NvGL5lI8qsn7mFRhe2V4RgYbteJdjoW8lJF9pDdoLXZLEU0HBmC/64ACzoQIaqgVPltn7ot8s4QgmEEjKxy0o7mguWutQmnvH3dTcNlpCVrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778571944; c=relaxed/simple;
-	bh=Rr03NR4nj+PXY2Go2NPeoJ6eZbZIwlqJ5SdV9WcHg9Y=;
-	h=Message-ID:Subject:From:To:CC:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=suK0LPc4CnTMNBMi3ltggVAV+e27lzVvuHaNLXw8UpQ61Lw2k0ATb4lofAJeKebIE2+/R2gEXLBV0Xee0IyFXlJiKi90SlxxOQQe/1nTLb1rMonC9zjx3FyB2wHhlyDL8Qxss7yZ0sw1c/sa4K2OocJrEL38gqYom3iyTzzM1kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=ImWiGKN8; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1778572273; c=relaxed/simple;
+	bh=GIepLcHTJURrppAg6CpDxGEX4YxETo5qs9bcQX5fU9g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=u44eE8QhFCPwW53v23n801epTQCOEGrngMp1x6Ta3FhJcLAuWg+Ty6sb9FbmaSAKIvb5wmAvIW+eUScayf6AQOV3io0K19hrT7120WLzfSppXkxAaRPhXYpB+QMd573nyIWQvHhX3gFGwgNo2SNsQ/gbzRAYFvuPiXrq/U7ttJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jMRWmgM4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="ImWiGKN8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1778571938; x=1810107938;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=Rr03NR4nj+PXY2Go2NPeoJ6eZbZIwlqJ5SdV9WcHg9Y=;
-  b=ImWiGKN8ho/LpehnHZ9zaPG8QsLxPFuwDvjBRxb9wJM593kLVYwj6yQt
-   CN0UwphUS5YtylZ0Arx0FGaHvALF5jfSrzd4r5sL9wXJzXBCcVJVw7k/6
-   v9Opvk1JRa0Rvq8V/CcYbt6V2i7qlbAvu5KT8eO3evMYBpfNZGhG+lqae
-   Cyeg8bd3JZxEJWZ401URnVc7V4AaLyQ4jyZF6OtlMHTp7rdnVKqJpMC0L
-   RRfhkT8P1O2kVu405oKKd/eurV1Q1YplDQC8n3bKVddSklEGnQpmNjgBS
-   uyHO3szhhN0MimkCJWlA9TRL2ubTC376Bp8DPguUIZcRvSkeffJ8FmBBI
-   Q==;
-X-CSE-ConnectionGUID: OyC0JCsKQAONdiAid1+YGg==
-X-CSE-MsgGUID: e8IoqHhgRVqSZW8UBlT4jA==
-X-IronPort-AV: E=Sophos;i="6.23,230,1770620400"; 
-   d="scan'208";a="57379055"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 12 May 2026 00:45:31 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Tue, 12 May 2026 00:45:29 -0700
-Received: from DEN-DL-M77643.microsemi.net (10.10.85.11) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Tue, 12 May 2026 00:45:26 -0700
-Message-ID: <f4c4ad7d6c690cec90fa1cb3373286d01b32db52.camel@microchip.com>
-Subject: Re: [PATCH net-next v4 8/9] net: dsa: lan9645x: add mdb management
-From: Jens Emil Schulz Ostergaard <jensemil.schulzostergaard@microchip.com>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: <UNGLinuxDriver@microchip.com>, <andrew@lunn.ch>, <olteanv@gmail.com>,
-	<davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>,
-	<horms@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
-	<conor+dt@kernel.org>, <woojung.huh@microchip.com>, <linux@armlinux.org.uk>,
-	<Steen.Hegelund@microchip.com>, <daniel.machon@microchip.com>,
-	<linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<devicetree@vger.kernel.org>
-Date: Tue, 12 May 2026 09:45:25 +0200
-In-Reply-To: <20260506014616.1616843-1-kuba@kernel.org>
-References: <20260430-dsa_lan9645x_switch_driver_base-v4-8-f1b6005fa8b7@microchip.com>
-	 <20260506014616.1616843-1-kuba@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2.1 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jMRWmgM4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AD63C2BCB0;
+	Tue, 12 May 2026 07:51:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778572272;
+	bh=GIepLcHTJURrppAg6CpDxGEX4YxETo5qs9bcQX5fU9g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jMRWmgM4TFh1Xb+dEKyEYsgBNhVzaPuDSi4CMld9Xc58a83X1lERve1GKOFKGOOlM
+	 lclh2p1Cyp8UHep/JRikDLFtYAaIAhEN7MNNF83RuNj9VBxa9HjoL15dC8LHgiCRn6
+	 POYYwA4NSblSpzS/bS6hJXZ6BiLJtrA6jBokTNtCmwsYv5X8ECFQ/JBJQ1YmrBiydz
+	 ZUNaDzq5IjjKeDXyHNHVfFLbR3H79rYP8H/ra8KNgDugQY3Llud74XWQlfODlcpIPR
+	 She2M/Sh1Vldu+LE7kVEn7mjEhO5kBfQ1wU0sCWhqwM24nkczmqARGsHYqrLcq2mgA
+	 aBEaFoIQFA8Aw==
+Date: Tue, 12 May 2026 15:51:06 +0800
+From: "Peter Chen (CIX)" <peter.chen@kernel.org>
+To: Svyatoslav Ryhel <clamor95@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
+	linux-tegra@vger.kernel.org, linux-usb@vger.kernel.org
+Subject: Re: [PATCH v1 2/6] usb: chipidea: tegra: Avoid controller/PHY init
+ if bus is externally controlled
+Message-ID: <agLb6mgP45jHjvNt@nchen-desktop>
+References: <20260511135703.62470-1-clamor95@gmail.com>
+ <20260511135703.62470-3-clamor95@gmail.com>
+ <agJ/T8nBGWEoblmd@nchen-desktop>
+ <CAPVz0n173syW9rXy7Qt_N=mChe6WBRLvjRDypcJEC50hPL4OMQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAPVz0n173syW9rXy7Qt_N=mChe6WBRLvjRDypcJEC50hPL4OMQ@mail.gmail.com>
 
-On Tue, 2026-05-05 at 18:46 -0700, Jakub Kicinski wrote:
-> EXTERNAL EMAIL: Do not click links or open attachments unless you know th=
-e content is safe
->=20
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> ---
-> net: dsa: lan9645x: add mdb management
->=20
-> This change adds DSA mdb callbacks for lan9645x, with distinct handling
-> for L2 multicast (PGID-backed) and IP multicast (port mask inline in
-> the mac table).
->=20
-> > diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c b/drive=
-rs/net/dsa/microchip/lan9645x/lan9645x_main.c
-> > index b21e1bf25b0c..15a493c1f215 100644
-> > --- a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
-> > +++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
-> > @@ -70,6 +70,7 @@ static void lan9645x_teardown(struct dsa_switch *ds)
-> >       destroy_workqueue(lan9645x->owq);
-> >       lan9645x_npi_port_deinit(lan9645x, lan9645x->npi);
-> >       lan9645x_mac_deinit(lan9645x);
-> > +     lan9645x_mdb_deinit(lan9645x);
-> >       mutex_destroy(&lan9645x->fwd_domain_lock);
-> >  }
-> >=20
-> > @@ -141,6 +142,7 @@ static int lan9645x_setup(struct dsa_switch *ds)
-> >       if (err)
-> >               return err;
-> >       lan9645x_mac_init(lan9645x);
-> > +     lan9645x_mdb_init(lan9645x);
->=20
-> Is lan9645x_mdb_deinit() reachable when lan9645x_setup() fails after
-> this point?
->=20
-> lan9645x_setup() continues after lan9645x_mdb_init() with operations
-> that can fail, including alloc_ordered_workqueue() near the bottom of
-> the function which returns -ENOMEM. On error from ds->ops->setup(),
-> dsa_switch_setup() in net/dsa/dsa.c jumps directly to the notifier
-> cleanup path and does not invoke ds->ops->teardown:
->=20
->         err =3D ds->ops->setup(ds);
->         if (err < 0)
->                 goto unregister_notifier;
->=20
-> Since lan9645x_teardown() is where lan9645x_mdb_deinit() runs,
-> the freshly initialized mdb_lock (and its lockdep map) is never
-> torn down if setup fails after lan9645x_mdb_init().
->=20
-> Could lan9645x_mdb_init() be moved later in setup (after the steps
-> that can still fail), or could setup-time error unwinding be added
-> for mdb_lock, mact_lock and fwd_domain_lock? The same pattern exists
-> for mact_lock (from lan9645x_mac_init()) and fwd_domain_lock, and this
-> change adds mdb_lock to the same class of resources.
+On 26-05-12 09:13:40, Svyatoslav Ryhel wrote:
+> вт, 12 трав. 2026 р. о 04:16 Peter Chen (CIX) <peter.chen@kernel.org> пише:
+> >
+> > On 26-05-11 16:56:57, Svyatoslav Ryhel wrote:
+> > > If the USB controller and PHY are externally controlled, then the
+> > > registration of the controller and the PHY initialization should be
+> > > skipped, since these configurations must be done by the device that
+> > > controls the bus to work correctly.
+> > >
+> >
+> > I find you only control USB controller device add at PHY driver, most of USB drivers
+> > has PHY control, for chipidea, it has PHY control at core.c, would please try to
+> > adapt for it?
+> >
+> 
+> Usually yes, but this is not the case for Tegra unfortunately. As you
+> can see Tegra specific section of Chipidea driver specifically
+> describes why it has to set PHY manually.
+> 
+> /*
+>  * USB controller registers shouldn't be touched before PHY is
+>  * initialized, otherwise CPU will hang because clocks are gated.
+>  * PHY driver controls gating of internal USB clocks on Tegra.
+>  */
+> 
+> So in order to provide correct work of USB when set by an external
+> device, both PHY and controller init/add must be skipped.
 
-Yes I will add this deinit to the unwind in the error path.
+You could call generic PHY APIs at ci_hdrc_tegra.c, after PHY init or power on,
+call controller initialization.
 
->=20
-> >=20
-> >       /* Link Aggregation Mode: NETDEV_LAG_HASH_L2 */
-> >       lan_wr(ANA_AGGR_CFG_AC_SMAC_ENA |
->=20
-> [ ... ]
->=20
-> > diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_port.c b/drive=
-rs/net/dsa/microchip/lan9645x/lan9645x_port.c
-> > index 661cd00465e2..5dee92940f89 100644
-> > --- a/drivers/net/dsa/microchip/lan9645x/lan9645x_port.c
-> > +++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_port.c
-> > @@ -189,6 +189,14 @@ int lan9645x_port_setup(struct dsa_switch *ds, int=
- port)
-> >               ANA_PORT_CFG_PORTID_VAL,
-> >               lan9645x, ANA_PORT_CFG(p->chip_port));
-> >=20
-> > +     lan_rmw(ANA_CPU_FWD_CFG_IGMP_REDIR_ENA_SET(true) |
-> > +             ANA_CPU_FWD_CFG_MLD_REDIR_ENA_SET(true) |
-> > +             ANA_CPU_FWD_CFG_IPMC_CTRL_COPY_ENA_SET(true),
-> > +             ANA_CPU_FWD_CFG_IGMP_REDIR_ENA |
-> > +             ANA_CPU_FWD_CFG_MLD_REDIR_ENA |
-> > +             ANA_CPU_FWD_CFG_IPMC_CTRL_COPY_ENA,
-> > +             lan9645x, ANA_CPU_FWD_CFG(p->chip_port));
-> > +
->=20
-> Should this block be guarded for the NPI (CPU-facing) port?
->=20
-> The IGMP/MLD redirect and IPMC control-copy bits are enabled here for
-> every chip_port that lan9645x_port_setup() is called on, with no
-> check for whether the port is the NPI. The VLAN host-mode call a few
-> lines below explicitly excludes the NPI:
->=20
->         if (p->chip_port !=3D lan9645x->npi)
->                 lan9645x_vlan_set_hostmode(p);
->=20
-> In the related driver for the same family, drivers/net/ethernet/mscc/
-> ocelot_net.c, ocelot_port_attr_mc_set() toggles these same bits only
-> on user ports in response to SWITCHDEV_ATTR_ID_BRIDGE_MC_DISABLED.
->=20
-> Can CPU-injected IGMP/MLD/IPMC-control frames end up being redirected
-> or copied back to the CPU with this configuration, or does IFH_BYPASS=3D1
-> fully suppress these classifiers on NPI ingress? If the latter, the
-> bits on the NPI are at least wasteful; if the former, duplicate
-> delivery or a trap loop seems possible.
+> 
+> > Peter
+> >
+> > > Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
+> > > ---
+> > >  drivers/usb/chipidea/ci_hdrc_tegra.c | 36 +++++++++++++++++-----------
+> > >  1 file changed, 22 insertions(+), 14 deletions(-)
+> > >
+> > > diff --git a/drivers/usb/chipidea/ci_hdrc_tegra.c b/drivers/usb/chipidea/ci_hdrc_tegra.c
+> > > index 372788f0f970..593390a818d1 100644
+> > > --- a/drivers/usb/chipidea/ci_hdrc_tegra.c
+> > > +++ b/drivers/usb/chipidea/ci_hdrc_tegra.c
+> > > @@ -32,6 +32,7 @@ struct tegra_usb {
+> > >       struct clk *clk;
+> > >
+> > >       bool needs_double_reset;
+> > > +     bool externally_controlled;
+> > >  };
+> > >
+> > >  struct tegra_usb_soc_info {
+> > > @@ -312,20 +313,25 @@ static int tegra_usb_probe(struct platform_device *pdev)
+> > >       if (device_property_present(&pdev->dev, "nvidia,needs-double-reset"))
+> > >               usb->needs_double_reset = true;
+> > >
+> > > +     if (device_property_present(&pdev->dev, "nvidia,external-control"))
+> > > +             usb->externally_controlled = true;
+> > > +
+> > >       err = tegra_usb_reset_controller(&pdev->dev);
+> > >       if (err) {
+> > >               dev_err_probe(&pdev->dev, err, "failed to reset controller");
+> > >               goto fail_power_off;
+> > >       }
+> > >
+> > > -     /*
+> > > -      * USB controller registers shouldn't be touched before PHY is
+> > > -      * initialized, otherwise CPU will hang because clocks are gated.
+> > > -      * PHY driver controls gating of internal USB clocks on Tegra.
+> > > -      */
+> > > -     err = usb_phy_init(usb->phy);
+> > > -     if (err)
+> > > -             goto fail_power_off;
+> > > +     if (!usb->externally_controlled) {
+> > > +             /*
+> > > +              * USB controller registers shouldn't be touched before PHY is
+> > > +              * initialized, otherwise CPU will hang because clocks are gated.
+> > > +              * PHY driver controls gating of internal USB clocks on Tegra.
+> > > +              */
+> > > +             err = usb_phy_init(usb->phy);
+> > > +             if (err)
+> > > +                     goto fail_power_off;
+> > > +     }
+> > >
+> > >       /* setup and register ChipIdea HDRC device */
+> > >       usb->soc = soc;
+> > > @@ -342,12 +348,14 @@ static int tegra_usb_probe(struct platform_device *pdev)
+> > >       if (of_usb_get_phy_mode(pdev->dev.of_node) == USBPHY_INTERFACE_MODE_ULPI)
+> > >               usb->data.flags &= ~CI_HDRC_SUPPORTS_RUNTIME_PM;
+> > >
+> > > -     usb->dev = ci_hdrc_add_device(&pdev->dev, pdev->resource,
+> > > -                                   pdev->num_resources, &usb->data);
+> > > -     if (IS_ERR(usb->dev)) {
+> > > -             err = dev_err_probe(&pdev->dev, PTR_ERR(usb->dev),
+> > > -                                 "failed to add HDRC device");
+> > > -             goto phy_shutdown;
+> > > +     if (!usb->externally_controlled) {
+> > > +             usb->dev = ci_hdrc_add_device(&pdev->dev, pdev->resource,
+> > > +                                           pdev->num_resources, &usb->data);
+> > > +             if (IS_ERR(usb->dev)) {
+> > > +                     err = dev_err_probe(&pdev->dev, PTR_ERR(usb->dev),
+> > > +                                         "failed to add HDRC device");
+> > > +                     goto phy_shutdown;
+> > > +             }
+> > >       }
+> > >
+> > >       return 0;
+> > > --
+> > > 2.51.0
+> > >
+> >
+> > --
+> >
+> > Best regards,
+> > Peter
 
-No it does work, but it does makes more sense to not do this for the
-npi port. I will change this.
+-- 
 
->=20
-> >       if (p->chip_port !=3D lan9645x->npi)
-> >               lan9645x_vlan_set_hostmode(p);
-> >=20
-
+Best regards,
+Peter
