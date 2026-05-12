@@ -1,119 +1,194 @@
-Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011049.outbound.protection.outlook.com [52.101.57.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43EE8426D33
-	for <netdev@vger.kernel.org>; Tue, 12 May 2026 06:06:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC6CD42EED1;
+	Tue, 12 May 2026 06:06:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.49
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778565977; cv=pass; b=QXwC1EuGVb9M9+O3wgHHMwz0JJH6jIAsbyamZqh1nx7Ix+e7GNMLv9J645WqBmUCZXsZzUERBkWyHczDIw1xbAebwsKnGkKz0Pg/xBlcdOVLtcpsCF224rh6+QnUEbf/AaAVZEeaEJEi2WoYPHndluh7w69wYKSdpyU8Xaphn3M=
+	t=1778566015; cv=fail; b=KjOsdnnNYxaTIX+wkthkvsqGjbLVrXx809pCJmAtjDOcotpQnrfvv8arAHZd9gzL0RR5SgErf8N0cJzcUKmsv4tEY5WTCdpB/Ptmux55iu5RVC0JXE0duSz/9stqAcD4J7zheGE7OKpc5dxOAnEq87fRf2HozfRTKCfpUqOUBvw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778565977; c=relaxed/simple;
-	bh=yxZL62iX8pebWS6AofBmV9FGACpi7rIEMuv0C7XnSII=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MfQY8Gnu+Ih0VA4L5/xduGi4YoHI8hqomLXeK3A0ViMhDbavRmdl4LDPsYnis7Ctbi5zib33b/MX0wOqZJK28Ch8sGRfyhoeoTaYh8XI+or+8on+TL4GU38A4fg0txPLiOP7Ns6rU/cNvf1ICKMvi/UZPHZsrdfFi4cxgpfJYNo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=tEHWRCep; arc=pass smtp.client-ip=74.125.82.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1778566015; c=relaxed/simple;
+	bh=Q10Xu7QXiuCsuqZ6+LK9+il4OTqCTBYXAqTh5LfTSKk=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=k5+eEJKCyAYI3E3nWrzHs/epWrKgOfA8ygBSq4pbZnhg4ov3+fehy+QzFlMtIxd3RtGDJ6+MuWACwhfgHzKbTicebYFPQk5d10Es7H2+0H98v2cuekNGv5gsJa3AF7t3Berq5kwwf3WNHUKKfw7oQD/5HP1ltYb6Hi1ghWj6wwk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=pxr9sAKw; arc=fail smtp.client-ip=52.101.57.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="tEHWRCep"
-Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-2f7ca62a3c4so5218788eec.0
-        for <netdev@vger.kernel.org>; Mon, 11 May 2026 23:06:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778565970; cv=none;
-        d=google.com; s=arc-20240605;
-        b=HqCsPDwTr19wxpvCXBSGXts1M6Ev9xIa4ek8CPuEqv5/nrOLEqrVEsxcbFLgAxSyQE
-         qrEBkGrxiJqhZ+bIxM8E4s4SuHDJgqWnc1lc4pqeuLSBw+C2vbDUiTzI30K+BkjDrIvu
-         k57IVNFnvl7dJELe5OfVqOmxuVQMa4F6106VER8eqHPcYtOPgqXns4WxxzBifJUlUfVe
-         gmCtmYbX3t/AGEzCbs77Lv9b+O0pkGXWjz0NObpOHkmMRP6eGsyHJLdmy4SNXUl3MHii
-         zQh8KrH4OKZlDAQoypSbKzCqkYeegEoF8PkMzsClJ3AveVnDlUgfVbGmiYB0HqKAmUVk
-         Cxvg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=CrrmqA1MIjLw7p2PiJAG2cpDnb+P9Y0HrkTx6QFkzK8=;
-        fh=nuuHL47rZR5tzQfARtgLFvPo3XPlivJXi804oJorfXw=;
-        b=ZsyJGIdEFHSVNXXiuI70U+0Mzx02Asc3HAjCme0jlWJjF75SZ4fDyOTRIxodUz8kAo
-         VdrALGRbzquZvFGvNiB8OOSJW1eOQjV+M4fjRWAx+2fAZITAZs7GKMLAaHvqhLw0UiY/
-         mzz0RTq7SkebwsEPl2z+ZKNv3FTTsw3wgAzsAmXS7nssDvV+KhIyeTJmcI3dJcTAIAPz
-         nfsSIKmzIQz6vpGhv3HV9rYDs0qr8IO1m2UzCQhLLNvK+vLMJzmT04cWGOFGh8mNYRIh
-         0LmGa688muKd6XXfVL6vDxi2X0ShMVGt9JSvoS8UZlRAZjnnVa+usWEuePzsX5W+TaeY
-         uQ5Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778565970; x=1779170770; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CrrmqA1MIjLw7p2PiJAG2cpDnb+P9Y0HrkTx6QFkzK8=;
-        b=tEHWRCepdx5nmp6yIVCYqQVzLmcrQesovgaR9iEkViVeFajmSrIpSEYelr2lD2XxoP
-         xh5y8Zvqn+p86e68KD2mvaQiqYvCBtE5yPAPTikVo2xqoL3Tzv1bOvc6AoLsBX9tMQ5x
-         bYKhs3w7Wz6+rTS0+0PdymwNuR6Mrju/sIlosbiQTM7eQulfT33DGAwgDmm2ablH56dQ
-         bWpBu7X7LqvzKybeZhNl7lGCCxcAzvLmd3Uqv1PZtG5EGNwdM3TqVIVGnx8neXBuwl/W
-         L4ZL2IYFzfr7AuRSPKZt2mLvNKX42PoQwoqq4VK13MoKe4InA0vqbgWOu8BlRN8yU7AO
-         0QiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778565970; x=1779170770;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=CrrmqA1MIjLw7p2PiJAG2cpDnb+P9Y0HrkTx6QFkzK8=;
-        b=Tu1tEfjTsv1iNHawAs5/9wRMuyqBPAMaI7lNlShtdUgga/Y0/4w/kkkeDZqqsMDn0E
-         nU4WqVF5Eo2TNEhicG8dxUF1Ewmhi6S1gOuGEJ8JJ63F9iAFOhyDoVfDNVaFvBLlO/A4
-         AILyWXbk9NNVGDX+G+lyGybnJnp0I5EWDj24PrC+RZ1IBOKdzH5WCgXn4OS0wFAg41Tz
-         NSLWMDKjse7K9SkiuaOZadfpIAdx72jX2mldLATURff0E1PaLnbdmD924ouFGNXYI82N
-         +0ulTim+ClMHRkx+lcvCnjrxsc9acMEZAwTrNcfb2WkzbfyESUfAQkrcP+Exz2EDd0gI
-         4M9g==
-X-Forwarded-Encrypted: i=1; AFNElJ+ZhbskXCGb3OhPhWEZMDNnNkuMNmwfeLf7KrEVEQOQiHSg0+Qk+JMDoYGsFc/9KsGqk+tHtzY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzUVK8wnhQJFq4EndkG4YPuyaNhpM4ifPmoYj+foltkwOEzLopL
-	XJqKKouWJwv2jZ7IjjKR80BMLf6S6XLLS7q6InoWjRGjVT1ojD+FjhQbwZCo7tYXa/rKokjw3QS
-	ZbXKDVXMTneXv9k9qOiXbCUllr4vTVEM=
-X-Gm-Gg: Acq92OF4Nm8MNXiEJZSeBFFIs7XnwqmR7uBK7xEsMY8ktTGNe29YXfetFL32Iehca8e
-	N4ZH6UyKZSGSCOF5lFtJmsq6DxGL8HMIQcguxQLnwSXYCkno2KO97US+1DG688QT3HnX6gZH9L8
-	zBeSESxD3rbsrV0CbIWHt7Z0AEsO9QP0mU8u4rZG1rI8tmag8iSuA6Z8Nt8HI4rI56NtWyzRI7g
-	FmwhOX69+M57MBWBW4U6kCxDuXX2NwiXlmfN4R16lrFk5HHW6yQXbp1okaj9CcGcmdcdKRk3RTv
-	OMYPxZAw
-X-Received: by 2002:a05:7300:d70d:b0:2f5:3f62:37b4 with SMTP id
- 5a478bee46e88-2f54c080b64mr13761984eec.8.1778565969672; Mon, 11 May 2026
- 23:06:09 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="pxr9sAKw"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FskIoMQ9Ru2wQZS+fQ8OJwejEdkXFd/45naxZ2Q/R6hQ1xjIJQgoV8AEQOYU5hdcXaXYAXWlwNrtDHfCIMu2be5y2Ka8uLj/jOmVkZLMKyqErsw1oXFUQBW5NZNUnlMKhvV7R/WUL1ovyZKlr49QwhGTF4xEC/bzPG5NmUV658JjQznfj0is+wKRbd03JrXzYsy1h8YAkAAMKcNI2lFQDeG3KXz92REjJmBaI1+rphoYYhyVVGBt5otsTgWZVlvWCif2RtM9wmlYSWxPUCLokxHR82CbV1p3G2Wnc3DmIJokZHoqG0Cdd/Bz1FVF3JQD2CgnZXFQYsVSbGp5EWX//Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zhV5pZU1ZpCho63/VsNyuPlp5eR8q3Qx50F4hklB/Io=;
+ b=k5HzFkDmmwmnsmcF/cOFoKHWtBw4gawm+Zwyu6loJdTn9mZTzFHNAEDrT4wxJlHi4nx4UnV8UbthnKJIDTw/uqMGZA0Df8sz0BzySGMlxut5cR3luMKYVzF4RdXON5KA0ZfEsZ9ocwZt49YQUCA6C6fl9GI+y5aQsYOHEIZ6UedBaLZgYJ3bSWX2jXyiKl/tPYEeU/l7O4SjSpySJnlgTT3KnXYjLCS4Udo2saV33qZLqbqunCT7yKWSojkspOy79VQ4rdJrf7riYJMOM0JovvA1Pf5icve8segH9OcxiqXiwJEROkUXs6MfYoZpEH9rzdQE23sf7RoljB/Zj7NH6A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 198.47.23.194) smtp.rcpttodomain=davemloft.net smtp.mailfrom=ti.com;
+ dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zhV5pZU1ZpCho63/VsNyuPlp5eR8q3Qx50F4hklB/Io=;
+ b=pxr9sAKwZA1VGUxSKGpZgjiOHPGieuE1YCwcoSQ8y6BYIJpWlR8CTD9710TMr2grRKx/HeVKJjf0ir06OefUbjAMLP6Ch0hLo2MHLx3aFcA0JXQeXWUbW1ci6lvrNVN07A8Wu/fFzrLyzSShKwxkN5jjICTObrPB+r26bt4qU0c=
+Received: from SN7P220CA0023.NAMP220.PROD.OUTLOOK.COM (2603:10b6:806:123::28)
+ by CO6PR10MB5635.namprd10.prod.outlook.com (2603:10b6:303:14a::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.23; Tue, 12 May
+ 2026 06:06:39 +0000
+Received: from SN1PEPF000252A2.namprd05.prod.outlook.com
+ (2603:10b6:806:123:cafe::44) by SN7P220CA0023.outlook.office365.com
+ (2603:10b6:806:123::28) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9891.23 via Frontend Transport; Tue,
+ 12 May 2026 06:06:38 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.23.194)
+ smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
+ action=none header.from=ti.com;
+Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
+ 198.47.23.194 as permitted sender) receiver=protection.outlook.com;
+ client-ip=198.47.23.194; helo=lewvzet200.ext.ti.com; pr=C
+Received: from lewvzet200.ext.ti.com (198.47.23.194) by
+ SN1PEPF000252A2.mail.protection.outlook.com (10.167.242.9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.25.13 via Frontend Transport; Tue, 12 May 2026 06:06:37 +0000
+Received: from DLEE208.ent.ti.com (157.170.170.97) by lewvzet200.ext.ti.com
+ (10.4.14.103) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Tue, 12 May
+ 2026 01:06:37 -0500
+Received: from DLEE202.ent.ti.com (157.170.170.77) by DLEE208.ent.ti.com
+ (157.170.170.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Tue, 12 May
+ 2026 01:06:36 -0500
+Received: from fllvem-mr07.itg.ti.com (10.64.41.89) by DLEE202.ent.ti.com
+ (157.170.170.77) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37 via Frontend
+ Transport; Tue, 12 May 2026 01:06:36 -0500
+Received: from lelv0854.itg.ti.com (lelv0854.itg.ti.com [10.181.64.140])
+	by fllvem-mr07.itg.ti.com (8.18.1/8.18.1) with ESMTP id 64C66aVO2904985;
+	Tue, 12 May 2026 01:06:36 -0500
+Received: from localhost (danish-tpc.dhcp.ti.com [172.24.231.152])
+	by lelv0854.itg.ti.com (8.14.7/8.14.7) with ESMTP id 64C66ZYj031935;
+	Tue, 12 May 2026 01:06:36 -0500
+From: MD Danish Anwar <danishanwar@ti.com>
+To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Jonathan Corbet
+	<corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, MD Danish Anwar
+	<danishanwar@ti.com>, Roger Quadros <rogerq@kernel.org>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, Jacob Keller <jacob.e.keller@intel.com>, "Meghana
+ Malladi" <m-malladi@ti.com>, David Carlier <devnexen@gmail.com>, Kevin Hao
+	<haokexin@gmail.com>, Vadim Fedorenko <vadim.fedorenko@linux.dev>
+CC: <netdev@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	Vignesh Raghavendra <vigneshr@ti.com>
+Subject: [PATCH net-next 1/2] net: ti: icssg: Derive stats array lengths from ARRAY_SIZE
+Date: Tue, 12 May 2026 11:36:26 +0530
+Message-ID: <20260512060627.3781329-2-danishanwar@ti.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260512060627.3781329-1-danishanwar@ti.com>
+References: <20260512060627.3781329-1-danishanwar@ti.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260511135703.62470-1-clamor95@gmail.com> <20260511170548.0065fd07@kernel.org>
-In-Reply-To: <20260511170548.0065fd07@kernel.org>
-From: Svyatoslav Ryhel <clamor95@gmail.com>
-Date: Tue, 12 May 2026 09:05:58 +0300
-X-Gm-Features: AVHnY4J1P3ErzmBnYdLDEn2tVC5ojwqEMUhGov68STEE-MFG5Dk8UXTF_hePr8Q
-Message-ID: <CAPVz0n3wcgaXzSLAMT=Yt=+FC=n7ufkn_CAaKNcyTr=a+7bdTQ@mail.gmail.com>
-Subject: Re: [PATCH v1 0/6] Add support for Infineon/Intel XMM6260 modem
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Vinod Koul <vkoul@kernel.org>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Thierry Reding <thierry.reding@kernel.org>, 
-	Jonathan Hunter <jonathanh@nvidia.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Peter Chen <peter.chen@kernel.org>, netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org, 
-	linux-tegra@vger.kernel.org, linux-usb@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PEPF000252A2:EE_|CO6PR10MB5635:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8e1e2ce6-9e52-476f-4a67-08deafeca095
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|82310400026|1800799024|36860700016|22082099003|18002099003|921020|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	kL0mPGLxqAAMOxULR5TTfnztJGNYRVEjVVAlGLaDiJfpo+ZUDyGk8LX9OFSLRUyM8TESFrfgOuhGdXj7ozQgJw1RDPRh7WIbf1fT7Xjext3+kcK47/hkq497oOS08bIV6gxGLMeaOopfrYjjarmBzMPTwMQQGvTlLHV11lvzJWZo+dMrX73kmzKa+y3qGumtPsg6egnIHwwpzlWZKm05NDvaqgMa85fif+e94s6qs41viHLvkRgA2enbgPC05+VxLRJona+f/t5FGLPl3ZaYCsK7CkS51aEqwQa+hTOQKgCHnKnYSNTMpAeyAjt/VHIvK0esaXFZZy81RPExpSMHWltLmLCC+q0SCepx7T7ahAxgp6etlqkfxylq954iPoeyzrgd88TB6CiaNVonAAD3AaKb3HBQiqkVD6UfJRXs0T67qFVlXJtYebky+PRqS6g+QeBbdVLL7Gw8NX5Gu/6Y60c/wKWYJ4lm8BOMKGLlFeRIXSocgardXuf7ywdDlvph5c8V0SevfE2HolYUmP9AGLxoIkENWNiHAXHjyMmPFt1JMUdYEIcFHwfJ6YUv3T7T4LiNieziQ5OK4B4VECQDDlYYw86mqHO2E8nGpK4EGu1DjcUFgeyty2ij7fCvoM4c62d2m/tlupf4MykUdrO/9Ipahqg6u6OaA+o/mkaNIsiOTcfge7AUbU15gB7CNOLtQZleRrknZb7Udex514HxhJ73uQuBT1jHVZBqM0gvLzyP0XiRulLS/J1Lx2UNGOmYSfgMrES0ILOx+s5WC1KNew==
+X-Forefront-Antispam-Report:
+	CIP:198.47.23.194;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:lewvzet200.ext.ti.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(82310400026)(1800799024)(36860700016)(22082099003)(18002099003)(921020)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	djaagVge4xpEjQCHjLm9PurYKU/Aiad61asaSu/cAVgta0rz9GOFCZU67G6j7STX83g6thehFpZjtN4IjTa9Tul7/bcLKGAIX9ekg82wKVSfdA92DRGcUQi+YCq6n7CbkuLuO4Mw3XQes29VDu4+60vzEwGt8plyZSlZYyl4+wJgQOxK0IHgAEQa3gykThhQ6r8IQrnBRFCpLAJSwNmHVVzWlZujj0F+SdmKFC+1ss3ovDwI3CBMc7mduzhsxj8fA4YCAxpHoQx4/suarrx668qN2OeJeSf77i6dMS0mEaHpoVGhKdrb596qUg6FIIVj8rV0YKDFDooQeRFjv7sJgAEMth1Xhu2vidoo5kJ5ZesFCOh1FNiMU5+t/lmLVoZ4s4xm8DjkFjaPSLZDCfMAUQF8Vg31vh1p15dNOZzvPm+UXp7/ywSbRwMaGAkEWyab
+X-OriginatorOrg: ti.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2026 06:06:37.3736
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8e1e2ce6-9e52-476f-4a67-08deafeca095
+X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.23.194];Helo=[lewvzet200.ext.ti.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SN1PEPF000252A2.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO6PR10MB5635
 
-=D0=B2=D1=82, 12 =D1=82=D1=80=D0=B0=D0=B2. 2026=E2=80=AF=D1=80. =D0=BE 03:0=
-5 Jakub Kicinski <kuba@kernel.org> =D0=BF=D0=B8=D1=88=D0=B5:
->
-> On Mon, 11 May 2026 16:56:55 +0300 Svyatoslav Ryhel wrote:
-> >   dt-bindings: usb: ci-hdrc-usb2: Document nvidia,external-control
-> >     property
-> >   usb: chipidea: tegra: Avoid controller/PHY init if bus is externally
-> >     controlled
-> >   dt-bindings: net: Document Infineon/Intel XMM6260 modem
-> >   net: usb: Add Infineon XMM6260 Baseband modem support
-> >   dt-bindings: phy: tegra: Document Nvidia Tegra XMM6260 PHY
-> >   phy: tegra: Add support for Nvidia Tegra XMM6260 PHY
->
-> You need to split this more on subsystem boundaries.
+Replace the manually maintained ICSSG_NUM_MIIG_STATS and
+ICSSG_NUM_PA_STATS constants with ARRAY_SIZE() expressions derived
+directly from the corresponding stat descriptor arrays, so that adding
+new entries to icssg_all_miig_stats[] or icssg_all_pa_stats[] no longer
+requires a separate update to a numeric constant.
 
-Yes, I will in v2. I needed an initial patchset combined to have a
-reference point and show that all patches are logically linked.
+To make this self-contained, break the circular include dependency
+between icssg_stats.h and icssg_prueth.h:
+
+  - icssg_stats.h previously included icssg_prueth.h (transitively
+    pulling in icssg_switch_map.h and ETH_GSTRING_LEN).  Replace that
+    with direct includes of <linux/ethtool.h>, <linux/kernel.h> and
+    "icssg_switch_map.h".
+
+  - icssg_prueth.h now includes icssg_stats.h, giving it access to
+    the ARRAY_SIZE-based ICSSG_NUM_MIIG_STATS and ICSSG_NUM_PA_STATS
+    before they are used in the prueth_emac struct and ICSSG_NUM_STATS.
+
+Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
+---
+ drivers/net/ethernet/ti/icssg/icssg_prueth.h | 3 +--
+ drivers/net/ethernet/ti/icssg/icssg_stats.h  | 7 ++++++-
+ 2 files changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.h b/drivers/net/ethernet/ti/icssg/icssg_prueth.h
+index df93d15c5b78..e2ccecb0a0dd 100644
+--- a/drivers/net/ethernet/ti/icssg/icssg_prueth.h
++++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.h
+@@ -43,6 +43,7 @@
+ 
+ #include "icssg_config.h"
+ #include "icss_iep.h"
++#include "icssg_stats.h"
+ #include "icssg_switch_map.h"
+ 
+ #define PRUETH_MAX_MTU          (2000 - ETH_HLEN - ETH_FCS_LEN)
+@@ -57,8 +58,6 @@
+ 
+ #define ICSSG_MAX_RFLOWS	8	/* per slice */
+ 
+-#define ICSSG_NUM_PA_STATS	32
+-#define ICSSG_NUM_MIIG_STATS	60
+ /* Number of ICSSG related stats */
+ #define ICSSG_NUM_STATS (ICSSG_NUM_MIIG_STATS + ICSSG_NUM_PA_STATS)
+ #define ICSSG_NUM_STANDARD_STATS 31
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_stats.h b/drivers/net/ethernet/ti/icssg/icssg_stats.h
+index 5ec0b38e0c67..b854eb587c1e 100644
+--- a/drivers/net/ethernet/ti/icssg/icssg_stats.h
++++ b/drivers/net/ethernet/ti/icssg/icssg_stats.h
+@@ -8,10 +8,15 @@
+ #ifndef __NET_TI_ICSSG_STATS_H
+ #define __NET_TI_ICSSG_STATS_H
+ 
+-#include "icssg_prueth.h"
++#include <linux/ethtool.h>
++#include <linux/kernel.h>
++#include "icssg_switch_map.h"
+ 
+ #define STATS_TIME_LIMIT_1G_MS    25000    /* 25 seconds @ 1G */
+ 
++#define ICSSG_NUM_MIIG_STATS	ARRAY_SIZE(icssg_all_miig_stats)
++#define ICSSG_NUM_PA_STATS	ARRAY_SIZE(icssg_all_pa_stats)
++
+ struct miig_stats_regs {
+ 	/* Rx */
+ 	u32 rx_packets;
+-- 
+2.34.1
+
