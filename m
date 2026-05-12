@@ -1,149 +1,204 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx.ssi.bg (mx.ssi.bg [193.238.174.39])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07A7731578E
-	for <netdev@vger.kernel.org>; Tue, 12 May 2026 04:20:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8CC02D9EE4;
+	Tue, 12 May 2026 04:22:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.238.174.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778559651; cv=none; b=IkUOLm5ozxjwEbkXQ5lAtGgYRs3gRrR6AzULbEAroKXT9LYgjs+bJui2vZAJ2iRnjRoZYjFd69J5+Ew2i1hj5zDoZKIhEuWUKuYBALjxQFOsjZVnQwAOC3QD2etynWmBfHuJh18kK9gl2xy2mRsvpfmU+W/UMUE6Rhuo+yc2uFk=
+	t=1778559772; cv=none; b=jCz5rwrN9Pobi/pxqcUX9opfz275ojplg7MTbVAFXY4MngGZQ1UkoPic0r6llc2057XkgXtVny/WFQyw9aLNfQBeUn0P0Hh7/t9YMq/qrtjTXsFQSxdXW2j77HeVyzNs68cMQLn1IuT5E56sEe5MZZEtB8NbX6hIz1I32nQXr/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778559651; c=relaxed/simple;
-	bh=eaO/GAO2q9KnLpudsDf6ByiH6uufTvW/8bDXbw/Lot4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bk/OBGTKPUQsDBA1Zc4Fwe9WzPRbDtkZaukSPAukb/yGaNA+97tbJZ2K7oN5iYaFRZWNOwc4uWWQx6iYQjWBKqRQJf1x7/Ba3DPUtOc8/2HFQ+IXai71pwEabBDFqBFu999cyJONRkY8AWdawx+X9J8FH7OQB3+xoo2V3AvzILA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jknoj79U; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1778559772; c=relaxed/simple;
+	bh=Plo8mlr6rowS/NyVjwGyUCLbyQ5h3qQGIUmvYL2DR1A=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=D/dyHBrgQy5R/I0PSqQEgkb5ge6vT9exmtBpe54TizUcD/EBnm/ykNel6s5fLvE8+Ghm7RCltJUmTLMwi71m2UNPa1lWsKH4gLv5ZCFetBQXJGvy0L3w5feIaU64u1nOZnZfJlaIWALgoYlSx8vdvQsyjy8EKa7CFH+trzWqQ8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg; spf=pass smtp.mailfrom=ssi.bg; dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b=r0MYbtAl; arc=none smtp.client-ip=193.238.174.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.bg
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jknoj79U"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-48d102471a4so49394905e9.2
-        for <netdev@vger.kernel.org>; Mon, 11 May 2026 21:20:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778559647; x=1779164447; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KrTxPrLZSrX9/AE26HqoZYG+0GxCFkz4Bhu3XTJcKCM=;
-        b=jknoj79UDYd4IZAHjm5zToPiEa1hoP+cMULohiFLl6UG/+efO4dh/h3pH+KB7UYRRK
-         MGpHuKa3cta/klU91PB/m1HEaBCCX/9y/OGoKxvzM4lOk9QJspXePGDej4VRC4vWszjB
-         fOSLB1lV8YwZDMengKUXGUY2UbPSV0zzNdNJhlbcrZmsaYrpj0K3ITxRJIEvuQVuplmz
-         gWNwJvvClhvO4mJfS8bo7LHBmT2aH6oyHn6KuywIf8I/xQWHQJ1DKHfjaxb8pJrxZvgI
-         P0l/j6xTYnyJ+uc7ejepen/aiHLzqn/p4qulXMmv/ALEvg8fhlks6Uo9mqnn3356KCaa
-         g8tw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778559647; x=1779164447;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=KrTxPrLZSrX9/AE26HqoZYG+0GxCFkz4Bhu3XTJcKCM=;
-        b=ot2DlG8OVH5c/wTISxEqILrNkLob0XpBGSVVJaw9bovZVSGj0T1uBBl/PkllavLhii
-         8AR7YK/D6fpVz3GxHYNd+JcKnHp1JDKWrWEiUcpVzGVM4dR83KYbj8QXcNSbKaTMfaRT
-         Kx7Nchi0ECIs8kJLTz4FC6QnkrRaBsjxZhfqQXEdXKbUGteynPdz7fGnSknObfaTR3F9
-         Rf7tqnkHqZDlaN/UvJt3bjVK5JSLvzif41GzoYwVTtq5vLYoaggqOoS9jyBgMK0GxeSZ
-         5YGoxpDn5PtECM3HCxExaogNDIXR3YNx3dBRZ06JrA0thOl/N9uZBPXVx+qLcgM0mI4n
-         rYrg==
-X-Gm-Message-State: AOJu0Yx+oz2Js2CIZLEb2dDdOKS/OKizQsjqBr9UFMgxM3jM/NgaTOX8
-	GkXZTKIS9gJ8EkQThVlsVoB8lBti79n4OL6+e83Av/VT03klrRwsOVfcO7KKzhXqxV3E5Q==
-X-Gm-Gg: Acq92OH5ThVWimTtVPU05mFe+v9ZWrS3iwroGawNBWLjWS5IwClOSfrq1oAjFB9j5wo
-	Xqm7ckXVRAmNzVAH2Rfunv9EHigY0pjtqDbK3gassb3oG0aCF1mJWGZide652+DeQPqOulMPrbA
-	aINwhABqpmCHoKhUSNobabQnh3zJCYi7x0bRfgD8d88E/sOUkUgdwn4cy0Lb3J0R8gvjoJFyqth
-	Ci2qiLBfvzVgUDoVWmMIC9ouzZqiFyYPHNAFRrhI3UAj7JRA370yaPf+PtkjvXwlVDDsrtzk/KA
-	6JlYG6Ph9ei45P6CaLRLEK+kyBzwNGbDjSCtwe4JMzJZF1fGAlRPt5EVtgT7i3EvKMW/ziQv2IB
-	GPIhRn3DudLnPstiKS30AOyQeVj4Ftkm3Y7Kc153hPrtfvidV1P5Kf7tJ5DYxp4IrjnT95O18y2
-	bsfoqb8z/SYjWx+dEbUbssL7RuCQvJc4RhZ+VkO8k8N1U0CC311CAsuBBgmsmWFkRmNl6WNfWDH
-	ICd4k4M+rU=
-X-Received: by 2002:a05:600c:524e:b0:489:1d74:56d with SMTP id 5b1f17b1804b1-48e676c14b9mr262868345e9.29.1778559647181;
-        Mon, 11 May 2026 21:20:47 -0700 (PDT)
-Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e908d2c77sm16802215e9.12.2026.05.11.21.20.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 21:20:46 -0700 (PDT)
-From: David Carlier <devnexen@gmail.com>
-To: netdev@vger.kernel.org
-Cc: David Carlier <devnexen@gmail.com>,
-	Antonio Quartulli <antonio@openvpn.net>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net 2/2] ovpn: respect peer refcount in CMD_NEW_PEER error path
-Date: Tue, 12 May 2026 05:19:13 +0100
-Message-ID: <20260512042036.19870-3-devnexen@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260512042036.19870-1-devnexen@gmail.com>
-References: <20260512042036.19870-1-devnexen@gmail.com>
+	dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b="r0MYbtAl"
+Received: from mx.ssi.bg (localhost [127.0.0.1])
+	by mx.ssi.bg (Potsfix) with ESMTP id 01E70210AB;
+	Tue, 12 May 2026 07:22:38 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ssi.bg; h=cc:cc
+	:content-type:content-type:date:from:from:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=ssi;
+	 bh=Wol3Wx9KU7gCeTBf/zFj0geFCUBKFbXdayy9bNvZ924=; b=r0MYbtAl/Pv8
+	AkDshua9gyLyQTLJiLFWnrfKT1JEbCVnnNrk+a1wCEoTnWu/+omrAY8Cd8lP/Yi7
+	95xB43vqgAQpVChFynNnQE1n/glDEvSoSw6Nhp+5712Qvpzr4oWQd/2FiYO50jby
+	obB1+i3jve1RMlC7NCn0fONJmbox0qMz0QI56YxI7q6Lr47zeYjz0zMzleiKS3GR
+	yUG9/oLuq0ljumdtPRAr1j9DOq9dQa4hsY3ZbrsEFWRrRRHlBLhHoVEMqQtR9pRZ
+	LJ1Exgu4YQzyKljdi11g15VvWmcZY9SxKjt/wejPdL6X8IvHjZhX12ti+2FFKsu6
+	OUOwYqiF9GPcAAyKx7dsrkKbJnZqWaIQpkHEqgYz7nW7/r/Jc5ziE241Qph2TJPI
+	KlbWQx3YFig8ey2QhaKVIeU52HxcXefHLiaoNHwlsTuW5ibDMNhcMuc5eN3WouWG
+	K9+ZIrQpCVmv3GsOjoBBCkVYHalMFyQU310//hqNyaw6lcbQtexuqH0q3ZzZKSjq
+	1/jV/xl1dw/PXTCgktwzWGSCygaUWgi/wFXEyS6C0pvimLqxB5gi9EI7D5VqmP1y
+	ORAEHl2M4CP4DiaCKsk7r/w43hziVEgx0GNT8CVTuXQERSiOZIZQu592O0tZ0ViN
+	w39BvZU7McWOFK6FKasCQ7+7brK/7kI=
+Received: from box.ssi.bg (box.ssi.bg [193.238.174.46])
+	by mx.ssi.bg (Potsfix) with ESMTPS;
+	Tue, 12 May 2026 07:22:37 +0300 (EEST)
+Received: from ja.ssi.bg (unknown [213.16.62.126])
+	by box.ssi.bg (Potsfix) with ESMTPSA id B66166289E;
+	Tue, 12 May 2026 07:22:35 +0300 (EEST)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by ja.ssi.bg (8.18.2/8.18.1) with ESMTP id 64C4MQUt007775;
+	Tue, 12 May 2026 07:22:27 +0300
+Date: Tue, 12 May 2026 07:22:26 +0300 (EEST)
+From: Julian Anastasov <ja@ssi.bg>
+To: Marco Crivellari <marco.crivellari@suse.com>
+cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Michal Hocko <mhocko@suse.com>, Simon Horman <horms@verge.net.au>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
+        Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
+        lvs-devel@vger.kernel.org, netfilter-devel@vger.kernel.org,
+        coreteam@netfilter.org
+Subject: Re: [PATCH net-next 2/2] ipvs: Replace use of system_unbound_wq with
+ system_dfl_wq
+In-Reply-To: <20260511134744.277032-3-marco.crivellari@suse.com>
+Message-ID: <734b9aa0-3af4-819a-49fe-8bba7035856f@ssi.bg>
+References: <20260511134744.277032-1-marco.crivellari@suse.com> <20260511134744.277032-3-marco.crivellari@suse.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
 
-ovpn_nl_peer_new_doit()'s error path calls ovpn_peer_release() directly
-rather than ovpn_peer_put(), bypassing the kref. The accompanying
-comment ("peer was not yet hashed, thus it is not used in any context")
-holds for UDP but not for TCP.
 
-For UDP, the ovpn_socket union uses the .ovpn arm and never points back
-at a peer; UDP encap_recv looks up peers via the not-yet-populated
-hashtables, so the new peer is unreachable until ovpn_peer_add()
-publishes it.
+	Hello,
 
-For TCP, ovpn_socket_new() sets ovpn_sock->peer and
-ovpn_tcp_socket_attach() publishes ovpn_sock via rcu_assign_sk_user_data().
-From that moment until ovpn_socket_release() detaches in the error path,
-the TCP fd is fully wired: userspace recvmsg / sendmsg / close / poll
-on the fd, as well as the strparser-driven ovpn_tcp_rcv() path, can
-reach the peer through sk_user_data -> ovpn_sock->peer and bump its
-refcount via ovpn_peer_hold().
+On Mon, 11 May 2026, Marco Crivellari wrote:
 
-ovpn_tcp_socket_wait_finish() (called inside ovpn_socket_release())
-drains strparser and the tx work, but does not synchronize with
-userspace syscall callers that already hold a peer reference. If
-ovpn_nl_peer_modify() or ovpn_peer_add() returns an error while such
-a caller is in flight - notably an ovpn_tcp_recvmsg() blocked in
-__skb_recv_datagram() on peer->tcp.user_queue - the direct
-ovpn_peer_release() destroys the peer while the caller still holds
-the reference, and the eventual ovpn_peer_put() from that caller
-operates on freed memory.
+> This patch continues the effort to refactor workqueue APIs, which has begun
+> with the changes introducing new workqueues and a new alloc_workqueue flag:
+> 
+>    commit 128ea9f6ccfb ("workqueue: Add system_percpu_wq and system_dfl_wq")
+>    commit 930c2ea566af ("workqueue: Add new WQ_PERCPU flag")
+> 
+> The point of the refactoring is to eventually alter the default behavior of
+> workqueues to become unbound by default so that their workload placement is
+> optimized by the scheduler.
+> 
+> Before that to happen, workqueue users must be converted to the better named
+> new workqueues with no intended behaviour changes:
+> 
+>    system_wq -> system_percpu_wq
+>    system_unbound_wq -> system_dfl_wq
+> 
+> This way the old obsolete workqueues (system_wq, system_unbound_wq) can be
+> removed in the future.
+> 
+> Cc: Julian Anastasov <ja@ssi.bg>
+> Cc: Pablo Neira Ayuso <pablo@netfilter.org>
+> Cc: Florian Westphal <fw@strlen.de>
+> Cc: Phil Sutter <phil@nwl.cc>
+> Cc: lvs-devel@vger.kernel.org
+> Cc: netfilter-devel@vger.kernel.org
+> Cc: coreteam@netfilter.org
+> Link: https://lore.kernel.org/all/20250221112003.1dSuoGyc@linutronix.de/
+> Suggested-by: Tejun Heo <tj@kernel.org>
+> Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
 
-Replace the direct destructor call with ovpn_peer_put() so the kref
-correctly defers destruction until the last reference is dropped.
-In the common case where no concurrent user is present, behaviour is
-unchanged: the kref hits zero immediately and ovpn_peer_release_kref()
-runs the same destructor.
+	Sorry that such change was delayed but there were
+many changes in IPVS for the last month. The last that may
+delay this patch is:
 
-Fixes: 11851cbd60ea ("ovpn: implement TCP transport")
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: David Carlier <devnexen@gmail.com>
----
- drivers/net/ovpn/netlink.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+v3 of "ipvs: avoid possible loop in ip_vs_dst_event on resizing"
+https://lore.kernel.org/lvs-devel/20260510104605.24218-1-ja@ssi.bg/T/#u
 
-diff --git a/drivers/net/ovpn/netlink.c b/drivers/net/ovpn/netlink.c
-index 291e2e5bb450..4c66c1ec497e 100644
---- a/drivers/net/ovpn/netlink.c
-+++ b/drivers/net/ovpn/netlink.c
-@@ -462,10 +462,12 @@ int ovpn_nl_peer_new_doit(struct sk_buff *skb, struct genl_info *info)
- sock_release:
- 	ovpn_socket_release(peer);
- peer_release:
--	/* release right away because peer was not yet hashed, thus it is not
--	 * used in any context
-+	/* For UDP, the peer is unreachable until added to the hashtables, so
-+	 * dropping the initial reference is enough. For TCP, the peer may be
-+	 * concurrently reachable via sk_user_data->peer until
-+	 * ovpn_socket_release() detaches; rely on the refcount.
- 	 */
--	ovpn_peer_release(peer);
-+	ovpn_peer_put(peer);
- 
- 	return ret;
- }
--- 
-2.53.0
+	May be we have to wait this change to reach net and
+net-next. Also, we can reconsider which queue to use, these works
+resize hash tables and call synchronize_rcu(), should we switch to
+system_dfl_long_wq if such job is considered "long" ?
+
+> ---
+>  net/netfilter/ipvs/ip_vs_conn.c |  4 ++--
+>  net/netfilter/ipvs/ip_vs_ctl.c  | 10 +++++-----
+>  2 files changed, 7 insertions(+), 7 deletions(-)
+> 
+> diff --git a/net/netfilter/ipvs/ip_vs_conn.c b/net/netfilter/ipvs/ip_vs_conn.c
+> index 9ea6b4fa78bf..2625c0379556 100644
+> --- a/net/netfilter/ipvs/ip_vs_conn.c
+> +++ b/net/netfilter/ipvs/ip_vs_conn.c
+> @@ -285,7 +285,7 @@ static inline int ip_vs_conn_hash(struct ip_vs_conn *cp)
+>  	/* Schedule resizing if load increases */
+>  	if (atomic_read(&ipvs->conn_count) > t->u_thresh &&
+>  	    !test_and_set_bit(IP_VS_WORK_CONN_RESIZE, &ipvs->work_flags))
+> -		mod_delayed_work(system_unbound_wq, &ipvs->conn_resize_work, 0);
+> +		mod_delayed_work(system_dfl_wq, &ipvs->conn_resize_work, 0);
+>  
+>  	return ret;
+>  }
+> @@ -916,7 +916,7 @@ static void conn_resize_work_handler(struct work_struct *work)
+>  
+>  out:
+>  	/* Monitor if we need to shrink table */
+> -	queue_delayed_work(system_unbound_wq, &ipvs->conn_resize_work,
+> +	queue_delayed_work(system_dfl_wq, &ipvs->conn_resize_work,
+>  			   more_work ? 1 : 2 * HZ);
+>  }
+>  
+> diff --git a/net/netfilter/ipvs/ip_vs_ctl.c b/net/netfilter/ipvs/ip_vs_ctl.c
+> index c7c7f6a7a9f6..f8fe1c8981d8 100644
+> --- a/net/netfilter/ipvs/ip_vs_ctl.c
+> +++ b/net/netfilter/ipvs/ip_vs_ctl.c
+> @@ -800,7 +800,7 @@ static void svc_resize_work_handler(struct work_struct *work)
+>  	if (!READ_ONCE(ipvs->enable) || !more_work ||
+>  	    test_bit(IP_VS_WORK_SVC_NORESIZE, &ipvs->work_flags))
+>  		return;
+> -	queue_delayed_work(system_unbound_wq, &ipvs->svc_resize_work, 1);
+> +	queue_delayed_work(system_dfl_wq, &ipvs->svc_resize_work, 1);
+>  }
+>  
+>  static inline void
+> @@ -1833,7 +1833,7 @@ ip_vs_add_service(struct netns_ipvs *ipvs, struct ip_vs_service_user_kern *u,
+>  	/* Schedule resize work */
+>  	if (t && ip_vs_get_num_services(ipvs) > t->u_thresh &&
+>  	    !test_and_set_bit(IP_VS_WORK_SVC_RESIZE, &ipvs->work_flags))
+> -		queue_delayed_work(system_unbound_wq, &ipvs->svc_resize_work,
+> +		queue_delayed_work(system_dfl_wq, &ipvs->svc_resize_work,
+>  				   1);
+>  
+>  	*svc_p = svc;
+> @@ -2078,7 +2078,7 @@ static int ip_vs_del_service(struct ip_vs_service *svc)
+>  	} else if (ns <= t->l_thresh &&
+>  		   !test_and_set_bit(IP_VS_WORK_SVC_RESIZE,
+>  				     &ipvs->work_flags)) {
+> -		queue_delayed_work(system_unbound_wq, &ipvs->svc_resize_work,
+> +		queue_delayed_work(system_dfl_wq, &ipvs->svc_resize_work,
+>  				   1);
+>  	}
+>  	return 0;
+> @@ -2511,7 +2511,7 @@ static int ipvs_proc_conn_lfactor(const struct ctl_table *table, int write,
+>  		} else {
+>  			WRITE_ONCE(*valp, val);
+>  			if (rcu_access_pointer(ipvs->conn_tab))
+> -				mod_delayed_work(system_unbound_wq,
+> +				mod_delayed_work(system_dfl_wq,
+>  						 &ipvs->conn_resize_work, 0);
+>  		}
+>  	}
+> @@ -2543,7 +2543,7 @@ static int ipvs_proc_svc_lfactor(const struct ctl_table *table, int write,
+>  			    READ_ONCE(ipvs->enable) &&
+>  			    !test_bit(IP_VS_WORK_SVC_NORESIZE,
+>  				      &ipvs->work_flags))
+> -				mod_delayed_work(system_unbound_wq,
+> +				mod_delayed_work(system_dfl_wq,
+>  						 &ipvs->svc_resize_work, 0);
+>  			mutex_unlock(&ipvs->service_mutex);
+>  		}
+> -- 
+> 2.54.0
+
+Regards
+
+--
+Julian Anastasov <ja@ssi.bg>
 
