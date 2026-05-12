@@ -1,182 +1,154 @@
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741E5346E7F
-	for <netdev@vger.kernel.org>; Tue, 12 May 2026 07:32:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27BCD47ECCC
+	for <netdev@vger.kernel.org>; Tue, 12 May 2026 07:33:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778571172; cv=none; b=WF8QFb/IOIP1Jn4FxhBesrN7I2KFPeEEAiS/eMW64PrhGeQ6CPwvVLTYlsSYKV/NDe+8/4UUiN9O6+WOE+oidYJeXxYJhHfVZSbgg41jZfON0+gKK56jb74/ttBanxTA/+XLQaMDNCfw7rBhqYtTmQAm64EK9HXe4Ob/fRPkBww=
+	t=1778571224; cv=none; b=QUCURRRj24kr1bks5f7hvY8kzCj1gf2ecs1lz0XHAbcuV1QV9DjMmoGgoNVzcjaV7lIfFaxHbomWdXjsg4Uyn3y6MqLixMbBo8GBHcuGRp2y2ORJV6bEOZBXWS/09kjGJenOzCNoZrPY19wBMvNtJyeTs9CGrdV8M/yjGAP+N84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778571172; c=relaxed/simple;
-	bh=xju/IWG8saxtdwnV7MWJwem0CiywKew1SHzwHJn1LZQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=IEHOve4lD5v1Y4RKyGCaojt+unK6shQjiE/7IXgmuyeCIDIU1uMNzpk9RzfQNHR/UH/3xT73kH1966XUxj7LSm4O0rmCV7uPg2uoVRYOFdW89eStKqr6fEXnMAKReGEGjdM+UKWhjv2I56cfZ0O20DJC4eOkQ3GESwkfza2+3y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=extrahop.com; spf=pass smtp.mailfrom=extrahop.com; dkim=pass (2048-bit key) header.d=extrahop.com header.i=@extrahop.com header.b=Z3BDvpbU; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=extrahop.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=extrahop.com
+	s=arc-20240116; t=1778571224; c=relaxed/simple;
+	bh=QBQ38YtbIovx3IIfEd+k2QDsSXMDIpaD/PIPsMGP/eQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oJzAFeXsRpyJHnNOBycSW8e/ouUx2waBgevu8eoOrXqKltIX2n4A+bcw1D8LA85Eh/BGx+XP+zlIyHe8T1Wv3ojbanae5tcMKbiOOjkSx8SK7O7p7bEEu5DWPaYggBDvmTvSJJLyvxc6B0w+miaj2yk5yat69ulyn3ZpfXz/xJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=aE5Ai6yT; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=extrahop.com header.i=@extrahop.com header.b="Z3BDvpbU"
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-83537a80ab6so3246170b3a.1
-        for <netdev@vger.kernel.org>; Tue, 12 May 2026 00:32:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="aE5Ai6yT"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-488ba840146so45861165e9.1
+        for <netdev@vger.kernel.org>; Tue, 12 May 2026 00:33:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=extrahop.com; s=google; t=1778571171; x=1779175971; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=0n1iBZT8JujYJeJFoTeIQmglBGjLLG46vH8a4p8cJ/A=;
-        b=Z3BDvpbUl3Mo6hxA2t9IH/cjReJ64P+SyfKaYHV7zGksb1PTVb7xMIqGsp3zGU9pkR
-         YnpcGeocah6w7f/x9tHtvHq2eLrJCTIb7vsrXdAlTSgXrCjn8UBxUWSxINQUH8rPy5hJ
-         8U7IQAZS5yJMcGmm3k46WgQfd5OVK7uvYojm3LrSeI/feI0yb4TPGETdhD4sXuxb7Mco
-         Pg7tqVpCOnzj0Yy1Pjfklh2kLT/vK3gz3Zij7rcRz3ODcEGdxv5EMskkHPTwQ4JxwV6u
-         urQB7bKWwOERVsSxM02XfJL0a6cYl9BBXgd4jVzBLdXd9T+YBXmO7WLTTXe0XloTn758
-         I9cg==
+        d=openvpn.net; s=google; t=1778571218; x=1779176018; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=xstN3lLqULmnNo7titfY517Jxb3RjkWAVc79aexWYro=;
+        b=aE5Ai6yTRbuLQjQS0Gh7rWS2msdhtmm4d2Ay5db4hAxTfWRO/sIUKw96vb/eorHAw9
+         5krYtaJO3lg4tIxoQyBq2yvtA/esub3RgybOWjFb9D3kUffNCtwF2H1EPOl/GA2WSFJh
+         QA5ftNjnr02U+YUqHmscgjClveZt1xkYpseBT4aWIkYjX8ZWu/mB+R5lm+xvbFrMOl1I
+         DMkS+qbP1sZhWh6xA8uuybHi9Th14KzySGypzXDsT3cuilEbRsdikjRfvqmTbmEp3J/M
+         Zc3Pszz0GjAPZhcNzTpRU8EiLPDm4Ha8UoQd5YQDaPV+Yd2hJRmjYd2wR5opvZ4EmOUZ
+         akcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778571171; x=1779175971;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1778571218; x=1779176018;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=0n1iBZT8JujYJeJFoTeIQmglBGjLLG46vH8a4p8cJ/A=;
-        b=bwcqIHMOQeazVlGk+FMDvAlcM2jFB5jxXoLYooU+F530LL4t8viq50553YWixJeAo8
-         47oTWSbTWy++CvuojqjCsixvdeVkNiFzpSymE/QkiB//17VQMmewxBqWzyiU8F8CSbcS
-         ongdLDHKyBhNVn4dyP5+a3VHoZ4MLTo1Lm81QPUsXl6682BDAYzk0AjmNMObYQ1C4Z2Q
-         vE7zPZUp65ePlsdEplB6gXhyNgPz9UWY1kLiQs2yG3Rl4Orib860qk9XZ2PXVJuY5zOB
-         APfw2HgDM9BBu/AEjiWGM+HSmK8G9LEMS49zI7i9OxUGsUWBwn+OHtQwCO9116i7Qk3I
-         0K0A==
-X-Forwarded-Encrypted: i=1; AFNElJ/JP3R8QJllGZDxbdoHFe9/I9KlnTqeo0Z3iQSWHVCLgHFohHSPLN/ANhKpjzahvsEOB7diQ9Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxzrcizjSV84Oh2D5uRRUK30eZqH25gBRMS+3OGLSD344J5E9PL
-	GNcjHU9w1U3y5XXYXVDT+ajIJ4AXOwOt2QqaEbitFc3cV0JoyJ+xrPrNNKGHFRwk5nu8+RTZCRx
-	/1LXvcjqTOQcEJDRJgwPyeYhl/uuQWXF5B7NX9OlpID03F9ez/ngXHgk6lx2lOWDoSAglOyONvt
-	M8QTjo0YOkaOlC1f1YYtbmW2sk9To3RDQc+Iry4OcnQN04yoQ=
-X-Gm-Gg: Acq92OHUZPmLhMyKethissqsPuvU1T6XCu+ECycpVAQvne9Nd9VQMFBegqJCppNPBrO
-	z8gxQ9CAOwRgUnQpM8NrOYCSaid2yHywEOaR9r990YbhUsjhNN8DgY9oSfvP6HOaQp0ynNC3iIF
-	/MuKuNmfDYofclYDGguq/gigy0+hiJU/rk14prLSeYM3TyJDPsQjRMEX2MJMTX2KeHqE8FwXT3K
-	5Fs3sEVtdrNoA/cQHEZcGvwg5cE/qMKyXsRg754LfZTpvgkF2uchMLi5Z9b3tjfXwK327bHM6xR
-	8lVzo8gEepby02irh1g1WJbrfpKZFTL7ZL80FWu2HDqtfZNHsBfHuREU1d/Y0ym7ICgPJPDMpmc
-	SZJLkilqVrri1OEw86Q7fTq7iCOV9BRlCq5TDwC5CuYyE9S2SjonSyH3DbWxz5Zhd6JYGH5KoQs
-	NrPyy6E2foghLHHbMTOQ==
-X-Received: by 2002:a05:6a00:4b12:b0:824:374a:1407 with SMTP id d2e1a72fcca58-83e3994878bmr12823372b3a.16.1778571170412;
-        Tue, 12 May 2026 00:32:50 -0700 (PDT)
-Received: from [127.0.1.1] ([208.79.144.52])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-839681a9e33sm24788894b3a.50.2026.05.12.00.32.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 May 2026 00:32:49 -0700 (PDT)
-From: Will Mortensen <will@extrahop.com>
-Date: Tue, 12 May 2026 00:32:38 -0700
-Subject: [PATCH v2] net/mlx5: don't printk garbage when transceiver
- overheats
+        bh=xstN3lLqULmnNo7titfY517Jxb3RjkWAVc79aexWYro=;
+        b=QDIF2RfKcfUtk3PoKyZt2DOEDQshCWGziyxFs6LeZr1lEx/nq6EkUQRzhbX+Ir67ms
+         9imNlce+skKtoOYYNJYsGCeSwGjEyESQTxzDAo1Jix5u63xk5ThwBPNBpVnWVISzr6DJ
+         Lz9F+e9J5AHBiwdiwi4/4XqkFWwSvp9HxMPaZCgqrJeEH3uP9u/ycC4OQpUhW/A0QHTZ
+         ss3TpDnFLb76jBYUXuFGro7CvQNf/Lr1pb2RFSZBu0PQkqHYqoPZPfSKOcbJvGBS02Lz
+         6Gc7VxV+OG5ScNxwfFvZBjZCE6iIqo+1SHIe+jfH5QcIZI+WcaBQomLYk+gpxnz+H84Z
+         29+A==
+X-Forwarded-Encrypted: i=1; AFNElJ/dVMa+v5cm9LfOqXQ/7We1WdA1xKHq805HBOvOgcHkL99YYRm5VqRnDUq9lnFHCAnWGiSyWFU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzOy+IWT+IJ7B26i9466bm6fD3kXF+uwCgJVfeNTSAQE3XXupWE
+	LRxncQyKdtxFYtmuAi4nbUp9ZXw/jG4G36XLFyqLVBrDb8wzVUchsRp5TKPYfvlOPkLRJxG8VgH
+	eO25b71/qdbJqAgy5kcUdUtbwyxfv5VUPavB5XVxek9nnYJ96B4s=
+X-Gm-Gg: Acq92OGR5fXx3Myxq06Y8Zzf25XBzjBZBhYFKTSHP5rzu2kTj3ZozuyvBGR6SgTkPGU
+	3KSZPvvqb4L768vlUhyhGcj5Gbf4Py+FJ+IGOKV1f2qrwBb/quk/7CSqWbJBeGF5ctBLVxmSB3T
+	nviSUsOI1qdn0BnzYE/3BckDDAPYk49rM8WBwXvjQ7FyQx6jvELdVa885jHqg6D5U0FUuEfjrHG
+	hr13/JqvXkP4f25qJffDTFSGQkuFB9iCICvxF17bF1sNbC/h1M+AwPLoGNYgjsfjX5a7/TsIGJ8
+	0x97U6m7v4H7y79RL7/SS2us0QvKJtkZSEO+4e83JqaruaHb2C7AlzmLwK1z6GPOi/QO8gnEEUV
+	IdeIfbO5eHfPQ5meI5yJxyiwVlkuAw5OW2EiPDL6EJFSPT1ptBY1lclvWBDhDB3TCgaNweKtDE4
+	ZAVlCplLltu0lPq36ZJrhv25bar8sXRJdv5Nfeo2rdbCc0fUCyO5jtWTeuNfCPMA==
+X-Received: by 2002:a05:600c:3510:b0:48a:8b02:ae91 with SMTP id 5b1f17b1804b1-48e8fe50c53mr23084875e9.11.1778571213798;
+        Tue, 12 May 2026 00:33:33 -0700 (PDT)
+Received: from ?IPV6:2001:67c:2fbc:1:7a81:9c57:657f:40cd? ([2001:67c:2fbc:1:7a81:9c57:657f:40cd])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e8e5efe71sm14202915e9.1.2026.05.12.00.33.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 12 May 2026 00:33:33 -0700 (PDT)
+Message-ID: <b1d90a50-3419-41bf-bf92-0012a8c1503d@openvpn.net>
+Date: Tue, 12 May 2026 09:33:32 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 2/2] ovpn: respect peer refcount in CMD_NEW_PEER error
+ path
+To: David Carlier <devnexen@gmail.com>, netdev@vger.kernel.org
+Cc: Sabrina Dubroca <sd@queasysnail.net>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org
+References: <20260512042036.19870-1-devnexen@gmail.com>
+ <20260512042036.19870-3-devnexen@gmail.com>
+Content-Language: en-US
+From: Antonio Quartulli <antonio@openvpn.net>
+Autocrypt: addr=antonio@openvpn.net; keydata=
+ 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
+Organization: OpenVPN Inc.
+In-Reply-To: <20260512042036.19870-3-devnexen@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260512-b4-mlx5-sensor-fix-v2-1-531fee4fd7fd@extrahop.com>
-X-B4-Tracking: v=1; b=H4sIAJXXAmoC/x2MQQqAMAzAviI9W5h1E/Er4mFqpwWdsoII4t8dH
- hNIHlBOwgpd8UDiS1SOmIHKAqbVx4VR5sxAhhrjTIujxX27HSpHPRIGudHYeraeKDS2ghyeibP
- +p/3wvh+3REjmZAAAAA==
-To: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
- Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, 
- netdev <netdev@vger.kernel.org>
-Cc: Shahar Shitrit <shshitrit@nvidia.com>, 
- Carolina Jubran <cjubran@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Will Mortensen <will@extrahop.com>, Jeremy Royal <jeremyr@extrahop.com>
-X-Mailer: b4 0.13.0
 
-When the mlx5 driver processes a temperature warning event, in events.c
-and hwmon.c, temp_warn() calls print_sensor_names_in_bit_set(), which
-calls hwmon_get_sensor_name() to get the NUL-terminated name of the
-relevant sensor, and then prints it to dmesg. In particular,
-print_sensor_names_in_bit_set() passes the bit index ("sensor index")
-within the 128-bit vector in the warning event to
-hwmon_get_sensor_name(). But hwmon_get_sensor_name() was expecting the
-index of the hwmon channel, and the driver registers hwmon channels for
-at most only two sensors: the ASIC sensor (sensor index 0) and the
-module sensor (sensor index 64 or 65 if we're on a 2-port NIC). So when
-the warning event concerned a module, hwmon_get_sensor_name() took the
-64th or 65th element of the likely 2-element temp_channel_desc array and
-thus returned a pointer to some other kernel memory past the end of it,
-which was printed to dmesg up to the first NUL byte.
+Hi,
 
-A further difficulty is that, at least in testing on our CX-8 C8240 with
-firmware 40.47.1088, the warning event can have bits set for other
-modules, e.g. if this PCI physical function is associated with
-port/module 0, we might expect bit 64 to be set, but bit 65 (for port/
-module 1) can also be set.
+On 12/05/2026 06:19, David Carlier wrote:
+> diff --git a/drivers/net/ovpn/netlink.c b/drivers/net/ovpn/netlink.c
+> index 291e2e5bb450..4c66c1ec497e 100644
+> --- a/drivers/net/ovpn/netlink.c
+> +++ b/drivers/net/ovpn/netlink.c
+> @@ -462,10 +462,12 @@ int ovpn_nl_peer_new_doit(struct sk_buff *skb, struct genl_info *info)
+>   sock_release:
+>   	ovpn_socket_release(peer);
+>   peer_release:
+> -	/* release right away because peer was not yet hashed, thus it is not
+> -	 * used in any context
+> +	/* For UDP, the peer is unreachable until added to the hashtables, so
+> +	 * dropping the initial reference is enough. For TCP, the peer may be
+> +	 * concurrently reachable via sk_user_data->peer until
+> +	 * ovpn_socket_release() detaches; rely on the refcount.
+>   	 */
+> -	ovpn_peer_release(peer);
+> +	ovpn_peer_put(peer);
 
-Fix this by clarifying that the argument to hwmon_get_sensor_name() is
-the raw sensor index, and correctly converting it to the hwmon channel
-index. Return NULL if the sensor index doesn't correspond to a hwmon
-channel (e.g. because it's for the other port's module).
+Thanks for this patch!
 
-Fixes: 46fd50cfcc12 ("net/mlx5: Add sensor name to temperature event message")
-Signed-off-by: Will Mortensen <will@extrahop.com>
-Reviewed-by: Jeremy Royal <jeremyr@extrahop.com>
----
- drivers/net/ethernet/mellanox/mlx5/core/events.c |  2 ++
- drivers/net/ethernet/mellanox/mlx5/core/hwmon.c  | 15 ++++++++++++++-
- drivers/net/ethernet/mellanox/mlx5/core/hwmon.h  |  2 +-
- 3 files changed, 17 insertions(+), 2 deletions(-)
+Unless the CI Complains, I'm pulling this in my tree and staging it for 
+the next PR to net.
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/events.c b/drivers/net/ethernet/mellanox/mlx5/core/events.c
-index 4d7f35b96876..9372551c7f90 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/events.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/events.c
-@@ -165,6 +165,8 @@ static void print_sensor_names_in_bit_set(struct mlx5_core_dev *dev, struct mlx5
- 	for_each_set_bit(i, bit_set_ptr, num_bits) {
- 		const char *sensor_name = hwmon_get_sensor_name(hwmon, i + bit_set_offset);
- 
-+		if (!sensor_name)
-+			continue;
- 		mlx5_core_warn(dev, "Sensor name[%d]: %s\n", i + bit_set_offset, sensor_name);
- 	}
- }
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/hwmon.c b/drivers/net/ethernet/mellanox/mlx5/core/hwmon.c
-index afcdebac9c4f..747ff30362f1 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/hwmon.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/hwmon.c
-@@ -417,7 +417,20 @@ void mlx5_hwmon_dev_unregister(struct mlx5_core_dev *mdev)
- 	mdev->hwmon = NULL;
- }
- 
--const char *hwmon_get_sensor_name(struct mlx5_hwmon *hwmon, int channel)
-+const char *hwmon_get_sensor_name(struct mlx5_hwmon *hwmon, int sensor_idx)
- {
-+	int channel;
-+
-+	if (sensor_idx >= 64) {
-+		if (hwmon->module_scount == 0)
-+			return NULL;
-+		channel = hwmon->asic_platform_scount;
-+		if (sensor_idx != hwmon->temp_channel_desc[channel].sensor_index)
-+			return NULL;
-+	} else {
-+		if (sensor_idx >= hwmon->asic_platform_scount)
-+			return NULL;
-+		channel = sensor_idx;
-+	}
- 	return hwmon->temp_channel_desc[channel].sensor_name;
- }
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/hwmon.h b/drivers/net/ethernet/mellanox/mlx5/core/hwmon.h
-index f38271c22c10..b2476bf54ce5 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/hwmon.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/hwmon.h
-@@ -10,7 +10,7 @@
- 
- int mlx5_hwmon_dev_register(struct mlx5_core_dev *mdev);
- void mlx5_hwmon_dev_unregister(struct mlx5_core_dev *mdev);
--const char *hwmon_get_sensor_name(struct mlx5_hwmon *hwmon, int channel);
-+const char *hwmon_get_sensor_name(struct mlx5_hwmon *hwmon, int sensor_idx);
- 
- #else
- static inline int mlx5_hwmon_dev_register(struct mlx5_core_dev *mdev)
+Regards,
 
----
-base-commit: 70390501d1944d4e5b8f7352be180fceb3a44132
-change-id: 20260508-b4-mlx5-sensor-fix-043d4a22f641
-
-Best regards,
 -- 
-Will Mortensen <will@extrahop.com>
+Antonio Quartulli
+OpenVPN Inc.
 
