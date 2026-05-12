@@ -1,190 +1,125 @@
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010030.outbound.protection.outlook.com [52.101.56.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f46.google.com (mail-yx1-f46.google.com [74.125.224.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0265B3A641A
-	for <netdev@vger.kernel.org>; Tue, 12 May 2026 22:44:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DE60342524
+	for <netdev@vger.kernel.org>; Tue, 12 May 2026 23:05:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.46
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778625894; cv=fail; b=iHfC6oL8oV8mY7DoDtvINii1Ry0+Ao2Y2xDAOOOvVK1yToKF2MKeZFxir3EaVy0XwM93Hkx1Xrm8nX+RGB5bl6kHahSuGKPXlYleXMXvctkLYLA4QkzvXF5SYd51vY6ZVpgQ5NPe6UoXintXi3EO9V/5wCAIcYweVFuNDiwWwQs=
+	t=1778627159; cv=pass; b=LSAhXUDQHNus3EUAUUvHSG7QF/UDt8lBw9x/YpeWgZqTPgUxRN1/JTxEy1en1EsCub+FV4UbyHaIMpVybPX1xlGS/8BpvAJKRQfFXSrUTvE53PJT1mJAAFyUAnmqI/N/JPAUC/SaEMGOXpYtM5VYw/dt5AVLAcn+bckbGak/3zE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778625894; c=relaxed/simple;
-	bh=rwJGA5Eo6HMXdk/NlbOCEREC7dN1bYP5PAqCesbcHR8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JxKxJPgkhuQXmJoTDtSyYzTjF1wW5yel209kCCFJ4PBVDMzg/sTPMHnZH7TYfZqxvuD4iS3InLkhWvy1mpxj3Vk2RbnYDpOVIgj62z2B9v8D21nn9sgDXdqZn/hk20+BfC1ACz0o3hUan+2dY9GX0gZaBCzX+vJpUWHGX4Yv4S8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=04I7d2fH; arc=fail smtp.client-ip=52.101.56.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1778627159; c=relaxed/simple;
+	bh=RhzImYsmOKKHk6qrADsWWn7xKpqZhsUfQxb019Di648=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=n/tiWLnk1aAwASrJqetedpmYL5U/9Gq8/prK3F+AqdmIe+X/s7jlxHgBErdeptewVxTRZVO7z8Cs4jR2fLTr2lMMijtWL+uExWLk3wknYU83EUnCNq/4zAFEzs5ztjApM2WmzyGgG31TdnbA1M7CaM6iikD/hdDb/k3jLj9HZfI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DjhTpofi; arc=pass smtp.client-ip=74.125.224.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="04I7d2fH"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VrHPKao+7HiLY4OGRnFd+HjWquTCEY5Bkkv+AApJ1nBOX1ogmbfL8Xd+w1rVWb4Qa6Qx274Fn0lKz+cgBwUKJsoscGvU8L5zkJhUAghpUmpvrXIQRIJEnsbDnuKLlvGJAMJiB/d/SOKEv7YqvfxyQKctVI+XJK+JvaNTRUZrCfI0sIEDq9+35UA0g4XUzQkd2yQKSGO3gVKVeDpfkHdvMYkHZHDpIHdovGY2GnUziNQjioXPzFfuzWZj0MUxSppBNKTsUqP6+sZjSPlUg4HFpTVl5ueuOEKhhBTqmnTEd0SFTmM3CtfTsAuYzSYmg1K+pDmsGwSjsiBB4JddJxDOeg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FsEdR0sW5n7yBJcWyDtymV/OzTyjFyZRuUrtFm0CDnY=;
- b=Rnlk/1mrcVqkAEl1LNaQxkh9Y1h4H1TDWfp8d7oTMgLRonCIPCFnF+TEV8cmi83HVurLtOr7ZoXcPD9QiB+FCCEm0dPLHXp1U09k6i2inn7RRQc1SOPm4ayeBfJtoMKfxjgR0wNSAPoWEszaMUTgenvS5r3Nf1UDP0/3/lqR3RJ/ONCq6/QL8LqngfC9ZVRrHG7+/2RtnQ6qdUxNNEA9LSs/S5zUXzKryr34IIaAt/SUU1wLg1Gg0KRDGUkpwIjTUc5KZId9db+TCUO5o/N6mIGGjHvyc41nt3onBifFQGANeVY7gDMT/jsKC0TkRdclr5d8iPySvYP0ruL0Eariig==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FsEdR0sW5n7yBJcWyDtymV/OzTyjFyZRuUrtFm0CDnY=;
- b=04I7d2fHXSJd9yiw7Ko0ea4Y+2gW1zHfR+qH8lh6aFkdmsddPcs+BhgHImAvR8B1TQeaW7Y9mb0WczWHDTNi/Vn+qT8eP2ZTn/T4VDwyu57mGnZcKIDrP80c7XcviE1LgggkcMLyf+LE3XZMyP40Bnu6fmPwQ7fv6pnZO1/MdJ8=
-Received: from CH0PR03CA0299.namprd03.prod.outlook.com (2603:10b6:610:e6::34)
- by SAWPR12MB999141.namprd12.prod.outlook.com (2603:10b6:806:4e1::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.25; Tue, 12 May
- 2026 22:44:41 +0000
-Received: from CH2PEPF0000009B.namprd02.prod.outlook.com
- (2603:10b6:610:e6:cafe::9f) by CH0PR03CA0299.outlook.office365.com
- (2603:10b6:610:e6::34) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9891.23 via Frontend Transport; Tue,
- 12 May 2026 22:44:41 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- CH2PEPF0000009B.mail.protection.outlook.com (10.167.244.23) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.25.13 via Frontend Transport; Tue, 12 May 2026 22:44:41 +0000
-Received: from driver-dev1.pensando.io (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Tue, 12 May
- 2026 17:44:40 -0500
-From: Eric Joyner <eric.joyner@amd.com>
-To: <netdev@vger.kernel.org>
-CC: Brett Creeley <brett.creeley@amd.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Eric Joyner <eric.joyner@amd.com>
-Subject: [PATCH net-next v3 3/5] ionic: Update ionic_if.h with new extra port stats structure
-Date: Tue, 12 May 2026 15:44:19 -0700
-Message-ID: <20260512224421.25236-4-eric.joyner@amd.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20260512224421.25236-1-eric.joyner@amd.com>
-References: <20260512224421.25236-1-eric.joyner@amd.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DjhTpofi"
+Received: by mail-yx1-f46.google.com with SMTP id 956f58d0204a3-64d5a7926cfso5727938d50.2
+        for <netdev@vger.kernel.org>; Tue, 12 May 2026 16:05:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778627157; cv=none;
+        d=google.com; s=arc-20240605;
+        b=L8BCkgzm7SkmE/U478cdSYYTw3Sz2lO4osxThjvxAFHM3SloUif8zCDtbU37HQN6au
+         9ZFDOSUw65lbh6r5gN/nk9MeXW5k9GisxN13Svhpf29kN47m10LSHj/XKYIfssOW+z2M
+         HROWVwqH0JBeYkou9mosQCrwAvVCewPfG6UWGRoBgBdTW6IKhH8SV7gq0wzluVJc3ANf
+         5a5au9MjBL1X6xv4tc0Ft0PuzaCQQDXC61hQVJTiI1vUspU0FUNOB5eSle/KjW+42Tlb
+         h5M2OkumMihD90tNyed0fz+J965o5QehcbuKeTPPDJoIQcfcXWNUQYUTkTdmIJvHziMF
+         n22Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=W1cX5/tujz2IvokGuYBkLn/0gcvAXJBHFlLEw+M7GKk=;
+        fh=Tkop5rzECCdLpgblxz97MQel2qDU5RX7IruSaLvkvTw=;
+        b=RL/y0blh0GChAaVtDKlanP3xcwtImxnBRUxUOhqhvd6vu4sX9vSC56IQH41HxP1Zgg
+         0WSNJjmIanWUm4H9eFF1MTqbAnAFRQHYC31TJdirV+xa+E+lnsouMzaaQwOo3FF/OK+j
+         032WE1JnHIxT+MKuFd1h/rCAJnK7GQdMIaKBE5absy4oqJxNkeXG3rN4jZ56C3gWraba
+         gTCVEZpnJYrkAxT2NQniPc1uDLTqS65AoxyWscVkPymNLDbza3ryCXg9PDIRzJGqAJLp
+         R9I6vPjxSke4rLh0tEsNWbnJO0F7MRU8muKzhOxLTM/Qb0vmVU512fQa4/Go/wAzWsd/
+         VF9A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778627157; x=1779231957; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=W1cX5/tujz2IvokGuYBkLn/0gcvAXJBHFlLEw+M7GKk=;
+        b=DjhTpofixFHRFuMnAdAeX1Tt+FOGGdbmhSShAAdLjnkUw8QEe4Nrk86l9SLfDI3ZxY
+         Q8p2u1IZ3ESFKzQ8d/oGyiVBUNocDbCoHVm0DqRbDIZmUFSx9mkiNSlSWow5K31FBHw7
+         ByhzZepgYFWCL2Ge3mDYHKdKQFouOhEwPhjYrvfI5U7y4v3LX2qP3D+GCRnAjmerMrco
+         XL24KugvqqknpwuD//o7cy58rhgRVuJ1jMOy/PFsG7rsvKkiOqkhEN7WvLuc8vzvSwXC
+         obwVY3jYdzM6pjgjL5ygzCWL+3r9+0wRqOeUiNPbPZZCnjItSrh7IrX3Ax+Qg7gIrvvF
+         w8YQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778627157; x=1779231957;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=W1cX5/tujz2IvokGuYBkLn/0gcvAXJBHFlLEw+M7GKk=;
+        b=cMyzKtBF5/3sqS/wRV9CSvDAamNsiHO3N6Ml5zbiKxtIuiHVmgTECGg1LNEWQuk5Nn
+         X2MObxq4Kw72TSeVtkomwR8fkY51xCsUXYnyC6FenFdX6QBpLlaY0kUfwUcODYmpcQ1k
+         JK7x8UwNS+uBrkZ1LzOdCxmvEZ0+A3IuUKS8nYVvt5H3IBJZc5vwn5NuY1wXo0uzp/Qz
+         Odu51cdcJ7tZF4LUtqbXQqo+73DzlJAMXVzflhFZtnsxLcJXwFNLJ6RpD0fVWmFrmrw8
+         0vMeaKKG/3BKXaldWR4b+o7gOobS6fSQCUEHrBHfsDQiRmstYlrEDSXHf70JjFbO8hGk
+         AQVA==
+X-Forwarded-Encrypted: i=1; AFNElJ8EUzyzdy3QdDN5Wtt0xJPEu+kh8StWvOquRHkYYfckJyB9RtB9fZawiGdximkx0E3Xuhu3Z08=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxfChrXSUVa51BDKgKS5GFTTXORiixzsy38QGTk1sv8Mfo//J9p
+	GiDoZIAHASk3gpYPoKq/xd/kx9tfTcaB+bvmd4MjmZWMXBMQWdcsEYDhSa/RLVZ7/ss8+hYsIa8
+	wOdxQSXXH8bsubLU6jaCx2SALCLKUVxLy9ENOzHk=
+X-Gm-Gg: Acq92OGH/KbmjCwlaKRUF/HlC42RLjwaKL0fE738fYUNPhF3zDcck9Uarx6VLW4X8Ni
+	JJz+jsLFRvlwIqGYH6p1w2Gj6wTNIu2PLozSq+2HLTdhDbVOeqW075qvBJ1WF+nfuTdiKX2lS0J
+	Gz7fokMgJKLjO04PkCYs9MuRO/be4jGbzvzE31nS4B7kiYYNYDivfbtN8QTI1zUEl5oN7Q/lXAi
+	1k0O/stG2B7pFCPNfBGLQACce57h9q1fyVKdai10AmI+lFVu63zVOJyQ8yXZkX1yWrPiTS8gviV
+	p5u2UORympCbfCOQvGBUewySSfddbMBoygZx
+X-Received: by 2002:a05:690e:130b:b0:652:f6aa:f73c with SMTP id
+ 956f58d0204a3-65df830c830mr342312d50.62.1778627157080; Tue, 12 May 2026
+ 16:05:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PEPF0000009B:EE_|SAWPR12MB999141:EE_
-X-MS-Office365-Filtering-Correlation-Id: f172a32e-c25e-450e-d0fc-08deb0780e21
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700016|82310400026|376014|56012099003|22082099003|18002099003|3023799003|11063799003;
-X-Microsoft-Antispam-Message-Info:
-	aI+8dQQ28FVcvbgqUNUkbJwF+lG+0ncASATrdCuDXCvK+yW4Qckf3nm7J3Rsg/SxY9z+N/huxieo6s9gez/zQWLYJ1ch4b3UsTnJXN7fk0EUTvIyM5ZWx+41eWdTGfnxqDrJ1dg5l2234AAdJXXixLDDOt+mpF2AaVVqeH3SsCT98f5ttLygFZJmwYiNaoojVJF+DTDV5GE3XRCd6+5P45DZR6dib93SE1CfJLeJJaPKXZfhAlf/bQjQmwBprV8Eo7hqbQipbbw57utn4YIf4nq0eblmfyP4Pf/Q1eUi0KilcDkKBbuXBbUD5HyWUCx+LnKpV1tdH6v6g3Ye7vvszeOgD8I9JlcP3Pe4E0HD1CaXFSHJacTiJGGH6f4gfFt3TzSP0t7tkuHn6KwS2uR4XhUVkkTx9oGjbrJL9dIm9/9bmORSrtjYHC5VPjNbB6fRy9+1YRMAae2cXQOXFzsK6p44F3oLuRwojbxhCy8v03RPadN4sPusfUnFyZ1oi6xqi69MEApM4/4gik8wpg779xTmjWuCFEoUzkT/sAoVJbtT8EY//apHyvV8dxoVaJzwMcUC1uDebDw4NN6Hydrd4Yj+CZWuCXUmyJKknkU0f20mb0Nts1tLae2ndrrsfwKsloAULGNXCfEIYHyyTigp1lrq3pMl//cKeC4jBImt4p7F1O/JPP6+phqziXiR32MadynsLIer385YNJo2DfoCSVnsZt+2U+8H5Zbf71PV93k=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(82310400026)(376014)(56012099003)(22082099003)(18002099003)(3023799003)(11063799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	30nrXCfG0b7+xshKcy0IsWknaFWj/rBxyS/M8urI8evxZkwB1RilCaVWuoBLcJXs5NH4J0gDq3SOg9ATShMTv9EktnLVyiqN7HXIeN2fTa8EAu29G0139sZsGrDifELiLojfS9nMLUvO6PeuV2sKoR6p/S0aQUmvmHk5/SVAm8JAPTE7OahIqJAGW74bhcgx/Z0cLquvDBNCneNvNkqQ9NhFV8NwhghkMOXfb2dq3mnjzmhIX451Mh6YfjVoa3OTme+k06keb3W3an1E/8fAFh4jkxC9T3l3DAF3vLdXUqj7+NeKJCcI5kkI86SwV4zcz+SlbAROOkvK96eoal4EdUEQsebMFAe4zf/YjwLCSkpdKCwB2nfvvpeQLRF3MZJIo1FbGrGQWLly04E8zsUrlv7BwkJcMN0ic4Uk2aDusXEjCGV63gThhkzwg9UI0oUE
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2026 22:44:41.2308
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f172a32e-c25e-450e-d0fc-08deb0780e21
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH2PEPF0000009B.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SAWPR12MB999141
+References: <cover.1778614451.git.michael.bommarito@gmail.com> <agOrCj3YoMAxsxYf@chamomile>
+In-Reply-To: <agOrCj3YoMAxsxYf@chamomile>
+From: Michael Bommarito <michael.bommarito@gmail.com>
+Date: Tue, 12 May 2026 19:05:45 -0400
+X-Gm-Features: AVHnY4LLHxol5Z8Cuh4v98Ejrlk8HjLaj8LKu4bDeQhq9QSTqxdejNfNpCA0ivk
+Message-ID: <CAJJ9bXxFHsLDfaEfDTMJajrVJ1GyGUCrNpYoRSdOnVm2AxocHA@mail.gmail.com>
+Subject: Re: [PATCH net 0/2] ipv4: harden against ihl < 5 IP_HDRINCL packets
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: Steffen Klassert <steffen.klassert@secunet.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
+	Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org, 
+	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Maciej Zenczykowski <maze@google.com>, Kees Cook <kees@kernel.org>, 
+	Jeff Layton <jlayton@kernel.org>, "Gustavo A . R . Silva" <gustavoars@kernel.org>, 
+	Florian Westphal <fw@strlen.de>, netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-A new structure to report additional statistics from the firmware has
-been added to struct ionic_port_info. It currently only contains FEC
-related statistics, but new statistics collected by the firmware for the
-port would go in it.
+On Tue, May 12, 2026 at 6:34=E2=80=AFPM Pablo Neira Ayuso <pablo@netfilter.=
+org> wrote:
+> There are possibly more ways to mangle ihl in the kernel in 2026, not
+> only NFQUEUE and nft_payload.
 
-This structure is located in the same area as the unused
-ionic_port_pb_stats structure, so this patch also removes that since it
-was never used in this driver.
+Yes, and there's a peer issue  in BEET IHL wrap I fixed in 017ccd82092e too=
+.
 
-Signed-off-by: Eric Joyner <eric.joyner@amd.com>
----
- .../net/ethernet/pensando/ionic/ionic_if.h    | 36 ++++++-------------
- 1 file changed, 10 insertions(+), 26 deletions(-)
+In addition to a few other nft_* paths, my understanding is that tc,
+NFQUEUE in userspace, eBPF, OVS, etc. will all be a problem unless we
+guard in the IP stack itself.  But then if there are legitimate uses
+of this path, we might cause regressions for people with complex rule
+sets.  That's why Herbert suggested we should bring the issue here to
+get feedback from the list broadly.
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_if.h b/drivers/net/ethernet/pensando/ionic/ionic_if.h
-index 23d6e2b4791e..01668dd10c0a 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_if.h
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_if.h
-@@ -2855,6 +2855,14 @@ struct ionic_mgmt_port_stats {
- 	__le64 frames_tx_pause;
- };
- 
-+struct ionic_port_extra_stats {
-+	__le64 rsfec_correctable_blocks;
-+	__le64 rsfec_uncorrectable_blocks;
-+	__le64 fec_corrected_bits_total;
-+	__le64 rx_bits_phy;
-+	__le64 fec_codeword_error_bin[16];
-+};
-+
- enum ionic_pb_buffer_drop_stats {
- 	IONIC_BUFFER_INTRINSIC_DROP = 0,
- 	IONIC_BUFFER_DISCARDED,
-@@ -2883,28 +2891,6 @@ enum ionic_oflow_drop_stats {
- 	IONIC_OFLOW_DROP_MAX,
- };
- 
--/* struct ionic_port_pb_stats - packet buffers system stats
-- * uses ionic_pb_buffer_drop_stats for drop_counts[]
-- */
--struct ionic_port_pb_stats {
--	__le64 sop_count_in;
--	__le64 eop_count_in;
--	__le64 sop_count_out;
--	__le64 eop_count_out;
--	__le64 drop_counts[IONIC_BUFFER_DROP_MAX];
--	__le64 input_queue_buffer_occupancy[IONIC_QOS_TC_MAX];
--	__le64 input_queue_port_monitor[IONIC_QOS_TC_MAX];
--	__le64 output_queue_port_monitor[IONIC_QOS_TC_MAX];
--	__le64 oflow_drop_counts[IONIC_OFLOW_DROP_MAX];
--	__le64 input_queue_good_pkts_in[IONIC_QOS_TC_MAX];
--	__le64 input_queue_good_pkts_out[IONIC_QOS_TC_MAX];
--	__le64 input_queue_err_pkts_in[IONIC_QOS_TC_MAX];
--	__le64 input_queue_fifo_depth[IONIC_QOS_TC_MAX];
--	__le64 input_queue_max_fifo_depth[IONIC_QOS_TC_MAX];
--	__le64 input_queue_peak_occupancy[IONIC_QOS_TC_MAX];
--	__le64 output_queue_buffer_occupancy[IONIC_QOS_TC_MAX];
--};
--
- /**
-  * struct ionic_port_identity - port identity structure
-  * @version:        identity structure version
-@@ -2950,7 +2936,7 @@ union ionic_port_identity {
-  * @sprom_page2:     Extended Transceiver sprom, page 2
-  * @sprom_page17:    Extended Transceiver sprom, page 17
-  * @rsvd:            reserved byte(s)
-- * @pb_stats:        uplink pb drop stats
-+ * @extra_stats:     Extra port statistics data
-  */
- struct ionic_port_info {
- 	union ionic_port_config config;
-@@ -2968,9 +2954,7 @@ struct ionic_port_info {
- 		};
- 	};
- 	u8     rsvd[376];
--
--	/* pb_stats must start at 2k offset */
--	struct ionic_port_pb_stats  pb_stats;
-+	struct ionic_port_extra_stats extra_stats;
- };
- 
- /*
--- 
-2.17.1
+> Your patches LGTM, are you suggesting more patches?
 
+I think the answer is yes either way, but either A) a smaller patch
+set in IP that I can handle if we go that route or B) distributed
+across people who know each of their systems better if we handle in
+each subsystem.
+
+Thanks,
+Mike Bommarito
