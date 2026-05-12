@@ -1,90 +1,134 @@
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 938044418F0
-	for <netdev@vger.kernel.org>; Tue, 12 May 2026 08:14:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4DA948C8C7;
+	Tue, 12 May 2026 08:17:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778573695; cv=none; b=CxEn+M//rWNIfZgjy7F76skzK9yb3ttU/CvvufGbgBo4Xc5bHa71LRucL3/akO0RM9Hse1vmd5IypN/JWJqSmVIBfFj3XgLV9VTCIfrnz2N5GsZcQD4MWdrSfDA4E2VEubdEDFBWewCn9ICtgL8BfWpEWND5SM6SI5SqKRk2jnY=
+	t=1778573826; cv=none; b=PcA/VNgxKZAWN31HSvmVzDBPOQyJjxTy3fNfNpGiTsbNwUROHmENsZ/N4Mqo/rEHit0k9gIEpfeCd8DSIaKrLuKcxKTVEGwocuLe/NUJrVYE+Tw4nnF8pCgJry+2b1J63u2hcyjAJ9F3Nze1mWwPtPKZZEyWE6ZykkR5yR91wsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778573695; c=relaxed/simple;
-	bh=0eir7FlsXReOo5Tnl+wZQO8WXKE1W8qeetRGqtFIL/g=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:In-Reply-To:
-	 Content-Type:References; b=eFBKTn2BcMv9vB9sWiyi/JCnBuVpeuDuYg6H53B4D634NJBKvytK34XgWKKT1FTAhvm3AJXi1QOPpgbA1jK4G3VtlB6X5a7hKARr8nHAbuCUDuyWr4rFD/czxjvuL7ZjmE3mwd9PtnqbL/70+NmkJLjkTSsbF4iiH7yVCv2lojU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=ELY+xwAS; arc=none smtp.client-ip=210.118.77.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1778573826; c=relaxed/simple;
+	bh=tI/lGNkIuja9ajGxoyDmTYN2O82oKg71izMcMng78FA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=upjP8kPKpkry8tN0cgJruwsQELcVwU4qLDKHFocpLmjjyI2xijKBTgmwqWwrY/tIOhnEUOt4SbcGm+LCYeIaQvA1dZXz0iUCXn/Xw/4p4qLDrobBx1U6YCOdfY6D/djkayPHvjmly5QbRT1KcxvHR0i6gv/4yVS3s5eIpKrh3E0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=XT0MkHvQ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=j9LZw+4R; arc=none smtp.client-ip=202.12.124.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="ELY+xwAS"
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260512081451euoutp01df93a6fc42168ac6bea2dfeda2b001bb~uw1lx36Hx0319703197euoutp01-
-	for <netdev@vger.kernel.org>; Tue, 12 May 2026 08:14:51 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260512081451euoutp01df93a6fc42168ac6bea2dfeda2b001bb~uw1lx36Hx0319703197euoutp01-
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1778573691;
-	bh=VaBvKdS3J023SDjGn9jNjOJ0mnJO7J/mBbhmPoJ4tI8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ELY+xwASgQwjHtyEv6XWKNRBBmrhOyzOpHCjckIu/WxEPRud7eCK6mwXsAE7jqs4G
-	 8EndhGBDPE3OiBCT2+6aYf7e6YlzZBzrVWiT+pEl1k086j9KrC63QeAxvuI45q3W1l
-	 H3OAYt0+/dUnsAiSwX8ypPV72HlaFG3B4QvorEU4=
-Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20260512081451eucas1p15eb6c85b5e97e07a3a79e2719aba89c8~uw1lg5iTC2392923929eucas1p1I;
-	Tue, 12 May 2026 08:14:51 +0000 (GMT)
-Received: from AMDC4622.eu.corp.samsungelectronics.net (unknown
-	[106.120.77.34]) by eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20260512081450eusmtip23dba322521148fe5f23e89b7154c4ab3~uw1k9UpQI2317823178eusmtip2g;
-	Tue, 12 May 2026 08:14:50 +0000 (GMT)
-Date: Tue, 12 May 2026 10:14:47 +0200
-From: Jakub Raczynski <j.raczynski@samsung.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com, k.domagalski@samsung.com,
-	k.tegowski@samsung.com
-Subject: Re: [PATCH net-next 2/3] net/stmmac/dwxgmac: Extend MTL/DMA support
- to 16 queues
-Message-ID: <agLhd/gs6W1wDl7z@AMDC4622.eu.corp.samsungelectronics.net>
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="XT0MkHvQ";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="j9LZw+4R"
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 35E4E7A00FB;
+	Tue, 12 May 2026 04:17:01 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Tue, 12 May 2026 04:17:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm1; t=1778573820; x=
+	1778660220; bh=kcKh2gyMp7VEH9jihouElpFQws/Ywu5UdBi3fT/ZVuc=; b=X
+	T0MkHvQOyKIMTDwArqiH72Imdoi1gVGv3e8/vAe6y/80WW3/1S2pfX22GlJlyBJp
+	VDJ1ZE8Sc1Z+QUJTD9xg641n8b+aypQgv5GLr23NVkub5Ch5HORSvoKAYBvf0Cqo
+	OZwGs4Q1ecAVsl6bOXnPG0g+U+5Q1HYiVuOubKgbWFP0oWBsmyCU5+Y9CYm0z1lo
+	luDVflVl0Kr6eVQQaPdE3qYdZv25M4s3EnZWYpgTdaTNo+ZoZ7W5hnoQx4hSzRNm
+	13AymYf5rMi9eh4Wt5MmpVorPSUDOa4B8vSgKbqT09SNNKiwda7dEEDdpAuMIr04
+	poqPstleyIV8AjUqvLBRg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1778573820; x=1778660220; bh=kcKh2gyMp7VEH9jihouElpFQws/Ywu5UdBi
+	3fT/ZVuc=; b=j9LZw+4RW+KuQR8WsCO6P/PIayNeKLJXUbLmmAC7lFmAp4IRndK
+	j/Mai/xcx7OcJKaZfO02I6KnWkaZgeQ1+4SWYDE/WWvm4CtUDPt8syrE8sxX0u6R
+	Sb33qfMmIHUlc5ocgBvKMkc1qOsl94UAhqRgSzQshySZimRPram25G+8N4vzpl3n
+	GfvH9Vq2XPJR71Cx+M640qef1WJtDewpzFdjmY4brcqQnnSxoVYr6meHJUhPmFOr
+	a/ayLqFSQJXEE4W2j3qJcqO84JDX0nqaSvFEJsyyOt7dUef6tMwvdnRy40OuH2hk
+	ZeZechjeLEvcY7XaUY6fwcbC2oYE6u1TTDg==
+X-ME-Sender: <xms:_OECaijExGUt5nrPvQjaSH6XqyG0t3S6kLeicGN2RmBI4hb1Cw5Trg>
+    <xme:_OECahj9TcFCwqrGyxfwH97HAJFc-dja8mUAB4OTBr6P-9RLeGHMYV3Y3wbLULosu
+    h_v4DggSx1fulrpUWy57qNbuFV1f9R-nyFMl1SZobMSGe0ZnpVCKNk>
+X-ME-Received: <xmr:_OECalmS1h9-jlElWGL--DdoWAa4uzlbHujTmsLpRcwcl28TGde7gDrz5QSE6isBQpwjWvpD1WxTxQ_NXpfou6Y>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduvddufedtucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtjeenucfhrhhomhepufgrsghrihhn
+    rgcuffhusghrohgtrgcuoehsugesqhhuvggrshihshhnrghilhdrnhgvtheqnecuggftrf
+    grthhtvghrnhepuefhhfffgfffhfefueeiudegtdefhfekgeetheegheeifffguedvueff
+    fefgudffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    epshgusehquhgvrghshihsnhgrihhlrdhnvghtpdhnsggprhgtphhtthhopedugedpmhho
+    uggvpehsmhhtphhouhhtpdhrtghpthhtoheprghlvgigjhhliihhvghnghesghhmrghilh
+    drtghomhdprhgtphhtthhopegrnhgurhgvfidonhgvthguvghvsehluhhnnhdrtghhpdhr
+    tghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopegvug
+    humhgriigvthesghhoohhglhgvrdgtohhmpdhrtghpthhtohepkhhusggrsehkvghrnhgv
+    lhdrohhrghdprhgtphhtthhopehprggsvghnihesrhgvughhrghtrdgtohhmpdhrtghpth
+    htohephhhorhhmsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohephhgrnhhnvghssehs
+    thhrvghsshhinhguuhhkthhiohhnrdhorhhgpdhrtghpthhtoheprghlsghinhifhigrnh
+    hgsehtvghntggvnhhtrdgtohhm
+X-ME-Proxy: <xmx:_OECalbZX1ACmoDEYa-kiby7beNiSrriMwSMydHJnj4U50YfpWrAUg>
+    <xmx:_OECaoxNO4ZhZ4ngfRL_Kd0r6NT24WrSiz1DleK2fqwXkEaNrAvMSw>
+    <xmx:_OECasZdt5arzMwX9JhojuGTm2bhsvKTzXkCLytngN3H34-ur8wMag>
+    <xmx:_OECahzmD5gJ2KY6iXQc4sAVIeBVpkAcfTT_HeHfrhJUxvKXWgtJMA>
+    <xmx:_OECaibgWh23Vvd26f9z0Jvamit-c8UXScSfx7rmwQWV-u-x-oF0Npv4>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 12 May 2026 04:16:59 -0400 (EDT)
+Date: Tue, 12 May 2026 10:16:57 +0200
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: alexjlzheng@gmail.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+	hannes@stressinduktion.org, albinwyang@tencent.com,
+	shenyangyang4@huawei.com, kuniyu@google.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jinliang Zheng <alexjlzheng@tencent.com>
+Subject: Re: [PATCH net v4 v4 1/3] macsec: introduce dedicated workqueue for
+ SA crypto cleanup
+Message-ID: <agLh-SUJqwZ8XF_n@krikkit>
+References: <20260511153102.2640368-1-alexjlzheng@tencent.com>
+ <20260511153102.2640368-2-alexjlzheng@tencent.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <93db358a-4ff2-4cc7-ac89-a0f13ae05597@lunn.ch>
-X-CMS-MailID: 20260512081451eucas1p15eb6c85b5e97e07a3a79e2719aba89c8
-X-Msg-Generator: CA
-Content-Type: multipart/mixed;
-	boundary="-----ovPTPTVSqDshbadlcck0r4M7-N_rZ7qlFcbt45lvJNOWX_g=_1ee64_"
-X-RootMTR: 20260511165431eucas1p28254403c5d4117b900dca4ca613bb532
-X-EPHeader: CA
-X-CMS-RootMailID: 20260511165431eucas1p28254403c5d4117b900dca4ca613bb532
-References: <20260511165416.3093015-1-j.raczynski@samsung.com>
-	<CGME20260511165431eucas1p28254403c5d4117b900dca4ca613bb532@eucas1p2.samsung.com>
-	<20260511165416.3093015-3-j.raczynski@samsung.com>
-	<93db358a-4ff2-4cc7-ac89-a0f13ae05597@lunn.ch>
-
--------ovPTPTVSqDshbadlcck0r4M7-N_rZ7qlFcbt45lvJNOWX_g=_1ee64_
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+In-Reply-To: <20260511153102.2640368-2-alexjlzheng@tencent.com>
 
-On Mon, May 11, 2026 at 08:05:32PM +0200, Andrew Lunn wrote:
+2026-05-11, 23:30:58 +0800, alexjlzheng@gmail.com wrote:
+> From: Jinliang Zheng <alexjlzheng@tencent.com>
 > 
-> I think
+> Introduce a dedicated ordered workqueue, macsec_wq, which will be used
+> by subsequent patches to defer SA crypto cleanup (crypto_free_aead and
+> related teardown) out of softirq context.
 > 
-> 	switch (queue):
-> 	case 0 ... 3:
-> 	     reg = XGMAC_MTL_RXQ_DMA_MAP0;
+> Using a dedicated workqueue instead of system_wq allows macsec_exit()
+> to drain exactly the work items belonging to this module via
+> destroy_workqueue(), without interfering with unrelated work items on
+> system_wq or causing unexpected delays elsewhere.
 > 
-> is more readable, and expresses in code what you had in the comment.
+> rcu_barrier() in macsec_exit() ensures all in-flight rcu_work callbacks
+> have enqueued their work items before destroy_workqueue() drains and
+> destroys the queue, making the two-step teardown correct and complete.
+> The same sequence is kept in the error path of macsec_init() as a
+> precaution, to mirror macsec_exit() and stay safe if work ever becomes
+> queueable before this point in the future.
 > 
->    Andrew
->
-Sure, can apply this in v2, thanks.
+> While at it, rename the error labels in macsec_init() from the
+> resource-named style (rtnl:, notifier:, wq:) to the err_xxx: style
+> (err_rtnl:, err_notifier:, err_destroy_wq:) to align with the broader
+> kernel convention.
+> 
+> Signed-off-by: Jinliang Zheng <alexjlzheng@tencent.com>
+> ---
+>  drivers/net/macsec.c | 23 ++++++++++++++++++-----
+>  1 file changed, 18 insertions(+), 5 deletions(-)
 
--------ovPTPTVSqDshbadlcck0r4M7-N_rZ7qlFcbt45lvJNOWX_g=_1ee64_
-Content-Type: text/plain; charset="utf-8"
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
 
+Thanks for the fixes!
 
--------ovPTPTVSqDshbadlcck0r4M7-N_rZ7qlFcbt45lvJNOWX_g=_1ee64_--
+-- 
+Sabrina
