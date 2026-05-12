@@ -1,92 +1,161 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from usb-smtp-delivery-120.mimecast.com (usb-smtp-delivery-120.mimecast.com [170.10.151.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3FA53905E7;
-	Tue, 12 May 2026 15:53:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 314DD3C2BB4
+	for <netdev@vger.kernel.org>; Tue, 12 May 2026 15:55:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.151.120
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778601184; cv=none; b=t8ZkIc6AVaTfRfIsk0/BwdWcOGGZB7Dy+nHGnB8TFXTk40DUH54QtLcvSJioAYFRru8SunHFcOlvROeSIrCVycNwzTADemsvGI8GjjBdED/YfmgUd3f2Q6dCesLmhgDLoEcNzuC7JvNCxLpRT+4wG/AaWqVCil5mNEZSk+tq5eM=
+	t=1778601333; cv=none; b=XGSJz6SFNbtxa9Qoka+rBq9K12QCALTGT+y+47hPvE8kjlGiAormKWBeFtIYY+ptQmD5SpDtqIFzJ3qJa8bG5AYSXLCfMPrG5Xj2SqFQxNDyAD9V2SCq/3PN+j04EHJuWpHRh1iSr8DKGgS7ZsLhV48wgCaQISanlIqqPRs+eFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778601184; c=relaxed/simple;
-	bh=+A6RU+3DA3OxZ4iB9Ss03OoR1eraZj8TU5tTdmq4D8U=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BQzuA+Xch6hvLP2rK5oFsPiS5VJhuFO+kdvaQnj+WNYQObZvoAbRDv8AMgCrRYoRkCR/4MwInxtEJQLVTSok5MS8LW8xc7O+4jtG5mZn6diSkM5GlJVSHlgvuhyua2+W2tpD0k+PVByzkdlIJCSBaPkOwCGfX3WGkBx5t8sI7A8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h6MR8EU3; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778601333; c=relaxed/simple;
+	bh=xe2g8s1o2WapCZpSrDK0PGf6EBH3dmNrzJFhbGlHJq8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 MIME-Version:Content-Type; b=AnpF6aAC98aaiVzW8GcQbWy+Vrhp8keJuFLiEd0dhtUePTqlNBBAYOnw6EvKMYIL9Mm+x6wNEjvGdz0mbbMWUC5oU2Q0vd1nmPRRaZhmdt1JkCFBPnIt92QA9FHh0IXo/wCzI3uwlSYJ+/wr8fZZDjpuPnq7gY587ArrtuHSOgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onsemi.com; spf=pass smtp.mailfrom=onsemi.com; dkim=pass (2048-bit key) header.d=onsemi.com header.i=@onsemi.com header.b=dRSWC7b4; arc=none smtp.client-ip=170.10.151.120
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onsemi.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onsemi.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h6MR8EU3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A093C2BCB0;
-	Tue, 12 May 2026 15:53:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778601183;
-	bh=+A6RU+3DA3OxZ4iB9Ss03OoR1eraZj8TU5tTdmq4D8U=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=h6MR8EU30uldPZH2L/gkkWTPKN210PZs/Dzp3UirV62WyFlMoTbasbowHOU+7Flq1
-	 aS6eSIg5gheeIaPERQByxDVVCyPUyiAbOnaytN2JMhYEqSgK0MQ+Zg3oNNVOD8CjhP
-	 SRyYLQFULt5tRTnuwDRsSJEsnKgVgmCDwCP8wAWf2XplEB+J2enOWnEDCj3Q0s2SbJ
-	 ts/mQe5zfzO9J4WomL2GT9+8AYbuYrREfjOUYMFuc0rPaesKZ9Wh8QoqWKUVdL6s4j
-	 mFtyEx/fLl+74i6w8NtsHumdEZG9L16Y9Wdb95UdSgOm/+hrdsBVCEm55GfIHSWvqH
-	 4HM1+XuuG7mwA==
-Date: Tue, 12 May 2026 08:53:02 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: "Maciej W. Rozycki" <macro@orcam.me.uk>
-Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>, Andrew Lunn
- <andrew@lunn.ch>, linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: MAINTAINERS: Add self for the 3c509 network driver
-Message-ID: <20260512085302.53cca49a@kernel.org>
-In-Reply-To: <alpine.DEB.2.21.2605120123260.46195@angie.orcam.me.uk>
-References: <177827761704.865600.12887598979033208728.git-patchwork-notify@kernel.org>
-	<20260509230519.57607-2-enelsonmoore@gmail.com>
-	<alpine.DEB.2.21.2605100246020.46195@angie.orcam.me.uk>
-	<20260510085841.243bdd7e@kernel.org>
-	<CADkSEUj3qUFDG-Hc3_RNZjm6=h8wJF63OOcHWsZGumG18VdLkA@mail.gmail.com>
-	<20260511162044.45494456@kernel.org>
-	<alpine.DEB.2.21.2605120123260.46195@angie.orcam.me.uk>
+	dkim=pass (2048-bit key) header.d=onsemi.com header.i=@onsemi.com header.b="dRSWC7b4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onsemi.com;
+	s=mimecast20250127; t=1778601331;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xe2g8s1o2WapCZpSrDK0PGf6EBH3dmNrzJFhbGlHJq8=;
+	b=dRSWC7b4TzREfEvRjvRFvA3hXEXN19MZPvEgmaF6+t/H0VZXWv2GuX5PO28NKLcEfogyJr
+	gBnvEY3G9s/zo8yioV1NC5gr41BXfnqukjUu6FVrTSYnfIcyv+MAMLhLasn/erUWBwNU3c
+	IyE1mvF2FDjcObZxWOEVAtZ7Jn96EOm4RGMXEG6uLOw1BeLuSnpNCXF15f3wIW+CAKzcJO
+	OO4Y1XYpsPIRorpjUNpYi4kJj1Bu8BeZEMjV5VxiKe6zfgLzEShBUWqoWVZzPPYHQ8YfHv
+	eyLob9elzpT7Yx7PrxgHaOe8cYL33QkyoxcajYzheCSmbZ5fSLvvvVs96Dg8Aw==
+Received: from CH1PR05CU001.outbound.protection.outlook.com
+ (mail-northcentralusazon11010059.outbound.protection.outlook.com
+ [52.101.193.59]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ usb-mta-13-_9CgpwEaO-aChZm1441aEA-1; Tue, 12 May 2026 08:55:27 -0700
+X-MC-Unique: _9CgpwEaO-aChZm1441aEA-1
+X-Mimecast-MFC-AGG-ID: _9CgpwEaO-aChZm1441aEA_1778601324
+Received: from CY8PR02MB9249.namprd02.prod.outlook.com (2603:10b6:930:9c::17)
+ by DS0PR02MB9102.namprd02.prod.outlook.com (2603:10b6:8:132::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.11; Tue, 12 May
+ 2026 15:55:20 +0000
+Received: from CY8PR02MB9249.namprd02.prod.outlook.com
+ ([fe80::e437:4ba8:6506:4cda]) by CY8PR02MB9249.namprd02.prod.outlook.com
+ ([fe80::e437:4ba8:6506:4cda%3]) with mapi id 15.20.9913.009; Tue, 12 May 2026
+ 15:55:20 +0000
+From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+To: Andrew Lunn <andrew@lunn.ch>
+CC: Piergiorgio Beruto <Pier.Beruto@onsemi.com>, "hkallweit1@gmail.com"
+	<hkallweit1@gmail.com>, "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
+	<edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH net-next v2 4/9] net: phy: ncn26000: Support for internal
+ phy for S2500
+Thread-Topic: [PATCH net-next v2 4/9] net: phy: ncn26000: Support for internal
+ phy for S2500
+Thread-Index: AdzhcNrMIlF1yVpURhiYlSATodqMaQACw4oAAABKvUAAAfpCgAAoqFHQ
+Date: Tue, 12 May 2026 15:55:20 +0000
+Message-ID: <CY8PR02MB9249E8896247662F5214B46B83392@CY8PR02MB9249.namprd02.prod.outlook.com>
+References: <CY8PR02MB9249195FE5BD6D7FA31F4D1B83382@CY8PR02MB9249.namprd02.prod.outlook.com>
+ <b6af67df-1217-411c-ad47-f9c3e556d345@lunn.ch>
+ <CY8PR02MB92493D7EA2E83DA6FE73B10583382@CY8PR02MB9249.namprd02.prod.outlook.com>
+ <954b5b1e-2850-48ac-97f0-f9ac6e52d461@lunn.ch>
+In-Reply-To: <954b5b1e-2850-48ac-97f0-f9ac6e52d461@lunn.ch>
+Accept-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CY8PR02MB9249:EE_|DS0PR02MB9102:EE_
+x-ms-office365-filtering-correlation-id: 0769525e-ba1d-48ae-a8c2-08deb03edef0
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|38070700021|11063799003|22082099003|18002099003|56012099003
+x-microsoft-antispam-message-info: anGKBkcXqbkA/NjptqJ0yNnNvZ8FyWbYmw5f1/JpH+Xro/eIV9EmIIaltE0c5XE2wrd6zdm3n/gK/tISpVcBn+vji8/UZt2BV0GQULl+MQykGZOYaRD4Ixa7OLErnxhDAB1FhwaH3DUZH67qSBGDUpQy1byRcm1lxs+f+/ICyXMHx8WDcmf2PrjPkZZr9txgclxxpmO3w6agouLO7GU9gJC61CRTsCymATviTQIgm6GJ8at6FnJpAOv9ofiPgVb/bbgsNtL/y9D5qodZ8J00LsAqa7G+IsXXftm9FYJn1DuDMuie3CEfFcYtCYlFxZ3/iHclTPUj6Le5WV08Z6ZhS4ApSuL4CZ0h+aU6sru1vsc1taEFvzdzb0XdpzX8Wu6scNac4iFfnZQkmNlidAvSzWLvbq3WcSIWYKl9kij8WPwHFxoXdfhkSW3woc1qOD4I/qQCduExi6sg8Cxq8m1EWdnZs5QPcLlbxEMBx1jVJ7ZJUwohTg1veWLW2pfhWE7RRporqIWgueL4kZJI3bCBHKnHTziupjFig8SXBGfxyn/qFEj1NF4bwCYllSkZch46Uxzr7OAHTfo6QpfFgraI5Jt/A08uYRS1oIj0S0XDvJS+Eu0kSYuPY41kwINO9ZSjep4lAuPYkAZjDnGLcbKxV7pob8Sc+78IFYRINO2GHDiJ3yZ5H4lBOlshTK1yDcRPLmRrux7jQWJJUyHkCO865IkyGIBB7JjUOVJv/th2VWKDM+EQ/wQaNeEgeTx6I+8R
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR02MB9249.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(38070700021)(11063799003)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?Vic5pYFNUM8qhien1PL4QQpBr4RSGNvryvXSnoTIU6wEW1WmhhvPIYM0OoA9?=
+ =?us-ascii?Q?IK+AoDI53R4L5dwgv5M957SjOcPMipY30FtxCNEyAZj57yp5AAsETps87Yu4?=
+ =?us-ascii?Q?WcjeSKO58tPez/qXdfszX/stIyDABiLWG60Xb0FeQjnTbQTVh0D45VPDwqyh?=
+ =?us-ascii?Q?Q/UfOHy8pxMleet41YayGkEfsXpgL1MWgyKOdnH8ANrwuw0orKveNfFJKJLk?=
+ =?us-ascii?Q?Mt3XjMzgi7xgi0fgVRak2ZDBYrO/9pRCUEAW//bDNIn5YgabigPRTML/kplt?=
+ =?us-ascii?Q?2bmTuIQDSwFRScpXecHEnGOKOfM38qE//i27ZOfGm7FFERs4R5defZV5GTY/?=
+ =?us-ascii?Q?tHCiS/g2S6Zoue0usET3jSUAI9inx3+VNxl8r5p4N2siy5sNsHuSpK0sD/Dw?=
+ =?us-ascii?Q?dwfw4dVUE7lB+RRYIlh6JJHI0M82uWhjk8bsLvvDyRXt4GrZpjQsktkThAxn?=
+ =?us-ascii?Q?uApSpfaqR34Bpd5RQNlgCXWnFph/eGHGCZMPobQUeEFGdmMwfgpddUqdOCfw?=
+ =?us-ascii?Q?G0EC51A8iuZ7N+8V3bxGbdqkoT0r+ibORZ1aWDrFIID7/AZLF8r0CbQwl9Pj?=
+ =?us-ascii?Q?6Pb6g8HT/3JDu4zeNTmi3u1xxpCaWReaKndbuJN+/Q3ibXn1LRkzmOYPDc6e?=
+ =?us-ascii?Q?rfxcN7WOLuMZRoa+uIenXk4qZBWGe29nA9Pb2tvtQ1ljcaXnfPYSQiD4arGC?=
+ =?us-ascii?Q?BjBTp7dBSy6VZwYKJbdRQ43yaFdkaeW9HVTYyB5cm55j4c0VSNJE/bezIAGl?=
+ =?us-ascii?Q?6MKKQP8aPtLYsc1XeaqmpJDW9Rv1dIfCTDwRRy9jZdVludFwhtvfTqdEFCtC?=
+ =?us-ascii?Q?Vdd9zvAcHbX2s+DLwQ3K2Bjd/FIdRszA/wPLZdmME5tiu/+2pRAqJC+2xZPl?=
+ =?us-ascii?Q?84/MpVjsmzj1AQm61Izm+RxtR0clrSQA7l1ekXCDeIds6mgDM6vCWMg5soIq?=
+ =?us-ascii?Q?rH5DXZR1jSdJ1saMeGcbvUqIU4Pel6veOO83904+TCPc7DJOafncZ7G10oCA?=
+ =?us-ascii?Q?fEYuMGTCP6NLo8EtUNsazFex5NyFXTUlT87HUSejKU8LoVqR93r1WiYRtkVg?=
+ =?us-ascii?Q?pCjTO5R2p7MafKwSbmzEohNjy2jdZXgTrfJtFvDH5YeBn/itPuXW7hNzZDr8?=
+ =?us-ascii?Q?iKLSG8aNvFUOin+gqxX1PyIQL6jETmGgRb9CvuGE+5xfoqCYNF36+sdvh3P2?=
+ =?us-ascii?Q?H+b5kGUo4Y+MOWLP0EwukUiwgj4cNnvHug2jy1+f+JFE9FuzuwSKv4PtkvTY?=
+ =?us-ascii?Q?LQswF0EuIVN/KkEGZm9d6Q68CQz9guiqOayRq2JtC2DzPH9c2bhNuF4QcBdi?=
+ =?us-ascii?Q?kBO5tmUAhwlV9MUjGkxWhL65Z6LTPmfjoEPTiHK6D6ZsDnmgCjNz50q0m6wk?=
+ =?us-ascii?Q?9BqJKcTInpYGr4col2A5nyfwwXnB7LKMZMPcQvMAQIeyaMUc2FBN89i1I8vJ?=
+ =?us-ascii?Q?StlqpaQtBd07BZiKYTTxNKaWIDpDIJlBuMJGdJbVq4+khzaXW7On4KoUmRJ5?=
+ =?us-ascii?Q?KBxDk6SHtxiir93/DiLOpTbPy88zR2xHTCROslQJh2ZkYJV8m+X8olan+jCM?=
+ =?us-ascii?Q?hW9ShyPpy2UZRfZqvFpnnNtsegeu3lfSLcRO1pZqbOHRYdcjU/89K8DBfA0p?=
+ =?us-ascii?Q?It1qsbk/n0jIlYGRpNg6IsITwdJsGfLUD2z4A0ezSqs4PyTzo9PbtDD7juPo?=
+ =?us-ascii?Q?qjaRXH5szF3YZvHVPkImlqUgSaqL2sNq0/7y1MioOftTo9ceLmTM45Y5RNQ/?=
+ =?us-ascii?Q?MvBeMSUX2K1WP5Ghfq4qzS5UeD5/es8=3D?=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-Exchange-RoutingPolicyChecked: DaInFGUA9O0MECSH7LSII4A0MZFeCiCn2qNHXlchOvVjOvFdblUF2CLeh5GE5N93DbrMYypIhTzc/L96n1fjHfv1pSXGKFfWLWoee6BpR23okuNBa6XDp3rQLVCM2AIMoDwgL20BHzYduJZlJIff8N/0dSuZciQOJu503VE0japeHe/5omvkk7YPRD7To7UqP4xgXPHbGFjz4lseBKmiTfJXqm64C+cVUay7hgb0noyemTWfqKnll2zxc3xLQvvXrIg+U1n6y/PSxiIvQmLImpFvNcF7TzWeV3i3viIRXwVqOUFIwcqKiTtyP1eNbGR04zPgJDwbT8x742Z29hxGsg==
+X-OriginatorOrg: onsemi.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CY8PR02MB9249.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0769525e-ba1d-48ae-a8c2-08deb03edef0
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 May 2026 15:55:20.7810
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 04e1674b-7af5-4d13-a082-64fc6e42384c
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: xiP0tQTEPn4OicUaV+3PO6MhAHo0LSIHBebfd5aVLwBuIMnXw9+wdIduqgr7MVmQuzYr6S5fMgopClXcWI7y7WkIX4shFvzpNwo0Hb75I6Y=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR02MB9102
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: ff6nsRZpuEVLBojxM2Z6qj4CrzOYPHPqS3BM2vObzPM_1778601324
+X-Mimecast-Originator: onsemi.com
+Content-Language: en-US
+Content-Type: text/plain; charset=WINDOWS-1252
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 12 May 2026 11:26:37 +0100 (BST) Maciej W. Rozycki wrote:
-> On Mon, 11 May 2026, Jakub Kicinski wrote:
-> > > Here:
-> > > https://lore.kernel.org/all/alpine.DEB.2.21.2604240004280.28583@angie.orcam.me.uk/  
-> > 
-> > Maciej, what's the relevance of your machine in the lab?  
-> 
->  It's one of my test machines for the defxx driver, specifically the EISA 
-> binding.  The Ethernet link served by the 3c509 driver is for Internet 
-> access, FDDI is intranet.
-> 
-> > Does the platform or any component that you test on this
-> > platform have actual users?  
-> 
->  I believe the defxx driver does, yes; unsure about the EISA binding.
-> 
-> > If the answer is no / unsure please fix the driver up to
-> > follow modern coding standards and submit the patch.  
-> 
->  I don't mind updating for our coding standards, though such a change 
-> might be considered just irritating noise that interferes with `git blame' 
-> (though with the removal of the code upstream, this got broken already 
-> anyway).  NB it's the reason why I have hesitated to reformat the defxx 
-> driver for decades now, which obviously has much more serious issues here 
-> such as the assumption of 4-character tabs.
-> 
->  I think the re-addition needs to be done in two stages, first being a 
-> plain revert so that no code change comes unrecorded in git, followed by 
-> the actual formatting cleanup.  Sadly this won't fix `git blame', but at 
-> least the diff will be empty between the repo states as at respectively 
-> the removal and the re-addition.
 
-Right, since it was already removed the git blame is going to point
-to the re-addition. Hence it's an opportunity for a cleanup.
+> > >
+> > > This Message Is From an External Sender
+> > > This message came from outside your organization.
+> > >
+> > > > @@ -163,7 +166,7 @@ static int ncn26000_config_intr(struct phy_devi=
+ce *phydev)
+> > > > }
+> > > >
+> > > > /* Directly accessing via Clause 45 read avoids the extra
+> > > > - * SPI accesses required by indirect access.
+> > > > + * SPI transactions required by indirect access.
+> > > > */
+> > >
+> > > Please don't change things you added in the previous patch.
+> >
+> > I thought v1 is abandoned once v2 is submitted. Didn't realized we diff=
+ v1 -> v2 too. Will
+> be careful in avoiding it in future.
+>=20
+> Wasn't this line added in a previous patch in this series? Patch 3/9 ?
 
->  Does it answer your questions and seem like a reasonable course of 
-> action?
+Yes. Sorry about that.=20
 
-Sounds fine, I'd squash them, but as long as the patches come in one
-series - either way works!
+>=20
+> Andrew
+
