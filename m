@@ -1,60 +1,60 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E4C93905EB
-	for <netdev@vger.kernel.org>; Tue, 12 May 2026 13:31:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 311081A267
+	for <netdev@vger.kernel.org>; Tue, 12 May 2026 13:32:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778592693; cv=none; b=u1903VNU0/dU6zH5s07/F28siB5AerRz/GWyVvr/UhbzGr/+eSWxl6MyXLnb9ccIb9GusxwWS6yzvyQh/juCymlTT0laIdK0jf1rg1RRW1fH2cJrG1IJsbz9pBrAQG3EqrwORRFp3hFptuDbYe1ppQNlDGgkiqK1LbfJeG0eih0=
+	t=1778592743; cv=none; b=CE795kTjK3c+TiWX5suUAo0CslBmNHzUHne7J1nXTycgILWPX6NeqGEwe2/kmDJcLH9mB9mWHIR/i596uck0Jq7Y+jaC7kumOxmiGcIViRjTpZgnyrh/lWOI7G3RId1zqHCSXMID6310qRAAPVP27ZKxsSn3lwfwrYsscicgNeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778592693; c=relaxed/simple;
-	bh=R45r9yU7MMX7pT+++mCU8H39a39mlzYwFvuPyP+hqQc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QBNTznpmFrvbTR8xb//cZSlU0jCoPR8Q9uH3R69cCP8Xz2fpy0V4DwcnGSWgeigsD7aYIM7You2bJk/B1Q7HTOFNzq6qWFktRPApH0X3QJzyknFjTDspQmAor0BiztubBBzEGYkh4K6AQsM/mgQlHV2Vbf4IOxC02iEIT3AJiZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V78pH50R; arc=none smtp.client-ip=209.85.214.169
+	s=arc-20240116; t=1778592743; c=relaxed/simple;
+	bh=Cgpsbn2DkZpZS3BgaGqMF6WQ8CYCubeafRvaZv0Nr5U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iEnLtYMQ8eP3PE6VyjDxqta2rZnj2L6jriDKsnX7TdQThF3zA7zsbamnKEL9OxsL44k+Zr1sGUjIq5NtJmSk3r59PpnR0QCaFRfxHieJnDmQxRFP2yiQc8E4sndVWR38q3EblLron5beiPzPr5Ac8QXja9c1Lt+oQPDkWkOVRK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=n9G/dVSK; arc=none smtp.client-ip=209.85.210.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V78pH50R"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2ba928852a5so36508935ad.1
-        for <netdev@vger.kernel.org>; Tue, 12 May 2026 06:31:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="n9G/dVSK"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-835399c11e0so2515839b3a.0
+        for <netdev@vger.kernel.org>; Tue, 12 May 2026 06:32:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778592691; x=1779197491; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1778592741; x=1779197541; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=QDYkhHfQmXQhrZX6ApB+iupAaO7l8zpahGGh7xZwSNQ=;
-        b=V78pH50R1sM1uE0bPuqXiOmAzERQZq5XSzRjG5OI8SH/nhpM2aSgyNzMoL0/3nYwzL
-         KAZraVLizlUAEbxVYf0fSGdiPbnM7B9R7qqQDyCfRx1o5H+Pf98at0LvKhsxRniJ9wVB
-         VlACJJ1iBLpatNMrsmMCy90Jag78SwTEpmkdgTCXMyf7/ruei4PPiJUl8DAs3GXT2fJ/
-         8IaQb8xK1eRVrrEJIqeihCvLJ1tZPs37PktGSy+PFweWe04TZefzr2ylc1CZ7YuBzRL0
-         yi/o7he43lQyWQvI2FIYKckhgzxicPjLcwIV+W/QnmxbNAQqkd4TQxVHWiBMnT1hMJc3
-         iwNQ==
+        bh=+G1CpOAyOxANA+SPh/GOBsJg+6uFI1md7kNT04Z6aes=;
+        b=n9G/dVSKQkvqYYaWPYb4ypU0wiuStGS8nWlby5RPv7rBVTJ/5nTsVNR9Bjsaaj5NF8
+         bqStEq81p5cz9rINxJPRIB0vWx97P6EL12M/ZHyqEWJZf2fA5K4yHeJ3HrlE7LPACReJ
+         eCYYdJgLVq+Hwzlyy8Xx1GZIhsmwuaGyRcgAjwKs8zSOnK82a5AX3asH8k19iKOK0Jn1
+         P9JrfFZtuw1hpZA47GXC8ZV84DAoxG5YuhR3M7RaTbZB6iBYJDxBpR6Kc+El5IZuYP6L
+         M1l/LaHWOUjU/L0CtKqbOVwyeNG8+1FVx19woZnkU76exMTZ64Dqq7t0+ACv5meZ0HrX
+         cq3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778592691; x=1779197491;
+        d=1e100.net; s=20251104; t=1778592741; x=1779197541;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=QDYkhHfQmXQhrZX6ApB+iupAaO7l8zpahGGh7xZwSNQ=;
-        b=L7heIBpxGTVfITIjWoVFycmjI64KU/t5VoQJ4vg+geBQkOlFd0wr24u5SMgekQgUFJ
-         PJVn1OnI9JC7GZK+Yj+YQPGxTI9FeVnu6RQUgfztDOHqVjeeoGaVm1soj0zafBueJHQO
-         8aWEQRN4TqoBI2mClGQ3wyB2qflDs2k8yxzyRjYcQHLg3mZ8x2Kaqq5mpZiMAvpSXgXr
-         J1CNn0mGjHaAdikEFJGcadf7zn0WeXt9ZMSjlkzTsdhLSxpuzjfIZAdFaViayS14TYMp
-         A/DQIinT79xEprzo5TbB3cF16VHHXee0kVSL6CIy8hG1PY+cX1AHYRI4bBjDhM0zFgZV
-         urvg==
-X-Gm-Message-State: AOJu0YxQxd2cbotQz5N6sGzaehEWmrYgj2K8mFVzKqCf8EKRbQWRIAvU
-	Tjv8P3S067FwK1QCeTOjoT4kJZJjBljBrb99xRDSqwx2usOfO5JIDioBnlFxAGKf
-X-Gm-Gg: Acq92OF+MTz7PQFJxtmeBoITr/OnA4Krhn2xXR9XcX0SHF2zadhn4KSVjA99h6J+5RF
-	G2jxowJzcjF0kPYvVgGmQbxxGiRc/H9j6LIf5wSpl8I8y4bG6iFnfH/3s9KH12DUmQwGMviBkGD
-	1xhQ5bJhjvJTBJyUa8vXllGY/pOAPQjvjnbRVKPWNB2/0EUkyGRAsJD74cloZdGV7CcYOSXbZRW
-	8DHGC4NPu/dF3HnAQcVAeoSRH/oDGoYZ2jmOZo4PuAaq4m5BPjHXNAlNkShOnf9MN+X6c7u7pY5
-	INVFjM34K1uU5S5r7DgFJfhFw3I3Yam1ImxaOtqAnYTwQyk0ubjM74IkaPNdfQ2T4+nSRfKjLiu
-	vtwYgV57VA9zEnhAvgQuT3vRA2anV6G2nGPpqtY/3QS/zkkUB5XRuc13FzfyauUQS4531JAErBW
-	ovAEIU1RMrBAQYzE0Dwnmt08J53KDRnPh3UxtqVK9BNf2DQmjgxIeZT4tDBL3Iew==
-X-Received: by 2002:a17:903:1ac3:b0:2bd:7ca:e67d with SMTP id d9443c01a7336-2bd07caea66mr26778545ad.29.1778592691438;
-        Tue, 12 May 2026 06:31:31 -0700 (PDT)
+        bh=+G1CpOAyOxANA+SPh/GOBsJg+6uFI1md7kNT04Z6aes=;
+        b=PD3a4/6Me96euVqxyqM7fDGWGC109WDI0TeoopS2Y5fhqgNR59yDyg7jkiIx1pbzj7
+         31Gn3M/OGQezX7lUdHXnIi7U0mxMgtyxPJ4kDUcYdmm1vmgGNN1OVkA71kYlDlBT/Erp
+         K70vPsPVV5oy9E3emrGjcYDPb03LHxk+yitlagSpgc4pz6GhglJdKfdL+uL+8RFKntMn
+         XVtTTKWDI8r061WSlNBHuc2Mzs4Nb51vhzgIG3pcmYLZYLMQAPTz3WnDag8fiVyHCHA4
+         Ob5zTJ8UeAY/Ld6t52yiY9hYd3TT7E+w0eORmU9yFDVUaXyi7EKHa5p/wvUnLW54Rvdb
+         XECg==
+X-Gm-Message-State: AOJu0Yz9scek+YezGgRgdiV6For2KMjKJleRibuP/ts/OJjNspL24Clr
+	T5fJSv1hx/aubOoe8RgZxaaWBuez6ft5Qr1F8E9YPOQiFGzJIrmYhEbWbzEQcIEZ
+X-Gm-Gg: Acq92OGoJMxOLg9Pz0jqeiczum3xiL9i1RkopJDG0dlQvvkX1rp8UaJ2OgKRG0o0kE1
+	/+cJqHE9FmDxStZWsXufRgah3Em0ADY7+ghQHg6hNY9rBO3DqEyGnns+dxe28s0gMj16iRErsOj
+	7qUSjlInEWSwzh+JARRrf7B0cwW/04gYNR1Fm0Am2K8314K24OLCJEVfkdzLb0LxvfUpb29fnWj
+	PgjXWy/cgL3LJrPWU8iyYzzJtVMC6e7n1V5UB/oq/gXVtvgZcu6K4TG48NgR6pzEG2jG4nc1eqe
+	IjPIiVxGhywsPG5/P7UP9IJblh0Xq/pkUPq2xvkrIky85Xm6JZUW0R+sWcGuDuzBV4GoXCjKGq1
+	MsRcyv/8s1a+1DCmBlMepYrLrBTPcnGMuIw8AlXSbyMjf1DJD/EU7D/GYQBU2TMjPlD1tq1qdG1
+	XT+3E9qy2fHRLCodDUKzLGHrLm1QrQSFEC7xzpWljL7TpyM3LW5zzuX4NxT9PvJA==
+X-Received: by 2002:a05:6a00:b48:b0:835:351c:f236 with SMTP id d2e1a72fcca58-83a5d09a78dmr28663707b3a.29.1778592740983;
+        Tue, 12 May 2026 06:32:20 -0700 (PDT)
 Received: from r912.lan.4v1.in ([182.70.116.80])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2baf1d2700dsm139967095ad.2.2026.05.12.06.31.27
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8396563f38fsm22849934b3a.8.2026.05.12.06.32.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 May 2026 06:31:30 -0700 (PDT)
+        Tue, 12 May 2026 06:32:20 -0700 (PDT)
 From: Avinash Duduskar <avinash.duduskar@gmail.com>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -63,11 +63,16 @@ Cc: davem@davemloft.net,
 	edumazet@google.com,
 	horms@kernel.org,
 	corbet@lwn.net,
+	jiri@resnulli.us,
+	mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
 	linux-doc@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next] Documentation: networking: ip-sysctl: fix typo in tcp_ecn_option
-Date: Tue, 12 May 2026 19:01:25 +0530
-Message-ID: <20260512133125.1772658-1-avinash.duduskar@gmail.com>
+Subject: [PATCH net-next] Documentation: networking: devlink: stmmac: fix typo in phc_coarse_adj
+Date: Tue, 12 May 2026 19:02:14 +0530
+Message-ID: <20260512133214.1773502-1-avinash.duduskar@gmail.com>
 X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -77,26 +82,26 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-"regarless" should be "regardless".
+"Functionnal" should be "Functional".
 
 Signed-off-by: Avinash Duduskar <avinash.duduskar@gmail.com>
 ---
- Documentation/networking/ip-sysctl.rst | 2 +-
+ Documentation/networking/devlink/stmmac.rst | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/networking/ip-sysctl.rst b/Documentation/networking/ip-sysctl.rst
-index 2e3a746fcc6d..4c6a35d07a08 100644
---- a/Documentation/networking/ip-sysctl.rst
-+++ b/Documentation/networking/ip-sysctl.rst
-@@ -489,7 +489,7 @@ tcp_ecn - INTEGER
- tcp_ecn_option - INTEGER
- 	Control Accurate ECN (AccECN) option sending when AccECN has been
- 	successfully negotiated during handshake. Send logic inhibits
--	sending AccECN options regarless of this setting when no AccECN
-+	sending AccECN options regardless of this setting when no AccECN
- 	option has been seen for the reverse direction.
+diff --git a/Documentation/networking/devlink/stmmac.rst b/Documentation/networking/devlink/stmmac.rst
+index 47e3ff10bc08..fbaa81ea782d 100644
+--- a/Documentation/networking/devlink/stmmac.rst
++++ b/Documentation/networking/devlink/stmmac.rst
+@@ -24,7 +24,7 @@ The ``stmmac`` driver implements the following driver-specific parameters.
+      - runtime
+      - Enable the Coarse timestamping mode, as defined in the DWMAC TRM.
+        A detailed explanation of this timestamping mode can be found in the
+-       Socfpga Functionnal Description [1].
++       Socfpga Functional Description [1].
  
- 	Possible values are:
+        In Coarse mode, the ptp clock is expected to be fed by a high-precision
+        clock that is externally adjusted, and the subsecond increment used for
 -- 
 2.54.0
 
