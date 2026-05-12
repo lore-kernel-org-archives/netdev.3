@@ -1,155 +1,155 @@
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B97081D88B4
-	for <netdev@vger.kernel.org>; Tue, 12 May 2026 21:09:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0B3F26ED46
+	for <netdev@vger.kernel.org>; Tue, 12 May 2026 21:18:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778620180; cv=none; b=bGjbmXaFMHzy0iLD8UWLU8Nvs1KCslHCltTmDcLukF63xEAlWgYLhCJJ2FIgCFgf//UG0kL99UWcsGFDjiaNVV69f2idMmr5npm1kgBe8qHF+5Wxl/qb50QJoB93WIDGrnx+o6rrMuWICFFZwDr87FYstArKpPMZEUaBol8WbLc=
+	t=1778620739; cv=none; b=nWN0UVtS2CUCF6nPLtW2lpRDOpAcXf2eTj3oIoEl3FGP7mYpa1gB8a3/cB5+IWXU5vQ+ahm54Q1AolkcmHrh6NxHG7AMaDp9OL+CwYIROzaZedqTGdesV3OChiGiAL7pCwuAgViGT0O/8Ph9qvjHKfbeGYaXADdgw2XLidhCWf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778620180; c=relaxed/simple;
-	bh=r5NfCaDR8XuBdLS5aQzoPlC0IDF+9iTlBaiLPWCz8/I=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=UPlErFKwlbwdDdPydgUTMTT3myKi+in9TmFc4kcplAgthvRCjfRMG1Td9KWnJ7yKli4ViAubEtPVCc4mI+TYXAPR73c7Y0sADZ/F10M+faMH6cEeL9cjGHBKdjRCwfdA4/op+WgYO9SVFoNmUC1mWwvzVFNRLqGgLK7qfi+ZwMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IJR6lpjj; arc=none smtp.client-ip=209.85.215.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1778620739; c=relaxed/simple;
+	bh=ZF+m+ZjVtnGgRZxs8fykE/7UK37XkDux4yfRZUGOw5Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mQcgKoG+Ht5dG0azZq1bY8kHc5uKC2RFKdgeRyRDSYe7OgFFdPsUfkRrZWBdmcPAj/PreRcbO9siM06nj4XIUpuzK/jra3BVoFy/qX+rBUaW+L9iV5L+Q0kCQgEs+aXzzDAA+LeJhLHUEXiW3yC+BSwS4dzEBArO7khYlp9WkW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux.win; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux.win
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IJR6lpjj"
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-c70e27e2b74so2443965a12.0
-        for <netdev@vger.kernel.org>; Tue, 12 May 2026 14:09:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778620179; x=1779224979; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=tldKA9Y19SPav5iRpI+W8dNtnr9IWxgUOCs/Hfp0DfE=;
-        b=IJR6lpjjdyCKSQhGXJojJzAYSPFt+HZQp/mKQ768XaBBdWMP63J3KECcu8gv08iAYP
-         LeZes9hImkVzJmXtzhtB6jv+cgO5YyDmG4e+1gRXux4F3phOrdZ3vkIk6aUq0KwBDMc6
-         O0vPGaZB/QoB9eqaWIvhSuTaRiWNpjw8H65MyNa6AJ0WpYjlu8beZnQwwtdmu+kj8q/c
-         Hv5sabYfyp8Yuqq0v5hMjZm2mWj+TUkDPib4gZN4QVADQFT2dq84oKrhtFdWt4o3jHum
-         pPXirSu2bjdwP4SeDShgXbrvaPrqNqhq2Vve4OYqkN48RxKkHwhqBdoAQb6DBPHJqIXg
-         9Btg==
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-67da63ae541so10613289a12.0
+        for <netdev@vger.kernel.org>; Tue, 12 May 2026 14:18:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778620179; x=1779224979;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tldKA9Y19SPav5iRpI+W8dNtnr9IWxgUOCs/Hfp0DfE=;
-        b=QfVg/2Yy/0bHXfTaZI7ffN2X/lnC5dzX73GZ/JpSYy2SrJCe6NJ2Yeag2UIVbxBQVv
-         Iu4i/zEpo2SQtraHFyijc6UMTwe8K513XwfXoP5jBAa+mpuTQVdUz6EUPSNTgXn8fKSP
-         E+Pf5LOW03bUp7XmwOdTSqai4ppog36kqQAGRtA/L6nVjcAl/U6q/xH4BVlXpI3zy9gR
-         +vxjefEz4P561viWBea0qKIHT9Vh+eROi3PN2c8Q1nK+UcXJQ/W4GVwdylSwZ14TIJXY
-         wVeiqQxgODiKPaU3BsTbh9fnVc27HwolbGKHjxwkuSJjgGXBnKGuK9PpIMvp6ydjrz9h
-         iKPA==
-X-Forwarded-Encrypted: i=1; AFNElJ+lr6n6cF+h4yK4k2GRKimPDkiF+nY6QybxMgVxeYGPaYnwFQZ+yVIg3C3wvHOCV99FfBjuW2Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQsPI0JoyWhef5+TazY+xabFXsmpfmIu7AJgB0GTI/CenMPxe0
-	eYOYkRqZSc9xjg1mo4OCNVRnu/u/ytFBYhArSP2LEVkdXeHxAMo/Yh7m
-X-Gm-Gg: Acq92OE64bUtZeRPgp4DVNhnFrRspZoPxyy4uk83jVF86lnQLlSZRp8DV0g4FJxxisj
-	VYBhC9QK7Pu6AzY9icqI3b1MSCwWD8H0ivFXT6uPGbQEdRqxX2fbwNbtaS1HxVoJbhhg24HQTa3
-	xOnjcDyebOKUqccE/Mc1SiWiugy7qZVCIp7eRHsTUf0grKWzxro1f00FgptK/Q86KIiVlvOVzjd
-	pQcM2qiJvMBJzdz8aMCdIXLhiNTjTsMFfec5BhRTVaX4Qc48tcSEeBD0shfoA8ssCGUm5vcw2Z9
-	axovFgToK25rweBuUNy7NJZ4QUppqGmMdbmjx4Dfwl4MqZZeZsB2Un8ig6TRN7Vp+iPh09300uu
-	0ykHxNSOah+SkOjXVWaT6Git0WOUR2wYKuYQVTOMIbIbich/kWNbRdA+vhNsYfyrBUYsuE06b9B
-	gx6cfKam7bwWAecEVEFntkFewy3NneNzsfDuP2n24FMMTZ5vlnDLQ2
-X-Received: by 2002:a05:6a20:748f:b0:3a3:21db:8ee8 with SMTP id adf61e73a8af0-3af7fb6dd28mr311449637.1.1778620178922;
-        Tue, 12 May 2026 14:09:38 -0700 (PDT)
-Received: from [192.168.0.226] ([38.34.87.7])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c82675fb236sm13144528a12.0.2026.05.12.14.09.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 May 2026 14:09:38 -0700 (PDT)
-Message-ID: <701f9924ff6d13cf948c4ce4527eb866a26950e2.camel@gmail.com>
-Subject: Re: [PATCH bpf-next v4 07/12] bpf: Unify referenced object tracking
- in verifier
-From: Eduard Zingerman <eddyz87@gmail.com>
-To: Amery Hung <ameryhung@gmail.com>
-Cc: bpf@vger.kernel.org, netdev@vger.kernel.org,
- alexei.starovoitov@gmail.com, 	andrii@kernel.org, daniel@iogearbox.net,
- memxor@gmail.com, martin.lau@kernel.org, 	mykyta.yatsenko5@gmail.com,
- kernel-team@meta.com
-Date: Tue, 12 May 2026 14:09:02 -0700
-In-Reply-To: <CAMB2axM8hR=OVqbkbTMJw_ej2pfnEm9Cm-quuoFPqsVhmJxO0g@mail.gmail.com>
-References: <20260506142709.2298255-1-ameryhung@gmail.com>
-	 <20260506142709.2298255-8-ameryhung@gmail.com>
-	 <23140ed4c48babfa8af91f3b67f379773bdc04c1.camel@gmail.com>
-	 <CAMB2axM8hR=OVqbkbTMJw_ej2pfnEm9Cm-quuoFPqsVhmJxO0g@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+        d=1e100.net; s=20251104; t=1778620736; x=1779225536;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ULDGSLAty8SEh/aPzQ3wMjjybANkPqfntQTcejrtbks=;
+        b=iAO26F7d2JAvR9efMRvyD+fi+XRBvyPayQPAO8ioXJrBCksOD2bpkYjmqoItdqRheh
+         r+I0cENRoFbh91H7MxIkxkL/FWshiNw9PGk8jUyKIsGlS/oZq2pcEnDplk/CvL5la0Gb
+         u0z+RTK+gIFrjbzhfWu+v2grVZYYe8s/Lv0kbCdI4mDKNbgm6rk1DMyBG1Dho4A5Jh72
+         5tOS4OiXrv/5WkabyTV9t7TsNJHbhl2Ocm++TkDz0lConymUY+Xzxya0PSUbeeeEa1JK
+         PojVeBt8KqeRWA08svzHq7IWbS3gl9RHa3K1IH+d/Nib+8Eqg1DleIcN+k/jjxR6Ul4F
+         Mf2Q==
+X-Forwarded-Encrypted: i=1; AFNElJ95m+QMf4FI3Q+uDOFkO5og4ov+o3dZmJDx3fS1eikLB0GS8LsP1G8VYije870iWElXvkV2DJk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxS0xBh+wSqPUtCkSk8PTFAbNmeop5DSoFBc5xZIju9KZpf7MGw
+	QsFhL+hSay51G1QmpOmEpIr+5lPvhYCCyfpyCn+/lPOw7jE8WfjB7fqb6Jilb9j75ns=
+X-Gm-Gg: Acq92OHDIcN/wU1frELK3p5G3O/0HmaFSC32PfW0vlwq7ramJ5osgjTp0GZuhV3D9UK
+	iQPvRCdYo/iZOG7bAa/MxK8xj0inf8MK/7E5vlsjjzoCzSbbQu8uT/+Jx1Rie7QorePkml2eyyG
+	httEmA29jvehtSy3l8+8ihmd9rgDBjkVkFd9ikbCD1SOPdInmC0yEJQ4GdCq7cwCtsW1FAKMCUQ
+	e8N5QWPhiLH+vPWoSIpBsA6m2yowsr3pd7RuKVJtHR7oD8RYv3o9J3aBp5O/IR6/nZD27AnaOWR
+	Yhv8umANSLQrOMeH7O8FPPxr3ZLcfnUybquZv6kDTdIzinstbx02nAUZMW5VywmznNsCmOFJZ/H
+	llJ3qZefQVYnBwCLe6GqOKFlwEO3tjoyjj2h6Z+QOiKs6LDFh5BlZa1+RREVzvuBoAcSD1OHvjn
+	fwWsLqTdDSySmhUZd+atDlVUfJtugw1SCEtYnDf3bGlR9w7EhCLGji3Q==
+X-Received: by 2002:aa7:d74f:0:b0:681:2472:76c2 with SMTP id 4fb4d7f45d1cf-682558ec2ccmr197916a12.4.1778620735839;
+        Tue, 12 May 2026 14:18:55 -0700 (PDT)
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com. [209.85.218.42])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-67ef0e0d455sm5538690a12.21.2026.05.12.14.18.53
+        for <netdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 12 May 2026 14:18:54 -0700 (PDT)
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-bd24f466598so272297866b.3
+        for <netdev@vger.kernel.org>; Tue, 12 May 2026 14:18:53 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+Gw26NNvu7MCt9oDCvB5ueFkQaw7vJOBByDZdc2cmn9r3AQ2Xm4J7LtpTkXtAuIdm+2EWgAOU=@vger.kernel.org
+X-Received: by 2002:a17:907:80a:b0:bd1:e36f:1ad7 with SMTP id
+ a640c23a62f3a-bd3bf484689mr27989066b.9.1778620733204; Tue, 12 May 2026
+ 14:18:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <CALCETrVqG+1yErRJjkxvJrf=A+Vu84HTR4Bx1Pcd8G1C0PJcMA@mail.gmail.com>
+ <14A441D8-5370-44BE-8732-99BF8107C3FD@getmailspring.com> <0b8bba44-f6bb-4d69-b9d4-5787c276d41a@inspirated.com>
+ <20260510163204.GA2279@sol> <3bfcf406-fdde-4303-9bd6-0d8d21ddba37@linux.win> <20260511213829.GA316710@google.com>
+In-Reply-To: <20260511213829.GA316710@google.com>
+From: Ignat Korchagin <ignat@linux.win>
+Date: Tue, 12 May 2026 22:18:42 +0100
+X-Gmail-Original-Message-ID: <CAOs+rJUA+bz6Y2GKioHnFGFKX_uAP+4LaPRs=ZDgRQoUi4mWkg@mail.gmail.com>
+X-Gm-Features: AVHnY4IXFsTsREC72LukcHqvk6gC-iS5eeOIEbsMsX37ajVDHN0xSqZ-iDLXxGU
+Message-ID: <CAOs+rJUA+bz6Y2GKioHnFGFKX_uAP+4LaPRs=ZDgRQoUi4mWkg@mail.gmail.com>
+Subject: Re: [PATCH] crypto: af_alg - Document the deprecation of AF_ALG
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: Kamran Khan <kz@inspirated.com>, Jeff Barnes <jeffbarnes@linux.microsoft.com>, 
+	Andy Lutomirski <luto@amacapital.net>, 
+	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>, 
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
+	"linux-api@vger.kernel.org" <linux-api@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, Linus Torvalds <torvalds@linux-foundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 2026-05-12 at 22:37 +0200, Amery Hung wrote:
-> On Tue, May 12, 2026 at 12:04=E2=80=AFPM Eduard Zingerman <eddyz87@gmail.=
-com> wrote:
-> >=20
-> > On Wed, 2026-05-06 at 07:27 -0700, Amery Hung wrote:
-> >=20
-> > LGTM, a nit below.
-> >=20
-> > [...]
-> >=20
-> > > @@ -8028,14 +8024,13 @@ static int check_func_arg(struct bpf_verifier=
-_env *env, u32 arg,
-> > >       }
-> > >=20
-> > >       if (reg->ref_obj_id && base_type(arg_type) !=3D ARG_KPTR_XCHG_D=
-EST) {
-> > > -             if (meta->ref_obj_id) {
-> > > -                     verbose(env, "more than one arg with ref_obj_id=
- R%d %u %u",
-> > > -                             regno, reg->ref_obj_id,
-> > > -                             meta->ref_obj_id);
-> > > +             if (meta->release_regno && meta->ref_obj.cnt) {
-> > > +                     verbose(env, "more than one arg with ref_obj_id=
- %s %u %u",
-> > > +                             reg_arg_name(env, argno), reg->ref_obj_=
-id,
-> > > +                             meta->ref_obj.ref_obj_id);
-> >=20
-> > I think this should be reported from update_ref_obj() itself,
-> > it is more consistent logically and also avoids reporting code
-> > duplication in check_kfunc_args() and check_kfunc_call().
-> > Also, technically the reg_arg_name() is an independent fix.
->=20
-> We have kfuncs that have more than one ref_obj. This is not a problem
-> unless ref_obj is referenced in the verification and is ambiguous
-> (e.g., used it to tie the lifetime of the allocated memory with
-> ref_obj). Therefore, it is kept at the location of use instead of
-> update_ref_obj() to prevent breaking existing kfuncs.
+On Mon, May 11, 2026 at 10:38=E2=80=AFPM Eric Biggers <ebiggers@kernel.org>=
+ wrote:
+>
+> On Mon, May 11, 2026 at 10:03:21PM +0100, Ignat Korchagin wrote:
+> > I don't think fully discounting hardware offloading is beneficial here.=
+ HW
+> > accelerators will be produced and without a common interface vendors wo=
+uld
+> > start implementing their own "bespoke" drivers with bespoke userspace
+> > interfaces (we already had such proposals), which in turn may introduce=
+ more
+> > attack surface. Yes, AF_ALG needs substantial improvement, but at least=
+ it
+> > can be a standardisation point.
+>
+> That isn't the best way to accelerate symmetric crypto anymore though,
+> if it ever was.  This has been known for a long time.
+>
+> > > In any case, any hypothetical security benefit provided by AF_ALG wou=
+ld
+> > > have to be *very high* to outweigh the continuous stream of
+> > > vulnerabilities in it.  I understand that people using AF_ALG might n=
+ot
+> > > be familiar with that continuous stream of vulnerabilities, but it wo=
+uld
+> >
+> >
+> > Is it actually that much compared to other features/subsystems, like eB=
+PF or
+> > user namespaces? But we don't rush to deprecate those - instead trying =
+to
+> > harden them and come up with better design.
+>
+> There are plenty of other kernel features with a large attack surface,
+> of course.  But they tend to be much more useful than AF_ALG.  It's all
+> about weighing benefits vs. risks.
 
-Ack, thank you for explaining.
+If divide number of CVEs in such systems on imaginary units of
+usefulness, I think the ratio is similar.
 
-> >=20
-> > > Drop the selftest introduced in 7ec899ac90a2 (=E2=80=9Cselftests/bpf:=
- Negative
-> > > test case for ref_obj_id in args=E2=80=9D) since the verifier no long=
-er
-> > > complains about ambiguous ref_obj if it is not used.
-> >=20
-> > On the other hand, if you think that this property is worth having,
-> > then maybe wrap the check with in some utility function?
->=20
-> A utility function like below makes sense if we fold ref_obj_id into
-> id. It would be too cumbersome for v3 as we may need two of this for
-> ref_obj->ref_obj_id and ref_obj->id.
->=20
-> static int get_ref_obj_id()
-> {
->         if (ref_obj->cnt > 1) {
->                 verifier_bug(env, "function expects only one
-> referenced object but got %d\n", ref_obj->cnt);
->                 return -EFAULT;
->         }
->         return ref_obj->id;
-> }
+> When we get the point where a large number of Linux users *had* to
+> disable AF_ALG as an emergency vulnerability response, and at the same
+> time their systems weren't even using AF_ALG so nothing even broke and
+> they could have just done that to begin with, I think we get a very
 
-Maybe just like this:
+Well, there were: cryptsetup, RHEL fips check, so there are some...
 
-  static void validate_ref_obj(struct ref_obj_desc *d) { ... }
+> clear idea of which side is heavier for AF_ALG in the real world.
 
-?
+Same thing could be said for unprivileged user namespaces - distros
+even put a custom sysctl to restrict it and no-one noticed.
+
+> The main relevance of AF_ALG to the Linux community is that it allows
+> their systems to be exploited.
+
+To be clear I'm not arguing for the current AF_ALG implementation. I
+agree, the splice zero-copy is... suboptimal (to be soft) and is
+actually not-so-zero copy. But I think it was just added before we had
+more modern approaches like io_uring (have their own can of worms, but
+hey - people adopt it fast).
+
+But I advocate for the usefulness of the concept itself - kernel/OS
+providing crypto services to userspace. As mentioned in other threads,
+other operating systems have it and Linux lags behind. There are use
+cases: common interface for HW accelerators, embedded systems, which
+don't have the space to bring a userspace lib etc. Even non-technical:
+there are environments that just don't want to rely on third-party
+userspace libraries like OpenSSL purely for licensing reasons. And I
+agree, that it is hard to do it right, but we can piggy-back on other
+subsystems (such as io_uring mentioned or other ideas).
+
+> - Eric
+>
+
+Ignat
