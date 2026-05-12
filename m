@@ -1,76 +1,65 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1723A4510;
-	Tue, 12 May 2026 23:13:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DB7F3164C7;
+	Tue, 12 May 2026 23:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778627598; cv=none; b=nU9bNd+vaNFFkT1G4O/k+8JbJ/HEAvWxbzub0pYjETnLVmrDUgdUPcMEo/SayuJSIh57MEExJQc/giVQYkw6H+PlbWxBb8rbMf7+YS0t8IiWmqoMn6nDZXLqBxgADWVc7Gqf0gwNDfAqqky0rvC128zcsXZ2bDK/qJpaqtjpFlY=
+	t=1778629010; cv=none; b=jq9Vm98hQOZJkEN3jytoAZAALnGs7tjv3a+oSRzC0eTQpmDANaLUA4YFiOEls79K3YPzuVpz+7hdqkjrsr3APLHu4SCEpf7JiE3SriQzYet9PcWIU5j7mWwq42EAJtoSGxvsyo0XHd2ggbWssZHv0zvwPZ3rK5DdNf4rwbqRZ/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778627598; c=relaxed/simple;
-	bh=7y5ERZ+46G5TuZ6kypctntsWjjmLUBio5KVlVFgY9Zw=;
+	s=arc-20240116; t=1778629010; c=relaxed/simple;
+	bh=dG0qSiXkRjgk9udIoctxC1ci5W6OuKyLB5frEI3/g9U=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q0tSxDSUQqFlKx/SYGMJ7XEOZ447qxgDHu+7p9YGOIFVjXB8TeU7hpgO/pylOvNS+ak9mD1TYyv+ipVLblfXJr9ZsWLsT2ZnEkOQuWM9QQugRNXqpeM2khDr2J6zdkbQIWFeZqAw91prGxR28i1amo/KDiwqDLO/4suVOLluY9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L8ix4T7L; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=kQ/Gw83eqDHriJomCx4QI446/SQasQSu7Sw+RkcwIsWnmVjKmUAxPC4mqenkQswZnBWNHCJraZIpthUqeyvZmK6dIKzCNuXrw/DqBCyhFytEGpkA5y+e23QQ5GdJP7Crfirf/Tt/NAFYxD4vmsBAlfiFATvZrH2OcluI+wVovdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XaaI+9Oh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L8ix4T7L"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88E9CC2BCB0;
-	Tue, 12 May 2026 23:13:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XaaI+9Oh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BBABC2BCB8;
+	Tue, 12 May 2026 23:36:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778627597;
-	bh=7y5ERZ+46G5TuZ6kypctntsWjjmLUBio5KVlVFgY9Zw=;
+	s=k20201202; t=1778629009;
+	bh=dG0qSiXkRjgk9udIoctxC1ci5W6OuKyLB5frEI3/g9U=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=L8ix4T7LumVzKwTGAmGHMrwUukpsAmAzFvnrLz0XdT9IECAVpIFPzI8JAdwAjELFb
-	 eEOXvwRJm5nKwiHf/5bwAazCxNLpjjYIURLL8u5VLa2jLpFYeCMrf0TzKNrnZcgJ3k
-	 b1lCRWWmuNb7/GLTRAnrSQXC0w+Xf2ly6Yt7jub737/bcoKACKWpPLlF+VCL8d8bld
-	 +ASIw4J2jCQZw86XzI2rfrgQWBcvoQF4p6LyjzYRgVlHTseYTsHE0RaF3T6I2k9mJZ
-	 OwdU7ctOnJp0Ts89wGEA+Md1HUBm4TJwDahotDhq1bYxG1AgaLLYqPhajGxV8kGAQ9
-	 YJQWeT5Ho3mBg==
-Date: Tue, 12 May 2026 16:13:15 -0700
+	b=XaaI+9Ohw3HbswEw5cwwwypUXcpSb4T1bYEOULjEXVxK4opt/E99WmEfpxX6/WN+h
+	 3pUi5f+0ns6S63PmgPBW3BzIdVoH1jt8DcTLcCHVskrMYbQsOBzx39/8aBKHX8RCqG
+	 H0prEap6Ta7dr0IDeabPKbmunhl6KeUQbmkgvjj4pwkcbp7BSP8Xvvr+G9G41JEt63
+	 nv5KJdOrFdV77haJVmXYKImeROtweVz/OvyAiJgh6AbamWYIRMb1t+VdGT4ZmZPdRp
+	 akuhrYjOGAVY5k8NGrvMW/Pao52dOwQACgHGsgoqgCntpHSzrfSiy+6mnRZZMbj5c3
+	 pMYJ+keFd+lIg==
+Date: Tue, 12 May 2026 16:36:48 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: =?UTF-8?B?5p2O5b+X?= <lizhi2@eswincomputing.com>
-Cc: andrew+netdev@lunn.ch, devicetree@vger.kernel.org, davem@davemloft.net,
- edumazet@google.com, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- rmk+kernel@armlinux.org.uk, pjw@kernel.org, palmer@dabbelt.com,
- aou@eecs.berkeley.edu, alex@ghiti.fr, linux-riscv@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- maxime.chevallier@bootlin.com, ningyu@eswincomputing.com,
- linmin@eswincomputing.com, pinkesh.vaghela@einfochips.com,
- pritesh.patel@einfochips.com, weishangjuan@eswincomputing.com,
- horms@kernel.org
-Subject: Re: [PATCH net-next v7 2/4] net: stmmac: eic7700: enable clocks
- before syscon access and correct RX sampling timing
-Message-ID: <20260512161315.141aba88@kernel.org>
-In-Reply-To: <446f69bd.7fe4.19e1ab248fb.Coremail.lizhi2@eswincomputing.com>
-References: <20260427072353.1114-1-lizhi2@eswincomputing.com>
-	<20260427072508.1151-1-lizhi2@eswincomputing.com>
-	<20260428180625.738223cf@kernel.org>
-	<2117464.7991.19ddd2125d1.Coremail.lizhi2@eswincomputing.com>
-	<20260430163551.7491407a@kernel.org>
-	<38d052b7.7a70.19dfb0d782b.Coremail.lizhi2@eswincomputing.com>
-	<446f69bd.7fe4.19e1ab248fb.Coremail.lizhi2@eswincomputing.com>
+To: f6bvp <bernard.f6bvp@gmail.com>
+Cc: toke@toke.dk, stable@vger.kernel.org, davem@davemloft.net,
+ netdev@vger.kernel.org, pabeni@redhat.com, gregkh@linuxfoundation.org,
+ linux-hams@vger.kernel.org
+Subject: Re: [PATCH net-deletions] net: remove ax25 and amateur radio
+ (hamradio) subsystem
+Message-ID: <20260512163648.7367a640@kernel.org>
+In-Reply-To: <20260512144512.9960-1-bernard.f6bvp@gmail.com>
+References: <87se8mytvv.fsf@toke.dk>
+	<20260512144512.9960-1-bernard.f6bvp@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, 12 May 2026 13:39:12 +0800 (GMT+08:00) =E6=9D=8E=E5=BF=97 wrote:
-> For the eth1 enablement part, my current understanding is that it
-> should be treated as a new independent v1 series for net-next,
-> since the scope and target tree have changed after the split.
->=20
-> Would you prefer this eth1 series to start as v1, or should it
-> continue as v8 for continuity with the original series?
+On Tue, 12 May 2026 16:45:10 +0200 f6bvp wrote:
+> Each patch carries the appropriate Fixes: tag and a Tested-by from me on
+> real hardware. They are visible on lore.kernel.org.
+> 
+> Since ROSE will no longer be maintained in-tree from 7.1 onward, the only
+> remaining users are those running current stable kernels (7.0.y and
+> earlier). Would it be possible to have these five patches queued for the
+> stable trees via Greg's stable process?
+> 
+> I am happy to resend them as a formal series tagged [PATCH stable] against
+> the current stable releases if that is preferred.
 
-v8 is better, but is the fix in net-next already?
-
-If this is the posting you're referring to:
-https://lore.kernel.org/all/20260507083214.192-1-lizhi2@eswincomputing.com/
-it has been dropped based on feedback from Maxime and I don't see a v2.
+Could you perhaps target the OOT modules?
+https://github.com/linux-netdev/mod-orphan
+Does it work with older kernels? I think I compile-tested it but didn't
+do any testing..
