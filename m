@@ -1,45 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C290239A4B0
-	for <netdev@vger.kernel.org>; Tue, 12 May 2026 13:52:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E16397B03
+	for <netdev@vger.kernel.org>; Tue, 12 May 2026 13:52:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778593958; cv=none; b=JsBkTkPfSMUgCNuR0aIyBVM1eTiZPMyCYL21NHgznfbhNzD7jAJYZou8A4RwYH1QHaUoa9vzeE27jsbohs8+YSAPGokbYZoIm28RY8EugUT924fGBQ4AwrZzba6ZmfBd+oHvy94ezrkQ8tahSs6wUftnMeZt9On/xJIQSX0uEPo=
+	t=1778593958; cv=none; b=ukX7IkZFULdTGvwlo0NxK+dG6vSsKQrI5tR4o1IJFukLTd0uZJ+66CDYfpne8tsSuZXQapmZItZt847OZ67oDGMaFm7g3Jdjao0OvgKzj2o1Ww+fCJZ3b0EqcMJdcx2q3ANwdaMeR+0MGki6zyTGmEND1GBisbnRI/t+vo3w2lQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1778593958; c=relaxed/simple;
-	bh=Nwraq/5O5MDQq4IfSGzGqkP5vL4BUgaDHI+Io9WLuu0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=C4GzYtPLSbzAkK67yjug4ufxxvjgm9HnHVp02M8g5p/fO05X8X0Zon1V9gjvXSr+qcuI6YNw35hj/2SelRVkZ56brRgjm7Kf5/jzFNNCGDO1n92/4mWC0FB95Jz1NaZaUx2nbBslhUyzjswinMkrdRgKbdSMTHFbDOcxSIQNdac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PaQIleSe; arc=none smtp.client-ip=170.10.129.124
+	bh=CI09rjw1id8j2uzBg7qddTN9fC/ddsDWfIeKhBcO+0U=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=euJ59V7nhrh2l9mN+idvot3vO38gvU2Vte46KkX45oPPlidhhdh/FQNBg3pshR5AvIL90RjCfPQM5TdAoxuNsjyzFkGGImivUmDmR0MPkuKuanXq/ArEotKwbM6afKQjyeHnVkrJIqVZ301rUxNA6Jrs8te9H0nS0o36miTad/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Woj61NY+; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PaQIleSe"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Woj61NY+"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778593955;
+	s=mimecast20190719; t=1778593956;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=Py7d7WTO4Wg4qp7SNmGJsAvlx7I7iYmUQcga1ICSagQ=;
-	b=PaQIleSeXNmHudIuAV6Ucgf++4P42Q+j9NMqOGRJDmHS2y+emdwT3qzNwWqI7dPrVC756b
-	9HqhGlDgKaLTfPWuGdB2P3EG0LqtSdibTddcM63OcOaLHHk4vqU99NbVbARyxcDNisgMrx
-	sHBckUI6+ZAjwrvlD8NSVV9uSiAB0hw=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kXZOyv9L5S/DM2phzpa3roYXamSDn9dOfRc37Ylb6xM=;
+	b=Woj61NY+/XRMKS0i2mXYyJhzqp8dIoGtnSSSCJfAMbIbPWdfq2l6fhj+xTs4t6Y0mGCNFI
+	dpN5/LvrSgi5JiSYLwDPzv7ntt331Qt0tfFjcHZnZG3W5jzi3liCXxVfU6V5yPAp3avywo
+	msdjgRW6c9FbpfYaJPXZy4IaQ6/1pu4=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-587-ZtF9qN99P-WX9cipnejvRQ-1; Tue,
- 12 May 2026 09:52:32 -0400
-X-MC-Unique: ZtF9qN99P-WX9cipnejvRQ-1
-X-Mimecast-MFC-AGG-ID: ZtF9qN99P-WX9cipnejvRQ_1778593951
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-627-CwMLYe8IOL2E7UPR1hq8JQ-1; Tue,
+ 12 May 2026 09:52:35 -0400
+X-MC-Unique: CwMLYe8IOL2E7UPR1hq8JQ-1
+X-Mimecast-MFC-AGG-ID: CwMLYe8IOL2E7UPR1hq8JQ_1778593954
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 96C4E1955DE3;
-	Tue, 12 May 2026 13:52:31 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0DC8B180058C;
+	Tue, 12 May 2026 13:52:34 +0000 (UTC)
 Received: from ShadowPeak.redhat.com (unknown [10.44.50.226])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8EB2719560B1;
-	Tue, 12 May 2026 13:52:29 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 216A219560A2;
+	Tue, 12 May 2026 13:52:31 +0000 (UTC)
 From: Petr Oros <poros@redhat.com>
 To: netdev@vger.kernel.org
 Cc: ivecera@redhat.com,
@@ -47,9 +49,11 @@ Cc: ivecera@redhat.com,
 	stephen@networkplumber.org,
 	vgrinber@redhat.com,
 	Petr Oros <poros@redhat.com>
-Subject: [PATCH iproute2-next 1/2] dpll: align help and man notation with actual option parsing
-Date: Tue, 12 May 2026 15:52:24 +0200
-Message-ID: <20260512135225.167158-1-poros@redhat.com>
+Subject: [PATCH iproute2-next 2/2] dpll: monitor: add -t/--timestamp and --tshort options
+Date: Tue, 12 May 2026 15:52:25 +0200
+Message-ID: <20260512135225.167158-2-poros@redhat.com>
+In-Reply-To: <20260512135225.167158-1-poros@redhat.com>
+References: <20260512135225.167158-1-poros@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -59,77 +63,172 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-dpll uses getopt_long(), which only accepts long options with the
-"--" prefix.  The iproute2-wide "-X[name]" shorthand used in the
-help text and man page implies a single-dash long form
-(e.g. -Version, -json, -pretty) that getopt_long does not parse;
-only -V/--Version, -j/--json and -p/--pretty actually work.
+Bring dpll monitor in line with the rest of iproute2 by allowing each
+received notification to be prefixed with a wall-clock timestamp.
 
-Replace the misleading shorthand with explicit "-V | --Version"
-style so the documented forms match what the parser accepts, and
-drop the redundant second usage line in help() that listed only a
-subset of the options and implied dpll could be invoked without an
-OBJECT.  No functional change.
+  -t / --timestamp  emit a separate "Timestamp:" line before each event,
+                    using the default text form of print_timestamp()
+                    (matches ip / bridge / tc -t monitor)
+  --tshort          emit a compact ISO 8601 prefix
+                    "[YYYY-MM-DDTHH:MM:SS.uuuuuu]" inline instead
+                    (matches ip -ts monitor)
+
+When combined with -j, the timestamp shows up as a "timestamp" /
+"timestamp_short" field on each notification object, the same way
+ip -j -t mptcp monitor integrates the helper.
+
+The flag is parsed globally but only consulted from the monitor
+callback, so passing -t to non-monitor commands is a no-op.
+
+--tshort has no short alias, so its long_options entry uses an
+identifier above the ASCII range (OPT_TSHORT = 256) following the
+iproute2 convention used in misc/ss.c, instead of consuming an
+ASCII letter that could later collide with a real short option.
 
 Signed-off-by: Petr Oros <poros@redhat.com>
 ---
- dpll/dpll.c     |  3 +--
- man/man8/dpll.8 | 12 ++++++------
- 2 files changed, 7 insertions(+), 8 deletions(-)
+ bash-completion/dpll |  8 ++++++--
+ dpll/dpll.c          | 21 +++++++++++++++++++--
+ man/man8/dpll.8      | 23 ++++++++++++++++++++++-
+ 3 files changed, 47 insertions(+), 5 deletions(-)
 
+diff --git a/bash-completion/dpll b/bash-completion/dpll
+index 7ddcf529d429db..f615d69147d140 100644
+--- a/bash-completion/dpll
++++ b/bash-completion/dpll
+@@ -299,7 +299,7 @@ _dpll_monitor()
+ _dpll()
+ {
+     local cur prev words cword
+-    local opt='--Version --json --pretty'
++    local opt='--Version --json --pretty --timestamp --tshort'
+     local objects="device pin monitor"
+ 
+     _init_completion || return
+@@ -326,7 +326,11 @@ _dpll()
+                 return 0
+                 ;;
+             -j|--json)
+-                COMPREPLY=( $( compgen -W "--pretty $objects" -- "$cur" ) )
++                COMPREPLY=( $( compgen -W "--pretty --timestamp --tshort $objects" -- "$cur" ) )
++                return 0
++                ;;
++            -t|--timestamp|--tshort)
++                COMPREPLY=( $( compgen -W "monitor" -- "$cur" ) )
+                 return 0
+                 ;;
+             *)
 diff --git a/dpll/dpll.c b/dpll/dpll.c
-index febf2a5d1fbdf4..81caa510078830 100644
+index 81caa510078830..a3cda2c2903f71 100644
 --- a/dpll/dpll.c
 +++ b/dpll/dpll.c
-@@ -534,9 +534,8 @@ static void dpll_pr_freq_range(__u64 freq_min, __u64 freq_max)
- static void help(void)
+@@ -29,7 +29,10 @@
+ 
+ #define pr_err(args...) fprintf(stderr, ##args)
+ 
++#define OPT_TSHORT 256
++
+ int json;
++int timestamp;
+ 
+ struct dpll {
+ 	struct mnlu_gen_socket nlg;
+@@ -535,7 +538,8 @@ static void help(void)
  {
  	pr_err("Usage: dpll [ OPTIONS ] OBJECT { COMMAND | help }\n"
--	       "       dpll [ -j[son] ] [ -p[retty] ]\n"
  	       "where  OBJECT := { device | pin | monitor }\n"
--	       "       OPTIONS := { -V[ersion] | -j[son] | -p[retty] }\n");
-+	       "       OPTIONS := { -V | --Version | -j | --json | -p | --pretty }\n");
+-	       "       OPTIONS := { -V | --Version | -j | --json | -p | --pretty }\n");
++	       "       OPTIONS := { -V | --Version | -j | --json | -p | --pretty |\n"
++	       "                    -t | --timestamp | --tshort }\n");
  }
  
  static int cmd_device(struct dpll *dpll);
+@@ -599,9 +603,11 @@ int main(int argc, char **argv)
+ 		{ "Version", no_argument, NULL, 'V' },
+ 		{ "json", no_argument, NULL, 'j' },
+ 		{ "pretty", no_argument, NULL, 'p' },
++		{ "timestamp", no_argument, NULL, 't' },
++		{ "tshort", no_argument, NULL, OPT_TSHORT },
+ 		{ NULL, 0, NULL, 0 }
+ 	};
+-	const char *opt_short = "Vjp";
++	const char *opt_short = "Vjpt";
+ 	struct dpll *dpll;
+ 	int err, opt, ret;
+ 
+@@ -624,6 +630,13 @@ int main(int argc, char **argv)
+ 		case 'p':
+ 			pretty = true;
+ 			break;
++		case 't':
++			timestamp = 1;
++			break;
++		case OPT_TSHORT:
++			timestamp = 1;
++			timestamp_short = 1;
++			break;
+ 		default:
+ 			pr_err("Unknown option.\n");
+ 			help();
+@@ -2305,6 +2318,8 @@ static int cmd_monitor_cb(const struct nlmsghdr *nlh, void *data)
+ 
+ 		new_json_obj_plain(json);
+ 		open_json_object(NULL);
++		if (timestamp)
++			print_timestamp(stdout);
+ 		print_string(PRINT_JSON, "name", NULL, json_name);
+ 		open_json_object("msg");
+ 		print_string(PRINT_FP, NULL, "[%s] ", cmd_name);
+@@ -2334,6 +2349,8 @@ static int cmd_monitor_cb(const struct nlmsghdr *nlh, void *data)
+ 
+ 		new_json_obj_plain(json);
+ 		open_json_object(NULL);
++		if (timestamp)
++			print_timestamp(stdout);
+ 		print_string(PRINT_JSON, "name", NULL, json_name);
+ 		open_json_object("msg");
+ 		print_string(PRINT_FP, NULL, "[%s] ", cmd_name);
 diff --git a/man/man8/dpll.8 b/man/man8/dpll.8
-index c0d4b9caef2a6c..6b52970972f41a 100644
+index 6b52970972f41a..43daa0cac2d5d2 100644
 --- a/man/man8/dpll.8
 +++ b/man/man8/dpll.8
-@@ -27,9 +27,9 @@ dpll \- Digital Phase Locked Loop (DPLL) subsystem management
- 
- .ti -8
+@@ -29,7 +29,9 @@ dpll \- Digital Phase Locked Loop (DPLL) subsystem management
  .IR OPTIONS " := { "
--\fB\-V\fR[\fIersion\fR] |
--\fB\-j\fR[\fIson\fR] |
--\fB\-p\fR[\fIretty\fR] }
-+\fB\-V\fR | \fB\-\-Version\fR |
-+\fB\-j\fR | \fB\-\-json\fR |
-+\fB\-p\fR | \fB\-\-pretty\fR }
+ \fB\-V\fR | \fB\-\-Version\fR |
+ \fB\-j\fR | \fB\-\-json\fR |
+-\fB\-p\fR | \fB\-\-pretty\fR }
++\fB\-p\fR | \fB\-\-pretty\fR |
++\fB\-t\fR | \fB\-\-timestamp\fR |
++\fB\-\-tshort\fR }
  
  .SH DESCRIPTION
  The
-@@ -44,17 +44,17 @@ internal oscillators.
- 
- .SH OPTIONS
- .TP
--.BR "\-V" , " \-Version"
-+.BR "\-V" , " \-\-Version"
- Print the version of the
- .B dpll
- utility and exit.
- 
- .TP
--.BR "\-j" , " \-json"
-+.BR "\-j" , " \-\-json"
- Output results in JavaScript Object Notation (JSON).
- 
- .TP
--.BR "\-p" , " \-pretty"
-+.BR "\-p" , " \-\-pretty"
+@@ -58,6 +60,25 @@ Output results in JavaScript Object Notation (JSON).
  When combined with \-j, generates a pretty JSON output with indentation
  and newlines for better human readability.
  
++.TP
++.BR "\-t" , " \-\-timestamp"
++When used with the
++.B monitor
++object, print a
++.B Timestamp:
++line before each received notification, in the same format used by
++.BR "ip monitor" .
++
++.TP
++.B "\-\-tshort"
++Like
++.BR \-t ,
++but emits a more compact, ISO 8601 inline prefix
++.RB \(lq [ YYYY-MM-DD T HH:MM:SS . uuuuuu ] \(rq
++in front of each notification instead of a separate
++.B Timestamp:
++line.
++
+ .SH DEVICE COMMANDS
+ 
+ .SS dpll device show [ id ID ] [ module-name NAME ] [ clock-id ID ] [ type TYPE ] [ mode MODE ] [ lock-status STATUS ]
 -- 
 2.53.0
 
