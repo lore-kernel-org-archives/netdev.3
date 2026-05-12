@@ -1,143 +1,96 @@
-Received: from fhigh-b4-smtp.messagingengine.com (fhigh-b4-smtp.messagingengine.com [202.12.124.155])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72104395ADA;
-	Tue, 12 May 2026 10:21:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.155
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F76395ADA
+	for <netdev@vger.kernel.org>; Tue, 12 May 2026 10:25:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778581305; cv=none; b=JaFVC9hzYPHgyiBT+WNXnj40rRguksB5odrEarp6nO5U1UzYVuWMgv/C/f2j6dCqkrfrE5hFXeVGDXTiGBs+JvdCOhTyikHqUULXFY3D1x7PQGqUxkxE/y9mpI7oC8m/1mCczFKUU515q3vVwrbGMQYwLX4gWOcVrzvACEWn2ew=
+	t=1778581527; cv=none; b=TL9lSmS6NPwhH6g/Ew0oYgWsWSehdFwERmY9Q5tucUwVLudu/3BfuBWPOrtqEEoRV4FMT8ST0dTInxsyWShiWTyi30lCqDaby451a7bISeO1tQ8/CtKtNc18667aLAchE7zO2VnC/AzdlBqxi0P2JSBPD9BvPhgOFSOPB+aOIr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778581305; c=relaxed/simple;
-	bh=AfU7dk2bJmBu9bniAEQBtTwUkW59X6XTQIpcV7H1Xuc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=esxgLopaSkcZiWS0J3jsgyyK0biK/XwRzPB1mQKZZnWYj59TI0do5QBlEKNN9L5fd3NqZ98vrvigI0nJjJcC9pEGrvIG0y+GaR5Ou3IqCLBpmkMcjC1F2ZH8glb1R/l5Ut0ExBx53oKesdXsW4HZImfBN/jZDIDrJwSfz6wU6eg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=MoABu1bj; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=d5GCDq/Y; arc=none smtp.client-ip=202.12.124.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	s=arc-20240116; t=1778581527; c=relaxed/simple;
+	bh=aX24LAztrHmynG61u3SAQQP3yV3M9517v3HJpsBkNrU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gATigiAm0jBFgSZ4ljk4DToDOSubwylt1eB20ct5eNK6WLiWQH+RVsluqop6ZqDgFjfLTnMSF2y/v3CKxCiDA0/uIa9wuGgqKg8zlEE14UVcXK1zdzomBbvCaGRyEZio/u+HAoG308rVS8oxyPqU3zOpk4jo/Zu0lwVs0UdT+8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oZyUw3mt; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="MoABu1bj";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="d5GCDq/Y"
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 2E73F7A0067;
-	Tue, 12 May 2026 06:21:42 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Tue, 12 May 2026 06:21:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-transfer-encoding:content-type:content-type
-	:date:date:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=fm1;
-	 t=1778581302; x=1778667702; bh=xVxq0sObjHoBRr65RLCzBiSoE8Y4hOAJ
-	8upIvYky/UA=; b=MoABu1bjDUYPNSd0B3DDvw/HaCXa93BP4Ac2Jp4lFGFag6J0
-	PswgvZGQh2lbNoAOwwfWyKbPZ1OdV7uQFkLz6Ek4TjfNyofuqdihjobjBLo848DC
-	5i+GMM2iCnZq5EB0AONlCOCmaQwAoyr47Xzn+qvszOoS1z4vIIMWwuOpSGMFmYhN
-	VWivqomPhbTglePHLZwyj89xCl1Zp+2YQody9liRGiRKJnubVG3Bd3Y+NQ3ITdNb
-	jstbd96ifPpOwmfbxNYB6rCBnnJC2XBXljE4a6oj3ZgO6iVG86gC0W6hJAWXRq4O
-	FScQpAsoDQvAefgVqlUQZduIsuF+QjPpsprEZg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1778581302; x=
-	1778667702; bh=xVxq0sObjHoBRr65RLCzBiSoE8Y4hOAJ8upIvYky/UA=; b=d
-	5GCDq/YRMAvIlz46XfuUahX4y5xuaJXAmb0XJbp5l3VEYjfF5ItuQ62quDda34Eb
-	nhzVXOpjYkZIYKezpXckH1P9/wpQkcPh7JVgxgbw3QIi8mgO5xJKI1Upo9g4RJD3
-	yeUCXot0VRVU6BuvJIjtRvPNnNHql6uTqOa1lJ9BaDEl70VoEI1y8quw1CxHOeIT
-	S1Ohh2fK1n60CCcw+2C+mydeMeAZWg8s2xP6JgV3DI77wbHvNgMVs5ds12LfEc4B
-	WOUft+jEL2Zd3sZSnkJidw0J4loyLIhXZNIMZKMeB7J5eL7CLuDC6Mn6Y32o+wZ0
-	VSuy32bLSut7kDN0oQWBw==
-X-ME-Sender: <xms:Nf8CahiZKTgZgUqOI1RSFrFYIxov76-mj-eVMuXDWG56PJkL_Qo9NA>
-    <xme:Nf8Cann8D26Z_Db43wICp8Aj_AXlvKtmjaNtd0nfXcmIU1YC9SFeU7M6GXF-HYwZE
-    UooNXA7AvdPvgCtD2qgBJUDOkyTifa_3aiIPmuOdEk3umr0bQm2vQ>
-X-ME-Received: <xmr:Nf8CagXMuS0R6cTvKwthRIGV2X3Y_gHXkbquL_DPlpH1-Q9_y_XVJ2RDBcPzZG5m-XP0V1KaswTMy1a1Ns22GWE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduvdduheehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfhfgggtugfgjgesthekre
-    dttddtjeenucfhrhhomhepufgrsghrihhnrgcuffhusghrohgtrgcuoehsugesqhhuvggr
-    shihshhnrghilhdrnhgvtheqnecuggftrfgrthhtvghrnhepgfdvgeeitefffedvgfdutd
-    elgeeihfegueehteevveegveejudelfeffieehledvnecuvehluhhsthgvrhfuihiivgep
-    tdenucfrrghrrghmpehmrghilhhfrhhomhepshgusehquhgvrghshihsnhgrihhlrdhnvg
-    htpdhnsggprhgtphhtthhopeduvddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohep
-    khhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghvvghmsegurghvvghmlh
-    hofhhtrdhnvghtpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdho
-    rhhgpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomhdprhgtphhtth
-    hopehprggsvghnihesrhgvughhrghtrdgtohhmpdhrtghpthhtoheprghnughrvgifodhn
-    vghtuggvvheslhhunhhnrdgthhdprhgtphhtthhopehhohhrmhhssehkvghrnhgvlhdroh
-    hrghdprhgtphhtthhopehjohhhnhdrfhgrshhtrggsvghnugesghhmrghilhdrtghomhdp
-    rhgtphhtthhopegsphhfsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:Nf8CasstA_vNXnFAN61f4W2AHrlXzr6NAOMNHCNimcrhUG9dX-czmQ>
-    <xmx:Nf8Caj7vO8auUsKf13KzsYwFJTzL0VsDjjzuC_oSkURbdgJYC2LCXw>
-    <xmx:Nf8CavQPCeTd4wXlVhEb6j3QzP-iRF3yIChKk5Tdw3dW_986YHucoQ>
-    <xmx:Nf8CamskEQZvizfWyFk9oD_kTqhkXRc7SjUNXAhpYzyerfw_tWrRkw>
-    <xmx:Nv8Cag2FCHH6ILPV6aWP3lf67HxbfJYHP4GQCu-46j9IUKMfJhc2tdDE>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 12 May 2026 06:21:41 -0400 (EDT)
-Date: Tue, 12 May 2026 12:21:40 +0200
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
-	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
-	john.fastabend@gmail.com, bpf@vger.kernel.org,
-	=?utf-8?B?6ZKx5LiA6ZOt?= <yimingqian591@gmail.com>,
-	daniel@iogearbox.net, jonathan.lemon@gmail.com
-Subject: Re: [PATCH net v2 1/4] net: tls: fix off-by-one in sg_chain entry
- count for wrapped sk_msg ring
-Message-ID: <agL_NNcOAVGyWb2K@krikkit>
-References: <20260511174920.433155-1-kuba@kernel.org>
- <20260511174920.433155-2-kuba@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oZyUw3mt"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-488af96f6b2so63952885e9.0
+        for <netdev@vger.kernel.org>; Tue, 12 May 2026 03:25:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778581524; x=1779186324; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=q4vyxpBxCJTYcPxjgMNl98AO8CuI4Hu+7pj3X3JK0DU=;
+        b=oZyUw3mtI5d2j06tBWbpYuYRIVlXptNuQV79hM1UfIFXVIdAt8rAPNOcEdiwbV2yNT
+         te0R3eQKbgMI4Cu5TtU8wzwYoiwpO+p9mgmfIjRG3ZpF/CPd4dtwfz6Pd9lf5Snx7aVi
+         oXrSnu7J9/TdES7mFI7JpfQcKdayz2O9QVGdcsCwJm190NCsEnxYd1u6fMgj2+GP/Kbf
+         8ZeUXhoCtqq8HV176BW+M5LaHNCQTU+U+YifmAn0PMnA45qZ703M77dc4SxUe5DU8eBa
+         ZSIWpEdCwsi27f8TCI6/TLW0KVxBt5ZPNQ7GV0QYZbLANrGeI9naDM7EHelkzsUv6bnl
+         dFAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778581524; x=1779186324;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=q4vyxpBxCJTYcPxjgMNl98AO8CuI4Hu+7pj3X3JK0DU=;
+        b=pfqraTw8Pr/omNLTWh1ho7qUgEw39LSOpCO1B3NQhToJRvpqvbE8UOzV65V5dvbgmf
+         odeCITNVgxFZMa991I0yaOHfA8jjVJeE9AVLWao2P4b64NV/V17o6iBGLHVaxBRSMnqL
+         MVa/HWGAD3XaouTBC55kYXm0aIsixMVDuyG51P98p351822gc0bbF7wz4P5DRVi5RU/3
+         JEVl+miA21k7d317P9/8sNcIvZHa8qUSBoVgHXgKk7+fCHpEnMaP0hHLoDe7dvxNODkF
+         4G7RU8nF32DJ2GRNCEX5OwizTaqRQwWjmn5cE+xcLE4ntsYBh6h133vYqkXhmzuJkdV5
+         OgHw==
+X-Forwarded-Encrypted: i=1; AFNElJ/pMcEQznjlpMUk1FnPf9gAad92UFQ+pjxL3eTJ6jrlKprqX6V+Mepb/jWUhQyuMhGbJ8a24r0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyby3jDgbYM3An04bYhP/Ix5aNhGK5nMNQ5ozZYMHjC6pdnePHS
+	F0zJnEDqDLvnxsYjudS3fiXVe4DNw4hdPWDGvU0bI0PziXyNSyF2M7/s
+X-Gm-Gg: Acq92OESXiBKq+dE002gXHTlXoTYhzXmuzsho1c2qIEnUtLJ+9dLSpNwuJoHLWeeOuy
+	9kQmy1dV0TjBt0pA0uhdbMfalKyTrmkH120sLv4kXHLrwgA6GfsFpdEtd+mUbbz832JTlHcokA5
+	jnczcVGrHuswfsItR3NFynw8+/zPbKu1yteCAIlGp6jGFFqkdDd9vfAag30gwd+tALhDRDHT01D
+	rVQVNXQQDa3XlvviffKYoiJHcdelaztqPpxijb0Xn3aFNaMJEEJDIUNYdrii62Bmgd+rZ/mQBI3
+	yCzBaS4AAy7EP/f6iB0YWVhTlUS1tgiQdmXiIlmJUWMPypezBZXBJztDHWi8F4uvwc395hr8CR+
+	kJzMug5/UAuT2rrNdJGoT6wbmNdhhfwI1mU45TOJMP+cIbkHjji1/QKLhZf5uS7hc2URJ38CwNh
+	XJIHGmo72JuwrELq8I1fpWibNncLeBrn+qeae2ubvyP+ciC2z0rrReVYqjlj5ixT4utVoZtwDLs
+	KJJn3j2PA==
+X-Received: by 2002:a05:600c:6299:b0:489:1c32:210d with SMTP id 5b1f17b1804b1-48e706f120fmr222953705e9.15.1778581524196;
+        Tue, 12 May 2026 03:25:24 -0700 (PDT)
+Received: from 127.net ([2620:10d:c092:600::1:8c90])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e9052c9fesm74352255e9.1.2026.05.12.03.25.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 May 2026 03:25:23 -0700 (PDT)
+From: Pavel Begunkov <asml.silence@gmail.com>
+To: io-uring@vger.kernel.org
+Cc: asml.silence@gmail.com,
+	netdev@vger.kernel.org
+Subject: [RFC 0/6] dynamic area addition
+Date: Tue, 12 May 2026 11:25:00 +0100
+Message-ID: <cover.1778581283.git.asml.silence@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260511174920.433155-2-kuba@kernel.org>
 
-2026-05-11, 10:49:17 -0700, Jakub Kicinski wrote:
-> When an sk_msg scatterlist ring wraps (sg.end < sg.start),
-> tls_push_record() chains the tail portion of the ring to the head
-> using sg_chain(). An extra entry in the sg array is reserved for
-> this:
-> 
->   struct sk_msg_sg {
->         [...]
->         /* The extra two elements:
->          * 1) used for chaining the front and sections when the list becomes
->          *    partitioned (e.g. end < start). The crypto APIs require the
->          *    chaining;
->          * 2) to chain tailer SG entries after the message.
->          */
->         struct scatterlist              data[MAX_MSG_FRAGS + 2];
-> 
-> The current code uses MAX_SKB_FRAGS + 1 as the ring size:
-> 
->     sg_chain(&msg_pl->sg.data[msg_pl->sg.start],
->              MAX_SKB_FRAGS - msg_pl->sg.start + 1,
->              msg_pl->sg.data);
-> 
-> This places the chain pointer at
-> 
->   sg_chain(data[start], (MAX_SKB_FRAGS - msg_start + 1) .. =
->   &data[start] + (MAX_SKB_FRAGS - msg_start + 1) - 1 =
->   data[start + (MAX_SKB_FRAGS - start + 1) - 1] =
->   data[MAX_SKB_FRAGS]
-> 
-> instead of the true last entry. This is likely due to a "race" of
-> the commit under Fixes landing close to
-> commit 031097d9e079 ("bpf: sk_msg, zap ingress queue on psock down")
-> 
-> Convert to ARRAY_SIZE and drop the data[start] / - start (as suggested
-> by Sabrina).
-> 
-> Reported-by: 钱一铭 <yimingqian591@gmail.com>
-> Fixes: 9aaaa56845a0 ("bpf: Sockmap/tls, skmsg can have wrapped skmsg that needs extra chaining")
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Currently, the user needs to give memory for the data upfront
+when registering a zcrx instance, but it's not always easy to
+predict for the user how much it will need. This series adds
+a way to add more memory / areas at runtime.
 
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Pavel Begunkov (6):
+  io_uring/zcrx: remove extra ifq close
+  io_uring/zcrx: move freelist lock to struct zcrx
+  io_uring/zcrx: store area pointers in an array
+  io_uring/zcrx: don't pass ifq_reg for for area creation
+  io_uring/zcrx: split append from area creation
+  io_uring/zcrx: add dynamic area creation
+
+ include/uapi/linux/io_uring/zcrx.h |   7 +
+ io_uring/zcrx.c                    | 203 ++++++++++++++++++++++-------
+ io_uring/zcrx.h                    |   7 +-
+ 3 files changed, 168 insertions(+), 49 deletions(-)
 
 -- 
-Sabrina
+2.53.0
+
