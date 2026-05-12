@@ -1,87 +1,107 @@
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6492E49250D
-	for <netdev@vger.kernel.org>; Tue, 12 May 2026 09:29:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DACDC355F35
+	for <netdev@vger.kernel.org>; Tue, 12 May 2026 09:31:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778578147; cv=none; b=b0U94Jlh1V64GPrjoGiRjKI4RY1iyLwkMsA2IQDBhDdGm+QlrQfSBV+nwqb4WoSnQJttcpQ2Z6tov99U1DaxwEaiUaWTSXqP9gyA8Oei7/UGh5AYWimYzGlbkDE4Nvm8LdXYqP1yjbP8tMQYrS6yyuG4JqCo3842I+xEaHG+RqA=
+	t=1778578263; cv=none; b=EaHKGIPm6YDCycZYVfRhNhbBGwjS8y2xa8PBlOCcXNe3HmISiIlV7dKvAo2GcYWEEs9oESwDf4eLBZZZn4lOXyNDGfBNjJIsoVH9Gcdonj/VbutbFWOVzx1LG96Kh5ZPTC25Tidtt9pyqwRwSIDTM/rPz4EhS3aLNOtE7dyIKeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778578147; c=relaxed/simple;
-	bh=XNF7s9LHREcd5HQA7aPEH5IiSz2Z5X4Y8+T33U09Ddw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=mZXIqnWRErxa/QEC8q12pLT7dq0gmUHmP8rkwO6S6lOAw5zOzvXOJbNdz3MokWpYB+nvZFSR2x1RLcprEHIi8N8ulD7EsHeAnAZKDPal16KsJlpUSNWoAwvYSNk+lWtpPMroSeHLzv0J0d3GahuqNFG0onuiSDZq3PBYz/whERE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=Jtq/nUwZ; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+	s=arc-20240116; t=1778578263; c=relaxed/simple;
+	bh=/Lkf0xtjR8+DcAGM3D4n7rN02RixsrTSOnsw4O3WC10=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Zyh/KOb7I0lR14TS87wzZfioNr/Tq4ZuHgffuNLiEslZgPDQpFJxPV0nZTZKUVGcbgVyAq31b6PQFwgZSAl2HlNk7mENzdqDzJ7Pexn3SJvR/aNpwVM4CBDXiZL9z98gJsq2U72MyMIlCNghygMvFrXnSOoBdWNo0cJdUPrvx+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M0C1PluA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="Jtq/nUwZ"
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-bccb9dca1beso474178666b.1
-        for <netdev@vger.kernel.org>; Tue, 12 May 2026 02:29:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1778578141; x=1779182941; darn=vger.kernel.org;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=XNF7s9LHREcd5HQA7aPEH5IiSz2Z5X4Y8+T33U09Ddw=;
-        b=Jtq/nUwZa1dPGa6NdaFja2YDd5HRL0trc5c0sOxgfrJHYjUjPiogmL5pT/7zEEz5MY
-         CYscMEdq0xpwqz8QE4rAoxrMID/6hRp42gobodZBzGezA5YdOc6iuqLNkGxRHCihNO61
-         TnCavyjdppXkV27lKbq8dBc5nMT+XPFbbpqPdd48dBkYn68G0MECcSzhamvplEVMWwlX
-         2HZHElMWIJZ2HzW3eBlxORauw4uZ+Hfk8HDFAdldUFySs/4RPWpBFhB0yu4cSS8LG0wH
-         GncMV3HnzeDFw+Y4vtymPJrIzIiGoBStcbZtbHibgyCLEN0caKb1h1xnDdU2AcnwX+SU
-         wsXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778578141; x=1779182941;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=XNF7s9LHREcd5HQA7aPEH5IiSz2Z5X4Y8+T33U09Ddw=;
-        b=YGZUBil+fsCVDmEQtlWbOQYhjFldkKgknmV/faQzLWBEEkxJo7VuSnEXsxlmEt+4a1
-         DGGrf7CEK8d6BUYJhOonyYs9vXUkQBC3t5QQ5J3/17emc92zAd/AqHkxA8fCJRactDas
-         jQnrrTo+YZjr12ASWUKqJsVTBxhdOm6LZVLEph2yk//lSVQAdxGbHT0LE2lmqSspCmcH
-         szsPtN49qY4V8y9hukX0VY/dCSQqXXFTat00hctnLtQi87qbbp+EuexCz47Z0kXNf2Kn
-         L1gQwplRgZoaU2pRLQeSbAJeiAwmRiB3wDUPtnBv6czJbo77ARwSh7jTlciOQWdVUATK
-         BFmg==
-X-Forwarded-Encrypted: i=1; AFNElJ8gIweYoGtSMOTv9bIEgmboNTmi2eoZd5688Wky2cpKlel6mpdyV/3Ph4LYdlBhNU5cDDajxWE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxqnBhzf4rXP7pdfELXHNN4XaXwd//hBeM7XF/YatqWSDTBj70j
-	8ivRKqmgkD3z33fMYbgqE21X4Heykaiari0pt154GAZSDXiS9uB1izhluYARbM8bLmg=
-X-Gm-Gg: Acq92OFQaFJIuP6mgMrCyo9bz79dCBGsKxmJx3s7qjJRN1GpZg8z2WyhEjkjCBgN6Hv
-	FbzXDwDVtZpbxDIu7cxXvSf9Fk6jh3Gg9Y/QXja9tSYLrcKadPW81CuGKklQlYAC0iEcOu122iE
-	+KTG4NsZaHzgPNfmGLMOvKfshlJrwWGLZ5ZTr0U1Gb5T3nPPCssdyWEK+JkWJgnRxu4i85zeYBk
-	lA/euJ3s2NCBz5eifSvd2qshzziBF5nYKvH+QE1+Pdnm5cRB4JqY/L80a5rZFbR2AZ0H6RdDR0h
-	CEjMeon05Axs+7V0skkT0vrx8BhWMmJCN3aOFLP9odlZhkWOqzCy1GdAa8Q0s1qbdJURKoNzKJi
-	Rj/JM95cL9YTkEuQZ7J6H16ODeSJwTHHWiCTw6IBe6G7qOoOtN77XPhm6BOhURJQ0yCc0iVZvpU
-	dMyggbXSaTUbuastgeiTwoa+z7hA==
-X-Received: by 2002:a17:907:8b87:b0:bcd:2dbd:8241 with SMTP id a640c23a62f3a-bcd2dbd8f82mr684678166b.5.1778578140766;
-        Tue, 12 May 2026 02:29:00 -0700 (PDT)
-Received: from cloudflare.com ([104.28.21.182])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bcfac35c47asm311438366b.1.2026.05.12.02.29.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 May 2026 02:29:00 -0700 (PDT)
-From: Jakub Sitnicki <jakub@cloudflare.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net,  netdev@vger.kernel.org,  edumazet@google.com,
-  pabeni@redhat.com,  andrew+netdev@lunn.ch,  horms@kernel.org,
-  sd@queasysnail.net,  john.fastabend@gmail.com,  bpf@vger.kernel.org,
- Jiayuan Chen <jiayuan.chen@linux.dev>
-Subject: Re: [PATCH net v2 0/4] net: tls: net: tls: fix a few random bugs
-In-Reply-To: <20260511174920.433155-1-kuba@kernel.org> (Jakub Kicinski's
-	message of "Mon, 11 May 2026 10:49:16 -0700")
-References: <20260511174920.433155-1-kuba@kernel.org>
-Date: Tue, 12 May 2026 11:28:59 +0200
-Message-ID: <87se7x7z8k.fsf@cloudflare.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M0C1PluA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DECCEC2BCF6;
+	Tue, 12 May 2026 09:31:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778578263;
+	bh=/Lkf0xtjR8+DcAGM3D4n7rN02RixsrTSOnsw4O3WC10=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=M0C1PluAnOEvd3FHFCLKsCriNp2pN7jslbKG13ypogFIFfLacjv/lI4SOjIFHfj0E
+	 mFuA5EJAHtbq5Rif4W09Kz0ses2CrvoIlfeJg7v9Oo6DYxbYqzwiB3EW5U69tkUXZ0
+	 aqnsVZuRFJf0HJXP0w6qTTAOdUiU14KDWtv3321u0vncE9pgm7OPYwb/2b5DChRBFP
+	 WI4t0ecWLeswRdw6eOhsXS/ou2rVdD8nK4mDAnEH1tbWeuEmk4QAePwYnND3ica2l2
+	 j6rUJh1KAr0Rzlh6TDKHt+7bKeVlq7qgCr/RbNBMXsVfV/HGApk72sEtZQ+z18qaqV
+	 TAUOKSn01e3uQ==
+From: Simon Horman <horms@kernel.org>
+To: przemyslaw.korba@intel.com
+Cc: 'Simon Horman' <horms@kernel.org>,
+	intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	aleksandr.loktionov@intel.com,
+	arkadiusz.kubalewski@intel.com
+Subject: Re: [PATCH iwl-net v2] ice: support SBQ posted writes with non-posted support for CGU
+Date: Tue, 12 May 2026 10:27:41 +0100
+Message-ID: <20260512092740.290008-2-horms@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260508102247.826375-1-przemyslaw.korba@intel.com>
+References: <20260508102247.826375-1-przemyslaw.korba@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-General question - do we know about any kTLS with sockmap-redirects
-users out there? I've been asking around at conferences for a couple
-years now and haven't heard about any consumers of this feature.
+From: 'Simon Horman' <horms@kernel.org>
 
-If there are no known users, maybe we can have kTLS+sockmap glue code
-behind a build-time config option and put it on a path to deprecation?
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://sashiko.dev
+---
+ice: support SBQ posted writes with non-posted support for CGU
 
-WDYT?
+This commit introduces non-posted SBQ writes while allowing posted writes
+to skip completion waits. It also adds an SBQ flush by reading address 0
+from PHY 0 before issuing a SYNC command to ensure writes are completed.
+
+> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+> index 24fb7a3e14d63..ec4c85ad12e4d 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+> @@ -352,6 +352,17 @@ void ice_ptp_src_cmd(struct ice_hw *hw, enum ice_ptp_tmr_cmd cmd)
+>  static void ice_ptp_exec_tmr_cmd(struct ice_hw *hw)
+>  {
+>  	struct ice_pf *pf = container_of(hw, struct ice_pf, hw);
+> +	struct ice_sbq_msg_input msg = {
+> +		.dest_dev = ice_sbq_dev_phy_0,
+> +		.opcode = ice_sbq_msg_rd,
+> +	};
+> +	int err;
+> +
+> +	if (hw->mac_type != ICE_MAC_E810) {
+> +		err = ice_sbq_rw_reg(hw, &msg, LIBIE_AQ_FLAG_RD);
+> +		if (err)
+> +			dev_warn(ice_hw_to_dev(hw), "Failed to flush SBQ: %d\n", err);
+> +	}
+
+[ ... ]
+
+> @@ -4469,15 +4482,15 @@ static int ice_read_phy_reg_e810(struct ice_hw *hw, u32 addr, u32 *val)
+>   */
+>  static int ice_write_phy_reg_e810(struct ice_hw *hw, u32 addr, u32 val)
+>  {
+> -	struct ice_sbq_msg_input msg = {0};
+> +	struct ice_sbq_msg_input msg = {
+> +		.dest_dev = ice_sbq_dev_phy_0,
+> +		.opcode = ice_sbq_msg_wr_p,
+> +		.msg_addr_low = lower_16_bits(addr),
+> +		.msg_addr_high = upper_16_bits(addr),
+> +		.data = val
+> +	};
+
+Since ice_write_phy_reg_e810() is updated to use the posted write opcode
+(ice_sbq_msg_wr_p), it will skip the completion wait and return immediately.
+
+If the SBQ flush in ice_ptp_exec_tmr_cmd() explicitly skips E810 devices
+via the check for hw->mac_type != ICE_MAC_E810, does this leave E810 PHY
+writes entirely asynchronous and unguarded?
+
+Could this lead to a race condition where the writes have not actually
+completed before the SYNC_EXEC_CMD is executed?
