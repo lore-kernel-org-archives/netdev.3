@@ -1,146 +1,269 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE9713D5C07
-	for <netdev@vger.kernel.org>; Tue, 12 May 2026 16:52:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFE523C416B
+	for <netdev@vger.kernel.org>; Tue, 12 May 2026 16:57:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778604738; cv=none; b=iTkp2N3TnCGYu+P5FNvtXibsn6sFR7uOl23S1jHUY0QW9YH8Xog3fCI3uSfT9JPPMeu7YirkJxn1OactGYOFdqwNzvrxnbYAJrufjZ35LZ+EUqTmYDZsWnTM51cvQtkoJrxjqJ+c3QNWNoWqlBixo01yst5vIBB4FT3zz4h6E1I=
+	t=1778605077; cv=none; b=W/ql16mrfAKD0LYFOgbhW8sds+RYYVPCnh/7tGluEVvWtDdcWcKY+PVcfCtpkdcqUrXlr1vjel2757/W5YwE1a2zmHIF8a0QjUVWwU+NjeXFWdXpXaRKXOQ5hmL0wN6v39nEcso/pfHXfIZMXE4Kbw/nO7j8/q/JiDgk7NnMcq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778604738; c=relaxed/simple;
-	bh=mreFfcrWDOuj5XwItoV3PyFMdhHPi9qxScc5tKzcWe4=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=hI2AEoCvtyrM2fQFhrE5+oSnTgzbJd1kCFXe9O3+dlrAXlAzyGjR3UWTW26/MwdSZxKwuJS2cZBxVblnld+sC41YvXtXDfd7JHE52rWmJyfoF3prpHeXc5qKezqOglaY8DCKgVtXGRn3ZeZmXeJm3+es+XM93MZ22Mwte0Tizmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UkHDBJKm; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1778605077; c=relaxed/simple;
+	bh=y3/J5IiYgtXjDj2kJmMop3V1kZxt0TxttP+HBcvK1us=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KIwa4pOSGgjY1m/YY1bTcC+ELZ48niVzMv26bEOnXMg9/euszQIeI3qSx0/eNFD/85d2AcSWmi9w+8fGLu+c65xQ7CAgtjHtcSFMbmw4RgHMbQxmofz7jXuRi6XP3Y3aipitZItgD2TLQVnD4FBTPhj3E+MgD60ayJmr6dGW5gg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im; spf=pass smtp.mailfrom=fastmail.im; dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b=fMtGmMav; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ONO7192j; arc=none smtp.client-ip=103.168.172.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.im
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UkHDBJKm"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778604736;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tSkn0U6lptu9azs6ifq+vMKSs54jCFl5ojJEkWp+IUs=;
-	b=UkHDBJKm8iq173MNz2f6OY9QaGiAa7oBhuNIYQksdGaRXL9+m8RbyCfT+G0WmLBUScY2Q1
-	4pN1SClIMQ5VzOZnuhJYuLI/Ej74eRlnnhhVxN5WGGQoDlGb1i0ftKfFMOK0X2LodlaiM0
-	83n25wBMOkwBV1jwC2+i+9NnmPMBKBw=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-668-RFZHH02wNCa-xyhjA4X8qw-1; Tue,
- 12 May 2026 12:52:12 -0400
-X-MC-Unique: RFZHH02wNCa-xyhjA4X8qw-1
-X-Mimecast-MFC-AGG-ID: RFZHH02wNCa-xyhjA4X8qw_1778604729
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 57FC7180061A;
-	Tue, 12 May 2026 16:52:09 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.44.48.83])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 967C619560A7;
-	Tue, 12 May 2026 16:52:04 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <20260512143835.13af8bc4@pumpkin>
-References: <20260512143835.13af8bc4@pumpkin> <20260511160753.607296-1-dhowells@redhat.com> <20260511160753.607296-3-dhowells@redhat.com>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: dhowells@redhat.com, netdev@vger.kernel.org,
-    Hyunwoo Kim <imv4bel@gmail.com>,
-    Marc Dionne <marc.dionne@auristor.com>,
-    Jakub Kicinski <kuba@kernel.org>,
-    "David S.
- Miller" <davem@davemloft.net>,
-    Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-    Simon Horman <horms@kernel.org>, linux-afs@lists.infradead.org,
-    linux-kernel@vger.kernel.org, Jeffrey Altman <jaltman@auristor.com>,
-    Jiayuan Chen <jiayuan.chen@linux.dev>, stable@vger.kernel.org
-Subject: Re: [PATCH net 2/3] rxrpc: Fix DATA decrypt vs splice() by copying data to buffer in recvmsg
+	dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b="fMtGmMav";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ONO7192j"
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailfout.phl.internal (Postfix) with ESMTP id C7E02EC023D;
+	Tue, 12 May 2026 12:57:53 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-09.internal (MEProxy); Tue, 12 May 2026 12:57:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.im; h=
+	cc:cc:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=fm3; t=1778605073; x=1778691473; bh=J+VkuR2izqlV3beZqVw7+
+	qkVprYDnLIVVxZa1jQwSrE=; b=fMtGmMavp5hnOcZtAYp/j4KuS2SEJZNGxeOYX
+	pvExl4o4sRcwI2MaZxUkdDFtqfLJV5da2HQDZkwaRjkYhW0fZwPeSIm2EGiIx1HJ
+	ZR6R59W0UFosqQzoWkHYUfP+eZ66Ki/azgEfInKzYqphj1HKBD5NcnSu7bfiIkpz
+	gfWFyNRw/Q7/aAIr3UxwEiEpZ/UVXkiQ3CKwJI+O4MYHrQI/c9NGwTbU/v26RQ7c
+	mpymRgkhFLe77eGkw9RcIPPY+W12FBLAdKBUecqad+UgB3p5lpZ67Jq+A/A4rjx0
+	fo4/q6J5N9Q4LbZ/E2+v63hzYuW5M+EsocCYK+wYUKOsJ5D9g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1778605073; x=1778691473; bh=J+VkuR2izqlV3beZqVw7+qkVprYDnLIVVxZ
+	a1jQwSrE=; b=ONO7192jHOJH1wNXM5GLOSzmg+gNOzrcnwSo/FgsADU/v1PR83V
+	XaNk1Oos4k8z2Xl5j/F7MKOQoCBIF84QMo/2V88U33Dl9b2LVkY8z/81j+wx5CV7
+	9j2hQNvg8IkwswSRIsGdYGaE24PSqSjohFpSiS6S2z5vIafxWoEMnYm61sszkHcC
+	EWCkNER83BSB33VFi/Jz8nPEUEQqnkemxQA1Yqul+wX8lu0pSZwhAeRtwMhe0BZT
+	E3gnD38KjNTuF3I5MSwqcfsFpbcMjbwMtUpTCB0+B9Al9cn1D+ZKInP/i9WOEe8g
+	Ytu7N5DCX+OHdkoWWjHf2USEmq8vx7k6pIA==
+X-ME-Sender: <xms:EVwDaq0kSTuXbzGWlsrLP3Pce3mAv1hanTMyv-O5kNmtoCHeT44r1w>
+    <xme:EVwDarlJGqro2KsEOd1EJKfgJfphMhnF276xjJkAHjrgexa3uJwovknERoUsTvXSg
+    hidHnXodNsNylCNouhL3Q1xfnpbeYz28c_kuc5mLbzZUiTkxUyd>
+X-ME-Received: <xmr:EVwDapu19eX36ab0z-ignGSq3zFk_cmEjT67Cgrs-it8M5R2mFRzMtzYXClsxEfJjQAyzWIKcI9-XCrhiA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduvddvfeegucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhephffvvefufffkofgggfestdekredtredttdenucfhrhhomheptehlihgtvgcuofhi
+    khhithihrghnshhkrgcuoegrlhhitggvrdhkvghrnhgvlhesfhgrshhtmhgrihhlrdhimh
+    eqnecuggftrfgrthhtvghrnheptdeluefhhfehkefgkeehjeehhfeludeujefhkeegtefg
+    leffveekvdefgefguddunecuffhomhgrihhnpehsrghshhhikhhordguvghvpdhkvghrnh
+    gvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhr
+    ohhmpegrlhhitggvrdhkvghrnhgvlhesfhgrshhtmhgrihhlrdhimhdpnhgspghrtghpth
+    htohepudejpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegurghnihgvlhesihho
+    ghgvrghrsghogidrnhgvthdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrd
+    hnvghtpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomhdprhgtphht
+    thhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgrsggvnhhisehrvg
+    guhhgrthdrtghomhdprhgtphhtthhopehluhgtihgvnhdrgihinhesghhmrghilhdrtgho
+    mhdprhgtphhtthhopeifihhllhgvmhguvggsrhhuihhjnhdrkhgvrhhnvghlsehgmhgrih
+    hlrdgtohhmpdhrtghpthhtohepfihilhhlvghmsgesghhoohhglhgvrdgtohhmpdhrtghp
+    thhtohepughsrghhvghrnheskhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:EVwDar3gEVFKNtnZUwr2hXCC9RZXoMDdeJOQagqJCnRgXWgvYDRUYg>
+    <xmx:EVwDalS8wXjuwvhYe_xnq3hrjsRgpf9YUJwGa_lzw5W3uFmTXjSapg>
+    <xmx:EVwDavslWSvlzyfmrYKuYV_B1HogXvm0yGxo-Ipa0BVQgxEE3Zk_TA>
+    <xmx:EVwDarKzJRm80P7URgItnhdvm_qd1PimQDFxqdN0n6ZLq4bBqlNJyg>
+    <xmx:EVwDarBPrvFttEBwgvQOKFZvaEwDBidFGCf4jwY0KBpf5cNhPt701nK->
+Feedback-ID: i559e4809:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 12 May 2026 12:57:52 -0400 (EDT)
+From: Alice Mikityanska <alice.kernel@fastmail.im>
+To: Daniel Borkmann <daniel@iogearbox.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Nikolay Aleksandrov <razor@blackwall.org>
+Cc: Shuah Khan <shuah@kernel.org>,
+	Stanislav Fomichev <stfomichev@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Simon Horman <horms@kernel.org>,
+	Florian Westphal <fw@strlen.de>,
+	netdev@vger.kernel.org,
+	Alice Mikityanska <alice@isovalent.com>
+Subject: [PATCH net-next v4 00/12] BIG TCP for UDP tunnels
+Date: Tue, 12 May 2026 18:56:36 +0200
+Message-ID: <20260512165648.386518-1-alice.kernel@fastmail.im>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1072348.1778604723.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 12 May 2026 17:52:03 +0100
-Message-ID: <1072349.1778604723@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Content-Transfer-Encoding: 8bit
 
-David Laight <david.laight.linux@gmail.com> wrote:
+From: Alice Mikityanska <alice@isovalent.com>
 
-> > Note also that I would generally prefer to replace the buffers of the
-> > current sk_buff with a new kmalloc'd buffer of the right size, ditchin=
-g the
-> > old data and frags as this makes the handling of MSG_PEEK easier and
-> > removes the double-decryption issue, but this looks like quite a
-> > complicated thing to achieve.  skb_morph() looks half way to what I wa=
-nt,
-> > but I don't want to have to allocate a new sk_buff.
-> =
+This series is a follow-up to "BIG TCP without HBH in IPv6", and it adds
+support for BIG TCP IPv4/IPv6 workloads in vxlan and geneve. Now that
+IPv6 BIG TCP doesn't require stripping the HBH in all various
+combinations in tunneled traffic, adding BIG TCP becomes feasible.
 
-> Wouldn't you need to do that anyway when the kkb is shared - or can't
-> that happen?
+Patches 01-03 are small fixups to some related code that I'm changing in
+the series.
 
-Hmmm...  That may well be the case - but if it's shared, do I own the
-->next/prev pointers and the ->cb area?
+Patch 04 adds accessors for the length field in the UDP header, as
+suggested by Paolo in review. The usage of udp_set_len is then added in
+the following patches that start using length=0 in BIG TCP UDP packets.
 
-> > +	unsigned short		rx_dec_bsize;	/* rx_dec_buffer size */
-> > +	unsigned short		rx_dec_offset;	/* Decrypted packet data offset */
-> > +	unsigned short		rx_dec_len;	/* Decrypted packet data len */
-> =
+Patches 05-07 close the gaps that prevent BIG TCP packets from going
+through UDP tunnel code.
 
-> Is it actually worth making those short rather than int?
-> I doubt the extra 4 bytes will matter and the generated code might be be=
-tter.
-> (IIRC 32bit arm has a limited offset from 16 bit load/store, dunno about=
- 64bit)
+Patch 08 re-adds proper validation of malformed packets that arrive with
+length=0 from the wire.
 
-Well, the capacity of a UDP packet less the rxrpc header can't reach 65535=
-, so
-on that basis this should be fine.  I'm a little worried about the rxrpc_c=
-all
-struct's size - it's already ~1.3K.  It's already got a lot of 8- and 16-b=
-it
-fields in it.  Of course, it's nowhere near as bit-for-bit optimised as
-sk_buff, but I guess there are a lot more of those in a system.
+Patch 09 is for proper formatting in tcpdump (set UDP len to 0 rather
+than a trimmed value on overflow).
 
-> > +	if (call->rx_dec_bsize < sp->len) {
-> =
+Patches 10-11 bump up tso_max_size for VXLAN and GENEVE.
 
-> IMHO That test is backwards; the 'more constant' value should be on the =
-right.
+Patch 12 adds selftests.
 
-Actually, the thing you're testing should be on the left and the thing you=
-'re
-testing against on the right - but, yes, I should switch them around.
+Thanks all!
 
-> > +		size_t size =3D umin(round_up(sp->len, 32), 2048);
-> =
+v4 changes: Rebased, addressed Sashiko AI review [1] and Willem's
+comment about netperf flags.
 
-> Doesn't min() work?
+My comments on Sashiko AI review per patch:
 
-Actually, it should be umax() as I want the largest of the values (as Jeff
-pointed out).  I prefer using umin/umax for values that are known to be
-unsigned as you don't get casting errors (see the number of places we end =
-up
-using min/max_t(<unsigned-type>, ...) when we should use umin/umax() inste=
-ad)
-and the compiler may generate better code as we've told it that it doesn't
-have to worry about negatives.
+01: I'd prefer to keep the cases that I haven't tested outside of the
+scope of this series, which is for VXLAN/GENEVE tunnels, not for ESP.
 
-> That doesn't look right.
-> If sp->len is bigger than 2048 the you keep allocating a new buffer
-> and the call below overruns the allocated buffer.
+02: The patch doesn't have behavioral changes other than fixing the
+checksum. The final uh->len assignment assigns the actual length, not
+64k.
 
-Yep - see the aforementioned umax comment.
+03: The check can't be loosened, because total_len is also assigned to
+UDP length. BIG TCP works in the mode without GRO hint option.
 
-David
+04: Fixed the fallback value for udplen. BIG TCP is fine, it's the
+uh->len = 0 case, uh->len can't exceed 64k.
+
+05: In the BIG TCP case, partial GSO splits the SKB in two. If full
+segmentation is needed, the SKB is split in many MSS-sized SKBs without
+fragments.
+
+06: Invalid packets from the wire are addressed in 08.
+
+07: __udp_gso_segment only handles UDP GSO packets, which can't be
+bigger than 64k. Kept udp_set_len_short in nf_nat_mangle_udp_packet, as
+the function doesn't support BIG TCP packets anyway (see
+mangle_contents).
+
+08: udp_gro_receive handles packets before aggregation, there are no BIG
+TCP packets at this point. RFC 768 doesn't say that padded UDP packets
+are valid. Real jumbograms don't seem to be supported in this path
+anyway.
+
+09: The packet goes to skb_udp_tunnel_segment, not __udp_gso_segment.
+__skb_udp_tunnel_segment handles this case.
+
+12: Improved process cleanup by killing everything inside netns before
+deleting them, and by avoiding killing netserver outside of netns.
+netperf with -r in TCP_STREAM mode works, and the option has the
+intended effect, but I replaced it with -m. Added dependency check for
+tcpdump.
+
+[1]: https://sashiko.dev/#/patchset/20260410150943.993350-1-alice.kernel%40fastmail.im
+
+v3: https://lore.kernel.org/netdev/20260410150943.993350-1-alice.kernel@fastmail.im/
+
+v3 changes: Fixed the redirect in the selftest, rebased over my L2TP fix
+[2] for the syzbot report [3].
+
+[2]: https://lore.kernel.org/netdev/20260403174949.843941-1-alice.kernel@fastmail.im/
+[3]: https://lore.kernel.org/netdev/69a1dfba.050a0220.3a55be.0026.GAE@google.com/
+
+v2: https://lore.kernel.org/netdev/20260226201600.222044-1-alice.kernel@fastmail.im/
+
+v2 changes: Addressed the review comments: added UDP len helpers,
+consolidated UDP len sanity checks in patch 08 into one, added
+selftests. Added fixups to related code (patch 01-03).
+
+v1: https://lore.kernel.org/netdev/20250923134742.1399800-1-maxtram95@gmail.com/
+
+Alice Mikityanska (11):
+  net/sched: act_csum: don't mangle UDP tunnel GSO packets
+  udp: gso: Simplify handling length in GSO_PARTIAL
+  geneve: Fix off-by-one comparing with GRO_LEGACY_MAX_SIZE
+  net: Use helpers to get/set UDP len tree-wide
+  net: Enable BIG TCP with partial GSO
+  udp: Support gro_ipv4_max_size > 65536
+  udp: Support BIG TCP GSO packets where they can occur
+  udp: Validate UDP length in udp_gro_receive
+  udp: Set length in UDP header to 0 for big GSO packets
+  vxlan: Enable BIG TCP packets
+  selftests: net: Add a test for BIG TCP in UDP tunnels
+
+Daniel Borkmann (1):
+  geneve: Enable BIG TCP packets
+
+ drivers/infiniband/core/lag.c                 |   2 +-
+ drivers/infiniband/sw/rxe/rxe_net.c           |   4 +-
+ drivers/net/amt.c                             |   6 +-
+ drivers/net/ethernet/intel/i40e/i40e_txrx.c   |   2 +-
+ drivers/net/ethernet/intel/iavf/iavf_txrx.c   |   2 +-
+ drivers/net/ethernet/intel/ice/ice_txrx.c     |   2 +-
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c   |   2 +-
+ .../marvell/octeontx2/nic/otx2_txrx.c         |   2 +-
+ .../net/ethernet/mellanox/mlx5/core/en_rx.c   |   4 +-
+ .../ethernet/mellanox/mlx5/core/en_selftest.c |   2 +-
+ drivers/net/ethernet/sfc/falcon/selftest.c    |   4 +-
+ drivers/net/ethernet/sfc/selftest.c           |   4 +-
+ drivers/net/ethernet/sfc/siena/selftest.c     |   4 +-
+ drivers/net/ethernet/sfc/tc_encap_actions.c   |   2 +-
+ .../stmicro/stmmac/stmmac_selftests.c         |   4 +-
+ drivers/net/geneve.c                          |   6 +-
+ drivers/net/netdevsim/dev.c                   |   2 +-
+ drivers/net/netdevsim/psample.c               |   2 +-
+ drivers/net/netdevsim/psp.c                   |   8 +-
+ drivers/net/vxlan/vxlan_core.c                |   2 +
+ drivers/net/wireguard/receive.c               |   2 +-
+ include/linux/udp.h                           |  16 ++
+ include/trace/events/icmp.h                   |   2 +-
+ lib/tests/blackhole_dev_kunit.c               |   2 +-
+ net/6lowpan/nhc_udp.c                         |  10 +-
+ net/core/netpoll.c                            |   2 +-
+ net/core/pktgen.c                             |   4 +-
+ net/core/selftests.c                          |   4 +-
+ net/core/skbuff.c                             |  10 +-
+ net/core/tso.c                                |   3 +-
+ net/ipv4/esp4.c                               |   2 +-
+ net/ipv4/fou_core.c                           |   2 +-
+ net/ipv4/ipconfig.c                           |   6 +-
+ net/ipv4/netfilter/nf_nat_snmp_basic_main.c   |   4 +-
+ net/ipv4/route.c                              |   2 +-
+ net/ipv4/udp.c                                |   8 +-
+ net/ipv4/udp_offload.c                        |  58 +++----
+ net/ipv4/udp_tunnel_core.c                    |   2 +-
+ net/ipv6/esp6.c                               |   5 +-
+ net/ipv6/fou6.c                               |   2 +-
+ net/ipv6/ip6_udp_tunnel.c                     |   2 +-
+ net/ipv6/udp.c                                |   3 +-
+ net/ipv6/udp_offload.c                        |   2 +-
+ net/l2tp/l2tp_core.c                          |   2 +-
+ net/netfilter/ipvs/ip_vs_xmit.c               |   2 +-
+ net/netfilter/nf_conntrack_proto_udp.c        |  17 +-
+ net/netfilter/nf_log_syslog.c                 |   2 +-
+ net/netfilter/nf_nat_helper.c                 |   2 +-
+ net/psp/psp_main.c                            |   2 +-
+ net/sched/act_csum.c                          |  12 +-
+ net/xfrm/xfrm_nat_keepalive.c                 |   2 +-
+ tools/testing/selftests/net/Makefile          |   1 +
+ .../testing/selftests/net/big_tcp_tunnels.sh  | 151 ++++++++++++++++++
+ 53 files changed, 301 insertions(+), 111 deletions(-)
+ create mode 100755 tools/testing/selftests/net/big_tcp_tunnels.sh
+
+-- 
+2.54.0
 
