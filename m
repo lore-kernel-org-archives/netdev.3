@@ -1,72 +1,153 @@
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f66.google.com (mail-wr1-f66.google.com [209.85.221.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 901B435B632
-	for <netdev@vger.kernel.org>; Wed, 13 May 2026 18:36:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DE903AEF3E
+	for <netdev@vger.kernel.org>; Wed, 13 May 2026 18:36:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778697364; cv=none; b=CxFYQMH4B9Srn8k+bmdeVuE8bYTdpItvHqJQ/fosfvUJsCDu9PykYb3pUVpTaqXS1MhMmiRHx9wtC4lUCICTUrxx0AL62Wkv3cofbVJIhuKrv0pSo5NIFFi2kBk5FAGn9ZvlxUYiEvWLl8nev3KzsF9zHMYRMeoSyApIHdqM/EY=
+	t=1778697380; cv=none; b=Ia/vHmIlswK+oCfn7plLsKiM3rclBbWcCEl9STuYLK+g4jvLZXe7m8SIjWluKJAvbOx9gDqdYo+EBgBNvmfn8GOo34mfesofTZxY3VJOkJCP/DsO4DxZeuOEwUsFvr76+OlIrn3agCx1JFY0hezXj4KXa95fb+5UZ/AXdtQdf/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778697364; c=relaxed/simple;
-	bh=+J8vDguIcTbUHW1595rtimwASjcABHZYtC2lDRVvj58=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=R+Uqk6GPnA1bdNn+qksaRb50efjC2StSJVKxyoAiKyOPc0oVxbsLhHo+1IhWHmiOQviUuCeMtbcrwsM5+Ss/Z4FujuaOTNAag+Wbc1svsjoOAg+TqssEfqHz9XiJKsf+wTX/16m+teGGGvdOLuRnzHxcfmQNnjc3I1pQI5iwZ5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=miiOQM0v; arc=none smtp.client-ip=91.218.175.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="miiOQM0v"
-Date: Wed, 13 May 2026 20:35:56 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1778697360;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KZahbxcLMk4nFiXMIuxR7pAqjPA9tjQUCG0y2N20ur4=;
-	b=miiOQM0voUMout4J80B/M5yKxTaXCtTgD+KAfkWUCITTOCOycrH+VmAKy+fmLDhjr/6v1M
-	kcQag3+HWu6Rj0xPSHs4UXeIO9wVTAI94ROQN9ZwgMkiZSG3ri+AaMqGYjxZ/27OA9G05Q
-	GzRj26YFX6r0xXyMSgKKw8qWO1huqXU=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Luka Gejak <luka.gejak@linux.dev>
+	s=arc-20240116; t=1778697380; c=relaxed/simple;
+	bh=aPeYaW9AUJnEZDpa8VfIqEnqS0ks0v0SsKXhoV+Jzd8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WnMjppZ6/R7jXCI9g+UrdCyIKLVFeOXy2WqVIXqQ4XA9sLlnqbNE+WRkf4psItkpvwnZ+R44IaI5oUCI4q9RRgwK5OWx6Xp1mcd62srtHzw3KA01cGqqpKmgvV1gzbdROonOr2gXxX/lpGge4kp5bX2k46gdXNNWCoYt+PeVTmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f66.google.com with SMTP id ffacd0b85a97d-43fe3e22e33so4329704f8f.0
+        for <netdev@vger.kernel.org>; Wed, 13 May 2026 11:36:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778697376; x=1779302176;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=y241hz5AZ3XRjdMX0rkgsL+n7zioWgCIbmFy01u0VNE=;
+        b=MH7Sw/WTHOQB0AHe1fJCkN22MA25OyGmYtQzxrnmCo9Jrsu6GyEJUYkRWCBh11uwgX
+         iNBQNDkH0SClLrFz6m5x9D5R4R74JM3gy9fMhuNOdqDglZYu7bbT8MsgV50DSm0EiA9T
+         h1XSXSTm4f22bR7RWfVZfjZPMQa5PAXWBFHG6lt0F9STWJmtAtwFLHyKCer8z+yMpgKt
+         UIep7t45cEZbX8mrsAXnPMEPcB04f+fgnGNe/kE0NXohebgxwOkKubczzm/jXyBmIFHf
+         MJed4WJQWOWcHXmkXp2xo/vXtxs/pwKa0gS0hOOeF7jxA3qM1H73ZZy+wHpXjFgSNEsl
+         TGbA==
+X-Gm-Message-State: AOJu0YzpwLqImWJVNNmI+33lWVLTh4KWyFa5cIovX7+rIS0t4wkxCMDm
+	wdLoraEnLO9FTU0leCWbsmsZ+np1uzKl1ZKRYgQkvDY4gmeWrZ+hn73u9k7hKM4e
+X-Gm-Gg: Acq92OGvdZxS+gh1wckWQRaarjenrXlh5zknn5hhZkFBO6WkXHCBnQVo2z9H/vbu/RJ
+	13oMHo/MyWxipfwsBGCs1ODerpyYCUOGsLsEXxpqwMMbApp8LBRdKzLs57WqKneZukBUmeD+MKt
+	mBXnwF0Y4Awe/ZdsYDKgzOnCd0zWc0zvi8hGSVbtDjaof/ulboHyethSelnKpJ/6HpnsPf8qzsX
+	aFQl89Is/1LKjbrI0oofcFl6hkIYN7xX6/5Zz3ACEj1SnO3toBdCX+g2dqBBBf3wSPG3toPy04h
+	KQV5KbTx5FHgmswrUzpK6x3fmTr2xkLdc0ikvHA2TrxB7ErH/SSJxsIHCSvbiApO4MBhv0Xtumi
+	udBUjExBLR4FlcLuVpfqT/028b1W7973pR4IHPkIDWzatBdKFQZ0tmT/n9piVUFZEzjW4R+2mFY
+	fPh3QIJhfHKIZorR9kuL8be/er5arKQr+r83TgJbqQvd2JQ8SyRKzvy1eWxL4=
+X-Received: by 2002:a05:6000:2f83:b0:43d:761d:5423 with SMTP id ffacd0b85a97d-45c584a80e3mr6819397f8f.16.1778697376323;
+        Wed, 13 May 2026 11:36:16 -0700 (PDT)
+Received: from im-t490s.redhat.com (37-48-40-237.nat.epc.tmcz.cz. [37.48.40.237])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45da15a6454sm720609f8f.34.2026.05.13.11.36.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 May 2026 11:36:15 -0700 (PDT)
+From: Ilya Maximets <i.maximets@ovn.org>
 To: netdev@vger.kernel.org
-CC: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- fmaurer@redhat.com, luka.gejak@linux.dev
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_net-next_v6_0/2=5D_net=3A_hs?=
- =?US-ASCII?Q?r=3A_strict_supervision_TLV_validation?=
-In-Reply-To: <20260513182657.20346-1-luka.gejak@linux.dev>
-References: <20260513182657.20346-1-luka.gejak@linux.dev>
-Message-ID: <7D68E562-7941-46EF-B4B0-AE0DBAD15FC0@linux.dev>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Aaron Conole <aconole@redhat.com>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Antoine Tenart <atenart@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	linux-kernel@vger.kernel.org,
+	dev@openvswitch.org,
+	linux-kselftest@vger.kernel.org,
+	Ilya Maximets <i.maximets@ovn.org>
+Subject: [RFC net-next 0/6] openvswitch: remove support for legacy tunnel ports
+Date: Wed, 13 May 2026 20:35:20 +0200
+Message-ID: <20260513183559.2141010-1-i.maximets@ovn.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
 
-On May 13, 2026 8:26:55 PM GMT+02:00, luka=2Egejak@linux=2Edev wrote:
->From: Luka Gejak <luka=2Egejak@linux=2Edev>
->
+ovs-vswitchd doesn't use OVS_VPORT_TYPE_GRE/VXLAN/GENEVE with upstream
+Linux kernel module since adding support for standard tunnel devices
+with COLLECT_METADATA back in 2017.  The code to use them is still
+present, but it is only activated as a fallback for old kernels, so
+not used in practice.  And it is marked for removal in the next OVS
+release this summer.  Modern way to use tunnels with OVS is to create
+standard tunnel ports with RTM_NEWLINK + COLLECT_METADATA and add them
+as OVS_VPORT_TYPE_NETDEV.
 
-=2E=2E=2E
+Device reference management and the netlink options parsing for these
+legacy port types is complicated and was a CVE magnet recently.  Since
+there are no actual users for these port types for a very long time,
+let's just remove the support entirely.
 
->Luka Gejak (2):
->  net: hsr: require valid EOT supervision TLV
->  net: hsr: reject unresolved interlink ifindex
->
-> net/hsr/hsr_forward=2Ec | 6 +++---
-> net/hsr/hsr_netlink=2Ec | 7 ++++++-
-> 2 files changed, 9 insertions(+), 4 deletions(-)
->
 
-Just one note: This series has been resubmitted because it was never=20
-merged due to window being closed and I was instructed by Felix to=20
-resubmit it now=2E Link to old thread is [1]=2E
-Best regards,
-Luka Gejak
-[1]: https://lore=2Ekernel=2Eorg/netdev/20260413103449=2E169913-1-luka=2Eg=
-ejak@linux=2Edev/
+There are 3 parts to this set:
+
+1. The first patch does the tunnel port removal, which is the primary
+   goal here.
+
+2. Patches 2 and 3 remove extra infrastructure that is no longer in
+   use by anything inside the openvswitch module.  It may technically
+   be used by some out-of-tree module, but it is unlikely, so the
+   proposal here is to also just remove it.  Or we can consider
+   deprecation.  It's not really a user API, it's an API for modules.
+   Which can be considered as users, I guess.  Not sure.
+
+3. Patches 4-6 remove functions from gre/vxlan/geneve modules that
+   were added for openvswitch in the past to support the tunnel types.
+   And openvswitch is the only in-tree consumer of these functions,
+   so we could remove them.  But they are also exported symbols, so
+   can in theory be used by some out-of-tree modules, though I doubt
+   that.  Not sure what the process should be here.  Removal seems
+   reasonable, but we may consider deprecation first.
+
+Thoughts?
+
+
+Ilya Maximets (6):
+  openvswitch: remove support for legacy tunnel types
+  openvswitch: vport: remove infrastructure for vport options
+  openvswitch: vport: remove infrastructure for separate modules
+  net: geneve: remove unused geneve_dev_create_fb
+  net: gre: remove unused gretap_fb_dev_create
+  net: vxlan: remove unused vxlan_dev_create
+
+ drivers/net/geneve.c                          |  48 -----
+ drivers/net/vxlan/vxlan_core.c                |  42 +----
+ include/net/geneve.h                          |   5 -
+ include/net/gre.h                             |   2 -
+ include/net/vxlan.h                           |   3 -
+ include/uapi/linux/openvswitch.h              |  31 +++-
+ net/ipv4/ip_gre.c                             |  47 -----
+ net/openvswitch/Kconfig                       |  35 ----
+ net/openvswitch/Makefile                      |   4 -
+ net/openvswitch/datapath.c                    |  22 +--
+ net/openvswitch/vport-geneve.c                | 143 ---------------
+ net/openvswitch/vport-gre.c                   | 106 -----------
+ net/openvswitch/vport-netdev.c                |  28 +--
+ net/openvswitch/vport-netdev.h                |   3 +-
+ net/openvswitch/vport-vxlan.c                 | 172 ------------------
+ net/openvswitch/vport.c                       |  76 +-------
+ net/openvswitch/vport.h                       |  23 +--
+ tools/testing/selftests/net/config            |   3 -
+ .../selftests/net/openvswitch/openvswitch.sh  |  37 ----
+ .../selftests/net/openvswitch/ovs-dpctl.py    |  93 +++-------
+ 20 files changed, 59 insertions(+), 864 deletions(-)
+ delete mode 100644 net/openvswitch/vport-geneve.c
+ delete mode 100644 net/openvswitch/vport-gre.c
+ delete mode 100644 net/openvswitch/vport-vxlan.c
+
+-- 
+2.53.0
+
