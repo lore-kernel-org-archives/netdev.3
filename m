@@ -1,792 +1,587 @@
-Received: from seg02.wnc.com.tw (seg02.wnc.com.tw [211.75.124.87])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E5313DF00D;
-	Wed, 13 May 2026 08:43:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=211.75.124.87
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778661837; cv=fail; b=podG8F7YGxrAq61tn9DdghwHLUlxfRaT1Lfxw9Ao/B9LI0pD4nA6AjHubtnrpGF+9+3+aeExWtfRN4Dw9y1abEKL/UX5p3JBb4a85j879xPZvq4ll3jE8ugsV1/ogoi9d2mZmnCnez7rlM81tYRCPPBIXk8QbPYefNuNda5R8BQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778661837; c=relaxed/simple;
-	bh=KcLja1uK2SChufArG0IOo12RYG518me73Ax8/tdet88=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=fJW8LVqFxc9nLCG5fhRiO0fVVmuuUF5CwDH93Z0iFvy/ayTqPHO8z6ifS4QG9qA1E54HT9Y76rfZx3co44yIoXcdVTWU4gXOcE1hp8SRMroLxzeds24ESTqspPeKl0rJa7OYo4TP+YrR7kEYoXu6+rU05MWrMmuTWHUIyL0bNjI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wnc.com.tw; spf=pass smtp.mailfrom=wnc.com.tw; dkim=pass (1024-bit key) header.d=wnc.com.tw header.i=@wnc.com.tw header.b=Ea68s25Y; dkim=fail (1024-bit key) header.d=WNCM365.onmicrosoft.com header.i=@WNCM365.onmicrosoft.com header.b=ulvjrKlr reason="signature verification failed"; arc=fail smtp.client-ip=211.75.124.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wnc.com.tw
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wnc.com.tw
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1273839EF2B;
+	Wed, 13 May 2026 08:45:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778661926; cv=none; b=dVzT8QeUdqu+xe7m2MGMVxNrQERPINDj1gApzTdXa0IvQJDkW7HbT1kBE72PLKwfQ7k0PyA2rtkzi57nm9PUHTBlEaWYbM9V64IUN049H+eD4LAVjogNi5OCC8pcSay+H6kp55IvHq/RTisl0MG1nW8HE9Y7JdOZjcUSWYQZ6yI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778661926; c=relaxed/simple;
+	bh=jwu+uu0rnBLvJnhGeNme6KjpiIiHqGW+NsZ7oiFUHVU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=O9QslL7FTjejnFxPm+ENzSV1JRaZB5KWBPcKkSQcS7Y39XouirivJsrIEJFpw2ZhOxoEd+/j3JkM8XrCJKLE+HcGA0sLvE3ix178M+yDptn1tvB6955SD1bPHe7ikGC3QEVr4+BvI0uZqZBTDMin3RHri+VmS9WrRwLnmL/2Tjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UhJDfSuA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=wnc.com.tw header.i=@wnc.com.tw header.b="Ea68s25Y";
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=WNCM365.onmicrosoft.com header.i=@WNCM365.onmicrosoft.com header.b="ulvjrKlr"
-X-UUID: 22862b7a4ea711f1827585c6d5df5b9f-20260513
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=wnc.com.tw; s=WistronNeWeb;
-	h=MIME-Version:Content-Type:Message-ID:Date:Subject:CC:To:From; bh=fwCUCPLeVnAOArBYAeoGi9AZk13y/8Nrekt98lh3iX8=;
-	b=Ea68s25Yht5B5db0JBKnuF/RtSGdPMcOyc/I5DrEtlOOrQmC1rul8m/D/hxyZLdtijUDUbeBNXYEssq6RZXFEeJg7UJGI5uB+zncJF6XJiuono9v8K8lWR78FUo+NGBX6MCWv2Ornt4JWakPgUu3WRRED3jW3s/g+JU19+W1Fw4=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:60689907-9adf-44b6-ab9a-6dd898c5b76a,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:5,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:5
-X-CID-META: VersionHash:e7bac3a,CLOUDID:4eb2c643-11c5-46fd-96b8-8ddde212c99a,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|110|111|836|865|888|898,TC:0,Con
-	tent:0|14|50,EDM:-3,IP:nil,URL:0,File:2|127,RT:0,Bulk:nil,QS:nil,BEC:nil,C
-	OL:0,OSI:0,OSA:0,AV:0,LES:0,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: 785E44C90E4723070C7FCA46B8248363
-X-UUID: 22862b7a4ea711f1827585c6d5df5b9f-20260513
-Received: from twwebmail.wneweb.com.tw [(172.16.101.149)] by seg02.wnc.com.tw
-	(envelope-from <tim.jh.chen@wnc.com.tw>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1719160280; Wed, 13 May 2026 16:38:37 +0800
-Received: from T1HQEX32.wneweb.com.tw (172.16.101.149) by
- T1HQEX32.wneweb.com.tw (172.16.101.149) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Wed, 13 May 2026 16:37:51 +0800
-Received: from SI4PR04CU002.outbound.protection.outlook.com (40.93.129.122) by
- T1HQEX32.wneweb.com.tw (172.16.101.149) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17 via Frontend Transport; Wed, 13 May 2026 16:37:51 +0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ldB2DCpyEaRQoxSXWkc9Llxe/5uZsvtSWasH8I7EptGJw1OksRwdLFRScbcGI7b0RXCMGcHQjrdx1elVVlFa53sEVMGuclryMZo5JwKbH8kzdyArWhLE4/hWZPaCRdToXPQYu5kwjNcEVuZgTqPN0jGjTB46Be3iVEn2ILgLru8hui3Bh4UkAfAeod1vzDBlf2d4RyHT4xyKXu8K/J3T0zdoqAQRJMyDBqTx5KwRzeLw2eT2DIN/W5/AdWgOTflYrsoul07PnAQ4oRYU4sEysq/OojOchPxeJaoFt3R1zAXoL7+kJFS3LjivjjcqVB2IIvNv1bh8R7CGukVLvTNJOg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vv/ja6/DqmSzWC7Z8mbe34OsFNBvv+WMvXwsZlPRPUo=;
- b=XxvltLBxv7lSRWg1Ekvb350e4nDKWEmGuFjnp6P0yc+BT1K8zj163XZ7FyZ/b6WMcKvfgKoUUm1HUpSFNySTIubBytcDB1rPozQbnNCOmrTCnvTOZbmRp1mhI3GQknzXiQAvlFoeZsVfH00+MeyZUCXP2cXe5i81P+E1zHA7dmkAWgPkUtnUJTlB9szCilkN43TgXAv6SkYu+L91IDh+DDrMUSf5btLe1XKinVDFaHCb6kQ0xFVg5akcNCwIMiOY4yFiWK+krQ37jyqt6dRUysHqBdR9u9R4126Yiz0sZKoeJbVMEABZaSLfGFtQIUYf1KAQXPvYsJgJvlU4Jk4NTA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=wnc.com.tw; dmarc=pass action=none header.from=wnc.com.tw;
- dkim=pass header.d=wnc.com.tw; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=WNCM365.onmicrosoft.com; s=selector2-WNCM365-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vv/ja6/DqmSzWC7Z8mbe34OsFNBvv+WMvXwsZlPRPUo=;
- b=ulvjrKlrtmliYsNpx15coO1CQe6h3HwMk54RebmYn4sG5g7RhKU9Yu8/2KzEreHR2TCSDDBKbby3Jk+Z2g9QYiF8pqfzZPsW7s7c9ZOV2U09/79oOj3hrUTyvgozKq4AMJnXEB/u3Nb801IY406Z/f9Rgejv+zvqung6QRenbkg=
-Received: from TYZPR02MB5232.apcprd02.prod.outlook.com (2603:1096:400:72::7)
- by SI2PR02MB6104.apcprd02.prod.outlook.com (2603:1096:4:1f9::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.11; Wed, 13 May
- 2026 08:37:49 +0000
-Received: from TYZPR02MB5232.apcprd02.prod.outlook.com
- ([fe80::1bcb:74be:ca6c:32f9]) by TYZPR02MB5232.apcprd02.prod.outlook.com
- ([fe80::1bcb:74be:ca6c:32f9%5]) with mapi id 15.20.9913.009; Wed, 13 May 2026
- 08:37:48 +0000
-From: =?big5?B?VGltIEpIIENoZW4os6+kr8JFKQ==?= <Tim.JH.Chen@wnc.com.tw>
-To: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-CC: "chandrashekar.devegowda@intel.com" <chandrashekar.devegowda@intel.com>,
-	"haijun.liu@mediatek.com" <haijun.liu@mediatek.com>,
-	"ricardo.martinez@linux.intel.com" <ricardo.martinez@linux.intel.com>,
-	"loic.poulain@oss.qualcomm.com" <loic.poulain@oss.qualcomm.com>,
-	"ryazanov.s.a@gmail.com" <ryazanov.s.a@gmail.com>, "davem@davemloft.net"
-	<davem@davemloft.net>, "kuba@kernel.org" <kuba@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: [PATCH] net: wwan: t7xx: fix race between TX thread and system PM
- suspend
-Thread-Topic: [PATCH] net: wwan: t7xx: fix race between TX thread and system
- PM suspend
-Thread-Index: AQHc4rEYd4Hmj8wiV0Cb4VgPh/ckqg==
-Date: Wed, 13 May 2026 08:37:48 +0000
-Message-ID: <TYZPR02MB5232A8C6A2BA56226D97CF4A90062@TYZPR02MB5232.apcprd02.prod.outlook.com>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach: yes
-X-MS-TNEF-Correlator: 
-msip_labels: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=wnc.com.tw;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: TYZPR02MB5232:EE_|SI2PR02MB6104:EE_
-x-ms-office365-filtering-correlation-id: 187bbde8-3a06-4f11-8e13-08deb0cae9b0
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|6049299003|366016|376014|42112799006|1800799024|19092799006|11063799003|18002099003|56012099003|38070700021|8096899003|4053099003;
-x-microsoft-antispam-message-info: z0HrPl/tgIcjtB/mx4VfJRNOWWODy+KTWVKtBd2/LIYZPbIN9cyfy5GdsllwIw9DhbpQkpUatMqyIaPNBbqcV0DExw6XznRakZdbvFyTnK4AwLD/FCkwpDTp1cUQfvz/ph7CmpcubOVRX6PpVDD+85nGfMbfcT6Z8d0jRNtbYbHUsyFOFw6bfVBqPZZI+RGFCSNHkXLghwuTqP/IGKHDeDSjKekxybREkU4Qwrba2DxIc3MkcYWonGIPPLXgyaAHupuTktDXlyYmOaKENqnOo2rdWCefnU/goHUDWNS6wW0e86l0UfsZrLZ4te/3v8QXLJqStbT/gqYkOiPbrx1kbigd9sOafuhrpHnytbevAjv2hW7QJ7M1BUl8PVKopEXIMqbs0Iu1xt6QlDOx/QnTzwjZlxdZMpsGX7l1CbNJHl8VGC3rspXii1YRRzM4i+GILbk+C65HPekyeTEdoXoDuUvs49bNJslGjpcfv36vb8v927eKbV4youNHn2fw0L+3FJ6LQ3IWq3QJsyTJhJQNBKoIm+dMnx7MGkEEQCPW+5VFGPfRvttO+YgM+3PNXUwj8RcAaMZxbWhci58x6LK3foNsTbzXYfsmBRRpy+0BF5Ryz4pNp684nNr3UoWAklZCgus/sMPfUERjUAkxRDcVNQHb9YxZzb98ntQleXdVf+DevKk2bdzSaUBpmORsRuQouRtOz6tivmTloKQW7r5FfMjtE4NIu3mOW9GZVCcjP8ADUHzMXebSbwUZvVUj5YTE
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:zh-tw;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYZPR02MB5232.apcprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(6049299003)(366016)(376014)(42112799006)(1800799024)(19092799006)(11063799003)(18002099003)(56012099003)(38070700021)(8096899003)(4053099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?big5?B?RTNhTTlhaHFuWUt5em8wWkVNSUpaRU9kc3lCMEZWMUFSU0xxR2RZa0k2TkdQV3Iy?=
- =?big5?B?NDNEd3MrU3E1WXE0YlVxQXpGNTNyWWpjdW93ZkFYM0h0N1gxWHdrWmJ4Y3JKVXlK?=
- =?big5?B?eG1tMkJtOGpuK29nL1IybTA3NEVMbzRsNFBsTUNwWDg0cDJLTjBtUTVPZE5IRWdq?=
- =?big5?B?MHFjNVVjdnpmR3FmQUV1Q2lZV1JWNFc4NEtxbXBuQnZCZ3NNMzUwV3Npbk9Qcitu?=
- =?big5?B?NUQwS3ZBc1lyU0dOUzhRUURQdXEwNFBxL01yV3NsaGpIejlKaFNzdzMwOW4wOStO?=
- =?big5?B?ZU44MjhHSFpvcWJ5NmFEWVRsVHRRRnppM0ZSYzJ1NWJYV2tsTWt4RHJBOFliOXBt?=
- =?big5?B?aHJCR3BCa2JmRko0WHlnS3hFVm9LYmZITVFGeEtMTnpoanhuVmM0VlV0allOanI3?=
- =?big5?B?anZGK1krQXB2bSs5cjFKeGY1OEJ3bjhxVHhFL3JrSzhIMTR4OUwzQk15bzZQdnJs?=
- =?big5?B?bG5MYXNLYy9XQ1F1cThubnRaWHliMUoydVJnTjBwNW1wb1Biay90UE5BYnVtaUY0?=
- =?big5?B?QVo0SXdVVVhFZUxnV21rbk5jK2x6a1NIY2I5TUdXRkJjam4yRXcrclVlNzJmZElL?=
- =?big5?B?Sit1bm5idG1RUXBYNVNWQTFhYUszMTZhTStoV1hqcjdkbWYwUGxSY09NM2xLVE5C?=
- =?big5?B?NE16UjVwdTBETTJVY0lvRmdOWVdlaXZxR3ZyUkJtYVBGb1Q3eUNrUndKRU45MHRa?=
- =?big5?B?NGxCTFU2eEk3aTdIWHhvYjRTeWNRdXBjVVRKMCtOdmRpMjMvZmFUdlkzVktHU25p?=
- =?big5?B?clVFd2ZjdXdhQmIyK0VhYmtySzcrOHRaOFVIanhaekQwb0h1VGpIS3lBSmZxWi96?=
- =?big5?B?Y1MvL3RRZFkwdXozTENDZTRpRVd0Vk5ucmNJcDk4dEROanhWbk1IdkpVQ1FOeGti?=
- =?big5?B?cDcwMUNZanh6T0JtMFhNZ0wwNUlLUGFCZThSR3RsL2ZuZ0t1VlRhQWZESW16R2xO?=
- =?big5?B?RGYvc09JVk1WQVAzUUp1KzZzcFpzVy83Z216V2RWczdKSlpubUc5SmdScWdrbmZk?=
- =?big5?B?ZG5md0dRUldhNVRWSTBJTnVOb0M3K2RlNnlXZE0xQlB2NHoydFZSRlpKSDVHbU9s?=
- =?big5?B?TVVPT3N3cHBkQzE4SEszOUpPdEFkVGVZRWtoZjV1Z3UzUEFoQ2RLZkNDeUt2NS93?=
- =?big5?B?UXhZaExuamExMW5GWndTRk5MUEdhUnFBaTExbk1IRkdRcWZ5QmhSMmZuVStEckQ2?=
- =?big5?B?S0Q0enhWaEt3NXg0Qi9hSWp3Y1pqTkViVGdiaGhnNWl4dnkwcEtMa0JpNzRmZU81?=
- =?big5?B?aGl6T0M1QkRQSDFEaFJ0eUZBalVHZCt4MW05VlZuZDlSTlc3Y25ZR2ZkM3BYSW1M?=
- =?big5?B?T1NDeDA3MS9LTHFXaWEvVXdxNDBUQzJ2ZjFxSHh3c25sSzZGV0xyNnQwcEhwRkVp?=
- =?big5?B?Q2pUalFsZ0UzNG9SWXNZcEJZNXZuRFRjeG84L2xGeXNlQjFKREk1MjRsMmw0cTFv?=
- =?big5?B?MjVab0o5eis5empNY1dNL3ByRllrc0liQzBMV1VwNzBTQlB4UHRabnF0YWJGdzE5?=
- =?big5?B?eUt6TDB3OGZ6RnA4dyt1ZGlidUM5aGNub0UvRy9Sc3czOWVBZlJvODhFaFRDN0Nh?=
- =?big5?B?R3JJWE0zdWFYZWgvV3FEN1QwSmJPeitMUnVodDFIUWlBTTdROFNDcklMRXJrOXRR?=
- =?big5?B?NDkyOXF5Z3VJbWl1aUw5aHA5Q0h4ayt4T29aYWxkODE4K1pydXFPTmNwbzVsK0Fk?=
- =?big5?B?V1ZHK01DdkdwUFZ1QXVnQncwRXQ2SGsrNzR5MzhwaVR5YVlWMmhYME1sYkdDYkJX?=
- =?big5?B?US82YW9ZWVdaUkpsS01kSEN2TzA1ZXVhVldPeE5JVHBPWUhuWEQwU2RuSDJRREdL?=
- =?big5?B?L3F3Q3hpdk5LM0lNNktpYWFiM3NhbHdSYW5vNlQrdTg2VThYTlU4cmtYM2ZDTE5J?=
- =?big5?B?Ynp1T2ZxUGRzREtHWU8yV1JJTkcxRXRXc0lENjI2NlZtYnI4NHVIZUw1TThDOUls?=
- =?big5?B?cktCRnJTNmUzd0VrYm1aWW9uN081RUsyWEhnUkZyKzgwbEM0TFpJOVZ6NnRXaHRG?=
- =?big5?B?UXBLZ1U1OHF3WmhKNWlHTkgvSFcxU1V3R3RyWXBUMmRNTWlIa29vVmY3amdFcHJD?=
- =?big5?B?NjhoTmZFVnZUcER5QzRaQ2lnK3BDN1k4TXFLcHJaUjFqWjlVeHpiRUx3TmdhRTc3?=
- =?big5?B?Tk0yd2R5QWlZVTd3YjMvQ2lWbjhVaGcrckZXWi9lY21HbjRXczlqb3BwYURwOFZl?=
- =?big5?B?cHJpS1l1TEJKUXFVMVF0QlJBT3Nwdz09?=
-Content-Type: multipart/mixed;
-	boundary="_004_TYZPR02MB5232A8C6A2BA56226D97CF4A90062TYZPR02MB5232apcp_"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UhJDfSuA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AA33C2BCB7;
+	Wed, 13 May 2026 08:45:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778661925;
+	bh=jwu+uu0rnBLvJnhGeNme6KjpiIiHqGW+NsZ7oiFUHVU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UhJDfSuAZmfhq3NWC8YNKCfMmzOIuJ4HqDAY8EQl+Xa2T2A83GaAnvBi0evCJE2ua
+	 OUBEMg2v3h5V8GTzC3y3MRbT+vITxx0ie0NdvRRlD9gFkq24yfkLmBUyVqwYwbhz9Z
+	 7CcRX7xByP7R7OKbxuhWLiqqQbuQvVTSWNdmPfl36kc5AXgWLT0kNrtLGaQmjcf4rV
+	 qgEjB9cyvf3hSOIXBfetkw9ekQafNBOTgfiMaoTdbA5msYIt0Eoe+wSAJutf+SHGEr
+	 HghV64GbimXQg+oaWppLGxqdvrv+pQRrC79qnYPbmow7cYDopA8VqvFFil0eRbqr7T
+	 Fpt9DOFNmQgXw==
+Date: Wed, 13 May 2026 10:45:22 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: Christian Marangi <ansuelsmth@gmail.com>,
+	Benjamin Larsson <benjamin.larsson@genexis.eu>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, Xuegang Lu <xuegang.lu@airoha.com>
+Subject: Re: [PATCH net-next v6 04/12] net: airoha: Move airoha_qdma pointer
+ in airoha_gdm_dev struct
+Message-ID: <agQ6ItB6HFgdffCx@lore-desk>
+References: <20260511-airoha-eth-multi-serdes-v6-0-c899462c4f75@kernel.org>
+ <20260511-airoha-eth-multi-serdes-v6-4-c899462c4f75@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: VQYAkTXP16s8vwrsDE1p6dyUn2GNBsaHGt1aeZR64IlT7OUATOm1syj2+1A8NCBYeKdmVV72X6nQtP6r/mOGixEwrCG9PpfwaNkxiWHK0E2+XJrSZomG6+UXrvdclzgOTfPlOCbXxz8U6b+DCq/xQMSW+d5eCMhKLToYqubGPjHSGSaoQYJmO/TsACrA4Wx1BEuOUpQD6crNFuyxJdUFEJNSQUewhnSpV4e7fF+0SEHA53cBnqciN7vNxu2gwFPYGNnWdEQyiG2M31KONwkWA5n2IUwnbMGzkQKarvAVoIpqBisQ+Pn4fbT5cLB+BSANRqzqmjF9UWlAC96r7TNZOw==
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: NzEsUyveRW+sN8SYdqz0ANDYbQy2hOClgUg23oIgD2PMOObJ4qOfEFZ9Pk/IAdqeQbkvB1y3BSpebErGW20gcQPZvDUkNBb7trhl5syNj6HPkDsXLz9RR5vSv60gWVpWdTk+jZI6v4YzQhj7PbfxsC1y00EV6cyc9XlF5+100CtU5UyLLjrEnuXMuxezFhWzOiugaPOPQBENLJA64qZeKcRV9i3icsMk8SaOsCSLf5ba6oESaUnNjaI1LphLPzn3+gpSM84JFv5oE8TvV5SOk+/8C4TBduTOtN6H6EPy9Uhp3x+4TEE3dj9bqwZ+BXWUKoboueCStbXWiUkfEp6+5ipOUVVOkj553NhZ3wVj+vL0KMxdMQjgAcGPOhDfyihnvGLudZZwkgaCma+YtCnUmoGrVno7rbROW42fO9D0Dln+YSEKchZCoGYruPEKvH/RSEEhRysaz92IYLj8NgGfyMHvVhDSriNDiiFECAklbBSs6i9sTEckq2jIrcCJ4aNqFjrWoLzA/Vs+3CoRBzT+sgDJn/54HZ6aDronNC0aejO0ZZPirwsCzvb8oDb52tOH/mA9iuunVL51TlDIp1R3EQSAE5OYtYjAf96XjAN7CfGBGq6VQTGBqFJtI/mKWv4T
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: TYZPR02MB5232.apcprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 187bbde8-3a06-4f11-8e13-08deb0cae9b0
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 May 2026 08:37:48.3398
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 5e7e27a9-756f-49ba-a3ae-72aba10a316e
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: bY5srg+b1mCEI2+gmDj24e4qB1Y1GeP5LzieaFx/9x/bm+cCLMBTkdBHb4wKiwZHx1O+bjhi58PXX2wPBMoH3A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SI2PR02MB6104
-X-OriginatorOrg: wnc.com.tw
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="NE+4h+Wyx7O1ITBi"
+Content-Disposition: inline
+In-Reply-To: <20260511-airoha-eth-multi-serdes-v6-4-c899462c4f75@kernel.org>
 
---_004_TYZPR02MB5232A8C6A2BA56226D97CF4A90062TYZPR02MB5232apcp_
-Content-Type: multipart/alternative;
-	boundary="_000_TYZPR02MB5232A8C6A2BA56226D97CF4A90062TYZPR02MB5232apcp_"
 
---_000_TYZPR02MB5232A8C6A2BA56226D97CF4A90062TYZPR02MB5232apcp_
-Content-Type: text/plain; charset="big5"
-Content-Transfer-Encoding: base64
-
-RGF0ZTogV2VkLCAxMyBNYXkgMjAyNiAwOToyMTo0MCArMDgwMA0KU3ViamVjdDogW1BBVENIXSBu
-ZXQ6IHd3YW46IHQ3eHg6IGZpeCByYWNlIGJldHdlZW4gVFggdGhyZWFkIGFuZCBzeXN0ZW0gUE0N
-CiBzdXNwZW5kDQpNSU1FLVZlcnNpb246IDEuMA0KQ29udGVudC1UeXBlOiB0ZXh0L3BsYWluOyBj
-aGFyc2V0PVVURi04DQpDb250ZW50LVRyYW5zZmVyLUVuY29kaW5nOiA4Yml0DQoNCldoZW4gc3lz
-dGVtIHN1c3BlbmQgaXMgdHJpZ2dlcmVkIHdoaWxlIHRoZSBEUE1BSUYgVFgga3RocmVhZA0KKHQ3
-eHhfZHBtYWlmX3R4X2h3X3B1c2hfdGhyZWFkKSBpcyBydW5uaW5nLCBhIGRlYWRsb2NrIGNhbiBv
-Y2N1cg0KbGVhZGluZyB0byBhIENQVSBzb2Z0IGxvY2t1cC4NCg0KVGhlIHJvb3QgY2F1c2UgaXMg
-dHdvLWZvbGQ6DQoNCjEuIHQ3eHhfZHBtYWlmX3N1c3BlbmQoKSBjYWxscyB0N3h4X2RwbWFpZl90
-eF9zdG9wKCkgd2hpY2ggb25seSBzdG9wcw0KICAgdGhlIFRYIHdvcmstcXVldWUgaXRlbXMgKGJ5
-IGNsZWFyaW5nIHR4cS0+cXVlX3N0YXJ0ZWQgYW5kIHdhaXRpbmcgb24NCiAgIHR4cS0+dHhfcHJv
-Y2Vzc2luZykuIEl0IGRvZXMgTk9UIHNpZ25hbCB0aGUga3RocmVhZCBhbmQgZG9lcyBOT1QNCiAg
-IHVwZGF0ZSBkcG1haWZfY3RybC0+c3RhdGUsIHdoaWNoIHN0YXlzIERQTUFJRl9TVEFURV9QV1JP
-Ti4NCg0KMi4gVGhlIGt0aHJlYWQncyBzdGF0ZSBndWFyZCAobGluZTogImlmIC4uLiBzdGF0ZSAh
-PSBEUE1BSUZfU1RBVEVfUFdST04iKQ0KICAgaXMgb25seSBjaGVja2VkIGF0IHRoZSB0b3Agb2Yg
-ZWFjaCBsb29wIGl0ZXJhdGlvbi4gSWYgdGhlIHRocmVhZA0KICAgYWxyZWFkeSBwYXNzZWQgdGhp
-cyBndWFyZCwgaXQgcHJvY2VlZHMgdW5jb25kaXRpb25hbGx5IHRvIGNhbGwNCiAgIHBtX3J1bnRp
-bWVfcmVzdW1lX2FuZF9nZXQoKSChWCB3aGljaCB0cmllcyB0byBhY3F1aXJlIHRoZSBQTSBzcGlu
-bG9jaw0KICAgYWxzbyBoZWxkIChvciBjb250ZW5kZWQpIGJ5IHRoZSBzeXN0ZW0gUE0gc3VzcGVu
-ZCBwYXRoLg0KDQpUaGUgcmVzdWx0IGlzIGEgc3BpbmxvY2sgZGVhZGxvY2sgb2JzZXJ2ZWQgYXM6
-DQoNCiAgd2F0Y2hkb2c6IEJVRzogc29mdCBsb2NrdXAgLSBDUFUjTiBzdHVjayBmb3IgMjZzISBb
-ZHBtYWlmX3R4X2h3X3B1XQ0KICBSSVA6IF9yYXdfc3Bpbl91bmxvY2tfaXJxcmVzdG9yZQ0KICBD
-YWxsIFRyYWNlOg0KICAgIF9fcG1fcnVudGltZV9yZXN1bWUrMHg1Yi8weDgwDQogICAgdDd4eF9k
-cG1haWZfdHhfaHdfcHVzaF90aHJlYWQrMHhjNCBbbXRrX3Q3eHhdDQoNClRoZSBjb25kaXRpb24g
-cmVxdWlyZXMgQVNQTSBMMSBlbmFibGVkIG9uIHRoZSBlbmRwb2ludCAod2hpY2ggZXh0ZW5kcw0K
-dGhlIHRpbWUgcG1fcnVudGltZV9yZXN1bWVfYW5kX2dldCgpIGhvbGRzIHRoZSBQTSBsb2NrIGR1
-cmluZyBMMS4yDQpsaW5rIHJldHJhaW5pbmcpIGFuZCBodW5kcmVkcyBvZiByZXBlYXRlZCBzdXNw
-ZW5kL3Jlc3VtZSBjeWNsZXMgdG8NCnRyaWdnZXIgcmVsaWFibHkuDQoNCkZpeCBieSB0aHJlZSBj
-b29yZGluYXRlZCBjaGFuZ2VzOg0KDQotIEluIHQ3eHhfZHBtYWlmX3N1c3BlbmQoKTogaW1tZWRp
-YXRlbHkgc2V0IHN0YXRlIHRvIERQTUFJRl9TVEFURV9QV1JPRkYNCiAgYWZ0ZXIgc3RvcHBpbmcg
-dGhlIFRYIHF1ZXVlLCB0aGVuIGNhbGwgd2FrZV91cCgpIHNvIGFueSBzbGVlcGluZyB0aHJlYWQN
-CiAgcmUtZXZhbHVhdGVzIHRoZSB3YWl0X2V2ZW50IGNvbmRpdGlvbiBhbmQgc3RvcHMuDQoNCi0g
-SW4gdDd4eF9kcG1haWZfcmVzdW1lKCk6IHJlc3RvcmUgc3RhdGUgdG8gRFBNQUlGX1NUQVRFX1BX
-Uk9OIGJlZm9yZQ0KICByZS1lbmFibGluZyB0aGUgVFggcXVldWVzLCBzeW1tZXRyaWMgd2l0aCB0
-aGUgc3VzcGVuZCBjaGFuZ2UuDQogIFdpdGhvdXQgdGhpcyB0aGUga3RocmVhZCB3b3VsZCBuZXZl
-ciB3YWtlIHVwIGFmdGVyIHJlc3VtZS4NCg0KLSBJbiB0N3h4X2RwbWFpZl90eF9od19wdXNoX3Ro
-cmVhZCgpOiBhZGQgYSBzZWNvbmQgc3RhdGUgY2hlY2sNCiAgaW1tZWRpYXRlbHkgYmVmb3JlIHBt
-X3J1bnRpbWVfcmVzdW1lX2FuZF9nZXQoKSB0byBjbG9zZSB0aGUgVE9DVE9VDQogIHdpbmRvdyBi
-ZXR3ZWVuIHRoZSB3YWl0X2V2ZW50IGd1YXJkIGFuZCB0aGUgcG0gY2FsbC4NCg0KVGVzdGVkOiBu
-byBzb2Z0IGxvY2t1cCBvYnNlcnZlZCBvdmVyIDUwMCsgc3VzcGVuZC9yZXN1bWUgY3ljbGVzIHdp
-dGgNClNJTSByZWdpc3RlcmVkIGFuZCBBU1BNIEwxIGVuYWJsZWQgKHByZXZpb3VzbHkgdHJpZ2dl
-cmVkIGluIDwgMzAwKS4NCg0KRml4ZXM6IDA1ZjdlODlhYiAoIkxpbnV4IDYuMTkiKQ0KU2lnbmVk
-LW9mZi1ieTogVGltIEpIIENoZW4gPHRpbS5qaC5jaGVuQHduYy5jb20udHc+DQotLS0NCiBkcml2
-ZXJzL25ldC93d2FuL3Q3eHgvdDd4eF9oaWZfZHBtYWlmLmMgICAgfCAzICsrKw0KIGRyaXZlcnMv
-bmV0L3d3YW4vdDd4eC90N3h4X2hpZl9kcG1haWZfdHguYyB8IDMgKysrDQogMiBmaWxlcyBjaGFu
-Z2VkLCA2IGluc2VydGlvbnMoKykNCg0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3d3YW4vdDd4
-eC90N3h4X2hpZl9kcG1haWYuYyBiL2RyaXZlcnMvbmV0L3d3YW4vdDd4eC90N3h4X2hpZl9kcG1h
-aWYuYw0KaW5kZXggN2ZmMzNjMWQ2Li4zMTVhNzdlMjQgMTAwNjQ0DQotLS0gYS9kcml2ZXJzL25l
-dC93d2FuL3Q3eHgvdDd4eF9oaWZfZHBtYWlmLmMNCisrKyBiL2RyaXZlcnMvbmV0L3d3YW4vdDd4
-eC90N3h4X2hpZl9kcG1haWYuYw0KQEAgLTQxMiw2ICs0MTIsOCBAQCBzdGF0aWMgaW50IHQ3eHhf
-ZHBtYWlmX3N1c3BlbmQoc3RydWN0IHQ3eHhfcGNpX2RldiAqdDd4eF9kZXYsIHZvaWQgKnBhcmFt
-KQ0KICAgICAgICBzdHJ1Y3QgZHBtYWlmX2N0cmwgKmRwbWFpZl9jdHJsID0gcGFyYW07DQoNCiAg
-ICAgICAgdDd4eF9kcG1haWZfdHhfc3RvcChkcG1haWZfY3RybCk7DQorICAgICAgIGRwbWFpZl9j
-dHJsLT5zdGF0ZSA9IERQTUFJRl9TVEFURV9QV1JPRkY7DQorICAgICAgIHdha2VfdXAoJmRwbWFp
-Zl9jdHJsLT50eF93cSk7DQogICAgICAgIHQ3eHhfZHBtYWlmX2h3X3N0b3BfYWxsX3R4cSgmZHBt
-YWlmX2N0cmwtPmh3X2luZm8pOw0KICAgICAgICB0N3h4X2RwbWFpZl9od19zdG9wX2FsbF9yeHEo
-JmRwbWFpZl9jdHJsLT5od19pbmZvKTsNCiAgICAgICAgdDd4eF9kcG1haWZfZGlzYWJsZV9pcnEo
-ZHBtYWlmX2N0cmwpOw0KQEAgLTQ1MSw2ICs0NTMsNyBAQCBzdGF0aWMgaW50IHQ3eHhfZHBtYWlm
-X3Jlc3VtZShzdHJ1Y3QgdDd4eF9wY2lfZGV2ICp0N3h4X2Rldiwgdm9pZCAqcGFyYW0pDQogICAg
-ICAgIGlmICghZHBtYWlmX2N0cmwpDQogICAgICAgICAgICAgICAgcmV0dXJuIDA7DQoNCisgICAg
-ICAgZHBtYWlmX2N0cmwtPnN0YXRlID0gRFBNQUlGX1NUQVRFX1BXUk9OOw0KICAgICAgICB0N3h4
-X2RwbWFpZl9zdGFydF90eHJ4X3FzKGRwbWFpZl9jdHJsKTsNCiAgICAgICAgdDd4eF9kcG1haWZf
-ZW5hYmxlX2lycShkcG1haWZfY3RybCk7DQogICAgICAgIHQ3eHhfZHBtYWlmX3VubWFza19kbHFf
-aW50cihkcG1haWZfY3RybCk7DQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd3dhbi90N3h4L3Q3
-eHhfaGlmX2RwbWFpZl90eC5jIGIvZHJpdmVycy9uZXQvd3dhbi90N3h4L3Q3eHhfaGlmX2RwbWFp
-Zl90eC5jDQppbmRleCAyMzZkNjMyY2YuLmQ1YTViZWZlYyAxMDA2NDQNCi0tLSBhL2RyaXZlcnMv
-bmV0L3d3YW4vdDd4eC90N3h4X2hpZl9kcG1haWZfdHguYw0KKysrIGIvZHJpdmVycy9uZXQvd3dh
-bi90N3h4L3Q3eHhfaGlmX2RwbWFpZl90eC5jDQpAQCAtNDYwLDYgKzQ2MCw5IEBAIHN0YXRpYyBp
-bnQgdDd4eF9kcG1haWZfdHhfaHdfcHVzaF90aHJlYWQodm9pZCAqYXJnKQ0KICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICBicmVhazsNCiAgICAgICAgICAgICAgICB9DQoNCisgICAgICAg
-ICAgICAgICBpZiAoZHBtYWlmX2N0cmwtPnN0YXRlICE9IERQTUFJRl9TVEFURV9QV1JPTikNCisg
-ICAgICAgICAgICAgICAgICAgICAgIGNvbnRpbnVlOw0KKw0KICAgICAgICAgICAgICAgIHJldCA9
-IHBtX3J1bnRpbWVfcmVzdW1lX2FuZF9nZXQoZHBtYWlmX2N0cmwtPmRldik7DQogICAgICAgICAg
-ICAgICAgaWYgKHJldCA8IDAgJiYgcmV0ICE9IC1FQUNDRVMpDQogICAgICAgICAgICAgICAgICAg
-ICAgICByZXR1cm4gcmV0Ow0KLS0NCjIuMjUuMQ0K
-
---_000_TYZPR02MB5232A8C6A2BA56226D97CF4A90062TYZPR02MB5232apcp_
-Content-Type: text/html; charset="big5"
+--NE+4h+Wyx7O1ITBi
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-<html>
-<head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dbig5">
-<style type=3D"text/css" style=3D"display:none;"> P =
-{margin-top:0;margin-bottom:0;} </style>
-</head>
-<body dir=3D"ltr">
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-Date: Wed, 13 May 2026 09:21:40 +0800</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-Subject: [PATCH] net: wwan: t7xx: fix race between TX thread and system =
-PM</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-&nbsp;suspend</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-MIME-Version: 1=2E0</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-Content-Type: text/plain; charset=3DUTF-8</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-Content-Transfer-Encoding: 8bit</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-<br>
-</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-When system suspend is triggered while the DPMAIF TX kthread</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-(t7xx_dpmaif_tx_hw_push_thread) is running, a deadlock can occur</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-leading to a CPU soft lockup=2E</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-<br>
-</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-The root cause is two-fold:</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-<br>
-</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-1=2E t7xx_dpmaif_suspend() calls t7xx_dpmaif_tx_stop() which only =
-stops</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-&nbsp; &nbsp;the TX work-queue items (by clearing txq-&gt;que_started and =
-waiting on</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-&nbsp; &nbsp;txq-&gt;tx_processing)=2E It does NOT signal the kthread and =
-does NOT</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-&nbsp; &nbsp;update dpmaif_ctrl-&gt;state, which stays =
-DPMAIF_STATE_PWRON=2E</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-<br>
-</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-2=2E The kthread's state guard (line: &quot;if =2E=2E=2E state !=3D =
-DPMAIF_STATE_PWRON&quot;)</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-&nbsp; &nbsp;is only checked at the top of each loop iteration=2E If the =
-thread</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-&nbsp; &nbsp;already passed this guard, it proceeds unconditionally to =
-call</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-&nbsp; &nbsp;pm_runtime_resume_and_get() =A1X which tries to acquire the PM=
- spinlock</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-&nbsp; &nbsp;also held (or contended) by the system PM suspend =
-path=2E</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-<br>
-</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-The result is a spinlock deadlock observed as:</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-<br>
-</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-&nbsp; watchdog: BUG: soft lockup - CPU#N stuck for 26s! =
-[dpmaif_tx_hw_pu]</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-&nbsp; RIP: _raw_spin_unlock_irqrestore</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-&nbsp; Call Trace:</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-&nbsp; &nbsp; __pm_runtime_resume+0x5b/0x80</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-&nbsp; &nbsp; t7xx_dpmaif_tx_hw_push_thread+0xc4 [mtk_t7xx]</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-<br>
-</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-The condition requires ASPM L1 enabled on the endpoint (which extends</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-the time pm_runtime_resume_and_get() holds the PM lock during L1=2E2</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-link retraining) and hundreds of repeated suspend/resume cycles to</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-trigger reliably=2E</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-<br>
-</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-Fix by three coordinated changes:</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-<br>
-</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-- In t7xx_dpmaif_suspend(): immediately set state to =
-DPMAIF_STATE_PWROFF</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-&nbsp; after stopping the TX queue, then call wake_up() so any sleeping =
-thread</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-&nbsp; re-evaluates the wait_event condition and stops=2E</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-<br>
-</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-- In t7xx_dpmaif_resume(): restore state to DPMAIF_STATE_PWRON before</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-&nbsp; re-enabling the TX queues, symmetric with the suspend =
-change=2E</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-&nbsp; Without this the kthread would never wake up after resume=2E</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-<br>
-</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-- In t7xx_dpmaif_tx_hw_push_thread(): add a second state check</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-&nbsp; immediately before pm_runtime_resume_and_get() to close the =
-TOCTOU</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-&nbsp; window between the wait_event guard and the pm call=2E</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-<br>
-</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-Tested: no soft lockup observed over 500+ suspend/resume cycles with</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-SIM registered and ASPM L1 enabled (previously triggered in &lt; =
-300)=2E</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-<br>
-</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-Fixes: 05f7e89ab (&quot;Linux 6=2E19&quot;)</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-Signed-off-by: Tim JH Chen &lt;tim=2Ejh=2Echen@wnc=2Ecom=2Etw&gt;</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
----</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-&nbsp;drivers/net/wwan/t7xx/t7xx_hif_dpmaif=2Ec &nbsp; &nbsp;| 3 +++</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-&nbsp;drivers/net/wwan/t7xx/t7xx_hif_dpmaif_tx=2Ec | 3 +++</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-&nbsp;2 files changed, 6 insertions(+)</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-<br>
-</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-diff --git a/drivers/net/wwan/t7xx/t7xx_hif_dpmaif=2Ec =
-b/drivers/net/wwan/t7xx/t7xx_hif_dpmaif=2Ec</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-index 7ff33c1d6=2E=2E315a77e24 100644</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
---- a/drivers/net/wwan/t7xx/t7xx_hif_dpmaif=2Ec</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-+++ b/drivers/net/wwan/t7xx/t7xx_hif_dpmaif=2Ec</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-@@ -412,6 +412,8 @@ static int t7xx_dpmaif_suspend(struct t7xx_pci_dev =
-*t7xx_dev, void *param)</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-&nbsp; &nbsp; &nbsp; &nbsp; struct dpmaif_ctrl *dpmaif_ctrl =3D =
-param;</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-<br>
-</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-&nbsp; &nbsp; &nbsp; &nbsp; t7xx_dpmaif_tx_stop(dpmaif_ctrl);</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-+ &nbsp; &nbsp; &nbsp; dpmaif_ctrl-&gt;state =3D DPMAIF_STATE_PWROFF;</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-+ &nbsp; &nbsp; &nbsp; wake_up(&amp;dpmaif_ctrl-&gt;tx_wq);</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-&nbsp; &nbsp; &nbsp; &nbsp; =
-t7xx_dpmaif_hw_stop_all_txq(&amp;dpmaif_ctrl-&gt;hw_info);</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-&nbsp; &nbsp; &nbsp; &nbsp; =
-t7xx_dpmaif_hw_stop_all_rxq(&amp;dpmaif_ctrl-&gt;hw_info);</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-&nbsp; &nbsp; &nbsp; &nbsp; t7xx_dpmaif_disable_irq(dpmaif_ctrl);</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-@@ -451,6 +453,7 @@ static int t7xx_dpmaif_resume(struct t7xx_pci_dev =
-*t7xx_dev, void *param)</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-&nbsp; &nbsp; &nbsp; &nbsp; if (!dpmaif_ctrl)</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return 0;</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-<br>
-</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-+ &nbsp; &nbsp; &nbsp; dpmaif_ctrl-&gt;state =3D DPMAIF_STATE_PWRON;</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-&nbsp; &nbsp; &nbsp; &nbsp; t7xx_dpmaif_start_txrx_qs(dpmaif_ctrl);</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-&nbsp; &nbsp; &nbsp; &nbsp; t7xx_dpmaif_enable_irq(dpmaif_ctrl);</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-&nbsp; &nbsp; &nbsp; &nbsp; t7xx_dpmaif_unmask_dlq_intr(dpmaif_ctrl);</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-diff --git a/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_tx=2Ec =
-b/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_tx=2Ec</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-index 236d632cf=2E=2Ed5a5befec 100644</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
---- a/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_tx=2Ec</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-+++ b/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_tx=2Ec</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-@@ -460,6 +460,9 @@ static int t7xx_dpmaif_tx_hw_push_thread(void =
-*arg)</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; =
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; break;</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-<br>
-</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if =
-(dpmaif_ctrl-&gt;state !=3D DPMAIF_STATE_PWRON)</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; =
-&nbsp; continue;</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-+</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ret =3D =
-pm_runtime_resume_and_get(dpmaif_ctrl-&gt;dev);</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (ret &lt; 0 =
-&amp;&amp; ret !=3D -EACCES)</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; =
-&nbsp; &nbsp; return ret;</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
---</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, =
-Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; =
-font-size: 11pt; color: rgb(0, 0, 0);">
-2=2E25=2E1</div>
-</body>
-</html>
-<!--type:html--><!--{-->"<hr>
-This email and any attachments are intended for the sole use of the named =
-recipient(s) and may contain confidential, proprietary, privileged or =
-copyrighted information=2E If you are not the intended recipient, please =
-delete immediately=2E Do not read, copy, or forward this email or any =
-attachments=2E
-<hr>"
-<!--}-->
---_000_TYZPR02MB5232A8C6A2BA56226D97CF4A90062TYZPR02MB5232apcp_--
+On May 11, Lorenzo Bianconi wrote:
+> Move airoha_qdma pointer from airoha_gdm_port struct to airoha_gdm_dev
+> one since the QDMA block used depends on the particular net_device
+> WAN/LAN configuration and in the current codebase net_device pointer is
+> associated to airoha_gdm_dev struct.
+> This is a preliminary patch to support multiple net_devices connected
+> to the same GDM{3,4} port via an external hw arbiter.
+>=20
+> Tested-by: Xuegang Lu <xuegang.lu@airoha.com>
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> ---
+>  drivers/net/ethernet/airoha/airoha_eth.c | 105 +++++++++++++++----------=
+------
+>  drivers/net/ethernet/airoha/airoha_eth.h |   9 ++-
+>  drivers/net/ethernet/airoha/airoha_ppe.c |  17 ++---
+>  3 files changed, 64 insertions(+), 67 deletions(-)
+>=20
+> diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ether=
+net/airoha/airoha_eth.c
+> index 18a89de4d58a..e0cd401bbf67 100644
+> --- a/drivers/net/ethernet/airoha/airoha_eth.c
+> +++ b/drivers/net/ethernet/airoha/airoha_eth.c
+> @@ -71,9 +71,10 @@ static void airoha_qdma_irq_disable(struct airoha_irq_=
+bank *irq_bank,
+>  	airoha_qdma_set_irqmask(irq_bank, index, mask, 0);
+>  }
+> =20
+> -static void airoha_set_macaddr(struct airoha_gdm_port *port, const u8 *a=
+ddr)
+> +static void airoha_set_macaddr(struct airoha_gdm_dev *dev, const u8 *add=
+r)
+>  {
+> -	struct airoha_eth *eth =3D port->qdma->eth;
+> +	struct airoha_gdm_port *port =3D dev->port;
+> +	struct airoha_eth *eth =3D dev->eth;
+>  	u32 val, reg;
+> =20
+>  	reg =3D airoha_is_lan_gdm_port(port) ? REG_FE_LAN_MAC_H
+> @@ -85,7 +86,7 @@ static void airoha_set_macaddr(struct airoha_gdm_port *=
+port, const u8 *addr)
+>  	airoha_fe_wr(eth, REG_FE_MAC_LMIN(reg), val);
+>  	airoha_fe_wr(eth, REG_FE_MAC_LMAX(reg), val);
+> =20
+> -	airoha_ppe_init_upd_mem(port);
+> +	airoha_ppe_init_upd_mem(dev);
+>  }
+> =20
+>  static void airoha_set_gdm_port_fwd_cfg(struct airoha_eth *eth, u32 addr,
+> @@ -101,10 +102,10 @@ static void airoha_set_gdm_port_fwd_cfg(struct airo=
+ha_eth *eth, u32 addr,
+>  		      FIELD_PREP(GDM_UCFQ_MASK, val));
+>  }
+> =20
+> -static int airoha_set_vip_for_gdm_port(struct airoha_gdm_port *port,
+> -				       bool enable)
+> +static int airoha_set_vip_for_gdm_port(struct airoha_gdm_dev *dev, bool =
+enable)
+>  {
+> -	struct airoha_eth *eth =3D port->qdma->eth;
+> +	struct airoha_gdm_port *port =3D dev->port;
+> +	struct airoha_eth *eth =3D dev->eth;
+>  	u32 vip_port;
+> =20
+>  	vip_port =3D eth->soc->ops.get_vip_port(port, port->nbq);
+> @@ -858,10 +859,13 @@ static void airoha_qdma_wake_netdev_txqs(struct air=
+oha_queue *q)
+>  		if (!port)
+>  			continue;
+> =20
+> -		if (port->qdma !=3D qdma)
+> +		dev =3D port->dev;
+> +		if (!dev)
+> +			continue;
+> +
+> +		if (dev->qdma !=3D qdma)
+>  			continue;
+> =20
+> -		dev =3D port->dev;
+>  		for (j =3D 0; j < dev->dev->num_tx_queues; j++) {
+>  			if (airoha_qdma_get_txq(qdma, j) !=3D qid)
+>  				continue;
+> @@ -1562,9 +1566,10 @@ static void airoha_qdma_stop_napi(struct airoha_qd=
+ma *qdma)
+>  	}
+>  }
+> =20
+> -static void airoha_update_hw_stats(struct airoha_gdm_port *port)
+> +static void airoha_update_hw_stats(struct airoha_gdm_dev *dev)
+>  {
+> -	struct airoha_eth *eth =3D port->qdma->eth;
+> +	struct airoha_gdm_port *port =3D dev->port;
+> +	struct airoha_eth *eth =3D dev->eth;
+>  	u32 val, i =3D 0;
+> =20
+>  	spin_lock(&port->stats.lock);
+> @@ -1711,11 +1716,11 @@ static int airoha_dev_open(struct net_device *net=
+dev)
+>  	int err, len =3D ETH_HLEN + netdev->mtu + ETH_FCS_LEN;
+>  	struct airoha_gdm_dev *dev =3D netdev_priv(netdev);
+>  	struct airoha_gdm_port *port =3D dev->port;
+> -	struct airoha_qdma *qdma =3D port->qdma;
+> +	struct airoha_qdma *qdma =3D dev->qdma;
+>  	u32 pse_port =3D FE_PSE_PORT_PPE1;
+> =20
+>  	netif_tx_start_all_queues(netdev);
+> -	err =3D airoha_set_vip_for_gdm_port(port, true);
+> +	err =3D airoha_set_vip_for_gdm_port(dev, true);
+>  	if (err)
+>  		return err;
+> =20
+> @@ -1751,11 +1756,11 @@ static int airoha_dev_stop(struct net_device *net=
+dev)
+>  {
+>  	struct airoha_gdm_dev *dev =3D netdev_priv(netdev);
+>  	struct airoha_gdm_port *port =3D dev->port;
+> -	struct airoha_qdma *qdma =3D port->qdma;
+> +	struct airoha_qdma *qdma =3D dev->qdma;
+>  	int i;
+> =20
+>  	netif_tx_disable(netdev);
+> -	airoha_set_vip_for_gdm_port(port, false);
+> +	airoha_set_vip_for_gdm_port(dev, false);
+>  	for (i =3D 0; i < netdev->num_tx_queues; i++)
+>  		netdev_tx_reset_subqueue(netdev, i);
+> =20
+> @@ -1781,21 +1786,21 @@ static int airoha_dev_stop(struct net_device *net=
+dev)
+>  static int airoha_dev_set_macaddr(struct net_device *netdev, void *p)
+>  {
+>  	struct airoha_gdm_dev *dev =3D netdev_priv(netdev);
+> -	struct airoha_gdm_port *port =3D dev->port;
+>  	int err;
+> =20
+>  	err =3D eth_mac_addr(netdev, p);
+>  	if (err)
+>  		return err;
+> =20
+> -	airoha_set_macaddr(port, netdev->dev_addr);
+> +	airoha_set_macaddr(dev, netdev->dev_addr);
+> =20
+>  	return 0;
+>  }
+> =20
+> -static int airoha_set_gdm2_loopback(struct airoha_gdm_port *port)
+> +static int airoha_set_gdm2_loopback(struct airoha_gdm_dev *dev)
+>  {
+> -	struct airoha_eth *eth =3D port->qdma->eth;
+> +	struct airoha_gdm_port *port =3D dev->port;
+> +	struct airoha_eth *eth =3D dev->eth;
+>  	u32 val, pse_port, chan;
+>  	int i, src_port;
+> =20
+> @@ -1840,7 +1845,7 @@ static int airoha_set_gdm2_loopback(struct airoha_g=
+dm_port *port)
+>  		      __field_prep(SP_CPORT_MASK(val), FE_PSE_PORT_CDM2));
+> =20
+>  	for (i =3D 0; i < eth->soc->num_ppe; i++)
+> -		airoha_ppe_set_cpu_port(port, i, AIROHA_GDM2_IDX);
+> +		airoha_ppe_set_cpu_port(dev, i, AIROHA_GDM2_IDX);
+> =20
+>  	if (port->id =3D=3D AIROHA_GDM4_IDX && airoha_is_7581(eth)) {
+>  		u32 mask =3D FC_ID_OF_SRC_PORT_MASK(port->nbq);
+> @@ -1860,9 +1865,9 @@ static int airoha_dev_init(struct net_device *netde=
+v)
+>  	int i;
+> =20
+>  	/* QDMA0 is used for lan ports while QDMA1 is used for WAN ports */
+> -	port->qdma =3D &eth->qdma[!airoha_is_lan_gdm_port(port)];
+> -	dev->dev->irq =3D port->qdma->irq_banks[0].irq;
+> -	airoha_set_macaddr(port, netdev->dev_addr);
+> +	dev->qdma =3D &eth->qdma[!airoha_is_lan_gdm_port(port)];
+> +	dev->dev->irq =3D dev->qdma->irq_banks[0].irq;
+> +	airoha_set_macaddr(dev, netdev->dev_addr);
+> =20
+>  	switch (port->id) {
+>  	case AIROHA_GDM3_IDX:
+> @@ -1871,7 +1876,7 @@ static int airoha_dev_init(struct net_device *netde=
+v)
+>  		if (!eth->ports[1]) {
+>  			int err;
+> =20
+> -			err =3D airoha_set_gdm2_loopback(port);
+> +			err =3D airoha_set_gdm2_loopback(dev);
+>  			if (err)
+>  				return err;
+>  		}
+> @@ -1881,8 +1886,7 @@ static int airoha_dev_init(struct net_device *netde=
+v)
+>  	}
+> =20
+>  	for (i =3D 0; i < eth->soc->num_ppe; i++)
+> -		airoha_ppe_set_cpu_port(port, i,
+> -					airoha_get_fe_port(port));
+> +		airoha_ppe_set_cpu_port(dev, i, airoha_get_fe_port(dev));
+> =20
+>  	return 0;
+>  }
+> @@ -1894,7 +1898,7 @@ static void airoha_dev_get_stats64(struct net_devic=
+e *netdev,
+>  	struct airoha_gdm_port *port =3D dev->port;
+>  	unsigned int start;
+> =20
+> -	airoha_update_hw_stats(port);
+> +	airoha_update_hw_stats(dev);
+>  	do {
+>  		start =3D u64_stats_fetch_begin(&port->stats.syncp);
+>  		storage->rx_packets =3D port->stats.rx_ok_pkts;
+> @@ -1914,8 +1918,8 @@ static int airoha_dev_change_mtu(struct net_device =
+*netdev, int mtu)
+>  {
+>  	struct airoha_gdm_dev *dev =3D netdev_priv(netdev);
+>  	struct airoha_gdm_port *port =3D dev->port;
+> -	struct airoha_eth *eth =3D port->qdma->eth;
+>  	u32 len =3D ETH_HLEN + mtu + ETH_FCS_LEN;
+> +	struct airoha_eth *eth =3D dev->eth;
+> =20
+>  	airoha_fe_rmw(eth, REG_GDM_LEN_CFG(port->id),
+>  		      GDM_LONG_LEN_MASK,
+> @@ -1989,10 +1993,10 @@ static u32 airoha_get_dsa_tag(struct sk_buff *skb=
+, struct net_device *dev)
+>  #endif
+>  }
+> =20
+> -int airoha_get_fe_port(struct airoha_gdm_port *port)
+> +int airoha_get_fe_port(struct airoha_gdm_dev *dev)
+>  {
+> -	struct airoha_qdma *qdma =3D port->qdma;
+> -	struct airoha_eth *eth =3D qdma->eth;
+> +	struct airoha_gdm_port *port =3D dev->port;
+> +	struct airoha_eth *eth =3D dev->eth;
+> =20
+>  	switch (eth->soc->version) {
+>  	case 0x7583:
+> @@ -2009,8 +2013,7 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff *=
+skb,
+>  				   struct net_device *netdev)
+>  {
+>  	struct airoha_gdm_dev *dev =3D netdev_priv(netdev);
+> -	struct airoha_gdm_port *port =3D dev->port;
+> -	struct airoha_qdma *qdma =3D port->qdma;
+> +	struct airoha_qdma *qdma =3D dev->qdma;
+>  	u32 nr_frags, tag, msg0, msg1, len;
+>  	struct airoha_queue_entry *e;
+>  	struct netdev_queue *txq;
+> @@ -2048,7 +2051,7 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff *=
+skb,
+>  		}
+>  	}
+> =20
+> -	fport =3D airoha_get_fe_port(port);
+> +	fport =3D airoha_get_fe_port(dev);
+>  	msg1 =3D FIELD_PREP(QDMA_ETH_TXMSG_FPORT_MASK, fport) |
+>  	       FIELD_PREP(QDMA_ETH_TXMSG_METER_MASK, 0x7f);
+> =20
+> @@ -2151,8 +2154,7 @@ static void airoha_ethtool_get_drvinfo(struct net_d=
+evice *netdev,
+>  				       struct ethtool_drvinfo *info)
+>  {
+>  	struct airoha_gdm_dev *dev =3D netdev_priv(netdev);
+> -	struct airoha_gdm_port *port =3D dev->port;
+> -	struct airoha_eth *eth =3D port->qdma->eth;
+> +	struct airoha_eth *eth =3D dev->eth;
+> =20
+>  	strscpy(info->driver, eth->dev->driver->name, sizeof(info->driver));
+>  	strscpy(info->bus_info, dev_name(eth->dev), sizeof(info->bus_info));
+> @@ -2165,7 +2167,7 @@ static void airoha_ethtool_get_mac_stats(struct net=
+_device *netdev,
+>  	struct airoha_gdm_port *port =3D dev->port;
+>  	unsigned int start;
+> =20
+> -	airoha_update_hw_stats(port);
+> +	airoha_update_hw_stats(dev);
+>  	do {
+>  		start =3D u64_stats_fetch_begin(&port->stats.syncp);
+>  		stats->FramesTransmittedOK =3D port->stats.tx_ok_pkts;
+> @@ -2205,7 +2207,7 @@ airoha_ethtool_get_rmon_stats(struct net_device *ne=
+tdev,
+>  		     ARRAY_SIZE(hw_stats->rx_len) + 1);
+> =20
+>  	*ranges =3D airoha_ethtool_rmon_ranges;
+> -	airoha_update_hw_stats(port);
+> +	airoha_update_hw_stats(dev);
+>  	do {
+>  		int i;
+> =20
+> @@ -2225,18 +2227,17 @@ static int airoha_qdma_set_chan_tx_sched(struct n=
+et_device *netdev,
+>  					 const u16 *weights, u8 n_weights)
+>  {
+>  	struct airoha_gdm_dev *dev =3D netdev_priv(netdev);
+> -	struct airoha_gdm_port *port =3D dev->port;
+>  	int i;
+> =20
+>  	for (i =3D 0; i < AIROHA_NUM_TX_RING; i++)
+> -		airoha_qdma_clear(port->qdma, REG_QUEUE_CLOSE_CFG(channel),
+> +		airoha_qdma_clear(dev->qdma, REG_QUEUE_CLOSE_CFG(channel),
+>  				  TXQ_DISABLE_CHAN_QUEUE_MASK(channel, i));
+> =20
+>  	for (i =3D 0; i < n_weights; i++) {
+>  		u32 status;
+>  		int err;
+> =20
+> -		airoha_qdma_wr(port->qdma, REG_TXWRR_WEIGHT_CFG,
+> +		airoha_qdma_wr(dev->qdma, REG_TXWRR_WEIGHT_CFG,
+>  			       TWRR_RW_CMD_MASK |
+>  			       FIELD_PREP(TWRR_CHAN_IDX_MASK, channel) |
+>  			       FIELD_PREP(TWRR_QUEUE_IDX_MASK, i) |
+> @@ -2244,13 +2245,12 @@ static int airoha_qdma_set_chan_tx_sched(struct n=
+et_device *netdev,
+>  		err =3D read_poll_timeout(airoha_qdma_rr, status,
+>  					status & TWRR_RW_CMD_DONE,
+>  					USEC_PER_MSEC, 10 * USEC_PER_MSEC,
+> -					true, port->qdma,
+> -					REG_TXWRR_WEIGHT_CFG);
+> +					true, dev->qdma, REG_TXWRR_WEIGHT_CFG);
+>  		if (err)
+>  			return err;
+>  	}
+> =20
+> -	airoha_qdma_rmw(port->qdma, REG_CHAN_QOS_MODE(channel >> 3),
+> +	airoha_qdma_rmw(dev->qdma, REG_CHAN_QOS_MODE(channel >> 3),
+>  			CHAN_QOS_MODE_MASK(channel),
+>  			__field_prep(CHAN_QOS_MODE_MASK(channel), mode));
+> =20
+> @@ -2316,9 +2316,9 @@ static int airoha_qdma_get_tx_ets_stats(struct net_=
+device *netdev, int channel,
+>  	struct airoha_gdm_dev *dev =3D netdev_priv(netdev);
+>  	struct airoha_gdm_port *port =3D dev->port;
+> =20
+> -	u64 cpu_tx_packets =3D airoha_qdma_rr(port->qdma,
+> +	u64 cpu_tx_packets =3D airoha_qdma_rr(dev->qdma,
+>  					    REG_CNTR_VAL(channel << 1));
+> -	u64 fwd_tx_packets =3D airoha_qdma_rr(port->qdma,
+> +	u64 fwd_tx_packets =3D airoha_qdma_rr(dev->qdma,
+>  					    REG_CNTR_VAL((channel << 1) + 1));
+>  	u64 tx_packets =3D (cpu_tx_packets - port->cpu_tx_packets) +
+>  			 (fwd_tx_packets - port->fwd_tx_packets);
+> @@ -2582,17 +2582,16 @@ static int airoha_qdma_set_tx_rate_limit(struct n=
+et_device *netdev,
+>  					 u32 bucket_size)
+>  {
+>  	struct airoha_gdm_dev *dev =3D netdev_priv(netdev);
+> -	struct airoha_gdm_port *port =3D dev->port;
+>  	int i, err;
+> =20
+>  	for (i =3D 0; i <=3D TRTCM_PEAK_MODE; i++) {
+> -		err =3D airoha_qdma_set_trtcm_config(port->qdma, channel,
+> +		err =3D airoha_qdma_set_trtcm_config(dev->qdma, channel,
+>  						   REG_EGRESS_TRTCM_CFG, i,
+>  						   !!rate, TRTCM_METER_MODE);
+>  		if (err)
+>  			return err;
+> =20
+> -		err =3D airoha_qdma_set_trtcm_token_bucket(port->qdma, channel,
+> +		err =3D airoha_qdma_set_trtcm_token_bucket(dev->qdma, channel,
+>  							 REG_EGRESS_TRTCM_CFG,
+>  							 i, rate, bucket_size);
+>  		if (err)
+> @@ -2642,11 +2641,11 @@ static int airoha_tc_htb_alloc_leaf_queue(struct =
+net_device *netdev,
+>  	return 0;
+>  }
+> =20
+> -static int airoha_qdma_set_rx_meter(struct airoha_gdm_port *port,
+> +static int airoha_qdma_set_rx_meter(struct airoha_gdm_dev *dev,
+>  				    u32 rate, u32 bucket_size,
+>  				    enum trtcm_unit_type unit_type)
+>  {
+> -	struct airoha_qdma *qdma =3D port->qdma;
+> +	struct airoha_qdma *qdma =3D dev->qdma;
+>  	int i;
+> =20
+>  	for (i =3D 0; i < ARRAY_SIZE(qdma->q_rx); i++) {
+> @@ -2725,7 +2724,6 @@ static int airoha_dev_tc_matchall(struct net_device=
+ *netdev,
+>  {
+>  	enum trtcm_unit_type unit_type =3D TRTCM_BYTE_UNIT;
+>  	struct airoha_gdm_dev *dev =3D netdev_priv(netdev);
+> -	struct airoha_gdm_port *port =3D dev->port;
+>  	u32 rate =3D 0, bucket_size =3D 0;
+> =20
+>  	switch (f->command) {
+> @@ -2750,7 +2748,7 @@ static int airoha_dev_tc_matchall(struct net_device=
+ *netdev,
+>  		fallthrough;
+>  	}
+>  	case TC_CLSMATCHALL_DESTROY:
+> -		return airoha_qdma_set_rx_meter(port, rate, bucket_size,
+> +		return airoha_qdma_set_rx_meter(dev, rate, bucket_size,
+>  						unit_type);
+>  	default:
+>  		return -EOPNOTSUPP;
+> @@ -2762,8 +2760,7 @@ static int airoha_dev_setup_tc_block_cb(enum tc_set=
+up_type type,
+>  {
+>  	struct net_device *netdev =3D cb_priv;
+>  	struct airoha_gdm_dev *dev =3D netdev_priv(netdev);
+> -	struct airoha_gdm_port *port =3D dev->port;
+> -	struct airoha_eth *eth =3D port->qdma->eth;
+> +	struct airoha_eth *eth =3D dev->eth;
+> =20
+>  	if (!tc_can_offload(netdev))
+>  		return -EOPNOTSUPP;
+> diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ether=
+net/airoha/airoha_eth.h
+> index c78cabbec753..f1eea492217c 100644
+> --- a/drivers/net/ethernet/airoha/airoha_eth.h
+> +++ b/drivers/net/ethernet/airoha/airoha_eth.h
+> @@ -537,12 +537,12 @@ struct airoha_qdma {
+> =20
+>  struct airoha_gdm_dev {
+>  	struct airoha_gdm_port *port;
+> +	struct airoha_qdma *qdma;
+>  	struct net_device *dev;
+>  	struct airoha_eth *eth;
+>  };
+> =20
+>  struct airoha_gdm_port {
+> -	struct airoha_qdma *qdma;
+>  	struct airoha_gdm_dev *dev;
+>  	int id;
+>  	int nbq;
+> @@ -666,19 +666,18 @@ static inline bool airoha_is_7583(struct airoha_eth=
+ *eth)
+>  	return eth->soc->version =3D=3D 0x7583;
+>  }
+> =20
+> -int airoha_get_fe_port(struct airoha_gdm_port *port);
+> +int airoha_get_fe_port(struct airoha_gdm_dev *dev);
+>  bool airoha_is_valid_gdm_dev(struct airoha_eth *eth,
+>  			     struct airoha_gdm_dev *dev);
+> =20
+> -void airoha_ppe_set_cpu_port(struct airoha_gdm_port *port, u8 ppe_id,
+> -			     u8 fport);
+> +void airoha_ppe_set_cpu_port(struct airoha_gdm_dev *dev, u8 ppe_id, u8 f=
+port);
+>  bool airoha_ppe_is_enabled(struct airoha_eth *eth, int index);
+>  void airoha_ppe_check_skb(struct airoha_ppe_dev *dev, struct sk_buff *sk=
+b,
+>  			  u16 hash, bool rx_wlan);
+>  int airoha_ppe_setup_tc_block_cb(struct airoha_ppe_dev *dev, void *type_=
+data);
+>  int airoha_ppe_init(struct airoha_eth *eth);
+>  void airoha_ppe_deinit(struct airoha_eth *eth);
+> -void airoha_ppe_init_upd_mem(struct airoha_gdm_port *port);
+> +void airoha_ppe_init_upd_mem(struct airoha_gdm_dev *dev);
+>  u32 airoha_ppe_get_total_num_entries(struct airoha_ppe *ppe);
+>  struct airoha_foe_entry *airoha_ppe_foe_get_entry(struct airoha_ppe *ppe,
+>  						  u32 hash);
+> diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ether=
+net/airoha/airoha_ppe.c
+> index af7af4097b98..22f5f1bae730 100644
+> --- a/drivers/net/ethernet/airoha/airoha_ppe.c
+> +++ b/drivers/net/ethernet/airoha/airoha_ppe.c
+> @@ -84,9 +84,9 @@ static u32 airoha_ppe_get_timestamp(struct airoha_ppe *=
+ppe)
+>  			     AIROHA_FOE_IB1_BIND_TIMESTAMP);
+>  }
+> =20
+> -void airoha_ppe_set_cpu_port(struct airoha_gdm_port *port, u8 ppe_id, u8=
+ fport)
+> +void airoha_ppe_set_cpu_port(struct airoha_gdm_dev *dev, u8 ppe_id, u8 f=
+port)
+>  {
+> -	struct airoha_qdma *qdma =3D port->qdma;
+> +	struct airoha_qdma *qdma =3D dev->qdma;
+>  	struct airoha_eth *eth =3D qdma->eth;
+>  	u8 qdma_id =3D qdma - &eth->qdma[0];
+>  	u32 fe_cpu_port;
+> @@ -180,8 +180,8 @@ static void airoha_ppe_hw_init(struct airoha_ppe *ppe)
+>  			if (!port)
+>  				continue;
+> =20
+> -			airoha_ppe_set_cpu_port(port, i,
+> -						airoha_get_fe_port(port));
+> +			airoha_ppe_set_cpu_port(port->dev, i,
+> +						airoha_get_fe_port(port->dev));
+>  		}
+>  	}
+>  }
+> @@ -1473,11 +1473,12 @@ void airoha_ppe_check_skb(struct airoha_ppe_dev *=
+dev, struct sk_buff *skb,
+>  	airoha_ppe_foe_insert_entry(ppe, skb, hash, rx_wlan);
+>  }
+> =20
+> -void airoha_ppe_init_upd_mem(struct airoha_gdm_port *port)
+> +void airoha_ppe_init_upd_mem(struct airoha_gdm_dev *dev)
+>  {
+> -	struct airoha_eth *eth =3D port->qdma->eth;
+> -	struct net_device *dev =3D port->dev->dev;
+> -	const u8 *addr =3D dev->dev_addr;
+> +	struct airoha_gdm_port *port =3D dev->port;
+> +	struct net_device *netdev =3D dev->dev;
+> +	struct airoha_eth *eth =3D dev->eth;
+> +	const u8 *addr =3D netdev->dev_addr;
+>  	u32 val;
+> =20
+>  	val =3D (addr[2] << 24) | (addr[3] << 16) | (addr[4] << 8) | addr[5];
+>=20
+> --=20
+> 2.54.0
+>=20
 
---_004_TYZPR02MB5232A8C6A2BA56226D97CF4A90062TYZPR02MB5232apcp_
-Content-Type: application/octet-stream;
-	name="0001-net-wwan-t7xx-fix-race-between-TX-thread-and-system-.patch"
-Content-Description: 0001-net-wwan-t7xx-fix-race-between-TX-thread-and-system-.patch
-Content-Disposition: attachment;
-	filename="0001-net-wwan-t7xx-fix-race-between-TX-thread-and-system-.patch";
-	size=4009; creation-date="Wed, 13 May 2026 08:21:58 GMT";
-	modification-date="Wed, 13 May 2026 08:36:35 GMT"
-Content-Transfer-Encoding: base64
+Commenting on sashiko's report:
+https://sashiko.dev/#/patchset/20260511-airoha-eth-multi-serdes-v6-0-c89946=
+2c4f75%40kernel.org
+- This isn't a regression introduced by this patch, but is it safe to use
+  spin_lock() here instead of spin_lock_bh()?
+  - According to my understanding ndo_get_stats64 callback can't run softirq
+    context.
 
-RnJvbSA3NDEyODg1ZmQzYjFkYTg2ZDBmZGMyM2U5YTQ4YWY0YjZkNTJjMzcwIE1vbiBTZXAgMTcg
-MDA6MDA6MDAgMjAwMQpGcm9tOiBUaW0gSkggQ2hlbiA8dGltLmpoLmNoZW5Ad25jLmNvbS50dz4K
-RGF0ZTogV2VkLCAxMyBNYXkgMjAyNiAwOToyMTo0MCArMDgwMApTdWJqZWN0OiBbUEFUQ0hdIG5l
-dDogd3dhbjogdDd4eDogZml4IHJhY2UgYmV0d2VlbiBUWCB0aHJlYWQgYW5kIHN5c3RlbSBQTQog
-c3VzcGVuZApNSU1FLVZlcnNpb246IDEuMApDb250ZW50LVR5cGU6IHRleHQvcGxhaW47IGNoYXJz
-ZXQ9VVRGLTgKQ29udGVudC1UcmFuc2Zlci1FbmNvZGluZzogOGJpdAoKV2hlbiBzeXN0ZW0gc3Vz
-cGVuZCBpcyB0cmlnZ2VyZWQgd2hpbGUgdGhlIERQTUFJRiBUWCBrdGhyZWFkCih0N3h4X2RwbWFp
-Zl90eF9od19wdXNoX3RocmVhZCkgaXMgcnVubmluZywgYSBkZWFkbG9jayBjYW4gb2NjdXIKbGVh
-ZGluZyB0byBhIENQVSBzb2Z0IGxvY2t1cC4KClRoZSByb290IGNhdXNlIGlzIHR3by1mb2xkOgoK
-MS4gdDd4eF9kcG1haWZfc3VzcGVuZCgpIGNhbGxzIHQ3eHhfZHBtYWlmX3R4X3N0b3AoKSB3aGlj
-aCBvbmx5IHN0b3BzCiAgIHRoZSBUWCB3b3JrLXF1ZXVlIGl0ZW1zIChieSBjbGVhcmluZyB0eHEt
-PnF1ZV9zdGFydGVkIGFuZCB3YWl0aW5nIG9uCiAgIHR4cS0+dHhfcHJvY2Vzc2luZykuIEl0IGRv
-ZXMgTk9UIHNpZ25hbCB0aGUga3RocmVhZCBhbmQgZG9lcyBOT1QKICAgdXBkYXRlIGRwbWFpZl9j
-dHJsLT5zdGF0ZSwgd2hpY2ggc3RheXMgRFBNQUlGX1NUQVRFX1BXUk9OLgoKMi4gVGhlIGt0aHJl
-YWQncyBzdGF0ZSBndWFyZCAobGluZTogImlmIC4uLiBzdGF0ZSAhPSBEUE1BSUZfU1RBVEVfUFdS
-T04iKQogICBpcyBvbmx5IGNoZWNrZWQgYXQgdGhlIHRvcCBvZiBlYWNoIGxvb3AgaXRlcmF0aW9u
-LiBJZiB0aGUgdGhyZWFkCiAgIGFscmVhZHkgcGFzc2VkIHRoaXMgZ3VhcmQsIGl0IHByb2NlZWRz
-IHVuY29uZGl0aW9uYWxseSB0byBjYWxsCiAgIHBtX3J1bnRpbWVfcmVzdW1lX2FuZF9nZXQoKSDi
-gJQgd2hpY2ggdHJpZXMgdG8gYWNxdWlyZSB0aGUgUE0gc3BpbmxvY2sKICAgYWxzbyBoZWxkIChv
-ciBjb250ZW5kZWQpIGJ5IHRoZSBzeXN0ZW0gUE0gc3VzcGVuZCBwYXRoLgoKVGhlIHJlc3VsdCBp
-cyBhIHNwaW5sb2NrIGRlYWRsb2NrIG9ic2VydmVkIGFzOgoKICB3YXRjaGRvZzogQlVHOiBzb2Z0
-IGxvY2t1cCAtIENQVSNOIHN0dWNrIGZvciAyNnMhIFtkcG1haWZfdHhfaHdfcHVdCiAgUklQOiBf
-cmF3X3NwaW5fdW5sb2NrX2lycXJlc3RvcmUKICBDYWxsIFRyYWNlOgogICAgX19wbV9ydW50aW1l
-X3Jlc3VtZSsweDViLzB4ODAKICAgIHQ3eHhfZHBtYWlmX3R4X2h3X3B1c2hfdGhyZWFkKzB4YzQg
-W210a190N3h4XQoKVGhlIGNvbmRpdGlvbiByZXF1aXJlcyBBU1BNIEwxIGVuYWJsZWQgb24gdGhl
-IGVuZHBvaW50ICh3aGljaCBleHRlbmRzCnRoZSB0aW1lIHBtX3J1bnRpbWVfcmVzdW1lX2FuZF9n
-ZXQoKSBob2xkcyB0aGUgUE0gbG9jayBkdXJpbmcgTDEuMgpsaW5rIHJldHJhaW5pbmcpIGFuZCBo
-dW5kcmVkcyBvZiByZXBlYXRlZCBzdXNwZW5kL3Jlc3VtZSBjeWNsZXMgdG8KdHJpZ2dlciByZWxp
-YWJseS4KCkZpeCBieSB0aHJlZSBjb29yZGluYXRlZCBjaGFuZ2VzOgoKLSBJbiB0N3h4X2RwbWFp
-Zl9zdXNwZW5kKCk6IGltbWVkaWF0ZWx5IHNldCBzdGF0ZSB0byBEUE1BSUZfU1RBVEVfUFdST0ZG
-CiAgYWZ0ZXIgc3RvcHBpbmcgdGhlIFRYIHF1ZXVlLCB0aGVuIGNhbGwgd2FrZV91cCgpIHNvIGFu
-eSBzbGVlcGluZyB0aHJlYWQKICByZS1ldmFsdWF0ZXMgdGhlIHdhaXRfZXZlbnQgY29uZGl0aW9u
-IGFuZCBzdG9wcy4KCi0gSW4gdDd4eF9kcG1haWZfcmVzdW1lKCk6IHJlc3RvcmUgc3RhdGUgdG8g
-RFBNQUlGX1NUQVRFX1BXUk9OIGJlZm9yZQogIHJlLWVuYWJsaW5nIHRoZSBUWCBxdWV1ZXMsIHN5
-bW1ldHJpYyB3aXRoIHRoZSBzdXNwZW5kIGNoYW5nZS4KICBXaXRob3V0IHRoaXMgdGhlIGt0aHJl
-YWQgd291bGQgbmV2ZXIgd2FrZSB1cCBhZnRlciByZXN1bWUuCgotIEluIHQ3eHhfZHBtYWlmX3R4
-X2h3X3B1c2hfdGhyZWFkKCk6IGFkZCBhIHNlY29uZCBzdGF0ZSBjaGVjawogIGltbWVkaWF0ZWx5
-IGJlZm9yZSBwbV9ydW50aW1lX3Jlc3VtZV9hbmRfZ2V0KCkgdG8gY2xvc2UgdGhlIFRPQ1RPVQog
-IHdpbmRvdyBiZXR3ZWVuIHRoZSB3YWl0X2V2ZW50IGd1YXJkIGFuZCB0aGUgcG0gY2FsbC4KClRl
-c3RlZDogbm8gc29mdCBsb2NrdXAgb2JzZXJ2ZWQgb3ZlciA1MDArIHN1c3BlbmQvcmVzdW1lIGN5
-Y2xlcyB3aXRoClNJTSByZWdpc3RlcmVkIGFuZCBBU1BNIEwxIGVuYWJsZWQgKHByZXZpb3VzbHkg
-dHJpZ2dlcmVkIGluIDwgMzAwKS4KCkZpeGVzOiAwNWY3ZTg5YWIgKCJMaW51eCA2LjE5IikKU2ln
-bmVkLW9mZi1ieTogVGltIEpIIENoZW4gPHRpbS5qaC5jaGVuQHduYy5jb20udHc+Ci0tLQogZHJp
-dmVycy9uZXQvd3dhbi90N3h4L3Q3eHhfaGlmX2RwbWFpZi5jICAgIHwgMyArKysKIGRyaXZlcnMv
-bmV0L3d3YW4vdDd4eC90N3h4X2hpZl9kcG1haWZfdHguYyB8IDMgKysrCiAyIGZpbGVzIGNoYW5n
-ZWQsIDYgaW5zZXJ0aW9ucygrKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3d3YW4vdDd4eC90
-N3h4X2hpZl9kcG1haWYuYyBiL2RyaXZlcnMvbmV0L3d3YW4vdDd4eC90N3h4X2hpZl9kcG1haWYu
-YwppbmRleCA3ZmYzM2MxZDYuLjMxNWE3N2UyNCAxMDA2NDQKLS0tIGEvZHJpdmVycy9uZXQvd3dh
-bi90N3h4L3Q3eHhfaGlmX2RwbWFpZi5jCisrKyBiL2RyaXZlcnMvbmV0L3d3YW4vdDd4eC90N3h4
-X2hpZl9kcG1haWYuYwpAQCAtNDEyLDYgKzQxMiw4IEBAIHN0YXRpYyBpbnQgdDd4eF9kcG1haWZf
-c3VzcGVuZChzdHJ1Y3QgdDd4eF9wY2lfZGV2ICp0N3h4X2Rldiwgdm9pZCAqcGFyYW0pCiAJc3Ry
-dWN0IGRwbWFpZl9jdHJsICpkcG1haWZfY3RybCA9IHBhcmFtOwogCiAJdDd4eF9kcG1haWZfdHhf
-c3RvcChkcG1haWZfY3RybCk7CisJZHBtYWlmX2N0cmwtPnN0YXRlID0gRFBNQUlGX1NUQVRFX1BX
-Uk9GRjsKKwl3YWtlX3VwKCZkcG1haWZfY3RybC0+dHhfd3EpOwogCXQ3eHhfZHBtYWlmX2h3X3N0
-b3BfYWxsX3R4cSgmZHBtYWlmX2N0cmwtPmh3X2luZm8pOwogCXQ3eHhfZHBtYWlmX2h3X3N0b3Bf
-YWxsX3J4cSgmZHBtYWlmX2N0cmwtPmh3X2luZm8pOwogCXQ3eHhfZHBtYWlmX2Rpc2FibGVfaXJx
-KGRwbWFpZl9jdHJsKTsKQEAgLTQ1MSw2ICs0NTMsNyBAQCBzdGF0aWMgaW50IHQ3eHhfZHBtYWlm
-X3Jlc3VtZShzdHJ1Y3QgdDd4eF9wY2lfZGV2ICp0N3h4X2Rldiwgdm9pZCAqcGFyYW0pCiAJaWYg
-KCFkcG1haWZfY3RybCkKIAkJcmV0dXJuIDA7CiAKKwlkcG1haWZfY3RybC0+c3RhdGUgPSBEUE1B
-SUZfU1RBVEVfUFdST047CiAJdDd4eF9kcG1haWZfc3RhcnRfdHhyeF9xcyhkcG1haWZfY3RybCk7
-CiAJdDd4eF9kcG1haWZfZW5hYmxlX2lycShkcG1haWZfY3RybCk7CiAJdDd4eF9kcG1haWZfdW5t
-YXNrX2RscV9pbnRyKGRwbWFpZl9jdHJsKTsKZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3d3YW4v
-dDd4eC90N3h4X2hpZl9kcG1haWZfdHguYyBiL2RyaXZlcnMvbmV0L3d3YW4vdDd4eC90N3h4X2hp
-Zl9kcG1haWZfdHguYwppbmRleCAyMzZkNjMyY2YuLmQ1YTViZWZlYyAxMDA2NDQKLS0tIGEvZHJp
-dmVycy9uZXQvd3dhbi90N3h4L3Q3eHhfaGlmX2RwbWFpZl90eC5jCisrKyBiL2RyaXZlcnMvbmV0
-L3d3YW4vdDd4eC90N3h4X2hpZl9kcG1haWZfdHguYwpAQCAtNDYwLDYgKzQ2MCw5IEBAIHN0YXRp
-YyBpbnQgdDd4eF9kcG1haWZfdHhfaHdfcHVzaF90aHJlYWQodm9pZCAqYXJnKQogCQkJCWJyZWFr
-OwogCQl9CiAKKwkJaWYgKGRwbWFpZl9jdHJsLT5zdGF0ZSAhPSBEUE1BSUZfU1RBVEVfUFdST04p
-CisJCQljb250aW51ZTsKKwogCQlyZXQgPSBwbV9ydW50aW1lX3Jlc3VtZV9hbmRfZ2V0KGRwbWFp
-Zl9jdHJsLT5kZXYpOwogCQlpZiAocmV0IDwgMCAmJiByZXQgIT0gLUVBQ0NFUykKIAkJCXJldHVy
-biByZXQ7Ci0tIAoyLjI1LjEKCg==
+--NE+4h+Wyx7O1ITBi
+Content-Type: application/pgp-signature; name=signature.asc
 
---_004_TYZPR02MB5232A8C6A2BA56226D97CF4A90062TYZPR02MB5232apcp_--
+-----BEGIN PGP SIGNATURE-----
 
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCagQ6IgAKCRA6cBh0uS2t
+rEkcAQC2ig9Q3isG9GROZcAedOuCxFa7PNLkJr6FgQU71+9XKgD+KENnRdmunSv/
+sv4qVObbRaSCGbg1D1CLGPFCsU2UeAs=
+=eF2v
+-----END PGP SIGNATURE-----
+
+--NE+4h+Wyx7O1ITBi--
