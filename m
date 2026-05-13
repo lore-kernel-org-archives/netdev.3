@@ -1,32 +1,32 @@
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F0B53A9D88
-	for <netdev@vger.kernel.org>; Wed, 13 May 2026 18:27:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17C033AA500
+	for <netdev@vger.kernel.org>; Wed, 13 May 2026 18:27:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778696858; cv=none; b=Mu2pgTaWTRyB1cuZfwv6ol8EClFaRU+xo0nSXV6clBkKOsJhT9vlphcqySjrfGLEWV2xosUSjqScm1xL7Qppugv0N4/EpvqDtI/HhGPZvorL4MGJkiNIuvh/kreLYQ7R5GKHtoBOxLY0hZlxrSDQ8DAD9h1bGbjzdR4PGqyZ1oc=
+	t=1778696861; cv=none; b=ShOHBsWfvpYiPUVxZmdZp0k3Ua4hAHi0F6gI29V1I2n4iOmncNUmyqo8viweDCcU51NyBsPiVnzSKqYawgkw+JVMrHKK5Wyi4nWB8qkg+Ov6w6dW0XsDU8DXjOqM4qCfsp9NIbMf0Mwi9wJjr5fthmwDfl3gqe9x9sdfIBsP3aM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778696858; c=relaxed/simple;
-	bh=wpjN+RGXgqlQnmx04rMsajg2yRYQms5G25hV8udFr7c=;
+	s=arc-20240116; t=1778696861; c=relaxed/simple;
+	bh=pmjkMioukLW5g1txgrEEVf7hs/e4o+qCrWbxN4mexf0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YTu0Lpf94G3lMYQPYo+6YO3/NA7j2rFiuD+lfzL+1fZDSHIl87NnIykMGCyjIkrgwKUKijICv4PvuXp9zgSqyyZtQU+fYEM340xmrHj3grP/tLOhBBHfQosBMeqx9k2yY45tWYgPckqDAkvNa4vzu7m3OwxInhzTSfHSV9feGRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=dNT6sHuw; arc=none smtp.client-ip=91.218.175.174
+	 MIME-Version; b=epyviWdqWfB3nXsGofAaSJpDxNX+yC5O9UIPEiM2Fl7y7zFTT+kW4syHlzfNNVA5GOd7995vrhgQbV9LHvn5Er8vxIM1Pw4BhsFxGn1WzvdoGKL0Pj/aA4hzSB6GEfqC0NW25FFHWuJWCPNnshCAsCyEq9HkPR3uY2Jd1oOF7JM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=rDK00f9k; arc=none smtp.client-ip=91.218.175.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="dNT6sHuw"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="rDK00f9k"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1778696855;
+	t=1778696858;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=TlNyc17gw2Ti7/hBMrFLpptKaPycSsdcm8axofbmVWA=;
-	b=dNT6sHuwynPBxzSrUDMXd9nf1R6f3dHqiukQkvhnwBmTR26Lp7MA4PZCkyqxJygfO2jT3b
-	Huoz+znlreNDaVU3kboUOkYELcEnhOwudvN8Bc8737yuFkcE9SqN7layT2UuDPq+GVh54r
-	zWaZ58dIpv3zcqFfFr7VROBjmmeyv1Y=
+	bh=f2nx21UCgkelQfmsgGrpgYKaWUBt9g94q5n1ek11K60=;
+	b=rDK00f9kgn/XkdbYChNRnvvrKW9ajzsfvLmyg61vkCI/Rp5JwODQ4wqDe4usFeFHBmJHwA
+	3YMiMHkqxKa2vOtyaZMlyJnGebg3U0QFxZ6Iw0rTez5CXtOpvgwyOkLzvO9IhIcLYkMul7
+	QgESNXnqleq4jk+jQaA8s0H6aqMLDIk=
 From: luka.gejak@linux.dev
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -35,9 +35,9 @@ Cc: davem@davemloft.net,
 	pabeni@redhat.com,
 	fmaurer@redhat.com,
 	luka.gejak@linux.dev
-Subject: [PATCH net-next v6 1/2] net: hsr: require valid EOT supervision TLV
-Date: Wed, 13 May 2026 20:26:56 +0200
-Message-ID: <20260513182657.20346-2-luka.gejak@linux.dev>
+Subject: [PATCH net-next v6 2/2] net: hsr: reject unresolved interlink ifindex
+Date: Wed, 13 May 2026 20:26:57 +0200
+Message-ID: <20260513182657.20346-3-luka.gejak@linux.dev>
 In-Reply-To: <20260513182657.20346-1-luka.gejak@linux.dev>
 References: <20260513182657.20346-1-luka.gejak@linux.dev>
 Precedence: bulk
@@ -51,51 +51,40 @@ X-Migadu-Flow: FLOW_OUT
 
 From: Luka Gejak <luka.gejak@linux.dev>
 
-Supervision frames are only valid if terminated with a zero-length EOT
-TLV. The current check fails to reject non-EOT entries as the terminal
-TLV, potentially allowing malformed supervision traffic.
+In hsr_newlink(), a provided but invalid IFLA_HSR_INTERLINK attribute
+was silently ignored if __dev_get_by_index() returned NULL. This leads
+to incorrect RedBox topology creation without notifying the user.
 
-Fix this by strictly requiring the terminal TLV to be HSR_TLV_EOT
-with a length of zero, and properly linearizing the TLV header before
-access.
+Fix this by returning -EINVAL and an extack message when the
+interlink attribute is present but cannot be resolved.
 
 Assisted-by: Gemini:Gemini-3.1-flash
+Reviewed-by: Felix Maurer <fmaurer@redhat.com>
 Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
 ---
- net/hsr/hsr_forward.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/hsr/hsr_netlink.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
-index 0aca859c88cb..0774981a65c1 100644
---- a/net/hsr/hsr_forward.c
-+++ b/net/hsr/hsr_forward.c
-@@ -84,7 +84,7 @@ static bool is_supervision_frame(struct hsr_priv *hsr, struct sk_buff *skb)
- 
- 	/* Get next tlv */
- 	total_length += hsr_sup_tag->tlv.HSR_TLV_length;
--	if (!pskb_may_pull(skb, total_length))
-+	if (!pskb_may_pull(skb, total_length + sizeof(struct hsr_sup_tlv)))
- 		return false;
- 	skb_pull(skb, total_length);
- 	hsr_sup_tlv = (struct hsr_sup_tlv *)skb->data;
-@@ -100,7 +100,7 @@ static bool is_supervision_frame(struct hsr_priv *hsr, struct sk_buff *skb)
- 
- 		/* make sure another tlv follows */
- 		total_length += sizeof(struct hsr_sup_tlv) + hsr_sup_tlv->HSR_TLV_length;
--		if (!pskb_may_pull(skb, total_length))
-+		if (!pskb_may_pull(skb, total_length + sizeof(struct hsr_sup_tlv)))
- 			return false;
- 
- 		/* get next tlv */
-@@ -110,7 +110,7 @@ static bool is_supervision_frame(struct hsr_priv *hsr, struct sk_buff *skb)
+diff --git a/net/hsr/hsr_netlink.c b/net/hsr/hsr_netlink.c
+index db0b0af7a692..f0ca23da3ab9 100644
+--- a/net/hsr/hsr_netlink.c
++++ b/net/hsr/hsr_netlink.c
+@@ -76,9 +76,14 @@ static int hsr_newlink(struct net_device *dev,
+ 		return -EINVAL;
  	}
  
- 	/* end of tlvs must follow at the end */
--	if (hsr_sup_tlv->HSR_TLV_type == HSR_TLV_EOT &&
-+	if (hsr_sup_tlv->HSR_TLV_type != HSR_TLV_EOT ||
- 	    hsr_sup_tlv->HSR_TLV_length != 0)
- 		return false;
+-	if (data[IFLA_HSR_INTERLINK])
++	if (data[IFLA_HSR_INTERLINK]) {
+ 		interlink = __dev_get_by_index(link_net,
+ 					       nla_get_u32(data[IFLA_HSR_INTERLINK]));
++		if (!interlink) {
++			NL_SET_ERR_MSG_MOD(extack, "Interlink does not exist");
++			return -EINVAL;
++		}
++	}
  
+ 	if (interlink && interlink == link[0]) {
+ 		NL_SET_ERR_MSG_MOD(extack, "Interlink and Slave1 are the same");
 -- 
 2.53.0
 
