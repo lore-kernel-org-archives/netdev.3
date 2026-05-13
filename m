@@ -1,116 +1,121 @@
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E83AC3CDBCF
-	for <netdev@vger.kernel.org>; Wed, 13 May 2026 23:46:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2F842D29C8
+	for <netdev@vger.kernel.org>; Wed, 13 May 2026 23:53:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778716019; cv=none; b=XASSFnecSkl5Ms4qHZOT8yfUqpB06Lm3y1C7aZyTUx5FhTGf3uWPJ0F/6wmwXPWXZ8Hq2TXh9Evbh/Mq/JO+VAGqiKQvqGtywV2CqZ3OIOwxJx/IehRYyVDEG90mAjv7FNLUB+NXKHm/dkQ19zSpsJHQ3S6wz/nK/BhqaqGY5AQ=
+	t=1778716387; cv=none; b=QJeCuDQYlrPvfOnhcQfv4Z7t408fD5mCYLVaeRQATJnazNxd0yNzNBb7D67EyccsIMPSohV8HSRJ/YT0tfaxJ4UvrpFOoWYAduGoUjR0W40Mp4mT3RdewDFr51NBCsTrj3hTTWUn+nrdlD679wp9X4opKHcwmUXN8fd7lGOyex8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778716019; c=relaxed/simple;
-	bh=nABnyTVpdpjK5O3wtbrmycZjbC6IhActFaxQTKL0PH4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Gy/WeZNwk+j/ifBXr5upa8lxwVwOpjaNq2bNrr+zmiN7lL+lFrjsoyQVj8zNubksbhLVQU+JwTBD8K6PAUXJzbSTQPD/VC3bebCIPac28H21fkd4oc6XjgliL6rLvnHeBYyc7RWNAQwKalI1AW6vFpjBps9SMK8IqKz0V1Jd1BE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=cVjn7pyJ; arc=none smtp.client-ip=209.85.222.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1778716387; c=relaxed/simple;
+	bh=0gQKUOWRFCHFEXWMgOwPi1lRiFrKxliXZKk8yZyJNWM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=h8teNdPhcuXUlh+Tf/W9lL/1DYLtFcup3/OP5Tst32upzC7Jg7zqX8ZL1hIrT/0SeJF/jhsMlVpDwO4KTinllJkxWodUyNAws5C1WDF+rHjK8wVOS4SChcgXbc5yZPqB9nK/+CZuQejHpJjYlzloWAE3aTQgIz6eXAJawDDye4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OGfgBQae; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="cVjn7pyJ"
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-90d042fa745so396684085a.1
-        for <netdev@vger.kernel.org>; Wed, 13 May 2026 16:46:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1778716017; x=1779320817; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fkTU6tjGG+nOcVlZzdhoBVAzDEp9yyRsCuO17s66584=;
-        b=cVjn7pyJuevwdWBS6gPt8TLoDkrW9VAXpoE7Cl1n1yF5qQYP+tjhho9mp/KOcejhUb
-         GVy8+HRmlr3ubV07o+9Tkw5Hs3+GFPmLBsbT4Zm0axwX3xT45WeEE5TxBMXgcJpCfapD
-         0glamCEwT0CwmffxtXTk3rmHxpq1axM6p48A6HjJm/zYaPAFJUr8nQH5gLEiJHKAy+Ee
-         5JB7EPB/JvHsbuV7J525JCN7ck5YKEwfiAW4XSHzvoTg1jcA5sNyoqlSx3Y/AjYKp0qC
-         psyTvIntQ7LAIqChx2CNg5D0Q0nGLYxml5PTkqSSxpzgrpXiZ3Aro/3Jhz/fw09x8IM0
-         NmOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778716017; x=1779320817;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fkTU6tjGG+nOcVlZzdhoBVAzDEp9yyRsCuO17s66584=;
-        b=blDNnnH2vXpKqvbGuMn/0zawxnotDL3CrS+l4FY/JGeUbF2N3IFCvE21Py+x/45DDg
-         Y12hvcUWzONhrni8PfHW49UPsZm6f4el+u8wX3V7GL3BT5Q0loC4Br3eQJQgkkxKnKip
-         F6f9j+j0myWmMYNKkJ1W1FpIsUztNNXjg9e34Fy6isdUpuz7ol8YxYrGlf3GEd0lTQuK
-         EGLvVcaZ8yhm+ryg2mfWuVjDd6v4XZNQiUg7zEfMvZU7yH8wSz8koXTnI9A6uGoQozg2
-         pzWgdWbjcpJrkrK94blvymKlNP/zzBF5kQ1s4JOhO1PelR3J8q0LcETgWkmqmErx6MmV
-         yaCA==
-X-Forwarded-Encrypted: i=1; AFNElJ9VYN5kMByAlk6qnuytj8pm+pU/jHKo3sYPiTU38T/JZKKM8GwMzmoLjkMeSTHIyzNnAR+q3z8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwOwgIKDWd/PjpdcTOgbCH6vFx7PwX5vsan28Cc7gF53V5lGUFY
-	5S+GousP0FEFDFrWcUPPamLYenWsKU0eSSgetezdEAwAj+7S2rS+WkMxbgBntEPJ1SA=
-X-Gm-Gg: Acq92OEzXsbUQgMK1mRf8l8xJuTLbuHsoL0rNkACGkk2ao/7DofJ/eGDPZYuAdgFC1f
-	vErQCdjA8U1DFp1lDdyt0xBXyI958FNhAR8I8LL4fur87BYaqTKH7nt/VmayKOUrl2EKqJLbdte
-	WFrcJ+Err8do8WZ5pgkn25sZAXTwUAS/Z163DIuQUfmLDurVjR/L51U+O5jN+6xx0v2jJz9mpNA
-	69vl5ytHGaJ/iax11Qs5+SKe31qw0U2Gmh5WMNQuaq5FXMmOjoDSgz+hYoBeqntdd78hrr9aXzk
-	M4c9KA4d89b+V92PIbrHMiNtDUJNEhcbZ73ZQIyIBp/bCsg6M7uGbtum6p2n/LpvfrQrPazhPbC
-	oKZa8OYCjz48OhuRquIgC1O85cpTvAyY89rv4qZHwkkLAhANNk85GsL1i4E2lnSIskyoosLN8tb
-	zZim7+glDnAeUyO3qzoMuk029CocZsMUxlaNNYtoeEKOdnKNdVAw0ZK2iLchNaU3Fnv+GT2pYUt
-	e3FPQ==
-X-Received: by 2002:a05:620a:4409:b0:910:3078:5cf6 with SMTP id af79cd13be357-910307868dcmr532307185a.44.1778716016939;
-        Wed, 13 May 2026 16:46:56 -0700 (PDT)
-Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-910bae27359sm107053985a.17.2026.05.13.16.46.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 May 2026 16:46:56 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wNJHz-000000048gW-3syt;
-	Wed, 13 May 2026 20:46:55 -0300
-Date: Wed, 13 May 2026 20:46:55 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Leon Romanovsky <leon@kernel.org>
-Cc: syzbot+d8f76778263ab65c2b21@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>, akpm@linux-foundation.org,
-	arjan@linux.intel.com, davem@davemloft.net, dsahern@kernel.org,
-	edumazet@google.com, hdanton@sina.com, horms@kernel.org,
-	kuba@kernel.org, kuniyu@google.com, linux-kernel@vger.kernel.org,
-	linux-rdma@vger.kernel.org, netdev@vger.kernel.org,
-	pabeni@redhat.com, syzkaller-bugs@googlegroups.com,
-	yanjun.zhu@linux.dev, zyjzyj2000@gmail.com
-Subject: Re: [PATCH] RDMA/nldev: add mutual exclusion in nldev_dellink()
-Message-ID: <20260513234655.GW7702@ziepe.ca>
-References: <tencent_611BEB4B141B1A2526BAA3BBB2335F9E9108@qq.com>
- <177869624862.2335447.16979087766093395765.b4-ty@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OGfgBQae"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778716386; x=1810252386;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=0gQKUOWRFCHFEXWMgOwPi1lRiFrKxliXZKk8yZyJNWM=;
+  b=OGfgBQaepJ9JlEWxwTkURhVBDdkEfuDAMrIBuGgV4nKJgM4KvBGEWC6C
+   P8hpDmBeeja9ejY1GmFVZxHxIkL/IhH37M0tA6ZRwmBGOFdXHP9H2b+mY
+   Brsum5BeQc5ismaHZzFwaiWg3RnPKYZXhlrMXSAD80HOa3jYA1UhsaekL
+   qqcPoatup1llsM/61wNyA4MxYtdm7oMJy9i9liWQWeaMKyxvdkKP8Fr3+
+   5NFRpQnxCodqW3lzkWGn7A3XrfB+2w1ZR/NgoW6NtMaaGlxviA6OI6gyX
+   kthDB5Gouc49Wor7gkjCoN6ynzDVf1XtfkVrDfN8Gi4JgA1tX+gIhAm9k
+   w==;
+X-CSE-ConnectionGUID: B4fm2WKgRrqCs6bydxvQJg==
+X-CSE-MsgGUID: GMOBchDMQU+VEf53ncLpLw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11785"; a="78799223"
+X-IronPort-AV: E=Sophos;i="6.23,233,1770624000"; 
+   d="scan'208";a="78799223"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 16:53:05 -0700
+X-CSE-ConnectionGUID: tCemc5wKRrG+PeePlDaJaw==
+X-CSE-MsgGUID: foyqgXBUQj6+80Nam2tavg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,233,1770624000"; 
+   d="scan'208";a="276319925"
+Received: from dmert-dev.jf.intel.com ([10.166.241.33])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 16:53:04 -0700
+From: Dave Ertman <david.m.ertman@intel.com>
+To: cratiu@nvidia.com
+Cc: andrew+netdev@lunn.ch,
+	cjubran@nvidia.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	gal@nvidia.com,
+	horms@kernel.org,
+	jiri@resnulli.us,
+	kuba@kernel.org,
+	leonro@nvidia.com,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	saeedm@nvidia.com,
+	tariqt@nvidia.com
+Subject: Re:net-shapers plan
+Date: Wed, 13 May 2026 16:53:26 -0400
+Message-ID: <20260513205326.2571971-1-david.m.ertman@intel.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <d9831d0c940a7b77419abe7c7330e822bbfd1cfb.camel@nvidia.com>
+References: <d9831d0c940a7b77419abe7c7330e822bbfd1cfb.camel@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <177869624862.2335447.16979087766093395765.b4-ty@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Wed, May 13, 2026 at 02:17:28PM -0400, Leon Romanovsky wrote:
+On 3/6/2025 6:03 AM, Cosmin Ratiu wrote:
+> Hello,
 > 
-> On Thu, 07 May 2026 20:50:10 +0800, Edward Adam Davis wrote:
-> > We must serialize calls to nldev_dellink() or risk a crash as syzbot
-> > reported:
-> > 
-> > Call Trace:
-> >  udp_tunnel_sock_release+0x6d/0x80 net/ipv4/udp_tunnel_core.c:197
-> >  rxe_release_udp_tunnel drivers/infiniband/sw/rxe/rxe_net.c:294 [inline]
-> >  rxe_sock_put drivers/infiniband/sw/rxe/rxe_net.c:639 [inline]
-> >  rxe_net_del+0xfb/0x290 drivers/infiniband/sw/rxe/rxe_net.c:660
-> >  rxe_dellink+0x15/0x20 drivers/infiniband/sw/rxe/rxe.c:254
-> > 
-> > [...]
+> This (long) email presents a plan agreed with Simon and Paolo for
+> extending net-shapers with use cases currently serviced by devlink-
+> rate. The goal is to get net-shapers to feature parity with devlink-
+> rate so that the amount of code dedicated to traffic shaping in the
+> kernel could eventually be reduced significantly.
 > 
-> Applied, thanks!
+> This is in response to Jakub's concerns raised in [3] and [4].
 > 
-> [1/1] RDMA/nldev: add mutual exclusion in nldev_dellink()
->       https://git.kernel.org/rdma/rdma/c/0b28000b64f40d
+> Context
+> -------
+> devlink-rate ([1]) can control traffic shaping for a VF / VF group and
+> is currently implemented by the Intel ice and NVIDIA mlx5 drivers. It
+> operates either on devlink ports (for VF rates) or on devlink objects
+> (for group rates). Rate objects are owned by the devlink object.
+> 
+> net-shapers ([2]) is a recently added API for shaping traffic for a
+> netdev tx queue / queue group / entire netdev. It is more granular than
+> devlink-rate but cannot currently control shaping for groups of
+> netdevs. It operates with netdev handles. Stores the shaping hierarchy
+> in the netdevice.
+> 
+> [3] & [4] add support to devlink-rate for traffic-class shaping, which
+> is controlling the shaping hierarchy in hardware to control the
+> bandwidth allocation different traffic classes get. The question is how
+> to represent traffic classes in net-shapers.
 
-This seems like a rxe bug, I would have expected the lock to be inside
-rxe to protect its racy implementation of rxe_net_del(), which looks
-like it is possibly also triggered by NETDEV_UNREGISTER...
+[ ... ]
 
-ie it should not change nldev_dellink().
+> 3. Extend NODE scope to group multiple netdevs and new DEVLINK binding
+> Today, all net-shapers objects are owned by a netdevice. Who should own
+> a net shaper that represents a group of netdevices? It needs to be a
+> stable object that isn't affected by group membership changes and
+> therefore cannot be any netdev from the group. The only sensible option
+> would be to pick an object corresponding to the eswitch to own such
+> groups, which neatly corresponds to the devlink object today.
 
-Jason
+Will you be using two sets of _ops structs?
+
+One for the netdev (ndo_shaper_ops) when the scope is meant to target a
+VF handling its own sub-tree, and another for devlink
+(devlink_ops .rate_*) for when the scope is for the hypervisor managing
+its netdevs?
+
+DaveE
