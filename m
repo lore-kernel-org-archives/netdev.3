@@ -1,169 +1,267 @@
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B46F3AE195
-	for <netdev@vger.kernel.org>; Wed, 13 May 2026 09:36:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB1AD3C3BE6
+	for <netdev@vger.kernel.org>; Wed, 13 May 2026 09:37:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778665005; cv=none; b=Guj5enMqspCqKgs5GG8KuPRjRPhgvZZTvIMjqvoC2diOCqVc10lbxsGV+dpzMJu3ceJ5hHoRwwvlqlcrwQI71VGEkDD4GP/bYS2HsfNDqsFWsJZxNG79sDGfqadrq5qxh9XwTCXGRSR42cPqv5B2H2mM4CeYHmVqB+pNIVOijpc=
+	t=1778665075; cv=none; b=dv45HIU4NUeIdYE5jFP3nt1kZ2LyXl/yioqfgzzg00GWpU50UXjE7V/4Qc8XDuHGelRz8unFRN6ls04p6fNIPJJ3K6D+2swXiBY5LVfFN+jUKhogKuhmmT8ByZbw1jembYkYmb/Oj+mJmz42OmU2AMmEed4NZemikxEL4SV8SIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778665005; c=relaxed/simple;
-	bh=aAJHQ33bJ4PDhBNJKFufDit3fV/pu3MUw3SmOAJMr2Q=;
-	h=Message-ID:Subject:Date:From:To:Cc:References:In-Reply-To:
-	 Content-Type; b=nDm8zL+lCvUEzPYjHLmafH5CmgsBp+4rRy9djx6Gq5jkdSF1vVOgcOu0p3rV4witGQ6L1jVom2vi/eAF77/oo6o7fnBgXf8jmZ8Ze1mKoFZOxsmKDrEDYV02Iuszf77LHA4YiiISM0wZJb0xX9pvJaAKo6IQQzo0CBVWrYuSvo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=BUFx7xgb; arc=none smtp.client-ip=115.124.30.97
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1778665075; c=relaxed/simple;
+	bh=3ZE9OxERC0pyhWuHeI+A8r6DIJhoAQnYv0T9ivO+4HQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=S89uSxVbbENF1rsCR7LLMCqWSjnlKwJ6t+17Y1oq/JL+sm7i+YFSll5Mt4Wk6UcvVnnFa0z3JbYI3paABQWmfy9ZZ9lN7J/WyHLobyzmmq7LPkCjy0rZdQPTbUzTtvNP50IpOaflQHXR8o4BCNZZPE9BPz597g7Gh++okzEvgE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KIeX3R9l; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=k0VFa+7i; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="BUFx7xgb"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1778664995; h=Message-ID:Subject:Date:From:To:Content-Type;
-	bh=MZQZW7273zCOHWpxlljLTSlQBSte44sCnNS0Gj4IQeM=;
-	b=BUFx7xgbMPjJORRRRKjruw0iGMqgfyxHWaj5RE9JAGRqfqgRiEzd0SQzGGqKnbw6nRX3hrIFjt9FhnkT/1HuvrIGaf1As913IBezSvBY9cj375g9iHVsdzGZ8N0upIAifqAl/qX0jOYJT3HBwhBIUu0StL7fSJXfWJNQR5gC224=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R931e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=xuanzhuo@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0X2tfaJ._1778664993;
-Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0X2tfaJ._1778664993 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 13 May 2026 17:36:34 +0800
-Message-ID: <1778664597.4457154-1-xuanzhuo@linux.alibaba.com>
-Subject: Re: [PATCH net-next v42 0/8] eea: Add basic driver framework for Alibaba Elastic Ethernet Adaptor
-Date: Wed, 13 May 2026 17:29:57 +0800
-From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>,
- Wen Gu <guwen@linux.alibaba.com>,
- Philo Lu <lulie@linux.alibaba.com>,
- Vadim Fedorenko <vadim.fedorenko@linux.dev>,
- Dong Yibo <dong100@mucse.com>,
- Mingyu Wang <25181214217@stu.xidian.edu.cn>,
- Heiner Kallweit <hkallweit1@gmail.com>,
- Dust Li <dust.li@linux.alibaba.com>,
- netdev@vger.kernel.org
-References: <20260504144439.29570-1-xuanzhuo@linux.alibaba.com>
- <1c5a2912-6d24-4709-b3da-9a58f0731e9f@redhat.com>
-In-Reply-To: <1c5a2912-6d24-4709-b3da-9a58f0731e9f@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KIeX3R9l";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="k0VFa+7i"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778665072;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4gG8d2uNiMKq5bQSD3rz62Oi2tshDrpyy2LvH23JNt0=;
+	b=KIeX3R9lOQnEjqUp4+eb7fcxyLB5YAFRnGn7U6WD3gxmvM+nfxh3b/7N/ydQ0U/FQUpzmr
+	IpbU7D99izo3m66c3Bh0m4Np4VAldSxNBEtnoZ4BPU9pKlgieJ+sRH2NKl9diy4wlgrchY
+	J8Rb3aMoDocth7Nv5loy4WCzhBPtMzo=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-398-HUjb1fbAPz-7Ta0E-sIkrQ-1; Wed, 13 May 2026 05:37:51 -0400
+X-MC-Unique: HUjb1fbAPz-7Ta0E-sIkrQ-1
+X-Mimecast-MFC-AGG-ID: HUjb1fbAPz-7Ta0E-sIkrQ_1778665070
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-44d83e45febso5922824f8f.0
+        for <netdev@vger.kernel.org>; Wed, 13 May 2026 02:37:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1778665070; x=1779269870; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4gG8d2uNiMKq5bQSD3rz62Oi2tshDrpyy2LvH23JNt0=;
+        b=k0VFa+7ibtEgdi1i9XiLwt+z8MLLNoXJZGiFv3QEVokA+ydy9nRaSOHM5mUfe8bUxC
+         8rC68Ec5npE9ICgPi4TLUBj8rr8R7MSngNpLbQ3vUWnPrCLLcVPjPhRDxCgqLDH/N6oa
+         Y7HLJY0Gg8vjc1sT8bAEf/78vnfQTT6Vl6HYO2i3hq3zeIpRrkjAyh+wX8Rac8qBbX+n
+         yHQNPL1nnHyej7ptm9AOZN/Akcgs51lPw1dVzQwOnpTfQ5szAqsCF1+3m3EYIYfdgobx
+         87pFG/ZYjjZ3XbdzQZhfTkMhDMclii1+EJr6h2UHnwQkyaVqiQ2dprcAsS7PbtLJisjl
+         HZHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778665070; x=1779269870;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4gG8d2uNiMKq5bQSD3rz62Oi2tshDrpyy2LvH23JNt0=;
+        b=LRtxIUM8MY2/karSC4Na/4WIdhZUlVn/ddYESbGvmjS/gPTrmoFRNtuxQmKX0xEL/M
+         rTrVofvPvxb+YdlJmLnNwuxQXyCvEo36UQT/xaSoHxBgmmAYxum6iGULtk29XCjTQM+9
+         mTM2OmrwXOx971xAks1VKIva+vVprh76qmyri8hkkDSM+xSg8VHu+EMJ0KZLXFBciD72
+         bq88qekrp/mnwsswaw2/dPc7JuYPB6XQ260zlNyi+EG4oG9zM3I89lc87mGvG/FFLmhB
+         bTSBNSWYaW0HtChdVOm8HhZQM+OyQmPgwNsLExBOUWGNPlFZ0T2rigbLFkUEkKzGdVpk
+         kWzg==
+X-Forwarded-Encrypted: i=1; AFNElJ9Q0Rgww/kxPh6tEZ2ETWLiDhvuVfyBi7tgACc2t1W1M8Dvr+23iHhF1K2YaFDNAmrqIVR4Y6k=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/Bqml7zwS8TO2vLIYpq9wxNaukWxRXDzkn5zA5MjSTsDAsXOZ
+	JBSycwZ7whPppWFgSg29tLTSSoHzJbsofP0lrlvaHJdBFP2euRqHxvv9u1B6t9Sox7noVUhoowX
+	Qe9zQJAdGmZYLbHeAWwAQLpIEphFy176Z7nb+UI/gESPUHsW6FSKY6GAp7g==
+X-Gm-Gg: Acq92OFPUCNVAHhXhRSUxdBygOqk/AOV9Kp1TciFctIPw42D4rDgmGNFGZ2AueQmVQ9
+	tgnqVVpI+uJxh9GGL9kUjXs98ZFaJ5/3i9m+Q34YB5mYTe9A+LA1tB0B9E836U8DSRSf4bd3jr8
+	N1HBYKcboLvsQZk32+gwnTmZeVl3LX/aVneve5Pchw6ih7lotIiJymcT9nnmGAAUDmhh71a0ET/
+	1iYRO+5mGuUiULEMRQRsS96RBgv1Nij8LT0dY3pbpA3AawKIMR8tfP1khfojyDn6HeYRNfVAL0I
+	hN13z7TxLPngF9X/8sgqRoqs2cdsRws/3xAWk3b73SiBn3hOCks/anVqyvBLkGFKZ86PSiGGy9W
+	YjcTiJk/40aAbR6mfZwBTimov+TEM9lMXbvSgPqmk5BDVYFrIDlnNEYk=
+X-Received: by 2002:a05:600c:45cd:b0:485:3c2e:60d5 with SMTP id 5b1f17b1804b1-48fc971f0ecmr35736185e9.2.1778665069826;
+        Wed, 13 May 2026 02:37:49 -0700 (PDT)
+X-Received: by 2002:a05:600c:45cd:b0:485:3c2e:60d5 with SMTP id 5b1f17b1804b1-48fc971f0ecmr35735635e9.2.1778665069244;
+        Wed, 13 May 2026 02:37:49 -0700 (PDT)
+Received: from [192.168.88.32] ([216.128.9.106])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e8f4247fasm52677825e9.9.2026.05.13.02.37.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 13 May 2026 02:37:48 -0700 (PDT)
+Message-ID: <be1b6f66-207a-4ed6-8188-72ec11f222a4@redhat.com>
+Date: Wed, 13 May 2026 11:37:46 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2 1/1] mptcp: fix request ownership when cloning
+ reqsk
+To: Ren Wei <n05ec@lzu.edu.cn>, netdev@vger.kernel.org, mptcp@lists.linux.dev
+Cc: matttbe@kernel.org, martineau@kernel.org, geliang@kernel.org,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, horms@kernel.org,
+ ncardwell@google.com, kuniyu@google.com, daniel@iogearbox.net, kafai@fb.com,
+ yuantan098@gmail.com, yifanwucs@gmail.com, tomapufckgml@gmail.com,
+ bird@lzu.edu.cn, caoruide123@gmail.com, enjou1224z@gmail.com
+References: <40fd38e7a368e5b7bc9bc83364a32241f977d53f.1778404619.git.caoruide123@gmail.com>
+From: Paolo Abeni <pabeni@redhat.com>
+Content-Language: en-US
+In-Reply-To: <40fd38e7a368e5b7bc9bc83364a32241f977d53f.1778404619.git.caoruide123@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, 7 May 2026 12:30:15 +0200, Paolo Abeni <pabeni@redhat.com> wrote:
-> On 5/4/26 4:44 PM, Xuan Zhuo wrote:
-> > Add a driver framework for EEA that will be available in the future.
-> >
-> > This driver is currently quite minimal, implementing only fundamental
-> > core functionalities. Key features include: I/O queue management via
-> > adminq, basic PCI-layer operations, and essential RX/TX data
-> > communication capabilities. It also supports the creation,
-> > initialization, and management of network devices (netdev). Furthermore,
-> > the ring structures for both I/O queues and adminq have been abstracted
-> > into a simple, unified, and reusable library implementation,
-> > facilitating future extension and maintenance.
->
-> I forwarded you the comments from nipa-sashiko. There are more on
-> gemini, even a good deal of them looks invalid. For future revisions, it
-> would help moving this series forward to triage such comments,
-> explicitly marking the invalid ones.
+On 5/10/26 4:14 PM, Ren Wei wrote:
+> From: Ruide Cao <caoruide123@gmail.com>
+> 
+> TCP request migration clones pending request sockets with
+> inet_reqsk_clone(). For MPTCP MP_JOIN requests this raw-copies
+> subflow_req->msk, but the cloned request does not take a new reference.
+> 
+> Both the original and the cloned request can later drop the same msk in
+> subflow_req_destructor(), and a migrated request may keep a dangling msk
+> pointer after the original owner has already been released.
+> 
+> MP_CAPABLE requests have a similar ownership issue for token_node. The
+> original request is hashed in the token table, and inet_reqsk_clone()
+> raw-copies the hlist pointers into the clone. The clone must not inherit
+> that hashed state on migration failure, and the token ownership must move
+> only after the new req has actually replaced the old one in the ehash.
+> 
+> Fix both cases while keeping the change local to MPTCP and the TCP
+> migration path: grab a reference for cloned subflow requests that carry an
+> msk, clear any raw-copied token hash state from the clone, and move the
+> hashed token request ownership only after migration succeeds.
+> 
+> Fixes: c905dee62232 ("tcp: Migrate TCP_NEW_SYN_RECV requests at retransmitting SYN+ACKs.")
+> Cc: stable@kernel.org
+> Reported-by: Yuan Tan <yuantan098@gmail.com>
+> Reported-by: Yifan Wu <yifanwucs@gmail.com>
+> Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+> Reported-by: Xin Liu <bird@lzu.edu.cn>
+> Signed-off-by: Ruide Cao <caoruide123@gmail.com>
+> Tested-by: Ren Wei <enjou1224z@gmail.com>
+> Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+> ---
+> changes in v2:
+>   - drop the generic request_sock clone callback
+>   - call MPTCP directly from inet_reqsk_clone() under the TCP protocol check
+>   - keep cloned MP_JOIN requests holding an msk reference
+>   - clear raw-copied MP_CAPABLE token hash state in the clone
+>   - move MP_CAPABLE token ownership only after successful req migration
+>   - avoid exposing token internals to inet_connection_sock.c
+>   - update the commit message accordingly
+>   - v1 link: https://lore.kernel.org/all/86e2514b533bf4d55d4aa2fdbf1404022e8c9430.1776149210.git.caoruide123@gmail.com/
+> 
+>  include/net/mptcp.h             | 14 ++++++++++++++
+>  net/ipv4/inet_connection_sock.c | 12 ++++++++++--
+>  net/mptcp/protocol.h            |  2 ++
+>  net/mptcp/subflow.c             | 20 ++++++++++++++++++++
+>  net/mptcp/token.c               | 25 +++++++++++++++++++++++++
+>  5 files changed, 71 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/net/mptcp.h b/include/net/mptcp.h
+> index f7263fe2a2e4..4bb24963afef 100644
+> --- a/include/net/mptcp.h
+> +++ b/include/net/mptcp.h
+> @@ -219,6 +219,10 @@ int mptcp_subflow_init_cookie_req(struct request_sock *req,
+>  struct request_sock *mptcp_subflow_reqsk_alloc(const struct request_sock_ops *ops,
+>  					       struct sock *sk_listener,
+>  					       bool attach_listener);
+> +void mptcp_subflow_reqsk_clone(struct request_sock *req,
+> +			       struct request_sock *new_req);
+> +void mptcp_subflow_reqsk_migrated(struct request_sock *req,
+> +				  struct request_sock *new_req);
+>  
+>  __be32 mptcp_get_reset_option(const struct sk_buff *skb);
+>  
+> @@ -314,6 +318,16 @@ static inline struct request_sock *mptcp_subflow_reqsk_alloc(const struct reques
+>  	return NULL;
+>  }
+>  
+> +static inline void mptcp_subflow_reqsk_clone(struct request_sock *req,
+> +					     struct request_sock *new_req)
+> +{
+> +}
+> +
+> +static inline void mptcp_subflow_reqsk_migrated(struct request_sock *req,
+> +						struct request_sock *new_req)
+> +{
+> +}
+> +
+>  static inline __be32 mptcp_reset_option(const struct sk_buff *skb)  { return htonl(0u); }
+>  
+>  static inline void mptcp_active_detect_blackhole(struct sock *sk, bool expired) { }
+> diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
+> index e961936b6be7..578471bb8a2b 100644
+> --- a/net/ipv4/inet_connection_sock.c
+> +++ b/net/ipv4/inet_connection_sock.c
+> @@ -17,6 +17,7 @@
+>  #include <net/inet_timewait_sock.h>
+>  #include <net/ip.h>
+>  #include <net/route.h>
+> +#include <net/mptcp.h>
+>  #include <net/tcp_states.h>
+>  #include <net/xfrm.h>
+>  #include <net/tcp.h>
+> @@ -951,8 +952,13 @@ static struct request_sock *inet_reqsk_clone(struct request_sock *req,
+>  	/* We need not acquire fastopenq->lock
+>  	 * because the child socket is locked in inet_csk_listen_stop().
+>  	 */
+> -	if (sk->sk_protocol == IPPROTO_TCP && tcp_rsk(nreq)->tfo_listener)
+> -		rcu_assign_pointer(tcp_sk(nreq->sk)->fastopen_rsk, nreq);
+> +	if (sk->sk_protocol == IPPROTO_TCP) {
+> +		if (tcp_rsk(nreq)->tfo_listener)
+> +			rcu_assign_pointer(tcp_sk(nreq->sk)->fastopen_rsk, nreq);
+> +
+> +		if (rsk_is_mptcp(req))
+> +			mptcp_subflow_reqsk_clone(req, nreq);
+> +	}
+>  
+>  	return nreq;
+>  }
+> @@ -1115,6 +1121,8 @@ static void reqsk_timer_handler(struct timer_list *t)
+>  			goto no_ownership;
+>  		}
+>  
+> +		if (rsk_is_mptcp(oreq))
+> +			mptcp_subflow_reqsk_migrated(oreq, nreq);
 
-Allow me to summarize the situation briefly:
+Sashiko says:
 
-eea: introduce PCI framework
-     Sashiko questioned if read_poll_timeout could return early by reading =
-the
-     value we just wrote. While this is a valid concern for generic PCI
-     devices, it is not an issue here. In our scenario, the DPU software
-     handles all IOMMU responses, ensuring that the register transition is
-     atomic relative to the software service. Thus, no hardware-side race
-     condition exists, and the current handshake is robust by design.
+---
+Can this sequence trigger a race condition with network RX processing?
+In reqsk_timer_handler(), nreq is inserted into the global ehash table
+via inet_ehash_insert() right before this block. The ehash lock is
+immediately dropped, making nreq globally visible to concurrent network
+RX softirq processing.
+However, the MPTCP token state is not migrated to nreq until the call to
+mptcp_subflow_reqsk_migrated(oreq, nreq).
+If a concurrent RX thread processes an incoming ACK for the connection
+in this narrow window, it could find nreq in the ehash table,
+successfully process it, and invoke mptcp_token_accept(nreq).
+Inside mptcp_token_accept(), __token_lookup_req() searches the token
+bucket and finds oreq, because the timer thread hasn't moved the token yet.
+The code then asserts ownership:
+mptcp_token_accept()
+	pos = __token_lookup_req(bucket, req->token);
+	if (!WARN_ON_ONCE(pos != req))
+		hlist_nulls_del_init_rcu(&req->token_node);
+Since pos is oreq and req is nreq, would this fail the assertion and
+trigger a kernel warning?
+If the calls were reordered so that mptcp_subflow_reqsk_migrated()
+happens before inet_ehash_insert(), could that merely shift the race? If
+a concurrent ACK is already processing oreq, it might call
+mptcp_token_accept(oreq) after the token was moved to nreq, triggering
+the same warning, since the ehash table and the token bucket are
+protected by different locks and the updates are non-atomic.
+Could a remote attacker time ACKs to hit this window during a listener
+migration, potentially leading to a denial of service on systems
+configured to panic on warnings?
+---
 
-eea: introduce ring and descriptor structures
-     This commit has passed regression testing multiple times and is consid=
-ered
-     stable. We can likely drop it from our focus list.
+I _think_ the above race could/should be solved squashing
+mptcp_subflow_reqsk_migrated() into mptcp_subflow_reqsk_clone() and
+adjusting  mptcp_token_destroy_request() and mptcp_token_accept() to
+deal with already removed token, checking (again) for unhased token_node
+under the bucket lock.
 
-eea: probe the netdevice and create adminq
-     Sashiko has repeatedly expressed concerns that the device might access=
- the
-     ring if eea_pci_set_aq_up fails. While the ring's DMA address is confi=
-gured
-     in the hardware beforehand, the device is architecturally designed to =
-only
-     begin ring processing upon a successful return from eea_pci_set_aq_up.=
- If
-     this step fails, the device remains idle and will not perform any write
-     operations to the ring. Thus, there is no risk of invalid hardware acc=
-ess.
+The latter will require a little more work, returning a success status
+to the caller - mptcp_sk_clone_init() - and make the latter fail on
+mptcp_token_accept() failures.
 
-eea: create/destroy rx,tx queues for netdevice open and stop
-     This section seems to be a persistent source of minor glitches. ^_^
+The above would also make the fix more encapsulated into the mptcp code.
 
-eea: implement packet receive logic
-     I believe this commit is ready. It hasn't triggered any meaningful iss=
-ues
-     for a long time. Sashiko=E2=80=99s concern primarily centers on error =
-handling
-     during multi-fragment processing=E2=80=94specifically, whether a mid-s=
-tream
-     exception might cause the driver to misidentify subsequent fragments a=
-s the
-     start of a new packet. However, from a driver perspective, there is li=
-ttle
-     we can do in such scenarios; if the hardware state becomes corrupted in
-     this way, it constitutes a critical hardware error that is effectively
-     beyond the driver's recovery capability.
+/P
 
-eea: implement packet transmit logic
-     Sashiko requested that we clear the descriptor (desc) fields before
-     dispatch. However, according to our current design, unused fields in t=
-he
-     descriptor do not require explicit clearing. I believe this addition is
-     unnecessary and could introduce overhead without providing actual valu=
-e.
-     Regarding the other points on exception handling, I maintain my previo=
-us
-     stance: if the hardware enters a faulty state, the driver's ability to
-     recover is inherently limited. I don't see the benefit in over-enginee=
-ring
-     the driver to compensate for catastrophic hardware failures.
-
-eea: introduce ethtool support
-     This commit has passed regression testing multiple times and is consid=
-ered
-     stable. We can likely drop it from our focus list.
-
-eea: introduce callback for ndo_get_stats64 and register netdev
-     There is a standing requirement for linear growth in the stats counter=
-s.
-     However, I plan to introduce qstats (queue-specific statistics) in a f=
-uture
-     update, which will be a more appropriate place for such tracking. I in=
-tend
-     to defer this feature until that implementation; it will not be includ=
-ed in
-     the current version.
-
-Thanks.
-
-
-
-
-
-
-
-
-
-
-
-
-
->
-> Thanks,
->
-> Paolo
->
