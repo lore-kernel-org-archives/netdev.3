@@ -1,121 +1,162 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from usb-smtp-delivery-120.mimecast.com (usb-smtp-delivery-120.mimecast.com [170.10.153.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2F842D29C8
-	for <netdev@vger.kernel.org>; Wed, 13 May 2026 23:53:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D873CC327
+	for <netdev@vger.kernel.org>; Wed, 13 May 2026 23:53:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.153.120
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778716387; cv=none; b=QJeCuDQYlrPvfOnhcQfv4Z7t408fD5mCYLVaeRQATJnazNxd0yNzNBb7D67EyccsIMPSohV8HSRJ/YT0tfaxJ4UvrpFOoWYAduGoUjR0W40Mp4mT3RdewDFr51NBCsTrj3hTTWUn+nrdlD679wp9X4opKHcwmUXN8fd7lGOyex8=
+	t=1778716405; cv=none; b=Ml13rqIcj/SnGVCMz5ARt8MnMh/12lfqslpLl5o4wsEWPn0JtLMliJr119m7AS4/iFRNMrkI+fBuqjDLP6WC25gmrYgaHisM5QvSl5vDJjEFwPWtygKVbmdJtwpouH1XQLNxO+GnKqrVQehEsQzAOsNX91sGHlzZwHusYVY+qOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778716387; c=relaxed/simple;
-	bh=0gQKUOWRFCHFEXWMgOwPi1lRiFrKxliXZKk8yZyJNWM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h8teNdPhcuXUlh+Tf/W9lL/1DYLtFcup3/OP5Tst32upzC7Jg7zqX8ZL1hIrT/0SeJF/jhsMlVpDwO4KTinllJkxWodUyNAws5C1WDF+rHjK8wVOS4SChcgXbc5yZPqB9nK/+CZuQejHpJjYlzloWAE3aTQgIz6eXAJawDDye4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OGfgBQae; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1778716405; c=relaxed/simple;
+	bh=fxMxXQIw8ZjQ8EPb898K7EZvtKPcOGrgDojoAMlGPQk=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 MIME-Version:Content-Type; b=g9jZLo7652pBgImhTPNFBEmB1A4zsqE7au+VOcKqwIhpgAOHBQ8CAzaUKcARLZ+vr+N5ccXHgHgWhwn5ckHTTLvIVeqdl0ap/E41HjNitsmvwqpQezKbCKzsfD2QS1rc9pm4+4/yDddJRm4YZyF+L8KUZBNKu9axFlfr5c1trwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onsemi.com; spf=pass smtp.mailfrom=onsemi.com; dkim=pass (2048-bit key) header.d=onsemi.com header.i=@onsemi.com header.b=A2t5Qm36; arc=none smtp.client-ip=170.10.153.120
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onsemi.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onsemi.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OGfgBQae"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778716386; x=1810252386;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=0gQKUOWRFCHFEXWMgOwPi1lRiFrKxliXZKk8yZyJNWM=;
-  b=OGfgBQaepJ9JlEWxwTkURhVBDdkEfuDAMrIBuGgV4nKJgM4KvBGEWC6C
-   P8hpDmBeeja9ejY1GmFVZxHxIkL/IhH37M0tA6ZRwmBGOFdXHP9H2b+mY
-   Brsum5BeQc5ismaHZzFwaiWg3RnPKYZXhlrMXSAD80HOa3jYA1UhsaekL
-   qqcPoatup1llsM/61wNyA4MxYtdm7oMJy9i9liWQWeaMKyxvdkKP8Fr3+
-   5NFRpQnxCodqW3lzkWGn7A3XrfB+2w1ZR/NgoW6NtMaaGlxviA6OI6gyX
-   kthDB5Gouc49Wor7gkjCoN6ynzDVf1XtfkVrDfN8Gi4JgA1tX+gIhAm9k
-   w==;
-X-CSE-ConnectionGUID: B4fm2WKgRrqCs6bydxvQJg==
-X-CSE-MsgGUID: GMOBchDMQU+VEf53ncLpLw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11785"; a="78799223"
-X-IronPort-AV: E=Sophos;i="6.23,233,1770624000"; 
-   d="scan'208";a="78799223"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 16:53:05 -0700
-X-CSE-ConnectionGUID: tCemc5wKRrG+PeePlDaJaw==
-X-CSE-MsgGUID: foyqgXBUQj6+80Nam2tavg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,233,1770624000"; 
-   d="scan'208";a="276319925"
-Received: from dmert-dev.jf.intel.com ([10.166.241.33])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 16:53:04 -0700
-From: Dave Ertman <david.m.ertman@intel.com>
-To: cratiu@nvidia.com
-Cc: andrew+netdev@lunn.ch,
-	cjubran@nvidia.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	gal@nvidia.com,
-	horms@kernel.org,
-	jiri@resnulli.us,
-	kuba@kernel.org,
-	leonro@nvidia.com,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	saeedm@nvidia.com,
-	tariqt@nvidia.com
-Subject: Re:net-shapers plan
-Date: Wed, 13 May 2026 16:53:26 -0400
-Message-ID: <20260513205326.2571971-1-david.m.ertman@intel.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <d9831d0c940a7b77419abe7c7330e822bbfd1cfb.camel@nvidia.com>
-References: <d9831d0c940a7b77419abe7c7330e822bbfd1cfb.camel@nvidia.com>
+	dkim=pass (2048-bit key) header.d=onsemi.com header.i=@onsemi.com header.b="A2t5Qm36"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onsemi.com;
+	s=mimecast20250127; t=1778716397;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fxMxXQIw8ZjQ8EPb898K7EZvtKPcOGrgDojoAMlGPQk=;
+	b=A2t5Qm36I4y0GkiJIw4gfKNx+b95EkHBNdLNywUOWCF3EvWXNoi9Uda4DVRQ5pvZ7vCpVh
+	bh6zLD055+nkk/Z9FtBGumP16RKksuRSylvcy6X+/RzcEydTeSG+IndW5jKR4MgxlhddUq
+	179nk/kYyAMD3oLE4MYzxq1GX6+dbWkdGIHNJ6k89hwjxDmNDBvICn7p9IonplnsTh9xNN
+	Q1oOBDnRTJFj4vYDbe5G3yB3aesVvzGZH5yvQOHX0iE/wmKXUenxGFnHy+CdUmX8DPUgfL
+	jDbAPLXYXqgPSMyhbELYIiBZEFi92uhZ9o0fbFIAHQaYURyEQt5LRxGU0jWNHg==
+Received: from SN4PR2101CU001.outbound.protection.outlook.com
+ (mail-southcentralusazon11012037.outbound.protection.outlook.com
+ [40.93.195.37]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ usb-mta-4-t3hZaYVMNW-RwQyAXEBMrA-1; Wed, 13 May 2026 16:53:15 -0700
+X-MC-Unique: t3hZaYVMNW-RwQyAXEBMrA-1
+X-Mimecast-MFC-AGG-ID: t3hZaYVMNW-RwQyAXEBMrA_1778716391
+Received: from CY8PR02MB9249.namprd02.prod.outlook.com (2603:10b6:930:9c::17)
+ by LV3PR02MB10127.namprd02.prod.outlook.com (2603:10b6:408:1a5::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.11; Wed, 13 May
+ 2026 23:53:08 +0000
+Received: from CY8PR02MB9249.namprd02.prod.outlook.com
+ ([fe80::e437:4ba8:6506:4cda]) by CY8PR02MB9249.namprd02.prod.outlook.com
+ ([fe80::e437:4ba8:6506:4cda%3]) with mapi id 15.20.9913.009; Wed, 13 May 2026
+ 23:53:07 +0000
+From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+To: Andrew Lunn <andrew@lunn.ch>
+CC: Piergiorgio Beruto <Pier.Beruto@onsemi.com>, "andrew+netdev@lunn.ch"
+	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
+	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>, "robh@kernel.org"
+	<robh@kernel.org>, "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH net-next v2 1/9] dt-bindings: net: add onsemi's S2500
+ 10BASE-T1S MACPHY
+Thread-Topic: [PATCH net-next v2 1/9] dt-bindings: net: add onsemi's S2500
+ 10BASE-T1S MACPHY
+Thread-Index: AdzhcEqKHy9WMaaoSHKX00ujMX5pNgACjxcAAFv2XRAAAydUAAAPAmlA
+Date: Wed, 13 May 2026 23:53:07 +0000
+Message-ID: <CY8PR02MB9249D14ADE162A6854C72B9783062@CY8PR02MB9249.namprd02.prod.outlook.com>
+References: <CY8PR02MB924920C8825C7AE5D22EFA4483382@CY8PR02MB9249.namprd02.prod.outlook.com>
+ <20542d76-6f70-4c2d-9fef-0de620a8d6d1@lunn.ch>
+ <CY8PR02MB924974BBC348DE4814DA3C7C83062@CY8PR02MB9249.namprd02.prod.outlook.com>
+ <3c5aa072-9107-440c-820f-3f63aa3ac3e9@lunn.ch>
+In-Reply-To: <3c5aa072-9107-440c-820f-3f63aa3ac3e9@lunn.ch>
+Accept-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CY8PR02MB9249:EE_|LV3PR02MB10127:EE_
+x-ms-office365-filtering-correlation-id: 303db9e0-04d4-4850-c1b2-08deb14ac84d
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024|38070700021|4143699003|22082099003|18002099003|56012099003|11063799003|3023799003
+x-microsoft-antispam-message-info: ysUX5IwqtXWtvzqLfA1QDoQMHKzhW8BCh8RFZ0qB4mPOCHn43JKvV21PTjdmDPZP6FPy2aL38kF2zuNp+H+xhOcniWcXZVLc45QcWDkqv7tGg5fO3pLoexlqRVGlBkwN6v9hKolKn1Ajvw7h1SIL19LOWL5gsDmOw8GZbmuVXyThina4eQxX/+2fk/TQzTEV3HAlvlqpwkxEKU6LvydfLq+5H4ONsqwvP3/x/wpb6xMkUdODbgzPiQymIh1Nl7pLnfhwgk12rwh0wqc/aNEt889VsT2S8qTDiWtMgc7+e4ZX1a84Z034mC3+pZz29+6CdBX/Kgb27B1Zg1asf7DRn30SgMAnHwsr13FLig9fVU5I2nosV76yynxf2ixlfTtxsKnmdSrD5Q4OMdkKQAfQDz2xFo/dXlGOI/WWNEa0bGmur3oe98m3oDuX7ryR5kzI9yxRj/DNasW0oTdwRsBR97uEucinKbIdM9WhlA5YAhr64C3PD33ORPOwdaEBMLZMsAF81kDyg9PhOLRrqWRi2iNk+HQPlN5climonLwERhIQiCPtgl0MR4zqYKu5pB49f1AxYmI1q2KwQzAHv+Ysdo9h/1yXPUdwzTTLfYE003/1DcnXX2RcDG894tBv52eETmZBzukqGzCX/baQScGG/FWog+hgaataHsK6jzJtlHqU1tpsQ8byZoelbiv2WJ7BOWQIS2NkDfh06+mo633EqPP8ZaPYw61fDkpGIDxgsXtNhw1v+HvrSmD5NSDw3+9A
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR02MB9249.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(38070700021)(4143699003)(22082099003)(18002099003)(56012099003)(11063799003)(3023799003);DIR:OUT;SFP:1101
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?bXl6Mnd6K0tLQitDOWtTd3NzeVoremxXQTg0elU0RVFUaVhmbFVTQjZod2Rq?=
+ =?utf-8?B?UjA0dkU4dFpFRWloMGRwb25WTVpRVCtsc05lU0lMekRMQTJScVgydXdNOXRa?=
+ =?utf-8?B?ZUVMbS9pZXpxTWNMcGd0NWNTbG11QjE5RTN1Z3k0cGxVRnR5MlBLdTBOWldI?=
+ =?utf-8?B?OVFiZzBkRVppWFFNb21EMjdsNDBYTTVJTUlGQTh0TmkvL2tWY2RQZzJPa0Fj?=
+ =?utf-8?B?bFZQUHFZaFNITE5CRWsxcXJiU2d1YnplQklMWjRvNUNKNStJSDBBYWUrdkRi?=
+ =?utf-8?B?YU9WY3pKa09vMVVDa05JODZ2VU4xRHJUVUtQK2NFWS9saVZtbmRBMGU5OTlk?=
+ =?utf-8?B?Sm1qSmRMRUtUaEw3M1kzUGYzd1FidmQ4YnR2L0dqVGtBSEc5OExPZVNTTDdz?=
+ =?utf-8?B?ZUNoSXhBUHlsYUxRU1Vnd0xFSDJocEE0OVpTOWpjSnVSUHcvWmVyMWgyMWVz?=
+ =?utf-8?B?NnhVVlVvbG9zcDR4MXQ4OHM0dEZ2MThCdGhOaVZUZWpvYXZITk1xSEhkY0VF?=
+ =?utf-8?B?U21VVkk1NkRJVTZMNDlkVGk1RUZ5ZW4wYVkxcVcyQUFUYWQvbkxLZFJNQmVl?=
+ =?utf-8?B?dnlXVGhpTmQzTjgwMHF1VXUvRDMvaE5VSTF5YnQwUTg1ZG93WFVoMGYwNlFR?=
+ =?utf-8?B?LzZQbDZlSG45UDF4MjZHcHovOHFDanBwQmRGZTYvQWJQTDRvcThsVVZlL0Vy?=
+ =?utf-8?B?N1Y0YWVkZUw1OW1EdGc1cnkzVXZWbER3bmNyekVVY2c3Ry9seDFGQ1hmeS95?=
+ =?utf-8?B?cGp2anEzS1FSODBLNGtrZ1lXRFNuVFEzbUl0ZFRSKzBOTTZqZDBvU25SZGMr?=
+ =?utf-8?B?dHJRSUZQOEtjNEV3S0NJcnlsNHZxYlYyaDRNRCtTYVlJQURYZVBRbWUwWkJY?=
+ =?utf-8?B?SkZOa0VVQ005VUZnQTFFU055aTdwWWczTTZEQ2tJRzRxVTFPVlV6bmtvQVQw?=
+ =?utf-8?B?dkcvZitPWnFIdlBCQ0JRMzh6clBiQ2liQm11T2hyNEh6cFhXa1BnejU5Y09G?=
+ =?utf-8?B?NlE1c21kWUNRNHduMnhveHViRmFpWFpEN2VqN3dZRWhRUEJ4L2pkemJDb0VD?=
+ =?utf-8?B?L0pybEpxQUhabS9ONWhhUUxFdlNmd0JwbGJLY2dUdlVhOWVJa290N1NSN1ZR?=
+ =?utf-8?B?cEpkbXFCU0ErVHN2bU9tZFplNkd6TUtoZjFxM1k5elV5eU9RODZtT3YzZWd1?=
+ =?utf-8?B?ZHVIQUQzQlhFUHcyWE9EQUMvcVRHLy9kaGE2ODRXZmNuSXJLYUhmYk15QldR?=
+ =?utf-8?B?aUpXY053cU9wckFJajJvUC9kMTdUQm9tci9rM3kraUZ4MGJVb1RkOHpwamMr?=
+ =?utf-8?B?d2dTNWdvQWRBVUVKS1RCVkNCdmZWWDR4b2c4dk11Q2JWY3B0b2ZYYmdydnov?=
+ =?utf-8?B?V1Y4TkIxdU1sSHp2eDQyQlJZeW8yVzdibWtuazZRRnN0cmRvMnZFS2crcnk3?=
+ =?utf-8?B?Z1c3emljZFVldXROeE1zemthbll1YWVQeDFHTmd0ZWRZcFlzc0hYNG0xMCt2?=
+ =?utf-8?B?K0tzTkM5bGZzNDBpcFpQcGtGcHhxbURxV0NCbmlvc21DNlVrVmdnYUpoSisz?=
+ =?utf-8?B?Rlpka2FFbTdTaW85aGhUYWswOElTRUNlc0ZERitmNHUyd0swNDhUZHBHOHBG?=
+ =?utf-8?B?VGlndDZKZFNpWEVxdmdvL2JEYjFPMWNjZkdUTkxpUUtaWXc0dk5JTnorSlVr?=
+ =?utf-8?B?S0JmaEF5UnRtSE1tclJXRWlUaVpRSWc1N3BRdmM5eGVoZy8yaVpFVk1sdEhV?=
+ =?utf-8?B?VjY1MmU4OTVQNVN5SThhbVV4VFFxZE5hT2N6V1FwVFpUdVlVbFFlTzZhZm4r?=
+ =?utf-8?B?M3lJUitzSUlVa0oxRlY4UjBhclgxS3hoN256NnVXUklIMW9HeEtabUlZTWVy?=
+ =?utf-8?B?U0s1Q2JRYTM2R1VUQ2kvbkRwMkVVaE94REwvUlY2QW1YZU84Nk50YWZaRVZh?=
+ =?utf-8?B?UnJwQWZDTjBXMFRlcGNoZkpGN1A0U3g4MzFReGZDQzFTc3JsaDV6M0NnQ2RK?=
+ =?utf-8?B?TjRFL0haWXpDNlB4VnU4ckkwcGlwWDFva3FNTzZ6VHlWeVF4aEJZeFVQUVNH?=
+ =?utf-8?B?UmtKVmp3YzlDcFZteUY1THBjdi9hVENGMHNXS0NmdjF4Q2d4YldTaE1Jc3lQ?=
+ =?utf-8?B?UjFJMVJSSjVab0RkcnlBMUdoOGdOTGp3UFJVRlVXUm44Wi9rZ0pKOGtoekRw?=
+ =?utf-8?B?a3hVYlFOZUZYZlkzWTRiMFUrWk9wYzZ1ZnFTQ3hFbzB3ajZjeGkwNVJSTUVj?=
+ =?utf-8?B?cGk5YUNRRGZ5NmZTU21YZmNMWHNrSzZCdTJNdTI3SnZNYzJXZTVwTzYvWHJV?=
+ =?utf-8?B?U2Zxb0pQMndqNThvRG5kV282Z050RUlpeENzMWJ4alhhWjFrdGhySVV3b29R?=
+ =?utf-8?Q?3p0ggWFWU4xO3tp8=3D?=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Exchange-RoutingPolicyChecked: kcwk2Kgdprv+SM343B8CTmPorLRjZSML1CRlmmTknJEvVwCSCtcxXFwADpSun7/Q/eYMV60VTkvfL/Dn7iPcJ5k/kAxwBWlt4+RDdwYCua2ckCq7LSEqILd+1wLgeYlNwd7fXdvd8PuqTYIreZpf7XGdDqRO8eeErYp1SaREvKsh9deiDVbMP+XsuzxiWm5JvGzBl5rxXhJVwHbHgC1lamud1oo8jhWAxNvJnJfgdYuxPdXepKo8vR1McvCqvmEG0SKJUAfmPy8jF1t4J25FPko7LsJqm+fEmisAx2llcyhf3aJkqVr047S74XphuelMrPV2CyC6YeeAj7Yw73heqg==
+X-OriginatorOrg: onsemi.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CY8PR02MB9249.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 303db9e0-04d4-4850-c1b2-08deb14ac84d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 May 2026 23:53:07.9057
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 04e1674b-7af5-4d13-a082-64fc6e42384c
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: lf88bT5Wif/4nrU7z0XbjcNGiXN6Srq+W9qVLTMi2Tsi23/j9S5PFVV3Uu3sOA1LDZqiygBN4W4kLFUXzJdeLmHSo4EpziRA787l4Fofhi8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR02MB10127
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: QtAYry2ZBb4IVdTzS26CV38iK-YlObBDzPGUxQhyQEk_1778716391
+X-Mimecast-Originator: onsemi.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 
-On 3/6/2025 6:03 AM, Cosmin Ratiu wrote:
-> Hello,
-> 
-> This (long) email presents a plan agreed with Simon and Paolo for
-> extending net-shapers with use cases currently serviced by devlink-
-> rate. The goal is to get net-shapers to feature parity with devlink-
-> rate so that the amount of code dedicated to traffic shaping in the
-> kernel could eventually be reduced significantly.
-> 
-> This is in response to Jakub's concerns raised in [3] and [4].
-> 
-> Context
-> -------
-> devlink-rate ([1]) can control traffic shaping for a VF / VF group and
-> is currently implemented by the Intel ice and NVIDIA mlx5 drivers. It
-> operates either on devlink ports (for VF rates) or on devlink objects
-> (for group rates). Rate objects are owned by the devlink object.
-> 
-> net-shapers ([2]) is a recently added API for shaping traffic for a
-> netdev tx queue / queue group / entire netdev. It is more granular than
-> devlink-rate but cannot currently control shaping for groups of
-> netdevs. It operates with netdev handles. Stores the shaping hierarchy
-> in the netdevice.
-> 
-> [3] & [4] add support to devlink-rate for traffic-class shaping, which
-> is controlling the shaping hierarchy in hardware to control the
-> bandwidth allocation different traffic classes get. The question is how
-> to represent traffic classes in net-shapers.
+DQo+ID4gSSBiZWxpZXZlIHRoaXMgd2lsbCBhZmZlY3QgdGhlIHBhcmFtZXRlcnMgcGFzc2VkIHRv
+IHJlcXVlc3RfaXJxIGluIG9hX3RjNi5jLiBBdCBwcmVzZW50LA0KPiBJUlFGX1RSSUdHRVJfRkFM
+TElORyBpcyB1c2VkLiBJdCBoYXMgdG8gYmUgY2hhbmdlZCB0byBJUlFGX1RSSUdHRVJfTE9XLg0K
+PiA+IEJUVywgSSBkaWQgdGVzdCB3aXRoIHRoaXMgY29uZmlndXJhdGlvbi4gQm90aCBlZGdlIHRy
+aWdnZXJlZCBhbmQgYWN0aXZlIGxvdywgbGV2ZWwNCj4gdHJpZ2dlcmVkIHNlZW0gdG8gd29yaywg
+dGhvdWdoIHRlY2huaWNhbGx5IGl0IGlzIHN1cHBvc2VkIHRvIGJlIGxldmVsIHRyaWdnZXJlZC4N
+Cj4gPg0KPiA+IE15IHVuZGVyc3RhbmRpbmcgaXMgdGhhdCBJIHNob3VsZCBzdWJtaXQgdGhpcyBw
+YXJ0aWN1bGFyIGNoYW5nZSB0byBvYV90YzYsIHRvIG5ldCwgbm90DQo+IG5ldC1uZXh0IGFzIGl0
+IGZhbGxzIHVuZGVyIGJ1ZyBmaXguIENhbiB5b3UgY29uZmlybT8NCj4gDQo+IFllcywgdGhpcyBp
+cyBhIGJ1Zy4gUGxlYXNlIHN1Ym1pdCBpdCB0byBuZXQsIGFuZCBpbmNsdWRlIGEgRml4ZXM6IHRh
+Zy4NCg0KQW5kcmV3LA0KDQpJIGFtIHByZXBhcmluZyB0aGUgcGF0Y2ggZm9yIHRoaXMgaXNzdWUu
+DQoNCldvbmRlcmluZyB3aG8gd291bGQgZml4IHRoaXMgaW4gdGhlIFlBTUwgZmlsZT8gVGhlIG1h
+aW50YWluZXJzIGZyb20gdGhlIHJlc3BlY3RpdmUgdmVuZG9ycyA/IFRoZSBzcGVjaWZpYyBmaWxl
+IGluIHF1ZXN0aW9uIGlzLCBtaWNyb2NoaXAsbGFuODY1MC55YW1sLg0KDQo+IA0KPiBBbmRyZXcN
+Cg0K
 
-[ ... ]
-
-> 3. Extend NODE scope to group multiple netdevs and new DEVLINK binding
-> Today, all net-shapers objects are owned by a netdevice. Who should own
-> a net shaper that represents a group of netdevices? It needs to be a
-> stable object that isn't affected by group membership changes and
-> therefore cannot be any netdev from the group. The only sensible option
-> would be to pick an object corresponding to the eswitch to own such
-> groups, which neatly corresponds to the devlink object today.
-
-Will you be using two sets of _ops structs?
-
-One for the netdev (ndo_shaper_ops) when the scope is meant to target a
-VF handling its own sub-tree, and another for devlink
-(devlink_ops .rate_*) for when the scope is for the hypervisor managing
-its netdevs?
-
-DaveE
