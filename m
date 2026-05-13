@@ -1,189 +1,156 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013000.outbound.protection.outlook.com [40.107.159.0])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD7A3F7AA8
-	for <netdev@vger.kernel.org>; Wed, 13 May 2026 10:55:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778669732; cv=none; b=usveUggLf7yVR8GV9bVffXFUk0pz0trFlVq7LwSIfhKlwKKoaScbck8RFU0C6bDGlxvTZY0cDrd686D+guIY0GrB133QCqIdzZugwIFXYtvIh9svF2P4rAF95y5Lm2QSF1M/gKheINB1p6s6AAOQQ7Bgh2dh8Kt1FD6ORlL6jx8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778669732; c=relaxed/simple;
-	bh=4GcPtw6yzDT+uQnJcBvUSlSFbsL2VlMJq3G4QuXz/kI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E1/TGhO4Ag4XfsdAq4wwDJEiZhZEBdEz9dmKCWNpzDrYihGU/zFzuUkzayE6HEt7GEuGwAeGaKHoBIBDZ5D8moG+XmhulnP1S+OSZz8tSaDWaDDbMK5sRyZRWHsXA3CzVRRDcHeP4fa14dKuS4obD3Du4QiSS07uFsGWmj96dlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cvgvUuDZ; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01CD33EF67E;
+	Wed, 13 May 2026 10:56:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.0
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778669816; cv=fail; b=lkSTSE+RQEWhSpMFLMcNj0KqWHt8lYZESJNE3R6BbDidx56X8+p0TO8M75/YH80aiyZquizH3MzZLrSaY6DTebZTFJC4bbIcMWoih773oAfRm+M+KdqtBYA6n40iXBeyR9ka2ijXqC4lLa+5KR6S4xqR8rdnnHr1ZC7GOvQyzug=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778669816; c=relaxed/simple;
+	bh=6Gg4lyEyP9ixnsUNLxZqSNz0Z/sb21m1/g/I8vsj0D0=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=WQM6wN1vCSSQtUxb2AjnnJcljwuTtuiF9V7bYkTks5MmGm2L9jHIc39o3O8Nc4CeqHCjKKImkNKDgencGkA3ajOjcAEdI1bQn6v7dpl5AlfZxhk54QdIcYeR25VaAiA22PAzjOyZOwI43qhpKkkX0sWLHbJZ7poa/7BVa5AplcI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=B06XdUNG; arc=fail smtp.client-ip=40.107.159.0
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cvgvUuDZ"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-488a14c31eeso45192045e9.0
-        for <netdev@vger.kernel.org>; Wed, 13 May 2026 03:55:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778669729; x=1779274529; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cnMgQIZVl3j9s1upPLydgLf3EqbcIw1LZyyGapADhuc=;
-        b=cvgvUuDZG/D/3UdSHjNj8yyuyqKtgXmSHCM8zhqYQF1M0lI+ZUppWC9VVgtjkJmP4h
-         N4it0ypyC74vPDPPIulBAbtKbXXdpgWB3rML/2Z+u+AMfrF/ZlnsQIsAiwK3OssljvVe
-         XdepxNGFCn2DXad48DkTH9F6zRSm6Aa6RpOy6PomD0Pmx7iGOQJ7wPS6t0z2K5TSgkEg
-         Qlad0fVEdehn8RPuUa62uNi4jVfPbdewZdIagK/YOzzL7FREfdqfKGzUz1ISnie7FsnE
-         DLYEVxTY3bqXtKx9jjyDdFnrBE8MzVWyudgOG92+nWvbPgl3A5oI7m8PaODXTRgeQwAR
-         T8Pg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778669729; x=1779274529;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=cnMgQIZVl3j9s1upPLydgLf3EqbcIw1LZyyGapADhuc=;
-        b=X5lrs3CgIYW7ldzDd3R/iK3/uxtkSyYVEaaLo70vQn1rVIaJxMTxKs9d9Y46EFbLKO
-         sEX5A/AFFbvLdOS+NJc0G9GU39UDIHIQ1IrGb6bq44is24dgUG7vRB1FyQ17QfGRkTmU
-         eK2TahaKwMf0SLYZ/QFaAu087ZjKthm6I3Z67+upAVyRovaym8f4nVID9BZaPm9r/QJG
-         pidUjsF5aLWXG4voMXotxlL3AwcWV+zgGm4sNXW5R0dc2s2MrmQ9zIiGTWjtOFc2cnlr
-         5f37vUKA9ynYO1JFyOHC9GbmauQr74Eqw//gnLb0eQkpE0JBhfwb43+rtQxjjGREWjuh
-         ulKw==
-X-Gm-Message-State: AOJu0Yz6uhWqhcAImyqDaRYgfaDxi+2GHr8HNXxW1T79D9kBlATsv/gV
-	O//1gEskILiDC4mMbnL0tg3am5AaPyrKp4iv9F7sv/fJXQFYBjRlg0AVYsym4mTn3XY=
-X-Gm-Gg: Acq92OHpEqKTln3qW2DN/99PpY2H3nXX/SPy5ObWl0Smo/dbB9P1f7Fa5UXBl9s/2sC
-	TPKCYWYWTBwqPZnyTn/VCoZmR3xVeuPVx3iGj3m/CSvHA7RZIlKPngL0GQNbl/kGn4HnDVIFVXQ
-	ru8eyPh3gtMTTxhRhVASTsxdYSVs+LOF8rrPxmXbIbJdFiNRX89LurRVlGjnbScOpaQ249AWXCq
-	b+A9xdn00xg4Pa9cNKk3hD/MokbsbPqHzEPI1QfsQB8NXACtdsWql99Pv9bveFgWIAdymt/lsDR
-	KK4j40amdbgwz7xkTAEtfmkutElRrRqZIN/pB9UggN9SVOLiRh11spNs3kvBZhe47kZnmEfsPrj
-	qPYV6clooRR5WAAXnNkGsIYQ43mD8ttWZa9l5MjP5kB0Bxkn745kk5/W9R5BRZVJQP7/GdOz+1k
-	XOO6b9irPyAI3dp/424FqxfAIc+Qw86hzw+xuAdQS7Vqxk2flt7AMVVXVq9uGQeIprh6fEJ1D1O
-	0kuuZAeEfA=
-X-Received: by 2002:a05:600c:3ba8:b0:48a:6798:52e9 with SMTP id 5b1f17b1804b1-48fc99a8bd4mr40049135e9.0.1778669729093;
-        Wed, 13 May 2026 03:55:29 -0700 (PDT)
-Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e8f438890sm46688195e9.23.2026.05.13.03.55.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 May 2026 03:55:28 -0700 (PDT)
-From: David Carlier <devnexen@gmail.com>
-To: netdev@vger.kernel.org
-Cc: David Carlier <devnexen@gmail.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Antonio Quartulli <antonio@openvpn.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/2] ovpn: respect peer refcount in CMD_NEW_PEER error path
-Date: Wed, 13 May 2026 11:55:21 +0100
-Message-ID: <20260513105521.21629-3-devnexen@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260512042036.19870-1-devnexen@gmail.com>
-References: <20260512042036.19870-1-devnexen@gmail.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="B06XdUNG"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XWwg1NWpzWby31Dz2oyFyxfzzjPMEW05ho7049u4I53IfnOOEUMXJxLBVWCAmwfGchii2yfJt3UBvZTjrasxPxZQ3Etv38Gd2uMiKhSkJcat+U1qLDMHxaXHs3Uo+hdlFh1HmYqmFw4su+Jv7B2tpar6wjgVkwQvoxyX6jf5LQ3i+vwT8l3PpnkVaJBauXcnCRkkOMIQjtdZCiYWKMHncid4YmZv8CWllO2a7cD0LlIoK4rY7B1JNRM3hKgilc8Tcj6WUV5Q2h2XlRigYdIrK2B9nzVeOEzzR2XYwESZXRHIJnz79nhXqBaI6C3rM1opeHJdjwO9KMh/0Z3nGLhnAA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=a6ZXVe7trp5mkUnz7BCRtaZYwI62WzG8ZNqrwGI8nmY=;
+ b=PlW1bHv3UJFCj7RzfboQKbpgHbLvGSHX21ZDQAbqhmd7h4K+pMFeRB+6qIn0NmgLOCEEA8VnNHM2tho2lEzgkw3cu+e5V/yHBkQxGGS119gcS7O5nnm1kemVzp291Sf3x25q6dGU3Eu6eVFPtLXCp38NbsUwyVLBKnkkRL8a9P5HH2xXPCXDUzHJwYI1S+n7/CnmlvqRwVNcoij6cAZEa2TUNHu4Dex2sMvIXbLDgoY3uzlTvn0Tj0YAA1OudptiNbHP6zkUk4PpwF0bPByrrPJIC540mPrdra/8R7NOHTl2pjoowWTBIE6jf0zPGN8seW58M5OsTnu+yF7IQDoKfA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=a6ZXVe7trp5mkUnz7BCRtaZYwI62WzG8ZNqrwGI8nmY=;
+ b=B06XdUNGmerw33P9CgJLx0v4IFWSApfheOApwrw7Qpj4f7JA5VX26W25t2PfFNzdmKi+tVt1r05WYum9nhJT6Un3FVXKmhxDCC8dmhM9JOq8lkiaQLrjcAaVEuEb9sPFhriwwVltkpKFjg08xV02a1V/yM2c9NpEDXUwROLScUkEIMb95WORGsgfB5tMTOwGOJfiG87J/KM42KqtreNdVJvVyiOiJzWiwz0QCOtc4js614vVvJq0syyUk4ylecd7Xb7Y+wGia/GxHXQQayxXm2LlaNHWoG5itt+WtZSWAt/RNlLcjdh2i1bwzP4DAlqZ15sM+2Knxw8A+x0Gn8aWcA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DBBPR04MB7500.eurprd04.prod.outlook.com (2603:10a6:10:1f4::16)
+ by PA6PR04MB11806.eurprd04.prod.outlook.com (2603:10a6:102:526::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.11; Wed, 13 May
+ 2026 10:56:50 +0000
+Received: from DBBPR04MB7500.eurprd04.prod.outlook.com
+ ([fe80::c291:543b:4bde:cee7]) by DBBPR04MB7500.eurprd04.prod.outlook.com
+ ([fe80::c291:543b:4bde:cee7%6]) with mapi id 15.20.9913.009; Wed, 13 May 2026
+ 10:56:50 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: claudiu.manoil@nxp.com,
+	vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: imx@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	catalin.horghidan@nxp.com
+Subject: [PATCH net 0/6] net: enetc: SR-IOV robustness and security fixes
+Date: Wed, 13 May 2026 18:30:15 +0800
+Message-Id: <20260513103021.2190593-1-wei.fang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MA5PR01CA0123.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:1a7::13) To DBBPR04MB7500.eurprd04.prod.outlook.com
+ (2603:10a6:10:1f4::16)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DBBPR04MB7500:EE_|PA6PR04MB11806:EE_
+X-MS-Office365-Filtering-Correlation-Id: a74575d0-be81-492f-5b04-08deb0de5573
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|52116014|366016|19092799006|38350700014|11063799003|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	BFi053IQ5l/mjWQGRdQMpZ1bx5IaVsY2g0V2iIYf9exC5bCqDkfMGOREZ8zslQ3qNGM4fD75bGH0oQydgU2R+Jzhold4DTBFxcXVMbdSs6+zF0m7Hmqm2uQRJb6g/kwPhcZJgzYrRakubyTyjdy5k+RyyvEuL+YPulgQpBmN9WZdbo9VQq4CkqERowPVL0U2Px0IUKkC57sToMo2gzBMUT7Gjl1p6JpGhrQB+tBZXreUw24QZSSNihJTxgtSCSY61AFoPwWPLDBJoJDrCR/bwaenGP/OavuXpeSIvLwS4grNZ+qqpTeWcuw6p/IqW4ih6Cfo6QosWWzNdUhIhOIbXIWpRlrpysWfPDuue1HL0zRFD9OG3wAxW8qZsBV9VeM0tOa+NNQk9Qs8kq3WvaYRWEOvyQ9bRtZXoh2n8IyyxkHpsSYlKXArfKONTaZfNAg0T2RKhVG30s0MroXks6RXoQ2jSHLjPLRsreF7i/g0HA9WaDs4NiVWm57d2UB1iMwLfOZ4+SZbTncJru+sR5jZebl4JBnqelAYj/8bFUJE7Lug8jBVIwCQN+7j7iZsL9nYJvqovRoQC+yugfK2ohgw8PjyBM4j5lhKIJfDzCOttOtint04RoSKfqG5Yy73udaBI/3ducgyuM28iZDMhCceHdW23jEnYQzqHHmNtbRXbJj3CVHru2T9XWp4/Xu1c+lLFcR0UwoDXqY34wqqRpCcDtq+oUACx4YqlKT2VdJM6PMDzQjyPrtyLDYHt6wgaAtp
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DBBPR04MB7500.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(52116014)(366016)(19092799006)(38350700014)(11063799003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?R0pWZWLcVvok+QIGrCVBhCNyEkZ+GzZgwsVJSmtKEMYf72nOY4EKCcfb9yHq?=
+ =?us-ascii?Q?EJUTvrLHmrmYJCYVzg1T9r0SRglKEOAlEjpnstHyo5Hu3YbuJts4oivai07y?=
+ =?us-ascii?Q?d74mtUmmqLDkOtk0LmBJ87pTRtABb/Tkh4043siH0f9+4cFNgV53+aY0NMWP?=
+ =?us-ascii?Q?5O2B2bRtS7YwtdnEvKWNES45RiAkXnxCM6kLAW1E2tTaGcgctjbxK7uM1FX2?=
+ =?us-ascii?Q?ROqyjPNvAgxJa1R6PbIKKOg7XckPNscYpHWYEOEUrrWOnM5NLYMRhSZsBuWe?=
+ =?us-ascii?Q?h7Yl87XX/EXr8+JmD/ggFcVAtVkcQaGDBvx3OEx81yLdzAEGrromtOmeWzqc?=
+ =?us-ascii?Q?Q6oKdneDC0kM4EfpaYlKnNMwUaLzflvo0W+tcG4vY6NeuDrYPYRRfdTa5E4K?=
+ =?us-ascii?Q?jdM26x8XFWYPRMqBBHvYcfWSOT6P0dvklgmB8PXZfrCuTc0bdFeruYL9LfTm?=
+ =?us-ascii?Q?grPM52WJWa874zLCaTY05CsCA3oPBwWVF91vBonHRwTaudEWY0DLgS1zApK8?=
+ =?us-ascii?Q?0MMNacVbVSb0FitYUQJW+Vq9HuMaB/DKWsdJs9N8VgPT/lHetbRgWAOkmoBF?=
+ =?us-ascii?Q?zA5DS9lPgAYYsk47IEp3I6Yr2uZy81/BsVV2pwdgXquEY/4xgFYlo8P5GdAp?=
+ =?us-ascii?Q?qlGL31HlvFvuTsneygCPS8hfXnrqY8ebfX9Wc/AYw4/k3mUGcycRQFNXO45z?=
+ =?us-ascii?Q?H2p+ZQSssw80aK4DysG/+449GE29iKf7O6bhVr9Fx24FS8nbwWTalZ69OCW5?=
+ =?us-ascii?Q?XuKy/ZTnavsieZYmLxI4h8TOj4YD5N70qTZwK2yGk23HGuHdIgpv699yq5ls?=
+ =?us-ascii?Q?ZIHKy+9ivQr+tUFujm+2oJBE5+mTh+jwZ4zGr0MGo0uNbjsiyEQnZEf5Ujio?=
+ =?us-ascii?Q?66QBe4zrIqMIK95Dtadvj1Mkkwoh5oyEdWwZVxXP9yInZIwRCffq5Mwrg7j8?=
+ =?us-ascii?Q?1QEhcUqqrTb5CdoOeV3n/qOEu49HHv2EyH/4kyYOxNpScdXEHZpdQv+XDzKe?=
+ =?us-ascii?Q?z2ZpePBTA0D7toCR7oiRXD31HDwTBC6uwGMlPUDCgQ7H6liYiwWVNcp6zt+x?=
+ =?us-ascii?Q?+d2gntWChk8VhRMa1uKuvwZ+Bp2C6h/AiGOpg6rtLAgMcCMdKInuh9l6iSFo?=
+ =?us-ascii?Q?SLyXpM84f6nHnri/qS2fQ8j0e1hd/3TUIBEGx+MuPkye8CSYBOE5o8fRvINQ?=
+ =?us-ascii?Q?JZIo1O8P/Ywy6DS+e4DXqMZfMltpG0eQauFql2UAFrvCa/4s3n4lhHIwQpdc?=
+ =?us-ascii?Q?3qa/b0TFVAAWs0TDBdXVQmF2w57f654hHgXbrcvDDmYF7ImO3r6Zcw3l8FjY?=
+ =?us-ascii?Q?MD4qzBvusH6IrduSD/WCkNq9/0itULJKtJZvFDu/14Y9MC+/0l3w93mYF9wA?=
+ =?us-ascii?Q?aKjShrxX7MuVDid17gmhjQRco8LQrN5RRcw64fMrfZD1A9x5RXHuSqmJimgF?=
+ =?us-ascii?Q?uYq5e0AUJqKjfHBH47+yPFmTN60iviGY63GLmfkIRWEC431yqzfI/GqeIYzG?=
+ =?us-ascii?Q?mJkYxYjQXIdi5I/ztxhlMqt4HEdUGSneR9k1Z6yJPDFfOj7bc6svpU+xV2iE?=
+ =?us-ascii?Q?ZnwooA11awr9OMrTPyXV0gZEh+Ng5AgJIpMl2AkvHsgZhYnAKbA7+0IpJpU9?=
+ =?us-ascii?Q?IYONJ8KjzQK7jFBd0F4/19bAso1P4hCCqZx35KWbla9BQX0ZAwmiz+YrWxqv?=
+ =?us-ascii?Q?08MT8CuOGVh0Myf+MTPmHpBGddi0AqpX9xuA8OovRbJt2/BHFR/3apeiBQWw?=
+ =?us-ascii?Q?qW24LApOMA=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a74575d0-be81-492f-5b04-08deb0de5573
+X-MS-Exchange-CrossTenant-AuthSource: DBBPR04MB7500.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2026 10:56:49.9968
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Tq//mqJP6UkWg+5w5Vo1GYGCL+XlbD25PbS8AXokVyy0Y61p4hd3Zy8Lv8pS62et8ZfEOoGbaDrAmHZvu1+bAQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA6PR04MB11806
 
-ovpn_nl_peer_new_doit()'s error path calls ovpn_peer_release() directly
-rather than ovpn_peer_put(), bypassing the kref. The accompanying
-comment ("peer was not yet hashed, thus it is not used in any context")
-holds for UDP but not for TCP.
+This series hardens the ENETC PF driver's SR-IOV implementation by
+fixing multiple security and stability issues in the VF-to-PF mailbox
+communication path, identified through code review.
 
-For UDP, the ovpn_socket union uses the .ovpn arm and never points back
-at a peer; UDP encap_recv looks up peers via the not-yet-populated
-hashtables, so the new peer is unreachable until ovpn_peer_add()
-publishes it.
+Issues addressed:
+  - Missing input validation for VF requests (security)
+  - Race conditions in VF state management (stability)
+  - Initialization ordering bugs (reliability)
+  - Resource cleanup issues (memory safety)
+  - Missing ratelimiting in error paths (DoS prevention)
 
-For TCP, ovpn_socket_new() sets ovpn_sock->peer and
-ovpn_tcp_socket_attach() publishes ovpn_sock via rcu_assign_sk_user_data().
-From that moment until ovpn_socket_release() detaches in the error path,
-the TCP fd is fully wired: userspace recvmsg / sendmsg / close / poll
-on the fd, as well as the strparser-driven ovpn_tcp_rcv() path, can
-reach the peer through sk_user_data -> ovpn_sock->peer and bump its
-refcount via ovpn_peer_hold().
+All issues are theoretical (found through static analysis) but represent
+real vulnerabilities exploitable by malicious guests or buggy VF drivers.
 
-ovpn_tcp_socket_wait_finish() (called inside ovpn_socket_release())
-drains strparser and the tx work, but does not synchronize with
-userspace syscall callers that already hold a peer reference. If
-ovpn_nl_peer_modify() or ovpn_peer_add() returns an error while such
-a caller is in flight - notably an ovpn_tcp_recvmsg() blocked in
-__skb_recv_datagram() on peer->tcp.user_queue - the direct
-ovpn_peer_release() destroys the peer while the caller still holds
-the reference, and the eventual ovpn_peer_put() from that caller
-operates on freed memory.
+Wei Fang (6):
+  net: enetc: validate VF primary MAC address before configuration
+  net: enetc: fix race condition in VF MAC address configuration
+  net: enetc: fix use-after-free in mailbox cleanup on interrupt race
+  net: enetc: avoid VF->PF mailbox timeout during SR-IOV teardown
+  net: enetc: fix initialization order to prevent use of uninitialized
+    resources
+  net: enetc: add ratelimiting to VF mailbox error messages
 
-Replace the direct destructor call with ovpn_peer_put() so the kref
-correctly defers destruction until the last reference is dropped.
-In the common case where no concurrent user is present, behaviour is
-unchanged: the kref hits zero immediately and ovpn_peer_release_kref()
-runs the same destructor.
+ .../net/ethernet/freescale/enetc/enetc_msg.c  | 34 +++++++++----------
+ .../net/ethernet/freescale/enetc/enetc_pf.c   | 28 ++++++++++++---
+ .../net/ethernet/freescale/enetc/enetc_pf.h   |  1 +
+ 3 files changed, 40 insertions(+), 23 deletions(-)
 
-With this conversion ovpn_peer_release() has no callers outside peer.c
-- ovpn_peer_release_kref() in the same translation unit is the only
-remaining user - so make it static and drop its declaration from
-peer.h.
-
-Fixes: 11851cbd60ea ("ovpn: implement TCP transport")
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: David Carlier <devnexen@gmail.com>
----
-
-v2:
-- Make ovpn_peer_release() static and drop its declaration from
-  peer.h, since the netlink callsite was the last external user
-  (Sabrina Dubroca, Antonio Quartulli)
-- Add Reviewed-by from Sabrina Dubroca
-
- drivers/net/ovpn/netlink.c | 8 +++++---
- drivers/net/ovpn/peer.c    | 2 +-
- drivers/net/ovpn/peer.h    | 1 -
- 3 files changed, 6 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/ovpn/netlink.c b/drivers/net/ovpn/netlink.c
-index 291e2e5bb450..4c66c1ec497e 100644
---- a/drivers/net/ovpn/netlink.c
-+++ b/drivers/net/ovpn/netlink.c
-@@ -462,10 +462,12 @@ int ovpn_nl_peer_new_doit(struct sk_buff *skb, struct genl_info *info)
- sock_release:
- 	ovpn_socket_release(peer);
- peer_release:
--	/* release right away because peer was not yet hashed, thus it is not
--	 * used in any context
-+	/* For UDP, the peer is unreachable until added to the hashtables, so
-+	 * dropping the initial reference is enough. For TCP, the peer may be
-+	 * concurrently reachable via sk_user_data->peer until
-+	 * ovpn_socket_release() detaches; rely on the refcount.
- 	 */
--	ovpn_peer_release(peer);
-+	ovpn_peer_put(peer);
- 
- 	return ret;
- }
-diff --git a/drivers/net/ovpn/peer.c b/drivers/net/ovpn/peer.c
-index c02dfab51a6e..fb10d1fea940 100644
---- a/drivers/net/ovpn/peer.c
-+++ b/drivers/net/ovpn/peer.c
-@@ -354,7 +354,7 @@ static void ovpn_peer_release_rcu(struct rcu_head *head)
-  * ovpn_peer_release - release peer private members
-  * @peer: the peer to release
-  */
--void ovpn_peer_release(struct ovpn_peer *peer)
-+static void ovpn_peer_release(struct ovpn_peer *peer)
- {
- 	ovpn_crypto_state_release(&peer->crypto);
- 	spin_lock_bh(&peer->lock);
-diff --git a/drivers/net/ovpn/peer.h b/drivers/net/ovpn/peer.h
-index 328401570cba..86c8cffada6d 100644
---- a/drivers/net/ovpn/peer.h
-+++ b/drivers/net/ovpn/peer.h
-@@ -127,7 +127,6 @@ static inline bool ovpn_peer_hold(struct ovpn_peer *peer)
- 	return kref_get_unless_zero(&peer->refcount);
- }
- 
--void ovpn_peer_release(struct ovpn_peer *peer);
- void ovpn_peer_release_kref(struct kref *kref);
- 
- /**
 -- 
-2.53.0
+2.34.1
 
