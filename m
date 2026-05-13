@@ -1,50 +1,48 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A0237CD36
-	for <netdev@vger.kernel.org>; Wed, 13 May 2026 14:17:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A7E03932DB
+	for <netdev@vger.kernel.org>; Wed, 13 May 2026 14:17:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778681853; cv=none; b=fa6PT8XFpGWHK9L+xHo+sIzyW2jw4p1sjhRZTcCYC1m1BFWA6Cx/0xVWfxgActNMNzwfO4fLu15fhpx+4AceA6jcC7i0veOF5XGVntJOaDN5ei4S6CODsZA7h5yo0YvcImTcfpgizoO8oobh5G/3Sc0ayMOOCQo6H2RPVtDNUbQ=
+	t=1778681868; cv=none; b=pGWyzxrRuwV8YLcW7G7U21h1m/z3N9xZIpHUrZSoVEJEV+O7Bx5mvRPnzYghslSd/N3W2GcyMjoTjQIN2CIes1a8tEPcOm/IGkzkEfoQx9yFttBQtH207mbeT54W4+7TLdRchV05bV6cLFoVlxWnY4nCVn6H5/x5IYHqOm6juwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778681853; c=relaxed/simple;
-	bh=/BE9TG1Fk5TI3zLpfvJc5b3fl57SB+n3RbZGkVx74gs=;
+	s=arc-20240116; t=1778681868; c=relaxed/simple;
+	bh=zRoVPx6EDfKiQbyjHvKFD2ORBtA51hWVhfOUNdBjmbo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JcRd405i/fEo8simj7gsSJWElEy2N59fqIz72CZ2gGOej6y66GoYO5ZseAUJ5XOWKIK6ihfSaeq+34I5+FN3iXrleY3lfQtl/27aYE+iduTkqgE7g5AG5rkf8ft/L7XlYaze4CYzmudl+urp+9ccxWWr9jbltoxatq/MyCELkWE=
+	 Content-Type:Content-Disposition:In-Reply-To; b=BIBug8Fn5gXSzXEEdeTpNl7pteMymS8SaQ3Bmgs20te74Knrz7U5M/RN1FhNMwuGOdx3TI85XZzIGpRy8CO5AQjo9EBLgbFrKstGW138NH8bpJOswiRSaVwb5T4F6lTdfaWaPFfYgtRGj3pnt8o6adOqZbAftFHE8KeAQAgnphQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=fail smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=pengutronix.de
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1wNAOV-0007a6-QK; Wed, 13 May 2026 16:17:03 +0200
+	id 1wNAP3-0007lX-AV; Wed, 13 May 2026 16:17:37 +0200
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1wNAOT-000c0f-33;
-	Wed, 13 May 2026 16:17:01 +0200
+	id 1wNAP3-000c0m-0O;
+	Wed, 13 May 2026 16:17:37 +0200
 Received: from pengutronix.de (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id A4192535C39;
-	Wed, 13 May 2026 14:17:01 +0000 (UTC)
-Date: Wed, 13 May 2026 16:17:01 +0200
+	by smtp.blackshift.org (Postfix) with ESMTPSA id DEDA9535C3C;
+	Wed, 13 May 2026 14:17:36 +0000 (UTC)
+Date: Wed, 13 May 2026 16:17:36 +0200
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Lee Jones <lee@kernel.org>
-Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org, 
-	davem@davemloft.net, linux-can@vger.kernel.org, kernel@pengutronix.de, 
-	Oliver Hartkopp <socketcan@hartkopp.net>
-Subject: Re: [PATCH net 2/6] can: bcm: prevent thrtimer UAF in rx path by
- checking RX_NO_AUTOTIMER
-Message-ID: <20260513-abstract-purring-inchworm-f6daa3-mkl@pengutronix.de>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, linux-can@vger.kernel.org, 
+	kernel@pengutronix.de, Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+Subject: Re: [PATCH net 6/6] can: flexcan: disable all IRQ lines in
+ flexcan_chip_interrupts_enable()
+Message-ID: <20260513-crouching-rhino-of-expression-082dcb-mkl@pengutronix.de>
 X-AI: stop_reason: "refusal"
 References: <20260507112321.439968-1-mkl@pengutronix.de>
- <20260507112321.439968-3-mkl@pengutronix.de>
- <20260508151237.7d0a9105@kernel.org>
- <20260513135913.GA305027@google.com>
+ <20260507112321.439968-7-mkl@pengutronix.de>
+ <20260508151159.71fa563a@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,54 +50,46 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="qtrf4g5yl45ftvik"
+	protocol="application/pgp-signature"; boundary="n5wfuoyphpq6y34j"
 Content-Disposition: inline
-In-Reply-To: <20260513135913.GA305027@google.com>
+In-Reply-To: <20260508151159.71fa563a@kernel.org>
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
 X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
 
---qtrf4g5yl45ftvik
+--n5wfuoyphpq6y34j
 Content-Type: text/plain; protected-headers=v1; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH net 2/6] can: bcm: prevent thrtimer UAF in rx path by
- checking RX_NO_AUTOTIMER
+Subject: Re: [PATCH net 6/6] can: flexcan: disable all IRQ lines in
+ flexcan_chip_interrupts_enable()
 MIME-Version: 1.0
 
-On 13.05.2026 14:59:13, Lee Jones wrote:
-> On Fri, 08 May 2026, Jakub Kicinski wrote:
->
-> > On Thu,  7 May 2026 10:22:24 +0200 Marc Kleine-Budde wrote:
-> > > Commit f1b4e32aca08 ("can: bcm: use call_rcu() instead of costly
-> > > synchronize_rcu()") removed the synchronize_rcu() call from
-> > > bcm_delete_rx_op() and introduced the RX_NO_AUTOTIMER flag to prevent
-> > > timers from being rearmed during deletion.  However, it only applied
-> > > this check to op->timer via bcm_rx_starttimer().
+On 08.05.2026 15:11:59, Jakub Kicinski wrote:
+> On Thu,  7 May 2026 10:22:28 +0200 Marc Kleine-Budde wrote:
+> > flexcan_chip_interrupts_enable() disables only the primary IRQ line whi=
+le
+> > writing to the IMASK and CTRL registers.
 > >
-> > All AIs point out this is insufficient:
+> > On multi-IRQ platforms (S32G2, MCF5441X), the additional IRQ lines (bof=
+f,
+> > err, secondary-mb) remain active so their handlers can fire while
+> > registers are inconsistent.
 > >
-> >     reader (bcm_rx_handler, RCU) | writer (bcm_delete_rx_op)
-> >     -----------------------------+-------------------------------
-> >     test op->flags (no AUTOTIMER)|
-> >                                  | op->flags |=3D RX_NO_AUTOTIMER
-> >                                  | bcm_remove_op()
-> >                                  |   hrtimer_cancel(&op->thrtimer)
-> >                                  |     /* not armed: no-op */
-> >                                  | call_rcu(bcm_free_op_rcu)
-> >     hrtimer_start(&op->thrtimer) |
-> >     return from RCU section      |
-> >                                  | grace period elapses
-> >                                  | bcm_free_op_rcu() -> kfree(op)
-> >     thrtimer fires               |
-> >       bcm_rx_thr_handler(op)     | <-- UAF
+> > Disable all registered IRQ lines around the IMASK/CTRL writes. This
+> > also fixes the resume path, which calls this function.
 >
-> Noted.  Leave it with me and I'll follow up shortly.
+> Sashiko points out that the driver is requesting those IRQs with
+> IRQF_SHARED, I think you should also clear that flag if the QUIRK
+> is necessary.
+>
+> Marc, sorry for the delay LMK if you prefer follow up or respin
 
-Please send a new patch against net-next/main, I'll drop this one.
+Sorry for the delay, I prefer to re-spin, so drop this PR.
 
+regards,
 Marc
 
 --=20
@@ -108,15 +98,15 @@ Embedded Linux                   | https://www.pengutronix.de |
 Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
 Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
 
---qtrf4g5yl45ftvik
+--n5wfuoyphpq6y34j
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCagSH2wAKCRDMOmT6rpmt
-0tWyAQC3l2PbvtVVQNQ6aODpspmYDpaF7w5WBzZcBZa5MWG7KwEA9W628gmT8PS1
-TFsQBqRDZxUWef3a8P3jxsTvyDV10ww=
-=2lAk
+iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCagSH/gAKCRDMOmT6rpmt
+0m0UAQD/XJkjMkx2Fuqr7TyYsjzKsXaK4lRj365tebvw9KD5QAEAoxNV/83rYa2u
+cQkSbH449Wy1YC9cksne8Z0I0GHn6gM=
+=YiZO
 -----END PGP SIGNATURE-----
 
---qtrf4g5yl45ftvik--
+--n5wfuoyphpq6y34j--
