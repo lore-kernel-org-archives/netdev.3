@@ -1,199 +1,65 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2954E3CAE6E;
-	Wed, 13 May 2026 22:10:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F1B137FF58;
+	Wed, 13 May 2026 22:30:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778710211; cv=none; b=TNPNn4d6UGAsK87mRQcnKPpM84prI0/rvO9eMmpa2RAlnv0mYLBiL56Jg/7NlS+XEMfh2fLjWxyQWNi1Yqr6daFuNF9YfyAdEwoKE6OPQCPBtUoswZQs3VNVUaarNsZj6jJCDzRCWM499lkL3sdTmmoyVC8h2nbeOmLjoKvYFTY=
+	t=1778711435; cv=none; b=NF8q/tpRcUGa6EoH5bllFibOPr94vTwsgFPzYlvg4JVM0SpbedZoTPysJbAupF/37MBKPvb/1U8pq764urJc2zfCHhG904hFV7lztO1RX5GFuaWCz9+ml1GetxIv6BJeSyNOWeB1xOE6dwn1dk29YfwuKCXhOuIZv3ULGUeNo88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778710211; c=relaxed/simple;
-	bh=z4w1xvlC2HZiJC8OX0qc52f8QnacEaT7+Of5YaCoc6M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ApPPtCR6SUZFFWbF7fIwpfFIR3HDCLPWoArL9zwBQEDbYBlo19UaEtnsFadhjR5ix4VNbuvtEi5ll1Gxmrj1pudaoEfI5tBqRLejS88lIL4c/trem+NZP0pLmKIaAf4cdOyVLUr/VTVZKnyq4Q7InbdQTKw5sspl1qfzBEPGW0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1202)
-	id 1EFE320B716C; Wed, 13 May 2026 15:10:07 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 1EFE320B716C
-From: Long Li <longli@microsoft.com>
-To: Long Li <longli@microsoft.com>,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Leon Romanovsky <leon@kernel.org>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	"K . Y . Srinivasan" <kys@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	shradhagupta@linux.microsoft.com
-Cc: Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	linux-hyperv@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v9 6/6] RDMA/mana_ib: Allocate interrupt contexts on EQs
-Date: Wed, 13 May 2026 15:09:56 -0700
-Message-ID: <20260513220956.402058-7-longli@microsoft.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20260513220956.402058-1-longli@microsoft.com>
-References: <20260513220956.402058-1-longli@microsoft.com>
+	s=arc-20240116; t=1778711435; c=relaxed/simple;
+	bh=NXP84lvtAJkBs5OOdZdw6bPQK+75PbJWLaGmXLWSShY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MSd6Rn5O3/ML2mN9ZzISggOqXyCspQzTAvgXfcEVVAbvR/hZh7aH+AQvSAGss+wp4IE2WQwrEAV+IOQr76DDiTX6Sr54PDRgZ4jcoOCPdlxnSogR7z8rogy0/4dat8b5XgQPKfVbgNKf5Vti4qpQ3EcIIY7k7ctKU2CXQYc0JP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H4TH6LM6; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H4TH6LM6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13150C19425;
+	Wed, 13 May 2026 22:30:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778711435;
+	bh=NXP84lvtAJkBs5OOdZdw6bPQK+75PbJWLaGmXLWSShY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=H4TH6LM6bGmxdAlgMIZO6VtcI8hx3CftdRZ4aPCbeOlzQVExWwd4w3Evu/R9yMCZP
+	 wcSqjdkQNDxLABPVTng9+/ajTM4dVa60LMhRK+tURkrti/gZv+33zORrnQJd9LhXE4
+	 U0N1CkfPX7eBHjoezWnrSsDRpj+uaS6/kMxgKS7SdUjyfpzDDpJ0OvlZire4CxVWAl
+	 4fqp0nb3SZq1Ix5xCceW5a3i7tGfZEN+UGyzjHE73jTb6ljm4paDQkSkRZz3jzKRD0
+	 WU1ucSQPSKM5GgSsWyXXumIjUxfHqRhsyIhSNNoZQ8xRFAkV2IY0xg2npe8KysmCtb
+	 DaCr+iYJ85xcA==
+Date: Wed, 13 May 2026 17:30:30 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Robert Marko <robert.marko@sartura.hr>
+Cc: edumazet@google.com, o.rempel@pengutronix.de, pabeni@redhat.com,
+	devicetree@vger.kernel.org, kory.maincent@bootlin.com,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	davem@davemloft.net, krzk+dt@kernel.org, andrew+netdev@lunn.ch,
+	luka.perkov@sartura.hr, conor+dt@kernel.org, kuba@kernel.org
+Subject: Re: [PATCH net-next 1/2] dt-bindings: net: pse-pd:
+ microchip,pd692x0: add port disable GPIO
+Message-ID: <177871143033.2145977.6127255354690890686.robh@kernel.org>
+References: <20260507104720.262641-1-robert.marko@sartura.hr>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260507104720.262641-1-robert.marko@sartura.hr>
 
-Use the GIC functions to allocate interrupt contexts for RDMA EQs. These
-interrupt contexts may be shared with Ethernet EQs when MSI-X vectors
-are limited.
 
-The driver now supports allocating dedicated MSI-X for each EQ. Indicate
-this capability through driver capability bits. The RDMA EQs pass
-use_msi_bitmap=false to share MSI-X vectors with Ethernet, while the
-capability flag advertises that the driver supports per-vPort EQ
-separation when hardware has sufficient vectors.
+On Thu, 07 May 2026 12:46:54 +0200, Robert Marko wrote:
+> Microchip PSE controllers have a dedicated port disable input that like it
+> name suggest, will disable PoE on all ports.
+> 
+> So, lets document that GPIO.
+> 
+> Signed-off-by: Robert Marko <robert.marko@sartura.hr>
+> ---
+>  .../devicetree/bindings/net/pse-pd/microchip,pd692x0.yaml     | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
 
-Populate eq.irq on all RDMA EQs for consistency with the Ethernet path.
-
-Also relocate the GDMA_DRV_CAP_FLAG_1_HW_VPORT_LINK_AWARE define to its
-numeric BIT(6) position among the other capability flags.
-
-Signed-off-by: Long Li <longli@microsoft.com>
----
- drivers/infiniband/hw/mana/main.c | 43 +++++++++++++++++++++++++------
- include/net/mana/gdma.h           |  7 +++--
- 2 files changed, 40 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/infiniband/hw/mana/main.c b/drivers/infiniband/hw/mana/main.c
-index 6159bd03a021..47e5322bebca 100644
---- a/drivers/infiniband/hw/mana/main.c
-+++ b/drivers/infiniband/hw/mana/main.c
-@@ -750,7 +750,8 @@ int mana_ib_create_eqs(struct mana_ib_dev *mdev)
- {
- 	struct gdma_context *gc = mdev_to_gc(mdev);
- 	struct gdma_queue_spec spec = {};
--	int err, i;
-+	struct gdma_irq_context *gic;
-+	int err, i, msi;
- 
- 	spec.type = GDMA_EQ;
- 	spec.monitor_avl_buf = false;
-@@ -758,11 +759,19 @@ int mana_ib_create_eqs(struct mana_ib_dev *mdev)
- 	spec.eq.callback = mana_ib_event_handler;
- 	spec.eq.context = mdev;
- 	spec.eq.log2_throttle_limit = LOG2_EQ_THROTTLE;
--	spec.eq.msix_index = 0;
-+
-+	msi = 0;
-+	gic = mana_gd_get_gic(gc, false, &msi);
-+	if (!gic)
-+		return -ENOMEM;
-+	spec.eq.msix_index = msi;
- 
- 	err = mana_gd_create_mana_eq(mdev->gdma_dev, &spec, &mdev->fatal_err_eq);
--	if (err)
-+	if (err) {
-+		mana_gd_put_gic(gc, false, 0);
- 		return err;
-+	}
-+	mdev->fatal_err_eq->eq.irq = gic->irq;
- 
- 	mdev->eqs = kzalloc_objs(struct gdma_queue *,
- 				 mdev->ib_dev.num_comp_vectors);
-@@ -772,32 +781,50 @@ int mana_ib_create_eqs(struct mana_ib_dev *mdev)
- 	}
- 	spec.eq.callback = NULL;
- 	for (i = 0; i < mdev->ib_dev.num_comp_vectors; i++) {
--		spec.eq.msix_index = (i + 1) % gc->num_msix_usable;
-+		msi = (i + 1) % gc->num_msix_usable;
-+
-+		gic = mana_gd_get_gic(gc, false, &msi);
-+		if (!gic) {
-+			err = -ENOMEM;
-+			goto destroy_eqs;
-+		}
-+		spec.eq.msix_index = msi;
-+
- 		err = mana_gd_create_mana_eq(mdev->gdma_dev, &spec, &mdev->eqs[i]);
--		if (err)
-+		if (err) {
-+			mana_gd_put_gic(gc, false, msi);
- 			goto destroy_eqs;
-+		}
-+		mdev->eqs[i]->eq.irq = gic->irq;
- 	}
- 
- 	return 0;
- 
- destroy_eqs:
--	while (i-- > 0)
-+	while (i-- > 0) {
- 		mana_gd_destroy_queue(gc, mdev->eqs[i]);
-+		mana_gd_put_gic(gc, false, (i + 1) % gc->num_msix_usable);
-+	}
- 	kfree(mdev->eqs);
- destroy_fatal_eq:
- 	mana_gd_destroy_queue(gc, mdev->fatal_err_eq);
-+	mana_gd_put_gic(gc, false, 0);
- 	return err;
- }
- 
- void mana_ib_destroy_eqs(struct mana_ib_dev *mdev)
- {
- 	struct gdma_context *gc = mdev_to_gc(mdev);
--	int i;
-+	int i, msi;
- 
- 	mana_gd_destroy_queue(gc, mdev->fatal_err_eq);
-+	mana_gd_put_gic(gc, false, 0);
- 
--	for (i = 0; i < mdev->ib_dev.num_comp_vectors; i++)
-+	for (i = 0; i < mdev->ib_dev.num_comp_vectors; i++) {
- 		mana_gd_destroy_queue(gc, mdev->eqs[i]);
-+		msi = (i + 1) % gc->num_msix_usable;
-+		mana_gd_put_gic(gc, false, msi);
-+	}
- 
- 	kfree(mdev->eqs);
- }
-diff --git a/include/net/mana/gdma.h b/include/net/mana/gdma.h
-index 6c138cc77407..d84e474309a3 100644
---- a/include/net/mana/gdma.h
-+++ b/include/net/mana/gdma.h
-@@ -615,6 +615,7 @@ enum {
- #define GDMA_DRV_CAP_FLAG_1_HWC_TIMEOUT_RECONFIG BIT(3)
- #define GDMA_DRV_CAP_FLAG_1_GDMA_PAGES_4MB_1GB_2GB BIT(4)
- #define GDMA_DRV_CAP_FLAG_1_VARIABLE_INDIRECTION_TABLE_SUPPORT BIT(5)
-+#define GDMA_DRV_CAP_FLAG_1_HW_VPORT_LINK_AWARE BIT(6)
- 
- /* Driver can handle holes (zeros) in the device list */
- #define GDMA_DRV_CAP_FLAG_1_DEV_LIST_HOLES_SUP BIT(11)
-@@ -631,7 +632,8 @@ enum {
- /* Driver detects stalled send queues and recovers them */
- #define GDMA_DRV_CAP_FLAG_1_HANDLE_STALL_SQ_RECOVERY BIT(18)
- 
--#define GDMA_DRV_CAP_FLAG_1_HW_VPORT_LINK_AWARE BIT(6)
-+/* Driver supports separate EQ/MSIs for each vPort */
-+#define GDMA_DRV_CAP_FLAG_1_EQ_MSI_UNSHARE_MULTI_VPORT BIT(19)
- 
- /* Driver supports linearizing the skb when num_sge exceeds hardware limit */
- #define GDMA_DRV_CAP_FLAG_1_SKB_LINEARIZE BIT(20)
-@@ -659,7 +661,8 @@ enum {
- 	 GDMA_DRV_CAP_FLAG_1_SKB_LINEARIZE | \
- 	 GDMA_DRV_CAP_FLAG_1_PROBE_RECOVERY | \
- 	 GDMA_DRV_CAP_FLAG_1_HANDLE_STALL_SQ_RECOVERY | \
--	 GDMA_DRV_CAP_FLAG_1_HWC_TIMEOUT_RECOVERY)
-+	 GDMA_DRV_CAP_FLAG_1_HWC_TIMEOUT_RECOVERY | \
-+	 GDMA_DRV_CAP_FLAG_1_EQ_MSI_UNSHARE_MULTI_VPORT)
- 
- #define GDMA_DRV_CAP_FLAGS2 0
- 
--- 
-2.43.0
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
 
