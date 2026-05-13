@@ -1,195 +1,209 @@
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011015.outbound.protection.outlook.com [52.101.57.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4653D45E7
-	for <netdev@vger.kernel.org>; Wed, 13 May 2026 06:37:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.145.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CABC3D45EC;
+	Wed, 13 May 2026 06:37:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.15
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778654271; cv=fail; b=C0aEIcXyI37hRcDD1VkFhSFj6Deji2wPxjbaGlvhrgtbFMCbO0xbjpzXiAn+4d/U57Z4V3n9M8/aZLXghKHUDpKIurUa683D4JbIeUoiHkBX12zkck9na9vbZZEBPuHMuyiu0suhLCuWu1t3eCE2EN7Q212+HSxuszhlrTI8DhY=
+	t=1778654271; cv=fail; b=T8gUvw9YG9lXHvnAKWTK054bEPrD/ARS5MDvo09fICf1LBJBgYXbsIvpsIL1PA7wlY+8t/woZHPTCgu/7nB0ByXtmjjx/Fr7urkjtatEnW6zu5quEkPkGiYEFDDHak85rqF8SvLmuzARL5P1bxTkhhGf2OFnVvuxLXq4gBCIvEs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1778654271; c=relaxed/simple;
-	bh=ldUUL5LvKKg8pO0Cs/L34kXovzIocX5yA8E+TJKLni0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Bk2AtVdccZERNT7nRIYBlouOzIKvBuuqHqO66OXkehdSDnORcv6c70ap7MSZYeOn/SfAfzlfvsyjIv55sVEy1ABCYL52q6amOiZgDKBKGYwr9DlJaBYUyEsZLF0XVbojvadOfeLf8DZUt4RQyFjl75uk77OKowgqREO8r7RbVDI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=vpMyG/0T; arc=fail smtp.client-ip=67.231.145.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	bh=Z3NET3hw5Mbo95xar5MzopKq5lmbKjV2xutRFPIeu7o=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SxPsW1m1AFE0mbKXVxKN+8iGa/Ct8CqUlS+gEuUhPFSZ/jkhsgfKxTMJ9OpL/Rv4vF/fXMLTxlymlDFG5sl8UVUB71AeVDhD7/x9hq1gVJgfL6s/bXrEM/FcW5YBms8dqOtDzIChFBfeK4QA9cB4q1Gdc7N82/OE7wwdidJlTcA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=jGFmZXDD; arc=fail smtp.client-ip=52.101.57.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="vpMyG/0T"
-Received: from pps.filterd (m0528008.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64CFdwhI1926981
-	for <netdev@vger.kernel.org>; Tue, 12 May 2026 23:37:48 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=LAM65dsmKstrNrOI5lpRjp6+6YUiNRddRB1paFn5Tj4=; b=vpMyG/0TqYlK
-	FWur0gKHVAvJLoyN0BSGdH/as0387H96++tNCUt3QXLPzIH8p4iQVhoAWfqG5rIL
-	PJ8R14LbD6TgPnBJVBKbPpbdVILQkJgwZKS+0j92/oMcMMWJ6YSQw55sVRvWsjnv
-	BK/NZREMWIfqkQkozj9BcGNXRWm9pg4/DgAPmrQfwhM3YcV7+5PrtgRlcs0tQ6Iv
-	2sv9r9VJfHH/yIJi1TSk1Tg8YBNDS6675+5PvwhHEKsVCveXe4BTBOJndjzhI9G3
-	GBkVoYXXxprMnmmG/IdN4YW+qAjnw0hImptu3z2Tk3hWF9aSB5AQvuc7ytezl1l/
-	OsvLiBRgJQ==
-Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4e3nw1p46v-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Tue, 12 May 2026 23:37:48 -0700 (PDT)
-Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-482abfeea78so1690566b6e.1
-        for <netdev@vger.kernel.org>; Tue, 12 May 2026 23:37:48 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778654267; cv=none;
-        d=google.com; s=arc-20240605;
-        b=fn6/obP8gTPi6xCa4QemBfUtZ4ClJYhWFI6sAVZYwGNQgpP9zsmRxc70Z7t4J+64ah
-         xsZ1rDsJaA9yG/orR1MsEMsZ9lQbiXv5tS05iz9qu0qDvbIGw3EzfEWeAgWFyWrAh7Fy
-         aXoiiEkVWhhH/TQRKJ137OZKKvThu8KNAk2QnPLQHOQR7GSmUv7GJQm3U8BwApWf19fj
-         TV1UFuDiB8HoPuBKnK7DR8ouKmhUHzq+6CQsnVxSFo/2b7MHYe2w5DNkQu/gK+uHW59a
-         mmQGS1FjSAa/nVUIEJs3Zi/dyBHgdxJ8r9VgXxZfV5Trhcc/OzDCyorvGyE+Ny5Nr8na
-         Vxjg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version;
-        bh=P9w2oPSXP1dmZeF210Jp6h9CK0SajjpVEjMBSbv21rw=;
-        fh=0xD/O83F4mDi3PNkHyc485y9B85dj5ve4dzfs03cJU8=;
-        b=DE8ZfKQb/+n6CNudxRts+37vgp+Iu0IxQob/eCIm6a9xKDsPKM7Rv0THyJA46g/SvY
-         qKLmlHE4Pi2oqm5u2w2JZvLIMfMbWUSzn5UIf3tdDMJjGqZ7ThPDLRk0l+C2ZpRSIMr+
-         wdpgPY0/322MJscXI/L5bbIRxMgA+SO2bJdzHcpXJp/bWE2ERMWToXiSjHnr6WALvToz
-         gdF5FNC4jc3V0a9/0VTRTOTK7zNS8QmCTl2vHXp4yfo6iJZ9/f6B8pJVEfBs0pxjN2/E
-         emNqtDpYHjQmzLnZq72zUMLbY3W9Peyi/sKR5gQSrKGpQDmVnvTBfplxk1HCbJkd+8OH
-         WbXw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778654267; x=1779259067;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=P9w2oPSXP1dmZeF210Jp6h9CK0SajjpVEjMBSbv21rw=;
-        b=Gej73QdB3qfAur/Lgmqlb0aDfa2xjwXGcfhP9YIgR1Ktx7kYWVxwBtrMn+NBFTZoFU
-         HiR8Nw5a3Fqv224JhRT/ZMxoo/FQ7Ci7PrrgGagyL6ToymxoUgq48QOWUqeUfg3qB6b3
-         syfhTfox+hgmxlXflOosQHHV4DuBvVLgRv7zk13geVOeSbVG9BRAI42HnFvaYJxtN96q
-         Guo+Cck3yaldtWntPnZ4ltCuKgeB8a48nU/Prwu+XnEQEoXKDu5xFzcrKOMPv+AGPJNV
-         huSa5hPSsLFVIiZyYp1q+o5z3ZAf/un2ZrV/SAG8kJ+hH+PmdY+lqQCCo1nIiGXIqGKk
-         3BcQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9N0yKeCE5B1KNJEj9zutdlZKdl9YKWMAS7u0OjS1e9k/KbopDCgc96Zd9xVe2knUDfN5/nBU0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywz2qNhZWifn91c9uOLmFON3wtW0gcYIFCqENZwOVaQG4pWb2nl
-	fMtdB2t2DheWFpjGonIXHqcc2BYl9i3Fj7PDuzQrWkbGpxxEZdOVBQwytns6+96F9qi3BAcXUBQ
-	x8RJ36IWN+/C0I+3/waLvCzSLirUNH9lQRlALhwNr9vhrjgbP1W0EF9zGzkZ4x2QIauyTq/qj7u
-	8LmuuOJ8VmLl4n/P82wxmjICih+QlNl+iPqkGMCVo2gw==
-X-Gm-Gg: Acq92OFMULxPfyh7xCQdZCJjFAo82cew5dy4uB7bMJ35yi60Q0IcLs/QLbejvK1Vw1A
-	TAHJUL2E8T8/8KO8SK4B8TKBLZuiAr77G83rhPQo4lpduH7WBGNF7LThRy0E9EWEEy09TsoDPXO
-	ruagFhAPSqMgmBIXKXs5HUdSoNe2OCyWkZqL99N1NtjBV9YGM93KcV4nC3uPIjwgxrDsxp1AE2S
-	cqDX/kNTc+RUi7tx6/1GPs0NQQfjNo75w+J18j8
-X-Received: by 2002:a05:6808:1492:b0:45f:13fe:4a3d with SMTP id 5614622812f47-482b28c375cmr1554319b6e.7.1778654267588;
-        Tue, 12 May 2026 23:37:47 -0700 (PDT)
-X-Received: by 2002:a05:6808:1492:b0:45f:13fe:4a3d with SMTP id
- 5614622812f47-482b28c375cmr1554304b6e.7.1778654267114; Tue, 12 May 2026
- 23:37:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="jGFmZXDD"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mYkn1LKnBP83QukBaQZZAMy2Y567Eod2LR+J2Uvv8LCBmvdNR4trQ/HjxH85ki45W77XyJyG4wxBtpT33CUrZ2EkkPxg2TSEGhQJdaglBVQjmRf1lOt1XtJhfG6gMJ47rL1iel4qU4wXgMqLFRrATHGx7wt+cfc4Prp0TzpeS2VkqIOEhQLbr3AOY6tVx/lKVxYBZmhnsLVhROvNmYm3RXRIpjMSRJrgKGuXEZqTEw9NfbkUHq9Z05RSPWjJSo2xZBLlQZF6TxMKBqNNaDsHDMQpgEPBBOQSpC0HCkVycBfHG+Iv5V3Q297gwH+Ojvnp6FsnfrFefTMusaJrKRmcDg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tG0Fyk21F93qqH0+MeGNnwPDWKFQ9NsGMdG1HMSmgFw=;
+ b=uq2NZ2CoKykxhUmbhHk9svRfigVU3jLLCe6B9x7MET9AfqZhw9tnz4dQs/DeS+8we/Tx3S9j8G6e8On2FhTcI+kXLVXsuLTEjDIg3wF3vLW/K9xQ+Oc9VhTr5Xkwj5WGbLjA2BUyOV7W5rrkAECdZTJ1imIpCzC82EcPPjEYJ7ZjkDwTL0h3LbAEy6NFzyg/YCGJPYDfNCb3C1Lgqk/huwbK+kPqR1VKlI3yTcvQxTK6c1Qb5FGfHzB9Ax0bXgx8BrKtzo5pA0jcd4sJVWetLVCyL0P0VrBhnDQ/Rup8EyO/FonMmyXgcV/J6/SU5JRHObGTOwwOXHNo2uD+47OV7A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.232) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tG0Fyk21F93qqH0+MeGNnwPDWKFQ9NsGMdG1HMSmgFw=;
+ b=jGFmZXDDZdRcgSQ82fCVWBHD9IbeUChQPbNpDEhRt4kp7mHLO3M/QiKlrFp9xyRmP5ewD9dUhxs1jHLw2ygu8/pfxgypiRMXOkddDmgo5ZLeaTOKmbO1LGnSIXSYx56hMi/qWYyPmUfe5pvkNlOJD+wW8bZ6+ErmlsIrOTPwj69ST/+GfXqVfQ7LJyqMbb6gX/jaZE4UObBHih5/pTDFoYHFKT+weTw627iFuBDWiGIrqpoAHRJuQq1KlLA1cdjK1oxvXHGWNb3R39q8IEhkc8kY7q3aDLEVrTyKQeykl8w4IddlPDSn2qvn3J9J/D4HsGHjSDRps6G55DXaszVC2w==
+Received: from PH7PR02CA0014.namprd02.prod.outlook.com (2603:10b6:510:33d::34)
+ by PH7PR12MB6719.namprd12.prod.outlook.com (2603:10b6:510:1b2::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.11; Wed, 13 May
+ 2026 06:37:43 +0000
+Received: from CY4PEPF0000EE34.namprd05.prod.outlook.com
+ (2603:10b6:510:33d:cafe::4f) by PH7PR02CA0014.outlook.office365.com
+ (2603:10b6:510:33d::34) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.25.17 via Frontend Transport; Wed, 13
+ May 2026 06:37:42 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ CY4PEPF0000EE34.mail.protection.outlook.com (10.167.242.40) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.25.13 via Frontend Transport; Wed, 13 May 2026 06:37:42 +0000
+Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 12 May
+ 2026 23:37:25 -0700
+Received: from drhqmail201.nvidia.com (10.126.190.180) by
+ drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Tue, 12 May 2026 23:37:24 -0700
+Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
+ (10.126.190.180) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
+ Transport; Tue, 12 May 2026 23:37:18 -0700
+From: Tariq Toukan <tariqt@nvidia.com>
+To: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>
+CC: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+	Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, Shay Drory
+	<shayd@nvidia.com>, Or Har-Toov <ohartoov@nvidia.com>, Edward Srouji
+	<edwards@nvidia.com>, Maher Sanalla <msanalla@nvidia.com>, Simon Horman
+	<horms@kernel.org>, Parav Pandit <parav@nvidia.com>, Moshe Shemesh
+	<moshe@nvidia.com>, Kees Cook <kees@kernel.org>, Patrisious Haddad
+	<phaddad@nvidia.com>, Gerd Bayer <gbayer@linux.ibm.com>,
+	<netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Gal Pressman <gal@nvidia.com>
+Subject: [PATCH net] net/mlx5: Skip disabled vports when setting max TX speed
+Date: Wed, 13 May 2026 09:36:40 +0300
+Message-ID: <20260513063640.334132-1-tariqt@nvidia.com>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260512184755.4137227-1-zhipingz@meta.com> <20260512184755.4137227-3-zhipingz@meta.com>
- <d5b26695-f1fd-4cb6-8e19-201f689eceaf@huawei.com>
-In-Reply-To: <d5b26695-f1fd-4cb6-8e19-201f689eceaf@huawei.com>
-From: Zhiping Zhang <zhipingz@meta.com>
-Date: Tue, 12 May 2026 23:37:36 -0700
-X-Gm-Features: AVHnY4KQd48YcOfbXPjFCGlTijSz26BhC9fVFq41RkqL4K2-2maS91GmCZxuWQI
-Message-ID: <CAH3zFs2V_EENYzq+MRbSV_XPqz99xzA1V=Yc_GpgjGxxt41quw@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] RDMA/mlx5: get tph for p2p access when registering
- dma-buf mr
-To: fengchengwen <fengchengwen@huawei.com>
-Cc: Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-        Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <helgaas@kernel.org>,
-        kvm@vger.kernel.org, linux-rdma@vger.kernel.org,
-        linux-pci@vger.kernel.org, netdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, Keith Busch <kbusch@kernel.org>,
-        Yochai Cohen <yochai@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Authority-Analysis: v=2.4 cv=HuZG3UTS c=1 sm=1 tr=0 ts=6a041c3c cx=c_pps
- a=4ztaESFFfuz8Af0l9swBwA==:117 a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=_1IyUuN4QrATX339ibzo:22
- a=i0EeH86SAAAA:8 a=VabnemYjAAAA:8 a=xwbcgjOLmlna_7dmNJkA:9 a=QEXdDO2ut3YA:10
- a=TPnrazJqx2CeVZ-ItzZ-:22 a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-GUID: MwbwvD8o88kRvp6c8r9mE7ZEfbUdSq3c
-X-Proofpoint-ORIG-GUID: MwbwvD8o88kRvp6c8r9mE7ZEfbUdSq3c
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTEzMDA2NiBTYWx0ZWRfX+CV8eIzGw0VL
- 4MCYvYHDZxGJGZnYpNQGCsTh7DIXcfOjz4+V4aWzjUSyZgZU+PpcS3peO5HGVAICnY1FG71vY02
- VvkcBplt9XVXb/FSOxMKjUhYM1ikPAm2A4My0rDSSqlzSbDTV/0NBMUCtfbGJj/Yoc57AR/EVhu
- ryr65NAlfj1nW3sM3pEiqSf69CYVrIYhJP5j00ijLUADhJW6DRsz1M0EhV7M1859dVODuz/77pa
- 1JiC0hPiW8nYhd9Wrl/Gp46XsPCbu8Ora0QBDiNp7lzPwiMHby3Kw/XIb5EBILoAO7AGFGGaEWW
- ZQ/F4pJu4dfrJUf6Fad3M5AcKG9b7ZJPyWzZCSDwh6CouRVV2lg09qzqkIQgIMgSrBxoeF8DFf4
- 6LlR2hgXr4CySqffK8Pnjcsoj+6yOfsbLLGOMEzMfqdSwwPSFs0XlfGG5aOh5vWOiHpbhVsdIHs
- cw6RXBuM9FFZ5PlbDCw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-11_05,2026-05-08_02,2025-10-01_01
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE34:EE_|PH7PR12MB6719:EE_
+X-MS-Office365-Filtering-Correlation-Id: b1041d1d-3099-485a-e617-08deb0ba22df
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|376014|7416014|1800799024|82310400026|11063799003|18002099003|56012099003|3023799003;
+X-Microsoft-Antispam-Message-Info:
+	svKSX1P2pI7XeVTTS1wb6XG7k4YuLArkmnBuYGc4gf2/ZnrE2jV/uK42MobGoyyEe3WIrWZzPp6I4mDNwuXdWg65a8eMGZcd9OBl7t4xu5MJkmsmjrLcgeo0Ucrgbe2WZwfbcqnUMHPxUTVQT9dBmx2HbbYnZkE0gC80zU2sknxmZMfl30194vw/2LobxAsGuH8G00yD0V0GjypuUmQYl0b67vWIeyg5rXagMPcPKU+I+lTGO49rTJ10SfaRBvpIYbgxOwfIpbcuYVCD0sIs6V0pywB830rNopZg7X6ZNHMVchk7nX1zdqLKXLv3yNatOn7ct9gLUdnXSPopflL7lD9jyo5kHZsn0VexJkKRNRalse6RhyYEn5eqC6vbz08VosD4aYg/QkoQOm18iyquOAsaxmHVBsoo6k1tqpIQS9m/NqKiCIChmf0Z0rMPu7G7SyRPkmXdRLdx9yOKFFln/8PXFjge4LAaP4+OzRMD2HlKeQ81dmccB9+BGeJvAG3Do24KKYpgm7xkqF9RnjC6g5sRHQfFwS0R9jm3+h/PuawWsnA2fLIopVgqh9hy2W7kyS6ty21EFVookcZwr7UaRrnJjs0WDqnE4m/qXHiHnmG13k79CFgdFG1QBeNe9FODA7e7dXpTwIeG8SNeS87XlMedKFXMoe2hfeZXF772s097xS4VGmQIoIjKiHS/t4crHb77Dbbk4iAfuoFx+k7i0OnG8adHxpfhK1HNTGym3pM=
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(376014)(7416014)(1800799024)(82310400026)(11063799003)(18002099003)(56012099003)(3023799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	PrwMi8eUPZQ4SLskxuMjtPpsdHJJ01B9jDn2UGjTwkMM/1+vJSMKqkKYUQu4VdzlgwhONCJTyaC2VL68UTLw4KIFGwdlRXP8/7Hl/PhvqxQhLCKX2bg7p6j0v/gzXKxBoenbPAq8dVs697yOQY7IrpCRDAyRjErF4gX4WWLmYwx/7ZxIbtXvUEHZmpx2DMgzL3kZvkFpiFRX8wWWgdA7viQ4ZoHpyRF0NNSIiXkuXfLa61XTgKr1NeqTI6ze9XwSWC83AD2sgHZutmZIn6wnyG4iSoqnC6JzBHFTHRR84pPxVcHio1/2G5DpxVDpFtQMZtmaKDM8yO5oHETzCCy122/5LYJk9JrOwsUoGXbDN0MPwOXHDfMLdhrXYl7W+vXjg2t2KC0S5vY5B0+NCfarhW+YmfSZuKmpW8Ghajry6nMINeUY9RHCHeepZ+CH+HN5
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2026 06:37:42.7438
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b1041d1d-3099-485a-e617-08deb0ba22df
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000EE34.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6719
 
-On Tue, May 12, 2026 at 6:49=E2=80=AFPM fengchengwen <fengchengwen@huawei.c=
-om> wrote:
->
-> >
-> On 5/13/2026 2:47 AM, Zhiping Zhang wrote:
-> > Query dma-buf TPH metadata when registering a dma-buf MR for peer to
-> > peer access and translate the raw steering tag into an mlx5 steering
-> > tag index. Factor mlx5_st_alloc_index() so callers that already have a
-> > raw steering tag can allocate the corresponding mlx5 index directly.
-> > Keep the DMAH path as the first priority and only fall back to dma-buf
-> > metadata when no DMAH is supplied.
-> >
-> > Add pcie_tph_get_st_width() so the mlx5 IB driver can query the
-> > device's negotiated ST width without poking pci_dev::tph_req_type
-> > directly (that field is gated by CONFIG_PCIE_TPH and would otherwise
-> > break !CONFIG_PCIE_TPH builds). Pass the width to the dma-buf
-> > get_tph() callback so the exporter can return the value that matches
-> > the consumer's capability.
->
-> 1\ Recommend the PCI/TPH modification be committed separately.
-> 2\ How about rename it to pcie_tph_enabled_req_type() ? so we could
->    use already defined macro:
-> #define   PCI_TPH_REQ_DISABLE           0x0 /* No TPH requests allowed */
-> #define   PCI_TPH_REQ_TPH_ONLY          0x1 /* TPH only requests allowed =
-*/
-> #define   PCI_TPH_REQ_EXT_TPH           0x3 /* Extended TPH requests allo=
-wed */
->
+From: Or Har-Toov <ohartoov@nvidia.com>
 
-Hi Chengwen,
-  Thanks for the great suggestions.
-  1. Splitting the PCI/TPH helper change into a separate prep patch
-sounds reasonable.
-  2. I see your point about exposing the enabled TPH request type! I
-want to take one
-      more pass over the overall flow and switch to that if I don=E2=80=99t
-find any issues.
+When setting vports max TX speed during LAG activation or bond state
+changes, the code iterates over all eswitch vports. However, some
+vports may not be enabled yet.
 
-  Zhiping
+Skip vports that are not enabled to avoid sending FW commands for
+uninitialized vports. Save the LAG aggregated speed in the vport
+struct so it can be applied when the vport is enabled later.
 
-> >
-> > Pass the dma_buf pointer that the umem already resolved into
-> > get_tph_mr_dmabuf() instead of re-resolving the user-supplied fd.
-> > Re-resolving opens a TOCTOU where a concurrent dup2() can substitute a
-> > different dma_buf between umem creation and TPH lookup.
-> >
-> > Track the per-MR ownership of the allocated mlx5 ST index on
-> > mlx5_ib_mr (dmabuf_st_index / dmabuf_st_owned) and release it once the
-> > firmware mkey no longer references it. Both the cached path
-> > (mlx5r_umr_revoke_mr_with_lock + ib_frmr_pool_push) and the
-> > destroy_mkey path call mlx5_ib_mr_put_dmabuf_st() so the ST index does
-> > not leak when the MR is reused from the FRMR pool.
-> >
-> > Initialize ret in mlx5_st_create() so the cached steering-tag path
-> > returns success cleanly under clang builds.
-> >
-> > Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
-> > ---
-> >  drivers/infiniband/hw/mlx5/mlx5_ib.h          |  6 ++
-> >  drivers/infiniband/hw/mlx5/mr.c               | 72 ++++++++++++++++++-
-> >  .../net/ethernet/mellanox/mlx5/core/lib/st.c  | 27 ++++---
-> >  drivers/pci/tph.c                             | 20 ++++++
-> >  include/linux/mlx5/driver.h                   |  7 ++
-> >  include/linux/pci-tph.h                       |  2 +
-> >  6 files changed, 124 insertions(+), 10 deletions(-)
-> >
->
-> ...
+Fixes: 50f1d188c580 ("net/mlx5: Propagate LAG effective max_tx_speed to vports")
+Signed-off-by: Or Har-Toov <ohartoov@nvidia.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+---
+ .../net/ethernet/mellanox/mlx5/core/eswitch.c | 21 +++++++++++++++++++
+ .../net/ethernet/mellanox/mlx5/core/eswitch.h |  1 +
+ .../net/ethernet/mellanox/mlx5/core/lag/lag.c |  5 +++++
+ 3 files changed, 27 insertions(+)
+
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
+index 123c96716a54..7c8311f41232 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
+@@ -908,6 +908,24 @@ static void esw_vport_cleanup(struct mlx5_eswitch *esw, struct mlx5_vport *vport
+ 	esw_vport_cleanup_acl(esw, vport);
+ }
+ 
++static void mlx5_esw_vport_set_max_tx_speed(struct mlx5_eswitch *esw,
++					    struct mlx5_vport *vport)
++{
++	int ret;
++
++	if (!MLX5_CAP_ESW(esw->dev, esw_vport_state_max_tx_speed))
++		return;
++
++	ret = mlx5_modify_vport_max_tx_speed(esw->dev,
++					     MLX5_VPORT_STATE_OP_MOD_ESW_VPORT,
++					     vport->vport, true,
++					     vport->agg_max_tx_speed);
++	if (ret)
++		mlx5_core_dbg(esw->dev,
++			      "Failed to set vport %d speed %d, err=%d\n",
++			      vport->vport, vport->agg_max_tx_speed, ret);
++}
++
+ int mlx5_esw_vport_enable(struct mlx5_eswitch *esw, struct mlx5_vport *vport,
+ 			  enum mlx5_eswitch_vport_event enabled_events)
+ {
+@@ -948,6 +966,9 @@ int mlx5_esw_vport_enable(struct mlx5_eswitch *esw, struct mlx5_vport *vport,
+ 
+ 	esw->enabled_vports++;
+ 	esw_debug(esw->dev, "Enabled VPORT(%d)\n", vport_num);
++
++	if (vport->agg_max_tx_speed)
++		mlx5_esw_vport_set_max_tx_speed(esw, vport);
+ done:
+ 	mutex_unlock(&esw->state_lock);
+ 	return ret;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
+index 5128f5020dae..e9cf7c592ce9 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
+@@ -247,6 +247,7 @@ struct mlx5_vport {
+ 	enum mlx5_eswitch_vport_event enabled_events;
+ 	int index;
+ 	struct mlx5_devlink_port *dl_port;
++	u32 agg_max_tx_speed;
+ };
+ 
+ struct mlx5_esw_indir_table;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
+index 449e4bd86c06..f8e70ac5a85b 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
+@@ -1274,6 +1274,11 @@ static void mlx5_lag_modify_device_vports_speed(struct mlx5_core_dev *mdev,
+ 		if (vport->vport == MLX5_VPORT_UPLINK)
+ 			continue;
+ 
++		vport->agg_max_tx_speed = speed;
++
++		if (!vport->enabled)
++			continue;
++
+ 		ret = mlx5_modify_vport_max_tx_speed(mdev, op_mod,
+ 						     vport->vport, true, speed);
+ 		if (ret)
+
+base-commit: f5b2772d14884f4be9e718644f1203d4d0e6f0d6
+-- 
+2.44.0
+
