@@ -1,139 +1,138 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C2494921A1
-	for <netdev@vger.kernel.org>; Wed, 13 May 2026 15:35:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2E048C40C
+	for <netdev@vger.kernel.org>; Wed, 13 May 2026 15:35:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778686506; cv=none; b=IwoqVDN2vu8+YRhlombMxkxioaWIHGZK0ADiXXTPMLgyVtwIVMODAoTTduacjL75+RaJxB1C8WYcIODO57vOUgnpfiGeT6zeA5MZHr1FBGycARsYqb3bJSYbb9hv5C6bIaBpLuX1ym6NqkpEWNa7TF+yjjTiTOArhqn+4x6nWBM=
+	t=1778686554; cv=none; b=t0gVOVJVFvjJFXOcEF/yP52ui5u/gmIkWpyUsvcBYL+Y3Gg5GF+O2A507jDmnv0jJCnbdBT2sn09On1FunPe0NNGJa8l/MeaEcGA1zJvHs9BF3xwuz/7JGlhwQR4OI4lLRbyA1Uk8upDIkHTVYDx9ITHAsMLdvrhPiobBxaoOBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778686506; c=relaxed/simple;
-	bh=380OIoxziQ8FlKx1mJdOpqZlW6QTVqBF+ru5RUN6Y8U=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ak9DJKYNzHR7lgVkaatMHCEkq0QnnqrqcV+RSjqobfr3ZMg5KghcBO65vmNbgapdULtBR+OCD1n9De55mpEOvkdtmKvWw891USdLot5im78G2RHQuYeg53sTd24mRWdbhv1K150ddC2SHSCxW1wdShsR6nPanhLpq+B/yBASRug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=npRkMkoU; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1778686554; c=relaxed/simple;
+	bh=MbMe/mygK1eYg3wRO5HZ52i+Mu+A2bu5L1l3HOhdADQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GkJ+a3PC0+ZjT1flcV4a7kqemPW4n0Yb5JOzQcTZ8LBNnatUVs5T6X+l4ajWTnyMQwuQdYtqMH4bY/TtLq1Bm9Wi4aN/Kzg/29SXCGmBzmrHTMXWSCCIHh/u/Yh4tLZVegMneksqCBBO4PQU+4ZWqB1AGIQCyG95jWdwGj2mIIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="npRkMkoU"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2babfd18435so35711245ad.1
-        for <netdev@vger.kernel.org>; Wed, 13 May 2026 08:35:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778686501; x=1779291301; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=1ruAzbMeVdqPrvuygkIYeYyoYSoRcGERUW0xC+xQv0o=;
-        b=npRkMkoUGnX70IhNC8M/ofOyKtFVwAiVdmWCIefbzRBhb9ApUHkAZn/LSblKzBFCRA
-         wlOTJp3WKEN6cxWpj32fSDOxvmJSFeTaxHXGELTCZkENr8/dsHQWW/BOJoD+RiPc4Wcn
-         ZHiMizZfcam6yOMHqJjLkpz1EZFQxJlQNPObFaG3u+1Gc+WXSMhmbCySzPER2zv5gqNz
-         0uWCMkz3b/u06VCJzxJY4G4G/nJghKTash9R/knJHy53JLg5TKFtcJ2Hdt+pZs+3b3bZ
-         +pv541wOv/ki2bCzgMngHRTw55QDIm5EekSXN0fiV8dWHh5YU5mK2PsXZaii7QyhbjRg
-         KZgQ==
+Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-5753a289955so2285329e0c.2
+        for <netdev@vger.kernel.org>; Wed, 13 May 2026 08:35:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778686501; x=1779291301;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1778686549; x=1779291349;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1ruAzbMeVdqPrvuygkIYeYyoYSoRcGERUW0xC+xQv0o=;
-        b=R8xBlzNgVlBdEvd0lL1V37WrZkChBrChTY38FgzAxNZUwN/UeOJSjBVufLgg/IXUZL
-         XYAy8Vvvzrrxe9exXAJv9VgfPnXaz5d7Y9mziQHzuxuLxneOiwWmjUIWxU7x3e+udaO2
-         tAZiCxA5TwOT1jHPExj65geTgbaLVjoIUyCNGCmylztnd+42buEDjuu68EemZJPg+VzK
-         SMcAhpIVNfxjwlXyWCFQ0rP819gW3vHa2b5zEjX1jj7rncG988pHcz7U456Lhb1hGOuz
-         8tuAc8nK6rq9G+IuB9DHU79rYnSgnmJ6TJD/bEDOuHID3ckef8coc/j+K/PvdZ6UD1um
-         XZgQ==
-X-Forwarded-Encrypted: i=1; AFNElJ92EfveS0SIaHhKjNAqOaSKo3n5uKpNFyM1LU2Q6IhvYFIE9lTMzlf6RXazWPxiorFolTH5M1w=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywh4VOMAc82eHMjeo29T6kRNnwNap6Ef7rD6zTeuErvcNbVPQqa
-	ejzxjxraQhVRcfSpQJsptU+bS6cs41xGdkbdI1mxQjP/heTzhuFXxbPm
-X-Gm-Gg: Acq92OH4Hjb4dxMevz2us3oLrBWZGOp3T83j9oGUO5J0npsYEqdVM0FEjn+Na4vKjqA
-	Q3MImUARX8cOsSNblDTwuUcbT5Th0hLRPgUidVqasiBE7UL0yeB5YfUDHqLOLn8+n+xme02vN9L
-	5a711rykWInoQhEU+ErJEsGFxPO0yJwQOoUIo4TVZXgLjQ47HR4Q9LoVCsvnvfZrxRJLPxobtu2
-	KQ7QzGxoMaoLgBaoxKbeQnYBfVSeyh23pYARZ1PNp8BOduRznAB+5aN8vSs9g18dA1eGIRU1zVm
-	ygQuw/gNpR5ZGiQQHIEcMuKMlBi6+NwyWoqO6b1OSb/GDmx71AN+nQwsd0Cax/DyLlsWgNiP00o
-	z94IgedRA7nNoUXHCSAt0RGKDiiPGCfS6FnE4+NdHD4mXZroiAikWGlFlCzrEnEj6KpFk/6CEuu
-	KkC0uZEbCzu84VfjrQOG7CP58vsGN32+jkrRcXnh+lCOqCu4vBxPIaLcceEhCX5Q==
-X-Received: by 2002:a17:903:f8c:b0:2bd:147d:c712 with SMTP id d9443c01a7336-2bd27133c75mr44261705ad.1.1778686500924;
-        Wed, 13 May 2026 08:35:00 -0700 (PDT)
-Received: from localhost.localdomain ([115.110.225.242])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2baf1d27055sm173821065ad.6.2026.05.13.08.34.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 May 2026 08:34:58 -0700 (PDT)
-From: Shitalkumar Gandhi <shital.gandhi45@gmail.com>
-X-Google-Original-From: Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>
-To: Alexander Aring <alex.aring@gmail.com>,
-	Stefan Schmidt <stefan@datenfreihafen.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-wpan@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>
-Subject: [PATCH wpan] ieee802154: ca8210: fix pointer truncation in kfifo on 64-bit
-Date: Wed, 13 May 2026 21:04:12 +0530
-Message-Id: <20260513153412.1284549-1-shitalkumar.gandhi@cambiumnetworks.com>
-X-Mailer: git-send-email 2.25.1
+        bh=nDnAYsDqfkn63HOuBNcLqNYcqNClUjY79NfZ7yIaClw=;
+        b=QSz0YHgyQoS6d9WnwH1M3dkKa9sIOp+WJ741YpE7pIMd0uDlyzFF7xt6wkA/pEvOGz
+         0550zart0S4a7fnfJEAss6gylNqFxxXHkBkY6ogReJ4bPgebrLLPtVsagrJVqqbhtNoK
+         Tyw/kosx5fvQMLGUGdBtYsHnhh5JGMtnhR/RQvWvS5woO8I/GHOecnDaCQ5BWRr+MTZe
+         gBT2p2jpSCSGdHqwCg0b+0ZDv4zEzYyWA96JkJmM5I7YzmXaqAcHJlYvDoSNRGha/5hn
+         Lexvotxu3X8AyanzVCJ9y6wEtgytkqzTX8cIg4wdFkZAXXBuLnq7lkTObQTtPMyEXT56
+         cPQw==
+X-Gm-Message-State: AOJu0Yw29fJI3OVQXKmbp/bxJNf8rUzjV7Sft0xipTnTP0pz/IWG6JcN
+	G4Wp5utQic9FjoAiiOjiClnhzwT0mplgFCgFR+KGNOBBoKqaY9o9IMKWFHw/G6mD
+X-Gm-Gg: Acq92OFVZ2jo2mzdVELQRj1kqONR7/scpg3h3iiLaThUTXfQbnFPIStd7FYUqORR9Ow
+	9qbzpMTWN1IFHFil2ceJrB+oJN3t6pWvSq2qwVyRXrIKcWSgrVlxVqUW5i6uJekclFWMKK1cNMX
+	rPCozJf0WGsROqbWg18sBhwQz08giuAxpdOmpqEe5/jAChfflqxni/M7550pRfPcUnWYk3hOB8F
+	nMPDywbzx0QE9kIDdLd9VXchplIAEl9u642Fe+Qo1uuetTTTwCfHG4JfcR8l1CcF74YA60Bw4sl
+	8Dhq1IH61JNVcyyZVze9IR/9PzGgdTTt82ZbNYNt7sWo66YLwaLnZPN6WV4Emiov4+6CLNZLPT0
+	5ZPtT9jbgV/P++5viR5p6toiLahNk6TxYyHZoNoJlzhNSj1pMwJ/J457lENcAAhOcx7sAAYkhVf
+	5NgC8PEovyCCcGrmQYTf3sWpdWZ5VocV1DY09nDJHKcNQTcEYy3GUxZrWMMHh/fStWXhlKtae5s
+	+g=
+X-Received: by 2002:a05:6122:882:b0:56f:1c32:bd07 with SMTP id 71dfb90a1353d-575e6f22045mr2051185e0c.2.1778686548958;
+        Wed, 13 May 2026 08:35:48 -0700 (PDT)
+Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com. [209.85.221.180])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-574a6ee065asm23100197e0c.15.2026.05.13.08.35.48
+        for <netdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 13 May 2026 08:35:48 -0700 (PDT)
+Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-575124e716fso2510602e0c.1
+        for <netdev@vger.kernel.org>; Wed, 13 May 2026 08:35:48 -0700 (PDT)
+X-Received: by 2002:a05:6122:221:b0:572:36f3:e792 with SMTP id
+ 71dfb90a1353d-575e70b2327mr1869164e0c.14.1778686548556; Wed, 13 May 2026
+ 08:35:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <1afbbbc74669f053414dcbabd909e52e7eae66e0.1778678915.git.geert+renesas@glider.be>
+ <fd5245fa-b46c-4f83-955a-dc0376610b89@linux.ibm.com>
+In-Reply-To: <fd5245fa-b46c-4f83-955a-dc0376610b89@linux.ibm.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Wed, 13 May 2026 17:35:37 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdV=LvYby2m9-WBpNjALE6Nit1aH6NX1mSmq-Y24Szy45Q@mail.gmail.com>
+X-Gm-Features: AVHnY4IBPT8_PzFo_9_RTVPPLnbS2tpVbYfWlUHL4a-u5BXkMoBksIv0tgnktMM
+Message-ID: <CAMuHMdV=LvYby2m9-WBpNjALE6Nit1aH6NX1mSmq-Y24Szy45Q@mail.gmail.com>
+Subject: Re: [PATCH] [net] dibs: Improve DIBS prompts and help texts
+To: Alexandra Winter <wintera@linux.ibm.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-ca8210_test_int_driver_write() and ca8210_test_int_user_read() exchange
-a kmalloc'd buffer pointer through a struct kfifo, but pass a literal
-'4' as the byte count to kfifo_in()/kfifo_out().
+Hi Alexandra,
 
-This is correct on 32-bit (pointer = 4 bytes), but on 64-bit only the
-low 4 bytes of the 8-byte pointer are written into the FIFO. The reader
-then reads back 4 bytes into an 8-byte local pointer variable, leaving
-the upper 4 bytes uninitialized stack data. The first dereference of
-the reconstructed pointer (fifo_buffer[1]) accesses an arbitrary kernel
-address and generally results in an oops.
+On Wed, 13 May 2026 at 16:20, Alexandra Winter <wintera@linux.ibm.com> wrote:
+> On 13.05.26 15:29, Geert Uytterhoeven wrote:
+> > The Kconfig prompts for the DIBS options read:
+> >
+> >     DIBS support (DIBS) [N/m/y/?]
+> >       intra-OS shortcut with dibs loopback (DIBS_LO) [N/y/?]
+> >
+> > Clarify the DIBS prompt by expanding the acronym.
+>
+> Thank you, yes that is an improvement.
+>
+> > Capitalize the first character of the DIBS_LO prompt, and always write
+> > DIBS in full caps.
+>
+> dibs is a shim layer between other kernel components and code pieces are
+> typically lowercase, same for sysfs paths. It is not some formal standard
+> that is documented anywhere in uppercase. So I'd like to keep it lowercase
+> in the help text.
+>
+> > While at it, join the first two lines of the DIBS help text into a real
+> > sentence.
+> >
+> > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-Use sizeof(fifo_buffer) so the byte count matches pointer width on every
-architecture.
+> > --- a/drivers/dibs/Kconfig
+> > +++ b/drivers/dibs/Kconfig
+> > @@ -1,23 +1,23 @@
+> >  # SPDX-License-Identifier: GPL-2.0
+> >  config DIBS
+> > -     tristate "DIBS support"
+> > +     tristate "Direct Internal Buffer Sharing support"
+> >       default n
+> >       help
+> > -       Direct Internal Buffer Sharing (DIBS)
+> > -       A communication method that uses common physical (internal) memory
+> > -       for synchronous direct access into a remote buffer.
+> > +       Direct Internal Buffer Sharing (DIBS) is a communication method that
+>
+> I could consider changing this to (dibs), if people think that is easier to read.
+> But I thought it more obvious this way.
+>
+> > +       uses common physical (internal) memory for synchronous direct access
+> > +       into a remote buffer.
+> >
+> >         Select this option to provide the abstraction layer between
+> > -       dibs devices and dibs clients like the SMC protocol.
+> > -       The module name is dibs.
+> > +       DIBS devices and DIBS clients like the SMC protocol.
+> > +       The module name is DIBS.
+>
+> The module name is definitively dibs in lowercase.
 
-The driver has no architecture restriction in Kconfig, so any 64-bit
-build with CONFIG_IEEE802154_CA8210_DEBUGFS=y is exposed. Issue has
-been latent since the driver was added in 2017 because it is most
-commonly deployed on 32-bit MCUs.
+My fault, that is indeed a silly mistake.
+Will send v2 later, taking your comments into accoun.
 
-Found via a custom Coccinelle semantic patch hunting for short-byte
-kfifo I/O on byte-mode kfifos used to shuttle pointers.
+Gr{oetje,eeting}s,
 
-Fixes: ded845a781a5 ("ieee802154: Add CA8210 IEEE 802.15.4 device driver")
-Signed-off-by: Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>
----
- drivers/net/ieee802154/ca8210.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+                        Geert
 
-diff --git a/drivers/net/ieee802154/ca8210.c b/drivers/net/ieee802154/ca8210.c
-index 753215ebc67c..154af346c936 100644
---- a/drivers/net/ieee802154/ca8210.c
-+++ b/drivers/net/ieee802154/ca8210.c
-@@ -597,7 +597,7 @@ static int ca8210_test_int_driver_write(
- 	fifo_buffer = kmemdup(buf, len, GFP_KERNEL);
- 	if (!fifo_buffer)
- 		return -ENOMEM;
--	kfifo_in(&test->up_fifo, &fifo_buffer, 4);
-+	kfifo_in(&test->up_fifo, &fifo_buffer, sizeof(fifo_buffer));
- 	wake_up_interruptible(&priv->test.readq);
- 
- 	return 0;
-@@ -2541,7 +2541,8 @@ static ssize_t ca8210_test_int_user_read(
- 		);
- 	}
- 
--	if (kfifo_out(&priv->test.up_fifo, &fifo_buffer, 4) != 4) {
-+	if (kfifo_out(&priv->test.up_fifo, &fifo_buffer, sizeof(fifo_buffer))
-+	    != sizeof(fifo_buffer)) {
- 		dev_err(
- 			&priv->spi->dev,
- 			"test_interface: Wrong number of elements popped from upstream fifo\n"
 -- 
-2.25.1
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
