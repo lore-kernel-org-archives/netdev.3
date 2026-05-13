@@ -1,125 +1,72 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7170334F24A
-	for <netdev@vger.kernel.org>; Wed, 13 May 2026 18:30:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 901B435B632
+	for <netdev@vger.kernel.org>; Wed, 13 May 2026 18:36:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778697057; cv=none; b=eZHak5ZegzaxfFCdkSGtCUAuHxnNxg0KiVOS8GB0Qi7/6Wd0cTLuIjRIKddfmSNMMVDxnRg5H+U5xG+g2PR1S0Vzfxj+LrsIhZc9Fh85y0u0byJuDYnykIxeNYNi+wJ/bmkU9l7c4e+8mv3Qj5C06Q5y/NAGPqFckyVdUGPPjmk=
+	t=1778697364; cv=none; b=CxFYQMH4B9Srn8k+bmdeVuE8bYTdpItvHqJQ/fosfvUJsCDu9PykYb3pUVpTaqXS1MhMmiRHx9wtC4lUCICTUrxx0AL62Wkv3cofbVJIhuKrv0pSo5NIFFi2kBk5FAGn9ZvlxUYiEvWLl8nev3KzsF9zHMYRMeoSyApIHdqM/EY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778697057; c=relaxed/simple;
-	bh=MM5n0eINXFRMBIyPEWK0pUG2mSn+T2VQWZTmKU1E1aA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kp2QPPxQHuE6gvWGsHjocBBZELjV52WR1ZcWmChqHozIzbIYimdhpuCyY7xM7mybP3oOonsMczv6jaeemtOfN3eQUV0mhp2a3wQNSyJDDhWyB5idS1qDmyOYxc1zjFa3DT/VzbegOpK5k1/wltFGkVWr7laWj+cfKslA8cM2/mY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cp4pp6uq; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1778697364; c=relaxed/simple;
+	bh=+J8vDguIcTbUHW1595rtimwASjcABHZYtC2lDRVvj58=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=R+Uqk6GPnA1bdNn+qksaRb50efjC2StSJVKxyoAiKyOPc0oVxbsLhHo+1IhWHmiOQviUuCeMtbcrwsM5+Ss/Z4FujuaOTNAag+Wbc1svsjoOAg+TqssEfqHz9XiJKsf+wTX/16m+teGGGvdOLuRnzHxcfmQNnjc3I1pQI5iwZ5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=miiOQM0v; arc=none smtp.client-ip=91.218.175.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cp4pp6uq"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-3680540a6efso2893446a91.2
-        for <netdev@vger.kernel.org>; Wed, 13 May 2026 11:30:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778697056; x=1779301856; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=E7yINQxL1u4J/CFwyU7LnHzU+2n2gvC+s1F5nvo1dTc=;
-        b=Cp4pp6uqjIaw++c9eYJpUakd4egCR6CtX+vkqCENFjUv8dXvHqUGirtAC0DrhYqOSX
-         jujGEVaR32zCVDdBlArCKbH4Zxj5t+GlJlyKn6g8PY1ML/fXD1yzKJdlBpdp7sJA6eEa
-         ZB80tV5OwzEqJ37jghATCv+sSTBL8xxAgT9yk2avBNuoeI6N2yinY5yZMr9aMbnU8i9x
-         7TQksguJxCbpK/e7i5qYZ2hmEdRDpSkho958hYeU/vQDxIIcWHmOtq7U850PMNf0uQco
-         40saMTgSOs2/0DS27FmKsW4NVIznA/8jLvHTJ+eVwCNMZ0p5pL6CMw9olNfCOJjDVdTX
-         Picw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778697056; x=1779301856;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=E7yINQxL1u4J/CFwyU7LnHzU+2n2gvC+s1F5nvo1dTc=;
-        b=dB4amU7IEXRRJK3eQ15OGORG+zO5fJOSJoIjEHCwoES5iokEKXsAimlEmBmWkL4gDE
-         /x1fS5yj0uAk1ylrNaIrMoSSxHyg/VjhjvkkKVdQyOc1NLIVnS8AxpxCCThvFuFMs//f
-         hvQunMMhafSphVQu4BhXt+nKhoBXfbrTbZ8924m5BJRITMHoYkDi9R9vbZsE2HpnQ8vS
-         hFsKRrq9roDh5yppVCMc/NYQIyMPvJjz4Yvt0yOBfBrgdglpMEyXkRmC9GYfcTuScmsP
-         w383xHJf7JKsP/OjOi04ju3UxTfUQWTAn4295ilcEOnkwSE0eTEmjbAqe5F1lDZsSttM
-         qsRQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8yfMbVYzFLlzzRfUVjfCLvC12+5kK/RVMVYFZkf6zgBZMuCeo2v5CoVytxhtRGNbBjpy1VchQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzsGmIrXB7FZofRQXQpOYk5Y1wdE35v71VxI7qtwnMlH6fUOuGB
-	nLe+AcbHmLaS7/iYh1ufdC41CBZBCkwuyfjRXMny5DxRnQ/bKrblZnaE
-X-Gm-Gg: Acq92OEhSzf9ot7wfwZygVUZadshVKK48oeJqeOKroH8ZFuIaahQpIKdNEXkV06t/DF
-	eAay3GhMlL+OEvjuH+wtluqU04g6ifI1YxXjgVDgd4ZRWcMuoeRd4GFPO7BxB3Nyy17CctvepP5
-	wVT49QKbxfEtfBKj9pU+jSwvb95aYIUpUIrxiBPUSuRE7EmRL+YzJKxIMQ4sb1Lt3LjwKDOUfUX
-	4PyAvKuZYLeTOP1AfGHfXGQgueGUxiq8yykZHrHLdxs0DdCA9L54Dlpimq5Nmbz3nMKGVG0+/kX
-	mpoWWUtuIbLR7GINiNmy3Ktsw4nNJTMlhJ/jdw8PpoPkmNMDYIk8eIBT3kQQ3ocQseZVJZBR+V1
-	98ni8ApizwkeLXe+mQsCx4XigcCVW/yYgC4Xifgrbv4F9oooxZ/SZkDsVhM0d7QTXc+Vlu47INm
-	nrtYLnCRX7NmnzEJ4OqW4klH3SoARf4TPeP0yW868hsmA=
-X-Received: by 2002:a17:90b:3cc5:b0:368:763a:17b8 with SMTP id 98e67ed59e1d1-368f77f69a4mr4388675a91.2.1778697055604;
-        Wed, 13 May 2026 11:30:55 -0700 (PDT)
-Received: from v4bel ([58.123.110.97])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-368edf4d940sm3564241a91.7.2026.05.13.11.30.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 May 2026 11:30:55 -0700 (PDT)
-Date: Thu, 14 May 2026 03:30:51 +0900
-From: Hyunwoo Kim <imv4bel@gmail.com>
-To: Ben Hutchings <ben@decadent.org.uk>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, steffen.klassert@secunet.com,
-	herbert@gondor.apana.org.au, dsahern@kernel.org, vakzz@zellic.io,
-	stable@vger.kernel.org, netdev@vger.kernel.org, imv4bel@gmail.com
-Subject: Re: [PATCH net] net: skbuff: propagate shared-frag marker through
- pskb_copy()
-Message-ID: <agTDW-mJqKCSEE17@v4bel>
-References: <agRfuVOeMI5pbHhY@v4bel>
- <811b31f3373526d1ff60160c2f32ddb359e54c31.camel@decadent.org.uk>
- <agSx78pXBFCdn08p@v4bel>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="miiOQM0v"
+Date: Wed, 13 May 2026 20:35:56 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1778697360;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KZahbxcLMk4nFiXMIuxR7pAqjPA9tjQUCG0y2N20ur4=;
+	b=miiOQM0voUMout4J80B/M5yKxTaXCtTgD+KAfkWUCITTOCOycrH+VmAKy+fmLDhjr/6v1M
+	kcQag3+HWu6Rj0xPSHs4UXeIO9wVTAI94ROQN9ZwgMkiZSG3ri+AaMqGYjxZ/27OA9G05Q
+	GzRj26YFX6r0xXyMSgKKw8qWO1huqXU=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Luka Gejak <luka.gejak@linux.dev>
+To: netdev@vger.kernel.org
+CC: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ fmaurer@redhat.com, luka.gejak@linux.dev
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_net-next_v6_0/2=5D_net=3A_hs?=
+ =?US-ASCII?Q?r=3A_strict_supervision_TLV_validation?=
+In-Reply-To: <20260513182657.20346-1-luka.gejak@linux.dev>
+References: <20260513182657.20346-1-luka.gejak@linux.dev>
+Message-ID: <7D68E562-7941-46EF-B4B0-AE0DBAD15FC0@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <agSx78pXBFCdn08p@v4bel>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Migadu-Flow: FLOW_OUT
 
-On Thu, May 14, 2026 at 02:16:31AM +0900, Hyunwoo Kim wrote:
-> On Wed, May 13, 2026 at 06:21:45PM +0200, Ben Hutchings wrote:
-> > On Wed, 2026-05-13 at 20:25 +0900, Hyunwoo Kim wrote:
-> > > __pskb_copy_fclone() shallow-copies the source's frag descriptors and
-> > > bumps each page's refcount via skb_frag_ref(), then defers the rest
-> > > of the shinfo metadata to skb_copy_header().  That helper only carries
-> > > over gso_{size,segs,type} and never touches skb_shinfo()->flags, so
-> > > the destination skb keeps a reference to the same externally-owned or
-> > > page-cache-backed pages while reporting skb_has_shared_frag() as
-> > > false.
-> > >
-> > > The mismatch is harmful in any in-place writer that uses
-> > > skb_has_shared_frag() to decide whether shared pages must be detoured
-> > > through skb_cow_data().  ESP input is one such writer (esp4.c,
-> > > esp6.c), and a single nft 'dup to <local>' rule -- or any other
-> > > nf_dup_ipv4() / xt_TEE caller -- is enough to land a pskb_copy()'d
-> > > skb in esp_input() with the marker stripped, letting an unprivileged
-> > > user write into the page cache of a root-owned read-only file via
-> > > authencesn-ESN stray writes.
-> > > 
-> > > Set SKBFL_SHARED_FRAG on the destination whenever frag descriptors
-> > > were actually moved from the source.  skb_copy() and skb_copy_expand()
-> > > share skb_copy_header() too but linearize all paged data into freshly
-> > > allocated head storage and emerge with nr_frags == 0, so
-> > > skb_has_shared_frag() returns false on its own; they need no change.
-> > 
-> > What about skb_shift()?  It seems like that should also propagate this
-> > flag.  But I could be missing some reason why it's not necessary.
-> 
-> Yes, since skb_shift() is also a function that moves frag descriptors, 
-> I think SHARED_FRAG should be propagated as well. The actual trigger 
-> conditions are tricky (not deterministic) due to TCP write-queue skb 
-> merging, but I believe the fix is the right thing to do. 
-> 
-> I'm planning to submit a v2 patch. What do you think?
+On May 13, 2026 8:26:55 PM GMT+02:00, luka=2Egejak@linux=2Edev wrote:
+>From: Luka Gejak <luka=2Egejak@linux=2Edev>
+>
 
-And skb_gro_receive() also appears to need work. Further testing is 
-in progress...
+=2E=2E=2E
 
-> 
-> 
-> Best regards,
-> Hyunwoo Kim
+>Luka Gejak (2):
+>  net: hsr: require valid EOT supervision TLV
+>  net: hsr: reject unresolved interlink ifindex
+>
+> net/hsr/hsr_forward=2Ec | 6 +++---
+> net/hsr/hsr_netlink=2Ec | 7 ++++++-
+> 2 files changed, 9 insertions(+), 4 deletions(-)
+>
+
+Just one note: This series has been resubmitted because it was never=20
+merged due to window being closed and I was instructed by Felix to=20
+resubmit it now=2E Link to old thread is [1]=2E
+Best regards,
+Luka Gejak
+[1]: https://lore=2Ekernel=2Eorg/netdev/20260413103449=2E169913-1-luka=2Eg=
+ejak@linux=2Edev/
