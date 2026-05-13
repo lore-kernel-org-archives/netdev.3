@@ -1,182 +1,251 @@
-Received: from mail-wm1-f68.google.com (mail-wm1-f68.google.com [209.85.128.68])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11020076.outbound.protection.outlook.com [52.101.46.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9EC44A1384
-	for <netdev@vger.kernel.org>; Wed, 13 May 2026 16:56:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.68
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778691364; cv=none; b=fQEg2ApIMnspp+mEY6Hu4NC0EQuPDl8Ca2MDVy/Oqg+WLOHAjHHiHrtX8mxQsYzFUFPRmW7F/hxdJFpJ//ZPZzFtWrvjMtE13/3PZxkwl7YuKggdYQU1qHIlZmtWrgdgY/q1Zhy6PNX++VHvM5/lmhcMgOK+iJQUxLkeh1aBo/c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778691364; c=relaxed/simple;
-	bh=HrkFGrBInTcXULZqscIQ9UXxwnJVIz+HxxMBcCCFRMI=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=rUPsBJr+SSLi/SHIdimgiYwyP4eU0LJKPYXpKU4lcxVBXKjG6h/LkhWBSBEJrKP6gu565Q7OnICuD3dRWTVVDBDWq9eVl9gAvs6AqdB1JiGvv795d2bL3OIxuZfKmUx3I48ByxFHP9QODZef58kS0pADMsZoql9k52Cl2TnFjGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f68.google.com with SMTP id 5b1f17b1804b1-48d146705b4so84577575e9.3
-        for <netdev@vger.kernel.org>; Wed, 13 May 2026 09:56:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778691361; x=1779296161;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:to:subject:cc:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/oWwbMUe8Wxr7v3phxXvZ4G3SsHYeSlk75eQVB1Z1eE=;
-        b=BRqNBt1FPIplox0eZyYRih3zN4ycSgkf/hKav6X05zbJ4/bP8/CQEcy+hNlgylU1CW
-         0QwUpZHky+7tstCtHjgkxDslBzjYG5oyrKDn+GeoOEzZqrrncQ+Zrz5sQiF1JUPnAnuK
-         bV/W9cj9McHxj66cQhM7VXtpZChZLKMfzJdM1sjFiJX+iRrAs6tQZcr1jvvhWiIE0iAq
-         ONeJkMXBnWBRkA2wLIT1JjqgUL8IQ164jrQ3WdjORbFejSxVkH04mHcHkCo+gY6jrjwM
-         0I5MxMAu9Ytpk6e+rdRwCpn6+TxwlvUl/fIRvYlxtAvgpYbMCYgMTCRrj52RNo7cAJn7
-         JquQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9P2SAQ8CiXOYrBpAriPt4BDRIs8O1pAao9cOMSborSjl49ym66shNrd94nuv23eUZXWdkqdZs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx5OzmiqsRYQNFAeAR5TZztux31V4C12iZ/8mm5jVt5zyu/1lTV
-	hnhsd2meAIcv0lGIwBFp7hBEWNPTJjlJIcGgvRD5eWclTdZWFy03MRbe2VKyY0i4
-X-Gm-Gg: Acq92OFogonKqeXlwmUiUs1Qv24YDEfAuJ0pOkpaIVKwanLP3botLmcdechnHRSJdeZ
-	6a4RDH1qty3qySQ8BaILv7902Vox53RwMCe8IO7ET6xwSvGo36cD679FkaEaM2wEjNDyzrSK+Iy
-	2sZHykhTqth04x7qUaljTatFHrq08x1BwFvXvSdlCl2hNgVzlYxWpxGH1XGMxi0SQV0JpL2FsHE
-	Ekbcbzd7TvG30oR02m0qpsgkfDWZPbdN0PqX+Q2VZiHqNeNK+7Apcl6wKWD74Gfo/zh95qDuG6V
-	c9ftK4GzF0EDk30YETGrMcwf6sYfYOC9f5C+pylXEKerjXqEW5yB73r1akGJ2yXkSUpRknN5GTE
-	+gLYG/ySscqAooY3ck2TYtw5hWV/NLUZdy2oDqDp0vFXy8QYGl9urp8PcDxsG6WRe8TrHk2xjG3
-	HqFyK/rD66xBGGeSSysNgu7en5/6kM5D4zu8e5FxDZfAaPLNYdcepS0PUVfDfFJnZ86A==
-X-Received: by 2002:a05:600c:b95:b0:48a:592c:e655 with SMTP id 5b1f17b1804b1-48fc9a2b8c9mr64410795e9.17.1778691360927;
-        Wed, 13 May 2026 09:56:00 -0700 (PDT)
-Received: from [192.168.88.241] (37-48-40-237.nat.epc.tmcz.cz. [37.48.40.237])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fd6498a7esm3406065e9.4.2026.05.13.09.55.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 May 2026 09:56:00 -0700 (PDT)
-Message-ID: <41104c02-efb9-4f23-8e11-95afa6eef442@ovn.org>
-Date: Wed, 13 May 2026 18:55:59 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65AE13563DD;
+	Wed, 13 May 2026 17:08:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.76
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778692098; cv=fail; b=FeI3iJDD9MaODxINDdAK6wU5uiUsoU12qBbr0yE2mLqsfKCeQ7MFQCQLXPxXV0J8wShBKIH0W+FGaJZH+nwSoU15mJY4HbeE6/Ir5QNLPmlXo2dWND8cYCFvydLQ8CBpW4vlneI2YpU5awPgZ8Dpamk8Z0wp/r/EXpU5cM21NgU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778692098; c=relaxed/simple;
+	bh=RAC2d2l2DwHZ764TOezZb2cJAKAGwwSzV59Tnz7HSh4=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=klAN863YbcreZxTa9xSAWrNR8x+yli1VoBxJYOpE3xYMzXEZIKROweM7jMH89wLmz4Mx3cfbtvI4cqCcWX8j8DJzU9njFHiAfbkyoUwjiatLyqepD5pdUHnw5rFJdcGUs2y9SZ7JmsUzFdmRvyT4vLt4s+qmKUVf9svTrpL8O7M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amperemail.onmicrosoft.com; spf=pass smtp.mailfrom=os.amperecomputing.com; dkim=fail (0-bit key) header.d=amperemail.onmicrosoft.com header.i=@amperemail.onmicrosoft.com header.b=SIq9IEUp reason="key not found in DNS"; arc=fail smtp.client-ip=52.101.46.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amperemail.onmicrosoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=os.amperecomputing.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=amperemail.onmicrosoft.com header.i=@amperemail.onmicrosoft.com header.b="SIq9IEUp"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XXVRmL05HuTwEeCP4UglvydVkFpQAK+1uKqZ3sFNXmdBUOSw4JB/55WxKAIvkI4EKszzSIsclI2wPdRuSzYhFh15hTV9M5viQVxq646GR7uKQnUOqB5Du/VpkspJcHOpfF5T2rdrXtZ6+r0J3qW5KcFz0hVTBRAvdooLk+e8/C0OBzp7a9rF52Ee2AS1s1tsU7yYxftOW7S+T90yieD4PO54xP2Cue9sMHUEecnU/t1fAf2we8Fa4HM53ElWDybkhLlZJ6+/Jole/yM0PRKpt3dNWbyOL25QTqBwJlcgFUd5+DPoRJjbpW1nEc+/Z2yWSopvDzgFdAvTsNfJ62E4Eg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=egqVXwQUXY/ZsQNYgkDV99NgLXuv4UPK+XZCnBhD2bA=;
+ b=rzruIL4sJqGVRWkU0Ivt+DrcMxpqw1h9NuQETwYOHrZdjoBsn3+GSMLDkSNJ8niOPTCMy4I353hiTvRxoUHnizeRlCoa6eSaQZcrYA0/AHyIBrJDPlq7rfDcZA60Iy7OwgGJAN3eMwx3XCHUMDyIhyyBgPJNCmxEgdfj20rHMiVwHxqGx+9FDd/ws+NoVTHRsM2SKAvt/ffax9zPSgYuSCTvxG218rdhy2ZJzT/n1Q0gNw2XgYmWRF0BJDRoZDaf2KjAa+aGlSnm5NnPBo9V57azoYfN97zc9ZltEcmrxPZeRTAQgx3UgkSHvqAWmBl/OVdIlnC/kmvaSpHFTEDebQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
+ header.from=amperemail.onmicrosoft.com; dkim=pass
+ header.d=amperemail.onmicrosoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=amperemail.onmicrosoft.com; s=selector1-amperemail-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=egqVXwQUXY/ZsQNYgkDV99NgLXuv4UPK+XZCnBhD2bA=;
+ b=SIq9IEUp+D69O4+TpBeUX3tT+qbLURFm0b27A+t+Y44NnqdfXNpkYb6M0I95SdPY5hygWCVVj4frcS/DDtuSqOeE/tcY0rwYdZ6qNc5JKfOVAc2jg7YFO1vh7FemiQErjH4fjm9/dMpK1ypb1+OLFRBuE4sIRRPO+uCk4+eHIaE=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amperemail.onmicrosoft.com;
+Received: from BN3PR01MB9212.prod.exchangelabs.com (2603:10b6:408:2cb::8) by
+ PH0PR01MB6777.prod.exchangelabs.com (2603:10b6:510:93::23) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.25.18; Wed, 13 May 2026 17:08:04 +0000
+Received: from BN3PR01MB9212.prod.exchangelabs.com
+ ([fe80::44f3:1050:dce8:1ea9]) by BN3PR01MB9212.prod.exchangelabs.com
+ ([fe80::44f3:1050:dce8:1ea9%6]) with mapi id 15.21.0025.012; Wed, 13 May 2026
+ 17:08:04 +0000
+Message-ID: <0ed53cec-6a01-48c3-9689-b815edccc184@amperemail.onmicrosoft.com>
+Date: Wed, 13 May 2026 13:08:02 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [net-next v41] mctp pcc: Implement MCTP over PCC Transport
+To: Jeremy Kerr <jk@codeconstruct.com.au>,
+ Adam Young <admiyo@os.amperecomputing.com>,
+ Matt Johnston <matt@codeconstruct.com.au>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Sudeep Holla <sudeep.holla@arm.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Huisong Li <lihuisong@huawei.com>
+References: <20260510163228.443778-1-admiyo@os.amperecomputing.com>
+ <9f4d364ebbbbbb697fcee022991a546e60692f11.camel@codeconstruct.com.au>
+ <9519a497-c10c-4abc-bcf9-414467f74ba3@amperemail.onmicrosoft.com>
+ <71b7c8f40efc25fadb0aede6be888986364f2d53.camel@codeconstruct.com.au>
+Content-Language: en-US
+From: Adam Young <admiyo@amperemail.onmicrosoft.com>
+In-Reply-To: <71b7c8f40efc25fadb0aede6be888986364f2d53.camel@codeconstruct.com.au>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BL1PR13CA0383.namprd13.prod.outlook.com
+ (2603:10b6:208:2c0::28) To BN3PR01MB9212.prod.exchangelabs.com
+ (2603:10b6:408:2cb::8)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: i.maximets@ovn.org, netdev@vger.kernel.org,
- Eelco Chaudron <echaudro@redhat.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, dev@openvswitch.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] openvswitch: vport: fix race between linking and the
- device notifier
-To: Aaron Conole <aconole@redhat.com>
-References: <20260513095541.2010516-1-i.maximets@ovn.org>
- <f7tse7vo6v6.fsf@redhat.com>
-Content-Language: en-US
-From: Ilya Maximets <i.maximets@ovn.org>
-Autocrypt: addr=i.maximets@ovn.org; keydata=
- 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
-In-Reply-To: <f7tse7vo6v6.fsf@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN3PR01MB9212:EE_|PH0PR01MB6777:EE_
+X-MS-Office365-Filtering-Correlation-Id: 86923aa1-7964-44b6-6214-08deb1123217
+X-MS-Exchange-AtpMessageProperties: SA
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|10070799003|3023799003|4143699003|56012099003|18002099003|22082099003|11063799003|55112099003;
+X-Microsoft-Antispam-Message-Info:
+	s09464ulEsPSutWSzWRE375k1w7QFrdlRbBt9ocQXyf0jsHEJFvRrqDOgcK5dBd15s3kQQu/nUhWcklE81pJwv7TS7zagboLFpstvAXW33YlTYK0g/DUtOulgK4pTAcbD3MMoE4gGsPxA5hW4KMVBPYdjtFrZU5x2Is+3gOpE7xYdcqjDhIFejzjIAqFDm78YcHb659f8vidlZ3Vi9mZhaJTL/Jdi9RoT3+DtjfP57KEdbmY/T/Wc9YTSXbvl0XHWU3YsgdYQRPlifnsjtomair1GtkfgP3IRvpG94O484oCeXy+ikviWMmpUIPEt6blo2z87dvUrLF529Iu1WlguFg36J43dDDTw5fCRMwJjdlMYQEcJ7YScJhE+olmKLrn2Dmn3wdvflI3bae4VCComFLyDMxnKZuBIjFlKY98Tz/g1oEr2AF62wJBG80Tb3bqDRLcP6Wlpss2YoDmLjeegoEIYHHHhD2Hza1d0g/z6zPNmrzsNmwnlumBU2pu+yoADMcj+r95Q0y9igcjCW/06dOL1QVA8FmIzeg+Gx+ygFSKkfI6FTxIjnwPL9MpWPUUuJPzcOl0ioyikgDJZg5N9melNsEBdOUPnA3+4ud0DYH4Axzk8B6ikE5LzWPhUWYr
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN3PR01MB9212.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(10070799003)(3023799003)(4143699003)(56012099003)(18002099003)(22082099003)(11063799003)(55112099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MkZwM3N6T2FSOGxhRTVFMXZQWGpGaC8rQWhXeGU4cFo5YzdPTlVKTElKUEJt?=
+ =?utf-8?B?elpMSmFPZjJiNnFKWjI4d3ZmWWltY2NIem5FcnRtVk1RZk9UdTFaVWk0RmJ5?=
+ =?utf-8?B?RWgyNCtrNDlERjJjOHlSc3Q1Q3M3OWNBTFZBTUQ0N25TdEtPOVBpeGFuNFdj?=
+ =?utf-8?B?Ti9tTmFxMWU4TFlVYi9yRFBzOExVMW1NeW1CQ0o2OW54OGIwK296QUF4K0Ft?=
+ =?utf-8?B?NVRiSW1SS3J1WGtDYW9Edm1CRDhJZlZSelNyZVh6Rlp1dUJYejN5WFZMYzZM?=
+ =?utf-8?B?aTQrbFhoQVkwNGRrTjN1cHNuQ3I2KzE2cUQvdG9VYVJxa0xjazE3K1BuaTBP?=
+ =?utf-8?B?azlPT1dVeHhWRkJMZkVUYVlUbXA1WjRnTWsrcDk0TkFyd2Q3VUZDMXhFTGV6?=
+ =?utf-8?B?VFB0MDAvd1NTZkRhejJsNFE5S0dhSlc2MVdSOW9mak1Yb3Y0bkwvdi9PYUFV?=
+ =?utf-8?B?YkF3WlM1N1lxM0ZlRzJmYzlicXZJYnhnbklIamZVdzZTT2E4eTk5OXdwaDN5?=
+ =?utf-8?B?NXJydXdoU05POVdLWEpRTUlhS0Rpb2FQT1NWRG4xSTZ3Z2dFbWh1RWU0d0dF?=
+ =?utf-8?B?Z2IvOFkxMmEvVXdkNFd3MXdrck4vYXdBbGFQcGhSTnE4NTg0RXcyNE92dVlZ?=
+ =?utf-8?B?OTc2SE82SjlzUWxHOG10NnI1aHJCaGhKZmNaNS90Y0srMTRlM0d0QlZXNEYv?=
+ =?utf-8?B?ejllNkNpR1dRZzRMQlF0UlR0N2JPZ1AwMDgxOUNFNU8xREFzR1FwOGtaaUM5?=
+ =?utf-8?B?dy9zb2cvMjNaL0p0bTJaa2pQVmZYYlkyS2FocERKaTBaeWRMSFpGWHJzUTd3?=
+ =?utf-8?B?Q1N5NWxMYVBtVkExMlNJUGhYSHNFQjQ4N2Y2TlN0MW9TTThmRWk5elh1S1g2?=
+ =?utf-8?B?UUpuTzUveU1Ebk5VY1ZMemxiSURTYSsvKzIrZVRMN2NneHVENTY1RnZYZmM4?=
+ =?utf-8?B?YWRNQWdNZytWOEllbnhINVRFZ0xHeml1WWtZYlFsT3NYL2p3dTBpMmxpempX?=
+ =?utf-8?B?a0hVTndyaHQ4VFhMNlpCc2wzanJXUkIyNEYyZmdjYXJVWnRydGd3aXpyTGRY?=
+ =?utf-8?B?UWxtNzlXd0dwTmVsak1yd2pqeVBQNWJxL0FYczkraXJqaERwVE5Ec21MMkVK?=
+ =?utf-8?B?RURoa1BINDdwRlhxSWJ0bUlBaUE3QTVBYkxUbEpFN3ZnTWVHcXNnaEtHZEly?=
+ =?utf-8?B?b2RxRnE4V2pEZ2FMZUYrUExiTG5GK1BDSE13L3RtR1RodElOTVRCL1FhWjM0?=
+ =?utf-8?B?QnJsUTd2OUNmaGt0TDUvUXRZRTlOSzBYVGdyc2tMalQvNGsxY2l3d2cyTUR0?=
+ =?utf-8?B?WUcvVjZnaG1ERk42c285SUxmK2V3cXVNeFZvUlUwZkNpQThpdjI2R1lrL3Fl?=
+ =?utf-8?B?MGNXNW4xRFphc0hGSzFrZnM4eGRWeGYvRjZGazdXM09BajNJZ1RBTS9ZT2Rx?=
+ =?utf-8?B?L08wT3UxOTZtbVlxbXEzRVg2L0g4ZXRldTh3OGZMN3NpY1FGZjMrK2g0T09Q?=
+ =?utf-8?B?Qzg3aC9pbzFZVkxOaVR3aFZXcUxyM3hFaEErZUtpUnZBcFY5RWJCbEdOUG5M?=
+ =?utf-8?B?MFNzNktpQ1ZkMWlCS1Zra05HWjJyMlNWempaK09RbGVSSWxqQnk1SGYzelJP?=
+ =?utf-8?B?VGJIVTFiaHU4MU1yaERDblJQdm03VmdzLytab05qclp6Zzh2ZzdOcVA3UFY2?=
+ =?utf-8?B?azJtaFdUd0hRRFJpYk5qaTVQcC95WWtyNk5lSk9abU1uSzZScFB5bW1zdkpG?=
+ =?utf-8?B?aHd2MW1TR1pXSW5hV0xyZkIrak50ckVHVVB1ZzVsdXYzN2YvL2pHRlJYdVVC?=
+ =?utf-8?B?WVh3ZGlZUDRRQUlJR3p1bXdnNEpteGt6UWhXVGp3aUovdGIzNmgyR1ZleTJC?=
+ =?utf-8?B?blV6WHg1K21PTUdUOHVlNUxNeDhVdEVUTUtWVGxxNjNoWnM4UFYyNkZuWVp2?=
+ =?utf-8?B?VThQM3RtdkR6TFVUYzdEZ2I1ZWNOTkpFNlpmNVF1ZXdyc3hjMGFSTGJObFds?=
+ =?utf-8?B?YlJ0SWhKb2l2WEdGUFdYd0w1LyswS3ZqYXBnWVNkeU0vblgxT3lsMmdHZDFR?=
+ =?utf-8?B?L0ZxTzlXdlllN2FnamhicDVRWHI2bG5LZWVab2ZrYUVDZkFHWThvWmRqTjVp?=
+ =?utf-8?B?aG5BcVM5SGExRWpqd2hHcFNSenZoS2xENUxGb2lFdmp4b25PRXNYUm92dzZD?=
+ =?utf-8?B?T0Q0Y0JaRjZ6dk1HdEVkWkNWUmNNNzk1bXp4TVdFUklzK3U2VXlQLzJGZ2Ja?=
+ =?utf-8?B?clJSK3Z5aHBIMlpwNmdseVNBMzExT1VPbUpHYzhlVDJnbWxyMXhwUGtpOVpD?=
+ =?utf-8?B?TnE2Z0h2N2k0NUJmUlNaNFo0UTdUUzFnTlpnbFZtL1Z5NVZvNktoN3M1REV5?=
+ =?utf-8?Q?DT4SfHusUO/Ds6eZ+4SZ2PcrZUgXmPFx6QYLPiZTauV3Y?=
+X-MS-Exchange-AntiSpam-MessageData-1:
+	fqEKjmKeViHOKmuzgaMtDeTHFOhXwyG1hF/RlhFqKtR0CW9fr7mOU/D4
+X-OriginatorOrg: amperemail.onmicrosoft.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 86923aa1-7964-44b6-6214-08deb1123217
+X-MS-Exchange-CrossTenant-AuthSource: BN3PR01MB9212.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2026 17:08:04.2381
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: bbJ12Sc/lKT+Ap6Z1reEH0ZKpd6tKdRZ0Ky2A2mwiDC76SRu2MrxoZBwYAkJJyM6PyLPzCbEoigHaO9t3C0G4qONWcU/elfoBsAT3YvKxYei5HUsVcLZFmN3zcnNJlQh
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR01MB6777
 
-On 5/13/26 2:02 PM, Aaron Conole wrote:
-> Hi Ilya,
-> 
-> Ilya Maximets <i.maximets@ovn.org> writes:
-> 
->> Sashiko reports that it is technically possible that we got the device
->> reference, but by the time we're linking it to the OVS datapath, it
->> may be already in the process of being deleted.  In this case if the
->> notifier wins the race for RTNL, it will see that the device is not
->> yet in the OVS datapath (ovs_netdev_get_vport() will fail in the
->> dp_device_event()) and will do nothing.  Then the ovs_netdev_link()
->> will take the RTNL and link the unregistering device to OVS datapath.
->>
->> Eventually, netdev_wait_allrefs_any() will re-broadcast the event and
->> the device will be properly detached, but it will take at least a
->> second before that happens, so it's not something we should rely on.
->>
->> Let's avoid linking the non-registered device in the first place.
->>
->> Note: As per documentation, RTNL doesn't protect the reg_state, but
->> it actually does for all the state transitions we care about here,
->> so it should not be necessary to use READ_ONCE or taking the instance
->> lock.  We can still do that, but we have a few more places even in
->> this file where the reg_state is accessed without those while under
->> RTNL, and many more places like this across the kernel code, so it
->> might make more sense to change all of them in a more centralized
->> fashion in the future, if necessary.
->>
->> Fixes: ccb1352e76cf ("net: Add Open vSwitch kernel components.")
->> Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
->> ---
->>  net/openvswitch/vport-netdev.c | 5 +++++
->>  1 file changed, 5 insertions(+)
->>
->> diff --git a/net/openvswitch/vport-netdev.c b/net/openvswitch/vport-netdev.c
->> index c42642075685d..de90d0541e172 100644
->> --- a/net/openvswitch/vport-netdev.c
->> +++ b/net/openvswitch/vport-netdev.c
->> @@ -83,6 +83,11 @@ struct vport *ovs_netdev_link(struct vport *vport, bool tunnel)
->>  	}
->>  
->>  	rtnl_lock();
-> 
-> As noted in your commit, this shouldn't cause any kind of issues, since
-> the next netdev_wait_allrefs_any() will make sure things look correct to
-> the users again.
-> 
-> That said, I agree this is good to do to prevent some confusion going to
-> the users.  I wonder if it makes sense to add a comment here noting
-> that.  Otherwise, if I were just freshly reading through the code it
-> wouldn't follow (all the places where ovs_netdev_link get called are in
-> the 'create' path).
-> 
-> WDYT?
 
-I'm not sure if the comment is necessary.  We're not creating a device here
-and it seems clear enough that we shouldn't be linking devices that are not
-registered, even if there are no races.  But I could add something like:
+On 5/12/26 00:07, Jeremy Kerr wrote:
+> Hi Adam,
+>
+>> Sorry, I should have been more explicit here.  I am not certain what is
+>> going to happen with fragmentation, so I want to be protected against
+>> future changes.
+> Nothing is going to happen with fragmentation. Your driver will only see
+> linear skbs in the ndo_start_xmit callback.
+>
+> Adding the skb_linearize() there is unnecessary, and creates ambiguity
+> about the structure of the skbs that we're dealing with in that path.
+>
+>> The check in validate_xmit_skb() is good, as it protects against the
+>> current set up. So my option was to put a comment in here and hope both
+>> changes happened together, or to just try and get this portion of the
+>> driver solid against the change.
+> I'm not clear on what changes you're referring to here?
+>
+>> And I thought that was what you were suggesting in the comment. The
+>> original comment sounded more like an "here is an optimization" instead
+>> of "this is important enough to kick back"
+> It's less of an optimisation, and more removing something that is
+> unneeded, and potentially confusing ("why is the driver doing this?")?
+>
+>> As for spacing, I get that there is a style, but it really should be
+>> encoded in checkstyle.sh or something and automated.  My own tendency is
+>> to put way too many spaces in to chunk things together, and I end up
+>> going over-draconian on stripping them out to try and meet the expected
+>> layout.
+> I'm not too fussed about the style at the level you have here, these are
+> suggestions to clean up if you're already re-rolling. My confusion is
+> that you had applied my feedback to one part of the code, but not to the
+> area I had commented on (which has the same style structure).
+>
+> You also had some sashiko feedback on v40. I'm not sure whether all
+> items are relevant (I *think* you're OK for the first, for example), but
+> worth confirming:
+>
+> https://sashiko.dev/#/patchset/20260508032953.337036-1-admiyo%40os.amperecomputing.com
 
-/* Do not link devices that are not registered to avoid a potential
- * race with the NETDEV_UNREGISTER notification in dp_device_event().
- */
+I'd like to address this part specifically:
 
-WDYT?
 
-Best regards, Ilya Maximets.
+
+ > +static int mctp_pcc_stop(struct net_device *ndev)
+ > +{
+ > +    struct mctp_pcc_ndev *mctp_pcc_ndev;
+ > +    unsigned int count, idx;
+ > +    struct mbox_chan *chan;
+ > +    struct sk_buff *skb;
+ > +
+ > +    mctp_pcc_ndev = netdev_priv(ndev);
+ > +    chan = mctp_pcc_ndev->outbox.chan->mchan;
+ > +    pcc_mbox_free_channel(mctp_pcc_ndev->inbox.chan);
+ > +    scoped_guard(spinlock_irqsave, &chan->lock) {
+ > +        skb = chan->active_req;
+ > +        chan->active_req = NULL;
+ > +        if (skb) {
+ > +            dev_dstats_tx_dropped(ndev);
+ > +            dev_consume_skb_any(skb);
+ > +        }
+ > +        while (chan->msg_count > 0) {
+ > +            count = chan->msg_count;
+ > +            idx = chan->msg_free;
+ > +            if (idx >= count)
+ > +                idx -= count;
+ > +            else
+ > +                idx += MBOX_TX_QUEUE_LEN - count;
+ > +            skb = chan->msg_data[idx];
+ > +            dev_dstats_tx_dropped(ndev);
+ > +            dev_consume_skb_any(skb);
+ > +            chan->msg_count--;
+ > +        }
+ > +    }
+Is it safe to directly access and modify internal mailbox controller
+structures here?
+By manually clearing chan->active_req and freeing the active skb while the
+hardware controller might be actively transmitting it, could this cause a
+use-after-free or double-free? If the controller's interrupt handler runs
+concurrently, it might dereference the now-freed skb.
+Should the driver treat struct mbox_chan as an opaque handle and rely on
+the standard APIs instead of manually clearing the queue?
+
+End Sashiko Output
+
+There is no way to clear the SKBs in the ringbuffer without using the 
+internal mailbox controller structures.  THere is no callback to flush 
+old messages.  Thus, this is done inline in the client code using the 
+tools available.
+
+The first step in the code above is to free the channel.  That will both 
+disable the interrupt and unmap the shared memory.  The primary way we 
+could get a use-after-free is by the code executing from the interrupt 
+handler, which is why we need to disable it before this point.
+
+MCTP stop should be called after the MCTP infrastructure has removed the 
+device as a viable target for forwarding packets. Thus, we should not 
+get another tx request after this function gets called.
+
+
+
+
+> Cheers,
+>
+>
+> Jeremy
