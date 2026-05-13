@@ -1,382 +1,217 @@
-Received: from alln-iport-4.cisco.com (alln-iport-4.cisco.com [173.37.142.91])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AE8248BD3D;
-	Wed, 13 May 2026 15:17:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.37.142.91
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778685456; cv=none; b=A+uJAsljtJNJohIUKCyFbxzCJ7fN36G+vr7LFwYLkWUiS9TK9rPi3Dm9Q7V2Ue1V3BGg0VojVF8ob+4JQQ9sVXmqWVk+xVSYIbzMXMyR/yrh/CnTwsIYcBMEqQ67aG11eJMqGv70c6CdbphFtvvMPD1oh0DeHdK5aSlqsdTN9X0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778685456; c=relaxed/simple;
-	bh=AZ5PLVgR9SM+hDj0pC3rqRP3gdUywtSJM5oByfueS84=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=tVF1fNjugh9KYLe5LMwjH1CeN920pgZ8uX53CW9VZqzSWSuEBzWWCP3zxHfqimawWKAEEj9BiOr8m6SAQgfouIT94wT38QzNIztcRUKxYoll51iipt/bqHkZi4hWNGCzG835YREXiuqxhj6WDN3OBeUxcz0E/XEekToIqCMNYVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b=dgIzZvle; arc=none smtp.client-ip=173.37.142.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40562413240;
+	Wed, 13 May 2026 15:21:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.18
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778685669; cv=fail; b=uhG5ElKDTP+hH/+exsSKjmve+oxmK9t2ZIhVD0AANwNrQFz1TuGs++BUK7CjlNzYQ/EVIJlFOkr7Tx9du3oNDeANWVQfXLL32hGcm8QnIk35LGEzTo3nTLCdHqGelhP3iNm6SDmzfQrLAvUw60VpOWZ8L1csYGUNuq6swZNwhfs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778685669; c=relaxed/simple;
+	bh=48L9JqtQMpYSdQz/+ejKFFjwoEVucdHmk/cqK6xe3i4=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=iB5zvQn0oXNUAFkfKWnt4mTacBHCFpArfvJhvOXWB8vUrExBCieBE59rPLtqln9/UmoNHD50pu/FuOrNYYxc52R0oVFynYJ1syWJtdLzD4Av90sIs2RMeS+OZ4USjVh+dAtzj0qXZ2oGXfluPly/tk7fDwLtNLmBZtl4V1KxuVI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Jso9UWb0; arc=fail smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b="dgIzZvle"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=cisco.com; i=@cisco.com; l=8596; q=dns/txt;
-  s=iport01; t=1778685455; x=1779895055;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=2/NcobUlyGgrCLakC44OQHqYS7iM+bDK2LrV5Q4q8sA=;
-  b=dgIzZvleY6xtR8rWU/iWxJ6S9xDeA+I1bz3oMCA92bkZu3bGxErBQHpm
-   c8k+Bkn5X3LKbK/QBHKJMpfQsHnhlEDdvpOKjAtjTM2GX3RtyfJVNVGWx
-   aqr9Fl9YiAmHJRcLLtpVWQZ0bckge5hD3bLYQll+XnA3Phx8TLLH1aKCc
-   PorvRV0yG6DEo7Id0dxywQuIl0Gik0Hoct0tj2AfchzzPSolyjck94qdL
-   TkofK8CAwQXdCs5TvV5couef21pvNKl+kzJZGadz2STQ/SZ8FaSJ7iJ/9
-   9u4ORH3F7KoKkqwPpyQ5moPGj/hHaPmM9ggha9Z2AUigCarTUGEhtClVS
-   Q==;
-X-CSE-ConnectionGUID: YNDV3mz4T12IwmhrivdIRw==
-X-CSE-MsgGUID: 28VrWugYSYK+xKysDWRBSA==
-X-IPAS-Result: =?us-ascii?q?A0BGAgA0lQRq/5D/Ja1aglmCGD+BUENJhFePU4IhkU2MU?=
- =?us-ascii?q?BSBaw8BAQEPUQQBAYUGAo0yAiY0CQ4BAgQDAgMBAQEBAQEBAQEBAQsBAQUBA?=
- =?us-ascii?q?QECAQcFgQ4ThlyGWwIBAyMEUhAlAiYCAkYQBgESgipYgnQDsw96fzOBAYR92?=
- =?us-ascii?q?USBZAELFAGBCi6FcoJnAYFwhAY7hEAnG4FJRIEVg2iEBRqDf4JpBIMcFIM4i?=
- =?us-ascii?q?0AJP4ECHANZLAFVEw0KCwcFYVIzAyAKCxISGBUCFBwTDwQWMh1wDBAXEiwXM?=
- =?us-ascii?q?1gbBwWBS4IFchQxBCGBAoRfeCMsA06BQwMLGA1IESw3Bg4bBD0BbgeKPx0Pg?=
- =?us-ascii?q?T9qB0swFEI5MQF7BTCTCx2Dfo1da4E1n1mEJoFkoA4BMpdmkwWZBiKjTGuEa?=
- =?us-ascii?q?IFoPIFZMxoIGxWDIlMZD44tFhzMIicyPQIHAgcNAwuReYFsAQE?=
-IronPort-Data: A9a23:gJplyKmcIp4iNL6qk/fMWnjo5gxBJ0RdPkR7XQ2eYbSJt1+Wr1Gzt
- xJNC2rXbvyOYzSmedp0bYjg9E8DsZfTzYNjSgBk/ywyQ1tH+JHPbTi7wugcHM8zwunrFh8PA
- xA2M4GYRCwMZiaC4E/raf658SUUOZigHtLUEPTDNj16WThqQSIgjQMLs+Mii+aEu/Dha++2k
- Y20+Za31GONgWYubDpJsvnb8XuDgdyr0N8mlg1mDRx0lAe2e0k9VPo3Oay3Jn3kdYhYdsbSb
- /rD1ryw4lTC9B4rDN6/+p6jGqHdauePVeQmoiM+t5mK2nCulARrukoIHKZ0hXNsttm8t4sZJ
- OOhGnCHYVxB0qXkwIzxWvTDes10FfUuFLTveRBTvSEPpqHLWyOE/hlgMK05Fbw+1tgsBHMSy
- aVCCS8IbgqCme6X+q3uH4GAhux7RCXqFJkUtnclyXTSCuwrBMicBa7L/tRfmjw3g6iiH96HO
- JFfMmUpNkmdJUQTZj/7C7pm9AusrmL2bzxDqFGVjaE2+GPUigd21dABNfKKIY3VGp0Jxh/wS
- mTupTTHGC4HO+2k+BnG4lG9ncPwpwnAcddHfFG/3rsw6LGJ/UQfAQMbUHO3qOe0j0q5Vc4ZL
- UEIkgIjobU3/V6mUvHyWBq3pHPCtRkZM/JTDuczwAKA0KzZ50CeHGdsZjdHZMYrq4wwSCAm2
- 0Ghm87vA3pksNW9UXuX+7GVhSm/NSgcMSkJYipsZQ8E5cTz5YI+lBTCSv59H6OvyN74Azf9x
- 3aNtidWr7MekcIGyY2l8l3dxTGhvJ7ESkgy/Aq/Y46+xhlyaIjgY8mj7kLWqK4fao2YVVKG+
- nMDnqBy8dwzMH1ErwTVKM1lIV1jz6nt3OH06bK3I6Qcyg==
-IronPort-HdrOrdr: A9a23:4NztOanKes8EXZRzaU2Ezra43FvpDfLa3DAbv31ZSRFFG/FwWf
- re+MjzsiWUtN9xYh8dcL+7VZVoLUm3yXcx2/hyAV7AZmbbURWTTL2KhLGKq1bd8m/Fh41gPM
- xbH5SWZueAaGRSvILW7Ba1FtA4zMLC0qy57N2utktFfEVGZ75t6gFhBh3eKE15QwFaGYE0fa
- DsgPav3wDQHkg/X4CcGmQPWfTFqpngkZLrZgNDOjscgTP+9Q9BLNXBYmKlNtB0aUI1/Ysf
-X-Talos-CUID: =?us-ascii?q?9a23=3ADO8sa2qzxWaauLHPpP0Y7oDmUfEDXkOGyWWMHxb?=
- =?us-ascii?q?iKHlsSKeUV1Oxwrwxxg=3D=3D?=
-X-Talos-MUID: 9a23:te+NwgvabpUV9/rros2n3mFcLvh17JWVOWNOgbYXoOW7DwZLEmLI
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-AV: E=Sophos;i="6.23,232,1770595200"; 
-   d="scan'208";a="739770401"
-Received: from rcdn-l-core-07.cisco.com ([173.37.255.144])
-  by alln-iport-4.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 13 May 2026 15:16:06 +0000
-Received: from [127.0.0.1] (unknown [10.25.128.216])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by rcdn-l-core-07.cisco.com (Postfix) with ESMTPS id 5E79B1800020F;
-	Wed, 13 May 2026 15:16:05 +0000 (GMT)
-From: Satish Kharat <satishkh@cisco.com>
-Date: Wed, 13 May 2026 08:15:44 -0700
-Subject: [PATCH net-next v7 07/10] enic: add MBOX PF handlers for VF
- register and capability
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Jso9UWb0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778685668; x=1810221668;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=48L9JqtQMpYSdQz/+ejKFFjwoEVucdHmk/cqK6xe3i4=;
+  b=Jso9UWb03zQF4LpaBG93q+34yvpTzL56Y4ljlYkSZM18G/JnZ9qiSid3
+   5OAjzuWnb6e9qyMbic5E1kQxeuNRJ1ItXGM9GSyePQL45lJb4RjIM5KmV
+   vVZTfoD4KPmRZ8hTHX8B4oHdRP5ATgQJ12pnj8qHGamgD7wJWNG5AUOq0
+   OMj+cTPB29PgRTUEP4CPK7eHPLs3llk6u2PT42wBVsLI0Q7bFNL+criT2
+   nVBXR7A9SX9ARmxmVZGgeQktn8e9zpW5J6bIHu5oYXwLs10MA3LwXDYRX
+   wtzsErbxVamH7U6F9l4U3EmsAbE/gu1E+RtFWmiqGMVwMRQLeDcLmH/nU
+   A==;
+X-CSE-ConnectionGUID: nDiNb880SsWplrAESgxu7w==
+X-CSE-MsgGUID: r8xvZqZ7Tty2cEwsrrOVKA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11785"; a="79646092"
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
+   d="scan'208";a="79646092"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 08:21:07 -0700
+X-CSE-ConnectionGUID: c/RBilK1QW6CR5rjjBXJJQ==
+X-CSE-MsgGUID: 7KaNV+rYR1iixB5uV/EX2w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
+   d="scan'208";a="243092618"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 08:21:07 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 13 May 2026 08:21:07 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Wed, 13 May 2026 08:21:07 -0700
+Received: from CO1PR03CU002.outbound.protection.outlook.com (52.101.46.10) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 13 May 2026 08:21:04 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ltCoX7QqSnLNmSKMPIP+tjTe5Sl3Hz23Cf9HFnIY5Lx6i+ww7TbQYXsJDkW5F59mW9b8OslaWbO5Br8bfXSOJeetRriHt4ygjeHnATYnAsk3ivw/B34oWJU56ZNCIQp2A4qQsqhoats7imDRqn0xe9NgnYcnwf/5qqk6IHRvP5a/uuaIRmJfDjSgNvMW02KiBTd3j2JVZGHu+YdJHb5W+ZI9CrLVJLJGqEifD/Ol4FHKb87JQGylc/xviOsfgZgrDTiz0FpbTRpJaoUy3PKo6YcfzMbyKP499obuv2pFoOWvz1xr+QKCkF6cg1qC6ksks1WxUdwFtDuIj/1ShqV9/w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EaKSVeapt2G99z6jD2sNqmkc6plHYXp33HkN8X9Onwg=;
+ b=lqPGC0iRsfntK0bymk/hlOOr5P2FMljwiX8aFRr1WOF00K63J/cdW5qxbpBi7djmzSFFyfW915/4JzNdosiKAEsVsQ2BgIvnacm4fNkCAptpBr3aTftBmkyMnN+dE/4ED/H5M10t2sdjFnajlSlsMByPBby6bzAACaGT2CZkQs2o5FOJdka5CHXfjqyyTunzrizgjSpu0SJkK+qgtNL2/edpOYpoZgnhHyzQTDPIXQQjCdHN9R3ivTBZkcbV+V4lJYYeToR1ZZbsnz/v1WCvmr27RnzlKIEeJlcXbgfwMEb9abmYEigY83ZDeC3byBJl16B/qx618bX4j20ZWw/5cg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB8718.namprd11.prod.outlook.com (2603:10b6:8:1b9::20)
+ by MW5PR11MB5858.namprd11.prod.outlook.com (2603:10b6:303:193::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.22; Wed, 13 May
+ 2026 15:21:00 +0000
+Received: from DS0PR11MB8718.namprd11.prod.outlook.com
+ ([fe80::6aa:411d:4bfa:619c]) by DS0PR11MB8718.namprd11.prod.outlook.com
+ ([fe80::6aa:411d:4bfa:619c%5]) with mapi id 15.20.9913.009; Wed, 13 May 2026
+ 15:21:00 +0000
+Message-ID: <9c49ecf7-1d35-4b03-8a71-9d724562594d@intel.com>
+Date: Wed, 13 May 2026 17:18:50 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] xsk: switch xdp_build_skb_from_zc() to napi_alloc_skb()
+To: Lorenz Brun <lorenz@monogon.tech>
+CC: Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel
+	<przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
+	<daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, "John
+ Fastabend" <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>, <stable@vger.kernel.org>,
+	<intel-wired-lan@lists.osuosl.org>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <bpf@vger.kernel.org>
+References: <20260512152658.2818805-1-lorenz@monogon.tech>
+Content-Language: en-US
+From: Alexander Lobakin <aleksander.lobakin@intel.com>
+In-Reply-To: <20260512152658.2818805-1-lorenz@monogon.tech>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: DUZPR01CA0262.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:4b9::24) To DS0PR11MB8718.namprd11.prod.outlook.com
+ (2603:10b6:8:1b9::20)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260513-enic-sriov-v2-admin-channel-v2-v7-7-68b9f4141f4c@cisco.com>
-References: <20260513-enic-sriov-v2-admin-channel-v2-v7-0-68b9f4141f4c@cisco.com>
-In-Reply-To: <20260513-enic-sriov-v2-admin-channel-v2-v7-0-68b9f4141f4c@cisco.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Sesidhar Baddela <sebaddel@cisco.com>, Satish Kharat <satishkh@cisco.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778685359; l=8938;
- i=satishkh@cisco.com; h=from:subject:message-id;
- bh=AZ5PLVgR9SM+hDj0pC3rqRP3gdUywtSJM5oByfueS84=;
- b=y2TCL8QXj4hOZCUzIH8HTUXdKshMt6Rp4yMEK5lIK4pmFTuhVT9J6evge8GYmWEU//aRZKjl7
- PGy2C43kXCRDQgnBLIDjcqdqXGg4tg3ZGRiQDf/5sGJy2xHTRktLJdj
-X-Developer-Key: i=satishkh@cisco.com; a=ed25519;
- pk=4BxbLoCGvHeIMH/PbpiNVx8/2IcTjFvqcr0AD8K6WLY=
-X-Outbound-Client-TLS: ANONYMOUS;unknown [10.25.128.216];TLSv1.3;TLS_AES_256_GCM_SHA384;256
-X-Outbound-SMTP-Client: 10.25.128.216, [10.25.128.216]
-X-Outbound-Node: rcdn-l-core-07.cisco.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB8718:EE_|MW5PR11MB5858:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5a510027-062d-445b-d4b8-08deb1033cd3
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024|22082099003|56012099003|18002099003|11063799003;
+X-Microsoft-Antispam-Message-Info: UhIW6Xu3Z2rFhHOUJ5f7PyeyJbhH+V1w1gmEtxWRnSQnS7X6hdDzgfLIGN1MpuXqbtKFprAo25xBaAG8gl3cNyQhsTdS7mSmLSK5nGFjvtwXpx10c58tlyMb8YGnlEuPqaPWQmb45Id3y8xbL4MHI2zku3u9FafpEsbeXbrsV4VFtyBz/FKCXbWTHRLebKGVo5ggSnHu+yPDNzDBuo6NT28qRITVY7cjGj9SEaiZkGyN3KAH5c1+nowzzLI5Dha1E5/HedXi8GlUkhseE5NiUHs0BWEI4lFipfQyejCZc5srmRb69IjilGeu5zR0VcVqIaEM7ZJRku6PIJXynMq2EJutF7jwkfthLk/uaa0QU+e4IJ2G/EXvxBcxMkgZLreOxQxuc+SitSp6lTHhXsK6p+SJZjmkc6XCaqXAhesqOm4CNalCI3buHRWImPL9fadXwk7souQ9rX2bYHJyCA5ygfQkL3S1tdvKrEAgBTywj4LZwiLgTssDdb7JbpNk/jgqmdMVsRLwEnSJOvjEUX65wuMLX0hTuIOXxorM5IQz4BmGQXOAsp+phpQqDVEgt3GtjUaDULTOA+Cu/w3udN+i0sqkraUCJgurzqSYNvfo0ZkUz6wIsBxo/1pwfvk5YI/p4fTyZzdl7mSvvCMqCQhWms+NPnSRzEs8zcdYMdeqQEfFrmIhS5ROtc1SganLm9oB
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8718.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(22082099003)(56012099003)(18002099003)(11063799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QzVYZG5oaURuQys3OUoyZG1ZWFFVRE1PblJwNXo1YkNuSkpXaitIdU81Rnkx?=
+ =?utf-8?B?cW5oZk5ibHJKMGhGMFpTdCtTdllEajRsazFxVUpxOGhWcm1zTWNpYVU2KzNU?=
+ =?utf-8?B?VGh1RUlQZG1hUVhkcmVpQ1dqZUJrWGJzbkJwdkZYdVVBb1pxcVlVd3RjRk4x?=
+ =?utf-8?B?N3pBRTFiODNVZ2I3OW1nZHRubHB4MWlYdUExNmFmSkhJUzEwQXVZdHdHSTlE?=
+ =?utf-8?B?aS9CVTJ0WGtQTmFrSXE1R3NLVnhIZDB6TjJDSG5qbncxajdDa2xuUUtybnBa?=
+ =?utf-8?B?cytzK01oOWZTdm9IT2hXSFArbFNFQnlnZmtJR1ZBUHduTFlNeXBvUkc0R0RE?=
+ =?utf-8?B?QVozKzI3Q2k1STJZbU9XcG5GSnVyVUhSVkV0c2xxVGhGc1k3dSs3a0pOU3Zy?=
+ =?utf-8?B?bDFqdXZJK2xVSHc0OEZYZ0tZd3MrK1dsOHp5OGxWcnFpVFQxbkgxS3VUWTI5?=
+ =?utf-8?B?MmJBRXdtalpQcEJMVS9RM1pTTUtJdEZFZVVIb1R0ZWZnbnJ4cTA2NkltZHFw?=
+ =?utf-8?B?RE0ya1dUcDFsZFR5VEw0blB1TitrR3lLWjBzay8yV2Q3emhMNE1wc3N1YVcx?=
+ =?utf-8?B?NU42SURXRTJldTV3eTFFN0I0bzZla3JuR1N5VFhDbEM5SVo0ZSswaDJPOHNP?=
+ =?utf-8?B?QjM0aEFodHIySG56TGpoR3JYQkVzNGJGTGlOQ3BicnBES2d5c1g4eXA2RmxD?=
+ =?utf-8?B?QVZVYjd3SDlnQzRWd2lHSVZaNTUzcFNXVEJGUm90cHV1NW84YTUrSkpqaWsw?=
+ =?utf-8?B?VXRXS3ZvWFJ3Rlg5K0ZJQjB1VnNkR1hDN3VhN25Idyt4Vzl1SitUdkwrSzgw?=
+ =?utf-8?B?NFVoeFNteWo3TmJyWVZwc3ZtNnBRYlZ0ZDlwVjA4R2V0Szl2M0F1M0hSbm45?=
+ =?utf-8?B?MHBjdytQbVBsK3ladDgrY1dpRG0xaDZrVTBUbXJzWmxiZzJXU3N0MEprbzQ5?=
+ =?utf-8?B?SnNzMWlBTjB1bHNkZXRHckhRWnpPdDdpNkx4bVdBWGM0aitLMTFzSU9tKzV1?=
+ =?utf-8?B?TU1OanpxZjI1dHZFMlNQTWsyWExSY0psUnptZnc0YlM1Y3F0V09RYjV0b2or?=
+ =?utf-8?B?YnZNTXlzT05GcS92VGs0QXhEaytHTG1RdFNYMzBXNnEvdW1LL01uUFRCWEg4?=
+ =?utf-8?B?MEYwcTRrUXFrVzRWY2psLzJySkJPenhCNnBhY3hmeS8rdW9jVndKTFYwd0Fs?=
+ =?utf-8?B?Yk5FSTdiaWQ3V0tWUktOSkF3SUVocXV2YVVEeVErd3piNU9kYk1Vd0lNWjhm?=
+ =?utf-8?B?bXlpUWdFb1RwRFVjWmVuUHpvbTduak9oTFNQUkx6S1FkTWdZK2lCQ2cvWVA4?=
+ =?utf-8?B?ZnZLMEpYRW5NVVdsUndtN1VFaldJSVJNb1F1K09kbG5iSldEZlN4bVJMcUUv?=
+ =?utf-8?B?S25JaS9xRlhreEk0SU5vM0N5OFo5ejVLYWF3T0l5d05wVDdrZXdIczJiUWJ2?=
+ =?utf-8?B?N0FjWTZxZGJ4M0tQaE4rUC9EdVBwNjkzNkJMTEN3eXp5aTd5eWYvWDdiZDQ4?=
+ =?utf-8?B?aGpobEpQNEcrNm1vVmxFcXJ1T0NZUEQwbHhEQnl1RVBvTFdzaU4xUloxZVVl?=
+ =?utf-8?B?S2JrenRQZFV0b09OT3NCZ09TNVNma1RBM2dSRU5STWExMTFrTU1ic3kyYytI?=
+ =?utf-8?B?QVlCQ2Y3eW1MYW9TZ25nZkIxNTFHSnZTaElUZG50eUNwSkxBSFFEbzFEQStn?=
+ =?utf-8?B?MGw3QUNzMTVVZ1F1TnFxWXAyN2dsVkpqMGVrM3ArR0liaFU1bktSQ1c4c1Js?=
+ =?utf-8?B?OEx3cVZhSW1ESkpnWW0ydUwvaW92OE5WTFJjdWtqYjBHRit2M0djOU1Ba2Yy?=
+ =?utf-8?B?NVJjdHlCL2laR3E4K2NSMkJ5dGxIRmVWMjJXZGNjd3U1NldQYS9RM0d5N1Ns?=
+ =?utf-8?B?b3BpQnE2V3VXbGRwZ25Vd296Y2YwSmFGT1pLNndUQWIxWnUzYVNGSnZtSm92?=
+ =?utf-8?B?c0pRbXd2NlAxUnNzSWRQdEtQS1ZJaDZjVnBod05KenZXbTFxbm1EMW9QSWlS?=
+ =?utf-8?B?cEFPOFMrYlNnWVNEb1paVk5wSzNiTU1kdCtZY1RlZklSMzQ4STVKN0Y5OFZH?=
+ =?utf-8?B?c0NRNGdnUXFTSE1CWkNiNmZwNkoyb2xTWW9CUldYc0hKZEFONi9ZbmhQeUVH?=
+ =?utf-8?B?Nk9mdnQvSHAvTGsvUzVqbFRmR1VSbWxra2EyYWFJVE9yTzdnQzhqaVduQnRP?=
+ =?utf-8?B?dGdtTFlPbnJtaThXYkxnc25yZis3cnV2MGdEVUNENVVndCt0YllMM1l4T1Ur?=
+ =?utf-8?B?YVdnMDVwakV4NE5xMzJFNmh6NHN3UVNURjFqU2pBVmV1eGlwRkFKNmJWN252?=
+ =?utf-8?B?REJodk5kYmQyd01YVXIvOWIxc2ZqOFoweXJMblcrQldrRVJoTjUybHQxNzhw?=
+ =?utf-8?Q?g67aB+rW0Y+R4fok=3D?=
+X-Exchange-RoutingPolicyChecked: OWYo5CnPlU/rTvnDNpuce4CNKnkVXZ6BvEU2rlKdT/Pl6vjLCHjo6wsO+W6Xa6ZiTLW1udLWFVmI6Uo/a/yEAdCaZZGp+u32YD0LSxe6D3mjjoXLOEbn2NY2/SEXmPjVeZhvs7cg/Oy4RU2LcpSmIETagR+umnT2qQ0/YYvyqyukqz6qMs/IFjAHMwh26+bWRJlrhsauBmxtTNffZf84VeVjWLKk1byCKVn4g1c9BwPunt+RAuN0XilbCoTumwvYU0l+j6T2pbIhWPupXt3+GaH3WOfCb5QZH1sFQUudb/Pf7LcAKwCczEeSGSc9HvkhrTax+MeKuDociHuGD87F9A==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5a510027-062d-445b-d4b8-08deb1033cd3
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8718.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2026 15:20:59.9332
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: SmHrt9BK81w7+g2ZE5jgvBUWlB7mCDwz//fjEDJZnY9oAd5qwVL/v/PVIVEww3ePffx2CQhQDxIAGUc6NNKj6YY2itkfgoqBiqBetbo76hs=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW5PR11MB5858
+X-OriginatorOrg: intel.com
 
-Implement PF-side mailbox message processing for SR-IOV V2
-admin channel communication.
+From: Lorenz Brun <lorenz@monogon.tech>
+Date: Tue, 12 May 2026 17:26:56 +0200
 
-When the PF receives messages from VFs, the dispatch routes
-them to type-specific handlers:
-  - VF_CAPABILITY_REQUEST: reply with protocol version 1
-  - VF_REGISTER_REQUEST: mark VF registered, reply, then
-    send PF_LINK_STATE_NOTIF with link enabled
-  - VF_UNREGISTER_REQUEST: mark VF unregistered, send reply
-  - PF_LINK_STATE_ACK: log errors from VF acknowledgment
+> xdp_build_skb_from_zc() allocated xdp->frame_sz bytes from the per-cpu
+> system_page_pool and built the skb head with napi_build_skb(). The
+> latter places skb_shared_info at the tail of the buffer, but the
+> helper sized the allocation as if the whole frame_sz were usable for
+> data. Whenever the packet plus reserved headroom approached frame_sz,
+> the head memcpy overran shinfo with packet content, corrupting
+> ->flags (SKBFL_ZEROCOPY_ENABLE) and ->nr_frags, which then drove
+> skb_copy_ubufs() off the end of frags[] on the RX path:
+> 
+>   UBSAN: array-index-out-of-bounds in include/linux/skbuff.h:2541
+>   index 113 is out of range for type 'skb_frag_t [17]'
+>    skb_copy_ubufs+0x7da/0x960
+>    ip_local_deliver_finish+0xcd/0x110
+>    ice_napi_poll+0xe4/0x2a0 [ice]
+> 
+> The overrun bytes come from the packet, so an on-wire sender can
+> corrupt kernel memory remotely whenever the XDP program returns
+> XDP_PASS.
+> 
+> Rather than patch the sizing math, switch to the pattern used by other
+> in-tree AF_XDP zero-copy drivers like mlx5 and i40e which use
+> napi_alloc_skb() sized to the actual packet plus skb_put_data().
+> This sizes the head exactly for the data being copied, drops the
+> system_page_pool local_lock from this path, and removes the
+> structural mismatch between frame_sz and the skb head buffer. Frags
+> are allocated with alloc_page() per frag, matching the other drivers.
 
-Per-VF state (struct enic_vf_state) is tracked via enic->vf_state
-which will be allocated when SRIOV V2 is enabled.
+I used napi_build_skb() + system page_pool to enable PP recycling
+improving XSk XDP_PASS performance a lot.
+Are you sure there's no other way to approach this?
 
-Remove the CONFIG_PCI_IOV guard from num_vfs in struct enic. The
-PF handlers reference enic->num_vfs for VF ID bounds checking in
-enic_mbox.c, which is compiled unconditionally. The field must be
-visible regardless of CONFIG_PCI_IOV to avoid build failures.
+napi_alloc_skb() used in other drivers works, but it's sorta old
+approach which is way slower.
 
-Add enic_mbox_send_link_state() helper for PF-initiated link
-state notifications, also used later by ndo_set_vf_link_state.
+System page_pools always allocate a full page, why can it create an skb
+prone to overruns?
 
-Signed-off-by: Satish Kharat <satishkh@cisco.com>
----
- drivers/net/ethernet/cisco/enic/enic.h      |   7 +-
- drivers/net/ethernet/cisco/enic/enic_mbox.c | 184 +++++++++++++++++++++++++++-
- drivers/net/ethernet/cisco/enic/enic_mbox.h |   1 +
- 3 files changed, 188 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/ethernet/cisco/enic/enic.h b/drivers/net/ethernet/cisco/enic/enic.h
-index 42f345aceced..9b1fa3857df5 100644
---- a/drivers/net/ethernet/cisco/enic/enic.h
-+++ b/drivers/net/ethernet/cisco/enic/enic.h
-@@ -256,9 +256,7 @@ struct enic {
- 	struct enic_rx_coal rx_coalesce_setting;
- 	u32 rx_coalesce_usecs;
- 	u32 tx_coalesce_usecs;
--#ifdef CONFIG_PCI_IOV
- 	u16 num_vfs;
--#endif
- 	enum enic_vf_type vf_type;
- 	unsigned int enable_count;
- 	spinlock_t enic_api_lock;
-@@ -310,6 +308,11 @@ struct enic {
- 	/* MBOX protocol state */
- 	struct mutex mbox_lock;
- 	u64 mbox_msg_num;
-+
-+	/* PF: per-VF MBOX state, allocated when SRIOV V2 is enabled */
-+	struct enic_vf_state {
-+		bool registered;
-+	} *vf_state;
- };
- 
- static inline struct net_device *vnic_get_netdev(struct vnic_dev *vdev)
-diff --git a/drivers/net/ethernet/cisco/enic/enic_mbox.c b/drivers/net/ethernet/cisco/enic/enic_mbox.c
-index 3f95247b8f6b..0f7f9d2d091f 100644
---- a/drivers/net/ethernet/cisco/enic/enic_mbox.c
-+++ b/drivers/net/ethernet/cisco/enic/enic_mbox.c
-@@ -135,10 +135,177 @@ int enic_mbox_send_msg(struct enic *enic, u8 msg_type, u16 dst_vnic_id,
- 	return err;
- }
- 
-+int enic_mbox_send_link_state(struct enic *enic, u16 vf_id, u32 link_state)
-+{
-+	struct enic_mbox_pf_link_state_notif_msg notif = {};
-+
-+	if (!enic->vf_state || vf_id >= enic->num_vfs ||
-+	    !enic->vf_state[vf_id].registered) {
-+		netdev_dbg(enic->netdev,
-+			   "MBOX: skip link state to unregistered VF %u\n",
-+			   vf_id);
-+		return 0;
-+	}
-+
-+	notif.link_state = cpu_to_le32(link_state);
-+	return enic_mbox_send_msg(enic, ENIC_MBOX_PF_LINK_STATE_NOTIF, vf_id,
-+				  &notif, sizeof(notif));
-+}
-+
-+static int enic_mbox_pf_handle_capability(struct enic *enic, void *msg,
-+					  u16 vf_id, u64 msg_num)
-+{
-+	struct enic_mbox_vf_capability_reply_msg reply = {};
-+
-+	reply.reply.ret_major = cpu_to_le16(0);
-+	reply.version = cpu_to_le32(ENIC_MBOX_CAP_VERSION_1);
-+
-+	return enic_mbox_send_msg(enic, ENIC_MBOX_VF_CAPABILITY_REPLY, vf_id,
-+				  &reply, sizeof(reply));
-+}
-+
-+static int enic_mbox_pf_handle_register(struct enic *enic, void *msg,
-+					u16 vf_id, u64 msg_num)
-+{
-+	struct enic_mbox_vf_register_reply_msg reply = {};
-+	int err;
-+
-+	if (!enic->vf_state || vf_id >= enic->num_vfs) {
-+		if (net_ratelimit())
-+			netdev_warn(enic->netdev,
-+				    "MBOX: register from invalid VF %u\n",
-+				    vf_id);
-+		return -EINVAL;
-+	}
-+
-+	/* VF re-registering (e.g. guest reboot without clean unregister):
-+	 * mark the previous registration inactive before accepting the new one.
-+	 */
-+	if (enic->vf_state[vf_id].registered) {
-+		netdev_dbg(enic->netdev,
-+			   "MBOX: VF %u re-register, cleaning previous state\n",
-+			   vf_id);
-+		enic->vf_state[vf_id].registered = false;
-+	}
-+
-+	reply.reply.ret_major = cpu_to_le16(0);
-+	err = enic_mbox_send_msg(enic, ENIC_MBOX_VF_REGISTER_REPLY, vf_id,
-+				 &reply, sizeof(reply));
-+	if (err)
-+		return err;
-+
-+	enic->vf_state[vf_id].registered = true;
-+	if (net_ratelimit())
-+		netdev_info(enic->netdev, "VF %u registered via MBOX\n", vf_id);
-+
-+	err = enic_mbox_send_link_state(enic, vf_id,
-+					ENIC_MBOX_LINK_STATE_ENABLE);
-+	if (err)
-+		netdev_warn(enic->netdev,
-+			    "VF %u: failed to send initial link state: %d\n",
-+			    vf_id, err);
-+	/* Registration succeeded; link state will be (re-)sent on next
-+	 * enic_link_check() event.
-+	 */
-+	return 0;
-+}
-+
-+static int enic_mbox_pf_handle_unregister(struct enic *enic, void *msg,
-+					  u16 vf_id, u64 msg_num)
-+{
-+	struct enic_mbox_vf_register_reply_msg reply = {};
-+	int err;
-+
-+	if (!enic->vf_state || vf_id >= enic->num_vfs) {
-+		if (net_ratelimit())
-+			netdev_warn(enic->netdev,
-+				    "MBOX: unregister from invalid VF %u\n",
-+				    vf_id);
-+		return -EINVAL;
-+	}
-+
-+	/* VF is unloading; clear local state regardless of whether
-+	 * the reply is successfully delivered to avoid the PF treating
-+	 * a dead VF as still registered.
-+	 */
-+	enic->vf_state[vf_id].registered = false;
-+
-+	reply.reply.ret_major = cpu_to_le16(0);
-+	err = enic_mbox_send_msg(enic, ENIC_MBOX_VF_UNREGISTER_REPLY, vf_id,
-+				 &reply, sizeof(reply));
-+
-+	if (net_ratelimit())
-+		netdev_info(enic->netdev, "VF %u unregistered via MBOX\n", vf_id);
-+
-+	return err;
-+}
-+
-+static void enic_mbox_pf_process_msg(struct enic *enic,
-+				     struct enic_mbox_hdr *hdr, void *payload)
-+{
-+	u16 vf_id = le16_to_cpu(hdr->src_vnic_id);
-+	u16 msg_len = le16_to_cpu(hdr->msg_len);
-+	int err = 0;
-+
-+	if (!enic->vf_state) {
-+		netdev_dbg(enic->netdev,
-+			   "MBOX: PF received msg but SRIOV not active\n");
-+		return;
-+	}
-+
-+	if (vf_id >= enic->num_vfs) {
-+		if (net_ratelimit())
-+			netdev_warn(enic->netdev,
-+				    "MBOX: PF received msg from invalid VF %u\n",
-+				    vf_id);
-+		return;
-+	}
-+
-+	switch (hdr->msg_type) {
-+	case ENIC_MBOX_VF_CAPABILITY_REQUEST:
-+		err = enic_mbox_pf_handle_capability(enic, payload, vf_id,
-+						     le64_to_cpu(hdr->msg_num));
-+		break;
-+	case ENIC_MBOX_VF_REGISTER_REQUEST:
-+		err = enic_mbox_pf_handle_register(enic, payload, vf_id,
-+						   le64_to_cpu(hdr->msg_num));
-+		break;
-+	case ENIC_MBOX_VF_UNREGISTER_REQUEST:
-+		err = enic_mbox_pf_handle_unregister(enic, payload, vf_id,
-+						     le64_to_cpu(hdr->msg_num));
-+		break;
-+	case ENIC_MBOX_PF_LINK_STATE_ACK: {
-+		struct enic_mbox_pf_link_state_ack_msg *ack = payload;
-+
-+		if (msg_len < sizeof(*hdr) + sizeof(*ack))
-+			break;
-+		if (le16_to_cpu(ack->ack.ret_major))
-+			netdev_warn(enic->netdev,
-+				    "MBOX: VF %u link state ACK error %u/%u\n",
-+				    vf_id, le16_to_cpu(ack->ack.ret_major),
-+				    le16_to_cpu(ack->ack.ret_minor));
-+		break;
-+	}
-+	default:
-+		netdev_dbg(enic->netdev,
-+			   "MBOX: PF unhandled msg type %u from VF %u\n",
-+			   hdr->msg_type, vf_id);
-+		err = -EOPNOTSUPP;
-+		break;
-+	}
-+
-+	if (err && net_ratelimit())
-+		netdev_warn(enic->netdev,
-+			    "MBOX: PF handler for msg type %u from VF %u failed: %d\n",
-+			    hdr->msg_type, vf_id, err);
-+}
-+
- static void enic_mbox_recv_handler(struct enic *enic, void *buf,
- 				   unsigned int len)
- {
- 	struct enic_mbox_hdr *hdr = buf;
-+	void *payload;
-+	u16 msg_len;
- 
- 	if (len < sizeof(*hdr)) {
- 		if (net_ratelimit())
-@@ -156,10 +323,23 @@ static void enic_mbox_recv_handler(struct enic *enic, void *buf,
- 		return;
- 	}
- 
-+	msg_len = le16_to_cpu(hdr->msg_len);
-+	if (msg_len < sizeof(*hdr) || msg_len > len) {
-+		if (net_ratelimit())
-+			netdev_warn(enic->netdev,
-+				    "MBOX: invalid msg_len %u (buf len %u)\n",
-+				    msg_len, len);
-+		return;
-+	}
-+
- 	netdev_dbg(enic->netdev,
- 		   "MBOX recv: type %u from vnic %u len %u\n",
--		   hdr->msg_type, le16_to_cpu(hdr->src_vnic_id),
--		   le16_to_cpu(hdr->msg_len));
-+		   hdr->msg_type, le16_to_cpu(hdr->src_vnic_id), msg_len);
-+
-+	payload = buf + sizeof(*hdr);
-+
-+	if (enic->vf_state)
-+		enic_mbox_pf_process_msg(enic, hdr, payload);
- }
- 
- void enic_mbox_init(struct enic *enic)
-diff --git a/drivers/net/ethernet/cisco/enic/enic_mbox.h b/drivers/net/ethernet/cisco/enic/enic_mbox.h
-index 73fd7f783ee2..f1de67db1273 100644
---- a/drivers/net/ethernet/cisco/enic/enic_mbox.h
-+++ b/drivers/net/ethernet/cisco/enic/enic_mbox.h
-@@ -87,5 +87,6 @@ struct enic;
- void enic_mbox_init(struct enic *enic);
- int enic_mbox_send_msg(struct enic *enic, u8 msg_type, u16 dst_vnic_id,
- 		       void *payload, u16 payload_len);
-+int enic_mbox_send_link_state(struct enic *enic, u16 vf_id, u32 link_state);
- 
- #endif /* _ENIC_MBOX_H_ */
-
--- 
-2.43.0
-
+> 
+> Fixes: 560d958c6c68 ("xsk: add generic XSk &xdp_buff -> skb conversion")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Lorenz Brun <lorenz@monogon.tech>
+Thanks,
+Olek
