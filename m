@@ -1,175 +1,138 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011015.outbound.protection.outlook.com [40.107.130.15])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F033FBEBB;
-	Wed, 13 May 2026 10:57:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778669840; cv=fail; b=AHg5lWTTznFZ/0gE93ZH98USv8kHu7rxWSB2V3s6abgGNu/9jKlkUP0kkSVuCMO8QchawwRFm+EzOGTSm6hKG9+Q31WqWNM34lcaI8pOmMUtIh7r0/22q9R7Ot7Q6dPIv2lxhDopTdyuBXIU465nwyfnWtT7FsgcHDmF7txurJc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778669840; c=relaxed/simple;
-	bh=Iur5/EtmFT2zL21Jh7pMQGrXgctdMZa93XjWqR3bj1I=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=blp4W0X/8/rKm7Gx1mzSCMtfTRPlK9u4Go2ZYRmNckZxGb0ko6DQyBISt8kKuaENTk/tAAjbVgyZzPAiyRVYEPrOAJLmUINI9qBlEODVfCzCFP5+zAbqPvZorvQrVuXAAkh3ZXwROGg49CiOAwAothOg6eS0EAxelTdBNgFndW4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=jtuKIgMl; arc=fail smtp.client-ip=40.107.130.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E55A838E12D;
+	Wed, 13 May 2026 10:58:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778669915; cv=none; b=Nw2KIGvIr0UE7VsRHxTvzMWnc7pw22j8J16UTrtAG45htoXM3cfENGUyS+UV71csO/J+YAQWaV+GwuD8M/BFxEzse1VKvJE2nY7SUddGg+GJiE3snO3Ksr0u05DUhMy7/7koF5AO58KikwQPT0Tb1pm3oZrn/WgvVf7kJuYKd+U=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778669915; c=relaxed/simple;
+	bh=QIA/aaUl+Tf7JJyWRrgCs8eHCQk13Eufaox2+xCY8+8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=mIg8gKOftNgl2Gs33U8kc4E7zFe8rc9gL6M4OtZI+Jlc/3jnqB9wCepKYSkNk2sUIaG4qelc6GSL5RXayOoDbGdMdy2jt1sJehwsZlV3Jzx9/BLfcLNSR79nxk/alwfmRCPWlZtvsZNEqMYdpmae+AYC6M/ZwHB18b9iqjITRkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=r/JD0yV0; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="jtuKIgMl"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=T9B3XJj1fssCQ0arZ7kQ8dYy0O4YWR7cHw5O0vaWS6vJ8bR2rv6wM35FQQbJKmw2J6R+QHG6GefrZoqeQtOqV3QXN+4ENlkfcN+b52npD1o7mZXMXtTYsVilmyHO1B0/2QkocH86kBHXHHqgZSz9zgHcohCpYrmkZpusB2Ebiu+wkzgxXHNYI6tnz4OlGlIRLDA//yXOFaXFm/Q/EY5U93ci4zkmYeIqcUMzrYcrtqaxH4xvaoYE686WzAMJfpfbztzzuTQ62OhW95cIRINJtlqah+C6Mqj1/CuQm73zbdLQTpJ1D7c7lhrrEMi3SdrWsAXbiA0iwvgpICVDRUZfmg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YyLzV7m5QIuSXCBQxaMXkthoJ59wstg0QIw9FXal53o=;
- b=tuschVQ0wgBhRctgecbevREOsK/ZoiVWBXLuRlabyoa9XA9SHmTJLLloBgDJND84TfQSka/Z8jcdqRY1j4OrWDA8Pmyq7v1Xw2W4VnROfTXASp9qFvfr7//43jpWVYRlke6gy886ABVB2YB8Fg3okPpzaZCiPCsNw1HqplpqrfqoErPwjVdL819G1Wx/FPmb9IEZ3o0xIxtHm74X/DClXVvNiMlKQAEjAx9ZDrcnCgL2AWjWj9aE5AkxFTSJT16leD2hC11q4eps1zNCHtGV2kyqUYMFy3sZCdIs4z5VXrwRfv108kG5JChAZhryCz9wWRlA7VN8BG2Dwytt7oajCg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YyLzV7m5QIuSXCBQxaMXkthoJ59wstg0QIw9FXal53o=;
- b=jtuKIgMlpArWW6P3K2bM3IOnI2MS5pjOtrgRV4v8BUHsQMF+wY6ZiVkOUKPxKbpsyQWxat7Pb2KPugC7/aGAbj5wseEPd1SVBJgpVeMs9o5GEPgqoweNISFIPfnCnhL3lzH8T1Hd1wKnReN2T2GoPbs1Ir5l4t+w56znoap2CHzLb9g2fViWTkrj3awNK05PLJKB5fIDyN6RNkgxXM15Uyv7aTEXNtzls+NL8HSRcIhDyI2wD8z4IllNJ+E3gagFdy3LWwi/7t70KrUpHKpnS3feVyiMMSynzinrT9KFKfwbXXfgV4Z6tTEh59rktttZo23mzT2YvdUrjuO8cV3x9A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DBBPR04MB7500.eurprd04.prod.outlook.com (2603:10a6:10:1f4::16)
- by PAXPR04MB8427.eurprd04.prod.outlook.com (2603:10a6:102:1cd::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.11; Wed, 13 May
- 2026 10:57:15 +0000
-Received: from DBBPR04MB7500.eurprd04.prod.outlook.com
- ([fe80::c291:543b:4bde:cee7]) by DBBPR04MB7500.eurprd04.prod.outlook.com
- ([fe80::c291:543b:4bde:cee7%6]) with mapi id 15.20.9913.009; Wed, 13 May 2026
- 10:57:15 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: imx@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	catalin.horghidan@nxp.com
-Subject: [PATCH net 6/6] net: enetc: add ratelimiting to VF mailbox error messages
-Date: Wed, 13 May 2026 18:30:21 +0800
-Message-Id: <20260513103021.2190593-7-wei.fang@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260513103021.2190593-1-wei.fang@nxp.com>
-References: <20260513103021.2190593-1-wei.fang@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MA5PR01CA0123.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:1a7::13) To DBBPR04MB7500.eurprd04.prod.outlook.com
- (2603:10a6:10:1f4::16)
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="r/JD0yV0"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
+	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
+	bh=b2vQAn4oTfcls0aM2yCHBuL5+9umU8OJL3yCGEj5204=; b=r/JD0yV07yKn/rGJzW6sVNAKbN
+	huAov3LYBDl2q5atVn5g94IkPk4SDZKg9fPdqFaslx3PUAuV/ZCRvndG4380AVJIR+Puq9Sem9E2c
+	DAZdWLsaFboqsWxDXGDVwHQosWydSb0Y/hPfYUoliIiesZA6TAf3kqMpY08Y++C7VmIXVWaGXKvtJ
+	rdyR/Aibg2JYdDDpN1QtW7CJZvKosopdDy8Dtt3lp4BT5QUPzOLsVoSUs1LAFk0WeDbuOfBGH2/Qv
+	zOPPaJyt3JpqbHHmR4B2tc6PfALmzuXtF63L3qkB6ZC1s8v4MYJmcuT7MfLlorzAO3ji4r7TJkxnI
+	49n/lFqA==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wN7I2-00371Y-0r;
+	Wed, 13 May 2026 10:58:10 +0000
+From: Breno Leitao <leitao@debian.org>
+Date: Wed, 13 May 2026 03:57:54 -0700
+Subject: [PATCH net] nfc: llcp: avoid userspace overflow on invalid optlen
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DBBPR04MB7500:EE_|PAXPR04MB8427:EE_
-X-MS-Office365-Filtering-Correlation-Id: 90c93c85-a5c6-4591-6952-08deb0de64ef
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|19092799006|52116014|376014|366016|56012099003|11063799003|22082099003|18002099003|3023799003|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	KngjcANmSLVZAqEF0WqCsdsYzR7wafXOBU9Ze1cgKonVfaoGmVQ30q46tz0sPm2UY2PDikBDwL6c7soopvjmY5m4vyTflKWtOF7aGevLXkMoQQENMBc9a5G6vGbMv9mZw/RlIU+j/R0SbbuV4cdPWVJTBWNHhSwGUotLGr8BDXXUVYjiliiB+n2jULVUfRvhqcXJstADsdzLkpnEAh0Lok7c4yeBUorYtlAG+5shqKAXQ4l+cuWfOC4wYzyDfFSDYkv9uIY8PmKHk/vD5GEd/Zty0QoYKQU9rG5YK6Y2+S0CEzMW2M5SnOJBmoutE9/DNPf8J83BxSWMn49pA2HFfNqNCuyS2YSe8rfXKAdgrVdShy+r1TBN5ZJFketgbxok4tI5reZTViRJBUzScxzf1RClDgRz8fn1Rq1XXCbSMH+FGM7AWDs6l7I4sX3A2s5OoWCR5/vIkqdDxzIfRE/o7YHsa3ge95+SOe0a2VPdF+qjGNXH8jz7jwYBzesoYt2uUCeWRI5FzM2qXU64iRU+C2mdZcJWJ+ru3CigUcRCiaP9Eqs63GqIKg4EGtwxbNMR9f0anvLO4AN8kM9y3J3uptaR4FfCkWYXCvSSGy4VACpw+Suo6qZCick6d4EpJQWp0gfIm7Ilwd49wYC/zmq/T3yxXycluVcwFvUul6nR5nRThPVTkj75YoVrkE32c5pc
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DBBPR04MB7500.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(52116014)(376014)(366016)(56012099003)(11063799003)(22082099003)(18002099003)(3023799003)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Dxll1sUnGWS12fx3oFivoOHl3k2lTab0wkMcqsJ7VdkUfRtwl9BgAdWrdp8/?=
- =?us-ascii?Q?UrkAhnCqcU0qJ2+NCiLnq0q5A2eA/t4uQU55vd4taASkRt9Z8EStZreyr4zr?=
- =?us-ascii?Q?7/zR/IegVDPYoDQ83ZoKucQdHpM48WLKpRCVqUq1HIaL5gnxI+LLr8mB52RL?=
- =?us-ascii?Q?jg496gZpmHsJIhEyroDY43CqBYbBAw2XClBl0LxGghuaZ8/p4ELMX6AOz25m?=
- =?us-ascii?Q?QgZ5Rq86GzeGrQbbH5wqmSfNminrVtEdkjhSTOKImFoE3PrlcN5LpVsUdOxa?=
- =?us-ascii?Q?HIdFmahHDQ8Kodq1M8rKabGBwSxrl98l48awWIJKVnwd57sftOs0dPw8fCXq?=
- =?us-ascii?Q?RL6gJyeu5rKuIpDpenv1BUhSxYFb3s9xHr5/ZlSzwsLy0tasOqKZKdSo8pjS?=
- =?us-ascii?Q?U/YEZuk+kBLZMJbcvWcLlwYb6gglz3FweSK2npt4uzwtIfgDP8y9nbWW/KVm?=
- =?us-ascii?Q?Pt/K8N0LQGKBzmGWKnSKVU3n05jc15Bu3Osn19osHsm8nn/KiPBFrlgPFPI7?=
- =?us-ascii?Q?BdmsqSi7lbo5T1oR2KSqIbjYhpnGPk1kJtZ+9cDvlFxXUz3aVyPpxBWnem27?=
- =?us-ascii?Q?Mv6MwhUsISxIdcZNjwgGzo8boFc8IImSetJFLbtbpwKve4SWIqad4lDOUgou?=
- =?us-ascii?Q?MMyBrgQIptUtQ4q8oqYLScjaq/3BM4VMKcRq3foLkev86QCG355rDqZlIqG9?=
- =?us-ascii?Q?OKvwGiDTAPzBYLp/K671f3+OQMEokf+CR9PBY5hmTzen50HXIxC043hZdIyZ?=
- =?us-ascii?Q?ba8r0BzLWgIj/d7XAKBQvtkqb8QPGOpyWGp9tD8qINLShvbteTEUWJjfTLIR?=
- =?us-ascii?Q?Deke/5wIptPABntS/9XOWybPkCdfPEavy2m8oVNgUkER0bbcbCPngvtcTa5e?=
- =?us-ascii?Q?+4edT18WQWnyqrktDf2vj8m2lRNwih1Jw/yuH9gnzLQMlomC40VSTeK0ciZp?=
- =?us-ascii?Q?ArrKaKrUw3qJHcgxpg65rzzyu4Y13W5VgS5pNgyUIisvHoG2n1H10GAJlrHS?=
- =?us-ascii?Q?Lj+YwYljjI615LX71vqIhUH2cyZZ1lOXT/F982kYkkGbUhX+9bakPrbeOwDE?=
- =?us-ascii?Q?f5/sQhjxWNnlGQdRysY811gl4WhRdg5BTRneUFwqmSgEOTz8X10wi4sDwjU6?=
- =?us-ascii?Q?UOF5X5egOZNieegJdKijO8Ge++0PSnbsBaNpu99DLqG567W0SVeAyozzaxvQ?=
- =?us-ascii?Q?xbP+i7VU1nV006ZvzMCHFOnUc2XeBcX+Q9LQr5GVcRQZ+HdT45/bvei9x8eI?=
- =?us-ascii?Q?r8ycnYOWc3uzZiI3gJzEa24ws9OmWKy1BN+8CLXjPP1SZ46a9QP9lJsVhsj+?=
- =?us-ascii?Q?ZJjujEIdPGTpJUIFf+ailbHKTv8FrS55355R3r/i0slQYI5O0sagHv8JDzFY?=
- =?us-ascii?Q?QfQZuwgjL5ue+WlNbF6171ZYvCDMt/ykxVCJeNwTA4spC4DhkOcoUBnEYJLN?=
- =?us-ascii?Q?nzfFmZ3AiifQMyJdvKE47yDoncxDl21e7CGIW9cZhCicQS/LsGpPkfkj7X3V?=
- =?us-ascii?Q?hOkIWZ9Z26J89oyrwtgT3eoYP+MjAkHS/t5jc/kkiMvaS1E/lu/16j+ySm7a?=
- =?us-ascii?Q?/BDbDWCLXlVVJqhrwCGrXJQol3/Ad7+xV8Ie7frWgefua8DJZMgFvHVR1sL1?=
- =?us-ascii?Q?4Q5ysRcchmN7vGmWzmZBxVjUk8MG/swiOUJsxEAatLiYoRSkTtgSsJUghd8A?=
- =?us-ascii?Q?h/Son1xJUDMJUdlb/W/Az6/CQfYKkIirc5ll4Rkz7TIcTMSOkWU0L7z95Yly?=
- =?us-ascii?Q?nClCZx/ZEA=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 90c93c85-a5c6-4591-6952-08deb0de64ef
-X-MS-Exchange-CrossTenant-AuthSource: DBBPR04MB7500.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2026 10:57:15.7515
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MTGHv2MxR751CI4z5gxlKXudwWoFTYDrbC2+UIcdNvmFK7qpbcX9meq6oXK/20baLKC+TqE5HBnhY8Up0Z0wMA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8427
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260513-fix_llc-v1-1-33c76f931ff6@debian.org>
+X-B4-Tracking: v=1; b=H4sIADFZBGoC/yXMQQqDMBAF0KsMf23AJI2VXKWI2Dhpp0haEhVBv
+ Htp3b7F21E4Cxd42pF5lSLvBE+6IoTnkB6sZIQnmNo0tdNWRdn6aQrKXOOlta5ptXWoCJ/MUbb
+ /dEPiGd2JZbm/OMy/A8fxBVwhGBJwAAAA
+X-Change-ID: 20260513-fix_llc-27f483568135
+To: "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Shuah Khan <shuah@kernel.org>, David Heidelberg <david+nfc@ixit.cz>, 
+ Samuel Ortiz <sameo@linux.intel.com>
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, oe-linux-nfc@lists.linux.dev, 
+ kernel-team@meta.com, Breno Leitao <leitao@debian.org>
+X-Mailer: b4 0.16-dev-d5d98
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2108; i=leitao@debian.org;
+ h=from:subject:message-id; bh=QIA/aaUl+Tf7JJyWRrgCs8eHCQk13Eufaox2+xCY8+8=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqBFk+AoW4oPCP5GFeTXU6bONFB9NA6e78wUQak
+ f0UWuFGWvKJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCagRZPgAKCRA1o5Of/Hh3
+ baIuD/9WV2i+Km1+S+9RNoOXRoOcjrz64ezSvMmj2PgL0WQuf6waZw4SN45WRtGigcorcNp7H+i
+ HB2nakWATkqD2AS5WOMLLzTZzZFA3Lh1VIx0iuAiEssLRLRStUW9YNbrKIkAwbTYb3Fs8zT++pW
+ adx+kddYkyH+m2kFXzIGVz6lfloNE8gqKfZ5JeqtdCFSNNKFs4BV7ho7XlBurPQ9SU/LYRu1mGS
+ MpgBc5c1l45gyVXToVfpKyAR+zasYeombAWk1rLDgppNJq0pkOJ28Z8tceMPv8Au5mFox3pcSSi
+ oeq+zBUaraEpZYIUU6ksy2CWFAnSI1LCKMwQ0RFc5vadtHKUzjOAnz0CNWTcgfo78O8stjtR9LY
+ saL5gVcEO8zpqpTephhAoZdvLnVwsAjuz7imUvZUTl+V9sREx0NJ2YvGEe6ZHViI04Q6HQnhF6h
+ +AMPqQGOuPCPIFOkdTLIflLqjzRn5xGgAtBKcqwJ6o06LevBh9QDcYHnFsoPPyDQygaf5xxb1CH
+ QC29DpPKp8mTy4cpAWaIxFMC3tgn0SCVNOxBneqZ0ApyG0zG86LxKbNOlT1kO7ZeYpnVeaxXViP
+ 9rEJWb76EhgjpWmq85KkTcM0JGftSqzrL2KQn+D3snErdOtxpcSsWyVEsqPww+FJFSfoOScrroC
+ EyUEuel0yP+FE2Q==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
 
-Sashiko reported that a buggy or malicious guest VM can flood the host
-kernel log by repeatedly sending VF-to-PF messages at a high rate,
-degrading host performance and hiding important system logs [1].
+nfc_llcp_getsockopt() returns each of its option values via:
 
-Fix by replacing dev_err()/dev_warn() with dev_err_ratelimited() and
-dev_warn_ratelimited(), limiting output to the default kernel ratelimit.
-This ensures errors are still logged for debugging while preventing log
-flooding attacks.
+	put_user(value, (u32 __user *) optval);
 
-Link: https://sashiko.dev/#/patchset/20260511080805.2052495-1-wei.fang%40nxp.com #1
-Fixes: beb74ac878c8 ("enetc: Add vf to pf messaging support")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
+The (u32 __user *) cast tells put_user() to store sizeof(u32) = 4
+bytes, regardless of what optlen the caller supplied. The earlier
+clamp
+
+	len = min_t(u32, len, sizeof(u32));
+
+only affects the optlen value that is later reported back to user
+space; it does not constrain the put_user() store itself.
+
+If a caller invokes getsockopt(NFC_LLCP_RW/MIUX/REMOTE_*) with
+optlen < 4 (for example optlen = 1 against a single-byte buffer),
+the kernel still writes 4 bytes into optval, scribbling up to 3
+bytes of the caller's adjacent memory.
+
+That violates the getsockopt(2) contract that the kernel must not write
+more than *optlen bytes into the user buffer.
+
+All five supported optnames (NFC_LLCP_RW, NFC_LLCP_MIUX,
+NFC_LLCP_REMOTE_MIU, NFC_LLCP_REMOTE_LTO, NFC_LLCP_REMOTE_RW)
+are affected because they share the same put_user() pattern.
+
+Reject any call with optlen < sizeof(u32) up front so the
+put_user() stores always have enough room. This formalises the
+implicit u32 ABI these options have always returned.o
+
+Maybe it is possible to change nfc_llcp_getsockopt() to accept optlen
+< 4, but this might be a riskier operation than just keep the current
+approach and guarantee that users are doing the right thing.
+
+Fixes: 26fd76cab2e6 ("NFC: llcp: Implement socket options")
+Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc_pf.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ net/nfc/llcp_sock.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf.c b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-index 052cab48df51..73a899b00308 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-@@ -505,8 +505,9 @@ static u16 enetc_msg_pf_set_vf_primary_mac_addr(struct enetc_pf *pf,
+diff --git a/net/nfc/llcp_sock.c b/net/nfc/llcp_sock.c
+index f1be1e84f6653..dc74e725ddd05 100644
+--- a/net/nfc/llcp_sock.c
++++ b/net/nfc/llcp_sock.c
+@@ -319,6 +319,9 @@ static int nfc_llcp_getsockopt(struct socket *sock, int level, int optname,
+ 	if (get_user(len, optlen))
+ 		return -EFAULT;
  
- 	mutex_lock(&vf_state->lock);
- 	if (vf_state->flags & ENETC_VF_FLAG_PF_SET_MAC)
--		dev_warn(dev, "Attempt to override PF set mac addr for VF%d\n",
--			 vf_id);
-+		dev_warn_ratelimited(dev,
-+				     "VF%d attempted to override PF set MAC\n",
-+				     vf_id);
- 	else
- 		enetc_pf_set_primary_mac_addr(&pf->si->hw, vf_id + 1, addr);
- 
-@@ -531,8 +532,9 @@ void enetc_msg_handle_rxmsg(struct enetc_pf *pf, int vf_id, u16 *status)
- 		*status = enetc_msg_pf_set_vf_primary_mac_addr(pf, vf_id);
- 		break;
- 	default:
--		dev_err(dev, "command not supported (cmd_type: 0x%x)\n",
--			cmd_type);
-+		dev_err_ratelimited(dev,
-+				    "command not supported (cmd_type: 0x%x)\n",
-+				    cmd_type);
- 	}
- }
- 
--- 
-2.34.1
++	if (len < sizeof(u32))
++		return -EINVAL;
++
+ 	local = llcp_sock->local;
+ 	if (!local)
+ 		return -ENODEV;
+
+---
+base-commit: 1d5dcaa3bd65f2e8c9baa14a393d3a2dc5db7524
+change-id: 20260513-fix_llc-27f483568135
+
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
 
