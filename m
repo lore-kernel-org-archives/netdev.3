@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7743F395AD5;
-	Wed, 13 May 2026 03:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1C6C399346;
+	Wed, 13 May 2026 03:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778643967; cv=none; b=C8nEI9TVj8ski6BxeH8wOzWiFeuPgI0AlhpbPa/YlMQFfaqHkiZ0cRtDl8to3/AZcTF3drCao77t7Jln6eB0H1zOALOoTY3LQALga937dflDpRfMHoSY8JRWwvwQMk9q1kb/BZwlP1fYucKsI2L7IdLCNom/jjwZ5nF4w2AaAqM=
+	t=1778643968; cv=none; b=eQmNh17E3DVHV1CEpWxVGJTjJ4Ae8+LPCLrMiNO+AMLj0PuFeov1heD6bn6hd+1/lkphOW9NkQsKJ5cskAyreUuzj4IjWgKahaEU87wq6Q5hA+CnecU0d0NJE2OFIL+7/dKZMwEVa/WdbnCuJGweZRXOC7dBoEQOBHncznUP8P0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778643967; c=relaxed/simple;
-	bh=iZVh9KPnMiR8exSsOFVprvss4chz1VIMZa7sqVbAAqk=;
+	s=arc-20240116; t=1778643968; c=relaxed/simple;
+	bh=cBzNfESIoIwL0XJB4bSmZHEGSqM7E9hWVahPbhi2bAI=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ioimu2GEXH6qv4ZFn+Cnm/Yq9T4h0odIAxTvc5J36Zpy+zDGhKaZ8eoXhotxFPLTjbPqI8Bqbh2A+hMST5qEswwzTPhPRQTepp18BPCwqEmmjYfwALrbSYswLW/ZSvvloc0TtIqgizxEeMgi3KaN1um6uVFBjcmbwaDws1SKacw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nl+JW6Ip; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=JwB3/DLldblOwQpsH/hDTPS9+Qr1cOnDN/zrOcu0MUX+qSBTh7mGrlZObg0BqIZoorMabIyaYAsTWYlRog48eYMa3y/onUyhN5hTLORuMlj8K7kcrP+Js1HlTEmc2M7JfhrtwAR2UjtZXatpeObk3gJSyqdTxx2IkzoOy8b46pQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L7DwdxVR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nl+JW6Ip"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0637BC2BCC7;
-	Wed, 13 May 2026 03:46:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L7DwdxVR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83FF5C2BCFA;
+	Wed, 13 May 2026 03:46:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778643967;
-	bh=iZVh9KPnMiR8exSsOFVprvss4chz1VIMZa7sqVbAAqk=;
+	s=k20201202; t=1778643968;
+	bh=cBzNfESIoIwL0XJB4bSmZHEGSqM7E9hWVahPbhi2bAI=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Nl+JW6IpOf3dhyTXX0adLFHookILIElqpUdnnioZoHFtuNjpwgjdb3nSNEanpdFY0
-	 ZfCC6zZlW4I7YdVNuwYR/M/+KYvPmAqCCItSOovSfkYmUoftdijd9ioET/c6w7qhXC
-	 svmEXoMV3CtqtJMLnjHh/fjvNuLRzb/R/RvRYerUIT3m1HJLfJVaq9t+n0sHl8gseP
-	 vnqSdRmaNj4W5cHotSR8bqfcViDaQCCMoG2eYJgcRtHeCrV+8O/61YqdtYXXYvMM+y
-	 NRYYvN52IKgR4s2A5iBY67C1C6FjnuTeaLIN7Vbz8PRYoGC0JEqpkMUN1Uz4SyD2Bb
-	 by9nQ8nqrYe0g==
+	b=L7DwdxVR4NN24rI3/0OoLDhaX1P5TQmYbin08SesHvX0JzxSbHdfot5BDuezRmch5
+	 q7DcA9y4VL/+qYtBvZqwDFCyrFzM+ha4WTC5nSP2pj7LnxOsXplUgrCSYg2rM5kp3X
+	 TOGnzCBM7jSxI7ciYPOqcNBfvRxc3FZOfeNTvnc3ySPTJOBqgZEHjzJgV9+S5HNlti
+	 XN2Dcqpj0GNQPUNRELjNGqejwLJuc8bGAA72abF/VBcAFFF2hpiIhk5ivQXUxl33v7
+	 dBuQQQQJlfKAIRYtDkDaWlHVGpS2sumGMEy8TuAxDhQ04JbZtEt+s0Y/UDOucFRHlA
+	 GM7R/RRC96GAg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02CFB3822D60;
-	Wed, 13 May 2026 03:45:14 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CEAB3822D60;
+	Wed, 13 May 2026 03:45:15 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,38 +37,42 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net: atlantic: preserve PCI wake-from-D3 on
- shutdown
- when WOL enabled
+Subject: Re: [PATCH net] net/smc: avoid NULL deref of conn->lnk in
+ smc_msg_event
+ tracepoint
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177864391254.3173643.14180914771474324988.git-patchwork-notify@kernel.org>
-Date: Wed, 13 May 2026 03:45:12 +0000
-References: <20260511064002.1857-1-goodboy@rexbytes.com>
-In-Reply-To: <20260511064002.1857-1-goodboy@rexbytes.com>
-To: Zoran Ilievski <goodboy@rexbytes.com>
-Cc: irusskikh@marvell.com, sukhdeeps@marvell.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+ <177864391404.3173643.11609029182707256473.git-patchwork-notify@kernel.org>
+Date: Wed, 13 May 2026 03:45:14 +0000
+References: <20260510222640.1230720-1-xmei5@asu.edu>
+In-Reply-To: <20260510222640.1230720-1-xmei5@asu.edu>
+To: Xiang Mei <xmei5@asu.edu>
+Cc: netdev@vger.kernel.org, alibuda@linux.alibaba.com,
+ dust.li@linux.alibaba.com, wenjia@linux.ibm.com, sidraya@linux.ibm.com,
+ tonylu@linux.alibaba.com, linux-rdma@vger.kernel.org,
+ linux-s390@vger.kernel.org, bestswngs@gmail.com
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 11 May 2026 08:40:02 +0200 you wrote:
-> The shutdown handler aq_pci_shutdown() unconditionally calls
-> pci_wake_from_d3(pdev, false), clearing the PCI PME_En bit even when
-> wake-on-LAN has been configured. While aq_nic_shutdown() correctly
-> programs the NIC firmware via aq_nic_set_power() to listen for magic
-> packets, the PCI subsystem will not propagate the resulting PME wake
-> event from D3, so the system never wakes after poweroff.
+On Sun, 10 May 2026 15:26:40 -0700 you wrote:
+> The smc_msg_event tracepoint class, shared by smc_tx_sendmsg and
+> smc_rx_recvmsg, unconditionally dereferences smc->conn.lnk:
+> 
+> 	__string(name, smc->conn.lnk->ibname)
+> 
+> conn->lnk is only set for SMC-R; for SMC-D it is NULL. Other code on
+> these paths already handles this (e.g. !conn->lnk in
+> SMC_STAT_RMB_TX_SIZE_SMALL()). With the tracepoint enabled, the first
+> sendmsg()/recvmsg() on an SMC-D socket crashes:
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2] net: atlantic: preserve PCI wake-from-D3 on shutdown when WOL enabled
-    https://git.kernel.org/netdev/net/c/2c308cf34284
+  - [net] net/smc: avoid NULL deref of conn->lnk in smc_msg_event tracepoint
+    https://git.kernel.org/netdev/net/c/7bf563badd37
 
 You are awesome, thank you!
 -- 
