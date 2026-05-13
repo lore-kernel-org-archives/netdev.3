@@ -1,76 +1,88 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB6CB306D2A;
-	Wed, 13 May 2026 18:17:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58BE33A872A
+	for <netdev@vger.kernel.org>; Wed, 13 May 2026 18:27:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778696251; cv=none; b=a7tULt5OF8rJMTvBT1Pvz8eXvjGhLPHPplxPTKQZ7DV914KPSIj/kqDoY0z8gBh56hKAfuY5e/fsZeBkV6U4rWGISx2gegOso4b8+i5Rs6RYVF4egTlRL9eNmiUKpTSHnYmgGNjT8+M02rpZi7/nc7l7O/8e2HPbKyJfEedIoL4=
+	t=1778696850; cv=none; b=ftwbaBMfvn5bVPs2kmCDdxvg5eisZDpDWC4WGMTXy09j8cJEr3nGs+znDmGhY6iPqbqXnLK7bCPnOm/mbq0V3iwe9zZ6NZPmmoICG8JLHv357WMYHrYHd+rncOtuf+IQhT6zq+EU4H5HcH8zmInqN3JTaPn/8fA+Ze+Xngm4wx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778696251; c=relaxed/simple;
-	bh=A+lS4kpQ3qREzW5nwkuVUTFMRxyxOn25hGYCWkfLjQs=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=p7MHSGAB2ANrurNVKI8hX8dcK8Qe4ctnFipB/mHoJMyZXYdBmTzdWdSWfqgU2c2APVHKCIHQHfQetJ/3fpN0QtzCzxFIzjGiWNLEMpe3vbiZBv/luT4NjY9YIG4CtEoIB4LA9oAdfgVGUqMRIx33sq5NfhOl+oK3Yk2xRpUW5Os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HJOcb6wo; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778696850; c=relaxed/simple;
+	bh=MJMGlFoHmOgcTF0m9x8IW19F5KeEe1oKZKbG+3Z0pYc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qVEoF3lbSdfqEtvGnZY6bRCYJMAcrpK0sxuSm+aOlTNK0Ncp7cQKJ27jklHrj1xyZkOXJwWBH3enBaGKATVzLpyWC4WzEpjvafjnkzUVKtVxM7Fh6TioIk6ASpvcUgJ/gaielcrLXmweYH3zwpvNK9MU0apMluQPhnd4RemnV4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=k9FOsbID; arc=none smtp.client-ip=91.218.175.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HJOcb6wo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28C9AC19425;
-	Wed, 13 May 2026 18:17:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778696251;
-	bh=A+lS4kpQ3qREzW5nwkuVUTFMRxyxOn25hGYCWkfLjQs=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=HJOcb6wo01uuMXmwGcVKGZ7G1SHAoJCnFnwQbLaJH7oigEN6jxWBOGfcvtyD9SjQg
-	 ui5aX6JaxaDPcj8AoQz496mgfEJhg4+0QQtARzur6vh619UG6bu/bromIFNpztIUlf
-	 8FRT7NINDOt/WGWWPSDeaCasM1axFWAnAd/PDEMs80xpXBSwUGwZtHRO9p0xpJIPEU
-	 FitvvV0LFHgq5rwz7bN03fJhuqzKtGmnQ48wx0jB3YiAloBZ/3SdKSDayshoEYG5rq
-	 I1mT8CsCb5XYljsSzORMujrYLcRByCTxJpYbjavNW0Qtht3iHBd222scbFlu5WMos5
-	 7QQVOacpRaxLw==
-From: Leon Romanovsky <leon@kernel.org>
-To: syzbot+d8f76778263ab65c2b21@syzkaller.appspotmail.com, 
- Edward Adam Davis <eadavis@qq.com>
-Cc: akpm@linux-foundation.org, arjan@linux.intel.com, davem@davemloft.net, 
- dsahern@kernel.org, edumazet@google.com, hdanton@sina.com, horms@kernel.org, 
- jgg@ziepe.ca, kuba@kernel.org, kuniyu@google.com, 
- linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, 
- netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com, 
- yanjun.zhu@linux.dev, zyjzyj2000@gmail.com, 
- Kuniyuki Iwashima <kuniyu@google.com>
-In-Reply-To: <tencent_611BEB4B141B1A2526BAA3BBB2335F9E9108@qq.com>
-References: <tencent_611BEB4B141B1A2526BAA3BBB2335F9E9108@qq.com>
-Subject: Re: [PATCH] RDMA/nldev: add mutual exclusion in nldev_dellink()
-Message-Id: <177869624862.2335447.16979087766093395765.b4-ty@kernel.org>
-Date: Wed, 13 May 2026 14:17:28 -0400
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="k9FOsbID"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1778696846;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=8oOYZXHA0JcJjaaCeyKcKCUwn5KT7rWJLc2/kdQ/QYU=;
+	b=k9FOsbID8tv+JTAGj/iBFG333ogH0EFRAnwxRK4ySndZnvuiRC8Y/5ms4E5meDp3JsgeR4
+	5FaRUc3rljN5c9rHZ/uhW6Hz1lx1eiYH4muUKmmqio7nhcGTRc6A+XLDiuEoc0T11606/S
+	ouPay58S4Hr+MqmQ5xvHUMzv2Ds0f3A=
+From: luka.gejak@linux.dev
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	fmaurer@redhat.com,
+	luka.gejak@linux.dev
+Subject: [PATCH net-next v6 0/2] net: hsr: strict supervision TLV validation
+Date: Wed, 13 May 2026 20:26:55 +0200
+Message-ID: <20260513182657.20346-1-luka.gejak@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-18f8f
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
+From: Luka Gejak <luka.gejak@linux.dev>
 
-On Thu, 07 May 2026 20:50:10 +0800, Edward Adam Davis wrote:
-> We must serialize calls to nldev_dellink() or risk a crash as syzbot
-> reported:
-> 
-> Call Trace:
->  udp_tunnel_sock_release+0x6d/0x80 net/ipv4/udp_tunnel_core.c:197
->  rxe_release_udp_tunnel drivers/infiniband/sw/rxe/rxe_net.c:294 [inline]
->  rxe_sock_put drivers/infiniband/sw/rxe/rxe_net.c:639 [inline]
->  rxe_net_del+0xfb/0x290 drivers/infiniband/sw/rxe/rxe_net.c:660
->  rxe_dellink+0x15/0x20 drivers/infiniband/sw/rxe/rxe.c:254
-> 
-> [...]
+Changes in v6:
+ - Dropped capitalization comment changes per request of Jakub Kicinski
 
-Applied, thanks!
+Changes in v5:
+ - Reverted TLV loop in Patch 1 to strict sequential parsing per IEC
+   62439-3.
+ - Retained pskb_may_pull() logic to ensure memory safety for TLV
+   headers.
+ - Dropped Reviewed-by from Patch 1 due to the logic evolving since
+   original review.
+ - Added Assisted-by tag for AI-aided translation and formatting to
+   both patches.
 
-[1/1] RDMA/nldev: add mutual exclusion in nldev_dellink()
-      https://git.kernel.org/rdma/rdma/c/0b28000b64f40d
+Changes in v4:
+ - Split from a 4-patch series into 'net' and 'net-next' as requested.
+ - Implemented a TLV walker in Patch 1 to correctly handle extension
+   TLVs and avoid regressions on paged frames/non-linearized skbs.
+ - Corrected pskb_may_pull() logic to include the TLV header size.
 
-Best regards,
+History of pre-separation series (v1-v3):
+Changes in v3:
+ - addressed Felix review feedback in the VLAN add unwind fix
+ - removed the superfluous empty line
+
+Changes in v2:
+ - picked up Reviewed-by tags on patches 1, 3 and 4
+ - changes in patch 2 per advice of Felix Maurer
+
+Luka Gejak (2):
+  net: hsr: require valid EOT supervision TLV
+  net: hsr: reject unresolved interlink ifindex
+
+ net/hsr/hsr_forward.c | 6 +++---
+ net/hsr/hsr_netlink.c | 7 ++++++-
+ 2 files changed, 9 insertions(+), 4 deletions(-)
+
 -- 
-Leon Romanovsky <leon@kernel.org>
+2.53.0
 
