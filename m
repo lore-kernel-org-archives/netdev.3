@@ -1,35 +1,60 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B2C3B7751;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040363BB687;
 	Thu, 14 May 2026 10:51:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778755875; cv=none; b=MuHbnl75ttKxf3Er2ypRafnVzrUomOXv6C4fBAsYls7sZS6xqNM+yvQVRtFNjTBZBS7MsCNa/v+1zZ9mhDj2qxkkbrt9+CF2sOZu5rPXqR13maxIO1yT4jsApybe6uKFEGCoXTDzbjRjujBt7e3ZOYuzlDL27O4UVn5oMjJ0Sio=
+	t=1778755877; cv=none; b=OX7+DwEZsmrGaXbLNdnKhp91kxsoM9oUAGqbGHMB3838UQqTUby2qd1uLeKwoH8DiIf4YamcBzFaJoBnRJ253ZuHUO+ntEQb4H3qfZ6vfkaWfgSHrClzQJxhgj3w1zeKS7UyAVhHVN+cIQ6Y34CVY9UTmr5GM0Ew5snyPJHtP2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778755875; c=relaxed/simple;
-	bh=+x1FRlnUcjwLyuK/yNOv8UDz22Nry8z9aIdJLqVZYo0=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=BOQtynBR18jCa2D9ESWfQDp+c9PGdBrh8PhXZUQh76RwF5EgEeMo3yh+7B0JaJPqH8oUpg3WcJQmkLbv9rGEEson8ZTZOE925BK0eaJz4OOelJH8Zhtf0kNDf/b6kbPczSJbmYB7EeEkDYJWvH+yAxUImUIW3423mkGLBpbVAy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kGJ4ecdu; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778755877; c=relaxed/simple;
+	bh=GLC1Dg4DAQYOUX5stTUxmUbQS2csfmdPXEjjgpMel0c=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qMbTCeq89KUoc6WH21Oeslf7Q+BGP3JExnZOXVv/JbEHZpDI970+u9VnywwfdcUZtB6t5m2zEtlf2Et6h6x9M697FUardKVJZGK5qmkPvyU3msNCkPCVoUOVrIl+rnYATxG9DbMFoujuWIGk+9ij03+h0TW7gt7J/PD6f2EXsE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=ckGOYb3E; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kGJ4ecdu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25C91C2BCB3;
-	Thu, 14 May 2026 10:51:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778755875;
-	bh=+x1FRlnUcjwLyuK/yNOv8UDz22Nry8z9aIdJLqVZYo0=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=kGJ4ecduY8vJjzxH6LkR7RPATN4q0A6GnZF+02NGBB5bL0Ualu1XTcVDkZ0wntwPZ
-	 rkN/JF+QsL56ZzcR6terJ8XARzTH/04af5LPSAuTI4sQKekDKLqQUsmnjZ7aH5K8Tx
-	 NGF0AIIP65XGB9ZFZYI0dZ16DilY0aI5/1RNR9DeEMzHn0vqEUPfEtlkKSqD1N2pRk
-	 jeTXbMpYIzoVc4U+JSfYSVc6bju6B6MgMp5d7OvlgjRZYJ0fIcNgnNocqsk/cFpcZ7
-	 RIf9TOZEjYPaH22bY6kj7GtoHatq2BOJgVTRtg0AtDPqzqdfBkVeP/bF6v9X/XXFJH
-	 xitRUwyVu9Xtw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FDB23931095;
-	Thu, 14 May 2026 10:50:21 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="ckGOYb3E"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1778755876; x=1810291876;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=GLC1Dg4DAQYOUX5stTUxmUbQS2csfmdPXEjjgpMel0c=;
+  b=ckGOYb3EzZ8VOZdSS5YYDoAKLQb9WBSFVUnGd4v4/Bdi7S3YlhNHUtTU
+   efa4rNtdDgyHxBJCq0tSZXsw+2tFeTkdWoFDXxPGWikPp7eNzGEY7WHrE
+   5VnY06dm7I6I7GE6NiaX5qnrrej9b6rSCCiF/8FmqfUxkYhLiKM6Dd2G1
+   t9ImyRbs4Eh6iRq+rPje3JWApG9mVGxVl9UBNPVwrJ8TD8oc3pAqLzX2I
+   3arGQ65XDetktXGLuuEIcx/neBNmDUIM85Lz7ETxZeSsSs1OwYAtJQzdL
+   ypvNRk7T1CxJXNpIYDOc3mc/EE/RGDfkl9awROh0Md26IXa1z5btGinfl
+   g==;
+X-CSE-ConnectionGUID: kYThZSFMTzyTA5rtXI+lEw==
+X-CSE-MsgGUID: h4zf1VzfQ0OdptI4p7gMkg==
+X-IronPort-AV: E=Sophos;i="6.23,234,1770620400"; 
+   d="scan'208";a="57503058"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 14 May 2026 03:51:15 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Thu, 14 May 2026 03:51:14 -0700
+Received: from che-ld-unglab06.microchip.com (10.10.85.11) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Thu, 14 May 2026 03:51:11 -0700
+From: Thangaraj Samynathan <thangaraj.s@microchip.com>
+To: <netdev@vger.kernel.org>
+CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <bryan.whitehead@microchip.com>,
+	<UNGLinuxDriver@microchip.com>, <linux@armlinux.org.uk>,
+	<linux-kernel@vger.kernel.org>
+Subject: [PATCH v4 5/5] net: lan743x: Add PCS/XPCS support for SFP on PCI11x1x
+Date: Thu, 14 May 2026 16:20:28 +0530
+Message-ID: <20260514105028.42942-6-thangaraj.s@microchip.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260514105028.42942-1-thangaraj.s@microchip.com>
+References: <20260514105028.42942-1-thangaraj.s@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,61 +62,222 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2 0/6] bridge: Add selective forwarding of
- gratuitous neighbor announcements
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177875582014.4067480.7391428922035544724.git-patchwork-notify@kernel.org>
-Date: Thu, 14 May 2026 10:50:20 +0000
-References: <20260511065936.4173106-1-danieller@nvidia.com>
-In-Reply-To: <20260511065936.4173106-1-danieller@nvidia.com>
-To: Danielle Ratson <danieller@nvidia.com>
-Cc: netdev@vger.kernel.org, donald.hunter@gmail.com, kuba@kernel.org,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- horms@kernel.org, razor@blackwall.org, idosch@nvidia.com,
- andrew+netdev@lunn.ch, shuah@kernel.org, ast@fiberby.net,
- liuhangbin@gmail.com, daniel@iogearbox.net, aroulin@nvidia.com,
- fmaurer@redhat.com, sdf.kernel@gmail.com, sd@queasysnail.net,
- kees@kernel.org, nickgarlis@gmail.com, amorenoz@redhat.com,
- alasdair@mcwilliam.dev, johannes.wiesboeck@aisec.fraunhofer.de,
- petrm@nvidia.com, linux-kernel@vger.kernel.org, bridge@lists.linux.dev,
- linux-kselftest@vger.kernel.org
+Content-Type: text/plain
 
-Hello:
+Add a PCS MII bus and XPCS instance to support SFP modules on PCI11x1x
+platforms.
 
-This series was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+Register a dedicated mdiobus for PCS access when SFP support is enabled
+and initialize it with C45 read/write callbacks wired to the internal
+SGMII access functions. Set phy_mask to ~0 to prevent the MDIO bus scan
+from probing internal SGMII registers as PHY addresses.
 
-On Mon, 11 May 2026 09:59:30 +0300 you wrote:
-> The existing neighbor suppression unconditionally suppresses gratuitous
-> ARPs and unsolicited Neighbor Advertisements, which prevents fast
-> mobility of hosts between VTEPs.
-> 
-> This series adds a new neigh_forward_grat option that provides
-> independent control of gratuitous ARP and unsolicited NA forwarding.
-> When neigh_suppress is enabled but neigh_forward_grat is enabled,
-> regular neighbor discovery is suppressed while gratuitous announcements
-> are forwarded.
-> 
-> [...]
+Integrate the XPCS instance with phylink by providing a mac_select_pcs
+callback. Support SGMII and 2.5GBASE-X interfaces in phylink, allowing
+proper link configuration for SFP modules.
 
-Here is the summary with links:
-  - [net-next,v2,1/6] bridge: uapi: Add neigh_forward_grat netlink attributes
-    https://git.kernel.org/netdev/net-next/c/0c32db0761fe
-  - [net-next,v2,2/6] bridge: Add internal flags for neigh_forward_grat
-    https://git.kernel.org/netdev/net-next/c/3a28ccb9dd47
-  - [net-next,v2,3/6] bridge: Add selective forwarding of gratuitous neighbor announcements
-    https://git.kernel.org/netdev/net-next/c/27c082c600b1
-  - [net-next,v2,4/6] bridge: Add port-level netlink handling for neigh_forward_grat
-    https://git.kernel.org/netdev/net-next/c/2c75c438b9d9
-  - [net-next,v2,5/6] bridge: Add per-VLAN netlink handling for neigh_forward_grat
-    https://git.kernel.org/netdev/net-next/c/e65cf8815932
-  - [net-next,v2,6/6] selftests: net: Add tests for neigh_forward_grat option
-    https://git.kernel.org/netdev/net-next/c/4620aa6527d3
+Cleanup the PCS mdiobus and XPCS instance during driver removal. Update
+adapter structure to hold PCS mdiobus and XPCS references.
 
-You are awesome, thank you!
+Signed-off-by: Thangaraj Samynathan <thangaraj.s@microchip.com>
+---
+ drivers/net/ethernet/microchip/lan743x_main.c | 92 ++++++++++++++++++-
+ drivers/net/ethernet/microchip/lan743x_main.h |  5 +
+ 2 files changed, 94 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
+index 649065c36434..72f135fba8e2 100644
+--- a/drivers/net/ethernet/microchip/lan743x_main.c
++++ b/drivers/net/ethernet/microchip/lan743x_main.c
+@@ -15,7 +15,6 @@
+ #include <linux/rtnetlink.h>
+ #include <linux/iopoll.h>
+ #include <linux/crc16.h>
+-#include <linux/phylink.h>
+ 
+ #include "lan743x_main.h"
+ #include "lan743x_ethtool.h"
+@@ -1192,6 +1191,28 @@ static int lan743x_get_lsd(int speed, int duplex, u8 mss)
+ 	return lsd;
+ }
+ 
++static int pci11x1x_pcs_read(struct mii_bus *bus, int addr, int devnum,
++			     int regnum)
++{
++	struct lan743x_adapter *adapter = bus->priv;
++
++	if (addr)
++		return -EOPNOTSUPP;
++
++	return lan743x_sgmii_read(adapter, devnum, regnum);
++}
++
++static int pci11x1x_pcs_write(struct mii_bus *bus, int addr, int devnum,
++			      int regnum, u16 val)
++{
++	struct lan743x_adapter *adapter = bus->priv;
++
++	if (addr)
++		return -EOPNOTSUPP;
++
++	return lan743x_sgmii_write(adapter, devnum, regnum, val);
++}
++
+ static int lan743x_sgmii_mpll_set(struct lan743x_adapter *adapter,
+ 				  u16 baud)
+ {
+@@ -3268,6 +3289,18 @@ static void lan743x_mac_eee_enable(struct lan743x_adapter *adapter, bool enable)
+ 	lan743x_csr_write(adapter, MAC_CR, mac_cr);
+ }
+ 
++static struct phylink_pcs *lan743x_phylink_mac_select(struct phylink_config *config,
++						      phy_interface_t interface)
++{
++	struct net_device *netdev = to_net_dev(config->dev);
++	struct lan743x_adapter *adapter = netdev_priv(netdev);
++
++	if (adapter->xpcs)
++		return adapter->xpcs;
++
++	return NULL;
++}
++
+ static void lan743x_phylink_mac_config(struct phylink_config *config,
+ 				       unsigned int link_an_mode,
+ 				       const struct phylink_link_state *state)
+@@ -3399,6 +3432,7 @@ static const struct phylink_mac_ops lan743x_phylink_mac_ops = {
+ 	.mac_link_up = lan743x_phylink_mac_link_up,
+ 	.mac_disable_tx_lpi = lan743x_mac_disable_tx_lpi,
+ 	.mac_enable_tx_lpi = lan743x_mac_enable_tx_lpi,
++	.mac_select_pcs = lan743x_phylink_mac_select,
+ };
+ 
+ static int lan743x_phylink_create(struct lan743x_adapter *adapter)
+@@ -3422,6 +3456,7 @@ static int lan743x_phylink_create(struct lan743x_adapter *adapter)
+ 
+ 	switch (adapter->phy_interface) {
+ 	case PHY_INTERFACE_MODE_SGMII:
++	case PHY_INTERFACE_MODE_2500BASEX:
+ 		__set_bit(PHY_INTERFACE_MODE_SGMII,
+ 			  adapter->phylink_config.supported_interfaces);
+ 		__set_bit(PHY_INTERFACE_MODE_1000BASEX,
+@@ -3489,12 +3524,13 @@ static int lan743x_phylink_connect(struct lan743x_adapter *adapter)
+ 	struct device_node *dn = adapter->pdev->dev.of_node;
+ 	struct net_device *dev = adapter->netdev;
+ 	struct phy_device *phydev;
+-	int ret;
++	int ret = 0;
+ 
+ 	if (dn)
+ 		ret = phylink_of_phy_connect(adapter->phylink, dn, 0);
+ 
+-	if (!dn || (ret && !lan743x_phy_handle_exists(dn))) {
++	if (!adapter->is_sfp_support_en &&
++	    (!dn || (ret && !lan743x_phy_handle_exists(dn)))) {
+ 		phydev = phy_find_first(adapter->mdiobus);
+ 		if (phydev) {
+ 			/* attach the mac to the phy */
+@@ -3767,6 +3803,11 @@ static void lan743x_hardware_cleanup(struct lan743x_adapter *adapter)
+ 
+ static void lan743x_mdiobus_cleanup(struct lan743x_adapter *adapter)
+ {
++#ifdef CONFIG_LAN743X_SFP
++	if (adapter->xpcs)
++		xpcs_destroy_pcs(adapter->xpcs);
++#endif
++
+ 	mdiobus_unregister(adapter->mdiobus);
+ }
+ 
+@@ -3881,6 +3922,44 @@ static int lan743x_hardware_init(struct lan743x_adapter *adapter,
+ 	return 0;
+ }
+ 
++#ifdef CONFIG_LAN743X_SFP
++static int lan743x_pcs_mdiobus_init(struct lan743x_adapter *adapter)
++{
++	struct phylink_pcs *pcs;
++	int ret;
++
++	adapter->pcs_mdiobus = devm_mdiobus_alloc(&adapter->pdev->dev);
++	if (!adapter->pcs_mdiobus)
++		return -ENOMEM;
++
++	adapter->pcs_mdiobus->priv = (void *)adapter;
++	adapter->pcs_mdiobus->read_c45 = pci11x1x_pcs_read;
++	adapter->pcs_mdiobus->write_c45 = pci11x1x_pcs_write;
++	adapter->pcs_mdiobus->name = "lan743x-pcs-mdiobus-c45";
++	adapter->pcs_mdiobus->phy_mask = ~0;
++	netif_dbg(adapter, drv, adapter->netdev, "lan743x-pcs-mdiobus-c45\n");
++	snprintf(adapter->pcs_mdiobus->id, MII_BUS_ID_SIZE, "pci-pcs-%s", pci_name(adapter->pdev));
++
++	if (!adapter->phy_interface)
++		lan743x_phy_interface_select(adapter);
++
++	ret = devm_mdiobus_register(&adapter->pdev->dev, adapter->pcs_mdiobus);
++	if (ret) {
++		netdev_err(adapter->netdev, "failed to register pcs mdiobus\n");
++		return ret;
++	}
++
++	pcs = xpcs_create_pcs_mdiodev(adapter->pcs_mdiobus, 0);
++	if (IS_ERR(pcs)) {
++		netdev_err(adapter->netdev, "failed to create xpcs\n");
++		return PTR_ERR(pcs);
++	}
++
++	adapter->xpcs = pcs;
++	return 0;
++}
++#endif /* CONFIG_LAN743X_SFP */
++
+ static int lan743x_mdiobus_init(struct lan743x_adapter *adapter)
+ {
+ 	int ret;
+@@ -4002,6 +4081,13 @@ static int lan743x_pcidev_probe(struct pci_dev *pdev,
+ 	if (ret)
+ 		goto cleanup_hardware;
+ 
++#ifdef CONFIG_LAN743X_SFP
++	if (adapter->is_sfp_support_en) {
++		ret = lan743x_pcs_mdiobus_init(adapter);
++		if (ret)
++			goto cleanup_mdiobus;
++	}
++#endif
+ 	adapter->netdev->netdev_ops = &lan743x_netdev_ops;
+ 	adapter->netdev->ethtool_ops = &lan743x_ethtool_ops;
+ 	adapter->netdev->features = NETIF_F_SG | NETIF_F_TSO |
+diff --git a/drivers/net/ethernet/microchip/lan743x_main.h b/drivers/net/ethernet/microchip/lan743x_main.h
+index a25864bd8328..a16fc69c4466 100644
+--- a/drivers/net/ethernet/microchip/lan743x_main.h
++++ b/drivers/net/ethernet/microchip/lan743x_main.h
+@@ -8,6 +8,9 @@
+ #include <dt-bindings/gpio/gpio.h>
+ #include <linux/i2c.h>
+ #include <linux/phy.h>
++#ifdef CONFIG_LAN743X_SFP
++#include <linux/pcs/pcs-xpcs.h>
++#endif
+ #include <linux/phylink.h>
+ #include <linux/platform_device.h>
+ #include <linux/property.h>
+@@ -1108,6 +1111,7 @@ struct lan743x_sw_nodes {
+ struct lan743x_adapter {
+ 	struct net_device       *netdev;
+ 	struct mii_bus		*mdiobus;
++	struct mii_bus		*pcs_mdiobus;
+ 	int                     msg_enable;
+ #ifdef CONFIG_PM
+ 	u32			wolopts;
+@@ -1145,6 +1149,7 @@ struct lan743x_adapter {
+ 	u32			flags;
+ 	u32			hw_cfg;
+ 	phy_interface_t		phy_interface;
++	struct phylink_pcs      *xpcs;
+ 	struct phylink		*phylink;
+ 	struct phylink_config	phylink_config;
+ 	int			rx_tstamp_filter;
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.34.1
 
