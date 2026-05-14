@@ -1,70 +1,126 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F8A63C09FE;
-	Thu, 14 May 2026 13:03:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3BC922083
+	for <netdev@vger.kernel.org>; Thu, 14 May 2026 13:08:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778763794; cv=none; b=KrY2rf4kgVxrYLCvin/Egsr+RbNAWzcgjSCraP+qDj4DM3k/c92OIrIoTE/DwLyS1LF5cPjb4Shyr5Nh8r+xWdoqd3hHjm04ErZP5IRGmZl/3ScNzSJfcGCpxI5UtFT6zJz/rita1O9b8ZQPfggPzk9AAS2YEnpvOVrrvPGSUrM=
+	t=1778764135; cv=none; b=Y+GHrKR1T7Z3Hej1kLKI3UVLSeaotPp5pwAUGyrnbzbKMZyD7kTnV0v8Ac4iRe0/Ki5PxOO2pBrFwUtgC/AK3cOZ3nyyKT5OKvAujmYXoLVvcUKKkk5hu1M4KbT+Ph7c3xbRxN9HYuJF2+tKmN60f8trfmScjMe9TisLYzSxUWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778763794; c=relaxed/simple;
-	bh=o3ZohSxRXTbmgrWS4XZhwFPK1MazBVyCKXH0CitwV+c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bKj44KjITYbcGX7mAWPtzwxsg2Q54oyR9HvnecNC/j1QEpKTnIhRG5k8c/MKNX5yjBfafDe2MYMmlxbb+uetQNGYe99cH5asum1mjutlDT3Qd7OsFlEnmwHP+Ec/PU64JQqX1AZR3raNpfhzCzX8wSP0zndyhtr4OtKgi3dyfPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=YVWbBMN9; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1778764135; c=relaxed/simple;
+	bh=z+cAkSuJLhE40c0uEq+6x0YaX2J65ezf/wP88bR/sCs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ta/XSYB2ZT108BBzXwHU7X3tIPWJHQZBOcd+13mqPuDk2+VS+9EyMJXqs4MZpqWDUu4WSHhBIF1e5hAy4ejKKKvDjS8TXWVm/jcgEjvQ646b6azBrmPGq3ABknkP30mDYIwiWAK0T5s09SPaEF9LUsMAUD1BGCnZFsGTzl0X5nY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BvO4U9Qq; arc=none smtp.client-ip=74.125.82.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="YVWbBMN9"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=ZBoeZ/sB2vsw+24jLWZrz4nb+HsgIbUmCNrMODsxQAM=; b=YVWbBMN9ugLjZJA+gpXCtESJDQ
-	GJGQ9I+dzTPLdD0RRQjREIs5Ef3Inmkv1iqgLvhtpPYSewNUjgP0tvoA72Z7iT+bJ4I2/e6xhsueD
-	E41M3K9pfUtw6AjTttwxoesoouN3zEorRvZEbeqao/og137nIors76ZLHtSqV12Gbg8I=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wNViN-002uJ8-4i; Thu, 14 May 2026 15:02:59 +0200
-Date: Thu, 14 May 2026 15:02:59 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Thangaraj Samynathan <thangaraj.s@microchip.com>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	bryan.whitehead@microchip.com, UNGLinuxDriver@microchip.com,
-	linux@armlinux.org.uk, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 3/5] net: lan743x: Add support to software-nodes for
- SFP
-Message-ID: <9775fb06-db4b-48a7-a7ee-fa70ecdd0096@lunn.ch>
-References: <20260514105028.42942-1-thangaraj.s@microchip.com>
- <20260514105028.42942-4-thangaraj.s@microchip.com>
- <40f567f0-e6eb-434f-9d54-7f226f0f70fb@lunn.ch>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BvO4U9Qq"
+Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-1330d6bb78dso4686683c88.1
+        for <netdev@vger.kernel.org>; Thu, 14 May 2026 06:08:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778764133; x=1779368933; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=H0FKlHSR2yB25EroVOVzDhJO/vm7mF/0/3x30QlYGog=;
+        b=BvO4U9QqBWC8eCi63jOJbvcIShXzv1c1z5bQsQxIHxKakbPLVbG/XOmS4dVOHO5JXV
+         kVQ8oDaqioqe2g9GyWyrt9Z/145honCeyOCRhc+4ZkzE3xXiZJd1PMt3a5+J/NTjoufE
+         tVkK//2UmjwyRRlDBlzv13ZBn+23VbQV3mznFGxHRCE7Xm55QpuwiKKUS+4mjL1N+I9U
+         8xV1ck2B42YiMTsSjJB7DLke4ZIoKJpsS2dLy0KWssjujZeBP160RiTsA0mfJ4rWBjLX
+         JEMZ+LDPNRnSdG2bsTUNqY31sDT2e8OYR8Z9fm1q6iCEn/k3YavlCHAbdORPWkjyBrxH
+         Eu0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778764133; x=1779368933;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=H0FKlHSR2yB25EroVOVzDhJO/vm7mF/0/3x30QlYGog=;
+        b=kwfus/hPxcokiRx2/26FgNCsyAaZlblC1x3s9VHI1t6223UG0u8u7O5Tb6gRKhMPDP
+         QBJzsMtyzaxIpbP9Gy80gcfn+zy/vttgGaRfkgx8fqqNB/9rIKw59OfHaiZ5EUBJURrR
+         jzoVqtsU1OEZPe/xzURqevEYzPiRstSot0JnaFkye3bJrs+vwTI8TOL9YZQk7EQVFC8J
+         zNb7vcWSSM6e7Q7hRgOwGJgLFfg6Okq3wcldpeuSdgnLvswPRQK4xkahBsvy3PuKWTTH
+         I9baokVju9WmAc5pUtKFYkNlAAHmlizUw3Bz+PDHEyk15hC0Drm8vRucPnD/LBM7h9OB
+         hGYg==
+X-Forwarded-Encrypted: i=1; AFNElJ/gL8teul+NYjubAC3Cg09QavXUi41LFRHAipGZBJOBlSiAWqu4DHcD7mnD39K3iK276NxaeMk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxmrgolgpoZNHcLKp3wObgrtw3EZKU1Tv0YjCEGZ1A332EXlYBV
+	1/jTzwu3G1VZiIYJSFuOvABrQx7nATt/Y7oqG/1eZbY41RcwNKn4v2/IhzlsNuxoG7I=
+X-Gm-Gg: Acq92OH6Bkeg/HL17EOQsuoL27Xctqgp2pWZEbmDgwElRiAKLNu1KPiht0Cf1J+vUwR
+	vp6ZHjnZZSaw+7o1OvPplWErHaMB7tZ28mdK2/MRpepeiRP7SKpisiKRAqoT7tSjtZhDrG2XPQd
+	b/Z7aLAKT+wvpCJU4CS2zkmFb3FXZJDQdfe7jdWZGZJq7FW2V6tqTRUYCRpxNT8h4CFhC/8heZd
+	F8fXJleOCvK5OG0lz3u8CPYvh7MPMZa3SRxXnwof1pWzAWvcZpJklBixRic6Oqej0BSvpaVTIYe
+	raDwWhcxra1fTAKOXx7llKNkFSlhg3F8y9BPbNNuX5jNlpc0JLz9VzByeAa7Ybz2FEOTt3DFyfi
+	EUOc72xD9I/aAWeR/Yxm+jfHkMFBUWh2mxJZvbU2XyxgUflBOl/HATuboQ+kN9CcTIsLuGUEUcQ
+	a7fQ3qVk7Qqd71Z8S1ElDqmRt4KC/+6XHFZxZaXbc01peW4payuKSep8SENUEf9ddJ2VHuHbvDG
+	ZPo7YEJfA==
+X-Received: by 2002:a05:7022:f008:b0:12a:71ab:8235 with SMTP id a92af1059eb24-1342ee39d21mr4686283c88.6.1778764132725;
+        Thu, 14 May 2026 06:08:52 -0700 (PDT)
+Received: from efaec68ba852.tailc0aff1.ts.net ([206.206.192.132])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-134cc2351d9sm4389502c88.9.2026.05.14.06.08.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 May 2026 06:08:51 -0700 (PDT)
+From: Weiming Shi <bestswngs@gmail.com>
+To: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	netdev@vger.kernel.org,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>
+Subject: [PATCH net] net: appletalk: fix NULL pointer dereference in aarp_send_ddp()
+Date: Thu, 14 May 2026 05:38:08 -0700
+Message-ID: <20260514123806.3085961-3-bestswngs@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <40f567f0-e6eb-434f-9d54-7f226f0f70fb@lunn.ch>
+Content-Transfer-Encoding: 8bit
 
-On Thu, May 14, 2026 at 02:57:31PM +0200, Andrew Lunn wrote:
-> > +#define PCI11X1X_TX_FAULT_GPIO		46
-> > +#define PCI11X1X_TX_DIS_GPIO		47
-> > +#define PCI11X1X_RATE_SEL0_GPIO		48
-> > +#define PCI11X1X_LOS_GPIO		49
-> > +#define PCI11X1X_MOD_DEF0_GPIO		51
-> 
-> How do you know these values?
+aarp_send_ddp() calls atalk_find_dev_addr(dev) in the LocalTalk fast
+path without checking for NULL. When the device has no AppleTalk
+interface configured (dev->atalk_ptr == NULL), this leads to a NULL
+pointer dereference at the at->s_net access.
 
-https://ww1.microchip.com/downloads/aemDocuments/documents/UNG/ApplicationNotes/ApplicationNotes/AN2948-LAN743x-Functional-Description-and-Configuration-Registers-DS00002948.pdf
+ KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+ RIP: 0010:aarp_send_ddp (net/appletalk/aarp.c:552 (discriminator 2))
+ Call Trace:
+  <TASK>
+  atalk_sendmsg (net/appletalk/ddp.c:1715)
+  __sys_sendto (net/socket.c:2265 (discriminator 1))
+  __x64_sys_sendto (net/socket.c:2272)
+  do_syscall_64 (arch/x86/entry/syscall_64.c:94)
+  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
 
-  The GPIO controller is comprised of 4 (for the LAN7430) or 12 (for
-  the LAN7431) programmable input/output pins.
+Add a NULL check consistent with the other callers of
+atalk_find_dev_addr().
 
-So i could use the LAN7430 and don't connect TX_FAULT. phylink will be
-happy with the subset.
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Assisted-by: Claude:claude-opus-4-7
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+---
+ net/appletalk/aarp.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-	Andrew
+diff --git a/net/appletalk/aarp.c b/net/appletalk/aarp.c
+index e7315c01a299..30493ea3c010 100644
+--- a/net/appletalk/aarp.c
++++ b/net/appletalk/aarp.c
+@@ -542,6 +542,11 @@ int aarp_send_ddp(struct net_device *dev, struct sk_buff *skb,
+ 		struct ddpehdr *ddp = (struct ddpehdr *)skb->data;
+ 		int ft = 2;
+ 
++		if (!at) {
++			kfree_skb(skb);
++			return NET_XMIT_DROP;
++		}
++
+ 		/*
+ 		 * Compressible ?
+ 		 *
+-- 
+2.43.0
+
