@@ -1,44 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5989538C2B0;
-	Thu, 14 May 2026 23:42:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1EED3016F5;
+	Thu, 14 May 2026 23:57:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778802141; cv=none; b=YXQeCZhGeelAj2F6LHJsoqJW6SGBbPYIZfuFp9dSs8BWHMDBUHHgBwKV2qyBAANKnpYHPtSd83w6TSpsXm2MMLPVz3ffBOkgSPTFpZUoNhh4H/ZHHgJlQB40aY3zpyBZ8jXHl900ZXFMWrQuof8pTraiT+tTfnGmn7voRqcyWwE=
+	t=1778803036; cv=none; b=iT7+Dtcfm4jrNjzflpP1lZw3cLVyzon8vxOhj8t4oKwYjyOvyqt1uyUmQuPakCtHfJXlNIYh2T4gIH6L5fL2TaCivhDJbun+Im9Fy5AgMdDjeuQCOSQV0beOYWhbrw5hLLbOTmKq8vlMfm+BotEkX3ck5N9yPncfaRbvzmZ0NLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778802141; c=relaxed/simple;
-	bh=J5z8BrvW7MUwwukRDBhUX4+6YCNoc6zcOCSYKYGEIYw=;
+	s=arc-20240116; t=1778803036; c=relaxed/simple;
+	bh=RWTWIwqVzWQfpAUGzl/eLS/TxSSKAmFWkhFN91IfKCA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nwqW+84sE48MaIOHDBAaXTRpt/O26WyO8TskzxqNVkVo9XRO30jqsL21f5LhLuXlliyVuVNMx7PTk2nEr1YKk0SUV6VBMBZmFW5C/Np/UeXVnYdD5v2uWrdQa+XCX7taNzl9PrCsHDCtoLhqxTlGym3rD8uEd7Z7HHbs+G/1kc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HAA1Q/E5; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=fwcxcSHxqSAKo6/8e94oexzrzLeKB8vU7HYqVQWQX5RTdlyIHYvb0E/GuAAaciqPt8h6EUuwkXckKU2fuKhhJihsNTTYS6virC2PlKtMHF9vuhrRph0TQPniFeAedgiVViv5KaxtwaMpHrirawz68Fo1hBFR89KbTh2i0DhGl6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D9E9NBPg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HAA1Q/E5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D8F8C2BCB3;
-	Thu, 14 May 2026 23:42:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D9E9NBPg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04302C2BCB3;
+	Thu, 14 May 2026 23:57:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778802140;
-	bh=J5z8BrvW7MUwwukRDBhUX4+6YCNoc6zcOCSYKYGEIYw=;
+	s=k20201202; t=1778803036;
+	bh=RWTWIwqVzWQfpAUGzl/eLS/TxSSKAmFWkhFN91IfKCA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=HAA1Q/E52X2rgxX6DTmYBcaD8jsZoAh+jfTuzk7uM7uwV/w0yUTaf/nJkjQ0xfFlh
-	 J9LZ7WCwOXlxfSSmFvA4xyA1v/DxfU05C4S6JxzrLzNT2B9G9AUhH0eBjoAqwsFGP9
-	 0oOO68sronKX5tcsH91jo6NCiz44EPmamAJ3rLWGbchoXoTBW5I1npNHYPHagQsWfA
-	 PnCLLmHyqd03Vo80pJIU1IRkRVcrOZFYNLFx1fVqcPkjUd86JYWQr0p0t+KyGDJM/E
-	 ysZLzCSbV8aoR5aJpmSbJ2OR45lm1/17p3ClpkEi/h0OZnBQpl1eMK7YI+P9yL/Aor
-	 hcog5tkjnJxfA==
-Date: Thu, 14 May 2026 16:42:19 -0700
+	b=D9E9NBPg6StkIHoseBj6U2d7fSDfkF/XItVuTpwDb31G+TOpEXS17RKjSxhjDSuH1
+	 RS/EOBgoNDgpX6thdkcCK8MrAH1d247Wfs5aAUeNKIxjgLTx8vrQ2YsncJdR0ELKW1
+	 DiWXtXWTCuu/0H87bQYGC6DJ49JpdMYngSbnczublC+L67wglPnKkwQ1KTEuq1lqnl
+	 dAV6kcNe97e95MnRd0aduso2hNW15HQUqe/o2ENF1M8DFks89O+u61tQbWVY97t/RE
+	 EwTqIMjPZNkhAq/TdX5IIRWYMbdzFotYCHZf9fKVbUcZLbD9ieOeJQE57vpBarUUhd
+	 ic0vPdl9RcyEg==
+Date: Thu, 14 May 2026 16:57:15 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>
-Cc: Dragos Tatulea <dtatulea@nvidia.com>, Aleksandr Loktionov
- <aleksandr.loktionov@intel.com>, Stanislav Fomichev <sdf.kernel@gmail.com>,
- Paolo Abeni <pabeni@redhat.com>, Tariq Toukan <tariqt@nvidia.com>,
- Stanislav Fomichev <sdf@fomichev.me>, <netdev@vger.kernel.org>, Cosmin
- Ratiu <cratiu@nvidia.com>, <linux-rdma@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net] IB/IPoIB: ndo_set_rx_mode_async conversion
-Message-ID: <20260514164219.0cb832ff@kernel.org>
-In-Reply-To: <20260513124519.3357165-1-dtatulea@nvidia.com>
-References: <20260513124519.3357165-1-dtatulea@nvidia.com>
+To: David Yang <mmyangfl@gmail.com>
+Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
+ Horman <horms@kernel.org>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] net: netlink: warn on overwriting extack
+ message
+Message-ID: <20260514165715.3734df47@kernel.org>
+In-Reply-To: <20260513143219.3327287-1-mmyangfl@gmail.com>
+References: <20260513143219.3327287-1-mmyangfl@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,7 +46,13 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 13 May 2026 15:45:18 +0300 Dragos Tatulea wrote:
->  drivers/infiniband/ulp/ipoib/ipoib_main.c | 8 +++++---
+On Wed, 13 May 2026 22:32:16 +0800 David Yang wrote:
+> When NL_SET_ERR_MSG is called more than once on the same extack, the
+> existing message is silently overwritten. This is hard to detect via
+> static analysis. Emit a rate-limited warning so these cases become
+> visible.
 
-Since it was tagged for "net" - can we get a stamp from RDMA?
+I don't think this is worth the bloat.
+There's only so much we can do for poorly written code.
+-- 
+pw-bot: reject
