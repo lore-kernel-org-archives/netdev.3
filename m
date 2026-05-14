@@ -1,109 +1,203 @@
-Received: from smtpbguseast1.qq.com (smtpbguseast1.qq.com [54.204.34.129])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f50.google.com (mail-ua1-f50.google.com [209.85.222.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE23937B01E
-	for <netdev@vger.kernel.org>; Thu, 14 May 2026 10:34:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.129
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778754893; cv=none; b=KgQ1yWCY0E9fnM7QK+E10ACJ83b3ZwaD/1UuZMcfu0yAcGt3DqTMLo29IlGmhYyYAN8c9R05D9wLlHidNnzjTz/CXkeMbpEcvYJB8ufhTMlWxukzMz8umBvWMXlmDM77zwErFRvnNxRtvyLuaJ2rdrtBHBmP48ZfInRIZQ8u2AA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778754893; c=relaxed/simple;
-	bh=85ssI1PesHN22ZiiKUtsdNWmdhiimfHnogZOanUqdAM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=f6mOKJR2DW4WfUO+8p0Yk5DC/vhBZB9mk70+6xahTP/4pbf17QrnMfwVr6kLcwezX7hYax9NCC0wQTW2GggPDYagP55Xb09EMW/mXdpnYTm5up/2ki3zNH1hkWimDopkKq8544ntBqhhmYsgl+6wWWTrrWKOazBZANn502fZXOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=54.204.34.129
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
-X-QQ-mid: esmtpgz12t1778754854t6cec0ced
-X-QQ-Originating-IP: oPbcLFYO+9c6tYzyV+JCrk1eYHt0qtrrk9O6Tahvmng=
-Received: from localhost.localdomain ( [115.227.149.194])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 14 May 2026 18:34:14 +0800 (CST)
-X-QQ-SSF: 0001000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 4682165053878428630
-EX-QQ-RecipientCnt: 4
-From: Mengyuan Lou <mengyuanlou@net-swift.com>
-To: netdev@vger.kernel.org
-Cc: jiawenwu@trustnetic.com,
-	duanqiangwen@net-swift.com,
-	Mengyuan Lou <mengyuanlou@net-swift.com>
-Subject: [PATCH net-next 2/3] net: libwx: add support for set_coalesce in wx_ethtool_ops_vf
-Date: Thu, 14 May 2026 18:34:04 +0800
-Message-Id: <20260514103405.42175-3-mengyuanlou@net-swift.com>
-X-Mailer: git-send-email 2.30.1
-In-Reply-To: <20260514103405.42175-1-mengyuanlou@net-swift.com>
-References: <20260514103405.42175-1-mengyuanlou@net-swift.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE04A37FF51
+	for <netdev@vger.kernel.org>; Thu, 14 May 2026 10:35:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778754926; cv=pass; b=nn5QrH+cK4HT2r1hd2O3XzhkbgC/N06lNralTvEowEpi33pYAkASyvlmR2tRPwkerhJYTVQjHXXKUtSSOxt60d21bOWTzBvaVe5Kh2mpd2hLeIdrac5KZYd70M3nLrfD7se+6v8o21VwC5o22ESPUSdVV5CA7yc5vaGD3gduxdA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778754926; c=relaxed/simple;
+	bh=5VZ60u3JAayyEgt5AnKKcO/F2qG6gqEE7NmxrRz8fn8=;
+	h=From:References:MIME-Version:In-Reply-To:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lXqS66LTzviZetZBwFSpmiIBqlZhnLDC+T1NW4CW5O6xbKewgye0dpzgDSoYqnv7+0RjcMp05ACiEnkX0ZoM6BslvQ+8W4m2lMHJG9qVpDHc7+JLnDd3Kw3WxAwNu7RdQa9gEOzP7mqJxD+M+WgQqRLMmVGrnyw006PQvNANcPQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=malat.biz; spf=none smtp.mailfrom=malat.biz; dkim=pass (2048-bit key) header.d=malat-biz.20251104.gappssmtp.com header.i=@malat-biz.20251104.gappssmtp.com header.b=OwlcHGNq; arc=pass smtp.client-ip=209.85.222.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=malat.biz
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=malat.biz
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=malat-biz.20251104.gappssmtp.com header.i=@malat-biz.20251104.gappssmtp.com header.b="OwlcHGNq"
+Received: by mail-ua1-f50.google.com with SMTP id a1e0cc1a2514c-95fa7cd1392so758862241.2
+        for <netdev@vger.kernel.org>; Thu, 14 May 2026 03:35:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778754921; cv=none;
+        d=google.com; s=arc-20240605;
+        b=kLodSRTh4gyXONmYwNd6oaRcyMLNcrXOQpuaAWZx+harPP3daUQMsJhJLqf4wmPmOo
+         x5Dv7YANb4kDK6yEEMz52Uh7sr+786pA/tihJbwMJkRQEpKa/GusPYdGtF7dS4nBkxRB
+         hr/+BUhjSOHYV/kW6ciVh0WI8H2rHMsWHF98uPRq/Q6wTWw6OQaCDjgNbAY2mDHp4v8V
+         NY9c2WqxoNxeqyHNtTp5aCht5sOTNDu5Kx8dxykx/Eqgl9kKW5Zpg017R6L73xvIIuB9
+         yukjy14JxLgS4LZFuPpbtimOvQ0oo/shM9Up0VOFkH626zrkh4DgdipkEbNEknh2cuxQ
+         Cb0A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
+         :from:dkim-signature;
+        bh=dPyh+U6NMeLlVndfBiu/Vj4PiJmRit4vloN/eJ/ylSU=;
+        fh=cQtiWioVST8fxGGRryGaTDUxrKzjIlSvmHcC9yidyog=;
+        b=d90lakfKfUrB39weW9LlR8v0b0d61W4JA1+qSFbgahwGdZS/qqzqOmmpr6kghGqU0Q
+         aBHBLxpL0AI5b/b10XVteqt2KtqD8OXjOAVPZnKQIZokEH0CvWHnf4K6qjNsaTwzieI2
+         RSy30BjNtTwdR2tOXMpQ/NP93N0YAWrBQYejGhQW3/rUCLQh1FsTfbSlHn3EhGN2RLbf
+         /GMEdkMDzj4kw9UX7Wz7ULAIGLC8Pl02h+HkYMCc0M6oON4Zsa9AljwUIzn6Xn7jwdQY
+         /Jv2Owl7qFRvLydXuyfp79mWR1Dxey2R2CJVr/BUp8qvb05YFpmNzACRsDbqxAwAXtWO
+         DkJQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=malat-biz.20251104.gappssmtp.com; s=20251104; t=1778754921; x=1779359721; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=dPyh+U6NMeLlVndfBiu/Vj4PiJmRit4vloN/eJ/ylSU=;
+        b=OwlcHGNqERZygiN/fvlakQ2CqhlR82QS7lNEgUDt2iRt3qNU8iGcP0smQoausScXGl
+         DDWO6oWgEVLTF5ZJ1ZYYaaEdPtZVa2uyJ29JftM0t/b6VsJaw3wEZodcrdJ+o08GDtzI
+         JZVDWcGqjZ+1eE16ies714An1fFoRtVNs/pASTOk6WfSqAqHM4OOUoY5z0zfufI+vd6O
+         KjLnKqZdJ66HdhePK5pqqhu21cjJzB7UollX/7RxaKCgrxKUNG6qUz1FlN/TAcXrdJhZ
+         mTvo10wbhQwPVzENF7F+LVhWAAcr6RWbIEMJSSc3/+jQEH0Dypn5sJaVfuMUWzlef4r6
+         TP/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778754921; x=1779359721;
+        h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dPyh+U6NMeLlVndfBiu/Vj4PiJmRit4vloN/eJ/ylSU=;
+        b=gNIactnlR+Lcjqh9RboS6aSrnOjav0gX5PJB0ae06KAnVQn1Zk40qQhhGrgrvapAqe
+         csEFHVMbWRGTekRwIy1dYjqKH3g2B110ux7g3ksk4hhWC7F/iMaCluROqc2fkv6rHB9E
+         HsxGGGZefPhQH+ai9blIIsQ6lBzN7ycr7OFeE6z4ABfrPwxuoj93SAF1hTWztVwsIDzK
+         WjCcMISdVb5D5pI3yn1UXRoj3z/cVIS9xSwuY/OToeDSENvYY3GykQWRrEFCzeARy6K9
+         WwNuR8AyrXqYJ/uWylrVor1wSaVqnLMGquf9FZm+iY22xvvCZVo7+7+t2trtUgvwNDQ3
+         EuDA==
+X-Forwarded-Encrypted: i=1; AFNElJ/9yX9w8FbBA0WfDMM1yaoXW09Wa+dzTREbAIxT3uQELZB0an8zy2Bln4MWXbSjZYsQ7RhCRV4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxMfrN9/tpDxkYXTb/KqcDKu/aqUWLymv8Pm22S82KnI0eBX2p
+	a7MnDQ3x0rgtobtIVvSc32F5SPdrKrxh9X4EJOiMm9ngY4kXGyYG64cVy1a5XFjWM9sywFO98QP
+	NNm0mVrxU0iesX2y+0gtKHW67yLwXA6palKxuIQOerPmNwW+q34I=
+X-Gm-Gg: Acq92OEfqoX8t5lif9+g/7vASn7qqb7LjrgJHwO4CXYUcS+m0VkV2DYrJv6VF3EEXvp
+	88zf93GZOQuzbHdh4EjxFuDjjtJKBQB1PxORLLxaY9v5cikoolJe32k/SEw2A1rpyRs7bc4DW72
+	U5wNYAO00FAuY8nVHIe/25jdOiXXw1Ps44tLnBcymfRKMBBtmGLWYVQoZ5OjSq27T5zxSkBjORn
+	wu3X1WROHMWzcoiLF/+R1Bj4O7h43shskG3XASBjA+H0bbJzcU1w0DKqDGLGIgWGauikeQ5D5x5
+	MWtMUQ==
+X-Received: by 2002:a05:6102:8544:20b0:639:1e8b:ecd9 with SMTP id
+ ada2fe7eead31-6391e8beda7mr440037137.20.1778754921535; Thu, 14 May 2026
+ 03:35:21 -0700 (PDT)
+Received: from 753933720722 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 14 May 2026 03:35:20 -0700
+Received: from 753933720722 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 14 May 2026 03:35:20 -0700
+From: Petr Malat <oss@malat.biz>
+References: <CANMuvJn15HHBrq8EEbhSfCk-Sn33WEEovRa-yVWF5huTKfoOYA@mail.gmail.com>
+ <20260428055851.2204248-1-kuniyu@google.com> <CANMuvJngCeUSEZEkm-xSEEgiA-dVxqyuB4SJikw7ppePNYtm5Q@mail.gmail.com>
+ <CAAVpQUCueaur49EhBgHO-NsMV9Oxmu66mRjTqKvnVdHSYXZpgA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpgz:net-swift.com:qybglogicsvrgz:qybglogicsvrgz5b-1
-X-QQ-XMAILINFO: MA/YV2jQPtiykHovZxtnFrQp/NuhlIFmNp7MU2N+LJ/XeVXoxfjDCUri
-	FZV1H7kwinHC0OBjfZZfHV404FfawKPLUM7/+oy5TJP0xMdhOBrZHTvw4N2yEUeA5ytNmcR
-	6jY1XbdvoRx+Xg7erqSn0n4cEiUobkL1eyrG7bysVvtX5btUr6Q1+W/Rk9v/MXsQeEQ8TvH
-	zaOMyQDD4GRwU8jHNPb7T5QUM1++Fn9IRYbizEnGEYI2//xs/Zervm9uz+eWgWEz+A1x556
-	WOrWLBiQwxHn7lYU+xWvuqw28udWTwWeQ3yZeiSTWb8Rrt7vGzgz/OUr2EbIJR/V0IX6+j+
-	SnC7f6b9sv8P8PscNH4hZTjLzLmqOsW2L3FZsjHwbPXHISVJgY5Dad6wpqYWK6Gpmrka8js
-	AkuUpx81bcufpSbXTfbyKhXpnt+LHsRGIO16QqOdyan4+DeV2rYqZJdcgTOpEYdtmRxrJpo
-	OljJlBHdBUjrg+nSLMXRK3lrRHERRNY+gcbUP9l6mM9jSoSGpMYSkAZg/87bEx4VhvkFxT5
-	KIYDBqbL01aNw7VM8KXj2AZFshRImg8SoW9FnsW9CHoCRNPSGKZAyZwXhj/nFRMIW64+fg5
-	ojqY3jMk8fGz6kOuDkwviq1dzw33+iCfwZ5mxaKSK3KXZ+UaoCqvGQsrG0+SSCFUh6HJML8
-	B+xDsFD/FuXer9vOCTIBW3Ff2ZKc0oz9oRsyk+krrv2wNxPOgwLLKBFRNpaH7dMqDgec61d
-	3ody/+ZEQKVHBwU2OWqPTRTJ1uN8jfFWp8W7YSdShrGXovkp4q7AjJf1EeYdafUIPkuppAX
-	4k/W57cZ0xufwtVaK8c+zpkWirQVtH+S8JSHbHdkEVsW7uiHtQlQ8rTbmVOQRoWFeeQO/ou
-	h5aDoOYwD5eNFy6Mo5uOc4zWEnkM9++7AoBsSFMiuBaJ4gRSN0CINE+31chICmQKd+KBCtc
-	2VwJwI7sw9L4JRpRULvbxob6d7bdwwdErf41ATaUaPiTS8t+kbGF2ooxNraUyXiylbLRYNp
-	j5WXaLVOvLSGLEaLkMzFcVPdWl6AwNumuhatVDn4evhyCvkDpE3+DYzxHGCE+yshRcO6Xa8
-	FjZ6iS4u5zTX5EdkSnTuAC3P3xRycmF5tqrC5MX1W0UY9M+DuDbdIKmEOZV+afxMDeqxtue
-	FzSNAopBoagvJFhIy34cwzHiyg==
-X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
-X-QQ-RECHKSPAM: 0
+In-Reply-To: <CAAVpQUCueaur49EhBgHO-NsMV9Oxmu66mRjTqKvnVdHSYXZpgA@mail.gmail.com>
+Date: Thu, 14 May 2026 03:35:20 -0700
+X-Gm-Features: AVHnY4JvzFHxd6U4ARSZMFVNRmI6el4OXzYM4vSXb6aYa_L4_VV7TPrvqvC8m-0
+Message-ID: <CANMuvJmLD3K8B-Noi=z0HP0H9eBquK8FoRYixJw_386Yhg5itQ@mail.gmail.com>
+Subject: Re: [PATCH] net: datagram: Drain queue before reporting EOF or ENOTCONN
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: davem@davemloft.net, ebiggers@google.com, kuba@kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Add support for set_coalesce in wx_ethtool_ops_vf, which
-is used to set interrupt coalescing parameters.
+On Tue, Apr 28, 2026 at 12:45:12PM -0700, Kuniyuki Iwashima wrote:
+> On Mon, Apr 27, 2026 at 11:49???PM Petr Malat <oss@malat.biz> wrote:
+> > On Tue, Apr 28, 2026 at 05:58:41AM +0000, Kuniyuki Iwashima wrote:
+> > > From: Petr Malat <oss@malat.biz>
+> > > Date: Mon, 27 Apr 2026 22:23:33 -0700
+> > > > If a packet is queued and RCV_SHUTDOWN flag is set after the function
+> > > > __skb_wait_for_more_packets() checked the queue, the function returns
+> > > > EOF, which is then propagated by __unix_dgram_recvmsg() and the user
+> > > > reads EOF although there is a message or messages still pending.
+> > > >
+> > > > The function should check if the queue is empty before returning EOF.
+> > > > As the same is true for disconnect and it's also reasonable for a pending
+> > > > signal, check in a common place before returning from the function.
+> > > >
+> > > > Signed-off-by: Petr Malat <oss@malat.biz>
+> > > > ---
+> > > >  net/core/datagram.c | 38 +++++++++++++++++++++-----------------
+> > > >  1 file changed, 21 insertions(+), 17 deletions(-)
+> > > >
+> > > > diff --git a/net/core/datagram.c b/net/core/datagram.c
+> > > > index c285c6465923..5952950f7233 100644
+> > > > --- a/net/core/datagram.c
+> > > > +++ b/net/core/datagram.c
+> > > > @@ -98,40 +98,44 @@ int __skb_wait_for_more_packets(struct sock *sk,
+> > > > struct sk_buff_head *queue,
+> > > >     /* Socket errors? */
+> > > >     error = sock_error(sk);
+> > > >     if (error)
+> > > > -           goto out_err;
+> > > > +           goto out;
+> > > >
+> > > >     if (READ_ONCE(queue->prev) != skb)
+> > > >             goto out;
+> > > >
+> > > >     /* Socket shut down? */
+> > > > -   if (sk->sk_shutdown & RCV_SHUTDOWN)
+> > > > -           goto out_noerr;
+> > > > +   if (sk->sk_shutdown & RCV_SHUTDOWN) {
+> > > > +           error = 1;
+> > > > +           goto check_queue;
+> > >
+> > > We already have checked the same condition just above, and this
+> > > is a matter of timing.
+> > Yes, but both a message followed by RCV_SHUTDOWN can arrive after the
+> > condition has been checked and in which case returning the message
+> > must be prefered.
+> >
+> >
+> > > Even after the duplicated check is evaluated to false, there is
+> > > a small chance that the concurrent sendmsg() enqueues a new skb.
+> > No, there isn't, because the sendmsg checks the state and the sender
+> > gets error in that case. This is done udner a lock, so the situation
+> > you described is not possible, see unix_dgram_sendmsg():
+>
+> Note the function is not AF_UNIX specific and reused by
+> a bunch of other protocols as skb_recv_datagram().
 
-Signed-off-by: Mengyuan Lou <mengyuanlou@net-swift.com>
----
- drivers/net/ethernet/wangxun/libwx/wx_ethtool.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+I'm well aware of it, they either suffer from the same bug or there
+is no functional difference caused by this change.
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-index 31034cd20870..ab8796ea6535 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-@@ -10,6 +10,7 @@
- #include "wx_hw.h"
- #include "wx_lib.h"
- #include "wx_vf_common.h"
-+#include "wx_vf_lib.h"
- 
- struct wx_stats {
- 	char stat_string[ETH_GSTRING_LEN];
-@@ -488,7 +489,10 @@ int wx_set_coalesce(struct net_device *netdev,
- 		else
- 			/* rx only or mixed */
- 			q_vector->itr = rx_itr_param;
--		wx_write_eitr(q_vector);
-+		if (wx->pdev->is_virtfn)
-+			wx_write_eitr_vf(q_vector);
-+		else
-+			wx_write_eitr(q_vector);
- 	}
- 
- 	wx_update_rsc(wx);
-@@ -844,6 +848,7 @@ static const struct ethtool_ops wx_ethtool_ops_vf = {
- 	.set_ringparam		= wx_set_ringparam_vf,
- 	.get_msglevel		= wx_get_msglevel,
- 	.get_coalesce		= wx_get_coalesce,
-+	.set_coalesce		= wx_set_coalesce,
- 	.get_ts_info		= ethtool_op_get_ts_info,
- 	.get_link_ksettings	= wx_get_link_ksettings_vf,
- };
--- 
-2.50.1 (Apple Git-155)
 
+> >   unix_state_lock(other);
+> >   ....
+> >   if (other->sk_shutdown & RCV_SHUTDOWN) {
+> >      err = -EPIPE;
+> >      goto out_unlock;
+> >   }
+> >
+> > > Considering __skb_wait_for_more_packets() is called only when
+> > > the queue is empty, it's not worth another round when shutdown()ed.
+> > This breaks the interface as POSIX is quite clear here:
+> >   If no messages are available to be received and the peer has
+> >   performed an orderly shutdown, recv() shall return 0.
+>
+> Even if we think about only AF_UNIX, once the SEQPACKET peer
+> close()s, it triggers sock_error(sk) even though skb was queued before
+> __skb_wait_for_more_packets().  It seems "broken" in terms of POSIX,
+> but rather the application is too fragile if it's broken by a sudden close()
+> by peer.  These are dgram-based sockets.
+>
+> Except for close() (so not limited to AF_UNIX), if you see the race,
+> it means the application is calling shutdown() while recvmsg() is in
+> progress, and such an application must be prepared for the race
+> that it creates by itself, and that's how it has worked for decades.
+>
+>
+> > In this case messages were available, but 0 was returned. This
+> > behavior breaks even the simple example in unix(7), if you run it long
+> > enough (https://man7.org/linux/man-pages/man7/unix.7.html).
+>
+> Example is just an example, even it doesn't use epoll.
+
+So you say that behavior where the sender does
+  send(A)
+  send(B)
+  close()
+and receiver gets
+  recv() -> A
+  recv() -> EOF
+  recv() -> B  # Yes, it realy receives a message after EOF
+is correct and meets the interface description in manual pages or
+the Posix specification.
+  P.
