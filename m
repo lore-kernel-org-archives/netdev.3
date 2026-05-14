@@ -1,58 +1,35 @@
-Received: from smtpbg151.qq.com (smtpbg151.qq.com [18.169.211.239])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E58E83845C0;
-	Thu, 14 May 2026 13:19:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.169.211.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF51413959D;
+	Thu, 14 May 2026 13:21:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778764783; cv=none; b=KBjjUvMwPs9UwXLWHepOiDYpuUJoCGkPg5gH3UKpLj2+0kT0/Goo59vzVxiGL0rKySOUxaIN8veAy7jnxeDcYEhBZQLX0QmEclfc6ohw7/M7fMdtp5XupQSTv1Ex3OU6ZSDdX1d+so8ZHltsIzkI94lzY6JlLLzJmghRYb5iCzo=
+	t=1778764860; cv=none; b=NNI9o3gLXtjLsIZq2B6IlS0Se2PBV22h6eshSEX3OJl/mavg0wVpIvg0mARVQt6skRTqYoenrKHF0kKP8UkrwtnKfTXrgcROHRJTFZ1xeY1X5XxkPcPkUGTA4ZFe28ZVMKqEtQPPSEzRXB7VjQiVR/xhkDRk/KtsMcBL3eTvApM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778764783; c=relaxed/simple;
-	bh=cso4Y6sCLkhbf1B61Ik5w8+k+8JdXMYqXvauXIpRLxo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KDSi1CWmYHnMJkJr8k1M+rk/9iUuxAgkMFFF0HGUkr5CfDxrhm6KIVBE9PnaG2BCmPy0CeOcxUSnAJ17EiUNpYoZMx1s631gk6jLPzW1VGWZ0RTJyLZnfu0yqX/1ctHvSLkK3udjUotwug9bsLBImaevat/sfbTesMP1MhZ4u58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=extpvvTC; arc=none smtp.client-ip=18.169.211.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+	s=arc-20240116; t=1778764860; c=relaxed/simple;
+	bh=b5+uwiv1rRqvFQ4zpfy++OC6J70mF/9B48SIcf/QN6g=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=qvtU0rKIKlccvib1vy94i4tPQdzE58f+RZjEGSwarT0xysBJaBIqYHHHbppuXA86lNzep//SwSWwEnfpYoDDSXLu/JYQVy7H8UJnyI/xgpCRGq1sqWAI9Ple4/qbGnOCiwZ5auS473rRuQwhCIm3VQoIy/+DIU51KjzlAUjizOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ieL68oiE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="extpvvTC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1778764752;
-	bh=jCHQ+edTvyF2tOiHXH4CFRe0RGXkEcyEIIk/ffK04QY=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=extpvvTCsok7SeeRKSxzi9cgSU9IBzD11lrolHkFCgQFTi4pzh2yccfNxxgO2uAsw
-	 9lgRyIBEDGIcPl52GBxtB1c8gRdm2sfnFY0Lejqm/lvoDU1WhpzBVONRJd532eMEei
-	 zcZpo1fiUxR6+3HcC3eWYrhLOsJBoBD6CVVz9dyY=
-X-QQ-mid: zesmtpgz8t1778764736ta82c5792
-X-QQ-Originating-IP: szOAruv/Mcg9MvZDm929IM9PzQLdpAJYu+/NftWQ3lA=
-Received: from PEN202512010004 ( [113.57.152.160])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 14 May 2026 21:18:54 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 17632782849712745212
-EX-QQ-RecipientCnt: 14
-From: Xu Rao <raoxu@uniontech.com>
-To: penguin-kernel@i-love.sakura.ne.jp
-Cc: davem@davemloft.net,
-	dsahern@kernel.org,
-	edumazet@google.com,
-	horms@kernel.org,
-	idosch@nvidia.com,
-	kuba@kernel.org,
-	kuniyu@google.com,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	raoxu@uniontech.com,
-	syzbot+e2af46126e0644cbebdd@syzkaller.appspotmail.com,
-	willemb@google.com
-Subject: Re: [PATCH net v2] ipv6: addrconf: skip autoconf on unregistering devices
-Date: Thu, 14 May 2026 21:18:54 +0800
-Message-ID: <B2E03D908A12A79A+20260514131854.1752183-1-raoxu@uniontech.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <260a0064-0fa2-40cc-bb8c-1ee29f12dd1d@I-love.SAKURA.ne.jp>
-References: <260a0064-0fa2-40cc-bb8c-1ee29f12dd1d@I-love.SAKURA.ne.jp>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ieL68oiE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79A37C2BCB3;
+	Thu, 14 May 2026 13:21:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778764860;
+	bh=b5+uwiv1rRqvFQ4zpfy++OC6J70mF/9B48SIcf/QN6g=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=ieL68oiExae6AwV99o2CMNDkdl/Es3p5Sm4a4JoLa7cTOhIQHTdfZrDM0xOHhovkY
+	 f0itIFvON6zRn/VvWpqPSeYP6V3drw3Dzx+V59/23MghxP9NPGJq0lgWjwqvS52ASg
+	 dCjK7G5vVN/XpfYvR5ETwLouH/SjR0SgE0qnFgFV6UafzDRYh2Je8fJj94l6dBqxlC
+	 h6HQA8mh5rRIHQkD3JVTEwyipOe+mnCcEkvg87KLlG6X1QmgSpBOr3TZ9pQnU2OzF2
+	 6F02ptnkPDR9Kvew6K6hR56H204ignTKLXWbVZyLJAz74Mf3DSdb/HLBmfphUIiaA2
+	 c+Vu8b9zju8NA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CDA839310AE;
+	Thu, 14 May 2026 13:20:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,83 +37,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: OaNPNQWBi+inSIyHYEQ2Sh+twqYtJKS+bLrFUi9ZoITrVOAn89p0i0My
-	iLx9w1ACJQXDrdQx+28cs9+cH5BxoXgFutFQaboOTsR4br7dX2RSwABwJO6hxGahwNVyqRw
-	ahUDyePbEZJJ85TgUSoWn4a8wjsdcBwhX1QU/LGxsff+JWM4HJfECLjYO57C76WaD15Y7jJ
-	9kHrXFCImFxNoL+6tmSJlPaOyyv5u8uMJUr1uk96MuyjbnqAhGDKLTkrab2KJNpes8At6I+
-	trTCb3TB+Vkd2ubRdcivpGzkExKkH/X+vxwtoznQ1XQlidJndF/ameLQGjfVeDACCQcjH2l
-	Bojc9T3YGPWd21HF86oSwMRMC1MOVzgendxRy0l172FkvRdKolp2VZDCYj/8I4arjZ16cQh
-	vSrOKFyVx5GoG5I3mxqTB742QQJYyVHaQgiUwylk7Lb/wy32nBVB5d0a8TOSF1a3CchvtB8
-	wb2XF+T6EDZu3RLOPsNtvzSXJ8MZETlta9dLHwy8pKWoUYi5zFLfqnEgs+VsrFt9zjwz/gN
-	WpF/GtdriCQOTtrtdgJ3uDATCF/uI8bPTrxykW2N7KJ3DAqqpTsOGTTceXXmHw91VSFokOg
-	msRipOq83KrL7AoQhMTTbC1LycnhWsd/XdVQpbwNMSQRats2gzkGC4BsVk6qMHBPKboEk0i
-	mcgGbqs1vV3xdVYIiSbh0pfGZs+CRNb2PMm5SoRUvknVwqYDG98qhzIn0fkQqoFVdm7VeMl
-	kyWh3eYWhVh6sH0ytQMiEFSejJK/9Isd5u65lHtUialTI1vU8EGCppeqYjRKilKVE/r+NBs
-	1H4Qfpko/FJtCHqceEi/sjUzWz5wjj9/8VTJud0S+rhBGDpai11wp4Lu8y/whlm66kwKPvy
-	UBtXHTglN3DyVXKKP/5TxvXE19wGlC3zTbqEM0LU+2zyMuBXbtMs58WqP7lV+B+VM9gxMZW
-	uKT+7NzCR1Appx4wRh0FIZHrue0zgLViSrPuAwCNPNnf8AVoTv8EAc/1vGyiBAUcZbFUB2n
-	b5pGLgot07jShhhkkw2iX94fPlaSqHjJwFwDkgpwY/61rYvZwb82Y807hVxCs=
-X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
-X-QQ-RECHKSPAM: 0
+Subject: Re: [PATCH net v3] net: phy: DP83TC811: add reading of abilities
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177876480530.4119260.8287001430215972003.git-patchwork-notify@kernel.org>
+Date: Thu, 14 May 2026 13:20:05 +0000
+References: <20260512071949.6218-1-schuchmann@schleissheimer.de>
+In-Reply-To: <20260512071949.6218-1-schuchmann@schleissheimer.de>
+To: Sven Schuchmann <schuchmann@schleissheimer.de>
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ f.fainelli@gmail.com, dmurphy@ti.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, maxime.chevallier@bootlin.com
 
-Hi Tetsuo,
+Hello:
 
-> Will you test your patch with
->
-> - if (dev->reg_state == NETREG_UNREGISTERING)
-> - break;
-> -
-> + WARN_ON(dev->reg_state == NETREG_UNREGISTERING);
->
-> and confirm that WARN_ON() fires, for nobody knows whether this refcount
-> was obtained after dev->reg_state became NETREG_UNREGISTERING ?
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-> Please be aware that the stack traces that follow
+On Tue, 12 May 2026 09:19:47 +0200 you wrote:
+> At this time the driver is not listing any speeds
+> it supports. This should be ETHTOOL_LINK_MODE_100baseT1_Full_BIT
+> for DP83TC811. Add the missing call for phylib to read the abilities.
+> 
+> v3:
+>  - Fixed indentitation problems. no code changes.
+> v2:
+>  - Fixed subject and added fixes tag. no code changes.
+> 
+> [...]
 
-I ran the additional syzbot tests on the same tree.
+Here is the summary with links:
+  - [net,v3] net: phy: DP83TC811: add reading of abilities
+    https://git.kernel.org/netdev/net/c/c78bdba7b966
 
-First, the proposed v2 patch did not reproduce the issue:
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-  commit:         5cbb61bf4168
-  git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
-  result:         OK
-  console:        https://syzkaller.appspot.com/x/log.txt?x=147a20ec580000
-  patch:          https://syzkaller.appspot.com/x/patch.diff?x=12255636580000
 
-Second, I tested the diagnostic WARN_ON() patch suggested in this
-thread.  That patch adds WARN_ON(dev->reg_state == NETREG_UNREGISTERING)
-at the NETDEV_CHANGEMTU and NETDEV_UP/NETDEV_CHANGE paths.  syzbot also
-reported OK for that diagnostic patch:
-
-  commit:         5cbb61bf4168
-  git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
-  result:         OK
-  console:        https://syzkaller.appspot.com/x/log.txt?x=10eae996580000
-  patch:          https://syzkaller.appspot.com/x/patch.diff?x=1182da73980000
-
-I checked the console log and did not find a WARN_ON() splat.
-
-Finally, I ran the same tree without any patch, as a baseline.  That run
-did reproduce the problem:
-
-  commit:         5cbb61bf4168
-  git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
-  result:         report
-  report:         https://syzkaller.appspot.com/x/report.txt?x=13f620ec580000
-  console:        https://syzkaller.appspot.com/x/log.txt?x=15f620ec580000
-
-So the no-patch baseline still triggers the leak in the same environment
-where both the proposed patch and the WARN_ON() diagnostic patch returned
-OK.
-
-I agree that the WARN_ON() result does not prove the exact
-NETREG_UNREGISTERING hypothesis, because it did not trigger.  I also do
-not think this negative result is strong enough to disprove the race:
-this bug is timing-sensitive, and even adding the reg_state load, branch
-and WARN_ON() site can perturb the execution enough for a best-effort
-syzbot run not to hit the same interleaving.
-
-Thanks,
-Xu Rao
