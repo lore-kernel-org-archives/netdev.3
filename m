@@ -1,126 +1,74 @@
-Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3BC922083
-	for <netdev@vger.kernel.org>; Thu, 14 May 2026 13:08:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4FD33BFAC8;
+	Thu, 14 May 2026 13:16:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778764135; cv=none; b=Y+GHrKR1T7Z3Hej1kLKI3UVLSeaotPp5pwAUGyrnbzbKMZyD7kTnV0v8Ac4iRe0/Ki5PxOO2pBrFwUtgC/AK3cOZ3nyyKT5OKvAujmYXoLVvcUKKkk5hu1M4KbT+Ph7c3xbRxN9HYuJF2+tKmN60f8trfmScjMe9TisLYzSxUWk=
+	t=1778764602; cv=none; b=g1oSpx1ntcbHsCNGqjWpw4MSDs/GJ7aCdMkBw3RHhsblDFT7dJKZQgVvsKBTve5iCVeU5uX1fduXpK0duX9hFwedByLsSuOcl2EpESJq9E054maKWVCvaqu4jGoZ0zTTwi0mkrshCbOE6wY+quITBm8IhRFN/g3AwiRdAVNjyzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778764135; c=relaxed/simple;
-	bh=z+cAkSuJLhE40c0uEq+6x0YaX2J65ezf/wP88bR/sCs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ta/XSYB2ZT108BBzXwHU7X3tIPWJHQZBOcd+13mqPuDk2+VS+9EyMJXqs4MZpqWDUu4WSHhBIF1e5hAy4ejKKKvDjS8TXWVm/jcgEjvQ646b6azBrmPGq3ABknkP30mDYIwiWAK0T5s09SPaEF9LUsMAUD1BGCnZFsGTzl0X5nY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BvO4U9Qq; arc=none smtp.client-ip=74.125.82.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1778764602; c=relaxed/simple;
+	bh=dLQRcRkcA46txUCXuJ2km9A7HIs1N3NYIpzMw9JTGTQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dlFexUF+8NOnw4bUQLjzkmaozeg4yJr15EO38IccbHAjBCNA0d1LxG3txYo23kffk34+cr4a8eQHLulSsW+qbYFpusufGGh9/Gm5HAIaolXk067tAr8dO6sJolOo/79T9B+Cj+Lp7b/xIHlNhXZd/KRT+8DZCXmw9ro7wjoVlkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=RonAfqFn; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BvO4U9Qq"
-Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-1330d6bb78dso4686683c88.1
-        for <netdev@vger.kernel.org>; Thu, 14 May 2026 06:08:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778764133; x=1779368933; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=H0FKlHSR2yB25EroVOVzDhJO/vm7mF/0/3x30QlYGog=;
-        b=BvO4U9QqBWC8eCi63jOJbvcIShXzv1c1z5bQsQxIHxKakbPLVbG/XOmS4dVOHO5JXV
-         kVQ8oDaqioqe2g9GyWyrt9Z/145honCeyOCRhc+4ZkzE3xXiZJd1PMt3a5+J/NTjoufE
-         tVkK//2UmjwyRRlDBlzv13ZBn+23VbQV3mznFGxHRCE7Xm55QpuwiKKUS+4mjL1N+I9U
-         8xV1ck2B42YiMTsSjJB7DLke4ZIoKJpsS2dLy0KWssjujZeBP160RiTsA0mfJ4rWBjLX
-         JEMZ+LDPNRnSdG2bsTUNqY31sDT2e8OYR8Z9fm1q6iCEn/k3YavlCHAbdORPWkjyBrxH
-         Eu0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778764133; x=1779368933;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=H0FKlHSR2yB25EroVOVzDhJO/vm7mF/0/3x30QlYGog=;
-        b=kwfus/hPxcokiRx2/26FgNCsyAaZlblC1x3s9VHI1t6223UG0u8u7O5Tb6gRKhMPDP
-         QBJzsMtyzaxIpbP9Gy80gcfn+zy/vttgGaRfkgx8fqqNB/9rIKw59OfHaiZ5EUBJURrR
-         jzoVqtsU1OEZPe/xzURqevEYzPiRstSot0JnaFkye3bJrs+vwTI8TOL9YZQk7EQVFC8J
-         zNb7vcWSSM6e7Q7hRgOwGJgLFfg6Okq3wcldpeuSdgnLvswPRQK4xkahBsvy3PuKWTTH
-         I9baokVju9WmAc5pUtKFYkNlAAHmlizUw3Bz+PDHEyk15hC0Drm8vRucPnD/LBM7h9OB
-         hGYg==
-X-Forwarded-Encrypted: i=1; AFNElJ/gL8teul+NYjubAC3Cg09QavXUi41LFRHAipGZBJOBlSiAWqu4DHcD7mnD39K3iK276NxaeMk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxmrgolgpoZNHcLKp3wObgrtw3EZKU1Tv0YjCEGZ1A332EXlYBV
-	1/jTzwu3G1VZiIYJSFuOvABrQx7nATt/Y7oqG/1eZbY41RcwNKn4v2/IhzlsNuxoG7I=
-X-Gm-Gg: Acq92OH6Bkeg/HL17EOQsuoL27Xctqgp2pWZEbmDgwElRiAKLNu1KPiht0Cf1J+vUwR
-	vp6ZHjnZZSaw+7o1OvPplWErHaMB7tZ28mdK2/MRpepeiRP7SKpisiKRAqoT7tSjtZhDrG2XPQd
-	b/Z7aLAKT+wvpCJU4CS2zkmFb3FXZJDQdfe7jdWZGZJq7FW2V6tqTRUYCRpxNT8h4CFhC/8heZd
-	F8fXJleOCvK5OG0lz3u8CPYvh7MPMZa3SRxXnwof1pWzAWvcZpJklBixRic6Oqej0BSvpaVTIYe
-	raDwWhcxra1fTAKOXx7llKNkFSlhg3F8y9BPbNNuX5jNlpc0JLz9VzByeAa7Ybz2FEOTt3DFyfi
-	EUOc72xD9I/aAWeR/Yxm+jfHkMFBUWh2mxJZvbU2XyxgUflBOl/HATuboQ+kN9CcTIsLuGUEUcQ
-	a7fQ3qVk7Qqd71Z8S1ElDqmRt4KC/+6XHFZxZaXbc01peW4payuKSep8SENUEf9ddJ2VHuHbvDG
-	ZPo7YEJfA==
-X-Received: by 2002:a05:7022:f008:b0:12a:71ab:8235 with SMTP id a92af1059eb24-1342ee39d21mr4686283c88.6.1778764132725;
-        Thu, 14 May 2026 06:08:52 -0700 (PDT)
-Received: from efaec68ba852.tailc0aff1.ts.net ([206.206.192.132])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-134cc2351d9sm4389502c88.9.2026.05.14.06.08.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 May 2026 06:08:51 -0700 (PDT)
-From: Weiming Shi <bestswngs@gmail.com>
-To: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	netdev@vger.kernel.org,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>
-Subject: [PATCH net] net: appletalk: fix NULL pointer dereference in aarp_send_ddp()
-Date: Thu, 14 May 2026 05:38:08 -0700
-Message-ID: <20260514123806.3085961-3-bestswngs@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="RonAfqFn"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=G4fPOWWTSjI5yvRz5lPq6nB+O5BhDTbqkRTco99Z8Wo=; b=RonAfqFnFtgqoB8ydY6b7UKK0j
+	roADVpo5j+UOfNpWe/5KKxu/bulV/kIWdVSBEe0gL7L0HaAmvGcU1N2oCZ0FMWmyvaJRzsCsod1md
+	C2oF2amkmEVl1+xqG0j2erDdYAVd7RDPVT2YpsisfoCfVfMsgtr1c95bsssqekHy3tX8=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wNVvU-002uNe-2w; Thu, 14 May 2026 15:16:32 +0200
+Date: Thu, 14 May 2026 15:16:32 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Thangaraj Samynathan <thangaraj.s@microchip.com>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	bryan.whitehead@microchip.com, UNGLinuxDriver@microchip.com,
+	linux@armlinux.org.uk, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 5/5] net: lan743x: Add PCS/XPCS support for SFP on
+ PCI11x1x
+Message-ID: <a044fcc6-554f-4edb-ad49-194d11eb6124@lunn.ch>
+References: <20260514105028.42942-1-thangaraj.s@microchip.com>
+ <20260514105028.42942-6-thangaraj.s@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260514105028.42942-6-thangaraj.s@microchip.com>
 
-aarp_send_ddp() calls atalk_find_dev_addr(dev) in the LocalTalk fast
-path without checking for NULL. When the device has no AppleTalk
-interface configured (dev->atalk_ptr == NULL), this leads to a NULL
-pointer dereference at the at->s_net access.
+> Integrate the XPCS instance with phylink by providing a mac_select_pcs
+> callback. Support SGMII and 2.5GBASE-X interfaces in phylink
 
- KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
- RIP: 0010:aarp_send_ddp (net/appletalk/aarp.c:552 (discriminator 2))
- Call Trace:
-  <TASK>
-  atalk_sendmsg (net/appletalk/ddp.c:1715)
-  __sys_sendto (net/socket.c:2265 (discriminator 1))
-  __x64_sys_sendto (net/socket.c:2272)
-  do_syscall_64 (arch/x86/entry/syscall_64.c:94)
-  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
+Not 1000BaseX?
 
-Add a NULL check consistent with the other callers of
-atalk_find_dev_addr().
+>  
+>  	switch (adapter->phy_interface) {
+>  	case PHY_INTERFACE_MODE_SGMII:
+> +	case PHY_INTERFACE_MODE_2500BASEX:
+>  		__set_bit(PHY_INTERFACE_MODE_SGMII,
+>  			  adapter->phylink_config.supported_interfaces);
+>  		__set_bit(PHY_INTERFACE_MODE_1000BASEX,
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Assisted-by: Claude:claude-opus-4-7
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
----
- net/appletalk/aarp.c | 5 +++++
- 1 file changed, 5 insertions(+)
+So it looks like there is some sort of mixup with SGMII and
+1000BaseX. They are different things. Can adapter->phy_interface be
+set to PHY_INTERFACE_MODE_1000BASEX? Should there be a case: for it?
 
-diff --git a/net/appletalk/aarp.c b/net/appletalk/aarp.c
-index e7315c01a299..30493ea3c010 100644
---- a/net/appletalk/aarp.c
-+++ b/net/appletalk/aarp.c
-@@ -542,6 +542,11 @@ int aarp_send_ddp(struct net_device *dev, struct sk_buff *skb,
- 		struct ddpehdr *ddp = (struct ddpehdr *)skb->data;
- 		int ft = 2;
- 
-+		if (!at) {
-+			kfree_skb(skb);
-+			return NET_XMIT_DROP;
-+		}
-+
- 		/*
- 		 * Compressible ?
- 		 *
--- 
-2.43.0
+It could be the broken documentation, using SGMII to mean PCS, has
+resulted in other problems with 1000BaseX not being implemented
+correct? You might want to look at all the "SGMII" code and fixup all
+the 1000BaseX issues.
 
+	Andrew
