@@ -1,78 +1,64 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3AB03EDE5B;
-	Thu, 14 May 2026 14:07:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 010A03FA5F9;
+	Thu, 14 May 2026 14:08:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778767652; cv=none; b=nigr2/eS/ZBV3g8tYEhAybKdQCRUw92Mbwpqt5BYw2JkCllt+kN//rk6zV5BsztibaSczFSP2ZkLOR1q230H/tHw5PD/T6g60rpoB146M6IiQH7/qNwVDHprrO1UVSRyNL/TLZTa3g6icsRBfYjtKEZ7KwUHtmlE2z+lf18+RdI=
+	t=1778767687; cv=none; b=itUsbQPbCXXZcRHom/RP7z9ZfcXrigeU9ak70ur23FzUaCxqUlu9q5Im6J/JIAVa+w6HPNBcalcBqm/bmHrpkWV/1IcycxHaOH6ZysMDmp46DhfSdnYpZM63ZDjNbKQ+EWxqlYHvgIj1oo/W1LLekXqrBPHLQFwSWT2labzaoHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778767652; c=relaxed/simple;
-	bh=J1Opdc0EHVNMANR5k+PJHgrAhg+j7WWqVi39gQsYVK8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RMBZgWuLF8fzMzpjwhm76xwX8rqvv90VIKW3pCxkY6FgDv2PGmD/Fg/yM1qXMb0U9uv8Fqoo8yTo6DVU/zuIbXd7wEGMrlR+PEFzdUWv5yrilT1D0q+ya9+7lVh3JTqcTVgNbuUuPi3OzlL2vu9hTno3pdRxz1LYk/6ct25Q464=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=TkZxqnbd; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1778767687; c=relaxed/simple;
+	bh=imLyI5VX/UiHKhYAptgg2Ym4C+4f2expui1LJpsnLnc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rDme/EIl954X+mFp6CXtO/tB/Ur1RT9RtxGt8zeTV7iDRmfRT432P0BgO9lr8dVIDnW7MJ8qUIuWiKgXhe1EEpRFbIM8VLBPgfwwMQ7NO9V6M7UPtxuyRM2Ua6vhm4iNGA9l4ps7G4d1I6B3ZBJzN6WK4yEu5RKsfASir+M+Aqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NuDcjYLT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="TkZxqnbd"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=f2AaBkQmwN0Tpwjnhfs4Hs9nUKjH6yTFtxsYOYrSQT4=; b=TkZxqnbd/TmUTd8OqaDzhRHGT1
-	5ubAVteStBwx+lU8eNprY02GzhpWiTmu/rEiYr4Ud7ne5o2+f8mxdT1cZ/gwVfBY+ckXbU4nEYS2d
-	mWzXZilBiocwH6MSK/BJ3HRsKQdqS4xCvQ13oy9MHzEovfEeeKW9K2GWwAGZeS0gcsJU=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wNWij-002umu-7a; Thu, 14 May 2026 16:07:25 +0200
-Date: Thu, 14 May 2026 16:07:25 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: davem@davemloft.net, Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	=?iso-8859-1?Q?K=F6ry?= Maincent <kory.maincent@bootlin.com>,
-	Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	=?iso-8859-1?Q?Nicol=F2?= Veronese <nicveronese@gmail.com>,
-	Simon Horman <horms@kernel.org>, mwojtas@chromium.org,
-	Romain Gantois <romain.gantois@bootlin.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
-	Frank Wunderlich <frank.wunderlich@linux.dev>
-Subject: Re: [PATCH net-next v10 9/9] net: ethtool: Introduce ethtool command
- to list ports
-Message-ID: <793006fa-9d80-4d9b-bee2-df0ee11bd6f3@lunn.ch>
-References: <20260513130521.1064094-1-maxime.chevallier@bootlin.com>
- <20260513130521.1064094-10-maxime.chevallier@bootlin.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NuDcjYLT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 372FCC2BCC7;
+	Thu, 14 May 2026 14:08:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778767685;
+	bh=imLyI5VX/UiHKhYAptgg2Ym4C+4f2expui1LJpsnLnc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=NuDcjYLT7nKnd0/dVsCi7VI7CK/Nn07EJGpF5f0JsHZwyo4MyQzQfZk/mflJ/AKHJ
+	 sp7oGVRYOgo0SVEtpUc5+kED425f+b2Jkk0GzBwS2h5ir4AkV21lXDdaGu4kkxN5IU
+	 JCUQS9JYW+RZih4AqWYjcoO01F8SdivepOFRPvFf2w31cXaEn/YmQNooH0NXw1UUF2
+	 DDBrzVdfqk/JEpwRn76xo0qXfFJMcRPJtG9PTrYtxzRROvEuc74wO4MKz7VfWxz+CF
+	 tm4uhkFZaLTx8qY8akRLBFAB1A6vL6qH023mThLlpRchfl8G+I2VY4CIBID6tewI1l
+	 bW+Zn/j5KPz3w==
+Date: Thu, 14 May 2026 07:08:04 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Cc: Rodolfo Giometti <giometti@enneenne.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH] pps: make number of PPS devices configurable
+Message-ID: <20260514070804.7cbb6181@kernel.org>
+In-Reply-To: <65a3d091-0648-4c6c-8062-869d0fcec8dc@linux.dev>
+References: <20260514112614.2016026-1-vadim.fedorenko@linux.dev>
+	<20260514065526.2ed937dc@kernel.org>
+	<65a3d091-0648-4c6c-8062-869d0fcec8dc@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260513130521.1064094-10-maxime.chevallier@bootlin.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, May 13, 2026 at 03:05:20PM +0200, Maxime Chevallier wrote:
-> Expose the phy_port information to userspace, so that we can know how
-> many ports are available on a given interface, as well as their
-> capabilities. For MDI ports, we report the list of supported linkmodes
-> based on what the PHY that drives this port says.
-> For MII ports, i.e. empty SFP cages, we report the MII linkmodes that we
-> can output on this port.
+On Thu, 14 May 2026 15:03:03 +0100 Vadim Fedorenko wrote:
+> On 14/05/2026 14:55, Jakub Kicinski wrote:
+> > On Thu, 14 May 2026 11:26:14 +0000 Vadim Fedorenko wrote:  
+> >> Modern systems may have more than 16 PPS sources and current hard-coded
+> >> limit breaks registration of some devices. Make the limit configurable
+> >> via Kconfig, keep default value of 16 devices. UAPI has to be changed to
+> >> support maximum possible number.  
+> > 
+> > Hm, since this is effectively just sizing an IDR maybe we should just
+> > bump it to 64? It appears to cost nothing if not used.  
 > 
-> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+> Just bump to 64, but keep it constant? In this case maybe 256 just to
+> align with the max minor value for chardev (in compat mode)?
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-
-    Andrew
+That's fine too (the value is the count right? It's not the max id?
+Cause 256 would spill out of u8)
