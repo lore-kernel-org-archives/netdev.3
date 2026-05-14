@@ -1,62 +1,71 @@
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBABF3FADF9
-	for <netdev@vger.kernel.org>; Thu, 14 May 2026 14:03:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B590E3E274F;
+	Thu, 14 May 2026 14:04:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778767404; cv=none; b=hVVfYzfx3WpglxsLt/SReYwluXHXM50W3irp+FiB7xth/cm3o8dfjdB0RPDwzzyMtdxj68Kb3BabvEm1RDq4jvB0zXt7LzVLChwz2tXDlmvm/LpbF7S7lvtNtI4E2NwwMoT9dMC9N/YdgGEK3ro912YqfLx1jj89BrJaJayq1hA=
+	t=1778767476; cv=none; b=lFVNwLorOxys+48Rj57sapSQBwBvtsZtEKkUrMOIly7/vqHXCcXf4sfnMb6epyzB8Ig9/dWxnnDyGHV3WzoU7PNdAWzlH4+GSHoXAvAlYzt8CywGETcrGvRuUQxBf/Fs42uGg/ShEieLkFAe8Y72EQKNmJdQ/xQS+9gaDX4eNNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778767404; c=relaxed/simple;
-	bh=neIZnNUmn4ygpujeMBN0+qXsVjrMF/r/Yz7ENJiopCk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qcXWMsIzy9ZlW4hwhd4JNY9+t7GL2dmQF7A4cV0TKOUq8ENNt649LqPKq2NlF9Rr5dSuJfwCrCnuhU0XQfmuyArX46hjE2f2jaXbb/3TJvJwSifFuq5eJRENb/Szng10/ZlKG61b5CxfI1snZ55tqt5pvK9KcTd052cT1b1jHOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=fC5C99+/; arc=none smtp.client-ip=91.218.175.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="fC5C99+/"
-Message-ID: <65a3d091-0648-4c6c-8062-869d0fcec8dc@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1778767398;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0IJ/JWVLzpiu9gzA7/jZVal2HN1ffjU/2BFPwULtf6Q=;
-	b=fC5C99+/lEsjgdcYVU5Pj2kZ5xuSknR9Q9y32vdIMBdv2YMV0bRPmWOLbilGWkgUp2a5rU
-	OkRVLMqsECZnFxvsc+BlUwoq4WZdysqNPVpz4N5CUfgOilZMD2BdFnQTzgVbrGJAfgEJnX
-	N8/xz+/KPA0V1caqR3b6AKTwfOXwBxA=
-Date: Thu, 14 May 2026 15:03:03 +0100
+	s=arc-20240116; t=1778767476; c=relaxed/simple;
+	bh=HaU/yc/3soguBmfMqrysHnH+MhoL8mNdrkqPdpOP3IQ=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=ue8W34mNYBTWqdTzvc/+baLJQtxjZqDwBuZFqvsb5N68dQ9tM/8xMttKZJGL/Yl2Jold0mXJ1aKlWxhGWOs0KM2a6ur+cPQ1SV6bwrNEQ7gJhMcoMzyUxEhQiJ78WNBXyQquoeu81d9iCBR8DvbJGarlFB8xKPmB6JViB3Yj4PQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
+Received: from local
+	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
+	 (Exim 4.99)
+	(envelope-from <daniel@makrotopia.org>)
+	id 1wNWfa-0000000043n-073v;
+	Thu, 14 May 2026 14:04:10 +0000
+Date: Thu, 14 May 2026 15:04:06 +0100
+From: Daniel Golle <daniel@makrotopia.org>
+To: "Chester A. Unal" <chester.a.unal@arinc9.com>,
+	Daniel Golle <daniel@makrotopia.org>, Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	DENG Qingfang <dqfext@gmail.com>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	=?utf-8?B?QXLEsW7DpyDDnE5BTA==?= <arinc.unal@arinc9.com>,
+	Sean Wang <sean.wang@mediatek.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH net v2 0/5] net: dsa: mt7530: assorted fixes
+Message-ID: <cover.1778766629.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [RFC PATCH] pps: make number of PPS devices configurable
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Rodolfo Giometti <giometti@enneenne.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260514112614.2016026-1-vadim.fedorenko@linux.dev>
- <20260514065526.2ed937dc@kernel.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <20260514065526.2ed937dc@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On 14/05/2026 14:55, Jakub Kicinski wrote:
-> On Thu, 14 May 2026 11:26:14 +0000 Vadim Fedorenko wrote:
->> Modern systems may have more than 16 PPS sources and current hard-coded
->> limit breaks registration of some devices. Make the limit configurable
->> via Kconfig, keep default value of 16 devices. UAPI has to be changed to
->> support maximum possible number.
-> 
-> Hm, since this is effectively just sizing an IDR maybe we should just
-> bump it to 64? It appears to cost nothing if not used.
+A batch of small, independent fixes for the MediaTek MT7530 family DSA
+driver, addressing long-standing correctness issues that surface on
+hardware with bridge VLAN filtering enabled, on link-local frame
+reception, and during bridge join/leave transitions.
+---
+Changes since v1:
+ - rework patch 1/5 following up Paolo Abeni and Sashiko reviews
 
-Just bump to 64, but keep it constant? In this case maybe 256 just to
-align with the max minor value for chardev (in compat mode)?
+Daniel Golle (4):
+  net: dsa: mt7530: fix FDB entries not aging out with short timeout
+  net: dsa: mt7530: preserve VLAN tags on trapped link-local frames
+  net: dsa: mt7530: fix CPU port VLAN not being reset to unaware
+  net: dsa: mt7530: clear flood flags on bridge leave
+
+Edward Parker (1):
+  net: dsa: mt7530: untag VLAN-aware bridge PVID
+
+ drivers/net/dsa/mt7530.c | 165 +++++++++++++++++++++++----------------
+ 1 file changed, 98 insertions(+), 67 deletions(-)
+
+-- 
+2.54.0
