@@ -1,110 +1,120 @@
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F10E1B4224
-	for <netdev@vger.kernel.org>; Thu, 14 May 2026 10:01:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71CD938A73A
+	for <netdev@vger.kernel.org>; Thu, 14 May 2026 10:06:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778752903; cv=none; b=AxZdIhGbY4BHVi9pVjXxUevmdyHyhuxNsO2iQhUZA0yeKSVhRl4TxjlcTgoMhObGz+/WIa34Mz3JrixUjo4J/97RA3AwfSIsM1+pdoOMykOQWg2Gxnusm9R61Xis4ND7mLHs2ZW960BB7mk2rIDzHYXMckRCLlaRKrshzCeYseg=
+	t=1778753173; cv=none; b=rK23ynbsUidFEgj2bw1SrykJB9Mmv439RbRKhkF2LLIwHKse9tYHmDURWf7nN3wRrfuRHJ44rutGzb5Mfvb8pUoJHPGgruK8dQh+LREC4Pwmz9P8xiO5VxuGMu7czoRyWoBc59DrJb5z7UeuFrXQ/cUiGH4M7++dpE6auGtvZp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778752903; c=relaxed/simple;
-	bh=fx2CvsbT/rGSEQVwa9Ci2mQiisoXpO3tw2BMzPNgeLo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nNqekrjVZady1YC2+fPOKw0DqshjfHBhp/IE1LbNd2NhAX+DJ0sy95pMP+9gm7Xemn8iCFU1whVTingKWBA7yqX8LZsgztpupQskxy/v0dz4QyD4dPBPqiHrUXGOcu4hymjEpgGedrTAMG3dJ4qBt5JninC3veicGLAW1uUNKLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Twqk45HT; arc=none smtp.client-ip=91.218.175.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Twqk45HT"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1778752897;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=bzSH7YM66X1EdSQx4iL17DDOhAM5MvLcAjOx1Y/mcos=;
-	b=Twqk45HTcuK0mQpE54sJ3zUlRFbEoxXaSQX+46Fqf89bgJDVIPx4OuTqb/kt/ATFfH+DCq
-	nvQ4dlqvC6+0ZeFRGs7QYK2qTVeOJrsQTW87qwCnMmF6g49fWPQlxmNbt9eF5z+ttQXF0V
-	sK86UpbLxJMpUQbTiU0ILp9PzmbDBes=
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-To: Richard Cochran <richardcochran@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Subject: [PATCH net v3] ptp: ocp: fix resource freeing order
-Date: Thu, 14 May 2026 10:00:55 +0000
-Message-ID: <20260514100055.2014501-1-vadim.fedorenko@linux.dev>
+	s=arc-20240116; t=1778753173; c=relaxed/simple;
+	bh=hzb/rpTvchz4n++Rxj/M8+alBs7miaN+3wFDitOYegQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MbWokBcdFdCXZI6uc9Ugi1/4QhA+3dPkYBlgAEdSTQu3Ko6hSeXrjH+5XCy8Rv7rUOshAKJZCGYAFOMQF9Cnzapjl2VCuCy76la0/+Ber9vJMG4kml4u8MrTsatKmnZj1/Tq1SbZliypKrSF3MjftUbvM/wwMEq1GnqKn3UQu/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=fail smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1wNSx1-0007S9-Sa; Thu, 14 May 2026 12:05:55 +0200
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1wNSwy-000kMx-0L;
+	Thu, 14 May 2026 12:05:52 +0200
+Received: from pengutronix.de (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id B94D45363CF;
+	Thu, 14 May 2026 10:05:51 +0000 (UTC)
+Date: Thu, 14 May 2026 12:05:51 +0200
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Anurag Dutta <a-dutta@ti.com>
+Cc: u-kumar1@ti.com, vigneshr@ti.com, gehariprasath@ti.com, 
+	rcsekar@samsung.com, mailhol.vincent@wanadoo.fr, andrew+netdev@lunn.ch, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	linux-can@vger.kernel.org, netdev@vger.kernel.org, msp@baylibre.com
+Subject: Re: [PATCH] can: m_can: Implement workaround for errata i2278 and
+ i2279
+Message-ID: <20260514-tiny-koel-of-order-65ade7-mkl@pengutronix.de>
+X-AI: stop_reason: "refusal"
+References: <20260514065511.3573223-1-a-dutta@ti.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="updzfu6jqbf2tt6x"
+Content-Disposition: inline
+In-Reply-To: <20260514065511.3573223-1-a-dutta@ti.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Commit a60fc3294a37 ("ptp: rework ptp_clock_unregister() to disable
-events") added a call to ptp_disable_all_events() which changes the
-configuration of pins if they support EXTTS events. In ptp_ocp_detach()
-pins resources are freed before ptp_clock_unregister() and it leads to
-use-after-free during driver removal. Fix it by changing the order of
-free/unregister calls.
 
-Fixes: a60fc3294a37 ("ptp: rework ptp_clock_unregister() to disable events")
-Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
----
-v2 -> v3:
-* fix code issue in v2
-v1 -> v2:
-* on v1 sashiko mentioned that some IRQs may fire after bp->ptp freed.
-  it looks like a false positive, because ptp_clock_unregister() will
-  explicitly disable all EXTTS channels before destroying ptp_clock
-  structure. But there is a possibility of timestampers being active
-  without PTP_PF_EXTTS function set. It can be done through sysfs files
-  and it will change pins configuration directly, but can only be done
-  for TS1..TS4. Disable them explicitly after detaching sysfs files.
----
+--updzfu6jqbf2tt6x
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] can: m_can: Implement workaround for errata i2278 and
+ i2279
+MIME-Version: 1.0
 
- drivers/ptp/ptp_ocp.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+On 14.05.2026 12:25:11, Anurag Dutta wrote:
+> Message transmit order is not guaranteed when dedicated TX buffers
+> configured with the same Message ID are submitted simultaneously via
+> TXBAR write. This is described in J7 errata i2278 and i2279.
+>
+> As a workaround, introduce m_can_tx_peripheral_submit() to submit
+> buffers one at a time using ffs() to find the next pending buffer.
+> The TX complete interrupt(IR_TC) triggers submission of the next
+> buffer, ensuring strict FIFO ordering.
+>
+> Link: https://www.ti.com/lit/pdf/sprz530
 
-diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
-index beacc2ffb166..b3a9480b9bcb 100644
---- a/drivers/ptp/ptp_ocp.c
-+++ b/drivers/ptp/ptp_ocp.c
-@@ -4867,6 +4867,18 @@ ptp_ocp_detach(struct ptp_ocp *bp)
- 	ptp_ocp_detach_sysfs(bp);
- 	ptp_ocp_attr_group_del(bp);
- 	timer_delete_sync(&bp->watchdog);
-+	/* Disable interrupts on all timestampers */
-+	if (bp->ts1)
-+		ptp_ocp_ts_enable(bp->ts1, 0, false);
-+	if (bp->ts2)
-+		ptp_ocp_ts_enable(bp->ts2, 0, false);
-+	if (bp->ts3)
-+		ptp_ocp_ts_enable(bp->ts3, 0, false);
-+	if (bp->ts4)
-+		ptp_ocp_ts_enable(bp->ts4, 0, false);
-+	if (bp->ptp)
-+		ptp_clock_unregister(bp->ptp);
-+	kfree(bp->ptp_info.pin_config);
- 	ptp_ocp_unregister_ext(bp->ts0);
- 	ptp_ocp_unregister_ext(bp->ts1);
- 	ptp_ocp_unregister_ext(bp->ts2);
-@@ -4884,9 +4896,6 @@ ptp_ocp_detach(struct ptp_ocp *bp)
- 		clk_hw_unregister_fixed_rate(bp->i2c_clk);
- 	if (bp->n_irqs)
- 		pci_free_irq_vectors(bp->pdev);
--	if (bp->ptp)
--		ptp_clock_unregister(bp->ptp);
--	kfree(bp->ptp_info.pin_config);
- 	device_unregister(&bp->dev);
- }
- 
--- 
-2.47.3
+This errata is for the "J721S2/TDA4VE/TDA4AL/TDA4VL/AM68A Processor
+Silicon Revision 1.0". The code path you modify is only active for the
+is_peripheral case.
 
+is_peripheral is only set for the tcan4x5x SPI CAN controller, and not
+set for memory mapped M_CAN cores as found on the above mentioned TI
+processor:
+
+| $ git grep peripheral\ =3D drivers/net/can/m_can
+| drivers/net/can/m_can/m_can_platform.c:149:      mcan_class->is_periphera=
+l =3D false;
+| drivers/net/can/m_can/tcan4x5x-core.c:460:       mcan_class->is_periphera=
+l =3D true;
+
+The latest Bosch m_can documentation doesn't mention this problem,
+neither the TCAN4550 docs. Can this be an integration problem of the SoC
+on TI's side?
+
+regards,
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--updzfu6jqbf2tt6x
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCagWefAAKCRDMOmT6rpmt
+0oi2AQDNVRJ+6UHrBF7e3KeiZEmQTfJgSLhbi/bNlnbPpLAvYgD8CzNkA9KGLrJP
+XZMZ59ykSbydVLGQgTHeUyMfe0IxXwg=
+=Lqkc
+-----END PGP SIGNATURE-----
+
+--updzfu6jqbf2tt6x--
