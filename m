@@ -1,159 +1,96 @@
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0121A3A6F03
-	for <netdev@vger.kernel.org>; Thu, 14 May 2026 10:47:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 597443ADB9A
+	for <netdev@vger.kernel.org>; Thu, 14 May 2026 10:49:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778755637; cv=none; b=SiK+u2+LMm5LEMsrZ+h1cYo0dZ3vYFcEfK3NYhU5Qc6wL3IKzlR6pnkykNneqXWrW8y3F5tFE0AI0OzQ84enFOopRsI3LWxRmhxdENJCqZTvYcuSTg6DQbd46rr/ElUQEbU+u2auef8s6fZSZJnHEj5yblw1zuWZNQJZDjWZKzw=
+	t=1778755779; cv=none; b=uDzlczInr6Ume5O+ylq37cCbSn+fNPSvF+YuieFRoVjc0ZsllE9tIksC58Fcoo4e4LAXFgH844W13qr2TBvCK5ef5pkTftdi2Fw70FD5zGK/9G23l0ulLsNnu0yZTFTMbx1KmHlcG80EC24NIFr61xKT6oeEyyMeoxsefb6vpvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778755637; c=relaxed/simple;
-	bh=+CrmjDGr2JNHGvY/tkxLtymQWoIJOtkgZfzqjdARtNc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=cVFNBI5MmMFrRBK8UJ3opPiBXHF4fxPROClWDj4qreGhDqwo51lzDKPwfeVbaTdsloK6RMgBM5TLbrRo3VCPUrTAwV8LhWr8ooiEMnIjiQO/jRc7npU0k3yKSgjLaHw5MuyNbB63Py8ygrNdLUlGhyg2Q+08xpXpoyHQQYmrkfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=Sh1rVCtM; arc=none smtp.client-ip=209.85.218.45
+	s=arc-20240116; t=1778755779; c=relaxed/simple;
+	bh=W2ELaAWxPWq9kV4aD5RtZ5GPohgOHYpCVcJj9TyZ2fg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=U/A8ssKlDzk9oRJUaMpbymnAxnVlxRDw2YKkE0BoZpLCexnp1JJc/38s6eYEqfFKLhFhRjtH3xy3nESlLCwscrKfah/htIQEk8AG1uDQNGRvnCzLKaj7dRKoCxbemtAtXmww5sLE29jonRglW0tjtdVa5VrGCvrwB1lLSZ4wrps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=MyEzHq5c; arc=none smtp.client-ip=209.85.218.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="Sh1rVCtM"
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-bd124546379so613133366b.3
-        for <netdev@vger.kernel.org>; Thu, 14 May 2026 03:47:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="MyEzHq5c"
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-bd36614d329so363555366b.3
+        for <netdev@vger.kernel.org>; Thu, 14 May 2026 03:49:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1778755633; x=1779360433; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=e4uxss1CtZcDp0zNhfAFf+hQx8oKtm2lVjhVo3APIjM=;
-        b=Sh1rVCtM7DUXoe1+qA0CuDQC8kGrQiIUMS3uKythfnVjpH7Gz64cBNjQyvnfyPUEL7
-         ugkA5QM1nWZh1Qf4djLFa3cxY/PRuVWwBOPM/uONTEBSe+aGDCKktwpHccBEkaT2sB66
-         j2BLtLI1ADxoUGNWitbU7LDuMYy5rWI6ev4LKkOuk8lN37U/oy8FHi5nQ9V5zUOuOetM
-         vpFs4xJz/D2IfNUFVI5WHmKpBZtGlodXRtW0u8w24TPt3Eu/wzwWYWmTAgXuNwG7RrRt
-         +LuZh0jFvAkLKDz4w2d19AexrAh9w6VRxna0zuDcqJyI0Rv/lUI9B8I4TANudacLtc8P
-         ybZw==
+        d=cloudflare.com; s=google09082023; t=1778755777; x=1779360577; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=W2ELaAWxPWq9kV4aD5RtZ5GPohgOHYpCVcJj9TyZ2fg=;
+        b=MyEzHq5coipkYbJMd1yo7waPyBK3HkZ8XjybpErDYtrdDgrj5r6HSfF/nhbiSveM1D
+         bs+GkhECWjRn6m2FrgRNXo3EpYuqGZmfvNr0n7g72YwN3yM4v2cHFp3VC6lbU+l+HX3G
+         otml/B2tvFm8bn2HxZSO7s9nTAcopIP7EyHiCHDYL6OyPEtWS2ck3FUobH/Ml7PboZeI
+         86Fg+pzE0xt27l9SxaHxDHmIQ/vtKTzM1L1lStJNlkJ2CAjavVNsavKVILKfUF56IODy
+         KdZhPCvitlO/kbz92w5UQRV0vlU7QPpCf+pPIy+DyedgLxk59olG3HSQpBQkeAWE6AGA
+         tDDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778755633; x=1779360433;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=e4uxss1CtZcDp0zNhfAFf+hQx8oKtm2lVjhVo3APIjM=;
-        b=AOCURqUG2R40gyPLuGQ0W4MiXiiOX3onAvEEYlVT5dyDRhdvPUGfsQdpxrRQ6J8dYO
-         +POoXCihd/Lq29/2C55qmZQrpDz4xhwH+nO/ourDOWDvu4NyPQ/YpK4MlcBL5/wYSs4F
-         IPqBvROavEzGvkwVjpt2cN+r0PHk/qwJhtEIz4tHk6Cs+eRctWNXClhUv++m/MnjPAIL
-         nClkz3+qPRxPGj7qSoGQS/lfRc1EesaJkJMmkkZFlRe0hZpvSpnvmSBUq623btbB+ZAp
-         bAG5LVI0+wkrB/3GFLuHjTiilUef2PH4OOYJ/cte53bPp0KNhXn2yNgsyN61Vl01QF4N
-         OJwg==
-X-Gm-Message-State: AOJu0YxfkxUcwhom51pI6KOTh2UmVTrCrZRA3zYeKLH2T3VBrIzslaGo
-	9OxKkfZ6WMKHpyf1yGMon/SgdtxRPSbnDO88xykMqbVu7GS0yXfiRa/RDvEQcBcIbLc=
-X-Gm-Gg: Acq92OFoi3XK65QK0ph9Y2awNVqIvXbSmcJGdjFOGS1AH3mYbrAtdz7Tq/d9XkIa06k
-	BU1ns71VnQe5Hg7xSrNgwXuANE5Mc4Cyqmn70AQgXSo3v1yem82efQ2gU0RSJD8XMdO4ifzLMFw
-	Pz/6u5pNc163/i5GlJHf9ffbZZaTGFfds0iPaDaEuGHqpHLCXPh3naVQL31QUSoGE0YFjVMYte+
-	/gmc9qqnnEupoB4kcL8hIY1gM3cFR6nYI4hkqu9kE8RgkvnAYxB+1yd3TKh833yoiaIUdAr/mA6
-	JzNEc1EDGKaxR0UfqFjHq2okKGCBBlyShkYQUF3fg6JnJviUfZQHikGrbrM1ROQ+MwqIEZYBlFc
-	UraYztcNClSaFr+gLXIrbzLO7ic9AnnapAm38fqkeIAZV6dToFpOHPbGomndqgRJ5PyxsOz56W+
-	Mfr0l3KUwq1B9o3xrK04ndvV4WSBIqZmwQ1rTrfaOUW29PfNeO/yHWA0tvSotdd7pFiPp+bfNzw
-	jLDsWqt
-X-Received: by 2002:a17:906:7945:b0:ba6:8f34:b419 with SMTP id a640c23a62f3a-bd3dfc6cea8mr443057266b.13.1778755633367;
-        Thu, 14 May 2026 03:47:13 -0700 (PDT)
-Received: from cloudflare.com (79.184.84.124.ipv4.supernova.orange.pl. [79.184.84.124])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bd4f4c3150dsm75244066b.24.2026.05.14.03.47.12
+        d=1e100.net; s=20251104; t=1778755777; x=1779360577;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=W2ELaAWxPWq9kV4aD5RtZ5GPohgOHYpCVcJj9TyZ2fg=;
+        b=UY/vyUEuq+Jx/9O/NqJXmmskVP80sC+rZtQih0ok8y+HNAg+07xjRUbTrYQQqUtOY1
+         uKfCEGmthnaFymAKd5dkpTtqW03ZkfvjjbVDDCB0qq3RZsO/WvlEo/4sGDQiRtdvJNWd
+         5iANFafZi2n5hkZBhUrox39UgmWDRVXrhEPpcKjqGc7W3m6NXJYlI7bcYVg3KVXOZ9aG
+         WTFZpjlUJYTsANomAV0e6+NHRU7NY72DX98p54qKiRaVZu4FUhWC19+PvNprYn1DP6tt
+         QjEGVTPszd8wDU++7LxOe1RHywGoRKfLknzDd13nbEql1FHQ4MCXVBDG1PZMTGVAxGdg
+         mStQ==
+X-Forwarded-Encrypted: i=1; AFNElJ89u7jk7YYCd5g59jl87ARDsGcn6L9E8t8QsIg+6CRJOZXNBhRzOxPtGJA0xiK8OAHrT/71qIU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZDC0CttD8bi6hXzkgtFHqMJL7ZwYyreUTqdAmT8eCez5j13a9
+	XFoCia71QIvmqffjRaLl97yYb4jCVCKQL+CckUeUJpDCUH70C2I1i1wX7dR7w65rGYo=
+X-Gm-Gg: Acq92OFYDclo3hd93t5WXbhhziYQ6Rf640HZr77CU48qwr2BppOO/zmpc0yw38Ab2Y7
+	dGyYo34czz1NZXbl2dibh7k4i+Rv06WOR6xYrGGCp6dlCsDhJOL1t6NKS2tBcvxOIEENEFtqBt7
+	O0ZxozDED5VKY7hVQb0AGwkiJ9Is6A7XLATlIEbMyOXkC6jVNaeDpPEpmvI95mgPWI6vd9X0a9n
+	7ihfTgMc3wh4spmj9bXQtZOnKOpo9WObn/p8bxpmm+j0BUU2BTv77neCddgW4zXxOv5Tux1kOF/
+	GdEqn1OxCC0XbaGFYdzA1c5U4QMcZPBnvyaAubIzDpCc66tAq1Qe+hEEMSzCym3PlN1di3aAhc3
+	71DIr1e5LJ84dku9U9aZ7769T7ZOSZ6sC5m3AZJ9o2WY6H1Au2jHC6G+4kiVOEfg2o0IXhAD1uY
+	wXj+pOIphFJhQFEo2+NXIul935Z1I=
+X-Received: by 2002:a17:907:97ca:b0:bce:b80d:2843 with SMTP id a640c23a62f3a-bd3c18364famr554084766b.32.1778755776611;
+        Thu, 14 May 2026 03:49:36 -0700 (PDT)
+Received: from 2NNP224 ([104.28.21.182])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bd4f4dec7d1sm73895166b.32.2026.05.14.03.49.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 May 2026 03:47:13 -0700 (PDT)
+        Thu, 14 May 2026 03:49:36 -0700 (PDT)
+Date: Thu, 14 May 2026 12:49:34 +0200
 From: Jakub Sitnicki <jakub@cloudflare.com>
-Date: Thu, 14 May 2026 12:47:09 +0200
-Subject: [PATCH net v2] net: Clear skb metadata in LWT BPF xmit
+To: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Jakub Kicinski <kuba@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, 
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Martin KaFai Lau <martin.lau@kernel.org>, netdev@vger.kernel.org, bpf@vger.kernel.org, 
+	kernel-team@cloudflare.com
+Subject: Re: [PATCH net] net: Clear skb metadata before LWT xmit
+Message-ID: <bdyx3frk2qpw5ujueebmhpyuadfybf7jtjkr5fqajytruh4c3i@yddzh6pypa42>
+References: <20260428-wip-skb-local-storage-from-scratch-v1-1-8f7ca9b378ce@cloudflare.com>
+ <20260430173153.5cd1d348@kernel.org>
+ <87jyt78y93.fsf@cloudflare.com>
+ <20260513172612.6dcc5887@kernel.org>
+ <dff89f5d-01ff-4869-bff2-5c5b285cf578@iogearbox.net>
+ <68a1cc81-80b2-4d49-916a-2d3aca4d54a6@iogearbox.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260514-bpf-lwt-drop-skb-metadata-v2-1-458664edc2b5@cloudflare.com>
-X-B4-Tracking: v=1; b=H4sIACyoBWoC/z2Nyw6CMBBFf8XM2jGAD9CV/2FYDNOpNBZK2goaw
- r9bMXF5X+fOEMQbCXDZzOBlNMG4PoliuwFuqb8LGpU0FFlxyg5Fhc2g0U4RlXcDhkeDnURSFAn
- PlDeKpcyOJJD2gxdtXiv7Br1EqJPZmhCdf69/Y75Gf/RkfkTrmCx+e5T+tXcdBvYUucUxxxwrX
- TKdm31ZsVzZuqfSlrzs2HVQL8vyAbhq4IDVAAAA
-X-Change-ID: 20260428-bpf-lwt-drop-skb-metadata-9a1bdce705ae
-To: Daniel Borkmann <daniel@iogearbox.net>, 
- "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Martin KaFai Lau <martin.lau@kernel.org>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, kernel-team@cloudflare.com
-X-Mailer: b4 0.14.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <68a1cc81-80b2-4d49-916a-2d3aca4d54a6@iogearbox.net>
 
-skb metadata is meant for passing information between XDP and TC.
-LWT programs cannot access the __sk_buff->data_meta pseudo-pointer.
+On Thu, May 14, 2026 at 09:18:07AM +0200, 'Daniel Borkmann' via kernel-team wrote:
+> Maybe the one case where it could break down is if you would
+> try to transport data from container-related iface (e.g. tc @
+> host-facing veth, or netkit) all the way to phys dev when there
+> is tunnel in between. Not sure if it would survive today,
+> potentially yes. In such case maybe better to move this further
+> into lwt related paths?
 
-However, LWT_XMIT programs can call helpers that move packet data.
-One such helper is bpf_skb_change_head(), which uses skb_data_move() to
-move both packet data and metadata after skb_push(). skb_data_move()
-expects metadata to sit immediately before skb->data. This is the layout
-that commit 8989d328dfe7 ("net: Helper to move packet data and metadata
-after skb_push/pull") preserves for TC(X) programs when skb_push() or
-skb_pull() moves packet data.
+That sounds good:
 
-The IP output path can run LWT xmit before neighbour output has built the
-outgoing L2 header. For forwarded, or otherwise RX-originated, packets
-skb->data points at the network header while skb_mac_header() can still
-point at the old L2 header. If such an skb still carries XDP metadata,
-skb_data_move() sees metadata ending at skb_mac_header(), not immediately
-before skb->data, and warns:
-
-  WARNING: CPU: 21 PID: 454557 at include/linux/skbuff.h:4609 skb_data_move+0x47/0x90
-  CPU: 21 UID: 0 PID: 454557 Comm: napi/iconduit-g Tainted: G           O        6.18.21 #1
-  RIP: 0010:skb_data_move+0x47/0x90
-  Call Trace:
-   <IRQ>
-   bpf_skb_change_head+0xe6/0x1a0
-   bpf_prog_...+0x213/0x2e3
-   run_lwt_bpf.isra.0+0x1d3/0x360
-   bpf_xmit+0x46/0xe0
-   lwtunnel_xmit+0xa1/0xf0
-   ip_finish_output2+0x1e7/0x5e0
-   ip_output+0x63/0x100
-   __netif_receive_skb_one_core+0x85/0xa0
-   process_backlog+0x9c/0x150
-   __napi_poll+0x2b/0x190
-   net_rx_action+0x40b/0x7f0
-   handle_softirqs+0xd2/0x270
-   do_softirq+0x3f/0x60
-   </IRQ>
-
-Drop skb metadata in the LWT BPF xmit path, just before invoking the
-program. Doing it late, rather than in ip[6]_finish_output2(), preserves
-metadata for tc egress on the outgoing device when no LWT BPF program is
-attached - the only scenario where carrying tc-layer metadata through the
-IP output path could be meaningful. Non-BPF LWT encap types do not run
-helpers that touch metadata, so the BPF xmit op is the only site that needs
-the clear.
-
-Fixes: 8989d328dfe7 ("net: Helper to move packet data and metadata after skb_push/pull")
-Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
----
-Changes in v2:
-- Clear metadata in bpf_xmit to allow access from tc(x) egress (Daniel)
-- Add WARNING snippet to the description
-- Link to v1: https://lore.kernel.org/r/20260428-wip-skb-local-storage-from-scratch-v1-1-8f7ca9b378ce@cloudflare.com
----
- net/core/lwt_bpf.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/net/core/lwt_bpf.c b/net/core/lwt_bpf.c
-index f71ef82a5f3d..d26cb9bb8189 100644
---- a/net/core/lwt_bpf.c
-+++ b/net/core/lwt_bpf.c
-@@ -284,6 +284,11 @@ static int bpf_xmit(struct sk_buff *skb)
- 		__be16 proto = skb->protocol;
- 		int ret;
- 
-+		/* LWT BPF programs cannot access skb metadata but can corrupt
-+		 * it with helpers that operate on skb headroom. Drop it.
-+		 */
-+		skb_metadata_clear(skb);
-+
- 		ret = run_lwt_bpf(skb, &bpf->xmit, dst, CAN_REDIRECT);
- 		switch (ret) {
- 		case BPF_OK:
-
-
-
+https://lore.kernel.org/r/20260514-bpf-lwt-drop-skb-metadata-v2-1-458664edc2b5@cloudflare.com
