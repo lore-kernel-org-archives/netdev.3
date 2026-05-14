@@ -1,63 +1,63 @@
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B837A423148
-	for <netdev@vger.kernel.org>; Thu, 14 May 2026 14:48:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AD57423A8C
+	for <netdev@vger.kernel.org>; Thu, 14 May 2026 14:48:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778770097; cv=none; b=H0bEDBnGnwjc6oMyifmk+X+GCrMaKm4g2GcjV09SSmcQuYSyarXgiaIwMykpwFUcfwDQG4AW2RCq3vzuoI6WXZJJeDSCkTJlDCo4lVMs5tGi1VSTp0GcmGeR6HTSlS/LyWChNExkp17GqNVnyUjbd7do3DjUnPcQGQZ3BosQfpU=
+	t=1778770098; cv=none; b=uRXF3f1YMiXTrrAiKxqbYISau/a/J0XIa8R8m20IjVz2h6HUD78NLaeVEEIxbMlZRQZ1ZOVyQUOmq7gS/JAlmg0jDt6ImTYaf3VuKb6uXAIEuhjMvSTP753Nd8tVS9YpI3VOohMsQCkCg4PK71VaBwAhDteHresDYEi1PMahaoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778770097; c=relaxed/simple;
-	bh=S1H9KuR4CQlp0ArePGaPjstzYtFmfwP7PG5mYyROHMw=;
+	s=arc-20240116; t=1778770098; c=relaxed/simple;
+	bh=GGnsOngtYsNL8PvXlOM6kpuD0nfEwzYqtYtxO717D9w=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ORggdK0lhMqBneInj72cveFSuuS/erszFu9IpREVUjq3ajl0t+2rKegSPIbU+xI/0nFo/kwpStvTB6PfT+JkG64dUoD6lz4RKbu9CjgPgLOgLYGdThmazgBYxpub4eF5OL5Z29GBPKk/97dRg4QbP32hUhDdyeKlSiPJID5K8vI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20251104.gappssmtp.com header.i=@mojatatu-com.20251104.gappssmtp.com header.b=Lq9tW9Ky; arc=none smtp.client-ip=209.85.160.177
+	 MIME-Version; b=tZT4jPXyuUY9U4R3MXO9iu8b7+FhE6giLmw1MvdbQO2dRM8Ns3t7BP75n+4GnTQH0QrsAz6VCCi4gzGIUdzCmUl4X9W3OJHSXPnrLJN1eQh26nQC1mFsX4Cr33wmpvjnUCDholWbxgFcLkmN0eddx7vxAOTqnaBDNux84VaAvlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20251104.gappssmtp.com header.i=@mojatatu-com.20251104.gappssmtp.com header.b=T8nxgny9; arc=none smtp.client-ip=209.85.219.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mojatatu-com.20251104.gappssmtp.com header.i=@mojatatu-com.20251104.gappssmtp.com header.b="Lq9tW9Ky"
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-50e5bea4045so58874461cf.3
-        for <netdev@vger.kernel.org>; Thu, 14 May 2026 07:48:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=mojatatu-com.20251104.gappssmtp.com header.i=@mojatatu-com.20251104.gappssmtp.com header.b="T8nxgny9"
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-8b4298d271fso126978816d6.3
+        for <netdev@vger.kernel.org>; Thu, 14 May 2026 07:48:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20251104.gappssmtp.com; s=20251104; t=1778770092; x=1779374892; darn=vger.kernel.org;
+        d=mojatatu-com.20251104.gappssmtp.com; s=20251104; t=1778770095; x=1779374895; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=YSX5EMIChUIpPjobkEYrWFyOPpSxx/2oJIRRqSqdDzs=;
-        b=Lq9tW9KyASKu0DV77d3eD6F12NN9Hwxp0v5r7Nm+uOo2DXXCKuXItQ+JzKaNw7geb8
-         B4IsGSZzMxXiV3ABa1UfGnw1zLJTAYxWgFaWoS1YwKvSd+ypINSYFLDCict2bsUPzcAY
-         oMZOLV4f8OCeaiDGFPeDvJba3oBBVcPCrrew1UqW0pVZQA7cFFgJrWTpKni2GRRVgAUZ
-         kMC05l21BwPApdmshMVU+oQWmJ2NaC+FktEwe1/nmo3deYnVHHV3nGgF0T9xG9C2t6Yd
-         4Vgax/XogcL72kpJX7uQO/1GxQng53idzZRyryCjo4f1gR74Bz1Lv3pQtW7eCdq7Rsox
-         cm9w==
+        bh=KFYthfVWB66dFenrA+rsCMrgxtWnGXQ0VnKrRyQwRG4=;
+        b=T8nxgny9ByIfPQCwfYCs4V+1RSQ7xiXzyVK5FAegy8p137ulW369eMKtvnEnth7nIZ
+         rjPIjVReQlytoD6mS9Z2cNswFgAhtRZQ8wSDKJasFwjIsCXYzEXdH/F0QRRersbXO6d8
+         WHyVIIuTwD59bbmmcnuCSzDYsgkW7KdfGxK1XiiFGb25MJRIh15HKFKzQDxbH2AJcMO8
+         beS5Xp/Nq+3lSQVZwgZBkI9zdl6mFYwLsH/GKxW65DHiMPs0Q+7Oku3efLogBnhrSOgM
+         P6OrXngKqus90aIwBhTcHRSPnEDKt+VR+6KnbIGDdJyjzJP54pebx8e3EgeiLmTf6fpa
+         YBXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778770092; x=1779374892;
+        d=1e100.net; s=20251104; t=1778770095; x=1779374895;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=YSX5EMIChUIpPjobkEYrWFyOPpSxx/2oJIRRqSqdDzs=;
-        b=ZyAz5Fm43e0jA7h+W3b7zFurWL1wXPnZukD0ygj10jvX9e0zm6r685Srz8XE12ccd6
-         DdfXakJxTHpQ22SEw/7qzdZB9zGZ4aVQBG0SGs/vakd1sBCQ7Fj4+pgfGPrTPnAa3kvY
-         wk2SExUJeBG/H5eTKyPnjVwro89DzZ99NyMoggvXubFc4rl6GVEfgTx5Myr7WZjVgqiH
-         WK6xlEXAFKl8HOeb6NMy6U5gGnPXf9iKiYyRjQU5I19dSkGyIfwrfFekfJL8jwXGR/wT
-         +RtzizrplX/lhyHq3o/LSgoyGvmzNPLFJslCkmQaTQqJtcsabAYONZiG6L7EWsJdCgiC
-         9uxA==
-X-Gm-Message-State: AOJu0YzxkXGB9vfhekWr7MfSAelRBesVKwZo4db7WOFpy8MvNSLgaIqx
-	etr3FG1vK6uvXaf5VKBdxF3xg1IzABzFQfAISYdWYVRpNmMtMNh/eTs69ZrldTG7qmbKh81jSpO
-	O1nejJA==
-X-Gm-Gg: Acq92OGdikRluJQyLF85XWnlbhoP51rvKDj1NE/TVpYG6TNUjT9lsCduiuIDTZ1nPVL
-	qW7jXjZilfpHuzECuX2U0kULyZuGADXHqBduWbW5sOyctdAzlCZsYqE36r9Jz3Hz40vQ0OX9HaB
-	pPoGTB9fBraPKn7llOmoD+oUjceRSy2eYKOL67PorCeAPaLa4KVS8UwCRQ5WDGbKd610ikhrnLk
-	02OZUrrhYEu7bnYN4P3v1DeRmpRTJC7s+TPpnxiCtg2RJy3lhiGa1CVAzvUn7RoAGiyvkf6KrZd
-	wa+uAjFIzBaV1H5pcvHfNTLcIi/0SVMFQ06r3iK3x22C7vCFsJvmDnhTQZWGK5sklS0YP+GmfGe
-	DJfyu/kLdFaOXq+RObLIEoM8MB/IRjF/g9VJEzwaafk0syOHslfhoJWK1uZbwzsIHX9YZTqcn2X
-	KowcRM3KXg6iG+yDnllISu/bjEuqA=
-X-Received: by 2002:a05:622a:189a:b0:50f:b1e6:a8f6 with SMTP id d75a77b69052e-5162f4edccbmr107092961cf.26.1778770091814;
-        Thu, 14 May 2026 07:48:11 -0700 (PDT)
+        bh=KFYthfVWB66dFenrA+rsCMrgxtWnGXQ0VnKrRyQwRG4=;
+        b=CvC9b47n/WDCfaxwgf7O6ouSDVKY+kdHNbxALVM23950yhWEkTCVJnvpCeFV1g44l1
+         UmU5qS83k7vK+zOeaSnk7iVKaxZ+RWE+ivcKl9eGCSGxg/Qogcu3ZeNNDQI54YPTIwif
+         x/gajL47wLX55UaS24emCg/T+jOOr6P/bNwucoE7k8/KkKYUJDLRxPSC4jqUATONhToH
+         eAq7rhaxY6Fy6E98Ng6fsLyEVGZT7U1KLpRjieiByUISZnY8YklCg7/bYSLX5Bl9bjzx
+         wGW4jip4IqPhViZ17RgVrZqOo9AEd6kQT7mvJpylIrOK9a3dHVm53k5fYKD1lUV0cr7b
+         7FLA==
+X-Gm-Message-State: AOJu0Yz75h7jeeatRWxm2SWEJHwQbnAwzaHQM3Xu22HuejiT67EvUCzV
+	lWlgDNPx1U3zyeYHRtFMWOBzxCI48gde2vVHD/NlpS83lxyqOvaVLgNi0DSVmc1x6cnKwtH2gGv
+	GkeYAlQ==
+X-Gm-Gg: Acq92OEGLYtmijjVyuAyooNi256cFr+jjLr7CXVwMkRIscuWo6SpDjDW97TQfpBjBH+
+	6pkq+2UytmIle8Row4VcGpCLVQ6JIOLhYP0GD4bYqhR0tbiT2ZeQ8y5y2P2ExwTr+VOHZ25eukH
+	jngI4xeUbvWDdMtc5vLa3rmYI9mikmlnVZKH1D5Q8weaXQrsFGri5g2pjZgaMc/itO1SbVKE633
+	aIgusFDLRHRotSh+AKrOCZRA/hXATNsg5sgz4SpgfqWewQhabwjyG8EHTnjMAKFzhPDnc03c9zz
+	g1cvtbTtuGduDICPkQEBoHijqeTCLGwP99ZMrMzadQjbNM1WyBiA20KX0lDI3RLhfjRWUmMEXgP
+	VT27/1Lw80CAWMYBlPEY3Q+MGgAwS/yD03MoHG36MzZMsbNDQhijkU5IZxnj2Xm7KwdmtjJ0xsW
+	f2EdG9uTRh92Z6SynWd7WIbj74zUeWm20gNcl5oA==
+X-Received: by 2002:a05:622a:544d:b0:514:5d88:8296 with SMTP id d75a77b69052e-5162f6475e0mr109811711cf.52.1778770094596;
+        Thu, 14 May 2026 07:48:14 -0700 (PDT)
 Received: from majuu.waya ([184.144.29.222])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-516456c0a42sm19125461cf.10.2026.05.14.07.48.10
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-516456c0a42sm19125461cf.10.2026.05.14.07.48.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 May 2026 07:48:11 -0700 (PDT)
+        Thu, 14 May 2026 07:48:14 -0700 (PDT)
 From: Jamal Hadi Salim <jhs@mojatatu.com>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -76,11 +76,10 @@ Cc: davem@davemloft.net,
 	toke@toke.dk,
 	willemdebruijnkernel@gmail.com,
 	hxzene@gmail.com,
-	Sashiko <sashiko-bot@kernel.org>,
 	Jamal Hadi Salim <jhs@mojatatu.com>
-Subject: [PATCH net v5 7/9] net/sched: act_mirred: Fix skb leak in early mirred redirect returns
-Date: Thu, 14 May 2026 10:47:45 -0400
-Message-Id: <20260514144747.527175-8-jhs@mojatatu.com>
+Subject: [PATCH net v5 9/9] selftests/tc-testing: Add netem test case exercising loops
+Date: Thu, 14 May 2026 10:47:47 -0400
+Message-Id: <20260514144747.527175-10-jhs@mojatatu.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260514144747.527175-1-jhs@mojatatu.com>
 References: <20260514144747.527175-1-jhs@mojatatu.com>
@@ -94,90 +93,58 @@ Content-Transfer-Encoding: 8bit
 
 From: Victor Nogueira <victor@mojatatu.com>
 
-Since retval is set as TC_ACT_STOLEN in the mirred redirect case,
-returning retval in cases where redirect failed will make the core
-code not free the skb and thus cause a leak.
+Add a netem nested duplicate test case to validate that it won't
+cause an infinite loop
 
-Fix this by returning TC_ACT_SHOT instead in such scenarios.
-
-Fixes: 16085e48cb48 ("net/sched: act_mirred: Create function tcf_mirred_to_dev and improve readability")
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://sashiko.dev/#/patchset/20260413082027.2244884-1-hxzene%40gmail.com
 Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Acked-by: Stephen Hemminger <stephen@networkplumber.org>
 Signed-off-by: Victor Nogueira <victor@mojatatu.com>
 ---
- net/sched/act_mirred.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ .../tc-testing/tc-tests/qdiscs/netem.json     | 33 ++++++++++++++++++-
+ 1 file changed, 32 insertions(+), 1 deletion(-)
 
-diff --git a/net/sched/act_mirred.c b/net/sched/act_mirred.c
-index 2ce7ca6b5cc7..97f73cb20efa 100644
---- a/net/sched/act_mirred.c
-+++ b/net/sched/act_mirred.c
-@@ -372,7 +372,8 @@ static int tcf_blockcast_redir(struct sk_buff *skb, struct tcf_mirred *m,
- 					 dev_is_mac_header_xmit(dev_prev),
- 					 m_eaction, retval);
- 
--	return retval;
-+	/* If the packet wasn't redirected, we have to ask core to free it */
-+	return TC_ACT_SHOT;
- }
- 
- static int tcf_blockcast_mirror(struct sk_buff *skb, struct tcf_mirred *m,
-@@ -412,7 +413,7 @@ static int tcf_blockcast(struct sk_buff *skb, struct tcf_mirred *m,
- 	block = tcf_block_lookup(dev_net(skb->dev), blockid);
- 	if (!block || xa_empty(&block->ports)) {
- 		tcf_action_inc_overlimit_qstats(&m->common);
--		return retval;
-+		return is_redirect ? TC_ACT_SHOT : retval;
- 	}
- 
- 	if (is_redirect)
-@@ -430,8 +431,8 @@ TC_INDIRECT_SCOPE int tcf_mirred_act(struct sk_buff *skb,
- {
- 	struct tcf_mirred *m = to_mirred(a);
- 	int retval = READ_ONCE(m->tcf_action);
-+	bool m_mac_header_xmit, is_redirect;
- 	struct netdev_xmit *xmit;
--	bool m_mac_header_xmit;
- 	struct net_device *dev;
- 	bool want_ingress;
- 	int i, m_eaction;
-@@ -464,11 +465,13 @@ TC_INDIRECT_SCOPE int tcf_mirred_act(struct sk_buff *skb,
- 		return retval;
- 	}
- 
-+	is_redirect = tcf_mirred_is_act_redirect(m_eaction);
-+
- 	dev = rcu_dereference_bh(m->tcfm_dev);
- 	if (unlikely(!dev)) {
- 		pr_notice_once("tc mirred: target device is gone\n");
- 		tcf_action_inc_overlimit_qstats(&m->common);
--		return retval;
-+		goto err_out;
- 	}
- 
- 	if (!want_ingress) {
-@@ -478,7 +481,7 @@ TC_INDIRECT_SCOPE int tcf_mirred_act(struct sk_buff *skb,
- 			pr_notice_once("tc mirred: loop on device %s\n",
- 				       netdev_name(dev));
- 			tcf_action_inc_overlimit_qstats(&m->common);
--			return retval;
-+			goto err_out;
- 		}
- 		xmit->sched_mirred_dev[xmit->sched_mirred_nest++] = dev;
- 	}
-@@ -491,6 +494,11 @@ TC_INDIRECT_SCOPE int tcf_mirred_act(struct sk_buff *skb,
- 		xmit->sched_mirred_nest--;
- 
- 	return retval;
-+
-+err_out:
-+	if (is_redirect)
-+		retval = TC_ACT_SHOT;
-+	return retval;
- }
- 
- static void tcf_stats_update(struct tc_action *a, u64 bytes, u64 packets,
+diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/netem.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/netem.json
+index 3c4444961488..472b672a600d 100644
+--- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/netem.json
++++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/netem.json
+@@ -336,5 +336,36 @@
+         "teardown": [
+             "$TC qdisc del dev $DUMMY handle 1: root"
+         ]
+-    }
++    },
++    {
++        "id": "8c17",
++        "name": "Test netem's recursive duplicate",
++        "category": [
++            "qdisc",
++            "netem"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "$IP link set dev $DUMMY up || true",
++            "$IP addr add 10.10.11.10/24 dev $DUMMY || true",
++            "$TC qdisc add dev $DUMMY root handle 1: netem limit 1000 duplicate 100%",
++            "$TC qdisc add dev $DUMMY parent 1: handle 2: netem limit 1000 duplicate 100%"
++        ],
++        "cmdUnderTest": "ping -c 1 10.10.11.11 -W 0.01",
++        "expExitCode": "1",
++        "verifyCmd": "$TC -s -j qdisc ls dev $DUMMY root",
++        "matchJSON": [
++            {
++                "kind": "netem",
++                "handle": "1:",
++                "bytes": 294,
++                "packets": 3
++            }
++        ],
++        "teardown": [
++            "$TC qdisc del dev $DUMMY handle 1: root"
++        ]
++     }
+ ]
 -- 
 2.34.1
 
