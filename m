@@ -1,137 +1,594 @@
-Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 884A335E529;
-	Thu, 14 May 2026 09:45:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.22.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BD25368D42
+	for <netdev@vger.kernel.org>; Thu, 14 May 2026 09:51:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778751909; cv=none; b=BZM7BU7Sy8+n62A4/CemlJJph+uNifeVbW5rZ1tWYyOl/HluulbYtWd38mTWUIspOtkOAg7wPCu2tLoem5kPKQB/yDZYqtsvauPbPDQiIk/qeWje66+EuBObh3UHzeRLfhYNkyGUzDj75vUmnX0Q8UFkCH6B2e4F3d0w8m2B7u4=
+	t=1778752307; cv=none; b=NE5IzwZCnxJLrLE/iNc+FiuSIMuZ/yvWHiKZMNmIPrQ8piKDkMfpLSop/VcNdr7hsaE9nMSPfN0eC0BLlOzQZ4uebSdUYQkDEeYgrd7sETwbG7oRnN3cEX57yZYSseCYaCfp2t/w0Cos4RtaM1uBNpS9cq4O8BthyybOnEDH8hQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778751909; c=relaxed/simple;
-	bh=6R6H6lzmBrj1FVCMIqwJDCwFNEbTa/JRPrHEsL6rJkc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GA5ToUTgyh+gTy8RPbZysOtgcxppORSVvZdVKT/ow0jEF/nNKh6u7LD+Mdq7mp4sh9/w5znzx0g0i/qWbG62PcgLNf0nC3/EqjERlTT58WPMsGZQa0mljrL6gY5aqiKzXr7g7hpqEcnn34OaFWKVt1BmVMvb+4IQ4yp4tT2jhfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=gfcL+qfU; arc=none smtp.client-ip=54.207.22.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+	s=arc-20240116; t=1778752307; c=relaxed/simple;
+	bh=UkJK+EX4KD9bOnt+xHZu8t0Ov9lQUVIMUzA1ilHkXC4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=slUrhZZ46Y+nj0ORQmNxCemMAbQS1Wzo1fYUj8oZ2j6Yozw5UoxbFjQNEBWf2BaN+Ep9FmtI+2CYCaDSglnb6NDYX2Bd7wHhbLJWqJoQyLwrwaPzM5gPdELJszCCtG7GC+DuCot6VVvhf72ZU2HyvBBX8fWpCmmxVSbjRP88yKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=KHs0QaYK; arc=none smtp.client-ip=115.124.30.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="gfcL+qfU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1778751895;
-	bh=bUkOYv+xdQqslTPCYeG2m2MwzmalrbJ+MB0cr5TCMME=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=gfcL+qfUvMIYXARxVagY5RoLRo41dakVNCzgJHe0zm4db2NX+pAaca/IQXbQOKhOO
-	 J84CfELDW1zfFSef/JzSQGw9zzfJrFmnVC15YhtaCq0C5cJZOV1xvpqB0KRsIfKzNQ
-	 nRnJflN/KHgfijKVLSal3uM2LkQ5IZAIvY4O4FAk=
-X-QQ-mid: zesmtpsz9t1778751881t10bacff5
-X-QQ-Originating-IP: 76wr0ZChEcTJMOtxswo+SVUpq+DtfnDY+5hXNjLAp5E=
-Received: from PEN202512010004 ( [113.57.152.160])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 14 May 2026 17:44:39 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 1662633885266725282
-EX-QQ-RecipientCnt: 13
-From: Xu Rao <raoxu@uniontech.com>
-To: idosch@nvidia.com
-Cc: davem@davemloft.net,
-	dsahern@kernel.org,
-	edumazet@google.com,
-	horms@kernel.org,
-	kuba@kernel.org,
-	kuniyu@google.com,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	raoxu@uniontech.com,
-	syzbot+e2af46126e0644cbebdd@syzkaller.appspotmail.com,
-	willemb@google.com
-Subject: Re: [PATCH net v2] ipv6: addrconf: skip autoconf on unregistering devices
-Date: Thu, 14 May 2026 17:44:12 +0800
-Message-ID: <16DB33EB3B04B258+20260514094412.1497787-1-raoxu@uniontech.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260513073031.GA344043@shredder>
-References: <20260513073031.GA344043@shredder>
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="KHs0QaYK"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1778752302; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=dTqc0416qRhc02v9/8+4EcxV/vKQxy8Dq1aXhmWahHA=;
+	b=KHs0QaYK/sLj4SZq3h7p/s3HC6iPw/xuZtUA0EGFYRtAQ8noUf0QskiG+PsV360IOYBeblHt69Asc49HSvhlWIiTHKCOOn6Ssx79MULNECxqKvopNvFcgB64tTHh6z3RJaMWbIjGA6RVuuXIGDYqEyjJbDDDbiiFDcUdR3Sqs6U=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R831e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=xuanzhuo@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0X2wXL8b_1778752300;
+Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0X2wXL8b_1778752300 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 14 May 2026 17:51:41 +0800
+From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+To: netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>,
+	Philo Lu <lulie@linux.alibaba.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Dong Yibo <dong100@mucse.com>,
+	Mingyu Wang <25181214217@stu.xidian.edu.cn>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Dust Li <dust.li@linux.alibaba.com>
+Subject: [PATCH net-next v43 2/8] eea: introduce ring and descriptor structures
+Date: Thu, 14 May 2026 17:51:32 +0800
+Message-Id: <20260514095138.80680-3-xuanzhuo@linux.alibaba.com>
+X-Mailer: git-send-email 2.32.0.3.g01195cf9f
+In-Reply-To: <20260514095138.80680-1-xuanzhuo@linux.alibaba.com>
+References: <20260514095138.80680-1-xuanzhuo@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Git-Hash: 1b215e28dce9
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: NFQMG86uACrUl5CHwzwg0SBS+2daVpq5ImR3AGQUNdjiW3KPc43jFehF
-	IXPhYP4wvif1UhKE7obHNyC9uxezSyaZ3Cezc2E2IHpJYjfmHuus28BmbzIv6rKfWB60CoT
-	YLYcu7a/0kzUEuOx2/PRhxOX8SmqwZsfJHHGsig0Yi8D1xIPtnX9d3ahjN6FdC2x+/1fAH8
-	25txtvuZmEi2ScTPZyuxnJYQiMScVpnUuCE001umpffiaZ3dBMl3jbB2uPu42+Be/tZyEc6
-	yvr/4cCTAH2Zj4PHQSZBCSA7XRaKMACj0eFuMxUOVWjw1iZM2PqiRls73ImXhiBEUgmUsLl
-	fBcrbX/rKg1OIaAX21hG1mqljipBCjSKZhtvGEIN0C46qoPTTi57glAyAy+kBdvPViE/mqr
-	PMlnOew/CzIFEL4Pyqe7a1a/NfLOR0F0NY2NG4Q7T57BD7Aa2mHf9KGdl4Z5tBJ7Bhh5RGM
-	tG3m51ICUNxuCPazCGu4ra4+gLwBsxTBmD2U5mKlecrUfr+ipFhgZyHVjKj8cK3G9MtN044
-	AuWBDJ209W5auVakHpREE5lxjE/6rp0W4z2mewXM3RyjXGhpZhn8RT5U8buMfcOSTGIoDYl
-	8IuAtCH91R0En9PU6vcvg9XL5U+yO6PKUTdiVcdF4tOlu9UTlLHebIC60L5lInX651lJY8T
-	krixy+6LNbj5bJVLISmwqIe+dRSvMnr1B9cLI+xLG9tmvn7Eu6zBctr3yJ563rln6DREMKP
-	PzK1LvlS2kOynMRKt7Hre2MuojdrIR9jz4F7CMk/w1gF5LP0cdy9TmCd3GlBXykchZR1wQY
-	qtcYUjJ2uzqaNO5Ze/f+yEQPtlcGrsDALa8o51Ck3hW9/n8/7Dct/6ZVrgygKaMDqC8/vSS
-	4RVfDdLqy1jO50sq3ExzXb4+xynQpg+jypugeULl2+FpAIaM0OvqiDMHhsj99Fv3KE4dFTr
-	qK5VFijnUEsyVGl2du6zyEyh7fNP9r79s8ZvuzNZ/GK9lcSLC3KewPQ+bq4zUtD/yntJ3aR
-	Q3nJBmogdDZpSBfIQ9TvxM52HEZDQYT5iOoT3f81c1RcAa32/Z
-X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
-X-QQ-RECHKSPAM: 0
 
-Hi Ido,
+Add basic driver framework for the Alibaba Elastic Ethernet Adapter(EEA).
 
-> > The leaked reference is held by an IPv6 local route created from
-> > addrconf.  A late NETDEV_CHANGE notification can still reach
-> > addrconf_notify() after the device has entered NETREG_UNREGISTERING.
-> > The handler can then run automatic address configuration, add a
-> > link-local address and install its host route after unregister teardown
-> > has already started.  The route nexthop takes a netdev reference in
-> > fib6_nh_init(), and there might not be a later ifdown pass to remove
-> > the newly created address and route.
->
-> Do you have a reproducer?
+This commit introduces the ring and descriptor implementations.
 
-The reproducer is the syz repro from the syzbot report:
+These structures and ring APIs are used by the RX, TX, and admin queues.
 
-https://syzkaller.appspot.com/x/repro.syz?x=103f3dba580000
+Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
+Reviewed-by: Philo Lu <lulie@linux.alibaba.com>
+Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
+Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+---
+ drivers/net/ethernet/alibaba/eea/Makefile   |   3 +-
+ drivers/net/ethernet/alibaba/eea/eea_desc.h | 138 +++++++++++
+ drivers/net/ethernet/alibaba/eea/eea_ring.c | 249 ++++++++++++++++++++
+ drivers/net/ethernet/alibaba/eea/eea_ring.h |  99 ++++++++
+ 4 files changed, 488 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_desc.h
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_ring.c
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_ring.h
 
-I don't have a standalone C reproducer. I asked syzbot to test the patch
-against the original report tree:
+diff --git a/drivers/net/ethernet/alibaba/eea/Makefile b/drivers/net/ethernet/alibaba/eea/Makefile
+index a07f3019ec1f..7d8e7e8c2f3a 100644
+--- a/drivers/net/ethernet/alibaba/eea/Makefile
++++ b/drivers/net/ethernet/alibaba/eea/Makefile
+@@ -1,3 +1,4 @@
+ 
+ obj-$(CONFIG_ALIBABA_EEA) += eea.o
+-eea-y := eea_pci.o
++eea-y :=  eea_ring.o \
++	eea_pci.o
+diff --git a/drivers/net/ethernet/alibaba/eea/eea_desc.h b/drivers/net/ethernet/alibaba/eea/eea_desc.h
+new file mode 100644
+index 000000000000..8d94a0f0f237
+--- /dev/null
++++ b/drivers/net/ethernet/alibaba/eea/eea_desc.h
+@@ -0,0 +1,138 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ * Driver for Alibaba Elastic Ethernet Adapter.
++ *
++ * Copyright (C) 2025 Alibaba Inc.
++ */
++
++#ifndef __EEA_DESC_H__
++#define __EEA_DESC_H__
++
++#define EEA_DESC_TS_MASK GENMASK_ULL(47, 0)
++#define EEA_DESC_TS(desc) (le64_to_cpu((desc)->ts) & EEA_DESC_TS_MASK)
++
++struct eea_aq_desc {
++	__le16 flags;
++	__le16 id;
++	__le16 reserved;
++	u8 classid;
++	u8 command;
++	__le64 data_addr;
++	__le64 reply_addr;
++	__le32 data_len;
++	__le32 reply_len;
++};
++
++struct eea_aq_cdesc {
++	__le16 flags;
++	__le16 id;
++#define EEA_OK     0
++#define EEA_ERR    0xffffffff
++	__le32 status;
++	__le32 reply_len;
++	__le32 reserved1;
++
++	__le64 reserved2;
++	__le64 reserved3;
++};
++
++struct eea_rx_desc_no_hdr {
++	__le16 flags;
++	__le16 id;
++	__le16 len;
++	__le16 reserved1;
++
++	__le64 addr;
++};
++
++struct eea_rx_desc {
++	__le16 flags;
++	__le16 id;
++	__le16 len;
++	__le16 reserved1;
++
++	__le64 addr;
++
++	__le64 hdr_addr;
++	__le32 reserved2;
++	__le32 reserved3;
++};
++
++#define EEA_RX_CDESC_HDR_LEN_MASK GENMASK_ULL(9, 0)
++
++struct eea_rx_cdesc {
++#define EEA_DESC_F_DATA_VALID	BIT(6)
++#define EEA_DESC_F_SPLIT_HDR	BIT(5)
++	__le16 flags;
++	__le16 id;
++	__le16 len;
++#define EEA_NET_PT_NONE      0
++#define EEA_NET_PT_IPv4      1
++#define EEA_NET_PT_TCPv4     2
++#define EEA_NET_PT_UDPv4     3
++#define EEA_NET_PT_IPv6      4
++#define EEA_NET_PT_TCPv6     5
++#define EEA_NET_PT_UDPv6     6
++#define EEA_NET_PT_IPv6_EX   7
++#define EEA_NET_PT_TCPv6_EX  8
++#define EEA_NET_PT_UDPv6_EX  9
++	/* [9:0] is packet type. */
++	__le16 type;
++
++	/* hw timestamp [0:47]: ts */
++	__le64 ts;
++
++	__le32 hash;
++
++	/* 0-9: hdr_len  split header
++	 * 10-15: reserved1
++	 */
++	__le16 len_ex;
++	__le16 reserved2;
++
++	__le32 reserved3;
++	__le32 reserved4;
++};
++
++#define EEA_TX_GSO_NONE   0
++#define EEA_TX_GSO_TCPV4  1
++#define EEA_TX_GSO_TCPV6  4
++#define EEA_TX_GSO_UDP_L4 5
++#define EEA_TX_GSO_ECN    0x80
++
++struct eea_tx_desc {
++#define EEA_DESC_F_DO_CSUM	BIT(6)
++	__le16 flags;
++	__le16 id;
++	__le16 len;
++	__le16 reserved1;
++
++	__le64 addr;
++
++	__le16 csum_start;
++	__le16 csum_offset;
++	u8 gso_type;
++	u8 reserved2;
++	__le16 gso_size;
++	__le64 reserved3;
++};
++
++struct eea_tx_cdesc {
++	__le16 flags;
++	__le16 id;
++	__le16 len;
++	__le16 reserved1;
++
++	/* hw timestamp [0:47]: ts */
++	__le64 ts;
++};
++
++#define EEA_DB_FLAGS_OFF      0
++#define EEA_DB_IDX_OFF        (2 * 8)
++#define EEA_DB_TX_CQ_HEAD_OFF (4 * 8)
++#define EEA_DB_RX_CQ_HEAD_OFF (6 * 8)
++
++#define EEA_IDX_PRESENT   BIT(0)
++#define EEA_IRQ_MASK      BIT(1)
++#define EEA_IRQ_UNMASK    BIT(2)
++#endif
+diff --git a/drivers/net/ethernet/alibaba/eea/eea_ring.c b/drivers/net/ethernet/alibaba/eea/eea_ring.c
+new file mode 100644
+index 000000000000..99dcabd094b8
+--- /dev/null
++++ b/drivers/net/ethernet/alibaba/eea/eea_ring.c
+@@ -0,0 +1,249 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Driver for Alibaba Elastic Ethernet Adapter.
++ *
++ * Copyright (C) 2025 Alibaba Inc.
++ */
++
++#include "eea_pci.h"
++#include "eea_ring.h"
++
++void eea_ering_irq_active(struct eea_ring *ering, struct eea_ring *tx_ering)
++{
++	u64 value = 0, rx_idx, tx_idx;
++
++	tx_idx = (u64)tx_ering->cq.hw_idx;
++	rx_idx = (u64)ering->cq.hw_idx;
++
++	value |= EEA_IRQ_UNMASK << EEA_DB_FLAGS_OFF;
++	value |= tx_idx << EEA_DB_TX_CQ_HEAD_OFF;
++	value |= rx_idx << EEA_DB_RX_CQ_HEAD_OFF;
++
++	writeq(value, ering->db);
++}
++
++void *eea_ering_cq_get_desc(const struct eea_ring *ering)
++{
++	u8 phase;
++	u8 *desc;
++
++	desc = ering->cq.desc + (ering->cq.head << ering->cq.desc_size_shift);
++
++	phase = READ_ONCE(*(u8 *)(desc + ering->cq.desc_size - 1));
++
++	if ((phase & EEA_RING_DESC_F_CQ_PHASE) == ering->cq.phase) {
++		dma_rmb();
++		return desc;
++	}
++
++	return NULL;
++}
++
++/* sq api */
++void *eea_ering_sq_alloc_desc(struct eea_ring *ering, u16 id, bool is_last,
++			      u16 flags)
++{
++	struct eea_ring_sq *sq = &ering->sq;
++	struct eea_common_desc *desc;
++
++	if (!sq->shadow_num) {
++		sq->shadow_idx = sq->head;
++		sq->shadow_id = cpu_to_le16(id);
++	}
++
++	if (!is_last)
++		flags |= EEA_RING_DESC_F_MORE;
++
++	desc = sq->desc + (sq->shadow_idx << sq->desc_size_shift);
++
++	desc->flags = cpu_to_le16(flags);
++	desc->id = sq->shadow_id;
++
++	if (unlikely(++sq->shadow_idx >= ering->num))
++		sq->shadow_idx = 0;
++
++	++sq->shadow_num;
++
++	return desc;
++}
++
++/* This is an allocation API for admin Q. For each call to admin Q, only one
++ * desc will be allocated.
++ */
++void *eea_ering_aq_alloc_desc(struct eea_ring *ering)
++{
++	struct eea_ring_sq *sq = &ering->sq;
++	struct eea_common_desc *desc;
++
++	if (!sq->shadow_num)
++		sq->shadow_idx = sq->head;
++
++	desc = sq->desc + (sq->shadow_idx << sq->desc_size_shift);
++
++	if (unlikely(++sq->shadow_idx >= ering->num))
++		sq->shadow_idx = 0;
++
++	++sq->shadow_num;
++
++	return desc;
++}
++
++void eea_ering_sq_commit_desc(struct eea_ring *ering)
++{
++	struct eea_ring_sq *sq = &ering->sq;
++	int num;
++
++	num = sq->shadow_num;
++
++	ering->num_free -= num;
++
++	sq->head       = sq->shadow_idx;
++	sq->hw_idx     += num;
++	sq->shadow_num = 0;
++}
++
++void eea_ering_sq_cancel(struct eea_ring *ering)
++{
++	ering->sq.shadow_num = 0;
++}
++
++/* cq api */
++void eea_ering_cq_ack_desc(struct eea_ring *ering, u32 num)
++{
++	struct eea_ring_cq *cq = &ering->cq;
++
++	cq->head += num;
++	cq->hw_idx += num;
++
++	if (unlikely(cq->head >= ering->num)) {
++		cq->head -= ering->num;
++		cq->phase ^= EEA_RING_DESC_F_CQ_PHASE;
++	}
++
++	ering->num_free += num;
++}
++
++/* notify */
++void eea_ering_kick(struct eea_ring *ering)
++{
++	u64 value = 0, idx;
++
++	idx = (u64)ering->sq.hw_idx;
++
++	value |= EEA_IDX_PRESENT << EEA_DB_FLAGS_OFF;
++	value |= idx << EEA_DB_IDX_OFF;
++
++	writeq(value, ering->db);
++}
++
++/* ering alloc/free */
++static void ering_free_queue(struct eea_device *edev, size_t size,
++			     void *queue, dma_addr_t dma_handle)
++{
++	dma_free_coherent(edev->dma_dev, size, queue, dma_handle);
++}
++
++static void *ering_alloc_queue(struct eea_device *edev, size_t size,
++			       dma_addr_t *dma_handle)
++{
++	gfp_t flags = GFP_KERNEL | __GFP_NOWARN;
++
++	return dma_alloc_coherent(edev->dma_dev, size, dma_handle, flags);
++}
++
++static int ering_alloc_queues(struct eea_ring *ering, struct eea_device *edev,
++			      size_t num, u8 sq_desc_size, u8 cq_desc_size)
++{
++	dma_addr_t addr;
++	size_t size;
++	void *ring;
++
++	size = num * sq_desc_size;
++
++	ring = ering_alloc_queue(edev, size, &addr);
++	if (!ring)
++		return -ENOMEM;
++
++	ering->sq.desc     = ring;
++	ering->sq.dma_addr = addr;
++	ering->sq.dma_size = size;
++	ering->sq.desc_size = sq_desc_size;
++	ering->sq.desc_size_shift = fls(sq_desc_size) - 1;
++
++	size = num * cq_desc_size;
++
++	ring = ering_alloc_queue(edev, size, &addr);
++	if (!ring)
++		goto err_free_sq;
++
++	ering->cq.desc     = ring;
++	ering->cq.dma_addr = addr;
++	ering->cq.dma_size = size;
++	ering->cq.desc_size = cq_desc_size;
++	ering->cq.desc_size_shift = fls(cq_desc_size) - 1;
++
++	ering->num = num;
++
++	return 0;
++
++err_free_sq:
++	ering_free_queue(ering->edev, ering->sq.dma_size,
++			 ering->sq.desc, ering->sq.dma_addr);
++	return -ENOMEM;
++}
++
++static void ering_init(struct eea_ring *ering)
++{
++	ering->cq.phase = EEA_RING_DESC_F_CQ_PHASE;
++	ering->num_free = ering->num;
++}
++
++struct eea_ring *eea_ering_alloc(u32 index, u32 num, struct eea_device *edev,
++				 u8 sq_desc_size, u8 cq_desc_size,
++				 const char *name)
++{
++	struct eea_ring *ering;
++
++	if (num > EEA_NET_IO_HW_RING_DEPTH_MAX ||
++	    num < EEA_NET_IO_RING_DEPTH_MIN)
++		return NULL;
++
++	if (!is_power_of_2(num))
++		return NULL;
++
++	if (!sq_desc_size || !is_power_of_2(sq_desc_size))
++		return NULL;
++
++	if (!cq_desc_size || !is_power_of_2(cq_desc_size))
++		return NULL;
++
++	ering = kzalloc(sizeof(*ering), GFP_KERNEL);
++	if (!ering)
++		return NULL;
++
++	ering->edev = edev;
++	ering->name = name;
++	ering->index = index;
++
++	if (ering_alloc_queues(ering, edev, num, sq_desc_size, cq_desc_size))
++		goto err_free;
++
++	ering_init(ering);
++
++	return ering;
++
++err_free:
++	kfree(ering);
++	return NULL;
++}
++
++void eea_ering_free(struct eea_ring *ering)
++{
++	ering_free_queue(ering->edev, ering->cq.dma_size,
++			 ering->cq.desc, ering->cq.dma_addr);
++
++	ering_free_queue(ering->edev, ering->sq.dma_size,
++			 ering->sq.desc, ering->sq.dma_addr);
++
++	kfree(ering);
++}
+diff --git a/drivers/net/ethernet/alibaba/eea/eea_ring.h b/drivers/net/ethernet/alibaba/eea/eea_ring.h
+new file mode 100644
+index 000000000000..a7ce465943a5
+--- /dev/null
++++ b/drivers/net/ethernet/alibaba/eea/eea_ring.h
+@@ -0,0 +1,99 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ * Driver for Alibaba Elastic Ethernet Adapter.
++ *
++ * Copyright (C) 2025 Alibaba Inc.
++ */
++
++#ifndef __EEA_RING_H__
++#define __EEA_RING_H__
++
++#include <linux/dma-mapping.h>
++#include "eea_desc.h"
++
++#define EEA_RING_DESC_F_MORE		BIT(0)
++#define EEA_RING_DESC_F_CQ_PHASE	BIT(7)
++
++/* These two values define the bounds for the queue depth returned by the
++ * hardware.
++ */
++#define EEA_NET_IO_HW_RING_DEPTH_MAX (32 * 1024)
++#define EEA_NET_IO_HW_RING_DEPTH_MIN 128
++
++/* This value constrains the minimum queue depth that the driver configures for
++ * the hardware, which typically applies to user-provided settings. Naturally,
++ * the configured depth must also not exceed the maximum capacity supported by
++ * the hardware.
++ */
++#define EEA_NET_IO_RING_DEPTH_MIN 64
++
++struct eea_common_desc {
++	__le16 flags;
++	__le16 id;
++};
++
++struct eea_device;
++
++struct eea_ring_sq {
++	void *desc;
++
++	u16 head;
++	u16 hw_idx;
++
++	u16 shadow_idx;
++	__le16 shadow_id;
++	u16 shadow_num;
++
++	u8 desc_size;
++	u8 desc_size_shift;
++
++	dma_addr_t dma_addr;
++	u32 dma_size;
++};
++
++struct eea_ring_cq {
++	void *desc;
++
++	u16 head;
++	u16 hw_idx;
++
++	u8 phase;
++	u8 desc_size_shift;
++	u8 desc_size;
++
++	dma_addr_t dma_addr;
++	u32 dma_size;
++};
++
++struct eea_ring {
++	const char *name;
++	struct eea_device *edev;
++	u32 index;
++	void __iomem *db;
++	u16 msix_vec;
++
++	u32 num;
++
++	u32 num_free;
++
++	struct eea_ring_sq sq;
++	struct eea_ring_cq cq;
++};
++
++struct eea_ring *eea_ering_alloc(u32 index, u32 num, struct eea_device *edev,
++				 u8 sq_desc_size, u8 cq_desc_size,
++				 const char *name);
++void eea_ering_free(struct eea_ring *ering);
++void eea_ering_kick(struct eea_ring *ering);
++
++void *eea_ering_sq_alloc_desc(struct eea_ring *ering, u16 id,
++			      bool is_last, u16 flags);
++void *eea_ering_aq_alloc_desc(struct eea_ring *ering);
++void eea_ering_sq_commit_desc(struct eea_ring *ering);
++void eea_ering_sq_cancel(struct eea_ring *ering);
++
++void eea_ering_cq_ack_desc(struct eea_ring *ering, u32 num);
++
++void eea_ering_irq_active(struct eea_ring *ering, struct eea_ring *tx_ering);
++void *eea_ering_cq_get_desc(const struct eea_ring *ering);
++#endif
+-- 
+2.32.0.3.g01195cf9f
 
-git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
-
-The reproducer did not trigger the issue with this patch applied:
-
-Reported-by: syzbot+e2af46126e0644cbebdd@syzkaller.appspotmail.com
-Tested-by: syzbot+e2af46126e0644cbebdd@syzkaller.appspotmail.com
-
-Tested on:
-
-commit:         5cbb61bf arm64/fpsimd: ptrace: zero target's fpsimd_st..
-git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
-console output: https://syzkaller.appspot.com/x/log.txt?x=147a20ec580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=a834c6344141a58b
-dashboard link: https://syzkaller.appspot.com/bug?extid=e2af46126e0644cbebdd
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=12255636580000
-
-> The kernel repeatedly sends NETDEV_UNREGISTER notifications when it's
-> waiting for the reference count to drop.
-
-Yes, and this patch intentionally keeps NETDEV_DOWN and NETDEV_UNREGISTER
-handling unchanged so addrconf_ifdown() can still remove existing IPv6
-state during teardown.
-
-The guard only affects the MTU / UP / CHANGE paths. The problem I was
-trying to avoid is creating new IPv6 state once the device is already in
-NETREG_UNREGISTERING. In the syzbot trace, addrconf_notify() is reached
-from a NETDEV_CHANGE path and then creates a link-local address and its
-route while unregister is already in progress. The route then holds a
-netdev reference via fib6_nh_init().
-
-So the patch does not rely on suppressing unregister processing; it only
-prevents late autoconf from adding new state during unregister.
-
-Thanks,
-Xu Rao
