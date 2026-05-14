@@ -1,82 +1,35 @@
-Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C523C386C21
-	for <netdev@vger.kernel.org>; Thu, 14 May 2026 17:06:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC95838C402;
+	Thu, 14 May 2026 17:13:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778778382; cv=none; b=sEuVldjNn77QBJMKL85jPUhm27R7qqBaqavxvlSTl+0Rio/jgOz6X4rbPVOerDFY/XoXLnVxRcMP8aulzP4nV/9rl5c3NY7IUA6SPK1YHgaStNXlZs946l5aehc6vbBRwQ2dgWJyqpbBZwZdP1961UrZHGxZ0qH9mDr3Zw+AHMA=
+	t=1778778825; cv=none; b=Bk07fKY60vCCFZeNydbyeJD5uPo0G8j7y+TnAIVnKeFjBckmBZaowDMAZ4f8HlwFDtGM5sT5FnMMmdAbCJTmk0vjoZhd4vqIcc0yiNElIPGUPPAY/L/uDu4IKJXhozWoIeSFsirUFApCHCzsYKHkCNEq86ZinP6Oa4yLRyiwFlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778778382; c=relaxed/simple;
-	bh=J+qjlNG7yCfPi70a30kgJbcx9ouEfqYTcUcggQ3HxqE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LGpWkXeIIf4EeJnBDmBqY5colS5QHvjPd5FztLClyrY8w04iCvxmXD/YTZoohUE2Ca/ltLw4LFaARP+wLdBSJ2C+Mxegnskddjd9i6ARK9ZUh1iR0kZYlW4zl2mAdv63UZA9+VqJOOmtiACVHycll1HlKhNcGYUMpY8UrPPuUP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g5EPzIWT; arc=none smtp.client-ip=74.125.82.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1778778825; c=relaxed/simple;
+	bh=QM/whvKLvX41+Y9jLXWAZUiQ4elDSwzkWxvmRWDZTqI=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=lcZNVGdGHYLZXoDGcQc3t7hHdBY48sSIK/7U/Q45rrro1M5I3vyOlVgZWg9PY73NaYYrs7EIsuwqdEgbXWXErlK5+ryIR+zWNtmzR6+VptF/X/faKAy3Ck21uOBseu4Okns8Fk01EyQuloQzUQ7xtZPKC5lq0q9zfrmltT0nHlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pEejOf9M; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g5EPzIWT"
-Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-1309f4ee97fso10396126c88.1
-        for <netdev@vger.kernel.org>; Thu, 14 May 2026 10:06:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778778381; x=1779383181; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xsBBm4ZuQ5MGBzgA0ddyoKX5Ai5E3Bfgkd3FNlRPfrc=;
-        b=g5EPzIWTEnYC9BWKWbN0rt6f3IbnYn4vkaTKUumPdGr2nICHJaiBUBbFwPTb0YPaqp
-         6DcJBg2tkjj0D+6PBWCmjOnHN71B+p/mp+1yeOdlL1wcaXzUuAr4JHta6uIYMZG7nS3n
-         WTQZuEeSY+mILnc28yeFy22gpbPCnQAr8WotDeR52/78ll2oiKiUckoeymGvVIMsNxqF
-         IqXX+zDvLFrMMpoZeozoKPuEWckySWE9kUlysrrSlF35/JN9D6dgXLAI/B9ZKYxZxILb
-         WZyFHoVbbiocMDbUD5QYEHV42t/CoLdbgEPRgm1KvWt5et7dB8LBYrKi7v1+Xem/LU1i
-         Frmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778778381; x=1779383181;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=xsBBm4ZuQ5MGBzgA0ddyoKX5Ai5E3Bfgkd3FNlRPfrc=;
-        b=P8/xmuyjAP+1PLCpnnHIMSAYY+VXiPepKtQq/Kk1li5WuwGQw2sRJCA/9nXZCzb2yB
-         Jcp7K2OBxmDX3mg2TX3E45KhZsCugmYC+CSKCrgy4H0kGywT6OXQg/VVxc9w40WBvlJh
-         zsgwIo6Rm/2MsCrVA44TBDFB7ziklx8BXQ2lnAvd+PEgR/1o+sKskXxt1//oWCFHxoLb
-         Pl3j+0JBfaz0T7xwnnTGdwasWARr5hr1W4v4DCRW0SO2Xsq08TbulTpF4CdxRp6M03LS
-         cMr3+BnAV0M//mahLLKtWjvjzFN8LttU8AgN6Tg/1x7/vab9kHybkS/hG0l5c8KWZob7
-         guQw==
-X-Gm-Message-State: AOJu0YyxiMJCjl7uSl4jroGs1+BtY6NZg3LH8YNkNF2jM9nDZLMwEzde
-	TgiRmZD43xP7XYv5KmT5/YnxgO7Nkg8DBmNmgEVq52D+/tCHOlvoRW9G
-X-Gm-Gg: Acq92OFgsoX3VpgnUwVYkjz0RG9/6IU+Cm+pAV0ch8AUZLPkrbEg18us+e1vOyffbu/
-	CSWMcI120Vg6HLwWZwrpuDIFmU22J+VMA6Y3UlWPSOvI34XXFrPQDlkLgHkWcmlnSYV+P1qSBmN
-	ODWVH8QkvLidDL+7k6+151Q/C2LOOkkqHzNwsD3+UgUUL1N4SsaxiFNRURY5+k6oXbTzHo208C+
-	Xa0p4J8L8zkhoZnepY6alszBd2Ck+szIXEK7ljiJBcaQfsFktqp2D7qyPrEbKFpZ2Ag5+8ldLMU
-	zExSdKJ6QT2kSaEHSaPW4cOeqO0a1UhChAVP+EUOuhSX6aF4oxVbETlTmf/QuGye/DEBJ2/1vwd
-	FB+9GtcJuii+Eq7pzPYwjUfHjmXFqAhM+cFgQhURi9T3FCjH1TRLJIc69r+h07zO8E7MYh8HIkS
-	f2ecwjrdivDytBqCvmWXmwib7jwsPMAUhorw==
-X-Received: by 2002:a05:7022:670e:b0:130:c9cc:3384 with SMTP id a92af1059eb24-1349ac64a08mr4862213c88.30.1778778380849;
-        Thu, 14 May 2026 10:06:20 -0700 (PDT)
-Received: from localhost.localdomain ([148.135.103.3])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-134cbed531esm5349141c88.8.2026.05.14.10.06.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 May 2026 10:06:20 -0700 (PDT)
-From: Qi Tang <tpluszz77@gmail.com>
-To: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com
-Cc: netdev@vger.kernel.org,
-	lyutoon@gmail.com,
-	dsahern@kernel.org,
-	idosch@nvidia.com,
-	horms@kernel.org,
-	paul@paul-moore.com,
-	huw@codeweavers.com,
-	linux-security-module@vger.kernel.org,
-	Qi Tang <tpluszz77@gmail.com>
-Subject: Re: [PATCH net 0/4] net: trust-after-modification fixes for IPv4 options + netlabel
-Date: Fri, 15 May 2026 01:06:13 +0800
-Message-ID: <20260514170613.4098569-1-tpluszz77@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260514165139.436961-1-tpluszz77@gmail.com>
-References: <20260514165139.436961-1-tpluszz77@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pEejOf9M"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EC2EC2BCB3;
+	Thu, 14 May 2026 17:13:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778778825;
+	bh=QM/whvKLvX41+Y9jLXWAZUiQ4elDSwzkWxvmRWDZTqI=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=pEejOf9MA5mEICXwTs8rgSUaAG6GS/5DOgZfEUIhP/qAjQuaoj05CfFHoQQSN7k2d
+	 2cO02q2rU/XXrcII+uZqUzaqq9Q8u45x183I0daHWbTFcQIj0cVDT8YNBkp9/wmbDZ
+	 WSGbNlrFFAraUsyGqPgSbeNc0xd463tqVeBg1LB0+YnSbFxfYvjmkSx0mTYiWh2Ktu
+	 2UV4tBp9xLxhkWHDQ9lyYqzjKmzBv983Jn6TBnMGe83OJH2N+h+rlBhjW/6ZjKurIA
+	 WiXMlG14DP89D1C3IaJiXRNG+4ah8isM6x8hVbVoEWxvmWUr7/MBLAfbb3ikRdnq4O
+	 4NCXUgS4KeJBA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CEAA39D6579;
+	Thu, 14 May 2026 17:12:51 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -84,10 +37,48 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v3 0/4] rxrpc: Better fix for DATA/RESPONSE decrypt vs
+ splice()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177877877003.17572.12084366985884137835.git-patchwork-notify@kernel.org>
+Date: Thu, 14 May 2026 17:12:50 +0000
+References: <20260514155304.2249591-1-dhowells@redhat.com>
+In-Reply-To: <20260514155304.2249591-1-dhowells@redhat.com>
+To: David Howells <dhowells@redhat.com>
+Cc: netdev@vger.kernel.org, imv4bel@gmail.com, marc.dionne@auristor.com,
+ kuba@kernel.org, davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ horms@kernel.org, linux-afs@lists.infradead.org, linux-kernel@vger.kernel.org
 
-Sorry, v1 went out unthreaded and 1/4 was duplicated.  I will
-resend properly as [PATCH net v2 0/4] in ~24h.  Please ignore
-the v1 thread.
+Hello:
 
-Qi Tang <tpluszz77@gmail.com>
-Tong Liu <lyutoon@gmail.com>
+This series was applied to netdev/net.git (main)
+by Linus Torvalds <torvalds@linux-foundation.org>:
+
+On Thu, 14 May 2026 16:52:58 +0100 you wrote:
+> Here are two patches containing better fixes for the in-place decryption of
+> DATA and RESPONSE packets that can corrupt pagecache spliced into UDP
+> packets and sent to an AF_RXRPC server [CVE-2026-43500], plus a patch to
+> precheck the length of rxgk-secured DATA packets.
+> 
+> [!] Note that Hyunwoo Kim's fix is included as that is a prerequisite for
+> the main patches to build.  This is in Linus's tree, but not yet net/main.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,v3,1/4] rxrpc: Also unshare DATA/RESPONSE packets when paged frags are present
+    https://git.kernel.org/netdev/net/c/aa54b1d27fe0
+  - [net,v3,2/4] crypto/krb5, rxrpc: Fix lack of pre-decrypt/pre-verify length checks
+    (no matching commit)
+  - [net,v3,3/4] rxrpc: Fix DATA decrypt vs splice() by copying data to buffer in recvmsg
+    (no matching commit)
+  - [net,v3,4/4] rxrpc: Fix RESPONSE packet verification to extract skb to a linear buffer
+    (no matching commit)
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
