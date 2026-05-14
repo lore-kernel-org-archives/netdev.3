@@ -1,145 +1,126 @@
-Received: from smtpcmd10101.aruba.it (smtpcmd10101.aruba.it [62.149.156.101])
+Received: from fout-a4-smtp.messagingengine.com (fout-a4-smtp.messagingengine.com [103.168.172.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C2FF4014A3
-	for <netdev@vger.kernel.org>; Thu, 14 May 2026 15:00:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.149.156.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC0831716D;
+	Thu, 14 May 2026 15:05:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778770846; cv=none; b=X1RZ5e3Q9yOSTXRduU7LdQ2x17WGkAgfvoNpYK+V0sl5mwqMUgfiy2paPMvIqgXvO5Tlo1WyDfsz3X3dRYA6qvgPORNBCYYJz2rPlpTww8Wm2V1uwQ88xKHveEu2QYtPPDkb98gqFOiAy+tJ/vrpA1aCv/bGaEwNQJTUmj8mXYk=
+	t=1778771131; cv=none; b=uGMvRMv6t6pnTYsDePbRg0NROxczhzl5BSg+S47VnVYSXV+iVVjdjObb9VHryV8N4XGb/3E+egJccCmkadY7+TMO8kTC54uFKlLKlm7FA94Yj3EZ1zSOeO1julUHxhZUSyRygdAVCunb40uYXzbbVK0F953dluxvVaM7Jccg2jc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778770846; c=relaxed/simple;
-	bh=4npBjrVvi1nAurHHYzboVrGuBiR8WxUCErtRQizkNhk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=T8KS742KE4xdxNI5Y3K2McOSLYmTISPdWm79zR1gaqLM6JstSxJByDxfUA0wO1gUrp1C8YYD4MqP0d8Pnur1VeNRYM/IaYW+BmnqDkOiCZctzHh5fxOz53r/oZsW/rmlZGipuvnn6G2aWAQFXt/ycZkI44K2E7ACn72meKHiWbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enneenne.com; spf=pass smtp.mailfrom=enneenne.com; dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b=hiN4fwHB; arc=none smtp.client-ip=62.149.156.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enneenne.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=enneenne.com
+	s=arc-20240116; t=1778771131; c=relaxed/simple;
+	bh=uHXk142rdXP9Quc1HvPGg5PrsaBwyT37DlZuCMCtLw4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ch/Iel4srkagDJ42lADgM7zeGyE5tEiI/OxLh6+NBjEMj7lx5BXwPJo6Y19QU9bRoASdhnaK5u10DG3V8/sqY8xJimtJMYTbE3fOTKC7AqCTZhPEvBwOgDqWvxDnpRWANukjvCfgwzMB3cONMBSxTMYrcMsWEsoH34x7VrQ/O78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=W+8VcpKM; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=CvhPvrHw; arc=none smtp.client-ip=103.168.172.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b="hiN4fwHB"
-Received: from [192.168.0.186] ([109.118.84.223])
-	by Aruba SMTP with ESMTPSA
-	id NXVFwERTUIfDkNXVGwiVvX; Thu, 14 May 2026 16:57:34 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aruba.it; s=a1;
-	t=1778770654; bh=4npBjrVvi1nAurHHYzboVrGuBiR8WxUCErtRQizkNhk=;
-	h=Date:MIME-Version:Subject:To:From:Content-Type;
-	b=hiN4fwHBhYYDE9JYQeHobXzi2UWMQVw9DjmiwvHsevnQjETcT+YqtGY4PvISRLenC
-	 yUbwKHkOJ2P9+NA+ja3o3V31kIPGqJN4jnZjxuwjL08xSV/1KxtOXNrljacbXTZ/4n
-	 XYDWzpGuGUN8Da/hGv7C3pcChOceJJAYF+OW9sj/GQPHmDmt1XBiwGsMPRWHGPKjgH
-	 iUuZtb1YaRfoWJgO8fyUWLNiJ7PuBtnhR83IucJzwc5qZY5pG3V4wivMEh71jYGdsa
-	 Sp0SGdlZ2EOJB5qFtk9SADvINwkJcm88gDlx3u7/REaxAJjZnCVTOnOomYFZeCbtJw
-	 Ed0CUS1tloFfw==
-Message-ID: <13778ff3-70bb-48ee-9cec-0e6a092595ff@enneenne.com>
-Date: Thu, 14 May 2026 16:57:33 +0200
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="W+8VcpKM";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="CvhPvrHw"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfout.phl.internal (Postfix) with ESMTP id DAA45EC022B;
+	Thu, 14 May 2026 11:05:26 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Thu, 14 May 2026 11:05:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm1; t=1778771126; x=
+	1778857526; bh=t9AFOTY5ZkS/lLxTJk2f8rmgQ3k4DF6eF4A3cXW1DEg=; b=W
+	+8VcpKMukUrOtPLAyC3O8cr43iIuB9WhWs7dGTWI7xd8H6n0ML72V4/AntsWtr+5
+	HJOZYSe0muYjLh5T/2GVAKWBlaX7Im2uddnd577Nj/CVqDJnmsHELQ1WoP0doDgO
+	+/2aIxkbypS9mI0guBCcrOXDFJiJDzvxglOA2HQsqWyOSv+fAMOs+z37rhFjC+CA
+	z4BSl1+u2j3bQRsrI0zUU0Byt4KwgoKmspbhJV8Rl99CUwJNvEuOrhpW0qqNRI7G
+	q/pNTpscsZ52sk3UD+QjJOHZ3Ic+fqrtZVtEZVZtd88P+8qOVVqcRP8DrFkGE5o4
+	71CbrpDQbuf55rWXn8I3w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1778771126; x=1778857526; bh=t9AFOTY5ZkS/lLxTJk2f8rmgQ3k4DF6eF4A
+	3cXW1DEg=; b=CvhPvrHwlXiTzcITz4tXlnhChhsGA0pVZCO/i+dfZZx8OwXliNN
+	6P3uabJqbfBwFKJR9koN9AWBpax3Z4Z6yraOjBu6HWNJci+E20RWeub/p8yFmKHH
+	NxP9mSi3koQkoBkLQsgDh47QVVdDMWRvWKJORccugS5wt9/iijXFJBxySbNJknqH
+	RGXtvok7LMSVTkKTEUEIQ0G4ss0aV1WX6pTckHyAFTy7n80ninKOq+0LsSL2InIa
+	zK5HD/CgIMwj9ZVCSDnI+oj25dI6H15DhDhrEeYT6I+OvRg055U5enzoG3Q6yECl
+	fDM+9KjzUBrKrO2OOKkWFHNtfw9P2nJhreQ==
+X-ME-Sender: <xms:tuQFaq2WjPSU4xTQ2-5bGCil1bHPeAZBGhm9wU_K3ZEGBzVb5tNr4A>
+    <xme:tuQFanvFN94QUKx4oL6R4TA-eXXdSDvrg0XGlgXPbvMQZ-X6enJ7GQdf8lKPnDd9p
+    YzIA1m_V3Kz4qUNN2ZFLt_Kq5mbopS4bSWbmorrmWf2BdoNjeTP4WY>
+X-ME-Received: <xmr:tuQFao5NMYLyW_Ff2XowEpFs0Ui1FHTw-AHigwQj4RxN8OhDvDggMcKQETFsB5swLNLONpYXwnOmEvlwBs9r7k0>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduvdejkeefucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtjeenucfhrhhomhepufgrsghrihhn
+    rgcuffhusghrohgtrgcuoehsugesqhhuvggrshihshhnrghilhdrnhgvtheqnecuggftrf
+    grthhtvghrnhepuefhhfffgfffhfefueeiudegtdefhfekgeetheegheeifffguedvueff
+    fefgudffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    epshgusehquhgvrghshihsnhgrihhlrdhnvghtpdhnsggprhgtphhtthhopeelpdhmohgu
+    vgepshhmthhpohhuthdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtg
+    hpthhtohepphgrsggvnhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopegurghvvghm
+    segurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkh
+    gvrhhnvghlrdhorhhgpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtgho
+    mhdprhgtphhtthhopegrnhgurhgvfidonhgvthguvghvsehluhhnnhdrtghhpdhrtghpth
+    htohephhhorhhmsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhhohhhnrdhfrghs
+    thgrsggvnhgusehgmhgrihhlrdgtohhmpdhrtghpthhtohepsghpfhesvhhgvghrrdhkvg
+    hrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:tuQFareVmiaTAQfg8tf38x3x8SLzJ5MO_VG9wPa-6V9CsnehQF51Tg>
+    <xmx:tuQFatwP1IBPOyJJkX6rPTW5-LSYNLq8FE7rl4w49mIt9CHYRn0Qgg>
+    <xmx:tuQFao-hADsLMd4EU9aY0R0KXJOpnglPqCP0Fyp6sttX26ukDtjg7A>
+    <xmx:tuQFajxFtNIa5WP40RRyyCLz2CnvuNFeWcN1zgEP2stprgUM1aiKrQ>
+    <xmx:tuQFaigzlHloWKKl9IjQwt6B64FwNasjCm9OqkWqJ-ayXsz8BE70krYV>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 14 May 2026 11:05:25 -0400 (EDT)
+Date: Thu, 14 May 2026 17:05:23 +0200
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>, davem@davemloft.net,
+	netdev@vger.kernel.org, edumazet@google.com, andrew+netdev@lunn.ch,
+	horms@kernel.org, john.fastabend@gmail.com, bpf@vger.kernel.org
+Subject: Re: [PATCH net v2 4/4] net: tls: remove bad rollback and UAF on
+ ENOSPC
+Message-ID: <agXks9BGNvcE3WPz@krikkit>
+References: <20260511174920.433155-1-kuba@kernel.org>
+ <20260511174920.433155-5-kuba@kernel.org>
+ <a83d79d1-b932-458a-b5fa-1cb623fa03f1@redhat.com>
+ <agXGJ2v-Gnf5trWX@krikkit>
+ <20260514075504.1790a187@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] pps: make number of PPS devices configurable
-Content-Language: en-US
-To: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
- Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-References: <20260514112614.2016026-1-vadim.fedorenko@linux.dev>
-From: Rodolfo Giometti <giometti@enneenne.com>
-In-Reply-To: <20260514112614.2016026-1-vadim.fedorenko@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CMAE-Envelope: MS4xfJxannSbSFv8JfHqdn5JflYdVsY5/zxS4Sb9oUlAf4lLn8mARuyIpp4ScHyavJNY/IjiCCaDEKbn0CoRIpsT6rfs5VDfPcEwe/FTYdtsE8BPcbSmZa55
- nxlIesG/pEdg7XPvtQJKXR5IvzSLR399BmIxzHPPMdWrnCMto9YoM860xlsXj4cVsvH4GiLe+5TBH/OCCxCKJBNsbHjxzZ3GkPWmgxVyrQvZvCGlg5O0cywb
- wi9ozpmC/PZXHCtuBkVWS9b3Ojx4+Q8kxpJ3H07Hw0s9dHILMyWfSJ24V9vlEJkG6u0Yc2dWgzMlAzjoh32ouastYJBaL+H18GqIdWaH4vAlLwSe6udmPmhz
- /pAGB3gv
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260514075504.1790a187@kernel.org>
 
-On 5/14/26 13:26, Vadim Fedorenko wrote:
-> Modern systems may have more than 16 PPS sources and current hard-coded
-> limit breaks registration of some devices. Make the limit configurable
-> via Kconfig, keep default value of 16 devices. UAPI has to be changed to
-> support maximum possible number.
+2026-05-14, 07:55:04 -0700, Jakub Kicinski wrote:
+> On Thu, 14 May 2026 14:55:03 +0200 Sabrina Dubroca wrote:
+> > > The sashiko report here looks like a pre-existing issue that could be
+> > > handled separately.
 > 
-> Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-> ---
->   drivers/pps/Kconfig      | 9 +++++++++
->   drivers/pps/pps.c        | 6 +++---
->   include/uapi/linux/pps.h | 2 +-
->   3 files changed, 13 insertions(+), 4 deletions(-)
+> Or not, cause frankly TLS+sockmap feels a bit hopeless at this
+> stage.
+
+:/
+How long do you want to give Daniel/John (or others) to chime in on
+the cover letter? (it's been only 2 days, but it feels like much longer)
+
+> > > Still let me play safe and merge just the 2 first patch in the series.  
+> > 
+> > Kind of. We had agreed that #2 could be fixed in a somewhat better
+> > way.
+> > 
+> > @Jakub removal of the content_type chaining can be done in net-next as
+> > a clean up now I guess
 > 
-> diff --git a/drivers/pps/Kconfig b/drivers/pps/Kconfig
-> index e1651d51cfc9..166c157505fe 100644
-> --- a/drivers/pps/Kconfig
-> +++ b/drivers/pps/Kconfig
-> @@ -22,6 +22,15 @@ menuconfig PPS
->   
->   if PPS
->   
-> +config PPS_NR_SOURCES
-> +	int "Maximum number of PPS devices"
-> +	depends on PPS
-> +	range 16 256
-> +	default "16"
-> +	help
-> +	  Set this to the number of PPS devices you want the driver
-> +	  to support.
-> +
->   config PPS_DEBUG
->   	bool "PPS debugging messages"
->   	help
-> diff --git a/drivers/pps/pps.c b/drivers/pps/pps.c
-> index de1122bb69ea..d3eac77b4cb5 100644
-> --- a/drivers/pps/pps.c
-> +++ b/drivers/pps/pps.c
-> @@ -370,7 +370,7 @@ int pps_register_cdev(struct pps_device *pps)
->   	 * Get new ID for the new PPS source.  After idr_alloc() calling
->   	 * the new source will be freely available into the kernel.
->   	 */
-> -	err = idr_alloc(&pps_idr, pps, 0, PPS_MAX_SOURCES, GFP_KERNEL);
-> +	err = idr_alloc(&pps_idr, pps, 0, CONFIG_PPS_NR_SOURCES, GFP_KERNEL);
->   	if (err < 0) {
->   		if (err == -ENOSPC) {
->   			pr_err("%s: too many PPS sources in the system\n",
-> @@ -464,7 +464,7 @@ EXPORT_SYMBOL(pps_lookup_dev);
->   static void __exit pps_exit(void)
->   {
->   	class_unregister(&pps_class);
-> -	__unregister_chrdev(pps_major, 0, PPS_MAX_SOURCES, "pps");
-> +	__unregister_chrdev(pps_major, 0, CONFIG_PPS_NR_SOURCES, "pps");
->   }
->   
->   static int __init pps_init(void)
-> @@ -477,7 +477,7 @@ static int __init pps_init(void)
->   		return err;
->   	}
->   
-> -	pps_major = __register_chrdev(0, 0, PPS_MAX_SOURCES, "pps",
-> +	pps_major = __register_chrdev(0, 0, CONFIG_PPS_NR_SOURCES, "pps",
->   				      &pps_cdev_fops);
->   	if (pps_major < 0) {
->   		pr_err("failed to allocate char device region\n");
-> diff --git a/include/uapi/linux/pps.h b/include/uapi/linux/pps.h
-> index 009ebcd8ced5..1088dea65e12 100644
-> --- a/include/uapi/linux/pps.h
-> +++ b/include/uapi/linux/pps.h
-> @@ -26,7 +26,7 @@
->   #include <linux/types.h>
->   
->   #define PPS_VERSION		"5.3.6"
-> -#define PPS_MAX_SOURCES		16		/* should be enough... */
-> +#define PPS_MAX_SOURCES		256		/* should be enough... */
+> Oh, TBH I also thought you are okay with the patch as posted.
+> I'll follow up in net-next shortly (once Linus pulls).
 
-Nak. Let's make everything configurable, or let's leave it constant. 256 is OK.
-
-Ciao,
-
-Rodolfo
-
->   /* Implementation note: the logical states ``assert'' and ``clear''
->    * are implemented in terms of the chip register, i.e. ``assert''
-
+Ah, ok. Fine then, thanks.
 
 -- 
-GNU/Linux Solutions                  e-mail: giometti@enneenne.com
-Linux Device Driver                          giometti@linux.it
-Embedded Systems                     phone:  +39 349 2432127
-UNIX programming
+Sabrina
