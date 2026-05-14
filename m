@@ -1,60 +1,35 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEFE23B7B71;
-	Thu, 14 May 2026 10:51:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B2C3B7751;
+	Thu, 14 May 2026 10:51:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778755872; cv=none; b=nbau5kvQMCl9IBlrPZFn9Ds6aHpZYgXYRDbcZ9ZPfp4vBgiDt2pBFg0Z+cjdvJV9BLoFjq9Fin34zQTYURBwSikPKQIEC/SlLM5jgEB6beqhQRwxZ/16YIV42iToOYUymufMnWtRNNpI6l1FWWNf1eGOWcqDjCuap9hEwku5idU=
+	t=1778755875; cv=none; b=MuHbnl75ttKxf3Er2ypRafnVzrUomOXv6C4fBAsYls7sZS6xqNM+yvQVRtFNjTBZBS7MsCNa/v+1zZ9mhDj2qxkkbrt9+CF2sOZu5rPXqR13maxIO1yT4jsApybe6uKFEGCoXTDzbjRjujBt7e3ZOYuzlDL27O4UVn5oMjJ0Sio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778755872; c=relaxed/simple;
-	bh=nc+LssMnHiim6lFPG3GL5ZUz2cDCvzO1E7+0uTSJxw4=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cexszb+h7RN9DZsIW6D43rxPKglvYZvQajeq6av/tfmjmXW9mjJs4WGa9G2RcQPydBwlOJ0Wh0AI4Hk/ZABEe+E3PBQ7pNw7D4/9t6kEYAUpAms9tFbMDDkh6YW9Z8bf4HsOdOVoR1d3+lOfjXCL7lZ55E8sICnS9TDowgzMRR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=AI3zcx2O; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1778755875; c=relaxed/simple;
+	bh=+x1FRlnUcjwLyuK/yNOv8UDz22Nry8z9aIdJLqVZYo0=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=BOQtynBR18jCa2D9ESWfQDp+c9PGdBrh8PhXZUQh76RwF5EgEeMo3yh+7B0JaJPqH8oUpg3WcJQmkLbv9rGEEson8ZTZOE925BK0eaJz4OOelJH8Zhtf0kNDf/b6kbPczSJbmYB7EeEkDYJWvH+yAxUImUIW3423mkGLBpbVAy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kGJ4ecdu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="AI3zcx2O"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1778755870; x=1810291870;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=nc+LssMnHiim6lFPG3GL5ZUz2cDCvzO1E7+0uTSJxw4=;
-  b=AI3zcx2OtErma0MmC4oIDrozZh9ueKMMS5a0KRYMGssLx/FcgZgRVMtp
-   NaxZkJNxEm02RbH4U6zvSydTwokuVYQydkHiBO8MdJdfEnycVWvChGtJs
-   FSKcOi18G1VERHn51ZL/IoKP5gPI0EydA3YQaTzFc0Tld1p26owCl/+bI
-   MFreTVVTMARLeyd0MU7YMYskr7E0gfGgxOCiTmG/5eHXoBLA1wYu5QD9d
-   I2YoZTm6DoGNF2IumfGMxT/RAR21a2e6VEv2iRQukO+mY65N2oFn/Up5T
-   2QQaS2QhIrBUEb6EiKr+Ktxc8xssB2pP7Y0jHYV/+VHFdAjduoouM7KCu
-   Q==;
-X-CSE-ConnectionGUID: IBE4cFAPQnOFOZTFHmylNQ==
-X-CSE-MsgGUID: G4sXtU9LS9m4ZtixDCiahg==
-X-IronPort-AV: E=Sophos;i="6.23,234,1770620400"; 
-   d="scan'208";a="65858100"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2026 03:51:10 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.87.71) by
- chn-vm-ex2.mchp-main.com (10.10.87.31) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.37; Thu, 14 May 2026 03:51:09 -0700
-Received: from che-ld-unglab06.microchip.com (10.10.85.11) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Thu, 14 May 2026 03:51:05 -0700
-From: Thangaraj Samynathan <thangaraj.s@microchip.com>
-To: <netdev@vger.kernel.org>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <bryan.whitehead@microchip.com>,
-	<UNGLinuxDriver@microchip.com>, <linux@armlinux.org.uk>,
-	<linux-kernel@vger.kernel.org>
-Subject: [PATCH v4 4/5] net: lan743x: Register SFP platform device for PCI11x1x
-Date: Thu, 14 May 2026 16:20:27 +0530
-Message-ID: <20260514105028.42942-5-thangaraj.s@microchip.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260514105028.42942-1-thangaraj.s@microchip.com>
-References: <20260514105028.42942-1-thangaraj.s@microchip.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kGJ4ecdu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25C91C2BCB3;
+	Thu, 14 May 2026 10:51:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778755875;
+	bh=+x1FRlnUcjwLyuK/yNOv8UDz22Nry8z9aIdJLqVZYo0=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=kGJ4ecduY8vJjzxH6LkR7RPATN4q0A6GnZF+02NGBB5bL0Ualu1XTcVDkZ0wntwPZ
+	 rkN/JF+QsL56ZzcR6terJ8XARzTH/04af5LPSAuTI4sQKekDKLqQUsmnjZ7aH5K8Tx
+	 NGF0AIIP65XGB9ZFZYI0dZ16DilY0aI5/1RNR9DeEMzHn0vqEUPfEtlkKSqD1N2pRk
+	 jeTXbMpYIzoVc4U+JSfYSVc6bju6B6MgMp5d7OvlgjRZYJ0fIcNgnNocqsk/cFpcZ7
+	 RIf9TOZEjYPaH22bY6kj7GtoHatq2BOJgVTRtg0AtDPqzqdfBkVeP/bF6v9X/XXFJH
+	 xitRUwyVu9Xtw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FDB23931095;
+	Thu, 14 May 2026 10:50:21 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,137 +37,61 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Subject: Re: [PATCH net-next v2 0/6] bridge: Add selective forwarding of
+ gratuitous neighbor announcements
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177875582014.4067480.7391428922035544724.git-patchwork-notify@kernel.org>
+Date: Thu, 14 May 2026 10:50:20 +0000
+References: <20260511065936.4173106-1-danieller@nvidia.com>
+In-Reply-To: <20260511065936.4173106-1-danieller@nvidia.com>
+To: Danielle Ratson <danieller@nvidia.com>
+Cc: netdev@vger.kernel.org, donald.hunter@gmail.com, kuba@kernel.org,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ horms@kernel.org, razor@blackwall.org, idosch@nvidia.com,
+ andrew+netdev@lunn.ch, shuah@kernel.org, ast@fiberby.net,
+ liuhangbin@gmail.com, daniel@iogearbox.net, aroulin@nvidia.com,
+ fmaurer@redhat.com, sdf.kernel@gmail.com, sd@queasysnail.net,
+ kees@kernel.org, nickgarlis@gmail.com, amorenoz@redhat.com,
+ alasdair@mcwilliam.dev, johannes.wiesboeck@aisec.fraunhofer.de,
+ petrm@nvidia.com, linux-kernel@vger.kernel.org, bridge@lists.linux.dev,
+ linux-kselftest@vger.kernel.org
 
-Register an SFP platform device backed by the SFP software node when
-SFP support is enabled, and associate the I2C adapter's firmware node
-so the SFP subsystem can manage module detection and EEPROM reads.
+Hello:
 
-Signed-off-by: Thangaraj Samynathan <thangaraj.s@microchip.com>
----
- drivers/net/ethernet/microchip/lan743x_main.c | 64 +++++++++++++++++--
- drivers/net/ethernet/microchip/lan743x_main.h |  1 +
- 2 files changed, 60 insertions(+), 5 deletions(-)
+This series was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
-index b7bdf361705e..649065c36434 100644
---- a/drivers/net/ethernet/microchip/lan743x_main.c
-+++ b/drivers/net/ethernet/microchip/lan743x_main.c
-@@ -192,8 +192,8 @@ static int pci1xxxx_i2c_adapter_get(struct lan743x_adapter *adapter)
- 		return -EPROBE_DEFER;
- 	}
- 
--	if (!device_link_add(&perif_dev->dev, &adapter->pdev->dev,
--			     DL_FLAG_MANAGED | DL_FLAG_AUTOREMOVE_CONSUMER)) {
-+	if (!device_link_add(&adapter->pdev->dev, &perif_dev->dev,
-+			     DL_FLAG_AUTOREMOVE_CONSUMER)) {
- 		netif_err(adapter, drv, adapter->netdev,
- 			  "failed to link I2C peripheral device\n");
- 		put_device(adap_dev);
-@@ -234,8 +234,8 @@ static int pci1xxxx_gpio_dev_get(struct lan743x_adapter *adapter)
- 		return -EPROBE_DEFER;
- 	}
- 
--	if (!device_link_add(&perif_dev->dev, &adapter->pdev->dev,
--			     DL_FLAG_MANAGED | DL_FLAG_AUTOREMOVE_CONSUMER)) {
-+	if (!device_link_add(&adapter->pdev->dev, &perif_dev->dev,
-+			     DL_FLAG_AUTOREMOVE_CONSUMER)) {
- 		netif_err(adapter, drv, adapter->netdev,
- 			  "failed to link GPIO peripheral device\n");
- 		put_device(gpio_dev);
-@@ -3132,6 +3132,34 @@ static int lan743x_swnodes_register(struct lan743x_adapter *adapter)
- }
- #endif /* CONFIG_LAN743X_SFP */
- 
-+#ifdef CONFIG_LAN743X_SFP
-+static int lan743x_sfp_register(struct lan743x_adapter *adapter)
-+{
-+	struct pci_dev *pdev = adapter->pdev;
-+	struct platform_device_info sfp_info;
-+	struct platform_device *sfp_dev;
-+
-+	memset(&sfp_info, 0, sizeof(sfp_info));
-+	sfp_info.parent = &adapter->pdev->dev;
-+	sfp_info.fwnode = software_node_fwnode(adapter->nodes->group[SWNODE_SFP]);
-+	sfp_info.name = "sfp";
-+	sfp_info.id = (pci_domain_nr(pdev->bus) << 16) |
-+		      (pdev->bus->number << 8) | pdev->devfn;
-+	sfp_dev = platform_device_register_full(&sfp_info);
-+	if (IS_ERR(sfp_dev)) {
-+		netif_err(adapter, drv, adapter->netdev,
-+			  "Failed to register SFP device\n");
-+		return PTR_ERR(sfp_dev);
-+	}
-+
-+	adapter->sfp_dev = sfp_dev;
-+	netif_dbg(adapter, drv, adapter->netdev,
-+		  "SFP platform device registered\n");
-+
-+	return 0;
-+}
-+#endif /* CONFIG_LAN743X_SFP */
-+
- static int lan743x_phylink_sgmii_config(struct lan743x_adapter *adapter)
- {
- 	u32 sgmii_ctl;
-@@ -3754,6 +3782,12 @@ static void lan743x_destroy_phylink(struct lan743x_adapter *adapter)
- static void lan743x_full_cleanup(struct lan743x_adapter *adapter)
- {
- 	unregister_netdev(adapter->netdev);
-+	if (adapter->sfp_dev) {
-+		platform_device_unregister(adapter->sfp_dev);
-+		adapter->sfp_dev = NULL;
-+	}
-+	if (adapter->i2c_adap)
-+		adapter->i2c_adap = NULL;
- 
- 	lan743x_destroy_phylink(adapter);
- 	lan743x_mdiobus_cleanup(adapter);
-@@ -3981,11 +4015,31 @@ static int lan743x_pcidev_probe(struct pci_dev *pdev,
- 		goto cleanup_mdiobus;
- 	}
- 
-+#ifdef CONFIG_LAN743X_SFP
-+	if (adapter->is_sfp_support_en) {
-+		adapter->i2c_adap->dev.fwnode =
-+			software_node_fwnode(adapter->nodes->group[SWNODE_I2C]);
-+
-+		ret = lan743x_sfp_register(adapter);
-+		if (ret < 0) {
-+			netif_err(adapter, probe, netdev,
-+				  "failed to sfp register (%d)\n", ret);
-+			goto cleanup_phylink;
-+		}
-+	}
-+#endif
-+
- 	ret = register_netdev(adapter->netdev);
- 	if (ret < 0)
--		goto cleanup_phylink;
-+		goto cleanup_sfp;
- 	return 0;
- 
-+cleanup_sfp:
-+	if (adapter->sfp_dev) {
-+		platform_device_unregister(adapter->sfp_dev);
-+		adapter->sfp_dev = NULL;
-+	}
-+
- cleanup_phylink:
- 	lan743x_destroy_phylink(adapter);
- 
-diff --git a/drivers/net/ethernet/microchip/lan743x_main.h b/drivers/net/ethernet/microchip/lan743x_main.h
-index 1bff59f43d50..a25864bd8328 100644
---- a/drivers/net/ethernet/microchip/lan743x_main.h
-+++ b/drivers/net/ethernet/microchip/lan743x_main.h
-@@ -1150,6 +1150,7 @@ struct lan743x_adapter {
- 	int			rx_tstamp_filter;
- 	struct lan743x_sw_nodes *nodes;
- 	struct i2c_adapter      *i2c_adap;
-+	struct platform_device  *sfp_dev;
- };
- 
- #define LAN743X_COMPONENT_FLAG_RX(channel)  BIT(20 + (channel))
+On Mon, 11 May 2026 09:59:30 +0300 you wrote:
+> The existing neighbor suppression unconditionally suppresses gratuitous
+> ARPs and unsolicited Neighbor Advertisements, which prevents fast
+> mobility of hosts between VTEPs.
+> 
+> This series adds a new neigh_forward_grat option that provides
+> independent control of gratuitous ARP and unsolicited NA forwarding.
+> When neigh_suppress is enabled but neigh_forward_grat is enabled,
+> regular neighbor discovery is suppressed while gratuitous announcements
+> are forwarded.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next,v2,1/6] bridge: uapi: Add neigh_forward_grat netlink attributes
+    https://git.kernel.org/netdev/net-next/c/0c32db0761fe
+  - [net-next,v2,2/6] bridge: Add internal flags for neigh_forward_grat
+    https://git.kernel.org/netdev/net-next/c/3a28ccb9dd47
+  - [net-next,v2,3/6] bridge: Add selective forwarding of gratuitous neighbor announcements
+    https://git.kernel.org/netdev/net-next/c/27c082c600b1
+  - [net-next,v2,4/6] bridge: Add port-level netlink handling for neigh_forward_grat
+    https://git.kernel.org/netdev/net-next/c/2c75c438b9d9
+  - [net-next,v2,5/6] bridge: Add per-VLAN netlink handling for neigh_forward_grat
+    https://git.kernel.org/netdev/net-next/c/e65cf8815932
+  - [net-next,v2,6/6] selftests: net: Add tests for neigh_forward_grat option
+    https://git.kernel.org/netdev/net-next/c/4620aa6527d3
+
+You are awesome, thank you!
 -- 
-2.34.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
