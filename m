@@ -1,60 +1,46 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E694C34214A
-	for <netdev@vger.kernel.org>; Thu, 14 May 2026 16:40:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29EE8340260;
+	Thu, 14 May 2026 16:40:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778776812; cv=none; b=GVwCGpLtqf2YeQqPgt6oHQ6H++qVBItRwq2gEhKCtKseDSnuiZjA81/B94ZwzyGFwCvMbuSEbM41vs8yu/PHze9LxnzORnD1Cst/fO7lTSSYAGaxBPM1fI+0nA3NHGiiQ851jkloXI4vglLM6st65Nju0IcifsN79A+oh1H/BOE=
+	t=1778776834; cv=none; b=i130ua8SHeYWTcPgOCTssg83fzMjNTCxY+AfLdRFqQ6IEoCEs4etOsn3k0TXyeIdrMQP8AJdbrnCAHuIp4ULsgHwncl5ccD3LfADmcgjbtEUknV2MIzrftwlyrN8OlkvfFPxZoe1OvMbP+YcdPe4lCV+fbVVXUfrvgUp2OE8NGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778776812; c=relaxed/simple;
-	bh=rJdgJ1OFCQpo/ushgHRlnzGxSRqr/Cop7cNY+Q930EE=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=tUqrIIPaMarjToQ0UAqEBFoZShkqUkJm46YGc0W4wkJ4j8QQjl/iVuazEyPpplnegmwezv02n5bMYPcS9rJzqqqsu/bp/yKRru1tlfkNczWja/iGCAUf+jUs8v8y/6tyL3d1YwOdfw4K2jWrZ+e92/UkbOXi/vpdfDDmnOk5ugA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TyqqgTZ5; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1778776834; c=relaxed/simple;
+	bh=hYwVxdsUNFBpETRiRK2LPmgL5E49ZdizfOForXyTEAI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uRi0RvX6g97d/y6wgvueVUa6+UMHL9+SZS1Fv0cKO8bxf77ELir4u84rcUQxJr0JU6BuvzLugPnUavdvNFwqrBtPz4Q34dOtCB2ZXq4gY/MczVv4x3BObqqus0JN9xDTZlJK3GsU6ijhtgdLjHrHjqLiLYa6Chw5oInYjU6DT3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PIOJnuHo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TyqqgTZ5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778776811; x=1810312811;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=rJdgJ1OFCQpo/ushgHRlnzGxSRqr/Cop7cNY+Q930EE=;
-  b=TyqqgTZ5wiAsq88SLcSyMS5ab5DEUhAT0bRE1AXyDL/0/g5E/Xm2WOoI
-   Ov9sjPkO+ZdHpYr9d4fOSgF6QQuV1Z5Kw9phtTFoll3QwTL4RKbOI/4g2
-   kSDoepKGCE/OFdwsS+1KIofCdquf7c1RXS/8bg6HeK4O6GKr6YKvmYaD7
-   KXoIQXKKGNlOtO2I7hG/YUMG1kbgqYy3idgLbQzJQlO9iypLigwerekPE
-   yix0zEtzQAavTiSGDyDJsdSGEuIGWrEKcqwvaVU1khWO82UUTvWquI8Pa
-   k3YBMIDykAFR6YRUe9hInu8owYIBTIjE6T1weVOaxRM5k1IYRV2fkwYuZ
-   Q==;
-X-CSE-ConnectionGUID: mu1IK2T/SqyKcYKovRLqDQ==
-X-CSE-MsgGUID: TmOn1ooYSKmX/HL4NuZ5uA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="90417427"
-X-IronPort-AV: E=Sophos;i="6.23,234,1770624000"; 
-   d="scan'208";a="90417427"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2026 09:40:08 -0700
-X-CSE-ConnectionGUID: LRVKXak2SA6cvK/7udCKpA==
-X-CSE-MsgGUID: 19PQgLzZQ8SMWEfvUwvFdw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,234,1770624000"; 
-   d="scan'208";a="238534961"
-Received: from lkp-server01.sh.intel.com (HELO dca79079c3eb) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 14 May 2026 09:40:05 -0700
-Received: from kbuild by dca79079c3eb with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wNZ6Q-000000006mt-3yn8;
-	Thu, 14 May 2026 16:40:02 +0000
-Date: Fri, 15 May 2026 00:39:49 +0800
-From: kernel test robot <lkp@intel.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
- Jakub Kicinski <kuba@kernel.org>,
- "Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen"?= <toke@toke.dk>
-Subject: [net-next:main 114/116] net/core/sock.c:2761:1: warning:
- control reaches end of non-void function
-Message-ID: <202605150027.0UCMop1l-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PIOJnuHo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 203B8C2BCB3;
+	Thu, 14 May 2026 16:40:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778776833;
+	bh=hYwVxdsUNFBpETRiRK2LPmgL5E49ZdizfOForXyTEAI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PIOJnuHoC13vgBF2KrCH/GoQshh4Z8ogbdCKCeQQNWfhsw9Z6/wdnWb7ZUUOP4q9O
+	 4832VyF8S1nsJvKw8Fd9xiodCFbPMdPigFzOf9NyNFwYGgFk9y3ufzXNpI8wgRnCMt
+	 gQdnJ3E16/1k/VKNXe22M5Clv9i1dqlcHPlz2MvYyt3go+80ul50wW0pjLbXYDd0zv
+	 Rry4lFv0cUnxlgq1Wg2+1NxKeTzQkvN07B65QHuQXKQrlUMoTxoI1Aj1qGh5R3YSd5
+	 B90aMyPTcSVPs3VdFvcwXIYu64dvVCNDGfnmEK5nJ5CwXf0Aro31BU5vCuQWVQmQIx
+	 L9lGjqLBx/fYw==
+Date: Thu, 14 May 2026 19:40:29 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Abhijit Gangurde <abhijit.gangurde@amd.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org, Brett Creeley <brett.creeley@amd.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Allen Hubbe <allen.hubbe@amd.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Eric Joyner <eric.joyner@amd.com>
+Subject: Re: [PATCH net-next 0/4] RDMA/net/ionic: Misc updates
+Message-ID: <20260514164029.GU15586@unreal>
+References: <20260506041935.1061-1-eric.joyner@amd.com>
+ <20260506155954.17e984c6@kernel.org>
+ <4dc23648-7ec1-b68c-0e1b-282e014e534c@amd.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,83 +48,37 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4dc23648-7ec1-b68c-0e1b-282e014e534c@amd.com>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/davem/net-next.git main
-head:   f3f7760afe65292e83f182696130efb983278d04
-commit: f0de88303d5e7e04a1224bc7a00512b5a1c4fe7a [114/116] net: make is_skb_wmem() available to modules
-config: powerpc64-randconfig-002-20260514 (https://download.01.org/0day-ci/archive/20260515/202605150027.0UCMop1l-lkp@intel.com/config)
-compiler: powerpc64-linux-gcc (GCC) 8.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260515/202605150027.0UCMop1l-lkp@intel.com/reproduce)
+On Thu, May 14, 2026 at 08:03:09PM +0530, Abhijit Gangurde wrote:
+> 
+> On 5/7/26 04:29, Jakub Kicinski wrote:
+> > On Tue, 5 May 2026 21:19:31 -0700 Eric Joyner wrote:
+> > > Other smaller additions add a devlink parameter to the ionic ethernet
+> > > driver for enabling and disabling RDMA,
+> > My understanding is that the devlink param was expected to change
+> > the configuration of the device. IOW user can enable/disable RDMA
+> > to save internal device resources. You seem to be purely preventing
+> > the auxbus device to be added. So there's nothing gained here compared
+> > to simply not loading the RDMA driver. What am I missing?
+> You're right that the current implementation controls only the auxiliary bus
+> device registration and doesn't reconfigure firmware resource allocation.
+> The intent behind this devlink param is to provide per-device granularity
+> for enabling/disabling RDMA. In a system with multiple ionic NICs, an
+> administrator may want RDMA active on some devices but not others.
+> That said, if this per-device control justification is sufficient on its
+> own, or if firmware-side changes are a hard requirement for this to be
+> acceptable?
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202605150027.0UCMop1l-lkp@intel.com/
+I'm confident that the administrator can vibe code an appropriate udev
+rule and disable autoprobing for this case.
 
-All warnings (new ones prefixed by >>):
+The real advantage of a devlink knob here is the ability to control the
+firmware.
 
-   In file included from include/net/inet_sock.h:23,
-                    from include/net/ip.h:29,
-                    from include/linux/errqueue.h:6,
-                    from net/core/sock.c:91:
-   include/net/sock.h: In function 'is_skb_wmem':
-   include/net/sock.h:1861:56: error: '__sock_wfree' undeclared (first use in this function); did you mean 'sock_wfree'?
-            (IS_ENABLED(CONFIG_INET) && skb->destructor == __sock_wfree) ||
-                                                           ^~~~~~~~~~~~
-                                                           sock_wfree
-   include/net/sock.h:1861:56: note: each undeclared identifier is reported only once for each function it appears in
-   include/net/sock.h:1862:56: error: 'tcp_wfree' undeclared (first use in this function); did you mean 'sock_wfree'?
-            (IS_ENABLED(CONFIG_INET) && skb->destructor == tcp_wfree);
-                                                           ^~~~~~~~~
-                                                           sock_wfree
-   net/core/sock.c: In function 'can_skb_orphan_partial':
-   net/core/sock.c:2760:50: error: 'tcp_wfree' undeclared (first use in this function); did you mean 'sock_wfree'?
-      (IS_ENABLED(CONFIG_INET) && skb->destructor == tcp_wfree));
-                                                     ^~~~~~~~~
-                                                     sock_wfree
->> net/core/sock.c:2761:1: warning: control reaches end of non-void function [-Wreturn-type]
-    }
-    ^
---
-   In file included from include/linux/tcp.h:19,
-                    from net/core/skbuff.c:45:
-   include/net/sock.h: In function 'is_skb_wmem':
-   include/net/sock.h:1861:56: error: '__sock_wfree' undeclared (first use in this function); did you mean 'sock_wfree'?
-            (IS_ENABLED(CONFIG_INET) && skb->destructor == __sock_wfree) ||
-                                                           ^~~~~~~~~~~~
-                                                           sock_wfree
-   include/net/sock.h:1861:56: note: each undeclared identifier is reported only once for each function it appears in
-   include/net/sock.h:1862:56: error: 'tcp_wfree' undeclared (first use in this function); did you mean 'sock_wfree'?
-            (IS_ENABLED(CONFIG_INET) && skb->destructor == tcp_wfree);
-                                                           ^~~~~~~~~
-                                                           sock_wfree
->> include/net/sock.h:1863:1: warning: control reaches end of non-void function [-Wreturn-type]
-    }
-    ^
+Thanks
 
-
-vim +2761 net/core/sock.c
-
-9e17f8a475fca81 Eric Dumazet   2015-11-01  2750  
-414776621d1006e Jakub Kicinski 2019-08-07  2751  static bool can_skb_orphan_partial(const struct sk_buff *skb)
-414776621d1006e Jakub Kicinski 2019-08-07  2752  {
-414776621d1006e Jakub Kicinski 2019-08-07  2753  	/* Drivers depend on in-order delivery for crypto offload,
-414776621d1006e Jakub Kicinski 2019-08-07  2754  	 * partial orphan breaks out-of-order-OK logic.
-414776621d1006e Jakub Kicinski 2019-08-07  2755  	 */
-9f06f87fef689d2 Jakub Kicinski 2024-04-03  2756  	if (skb_is_decrypted(skb))
-414776621d1006e Jakub Kicinski 2019-08-07  2757  		return false;
-9f06f87fef689d2 Jakub Kicinski 2024-04-03  2758  
-414776621d1006e Jakub Kicinski 2019-08-07  2759  	return (skb->destructor == sock_wfree ||
-414776621d1006e Jakub Kicinski 2019-08-07 @2760  		(IS_ENABLED(CONFIG_INET) && skb->destructor == tcp_wfree));
-414776621d1006e Jakub Kicinski 2019-08-07 @2761  }
-414776621d1006e Jakub Kicinski 2019-08-07  2762  
-
-:::::: The code at line 2761 was first introduced by commit
-:::::: 414776621d1006e57e80e6db7fdc3837897aaa64 net/tls: prevent skb_orphan() from leaking TLS plain text with offload
-
-:::::: TO: Jakub Kicinski <jakub.kicinski@netronome.com>
-:::::: CC: David S. Miller <davem@davemloft.net>
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> 
+> Thanks,
+> Abhijit
