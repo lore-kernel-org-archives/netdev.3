@@ -1,74 +1,122 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4FD33BFAC8;
-	Thu, 14 May 2026 13:16:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 840D73D9023
+	for <netdev@vger.kernel.org>; Thu, 14 May 2026 13:19:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778764602; cv=none; b=g1oSpx1ntcbHsCNGqjWpw4MSDs/GJ7aCdMkBw3RHhsblDFT7dJKZQgVvsKBTve5iCVeU5uX1fduXpK0duX9hFwedByLsSuOcl2EpESJq9E054maKWVCvaqu4jGoZ0zTTwi0mkrshCbOE6wY+quITBm8IhRFN/g3AwiRdAVNjyzg=
+	t=1778764760; cv=none; b=q6Y+McR47/Gk8xkK11GwJo3OkaFFThCy/DGoLhHf+PGaaShPY63SPt/lZLI9e/ert8Vj75W49zrb7Sem7evfplHo5BZ1d3GItaQiG5MjN8LO/f02birGuVeJI43nMPwpXZJoLXRgM7s23Rbr3hT4tsKly8EAn6ArEX9nwaWvu/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778764602; c=relaxed/simple;
-	bh=dLQRcRkcA46txUCXuJ2km9A7HIs1N3NYIpzMw9JTGTQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dlFexUF+8NOnw4bUQLjzkmaozeg4yJr15EO38IccbHAjBCNA0d1LxG3txYo23kffk34+cr4a8eQHLulSsW+qbYFpusufGGh9/Gm5HAIaolXk067tAr8dO6sJolOo/79T9B+Cj+Lp7b/xIHlNhXZd/KRT+8DZCXmw9ro7wjoVlkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=RonAfqFn; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1778764760; c=relaxed/simple;
+	bh=80LqO0D6ZI6zzBP7dy7IDPTuTzNydob/c28DvxeRJwU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WqJL7tXN9B/l8i90uhjPysuGKHpQqQAz80u1FOfQ+oqqeR3Pk4YV6CEUusQvJv+NvNeePCoAx9mvQxuqLhnjLypAAR/4DptJzu6o0OlWaag2oGGAa6wC+GbP9GWSAceacYoWLYsQ12Wb9cBKHnK2Ym2LNSMvkUyJPHWHngIhq9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=jMmZT0ou; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=pL+vq/p4; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="RonAfqFn"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=G4fPOWWTSjI5yvRz5lPq6nB+O5BhDTbqkRTco99Z8Wo=; b=RonAfqFnFtgqoB8ydY6b7UKK0j
-	roADVpo5j+UOfNpWe/5KKxu/bulV/kIWdVSBEe0gL7L0HaAmvGcU1N2oCZ0FMWmyvaJRzsCsod1md
-	C2oF2amkmEVl1+xqG0j2erDdYAVd7RDPVT2YpsisfoCfVfMsgtr1c95bsssqekHy3tX8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wNVvU-002uNe-2w; Thu, 14 May 2026 15:16:32 +0200
-Date: Thu, 14 May 2026 15:16:32 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Thangaraj Samynathan <thangaraj.s@microchip.com>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	bryan.whitehead@microchip.com, UNGLinuxDriver@microchip.com,
-	linux@armlinux.org.uk, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 5/5] net: lan743x: Add PCS/XPCS support for SFP on
- PCI11x1x
-Message-ID: <a044fcc6-554f-4edb-ad49-194d11eb6124@lunn.ch>
-References: <20260514105028.42942-1-thangaraj.s@microchip.com>
- <20260514105028.42942-6-thangaraj.s@microchip.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jMmZT0ou";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="pL+vq/p4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778764758;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9femd5hn/xO1FkQTMLfqDsP0GKz5uGcRFwZhMant7do=;
+	b=jMmZT0ougjrxgwN1+H2ImpSQjrz7/VZOUfqrW0I+B9VSsIi1auYyEDnlssIY7XNGbs4Vi9
+	cEJeWddEG5tphJitOslfNLcZImRYgYBcRVKthehXjmujk23Uxjj+j4pflLwzMmD6UnqhNY
+	JWSvCveVVun4sFFrvFoOmNibsn/hA3M=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-465-eblGuJgIOdaQ7pyzqcZNLw-1; Thu, 14 May 2026 09:19:17 -0400
+X-MC-Unique: eblGuJgIOdaQ7pyzqcZNLw-1
+X-Mimecast-MFC-AGG-ID: eblGuJgIOdaQ7pyzqcZNLw_1778764756
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-48e5dfa8ec7so45164115e9.2
+        for <netdev@vger.kernel.org>; Thu, 14 May 2026 06:19:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1778764756; x=1779369556; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9femd5hn/xO1FkQTMLfqDsP0GKz5uGcRFwZhMant7do=;
+        b=pL+vq/p4x/KFUXUEQBL77LULgMvaSgkxXiYBiDgLANJsdJrgY1yrJeSh8sZFg1PM8V
+         zgCVveBvxoJBdKEPZ3nxriHAM9AICe2fHe7loqQSUovTUDYARitGFuNmt3+5sc3MWFeI
+         LMsbTrEBgzN/25OEXSRwbOFYpExsxzr3AzBIeE4WBFHWGFNznOvgBFPESqEf4Hfb3Gvq
+         6+3031BKa41F9ulQaw0NgD/ANxbiHxYUYEsY4bN93VpQl0q9cr82srOqrUxI9/QGAZ3z
+         KOekTvtOzVD8dfWGaw569VCp6o3H+P2F0JeFD0DIN+quCqtPSylUMobRpDEyoY5t9Gjh
+         G1ew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778764756; x=1779369556;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9femd5hn/xO1FkQTMLfqDsP0GKz5uGcRFwZhMant7do=;
+        b=cC0YJj/j9wN3q4fVPJvXTLpp1xM2FpHmn3c2/ItsWNRpkfHJyjRKM09MSh5ZrnTa8J
+         +HT9p9yTZG/zGpUHeI30FHeYG8uU8nlnyOtacTLRAjJjw9VgKrNjckBDeZHBsuzPMYyO
+         QxqNq66egISso4vybXjfKXwWbhFhxqhEqTM7ls6Y51qt/yHODnLkGuA74QbKhD4ndDWp
+         TThkTFUBFNjeorUAE06TK3DQFd14/NS/ZVIkvlyajvp4k9krT6Ki35kKunNyfnEScGTK
+         VWpICvOdg7FKA9MwfCGlgjdU7uXcyeeAAdwz/e1C/QkCHC21dHOBuLph/AwZAekCML1k
+         1KDA==
+X-Forwarded-Encrypted: i=1; AFNElJ/RKJfmwqcb7HYLDrETRUQFzCbZ7EGzPauA1q6cqP/7DUyWzcCJuoGO8kC3Zvab2tOLOsRQNGs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPiWdWFoKhTkpMM3PkBrTxkc/NmXgvF/EEchMs5RL6gIp7gLmA
+	9N3ds0GXyPb1/0gJxZHycvJA/KT2RgweLJO+wizHQa9RzVYZpzleqK7GdAZOhC8P1n7UIyMI6aY
+	A3iddq4PrI+jom3J1Gatnr9Z3JmKm/9UAqMQzMdf9W23BwdCkAMNST3AS9w==
+X-Gm-Gg: Acq92OHmjGVcyhxMFfB4gAlI1Tfm/nW2H90UgYJGCyTm7HaDjjX7XstjrVjL8MkEGk4
+	hiNJvUaWgYlRQ/vzggrVkrfgHaB9ijU/Fre9cPlAHIoO2bpNVA0mDgqMf8vV+utmVVygVq9drCe
+	Y5geNw/Sz3XtMF+S4O4OtLUCFOcbPth1trnN+4BkcS7c4/XMLGl+ofzZDR5znaWQF2G4W+9udcd
+	1N8PoZ6uzSkL/Q4g932IZ4YPOfHh4ah/LMnO8dn2hk7IRgRuu3wwf+4fW+tWv9b9dKiiafA0dmj
+	1tuqvETNJtwZ2Ua6I/z6gLdoAh4JkB3+mhG78aBqzDye/4riNx71oywvokV4tsVA78uqdxzCG7r
+	jMLTY1tiBxV3ZYuqgtB9HMlFv7sH4QwPYDlrX4+/0iiVQ8rUr4SQ3thI=
+X-Received: by 2002:a05:600c:1547:b0:485:ae14:8191 with SMTP id 5b1f17b1804b1-48fc9a02785mr112899795e9.5.1778764756132;
+        Thu, 14 May 2026 06:19:16 -0700 (PDT)
+X-Received: by 2002:a05:600c:1547:b0:485:ae14:8191 with SMTP id 5b1f17b1804b1-48fc9a02785mr112899255e9.5.1778764755751;
+        Thu, 14 May 2026 06:19:15 -0700 (PDT)
+Received: from [192.168.88.32] ([216.128.9.106])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fd62df4d3sm30027455e9.2.2026.05.14.06.19.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 14 May 2026 06:19:15 -0700 (PDT)
+Message-ID: <d49120e9-7f1d-41ab-8020-eacff408019a@redhat.com>
+Date: Thu, 14 May 2026 15:19:13 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260514105028.42942-6-thangaraj.s@microchip.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3] net: phy: DP83TC811: add reading of abilities
+To: Sven Schuchmann <schuchmann@schleissheimer.de>,
+ Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Florian Fainelli <f.fainelli@gmail.com>,
+ Dan Murphy <dmurphy@ti.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: maxime.chevallier@bootlin.com
+References: <20260512071949.6218-1-schuchmann@schleissheimer.de>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260512071949.6218-1-schuchmann@schleissheimer.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-> Integrate the XPCS instance with phylink by providing a mac_select_pcs
-> callback. Support SGMII and 2.5GBASE-X interfaces in phylink
+On 5/12/26 9:19 AM, Sven Schuchmann wrote:
+> At this time the driver is not listing any speeds
+> it supports. This should be ETHTOOL_LINK_MODE_100baseT1_Full_BIT
+> for DP83TC811. Add the missing call for phylib to read the abilities.
+> 
+> v3:
+>  - Fixed indentitation problems. no code changes.
+> v2:
+>  - Fixed subject and added fixes tag. no code changes.
 
-Not 1000BaseX?
+For future submissions please remember that the revision history should
+follow the '---' separator.
 
->  
->  	switch (adapter->phy_interface) {
->  	case PHY_INTERFACE_MODE_SGMII:
-> +	case PHY_INTERFACE_MODE_2500BASEX:
->  		__set_bit(PHY_INTERFACE_MODE_SGMII,
->  			  adapter->phylink_config.supported_interfaces);
->  		__set_bit(PHY_INTERFACE_MODE_1000BASEX,
+I'm stripping it while applying so no repost needed here.
 
-So it looks like there is some sort of mixup with SGMII and
-1000BaseX. They are different things. Can adapter->phy_interface be
-set to PHY_INTERFACE_MODE_1000BASEX? Should there be a case: for it?
+/P
 
-It could be the broken documentation, using SGMII to mean PCS, has
-resulted in other problems with 1000BaseX not being implemented
-correct? You might want to look at all the "SGMII" code and fixup all
-the 1000BaseX issues.
-
-	Andrew
