@@ -1,35 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44FFA35E1A2;
-	Fri, 15 May 2026 23:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7CD636DA0B;
+	Fri, 15 May 2026 23:16:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778886997; cv=none; b=fr/WnCw1PaFMU4QqOiSPkHyBSzGcFaoKGY6wGobOhonAq05jIok2pZW2csO5NNJSXotDGXJEK8S5xbruEu1SM75N8Qc0grwnw3k7dS2vW4cd+0LdeixfJkuHaSjev0UCYckYzgF8+I5Kc8TM/2GBLn0/EKRIcE10RHbuxrMZ7gA=
+	t=1778887001; cv=none; b=XpoOxucJlbmQ7fcCy5//3O6PsIBBC00/U+/n2ONaYlgR7zzZ3TOEtlUo8J0SepVjK6QfD8I/U4JxjJKaYZM9Y7qRdit+Gzz7FHsDch6q7bvKxDac0ovJi31Ke1rHkrj64p+LesYCQc08rfdVxkuijFcv7EIkkDn1lFhsTPWE8VE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778886997; c=relaxed/simple;
-	bh=ZMsRxrh8IFDEBxFzQ/V211V80nqkkiWsjoCKrZR1w5g=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=vD+InHRToHdu9Kr48CJuW5mfepkOq2gNy7xQkgTZ7fGv2M92bpwK5QlKT12YBS9/D8qGIBaTLFb780grpJFoqczhgxuDLd90PBYxoRapAV+zyB5GHbjMhZUwxqVGMlUVA+/Yjj5A8k4pO2SM64MaKjNOIByRYHgyKSCsVZ4V/8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sb4P3A9o; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778887001; c=relaxed/simple;
+	bh=6sZq2IJKNUrXM4hv2VWy7/L4s6ZDgiOimXZMV4PL8Bo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=J7da5ArdB104jOrURrIAlXU+JqcaPGPFMVGV3qGG98itsesbyiasImLdX0FaBxdWSi8Yc/dc+ApLHTzOUpg5s4kA0/tyFpHIhu0Af26Y53Exak419dqRWegC4VFwEjoE7WbETJbJEZwZ6LlHAg1h9feqggACY9yBeQH8toObqnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=on9AFBSS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sb4P3A9o"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE22FC2BCB0;
-	Fri, 15 May 2026 23:16:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="on9AFBSS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BBA3C2BCB0;
+	Fri, 15 May 2026 23:16:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778886996;
-	bh=ZMsRxrh8IFDEBxFzQ/V211V80nqkkiWsjoCKrZR1w5g=;
-	h=From:Subject:Date:To:Cc:From;
-	b=Sb4P3A9ofeB4/IMZIUaGSGePnhU57lTe3uh736tE1qTfVM8eozWGJs2OtUeMwOE36
-	 /5ilJZDZCStE3xpTQTVxM01wRZSP9y7EuHLDAegfxzgke5Zcttt0xJYBriwN1sXwdS
-	 Jy1/UMrTdHwKqWDFEWa0OVFKWZJ6Md62P/vQVDuY+3IPqluBwI4GvagAOmKbLGpPTf
-	 LI6Daih7v3y0Taf6LIVvzA/xwfYYhlk2c0Q2dD9VTD8aJsbvkCyX2Rotg7rmhVlRV0
-	 Xqg13TfDeTG+6bLvlUHh1SsisRQ3DXqclgcguqEhh4V/8prTLHuz4cazkJ5aV8PUHV
-	 t5nvfpLe9urig==
+	s=k20201202; t=1778887001;
+	bh=6sZq2IJKNUrXM4hv2VWy7/L4s6ZDgiOimXZMV4PL8Bo=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=on9AFBSSGXMy+LiIzx47iZwQfpdFF5qzUR23Hn3cRZP2ZWrqo3774SqL6ZUSnjOfv
+	 dvTGSX3TLwuPhbf6IkKHCEIv6UUTbbERMc8xlFXTRA405UDZJcpwafpLX+PQ7xLZSv
+	 UzsTkyYlNoTJ9CMcQzJsNNY6/jWT5P95pS/jq9W42ewIV+1vlfZM6u823WxVOK1VmN
+	 QrGWcN/ckvgaRbdQc46Xe2lLG4BYYBjxAKzBW2Jy/hwQ1sJyFev7D6p8eijKlz3ucq
+	 duHjQV/aWnxRSzt8uuvmcKGiWb99hOgl5hJVLjGuIU7yfdtQ6uYCPCAxF0/NGE2xQ2
+	 W0LyTmHe+MtfA==
 From: Linus Walleij <linusw@kernel.org>
-Subject: [PATCH 0/5] net: dsa: microchip: Add support for
- KSZ8995XA/KS8995XA
-Date: Sat, 16 May 2026 01:16:12 +0200
-Message-Id: <20260516-ks8995-to-ksz8-v1-0-70d0ef4aa5f4@kernel.org>
+Date: Sat, 16 May 2026 01:16:13 +0200
+Subject: [PATCH 1/5] net: dsa: microchip: Add fallback Micrel compatibles
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -38,10 +37,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDUwNL3exiC0tLU92SfCCrykLX0DTNOM0y2cLI3DBNCaipoCg1LbMCbGB
- 0LIRfXJqUlZpcAjJFqbYWAHEG089yAAAA
-X-Change-ID: 20260509-ks8995-to-ksz8-15f3f9c8271f
+Message-Id: <20260516-ks8995-to-ksz8-v1-1-70d0ef4aa5f4@kernel.org>
+References: <20260516-ks8995-to-ksz8-v1-0-70d0ef4aa5f4@kernel.org>
+In-Reply-To: <20260516-ks8995-to-ksz8-v1-0-70d0ef4aa5f4@kernel.org>
 To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
  Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
@@ -53,54 +51,43 @@ Cc: netdev@vger.kernel.org, Woojung Huh <Woojung.Huh@microchip.com>,
  devicetree@vger.kernel.org, Linus Walleij <linusw@kernel.org>
 X-Mailer: b4 0.15.2
 
-This series breaks with the dated attempt to polish the old
-KS8995 driver, and instead implement support for the KS8995XA
-in the KSZ driver, and after that delete the old KS8995 driver.
-
-The hardware clearly has the same ancestry, the KSZ8995XA is
-just a rebrand of the much older Micrel KX8995XA switch.
-
-The old drivers referce to "KS8995" was actually KS8995XA only,
-it never supported the sibling devices KS8995E or KS8995MA.
-This is reflected in this patch set.
-
-Add new compatibles, add special code paths for the KSZ8995XA
-and add a new tagger for the special front tag found in the
-KSZ8995XA.
-
-The patches were tested with the Actiontec MI424WR rev D (which
-has the KS8995XA) and OpenWrt as userspace.
+Because of forking paths when Micrel was acquired by Microchip,
+two devices also exist with the micrel,* prefix bindings.
+Add these to the KSZ SPI driver so users can use the more capable
+driver.
 
 Signed-off-by: Linus Walleij <linusw@kernel.org>
 ---
-Linus Walleij (5):
-      net: dsa: microchip: Add fallback Micrel compatibles
-      dt-bindings: net: dsa: microchip: Add KSZ8995XA
-      net: dsa: tag_ks8995: Add the KS8995 tag handling
-      net: dsa: microchip: Support Microchip KSZ8995XA / KS8995XA
-      net: dsa: ks8995: Delete surplus driver
+ drivers/net/dsa/microchip/ksz_spi.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
- .../devicetree/bindings/net/dsa/microchip,ksz.yaml |   1 +
- drivers/net/dsa/Kconfig                            |   8 -
- drivers/net/dsa/Makefile                           |   1 -
- drivers/net/dsa/ks8995.c                           | 857 ---------------------
- drivers/net/dsa/microchip/Kconfig                  |   1 +
- drivers/net/dsa/microchip/ksz8.c                   | 105 ++-
- drivers/net/dsa/microchip/ksz8_reg.h               |   2 +
- drivers/net/dsa/microchip/ksz_common.c             | 115 ++-
- drivers/net/dsa/microchip/ksz_common.h             |  11 +-
- drivers/net/dsa/microchip/ksz_spi.c                |  33 +-
- include/linux/platform_data/microchip-ksz.h        |   1 +
- include/net/dsa.h                                  |   2 +
- net/dsa/Kconfig                                    |   6 +
- net/dsa/Makefile                                   |   1 +
- net/dsa/tag_ks8995.c                               | 134 ++++
- 15 files changed, 376 insertions(+), 902 deletions(-)
----
-base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
-change-id: 20260509-ks8995-to-ksz8-15f3f9c8271f
+diff --git a/drivers/net/dsa/microchip/ksz_spi.c b/drivers/net/dsa/microchip/ksz_spi.c
+index d8001734b057..c38eda65aaf2 100644
+--- a/drivers/net/dsa/microchip/ksz_spi.c
++++ b/drivers/net/dsa/microchip/ksz_spi.c
+@@ -224,6 +224,21 @@ static void ksz_spi_shutdown(struct spi_device *spi)
+ }
+ 
+ static const struct of_device_id ksz_dt_ids[] = {
++	/*
++	 * Legacy Micrel bindings. In 2015 Microchip acquired
++	 * Micrel which is the originator of the KSZ series, and
++	 * devices branded for Micrel already existed, as well as
++	 * some device tree bindings. These two products are identical
++	 * to the same Microchip products.
++	 */
++	{
++		.compatible = "micrel,ksz8864",
++		.data = &ksz_switch_chips[KSZ8864]
++	},
++	{
++		.compatible = "micrel,ksz8795",
++		.data = &ksz_switch_chips[KSZ8795]
++	},
+ 	{
+ 		.compatible = "microchip,ksz8463",
+ 		.data = &ksz_switch_chips[KSZ8463]
 
-Best regards,
---  
-Linus Walleij <linusw@kernel.org>
+-- 
+2.54.0
 
