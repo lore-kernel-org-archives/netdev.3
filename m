@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8815530C17B
-	for <netdev@vger.kernel.org>; Fri, 15 May 2026 18:24:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D84F43FF1B5
+	for <netdev@vger.kernel.org>; Fri, 15 May 2026 18:24:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778869471; cv=none; b=sEXA67OCvS1egLU0lxsbZraZbG/ubB/ABzO4vyKlM05Rzbp1UpZSULMd7rdzVW0T8ODPdlvby1LHsC7pZRfU6fbyIlNHrO0kvyNu4MRsSZGkYsi3QwkxCiA8ndpRea7Yaf5N3mzheg9m0Zyx2Cq7nivtZKeGGP6wdDEJqxMMOm4=
+	t=1778869472; cv=none; b=EUPq6ybiHNSMR4mElfe9etRWtESGyBpNQLYXzMH4oqKYsTRkOzx97uMdCCYOHYWGD28ly3+45PyXxbK9t2vDJEJz49+cX2Qyt8MEh4gH8wRhJetutJwlGdXFY/ads8yE8LDVn4D4WXIU3fmvPV7yaY1FXEHEMgVaqlBtmrPOcQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778869471; c=relaxed/simple;
-	bh=+kkoGxvbZndDRM6tNXaR0zcmzRqf8jATFTF2iAfhMGg=;
+	s=arc-20240116; t=1778869472; c=relaxed/simple;
+	bh=bIZS3XVYKtfTqMYiFPSUVZSQDveyIbEN5ZiO02Mt1OY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QVpUEQCt8Vm40XiwgvwatZ6D+Q3vylzVhp9DhKkaQtj7xudbGb4EMSg0g9DmRr6zttCRDOw/c3A0Hvjc+npTN4zi2nVOLfgKhjRZ2tz3vQ9llWt7BXnNNwmpzPiFvZp62QHhGSKnv/zcQDE7ey/nGYZGOmXb0C70JDOi9nh7oj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KDlxo6SA; arc=none smtp.client-ip=198.175.65.14
+	 MIME-Version; b=dHaynDMHsQyj+JT/9U34S1AKP7H0xw7zol4mNcvMVajLeZwXhQbtcTTSpB7Q2kFziDkqeC6NYc/Upf8g5QLHQ5BvqBvL/mrWBokGb9cGN1gIcWUMXyuSmBRkwNJ4aGVf/ZCAEaXRoTZEGRj3+ASPPqHiQpZDdztwyFxaqPztfL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R/MVpfQc; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KDlxo6SA"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R/MVpfQc"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778869469; x=1810405469;
+  t=1778869471; x=1810405471;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=+kkoGxvbZndDRM6tNXaR0zcmzRqf8jATFTF2iAfhMGg=;
-  b=KDlxo6SATWLhyExA30VTtlHMpiXjTWJorRGDv9cX3f+5TVLX2xCcbLmt
-   jUiMDl3oUbCZz3dyw1SDbcVVQLftOQRBqvOM8d9KvZnoE4SbmBEugfPoD
-   n+4DQmOUJlRAfb0MWnArMiNc/c9wZ1qaZa0t6N99kciW+OQEPl8C7/f9L
-   7Xp8L/EG4pq6tSwqncwusYgUEgWHMpGuonzAl/vPXKwEKQHEik7mCU+Oy
-   KDtzyBfx/N+qSMrnZ5O/ARRQdBCVGGSw730M8vvD8lC7BHlf6VhRfrpEb
-   FC3FJAOys481UuH5Nje4M5ZuuvYgUj3nDAl1wK6hI8QxCX8kpNVYpMJXA
-   A==;
-X-CSE-ConnectionGUID: pnv7eSp+Q1OB5ykNlSrgJw==
-X-CSE-MsgGUID: F0WzOA8kRASZukJciuSlDA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="83701147"
+  bh=bIZS3XVYKtfTqMYiFPSUVZSQDveyIbEN5ZiO02Mt1OY=;
+  b=R/MVpfQc5ZVv1BrmuMJ8rI0u2whgxkPuLHwrOEJQE27WskPx75D8I1UY
+   s9uicUCQAi59T+pAuvWeA73OuRsQwaYP83vvkp9vKWN1fclxhoEAz6OR+
+   TfbzdW+zq1JALe7LwB5uy92A1KM2IjOWigIZlnSI5eAPfImo/oJ4QvDac
+   /9rJHWa/2Ymt8TR/sKDUGP5aej7g44I49IT/lYsZ+X2y5SwoMqJeph4Ba
+   zCxphhyCxnf1YLqAaGY3cQWDKEt09wBHv27h5fBmlBQM5puRaN8Kb4viR
+   PHfg2lCfau6rez9YpD7JKAXRZIx3csG1n3/DVsn3UHbvbrbCvRz2+IkSI
+   Q==;
+X-CSE-ConnectionGUID: HctYofKgSmWx+kcb0d4GuA==
+X-CSE-MsgGUID: K+AKapysQOiqqLmPY5QVvA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="83701154"
 X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="83701147"
+   d="scan'208";a="83701154"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
   by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 11:24:27 -0700
-X-CSE-ConnectionGUID: zNnKV4RhQfqfHMWc2lhMuQ==
-X-CSE-MsgGUID: 4av8MhRZQH+GOkwryYisbQ==
+X-CSE-ConnectionGUID: hCclpp14TbKXaBguhNNydw==
+X-CSE-MsgGUID: h571s+yKRAqvHtLSojUhCA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="238647445"
+   d="scan'208";a="238647448"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by orviesa008.jf.intel.com with ESMTP; 15 May 2026 11:24:26 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
@@ -54,12 +54,13 @@ Cc: Grzegorz Nitka <grzegorz.nitka@intel.com>,
 	anthony.l.nguyen@intel.com,
 	richardcochran@gmail.com,
 	przemyslaw.kitszel@intel.com,
+	horms@kernel.org,
 	Arkadiusz Kubalewski <Arkadiusz.kubalewski@intel.com>,
 	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
 	Alexander Nowlin <alexander.nowlin@intel.com>
-Subject: [PATCH net 04/10] ice: ptp: serialize E825 PHY timer start with PTP lock
-Date: Fri, 15 May 2026 11:24:11 -0700
-Message-ID: <20260515182419.1597859-5-anthony.l.nguyen@intel.com>
+Subject: [PATCH net 05/10] ice: ptp: use primary NAC semaphore on E825
+Date: Fri, 15 May 2026 11:24:12 -0700
+Message-ID: <20260515182419.1597859-6-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260515182419.1597859-1-anthony.l.nguyen@intel.com>
 References: <20260515182419.1597859-1-anthony.l.nguyen@intel.com>
@@ -73,70 +74,60 @@ Content-Transfer-Encoding: 8bit
 
 From: Grzegorz Nitka <grzegorz.nitka@intel.com>
 
-ice_start_phy_timer_eth56g() programs TIMETUS registers and issues
-INIT_INCVAL without holding the global PTP semaphore.
+For E825 2xNAC configurations, PTP semaphore operations must hit the
+primary NAC register block so both sides coordinate on the same lock.
 
-This allows concurrent PTP command paths to interleave with PHY timer
-start, which can make the sequence fail and leave timer initialization
-inconsistent.
+Commit e2193f9f9ec9 ("ice: enable timesync operation on 2xNAC E825
+devices") updated other primary-only PTP register accesses to
+use the primary NAC on non-primary functions, but left ice_ptp_lock()
+and ice_ptp_unlock() operating on the local NAC. As a result, secondary
+NAC PTP paths can take a different semaphore than the primary side.
 
-Take the PTP lock around TIMETUS registers programming and INIT_INCVAL
-command execution, and make sure the lock is released on all error paths.
+Select the primary hardware in ice_ptp_lock() and ice_ptp_unlock() when
+the current function is not primary, keeping semaphore operations
+symmetric and consistent with the rest of the 2xNAC PTP register access
+path.
 
-Keep the subsequent sync step outside of this critical section, since
-ice_sync_phy_timer_eth56g() takes the same semaphore internally.
-
-Fixes: 7cab44f1c35f ("ice: Introduce ETH56G PHY model for E825C products")
+Fixes: e2193f9f9ec9 ("ice: enable timesync operation on 2xNAC E825 devices")
 Reviewed-by: Arkadiusz Kubalewski <Arkadiusz.kubalewski@intel.com>
 Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 Tested-by: Alexander Nowlin <alexander.nowlin@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_ptp_hw.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
 diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-index 672218e5d1f9..8bb94e785f2a 100644
+index 8bb94e785f2a..2c18e16fe053 100644
 --- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
 +++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-@@ -2141,16 +2141,23 @@ int ice_start_phy_timer_eth56g(struct ice_hw *hw, u8 port)
- 	}
- 	incval = (u64)hi << 32 | lo;
+@@ -5264,9 +5264,13 @@ static void ice_ptp_init_phy_e830(struct ice_ptp_hw *ptp)
+  */
+ bool ice_ptp_lock(struct ice_hw *hw)
+ {
++	struct ice_pf *pf = container_of(hw, struct ice_pf, hw);
+ 	u32 hw_lock;
+ 	int i;
  
-+	if (!ice_ptp_lock(hw)) {
-+		dev_err(ice_hw_to_dev(hw), "Failed to acquire PTP semaphore\n");
-+		return -EBUSY;
-+	}
++	if (!ice_is_primary(hw))
++		hw = ice_get_primary_hw(pf);
 +
- 	err = ice_write_40b_ptp_reg_eth56g(hw, port, PHY_REG_TIMETUS_L, incval);
- 	if (err)
--		return err;
-+		goto err_ptp_unlock;
+ #define MAX_TRIES 15
  
- 	err = ice_ptp_one_port_cmd(hw, port, ICE_PTP_INIT_INCVAL);
- 	if (err)
--		return err;
-+		goto err_ptp_unlock;
- 
- 	ice_ptp_exec_tmr_cmd(hw);
- 
-+	ice_ptp_unlock(hw);
+ 	for (i = 0; i < MAX_TRIES; i++) {
+@@ -5293,6 +5297,11 @@ bool ice_ptp_lock(struct ice_hw *hw)
+  */
+ void ice_ptp_unlock(struct ice_hw *hw)
+ {
++	struct ice_pf *pf = container_of(hw, struct ice_pf, hw);
 +
- 	err = ice_sync_phy_timer_eth56g(hw, port);
- 	if (err)
- 		return err;
-@@ -2166,6 +2173,10 @@ int ice_start_phy_timer_eth56g(struct ice_hw *hw, u8 port)
- 	ice_debug(hw, ICE_DBG_PTP, "Enabled clock on PHY port %u\n", port);
- 
- 	return 0;
++	if (!ice_is_primary(hw))
++		hw = ice_get_primary_hw(pf);
 +
-+err_ptp_unlock:
-+	ice_ptp_unlock(hw);
-+	return err;
+ 	wr32(hw, PFTSYN_SEM + (PFTSYN_SEM_BYTES * hw->pf_id), 0);
  }
  
- /**
 -- 
 2.47.1
 
