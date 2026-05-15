@@ -1,28 +1,28 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012033.outbound.protection.outlook.com [52.101.66.33])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013057.outbound.protection.outlook.com [40.107.162.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 328093F5BE4;
-	Fri, 15 May 2026 22:37:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5B23EBF02;
+	Fri, 15 May 2026 22:37:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.57
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778884674; cv=fail; b=U4mNCEq3prujghVGgYlILglTCLWgEXR+XDPGhQUZ3bn+rAbynGPNKBUBtp6SuL3XVlttjDbB6N0hXRw+Mqz2rn1RX8pAuqsOYX2mM8diyTbIEXEXaMEku6eR4wU9NXTnk4RuKNxGy8L7lMG25T8j/5TPxT46TQNfETDc/AOWk9o=
+	t=1778884682; cv=fail; b=mwAyxn0kq1XS3CDLsWH0lno9B4qgmlgeBOnPbbVykT2yxABm0C1QFL77dd4pnL7EfF9heR2i7tCHO7BJVFPQDxLOv8mAt7B9q2C090TNL0ol7F7TLgEKW+BUlKLjiERJfBXFmTcBD9kpFlR1vt8GTmFAcsd+/x+yP6Gpp2q8cAE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778884674; c=relaxed/simple;
-	bh=Hq/sOUFo6NfRXo1CJAUy1PPGFamAJHIpVq0bhhcvMPE=;
+	s=arc-20240116; t=1778884682; c=relaxed/simple;
+	bh=cq9AmFrYOwwFyPaNOUaULCadhIkpmQBSV+akpibNQqk=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HmQY7HtdmNqM8PAKAf14GPj/r/rjWb2ZN2SaT5OP8EZn/wWrjK1hR4nRYpfOsfrYH++Puj/Ib3lVNKiUErOZIOYzfyWvGzTbFIVRn+IIrFqNybqVhSs61/HvdGiiRcOAP4cvB75TQ4LpWW2fRSHlpiubt+PX8/zzivIWrcpbXA8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ericsson.com; spf=pass smtp.mailfrom=ericsson.com; dkim=pass (2048-bit key) header.d=ericsson.com header.i=@ericsson.com header.b=ScVsnKoK; arc=fail smtp.client-ip=52.101.66.33
+	 MIME-Version:Content-Type; b=HHntl8zkDoGvoltw8FQEVnHUtdgHeHLfGEitxbjQjXVDr6ybpUCLa3VvwGgPlPwW+QiO/UcT7+gU6clOk604TUdo+43HKOqcJZqiU5BSRjVRQi7/LirRwI1VJX2t+L3LlES4vEvBHMHPg4cqbaiKWl4QUmkYXorQCWLWlr2XaEA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ericsson.com; spf=pass smtp.mailfrom=ericsson.com; dkim=pass (2048-bit key) header.d=ericsson.com header.i=@ericsson.com header.b=bsiMu8ti; arc=fail smtp.client-ip=40.107.162.57
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ericsson.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ericsson.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ericsson.com header.i=@ericsson.com header.b="ScVsnKoK"
+	dkim=pass (2048-bit key) header.d=ericsson.com header.i=@ericsson.com header.b="bsiMu8ti"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nBqpD3rGoKgE2u9JcrdHt2TFCCgCOwoAmnWG+dEPQIhIA61l1ACaAL7cBGyZeZiWUtzdM9z9txfMkhgW1IHz9GbhPdQiMvyv6vE6eaKS75lHio51cSSvlAfqQ0pwZiqu5H1ho7zvn1tJwL9XWPPrmzUFAcRlfnwMC7h6qs1m+NH1oW/D0CB03RDLGNC+FP3Bmx9lx1WZSxZrpvUw3XRm/302EyYVGt7hbU6aKfixALivPKhnCPwhy4qXpJ0/W+580VSy7dnqyGc6qTtWD8FbNSns4o4Pu6jXfGFwtGo7mVPyM5bJJjHQE8PqlW0ifPPfkYKH5XM+/nDuvt8ab8T7vw==
+ b=YONr7AKToYkAjWwYsE+xT3lnSorR+BtzojBbDK+n0iZFY5/7MtES9boRMt6spLSddt5v9OwdjSNLNVgzwZnF1VS6IlaZSHhCCJDJe85vsphNgwPG9dydpGWpPI/b6+t8aM3iBP2paxLNDo8EVcj4GFmAmDJASm79QsxfWVDBbIh0kARbwKm6LFsEw1aN2XPO9TXZmoN4bWSxy8c16BV3csGe1RAzQ+A5Jf3tO6/HlZ9rtwgDHtTHcEWSTzGmFMQSd22vi9B1KfD1NwKpA1wUa8yb6g8Sa8gTT4yajDWT4KFSmUbePkECS2NUdWLoxZ9wsH/6g52UDRE2QLtlY215Ug==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nXIZlVo4hiOJRVR5Lrn7RVvgrMnrBi6KHIQnuvF/Ro8=;
- b=LwQ6KvV9Bla/9pm1c+uXWUQe0ge87BaeuC1r9zWJS7xEj5ziFghNBpnx8g70Pb0TyJvjWHmrwWjf6uwoazm/REybPAjwp0BO9081omrRpK7yGiQImpnmlsDQH5P6hK6EQ9036EFrpWtaD+sFFkq7GVInK7HP+1ILoLJyqaE836WQIxkJaIy0DFR1q1Oox6tK8BwKNVs0H0BwW/LOIdvbxv09BTvw1mSIzvy/Cd3XRqO7JzGA1BhN85sD92w1uvyAeEcG4Y1je73QTml30NMXDsZUfCoT0grn7kQE8bsmfBHNPsmMMM072qJZ2OxwbkQBz1yRXIcfOF8K2EGwLKcV0Q==
+ bh=1g5UvKW9+jHTEN5xHVqXlO9PGhkJlVhXkI22zY6aNSY=;
+ b=CNr3+X29bUlgpTPuhzRuUayVgI2fX4NPQexeZp7y1IStn3EjVQNbaONb4cPcocaczP0vFsj1bkFwDzPOteEidlNDbFQrvBLO8KixdulMHQaO7CRkvYUpZXnplaQYpR4pYM2GeHj0yHUoJ7ZA4yht4SVnabo6AlgBmTgB6Sdfl+ATtm+row14varUt3mKOOu5ImUUunl8YxLkVSVL7vkbjuNJgsaZQo8CjrjuH6mkkigGr7JXdm11mcBJCBg/ajCLXbY8KVzQl4W1RtBq7L4JZFG/2THQPnRkQYIqbY/7TDQ+Jv5NJShHCz1p9bx6lF7qrWPTgyfGZfgd/MFutR/0nQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  192.176.1.74) smtp.rcpttodomain=davemloft.net smtp.mailfrom=ericsson.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=ericsson.com;
@@ -30,18 +30,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ericsson.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nXIZlVo4hiOJRVR5Lrn7RVvgrMnrBi6KHIQnuvF/Ro8=;
- b=ScVsnKoKq0W0CR+FvTLYa5Ay4ymIBQIU7E75vko7BCaXZzESqkl7j83nZfqswpvVYp5ftpt86KlK3Rp4ceW27FIoapmcnEGPOg3RuCOmpozueHF1tC2xy1NVhol7pwv2XeXvUAU1NP447QAyeHh2LRkF8Eafr6GJA2+qwF4ulAnTR8qj94uSEoguwxwcf2+rklBl6xUCz6/fQx5lP8MzsqVfZ46p8uiarh88WOL4RBl7xCV6JFN7HDRpMslzB9+sh9mMzqbWDjY8B8oYCYBwGcfVvQSB2o+80yAFKy08kLOEfc8mvbOq9CkGVfMlUTfKxQebV97+mIdFkT/XRSwvVg==
-Received: from DB8PR04CA0029.eurprd04.prod.outlook.com (2603:10a6:10:110::39)
- by AM9PR07MB7268.eurprd07.prod.outlook.com (2603:10a6:20b:2c7::22) with
+ bh=1g5UvKW9+jHTEN5xHVqXlO9PGhkJlVhXkI22zY6aNSY=;
+ b=bsiMu8tieIE/QTWTwbkKOUT2WGc23LhP50FQmTQ1LPj7sl1pP4O7sMF/BMx9kvFFBHL9OhDy0vMCZ2UTPLrlogOchhX4UDT3MeKnOwDq6Vzbc1QT+OxcLzprcOH+NyjAcgXdqX3yhGJsBnKQD4r5Py3vyg9FizIULhmWjQUsA9UzpU+l2sp2OsdD6KNWU25nzQzfUQKPQYanzBydaPy94swwLSNcj69/FUqoEO5/b6nbg1XHgXUySRWRcPO6zf8FOcD3h4KOFDYHmeyYvBoBguTHqruXEAwkVSIC6gtN54NphhEciu6c1GDAD02u4npjKCKcz9NdVJj2Zfaa5FryjA==
+Received: from AS4P191CA0049.EURP191.PROD.OUTLOOK.COM (2603:10a6:20b:657::8)
+ by GV4PR07MB11630.eurprd07.prod.outlook.com (2603:10a6:150:2e8::5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.15; Fri, 15 May
- 2026 22:37:48 +0000
-Received: from DB1PEPF000509F4.eurprd02.prod.outlook.com
- (2603:10a6:10:110:cafe::c0) by DB8PR04CA0029.outlook.office365.com
- (2603:10a6:10:110::39) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9870.25 via Frontend Transport; Fri,
- 15 May 2026 22:37:48 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.17; Fri, 15 May
+ 2026 22:37:53 +0000
+Received: from AMS0EPF00000191.eurprd05.prod.outlook.com
+ (2603:10a6:20b:657:cafe::93) by AS4P191CA0049.outlook.office365.com
+ (2603:10a6:20b:657::8) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9913.12 via Frontend Transport; Fri,
+ 15 May 2026 22:37:53 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 192.176.1.74)
  smtp.mailfrom=ericsson.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=ericsson.com;
@@ -49,18 +49,18 @@ Received-SPF: Pass (protection.outlook.com: domain of ericsson.com designates
  192.176.1.74 as permitted sender) receiver=protection.outlook.com;
  client-ip=192.176.1.74; helo=oa.msg.ericsson.com; pr=C
 Received: from oa.msg.ericsson.com (192.176.1.74) by
- DB1PEPF000509F4.mail.protection.outlook.com (10.167.242.150) with Microsoft
+ AMS0EPF00000191.mail.protection.outlook.com (10.167.16.216) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.25.13 via Frontend Transport; Fri, 15 May 2026 22:37:47 +0000
+ 15.21.25.13 via Frontend Transport; Fri, 15 May 2026 22:37:52 +0000
 Received: from seroius18815.sero.gic.ericsson.se (153.88.142.248) by
- smtp-central.internal.ericsson.com (100.87.178.67) with Microsoft SMTP Server
+ smtp-central.internal.ericsson.com (100.87.178.63) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Sat, 16 May 2026 00:37:47 +0200
+ 15.2.2562.29; Sat, 16 May 2026 00:37:51 +0200
 Received: from seroius06448.sero.gic.ericsson.se (seroius06448.sero.gic.ericsson.se [10.117.92.228])
-	by seroius18815.sero.gic.ericsson.se (Postfix) with ESMTP id 8158E4020840;
-	Sat, 16 May 2026 00:37:46 +0200 (CEST)
+	by seroius18815.sero.gic.ericsson.se (Postfix) with ESMTP id 1045D4020840;
+	Sat, 16 May 2026 00:37:51 +0200 (CEST)
 Received: by seroius06448.sero.gic.ericsson.se (Postfix, from userid 7434092)
-	id 6CA231005D6A; Sat, 16 May 2026 00:37:46 +0200 (CEST)
+	id EF1CB1005D6A; Sat, 16 May 2026 00:37:50 +0200 (CEST)
 From: Fidan Aliyeva <fidan.aliyeva.ext@ericsson.com>
 To: <andrew@lunn.ch>, <olteanv@gmail.com>, <davem@davemloft.net>,
 	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
@@ -68,9 +68,9 @@ To: <andrew@lunn.ch>, <olteanv@gmail.com>, <davem@davemloft.net>,
 CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<fidan.aliyeva.ext@ericsson.com>, Thomas Eckerman
 	<thomas.eckerman.ext@ericsson.com>
-Subject: [PATCH net-next 1/4] mv88e6xxx: Add mv88e6352_reset for 6352 family
-Date: Sat, 16 May 2026 00:37:04 +0200
-Message-ID: <20260515223707.1026325-2-fidan.aliyeva.ext@ericsson.com>
+Subject: [PATCH net-next 3/4] mv88e6xxx: Use cached config3 in 6352 has_serdes
+Date: Sat, 16 May 2026 00:37:06 +0200
+Message-ID: <20260515223707.1026325-4-fidan.aliyeva.ext@ericsson.com>
 X-Mailer: git-send-email 2.36.0
 In-Reply-To: <20260515223707.1026325-1-fidan.aliyeva.ext@ericsson.com>
 References: <20260510213429.2044612-1-fidan.aliyeva.ext@ericsson.com>
@@ -85,99 +85,96 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB1PEPF000509F4:EE_|AM9PR07MB7268:EE_
-X-MS-Office365-Filtering-Correlation-Id: 02af9c91-b457-496f-6049-08deb2d296d5
+X-MS-TrafficTypeDiagnostic: AMS0EPF00000191:EE_|GV4PR07MB11630:EE_
+X-MS-Office365-Filtering-Correlation-Id: eca369ba-6685-4932-f2f2-08deb2d2999f
 X-SMTP-Server: smtp-central.internal.ericsson.com
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|376014|36860700016|22082099003|18002099003|4143699003|56012099003|11063799003;
+	BCL:0;ARA:13230040|1800799024|36860700016|376014|82310400026|22082099003|18002099003|56012099003|4143699003|11063799003;
 X-Microsoft-Antispam-Message-Info:
-	Hff6z7qWRX/QDUYyHfMkc++3jKO6X6lNj3O8n5H6hP0OQ4AyaPpegUCqNWlwmkTVo2gML6TWLxB3ua8oHucVF1X0INRni3P5QdUqhJojal3bxoEfDXQIVMi43GXRRJBoQvg2dExklZaKas+KCKjgkJvMWygpv/CHZhjstSLQRp4kwyuFq1Fhx6HqZbP/JJTcC4ciltDRUTQEjf1hJg8lvJWRh9MCggi/oNV5D/zldZG/mF5QC8luvoOplizj0AA63uHvnXmmjkxRGmfR5/r9WkAwNY8hsxFDb80Qz62grR7nx5y2v8tU/zJA+VN0BniT44VzkzX2WKJPzzI5DrT5pNF85WS/T2ABn4JLYODFIzGX94rZNosyjxv3VZs+QF7vTkEPlir8/y0JYYwuOqvAYlbQRWq4or0xbif/AnbBtUWC1pbH3yy3cOk6E+LoX8v4Mnkh5R8/GmulLbUMSSt1goLgb4CTivHQZOaJOOhWJUk0CvGdnZ13+t8W6lhyOUtKbE/Ud26+8H7g3llBj7TUJykrkg6A+YTSxjJBAZrQEWdetdyWCJEKN6HU3qEDu4SbbAf069Kt3HU2ybqmySABPD8PROYYTu+28x+VqsBINbXoXMBfrmml6B3FOmnEtpdafGVDsCgtgahSfKmy8V7ZZ0z1L72a5RSyqY+fGTFSMzSyHxI2rDTxs9TPAfSyxVn1lPm2vWteDw9mu744iG7xHs4RkuMirVWDHZ+AAwNp6Xo=
+	R97Rd7EOFKNXK3GQwns3LWLmo0j8KDnmY80HLQqtUvm3SoCpBpN+xayyUOltgPfEH/JikNTEByvkRKKZzTBqKsbqqiWcuCojGBt8Ggmnlzy9tWJi1UdOMZPDYTXPqtSy7QdgfLQ3SxUaZQ0MitK7wT2XerExGPd+b18qrX/Y7/dGJQ2pfSCC7Sd5Vmcpl+f0aaNrWOfb+JUWbfimAx+/5bmR8DE3z/g+IP+JODg/ea1BGf2C4kkV7W+WSXPLlE13cAR/rbknq8uQT5dOgvPP7i9qEsqeOh446FPiwEcZJVUcDNaySFYbAiQfy7vQ/P+0P5Y4QO+jlhtL+GL/8ZJnzpBM2R/+i3ULUMISoHcWS3IaxN+4Mckbw+8Mi6A2x0S7UAHYREyAxhouiI7ngIbsNc4eAZtL3I14sGhWO9JuoUYsk3BIflZNDUpiCG8CW6YMLj6oQAh3/s2fgfHHnV/3BzIykzilt1a/1Yh8TdenHOV5ffeDarPE2Zw6lZ1+/xAAs+/TYploaiAi01n6VqiTI7QRFTcxf90PZ9pTpBKU/xWfehvm8V44actBsDoackt7P0A1wH50pQnwUtRDwcI4x3T/ew5zOTwqRFEfOVMhHxRQ+M9yxhJebOoPdquzk6tz4+ERUBKyo2wrV0S1WNw1JnrSVwXmHbwJ6P3byXr08G3yDe5PEKoDHeWAgR8n5mlzhpdAbagL3sNViqdz6rz6xbTNMGplbmj+etc+HGAauKM=
 X-Forefront-Antispam-Report:
-	CIP:192.176.1.74;CTRY:SE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:oa.msg.ericsson.com;PTR:office365.se.ericsson.net;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(376014)(36860700016)(22082099003)(18002099003)(4143699003)(56012099003)(11063799003);DIR:OUT;SFP:1101;
+	CIP:192.176.1.74;CTRY:SE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:oa.msg.ericsson.com;PTR:office365.se.ericsson.net;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(376014)(82310400026)(22082099003)(18002099003)(56012099003)(4143699003)(11063799003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	80fwX+cD8owb40SPFbcpK98+yA0XfVnBhSqcnqvMFm+gBtXQ59Cq2b/zJCzRGeHOnjzquK7cMVmMwgUNWgWv67/OSF8to2VK4Md96kAq/twZL4Q23n5R14MRgXjvS/oxS+8o8xicUeSb2VCTS+u27zZEltIOScukzZrLMKJY6yHq6+xZFsBRR1jD4jcsfUOkD42xpBvFgKqj9ipIX8kf0K+4E33cVzwZjug8rXOvWICzXe06nfGxZ0Whon3SfGAoJF0gQ3nTMWQpV87p35sNWqAbDTwz1U00DBFBoNWckqiSoCMVUt1UfG1vXXcOShNFXvww5Ivg3ylpjpKUgwF+cQvMJFlOQfTcRZ2YlolwtqpBAt8rDAyqzsUWekW7sezlRbyEtkByHSm8uj/A43YAZYS5/1dZgPckApkZGaCUY2FkDwxCcLXRCzJdzv/7pZoH
+	4A7Ox3my80JhvLhLgIXhCexaYoBAhwS8iD8/tENKLKyJa9PmshgrcbIvFsl5YVVPFGzVci79Ygdmg9trPc929NyNXEdB1Jr8r+5coX1bZRh52Wvm27xZHD/YRQB7ppphR0lXRMTypQB3u4t1NeR759euPvWyjh9KmU0jTZfPI95r6iugU6+741y2TVb1dX0PR3Vn5Gi2F6Rh/9k+B1aGAjeiSNZXFSFxLEwxWpMQ9szzOYD0rr3iYM1pQX6q1C24b9N+y7An5lzsNZ/m2312yutyfIv3CnNem+FasVvnSrw55tNQ+xERTRg7HYRPoprE5NQONAw2QOyC5n5COTmwtFgL/+MWZuViOE4pSUPe7Jre+l85YD5MYIqD+b9o2Xmtg/85JozBOAjv/aN279i3VxuC2LXGocV61YqZJTbkB9rY+t9CBuqLluDtzCVtMNcO
 X-OriginatorOrg: ericsson.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2026 22:37:47.5827
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2026 22:37:52.2875
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 02af9c91-b457-496f-6049-08deb2d296d5
+X-MS-Exchange-CrossTenant-Network-Message-Id: eca369ba-6685-4932-f2f2-08deb2d2999f
 X-MS-Exchange-CrossTenant-Id: 92e84ceb-fbfd-47ab-be52-080c6b87953f
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=92e84ceb-fbfd-47ab-be52-080c6b87953f;Ip=[192.176.1.74];Helo=[oa.msg.ericsson.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	DB1PEPF000509F4.eurprd02.prod.outlook.com
+	AMS0EPF00000191.eurprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR07MB7268
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV4PR07MB11630
 
-1. Add mv88e6352_reset which calls the previous ops->reset function
- - mv88e6352_g1_reset.
-2. Make all 6352 family use this new function as ops->reset
+1. Refactor mv88e6352_g2_scratch_port_has_serdes to use the cached
+scratch config3 value instead of reading it everytime.
+2. Remove err<0 check from mv88e6352_phylink_get_caps as it is never
+true anymore
 
 Co-developed-by: Thomas Eckerman <thomas.eckerman.ext@ericsson.com>
 Signed-off-by: Thomas Eckerman <thomas.eckerman.ext@ericsson.com>
 Signed-off-by: Fidan Aliyeva <fidan.aliyeva.ext@ericsson.com>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ drivers/net/dsa/mv88e6xxx/chip.c            |  3 ---
+ drivers/net/dsa/mv88e6xxx/global2_scratch.c | 18 ++++++------------
+ 2 files changed, 6 insertions(+), 15 deletions(-)
 
 diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index 8ca5fd40df92..6102b7fd8d44 100644
+index 4ed6f880e02c..63cdcce3d8c7 100644
 --- a/drivers/net/dsa/mv88e6xxx/chip.c
 +++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -3736,6 +3736,15 @@ static int mv88e6390_setup_errata(struct mv88e6xxx_chip *chip)
- 	return mv88e6xxx_software_reset(chip);
+@@ -685,9 +685,6 @@ static void mv88e6352_phylink_get_caps(struct mv88e6xxx_chip *chip, int port,
+ 	/* Port 4 supports automedia if the serdes is associated with it. */
+ 	if (port == 4) {
+ 		err = mv88e6352_g2_scratch_port_has_serdes(chip, port);
+-		if (err < 0)
+-			dev_err(chip->dev, "p%d: failed to read scratch\n",
+-				port);
+ 		if (err <= 0)
+ 			return;
+
+diff --git a/drivers/net/dsa/mv88e6xxx/global2_scratch.c b/drivers/net/dsa/mv88e6xxx/global2_scratch.c
+index a2c09bbdde17..7caf3d45177d 100644
+--- a/drivers/net/dsa/mv88e6xxx/global2_scratch.c
++++ b/drivers/net/dsa/mv88e6xxx/global2_scratch.c
+@@ -347,26 +347,20 @@ int mv88e6352_g2_cache_global_scratch_config3(struct mv88e6xxx_chip *chip)
  }
 
-+static int mv88e6352_reset(struct mv88e6xxx_chip *chip)
-+{
-+	int err;
-+
-+	err = mv88e6352_g1_reset(chip);
-+
-+	return err;
-+}
-+
- /* prod_id for switch families which do not have a PHY model number */
- static const u16 family_prod_id_table[] = {
- 	[MV88E6XXX_FAMILY_6341] = MV88E6XXX_PORT_SWITCH_ID_PROD_6341,
-@@ -4654,7 +4663,7 @@ static const struct mv88e6xxx_ops mv88e6172_ops = {
- 	.pot_clear = mv88e6xxx_g2_pot_clear,
- 	.hardware_reset_pre = mv88e6xxx_g2_eeprom_wait,
- 	.hardware_reset_post = mv88e6xxx_g2_eeprom_wait,
--	.reset = mv88e6352_g1_reset,
-+	.reset = mv88e6352_reset,
- 	.rmu_disable = mv88e6352_g1_rmu_disable,
- 	.atu_get_hash = mv88e6165_g1_atu_get_hash,
- 	.atu_set_hash = mv88e6165_g1_atu_set_hash,
-@@ -4757,7 +4766,7 @@ static const struct mv88e6xxx_ops mv88e6176_ops = {
- 	.pot_clear = mv88e6xxx_g2_pot_clear,
- 	.hardware_reset_pre = mv88e6xxx_g2_eeprom_wait,
- 	.hardware_reset_post = mv88e6xxx_g2_eeprom_wait,
--	.reset = mv88e6352_g1_reset,
-+	.reset = mv88e6352_reset,
- 	.rmu_disable = mv88e6352_g1_rmu_disable,
- 	.atu_get_hash = mv88e6165_g1_atu_get_hash,
- 	.atu_set_hash = mv88e6165_g1_atu_set_hash,
-@@ -5032,7 +5041,7 @@ static const struct mv88e6xxx_ops mv88e6240_ops = {
- 	.pot_clear = mv88e6xxx_g2_pot_clear,
- 	.hardware_reset_pre = mv88e6xxx_g2_eeprom_wait,
- 	.hardware_reset_post = mv88e6xxx_g2_eeprom_wait,
--	.reset = mv88e6352_g1_reset,
-+	.reset = mv88e6352_reset,
- 	.rmu_disable = mv88e6352_g1_rmu_disable,
- 	.atu_get_hash = mv88e6165_g1_atu_get_hash,
- 	.atu_set_hash = mv88e6165_g1_atu_set_hash,
-@@ -5463,7 +5472,7 @@ static const struct mv88e6xxx_ops mv88e6352_ops = {
- 	.pot_clear = mv88e6xxx_g2_pot_clear,
- 	.hardware_reset_pre = mv88e6xxx_g2_eeprom_wait,
- 	.hardware_reset_post = mv88e6xxx_g2_eeprom_wait,
--	.reset = mv88e6352_g1_reset,
-+	.reset = mv88e6352_reset,
- 	.rmu_disable = mv88e6352_g1_rmu_disable,
- 	.atu_get_hash = mv88e6165_g1_atu_get_hash,
- 	.atu_set_hash = mv88e6165_g1_atu_set_hash,
+ /**
+- * mv88e6352_g2_scratch_port_has_serdes - indicate if a port can have a serdes
++ * mv88e6352_g2_scratch_port_has_serdes - indicate if a port has serdes
+  * @chip: chip private data
+  * @port: port number to check for serdes
+  *
+  * Indicates whether the port may have a serdes attached according to the
+- * pin strapping. Returns negative error number, 0 if the port is not
+- * configured to have a serdes, and 1 if the port is configured to have a
+- * serdes attached.
++ * pin strapping, which is cached at reset (scratch config3). Returns 0 if
++ * the port is not configured to have a serdes, and 1 if the port is
++ * configured to have a serdes attached.
+  */
+ int mv88e6352_g2_scratch_port_has_serdes(struct mv88e6xxx_chip *chip, int port)
+ {
+-	u8 config3, p;
+-	int err;
+-
+-	err = mv88e6xxx_g2_scratch_read(chip, MV88E6352_G2_SCRATCH_CONFIG_DATA3,
+-					&config3);
+-	if (err)
+-		return err;
++	u8 p;
+
+-	if (config3 & MV88E6352_G2_SCRATCH_CONFIG_DATA3_S_SEL)
++	if (chip->g2_scratch_config3 & MV88E6352_G2_SCRATCH_CONFIG_DATA3_S_SEL)
+ 		p = 5;
+ 	else
+ 		p = 4;
 --
 2.36.0
 
