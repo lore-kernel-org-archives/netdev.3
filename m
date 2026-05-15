@@ -1,54 +1,27 @@
-Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CBF144E045
-	for <netdev@vger.kernel.org>; Fri, 15 May 2026 09:56:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774D343E4AE;
+	Fri, 15 May 2026 09:56:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778838965; cv=none; b=oPcYyl0/lDydXgwZqBEEPY1SX2t16mkesITqaisvxOhdGoqjbD3iQHL99JzCVBy0Q1JtPNa2IHrs8tlw51kcy7ggBN/nC48f6vZczRWtmdKLHunNLX3pcdEWKxlozL+43sMEjcD9itQyVpXz8DDwz+SZNjKMFiD83Dj2H8DuktI=
+	t=1778838972; cv=none; b=Nq3sK0VgM2bpXQMME63JTOdwg1CMWD4Pz3gkRI0P/glQyriSK6qKINDtqVDlAfkn8Xg8N6+Krg8wgDEn/dTywr0FOe9ZQcm26xQkFsKwvo8EepNjgYiLbo1UQ7sr4VPtRX8kUq9UjCQvr4+k1NZuTJNoemEVQXak5C2wEZHb208=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778838965; c=relaxed/simple;
-	bh=W40SoSreIU88L+hWn4oxS7WToT9+CfJQByS6Lhm6pok=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bJNvbFFfhLjst3i20PhAeaeTqm3Mtk3ik+kLoXv/aVyuoQSzBiPPBMWw2LrNInNvpJ3SUZVEcx2gYpwcUF89D93meV2cvqic3drK4REi5kjp+MROrJJiXTWQpPeXkfJbpdKpmOiI1HTi40+cWl23XO8PC2fuCqhifl1ZPiB3Dcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=fpyH5y9D; arc=none smtp.client-ip=23.88.38.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="fpyH5y9D"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1778838956;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0K7x5d0HnCXiyQuckQHY2w5gbSJ9qlIcYYGqaA5h0nI=;
-	b=fpyH5y9DbZs5JfNlSpeKGgKA2yCoiAbOeeN5N2PCbKsRBxeizRQiCDCpPSYalLVcP90Kso
-	eCxoEKiaQ8YNA8Fqssh0su02bqCEv/k4OlBYha/y0Xod3PoS2gmX36+bCkYcJcoXetJVHG
-	QrU3/PSESha0H7I5xnFkUT8hlBuGsYt31P7v83FqEvUZnLH7U4eUqdxMxnXMaX7qhgWjDo
-	RE0Qt4ffIBtxbiHRqeRYxQ0WMA2d15MQMoTh1CYHUSg43ac/I0FHtKhbaE1WwnbnWXgV+V
-	FdaApkO86eamjjOvH5cWtyGC5jtxAx0+JMW/LcLBYWN4yX2SMu8QLf6ZYd9nsw==
-From: Simon Wunderlich <sw@simonwunderlich.de>
-To: netdev@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	b.a.t.m.a.n@lists.open-mesh.org,
-	Sven Eckelmann <sven@narfation.org>,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net 12/14] batman-adv: tp_meter: avoid use of uninit sender vars
-Date: Fri, 15 May 2026 11:55:37 +0200
-Message-ID: <20260515095540.325586-13-sw@simonwunderlich.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260515095540.325586-1-sw@simonwunderlich.de>
-References: <20260515095540.325586-1-sw@simonwunderlich.de>
+	s=arc-20240116; t=1778838972; c=relaxed/simple;
+	bh=UGCagGDoyi3bkk5Q504DGiKrb4e0/4S3z32wD3DgJug=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=T4Vj/2uIRGJyfs0CMQBIww3Xk8trorqngZ6ED4g91hKgoYasXVwfXDQuNjwYRPztbM/EjUUol01V7YLVtS8X1q8qWcFkEB5a2n1FpSfN7lAJ+O5kY67W4plWFGxkUC7FtPotjD1DN3EY1dqdOX8pvYzr3ownDWK3jURWrloOMJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EB2BC2BCB0;
+	Fri, 15 May 2026 09:56:11 +0000 (UTC)
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+To: Alexandra Winter <wintera@linux.ibm.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH v2] [net-next] dibs: Improve DIBS prompts and help texts
+Date: Fri, 15 May 2026 11:56:02 +0200
+Message-ID: <9093259c43e5d1996965d1522562444419196a19.1778838921.git.geert+renesas@glider.be>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,66 +30,54 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Sven Eckelmann <sven@narfation.org>
+The Kconfig prompts for the DIBS options read:
 
-batadv_tp_recv_ack() and batadv_tp_stop() are only valid for tp_vars in the
-BATADV_TP_SENDER role. When called with a BATADV_TP_RECEIVER role, it
-proceeds to read sender-only members that were never initialized, leading
-to undefined behavior.
+    DIBS support (DIBS) [N/m/y/?]
+      intra-OS shortcut with dibs loopback (DIBS_LO) [N/y/?]
 
-This can be triggered when a node that is currently acting as a receiver in
-an ongoing tp_meter session receives a malicious ACK packet.
+Clarify the DIBS prompt by expanding the acronym.
+Capitalize the first character of the DIBS_LO prompt.
+While at it, join the first two lines of the DIBS help text into a real
+sentence.
 
-Guard against this by checking tp_vars->role immediately after the
-lookup and bailing out if it is not BATADV_TP_SENDER, before any of
-those members are accessed.
-
-Cc: stable@kernel.org
-Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Reviewed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- net/batman-adv/tp_meter.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+v2:
+  - Drop changing dibs to all caps, which was completely wrong for the
+    module name,
+  - Target "net-next" instead of "net".
+---
+ drivers/dibs/Kconfig | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
-index ca6c3f6374bc5..a3593d104caa5 100644
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -664,6 +664,9 @@ static void batadv_tp_recv_ack(struct batadv_priv *bat_priv,
- 	if (unlikely(!tp_vars))
- 		return;
+diff --git a/drivers/dibs/Kconfig b/drivers/dibs/Kconfig
+index 5dc347b9b2350667..8f41e562210044df 100644
+--- a/drivers/dibs/Kconfig
++++ b/drivers/dibs/Kconfig
+@@ -1,18 +1,18 @@
+ # SPDX-License-Identifier: GPL-2.0
+ config DIBS
+-	tristate "DIBS support"
++	tristate "Direct Internal Buffer Sharing support"
+ 	default n
+ 	help
+-	  Direct Internal Buffer Sharing (DIBS)
+-	  A communication method that uses common physical (internal) memory
+-	  for synchronous direct access into a remote buffer.
++	  Direct Internal Buffer Sharing (DIBS) is a communication method that
++	  uses common physical (internal) memory for synchronous direct access
++	  into a remote buffer.
  
-+	if (unlikely(tp_vars->role != BATADV_TP_SENDER))
-+		goto out;
-+
- 	if (unlikely(atomic_read(&tp_vars->sending) == 0))
- 		goto out;
+ 	  Select this option to provide the abstraction layer between
+ 	  dibs devices and dibs clients like the SMC protocol.
+ 	  The module name is dibs.
  
-@@ -1101,12 +1104,16 @@ void batadv_tp_stop(struct batadv_priv *bat_priv, const u8 *dst,
- 	if (!tp_vars) {
- 		batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
- 			   "Meter: trying to interrupt an already over connection\n");
--		goto out;
-+		goto out_put_orig_node;
- 	}
- 
-+	if (unlikely(tp_vars->role != BATADV_TP_SENDER))
-+		goto out_put_tp_vars;
-+
- 	batadv_tp_sender_shutdown(tp_vars, return_value);
-+out_put_tp_vars:
- 	batadv_tp_vars_put(tp_vars);
--out:
-+out_put_orig_node:
- 	batadv_orig_node_put(orig_node);
- }
- 
+ config DIBS_LO
+-	bool "intra-OS shortcut with dibs loopback"
++	bool "Intra-OS shortcut with dibs loopback"
+ 	depends on DIBS
+ 	default n
+ 	help
 -- 
-2.47.3
+2.43.0
 
