@@ -1,52 +1,31 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE6DF23D7FF;
-	Fri, 15 May 2026 12:47:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF8AE23EAA4;
+	Fri, 15 May 2026 12:48:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778849236; cv=none; b=BTXUkYa6c+hZnksS2EGkcz/Iyqdbe0fK8uamFgz0OwvbxSuAEGUWiOQjLw0FDkcoA9Kv1ipZr5Al3r7hdNZiExdILkuYskCjOQPkHhBa7tMrDx3s575goVhssLh9ZXpSDKznI0WLpOwVdO1WS2AWqJ56W3lzW5VOjKciu45+bVk=
+	t=1778849291; cv=none; b=RUYK7BsGOXrB+NIF4LB6QT2BxaENKo6IB3AIhZRiomm7oBWYWVpnn2I/CIOUlQhuUXOSyM0dvESs08KWhlMRjA8ew2g66S7UpANh1JOY99/ghfj/nG7jQdBMm4uHAuEibaHzxKO1S8tNxfUb+Ss0+Xl4WQG6sBq8ZNOtTnxjNKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778849236; c=relaxed/simple;
-	bh=/rQz0n7I5ID0pC/3uZdyjXEI3ecbm5cYZM4YFWxmbq4=;
+	s=arc-20240116; t=1778849291; c=relaxed/simple;
+	bh=6JGDGmmwgA0OKG+d2hEn1s6MZ8gf5q+OXTINTevYihk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GW8BQ15vhMVE2FD4BH4w4EqSOkBwTYrGYDXaiQYWpDnDngo6QYBkLSxAs2jMV/7WoTxLcbFesk4g80lAm/OmU7yjZ5EzMgPnom6+6/kc7v1x74v4JjQiHfTAk5MQtiE2mV2QlwpVDaypSrSIDy2MduMLGrGbTrwmAuzlqyUMz+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=AdIB5a9F; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="AdIB5a9F"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=EF+740UnJnqAgctNgdg2R5aHolnMpCTYC3TQf0irLIg=; b=AdIB5a9FUoLhQ4tXb72J/+z7zV
-	VgffyIEypIZ1NCJb4YLBK2VXZEv+t1X8oIUGnDxhRLLWnolVTY+zgqJnwfUJZR8PqTpPZ82DaRmXh
-	MZSUGME5WHiQBxF5e9CvxdSWWK2+CHHKSr9PHlpbtICid4HGLvOtt68R2tA1Rbo2WHTA=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wNrwW-0033xq-8P; Fri, 15 May 2026 14:47:04 +0200
-Date: Fri, 15 May 2026 14:47:04 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Lukasz Raczylo <lukasz@raczylo.com>
-Cc: netdev@vger.kernel.org, Theo Lebrun <theo.lebrun@bootlin.com>,
-	Andrea della Porta <andrea.porta@suse.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-rpi-kernel@lists.infradead.org
-Subject: Re: [PATCH net-next] net: macb: fix build of TX stall watchdog by
- replacing undefined netdev_warn_ratelimited
-Message-ID: <3aa11074-2b96-422e-8725-35c5522272d3@lunn.ch>
-References: <cover.1777064117.git.lukasz@raczylo.com>
- <20260514215459.36109-1-lukasz@raczylo.com>
- <20260514215459.36109-4-lukasz@raczylo.com>
- <20260515095336.92237-1-lukasz@raczylo.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=X3wMLgWBtbrH+RcsPk/HFmxSzo+wwDuWNUGiKV6LRisOMxchY0VjZMm+U0gV73nFE6lHXUcXS5IwZgOPNeqOMLvHn9CExEIao3Xegn6WGkAsF+lmO4DRzgaJ1ignBGFGUq/oJqZV6hfNBrt0JY0W0eeUjCzn1zVSgn8AKIpgTjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
+Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
+	id D06D860706; Fri, 15 May 2026 14:48:06 +0200 (CEST)
+Date: Fri, 15 May 2026 14:48:05 +0200
+From: Florian Westphal <fw@strlen.de>
+To: Qi Tang <tpluszz77@gmail.com>
+Cc: netfilter-devel@vger.kernel.org, netdev@vger.kernel.org,
+	pablo@netfilter.org, herbert@gondor.apana.org.au,
+	michael.bommarito@gmail.com, lyutoon@gmail.com
+Subject: Re: [RFC] netfilter: disable payload mangling in userns
+Message-ID: <agcWBZNugohelNp6@strlen.de>
+References: <20260515100411.3141-1-fw@strlen.de>
+ <20260515114848.1105927-1-tpluszz77@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,33 +34,47 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260515095336.92237-1-lukasz@raczylo.com>
+In-Reply-To: <20260515114848.1105927-1-tpluszz77@gmail.com>
 
-On Fri, May 15, 2026 at 10:53:36AM +0100, Lukasz Raczylo wrote:
-> netdev_warn_ratelimited() does not exist in this kernel -- neither
-> mainline net-next nor raspberrypi/linux rpi-6.18.y define a
-> netdev_*_ratelimited() family.  I confused it with the existing
-> net_warn_ratelimited() / pr_warn_ratelimited() macros when
-> authoring v2 patch 3 of the macb silent TX stall series, and the
-> result fails to build with implicit-function-declaration.
+Qi Tang <tpluszz77@gmail.com> wrote:
+> I agree with the userns block.  I'll keep pushing the five
+> consumer-side bounds-check patches: root in init userns can
+> still install the same payload-set rule and trigger the same
+> OOB at the re-read sites, so the underlying bug fix is still
+> worth landing.
 > 
-> Replace with the standard `if (printk_ratelimit()) netdev_warn(...)`
-> pattern.  Same semantics intended by v2 patch 3 (bounded log noise,
-> retains the netdev prefix in the message); works in every kernel
-> version.
+> None of the five sites overlap with the relax wishlist (saddr/
+> daddr, transport, linklayer).  Same class showed up in an
+> earlier patch:
+>   https://lore.kernel.org/netdev/20260514035802.1540395-1-tpluszz77@gmail.com/
 > 
-> Fixes the build of patch 3/3 of:
+> These five are unlikely to be all of them; we think the
+> consumer side warrants a broader audit.  Thoughts?
 
-What you should do is reply to patch 3/3 and say
+I think we have to do both.
 
-self NACK
+For nft_payload/nft_exthdr:
+1. Writes from !initial_userns are rejected (rule insert fails).
+2. Writes for initial userns get validated at rule add time:
+  - netdev ingress is allowed to alter everything, I think
+  this is early enough to not introduce oddities that can't come
+  from wire / untrusted peer.
+ - bridge is allowed to alter everything: AFAICS there shouldn't
+ be a problem with this, same as with ingress.
+ - inet (ipv4/ip6): Check base (offset is unsigned and relative
+   to ll/network header/transport header/payload
+   - Allow modifications past transport header.
+   - Allow modifications of transport header
+   - Allow network header modifications for a subset of valid
+     offsets/lengths: saddr, daddr, checksum, tos, id, ttl / hl.
+     Reject everything else.
+   - Allow link-layer; but check at from packetpath that
+     offset + len don't write past start of the network header.
+     Else: no-op.
 
-and explain why it is broken.
+nfqueue is the bigger problem: userspace gives us a whole new
+packet data blob, not a delta that we should apply at offset x).
 
-Then wait 24 hours, and send a new version of the patch series, with
-patch 3/3 fixed.
-
-    Andrew
-
----
-pw-bot: cr
+I think we have to update nfqueue to do rudimentary header revalidation
+and drop the packet on failure, e.g. at least making sure tot_len is not
+past skb->len.
