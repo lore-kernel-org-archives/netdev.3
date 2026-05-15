@@ -1,42 +1,81 @@
-Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741BC4921A8;
-	Fri, 15 May 2026 15:23:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB9103B6371
+	for <netdev@vger.kernel.org>; Fri, 15 May 2026 15:27:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778858635; cv=none; b=g4c8xHAHbPtteh1GEnBP8yqQsdqLR5IAaSWtBD1w1V2Aj24B+7uTG5Vx0tdgQBvRyN5+Fd33mhU7RMtI7Y3LtnY1/YWO7p8ap4rVgGNHOZVsKvcCj4R7Cwdo1A7K6qHTF+BhD9Xiv8P6Ypr299l+ADkApduRhqPGpEHJ9HUpzZU=
+	t=1778858855; cv=none; b=XtZ/AyPbkELJtEdn6sSR6r1SfkbHT2S0almnaMhwZvyCeQAYl4AtfLg70WwJl5lztGHNFKOgD4Fy0BXff9To/7KOPVbdJ5C8Sb8tuQhRCnILImd45HmJ4R/3aLaNtPHhGYPQxbs5jt3ndSqAvRTa4bfQr9fFBtzTCfj7FekIzjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778858635; c=relaxed/simple;
-	bh=nmV8p/T76++v4kS8HMb/fCezPJOSLRoxPxDZl47Q6Ww=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OB/h1GJjM9cJZ1rH2Yjv3EOWLT1NigdmgjrdNUzjVgUcovxzKlasUFiM/xjN0CooZKR06TQMGqSFxQHU++WGMS6FfNeD8gKAwAtGtlO5oFB6sVIWnKJyMSe9mhxHswToSG+PFXksfApaEL+5hY0FVT6afmvs/FoAgT6MaHoi0Sw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=YwLp0g94; arc=none smtp.client-ip=101.71.155.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+	s=arc-20240116; t=1778858855; c=relaxed/simple;
+	bh=fi76CKak6ECRmebrkvfSXR4merewC08i+gXXn2It1Wk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=U9i8SuoTpAL4hCrJnDfSY8yuecaZuQznEbIS1QXI7S2chS5jFF2nYaT7cxa8MyjlncaYh7rLFXqYTqHqJ47DPwPk1flF2kY7oPW2miLgnk9VB5PiMqO7T15NmJF5Vh+UWOs74tY/jhLrX7PkRQpSMp0iuf0rl7v5Ljso5E86GPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=EnfFGrzH; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="YwLp0g94"
-Received: from DESKTOP-SUEFNF9.taila7e912.ts.net (unknown [58.241.16.34])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 3e998b2e7;
-	Fri, 15 May 2026 23:18:31 +0800 (GMT+08:00)
-From: Dawei Feng <dawei.feng@seu.edu.cn>
-To: sgoutham@marvell.com
-Cc: gakula@marvell.com,
-	sbhatta@marvell.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	jianhao.xu@seu.edu.cn,
-	Dawei Feng <dawei.feng@seu.edu.cn>,
-	stable@vger.kernel.org,
-	Zilin Guan <zilin@seu.edu.cn>
-Subject: [PATCH net] octeontx2-pf: avoid double free of pool->stack on AQ init failure
-Date: Fri, 15 May 2026 23:18:26 +0800
-Message-Id: <20260515151826.1005397-1-dawei.feng@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="EnfFGrzH"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-488a9033b2cso81585395e9.2
+        for <netdev@vger.kernel.org>; Fri, 15 May 2026 08:27:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1778858852; x=1779463652; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=1mVnrFaglNDW2vBnNpYd1p6VJ2gDs8dA3EdHkOtYwt8=;
+        b=EnfFGrzHtNVLJh5RNtHl39HG8qXgmBU5wHvNccAdTUlZvj1vNY04lsWSTK4GYYGDds
+         O8OcypA2hhkJyTCLipD7viPSj2pSLplxKnyNmTPYalKJb4+OFgtVZa+765jdDC69qviU
+         iWmrE1wOi/OoS07A2tmM3Vz9rCktojSd7Dz1yq6FX6294xFMz6mIgOT5k+NLis+wCwvx
+         z/OpSjFChpBSHEbS5NMDIc1f52G/dnUJfkUDGPIcM4g+s3Lll71/4WfuHPzjvGnSypIw
+         HdtxDZ9zhzzQNCdpreLkU3r6GsRYCmk9IJcuDuu3TRFWqqueH+TWhiOODMy3waJuNll2
+         +H7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778858852; x=1779463652;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1mVnrFaglNDW2vBnNpYd1p6VJ2gDs8dA3EdHkOtYwt8=;
+        b=gARyKB928OrC+bNBQh5Ar1+qifmVf3Qgxq+6QWBtnpDFyUckO90a8IB/xkZ5HWCOtA
+         3VropkojJFoLDFF8fea+/ISpno89asVVamt7aE9DAbaH/GBsO5io4s2e9zdBFXTDaQ/b
+         7I2uhY8IYMR9g21x2CEbEiyTHP/22Vh9HdQb6OnLeI0JEKpwDMs33H5fD2Sv0Qazdyhd
+         IYnI/DkfUEU8oDdQ6ZQbEgXHoRb/RXzJouNxNwn8/Uvbs4lkBLqC4+e5X+HU3x2RPwQf
+         wypooVKysnqDG840/lOiOun/B+zGWCM0Qkv1HzsUJP7C5MBz4RjP0TyeplPGdi2h/zEz
+         k89Q==
+X-Forwarded-Encrypted: i=1; AFNElJ8MuIqTV/ZQdnbzjPz2yphVWoXbXYZnxqcZGUR6Omg3j7hj5q82eYkpW16OAvba3TwOysmJLmM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZ2kIYMfFedfS6TzpOa46GGfmp7og2NsqWJdfVvSNlvitkfj9+
+	Z/xf7O8q6AATKo+O+hFmUyQHM14Zi7xO95jVtJ+oXmmSKXu+FFaIepfAeOnyQGrx6mU=
+X-Gm-Gg: Acq92OFhTSUg4EOJA/Hf4iIKkkM3B+y9ocyky6oDtKKKFR0wgtrKmby+BV4r2Oci3fd
+	gBc0lIhY7e6S8Btd8WrhjYWygG7uoCWNewk65E6VVi7tSBM+6iLsxWku7f3Mb94/F5URZLXDUHg
+	2dNegpqMiy+HzdPjPiOvs/oJ6wgJ1XeRWFgOy7XmJytJJzmpXbB7juYGhbsWSJCAdjnoUcGvsrO
+	Znsbnv6VQzIBo9t6XBQi9XiVgzElE+VNE/SsCdawmjJsDmEOA1K4ekmwiA4GKDn5CRiDwESLqro
+	F2UXemTtYQZ6GcHxPWdEc66MbIkdlEFdSlOvpn8FI6mX+KQBMPcBUm4dlOncn6Ew4V+ZyvnonTf
+	6XiPLIDBK0A7UabLwYscIZIcWTqDKKDcdGBxLrMmlTZjH6NmUByaQgnPn7S0BRoL//1Xj7DgBXD
+	TSZC55qzMrVecANVuJy88OZjfa5g==
+X-Received: by 2002:a05:600c:4e02:b0:48a:906a:9050 with SMTP id 5b1f17b1804b1-48fe5fdb076mr66546385e9.10.1778858852345;
+        Fri, 15 May 2026 08:27:32 -0700 (PDT)
+Received: from linux ([2a00:6d43:105:c401:e307:1a37:2e76:ce91])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48febe6aff4sm16079945e9.25.2026.05.15.08.27.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 May 2026 08:27:32 -0700 (PDT)
+From: Marco Crivellari <marco.crivellari@suse.com>
+To: linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: Tejun Heo <tj@kernel.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Marco Crivellari <marco.crivellari@suse.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [RFC PATCH net-next] net: macb: Move delayed work on system_dfl_wq
+Date: Fri, 15 May 2026 17:27:21 +0200
+Message-ID: <20260515152721.344380-1-marco.crivellari@suse.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -44,83 +83,52 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9e2c37bdaa03a2kunm5da3c6f1b5961
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaGh1DVkJNGR9CHR1JGEJKT1YeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlOQ1VJT0pVSk1VSE9ZV1kWGg8SFR0UWUFZT0tIVUpLSUhOQ0
-	NVSktLVUtZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=YwLp0g94UA9YAEUqjxpyrYtlzwNjQ3tQ/llGmv6rty0go3BbTnopTBKI4PHRnXhaRww2MGRO6qwc3Hskr/uOo9ryyDUFdTrbzv0VKhM2OxhOF0xZxkl/+2oHkwAPWA0C55TIgDfoS5bJAWU2Bt/QUEPqcNhYBAN5n5MfxB6SOi4=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
-	bh=u79pZuyIMbbIz9O7acDkygmJPHr/MQwleRbsEeDtsuA=;
-	h=date:mime-version:subject:message-id:from;
 
-otx2_pool_aq_init() frees pool->stack when mailbox sync or retry
-allocation fails, but leaves the pointer unchanged. Later,
-otx2_sq_aura_pool_init() unwinds the partial setup through
-otx2_aura_pool_free(), which frees pool->stack again. The CN20K-specific
-cn20k_pool_aq_init() implementation has the same bug in
-its corresponding error path.
+Currently the code enqueue work items using {queue|mod}_delayed_work(),
+using system_wq, which will be deprecated soon and replaced by
+system_percpu_wq.
 
-Set pool->stack to NULL immediately after the local free so the shared
-cleanup path does not free the same stack again while cleaning up
-partially initialized pool state.
+   commit 128ea9f6ccfb ("workqueue: Add system_percpu_wq and system_dfl_wq")
 
-The bug was first flagged by an experimental analysis tool we are
-developing for kernel memory-management bugs while analyzing
-v6.13-rc1. The tool is still under development and is not yet publicly
-available. Manual inspection confirms that the bug is still present in
-v7.1-rc3.
+The function(s) mentioned earlier, end up calling __queue_delayed_work(),
+which set a global timer that could fire anywhere, enqueuing the work
+where the timer fired.
 
-Runtime validation was not performed because reproducing this path
-requires OcteonTX2/CN20K hardware.
+Unbound works could benefit from scheduler task placement, to optimize
+performance and power consumption.
 
-Fixes: caa2da34fd25 ("octeontx2-pf: Initialize and config queues")
-Fixes: d322fbd17203 ("octeontx2-pf: Initialize cn20k specific aura and pool contexts")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
+Since the workqueue work doesn't rely on per-cpu variables, there is no
+obvious reason that justify the use of a per-cpu workqueue. So change
+system_wq with system_dfl_wq so that the work may benefit from
+scheduler task placement.
+
+Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/cn20k.c       | 2 ++
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c | 2 ++
- 2 files changed, 4 insertions(+)
+ drivers/net/ethernet/cadence/macb_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/cn20k.c b/drivers/net/ethernet/marvell/octeontx2/nic/cn20k.c
-index a5a8f4558717..dbf173196608 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/cn20k.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/cn20k.c
-@@ -619,11 +619,13 @@ static int cn20k_pool_aq_init(struct otx2_nic *pfvf, u16 pool_id,
- 		err = otx2_sync_mbox_msg(&pfvf->mbox);
- 		if (err) {
- 			qmem_free(pfvf->dev, pool->stack);
-+			pool->stack = NULL;
- 			return err;
- 		}
- 		aq = otx2_mbox_alloc_msg_npa_cn20k_aq_enq(&pfvf->mbox);
- 		if (!aq) {
- 			qmem_free(pfvf->dev, pool->stack);
-+			pool->stack = NULL;
- 			return -ENOMEM;
- 		}
- 	}
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-index 971fcab1c248..3d253132a17f 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-@@ -1482,11 +1482,13 @@ int otx2_pool_aq_init(struct otx2_nic *pfvf, u16 pool_id,
- 		err = otx2_sync_mbox_msg(&pfvf->mbox);
- 		if (err) {
- 			qmem_free(pfvf->dev, pool->stack);
-+			pool->stack = NULL;
- 			return err;
- 		}
- 		aq = otx2_mbox_alloc_msg_npa_aq_enq(&pfvf->mbox);
- 		if (!aq) {
- 			qmem_free(pfvf->dev, pool->stack);
-+			pool->stack = NULL;
- 			return -ENOMEM;
- 		}
- 	}
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index a12aa21244e8..42328b5ca403 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -672,7 +672,7 @@ static void macb_tx_lpi_work_fn(struct work_struct *work)
+ static void macb_tx_lpi_schedule(struct macb *bp)
+ {
+ 	if (bp->eee_active)
+-		mod_delayed_work(system_wq, &bp->tx_lpi_work,
++		mod_delayed_work(system_dfl_wq, &bp->tx_lpi_work,
+ 				 usecs_to_jiffies(bp->tx_lpi_timer));
+ }
+ 
+@@ -724,7 +724,7 @@ static int macb_mac_enable_tx_lpi(struct phylink_config *config, u32 timer,
+ 	/* Defer initial LPI entry by 1 second after link-up per
+ 	 * IEEE 802.3az section 22.7a.
+ 	 */
+-	mod_delayed_work(system_wq, &bp->tx_lpi_work, msecs_to_jiffies(1000));
++	mod_delayed_work(system_dfl_wq, &bp->tx_lpi_work, msecs_to_jiffies(1000));
+ 
+ 	return 0;
+ }
 -- 
-2.34.1
+2.54.0
 
