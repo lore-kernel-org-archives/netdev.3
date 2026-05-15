@@ -1,33 +1,33 @@
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D3143DA23
-	for <netdev@vger.kernel.org>; Fri, 15 May 2026 09:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CB5B44E042
+	for <netdev@vger.kernel.org>; Fri, 15 May 2026 09:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778838962; cv=none; b=i+YO4l9GI2BikbVBwQbIoLuaik3JsD752SxqeTjzj/+ko+epKloaep1jfFJVDX74fs4caarRe3+ozLTYYlkgY/We+D8FqB2SgfYPyp5YsYf+WN8hTRd26XAcbZmqDdXbHV13jRt/et/725TLLLAQsDd1VKL2nIDGg9Sp/Efz/3s=
+	t=1778838964; cv=none; b=uijNOogYBFYPkWy/efdNiT/bencv4S8H2DxHJ4d2ecsUbCdVywHZLUMJnWWK7me7WHnOmjbYBn1S5eqxS5rGfEaOEUqb16CCYgyBixyVwzSRQNei9zaHRIKgENejJcofqnEZVuTcTIc1Cg7lFa6GDo2bvP1bRDoJ7feKhhrF7j0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778838962; c=relaxed/simple;
-	bh=4KaiGV31VY6nwZmMfhTyDfCcFB1eD0rsghZrRPc2iKo=;
+	s=arc-20240116; t=1778838964; c=relaxed/simple;
+	bh=rtlinpMKG533BM40dbyahnF1pFMM8U2rJrQWFo5Lra4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z9B587apSkFWaq6uhVWBgMwcD7zM4Hi4XvhofW0ptLHOUurVlcdeHnLgPMQvloHYSMvKY43kSUZztgkeplCh3ZA2VHPqy6cXRgkgCZFz1df5iEojF+OA549PCPZMx760yeNoEn7EM0UGCqwcA+RJXFhfimenfkv6ye04qEz1RTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=kuXYf9Oc; arc=none smtp.client-ip=23.88.38.48
+	 MIME-Version; b=GpvmBEYBc12oSNb5TaYjcSrU9VGo1+3ukajPEFUMjLY2WeeKVIaVn9/eyuXIQYwISklnf3DOsfaytottcsUdKIm9+i0s/ILX90OfB4RC3ipDHSrC3F2Bf+u6RQp28vJkrYPeI3Qr7CNXg+UmF5BJZ0QK0ZOhdCvkvYbNZwKTVHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=KzdBiR9d; arc=none smtp.client-ip=23.88.38.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="kuXYf9Oc"
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="KzdBiR9d"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1778838955;
+	s=09092022; t=1778838957;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MD7N++K/ODC3M1fZeSj71WXES304/gYjuuvWCHBoPkI=;
-	b=kuXYf9OcuM4E/PVrqnysbJ4fQ8zUSSGuI0z/fDOx1R56paTQYkVq8Ye9CcmV/CsZiNTseW
-	stnMRWM8ltb5K8C4xhiXy3GM/DBFEKmPltH/mxrPvtXf2L7KBP+617akmPP7TwEiFkJIAX
-	SfTt7HEIBQZK+HIGJdHATn6lntsKLOLBd/wplD3kKUhW5G6Vz4JZRL2EmCK5dKfHQIouDl
-	vzLu9sqRB2QVOxtxQGl3KIuKIuRZvxfyPeX8pg4yvlo3iV8Qhh+w+MM3StbbS/+lm/ycGJ
-	/fA9ettrY9l9QoMppfOVdZ6FkgkV3CB6iC5tFquTXBgBTh5naqjynMzo6Xd76Q==
+	bh=FhfNjkuMbZpr2ack+ilUXPWHeaOvldZUmgcoY4j+Ous=;
+	b=KzdBiR9dK3q3KNFqxvVPUJJ9mvASjFeyFmJxgXi3Pl7WwzY7hkSYJqy5DDsAJjXwig7dcE
+	luK2JPVw63+x43YGA+5SziXHLvYtg69FX67mkOH+U06saSO969F3OcFHkPN8s4BalosU+W
+	kQlG/yuiBxkMHU39dyax4Qkdh/OCMlJGbZW6mEOAAtZ8u0deSbx4CZGr2eADYstc9cd2C/
+	rBAuEhV8MW7kx+RnOrlIpc9yOME11s6h2vqlICRDo3qkoiW7xv+aVVYY4UOvFx2DP7FH2x
+	LSdSbWhbG+D0gu/e5wEOSlASAe2WdulE8ZVtgK5Fey4Zv7DvK+VTw9B87ePk+w==
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -36,19 +36,16 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
 	b.a.t.m.a.n@lists.open-mesh.org,
-	Ruijie Li <ruijieli51@gmail.com>,
+	Sven Eckelmann <sven@narfation.org>,
 	stable@kernel.org,
 	Yuan Tan <yuantan098@gmail.com>,
 	Yifan Wu <yifanwucs@gmail.com>,
 	Juefei Pu <tomapufckgml@gmail.com>,
 	Xin Liu <bird@lzu.edu.cn>,
-	Zhanpeng Li <lzhanpeng2025@lzu.edu.cn>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net 10/14] batman-adv: clear current gateway during teardown
-Date: Fri, 15 May 2026 11:55:35 +0200
-Message-ID: <20260515095540.325586-11-sw@simonwunderlich.de>
+Subject: [PATCH net 13/14] batman-adv: frag: disallow unicast fragment in fragment
+Date: Fri, 15 May 2026 11:55:38 +0200
+Message-ID: <20260515095540.325586-14-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260515095540.325586-1-sw@simonwunderlich.de>
 References: <20260515095540.325586-1-sw@simonwunderlich.de>
@@ -60,49 +57,88 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Ruijie Li <ruijieli51@gmail.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-batadv_gw_node_free() removes the gateway list entries during mesh teardown,
-but it does not clear the currently selected gateway. This leaves stale
-gateway state behind across cleanup and can break a later mesh recreation.
+batadv_frag_skb_buffer() is called by batadv_batman_skb_recv() when a
+BATADV_UNICAST_FRAG packet is received. Once all fragments are collected
+and the packet is reassembled, batadv_recv_frag_packet() calls
+batadv_batman_skb_recv() again to process the defragmented payload.
 
-Clear bat_priv->gw.curr_gw before walking the gateway list so the selected
-gateway reference is dropped as part of teardown.
+A malicious sender can craft a BATADV_UNICAST_FRAG packet whose reassembled
+payload is itself a BATADV_UNICAST_FRAG packet (matryoshka-style nesting).
+Each nesting level recurses through batadv_batman_skb_recv() without bound,
+growing the kernel stack until it is exhausted.
 
-Fixes: 2265c1410864 ("batman-adv: gateway election code refactoring")
+Since refragmentation or fragments in fragments are not actually allowed,
+discard all packets which are still BATADV_UNICAST_FRAG packets after the
+defragmentation process.
+
 Cc: stable@kernel.org
+Fixes: 610bfc6bc99b ("batman-adv: Receive fragmented packets and merge")
 Reported-by: Yuan Tan <yuantan098@gmail.com>
 Reported-by: Yifan Wu <yifanwucs@gmail.com>
 Reported-by: Juefei Pu <tomapufckgml@gmail.com>
 Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Ruijie Li <ruijieli51@gmail.com>
-Signed-off-by: Zhanpeng Li <lzhanpeng2025@lzu.edu.cn>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Reviewed-by: Yuan Tan <yuantan098@gmail.com>
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 ---
- net/batman-adv/gateway_client.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/batman-adv/fragmentation.c | 35 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-diff --git a/net/batman-adv/gateway_client.c b/net/batman-adv/gateway_client.c
-index 51e9c081a2a4e..a9d0346e8332e 100644
---- a/net/batman-adv/gateway_client.c
-+++ b/net/batman-adv/gateway_client.c
-@@ -478,10 +478,14 @@ void batadv_gw_node_delete(struct batadv_priv *bat_priv,
-  */
- void batadv_gw_node_free(struct batadv_priv *bat_priv)
- {
-+	struct batadv_gw_node *curr_gw;
- 	struct batadv_gw_node *gw_node;
- 	struct hlist_node *node_tmp;
+diff --git a/net/batman-adv/fragmentation.c b/net/batman-adv/fragmentation.c
+index 1152c2ce0c1ea..4a594aa2ebf66 100644
+--- a/net/batman-adv/fragmentation.c
++++ b/net/batman-adv/fragmentation.c
+@@ -304,6 +304,31 @@ batadv_frag_merge_packets(struct hlist_head *chain)
+ 	return skb_out;
+ }
  
- 	spin_lock_bh(&bat_priv->gw.list_lock);
-+	curr_gw = rcu_replace_pointer(bat_priv->gw.curr_gw, NULL, true);
-+	batadv_gw_node_put(curr_gw);
++/**
++ * batadv_skb_is_frag() - check if newly merged skb is gain a unicast packet
++ * @skb: newly merged skb
++ *
++ * Return: if newly skb is of type BATADV_UNICAST_FRAG
++ */
++static bool batadv_skb_is_frag(struct sk_buff *skb)
++{
++	struct batadv_ogm_packet *batadv_ogm_packet;
 +
- 	hlist_for_each_entry_safe(gw_node, node_tmp,
- 				  &bat_priv->gw.gateway_list, list) {
- 		hlist_del_init_rcu(&gw_node->list);
++	/* packet should hold at least type and version */
++	if (unlikely(!pskb_may_pull(skb, 2)))
++		return false;
++
++	batadv_ogm_packet = (struct batadv_ogm_packet *)skb->data;
++
++	if (batadv_ogm_packet->version != BATADV_COMPAT_VERSION)
++		return false;
++
++	if (batadv_ogm_packet->packet_type != BATADV_UNICAST_FRAG)
++		return false;
++
++	return true;
++}
++
+ /**
+  * batadv_frag_skb_buffer() - buffer fragment for later merge
+  * @skb: skb to buffer
+@@ -337,6 +362,16 @@ bool batadv_frag_skb_buffer(struct sk_buff **skb,
+ 	if (!skb_out)
+ 		goto out_err;
+ 
++	/* fragment in fragment is not allowed. otherwise it is possible
++	 * to exhaust the stack when receiving a matryoshka-style
++	 * "fragments in a fragment packet"
++	 */
++	if (batadv_skb_is_frag(skb_out)) {
++		kfree_skb(skb_out);
++		skb_out = NULL;
++		goto out_err;
++	}
++
+ out:
+ 	ret = true;
+ out_err:
 -- 
 2.47.3
 
