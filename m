@@ -1,77 +1,68 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F86224A06D;
-	Fri, 15 May 2026 00:21:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D18221FB1;
+	Fri, 15 May 2026 00:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778804484; cv=none; b=jxa1SHZSqyCotodIdZXVyAwKJ/WU+XZYULT90FmO1OHVmzJ8A7rbp51O3udZ6MWU9ZNgtepupxoXUwl404pKP1MgSV0zCcHNf6qjSfiet+OLXKPI4vfqm3PR6vOyVsig0TZZuR5HiigJm0WV1TvPAFfiMtnqbOVfsveRhL4zo+0=
+	t=1778804490; cv=none; b=kEDXVoPolcPs63fBrRCzfDA+7/YWl6iCUeX2bW+6eRXBIlmTQ7xckjuzKaPaUs9vWDDM6zPZCBmR7Gs/QuwVel0udsq/AE39pDFAB2s26oxk2Ytv8AQzhxzUB2y2RFgqwGVoRruGEtQ6+9NzwCL7l7P2rFCi2spiZiyrobHrGJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778804484; c=relaxed/simple;
-	bh=G9uTTyNzrHQKSAO50UfTasKrmVD+4UC8dZ2+xuUu2r0=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=oEFv2CjPDqclAJfZmf3InaTRkXhQYlRzVYyuD9fOacBBn6v4/fjb6zjrdwOnpAaTgMBe3WJynB6jpUJwWCHyeun/yawcbrsBqXU1Cc/II+YBjmNusEMTpSLLh769P810Pa5N4lGXB0vnCrOf5lB7uRtidRnEEb7BSwVFL5wsE2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pyAsEHwe; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778804490; c=relaxed/simple;
+	bh=Geonpnf5rDoMCU8CrpajCyHwDYg8SoLR9V+hJ/XOLxM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Q0d7gCZBT7hsQSLKFjWqYw7UDO6EjXL1IzmY4PoZOkuEf3O49JZMcuQfuDHkD1zY+xCP6TqcvcDfab5bolEMrXr+Bfr9BllSQZ9ZjHjpG9YJYtNe7A43DY8sUD09nRndOFSItkKPNg/F9L5A8/TzqH05W7Fxx3O+BJeYM6Zmsgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BiT7ulLO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pyAsEHwe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A45A1C2BCB3;
-	Fri, 15 May 2026 00:21:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BiT7ulLO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C6D5C2BCB3;
+	Fri, 15 May 2026 00:21:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778804483;
-	bh=G9uTTyNzrHQKSAO50UfTasKrmVD+4UC8dZ2+xuUu2r0=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=pyAsEHwehiEQDWq51luLRoDRGtxcZufUPS4aWzjBn7ow2VtMziCYCoKE6tOWVsx52
-	 XNc062F053Haz8CrZ49XKh31bIkuQ+PxYk89T4iziBhUGi/o6Fzlw7z+NCiFDueYyS
-	 1kKS+FFBpMBOnqU18Dp6gcUloWiQ4F71Ofb0RoGZxBpxfYYbmyxTNB6ldGdo5YdZ6D
-	 752nx9CGDm6QjGI9D9/1+1uaiUeSUpxQV8l8/pqSnjiyvhVYiCpp9mHHC5BvC1KMCz
-	 zyNZ6gSpOVZF9e/TvAUCh7j8P577rpOTl/ySQUhElAePV7hqWeB3T+0u36OJT0HzyL
-	 m3+wcrXsBghVg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CD7939E4DB3;
-	Fri, 15 May 2026 00:20:29 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1778804489;
+	bh=Geonpnf5rDoMCU8CrpajCyHwDYg8SoLR9V+hJ/XOLxM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=BiT7ulLO/P3AnwJ8HHpnTuYp25WrtDoKeNxzxBHUiBVuLX3zE712XVtX/hLNE0FmU
+	 DLGym4cbO6cCjCkOCoRj2Jwr681JCqJ1NC60klXy9O4syeHYPbMHaeChuIVgqMjMUP
+	 MawCYfX1z0z7bYwEDGEi+JNFU0IzbjNArLczpoVJBJzMKYeot3rFll3i5/ChxASe1a
+	 mYbB36MOxPeK8K5GC8OHNMMIneK1G29Ys+fnZCHeoTCIcgdKEP6L4pYL71OclD/Q2O
+	 +87CFlANlCZ/Z2nFClvTGQ94lr8pV+b3b7fN4wHisGMqVhJEbS96tC1Z73qlbnc35k
+	 xbVAJi+MLoj0g==
+Date: Thu, 14 May 2026 17:21:28 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: javen <javen_xu@realsil.com.cn>
+Cc: <hkallweit1@gmail.com>, <nic_swsd@realtek.com>, <andrew+netdev@lunn.ch>,
+ <davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>,
+ <horms@kernel.org>, <netdev@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [Patch net-next v3 5/7] r8169: add support and enable rss
+Message-ID: <20260514172128.41093a07@kernel.org>
+In-Reply-To: <20260513115543.1730-6-javen_xu@realsil.com.cn>
+References: <20260513115543.1730-1-javen_xu@realsil.com.cn>
+	<20260513115543.1730-6-javen_xu@realsil.com.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] rds: tcp_listen: fix typos in comments
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177880442804.134878.5537971782317134127.git-patchwork-notify@kernel.org>
-Date: Fri, 15 May 2026 00:20:28 +0000
-References: <20260512215531.1988662-1-avinash.duduskar@gmail.com>
-In-Reply-To: <20260512215531.1988662-1-avinash.duduskar@gmail.com>
-To: Avinash Duduskar <avinash.duduskar@gmail.com>
-Cc: netdev@vger.kernel.org, achender@kernel.org, davem@davemloft.net,
- kuba@kernel.org, pabeni@redhat.com, edumazet@google.com, horms@kernel.org,
- linux-rdma@vger.kernel.org, rds-devel@oss.oracle.com,
- linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Wed, 13 May 2026 03:25:31 +0530 you wrote:
-> Two typos in comments:
+On Wed, 13 May 2026 19:55:41 +0800 javen wrote:
+> From: Javen Xu <javen_xu@realsil.com.cn>
 > 
-> - "reconneect" -> "reconnect" (block comment above
->   rds_tcp_accept_one_path()).
-> - "acccepted" -> "accepted" (block comment inside
->   rds_tcp_conn_slots_available()).
-> 
-> [...]
+> This patch adds support and enable rss for RTL8127.
 
-Here is the summary with links:
-  - [net-next] rds: tcp_listen: fix typos in comments
-    https://git.kernel.org/netdev/net-next/c/1b2ba91c4505
+Still doesn't build cleanly:
 
-You are awesome, thank you!
+../drivers/net/ethernet/realtek/r8169_main.c:5203:24: warning: incorrect type in return expression (different base types)
+../drivers/net/ethernet/realtek/r8169_main.c:5203:24:    expected unsigned int
+../drivers/net/ethernet/realtek/r8169_main.c:5203:24:    got restricted __le32
+../drivers/net/ethernet/realtek/r8169_main.c:5205:24: warning: incorrect type in return expression (different base types)
+../drivers/net/ethernet/realtek/r8169_main.c:5205:24:    expected unsigned int
+../drivers/net/ethernet/realtek/r8169_main.c:5205:24:    got restricted __le32
+../drivers/net/ethernet/realtek/r8169_main.c:5264:26: warning: cast to restricted __le32
+../drivers/net/ethernet/realtek/r8169_main.c:5278:34: warning: cast to restricted __le32
+
+Install sparse and build with C=1, please.
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: cr
