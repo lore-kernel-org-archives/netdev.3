@@ -1,66 +1,56 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADCA938423F
-	for <netdev@vger.kernel.org>; Fri, 15 May 2026 18:54:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B40E735E1DD
+	for <netdev@vger.kernel.org>; Fri, 15 May 2026 19:04:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778871271; cv=none; b=sc5cKXvwMqCk3DRImihu3n1QWRUbx3GpeRhA/lI1UW3K2knnj6n7+yWXoE6827XTMUGSmwHHegADJOLMI39lf8ht7gD0UTFFuhw7g11gAZAewqSud1G0yjuR9UqSxj3ZWDnoU0PXGouKWsk1c3UYnbhKFOhqdh6DRmHDsw/bcCI=
+	t=1778871861; cv=none; b=lkjqOWwUBGcwuE3XAQTE6PXu5DLpE+q2U2tMXEW01an/uh+gprzMKzIkVlgBiUNNFHyiMXgB6ddo+tPI29FdDrFfrrdosicDs9emNG2ggrOZoGTqn23nJr1YtzngR9LIt05Xw3EBSV8ZRNWqLCX3GuBahg1wdG/iUlA/INPny0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778871271; c=relaxed/simple;
-	bh=5eaIm7oQrXrv26FV2waWzgjgidPzic9XkF5iTxDoZAA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=kBYWAFvI27IAYSj9kxFVnCN3tvsVZbGXfccgoICRfQwprMKpo8N/t+HioNxWcxo22ogvqzUu/w8z4cNdfiSgWIcxQdl9RHEAa7YDZJoRf+Ii9pdlCP3Onkpqs41t1vjjuP+v+HckwWHY1BqYMmS5vjIwzs2p5FhpqiDLusEeo8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YTN8QEiG; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1778871861; c=relaxed/simple;
+	bh=Ent00k7exvK8hToZmNFZmmOeIHqZFUsATQ6w071IpCY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dw93J2cF2+gQE7q3ujvtB2mAEJpI3pdMAd8BlxKkSHLH/jrHNJdMYJOFDap8v4LIJklJKghwkxYqQLNNjDFA60iyUVbXllXzssqQ2LqUWD7g/mRF7maN34a4XIp0BrSw1BWhyhxozcVrzNiGnpt+Qg0M4bI/pV0rsRDsovcbtqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gE5LAX6f; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YTN8QEiG"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4891ca4ce02so2705e9.1
-        for <netdev@vger.kernel.org>; Fri, 15 May 2026 11:54:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778871265; x=1779476065; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PNFlWNxHBBoOTkz1i9JncC0yIj0DqDbA8cq/UI1Bf44=;
-        b=YTN8QEiGHHdnprLQd4QF4cecW35GhQVlLJOKOfrlbUIpLU3YETnSZ7SAZ75pD4+xLU
-         JE95jMSsbzu7tvXxTEblYm67ZGMfe/XDBqYu9l9KCvf94QEbwgn2mVSnf+QDmBdO6yUu
-         /JOROf/9RRxy4kRG2d2LLjwPrLrWHvN98DT8Q3xowg5Z5J4Q3BrqkQT6/2faP8j/N7Ei
-         Bkmoa7IdWTvOBsy91glQdiElDn7pmakZxbVgrfE5WsA1HFEnVXh9HICSaz3ZGAusL6aT
-         x5ftNRrsF4nOV+5ATj3tUzsa8cqi5nQRNxo4u2VEaaPgDJlirOcYBlnOy7ES2iFNLF+o
-         f8Ow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778871265; x=1779476065;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=PNFlWNxHBBoOTkz1i9JncC0yIj0DqDbA8cq/UI1Bf44=;
-        b=JGqeO0CDxCS67fo81EHJwUCPXrT7JXpu+mnVDTeVr/Xws/yhs41aRNWQ2Z/Lct87Zs
-         riV8UI7V28B/+BKdkXePpN6uPr+XonwUPMLBpqRC/DimhWQrQYq/OntONMzNAKv4+1VA
-         utQh0FOTWtRn1zTa/X3xbFMX2rlN27t5q/Q6VniOYHzg5Di3e6yJilSNnWExXi6+NlTk
-         9UDyY+DyUeV/miWHlSoG35dxGuuO8DV9gvu9hZ99lYLdRE3ykrcZLvdO6RQdo+Orbav/
-         x0lug9y1JuvuJCZ4DaHTwcfi52D7HDdLP+52IJYQiqhiHctdaprjuUDi358Sa93QfCld
-         eRaA==
-X-Forwarded-Encrypted: i=1; AFNElJ/FXS3v/lnCAboSs30zesZ2jUWJiZWHmIN0Lnzebe5Cz/jEgD/2Hyz9+e5TRZoyvimj5o9l5Qw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzwUW6DgvvN5MMY89RShaSpwpwVX7jNacgOo/Dfg++q9LS6D+Rv
-	f2/hLiIfofwXWR1WnhBKVZVwxp4WuSX5H3IcqGlz6nHAoYZmTI5PwkdVY497Ed12nA==
-X-Gm-Gg: Acq92OGrmih8aeiwswK5/E8d6UyEjjSAg8hbDlDOKhfjYhy9bwlOibYbAfkDRPsv8mn
-	gpgxXLgy4DGm60evj6mziesGErLzkfOAj74nK3UV8yeF3WDbJ0JaKMlmNUw6gJdSl+5KEtrs/Qb
-	fYKgE+qgB9x1hKcWXq/kR6+tt11SzV7TKAKcUgC9cH5suE34Ot7MNx2pKIyvDn3M/ljazIctNgb
-	PowMTQTu72cpUWOW+qq8ogmdLidjunzPHv/Dm1bXcMgLptXEa+VNKoDZA4bwILbeo9bsqNV8olS
-	vuYwDyJIJHBaZYWy3fyojQ6cdOYaI75iduBUV8GgkgHPVh9hbuF5vA/QJ+ahUDTt9bPczjeBBnM
-	Aszbuvi6YOKpPUcJJ1OLwvHxfZtVEIUoim6LpT5PF0gkluTo2X3sZQnYYJ86qkAcm+IHloOZQLc
-	7T866UuH7U5hBi3VD7GQdIfV8TQcBTUYVfVOzqBU/n5/sIMbd+o0KV+p+9Ht0mMw==
-X-Received: by 2002:a05:600c:605a:b0:48a:55dc:9c1e with SMTP id 5b1f17b1804b1-48ff4b2c3bfmr64135e9.10.1778871264521;
-        Fri, 15 May 2026 11:54:24 -0700 (PDT)
-Received: from localhost ([2a00:79e0:288a:8:7481:4dac:8e80:6e9b])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48febe79ce3sm20112695e9.31.2026.05.15.11.54.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 May 2026 11:54:24 -0700 (PDT)
-From: Jann Horn <jannh@google.com>
-Date: Fri, 15 May 2026 20:54:09 +0200
-Subject: [PATCH 2/3] af_unix: Simplify unix_stream_data_wait()
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gE5LAX6f"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778871860; x=1810407860;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Ent00k7exvK8hToZmNFZmmOeIHqZFUsATQ6w071IpCY=;
+  b=gE5LAX6f9ypJi7LDk0b86D8ujYLgzd1EgEzE8X0X3TlGUm5ii3PWvgNh
+   NoRLq+gQXTEidsZPwiRJFWohojZk9JyQ6yb9V06EbXMxqaxy6Bf2zAZq5
+   +AmdtRrLX164nuPwpRkivOPYBLyng/0ZTJcNsJAWvo7ENstPpWVMKXUwU
+   hGwY5J/M1gtUBsHK343NMLuDmTBGrYPSOuIAsEBR8gOQU4EkiS65vNk43
+   mBCfRlkIDUkSERtbG8H68bK+qDt+nr+1T+1HE2ciVUVhSyG/1fsOq+aNZ
+   SbEzyqImci2mH5YaA5aYB3Q+ObRu6ye8ee5IKbTE4wM6D4+8U/idhySbg
+   g==;
+X-CSE-ConnectionGUID: trGk82ZIQOurxr3f1hqhxQ==
+X-CSE-MsgGUID: ggiBiH3wRYO70duNo1EaHA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="79725694"
+X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
+   d="scan'208";a="79725694"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 12:04:19 -0700
+X-CSE-ConnectionGUID: oXDAhsc2QdiyuCfl5fL8Vg==
+X-CSE-MsgGUID: kHBkbUshStS3S5OjmrBe2Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
+   d="scan'208";a="238895618"
+Received: from amlin-019-225.igk.intel.com ([10.102.19.225])
+  by orviesa009.jf.intel.com with ESMTP; 15 May 2026 12:04:18 -0700
+From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+To: intel-wired-lan@lists.osuosl.org,
+	anthony.l.nguyen@intel.com,
+	aleksandr.loktionov@intel.com
+Cc: netdev@vger.kernel.org
+Subject: [PATCH iwl-net v5 0/4] ixgbe: four bug fixes
+Date: Fri, 15 May 2026 21:04:13 +0200
+Message-ID: <20260515090000.5112345-1-aleksandr.loktionov@intel.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -68,156 +58,99 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260515-unix-recv-wait-v1-2-76adb5f063d5@google.com>
-References: <20260515-unix-recv-wait-v1-0-76adb5f063d5@google.com>
-In-Reply-To: <20260515-unix-recv-wait-v1-0-76adb5f063d5@google.com>
-To: Kuniyuki Iwashima <kuniyu@google.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>
-Cc: Hannes Frederic Sowa <hannes@stressinduktion.org>, 
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Jann Horn <jannh@google.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778871255; l=4212;
- i=jannh@google.com; s=20240730; h=from:subject:message-id;
- bh=5eaIm7oQrXrv26FV2waWzgjgidPzic9XkF5iTxDoZAA=;
- b=6VwkbRKbXyM57UZcd+u9NRFFl6a2vqKgQ5vgB5wq6NdR+FNOk105mWuSrcOwz+9Bf2Z+LL7U7
- XiNleUuhKGzCWlSfUq4kCilsFmjn9b9WtFSLwY6wfd01XIiUGPC3fl7
-X-Developer-Key: i=jannh@google.com; a=ed25519;
- pk=AljNtGOzXeF6khBXDJVVvwSEkVDGnnZZYqfWhP1V+C8=
+Content-Transfer-Encoding: 8bit
 
-The current implementation of unix_stream_data_wait() works like this:
+Four fixes for the ixgbe driver, covering a SWFW semaphore timeout
+miscalculation, a false-success return in the cls_u32 nexthdr path,
+an adaptive-ITR u8 overflow, and wrong bit positions in the UP-to-TC
+register normalisation.
 
- - unix_stream_read_generic() grabs locks
- - unix_stream_read_generic() determines that the read must block
- - unix_stream_read_generic() drops locks
- - unix_stream_data_wait() sets up a wait_queue_entry
- - unix_stream_data_wait() rechecks that the read must still block, with
-   less locking protection than unix_stream_read_generic()
- - unix_stream_data_wait() waits, then loops back to recheck again
+Patch 1 fixes a timeout too short for X550 family FW update operations,
+which caused spurious EBUSY failures during module-update and SR-dump
+commands.
 
-That seems needlessly complicated; and it also involves an ugly comparison
-between a potentially-dangling `last` pointer and another
-potentially-dangling `tail` pointer.
+Patches 2-4 fix correctness bugs with user-visible effects: a cls_u32
+nexthdr offload path that silently dropped filter-install errors, an
+adaptive-ITR path that corrupted the mode flag via u8 truncation, and
+a UP-to-TC validation loop that cleared only UP1 regardless of which
+user priority was out of bounds.
 
-Instead, let's set up a wait_queue_entry
-while the locks grabbed by unix_stream_read_generic() are still held, and
-after the wait, directly retry the read.
+Patch 3 reworks the ITR write-back to keep the mode flag
+(IXGBE_ITR_ADAPTIVE_LATENCY, bit 7) and the usec delay in separate
+operands until the final store, and clamps the delay to
+[IXGBE_ITR_ADAPTIVE_MIN_USECS, IXGBE_ITR_ADAPTIVE_MAX_USECS] via
+clamp_val().
 
-Signed-off-by: Jann Horn <jannh@google.com>
+Patch 4 corrects the Fixes: tag to 8b1c0b24d9af ("ixgbe: configure
+minimal packet buffers to support TC") per Simon Horman.
+
+Changes in v5:
+ - DROPPED "ixgbe: call ixgbe_setup_fc() before fc_enable() after NVM
+   update" (was 2/5 in v4).
+   ixgbe_setup_fc_e610() is documented as an init-time-only operation.
+   Calling it unconditionally from ixgbe_watchdog_update_link() on
+   every link-up event causes it to issue an ACI set_phy_cfg command
+   with IXGBE_ACI_PHY_ENA_AUTO_LINK_UPDT on E610 (Linkville) devices.
+   That flag instructs the firmware to re-initialise the PHY, which
+   immediately drops the link; the resulting link-up triggers another
+   watchdog call, which issues another set_phy_cfg, creating a rapid
+   reset loop during early init.  The E610 firmware's fault-detection
+   logic sets IXGBE_GL_MNG_FWSM_RECOVERY_M in response, causing all
+   E610 ports to report "Firmware recovery mode detected. Limiting
+   functionality." and enumerate no network interfaces.
+   A correct fix must gate the setup_fc() call on an actual NVM-update
+   event rather than on every link-up; that rework will be sent as a
+   separate series once the interaction with the E610 ACI PHY-config
+   path is fully understood.
+ - 1/4 (was 1/5), 2/4 (was 3/5), 3/4 (was 4/5), 4/4 (was 5/5):
+   renumbered only; no code or commit-message change.
+
+Changes in v4:
+ - DROPPED "ixgbe: add bounds check for debugfs register access"
+   (was 2/6 in v3).  The WARN_ON_ONCE(reg > IXGBE_HFDR) guard added
+   to ixgbe_read_reg() fires on legitimate driver code paths on
+   X550EM_a / E610 (LKV): probe reads IXGBE_EEC(hw), which on those
+   parts resolves to IXGBE_EEC_X550EM_a == 0x15FF8, exceeding
+   IXGBE_HFDR == 0x15FE8.  IXGBE_LINKS_10G_LANE_SYNC (0x17000) is
+   another in-driver register beyond IXGBE_HFDR.  The premise of the
+   patch -- that IXGBE_HFDR is the highest valid MMIO offset -- is
+   incorrect, so the read-side guard cannot be retained as written,
+   and the debugfs-side bound suffers from the same wrong ceiling.
+   A correct debugfs-only bound (against pci_resource_len(BAR0)) will
+   be sent separately if/when needed; that work is outside the scope
+   of these -net fixes.  Reported by Larysa Zaremba.
+ - 1/5 (was 1/6), 2/5 (was 3/6), 3/5 (was 4/6), 4/5 (was 5/6),
+   5/5 (was 6/6): renumbered only; no code or commit-message change.
+
+Changes in v3:
+ - cover: removed Patch 1 squash-history description.
+ - 1/6: add Reviewed-by: Simon Horman, Reviewed-by: Jacob Keller.
+ - 2/6: add Reviewed-by: Simon Horman; no code change.
+ - 3/6: add backplane-link guard in ixgbe_watchdog_update_link().
+ - 4/6: add Reviewed-by: Simon Horman; no code change.
+ - 5/6: rework clamping -- use clamp_val() with mode and delay as
+        separate operands; clamp to [IXGBE_ITR_ADAPTIVE_MIN_USECS,
+        IXGBE_ITR_ADAPTIVE_MAX_USECS].
+ - 6/6: correct Fixes: tag to 8b1c0b24d9af; add Reviewed-by:
+        Simon Horman.
+
+Changes in v2:
+ - 1/6: Squash two patches; fix commit msg ("200ms" -> "1s"); three
+        explicit mac.type == comparisons instead of range check.
+ - 2/6: Add Fixes: tag; reroute from iwl-next to iwl-net.
+ - 3/6: Add Fixes: tag; reroute to iwl-net; skip fc_enable() when
+        setup_fc() fails to avoid committing stale FC state.
+ - 4/6: Add Fixes: tag; reroute from iwl-next to iwl-net.
+ - 5/6: Add proper [N/M] patch numbering.
+ - 6/6: Reroute to iwl-net; swap to (expr >> ..) & MASK operand order.
 ---
- net/unix/af_unix.c | 49 ++++++++++++++-----------------------------------
- 1 file changed, 14 insertions(+), 35 deletions(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index dc71ed79be4a..b38804e2c5ac 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -2710,39 +2710,22 @@ static int unix_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
- /*
-  *	Sleep until more data has arrived. But check for races..
-  */
--static long unix_stream_data_wait(struct sock *sk, long timeo,
--				  struct sk_buff *last, bool freezable)
-+static long unix_stream_data_wait(struct sock *sk, long timeo, bool freezable)
-+__releases(&unix_sk(sk)->iolock)
-+__releases(&unix_sk(sk)->lock)
- {
- 	unsigned int state = TASK_INTERRUPTIBLE | freezable * TASK_FREEZABLE;
--	struct sk_buff *tail;
- 	DEFINE_WAIT(wait);
- 
--	unix_state_lock(sk);
--
--	for (;;) {
--		prepare_to_wait(sk_sleep(sk), &wait, state);
--
--		tail = skb_peek_tail(&sk->sk_receive_queue);
--		if (tail != last ||
--		    sk->sk_err ||
--		    (sk->sk_shutdown & RCV_SHUTDOWN) ||
--		    signal_pending(current) ||
--		    !timeo)
--			break;
--
--		sk_set_bit(SOCKWQ_ASYNC_WAITDATA, sk);
--		unix_state_unlock(sk);
--		timeo = schedule_timeout(timeo);
--		unix_state_lock(sk);
--
--		if (sock_flag(sk, SOCK_DEAD))
--			break;
-+	prepare_to_wait(sk_sleep(sk), &wait, state);
-+	unix_state_unlock(sk);
-+	mutex_unlock(&unix_sk(sk)->iolock);
- 
--		sk_clear_bit(SOCKWQ_ASYNC_WAITDATA, sk);
--	}
-+	sk_set_bit(SOCKWQ_ASYNC_WAITDATA, sk);
-+	timeo = schedule_timeout(timeo);
-+	sk_clear_bit(SOCKWQ_ASYNC_WAITDATA, sk);
- 
- 	finish_wait(sk_sleep(sk), &wait);
--	unix_state_unlock(sk);
- 	return timeo;
- }
- 
-@@ -2955,7 +2938,7 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
- 	skip = max(sk_peek_offset(sk, flags), 0);
- 
- 	do {
--		struct sk_buff *skb, *last;
-+		struct sk_buff *skb;
- 		int chunk;
- 
- 		unix_state_lock(sk);
-@@ -2963,7 +2946,7 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
- 			err = -ECONNRESET;
- 			goto unlock;
- 		}
--		last = skb = skb_peek(&sk->sk_receive_queue);
-+		skb = skb_peek(&sk->sk_receive_queue);
- 
- again:
- #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
-@@ -2989,15 +2972,13 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
- 			if (sk->sk_shutdown & RCV_SHUTDOWN)
- 				goto unlock;
- 
--			unix_state_unlock(sk);
- 			if (!timeo) {
- 				err = -EAGAIN;
--				break;
-+				goto unlock;
- 			}
- 
--			mutex_unlock(&u->iolock);
--
--			timeo = unix_stream_data_wait(sk, timeo, last, freezable);
-+			/* does unix_state_unlock() and drops u->iolock */
-+			timeo = unix_stream_data_wait(sk, timeo, freezable);
- 
- 			if (signal_pending(current)) {
- 				err = sock_intr_errno(timeo);
-@@ -3013,7 +2994,6 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
- 
- 		while (skip >= unix_skb_len(skb)) {
- 			skip -= unix_skb_len(skb);
--			last = skb;
- 			skb = skb_peek_next(skb, &sk->sk_receive_queue);
- 			if (!skb)
- 				goto again;
-@@ -3087,7 +3067,6 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
- 				break;
- 
- 			skip = 0;
--			last = skb;
- 			unix_state_lock(sk);
- 			skb = skb_peek_next(skb, &sk->sk_receive_queue);
- 			if (skb)
+Aleksandr Loktionov (4):
+  ixgbe: fix SWFW semaphore timeout for X550 family
+  ixgbe: fix cls_u32 nexthdr path returning success when no entry installed
+  ixgbe: fix ITR value overflow in adaptive interrupt throttling
+  ixgbe: fix integer overflow and wrong bit position in ixgbe_validate_rtr()
 
--- 
-2.54.0.563.g4f69b47b94-goog
-
+ drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 17 +++++++++--------
+ drivers/net/ethernet/intel/ixgbe/ixgbe_x540.c |  8 ++++++++
+ 2 files changed, 17 insertions(+), 8 deletions(-)
