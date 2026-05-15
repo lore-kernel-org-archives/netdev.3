@@ -1,60 +1,52 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B99D530B50F;
-	Fri, 15 May 2026 13:12:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE92C317150;
+	Fri, 15 May 2026 13:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778850753; cv=none; b=r5s0/FmkhU/yNXt+mGP2O8l4hHucpSknQJz22tJYYNjxio9oeX8tk6jYglN6pVjsH63VBOlJ8/Ct5o8mlfCxw8ORmSZdjh4yiAEhvZK1f6Xj1oQyEs3PiFUuQJdjSnbbnNfUSbWW3IPoyWSuUQqUtEQal914iNrUF9LXVnV64pk=
+	t=1778850856; cv=none; b=DvSM9Zq8ZwRHMmICphlOG1wLCLOLSakyNesBtiSImlFb3jW9bw6MwS25N6breYW2J+OdqSJ+CvTdvgq198b/ypn5BS6uy9xzo97m3TkgryuRh8WNtxF+ohS84TcvAWRZ+ZEgWoiRXb2lQeF9u+r2nImgflabkE49XuZRKwwY1Nk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778850753; c=relaxed/simple;
-	bh=q30lxFmDv4dNqul36sBtoF14JZ2WcFMM69V4BB/vstk=;
+	s=arc-20240116; t=1778850856; c=relaxed/simple;
+	bh=K8+IOdK6mfi+tlOyO0LvfPWKRPiT10gc6/h3f/mbymM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y9UXeMHnMiQ9h8i0mNqbCbpJUotwQFmTw1mZAbBBBmW0CdYcv7fwNvjSx3YABmk7PPpRhoJS1jvvSnl+ka1jnpyWV0L6irRkq4QuSEq66sJ6msKzn1NCVyZUxMAjOlGbg9LMxilqtab5oH+sdG/j/VDhKLIz3ME0yXydNFCkQfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=p+j2BJgh; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=CX1ge1tzvF3VwFzSghjZzlw10dMKCF6bJV2zRvOTbLOOP1tSAalkwGARAqB3El/biX02ZCcGaoDBaj8FJ+jnYbE1xnlnwfstFINlZAiot0R+VzU8QbDEVHyfXSTqNt7b8TQLx6u6THst4okyp8xUpAwuX+QLjuGhJb4VxfKE+eI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=GDb9KE3d; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="p+j2BJgh"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="GDb9KE3d"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=Q85THMGJzjLyW44YEGjlAlMDf7fpPuKF9ngHPGJsQPQ=; b=p+j2BJghM/qNsf62mTDKoYjDeA
-	oCt0vR04TXhe5qhtwSmzCbTufeRvjWfAD3yyjq4Ng73I5ZTRJW/8qnvgEahNND2K++pw3Rcyaa6JZ
-	o7gD6FY8ksWS0cxq9r6QHVAEAcvR65aKzDkef0vdBgnoCZlb5gOxxZrmBRgVd3zviRkU=;
+	bh=1O3Uv9ZACqlT1DjzNL55O3hGy5mm/f60RLVWQ8N0rvQ=; b=GDb9KE3dc8qmyI0VEzFmQ754UX
+	AhMwsKMwKCOBjsy2MY+59KnOdLreZtA9w1qLHxsKCSSQuVtbXRKdfyj0QKkD5afAtyMA0LK3ObL30
+	qlfGJTJDYfLT+pMTnzVEQDLgvaRPUTslm1VeNk6uhfDBBAjuw/n940U/2W8iRDykFW8w=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1wNsKy-003499-Fn; Fri, 15 May 2026 15:12:20 +0200
-Date: Fri, 15 May 2026 15:12:20 +0200
+	id 1wNsMg-0034A1-U0; Fri, 15 May 2026 15:14:06 +0200
+Date: Fri, 15 May 2026 15:14:06 +0200
 From: Andrew Lunn <andrew@lunn.ch>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: davem@davemloft.net, Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	=?iso-8859-1?Q?K=F6ry?= Maincent <kory.maincent@bootlin.com>,
-	Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	=?iso-8859-1?Q?Nicol=F2?= Veronese <nicveronese@gmail.com>,
-	Simon Horman <horms@kernel.org>, mwojtas@chromium.org,
-	Romain Gantois <romain.gantois@bootlin.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
-	Frank Wunderlich <frank.wunderlich@linux.dev>
-Subject: Re: [PATCH net-next v10 6/9] net: phy: phy_port: Store information
- about a MII port's vacant state
-Message-ID: <d7086094-9f8b-4d18-92ae-e278b4e67658@lunn.ch>
-References: <20260513130521.1064094-1-maxime.chevallier@bootlin.com>
- <20260513130521.1064094-7-maxime.chevallier@bootlin.com>
- <97cd33a0-ee74-4f64-b11a-bb5b88bce79a@lunn.ch>
- <c68f3abd-7a3d-4d37-9589-02433bbd5c5c@bootlin.com>
+To: =?utf-8?B?5p2O5b+X?= <lizhi2@eswincomputing.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+	rmk+kernel@armlinux.org.uk, maxime.chevallier@bootlin.com,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, ningyu@eswincomputing.com,
+	linmin@eswincomputing.com, pinkesh.vaghela@einfochips.com,
+	pritesh.patel@einfochips.com, weishangjuan@eswincomputing.com
+Subject: Re: Re: [PATCH net v1 1/2] dt-bindings: ethernet: eswin: refine
+ delay model and HSP register description
+Message-ID: <0581dba0-c500-4a21-935f-9324692fce78@lunn.ch>
+References: <20260507083037.152-1-lizhi2@eswincomputing.com>
+ <20260507083136.175-1-lizhi2@eswincomputing.com>
+ <2436c6e9-4aad-4ffd-9fef-0cbbe38dc66d@lunn.ch>
+ <29bee81.8323.19e2a8bf746.Coremail.lizhi2@eswincomputing.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,41 +55,12 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c68f3abd-7a3d-4d37-9589-02433bbd5c5c@bootlin.com>
+In-Reply-To: <29bee81.8323.19e2a8bf746.Coremail.lizhi2@eswincomputing.com>
 
-On Fri, May 15, 2026 at 09:22:29AM +0200, Maxime Chevallier wrote:
-> Hi Andrew,
-> 
-> On 5/14/26 15:58, Andrew Lunn wrote:
-> > > We have information about what MII they can handle, however we don't
-> > > store anything about whether they are currently connected to an SFP
-> > > module or not. As phy_port aims at listing the front-facing ports, let's
-> > > store an "vacant" bit to know whether or not a MII port is currently
-> > > vacant (i.e. there's no module in the SFP cage), or not (i.e.
-> > > there's an SFP module).
-> > 
-> > vacant == False actually means a bit more than there is a module in
-> > the cage. It also means that, so far, we have not had any errors
-> > trying to use the module. If there is an error, we might have a module
-> > physically in the cage, but vacant == True.
-> 
-> This is a good point. Even with an error, we should have vacant = false.
-> 
-> TBH I'm unsure how to name this, vacant may not be the best word there, but
-> I'm struggling to find a better term.
-> 
-> maybe "empty" ?
+> This will help determine whether this change should remain in the net
+> series or be moved to a follow-up net-next series.
 
-My comment is really about, what do we mean by vacant/empty?
+net-next. It does not fix anything which is broken, and bothers
+people.
 
-Is it simply about there physically being a module in the cage, or is
-it also about being able to drive that module? If it is just about
-there being a module in the cage, then vacant/empty is good. If we
-also want to say that we have been able to read out the EEPROM and
-determined the module will work in combination with the PCS and MAC,
-then i would probably use a different name. "usable", "compatible"?
-
-Either way, i think the code either needs simplifying, or made more
-complex.
-
-	Andrew
+	  Andrew
