@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229FD3CF68C;
-	Fri, 15 May 2026 22:45:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A9E3D1AA0;
+	Fri, 15 May 2026 22:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778885115; cv=none; b=AOhvcuwqNmiXIGU8oiYbHtUKslNzFka3OstpUpbjvRAWh/v5nJoV+A/HJa8kh0JCi9YNCw0itx3BD5FAMb+qvDjhbi8YpyEem+kGMcL5tGkLnjLbjIPb8CS2j4G6kOIHxr1fS6MWHz8S5aXOKFQ1kYF1YeZhxcW1Bf8KQbZ4roc=
+	t=1778885116; cv=none; b=DgCH0JqWE9FWRtwFAXN+e6OrdCDHV+jC1p+4aMwsT5ScyiQmPu/HUxItJdkgwL8GIEN/7o9NW+FF6Q9yT7RmjDuUtTIZ9WHMU8VjR4MAwgonDplApokVx2SpB5Y9oI2TeYpeaEkLSHH3m3dHlLwWFQIhlKdv1GVCG7CLkNiD7c4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778885115; c=relaxed/simple;
-	bh=1e7fgKH6ZHeEkbYoDTjZ8GFH0h4OGqbLMN+7qmTi3sc=;
+	s=arc-20240116; t=1778885116; c=relaxed/simple;
+	bh=rIAXzlpeHtdShxnw/96bcj3syzL9ST+zI66aiOT/90g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rq0sdljFw9H1mxezqAWryhrEDSn8sKQX7bVMzSHe63czqt26KP+TpgSdOvQzbV2UIWFf0vtxQwU+kp6HX8Inv7egjyPtnhCrnaaUXAYQfHJ5K6ibht5EpitljYJFwRALHpkqEBzNe6BSj122UmYVREt15Ay10ZiAKukJNs9P9Q4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fVQsvrJB; arc=none smtp.client-ip=198.175.65.13
+	 MIME-Version; b=KAggHmqrArOkMlgdDP+IK2ijtCsQyw6/oDPRNb9KJtf/K8bs/FO5ck/dloL3gKugyx3EiqmPYNYCof8TVIsaHrxMPwQTo+i2o//wme2Xs8ca0pUXwDFEgIv30/I/hQU3VuD8DwhMrMlqrJmIX9lly6HKY/3jluHrNoCEDLyOw0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m4SXSjg0; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fVQsvrJB"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m4SXSjg0"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778885113; x=1810421113;
+  t=1778885114; x=1810421114;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=1e7fgKH6ZHeEkbYoDTjZ8GFH0h4OGqbLMN+7qmTi3sc=;
-  b=fVQsvrJB18gid3JyAeF8q3B7u0CeD8Ow9j3WWZlxzfGuGxj6MYLhehTY
-   un6/I7P8R8yo5PsPXi3UXxN8ozgvLlm40C8yP388amH90GaOrhLa0vNM9
-   FqSRPfwV3IFZHKXoOIvd+TL4ms2lwC79ZDnPnZwxkZudqVOEAfdGUh+yd
-   rMBNLihthm6Q2fDzurGOO1CTf9gijwklJPLJCMO9fPJyzDHCYNNwnHu31
-   4V1p4SymKDGd31sNXNNm+on9GzaU2v3tdD8U+HqR7698DJtuR+n3YG6J4
-   oSNfQpwvP13yiKLE6r+eXCTaTGQ3sCyOt6iWwa5/UDkP6eu383/FROLel
-   w==;
-X-CSE-ConnectionGUID: +W2TQLAtQ7Sk/AD6+E2F0A==
-X-CSE-MsgGUID: 6N3u5mHUSBO+hW1tkycLpA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="90949230"
+  bh=rIAXzlpeHtdShxnw/96bcj3syzL9ST+zI66aiOT/90g=;
+  b=m4SXSjg0VubE/eII0hD96B+HZgL5uhMjj1b2i8Mvc+DSromnvpgnwQxl
+   sZR1QqPJ60WbxHftn/uFgxS7dmG9vdcboGnd+Aiz7ID5F7L2gv+hSpqRi
+   26VpPOHeHBGIHgwhSSIOKZwt9g6jnFieQKoOsZcpIsXDRIj1yytiwP1Ky
+   F5bBY6nGFcBqKBjykiybR2fRTSvKVlktfZ+dYpNPyFZTmh8IImSoRePZn
+   6aQK1Gt8oN1o7Kgct/wYwtDRI9Vn6E0sqGYCUQzo89Uv39iqZNbdz48bv
+   959xVPvB8y81Z1eL66PCMqz0om3T3N29AAQBYGK6b2KXr5Fa9xUcl6HBW
+   g==;
+X-CSE-ConnectionGUID: fSs020PyQdOsduiCm0rsKg==
+X-CSE-MsgGUID: CsJOWxKvQkmHziHvPeOtyw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="90949258"
 X-IronPort-AV: E=Sophos;i="6.23,237,1770624000"; 
-   d="scan'208";a="90949230"
+   d="scan'208";a="90949258"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 15:45:07 -0700
-X-CSE-ConnectionGUID: aXk6I3rAR8iYAWuNNEPBFQ==
-X-CSE-MsgGUID: hu3yJ917TQukBcG0CoQHVQ==
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 15:45:08 -0700
+X-CSE-ConnectionGUID: ABAb0fPrRxaqpl8PbzBsBQ==
+X-CSE-MsgGUID: s+eObKHATGCADRRXF/lR1Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,237,1770624000"; 
-   d="scan'208";a="243146682"
+   d="scan'208";a="243146695"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by orviesa004.jf.intel.com with ESMTP; 15 May 2026 15:45:07 -0700
+  by orviesa004.jf.intel.com with ESMTP; 15 May 2026 15:45:08 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -68,11 +68,11 @@ Cc: Larysa Zaremba <larysa.zaremba@intel.com>,
 	corbet@lwn.net,
 	richardcochran@gmail.com,
 	linux-doc@vger.kernel.org,
-	Samuel Salin <Samuel.salin@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Subject: [PATCH net-next v3 09/14] idpf: make mbx_task queueing and cancelling more consistent
-Date: Fri, 15 May 2026 15:44:33 -0700
-Message-ID: <20260515224443.2772147-10-anthony.l.nguyen@intel.com>
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Bharath R <Bharath.r@intel.com>
+Subject: [PATCH net-next v3 12/14] ixd: add reset checks and initialize the mailbox
+Date: Fri, 15 May 2026 15:44:36 -0700
+Message-ID: <20260515224443.2772147-13-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260515224443.2772147-1-anthony.l.nguyen@intel.com>
 References: <20260515224443.2772147-1-anthony.l.nguyen@intel.com>
@@ -86,107 +86,480 @@ Content-Transfer-Encoding: 8bit
 
 From: Larysa Zaremba <larysa.zaremba@intel.com>
 
-As a consequence of refactoring idpf code to use libeth APIs,
-idpf_vc_xn_shutdown was merged with and replaced by idpf_deinit_dflt_mbx.
-This does not affect the Tx path, as it checked for a presence of an xn
-manager anyway. Rx processing is handled by the mbx_task that is not always
-cancelled before calling the new consolidated mailbox deinit function.
-Moreover, in the reset path idpf_intr_rel() reschedules it after the deinit
-is done. This leads to mbx_task referencing the freed mailbox and causing
-KASAN warnings.
+At the end of the probe, trigger hard reset, initialize and schedule the
+after-reset task. If the reset is complete in a pre-determined time,
+initialize the default mailbox, through which other resources will be
+negotiated.
 
-To remedy this, in the init path, do the first queueing of mbx_task in
-idpf_init_dflt_mbx(), in deinit and reset, always cancel the task in
-idpf_deinit_dflt_mbx() and in every flow first call idpf_mb_intr_rel_irq().
-
-Reviewed-by: Emil Tantilov <emil.s.tantilov@intel.com>
-Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
+Co-developed-by: Amritha Nambiar <amritha.nambiar@intel.com>
+Signed-off-by: Amritha Nambiar <amritha.nambiar@intel.com>
+Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
-Tested-by: Samuel Salin <Samuel.salin@intel.com>
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Bharath R <Bharath.r@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/idpf/idpf.h          | 1 +
- drivers/net/ethernet/intel/idpf/idpf_lib.c      | 9 ++++-----
- drivers/net/ethernet/intel/idpf/idpf_virtchnl.c | 6 +++++-
- 3 files changed, 10 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/intel/ixd/Kconfig        |   1 +
+ drivers/net/ethernet/intel/ixd/Makefile       |   2 +
+ drivers/net/ethernet/intel/ixd/ixd.h          |  28 +++-
+ drivers/net/ethernet/intel/ixd/ixd_dev.c      |  89 +++++++++++
+ drivers/net/ethernet/intel/ixd/ixd_lan_regs.h |  40 +++++
+ drivers/net/ethernet/intel/ixd/ixd_lib.c      | 143 ++++++++++++++++++
+ drivers/net/ethernet/intel/ixd/ixd_main.c     |  32 +++-
+ 7 files changed, 326 insertions(+), 9 deletions(-)
+ create mode 100644 drivers/net/ethernet/intel/ixd/ixd_dev.c
+ create mode 100644 drivers/net/ethernet/intel/ixd/ixd_lib.c
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf.h b/drivers/net/ethernet/intel/idpf/idpf.h
-index 679539a1b947..1d0e32e47e87 100644
---- a/drivers/net/ethernet/intel/idpf/idpf.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf.h
-@@ -984,6 +984,7 @@ void idpf_vc_event_task(struct work_struct *work);
- void idpf_dev_ops_init(struct idpf_adapter *adapter);
- void idpf_vf_dev_ops_init(struct idpf_adapter *adapter);
- int idpf_intr_req(struct idpf_adapter *adapter);
-+void idpf_mb_intr_rel_irq(struct idpf_adapter *adapter);
- void idpf_intr_rel(struct idpf_adapter *adapter);
- u16 idpf_get_max_tx_hdr_size(struct idpf_adapter *adapter);
- int idpf_initiate_soft_reset(struct idpf_vport *vport,
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-index 0d131bf0993e..7988836fbae0 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-@@ -68,9 +68,11 @@ static void idpf_deinit_vector_stack(struct idpf_adapter *adapter)
-  * This will also disable interrupt mode and queue up mailbox task. Mailbox
-  * task will reschedule itself if not in interrupt mode.
+diff --git a/drivers/net/ethernet/intel/ixd/Kconfig b/drivers/net/ethernet/intel/ixd/Kconfig
+index f5594efe292c..24510c50070e 100644
+--- a/drivers/net/ethernet/intel/ixd/Kconfig
++++ b/drivers/net/ethernet/intel/ixd/Kconfig
+@@ -5,6 +5,7 @@ config IXD
+ 	tristate "Intel(R) Control Plane Function Support"
+ 	depends on PCI_MSI
+ 	select LIBETH
++	select LIBIE_CP
+ 	select LIBIE_PCI
+ 	help
+ 	  This driver supports Intel(R) Control Plane PCI Function
+diff --git a/drivers/net/ethernet/intel/ixd/Makefile b/drivers/net/ethernet/intel/ixd/Makefile
+index 3849bc240600..164b2c86952f 100644
+--- a/drivers/net/ethernet/intel/ixd/Makefile
++++ b/drivers/net/ethernet/intel/ixd/Makefile
+@@ -6,3 +6,5 @@
+ obj-$(CONFIG_IXD) += ixd.o
+ 
+ ixd-y := ixd_main.o
++ixd-y += ixd_dev.o
++ixd-y += ixd_lib.o
+diff --git a/drivers/net/ethernet/intel/ixd/ixd.h b/drivers/net/ethernet/intel/ixd/ixd.h
+index d813c27941a5..99c44f2aa659 100644
+--- a/drivers/net/ethernet/intel/ixd/ixd.h
++++ b/drivers/net/ethernet/intel/ixd/ixd.h
+@@ -4,14 +4,25 @@
+ #ifndef _IXD_H_
+ #define _IXD_H_
+ 
+-#include <linux/intel/libie/pci.h>
++#include <linux/intel/libie/controlq.h>
+ 
+ /**
+  * struct ixd_adapter - Data structure representing a CPF
+- * @hw: Device access data
++ * @cp_ctx: Control plane communication context
++ * @init_task: Delayed initialization after reset
++ * @xnm: virtchnl transaction manager
++ * @asq: Send control queue info
++ * @arq: Receive control queue info
   */
--static void idpf_mb_intr_rel_irq(struct idpf_adapter *adapter)
-+void idpf_mb_intr_rel_irq(struct idpf_adapter *adapter)
+ struct ixd_adapter {
+-	struct libie_mmio_info hw;
++	struct libie_ctlq_ctx cp_ctx;
++	struct {
++		struct delayed_work init_work;
++		u8 reset_retries;
++	} init_task;
++	struct libie_ctlq_xn_manager *xnm;
++	struct libie_ctlq_info *asq;
++	struct libie_ctlq_info *arq;
+ };
+ 
+ /**
+@@ -22,7 +33,16 @@ struct ixd_adapter {
+  */
+ static inline struct device *ixd_to_dev(struct ixd_adapter *adapter)
  {
--	clear_bit(IDPF_MB_INTR_MODE, adapter->flags);
-+	if (!test_and_clear_bit(IDPF_MB_INTR_MODE, adapter->flags))
+-	return &adapter->hw.pdev->dev;
++	return &adapter->cp_ctx.mmio_info.pdev->dev;
+ }
+ 
++void ixd_ctlq_reg_init(struct ixd_adapter *adapter,
++		       struct libie_ctlq_reg *ctlq_reg_tx,
++		       struct libie_ctlq_reg *ctlq_reg_rx);
++void ixd_trigger_reset(struct ixd_adapter *adapter);
++bool ixd_check_reset_complete(struct ixd_adapter *adapter);
++void ixd_init_task(struct work_struct *work);
++int ixd_init_dflt_mbx(struct ixd_adapter *adapter);
++void ixd_deinit_dflt_mbx(struct ixd_adapter *adapter);
++
+ #endif /* _IXD_H_ */
+diff --git a/drivers/net/ethernet/intel/ixd/ixd_dev.c b/drivers/net/ethernet/intel/ixd/ixd_dev.c
+new file mode 100644
+index 000000000000..cdd5477cc1f4
+--- /dev/null
++++ b/drivers/net/ethernet/intel/ixd/ixd_dev.c
+@@ -0,0 +1,89 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/* Copyright (C) 2025 Intel Corporation */
++
++#include "ixd.h"
++#include "ixd_lan_regs.h"
++
++/**
++ * ixd_ctlq_reg_init - Initialize default mailbox registers
++ * @adapter: PCI device driver-specific private data
++ * @ctlq_reg_tx: Transmit queue registers info to be filled
++ * @ctlq_reg_rx: Receive queue registers info to be filled
++ */
++void ixd_ctlq_reg_init(struct ixd_adapter *adapter,
++		       struct libie_ctlq_reg *ctlq_reg_tx,
++		       struct libie_ctlq_reg *ctlq_reg_rx)
++{
++	struct libie_mmio_info *mmio_info = &adapter->cp_ctx.mmio_info;
++	*ctlq_reg_tx = (struct libie_ctlq_reg) {
++		.head = libie_pci_get_mmio_addr(mmio_info, PF_FW_ATQH),
++		.tail = libie_pci_get_mmio_addr(mmio_info, PF_FW_ATQT),
++		.len = libie_pci_get_mmio_addr(mmio_info, PF_FW_ATQLEN),
++		.addr_high = libie_pci_get_mmio_addr(mmio_info, PF_FW_ATQBAH),
++		.addr_low = libie_pci_get_mmio_addr(mmio_info, PF_FW_ATQBAL),
++		.len_mask = PF_FW_ATQLEN_ATQLEN_M,
++		.len_ena_mask = PF_FW_ATQLEN_ATQENABLE_M,
++		.head_mask = PF_FW_ATQH_ATQH_M,
++	};
++
++	*ctlq_reg_rx = (struct libie_ctlq_reg) {
++		.head = libie_pci_get_mmio_addr(mmio_info, PF_FW_ARQH),
++		.tail = libie_pci_get_mmio_addr(mmio_info, PF_FW_ARQT),
++		.len = libie_pci_get_mmio_addr(mmio_info, PF_FW_ARQLEN),
++		.addr_high = libie_pci_get_mmio_addr(mmio_info, PF_FW_ARQBAH),
++		.addr_low = libie_pci_get_mmio_addr(mmio_info, PF_FW_ARQBAL),
++		.len_mask = PF_FW_ARQLEN_ARQLEN_M,
++		.len_ena_mask = PF_FW_ARQLEN_ARQENABLE_M,
++		.head_mask = PF_FW_ARQH_ARQH_M,
++	};
++}
++
++static const struct ixd_reset_reg ixd_reset_reg = {
++	.rstat  = PFGEN_RSTAT,
++	.rstat_m = PFGEN_RSTAT_PFR_STATE_M,
++	.rstat_ok_v = 0b01,
++	.rtrigger = PFGEN_CTRL,
++	.rtrigger_m = PFGEN_CTRL_PFSWR,
++};
++
++/**
++ * ixd_trigger_reset - Trigger PFR reset
++ * @adapter: the device with mapped reset register
++ */
++void ixd_trigger_reset(struct ixd_adapter *adapter)
++{
++	void __iomem *addr;
++	u32 reg_val;
++
++	addr = libie_pci_get_mmio_addr(&adapter->cp_ctx.mmio_info,
++				       ixd_reset_reg.rtrigger);
++	reg_val = readl(addr);
++	writel(reg_val | ixd_reset_reg.rtrigger_m, addr);
++}
++
++/**
++ * ixd_check_reset_complete - Check if the PFR reset is completed
++ * @adapter: CPF being reset
++ *
++ * Return: %true if the register read indicates reset has been finished,
++ *	   %false otherwise
++ */
++bool ixd_check_reset_complete(struct ixd_adapter *adapter)
++{
++	u32 reg_val, reset_status;
++	void __iomem *addr;
++
++	addr = libie_pci_get_mmio_addr(&adapter->cp_ctx.mmio_info,
++				       ixd_reset_reg.rstat);
++	reg_val = readl(addr);
++	reset_status = reg_val & ixd_reset_reg.rstat_m;
++
++	/* 0xFFFFFFFF might be read if the other side hasn't cleared
++	 * the register for us yet.
++	 */
++	if (reg_val != GENMASK(31, 0) &&
++	    reset_status == ixd_reset_reg.rstat_ok_v)
++		return true;
++
++	return false;
++}
+diff --git a/drivers/net/ethernet/intel/ixd/ixd_lan_regs.h b/drivers/net/ethernet/intel/ixd/ixd_lan_regs.h
+index fbb88929d0de..58e58c75981b 100644
+--- a/drivers/net/ethernet/intel/ixd/ixd_lan_regs.h
++++ b/drivers/net/ethernet/intel/ixd/ixd_lan_regs.h
+@@ -11,9 +11,33 @@
+ #define PF_FW_MBX_REG_LEN		4096
+ #define PF_FW_MBX			0x08400000
+ 
++#define PF_FW_ARQBAL			(PF_FW_MBX)
++#define PF_FW_ARQBAH			(PF_FW_MBX + 0x4)
++#define PF_FW_ARQLEN			(PF_FW_MBX + 0x8)
++#define PF_FW_ARQLEN_ARQLEN_M		GENMASK(12, 0)
++#define PF_FW_ARQLEN_ARQENABLE_S	31
++#define PF_FW_ARQLEN_ARQENABLE_M	BIT(PF_FW_ARQLEN_ARQENABLE_S)
++#define PF_FW_ARQH_ARQH_M		GENMASK(12, 0)
++#define PF_FW_ARQH			(PF_FW_MBX + 0xC)
++#define PF_FW_ARQT			(PF_FW_MBX + 0x10)
++
++#define PF_FW_ATQBAL			(PF_FW_MBX + 0x14)
++#define PF_FW_ATQBAH			(PF_FW_MBX + 0x18)
++#define PF_FW_ATQLEN			(PF_FW_MBX + 0x1C)
++#define PF_FW_ATQLEN_ATQLEN_M		GENMASK(9, 0)
++#define PF_FW_ATQLEN_ATQENABLE_S	31
++#define PF_FW_ATQLEN_ATQENABLE_M	BIT(PF_FW_ATQLEN_ATQENABLE_S)
++#define PF_FW_ATQH_ATQH_M		GENMASK(9, 0)
++#define PF_FW_ATQH			(PF_FW_MBX + 0x20)
++#define PF_FW_ATQT			(PF_FW_MBX + 0x24)
++
+ /* Reset registers */
+ #define PFGEN_RTRIG_REG_LEN		2048
+ #define PFGEN_RTRIG			0x08407000	/* Device resets */
++#define PFGEN_RSTAT			0x08407008	/* PFR status */
++#define PFGEN_RSTAT_PFR_STATE_M		GENMASK(1, 0)
++#define PFGEN_CTRL			0x0840700C	/* PFR trigger */
++#define PFGEN_CTRL_PFSWR		BIT(0)
+ 
+ /**
+  * struct ixd_bar_region - BAR region description
+@@ -25,4 +49,20 @@ struct ixd_bar_region {
+ 	resource_size_t size;
+ };
+ 
++/**
++ * struct ixd_reset_reg - structure for reset registers
++ * @rstat: offset of status in register
++ * @rstat_m: status mask
++ * @rstat_ok_v: value that indicates PFR completed status
++ * @rtrigger: offset of reset trigger in register
++ * @rtrigger_m: reset trigger mask
++ */
++struct ixd_reset_reg {
++	u32	rstat;
++	u32	rstat_m;
++	u32	rstat_ok_v;
++	u32	rtrigger;
++	u32	rtrigger_m;
++};
++
+ #endif /* _IXD_LAN_REGS_H_ */
+diff --git a/drivers/net/ethernet/intel/ixd/ixd_lib.c b/drivers/net/ethernet/intel/ixd/ixd_lib.c
+new file mode 100644
+index 000000000000..afc413d3650f
+--- /dev/null
++++ b/drivers/net/ethernet/intel/ixd/ixd_lib.c
+@@ -0,0 +1,143 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/* Copyright (C) 2025 Intel Corporation */
++
++#include "ixd.h"
++
++#define IXD_DFLT_MBX_Q_LEN 64
++
++/**
++ * ixd_init_ctlq_create_info - Initialize control queue info for creation
++ * @info: destination
++ * @type: type of the queue to create
++ * @ctlq_reg: register assigned to the control queue
++ */
++static void ixd_init_ctlq_create_info(struct libie_ctlq_create_info *info,
++				      enum virtchnl2_queue_type type,
++				      const struct libie_ctlq_reg *ctlq_reg)
++{
++	*info = (struct libie_ctlq_create_info) {
++		.type = type,
++		.id = -1,
++		.reg = *ctlq_reg,
++		.len = IXD_DFLT_MBX_Q_LEN,
++	};
++}
++
++/**
++ * ixd_init_libie_xn_params - Initialize xn transaction manager creation info
++ * @params: destination
++ * @adapter: adapter info struct
++ * @ctlqs: list of the managed queues to create
++ * @num_queues: length of the queue list
++ */
++static void ixd_init_libie_xn_params(struct libie_ctlq_xn_init_params *params,
++				     struct ixd_adapter *adapter,
++				      struct libie_ctlq_create_info *ctlqs,
++				      uint num_queues)
++{
++	*params = (struct libie_ctlq_xn_init_params){
++		.cctlq_info = ctlqs,
++		.ctx = &adapter->cp_ctx,
++		.num_qs = num_queues,
++	};
++}
++
++/**
++ * ixd_adapter_fill_dflt_ctlqs - Find default control queues and store them
++ * @adapter: adapter info struct
++ */
++static void ixd_adapter_fill_dflt_ctlqs(struct ixd_adapter *adapter)
++{
++	guard(spinlock)(&adapter->cp_ctx.ctlqs_lock);
++	struct libie_ctlq_info *cq;
++
++	list_for_each_entry(cq, &adapter->cp_ctx.ctlqs, list) {
++		if (cq->qid != -1)
++			continue;
++		if (cq->type == LIBIE_CTLQ_TYPE_RX)
++			adapter->arq = cq;
++		else if (cq->type == LIBIE_CTLQ_TYPE_TX)
++			adapter->asq = cq;
++	}
++}
++
++/**
++ * ixd_deinit_dflt_mbx - Deinitialize default mailbox
++ * @adapter: adapter info struct
++ */
++void ixd_deinit_dflt_mbx(struct ixd_adapter *adapter)
++{
++	if (adapter->xnm)
++		libie_ctlq_xn_deinit(adapter->xnm, &adapter->cp_ctx);
++
++	adapter->arq = NULL;
++	adapter->asq = NULL;
++	adapter->xnm = NULL;
++}
++
++/**
++ * ixd_init_dflt_mbx - Setup default mailbox parameters and make request
++ * @adapter: adapter info struct
++ *
++ * Return: %0 on success, negative errno code on failure
++ */
++int ixd_init_dflt_mbx(struct ixd_adapter *adapter)
++{
++	struct libie_ctlq_create_info ctlqs_info[2];
++	struct libie_ctlq_xn_init_params xn_params;
++	struct libie_ctlq_reg ctlq_reg_tx;
++	struct libie_ctlq_reg ctlq_reg_rx;
++	int err;
++
++	ixd_ctlq_reg_init(adapter, &ctlq_reg_tx, &ctlq_reg_rx);
++	ixd_init_ctlq_create_info(&ctlqs_info[0], LIBIE_CTLQ_TYPE_TX,
++				  &ctlq_reg_tx);
++	ixd_init_ctlq_create_info(&ctlqs_info[1], LIBIE_CTLQ_TYPE_RX,
++				  &ctlq_reg_rx);
++	ixd_init_libie_xn_params(&xn_params, adapter, ctlqs_info,
++				 ARRAY_SIZE(ctlqs_info));
++	err = libie_ctlq_xn_init(&xn_params);
++	if (err)
++		return err;
++	adapter->xnm = xn_params.xnm;
++
++	ixd_adapter_fill_dflt_ctlqs(adapter);
++
++	if (!adapter->asq || !adapter->arq) {
++		ixd_deinit_dflt_mbx(adapter);
++		return -ENOENT;
++	}
++
++	return 0;
++}
++
++/**
++ * ixd_init_task - Initialize after reset
++ * @work: init work struct
++ */
++void ixd_init_task(struct work_struct *work)
++{
++	struct ixd_adapter *adapter;
++	int err;
++
++	adapter = container_of(work, struct ixd_adapter,
++			       init_task.init_work.work);
++
++	if (!ixd_check_reset_complete(adapter)) {
++		if (++adapter->init_task.reset_retries < 10)
++			queue_delayed_work(system_unbound_wq,
++					   &adapter->init_task.init_work,
++					   msecs_to_jiffies(500));
++		else
++			dev_err(ixd_to_dev(adapter),
++				"Device reset failed. The driver was unable to contact the device's firmware. Check that the FW is running.\n");
 +		return;
++	}
 +
- 	kfree(free_irq(adapter->msix_entries[0].vector, adapter));
- 	queue_delayed_work(adapter->mbx_wq, &adapter->mbx_task, 0);
- }
-@@ -1938,14 +1940,11 @@ static void idpf_init_hard_reset(struct idpf_adapter *adapter)
- 		goto unlock_mutex;
- 	}
++	adapter->init_task.reset_retries = 0;
++	err = ixd_init_dflt_mbx(adapter);
++	if (err)
++		dev_err(ixd_to_dev(adapter),
++			"Failed to initialize the default mailbox: %pe\n",
++			ERR_PTR(err));
++}
+diff --git a/drivers/net/ethernet/intel/ixd/ixd_main.c b/drivers/net/ethernet/intel/ixd/ixd_main.c
+index 75ee53152e61..b4d4000b63ed 100644
+--- a/drivers/net/ethernet/intel/ixd/ixd_main.c
++++ b/drivers/net/ethernet/intel/ixd/ixd_main.c
+@@ -5,6 +5,7 @@
+ #include "ixd_lan_regs.h"
  
--	queue_delayed_work(adapter->mbx_wq, &adapter->mbx_task, 0);
--
- 	/* Initialize the state machine, also allocate memory and request
- 	 * resources
- 	 */
- 	err = idpf_vc_core_init(adapter);
- 	if (err) {
--		cancel_delayed_work_sync(&adapter->mbx_task);
- 		idpf_deinit_dflt_mbx(adapter);
- 		goto unlock_mutex;
- 	}
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-index 13c8505d126f..8936c2a67ce0 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-@@ -2982,6 +2982,8 @@ int idpf_init_dflt_mbx(struct idpf_adapter *adapter)
- 	adapter->xnm = params.xnm;
- 	adapter->state = __IDPF_VER_CHECK;
+ MODULE_DESCRIPTION("Intel(R) Control Plane Function Device Driver");
++MODULE_IMPORT_NS("LIBIE_CP");
+ MODULE_IMPORT_NS("LIBIE_PCI");
+ MODULE_LICENSE("GPL");
  
-+	queue_delayed_work(adapter->mbx_wq, &adapter->mbx_task, 0);
-+
- 	return 0;
- }
- 
-@@ -2991,6 +2993,9 @@ int idpf_init_dflt_mbx(struct idpf_adapter *adapter)
-  */
- void idpf_deinit_dflt_mbx(struct idpf_adapter *adapter)
+@@ -16,7 +17,13 @@ static void ixd_remove(struct pci_dev *pdev)
  {
-+	idpf_mb_intr_rel_irq(adapter);
-+	cancel_delayed_work_sync(&adapter->mbx_task);
+ 	struct ixd_adapter *adapter = pci_get_drvdata(pdev);
+ 
+-	libie_pci_unmap_all_mmio_regions(&adapter->hw);
++	/* Do not mix removal with (re)initialization */
++	cancel_delayed_work_sync(&adapter->init_task.init_work);
++	/* Leave the device clean on exit */
++	ixd_trigger_reset(adapter);
++	ixd_deinit_dflt_mbx(adapter);
 +
- 	if (adapter->arq && adapter->asq) {
- 		idpf_mb_clean(adapter, adapter->asq, true);
- 		libie_ctlq_xn_deinit(adapter->xnm, &adapter->ctlq_ctx);
-@@ -3249,7 +3254,6 @@ void idpf_vc_core_deinit(struct idpf_adapter *adapter)
- 		idpf_deinit_dflt_mbx(adapter);
++	libie_pci_unmap_all_mmio_regions(&adapter->cp_ctx.mmio_info);
+ }
  
- 	cancel_delayed_work_sync(&adapter->serv_task);
--	cancel_delayed_work_sync(&adapter->mbx_task);
+ /**
+@@ -51,7 +58,7 @@ static int ixd_iomap_regions(struct ixd_adapter *adapter)
+ 	};
  
- 	idpf_vport_params_buf_rel(adapter);
+ 	for (int i = 0; i < ARRAY_SIZE(regions); i++) {
+-		struct libie_mmio_info *mmio_info = &adapter->hw;
++		struct libie_mmio_info *mmio_info = &adapter->cp_ctx.mmio_info;
+ 		bool map_ok;
  
+ 		map_ok = libie_pci_map_mmio_region(mmio_info,
+@@ -81,11 +88,15 @@ static int ixd_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	struct ixd_adapter *adapter;
+ 	int err;
+ 
++	if (WARN_ON(ent->device != IXD_DEV_ID_CPF))
++		return -EINVAL;
++
+ 	adapter = devm_kzalloc(&pdev->dev, sizeof(*adapter), GFP_KERNEL);
+ 	if (!adapter)
+ 		return -ENOMEM;
+-	adapter->hw.pdev = pdev;
+-	INIT_LIST_HEAD(&adapter->hw.mmio_list);
++
++	adapter->cp_ctx.mmio_info.pdev = pdev;
++	INIT_LIST_HEAD(&adapter->cp_ctx.mmio_info.mmio_list);
+ 
+ 	err = libie_pci_init_dev(pdev);
+ 	if (err)
+@@ -93,7 +104,18 @@ static int ixd_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 
+ 	pci_set_drvdata(pdev, adapter);
+ 
+-	return ixd_iomap_regions(adapter);
++	err = ixd_iomap_regions(adapter);
++	if (err)
++		return err;
++
++	INIT_DELAYED_WORK(&adapter->init_task.init_work,
++			  ixd_init_task);
++
++	ixd_trigger_reset(adapter);
++	queue_delayed_work(system_unbound_wq, &adapter->init_task.init_work,
++			   msecs_to_jiffies(500));
++
++	return 0;
+ }
+ 
+ static const struct pci_device_id ixd_pci_tbl[] = {
 -- 
 2.47.1
 
