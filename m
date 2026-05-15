@@ -1,33 +1,33 @@
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0BA44A73E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B715044B679
 	for <netdev@vger.kernel.org>; Fri, 15 May 2026 09:55:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778838961; cv=none; b=Ut0rVOyxN1Cz8O3YVb5WOOu+E3c8VcGtfBEuBhSgaNQp5FCG2Pva8MpjLTKCn+06Rg+Pt7SZ51PV3oNxfvP6AwBwRiIPXlj70FrkPt0JvTtfBU1NWCGYT7vSjO7Wj88XeKEM+BbVgQGMIw6OcLmeDf10pJNpK0l2k5DXsfHBkEA=
+	t=1778838961; cv=none; b=jLcwsLQR2P7Rb9Sp9XNm/KZssypU0ldRYNWlzMLNroOMNw8rnIyuDRspOEVF/by9N2ZeOb5+ZkMRWoQ3zcIuZ6vJXCasPSEYg05nq2I/CLoRvIIcQDyH0ddvJdpcZXCIZMtOfl90EVnPOkhDfWa1SRKI166jrJs/7Kn30kZzU/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1778838961; c=relaxed/simple;
-	bh=XCQRyRU02uiAirdw9ArZr9s5/BX3a14e6N07R5kjeIs=;
+	bh=jMAL+tnthAxnEQOosSDI8vDg5YWT9zPzgbxcuvw1yxM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u8FWx9Z5IJFpRkLgG23jOFYvXkchaPz6E3T126RRF6ZJxNO+97Ra3oSNqpXjwt0DGw9Fbu6QaeSQiAyYwEbH/AtpILEvfjpn9yw8D5tdJmFgjTH/ybab4i473BGJbOOke+KgIlcC3XXVB7qR9MeR5KRlm/EZO469wAOHGBvBf74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=b/P/WA5h; arc=none smtp.client-ip=23.88.38.48
+	 MIME-Version; b=B7dogeTGlWXzSpw9ZB9UMAa7Zl/SyNSrLimiXuHIR7yNWHJP+oyCNasO8vj4t0rpowccoPZguHKWSoRsLRVHxQCErv4roW0NMtFtljrrvaQYK935i+h4P/fVLjTC2G2PctVwVvKX+amm8gKmTcLjEOLrRTNNSn2WpE8I1oI9nSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=1m6cbMFF; arc=none smtp.client-ip=23.88.38.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="b/P/WA5h"
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="1m6cbMFF"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1778838950;
+	s=09092022; t=1778838952;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=q/qkFKT8Qr7l15xFxytFFUVwsMDuYQMQoM7YNKCJOr8=;
-	b=b/P/WA5hCs7nMi+QKuSlg4ffP2GRtM0t+oyAbQe5gjVUvZk13tSXWlvxH7Gb1jAB7ng0WR
-	3reWJ8lkEZh893acthADvWJ2CHznddReHOcV03oCKCukXXRoDDZ7BQGTKNhjMQA4M6QFV0
-	k6SFjDpyL6lQXXPAlMGqKVpYDcS6Old9uHTp91v9t9JZX+ur9Sxdf8/JnHe9vmmso5317v
-	kPxFvSUAEPXCqWitibmzf0BCReeD8MLJACBfwwNuxF4r3fLbQhWBWBtuNjrM6dvrFFOcy+
-	hyS4FjywW7TthNZ1nn0mDiEdL4zklbpBAZfeJO/EsLQpMUiif67vbYq+aV4qrg==
+	bh=ffEoovkVXZbE3xQwmCZgFJegoFF/ES2d/8yrtCW0AEo=;
+	b=1m6cbMFFotsdH3szHo425cfv1RpJ3wuqMxIIMsNUmrByTUo+MPCTVwMwTb+HJMaiTVe2ws
+	ZpqMpIBtqAh98H5su6KEGfxlcS1hYDPE2ZimZBtoXgQWDQUYgT4K4zSry59zsolN4H0zgi
+	LUkc0RDNxJxqebFL6c5IJGnNgyClJgINvHPGIAFdxSOZHxFyYiVK5XSjAqHyFh7q2W+9Er
+	GYdbTWjApojHCPPITWjO00xWRFXrKlSX70fOqEb0T7cFAmZrbkWJlv2mxeZs/dZLqZmPEL
+	whxWGfWiKIc9NvtBXYPxVz3RYmjZ04/MxD/PnAVlZiivLAJCRXMkSlJpdvviUQ==
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -39,9 +39,9 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Sven Eckelmann <sven@narfation.org>,
 	stable@kernel.org,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net 04/14] batman-adv: tt: fix negative tt_buff_len
-Date: Fri, 15 May 2026 11:55:29 +0200
-Message-ID: <20260515095540.325586-5-sw@simonwunderlich.de>
+Subject: [PATCH net 07/14] batman-adv: tt: avoid empty VLAN responses
+Date: Fri, 15 May 2026 11:55:32 +0200
+Message-ID: <20260515095540.325586-8-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260515095540.325586-1-sw@simonwunderlich.de>
 References: <20260515095540.325586-1-sw@simonwunderlich.de>
@@ -55,40 +55,82 @@ Content-Transfer-Encoding: 8bit
 
 From: Sven Eckelmann <sven@narfation.org>
 
-batadv_orig_node::tt_buff_len was declared as s16, but the field is never
-intended to hold a negative value. When a value greater than 32767 is
-assigned, it wraps to a negative signed integer.
-
-In batadv_send_other_tt_response(), tt_buff_len is temporarily widened to
-s32. The incorrectly negative s16 value propagates into the s32, causing
-batadv_tt_prepare_tvlv_global_data() to allocate a full sized buffer but
-populates only a small portion of it with the collected changeset. All
-remaining bits are kept uninitialized.
-
-Using an u16 avoids this type confusion and ensures that no (negative) sign
-extension is performed in batadv_send_other_tt_response().
+The commit 16116dac2339 ("batman-adv: prevent TT request storms by not
+sending inconsistent TT TLVLs") added checks to the local (direct) TT
+response code. But the response can also be done indirectly by another node
+using the global TT state. To avoid such inconsistency states reported in
+the original fix, also avoid sending empty VLANs for replies from the
+global TT state.
 
 Cc: stable@kernel.org
-Fixes: a73105b8d4c7 ("batman-adv: improved client announcement mechanism")
+Fixes: 7ea7b4a14275 ("batman-adv: make the TT CRC logic VLAN specific")
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 ---
- net/batman-adv/types.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/batman-adv/translation-table.c | 20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
-diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
-index b9c0b77791226..888f337a194bf 100644
---- a/net/batman-adv/types.h
-+++ b/net/batman-adv/types.h
-@@ -452,7 +452,7 @@ struct batadv_orig_node {
- 	 * @tt_buff_len: length of the last tt changeset this node received
- 	 *  from the orig node
- 	 */
--	s16 tt_buff_len;
-+	u16 tt_buff_len;
+diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
+index f009cbf8a2768..2259b241e0b56 100644
+--- a/net/batman-adv/translation-table.c
++++ b/net/batman-adv/translation-table.c
+@@ -797,24 +797,26 @@ batadv_tt_prepare_tvlv_global_data(struct batadv_orig_node *orig_node,
+ 				   s32 *tt_len)
+ {
+ 	u16 num_vlan = 0;
+-	u16 num_entries = 0;
+ 	u16 tvlv_len = 0;
+ 	unsigned int change_offset;
+ 	struct batadv_tvlv_tt_vlan_data *tt_vlan;
+ 	struct batadv_orig_node_vlan *vlan;
++	u16 total_entries = 0;
+ 	u8 *tt_change_ptr;
++	int vlan_entries;
  
- 	/** @tt_buff_lock: lock that protects tt_buff and tt_buff_len */
- 	spinlock_t tt_buff_lock;
+ 	spin_lock_bh(&orig_node->vlan_list_lock);
+ 	hlist_for_each_entry(vlan, &orig_node->vlan_list, list) {
++		vlan_entries = atomic_read(&vlan->tt.num_entries);
++		total_entries += vlan_entries;
+ 		num_vlan++;
+-		num_entries += atomic_read(&vlan->tt.num_entries);
+ 	}
+ 
+ 	change_offset = struct_size(*tt_data, vlan_data, num_vlan);
+ 
+ 	/* if tt_len is negative, allocate the space needed by the full table */
+ 	if (*tt_len < 0)
+-		*tt_len = batadv_tt_len(num_entries);
++		*tt_len = batadv_tt_len(total_entries);
+ 
+ 	if (change_offset > U16_MAX || *tt_len > U16_MAX - change_offset) {
+ 		*tt_len = 0;
+@@ -835,14 +837,26 @@ batadv_tt_prepare_tvlv_global_data(struct batadv_orig_node *orig_node,
+ 	(*tt_data)->num_vlan = htons(num_vlan);
+ 
+ 	tt_vlan = (*tt_data)->vlan_data;
++	num_vlan = 0;
+ 	hlist_for_each_entry(vlan, &orig_node->vlan_list, list) {
++		vlan_entries = atomic_read(&vlan->tt.num_entries);
++		if (vlan_entries < 1)
++			continue;
++
+ 		tt_vlan->vid = htons(vlan->vid);
+ 		tt_vlan->crc = htonl(vlan->tt.crc);
+ 		tt_vlan->reserved = 0;
+ 
+ 		tt_vlan++;
++		num_vlan++;
+ 	}
+ 
++	/* recalculate in case number of VLANs reduced */
++	change_offset = struct_size(*tt_data, vlan_data, num_vlan);
++	tvlv_len = *tt_len + change_offset;
++
++	(*tt_data)->num_vlan = htons(num_vlan);
++
+ 	tt_change_ptr = (u8 *)*tt_data + change_offset;
+ 	*tt_change = (struct batadv_tvlv_tt_change *)tt_change_ptr;
+ 
 -- 
 2.47.3
 
