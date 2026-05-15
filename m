@@ -1,33 +1,33 @@
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4C5F43DA23
-	for <netdev@vger.kernel.org>; Fri, 15 May 2026 09:55:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B97944A715
+	for <netdev@vger.kernel.org>; Fri, 15 May 2026 09:55:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778838959; cv=none; b=CbE1tw4qgI23I1gxKrxQ1+Vq1CFB+onDyeAb8ozpBa4hGYAGSNFrSF8vRShYv9b8F2dridVVTeympK9R6TZr5ACOM+msP9nl6bNHqB8GnoBSlQlgQ+Gtanijo9LrTi7oiei010eeXXIpEtvZdo97kqZ5okekg1fhnYqEPex6PI8=
+	t=1778838960; cv=none; b=Zb4CYPZ3UQCXpU6xGYgFSJ8OMLe7ULjj6luRjEuoph56XbThmhc+RjLqD2JqcPRIeIDvrEhCCGUwE7jiCZHZGxRhKhNvwh+Rh0gfh9HRXafIgS4+MaxwZoT023GdxxZU4+stjIwsFvvSgeWYXKKtZuZPArXdTOCMP3sIrbhCI9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778838959; c=relaxed/simple;
-	bh=WBhfxBtEaX0bEsOpQ61ODHTEGaPjrv4ke10R/pVduwY=;
+	s=arc-20240116; t=1778838960; c=relaxed/simple;
+	bh=iAXxAaQDu7AYQ3yh9XXeq98ASqueitjzAdAvlTkipVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lKjnyUlYpjJHcHxb6KzVhXbo8Z3NczEIDpQB55gRTugtgu4H3wKWk+FHmfERd1fZJlgAXllqLIfgrBihm1Pi2+6BZNhKEKBFjIkA+8LCxO2su8kwg9d9w7euC+AAQ0GGLXuIHi/dxHrmwkWDj42Nb882uXFnU5/yUWvwGFNSwW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=NTXOFFco; arc=none smtp.client-ip=23.88.38.48
+	 MIME-Version; b=bYj6f9Sw27OzsSOsYkBA/b0e82tNoytI20q50JUyOrFZUmkVwvOCTe6wRTeMD1bglJjscRySj7xyQOj/1VbZJOo5Zo1649LLkZ6TEsi9XoiknY00bmM96DLdpOxN5/oZHpeKsSNKJNoDQZnENOlWeZeh9FqvQueUui7Orr8mbLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=Gx71AIHx; arc=none smtp.client-ip=23.88.38.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="NTXOFFco"
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="Gx71AIHx"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1778838948;
+	s=09092022; t=1778838952;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=z/spqeaHa4lgN1IdgCg3OUKQveI8w5SpYJn4beTiC/A=;
-	b=NTXOFFco7w4G73JPwv3L2QIxpGEjVWgGcjnw+mtQ7rG51bb71IDmXZdMqokUyGFtu4Izpz
-	F8InecqiI1WYoGxyWY4BTqDNav52h495JqPDwXLbUZBtOsvxWlfXoNbzTe+JHheT8Bi3PL
-	fS83pQGEEqjq3tTrV1BjTCGdnlQ2d4OurQNWHLEAxLjcgTtTZ8OwwSITTmdB7/7QK3vqi3
-	BWVWBXIrZk1/i/raOrbfkC4+epLb0qzynOj464WmU7O1AsmIiL5AwdXfk0xLsXmSJNBVHH
-	OjtBS3O+26RCxPP8F2zWmXejzt3l/cgWiRVzNzOl/YrtR/u2FxwHtOTcyt7kpw==
+	bh=bO6/WoBwND4qMmKm1Rn3FY79+Y+Anm0CU0JzhPC1W1U=;
+	b=Gx71AIHxNgXIXEZZXBe2kyvtQVl+PXIodvYYHeQakLOQ1Sx02z+TGSlY9DTIK6ebz+Ll0e
+	y7ub8k/e/mjswEd3GEz5ac7zGTvdbe3+GlcQZ/CwzbN0YMThUpxOk/3eOIq0nrToHtvD1Q
+	8qrW/RNQiavX620ptl1uKSTmw/0DK++DB+ev9WPNQpR6sHqN6YcFP/C/A6QgAMpmprGeql
+	njdu0A+U+0kUteSS9q3b0xLZK9qaPCABOZTAZqj1ilt50yWYSASMvLPCneJRMMt63KX62z
+	dGmzGM5c5LK0488Wtb2FOpNCL1Z9LHckkNMaLrBATc1j2M9xKkCSMhiVmjqeQA==
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -39,9 +39,9 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Sven Eckelmann <sven@narfation.org>,
 	stable@kernel.org,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net 02/14] batman-adv: tp_meter: fix tp_vars reference leak in receiver shutdown
-Date: Fri, 15 May 2026 11:55:27 +0200
-Message-ID: <20260515095540.325586-3-sw@simonwunderlich.de>
+Subject: [PATCH net 06/14] batman-adv: tt: fix TOCTOU race for reported vlans
+Date: Fri, 15 May 2026 11:55:31 +0200
+Message-ID: <20260515095540.325586-7-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260515095540.325586-1-sw@simonwunderlich.de>
 References: <20260515095540.325586-1-sw@simonwunderlich.de>
@@ -55,91 +55,69 @@ Content-Transfer-Encoding: 8bit
 
 From: Sven Eckelmann <sven@narfation.org>
 
-The receiver shutdown timer handler, batadv_tp_receiver_shutdown(), is
-responsible for releasing the tp_vars reference it holds. However, the
-existing logic for coordinating this release with batadv_tp_stop_all() was
-flawed.
+The local TT based TVLV is generated by first checking the number of VLANs
+which have at least one TT entry. A new buffer with the correct size for
+the VLANs is then allocated. Only then, the list of VLANs s used to fill
+the VLAN entries in the buffer. During this time, the meshif_vlan_list_lock
+is held. But the actual number of TT entries of each VLAN can still
+increase during this time - just not the number of VLANs in the list.
 
-timer_shutdown_sync() guarantees the timer will not fire again after it
-returns, but it returns non-zero only when the timer was pending at the
-time of the call. If the timer had already expired (and
-batadv_tp_stop_all() would unsucessfully try to  rearm itself),
-batadv_tp_stop_all() skips its batadv_tp_vars_put(), and
-batadv_tp_receiver_shutdown() fails to put its own reference as well.
+But the prefilter used in the buffer size calculation might still cause an
+increase of the number of VLANs which need to be stored. Simply because a
+VLAN might now suddenly have at least one entry when it had none in the
+pre-alloc check - and then needs to occupy space which was not allocated.
 
-Fix this by introducing a new atomic variable receiving that is set to 1
-when the receiver is initialized and cleared atomically with atomic_xchg()
-by whichever side claims it first. Only the side that observes the
-transition from 1 to 0 is responsible for releasing the tp_vars timer
-reference, eliminating the uncertainty.
+It is better to overestimate the buffer size at the beginning and then fill
+the buffer only with the VLANs which are not empty.
 
 Cc: stable@kernel.org
-Fixes: 3d3cf6a7314a ("batman-adv: stop tp_meter sessions during mesh teardown")
+Fixes: 16116dac2339 ("batman-adv: prevent TT request storms by not sending inconsistent TT TLVLs")
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 ---
- net/batman-adv/tp_meter.c | 13 +++++++++++--
- net/batman-adv/types.h    |  3 +++
- 2 files changed, 14 insertions(+), 2 deletions(-)
+ net/batman-adv/translation-table.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
-index a4397aa881dd4..ca6c3f6374bc5 100644
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -8,6 +8,7 @@
- #include "main.h"
+diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
+index 06548dae1039d..f009cbf8a2768 100644
+--- a/net/batman-adv/translation-table.c
++++ b/net/batman-adv/translation-table.c
+@@ -887,11 +887,8 @@ batadv_tt_prepare_tvlv_local_data(struct batadv_priv *bat_priv,
+ 	spin_lock_bh(&bat_priv->meshif_vlan_list_lock);
+ 	hlist_for_each_entry(vlan, &bat_priv->meshif_vlan_list, list) {
+ 		vlan_entries = atomic_read(&vlan->tt.num_entries);
+-		if (vlan_entries < 1)
+-			continue;
+-
+-		num_vlan++;
+ 		total_entries += vlan_entries;
++		num_vlan++;
+ 	}
  
- #include <linux/atomic.h>
-+#include <linux/bug.h>
- #include <linux/build_bug.h>
- #include <linux/byteorder/generic.h>
- #include <linux/cache.h>
-@@ -1156,6 +1157,9 @@ static void batadv_tp_receiver_shutdown(struct timer_list *t)
- 	spin_unlock_bh(&tp_vars->unacked_lock);
+ 	change_offset = struct_size(*tt_data, vlan_data, num_vlan);
+@@ -916,6 +913,7 @@ batadv_tt_prepare_tvlv_local_data(struct batadv_priv *bat_priv,
+ 	(*tt_data)->num_vlan = htons(num_vlan);
  
- 	/* drop reference of timer */
-+	if (WARN_ON(atomic_xchg(&tp_vars->receiving, 0) != 1))
-+		return;
+ 	tt_vlan = (*tt_data)->vlan_data;
++	num_vlan = 0;
+ 	hlist_for_each_entry(vlan, &bat_priv->meshif_vlan_list, list) {
+ 		vlan_entries = atomic_read(&vlan->tt.num_entries);
+ 		if (vlan_entries < 1)
+@@ -926,8 +924,15 @@ batadv_tt_prepare_tvlv_local_data(struct batadv_priv *bat_priv,
+ 		tt_vlan->reserved = 0;
+ 
+ 		tt_vlan++;
++		num_vlan++;
+ 	}
+ 
++	/* recalculate in case number of VLANs reduced */
++	change_offset = struct_size(*tt_data, vlan_data, num_vlan);
++	tvlv_len = *tt_len + change_offset;
 +
- 	batadv_tp_vars_put(tp_vars);
- }
- 
-@@ -1374,6 +1378,7 @@ batadv_tp_init_recv(struct batadv_priv *bat_priv,
- 
- 	ether_addr_copy(tp_vars->other_end, icmp->orig);
- 	tp_vars->role = BATADV_TP_RECEIVER;
-+	atomic_set(&tp_vars->receiving, 1);
- 	memcpy(tp_vars->session, icmp->session, sizeof(tp_vars->session));
- 	tp_vars->last_recv = BATADV_TP_FIRST_SEQ;
- 	tp_vars->bat_priv = bat_priv;
-@@ -1546,8 +1551,12 @@ void batadv_tp_stop_all(struct batadv_priv *bat_priv)
- 			break;
- 		case BATADV_TP_RECEIVER:
- 			batadv_tp_list_detach(tp_var);
--			if (timer_shutdown_sync(&tp_var->timer))
--				batadv_tp_vars_put(tp_var);
-+			timer_shutdown_sync(&tp_var->timer);
++	(*tt_data)->num_vlan = htons(num_vlan);
 +
-+			if (atomic_xchg(&tp_var->receiving, 0) != 1)
-+				break;
-+
-+			batadv_tp_vars_put(tp_var);
- 			break;
- 		}
- 
-diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
-index daa06f4211542..b9c0b77791226 100644
---- a/net/batman-adv/types.h
-+++ b/net/batman-adv/types.h
-@@ -1323,6 +1323,9 @@ struct batadv_tp_vars {
- 	/** @sending: sending binary semaphore: 1 if sending, 0 is not */
- 	atomic_t sending;
- 
-+	/** @receiving: receiving binary semaphore: 1 if receiving, 0 is not */
-+	atomic_t receiving;
-+
- 	/** @reason: reason for a stopped session */
- 	enum batadv_tp_meter_reason reason;
+ 	tt_change_ptr = (u8 *)*tt_data + change_offset;
+ 	*tt_change = (struct batadv_tvlv_tt_change *)tt_change_ptr;
  
 -- 
 2.47.3
