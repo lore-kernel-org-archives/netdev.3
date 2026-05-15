@@ -1,132 +1,120 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 144D73E16A2;
-	Fri, 15 May 2026 18:24:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D16B23FF1B5
+	for <netdev@vger.kernel.org>; Fri, 15 May 2026 18:38:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778869474; cv=none; b=ZyD+vVL9aMEZUymyEBp+DZSTj738HVlly7V+TfHh4X6ebqdeKfPhdiwHY1EOJD0cH5cDOVlfHnUmRSO3ehxzdBzdVl0XDu4LM9Iitgm/ykPiqMwvir0N02l0YeGs4p7fGT01TWBQymsqPGYZaKYHjDRsMum40I1cLz80bgN1AfQ=
+	t=1778870293; cv=none; b=JCFEziS8kATcVFlmwWI8R/Wjn3uE92JcVHI4YFSl+SlfcgFo0+WOpWOdx1DmyjUE+WFw+yT60oYoeO+9IOcY33naps4I2Q1w3NgiLIOa5QXkAnZciOkOFj/I7Ay6ckhKItnb1fKCl4ftjtzZFYuz+k9tMxzYIzlsdLO5WXcDMNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778869474; c=relaxed/simple;
-	bh=BqF3ekoFBJIxN9w40qQQ+V8dAt8jGYkSVHl6tfrrPM8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tRDY3ziiBm4AoFU2pmB/Iow7nXY8n21wtJMvMEZLURXID3kD5CqkjSuLgpSEmV+O7G8qbHPzRhwdKvOt3H/xA3D+AjoAwB+sRZIivdN2y24raD0rWm25saPjt1iDBygJ7ShXDLMTi6ibGdUszyrTx4KGSFII+qrRl2XaMCRhK0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PZIBoUWx; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1778870293; c=relaxed/simple;
+	bh=k5VW4oDrG/O1uIaSctnLaAkhDnEI15xDK9kkrZgNuXU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lt7OK/gKwzNQd0FTpVaWypGT6FZXaPd12fIt7Jjk0Ce5EPSaCDqeVqjOg7dLVuzd6X0664nRoo32Y3N8EnmTSzfgHd2Pg1Yx9hp+KdlFjFH5JAJHgSqOVXZ803pfY61B25/Ls0fRPAj+E0ddei5BLassazOTpID9pZ5IY//WMf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XghzgMbW; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PZIBoUWx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778869473; x=1810405473;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=BqF3ekoFBJIxN9w40qQQ+V8dAt8jGYkSVHl6tfrrPM8=;
-  b=PZIBoUWx8tKBpJo6Db7ogVzGyKQXaiWPfPx4drlZ3XhINTdw6q4sp10l
-   MqmLwd7dZfHrrRG0vMJWTDZGghmqlj+ycAnpM4cG2zLKj6N2bly4RoWfG
-   QEYblDLxyMNWJlYkpVjfY3bsytwnKyKodGrbmZPpE2n1qPAaK366KU/Gk
-   rbTTZsAUTIJuYLUNhtAwCClUGBjYF4TmmDZvFQVwsnkHPkHFOCObU3rK1
-   2f0C0KVL3MGoxigCXafgeOpMTbD+PYHarX+7/OdfVD2Xm+FWl1N8caKbU
-   nwuD+/XyyjC7DsH5alvFlTWOZtvmd+CPEp6phWI538bCxvr6r0IqRE/hK
-   Q==;
-X-CSE-ConnectionGUID: TB2alXqGQYKEmwK6zeXQxQ==
-X-CSE-MsgGUID: DxUFIMdfQGKBpyOWN4xrbA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="83701185"
-X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="83701185"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 11:24:27 -0700
-X-CSE-ConnectionGUID: Dn+j99agQsKV+sD6RlvQJQ==
-X-CSE-MsgGUID: +cH8+Y6nSxOn3cKL/ko18Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="238647460"
-Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by orviesa008.jf.intel.com with ESMTP; 15 May 2026 11:24:27 -0700
-From: Tony Nguyen <anthony.l.nguyen@intel.com>
-To: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	netdev@vger.kernel.org
-Cc: Kohei Enju <kohei@enjuk.jp>,
-	anthony.l.nguyen@intel.com,
-	dima.ruinskiy@intel.com,
-	faizal.abdul.rahim@linux.intel.com,
-	chwee.lin.choong@intel.com,
-	kohei.enju@gmail.com,
-	vladimir.oltean@nxp.com,
-	stable@vger.kernel.org,
-	Simon Horman <horms@kernel.org>,
-	Avigail Dahan <avigailx.dahan@intel.com>
-Subject: [PATCH net 09/10] igc: fix potential skb leak in igc_fpe_xmit_smd_frame()
-Date: Fri, 15 May 2026 11:24:16 -0700
-Message-ID: <20260515182419.1597859-10-anthony.l.nguyen@intel.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20260515182419.1597859-1-anthony.l.nguyen@intel.com>
-References: <20260515182419.1597859-1-anthony.l.nguyen@intel.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XghzgMbW"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4891c00e7aeso874205e9.2
+        for <netdev@vger.kernel.org>; Fri, 15 May 2026 11:38:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778870287; x=1779475087; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=k5VW4oDrG/O1uIaSctnLaAkhDnEI15xDK9kkrZgNuXU=;
+        b=XghzgMbWSQOxk32wfrd99kf1tXI3HumLCinzWmEWtLVzIFjPIhNSNIq4kDC4tTL2YE
+         ojQegKItxinfFAiCTz+geqaOJ0Vf19NMskIjxE8uKTBu3pip19EVqp5E3u9bJy3WqZ8k
+         CO9tbRQmXYzStZm2kmfkBEqPgnJemreJU/W+YitqMI7WMMO6KckgR1avTXPfEXC39Cum
+         T+/2xSH1EynZHsh3N09H/g819AfiiA2U4aZ8Rr7iU1zb4I647UxITthgmwtuVL4c/LST
+         9D4rUCokKH3jGLH5WhD3GjlPjooncqa3QimOXxDBedZQjIYilKHShbuLzOvMBLlVJenf
+         o91w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778870287; x=1779475087;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=k5VW4oDrG/O1uIaSctnLaAkhDnEI15xDK9kkrZgNuXU=;
+        b=Ric4BSFEe2hf7/uDFbfHn+her1LQF34HfVqtzTF6Yzk58vMEc2zF34wtwt+sXPQ8Jp
+         T2ZTP5Pslau79AjfacW2Vxe0kPSKugPTd6cXLMLT2wh7Y8KRRGBh6tPDA6j90f4r5uWV
+         i6J8OqAPRL104tWKXShTKlkDlZUkdUT4PbBTKt/c1LVtsjlKlJTPJiyHRyXmQKoC0Y6P
+         ibRaNGwgfXMkNxvIxIumgMP1FaUNDTcNeVFq1LKPNftkT6J4IpPKaIdAR8053R3jwKge
+         86wYqa1e+DOIArzKwCmrqbfNk/CmE9+m9Z6ddwgkUV6AXTgfAVo/jCYe1r+gvVPz8TGv
+         UBdg==
+X-Forwarded-Encrypted: i=1; AFNElJ9eqCKeVEajDVTGgVVTQsuenj46uzy83EnHa4Y9R9XRrdbZNuNHYG0xu1JBCnbSMWsfiOYqLWg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxALYULK1+saRpWPdiInh7YVmipEfC9ULT7Z5um5dIa8kFQVrH8
+	Wfy9nQjgKvfth2f33vRxjG6jz8UDP2HQb0bZyMWbz5a+aYHV5LemZ2ep
+X-Gm-Gg: Acq92OEwZ22MqLJylUku0UIEgH5hm9RlWfEah5GXmGhn/CnQWQN9kZFuWUeGvhZdx7N
+	UR/vYlgxIVSMiaXWNlG8cyWT+ma2SnVGRY/DXCwNzmkg+6v7y3hv7jFKDAlM1YC2drauCTJdmua
+	1Ygq3i0hqUd+r3SKnz95eDqGvTepSPR/s0nFPrI2ICw56RlgqU1tUxiCQothr8A1lr9ApNnqJu9
+	8wpfvT61ffCrwcoHxWpH6eII4dCpPjOG9xZB4MNGNfYfQ6sKTTcKx620pcOPcjzrKni2//pz1CW
+	efjd1dWiBs8i1drLQxXP0buat1cTqn3FGz5FPO+k/RgScTcztW6/dGfUZESaR7e4KSYRZobQtTi
+	sU5kRjmnko5ePgC0MSVcZUdMMc2pCBM7fCpMPDkgVs2glY4JCFKoYVDc6LZdfEZ9T6wZAMavwgX
+	UxCoaOSaNfZJ3Nfj/a3EolrBQr44xtKrgtiOnhhLevulwtCAPRKAeSJ/lhO6C/xbQEXVxPEbU=
+X-Received: by 2002:a5d:5f53:0:b0:44b:9dca:7d93 with SMTP id ffacd0b85a97d-45e5c58761emr6944564f8f.26.1778870286817;
+        Fri, 15 May 2026 11:38:06 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45d9e768bcesm17709798f8f.4.2026.05.15.11.38.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 May 2026 11:38:06 -0700 (PDT)
+Date: Fri, 15 May 2026 19:38:04 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: "Arnd Bergmann" <arnd@arndb.de>
+Cc: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>, "Arnd Bergmann"
+ <arnd@kernel.org>, "Alexei Starovoitov" <ast@kernel.org>, "Daniel Borkmann"
+ <daniel@iogearbox.net>, "Andrii Nakryiko" <andrii@kernel.org>, "Eduard
+ Zingerman" <eddyz87@gmail.com>, "Kumar Kartikeya Dwivedi"
+ <memxor@gmail.com>, "David S . Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo
+ Abeni" <pabeni@redhat.com>, "Jesper Dangaard Brouer" <hawk@kernel.org>,
+ "John Fastabend" <john.fastabend@gmail.com>, "Martin KaFai Lau"
+ <kafai@fb.com>, Toke =?UTF-8?B?SMO4aWxhbmQtSsO4cmdlbnNlbg==?=
+ <toke@redhat.com>, "Martin KaFai Lau" <martin.lau@linux.dev>, "Song Liu"
+ <song@kernel.org>, "Yonghong Song" <yonghong.song@linux.dev>, "Jiri Olsa"
+ <jolsa@kernel.org>, "Simon Horman" <horms@kernel.org>, "Stanislav Fomichev"
+ <sdf@fomichev.me>, bpf <bpf@vger.kernel.org>, Netdev
+ <netdev@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] bpf: test_run: reduce kernel stack usage
+Message-ID: <20260515193804.4d85283b@pumpkin>
+In-Reply-To: <b387dd31-0ee5-41b9-b07a-13b718080e89@app.fastmail.com>
+References: <20260515113102.2389020-1-arnd@kernel.org>
+	<CAADnVQLYitAZVpXCTygA1uAUtN6m8pMkWzFi9su719M=nktmQQ@mail.gmail.com>
+	<b387dd31-0ee5-41b9-b07a-13b718080e89@app.fastmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Kohei Enju <kohei@enjuk.jp>
+On Fri, 15 May 2026 17:15:46 +0200
+"Arnd Bergmann" <arnd@arndb.de> wrote:
 
-When igc_fpe_init_tx_descriptor() fails, no one takes care of an
-allocated skb, leaking it. [1]
-Use dev_kfree_skb_any() on failure.
+> On Fri, May 15, 2026, at 16:47, Alexei Starovoitov wrote:
+> > On Fri, May 15, 2026 at 4:31=E2=80=AFAM Arnd Bergmann <arnd@kernel.org>=
+ wrote:
+> >
+> > 1k?
+> > pahole -C xdp_test_data
+> > /* size: 192, cachelines: 3, members: 9 */
+> > /* sum members: 120, holes: 1, sum holes: 56 */
+> > /* padding: 16 */
+> > /* paddings: 1, sum paddings: 36 */
+> >
+> > what s390 doing to make it huge? =20
+>=20
+> I think it's a combination of cacheline alignment (256 byte
+> lines) that leads to padding before 'rxq' and at the end of
+> xdp_test_data, as well as CONFIG_KASAN_STACK that increases
+> the stack usage further.
 
-Tested on an I226 adapter with the following command, while injecting
-faults in igc_fpe_init_tx_descriptor() to trigger the error path.
- # ethtool --set-mm $DEV verify-enabled on tx-enabled on pmac-enabled on
+There will also be a 'double stack frame' in order to put an
+aligned item on stack.
+That could be slightly larger than a stack frame and probably doesn't
+show up in the figures.
 
-[1]
-unreferenced object 0xffff888113c6cdc0 (size 224):
-...
-  backtrace (crc be3d3fda):
-    kmem_cache_alloc_node_noprof+0x3b1/0x410
-    __alloc_skb+0xde/0x830
-    igc_fpe_xmit_smd_frame.isra.0+0xad/0x1b0
-    igc_fpe_send_mpacket+0x37/0x90
-    ethtool_mmsv_verify_timer+0x15e/0x300
-
-Cc: stable@vger.kernel.org
-Fixes: 5422570c0010 ("igc: add support for frame preemption verification")
-Signed-off-by: Kohei Enju <kohei@enjuk.jp>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
-Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
----
- drivers/net/ethernet/intel/igc/igc_tsn.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/intel/igc/igc_tsn.c b/drivers/net/ethernet/intel/igc/igc_tsn.c
-index 725ba253165c..52de2bcbadbe 100644
---- a/drivers/net/ethernet/intel/igc/igc_tsn.c
-+++ b/drivers/net/ethernet/intel/igc/igc_tsn.c
-@@ -110,10 +110,16 @@ static int igc_fpe_xmit_smd_frame(struct igc_adapter *adapter,
- 	__netif_tx_lock(nq, cpu);
- 
- 	err = igc_fpe_init_tx_descriptor(ring, skb, type);
--	igc_flush_tx_descriptors(ring);
-+	if (err)
-+		goto err_free_skb_any;
- 
-+	igc_flush_tx_descriptors(ring);
- 	__netif_tx_unlock(nq);
-+	return 0;
- 
-+err_free_skb_any:
-+	__netif_tx_unlock(nq);
-+	dev_kfree_skb_any(skb);
- 	return err;
- }
- 
--- 
-2.47.1
-
+-- David
