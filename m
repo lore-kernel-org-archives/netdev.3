@@ -1,115 +1,172 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pdx-out-011.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-011.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.35.192.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 887E0328616;
-	Fri, 15 May 2026 16:40:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A6432ABC0;
+	Fri, 15 May 2026 16:40:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.35.192.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778863227; cv=none; b=CmHCNXSx1JpRv29SRTSUtJBubZwg/OtsnD4nFXQ346r6rTtB5jqHjcRy9SWQwCG8mWwONLoEfPpIS8wJdxrwkRiHbYU9n/JSLyAK+qqSnZCcqz1ZYmxY712/rzswUi5BN3ruZNEnUjp0tyHHKQqirelcKYj+UxSnu7R+nlvWrVo=
+	t=1778863259; cv=none; b=N2oIPIo/a4ieGmdnklSFUFChY2zIn2AxbWkYniWKTUFNgyS6M+y512ov2fmG3ZxmkTSRmItA2/wcuE+A2qwJ/eTR1EuO5VG1LtAUjc12+FNvjTefEHcgoq+kPSeE9GkVKJffN3JvCb3FJ5yg8v9zQuAl8NQv/Zzu4Nko31g842g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778863227; c=relaxed/simple;
-	bh=MK0lOoOb01ATL1ybllX6LaYNKeJXRCfHdg7GjnhodWE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dY2oPluN9dI7RDyTo09OI/+0YtyQCukBQriVT92JbrltAd3XBuYnD5PimC0L9nciewfoQsdc6hv/1aqdeu7/K/jyUBtAq4t+umNUH3RSSL296A8YSxjbfYOAABejkFdfH3flEabVlwd2K5qm87bZXhE08KLcPAYAkCPCf7JjSVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oLE3f5vb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778863259; c=relaxed/simple;
+	bh=XWBFSg8szzCHX65W+LYQnfSnkWMu48jKtZ5yOZzh0cU=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CvESPKU0XKR4hdfChh+wKzMbSWL4643XU3zUr4mRyxyVR7Jf54t7TeqmQeC7bzS9ACstszo4NQJdjQwlB5Zq3aC0nlgnLyVeFkcFmo8XeAERDzixNuaXJh+wSTx9eOotkKhNHQHdDP7yhjs2PPd7w/nMcJVsU6v8/7caYm57bw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=aeeVo2ba; arc=none smtp.client-ip=52.35.192.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oLE3f5vb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2229DC2BCB0;
-	Fri, 15 May 2026 16:40:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778863227;
-	bh=MK0lOoOb01ATL1ybllX6LaYNKeJXRCfHdg7GjnhodWE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oLE3f5vbh8c/Kfzkv8oDOLjrGyecegLfqPgZVupwaKJZoOuR6fRqtk5SsJqmZ6Zo6
-	 NLsuPml9je1MnrW+5sPBikXt7As0UZdwWwZLwDvxu/PR1QBf2sT1x/bkVgaOF/dsDc
-	 FgTBUDahQWBsI1O7lUaUTsHgIHgHIxW46Cg3mLy1lKMhKWsJ6b/HK8vTYYJAVLSMf0
-	 QDxbg53J4FcM4aQTlFip+BTiqe1g2gMkGoEEbwl/erSbxogiZnFOSWU0j4IMMMTAZz
-	 robT9EwrnAXSDIq8m4ygch3KGxVzu6EtrY+RztGq9TryUIaO6fYR8d2jp0vyg85o8f
-	 81oE8kfqIz7Jg==
-Date: Fri, 15 May 2026 17:40:22 +0100
-From: Simon Horman <horms@kernel.org>
-To: Jonas Jelonek <jelonek.jonas@gmail.com>
-Cc: linux@armlinux.org.uk, andrew@lunn.ch, hkallweit1@gmail.com,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, maxime.chevallier@bootlin.com,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, bjorn@mork.no
-Subject: Re: [PATCH net-next v7 2/2] net: sfp: extend SMBus support
-Message-ID: <20260515164022.GD227382@horms.kernel.org>
-References: <20260507093301.1144740-3-jelonek.jonas@gmail.com>
- <20260510164741.1401430-1-horms@kernel.org>
- <d2a56757-8e57-4c06-91e0-dfd33855ad86@gmail.com>
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="aeeVo2ba"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1778863257; x=1810399257;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=UlJWLuxmHT8SCx8qRHdUgoi0qgBbNM8ZIVyE0ArpedI=;
+  b=aeeVo2baZn2DzTKeWkhInOn+91yNyKVgv3oS42wFn7O+pRFHY6kNaMlC
+   jBMxLejs5xPmmOjA729AGTcdGAd8HOpKsDnt4GKgOLurjSVqM/Uudz4QX
+   h0TQyg4XvHsDrFJ67MkMCeIz+rc+No8YRMtgobO6jwKU7S8B9OZewtkwa
+   NYZTlrCKHbUA4Pr4Yu/PjCgLWuoPmDHty6bhISlZdQsSNWe1WIF0x5VaQ
+   3K837YCkBi4MwGxMQESaZG2GegwyQsDnrHUiTsWqCirxs527/t4YEKKkw
+   UqYGiNat4IJ7spp16thZPKtkBkgtbPcHzyrUPovUID9NJpSedPLXlc1kO
+   Q==;
+X-CSE-ConnectionGUID: BCUwzNNiSlGSpTmlVVao0w==
+X-CSE-MsgGUID: Rrxq5KTkRc2wiKl2qJtcDw==
+X-IronPort-AV: E=Sophos;i="6.23,236,1770595200"; 
+   d="scan'208";a="19524399"
+Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
+  by internal-pdx-out-011.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 16:40:54 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [205.251.233.182:28511]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.56.132:2525] with esmtp (Farcaster)
+ id 424bb4e9-4620-477f-afcd-4a4e409a5240; Fri, 15 May 2026 16:40:53 +0000 (UTC)
+X-Farcaster-Flow-ID: 424bb4e9-4620-477f-afcd-4a4e409a5240
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWA001.ant.amazon.com (10.250.64.217) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Fri, 15 May 2026 16:40:53 +0000
+Received: from dev-dsk-akiyano-1c-2138b29d.eu-west-1.amazon.com (172.19.83.6)
+ by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Fri, 15 May 2026 16:40:48 +0000
+From: Arthur Kiyanovski <akiyano@amazon.com>
+To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+	<netdev@vger.kernel.org>
+CC: Arthur Kiyanovski <akiyano@amazon.com>, Richard Cochran
+	<richardcochran@gmail.com>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+	<pabeni@redhat.com>, David Woodhouse <dwmw2@infradead.org>, Thomas Gleixner
+	<tglx@linutronix.de>, Miroslav Lichvar <mlichvar@redhat.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, Wen Gu <guwen@linux.alibaba.com>, Xuan Zhuo
+	<xuanzhuo@linux.alibaba.com>, David Woodhouse <dwmw@amazon.com>, "Yonatan
+ Sarna" <ysarna@amazon.com>, Zorik Machulsky <zorik@amazon.com>, "Alexander
+ Matushevsky" <matua@amazon.com>, Saeed Bshara <saeedb@amazon.com>, Matt
+ Wilson <msw@amazon.com>, Anthony Liguori <aliguori@amazon.com>, Nafea Bshara
+	<nafea@amazon.com>, Evgeny Schmeilin <evgenys@amazon.com>, Netanel Belgazal
+	<netanel@amazon.com>, Ali Saidi <alisaidi@amazon.com>, Benjamin Herrenschmidt
+	<benh@amazon.com>, Noam Dagan <ndagan@amazon.com>, David Arinzon
+	<darinzon@amazon.com>, Evgeny Ostrovsky <evostrov@amazon.com>, Ofir Tabachnik
+	<ofirt@amazon.com>, Amit Bernstein <amitbern@amazon.com>,
+	<linux-kselftest@vger.kernel.org>, <shuah@kernel.org>,
+	<vadim.fedorenko@linux.dev>
+Subject: [PATCH v3 net-next 0/7] ptp: Add PHC timestamp quality attributes
+Date: Fri, 15 May 2026 16:40:20 +0000
+Message-ID: <20260515164033.6403-1-akiyano@amazon.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d2a56757-8e57-4c06-91e0-dfd33855ad86@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: EX19D038UWB003.ant.amazon.com (10.13.139.157) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-On Fri, May 15, 2026 at 03:55:22PM +0200, Jonas Jelonek wrote:
-> Hi,
-> 
-> On 10.05.26 18:47, Simon Horman wrote:
-> > From: 'Simon Horman' <horms@kernel.org>
-> >
-> > [ ... ]
-> >> @@ -756,50 +757,110 @@ static int sfp_i2c_write(struct sfp *sfp, bool a2, u8 dev_addr, void *buf,
-> > [ ... ]
-> >> +static int sfp_smbus_read(struct sfp *sfp, bool a2, u8 dev_addr, void *buf,
-> >> +			  size_t len)
-> >> +{
-> >> +	union i2c_smbus_data smbus_data;
-> >> +	u8 bus_addr = a2 ? 0x51 : 0x50;
-> >> +	size_t this_len, transferred;
-> >> +	u32 functionality;
-> >> +	u8 *data = buf;
-> >> +	int ret;
-> >> +
-> >> +	functionality = i2c_get_functionality(sfp->i2c);
-> >> +
-> >> +	while (len) {
-> >> +		this_len = min(len, sfp->i2c_block_size);
-> >> +
-> >> +		if (functionality & I2C_FUNC_SMBUS_READ_I2C_BLOCK) {
-> >> +			smbus_data.block[0] = this_len;
-> >> +			ret = i2c_smbus_xfer(sfp->i2c, bus_addr, 0,
-> >> +					     I2C_SMBUS_READ, dev_addr,
-> >> +					     I2C_SMBUS_I2C_BLOCK_DATA, &smbus_data);
-> >> +			if (ret < 0)
-> >> +				return ret;
-> >> +
-> >> +			memcpy(data, &smbus_data.block[1], this_len);
-> > Can this sequence leak uninitialized kernel stack memory to the output buffer?
-> >
-> > When performing an I2C_SMBUS_I2C_BLOCK_DATA transfer, i2c_smbus_xfer()
-> > updates smbus_data.block[0] with the actual number of bytes read from the
-> > bus upon success.
-> >
-> > If the adapter or device returns fewer bytes than requested (a short read),
-> > smbus_data.block[0] will be less than this_len. Because memcpy()
-> > unconditionally copies this_len bytes, it appears it would overrun the valid
-> > data and copy uninitialized memory from the smbus_data stack variable.
-> >
-> > Since the SFP EEPROM data is accessible to userspace via ethtool, could this
-> > expose uninitialized kernel stack memory to userspace?
-> >
-> > Should the code verify that smbus_data.block[0] == this_len, or use
-> > smbus_data.block[0] as the actual transferred length?
-> 
-> Valid point, indeed uninitialized memory might be leaked here. I wouldn't
-> use the proposed fix though. Maybe I missed it but It doesn't seem to be
-> the contract that I2C/SMBus drivers need to update that field after read.
-> So using that for a check seems wrong. As a fix I will just make sure no
-> uninitialized memory is leaked.
+This series adds quality attributes to PTP Hardware Clock (PHC)
+timestamps, allowing userspace to obtain error bound, clock status,
+timescale, and raw counter values alongside timestamps in a single
+call.
 
-Yes, that sounds good to me.
+Motivation
+----------
+The existing PTP APIs return timestamps without any indication of
+their quality. Applications that need clock accuracy and
+synchronization status commonly rely on external tools such as
+ptp4l, which implement synchronization logic and can export their
+measurement of clock accuracy. For managed PHC devices — such as
+the ENA network adapter, whose clock is synchronized by the device
+without userspace involvement — these tools are not available, and
+the existing APIs lack a way to report quality metrics to consumers
+of time.
 
-> 
-> If there are other suggestions please raise your hand, otherwise I'll
-> sned the follow-up soon.
-> 
-> Regards,
-> Jonas Jelonek
-> 
+This was previously proposed as an RFC [1] with a single ioctl.
+Based on community feedback, the design was reworked to cover both
+the extended (multi-sample) and precise (cross-timestamp) paths,
+with a shared attributes structure.
+
+Design
+------
+This series introduces two new ioctls that extend the existing
+extended and precise timestamp paths with per-timestamp quality
+attributes: error bound (nanoseconds), clock synchronization
+status, timescale, and raw hardware counter values.
+
+A capability flag is added to ptp_clock_caps so userspace can
+discover attributes support.
+
+Patches 2-3 add testptp support for the new ioctls.
+
+Patch 4 implements the attributes for ptp_vmclock, reporting
+error bound, clock status, timescale, and raw counter values.
+
+Patches 5-7 implement the attributes for the ENA driver,
+reporting error bound from the device's PHC layer.
+
+v3:
+- Remove patch 5/8 from v2 (return-code bugfix) — sent separately
+  as [PATCH net] to the net tree.
+- Zero-initialize struct ptp_clock_attributes in PTP core ioctl
+  handlers to prevent stack leak of unset fields. (Simon Horman,
+  sashiko)
+- ptp_vmclock: validate counter_period_shift < 128 to prevent
+  undefined behavior on untrusted hypervisor input. (sashiko)
+- ptp_vmclock: add overflow check on err_hi * NSEC_PER_SEC to
+  prevent silent wraparound producing erroneously small error
+  bound. (sashiko)
+- ptp_vmclock: report PTP_TIMESCALE_TAI after tai_adjust() to
+  avoid timescale mismatch. (sashiko)
+- ENA: set counter_id = 0, counter_value = 0 in gettimexattrs64
+  for defense-in-depth. (sashiko)
+
+v2:
+- Fix build bisectability: move ena_com.c consumer updates into
+  patch 6/8 and ena_phc.c caller update into patch 7/8 so each
+  patch compiles independently.
+- Add missing Cc for Amit Bernstein (co-author of ENA patches).
+
+[1] https://lore.kernel.org/netdev/20250724115657.150-1-darinzon@amazon.com/
+
+Arthur Kiyanovski (7):
+  ptp: Add ioctls for PHC timestamps with quality attributes
+  selftests/ptp: Extract print_system_timestamp helper in testptp
+  selftests/ptp: Add testptp support for attributes ioctls
+  ptp: ptp_vmclock: Implement attributes ioctls
+  net: ena: Update PHC admin interface for error bound support
+  net: ena: Add error bound to PHC communication layer
+  net: ena: Implement gettimexattrs64 callback for PTP attributes
+
+ .../device_drivers/ethernet/amazon/ena.rst    |   2 +
+ .../net/ethernet/amazon/ena/ena_admin_defs.h  |  17 +-
+ drivers/net/ethernet/amazon/ena/ena_com.c     |  47 ++--
+ drivers/net/ethernet/amazon/ena/ena_com.h     |   5 +-
+ drivers/net/ethernet/amazon/ena/ena_debugfs.c |   3 +
+ drivers/net/ethernet/amazon/ena/ena_phc.c     |  64 ++++-
+ drivers/ptp/ptp_chardev.c                     | 130 +++++++++-
+ drivers/ptp/ptp_clock.c                       |   4 +-
+ drivers/ptp/ptp_vmclock.c                     | 209 ++++++++++++++--
+ include/linux/ptp_clock_kernel.h              |  30 +++
+ include/uapi/linux/ptp_clock.h                | 225 +++++++++++++++++-
+ tools/testing/selftests/ptp/testptp.c         | 175 ++++++++++----
+ 12 files changed, 804 insertions(+), 107 deletions(-)
+
+-- 
+2.47.3
+
