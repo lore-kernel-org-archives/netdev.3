@@ -1,559 +1,254 @@
-Received: from mail-yx1-f48.google.com (mail-yx1-f48.google.com [74.125.224.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD7F937187F
-	for <netdev@vger.kernel.org>; Fri, 15 May 2026 15:16:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.48
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778858177; cv=none; b=GoThKy437u/M+VychlCqCjFdOTYYeT7yMqr5/1O1iX3vYTHhTpk3o3VXoZaztnK0BJgDc483U6v8hau8yxHLFVjaBX1LRxbDdfi9e9Fp9izzWCr9PgUeDlRESz06vNR53C7OBa55Sd9EINlwwb3/kd9LneMZ1hrY8+1b/pvuaeI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778858177; c=relaxed/simple;
-	bh=GIJIJDp6NwwYX0Q1AbNNOxWqITIK3rl3pHKEHpkJ2us=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j5yANUeVqbF8iD0wvatRQlUqMqWOlHax1n2FpQxOjf/zaGPh3BEb2ptc753sGwgg6aYgB96HRqcRRgqErLkQeLEOfB0oi2UiYSCCbOpgOfy972lj9aFYAg49crRFe30InGS+fRC2djvIkEZH72COHncBb8GMbFSGPsnpjUUVcXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=northecho.dev; spf=none smtp.mailfrom=northecho.dev; dkim=pass (2048-bit key) header.d=northecho-dev.20251104.gappssmtp.com header.i=@northecho-dev.20251104.gappssmtp.com header.b=lFH9Kiad; arc=none smtp.client-ip=74.125.224.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=northecho.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=northecho.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E327F4921B6;
+	Fri, 15 May 2026 15:23:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778858616; cv=fail; b=AXeeXuBYpzUiyUlwH/BQD1nX3MidDvRaE2U5P6MWJDY2uVRKrvSHqZY3vFjXm9W6KdtoicUqMT/efw2fZ1OjBxZjlLH9z8GI+uSNtcSCzg0VYEaeHYdv2yh0daFdrJ9dU3eDljP3wA5QuLAqWBdwBk8nMOifiH7qwY99QvCfiOU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778858616; c=relaxed/simple;
+	bh=4gyY6kgBuvMcAnNWd4ejZes6pVXd8nvwGRms74hYqm0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=EkeeTSRJ89UZg6yqpetvip9BsSNUW73U+bccjy/bo5kl+Gsp8qv4EwuKS/K/DQhmqEhHPVFlzwT6iHu9UnOjYG/4xrcnlDWsUuXWogAejmfYCIPCY3xioYy5t0Jm5jlNacNZwtr0lJuLH90YpCmxhuTn0WCG0bwWBLTclgRr7xA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bhhBfFzU; arc=fail smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=northecho-dev.20251104.gappssmtp.com header.i=@northecho-dev.20251104.gappssmtp.com header.b="lFH9Kiad"
-Received: by mail-yx1-f48.google.com with SMTP id 956f58d0204a3-65dd2b22372so804185d50.2
-        for <netdev@vger.kernel.org>; Fri, 15 May 2026 08:16:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=northecho-dev.20251104.gappssmtp.com; s=20251104; t=1778858174; x=1779462974; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T1gP18CObPDJD3QB+9rYWPUzAtOZhH2+QD3gPrVbM98=;
-        b=lFH9Kiad8WOQl2SddwASMzOlFrl8dYOSDTWgrWpfmZ6gmHkwff/wlFwYPpcMx9WA6z
-         sCbJgrjgTMObh59mzYk6io1jUoDFX+VDP9RNhqB+C19ecbSSrv2KTUlNt/UAwJyNzKpb
-         Nu0E9PL3l4fvMYucVXfJmWceP5qKlcMGZrvuFzQ4f9Qk0QOf09wuqSKEbQLqKviiTpIO
-         +7P/FtGssH5PrzGmx9jHVWDjbukAOAw/AWDOxq+vyJLaVFZGD/C/FNL91FSVFTrGEtYU
-         qp8S6j9r9IqPaFoj148bwtufVY6857gdCK4e5T8AklaFF9mSrgaAqvCFRtH2twww0nvL
-         UKxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778858174; x=1779462974;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=T1gP18CObPDJD3QB+9rYWPUzAtOZhH2+QD3gPrVbM98=;
-        b=e4eb9Ie+681seH9J2Qo8E5Db2aPvRRatEzUw1H32ho4u5sxWEe+tHyoRkMCsHeYJFN
-         IzOt2qrfFtEiofWvKRNB9nEN5g+PHfBuv/Fm195fVuKG6bHFwhuYTZyR7D0G1JT82xB1
-         Nq5CpgSK72UqpkcAJR3yT5oJZXxFEXc16QiugX0dlqTHq3N94FxusiQac25MYFgxau7h
-         l3f7z53qAsNNgNeHXt6AIcDWqVgjcOTDiB9nfRuUAQe+UNgJX+vxOZKjjNnPeyx1UB3z
-         /dakK2r52yqE+CgHJTV9+Z0NiI/8h43k2PLfMDQ4cXeStriawUXZfiKprcuAlmaj1J9M
-         wtOA==
-X-Forwarded-Encrypted: i=1; AFNElJ/dw5xusX18/w9ZjATrG/PH0rrJl3m8NfxzccDvPLC17t2btojkOHC7ea3nAd21tky3PklJaCA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyhPipaFkkifyDEFtig+hfTgj79m+XmOOwb1lmF4oqfUYaZo8RJ
-	4TVCIRgJbyo3r2IqJlQ1w8xH/sB8HgkbofG2L6PxFpkiYT9HOPKkYuI3xnSwaiRAkAzy
-X-Gm-Gg: Acq92OFjidj6EnAgIhwC/gOwHPHCUgK4laaTnKBrGWuxRKmMIe6j9DJAkZau52ZfdmU
-	sfjLGY+xVmE5KPRq5/ZrvAuH+6KRdCbI5+Bgr0E+pb47fwY+gepm7G62NdNB458IbeLXsOul4Mj
-	+DPN/uQS+eD/fKN9yfU8wntpW6nPX/CaAt1XOVLifSCiX+11Z31j8fQU8UpWOyf9DI1umDQHGJ5
-	HDdthIT7TIoggtT1aouqap7/9bfGDq31qFq1F3U1GdhXu0qEk75Aw4HkiOA4apQBcdCUTF3t7W1
-	pvUGBT8Wb1iWQULG7q1ERLsVl6CwD1x1GbTX7RYeZ/aZ3yDrlYvpseGtulNbjHOohko5LGf2KtN
-	QT8jAG11swyjTyiULP73iYmpF30/AYF+UrcmpgsyI0JBYB4D6bbEVVDp/MjBDgfvhhYje9V6pRQ
-	Hw/HWRn4releCQKahJlc6MEXwce7X0grX1yZLBwlvCPiDR3s5mCHcZhhOJsgI/woRJeIUcgYPXT
-	oYKZgFg7HwpMFc=
-X-Received: by 2002:a05:690e:1206:b0:653:9e2:1059 with SMTP id 956f58d0204a3-65e223a1712mr2896993d50.0.1778858173484;
-        Fri, 15 May 2026 08:16:13 -0700 (PDT)
-Received: from kelso.tail8e61da.ts.net (99-10-92-174.lightspeed.rlghnc.sbcglobal.net. [99.10.92.174])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-65e0d878cf2sm2724116d50.2.2026.05.15.08.16.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 May 2026 08:16:12 -0700 (PDT)
-From: Christopher Lusk <clusk@northecho.dev>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: John Fastabend <john.fastabend@gmail.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net 2/2] selftests: net: add kTLS async split record regression
-Date: Fri, 15 May 2026 11:15:56 -0400
-Message-ID: <20260515151556.189841-3-clusk@northecho.dev>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515151556.189841-1-clusk@northecho.dev>
-References: <20260515151556.189841-1-clusk@northecho.dev>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bhhBfFzU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778858615; x=1810394615;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=4gyY6kgBuvMcAnNWd4ejZes6pVXd8nvwGRms74hYqm0=;
+  b=bhhBfFzUeZRszx3VuoaNb7S+kQCH1gNLTOwPBQKwioxN2BC6Ekc/MCJa
+   1CQnuT9IboXGmVtzKOUQ9svLPUbSHE9voPq9G5ku6PC4e3R57EI9113k/
+   jwp9UI4KXL+JDZsdXwgRb5a3xqV/pQ2x7K7LtV0C7TED6Ub+fUTUj/WFs
+   qhpNxET97YnGOEWhMRpoD9oD/KyJIk3oywVoB9lFJc7FEO1umdqTv6AUC
+   qaWvKX3hxtU42OSWFO4EX10WlpcvcSnoBf15utzBMmvUSNvy2WwYSob03
+   PlAGgPRFmD04cGoXUgr4CzM71r6sXi7//fAltdWrMsrFMWG8w92/Icww6
+   w==;
+X-CSE-ConnectionGUID: bEirvgUGTTmY6WDi2KfgtA==
+X-CSE-MsgGUID: Y5DY+ievQXKusVaQw6wo2g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="97244480"
+X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
+   d="scan'208";a="97244480"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 08:23:30 -0700
+X-CSE-ConnectionGUID: +fBg0psGQWGxrH8pTNbg1A==
+X-CSE-MsgGUID: fSkiX7DSSOSPjS7vYKxP7g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
+   d="scan'208";a="238971783"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 08:23:30 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Fri, 15 May 2026 08:23:29 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Fri, 15 May 2026 08:23:29 -0700
+Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.14) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Fri, 15 May 2026 08:23:25 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MOw9VMw8Ew2kMzpJYDvQMo2VTFNSmzZ8KCyvGcUs0DNsHx1Z5pnh6uljzG6YevpXvy9j9xagh75ATeQywM9LHnQp9FR6EEDAtF47rBw7LDdIVcPtgXPpBJ8qB+B0jvaWLaDMqxsSsJU1/VAwGxUjsu85ydW4PgzVfLH8BfcK6jXRtU2pelxUnuTffid5kbR1RmqCiyTGxDRj39aVlGA+sIMpOFessGsqq/JNDEe/pCR/yyNym/JEcpOiOTsoKOG7AYzdvoTM2c8VVyGR+9iYZlU9xT1Gc2u0qRPL8iNtz6rU4nd49tf1F9gQr+Cv4IQ9Vep1VvWfjqu4ICI7feO6tQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jW7RN9ssJDYpso6nLxhDLWgQHdAd7l1o5p8+lDHZeBg=;
+ b=cnLZleem5WEDycNJgKczDhuQxJ6wOtjHaa5eMeAv9nLYWWgJjxiXWFBEpW1PMwzkhDF+wJUoBFFuAO2bn6/FOe8CaXfxJYuJ+hX6tPwadOULJuS+8yPPikvCsJWJuKoSQYKcvdb97T8dRXD78JR13R88Nn1pWm7n5a9cYgAg13G2EjjNSlGhKpixvdlqtg9+PH7EQfZ9K6FlWc0Kh0G0X9eOOr+LvPFchlu8DQuA7lJb/mdg5q4dEoxacLdod4ZK4Nibw+Synwt2/RHNpK9/fvX9OYFYtgWqYGNffVxC6FfbO2pa5sHZJMvF8s8Ml9QC0ZQFtmjiP707/gmPz3uWZA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from IA1PR11MB6219.namprd11.prod.outlook.com (2603:10b6:208:3e9::15)
+ by PH0PR11MB4917.namprd11.prod.outlook.com (2603:10b6:510:32::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.12; Fri, 15 May
+ 2026 15:23:15 +0000
+Received: from IA1PR11MB6219.namprd11.prod.outlook.com
+ ([fe80::a2b9:8e8:c48b:ea31]) by IA1PR11MB6219.namprd11.prod.outlook.com
+ ([fe80::a2b9:8e8:c48b:ea31%5]) with mapi id 15.20.9913.009; Fri, 15 May 2026
+ 15:23:15 +0000
+From: "Nitka, Grzegorz" <grzegorz.nitka@intel.com>
+To: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
+CC: "Vecera, Ivan" <ivecera@redhat.com>, "vadim.fedorenko@linux.dev"
+	<vadim.fedorenko@linux.dev>, "kuba@kernel.org" <kuba@kernel.org>,
+	"jiri@resnulli.us" <jiri@resnulli.us>, "edumazet@google.com"
+	<edumazet@google.com>, "Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>,
+	"richardcochran@gmail.com" <richardcochran@gmail.com>,
+	"donald.hunter@gmail.com" <donald.hunter@gmail.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Kubalewski,
+ Arkadiusz" <arkadiusz.kubalewski@intel.com>, "andrew+netdev@lunn.ch"
+	<andrew+netdev@lunn.ch>, "intel-wired-lan@lists.osuosl.org"
+	<intel-wired-lan@lists.osuosl.org>, "horms@kernel.org" <horms@kernel.org>,
+	"Prathosh.Satish@microchip.com" <Prathosh.Satish@microchip.com>, "Nguyen,
+ Anthony L" <anthony.l.nguyen@intel.com>, "pabeni@redhat.com"
+	<pabeni@redhat.com>, "davem@davemloft.net" <davem@davemloft.net>
+Subject: RE: [Intel-wired-lan] [PATCH v9 net-next 0/8] dpll/ice: Add generic
+ DPLL type and full TX reference clock control for E825
+Thread-Topic: [Intel-wired-lan] [PATCH v9 net-next 0/8] dpll/ice: Add generic
+ DPLL type and full TX reference clock control for E825
+Thread-Index: AQHc4/X8hGVqzkhfN0ye4z8vc9MzjbYPAKaAgAA0ouA=
+Date: Fri, 15 May 2026 15:23:14 +0000
+Message-ID: <IA1PR11MB621932CA3109B582813D336892042@IA1PR11MB6219.namprd11.prod.outlook.com>
+References: <20260514225946.2885623-1-grzegorz.nitka@intel.com>
+ <IA3PR11MB8986B93163E2FEC79BAB36EDE5042@IA3PR11MB8986.namprd11.prod.outlook.com>
+In-Reply-To: <IA3PR11MB8986B93163E2FEC79BAB36EDE5042@IA3PR11MB8986.namprd11.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA1PR11MB6219:EE_|PH0PR11MB4917:EE_
+x-ms-office365-filtering-correlation-id: f7d00db3-b8cf-4343-20a9-08deb295e24a
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016|38070700021|11063799003|4143699003|18002099003|22082099003|56012099003;
+x-microsoft-antispam-message-info: +TUTnktPXRxIlIC4FMgAFvwKiGfz6YjdRuJF6UH4pAGSWAIXb9za+JzEQT6j85K0VWa/z41w6mb/znDegi52mbRWJjYUUq4Lxf0nYkMQc+1PPxXZGkAfgsENVfX+RBhQFMJZ8Ury/B65SFFTmq7mCxqQ4ExoJISopov93gq/UHM/iWbsUMmsahHnkuJV11kUxyDzeyOAhM3bwH+8fPq87nX96GSNMYpiuH5O1oHsg6Dmu94e+wz/nxpLg6iJUkemRaOi+tjk/u0A8zdCKthVvbV6yvQyZMRTFdUsS5TubUYeyal6/3iHDAGnAMXYbutUqOE6brvECGHq8qrKVvCrlUJFtWFVVopwzA/i740AI57rmo6mwASgWRSZt6C6yMbWBcrr28K/mToMqgPSxg0nam+xniWO93PhF76yxCM77bO9pLCn7VHAXTsart6kdufyKRWiPUswc6ouUikKQumRNVS3xxFQb8NaRK+VLg4zyk2OI1EC9Sv09kZW1bv+DKVXGTdaf8+owDpUgnqtd/kXHBbMiyHOM9PLkHl2tnEhJpDYAdA3viGxGouufKUBlikZj3oK8hx0d/WqFWoHgecd1Xnh9Tvw2dfEZ5CNuQRD6RXB9uVJceOjNjGZVJthsJsByWXvPsCDVuctob9s/xQY+D/HRLTF4UqdwqbxY6k26qj3gbgRqK+3AW6EaXdyfBoh4S0uBiEQlqgh2K1romHPodAWryoaFzySGcuOTeJGaYve4SfHqHRMkEehDlupPLgW
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB6219.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(38070700021)(11063799003)(4143699003)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?GQ9Npph1dhyCLE669MKmbm5E4xS41FF/ruRC8IojmkzruhnS/jP+1HdbRbQF?=
+ =?us-ascii?Q?gpYqluQLnlB27anzxQOkuW3hLqR1aT4tP7HEKcrLxLMjEmhHA3szTmV08RAC?=
+ =?us-ascii?Q?GwbbXqQDXzTqZIQBje5cwjNE+/Eqv/kFYydYYdt9g4DVO65ap/76h2hAuYkS?=
+ =?us-ascii?Q?U6JO16Wbcm9HnhwlEZad5DtEPVyu29azksdyowXi87m6RrDh/eaOfGCdWHqG?=
+ =?us-ascii?Q?KhCzuFZBRxXawDKzNo/2Y373sPXbizf/8O/6koZzcTHzWAEeqZFNPz92fdjO?=
+ =?us-ascii?Q?Ci7V6DHzkWV/1Mp2L36MeDyw3QKESxGNhAH54K9zAD4rd+ozOUAOE6/LVxY2?=
+ =?us-ascii?Q?/+QPcgt5ymcZC99UHfWrwKH8TC4vDNzZZyHmxQgeDB+6s5qKY0zPl3NJlF+R?=
+ =?us-ascii?Q?BGhxk8t32UgPNH0l4KobEoTofp058JZGu4gMu1p0gHbgmiCAFO6kKOhIEiLk?=
+ =?us-ascii?Q?dATNuBHVsUaItR6OPJSNU/EO4jWRLrEHL936I9y03QsOavDSEZNBQcMw7Dri?=
+ =?us-ascii?Q?xDHsGUcMQgg9BOaOSTOzOQgWagIvMiybAhxr7FmovNHJDq088zIUP61gsQat?=
+ =?us-ascii?Q?JQLHEVm32T26CWPL//Ijinawk/bffB2JjiAKLzohLxBbt6nvFGAecO3zXa6H?=
+ =?us-ascii?Q?Hs53p+K4L+K55YIb61vRij0M8ZePEkDNJPSlzwFo79lAbYhQ+4aUVh9/CVQH?=
+ =?us-ascii?Q?2w0l2AzXgrKle8uZfB5n5s33g0vEiXKEmHF/YeywdPa+BBsiKjd66AhP8OX3?=
+ =?us-ascii?Q?OyU2+yepfZ0MQm+zMAJf1jxH8F4FqtJOnFJI/jAC5ZLiMTDJtgsUEC1TuG5S?=
+ =?us-ascii?Q?Upqhf/dy8btvnRo+3DlWL/WiCOSuckn2qvvMjapqtN0XCew6t8ahKAHj/7Bk?=
+ =?us-ascii?Q?x9Jsz0fFI+ynFBAPd4lrWNypYMWVLuuHwUKojNOYMr1wr1A8PdymQiThXbfo?=
+ =?us-ascii?Q?rTxc1KIGA8g/x2SgSZ6l6WSE+ZfxEF6Muhp7Mr2wF9mvIbueOuqHJ4MtV6Um?=
+ =?us-ascii?Q?uzvcVTDNDNrgApkzVZUrSuyrVgrJxqwhxMyVuWbbcwERLt5V7ZFufORay4au?=
+ =?us-ascii?Q?Xh7cwsJSbNni23+/DupyVDAC1JUivtjdiHh/0zRmlutJP+hPHRb1+7EGPGz7?=
+ =?us-ascii?Q?wN6B5JTSKZytoQBxA9j9io+hs8WqiWUWm8h5X6MgAJtWOl2N87vEDAZSsd7/?=
+ =?us-ascii?Q?zup2j664XeWOPwUScWTA0o3qabvJjFwxPZzkbE57T+TbrHm4Ax9QsHhHSbs8?=
+ =?us-ascii?Q?WJHaifvQavg1wyvWjbhyCbWGysxlyYZsyIXkFLGo7IR2t6Pc84AWHHfFOa1O?=
+ =?us-ascii?Q?pLxjb4FJA3c374A6o+Gt+qnxOKyGiaWWPTgMyWVV0BCDs3gu5xgCQ2v/GMAy?=
+ =?us-ascii?Q?oCtkWUoj48nm4cqBY5DMZUi3FvgCmbKTDiaLL4ZPEbewf4sqPOdtAA/uNLG7?=
+ =?us-ascii?Q?hnFkYTfjCQY3WMN01kGVL9o2rNJhLnHzsEuynfngguRxbCfFG5VBBHyJjBLN?=
+ =?us-ascii?Q?42z1WNLpJHqi+8fXXXSSRI1hNowkfaNut4ZvSPyXl6uB6T1ta2MhhkX136m2?=
+ =?us-ascii?Q?evgqVMAu20/RAnL2J4GZc5/MFAihbVP4Ci4ya6od7hmnvBD6n8+XDQeEudJo?=
+ =?us-ascii?Q?fRwYBWwBQVIilxWH92icBH50EWsAwzAbv/d3Ds/2XSBWfrZqN2btJhAMcy5y?=
+ =?us-ascii?Q?3DGoCsMKAxGZK/yM1o7hFRWicyPXKfJTs4zjq2yzobdu7QbNfdPcVJxLq01t?=
+ =?us-ascii?Q?S/NLNaw0cQ=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Exchange-RoutingPolicyChecked: GAogyaeL7llR8HDCiH95P7dzqMtbzbG/YfsY3YYGqsn5qrg1ZRPrLLO0wJrpvz2QmjHmqMS/Bt09dnoaG3U22/H8qurUd9uJ5O7ayvjoaYnOzHpMzescB/bu2rEamgLdDTBl7ZTzCRqrZvyKWIfMKQjAxknq7/9hztJm+DUCWWrGghl3CHJkjaFS1L//ViJt6G6vnJEGNatL83wEtlKTwOplmTfyl8JjgyCIXdYT95pEtl12PPotfM7ILn0jaVl7XyrXaveYauzKwvKY5RTLIqEW4M2haZT0/K1JJssq519wbKxaY2QzZ6wRX/+3suScY784Upsoi65GTbekIp90oQ==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB6219.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f7d00db3-b8cf-4343-20a9-08deb295e24a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 15 May 2026 15:23:14.9419
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 5cqUGN8ekw7yrz5fuV5r2rppLp31I5FBDJXqj/zw59xc3jNpPFHnbmPlc7BEwKucCjJZ8W20KQVyvBeZ25lKoFetDNxFZfB9gnjzjKay3Xg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB4917
+X-OriginatorOrg: intel.com
 
-Add a kTLS TX regression test for the BPF sk_msg apply_bytes
-split-record path. The test sends four 4096-byte writes through
-a sockmap verdict program that applies 512-byte verdict windows,
-then verifies that the peer receives the full TLS-protected stream.
 
-Run the case once with the synchronous provider and once after
-instantiating an async pcrypt gcm(aes) provider. Vulnerable kernels
-silently truncate the async run because the split open-record remainder
-is lost when encryption returns -EINPROGRESS.
 
-Signed-off-by: Christopher Lusk <clusk@northecho.dev>
-Assisted-by: Codex:gpt-5.5
-Assisted-by: Claude:claude-opus-4-7
----
- tools/testing/selftests/net/Makefile          |   5 +
- .../selftests/net/ktls_async_split.bpf.c      |  24 ++
- .../testing/selftests/net/ktls_async_split.c  | 391 ++++++++++++++++++
- 3 files changed, 420 insertions(+)
- create mode 100644 tools/testing/selftests/net/ktls_async_split.bpf.c
- create mode 100644 tools/testing/selftests/net/ktls_async_split.c
+> -----Original Message-----
+> From: Loktionov, Aleksandr <aleksandr.loktionov@intel.com>
+> Sent: Friday, May 15, 2026 2:14 PM
+> To: Nitka, Grzegorz <grzegorz.nitka@intel.com>; netdev@vger.kernel.org
+> Cc: Vecera, Ivan <ivecera@redhat.com>; vadim.fedorenko@linux.dev;
+> kuba@kernel.org; jiri@resnulli.us; edumazet@google.com; Kitszel,
+> Przemyslaw <przemyslaw.kitszel@intel.com>; richardcochran@gmail.com;
+> donald.hunter@gmail.com; linux-kernel@vger.kernel.org; Kubalewski,
+> Arkadiusz <arkadiusz.kubalewski@intel.com>; andrew+netdev@lunn.ch;
+> intel-wired-lan@lists.osuosl.org; horms@kernel.org;
+> Prathosh.Satish@microchip.com; Nguyen, Anthony L
+> <anthony.l.nguyen@intel.com>; pabeni@redhat.com; davem@davemloft.net
+> Subject: RE: [Intel-wired-lan] [PATCH v9 net-next 0/8] dpll/ice: Add gene=
+ric
+> DPLL type and full TX reference clock control for E825
+>=20
+>=20
+>=20
+> > -----Original Message-----
+> > From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf
+> > Of Grzegorz Nitka
+> > Sent: Friday, May 15, 2026 1:00 AM
+> > To: netdev@vger.kernel.org
+> > Cc: Vecera, Ivan <ivecera@redhat.com>; vadim.fedorenko@linux.dev;
+> > kuba@kernel.org; jiri@resnulli.us; edumazet@google.com; Kitszel,
+> > Przemyslaw <przemyslaw.kitszel@intel.com>; richardcochran@gmail.com;
+> > donald.hunter@gmail.com; linux-kernel@vger.kernel.org; Kubalewski,
+> > Arkadiusz <arkadiusz.kubalewski@intel.com>; andrew+netdev@lunn.ch;
+> > intel-wired-lan@lists.osuosl.org; horms@kernel.org;
+> > Prathosh.Satish@microchip.com; Nguyen, Anthony L
+> > <anthony.l.nguyen@intel.com>; pabeni@redhat.com;
+> davem@davemloft.net
+> > Subject: [Intel-wired-lan] [PATCH v9 net-next 0/8] dpll/ice: Add
+> > generic DPLL type and full TX reference clock control for E825
+> >
+> > NOTE: This series is intentionally submitted on net-next (not
+> > intel-wired-lan) as early feedback of DPLL subsystem changes is
+> > welcomed. In the past possible approaches were discussed in [1].
+> >
+> > This series adds TX reference clock support for E825 devices and
+> > exposes TX clock selection and synchronization status via the Linux
+> > DPLL subsystem.
+> >
+> > Here is the high-level connection diagram for E825 device:
+>=20
+> ...
+>=20
+> > ice_dpll_deinit_txclk_pins and
+> >   ice_dpll_pin_notify_work() that is about to register the SYNCE pin
+> >   (patch 5/8)
+> > - resolved potential path deadlock during driver probe and error
+> > path
+> >   (patch 5/8)
+> > - relaxed kernel-doc regarding cpi mutex usage (patch 6/8)
+> > - fixed ice_cpi.c header (patch 6/8)
+> > - fix retry mechanism in ice_cpi_wait_req0_ack0 (patch 6/8)
+> > - fix potrntial leaving LM.REQ stuck asserted on the hardware (patch
+> > 6/8)
+> > - fix kernel-doc for ice_cpi_ena_dis_clk_ref
+> > - removed unused CPI definitions (patch 6/8)
+> > - fix header inclusion (patch 6/8)
+> > - addressed Sashiko issues for patch (8/8)
+> >
+> > Changes in v7:
+> > - rebased
+> > - replace TXC-specific DPLL type with DPLL_TYPE_GENERIC (patch 1/8)
+> > - update TXC framework to use DPLL_TYPE_GENERIC instead of
+> > DPLL_TYPE_GENERIC
+> DPLL_TYPE_GENERIC instead of DPLL_TYPE_GENERIC
+> Something is wrong
+>=20
 
-diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
-index f3da38c54..0435327e9 100644
---- a/tools/testing/selftests/net/Makefile
-+++ b/tools/testing/selftests/net/Makefile
-@@ -179,6 +179,7 @@ TEST_GEN_PROGS := \
- 	epoll_busy_poll \
- 	icmp_rfc4884 \
- 	ipv6_fragmentation \
-+	ktls_async_split \
- 	proc_net_pktgen \
- 	reuseaddr_conflict \
- 	reuseport_bpf \
-@@ -236,3 +237,7 @@ $(OUTPUT)/bind_bhash: LDLIBS += -lpthread
- $(OUTPUT)/io_uring_zerocopy_tx: CFLAGS += -I../../../include/
- 
- include bpf.mk
-+
-+$(OUTPUT)/ktls_async_split: CFLAGS += -I../../../lib
-+$(OUTPUT)/ktls_async_split: LDLIBS += $(BPFOBJ) -lelf -lz
-+$(OUTPUT)/ktls_async_split: $(BPFOBJ)
-diff --git a/tools/testing/selftests/net/ktls_async_split.bpf.c b/tools/testing/selftests/net/ktls_async_split.bpf.c
-new file mode 100644
-index 000000000..c7caafb73
---- /dev/null
-+++ b/tools/testing/selftests/net/ktls_async_split.bpf.c
-@@ -0,0 +1,24 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <linux/bpf.h>
-+#include <bpf/bpf_helpers.h>
-+
-+#ifndef SK_PASS
-+#define SK_PASS 1
-+#endif
-+
-+char LICENSE[] SEC("license") = "GPL";
-+
-+struct {
-+	__uint(type, BPF_MAP_TYPE_SOCKMAP);
-+	__uint(max_entries, 4);
-+	__type(key, __u32);
-+	__type(value, int);
-+} sock_map SEC(".maps");
-+
-+SEC("sk_msg")
-+int apply_bytes_verdict(struct sk_msg_md *msg)
-+{
-+	bpf_msg_apply_bytes(msg, 512);
-+	return SK_PASS;
-+}
-diff --git a/tools/testing/selftests/net/ktls_async_split.c b/tools/testing/selftests/net/ktls_async_split.c
-new file mode 100644
-index 000000000..a9a84e0f5
---- /dev/null
-+++ b/tools/testing/selftests/net/ktls_async_split.c
-@@ -0,0 +1,391 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#define _GNU_SOURCE
-+
-+#include <arpa/inet.h>
-+#include <bpf/bpf.h>
-+#include <bpf/libbpf.h>
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <linux/if_alg.h>
-+#include <linux/bpf.h>
-+#include <linux/tls.h>
-+#include <netinet/in.h>
-+#include <netinet/tcp.h>
-+#include <signal.h>
-+#include <stdbool.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <sys/resource.h>
-+#include <sys/socket.h>
-+#include <sys/types.h>
-+#include <sys/wait.h>
-+#include <unistd.h>
-+
-+#include "kselftest.h"
-+
-+#ifndef SOL_TLS
-+#define SOL_TLS 282
-+#endif
-+
-+#define EXPECTED_BYTES 17312
-+
-+static void fill_seq(unsigned char *p, size_t n, unsigned char seed)
-+{
-+	size_t i;
-+
-+	for (i = 0; i < n; i++)
-+		p[i] = (unsigned char)(seed + i);
-+}
-+
-+static void bump_memlock(void)
-+{
-+	struct rlimit r = { RLIM_INFINITY, RLIM_INFINITY };
-+
-+	setrlimit(RLIMIT_MEMLOCK, &r);
-+}
-+
-+static int run_cmd(const char *cmd)
-+{
-+	int ret = system(cmd);
-+
-+	if (ret == -1)
-+		return -1;
-+	if (WIFEXITED(ret))
-+		return WEXITSTATUS(ret);
-+	return 1;
-+}
-+
-+static int instantiate_aead(const char *name)
-+{
-+	struct sockaddr_alg sa = {
-+		.salg_family = AF_ALG,
-+	};
-+	int fd, ret;
-+
-+	strncpy((char *)sa.salg_type, "aead", sizeof(sa.salg_type) - 1);
-+	strncpy((char *)sa.salg_name, name, sizeof(sa.salg_name) - 1);
-+
-+	fd = socket(AF_ALG, SOCK_SEQPACKET, 0);
-+	if (fd < 0)
-+		return -errno;
-+
-+	ret = bind(fd, (struct sockaddr *)&sa, sizeof(sa));
-+	if (ret < 0)
-+		ret = -errno;
-+
-+	close(fd);
-+	return ret;
-+}
-+
-+static bool have_async_pcrypt(void)
-+{
-+	FILE *f = fopen("/proc/crypto", "r");
-+	char line[256];
-+	bool in_driver = false;
-+	bool async = false;
-+
-+	if (!f)
-+		return false;
-+
-+	while (fgets(line, sizeof(line), f)) {
-+		if (!strncmp(line, "driver", 6)) {
-+			in_driver = strstr(line, "pcrypt(") &&
-+				    strstr(line, "gcm");
-+			async = false;
-+			continue;
-+		}
-+		if (in_driver && !strncmp(line, "async", 5)) {
-+			async = strstr(line, "yes");
-+			if (async) {
-+				fclose(f);
-+				return true;
-+			}
-+		}
-+	}
-+
-+	fclose(f);
-+	return false;
-+}
-+
-+static bool module_loaded(const char *name)
-+{
-+	FILE *f = fopen("/proc/modules", "r");
-+	char line[256], mod[128];
-+
-+	if (!f)
-+		return false;
-+
-+	while (fgets(line, sizeof(line), f)) {
-+		if (sscanf(line, "%127s", mod) == 1 && !strcmp(mod, name)) {
-+			fclose(f);
-+			return true;
-+		}
-+	}
-+
-+	fclose(f);
-+	return false;
-+}
-+
-+static int make_listener(unsigned short *port)
-+{
-+	struct sockaddr_in addr = {
-+		.sin_family = AF_INET,
-+		.sin_addr.s_addr = htonl(INADDR_LOOPBACK),
-+		.sin_port = 0,
-+	};
-+	socklen_t len = sizeof(addr);
-+	int fd, one = 1;
-+
-+	fd = socket(AF_INET, SOCK_STREAM, 0);
-+	if (fd < 0)
-+		return -errno;
-+
-+	if (setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &one, sizeof(one)) < 0)
-+		goto err;
-+	if (bind(fd, (struct sockaddr *)&addr, sizeof(addr)) < 0)
-+		goto err;
-+	if (listen(fd, 1) < 0)
-+		goto err;
-+	if (getsockname(fd, (struct sockaddr *)&addr, &len) < 0)
-+		goto err;
-+
-+	*port = ntohs(addr.sin_port);
-+	return fd;
-+
-+err:
-+	close(fd);
-+	return -errno;
-+}
-+
-+static int connect_client(unsigned short port)
-+{
-+	struct sockaddr_in addr = {
-+		.sin_family = AF_INET,
-+		.sin_addr.s_addr = htonl(INADDR_LOOPBACK),
-+		.sin_port = htons(port),
-+	};
-+	int fd;
-+
-+	fd = socket(AF_INET, SOCK_STREAM, 0);
-+	if (fd < 0)
-+		return -errno;
-+	if (connect(fd, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
-+		close(fd);
-+		return -errno;
-+	}
-+
-+	return fd;
-+}
-+
-+static int make_tcp_pair(int *client_fd, int *peer_fd)
-+{
-+	unsigned short port = 0;
-+	int listen_fd, c, p;
-+
-+	listen_fd = make_listener(&port);
-+	if (listen_fd < 0)
-+		return listen_fd;
-+
-+	c = connect_client(port);
-+	if (c < 0) {
-+		close(listen_fd);
-+		return c;
-+	}
-+
-+	p = accept(listen_fd, NULL, NULL);
-+	close(listen_fd);
-+	if (p < 0) {
-+		close(c);
-+		return -errno;
-+	}
-+
-+	*client_fd = c;
-+	*peer_fd = p;
-+	return 0;
-+}
-+
-+static int enable_ktls_tx(int fd)
-+{
-+	struct tls12_crypto_info_aes_gcm_128 info;
-+	static const char ulp[] = "tls";
-+
-+	if (setsockopt(fd, IPPROTO_TCP, TCP_ULP, ulp, sizeof(ulp)) < 0)
-+		return -errno;
-+
-+	memset(&info, 0, sizeof(info));
-+	info.info.version = TLS_1_2_VERSION;
-+	info.info.cipher_type = TLS_CIPHER_AES_GCM_128;
-+	fill_seq(info.iv, sizeof(info.iv), 0x11);
-+	fill_seq(info.key, sizeof(info.key), 0x22);
-+	fill_seq(info.salt, sizeof(info.salt), 0x33);
-+	fill_seq(info.rec_seq, sizeof(info.rec_seq), 0x44);
-+
-+	if (setsockopt(fd, SOL_TLS, TLS_TX, &info, sizeof(info)) < 0)
-+		return -errno;
-+
-+	return 0;
-+}
-+
-+static int attach_bpf(const char *obj_path, int sock_fd, struct bpf_object **obj_out)
-+{
-+	struct bpf_object *obj;
-+	struct bpf_program *prog;
-+	int map_fd, prog_fd;
-+	__u32 key = 0;
-+
-+	obj = bpf_object__open_file(obj_path, NULL);
-+	if (libbpf_get_error(obj))
-+		return -EINVAL;
-+	if (bpf_object__load(obj))
-+		return -EINVAL;
-+
-+	prog = bpf_object__find_program_by_name(obj, "apply_bytes_verdict");
-+	if (!prog)
-+		return -ENOENT;
-+	prog_fd = bpf_program__fd(prog);
-+
-+	map_fd = bpf_object__find_map_fd_by_name(obj, "sock_map");
-+	if (map_fd < 0)
-+		return -ENOENT;
-+
-+	if (bpf_prog_attach(prog_fd, map_fd, BPF_SK_MSG_VERDICT, 0))
-+		return -errno;
-+	if (bpf_map_update_elem(map_fd, &key, &sock_fd, BPF_ANY))
-+		return -errno;
-+
-+	*obj_out = obj;
-+	return 0;
-+}
-+
-+static void server_loop(int fd, int out_fd)
-+{
-+	unsigned char buf[16384];
-+	int total = 0;
-+
-+	for (;;) {
-+		ssize_t n = read(fd, buf, sizeof(buf));
-+
-+		if (n < 0) {
-+			if (errno == EINTR)
-+				continue;
-+			_exit(1);
-+		}
-+		if (!n)
-+			break;
-+		total += (int)n;
-+	}
-+
-+	(void)write(out_fd, &total, sizeof(total));
-+	close(fd);
-+	close(out_fd);
-+	_exit(0);
-+}
-+
-+static int run_case(const char *obj_path, int *server_read)
-+{
-+	struct bpf_object *obj = NULL;
-+	unsigned char buf[4096];
-+	int client_fd = -1, peer_fd = -1, pipefd[2] = { -1, -1 };
-+	pid_t pid;
-+	int status, ret, i;
-+	ssize_t n, got;
-+
-+	ret = make_tcp_pair(&client_fd, &peer_fd);
-+	if (ret)
-+		return ret;
-+	if (pipe(pipefd)) {
-+		close(client_fd);
-+		close(peer_fd);
-+		return -errno;
-+	}
-+
-+	pid = fork();
-+	if (pid < 0) {
-+		close(client_fd);
-+		close(peer_fd);
-+		close(pipefd[0]);
-+		close(pipefd[1]);
-+		return -errno;
-+	}
-+	if (!pid) {
-+		close(pipefd[0]);
-+		server_loop(peer_fd, pipefd[1]);
-+	}
-+
-+	close(peer_fd);
-+	close(pipefd[1]);
-+
-+	ret = attach_bpf(obj_path, client_fd, &obj);
-+	if (ret)
-+		goto out;
-+	ret = enable_ktls_tx(client_fd);
-+	if (ret)
-+		goto out;
-+
-+	fill_seq(buf, sizeof(buf), 0x80);
-+	for (i = 0; i < 4; i++) {
-+		n = send(client_fd, buf, sizeof(buf), 0);
-+		if (n != sizeof(buf)) {
-+			ret = n < 0 ? -errno : -EIO;
-+			goto out;
-+		}
-+	}
-+
-+	shutdown(client_fd, SHUT_WR);
-+	got = read(pipefd[0], server_read, sizeof(*server_read));
-+	if (got != sizeof(*server_read))
-+		ret = -EIO;
-+
-+out:
-+	close(client_fd);
-+	close(pipefd[0]);
-+	if (obj)
-+		bpf_object__close(obj);
-+	if (waitpid(pid, &status, 0) < 0)
-+		return -errno;
-+	if (!ret && (!WIFEXITED(status) || WEXITSTATUS(status)))
-+		ret = -EIO;
-+	return ret;
-+}
-+
-+int main(int argc, char **argv)
-+{
-+	const char *obj_path = argc > 1 ? argv[1] : "./ktls_async_split.bpf.o";
-+	int sync_read = 0, async_read = 0, ret;
-+
-+	ksft_print_header();
-+	ksft_set_plan(2);
-+	bump_memlock();
-+
-+	if (run_cmd("modprobe tls >/dev/null 2>&1") && !module_loaded("tls"))
-+		ksft_exit_skip("missing tls module\n");
-+
-+	/* Keep the first run on the synchronous provider. */
-+	run_cmd("modprobe -r pcrypt >/dev/null 2>&1");
-+	ret = run_case(obj_path, &sync_read);
-+	if (ret)
-+		ksft_exit_fail_msg("sync case failed: %s\n", strerror(-ret));
-+	if (sync_read != EXPECTED_BYTES)
-+		ksft_exit_fail_msg("sync case read %d, expected %d\n",
-+				   sync_read, EXPECTED_BYTES);
-+	ksft_test_result_pass("sync provider transmits split record\n");
-+
-+	run_cmd("modprobe af_alg algif_aead pcrypt >/dev/null 2>&1");
-+	ret = instantiate_aead("pcrypt(generic-gcm-vaes-avx2)");
-+	if (ret)
-+		ret = instantiate_aead("pcrypt(gcm(aes))");
-+	if (ret || !have_async_pcrypt())
-+		ksft_exit_skip("missing async pcrypt gcm(aes) provider\n");
-+
-+	ret = run_case(obj_path, &async_read);
-+	if (ret)
-+		ksft_exit_fail_msg("async case failed: %s\n", strerror(-ret));
-+	if (async_read != EXPECTED_BYTES)
-+		ksft_exit_fail_msg("async case read %d, expected %d\n",
-+				   async_read, EXPECTED_BYTES);
-+	ksft_test_result_pass("async provider transmits split record\n");
-+
-+	ksft_finished();
-+}
--- 
-2.54.0
+Correct! Typo ...  the correct statement should be:
+DPLL_TYPE_GENERIC instead of DPLL_TYPE_TXC
+
+Thanks
+
+Grzegorz
+> ...
+>=20
+> > --
+> > 2.39.3
 
