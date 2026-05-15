@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1168D21A447;
-	Fri, 15 May 2026 00:21:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F08520297C
+	for <netdev@vger.kernel.org>; Fri, 15 May 2026 00:21:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778804463; cv=none; b=ClNxYTmrAssyvgqOX81GlOmfWQJyxBkNPp+GTWG2Hkz0qzgN6slZJc/PIdy+Ooo1FCJrOhp+WkRxOgfLP70GDtq9ttbSUq12nGMeQJgSnTEV+XO2aduR4DsMULZLlF2xvrRxrYRocIj9znUTLI3RlyEOcM8y+Cg/wceVZkoRPiM=
+	t=1778804478; cv=none; b=r61SfER6dQrDBp+0vcmaGZd6QLoQfaaw/L0e/tXEn/dOb+2M0CaqtcoKLJ+3Pmy5/U47XDZHAs3F44rDrlfwStsPh0dtfJT83HyMF58QRaXWPvaak1t+OJ625uey9Ubmznri6Xfl2j2YaS8Ap6aNMA5923L/SaU8SG5U7qwMs3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778804463; c=relaxed/simple;
-	bh=gU9VhBBF6B82CQGM+/Rzi2fldWvbjFwpm5F3HZyAt+I=;
+	s=arc-20240116; t=1778804478; c=relaxed/simple;
+	bh=nb4FiqZJBnImGOG9/gEjUlNq5dYB7k+I+TJzlXSp/z0=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=s6836d6Ot1aPLQdmnUXX1tEOzaI1j69pBAN8iXFvIlIn1Knh6i6RdgaQGTLMcf1Ww4NbkgEtGWQzG2z96Em2ZvVU4dbIdG6V1GevuXGLeC2dNoDG64B++PvacKo+LH1ws4/ckrqMEsK5YPBJOhweQ3DeSyn8T4f9mPXk/nTpj/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gxC0HewE; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=Wgw11zrEoxz4PiEgT/a+TKNzih68/o5O34tdLn+7+FXUt1G2xATLQ6VlbhurbBJCPJKYNSwoFK6Hc4mYAk7gNOYJeA0LRXYCwHFNse/6QU0kCEqPNf6zBGFfP1JPfuUXYWxbO4RbU7arz0FEHQB+x1+p5SjBAbRmYdkpfxYEWKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V/7EEjSv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gxC0HewE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4806C2BCB3;
-	Fri, 15 May 2026 00:21:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V/7EEjSv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7988C2BCB3;
+	Fri, 15 May 2026 00:21:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778804463;
-	bh=gU9VhBBF6B82CQGM+/Rzi2fldWvbjFwpm5F3HZyAt+I=;
+	s=k20201202; t=1778804478;
+	bh=nb4FiqZJBnImGOG9/gEjUlNq5dYB7k+I+TJzlXSp/z0=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=gxC0HewEoGHY5QTb1p1f6nT5gNak8Bi/8FvI0KQdGrxvIw7JnCFbGdSYlw9hvlfpP
-	 FBXYr3OeV8OI1zMmsNKgq52DeoeYXLBAfGlqaJkOsTsH7vvFvdbz+d/R/irycZ5gRw
-	 pM+0L6wNYm6Lbyxi73iHoPLUjRYOYAKty02s3uAgfcK7wpo0256Lh/69+d6DBjHOPL
-	 74htdcxcvsa6EjwXRKW9K8wn+H6R9QhOzQFkmINbZyu5gV0GF4P5U4+L3EL1g6BdAV
-	 /moHdvprpH4ZnZcfYU0um818lzmskQrdgX49vV3EP65cV3ZXqAZLFk6p0X9EYsYtt7
-	 YZFNRMwzuDwbw==
+	b=V/7EEjSv9S4/WDyDKz76efpNutR5uu5u5kGezkBr0eD3LQ0qBAHMRuIwjm8MemxK6
+	 t6oT5w+rIRNv9W+rkYI4FMPKJJgUbIikZiMv/ABgkGXpC2KfoKFSw0lDG7o9/PXUb3
+	 6fPLZJs9UR4H3xsOnoRBJF2cstM3iAe30+0L9IicguSCZWl0d7AI6fKsoXQLWXwmPt
+	 +LvxWiOVsglXkPAehWwojpufLavYH2Aflxpyc3JWEjGyfsy+57uPakNzo2ttb53OdV
+	 46yp/nKeWKiwYpE6z0i8Z2riLQ8aWH77nasy/xF1anNdBFrB8I5714oE0dyMKCoxaM
+	 sA0trpEERHNaA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9D7F39E4DB3;
-	Fri, 15 May 2026 00:20:08 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9DE139E4DB3;
+	Fri, 15 May 2026 00:20:23 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] rds_tcp: close NULL deref window in
- rds_tcp_set_callbacks
+Subject: Re: [PATCH net-next 0/3] net/sched: changes around
+ qdisc_qstats_qlen_backlog()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177880440754.134878.15132250364386263832.git-patchwork-notify@kernel.org>
-Date: Fri, 15 May 2026 00:20:07 +0000
-References: <20260512142807.1855619-1-maoyi.xie@ntu.edu.sg>
-In-Reply-To: <20260512142807.1855619-1-maoyi.xie@ntu.edu.sg>
-To: Maoyi Xie <maoyixie.tju@gmail.com>
-Cc: achender@kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
- linux-rdma@vger.kernel.org, rds-devel@oss.oracle.com,
- linux-kernel@vger.kernel.org, maoyi.xie@ntu.edu.sg
+ <177880442228.134878.3806192923623585975.git-patchwork-notify@kernel.org>
+Date: Fri, 15 May 2026 00:20:22 +0000
+References: <20260513080853.1383975-1-edumazet@google.com>
+In-Reply-To: <20260513080853.1383975-1-edumazet@google.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ jhs@mojatatu.com, victor@mojatatu.com, jiri@resnulli.us, idosch@nvidia.com,
+ dsahern@kernel.org, toke@toke.dk, netdev@vger.kernel.org,
+ eric.dumazet@gmail.com
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 12 May 2026 22:28:07 +0800 you wrote:
-> rds_tcp_set_callbacks() links a new rds_tcp_connection onto
-> rds_tcp_tc_list under rds_tcp_tc_list_lock. It releases the
-> lock, then assigns tc->t_sock = sock outside the lock.
+On Wed, 13 May 2026 08:08:50 +0000 you wrote:
+> First patch makes clear qdisc_qstats_qlen_backlog() runs locklessly.
 > 
-> rds_tcp_tc_info() and rds6_tcp_tc_info() walk rds_tcp_tc_list
-> under the same lock. Both dereference tc->t_sock->sk without
-> a NULL check.
+> Second patch changes ioam6 to not acquire qdisc spinlock anymore.
+> 
+> Third pach adds missing READ_ONCE()/WRITE_ONCE() annotations in hfsc.
+> 
+> htb still needs fixes, I will take care of them separately.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] rds_tcp: close NULL deref window in rds_tcp_set_callbacks
-    https://git.kernel.org/netdev/net/c/d2bfdbb69cf8
+  - [net-next,1/3] net/sched: qdisc_qstats_qlen_backlog() runs locklessly
+    https://git.kernel.org/netdev/net-next/c/72a1795999df
+  - [net-next,2/3] net: ioam6: no longer acquire qdisc spinlock while calling qdisc_qstats_qlen_backlog()
+    https://git.kernel.org/netdev/net-next/c/d3f3c8a4d1f6
+  - [net-next,3/3] net/sched: sch_hfsc: annotate data-races in hfsc_dump_class_stats()
+    https://git.kernel.org/netdev/net-next/c/e300c7d470ad
 
 You are awesome, thank you!
 -- 
