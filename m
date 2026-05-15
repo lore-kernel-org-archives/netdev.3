@@ -1,77 +1,85 @@
-Received: from pdx-out-003.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-003.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.68.102])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C972392C5A;
-	Fri, 15 May 2026 16:41:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.246.68.102
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B758B3F660B
+	for <netdev@vger.kernel.org>; Fri, 15 May 2026 16:41:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778863281; cv=none; b=OOc23vp6RLafBZDvmBdDdI9W1A/gtg/TNzleSnTiNPW7m4G1wqr8mYOBgJ7xmyLbzWgj1EXSuPbtD+HqolqQ/UcjDXpT6DRw5YuVze5s0LrgoZK82uvXD74EjET5Jjl5ByJEUtklaDkCx+U/h0gUszIEuFzuYlnFPY4USrz0BNk=
+	t=1778863289; cv=none; b=MBENFkPEUjDkBe0J7DbswrYraS886U4HUrBStsF20oR75VtqlrX7muGZqJMNubCWkN2uC7+Ene0bn93PLGtjp5z0kDOmHLHltF4x2G/cToPUobBQ8dfLBIPYItPvLzyxMXlA+6Z3ryL4hZ8wnesQm7Tzn2gzDmwKULBjRCjXtlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778863281; c=relaxed/simple;
-	bh=fhQVGn8eCoyqgWZRFpQIKMnhVqGyNWNReSidO871/aw=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RwWnZ1gH234NY5Kx3J/V55Ybs0tpA7h3i6aSGsl18wKiP/DWp0MJoY9CXobO4OIAlgPUIjAhPJj4fMngStA2Q3Ml9NvsZTXLIOjs5UC9gZArQpGoSavt/nG+Ws9VbIZ79jF3HFbV/tMQp6Pl8t+A7zv/jW43oduoamdimNJkyws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=lv/bSvg2; arc=none smtp.client-ip=44.246.68.102
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+	s=arc-20240116; t=1778863289; c=relaxed/simple;
+	bh=VQrt6Kb8j8BwVo0kBZX98Mz7U5mvGhyJexU+/XCJAyw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ToSDqyHVlYNCw/J4EREJe3sla3vXcd8PCtYdOaxV6Gi78BGPMa7GsIS/4/scUA8P58Wr3DapPCaGHrh7lPlMICtyPHxe06OracsRxyOnOGe8FaCIh1uDZ1LhWBLoEvdKNzZupj2e/ct5ScKDA3fudS1iEGOUT5DXP2acTYUAApg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HJZycQTE; arc=none smtp.client-ip=209.85.210.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="lv/bSvg2"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HJZycQTE"
+Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-7dbd7a1e989so921040a34.1
+        for <netdev@vger.kernel.org>; Fri, 15 May 2026 09:41:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1778863278; x=1810399278;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=wdV9Q0EwyYv6Y1Cx4DKYff4Ebn/kaxIhmn6o8hitAW0=;
-  b=lv/bSvg2GhvIea0Rc6qMNFmjlvL4YReMlyPRPTXc1+DULhCwJRqdFF4o
-   O4l4jSx1gafgJObO21kNKQnysLwScTcLYAhrU0fifuc4rjjkLpL8vzdze
-   SJW6yXe6esvr9rThk2iJcerR8khTOWeaaEeCiIqQeMwPIhmPGFmw7hdw8
-   CjIB0x880kHA4VkJ9F2z37ZSzyFR5BDsPbRtSvw6pI/aG/VXQ88l7KQJI
-   gQTC80bTQ+5rE1VHSvnvj0Vy9aPsqESIHyMLy0DNvlEDjVlI/SOMcL2Ni
-   hwjOqV3TYo5EaKVmaLWHktskT+sTYYSILnLUGzEdBA2gcn5fFc+ZLEnLM
-   g==;
-X-CSE-ConnectionGUID: pAmnmwzQTxSrkWaKqYeHdg==
-X-CSE-MsgGUID: +ZgXbzlmQoyWaZ/u1m5F7Q==
-X-IronPort-AV: E=Sophos;i="6.23,236,1770595200"; 
-   d="scan'208";a="19764784"
-Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
-  by internal-pdx-out-003.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 16:41:14 +0000
-Received: from EX19MTAUWA002.ant.amazon.com [205.251.233.178:23065]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.17.30:2525] with esmtp (Farcaster)
- id f0bfc0ae-3647-42dd-9bf2-c38b46377a31; Fri, 15 May 2026 16:41:14 +0000 (UTC)
-X-Farcaster-Flow-ID: f0bfc0ae-3647-42dd-9bf2-c38b46377a31
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Fri, 15 May 2026 16:41:12 +0000
-Received: from dev-dsk-akiyano-1c-2138b29d.eu-west-1.amazon.com (172.19.83.6)
- by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Fri, 15 May 2026 16:41:07 +0000
-From: Arthur Kiyanovski <akiyano@amazon.com>
-To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
-	<netdev@vger.kernel.org>
-CC: Arthur Kiyanovski <akiyano@amazon.com>, Richard Cochran
-	<richardcochran@gmail.com>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
-	<pabeni@redhat.com>, David Woodhouse <dwmw2@infradead.org>, Thomas Gleixner
-	<tglx@linutronix.de>, Miroslav Lichvar <mlichvar@redhat.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, Wen Gu <guwen@linux.alibaba.com>, Xuan Zhuo
-	<xuanzhuo@linux.alibaba.com>, David Woodhouse <dwmw@amazon.com>, "Yonatan
- Sarna" <ysarna@amazon.com>, Zorik Machulsky <zorik@amazon.com>, "Alexander
- Matushevsky" <matua@amazon.com>, Saeed Bshara <saeedb@amazon.com>, Matt
- Wilson <msw@amazon.com>, Anthony Liguori <aliguori@amazon.com>, Nafea Bshara
-	<nafea@amazon.com>, Evgeny Schmeilin <evgenys@amazon.com>, Netanel Belgazal
-	<netanel@amazon.com>, Ali Saidi <alisaidi@amazon.com>, Benjamin Herrenschmidt
-	<benh@amazon.com>, Noam Dagan <ndagan@amazon.com>, David Arinzon
-	<darinzon@amazon.com>, Evgeny Ostrovsky <evostrov@amazon.com>, Ofir Tabachnik
-	<ofirt@amazon.com>, Amit Bernstein <amitbern@amazon.com>,
-	<linux-kselftest@vger.kernel.org>, <shuah@kernel.org>,
-	<vadim.fedorenko@linux.dev>
-Subject: [PATCH v3 net-next 3/7] selftests/ptp: Add testptp support for attributes ioctls
-Date: Fri, 15 May 2026 16:40:23 +0000
-Message-ID: <20260515164033.6403-4-akiyano@amazon.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260515164033.6403-1-akiyano@amazon.com>
-References: <20260515164033.6403-1-akiyano@amazon.com>
+        d=gmail.com; s=20251104; t=1778863285; x=1779468085; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CUh3g6NF2/hDjdQJcgRgRluSwJT7rJP3ZfpYW2WdTWI=;
+        b=HJZycQTEZKCwZPdT9amSYOIRjWf+pVC2bxgOk5u/xkOinCwjKURBXZaFYlhyyuub7H
+         k9LhIAsyCQjXKzYrcesNAF72rOrlE46uGHmj/2E5Ax2IpkRwZGyc4zKNKE7VHlbUZjze
+         Al5M8A+tYMgJ/bD7dzue/XZro4JWjhbD9/Nq5A+kl0QKS2P/2s8dbxnm5iSyMV2E9Nhv
+         zMdUaxNUhGxEJSx7++ZsmlAxZBqcHGefBJ+7rRLD/pUIi+GJI0iXPvdzVuMx4RP9BP4j
+         jONTvisBU9LXlvspi75dmlPdLQJSM0ocSERnxOzRtwa8OXt/Fn9WxgXxswRbO6Vkq9ud
+         1kDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778863285; x=1779468085;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=CUh3g6NF2/hDjdQJcgRgRluSwJT7rJP3ZfpYW2WdTWI=;
+        b=m9tn0pWuMlJ8M5GwNJOoLeH1ZSUB3DApEt2YeSdUMeUxMVDBmVDPpctz46L+8UAm1M
+         V5L2+2r5ZJ8BtZSjUOfnxcuA17Qrq0YkPoOZqWZbfyUFOzKSexvpTSuWQbe0nmMT02LC
+         C+eRr7HUhN6krDqL72Xz3ue7zNgASnqkH8tsSwu7ueMNXuUq9TBvamIZ2M5V64JZGtUl
+         CvW2z1VP5jmckRX2nLxg5Qsr2a3I0HgXdEJycFEnEKzembbIPj+dgElq4EdVQIdyAWsc
+         bXMKmRrq/l+P+cpvEIP1XJyCxFEBdfATuAxU7o52HNVGU7YokfK8eZR0Ea0Es159IbAu
+         Cmaw==
+X-Forwarded-Encrypted: i=1; AFNElJ9XzUGW/eXZtOj6xb9PSlO8NyX5ys8jdcQqmB+2YAn/XIw1BFHKkxX3eXqeTH52684uwzR9pmY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyxo+btCmC0SVKEIlFH+SOEIi0c+haBdKRXZqE5qdN2zJcyVLyF
+	IsdA3LRQdO1ouWDstxJEAltVi06HtDnztEGwqDcdGthRm9oPDwi5v2bX
+X-Gm-Gg: Acq92OHnyyOsY3NBl8hM+FS5FpkB5UumCvi2fLC6HE3JvULulTdLe9pgG4NUdUt8pTn
+	XCiOHDG5saWcW/zlwvSCB5C78fs+hcI6PXz6vVCBGXQUdLE7sh8wZpelsEvIhjQ6AJBCQYR3lBf
+	Y1iEELaXxz5QNB2Wqf85ypsivxjac8bMnm6LXHKD5WAmxWwoqdqXd3QPzHfoYwjp7Cskb+/cQ8l
+	g5F4EYZYerIZh0kvxT5GfHisZ5CBWyVhsEknYeasWWUn92IZtWJZV2R/Rgt9lPJqbV9+DRYiHV1
+	V1HfGLr9xDI1TmveDdtDQ+YlTGSNGP0H22UQOwBV37AmZGtCFhIoJryD4cWhWnelU9tBdn0TVRe
+	sgQacftA0enmabTG9Qhya6F+SMJmvs2vai8EVKhvVyvYFMz3/nnqJxdB76voYO38OreBEDjpDYO
+	1FK1bXdhqOhxhNLwTWDwt3N2m/6wJyGAV2M/LBYrn92N42ZTkXy+yOFEytKMwnm2dpP18NnqWBp
+	jFr8iruhGcqw4VqREdkg9Gu
+X-Received: by 2002:a05:6830:4104:b0:7db:e661:bb52 with SMTP id 46e09a7af769-7e4f2b15f9cmr1890167a34.4.1778863285020;
+        Fri, 15 May 2026 09:41:25 -0700 (PDT)
+Received: from localhost ([136.49.184.116])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7e55bc4983asm1608373a34.26.2026.05.15.09.41.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 May 2026 09:41:24 -0700 (PDT)
+From: Aaron Esau <aaron1esau@gmail.com>
+To: imv4bel@gmail.com
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	sultan@kerneltoast.com,
+	sd@queasysnail.net,
+	steffen.klassert@secunet.com,
+	herbert@gondor.apana.org.au,
+	dsahern@kernel.org,
+	netdev@vger.kernel.org,
+	stable@vger.kernel.org,
+	Aaron Esau <aaron1esau@gmail.com>
+Subject: Re: [PATCH net v4] net: skbuff: propagate shared-frag marker through frag-transfer helpers
+Date: Fri, 15 May 2026 11:41:21 -0500
+Message-ID: <20260515164121.2608076-1-aaron1esau@gmail.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <aga1VyHpHaUhnGZa@v4bel>
+References: <aga1VyHpHaUhnGZa@v4bel>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,217 +87,51 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D038UWB003.ant.amazon.com (10.13.139.157) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-Add support for testing the new PTP_SYS_OFFSET_EXTENDED_ATTRS and
-PTP_SYS_OFFSET_PRECISE_ATTRS ioctls in the testptp utility.
+skb_segment() propagates SKBFL_SHARED_FRAG from head_skb only.  When
+segments pull frags from frag_list members, the flag is never
+propagated from those members into the segment skb.
 
-New command-line options:
-  -a: Get extended offset with attributes (error_bound, clock_status,
-      timescale)
-  -A: Get precise cross-timestamp with attributes
+There are two miss sites:
 
-These options allow testing and validation of PHC devices that provide
-clock quality information alongside timestamps.
+1. Line ~4986: a new nskb propagates only from head_skb, but frag_skb
+   may already point to a list_skb carried over from the previous
+   segment's iteration (i, nfrags, frag_skb persist across the outer
+   do/while).
 
-Also display the new clock_attrs capability in the -c output, and
-update print_system_timestamp to print unrecognized clock types instead
-of silently dropping them.
+2. When the inner loop exhausts head_skb frags and switches to a
+   list_skb (line ~4999-5002), frag_skb is updated but its
+   SKBFL_SHARED_FRAG is not propagated into nskb.
 
-Signed-off-by: Amit Bernstein <amitbern@amazon.com>
-Signed-off-by: Arthur Kiyanovski <akiyano@amazon.com>
----
- tools/testing/selftests/ptp/testptp.c | 105 +++++++++++++++++++++++++-
- 1 file changed, 103 insertions(+), 2 deletions(-)
+Your v4 GRO fix means head_skb will normally carry the flag, so
+skb_segment() picks it up indirectly.  But skb_segment() itself should
+propagate from frag_list members directly --- otherwise any non-GRO
+frag_list producer re-exposes the gap.
 
-diff --git a/tools/testing/selftests/ptp/testptp.c b/tools/testing/selftests/ptp/testptp.c
-index d3bcfd0..99eb346 100644
---- a/tools/testing/selftests/ptp/testptp.c
-+++ b/tools/testing/selftests/ptp/testptp.c
-@@ -147,10 +147,13 @@ static void usage(char *progname)
- 		" -t val     shift the ptp clock time by 'val' seconds\n"
- 		" -T val     set the ptp clock time to 'val' seconds\n"
- 		" -x val     get an extended ptp clock time with the desired number of samples (up to %d)\n"
-+		" -a val     get extended timestamps with attributes (error_bound,\n"
-+		"            clock_status, timescale, counter), up to %d samples\n"
- 		" -X         get a ptp clock cross timestamp\n"
-+		" -A         get a precise cross timestamp with attributes\n"
- 		" -y val     pre/post tstamp timebase to use {realtime|monotonic|monotonic-raw}\n"
- 		" -z         test combinations of rising/falling external time stamp flags\n",
--		progname, PTP_MAX_SAMPLES);
-+		progname, PTP_MAX_SAMPLES, PTP_MAX_SAMPLES);
- }
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -4986,7 +4986,8 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
  
- static void print_system_timestamp(int sample_num, __kernel_clockid_t clockid,
-@@ -171,6 +174,8 @@ static void print_system_timestamp(int sample_num, __kernel_clockid_t clockid,
- 		       sample_num, when, sec, nsec);
- 		break;
- 	default:
-+		printf("sample #%2d: unknown clock %d %s: %lld.%09u\n",
-+		       sample_num, clockid, when, sec, nsec);
- 		break;
- 	}
- }
-@@ -188,6 +193,8 @@ int main(int argc, char *argv[])
- 	struct ptp_sys_offset *sysoff;
- 	struct ptp_sys_offset_extended *soe;
- 	struct ptp_sys_offset_precise *xts;
-+	struct ptp_sys_offset_precise_attrs *xtsa;
-+	struct ptp_sys_offset_extended_attrs *soea;
+-		skb_shinfo(nskb)->flags |= skb_shinfo(head_skb)->flags &
+-					   SKBFL_SHARED_FRAG;
++		skb_shinfo(nskb)->flags |= (skb_shinfo(head_skb)->flags |
++					    skb_shinfo(frag_skb)->flags) &
++					   SKBFL_SHARED_FRAG;
  
- 	char *progname;
- 	unsigned int i;
-@@ -208,7 +215,9 @@ int main(int argc, char *argv[])
- 	int list_pins = 0;
- 	int pct_offset = 0;
- 	int getextended = 0;
-+	int getextendedattrs = 0;
- 	int getcross = 0;
-+	int getcrossattrs = 0;
- 	int n_samples = 0;
- 	int pin_index = -1, pin_func;
- 	int pps = -1;
-@@ -226,7 +235,7 @@ int main(int argc, char *argv[])
+ 		if (skb_zerocopy_clone(nskb, frag_skb, GFP_ATOMIC))
+@@ -5000,6 +5001,8 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
+ 				frag = skb_shinfo(list_skb)->frags;
+ 				frag_skb = list_skb;
  
- 	progname = strrchr(argv[0], '/');
- 	progname = progname ? 1+progname : argv[0];
--	while (EOF != (c = getopt(argc, argv, "cd:e:E:f:F:ghH:i:k:lL:n:o:p:P:rsSt:T:w:x:Xy:z"))) {
-+	while (EOF != (c = getopt(argc, argv, "a:Acd:e:E:f:F:ghH:i:k:lL:n:o:p:P:rsSt:T:w:x:Xy:z"))) {
- 		switch (c) {
- 		case 'c':
- 			capabilities = 1;
-@@ -311,9 +320,22 @@ int main(int argc, char *argv[])
- 				return -1;
- 			}
- 			break;
-+		case 'a':
-+			getextendedattrs = atoi(optarg);
-+			if (getextendedattrs < 1 ||
-+			    getextendedattrs > PTP_MAX_SAMPLES) {
-+				fprintf(stderr,
-+					"number of extended attrs timestamp samples must be between 1 and %d; was asked for %d\n",
-+					PTP_MAX_SAMPLES, getextendedattrs);
-+				return -1;
-+			}
-+			break;
- 		case 'X':
- 			getcross = 1;
- 			break;
-+		case 'A':
-+			getcrossattrs = 1;
-+			break;
- 		case 'y':
- 			if (!strcasecmp(optarg, "realtime"))
- 				ext_clockid = CLOCK_REALTIME;
-@@ -367,6 +389,7 @@ int main(int argc, char *argv[])
- 			       "  %d programmable pins\n"
- 			       "  %d cross timestamping\n"
- 			       "  %d adjust_phase\n"
-+			       "  %d clock_attrs\n"
- 			       "  %d maximum phase adjustment (ns)\n",
- 			       caps.max_adj,
- 			       caps.n_alarm,
-@@ -376,6 +399,7 @@ int main(int argc, char *argv[])
- 			       caps.n_pins,
- 			       caps.cross_timestamping,
- 			       caps.adjust_phase,
-+			       caps.clock_attrs,
- 			       caps.max_phase_adj);
- 		}
- 	}
-@@ -648,6 +672,50 @@ int main(int argc, char *argv[])
- 		free(soe);
- 	}
- 
-+	if (getextendedattrs) {
-+		soea = calloc(1, sizeof(*soea));
-+		if (!soea) {
-+			perror("calloc");
-+			return -1;
-+		}
++				skb_shinfo(nskb)->flags |= skb_shinfo(frag_skb)->flags & SKBFL_SHARED_FRAG;
 +
-+		soea->n_samples = getextendedattrs;
-+		soea->clockid = ext_clockid;
-+
-+		if (ioctl(fd, PTP_SYS_OFFSET_EXTENDED_ATTRS, soea)) {
-+			perror("PTP_SYS_OFFSET_EXTENDED_ATTRS");
-+		} else {
-+			printf("extended timestamp request returned %d samples\n",
-+			       getextendedattrs);
-+
-+			for (i = 0; i < getextendedattrs; i++) {
-+				print_system_timestamp(i, ext_clockid,
-+						       soea->ts[i][0].pct.sec,
-+						       soea->ts[i][0].pct.nsec,
-+						       "before");
-+
-+				printf("            phc time: %lld.%09u, error bound: %u, clock status: %u, timescale: %u\n",
-+				       soea->ts[i][1].pct.sec,
-+				       soea->ts[i][1].pct.nsec,
-+				       soea->ts[i][1].att.error_bound,
-+				       soea->ts[i][1].att.status,
-+				       soea->ts[i][1].att.timescale);
-+
-+				if (soea->ts[i][1].att.counter_id)
-+					printf("            counter: %llu (id: %u)\n",
-+					       (unsigned long long)soea->ts[i][1].att.counter_value,
-+					       soea->ts[i][1].att.counter_id);
-+
-+				print_system_timestamp(i, ext_clockid,
-+						       soea->ts[i][2].pct.sec,
-+						       soea->ts[i][2].pct.nsec,
-+						       "after");
-+			}
-+		}
-+
-+		free(soea);
-+	}
-+
- 	if (getcross) {
- 		xts = calloc(1, sizeof(*xts));
- 		if (!xts) {
-@@ -671,6 +739,39 @@ int main(int argc, char *argv[])
- 		free(xts);
- 	}
- 
-+	if (getcrossattrs) {
-+		xtsa = calloc(1, sizeof(*xtsa));
-+		if (!xtsa) {
-+			perror("calloc");
-+			return -1;
-+		}
-+
-+		if (ioctl(fd, PTP_SYS_OFFSET_PRECISE_ATTRS, xtsa)) {
-+			perror("PTP_SYS_OFFSET_PRECISE_ATTRS");
-+		} else {
-+			puts("system and phc crosstimestamping with attributes request okay");
-+
-+			printf("device time: %lld.%09u\n",
-+			       xtsa->device.pct.sec, xtsa->device.pct.nsec);
-+			printf("error_bound: %u ns\n",
-+			       xtsa->device.att.error_bound);
-+			printf("status: %u\n",
-+			       xtsa->device.att.status);
-+			printf("timescale: %u\n",
-+			       xtsa->device.att.timescale);
-+			if (xtsa->device.att.counter_id)
-+				printf("counter: %llu (id: %u)\n",
-+				       (unsigned long long)xtsa->device.att.counter_value,
-+				       xtsa->device.att.counter_id);
-+			printf("system time: %lld.%09u\n",
-+			       xtsa->sys_realtime.sec, xtsa->sys_realtime.nsec);
-+			printf("monoraw time: %lld.%09u\n",
-+			       xtsa->sys_monoraw.sec, xtsa->sys_monoraw.nsec);
-+		}
-+
-+		free(xtsa);
-+	}
-+
- 	if (channel >= 0) {
- 		if (ioctl(fd, PTP_MASK_CLEAR_ALL)) {
- 			perror("PTP_MASK_CLEAR_ALL");
--- 
-2.47.3
+ 				if (!skb_headlen(list_skb)) {
+ 					BUG_ON(!nfrags);
+ 				} else {
 
+Site 1 covers segments that start mid-list_skb (frag_skb carried from
+the previous segment).  Site 2 covers segments that switch from
+head_skb frags to list_skb frags mid-construction.
+
+Fixes: cef401de7be8 ("net: fix possible wrong checksum generation")
