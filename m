@@ -1,31 +1,41 @@
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF8AE23EAA4;
-	Fri, 15 May 2026 12:48:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FB542DECDE
+	for <netdev@vger.kernel.org>; Fri, 15 May 2026 13:00:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778849291; cv=none; b=RUYK7BsGOXrB+NIF4LB6QT2BxaENKo6IB3AIhZRiomm7oBWYWVpnn2I/CIOUlQhuUXOSyM0dvESs08KWhlMRjA8ew2g66S7UpANh1JOY99/ghfj/nG7jQdBMm4uHAuEibaHzxKO1S8tNxfUb+Ss0+Xl4WQG6sBq8ZNOtTnxjNKM=
+	t=1778850004; cv=none; b=kOtTz4cYvxKwW7SwyLG9B+n2iw6tzgXF/hSOFsIh5MSJhOa0RtQ2aDOuc/DZ/BGQendnSIn6gbzP8aEaruIsCYTDU0zYSJ5VdNhjmH8ZhI5PLv1DOuGvg7tDI+NyDDFyA5k0sbnCxtHcmz1KRT/CuYoAM3sVYkU62F7/T6Z459k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778849291; c=relaxed/simple;
-	bh=6JGDGmmwgA0OKG+d2hEn1s6MZ8gf5q+OXTINTevYihk=;
+	s=arc-20240116; t=1778850004; c=relaxed/simple;
+	bh=UJLvqzSDwwLyRjZD5gG5mNZYATJsWtjrmnjoryulM9Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X3wMLgWBtbrH+RcsPk/HFmxSzo+wwDuWNUGiKV6LRisOMxchY0VjZMm+U0gV73nFE6lHXUcXS5IwZgOPNeqOMLvHn9CExEIao3Xegn6WGkAsF+lmO4DRzgaJ1ignBGFGUq/oJqZV6hfNBrt0JY0W0eeUjCzn1zVSgn8AKIpgTjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
-Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
-	id D06D860706; Fri, 15 May 2026 14:48:06 +0200 (CEST)
-Date: Fri, 15 May 2026 14:48:05 +0200
-From: Florian Westphal <fw@strlen.de>
-To: Qi Tang <tpluszz77@gmail.com>
-Cc: netfilter-devel@vger.kernel.org, netdev@vger.kernel.org,
-	pablo@netfilter.org, herbert@gondor.apana.org.au,
-	michael.bommarito@gmail.com, lyutoon@gmail.com
-Subject: Re: [RFC] netfilter: disable payload mangling in userns
-Message-ID: <agcWBZNugohelNp6@strlen.de>
-References: <20260515100411.3141-1-fw@strlen.de>
- <20260515114848.1105927-1-tpluszz77@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=uzj7D8QzYl3HedLbf4JZlU8DAoGy8Uszlfi1+wNaiL9T08az/14ECRGx+zZGrzGomB7oIRR2qO70F3yabwmqU1EoIrXK6+LaSifDSxitLBbVouTBiXQ36X8pR/Y1ojSc411tFLaaksx6NEgwf8I+Klx6v3DZX4A9kvep1I0dWh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=1rErwQnr; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="1rErwQnr"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=bqFoJAYhOcuPQCiA0z9gbzKqgyvvr8P1ckx+vlPg9E8=; b=1rErwQnrXYp9q2OgCgxhihLojh
+	XlkYmosB0V/6pL6/phT5eos3i1WubhPncSDdzzFozilUWrcpK6yo/uffXbZ0jhypCBwj6eX5TZGT4
+	IgU9QyPSKH+K5Dnjv1r7IZxueEoGGIX6q1gjewbK+82llajNB8tqTBRJjzPskDgeHz0w=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wNs8w-00343Q-BI; Fri, 15 May 2026 14:59:54 +0200
+Date: Fri, 15 May 2026 14:59:54 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Liu Xiang <liu.xiang@zlingsmart.com>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
+Subject: Re: [PATCH v4] net: stmmac: avoid repeated devm_gpiod_get_optional
+ in mdio reset on resume
+Message-ID: <4a2c3023-ddc9-4729-a609-a648f1a052de@lunn.ch>
+References: <20260515065652.46998-1-liu.xiang@zlingsmart.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -34,47 +44,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260515114848.1105927-1-tpluszz77@gmail.com>
+In-Reply-To: <20260515065652.46998-1-liu.xiang@zlingsmart.com>
 
-Qi Tang <tpluszz77@gmail.com> wrote:
-> I agree with the userns block.  I'll keep pushing the five
-> consumer-side bounds-check patches: root in init userns can
-> still install the same payload-set rule and trigger the same
-> OOB at the re-read sites, so the underlying bug fix is still
-> worth landing.
+On Fri, May 15, 2026 at 02:56:52PM +0800, Liu Xiang wrote:
+> During system resume, stmmac_resume() calls stmmac_mdio_reset().
+> This results in repeated calls to devm_gpiod_get_optional() for the same
+> GPIO. The second invocation returns an error since the GPIO descriptor has
+> already been obtained.
 > 
-> None of the five sites overlap with the relax wishlist (saddr/
-> daddr, transport, linklayer).  Same class showed up in an
-> earlier patch:
->   https://lore.kernel.org/netdev/20260514035802.1540395-1-tpluszz77@gmail.com/
-> 
-> These five are unlikely to be all of them; we think the
-> consumer side warrants a broader audit.  Thoughts?
+> Fixes: 7c86f20d15b7c113 ("net: stmmac: use GPIO descriptors in stmmac_mdio_reset")
+> Suggested-by: Andrew Lunn <andrew@lunn.ch>
+> Signed-off-by: Liu Xiang <liu.xiang@zlingsmart.com>
+> ---
 
-I think we have to do both.
+Under the --- you should include the history of the patch. This is
+version 4. How does it differ to v1, v2, v3.
 
-For nft_payload/nft_exthdr:
-1. Writes from !initial_userns are rejected (rule insert fails).
-2. Writes for initial userns get validated at rule add time:
-  - netdev ingress is allowed to alter everything, I think
-  this is early enough to not introduce oddities that can't come
-  from wire / untrusted peer.
- - bridge is allowed to alter everything: AFAICS there shouldn't
- be a problem with this, same as with ingress.
- - inet (ipv4/ip6): Check base (offset is unsigned and relative
-   to ll/network header/transport header/payload
-   - Allow modifications past transport header.
-   - Allow modifications of transport header
-   - Allow network header modifications for a subset of valid
-     offsets/lengths: saddr, daddr, checksum, tos, id, ttl / hl.
-     Reject everything else.
-   - Allow link-layer; but check at from packetpath that
-     offset + len don't write past start of the network header.
-     Else: no-op.
+> +	priv->reset_gpio = devm_gpiod_get_optional(priv->device,
+> +						   "snps,reset",
+> +						   GPIOD_ASIS);
+> +	if (IS_ERR(priv->reset_gpio)) {
+> +		priv->reset_gpio = NULL;
+> +		dev_warn(dev, "No reset GPIO found\n");
+> +	}
 
-nfqueue is the bigger problem: userspace gives us a whole new
-packet data blob, not a delta that we should apply at offset x).
+Please read the documentation for devm_gpiod_get_optional().
 
-I think we have to update nfqueue to do rudimentary header revalidation
-and drop the packet on failure, e.g. at least making sure tot_len is not
-past skb->len.
+There are three different cases:
+
+1) A GPIO is returned
+2) No GPIO is found in DT, which since it is optional, is O.K.
+3) A real error happened, which should fail the probe.
+
+Also, see what happens when you pass NULL to any gpiod_ method.
+
+    Andrew
+
+---
+pw-bot: cr
