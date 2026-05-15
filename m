@@ -1,78 +1,83 @@
-Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B9E4968E5
-	for <netdev@vger.kernel.org>; Fri, 15 May 2026 11:48:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBC8C47CC8E
+	for <netdev@vger.kernel.org>; Fri, 15 May 2026 11:50:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778845736; cv=none; b=SST3cbfFCQtjfgzfAqI+CK1c+Iq5tf995zbzE6jJyyZ/jc+jlp0nf4fJ0PucYlZJcVN+FReZyerHi4sHLUcszSQG6TnXp1KHFXIZ1tPmuzamH/7qO7gi3f6gjjDr0+Ex/vvRi5wRDAv+nex5G2lntGP7xp6ji2FDH5dUoyBWenI=
+	t=1778845861; cv=none; b=Yctda2VznCjArSl0+9hhnEbiAmW6gzJZoI9cKG54bO/KYAmWrmYnyhJXF/wBU7UuAp6UIHpjP4CLAGzq/2PcsmZbxUWSq+QGbczQYYPRJORhLyY9PeJG3Q1Hj5XDRMdjk4x15cWEKtW8Esc0IcFAG7XUT6hFugPXfZIst70NM6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778845736; c=relaxed/simple;
-	bh=wwiNcYnDC1z10P0PrRs9APY772ZKV/kzqcnC5P5allo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KAKecuLWuiMqNN+k5fQAgzvxQcFbyyz99EB78AOMR2aer54BQeqzRYsSCTGVKKDxh6BfNUXclkKUGRDLsH/+4b7qlQxLvUb/B20f8aLvrkmQVnSlDOiPXc3gQgirOIXlbri69IfVAVRy6bx7cOawimQ0qITMP8VhIWgcfV/oz9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TXiZjQV5; arc=none smtp.client-ip=74.125.82.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1778845861; c=relaxed/simple;
+	bh=6kFn4dcGVaXo/n35fpEIPoxldbG29tZM7Sv8RrAE/FI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=G5mwHUZ62B/sosnNKh5A8t/zp89j1ULJMvqTm9xJq9dRmCB1/LyB3J55/ksAQRyEOJLS8tseMmOm4uSf5Rj6Isk1TiCBJX5Ly2US5LYSZfOZQbTb+b6iNw0KDpspMqCCG1lT3CDHPEyFE0eiiPB1yRd7xNtZcfBctrgOjWcBZQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sartura.hr; spf=pass smtp.mailfrom=sartura.hr; dkim=pass (2048-bit key) header.d=sartura.hr header.i=@sartura.hr header.b=dGyZoH+A; arc=none smtp.client-ip=209.85.167.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sartura.hr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sartura.hr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TXiZjQV5"
-Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-2f68f3b075fso13552705eec.0
-        for <netdev@vger.kernel.org>; Fri, 15 May 2026 04:48:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=sartura.hr header.i=@sartura.hr header.b="dGyZoH+A"
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5a62f43b76aso8094980e87.3
+        for <netdev@vger.kernel.org>; Fri, 15 May 2026 04:50:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778845734; x=1779450534; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=REkPrp5VneTuK6ehtYR1UAlutKollViGkaFp6MZ6pyY=;
-        b=TXiZjQV5RqNHr/6bEk9wDCgK72Gm24+OtLYHe2Ib1W80uZXRq8bCE55bqcPQZkd5h/
-         iW7VfXqcRQB71xdPwi2oJ6IX/R3QNioJQ9xmdeY+rUA0A1Y2c6PbnDzyOkM7qIBxvITd
-         De8tnaN+u9jyrQH9wCAm2ybaoyvr0da6yNqN1nIfWyIafMXbj8xMs+g4yDMmCv0YVfa4
-         SwXynq6blXJjBMztam4eXs4/HLtiTjj7+Sd32M/JHIMs5g0R/mlR7S9xfSwQ4santlI8
-         HJ6vyNcZPfzMf1WNRxR25pyXa+3xcG5vbiVS0g68rI0wI5mGd2QAg6pKm09JqxuEcYUB
-         wtaQ==
+        d=sartura.hr; s=sartura; t=1778845858; x=1779450658; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=X6ljMWmUboXD/jlL65txDouWmV0Cc/lFptWauWqQZEE=;
+        b=dGyZoH+Au2zrEwjH9gfGsLmwb8QoE4EOTJ8y2EXlRHR89hrJ/mnVFXKxALiKcq1sm2
+         etls6uJrH0r+b1ydVqPglXCrRw+7IL15FZ02qq1BuIbbCvLPhxCBNEHD75A+sXGT8yJD
+         PZmHzQFipstGnLrZ7ozoJLzDp7gIbOxiORV+jzioU7jmHjy/PWCsvZwN1eSoTBkV+6xl
+         pSb6wmv1vxbVdeJiWTTJaZf1vdlVzq/4bGKPAcd1fKakB7rvZMRGj/uBLXK2zmND2TdE
+         gaA6tvFl0j08cERLgasrcQCTeEXbuDXEiFRmLfxN6MJLZaLIkQr37nLdFYeEC9VmqYfS
+         ogDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778845734; x=1779450534;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=REkPrp5VneTuK6ehtYR1UAlutKollViGkaFp6MZ6pyY=;
-        b=mkshQC26yOGK9gK4iebgkr8gaitcOJy/XH4RPZFXW5HmchubhZhWXvQWHkkJrjqj2A
-         aK8/S53W0hSRJ0e9rIsAsDPmK6brPpNyBHem9qfuie15igcoOE0XD4wSxV2IWtlA82vr
-         LTIpIRZqkaOpjnpxYuZ9T4LedNHGkMqfK7FbmVUBlKANZMo0Lj3GVBrIt5MwKFhYdZbg
-         eUpCD3UeS469hPRRvfYNfRGFDb9nBzV4683o8o+5dO2rcPrEb3K8GTkde1sSWVp1LW/L
-         jjeRnQR/PEnxiFJQekI2SvGVk2mo822v43BoUYosnX8n34KVLX/V9gQanoQaIQIqlzYT
-         pICg==
-X-Forwarded-Encrypted: i=1; AFNElJ+2BQ2zGMhbcw6vS+suzSMgmho0epVI2GU+dIGgxKhZz6uT/pL8rhe0/zD+/N0C8SlQcDv33so=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx2DIj8TWLq922dmk7bSt0LWX2RzGlkHrvuBzGLXkFbmeXjKyo7
-	5bV+5R+KGmPZtBgYoXs6A/lU+Fa7fMywoofgt2+IzS0ZrfKSi5KyZYURd5WC0xl0eIg=
-X-Gm-Gg: Acq92OExbZvclhKgefnIyBAy6a+Rbndne/E05WK2a6ZHvzhgOX92aOr6H+9Rq6w0OxL
-	AhE93+Tre0KDKydwjHqBksF3TGnAhPF1H3uMTm5ZfmuxbRyvoavTBqihi78ttAPlrniqx9IrmEM
-	gKfoBDZyiBcuXk9dyxvzvalx25yr9ao9xGjdNoBvFW4hns4GuPe9K9UBSo9/wpUwaGdoRPU7ZMW
-	DsIpwUsRsq0W5m2fRFQooe/yE5hoVwwxrKuSX4uIc701f3EwqbL6rFlgCXaGRpBJvKK4EWQICw1
-	0/gRE3rGig+6tNX6+muBr8qlxqHlgfvW2Eq0WMluFY5bHdDHMtb/zPY+YvJvvpzxmLKd3i9GW7U
-	PKnBpjOxRDRntaN7Krg2xxyqhML1wnRRi872sNUhJFnQ+EaeemKhXiYNQG0/b8dFNFE7obkyt/p
-	oW7TpqpsU3y+FuLxZqHHDSQIXt9RQsqfbEtw==
-X-Received: by 2002:a05:7300:ec17:b0:2e7:c701:aa85 with SMTP id 5a478bee46e88-30398626570mr1942874eec.17.1778845734267;
-        Fri, 15 May 2026 04:48:54 -0700 (PDT)
-Received: from localhost.localdomain ([148.135.103.3])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-302978b3cb2sm8288053eec.30.2026.05.15.04.48.51
+        d=1e100.net; s=20251104; t=1778845858; x=1779450658;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=X6ljMWmUboXD/jlL65txDouWmV0Cc/lFptWauWqQZEE=;
+        b=Sxa3OA8Rt396LhdGPITbvM5uBpQCdhQfvVeRsid4QxPZkNfTG0GgsKqiJWNocN9tr1
+         /7Ti1iXGIebv9zhTHcXy9lur/K9sTyRc9A5TwDDCA9NOCAmhAklHApSJeJPhQcoW/UPA
+         1q9zY6eUfw/YGOTIvbQ30pDK7DEQ5rJnbgrl8WGETbJlX9Y9ypKrsCpy3AxTR1lk/Rtl
+         zaRsXaqZg/5I1e4WydQsvHR+Rx/hzTsrEqlX2QNZ5ST8ilMwi1Obvo8zbOaPSAsgVHlY
+         APYv+3vjcM285mz4pKXRra9rw7LPg4a+fWPMWhQ76bIu1wjQFCYOdn3nm1x7TXqSB1J9
+         7icA==
+X-Forwarded-Encrypted: i=1; AFNElJ/zkLnU8hVGkIIHfpe1IGC43ZuFLWs2yXTDavXZXHIuRto4BOIjqeuY1RuHjo1chvHQ92xnKOY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzanNkKswG152QH9Z7XDme2xh5Y0m7xNFuhA9TAG+7r5LD/beHp
+	xSZc/aX3mQV5qiwLnKoaSQx4uCNOa5y0mLTGOU2l2QUKXvgGyEOnIq23syGXB2JJg08=
+X-Gm-Gg: Acq92OE/2+RAmJHGKxMoXBmBDnD/uFE85xPjzHQLk0FZHlGHuaULRfHz/JIFHrzEv1Q
+	KZFwR5roNkE+mvLrpb0tBSgiEzwxXkld7IGSd1C/NWpiGIoX5SkvkOTgYQ2zwwYBWpk1+Ij/QIi
+	0RAjAPQWtbmnfdammFF4h7OV/QG6Inavvr+aKcb70HXLnllF4QN1J8gcVrR8Nuvy8+E+NHP9wh8
+	IbkitHo9BwFY5cehW0aC1+5x7qYVLHuN5Aq7cMyeJqNRUzM0j8tOLqHrDjRkfjNlgFqJuqlexNC
+	Ndsj+WkgCc20+gBx1nl1kdAHk4wi7y+jgY8cLNZYbrASBWjTtl8OM9XGvkawgEqNl7EESWKPXWy
+	zd0cWWixYoHWPLS2hlxE/p7d5jUgjoMRY/pZKUGi1RldSQgbEOK3SSk39ayA4KITafmKscWaCB8
+	lPZVGkW2F/4mHoFdvQygaw0Zr0dVW5AnQvU/UEseKc/mPWoG5Kl8R8Ax78zlBaITahYxfTS49My
+	lvjFmf/FT/9Iuj8jY5GoA==
+X-Received: by 2002:a05:6512:1387:b0:5a8:65d9:613f with SMTP id 2adb3069b0e04-5aa0e73c0eemr1036472e87.24.1778845857681;
+        Fri, 15 May 2026 04:50:57 -0700 (PDT)
+Received: from fedora (d-zg2-146.globalnet.hr. [213.149.37.146])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a9164bc0ccsm1278617e87.41.2026.05.15.04.50.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 May 2026 04:48:53 -0700 (PDT)
-From: Qi Tang <tpluszz77@gmail.com>
-To: fw@strlen.de
-Cc: netfilter-devel@vger.kernel.org,
+        Fri, 15 May 2026 04:50:57 -0700 (PDT)
+From: Robert Marko <robert.marko@sartura.hr>
+X-Google-Original-From: Robert Marko <robimarko@gmail.com>
+To: o.rempel@pengutronix.de,
+	kory.maincent@bootlin.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
 	netdev@vger.kernel.org,
-	pablo@netfilter.org,
-	herbert@gondor.apana.org.au,
-	michael.bommarito@gmail.com,
-	lyutoon@gmail.com,
-	Qi Tang <tpluszz77@gmail.com>
-Subject: Re: [RFC] netfilter: disable payload mangling in userns
-Date: Fri, 15 May 2026 19:48:48 +0800
-Message-ID: <20260515114848.1105927-1-tpluszz77@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260515100411.3141-1-fw@strlen.de>
-References: <20260515100411.3141-1-fw@strlen.de>
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: luka.perkov@sartura.hr,
+	Robert Marko <robert.marko@sartura.hr>
+Subject: [PATCH net-next v2 1/2] dt-bindings: net: pse-pd: microchip,pd692x0: add port disable GPIO
+Date: Fri, 15 May 2026 13:50:00 +0200
+Message-ID: <20260515115050.691119-1-robimarko@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -81,18 +86,37 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-I agree with the userns block.  I'll keep pushing the five
-consumer-side bounds-check patches: root in init userns can
-still install the same payload-set rule and trigger the same
-OOB at the re-read sites, so the underlying bug fix is still
-worth landing.
+From: Robert Marko <robert.marko@sartura.hr>
 
-None of the five sites overlap with the relax wishlist (saddr/
-daddr, transport, linklayer).  Same class showed up in an
-earlier patch:
-  https://lore.kernel.org/netdev/20260514035802.1540395-1-tpluszz77@gmail.com/
+Microchip PSE controllers have a dedicated port disable input that like it
+name suggest, will disable PoE on all ports.
 
-These five are unlikely to be all of them; we think the
-consumer side warrants a broader audit.  Thoughts?
+So, lets document that GPIO.
 
-Qi
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Robert Marko <robert.marko@sartura.hr>
+---
+Changes in v2:
+* Pick Acked-by from Rob
+
+ .../devicetree/bindings/net/pse-pd/microchip,pd692x0.yaml     | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/net/pse-pd/microchip,pd692x0.yaml b/Documentation/devicetree/bindings/net/pse-pd/microchip,pd692x0.yaml
+index ca61cc37a790..ca4200afa793 100644
+--- a/Documentation/devicetree/bindings/net/pse-pd/microchip,pd692x0.yaml
++++ b/Documentation/devicetree/bindings/net/pse-pd/microchip,pd692x0.yaml
+@@ -22,6 +22,10 @@ properties:
+   reg:
+     maxItems: 1
+ 
++  disable-ports-gpios:
++    description: GPIO pin to disable PoE on all ports
++    maxItems: 1
++
+   vdd-supply:
+     description: Regulator that provides 3.3V VDD power supply.
+ 
+-- 
+2.54.0
+
