@@ -1,88 +1,151 @@
-Received: from smtp.smtpout.orange.fr (smtp-76.smtpout.orange.fr [80.12.242.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AAB13C3430
-	for <netdev@vger.kernel.org>; Fri, 15 May 2026 14:52:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48BB0292B54
+	for <netdev@vger.kernel.org>; Fri, 15 May 2026 15:06:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.181.97.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778856726; cv=none; b=gkU/AvawoD+dRvZD1jYVJCZRSw/qItUUjUZP3zeLQhDGQ8xMYdM/gkTlto5HRTyiSEKMR41JGvW2b4S4ytrWbw2R06WHXUEC4Eh6XrvkdZObLxST1AeIgxHkW/IffyPpa7CMdDIlV1urZ+kqrSW/gdoYQB1Xo8BsYwzS8XJCTxU=
+	t=1778857589; cv=none; b=KkfM0tgPYxj3pR2nNf2hL36bMG7lMbG910VX/I5ON/n5o7YUY3reDdMYZn/QEnTIJiEcH6HAlW94eYHnB6bns/ku8CpNK8pXu2oguHAscT7EvW1A9OtKM/e0gugMECblNJAompyRtyJHGb84vMCBygK+CZczJFImsfRglkia018=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778856726; c=relaxed/simple;
-	bh=c22ZD/MmN/a4onHgNs0fnMFUToNJkqc4sbq7xQCnCEY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TAfhQzquu0RS60B6wDLKWCK2DJGj9xLSb3G3/R4g+JfB67BtqVZW3tcSGUoHW3mNW/WHh+aOhtsGDFVdXyipbnu5kamyrQjqd0dS5Qo5JsZ5b4ABTMLhWYi/Mt/fDYXQozyo6hJ5BaGoIuQvfp6jBNkDVs+4zG5nfsK+mSiYj6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=TerWnb0B; arc=none smtp.client-ip=80.12.242.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="TerWnb0B"
-Received: from fedora.home ([IPv6:2a01:cb10:785:b00:8347:f260:7456:7662])
-	by smtp.orange.fr with ESMTP
-	id NtsCwcHRYKJeZNtsIwOx2S; Fri, 15 May 2026 16:50:50 +0200
-Received: from fedora.home ([IPv6:2a01:cb10:785:b00:8347:f260:7456:7662])
-	by smtp.orange.fr with ESMTPSA
-	id Nts1wguySDTmsNtsAwk1zC; Fri, 15 May 2026 16:50:43 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1778856643;
-	bh=lcPXlx4BAkS4tA31+H7qeGyoefUdwpUgtRh2zR4stAU=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=TerWnb0BY6h+hk4+lJf3aTqgXGBL9lQD648pQv8dN23IW196zfdMXA/1q/AxRmF0c
-	 DnWInTIXquUd0WkhbNovYZL9Cq3p213xoWmAAP9f0p03eqKGHXcs25jXphcbUK/A/D
-	 KBEdzhS4tmurXHwf0hR7vGLpF0YsDjhtrxqJ5J7/wO8xzUzmgXz6sis7VoaxAH5eAN
-	 n//dK2sI8TtHQNQyrfk5uY8fR92+9Nx18uoRie7Afm2/DlNpkVfePWzc/lOE9RXcCG
-	 jYcz4mj8J9Ans1qWzog/q+HlQPW6PKU19LhVTdoGsnP6yGBQo9HbgzPTODtX8Zhz+W
-	 I6+Hq8eL7v5tA==
-X-ME-Helo: fedora.home
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Fri, 15 May 2026 16:50:43 +0200
-X-ME-IP: 2a01:cb10:785:b00:8347:f260:7456:7662
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To: andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH 1/3 net-next] net: mdio: mscc-miim: Remove some redundant code
-Date: Fri, 15 May 2026 16:50:24 +0200
-Message-ID: <11209c6c6485656cc9a841c495381c540783798a.1778856199.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <cover.1778856199.git.christophe.jaillet@wanadoo.fr>
-References: <cover.1778856199.git.christophe.jaillet@wanadoo.fr>
+	s=arc-20240116; t=1778857589; c=relaxed/simple;
+	bh=y7UP4DX3+pPFoPxCWSu+GD0Wh8ljcMqmeACCBqn2irY=;
+	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=UVFDYkG1XOdnbmGlpMSm6Udx8lTPz9rQYpOjBXDSPjCdL9YANhjxYFgo6njwtmA7+ff/G3LeMuivEylQwjImqb51t4GQHEuJTdqcFb7/cvzSObykLdy7zZVWDzy2fuOpkwYkUIWyB4a8mrpkgVOA2nHBquF8AGI7z0TwZAY2A7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=I-love.SAKURA.ne.jp; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp; arc=none smtp.client-ip=202.181.97.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=I-love.SAKURA.ne.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp
+Received: from www262.sakura.ne.jp (localhost [127.0.0.1])
+	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 64FF5t4G043206;
+	Sat, 16 May 2026 00:05:55 +0900 (JST)
+	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Received: from [192.168.1.5] (M106072072000.v4.enabler.ne.jp [106.72.72.0])
+	(authenticated bits=0)
+	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 64FF5tZh043202
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
+	Sat, 16 May 2026 00:05:55 +0900 (JST)
+	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Message-ID: <98be20ee-c914-4c93-b4bd-d04ddcc349cf@I-love.SAKURA.ne.jp>
+Date: Sat, 16 May 2026 00:05:52 +0900
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        Network Development <netdev@vger.kernel.org>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Subject: [PATCH net] net: neighbour: reject neighbor creation on IFF_NOARP
+ devices
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Anti-Virus-Server: fsav204.rs.sakura.ne.jp
+X-Virus-Status: clean
 
-*pbus is assign twice with the same value. Remove one of the redundant
-assignment.
+syzbot is reporting
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+  unregister_netdevice: waiting for vcan0 to become free. Usage count = 2
+
+problem.
+
+I asked AI Mode in Google Search to analyze a log from my debug printk()
+patch in linux-next-20260508. It performed a meticulous trace of
+__dev_hold() and __dev_put() frequency, and identified that a reference
+acquired via ___neigh_create() remains unreleased at the end of the device
+unregistration timeline.
+
+  Call trace for vcan0[24] +1 at
+       __dev_hold include/linux/netdevice.h:4470 [inline]
+       netdev_hold include/linux/netdevice.h:4513 [inline]
+       ___neigh_create+0xcb3/0x2360 net/core/neighbour.c:664
+       neigh_add+0xc51/0xf70 net/core/neighbour.c:2136
+       rtnetlink_rcv_msg+0x77e/0xbe0 net/core/rtnetlink.c:7005
+       netlink_rcv_skb+0x232/0x4b0 net/netlink/af_netlink.c:2551
+       netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
+       netlink_unicast+0x780/0x920 net/netlink/af_netlink.c:1345
+       netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1895
+       sock_sendmsg_nosec+0x112/0x150 net/socket.c:797
+
+For devices that do not require address resolution, such as CAN devices
+(vcan) or loopback (lo) which carry the IFF_NOARP flag, explicit neighbor
+creation requests (via Netlink RTM_NEWNEIGH) shouldn't be permitted.
+If an arbitrary neighbor entry is created on such a device, it can under
+certain protocol mismatches bypass the standard flush mechanism
+(neigh_ifdown) during the NETDEV_UNREGISTER notification chain. As a
+result, the neighbor object clings onto the net_device's reference tracker
+permanently, blocking the device from being freed.
+
+Fix this by explicitly rejecting neighbor creation requests on devices
+with the IFF_NOARP flag set, returning -EOPNOTSUPP. How to handle this
+problem for devices without the IFF_NOARP flag set needs wider discussion.
+
+Reported-by: syzbot+e2af46126e0644cbebdd@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=e2af46126e0644cbebdd
+Analyzed-by: AI Mode in Google Search (no mail address)
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 ---
- drivers/net/mdio/mdio-mscc-miim.c | 2 --
- 1 file changed, 2 deletions(-)
+Below section is additional comments from AI Mode. Since I'm not familiar
+with this area, this is beyond what I can understand. Therefore, I would
+appreciate validations / thoughts from the netdev community on how we
+should address this wider scope for non-IFF_NOARP devices.
 
-diff --git a/drivers/net/mdio/mdio-mscc-miim.c b/drivers/net/mdio/mdio-mscc-miim.c
-index 259944d37fbd..03878bd9091d 100644
---- a/drivers/net/mdio/mdio-mscc-miim.c
-+++ b/drivers/net/mdio/mdio-mscc-miim.c
-@@ -233,8 +233,6 @@ int mscc_miim_setup(struct device *dev, struct mii_bus **pbus, const char *name,
+  During the log analysis, we also uncovered a potential "air pocket"
+  (protocol mismatch) in the neighbor flush mechanism that could similarly
+  affect !IFF_NOARP devices (e.g., standard Ethernet devices).
+  
+  How the mismatch happens for !IFF_NOARP devices:
+  When a neighbor entry is explicitly created via Netlink, the requested
+  table's family determines where it gets chained. For example, if a
+  request targets the IPv6 neighbor table (nd_tbl) on a device that hasn't
+  fully initialized IPv6 (or during a phase where IPv6 contexts are already
+  being torn down), the entry successfully hooks into
+  dev->neighbours[NEIGH_ND_TABLE].
+  
+  However, during unregistration (NETREG_UNREGISTERING), the core network
+  layer fires the NETDEV_UNREGISTER notifier chain. If the IPv6 notification
+  handler (addrconf_notify) decides to skip the cleanup loop because the
+  device's IPv6 configuration is absent or already destroyed,
+  neigh_ifdown(&nd_tbl, dev) is never triggered. Meanwhile, the IPv4 handler
+  (fib_netdev_event) only flushes dev->neighbours[NEIGH_ARP_TABLE] and
+  remains blind to the stray IPv6 bucket. This allows the neighbor entry to
+  silently bypass the flush process, causing a permanent refcount leak on
+  standard devices.
+
+  Additionally, a similar leak can occur if a neighbor entry is marked as
+  NUD_PERMANENT. During the early stage of unregistration (e.g., NETDEV_DOWN),
+  neigh_flush_dev() skips permanent entries because 'skip_perm' is true.
+  If subsequent notifier steps abort or fail to clear out NUD_PERMANENT
+  entries properly, the tracker stays alive indefinitely.
+
+  Possible Solutions for !IFF_NOARP devices:
+  1. Ingress Validation: In ___neigh_create() or neigh_add(), strictly validate
+     that the requested table's family (tbl->family) corresponds to a protocol
+     layer that is currently enabled/active on the target net_device.
+  2. Safety Net in Dev Core: Introduce a final, unconditional flush (e.g.,
+     calling neigh_ifdown_many() with skip_perm=false) directly inside the
+     unregister_netdevice core logic before entering the 10-second wait loop,
+     rather than relying entirely on protocol-specific notifier chains.
+
+ net/core/neighbour.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+index 5d9216016507..06170fb3f976 100644
+--- a/net/core/neighbour.c
++++ b/net/core/neighbour.c
+@@ -652,6 +652,9 @@ ___neigh_create(struct neigh_table *tbl, const void *pkey,
+ 	struct neigh_hash_table *nht;
+ 	int error;
  
- 	miim = bus->priv;
- 
--	*pbus = bus;
--
- 	miim->regs = mii_regmap;
- 	miim->mii_status_offset = status_offset;
- 	miim->ignore_read_errors = ignore_read_errors;
++	if (dev->flags & IFF_NOARP)
++		return ERR_PTR(-EOPNOTSUPP);
++
+ 	n = neigh_alloc(tbl, dev, flags, exempt_from_gc);
+ 	trace_neigh_create(tbl, dev, pkey, n, exempt_from_gc);
+ 	if (!n) {
 -- 
 2.54.0
 
