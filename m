@@ -1,261 +1,161 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BD933D669E
-	for <netdev@vger.kernel.org>; Sat, 16 May 2026 11:53:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC29E231830;
+	Sat, 16 May 2026 11:56:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778932416; cv=none; b=Me20hQVfhNmwCQbVC3Z/RkjvO9oaCXKlkcagQQOSvpIzrT7rLLlI7OwZnybOUstuMf8oebbXrKjL0ieh1/M0RdYjlyTZdfMsneMIGL4/RjZtl17Wom8+UBrfPFcbPxZY8mqW1cYMO5pJhlBnzoK3HTTUk4o+2O9Q7jgpXKO5IZs=
+	t=1778932601; cv=none; b=JFK7uCi0GNDRWJEAUtP4eayYigfb5d95ZXLu3WZVayMPznAxE/SU9PkqcDMXlSQryemWDxb8wKA8axwHhd4sjHNqxb2q94Dq8Iv+GbGXJnlQbVNTM8NCQ8AnH3vK/pGjnmE7N78RKd1pHgRBRANPumA2vxQB6E5xl52PBxULnEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778932416; c=relaxed/simple;
-	bh=F7j14MGWg5MpaTs46ixVgM5+KDomqLpuWcEipt69nvI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QZLRr/LFjDz/KPQYhvQ35AKcAbnA8lKkEUP7WpO5l0myQ1s09K0wXOGal4pMlijUSt0K3nJkwKTGimqy1+13adjc8LA51TFZkCBaWbEZMGBUzapvGF8pjlGKjQIdiTuuZRcZroZ91O+X1ZV58D6qTu3Kyj7+lrqAybpIGf/nAmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TTwzhsR5; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1778932601; c=relaxed/simple;
+	bh=ZJfbekSEIynvZHoz9g7nIET251nPamkS6ZsAujIeqf8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=XEPCfwy1ZvU4kZ0TqduQbaHn8scwlBkLEX3K+9nEt0Py/71J8gL71phCvLNoDSu0d6jNz9y1zw/iLWTVu1TfZzrFK+QdO/f2yHHHNnVSfSEziJ+F+keC5daOF5ZkjtNMsGOI4ngmdHZiOcZt2gNJ8QgMHBOY7sQyvEJkGWr2Fmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=cfrB3euo; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TTwzhsR5"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-43d76dd4ee8so506976f8f.2
-        for <netdev@vger.kernel.org>; Sat, 16 May 2026 04:53:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778932412; x=1779537212; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GMsYPxsGdmOZu2bUf9upWSruFK/hZRv7KGPN8jXsIdE=;
-        b=TTwzhsR5nBzuTE33a4WAvIiwr/EV+I1TVkybF8WTUoYUierI7qMv6v9zrehsSQ6eIS
-         d5J7nnW80F8TPiYRlB5IG4XsvHMyNuAK4pL00yBRNxIrAtHgkCK0foHx1jqkDCKmQ9Fd
-         O7faNAbFNfs/TBuMmiIfnSixME52ODqs2ofPDOSn645g0Mn9fnUV+qkNlilsig2TMYC+
-         VpXjTRaJXZKGPkEntwW+XZGUYb7x0UESFJlrCY0jdA74Kvt/qZ0EpHz5e+RNp3Ec5cMW
-         ZIiS7nf/w0Ks9GI2EsN9wn8Hbr7UBgOslrM7Yfyh1qTf/IYHk6lAP0pKdgklS7VlZ3di
-         u9kw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778932412; x=1779537212;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=GMsYPxsGdmOZu2bUf9upWSruFK/hZRv7KGPN8jXsIdE=;
-        b=YoHEsmSHrm+Gf4uFpxk7Gw5BtChtCsOzxC4DkYsV6C0xzBJTEJ5AZ29R5PHwfyQH+2
-         ndv84t0ktVKFTwrEBZD4ELLs0jz4GY+4ZxKkgGYc9yB7+EIsDVY0q5cbiVG1LeNp1krB
-         zWYGKmtDBYMn5z+8/R0hq99vG/2ACh2buB55deb66CnCHeLAK20c3C6DOAnNtK0A7Mtt
-         U4/Jm+snNhaghByuHeGtiIYjsrk3k6z9nIw+W+8jfPpamH68qA3OhYRnRA/BgiPHOaGQ
-         1sBdgtbvcrKdobKxkFjghIPE6kI4K7Ho8L3KOaE3FE2iill0Nr/b81iXLhSNFB7lXo80
-         fWOg==
-X-Gm-Message-State: AOJu0YxAMX2sxDe9s3ESvaYpJHfQIIKVdMieWuZ9nwkk+DOe2Vl6d7Z1
-	zqEANRoCyYs5ap2kEjXuTy69jBGT76T69g6cGcHNGJaYxVtS8KG/zp5o
-X-Gm-Gg: Acq92OHA/L5nxCviDdB1lA45lR+UDTVSUYYUdyksQxfaaG0regC2g0Yr0HzK/IkkI0N
-	PU7JHMok6mEZrFxtnbEdazr5Q1drYQSh7TuFkjal8U5III3S8zHON30vtujkH+9fRqAD7AJNpY0
-	6FF5qnkYK4vUfSssSVnBu7LKanAigZ+gd1JSVWBtDzToxJWxSjwcy97Zwp5vp4yyg5SGEFzhf7T
-	HtzljW1SJVNCnZRfKfiED54DaSKDuolxDpuhPtYnVWnp5pi0ztByrDFKuAyvZ94X2d6FPAHgcC2
-	hlcvsciy64w3RVx7yY8ER5dX177jND3D5ux7htqchfWk9OfF+FedQHM1B+hBMqy3l4oN2NHBDRu
-	Y6b8gfs4fRJjAeUnf79oAWiLPpYQhPcZzl3K/dkP6K9i3vS5z/CbmtKa/YN/rdfMP4rekpDd2YU
-	RSbILNuUE+yr+DTTfCTxmU3dpp+bxD9SPzYfPxzIynJkSA6iCZit+mNFdKXiZh
-X-Received: by 2002:a05:6000:288e:b0:45d:7bf0:c7d3 with SMTP id ffacd0b85a97d-45e5c37122emr10808299f8f.19.1778932411691;
-        Sat, 16 May 2026 04:53:31 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45da15a6454sm22250671f8f.34.2026.05.16.04.53.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 16 May 2026 04:53:31 -0700 (PDT)
-Date: Sat, 16 May 2026 12:53:29 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Arseniy Krasnov
- <avkrasnov@salutedevices.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- kvm@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Eugenio
- =?UTF-8?B?UMOpcmV6?= <eperezma@redhat.com>, "Michael S. Tsirkin"
- <mst@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
- virtualization@lists.linux.dev, "David S. Miller" <davem@davemloft.net>,
- Jason Wang <jasowang@redhat.com>, linux-kernel@vger.kernel.org, Maher
- Azzouzi <maherazz04@gmail.com>
-Subject: Re: [PATCH net] vsock/virtio: fix zerocopy completion for multi-skb
- sends
-Message-ID: <20260516125329.7b699c6f@pumpkin>
-In-Reply-To: <20260514092948.268720-1-sgarzare@redhat.com>
-References: <20260514092948.268720-1-sgarzare@redhat.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="cfrB3euo"
+Received: from localhost.localdomain (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with ESMTPSA id D6B22601A2;
+	Sat, 16 May 2026 13:56:30 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1778932591;
+	bh=hAL/CMd2bZJ6BgSA3AbyZA9G5EK0nxLqi/FlYaGSVdg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=cfrB3euo0OBrcx28tXtJ5Lpux16AtnTX6dnfZVoS5EQp+Z87UcU+7XfPXmAAlRELz
+	 HGaYzKqkLxOG20Jf+cP7s9DdRl1/YwREKJWfpioKHRcyfbgIZ0Y5y+adHc29UubcJM
+	 6I+YpvCLaxW4ohYTMm1o28Apx3zrSjeK0RPhqLcmKg9LG7aYwKJrjGFTraQxtRHY0S
+	 kKH1KCYmTZwaMXp5XHRPk/jiQlKiERKQTobluPk2/kTCLnhAS1ArKOY4A0reXrUW1/
+	 0iZgUGGq+uBbAdOo4lByE/ZUZf97L2TNPkO0rz2VwqFFToxHQPKyN0qGO/w0KYMmad
+	 sgQbnB276WFYw==
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: netfilter-devel@vger.kernel.org
+Cc: davem@davemloft.net,
+	netdev@vger.kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	fw@strlen.de,
+	horms@kernel.org
+Subject: [PATCH net 00/12] Netfilter/IPVS fixes for net
+Date: Sat, 16 May 2026 13:56:15 +0200
+Message-ID: <20260516115627.967773-1-pablo@netfilter.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, 14 May 2026 11:29:48 +0200
-Stefano Garzarella <sgarzare@redhat.com> wrote:
+Hi,
 
-> From: Stefano Garzarella <sgarzare@redhat.com>
-> 
-> When a large message is fragmented into multiple skbs, the zerocopy
-> uarg is only allocated and attached to the last skb in the loop.
-> Non-final skbs carry pinned user pages with no completion tracking,
-> so the kernel has no way to notify userspace when those pages are safe
-> to reuse. If the loop breaks early the uarg is never allocated at all,
-> leaking pinned pages with no completion notification.
-> 
-> Fix this by following the approach used by TCP: allocate the zerocopy
-> uarg (if not provided by the caller) before the send loop and attach
-> it to every skb via skb_zcopy_set(), which takes a reference per skb.
-> Each skb's completion properly decrements the refcount, and the
-> notification only fires after the last skb is freed.
-> On failure, if no data was sent, the uarg is cleanly aborted via
-> net_zcopy_put_abort().
-> 
-> This issue was initially discovered by sashiko while reviewing commit
-> 1cb36e252211 ("vsock/virtio: fix MSG_ZEROCOPY pinned-pages accounting")
-> but was pre-existing.
-> 
-> Fixes: 581512a6dc93 ("vsock/virtio: MSG_ZEROCOPY flag support")
-> Cc: Arseniy Krasnov <avkrasnov@salutedevices.com>
-> Closes: https://sashiko.dev/#/patchset/20260420132051.217589-1-sgarzare%40redhat.com
-> Reported-by: Maher Azzouzi <maherazz04@gmail.com>
-> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-> ---
->  net/vmw_vsock/virtio_transport_common.c | 83 ++++++++++---------------
->  1 file changed, 34 insertions(+), 49 deletions(-)
-> 
-> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-> index 989cc252d3d3..1e3409d28164 100644
-> --- a/net/vmw_vsock/virtio_transport_common.c
-> +++ b/net/vmw_vsock/virtio_transport_common.c
-> @@ -70,34 +70,6 @@ static bool virtio_transport_can_zcopy(const struct virtio_transport *t_ops,
->  	return true;
->  }
->  
-> -static int virtio_transport_init_zcopy_skb(struct vsock_sock *vsk,
-> -					   struct sk_buff *skb,
-> -					   struct msghdr *msg,
-> -					   size_t pkt_len,
-> -					   bool zerocopy)
-> -{
-> -	struct ubuf_info *uarg;
-> -
-> -	if (msg->msg_ubuf) {
-> -		uarg = msg->msg_ubuf;
-> -		net_zcopy_get(uarg);
-> -	} else {
-> -		struct ubuf_info_msgzc *uarg_zc;
-> -
-> -		uarg = msg_zerocopy_realloc(sk_vsock(vsk),
-> -					    pkt_len, NULL, false);
-> -		if (!uarg)
-> -			return -1;
-> -
-> -		uarg_zc = uarg_to_msgzc(uarg);
-> -		uarg_zc->zerocopy = zerocopy ? 1 : 0;
-> -	}
-> -
-> -	skb_zcopy_init(skb, uarg);
-> -
-> -	return 0;
-> -}
-> -
->  static int virtio_transport_fill_skb(struct sk_buff *skb,
->  				     struct virtio_vsock_pkt_info *info,
->  				     size_t len,
-> @@ -317,8 +289,10 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
->  	u32 src_cid, src_port, dst_cid, dst_port;
->  	const struct virtio_transport *t_ops;
->  	struct virtio_vsock_sock *vvs;
-> +	struct ubuf_info *uarg = NULL;
->  	u32 pkt_len = info->pkt_len;
->  	bool can_zcopy = false;
-> +	bool have_uref = false;
->  	u32 rest_len;
->  	int ret;
->  
-> @@ -360,6 +334,25 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
->  		if (can_zcopy)
->  			max_skb_len = min_t(u32, VIRTIO_VSOCK_MAX_PKT_BUF_SIZE,
->  					    (MAX_SKB_FRAGS * PAGE_SIZE));
-> +
-> +		if (info->msg->msg_flags & MSG_ZEROCOPY &&
-> +		    info->op == VIRTIO_VSOCK_OP_RW) {
-> +			uarg = info->msg->msg_ubuf;
-> +
-> +			if (!uarg) {
-> +				uarg = msg_zerocopy_realloc(sk_vsock(vsk),
-> +							    pkt_len, NULL, false);
-> +				if (!uarg) {
-> +					virtio_transport_put_credit(vvs, pkt_len);
-> +					return -ENOMEM;
-> +				}
-> +
-> +				if (!can_zcopy)
-> +					uarg_to_msgzc(uarg)->zerocopy = 0;
-> +
-> +				have_uref = true;
-> +			}
-> +		}
+The following patchset contains Netfilter/IPVS fixes for net:
 
-Surely that block should only be done if can_zcopy is true?
-And shouldn't something unset it if info->op != VIRTIO_VSOCK_OP_RW ?
-If the msg_zerocopy_realloc() fails then can't you just set can_zcopy to false.
+1) Fix small race windows in nf_ct_helper_log() when accessing helper,
+   from Florian Westphal.
 
-It info->msg->msg_buf is already set then I think you have to disable zero-copy.
-The caller has already requested a callback - and you can't add another.
+2) Fix potential infinite loop and race conditions in IPVS caused by
+   frequent user-triggered service table changes, from Julia Anastasov.
 
-In any case by the end of this can_zcopy and have_uref are really the same flag.
+3) Fix a race condition when dumping ipsets for restore,
+   from Jozsef Kadlecsik.
 
->  	}
->  
->  	rest_len = pkt_len;
-> @@ -378,27 +371,7 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
->  			break;
->  		}
->  
-> -		/* We process buffer part by part, allocating skb on
-> -		 * each iteration. If this is last skb for this buffer
-> -		 * and MSG_ZEROCOPY mode is in use - we must allocate
-> -		 * completion for the current syscall.
-> -		 *
-> -		 * Pass pkt_len because msg iter is already consumed
-> -		 * by virtio_transport_fill_skb(), so iter->count
-> -		 * can not be used for RLIMIT_MEMLOCK pinned-pages
-> -		 * accounting done by msg_zerocopy_realloc().
-> -		 */
-> -		if (info->msg && info->msg->msg_flags & MSG_ZEROCOPY &&
-> -		    skb_len == rest_len && info->op == VIRTIO_VSOCK_OP_RW) {
-> -			if (virtio_transport_init_zcopy_skb(vsk, skb,
-> -							    info->msg,
-> -							    pkt_len,
-> -							    can_zcopy)) {
-> -				kfree_skb(skb);
-> -				ret = -ENOMEM;
-> -				break;
-> -			}
-> -		}
-> +		skb_zcopy_set(skb, uarg, NULL);
->  
->  		virtio_transport_inc_tx_pkt(vvs, skb);
->  
-> @@ -422,6 +395,18 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
->  
->  	virtio_transport_put_credit(vvs, rest_len);
->  
-> +	/* msg_zerocopy_realloc() initializes the ubuf_info refcnt to 1.
-> +	 * skb_zcopy_set() increases it for each skb, so we can drop that
-                                                            ^ must
+4) Fix inner transport offset in IPv6 in nft_inner when extension
+   headers come before the layer 4 transport header, from Yizhou Zhao.
 
-> +	 * initial reference to keep it balanced.
-> +	 */
-> +	if (have_uref) {
-> +		if (rest_len == pkt_len)
-> +			/* No data sent, abort the notification. */
-> +			net_zcopy_put_abort(uarg, true);
+5) Fix incorrect iteration over IPv4 ranges in several hash set types,
+   from Nan Li.
 
-Is it worth optimising for the 'nothing sent' case ?
+6) Fix incorrect order when restoring BH in nft_inner_restore_tun_ctx(),
+   from Florian Westphal.
 
--- David
+7) Validate option array from ip6t_hbh checkpath() to fix an off-by-one
+   access, from Zhengchuan Liang.
 
-> +		else
-> +			net_zcopy_put(uarg);
-> +	}
-> +
->  	/* Return number of bytes, if any data has been sent. */
->  	if (rest_len != pkt_len)
->  		ret = pkt_len - rest_len;
+8) Fix race condition between ipset list -terse and concurrent updates,
+   from Jozsef Kadlecisk.
 
+9) Fix race condition when inserting elements into a hash bucket, also
+   from Jozsef.
+
+10) Annotate access to first free slot in hashtable, from Jozsef Kadlecsik.
+
+11) Ensure sufficient headroom in br_netfilter neigh transmission,
+    from Lorenzo Bianconi.
+
+12) Hold reference on skb->dev in nfqueue exit path, bridge local input
+    is speciall since skb->dev != state->indev, allowing for net_device
+    to go away while packet is sitting in nfqueue. From Haoze Xie.
+
+Please, pull these changes from:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf.git nf-26-05-16
+
+Thanks.
+
+----------------------------------------------------------------
+
+The following changes since commit 93d809adc13001e9d3a3ceb8d1e60fae2fb740d6:
+
+  Merge branch 'vsock-virtio-fix-vsockmon-tap-skb-construction' (2026-05-12 12:52:18 +0200)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf.git tags/nf-26-05-16
+
+for you to fetch changes up to e196115ec330a18de415bdb9f5071aa9f08e53ce:
+
+  netfilter: nf_queue: hold bridge skb->dev while queued (2026-05-16 13:23:01 +0200)
+
+----------------------------------------------------------------
+netfilter pull request 26-05-16
+
+----------------------------------------------------------------
+Florian Westphal (2):
+      netfilter: nf_conntrack_helper: fix possible null deref during error log
+      netfilter: nft_inner: release local_lock before re-enabling softirqs
+
+Haoze Xie (1):
+      netfilter: nf_queue: hold bridge skb->dev while queued
+
+Jozsef Kadlecsik (4):
+      netfilter: ipset: fix a potential dump-destroy race
+      netfilter: ipset: Fix data race between add and list header in all hash types
+      netfilter: ipset: Fix data race between add and dump in all hash types
+      netfilter: ipset: annotate "pos" for concurrent readers/writers
+
+Julian Anastasov (1):
+      ipvs: avoid possible loop in ip_vs_dst_event on resizing
+
+Lorenzo Bianconi (1):
+      netfilter: br_netfilter: Reallocate headroom if necessary in neigh_hh_bridge()
+
+Nan Li (1):
+      netfilter: ipset: stop hash:* range iteration at end
+
+Yizhou Zhao (1):
+      netfilter: nft_inner: Fix IPv6 inner_thoff desync
+
+Zhengchuan Liang (1):
+      netfilter: ip6t_hbh: reject oversized option lists
+
+ include/net/ip_vs.h                         |   3 +-
+ include/net/neighbour.h                     |   8 +-
+ include/net/netfilter/nf_queue.h            |   1 +
+ net/bridge/br_netfilter_hooks.c             |   6 +-
+ net/ipv6/netfilter/ip6t_hbh.c               |   4 +
+ net/netfilter/ipset/ip_set_core.c           |   5 +-
+ net/netfilter/ipset/ip_set_hash_gen.h       |  57 ++++++---
+ net/netfilter/ipset/ip_set_hash_ipmark.c    |   6 +-
+ net/netfilter/ipset/ip_set_hash_ipport.c    |   5 +-
+ net/netfilter/ipset/ip_set_hash_ipportip.c  |   5 +-
+ net/netfilter/ipset/ip_set_hash_ipportnet.c |   5 +-
+ net/netfilter/ipvs/ip_vs_ctl.c              | 187 ++++++++++++++++++----------
+ net/netfilter/nf_conntrack_helper.c         |  13 +-
+ net/netfilter/nf_queue.c                    |   4 +-
+ net/netfilter/nfnetlink_queue.c             |   2 +
+ net/netfilter/nft_inner.c                   |   3 +-
+ 16 files changed, 211 insertions(+), 103 deletions(-)
