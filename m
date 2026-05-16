@@ -1,166 +1,138 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C629F37418A;
-	Sat, 16 May 2026 12:07:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B12D30648A;
+	Sat, 16 May 2026 12:40:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.163.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778933244; cv=none; b=KR9Hjz8FttPRtbkc2F2l3GwFZAH92eM80NVDdwLIQk/AtzV0T3c90mlYD90adSZxaXTkanTEmRLvXf0mAU/xvisL1GimL3wZesfq2x/rwFSAv0Y6sJIAzUEXwVr1Cv7PkHcYIrqsuMqbKIljJtSDb6SyglGTCwjkwD60j3VNObs=
+	t=1778935257; cv=none; b=pbNpoW/bCltogNopsKgQNjdnt0cGIbqxjcH7LX5dUETgvRdXP53rUe3oXQrcdWjlaR0oodOHS9y8xG9ahKoGJCX8Mugpao71rJghoOdXvqDf/nWtpVVDX0fYtdE7gjZEna1a/tnpTlcfF+mYDDyFUW7hjkjxE+rOyF8cWpioV38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778933244; c=relaxed/simple;
-	bh=di2Nx7xIU2JWNo5WwYBFMHkUwxrrucvWso4uehXJl2E=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=t4MtsHp2DzjbR4BZF9wJaa7yLWE5oDV8nEJIddfs/ZX0/3n/Bkiowram7yWaIbJ08eU4zg0jrjyFRVjOiBj1HW6tKVyzvQXa9kDpCSb002NneNcIlqCtAz34B1K72ToNzuCJofks1cuiLgk6WsuMfWZb7JaAyFb4BeBG0FMrNCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O1gUesYh; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778935257; c=relaxed/simple;
+	bh=Vo5Z/L1Sas/37lmOMcWft35zXgLqFdtzmshl5IH4lm4=;
+	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
+	 MIME-Version; b=V/Z6PA+Z2/SFkvgwENtNJYCbcsEwn+FV3SBgnRn/ejQ38CBTQ8Px/zK71LYU63QtO2z7zeM6k/l1o16jMBhlY6lLfuLI8+tDoEz4KXJOeejLUIPHkez43x20VoCjJ0SELw9b0LpoauRNWLM5iohAROQTbblEmupmq6/AM4yDR9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=TmbCC9B1; arc=none smtp.client-ip=43.163.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O1gUesYh"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5B491C19425;
-	Sat, 16 May 2026 12:07:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778933244;
-	bh=di2Nx7xIU2JWNo5WwYBFMHkUwxrrucvWso4uehXJl2E=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=O1gUesYhuiSxvo6Md8M61qX41NRYZ1D6yQf2JxV0EJ3kIESriwLqjC1ULsVPio/GD
-	 fSHBxoM/44goSB3KsnYC4bFxpHPvSPMonE11nkDvbAxbldA0l3Ap59PSwNbLthkbTn
-	 gjV4MsQl3AmUkVXtPV7Y6nUbmaSIqV/Kk24f9qsscDkd3mqMTRcDKeuq+oYyXTly3D
-	 KQV1NiXErQE5/B47urAJ1AyCfMrrJwBFxTJzZFHzDWsnks4cgezkOmee7cMuhRBISJ
-	 I42dQhubIb8I0TrTORh/wlcrysRT7dGarIUoSpO7maZJKuIky8UsKItUwNvKJWWp+F
-	 jMIrR2CYfx5pw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 48CBCCD4F3C;
-	Sat, 16 May 2026 12:07:24 +0000 (UTC)
-From: Carl Lee via B4 Relay <devnull+carl.lee.amd.com@kernel.org>
-Date: Sat, 16 May 2026 19:55:18 +0800
-Subject: [PATCH v3] nfc: nxp-nci: i2c: use rising-edge IRQ on ACPI systems
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="TmbCC9B1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1778935245; bh=4r1Zzi9wwhOJMeUIJBhxhb4qj0sTJbM5a/Qno3kXbgs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=TmbCC9B1/dXbG446fXxez6yBlW/6Vy1YppixCLtA3p0KjKb4T4PgP7iZnsLr24L+p
+	 v90ugzZabBymkyo49n7HcCbsNgLCmvi6nVbgcszotezsdeFxVArcw0/Adxx5o/6sMX
+	 mt/iDNahi/S+6ydX6zjMbbE1Z/oRQ4SwU3ijP3Dw=
+Received: from lxu-ped-host.. ([111.198.231.89])
+	by newxmesmtplogicsvrszb51-0.qq.com (NewEsmtp) with SMTP
+	id A261E408; Sat, 16 May 2026 20:40:38 +0800
+X-QQ-mid: xmsmtpt1778935238td8938n2x
+Message-ID: <tencent_0106C0D2EA464109986EE86EF40CB5E7D406@qq.com>
+X-QQ-XMAILINFO: NnYhxYSyuBnLJQzDT4rpHk3NSGAMaog6L8ccJhGUHTDim9aOeeRfUup7MlJ0o2
+	 7G52pC20CBUtZU8xeIU3+E0Fsuq4BcYoksTUDD6kqR03xje6Cf0hdCGf8FE8zWU8mpJFRZJSEme2
+	 DISTv6mf4YhYT6Tsw7QEMOV68U6Yyj2IDTsXCWJBQGYQ+UWY14z7m8HZPuKu3g01ivcGS+CpD5ae
+	 w7rzaDSQHDcZ5pPZai+D1xEn6RlZ6q3g6FE19YnQqIQkF1vKVS/KkmIxohKPflN6zaM1LRNOOPrR
+	 Y9kONH7Cwnj34orKrud7PHTOu3VUExMGt8/jZDLvh8sADqXfwofOOCOqNNK6ACv9Dz3JeNmCSYhy
+	 VUc4g27dfguwav7WhFrjLrHTgovICd6pTYxjaWXxk9ag66c6NonzY4+jFi9TZz0e5dDY3557xyoz
+	 mgoKbN1jkkSyLH7m0C/gK/yF9SMsiYjsvgDBafZN5rXK5iQve5elIiB2vflJA4diluw+1YBfa/bC
+	 qnC6N2cxsJuuXTOcdpWePYvU90tPFl/SkJY3tTvlXHRyPn4ZELhhQ1mo8PCZ9OOuoHsYtu0Gjqw6
+	 PJGBQMbEr8WlIWY8jyP9iXfhsZs1KWkl4tcukyFrYuLqQD0YRjAuvzVBynLRxz+6xGPL4Y568uqC
+	 vTggwTUogekDgSoEfD+LXgcoNFQwiBuqVb1x+jMIt2CzC7AetB+Re5WFpb9Ml9eeqCGMwHTziyC4
+	 FF21BDjxmNOsJGRvGxX0hBxk2Sq5ESKxzbbe+tcynUqfXl/CDKVSPrHdKQwQW0CaFFKKkWiPUKXI
+	 OwZu39WzMMeUXEuBDHiHVy4tLMUntkG0axNAq+hp4FhErBdJ1uuETFxuy9lilbGQh7PciiApURG+
+	 jspRIKBerHNTiesApK5RBlhoczdFdT6ufUOYeq8IzN3upEodpHX4q7mYfue8lsTAvNmdQsYeTsv4
+	 slhUS2kpTpDUOzpnOg2ocokA9z4PMchr/hWrgB9JUCRf6QNcZG0ET2pTOCJ/eOnI67mr4g+pT8uQ
+	 PO8ZkkU9YsE+cP7TCsFQ6RntxndStJOVrlSprCXZpvf0o8cPJl
+X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
+From: Edward Adam Davis <eadavis@qq.com>
+To: jgg@ziepe.ca
+Cc: akpm@linux-foundation.org,
+	arjan@linux.intel.com,
+	davem@davemloft.net,
+	dsahern@kernel.org,
+	eadavis@qq.com,
+	edumazet@google.com,
+	hdanton@sina.com,
+	horms@kernel.org,
+	kuba@kernel.org,
+	kuniyu@google.com,
+	leon@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	syzbot+d8f76778263ab65c2b21@syzkaller.appspotmail.com,
+	syzkaller-bugs@googlegroups.com,
+	yanjun.zhu@linux.dev,
+	zyjzyj2000@gmail.com
+Subject: Re: [PATCH] RDMA/nldev: add mutual exclusion in nldev_dellink()
+Date: Sat, 16 May 2026 20:40:38 +0800
+X-OQ-MSGID: <20260516124037.428461-2-eadavis@qq.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260514141409.GA7702@ziepe.ca>
+References: <20260514141409.GA7702@ziepe.ca>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260516-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-v3-1-37ba4b6e9086@amd.com>
-X-B4-Tracking: v=1; b=H4sIACVbCGoC/52NzQ6CMBAGX4X07Jp2W0E9+R7GQ+0PbISChRAM4
- d0tXPSqx9nsNzOz3kVyPTtnM4tupJ7akEDuMmYqHUoHZBMz5JhzKQQEbyBMHQRDQGggun5oY3q
- LTxgilaWL4HVd37V5gLH6pPAguck5S8ouOk/TlrveEle0jl9bfRTr9c/QKEDAySEvhFJC2OKiG
- 7s3bcPWzIjfavxRjUktc5Tq6AuvJf+ol2V5AyxLRqVBAQAA
-X-Change-ID: 20260311-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-cda942530c60
-To: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: Carl Lee <carl.lee@amd.com>, krzk@kernel.org, carl.lee@amd.com, 
- peter.shen@amd.com, colin.huang2@amd.com, kuba@kernel.org, david@ixit.cz, 
- luca.stefani.ge1@gmail.com, brgl@kernel.org, mpearson@squebb.ca
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778932520; l=3257;
- i=carl.lee@amd.com; s=20260203; h=from:subject:message-id;
- bh=AMSt9loXPyaoOpf5Py15SrUAJJFo8zGMLjoVxukd9fM=;
- b=e8EQLMWG6SkcKINegth5pIbCvRerCIZ38zgG62J9x+VNmzI8PCoOO/6oiL+tPg0EpWcZkk0Nm
- DACZRtwbQc7BCNz+cmTy412m4yDEbV7F+7D9KVfqmuIGFDlula/QlE3
-X-Developer-Key: i=carl.lee@amd.com; a=ed25519;
- pk=pyq7QaQvoxMg806KVkRwpCbiah+7ncWr4MBpK1AEyjA=
-X-Endpoint-Received: by B4 Relay for carl.lee@amd.com/20260203 with
- auth_id=623
-X-Original-From: Carl Lee <carl.lee@amd.com>
-Reply-To: carl.lee@amd.com
+Content-Transfer-Encoding: 8bit
 
-From: Carl Lee <carl.lee@amd.com>
+On Thu, 14 May 2026 11:14:09 -0300, Jason Gunthorpe wrote:
+> On Thu, May 14, 2026 at 07:58:18AM -0600, David Ahern wrote:
+> > On 5/14/26 5:50 AM, Jason Gunthorpe wrote:
+> > > On Thu, May 14, 2026 at 03:31:22PM +0800, Edward Adam Davis wrote:
+> > >> On Wed, 13 May 2026 20:46:55 -0300, Jason Gunthorpe wrote:
+> > >>> On Wed, May 13, 2026 at 02:17:28PM -0400, Leon Romanovsky wrote:
+> > >>>>
+> > >>>> On Thu, 07 May 2026 20:50:10 +0800, Edward Adam Davis wrote:
+> > >>>>> We must serialize calls to nldev_dellink() or risk a crash as syzbot
+> > >>>>> reported:
+> > >>>>>
+> > >>>>> Call Trace:
+> > >>>>>  udp_tunnel_sock_release+0x6d/0x80 net/ipv4/udp_tunnel_core.c:197
+> > >>>>>  rxe_release_udp_tunnel drivers/infiniband/sw/rxe/rxe_net.c:294 [inline]
+> > >>>>>  rxe_sock_put drivers/infiniband/sw/rxe/rxe_net.c:639 [inline]
+> > >>>>>  rxe_net_del+0xfb/0x290 drivers/infiniband/sw/rxe/rxe_net.c:660
+> > >>>>>  rxe_dellink+0x15/0x20 drivers/infiniband/sw/rxe/rxe.c:254
+> > >>>>>
+> > >>>>> [...]
+> > >>>>
+> > >>>> Applied, thanks!
+> > >>>>
+> > >>>> [1/1] RDMA/nldev: add mutual exclusion in nldev_dellink()
+> > >>>>       https://git.kernel.org/rdma/rdma/c/0b28000b64f40d
+> > >>>
+> > >>> This seems like a rxe bug, I would have expected the lock to be inside
+> > >>> rxe to protect its racy implementation of rxe_net_del(), which looks
+> > >>> like it is possibly also triggered by NETDEV_UNREGISTER...
+> > >> No, it was triggered by RDMA_NLDEV_CMD_DELLINK, you can see the "call trace".
+> >
+> > Not that Jason's point. Code wise
+> >
+> > rxe_dellink -> rxe_net_del
+> >
+> > netdev NETDEV_UNREGISTER:
+> >  rxe_notify -> rxe_net_del
+> >
+> > both can lead to the same problem
+> >
+> > >>>
+> > >>> ie it should not change nldev_dellink().
+> > >> While this could be fixed within RXE, the same issue affects all other
+> > >> RXE-like submodules when they subsequently support the "dellink" interface,
+> > >> therefore, handling this within nldev_dellink() is relatively more appropriate.
+> > >
+> > > Why would other modules have an issue? The problem is rxe's racey
+> > > refcounting scheme for its lazy socket creation. There is nothing
+> > > wrong with nldev, and now you've created some nasty BKL in the nldev
+> > > code to fix rxe while ignoring its other races.
+> >
+> > +1
+> 
+> Edward, please come with a fixup on top of this since it was already
+> applied
+OK.
 
-Some ACPI-based platforms report incorrect IRQ trigger types (e.g.
-IRQF_TRIGGER_HIGH), which can lead to interrupt storms.
-
-Use the historically working rising-edge trigger on ACPI systems to
-avoid this regression.
-
-Device Tree-based systems continue to use the firmware-provided
-trigger type.
-
-Signed-off-by: Carl Lee <carl.lee@amd.com>
----
-Some ACPI-based platforms report incorrect IRQ trigger types,
-which can lead to interrupt storms.
-
-Use rising-edge IRQ on ACPI systems to avoid this regression,
-while keeping firmware-provided trigger types on non-ACPI systems.
-
-Cc: netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: krzk@kernel.org
-Cc: carl.lee@amd.com
-Cc: peter.shen@amd.com
-Cc: colin.huang2@amd.com
-Cc: kuba@kernel.org
-Cc: david@ixit.cz
-Cc: luca.stefani.ge1@gmail.com
-Cc: brgl@kernel.org
-Cc: mpearson@squebb.ca
----
-Changes in v3:
-- Use rising-edge IRQ on ACPI systems to avoid interrupt storms
-- Keep using firmware-provided trigger type on non-ACPI systems
-- Refine commit message to focus on regression on ACPI platforms
-- Link to v2: https://lore.kernel.org/r/20260312-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-v2-1-362348f7fa30@amd.com
-
-Changes in v2:
-- Add missing <linux/irq.h> include for irq_get_trigger_type().
-- Link to v1: https://lore.kernel.org/r/20260311-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-v1-1-9e20714411d7@amd.com
----
- drivers/nfc/nxp-nci/i2c.c | 21 ++++++++++++++++++++-
- 1 file changed, 20 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/nfc/nxp-nci/i2c.c b/drivers/nfc/nxp-nci/i2c.c
-index 6a5ce8ff91f0..266dc231c47d 100644
---- a/drivers/nfc/nxp-nci/i2c.c
-+++ b/drivers/nfc/nxp-nci/i2c.c
-@@ -16,6 +16,7 @@
- #include <linux/delay.h>
- #include <linux/i2c.h>
- #include <linux/interrupt.h>
-+#include <linux/irq.h>
- #include <linux/module.h>
- #include <linux/nfc.h>
- #include <linux/gpio/consumer.h>
-@@ -267,6 +268,7 @@ static int nxp_nci_i2c_probe(struct i2c_client *client)
- {
- 	struct device *dev = &client->dev;
- 	struct nxp_nci_i2c_phy *phy;
-+	unsigned long irqflags;
- 	int r;
- 
- 	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C)) {
-@@ -303,9 +305,26 @@ static int nxp_nci_i2c_probe(struct i2c_client *client)
- 	if (r < 0)
- 		return r;
- 
-+	/*
-+	 * ACPI platforms may report incorrect IRQ trigger types
-+	 * (e.g. level-high), which can lead to interrupt storms.
-+	 *
-+	 * Use the historically stable rising-edge trigger for ACPI devices.
-+	 *
-+	 * On non-ACPI systems (e.g. Device Tree), prefer the firmware-
-+	 * provided trigger type, falling back to rising-edge if not set.
-+	 */
-+	if (ACPI_COMPANION(dev)) {
-+		irqflags = IRQF_TRIGGER_RISING;
-+	} else {
-+		irqflags = irq_get_trigger_type(client->irq);
-+		if (!irqflags)
-+			irqflags = IRQF_TRIGGER_RISING;
-+	}
-+
- 	r = request_threaded_irq(client->irq, NULL,
- 				 nxp_nci_i2c_irq_thread_fn,
--				 IRQF_ONESHOT,
-+				 irqflags | IRQF_ONESHOT,
- 				 NXP_NCI_I2C_DRIVER_NAME, phy);
- 	if (r < 0)
- 		nfc_err(&client->dev, "Unable to register IRQ handler\n");
-
----
-base-commit: 7109a2155340cc7b21f27e832ece6df03592f2e8
-change-id: 20260311-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-cda942530c60
-
-Best regards,
--- 
-Carl Lee <carl.lee@amd.com>
-
+Edward
 
