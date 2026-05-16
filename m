@@ -1,63 +1,55 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from srv4.3e8.eu (srv4.3e8.eu [193.25.101.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F5E73612E7
-	for <netdev@vger.kernel.org>; Sat, 16 May 2026 19:13:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB70735A933;
+	Sat, 16 May 2026 19:14:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.25.101.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778958823; cv=none; b=uCVHAUOEu4nJNHdoWPYaTK+DIUi5TdzARe3kJCDkg3A2HVHO7oTw05eKOLGE4GHhizl6WBCXjfQ4KKyALhJZpqCpJhsLx0QnoCZ+5aq18367uXc99gA6pTgq2LL1rtRp2EvkrwgWdoTRjH6s1EO8IXnKHyaJRlMyM8DcxP5eiXc=
+	t=1778958877; cv=none; b=MrYODrZWGOc/4kwqiNc9s/QGjP/L8ICWHHI1CdAMZzXfVL1xpR8W3ur2pcS7nqhqnA1nCvxxYGbxpLirQdduKWAWg6rsiG+DZA1iINrwPgZ5z+Op4bBDu77gjBy5iMklmJIVlmkLTCi0ptN+cGJI3Dx4Um4t5z40eGWiMjOH/yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778958823; c=relaxed/simple;
-	bh=AV/PZNcVDZtD3wIbTgjMAGnt05Ae2fGl6vs20KGKVOE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o8t4WAP3IGZzCLP4uRi+sx3f3/kMyuNAY8Vr/KhYvhVbn1/qEN7Ca1KNarYNFh1nll6Dyki1Tzn7De6DVD15n4XPL4Sq5w/6/yrCboQv5b/L/SmcoeLZt/dZmCnMwCWJFxgdFdzGS0xGeSX0il2VOE/Ftezm0BxcNJYIai8pDTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TDwsgAqC; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1778958877; c=relaxed/simple;
+	bh=6HluhRRZpWJv0CAyBmyjhEA4nUf08erKvWtpyyQtpaE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eCsWZNUewvPoV+y3ZMwGrC68xI5GHfG4fjc/MHTPr38FB8tTqRmmUDQDxm2SSHes0x+HHFAR76kE0cG8a/AT4PyoQwNioRIFH/D3j0sAmF9bQW6mjKjjLol8BADASeP5b707Kp6yir+6qe0aW7oraENdlj0OTqE2/MpzD6zYhkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=3e8.eu; spf=pass smtp.mailfrom=3e8.eu; dkim=pass (2048-bit key) header.d=3e8.eu header.i=@3e8.eu header.b=A9K4MNZ7; arc=none smtp.client-ip=193.25.101.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=3e8.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=3e8.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TDwsgAqC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778958820;
+	dkim=pass (2048-bit key) header.d=3e8.eu header.i=@3e8.eu header.b="A9K4MNZ7"
+Received: from jan-pc (p200300ed473225a050c356a035128308.dip0.t-ipconnect.de [IPv6:2003:ed:4732:25a0:50c3:56a0:3512:8308])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by srv4.3e8.eu (Postfix) with ESMTPSA id DF5C840186;
+	Sat, 16 May 2026 21:05:25 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=3e8.eu; s=mail20211217;
+	t=1778958327;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=N2WYfddecpwHUAGt4Gbbl5tbqcWFhdWpYjlHOX+xowA=;
-	b=TDwsgAqC1voBAt2jc6QoKwtS/0koPPhLcZTkJUxw9mITJ57NaBnEbaoBILS0Sx40wd4d+7
-	jfIV2Z3hloQgkuE11ZIEEXaUbpkmKWGkVCz1xGhYj13l6YT2wkBUBTqudEefRHnEd/aDpo
-	DmZyyw/lEqoBr84tHyjZiV9UOyz9b0U=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-10-Onjj8GdQOTal3xFCFk5WAA-1; Sat,
- 16 May 2026 15:13:34 -0400
-X-MC-Unique: Onjj8GdQOTal3xFCFk5WAA-1
-X-Mimecast-MFC-AGG-ID: Onjj8GdQOTal3xFCFk5WAA_1778958812
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E8B7D195608F;
-	Sat, 16 May 2026 19:13:31 +0000 (UTC)
-Received: from ShadowPeak.redhat.com (unknown [10.44.32.36])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0AAD219432BB;
-	Sat, 16 May 2026 19:13:28 +0000 (UTC)
-From: Petr Oros <poros@redhat.com>
-To: netdev@vger.kernel.org
-Cc: ivecera@redhat.com,
-	Petr Oros <poros@redhat.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Milena Olech <milena.olech@intel.com>,
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=wtx0OcCAVMkEom9JQXQuE8wkRRBPDlD+ZHEyWFtHUxM=;
+	b=A9K4MNZ7e3XAssn1dJsq7eIrRS6sa+tBNPNg8gyVKNpEq2fya4m6pJseve9x8odTYFwGz5
+	fJwYVVPnyQdup8/ChLCDgl1RM50JELPjPjrKYSzIWOF5mMPUwMupBPCvlDOupUnFq6E225
+	HpAlXz4AqYQvk1uhBxJtZtK90nnEdj2fVrDa3nfoEVtyB5VLjUzupxdu6ZBRyqBmQvYlC0
+	0IJxVqiDniPwQUIkfbmclBQOzzIvKs2gUtf1GMLEmavFDJL+K86Y+fxFPO1lw9fPTKoyyN
+	4axQuOpr1w/otLZMvZIRIdNlPgoYDay3FeP36assBScq6oR8wwX/ew+OeA8udg==
+From: Jan Hoffmann <jan@3e8.eu>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
 	"David S. Miller" <davem@davemloft.net>,
-	Michal Michalik <michal.michalik@intel.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net 1/2] dpll: fix NULL deref in dpll_device_ops() during teardown race
-Date: Sat, 16 May 2026 21:13:16 +0200
-Message-ID: <20260516191317.1005612-2-poros@redhat.com>
-In-Reply-To: <20260516191317.1005612-1-poros@redhat.com>
-References: <20260516191317.1005612-1-poros@redhat.com>
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Markus Stockhausen <markus.stockhausen@gmx.de>,
+	Damien Dejean <dam.dejean@gmail.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jan Hoffmann <jan@3e8.eu>
+Subject: [PATCH net-next v4] net: phy: realtek: support MDI swapping for RTL8226-CG
+Date: Sat, 16 May 2026 21:03:45 +0200
+Message-ID: <20260516190456.387768-1-jan@3e8.eu>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -65,143 +57,233 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-When a dpll device driver (zl3073x) is unloaded via rmmod while a
-foreign driver (ice) still holds pins on it via
-dpll_pin_on_pin_register(), dpll_device_unregister() empties
-dpll->registration_list but the dpll object stays alive on ice's
-refcount. A subsequent PIN_DELETED
-notification on ice's pin reaches dpll_cmd_pin_get_one() which calls
-dpll_device_ops() on the still-indexed but half-dead dpll;
-dpll_device_registration_first() returns NULL and the accessor
-dereferences ops at offset 0x10 (struct dpll_device_registration::ops):
+Add support for configuring swapping of MDI pairs (ABCD->DCBA) when the
+property "enet-phy-pair-order" is specified.
 
-  CPU A (zl3073x rmmod)            CPU B (ice workqueue)
-  ---------------------            ---------------------
-  dpll_device_unregister():
-    drop reg from
-    dpll->registration_list
-                                   dpll_pin_on_pin_unregister
-                                     dpll_pin_delete_ntf
-                                       dpll_cmd_pin_get_one
-                                         dpll_device_ops()
-                                           registration_first() = NULL
-                                           NULL deref @ 0x10
+Unfortunately, no documentation about this feature is available, but
+this implementation still tries to avoid magic numbers and raw register
+numbers where it seems clear what is going on.
 
-  WARNING: CPU: 27 PID: 972 at drivers/dpll/dpll_core.c:1072 dpll_device_ops+0x20/0x30
-  Workqueue: ice_dpll_wq ice_dpll_pin_notify_work [ice]
-  RIP: 0010:dpll_device_ops+0x20/0x30
-  Call Trace:
-   <TASK>
-   ? __warn+0x84/0x140
-   ? dpll_device_ops+0x20/0x30
-   ? report_bug+0x16b/0x180
-   ? handle_bug+0x3c/0x70
-   ? exc_invalid_op+0x14/0x70
-   ? asm_exc_invalid_op+0x16/0x20
-   ? dpll_device_ops+0x20/0x30
-   dpll_cmd_pin_get_one+0x303/0x490
-   dpll_pin_event_send+0x93/0x140
-   dpll_pin_on_pin_unregister+0x45/0xe0
-   ice_dpll_pin_notify_work+0x7b/0x150 [ice]
-   process_one_work+0x188/0x3b0
-   worker_thread+0x2ef/0x410
-   kthread+0x122/0x240
-   ret_from_fork+0x28/0x50
-   </TASK>
-  ---[ end trace 0000000000000000 ]---
-  BUG: kernel NULL pointer dereference, address: 0000000000000010
-  RIP: 0010:dpll_device_ops+0x24/0x30
-  Call Trace:
-   dpll_cmd_pin_get_one+0x303/0x490
-   dpll_pin_event_send+0x93/0x140
-   dpll_pin_on_pin_unregister+0x45/0xe0
-   ice_dpll_pin_notify_work+0x7b/0x150 [ice]
-   process_one_work+0x188/0x3b0
-   worker_thread+0x2ef/0x410
-   kthread+0x122/0x240
-   ret_from_fork+0x28/0x50
+As it is unknown whether the patching step can be safely reversed, only
+enabling MDI swapping is fully supported. A value of "0" for the "enet-
+phy-pair-order" property is not accepted if the PHY has already been
+patched for MDI swapping (however, this should not occur in practice).
 
-dpll_lock serializes the two paths but cannot reorder them: ice's work
-was queued before zl3073x took the lock. "Empty registration_list on a
-still-indexed dpll" is a legitimate transient state caused by
-peer-driver refcounting; the accessors must tolerate it.
+Some other Realtek PHYs also support similar mechanisms:
 
-Drop the WARN_ON in dpll_device_registration_first(), make dpll_priv()
-and dpll_device_ops() return NULL on the empty-list state, and bail
-out cleanly in dpll_cmd_pin_get_one() when the first dpll the pin
-references is already gone.
+- RTL8221B-VB-CG allows to configure MDI swapping via the same register,
+  but does not need the additional patching step. However, it is unclear
+  whether a driver implementation for that PHY is necessary, as it is
+  known to support configuration via strapping pins (which is working
+  fine at least in Zyxel XGS1210-12 rev B1).
 
-In-tree doit/dumpit callers of dpll_priv() / dpll_device_ops() obtain
-their dpll via dpll_pre_doit() -> dpll_device_get_by_id(), which only
-returns DPLL_REGISTERED devices; dpll_device_unregister() clears that
-mark only after observing list_empty(&dpll->registration_list), so
-those callers cannot see the new NULL return. The only path that can
-is dpll_cmd_pin_get_one() reached from dpll_pin_event_send(), gated
-here.
+- The patching step seems to match the one for the integrated PHYs of
+  some Realtek PCIe/USB NICs (see for example the r8152 driver).
 
-Fixes: 9431063ad323 ("dpll: core: Add DPLL framework base functions")
-Signed-off-by: Petr Oros <poros@redhat.com>
+For now, only implement this for the RTL8226-CG PHY, where it is needed
+for the switches Zyxel XGS1010-12 rev A1 and XGS1210-12 rev A1.
+
+Signed-off-by: Jan Hoffmann <jan@3e8.eu>
 ---
- drivers/dpll/dpll_core.c    | 12 ++++++------
- drivers/dpll/dpll_netlink.c |  6 ++++++
- 2 files changed, 12 insertions(+), 6 deletions(-)
+v4:
+ - Use phydev_err instead of phydev_warn, as that branch causes probing
+   to fail.
 
-diff --git a/drivers/dpll/dpll_core.c b/drivers/dpll/dpll_core.c
-index cbb635db43210f..4a058b46c69d4f 100644
---- a/drivers/dpll/dpll_core.c
-+++ b/drivers/dpll/dpll_core.c
-@@ -1060,12 +1060,8 @@ EXPORT_SYMBOL_GPL(dpll_pin_ref_sync_pair_add);
- static struct dpll_device_registration *
- dpll_device_registration_first(struct dpll_device *dpll)
- {
--	struct dpll_device_registration *reg;
--
--	reg = list_first_entry_or_null((struct list_head *)&dpll->registration_list,
--				       struct dpll_device_registration, list);
--	WARN_ON(!reg);
--	return reg;
-+	return list_first_entry_or_null((struct list_head *)&dpll->registration_list,
-+					struct dpll_device_registration, list);
- }
+v3:
+ - Accept value of "0" for "enet-phy-pair-order" property.
+ - Do configuration in .probe instead of .config_init, as it only needs
+   to be done once and survives soft reset.
+
+v2:
+ - Added register/field definitions where possible. For some registers,
+   it seems hard to find a proper name, but I still defined them where
+   some of the fields are known.
+ - Introduced new helper function to swap RG_LPF_CAP and RG_LPF_CAP_XG
+   values, in order to reduce duplication.
+
+ drivers/net/phy/realtek/realtek_main.c | 154 +++++++++++++++++++++++++
+ 1 file changed, 154 insertions(+)
+
+diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
+index 3d98df197a33..27268811f564 100644
+--- a/drivers/net/phy/realtek/realtek_main.c
++++ b/drivers/net/phy/realtek/realtek_main.c
+@@ -206,6 +206,21 @@
+ #define RTL8224_VND1_MDI_PAIR_SWAP		0xa90
+ #define RTL8224_VND1_MDI_POLARITY_SWAP		0xa94
  
- void *dpll_priv(struct dpll_device *dpll)
-@@ -1073,6 +1069,8 @@ void *dpll_priv(struct dpll_device *dpll)
- 	struct dpll_device_registration *reg;
- 
- 	reg = dpll_device_registration_first(dpll);
-+	if (!reg)
-+		return NULL;
- 	return reg->priv;
- }
- 
-@@ -1081,6 +1079,8 @@ const struct dpll_device_ops *dpll_device_ops(struct dpll_device *dpll)
- 	struct dpll_device_registration *reg;
- 
- 	reg = dpll_device_registration_first(dpll);
-+	if (!reg)
-+		return NULL;
- 	return reg->ops;
- }
- 
-diff --git a/drivers/dpll/dpll_netlink.c b/drivers/dpll/dpll_netlink.c
-index 0ff1658c2dc1ba..8e7e61982b867c 100644
---- a/drivers/dpll/dpll_netlink.c
-+++ b/drivers/dpll/dpll_netlink.c
-@@ -682,6 +682,12 @@ dpll_cmd_pin_get_one(struct sk_buff *msg, struct dpll_pin *pin,
- 	ref = dpll_xa_ref_dpll_first(&pin->dpll_refs);
- 	ASSERT_NOT_NULL(ref);
- 
-+	/* The first dpll the pin references may be torn down while still
-+	 * pinned by foreign-driver refs; drop the notification cleanly.
-+	 */
-+	if (!dpll_device_ops(ref->dpll))
-+		return -ENODEV;
++#define RTL8226_VND1_UNKNOWN_6A21		0x6a21
++#define  RTL8226_VND1_UNKNOWN_6A21_MDI_SWAP_EN	BIT(5)
 +
- 	ret = dpll_msg_add_pin_handle(msg, pin);
- 	if (ret)
- 		return ret;
++#define RTL8226_VND2_UNKNOWN_D068		0xd068
++#define  RTL8226_VND2_UNKNOWN_D068_MDI_SWAP_FLAG	BIT(1)
++#define  RTL8226_VND2_UNKNOWN_D068_PAIR_SEL	GENMASK(4, 3)
++#define RTL8226_VND2_ADCCAL_OFFSET		0xd06a
++
++#define RTL8226_VND2_RG_LPF_CAP_XG_P0_P1	0xbd5a
++#define RTL8226_VND2_RG_LPF_CAP_XG_P2_P3	0xbd5c
++#define RTL8226_VND2_RG_LPF_CAP_P0_P1		0xbc18
++#define RTL8226_VND2_RG_LPF_CAP_P2_P3		0xbc1a
++#define  RTL8226_RG_LPF_CAP_PAIR_A_MASK		GENMASK(4, 0)
++#define  RTL8226_RG_LPF_CAP_PAIR_B_MASK		GENMASK(12, 8)
++
+ #define RTL8366RB_POWER_SAVE			0x15
+ #define RTL8366RB_POWER_SAVE_ON			BIT(12)
+ 
+@@ -1485,6 +1500,144 @@ static int rtl822xb_write_mmd(struct phy_device *phydev, int devnum, u16 reg,
+ 	return write_ret;
+ }
+ 
++static int rtl8226_set_mdi_swap(struct phy_device *phydev, bool swap_enable)
++{
++	u16 val = swap_enable ? RTL8226_VND1_UNKNOWN_6A21_MDI_SWAP_EN : 0;
++
++	return phy_modify_mmd(phydev, MDIO_MMD_VEND1, RTL8226_VND1_UNKNOWN_6A21,
++			      RTL8226_VND1_UNKNOWN_6A21_MDI_SWAP_EN, val);
++}
++
++static int rtl8226_swap_rg_lpf_cap(struct phy_device *phydev, u32 reg_p0_p1, u32 reg_p2_p3)
++{
++	u16 val_p0, val_p1, val_p2, val_p3;
++	int ret;
++
++	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, reg_p0_p1);
++	if (ret < 0)
++		return ret;
++
++	val_p0 = FIELD_GET(RTL8226_RG_LPF_CAP_PAIR_A_MASK, ret);
++	val_p1 = FIELD_GET(RTL8226_RG_LPF_CAP_PAIR_B_MASK, ret);
++
++	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, reg_p2_p3);
++	if (ret < 0)
++		return ret;
++
++	val_p2 = FIELD_GET(RTL8226_RG_LPF_CAP_PAIR_A_MASK, ret);
++	val_p3 = FIELD_GET(RTL8226_RG_LPF_CAP_PAIR_B_MASK, ret);
++
++	ret = phy_modify_mmd(phydev, MDIO_MMD_VEND2, reg_p0_p1,
++			     RTL8226_RG_LPF_CAP_PAIR_A_MASK | RTL8226_RG_LPF_CAP_PAIR_B_MASK,
++			     FIELD_PREP(RTL8226_RG_LPF_CAP_PAIR_A_MASK, val_p3) |
++			     FIELD_PREP(RTL8226_RG_LPF_CAP_PAIR_B_MASK, val_p2));
++	if (ret < 0)
++		return ret;
++
++	return phy_modify_mmd(phydev, MDIO_MMD_VEND2, reg_p2_p3,
++			     RTL8226_RG_LPF_CAP_PAIR_A_MASK | RTL8226_RG_LPF_CAP_PAIR_B_MASK,
++			     FIELD_PREP(RTL8226_RG_LPF_CAP_PAIR_A_MASK, val_p1) |
++			     FIELD_PREP(RTL8226_RG_LPF_CAP_PAIR_B_MASK, val_p0));
++}
++
++static int rtl8226_patch_mdi_swap(struct phy_device *phydev, bool swap_enable)
++{
++	u16 adccal_offset[4];
++	bool is_patched;
++	int ret;
++
++	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, RTL8226_VND2_UNKNOWN_D068);
++	if (ret < 0)
++		return ret;
++
++	is_patched = !(ret & RTL8226_VND2_UNKNOWN_D068_MDI_SWAP_FLAG);
++
++	if (is_patched == swap_enable) {
++		/* Nothing to do */
++		return 0;
++	}
++
++	if (!swap_enable) {
++		/* Patching is only implemented one-way, see next comment. */
++		phydev_err(phydev, "MDI swapping disabled, but PHY is already patched.\n");
++		return -EINVAL;
++	}
++
++	/* The exact meaning of these bits is unknown. We only know that bit 1
++	 * is used as a flag that swapping is already done.
++	 */
++	ret = phy_modify_mmd(phydev, MDIO_MMD_VEND2, RTL8226_VND2_UNKNOWN_D068, 0x7, 0x1);
++	if (ret < 0)
++		return ret;
++
++	for (int i = 0; i < 4; i++) {
++		ret = phy_modify_mmd(phydev, MDIO_MMD_VEND2, RTL8226_VND2_UNKNOWN_D068,
++				     RTL8226_VND2_UNKNOWN_D068_PAIR_SEL,
++				     FIELD_PREP(RTL8226_VND2_UNKNOWN_D068_PAIR_SEL, i));
++		if (ret < 0)
++			return ret;
++
++		ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, RTL8226_VND2_ADCCAL_OFFSET);
++		if (ret < 0)
++			return ret;
++
++		adccal_offset[i] = ret;
++	}
++
++	for (int i = 0; i < 4; i++) {
++		ret = phy_modify_mmd(phydev, MDIO_MMD_VEND2, RTL8226_VND2_UNKNOWN_D068,
++				     RTL8226_VND2_UNKNOWN_D068_PAIR_SEL,
++				     FIELD_PREP(RTL8226_VND2_UNKNOWN_D068_PAIR_SEL, i));
++		if (ret < 0)
++			return ret;
++
++		ret = phy_write_mmd(phydev, MDIO_MMD_VEND2, RTL8226_VND2_ADCCAL_OFFSET,
++				    adccal_offset[3 - i]);
++		if (ret < 0)
++			return ret;
++	}
++
++	ret = rtl8226_swap_rg_lpf_cap(phydev, RTL8226_VND2_RG_LPF_CAP_XG_P0_P1,
++				      RTL8226_VND2_RG_LPF_CAP_XG_P2_P3);
++	if (ret < 0)
++		return ret;
++
++	return rtl8226_swap_rg_lpf_cap(phydev, RTL8226_VND2_RG_LPF_CAP_P0_P1,
++				       RTL8226_VND2_RG_LPF_CAP_P2_P3);
++}
++
++static int rtl8226_config_mdi_order(struct phy_device *phydev)
++{
++	u32 order;
++	bool swap_enable;
++	int ret;
++
++	ret = of_property_read_u32(phydev->mdio.dev.of_node, "enet-phy-pair-order", &order);
++
++	/* Property not present, nothing to do */
++	if (ret == -EINVAL || ret == -ENOSYS)
++		return 0;
++
++	if (ret)
++		return ret;
++
++	if (order & ~1)
++		return -EINVAL;
++
++	swap_enable = !!(order & 1);
++
++	ret = rtl8226_set_mdi_swap(phydev, swap_enable);
++	if (ret)
++		return ret;
++
++	return rtl8226_patch_mdi_swap(phydev, swap_enable);
++}
++
++static int rtl8226_probe(struct phy_device *phydev)
++{
++	return rtl8226_config_mdi_order(phydev);
++}
++
+ static int rtl822x_set_serdes_option_mode(struct phy_device *phydev, bool gen1)
+ {
+ 	bool has_2500, has_sgmii;
+@@ -2684,6 +2837,7 @@ static struct phy_driver realtek_drvs[] = {
+ 		.soft_reset	= rtl822x_c45_soft_reset,
+ 		.get_features	= rtl822x_c45_get_features,
+ 		.config_aneg	= rtl822x_c45_config_aneg,
++		.probe		= rtl8226_probe,
+ 		.config_init	= rtl822x_config_init,
+ 		.inband_caps	= rtl822x_inband_caps,
+ 		.config_inband	= rtl822x_config_inband,
 -- 
-2.53.0
+2.54.0
 
