@@ -1,256 +1,311 @@
-Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f196.google.com (mail-pf1-f196.google.com [209.85.210.196])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6474F405C4D;
-	Sat, 16 May 2026 16:32:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 998C43E7BDC
+	for <netdev@vger.kernel.org>; Sat, 16 May 2026 16:43:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778949167; cv=none; b=RYdaf6Kgfv6d7jTfE8t34j2RRDLNPb1L7/H5TQiX9kC6nTWUVINEQfup4l2zvO6IcZi8uor/YUWwHy9bkM5s4o66mMZ88iTmjHFDiLrHhHshqHQnrGaW6dJSsTM0D7yzLuA3Oq95OvEzSI21kPHh1tQUrjHZ4H6MD8HIvCv1dMk=
+	t=1778949824; cv=none; b=HsYpaCeImKkHaFEeUal0OQrPO+5CmOW5tMxVPzUGhT463qA2/CY2gkdhLuFOYy3o6LKRBSGWuVqnKTtVGa8x8GDYbAPZw2+/yABvIX8CV0snpaa8qC8ySKAbmvbH043KTsQUYPmmtiLrl8JGZJRE+eabFTwUndgKI7zTNr5A8zs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778949167; c=relaxed/simple;
-	bh=PWRlz0bAYGNEss5NAODwa78EZdoYB4GvTMaDda35irc=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=D4+j2XOkfbGEbo5LalsbH7QWlqUy3VdrA8svKshZ0kY5HZk2ovwHC9lBlGREq8/kcKVjxejHyqdY5rmkmObV5+TcDzgpQoHtWBevQ5W/B8/JkGcVPK/zUuIF3LzNnu3VBBp4DFHHN1QW9WOXtTA4kFWduxUbHEaJa2N3FRiKH/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=o7bu4ttN; dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=Ryku/9CD; arc=none smtp.client-ip=160.80.4.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
+	s=arc-20240116; t=1778949824; c=relaxed/simple;
+	bh=VK6oQzrtgf6YYfW3WkqQQxt0wecu5lgEtccn/P7djnQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Rxqi3YzveexW5BEIUPJBIwcdxLB1WCmT/nmZHFt4EfE9ESDW+j8D9/lXtjPm5IArX82E/fBLvaigfv8mo2Tarmf2v3OnvCr1+JrZ29XF3Jfn7Oak5dyc1B3E+uKhpHfFosmH3c8YVbrDt8zHADpUdZKCnIZ6uv7sWK2zkZmEy4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m/Rk49AL; arc=none smtp.client-ip=209.85.210.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="o7bu4ttN";
-	dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="Ryku/9CD"
-Received: from smtpauth-2019-1.uniroma2.it (smtpauth-2019-1.uniroma2.it [160.80.5.46])
-	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 64GGQ0f7022595;
-	Sat, 16 May 2026 18:26:06 +0200
-Received: from lubuntu-18.04 (host-95-246-236-184.retail.telecomitalia.it [95.246.236.184])
-	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id DBF44122901;
-	Sat, 16 May 2026 18:25:56 +0200 (CEST)
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
-	s=ed201904; t=1778948757; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RTO1RAu7euvHtj4HzoctoToKt9Ch9IUKUgMEEx4QzpQ=;
-	b=o7bu4ttNt52bH3A6pny5FyhRyrFs+Yn4MFCg9/fTZe27XN9jDx6O3FxJhA41tQo+R2DyA8
-	dM+TGYj7SRzLH2BA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
-	t=1778948757; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RTO1RAu7euvHtj4HzoctoToKt9Ch9IUKUgMEEx4QzpQ=;
-	b=Ryku/9CDDmWB/aFrWWfQ0ClbLjlvV00F9zcAwNDPa1czzXWpj3zwoMx3F1aDO8Xenp/dSx
-	XUsOri3sl7ZMaX+CBY5BBPIlYxp0dSUZ1UIpXy8UUDGD1jpCE1+nVuI0OULcAOtQ2tOGAm
-	KZp7ERlmvcMGi6CP9UexUuOguskVP2274Y9d135F7XZ6YIAUClGgyzS5JYGsn/LrTd8Yh7
-	EMMPE3MhF4VbQKSK2SYn42ZIVDDs7gw5FhXEVNu63znQLgAS4Sotnn1hQX9E9KzmMhJ41V
-	xTaU65EK+l+ZKGk3gbqtRzEl3FMR9Q8KyXPUmcoyOZvvJY1kBu2zvnGuN/ykIQ==
-Date: Sat, 16 May 2026 18:25:56 +0200
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
-To: Yuya Kusakabe <yuya.kusakabe@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m/Rk49AL"
+Received: by mail-pf1-f196.google.com with SMTP id d2e1a72fcca58-83659d38e38so365184b3a.1
+        for <netdev@vger.kernel.org>; Sat, 16 May 2026 09:43:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778949822; x=1779554622; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=aA9KTdiB1VlZvIllZFRx7+iTC5UX5yzMKOX1jBgCP78=;
+        b=m/Rk49ALLW1g2ZK1g4YOD614AUKx7qFC/F/ELNakxInhVQjipE4NUeIL33OqJFxTs6
+         OBt9+cR/wQJeP1kTBcZrFqIfdodO3GKCaS6PHEhAPCDsUSR+4sugCj8NmndjrtewEPB4
+         2serkR9BsAbORsFryIeYsN2zxW1jJpRhXmGlgmwwSyKGoR19GajOwpKNVNBtqlEtT+j7
+         bcgiK2Ymb3e2gsi12y6DCgJskfmxQdRzWDE6uYK4Vev6QQ8bibPkeZ/k9DDlQaq9+06U
+         e44OucPPHgfE8j5B3tyOFBlOZNmhm6Yw6Qu3C6D0UC19/5mumyBmIRQeTYlqyMwHPAUW
+         PdVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778949822; x=1779554622;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aA9KTdiB1VlZvIllZFRx7+iTC5UX5yzMKOX1jBgCP78=;
+        b=T4t0nrZ3mn7YKOtq8Mca7puYq9E8hAD4rOyVCYLrA0XWlHU1qro3lLrRCqI71mw8t1
+         adPaJ6pSN/VIBUiOQ8yXTjKnyTdw7tHYnIO7kTx3NFlpaA16x6CydpTek4DNsTtxS9eM
+         8BY3kjJMaYWrl6Y8+Z8W0zj/p7BQ6b51BmpaoaqJn+8ehCC8jZf8at/FpsQxCdh+hVvq
+         bcgGjs7ZPpBdP/KwBOjJLQSvZLRVW/1rS7LrygrJltVu0FOc95zBk9PEB32Ur2HvMCyp
+         xsYqLDntBCI8iap1ZQlNg4IILBiuXtdzyTX1U6v3AvWbedMVRsDKrNTwOxTHK9NS1tbu
+         9y3A==
+X-Forwarded-Encrypted: i=1; AFNElJ9sSthGW20JMhkjMgTfNsO04CdFADzh9yLR21+GLOnBORqT4bt1+mReh/RbB3O4EZLRHpv80i8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxM5A75ehyqeeytYBX6fEuXRYYQGKqXlHbnYE10rN7gtnRwQQ1
+	nd2Z+vo7S++2KSZoI/sVpr5jAny+3qD96N5JXjDKKW3XYzIEv+NvHZVs
+X-Gm-Gg: Acq92OF9VZogy7LrHpAyy4USWtaSaUhjZgG+yJJvd4+c66qFxHvb00s+BKmY9qfmQh7
+	oolVgdp7Jlp8RfPbjwE8XEmg1gJf+1hUrTNEaFOh5UGMgdEj+DTCKEQMZQ+AWOxS+BMg5G8FadV
+	uorVGWIpohYcn/YDingKoOSqHLUbHd6Yr4cpWWftjdkkFyjBEznn1cELi0siKcrxpLSI3QZZB6z
+	1EPOFjVz/7FwYrlbmns9TCqJn1uqcNbkL5sRXlsLUE039w1a3m6Fe43m1NGL4lpFuVCs6lqCADs
+	CYu4csrF3iFCKRn/phpZWehHHdpqaAa2tIYbWB1VdTiQnkyiVE84bqZPfKXnqWnBbQDSxPSfMuz
+	B+PicyGOVzpOmihtkGlOVbmitf1CG4ZhWKBPXmeVxV/fbJkKlixn6iW9B2AsWl+tO7gk+qJiNDt
+	INph7+GJPhMSJXtoYVwLynO3nhcAjOja/VId/xyj5iWw==
+X-Received: by 2002:a05:6a00:1251:b0:838:6d43:9488 with SMTP id d2e1a72fcca58-83f33c61c17mr8989803b3a.32.1778949821723;
+        Sat, 16 May 2026 09:43:41 -0700 (PDT)
+Received: from localhost ([111.228.63.84])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83f19f7ccc7sm11281641b3a.58.2026.05.16.09.43.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 16 May 2026 09:43:41 -0700 (PDT)
+From: Zhang Cen <rollkingzzc@gmail.com>
+To: Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Jakub Sitnicki <jakub@cloudflare.com>
 Cc: "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        Justin Iurman
- <justin.iurman@gmail.com>,
-        Shuah Khan <shuah@kernel.org>, Jonathan Corbet
- <corbet@lwn.net>,
-        Shuah Khan <skhan@linuxfoundation.org>, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-doc@vger.kernel.org, stefano.salsano@uniroma2.it,
-        ahabdels@cisco.com, Andrea Mayer
- <andrea.mayer@uniroma2.it>
-Subject: Re: [PATCH v2 0/7] seg6: add SRv6 Mobile User Plane (RFC 9433)
- behaviors
-Message-Id: <20260516182556.66af27a9c63208435911990b@uniroma2.it>
-In-Reply-To: <20260505-seg6-mobile-v2-0-9e8022bdfdb6@gmail.com>
-References: <20260505-seg6-mobile-v2-0-9e8022bdfdb6@gmail.com>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	zerocling0077@gmail.com,
+	2045gemini@gmail.com,
+	Zhang Cen <rollkingzzc@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] bpf, sockmap: keep sk_msg copy state in sync
+Date: Sun, 17 May 2026 00:43:19 +0800
+Message-Id: <20260516164319.1519418-1-rollkingzzc@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
-X-Virus-Status: Clean
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Tue, 05 May 2026 01:30:10 +0900
-Yuya Kusakabe <yuya.kusakabe@gmail.com> wrote:
+SK_MSG helpers use msg->sg.copy as provenance for scatterlist entries that
+still refer to external or shared pages and must not be exposed through
+data/data_end.
 
-Hi Yuya,
+bpf_msg_pull_data(), bpf_msg_push_data() and bpf_msg_pop_data() rewrite the
+scatterlist ring by compacting, splitting and shifting entries. Those
+updates move msg->sg.data[] slots around, but leave the parallel copy
+bitmap behind.
+A later helper sequence can then move an external entry back to
+msg->sg.start with its copy bit cleared and make
+sk_msg_compute_data_pointers() treat it as directly writable packet data.
 
-Thanks for the work. Some comments on the overall design below. I will
-reply on the individual patches separately.
+Keep msg->sg.copy synchronized with every scatterlist move, preserve
+the bit for split tail entries, and clear it whenever a helper replaces
+an entry with a freshly allocated private page.
 
-> This series adds the in-kernel data path for the SRv6 Mobile User
-> Plane (MUP) architecture defined in RFC 9433.  SRv6 MUP integrates
-> GTP-U mobile traffic into an SRv6 transport domain by mapping the
-> 5-tuple (TEID, QFI, R, U, PDU Session ID) into a single SID, allowing
-> operators to replace the GTP-U overlay between the gNB and the
-> upstream UPF with native SRv6 forwarding while keeping the radio side
-> unchanged.
->
-> The series implements the six MUP behaviors that an SRv6 MUP gateway
-> typically needs:
->
->   End.MAP         (RFC 9433 Section 6.2) -- swap DA with the next SID
->                                             without consuming the SRH
->   End.M.GTP6.D    (Section 6.3) -- IPv6/GTP-U to SRv6 headend encap
->   End.M.GTP6.D.Di (Section 6.4) -- drop-in mode variant of the above
->                                    (preserves the original outer DA at
->                                    SRH[0] and discards TEID/QFI)
->   End.M.GTP6.E    (Section 6.5) -- SRv6 to IPv6/GTP-U egress encap
->   End.M.GTP4.E    (Section 6.6) -- SRv6 to IPv4/GTP-U egress encap
->   H.M.GTP4.D      (Section 6.7) -- IPv4/GTP-U to SRv6 headend encap
+Fixes: 015632bb30da ("bpf: sk_msg program helper bpf_sk_msg_pull_data")
+Fixes: 6fff607e2f14 ("bpf: sk_msg program helper bpf_msg_push_data")
+Fixes: 7246d8ed4dcc ("bpf: helper to pop data from messages")
+Cc: stable@vger.kernel.org
+Co-developed-by: Han Guidong <2045gemini@gmail.com>
+Signed-off-by: Han Guidong <2045gemini@gmail.com>
+Signed-off-by: Zhang Cen <rollkingzzc@gmail.com>
+---
+While researching recent page cache bugs, we discovered this bug. We confirmed it allows overwriting the page cache of read-only files via splice(). We haven't attempted to write an exploit, but the corruption primitive is verified. PoC available upon request. Recommend fixing ASAP.
+---
+ net/core/filter.c | 50 ++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 49 insertions(+), 1 deletion(-)
 
-RFC 9433 Section 6 is titled "SRv6 Segment Endpoint Mobility Behaviors",
-but Section 6.7 defines H.M.GTP4.D as "SR Policy Headend with tunnel
-decapsulation and map to an SRv6 policy". This behavior receives IPv4
-packets and is not bound to any SID, so it does not fit the endpoint
-model that seg6_local implements. Placing it there required relaxing the
-ETH_P_IPV6 guard to accept ETH_P_IP and adding input_family to
-seg6_action_desc, for a single behavior that does not share the endpoint
-model.
-
-seg6_local is not the natural place for this behavior. The UAPI cannot
-be undone once merged, so where it should live needs discussion on the
-list before we proceed.
-
->
-> End.Limit (RFC 9433 Section 6.8) is intentionally out of scope.
-
->
-> All behaviors plug into the existing seg6_local lwtunnel framework, so
-> they are configurable through the standard "ip route ... encap
-> seg6local action ..." interface.
-
-This adds ~2.2k lines to seg6_local.c, bringing it from ~2.7k to ~5k
-lines. The behaviors reuse the existing seg6_local infrastructure (SRH
-validation, seg6_do_srh_encap, seg6_lookup_nexthop), while the GTP-U
-parsing, encapsulation, and PDU Session handling, for example, is new
-and self-contained. Given the volume, moving the MUP code into a
-separate seg6_mobile.c (say CONFIG_IPV6_SEG6_MUP) would keep seg6_local
-focused on the RFC 8986 endpoint framework. There are trade-offs
-either way and I think this deserves discussion on the list.
-
-There is significant duplication across the introduced behaviors: for
-example the GTP-U parsing, inner protocol dispatch, and NF_HOOK plumbing
-are nearly identical each time, and the small differences are already
-hiding issues (HMAC validation missing in some, malformed SRH silently
-accepted in others, wrong drop reasons). Some of the individual
-functions are also well over 100 lines. Splitting them with helpers
-would help.
-The new code also has some style drift from seg6_local.c (variable
-declaration ordering, scope blocks, blank lines) that should be fixed.
-
-I think this patchset should be broken into smaller patchsets, one per
-behavior, each with the behavior, its selftest, and any needed helpers as
-separate patches. The same approach was used for End.DT4/End.DT6 and
-End.DT46. End.M.GTP4.E alone is ~1.2k lines in a single diff.
-
-> No new netlink families are
-> introduced -- the new SEG6_LOCAL_MOBILE_* attributes extend
-> SEG6_LOCAL_MAX in an add-only way, and the new SEG6_LOCAL_ACTION_*
-> values are appended.
-
-The attribute layout and semantics are probably the most sensitive part
-of the series and need to be settled before it can go in, since the UAPI
-cannot be changed once merged.
-
-The series reuses SEG6_LOCAL_NH6, SEG6_LOCAL_SRH and SEG6_LOCAL_OIF with
-semantics that differ from the existing behaviors. NH6 today means
-next-hop in End.X/DX6. This series reuses it as DA replacement in
-End.MAP and as prefix template in H.M.GTP4.D.
-SRH is inserted verbatim in End.B6/B6.Encaps but augmented per-packet in
-the mobile behaviors. These attributes have established UAPI semantics
-from their existing behaviors. Giving them a different meaning in new
-behaviors is a UAPI semantic divergence.
-
-The selftests use OIF on all five GTP behaviors to select a VRF for the
-lookup, but that is what TABLE and VRFTABLE are for (End.DT4, End.DT6).
-OIF in the existing behaviors means output interface (End.X) or L2
-egress device (End.DX2). VRF support is a nice-to-have that can be added
-later as a separate optional attribute.
-
->
-> The egress behaviors (End.M.GTP4.E and End.M.GTP6.E) accept an
-> optional per-route pdu_type attribute that is the sole control
-> for inserting the GTP-U PDU Session Container (3GPP TS 38.415 Section
-> 5.5.2).  When pdu_type is set (dl/ul/0..15), every emitted GTP-U
-> packet carries the container with that PDU Type and the QFI extracted
-> from Args.Mob.Session.  When pdu_type is unset, the egress emits
-> a short GTPv1-U header with no container.  pdu_type must be
-> configured on egress routes serving 5G N3 traffic; omitting it is
-> intended only for LTE-only / S1-U-style deployments where no PDU
-> Session Container is exchanged.
->
-> The matching iproute2 patch series has been posted to iproute2-next:
-> https://lore.kernel.org/netdev/20260505-seg6-mobile-v2-0-93291b7b0134@gmail.com/
-
-The user-facing parameter names and their semantics are defined in the
-iproute2 series (where the man page lives), so that is probably the
-better place to discuss keyword choices and attribute naming.
-
-> [snip]
->  include/net/dropreason-core.h                      |   40 +
-
-The series introduces six mobile-specific drop reasons. Drop reasons are
-visible to userspace via the kfree_skb tracepoint (perf, bpftrace,
-dropwatch), so they look like a kind of interface and their names should
-match the actual failure.
-
-BAD_SID and BAD_GTPU make sense as mobile-specific reasons. The other
-four have issues: NOMEM and MTU_EXCEEDED duplicate existing generic
-reasons (NOMEM and PKT_TOO_BIG). INVALID_SRH_SL is used for multiple SRH
-validation failures, not just Segments Left (HMAC failure is also
-reported as INVALID_SRH_SL). BAD_INNER is used as a catch-all for outer
-header pull failures and encapsulation errors, neither of which involves
-the inner payload.
-
-We could think about a prep patch introducing SRv6-level drop reasons
-(SEG6_INVALID_SRH, SEG6_HMAC, etc.) that both the existing behaviors and
-the MUP ones can share.
-
-> [snip]
->  .../selftests/net/srv6_end_m_gtp4_e_test.sh        |  486 ++++
->  .../selftests/net/srv6_end_m_gtp6_d_di_test.sh     |  427 ++++
->  .../selftests/net/srv6_end_m_gtp6_d_test.sh        |  497 ++++
->  .../selftests/net/srv6_end_m_gtp6_e_test.sh        |  402 +++
->  tools/testing/selftests/net/srv6_end_map_test.sh   |  103 +
->  .../testing/selftests/net/srv6_h_m_gtp4_d_test.sh  |  487 ++++
-
-Selftests for the five GTP behaviors heavily depend on python3 and scapy
-heredocs embedded in the shell scripts for packet construction and
-validation, which adds an external runtime dependency. A statically
-compiled C helper would remove it and avoid embedding python heredocs
-in shell scripts.
-A few cases worth covering: SRH and no-SRH input paths where the
-behavior accepts both, missing SRH where the behavior requires
-it, malformed SRH, and invalid attribute values.
-
-The five GTP behaviors pass per-packet context to a finish callback through
-skb->cb, and recover the lwtstate via skb_dst(skb)->lwtstate.
-When nf_hooks_lwtunnel is enabled, an NF_HOOK sits between the input
-handler and the finish callback. Netfilter processing at this hook can then
-corrupt the cb (IPCB/IP6CB aliases skb->cb) or drop/replace the skb dst, so
-the finish callback dereferences a NULL or unrelated dst.
-Even if the dst is preserved, the cb may have been modified.
-
-The dst problem is pre-existing from 7a3f5b0de364 ("netfilter: add
-netfilter hooks to SRv6 data plane") and affects seg6_iptunnel too. Both
-issues need a robust fix before this series can go in. I want to look at
-this myself and will Cc you when I do, as the five new behaviors may need
-to be adjusted on top.
-
-> [snip]
-
-> Best regards,
-> --
-> Yuya Kusakabe <yuya.kusakabe@gmail.com>
-
-Ciao,
-Andrea
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 9590877b0714f..352233da29429 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -2654,6 +2654,19 @@ static void sk_msg_reset_curr(struct sk_msg *msg)
+ 	}
+ }
+ 
++static bool sk_msg_elem_is_copy(const struct sk_msg *msg, u32 i)
++{
++	return test_bit(i, msg->sg.copy);
++}
++
++static void sk_msg_set_elem_copy(struct sk_msg *msg, u32 i, bool copy)
++{
++	if (copy)
++		__set_bit(i, msg->sg.copy);
++	else
++		__clear_bit(i, msg->sg.copy);
++}
++
+ static const struct bpf_func_proto bpf_msg_cork_bytes_proto = {
+ 	.func           = bpf_msg_cork_bytes,
+ 	.gpl_only       = false,
+@@ -2738,6 +2751,8 @@ BPF_CALL_4(bpf_msg_pull_data, struct sk_msg *, msg, u32, start,
+ 	} while (i != last_sge);
+ 
+ 	sg_set_page(&msg->sg.data[first_sge], page, copy, 0);
++	sk_msg_set_elem_copy(msg, first_sge, false);
++	sk_msg_set_elem_copy(msg, msg->sg.end, false);
+ 
+ 	/* To repair sg ring we need to shift entries. If we only
+ 	 * had a single entry though we can just replace it and
+@@ -2754,6 +2769,7 @@ BPF_CALL_4(bpf_msg_pull_data, struct sk_msg *, msg, u32, start,
+ 	sk_msg_iter_var_next(i);
+ 	do {
+ 		u32 move_from;
++		bool move_copy;
+ 
+ 		if (i + shift >= NR_MSG_FRAG_IDS)
+ 			move_from = i + shift - NR_MSG_FRAG_IDS;
+@@ -2762,10 +2778,13 @@ BPF_CALL_4(bpf_msg_pull_data, struct sk_msg *, msg, u32, start,
+ 		if (move_from == msg->sg.end)
+ 			break;
+ 
++		move_copy = sk_msg_elem_is_copy(msg, move_from);
+ 		msg->sg.data[i] = msg->sg.data[move_from];
++		sk_msg_set_elem_copy(msg, i, move_copy);
+ 		msg->sg.data[move_from].length = 0;
+ 		msg->sg.data[move_from].page_link = 0;
+ 		msg->sg.data[move_from].offset = 0;
++		sk_msg_set_elem_copy(msg, move_from, false);
+ 		sk_msg_iter_var_next(i);
+ 	} while (1);
+ 
+@@ -2794,6 +2813,8 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
+ {
+ 	struct scatterlist sge, nsge, nnsge, rsge = {0}, *psge;
+ 	u32 new, i = 0, l = 0, space, copy = 0, offset = 0;
++	bool sge_copy = false, nsge_copy = false, nnsge_copy = false;
++	bool rsge_copy = false;
+ 	u8 *raw, *to, *from;
+ 	struct page *page;
+ 
+@@ -2866,6 +2887,7 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
+ 			sk_msg_iter_var_prev(i);
+ 		psge = sk_msg_elem(msg, i);
+ 		rsge = sk_msg_elem_cpy(msg, i);
++		rsge_copy = sk_msg_elem_is_copy(msg, i);
+ 
+ 		psge->length = start - offset;
+ 		rsge.length -= psge->length;
+@@ -2891,23 +2913,31 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
+ 	/* Shift one or two slots as needed */
+ 	sge = sk_msg_elem_cpy(msg, new);
+ 	sg_unmark_end(&sge);
++	sge_copy = sk_msg_elem_is_copy(msg, new);
+ 
+ 	nsge = sk_msg_elem_cpy(msg, i);
++	nsge_copy = sk_msg_elem_is_copy(msg, i);
+ 	if (rsge.length) {
+ 		sk_msg_iter_var_next(i);
+ 		nnsge = sk_msg_elem_cpy(msg, i);
++		nnsge_copy = sk_msg_elem_is_copy(msg, i);
+ 		sk_msg_iter_next(msg, end);
+ 	}
+ 
+ 	while (i != msg->sg.end) {
+ 		msg->sg.data[i] = sge;
++		sk_msg_set_elem_copy(msg, i, sge_copy);
+ 		sge = nsge;
++		sge_copy = nsge_copy;
+ 		sk_msg_iter_var_next(i);
+ 		if (rsge.length) {
+ 			nsge = nnsge;
++			nsge_copy = nnsge_copy;
+ 			nnsge = sk_msg_elem_cpy(msg, i);
++			nnsge_copy = sk_msg_elem_is_copy(msg, i);
+ 		} else {
+ 			nsge = sk_msg_elem_cpy(msg, i);
++			nsge_copy = sk_msg_elem_is_copy(msg, i);
+ 		}
+ 	}
+ 
+@@ -2915,13 +2945,15 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
+ 	/* Place newly allocated data buffer */
+ 	sk_mem_charge(msg->sk, len);
+ 	msg->sg.size += len;
+-	__clear_bit(new, msg->sg.copy);
++	sk_msg_set_elem_copy(msg, new, false);
+ 	sg_set_page(&msg->sg.data[new], page, len + copy, 0);
+ 	if (rsge.length) {
+ 		get_page(sg_page(&rsge));
+ 		sk_msg_iter_var_next(new);
+ 		msg->sg.data[new] = rsge;
++		sk_msg_set_elem_copy(msg, new, rsge_copy);
+ 	}
++	sk_msg_set_elem_copy(msg, msg->sg.end, false);
+ 
+ 	sk_msg_reset_curr(msg);
+ 	sk_msg_compute_data_pointers(msg);
+@@ -2945,29 +2977,41 @@ static void sk_msg_shift_left(struct sk_msg *msg, int i)
+ 
+ 	put_page(sg_page(sge));
+ 	do {
++		bool copy;
++
+ 		prev = i;
+ 		sk_msg_iter_var_next(i);
++		copy = sk_msg_elem_is_copy(msg, i);
+ 		msg->sg.data[prev] = msg->sg.data[i];
++		sk_msg_set_elem_copy(msg, prev, copy);
+ 	} while (i != msg->sg.end);
+ 
+ 	sk_msg_iter_prev(msg, end);
++	sk_msg_set_elem_copy(msg, msg->sg.end, false);
+ }
+ 
+ static void sk_msg_shift_right(struct sk_msg *msg, int i)
+ {
+ 	struct scatterlist tmp, sge;
++	bool tmp_copy, sge_copy;
+ 
+ 	sk_msg_iter_next(msg, end);
+ 	sge = sk_msg_elem_cpy(msg, i);
++	sge_copy = sk_msg_elem_is_copy(msg, i);
+ 	sk_msg_iter_var_next(i);
+ 	tmp = sk_msg_elem_cpy(msg, i);
++	tmp_copy = sk_msg_elem_is_copy(msg, i);
+ 
+ 	while (i != msg->sg.end) {
+ 		msg->sg.data[i] = sge;
++		sk_msg_set_elem_copy(msg, i, sge_copy);
+ 		sk_msg_iter_var_next(i);
+ 		sge = tmp;
++		sge_copy = tmp_copy;
+ 		tmp = sk_msg_elem_cpy(msg, i);
++		tmp_copy = sk_msg_elem_is_copy(msg, i);
+ 	}
++	sk_msg_set_elem_copy(msg, msg->sg.end, false);
+ }
+ 
+ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
+@@ -3024,8 +3068,10 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
+ 	 */
+ 	if (start != offset) {
+ 		struct scatterlist *nsge, *sge = sk_msg_elem(msg, i);
++		u32 sge_idx = i;
+ 		int a = start - offset;
+ 		int b = sge->length - pop - a;
++		bool sge_copy = sk_msg_elem_is_copy(msg, sge_idx);
+ 
+ 		sk_msg_iter_var_next(i);
+ 
+@@ -3038,6 +3084,7 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
+ 				sg_set_page(nsge,
+ 					    sg_page(sge),
+ 					    b, sge->offset + pop + a);
++				sk_msg_set_elem_copy(msg, i, sge_copy);
+ 			} else {
+ 				struct page *page, *orig;
+ 				u8 *to, *from;
+@@ -3054,6 +3101,7 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
+ 				memcpy(to, from, a);
+ 				memcpy(to + a, from + a + pop, b);
+ 				sg_set_page(sge, page, a + b, 0);
++				sk_msg_set_elem_copy(msg, sge_idx, false);
+ 				put_page(orig);
+ 			}
+ 			pop = 0;
+-- 
+2.43.0
