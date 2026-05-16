@@ -1,169 +1,163 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szelinsky.de (szelinsky.de [85.214.127.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D46F13C7DF1
-	for <netdev@vger.kernel.org>; Sat, 16 May 2026 10:23:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E95323C7DF1;
+	Sat, 16 May 2026 10:24:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.127.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778927032; cv=none; b=TVwPpjaQTuHQ/U/ovEHB1H/FfS303KX6H+f6PdCJZia0XwtubxmGij2zmgw85AuKg0ZWPQSc5SJuI+/mRawVw5mRMOBQ05mOTkRT1SrOYfoo321NW7lIREI5GQTCqwXne7GbOdEyh8I7Y1FMQksRLwltD6ds/igXo3wV5zN2oJI=
+	t=1778927052; cv=none; b=p8j9cO1pMixjLR2X6gTSjxyBD2istgCUcZsuYuSkGSM7cJAyLAoemC20pTbQkkDyG20fTzsvkNgwEdg88Zth8KQv9vaUNuNHHF5nlwB+23NA1urmxmU9mzckw+Jup+CQdGhEnBJkje2E8ggd2Xqav/0JZl31J8ITP4mmac72Zds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778927032; c=relaxed/simple;
-	bh=ucgpvPucluLLQch/91ovzgYsoGv18AD07LlNLTU7ITU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NC4SVBDFREOnEE/p39yle19T5pmH1dtACUNJ+Hlv72RrXhiraEB8joIKVQRh83g+lxNaln99lelCaxGHEo/C/KYjpHQ/omNeWSal4U965QnL/vMTLvjdJNFJzx+XCiPAXbLVbKtVa5LgdMj8UFAuIrQbx77GONShnPOJq0Iqp0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gCWw5y5h; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1778927052; c=relaxed/simple;
+	bh=bdN0NT6/HcYgI/x4qjaeluTgxOtZ+qYb36w6gMUlXR8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gFdO8sKaQsl4F5aRsIjFpjGF3JgVIjeg98c/mKBH7cKz5XkDndZVpl7fQ5PbnLb15ODs50X3S6s9C5zYEIqylVsQfvvd9egRMZrld0RBogbURZdMuF99Of6LjP03bTNZVOkq/jAe3JsYef6hEjYjFHa5VPUZBpWdPd3zLEqzSgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de; spf=pass smtp.mailfrom=szelinsky.de; dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b=lFgeuMo1; arc=none smtp.client-ip=85.214.127.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szelinsky.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gCWw5y5h"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-488b0046078so5250195e9.1
-        for <netdev@vger.kernel.org>; Sat, 16 May 2026 03:23:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778927029; x=1779531829; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jVa4zsTQ3V9QXphBLyT/aBBAE+kxgZ/pSmpG3ndrOMc=;
-        b=gCWw5y5hJKventJP1RWXKmDUtTDKxhNTOkf4bQv71HPYRCQU4tfeuHC0R9Ynoo8hr+
-         Yx9cqL1/F8JyyFOQ2oX/GVi+cnAFpfsx00oeIii7/8R9gkyT67P4kOu1pBcD4tCskBn3
-         HL90+JKyDtcgBjH+TOwLJALGGUYoajfBc98/DsQYSvy7DluRVMET27AjFB9viSOjkL0q
-         ULqujvEoAGnSxHasvrRR/iXMc1TlOvpuQkroX8AFk/AgZCaR5Pb9l1SbY5uFeZlUTZ7w
-         UzrKZHKMsju2YpnoLhDC/0SR2suztuMOhDkpkbeQuXLJEoBlvvyI4Ms5XB+K20T+rTlO
-         7H+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778927029; x=1779531829;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=jVa4zsTQ3V9QXphBLyT/aBBAE+kxgZ/pSmpG3ndrOMc=;
-        b=LTezkoooHk/sjGM2CyXkkx/eTWX9XDlnu8ZEIYPUWyJ3kCkqNHFzGWOZkLS+G4U9a9
-         MGTipjIWAwSletEWKFW6vX8ypE83+2Togymrq23msZ/OGIjbzTiYdHpAZ4KisQ18DbrC
-         aj+4DPC+NmObOp4yK05Z+fO16jYNLxdcGQx9HXCtBiN1p7eOe+8WFAhJWz+ZodZ4Qgxs
-         qLHfO/+n4Y0UoVvcsifKY50cQSLX6gV3yvWVtxGamWs2uearOZXY43N4+FlBBJkSaa3G
-         PfOm9qvHqrPJh763rPhnBZVPE3G+eluBEt4RA+B5aUKbDsmsI/CiiI3Rdtz+1sY6Oaq+
-         Jadw==
-X-Gm-Message-State: AOJu0Yy78fhNqJZH+tIJoveratHh+6pFnKEIA9jPOe8tHypt2o73rGBv
-	AVxMq8unXx1fCTz8SgF677F3SGpa5co8eYGrfzfh/VMiCVx/mvJzW5WafCF1MyRA
-X-Gm-Gg: Acq92OHhcDhhiO3iYLm1xyxd12/iNS1C+aleyVQgBD4uHa056vO9cmzMpZlikTb77ux
-	iTXw6POhhgpYz6ycL1lWMKXHn2TOO/Be1CW6r3xXeniduniAS78lRquCypfP0KWQQs9hSZIbWa0
-	B5Xaffsj+EVl7DOk/pqRrPJfk5KyKliZynQ0DnwXpzMJVnRUj4moNwL25IfOjloDdzsoenC51Rl
-	p3EASsUrssaDeInXWu8d16GFEOdwe3D5HcPpOoPl927X2FV8UJclJg8gTr9yBFSM3ElIt8YqxOH
-	SrX5sJGy2VoJpXFIMSTJm19IlFQlZEdWbaz6tMo/ouspoq/kQ3WcDghxfreF4oAbreZQtYGIOkW
-	lpYMmozl2+JsJ+8AMxrqGW3Jpde92nCCUCgaNwPD03AC0dOn1OS0Jd8XlD1iq2+tGNQgRv2lWs/
-	JeLJEBu0YXrrk6KfWQud+6ZjzxTHXlt/46yl1OCxS82S7hWVukq8G5/P3WkPKg
-X-Received: by 2002:a05:600c:1505:b0:48f:ed68:6760 with SMTP id 5b1f17b1804b1-48fed6867famr40993135e9.29.1778927029071;
-        Sat, 16 May 2026 03:23:49 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48febe5821fsm33738735e9.14.2026.05.16.03.23.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 16 May 2026 03:23:48 -0700 (PDT)
-Date: Sat, 16 May 2026 11:23:47 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Avinash Duduskar <avinash.duduskar@gmail.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] llc: avoid sparse cast-truncates warning in
- counter clamps
-Message-ID: <20260516112347.68aba670@pumpkin>
-In-Reply-To: <20260513092253.3035961-1-avinash.duduskar@gmail.com>
-References: <20260513092253.3035961-1-avinash.duduskar@gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b="lFgeuMo1"
+Received: from localhost (localhost [127.0.0.1])
+	by szelinsky.de (Postfix) with ESMTP id 529CDE83300;
+	Sat, 16 May 2026 12:17:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=szelinsky.de;
+	s=mail; t=1778926664;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xQxE5eeNi+FgzpQyikK/9wb1gzBGDwcK1LlAPy0UyIo=;
+	b=lFgeuMo1K1pAxBJ2oR7LoPSr7PvIuSayWS9JSK1hr3Z87k5OoIx53LwcwZvmnSxORpMM/v
+	wZ2i46cdxJ+W4awMI+KwulKLD70Un8aMhKfEdaRXQ3Am4L1h88iF8jw9zmcwuZLXC4UHsq
+	ZlmwO/IhNTQjIHkZgDzhtDGOE5IMS8cw+yEc79KEabi6u7wZrVnyDg5nY7VsjU12WcyBZi
+	e713O6gsHAYn9R+rS6ZhnuRq3TnkMjGtLLF2pCBDB8qEsGxfH9vRVpE76teUogFhhMQk1W
+	N+/iHWHDCM1FPT9y9dODyV/JJY1Pl5nrhsfFm2ZEvcAcETj0C5RVwztUMGk6Fg==
+X-Virus-Scanned: Debian amavis at szelinsky.de
+Received: from szelinsky.de ([127.0.0.1])
+ by localhost (szelinsky.de [127.0.0.1]) (amavis, port 10025) with ESMTP
+ id ZRLkrymdl950; Sat, 16 May 2026 12:17:43 +0200 (CEST)
+Received: from p14sgen5.fritz.box (p578439b8.dip0.t-ipconnect.de [87.132.57.184])
+	by szelinsky.de (Postfix) with ESMTPSA;
+	Sat, 16 May 2026 12:17:43 +0200 (CEST)
+From: Carlo Szelinsky <github@szelinsky.de>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-leds@vger.kernel.org,
+	Carlo Szelinsky <github@szelinsky.de>
+Subject: Re: [PATCH net-next v5 1/2] net: pse-pd: add devm_pse_poll_helper()
+Date: Sat, 16 May 2026 12:17:20 +0200
+Message-ID: <20260516101720.1686465-1-github@szelinsky.de>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260505015757.831372-1-kuba@kernel.org>
+References: <20260505015757.831372-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Wed, 13 May 2026 14:52:53 +0530
-Avinash Duduskar <avinash.duduskar@gmail.com> wrote:
+Hi Jakub,
 
-> llc_conn_ac_inc_npta_value() and llc_conn_ac_inc_tx_win_size()
-> clamp their counters to the maximum valid 7-bit value via
-> (u8) ~LLC_2_SEQ_NBR_MODULO. LLC_2_SEQ_NBR_MODULO is defined as
-> ((u8) 128) in include/net/llc_pdu.h,
+Thanks for sending the AI review. I checked the code again... both
+points are real, but one of them looks to me like more theory than practice.
+Out of curiosity, what prompt do you use for these reviews, so I can use it 
+before sending the next version? Replying inline:
 
-That (u8) cast is entirely pointless.
-Whenever the value is used it is subject to integer promotion
-and becomes a signed 128.
+On Mon, 4 May 2026 18:57:57 -0700 Jakub Kicinski wrote:
+> > @@ -1118,6 +1125,8 @@ void pse_controller_unregister(struct pse_controller_dev *pcdev)
+> >  	pse_release_pis(pcdev);
+> >  	if (pcdev->irq)
+> >  		disable_irq(pcdev->irq);
+> > +	if (pcdev->polling)
+> > +		cancel_delayed_work_sync(&pcdev->poll_work);
+>
+> Because pse_release_pis() executes kfree(pcdev->pi) before the delayed work
+> is cancelled, can pse_poll_worker() run concurrently and access the freed
+> pcdev->pi array inside pse_handle_events() before the cancellation completes?
 
-> but the (u8) cast does not
-> prevent integer promotion of the operand of ~: ~128 is computed
-> as int (0xffffff7f), and the surrounding (u8) cast truncates
-> back to 0x7f. The result is correct (127), but the implicit
-> truncation is flagged by sparse:
-> 
->   net/llc/llc_c_ac.c:1008:38: warning: cast truncates bits from
->       constant value (ffffff7f becomes 7f)
->   (and three more at lines 1009, 1099, 1100)
-> 
-> Replace the (u8) ~LLC_2_SEQ_NBR_MODULO expression with
-> LLC_2_SEQ_NBR_MODULO - 1, which evaluates to 127 directly and
-> silences sparse.
-> 
-> The same ~LLC_2_SEQ_NBR_MODULO pattern also appears in
-> include/net/llc_pdu.h:148 as part of PDU_GET_NEXT_Vr, but there
-> the result is immediately &-masked, so the int promotion is
-> harmless and sparse does not flag it; it is left alone.
-> 
-> This patch is the minimum diff to silence the warning. The
-> counter-clamp idiom itself could be modernized to
-> min_t(u8, ..., LLC_2_SEQ_NBR_MODULO - 1), but that is a
-> separate cleanup left for another patch.
+Yes, seems like a real bug. The IRQ thread and the poll worker can still run
+after pse_release_pis() frees pcdev->pi, and both end up in
+pse_handle_events() touching pcdev->pi[i]. We need to stop them
+first. v6 will reorder pse_controller_unregister() to:
 
-Using min_t() (especially with u8 or u16) is a very bad idea.
-Consider what would would happen if the limit were 255.
+	if (pcdev->irq)
+		disable_irq(pcdev->irq);
+	if (pcdev->polling)
+		cancel_delayed_work_sync(&pcdev->poll_work);
+	cancel_work_sync(&pcdev->ntf_work);
+	pse_release_pis(pcdev);
 
-> 
-> No functional change.
-> 
-> Signed-off-by: Avinash Duduskar <avinash.duduskar@gmail.com>
-> ---
-> Built with CONFIG_LLC2=m; full kernel build clean, sparse no
-> longer warns on the touched lines.
-> 
->  net/llc/llc_c_ac.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/net/llc/llc_c_ac.c b/net/llc/llc_c_ac.c
-> index 0779daa8aa8f..ab86c720b3ec 100644
-> --- a/net/llc/llc_c_ac.c
-> +++ b/net/llc/llc_c_ac.c
-> @@ -1005,8 +1005,8 @@ static int llc_conn_ac_inc_npta_value(struct sock *sk, struct sk_buff *skb)
->  		llc->dec_step = 0;
->  		llc->dec_cntr = llc->inc_cntr = 2;
->  		++llc->npta;
-> -		if (llc->npta > (u8) ~LLC_2_SEQ_NBR_MODULO)
-> -			llc->npta = (u8) ~LLC_2_SEQ_NBR_MODULO;
-> +		if (llc->npta > LLC_2_SEQ_NBR_MODULO - 1)
-> +			llc->npta = LLC_2_SEQ_NBR_MODULO - 1;
+The IRQ side seem to be already broken before this patch. I went
+through the git log:
 
-If you rewrite it, do the check before the increment.
-The compiler doesn't know that llc->npta isn't 255 - when the result
-of the above is 0. That can generate rather more code.
-Probably best to do:
-		if (llc->npta < LLC_2_SEQ_NBR_MODULO - 1)
-			llc->npta++;
+* fc0e6db30941 ("net: pse-pd: Add support for reporting events")
+  added pse_isr but never called disable_irq() in unregister at all.
+* ffef61d6d273 ("net: pse-pd: Add support for budget evaluation
+  strategies") added the disable_irq() call, but put it in the
+  wrong place (after pse_release_pis()).
 
--- David
+What do you suggest to do, I could imagine: ... 
 
->  	} else
->  		--llc->inc_cntr;
->  	return 0;
-> @@ -1096,8 +1096,8 @@ int llc_conn_ac_inc_tx_win_size(struct sock *sk, struct sk_buff *skb)
->  	struct llc_sock *llc = llc_sk(sk);
->  
->  	llc->k += 1;
-> -	if (llc->k > (u8) ~LLC_2_SEQ_NBR_MODULO)
-> -		llc->k = (u8) ~LLC_2_SEQ_NBR_MODULO;
-> +	if (llc->k > LLC_2_SEQ_NBR_MODULO - 1)
-> +		llc->k = LLC_2_SEQ_NBR_MODULO - 1;
->  	return 0;
->  }
->  
-> 
-> base-commit: 8ebd24a7822cbae25beeafba49b2159d6a68a5f2
+1) Send the fix as a standalone "Fixes:" patch to net first,
+   then rebase v6 on top once it lands? Or fold it into v6 as
+   patch 1/3? My vote is standalone since the fix stands on its
+   own, but up to you.
 
+2) Which commit for the Fixes: tag? I'd pick ffef61d6d273
+   (that's where the broken order came from), but fc0e6db30941
+   also works (no protection at all back then). wdyt?
+
+> > +int devm_pse_poll_helper(struct pse_controller_dev *pcdev,
+> > +			 const struct pse_irq_desc *d)
+> > +{
+> [...]
+> > +	queue_delayed_work(system_freezable_wq, &pcdev->poll_work,
+> > +			   msecs_to_jiffies(pcdev->poll_interval_ms));
+>
+> Since memory is allocated with devm_ helpers but no devm cleanup action is
+> registered to cancel the delayed work, what happens if a driver's probe
+> function encounters an error after calling this helper? [...]
+>
+> The commit message mentions that drivers typically set up the helper before
+> registering the controller. If queue_delayed_work() schedules the worker
+> to run before devm_pse_controller_register() completes, will
+> pse_poll_worker() attempt to acquire pcdev->lock and push events into
+> pcdev->ntf_fifo before they are initialized?
+
+The probe-failure case is a real bug. If probe fails between this
+helper and devm_pse_controller_register(), the work stays queued
+and fires later on a pcdev whose devres memory is gone. UAF.
+
+The "worker fires before mutex/kfifo are ready" case is real in
+theory, but I don't think you can actually hit it?! Default
+poll_interval_ms is 1000 ms, so pse_controller_register() would
+need to take over a second to lose the race. Worth fixing to keep
+the code clean, but not urgent or?
+
+Same fix for both: move queue_delayed_work() out of the helper.
+The helper just allocates the state and does INIT_DELAYED_WORK.
+pse_controller_register() then arms the work as the very last
+step on success, gated on pcdev->polling. So the work only ever
+runs when everything is set up AND register has succeeded.
+
+Should I fix both in v6, or just the probe-failure leak? One
+change covers both, so I would suggest to do both. wdyt?
+
+So the steps for v6 [1/2] could be:
+* standalone "Fixes:" patch reordering pse_controller_unregister()
+  (sent to net first, unless you suggest to fold it in)
+* move queue_delayed_work() into pse_controller_register()
+
+Do you have any other feedback, do I miss anything ?
+
+Cheers,
+Carlo
