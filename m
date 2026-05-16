@@ -1,46 +1,46 @@
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012011.outbound.protection.outlook.com [40.107.209.11])
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010030.outbound.protection.outlook.com [40.93.198.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD2125B08F;
-	Sat, 16 May 2026 02:44:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C025025B087;
+	Sat, 16 May 2026 02:44:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.30
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778899461; cv=fail; b=klSXIRteTeccmr0iO2s/EZRzfURnyFCfH6NZIg/mPStG6aR2+HYA7+mFGWSOKorwmyVzDiFlKbNTorMIPHeqrf6VaqzkqgfvZaB35ldezrVsyebuYheh9oJjw3ZCjguuM3dFTZ7098Zquqpnvm6RR/lavjgNzasZloE0neFDkms=
+	t=1778899466; cv=fail; b=IJNM04feVFZHNHTw16yOeaAJK91jvBiNKuFICefaKQQKSgFvRQgiOMeRpVIMdBcNGwKx1V+9l92IRt75zv5/KEdE6XGt9MzqGNVdeOIEC9xf7vQdqUQPEk2EJjkeMfE2+oPcfzHTNgBKjrBn2w09Ya8+iOpXju9JYDjdzgTmpTc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778899461; c=relaxed/simple;
-	bh=+3Tbwb/X6gGrT+4jR9t567b8UGsWhUaDO5baIS2V5AQ=;
+	s=arc-20240116; t=1778899466; c=relaxed/simple;
+	bh=m8yARpr220UPTklXFkOB3JiSX//yTssgVV+v/MkVxXE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=X1xsUO5y+JuyQSimYmT7sHVwoq0tduVQm4DrijW9NV/WISardSU0CFmLv6fLKiuenzRC7jDpvT2XLlj5meKH1xQv2Pl3Y3ILWYSPOD5pp9n9zkJaVTFK8iUINcZBODugY/DRmQT3Ss5kfJTkpTlfby/2XiokfRyys40uoqxL3zI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Ujk+YEF4; arc=fail smtp.client-ip=40.107.209.11
+	 In-Reply-To:To:CC; b=rdU5atW+ldNwfZMgus01qNuK43cIe0fn/NahqJjBAMRRMeOKHo2u7kkK6hnoHpJRvV61R+OhU/X2AoE61nLdpTnSZbr0Fmiw2m541Zvp74vqiaQiQE8jdwUyvFDDegxFJSAwrsL02+N8WPG5w8pjVvCO8Xmlox7+e/zBJH8kOkg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=fS+l+4gj; arc=fail smtp.client-ip=40.93.198.30
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Ujk+YEF4"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="fS+l+4gj"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FYyD/pZDW3RfuobgvjBz1m6eCShnZ3bC4eg9cXjQ85MW0Wd1Xe7pyM6TmThuWV6vtDy82NS0KTJsI8UG2WDl6JaoXUZTl0j/DQQelnUNJtIhtSynnki96pNnG7y1fymuypOYJ6CQDG1Ywwy4GocuFG0e3kC7AhY4WAmQLyeLciCLFzBzQEJaekRpXkcNwV7IGgBANdpqIr3lSB1r/eTpjrvflZxR74B6Z09l7WLIeTam/SDATUqGp7UE+bivifr12ey3EKJpqQ1Zv7TUkTQ1bQ8cQbOBl96DP77xZjE5nsmtmPbTe5ylILCGAIjgGczEFAczqPyRppwNoXIL94Khgg==
+ b=EOBXwOSvRJachRKh1QSmy59rPTIASTqoScPwPGr9TP+n0E4OqrD+2w3Jxq1D6qWQH5KrJgQOBYl3DQsNnTjekrdIueDCujO+zU2N3ZGQp22fplPa/trH+6joREplvsrIUwT+Q+zdWzbC+FuGpNjrksK97jU6MMJlQF88QyUw3HaY9UH8+H4IINy0XzdHrv7T4MpvRxBvmJUngIjO/IGiumQEes5TXQVRnrDnBkwe5BGzrv6oHMtAyKyqDzD9L0+FhC98d+iI4V8dBo00I+8JYUkneUt5WZkIO4kVAjmBXc/IQRowQapBx5VVGIrB25Xmnxx2ptZ16FU8nS0WYGyNhw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZooS1qxE8RBgDYLhkkmZtnGHEoXFHVjM2TCZ428c8vU=;
- b=gHb/YAD0/+WgVevBE28bLK+g+QpeSNXXK9LWGv6jppEMnfwcYL3Tgo3a8kE19xc7fknR3gmL0u2KlzqRF9MnAk2mz6GiJSrzsA0JJhY9GDlG5GF2fCOHX8fzlVlRh+wDtynfMUPADeMZ6rGZ6uC+TYUB56jnbmvAzDb0jJZ3+obvIMd4qypwcaEr58gmADKt0KRoVd24Etfm0IBFkkiotoG7zR722KCJD8BDt0iZMHrbwp9rgCj+xrmaRr1XJvwnsils6RZTPCb0yY1NyH/mtsSzor0OYNCXxGfoFSTN3WVuBf8iyszYMFl28Jijzod/4bQKSh+HN51lVfDdnSHfgA==
+ bh=ixbu52fe5Bc+2VPDdboXn7L11/N6YPzWXlqWfGR5tQw=;
+ b=C5qsFlw/bKtdxZkw3wuJ+YWa8OGX/gnS6rSqJlTbzWr6TjvtifZ0vSojN4useDCSFbJkdI+m7/5EDyxmEDe8XegzMZja8slVDK+fHVCdF9gBeLNWWiCLcR0tKwmxZ+JtXbx+LMKhFBvCXfv99AEfh05yFFms+BIqkXi4T7MK0q1HK4rKKn552gdPRlL8Fr5EO4idfu3ATDHhBDQMCBAN8UWAlbr5p74YQ2MuKzjW2Kv3uZ7v4uid+HMlVFWvyZroEGqclgB7FE7jGbq9MdCwjmlyZKlptQnrnBP+Tza4aXiSc+rVGTwHFHdm36+nZ4cS+LdXt0fhQC8GUvNeT+5NJg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZooS1qxE8RBgDYLhkkmZtnGHEoXFHVjM2TCZ428c8vU=;
- b=Ujk+YEF47XvmzMVGB4R3qa7GnYcMeecP0WHl4GSaGYTN3Wg20nXcvROuhivD6DVIDU1sZ6fFVXmcyJPa1EIVuHzPEyT0QThJztYiJZQ8yjxWDLWUXI4v870n1+QPQ73OlHga0wJ8MBKX9XVfTgeQSdjwfKNh6pjeXt25RoM8KDg=
-Received: from BN9PR03CA0214.namprd03.prod.outlook.com (2603:10b6:408:f8::9)
- by PH7PR12MB6466.namprd12.prod.outlook.com (2603:10b6:510:1f6::22) with
+ bh=ixbu52fe5Bc+2VPDdboXn7L11/N6YPzWXlqWfGR5tQw=;
+ b=fS+l+4gjqNl+d8OCNOliMrvkFDqL5xrHuhA/oRsWEkfBEAtuGabDufDeZrs0yFDFQntwivezBYvcrnI4E34Ar/7J2J2lE4Qbr0xfnXDci/Y0L1tOMDM4lLPxEbfMA2FTtI3QnObXkrk2xpAqiJJj/xNulYodvBBqnSQfxjPLBZ0=
+Received: from BN9PR03CA0231.namprd03.prod.outlook.com (2603:10b6:408:f8::26)
+ by CH2PR12MB4231.namprd12.prod.outlook.com (2603:10b6:610:7d::24) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.18; Sat, 16 May
- 2026 02:44:15 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.12; Sat, 16 May
+ 2026 02:44:16 +0000
 Received: from BN1PEPF0000468A.namprd05.prod.outlook.com
- (2603:10b6:408:f8:cafe::4) by BN9PR03CA0214.outlook.office365.com
- (2603:10b6:408:f8::9) with Microsoft SMTP Server (version=TLS1_3,
+ (2603:10b6:408:f8:cafe::77) by BN9PR03CA0231.outlook.office365.com
+ (2603:10b6:408:f8::26) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.9913.14 via Frontend Transport; Sat,
- 16 May 2026 02:44:14 +0000
+ 16 May 2026 02:44:16 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -50,15 +50,14 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
 Received: from satlexmb07.amd.com (165.204.84.17) by
  BN1PEPF0000468A.mail.protection.outlook.com (10.167.243.135) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.25.13 via Frontend Transport; Sat, 16 May 2026 02:44:14 +0000
+ 15.21.25.13 via Frontend Transport; Sat, 16 May 2026 02:44:16 +0000
 Received: from [127.0.1.1] (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Fri, 15 May
- 2026 21:44:12 -0500
+ 2026 21:44:14 -0500
 From: "Nikhil P. Rao" <nikhil.rao@amd.com>
-Date: Sat, 16 May 2026 02:42:36 +0000
-Subject: [PATCH net-next v2 2/6] pds_core: add support for identity version
- 2
+Date: Sat, 16 May 2026 02:42:38 +0000
+Subject: [PATCH net-next v2 4/6] pds_core: add PLDM component info display
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -67,7 +66,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20260516-upstream_v2_clean-v2-2-7e0d66bf4020@amd.com>
+Message-ID: <20260516-upstream_v2_clean-v2-4-7e0d66bf4020@amd.com>
 References: <20260516-upstream_v2_clean-v2-0-7e0d66bf4020@amd.com>
 In-Reply-To: <20260516-upstream_v2_clean-v2-0-7e0d66bf4020@amd.com>
 To: Brett Creeley <brett.creeley@amd.com>, Andrew Lunn
@@ -81,158 +80,164 @@ X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF0000468A:EE_|PH7PR12MB6466:EE_
-X-MS-Office365-Filtering-Correlation-Id: 131380ed-1782-41d2-74e8-08deb2f50493
+X-MS-TrafficTypeDiagnostic: BN1PEPF0000468A:EE_|CH2PR12MB4231:EE_
+X-MS-Office365-Filtering-Correlation-Id: f93720e3-3823-46f8-4651-08deb2f5058d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|36860700016|1800799024|82310400026|56012099003|22082099003|18002099003|11063799003;
+	BCL:0;ARA:13230040|82310400026|1800799024|36860700016|376014|11063799003|56012099003|22082099003|18002099003|3023799003;
 X-Microsoft-Antispam-Message-Info:
-	IyjPVNeOD7h4LSrUDk/VzeoD7y3aYB7yIfJXP5wXKk/QK8zZOWjYFmPy68MhmNMCF59p7dQRAY04qtnhYWnxooQPbYnPsdlESlUYQqx2ifergyIXA9CGVfW1Zi+E4MCKJ54Gf/tMKOsBmoIuBNbBLdSAuccj1cQmgN5hAKOjhRJ6avjr/3BP43OaRUjZ8J5LGhio3yLr/+XxzXu+EQd/KNdU1dLOHgb8P/rqVftae+dWihURCqB8GSdvRBpQ0dRgbA4x8I/ZK4Mr5io6kVVjRjoH5SoPqb3rWOptaHJQ1dMAbJqs6F7gQNoM18U/K51BTZhR3AmPJVPjcxTZUoXFH8ChholLVFPiiSZHbx/ezayrtTthWbE58Y774l904hg5CABvxBcixkWpc4iwuGcES/J8jTCNVsIUsCFsJLvAnslNgocX97MQOcGKEWxH4H9FAm8wflXtVpYOr3Ktz2CtZlbRhpCPxGX/j7mUoPyYFp6Ae8y997R+QbdkZhbR2EBr5fnoVEh3wjEwCPnF64A+C4rSZDP2fMzB4ux98QOAQqGQpn8r74IOBngdtJcHkX5EPlN+mTfclChqza3hnPxHb+EhSY802ejesObB9BiAdCsNmH5COhRwzqKB910YUwmc9vgVf5cKi7stWARhr1TeuE2i1hZWcKC8fqUgTzaN7MupOFAn+jLQXKhmJhoImA6m0xmABCXbmM+DROEyllEYvvrR5OittbFnL3HoTa3MTnE=
+	pimmGyrhqL1V9QaPG4UTTh8beM5WELyvLtqJrqJdu4tSt19zQBjxo9UdXDjj3VMdxGYkhh+5asIHgCJ+qepANP0N3y48Rko7jxV14ssuc2aZMoxvayLh4zmGoGQ33qxngS2ZIJUT4bxG1cFunBCpFYUCvhgjjpxeCl5Zzjn2SImfox4N4JsncAmbd9Kgo6tFuAis4p9L/BNkGErh82bFD5Pa20VmmOnaEJ5CH8+vxIU+8iRXgm/ooOAjd/ho+21fXbg8MQzc4/qbSOcqBXQf5oxL54ulb3BndHeD01n9HK0fc6+1nPODiZvp4hiRU/bwafm0OxjB961Ue3GktzweV7fdaGPnIGKjpnxOVL0X6KZZ4ktuNJaTdbYsBCNAJKQDlZMlflLVlrxlhYSnqUyAlt0Hyc7UuzuGgEU7GKjgZ3qnonpggkdZLpCUvKs0PsMF3ZUv9B0hEp7zLtS6miLiLwI0eaxio7rEhsF/Ku8kJC2k9TbG1AATKIIsFoA2aNPEOGLXMJlJXNUPR5LMR17725g67yZao0WjrnFQBxgijJAN1rySwiyyYzl1b50zbVKP1hVCqIK9IReCSBon9DvJ6uF/wElzmgU1jCHKPeIq/22NdxM6SAFXP4k8Xjaj91UtZMGnbnjUkUE2Rda7SPpyYY9YB2ftN2HL+h0bK53lCQ7aQXhXU4qg36w5TQLgDEfGPTrfyxoj1dUdCr2cX+3NgVK/bz17agEBdspxeHGCfgI=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700016)(1800799024)(82310400026)(56012099003)(22082099003)(18002099003)(11063799003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700016)(376014)(11063799003)(56012099003)(22082099003)(18002099003)(3023799003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	kN23ZH6mknXpJwFH7WDbjUciTjdvELRsjEE3dDfai10TbGFpxijQYbBZXQiD0l24jG6Sbz5i2HyY+n2e5k0RoqAzSmJEKOZ4jreZUilMTWzCiltyYEtNsyU7An5GSo4zJETrEi/nl2aYMuYHSYTHQI7IGhaMtAEwZRBrhO11RA7BFQHRBKq/8D2K1AK3rRa/Nx4ZkEyUuQ4fj6q1CqHE8OK5iZsWHY2qYNRF/GbhFnxR7mp9Q6wUpX0Sk8nmCdjq5g9DkKkUpGWgpz6OgRgYitY/WMH6qcg2S44hxfbydb+UiZlIS/Xs79XlkuReS6d5hbhEgkAt1vyk2jgLklGHWBUTGi+aAOfLFliZgremnzRIVIANMYSVv1G3qJHXcFtV+gU3UhRNkI8/uQchFzg+Het9cEds9pOq2SzVPUPy3wMkJRcZpOAC8kuO5SsKM5hG
+	ZvKftYMg+A874HUZUGNRog8+uMYgBbnFxcxkMqGMZ5i4/GGX4V17FylUHIieGSSCefmoZqNizae/s4HB1UzoYAU0YpVsXLLdroeHWSCPPI9POEAx5NOk0I8jxmveqWGiLsbQfwH2HYtI5CsBQ8BHpToUKJoOaRmQQGetHHKqiqbOaYqaPZTbIL2JAOXFtmP0wJ72ytQorhxKBuc/hyZMliigWPYOEOuO8uYWYxtNXeY0A1h5LlxFeEfVqIDB/CIFNzzId65Io5hPzyzMp6SKdXmJ+Mg+e9cluvQdC/SqvjChzGkxuIMI5WrT2BfPua2V5k8kTbUdTgvQ9hEFeDiOKnAiRCYbfTNE2iwDAAoZjrKyL13MVm5VBF9lSeWICscW1v2N20zurEbgGTXvOPPh+ESWbP5rQ8f4q4wAaAv2NQj/V7SF4j7emBYRHjOSt9qE
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 May 2026 02:44:14.6260
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 May 2026 02:44:16.2635
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 131380ed-1782-41d2-74e8-08deb2f50493
+X-MS-Exchange-CrossTenant-Network-Message-Id: f93720e3-3823-46f8-4651-08deb2f5058d
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
 	BN1PEPF0000468A.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6466
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4231
 
 From: Brett Creeley <brett.creeley@amd.com>
 
-Add a new capabilities field in struct pds_core_dev_identity,
-which requires bumping the identity version to 2, i.e.
-PDS_CORE_IDENTITY_VERSION_2. If version 2 negotiation fails,
-then quietly fall back to version 1. If version 1 negotiation
-fails, then driver load will fail.
+Add detailed component information display. This allows users to see
+individual firmware components, their versions, and update status via
+devlink info. Components are marked as fixed, running, or stored based
+on their flags.
 
-Another patch in the series will make use of the capabilities
-field.
+Example output:
+  $ devlink dev info pci/0000:b5:00.0
+  ...
+  versions:
+    running:
+      fw.goldfw 1.2.3
+      fw.mainfwa 1.2.4
+      fw.mainfwb 1.2.3
 
 Signed-off-by: Brett Creeley <brett.creeley@amd.com>
 ---
- drivers/net/ethernet/amd/pds_core/dev.c | 36 ++++++++++++++++++++++++++-------
- include/linux/pds/pds_core_if.h         |  4 ++++
- 2 files changed, 33 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/amd/pds_core/devlink.c | 88 ++++++++++++++++++++++++++++-
+ 1 file changed, 86 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/amd/pds_core/dev.c b/drivers/net/ethernet/amd/pds_core/dev.c
-index 5b86d6cd0ac3..c9abea9b2eb1 100644
---- a/drivers/net/ethernet/amd/pds_core/dev.c
-+++ b/drivers/net/ethernet/amd/pds_core/dev.c
-@@ -243,15 +243,17 @@ int pdsc_devcmd_reset(struct pdsc *pdsc)
- 	return pdsc_devcmd(pdsc, &cmd, &comp, pdsc->devcmd_timeout);
+diff --git a/drivers/net/ethernet/amd/pds_core/devlink.c b/drivers/net/ethernet/amd/pds_core/devlink.c
+index 7f44e1a8d4fd..95c3d2531ef1 100644
+--- a/drivers/net/ethernet/amd/pds_core/devlink.c
++++ b/drivers/net/ethernet/amd/pds_core/devlink.c
+@@ -93,14 +93,78 @@ int pdsc_dl_flash_update(struct devlink *dl,
+ 	return pdsc_firmware_update(pdsc, params, extack);
  }
  
--static int pdsc_devcmd_identify_locked(struct pdsc *pdsc)
-+static int pdsc_devcmd_identify_locked(struct pdsc *pdsc, u8 drv_ident_ver,
-+				       bool do_msg)
- {
- 	union pds_core_dev_comp comp = {};
- 	union pds_core_dev_cmd cmd = {
- 		.identify.opcode = PDS_CORE_CMD_IDENTIFY,
--		.identify.ver = PDS_CORE_IDENTITY_VERSION_1,
-+		.identify.ver = drv_ident_ver,
- 	};
- 
--	return pdsc_devcmd_locked(pdsc, &cmd, &comp, pdsc->devcmd_timeout);
-+	return __pdsc_devcmd_locked(pdsc, &cmd, &comp, pdsc->devcmd_timeout,
-+				    do_msg);
- }
- 
- static void pdsc_init_devinfo(struct pdsc *pdsc)
-@@ -274,8 +276,9 @@ static void pdsc_init_devinfo(struct pdsc *pdsc)
- 	dev_dbg(pdsc->dev, "fw_version %s\n", pdsc->dev_info.fw_version);
- }
- 
--static int pdsc_identify(struct pdsc *pdsc)
-+static int pdsc_identify_ver(struct pdsc *pdsc, u8 drv_ident_ver)
- {
-+	bool do_msg = drv_ident_ver == PDS_CORE_IDENTITY_VERSION_1;
- 	struct pds_core_drv_identity drv = {};
- 	size_t sz;
- 	int err;
-@@ -295,10 +298,13 @@ static int pdsc_identify(struct pdsc *pdsc)
- 	 */
- 	mutex_lock(&pdsc->devcmd_lock);
- 
-+	/* Zero data region so fields not set by older firmware read as zero */
-+	memset_io(&pdsc->cmd_regs->data, 0, sizeof(pdsc->cmd_regs->data));
-+
- 	sz = min_t(size_t, sizeof(drv), sizeof(pdsc->cmd_regs->data));
- 	memcpy_toio(&pdsc->cmd_regs->data, &drv, sz);
- 
--	err = pdsc_devcmd_identify_locked(pdsc);
-+	err = pdsc_devcmd_identify_locked(pdsc, drv_ident_ver, do_msg);
- 	if (!err) {
- 		sz = min_t(size_t, sizeof(pdsc->dev_ident),
- 			   sizeof(pdsc->cmd_regs->data));
-@@ -307,8 +313,9 @@ static int pdsc_identify(struct pdsc *pdsc)
- 	mutex_unlock(&pdsc->devcmd_lock);
- 
- 	if (err) {
--		dev_err(pdsc->dev, "Cannot identify device: %pe\n",
--			ERR_PTR(err));
-+		if (do_msg)
-+			dev_err(pdsc->dev, "Cannot identify device: %pe\n",
-+				ERR_PTR(err));
- 		return err;
- 	}
- 
-@@ -327,6 +334,21 @@ static int pdsc_identify(struct pdsc *pdsc)
- 	return 0;
- }
- 
-+static int pdsc_identify(struct pdsc *pdsc)
++static int pdsc_dl_report_component(struct devlink_info_req *req,
++				    struct pds_core_fw_component_info *info)
 +{
-+	int err;
++	enum devlink_info_version_type ver_type;
++	u16 flags = le16_to_cpu(info->flags);
++	char *ver = info->version;
++	char buf[32];
 +
-+	/* Older firmware rejects anything but PDS_CORE_IDENTIFY_VERSION_1
-+	 * instead of returning the max supported identify version, so retry if
-+	 * firmware doesn't support PDS_CORE_IDENTIFY_VERSION_2
-+	 */
-+	err = pdsc_identify_ver(pdsc, PDS_CORE_IDENTITY_VERSION_2);
-+	if (err)
-+		err = pdsc_identify_ver(pdsc, PDS_CORE_IDENTITY_VERSION_1);
++	ver_type = DEVLINK_INFO_VERSION_TYPE_NONE;
++	snprintf(buf, sizeof(buf), "fw.%s", info->name);
++	if (flags & PDS_CORE_FW_COMPONENT_INFO_F_UPDATE_BY_NAME)
++		ver_type = DEVLINK_INFO_VERSION_TYPE_COMPONENT;
 +
-+	return err;
++	if (flags & PDS_CORE_FW_COMPONENT_INFO_F_FIXED)
++		return devlink_info_version_fixed_put(req, buf, ver);
++
++	if (flags & PDS_CORE_FW_COMPONENT_INFO_F_RUNNING) {
++		int err;
++
++		err = devlink_info_version_running_put_ext(req, buf,
++							   ver, ver_type);
++		if (err)
++			return err;
++	}
++
++	if (flags & PDS_CORE_FW_COMPONENT_INFO_F_STARTUP)
++		return devlink_info_version_stored_put_ext(req, buf,
++							   ver, ver_type);
++
++	return 0;
 +}
 +
- void pdsc_dev_uninit(struct pdsc *pdsc)
- {
- 	if (pdsc->intr_info) {
-diff --git a/include/linux/pds/pds_core_if.h b/include/linux/pds/pds_core_if.h
-index 17a87c1a55d7..619186f26b5b 100644
---- a/include/linux/pds/pds_core_if.h
-+++ b/include/linux/pds/pds_core_if.h
-@@ -119,6 +119,8 @@ struct pds_core_drv_identity {
-  *		      value in usecs to device units using:
-  *		      device units = usecs * mult / div
-  * @vif_types:        How many of each VIF device type is supported
-+ * @capabilities:     Device capabilities
-+ *		      only supported on version >= PDS_CORE_IDENTITY_VERSION_2
-  */
- struct pds_core_dev_identity {
- 	u8     version;
-@@ -131,9 +133,11 @@ struct pds_core_dev_identity {
- 	__le32 intr_coal_mult;
- 	__le32 intr_coal_div;
- 	__le16 vif_types[PDS_DEV_TYPE_MAX];
-+	__le64 capabilities;
++static int pdsc_dl_component_info_get(struct devlink *dl,
++				      struct devlink_info_req *req,
++				      struct netlink_ext_ack *extack)
++{
++	struct pds_core_component_list_info *list_info;
++	struct pdsc *pdsc = devlink_priv(dl);
++	u8 num_components;
++	int err;
++	int i;
++
++	if (!pdsc->fw_components.num_components) {
++		err = pdsc_get_component_info(pdsc);
++		if (err) {
++			dev_err(pdsc->dev, "Failed to get component_info %pe\n",
++				ERR_PTR(err));
++			return err;
++		}
++	}
++
++	list_info = &pdsc->fw_components;
++	num_components = min_t(u8, list_info->num_components,
++			       le16_to_cpu(pdsc->dev_ident.max_fw_slots));
++	for (i = 0; i < num_components; i++) {
++		err = pdsc_dl_report_component(req, &list_info->info[i]);
++		if (err)
++			return err;
++	}
++
++	return 0;
++}
++
+ static char *fw_slotnames[] = {
+ 	"fw.goldfw",
+ 	"fw.mainfwa",
+ 	"fw.mainfwb",
  };
  
- #define PDS_CORE_IDENTITY_VERSION_1	1
-+#define PDS_CORE_IDENTITY_VERSION_2	2
+-int pdsc_dl_info_get(struct devlink *dl, struct devlink_info_req *req,
+-		     struct netlink_ext_ack *extack)
++static int pdsc_dl_fw_list_info_get(struct devlink *dl,
++				    struct devlink_info_req *req,
++				    struct netlink_ext_ack *extack)
+ {
+ 	union pds_core_dev_cmd cmd = {
+ 		.fw_control.opcode = PDS_CORE_CMD_FW_CONTROL,
+@@ -132,6 +196,26 @@ int pdsc_dl_info_get(struct devlink *dl, struct devlink_info_req *req,
+ 			return err;
+ 	}
  
- /**
-  * struct pds_core_dev_identify_cmd - Driver/device identify command
++	return 0;
++}
++
++int pdsc_dl_info_get(struct devlink *dl, struct devlink_info_req *req,
++		     struct netlink_ext_ack *extack)
++{
++	struct pdsc *pdsc = devlink_priv(dl);
++	char buf[32];
++	int err;
++
++	if (pdsc->dev_ident.version >= PDS_CORE_IDENTITY_VERSION_2)
++		err = pdsc_dl_component_info_get(dl, req, extack);
++	else
++		err = pdsc_dl_fw_list_info_get(dl, req, extack);
++	if (err) {
++		dev_err(pdsc->dev, "Failed to get devlink info for identity version %u: %pe\n",
++			pdsc->dev_ident.version, ERR_PTR(err));
++		return err;
++	}
++
+ 	err = devlink_info_version_running_put(req,
+ 					       DEVLINK_INFO_VERSION_GENERIC_FW,
+ 					       pdsc->dev_info.fw_version);
 
 -- 
 2.43.0
