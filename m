@@ -1,145 +1,166 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A345F3E0228;
-	Sat, 16 May 2026 11:56:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C629F37418A;
+	Sat, 16 May 2026 12:07:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778932610; cv=none; b=DrglpSf9p/eat2HskdczTAmMTRDk1h2LF6q21e6aGfMBFlXMrSBFjsfA9qtmWBIEZPiDtLj06M+He6nws19pVMJr1zIisOwLmle7/WqnWNk1noJLsXsdnGAzVn6B/ZN0ZdJ2QcPfwC4r60yJrhM2ZhGiN/M9uBz5ztnXamh1MB4=
+	t=1778933244; cv=none; b=KR9Hjz8FttPRtbkc2F2l3GwFZAH92eM80NVDdwLIQk/AtzV0T3c90mlYD90adSZxaXTkanTEmRLvXf0mAU/xvisL1GimL3wZesfq2x/rwFSAv0Y6sJIAzUEXwVr1Cv7PkHcYIrqsuMqbKIljJtSDb6SyglGTCwjkwD60j3VNObs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778932610; c=relaxed/simple;
-	bh=/mCwhYllecjs8nxYKsXlYlbNilMQRl4qLivhwgvteEs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sT1gN/Qcy/NZ+IdTMLT7aRCkbaFCO+R4bm3uNoI/B02S2AX2DjqcWRs/QOA/5LHTMMLwa+WNpoSkWdknv3lrG8MRfC2yMDO6dCB+pY1E9akAckt0eguhSYVllRSSJHVJ13NEsy7VNiqLsB/rKLuR0mDO4D5lXBxF0L9WmvLcYHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=evR4PXHq; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	s=arc-20240116; t=1778933244; c=relaxed/simple;
+	bh=di2Nx7xIU2JWNo5WwYBFMHkUwxrrucvWso4uehXJl2E=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=t4MtsHp2DzjbR4BZF9wJaa7yLWE5oDV8nEJIddfs/ZX0/3n/Bkiowram7yWaIbJ08eU4zg0jrjyFRVjOiBj1HW6tKVyzvQXa9kDpCSb002NneNcIlqCtAz34B1K72ToNzuCJofks1cuiLgk6WsuMfWZb7JaAyFb4BeBG0FMrNCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O1gUesYh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="evR4PXHq"
-Received: from localhost.localdomain (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with ESMTPSA id 9960D601A2;
-	Sat, 16 May 2026 13:56:46 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1778932607;
-	bh=gVHsNnzVjJ5CQ6vEFP7KwWXCZ1KRueCIiThEVTDS+9U=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=evR4PXHqiCx3fYjbVH0YKmiOxDO98AfpwzkEj1LTfR2nP3vplIEohq3hyfFVdn/7/
-	 HfwoFklSjX4mj9bLVuk/9Pf+LCIdTm29EPHZwvn3Yh9ajG6AOJWJj3+kV4VvQF951b
-	 rrQSxZzjNvZSbXO+3ZBmWyIqoZp+JBiPxX99hwFnGxGH3i4iDRqGg8snisMxF/J09J
-	 UeXgVPAZHPw6kaRzfWpHQ4nH2nw6DclaFxs3nH9eCqiot4EndJSZjaKVpRY/w8kky5
-	 bZjWjiAnrtGOmVDOp4iv8cP1hUJ0OBwtz4MsjLGUvc1xK0nO7GOlmuYhDjzyZpqqNx
-	 Cl6xkOx/SFT2g==
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: netfilter-devel@vger.kernel.org
-Cc: davem@davemloft.net,
-	netdev@vger.kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	fw@strlen.de,
-	horms@kernel.org
-Subject: [PATCH net 12/12] netfilter: nf_queue: hold bridge skb->dev while queued
-Date: Sat, 16 May 2026 13:56:27 +0200
-Message-ID: <20260516115627.967773-13-pablo@netfilter.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260516115627.967773-1-pablo@netfilter.org>
-References: <20260516115627.967773-1-pablo@netfilter.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O1gUesYh"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 5B491C19425;
+	Sat, 16 May 2026 12:07:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778933244;
+	bh=di2Nx7xIU2JWNo5WwYBFMHkUwxrrucvWso4uehXJl2E=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=O1gUesYhuiSxvo6Md8M61qX41NRYZ1D6yQf2JxV0EJ3kIESriwLqjC1ULsVPio/GD
+	 fSHBxoM/44goSB3KsnYC4bFxpHPvSPMonE11nkDvbAxbldA0l3Ap59PSwNbLthkbTn
+	 gjV4MsQl3AmUkVXtPV7Y6nUbmaSIqV/Kk24f9qsscDkd3mqMTRcDKeuq+oYyXTly3D
+	 KQV1NiXErQE5/B47urAJ1AyCfMrrJwBFxTJzZFHzDWsnks4cgezkOmee7cMuhRBISJ
+	 I42dQhubIb8I0TrTORh/wlcrysRT7dGarIUoSpO7maZJKuIky8UsKItUwNvKJWWp+F
+	 jMIrR2CYfx5pw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 48CBCCD4F3C;
+	Sat, 16 May 2026 12:07:24 +0000 (UTC)
+From: Carl Lee via B4 Relay <devnull+carl.lee.amd.com@kernel.org>
+Date: Sat, 16 May 2026 19:55:18 +0800
+Subject: [PATCH v3] nfc: nxp-nci: i2c: use rising-edge IRQ on ACPI systems
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260516-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-v3-1-37ba4b6e9086@amd.com>
+X-B4-Tracking: v=1; b=H4sIACVbCGoC/52NzQ6CMBAGX4X07Jp2W0E9+R7GQ+0PbISChRAM4
+ d0tXPSqx9nsNzOz3kVyPTtnM4tupJ7akEDuMmYqHUoHZBMz5JhzKQQEbyBMHQRDQGggun5oY3q
+ LTxgilaWL4HVd37V5gLH6pPAguck5S8ouOk/TlrveEle0jl9bfRTr9c/QKEDAySEvhFJC2OKiG
+ 7s3bcPWzIjfavxRjUktc5Tq6AuvJf+ol2V5AyxLRqVBAQAA
+X-Change-ID: 20260311-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-cda942530c60
+To: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Carl Lee <carl.lee@amd.com>, krzk@kernel.org, carl.lee@amd.com, 
+ peter.shen@amd.com, colin.huang2@amd.com, kuba@kernel.org, david@ixit.cz, 
+ luca.stefani.ge1@gmail.com, brgl@kernel.org, mpearson@squebb.ca
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1778932520; l=3257;
+ i=carl.lee@amd.com; s=20260203; h=from:subject:message-id;
+ bh=AMSt9loXPyaoOpf5Py15SrUAJJFo8zGMLjoVxukd9fM=;
+ b=e8EQLMWG6SkcKINegth5pIbCvRerCIZ38zgG62J9x+VNmzI8PCoOO/6oiL+tPg0EpWcZkk0Nm
+ DACZRtwbQc7BCNz+cmTy412m4yDEbV7F+7D9KVfqmuIGFDlula/QlE3
+X-Developer-Key: i=carl.lee@amd.com; a=ed25519;
+ pk=pyq7QaQvoxMg806KVkRwpCbiah+7ncWr4MBpK1AEyjA=
+X-Endpoint-Received: by B4 Relay for carl.lee@amd.com/20260203 with
+ auth_id=623
+X-Original-From: Carl Lee <carl.lee@amd.com>
+Reply-To: carl.lee@amd.com
 
-From: Haoze Xie <royenheart@gmail.com>
+From: Carl Lee <carl.lee@amd.com>
 
-br_pass_frame_up() rewrites skb->dev from the ingress port to the bridge
-master before queueing bridge LOCAL_IN packets. NFQUEUE only holds
-references on state.in/out and bridge physdevs, so a queued bridge
-packet can retain a freed bridge master in skb->dev until reinjection.
+Some ACPI-based platforms report incorrect IRQ trigger types (e.g.
+IRQF_TRIGGER_HIGH), which can lead to interrupt storms.
 
-When the verdict is reinjected later, br_netif_receive_skb() re-enters
-the receive path with skb->dev still pointing at the freed bridge master,
-triggering a use-after-free.
+Use the historically working rising-edge trigger on ACPI systems to
+avoid this regression.
 
-Store skb->dev in the queue entry, hold a reference on it for the queue
-lifetime, and use the saved device when dropping queued packets during
-NETDEV_DOWN handling.
+Device Tree-based systems continue to use the firmware-provided
+trigger type.
 
-Fixes: ac2863445686 ("netfilter: bridge: add nf_afinfo to enable queuing to userspace")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Haoze Xie <royenheart@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Carl Lee <carl.lee@amd.com>
 ---
- include/net/netfilter/nf_queue.h | 1 +
- net/netfilter/nf_queue.c         | 4 +++-
- net/netfilter/nfnetlink_queue.c  | 2 ++
- 3 files changed, 6 insertions(+), 1 deletion(-)
+Some ACPI-based platforms report incorrect IRQ trigger types,
+which can lead to interrupt storms.
 
-diff --git a/include/net/netfilter/nf_queue.h b/include/net/netfilter/nf_queue.h
-index d17035d14d96..3978c3174cdb 100644
---- a/include/net/netfilter/nf_queue.h
-+++ b/include/net/netfilter/nf_queue.h
-@@ -14,6 +14,7 @@ struct nf_queue_entry {
- 	struct list_head	list;
- 	struct rhash_head	hash_node;
- 	struct sk_buff		*skb;
-+	struct net_device	*skb_dev;
- 	unsigned int		id;
- 	unsigned int		hook_index;	/* index in hook_entries->hook[] */
- #if IS_ENABLED(CONFIG_BRIDGE_NETFILTER)
-diff --git a/net/netfilter/nf_queue.c b/net/netfilter/nf_queue.c
-index a6c81c04b3a5..57b450024a99 100644
---- a/net/netfilter/nf_queue.c
-+++ b/net/netfilter/nf_queue.c
-@@ -61,6 +61,7 @@ static void nf_queue_entry_release_refs(struct nf_queue_entry *entry)
- 	struct nf_hook_state *state = &entry->state;
+Use rising-edge IRQ on ACPI systems to avoid this regression,
+while keeping firmware-provided trigger types on non-ACPI systems.
+
+Cc: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: krzk@kernel.org
+Cc: carl.lee@amd.com
+Cc: peter.shen@amd.com
+Cc: colin.huang2@amd.com
+Cc: kuba@kernel.org
+Cc: david@ixit.cz
+Cc: luca.stefani.ge1@gmail.com
+Cc: brgl@kernel.org
+Cc: mpearson@squebb.ca
+---
+Changes in v3:
+- Use rising-edge IRQ on ACPI systems to avoid interrupt storms
+- Keep using firmware-provided trigger type on non-ACPI systems
+- Refine commit message to focus on regression on ACPI platforms
+- Link to v2: https://lore.kernel.org/r/20260312-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-v2-1-362348f7fa30@amd.com
+
+Changes in v2:
+- Add missing <linux/irq.h> include for irq_get_trigger_type().
+- Link to v1: https://lore.kernel.org/r/20260311-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-v1-1-9e20714411d7@amd.com
+---
+ drivers/nfc/nxp-nci/i2c.c | 21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/nfc/nxp-nci/i2c.c b/drivers/nfc/nxp-nci/i2c.c
+index 6a5ce8ff91f0..266dc231c47d 100644
+--- a/drivers/nfc/nxp-nci/i2c.c
++++ b/drivers/nfc/nxp-nci/i2c.c
+@@ -16,6 +16,7 @@
+ #include <linux/delay.h>
+ #include <linux/i2c.h>
+ #include <linux/interrupt.h>
++#include <linux/irq.h>
+ #include <linux/module.h>
+ #include <linux/nfc.h>
+ #include <linux/gpio/consumer.h>
+@@ -267,6 +268,7 @@ static int nxp_nci_i2c_probe(struct i2c_client *client)
+ {
+ 	struct device *dev = &client->dev;
+ 	struct nxp_nci_i2c_phy *phy;
++	unsigned long irqflags;
+ 	int r;
  
- 	/* Release those devices we held, or Alexey will kill me. */
-+	dev_put(entry->skb_dev);
- 	dev_put(state->in);
- 	dev_put(state->out);
- 	if (state->sk)
-@@ -102,6 +103,7 @@ bool nf_queue_entry_get_refs(struct nf_queue_entry *entry)
- 	if (state->sk && !refcount_inc_not_zero(&state->sk->sk_refcnt))
- 		return false;
+ 	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C)) {
+@@ -303,9 +305,26 @@ static int nxp_nci_i2c_probe(struct i2c_client *client)
+ 	if (r < 0)
+ 		return r;
  
-+	dev_hold(entry->skb_dev);
- 	dev_hold(state->in);
- 	dev_hold(state->out);
- 
-@@ -202,11 +204,11 @@ static int __nf_queue(struct sk_buff *skb, const struct nf_hook_state *state,
- 
- 	*entry = (struct nf_queue_entry) {
- 		.skb	= skb,
-+		.skb_dev = skb->dev,
- 		.state	= *state,
- 		.hook_index = index,
- 		.size	= sizeof(*entry) + route_key_size,
- 	};
--
- 	__nf_queue_entry_init_physdevs(entry);
- 
- 	if (!nf_queue_entry_get_refs(entry)) {
-diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
-index 58304fd1f70f..984a0eb9e149 100644
---- a/net/netfilter/nfnetlink_queue.c
-+++ b/net/netfilter/nfnetlink_queue.c
-@@ -1212,6 +1212,8 @@ dev_cmp(struct nf_queue_entry *entry, unsigned long ifindex)
- 	if (physinif == ifindex || physoutif == ifindex)
- 		return 1;
- #endif
-+	if (entry->skb_dev && entry->skb_dev->ifindex == ifindex)
-+		return 1;
- 	if (entry->state.in)
- 		if (entry->state.in->ifindex == ifindex)
- 			return 1;
++	/*
++	 * ACPI platforms may report incorrect IRQ trigger types
++	 * (e.g. level-high), which can lead to interrupt storms.
++	 *
++	 * Use the historically stable rising-edge trigger for ACPI devices.
++	 *
++	 * On non-ACPI systems (e.g. Device Tree), prefer the firmware-
++	 * provided trigger type, falling back to rising-edge if not set.
++	 */
++	if (ACPI_COMPANION(dev)) {
++		irqflags = IRQF_TRIGGER_RISING;
++	} else {
++		irqflags = irq_get_trigger_type(client->irq);
++		if (!irqflags)
++			irqflags = IRQF_TRIGGER_RISING;
++	}
++
+ 	r = request_threaded_irq(client->irq, NULL,
+ 				 nxp_nci_i2c_irq_thread_fn,
+-				 IRQF_ONESHOT,
++				 irqflags | IRQF_ONESHOT,
+ 				 NXP_NCI_I2C_DRIVER_NAME, phy);
+ 	if (r < 0)
+ 		nfc_err(&client->dev, "Unable to register IRQ handler\n");
+
+---
+base-commit: 7109a2155340cc7b21f27e832ece6df03592f2e8
+change-id: 20260311-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-cda942530c60
+
+Best regards,
 -- 
-2.47.3
+Carl Lee <carl.lee@amd.com>
+
 
