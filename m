@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 718471EA84
-	for <netdev@vger.kernel.org>; Sat, 16 May 2026 01:10:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B819C29BDB1
+	for <netdev@vger.kernel.org>; Sat, 16 May 2026 01:10:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778893815; cv=none; b=RCK1JeCamt0fQWCxs7pie+3y/a5OI7jQvjOaQzF3QBFCwse5PDMUCjPwUWaQU7OXF+0WnGN6n3MZ7KRG8QyAfLoxCjPwFXJ7n6juX/UdNmCpEYK0sS75DRHN7xS7KITAO/UB0N6SIVk2YrtLzg//KzqljPOVFksXqi/U0MW652M=
+	t=1778893816; cv=none; b=aGnb9vVyYOR2liwtRCAhnxT9kfVzkiZmJl9EMG3rNVN2YQmY6chE9gQczscntx2QnfEm0lXFcgIPQ2B8mQmuCX/9vuYLYj3TVlIkAMekFhVwEsnjn//oiZTDXontSUlk3FeVeC6qHDhWQqHx+umRlHyoEPn/V6aDKVuRx0PVMYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778893815; c=relaxed/simple;
-	bh=jL7mFYf3rVR+JxDgkv4UI6YD9VctbCA7j+C0BaFG30A=;
+	s=arc-20240116; t=1778893816; c=relaxed/simple;
+	bh=q4humdzQhT75PJYD0sJWYpPcuGedUGovyqEbRbwM7SM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NV/6uF5bEJTwOxYPUVsD/Kms2pfm4C2e8i8rccvQmpkyWeTFWDujut2a0ZvWWWF1658YmRSYcMM5up3Het4aOveBw6yeteD5OxkkOaCXqdlyfEBfpMhWqRDmn2/kpuvXmRGdFRFnD+FZvttS9tHPius9y3K6vcubgLfd4zkBcFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VSq7ZZke; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=ma/T4wjxtnGiPuYKrCWMVRZC9iFknpl8Ej6aJha3Rhxo/DaYEdb+TAuHiI8Gx50mo5xjpKNAvAFTEGoMBClbDHrTScqE3pr+N1g5uM2Yf+L1f/TehDTMCQY/eYDg4l67yNtFC/GzeVeHgiCP1EnWEq82vg426ROa8WKOfaA5AEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e2YWsmuJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VSq7ZZke"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2F30C2BCB0;
-	Sat, 16 May 2026 01:10:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e2YWsmuJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25E92C2BCB7;
+	Sat, 16 May 2026 01:10:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778893815;
-	bh=jL7mFYf3rVR+JxDgkv4UI6YD9VctbCA7j+C0BaFG30A=;
+	s=k20201202; t=1778893816;
+	bh=q4humdzQhT75PJYD0sJWYpPcuGedUGovyqEbRbwM7SM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VSq7ZZkeltpjpr8Fj/pZndyfAhVM4IbWmW1xbXCIln3XCf/kEJ2EDmoedjGnrczsI
-	 ak1lQherbj4Gdw57l7lX7EIsQnV2UGD+3wkGURR6Ovk2229+9ALmcPAmXBwyp+U+bL
-	 McaFC6V/L6CfkvaFcCGZXAgIveyftcCmDuzO9Ok6GlYge3e43o0x1+Z52/Yxk8IY7S
-	 oFIR2CRJwVn3RdcRmW4KVQYlpuKHiZhJ4WEC+AhT8SeNE5YhLuv3GQiJL3OK7//8es
-	 vV2MFDv0gbLyfrxKXHkcZlZSZGZJ7ZVg3WiSoZEOd1uZ3tLQWDb4BaD2M4vtBko+90
-	 b+TaxufDfVjwg==
+	b=e2YWsmuJqUVXmczbl8UkH80adREsXg02/T9YrXtd6LoyPQ3NaP03DpzmNQ1ANN5Ek
+	 7Bbjs0HmySXQ7egAW8RzdxOcdSEP/1F+IwAOnO1yeCqOqwgTLG6M2mR55ttBBb1Rzh
+	 CoRYnz4ytayTpIVOsMY3oAdfc13RSN06vaF5Eb6PYTzbXYWI4m0IWwJihKpPSNpt1n
+	 aTMA9/9v9N5j+j/5fcPOAR/sc0Ooxn/Hnel4IolQXlg5iBFya0WAjqgzzi7JGdTyFb
+	 QQRa+ViQ2HcKyKyQ8K9UL5ybbtfGqrFb+LZ8JNq6m4AQ8xfUIRb8KilSAxRR7Hq1Uo
+	 ElU1Af+S+7stQ==
 From: Jakub Kicinski <kuba@kernel.org>
 To: michael.chan@broadcom.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -36,12 +36,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	andrew+netdev@lunn.ch,
 	pavan.chebbi@broadcom.com,
 	andrew.gospodarek@broadcom.com
-Subject: Re: [PATCH net-next v2 07/15] bnxt_en: Allocate crypto structure and backing store
-Date: Fri, 15 May 2026 18:10:13 -0700
-Message-ID: <20260516011013.1857516-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next v2 08/15] bnxt_en: Reserve crypto RX and TX key contexts on a PF
+Date: Fri, 15 May 2026 18:10:15 -0700
+Message-ID: <20260516011015.1857549-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512212105.3488258-8-michael.chan@broadcom.com>
-References: <20260512212105.3488258-8-michael.chan@broadcom.com>
+In-Reply-To: <20260512212105.3488258-9-michael.chan@broadcom.com>
+References: <20260512212105.3488258-9-michael.chan@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,99 +53,104 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-bnxt_en: Allocate crypto structure and backing store
+bnxt_en: Reserve crypto RX and TX key contexts on a PF
 
-If the chip and firmware support crypto (TLS) offload, allocate a
-bp->crypto_info software structure and backing store to support the RX
-and TX contexts.  Each offloaded TLS connection requires a backing store
-context for each direction.
+This patch teaches the bnxt_en PF reservation path to populate
+num_ktls_tx_key_ctxs / num_ktls_rx_key_ctxs in the HWRM_FUNC_CFG request
+and to record the reserved counts returned by HWRM_FUNC_QCFG, so kTLS
+keys can later be allocated at run-time.
 
-> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_crypto.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_crypto.c
-> new file mode 100644
-> index 000000000000..a5fee08eaa67
-> --- /dev/null
-> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_crypto.c
-
-[ ... ]
-
-> +static u32 bnxt_get_max_crypto_key_ctx(struct bnxt *bp, int key_type)
-> +{
-> +	u32 fw_maj = BNXT_FW_MAJ(bp);
-> +
-> +	if (key_type == BNXT_TX_CRYPTO_KEY_TYPE)
-> +		return (fw_maj < 233) ? BNXT_MAX_TX_CRYPTO_KEYS_PRE_233FW :
-> +		       BNXT_MAX_TX_CRYPTO_KEYS;
-> +
-> +	return (fw_maj < 233) ? BNXT_MAX_RX_CRYPTO_KEYS_PRE_233FW :
-> +	       BNXT_MAX_RX_CRYPTO_KEYS;
-> +}
+> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> index e2b5f81b36a6..926665c8bb79 100644
+> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
 
 [ ... ]
 
-> +void bnxt_alloc_crypto_info(struct bnxt *bp,
-> +			    struct hwrm_func_qcaps_output *resp)
-> +{
-> +	u16 max_keys = le16_to_cpu(resp->max_key_ctxs_alloc);
-> +	struct bnxt_crypto_info *crypto = bp->crypto_info;
-> +
-> +	if (BNXT_VF(bp))
-> +		return;
-> +	if (!crypto) {
-> +		struct bnxt_kctx *kctx;
-> +		int i;
-> +
-> +		crypto = kzalloc_obj(*crypto);
-> +		if (!crypto) {
-> +			netdev_warn(bp->dev,
-> +				    "Unable to allocate crypto info\n");
-> +			return;
-> +		}
-> +		for (i = 0; i < BNXT_MAX_CRYPTO_KEY_TYPE; i++) {
-> +			kctx = &crypto->kctx[i];
-> +			kctx->type = i;
-> +			kctx->max_ctx = bnxt_get_max_crypto_key_ctx(bp, i);
-> +		}
-> +		bp->crypto_info = crypto;
-> +	}
-> +	crypto->max_key_ctxs_alloc = max_keys;
-> +}
+> @@ -7915,8 +7920,9 @@ __bnxt_hwrm_reserve_pf_rings(struct bnxt *bp, struct bnxt_hw_rings *hwr)
+>  		}
+>  		req->num_stat_ctxs = cpu_to_le16(hwr->stat);
+>  		req->num_vnics = cpu_to_le16(hwr->vnic);
+> +		bnxt_hwrm_reserve_pf_key_ctxs(bp, req);
+>  	}
+> -	req->enables = cpu_to_le32(enables);
+> +	req->enables |= cpu_to_le32(enables);
+>  	return req;
+>  }
 
 [Medium]
-Should the kctx[].max_ctx values be refreshed on every call, rather than
-only when bp->crypto_info is first allocated?
+After this change, every caller of __bnxt_hwrm_reserve_pf_rings() that
+takes the BNXT_NEW_RM(bp) path picks up a kTLS key reservation.  One of
+those callers is bnxt_hwrm_check_pf_rings(), which is the feasibility
+check used by bnxt_check_rings() (ethtool -L, ethtool -G, channel
+resize, etc.):
 
-bnxt_alloc_crypto_info() can be invoked multiple times for a given bp.
-__bnxt_hwrm_func_qcaps() is the caller, and it runs from paths such as
-bnxt_resume(), bnxt_restore_pf_fw_resources(), bnxt_io_resume(), and
-during SR-IOV enable, in addition to initial probe.
+    static int bnxt_hwrm_check_pf_rings(struct bnxt *bp,
+                                        struct bnxt_hw_rings *hwr)
+    {
+            struct hwrm_func_cfg_input *req;
+            u32 flags;
 
-On the second and later calls, the crypto pointer is non-NULL, so the
-loop that calls bnxt_get_max_crypto_key_ctx(bp, i) is skipped and only
-crypto->max_key_ctxs_alloc is refreshed.
+            req = __bnxt_hwrm_reserve_pf_rings(bp, hwr);
+            flags = FUNC_CFG_REQ_FLAGS_TX_ASSETS_TEST;
+            if (BNXT_NEW_RM(bp)) {
+                    flags |= FUNC_CFG_REQ_FLAGS_RX_ASSETS_TEST |
+                             FUNC_CFG_REQ_FLAGS_CMPL_ASSETS_TEST |
+                             FUNC_CFG_REQ_FLAGS_STAT_CTX_ASSETS_TEST |
+                             FUNC_CFG_REQ_FLAGS_VNIC_ASSETS_TEST;
+                    ...
+            }
 
-If BNXT_FW_MAJ(bp) crosses the 233 boundary between two qcaps queries on
-the same driver instance (for example after a firmware update applied
-across suspend/resume, or after a firmware reset that re-reads
-fw_ver_code), the cached kctx[].max_ctx retains the pre-233 value of
-65535 instead of being recomputed to 204800.
+            req->flags = cpu_to_le32(flags);
+            return hwrm_req_send_silent(bp, req);
+    }
 
-bnxt_backing_store_cfg_v2() then sizes the TCK/RCK backing stores from
-those cached values:
+This sets the *_ASSETS_TEST bits in req->flags, but it never sets
+FUNC_CFG_REQ_FLAGS2_KTLS_KEY_CTX_ASSETS_TEST in req->flags2 (a grep of
+drivers/net/ethernet/broadcom/bnxt confirms that flag is not set
+anywhere in the driver).
 
-	if (crypto) {
-		ctxm = &ctx->ctx_arr[BNXT_CTX_TCK];
-		rc = bnxt_setup_ctxm_pg_tbls(bp, ctxm,
-					     BNXT_TCK(crypto).max_ctx, 1);
-		...
-		ctxm = &ctx->ctx_arr[BNXT_CTX_RCK];
-		rc = bnxt_setup_ctxm_pg_tbls(bp, ctxm,
-					     BNXT_RCK(crypto).max_ctx, 1);
+Does that mean firmware will treat the tx/rx/cmpl/stat/vnic resources as
+test-only while still committing the kTLS key reservation as a side
+effect of every bnxt_check_rings() call?
 
-and bnxt_setup_ctxm_pg_tbls() applies clamp_t(u32, entries,
-ctxm->min_entries, ctxm->max_entries), so the stale 65535 caps the
-allocation even if firmware now advertises a larger ctxm->max_entries.
+If so, would this also cause an ethtool ring/channel resize to be
+rejected on a chip whose kTLS key pool is currently exhausted, even
+though the user only intended to probe the ring resources?
 
-Would moving the kctx[] initialization out of the if (!crypto) block, or
-running it unconditionally, be a better fit for the function name and
-kerneldoc which describe it as 'Allocate and initialize crypto offload
-context' without noting the once-only initialization?
+Should bnxt_hwrm_check_pf_rings() either skip
+bnxt_hwrm_reserve_pf_key_ctxs(), or set
+FUNC_CFG_REQ_FLAGS2_KTLS_KEY_CTX_ASSETS_TEST in req->flags2 so the kTLS
+portion of the request is also evaluated as test-only?
+
+[Low]
+On a kTLS-capable PF (bp->crypto_info != NULL),
+bnxt_hwrm_reserve_pf_key_ctxs() unconditionally sets
+FUNC_CFG_REQ_ENABLES_KTLS_TX_KEY_CTXS |
+FUNC_CFG_REQ_ENABLES_KTLS_RX_KEY_CTXS in req->enables, and the change
+from "=" to "|=" on the final assignment preserves them.
+
+That makes the early-return short-circuit in bnxt_hwrm_reserve_pf_rings()
+unreachable on such PFs:
+
+    req = __bnxt_hwrm_reserve_pf_rings(bp, hwr);
+    if (!req)
+            return -ENOMEM;
+
+    if (!req->enables) {
+            hwrm_req_drop(bp, req);
+            return 0;
+    }
+
+    rc = hwrm_req_send(bp, req);
+    ...
+    return bnxt_hwrm_get_rings(bp);
+
+Is it intended that every previously-no-op call now performs an HWRM
+round-trip plus a follow-up bnxt_hwrm_get_rings() on kTLS-capable PFs?
+
+If not, would it be appropriate to also gate the kTLS enables/values on
+whether any of the original "enables" bits were going to be set, so the
+no-op path is preserved?
+
+[ ... ]
