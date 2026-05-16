@@ -1,163 +1,133 @@
-Received: from szelinsky.de (szelinsky.de [85.214.127.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E95323C7DF1;
-	Sat, 16 May 2026 10:24:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.127.56
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778927052; cv=none; b=p8j9cO1pMixjLR2X6gTSjxyBD2istgCUcZsuYuSkGSM7cJAyLAoemC20pTbQkkDyG20fTzsvkNgwEdg88Zth8KQv9vaUNuNHHF5nlwB+23NA1urmxmU9mzckw+Jup+CQdGhEnBJkje2E8ggd2Xqav/0JZl31J8ITP4mmac72Zds=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778927052; c=relaxed/simple;
-	bh=bdN0NT6/HcYgI/x4qjaeluTgxOtZ+qYb36w6gMUlXR8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gFdO8sKaQsl4F5aRsIjFpjGF3JgVIjeg98c/mKBH7cKz5XkDndZVpl7fQ5PbnLb15ODs50X3S6s9C5zYEIqylVsQfvvd9egRMZrld0RBogbURZdMuF99Of6LjP03bTNZVOkq/jAe3JsYef6hEjYjFHa5VPUZBpWdPd3zLEqzSgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de; spf=pass smtp.mailfrom=szelinsky.de; dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b=lFgeuMo1; arc=none smtp.client-ip=85.214.127.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szelinsky.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2CC227EC7C
+	for <netdev@vger.kernel.org>; Sat, 16 May 2026 10:48:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778928537; cv=pass; b=ncSn7DthWKPANZ1RsO7pN0EC4OBIhow0cANQkoxcTWfljyklW+jhnW1v1R8y61TZ3l+EYfD7OknXDnreojrWgBSvUFiAS0rS+ukTq7GIDZPg3lE6vDEUAHTLO08k2cbcSvP0MXzDZrms//kPgebw5m0QN8rzPkBYnd9rbTYhl6w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778928537; c=relaxed/simple;
+	bh=n/AVyKlJGTsYHXsiXwBdHgBJFjZOldWnzK92bPN/bbw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WSncXXCfZWjDO+OXoZBfdFiX/CHEC9z2llNOfjQ2n1d3Dt/DTntDmstZ4R8wq6Vde+kmnc/nwY6V6kULzsjnHoXjhBGVD3iAGtRT9D0MLJRMDrg/gGQ9MWrki6muY0iVlCX+RVyKjk/rzLNWXp/PRd7QaX/GRURq4lxmrjKFBTk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pNYtLhh5; arc=pass smtp.client-ip=209.85.128.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b="lFgeuMo1"
-Received: from localhost (localhost [127.0.0.1])
-	by szelinsky.de (Postfix) with ESMTP id 529CDE83300;
-	Sat, 16 May 2026 12:17:44 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=szelinsky.de;
-	s=mail; t=1778926664;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xQxE5eeNi+FgzpQyikK/9wb1gzBGDwcK1LlAPy0UyIo=;
-	b=lFgeuMo1K1pAxBJ2oR7LoPSr7PvIuSayWS9JSK1hr3Z87k5OoIx53LwcwZvmnSxORpMM/v
-	wZ2i46cdxJ+W4awMI+KwulKLD70Un8aMhKfEdaRXQ3Am4L1h88iF8jw9zmcwuZLXC4UHsq
-	ZlmwO/IhNTQjIHkZgDzhtDGOE5IMS8cw+yEc79KEabi6u7wZrVnyDg5nY7VsjU12WcyBZi
-	e713O6gsHAYn9R+rS6ZhnuRq3TnkMjGtLLF2pCBDB8qEsGxfH9vRVpE76teUogFhhMQk1W
-	N+/iHWHDCM1FPT9y9dODyV/JJY1Pl5nrhsfFm2ZEvcAcETj0C5RVwztUMGk6Fg==
-X-Virus-Scanned: Debian amavis at szelinsky.de
-Received: from szelinsky.de ([127.0.0.1])
- by localhost (szelinsky.de [127.0.0.1]) (amavis, port 10025) with ESMTP
- id ZRLkrymdl950; Sat, 16 May 2026 12:17:43 +0200 (CEST)
-Received: from p14sgen5.fritz.box (p578439b8.dip0.t-ipconnect.de [87.132.57.184])
-	by szelinsky.de (Postfix) with ESMTPSA;
-	Sat, 16 May 2026 12:17:43 +0200 (CEST)
-From: Carlo Szelinsky <github@szelinsky.de>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-leds@vger.kernel.org,
-	Carlo Szelinsky <github@szelinsky.de>
-Subject: Re: [PATCH net-next v5 1/2] net: pse-pd: add devm_pse_poll_helper()
-Date: Sat, 16 May 2026 12:17:20 +0200
-Message-ID: <20260516101720.1686465-1-github@szelinsky.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260505015757.831372-1-kuba@kernel.org>
-References: <20260505015757.831372-1-kuba@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pNYtLhh5"
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-7bdec52f48dso2338297b3.0
+        for <netdev@vger.kernel.org>; Sat, 16 May 2026 03:48:55 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778928535; cv=none;
+        d=google.com; s=arc-20240605;
+        b=H72AGfkAaN/eUgnyVw10fKHo25MlJMTv0ahFJOqzojg+UcMiDL9DftMDzgyHePf1QK
+         YWDvvBR4jPV0+UeBhObDhe9G9dzLb2OyBYZ5iFjGuZDgU/MEvJnhAGa3W0t55pgRr76F
+         1sjQTmg9x0WOWSfWW3Ig1BrfOpMt6v5+W11zQ0NTTszVEw1qhAgeGgqt9ALm938QgbTq
+         2b+WF9+tZ1gzm1jMG1/BRlwDV4eQpzN/HZzuVs2YMu9xRGlv0ypfAaeKM3eTGENfHGEE
+         2lnJXgCRq5ccDr5DsQG+SB5dODFpt+Pr5e86Fj7PiC3NLYUzRFyhFysyMDCK6ps1OYNI
+         +VRA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=n/AVyKlJGTsYHXsiXwBdHgBJFjZOldWnzK92bPN/bbw=;
+        fh=2XFcmFmCYdDBv36x3LOgbl/B2vqa0dB2DmXQDDa3IG8=;
+        b=faHiKBPpXpBv8g2/6ElYyqYezbSZ080AgXmZjRlAc8ay6ONx2Z3njIhthoAbsyVaCZ
+         BThbE46cZ6fE6gmig4QGvCzxpoQSydTxDOJZ/MeqMbyH8bm2GljhPTP1LuCHXAJpNDiu
+         nSNCIPJlBSyVmxHaWnb+jYz0S3RV1V5IjtJ2jpt2CIPn6i7qiMHb2F2T7p27l+rSQ4CU
+         kOpsDZVQ6gCNVMmgAEI7s9fC5skHU5LNoyHjkCnV78CLinvIkwRvzYfbu/EJVf/WfF9v
+         7yH205p0/zwkGLwRfdSY8HMyJp1VkXtTBooN2SBULI0VLNPWXRZ5BeG3Ha10U2hkiYxb
+         /+lw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778928535; x=1779533335; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=n/AVyKlJGTsYHXsiXwBdHgBJFjZOldWnzK92bPN/bbw=;
+        b=pNYtLhh5Z7Szpf+lmmbK5DyYZo09+EFqC9DuBQrPsp4WWjDm4UOApB/IjtyGCU2Jgg
+         s879xPqgRqLMyrnJMxYTEl6FsidKqoJEIcn4lxrtvZFLlqhdtUP53YBaWKFTtHVIY7Kv
+         CJWXP+/ph1nPWfZUjE9gRgq7L51vDPXnceo1FYZnQeDo+GeZovYXLPuB1WUT7dxBtojP
+         7MhF+wm24KlkZAMocLkOwMwU6DejpPquPiDBkrYZQLdL0iwZSU3L/SRVf4g2260FYSyO
+         r4xv9CE4FAzsN2GlsXS88f9+bXBKJAwmNKIx+/GoN1WAB6tQGOuejZoObLYWzuAkPq7M
+         13WQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778928535; x=1779533335;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=n/AVyKlJGTsYHXsiXwBdHgBJFjZOldWnzK92bPN/bbw=;
+        b=VFoxhCOTqHJHtKU+wSz6zMs6dCY2QFCN1UICNMhxxYUcPx7YSxvau3ps3H7XRp2MuJ
+         ua00mBfpJ+XfICddK34I6cXjBrsvH9V5EHNWIYFpHM43h+MedXYDzVLjg5ZnwSOAEZdg
+         PqhsogA++hD0gemlS2BqmQ68vF/uNt4L6k5zT9hi6Lrv/a/TQHUD8IqIGyo2BNDIDt3T
+         6DTVYDd44PLnKL0gYXDxPzCXrJMto7Pbm5EtEQ/06p4tCkXHoCZ/J4U6GNj2VNkIRlsz
+         UYx1tjdH0At2enevnbWMW4UBaN2yvw02VqtAmeR2epWMI6mSkL1PYExGSAufUERTawiz
+         YanQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8/eUX0A4UH5qKiWX4o3UVJ6lu3xpx97YVIyL6RYwHaOmg9I+tQlZHz9fmwb4naPWBqOYFLx9A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQPrr/YGfMe8K/fg05iWJ21WVdRh/D9V0ugCn/Y7G2IWY6ZASP
+	5/zDXbogbcuXDSXIuhcBPHzIbuCJR/413cC+lA+uxEtdGmo0hDhakRk/lXYQJ+wPJ1ZoOti6DPV
+	bSiv531J3ZifPFamWNm432nLAd94kMv8=
+X-Gm-Gg: Acq92OE1IbSyd+qBkCLriKhi2OH3s9JipO7EPVjUbzERQ5XgUd3NF2/6GK23vzKXSHd
+	EAQs3QlGao0dnTCi3bBjjqTA/NUbU9/dZbT9vH1ZY04LjEI5b7MiBe1G49z8Tjn+MmT62fv90aC
+	IeRhfPyqwvCHfr6B8N9GiMr3qVkdP+NnSyMwFJxTLFiuYW8/D57KiwjXD3TCUKKAA5nPZp7TYmJ
+	V1u14AuSvkM6wJ9UEEvgD5J+yIbwZrN/ZxpCYHGAnOyJcYJ4OxJ+MM+O8c1ELhpW3S3hGHC/6/s
+	+4O94dM=
+X-Received: by 2002:a05:690c:c36b:b0:7ba:ded4:df69 with SMTP id
+ 00721157ae682-7c9463a27d4mr60332307b3.1.1778928534930; Sat, 16 May 2026
+ 03:48:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <87se8mytvv.fsf@toke.dk> <20260512144512.9960-1-bernard.f6bvp@gmail.com>
+ <20260512163648.7367a640@kernel.org> <CAFAa3YDcBsCnEJ1t+a3iHhzxW65HX+QNkZWPKHvDYp_V+UwZYQ@mail.gmail.com>
+ <20260515181411.28af7ffc@kernel.org>
+In-Reply-To: <20260515181411.28af7ffc@kernel.org>
+From: Bernard Pidoux <bernard.f6bvp@gmail.com>
+Date: Sat, 16 May 2026 12:48:43 +0200
+X-Gm-Features: AVHnY4IZ0c2IDo5kgo9E787Nd7IrItMcCAVJ5vxd7c8NHwfo2rpdQii2G5jAbXo
+Message-ID: <CAFAa3YDf4Zq9bH44FMS43E=FnMrvXF1ry9pdTQqT4ZvrqhzZBw@mail.gmail.com>
+Subject: Re: [PATCH net-deletions] net: remove ax25 and amateur radio
+ (hamradio) subsystem
+To: kuba@kernel.org
+Cc: toke@toke.dk, stable@vger.kernel.org, davem@davemloft.net, 
+	netdev@vger.kernel.org, pabeni@redhat.com, gregkh@linuxfoundation.org, 
+	linux-hams@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Jakub,
+On Fri, 16 May 2026 Jakub Kicinski wrote:
+> It's a GitHub repo so PR is probably appropriate there.
 
-Thanks for sending the AI review. I checked the code again... both
-points are real, but one of them looks to me like more theory than practice.
-Out of curiosity, what prompt do you use for these reviews, so I can use it 
-before sending the next version? Replying inline:
+Done. I have submitted the five rose fixes as a pull request to the
+mod-orphan repository:
 
-On Mon, 4 May 2026 18:57:57 -0700 Jakub Kicinski wrote:
-> > @@ -1118,6 +1125,8 @@ void pse_controller_unregister(struct pse_controller_dev *pcdev)
-> >  	pse_release_pis(pcdev);
-> >  	if (pcdev->irq)
-> >  		disable_irq(pcdev->irq);
-> > +	if (pcdev->polling)
-> > +		cancel_delayed_work_sync(&pcdev->poll_work);
+https://github.com/linux-netdev/mod-orphan/pull/1
+
+The PR contains six commits:
+
+1. rose: build with hamradio_compat.h on pre-7.0 kernels
+(compat shim for struct sockaddr_unsized, required by af_rose.c)
+2. rose: fix dev_put() leak in rose_loopback_timer()
+3. rose: hold loopback neighbour reference across timer callback
+4. rose: fix race between loopback timer and module removal
+5. rose: clear neighbour pointer after rose_neigh_put() in state machines
+6. rose: guard rose_neigh_put() against NULL in timer expiry
+
+All five fixes have been built and tested successfully against kernel
+6.17.0-23-generic (pre-7.0): insmod, functional operation, and rmmod
+all completed cleanly with no crash or leak detected.
+
+73 de Bernard Pidoux F6BVP
+
+
+Le sam. 16 mai 2026 =C3=A0 03:14, Jakub Kicinski <kuba@kernel.org> a =C3=A9=
+crit :
 >
-> Because pse_release_pis() executes kfree(pcdev->pi) before the delayed work
-> is cancelled, can pse_poll_worker() run concurrently and access the freed
-> pcdev->pi array inside pse_handle_events() before the cancellation completes?
-
-Yes, seems like a real bug. The IRQ thread and the poll worker can still run
-after pse_release_pis() frees pcdev->pi, and both end up in
-pse_handle_events() touching pcdev->pi[i]. We need to stop them
-first. v6 will reorder pse_controller_unregister() to:
-
-	if (pcdev->irq)
-		disable_irq(pcdev->irq);
-	if (pcdev->polling)
-		cancel_delayed_work_sync(&pcdev->poll_work);
-	cancel_work_sync(&pcdev->ntf_work);
-	pse_release_pis(pcdev);
-
-The IRQ side seem to be already broken before this patch. I went
-through the git log:
-
-* fc0e6db30941 ("net: pse-pd: Add support for reporting events")
-  added pse_isr but never called disable_irq() in unregister at all.
-* ffef61d6d273 ("net: pse-pd: Add support for budget evaluation
-  strategies") added the disable_irq() call, but put it in the
-  wrong place (after pse_release_pis()).
-
-What do you suggest to do, I could imagine: ... 
-
-1) Send the fix as a standalone "Fixes:" patch to net first,
-   then rebase v6 on top once it lands? Or fold it into v6 as
-   patch 1/3? My vote is standalone since the fix stands on its
-   own, but up to you.
-
-2) Which commit for the Fixes: tag? I'd pick ffef61d6d273
-   (that's where the broken order came from), but fc0e6db30941
-   also works (no protection at all back then). wdyt?
-
-> > +int devm_pse_poll_helper(struct pse_controller_dev *pcdev,
-> > +			 const struct pse_irq_desc *d)
-> > +{
-> [...]
-> > +	queue_delayed_work(system_freezable_wq, &pcdev->poll_work,
-> > +			   msecs_to_jiffies(pcdev->poll_interval_ms));
+> On Fri, 15 May 2026 16:52:43 +0200 Bernard Pidoux wrote:
+> > I am happy to submit these two fixes as patches to mod-orphan if that
+> > is the right approach. Please let me know.
 >
-> Since memory is allocated with devm_ helpers but no devm cleanup action is
-> registered to cancel the delayed work, what happens if a driver's probe
-> function encounters an error after calling this helper? [...]
->
-> The commit message mentions that drivers typically set up the helper before
-> registering the controller. If queue_delayed_work() schedules the worker
-> to run before devm_pse_controller_register() completes, will
-> pse_poll_worker() attempt to acquire pcdev->lock and push events into
-> pcdev->ntf_fifo before they are initialized?
-
-The probe-failure case is a real bug. If probe fails between this
-helper and devm_pse_controller_register(), the work stays queued
-and fires later on a pcdev whose devres memory is gone. UAF.
-
-The "worker fires before mutex/kfifo are ready" case is real in
-theory, but I don't think you can actually hit it?! Default
-poll_interval_ms is 1000 ms, so pse_controller_register() would
-need to take over a second to lose the race. Worth fixing to keep
-the code clean, but not urgent or?
-
-Same fix for both: move queue_delayed_work() out of the helper.
-The helper just allocates the state and does INIT_DELAYED_WORK.
-pse_controller_register() then arms the work as the very last
-step on success, gated on pcdev->polling. So the work only ever
-runs when everything is set up AND register has succeeded.
-
-Should I fix both in v6, or just the probe-failure leak? One
-change covers both, so I would suggest to do both. wdyt?
-
-So the steps for v6 [1/2] could be:
-* standalone "Fixes:" patch reordering pse_controller_unregister()
-  (sent to net first, unless you suggest to fold it in)
-* move queue_delayed_work() into pse_controller_register()
-
-Do you have any other feedback, do I miss anything ?
-
-Cheers,
-Carlo
+> It's a GitHub repo so PR is probably appropriate there.
