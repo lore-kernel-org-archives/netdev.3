@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56CCA1E5724;
-	Sat, 16 May 2026 01:17:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 480E622D7A1;
+	Sat, 16 May 2026 01:17:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778894245; cv=none; b=EeR7zv0IAqBWbNpdiAczZsH5NI1i4TmK7eU+24kDMeZ0KbMjNZZ+uJbz5Ijxckx9p7vZNfMhK/HAN2dmrdR58RlOZlyp2w5VXVWk3kMNYAbFoYqGqo06OSpLA3V8dIuy2D+aYQVLiEPtFgpjpkEhEfsU0M+MOaiVO6jrD/CDTB4=
+	t=1778894251; cv=none; b=SNDYeNvhu1qSttwrhNsGwQF+RJ0Ugy2Tjees7Fihw0d5sdMHKeCcj5wNoXvnrXBZJ8/mAniNTGBikHaS2aYhMNvk5VNt58JaZ4GzObxx3PtJo9IFsbvw1euRwG0wYiNHuzY4Lqw0h7uEErL7UIYnBTNNmyImNfQ3U9O9vEJuNaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778894245; c=relaxed/simple;
-	bh=VDLgZ9qYf5MToJ9kx5H+huLMvETkYu6EHW4zksLDWi4=;
+	s=arc-20240116; t=1778894251; c=relaxed/simple;
+	bh=vqb4ZaYQMmZhkOs6tnUeA/Kf3Oyzbjn5GJjDqFFFshs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WNVyjZU0Rvlo5n/WVb/2NfBfChYc1T/eCil/zRSAFLVWAT01Y5dbzV+nkcQICFbroSkeR/fDM8y8BAqdkGVdzTfOyNFqdL01ih1ijDIfmniU9PXgffOJZh2IlGToy/chpR8O7ro0CQWgT90UHtoWNHU3xabbpkevVv/nBR05fMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aS6P9twR; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=iT9n4+0YLaURSXfYOp1/v3xUjg9FXIbmJSaH2umKSl7hetOOV7B31WT4kGe4R1OD8/fSobLT/RByGq5Q50dEahDAMlZ57S43BhJIfx1400lx2YTzW0mMTjNQAltXPw9v0XYwnJ/Rh8H286xTfJC9tBT1qaIrnRnpC/fyX3PEwWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ktroCvJU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aS6P9twR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 561B4C2BCC9;
-	Sat, 16 May 2026 01:17:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ktroCvJU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A252C2BCB0;
+	Sat, 16 May 2026 01:17:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778894243;
-	bh=VDLgZ9qYf5MToJ9kx5H+huLMvETkYu6EHW4zksLDWi4=;
+	s=k20201202; t=1778894246;
+	bh=vqb4ZaYQMmZhkOs6tnUeA/Kf3Oyzbjn5GJjDqFFFshs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aS6P9twRkyY0z0a3em2n08yTm3PQMCA8gzanR9leXckzZ0fojPUcR208U8CyN7Dl6
-	 iLx1Wh5YiktZqfR9YaNDXhoFARAhI5K2YfGgr9IIn/UQllYmEX/hegL7CR2dJhwgCp
-	 ifdJ2V/l7P3L6yivPasm98mRCKrtUJT8ooGM+RX6LvkmLh4vZc9lzaJJqvk5pv1CQ7
-	 E7nhvza7aAu0frLEzcjJcBST9cofitzQrSLQh/pqQVwrSSQC+SdjUoqv6tIXoVzIhO
-	 1HF748q2h9bu71292fcZFmWhWmvgY6aKCBJO8hNcsfUyVzxkvwbS+QrpaoH2eDqM1+
-	 ljutGEPMqvGDg==
+	b=ktroCvJU6D57PDwDQLq18RTS9++FjObYgRd4TF3y5homw34kztyJtZyUG1L36wfBQ
+	 qXPjhXoI15exDOyy587dV1+aKFnSCRFbjeFHJUSekbghRXTMoXsC6Zz2Ee1pJ5wLH3
+	 T2ORYFvE9EWUDAA1gCpHYtTX8cGqoBjJWGNbQpD5zDSX9NAjp0bMSlKSPTCyqeS10v
+	 LECKguAZUbzU3cQ0HlppYpi7rezFxnCmw8JQyTSlNO7EwwMKwGLN108QHtD5+R2xAd
+	 5vGGX4khDry5X0qeoheaFRAcPxcAdO9Ndx4GoMZ2BJmtaPo/rbb3vE/557ujsn34nM
+	 g2bVkC6Xo8TrQ==
 From: Jakub Kicinski <kuba@kernel.org>
 To: illusion.wang@nebula-matrix.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -45,98 +45,125 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	skhan@linuxfoundation.org,
 	hkallweit1@gmail.com,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v14 net-next 09/11] net/nebula-matrix: add Dispatch layer implementation
-Date: Fri, 15 May 2026 18:17:20 -0700
-Message-ID: <20260516011721.1864053-1-kuba@kernel.org>
+Subject: Re: [PATCH v14 net-next 11/11] net/nebula-matrix: add common dev start/stop operation
+Date: Fri, 15 May 2026 18:17:25 -0700
+Message-ID: <20260516011725.1864115-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260513011649.4404-10-illusion.wang@nebula-matrix.com>
-References: <20260513011649.4404-10-illusion.wang@nebula-matrix.com>
+In-Reply-To: <20260513011649.4404-12-illusion.wang@nebula-matrix.com>
+References: <20260513011649.4404-12-illusion.wang@nebula-matrix.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-net/nebula-matrix: add Dispatch layer implementation
+net/nebula-matrix: add common dev start/stop operation
 
-This patch introduces a control-level routing mechanism for the Dispatch layer.
-Routing is controlled by interface-declared levels and upper-layer configured
-control levels.
+This patch sets up common device start and stop operations. It configures the
+MSI-X map table, allocates and enables MSI-X vectors, and registers the
+mailbox ISR.
 
-> Current state:
-> - Regular PF: configures NET_LVL at Dispatch layer.
->   Since NBL_DISP_CTRL_LVL_NET is not yet wired in nbl_disp_init(),
->   all operations currently fall through to the CTRL_LVL_MGT branch
->   and use the channel path. The direct path for NET_LVL is a
->   framework extension point reserved for future use.
->
-> - Management PF: configures both NET_LVL and CTRL_LVL.
->   Same as above — currently all ops use channel path.
->
-> Future work:
-> Implement the has_net / NBL_DISP_CTRL_LVL_NET branch in nbl_disp_init()
-> to enable direct path routing for network operations.
-
-The commit message states that NBL_DISP_CTRL_LVL_NET is not yet wired in
-nbl_disp_init(), and lists implementing the has_net branch as future work.
-
-However, the patch includes this exact logic in nbl_disp_init() below.
-
-Could the commit message be updated to match the implemented code?
-
+> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
+> index 9b7f4598fccc3..c7e632a16b40c 100644
+> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
+> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
 [ ... ]
-> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
-[ ... ]
-> +static void nbl_disp_chan_get_vsi_id_resp(void *priv, u16 src_id, u16 msg_id,
-> +					  void *data, u32 data_len)
+> @@ -79,6 +259,14 @@ static void nbl_dev_clean_mailbox_task(struct work_struct *work)
+>  				      NBL_CHAN_TYPE_MAILBOX);
+>  }
+>  
+> +static int nbl_dev_clean_mailbox_schedule(struct nbl_dev_mgt *dev_mgt)
 > +{
-[ ... ]
-> +	NBL_CHAN_ACK(chan_ack, src_id, NBL_CHAN_MSG_GET_VSI_ID, msg_id, err,
-> +		     &result, sizeof(result));
-> +	ret = chan_ops->send_ack(disp_mgt->chan_ops_tbl->priv, &chan_ack);
-
-Could this lead to a self-deadlock on txq_lock during mailbox polling?
-
-If a message is sent while polling, nbl_chan_send_msg() acquires txq_lock
-and processes incoming messages in its polling loop:
-
-nbl_chan_send_msg() [acquires txq_lock]
-  -> nbl_chan_clean_queue()
-    -> nbl_chan_recv_msg()
-      -> nbl_disp_chan_get_vsi_id_resp()
-
-If nbl_disp_chan_get_vsi_id_resp() processes a request and calls
-chan_ops->send_ack(), this will eventually call back into nbl_chan_send_msg():
-
-nbl_disp_chan_get_vsi_id_resp()
-  -> chan_ops->send_ack()
-    -> nbl_chan_send_ack()
-      -> nbl_chan_send_msg() [attempts to acquire txq_lock again]
-
-Will this cause an immediate deadlock since the non-recursive txq_lock is
-already held by the outer nbl_chan_send_msg() call?
-
-[ ... ]
-> @@ -71,9 +477,24 @@ int nbl_disp_init(struct nbl_adapter *adapter)
-[ ... ]
-> +	if (common->has_ctrl)
-> +		nbl_disp_setup_ctrl_lvl(disp_mgt, NBL_DISP_CTRL_LVL_MGT);
+> +	struct nbl_dev_common *common_dev = dev_mgt->common_dev;
 > +
-> +	if (common->has_net)
-> +		nbl_disp_setup_ctrl_lvl(disp_mgt, NBL_DISP_CTRL_LVL_NET);
-
-This appears to wire up the NBL_DISP_CTRL_LVL_NET branch, which contradicts the
-commit message stating it is not yet wired.
-
+> +	nbl_common_queue_work(&common_dev->clean_mbx_task);
+> +	return 0;
+> +}
 > +
-> +	nbl_disp_setup_ctrl_lvl(disp_mgt, NBL_DISP_CTRL_LVL_ALWAYS);
+>  /* ----------  Dev init process  ---------- */
+>  static int nbl_dev_setup_common_dev(struct nbl_adapter *adapter)
+>  {
+
+Looking at nbl_dev_setup_common_dev() in the same file:
+
+nbl_dev_setup_common_dev() {
+        ...
+        ret = nbl_dev_setup_chan_queue(dev_mgt, NBL_CHAN_TYPE_MAILBOX);
+        if (ret)
+                return ret;
+
+        INIT_WORK(&common_dev->clean_mbx_task, nbl_dev_clean_mailbox_task);
+        common->vsi_id = disp_ops->get_vsi_id(priv, NBL_VSI_DATA);
+        if (common->vsi_id == U32_MAX)
+                return -ENOENT;
+        ...
+}
+
+If operations like disp_ops->get_vsi_id() or disp_ops->get_eth_id() fail,
+the function returns the error directly. Could this leak the mailbox queue
+resources allocated by nbl_dev_setup_chan_queue() on these initialization
+error paths? 
+
+Since dev_mgt->common_dev is only assigned at the end of the setup function,
+it appears the caller nbl_dev_init() cannot clean this up either.
+
+[ ... ]
+> @@ -220,9 +408,41 @@ void nbl_dev_remove(struct nbl_adapter *adapter)
+>  /* ----------  Dev start process  ---------- */
+>  int nbl_dev_start(struct nbl_adapter *adapter)
+>  {
+> +	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
+> +	int ret;
 > +
+> +	ret = nbl_dev_configure_msix_map(dev_mgt);
+> +	if (ret)
+> +		goto config_msix_map_err;
+> +
+> +	ret = nbl_dev_init_interrupt_scheme(dev_mgt);
+> +	if (ret)
+> +		goto init_interrupt_scheme_err;
+> +	ret = nbl_dev_request_mailbox_irq(dev_mgt);
+> +	if (ret)
+> +		goto mailbox_request_irq_err;
+> +	ret = nbl_dev_enable_mailbox_irq(dev_mgt);
+> +	if (ret)
+> +		goto enable_mailbox_irq_err;
+> +
+>  	return 0;
+> +enable_mailbox_irq_err:
+> +	nbl_dev_disable_mailbox_irq(dev_mgt);
+> +	nbl_dev_free_mailbox_irq(dev_mgt);
+> +mailbox_request_irq_err:
+> +	nbl_dev_clear_interrupt_scheme(dev_mgt);
+> +init_interrupt_scheme_err:
+> +	nbl_dev_destroy_msix_map(dev_mgt);
+> +config_msix_map_err:
 > +	return ret;
 >  }
+>  
+>  void nbl_dev_stop(struct nbl_adapter *adapter)
+>  {
+> +	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
+> +
+> +	nbl_dev_disable_mailbox_irq(dev_mgt);
+> +	nbl_dev_free_mailbox_irq(dev_mgt);
+> +	nbl_dev_clear_interrupt_scheme(dev_mgt);
+> +	nbl_dev_destroy_msix_map(dev_mgt);
+>  }
+
+When nbl_dev_stop() is called, or when nbl_dev_start() takes the error path
+after enabling the mailbox IRQ, the driver disables and frees the interrupt,
+but does not cancel clean_mbx_task.
+
+If an interrupt fires just before the IRQ is disabled, the work remains
+queued on wq_mgt->ctrl_dev_wq and will execute asynchronously.
+
+Could this lead to a memory access issue if devres frees the common_dev
+memory when the device unbinds? Is it necessary to call cancel_work_sync()
+here to ensure any pending work is flushed or cancelled before the structure
+is destroyed?
