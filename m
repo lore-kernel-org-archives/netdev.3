@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38CB81DDC35;
-	Sat, 16 May 2026 01:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C621DDC35;
+	Sat, 16 May 2026 01:17:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778894239; cv=none; b=bvBpnsve1oMtDLiIYgnt4ZIftnmlVDMvm44oZDQsB1GPHHZLt3ulNyNHR8p6SGUq2v0h+hVupYCAMfe9zilW0kV5Md2zW/Acf734HHBwpmdwP3RxvZN0UVUeYKCOEk15HWdkgPkl9/6Hx5OPACdP8wmwR6/Zy6H6XXlVZLGLfdA=
+	t=1778894245; cv=none; b=O7e0atLgx/xMfjCQ3y3G3qp8JE8zQ1B0GPoGGx4T1e1xYBrlR7UmJ04iQrxlFNDCAqsThiZVNmTnvAbNZa/WZHm7NrLpKlickruoz877j3JnxLsAYMnuXCD9lpaj2MQgS3qkGebhjG0RIT1pvCL/bDC2UZuNXYKowgfc23ablfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778894239; c=relaxed/simple;
-	bh=NTmDybnJmucN1fJhDmejKbpLOc0Fb9sL51dU5jBJuW4=;
+	s=arc-20240116; t=1778894245; c=relaxed/simple;
+	bh=f+M4vcKwK8EwFb05uG2mSIdBy1gVpWjjQiVq8hoOUyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IJ+1QEWacRHYDxf8IfHfA4/fqbaLPQz7wncizorYpVyyXSYckF6Vj1tq/aUHlTOJrJTrYJOD4CvNi82DILpGVuGP14ngTZIv3ylzl14ig95Ps+nEmB8MV+CxoT34vHbUkDPMgGJ87xDx6tI23Bd2Eon9r0f3Oh2M3yKNtio1jKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EYTNMhAI; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=n6ssPk1AzVsBk2K12l927wRo0JZeLokgvESk6ntzRBMW8uA0wUx+wMja7R8OxCD6Gxpndbd9Bi0qgSCUDJjeq0wn/9N1Cy6ubSZcFGhrYrU1gXY57kqaTzG56X3qaK/7hdE5sFJeApzzBRHLrjtmXNELwRrVn45Rm0BRx2vUbi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uHWv4W8a; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EYTNMhAI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 227ECC2BCB7;
-	Sat, 16 May 2026 01:17:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uHWv4W8a"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5050BC2BCB0;
+	Sat, 16 May 2026 01:17:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778894238;
-	bh=NTmDybnJmucN1fJhDmejKbpLOc0Fb9sL51dU5jBJuW4=;
+	s=k20201202; t=1778894245;
+	bh=f+M4vcKwK8EwFb05uG2mSIdBy1gVpWjjQiVq8hoOUyI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EYTNMhAIfSOlQvjpWdYwSHbqy/72TSG3EMldWT/nL+FNYurmno0ESXcjBStwtJn2V
-	 bXETEAr9rMRpE1CDaDaqXLuI4i8ZjFqcQAIq4vXYIG9Ytpvjw3Geh0K2WN2Fmi0Q+B
-	 n0YTcgJxjq1WNWziI/Pc1/u1NlZPFbijOZcABXTMPUJv//5gECrH7PHe1Rc5u9SUv9
-	 7O95ykCiQ4n1jVv30X/cBKQDgx65Jju00+MZa3Anhb8zmTv93IlJRNtM8IVdEs2t4p
-	 N/NF21ZXzARekZCzD3/9qgEA3lt/8dU9SBEyO2Zn8g0J3BEZAUHDW6emHlKG5A23sr
-	 ykPtiBabUPn2g==
+	b=uHWv4W8aTRT649ijIOuO0gjo7dXWcKaODvDA+DmbSHPrQK+r6qQAVKParEqrNKop3
+	 09mn12Ry07hZsVvFITooKfsXuG5p2uQFiZz3VTXhor1BcgmqUwd7M2I4cIcCaGawhm
+	 +PG1d6wlq30v699Uv93eynLUT2RUAmfJ6mJKoyO+Rczpxm19EKDsUPqqvRuVkSu4ys
+	 bkrMf4tJc/OvcyJDiBkdZT1OOVhHPQ9xvKauXOGyq47rXq25lq5uWEUJBqn7ADJ1Di
+	 eJ2qQI0lqqWe/FrtvHT3jb+UNaRHVY7fkpZqeR+ctQYc9Ky+S9KmwNuun002cdVwAc
+	 Mw2Pmu17Ixecg==
 From: Jakub Kicinski <kuba@kernel.org>
 To: illusion.wang@nebula-matrix.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -45,12 +45,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	skhan@linuxfoundation.org,
 	hkallweit1@gmail.com,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v14 net-next 07/11] net/nebula-matrix: add intr resource implementation
-Date: Fri, 15 May 2026 18:17:17 -0700
-Message-ID: <20260516011717.1863989-1-kuba@kernel.org>
+Subject: Re: [PATCH v14 net-next 10/11] net/nebula-matrix: add common/ctrl dev init/reinit operation
+Date: Fri, 15 May 2026 18:17:23 -0700
+Message-ID: <20260516011723.1864084-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260513011649.4404-8-illusion.wang@nebula-matrix.com>
-References: <20260513011649.4404-8-illusion.wang@nebula-matrix.com>
+In-Reply-To: <20260513011649.4404-11-illusion.wang@nebula-matrix.com>
+References: <20260513011649.4404-11-illusion.wang@nebula-matrix.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,97 +62,90 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-net/nebula-matrix: add intr resource implementation
-    
-Implement dynamic allocation and management of MSI-X interrupt vectors,
-including network interrupts and other interrupt types. Maintain the
-MSI-X mapping table (msix_map_table) to establish interrupt associations
-between hardware and software. Support enabling/disabling specific
-interrupts through hardware operations.
+net/nebula-matrix: add common/ctrl dev init/reinit operation
 
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
-> index 55d6ed70a9e60..612d6c9812b01 100644
-> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
-> @@ -64,6 +64,76 @@ static void nbl_hw_wr_regs(struct nbl_hw_mgt *hw_mgt, u64 reg, const u32 *data,
+This commit introduces common and control device setup and teardown routines
+for the nebula-matrix network driver. It configures mailbox channels, queue
+tasks, and MSI-X initialization.
+
+> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
+> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
+> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
 
 [ ... ]
 
-> +static void nbl_hw_configure_msix_map(struct nbl_hw_mgt *hw_mgt, u16 func_id,
-> +				      bool valid, dma_addr_t dma_addr, u8 bus,
-> +				      u8 devid, u8 function)
+> @@ -6,6 +6,159 @@
+>  #include <linux/pci.h>
+>  #include "nbl_dev.h"
+
+[ ... ]
+
+> +static int nbl_dev_setup_common_dev(struct nbl_adapter *adapter)
 > +{
-> +	union nbl_function_msix_map_u function_msix_map;
+> +	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
+> +	struct nbl_dispatch_ops *disp_ops = dev_mgt->disp_ops_tbl->ops;
+> +	struct nbl_dispatch_mgt *priv = dev_mgt->disp_ops_tbl->priv;
+> +	struct nbl_common_info *common = dev_mgt->common;
+> +	struct nbl_dev_common *common_dev;
+> +	int ret;
 > +
-> +	memset(&function_msix_map, 0, sizeof(function_msix_map));
-> +	if (valid) {
-> +		function_msix_map.info.msix_map_base_addr = dma_addr;
-> +		/* use af's bdf, because dma memmory is alloc by af */
-> +		function_msix_map.info.function = function;
-> +		function_msix_map.info.devid = devid;
-> +		function_msix_map.info.bus = bus;
-> +		function_msix_map.info.valid = 1;
-> +	}
+> +	common_dev = devm_kzalloc(&adapter->pdev->dev, sizeof(*common_dev),
+> +				  GFP_KERNEL);
+> +	if (!common_dev)
+> +		return -ENOMEM;
+> +	common_dev->dev_mgt = dev_mgt;
 > +
-> +	nbl_hw_wr_regs(hw_mgt,
-> +		       NBL_PCOMPLETER_FUNCTION_MSIX_MAP_REG_ARR(func_id),
-> +		       function_msix_map.data, sizeof(function_msix_map));
+> +	ret = nbl_dev_setup_chan_queue(dev_mgt, NBL_CHAN_TYPE_MAILBOX);
+> +	if (ret)
+> +		return ret;
+> +
+> +	INIT_WORK(&common_dev->clean_mbx_task, nbl_dev_clean_mailbox_task);
+> +	common->vsi_id = disp_ops->get_vsi_id(priv, NBL_VSI_DATA);
+> +	if (common->vsi_id == U32_MAX)
+> +		return -ENOENT;
 
-Is there an out-of-bounds array access here when passing
-function_msix_map.data?
+If disp_ops->get_vsi_id() or disp_ops->get_eth_id() fail below, does this
+leak the mailbox channel queue?
 
-union nbl_function_msix_map_u contains struct info which is 16 bytes long,
-but its data array is defined as u32 data[NBL_FUNC_MSIX_MAP_DWLEN], where
-NBL_FUNC_MSIX_MAP_DWLEN is 3 (12 bytes).
+Because dev_mgt->common_dev is not assigned until the very end of this
+function, the standard cleanup routine nbl_dev_remove_common_dev() will
+return early due to its NULL check. It seems the queue will not be destroyed
+in these error paths.
 
-When nbl_hw_wr_regs() receives sizeof(function_msix_map) (16 bytes), it will
-iterate 4 times and access data[3]. Since data is an array of size 3, this
-triggers an out-of-bounds memory violation under CONFIG_UBSAN_BOUNDS.
-Should NBL_FUNC_MSIX_MAP_DWLEN be updated to 4?
+> +	ret = disp_ops->get_eth_id(priv, common->vsi_id, &common->eth_num,
+> +			     &common->eth_id, &common->logic_eth_id);
+> +	if (ret)
+> +		return ret;
+> +	nbl_dev_register_chan_task(dev_mgt, NBL_CHAN_TYPE_MAILBOX,
+> +				   &common_dev->clean_mbx_task);
+> +
+> +	dev_mgt->common_dev = common_dev;
+> +	nbl_dev_init_msix_cnt(dev_mgt);
+> +
+> +	return 0;
+> +}
+> +
+> +static void nbl_dev_remove_common_dev(struct nbl_adapter *adapter)
+> +{
+> +	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
+> +	struct nbl_dev_common *common_dev = dev_mgt->common_dev;
+> +
+> +	if (!common_dev)
+> +		return;
+> +
+> +	nbl_dev_remove_chan_queue(dev_mgt, NBL_CHAN_TYPE_MAILBOX);
 
+Can this lead to a race condition and a potential use-after-free?
+
+By tearing down the channel queue before unregistering the task, a pending
+or running clean_mbx_task could execute on the destroyed queue.
+
+Additionally, is a call to cancel_work_sync() needed here for the
+clean_mbx_task? Since common_dev is allocated via devm_kzalloc, it will be
+freed when the device detaches. If the work is still pending or running, it
+might try to access the freed memory.
+
+> +	nbl_dev_register_chan_task(dev_mgt, NBL_CHAN_TYPE_MAILBOX, NULL);
 > +}
 
 [ ... ]
-
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.h
-> index 15dc7f78afc0b..b1f5724e727a9 100644
-> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.h
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.h
-> @@ -18,6 +18,35 @@
->  
->  struct nbl_resource_mgt;
->  
-> +/* --------- INTERRUPT ---------- */
-> +#define NBL_MAX_OTHER_INTERRUPT			1024
-> +#define NBL_MAX_NET_INTERRUPT			4096
-> +
-> +struct nbl_msix_map {
-> +	u16 valid:1;
-> +	u16 global_msix_index:13;
-> +	u16 rsv:2;
-> +};
-
-Does this code use C bitfields for hardware-shared structures?
-
-This structure is used for DMA-coherent memory in
-nbl_res_intr_configure_msix_map():
-
-drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_interrupt.c:nbl_res_intr_configure_msix_map() {
-    ...
-	msix_map_table->size =
-		sizeof(struct nbl_msix_map) * NBL_MSIX_MAP_TABLE_MAX_ENTRIES;
-	msix_map_table->base_addr = dma_alloc_coherent(dev,
-						       msix_map_table->size,
-    ...
-}
-
-Bitfield packing order is implementation-defined in C. On Big Endian
-architectures, compilers pack bitfields in the opposite direction from Little
-Endian, which will cause the hardware to read misaligned or reversed bit
-positions. Standard kernel practice mandates using explicitly sized types
-like __le16 and bitwise operations (FIELD_PREP, etc.) for hardware-facing
-memory.
-
-The same applies to MMIO registers written using unions containing bitfields,
-such as union nbl_function_msix_map_u and union nbl_mailbox_qinfo_map_table_u.
-Could these be converted to standard bitwise operations as well?
