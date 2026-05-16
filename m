@@ -1,152 +1,191 @@
-Received: from sonic315-22.consmr.mail.ne1.yahoo.com (sonic315-22.consmr.mail.ne1.yahoo.com [66.163.190.148])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B338E2F7EFA
-	for <netdev@vger.kernel.org>; Sat, 16 May 2026 06:10:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.190.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B6B6357D15
+	for <netdev@vger.kernel.org>; Sat, 16 May 2026 06:11:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778911834; cv=none; b=b/LJLSY13NpKETPX9u5DgjwWjWnVEzgb/RDN0uraDbwNKO7UbNflZBdN4EZz/uDl5EzQYSHId0XEkuB7rqXL3/DDEqfCtP2AA68TOhGmXdF7X2mgtdMkg53CspXEUzMlWICF82Vc8ZoqYIrIjX/q0nFYXn5h2uKLL9BHK99f1tY=
+	t=1778911867; cv=none; b=SkGldZM4qlw3au0v46lEpBsdaVspstCmKe6fLrJxOyj/CvYwBiGwSA6dQ7NoGIYwfc2FzQlpRCBvONmtq91wcz7016M3rxEiYUV1h5ZXrlL/iOht+aj0oHxQt2txedITAPUfe8D4y1KH8Pmk2WymPoVOLOOuPWvyArR1suc9nZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778911834; c=relaxed/simple;
-	bh=bxgc4YTfsJuw3vIFJMf/UYBPu0vmdi58MFXWju67WAU=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=JZb4m8/JVfbvuxRixIoZmXiWxM8a1GzDeIkYvh45tjhXHlLtX5Ym9oI0SrqZak80UNdVubY2DrnCi9X6OrT+M3ak/R7kLIg+irpHB+RHgvBR3sekyb5jvXKXN/5jPfAzLMA8K+BLuY61nyP46m7M8t+tyN4EpYHgUZQ24/HPnMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=jBZqf3FL; arc=none smtp.client-ip=66.163.190.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+	s=arc-20240116; t=1778911867; c=relaxed/simple;
+	bh=2Leslt9BvB34QU801/n0+rUCWtgQPEnpWkpjEuM4jNw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=AxFCudf9m0Wv7BgMvROi3CGu2sfZQPNhbB2r2fRVQ/Lnan7cLIjr4utVlPyMyavSZC/cIWlbFGBN5T4E016viN3SGpUbGzCsOI2qX9IuUGbgqSIC5u5zciK8Mj9ijwH1NnCLvxQAmxf/OAO3sjNVIbx+yG9dToJp2cajHawMHoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=extrahop.com; spf=pass smtp.mailfrom=extrahop.com; dkim=pass (2048-bit key) header.d=extrahop.com header.i=@extrahop.com header.b=hyJinF8c; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=extrahop.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=extrahop.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="jBZqf3FL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1778911832; bh=jDr9oJom1fw8aQ+wYn/oZVYe9Vm/nYGh+z+rXo/tde0=; h=Date:From:Subject:To:Cc:References:In-Reply-To:From:Subject:Reply-To; b=jBZqf3FLfoX2oSP3gtSx7HcQVdnmnINim+U/l5TFxMsmAiJ2xw3TXh6OhYMoNVOsgwbkVZWTARh3HaOxcQvsjYYDqNqOh1B2Eu4s07d8IakwEQwxwuhv2VIJkDiPAV1MH5WL1GCYQElh2UBuvg7GYmJqve6LKL+H3tJ+yz/n4wNHrdkOLdg8R9ctGOm9mMSRY/dACEH7P1+3yfJchctpTlIQJnVwclV+Um7lTDa4RjCtwiT7Dyh1bqCQvSEGGQvE9Nf4I7C8G6RLhB4YI8yR5w7gFkuTzQ1PR8zckXGRwwvnZMQC2DSgM/DNALIyKJMvidglKcArUl50Y5uSmzBAXA==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1778911832; bh=QAtJxjAV/zQw1g5yBwTvtuYBFwJvq09ej4f056m5k3C=; h=X-Sonic-MF:Date:From:Subject:To:From:Subject; b=uEaA+jeiIKZ9B86Max1SZL7CBams4SpgNOtCVGJh21Pi3G4karkKxPSiu2S3/WQkut0VY6mj6y6T+xEzMSHd9ZVLnnRPSAr6BmcE4pVbT7HsqVvO/Z07wq9vNxwTmdI56sHrzEnlLItCiSI7NVUZWqHcmtnjYdn9RtpsdG80tegJ3y3IRdqnEXpb4a85bxXki7uE1I/1omJ+2p2QszArfDjvo2Lcdt9RAlym/IEtjNPAT2vcL5eDUz3vEQO9mb+jScc/x8WiMbqhzWqqVZzx4rjx2X3AisJC5mLgk29DTh6+kQkzJ3lIzc80U0paWtI+afnlGbLuOwl2lqh4Et1ahg==
-X-YMail-OSG: tD3gGVcVM1kk64.rVhdreGdwg.MgpVCZgsroE8dnvtiHY_sGUkITiSxE7kooX_l
- uPoArT5XT7ewgXXMUWpwDoJ4_BwSwE_mdteX5gi9N7EolSKsqIA3srz9fc7cQEONyi48MAR614D4
- 41OYt4PBAtYIa9OYilossea0dzzvE50L7T7EV2sII2c81_2K.sdftiZh4FDF.zOswVsgjoaHyklQ
- r4pTh3_L2HLUzI_fsB3bFiUx_B0qsWA9WHjaUXV9EoQAYck4SW3b4Xiwp1i.ioS_paG6LCCRSiXU
- AzzTudmr5V0PBPO2WyKRzSdWq1eJZVMsN0.2T905a2FYNfJQU5srl5CUHIiZy.98wCunPHNJUyKY
- t5KiwwO2F2.qwzNiSKZ4bgt6RjOPlL5Hcm97wgA1eBoIu5Q3GJDF2rxNK4Mww4OYRGTpFZoy7EK3
- DIwcr7LhveCp5DSzURfxVPrd2VU7IYFcD.NLgcYic5NaMpQPxsJFeY91VLkn4wjgvNI212MTv9vT
- dMQl4KiK2MXc2dfKbDBv_C6ESB7u8Yo30Xxa2HKZZoDHS_ntkelerymRB13kmd6N0Reka33_FyAd
- BUESur0fJ_Ixl7Fg5j3TA0EX1YnoWmqbNVsAdf41aD5VhNWK0A521v3p0r6euRKbHxkH3NXCb9JP
- u8Sf.414tCo1P0PN8oMwZd2INZON0.MtFlWkx3zzBAURnHSlp.zgHNhdxSp_cEJtDR9NuH7ZFy39
- CoGi80E_ffxpCJZ38JMXNsGJm_VRyxIb0u8kmhYDviJ_4le08H3c6Rk3bTZeoBl9WmXNfbyCaY1U
- 5yGmAkjf0Lez_ihzuvYrER.28MGp0WCHhBtY8uAMARKzD9QIMW8.t0yJz519ck31G..OuYAhJPcf
- bcx0CDDnd4gXdUdTyid5440x1oWbI2PryBCVpalvw3AqH2SviW4zE1eu7HJqOwBbNGDZijYQoZJd
- CI5zhA3_W0WYqHkq3zOQL7vWJupRXrFrT43Z3AuUFXLTLUxYfDYzPZom5zmnVbvegQmE83VOr136
- SDlMqBH5GOhP1XWnBmQrBf0T.RI7YpV75Yc9lq_AoXuKBqCw_EsPuA9CtzDteeOqeSJv4h8oeXYI
- rZooDI6QeIiRFsNRJQry1WpKxEfm3xHHpJX3iFSF3SuXfbIWURPmtarmgN0C6WYwzFuBvP_H9xEd
- CjZ8uvwGlR7pbYpRaYUKCyL4h8675vbkATHeXNaWQ5eLPbaLcF5ymRUH6wUXaj6cjLgEguvwAn7z
- zI.PT5AZE2b7N9zaQb0.jOfvehi9RtbxW5bRBVfGyjPkIwEf_eoaHBCFXkwr_LKQXHJkXY7N0haT
- TW3pfTx5q7Pnw5bikRxcH8sKHZ7vv5kad2w2bjI7.mOCnOQbO.WpWthkVp8i6jYGlsSfLQ0M.FMr
- 6iwylxbSCe7GztCUj7jMNmKVo_ajWy73Ajk15v8JPkB3.pA9.lw.JG8YS2mGoigmbvRK3BOcKz.Q
- Bf673M7bThsA8s6v9r0r2dBrp9RNYg2XQot0F8GiBdMTgNNpOTu5dXOs7yfp0JejjnQdaf79Nb2X
- E.bFPihy0miGLHVvBFHudEKox4daK0o14yHwKXVOEzO_iXN0VhQGMOyk4LxzSuOk.lqyqEn3grB6
- cbt0yy.usHBMfrnn_fFMrhRhjpqbo1_xaL0jIHWqcNjw2wTYzTvSt1RQ8yQWX8.l8H9dsS_VAR3T
- C8MqL3_o3XRmmNr7YEybjzFpXMHJ1EBxk0PJvYZrC.qfCYTWO34Ncjxw.VntSzYqWOiDMExLdgiu
- PQujO.NlAGqZKyPDmPCJBcFo_WG2V4F084sjmRCzj27oNIy7Y_ownGgXGCX5LDABBkQW3W3WN84d
- xtbc4Ix4uhhthJO07zXlI8Mco.E0I9dRIbhmNiIv56GMr1ERdsfMGsOflMdCWNch7XP_S3zZt26S
- O5LXmAYcLAtFnt_Cb2Co5Ugj_Qw8dziWf7Z6uHTvzoSjDkiB3rA6yd8hcRmQTKAbkOujmlWjoE6z
- 1nF8v6wxwuQh3W4a__1fwIhwxRPCSbUNsn883q4BLQJtB1ypaHGDcoZkb2ckKnUxUd.f_TBBKo52
- WGZCzLX0wxaarh6pU2tcEzTaKzT1uHyid.ef420xJrXs2xCHd_s3wJRl6pS1YzN3zR3ku4oAdJ7J
- GUtaDYNN6wWUJG2XkvAClGNa.x5DS2BO9POSRHxLUqbjZkdZPMK969weCSzl6UeUwyK3h_I4hjM4
- X1JuZXq0HMWTAwbMhOvNvQefdZBI1zeBtKk3Sw0SqlR.8d9ekNNwc7SXSunWOyqkMsmznSJeHQeK
- SYLum22nTUoX_5meYFtc2rPCWBx2YrrxL0Oy3GtY-
-X-Sonic-MF: <namiltd@yahoo.com>
-X-Sonic-ID: 49f81ff1-bd5d-4b6f-ab94-0f7450858c13
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic315.consmr.mail.ne1.yahoo.com with HTTP; Sat, 16 May 2026 06:10:32 +0000
-Received: by hermes--production-ir2-89844b765-bdgnn (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 0d872dc4597e8f29e811ca18b30b5c9b;
-          Sat, 16 May 2026 05:48:31 +0000 (UTC)
-Message-ID: <03d0fc52-108a-44de-b22a-6bf4a2d9da90@yahoo.com>
-Date: Sat, 16 May 2026 07:48:24 +0200
+	dkim=pass (2048-bit key) header.d=extrahop.com header.i=@extrahop.com header.b="hyJinF8c"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2ba1e9d3687so4086855ad.3
+        for <netdev@vger.kernel.org>; Fri, 15 May 2026 23:11:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=extrahop.com; s=google; t=1778911865; x=1779516665; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gJUW1fIrNG8R6/LQd80CdB1tEktS5+sLoCJwrPWafEc=;
+        b=hyJinF8caPaeCe/g8PvdHPd/WchKYMUFbngZ6vbKdH62qlZpHiP/44OmYkbhKlJ+3R
+         6vW4+OC0utk/pri7sP6o+kN4cKii5clqitLl1+iG3xACJFhyQZp9frMOaTRcxAWhGmAb
+         Fz4DVxvVCYnPvyMx2SrLSaM6Pq+2G39XFvoZZXLiBUE8oVWcXHse4ajhxISLbqM6oUaA
+         oVblE+8pyNI58/j8hIEBrwaL4eDOuqOdzZQLMpodTEwOn+Sx6UumoSssdEpKAqxDwpzU
+         tpit+P4Duyq/+GpPtzoxtVwddS28Nl6JUDceuipIihLzUkYlfLYwG3ia9/BmqUGeEh6x
+         zM0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778911865; x=1779516665;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gJUW1fIrNG8R6/LQd80CdB1tEktS5+sLoCJwrPWafEc=;
+        b=hYr/W/VLLeM2Wl6doM96Gl9EehiAL1A/bzonWB0lYTK+ydjJTCFdgPksOnbuH0Zwqd
+         I9xMYl5e7MUrfuvBQGKVyvcye2S46VgTM1gyXrExBDCrV8BWDnbdg57nhks9T0/TiTbr
+         Fu5VLQp6LNLzAwTKFqgayGyL3GRnf05y8RWkD6lpnlQ1nsmGGqIcKRTUz8h53gZiRHAz
+         z713dLXP9ROcKMJVlJk57O4jN/erWN1IpIvnMrN6EdiR3YuH/lUQPAkYJUdnKcVohW61
+         fb3wSi+Q4vcg2C2zIYjKgrP7K5n00Df479vBYE5i12i/63iKUhfllRZlhts35sGcw0GP
+         Xmxg==
+X-Forwarded-Encrypted: i=1; AFNElJ+OlJf9D4dTZUmg04/nwzTWOmtMmGBR/Qrpk54rlNsUCJDk1QEHciuO9YcuHNKypTYb4RfI474=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw8jSKDfuVYDn2DfeFNCJpvFJn9siVQihN3zsBnKaU5EX4EDNa8
+	jz/MVVkb7sYsX2KnrcSNu5mvMDi6WYd2hM5T/z1igALgSgEAZ2gSsgP0UQUcA8e85oHPaOGju4i
+	xZvJNceH+T1K1LgK6s39xeo608G3xmSGJtJJjiVmGXWqJSrD4VK+A/PEcYQe0vEs6Kyf9Ta7Xx8
+	YKQS0aDLYm9QrKzYziUlckAbYWCudrUdDMgB7lvFWN0zqYYD8=
+X-Gm-Gg: Acq92OFTItr75l4NOaXbs80KkE8aCYVBK8hFxORDUbHQrPT1UlNabkETd5BDHfTGIxY
+	617+aBQ78n7O/XvWeclwJgta80CSpjM/qEVe3H6wE3We8k8OilNxzoSELNPN31tjDNfTeDQ6ZB9
+	YHxkSXvKr+2ZsxitAR2vuTU4Yc9WLxafgHkQRcjiSv1i+rok5b4MjAAYNGDaJtmzCK6NRR2olO/
+	B2Hzn2fW6sIgCItpmf88fRQ6Ptdcc/9r+I71HNGtK7avNg1e0O/cSSawiKU6k7QuviJDeRJ2TVX
+	j+woAA33SLVA9u9vYUbWJuzcMtju10co3O+73K/kgb7tTk9eqJYQt4XqiJs6c5QCz42muSogURS
+	aHxAZxAkNykEO3FT38M/U40rRLwQVHdQODR3zUt3bPu9BdnU6Q9Mg8q/+sc1ZAaEfUVc0x925vJ
+	+U+XvGDRWWUgf9vpVEkic+WIKjEO5S
+X-Received: by 2002:a17:903:2984:b0:2ba:67f7:9326 with SMTP id d9443c01a7336-2bd7e81a6c0mr79060175ad.9.1778911865304;
+        Fri, 15 May 2026 23:11:05 -0700 (PDT)
+Received: from [127.0.1.1] ([208.79.144.52])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5d23a41fsm79591625ad.83.2026.05.15.23.11.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 May 2026 23:11:04 -0700 (PDT)
+From: Will Mortensen <will@extrahop.com>
+Date: Fri, 15 May 2026 23:10:36 -0700
+Subject: [PATCH net v3] net/mlx5: don't printk garbage when transceiver
+ overheats
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-Subject: Re: [net-next PATCH v4 7/8] net: dsa: realtek: rtl8365mb: add FDB
- support
-To: Luiz Angelo Daros de Luca <luizluca@gmail.com>,
- Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Linus Walleij <linusw@kernel.org>,
- =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
- Yury Norov <yury.norov@gmail.com>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Russell King <linux@armlinux.org.uk>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260516-realtek_forward-v4-0-8b6d6a1eefdc@gmail.com>
- <20260516-realtek_forward-v4-7-8b6d6a1eefdc@gmail.com>
-Content-Language: pl
-In-Reply-To: <20260516-realtek_forward-v4-7-8b6d6a1eefdc@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Mailer: WebService/1.1.25725 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260515-b4-mlx5-sensor-fix-v3-1-f537ce191d6c@extrahop.com>
+X-B4-Tracking: v=1; b=H4sIAFsKCGoC/22NwQ7CIBBEf6XZs2tgS6vx5H+YHmpZLImFBgipa
+ fh3Sb16nDeZNztEDpYj3JodAmcbrXc1tKcGpnl0L0arawYS1ItOXPGpcHlvHUZ20Qc0dkOhWq1
+ GItMrCXW4Bq74kD7AcYKhwtnG5MPnOMp0VD+npH/OTCixa6VhVkZfjL7zlsI4+/U8+QWGUsoXH
+ MYM77wAAAA=
+To: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
+ Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, 
+ netdev <netdev@vger.kernel.org>
+Cc: Shahar Shitrit <shshitrit@nvidia.com>, 
+ Carolina Jubran <cjubran@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, linux-rdma <linux-rdma@vger.kernel.org>, 
+ Jeremy Royal <jeremyr@extrahop.com>, Will Mortensen <will@extrahop.com>
+X-Mailer: b4 0.13.0
 
-On 5/16/2026 5:46 AM, Luiz Angelo Daros de Luca wrote:
-> From: Alvin Å ipraga <alsi@bang-olufsen.dk>
-> 
-> Implement support for FDB and MDB management for the RTL8365MB series
-> switches.
-> 
-> The hardware supports IVL by keying the forwarding database with the
-> {VID, MAC, EFID} tuple.  The Extended Filtering ID (EFID) is 3 bits
-> wide, providing 8 unique filtering domains. This driver reserves EFID 0
-> for standalone ports, effectively limiting the hardware offload to a
-> maximum of 7 bridges.
-> 
-> Introduce a mutex lock (l2_lock) to protect concurrent L2 table updates.
-> 
-> Add support for forwarding database operations, including unicast and
-> multicast entry handling as well as fast aging support.
-> 
-> Set DSA switch flags assisted_learning_on_cpu_port and fdb_isolation.
-> 
-> Co-developed-by: Alvin Å ipraga <alsi@bang-olufsen.dk>
-> Signed-off-by: Alvin Å ipraga <alsi@bang-olufsen.dk>
-> Reviewed-by: Linus Walleij <linusw@kernel.org>
-> Signed-off-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
-> ---
-> [ ... ]
-> +
-> +struct rtl8365mb_l2_mc_key {
-> +	u8 mac_addr[ETH_ALEN];
-> +	union {
-> +		u16 vid; /* IVL */
-> +		u16 fid; /* SVL */
-> +	};
-> +	bool ivl;
-> +};
-> +
-> +struct rtl8365mb_l2_mc {
-> +	struct rtl8365mb_l2_mc_key key;
-> +	u16 member;
-> +	u8 priority;
-> +	u8 igmpidx;
-> +
-> +	bool is_static;
-> +	bool fwd_pri;
-> +	bool igmp_asic;
-> +};
-> +
-> +static void rtl8365mb_l2_data_to_uc(const u16 *data, struct rtl8365mb_l2_uc *uc)
-> +{
-> +	u32 val;
-> +
-> +	uc->key.mac_addr[5] = FIELD_GET(RTL8365MB_L2_UC_D0_MAC5_MSK, data[0]);
-> +	uc->key.mac_addr[4] = FIELD_GET(RTL8365MB_L2_UC_D0_MAC4_MSK, data[0]);
-> +	uc->key.mac_addr[3] = FIELD_GET(RTL8365MB_L2_UC_D1_MAC3_MSK, data[1]);
-> +	uc->key.mac_addr[2] = FIELD_GET(RTL8365MB_L2_UC_D1_MAC2_MSK, data[1]);
-> +	uc->key.mac_addr[1] = FIELD_GET(RTL8365MB_L2_UC_D2_MAC1_MSK, data[2]);
-> +	uc->key.mac_addr[0] = FIELD_GET(RTL8365MB_L2_UC_D2_MAC0_MSK, data[2]);
-> +	uc->key.efid = FIELD_GET(RTL8365MB_L2_UC_D4_EFID_MSK, data[4]);
-> +	uc->key.vid = FIELD_GET(RTL8365MB_L2_UC_D3_VID_MSK, data[3]);
-> +	uc->key.ivl = FIELD_GET(RTL8365MB_L2_UC_D3_IVL_MSK, data[3]);
-> +	uc->key.fid = FIELD_GET(RTL8365MB_L2_UC_D4_FID_MSK, data[4]);
-> +	uc->age = FIELD_GET(RTL8365MB_L2_UC_D4_AGE_MSK, data[4]);
-> +	uc->auth = FIELD_GET(RTL8365MB_L2_UC_D4_AUTH_MSK, data[4]);
-> +
+When the mlx5 driver processes a temperature warning event, in events.c
+and hwmon.c, temp_warn() calls print_sensor_names_in_bit_set(), which
+calls hwmon_get_sensor_name() to get the NUL-terminated name of the
+relevant sensor, and then prints it to dmesg. In particular,
+print_sensor_names_in_bit_set() passes the bit index ("sensor index")
+within the 128-bit vector in the warning event to
+hwmon_get_sensor_name(). But hwmon_get_sensor_name() was expecting the
+index of the hwmon channel, and the driver registers hwmon channels for
+at most only two sensors: the ASIC sensor (sensor index 0) and the
+module sensor (sensor index 64 or 65 on a 2-port NIC). So when the
+warning event concerned a module, hwmon_get_sensor_name() took the 64th
+or 65th element of the likely 2-element temp_channel_desc array and thus
+returned a pointer to some other kernel memory past the end of it, which
+was printed to dmesg up to the first NUL byte.
 
-The problem with overwriting uc->key.fid and uc->key.vid values in the union still exists.
+A further difficulty is that, at least in testing on our CX-8 C8240 with
+firmware 40.47.1088, the warning event can have bits set for other
+modules, e.g. if this PCI physical function is associated with
+port/module 0, we might expect bit 64 to be set, but bit 65 (for port/
+module 1) can also be set unexpectedly.
+
+Fix this by clarifying that the argument to hwmon_get_sensor_name() is
+the raw sensor index, and correctly converting it to the hwmon channel
+index. Return NULL if the sensor index doesn't correspond to a hwmon
+channel (e.g. because it's for the other function/port's module).
+
+Fixes: 46fd50cfcc12 ("net/mlx5: Add sensor name to temperature event message")
+Reviewed-by: Jeremy Royal <jeremyr@extrahop.com>
+Signed-off-by: Will Mortensen <will@extrahop.com>
+---
+Changes in v3:
+- Fix ordering of Signed-off-by
+- Add target tree name
+- Add CCs
+- Tweak commit message
+- Link to v2: https://lore.kernel.org/r/20260512-b4-mlx5-sensor-fix-v2-1-531fee4fd7fd@extrahop.com
+---
+ drivers/net/ethernet/mellanox/mlx5/core/events.c |  2 ++
+ drivers/net/ethernet/mellanox/mlx5/core/hwmon.c  | 15 ++++++++++++++-
+ drivers/net/ethernet/mellanox/mlx5/core/hwmon.h  |  2 +-
+ 3 files changed, 17 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/events.c b/drivers/net/ethernet/mellanox/mlx5/core/events.c
+index 4d7f35b96876..9372551c7f90 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/events.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/events.c
+@@ -165,6 +165,8 @@ static void print_sensor_names_in_bit_set(struct mlx5_core_dev *dev, struct mlx5
+ 	for_each_set_bit(i, bit_set_ptr, num_bits) {
+ 		const char *sensor_name = hwmon_get_sensor_name(hwmon, i + bit_set_offset);
+ 
++		if (!sensor_name)
++			continue;
+ 		mlx5_core_warn(dev, "Sensor name[%d]: %s\n", i + bit_set_offset, sensor_name);
+ 	}
+ }
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/hwmon.c b/drivers/net/ethernet/mellanox/mlx5/core/hwmon.c
+index afcdebac9c4f..747ff30362f1 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/hwmon.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/hwmon.c
+@@ -417,7 +417,20 @@ void mlx5_hwmon_dev_unregister(struct mlx5_core_dev *mdev)
+ 	mdev->hwmon = NULL;
+ }
+ 
+-const char *hwmon_get_sensor_name(struct mlx5_hwmon *hwmon, int channel)
++const char *hwmon_get_sensor_name(struct mlx5_hwmon *hwmon, int sensor_idx)
+ {
++	int channel;
++
++	if (sensor_idx >= 64) {
++		if (hwmon->module_scount == 0)
++			return NULL;
++		channel = hwmon->asic_platform_scount;
++		if (sensor_idx != hwmon->temp_channel_desc[channel].sensor_index)
++			return NULL;
++	} else {
++		if (sensor_idx >= hwmon->asic_platform_scount)
++			return NULL;
++		channel = sensor_idx;
++	}
+ 	return hwmon->temp_channel_desc[channel].sensor_name;
+ }
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/hwmon.h b/drivers/net/ethernet/mellanox/mlx5/core/hwmon.h
+index f38271c22c10..b2476bf54ce5 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/hwmon.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/hwmon.h
+@@ -10,7 +10,7 @@
+ 
+ int mlx5_hwmon_dev_register(struct mlx5_core_dev *mdev);
+ void mlx5_hwmon_dev_unregister(struct mlx5_core_dev *mdev);
+-const char *hwmon_get_sensor_name(struct mlx5_hwmon *hwmon, int channel);
++const char *hwmon_get_sensor_name(struct mlx5_hwmon *hwmon, int sensor_idx);
+ 
+ #else
+ static inline int mlx5_hwmon_dev_register(struct mlx5_core_dev *mdev)
+
+---
+base-commit: 6916d5703ddf9a38f1f6c2cc793381a24ee914c6
+change-id: 20260508-b4-mlx5-sensor-fix-043d4a22f641
+
+Best regards,
+-- 
+Will Mortensen <will@extrahop.com>
+
