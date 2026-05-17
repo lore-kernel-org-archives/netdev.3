@@ -1,384 +1,106 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8CFA23BF9F
-	for <netdev@vger.kernel.org>; Sun, 17 May 2026 06:51:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C331D2FE56F;
+	Sun, 17 May 2026 07:05:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779000690; cv=none; b=Hp7lO3KBYm3hR82tcGWlccds4I92jup4sq2ocKWXptaTLke/+dSzglp9ylU3RBoRgrxhEMFQIan+PVjmYpmP2z3V7CMKzxrQd9SHJRRaPpMuo6x1cj9riU7USb1QYhbhNxdiiofOnaKG4C8FRkYdyoq/FRqoclgShvf6r5p3D30=
+	t=1779001507; cv=none; b=Si0a2u4WSBelYTiqIwLjKgP/7+LlMHee96/MSlxOf9UfhwNmwvP0ojBMfTozifbh87NZYUPHYLPvrPeS0f7hmHZIIe9RjtOslS6CeQSjaTwZ7xL4yYiZsc/fTKkgR8m5PvFXWc2/8yyCmz7p8j8VXbWRO+9+ALRW3DLnsg20Uow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779000690; c=relaxed/simple;
-	bh=I4fZBWo7xeRD5kNgdnR+0yi9rdwTfpFYCgSH+jxnDnY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=m6TboF6U1ZZEu5FkC+/lmvxYeJHor1mttyrCVKy1qIxCYpDu9nvct5b/lGFypiGUribhdXARYjqipP9MWheN8lT/rcbOA3xMUoDM/vgCC94+hml05QgxLYNwq0DUjnr59e4oQk2rpO87EGUcTJwjZcNT8DBFvF5KImToAn+TRXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BeiaIWr2; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1779001507; c=relaxed/simple;
+	bh=DWQ5ZaUVofMOuDdmYgrDHa0mOV3/SOqI62+qZdxC5wU=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=EamuvSmdqbNZ6jWEfQg/9XXA5V3Lts9R6inHL1OEHTnJwPQ2Ql2FD9NBlTg76JKXFhUA6IuIbSRpt6kymrJGbcsx/XAOZHtq1uAU87k0QozH80u2Koy2XPKN87eyE0DgpXdLsYd0hPLd5VcgsJkbNO7v4p8qM2O68IPWT4X3hRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=a8dBa3UY; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BeiaIWr2"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2b9fcf7c91bso13764755ad.0
-        for <netdev@vger.kernel.org>; Sat, 16 May 2026 23:51:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779000688; x=1779605488; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=VWcF6Tu94ZUMlCG+mLEuiLjfUm9hfl+aSzIjCzu3eIs=;
-        b=BeiaIWr2t1aoTQTPsPx2tPbFBDnWeUKlMJviu0RabkwA+kCiBixXkOa+GmaUDi7Q7e
-         +ATYk1yeLTTrmPKKseo1mC5xBhk9ubAd4JYaMudh6aook5Imcg5L8xGruUgdlOder9gk
-         YaR939YdEMwjHFwxZnQz2vxnrj+JWESz7u/aPmKFIvYvFGcXevxUPKJ1aI+dUuAA4/fH
-         jfpivZf7Ztm2UMq0sHlfZHmM97X5hz8Ry0q801Auye8D37pkSYviApugENDkG7AkdVWO
-         IWhjwsTQZr+iUaWqqisPTUcAdNOKGrFnvp0FZMaljo08BAExyJNAX6O2G2NcbHel8KVS
-         O7Xw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779000688; x=1779605488;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VWcF6Tu94ZUMlCG+mLEuiLjfUm9hfl+aSzIjCzu3eIs=;
-        b=Jcsc7cCdRE27DK85Hz0ahIqdtWAluOCEUvFbmw2ACQSo00PDXoHLpCPf4jceTqOrlh
-         ehHq0DBJcFYaS5bPeWvjEeMZ4BM1wYtv8RWltRaSaUtPCvZyQGJymGNxIWp/WC74EehP
-         PxBfBMctnbrQJiKWHkBSYDcCS380tMVBoQGKXIQNgQ34p16dV4v93UMm4t9OpqJvPGYq
-         EfgWhL2Lrq70QbRS2Ln+lMDzDjvg0Iqfg8NbHCWV8j+FOwsvItAM5H1Xq4UoRjr9tfI7
-         73EWJNbRoXrqOU+bEiDRPKmwBnLPYd1x6rFj4qgk39u+ymFZE0nlCPKGGkO1hbf5NVsk
-         YDkA==
-X-Forwarded-Encrypted: i=1; AFNElJ/6SaWEWSw+sxsfLhhtpe6HF6nvn6WABOKuhNt+JWjWz/s8Igxuz9kXsizsuXzxZQrL70RkpZk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYsnI7UdAVxczYgwsBgx3uZSaQKrHiGkeZMwa7aLpxgHGb6JqW
-	OQFqP5Nz3saSykxjB7q6XTVMGa+oXtkirXvto9Xvw7KFlFSVp+ivgu53
-X-Gm-Gg: Acq92OEM7UnyarSfkNlT4XYyHnDiXTFs0rymUb55oMAdDtx2M0JHA9LlHoLbbzI9ZX6
-	8ETDIhKoRvzMh1Z+WtYejbSk967IMlm+hz0o9dHTMkbLuAOhnGztOWHfvz9hXoDP9LJeSFYB/OG
-	6ljvXJsEp5NXBLIaJ0fGfyzhhWaZXqbblr8cW0aWOhb+UQGvobC2q59+7y4tnVA72Dot53w7LRb
-	LF4WSOtEZd4uslsK+/DPf2vQN/M3xXrvalQjOKOa/Gf9tbUzm74pw9OQAQrka9xCI8W6vXz0F35
-	XTaN+GXZuWJ7EqgCmvOKWB+CBMKL1UggxiyZo19AnuaXzJKjJLUROm+00dbsPklSkHbGJz0FNxz
-	XRwt3YhMYpGkFbar9BmkcXHk+0ZdxixT0Eo0xBqOnOdNujVeIaniMQdBjzZhELjQLEcOJV+WNMy
-	1lr/qy3JvMydk54ezVVrQVh0ZId+TFG15T2hfIALnamdwRYa4gWL1vy5CbY6HJzstrxIj3xw9jx
-	9+I9OGG/YmQf+Ml0oueAw==
-X-Received: by 2002:a17:902:f78a:b0:2b0:ac1e:9720 with SMTP id d9443c01a7336-2bd7e8f25f5mr115574575ad.23.1779000688026;
-        Sat, 16 May 2026 23:51:28 -0700 (PDT)
-Received: from localhost.localdomain (124-218-201-66.cm.dynamic.apol.com.tw. [124.218.201.66])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5d235c18sm104022015ad.81.2026.05.16.23.51.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 16 May 2026 23:51:27 -0700 (PDT)
-From: "Lucien.Jheng" <lucienzx159@gmail.com>
-To: andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	bjorn@mork.no
-Cc: ericwouds@gmail.com,
-	frank-w@public-files.de,
-	daniel@makrotopia.org,
-	lucien.jheng@airoha.com,
-	albert-al.lee@airoha.com,
-	"Lucien.Jheng" <lucienzx159@gmail.com>
-Subject: [PATCH v5] net: phy: air_en8811h: add AN8811HB MCU assert/deassert support
-Date: Sun, 17 May 2026 14:50:41 +0800
-Message-Id: <20260517065041.50155-1-lucienzx159@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="a8dBa3UY"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B6AD1A03A9;
+	Sun, 17 May 2026 09:04:51 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1779001494; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=pFeBYRizKV6K71+3q3fTFs33sI9qE9UPh7FEnkLXwcs=;
+	b=a8dBa3UY7384Sd7z/2YJaRaRnmrBuKG5EECzv103lf8ic9ORM8Rqj2NyH7Pxk0tDFXZXZX
+	TpPymTX2D5YgTTlomyoMrp2wUiklMzf/8g1SEObuk7Q8ookoHMzoeeJeys8MFkmPlEkTR6
+	GvY0GzXMNj5m9u1m9cVy/uKj/jiScx5A1Kdjeg+sX3oJd3DdlO7XkaoNimMWQLBNqKAMy0
+	eNj2KGXth2AFfURJ8aqiUZKkPoOeUUfONg9mq4gqNy/hj0e99J2jB5sxgABq1VHrqmbNxd
+	qu+lH7gcwmQKK8w+7OUwlq42D2qYM9psSYfPc8fnxBjfigFMHwqmaIPrBZSS8w==
+Date: Sun, 17 May 2026 09:04:51 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Andrew Lunn <andrew@lunn.ch>
+CC: Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Oleksij Rempel <o.rempel@pengutronix.de>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net: phy: honor eee_disabled_modes in phy_support_eee()
+User-Agent: Thunderbird for Android
+In-Reply-To: <c18fa685-0ff6-4783-a26e-aa375df1ed71@lunn.ch>
+References: <20260516-devel-phy-support-eee-fix-v1-1-59debc00eda0@tipi-net.de> <c18fa685-0ff6-4783-a26e-aa375df1ed71@lunn.ch>
+Message-ID: <4F3CE9FF-E600-4122-8864-8A072C1D225E@tipi-net.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-AN8811HB needs a MCU soft-reset cycle before firmware loading begins.
-Assert the MCU (hold it in reset) and immediately deassert (release)
-via a dedicated PBUS register pair (0x5cf9f8 / 0x5cf9fc), accessed
-through a registered mdio_device at PHY-addr+8.
+Hi Andrew
 
-Add __air_pbus_reg_write() as a low-level helper taking a struct
-mdio_device *, create and register the PBUS mdio_device in
-an8811hb_probe() and store it in priv->pbusdev, then implement
-an8811hb_mcu_assert() / _deassert() on top of it. Add
-an8811hb_remove() to unregister the PBUS device on teardown. Wire
-both calls into an8811hb_load_firmware() and en8811h_restart_mcu()
-so every firmware load or MCU restart on AN8811HB correctly sequences
-the reset control registers.
+On May 16, 2026 4:40:25 PM GMT+02:00, Andrew Lunn <andrew@lunn=2Ech> wrote=
+:
+>On Sat, May 16, 2026 at 06:51:02AM +0200, Nicolai Buchwitz wrote:
+>> phy_support_eee() copies supported_eee into advertising_eee
+>> unconditionally, overwriting any filtering applied during phy_probe()
+>> based on DT eee-broken-* properties or driver-populated
+>> eee_disabled_modes=2E MAC drivers that call phy_support_eee() after
+>> probe (e=2Eg=2E bcmgenet, fec, lan743x, lan78xx, r8169) then cause the =
+PHY
+>> to advertise EEE for modes the user marked as broken=2E
+>>=20
+>> The symptom is that ethtool --show-eee on the local interface reports
+>> "not supported" (supported & ~eee_disabled_modes is empty) while the
+>> link partner sees EEE negotiated and active=2E
+>>=20
+>> phy_probe() already filters advertising_eee via eee_disabled_modes
+>> after calling of_set_phy_eee_broken()=2E Apply the same mask in
+>> phy_support_eee() so the filtering survives the copy=2E
+>
+>I don't think this not the full fix=2E
 
-Fixes: 5afda1d734ed ("net: phy: air_en8811h: add Airoha AN8811HB support")
-Signed-off-by: Lucien Jheng <lucienzx159@gmail.com>
+You're right, this only fixes the initial behavior on boot=2E
 
----
-Changes in v5:
-- Move the version changelog out of the commit message;
-  keep it only in the patch changelog section.
+>
+>of_set_phy_eee_broken() sets phydev->eee_disabled_modes=2E
+>
+>genphy_c45_ethtool_get_eee() masks supported_eee with this when
+>reporting to user space what is supported=2E
+>
+>genphy_c45_ethtool_set_eee() will also mask what user space passes in,
+>if it is not empty=2E However, if nothing is passed in,
+>phy_advertise_eee_all() is used, and that does not make use of
+>phydev->eee_disabled_modes, which i think it should=2E
 
-Changes in v4:
-- Correct Fixes tag to 5afda1d734ed.
-- Refine an8811hb_probe() error paths: split cleanup into err_dev_free and
-  err_dev_create so an unregistered PBUS mdio_device is only freed, while a
-  registered one is removed then freed. Simplify with fallthrough pattern.
+Agree, will fix this in v2=2E
 
-Changes in v3:
-- Register a dedicated mdio_device for the PBUS node (addr+8) in
-  an8811hb_probe() and store it in priv->pbusdev, replacing the
-  inline addr+8 computation in v2.
-- Change __air_pbus_reg_write() to take struct mdio_device * instead
-  of struct phy_device *.
-- Add an8811hb_remove() to unregister and free the PBUS device.
-- Fix error handling in an8811hb_probe() with goto error paths to
-  ensure the PBUS device is always cleaned up on failure.
+>
+>So while your fix seems correct, i don't think on its own, it is
+>sufficient=2E Whenever phydev->supported_eee is used, we need to review
+>the code and see if it should be masked by phydev->eee_disabled_modes=2E
 
-Changes in v2:
-- Rewrite commit message: The previous wording was ambiguous,
-  as it suggested the MCU remains asserted during the entire
-  firmware loading process, rather than a quick reset cycle
-  before it starts.
-  Clarify that assert and deassert is an immediate soft-reset
-  cycle to clear MCU state before firmware loading begins.
-- Add Fixes: 0a55766b7711 ("net: phy: air_en8811h: add Airoha AN8811HB
-  support").
-- Change phydev_info() to phydev_dbg() in an8811hb_mcu_assert() and
-  an8811hb_mcu_deassert() to avoid noise during normal boot.
+I will have a look and try to catch all scenarios=2E
 
- drivers/net/phy/air_en8811h.c | 143 +++++++++++++++++++++++++++++++++-
- 1 file changed, 139 insertions(+), 4 deletions(-)
+>
+>    Andrew
+>
+>---
+>pw-bot: cr
 
-diff --git a/drivers/net/phy/air_en8811h.c b/drivers/net/phy/air_en8811h.c
-index 29ae73e65..07978979d 100644
---- a/drivers/net/phy/air_en8811h.c
-+++ b/drivers/net/phy/air_en8811h.c
-@@ -170,9 +170,21 @@
- #define   AN8811HB_CLK_DRV_CKO_LDPWD		BIT(13)
- #define   AN8811HB_CLK_DRV_CKO_LPPWD		BIT(14)
-
-+#define AN8811HB_MCU_SW_RST		0x5cf9f8
-+#define   AN8811HB_MCU_SW_RST_HOLD		BIT(16)
-+#define   AN8811HB_MCU_SW_RST_RUN		(BIT(16) | BIT(0))
-+#define AN8811HB_MCU_SW_START		0x5cf9fc
-+#define   AN8811HB_MCU_SW_START_EN		BIT(16)
-+
-+/* MII register constants for PBUS access (PHY addr + 8) */
-+#define AIR_PBUS_ADDR_HIGH		0x1c
-+#define AIR_PBUS_DATA_HIGH		0x10
-+
- /* Led definitions */
- #define EN8811H_LED_COUNT	3
-
-+#define EN8811H_PBUS_ADDR_OFFS	8
-+
- /* Default LED setup:
-  * GPIO5 <-> LED0  On: Link detected, blink Rx/Tx
-  * GPIO4 <-> LED1  On: Link detected at 2500 or 1000 Mbps
-@@ -201,6 +213,7 @@ struct en8811h_priv {
- 	struct clk_hw		hw;
- 	struct phy_device	*phydev;
- 	unsigned int		cko_is_enabled;
-+	struct mdio_device	*pbusdev;
- };
-
- enum {
-@@ -254,6 +267,31 @@ static int air_phy_write_page(struct phy_device *phydev, int page)
- 	return __phy_write(phydev, AIR_EXT_PAGE_ACCESS, page);
- }
-
-+static int __air_pbus_reg_write(struct mdio_device *mdiodev,
-+				u32 pbus_reg, u32 pbus_data)
-+{
-+	int ret;
-+
-+	ret = __mdiobus_write(mdiodev->bus, mdiodev->addr, AIR_EXT_PAGE_ACCESS,
-+			      upper_16_bits(pbus_reg));
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = __mdiobus_write(mdiodev->bus, mdiodev->addr, AIR_PBUS_ADDR_HIGH,
-+			      (pbus_reg & GENMASK(15, 6)) >> 6);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = __mdiobus_write(mdiodev->bus, mdiodev->addr,
-+			      (pbus_reg & GENMASK(5, 2)) >> 2,
-+			      lower_16_bits(pbus_data));
-+	if (ret < 0)
-+		return ret;
-+
-+	return __mdiobus_write(mdiodev->bus, mdiodev->addr, AIR_PBUS_DATA_HIGH,
-+			       upper_16_bits(pbus_data));
-+}
-+
- static int __air_buckpbus_reg_write(struct phy_device *phydev,
- 				    u32 pbus_address, u32 pbus_data)
- {
-@@ -570,10 +608,67 @@ static int an8811hb_load_file(struct phy_device *phydev, const char *name,
- 	return ret;
- }
-
-+static int an8811hb_mcu_assert(struct phy_device *phydev)
-+{
-+	struct en8811h_priv *priv = phydev->priv;
-+	int ret;
-+
-+	phy_lock_mdio_bus(phydev);
-+
-+	ret = __air_pbus_reg_write(priv->pbusdev, AN8811HB_MCU_SW_RST,
-+				   AN8811HB_MCU_SW_RST_HOLD);
-+	if (ret < 0)
-+		goto unlock;
-+
-+	ret = __air_pbus_reg_write(priv->pbusdev, AN8811HB_MCU_SW_START, 0);
-+	if (ret < 0)
-+		goto unlock;
-+
-+	msleep(50);
-+	phydev_dbg(phydev, "MCU asserted\n");
-+
-+unlock:
-+	phy_unlock_mdio_bus(phydev);
-+	return ret;
-+}
-+
-+static int an8811hb_mcu_deassert(struct phy_device *phydev)
-+{
-+	struct en8811h_priv *priv = phydev->priv;
-+	int ret;
-+
-+	phy_lock_mdio_bus(phydev);
-+
-+	ret = __air_pbus_reg_write(priv->pbusdev, AN8811HB_MCU_SW_START,
-+				   AN8811HB_MCU_SW_START_EN);
-+	if (ret < 0)
-+		goto unlock;
-+
-+	ret = __air_pbus_reg_write(priv->pbusdev, AN8811HB_MCU_SW_RST,
-+				   AN8811HB_MCU_SW_RST_RUN);
-+	if (ret < 0)
-+		goto unlock;
-+
-+	msleep(50);
-+	phydev_dbg(phydev, "MCU deasserted\n");
-+
-+unlock:
-+	phy_unlock_mdio_bus(phydev);
-+	return ret;
-+}
-+
- static int an8811hb_load_firmware(struct phy_device *phydev)
- {
- 	int ret;
-
-+	ret = an8811hb_mcu_assert(phydev);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = an8811hb_mcu_deassert(phydev);
-+	if (ret < 0)
-+		return ret;
-+
- 	ret = air_buckpbus_reg_write(phydev, EN8811H_FW_CTRL_1,
- 				     EN8811H_FW_CTRL_1_START);
- 	if (ret < 0)
-@@ -662,6 +757,16 @@ static int en8811h_restart_mcu(struct phy_device *phydev)
- {
- 	int ret;
-
-+	if (phy_id_compare_model(phydev->phy_id, AN8811HB_PHY_ID)) {
-+		ret = an8811hb_mcu_assert(phydev);
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = an8811hb_mcu_deassert(phydev);
-+		if (ret < 0)
-+			return ret;
-+	}
-+
- 	ret = air_buckpbus_reg_write(phydev, EN8811H_FW_CTRL_1,
- 				     EN8811H_FW_CTRL_1_START);
- 	if (ret < 0)
-@@ -1166,6 +1271,7 @@ static int en8811h_leds_setup(struct phy_device *phydev)
-
- static int an8811hb_probe(struct phy_device *phydev)
- {
-+	struct mdio_device *mdiodev;
- 	struct en8811h_priv *priv;
- 	int ret;
-
-@@ -1175,10 +1281,21 @@ static int an8811hb_probe(struct phy_device *phydev)
- 		return -ENOMEM;
- 	phydev->priv = priv;
-
-+	mdiodev = mdio_device_create(phydev->mdio.bus,
-+				     phydev->mdio.addr + EN8811H_PBUS_ADDR_OFFS);
-+	if (IS_ERR(mdiodev))
-+		return PTR_ERR(mdiodev);
-+
-+	ret = mdio_device_register(mdiodev);
-+	if (ret)
-+		goto err_dev_free;
-+
-+	priv->pbusdev = mdiodev;
-+
- 	ret = an8811hb_load_firmware(phydev);
- 	if (ret < 0) {
- 		phydev_err(phydev, "Load firmware failed: %d\n", ret);
--		return ret;
-+		goto err_dev_create;
- 	}
-
- 	en8811h_print_fw_version(phydev);
-@@ -1191,22 +1308,29 @@ static int an8811hb_probe(struct phy_device *phydev)
-
- 	ret = en8811h_leds_setup(phydev);
- 	if (ret < 0)
--		return ret;
-+		goto err_dev_create;
-
- 	priv->phydev = phydev;
- 	/* Co-Clock Output */
- 	ret = an8811hb_clk_provider_setup(&phydev->mdio.dev, &priv->hw);
- 	if (ret)
--		return ret;
-+		goto err_dev_create;
-
- 	/* Configure led gpio pins as output */
- 	ret = air_buckpbus_reg_modify(phydev, AN8811HB_GPIO_OUTPUT,
- 				      AN8811HB_GPIO_OUTPUT_345,
- 				      AN8811HB_GPIO_OUTPUT_345);
- 	if (ret < 0)
--		return ret;
-+		goto err_dev_create;
-
- 	return 0;
-+
-+err_dev_create:
-+	mdio_device_remove(mdiodev);
-+
-+err_dev_free:
-+	mdio_device_free(mdiodev);
-+	return ret;
- }
-
- static int en8811h_probe(struct phy_device *phydev)
-@@ -1561,6 +1685,16 @@ static int en8811h_suspend(struct phy_device *phydev)
- 	return genphy_suspend(phydev);
- }
-
-+static void an8811hb_remove(struct phy_device *phydev)
-+{
-+	struct en8811h_priv *priv = phydev->priv;
-+
-+	if (priv->pbusdev) {
-+		mdio_device_remove(priv->pbusdev);
-+		mdio_device_free(priv->pbusdev);
-+	}
-+}
-+
- static struct phy_driver en8811h_driver[] = {
- {
- 	PHY_ID_MATCH_MODEL(EN8811H_PHY_ID),
-@@ -1587,6 +1721,7 @@ static struct phy_driver en8811h_driver[] = {
- 	PHY_ID_MATCH_MODEL(AN8811HB_PHY_ID),
- 	.name			= "Airoha AN8811HB",
- 	.probe			= an8811hb_probe,
-+	.remove			= an8811hb_remove,
- 	.get_features		= en8811h_get_features,
- 	.config_init		= an8811hb_config_init,
- 	.get_rate_matching	= en8811h_get_rate_matching,
---
-2.34.1
-
+Thanks
+Nicolai
