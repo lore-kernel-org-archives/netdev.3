@@ -1,198 +1,159 @@
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012061.outbound.protection.outlook.com [40.107.209.61])
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011005.outbound.protection.outlook.com [52.101.57.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0BD8BE9;
-	Sun, 17 May 2026 11:27:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A17C361667;
+	Sun, 17 May 2026 11:27:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.5
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779017247; cv=fail; b=BZ3oqOAZGlfpvwUkHEJqBlljrXhtHHGbSo4ljygKBjlz8fyOUbZA0oZKvkV9xssLjoi0hDezJGioN8uF76tsWkN+maNGCbXhvLth7DHttL2nnCGmbzlvQoDosGiD3oEvUBFI1BJkoMPRnlHIME5vYB4g8vQt+IOvYmhKut3Q0ww=
+	t=1779017250; cv=fail; b=FI6tAw87hg2o9s5KNXRoUIlyyx+GRoxuS43dkHax4tMRR0mebSDg25VIDu4LjIwV2NCKCjWxL5EwsPPTTW/9EKTpDICDZlyWmty2VLuc5G3ww1h9XrDEh8MVwcebKtTl5Ngs5ObdFcHjEvVPcw522mPuBJDKoDZ/AVdwwyViIMA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779017247; c=relaxed/simple;
-	bh=j2lsjXtnX11zyAD1exa4mtOsl15ZNbH4ZTjqlfHRJjY=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ABiX1uofVrb3VzELpffOe4acpNZG1xd3qFc9oJoy1ot0HKEbChSU8p+ClrGrGgzTs/D77uiFO/HgFmfjxLhMSDtXOlnL90F58Onm+24JhrUt1Msh9KowTEUsHBpMuhc4MtDmqMCqwk8L/DTPdpaVF2h0NATpz7FbgFu4DkonjCk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=s+EAq9SH; arc=fail smtp.client-ip=40.107.209.61
+	s=arc-20240116; t=1779017250; c=relaxed/simple;
+	bh=AcpU6J2kjZv44DTXiXJPvEfXm/yIkt7/9SgC6b18Qwo=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=E7inAV2uT6vqAxp7xrpvTocFettizVdmcsXXPtw9C5lCcxM/aZGjQ1mHAVyGxq0A9gvlDSA2GFe3P+gLO9eNJ+utm1OAdh+HfMvZww56MwHIdgxdWrxO9SLXQg8QX+sMZse125H9U5Gt+x1Y88lkAy8wUbvRymV+KChnUFlFJz4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=qyuaUO66; arc=fail smtp.client-ip=52.101.57.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="s+EAq9SH"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="qyuaUO66"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Zy66LghFyuYhbyPWkY2snVZ5ajvuU7Qqicb29tYcs/6TaHYtavz4Gu2Mngm6t4u51mXEAxrflmYI1Zt/qpLZQvpSgwUQzZ/bjsnN/pC3QaNr4lho5RaMP7q+JgbMyXU1ZCsIagZ36S4QE/GH5TWRa6+04cAH+EC1L/SuZXrENw8v7KToZgjI7tpnYHKsnFGlqyWTZNNO2BTe5mrYzi2LomQpXWsRb+bMX3HlUvuDRym0sLMbfZmsWXxo8mwvQXg5hRaCg4+zQLK07T79i6kxkdKObLPPn9wvyyVKEacIDaIrSQrYgaTJ78XtT0wwuMgIrh/I8YwZcuoBPUlsGDS16w==
+ b=iYKdyXaIXVGNqSOo9ByvMgq30ha6oHd2NV+RnIFvsbfLC+Rk8Y6gM7asCWyPSsovQKOslnVEKHD04dn4A/jLBNqZpeXplcd49NMpf6bWsSVBkBDhzgeh5JTbApf+rnBiOLz3h4LYH3/8xYhp9MgxNbFZ0UH9JcEnFDV1j2m8iTVHTGJtFoddoxN+LACD30ovm+AOi6Xov8oGC3pCY/6BmdmzPOv8IbauMNdsEVQ8AQF6qjq28nxIfvfDC9sQwj/gy8BHPbKoWmGZXbZCbOiReHKG8LeORdfAWpSAqeKSB9wdLtkAlOXAHlq4/bQ7j+fzh8VCyWGLQPyTXHm0oV+tAQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RMN5W+8RyRdlAKWymBV2oQizIWstw4dOqqP0ZpR2dqY=;
- b=K9fa1944DrEWVOe8PjK+HRDCzuNbUzxxmsIfpNk6xn0RwCpVJ9rEmqDCjAqar68BQj78FNDXRYfIui8LoKy/MGP1LMLZommXKZpFwI1XWvzFOdvapOmGdW1feGyPRWCevtskytmJDl6mi5Qq2ThmTcZZf8bbi4pvEIgfWZbzwL/dlIKNiRbvbNaHN7E9OrPf9n4qMq982MJq6NX6aLLzk5wm54YKUlNbo/7RillE8J5jRFTZ2yB0P/CB3CKJQOFil1R43CbrIMT9CP4Vcmb5p10gdHNEYbmJxgN3HIy5wVmH3qrpyE4alv43pVUbAgPEGisjHG2Tj5QYO7lt0jtRMA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.232) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
+ bh=d8MXiYSjsezHTTnoKMIxBQH5qg+qHU0Qv+sXpilipno=;
+ b=cjX54pDcu6Kycc0S4lrzDtyso9jw9qbn7BskyvZBl2fwimDnDJedhkmOZMhCQ03jh/PRSdBpQaNII2lrVGtyqG81NzlV/M7xgQKo91DEYm2MA82Y6C6K37w9Cz/zykS+kJcBM7ghZvPVpCJgM+wx/jnb8Xn6ywaelmSb3NWaQeO6DB5w3/Ts7Y0AVvmVqCpL/1ri7H21ADZs5dUIWnUGQx3nxFPGT/9n5M9DeL2pbgdmQ5ooN2Asr6CasT9YaUXZ2r0eLW5EsbBBa3or4Js0/Oi0Kzi5BnknvW2t8EpyBkFPCRTTtcpsaerSYP3lYDdn6l9ZZY+Mwy/ygO8shi9bRA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RMN5W+8RyRdlAKWymBV2oQizIWstw4dOqqP0ZpR2dqY=;
- b=s+EAq9SHvUlZ/8CLnLEM7cxcK60N4OvpmlgIpxKbr6zlPgkSQAhUkzcHsHti3xZQF4FdvCK4J+luATJ4NuMZFw4vmodpWYvmq7Wao3Agg/3gZwH5GMECkz4o0+5IfflrPgkQj2qsApwQLsOcLzAOb5AWfJLWkZxYJCS5t9qunnUXEbIw6N7wucI11kTJEPIx0Qw6esDGjR7tLT5uJjAEipBF4hqJhFxGUhEJLIOOja2wQjMcgNtM+RAs/MCHP6d7t0SQLII6U2SXd1/PxxbmqTy5u442f1J8RJtxZ+dS4GQniVLvOoZRuqKb+XFtHz/60W7D9OqBEq4OZJSXTer57g==
-Received: from DM6PR01CA0016.prod.exchangelabs.com (2603:10b6:5:296::21) by
- SN7PR12MB7812.namprd12.prod.outlook.com (2603:10b6:806:329::18) with
+ bh=d8MXiYSjsezHTTnoKMIxBQH5qg+qHU0Qv+sXpilipno=;
+ b=qyuaUO66/urdnzo5RXsJLVmHb9g+YcR/jo0d9TP1WGHVabkmuj38uxA6jKNVjYrtWysF/H0mqVCRD7vTL0bOBvztas9aqb5snjfgvHSEwHYjHG3heTNd77V/FiAx5LS0Ps+DA5ixbRkZZolyAs0hKXlOOZM/9z7dz19gBuCtKmktp7Cq+9PQ2gKxGVQkDtR4xYR2Qt/MkGY4iV9SbXpqqeLZ1I6OHWgnuBPr94+E8nJOMvurOkIqyByzZ4kjdbF6OMWHnaNuKmKjIwLP8ETsESpv/5mTbxY7aJrh2deGk1IOs2xTdmeFfmIlOB1sf33D6U9rQDkuzw8cGd0Dkrrykg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MW4PR12MB6802.namprd12.prod.outlook.com (2603:10b6:303:20f::19)
+ by DS2PR12MB9821.namprd12.prod.outlook.com (2603:10b6:8:270::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.19; Sun, 17 May
- 2026 11:27:20 +0000
-Received: from DS1PEPF00017097.namprd05.prod.outlook.com
- (2603:10b6:5:296:cafe::b0) by DM6PR01CA0016.outlook.office365.com
- (2603:10b6:5:296::21) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.25.21 via Frontend Transport; Sun, 17
- May 2026 11:27:20 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.232) by
- DS1PEPF00017097.mail.protection.outlook.com (10.167.18.101) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.48.11 via Frontend Transport; Sun, 17 May 2026 11:27:19 +0000
-Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
- (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Sun, 17 May
- 2026 04:27:18 -0700
-Received: from drhqmail201.nvidia.com (10.126.190.180) by
- drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.20; Sun, 17 May 2026 04:27:17 -0700
-Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
- (10.126.190.180) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
- Transport; Sun, 17 May 2026 04:27:11 -0700
-From: Tariq Toukan <tariqt@nvidia.com>
-To: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>
-CC: Jiri Pirko <jiri@resnulli.us>, Simon Horman <horms@kernel.org>, "Jonathan
- Corbet" <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, "Saeed
- Mahameed" <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Tariq
- Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, Vlad Dumitrescu
-	<vdumitrescu@nvidia.com>, Aleksandr Loktionov
-	<aleksandr.loktionov@intel.com>, Daniel Zahka <daniel.zahka@gmail.com>,
-	"David Ahern" <dsahern@kernel.org>, Nikolay Aleksandrov
-	<razor@blackwall.org>, <netdev@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-rdma@vger.kernel.org>, Gal Pressman
-	<gal@nvidia.com>, Dragos Tatulea <dtatulea@nvidia.com>, Jiri Pirko
-	<jiri@nvidia.com>, Nikolay Aleksandrov <nikolay@nvidia.com>
-Subject: [PATCH net-next 1/2] devlink: add generic device max_sfs parameter
-Date: Sun, 17 May 2026 14:26:59 +0300
-Message-ID: <20260517112700.343575-2-tariqt@nvidia.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20260517112700.343575-1-tariqt@nvidia.com>
-References: <20260517112700.343575-1-tariqt@nvidia.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.22; Sun, 17 May
+ 2026 11:27:24 +0000
+Received: from MW4PR12MB6802.namprd12.prod.outlook.com
+ ([fe80::51f4:a3d9:b44e:9587]) by MW4PR12MB6802.namprd12.prod.outlook.com
+ ([fe80::51f4:a3d9:b44e:9587%5]) with mapi id 15.21.0025.020; Sun, 17 May 2026
+ 11:27:24 +0000
+Message-ID: <aa818076-6e5a-4b61-bc7f-0bfe3907fe2f@nvidia.com>
+Date: Sun, 17 May 2026 14:27:15 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] selftests: net: Fix checksums in xdp_native
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Stanislav Fomichev <sdf@fomichev.me>, Mohsin Bashir
+ <mohsin.bashr@gmail.com>, Amery Hung <ameryhung@gmail.com>,
+ Martin KaFai Lau <martin.lau@kernel.org>,
+ Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+ Carolina Jubran <cjubran@nvidia.com>, Dragos Tatulea <dtatulea@nvidia.com>
+References: <20260513072355.1083381-1-noren@nvidia.com>
+ <20260514183832.5ef205c1@kernel.org>
+Content-Language: en-US
+From: Nimrod Oren <noren@nvidia.com>
+In-Reply-To: <20260514183832.5ef205c1@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR0P281CA0086.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:1e::22) To MW4PR12MB6802.namprd12.prod.outlook.com
+ (2603:10b6:303:20f::19)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS1PEPF00017097:EE_|SN7PR12MB7812:EE_
-X-MS-Office365-Filtering-Correlation-Id: a0e9e4bf-611b-4433-015f-08deb407422b
+X-MS-TrafficTypeDiagnostic: MW4PR12MB6802:EE_|DS2PR12MB9821:EE_
+X-MS-Office365-Filtering-Correlation-Id: 229ecbd3-5f30-4603-95f3-08deb4074475
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|36860700016|376014|7416014|11063799003|22082099003|18002099003|56012099003;
+	BCL:0;ARA:13230040|376014|1800799024|366016|7416014|11063799003|4143699003|56012099003|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	jdALpJj7qGlUryYnWgCzoe/2g30sIXd7ltQQI7v/RTIDA65nQfo8A1sdICRjFMnKHN6/BVdXRsilM8FmEY42L9izbbyMzfRAtg2Nv1GBD+bQrPrm6yUs5btuBiHrvElgBpSVFVmy1MVrVpG+JQqR7VY2FYSW5T51EwtmW9KkoG2BSkJEXJc2XfsVNFc651s/gxBF84aT8sqIhwPuC+VxqNA+rjiaKs3CFEYYYJk1dhvfXZEmVIMn8unNVpMRGUvmeo1BfcvnOj+/RFwx12FpFzHF59CCP3i4kjjBvVpzTgLTBApdy0rlZLe2epQB34nKcJBndFHP81e+RI0H0mnArFQdSAtjBhSpQoqtVyp+OKVlUxGkfFhGYJadDaTeDMxFC6P/tHXxG3tfmS4wMiJ7lgdt0URindwrWuMUpcUyfshzsIfk5BxIakjtLZJf1tDrKhIaXl/bZwjKmAdQLZSlkwqqSGDSQxQWqAa3GqG04CnRhGjTgS0nZUEXFggDsA0xlxYyPgMPhpTy6+Q5zObcpKPm3o5tXE2XLEfFsCoFIHLw4j61Zs5OxD7FP+VwroqVWtiPWEskEIYzXQkQBDdFuHRm7ulNwVMWnkf5RHrCf3ja31BoFl2P9LeDRFnh3w+/pTRA2VFgoClaDJPhtTQ+izcH9wtKkKlVepasSy/f9USwstVMegC+SMHJxbRqCSJCbb9MaKS6O/Lxn8CQnlwmzvvCIlsRmVDl4DHYw5TpHFg=
+	JTVlxqZJaQSQroOvNmyvagqVFK75d84ftyMJbJs4SacQxnBo8EZpRtOvnw9P2NeRhgos/6mFp8ZhDl2oJCiuTtcNsY/z4X8yJ2yeYQfLL3kyiP3olhU5f1+Fj+2aG85wXehScX0dj4TLC2s5BBRyT/K/A3XRZqF0qOqOyz/WYonw2ym0odYJuaSuDeiXWfgjaTZY8/WetAZZ71CUkkN2JvqgBf4i7ow7/sqtJwbLtrpziW4UypiAySZ1TbYtPJz5Wi9B3JcGZewyarPJkctl2yMB4GGurleh/a+KJcn982KKS2IZe8U+6h4Lbbjx7VTGvOCGijii/2DemaZs1xSl6oDIf8BiXwGFIKSOpl1W/Fc40xTeFd7WKt85zsJB0euK6kx+z64vtbyrAzkG/5I4SnsYFK97EKlaXPK27Y85gxE/g7Y8OCfIfJS4vd4k26Ev+v0+gpoPEY+W2cCDxXgwPFSTX3BbFeEUTZ+51TIF53AKYEcz3yQYesznlvFhkLeN15YoTrhc1Y0mqF4GOuWxAq+OaVrcLbM11ekajDJmK9XCDfyEbEHTSWjBip+UyhQPP6x89n1TkpH95g/Ct7YcjljY+C+OQBCGFwsx2vuwJLEhMVgfQVzPFr5ruewlyWr9yENezPf9CQk3/PpYMmYT/P+NVJvbD//1uCZf1Styc/csot+PtDDc+lmsEBJBxpBP
 X-Forefront-Antispam-Report:
-	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700016)(376014)(7416014)(11063799003)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6802.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(7416014)(11063799003)(4143699003)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	IUJbNXnNO4o/Y1ZHfCgsbts0zUewebXZHjTb0CLkldY77hbwjMfG/iug5T5T6VrJFGyWKLf/ZfAWO16zTKAEg9GdmBbbhyg/uDRMqU4ntJvceyxJ+uTNgT8DModPj80p7tkt3gzFiobT/d0qHZw6Y84b3VA6NqzsmEGjLFdnZekm+d1Mf/k8daittXUXMw4NdSmVVELQWF+iWy0qArWvLxc2PEPAk6IOv6KX4GfmxJUkkp0Gf+nMKsgUlfOGsRUGqNve23T8hhCioRNP5NHpWVdJTKGnMx9fo8ruwIxJrflL8ETwHPGUMu9XYcR9aFYpy4VAxt45qu+AqOedFueNpbNglqIWYqSx2aTVXDmFunEa/1z65ud78qrNMNFda6Si6S0PE7Mh/gSUTC6eBte1fEuAFbqRWuFI5EgSbJewz0mCTrBcQkWHMNN7pb37hMgJ
+	=?utf-8?B?TTJUVkE2Mlo4VkhCcXlUNUJIbmtoVFp4SUlrQms1Mm8rWStJN1BHNjF5UFNB?=
+ =?utf-8?B?bG1nWlBnR01KWXpEZlJhQWNvdERRdTdlRmdGNWZITjhPZ0g4RnNKREcyR1lX?=
+ =?utf-8?B?UUtQcVB2VjBzamxCTVZncFZudG1VamFUY3FhbFIvSFNOdHFJbml4d21lNFRX?=
+ =?utf-8?B?Z2hwcEVkaHNzeHc2OFI0dVphQ1RYSzYxTGdSM3hYWnZvNU5vZnZOSHNQa0RM?=
+ =?utf-8?B?Nk5lbDNQRFVQMHFtL3JNWW5xRU1aSFJETlZpMEE4dllEdnhmUll4N3RLclNh?=
+ =?utf-8?B?ZVE4ckJnUFZjL3ZWbm9jVzBuWC9zOTFxVS81Skw5Uzlwb1B4Mktqa3gwTTNo?=
+ =?utf-8?B?Z1NWdnB0SnJxVyttNEJ5WjBHaXgrVmtGTHZ2MWF5TURSZWkwR2ZjM0pSc1JF?=
+ =?utf-8?B?MUNRaGtPZGNyT01XVTRRQjNYZ0JXYWJ5SkJnMGxsZm01THdOdUpQUnB5YVFN?=
+ =?utf-8?B?MllHb2xHajFNY0FwS3JFbzFMVDBueGJuS2N5QXBNNFJwelkwSElZUm83MFVl?=
+ =?utf-8?B?WGFMMzBmOFBWZDJkdjVPaEljc3ZYRGpwaHlRNW8vVy9MOGtNR255bTlIVkF4?=
+ =?utf-8?B?bDZWMllqNEJGdGY5WDlqWW9sdUZ2TVhiV1FiRXhZZElIQjMyM08xb0h5NDFi?=
+ =?utf-8?B?azNtYUVFeGlzODVQWXBvN2M2TFpBa2lkRis1SXI5SFNIdjRpQkc1NDBEV2NM?=
+ =?utf-8?B?TkVHbE4yZ0tOMkJTWDlxZUFhbTBNencvYVQ0Zmw2cjFmOFJ1VmpuWEZ6REJ3?=
+ =?utf-8?B?cnloN2I4Ujdzb2dvemxETW1KZ2xuQjgxSmVHWG42UXJ2RlBsUnYyaHJ4aEF6?=
+ =?utf-8?B?UnNHZlYrdzUzZ2FsaGhwbEF5Z0V1RFBDZ3ZXZ3BqM0dMQk4xNWpWNTNZS01n?=
+ =?utf-8?B?M1JocTVyVlMzbzBuL3o5dmNtZ2JUMFJsUnBRVzVYaTNOZVV4Tm9kRHhHQUJB?=
+ =?utf-8?B?bi8xVmEvL1c4V1dnOXlra2ZpNEk3K1VNMm4vd2ZDdzYveGh0ZjMwaTR5NnB0?=
+ =?utf-8?B?cFFXSFV6Q0drSzl2VXJ5djcraVo5SWVPUHZ3SmVOYkNZdjNvQVdjUk1HcG40?=
+ =?utf-8?B?cmM2ZVducTF5NnlhamUwSjQ5SllGN25kUDA2YXZaZnhKT1IyU3dJWDl2RzVV?=
+ =?utf-8?B?SzBuUHJ5Nkx3Q2RoaDVLRU5idmE4UlV0SVc2aGsvWjlLSEs2S1dHUFFpbVFZ?=
+ =?utf-8?B?Z3VDRjN4cWhBMnY4UVU5ZUFueTZqL0pGTU16R0UwMVYwYUJObittZlMzTWIz?=
+ =?utf-8?B?c0czWnB5Q3FrczRnNFcxVUZkcGtwbDRrcm15amIyUlpLS1MvM0FIZXEyRUdo?=
+ =?utf-8?B?UVJab2lqZEVYV3pmcDhkeHNiUnVDWFQwU0VJNjh5eGtmWXV4dzJBV0NqWFVy?=
+ =?utf-8?B?M0ZUQnFjMExYMURDS3JSU3NTQXQ1d05YQlVNMVYzVjMyQVorbzQ2Y3cyRFFy?=
+ =?utf-8?B?QlFVYWRxSHNKZmk2YytESFd3cVZuSEJyTThEdGhMWDIzWmFKMTAyVURtREFS?=
+ =?utf-8?B?VTNMYmhZZkdoekFXL3RZUmRjakQwaG9ZQzk3eFdYeWJNRENPZHBtaEptWkJW?=
+ =?utf-8?B?ekxMbGpDVG5UbTJDUFQ4SGNvcmh3THRHZ3hOWVAvM29oOXFNWkcxQk1LNTdQ?=
+ =?utf-8?B?MEExN3FSU3hRakp5VFViZnZwRGFxUjM4Y2lOZThoN1JEQkdkUzBMUFRqdW9Q?=
+ =?utf-8?B?cTkwWlZOcndDdVdqbytDcllLNmhTcXhJSjhGVGVXZkdFMmdERDRvaDhNd1pD?=
+ =?utf-8?B?Znd3QUlzSmlNaE9oSEFJV044NXVITm5Rc3RXTGVRUkd1a2NtWU9jU3NmWXpO?=
+ =?utf-8?B?STEyTFV6RjRSdjYxT1VkTnhaSk9YTXVaeHQxY1hlTjduMDdRL25uaFdNbW5U?=
+ =?utf-8?B?WGFtWllxSk5YNmJIUUV4N1NKZjR1UzBNNzc1NEtaaHFhSUE2SWJlOS9HTUh4?=
+ =?utf-8?B?d1BCMVAwQUVwelhjV0ZlNDZPelpXUjc0V1hPOEE5SmJESjBmOTZGZlN6Wlp2?=
+ =?utf-8?B?aGVPVU5BVVFqeEQ0eVE4OUR6aVAxc2ZyU1R2VWQ2a1J0SG5OQ25iUmNkU09x?=
+ =?utf-8?B?SnRuM2REN0ZONmFvTlgxamE5RnRkMytYSFNrcjJFV3Q4MnBSREE5T0V3alBm?=
+ =?utf-8?B?dDhWOGVNVnUrVGFHREdXaENDVUZuSzVGTG5vb0FJM1ZmdzN2MzNVcFFndFBx?=
+ =?utf-8?B?QWpPNmIyTVovOS9GZkEwUW9kdjlNQVAzVURnLzRmaERLSlJpYk0yVkFHWHNT?=
+ =?utf-8?B?ME1pZ1ZldmZ2ZDNiV1o0c1NWNmI2RUxjV3NneWF2ZXdBYWpHSlkrNnB3U2dT?=
+ =?utf-8?Q?WRLTg9VAgfX/yYVXHa?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 May 2026 11:27:19.9614
+X-MS-Exchange-CrossTenant-Network-Message-Id: 229ecbd3-5f30-4603-95f3-08deb4074475
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6802.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 May 2026 11:27:24.5388
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a0e9e4bf-611b-4433-015f-08deb407422b
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DS1PEPF00017097.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7812
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: iO3Tx6WA5LZen9RANFJXuGV+oikswN8APc2ix/3WIzDHy1TdUcvjz19AZIVCHEjiHuAxIi85V7lozZkFvLNS8Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR12MB9821
 
-From: Nikolay Aleksandrov <nikolay@nvidia.com>
 
-Add a new generic devlink device parameter (max_sfs) to control if and
-how many light-weight NIC subfunctions can be created. Subfunctions are
-a light-weight network functions backed by an underlying PCI function.
-Their lifecycle can already be managed by devlink, but currently users
-cannot enable them in the device. They can be enabled/disabled only via
-external vendor tools. This parameter allows subfunctions to be enabled
-(>0) or disabled (0) via devlink. A subsequent patch will add support
-for max_sfs to the mlx5 driver.
 
-Signed-off-by: Nikolay Aleksandrov <nikolay@nvidia.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
----
- Documentation/networking/devlink/devlink-params.rst | 6 ++++++
- include/net/devlink.h                               | 4 ++++
- net/devlink/param.c                                 | 5 +++++
- 3 files changed, 15 insertions(+)
+On 15/05/2026 4:38, Jakub Kicinski wrote:
+> On Wed, 13 May 2026 10:23:55 +0300 Nimrod Oren wrote:
+>> Data adjustment cases failed with "Data exchange failed" when using IPv4
+>> because the program did not update the IP and UDP checksums in the IPv4
+>> branch. The issue was masked when both IPv4 and IPv6 were configured,
+>> since the test harness prefers IPv6.
+> 
+> Oops, maybe we should run against both IP version after all?
 
-diff --git a/Documentation/networking/devlink/devlink-params.rst b/Documentation/networking/devlink/devlink-params.rst
-index ea17756dcda6..29b8a9246fb6 100644
---- a/Documentation/networking/devlink/devlink-params.rst
-+++ b/Documentation/networking/devlink/devlink-params.rst
-@@ -165,3 +165,9 @@ own name.
-      - u32
-      - Controls the maximum number of MAC address filters that can be assigned
-        to a Virtual Function (VF).
-+   * - ``max_sfs``
-+     - u32
-+     - The maximum number of subfunctions which can be created on the device.
-+       Modifying this parameter may require a device restart and PCI bus
-+       rescanning because the BAR layout may change. A value of 0 disables
-+       subfunction creation.
-diff --git a/include/net/devlink.h b/include/net/devlink.h
-index bcd31de1f890..4ec455cfe7a4 100644
---- a/include/net/devlink.h
-+++ b/include/net/devlink.h
-@@ -546,6 +546,7 @@ enum devlink_param_generic_id {
- 	DEVLINK_PARAM_GENERIC_ID_TOTAL_VFS,
- 	DEVLINK_PARAM_GENERIC_ID_NUM_DOORBELLS,
- 	DEVLINK_PARAM_GENERIC_ID_MAX_MAC_PER_VF,
-+	DEVLINK_PARAM_GENERIC_ID_MAX_SFS,
- 
- 	/* add new param generic ids above here*/
- 	__DEVLINK_PARAM_GENERIC_ID_MAX,
-@@ -619,6 +620,9 @@ enum devlink_param_generic_id {
- #define DEVLINK_PARAM_GENERIC_MAX_MAC_PER_VF_NAME "max_mac_per_vf"
- #define DEVLINK_PARAM_GENERIC_MAX_MAC_PER_VF_TYPE DEVLINK_PARAM_TYPE_U32
- 
-+#define DEVLINK_PARAM_GENERIC_MAX_SFS_NAME "max_sfs"
-+#define DEVLINK_PARAM_GENERIC_MAX_SFS_TYPE DEVLINK_PARAM_TYPE_U32
-+
- #define DEVLINK_PARAM_GENERIC(_id, _cmodes, _get, _set, _validate)	\
- {									\
- 	.id = DEVLINK_PARAM_GENERIC_ID_##_id,				\
-diff --git a/net/devlink/param.c b/net/devlink/param.c
-index cf95268da5b0..523243e49d88 100644
---- a/net/devlink/param.c
-+++ b/net/devlink/param.c
-@@ -117,6 +117,11 @@ static const struct devlink_param devlink_param_generic[] = {
- 		.name = DEVLINK_PARAM_GENERIC_MAX_MAC_PER_VF_NAME,
- 		.type = DEVLINK_PARAM_GENERIC_MAX_MAC_PER_VF_TYPE,
- 	},
-+	{
-+		.id = DEVLINK_PARAM_GENERIC_ID_MAX_SFS,
-+		.name = DEVLINK_PARAM_GENERIC_MAX_SFS_NAME,
-+		.type = DEVLINK_PARAM_GENERIC_MAX_SFS_TYPE,
-+	},
- };
- 
- static int devlink_param_generic_verify(const struct devlink_param *param)
--- 
-2.44.0
+I can send a follow-up to run all xdp.py cases against both IP versions
+when both are configured. Or are you suggesting this as a broader change
+for all drivers/net/*.py selftests?
 
