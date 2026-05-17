@@ -1,37 +1,38 @@
-Received: from mail-01.1984.is (mail-01.1984.is [185.112.145.69])
+Received: from mail-03.1984.is (mail-03.1984.is [93.95.224.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98EA53B4EBD;
-	Sun, 17 May 2026 14:15:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.112.145.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9EE3B6BFA;
+	Sun, 17 May 2026 14:16:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.95.224.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779027358; cv=none; b=kdLV4gUeYw6oOnpYu0cDRkclo1eey4IS4/WNYfo2ho5J4f0RHlSzhYRqbsXWgt1PfhgJhjXEeZ33qaXynP+ZW4VX/6ouauKNgByFIQm8O1azbTUwC5TCCHUpzthW5mxkodgqhX45ZWK++ajjs4KVJqX8H5OZTKd20icYOsZDTk0=
+	t=1779027383; cv=none; b=uLsLBcIZKr0F2/kfirQXj3rKUka5PTeE1u1sTkiw/AbX/2f8gKhqw+osCChtPQ+oq5a8t59BplkYTie43791P8k3WULqUupZc3JowFxP8TwQRdFOUYcVx6s84ZWiNyDOUAgRp6v5VSHl+SncprCmgF67rjKXfI8CZUJsQPXD2nM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779027358; c=relaxed/simple;
-	bh=Qga+mtvz86YHLopOaANdVdDeOH1iglUFDZnSQM3MKCM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VUCnVq5YQjRM818/634H19b+EyDtLoZ0Lf85sRS4TFuYIK9dwXZeWA8LqY97cIpSsvVZ36/EjHJNlBFPTzDM5P48fGmXisSXos9j16w+cCBOe2I2hh2OpKkGV171j6ku/ZmUj14stvPRQxLGiNMqUH7p1t/XyecNmujj8sTg2Y8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=berkoc.com; spf=pass smtp.mailfrom=berkoc.com; dkim=pass (2048-bit key) header.d=berkoc.com header.i=@berkoc.com header.b=iGPL7977; arc=none smtp.client-ip=185.112.145.69
+	s=arc-20240116; t=1779027383; c=relaxed/simple;
+	bh=E+5rE7WnzKpZKHrWJx0IS9bEifvlfmUUp8PYIDd6u1Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IsUkisnV1KNM08irSJjffZXwD4wB/qGoGbIdhIvza7Ml8V58Amt33KokcnWT3Jc988sHXDbiR2Gd7lqSU+a+WwYcMun/DY2AZbIpEX5M8CgqP7YkdBkf44qduaTgFGBtjZ2RgC2WJ9fnQeazPVyU+z+FfCgRtWeHLqWSN/7pGtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=berkoc.com; spf=pass smtp.mailfrom=berkoc.com; dkim=pass (2048-bit key) header.d=berkoc.com header.i=@berkoc.com header.b=TYXaWNv2; arc=none smtp.client-ip=93.95.224.70
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=berkoc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=berkoc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=berkoc.com header.i=@berkoc.com header.b="iGPL7977"
+	dkim=pass (2048-bit key) header.d=berkoc.com header.i=@berkoc.com header.b="TYXaWNv2"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=berkoc.com;
-	s=1984; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:Date
-	:Subject:Cc:To:From:Sender:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	s=1984; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
+	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=ROYjdED/XPcRufNK0R//jz4sQ/Lqx1XU3qMXN4nQjJ0=; b=iGPL7977BgnMDW+CgbK0wpi67E
-	Bi1gwBiCxmhTTRlHW+cBi+Q2zl7sl+HE7WhZunYyHaD8QIGa8IKAPgxnMxJ1G1fJrVAAwtgXl4yIP
-	TitoRltX79BofRzR6eQZNkr0EXBiFRAvRf52UBrcP7C+zflarAS1l3B8Yvg154kl+mIqMH1ngCn41
-	4ZdKeJcAl1QTwRZ+EWLJYByaAVoMAK+zIB7qrGJN3N4wRtSLGNP1IeSFP+JhQZwmPQAqZicKyiOug
-	sGySRwZV/J0T7A9jYcnEOMLY08qLkdSz2gDZluAF4Rc5ZIZcwOAuM/vn6pRyCCGgc7Ro27a5NY7Jg
-	zS9BIjwg==;
+	bh=ZZu/4zOYpHfrXMZxN3vf1rOOegDar5F3Gvvj7NThVoQ=; b=TYXaWNv2rFphn3xJ7Qhr9837d9
+	lWcpOToa9FKwo6AL0LKblbXmN5n7PtjmgX53IkGUWP1dIk3nhkEQ2dBMtnTgIsuGYeAzCJorPl2an
+	K4fjuFYXBm5fnARmhcenYjC6Tp3c+WDsTcI7cvRJ5dFP1zzxHWb1InZJGtLh2WtA8uiTmklXnWSK2
+	ZUFYCg8ykx/bnSMQJ9rNCTKgd74ylgTVai9cw8vpitLY8wF7RVhGvCWseaf0gBc2En9FoJ+3f5FTj
+	ecIEn7vI9QUdmW4ffPwXeB087pkYGBPIyc/9Juv1HQuqEZkwJv24OUPvPK43i4rRaZz/tRy0r/I89
+	6GBJQqXA==;
 Received: from localhost
-	by mail-01.1984.is with utf8esmtp (Exim 4.96)
+	by mail-03.1984.is with utf8esmtp (Exim 4.96)
 	(envelope-from <me@berkoc.com>)
-	id 1wOcHR-00GB0n-34;
-	Sun, 17 May 2026 14:15:46 +0000
+	id 1wOcHk-00HFZk-1H;
+	Sun, 17 May 2026 14:16:05 +0000
 From: Berkant Koc <me@berkoc.com>
 To: Marc Kleine-Budde <mkl@pengutronix.de>,
  Vincent Mailhol <mailhol@kernel.org>,
@@ -40,9 +41,11 @@ Cc: linux-can@vger.kernel.org,
  netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org,
  kernel@pengutronix.de
-Subject: [PATCH 0/2] can: usb: validate URB length in PEAK-USB rx callbacks
-Date: Sun, 17 May 2026 15:55:00 +0200
-Message-ID: <20260517-can-usb-fix-cover@berkoc.com>
+Subject: [PATCH 2/2] can: peak_usb: validate URB length in pcan_usb_pro_decode_buf()
+Date: Sun, 17 May 2026 15:55:02 +0200
+Message-ID: <20260517-can-usb-fix-2@berkoc.com>
+In-Reply-To: <20260517-can-usb-fix-cover@berkoc.com>
+References: <20260517-can-usb-fix-cover@berkoc.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,43 +58,61 @@ X-Spam-Score: -0.0 (/)
 X-Authenticated-User: me@berkoc.com
 X-Sender-Address: me@berkoc.com
 
-This series mirrors the two gs_usb hardening fixes that landed in 6.18
-(commits 6fe9f3279f7d and 395d988f9386) for the two PEAK-System USB
-drivers that share the same "walk records inside the bulk-in URB"
-pattern: pcan_usb_fd.c and pcan_usb_pro.c. Both decode loops read the
-on-wire record header before validating that the URB actually contains
-that header, allowing a malicious USB device that emulates a PEAK CAN
-adapter to trigger a short read of one or two bytes past the URB
-buffer on every poll cycle.
+pcan_usb_pro_decode_buf() walks variable-sized records inside the
+bulk-in URB. Each iteration reads pr->data_type (the first byte of the
+record) and indexes pcan_usb_pro_sizeof_rec[] with it before checking
+that the announced record length fits within msg_end. When the URB
+length exactly equals PCAN_USBPRO_MSG_HEADER_LEN (4 bytes),
+pcan_msg_init() returns a rec_ptr that already equals msg_end while the
+on-wire rec_cnt field can still be non-zero. The first iteration then
+reads pr->data_type one byte past the URB buffer.
 
-Patch 1 adds a sizeof(struct pucan_msg) check at the top of the
-pcan_usb_fd_decode_buf() loop and rejects records whose announced size
-is smaller than the header itself.
+A malicious USB device that pretends to be a PEAK-System PCAN-USB-Pro
+adapter (USB IDs 0c72:000c..0c72:0014 across the Pro and Pro-FD line)
+can keep returning short bulk-in URBs and trigger this read on every
+poll cycle, leaking one byte of adjacent slab content into the
+dispatch table lookup or producing a KASAN slab-out-of-bounds report.
 
-Patch 2 adds a one-byte check before reading pr->data_type in
-pcan_usb_pro_decode_buf(), which is the field used to index the
-record-size table.
+Apply the pattern from commit 6fe9f3279f7d ("can: gs_usb: gs_usb_receive_bulk_callback(): check actual_length before accessing header"):
+verify that at least one byte remains before dereferencing the record
+header.
 
-Both fixes are static-analysis-identified mirrors of the gs_usb
-precedent. I did not have access to a PCAN-USB-FD or PCAN-USB-Pro
-adapter and therefore no live KASAN trip is attached, but the trigger
-condition (URB actual_length below the per-record header size) is
-identical to the gs_usb case that Marc Kleine-Budde fixed in November.
+Identified by static analysis. No KASAN trip available without specific
+PEAK CAN-USB-Pro hardware.
 
-A third candidate file, drivers/net/can/usb/usb_8dev.c, was reviewed
-for the same pattern but already validates "pos + sizeof(struct
-usb_8dev_rx_msg) > urb->actual_length" at the top of its loop and uses
-a fixed-size record, so no patch is included for it.
-
-Note: a concurrent series by James Gao (msgid <TYCPR01MB856782BAA657447E5EDDDC1FF0062>) hardens different sites in pcan_usb_pro.c (handle_canmsg + handle_error); the hunks in patch 2/2 here do not overlap.
-
-Berkant Koc (2):
-  can: peak_usb: validate URB length in pcan_usb_fd_decode_buf()
-  can: peak_usb: validate URB length in pcan_usb_pro_decode_buf()
-
- drivers/net/can/usb/peak_usb/pcan_usb_fd.c  |  7 ++++---
+Fixes: d8a199355f8f ("can: usb: PEAK-System Technik PCAN-USB Pro specific part")
+Cc: stable@vger.kernel.org # 3.4+
+Signed-off-by: Berkant Koc <me@berkoc.com>
+---
  drivers/net/can/usb/peak_usb/pcan_usb_pro.c | 15 +++++++++++++--
- 2 files changed, 17 insertions(+), 5 deletions(-)
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/net/can/usb/peak_usb/pcan_usb_pro.c b/drivers/net/can/usb/peak_usb/pcan_usb_pro.c
+index 4bfa8d0fbb32..f7b0304f7c37 100644
+--- a/drivers/net/can/usb/peak_usb/pcan_usb_pro.c
++++ b/drivers/net/can/usb/peak_usb/pcan_usb_pro.c
+@@ -715,8 +715,19 @@ static int pcan_usb_pro_decode_buf(struct peak_usb_device *dev, struct urb *urb)
+ 	msg_end = urb->transfer_buffer + urb->actual_length;
+ 	rec_cnt = le16_to_cpu(*usb_msg.u.rec_cnt_rd);
+ 	for (; rec_cnt > 0; rec_cnt--) {
+-		union pcan_usb_pro_rec *pr = (union pcan_usb_pro_rec *)rec_ptr;
+-		u16 sizeof_rec = pcan_usb_pro_sizeof_rec[pr->data_type];
++		union pcan_usb_pro_rec *pr;
++		u16 sizeof_rec;
++
++		/* make sure data_type is readable before dereferencing it */
++		if (rec_ptr >= msg_end) {
++			netdev_err(netdev,
++				   "got frag rec: should inc usb rx buf size\n");
++			err = -EBADMSG;
++			break;
++		}
++
++		pr = (union pcan_usb_pro_rec *)rec_ptr;
++		sizeof_rec = pcan_usb_pro_sizeof_rec[pr->data_type];
+ 
+ 		if (!sizeof_rec) {
+ 			netdev_err(netdev,
 -- 
 2.47.3
+
