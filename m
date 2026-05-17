@@ -1,96 +1,83 @@
-Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B52B3D5234
-	for <netdev@vger.kernel.org>; Sun, 17 May 2026 22:30:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43282F7F19
+	for <netdev@vger.kernel.org>; Sun, 17 May 2026 22:39:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779057035; cv=none; b=k6c4u4qpxgSAIXdYaa+YZwent8bpDNqHLYDCurPb4V82/Ie/c37CdxRF6/oOSepcx6PDpx+ffK9RoCK51f5hqEvd3oeLS0Y3387pvQz+R+eipgQRDrIcN240Jm8gL1RzIwLP95WNVRzf8Z/UvCHYuQ/gg8aGWMvFbrWIMHcgiBI=
+	t=1779057594; cv=none; b=ClNXzNog3mUsCz+cXxg3G8WN2q9rbur+is25r8FjYNfEKFP4UbdCHryMnbmmNzG4Ni/M8KtIAd56oOIHCnDt4RLh+6QYSgxwFf1s2c3ciJ46zusGHIhNPr7T5yfLpVusjpNPmIqqR7HLj3uTiuvFBygOm3YUL3MnT2AaGpt34L0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779057035; c=relaxed/simple;
-	bh=tFC1Tbig5ZrVoDzs4ZGIr+cH/i6Rgd6IXMeuXberw0w=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QXcrW7MBadXwldry+S5TppMB51RA8x6oF4QpnKq2nKXAKq66T+OSPtHBxvBCrkvNZJfiNug/uKQP3VJUJPdEpHU3ps84xARi2vgJGZZStgkUkCrNOqeOzP4/HUSW8FzHfCAGvGGqh2IvN12+TGZfVtlraC0ePxi8bq+Y39jKk3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b=tvdHKwzG; arc=none smtp.client-ip=74.125.82.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
+	s=arc-20240116; t=1779057594; c=relaxed/simple;
+	bh=R0Iv+fBFrWEXjMq5mik6ej8jbc+LV+EAnntgfouQrsI=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=M1mZcn5C5rSOTUF2GW6IpWVGfffET5l/tEC9mqAfQZTZCmbp+YF8qMFgzahUzEWuc4ayXcl9pVPzhpAk3bFZEZfc1oIX9bawxid5e0kmRrPBFt6WeUgh0YFka6wzPfOOxj5lkG6yn7U866TCehf/rbxYi0M5cn9Ch/wvY0UgtsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Uc6s6Az9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b="tvdHKwzG"
-Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-1357c851a48so695697c88.1
-        for <netdev@vger.kernel.org>; Sun, 17 May 2026 15:30:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20251104.gappssmtp.com; s=20251104; t=1779057032; x=1779661832; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TFjN/px4t2GB4LUmB5H4/ZYU1cMD3YdG5kZ78HR4kE0=;
-        b=tvdHKwzGRW8gCzjhN4hGxvHoG+qOglnEFvAyK9SwHYbSiVFMiISIvtnbzhCv5YMy20
-         7Gb/ql0ew/MOhDO8ID+vNuAKUq7W9XsBiaFtPHIAFlL442kiRACd61/cbyCSJvwkMpAX
-         lSPK3ZotHeiz16relwcQYE3KBap7nLPwCR1o6/S/a2IrrEdiMbCQvJ4kinQlyT0mv8U0
-         mY5jMbgYJCVYyZaNzZ+AtzCSXhwK2a1Vs2IooufNwwmdoYRCY890r2CXIEOEru7Fc4Pu
-         E6dPLqJNLXKhrfX6R81xvuJBIC/5eauQ3NgiWGbotmmVIQSPf9PTZZ9qvrHHkcsJ/p9B
-         gOXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779057032; x=1779661832;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=TFjN/px4t2GB4LUmB5H4/ZYU1cMD3YdG5kZ78HR4kE0=;
-        b=KxcEOFKQE4zL9wwXzziJDIErBypt/oc2DbFnXaBL652iyE1VKmIH4A0yBh/H7hmXMW
-         /AYw+E/2q7yzrxuUQ/+JpcGHa/E6QuUHHbhWN3mQpesAzLK7ylYo8xwoPdaNvqtgKk+E
-         Q0mrPnaaVgRBDxgsQMyDvwbAezlQA/7nr2+iXySz2OWUzfsvS4jB/ZYQFdlGGuImki9W
-         8GoNnxCF2AVBR9+ouRS8mYd8zY8icfsz/Iu+l6hjk4yj5HB0QDDP/4uzYfO5m/QWhbj7
-         UYBwI6cRETsbhACMmqKezAC7m2b41wVuLf2YWMNcdRMDdGaYJ8erULzqY5Yhao0NIJ8m
-         iKHw==
-X-Gm-Message-State: AOJu0Yz+P8IYmNG4ENtiDI9S5JPXiwNT9UR+sB5q0oYWq74wFbpJg/4h
-	BJVdkBXmlyJbhovX6FXzqF4BXdpGV9YgBkeJacQ6eZkMOelogiU28r56RECcBOdDedY=
-X-Gm-Gg: Acq92OF6M5rA13D6hY5MR3BNgU4eQwgCRT+WvNNcjQj0AsLIu+r8n7BB0v1LQH1Vj5u
-	IB+6R8ueja3NYBaNmzg6aMDc/AZJTQgcM+Pbjdc5OVYk0S9DSoLjaQcy8nreYnd1xG7Y/H4moTZ
-	OrUgGE1JN3wSJM8sPvYnK0XuJGvSp3gvTEFSKAC1E3kEIGSb6t9nCd5AnwqGpMvcMQg4wquXH8b
-	PSOHvIk4B7Lf0mlwZNgDPD7LdxmtpI3cdZnlUuZajPL47ZI0rdXxx4awmGgHHz1srYKA/yfZpso
-	BGwrESztaUD0nJyR7Wu9ZQEUzHSo4MeNrBsViBbBmUBVOpHQADGNpu3/OLfRO2mMuB2V2vcTFOt
-	T87bZvgGXJMeQO1ZICNLBqhRoYWINMDagosMMM5EE3k1xEIcZV7ybbeNET4rJP9OkzyRE0Vh+rL
-	4PiZXflwdGheRMcqfSvFifOD54RtXtq+jfeN4=
-X-Received: by 2002:a05:7022:388a:b0:128:d967:4673 with SMTP id a92af1059eb24-13504515161mr5169307c88.16.1779057031968;
-        Sun, 17 May 2026 15:30:31 -0700 (PDT)
-Received: from phoenix.local ([104.202.41.210])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-134cf44668asm15091738c88.6.2026.05.17.15.30.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 May 2026 15:30:31 -0700 (PDT)
-Date: Sun, 17 May 2026 15:30:29 -0700
-From: Stephen Hemminger <stephen@networkplumber.org>
-To: William Gonzalez <gonzalez.williamalexander1@gmail.com>
-Cc: netdev@vger.kernel.org
-Subject: Re: [PATCH] bridge: vlan: reject reserved VLAN ID 4095
-Message-ID: <20260517153029.1500c5a7@phoenix.local>
-In-Reply-To: <20260511012339.71569-1-gonzalez.williamalexander1@gmail.com>
-References: <20260511012339.71569-1-gonzalez.williamalexander1@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Uc6s6Az9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69C21C2BCB0;
+	Sun, 17 May 2026 22:39:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779057593;
+	bh=R0Iv+fBFrWEXjMq5mik6ej8jbc+LV+EAnntgfouQrsI=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=Uc6s6Az9SFHfk/QW85pbnZhy+9zXiV3iDiwuh/DwtmaPAHbZYda9aBLiHFyn+pCJn
+	 hOwlhdOD8NskP2RIduhwWzgLaCr5zYWdC5Esxvu3YuihNVwis50I0bYXrB+Rs824rj
+	 QkXw1Dm1CNfPCVniLHrrAuGVbC073bfCu/DjN9PxMHCe/S2tANj00ItwXmH59f+l5t
+	 6BAtOOLrMJhm+uDR02NrjIgPr2QifNEYoLDPVuloBpR5tTyvufPpmGizzkM7qn1WSK
+	 uApAVXedKrH3HhshFJnK2viQjgXRevfYbY5UhzmgJw4LNXdUmVRagtOjL8t9QWdIQ4
+	 ZFldJeW6Tb7zA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 939C23930B8B;
+	Sun, 17 May 2026 22:40:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH iproute2-next 1/2] dpll: align help and man notation with
+ actual option parsing
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177905760539.1131623.3707450063145275135.git-patchwork-notify@kernel.org>
+Date: Sun, 17 May 2026 22:40:05 +0000
+References: <20260512135225.167158-1-poros@redhat.com>
+In-Reply-To: <20260512135225.167158-1-poros@redhat.com>
+To: Petr Oros <poros@redhat.com>
+Cc: netdev@vger.kernel.org, ivecera@redhat.com, dsahern@kernel.org,
+ stephen@networkplumber.org, vgrinber@redhat.com
 
-On Sun, 10 May 2026 21:23:39 -0400
-William Gonzalez <gonzalez.williamalexander1@gmail.com> wrote:
+Hello:
 
-> The bridge vlan parser currently rejects VLAN IDs greater than or
-> equal to 4096, which still allows VLAN ID 4095. VLAN ID 4095 is
-> reserved and should not be accepted as a configurable VLAN ID.
+This series was applied to iproute2/iproute2.git (main)
+by Stephen Hemminger <stephen@networkplumber.org>:
+
+On Tue, 12 May 2026 15:52:24 +0200 you wrote:
+> dpll uses getopt_long(), which only accepts long options with the
+> "--" prefix.  The iproute2-wide "-X[name]" shorthand used in the
+> help text and man page implies a single-dash long form
+> (e.g. -Version, -json, -pretty) that getopt_long does not parse;
+> only -V/--Version, -j/--json and -p/--pretty actually work.
 > 
-> Tighten userspace validation to accept only VLAN IDs in the range
-> 1..4094.
+> Replace the misleading shorthand with explicit "-V | --Version"
+> style so the documented forms match what the parser accepts, and
+> drop the redundant second usage line in help() that listed only a
+> subset of the options and implied dpll could be invoked without an
+> OBJECT.  No functional change.
 > 
-> Signed-off-by: William Gonzalez <gonzalez.williamalexander1@gmail.com>
-> ---
+> [...]
 
-Overall looks ok, but you missed the case of vlan range.
+Here is the summary with links:
+  - [iproute2-next,1/2] dpll: align help and man notation with actual option parsing
+    https://git.kernel.org/pub/scm/network/iproute2/iproute2.git/commit/?id=62d47c2dbc0e
+  - [iproute2-next,2/2] dpll: monitor: add -t/--timestamp and --tshort options
+    (no matching commit)
 
-If you have chance get rid of the use of atoi() here since that
-doesn't handle garbage input well. Instead using get_u16() from utils.c
-here instead. Better yet make the get_vlan() a helper in utils.c
-and even get_vlan_range() a helper. Other code does bad job of reading
-vlans.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
