@@ -1,118 +1,171 @@
-Received: from mail-01.1984.is (mail-01.1984.is [185.112.145.69])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B3E13B7742;
-	Sun, 17 May 2026 14:16:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.112.145.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1839B3BB13B
+	for <netdev@vger.kernel.org>; Sun, 17 May 2026 14:27:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779027381; cv=none; b=LBf/xuFFhNY0pXtxcED4+bvOB5uOnSUipwy8igfH2FfNjSvSjeJLLgOkSxhin5ZKf68SVrCIeJ47ipRTznEXGSAEIwaVTQNpJcY8cmY5kcWMsnW47e2FtI6I4rw3fkeM6nsmt82iRXNVYHVmgI+4juh8SgY+ZygJ4UjrdOpwlKs=
+	t=1779028057; cv=none; b=cB34/6H4vc4ipJ9HtoHqFOz/XNH4sMQR1ljC+tPsP3Z/X2bQNGRoaX7uls1gcJ/Kup1BAsy0sacK05jQM+CNa3iauHHz+ruqxzzcXamYbfP88Rn8gGvZe/UT0VgjPRabGFk65z1Jl1wA5tt1nauYNuiLkrSoI0wYxPzjXfItS64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779027381; c=relaxed/simple;
-	bh=85gBWQxdegiTwkYwL7s4UdSq1wrq7dfldbj1E6oPWLI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gILLhSZTSBEqAQCQIK7V1MBspi/MnDTWpiZMlfiJCdv1K8lDZy1rVNxvHfL6DYIvcajvcKLf4ZRcDqXfnk9tmZshuzeFWiEq2kUqZ09xCi61E2hl1pDcVzlzNIqECKEBV96iiBlldzK1c7XfJ2WsGe3rJ9SHjSPA71mYy0k68Lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=berkoc.com; spf=pass smtp.mailfrom=berkoc.com; dkim=pass (2048-bit key) header.d=berkoc.com header.i=@berkoc.com header.b=BHLYLuAA; arc=none smtp.client-ip=185.112.145.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=berkoc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=berkoc.com
+	s=arc-20240116; t=1779028057; c=relaxed/simple;
+	bh=4XSBxYxqISLsV6Spf98OGBDaeYRctTVPveYwKgI8UHs=;
+	h=To:cc:Subject:MIME-Version:Content-Type:From:Date:Message-ID; b=n4z0ZHiT9k4QyABNRpMD6I7I/mawHY6sIlOJNUg+4iRr0aKQH8trqijjCWMnvoX6y25spv2UPEgMIKtWYno8Hk380nFYjwtQ0LRiffDVJIiwWUuRyShMklngAcTmj4eN5sgberesyMq3Nmcl243X1IOfs+QyygUWECZ6RT2lzgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Xmky4gjO; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=berkoc.com header.i=@berkoc.com header.b="BHLYLuAA"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=berkoc.com;
-	s=1984; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
-	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=Taz36b0OeGtwr42qKl6eT5tEtMR06TYfgdbmRhMuCfs=; b=BHLYLuAAd8MFWeVGIK1QQk+hUo
-	Mv6dE/pldAns3sbhGyVYDvfE08MfKQP+fsjsLA4L5Nb3RxT9mMjSy+RHBwmDAYd67E+JDHgXfKpU+
-	ZpKzzBG1O/JoHspE+ItW8+wbxqYBFXdaPCrfMMvlcmGJGHPI46gnaxpKdn+Ye4CrRrfYb3uyk9TLV
-	bhhj8+b/r8hfNm/puhGY/zTLghvAjjrsJdQ6wn8g7sssGl1J277EbOlcRc1mnyp6epnlKEjGkOduh
-	yR348FucBqNxQjD/xyfkDxNzbOnGm+JCa5WrbJGAQNpKfQp5evRorACqIVrKd0Fz9eZIk3/nMxWE6
-	O/DKgFOw==;
-Received: from localhost
-	by mail-01.1984.is with utf8esmtp (Exim 4.96)
-	(envelope-from <me@berkoc.com>)
-	id 1wOcHa-00GB1t-2U;
-	Sun, 17 May 2026 14:15:55 +0000
-From: Berkant Koc <me@berkoc.com>
-To: Marc Kleine-Budde <mkl@pengutronix.de>,
- Vincent Mailhol <mailhol@kernel.org>,
- Stephane Grosjean <stephane.grosjean@hms-networks.com>
-Cc: linux-can@vger.kernel.org,
- netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- kernel@pengutronix.de
-Subject: [PATCH 1/2] can: peak_usb: validate URB length in pcan_usb_fd_decode_buf()
-Date: Sun, 17 May 2026 15:55:01 +0200
-Message-ID: <20260517-can-usb-fix-1@berkoc.com>
-In-Reply-To: <20260517-can-usb-fix-cover@berkoc.com>
-References: <20260517-can-usb-fix-cover@berkoc.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Xmky4gjO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1779028042;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=LavLM0+8mYsFB9TAKaulpbSa6g77ESdqNgfKK8jSpI0=;
+	b=Xmky4gjOTyP8L2Ne9NXqfgZ+ClL+Vf03RNUMs9xs4YfJjHVGOZ+pScJzEIYK4aEn4gWCYH
+	GWdKGjUroF7LHQVJf4ZMqudnBltCQcEgkjE6fRkp3MPbiMV2w7IQBlE3TzW1dG/HMkq5fv
+	FgsnGauB4cS/ncmlRWJa7vRj04JKN9U=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-67-3HtegX92MsSc8txN4rvGOg-1; Sun,
+ 17 May 2026 10:27:19 -0400
+X-MC-Unique: 3HtegX92MsSc8txN4rvGOg-1
+X-Mimecast-MFC-AGG-ID: 3HtegX92MsSc8txN4rvGOg_1779028037
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BB15E180044D;
+	Sun, 17 May 2026 14:27:16 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.44.48.33])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 63FF330001A2;
+	Sun, 17 May 2026 14:27:12 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+To: netdev@vger.kernel.org
+cc: dhowells@redhat.com, Michael Bommarito <michael.bommarito@gmail.com>,
+    Marc Dionne <marc.dionne@auristor.com>,
+    Jeffrey Altman <jaltman@auristor.com>,
+    Eric Dumazet <edumazet@google.com>,
+    "David S. Miller" <davem@davemloft.net>,
+    Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+    Simon Horman <horms@kernel.org>, linux-afs@lists.infradead.org,
+    stable@kernel.org, linux-kernel@kernel.org
+Subject: [PATCH] rxrpc: Fix the ACK parser to extract the SACK table for parsing
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -0.0 (/)
-X-Authenticated-User: me@berkoc.com
-X-Sender-Address: me@berkoc.com
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <3794759.1779027814.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+From: David Howells <dhowells@redhat.com>
+Date: Sun, 17 May 2026 15:27:10 +0100
+Message-ID: <3794930.1779028030@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-pcan_usb_fd_decode_buf() walks records inside the bulk-in URB by reading
-the 12-byte struct pucan_msg header from the front of each record. The
-existing loop only verifies that msg_ptr is below msg_end before
-dereferencing rx_msg->size and rx_msg->type, which means a short URB
-that contains between 1 and 11 bytes of payload causes a two-byte
-out-of-bounds read of the rx_msg->size and rx_msg->type fields. The
-fragment check that follows compares the announced size against msg_end
-but lands after the header has already been read.
+    =
 
-A malicious USB device that pretends to be a PEAK-System PCAN-USB-FD
-adapter (USB IDs 0c72:0012, 0c72:0014, 0c72:0016) can keep returning
-short bulk-in URBs and trigger this read on every poll cycle, leaking
-adjacent slab content via the dispatched decode paths or simply
-producing a KASAN slab-out-of-bounds report.
+Fix modification of the received skbuff in rxrpc_input_soft_acks() and a
+potential incorrect access of the buffer in a fragmented UDP packet (the
+packet would probably have to be deliberately pre-generated as fragmented)
+when AF_RXRPC tries to extract the contents of the SACK table by copying
+out the contents of the SACK table into a buffer before attempting to pars=
+e
+it.
 
-Apply the pattern from commit 6fe9f3279f7d ("can: gs_usb: gs_usb_receive_bulk_callback(): check actual_length before accessing header"):
-require that at least sizeof(struct pucan_msg) bytes remain before each
-iteration, and reject records whose announced size is smaller than the
-header itself.
+AF_RXRPC assumes that it can just call skb_condense() and then validly
+access the SACK table from skb->data and that it will be a flat buffer -
+but skb_condense() can silently fail to do anything under some
+circumstances.
 
-Identified by static analysis. No KASAN trip available without specific
-PEAK CAN-FD hardware.
+Note that whilst rxrpc_input_soft_acks() should be able to parse extended
+ACKs, the rest of AF_RXRPC doesn't currently support that.
 
-Fixes: 0a25e1f4f185 ("can: peak_usb: add support for PEAK new CANFD USB adapters")
-Cc: stable@vger.kernel.org # 4.0+
-Signed-off-by: Berkant Koc <me@berkoc.com>
+Further, there's then no need to call skb_condense() in rxrpc_input_ack(),
+so don't.
+
+Fixes: d57a3a151660 ("rxrpc: Save last ACK's SACK table rather than markin=
+g txbufs")
+Reported-by: Michael Bommarito <michael.bommarito@gmail.com>
+Link: https://lore.kernel.org/r/20260513180907.2061972-1-michael.bommarito=
+@gmail.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Jeffrey Altman <jaltman@auristor.com>
+cc: Eric Dumazet <edumazet@google.com>
+cc: "David S. Miller" <davem@davemloft.net>
+cc: Jakub Kicinski <kuba@kernel.org>
+cc: Paolo Abeni <pabeni@redhat.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: netdev@vger.kernel.org
+cc: stable@kernel.org
 ---
- drivers/net/can/usb/peak_usb/pcan_usb_fd.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ input.c |   22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/can/usb/peak_usb/pcan_usb_fd.c b/drivers/net/can/usb/peak_usb/pcan_usb_fd.c
-index eb4f5884ad73..63d93f90165c 100644
---- a/drivers/net/can/usb/peak_usb/pcan_usb_fd.c
-+++ b/drivers/net/can/usb/peak_usb/pcan_usb_fd.c
-@@ -726,7 +726,7 @@ static int pcan_usb_fd_decode_buf(struct peak_usb_device *dev, struct urb *urb)
- 	/* loop reading all the records from the incoming message */
- 	msg_ptr = urb->transfer_buffer;
- 	msg_end = urb->transfer_buffer + urb->actual_length;
--	for (; msg_ptr < msg_end;) {
-+	while (msg_ptr + sizeof(struct pucan_msg) <= msg_end) {
- 		u16 rx_msg_type, rx_msg_size;
- 
- 		rx_msg = (struct pucan_msg *)msg_ptr;
-@@ -738,8 +738,9 @@ static int pcan_usb_fd_decode_buf(struct peak_usb_device *dev, struct urb *urb)
- 		rx_msg_size = le16_to_cpu(rx_msg->size);
- 		rx_msg_type = le16_to_cpu(rx_msg->type);
- 
--		/* check if the record goes out of current packet */
--		if (msg_ptr + rx_msg_size > msg_end) {
-+		/* check if the record fits inside the current packet */
-+		if (rx_msg_size < sizeof(struct pucan_msg) ||
-+		    msg_ptr + rx_msg_size > msg_end) {
- 			netdev_err(netdev,
- 				   "got frag rec: should inc usb rx buf sze\n");
- 			err = -EBADMSG;
--- 
-2.47.3
+diff --git a/net/rxrpc/input.c b/net/rxrpc/input.c
+index 24aceb183c2c..0c15ebf19eae 100644
+--- a/net/rxrpc/input.c
++++ b/net/rxrpc/input.c
+@@ -963,21 +963,34 @@ static void rxrpc_input_soft_acks(struct rxrpc_call =
+*call,
+ 	struct rxrpc_skb_priv *sp =3D rxrpc_skb(skb);
+ 	struct rxrpc_txqueue *tq =3D call->tx_queue;
+ 	unsigned long extracted =3D ~0UL;
+-	unsigned int nr =3D 0;
++	unsigned int nr =3D 0, nsack;
+ 	rxrpc_seq_t seq =3D call->acks_hard_ack + 1;
+ 	rxrpc_seq_t lowest_nak =3D seq + sp->ack.nr_acks;
+-	u8 *acks =3D skb->data + sizeof(struct rxrpc_wire_header) + sizeof(struc=
+t rxrpc_ackpacket);
++	u8 sack[256] __aligned(sizeof(unsigned long));
++	u8 *acks =3D sack;
+ =
+
+ 	_enter("%x,%x,%u", tq->qbase, seq, sp->ack.nr_acks);
+ =
+
+ 	while (after(seq, tq->qbase + RXRPC_NR_TXQUEUE - 1))
+ 		tq =3D tq->next;
+ =
+
++	/* Extract an individual SACK table.  A normal SACK table is up to 255
++	 * bytes with 1 ACK flag per byte, but an extended SACK table can be up
++	 * to 256 bytes with up to 8 ACK/NACK flags per byte.  The ACK flags go
++	 * across all bit 0's then all bit 1's, then all bit 2's, ...
++	 */
++	memset(sack, 0, sizeof(sack));
++	nsack =3D umin(sp->ack.nr_acks, 256);
++	if (skb_copy_bits(skb,
++			  sizeof(struct rxrpc_wire_header) + sizeof(struct rxrpc_ackpacket),
++			  sack, nsack) < 0)
++		return;
++
+ 	for (unsigned int i =3D 0; i < sp->ack.nr_acks; i++) {
+ 		/* Decant ACKs until we hit a txqueue boundary. */
+ 		shiftr_adv_rotr(acks, extracted);
+ 		if (i =3D=3D 256) {
+-			acks -=3D i;
++			acks =3D sack;
+ 			i =3D 0;
+ 		}
+ 		seq++;
+@@ -1117,9 +1130,6 @@ static void rxrpc_input_ack(struct rxrpc_call *call,=
+ struct sk_buff *skb)
+ 	    skb_copy_bits(skb, ioffset, &trailer, sizeof(trailer)) < 0)
+ 		return rxrpc_proto_abort(call, 0, rxrpc_badmsg_short_ack_trailer);
+ =
+
+-	if (nr_acks > 0)
+-		skb_condense(skb);
+-
+ 	call->acks_latest_ts =3D ktime_get_real();
+ 	call->acks_hard_ack =3D hard_ack;
+ 	call->acks_prev_seq =3D prev_pkt;
 
