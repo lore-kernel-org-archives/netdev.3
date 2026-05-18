@@ -1,144 +1,199 @@
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E2B2745E
-	for <netdev@vger.kernel.org>; Mon, 18 May 2026 13:47:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB100481226
+	for <netdev@vger.kernel.org>; Mon, 18 May 2026 13:54:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.46
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779112046; cv=pass; b=QRIvLdLg5MJ6v5NkysrnPQFq8gkczMToRZ+gatAALEUza16yvPUAWFG6tpmUoocuG9FjU1Ye4QbBr72FNydkzydxT7SNV2qRA8GfnyMtd5G4Q5QQY174C9zTxHXtAHuD+4hTTXIUbNdcxzGRcWMlz9icX07Xt0/t3hylGyIQ0+U=
+	t=1779112444; cv=pass; b=vA0obTB2Ls1oqDatGmrLEjQROuPQzrbbko+yoCrjXFpS3OLxl/pRgxNCT4secwQh1qWV1njMmSMXxCqzOFgZmvkWSJmVO0BuIQNBOVMA/NHabhdySvKpk9F99r4gW8nb3hCqFMGMYU/S0jn2QS4ntCWB7pfYDBNzR+DWYWqghYo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779112046; c=relaxed/simple;
-	bh=AiBfizs3XqGgxWmZEFEssJiEOWWFoex2tZo1PsCQ90c=;
+	s=arc-20240116; t=1779112444; c=relaxed/simple;
+	bh=TmD28ZM4swHtfnvSp7BEh2wcnOTb7f4zOQZTyYX2jGI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rJ1lbq8TKY0V/axZe/ZEnEigvu7DU/cSkIBa3M/gBetXqo3hi4CUYjuN6aRqHQTB6q9Xn0Z21Wcri3IqIbWXhO4NMbgyrnFkvztlyrNIQZ5XeOSNPoFlnCr1fqAL+k0CNdTsOkMTk0SCvYBX/te7MdGWfME577Ew+0tlz7mgTyg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20251104.gappssmtp.com header.i=@mojatatu-com.20251104.gappssmtp.com header.b=h1bR3dWi; arc=pass smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	 To:Cc:Content-Type; b=EspyRkr4Q54cRJFqnmf+pas82d6TP6CJ3Sjmbom21ZLhMubfu3/tqwL2XAmKW0ifS+mheW0Prw+TqRfE1YVGoiLxN8RXN5PPHvrw/VmFbEN8w/Aiy99tE+vVn9BGgCgVrWNhFaFljlGeAo0o+GZK5lkQJFQ1JOgllhGTunQEqic=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bzKagooh; arc=pass smtp.client-ip=209.85.167.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mojatatu-com.20251104.gappssmtp.com header.i=@mojatatu-com.20251104.gappssmtp.com header.b="h1bR3dWi"
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-83ec36a13e9so927575b3a.0
-        for <netdev@vger.kernel.org>; Mon, 18 May 2026 06:47:24 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779112044; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bzKagooh"
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5aa1b2327c8so2206629e87.0
+        for <netdev@vger.kernel.org>; Mon, 18 May 2026 06:54:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779112441; cv=none;
         d=google.com; s=arc-20240605;
-        b=ivGP7oLTUqRoLh8Za2HVno65fVmdTW6aBol2sT7BhCvx2fLQEOIWfZpCRQnm3l4fRv
-         dTf12zPHkXGhtPIME7VjEFsOKdfrgl5B1/HtcNeF26bYejz2u4JQqjyg26fIfx5eq7xu
-         t2jg7fiDb2FmVGJ4LdpIAwtNKuMwoxfES7022FD3Hu5U1S7PIbN++VyjPotAgAjVDKy9
-         wohAS4ejMbVzXQt3LyJjvVJfmfs5Bq9BjTnJVESkBOtJ4hn+pk1OOzcV/vdhsaTYJ3nG
-         4tcyuZsoraY2rJoxx6I0Qif00idrDmLE/VPZw1NkRM4swY7BGDDqUjD1DOqJ4wXtqomt
-         oAZw==
+        b=cshgOgZtLzz+gduOmMTqOJh2SFCJIfm4faQFX0gJfPqBQfytGpFVvcSPJZCrG6eUCE
+         yzzQXGU0CDRHCX7InoRJLnseaKpU4Xvz8Jq8loEN7Z+cDOySCjqNhfpzwqzKVSl8b05j
+         VkDajunpt1lOLPrAcgt+S4XOsruUMm8ePLJlrro+0L7nED7nYW05K5HWr/gd3KngtDth
+         pezWkDZ2fyM6qFlEBpL5xM0XWxXiLt1cAAzdrvQ9cN7nE67Pco/cOkSKCpovHRPUgYgq
+         AfDDFj9uQ+/MWD9PrwQvbA0ceOnNtSnv26W8IOkldRxmcDCaT2pIwe/ww7NdlKvUHy2c
+         SwzQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=AiBfizs3XqGgxWmZEFEssJiEOWWFoex2tZo1PsCQ90c=;
-        fh=ecB1J+ACQLZAy3pw+CDnqR5q7+DaSVJ4htLuMCvXIcc=;
-        b=brV5kBKGFD2zm07Ncj0+Lurn+qSVWsPWl9DoHe2qreX9jU/dKDxIu19sCByr3TPD6o
-         1wjP6k/95fkOdCldip1oGaNkT12FRBg/Xr4dFyhH8P2JDEAzmMPdFZFatKBSC5hF2FTs
-         eRWZsSEfuQgLiB1zW8EKe5MbrprCIKUriUhAxYR6bqNVRioT56lsUbbo/2gbuMXezKuD
-         tFTkEspK+EPR+/KVGO5Vx25woy5yp050Uj6KlgNhIM4umH4EaIt6nPyDVe5R2DD+szwU
-         QsbI1BFVLdWI1Q5NBGJp6JfGcuwUmsftuoSlPwt+9oV2/iwW0ioUyU5a3QpHvWrPtOH3
-         LTPQ==;
+        bh=RFk/FYkO4eFAk9o9pHJjJBzIhmqttrEmir/vP3Hc1t0=;
+        fh=vk19+ITFaUffH6mAj+0858R+qKZ5yR/UnqaU9H3I5Rc=;
+        b=AdEC0Uo14CbqvA4ikrB+GhddvRukiIYYyxhSqinv8Cb7FT/vBGp/9mf2g1YAvNJrmt
+         rtNbGwhi2FKo4ZHzhph3lAoanWtbMC52Q14VZMWJU705U7Ays1+aA4uCdy/l8u6fCQFP
+         ymm8twM9OalFpitSZulOV9m22OzAx81jtFY/VgJMCSzRnfo9HaOGung7rojfspr8qfGU
+         lVDqAp/w4VZ3hClQJpjLxJqbf+MsVIAvu1IeEVOTOFqqC+ArrL4WLIqBDH1GXWGJQmyY
+         G0JTC8F64djse12jtmyaOZ9tDBM7u1Rti4+ETetd3RixATWDU9pOlV/rPKEUL9/vetsT
+         voXw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20251104.gappssmtp.com; s=20251104; t=1779112044; x=1779716844; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1779112441; x=1779717241; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=AiBfizs3XqGgxWmZEFEssJiEOWWFoex2tZo1PsCQ90c=;
-        b=h1bR3dWiAeo9opqZMvCxHho1+/0bCcH96Y6KsbYLXpfPeMOm02zeIPXmbybWPWHBsM
-         zCtxD2wT78TX20y6vwGq6SKaHgYJ0mdlDqMaZsFnAY9IRTLrhIdI+EI8ro5eRNPK+/oP
-         lp0aMQkHaLEeK36ij2EuvWYALPwcJItiGAFZU0pkkGLQchPLYwovrd8QmtsUHaJxs1li
-         px0BssMhLp0RMfI3Jkv6koqC+jDpxP9QnZ68Xm66cI7rbeubj5P26hNFkxDILLW45GxH
-         wCuoInU44ulIEJjkcomNa6PBaOr199OydkJKzI0ExmKIJ36r6u5UeeFQZu5CC+kFi0iK
-         txaA==
+        bh=RFk/FYkO4eFAk9o9pHJjJBzIhmqttrEmir/vP3Hc1t0=;
+        b=bzKagoohnB1y/ezP83W/3ILMs/mUsKluFV4HwNPYfwvdUavWnm+JlYMpx9/2x6pR9q
+         RIRHHE1AseLklgY1PGLani02Y4wuxHaJqXrjW7HhkqrtAMWSRwkSdOh9MS568hRekp2C
+         eV8IX2cC7hnPe13jS0TLrmYj8p54Ca01zb86IRvkMV6rvK4Z4bFHRL0uR4pOYXqCRgzC
+         ErIxZGC/cTuRmdU1L3iv4bVbl59kKUFL1Hljt4EEeZwBEuSnnGcb9hVCMNRHNfMQYMnp
+         0WTFnzwVI6jBcRWbeJI5+OrCqxnVsTd4wc5L9Gc05g4j5fdWdpwwShEzFd5QmNeNBrxf
+         R7eQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779112044; x=1779716844;
+        d=1e100.net; s=20251104; t=1779112441; x=1779717241;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=AiBfizs3XqGgxWmZEFEssJiEOWWFoex2tZo1PsCQ90c=;
-        b=ESuUeo622EgXEoq0chMBVIaPUdj6cyThnGScBBlUuRzRfQSY++CNgcQQZRLKzb8ncw
-         e3pUqRxWIKXOXckwjuGka63pUDAj225Q7iZqZ/khHL6pPKi0lUqVmGHHnc1J99tXmFJO
-         M/MTRQ/K78xMGhOPQb/qorPIUXsZgUFyzg2Z1h9aUTtcKX+Sxzft2IHH9qFk4oXerddp
-         27E8TU/z1JYAHCNkGPp2hQwzErCO07HmrotZjBA90sMwSpe9F9k0Sp9WyTrUoWJ82z1T
-         g5nVj5bhd6RV8QCIp1llxHeLtLNTBHFEWdPboQOHeaGqhg6pRI+0WxcWdm+JnCkTtXx/
-         cxqQ==
-X-Gm-Message-State: AOJu0Yy5O6Nni6PZnt3xQ6ntONlGlWUib3GJstAshDMRECPHS11lxN1R
-	0uyE/6cBElQnkZfOz1NGSloF33gpDe4pFw+/iAdwRA5RrHbT9OncpxcwOvE7ocVXj0AFxp2TCAj
-	/yeoL21JsWV9shpCClVlqz9oYYo4jGAXOLPjm6kbk+wYpexvllB4obg==
-X-Gm-Gg: Acq92OGhavivr3Y1bcmvH9QxmPn3d31vk2hKeXKOkxIh3exyiDf60/e8ZxZRB6a8UVA
-	3jQiiKONA+MI2OjKWbLU8wBe4S7GaNzssE2eabtBI+jOCCqXU/6tdHO75bf3Hukraq0X0qDsamG
-	iKBo6OHHu4WyPaT6iuW7MJFbIvVEhPyW6MasUOey3vXxNqACAAPq2wjFzgnWDsFTsyaxZkDgEBy
-	plHHAFr0j7BvJcRZDjqJ16VFc5t6DIiHBOmqYENVqmACVIjWwZeLG7eb/mR05hE4KwpC/8m16mq
-	dbBFHZH3v5OY0gED2Uw=
-X-Received: by 2002:a05:6a00:9502:b0:83a:78ac:edb7 with SMTP id
- d2e1a72fcca58-83f33ab95ddmr15092029b3a.5.1779112044199; Mon, 18 May 2026
- 06:47:24 -0700 (PDT)
+        bh=RFk/FYkO4eFAk9o9pHJjJBzIhmqttrEmir/vP3Hc1t0=;
+        b=WX5jsMNg0xre0N9SN+//bVn29cPtlgO2fPnW/ISKmypJFD6z7HUkYEAlj3WJAAmT9R
+         BqjX6jHYLDMaoWdTQu9rfUW+JEmt6N1IhotnzG+b+5pzPJfMKNPjb27GQx4ebLIjYilK
+         P1GfU/OFAVfwdZhE1ml7X1XDjYemAJYnjmqWZeqXg5N7Ru70edq7E+uI28CqvIDjXMzd
+         v24A7cu04eI5jnu9WH04OiIqE6r/W+KDRG4dcT9rWajHgU6d7d7Az/TlyadJ454dmu3o
+         E4TywA8OpZFGgku3GKoVZeA0FLy7EmAaQ7YfrLRvmglnwitM8OqfbLgghMxS0biU2Wya
+         0qLQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9/RWvUmYOQpSOBJ6THY8lIs5EzW6Y3mrt5DjiNUc0wTKJJzSht8sFLz8L3esnCOF12aA4/iMQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGfZokR+Vy21ba+L8ejFcTBUhrRYs8fM5guWnJ4PUr1dce7w+J
+	IGZBJMds5sdFPyZav6ao4peB5p1WEMBH+5dgS34PyXiUiP1eXKeGH0UfXuTeE9x4i/2eFnBfQyC
+	ZwXgdKZRyTyN23lfnAvyZa/c1bVv4328=
+X-Gm-Gg: Acq92OEp7wYKcHlDWJIXhWAu0zzgy7Uqiwi1VRt2KnrSD2S9xNfkmrgT72XEwEDJKOp
+	UYkVpkF7D7A0Eh2Lw2mK+dwteiaFC/byVZUStR6SHheDIZqFo/eXqJ3/gFKtKweD5ZTqtQLPlV2
+	tuFsYBClGoa5ZfBzuemHYqDzRgyeOCi7yW4QKVm7+M6wfes40t/ZIWbWhHgEDrluhkZrcrkB99k
+	ecdpFlwR2FVOtB9RJt2mZVb3VSNfVx9jCcirwxhXEqwsoYbmSRbdgVzQlcl2BLJN3hZY0egL5+T
+	C0qtNOf0TQ+XnsSIwAJ6Re1qSC3C9ULhJrsgee0=
+X-Received: by 2002:a05:6512:10c9:b0:5a8:6f10:799c with SMTP id
+ 2adb3069b0e04-5aa0e7305demr4625853e87.21.1779112440555; Mon, 18 May 2026
+ 06:54:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260514144747.527175-1-jhs@mojatatu.com> <CAM0EoMkthnGFtsmJgj5ibwuFjKg5s8dGOAkJSXUtH4FytG=qtg@mail.gmail.com>
- <3131c62f-b5c2-4f8e-b2a3-ebb844f800ff@redhat.com>
-In-Reply-To: <3131c62f-b5c2-4f8e-b2a3-ebb844f800ff@redhat.com>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Mon, 18 May 2026 09:47:12 -0400
-X-Gm-Features: AVHnY4LhkZoATVbpS1JQiNqB7Tf9yGEuOwTB_DMnfBy38hJ2OOGQHSvysQbBf-M
-Message-ID: <CAM0EoMkiFap7hARrC9eca4FNdpgXndT9767WpO+2Q2HehWusKQ@mail.gmail.com>
-Subject: Re: [PATCH net v5 0/9] net/sched: Fix packet loops in mirred and netem
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, horms@kernel.org, jiri@resnulli.us, 
-	stephen@networkplumber.org, victor@mojatatu.com, savy@syst3mfailure.io, 
-	will@willsroot.io, xmei5@asu.edu, pctammela@mojatatu.com, kuniyu@google.com, 
-	toke@toke.dk, willemdebruijnkernel@gmail.com, hxzene@gmail.com
+References: <20260518082344.96647-1-kerneljasonxing@gmail.com>
+ <20260518082344.96647-6-kerneljasonxing@gmail.com> <f9606d4b-7ff7-479f-8e73-2e8cc77095fa@kernel.org>
+In-Reply-To: <f9606d4b-7ff7-479f-8e73-2e8cc77095fa@kernel.org>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Mon, 18 May 2026 21:53:22 +0800
+X-Gm-Features: AVHnY4K-swb5msmI4aJefZbnvwlj0XzxaGYnWrFJPaZmGuIjZQLaUMRdNs14Qig
+Message-ID: <CAL+tcoDRSpVsiCym+DYsGLBGrdEuim7AZqyBTHYzd-OSBki5-Q@mail.gmail.com>
+Subject: Re: [PATCH net-next 5/6] bpf: enable bpf timestamping rx in TCP layer
+To: Jesper Dangaard Brouer <hawk@kernel.org>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, willemb@google.com, kuniyu@google.com, 
+	ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, martin.lau@linux.dev, 
+	eddyz87@gmail.com, memxor@gmail.com, song@kernel.org, yonghong.song@linux.dev, 
+	jolsa@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me, 
+	Simon Sundberg <Simon.Sundberg@kau.se>, =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>, 
+	netdev@vger.kernel.org, bpf@vger.kernel.org, 
+	Jason Xing <kernelxing@tencent.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, May 18, 2026 at 4:14=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wro=
-te:
+On Mon, May 18, 2026 at 9:01=E2=80=AFPM Jesper Dangaard Brouer <hawk@kernel=
+.org> wrote:
 >
-> On 5/15/26 10:26 PM, Jamal Hadi Salim wrote:
-> > On Thu, May 14, 2026 at 10:48=E2=80=AFAM Jamal Hadi Salim <jhs@mojatatu=
-.com> wrote:
-> >>
-> >> This patchset adds a 2-bit per-skb tc_depth counter that travels with
-> >> the packet. The existing per-CPU mirred nest tracking loses state
-> >> when a packet is deferred through the backlog or moves between CPUs
-> >> via XPS/RPS. A per-skb field covers both cases.
-> >>
-> >> Patch 1 adds the tc_depth field in a padding hole in sk_buff.
-> >> Patches 2-3 revert the check_netem_in_tree() fix and its tests,
-> >> which broke legitimate multi-netem configurations.
-> >> Patch 4 uses tc_depth to stop netem duplicate recursion.
-> >> Patch 5 uses tc_depth to catch mirred ingress redirect loops.
-> >> Patch 6 fixes the infinite loop in the mirred egress blockcast case.
-> >> Patch 7 fixes an skb leak in early return error scenarios in tcf_mirre=
-d_act
-> >> for redirect (caught by Sashiko [1]).
-> >> Patches 8-9 add mirred and netem test cases.
-> >>
-> >> Changes in v5:
-> >> - Fix issues in patches 6 and 7 found by Sashiko
-> >> - Set limit (1000) in root qdisc in test 8c17 to avoid flakiness (Paol=
-o)
-> >>
+>
+>
+> On 18/05/2026 10.23, Jason Xing wrote:
+> > From: Jason Xing <kernelxing@tencent.com>
 > >
-> > Sashiko has found some issues - we'll be sending a v6.
+> > Add two if statements to accurately isolate bpf timestamping and so
+> > timestamping. They can work respectively.
+> >
+> > As to so_timestamping, only add a loose condition via report flags
+> > to avoid duplicate strict checks that is done in tcp_recv_timestamp()
+> > and performance impact. If the loose condition is hit,
+> > tcp_recv_timestamp() is able to handle the exact case and doesn't
+> > hamper the existing timestamping feature.
+> >
+> > Make it work in TCP protocol.
+> >
+> > Signed-off-by: Jason Xing <kernelxing@tencent.com>
+> > ---
+> >   net/ipv4/tcp.c | 14 ++++++++++++--
+> >   1 file changed, 12 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+> > index 21ece4c71612..64c69bb3578a 100644
+> > --- a/net/ipv4/tcp.c
+> > +++ b/net/ipv4/tcp.c
+> > @@ -2949,8 +2949,18 @@ int tcp_recvmsg(struct sock *sk, struct msghdr *=
+msg, size_t len, int flags)
+> >       release_sock(sk);
+> >
+> >       if ((cmsg_flags | msg->msg_get_inq) && ret >=3D 0) {
+> > -             if (cmsg_flags & TCP_CMSG_TS)
+> > -                     tcp_recv_timestamp(msg, sk, &tss);
+> > +             if (cmsg_flags & TCP_CMSG_TS) {
+> > +                     u32 tsflags =3D READ_ONCE(sk->sk_tsflags);
+> > +
+> > +                     if (cgroup_bpf_enabled(CGROUP_SOCK_OPS) &&
+> > +                         SK_BPF_CB_FLAG_TEST(sk, SK_BPF_CB_RX_TIMESTAM=
+PING))
+> > +                             bpf_skops_rx_timestamping(sk, &tss,
+> > +                                                       BPF_SOCK_OPS_TS=
+TAMP_RCV_CB);
 >
-> I'm likely too late here and I haven't looked into the details for this
-> series, but please be aware that sashiko(gemini) has a tendency to point
-> out pre-existing issues in surrounding code, sometimes hiding quite well
-> the fact that the issue is pre-existing. The general guidance for such
-> cases is to address the issue(s) separately with follow-ups.
+> Does this mean I can enable timestamp reading per cgroup?
+
+Yes, I think so, but I didn't try. One of the natures of sockopt
+feature is supporting cgroup attach.
+cgroup_bpf_prog_attach()/cgroup_bpf_link_attach() is probably
+something that you're looking for.
+
+IIUC, you can attach the prog onto the cgroup where all the sockets
+are set using the bpf timestamping function. So the current impl is
+cleaner and has better isolation (to filter out those unmatched
+flows).
+
 >
+> In Simon's netstacklat[1] tool we are forced process all RX timestamp
+> (hooking fentry/tcp_recv_timestamp), and then we have a BPF filter[2] on
+> the cgroup IDs that we are interested in (which is a significant
+> overhead, as this is deployed at Cloudflare production scale).
 
-It's asking for something not very complex - so we'll just add it and
-send for this time. Next time we'll look into doing followup patches.
+I can feel the pain when filtering in this kind of relatively hot
+path, which is what I'm trying to avoid internally. What I've done in
+production (to cover those old kernels) is to just let the kernel
+print the information, that's it, and there is an agent continuously
+gathering the data, doing the match and computing latency. But it's
+overall complicated.
 
-cheers,
-jamal
-> /P
+Many thanks here, I'm always interested in hearing more useful and
+real requirements and fancy ideas on how to monitor the latency :) Now
+I'm still struggling to port the internal functions to bpf
+timestamping.
+
+Thanks,
+Jason
+
+>
+>
+> [1] https://github.com/xdp-project/bpf-examples/tree/main/netstacklat
+>
+> [2]
+> https://github.com/xdp-project/bpf-examples/blob/main/netstacklat/netstac=
+klat.bpf.c#L484-L488
+>
+>
+> > +                     if (sock_flag(sk, SOCK_RCVTSTAMP) ||
+> > +                         tsflags & SOF_TIMESTAMPING_SOFTWARE ||
+> > +                         tsflags & SOF_TIMESTAMPING_RAW_HARDWARE)
+> > +                             tcp_recv_timestamp(msg, sk, &tss);
+> > +             }
+> >               if ((cmsg_flags & TCP_CMSG_INQ) | msg->msg_get_inq) {
+> >                       msg->msg_inq =3D tcp_inq_hint(sk);
+> >                       if (cmsg_flags & TCP_CMSG_INQ)
 >
