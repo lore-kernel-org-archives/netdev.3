@@ -1,279 +1,138 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f201.google.com (mail-qk1-f201.google.com [209.85.222.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A003E1207;
-	Mon, 18 May 2026 08:57:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.7
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779094676; cv=fail; b=IznrVBnDNfMbbt3RtT+f11ryz7YwboJoOb6IDFQQ3847a6pvBHb0pUyGBC+fjmSWbvqYjQ5clECkrXiGMRUwh0LCMQIRNXSmp0xjgEArq/bJGk8b0RFXi38188Rna8IN4UW9IVcSolf3ZpcoAXBuH2gIrQy+pps7lwf1n5Er8Uo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779094676; c=relaxed/simple;
-	bh=WMHhJh+wSBZdhmLlhq8ukbGcO04R45kHS8le2qXYjIc=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=X6HCEx7SSP1duy1pLqzUQJiB8FMIPrY8NcFTSm7lkcXdl7C+6Q7LbtWZUjDK2Q72L5Mh/9A67YegS38ONzo/xFR9L9sH3FdiQ0hxjrcJqBCT3GJPa6tVukxH9Y/3ScEDu2bYmNY1LMizA67AP5Rmgal+CWNTwWmICSvXwQmnnh4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CBPe0BRx; arc=fail smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333ED3E4C80
+	for <netdev@vger.kernel.org>; Mon, 18 May 2026 09:05:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779095122; cv=none; b=lBlYGdusw/TIIj7okIECdYcK8rfaq8EGLqaNw767m/35KphbYhmOaCGC/3yeinV+R5L44eJXORYw44XOhfIZigjbj9ydDohvxeDzs/y9pIDdin++dA7wau42NAz3ZQ5Hl2nUqp6R1WPD6hVJT9u9tH6QmdqPA+90+lbxIM37mYQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779095122; c=relaxed/simple;
+	bh=fwAu8h03Rocz1H1sKQq7KpBIY+HRAIy1usLgxYgojGc=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=nvC7zSfpdsnzxRqlW8mvG7hzHrAjii8q8jDuZUOru4RUPlPA/1qLy/IA8AZeM/QQAqGX0K5vj93T+NlEE2DT4L5CkB9X+VqVGA1EOPbU1X+g2K8o5bGRB+YiK4AZgzPov/TuM1ClvfDqzwOAVJpI1p5Lu0nSFBqZiRiEVanBRWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=t7ViEXAd; arc=none smtp.client-ip=209.85.222.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CBPe0BRx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779094673; x=1810630673;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=WMHhJh+wSBZdhmLlhq8ukbGcO04R45kHS8le2qXYjIc=;
-  b=CBPe0BRxvekppioPC5rKnfGVbH5/zbddrHzx5J44XAyyd8cF8swpBiiB
-   XiGd8qq+73GfCDNXC4OB8jPVFL3e7S9DbTvFMOKP/zLz3dFCj56y1zpE/
-   weWA2smt5DuBdhzNI5eqOTW/yhl/vZBF1vqZkvNZ9c4/atcWBwOVsvwjC
-   CcnHtlEccwe+S1cjoOUbZDUBfLdh6fBp4Z8UOEx6eZgQSa6ALVNAromfv
-   bqWT0d91fx3327oY4oBlqsjj523W2S9m4QgKlt59bUJCfETKoEfGuethC
-   kEni1UlGfNM0dTSMYzP1p09BVTAxW/ULp0Zy6Gijj5Smmtfnj6nI8Xc5V
-   Q==;
-X-CSE-ConnectionGUID: Llt/TvAYSpmOp2uztYSXiw==
-X-CSE-MsgGUID: IgHdlLabR3ayaUW/XTPC4Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11789"; a="105403147"
-X-IronPort-AV: E=Sophos;i="6.23,241,1770624000"; 
-   d="scan'208";a="105403147"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 01:57:53 -0700
-X-CSE-ConnectionGUID: AKZr62Q3Rx2y03FjolAlBw==
-X-CSE-MsgGUID: 60Q28BheQSWOK9ez00xqFQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,241,1770624000"; 
-   d="scan'208";a="244342777"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 01:57:52 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 18 May 2026 01:57:52 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Mon, 18 May 2026 01:57:52 -0700
-Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.25) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 18 May 2026 01:57:51 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ts2R+dZaXoH/WIkW5/2Vovmvlv4SA3OQn4nud61qh9iZ+NaaA48KswUTGJ7ml6uoWQfFLfQXuMB2jHj+CjEemoYO4zG/1LXMIpHLqY1lhIFCVbCZneknUa0e9ONy8FCRz1Bw/CoT20z84Z9qnjGUAdEM0xi9C7oOR6urlds15LYBhGNUqdBK5huySrzsg88lvLgtIT0uVkCh27YWq7ZIJ2nENtthF+TqQHvo2qUm6H7SSvflOUTEuzWJChrMPGrooLBFeenW4GEb/CdP6YGxG4CVxAbj6B2Ue9d+Bc43uhMNaTihtjlCNyNAGIeAm3DQVDXLS4ykJZHbBlP0rTvORQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AMwp5k8Sx4nn28ffRAmgAOBvYdvrZjYkhsJdT3wRN2o=;
- b=UbkLpojur25MDTBAWEm35TCVQP73dNplt5RKsCmMsqTMVwwvsvikCjhUBtRdZNYsA7Y4tm06L7PTyD/S/XL0jvQMO0yIY6Iya1WXxRra4XhVob0noZgM+RZ5PgO+45tqqjs3oYtJZiZqRTNKoDKFoueorP+X0/tK8JeVfN6ZunI9oMxFh11WnSuBVbixl95H1Kda/FH19b14H7BUkBtMIVOlJmydweAFzi0PxpVP1r6gx1tvo0EjyF0ZLf5lNKnUW7sZhzXLqwrWdrxo8yQyVHSaPtmqzZjvX2Y/dPANjljXb+COt/7k70ti56doM3pRwlGK9gnsQOsGGsvDKkxGEg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA3PR11MB8986.namprd11.prod.outlook.com (2603:10b6:208:577::21)
- by CY5PR11MB6283.namprd11.prod.outlook.com (2603:10b6:930:21::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.24; Mon, 18 May
- 2026 08:57:49 +0000
-Received: from IA3PR11MB8986.namprd11.prod.outlook.com
- ([fe80::e6f0:6afb:6ef9:ab5c]) by IA3PR11MB8986.namprd11.prod.outlook.com
- ([fe80::e6f0:6afb:6ef9:ab5c%5]) with mapi id 15.21.0025.020; Mon, 18 May 2026
- 08:57:49 +0000
-From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
-To: Tariq Toukan <tariqt@nvidia.com>, Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "Andrew
- Lunn" <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>
-CC: Jiri Pirko <jiri@resnulli.us>, Simon Horman <horms@kernel.org>, "Jonathan
- Corbet" <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, "Saeed
- Mahameed" <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Mark Bloch
-	<mbloch@nvidia.com>, Vlad Dumitrescu <vdumitrescu@nvidia.com>, Daniel Zahka
-	<daniel.zahka@gmail.com>, David Ahern <dsahern@kernel.org>, "Nikolay
- Aleksandrov" <razor@blackwall.org>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-doc@vger.kernel.org"
-	<linux-doc@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-rdma@vger.kernel.org"
-	<linux-rdma@vger.kernel.org>, Gal Pressman <gal@nvidia.com>, Dragos Tatulea
-	<dtatulea@nvidia.com>, Jiri Pirko <jiri@nvidia.com>, Nikolay Aleksandrov
-	<nikolay@nvidia.com>
-Subject: RE: [PATCH net-next 1/2] devlink: add generic device max_sfs
- parameter
-Thread-Topic: [PATCH net-next 1/2] devlink: add generic device max_sfs
- parameter
-Thread-Index: AQHc5fAqyBv8g4eHK0GeZOOg2rKOH7YTfNQA
-Date: Mon, 18 May 2026 08:57:49 +0000
-Message-ID: <IA3PR11MB89862198768E41FCA4A1FADDE5032@IA3PR11MB8986.namprd11.prod.outlook.com>
-References: <20260517112700.343575-1-tariqt@nvidia.com>
- <20260517112700.343575-2-tariqt@nvidia.com>
-In-Reply-To: <20260517112700.343575-2-tariqt@nvidia.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA3PR11MB8986:EE_|CY5PR11MB6283:EE_
-x-ms-office365-filtering-correlation-id: 21765de3-0d90-42c6-1e1d-08deb4bb8986
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014|38070700021|22082099003|18002099003|56012099003|4143699003|11063799003;
-x-microsoft-antispam-message-info: 34/HGa37W4HE72+TA7+TgI9wyYA4Zzul4bU6eXMlRQ+49WH4qrXDFITuiu+aEAg/F6KegF7CKkubcUf25r1Gfer669Dbc+ErK1nMSGkGsXnpVwZR6HQGtpoXwMewduTy4TY+yuDBWWRDlrzwxAn96yBRUbI7ed++bbnoat74p+OiqSKcKtQHbxmbSu4dlhOLuJt//hKjH9raBk0J39jLJ7TiFwgL4q+9Ym38oyZqgc4VPIQe7I6reGhdXnQ9iPT53g+VufuIH/DClFBQDcyn1gCarcDjoLTYKjWyuzW5qjvxZs3p/N3P11YGiM5P0teXGEez7NSAcEGSIRNPiWDrX1Buufg96jK1z5LKeYO48wPWGq7QRRo5G1sSL+iE8iGbMoDupDORUU/ymLVAE9SeZOd4XrscC75jdJZV42rUQiKg3V3KfARmBslZ08qGji8Gf6yncb1zhNse8EndRSRPkuJ8l+T8TkAAdfnHU69ScKmxFpE0gxKWkJEiyv1447txFTRirXONuKoxL88JaA2jBRh736DBZ2AYtnQ4pM4lXkX37GIN9MXziO3o4W40cCl6CvawKMPFYdZ+ABNjOP/PiG3odYqvqjrUr78jZ9lMccHXuzjvntALYb4YVUlWzTmdZbiTwCbHyoyA/NDo6RcgGHXv7awRQKbBE2/sW4qfQp37w9VSHLM2TNCMWUustkeKEJ+032MWd3XRY6s/cY7z7ZW7Cb59S/VF0+3G37LQYTLRHMAK/pq68I6qoOMnOCUs
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB8986.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(38070700021)(22082099003)(18002099003)(56012099003)(4143699003)(11063799003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?hGoQI22jpwwrvAefzyrt3JfYyT4LWHcocbu7TLmRE82YOE6ntF+LaLBhREfd?=
- =?us-ascii?Q?dlVZWQoLVRBoMLYFstRJtVdBASYyzZsaU5YRcO0jB6aQbCrOO9WUGw/aXf65?=
- =?us-ascii?Q?PiXPdKxvhoDFXwBPSyLfjYqvLGNxvipbAbQNAOgntXw2kGLchBC3jJ1aKFv2?=
- =?us-ascii?Q?SEluz+GdwPWUpz3ec1Z+xZKPzFb080h3AWMAdrLi33TdAhtt1b6wUKrFYdzw?=
- =?us-ascii?Q?UlodvkGy3ncUu2ckxr0hbr6IGf8PpWO2Ougpfr9OOlmn17LuOyNSekKYqQYL?=
- =?us-ascii?Q?K5sHCvgM2eKs2ymN1rgeL7aufA4Sp3lyZ6ozVjV/BJ6d1J6bIjKZIqDZSeK/?=
- =?us-ascii?Q?23iwVDlR4qOSuvzgYCwQFhFXtoyNL/cM7jlGnKsTSZwFZF3GKQ2vYI0Vkta8?=
- =?us-ascii?Q?WGE10NPXHSF2ARnizztR0em26MDRngVm5sr1sOzFp1spa6baxnP2xCBVMcfk?=
- =?us-ascii?Q?WuRD4McuO0qU0igk8Qs8IR8O/+9v/uGAkrXC0veYdFD3jhp107at77gX5+At?=
- =?us-ascii?Q?xXUwOGHt0jM5YUSUFjqQmF34S4iH1tczkkCogDFS1SHF5pvA1wOdXIavY9gC?=
- =?us-ascii?Q?aZeuJ00jKansq+Hs7P3xeA1YSNNjnqehfHhS4CFTNZvWIwhxj23pgv6W+ET2?=
- =?us-ascii?Q?4N3JfGzBeKYiGYDQumGGe1qO5VlkRM5d6Z7Kho+Qg3aVTTZiJp6+z739U7Z9?=
- =?us-ascii?Q?mTvEQ5lHA5QpmbcXlDLrZDT1oTBoOz0Fa1CEAUjwVaHR6ST75yurwJ7tTiUD?=
- =?us-ascii?Q?CjrFnQ/Y7nG18Nc4IFN0nS/3hCOwg6oW05UUt1Jq6eB5bdoyyMh8ZsNG+1Jx?=
- =?us-ascii?Q?QSzWAvaZ1BmlPIg+EQEb+OzU4IX/WGj2H4zTh/J/rlbV/GMSL5bRleVJcH8y?=
- =?us-ascii?Q?gdCKG7ZkUvwU2WmC/wTYEzDHQjJ/ydrjZaWR6lxObQd5S8GYalUQSVQcyfF0?=
- =?us-ascii?Q?dQQuvq0Q+J7lbgVsG6Z6TGnS7qHo5j/pIwJpI3Udq4xzc1ysgQIqbHEvj19a?=
- =?us-ascii?Q?Jyi0gZ2ZbLL+b/vMzfAJl7/J/afPPyOnn7pFdnkVz3C3iK0kDmFRktgoOIeX?=
- =?us-ascii?Q?FELujJKhmUHCNDd54q731I0dh+K2nApDdL/4LFUMJw+cXGWw5VnivaZm686x?=
- =?us-ascii?Q?yXw6y7NmAct+8w3ZmMgezIeCYHbPympXuK8Fi/KrnrNrdV1O0YlhH1kMXJwg?=
- =?us-ascii?Q?Lmd+ORFd0D6cm+vyF5pCYYf6dSQs/KRNnJEO2aQqddef8nTKIwUCv8ZNT7ow?=
- =?us-ascii?Q?Ekq1cp/8X4jb/JHfjyesM+e0NAqgAUG+Vi9A/Qc0NwrGN2EbGlPdrH4391ty?=
- =?us-ascii?Q?NaSZvUxmBFSJdhT81ZSuSNWKhziRCy/qXSasq9XWYawKeYhcfSfAbxwu9pjN?=
- =?us-ascii?Q?8Hk5Al499vjhX0lqYmqIJI43nMC+QIuA2eH7jhFiQpBW8/eI81aP40IXM3fY?=
- =?us-ascii?Q?PBe4oChTL0L6g53ikouJFoQGt/q5XNY/AgT6Nf5esjof6Ozbo5+COX+aRRCe?=
- =?us-ascii?Q?5PxNb5eniCq9S0pSoNw4iH7ktHBGiDp5OVOOLRnwPF2aDrO+0mK+KIr2F+se?=
- =?us-ascii?Q?ntqzPvfHQS8OFLBG2C6nS5Ru+kFucud1Fux8caj351ZH3KJ1mrOn7jCIW/oA?=
- =?us-ascii?Q?5CxqO4e9V4DgSCkP6C5WaU2/pOgSsu1yfECAJHOom+dzzYpmHXTnsaWyTlIN?=
- =?us-ascii?Q?xTOV/J1bLQk7k5cbqBbwlB6WHEE+lw4UMZwygAoN3imP2VqDZbDdszzB6gnE?=
- =?us-ascii?Q?2+L18UY3RTOuFkbuGxxbL0Y/rAuQMi4=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="t7ViEXAd"
+Received: by mail-qk1-f201.google.com with SMTP id af79cd13be357-90f03c426e7so360463685a.0
+        for <netdev@vger.kernel.org>; Mon, 18 May 2026 02:05:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779095120; x=1779699920; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=UjWgmV3hq9V0Tl2MHTjAbAptzddCOf4e8Kblv8uH7iA=;
+        b=t7ViEXAdIPBwRDTJ66XgIMESZlqEzsFgu9qG5RF4FBWD8qdVIsMe6nrk5pB+kAyJ+x
+         nrMwmKfh6OUeWUj4Spvbw7j6QjktJmXP4DqGvEmN02klYLtl5Lw2/XPCADmIleB2WyZG
+         HOrLVh3Wneh3/BMIOxjOjmdrk6XUDTg4TEhNdn/PbMzfF0s0hYmrA+KvLu5rqpptvVhw
+         32Z1dJO9S+Fq2sTu/c5ntXu3mq6ITOcS1fyAudvN4mkq53Zx/Uu6J5EMLg81z2TVapbh
+         YVdKdBjFt9971pUl31FmE03enLKkuGH5WjebEyyf1cZY1dSeY+n2OzV4BGnApEfHSRkM
+         82gg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779095120; x=1779699920;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=UjWgmV3hq9V0Tl2MHTjAbAptzddCOf4e8Kblv8uH7iA=;
+        b=lQf9ZgNSvlB0TYMsz5nSrsdK49FViPdoiWGL5BvAfWF6CNkLYfS+anRIkFE/Tk6Q+B
+         Bv2o8t/sXOa8zBdgsRLzXlMtRdAFyhPP/4oRtr5YLioN5w3Hbpnshn1wczUsY5OrRzJr
+         HoU8sRN+dJmGUqvy2hfNWmSZXJOANSzXsaT7DjogutlKQr1UQmGIcEEnajNrXMxI675l
+         E2wDuyGzzU9SojN97nDc1Fu9bjwta0/X1DJ0BfxV0//QHN/NsBrDibKtoIYNa5uIvDnz
+         vNCwCo9VhvgdngjwdNBhRWp/0zOzi0Q2yo+J0Zg2mPgKNHf4mImzxT2nMDLFeG68m1gn
+         nu1w==
+X-Forwarded-Encrypted: i=1; AFNElJ9rl2vz0PEKgHWrwZSZj9/FQkB+KB7eIeWxgmG/90h1Sy+GwOL0f4CuBuRkFkcGBaF7coWprSY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyFPZ5MnsalJR1XAOGtnlCcyJq8sgeSJml3IpiJScbJYhQD3Zu6
+	Llvplsdz0zsLC9iYZDpZLtdDblGF0FjHxO9+Is7cKKm0IB1bmVNkdj4ygu8wxx+HbIJwup/V8nR
+	kF2goalP+OOJY7A==
+X-Received: from qknsn1.prod.google.com ([2002:a05:620a:9481:b0:911:4d08:b62d])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:2890:b0:910:c78d:12ef with SMTP id af79cd13be357-911cf3f7626mr2132178885a.38.1779095119288;
+ Mon, 18 May 2026 02:05:19 -0700 (PDT)
+Date: Mon, 18 May 2026 09:05:18 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: HRoA2fahp/2uLAw4NtYw+wrt7r70Ytl+fYzCRofTJRwDrgJo1i1vfXeQb4uTor3SuifZefjOCIyLW82pYb5AW0abWyQdozVtc1/5x6YK5lzcIsoWx9gxJAoRaZte28JIem9umHflzi4WmOIDitQBOUk0/+gnV2X+XBjKJw1851nwjK8CMR048A1baLG3kxBr9O8UrMwU/M8ZT40qHN1WFJYDvVHITwiE273zhL+2OucA/HDFs/MgBKeKua9TjWthM8B5gh+MlPafUeFG/SDO8QLY8Y84iqJUvv186Tn/YXZesiFnSrTHT1IDMRY8UuYd23yPdiqWwpAxANUEApoJFg==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB8986.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 21765de3-0d90-42c6-1e1d-08deb4bb8986
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 May 2026 08:57:49.1877
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ND9BtRjIdE/SSzFh7gS8dQi7qxvvgKPoOrvF618sbCPThkT8enrR86fwI7XhmFjvOjPgeXEYANmVNBDWASq+ek8hD/YfU6dVh90/+z5zwsg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR11MB6283
-X-OriginatorOrg: intel.com
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
+Message-ID: <20260518090518.629245-1-edumazet@google.com>
+Subject: [PATCH net-next] net/sched: sch_htb: fix htb_dump_class_stats() vs
+ offload mode
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Jamal Hadi Salim <jhs@mojatatu.com>, 
+	Victor Nogueira <victor@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>, 
+	Maxim Mikityanskiy <maximmi@mellanox.com>, Tariq Toukan <tariqt@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
 
+htb_dump_class_stats() and htb_offload_aggregate_stats()
+call gnet_stats_basic_sync_init(&cl->bstats) which
+is wrong on 32bit arches when syncp is cleared.
 
+Make sure to acquire qdisc spinlock and use
+_bstats_set() to ease future lockless dumps.
 
-> -----Original Message-----
-> From: Tariq Toukan <tariqt@nvidia.com>
-> Sent: Sunday, May 17, 2026 1:27 PM
-> To: Eric Dumazet <edumazet@google.com>; Jakub Kicinski
-> <kuba@kernel.org>; Paolo Abeni <pabeni@redhat.com>; Andrew Lunn
-> <andrew+netdev@lunn.ch>; David S. Miller <davem@davemloft.net>
-> Cc: Jiri Pirko <jiri@resnulli.us>; Simon Horman <horms@kernel.org>;
-> Jonathan Corbet <corbet@lwn.net>; Shuah Khan
-> <skhan@linuxfoundation.org>; Saeed Mahameed <saeedm@nvidia.com>; Leon
-> Romanovsky <leon@kernel.org>; Tariq Toukan <tariqt@nvidia.com>; Mark
-> Bloch <mbloch@nvidia.com>; Vlad Dumitrescu <vdumitrescu@nvidia.com>;
-> Loktionov, Aleksandr <aleksandr.loktionov@intel.com>; Daniel Zahka
-> <daniel.zahka@gmail.com>; David Ahern <dsahern@kernel.org>; Nikolay
-> Aleksandrov <razor@blackwall.org>; netdev@vger.kernel.org; linux-
-> doc@vger.kernel.org; linux-kernel@vger.kernel.org; linux-
-> rdma@vger.kernel.org; Gal Pressman <gal@nvidia.com>; Dragos Tatulea
-> <dtatulea@nvidia.com>; Jiri Pirko <jiri@nvidia.com>; Nikolay
-> Aleksandrov <nikolay@nvidia.com>
-> Subject: [PATCH net-next 1/2] devlink: add generic device max_sfs
-> parameter
->=20
-> From: Nikolay Aleksandrov <nikolay@nvidia.com>
->=20
-> Add a new generic devlink device parameter (max_sfs) to control if and
-> how many light-weight NIC subfunctions can be created. Subfunctions
-> are a light-weight network functions backed by an underlying PCI
-> function.
-> Their lifecycle can already be managed by devlink, but currently users
-> cannot enable them in the device. They can be enabled/disabled only
-> via external vendor tools. This parameter allows subfunctions to be
-> enabled
-> (>0) or disabled (0) via devlink. A subsequent patch will add support
-> for max_sfs to the mlx5 driver.
->=20
-> Signed-off-by: Nikolay Aleksandrov <nikolay@nvidia.com>
-> Reviewed-by: David Ahern <dsahern@kernel.org>
-> Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-> Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-> ---
->  Documentation/networking/devlink/devlink-params.rst | 6 ++++++
->  include/net/devlink.h                               | 4 ++++
->  net/devlink/param.c                                 | 5 +++++
->  3 files changed, 15 insertions(+)
->=20
-> diff --git a/Documentation/networking/devlink/devlink-params.rst
-> b/Documentation/networking/devlink/devlink-params.rst
-> index ea17756dcda6..29b8a9246fb6 100644
-> --- a/Documentation/networking/devlink/devlink-params.rst
-> +++ b/Documentation/networking/devlink/devlink-params.rst
-> @@ -165,3 +165,9 @@ own name.
->       - u32
->       - Controls the maximum number of MAC address filters that can be
-> assigned
->         to a Virtual Function (VF).
-> +   * - ``max_sfs``
-> +     - u32
-> +     - The maximum number of subfunctions which can be created on the
-> device.
-> +       Modifying this parameter may require a device restart and PCI
-> bus
-> +       rescanning because the BAR layout may change. A value of 0
-> disables
-> +       subfunction creation.
-> diff --git a/include/net/devlink.h b/include/net/devlink.h index
-> bcd31de1f890..4ec455cfe7a4 100644
-> --- a/include/net/devlink.h
-> +++ b/include/net/devlink.h
-> @@ -546,6 +546,7 @@ enum devlink_param_generic_id {
->  	DEVLINK_PARAM_GENERIC_ID_TOTAL_VFS,
->  	DEVLINK_PARAM_GENERIC_ID_NUM_DOORBELLS,
->  	DEVLINK_PARAM_GENERIC_ID_MAX_MAC_PER_VF,
-> +	DEVLINK_PARAM_GENERIC_ID_MAX_SFS,
->=20
->  	/* add new param generic ids above here*/
->  	__DEVLINK_PARAM_GENERIC_ID_MAX,
-> @@ -619,6 +620,9 @@ enum devlink_param_generic_id {  #define
-> DEVLINK_PARAM_GENERIC_MAX_MAC_PER_VF_NAME "max_mac_per_vf"
->  #define DEVLINK_PARAM_GENERIC_MAX_MAC_PER_VF_TYPE
-> DEVLINK_PARAM_TYPE_U32
->=20
-> +#define DEVLINK_PARAM_GENERIC_MAX_SFS_NAME "max_sfs"
-> +#define DEVLINK_PARAM_GENERIC_MAX_SFS_TYPE DEVLINK_PARAM_TYPE_U32
-> +
->  #define DEVLINK_PARAM_GENERIC(_id, _cmodes, _get, _set, _validate)	\
->  {									\
->  	.id =3D DEVLINK_PARAM_GENERIC_ID_##_id,				\
-> diff --git a/net/devlink/param.c b/net/devlink/param.c index
-> cf95268da5b0..523243e49d88 100644
-> --- a/net/devlink/param.c
-> +++ b/net/devlink/param.c
-> @@ -117,6 +117,11 @@ static const struct devlink_param
-> devlink_param_generic[] =3D {
->  		.name =3D DEVLINK_PARAM_GENERIC_MAX_MAC_PER_VF_NAME,
->  		.type =3D DEVLINK_PARAM_GENERIC_MAX_MAC_PER_VF_TYPE,
->  	},
-> +	{
-> +		.id =3D DEVLINK_PARAM_GENERIC_ID_MAX_SFS,
-> +		.name =3D DEVLINK_PARAM_GENERIC_MAX_SFS_NAME,
-> +		.type =3D DEVLINK_PARAM_GENERIC_MAX_SFS_TYPE,
-> +	},
->  };
->=20
->  static int devlink_param_generic_verify(const struct devlink_param
-> *param)
-> --
-> 2.44.0
+Fixes: 83271586249c ("sch_htb: Stats for offloaded HTB")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Maxim Mikityanskiy <maximmi@mellanox.com>
+Cc: Tariq Toukan <tariqt@nvidia.com>
+---
+ net/sched/sch_htb.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
+diff --git a/net/sched/sch_htb.c b/net/sched/sch_htb.c
+index d8ef3efbe0d5eab42c535e48d95d9005ac9682be..908b9ba9ba2efa8df396b51d437a714afc802a73 100644
+--- a/net/sched/sch_htb.c
++++ b/net/sched/sch_htb.c
+@@ -1293,8 +1293,6 @@ static void htb_offload_aggregate_stats(struct htb_sched *q,
+ 	struct htb_class *c;
+ 	unsigned int i;
+ 
+-	gnet_stats_basic_sync_init(&cl->bstats);
+-
+ 	for (i = 0; i < q->clhash.hashsize; i++) {
+ 		hlist_for_each_entry(c, &q->clhash.hash[i], common.hnode) {
+ 			struct htb_class *p = c;
+@@ -1313,7 +1311,7 @@ static void htb_offload_aggregate_stats(struct htb_sched *q,
+ 			}
+ 		}
+ 	}
+-	_bstats_update(&cl->bstats, bytes, packets);
++	_bstats_set(&cl->bstats, bytes, packets);
+ }
+ 
+ static int
+@@ -1340,17 +1338,21 @@ htb_dump_class_stats(struct Qdisc *sch, unsigned long arg, struct gnet_dump *d)
+ 				 INT_MIN, INT_MAX);
+ 
+ 	if (q->offload) {
++		spin_lock_bh(qdisc_lock(sch));
+ 		if (!cl->level) {
+-			if (cl->leaf.q)
+-				cl->bstats = cl->leaf.q->bstats;
+-			else
+-				gnet_stats_basic_sync_init(&cl->bstats);
+-			_bstats_update(&cl->bstats,
+-				       u64_stats_read(&cl->bstats_bias.bytes),
+-				       u64_stats_read(&cl->bstats_bias.packets));
++			u64 bytes = 0, packets = 0;
++
++			if (cl->leaf.q) {
++				bytes = u64_stats_read(&cl->leaf.q->bstats.bytes);
++				packets = u64_stats_read(&cl->leaf.q->bstats.packets);
++			}
++			bytes += u64_stats_read(&cl->bstats_bias.bytes);
++			packets += u64_stats_read(&cl->bstats_bias.packets);
++			_bstats_set(&cl->bstats, bytes, packets);
+ 		} else {
+ 			htb_offload_aggregate_stats(q, cl);
+ 		}
++		spin_unlock_bh(qdisc_lock(sch));
+ 	}
+ 
+ 	if (gnet_stats_copy_basic(d, NULL, &cl->bstats, true) < 0 ||
+-- 
+2.54.0.563.g4f69b47b94-goog
 
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
