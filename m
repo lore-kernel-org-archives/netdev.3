@@ -1,113 +1,116 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EF6F3E2777;
-	Mon, 18 May 2026 08:25:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7D723E3C46
+	for <netdev@vger.kernel.org>; Mon, 18 May 2026 08:26:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779092737; cv=none; b=m6vAzfDDunC8jRvUbUKhJQZwO9fwJe7FTfzmaakUqchBri2K+D4kKQZoCsC2Gj2pW0R9KT80IEHY7ZRiqfWaR8I0z3rhuwGBq+wlmJmhNqpca/G1Zxrqn4SLHYL9BPBEBT9UgGhNAaVS0g4MLJPSYQrOMgDAZMJ0ITrME+bA15I=
+	t=1779092772; cv=none; b=PPhlYT4+qMHoGEmfMu3zOsU+IPz+odMPSZNT4BY5gkyjW5A5vCMBXBAB1axndoBY4WXuzSI/nZ7zkJB2fjPSZkAlZ8XPc1EFp2RwbwgXGLujFBBzNtuWff6wNjGd8nB3s39UqvXE1DV+1maW7HhNbvDvD9BL9yhSBgnfPz/fVnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779092737; c=relaxed/simple;
-	bh=dLOm69gQbw+yPFjzKhXWb6owlkPXwo1xmuTC823sFfk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ikWIkhRtk5CEjGY86dkJh8cFokJiH12CYX3mrQ4QRWEaLXGj2avqH5KWAngo62ZYQQT+dmztwMjd89bOSKzQfy94gfwcwGR/ARQrG8N8larWzDRMUJmSWYIJTkAyBekWS76cZi4FM/SWOpNKKdS8Xu6Bz7Ca4yL7p/mUDx2RCwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k3gUlZHH; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1779092772; c=relaxed/simple;
+	bh=ZDLOyJOswmo5RlyF6Yu298Y8xMNBbTt2rTJK+rV5gis=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=QrA6iTn1v5e9V2/Q6sEzGurhenztb+yQyDfz10KNQYwW366JYWhjjjVYaQPPkquBYg4XWlA+j6kACFXYp3+53HyqgRWbpIaF+JiVp3gmN7quPY7AF+8aOhshJkN3JRZSZ7iGOUiB2ZnJS2BDv7o+spXahMg+vAH5ZqhTwyGXqSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QC/y0LZl; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k3gUlZHH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DD87C2BCB7;
-	Mon, 18 May 2026 08:25:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779092737;
-	bh=dLOm69gQbw+yPFjzKhXWb6owlkPXwo1xmuTC823sFfk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=k3gUlZHH1ifI6YBRuLpXeTzk2ozQpO3HESBwtwC8zpFiMZPh9iSXOOjoeoAaMFs4J
-	 QFjwSv1Jc7GcoCdpHILGpZi2i/L9xorwzK4mv6pA99xq2ji1nL9rOtSQbSXnMtxlyE
-	 DXZS0rubhcA1vIIdpMaeYak/e1ryZyQZ1R2h3xohGw8dFdHu9kaDY0EjyAcOAilxQO
-	 sX3v1xtJUSkFrPbICsJN9yBLCvVRx+ELYK2mUA959RLZseZ5nLwunVSxfNP2YeHzT3
-	 BvPoKfoH+ulOykGosZ2h13s/VxRtgeb2tSg4XO2smjJB/3q623uNjtTMaTLypKxMel
-	 6dRhI6tdtAE4g==
-Message-ID: <cd33f886-75fb-47b8-b839-97fc6b11743c@kernel.org>
-Date: Mon, 18 May 2026 10:25:33 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QC/y0LZl"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-488a88aeec9so23400605e9.2
+        for <netdev@vger.kernel.org>; Mon, 18 May 2026 01:26:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779092769; x=1779697569; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=If39ClIckMydOmcpj07jcbSov5r81Hv5FFSYom+H+B0=;
+        b=QC/y0LZljriaOuCoOsyw5IhoDRiChN6l6qnvOdAiBljSLh/Mv7m0yMOJsum1Hsb611
+         GzM94S2FHK38LnGWrUMv34AB28LVNrg7RPtRIaPecGH/XBWkfCBPV5eGGxkiyiLLC339
+         W4NooG0Kx6sz6tmKKqvPWtRVAUOOk85nugbVwSAStxBq5h+Yw97wPODsOGTMkVhPU3k1
+         zTN6im/YOhH9Gr1rtp86QwjDWNAgPNYqjQiJE/x6uhArlvYcFllUXG89Wo9JPVOcD+yM
+         MQCyAY6V+sdiphyB1DEuE8c+W8Ot7QwzGydX77WRJbhN6Rz75jTDe9ozPm2s/WLfaKuq
+         9tAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779092769; x=1779697569;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=If39ClIckMydOmcpj07jcbSov5r81Hv5FFSYom+H+B0=;
+        b=myxdprK5ZDkr6CTNRld4ZjzqzCvNPc3MZO89N+ns+PedGNGhfWtHWPiKy8qeEwY+ZJ
+         LoebNs5mdlkGbK96kwsyw+JopvRcaL3VnkoPaCjfmvQZoXt353mJbXI+nL/d9lTKp1CT
+         PmTKg+QMo3tqbWKxTLkaU65RGF0N44ziHN35+46W5Bm8vGZnaXb4UOmtQgF5dXgFuIx9
+         XUDsMBY0rcs2FQFWAThrAVj/FiwItRdYo2XaNiLx9vCfJQjye2pcV2LQkZNyYXvzgtcr
+         zIDQClvRKFzYbwtIM0H2ab66hfsQ1V3X4q7RcnFkvrnOxQUYOfLZ9O8ckqSkaUsDQDPJ
+         bcBg==
+X-Forwarded-Encrypted: i=1; AFNElJ8jbGpBfO3VCbE5bZd+7poDR2CrGWzVFL4X8LCvJEmIBRh8z8c8aoOfiWdvIfzhtXE1FVawG1Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJr/kDiDFeaNrzMQgOsy/nbGc+/cFXWLaeTCTwFveID97cujsn
+	IiJ16I0GmrZFgD2+78VLB1zeeOL+kFlAD7z+Za5TLxhy+ve6+eW/Z7Dq
+X-Gm-Gg: Acq92OG477V7xVxRFGQtIbnvasRGlfiEQl89lmL+K8ZXYPyi8DzCotKr01NYxsj4ayf
+	ByA62F7kXx2RWAJvxlB1fw1l6UHpg6Y2kybxzTPnmjQGov72vBHZJ/DqdQKUiGRLYQVYkeDAhKu
+	4EliI8yTrEzG48MemgfEMvHFc2dQo8vbXIHGcbqVfk3jw8q43qiwBhZFDdOX5SEbHxNrtjdUxRO
+	Jn32bp1CHaUSxwW5O4HbEyeoJgAmB1Nh6VXdpPyUaHkU125v1p52dVRuYlpd+8GGWlWy6xoVAem
+	4VATXRe2hQ0ze1IcKD1isGoftZ43EpEE1HCdzXGK6algSPoDyJX+nAhZakL3mh2gMoZNJhdaZK2
+	H2jZx0wwAQ/xDqPrx61kx4xiMd9y3M6vI4qnEbCbQbsPpPFJ/YuWBNy+FT70H3ks51gZ4xiIVJB
+	A9J6l1QsdJr6ocMI6378e//BDyD/As9yAy8y/KS7qcuMw=
+X-Received: by 2002:a05:600c:8905:b0:48e:5d91:cffb with SMTP id 5b1f17b1804b1-48fe60e7d6emr173167515e9.10.1779092769255;
+        Mon, 18 May 2026 01:26:09 -0700 (PDT)
+Received: from localhost.localdomain ([41.116.1.81])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45d9adc2209sm32834085f8f.0.2026.05.18.01.26.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 May 2026 01:26:08 -0700 (PDT)
+From: =?UTF-8?q?G=C3=BCnther=20Muller?= <gunther.muller2008@gmail.com>
+To: steffen.klassert@secunet.com
+Cc: =?UTF-8?q?G=C3=BCnther=20Muller?= <gunther.muller2008@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] xfrm: fix missing headroom check in xfrm_dev_direct_output
+Date: Mon, 18 May 2026 10:23:30 +0200
+Message-Id: <20260518082330.11483-1-gunther.muller2008@gmail.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] can: peak_usb: validate URB length in
- pcan_usb_fd_decode_buf()
-To: Berkant Koc <me@berkoc.com>
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>,
- Stephane Grosjean <stephane.grosjean@hms-networks.com>,
- linux-can@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, kernel@pengutronix.de, stable@vger.kernel.org
-References: <20260517-can-usb-fix-cover@berkoc.com>
- <20260517-can-usb-fix-1@berkoc.com>
- <b978603c-4878-4eee-adc1-290e905fe768@kernel.org>
- <177906591253.919135.13839066904083701982@berkoc.com>
-From: Vincent Mailhol <mailhol@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=mailhol@kernel.org; keydata=
- xjMEZluomRYJKwYBBAHaRw8BAQdAf+/PnQvy9LCWNSJLbhc+AOUsR2cNVonvxhDk/KcW7FvN
- JFZpbmNlbnQgTWFpbGhvbCA8bWFpbGhvbEBrZXJuZWwub3JnPsKZBBMWCgBBFiEE7Y9wBXTm
- fyDldOjiq1/riG27mcIFAmdfB/kCGwMFCQp/CJcFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcC
- F4AACgkQq1/riG27mcKBHgEAygbvORJOfMHGlq5lQhZkDnaUXbpZhxirxkAHwTypHr4A/joI
- 2wLjgTCm5I2Z3zB8hqJu+OeFPXZFWGTuk0e2wT4JzjgEZx4y8xIKKwYBBAGXVQEFAQEHQJrb
- YZzu0JG5w8gxE6EtQe6LmxKMqP6EyR33sA+BR9pLAwEIB8J+BBgWCgAmFiEE7Y9wBXTmfyDl
- dOjiq1/riG27mcIFAmceMvMCGwwFCQPCZwAACgkQq1/riG27mcJU7QEA+LmpFhfQ1aij/L8V
- zsZwr/S44HCzcz5+jkxnVVQ5LZ4BANOCpYEY+CYrld5XZvM8h2EntNnzxHHuhjfDOQ3MAkEK
-In-Reply-To: <177906591253.919135.13839066904083701982@berkoc.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 18/05/2026 at 02:58, Berkant Koc wrote:
-> Vincent, fair, my earlier "custom CVE-hunter setup" was too thin.
-> Here's the fuller picture.
-> 
-> Tooling: berkoc-pipeline, a custom RAG framework on Claude Opus 4.7
-> (Anthropic CVP cohort, May 2026). Full agentic stack: multi-tool
-> execution (filesystem, web fetch, code execution), parallel subagent
-> orchestration with adaptive task decomposition, extended-thinking
-> integration, retrieval-augmented context over a file-based semantic
-> knowledge base, MCP-style integration patterns. 7-step pre-disclosure
-> validation gate, manual verification on every finding before submit.
+Ensure the skb has enough headroom for the hardware offload device's
+hard_header_len. If the headroom is insufficient (e.g., when routing
+through certain virtual or tunnel devices), __skb_push() underflows
+skb->data below skb->head, causing silent memory corruption.
 
-Your message doesn't follow the mailing list etiquette:
+Fix this by using skb_cow_head() to dynamically expand headroom if
+needed, and switch to the checked skb_push() variant.
 
-Link: https://subspace.kernel.org/etiquette.html
+Fixes: 5eddd76ec2fd ("xfrm: fix tunnel mode TX datapath in packet offload mode")
 
-Relevant part:
+Signed-off-by: Günther Muller <gunther.muller2008@gmail.com>
+---
+ net/xfrm/xfrm_output.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-  kernel mailing lists exclusively require that all communication is
-  sent as interleaved quoted replies.
+diff --git a/net/xfrm/xfrm_output.c b/net/xfrm/xfrm_output.c
+index cc35c2fcbb..35f974d209 100644
+--- a/net/xfrm/xfrm_output.c
++++ b/net/xfrm/xfrm_output.c
+@@ -649,7 +649,10 @@ static int xfrm_dev_direct_output(struct sock *sk, struct xfrm_state *x,
+ 	 * to netdevice.
+ 	 */
+ 	skb->dev = x->xso.dev;
+-	__skb_push(skb, skb->dev->hard_header_len);
++	err = skb_cow_head(skb, skb->dev->hard_header_len);
++	if (err)
++		return err;
++	skb_push(skb, skb->dev->hard_header_len);
+ 	return dev_queue_xmit(skb);
+ }
+ 
+-- 
+2.39.5
 
-Is this answer also AI generated? If yes, please don't directly copy
-paste AI answers to the mailing list. We expect you to add value to
-the AI generated output.
-
-Regardless if this was AI generated or not, take time to familiarize
-yourself with the kernel processes. Reading a couple of the past
-threads in the mailing list is a good way to understand the
-expectations.
-
-> v2 of this patch will include the formal trailer:
-> Assisted-by: Claude:claude-opus-4-7 berkoc-pipeline
-
-Ack. Please use that tag.
-
-> For the peak_usb finding specifically: seeded with reference commit
-> 6fe9f3279f7d ("can: gs_usb: gs_usb_receive_bulk_callback(): check
-> actual_length before accessing header"), scanned drivers/net/can/usb/
-> for the "actual_length verified before header dereference" pattern,
-> candidate sites surfaced by the model, then manual verification with
-> a reproducer harness (synthetic short URB, walk through msg_ptr/msg_end
-> bounds) before the report went out.
-> 
-> Happy to formalise as `Assisted-by: Claude:claude-opus-4-7
-> berkoc-pipeline` trailer in v2 if you'd prefer, or drop the methodology
-> into a follow-up note.
-
-
-Yours sincerely,
-Vincent Mailhol
