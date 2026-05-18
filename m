@@ -1,116 +1,109 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7D723E3C46
-	for <netdev@vger.kernel.org>; Mon, 18 May 2026 08:26:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70D763C5540
+	for <netdev@vger.kernel.org>; Mon, 18 May 2026 08:30:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779092772; cv=none; b=PPhlYT4+qMHoGEmfMu3zOsU+IPz+odMPSZNT4BY5gkyjW5A5vCMBXBAB1axndoBY4WXuzSI/nZ7zkJB2fjPSZkAlZ8XPc1EFp2RwbwgXGLujFBBzNtuWff6wNjGd8nB3s39UqvXE1DV+1maW7HhNbvDvD9BL9yhSBgnfPz/fVnw=
+	t=1779093047; cv=none; b=Ito5671bsmsNvVQMgaSgozKZ8EQHOiL1/k7uXXhYKyp9FN83ibYLBj2KkE8dMxuo6vAEPd/KvPcp1+jBVt1VBoAMsWquuaT+/NcT5BCTTH1mX2IAgQRKfvrm+q/GHiSb/NHJYESwVR6ALvkpEt5DRU4FDSBwAiJ69hPvtRdQqoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779092772; c=relaxed/simple;
-	bh=ZDLOyJOswmo5RlyF6Yu298Y8xMNBbTt2rTJK+rV5gis=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=QrA6iTn1v5e9V2/Q6sEzGurhenztb+yQyDfz10KNQYwW366JYWhjjjVYaQPPkquBYg4XWlA+j6kACFXYp3+53HyqgRWbpIaF+JiVp3gmN7quPY7AF+8aOhshJkN3JRZSZ7iGOUiB2ZnJS2BDv7o+spXahMg+vAH5ZqhTwyGXqSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QC/y0LZl; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1779093047; c=relaxed/simple;
+	bh=9z+sp72f1iKw0nPgNMvIodYgBLWziGaRX6/Ms5G3y2s=;
+	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=G0j+m8q5spSLuXbrSvHmzECRO9V9T4GVdxx6WoIcKjdDf03InSrN0/3e1HmcBqH4/deSzgUzkSgJ5vzWpfiVpy7yGSFg0bJuDeJsiT+LihLssAlCbYvyAMHtXb1jgDKJ3E6dlMBheDAG8azlkx+jtcfl3hRiuEkTPXnK4W/aqOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UR03GAan; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QC/y0LZl"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-488a88aeec9so23400605e9.2
-        for <netdev@vger.kernel.org>; Mon, 18 May 2026 01:26:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779092769; x=1779697569; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=If39ClIckMydOmcpj07jcbSov5r81Hv5FFSYom+H+B0=;
-        b=QC/y0LZljriaOuCoOsyw5IhoDRiChN6l6qnvOdAiBljSLh/Mv7m0yMOJsum1Hsb611
-         GzM94S2FHK38LnGWrUMv34AB28LVNrg7RPtRIaPecGH/XBWkfCBPV5eGGxkiyiLLC339
-         W4NooG0Kx6sz6tmKKqvPWtRVAUOOk85nugbVwSAStxBq5h+Yw97wPODsOGTMkVhPU3k1
-         zTN6im/YOhH9Gr1rtp86QwjDWNAgPNYqjQiJE/x6uhArlvYcFllUXG89Wo9JPVOcD+yM
-         MQCyAY6V+sdiphyB1DEuE8c+W8Ot7QwzGydX77WRJbhN6Rz75jTDe9ozPm2s/WLfaKuq
-         9tAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779092769; x=1779697569;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=If39ClIckMydOmcpj07jcbSov5r81Hv5FFSYom+H+B0=;
-        b=myxdprK5ZDkr6CTNRld4ZjzqzCvNPc3MZO89N+ns+PedGNGhfWtHWPiKy8qeEwY+ZJ
-         LoebNs5mdlkGbK96kwsyw+JopvRcaL3VnkoPaCjfmvQZoXt353mJbXI+nL/d9lTKp1CT
-         PmTKg+QMo3tqbWKxTLkaU65RGF0N44ziHN35+46W5Bm8vGZnaXb4UOmtQgF5dXgFuIx9
-         XUDsMBY0rcs2FQFWAThrAVj/FiwItRdYo2XaNiLx9vCfJQjye2pcV2LQkZNyYXvzgtcr
-         zIDQClvRKFzYbwtIM0H2ab66hfsQ1V3X4q7RcnFkvrnOxQUYOfLZ9O8ckqSkaUsDQDPJ
-         bcBg==
-X-Forwarded-Encrypted: i=1; AFNElJ8jbGpBfO3VCbE5bZd+7poDR2CrGWzVFL4X8LCvJEmIBRh8z8c8aoOfiWdvIfzhtXE1FVawG1Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJr/kDiDFeaNrzMQgOsy/nbGc+/cFXWLaeTCTwFveID97cujsn
-	IiJ16I0GmrZFgD2+78VLB1zeeOL+kFlAD7z+Za5TLxhy+ve6+eW/Z7Dq
-X-Gm-Gg: Acq92OG477V7xVxRFGQtIbnvasRGlfiEQl89lmL+K8ZXYPyi8DzCotKr01NYxsj4ayf
-	ByA62F7kXx2RWAJvxlB1fw1l6UHpg6Y2kybxzTPnmjQGov72vBHZJ/DqdQKUiGRLYQVYkeDAhKu
-	4EliI8yTrEzG48MemgfEMvHFc2dQo8vbXIHGcbqVfk3jw8q43qiwBhZFDdOX5SEbHxNrtjdUxRO
-	Jn32bp1CHaUSxwW5O4HbEyeoJgAmB1Nh6VXdpPyUaHkU125v1p52dVRuYlpd+8GGWlWy6xoVAem
-	4VATXRe2hQ0ze1IcKD1isGoftZ43EpEE1HCdzXGK6algSPoDyJX+nAhZakL3mh2gMoZNJhdaZK2
-	H2jZx0wwAQ/xDqPrx61kx4xiMd9y3M6vI4qnEbCbQbsPpPFJ/YuWBNy+FT70H3ks51gZ4xiIVJB
-	A9J6l1QsdJr6ocMI6378e//BDyD/As9yAy8y/KS7qcuMw=
-X-Received: by 2002:a05:600c:8905:b0:48e:5d91:cffb with SMTP id 5b1f17b1804b1-48fe60e7d6emr173167515e9.10.1779092769255;
-        Mon, 18 May 2026 01:26:09 -0700 (PDT)
-Received: from localhost.localdomain ([41.116.1.81])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45d9adc2209sm32834085f8f.0.2026.05.18.01.26.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2026 01:26:08 -0700 (PDT)
-From: =?UTF-8?q?G=C3=BCnther=20Muller?= <gunther.muller2008@gmail.com>
-To: steffen.klassert@secunet.com
-Cc: =?UTF-8?q?G=C3=BCnther=20Muller?= <gunther.muller2008@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] xfrm: fix missing headroom check in xfrm_dev_direct_output
-Date: Mon, 18 May 2026 10:23:30 +0200
-Message-Id: <20260518082330.11483-1-gunther.muller2008@gmail.com>
-X-Mailer: git-send-email 2.39.5
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UR03GAan"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27B3BC2BCFC
+	for <netdev@vger.kernel.org>; Mon, 18 May 2026 08:30:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779093047;
+	bh=9z+sp72f1iKw0nPgNMvIodYgBLWziGaRX6/Ms5G3y2s=;
+	h=From:In-Reply-To:References:Date:Subject:To:Cc:From;
+	b=UR03GAany2qENmnCORdG+I9cu/83k3SV4ewM8k4MEjDzrOIyNxN3y38fIX54QvUAl
+	 8J7PbuK/zuYG6rb9MwQHYWX5F/qnE0o05AIQjyeOSpuIVeWE4fM6/CRGADKSAA0y/1
+	 Rp9Ys/MF9VKgplV/7fWuCDL8QB2dHOSO/VFVWuoaVsb8KHXzElXBEesjwtGPNX2ypm
+	 6BHBO65Z14fRlTmOWByLzJjRqwgIP63nRXxZkBtF7ffRaMOwHyq452y/uUug/pDt3T
+	 JzCD+I+otQYUBl/kJVKBfGfu+Q1CU31n0WrGkcWqQZOP5q/pJP1aThuGtqFps/3dxV
+	 gAq31G6Mu8buQ==
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-38e8292423fso13791891fa.0
+        for <netdev@vger.kernel.org>; Mon, 18 May 2026 01:30:47 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+FQoRbDPztE3sstK2XpByplV+qmdwgPuui2jPojhCdNOGij/1ckpDke6o+NLgfCTYC91LHTU0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzBgJuD3UhF6XHbpkUspt1PDVbgcZwHEwzrB22mjO3Jh2WFaq72
+	xExjw30FSE8GvCxfdFzMSbqkCBvpSxpKjJp3zr6tzwxwMs6n0xbvzamKphQKJo4ZB18sS4gdTFc
+	QAZRQJrWlQnFMJ5NCCKLRVIUkanJGuPrRyfp+vrumAg==
+X-Received: by 2002:a2e:8a98:0:b0:393:d706:7bc with SMTP id
+ 38308e7fff4ca-3956193091cmr39789731fa.0.1779093045805; Mon, 18 May 2026
+ 01:30:45 -0700 (PDT)
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 18 May 2026 04:30:44 -0400
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 18 May 2026 04:30:44 -0400
+From: Bartosz Golaszewski <brgl@kernel.org>
+In-Reply-To: <20260516-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-v3-1-37ba4b6e9086@amd.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20260516-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-v3-1-37ba4b6e9086@amd.com>
+Date: Mon, 18 May 2026 04:30:44 -0400
+X-Gmail-Original-Message-ID: <CAMRc=MfF3Kdz62XWxx_Y=N=bx=PUQ8iDakTYtD_P0gUUsUGKbw@mail.gmail.com>
+X-Gm-Features: AVHnY4K990tPUcDP2ohnS68GYVoXfSGX7h4Ft5lim9vMUAsNmJzLrAp6WoPSPNE
+Message-ID: <CAMRc=MfF3Kdz62XWxx_Y=N=bx=PUQ8iDakTYtD_P0gUUsUGKbw@mail.gmail.com>
+Subject: Re: [PATCH v3] nfc: nxp-nci: i2c: use rising-edge IRQ on ACPI systems
+To: carl.lee@amd.com
+Cc: krzk@kernel.org, peter.shen@amd.com, colin.huang2@amd.com, kuba@kernel.org, 
+	david@ixit.cz, luca.stefani.ge1@gmail.com, brgl@kernel.org, 
+	mpearson@squebb.ca, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Carl Lee via B4 Relay <devnull+carl.lee.amd.com@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Ensure the skb has enough headroom for the hardware offload device's
-hard_header_len. If the headroom is insufficient (e.g., when routing
-through certain virtual or tunnel devices), __skb_push() underflows
-skb->data below skb->head, causing silent memory corruption.
+On Sat, 16 May 2026 13:55:18 +0200, Carl Lee via B4 Relay
+<devnull+carl.lee.amd.com@kernel.org> said:
+> From: Carl Lee <carl.lee@amd.com>
+>
+> Some ACPI-based platforms report incorrect IRQ trigger types (e.g.
+> IRQF_TRIGGER_HIGH), which can lead to interrupt storms.
+>
+> Use the historically working rising-edge trigger on ACPI systems to
+> avoid this regression.
+>
+> Device Tree-based systems continue to use the firmware-provided
+> trigger type.
+>
+> Signed-off-by: Carl Lee <carl.lee@amd.com>
+> ---
+> Some ACPI-based platforms report incorrect IRQ trigger types,
+> which can lead to interrupt storms.
+>
+> Use rising-edge IRQ on ACPI systems to avoid this regression,
+> while keeping firmware-provided trigger types on non-ACPI systems.
+>
+> Cc: netdev@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: krzk@kernel.org
+> Cc: carl.lee@amd.com
+> Cc: peter.shen@amd.com
+> Cc: colin.huang2@amd.com
+> Cc: kuba@kernel.org
+> Cc: david@ixit.cz
+> Cc: luca.stefani.ge1@gmail.com
+> Cc: brgl@kernel.org
+> Cc: mpearson@squebb.ca
+> ---
 
-Fix this by using skb_cow_head() to dynamically expand headroom if
-needed, and switch to the checked skb_push() variant.
+LGTM!
 
-Fixes: 5eddd76ec2fd ("xfrm: fix tunnel mode TX datapath in packet offload mode")
+Tested-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
-Signed-off-by: Günther Muller <gunther.muller2008@gmail.com>
----
- net/xfrm/xfrm_output.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Maybe:
 
-diff --git a/net/xfrm/xfrm_output.c b/net/xfrm/xfrm_output.c
-index cc35c2fcbb..35f974d209 100644
---- a/net/xfrm/xfrm_output.c
-+++ b/net/xfrm/xfrm_output.c
-@@ -649,7 +649,10 @@ static int xfrm_dev_direct_output(struct sock *sk, struct xfrm_state *x,
- 	 * to netdevice.
- 	 */
- 	skb->dev = x->xso.dev;
--	__skb_push(skb, skb->dev->hard_header_len);
-+	err = skb_cow_head(skb, skb->dev->hard_header_len);
-+	if (err)
-+		return err;
-+	skb_push(skb, skb->dev->hard_header_len);
- 	return dev_queue_xmit(skb);
- }
- 
--- 
-2.39.5
+Fixes: 57be33f85e36 ("nfc: nxp-nci: remove interrupt trigger type")
+Cc: stable@vger.kernel.org # v6.19.y
 
+?
+
+Bart
