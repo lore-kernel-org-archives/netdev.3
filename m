@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 219DC288C2F;
-	Mon, 18 May 2026 23:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66EC63382C7
+	for <netdev@vger.kernel.org>; Mon, 18 May 2026 23:40:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779147614; cv=none; b=PDoDjsU5BtcWJpA/6IRfHlxsZ2VV+vQi3+akS8zr21OJVy56QB7jg6PkXNyNe6mmEdt03XjFtClQlDZ35FbGkIQHtn6FfT8w57WscA4TbzuTY9DYGGXYWE03pUrQUADXYaNh+fGwV154vjWR+LwtU8Ujtak5FS+LaPBdYcWPsSI=
+	t=1779147615; cv=none; b=ZHWG8GyN7X+qlAMJEpMtgD0HzrDodchZPDsie1fzOwoTJdj51205u1nBCKeVATHHZ8j7RjYQhehDx+pEs40IvWgduA7F9haK3d9t6fy5D2PfNwKYVLdQAWCLwTOyDh/iZEawWWztgLgrMAWiFbhhhhdw1UJ+27B+DLt0RApPvXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779147614; c=relaxed/simple;
-	bh=iTr589DozvIngmSVLR2l3PzYKcxJnBYqFPi6SZByA9A=;
+	s=arc-20240116; t=1779147615; c=relaxed/simple;
+	bh=f5T/RZ8Kfgw1IL3MycKeHgVh5NcthDi0AkWE4IUqMjY=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=P9ihF/hcI6APqjgymFOQjlMD6fUSYq7dOoc3HAcgiaj7WEcmaToTPFtvpGRWKgbkxmakkR4zSrvrU9qnlCtG8mOxu5v/yAV11kHjUjYiPUiX5lownLzQcfdmK8wp66Z4Yy2HrINCXSD8DdfR76H5FKz5n7QiLuIrMGSWTn7/+ys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LcCuoIMv; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=pCCMba6ThJ5ceT5sv8MKuWYf62y0NHKIt7P9xNa1W3oN1P7M2RSdMpzMVIRIG1vJHQHhCzv9kIktxt5Qm5g9IbkVtf7XWqncA0EXDF7rKpEtkuYhuk1cSKkuy3QwHnS8Dw5qIJgK2mUAJg6OI9vkirBzNPH5/pKgrdiMd+OI+Vg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IE4rxdd6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LcCuoIMv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B25CAC2BCC7;
-	Mon, 18 May 2026 23:40:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IE4rxdd6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C9AEC2BCB7;
+	Mon, 18 May 2026 23:40:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779147613;
-	bh=iTr589DozvIngmSVLR2l3PzYKcxJnBYqFPi6SZByA9A=;
+	s=k20201202; t=1779147615;
+	bh=f5T/RZ8Kfgw1IL3MycKeHgVh5NcthDi0AkWE4IUqMjY=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=LcCuoIMvTsoy0l5ByGAiLAor86+Z+Th3vt3BxyKO9ypoybPMGkv6EjLQqx0FC0soZ
-	 mkEs9KTN05D9AL8mFMXda9YRGWfQXELlJB1HvDl54H2MkY5rw4/fv4lkoagD3ivR6h
-	 Cm7T8pZi+3VhgeXnUd/tKxBnU8JVc1Qybsb5rKMZTcPINQrEBjtMF2S9BpHV8q3J0f
-	 rzSaBXHGssXZkp/4D5Zjpbkm4OcGrc65jvvSp7pwb5acFzqJYGGgWK8HEhu/jiYUfn
-	 W09B9EcRL3+U02390cGffqOH0QmzSnUfS9blkYCg4oMLiSFPjFk/6M3EXzU+9ATZ7c
-	 m7s9i5Jx5eB2Q==
+	b=IE4rxdd6i3TPWpgOFj6LksJC+xq+1FSAF4vPS1mKTZ6hwWgV3JQnGrMF+REQaMXNo
+	 yMjLM7yIsc2V5CUCFacq4wJgDF0i86XAxWAcH1W8+eZj7nYj+PkAu3I+yfBuhptKYq
+	 88raHfweHC6gBUglCIPQiYgv4rwLsBxpJ822SClEW8NqXwJ4oO3eK3FpIxZn6tq28L
+	 iY9IOG6ZpOeSMdHvablku92RIHgV0UmqFDAnyy7rLyloVTlYov0co5o6GdU/QPLp0v
+	 wjeycXIL9PYoKUeARspNsluagNAxOAXWX7AD8txYyFz7LcYl91w5Gbo6mvCHsdew/0
+	 HT0W7EenyijxQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56A133930CBF;
-	Mon, 18 May 2026 23:40:26 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D09813930CBF;
+	Mon, 18 May 2026 23:40:27 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] openvswitch: vport: fix race between linking and
- the
- device notifier
+Subject: Re: [PATCH net v2] net: qualcomm: rmnet: fix endpoint use-after-free
+ in
+ rmnet_dellink()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177914762488.2012201.13277593424692251967.git-patchwork-notify@kernel.org>
-Date: Mon, 18 May 2026 23:40:24 +0000
-References: <20260514184702.2461435-1-i.maximets@ovn.org>
-In-Reply-To: <20260514184702.2461435-1-i.maximets@ovn.org>
-To: Ilya Maximets <i.maximets@ovn.org>
-Cc: netdev@vger.kernel.org, aconole@redhat.com, echaudro@redhat.com,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, dev@openvswitch.org, linux-kernel@vger.kernel.org
+ <177914762638.2012201.16160511125102291139.git-patchwork-notify@kernel.org>
+Date: Mon, 18 May 2026 23:40:26 +0000
+References: <20260514122511.3083479-2-bestswngs@gmail.com>
+In-Reply-To: <20260514122511.3083479-2-bestswngs@gmail.com>
+To: Weiming Shi <bestswngs@gmail.com>
+Cc: subash.a.kasiviswanathan@oss.qualcomm.com,
+ sean.tranchetti@oss.qualcomm.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, xmei5@asu.edu
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 14 May 2026 20:46:31 +0200 you wrote:
-> Sashiko reports that it is technically possible that we got the device
-> reference, but by the time we're linking it to the OVS datapath, it
-> may be already in the process of being deleted.  In this case if the
-> notifier wins the race for RTNL, it will see that the device is not
-> yet in the OVS datapath (ovs_netdev_get_vport() will fail in the
-> dp_device_event()) and will do nothing.  Then the ovs_netdev_link()
-> will take the RTNL and link the unregistering device to OVS datapath.
+On Thu, 14 May 2026 05:25:12 -0700 you wrote:
+> rmnet_dellink() removes the endpoint from the hash table with
+> hlist_del_init_rcu() and then immediately frees it with kfree(). However,
+> RCU readers on the receive path (rmnet_rx_handler ->
+> __rmnet_map_ingress_handler) may still hold a reference to the endpoint and
+> dereference ep->egress_dev after the memory has been freed. The endpoint is
+> a kmalloc-32 object, and the stale read at offset 8 corresponds to the
+> egress_dev pointer.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2] openvswitch: vport: fix race between linking and the device notifier
-    https://git.kernel.org/netdev/net/c/bae3ee802c21
+  - [net,v2] net: qualcomm: rmnet: fix endpoint use-after-free in rmnet_dellink()
+    https://git.kernel.org/netdev/net/c/d00c953a8f69
 
 You are awesome, thank you!
 -- 
