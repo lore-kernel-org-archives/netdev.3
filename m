@@ -1,167 +1,236 @@
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011022.outbound.protection.outlook.com [40.107.208.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2CC382284
-	for <netdev@vger.kernel.org>; Mon, 18 May 2026 17:11:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.22
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779124293; cv=fail; b=WzfQY49rb0c25RPLScsisdk+vs0uJcaXNPY0WVOpbLTY9KDCAiOQ9BXcp/A8M7+8AlQ6jWTTH9yMI53fD7en+7J0qWoNAlsVDQW4F9OA9KU1WmEiEmV1jUoNIQNd+eF4EFq9lP8r1PaD1cZ59J6O5pIqrDZ9kj0wgYB3YXOlZZo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779124293; c=relaxed/simple;
-	bh=H8Aub50MnlCFiPmpoU3puEsIZUFOyGP7TzjS53Azf0M=;
-	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=ERY8H72ceeATxioD6GTkBDcD/+feqF771ISFhIyZ9M8HsGIdd1CSt7Qs28WRV5py/QUVYfdpP54IiWWmnf1GOL/I9638rr8H60XMBAqfOhFZ4XYebnBn1CRvQ7yrGNN0HNIFdjz7uSSK6abG+kOMjuO9SpY1EyNWeXaSYbn9J1o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ZZdRf3A9; arc=fail smtp.client-ip=40.107.208.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3869B38236E
+	for <netdev@vger.kernel.org>; Mon, 18 May 2026 17:18:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779124694; cv=none; b=E1tWhbGrhYeNvZduP4ultkNv3N+Vxpi++nyLYiBv2MQZqI5ZOwd5HCIhptWDuMSKdmwNkVbxJs4hWlx5heKm8/3NVEqNEVFv317wxtsrqtM5dwhmg/IB6U8SgHYrj1a2qxxDKiErFSC6Czik45qt8f5TAZZruOH82yefZjtm028=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779124694; c=relaxed/simple;
+	bh=3c0QS5xzL7i2Q75DhbTuhvaZhPUd9TNapdTzHhuKIbg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=L51DwWWULCmbBPU/FOtGLq6SJWTX2Nz9g+l6J1EokVzSq/sqoU8SM/aRQnHsFjjE9Q74PXwMMe4Sfw27r2KUqCC69VJjOUgt+Iw6AGGT+qsdAVbxc/58TjD1+EOgThHcVLM1sR6u31dIzovOs7/trgp0AwJo1dL/mmZjsKGodRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cLdYX1aZ; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ZZdRf3A9"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=k2DhJAxp9lGj7+LpDwJFg53/p6z5Qb9dSgF86UWxV3VEj7Q0j2BCPUf1URb9Auyby2Zmki80nrGNpHjMr0yNDB6GG7k40wOSv7tPdfA3ahIL6tkVGIGp44DwKoyhdiEX+E8XW0YKbYvwBSuyyFKLwDrRRi8cPV1ZMPkox78B+WqVZoANXaNNLM8IPFxCHrfzEV/f+6ROUEXUALs1ZHZI25qMhiYjBiJ6Z28HVLidxh6peR0dV9Uv5NtkYGy4xpzK92kVW6jt5y/L5eK5oi4euQA5/dkE+rrG0d/G/6xeATmBD4LZTZl9D4EIaei7TsgzQeI2CjYVZNapTPUiioJC1w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GJ3fg12nh0e/INWBzXuh4mKYU+m5hB6FtB4PQsTlsoA=;
- b=QJOqnO/tX0eGlvs+GNjXi1+kUcWxlKBoTExPpxOwgSuraZEHhMjEdlRSlt/s9Uw1SNvOb4UFYY9Gqy3nPBi1AbEspCrsXObLPM22lW2yVAK7DY50G08WoXoBF8G8SN1Ss0mdwI62vKgXkEOr9C3F0tLAnU5R59wY+AQL140BKYH9Y4nII0SjLfF4XSv56NrHtNH5TGmlqepjZzqvAKs0UbiCGKz009iofIf1PmiQwL5GDBHpILQFclmDAJ12q0bmm/ZurLOQP8j5MDc+dtvaT7+wx8AJZrkCGYtZDyVBCUCNDBkDvk4l4hQSmupUNmsSCs7syZmWLU4A0AtT0zjsRA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GJ3fg12nh0e/INWBzXuh4mKYU+m5hB6FtB4PQsTlsoA=;
- b=ZZdRf3A90od/I04qHLXp3BXjGXdQZI35vQ4k9J9NuJd494uzR490guZrjplxM1Z7LMFyjcrw8qsufXl1ippeFGG7RKFQMbvc/bpvaXzJoZwh6uGLKimuV7RVsmKGwKgBPyr9t7qA9H1vpI1x+9Cyaf5mAt0eDIr3zXIPl2VzuYdF2TH3W5xLjhrqyMnQgq7MYp1Lp8rrfWISayNqlDaY+eKXvOr3McFql9gfi3AoPtjrYSG005RUdScBObyIc8cOgPofA/yKx7bMiKZZsG95KjRKi1N/peXK+FxgdfTL+Iczc0wbyilIiuFxpuBAysfFX1CHZkAZXLT2haL+oMrt+w==
-Received: from PH7PR17CA0031.namprd17.prod.outlook.com (2603:10b6:510:323::14)
- by DS0PR12MB6656.namprd12.prod.outlook.com (2603:10b6:8:d2::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.24; Mon, 18 May
- 2026 17:11:27 +0000
-Received: from SA2PEPF00001505.namprd04.prod.outlook.com
- (2603:10b6:510:323:cafe::f4) by PH7PR17CA0031.outlook.office365.com
- (2603:10b6:510:323::14) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.25.24 via Frontend Transport; Mon, 18
- May 2026 17:11:27 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- SA2PEPF00001505.mail.protection.outlook.com (10.167.242.37) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.48.11 via Frontend Transport; Mon, 18 May 2026 17:11:26 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 18 May
- 2026 10:11:03 -0700
-Received: from fedora (10.126.231.37) by rnnvmail201.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 18 May
- 2026 10:11:00 -0700
-References: <CABV8kRzn=oewDQcv-_-WzktpxAuLBPiTgMdfcpyOYAnz=0kiDA@mail.gmail.com>
-User-agent: mu4e 1.8.14; emacs 30.2
-From: Petr Machata <petrm@nvidia.com>
-To: Keno Fischer <keno@juliahub.com>
-CC: <netdev@vger.kernel.org>, Ido Schimmel <idosch@nvidia.com>, Petr Machata
-	<petrm@nvidia.com>, <mlxsw@nvidia.com>
-Subject: Re: [BUG] mlxsw: Driver/Firmware disagreement about max headroom size
-Date: Mon, 18 May 2026 18:09:22 +0200
-In-Reply-To: <CABV8kRzn=oewDQcv-_-WzktpxAuLBPiTgMdfcpyOYAnz=0kiDA@mail.gmail.com>
-Message-ID: <87qzn8myn4.fsf@nvidia.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cLdYX1aZ"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-48ff4f8ef0dso29381225e9.3
+        for <netdev@vger.kernel.org>; Mon, 18 May 2026 10:18:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779124692; x=1779729492; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=HEqTTzF0Ghh6Rzlw5gbHSyUg5PTlw2WJ5Y6lPEAeK9k=;
+        b=cLdYX1aZ0ntSFY8Sihinyxg938YGokYZ+iqz+Kt/pJFC3Z2hqsj7RjX4rCYaTDuRl9
+         a6Sx246jNNF4y2nYq+hJsgXRJrh6yBBssPCJkEqAlnOfAPQjDjg1lZX4k6n57wsruo8a
+         xREnrC3Yjql4t0F7EZdbxEILvkBNCLOjRnsOkYr/5a3nOtpPeoq6qxW5ty6Y+N975fW8
+         UOryxL4q04xqLXw1nv6yfY2H0jVZe6px8IEAUUZ6WpBhobm/px9S7Y3Q1209e5OFRfHL
+         LoUho/kudMbvukksqusvULxAl2cYTltIssH/VtlbHJlu6s/CwtB+EBnHCDdRI71YXP+3
+         1YOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779124692; x=1779729492;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HEqTTzF0Ghh6Rzlw5gbHSyUg5PTlw2WJ5Y6lPEAeK9k=;
+        b=nD0ujfY+Ve6Yp0h9Y6WNJ/gWhLTakNAVJWpJbVEE0V5gh+j6bQyUa7BQwoHyxN8Cyh
+         7XPyjP7ZnMDiKPE71NQKK3xXCcAPwSDgTkZJWp08Bu/IH366hiaQZb2hi78ZMmjfpp37
+         6rSc9+m5XqACD8hjxYf4AF/Eli0o6ixLmDQW9ZwwXl20vntLLuubNtwtDyRzJFdFkDkI
+         1EQTWKjYT1vohK9gR7M7r+WxzVLqyjUyCxS6qgyHhPzsHUyXynr7wkHipslHRC58NINn
+         MrfmMZqa0E3knfLh682313oD1uW0MIkLiEse3WKBp4mRUd/kI2GUomSk5FBNCRb8cmGZ
+         LYJQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+2tLvJ8W3DDNebv9B0vMwqbCAGRzDI0w3v3JVCv916mGM/FvUw1G6KouQ48cMSIpfSVocp/rU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzVYXhyrQ2rcO12aHdLAJpnpR00J8Rclu57tMgYok1I3vkeMNBp
+	hJHNHS3SxYUOIuP6M6UH3P8tBXGjeLN7r7pEYnlNX+SHE1knLqd6vD4O
+X-Gm-Gg: Acq92OGJo64fV7fUE6zOdnHZi8+K38k1IFuEIBcubAjaC4KVoIpIZnagj+DjED+HVaO
+	xsZxQNQAGhkDOJGDkeeVO6CGe417hNIvXDam93uYhCaqyjOWFCpFa6Y8VV2mnzazRWhVlZ734rF
+	bctr0oy2x+oY/TugkjUH6o0k1AcqcdgN94aTFtYZiYRMA0HZqVgHqdxP4jERCadx/YHc6epIFIh
+	IDqjk6PfzbDs60/qsGjKDMYzGgdJnf4qQhpuCufqXWTfC8LyIOkEEWybqhbH24cY5pq7h56DCNN
+	x7f6nsCXrO719LlQfw0HM6ypEK6CkXxhs0k+jshptIiAoJ6asM5d9ANvhPBp2K1idlLXcPn+ZJD
+	3o1Uu4hBAakfDR9ehNmwj/vUCX2ZpWApU9CWqTYLIkUFDUBIqEBC22UhxzdzC/wYd/b01LkxZPJ
+	1u9xo2f2vw4FMJLcFqqn5h5QePOWI3geFJteAYG796UNYVapYOrF/qhrY=
+X-Received: by 2002:a05:600c:8905:b0:48e:5d91:cffb with SMTP id 5b1f17b1804b1-48fe60e7d6emr201978945e9.10.1779124691418;
+        Mon, 18 May 2026 10:18:11 -0700 (PDT)
+Received: from gmail.com (deskosmtp.auranext.com. [195.134.167.217])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fe4c8d39esm271445945e9.7.2026.05.18.10.18.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 May 2026 10:18:11 -0700 (PDT)
+Date: Mon, 18 May 2026 19:18:09 +0200
+From: Mahe Tardy <mahe.tardy@gmail.com>
+To: Stanislav Fomichev <sdf.kernel@gmail.com>
+Cc: bpf@vger.kernel.org, martin.lau@linux.dev, daniel@iogearbox.net,
+	john.fastabend@gmail.com, ast@kernel.org, andrii@kernel.org,
+	yonghong.song@linux.dev, jordan@jrife.io, netdev@vger.kernel.org,
+	netfilter-devel@vger.kernel.org, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com
+Subject: Re: [PATCH bpf-next v6 3/6] bpf: add bpf_icmp_send kfunc
+Message-ID: <agtJ0e_hlHS3Es_q@gmail.com>
+References: <20260518122842.218522-1-mahe.tardy@gmail.com>
+ <20260518122842.218522-4-mahe.tardy@gmail.com>
+ <ags3HARTFYwKU8nR@devvm7509.cco0.facebook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF00001505:EE_|DS0PR12MB6656:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1e9c5d2d-3ea0-4274-f337-08deb5007f29
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|376014|36860700016|11063799003|22082099003|18002099003|56012099003|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	ONGZmNnl+W49qZkggJBmgwwQ4rxVLVEM9thsGnijqshE/i8IvQ18rhcHr4uAEmpSQf0VO0WyFmIwFStmEzBZY1MqbQucsWOemQIhOAN+ih+E6vMHhZojUi2VZ63lA1lWEioLCbc8g4APZm78wrO03CXwRsIZiKyWo8a07aGHoA4F0w9k3yNJVal71feJEUzcxcHKswFmIu/UtcB7tCiU6Bu9uGpRnMDeWSjH5lNtGX+8J/ZoPGr6ly679e5L/Pbm50JGQGd19sDYjjw80vj0aZuX19qYBeu5r3W+2fBP5ZeLAJYuJF1671uUOFv5JY7JOKeP84MZxuGY+0r3GWJzeu+d1bJSmm5pRPFjm8VYEdQ2no95NoMCX2zZaBCaPq60f2pZGJUnldfqvlzGlwxnmgIJN3cQAPSYZ3rkHztUumxfKsn1QRch1TF+RZFYbnZt9GreDVudIMZ7ZF5lAxDDlYyQXO0STqTM+LFgydGyk1AokCJcixz7UtmPaAv6uKr8R5MZwxcO/3Tf3OpcUZXWZewWz1gQbKiutzZ6d4sENPT9FS93DnX040A3aIa7cWacquFIBb9huuCx8JHWGlW036jO2w+UkRjcd6NvbNlIN7ve2WZrbSHoef0O9X9XG8MsSwcayeFkOF/rQ/S7IsLXFSpn7wMzuR8yv9VnOvWN+2smYTHS8sRWyfcOZd1iX27HpI6RTepfmhhbXMU8obcHwSXdw2SLd35/72yAyh/WSFA=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(376014)(36860700016)(11063799003)(22082099003)(18002099003)(56012099003)(13003099007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	N3DxVhmWw3XCEUgKUZ3FQV0x+hEx4XxYcL/G++AgnSdCGpEFK2Xf+uV+CgCaxo3r+vBEw/8/um5sM+26q67Qq+NzLqu0LxFLQaiRCg/C7Z/YapZC6Abq2Ii76VIDswghfxBoZHtDfeARySPO94TkaXhkfol8aQ+RAbUqxepyZ8SC+udslHxcKeJf8VE5bvRNsfaR9p4Eenoo9Ru+atPNtRR4zb7zsZtb4UFjxvMfEBEC8X7q7UNtGklm1j5IpWR8aP71SFS7xMkTjOUdzKAX1D0U1eBOcc6pH28KZm/ZNggVpyJipUDYvItGwUk+9CkxtUP7vPJDy7REbN1ZOgM3uSXED2cofukZcAY3rDcvvLLyYh4a0j7NG18Egl6/gC5rvPIcZW05tb/y1IH/o+ODnuNhxfLU5O0JAX0hZ0E8HQZTVY0YzEakgxWJVOVhwqbt
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 May 2026 17:11:26.9916
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1e9c5d2d-3ea0-4274-f337-08deb5007f29
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF00001505.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6656
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ags3HARTFYwKU8nR@devvm7509.cco0.facebook.com>
+
+On Mon, May 18, 2026 at 09:17:45AM -0700, Stanislav Fomichev wrote:
+> On 05/18, Mahe Tardy wrote:
+> > This is needed in the context of Tetragon to provide improved feedback
+> > (in contrast to just dropping packets) to east-west traffic when blocked
+> > by policies using cgroup_skb programs. We also extend this kfunc to tc
+> > program as a convenience.
+> > 
+> > This reuses concepts from netfilter reject target codepath with the
+> > differences that:
+> > * Packets are cloned since the BPF user can still let the packet pass
+> >   (SK_PASS from the cgroup_skb progs for example) and the current skb
+> >   need to stay untouched (cgroup_skb hooks only allow read-only skb
+> >   payload).
+> > * We protect against recursion since the kfunc, by generating an ICMP
+> >   error message, could retrigger the BPF prog that invoked it.
+> > 
+> > For now, we support cgroup_skb and tc program types. For cgroup_skb and
+> > tc egress, almost everything should be good. However for tc ingress:
+> > - packet will not be routed yet: need to set the net device for
+> >   icmp_send, thus the call to ip[6]_route_reply_fill_dst.
+> > - fragments could trigger hook: icmp_send will only reply to fragment 0.
+> > - ensure the ip headers is linearized before processing, and zero out
+> >   the SKB control block after cloning to prevent icmp_send()/icmpv6_send()
+> >   from misinterpreting garbage data as IP options.
+> > 
+> > Only ICMP_DEST_UNREACH and ICMPV6_DEST_UNREACH are currently supported.
+> > The interface accepts a type parameter to facilitate future extension to
+> > other ICMP control message types.
+> > 
+> > Signed-off-by: Mahe Tardy <mahe.tardy@gmail.com>
+> > ---
+> >  net/core/filter.c | 118 ++++++++++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 118 insertions(+)
+> > 
+> > diff --git a/net/core/filter.c b/net/core/filter.c
+> > index 9590877b0714..843fa775596b 100644
+> > --- a/net/core/filter.c
+> > +++ b/net/core/filter.c
+> > @@ -84,6 +84,8 @@
+> >  #include <linux/un.h>
+> >  #include <net/xdp_sock_drv.h>
+> >  #include <net/inet_dscp.h>
+> > +#include <linux/icmpv6.h>
+> > +#include <net/icmp.h>
+> > 
+> >  #include "dev.h"
+> > 
+> > @@ -12464,6 +12466,110 @@ __bpf_kfunc int bpf_xdp_pull_data(struct xdp_md *x, u32 len)
+> >  	return 0;
+> >  }
+> > 
+> > +static DEFINE_PER_CPU(bool, bpf_icmp_send_in_progress);
+> > +
+> > +/**
+> > + * bpf_icmp_send - Send an ICMP control message
+> > + * @skb_ctx: Packet that triggered the control message
+> > + * @type: ICMP type (only ICMP_DEST_UNREACH/ICMPV6_DEST_UNREACH supported)
+> > + * @code: ICMP code (0-15 for IPv4, 0-6 for IPv6)
+> > + *
+> > + * Sends an ICMP control message in response to the packet. The original packet
+> > + * is cloned before sending the ICMP message, so the BPF program can still let
+> > + * the packet pass if desired.
+> > + *
+> > + * Currently only ICMP_DEST_UNREACH (IPv4) and ICMPV6_DEST_UNREACH (IPv6) are
+> > + * supported.
+> > + *
+> > + * Recursion protection: If called from a context that would trigger recursion
+> > + * (e.g., root cgroup processing its own ICMP packets), returns -EBUSY on
+> > + * re-entry.
+> > + *
+> > + * Return: 0 on success, negative error code on failure:
+> > + *         -EINVAL: Invalid code parameter
+> > + *         -EBADMSG: Packet too short or malformed
+> > + *         -ENOMEM: Memory allocation failed
+> > + *         -EBUSY: Recursion detected
+> > + *         -EHOSTUNREACH: Routing failed
+> > + *         -EPROTONOSUPPORT: Non-IP protocol
+> > + *         -EOPNOTSUPP: Unsupported ICMP type
+> > + */
+> > +__bpf_kfunc int bpf_icmp_send(struct __sk_buff *skb_ctx, int type, int code)
+> > +{
+> > +	struct sk_buff *skb = (struct sk_buff *)skb_ctx;
+> > +	struct sk_buff *nskb;
+> > +	bool *in_progress;
+> > +
+> > +	in_progress = this_cpu_ptr(&bpf_icmp_send_in_progress);
+> > +	if (*in_progress)
+> > +		return -EBUSY;
+> > +
+> > +	switch (skb->protocol) {
+> > +#if IS_ENABLED(CONFIG_INET)
+> > +	case htons(ETH_P_IP):
+> > +		if (type != ICMP_DEST_UNREACH)
+> > +			return -EOPNOTSUPP;
+> > +		if (code < 0 || code > NR_ICMP_UNREACH)
+> > +			return -EINVAL;
+> > +
+> > +		nskb = skb_clone(skb, GFP_ATOMIC);
+> > +		if (!nskb)
+> > +			return -ENOMEM;
+> > +
+> > +		if (!pskb_network_may_pull(nskb, sizeof(struct iphdr))) {
+> > +			kfree_skb(nskb);
+> > +			return -EBADMSG;
+> > +		}
+> > +
+> > +		if (!skb_dst(nskb) && ip_route_reply_fill_dst(nskb) < 0) {
+> > +			kfree_skb(nskb);
+> > +			return -EHOSTUNREACH;
+> > +		}
+> > +
+> > +		memset(IPCB(nskb), 0, sizeof(struct inet_skb_parm));
+> > +
+> > +		*in_progress = true;
+> > +		icmp_send(nskb, type, code, 0);
+> > +		*in_progress = false;
+> 
+> [..]
+> 
+> > +		kfree_skb(nskb);
+> 
+> I was going to suggest to use consume_skb here, I think it is a better fit?
+
+Yeah correct, I can replace it with consume_skb, didn't know about it,
+thanks.
+
+> But I'm not sure why you do the clone here, I don't see any requirement from
+> the icmp_send side, can you clarify? Is it because of the pull?
+
+From the icmp_send side I think it's fine, however, this part might
+touch the original packet, especially ip_route_reply_fill_dst:
 
 
-Keno Fischer <keno@juliahub.com> writes:
+if (!pskb_network_may_pull(nskb, sizeof(struct iphdr))) {
+	kfree_skb(nskb);
+	return -EBADMSG;
+}
 
-> Hello mlxsw maintainers,
->
-> I don't think this bug is particularly consequential, but there appears to be a
-> disagreement between the driver and the firmware regarding the proper max
-> headroom size. On my SN3800, I see the following:
->
->  ```
-> $ tc qdisc replace dev swp1 root handle 1: prio bands 8 priomap 0 1 2 3 4 5 6 7
-> $ tc qdisc replace dev swp2 root handle 1: prio bands 8 priomap 0 1 2 3 4 5 6 7
-> $ dcb buffer set dev swp1 \
->       buffer-size all:0 0:1219K \
->       prio-buffer 0:0 1:0 2:0 3:0 4:0 5:0 6:0 7:0
-> Attribute write: No buffer space available
-> $ dcb buffer set dev swp2 \
->       buffer-size all:0 0:1219K \
->       prio-buffer 0:0 1:0 2:0 3:0 4:0 5:0 6:0 7:0
-> [78711.680961] mlxsw_spectrum2 0000:07:00.0: EMAD reg access failed
-> (tid=43b7c51f003ef26e,reg_id=500c(pbmc),type=write,status=7(bad
-> parameter))
-> Attribute write: I/O error
-> ```
->
-> I don't know why this differs between the two switch ports, but since
-> the driver goes through a lot of effort to calculate the max value
-> and return a nice error (as shown in the first command), it seems
-> like a bug that it wouldn't do so on the second port.
+if (!skb_dst(nskb) && ip_route_reply_fill_dst(nskb) < 0) {
+	kfree_skb(nskb);
+	return -EHOSTUNREACH;
+}
 
-The driver is making the assumption that the headroom is allocated per
-port, but in fact it's allocated per a higher-level "port cluster".
-There's a separate HW resource to query how many ports are shared like
-this, and then the ports are allocated into clusters linearly by their
-local_port number.
+memset(IPCB(nskb), 0, sizeof(struct inet_skb_parm));
 
-I have something sketched up that might as well work, but I need to test
-it a bit and see if it survives regression.
 
-> As an aside, as a novice to this area, it wasn't clear to me from the
-> docs (https://github.com/Mellanox/mlxsw/wiki/Quality-of-Service),
-> whether the headroom buffer is a separate piece of memory or
-> whether it steals part of the shared buffer memory space, which
+All of this is mostly there because we allow this kfunc for tc and
+especially tc ingress. At this stage, the skb might not have a routing
+entry yet and icmp_send needs to know the dev from this or fail
+silently. This is the original reason why I added the the net patches
+(patch 1 and 2) and it was also spotted by Sashiko when I tried to
+remove them[^1].
 
-My understanding is that the headroom space that is configured at a PG
-cannot be used for other PG's and other ports' traffic. In that sense it
-subtracts from the shared buffer -- when there is traffic from other
-ports that is considered for admission into the shared buffer, it will
-not be admitted if the only available space is in "foreign" headrooms.
-
-> is what prompted me to just try various values here. It also wasn't
-> clear to me whether the headroom config did anything for lossy PGs.
-> Hope my naive view can help improve the page :).
-
-It's been a while since I touched this stuff, so maybe I'm missing
-something, but I think that configuring anything above MTU is only
-really relevant for lossless flows. One other use case from the top of
-my head is egress mirror, but the driver should account for that
-automatically.
+[^1]: https://lore.kernel.org/bpf/20260515202358.20252C2BCB0@smtp.kernel.org/
