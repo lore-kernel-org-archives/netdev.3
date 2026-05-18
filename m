@@ -1,143 +1,242 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F10013E714A;
-	Mon, 18 May 2026 09:34:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91AB93E3169;
+	Mon, 18 May 2026 09:35:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779096855; cv=none; b=TV25xEH422VaYW/8a6Bwn0IRZoFJ+0MGbeEeneip4QFW2S2SsbmMvtX6Qd9NUtkkbpqlfnTxB8/XPdE3icc57rnL3AkSoxe9WTz6YtozlQ+UPP1Wi6GneOEPp2hjAzLkYUtRaE7x6dkwB5OvSlLECA7EhsTYhvOrx10417ff/GI=
+	t=1779096954; cv=none; b=pa4rm5t8qgA1igRBTS8Xl+9h/zxj47Gy+LJ8ZAtBO2zkW3nKwuHonDtUzpY73Z4xFqRn7OmPM7s5H++aWAkWRn5l3o7H0JVvpHu+9gseeWTY29xcGzkNDhI33rwHpWaF+4l/DdYF39n6LM21w5DbcquWICAWcptNZSJSC5Kbq0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779096855; c=relaxed/simple;
-	bh=GzBzHDjnj4M3YTbCmBceQUc3zfWmzR4wFD9lrvfEGjY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=G3y6CkFIMDDb/Bh1TkMkd6/Nz8YAUHfhOiEvPt+auTXbvgYNuybXeIrNi2TF0L75icYv9T/9HWgqUCK0AqsXz5YbOdoeZWkPLcsQKDa2H3GzX0EQurXW911tvHeATKrck95eHONIbsZOyFF0xninMMxDAMk33YAPbqDQRysYpio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sZEb6K2Y; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1779096954; c=relaxed/simple;
+	bh=WWV1aLo69x/tz0kxJlt4phryPyzhpEYZVLXE8a7RXCs=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=u2/8O2SZ+pji4Yi4Lg9m15VWzw4r1bKAY8pHIA3Hw6Wba8lAEUuIjX4S/DlnJ5IDwXaA7umqIyZ+3zxT/qwxegfpc/GuXBO04vAIKj57Jc1XJPmIDiCD2YAGFvzhcrBthkLlRWTGhfQetkOhKeIT627dgHFy1ah63fzOvdBsBHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=MPXUMuXL; arc=none smtp.client-ip=113.46.200.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sZEb6K2Y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00108C2BCB7;
-	Mon, 18 May 2026 09:34:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779096854;
-	bh=GzBzHDjnj4M3YTbCmBceQUc3zfWmzR4wFD9lrvfEGjY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=sZEb6K2YedoHePpZc1igvCSBfZNBrGJBi8jQLbBUY2nThD+L/3S8D9jqg17V76XK6
-	 FSM2oQQMeno2AKFYtifyrgLOfCZDthPUxHTWx8eZvyyDrqzkk2Hrec75AZN9qsVAwa
-	 UMG9lre442aR/vAZD6Xuug6/4fzcx9l4wR+eOhpIKLjS9h1nzotoIZ5QDBClDpEmcm
-	 LVGaHGK7CXXiOcgZKSicJhfNM2qk0bu+yhtViubdsNc8fyQu3Vsr3PFQPOiFZCJYIf
-	 RDiUHxvHBV8BpypAMXbUQDMjWAZkjHe6asgWo9C7IPUOV2FMkDgmseugS+orIIQZow
-	 AHur9V0RknTsA==
-Message-ID: <65d11b12-5696-4403-8062-3ae65ca9113e@kernel.org>
-Date: Mon, 18 May 2026 11:33:59 +0200
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="MPXUMuXL"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=RddyL+tppm6O7sdJ/dYrXufGV/PCdclGuhNqBvuQmDM=;
+	b=MPXUMuXLn5Ku9gffBYA2dWCT+uCkVs2J7BQX4pjyWpeLJsEFm55oMvlLUlRfDA7iaJSVqQZkF
+	cHByzo6exS+m6UhrjEZ+VRg+u29nGuSBthDwhYvGVvXUHYk6RoRh9iL2skc19r3VsrhykyS9QJT
+	ooT/Ou4dIwihOW81pyeZbdA=
+Received: from mail.maildlp.com (unknown [172.19.162.140])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4gJssy5K1pz1prN9;
+	Mon, 18 May 2026 17:28:06 +0800 (CST)
+Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id 696342025F;
+	Mon, 18 May 2026 17:35:49 +0800 (CST)
+Received: from
+ deployment-s00611957-4ii0-20260331111539-78d5c5cfbb-9s2bv.default.svc.cluster.local
+ (7.197.8.232) by kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Mon, 18 May 2026 17:35:49 +0800
+From: Jijie Shao <shaojijie@huawei.com>
+To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
+CC: <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
+	<chenhao418@huawei.com>, <huangdonghua3@h-partners.com>,
+	<yangshuaisong@h-partners.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <shaojijie@huawei.com>
+Subject: [PATCH net-next 4/6] net: hns3: support IP and tunnel VNI dissectors for tc flow
+Date: Mon, 18 May 2026 17:35:24 +0800
+Message-ID: <20260518093526.1109595-5-shaojijie@huawei.com>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <20260518093526.1109595-1-shaojijie@huawei.com>
+References: <20260518093526.1109595-1-shaojijie@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] mm: introduce a new page type for page pool in page
- type
-To: Byungchul Park <byungchul@sk.com>
-Cc: Dragos Tatulea <dtatulea@nvidia.com>, linux-mm@kvack.org,
- akpm@linux-foundation.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, kernel_team@skhynix.com, harry.yoo@oracle.com,
- ast@kernel.org, daniel@iogearbox.net, davem@davemloft.net, kuba@kernel.org,
- hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me,
- saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
- andrew+netdev@lunn.ch, edumazet@google.com, pabeni@redhat.com,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, horms@kernel.org,
- jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
- ilias.apalodimas@linaro.org, willy@infradead.org, brauner@kernel.org,
- kas@kernel.org, yuzhao@google.com, usamaarif642@gmail.com,
- baolin.wang@linux.alibaba.com, almasrymina@google.com, toke@redhat.com,
- asml.silence@gmail.com, bpf@vger.kernel.org, linux-rdma@vger.kernel.org,
- sfr@canb.auug.org.au, dw@davidwei.uk, ap420073@gmail.com
-References: <20260224051347.19621-1-byungchul@sk.com>
- <982b9bc1-0a0a-4fc5-8e3a-3672db2b29a1@nvidia.com>
- <20260513121805.GA22430@system.software.com>
- <8348d867-f8a1-432c-be2d-699ad96b2e93@kernel.org>
- <20260513123920.GA51788@system.software.com>
- <627bb280-be44-4648-8771-5a479cda988f@kernel.org>
- <20260513132636.GA75142@system.software.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260513132636.GA75142@system.software.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemk100013.china.huawei.com (7.202.194.61)
 
-On 5/13/26 15:26, Byungchul Park wrote:
-> On Wed, May 13, 2026 at 03:02:43PM +0200, David Hildenbrand (Arm) wrote:
->> On 5/13/26 14:39, Byungchul Park wrote:
->>>  On 5/13/26 14:18, Byungchul Park wrote:
->>>
->>> This is not final patch, but for sharing the rough idea *with code* -
->>> maybe there are more points in code that should be adjusted by the
->>> change.  I just typed the draft patch quick just for sharing idea.
->>>
->>> If we should allow pp type pages to be used in mapping as well, then
->>> we should allow a page to keep both its type and mapcount at the same
->>> time.  Am I missing something?
->>
->> We don't want code to accidentally overflow mapcounts into these bits and have
->> them wrongly be detected as page types.
->>
->> This is just very fragile.
-> 
-> Okay.  Thanks for the explanation.  Plus, the adjustment I mentioned
-> might not be as simple as I thought it'd be.
-> 
-> So sorry about the noise.  I'm a zombie now.  I'll think about it after
-> some rest.
+Currently, the driver does not support FLOW_DISSECTOR_KEY_IP and
+FLOW_DISSECTOR_KEY_ENC_KEYID. But the hardware supports
+ip_tos (FLOW_DISSECTOR_KEY_IP) and
+outer_tun_vni (FLOW_DISSECTOR_KEY_ENC_KEYID).
 
-It's a shame we didn't get reports earlier that we do have some vm_insert_page()
-users :(
+This patch adds support for FLOW_DISSECTOR_KEY_IP and
+FLOW_DISSECTOR_KEY_ENC_KEYID.
 
+Additionally, since tc flow cannot effectively support
+l2_user_def, l3_user_def, and l4_user_def,
+this patch explicitly sets them to not be used.
+
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+---
+ .../hisilicon/hns3/hns3pf/hclge_main.c        | 78 +++++++++++++++++--
+ .../hisilicon/hns3/hns3pf/hclge_main.h        |  4 +
+ 2 files changed, 76 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index bbbc017a0fb7..35380dbd1ecf 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -16,7 +16,7 @@
+ #include <linux/crash_dump.h>
+ 
+ #include <net/rtnetlink.h>
+-
++#include <net/vxlan.h>
+ #include "hclge_cmd.h"
+ #include "hclge_dcb.h"
+ #include "hclge_main.h"
+@@ -337,7 +337,9 @@ static const struct key_info tuple_key_info[] = {
+ 	{ OUTER_SRC_PORT, 16, KEY_OPT_LE16, -1, -1 },
+ 	{ OUTER_DST_PORT, 16, KEY_OPT_LE16, -1, -1 },
+ 	{ OUTER_L4_RSV, 32, KEY_OPT_LE32, -1, -1 },
+-	{ OUTER_TUN_VNI, 24, KEY_OPT_VNI, -1, -1 },
++	{ OUTER_TUN_VNI, 24, KEY_OPT_VNI,
++	  offsetof(struct hclge_fd_rule, tuples.outer_tun_vni),
++	  offsetof(struct hclge_fd_rule, tuples_mask.outer_tun_vni) },
+ 	{ OUTER_TUN_FLOW_ID, 8, KEY_OPT_U8, -1, -1 },
+ 	{ INNER_DST_MAC, 48, KEY_OPT_MAC,
+ 	  offsetof(struct hclge_fd_rule, tuples.dst_mac),
+@@ -5590,8 +5592,9 @@ static int hclge_init_fd_config(struct hclge_dev *hdev)
+ 
+ 	/* If use max 400bit key, we can support tuples for ether type */
+ 	if (hdev->fd_cfg.fd_mode == HCLGE_FD_MODE_DEPTH_2K_WIDTH_400B_STAGE_1) {
+-		key_cfg->tuple_active |=
+-				BIT(INNER_DST_MAC) | BIT(INNER_SRC_MAC);
++		key_cfg->tuple_active |= BIT(INNER_DST_MAC) |
++					 BIT(INNER_SRC_MAC) |
++					 BIT(OUTER_TUN_VNI);
+ 		if (hdev->ae_dev->dev_version >= HNAE3_DEVICE_VERSION_V3)
+ 			key_cfg->tuple_active |= HCLGE_FD_TUPLE_USER_DEF_TUPLES;
+ 	}
+@@ -5760,6 +5763,17 @@ static bool hclge_fd_convert_tuple(u32 tuple_bit, u8 *key_x, u8 *key_y,
+ 		*(__le32 *)key_x = cpu_to_le32(tmp_x_l);
+ 		*(__le32 *)key_y = cpu_to_le32(tmp_y_l);
+ 
++		return true;
++	case KEY_OPT_VNI:
++		calc_x(tmp_x_l, *(u32 *)(&p[offset]), *(u32 *)(&p[moffset]));
++		calc_y(tmp_y_l, *(u32 *)(&p[offset]), *(u32 *)(&p[moffset]));
++		for (i = 0; i < HCLGE_VNI_LENGTH; i++) {
++			key_x[i] = (cpu_to_le32(tmp_x_l) >>
++				    (i * BITS_PER_BYTE)) & 0xFF;
++			key_y[i] = (cpu_to_le32(tmp_y_l) >>
++				    (i * BITS_PER_BYTE)) & 0xFF;
++		}
++
+ 		return true;
+ 	default:
+ 		return false;
+@@ -7340,6 +7354,52 @@ static void hclge_get_cls_key_port(const struct flow_rule *flow,
+ 	}
+ }
+ 
++static int hclge_get_cls_enc_keyid(struct hclge_dev *hdev,
++				   const struct flow_rule *flow,
++				   struct hclge_fd_rule *rule)
++{
++	if (flow_rule_match_key(flow, FLOW_DISSECTOR_KEY_ENC_KEYID)) {
++		struct flow_match_enc_keyid match;
++
++		flow_rule_match_enc_keyid(flow, &match);
++
++		/* vni is only 24 bits and must be greater than 0,
++		 * and it can not be masked.
++		 */
++		if (match.mask->keyid != HCLGE_FD_VXLAN_VNI_UNMASK ||
++		    be32_to_cpu(match.key->keyid) >= VXLAN_N_VID ||
++		    !match.key->keyid) {
++			dev_err(&hdev->pdev->dev, "invalid enc_keyid\n");
++			return -EINVAL;
++		}
++
++		rule->tuples.outer_tun_vni = be32_to_cpu(match.key->keyid);
++		rule->tuples_mask.outer_tun_vni =
++						be32_to_cpu(match.mask->keyid);
++	} else {
++		rule->unused_tuple |= BIT(OUTER_TUN_VNI);
++	}
++
++	return 0;
++}
++
++static void hclge_get_cls_key_ip_tos(const struct flow_rule *flow,
++				     struct hclge_fd_rule *rule)
++{
++	if (flow_rule_match_key(flow, FLOW_DISSECTOR_KEY_IP)) {
++		struct flow_match_ip match;
++
++		flow_rule_match_ip(flow, &match);
++
++		rule->tuples.ip_tos = match.key->tos;
++		rule->tuples_mask.ip_tos = match.mask->tos;
++		if (!rule->tuples.ip_tos)
++			rule->unused_tuple |= BIT(INNER_IP_TOS);
++	} else {
++		rule->unused_tuple |= BIT(INNER_IP_TOS);
++	}
++}
++
+ static int hclge_get_tc_flower_action(struct hclge_dev *hdev,
+ 				      struct flow_cls_offload *cls_flower,
+ 				      struct hclge_fd_rule *rule)
+@@ -7393,6 +7453,9 @@ static int hclge_parse_cls_flower(struct hclge_dev *hdev,
+ 	struct netlink_ext_ack *extack = cls_flower->common.extack;
+ 	int ret;
+ 
++	/* not support any user def tuples */
++	rule->unused_tuple |= HCLGE_FD_TUPLE_USER_DEF_TUPLES;
++
+ 	hclge_get_cls_key_basic(flow, rule);
+ 	hclge_get_cls_key_mac(flow, rule);
+ 	hclge_get_cls_key_vlan(flow, rule);
+@@ -7402,8 +7465,9 @@ static int hclge_parse_cls_flower(struct hclge_dev *hdev,
+ 		return ret;
+ 
+ 	hclge_get_cls_key_port(flow, rule);
++	hclge_get_cls_key_ip_tos(flow, rule);
+ 
+-	return 0;
++	return hclge_get_cls_enc_keyid(hdev, flow, rule);
+ }
+ 
+ static int hclge_check_cls_flower(struct hclge_dev *hdev,
+@@ -7433,7 +7497,9 @@ static int hclge_check_cls_flower(struct hclge_dev *hdev,
+ 	      BIT_ULL(FLOW_DISSECTOR_KEY_VLAN) |
+ 	      BIT_ULL(FLOW_DISSECTOR_KEY_IPV4_ADDRS) |
+ 	      BIT_ULL(FLOW_DISSECTOR_KEY_IPV6_ADDRS) |
+-	      BIT_ULL(FLOW_DISSECTOR_KEY_PORTS))) {
++	      BIT_ULL(FLOW_DISSECTOR_KEY_PORTS) |
++	      BIT_ULL(FLOW_DISSECTOR_KEY_IP) |
++	      BIT_ULL(FLOW_DISSECTOR_KEY_ENC_KEYID))) {
+ 		dev_err(&hdev->pdev->dev, "unsupported key set: %#llx\n",
+ 			dissector->used_keys);
+ 		return -EOPNOTSUPP;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h
+index 032b472d2368..ccb19d960690 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h
+@@ -645,6 +645,9 @@ struct key_info {
+ #define HCLGE_FD_USER_DEF_DATA		GENMASK(15, 0)
+ #define HCLGE_FD_USER_DEF_OFFSET	GENMASK(15, 0)
+ #define HCLGE_FD_USER_DEF_OFFSET_UNMASK	GENMASK(15, 0)
++#define HCLGE_FD_VXLAN_VNI_UNMASK	GENMASK(31, 0)
++
++#define HCLGE_VNI_LENGTH		3
+ 
+ /* assigned by firmware, the real filter number for each pf may be less */
+ #define MAX_FD_FILTER_NUM	4096
+@@ -738,6 +741,7 @@ struct hclge_fd_rule_tuples {
+ 	u32 l4_user_def;
+ 	u8 ip_tos;
+ 	u8 ip_proto;
++	u32 outer_tun_vni;
+ };
+ 
+ struct hclge_fd_rule {
 -- 
-Cheers,
+2.33.0
 
-David
