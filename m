@@ -1,161 +1,149 @@
-Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
+Received: from flow-a5-smtp.messagingengine.com (flow-a5-smtp.messagingengine.com [103.168.172.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F473E717D;
-	Mon, 18 May 2026 09:35:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.223
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F3863E7179;
+	Mon, 18 May 2026 09:36:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779096961; cv=none; b=CSa9vg4b8GTn+ZtVnNUZ+MA2B7CjDCTYBtDCFbSTtJtC52FQz2sctunUl4Wd0wlkCG5LkxsNUvzhfeG37vI9bi9TMkxEJCYQBN4PpVTqWkAPhdnwTKGNBJ2TLRqybclV0p73BhIMzqDG2I5iD/g8KFOZxDlAXhMOvUQSaeCwiHM=
+	t=1779096972; cv=none; b=nNw0tUJgA3Dd4J9+2Egk7728eMci0GMFFTpbOgyVuMIw/g+pvh5in9HHbAhPxl3tTV6m8EOar9JWTheLBp9wWH9OmaEuuMdpH2Rk+wf2Sh8DEIMk6v2ZhYz05IWYdi34v4YJxqthNdfc1aRihS7+S7Aqy2spwqW85tpNpw3dGm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779096961; c=relaxed/simple;
-	bh=4IRMK1SH8vkPGzTRoAu/9PzlKVGstmE0gkZLpRNV7SM=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Qx9inaRKM56br9+ioJvfRGbzx58aVhKMDyFdepSHga3vQVbJxf38W11ZC7d2NDhySpXvRKp0xRFSrDDW1Y8dAnZ46R2Frv5AxrEy/dpCcdtF5hqNm9x/r9FVC4ApbWTcqkuqHRBVkp6dTSyAltnQeJeD6fMUmZww6MyaoPVBro4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=LoP0bnHI; arc=none smtp.client-ip=113.46.200.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1779096972; c=relaxed/simple;
+	bh=9f59zeiLZgadl3kKXePTlE/z4EO79MiiStdZcxlY7A0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QAJHmlP8wKd8gtgGnaxtFR5Mp+v4Z8nXZARTaRIYme9xk6/OdefZtMof7pM5h5bjys9AvzieEAJtc2pYMoNmba1rMGbH0w52z13cZYI6mh/NnOSDMQUqM9lctJzMlq4RALlrafFQzohay97+4+wKO1t2k2C+Zl7rg1gtvUOE13A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=EXDwKVG5; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Qzttd3E3; arc=none smtp.client-ip=103.168.172.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="LoP0bnHI"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=9knPvIDKpNZX0ND2NsTb0A/XO0/cA9NffW2E5WLknz0=;
-	b=LoP0bnHI79AILw9+hY4mHJUgmBSbS/FFQ9TybgkDFwNRYbXlwk2UcNNFqvdqwJhtLpZ4pU95t
-	jYpu2WHM7K/79/c3j4AIeoVJuAZDW+7HT4wsnu7uOUZWG1kd44qyHx/OrMmerXi6JaTmquE4xAp
-	pvTg1TaTHcNloFdTyBOitpM=
-Received: from mail.maildlp.com (unknown [172.19.163.163])
-	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4gJssz5X2QzmV6S;
-	Mon, 18 May 2026 17:28:07 +0800 (CST)
-Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 22CF14056E;
-	Mon, 18 May 2026 17:35:49 +0800 (CST)
-Received: from
- deployment-s00611957-4ii0-20260331111539-78d5c5cfbb-9s2bv.default.svc.cluster.local
- (7.197.8.232) by kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Mon, 18 May 2026 17:35:48 +0800
-From: Jijie Shao <shaojijie@huawei.com>
-To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
-CC: <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
-	<chenhao418@huawei.com>, <huangdonghua3@h-partners.com>,
-	<yangshuaisong@h-partners.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <shaojijie@huawei.com>
-Subject: [PATCH net-next 3/6] net: hns3: support two more actions for tc flow
-Date: Mon, 18 May 2026 17:35:23 +0800
-Message-ID: <20260518093526.1109595-4-shaojijie@huawei.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20260518093526.1109595-1-shaojijie@huawei.com>
-References: <20260518093526.1109595-1-shaojijie@huawei.com>
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="EXDwKVG5";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Qzttd3E3"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailflow.phl.internal (Postfix) with ESMTP id 5C6921380493;
+	Mon, 18 May 2026 05:36:09 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Mon, 18 May 2026 05:36:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1779096969;
+	 x=1779104169; bh=19w0nMnNE9J8yixcestTCQ227en8+KUKILsHHgeFJYQ=; b=
+	EXDwKVG5CLp9uIlpOhT3ylfesZfyzXpa69XZPG+5SkJqBJS0R2S3ThV9nwmnn9TA
+	yBua87LtMY1EmaTVtLhNX3EBgnY5Gm0O5wvypTtMDUJrhTf+UP0kDbC8m4dvV1/3
+	n3u/NVnnJJjAYOhEAW4QxdgPO1PdbdY78e+HriRxW4J2mzVDpAtSon3VLcykhWwt
+	aptexbSwdEFQa/a74xqM07GiR0Akh9jlXzxXc6dQb8y0hqEb68EbRTfOnQs1NyQd
+	HJ2Hjr5c5JokNRIcG1Qd+9pQrZzynxK0vb3f4ydYitTv6KKapBCsTLnRyevmTYPa
+	5zctu42AZJLUWmZTsPwakQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1779096969; x=
+	1779104169; bh=19w0nMnNE9J8yixcestTCQ227en8+KUKILsHHgeFJYQ=; b=Q
+	zttd3E30ERjO8ZZLOp+QkUcCsi8wBQ/FAiE3GuG8iofnzfbxgSyz3w3JKrej2pC0
+	0naGJFx33ekROrh+2V5YGgMRxmdCrz8uvFjndPYCDyIi37Qdov7Slgf3kJ7vlA6S
+	ns6/BynHq86U79ZWhp/nu0CI3UUGlcaQ2Q1kRzETQmKWEhl1+7U3VdhbV9FwEh+I
+	MfezOkmp3j5AkrGNqKhWX2NacRJfhIu9P1i5FFqrS5T7Klglq7FO88OyuJCpvIWI
+	hG+j5DjlzNQOIW0Zcc0xTq0VlXFaeXj5BzfQQ3aAyWzT6m4QeoCP3d5jDEwaQJD+
+	iIrWU4IlslUHU0BrrfemA==
+X-ME-Sender: <xms:iN0Kauzuvm1090nizHzRV8-niUV7JaZPXojq8a7uxb4yzuB7vOD5VA>
+    <xme:iN0Kah_ySFwZidVDkdkj_NL9tfHCrDNk8wrq5JPzwy96rqEQoG4VjkUzGMQVtAEPv
+    kcjdTUCCOyl3hwmPiAYqThri_HH2tVV4EsUs6D9OB7Y47cN1iM>
+X-ME-Received: <xmr:iN0KamKHyTDyRd0-zrbEuhnQ_UaO1DpkwQRjNOPrmAMXzdCpUJesaZgooD3eCtfskjEMdxZxzJ7XJUtExOByG31O6g>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddufeekhedvucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpefirhgvghcu
+    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeehfffftd
+    ehkeevfeeujeduhefggfetffeijefgkeelffdtjeefhedttdfffeffueenucffohhmrghi
+    nhepsghoohhtlhhinhdrtghomhenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
+    epmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomhdpnhgspghrtghpthhtohep
+    vdekpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehmrghrkhhushdrvghlfhhrih
+    hnghesfigvsgdruggvpdhrtghpthhtohepuggrfigvihdrfhgvnhhgsehsvghurdgvughu
+    rdgtnhdprhgtphhtthhopeiiihhlihhnsehsvghurdgvughurdgtnhdprhgtphhtthhope
+    hnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehsghhouhht
+    hhgrmhesmhgrrhhvvghllhdrtghomhdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrd
+    hkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghr
+    rdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegrnhgurhgvfidonhgvthguvghvsehluh
+    hnnhdrtghhpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomh
+X-ME-Proxy: <xmx:iN0Kal7zmnqRU7742nyAy3ndkhKLViVV2CVNu7t4NF7msDG9dlqtUw>
+    <xmx:iN0KaruCW6BT3kZZzh6I4ORWubMhRyx3XY8M8mMhTGllGRCyHJgANQ>
+    <xmx:iN0KajZmoy4H2vxErtOkJetSDpS1A_xTbAK0N3uhlQDMatexomMGUA>
+    <xmx:iN0Kans-ooF5Dl2itzF58CnZDAZmXW1ZHPAu3h0pDuIgAvDgGdlYzw>
+    <xmx:id0KatN8hGEHzbie003ukn4uTChKkYmtpD9Vg3DS4QgBU6_0TDoMniBO>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 18 May 2026 05:36:08 -0400 (EDT)
+Date: Mon, 18 May 2026 11:35:22 +0200
+From: Greg KH <greg@kroah.com>
+To: Markus Elfring <Markus.Elfring@web.de>
+Cc: Dawei Feng <dawei.feng@seu.edu.cn>, Zilin Guan <zilin@seu.edu.cn>,
+	netdev@vger.kernel.org, Sunil Goutham <sgoutham@marvell.com>,
+	stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Eric Dumazet <edumazet@google.com>,
+	Geethasowjanya Akula <gakula@marvell.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jianhao Xu <jianhao.xu@seu.edu.cn>, Paolo Abeni <pabeni@redhat.com>,
+	Subbaraya Sundeep Bhatta <sbhatta@marvell.com>
+Subject: Re: [PATCH net] octeontx2-pf: avoid double free of pool->stack on AQ
+ init failure
+Message-ID: <2026051817-identical-decibel-3953@gregkh>
+References: <20260515151826.1005397-1-dawei.feng@seu.edu.cn>
+ <fe233758-26b8-4abc-ada9-d1f7c4102b08@web.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemk100013.china.huawei.com (7.202.194.61)
+In-Reply-To: <fe233758-26b8-4abc-ada9-d1f7c4102b08@web.de>
 
-Currently, the driver supports only one action:HCLGE_FD_ACTION_SELECT_TC.
+On Mon, May 18, 2026 at 11:23:30AM +0200, Markus Elfring wrote:
+> …
+> > Set pool->stack to NULL immediately after the local free so the shared
+> …
+>                                                  so that?
+> 
+> How do you think about to avoid a bit of duplicate source code
+> in affected function implementations?
+> https://elixir.bootlin.com/linux/v7.1-rc3/source/drivers/net/ethernet/marvell/octeontx2/nic/cn20k.c#L615-L629
+> https://elixir.bootlin.com/linux/v7.1-rc3/source/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c#L1478-L1492
+> 
+> 
+> > The bug was first flagged by an experimental analysis tool we are
+> > developing for kernel memory-management bugs while analyzing
+> > v6.13-rc1. The tool is still under development and is not yet publicly
+> > available. Manual inspection confirms that the bug is still present in
+> > v7.1-rc3.
+> 
+> Under which circumstances will the mentioned software revision gap
+> be adjusted accordingly?
+> 
+> Regards,
+> Markus
+> 
 
-This patch adds support for HCLGE_FD_ACTION_SELECT_QUEUE and
-HCLGE_FD_ACTION_DROP_PACKET.
+Hi,
 
-A rule can have only one action. Therefore, the driver intercepts rules
-that have multiple actions or no action.
+This is the semi-friendly patch-bot of Greg Kroah-Hartman.
 
-Note: The driver considers cls_flower->classid as an action:
-HCLGE_FD_ACTION_SELECT_TC.
+Markus, you seem to have sent a nonsensical or otherwise pointless
+review comment to a patch submission on a Linux kernel developer mailing
+list.  I strongly suggest that you not do this anymore.  Please do not
+bother developers who are actively working to produce patches and
+features with comments that, in the end, are a waste of time.
 
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
----
- .../hisilicon/hns3/hns3pf/hclge_main.c        | 59 ++++++++++++++++---
- 1 file changed, 52 insertions(+), 7 deletions(-)
+Patch submitter, please ignore Markus's suggestion; you do not need to
+follow it at all.  The person/bot/AI that sent it is being ignored by
+almost all Linux kernel maintainers for having a persistent pattern of
+behavior of producing distracting and pointless commentary, and
+inability to adapt to feedback.  Please feel free to also ignore emails
+from them.
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index 6eb4c6e4df4e..bbbc017a0fb7 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -7344,18 +7344,45 @@ static int hclge_get_tc_flower_action(struct hclge_dev *hdev,
- 				      struct flow_cls_offload *cls_flower,
- 				      struct hclge_fd_rule *rule)
- {
-+	struct flow_rule *flow = flow_cls_offload_flow_rule(cls_flower);
- 	struct hnae3_handle *handle = &hdev->vport[0].nic;
-+	struct flow_action *action = &flow->action;
-+	struct flow_action_entry *act;
- 	int tc;
- 
--	tc = tc_classid_to_hwtc(handle->netdev, cls_flower->classid);
--	if (tc < 0 || tc > hdev->tc_max) {
--		dev_err(&hdev->pdev->dev, "invalid traffic class: %d\n", tc);
--		return -EINVAL;
-+	if (!flow_action_has_entries(&flow->action)) {
-+		tc = tc_classid_to_hwtc(handle->netdev, cls_flower->classid);
-+		if (tc < 0 || tc > hdev->tc_max) {
-+			dev_err(&hdev->pdev->dev,
-+				"invalid traffic class: %d\n", tc);
-+			return -EINVAL;
-+		}
-+
-+		rule->action = HCLGE_FD_ACTION_SELECT_TC;
-+		rule->cls_flower.tc = tc;
-+		return 0;
- 	}
- 
--	rule->action = HCLGE_FD_ACTION_SELECT_TC;
--	rule->cls_flower.tc = tc;
--	return 0;
-+	act = &action->entries[0];
-+	switch (act->id) {
-+	case FLOW_ACTION_RX_QUEUE_MAPPING:
-+		if (act->rx_queue >= handle->kinfo.num_tqps) {
-+			dev_err(&hdev->pdev->dev,
-+				"queue id (%u) should be less than %u\n",
-+				act->rx_queue, handle->kinfo.num_tqps - 1);
-+			return -EINVAL;
-+		}
-+
-+		rule->queue_id = act->rx_queue;
-+		rule->action = HCLGE_FD_ACTION_SELECT_QUEUE;
-+		return 0;
-+	case FLOW_ACTION_DROP:
-+		rule->action = HCLGE_FD_ACTION_DROP_PACKET;
-+		return 0;
-+	default:
-+		dev_err(&hdev->pdev->dev, "unsupported action(%d)\n", act->id);
-+		return -EOPNOTSUPP;
-+	}
- }
- 
- static int hclge_parse_cls_flower(struct hclge_dev *hdev,
-@@ -7412,6 +7439,24 @@ static int hclge_check_cls_flower(struct hclge_dev *hdev,
- 		return -EOPNOTSUPP;
- 	}
- 
-+	/* driver will parses classid into an action */
-+	if (cls_flower->classid && flow_action_has_entries(&flow->action)) {
-+		dev_err(&hdev->pdev->dev,
-+			"please not set classid and action together\n");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	if (!flow_action_has_entries(&flow->action) && !cls_flower->classid) {
-+		dev_err(&hdev->pdev->dev, "please set action or classid\n");
-+		return -EINVAL;
-+	}
-+
-+	if (flow_action_has_entries(&flow->action) &&
-+	    !flow_offload_has_one_action(&flow->action)) {
-+		dev_err(&hdev->pdev->dev, "unsupported multiple actions\n");
-+		return -EOPNOTSUPP;
-+	}
-+
- 	return 0;
- }
- 
--- 
-2.33.0
+thanks,
 
+greg k-h's patch email bot
