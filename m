@@ -1,118 +1,144 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE0A3D3CF9
-	for <netdev@vger.kernel.org>; Mon, 18 May 2026 13:45:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779111956; cv=none; b=Cgo/MpcXw+GgXun6a9Sgd8AK+0PUUyDiTh4Yj+iMY6dYmTiafryPA7oPgUXMRCo3uYc9LD7HKeO30edywtYBV1TFbaLKju/eIXj9gHfMpxLPQQaKiQVN4Jn36SpspJJT9dtdeSXh+CmeoL8ryQJ8ZOf6I5gLuw37GBVFZ5+yy04=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779111956; c=relaxed/simple;
-	bh=A7iji+rXKq/foenCFTEp43CEifw4NZBgLqy3/ylbp4o=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=R54qkO7Cfu5khiDk8wUm6di8R2Ds8Am9KjUg6GeeQ+gQit1ettPGtGDDGPvSSce2eB6Zrjl83QY4eXlZCyx/S6kl1ORnfYeoN0Yvd4b0/qsjg0GwcX+LK5g5O7184oLfTV6vAQeen8mmWw6/VLAQ0avO6JDas/dCm7Nk3nWTb7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JuCEB9vX; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E2B2745E
+	for <netdev@vger.kernel.org>; Mon, 18 May 2026 13:47:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.181
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779112046; cv=pass; b=QRIvLdLg5MJ6v5NkysrnPQFq8gkczMToRZ+gatAALEUza16yvPUAWFG6tpmUoocuG9FjU1Ye4QbBr72FNydkzydxT7SNV2qRA8GfnyMtd5G4Q5QQY174C9zTxHXtAHuD+4hTTXIUbNdcxzGRcWMlz9icX07Xt0/t3hylGyIQ0+U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779112046; c=relaxed/simple;
+	bh=AiBfizs3XqGgxWmZEFEssJiEOWWFoex2tZo1PsCQ90c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rJ1lbq8TKY0V/axZe/ZEnEigvu7DU/cSkIBa3M/gBetXqo3hi4CUYjuN6aRqHQTB6q9Xn0Z21Wcri3IqIbWXhO4NMbgyrnFkvztlyrNIQZ5XeOSNPoFlnCr1fqAL+k0CNdTsOkMTk0SCvYBX/te7MdGWfME577Ew+0tlz7mgTyg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20251104.gappssmtp.com header.i=@mojatatu-com.20251104.gappssmtp.com header.b=h1bR3dWi; arc=pass smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JuCEB9vX"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-48a3e9862f0so13172165e9.1
-        for <netdev@vger.kernel.org>; Mon, 18 May 2026 06:45:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=mojatatu-com.20251104.gappssmtp.com header.i=@mojatatu-com.20251104.gappssmtp.com header.b="h1bR3dWi"
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-83ec36a13e9so927575b3a.0
+        for <netdev@vger.kernel.org>; Mon, 18 May 2026 06:47:24 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779112044; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ivGP7oLTUqRoLh8Za2HVno65fVmdTW6aBol2sT7BhCvx2fLQEOIWfZpCRQnm3l4fRv
+         dTf12zPHkXGhtPIME7VjEFsOKdfrgl5B1/HtcNeF26bYejz2u4JQqjyg26fIfx5eq7xu
+         t2jg7fiDb2FmVGJ4LdpIAwtNKuMwoxfES7022FD3Hu5U1S7PIbN++VyjPotAgAjVDKy9
+         wohAS4ejMbVzXQt3LyJjvVJfmfs5Bq9BjTnJVESkBOtJ4hn+pk1OOzcV/vdhsaTYJ3nG
+         4tcyuZsoraY2rJoxx6I0Qif00idrDmLE/VPZw1NkRM4swY7BGDDqUjD1DOqJ4wXtqomt
+         oAZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=AiBfizs3XqGgxWmZEFEssJiEOWWFoex2tZo1PsCQ90c=;
+        fh=ecB1J+ACQLZAy3pw+CDnqR5q7+DaSVJ4htLuMCvXIcc=;
+        b=brV5kBKGFD2zm07Ncj0+Lurn+qSVWsPWl9DoHe2qreX9jU/dKDxIu19sCByr3TPD6o
+         1wjP6k/95fkOdCldip1oGaNkT12FRBg/Xr4dFyhH8P2JDEAzmMPdFZFatKBSC5hF2FTs
+         eRWZsSEfuQgLiB1zW8EKe5MbrprCIKUriUhAxYR6bqNVRioT56lsUbbo/2gbuMXezKuD
+         tFTkEspK+EPR+/KVGO5Vx25woy5yp050Uj6KlgNhIM4umH4EaIt6nPyDVe5R2DD+szwU
+         QsbI1BFVLdWI1Q5NBGJp6JfGcuwUmsftuoSlPwt+9oV2/iwW0ioUyU5a3QpHvWrPtOH3
+         LTPQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779111951; x=1779716751; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=jeZUOTxiux+ntqD5XfCjsj5BrXI92DULaKFsiqtZdig=;
-        b=JuCEB9vXPm5YtzVMvHEAzRaHL4HV+ywz1gVzx0qSS/T7OLyVsYECTfV4gmMmE31ydd
-         Tii2stRB+aFkgpgqKt1JDJs+X7DcURqv0Jsjf23BFkEb1yHG1A31SAd0l6YzutUZRkGN
-         5x5N8KQMhDSgEmCKPoUFclWMVklpASmdw3HDpUZBEkyyQKB3jXILvvRg5ncUzuJHT4Uz
-         c4rmPvYabPiQW+uB2myXtpMpVmWul9HowVGbjJX++SqOXAnZMjnCOe4+y4hj8IaIoQWP
-         eHpcgxCof0UYbv4/wJItjVYPBA8PkYpCUPkHV2UIQd7jRxVgOZWd5Iaxfd5WKorku0B0
-         g1pw==
+        d=mojatatu-com.20251104.gappssmtp.com; s=20251104; t=1779112044; x=1779716844; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AiBfizs3XqGgxWmZEFEssJiEOWWFoex2tZo1PsCQ90c=;
+        b=h1bR3dWiAeo9opqZMvCxHho1+/0bCcH96Y6KsbYLXpfPeMOm02zeIPXmbybWPWHBsM
+         zCtxD2wT78TX20y6vwGq6SKaHgYJ0mdlDqMaZsFnAY9IRTLrhIdI+EI8ro5eRNPK+/oP
+         lp0aMQkHaLEeK36ij2EuvWYALPwcJItiGAFZU0pkkGLQchPLYwovrd8QmtsUHaJxs1li
+         px0BssMhLp0RMfI3Jkv6koqC+jDpxP9QnZ68Xm66cI7rbeubj5P26hNFkxDILLW45GxH
+         wCuoInU44ulIEJjkcomNa6PBaOr199OydkJKzI0ExmKIJ36r6u5UeeFQZu5CC+kFi0iK
+         txaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779111951; x=1779716751;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jeZUOTxiux+ntqD5XfCjsj5BrXI92DULaKFsiqtZdig=;
-        b=Lp9mC3D/4MTatIjMOX/8/vARWM43daeQZnQwNRUF3TZ2YrHw4evg6ksvdRevbxTvUC
-         aTEXvtNzGeNd5TvNcD9aOddggcTVGD7dUJ4HHxcxdmXvmXRZpDGfvKRw6TlgpODXWb0I
-         7NqP8R3CcABVBccOtjHhCBq07k14/pTcwQecwbHJNTPwdkIoY5AmZ5h+eyS58VtVpkVx
-         kX6xzYGUgSzi7T3DoKg6sibYNHZoU84hZJWuuAC3+tUDiKPebY2dT4fyax9PzcXxWv8q
-         SF66UnQQkeYXrZMsz1EEu7w+ebTRvRFj2o0o9muxi8v+ZrP7RHLCKltBvdc8AEW4Gw3/
-         4Y8g==
-X-Forwarded-Encrypted: i=1; AFNElJ9danV6/pWeM24kEPmu/ynYtQxv/uAm4SbyrZ+d57OGcN0djyalmrr6zQlHX+pPWl9qORvnKPQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyUYif3dC8Edwgxug0AUl9jhAI5ySWfikDwoBjr2czWzIGFWtE/
-	TtBump0N4iEsrimBPgM1SydeA1dfB/emOqJukZ6zjLFCppeMU1qZdRXf
-X-Gm-Gg: Acq92OGfB7eAP8RYriq/xIoBSokz4IHNkEwU8zb7RT8uT4n4BNzFVxmaY7p/W76os8+
-	Pax1msoIn83aGIOGaLY8zpQ++Gn5mlidqFchTTrajJyBo8h/uheXmU4Nn4PbAAjnvsdpwqsFXB8
-	HeQwaEIR4OVkSnoNk5XQSvhh6q/z9S2ytX2A80apRwYwcC9YDHDVMKZ7br2F4IBBNAYC+mmlFGn
-	nw5tlm9NE9i0CeY67DNn+Kx+/IEfi/Dt0V4o/n+HqZI8ivg2E21azShpmLseG4VNo6NY1z3Zctk
-	4uoIbzlbYHI07YlWHhZYnLIlzrCf/oLoeuq3SrI8bgoAxvLGX1qlk9mL7ZYymulz/hYGADp9YEC
-	hI+SduNgDp1l/4k+bXTQsPLMUFs93JcV1EbdDoR29gDq+nxWHtQmSmDmB6K8xpa/oxJvxO+O7u0
-	21DNLH9M4DYDnXS+fuYI0ZvFLUbpF+6WNuFuUxe8Rcbi2ZRwEFI56UBS7emKjpwW+z+OrnxUrgX
-	udIzJLMVA==
-X-Received: by 2002:a05:600c:6d83:b0:486:fcc7:6811 with SMTP id 5b1f17b1804b1-48fd635966cmr220810435e9.10.1779111950817;
-        Mon, 18 May 2026 06:45:50 -0700 (PDT)
-Received: from Ansuel-XPS24 (host-82-55-252-101.retail.telecomitalia.it. [82.55.252.101])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-45e6a135f0csm18927466f8f.27.2026.05.18.06.45.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2026 06:45:50 -0700 (PDT)
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: Lorenzo Bianconi <lorenzo@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Felix Fietkau <nbd@nbd.name>,
-	Simon Horman <horms@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH RESEND net] net: airoha: Fix NPU RX DMA descriptor bits
-Date: Mon, 18 May 2026 15:44:57 +0200
-Message-ID: <20260518134530.3683-1-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.53.0
+        d=1e100.net; s=20251104; t=1779112044; x=1779716844;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=AiBfizs3XqGgxWmZEFEssJiEOWWFoex2tZo1PsCQ90c=;
+        b=ESuUeo622EgXEoq0chMBVIaPUdj6cyThnGScBBlUuRzRfQSY++CNgcQQZRLKzb8ncw
+         e3pUqRxWIKXOXckwjuGka63pUDAj225Q7iZqZ/khHL6pPKi0lUqVmGHHnc1J99tXmFJO
+         M/MTRQ/K78xMGhOPQb/qorPIUXsZgUFyzg2Z1h9aUTtcKX+Sxzft2IHH9qFk4oXerddp
+         27E8TU/z1JYAHCNkGPp2hQwzErCO07HmrotZjBA90sMwSpe9F9k0Sp9WyTrUoWJ82z1T
+         g5nVj5bhd6RV8QCIp1llxHeLtLNTBHFEWdPboQOHeaGqhg6pRI+0WxcWdm+JnCkTtXx/
+         cxqQ==
+X-Gm-Message-State: AOJu0Yy5O6Nni6PZnt3xQ6ntONlGlWUib3GJstAshDMRECPHS11lxN1R
+	0uyE/6cBElQnkZfOz1NGSloF33gpDe4pFw+/iAdwRA5RrHbT9OncpxcwOvE7ocVXj0AFxp2TCAj
+	/yeoL21JsWV9shpCClVlqz9oYYo4jGAXOLPjm6kbk+wYpexvllB4obg==
+X-Gm-Gg: Acq92OGhavivr3Y1bcmvH9QxmPn3d31vk2hKeXKOkxIh3exyiDf60/e8ZxZRB6a8UVA
+	3jQiiKONA+MI2OjKWbLU8wBe4S7GaNzssE2eabtBI+jOCCqXU/6tdHO75bf3Hukraq0X0qDsamG
+	iKBo6OHHu4WyPaT6iuW7MJFbIvVEhPyW6MasUOey3vXxNqACAAPq2wjFzgnWDsFTsyaxZkDgEBy
+	plHHAFr0j7BvJcRZDjqJ16VFc5t6DIiHBOmqYENVqmACVIjWwZeLG7eb/mR05hE4KwpC/8m16mq
+	dbBFHZH3v5OY0gED2Uw=
+X-Received: by 2002:a05:6a00:9502:b0:83a:78ac:edb7 with SMTP id
+ d2e1a72fcca58-83f33ab95ddmr15092029b3a.5.1779112044199; Mon, 18 May 2026
+ 06:47:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260514144747.527175-1-jhs@mojatatu.com> <CAM0EoMkthnGFtsmJgj5ibwuFjKg5s8dGOAkJSXUtH4FytG=qtg@mail.gmail.com>
+ <3131c62f-b5c2-4f8e-b2a3-ebb844f800ff@redhat.com>
+In-Reply-To: <3131c62f-b5c2-4f8e-b2a3-ebb844f800ff@redhat.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Mon, 18 May 2026 09:47:12 -0400
+X-Gm-Features: AVHnY4LhkZoATVbpS1JQiNqB7Tf9yGEuOwTB_DMnfBy38hJ2OOGQHSvysQbBf-M
+Message-ID: <CAM0EoMkiFap7hARrC9eca4FNdpgXndT9767WpO+2Q2HehWusKQ@mail.gmail.com>
+Subject: Re: [PATCH net v5 0/9] net/sched: Fix packet loops in mirred and netem
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, horms@kernel.org, jiri@resnulli.us, 
+	stephen@networkplumber.org, victor@mojatatu.com, savy@syst3mfailure.io, 
+	will@willsroot.io, xmei5@asu.edu, pctammela@mojatatu.com, kuniyu@google.com, 
+	toke@toke.dk, willemdebruijnkernel@gmail.com, hxzene@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-In an internal review from Airoha, it was notice that the RX DMA descriptor
-bits and mask are wrong. These values probably refer to an old NPU firmware
-never published. The previous value works correctly but it was reported
-that in some specific condition in mixed scenario with both Ethernet and
-WiFi offload it's possible that RX DMA descriptor signal wrong value with
-the problem to the RX ring or packets getting dropped.
+On Mon, May 18, 2026 at 4:14=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wro=
+te:
+>
+> On 5/15/26 10:26 PM, Jamal Hadi Salim wrote:
+> > On Thu, May 14, 2026 at 10:48=E2=80=AFAM Jamal Hadi Salim <jhs@mojatatu=
+.com> wrote:
+> >>
+> >> This patchset adds a 2-bit per-skb tc_depth counter that travels with
+> >> the packet. The existing per-CPU mirred nest tracking loses state
+> >> when a packet is deferred through the backlog or moves between CPUs
+> >> via XPS/RPS. A per-skb field covers both cases.
+> >>
+> >> Patch 1 adds the tc_depth field in a padding hole in sk_buff.
+> >> Patches 2-3 revert the check_netem_in_tree() fix and its tests,
+> >> which broke legitimate multi-netem configurations.
+> >> Patch 4 uses tc_depth to stop netem duplicate recursion.
+> >> Patch 5 uses tc_depth to catch mirred ingress redirect loops.
+> >> Patch 6 fixes the infinite loop in the mirred egress blockcast case.
+> >> Patch 7 fixes an skb leak in early return error scenarios in tcf_mirre=
+d_act
+> >> for redirect (caught by Sashiko [1]).
+> >> Patches 8-9 add mirred and netem test cases.
+> >>
+> >> Changes in v5:
+> >> - Fix issues in patches 6 and 7 found by Sashiko
+> >> - Set limit (1000) in root qdisc in test 8c17 to avoid flakiness (Paol=
+o)
+> >>
+> >
+> > Sashiko has found some issues - we'll be sending a v6.
+>
+> I'm likely too late here and I haven't looked into the details for this
+> series, but please be aware that sashiko(gemini) has a tendency to point
+> out pre-existing issues in surrounding code, sometimes hiding quite well
+> the fact that the issue is pre-existing. The general guidance for such
+> cases is to address the issue(s) separately with follow-ups.
+>
 
-To handle these specific scenario, apply the new suggested bits mask from
-Airoha.
+It's asking for something not very complex - so we'll just add it and
+send for this time. Next time we'll look into doing followup patches.
 
-Correct functionality of both AN7581 NPU and MT7996 variant were verified
-and confirmed working.
-
-Fixes: a7fc8c641cab ("net: airoha: Fix npu rx DMA definitions")
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
----
- include/linux/soc/airoha/airoha_offload.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/include/linux/soc/airoha/airoha_offload.h b/include/linux/soc/airoha/airoha_offload.h
-index d01ef4a6b3d7..7589fccfeef6 100644
---- a/include/linux/soc/airoha/airoha_offload.h
-+++ b/include/linux/soc/airoha/airoha_offload.h
-@@ -71,9 +71,9 @@ static inline void airoha_ppe_dev_check_skb(struct airoha_ppe_dev *dev,
- #define NPU_RX1_DESC_NUM	512
- 
- /* CTRL */
--#define NPU_RX_DMA_DESC_LAST_MASK	BIT(27)
--#define NPU_RX_DMA_DESC_LEN_MASK	GENMASK(26, 14)
--#define NPU_RX_DMA_DESC_CUR_LEN_MASK	GENMASK(13, 1)
-+#define NPU_RX_DMA_DESC_LAST_MASK	BIT(29)
-+#define NPU_RX_DMA_DESC_LEN_MASK	GENMASK(28, 15)
-+#define NPU_RX_DMA_DESC_CUR_LEN_MASK	GENMASK(14, 1)
- #define NPU_RX_DMA_DESC_DONE_MASK	BIT(0)
- /* INFO */
- #define NPU_RX_DMA_PKT_COUNT_MASK	GENMASK(31, 29)
--- 
-2.53.0
-
+cheers,
+jamal
+> /P
+>
