@@ -1,104 +1,92 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84B973FBB73;
-	Mon, 18 May 2026 12:00:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C719C3FCB3C;
+	Mon, 18 May 2026 12:01:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779105659; cv=none; b=Umkd8zNaCXwtaC0H5ekh7Vypfc9mFN+MjCzooE7G3UDj24STBJs8Km2X8x4uYgLm8127rkbaQKz16oVbnBPaqXHeOF6hFEFmzyBSMl8hRBO1HHf+1PgPXcCHCE33FIGv73F7iO/QhfXqr6+L6OPWL6HmDwej5ZaPXhumeMOu9PU=
+	t=1779105669; cv=none; b=Xtr9VTq9uEGPWxhn2Rjc7x++O/x7A2JxfbyAaFt5urJHtgl+8Fg8jRu6o8afxIxFAw8oJFaANxuWL1+NRpUrlN4dyTSAzb+M89dMGfpi+9kPWvM2DD1AQV3yiJQedAfY02fww7DcUlXD621KQda7hGkyrCI64L9lzF6kHtc0XMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779105659; c=relaxed/simple;
-	bh=Dq9L8NgKLAHErwvoe6hqZn8vjQVRLs7Havu3hguUk0I=;
+	s=arc-20240116; t=1779105669; c=relaxed/simple;
+	bh=ZfdSCvmJheoZqbSwPXtauVF4UyINGQSXbG9sWcASG0A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qXPm8ljmWluhN5fTBbL+7nPRRuFw36TjkDxwKRLiOVkhLkfwt1DEBz2yFwPEt+B2QhBU+Hhv+RY92FAiBiyeSaIWQ3Y3uxd2UFsUNb9nwxrUAmxjN4EG5SDNjf85wFm4Ie7B/3a5xFSzuLTMuvWo+TUbIuy7lXymAdI+CGIz+S0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=EaV/T4oO; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=ut6M34zK610rFZ4ikLvRbmShWRj7wIWSUA6rLPr/1cWHOXvz8lAdMEZdYiPYWx6XA5VJ8NSwp1EiJ2LuHGQ7CNIh7ATVAbFBFC09p+EBzrjmlKzfOj1H/uCDRdvsUDQTSr5mdOZm08ggrD3lc2CUfsjRQeuG3HAtBmzIh3gPjmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=4b9VaJ/R; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="EaV/T4oO"
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 6DE2F6019F;
-	Mon, 18 May 2026 13:53:22 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1779105202;
-	bh=x5JGP+k+YEoRidDdG4n9aMggxVuZd6ch/QnZI57RP9U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EaV/T4oOIcgBpxPEG2zqU/lpalYB+eYcpwz7wOZeVhUEezP9A4UAXr6gM4OwhyTRt
-	 lUQiirhyxa7re5dGF0WBqcCZwjFEyU1gR4jnF0YwJFXN826Sgc7KG87rkVVPB1JHtO
-	 9T+tskKu0f0tWnWF89QSBiIT5Y0MBbyegI/1vRyAPrFSs61kTn8zVjLOnC+VYIyqFA
-	 JDtIv46mgUgGbkUDf7nkj5DhlLvaGC0BjiTxtTIZNj5jlU/T/kcvIJZ/TKaCAPMHbG
-	 KHgMGX6n0tW8Fz8//SbeWuqLTHVjjCY3Ag4PA2kU1AQ4CpnFoemZocejLtNRNG8Ldt
-	 7u5lmxz7gUsqA==
-Date: Mon, 18 May 2026 13:53:19 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Florian Westphal <fw@strlen.de>
-Cc: Qi Tang <tpluszz77@gmail.com>, netfilter-devel@vger.kernel.org,
-	netdev@vger.kernel.org, herbert@gondor.apana.org.au,
-	michael.bommarito@gmail.com, lyutoon@gmail.com
-Subject: Re: [RFC] netfilter: disable payload mangling in userns
-Message-ID: <agr9ry_EKdTfgoaj@chamomile>
-References: <20260515100411.3141-1-fw@strlen.de>
- <20260515114848.1105927-1-tpluszz77@gmail.com>
- <agcWBZNugohelNp6@strlen.de>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="4b9VaJ/R"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=b2/B+UK9SKjleTI91bdumxJx4pLws3/L2OWSi73KWpo=; b=4b9VaJ/Rj7jWHjVeoleSI82alV
+	i/fa0OYq2cR/HFqI84ON2qqx6lg+Z52dquD2DheuQgWIk08FqHqbdCeaqMKPwR4URL7aB/wZ06Mco
+	kpXNj5eRS3bab8aGgot0zmNMWt86ifUTQ8cJpFYUILnsOb2unkg/AmbyFxHb31hgVnAQ=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wOweP-003U3q-Kf; Mon, 18 May 2026 14:00:49 +0200
+Date: Mon, 18 May 2026 14:00:49 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+Cc: Piergiorgio Beruto <Pier.Beruto@onsemi.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net-next v2 8/9] onsemi: s2500: Add driver support for
+ TS2500 MAC-PHY
+Message-ID: <660d68f2-2e4a-4dad-a33b-9cbd1847c04e@lunn.ch>
+References: <CY8PR02MB924948C0BB8611D5A2618D3283382@CY8PR02MB9249.namprd02.prod.outlook.com>
+ <c9b1b559-f72e-46e0-8d71-57ea26f70bb0@lunn.ch>
+ <CY8PR02MB9249BE304350D2FA7C196A6C83032@CY8PR02MB9249.namprd02.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <agcWBZNugohelNp6@strlen.de>
+In-Reply-To: <CY8PR02MB9249BE304350D2FA7C196A6C83032@CY8PR02MB9249.namprd02.prod.outlook.com>
 
-On Fri, May 15, 2026 at 02:48:05PM +0200, Florian Westphal wrote:
-> Qi Tang <tpluszz77@gmail.com> wrote:
-> > I agree with the userns block.  I'll keep pushing the five
-> > consumer-side bounds-check patches: root in init userns can
-> > still install the same payload-set rule and trigger the same
-> > OOB at the re-read sites, so the underlying bug fix is still
-> > worth landing.
+On Mon, May 18, 2026 at 04:03:38AM +0000, Selvamani Rajagopal wrote:
+> 
+> 
+> 
+> > > +static int s2500_hwtstamp_get(struct net_device *ndev,
+> > > + struct kernel_hwtstamp_config *cfg)
+> > > +{
+> > > + struct s2500_info *priv = netdev_priv(ndev);
+> > > +
+> > > + if (!priv->ptp_clock) {
+> > > + cfg->tx_type = 0;
+> > > + cfg->rx_filter = 0;
+> > > + } else {
+> > > + oa_tc6_hwtstamp_get(priv->tc6, cfg);
+> > > + }
+> > > + return 0;
 > > 
-> > None of the five sites overlap with the relax wishlist (saddr/
-> > daddr, transport, linklayer).  Same class showed up in an
-> > earlier patch:
-> >   https://lore.kernel.org/netdev/20260514035802.1540395-1-tpluszz77@gmail.com/
-> > 
-> > These five are unlikely to be all of them; we think the
-> > consumer side warrants a broader audit.  Thoughts?
+> > What is actually specific to the s2500 here? Your aim should be to put
+> > everything you can into the core.
 > 
-> I think we have to do both.
+> I agree on this and the next comment as well. Nothing really vendor specific. 
 > 
-> For nft_payload/nft_exthdr:
-> 1. Writes from !initial_userns are rejected (rule insert fails).
-> 2. Writes for initial userns get validated at rule add time:
->   - netdev ingress is allowed to alter everything, I think
->   this is early enough to not introduce oddities that can't come
->   from wire / untrusted peer.
->  - bridge is allowed to alter everything: AFAICS there shouldn't
->  be a problem with this, same as with ingress.
->  - inet (ipv4/ip6): Check base (offset is unsigned and relative
->    to ll/network header/transport header/payload
->    - Allow modifications past transport header.
->    - Allow modifications of transport header
->    - Allow network header modifications for a subset of valid
->      offsets/lengths: saddr, daddr, checksum, tos, id, ttl / hl.
->      Reject everything else.
->    - Allow link-layer; but check at from packetpath that
->      offset + len don't write past start of the network header.
->      Else: no-op.
-> 
-> nfqueue is the bigger problem: userspace gives us a whole new
-> packet data blob, not a delta that we should apply at offset x).
->
-> I think we have to update nfqueue to do rudimentary header revalidation
-> and drop the packet on failure, e.g. at least making sure tot_len is not
-> past skb->len.
+> Question is, 
+> 1) Should we add the PTP code in oa_tc6.c? This PTP code add 200+ lines. My preference is to add a new file oa_tc6_ptp.c under the directory where oa_tc6.c resides.
 
-Agreed, nfqueue has been there for long time and such parser would
-validate the packet is correct from stack POV.
+oa_tc6_ptp.c is good. Maybe create a directory oa_tc6 and move the
+code into there. Especially if you need to add a local header which is
+shared by oa_tc6.c and oa_tc6_ptp.c, but is not needed by the drivers.
 
-But if a new function to validate that the IP header mangling is not
-valid is feasible, then why not simply apply the same sanitization
-from inet hooks to nft_payload/nft_exthdr?
+> 2) If we are adding a new file, should it be under same CONFIG_OA_TC6 or add a new CONFIG_OA_TC6_HW_TIMESTAMP or something similar?
 
-That can be a function in net/netfilter/utils.c.
+I would not bother with a new symbol. It adds build testing complexity
+having to build with and without it, to test the stubs are correct
+etc.
+
+	Andrew
