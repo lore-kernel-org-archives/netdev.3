@@ -1,167 +1,105 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.36])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE48640757A
-	for <netdev@vger.kernel.org>; Mon, 18 May 2026 14:22:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3EA5481FBE;
+	Mon, 18 May 2026 14:22:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779114133; cv=none; b=COcFK71StZV8Ni6US4yPN/Rf8b/dx1vikaJZJFALPdP0OuUz0cpBjnQqT9cJDuVQja4JShSn9ZQ1g/zHcQctlcSB9dS+hhddYR5rAypGorNivrLCovb0qntbSHYnN+MHSCGGQC29O1VEb7MtvRfCYbHcJqt8AYfoAC2+GUeL2Co=
+	t=1779114178; cv=none; b=PHv7irrsh4C6cHreJBFW5867igpl9lCCI3KylMJd/jhVnaQODmNFJtfY86oI6Xd9r73WXvnhv4reguk/Fv/g74w8bejFcVWBy00FTHnIWcTc8Ee69gVNqSX4yL1myiwFBsPTI7V93hBuLoBQQ9y68hboX9gaH2+h7SWCvUcdvvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779114133; c=relaxed/simple;
-	bh=gSixFFclTUS7ckGyJ6STwjNMBKoWCtWW79rUv1GMZXk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kIA9EkgGRVXZ9W7VFJZ8eNPo+Ui7nAltmao5JA9oEaJnKSYay+SjWoqb0smdNk49NfXCezab1nBqVYDghvh9XX5Nb6AuDBvZdzh32JBMcVY+xqtdqKudgYGrEqwLUSWCD8tnZEU1h0r7dOfB37U1rIoUsNopz2me2XXDl8p/+sE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j8jIZ2II; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j8jIZ2II"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-48e82c23840so17931505e9.3
-        for <netdev@vger.kernel.org>; Mon, 18 May 2026 07:22:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779114127; x=1779718927; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+Oumtl4pXAJKEcGCQwup2CrdSSym8HzjHOOsWboStNg=;
-        b=j8jIZ2IIsuxpWQ870MzemgZoBPQSu+i0AsYHIMBek6XI8VfiwGpMeweG1s/U8Jeu/w
-         bswnS4SxwRZ3/lbWH9xBJjHltNY9EkfI5DralRIibUZnRVZ/4WwV1QIZvzkwXD/kHxMt
-         ioVikITIBBqL258ANDW7aVQoeDB66sftmIZafvjqz24jKTK/JYEQ6zZde8o2bRiyDCxT
-         rtHsfOuGmP1XEgBVa+Sz5DJRUsgnGltCUSaPvIAludNRAsDpwRPtejaUSTIn15MgacFs
-         cxss4wlpunyxk0AeZfM4jJqmc54spg3y3y/hw70xkQA1ZJwHrz5GnqNTVsl1ogcwx5yd
-         g2Ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779114127; x=1779718927;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+Oumtl4pXAJKEcGCQwup2CrdSSym8HzjHOOsWboStNg=;
-        b=HKf0EXItRIZY7v8wyNjs7lkLskNW5a/rMBpc7/jkkYcCPdCUIvO73LLQ/sYDl5cpTR
-         DjKt3TJg4el/8WlRIcvIoxmYxAmRmMwqNGBWEa/3Nfe+7EMROXgoWQkEZXLSGcntbu6d
-         ofdgMniHkohNzWxGhdS+eDdIRT66H82RjYsVC0/obFpELtkEMHu0jYzL4Toz9NglD3/h
-         VOuIm7ZptsdXPjlHXorJl6bRPNnTO5+Y7w0GWEWeqW7n40TyEMpsXw+LTTmMBQ79a1hS
-         06YCQFJ04Pm6rKb8UOPOMC32tu8mrtycZHhMEvEdl41/y5lNbTfETImvMi4PO9Q/SrDa
-         HZhQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/4XhtrE82dgeMS+Us4lP2r62Q08x5S/t47wj8h9yke0js85mJHjhBVjtSo8k7ZfOIHDMcUtHk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwuZLYOGRD1/AeqcA6xwwJxfyT6EikIMY+JExOnVkPl4UIXpq76
-	HiBoIHoxeQ6wsIPSheaLeQl/SFO+H9FzMH5VC9TVNpw8qFwsqwXZOOg7
-X-Gm-Gg: Acq92OHU/lD7OEp2YO5yq+UVGuJZP8WfblqgumCuit1/Nak/lptg6xhGLOym1ehSzHA
-	rT3AI/f6MzTeH57oa+FAW8W312KSaB2QbgYvrUCUOJPBLpqQEN/FODftOD6gFFPTUawfoxvk6ho
-	vk4I5r+HABOdg9pzBcTONY2/FyxyRiBpbg3Ml3XnOinATpDavrx9jRKb9matZga1scm2VnrU76h
-	QyllMSHsNTO1F+GxFPh2wzV/26TTmGRcWDRDyrroSwzRIp0QuAepUju+il1CtAiHHrW0ypkav6f
-	uXE9AeTDWBBDC5rUIXM51AsGDh+4+eCywdBsk8swhbgzeRrKHptfSjeEaIhn6AbhGh1z3pZ3R03
-	b9ESIYXmYSkCm30brKvnUxklQntd/a32kttLz6I5pHwHAiVDAfbZTnEqr82A25OHB+dyePTs0I1
-	WTBwdeSMTb2jR6G7X7CbdBf4eh/Y9jGyu+iG2XdBUeRiwe625r/A5GtlU9IM3XvnEqUw==
-X-Received: by 2002:a05:600c:6383:b0:489:1c1f:35f9 with SMTP id 5b1f17b1804b1-48fe60ea4ebmr233939685e9.9.1779114126375;
-        Mon, 18 May 2026 07:22:06 -0700 (PDT)
-Received: from gmail.com (deskosmtp.auranext.com. [195.134.167.217])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45d9e768072sm37137502f8f.5.2026.05.18.07.22.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2026 07:22:05 -0700 (PDT)
-Date: Mon, 18 May 2026 16:22:04 +0200
-From: Mahe Tardy <mahe.tardy@gmail.com>
-To: bot+bpf-ci@kernel.org
-Cc: bpf@vger.kernel.org, martin.lau@linux.dev, daniel@iogearbox.net,
-	john.fastabend@gmail.com, ast@kernel.org, andrii@kernel.org,
-	yonghong.song@linux.dev, jordan@jrife.io, netdev@vger.kernel.org,
-	netfilter-devel@vger.kernel.org, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, martin.lau@kernel.org,
-	eddyz87@gmail.com, clm@meta.com, ihor.solodrai@linux.dev
-Subject: Re: [PATCH bpf-next v6 2/6] net: move netfilter
- nf_reject6_fill_skb_dst to core ipv6
-Message-ID: <agsgjAvP3atsziMx@gmail.com>
-References: <20260518122842.218522-3-mahe.tardy@gmail.com>
- <1637d7e04ac3c65239ef77709175697bff287250913d1da68e8d4072e0ff34e1@mail.kernel.org>
+	s=arc-20240116; t=1779114178; c=relaxed/simple;
+	bh=EisR7jxzd2LeRIwSiy1K1n3M2UViEZOmNv0A6dl9SLs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Ju8LbvX3KAZqh6qPfz/Zq5XarGhBbC0PIijfAs6WJC3x9+SFWGwFD4xubM5rDEZPDY91aKVCMwQie4OOFeAexKfMhEEyBKMtukUOv3X4tnpwR/JJNkrdgwiWhztA4s1pWlxaZtqXsy7e85LAgPA3WkaVrUeN6G/y15mU50tgSAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; arc=none smtp.client-ip=160.80.4.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
+Received: from localhost.localdomain ([160.80.103.126])
+	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 64IE8HKq002141;
+	Mon, 18 May 2026 16:08:22 +0200
+From: Andrea Mayer <andrea.mayer@uniroma2.it>
+To: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, horms@kernel.org, alex.aring@gmail.com,
+        justin.iurman@gmail.com, bestswngs@gmail.com,
+        stefano.salsano@uniroma2.it, Andrea Mayer <andrea.mayer@uniroma2.it>,
+        stable@vger.kernel.org
+Subject: [PATCH net v2] ipv6: rpl: add NULL check for idev in ipv6_rpl_srh_rcv()
+Date: Mon, 18 May 2026 16:06:30 +0200
+Message-Id: <20260518140630.24280-1-andrea.mayer@uniroma2.it>
+X-Mailer: git-send-email 2.20.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1637d7e04ac3c65239ef77709175697bff287250913d1da68e8d4072e0ff34e1@mail.kernel.org>
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
+X-Virus-Status: Clean
 
-On Mon, May 18, 2026 at 01:07:57PM +0000, bot+bpf-ci@kernel.org wrote:
-> > diff --git a/include/net/ip6_route.h b/include/net/ip6_route.h
-> > index 09ffe0f13ce7..eb5a60d3babe 100644
-> > --- a/include/net/ip6_route.h
-> > +++ b/include/net/ip6_route.h
-> > @@ -100,6 +100,8 @@ static inline struct dst_entry *ip6_route_output(struct net *net,
-> >  	return ip6_route_output_flags(net, sk, fl6, 0);
-> >  }
-> >
-> > +int ip6_route_reply_fill_dst(struct sk_buff *skb);
-> > +
-> 
-> [ ... ]
-> 
-> > diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-> > index e3d355d1fbd6..37a7627a94de 100644
-> > --- a/net/ipv6/route.c
-> > +++ b/net/ipv6/route.c
-> > @@ -2725,6 +2725,24 @@ struct dst_entry *ip6_route_output_flags(struct net *net,
-> >  }
-> >  EXPORT_SYMBOL_GPL(ip6_route_output_flags);
-> >
-> > +int ip6_route_reply_fill_dst(struct sk_buff *skb)
-> > +{
-> > +	struct dst_entry *result;
-> > +	struct flowi6 fl = {
-> > +		.daddr = ipv6_hdr(skb)->saddr
->                          ^^^^^^^^^^^^^^^^^^^^
-> 
-> Is it possible for the IPv6 header to span paged fragments here?
-> 
-> If the packet header isn't guaranteed to be in the linear data area, and
-> there are no linearization checks like pskb_may_pull() before accessing
-> ipv6_hdr(), could this read out-of-bounds memory or cause a page fault
-> when processing undersized or fragmented packets supplied by BPF programs?
-> 
-> While v6 cover letter mentions "call pskb_network_may_pull on the cloned
-> pkt", this linearization check is not present in this function.
+ipv6_rpl_srh_rcv() dereferences idev from __in6_dev_get() without a
+NULL check when reading idev->cnf.rpl_seg_enabled.
 
-Same answer, caller is calling pskb_may_pull, outdated.
+When the device's MTU drops below IPV6_MIN_MTU, addrconf_ifdown()
+clears dev->ip6_ptr through RCU_INIT_POINTER(), which is immediately
+visible to concurrent readers. A packet that already passed the idev
+check in ip6_rcv_core() can race with this and hit a NULL pointer
+dereference.
 
-> 
-> > +	};
-> > +	int err;
-> > +
-> > +	result = ip6_route_output(dev_net(skb->dev), NULL, &fl);
->                                   ^^^^^^^^^^^^
-> 
-> Could skb->dev be NULL in contexts where this function will be used?
-> 
-> Since this is being exported for use by BPF kfuncs, it might be called
-> from program types where the device reference is not retained, such as
-> socket filters.
-> 
-> If skb->dev is NULL in these contexts, won't dev_net(skb->dev) cause a
-> NULL pointer dereference?
-> 
-> While the netfilter caller (nf_send_unreach6) checks and sets skb->dev to
-> loopback_dev if NULL, the exported function itself does not have this
-> protection. When called from BPF kfuncs, especially in contexts like socket
-> filters or tc ingress before device assignment, skb->dev could be NULL.
+Reproduced by flooding traffic while rapidly flapping the receiving
+interface's MTU between 1500 and 1200:
 
-Ditto, outdated.
+ BUG: KASAN: null-ptr-deref in ipv6_rpl_srh_rcv+0xae/0x1050
+ Read of size 4 at addr 00000000000006b4 by task ping6/386
 
-> 
-> > +	err = result->error;
-> > +	if (err)
-> > +		dst_release(result);
-> > +	else
-> > +		skb_dst_set(skb, result);
-> > +	return err;
-> > +}
-> > +EXPORT_SYMBOL_GPL(ip6_route_reply_fill_dst);
-> > +
-> 
-> [ ... ]
-> 
-> 
-> ---
-> AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-> See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-> 
-> CI run summary: https://github.com/kernel-patches/bpf/actions/runs/26034287312
+ CPU: 0 UID: 0 PID: 386 Comm: ping6 Not tainted 7.1.0-rc3 #114 PREEMPT(full)
+ Call Trace:
+  <IRQ>
+  kasan_report+0xc6/0x100
+  ipv6_rpl_srh_rcv+0xae/0x1050
+  ip6_protocol_deliver_rcu+0x754/0x9a0
+  ip6_input_finish+0xa3/0x1b0
+  ip6_input+0xdc/0x490
+  ipv6_rcv+0x338/0x460
+  __netif_receive_skb_one_core+0xd1/0x130
+  process_backlog+0x2c7/0x9f0
+  __napi_poll.constprop.0+0x51/0x270
+  net_rx_action+0x322/0x730
+  handle_softirqs+0x119/0x640
+  do_softirq+0xae/0xe0
+  </IRQ>
+
+Add a NULL check for idev after __in6_dev_get(), dropping the skb
+with SKB_DROP_REASON_IPV6DISABLED when the device has no IPv6
+configuration.
+
+Fixes: 8610c7c6e3bd ("net: ipv6: add support for rpl sr exthdr")
+Cc: stable@vger.kernel.org
+Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+---
+v2:
+  - use SKB_DROP_REASON_IPV6DISABLED as drop reason (Eric Dumazet)
+v1: https://lore.kernel.org/netdev/20260428224816.11223-1-andrea.mayer@uniroma2.it/
+---
+ net/ipv6/exthdrs.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
+index 03cbce842c1a..a4af6e63349c 100644
+--- a/net/ipv6/exthdrs.c
++++ b/net/ipv6/exthdrs.c
+@@ -499,6 +499,10 @@ static int ipv6_rpl_srh_rcv(struct sk_buff *skb)
+ 	u32 r;
+ 
+ 	idev = __in6_dev_get(skb->dev);
++	if (!idev) {
++		kfree_skb_reason(skb, SKB_DROP_REASON_IPV6DISABLED);
++		return -1;
++	}
+ 
+ 	accept_rpl_seg = min(READ_ONCE(net->ipv6.devconf_all->rpl_seg_enabled),
+ 			     READ_ONCE(idev->cnf.rpl_seg_enabled));
+-- 
+2.43.0
 
