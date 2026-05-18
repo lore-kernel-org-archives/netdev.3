@@ -1,231 +1,256 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx08-0057a101.pphosted.com (mx08-0057a101.pphosted.com [185.183.31.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE97D392838
-	for <netdev@vger.kernel.org>; Mon, 18 May 2026 07:36:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779089797; cv=none; b=gZHsrVS676b6tVslPm5d1sqn9Rw8ERCUqx+iIgcJEEWO9ajxFUWwFmzOCimuWAfqUP0pZbt8jKa7H3JYl962FZuyETYC4nDi1LiV/wauQQS5M8WXcxR1ryjLsZEbS1yvM5scbpA+pli0C5WG8dKrHVgOZ+FdyGNoAmk7Zg4HLAQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779089797; c=relaxed/simple;
-	bh=tSY/+9e7Avin2SKeKnn0nYd+uZVQTXgWH36OVAKxF6s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=p/1yfE6Dmbw46un5+2qigbXoCkJgqgEJj6aT2BE0JEkNDjBsrU7O7L5XDWDxafCtH1DJUteBGhnkr6iOi/9JeJDMppMnPJ7V6v+cjCBB3vNg9VoNvXGz8BSeSdnfIGhwzQ7tPJY9EQxTw1ValitStyg7mTfdaw1A6FW/aS1myGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iXAVzmrG; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Dt+aJF5U; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD1212EBB9E;
+	Mon, 18 May 2026 07:38:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=185.183.31.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779089928; cv=fail; b=Ma5Q0uXcNLWCc3FtayQeIEABrcG1jAMCp2YV+TPc+T3R1z4P+thW9vzfM+KquWndDJ5zhpWBLR/OPG7fMQS+wWrx7p8WdQV6lT4bAdWIFSCTOdrwO66l4HwhfE86/rZm6AMPkgI4JyH10N28h8ZAg9s3+RbdljdcfZTv0LpKf80=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779089928; c=relaxed/simple;
+	bh=PeQqLkWL0zFmTZ5VBHOZiocs91x/7b+8t1TDwOympZ4=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=Y+rXJ9xgvk9kx4CBxnriqem7GwgPNlT7imfoWhck40FFu/Frl9lis8ACWVdZ5lRCzQkf2iQHA8W5HL9UzXxAi08ki+hi9e0Rrm0Oe0cWuW9O1W7C35drgiAXYxCoOpeDzqZF1g2owsL0+S3Tf/gSUoqQSuynPB6ijs0uSp9KhgI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=westermo.com; spf=pass smtp.mailfrom=westermo.com; dkim=pass (2048-bit key) header.d=westermo.com header.i=@westermo.com header.b=FIGtmQAo; dkim=pass (1024-bit key) header.d=beijerelectronicsab.onmicrosoft.com header.i=@beijerelectronicsab.onmicrosoft.com header.b=V3S19MjA; arc=fail smtp.client-ip=185.183.31.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=westermo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=westermo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iXAVzmrG";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Dt+aJF5U"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779089794;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=rxj3hjLS1wMg1dys4oRBWhSMYXGodufeExdNLEthm+k=;
-	b=iXAVzmrGOhDc/XohA89QOdwhrROBeQerc2ED0fo/I+DXt8G6+uxqrZNRidC8IwCZHKs0v0
-	syCn8134XpMPrHT40m28pT4GTpxJ9lxS0V/SMonm5aXNJYwssIjmjfX5iEMXHcN1vU+xkT
-	ce9/ffzxH85NzFYAP3ePCbbh99KTe24=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-621-8I02ukSjO1qCUUB7WWR23A-1; Mon, 18 May 2026 03:36:33 -0400
-X-MC-Unique: 8I02ukSjO1qCUUB7WWR23A-1
-X-Mimecast-MFC-AGG-ID: 8I02ukSjO1qCUUB7WWR23A_1779089792
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-44f56d5523eso2217100f8f.1
-        for <netdev@vger.kernel.org>; Mon, 18 May 2026 00:36:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=westermo.com header.i=@westermo.com header.b="FIGtmQAo";
+	dkim=pass (1024-bit key) header.d=beijerelectronicsab.onmicrosoft.com header.i=@beijerelectronicsab.onmicrosoft.com header.b="V3S19MjA"
+Received: from pps.filterd (m0214196.ppops.net [127.0.0.1])
+	by mx07-0057a101.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64I4Ns8m2730256;
+	Mon, 18 May 2026 09:21:47 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=westermo.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=270620241; bh=
+	5owCi21EMNCjFaAkdRJMpCANu+OAcSDcN+Mo7aOw/4Y=; b=FIGtmQAoaIV+bsJX
+	H+asuTA5TZPGNWkwlXYYhOfrn8O/C15vK5bcA/5P9u8ndr9GjpKBb9SttBc7y+zl
+	vdfRFg0a6xME2yBm/cTCV4mtNP9B5JY70GR7DF+xqngd4GkOQN6fh38zygoqJd45
+	9zPE+bc8DKsuOLuHX0eIAn82pwkY8YT+NtZKf88q4CiGCM5k7wsMq6hH3ncKhtUw
+	QDq4IpeC3/BAR5QKduCIWb/jo+VEhHhipneoyGR57/RvSC3fQyKstzhBd9v+Izq9
+	+IdJLNjCje3kbgXRGCZBdl4chOSb49YTzP50VeSnFu1gkBESJvio0CAmaAM3QfIG
+	epcD2g==
+Received: from duzpr83cu001.outbound.protection.outlook.com (mail-northeuropeazon11022096.outbound.protection.outlook.com [52.101.66.96])
+	by mx07-0057a101.pphosted.com (PPS) with ESMTPS id 4e7sn9g6vy-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 18 May 2026 09:21:47 +0200 (MEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dV+f4ejuKlxaneKJKqHOhMfoLo6AOx3PemMJHAgbLBFT+k/MShbxJKFv8rRd8gSCa3HZ8du05hDwYxeDa7rN+Q4ufczGzm5kQjwH+16dnpPimAbpxuoysncnqw5ag/lFwLyrZI0CvRcjp30WINUYnSGAGojYIkepYfoIP+ZoTlH9wub8dNmOyuglL/wLeftz1/pgnew5dyBivyiXhV9ImpCJSpuqhuBV4W5X9e/L6LfMseWrdc97xHn3eFRBupkNAvupnaRJWZa/OcZsU2UKJSVGdsIisLutvTnS0HluysZBNsCLRc6SijEyuj4QfPgo5lRSx+9rH3PWzcCIKh3kGw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5owCi21EMNCjFaAkdRJMpCANu+OAcSDcN+Mo7aOw/4Y=;
+ b=J0OVg7A7ZKnGJE4Z83ZiSAj9BPQwfN2rNXCEiFTLJaPQ2POAbhY0gHxrhVLYEf/APzAL4eYon29pMpS5oO71sm8UJfL2OiplTUaPYjlO27F14ngUqp6I5+GIgmgYN0IHcqnWk2+E2HOSF35gxdgi1mi8VGrSIAIvrN+0NSqSKSn9uR2XczVVdKlXAxn7a7bwEq1fIXkQU92H9sMoFY+U1sBhJBpcB7nAB3f7fs8xBKyyfU2m5tzZOIn/2Gw1PbMOw0lxoQspBglcHYD7xmhYXSWYxu24P0r5Earg7AzvcCQeWDBUq5jgJlFFhN+9h0SgpRFd6nR1mnlim0QHkfEHuQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=westermo.com; dmarc=pass action=none header.from=westermo.com;
+ dkim=pass header.d=westermo.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1779089792; x=1779694592; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=rxj3hjLS1wMg1dys4oRBWhSMYXGodufeExdNLEthm+k=;
-        b=Dt+aJF5UjxvV5wDE4PZ4kyPqHENjwo5krRuKY0PLlfknlH6ABYlNuR5ER0jM6vKz5b
-         xWuQ2te0CKWAzzTdJzEYRex03jr2xEeVwgr4pFDpVoZaZdLqoDbDhPPnfdhoCBM64NWy
-         Azh+1Gvr2Bp1Eh+4GWUQJqfdcgxA1xGyR7+xxB9HpjUaWORnGtsaxuSBj1DnVaCnTpOM
-         1fAnP4iaFIzSKhyqMAwp1+UbLQem6k95IaH5kNaN/Aq0YS9rNnkO9I8cRrG7BS4PKh+i
-         lOXuGvgFDF1b8chnuY3/pUSqbI//c409joHzhX9cfOMZoDjX9YJ7aQshSskrhmAURnVX
-         0TVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779089792; x=1779694592;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rxj3hjLS1wMg1dys4oRBWhSMYXGodufeExdNLEthm+k=;
-        b=V73ie+Cik4ecRIqS0dOzVJ4PkxGuqPp7Z56ODmfuP6Ng7ffk8lJU9h/EpM2CSmm6Ep
-         s22pJGa+kpcbz0Lu3mbSsCDwo11F5PYp1zjT433fAFevbB1wmk9GeA+3Nbr9KrhpKqt7
-         gLKgXmuimN2glK9OAW48JhSLQhfQpd/tyAi6GVJFUPGF3Juu89mB9qYww4Vx+g0GDXIH
-         PwylLvSxW8OPtkjdSDsF0elWks/CAgm+yGfEVESJa882HrFjDxqgXTjwgMVs6zKY6Kec
-         5J52zlVhJU254onfB36bVTfl89PlRW8r4OVWNvmllgJEq2v1P+ww1Rg0l7MIeV5aqXvs
-         skyQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9hCGXtuCnTLHbM13074SGyS8F7dPKJJqHDWCmWLAkFmpqS10Sm1PwIB6iIOidc11GF2MiQxy4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx9O3GsMkXmw/j2s5bQN7vK3po+Ol4H5dZ7kAJ1xOvWJgbR2Mmw
-	fpqwePNUDQnWRDRQp/5rWkHyI8fNhMIXzoViUuf84IqUM/5kWJAklzXAaUT1nh8wOYEbLLQtXF9
-	EDMeBT5/TySv7DIFfZXRgWqxuSOaCNzajfI2ieoMYTPQbYkwS0L6EH1WL7LxbuK6F0UUA
-X-Gm-Gg: Acq92OHDI07gQIox3AlVdM5VLbqFDj/yPRq9CeO7ikNpy6ugSFBd/42wWJYvHHwBbR2
-	fxYX97CqfMLVhM9mc9aXkz6KT42D1a2rN+RIe+ib3GoZe34d/5F/vbpzfGBjGoBkY4BnHgHTNQG
-	VuVyJJGSqsmaUKDWUDmiQGvVL0gOZqyR7ZAMM9jinE+2dEkm0BWeSDhnjJm22nD1guIy1R9CCpZ
-	0Z71WpH041OPeXUjZ4oCp6piNuqQYTkFHvFoL+zPFh3xBvlFIrhESW6mfAnXsyMlBEn+oTUiOtb
-	f0KbSTqDy3VtH95G40nuA047RP2s1ApyKPRoTIjGft2KAk9EvIjuD2ca1IjuzQ/OXqgGuSSAJRy
-	gQnlYllvEKKB6fun9WkkyzK8xfAt3FCRyWJFh68tbgFCjOiA2cF6k4no=
-X-Received: by 2002:a05:6000:401e:b0:449:c5e2:a8b7 with SMTP id ffacd0b85a97d-45e5c59ec1cmr20788003f8f.30.1779089792172;
-        Mon, 18 May 2026 00:36:32 -0700 (PDT)
-X-Received: by 2002:a05:6000:401e:b0:449:c5e2:a8b7 with SMTP id ffacd0b85a97d-45e5c59ec1cmr20787957f8f.30.1779089791712;
-        Mon, 18 May 2026 00:36:31 -0700 (PDT)
-Received: from [192.168.100.100] (82-64-211-94.subs.proxad.net. [82.64.211.94])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45d9ec39806sm34279591f8f.9.2026.05.18.00.36.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 May 2026 00:36:31 -0700 (PDT)
-Message-ID: <3550f13e-124c-492f-a5b5-ae6ad95f09f0@redhat.com>
-Date: Mon, 18 May 2026 09:36:29 +0200
+ d=beijerelectronicsab.onmicrosoft.com;
+ s=selector1-beijerelectronicsab-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5owCi21EMNCjFaAkdRJMpCANu+OAcSDcN+Mo7aOw/4Y=;
+ b=V3S19MjAzITwnW+Z3VqJdL1y/uOOGvOe2kLazzn/nF3dMZkWQvRoYFBNS2HKwsejeHv5Ja5J3qucb6vaeFU2WLeiZfkLHLTMl2t6XIztEjjFzdc8W4uDB33EezqG7qZDxUEAoLX8miO4JD8iDtXw9FrwXNoCWFYOODrAuIR5aO4=
+Received: from AS8P192MB2043.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:5bf::11)
+ by PAXP192MB1607.EURP192.PROD.OUTLOOK.COM (2603:10a6:102:282::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.21; Mon, 18 May
+ 2026 07:21:44 +0000
+Received: from AS8P192MB2043.EURP192.PROD.OUTLOOK.COM
+ ([fe80::9f05:d0fe:f10:78e6]) by AS8P192MB2043.EURP192.PROD.OUTLOOK.COM
+ ([fe80::9f05:d0fe:f10:78e6%5]) with mapi id 15.21.0025.022; Mon, 18 May 2026
+ 07:21:44 +0000
+Message-ID: <539202f5-43ba-4938-a9b2-393c1bb3e072@westermo.com>
+Date: Mon, 18 May 2026 09:21:42 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2] usbnet: limit max_mtu based on device's hard_mtu
+To: Laurent Vivier <lvivier@redhat.com>
+Cc: linux-usb@vger.kernel.org, Oliver Neukum <oneukum@suse.com>,
+        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+        Stefano Brivio <sbrivio@redhat.com>, linux-kernel@vger.kernel.org
+References: <20260119075518.2774373-1-lvivier@redhat.com>
+Content-Language: en-US
+From: Matthias May <matthias.may@westermo.com>
+In-Reply-To: <20260119075518.2774373-1-lvivier@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: ZRAP278CA0013.CHEP278.PROD.OUTLOOK.COM
+ (2603:10a6:910:10::23) To AS8P192MB2043.EURP192.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5bf::11)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] usbnet: limit max_mtu based on device's hard_mtu
-To: Matthias May <matthias.may@westermo.com>
-Cc: linux-usb@vger.kernel.org, Oliver Neukum <oneukum@suse.com>,
- Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
- Stefano Brivio <sbrivio@redhat.com>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260119075518.2774373-1-lvivier@redhat.com>
- <539202f5-43ba-4938-a9b2-393c1bb3e072@westermo.com>
-Content-Language: en-US
-From: Laurent Vivier <lvivier@redhat.com>
-Autocrypt: addr=lvivier@redhat.com; keydata=
- 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
-In-Reply-To: <539202f5-43ba-4938-a9b2-393c1bb3e072@westermo.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8P192MB2043:EE_|PAXP192MB1607:EE_
+X-MS-Office365-Filtering-Correlation-Id: 03530c3c-757f-443b-f51b-08deb4ae1d6c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|366016|11063799003|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	4+vpr9GX9DDBsRn0AvunW3qRvMo24lghGZmF1OS5ReDTq2f5CsKbYPgAQtGQ8yE3dL/ilzWtd7pa4+e4a2N2+ew5uDUauEBR/u34qhMPkgU4sDBiqgud+sKkC01C/Fkwz8rbgfVy/mnECukE8R6C8vzQVfiJlES38fEShGOWisFybTPS+m4+VYirhMwEaPvGmyFYdj8vBLIWQu6CJ9p5CFU6OTg6JUtDuTdPGtNcgucCwjcWEPM7O+cSaZatKZ2l+9lRUdLZxR+9/hzfW0LzlFKhESV+Vhmz6FrEzW85XCUDT+eI4fJxpeOXeigm202GnMzOcei7UAC0ADMJCNhFPAGxAPMs3smzYnmL+bLEb4KrOm0lYCfBqnB7SvnvJMq1CZ2IJspOVzFpUqJ9pYccERJaAGn3RUTm7HMMkzhRvlpwb3eV5sgGy5gg9QtwKcktXdWd3/xuByINHO0FvR8owJMCb3iDaeWGdGhXZDox0/yqiorYbT2i1Vy6KVZ4acw1eMD4t3VkwIHoPcmmZS0kyJu9vgmR9ur1A9wbjFUwwE9b81xVR91eJdA5aC2NEWWgdaBswnrAaIoeNh7UBHego9BFAJri7A8oTr8vM8TRl1x7ABKpdiHYM+HB++W9tmfmPh5ssnYQgrCvcGSasFSSxA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8P192MB2043.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(11063799003)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TkxPblQ4UFpyUncxOVhzdVZCNFRJZVRidU5oUHI0Y2lla1E4cnp5ZWFVMk5x?=
+ =?utf-8?B?UzFGQ1R5Q2IxMjJuUVphYktyRjhJT2N6SUxxTTBtUzVxSVdRUmRkVUdySUxa?=
+ =?utf-8?B?WmJvanhySVlhc1BCc21TUnhXOVpXTmdWS1hCclppOVR6TVdldDVHYWxYYm9l?=
+ =?utf-8?B?WXVLNjBOb3dIK3pucHlsMnV1VU9ORUlGS29ReVFFVEhmM1VXQUpEY25VaS9t?=
+ =?utf-8?B?ZzBjNGxxd2RtbjJhN3NXVFIycUkwUlNPbkJWWHBYUGlMekF6VVJudHYrUEI1?=
+ =?utf-8?B?bkxmMDFyd2NrbWFmd0JtYWFVaC83WTVXZGo4UDRwMlVQNklLUFFLVjN6Qk45?=
+ =?utf-8?B?WjA1VFZMQlp3UW9uUjNQaUhwaGJYV2dxUnlXNGdMeHlxRjlTODE1VHF6T282?=
+ =?utf-8?B?RSsvVTdQY0dXWjA2VFJLVFpUYkRiYmRiRFkxZ3ZzQlZvczJwNk8yT2pWL0hR?=
+ =?utf-8?B?MnBXT1V3K1JEd3l1ajZoYis3M1hHTkptR0ZnRlMyaUYwN3hyOWpVMUdra3pu?=
+ =?utf-8?B?Y0NTd2hCS09jRGkrd1hmam10QVdoaUk2NGxTMFdoalQwY0o3eDhxYTBPVkFQ?=
+ =?utf-8?B?VE5FdDY1cTk5a2ZuOWsxY0JEN0xlZ1VPeGdwRUNUZGE0U3lpVmJRbG5iRUhz?=
+ =?utf-8?B?TUZFRXFLdm5EeVkrN2JZL3ZGeWF2UUZjbVBkK0cvaVo2OXBWekRGQUNhY2Zx?=
+ =?utf-8?B?eUxHUm5VMjNvbFBtZ3Q3bVNObDNsdlIzTjFlMDByWXpYZUtsYnlXYzA3cnJP?=
+ =?utf-8?B?MWRNWTg2M0I2QXJJcU81UFc4VXQrK0FXRFNhUWZVMUNzcjU1dzBiVzBzYXNE?=
+ =?utf-8?B?Z0t5SG4rc1RnaEZEV1FOQTJCTmhQaTlzMjVhcXRybWdaYUI0NHIxRTZJTFB3?=
+ =?utf-8?B?cDhnOXVZL0hPMUNNS1NkQ2U3eFFOdTluZWZVWnZMc0lqMzhjUzZOb1E2UDBk?=
+ =?utf-8?B?L3FzaktQWU14eG5aU1Y5dXBwWnBPZTVsVlFIRHZYQjZKM01kdnBwWXpMM01t?=
+ =?utf-8?B?RnEvdkhzbmFPMXlqZjJTZ0ZMdm1vNGlNbk1NT0dpL0dQRWlVUG9mSG1pS3d5?=
+ =?utf-8?B?dWRmZ1d3OGdQbjVYRlRhSDBJbXFSUnVZSXFjLzB6bVhwTjJESXlYRXNlNXVz?=
+ =?utf-8?B?emE1d0V1QVlPcG8wOGhsL2V5cGZueDdlMEFWZVNsOGdmRVU0WEk0Wkt3bURX?=
+ =?utf-8?B?aGpFaktZdUVPRUxJMTdteHE1LzZlMDlNMGlXWmV6bXdJUEpaVEwzbFNBL3BM?=
+ =?utf-8?B?azlsZk53Wms4MkNZTmU2anlHT3hhMllUaVcxSUZ4VXFVWXZhT1NSOTdMWFh6?=
+ =?utf-8?B?b1lWZHR1blozY3BoRnR2eWhReUMyR3I4OTh0L3BuWFozbnRLVVYrRmt6MXNn?=
+ =?utf-8?B?eXE5cWpYaUFLNmhXZFNrZXFuR1k2SU1QelhPQ0RrTmNxakRnZ1RyYTlJZ2U2?=
+ =?utf-8?B?eDE1bmszNmRNQlJkeURzeFBaUm5ncUk4bndkOWl6aWxqaDlYWVNsb2s4UGl2?=
+ =?utf-8?B?NWhEN1czTFc0STVBN2hUTVQzUHlQQmFRenJvamIzOWY2bEFrOGtZWFR1bjYy?=
+ =?utf-8?B?ZmhkS2lVVmtZVTI2dy9wZ3hBK2ZpQUVTaFdmeGRyRTBrNEZ1TC9WdDRRRldC?=
+ =?utf-8?B?MGlBNCtudVpnb3R0WmdoVlRzNXYzNlF4dTZCZHhpN0srOWtRWFZYdEFHeTVk?=
+ =?utf-8?B?cStHbGRYOFhmYjZkU0x3Y3dJK3pEWUZrVmRNeFhvZmRCOUprQUJlanNmanJO?=
+ =?utf-8?B?ZVB2U09BNlBFOTk2RThER0lWY09VQzJwcWdFUkVLcHJVdjB4KytMOTRCL3I0?=
+ =?utf-8?B?SUlPMkZKVUNJR0s3eHBoVnQ4UTlGWU1FT3ZmVEc2VVJXTFZoekFqRjhIYUJk?=
+ =?utf-8?B?Q3UwNDBSUTVjQXF6ckFkN1BYSnhQVTgxRlNQdk5xdW4xUjd1bmI5SC9QWjVs?=
+ =?utf-8?B?VW0xZ3lqOWF4aWF2aWdlTjhkMWgrN1hhRmQycWNwcTI1MmJPdzZ6VTJET1Ft?=
+ =?utf-8?B?OEFEOVZpNzRGM09yTUNmNkowZWVOQ1BldDZqUnVyeVYzUHRwWlp1NTNjSzZV?=
+ =?utf-8?B?YnhWSHpKSWVFZTVLT1dWZGRaUzhOVjIycEtxTzIwRm05MHQ4OW9lNzhSOHlZ?=
+ =?utf-8?B?aWRiMEc2MDZmMTN2ZnBpeWdvRkZEUlFqV2c2RHFFWXZyeTNCZG1PYUNpZXZK?=
+ =?utf-8?B?VkM3QklIeTA4ckk1OWhERjB2OUNNYVpJa0pzdEd1d2RxR2dUc1FabXM0MVY1?=
+ =?utf-8?B?djIyNVBLcWtLdWhoZDFrS1V2QXJvMXliMUVCVkNjUGJjekxXN0R1NlNEaTU1?=
+ =?utf-8?B?SFRrdzV6ZnZYR0Iybno2YXJYeGk3NXlJbUlZTHlqUkxBUVZyejVMQT09?=
+X-Exchange-RoutingPolicyChecked:
+	qSA+cescxmqJfwI0QphymWgpWQl2qYrKwQeAzPV8btN8RTvLqTyldFk69YUwsoJgQNHs2H80DK4keWKK9fuci1BgDnbsfYZz/ZTB538NIo/G0ymYTduh8H61Pu8gL3KjZ3KM5WtJ4rsFG2D1Zbhu1pIBWy9K3Q0HLlW8J1YCYAAiMc0qGzgdQKQfWaKG7gVx+b4Zrk74L7hCUePMHRA0qAeFNlHNJr9Hol0lCLDC/EKH5lWX5SFoe8M6zVvKwezDe3qPgOvIdmKRzi3o3ICB/1Gh0gx3JyJfguN8F4lSzC3u7Bmy4sK0ACxWhV/G7uPvfYiHEa2h0glmeCO2uCouWA==
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	skaWXMFcQsI3tJ6hzfOKRXmdYFb6Ia3t4dq1y75STwi3Qi92Y8u9e/z9jsNxkXYC+lKk2ISCuCdU6BSOt5En0dEcsFYEcy3qqP7pvDFdTuBfdUhtFj52ISYy6wQBkmbBvrFmbFC+gGsJEFP40AiQeUrg3ZkXy52Tu0ooobMExH+nnMwfwXb8aI5Jsa9Qjnl7cemxpjgNWavezL6CIP5qSQHAin1Pqjo/u9o1juS9FQwWoEvD+ncGs8v7PdH4Yh7ET1RUhWrazzVcsAy9gqhXTh+cRnWAkNpTmI2dex7DJqd0wNxQ28oHCYsyIFp/Ef89WMgg9yMB4gU3/IPDPbJDjUStFBcUGFpIedShiBMY3+6YFKQ683EbXwE1EX/xD65X1qQhIScagcWAEiCnb5jfT+xW1E0oQsJhUA3WR37VETXo6I37KKQRJ1bFfAHk40vJr728pYXAaJpgWzysGUNfGaneb78LwdnDqAmM2I5Rp4F4/ytJspB8UCL+bSRcfNXUY9NKsr7Ndri5LzDFctZoXTUFSBd+MyfcKRVsBpCiPQ3748lv7PWWg/JMWAwpwkgTF+sFAaYyDHoK5fHF7+mdby/3Dx5/dVk8dM8kqKLbN8cK0KHrDBxMqjg7q+z0/T2+
+X-OriginatorOrg: westermo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 03530c3c-757f-443b-f51b-08deb4ae1d6c
+X-MS-Exchange-CrossTenant-AuthSource: AS8P192MB2043.EURP192.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 May 2026 07:21:44.6405
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4b2e9b91-de77-4ca7-8130-c80faee67059
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: RdHIzOCagk1B+OAguaV1PxYScX+E33dm1dLtA3NEFMw/A8XBrjLnn48Wr4uPGF2umQ2KoGoNX0Fp8jOb7Bp3Ig==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXP192MB1607
+X-MS-Exchange-CrossPremises-AuthSource: AS8P192MB2043.EURP192.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossPremises-AuthAs: Internal
+X-MS-Exchange-CrossPremises-AuthMechanism: 14
+X-MS-Exchange-CrossPremises-Mapi-Admin-Submission:
+X-MS-Exchange-CrossPremises-MessageSource: StoreDriver
+X-MS-Exchange-CrossPremises-BCC:
+X-MS-Exchange-CrossPremises-OriginalClientIPAddress: 144.2.103.240
+X-MS-Exchange-CrossPremises-TransportTrafficType: Email
+X-MS-Exchange-CrossPremises-Antispam-ScanContext:
+	DIR:Originating;SFV:NSPM;SKIP:0;
+X-MS-Exchange-CrossPremises-SCL: 1
+X-MS-Exchange-CrossPremises-Processed-By-Journaling: Journal Agent
+X-OrganizationHeadersPreserved: PAXP192MB1607.EURP192.PROD.OUTLOOK.COM
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE4MDA2OSBTYWx0ZWRfX8W1x8GGTBD8c
+ t2+rKWCDQ8WBJy5PV6qE8KTn3vFXDT7c1f3f4czt1R/IR9l4qm6Q5YrucULZpGqPu/IbsWEAVd1
+ S0JnUhrQpvGHWuXlON8kS++dmSxSBO3XzEx7AJIaXrPn9eXDoX9CesoktBBw7cfHUkSZYv+P7V3
+ OnA+seNNBXSbbTzkEGAdCyjyb6CQsCJMandbpdGkmbyPgCQ+1xnK3656I2m8Z0PWNwv5iXuzZ3p
+ bCYK/j/Hmzj0ihhF3DAc0oN6V+vJBMFKLc19tghJk1bw42I2hfPsPdGGm+EF8o5mktnGe8d7jMy
+ sM1AyFOF89h9tEglk/PfOTz6e52bAAbhYLHKeiuy7f+AxR8+09VZqgcwtManv5rhFfY0EY6E11D
+ 6YxQoOskMCf/gwFScWxv04xm/WVnvq52eDgYHkNSzl3/C9UQdHgXwBfS3S8/iE0aEb4TSid0Gu6
+ Em7bUOEpw5veU5DS1Og==
+X-Proofpoint-GUID: MFF9Aw50buP4W-azt0vkQlshSgok8gHU
+X-Proofpoint-ORIG-GUID: MFF9Aw50buP4W-azt0vkQlshSgok8gHU
+X-Authority-Analysis: v=2.4 cv=MtFiLWae c=1 sm=1 tr=0 ts=6a0abe0b cx=c_pps
+ a=YwV1dbZ4NCcMRCVFBFAcsw==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
+ a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
+ a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=8gLI3H-aZtYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=tr3XZvuDWTETL0Uaxejn:22 a=WQ4YJ39tjzx_Hbm9pN5v:22
+ a=p0WdMEafAAAA:8 a=pNgXkJcRAAAA:8 a=20KFwNOVAAAA:8 a=-i4I5E_jAAAA:8
+ a=F_gvssytOtQCGReap8EA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=tKe0A8swS_RTMQ4Dt1Wu:22 a=YQreJwxzuLcQAHRr27xt:22
 
-On 5/18/26 09:21, Matthias May wrote:
-> On 19/01/2026 8:55 am, Laurent Vivier wrote:
->> The usbnet driver initializes net->max_mtu to ETH_MAX_MTU before calling
->> the device's bind() callback. When the bind() callback sets
->> dev->hard_mtu based the device's actual capability (from CDC Ethernet's
->> wMaxSegmentSize descriptor), max_mtu is never updated to reflect this
->> hardware limitation).
->>
->> This allows userspace (DHCP or IPv6 RA) to configure MTU larger than the
->> device can handle, leading to silent packet drops when the backend sends
->> packet exceeding the device's buffer size.
->>
->> Fix this by limiting net->max_mtu to the device's hard_mtu after the
->> bind callback returns.
->>
->> See https://urldefense.com/v3/__https://gitlab.com/qemu-project/qemu/-/issues/3268__;!! 
->> I9LPvj3b!H-nIZIscCCh_2FnbJInagPxXTe0XcNu58-8k3NqGYKRdDy8LBOBjWiTIc1E- 
->> cC2wnv91MtZrak2pu7K-4cU$  and
->>      https://urldefense.com/v3/__https://bugs.passt.top/attachment.cgi?bugid=189__;!! 
->> I9LPvj3b!H-nIZIscCCh_2FnbJInagPxXTe0XcNu58-8k3NqGYKRdDy8LBOBjWiTIc1E- 
->> cC2wnv91MtZrak2pq4lrvZI$
->>
->> Fixes: f77f0aee4da4 ("net: use core MTU range checking in USB NIC drivers")
->> Signed-off-by: Laurent Vivier <lvivier@redhat.com>
->> Link: https://urldefense.com/v3/__https://bugs.passt.top/show_bug.cgi?id=189__;!! 
->> I9LPvj3b!H-nIZIscCCh_2FnbJInagPxXTe0XcNu58-8k3NqGYKRdDy8LBOBjWiTIc1E- 
->> cC2wnv91MtZrak2p8csXaww$
->> Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
->> ---
->>   drivers/net/usb/usbnet.c | 9 ++++++---
->>   1 file changed, 6 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
->> index 36742e64cff7..1093c2a412d9 100644
->> --- a/drivers/net/usb/usbnet.c
->> +++ b/drivers/net/usb/usbnet.c
->> @@ -1821,9 +1821,12 @@ usbnet_probe(struct usb_interface *udev, const struct 
->> usb_device_id *prod)
->>           if ((dev->driver_info->flags & FLAG_NOARP) != 0)
->>               net->flags |= IFF_NOARP;
->> -        /* maybe the remote can't receive an Ethernet MTU */
->> -        if (net->mtu > (dev->hard_mtu - net->hard_header_len))
->> -            net->mtu = dev->hard_mtu - net->hard_header_len;
->> +        if (net->max_mtu > (dev->hard_mtu - net->hard_header_len))
->> +            net->max_mtu = dev->hard_mtu - net->hard_header_len;
->> +
->> +        if (net->mtu > net->max_mtu)
->> +            net->mtu = net->max_mtu;
->> +
->>       } else if (!info->in || !info->out)
->>           status = usbnet_get_endpoints(dev, udev);
->>       else {
-> 
-> Hi Laurent
+On 19/01/2026 8:55 am, Laurent Vivier wrote:
+> The usbnet driver initializes net->max_mtu to ETH_MAX_MTU before calling
+> the device's bind() callback. When the bind() callback sets
+> dev->hard_mtu based the device's actual capability (from CDC Ethernet's
+> wMaxSegmentSize descriptor), max_mtu is never updated to reflect this
+> hardware limitation).
+>
+> This allows userspace (DHCP or IPv6 RA) to configure MTU larger than the
+> device can handle, leading to silent packet drops when the backend sends
+> packet exceeding the device's buffer size.
+>
+> Fix this by limiting net->max_mtu to the device's hard_mtu after the
+> bind callback returns.
+>
+> See https://urldefense.com/v3/__https://gitlab.com/qemu-project/qemu/-/issues/3268__;!!I9LPvj3b!H-nIZIscCCh_2FnbJInagPxXTe0XcNu58-8k3NqGYKRdDy8LBOBjWiTIc1E-cC2wnv91MtZrak2pu7K-4cU$  and
+>      https://urldefense.com/v3/__https://bugs.passt.top/attachment.cgi?bugid=189__;!!I9LPvj3b!H-nIZIscCCh_2FnbJInagPxXTe0XcNu58-8k3NqGYKRdDy8LBOBjWiTIc1E-cC2wnv91MtZrak2pq4lrvZI$
+>
+> Fixes: f77f0aee4da4 ("net: use core MTU range checking in USB NIC drivers")
+> Signed-off-by: Laurent Vivier <lvivier@redhat.com>
+> Link: https://urldefense.com/v3/__https://bugs.passt.top/show_bug.cgi?id=189__;!!I9LPvj3b!H-nIZIscCCh_2FnbJInagPxXTe0XcNu58-8k3NqGYKRdDy8LBOBjWiTIc1E-cC2wnv91MtZrak2p8csXaww$
+> Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
+> ---
+>   drivers/net/usb/usbnet.c | 9 ++++++---
+>   1 file changed, 6 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+> index 36742e64cff7..1093c2a412d9 100644
+> --- a/drivers/net/usb/usbnet.c
+> +++ b/drivers/net/usb/usbnet.c
+> @@ -1821,9 +1821,12 @@ usbnet_probe(struct usb_interface *udev, const struct usb_device_id *prod)
+>   		if ((dev->driver_info->flags & FLAG_NOARP) != 0)
+>   			net->flags |= IFF_NOARP;
+>   
+> -		/* maybe the remote can't receive an Ethernet MTU */
+> -		if (net->mtu > (dev->hard_mtu - net->hard_header_len))
+> -			net->mtu = dev->hard_mtu - net->hard_header_len;
+> +		if (net->max_mtu > (dev->hard_mtu - net->hard_header_len))
+> +			net->max_mtu = dev->hard_mtu - net->hard_header_len;
+> +
+> +		if (net->mtu > net->max_mtu)
+> +			net->mtu = net->max_mtu;
+> +
+>   	} else if (!info->in || !info->out)
+>   		status = usbnet_get_endpoints(dev, udev);
+>   	else {
 
-Hi Matthias,
+Hi Laurent
 
-> 
-> This change was backported to 6.6.* and caused a regression with wwan devices via USB when 
-> using a mux.
-> 
-> Tested on a Quectel EM12 running the firmware EM12GPAR01A21M4G_01.300.01.300.
-> 
-> Tue May  5 09:49:35.638 2026 kern.info kernel: [   10.819620] qmi_wwan 1-1.2:1.4: cdc- 
-> wdm0: USB WDM device
-> Tue May  5 09:49:35.638 2026 kern.info kernel: [   10.829601] qmi_wwan 1-1.2:1.4 
-> cellular0: register 'qmi_wwan' at usb-fsl-ehci.0-1.2, WWAN/QMI device, 6a:c3:49:88:47:b1
-> Tue May  5 09:49:35.638 2026 kern.info kernel: [   10.840579] usbcore: registered new 
-> interface driver qmi_wwan
-> 
-> The parent interface (we renamed it "cellular0") requires an MTU of 1504 (4 bytes overhead 
-> from the muxer).
-> The actual wwan0, wwan1 interfaces have an MTU of 1500.
-> 
-> With this change it's no longer possible to set an MTU of 1504 on cellular0.
+This change was backported to 6.6.* and caused a regression with wwan 
+devices via USB when using a mux.
 
-This should be fixed by
+Tested on a Quectel EM12 running the firmware 
+EM12GPAR01A21M4G_01.300.01.300.
 
-55f854dd5bdd ("qmi_wwan: allow max_mtu above hard_mtu to control rx_urb_size") which is in 
-v7.0.
+Tue May  5 09:49:35.638 2026 kern.info kernel: [   10.819620] qmi_wwan 
+1-1.2:1.4: cdc-wdm0: USB WDM device
+Tue May  5 09:49:35.638 2026 kern.info kernel: [   10.829601] qmi_wwan 
+1-1.2:1.4 cellular0: register 'qmi_wwan' at usb-fsl-ehci.0-1.2, WWAN/QMI 
+device, 6a:c3:49:88:47:b1
+Tue May  5 09:49:35.638 2026 kern.info kernel: [   10.840579] usbcore: 
+registered new interface driver qmi_wwan
 
-Could you have a try?
+The parent interface (we renamed it "cellular0") requires an MTU of 1504 
+(4 bytes overhead from the muxer).
+The actual wwan0, wwan1 interfaces have an MTU of 1500.
 
-Thanks,
-Laurent
+With this change it's no longer possible to set an MTU of 1504 on cellular0.
+
+BR
+Matthias
+
 
