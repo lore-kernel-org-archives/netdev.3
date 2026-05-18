@@ -1,119 +1,81 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 580CF37AA74;
-	Mon, 18 May 2026 19:47:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6862405C4B;
+	Mon, 18 May 2026 20:08:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779133642; cv=none; b=pHUuikJfccW8bR29ZvlDFpIJYNQheqynVMODaykRCq60oegq50mhGMcpolpJFfDJ4N3JneWt2J6uyQX6v1Mfzy9ixYC8yzP5tf5B1lygBo6cbp3dL2k25CFaXcQHxozylwoPnw/RLedNzH75UYL/ZTiHUIdgC71jPxpH/s+iIIM=
+	t=1779134905; cv=none; b=WWLJ9yAOdhzyH7gqLSlO+yhJYNtj3+Gecu33MjbzcQFmuJeVjBfNYyO6L5oxUpZk282m6iu5Gjocb1Km5VFBSJdRBxDY6B3q8/ULdCzMWGGV6yd9w2lfr4RWk2Grk8CWKrovx7aUDeKCKu8Xdrv8PeAkA2SqX6oklcK3WyTyvbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779133642; c=relaxed/simple;
-	bh=/bI0wvIS4irKNIW0UIRdjGpqzaCoFj0Y8jYQlzdIY1Q=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pA64qKE20mVPNUJql8uxlkwPLZ0fWd3EDW8WF3vhMe8bum7ALflbYtfqfSZZaNoROjQIQuFgndm7f7k/8qWr+nY+pmL+yub2pUL2mgtXKRcIVQQ6Up1O6ko9aguPkD0MGWZDCkCYSC9umZCOI7LuglYM8M1sRX7hDnRwhwLtPm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Ch6u7mM1; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1779134905; c=relaxed/simple;
+	bh=LBjgJsXIGbZM5w2GUzxKJldAI723FEpT19Mr+HRKvuo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rdoGrBmJE5kz9kOkgmvx9Vw5ICsoDlP0+HJxoL1rzCzm/X7BRH+MwNbMB4bu2Qzj8rlMsXH4uHc37Y7IEaie5oEsRyJEjEIvPkiQZMuJvshMDHar1SL4tM3KOPMqX2IoXICU0SO1Knx11wvAsFN2Lj5BimcSihqeTHIJ2ESYlGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FlMoAUxs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Ch6u7mM1"
-Received: from linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net (linux.microsoft.com [13.77.154.182])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 4362720B7169;
-	Mon, 18 May 2026 12:47:15 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 4362720B7169
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1779133635;
-	bh=bwEBs7RhjEVS6uregRRC6XmI5WIqcSFOYgqSBVfJPkw=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=Ch6u7mM1x6ZibX8hQFsLuYoPuor8c/sAwiG75n1Rl29ctM8ljFx6cBdCzl9zOQIRa
-	 yVXmhP0311OGDtTN0dXGfAUiovyvqVUx8XjLiawGH7630Ef+MvH6BZ7LzHOEnAAkks
-	 xHp3RpohJS5Ie8BsORmaMSn89HVnAAV3+encXy5U=
-From: Dipayaan Roy <dipayanroy@linux.microsoft.com>
-To: kys@microsoft.com,
-	haiyangz@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	leon@kernel.org,
-	longli@microsoft.com,
-	kotaranov@microsoft.com,
-	horms@kernel.org,
-	shradhagupta@linux.microsoft.com,
-	ssengar@linux.microsoft.com,
-	ernis@linux.microsoft.com,
-	shirazsaleem@microsoft.com,
-	linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	stephen@networkplumber.org,
-	jacob.e.keller@intel.com,
-	dipayanroy@microsoft.com,
-	leitao@debian.org,
-	kees@kernel.org,
-	john.fastabend@gmail.com,
-	hawk@kernel.org,
-	bpf@vger.kernel.org,
-	daniel@iogearbox.net,
-	ast@kernel.org,
-	sdf@fomichev.me,
-	yury.norov@gmail.com
-Subject: [PATCH net 2/2] net: mana: Skip redundant detach in queue reset handler if already detached
-Date: Mon, 18 May 2026 12:43:51 -0700
-Message-ID: <20260518194654.735580-3-dipayanroy@linux.microsoft.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20260518194654.735580-1-dipayanroy@linux.microsoft.com>
-References: <20260518194654.735580-1-dipayanroy@linux.microsoft.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FlMoAUxs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0320CC2BCB7;
+	Mon, 18 May 2026 20:08:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779134905;
+	bh=LBjgJsXIGbZM5w2GUzxKJldAI723FEpT19Mr+HRKvuo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=FlMoAUxsm9astcIK0DyduY0a9NwBtvAIJe4VYHzcEhD59YJ30o1NUk/rzUgNBLKo0
+	 APCRD4Fp7PSFol58ZHnBNqe4RAWdzxBmA0qzWgXWqYZGF5JIKwVvcYFM9SVuJVWQNO
+	 afmm1BczCj8jcjOFQF6beYANagEg5vfjydDG3DHXsAYgvjwavglJ0flP4dOR8FvQmU
+	 z/XRpvW8PoocZYqx5jpBaTEJg21tyQGRbQREM7Q0GszY4OjjFREBSf3xePoA25pGdw
+	 0BTkqRUkfQMZKx1DODC9cnoWih9NACDkG1cBioAq430nSECAU19zH5C+MITULoURc8
+	 k2hePFzGmfxUQ==
+Date: Mon, 18 May 2026 13:08:24 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Neil Spring <ntspring@meta.com>
+Cc: netdev@vger.kernel.org, edumazet@google.com, ncardwell@google.com,
+ kuniyu@google.com, davem@davemloft.net, dsahern@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
+ linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net-next v6 0/2] tcp: rehash onto different local ECMP
+ path on retransmit timeout
+Message-ID: <20260518130824.2fe952ea@kernel.org>
+In-Reply-To: <20260517174522.2232057-1-ntspring@meta.com>
+References: <20260517174522.2232057-1-ntspring@meta.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-When mana_per_port_queue_reset_work_handler() runs, it unconditionally
-calls mana_detach() which attempts to tear down queues that are already
-freed, leading to NULL pointer dereferences on apc->tx_qp and
-apc->rxqs.
+On Sun, 17 May 2026 10:45:20 -0700 Neil Spring wrote:
+> Currently sk_rethink_txhash() re-rolls the socket's txhash on RTO,
+> PLB, and spurious-retransmission events, but the new hash is not
+> propagated into the IPv6 ECMP path selection logic.  The cached
+> route is reused and fib6_select_path() is never re-invoked, so
+> the connection stays on the same ECMP path.
+> 
+> This series adds the two missing pieces:
+> 
+> 1. __sk_dst_reset() alongside sk_rethink_txhash() so the cached dst
+>    is invalidated and the next transmit triggers a fresh route lookup.
+> 
+> 2. fl6->mp_hash set from sk_txhash before each route lookup so
+>    fib6_select_path() picks a path based on the (potentially re-rolled)
+>    hash.  This is conditioned on fib_multipath_hash_policy == 0 (L3)
+>    because policies 1-3 compute a deterministic hash from the flow
+>    keys which must not be overridden.
+> 
+> Patch 1 is the kernel change; patch 2 adds selftests covering SYN
+> rehash, SYN/ACK rehash, midstream RTO rehash, midstream ACK rehash
+> (spurious retransmission), PLB rehash, a policy 1 negative test,
+> a flowlabel leak regression test, and two dst rebuild consistency
+> tests (normal and syncookie) verifying that natural route
+> invalidation does not cause unintended path changes.
 
-Check netif_device_present() in the reset handler and skip
-mana_detach() when the port is already in detached state. This avoids
-the redundant teardown and goes directly to mana_attach() to retry
-bringing the port back up.
+Still flakes:
 
-Fixes: 3b194343c250 ("net: mana: Implement ndo_tx_timeout and serialize queue resets per port.")
-Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
-Signed-off-by: Dipayaan Roy <dipayanroy@linux.microsoft.com>
----
- drivers/net/ethernet/microsoft/mana/mana_en.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+https://netdev-ctrl.bots.linux.dev/logs/vmksft/net/results/652122/44-ecmp-rehash-sh/stdout
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index 0582803907a8..907efadf6fd6 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -316,12 +316,19 @@ static void mana_per_port_queue_reset_work_handler(struct work_struct *work)
- 		goto out;
- 	}
- 
-+	/* If already detached (indicates detach succeeded but attach failed
-+	 * previously). Now skip mana detach and just retry mana_attach.
-+	 */
-+	if (!netif_device_present(ndev))
-+		goto attach;
-+
- 	err = mana_detach(ndev, false);
- 	if (err) {
- 		netdev_err(ndev, "mana_detach failed: %d\n", err);
- 		goto dealloc_pre_rxbufs;
- 	}
- 
-+attach:
- 	err = mana_attach(ndev);
- 	if (err)
- 		netdev_err(ndev, "mana_attach failed: %d\n", err);
+https://netdev-ctrl.bots.linux.dev/logs/vmksft/net-dbg/results/652122/34-ecmp-rehash-sh/stdout
 -- 
-2.43.0
-
+pw-bot: cr
