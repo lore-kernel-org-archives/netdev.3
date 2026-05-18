@@ -1,131 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A8703EF0C7;
-	Mon, 18 May 2026 10:33:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A35BF3F5BF0
+	for <netdev@vger.kernel.org>; Mon, 18 May 2026 10:35:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779100413; cv=none; b=N45VeZaobVbdWvJ+kf4cd+tqb22LIUsQu4nNgX/yRrr0LOr6tIleYjwdmPS3J9ofvz2XapEcp3/Doh0xZ0ntk6Gyw3jn+COtwSwOAFM+dWIwlY+L5t3IFUSxH44VfTGX9IT8VPxXXMbKTUTfqVGcqIzv02TyCdVq+mAY1Kg0Bm8=
+	t=1779100568; cv=none; b=HwV450qe4Gz9lVd1a18cjcZf5Btqqv3oohjZs0JSZ2ccDe9gyeM9YAvwLmujaweJ0ugtKVR1cD57FDjj1OQH5OfkhWebxY/UBGDKcgmcBPYVg0kE/I0EK80fzxOFZi5p0a6Ulhqpot1+EPc8mFBeVKms52xQChXp62Yxs1vt5fA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779100413; c=relaxed/simple;
-	bh=21mzB7Ds3SRyWGPHuXA4KK9wPMWdQb3wY8wzkyxvlgs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FDrcLXYTBR4gHnUMLavt/18cATQfKQ9HLXjId5bRi2zG8ZuIEU6SQWHWfq4zSuP0+O8T/fbC1LA6lGuegrG39v2Q2AAAeGJ6j7lMBwX8rqQVUT00HXlcJW7AFUELb3WMIRbvh33OX/mGa28l1KAKtlWyFrBy8t8kp9962lS0E/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jHVsvs+4; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1779100568; c=relaxed/simple;
+	bh=Fm3zA/DMxlruL4EOWMqRV/YcpdkTIjLqS3ePMEWOgw8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qFgt915giyHM0fBcG0m2HZP9lwLm3wlid4LO2gHHOk9MR2jzfANJ9HJlK2gLTk+EUrsAlUpH9opo2/6gILrGqTfyVwR+UM4hfYeYINLg+M1fxd3ec3W436gAey+wpdJXoMgy5mBG66HAlsmzuj4pbmQQ3SWOr1gfNWajWkCWli8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=px1tNRIX; arc=none smtp.client-ip=95.215.58.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jHVsvs+4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2726CC2BCB7;
-	Mon, 18 May 2026 10:33:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779100412;
-	bh=21mzB7Ds3SRyWGPHuXA4KK9wPMWdQb3wY8wzkyxvlgs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jHVsvs+4/zlZMlWUecu4ikRTrh3B+NNk7+gl1dTrVSK8PWTtF34hv4ZjJJnxNBBXN
-	 hxY0NXdHE6FASgKj9Qrv4+R2Hx3MH1mrSUYtvKfU0xXrjFx22Pv7zYJbe6M9Kn63gQ
-	 c/5+vygo0Uji6w7kXChcual63HZkk6kT0j/ULM80grdTjVrjBJkNnAYwZ1+AmTv015
-	 sTm2mcJe25gPUXiRQm75z4iCyM/KwVB0+dZtgxSgSnOs3yTcRKhTNI+t8bLERCxiV8
-	 gFKR86JQGr6/qPl3lNXb3vqVTWMZ3R11JtOvKRFTHUO1hLfLoMSXx7u8gZ0nApc9pM
-	 eDuGEzVlWy4Cg==
-From: Simon Horman <horms@kernel.org>
-To: maoyixie.tju@gmail.com
-Cc: 'Simon Horman' <horms@kernel.org>,
-	achender@kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	praveen.kakkolangara@aumovio.com,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	rds-devel@oss.oracle.com,
-	linux-kernel@vger.kernel.org,
-	maoyi.xie@ntu.edu.sg
-Subject: Re: [PATCH net v4] rds: filter RDS_INFO_* getsockopt by caller's netns
-Date: Mon, 18 May 2026 11:15:32 +0100
-Message-ID: <20260518101531.473574-2-horms@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260513143904.2497520-1-maoyi.xie@ntu.edu.sg>
-References: <20260513143904.2497520-1-maoyi.xie@ntu.edu.sg>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="px1tNRIX"
+Message-ID: <a181d845-5738-4f6c-87f1-cfa7a3429e65@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779100541;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7xJHEWZLDl5XB4+Od4nk2K3Ey+PuFR9OX3ThlmbfGB0=;
+	b=px1tNRIXwLXBr9FMob6zkoGbySLXmZxiY3l7pdZ7tOwvY1iuSyD/h4L0iHZD5O6c/lD9CW
+	4yVkdw2UP0t43169yFRdyZl92BpqVKrgrTuHfX55GbD1rz20vKatpkhd2irBi6MNef/M2E
+	ugLVTR7Yj7+bC3PUv3BoDZ8s8XYEKzI=
+Date: Mon, 18 May 2026 11:35:34 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v3] ptp: ocp: fix resource freeing order
+To: Richard Cochran <richardcochran@gmail.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>,
+ Vladimir Oltean <vladimir.oltean@nxp.com>,
+ "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+ Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org
+References: <20260514100055.2014501-1-vadim.fedorenko@linux.dev>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <20260514100055.2014501-1-vadim.fedorenko@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-From: 'Simon Horman' <horms@kernel.org>
+On 14/05/2026 11:00, Vadim Fedorenko wrote:
+> Commit a60fc3294a37 ("ptp: rework ptp_clock_unregister() to disable
+> events") added a call to ptp_disable_all_events() which changes the
+> configuration of pins if they support EXTTS events. In ptp_ocp_detach()
+> pins resources are freed before ptp_clock_unregister() and it leads to
+> use-after-free during driver removal. Fix it by changing the order of
+> free/unregister calls.
+> 
+> Fixes: a60fc3294a37 ("ptp: rework ptp_clock_unregister() to disable events")
+> Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+> ---
+> v2 -> v3:
+> * fix code issue in v2
+> v1 -> v2:
+> * on v1 sashiko mentioned that some IRQs may fire after bp->ptp freed.
+>    it looks like a false positive, because ptp_clock_unregister() will
+>    explicitly disable all EXTTS channels before destroying ptp_clock
+>    structure. But there is a possibility of timestampers being active
+>    without PTP_PF_EXTTS function set. It can be done through sysfs files
+>    and it will change pins configuration directly, but can only be done
+>    for TS1..TS4. Disable them explicitly after detaching sysfs files.
+> ---
+> 
+>   drivers/ptp/ptp_ocp.c | 15 ++++++++++++---
+>   1 file changed, 12 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
+> index beacc2ffb166..b3a9480b9bcb 100644
+> --- a/drivers/ptp/ptp_ocp.c
+> +++ b/drivers/ptp/ptp_ocp.c
+> @@ -4867,6 +4867,18 @@ ptp_ocp_detach(struct ptp_ocp *bp)
+>   	ptp_ocp_detach_sysfs(bp);
+>   	ptp_ocp_attr_group_del(bp);
+>   	timer_delete_sync(&bp->watchdog);
+> +	/* Disable interrupts on all timestampers */
+> +	if (bp->ts1)
+> +		ptp_ocp_ts_enable(bp->ts1, 0, false);
+> +	if (bp->ts2)
+> +		ptp_ocp_ts_enable(bp->ts2, 0, false);
+> +	if (bp->ts3)
+> +		ptp_ocp_ts_enable(bp->ts3, 0, false);
+> +	if (bp->ts4)
+> +		ptp_ocp_ts_enable(bp->ts4, 0, false);
+> +	if (bp->ptp)
+> +		ptp_clock_unregister(bp->ptp);
+> +	kfree(bp->ptp_info.pin_config);
+>   	ptp_ocp_unregister_ext(bp->ts0);
+>   	ptp_ocp_unregister_ext(bp->ts1);
+>   	ptp_ocp_unregister_ext(bp->ts2);
+> @@ -4884,9 +4896,6 @@ ptp_ocp_detach(struct ptp_ocp *bp)
+>   		clk_hw_unregister_fixed_rate(bp->i2c_clk);
+>   	if (bp->n_irqs)
+>   		pci_free_irq_vectors(bp->pdev);
+> -	if (bp->ptp)
+> -		ptp_clock_unregister(bp->ptp);
+> -	kfree(bp->ptp_info.pin_config);
+>   	device_unregister(&bp->dev);
+>   }
+>   
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev
+Looks like Sashiko still has a point of in-flight irq handler.
+Going to send v4 with synchronize_irq() added to the disable path
+of ptp_ocp_ts_enable()
+
 ---
-rds: filter RDS_INFO_* getsockopt by caller's netns
+pw-bot: cr
 
-This commit adds network namespace filtering to the RDS_INFO_* getsockopt
-handlers to restrict visibility of sockets and connections. It removes global
-counters and replaces them with a per-netns count gathered from a first pass
-over the lists.
-
-> diff --git a/net/rds/af_rds.c b/net/rds/af_rds.c
-> index 76f625986a7f2..ace52d3ce0597 100644
-> --- a/net/rds/af_rds.c
-> +++ b/net/rds/af_rds.c
-
-[ ... ]
-
-> @@ -806,6 +811,7 @@ static void rds_sock_info(struct socket *sock, unsigned int len,
->  			  struct rds_info_iterator *iter,
->  			  struct rds_info_lengths *lens)
->  {
-> +	struct net *net = sock_net(sock->sk);
->  	struct rds_info_socket sinfo;
->  	unsigned int cnt = 0;
->  	struct rds_sock *rs;
-> @@ -814,12 +820,22 @@ static void rds_sock_info(struct socket *sock, unsigned int len,
->  
->  	spin_lock_bh(&rds_sock_lock);
->  
-> -	if (len < rds_sock_count) {
-> -		cnt = rds_sock_count;
-> -		goto out;
-> +	/* First pass: count entries visible in the caller's netns. */
-> +	list_for_each_entry(rs, &rds_sock_list, rs_item) {
-> +		if (!net_eq(sock_net(rds_rs_to_sk(rs)), net))
-> +			continue;
-> +		if (!ipv6_addr_v4mapped(&rs->rs_bound_addr))
-> +			continue;
-> +		cnt++;
->  	}
->  
-> +	if (len < cnt)
-> +		goto out;
-> +
->  	list_for_each_entry(rs, &rds_sock_list, rs_item) {
-> +		/* Only show sockets in the caller's netns. */
-> +		if (!net_eq(sock_net(rds_rs_to_sk(rs)), net))
-> +			continue;
->  		/* This option only supports IPv4 sockets. */
->  		if (!ipv6_addr_v4mapped(&rs->rs_bound_addr))
->  			continue;
-> @@ -832,7 +848,6 @@ static void rds_sock_info(struct socket *sock, unsigned int len,
->  		sinfo.inum = sock_i_ino(rds_rs_to_sk(rs));
->  
->  		rds_info_copy(iter, &sinfo, sizeof(sinfo));
-
-Could a concurrent bind cause this second pass to copy more items than we
-counted in the first pass?
-
-If rds_bind() updates rs_bound_addr concurrently without holding
-rds_sock_lock, an unbound socket could be skipped during the first pass but
-match in the second pass.
-
-Because the second pass does not limit the number of copied items to the
-length checked after the first pass, rds_info_copy() could be called more
-times than the user-supplied buffer can handle.
-
-For example, if a caller provides a length of 0, the iter pages array may
-be NULL. If the first pass computes cnt = 0, the length check (len < cnt)
-evaluates to false and the second pass executes. If a socket is bound
-concurrently and matches the second pass, could this lead to an out-of-bounds
-read or a crash when rds_info_copy() dereferences iter->pages?
