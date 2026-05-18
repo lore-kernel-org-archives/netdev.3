@@ -1,54 +1,54 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79DBB3890FE
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11CAD38911E
 	for <netdev@vger.kernel.org>; Mon, 18 May 2026 05:07:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779080853; cv=none; b=r6xoehT4Ev8J1h4zuSZYGSDWR/Z3tfpzLd1f/aQBGRwBqUg/2U3YZb7HFIPZPc5oIs2jiW11aCHmqSk3A6mJxHK3V8WmFmFe3qMefL0pl49rNEci+pCSOExFllRTCuIja0iM+ga/lWlTKdropUG7cTY/nxsdn7E8+zbA1snEJhk=
+	t=1779080854; cv=none; b=gvwiUqmzX7B5MJEm48nUtxeA2R6fBzNpaRPaf0/uN7rek7kLLtNCoXBNODruaF5ysuPUIKG7VFuBNA1xLwcjyaKAfc1OyKwBq65lxqfcIE02/oJMN1WJh0TJIL66sJgZW7j7kgNvL7S7FiU8jLj8xFNrYI0VB8hWsOuVPS9/OA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779080853; c=relaxed/simple;
-	bh=r499Di9Hokshi1Y6fI3eedJtvJ1aKuBQNReYTOefmTw=;
+	s=arc-20240116; t=1779080854; c=relaxed/simple;
+	bh=DOZKBKh5jmk+R7VB7I5R4NmYk10fyYGUKS/vQ53aNk0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=PZLQfvIHiCWu1PMybaTJkyb7gD0yz5+z87kxbyQzmuVkm1gxLKnuMrFCB832LBWQTcdSB3xpGprdnWxrY1fiG7zRhhtrnAW7Hx6X07bbqi2DW6pXKoiqJJfm22jWuDxABVnkwWxq+3u75Aj60GPdLUvV1aCphZjeCZbhA0vQdFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jPqRBvg+; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=A8G/67Pj+Xdui7ubkKVbdHZgZhW4eF61t5carWt/FhRyjAZXPtFBdeW6KKxIBKyNBhH+wbEo4PuZBXC6FMu22OmKxFcKGw7wx5ZYGIglZ2vRoSJrzugUrPqMuSWaY4AL6iuROfPFlHv6caiZY4CysUtjKTa8oJygVlqKn0gcDgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OLGS5wqz; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jPqRBvg+"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-365fc4636bbso4167814a91.2
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OLGS5wqz"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c70ea91bfe1so996736a12.1
         for <netdev@vger.kernel.org>; Sun, 17 May 2026 22:07:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20251104; t=1779080852; x=1779685652; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=OsqTyVioLkIOXJSxMUadfToRl54+U4BL2jWjIN0phC0=;
-        b=jPqRBvg+eENLxzi2IDwZVUmGgTmxU9u9gecwU4g8dcSheGqCMWZTxciOzMvMsTFvmQ
-         jnjaf/0zBcMuUlug+YY2J9/TDQGTKvDrTbEyfOR/35z1xFUN2YiZLQOZ7I2INAHsU+6c
-         iH4DQm7YWlqD59FlwvMwcPOyeH2UjYbwxVMKhHpmbPYOd1bXn5B9+OX/pKGwPL0S5M16
-         lYcUcoDqMQBycqUj5ZkGToM2BtMdnJIIc7s1U7dLUidDPKdy9H2E9n/Ew35v5HAxWCa4
-         9lfxVw8/15AOFXMJAZF4w0Q61S9b0+Wotd9gYuhjpxR8rRCOFRlaBk/zsMwn/DlbM5yy
-         1WBg==
+        bh=UCC0Ma145abVNt33CjH4ulz/FW2YSQ0ujV+oGrhgjeo=;
+        b=OLGS5wqz2u+msfNpHTTJn44EoLARrRKNZipzGiu+w3hK8mRqm2ky0+Oee11vvhF57E
+         zwhFgVubReld3KWNKrIUYa+j5EQnKUwaQbx0TLAKZdBPw5kZlfeYS+l/VaEDQL77//+e
+         9ut0SklO1x7ia5F0JVEagTlFjQ2lH41XyCyiZFezM2vNG2zg4ooEmmyHhfl/naREPcCe
+         oYewO6NCdTx0uMu3ivu6WQ5E8y6u4oLjmzv11VYAhvCaGNViWBFcKLzc4SIQ5ilGnQu3
+         D4GMJBsX++Nypo4Vl/vaP0TrwC1EnOa9CnthbAF1aXQdoJUQpA9/hY/3jme6nQbl+j2S
+         wz8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1779080852; x=1779685652;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OsqTyVioLkIOXJSxMUadfToRl54+U4BL2jWjIN0phC0=;
-        b=MMxiVBfEMyKplMM1aNrLyldg2wU2/p6QjDo/0w0ZLNrTGghFu+7kpTXQ1/M9+1t3Aw
-         iVHhpM8JgSdcS5gOuBpnQfm0abaabiKvbO8YtIDwXk6j4PgBw5xI4/HuqN/9LvO5W9O+
-         PCxNtEuxIJ1XN8ix7PxxFaIVLW1Yss7TK1u0CbPznEekSqxqttXthe2MXNis7nDvGIuu
-         CkB40/bw4nN8us9RTkM3DuXgcoCHRKna+VxqXck8xX/ga6TjysOraTZT6kiwDFQjA/28
-         YctVEuDMyeykQrbFJIWKfoL2gNSt8RoKPNHKZqpR5XF1tc53aSSeq8F7FqsV6rAUcq4l
-         N5bQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+usxQC0JBbzbmD20CwduEd0TrWbRz1BvpvIP8WbAC0i0gShEqj1aDbNl080QNQhPDMMgL0iSA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxoMdFr5sRgB0aqymTeVhhJk9c+vpVZpR/yn1PTNiXXyzN08S8Z
-	FNH34IvKKxm7V5oEHVdEfdItv/lad95wg0fVIlm7Gq9RZYmGSJvZBP2jjpNRo2XrqElfH18FfYK
-	QiDMjrw==
-X-Received: from pjwt6.prod.google.com ([2002:a17:90a:d146:b0:368:3aec:213])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:56cf:b0:369:a74b:28cc
- with SMTP id 98e67ed59e1d1-369a75a769dmr4844718a91.18.1779080851510; Sun, 17
- May 2026 22:07:31 -0700 (PDT)
-Date: Mon, 18 May 2026 05:07:11 +0000
+        bh=UCC0Ma145abVNt33CjH4ulz/FW2YSQ0ujV+oGrhgjeo=;
+        b=XTFA+mXp7gaGjDHP/MBLrPBsPNaajGDc1xiVZJifqs3/6Td+YwtuhpDr6xxQSLdxnJ
+         oQMlmWvaezn6bthbDtHkEdzx83/xJX8GbclwjrzYzdipZwLUZh9F9oEitV2lbPT7z2IP
+         C/UUouUhEyLwzUbN/LvfFuyW/5T7s9bdXr5e0HeMW+L2JuVjD475FQYdp4jHtZ+z6Pgt
+         JoHDTbJQcM3V+l521Et9Th9BH9FsHFNUcF6M0p4Wk8n0kINGT0OniahWolRhaOJ/at4C
+         qs2uDR6LTdRhiYuefP7vYgIsSRohK3XrbsCpo/XCjzZzQOXzBqwwXrG7a9koblVEbUJC
+         oetA==
+X-Forwarded-Encrypted: i=1; AFNElJ8UIYe8pk1TP3w93sSzeX7jIKB3FzHsgkKc8pbfZD1QSxfCC4k4o3yklazuZCBPL2vgk3yJlqk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5ZrG3VQ+PqQEefOV+qquo8SVE/t39WEIunjqzoJ95+3czrJaC
+	F2f7+HlUfnZvQ/xfqaGsj7JMHzGQcfyWvN64hAfKqG1Bj5y2WyCSHTsaUUhz/YZ3yHPxyvgh1Bl
+	NKGYxxg==
+X-Received: from pffk1.prod.google.com ([2002:aa7:88c1:0:b0:82f:473b:a2d5])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:a214:b0:835:3949:3c1f
+ with SMTP id d2e1a72fcca58-83f33cf029cmr13906407b3a.24.1779080852182; Sun, 17
+ May 2026 22:07:32 -0700 (PDT)
+Date: Mon, 18 May 2026 05:07:12 +0000
 In-Reply-To: <20260518050726.318824-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -58,45 +58,54 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260518050726.318824-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <20260518050726.318824-5-kuniyu@google.com>
-Subject: [PATCH v1 net-next 4/5] bareudp: Remove synchronize_net() in bareudp_sock_release().
+Message-ID: <20260518050726.318824-6-kuniyu@google.com>
+Subject: [PATCH v1 net-next 5/5] bareudp: Use rtnl_dereference() in bareudp_sock_release().
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>
 Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
+	kernel test robot <lkp@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-synchronize_net() in bareudp_sock_release() has existed since
-day 1, commit 571912c69f0e ("net: UDP tunnel encapsulation module
-for tunnelling different protocols like MPLS, IP, NSH etc.").
+kernel test robot reported sparse warning in bareudp_sock_release():
 
-It was most likely copied from a similar tunneling device like
-vxlan or geneve.
+  drivers/net/bareudp.c:288:12: warning: incorrect type in assignment (different address spaces)
+  drivers/net/bareudp.c:288:12:    expected struct sock *sk
+  drivers/net/bareudp.c:288:12:    got struct sock [noderef] __rcu *sk
 
-bareudp_sock_release() is called from dev->netdev_ops->ndo_stop(),
-and synchronize_net() in unregister_netdevice_many_notify() ensures
-that inflight bareudp fast paths finish before bareudp_dev is freed.
+The warning is not new and exists since the initial bareudp commit
+571912c69f0e ("net: UDP tunnel encapsulation module for tunnelling
+different protocols like MPLS, IP, NSH etc.").
 
-Let's remove the redundant synchronize_net() in bareudp_sock_release().
+Let's use rtnl_dereference().
 
+Note that bareudp_sock_release() is called from bareudp_stop()
+under RTNL, so there is no real issue even without the helper.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202605062359.e3gOfZCr-lkp@intel.com/
 Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 ---
- drivers/net/bareudp.c | 1 -
- 1 file changed, 1 deletion(-)
+I didn't add Fixes tag so we don't bother resolving conflicts
+for harmless warning.
+---
+ drivers/net/bareudp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/net/bareudp.c b/drivers/net/bareudp.c
-index 890a0650d9cf..bfcecdcffe67 100644
+index bfcecdcffe67..5ef841c85526 100644
 --- a/drivers/net/bareudp.c
 +++ b/drivers/net/bareudp.c
-@@ -287,7 +287,6 @@ static void bareudp_sock_release(struct bareudp_dev *bareudp)
+@@ -285,7 +285,7 @@ static void bareudp_sock_release(struct bareudp_dev *bareudp)
+ {
+ 	struct sock *sk;
  
- 	sk = bareudp->sk;
+-	sk = bareudp->sk;
++	sk = rtnl_dereference(bareudp->sk);
  	rcu_assign_pointer(bareudp->sk, NULL);
--	synchronize_net();
  	udp_tunnel_sock_release(sk);
  }
- 
 -- 
 2.54.0.563.g4f69b47b94-goog
 
