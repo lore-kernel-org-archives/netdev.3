@@ -1,176 +1,189 @@
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from TY3P286CU002.outbound.protection.outlook.com (mail-japaneastazolkn19010019.outbound.protection.outlook.com [52.103.43.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ADE8410D17
-	for <netdev@vger.kernel.org>; Mon, 18 May 2026 12:36:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3410413239;
+	Mon, 18 May 2026 12:36:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.43.19
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779107801; cv=pass; b=XuvAbfMSw5YiYAwyHW+RCH7jjNe523yAGp7MJg/cCp1J4LQrjrfG/RvOs+ZArX3c7tsG/6lZX/0M9FXlLLhZSyClwBK6HE42mrMiXhhRSfHuleA6cms8XPbX1rHyDJcV5854sNo+Mc3XD0/9SqWKukkOTV7ebuk0ZGQRmtFQ/eI=
+	t=1779107803; cv=fail; b=TcoH84zFRQGYHozWTKIfDQTl3cdQVoOwwBzuht+qxd2XEA686H/GkzUKZPdJlHrgHZDTtY4bQeCPlFm5oD0pH286/g4L7rqk6+06p/DWZwL7fs8V85vRFB/zhDZoIODsYPSwyp31WYvKY43yFJlpukDkenkwacEpdjKcIfX2CrI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779107801; c=relaxed/simple;
-	bh=UxFHQ8myRrvcKnyp2w/HbJak2/jS/38obKXyH8OshAs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IIaruLHQeEauDe9aBSskK2bLoNpzBVE4TlilaH52/jLUCFx3bQjONl4tbwkF57VEJARH/LDoWyV+oLzeLsEUX/n0/qNYL9243aouN+2W1hSqtcNzo7dbCJBvkgD8cnPBqUgjvtXUfmF4lTvFijUY740iN86atsS8hKdaxY9Jmrk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D+U3xSLK; arc=pass smtp.client-ip=209.85.167.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1779107803; c=relaxed/simple;
+	bh=A5f2QYJFeSMB8AiI5OgmBN7hefjQIwCjEt0jwY39Z58=;
+	h=Message-ID:Date:From:Subject:To:Cc:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Ir98Xgom09qrLmtkVqFnQ1nzeCgL2ybH6NAPNus0M9kol+E/IS62bC5lGyxj9AQwi7HUSb4VWxVHocbjPIqWypE7NlETL1g3PWpVDbrxGTmb34iOmZh1pQxXOr64+X+0fnbORnb3XyKM+9CMUfYcfFNIRjDUjL5yq77JJ+nPKlQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=IBLepXDv; arc=fail smtp.client-ip=52.103.43.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D+U3xSLK"
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5a40cfab24dso2878235e87.2
-        for <netdev@vger.kernel.org>; Mon, 18 May 2026 05:36:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779107798; cv=none;
-        d=google.com; s=arc-20240605;
-        b=GUNOhOO79YQ8/V4W1xsFwtDwu3GlfjF20UKDxuWGpKHAne2C1o7/Nhp+D9post7zSx
-         bpTmAazK4tlgj+6HFiGGtjrKStMyzI0UUVWj4t4bq0S6rJKgl2G1LkgDkduXnmMU1lO3
-         nvfZMa9PpTAxKp3Fbwg8VSPKooo1n0WVmcdA94+6n5DIaIeTFYGoE+TnIWl2zgq1TIoU
-         fVdGnIL3h7xn0AnzgCoXHDlEZUc883OxbmN59A0X8qRYwEqfK/2AA/OkiVtB+b+J2v5c
-         TRddCRV8sl40UXjnX5+r5+Ez17SqIk12ACSRi7WK/4ILDs4nU1A7tELWOLvHKvEVTwM1
-         VJgw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=LQLPiuOk6sV8kiLBT0hZDm0NkG6cxPfbECWJSraE7Lo=;
-        fh=tLTa0Y0TILfuBm4End/FotmAo9zCvf5cIpqb2+KUits=;
-        b=JnQWh05RsDx9JExtqYgMA0QycZakdqsnJ2+Oargj0X7ugccF20SbPo9oAklMwcI+78
-         WucKyNAPQQKGyuNhL4oH8sWQ/D64IJBwhIaxa3lyd4Y2Msm2rSHwvQHzsHQCbz7C51kD
-         MgHcOw87NDDlN2ulJ81wTrplCT9UJ0wVIp3XvO+00JZYtj6HHe+nvcCvsSU86qpHXXIb
-         hDcK34N9KQ4HdioCBYUm4ZpXwaWP6mKrRog4IbsZVRnZR6IgKOXelY0+aCNp0jdHp550
-         2ictO/QqLg4b1yRUF64k1yUF+ewwoyHdQ1WfxnvScDGY6hQuUnjM9Vx0Ct3w7sBXIAsN
-         JfIw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779107798; x=1779712598; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LQLPiuOk6sV8kiLBT0hZDm0NkG6cxPfbECWJSraE7Lo=;
-        b=D+U3xSLKudhqxPnVvVdDuYrJSiOy1pbQoULBThY5Y9ZcyGjINGdi6w+9J61pKjyUoW
-         i8amaWF7yS7vAJ7mi88CDKyMqFofr2MwiBYBzWIXe8x3EIlpngj2Ld3M8e8/8ZKQX5v1
-         A04c3MQIEnK8Qp3OWt4tRpP4xkrMqIyY3n8uQHX70+11NxKFFjXea3rYddzMPrrM71jE
-         yaH8yMEogH3/Stsv1isyZb8tYbu49YpwIv0ZxRL+6ICsMNGMX8lPhyawnyVgYRYDfNkn
-         Kjdu6TLbogTiaCnEUg73OSpmgyATvkXYaQHwNT/xv321DeVgpxsv3n/1gmrOQGI5I7fI
-         UdVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779107798; x=1779712598;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=LQLPiuOk6sV8kiLBT0hZDm0NkG6cxPfbECWJSraE7Lo=;
-        b=O2yreljlvwI0wRyJpnLvsqcWFVQEv1bcHrnq4K/82IPk8HyjwLzh+w88f/ea7XC6QM
-         s06W5G7opJTzeed6RxUey5abQYmluRSxBGQ348e5gl3NY0xV6WWt7ygr6pWu/BbKBOpv
-         rrgavGG63y9OBUTrjE0nN59y0b1oHqlqF7OnJdzb/N8qVCPLqY/oD570XmEdeV9EJucO
-         DHFWA5dyb9/YJ0aCSoch5jxNOhkbgG6IkiuDuKyToZF/WODltuoEeFEVD+VF/KUKv8IP
-         eII5qlVJ9i14U93Z83RR0jZsAiC0J8YuX6eorQuGkqrkPLHQTII9sJ1L7pGpZNUVSJYA
-         lYDA==
-X-Forwarded-Encrypted: i=1; AFNElJ9imNewkhLjbKniXyUQoOehjpsLEREfQqE6zERhUbQx4Mw742CwmYKUfU/cgPXNPrbUHVBF+n4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUB+G33RVPDyY5d+w9U5a4Xj5OTOHlx8LVJGiBEFI9BEAOc1Ni
-	ZN324jc7zvtWHx6XkVTLeKX5CCJApA4E70MUD+uDfkfopST/r0E03u3G000NqU/uWhKDmuFY/ad
-	GInzaGGp0nAtwkiQ0S5xeeOgP7uGYD3g=
-X-Gm-Gg: Acq92OGWtpZJ1egs0Lvsnv1nE8EQGv8cWLrayXsq28iUXv3hy/hsv6hqw3LX0cLipIF
-	Ekiq73SMP6w5f8Ku7VmOgVNrprVdpQCdssAR3VraXcEyl2FO9XE16KpuzeLMytp484jan+yv4FR
-	taD4+7JxMFGDnSfR122YMNBpU/TiqbfXIqURA5N5V+wPUqloPmfZJJVI51Id6c83uE9gC6mBLJU
-	8OlpkKm0pG/jtx06hruumW9tDj+fQSqRg5dUVzNUJRxlneu+MFyxhiJDqvYozPKjeZf4XXsYWjr
-	o6w4BHlw3c9D16+ViN638nHJsVH2UtSkv3wWs+7T4Iqc2VYHq5I=
-X-Received: by 2002:a05:6512:3b8a:b0:5a8:5187:2e78 with SMTP id
- 2adb3069b0e04-5aa0e60ce1fmr4598222e87.13.1779107797593; Mon, 18 May 2026
- 05:36:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="IBLepXDv"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=f1auipLHjvPyze1VtBK9ywECKzGn8PH0TO984lNRREu8rlpw8vhYzY/RbHAGymThgCm5gXf1Dce6DlXM5dU0gWa5izgOjr2hY7FD7ARRCW3zpWWjRoQ3qWIuigdyBzbV1gjk4we/B8PM1807dAKu7lSH0itM8ukmLEePxlBtoRSiTBNf7HyODTL8tjxZQPxS9/eGlFYwU2HqxLSMdcqO15ZUL5y5shWXUUW1vG9/fdhwdEukJRHiJgtHbwfXLXvDsgmTU2RkVSE7O+ujbPHwxx6Gw/Jz/PkOpwk2SqItJztV+CoN2gHqmMu5EZUPKjODEfBSSC6RWMl6FqfNeX1WOQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=4Vw2HT5SUew7uPaMxLEcPH0GZVk0ip3KaaAtww9GyVo=;
+ b=PfWBPTYOnp4dfTswbooY3DTb4l/G12vo2cDiptipTn9t4L3Wng1EP23D0BB+5/b7EsZ3wYLFVlsKkjPxGwGoU8ECYnbpmeDyZPiPenhlrwXM9ytA1dO2Cu33BCPA+2cMTG3JR7cg2clnRIrChFHW+QHT2e9owAcWmUkWmqCD83RbvOEGF8DZB7RyjEW3k1sTxddAfYBcDD/3UgHQ17nK7hhwVwmKuA5PHLrWZMpiKDpjAScd+Jcy8h5sPW9BSKwKI2JiMcbYCUrj5Yu9sStlbppyuP+su5FajPCZbo27a7X8X7KzGtFeT4UqHoWvrt/uUl3eI48OvTZoIkwx/xa4sA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4Vw2HT5SUew7uPaMxLEcPH0GZVk0ip3KaaAtww9GyVo=;
+ b=IBLepXDvfJ3wH2Sx0R/XSXXv6krD2uHqSyuSdbKM1thcZCLms4wj6e8qRBu4X/t9WDlUpPJvvdY+qEkD+kVqj8U38PfSm0rmw7OdcpBz/w8ZYkQPDlWbnaSAA69Cm0994sHU3jq2vo7Mk46w+yhwUiZ96Omld8X5HDWGVnhA9P3VXVAw3KvEr3T9WTtBRKXBH43R/WHpmnzzpllhf7obBByuI0RSqZe2si+xRQMvuULlUB8AJA4ZJm1qaBnkbghcncXtvWdLvGgQ2xus5nj6WV8OfuVKqfneLDhzi3V9cSaJHhSBR1gy2vgDV9ugQP/ghiRtcjUE7i9fJN9A7tZ0qw==
+Received: from TYRPR01MB12666.jpnprd01.prod.outlook.com
+ (2603:1096:405:1b4::11) by TY4PR01MB15938.jpnprd01.prod.outlook.com
+ (2603:1096:405:2c7::6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.23; Mon, 18 May
+ 2026 12:36:38 +0000
+Received: from TYRPR01MB12666.jpnprd01.prod.outlook.com
+ ([fe80::6ded:56c7:8121:fa0e]) by TYRPR01MB12666.jpnprd01.prod.outlook.com
+ ([fe80::6ded:56c7:8121:fa0e%5]) with mapi id 15.21.0025.022; Mon, 18 May 2026
+ 12:36:38 +0000
+Message-ID:
+ <TYRPR01MB1266606B1144F3896FC712C3CCA032@TYRPR01MB12666.jpnprd01.prod.outlook.com>
+Date: Mon, 18 May 2026 20:36:25 +0800
+User-Agent: =?UTF-8?B?TW96aWxsYSBUaHVuZGVyYmlyZCDmtYvor5XniYg=?=
+From: Xavier HSINYUAN <XavierHsinyuan@outlook.com>
+Subject: Re: [RFC net-next 10/15] ipxlat: add 4to6 pre-fragmentation path
+To: ralf@mandelbit.com
+Cc: andrew+netdev@lunn.ch, antonio@mandelbit.com, davem@davemloft.net,
+ dxld@darkboxed.org, edumazet@google.com, kuba@kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com
+References: <20260319151230.655687-11-ralf@mandelbit.com>
+In-Reply-To: <20260319151230.655687-11-ralf@mandelbit.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SEWP216CA0142.KORP216.PROD.OUTLOOK.COM
+ (2603:1096:101:2be::10) To TYRPR01MB12666.jpnprd01.prod.outlook.com
+ (2603:1096:405:1b4::11)
+X-Microsoft-Original-Message-ID:
+ <d128f118-4a4d-42fa-891b-8c71b005d864@outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260518082344.96647-1-kerneljasonxing@gmail.com>
- <20260518082344.96647-2-kerneljasonxing@gmail.com> <850e3709-2cb1-4a26-8546-745401423696@kernel.org>
-In-Reply-To: <850e3709-2cb1-4a26-8546-745401423696@kernel.org>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Mon, 18 May 2026 20:35:59 +0800
-X-Gm-Features: AVHnY4KuhWWWfQKXUCIMgTLWad_PQHq31BMxVWNlZDH5P1tGxWBXQynOnQmIOqM
-Message-ID: <CAL+tcoBA0+Vspq37FtEURgM9A+Fk5MOPkhPvaq7OwP6SSpXfxg@mail.gmail.com>
-Subject: Re: [PATCH net-next 1/6] bpf: Add bpf_ktime_get_real_ns() kfunc
-To: Jesper Dangaard Brouer <hawk@kernel.org>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, willemb@google.com, kuniyu@google.com, 
-	ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, martin.lau@linux.dev, 
-	eddyz87@gmail.com, memxor@gmail.com, song@kernel.org, yonghong.song@linux.dev, 
-	jolsa@kernel.org, sdf@fomichev.me, netdev@vger.kernel.org, 
-	bpf@vger.kernel.org, Jason Xing <kernelxing@tencent.com>, john.fastabend@gmail.com, 
-	Simon Sundberg <Simon.Sundberg@kau.se>, =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TYRPR01MB12666:EE_|TY4PR01MB15938:EE_
+X-MS-Office365-Filtering-Correlation-Id: dcc7106f-a3c4-4b45-aaef-08deb4da1959
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|5072599009|19110799012|8060799015|15080799012|23021999003|12121999013|6090799003|41001999006|25031999004|8022599003|24021099003|440099028|3412199025;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?emZYQURlODVVUHpqcFE1TUlMTXpHWlRzeGZyMWpDS0cwRnpnd2NaYmJCQnVG?=
+ =?utf-8?B?SWVhVlpXTnJBVFRrK21PdTQrSDBydS9Ha1MzWVBGNm1sQmFWWUtuamg5bmFx?=
+ =?utf-8?B?QWwxUnU2Nkh5V1RyTVp2K3Q1TXhTUTBpNW1oaWprT2FHeXdMaUlSbEVWWlNE?=
+ =?utf-8?B?QmZWeHhuSDQyczRFT3JnbS9SQm1rWWRKZ1pwdDMyczJkQ1RjUEtBOGhKZ2FI?=
+ =?utf-8?B?TVZrNTVMR0ZEZ0g3U050NE5Fd1Z2RlBGYUpWL052aHh2NnpWb1dHbUFUSkNH?=
+ =?utf-8?B?azgrMnJBRzM1QVZwRy9TSnpiWHhSVDBBcUxaand0TGRHeVdybUx1c2ZPUkxw?=
+ =?utf-8?B?SnpKcmZWdTlxVTBDMGtiREg2d0RlMk5zWk02ZUhoQk5RQlZjalV6M0sxNUZU?=
+ =?utf-8?B?aEdNcTYxYktkamw1TkV4YUV0aVVid0hQdDhIOExyUVlMeEwxcUxxcFpveWhJ?=
+ =?utf-8?B?Mm1MVE53YW1La2FZNmpYWFJBazNYZFRWUVMvQW9jeGtZdlJpT3o4aEtuWm42?=
+ =?utf-8?B?M2IxVTh6U2xmOUVOeUlIT3IxeFZNMkxqZVNLdEhJZkFwdEkwTjdBWWFXK0lI?=
+ =?utf-8?B?NEpSZkF4N3FLWlRkalRXUDNJbXRiVU4wUnp4djdCK3BySmdRQ0RyQlQ5Rkw0?=
+ =?utf-8?B?MWdsdWw0bkZMbkFwRXNraWl1ZXF3cnE1ZVUxL3p3UnpaUzYvRnZBblQzYklT?=
+ =?utf-8?B?MThNdDRIbFI2Y1o4RTlKdkdQdFJMc2c2aXdQdDZZNkZTU0tsMFBoTU5TeWMy?=
+ =?utf-8?B?eE9hOFcyUHZHMWdBWlFYb1ZTc2tOaytYekdvTklWaElzSitJYS9MT3dnOW5l?=
+ =?utf-8?B?SHo4Nk9iSytSTjhuTGxheVFXeW9QWHBjczBzTnVsTGEydDd5T2tmeEpGUSto?=
+ =?utf-8?B?NWxlZy8ydTU0Z240dHNUbFRJNFVoNm1JUkx3bnZOeWJiTEJmSDJPL3JNN1lV?=
+ =?utf-8?B?c0hDeTVyVXFMclZIRjhYVUZ6UTMwTUdXMW8wekpxVk5hU3QweWVJNEQ0VitF?=
+ =?utf-8?B?TmNXcHZVZXYrWk9NOUFUUFpEUEthcHFhSWg5QUhwRXNFWkljc0tUa21aNk00?=
+ =?utf-8?B?RWFkRStqSzlaVzZTRFlKTEhHWjNVWGNkaG5OY21ya2JrOEpqeFNwQ0J0d0NE?=
+ =?utf-8?B?NEQ0QTNpeG44Qk01U2VvekVTaXoxWDZVaUJ4c2VheWVOU0RiV3BISS9Kb2w2?=
+ =?utf-8?B?YkF4c1M5RjBsUzZLSm5JM0lOSXZhNGFUZDhuTXgvcVVIVjRvdmRjMldvZC9E?=
+ =?utf-8?B?SldhUXFCMHM3OHBOSUk1NTRBc0dzM2lBczRXbTVqTktIdUxiUHRvS21KNlUw?=
+ =?utf-8?B?amJqSnY4OTRCWG5DSXk2WDc0T2NhMzdXNnFUMkFWLzNDNDhVcDF2R1Z3UnlE?=
+ =?utf-8?B?cFhLNTZ5Z2ZYK2c9PQ==?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?U2dxUjJqeDc5VE93YzFkVjV3KzF5NWYyYklXVXNBZVlYeXFHUHpXbzcvVWJs?=
+ =?utf-8?B?b0VEVlp1TVdlaUZsdm5QYVhhSFFEN0VqWWVxYXg0c3k5cmNINzMrZjlhUFV5?=
+ =?utf-8?B?NFpCaVVuS2xyQ2s1NUU3TnM1WEFNTFgzM0wvN1V0V2FoYVBiZXF3aTFnekpG?=
+ =?utf-8?B?VHl0RVZpZzVjTHh1MEplb3VQQ0pDR01XRDVrU25TWVdNcHBNc1FOaE9CTzA5?=
+ =?utf-8?B?MDcyb0pIT2t5QllCblBoa1R1MExIV2dPNkhDbEFneGh2SmJBcFBoWGVIL1Ex?=
+ =?utf-8?B?YkVGNmZGci90RVpONHN3ZlNPYUl2M3dtUld6R1pnMVZwT1FBOFhSY0hIaDQ1?=
+ =?utf-8?B?MlB3RUJRRk1TbVNlWlBRbHNRRDlpWTlMaHRlU2sra2lDL0hkVU5rSEg1VFVN?=
+ =?utf-8?B?ZG45REZKekhhenhLOFBlVWlKdW5YL2x2MEJGblNpSUUrcE9id0Y0MkdJbW9M?=
+ =?utf-8?B?Z0dxeGN5UkdxVzlPOFI2cktEU3BFVU45OEZTeVFDYVRDUkpkUnhBS2RKSC9K?=
+ =?utf-8?B?NElBR0srbllzemtvK0VqQ3lkbEdNV0RVNG0xZjcvSTBYSzhWRVZVbkJFSTRl?=
+ =?utf-8?B?allGWXFqTlE0eXZnaVpHNDFCc1VvUm1FdUZ1aFZ6Y3JybjJGRi9UTUVZNDZk?=
+ =?utf-8?B?dS9iQS9yZlppbGVBQ2JUTm5aVmdvblRoK0dvRmVBVEpTeXZTZ3JCL0l3dnVG?=
+ =?utf-8?B?VmI4TE1JSThzdi85VGhUQ2xUTytaSjZDSmxmcFpZemJRUnpobC9jSGRrMFhZ?=
+ =?utf-8?B?czJOQkJNZGQ4S0ZZc3RLUHdDSHdhcEErTXZ3cXU1bVd2V2pBeVEyeGtpRDZn?=
+ =?utf-8?B?dThQTFE5d3B0SkZURjZwQjR3eFhheUYzNkN3SHNpQlBLVFV6dDNZdVJVZTNG?=
+ =?utf-8?B?SHVITlB3TGs4dEFVQnYxQ2V0NWl1OTk5SjV6aXJtSElsMlk0TXZSOHlKVDhn?=
+ =?utf-8?B?RjkrbUVxem5LY0xveWR3YzBtcVRWVEZxSXVWeTYwQWw1aEU2eFFJZWdDbTZm?=
+ =?utf-8?B?a1Bya3FXWGxnS1hLaDhxQ1VVYWRhVTd5by9WQmhQaVZrQ3J0K0tVWUNhWVJj?=
+ =?utf-8?B?RmZpUHJFTTJ0a1NEV1FwRjZaRi9nbkdvaTJlc2hnMU53Rnh3dlN6SUxkTFdC?=
+ =?utf-8?B?MkVESE04RWtGTEZubkROQ09sQWNrLzdYb0o0ekxQOXNIR3l4SVBXUENSbGtP?=
+ =?utf-8?B?U3N4OGs1dEx4amR6c1Nvd3d2cGNqTER5SDRLQkVvNGlRUnZoeWFPektRcE13?=
+ =?utf-8?B?QmRWMERNWE9vc1ZJQSsreXNDYXhJY3Yzdkk1alViZ0ltK3luR3FnSTlRcFdP?=
+ =?utf-8?B?enlXSENTbWhzeGpqRTBxdWQxVnY3bGpMNWpiTU04SVU2SytLN3dMZVNoajRE?=
+ =?utf-8?B?SnIyV1hjN3ZLSXNGMUxpcDFCRXNyQmZrSmFsZWxvcHVlcXU5dG14ZFFUSm9y?=
+ =?utf-8?B?QnJWWXhGeHNHYko2K3RrTjZTbzhWUnRZWWF2ZDVIZWo0Zk1mZ0cwV0MrTHkr?=
+ =?utf-8?B?a1J4VDJrVTE0YVpKYUNRTlZHOXVyTnhEMVo2Y2hBemhodjhCaUlBWE1ZanV6?=
+ =?utf-8?B?dFhacWVnWEc4eUY0VjR5dzFNYW5jelI1QkNla3UvTWVJR2xaeE1RTWZtZTly?=
+ =?utf-8?B?TldVT1RJUVJpaTFGcUI0NGwvdGUxRUJqbzNxc0QwR1poUDFkeEoxQ0k2YjFU?=
+ =?utf-8?B?R051YVlxdmxWcVB0L1hpQkJqUFVybXpsT3RuRnpMVDdnZFZSN3BBbkE2M3lw?=
+ =?utf-8?B?a3F3d211eEtnelJSK3BGaXpUU2tLcWJjQmU2bm5qQjNWSDRzSFR4ZkNsSGtq?=
+ =?utf-8?B?OUtkSGRRSzF1d1ZFVXEwMnYxWFcwZW4zYW1QS1J0NlRkSU81bkNIMWY1Tm9H?=
+ =?utf-8?B?S3I0ZDdWdVZZRmhVNjl2WVdFd0syeDZ5eXhQVmJzR1BLS2NyZkE3d0owRUhP?=
+ =?utf-8?B?YnkzeEZSSGs0RHFYRityQStkaktid25nVzFsaTBPWnJWRmtEVHZUR3dERHRp?=
+ =?utf-8?B?WDJRU0ZoSWlnPT0=?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dcc7106f-a3c4-4b45-aaef-08deb4da1959
+X-MS-Exchange-CrossTenant-AuthSource: TYRPR01MB12666.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 May 2026 12:36:38.5236
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY4PR01MB15938
 
-On Mon, May 18, 2026 at 7:57=E2=80=AFPM Jesper Dangaard Brouer <hawk@kernel=
-.org> wrote:
->
-> On 18/05/2026 10.23, Jason Xing wrote:
-> > From: Jason Xing <kernelxing@tencent.com>
-> >
-> > Currently BPF programs can obtain timestamps via bpf_ktime_get_ns(),
-> > which returns CLOCK_MONOTONIC time. However, the skb->tstamp field
-> > populated by the network stack uses ktime_get_real() which is in the
-> > CLOCK_REALTIME domain.
-> >
-> > In the series, kernel reports the software/hardware timestamps through
-> > sockopt and then userspace bpf application gets them and calculate the
-> > delta only through an unified time unit.
-> >
-> > However, prior to this, when a BPF program tries to measure RX packet
-> > delay by comparing skb->tstamp with bpf_ktime_get_ns(), the result
-> > is incorrect because the two clocks have different epochs.
-> >
-> > Introduce a new BPF kfunc bpf_ktime_get_real_ns() that returns the
-> > current CLOCK_REALTIME time. This allows BPF programs to perform
-> > accurate delay calculations without clock domain mismatch issue.
-> >
->
-> I support adding this helper, because have also hit this issue[1].
-> Our ugly workaround is to use the TAI clock and adjust for the current
-> TAI offset.
+Hi Ralf,
 
-Right. Thanks :)
+>+int ipxlat_46_plan_prefrag(struct ipxlat_priv *ipxlat, struct sk_buff *skb)
+>+{
+>+	unsigned int pkt_len6, pmtu6, threshold6, frag_max_size, pkt_len4,
+>+		old_l3_len, new_l3_len;
+>+	struct ipxlat_cb *cb = ipxlat_skb_cb(skb);
+>+	const struct iphdr *in4 = ip_hdr(skb);
+>+	int l3_delta, frag_l3_delta;
+>+
+>+	if (unlikely(cb->frag_max_size)) {
+>+		DEBUG_NET_WARN_ON_ONCE(1);
+>+		cb->frag_max_size = 0;
+>+	}
+>+
+>+	pkt_len4 = iph_totlen(skb, in4);
+>+	old_l3_len = cb->l3_hdr_len;
+>+	new_l3_len = sizeof(struct ipv6hdr) +
+>+		     (ip_is_fragment(in4) ? sizeof(struct frag_hdr) : 0);
+>+	l3_delta = (int)new_l3_len - (int)old_l3_len;
+>+	pkt_len6 = pkt_len4 + l3_delta;
+>+
+>+	pmtu6 = ipxlat_46_lookup_pmtu6(ipxlat, skb, in4);
+>+	threshold6 = min(pmtu6, READ_ONCE(ipxlat->lowest_ipv6_mtu));
+>+
+>+	if (likely(pkt_len6 <= threshold6))
+>+		return 0;
+>+
+>+	/* df packets are never locally pre-fragmented */
+>+	if (likely(be16_to_cpu(in4->frag_off) & IP_DF)) {
+>+		/* Let the IPv6 forwarding path raise PTB when needed and rely
+>+		 * on the reverse 6->4 ICMP translation path for feedback.
+>+		 */
+>+		return 0;
+>+	}
 
->
-> [1] https://github.com/xdp-project/bpf-examples/tree/main/netstacklat
+How about putting the DF check before the PMTU lookup?
+ipxlat_46_lookup_pmtu6() requires ip6_route_output() and dst_release(),
+but the DF bit is much cheaper to test and is typically set on most
+TCP/QUIC packets. It looks like a pure reorder but I have not verified
+it carefully.
 
-The tool is useful as long as we enable net_enable_timetamp(). Yes,
-bpf/so timestamping is one of methods to do so.
-
-Thanks,
-Jason
-
->
-> Cc Simon Sundberg <Simon.Sundberg@kau.se>
->
-> > Signed-off-by: Jason Xing <kernelxing@tencent.com>
-> > ---
-> >   kernel/bpf/helpers.c | 6 ++++++
-> >   1 file changed, 6 insertions(+)
-> >
-> > diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
-> > index 2bb60200c266..863645d096ef 100644
-> > --- a/kernel/bpf/helpers.c
-> > +++ b/kernel/bpf/helpers.c
-> > @@ -2317,6 +2317,11 @@ void bpf_rb_root_free(const struct btf_field *fi=
-eld, void *rb_root,
-> >
-> >   __bpf_kfunc_start_defs();
-> >
-> > +__bpf_kfunc u64 bpf_ktime_get_real_ns(void)
-> > +{
-> > +     return ktime_get_real_fast_ns();
-> > +}
-> > +
-> >   /**
-> >    * bpf_obj_new() - allocate an object described by program BTF
-> >    * @local_type_id__k: type ID in program BTF
-> > @@ -4859,6 +4864,7 @@ BTF_ID_FLAGS(func, bpf_task_work_schedule_resume,=
- KF_IMPLICIT_ARGS)
-> >   BTF_ID_FLAGS(func, bpf_dynptr_from_file)
-> >   BTF_ID_FLAGS(func, bpf_dynptr_file_discard)
-> >   BTF_ID_FLAGS(func, bpf_timer_cancel_async)
-> > +BTF_ID_FLAGS(func, bpf_ktime_get_real_ns)
-> >   BTF_KFUNCS_END(common_btf_ids)
-> >
-> >   static const struct btf_kfunc_id_set common_kfunc_set =3D {
->
+Best regards,
+Xavier
