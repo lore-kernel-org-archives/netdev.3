@@ -1,175 +1,153 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7109126738C
-	for <netdev@vger.kernel.org>; Mon, 18 May 2026 23:55:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779148507; cv=none; b=ef+sEsqFXjtAzmWGJucdYLDXlcmzug3Cyep5unGkY0rc+TYIHljnpz1xCZZyNFcn2d3+GPn5Jbm8DZohZjmacqXcfA4HW/ZSXRbbNqyGDVsVlOQzV2+b3m0918XL0MPl+ZKAbpTSKeDjwahrEI8zbYS84NAHM99oGTIWMlCsAQ0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779148507; c=relaxed/simple;
-	bh=I6M7p5pdOxiaohQqJSbBC6DhwcWC7iEjgP4hkiscRvE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CHFuXvfCrUMthhMh7IIJNazdLo4tM9xPXdVopE8gB9BRcEsvI1H/mq8FW4lqW1KyZKZKBxhTmyvKdMDRjY8sqzmpayW4w8+hUPB2nTkr1BtT3wz3NmfdY5GkKrGUI7rPbWOJhW/LCUwSCYWo/1/gqy4jsY4c2BsQsIm1TU/rkmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DuRJxMCK; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1523112C0
+	for <netdev@vger.kernel.org>; Mon, 18 May 2026 23:57:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779148656; cv=pass; b=hoioWZdcOdQHcEoADo7tdkKpZxKF/Q/lNMZJQ9UInSZEX0zh0P18vCJ3L+rSqHHiQl7ykHgiOLyucNBLVxoX7XKsVLi6bPiED3TsztZuISKc8K1Pd2nfUmGzV0qFnL5JlGM3PRuIiUgtMYSUUcZTn8eGRLNAuWMT9ngr9MfKI38=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779148656; c=relaxed/simple;
+	bh=4xz9D7VAQrmdEZXxAcS5UoEWPCKtzjLiBUCPWtmx2B4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iy4zY3cB3DR5YZYiP0hMaUpOpvghbHiWydgItqiNsnEPvzCpoQMi0RNtdGOZQIuO0pU6uvXovIPeT9M12GPys4HwL7s0K9Oj83INID/Dl76dpHLw4XVwju0b+jJBHCTKuUIhwRwBJ336kpG+RiQU90yh4IcYzRTH3Do0tXzY5KQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mkzAcBi6; arc=pass smtp.client-ip=209.85.167.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DuRJxMCK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 945BAC2BCB7;
-	Mon, 18 May 2026 23:55:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779148507;
-	bh=I6M7p5pdOxiaohQqJSbBC6DhwcWC7iEjgP4hkiscRvE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DuRJxMCKnPK0d2oIWnCixXYrLwAATPQW41mcbpEA9ldHa+KAFJWALo1NCChMiHmGJ
-	 EGNwDKcgjy3gGIHn1EMt2AmK2T4K+BcjcQhHdem4NUZyeM4KmYTyxS43R0bwUrqiLl
-	 A4KiZZ1QyZWOTutcGFNdQzu12y7LiNh8O81zWGgvh8r4tlOQdinJXqscmSWS7RozrZ
-	 VrAsaO7JQiY6gardeydZvmOMJ86zb881ZuMrl5sVUICglFc4sm/Hw2U3dLTcu5EpWE
-	 EyBygd+WZZG0TtzZWBJncymsOqabBkUMq5HrIxpypMogo+Gd2/vy7869CCVBdMnN7N
-	 tvBdvdDdUjdDA==
-From: Jakub Kicinski <kuba@kernel.org>
-To: edumazet@google.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	davem@davemloft.net,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	ncardwell@google.com,
-	kuniyu@google.com,
-	netdev@vger.kernel.org,
-	eric.dumazet@gmail.com,
-	clm@meta.com
-Subject: Re: [PATCH v3 net] tcp: fix stale per-CPU tcp_tw_isn leak enabling ISN prediction
-Date: Mon, 18 May 2026 16:55:02 -0700
-Message-ID: <20260518235502.3204931-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515073859.957056-1-edumazet@google.com>
-References: <20260515073859.957056-1-edumazet@google.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mkzAcBi6"
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5a40cfab24dso3895064e87.2
+        for <netdev@vger.kernel.org>; Mon, 18 May 2026 16:57:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779148653; cv=none;
+        d=google.com; s=arc-20240605;
+        b=hTMfFs3jujUIGnBJpqNN2inUNL9PhitifSKOmZXGRyedXYLY+7EF+D8zvI6fPZw6XE
+         EIQHOFJbKxwuu4B+mrBl4Kb8mlY92zATdHpcffejWu5PSkqArj/LTABC6zL0kKL9mqST
+         m43FFnbxMWfBI+p9Kht1QYsQEZUKW0cUUFfOhNUi/SZj/T5Zhzd3ZvJlcKN3fpiD9PPn
+         cCvw9d60fPi1J36NKqKSNKJY4C7X67dYvoQ0o/FKT1HB/FqSdKVQ2Bc9mhQ0OMJ11+Tf
+         J3y/QpSfslF11mek7LNI2K90uxNGD43I/Vkb6OuQGk9U8nJKOx8pPU6jp0AUqvxc9NiM
+         zW3A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=W8rgBOoJQIg12SJZYcIEL+l2QP9Xebk+rpGwoK9DyJ4=;
+        fh=EAH9SxANYe7mjM3ukcLh6hVtxssvtmrbvHsN9d94uZA=;
+        b=Qu6DVvftwNUMDpUXvbjodu2X6AfU3k++cYy/YtC30eIQtQakiYvXXSpvuRzehOMdL3
+         Y6FTpk0u6McanZz9BJ4FZFZnRRoxRsaoGtcIGqJj2PteKuWdToYERYYx+wY4G01lFs+l
+         k5FGmSpWer468DJuUKU2paL+J6C+D1JmXnxLlGz8k3nHH2k5HD8djHkHdAnIZREeJRML
+         bNkfi9P0yY3Ng8UW8YUuvOiMLm32Q5UnNEpcgS2a9Jw9RxkLwlRATG+RSEVEnRAA68CB
+         niAxMwoGbTH/dnHZEspmMS1bVTAIsjhdq/fSnH45KgsuWlF0cytMvfay9TBYJwiewDGa
+         agGA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779148653; x=1779753453; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=W8rgBOoJQIg12SJZYcIEL+l2QP9Xebk+rpGwoK9DyJ4=;
+        b=mkzAcBi620+pQwhVeVniDJ17RfgJhvsMhOx3i+BhAl1H9J7himww5AH/FFlSDwiGkD
+         Ao5qNXgFsLIzq7jSmQkAjWHprvlbpVBntUkb31O2EF34b5kz7RqBSbZh9LM8rcU/ZpGU
+         BUOcoByPnEaX3V9+pJWSSe0Ja4ZV6TX8g2//ZFPrVuh4+Gzk+EoCqEinLMUU7JOjMcyY
+         hlku4y2imW8glzB9nWIzmuCa+LH486+eGcTE37ZLTLppPfjnwPhXk1TrmFPOuCh7Wb0V
+         5Dq7QL1+HHu1S7R+A6Zg8l1v9JKPTHFIyNTs9CJCTAzSP4syXfJfRVJcrigqma8JKVhr
+         uAoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779148653; x=1779753453;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=W8rgBOoJQIg12SJZYcIEL+l2QP9Xebk+rpGwoK9DyJ4=;
+        b=L5WdqD8EYmN2T0c3vrsK+JFbSLDtZSyx7/KzYg4WIJbtoWbBmO/bnpJ4pNY/PYagql
+         WCYcc7TyCs/2/jsSYvx+kW81MLt+2luw1l8QpkGlUMsNfBPrIxPKcl1wcqqA0S/cJ9e5
+         jZK0o6+0qjD0A4lLgD6N6rPYKnP9zlO+focigthek/xHY+DV07CYCIhXi3VhbK/bSTco
+         DVOBDzuBrQlCKAJHW/DP5dsyYWAjicln98ps4W4vls9O+1JfwF23H1cK4kvSc37Z0zGj
+         0/Af0JdNb6VpvLbKIK88FmTj8VJBQNaKxqLc2V2plmbnxgZ3otT2IySTxsc009gw3sfK
+         L6mw==
+X-Forwarded-Encrypted: i=1; AFNElJ9ya7pGdQcclH9eNpfv3feK43/pQRNXFIRCHjBFV3dHY738n3/+ZxcxJxZbPCfpS2p9SeQbu64=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy0tnCn7oQIg2dWl/JNTS8/965NkD6cn0bdioazxWIQjvVT60qe
+	udAwiqLhNCIjG08FEiDcNQPCNOVovKm5UXAscSF/etTqspo6wQe4jlCKRBFrjUIJDu1l+tIc0rQ
+	dVIZJn0eA463oMdcCFf0v70EZrNkXjEc=
+X-Gm-Gg: Acq92OEOluqc89rPADgUUz4BwtDy816jEpCiTqhk335VN3qSvqtoUZ4U7fe4c5AoVZW
+	Cj27jrhQl6QSzB8IoEXiIG+VHIEDhK4M3H+/Y+kHUKZJwWY9zQ+/FEQ+bC3dJgqXGQGHCQPd5c9
+	cl9IslRWrj8o/M2aKC36fMqix5YP4ZIwQLIQlQp9SokCFakQ0XVjdiRTW3fpKjYUuYPXXnCvz8S
+	vbwpGaU83p1hD8DoGoBDZSaXz5a9dWcfNRdEteZuXXhLzQg5cKPua6TlBU+NzXtR5Zm6BNE4na9
+	gNEkgcS24cCGaRax0hTEbUjtoy70WZW5RZVE1sE=
+X-Received: by 2002:a05:6512:1094:b0:5a4:175d:21a with SMTP id
+ 2adb3069b0e04-5aa0e600e20mr5276550e87.2.1779148652475; Mon, 18 May 2026
+ 16:57:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260518082344.96647-1-kerneljasonxing@gmail.com>
+ <20260518082344.96647-6-kerneljasonxing@gmail.com> <agsxE575ri8iLgxM@devvm7509.cco0.facebook.com>
+In-Reply-To: <agsxE575ri8iLgxM@devvm7509.cco0.facebook.com>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Tue, 19 May 2026 07:56:55 +0800
+X-Gm-Features: AVHnY4KqQCXKCs456Fffv-Vucw_lyoIiww_LVFXcU_9Mv3prioM5sCl1Gc9ovRg
+Message-ID: <CAL+tcoASR9sfdi_TiMEN2kqb=WL+HCuOTcO3h4XrLVR+2G2XCA@mail.gmail.com>
+Subject: Re: [PATCH net-next 5/6] bpf: enable bpf timestamping rx in TCP layer
+To: Stanislav Fomichev <sdf.kernel@gmail.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, willemb@google.com, kuniyu@google.com, 
+	ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, martin.lau@linux.dev, 
+	eddyz87@gmail.com, memxor@gmail.com, song@kernel.org, yonghong.song@linux.dev, 
+	jolsa@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me, 
+	netdev@vger.kernel.org, bpf@vger.kernel.org, 
+	Jason Xing <kernelxing@tencent.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-tcp: fix stale per-CPU tcp_tw_isn leak enabling ISN prediction
+On Mon, May 18, 2026 at 11:34=E2=80=AFPM Stanislav Fomichev
+<sdf.kernel@gmail.com> wrote:
+>
+> On 05/18, Jason Xing wrote:
+> > From: Jason Xing <kernelxing@tencent.com>
+> >
+> > Add two if statements to accurately isolate bpf timestamping and so
+> > timestamping. They can work respectively.
+> >
+> > As to so_timestamping, only add a loose condition via report flags
+> > to avoid duplicate strict checks that is done in tcp_recv_timestamp()
+> > and performance impact. If the loose condition is hit,
+> > tcp_recv_timestamp() is able to handle the exact case and doesn't
+> > hamper the existing timestamping feature.
+> >
+> > Make it work in TCP protocol.
+> >
+> > Signed-off-by: Jason Xing <kernelxing@tencent.com>
+> > ---
+> >  net/ipv4/tcp.c | 14 ++++++++++++--
+> >  1 file changed, 12 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+> > index 21ece4c71612..64c69bb3578a 100644
+> > --- a/net/ipv4/tcp.c
+> > +++ b/net/ipv4/tcp.c
+> > @@ -2949,8 +2949,18 @@ int tcp_recvmsg(struct sock *sk, struct msghdr *=
+msg, size_t len, int flags)
+> >       release_sock(sk);
+> >
+> >       if ((cmsg_flags | msg->msg_get_inq) && ret >=3D 0) {
+> > -             if (cmsg_flags & TCP_CMSG_TS)
+> > -                     tcp_recv_timestamp(msg, sk, &tss);
+> > +             if (cmsg_flags & TCP_CMSG_TS) {
+> > +                     u32 tsflags =3D READ_ONCE(sk->sk_tsflags);
+> > +
+> > +                     if (cgroup_bpf_enabled(CGROUP_SOCK_OPS) &&
+> > +                         SK_BPF_CB_FLAG_TEST(sk, SK_BPF_CB_RX_TIMESTAM=
+PING))
+> > +                             bpf_skops_rx_timestamping(sk, &tss,
+> > +                                                       BPF_SOCK_OPS_TS=
+TAMP_RCV_CB);
+>
+> What about tcp_zc_finalize_rx_tstamp? Do you not want the rx tstamp for
+> tcp rx zc?
 
-The patch attempts to fix a per-CPU tcp_tw_isn leak by moving the
-TIME_WAIT-derived ISN into the sk_buff structure. It unions tcp_tw_isn with
-skb->mark and skb->reserved_tailroom, assuming these fields are unused in
-the TCP receive path.
+Zerocopy support should not be complicated, I suppose. Let me find a
+benchmark to test it locally.
 
-> Instead, union it with skb->mark / skb->reserved_tailroom which
-> are unused in TCP receive path.
-
-Is this description accurate?
-
-> diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-> index 2bcf78a4de7b9..8a5082685b822 100644
-> --- a/include/linux/skbuff.h
-> +++ b/include/linux/skbuff.h
-[ ... ]
-> @@ -1066,6 +1067,7 @@ struct sk_buff {
->  	union {
->  		__u32		mark;
->  		__u32		reserved_tailroom;
-> +		u32		tcp_tw_isn;
->  	};
-
-> diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-> index c0526cc039804..719cfab3cd029 100644
-> --- a/net/ipv4/tcp_ipv4.c
-> +++ b/net/ipv4/tcp_ipv4.c
-[ ... ]
-> @@ -2198,6 +2197,7 @@ int tcp_v4_rcv(struct sk_buff *skb)
->  		}
->  	}
->  
-> +	skb->tcp_tw_isn = 0;
->  process:
->  	if (static_branch_unlikely(&ip4_min_ttl)) {
->  		/* min_ttl can be changed concurrently from do_ip_setsockopt() */
-
-Since tcp_tw_isn shares memory with skb->mark, doesn't clearing it here
-destroy any packet marks assigned earlier by Netfilter or ingress TC?
-
-Immediately following the zeroing, the code executes xfrm4_policy_check()
-and tcp_filter(). It appears IPsec policies and BPF socket filters will now
-evaluate against a mark of 0, potentially bypassing security boundaries and
-breaking policy routing.
-
-> @@ -2299,7 +2299,7 @@ int tcp_v4_rcv(struct sk_buff *skb)
->  		goto csum_error;
->  	}
->  
-> -	tw_status = tcp_timewait_state_process(inet_twsk(sk), skb, th, &isn,
-> +	tw_status = tcp_timewait_state_process(inet_twsk(sk), skb, th,
->  					       &drop_reason);
->  	switch (tw_status) {
->  	case TCP_TW_SYN: {
-> @@ -2313,7 +2313,6 @@ int tcp_v4_rcv(struct sk_buff *skb)
->  			sk = sk2;
->  			tcp_v4_restore_cb(skb);
->  			refcounted = false;
-> -			__this_cpu_write(tcp_tw_isn, isn);
->  			goto process;
->  		}
-
-If the packet maps to a TIME_WAIT socket, tcp_timewait_state_process()
-generates an ISN and assigns it to skb->tcp_tw_isn. When the code jumps
-back to the process label, won't this pseudo-random 32-bit ISN be passed
-into IPsec and BPF as skb->mark?
-
-This also corrupts skb->reserved_tailroom, which could lead to
-out-of-bounds writes if skb_tailroom() is subsequently evaluated.
-
-Furthermore, if an eBPF program executed via tcp_filter() legitimately sets
-skb->mark, won't it inadvertently modify skb->tcp_tw_isn?
-
-> diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-> index d5c9e65d97606..203660dc94efd 100644
-> --- a/net/ipv4/tcp_input.c
-> +++ b/net/ipv4/tcp_input.c
-[ ... ]
-> @@ -7594,25 +7594,22 @@ int tcp_conn_request(struct request_sock_ops *rsk_ops,
->  	struct net *net = sock_net(sk);
->  	struct sock *fastopen_sk = NULL;
->  	union tcp_seq_and_ts_off st;
-> +	u32 isn = skb->tcp_tw_isn;
->  	struct request_sock *req;
->  	bool want_cookie = false;
->  	struct dst_entry *dst;
->  	struct flowi fl;
->  	u8 syncookies;
-> -	u32 isn;
->  
->  #ifdef CONFIG_TCP_AO
->  	const struct tcp_ao_hdr *aoh;
->  #endif
->  
-> -	isn = __this_cpu_read(tcp_tw_isn);
-> -	if (isn) {
-> -		/* TW buckets are converted to open requests without
-> -		 * limitations, they conserve resources and peer is
-> -		 * evidently real one.
-> -		 */
-> -		__this_cpu_write(tcp_tw_isn, 0);
-> -	} else {
-> +	/* TW buckets are converted to open requests without
-> +	 * limitations, they conserve resources and peer is
-> +	 * evidently real one.
-> +	 */
-> +	if (!isn) {
->  		syncookies = READ_ONCE(net->ipv4.sysctl_tcp_syncookies);
->  
->  		if (syncookies == 2 || inet_csk_reqsk_queue_is_full(sk)) {
-
-If a BPF program sets skb->mark to a non-zero value, tcp_conn_request()
-will read it into isn. Since isn is now non-zero, won't this skip SYN
-cookie flood protection and use the mark value as the TCP connection's
-Initial Sequence Number?
-
-Could this regression eliminate ISN randomization and allow TCP sequence
-prediction?
+Thanks,
+Jason
