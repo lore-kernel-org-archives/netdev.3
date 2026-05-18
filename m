@@ -1,181 +1,144 @@
-Received: from mail-vs1-f44.google.com (mail-vs1-f44.google.com [209.85.217.44])
+Received: from mail-ot1-f78.google.com (mail-ot1-f78.google.com [209.85.210.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6F2D3EFD14
-	for <netdev@vger.kernel.org>; Mon, 18 May 2026 12:58:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.217.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779109092; cv=pass; b=pmtNGbfBGrqO3Ec7p5yafj2dgpexz9m+w6FWd6RlRXnwdKoDW2/tqRU9jgTG+ruM/zKUkAbEvUJYa/C6lDI1EL9LadNcKzdqx2BPGV00AiwvyGkwl0zyXBue8ZyRiePBrEfAUKdsH1yciakQ3V3Eb1RIJrlY7InHWcN49fs53R4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779109092; c=relaxed/simple;
-	bh=Sqv2/zJbUPZhwfmVPP/6XYmsqc5O0ye1F464HbPnnZU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=q5Cqlg/hl+jicL6z0/ufbs7WYbD0YBxS+G2GzSJVUKQnQcEIj2uis8D7eMPyaPttaQ8YlkcX6VPs4PQXNKsyu/vYMkheh/9gZq9yK2YX+DQXOWdRq935COvDNmygyuGy4HTCtkSZzr0jovEW61VRVheY1YhPx3xoQqVwig8jDDM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=monogon.tech; spf=pass smtp.mailfrom=monogon.tech; dkim=pass (2048-bit key) header.d=monogon-tech.20251104.gappssmtp.com header.i=@monogon-tech.20251104.gappssmtp.com header.b=S0+syl/4; arc=pass smtp.client-ip=209.85.217.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=monogon.tech
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=monogon.tech
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=monogon-tech.20251104.gappssmtp.com header.i=@monogon-tech.20251104.gappssmtp.com header.b="S0+syl/4"
-Received: by mail-vs1-f44.google.com with SMTP id ada2fe7eead31-6324ee4040cso624857137.0
-        for <netdev@vger.kernel.org>; Mon, 18 May 2026 05:58:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779109087; cv=none;
-        d=google.com; s=arc-20240605;
-        b=dKa16k60hK4/MR0ZiQMk/lYBcnIKYyuQIDUvPXImIcyL9l8NcB8GRW0czI9dh26euw
-         h4S1diTj2e8c3xXA27OX5mPnYlAKzUIsaFMkXd9gnm7pgKjN7Ekifvkwe2z3nCMDEZa6
-         CfE+XH088GjwsI3vnia5TDTkrwB//kkuL7L0mUAhIR7tpXgtV3Gac3rLB945g6ewHa67
-         y1ZYat+9k4cMvyp2HI9/L1e0jtmDs6dMDFDKxEftXpcOM4sqd+J/Crtox0LuK42PemE0
-         3VckL4zNFgBn0ToXNZpsaizLMpTbrhqcurWqr6vyRcDUMlvCoBOG+kUhpB/RrmAFDmZ5
-         5TTQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=uXmZ6DA2CSOKR9KLF5LwpbaR1zZis6lRfYv3mLA+dnU=;
-        fh=Tun8gtqDQqXixB/hOS5HfcwtkuAy9UHW1AUTwtveHwo=;
-        b=OUIPybE/21QKpqvSTstkt5kTMsPyB0uwAPcWF3kUxjw+NrIOC+HdRZb8SrBZFw6FqD
-         lO7fXHWNlsmrbzCxFHlkjhPNYUyVIi6fZQK6bFxzqyHjjljKUymwfkCLe7xNFIK3GCk+
-         NadqEGWm/r7A3ZrVXnsIrotXeQJnjzJ2lIibP7msAdCPCOeVOxfto6E8/gI9Jmvsrgzf
-         X8sN/Hs9Dk7o8vXLxtvHUFzp5UcG/gFf1SH8gFV8oTa5QqhBN+tQQl1VXOg69IKq1Hx/
-         NbixMTS/NpBVhdQcFOOUxsbQarGpgcyRpCfloDtu5GtdfduxcsRG9r1ZVdp6QMqlvkeV
-         oLQw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=monogon-tech.20251104.gappssmtp.com; s=20251104; t=1779109087; x=1779713887; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=uXmZ6DA2CSOKR9KLF5LwpbaR1zZis6lRfYv3mLA+dnU=;
-        b=S0+syl/4RTeNWzpfJakVAxkUEA4U38NXjBEfyHD2q9YPMDTaV32TovJ2F8M20idxHQ
-         NxhA928p0mglemYFzS+cpShbZN8Lsyeu5Ate3EJk4XaEkH6aeXnE/HSiaPRFsBcOZKoA
-         c29NJwbZlYBPkq0KfjBQc4av1qjHHzwn7kWVYuZxh9pxhq3r8R1vjMXS/wRLXHA9xd1D
-         EKQqVuNOKDPaN5JyyYYCxhxlg0kjOE4hBBRxCxTzze797FUTAxH/UVjc1/PSc01S9f3i
-         5M32NkaLc5VG4wuJVgnng18nlZYDH4rK3hoOmY74SGJEQzad24kRDTWhmpzZzOxl7mj+
-         yFLQ==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D123126DF
+	for <netdev@vger.kernel.org>; Mon, 18 May 2026 13:01:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.78
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779109286; cv=none; b=frirsVNe7/6Tg5BDZ3YYy550Q/AYYRp/NeC/zFtqBtt53YWZ9ygmO38yGD2zsz2dpYDzOtSwKs1u3tZcZKLC8ul4DGPRVBOFDFaC3DLhZ1TuysK1mf2T+LemES2lHn4u31r+WRwHYzapyDTl2ZtLTCItEwaxKdue1ef+yR4JYZ4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779109286; c=relaxed/simple;
+	bh=lLl6RY6caPM3rOvfBqXkbSVRHfr3cxYaeRWdxt5n5hE=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Rag4LwfSCAvZf3dq075kc/TeYZeAfUsOLMemSf0AaIOuy5gwNu0yUrPdf8Vjg0/b6e3lR9k+f7ASEdBGDqwNwMtkL79AEkyzljElLf53X0k+Y80nB4AQegROl951/OZvNQDpa51NGz8ku95SmYDilDwh2R2pqTFRN6P9fBrDP7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-ot1-f78.google.com with SMTP id 46e09a7af769-7dccdbdf5c2so2641364a34.3
+        for <netdev@vger.kernel.org>; Mon, 18 May 2026 06:01:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779109087; x=1779713887;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uXmZ6DA2CSOKR9KLF5LwpbaR1zZis6lRfYv3mLA+dnU=;
-        b=fXe3NGlgURIr/uXaQvRsq3+ADUOPekYkszC549Ge2aL5lCoqJ0PpZXQ3QK3AyXInz4
-         gITE1F5kyNMCqbxgcIr+3M4Lw37ZltWs5uG6FEnLEhGUMd/LRi1TfZpb78URvmO7161L
-         qboVP5GPsZjgOOBzwBekO3UiiXOkce/EzvISe38KY5PuWS7t/74OQIumRLtDNqBVpXNd
-         KnJtM17li2PNTS3HQ/Ow9vEG2D34kWy4c2kQbOyuyxMCC+jL1pxEUfVKgfLSST1+I8Jn
-         1rKivcpLmWommbWVUX+ryDytMu/voONXMHA1s7yoQ4/tvNoza0qB5e70FVES9Hmqyb2P
-         EC+Q==
-X-Forwarded-Encrypted: i=1; AFNElJ/bX20LWeWFuuojCOMogQN9qTgg7Kr689mmWOE3ErlokxRf+wIF/xZy3fd/THdZNuEIJtVmaes=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwMwyHA9+DhofJ5RSKwKpB51ArPoAlvPZOTMwsR73j0aJZI4ea4
-	IVCDZkgocfB6xiRisJNh7FxXCcBkkCtAFuvkHD5OOt4R8eCD21V0sa1kWOqo06afluhAwFH+zjK
-	0O9uBqI2AJYqg/xEJjQ+PJBJh/kBMMVH/os5YcO0vOw==
-X-Gm-Gg: Acq92OF0IhWuCIKNwGSfnxaFTEnrnvjCaJlHEtz1VjzkJXicNvC8Niw45ejR5aA6P9C
-	IUxj2enIZ5Iu0o8BrHiIYwYNrsmvDm2en3mXH7tfAPa3XY249VI/1NhBf57F8ddwpZt0WUuTJh7
-	DmaO+IJadI8fzMIcO3JYXp3R/kLF6Hy8Fsylhim/RHrK7ayPoWyMxVZpvpKwVTfqDcNOZEIdjek
-	Ibw/okDCdeF/mzyAR7nHBGP7lX0vKjKh6kqi3+qMP3iq+QDZ+P9afuCZXwdssIZZ5o/ozjdbyjh
-	XtP7ZMtb8IneAJ5Yv4U6UT+Hk6QAzBUBplmT
-X-Received: by 2002:a05:6102:6047:b0:631:4cd8:b6aa with SMTP id
- ada2fe7eead31-63a3d93b6edmr6378714137.13.1779109087067; Mon, 18 May 2026
- 05:58:07 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1779109284; x=1779714084;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=15XVrlqFLSsUnhnxXxSwCW7nrZfhUDLDuTiL9dFIkEs=;
+        b=NwEgnvrD7ogMRSkdYb0oFxXwASW8QeLcDb5FRIKov0yHR4syDkZq+CEUS4muXjTE9d
+         lTjq7QwURPOJkRvZATvSV1kDtMMsSUXDCC9hS5gRd7bXok2w/IyhMfpeJXxqgqvVJNRh
+         CDlmjOCrnzkXBiHG75+DRUbHNsp2gZ9ukNYyunONBGrfM6yCcmUGG6K7G7h5J5wPo+aN
+         bF7oW7FIkdd9lSqwB5MsrLmx6tlAVLv5k/hSSE83eK4UFNVARLqDbM8Q3iogJEMpLvl/
+         j0UMJGzyBxIKuV99aJrKSXDcrPcZnW63NZpQctZECPw/+NzZGpKLh9LYjcc1/4aVFo59
+         00BA==
+X-Forwarded-Encrypted: i=1; AFNElJ+mB5UkumvdDRWLnmYJNwDP04e+SaGa6o+ZSgmxet/aS6LrFFLFqIvSPIEPuuEKDyjivgGaFxc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8/0XNmSHz3eOVZRZojdEacuAq6eMi+NhPYiUIoVmy9hoRj6Sc
+	PxVpMug0/sqpYIlaj8Z8rfxYpxUk87d4BT0LJp6Pz5yc8TdcrOnm3uYl19W15po4y+D8r9CsWta
+	pJhlmKRmP2rnoRCNSx1szfDJfE/T/2+wyzQ+CXL2cTyXGVBojJqfHgkNepx4=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260512152658.2818805-1-lorenz@monogon.tech> <9c49ecf7-1d35-4b03-8a71-9d724562594d@intel.com>
-In-Reply-To: <9c49ecf7-1d35-4b03-8a71-9d724562594d@intel.com>
-From: Lorenz Brun <lorenz@monogon.tech>
-Date: Mon, 18 May 2026 14:57:55 +0200
-X-Gm-Features: AVHnY4KmAFH7SWcYKpSxBgfiVCiUuxFv1ES63sSXsCXW1j6V3gBDDffnv_CRq5o
-Message-ID: <CAJMi0nQN+XB14Z81=W2reEGnax526-MB=Armx+f_miWMWUmRFw@mail.gmail.com>
-Subject: Re: [PATCH] xsk: switch xdp_build_skb_from_zc() to napi_alloc_skb()
-To: Alexander Lobakin <aleksander.lobakin@intel.com>
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>, 
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, 
-	Stanislav Fomichev <sdf@fomichev.me>, Maciej Fijalkowski <maciej.fijalkowski@intel.com>, stable@vger.kernel.org, 
-	intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org
+X-Received: by 2002:a05:6830:d17:b0:7dc:cd0b:58af with SMTP id
+ 46e09a7af769-7e4f2a2d671mr9973331a34.6.1779109283951; Mon, 18 May 2026
+ 06:01:23 -0700 (PDT)
+Date: Mon, 18 May 2026 06:01:23 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a0b0da3.050a0220.175f0c.0000.GAE@google.com>
+Subject: [syzbot] [bridge?] WARNING in br_fill_linkxstats
+From: syzbot <syzbot+a35f9259d08f907c06e6@syzkaller.appspotmail.com>
+To: bridge@lists.linux.dev, davem@davemloft.net, edumazet@google.com, 
+	horms@kernel.org, idosch@nvidia.com, kuba@kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
+	razor@blackwall.org, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
 
-On Wed, 13 May 2026 at 17:21, Alexander Lobakin
-<aleksander.lobakin@intel.com> wrote:
->
-> From: Lorenz Brun <lorenz@monogon.tech>
-> Date: Tue, 12 May 2026 17:26:56 +0200
->
-> > xdp_build_skb_from_zc() allocated xdp->frame_sz bytes from the per-cpu
-> > system_page_pool and built the skb head with napi_build_skb(). The
-> > latter places skb_shared_info at the tail of the buffer, but the
-> > helper sized the allocation as if the whole frame_sz were usable for
-> > data. Whenever the packet plus reserved headroom approached frame_sz,
-> > the head memcpy overran shinfo with packet content, corrupting
-> > ->flags (SKBFL_ZEROCOPY_ENABLE) and ->nr_frags, which then drove
-> > skb_copy_ubufs() off the end of frags[] on the RX path:
-> >
-> >   UBSAN: array-index-out-of-bounds in include/linux/skbuff.h:2541
-> >   index 113 is out of range for type 'skb_frag_t [17]'
-> >    skb_copy_ubufs+0x7da/0x960
-> >    ip_local_deliver_finish+0xcd/0x110
-> >    ice_napi_poll+0xe4/0x2a0 [ice]
-> >
-> > The overrun bytes come from the packet, so an on-wire sender can
-> > corrupt kernel memory remotely whenever the XDP program returns
-> > XDP_PASS.
-> >
-> > Rather than patch the sizing math, switch to the pattern used by other
-> > in-tree AF_XDP zero-copy drivers like mlx5 and i40e which use
-> > napi_alloc_skb() sized to the actual packet plus skb_put_data().
-> > This sizes the head exactly for the data being copied, drops the
-> > system_page_pool local_lock from this path, and removes the
-> > structural mismatch between frame_sz and the skb head buffer. Frags
-> > are allocated with alloc_page() per frag, matching the other drivers.
->
-> I used napi_build_skb() + system page_pool to enable PP recycling
-> improving XSk XDP_PASS performance a lot.
-> Are you sure there's no other way to approach this?
->
-> napi_alloc_skb() used in other drivers works, but it's sorta old
-> approach which is way slower.
->
-> System page_pools always allocate a full page, why can it create an skb
-> prone to overruns?
->
-> >
-> > Fixes: 560d958c6c68 ("xsk: add generic XSk &xdp_buff -> skb conversion")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Lorenz Brun <lorenz@monogon.tech>
-> Thanks,
-> Olek
+Hello,
 
-Hi Olek
+syzbot found the following issue on:
 
-I looked at the code again. While your approach is indeed faster, it
-is only faster for traffic bypassing AF_XDP, which is generally not
-that relevant for performance.
+HEAD commit:    627ac78f2741 ipv6: addrconf: bail out of dad_failure when ..
+git tree:       net-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=1074102e580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=f2b487b72ffad035
+dashboard link: https://syzkaller.appspot.com/bug?extid=a35f9259d08f907c06e6
+compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
 
-More critically, it currently corrupts kernel memory and panics the
-kernel very quickly when running with frame-size set to 2048, 1500
-MTU, and passing received packets. To be honest, I'm not familiar
-enough with the XSK subsystem to know exactly what specific sizing
-assumption was violated here. By comparison, the approach taken by the
-other drivers is a lot more obviously correct and works perfectly.
+Unfortunately, I don't have any reproducer for this issue yet.
 
-If you want to preserve the current approach, I'm perfectly happy with
-that. However, I don't feel comfortable sending patches for it, as I
-don't understand exactly what the expectations of the various data
-blocks are.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/81fff4bdde96/disk-627ac78f.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/4b0352468dcd/vmlinux-627ac78f.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/6db18d47dfe4/bzImage-627ac78f.xz
 
-AFAIK, reproduction should be fairly easy. You just need to run a TCP
-connection to the receiving node (which gets passed to the kernel)
-while receiving some UDP packets via AF_XDP at the same time. As
-mentioned, it also needs frame-size 2048 to reproduce quickly.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+a35f9259d08f907c06e6@syzkaller.appspotmail.com
 
-I checked if I could get you an easy reproducer, but xdp-tools is
-quite limited. If you want to keep your approach and can't reproduce
-the panic yourself, let me know and I can see if I can synthesize a
-minimal reproducer.
+------------[ cut here ]------------
+diff > ((u16)~0U)
+WARNING: ./include/net/netlink.h:2265 at nla_nest_end include/net/netlink.h:2265 [inline], CPU#1: syz.2.5599/27626
+WARNING: ./include/net/netlink.h:2265 at br_fill_linkxstats+0x9e7/0xae0 net/bridge/br_netlink.c:1910, CPU#1: syz.2.5599/27626
+Modules linked in:
+CPU: 1 UID: 0 PID: 27626 Comm: syz.2.5599 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/18/2026
+RIP: 0010:nla_nest_end include/net/netlink.h:2265 [inline]
+RIP: 0010:br_fill_linkxstats+0x9e7/0xae0 net/bridge/br_netlink.c:1910
+Code: b6 bd 08 48 3b 84 24 60 01 00 00 75 33 44 89 f0 48 8d 65 d8 5b 41 5c 41 5d 41 5e 41 5f 5d e9 50 8f 30 01 cc e8 0a 1b 49 f7 90 <0f> 0b 90 e9 bc fe ff ff e8 fc 1a 49 f7 90 0f 0b 90 e9 53 ff ff ff
+RSP: 0018:ffffc9000d04f160 EFLAGS: 00010287
+RAX: ffffffff8a7ca956 RBX: 0000000000013550 RCX: 0000000000080000
+RDX: ffffc90010069000 RSI: 0000000000006616 RDI: 0000000000006617
+RBP: ffffc9000d04f310 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: dffffc0000000000
+R13: 1ffff92001a09e40 R14: 0000000000000000 R15: dffffc0000000000
+FS:  00007f437e58c6c0(0000) GS:ffff88812537a000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f7ecf36ab4c CR3: 000000003d060000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ rtnl_fill_statsinfo+0x541/0x26f0 net/core/rtnetlink.c:6018
+ rtnl_stats_get+0x4b6/0x6d0 net/core/rtnetlink.c:6340
+ rtnetlink_rcv_msg+0x77e/0xbe0 net/core/rtnetlink.c:7018
+ netlink_rcv_skb+0x232/0x4b0 net/netlink/af_netlink.c:2551
+ netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
+ netlink_unicast+0x75c/0x8e0 net/netlink/af_netlink.c:1345
+ netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1895
+ sock_sendmsg_nosec net/socket.c:787 [inline]
+ __sock_sendmsg net/socket.c:802 [inline]
+ ____sys_sendmsg+0x972/0x9f0 net/socket.c:2698
+ ___sys_sendmsg+0x2a5/0x360 net/socket.c:2752
+ __sys_sendmsg net/socket.c:2784 [inline]
+ __do_sys_sendmsg net/socket.c:2789 [inline]
+ __se_sys_sendmsg net/socket.c:2787 [inline]
+ __x64_sys_sendmsg+0x1bd/0x2a0 net/socket.c:2787
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x15f/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f437d79ce59
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f437e58c028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00007f437da16090 RCX: 00007f437d79ce59
+RDX: 0000000000000000 RSI: 0000200000000040 RDI: 000000000000000a
+RBP: 00007f437d832d6f R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f437da16128 R14: 00007f437da16090 R15: 00007ffe687b3418
+ </TASK>
 
-Regards,
-Lorenz
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
