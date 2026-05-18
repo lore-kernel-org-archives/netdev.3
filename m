@@ -1,408 +1,125 @@
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AAAC37FF5A
-	for <netdev@vger.kernel.org>; Mon, 18 May 2026 03:18:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.110
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DA4A37F8AD
+	for <netdev@vger.kernel.org>; Mon, 18 May 2026 03:21:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779074310; cv=none; b=bLJyhVO/znoOQddrfzbwvcHSzuo4bG1N/9ZKsDKkcQtFWfcDKZ8LPDzZrxbff8EUsongo1haiSBZ6/LHFev+XHee6+fSqyGZIHUODc3HSo8Jsw+XV19s1HrsWiSQwH2mGUU1eGAdV85wlKyh+zFoh2oshF/8w/Le5vCL/vi6eWs=
+	t=1779074499; cv=none; b=NDB5eNpcyXkJuYCWHHjC8A3RlAN2hupZfL4bwguzoLjrli4PgGTw9oydMZxX20WvTE/Tl4+Cg4l+WS42y3GurlimzloQdr27vjQ9297lU2HNZUZ+75X93yQB9IPRlnyXht38cANa00GND1Rw6iDrYEpiEgcVdXUvlvABhgZ0udQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779074310; c=relaxed/simple;
-	bh=7gYcZGNHz2rYrGabiae/qmvPW+mBCzEyVwjExD0oKZ4=;
-	h=Message-ID:Subject:Date:From:To:Cc:References:In-Reply-To; b=aA++NjWqkTsPf6Qv+kuqPNCZh5WW+LQs+sorSoNqY3U0CXSlC/3iKVWMrzGSQyz2pP79V+ofXwf2rMbMd0Q4CR3U4OAxd54AD/4p4IVaKEV8MiQKLnC7xpvSUursu+DAASChlV7U30UrrVhkXWrOp4cqkFp5fWI5kpcqxuJUVGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=cSZ0Qft9; arc=none smtp.client-ip=115.124.30.110
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1779074499; c=relaxed/simple;
+	bh=8bCQ/Iq0u1Lc/T7EX5SaevBnrMvazcgDznT+azAO2vA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=laMeV8prFbJFodZ9TUhK6WfMmbjlFUGHe8BBWc9yyBKcrb5WM+3aq+COi/FESV8kP+H/IRxZFPMpNBtyIJEpFWgb0n2/fHBIsif8Ma2GdLG33B6VSH5opj+TZFpla9COzH0Fv7xJR3BpD80DOcT0CMirU9AAj8pVrvLQnneu6Jg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OcEMbVA9; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="cSZ0Qft9"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1779074305; h=Message-ID:Subject:Date:From:To;
-	bh=mYTiPrz/pBrZk+NPI4Z30QOETd2d+NKndNUdmk1DReU=;
-	b=cSZ0Qft9upQTjBZZfGyyl2dj20YHMKVK+QMBrosLHxVwTkg6pHhgvyWKZSye4+EUg/kIYria/pjCCd9BzT0qh1k6T+lxtDUblBvW4uPJT1l0h4zA0EYF1B0YCJB6UI4F3ON5YYXeBn4BP3rYQ7odaCsU0KCoINFmcRrMKXfBcBU=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=xuanzhuo@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0X335DGQ_1779074303;
-Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0X335DGQ_1779074303 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 18 May 2026 11:18:24 +0800
-Message-ID: <1779073665.4889376-13-xuanzhuo@linux.alibaba.com>
-Subject: Re: [PATCH net-next v43 1/8] eea: introduce PCI framework
-Date: Mon, 18 May 2026 11:07:45 +0800
-From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-To: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- Wen Gu <guwen@linux.alibaba.com>,
- Philo Lu <lulie@linux.alibaba.com>,
- Vadim Fedorenko <vadim.fedorenko@linux.dev>,
- Dong Yibo <dong100@mucse.com>,
- Mingyu Wang <25181214217@stu.xidian.edu.cn>,
- Heiner Kallweit <hkallweit1@gmail.com>,
- Dust Li <dust.li@linux.alibaba.com>,
- netdev@vger.kernel.org
-References: <20260514095138.80680-1-xuanzhuo@linux.alibaba.com>
- <20260514095138.80680-2-xuanzhuo@linux.alibaba.com>
- <1779073615.1247635-12-xuanzhuo@linux.alibaba.com>
-In-Reply-To: <1779073615.1247635-12-xuanzhuo@linux.alibaba.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OcEMbVA9"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2b9a1896db5so4135205ad.3
+        for <netdev@vger.kernel.org>; Sun, 17 May 2026 20:21:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779074497; x=1779679297; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=RAFWkpA8YXLduhYX0RXRsoHuIKAwG9yvc6tBTptmV1U=;
+        b=OcEMbVA9i5Ix8g8UOdkXYaZOmwDXtRS0zUElvzVEiVOA5iXzodmwlm2Du0J2rtXUSG
+         s9whm08U5l6/63IGVll7mxhzjnC0gzmfGnrANzUzHe/68eK4c/nplABqbw5ibSuMpbsg
+         /GhSpDkrllAyRBWQKBODQFjTu/zR87T9enS4HfpSSWuxn9w3wcGJ2eOPFgJSt+hOpLr3
+         lxZ6iSacZ4d0CNg+DZHQdN2GWLk4h2gIRTJivFxV0eJOhLP+mhGzGbu/cWzYfYEHrLWR
+         t2b4M7kgWjsUo7ic1tz5QDI2ggiW48hRNVk0CV5iXuvF6644xz/fS1itatnCydxRPjd+
+         gtcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779074497; x=1779679297;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RAFWkpA8YXLduhYX0RXRsoHuIKAwG9yvc6tBTptmV1U=;
+        b=ijd6cTDwX6YFzYmPCqwwP57DNM9J+tB2tnkwsYO7coZssaH1FaKOZBKUuKjSRNjfRL
+         I6XoNEFpWP4qFFfF9jc3n+WF8b3bs4sI8Mw7GKD6OpQHsEapj/1Z6CsuFkUV69RgBWIO
+         BZPhyxHgWmW88XR9YsHniRFSsnfnXZ98fpKdQ7dzVm0Xo7JVD+NN4gWlc5FPEee1eQYH
+         +bxh+XVKsFIdXV/+dCMgzU9ows1LKLD2m/eaeja8IYkuhb8z0DD3cHGuuuhBrb6t6oQ4
+         EhL2CwmMc+1jdJbZS5rAIJ4i1QWylniqwoebS/5+TS66XMLYkbND/54JFmoc9J2T3pNg
+         5RwQ==
+X-Gm-Message-State: AOJu0Ywy55zub5KkMr6oCkoXuvrD5+TO1OAQAMtCGpr48jitdKctsPRp
+	felDgu4KXnyY78Usiep1PeJ/XJawn4FOEl10qcgGDZ7lZi2oqLP+6Kws5TF4nl/gaCk=
+X-Gm-Gg: Acq92OFTPNGM+RGU4u5B66PW0g/fEjsEg8kmWms/HWKQfBzjsI725WooW3oT/ZTtFy4
+	SHz4fhGjEo9yUkm557Wo62vlGN5JdQFB/Rz81MGN+Dq9E4ST4xs4QoFE1nqhWBzhIRjMV1wvjv8
+	ZpJd0pxO4Ih1135OkwSEQrCsIEAWZP0IOHuFnt9JrU2i/rt88Flc1uGdTR4Jm1h0xvrJ0msgO38
+	kn5mucMpdST8E185wjv8zTVqecsZDhtZzM1hCHKa/4BO3BMVrJ5W9jzGCW26KWbqzMthSE9eh8x
+	n2ibIB+2MIZoNHZyfA2QVElB6CgoE0A0cnNs7907TuUhmTNn6yKA8jY0k+XZIVuPYEdpwBic3SU
+	TurprzhpVXaAXcsjzyb6BgjOBy3hwdJopHMwGdYjhfwLq2RYYzPXXHNqOSMHcxW6BUEFO9k6aPQ
+	veFLqco/B5VyIM4289ycBIVClWWi6LNkiWDi7pKS3AMcW3W3+ExrS3hHZXlMqRwge4r1h8sqYxf
+	N5lOcE0IJDhPz26tnx9p2kdpoR5DHFz2w==
+X-Received: by 2002:a17:903:3c4b:b0:2bd:612b:9124 with SMTP id d9443c01a7336-2bd7e23f084mr76532925ad.0.1779074496732;
+        Sun, 17 May 2026 20:21:36 -0700 (PDT)
+Received: from localhost ([240d:f:a5c:fb00:b9d0:5976:9793:153b])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5cfe6b8fsm136391305ad.46.2026.05.17.20.21.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 17 May 2026 20:21:36 -0700 (PDT)
+From: Aaron Esau <aaron1esau@gmail.com>
+To: netdev@vger.kernel.org
+Cc: steffen.klassert@secunet.com,
+	herbert@gondor.apana.org.au,
+	"David S . Miller" <davem@davemloft.net>,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	Aaron Esau <aaron1esau@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] xfrm: espintcp: fix sg.size corruption on partial send error
+Date: Mon, 18 May 2026 12:21:09 +0900
+Message-ID: <20260518032109.616327-1-aaron1esau@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Mon, 18 May 2026 11:06:55 +0800, Xuan Zhuo <xuanzhuo@linux.alibaba.com> wrote:
->
-> From https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260514095138.80680-1-xuanzhuo%40linux.alibaba.com
->
-> commit 46941a5c3a95ebc5ea79193eb1c2ceab7183da1d
-> Author: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-> eea: introduce PCI framework
-> This patch adds a basic PCI driver framework for the Alibaba Elastic
-> Ethernet Adapter (EEA), implementing PCI probe, remove, shutdown, the
-> device-status handshake helpers, and an MMIO config layout.
-> A few questions inline below.
-> > diff --git a/drivers/net/ethernet/alibaba/eea/eea_pci.c b/drivers/net/ethernet/alibaba/eea/eea_pci.c
-> > new file mode 100644
-> > index 000000000000..65a0ceb73b35
-> > --- /dev/null
-> > +++ b/drivers/net/ethernet/alibaba/eea/eea_pci.c
-> > @@ -0,0 +1,487 @@
-> [ ... ]
-> > +int eea_device_reset(struct eea_device *edev)
-> > +{
-> > +	struct eea_pci_device *ep_dev = edev->ep_dev;
-> > +	int err;
-> > +	u8 val;
-> > +
-> > +	eea_pci_io_set_status(edev, 0);
-> > +
-> > +	/* We are no longer waiting for device ack during the shutdown flow. */
-> > +	if (ep_dev->shutdown)
-> > +		return 0;
-> > +
-> > +	/* A longer timeout is set here to handle edge cases, though it should
-> > +	 * return promptly in most scenarios.
-> > +	 *
-> > +	 * In our case, all replies are handled by the DPU software, so there is
-> > +	 * no race condition between the hardware processes and the register.
-> > +	 */
-> > +	err = read_poll_timeout(cfg_read8, val, (!val || val == 0xFF), 20,
-> > +				EEA_RESET_TIMEOUT_US,
-> > +				false, ep_dev->reg, device_status);
-> On the shutdown path, ep_dev->shutdown is set to true and eea_device_reset()
-> then returns immediately after writing device_status = 0, skipping the
-> read_poll_timeout() that would otherwise wait for the device to acknowledge
-> the reset:
-> eea_pci_shutdown():
->     ep_dev->shutdown = true;
->     /* do net device stop and clear. */
->     eea_device_reset(edev);
->     pci_clear_master(pci_dev);
-> After that, eea_pci_shutdown() calls pci_clear_master(), which only clears
-> the bus-master enable bit and does not drain in-flight or posted DMA writes.
-> Without a flush read of an MMIO register from this function or a synchronous
-> device-side ack, is there a guarantee that the device has stopped issuing
-> DMA before pci_clear_master() runs?
-> On kexec or warm-reboot, can in-flight DMA after eea_pci_shutdown() returns
-> land in pages that the next kernel has reused?
+espintcp_sendskmsg_locked() calls put_page() and sk_mem_uncharge() for
+each scatterlist element it successfully sends, but never decrements
+sg.size. If tcp_sendmsg_locked() then fails partway through, the error
+path advances sg.start past the freed elements while sg.size still
+accounts for them. A subsequent sk_msg_free() in espintcp_close() loops
+until sg.size reaches zero, overshoots sg.end, hits zeroed entries with
+NULL pages, and crashes in put_page().
 
-We prefer to avoid blocking for too long during the shutdown process, which is
-why read_poll_timeout is skipped here. As for the probe phase, I ensure DMA
-safety by triggering a reset before setting the master.
+Fix this by decrementing sg.size as each element is freed. Also use
+sk_msg_iter_var_next() instead of raw addition for sg.start, so it
+wraps at NR_MSG_FRAG_IDS.
 
-> > +
-> > +	/* Surprise PCIe Removal */
-> > +	if (val == 0xFF)
-> > +		return -EINVAL;
-> > +
-> > +	return err;
-> > +}
-> > +
-> > +int eea_pci_set_aq_up(struct eea_device *edev)
-> > +{
-> > +	struct eea_pci_device *ep_dev = edev->ep_dev;
-> > +	u8 status = eea_pci_io_get_status(edev);
-> > +	int err;
-> > +	u8 val;
-> > +
-> > +	eea_pci_io_set_status(edev, status | EEA_S_OK);
-> > +
-> > +	/* A longer timeout is set here to handle edge cases, though it should
-> > +	 * return promptly in most scenarios.
-> > +	 *
-> > +	 * In our case, all replies are handled by the DPU software, so there is
-> > +	 * no race condition between the hardware processes and the register.
-> > +	 */
-> > +	err = read_poll_timeout(cfg_read8, val,
-> > +				val & (EEA_S_OK | EEA_S_FAILED),
-> > +				20, EEA_RESET_TIMEOUT_US,
-> > +				false, ep_dev->reg, device_status);
-> > +
-> > +	/* Surprise PCIe Removal */
-> > +	if (val == 0xFF)
-> > +		return -EINVAL;
-> > +
-> > +	/* device fail */
-> > +	if (val & EEA_S_FAILED)
-> > +		return -EINVAL;
-> > +
-> > +	return err;
-> > +}
-> Can this handshake actually observe device acknowledgment?
-> The driver writes status | EEA_S_OK to device_status, then read_poll_timeout()
-> waits for the readback to satisfy (val & (EEA_S_OK | EEA_S_FAILED)).
-> read_poll_timeout() with sleep_before_read = false performs the op() once
-> before sleeping, so the very first cfg_read8() of device_status will return
-> the value that was just written, which already has EEA_S_OK set. The
-> condition is met on iteration zero, the 60-second EEA_RESET_TIMEOUT_US never
-> elapses, and EEA_S_FAILED never gets a chance to be observed.
-> For the device to ever indicate failure, would it need to first clear
-> EEA_S_OK and then either re-assert EEA_S_OK on success or set EEA_S_FAILED
-> on failure? Or use a separate ack/done bit that is distinct from the
-> driver-written request bit? As written, the EEA_S_FAILED check below the
-> poll appears unreachable on a healthy bus.
+Fixes: e27cca96cd68 ("xfrm: add espintcp (RFC 8229)")
+Cc: stable@vger.kernel.org
+Signed-off-by: Aaron Esau <aaron1esau@gmail.com>
+---
+ net/xfrm/espintcp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-This is a DPU implementation, so all PCI TLP messages are handled and
-acknowledged by software. Even for PCI registers, the read operation does not
-simply return the last written value.
+diff --git a/net/xfrm/espintcp.c b/net/xfrm/espintcp.c
+index e1b11ab59..6755f6df6 100644
+--- a/net/xfrm/espintcp.c
++++ b/net/xfrm/espintcp.c
+@@ -237,7 +237,8 @@ static int espintcp_sendskmsg_locked(struct sock *sk,
+ 		ret = tcp_sendmsg_locked(sk, &msghdr, size);
+ 		if (ret < 0) {
+ 			emsg->offset = offset - sg->offset;
+-			skmsg->sg.start += done;
++			while (done--)
++				sk_msg_iter_var_next(skmsg->sg.start);
+ 			return ret;
+ 		}
+ 
+@@ -250,6 +251,7 @@ static int espintcp_sendskmsg_locked(struct sock *sk,
+ 		done++;
+ 		put_page(p);
+ 		sk_mem_uncharge(sk, sg->length);
++		skmsg->sg.size -= sg->length;
+ 		sg = sg_next(sg);
+ 	} while (sg);
+ 
+-- 
+2.54.0
 
-
-> > +
-> > +static int eea_negotiate(struct eea_device *edev)
-> > +{
-> > +	struct eea_pci_device *ep_dev;
-> > +	u32 status;
-> > +
-> > +	ep_dev = edev->ep_dev;
-> > +
-> > +	edev->features = 0;
-> > +
-> > +	cfg_write32(ep_dev->reg, drv_f_idx, 0);
-> > +	cfg_write32(ep_dev->reg, drv_f, lower_32_bits(edev->features));
-> > +	cfg_write32(ep_dev->reg, drv_f_idx, 1);
-> > +	cfg_write32(ep_dev->reg, drv_f, upper_32_bits(edev->features));
-> > +
-> > +	eea_add_status(edev, EEA_S_FEATURE_DONE);
-> > +	status = eea_pci_io_get_status(edev);
-> > +
-> > +	/* Surprise PCIe Removal */
-> > +	if (status == 0xFF)
-> > +		return -EINVAL;
-> > +
-> > +	if (!(status & EEA_S_FEATURE_DONE))
-> > +		return -ENODEV;
-> > +
-> > +	return 0;
-> > +}
-> Is this status check tautological?
-> eea_add_status() reads device_status, ORs in EEA_S_FEATURE_DONE, and writes
-> it back. The very next line reads device_status again, so unless the device
-> clears the bit before the readback (which there is no synchronisation for),
-> the readback will always have EEA_S_FEATURE_DONE set, except in the surprise
-> removal case where the value is 0xFF.
-> Can this code detect a device that legitimately rejects the offered
-> features, given there is no poll, delay, or wait for the device to react?
-> The asymmetry with eea_pci_set_aq_up(), which does call read_poll_timeout()
-> albeit with the issue noted above, suggests the protocol contract for these
-> two transitions is different. Could the expected device-side behaviour for
-> EEA_S_FEATURE_DONE be spelled out so reviewers can check the handshake?
-
-
-This is just a framework, for this version no feature is needed to negotiabled.
-
-
-> > +
-> [ ... ]
-> > +static int eea_pci_setup(struct pci_dev *pci_dev, struct eea_pci_device *ep_dev)
-> > +{
-> > +	int err, n, ret, len;
-> > +
-> > +	ep_dev->pci_dev = pci_dev;
-> > +
-> > +	err = pci_enable_device(pci_dev);
-> > +	if (err)
-> > +		return err;
-> > +
-> > +	err = pci_request_regions(pci_dev, "EEA");
-> > +	if (err)
-> > +		goto err_disable_dev;
-> [ ... ]
-> > +	ep_dev->reg = pci_iomap(pci_dev, 0, 0);
-> > +	if (!ep_dev->reg) {
-> > +		dev_err(&pci_dev->dev, "Failed to map pci bar!\n");
-> > +		err = -ENOMEM;
-> > +		goto err_release_regions;
-> > +	}
-> > +
-> > +	err = eea_device_reset(&ep_dev->edev);
-> > +	if (err) {
-> > +		dev_err(&pci_dev->dev, "Failed to reset device for setup!\n");
-> > +		goto err_unmap_reg;
-> > +	}
-> [ ... ]
-> > +	ep_dev->edev.rx_num = cfg_read32(ep_dev->reg, rx_num_max);
-> > +	ep_dev->edev.tx_num = cfg_read32(ep_dev->reg, tx_num_max);
-> > +
-> > +	if (ep_dev->edev.rx_num > EEA_PCI_Q_MAX_NUM ||
-> > +	    ep_dev->edev.tx_num > EEA_PCI_Q_MAX_NUM) {
-> > +		dev_err(&pci_dev->dev, "Invalid queue num %u %u\n",
-> > +			ep_dev->edev.rx_num,
-> > +			ep_dev->edev.tx_num);
-> > +		err = -EINVAL;
-> > +		goto err_clear_master;
-> > +	}
-> [ ... ]
-> > +	/* In our design, the number of hardware interrupts matches the maximum
-> > +	 * number of queues. If pci_alloc_irq_vectors failed, return directly.
-> > +	 *
-> > +	 * 2: adminq, error handle
-> > +	 */
-> > +	n = ep_dev->edev.rx_num + 2;
-> > +	ret = pci_alloc_irq_vectors(ep_dev->pci_dev, n, n, PCI_IRQ_MSIX);
-> > +	if (ret != n) {
-> > +		err = ret;
-> > +		goto err_clear_master;
-> > +	}
-> The vector count uses rx_num only, but tx_num is also read from the device
-> and validated independently against EEA_PCI_Q_MAX_NUM. If a device ever
-> advertises tx_num > rx_num, would later patches that bind a TX-queue IRQ at
-> an index above rx_num + 1 fail because no vector was allocated?
-> Should this be max(rx_num, tx_num) + 2, or should there be an explicit
-> invariant rejecting tx_num > rx_num here so that the design assumption from
-> the comment is enforced?
-
-For the current design, these issues are out of scope.
-
-> > +
-> > +	ep_dev->msix_vec_n = ret;
-> > +
-> > +	return 0;
-> [ ... ]
-> > +static int eea_init_device(struct eea_device *edev)
-> > +{
-> > +	int err;
-> > +
-> > +	err = eea_device_reset(edev);
-> > +	if (err)
-> > +		return err;
-> > +
-> > +	eea_pci_io_set_status(edev, EEA_S_INIT);
-> > +
-> > +	err = eea_negotiate(edev);
-> > +	if (err)
-> > +		goto err;
-> > +
-> > +	/* do net device probe ... */
-> > +
-> > +	return 0;
-> > +err:
-> > +	eea_add_status(edev, EEA_S_FAILED);
-> > +	return err;
-> > +}
-> > +
-> > +static int __eea_pci_probe(struct pci_dev *pci_dev,
-> > +			   struct eea_pci_device *ep_dev)
-> > +{
-> > +	int err;
-> > +
-> > +	pci_set_drvdata(pci_dev, ep_dev);
-> > +
-> > +	err = eea_pci_setup(pci_dev, ep_dev);
-> > +	if (err)
-> > +		return err;
-> > +
-> > +	err = eea_init_device(&ep_dev->edev);
-> > +	if (err)
-> > +		goto err_pci_rel;
-> > +
-> > +	return 0;
-> The probe path calls eea_device_reset() twice in succession:
-> __eea_pci_probe()
->   -> eea_pci_setup()
->        -> eea_device_reset()  /* first reset */
->   -> eea_init_device()
->        -> eea_device_reset()  /* second reset */
-> EEA_RESET_TIMEOUT_US is 60 seconds, so a misbehaving or slow device can
-> stall probe for up to 120 seconds. Is the second reset intentional, and if
-> so, could the rationale be added as a comment? Otherwise, would it make
-> sense to drop one of them so that probe has only one reset point?
-
-The first reset is intended to clear any potential DMA remnants from scenarios
-like kexec. The second reset is performed to ensure the device is in a valid
-state immediately before the actual probe. While the 60s timeout is a worst-case
-safeguard, the actual device response should typically complete within 1 second.
-
-
-> > +
-> > +err_pci_rel:
-> > +	eea_pci_release_resource(ep_dev);
-> > +	return err;
-> > +}
-> [ ... ]
-> > diff --git a/drivers/net/ethernet/alibaba/eea/eea_pci.h b/drivers/net/ethernet/alibaba/eea/eea_pci.h
-> > new file mode 100644
-> > index 000000000000..746cce4dd68e
-> > --- /dev/null
-> > +++ b/drivers/net/ethernet/alibaba/eea/eea_pci.h
-> > @@ -0,0 +1,50 @@
-> [ ... ]
-> > +struct eea_pci_cap {
-> > +	__u8 cap_vndr;
-> > +	__u8 cap_next;
-> > +	__u8 cap_len;
-> > +	__u8 cfg_type;
-> > +};
-> > +
-> > +struct eea_pci_reset_reg {
-> > +	struct eea_pci_cap cap;
-> > +	__le16 driver;
-> > +	__le16 device;
-> > +};
-> > +
-> > +struct eea_pci_device;
-> > +
-> > +struct eea_device {
-> > +	struct eea_pci_device *ep_dev;
-> > +	struct device         *dma_dev;
-> > +	struct eea_net        *enet;
-> > +
-> > +	u64 features;
-> > +
-> > +	u32 rx_num;
-> > +	u32 tx_num;
-> > +	u32 db_blk_size;
-> > +};
-> > +
-> > +const char *eea_pci_name(struct eea_device *edev);
-> > +int eea_pci_domain_nr(struct eea_device *edev);
-> > +u16 eea_pci_bdf(struct eea_device *edev);
-> > +
-> > +int eea_device_reset(struct eea_device *dev);
-> > +int eea_pci_set_aq_up(struct eea_device *dev);
-> > +
-> > +u64 eea_pci_device_ts(struct eea_device *edev);
-> > +
-> > +void __iomem *eea_pci_db_addr(struct eea_device *edev, u32 off);
-> > +#endif
-> A number of symbols introduced here have no callers in this commit:
->   eea_pci_name()
->   eea_pci_domain_nr()
->   eea_pci_bdf()
->   eea_pci_set_aq_up()
->   eea_pci_db_addr()
->   eea_pci_device_ts()
->   struct eea_pci_cap
->   struct eea_pci_reset_reg
-> struct eea_device also references struct eea_net via the enet field, but
-> struct eea_net is not declared anywhere in this commit.
-> Because these helpers are non-static, the compiler will not warn about
-> unused functions, so the contracts they establish (for example the
-> eea_pci_set_aq_up() handshake noted above) cannot be checked against a real
-> caller in this patch.
-> Could the series be reorganised so that each helper or type is introduced
-> together with its first user, per the usual kernel convention?
-
-
-If there is a follow-up version, I will do this.
