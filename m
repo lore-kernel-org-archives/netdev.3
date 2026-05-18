@@ -1,81 +1,108 @@
-Received: from mx08-0057a101.pphosted.com (mx08-0057a101.pphosted.com [185.183.31.45])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD1212EBB9E;
-	Mon, 18 May 2026 07:38:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=185.183.31.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D52E43CDBC3;
+	Mon, 18 May 2026 07:41:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.16
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779089928; cv=fail; b=Ma5Q0uXcNLWCc3FtayQeIEABrcG1jAMCp2YV+TPc+T3R1z4P+thW9vzfM+KquWndDJ5zhpWBLR/OPG7fMQS+wWrx7p8WdQV6lT4bAdWIFSCTOdrwO66l4HwhfE86/rZm6AMPkgI4JyH10N28h8ZAg9s3+RbdljdcfZTv0LpKf80=
+	t=1779090078; cv=fail; b=llwXABa8DmZbsg5nnWucCBbtLELPReJfWumheVdmplD7uJagizlOVRS2KNDP6Ewr7gjhuUhEFfO+xMdKmWuFL7VJZLND67lcZGzg0Nuh7BJfV/pcucC3ZS/OR01HZkotdf8vbo3E4E65qzFb47BiR55Ey8NurCI1N+0PQ3orCYk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779089928; c=relaxed/simple;
-	bh=PeQqLkWL0zFmTZ5VBHOZiocs91x/7b+8t1TDwOympZ4=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Y+rXJ9xgvk9kx4CBxnriqem7GwgPNlT7imfoWhck40FFu/Frl9lis8ACWVdZ5lRCzQkf2iQHA8W5HL9UzXxAi08ki+hi9e0Rrm0Oe0cWuW9O1W7C35drgiAXYxCoOpeDzqZF1g2owsL0+S3Tf/gSUoqQSuynPB6ijs0uSp9KhgI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=westermo.com; spf=pass smtp.mailfrom=westermo.com; dkim=pass (2048-bit key) header.d=westermo.com header.i=@westermo.com header.b=FIGtmQAo; dkim=pass (1024-bit key) header.d=beijerelectronicsab.onmicrosoft.com header.i=@beijerelectronicsab.onmicrosoft.com header.b=V3S19MjA; arc=fail smtp.client-ip=185.183.31.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=westermo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=westermo.com
+	s=arc-20240116; t=1779090078; c=relaxed/simple;
+	bh=mueFaIam1v790Dou8FM1xh30VcyYs+O761hh0Yc0HHU=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=rCBj/inZ8yOZwgIeKSegkGdTJ/uTezW+5+blvoYZgzbUBK5TF8PjG9323l/69YmrPbKeu/ICg+Sct/L3bjFvhJSfhyUQF2slHCOKFSZrTUuUQsNlh87Yu3qCpCrbSMWMtm/gQd2povhnFkZMFqOKkz1O91qAirsaj9rvMFpBLyk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y2u6WHa/; arc=fail smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=westermo.com header.i=@westermo.com header.b="FIGtmQAo";
-	dkim=pass (1024-bit key) header.d=beijerelectronicsab.onmicrosoft.com header.i=@beijerelectronicsab.onmicrosoft.com header.b="V3S19MjA"
-Received: from pps.filterd (m0214196.ppops.net [127.0.0.1])
-	by mx07-0057a101.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64I4Ns8m2730256;
-	Mon, 18 May 2026 09:21:47 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=westermo.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=270620241; bh=
-	5owCi21EMNCjFaAkdRJMpCANu+OAcSDcN+Mo7aOw/4Y=; b=FIGtmQAoaIV+bsJX
-	H+asuTA5TZPGNWkwlXYYhOfrn8O/C15vK5bcA/5P9u8ndr9GjpKBb9SttBc7y+zl
-	vdfRFg0a6xME2yBm/cTCV4mtNP9B5JY70GR7DF+xqngd4GkOQN6fh38zygoqJd45
-	9zPE+bc8DKsuOLuHX0eIAn82pwkY8YT+NtZKf88q4CiGCM5k7wsMq6hH3ncKhtUw
-	QDq4IpeC3/BAR5QKduCIWb/jo+VEhHhipneoyGR57/RvSC3fQyKstzhBd9v+Izq9
-	+IdJLNjCje3kbgXRGCZBdl4chOSb49YTzP50VeSnFu1gkBESJvio0CAmaAM3QfIG
-	epcD2g==
-Received: from duzpr83cu001.outbound.protection.outlook.com (mail-northeuropeazon11022096.outbound.protection.outlook.com [52.101.66.96])
-	by mx07-0057a101.pphosted.com (PPS) with ESMTPS id 4e7sn9g6vy-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 18 May 2026 09:21:47 +0200 (MEST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y2u6WHa/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779090075; x=1810626075;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=mueFaIam1v790Dou8FM1xh30VcyYs+O761hh0Yc0HHU=;
+  b=Y2u6WHa/MqmaaoltmCq4MLELMPXW2k8jiKcQPIcvk7omXbljRm+xv++4
+   W8wY1Nhuhlspsip+pbQQC7kPy3SENSN9DoScUKTwsKBEOV2gIj6KRK3gO
+   bvCgWVtW4cKf/Ido1kRzyqxhRe7eAHB5a075MKUhFwiLOast8nv8XxD5i
+   utS3npF9VMqaKLrpgmMIPzB76tIOf703JVekSJ5GfuCphACEjVSbeJjr+
+   VQuT2bhmDkuzj7nlUS+5MFxxqmRsIHhbypVZIdrthkfWiuTX4+8WwsDRN
+   ve2KalQEwE4jM+g9qaiemXe5JnAIfIWE279vr2iIkhYN9T9SvuIvvI09T
+   g==;
+X-CSE-ConnectionGUID: PyWEBFs7Ti2WRFYFWmOoaQ==
+X-CSE-MsgGUID: AuU5t6z9QSC6Lu8q6nKnTg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11789"; a="80109106"
+X-IronPort-AV: E=Sophos;i="6.23,241,1770624000"; 
+   d="scan'208";a="80109106"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 00:40:39 -0700
+X-CSE-ConnectionGUID: XlHdntGIQsOZebm5c+92zA==
+X-CSE-MsgGUID: a0z9eCTNSWKbVpek1yZeTQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,241,1770624000"; 
+   d="scan'208";a="263130240"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 00:40:27 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 18 May 2026 00:40:26 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Mon, 18 May 2026 00:40:26 -0700
+Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.65) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 18 May 2026 00:40:26 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dV+f4ejuKlxaneKJKqHOhMfoLo6AOx3PemMJHAgbLBFT+k/MShbxJKFv8rRd8gSCa3HZ8du05hDwYxeDa7rN+Q4ufczGzm5kQjwH+16dnpPimAbpxuoysncnqw5ag/lFwLyrZI0CvRcjp30WINUYnSGAGojYIkepYfoIP+ZoTlH9wub8dNmOyuglL/wLeftz1/pgnew5dyBivyiXhV9ImpCJSpuqhuBV4W5X9e/L6LfMseWrdc97xHn3eFRBupkNAvupnaRJWZa/OcZsU2UKJSVGdsIisLutvTnS0HluysZBNsCLRc6SijEyuj4QfPgo5lRSx+9rH3PWzcCIKh3kGw==
+ b=GTvbICQapCeRSQ3YsHVsjRtCHBLl04y/Ff+vK3jDeFikdD3JWshmONcFh///x9UvBt5O9aN6fmupx9/QhgtaLZ2irJ14YHaE6ax/F3ouz7GA5qOdGhAbm8eMV2JY0ClQ4j59MpwfNV2PVJ5ha1jkqYkwQF7qN3Nc45Ye5j7pugAS+r5tCeAxQ9157Jx9UHLl/r1PkFVqCDjxGVqJLGzrMFF9g0K+xzT2Ag4sH9K+ZC8Z2wg9dbjhVx7dQVhHEaaZ/UehqpSbRb1MgkSBZ44lJBgousvMQcvuR1YTN+Ipg5f6nreD8nJVb7/fJ0FqdT13znUGxWwmnFOcrDnHFhx6SQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5owCi21EMNCjFaAkdRJMpCANu+OAcSDcN+Mo7aOw/4Y=;
- b=J0OVg7A7ZKnGJE4Z83ZiSAj9BPQwfN2rNXCEiFTLJaPQ2POAbhY0gHxrhVLYEf/APzAL4eYon29pMpS5oO71sm8UJfL2OiplTUaPYjlO27F14ngUqp6I5+GIgmgYN0IHcqnWk2+E2HOSF35gxdgi1mi8VGrSIAIvrN+0NSqSKSn9uR2XczVVdKlXAxn7a7bwEq1fIXkQU92H9sMoFY+U1sBhJBpcB7nAB3f7fs8xBKyyfU2m5tzZOIn/2Gw1PbMOw0lxoQspBglcHYD7xmhYXSWYxu24P0r5Earg7AzvcCQeWDBUq5jgJlFFhN+9h0SgpRFd6nR1mnlim0QHkfEHuQ==
+ bh=PElVkdmHUAWK8iTRIi69rjZklLUYGWZdIU1Zh5pdpa8=;
+ b=RnZCpIRZJtBgriRIvMMkJkse3q20bVY1ZjUrVXsKxToxQ6pApXaw14MX9C74JmYkrkWc9UmVwftMvnX4IlDl5CflJgzH9WjPpJXcqqLHfgfILhEW+O8dTyFeQu5tE7NA428EUhmKBmzeUDG3GCCzoTLNsndCQ9NaiXeYtGrWdrvv8PvcOMQX6ZPpjlUuaXKkCIvA2g0OEoO52kz2dKJ+wgLxVEYgVhNL/cqY7sJY2AvbVmbAGharYJO6rUYlUjj7Poic793jrFWAqpBvrRrzosQ1saX6B2goKGKCwjHVBWMsp46fAJbojVtGHldwL1lNRda4PYQrTRGK0N6WWjCBIQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=westermo.com; dmarc=pass action=none header.from=westermo.com;
- dkim=pass header.d=westermo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=beijerelectronicsab.onmicrosoft.com;
- s=selector1-beijerelectronicsab-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5owCi21EMNCjFaAkdRJMpCANu+OAcSDcN+Mo7aOw/4Y=;
- b=V3S19MjAzITwnW+Z3VqJdL1y/uOOGvOe2kLazzn/nF3dMZkWQvRoYFBNS2HKwsejeHv5Ja5J3qucb6vaeFU2WLeiZfkLHLTMl2t6XIztEjjFzdc8W4uDB33EezqG7qZDxUEAoLX8miO4JD8iDtXw9FrwXNoCWFYOODrAuIR5aO4=
-Received: from AS8P192MB2043.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:5bf::11)
- by PAXP192MB1607.EURP192.PROD.OUTLOOK.COM (2603:10a6:102:282::7) with
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SN7PR11MB7540.namprd11.prod.outlook.com (2603:10b6:806:340::7)
+ by CH3PR11MB8414.namprd11.prod.outlook.com (2603:10b6:610:17e::19) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.21; Mon, 18 May
- 2026 07:21:44 +0000
-Received: from AS8P192MB2043.EURP192.PROD.OUTLOOK.COM
- ([fe80::9f05:d0fe:f10:78e6]) by AS8P192MB2043.EURP192.PROD.OUTLOOK.COM
- ([fe80::9f05:d0fe:f10:78e6%5]) with mapi id 15.21.0025.022; Mon, 18 May 2026
- 07:21:44 +0000
-Message-ID: <539202f5-43ba-4938-a9b2-393c1bb3e072@westermo.com>
-Date: Mon, 18 May 2026 09:21:42 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] usbnet: limit max_mtu based on device's hard_mtu
-To: Laurent Vivier <lvivier@redhat.com>
-Cc: linux-usb@vger.kernel.org, Oliver Neukum <oneukum@suse.com>,
-        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-        Stefano Brivio <sbrivio@redhat.com>, linux-kernel@vger.kernel.org
-References: <20260119075518.2774373-1-lvivier@redhat.com>
-Content-Language: en-US
-From: Matthias May <matthias.may@westermo.com>
-In-Reply-To: <20260119075518.2774373-1-lvivier@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: ZRAP278CA0013.CHEP278.PROD.OUTLOOK.COM
- (2603:10a6:910:10::23) To AS8P192MB2043.EURP192.PROD.OUTLOOK.COM
- (2603:10a6:20b:5bf::11)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.23; Mon, 18 May
+ 2026 07:40:23 +0000
+Received: from SN7PR11MB7540.namprd11.prod.outlook.com
+ ([fe80::2edd:5c6d:169c:389b]) by SN7PR11MB7540.namprd11.prod.outlook.com
+ ([fe80::2edd:5c6d:169c:389b%6]) with mapi id 15.21.0025.022; Mon, 18 May 2026
+ 07:40:23 +0000
+Date: Mon, 18 May 2026 09:40:02 +0200
+From: Larysa Zaremba <larysa.zaremba@intel.com>
+To: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<edumazet@google.com>, <andrew+netdev@lunn.ch>, <netdev@vger.kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+CC: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<edumazet@google.com>, <andrew+netdev@lunn.ch>, <netdev@vger.kernel.org>,
+	Pavan Kumar Linga <madhu.chittim@intel.com>, <przemyslaw.kitszel@intel.com>,
+	<aleksander.lobakin@intel.com>, <sridhar.samudrala@intel.com>,
+	<anjali.singhai@intel.com>, <michal.swiatkowski@linux.intel.com>,
+	<maciej.fijalkowski@intel.com>, <emil.s.tantilov@intel.com>,
+	<joshua.a.hay@intel.com>, <jacob.e.keller@intel.com>,
+	<jayaprakash.shanmugam@intel.com>, <jiri@resnulli.us>, <horms@kernel.org>,
+	<corbet@lwn.net>, <richardcochran@gmail.com>, <linux-doc@vger.kernel.org>,
+	<bhelgaas@google.com>, <linux-pci@vger.kernel.org>, Samuel Salin
+	<Samuel.salin@intel.com>
+Subject: Re: [PATCH net-next v3 07/14] idpf: refactor idpf to use libie_pci
+ APIs
+Message-ID: <agrCUph4ybJHXrrL@soc-5CG4396X81.clients.intel.com>
+References: <20260515224443.2772147-1-anthony.l.nguyen@intel.com>
+ <20260515224443.2772147-8-anthony.l.nguyen@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260515224443.2772147-8-anthony.l.nguyen@intel.com>
+X-ClientProxiedBy: BE1P281CA0280.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:b10:84::20) To SN7PR11MB7540.namprd11.prod.outlook.com
+ (2603:10b6:806:340::7)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,174 +110,1302 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8P192MB2043:EE_|PAXP192MB1607:EE_
-X-MS-Office365-Filtering-Correlation-Id: 03530c3c-757f-443b-f51b-08deb4ae1d6c
+X-MS-TrafficTypeDiagnostic: SN7PR11MB7540:EE_|CH3PR11MB8414:EE_
+X-MS-Office365-Filtering-Correlation-Id: 15db7fbc-b901-4065-98fe-08deb4b0b7f8
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|366016|11063799003|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	4+vpr9GX9DDBsRn0AvunW3qRvMo24lghGZmF1OS5ReDTq2f5CsKbYPgAQtGQ8yE3dL/ilzWtd7pa4+e4a2N2+ew5uDUauEBR/u34qhMPkgU4sDBiqgud+sKkC01C/Fkwz8rbgfVy/mnECukE8R6C8vzQVfiJlES38fEShGOWisFybTPS+m4+VYirhMwEaPvGmyFYdj8vBLIWQu6CJ9p5CFU6OTg6JUtDuTdPGtNcgucCwjcWEPM7O+cSaZatKZ2l+9lRUdLZxR+9/hzfW0LzlFKhESV+Vhmz6FrEzW85XCUDT+eI4fJxpeOXeigm202GnMzOcei7UAC0ADMJCNhFPAGxAPMs3smzYnmL+bLEb4KrOm0lYCfBqnB7SvnvJMq1CZ2IJspOVzFpUqJ9pYccERJaAGn3RUTm7HMMkzhRvlpwb3eV5sgGy5gg9QtwKcktXdWd3/xuByINHO0FvR8owJMCb3iDaeWGdGhXZDox0/yqiorYbT2i1Vy6KVZ4acw1eMD4t3VkwIHoPcmmZS0kyJu9vgmR9ur1A9wbjFUwwE9b81xVR91eJdA5aC2NEWWgdaBswnrAaIoeNh7UBHego9BFAJri7A8oTr8vM8TRl1x7ABKpdiHYM+HB++W9tmfmPh5ssnYQgrCvcGSasFSSxA==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8P192MB2043.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(11063799003)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TkxPblQ4UFpyUncxOVhzdVZCNFRJZVRidU5oUHI0Y2lla1E4cnp5ZWFVMk5x?=
- =?utf-8?B?UzFGQ1R5Q2IxMjJuUVphYktyRjhJT2N6SUxxTTBtUzVxSVdRUmRkVUdySUxa?=
- =?utf-8?B?WmJvanhySVlhc1BCc21TUnhXOVpXTmdWS1hCclppOVR6TVdldDVHYWxYYm9l?=
- =?utf-8?B?WXVLNjBOb3dIK3pucHlsMnV1VU9ORUlGS29ReVFFVEhmM1VXQUpEY25VaS9t?=
- =?utf-8?B?ZzBjNGxxd2RtbjJhN3NXVFIycUkwUlNPbkJWWHBYUGlMekF6VVJudHYrUEI1?=
- =?utf-8?B?bkxmMDFyd2NrbWFmd0JtYWFVaC83WTVXZGo4UDRwMlVQNklLUFFLVjN6Qk45?=
- =?utf-8?B?WjA1VFZMQlp3UW9uUjNQaUhwaGJYV2dxUnlXNGdMeHlxRjlTODE1VHF6T282?=
- =?utf-8?B?RSsvVTdQY0dXWjA2VFJLVFpUYkRiYmRiRFkxZ3ZzQlZvczJwNk8yT2pWL0hR?=
- =?utf-8?B?MnBXT1V3K1JEd3l1ajZoYis3M1hHTkptR0ZnRlMyaUYwN3hyOWpVMUdra3pu?=
- =?utf-8?B?Y0NTd2hCS09jRGkrd1hmam10QVdoaUk2NGxTMFdoalQwY0o3eDhxYTBPVkFQ?=
- =?utf-8?B?VE5FdDY1cTk5a2ZuOWsxY0JEN0xlZ1VPeGdwRUNUZGE0U3lpVmJRbG5iRUhz?=
- =?utf-8?B?TUZFRXFLdm5EeVkrN2JZL3ZGeWF2UUZjbVBkK0cvaVo2OXBWekRGQUNhY2Zx?=
- =?utf-8?B?eUxHUm5VMjNvbFBtZ3Q3bVNObDNsdlIzTjFlMDByWXpYZUtsYnlXYzA3cnJP?=
- =?utf-8?B?MWRNWTg2M0I2QXJJcU81UFc4VXQrK0FXRFNhUWZVMUNzcjU1dzBiVzBzYXNE?=
- =?utf-8?B?Z0t5SG4rc1RnaEZEV1FOQTJCTmhQaTlzMjVhcXRybWdaYUI0NHIxRTZJTFB3?=
- =?utf-8?B?cDhnOXVZL0hPMUNNS1NkQ2U3eFFOdTluZWZVWnZMc0lqMzhjUzZOb1E2UDBk?=
- =?utf-8?B?L3FzaktQWU14eG5aU1Y5dXBwWnBPZTVsVlFIRHZYQjZKM01kdnBwWXpMM01t?=
- =?utf-8?B?RnEvdkhzbmFPMXlqZjJTZ0ZMdm1vNGlNbk1NT0dpL0dQRWlVUG9mSG1pS3d5?=
- =?utf-8?B?dWRmZ1d3OGdQbjVYRlRhSDBJbXFSUnVZSXFjLzB6bVhwTjJESXlYRXNlNXVz?=
- =?utf-8?B?emE1d0V1QVlPcG8wOGhsL2V5cGZueDdlMEFWZVNsOGdmRVU0WEk0Wkt3bURX?=
- =?utf-8?B?aGpFaktZdUVPRUxJMTdteHE1LzZlMDlNMGlXWmV6bXdJUEpaVEwzbFNBL3BM?=
- =?utf-8?B?azlsZk53Wms4MkNZTmU2anlHT3hhMllUaVcxSUZ4VXFVWXZhT1NSOTdMWFh6?=
- =?utf-8?B?b1lWZHR1blozY3BoRnR2eWhReUMyR3I4OTh0L3BuWFozbnRLVVYrRmt6MXNn?=
- =?utf-8?B?eXE5cWpYaUFLNmhXZFNrZXFuR1k2SU1QelhPQ0RrTmNxakRnZ1RyYTlJZ2U2?=
- =?utf-8?B?eDE1bmszNmRNQlJkeURzeFBaUm5ncUk4bndkOWl6aWxqaDlYWVNsb2s4UGl2?=
- =?utf-8?B?NWhEN1czTFc0STVBN2hUTVQzUHlQQmFRenJvamIzOWY2bEFrOGtZWFR1bjYy?=
- =?utf-8?B?ZmhkS2lVVmtZVTI2dy9wZ3hBK2ZpQUVTaFdmeGRyRTBrNEZ1TC9WdDRRRldC?=
- =?utf-8?B?MGlBNCtudVpnb3R0WmdoVlRzNXYzNlF4dTZCZHhpN0srOWtRWFZYdEFHeTVk?=
- =?utf-8?B?cStHbGRYOFhmYjZkU0x3Y3dJK3pEWUZrVmRNeFhvZmRCOUprQUJlanNmanJO?=
- =?utf-8?B?ZVB2U09BNlBFOTk2RThER0lWY09VQzJwcWdFUkVLcHJVdjB4KytMOTRCL3I0?=
- =?utf-8?B?SUlPMkZKVUNJR0s3eHBoVnQ4UTlGWU1FT3ZmVEc2VVJXTFZoekFqRjhIYUJk?=
- =?utf-8?B?Q3UwNDBSUTVjQXF6ckFkN1BYSnhQVTgxRlNQdk5xdW4xUjd1bmI5SC9QWjVs?=
- =?utf-8?B?VW0xZ3lqOWF4aWF2aWdlTjhkMWgrN1hhRmQycWNwcTI1MmJPdzZ6VTJET1Ft?=
- =?utf-8?B?OEFEOVZpNzRGM09yTUNmNkowZWVOQ1BldDZqUnVyeVYzUHRwWlp1NTNjSzZV?=
- =?utf-8?B?YnhWSHpKSWVFZTVLT1dWZGRaUzhOVjIycEtxTzIwRm05MHQ4OW9lNzhSOHlZ?=
- =?utf-8?B?aWRiMEc2MDZmMTN2ZnBpeWdvRkZEUlFqV2c2RHFFWXZyeTNCZG1PYUNpZXZK?=
- =?utf-8?B?VkM3QklIeTA4ckk1OWhERjB2OUNNYVpJa0pzdEd1d2RxR2dUc1FabXM0MVY1?=
- =?utf-8?B?djIyNVBLcWtLdWhoZDFrS1V2QXJvMXliMUVCVkNjUGJjekxXN0R1NlNEaTU1?=
- =?utf-8?B?SFRrdzV6ZnZYR0Iybno2YXJYeGk3NXlJbUlZTHlqUkxBUVZyejVMQT09?=
-X-Exchange-RoutingPolicyChecked:
-	qSA+cescxmqJfwI0QphymWgpWQl2qYrKwQeAzPV8btN8RTvLqTyldFk69YUwsoJgQNHs2H80DK4keWKK9fuci1BgDnbsfYZz/ZTB538NIo/G0ymYTduh8H61Pu8gL3KjZ3KM5WtJ4rsFG2D1Zbhu1pIBWy9K3Q0HLlW8J1YCYAAiMc0qGzgdQKQfWaKG7gVx+b4Zrk74L7hCUePMHRA0qAeFNlHNJr9Hol0lCLDC/EKH5lWX5SFoe8M6zVvKwezDe3qPgOvIdmKRzi3o3ICB/1Gh0gx3JyJfguN8F4lSzC3u7Bmy4sK0ACxWhV/G7uPvfYiHEa2h0glmeCO2uCouWA==
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	skaWXMFcQsI3tJ6hzfOKRXmdYFb6Ia3t4dq1y75STwi3Qi92Y8u9e/z9jsNxkXYC+lKk2ISCuCdU6BSOt5En0dEcsFYEcy3qqP7pvDFdTuBfdUhtFj52ISYy6wQBkmbBvrFmbFC+gGsJEFP40AiQeUrg3ZkXy52Tu0ooobMExH+nnMwfwXb8aI5Jsa9Qjnl7cemxpjgNWavezL6CIP5qSQHAin1Pqjo/u9o1juS9FQwWoEvD+ncGs8v7PdH4Yh7ET1RUhWrazzVcsAy9gqhXTh+cRnWAkNpTmI2dex7DJqd0wNxQ28oHCYsyIFp/Ef89WMgg9yMB4gU3/IPDPbJDjUStFBcUGFpIedShiBMY3+6YFKQ683EbXwE1EX/xD65X1qQhIScagcWAEiCnb5jfT+xW1E0oQsJhUA3WR37VETXo6I37KKQRJ1bFfAHk40vJr728pYXAaJpgWzysGUNfGaneb78LwdnDqAmM2I5Rp4F4/ytJspB8UCL+bSRcfNXUY9NKsr7Ndri5LzDFctZoXTUFSBd+MyfcKRVsBpCiPQ3748lv7PWWg/JMWAwpwkgTF+sFAaYyDHoK5fHF7+mdby/3Dx5/dVk8dM8kqKLbN8cK0KHrDBxMqjg7q+z0/T2+
-X-OriginatorOrg: westermo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 03530c3c-757f-443b-f51b-08deb4ae1d6c
-X-MS-Exchange-CrossTenant-AuthSource: AS8P192MB2043.EURP192.PROD.OUTLOOK.COM
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024|10070799003|22082099003|18002099003|56012099003|3023799003|11063799003|4143699003;
+X-Microsoft-Antispam-Message-Info: Lf3sYyY1olMuIKjQ6sO/V0JYARNl3XTAJrktITyr/Nx29c4dOK8do0pbSat6+rYKRZEn5j7mjI3X90o0qP1LmaAsRrzweG84v8erqIAAEn+bXTaluGTKjVMsjnFrk2MLgDSy9u7LkajZbwvb22Q21NmyXdwzz2U9Or/8gPheKtXkwoTcC6gNyXwBUgzou4//OZMMUiv3mup6DUP5XXiOz1ythngRKCa9/az9l6niZH/3DeK/nr8OOxVIsFp/3nD5Fak3QqmvRATpi12nFo2ltTa1yiLVlGdcpkmRDwdQRN+4AaVBmiG3tyF+9ifCZFIOh5Ib/qZP1oeMRDScBbAvyx99Hbik8lL4h211iTvruF3TvIVcH10UnuDY+FfR12PeQqHz9yqNDFCHgnIqkWMVMmWo9zqlgs+P5CYKxe5/7b4t96goupEpM/S89MVNYnhkPU4zqOL7pZ/fgIC/2IuetN/apMdKVfOIcssL901BptpbC59Io/9kOkkffiZBfyTRYA4Bvw4rXqnvAMTXC5mEiXxmOLh24gEA9FTA5bIJWQWEXiY4tylNDp/LW//7Cqb0bksX97mQQdPJaKjEai2hOprws/FHtEcAvieeSc4gY4Oro6OHz7iUA2uwDXCa8840Om0NkOdhELcuYHzWNHFzXg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR11MB7540.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(10070799003)(22082099003)(18002099003)(56012099003)(3023799003)(11063799003)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?c1Fq1hD/NH/bU9DBMadr00eM0eKLXjpHRyX4fco3hqjOADcJuHOrNmuRoABA?=
+ =?us-ascii?Q?Iu8S0QuXHMfxSM3AC3xOP6QFeLkn/IygMykI44vDEOjBp0Cp387+tWTF+W+C?=
+ =?us-ascii?Q?YrrSk6WkXy+n800EM3y/eafg+ATa/+355o3z/y5MZur7o0lXgo01lhQEK7kW?=
+ =?us-ascii?Q?B/d5R72N04ss4OuzUtzZgy118OERSHxOSE4qwpNMsVuFeugWgT75CCXe7g7b?=
+ =?us-ascii?Q?inXeQASPZn6lrp8PNX8hwRU6XhA2s/0TH1jbuM6xiPsV/PCpKSB1vn13vclK?=
+ =?us-ascii?Q?CeemZOluYVcMI62RbJgX7T8xpVOpc0DMKVjX7fTRw3Y95MGNsf9kM/ERNaFq?=
+ =?us-ascii?Q?8CsXJSidj1H5g+049CLHWyFEssa4+J3cuWINgS4LV2NYc0NUJUjWU5330jAw?=
+ =?us-ascii?Q?aJIK+c/4OSvB9zSfDm4WgAqK3mO4HF1tQeBn8ju4MzrUEKpnt8CuCV0DNAUH?=
+ =?us-ascii?Q?iGUGumI9pi8Maz/69QwNd8IGrUBlmmvnIy69qjWa3KThFd6jb/5fSFa0l1N4?=
+ =?us-ascii?Q?oa+q9zepwlPtCw4iDOukMGP9zYeGC/vcLJ5Glm6/9AsgFyB1mPLwHGVL2Rob?=
+ =?us-ascii?Q?0JcPMkeGtXVuxuJVib80O+1CHlDKB5vZc2lmqq3XBshlaI1Zl48JonTLeymb?=
+ =?us-ascii?Q?H1XlFGOrQ6g3/XZq0V6loDUhdmmttzjOS2EEMPP5reFuPQwVYqOTm+KLSBmH?=
+ =?us-ascii?Q?ad1O+BraK/p0GaAwP2PkiVBGJn5OdXq0Y00UqPNPWwkKsIc1wBWrDdjn0Jff?=
+ =?us-ascii?Q?go/4LfFQPt2vQVr0ufz1Qwjii9Awyd7Qu7bndcCl27F9hM/9Q2Oi4F7zMtwR?=
+ =?us-ascii?Q?CvENj+NfoI4/qiM1BrgYOH5K4aJQ1JoqpQChEgoqgJihcwBRjQZJlQvfWKq3?=
+ =?us-ascii?Q?IDNXMcknwa7GD0Wta1dqYtXWymzZDSGtT/TmMIvb1eoFLjcxcHMnY9aHKyge?=
+ =?us-ascii?Q?caLG+ELMXWAY1hsJiVqyaQvySFtB8AGGOZo/8Yj1Fp5US6PRPfmu9PW4B9fy?=
+ =?us-ascii?Q?DC+V07SEoyGWl26pOfqP13bFYbiyL2F/Ku3eVOK358SDEV1Ov3wHKyeGa/5u?=
+ =?us-ascii?Q?YowMAnKZRmoAyjieCMzCRd/QzPIytzjszG0vAw0QJn3PNal6onHescgKYfli?=
+ =?us-ascii?Q?SNhqKwRQNKw/bWjpjAcVNLfgvFGdFjSmIsoPhwCoZg3cuiUaafgv7ZcXZ9sE?=
+ =?us-ascii?Q?g+XMHFWDcS6VOCyyHRgxi0KuHPKpxu2T1fjO9WD7pl/s1Sr/wrQxYdNcjim+?=
+ =?us-ascii?Q?QP9+b5/gB3Mw0o0N6Q1wiDCkxakUZt/0il14JX7eIOjpPx3bZC3sZRAGn+AW?=
+ =?us-ascii?Q?CIeTLUIVu62t/HOTLISRjjylhcyeeyRUvv1MJYyudGTlgX+fIw3oXpmZxVA4?=
+ =?us-ascii?Q?XaVyP9/s3yZVRBiSYWZxEm8GqbR4vSQ+8+43fo358s89vDLAt/4uIC0DhWgH?=
+ =?us-ascii?Q?W7i9waUQm4U0y+RXlgWl6OI7HBmYrOc7oqlZgDhJypq/3lI9NRQGVvFvwcG0?=
+ =?us-ascii?Q?xdkIMuZaHGn15l6hwhnngkWTzH9TWMUG1/UZ8aqXytUuHSAterUmd3mrcDiI?=
+ =?us-ascii?Q?bWlr7ziWTmXKcMyvyccIBg0HjsiY97UlV3BM3j0XEjWm//ZnyI3lVL7lETcw?=
+ =?us-ascii?Q?FWZfogOI8ZZLSyJmr8SiW0wvATYkqK3OzvmgnzJdD4n/Sa7ZpcxqlsOZI2XT?=
+ =?us-ascii?Q?7cl4N6UbkYI/FLKLbxIZElhItkpJTXtSgofIOBtCJ3kntyp2i75fGFhXY2A4?=
+ =?us-ascii?Q?i3Jxe4xyYBXpk6pgkexDzgGkG7a1o2hfwv6XwQ24EeZW8U65EE7/eCT6wrah?=
+X-MS-Exchange-AntiSpam-MessageData-1: 6Oh925BzAO5pA/dqBMT4CrHqUdpcEVJ33j4=
+X-Exchange-RoutingPolicyChecked: Aedh1ICQdmzDvWpIvOYyIpKYrlPiY5hl6I7l4ARiyoZkWyEFDRQhptXUODP/YgVCPxAv/gVrdMUOUqzUu65B6O39JpGnvyokdhWIogxWjWwEE9epgsuszNt94R3FjhwMjFY/8KsirL7UPny84gNNpFMLYGC1hyUDeV31h323efgoixM65/6hPX7YH8Hx4PiT3TdLr5XBM19pCrO99nPaEBhzlTNoKFSmQPP+wtBb0XI/h/QP0Uj0xenSub9DWy7sb9wWO43C+cY53ChBVt+CjTB6pi6V8goSQFhBVRiMd76AaBIi0F4HiBw6PKOojjwFiE6T0Pak5ux16hkSbchITg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 15db7fbc-b901-4065-98fe-08deb4b0b7f8
+X-MS-Exchange-CrossTenant-AuthSource: SN7PR11MB7540.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 May 2026 07:21:44.6405
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 May 2026 07:40:23.0809
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4b2e9b91-de77-4ca7-8130-c80faee67059
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: RdHIzOCagk1B+OAguaV1PxYScX+E33dm1dLtA3NEFMw/A8XBrjLnn48Wr4uPGF2umQ2KoGoNX0Fp8jOb7Bp3Ig==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXP192MB1607
-X-MS-Exchange-CrossPremises-AuthSource: AS8P192MB2043.EURP192.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossPremises-AuthAs: Internal
-X-MS-Exchange-CrossPremises-AuthMechanism: 14
-X-MS-Exchange-CrossPremises-Mapi-Admin-Submission:
-X-MS-Exchange-CrossPremises-MessageSource: StoreDriver
-X-MS-Exchange-CrossPremises-BCC:
-X-MS-Exchange-CrossPremises-OriginalClientIPAddress: 144.2.103.240
-X-MS-Exchange-CrossPremises-TransportTrafficType: Email
-X-MS-Exchange-CrossPremises-Antispam-ScanContext:
-	DIR:Originating;SFV:NSPM;SKIP:0;
-X-MS-Exchange-CrossPremises-SCL: 1
-X-MS-Exchange-CrossPremises-Processed-By-Journaling: Journal Agent
-X-OrganizationHeadersPreserved: PAXP192MB1607.EURP192.PROD.OUTLOOK.COM
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE4MDA2OSBTYWx0ZWRfX8W1x8GGTBD8c
- t2+rKWCDQ8WBJy5PV6qE8KTn3vFXDT7c1f3f4czt1R/IR9l4qm6Q5YrucULZpGqPu/IbsWEAVd1
- S0JnUhrQpvGHWuXlON8kS++dmSxSBO3XzEx7AJIaXrPn9eXDoX9CesoktBBw7cfHUkSZYv+P7V3
- OnA+seNNBXSbbTzkEGAdCyjyb6CQsCJMandbpdGkmbyPgCQ+1xnK3656I2m8Z0PWNwv5iXuzZ3p
- bCYK/j/Hmzj0ihhF3DAc0oN6V+vJBMFKLc19tghJk1bw42I2hfPsPdGGm+EF8o5mktnGe8d7jMy
- sM1AyFOF89h9tEglk/PfOTz6e52bAAbhYLHKeiuy7f+AxR8+09VZqgcwtManv5rhFfY0EY6E11D
- 6YxQoOskMCf/gwFScWxv04xm/WVnvq52eDgYHkNSzl3/C9UQdHgXwBfS3S8/iE0aEb4TSid0Gu6
- Em7bUOEpw5veU5DS1Og==
-X-Proofpoint-GUID: MFF9Aw50buP4W-azt0vkQlshSgok8gHU
-X-Proofpoint-ORIG-GUID: MFF9Aw50buP4W-azt0vkQlshSgok8gHU
-X-Authority-Analysis: v=2.4 cv=MtFiLWae c=1 sm=1 tr=0 ts=6a0abe0b cx=c_pps
- a=YwV1dbZ4NCcMRCVFBFAcsw==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
- a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
- a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=8gLI3H-aZtYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=tr3XZvuDWTETL0Uaxejn:22 a=WQ4YJ39tjzx_Hbm9pN5v:22
- a=p0WdMEafAAAA:8 a=pNgXkJcRAAAA:8 a=20KFwNOVAAAA:8 a=-i4I5E_jAAAA:8
- a=F_gvssytOtQCGReap8EA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=tKe0A8swS_RTMQ4Dt1Wu:22 a=YQreJwxzuLcQAHRr27xt:22
+X-MS-Exchange-CrossTenant-UserPrincipalName: aNeJ0FCP5Nszjtsg91W8UgOolBzUpuTg9VaWLGCM/JP11F+JOc7BKMRYRLQhY9GW5aLZ8X7K7rSMnm83O0tYn3+adZK8YhK/HO75GpF0agg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB8414
+X-OriginatorOrg: intel.com
 
-On 19/01/2026 8:55 am, Laurent Vivier wrote:
-> The usbnet driver initializes net->max_mtu to ETH_MAX_MTU before calling
-> the device's bind() callback. When the bind() callback sets
-> dev->hard_mtu based the device's actual capability (from CDC Ethernet's
-> wMaxSegmentSize descriptor), max_mtu is never updated to reflect this
-> hardware limitation).
->
-> This allows userspace (DHCP or IPv6 RA) to configure MTU larger than the
-> device can handle, leading to silent packet drops when the backend sends
-> packet exceeding the device's buffer size.
->
-> Fix this by limiting net->max_mtu to the device's hard_mtu after the
-> bind callback returns.
->
-> See https://urldefense.com/v3/__https://gitlab.com/qemu-project/qemu/-/issues/3268__;!!I9LPvj3b!H-nIZIscCCh_2FnbJInagPxXTe0XcNu58-8k3NqGYKRdDy8LBOBjWiTIc1E-cC2wnv91MtZrak2pu7K-4cU$  and
->      https://urldefense.com/v3/__https://bugs.passt.top/attachment.cgi?bugid=189__;!!I9LPvj3b!H-nIZIscCCh_2FnbJInagPxXTe0XcNu58-8k3NqGYKRdDy8LBOBjWiTIc1E-cC2wnv91MtZrak2pq4lrvZI$
->
-> Fixes: f77f0aee4da4 ("net: use core MTU range checking in USB NIC drivers")
-> Signed-off-by: Laurent Vivier <lvivier@redhat.com>
-> Link: https://urldefense.com/v3/__https://bugs.passt.top/show_bug.cgi?id=189__;!!I9LPvj3b!H-nIZIscCCh_2FnbJInagPxXTe0XcNu58-8k3NqGYKRdDy8LBOBjWiTIc1E-cC2wnv91MtZrak2p8csXaww$
-> Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
+On Fri, May 15, 2026 at 03:44:31PM -0700, Tony Nguyen wrote:
+> From: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
+> 
+> Use libie_pci init and MMIO APIs where possible, struct idpf_hw cannot be
+> deleted for now as it also houses control queues that will be refactored
+> later. Use libie_cp header for libie_ctlq_ctx that contains mmio info from
+> the start in order to not increase the diff later.
+
+I had reviewed the Sashiko feedback [0]. Here is why I not find the feedback 
+very helpful for this particular patch:
+
+1. "libie_pci_get_mmio_addr() can return a NULL pointer" - should not happen, if 
+   the mapping is successful. If it was not, we would not be here.
+2. "cleanup subsystem guidelines recommend..." - comment to non-modified code.
+3. "idpf_vc_core_deinit() now calls idpf_decfg_lan_memory_regions(), which 
+    unmaps the MMIO regions. When this is called during the teardown sequence in 
+    idpf_remove(), the netdevs are still registered." - 
+   idpf_decfg_lan_memory_regions() unmaps only non-static regions, so this is 
+   fine.
+
+[0] https://sashiko.dev/#/patchset/20260515224443.2772147-1-anthony.l.nguyen%40intel.com
+
+
+> 
+> Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
+> Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
+> Signed-off-by: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
+> Co-developed-by: Larysa Zaremba <larysa.zaremba@intel.com>
+> Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
+> Tested-by: Samuel Salin <Samuel.salin@intel.com>
+> Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 > ---
->   drivers/net/usb/usbnet.c | 9 ++++++---
->   1 file changed, 6 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-> index 36742e64cff7..1093c2a412d9 100644
-> --- a/drivers/net/usb/usbnet.c
-> +++ b/drivers/net/usb/usbnet.c
-> @@ -1821,9 +1821,12 @@ usbnet_probe(struct usb_interface *udev, const struct usb_device_id *prod)
->   		if ((dev->driver_info->flags & FLAG_NOARP) != 0)
->   			net->flags |= IFF_NOARP;
->   
-> -		/* maybe the remote can't receive an Ethernet MTU */
-> -		if (net->mtu > (dev->hard_mtu - net->hard_header_len))
-> -			net->mtu = dev->hard_mtu - net->hard_header_len;
-> +		if (net->max_mtu > (dev->hard_mtu - net->hard_header_len))
-> +			net->max_mtu = dev->hard_mtu - net->hard_header_len;
+>  drivers/net/ethernet/intel/idpf/Kconfig       |   1 +
+>  drivers/net/ethernet/intel/idpf/idpf.h        |  70 +-------
+>  .../net/ethernet/intel/idpf/idpf_controlq.c   |  26 ++-
+>  .../net/ethernet/intel/idpf/idpf_controlq.h   |   2 -
+>  drivers/net/ethernet/intel/idpf/idpf_dev.c    |  61 ++++---
+>  drivers/net/ethernet/intel/idpf/idpf_idc.c    |  38 ++--
+>  drivers/net/ethernet/intel/idpf/idpf_lib.c    |   7 +-
+>  drivers/net/ethernet/intel/idpf/idpf_main.c   | 114 ++++++------
+>  drivers/net/ethernet/intel/idpf/idpf_vf_dev.c |  57 +++---
+>  .../net/ethernet/intel/idpf/idpf_virtchnl.c   | 169 +++++++++---------
+>  .../ethernet/intel/idpf/idpf_virtchnl_ptp.c   |  58 +++---
+>  11 files changed, 288 insertions(+), 315 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/intel/idpf/Kconfig b/drivers/net/ethernet/intel/idpf/Kconfig
+> index adab2154125b..586df3a4afe9 100644
+> --- a/drivers/net/ethernet/intel/idpf/Kconfig
+> +++ b/drivers/net/ethernet/intel/idpf/Kconfig
+> @@ -6,6 +6,7 @@ config IDPF
+>  	depends on PCI_MSI
+>  	depends on PTP_1588_CLOCK_OPTIONAL
+>  	select DIMLIB
+> +	select LIBIE_CP
+>  	select LIBETH_XDP
+>  	help
+>  	  This driver supports Intel(R) Infrastructure Data Path Function
+> diff --git a/drivers/net/ethernet/intel/idpf/idpf.h b/drivers/net/ethernet/intel/idpf/idpf.h
+> index 0d08f51be7e3..efdb58990a8b 100644
+> --- a/drivers/net/ethernet/intel/idpf/idpf.h
+> +++ b/drivers/net/ethernet/intel/idpf/idpf.h
+> @@ -23,6 +23,7 @@ struct idpf_rss_data;
+>  
+>  #include <linux/intel/iidc_rdma.h>
+>  #include <linux/intel/iidc_rdma_idpf.h>
+> +#include <linux/intel/libie/controlq.h>
+>  #include <linux/intel/virtchnl2.h>
+>  
+>  #include "idpf_txrx.h"
+> @@ -625,6 +626,7 @@ struct idpf_vc_xn_manager;
+>   * @flags: See enum idpf_flags
+>   * @reset_reg: See struct idpf_reset_reg
+>   * @hw: Device access data
+> + * @ctlq_ctx: controlq context
+>   * @num_avail_msix: Available number of MSIX vectors
+>   * @num_msix_entries: Number of entries in MSIX table
+>   * @msix_entries: MSIX table
+> @@ -682,6 +684,7 @@ struct idpf_adapter {
+>  	DECLARE_BITMAP(flags, IDPF_FLAGS_NBITS);
+>  	struct idpf_reset_reg reset_reg;
+>  	struct idpf_hw hw;
+> +	struct libie_ctlq_ctx ctlq_ctx;
+>  	u16 num_avail_msix;
+>  	u16 num_msix_entries;
+>  	struct msix_entry *msix_entries;
+> @@ -870,70 +873,6 @@ static inline u8 idpf_get_min_tx_pkt_len(struct idpf_adapter *adapter)
+>  	return pkt_len ? pkt_len : IDPF_TX_MIN_PKT_LEN;
+>  }
+>  
+> -/**
+> - * idpf_get_mbx_reg_addr - Get BAR0 mailbox register address
+> - * @adapter: private data struct
+> - * @reg_offset: register offset value
+> - *
+> - * Return: BAR0 mailbox register address based on register offset.
+> - */
+> -static inline void __iomem *idpf_get_mbx_reg_addr(struct idpf_adapter *adapter,
+> -						  resource_size_t reg_offset)
+> -{
+> -	return adapter->hw.mbx.vaddr + reg_offset;
+> -}
+> -
+> -/**
+> - * idpf_get_rstat_reg_addr - Get BAR0 rstat register address
+> - * @adapter: private data struct
+> - * @reg_offset: register offset value
+> - *
+> - * Return: BAR0 rstat register address based on register offset.
+> - */
+> -static inline void __iomem *idpf_get_rstat_reg_addr(struct idpf_adapter *adapter,
+> -						    resource_size_t reg_offset)
+> -{
+> -	reg_offset -= adapter->dev_ops.static_reg_info[1].start;
+> -
+> -	return adapter->hw.rstat.vaddr + reg_offset;
+> -}
+> -
+> -/**
+> - * idpf_get_reg_addr - Get BAR0 register address
+> - * @adapter: private data struct
+> - * @reg_offset: register offset value
+> - *
+> - * Based on the register offset, return the actual BAR0 register address
+> - */
+> -static inline void __iomem *idpf_get_reg_addr(struct idpf_adapter *adapter,
+> -					      resource_size_t reg_offset)
+> -{
+> -	struct idpf_hw *hw = &adapter->hw;
+> -
+> -	for (int i = 0; i < hw->num_lan_regs; i++) {
+> -		struct idpf_mmio_reg *region = &hw->lan_regs[i];
+> -
+> -		if (reg_offset >= region->addr_start &&
+> -		    reg_offset < (region->addr_start + region->addr_len)) {
+> -			/* Convert the offset so that it is relative to the
+> -			 * start of the region.  Then add the base address of
+> -			 * the region to get the final address.
+> -			 */
+> -			reg_offset -= region->addr_start;
+> -
+> -			return region->vaddr + reg_offset;
+> -		}
+> -	}
+> -
+> -	/* It's impossible to hit this case with offsets from the CP. But if we
+> -	 * do for any other reason, the kernel will panic on that register
+> -	 * access. Might as well do it here to make it clear what's happening.
+> -	 */
+> -	BUG();
+> -
+> -	return NULL;
+> -}
+> -
+>  /**
+>   * idpf_is_reset_detected - check if we were reset at some point
+>   * @adapter: driver specific private structure
+> @@ -945,7 +884,8 @@ static inline bool idpf_is_reset_detected(struct idpf_adapter *adapter)
+>  	if (!adapter->hw.arq)
+>  		return true;
+>  
+> -	return !(readl(idpf_get_mbx_reg_addr(adapter, adapter->hw.arq->reg.len)) &
+> +	return !(readl(libie_pci_get_mmio_addr(&adapter->ctlq_ctx.mmio_info,
+> +					       adapter->hw.arq->reg.len)) &
+>  		 adapter->hw.arq->reg.len_mask);
+>  }
+>  
+> diff --git a/drivers/net/ethernet/intel/idpf/idpf_controlq.c b/drivers/net/ethernet/intel/idpf/idpf_controlq.c
+> index d2dde43269e9..020b08367e18 100644
+> --- a/drivers/net/ethernet/intel/idpf/idpf_controlq.c
+> +++ b/drivers/net/ethernet/intel/idpf/idpf_controlq.c
+> @@ -1,7 +1,7 @@
+>  // SPDX-License-Identifier: GPL-2.0-only
+>  /* Copyright (C) 2023 Intel Corporation */
+>  
+> -#include "idpf_controlq.h"
+> +#include "idpf.h"
+>  
+>  /**
+>   * idpf_ctlq_setup_regs - initialize control queue registers
+> @@ -34,21 +34,27 @@ static void idpf_ctlq_setup_regs(struct idpf_ctlq_info *cq,
+>  static void idpf_ctlq_init_regs(struct idpf_hw *hw, struct idpf_ctlq_info *cq,
+>  				bool is_rxq)
+>  {
+> +	struct libie_mmio_info *mmio = &hw->back->ctlq_ctx.mmio_info;
 > +
-> +		if (net->mtu > net->max_mtu)
-> +			net->mtu = net->max_mtu;
+>  	/* Update tail to post pre-allocated buffers for rx queues */
+>  	if (is_rxq)
+> -		idpf_mbx_wr32(hw, cq->reg.tail, (u32)(cq->ring_size - 1));
+> +		writel((u32)(cq->ring_size - 1),
+> +		       libie_pci_get_mmio_addr(mmio, cq->reg.tail));
+>  
+>  	/* For non-Mailbox control queues only TAIL need to be set */
+>  	if (cq->q_id != -1)
+>  		return;
+>  
+>  	/* Clear Head for both send or receive */
+> -	idpf_mbx_wr32(hw, cq->reg.head, 0);
+> +	writel(0, libie_pci_get_mmio_addr(mmio, cq->reg.head));
+>  
+>  	/* set starting point */
+> -	idpf_mbx_wr32(hw, cq->reg.bal, lower_32_bits(cq->desc_ring.pa));
+> -	idpf_mbx_wr32(hw, cq->reg.bah, upper_32_bits(cq->desc_ring.pa));
+> -	idpf_mbx_wr32(hw, cq->reg.len, (cq->ring_size | cq->reg.len_ena_mask));
+> +	writel(lower_32_bits(cq->desc_ring.pa),
+> +	       libie_pci_get_mmio_addr(mmio, cq->reg.bal));
+> +	writel(upper_32_bits(cq->desc_ring.pa),
+> +	       libie_pci_get_mmio_addr(mmio, cq->reg.bah));
+> +	writel((cq->ring_size | cq->reg.len_ena_mask),
+> +	       libie_pci_get_mmio_addr(mmio, cq->reg.len));
+>  }
+>  
+>  /**
+> @@ -326,7 +332,9 @@ int idpf_ctlq_send(struct idpf_hw *hw, struct idpf_ctlq_info *cq,
+>  	 */
+>  	dma_wmb();
+>  
+> -	idpf_mbx_wr32(hw, cq->reg.tail, cq->next_to_use);
+> +	writel(cq->next_to_use,
+> +	       libie_pci_get_mmio_addr(&hw->back->ctlq_ctx.mmio_info,
+> +				       cq->reg.tail));
+>  
+>  err_unlock:
+>  	spin_unlock(&cq->cq_lock);
+> @@ -518,7 +526,9 @@ int idpf_ctlq_post_rx_buffs(struct idpf_hw *hw, struct idpf_ctlq_info *cq,
+>  
+>  		dma_wmb();
+>  
+> -		idpf_mbx_wr32(hw, cq->reg.tail, cq->next_to_post);
+> +		writel(cq->next_to_post,
+> +		       libie_pci_get_mmio_addr(&hw->back->ctlq_ctx.mmio_info,
+> +					       cq->reg.tail));
+>  	}
+>  
+>  	spin_unlock(&cq->cq_lock);
+> diff --git a/drivers/net/ethernet/intel/idpf/idpf_controlq.h b/drivers/net/ethernet/intel/idpf/idpf_controlq.h
+> index de4ece40c2ff..acf595e9265f 100644
+> --- a/drivers/net/ethernet/intel/idpf/idpf_controlq.h
+> +++ b/drivers/net/ethernet/intel/idpf/idpf_controlq.h
+> @@ -109,8 +109,6 @@ struct idpf_mmio_reg {
+>   * Align to ctlq_hw_info
+>   */
+>  struct idpf_hw {
+> -	struct idpf_mmio_reg mbx;
+> -	struct idpf_mmio_reg rstat;
+>  	/* Array of remaining LAN BAR regions */
+>  	int num_lan_regs;
+>  	struct idpf_mmio_reg *lan_regs;
+> diff --git a/drivers/net/ethernet/intel/idpf/idpf_dev.c b/drivers/net/ethernet/intel/idpf/idpf_dev.c
+> index 1a0c71c95ef1..e36b0017186f 100644
+> --- a/drivers/net/ethernet/intel/idpf/idpf_dev.c
+> +++ b/drivers/net/ethernet/intel/idpf/idpf_dev.c
+> @@ -16,7 +16,6 @@
+>  static void idpf_ctlq_reg_init(struct idpf_adapter *adapter,
+>  			       struct idpf_ctlq_create_info *cq)
+>  {
+> -	resource_size_t mbx_start = adapter->dev_ops.static_reg_info[0].start;
+>  	int i;
+>  
+>  	for (i = 0; i < IDPF_NUM_DFLT_MBX_Q; i++) {
+> @@ -25,22 +24,22 @@ static void idpf_ctlq_reg_init(struct idpf_adapter *adapter,
+>  		switch (ccq->type) {
+>  		case IDPF_CTLQ_TYPE_MAILBOX_TX:
+>  			/* set head and tail registers in our local struct */
+> -			ccq->reg.head = PF_FW_ATQH - mbx_start;
+> -			ccq->reg.tail = PF_FW_ATQT - mbx_start;
+> -			ccq->reg.len = PF_FW_ATQLEN - mbx_start;
+> -			ccq->reg.bah = PF_FW_ATQBAH - mbx_start;
+> -			ccq->reg.bal = PF_FW_ATQBAL - mbx_start;
+> +			ccq->reg.head = PF_FW_ATQH;
+> +			ccq->reg.tail = PF_FW_ATQT;
+> +			ccq->reg.len = PF_FW_ATQLEN;
+> +			ccq->reg.bah = PF_FW_ATQBAH;
+> +			ccq->reg.bal = PF_FW_ATQBAL;
+>  			ccq->reg.len_mask = PF_FW_ATQLEN_ATQLEN_M;
+>  			ccq->reg.len_ena_mask = PF_FW_ATQLEN_ATQENABLE_M;
+>  			ccq->reg.head_mask = PF_FW_ATQH_ATQH_M;
+>  			break;
+>  		case IDPF_CTLQ_TYPE_MAILBOX_RX:
+>  			/* set head and tail registers in our local struct */
+> -			ccq->reg.head = PF_FW_ARQH - mbx_start;
+> -			ccq->reg.tail = PF_FW_ARQT - mbx_start;
+> -			ccq->reg.len = PF_FW_ARQLEN - mbx_start;
+> -			ccq->reg.bah = PF_FW_ARQBAH - mbx_start;
+> -			ccq->reg.bal = PF_FW_ARQBAL - mbx_start;
+> +			ccq->reg.head = PF_FW_ARQH;
+> +			ccq->reg.tail = PF_FW_ARQT;
+> +			ccq->reg.len = PF_FW_ARQLEN;
+> +			ccq->reg.bah = PF_FW_ARQBAH;
+> +			ccq->reg.bal = PF_FW_ARQBAL;
+>  			ccq->reg.len_mask = PF_FW_ARQLEN_ARQLEN_M;
+>  			ccq->reg.len_ena_mask = PF_FW_ARQLEN_ARQENABLE_M;
+>  			ccq->reg.head_mask = PF_FW_ARQH_ARQH_M;
+> @@ -57,13 +56,14 @@ static void idpf_ctlq_reg_init(struct idpf_adapter *adapter,
+>   */
+>  static void idpf_mb_intr_reg_init(struct idpf_adapter *adapter)
+>  {
+> +	struct libie_mmio_info *mmio = &adapter->ctlq_ctx.mmio_info;
+>  	struct idpf_intr_reg *intr = &adapter->mb_vector.intr_reg;
+>  	u32 dyn_ctl = le32_to_cpu(adapter->caps.mailbox_dyn_ctl);
+>  
+> -	intr->dyn_ctl = idpf_get_reg_addr(adapter, dyn_ctl);
+> +	intr->dyn_ctl = libie_pci_get_mmio_addr(mmio, dyn_ctl);
+>  	intr->dyn_ctl_intena_m = PF_GLINT_DYN_CTL_INTENA_M;
+>  	intr->dyn_ctl_itridx_m = PF_GLINT_DYN_CTL_ITR_INDX_M;
+> -	intr->icr_ena = idpf_get_reg_addr(adapter, PF_INT_DIR_OICR_ENA);
+> +	intr->icr_ena = libie_pci_get_mmio_addr(mmio, PF_INT_DIR_OICR_ENA);
+>  	intr->icr_ena_ctlq_m = PF_INT_DIR_OICR_ENA_M;
+>  }
+>  
+> @@ -78,6 +78,7 @@ static int idpf_intr_reg_init(struct idpf_vport *vport,
+>  	struct idpf_adapter *adapter = vport->adapter;
+>  	u16 num_vecs = rsrc->num_q_vectors;
+>  	struct idpf_vec_regs *reg_vals;
+> +	struct libie_mmio_info *mmio;
+>  	int num_regs, i, err = 0;
+>  	u32 rx_itr, tx_itr, val;
+>  	u16 total_vecs;
+> @@ -93,14 +94,17 @@ static int idpf_intr_reg_init(struct idpf_vport *vport,
+>  		goto free_reg_vals;
+>  	}
+>  
+> +	mmio = &adapter->ctlq_ctx.mmio_info;
 > +
->   	} else if (!info->in || !info->out)
->   		status = usbnet_get_endpoints(dev, udev);
->   	else {
-
-Hi Laurent
-
-This change was backported to 6.6.* and caused a regression with wwan 
-devices via USB when using a mux.
-
-Tested on a Quectel EM12 running the firmware 
-EM12GPAR01A21M4G_01.300.01.300.
-
-Tue May  5 09:49:35.638 2026 kern.info kernel: [   10.819620] qmi_wwan 
-1-1.2:1.4: cdc-wdm0: USB WDM device
-Tue May  5 09:49:35.638 2026 kern.info kernel: [   10.829601] qmi_wwan 
-1-1.2:1.4 cellular0: register 'qmi_wwan' at usb-fsl-ehci.0-1.2, WWAN/QMI 
-device, 6a:c3:49:88:47:b1
-Tue May  5 09:49:35.638 2026 kern.info kernel: [   10.840579] usbcore: 
-registered new interface driver qmi_wwan
-
-The parent interface (we renamed it "cellular0") requires an MTU of 1504 
-(4 bytes overhead from the muxer).
-The actual wwan0, wwan1 interfaces have an MTU of 1500.
-
-With this change it's no longer possible to set an MTU of 1504 on cellular0.
-
-BR
-Matthias
-
-
+>  	for (i = 0; i < num_vecs; i++) {
+>  		struct idpf_q_vector *q_vector = &rsrc->q_vectors[i];
+>  		u16 vec_id = rsrc->q_vector_idxs[i] - IDPF_MBX_Q_VEC;
+>  		struct idpf_intr_reg *intr = &q_vector->intr_reg;
+> +		struct idpf_vec_regs *reg = &reg_vals[vec_id];
+>  		u32 spacing;
+>  
+> -		intr->dyn_ctl = idpf_get_reg_addr(adapter,
+> -						  reg_vals[vec_id].dyn_ctl_reg);
+> +		intr->dyn_ctl = libie_pci_get_mmio_addr(mmio,
+> +							reg->dyn_ctl_reg);
+>  		intr->dyn_ctl_intena_m = PF_GLINT_DYN_CTL_INTENA_M;
+>  		intr->dyn_ctl_intena_msk_m = PF_GLINT_DYN_CTL_INTENA_MSK_M;
+>  		intr->dyn_ctl_itridx_s = PF_GLINT_DYN_CTL_ITR_INDX_S;
+> @@ -110,22 +114,21 @@ static int idpf_intr_reg_init(struct idpf_vport *vport,
+>  		intr->dyn_ctl_sw_itridx_ena_m =
+>  			PF_GLINT_DYN_CTL_SW_ITR_INDX_ENA_M;
+>  
+> -		spacing = IDPF_ITR_IDX_SPACING(reg_vals[vec_id].itrn_index_spacing,
+> +		spacing = IDPF_ITR_IDX_SPACING(reg->itrn_index_spacing,
+>  					       IDPF_PF_ITR_IDX_SPACING);
+>  		rx_itr = PF_GLINT_ITR_ADDR(VIRTCHNL2_ITR_IDX_0,
+> -					   reg_vals[vec_id].itrn_reg,
+> -					   spacing);
+> +					   reg->itrn_reg, spacing);
+>  		tx_itr = PF_GLINT_ITR_ADDR(VIRTCHNL2_ITR_IDX_1,
+> -					   reg_vals[vec_id].itrn_reg,
+> -					   spacing);
+> -		intr->rx_itr = idpf_get_reg_addr(adapter, rx_itr);
+> -		intr->tx_itr = idpf_get_reg_addr(adapter, tx_itr);
+> +					   reg->itrn_reg, spacing);
+> +		intr->rx_itr = libie_pci_get_mmio_addr(mmio, rx_itr);
+> +		intr->tx_itr = libie_pci_get_mmio_addr(mmio, tx_itr);
+>  	}
+>  
+>  	/* Data vector for NOIRQ queues */
+>  
+>  	val = reg_vals[rsrc->q_vector_idxs[i] - IDPF_MBX_Q_VEC].dyn_ctl_reg;
+> -	rsrc->noirq_dyn_ctl = idpf_get_reg_addr(adapter, val);
+> +	rsrc->noirq_dyn_ctl =
+> +		libie_pci_get_mmio_addr(&adapter->ctlq_ctx.mmio_info, val);
+>  
+>  	val = PF_GLINT_DYN_CTL_WB_ON_ITR_M | PF_GLINT_DYN_CTL_INTENA_MSK_M |
+>  	      FIELD_PREP(PF_GLINT_DYN_CTL_ITR_INDX_M, IDPF_NO_ITR_UPDATE_IDX);
+> @@ -143,7 +146,9 @@ static int idpf_intr_reg_init(struct idpf_vport *vport,
+>   */
+>  static void idpf_reset_reg_init(struct idpf_adapter *adapter)
+>  {
+> -	adapter->reset_reg.rstat = idpf_get_rstat_reg_addr(adapter, PFGEN_RSTAT);
+> +	adapter->reset_reg.rstat =
+> +		libie_pci_get_mmio_addr(&adapter->ctlq_ctx.mmio_info,
+> +					PFGEN_RSTAT);
+>  	adapter->reset_reg.rstat_m = PFGEN_RSTAT_PFR_STATE_M;
+>  }
+>  
+> @@ -155,11 +160,11 @@ static void idpf_reset_reg_init(struct idpf_adapter *adapter)
+>  static void idpf_trigger_reset(struct idpf_adapter *adapter,
+>  			       enum idpf_flags __always_unused trig_cause)
+>  {
+> -	u32 reset_reg;
+> +	void __iomem *addr;
+>  
+> -	reset_reg = readl(idpf_get_rstat_reg_addr(adapter, PFGEN_CTRL));
+> -	writel(reset_reg | PFGEN_CTRL_PFSWR,
+> -	       idpf_get_rstat_reg_addr(adapter, PFGEN_CTRL));
+> +	addr = libie_pci_get_mmio_addr(&adapter->ctlq_ctx.mmio_info,
+> +				       PFGEN_CTRL);
+> +	writel(readl(addr) | PFGEN_CTRL_PFSWR, addr);
+>  }
+>  
+>  /**
+> diff --git a/drivers/net/ethernet/intel/idpf/idpf_idc.c b/drivers/net/ethernet/intel/idpf/idpf_idc.c
+> index b7d6b08fc89e..0a7edb783758 100644
+> --- a/drivers/net/ethernet/intel/idpf/idpf_idc.c
+> +++ b/drivers/net/ethernet/intel/idpf/idpf_idc.c
+> @@ -416,9 +416,12 @@ idpf_idc_init_msix_data(struct idpf_adapter *adapter)
+>  int idpf_idc_init_aux_core_dev(struct idpf_adapter *adapter,
+>  			       enum iidc_function_type ftype)
+>  {
+> +	struct libie_mmio_info *mmio = &adapter->ctlq_ctx.mmio_info;
+>  	struct iidc_rdma_core_dev_info *cdev_info;
+>  	struct iidc_rdma_priv_dev_info *privd;
+> -	int err, i;
+> +	struct libie_pci_mmio_region *mr;
+> +	size_t num_mem_regions;
+> +	int err, i = 0;
+>  
+>  	adapter->cdev_info = kzalloc_obj(*cdev_info);
+>  	if (!adapter->cdev_info)
+> @@ -436,22 +439,37 @@ int idpf_idc_init_aux_core_dev(struct idpf_adapter *adapter,
+>  	cdev_info->rdma_protocol = IIDC_RDMA_PROTOCOL_ROCEV2;
+>  	privd->ftype = ftype;
+>  
+> +	num_mem_regions = list_count_nodes(&mmio->mmio_list);
+> +	if (num_mem_regions <= IDPF_MMIO_REG_NUM_STATIC) {
+> +		err = -EINVAL;
+> +		goto err_plug_aux_dev;
+> +	}
+> +
+> +	num_mem_regions -= IDPF_MMIO_REG_NUM_STATIC;
+>  	privd->mapped_mem_regions =
+>  		kzalloc_objs(struct iidc_rdma_lan_mapped_mem_region,
+> -			     adapter->hw.num_lan_regs);
+> +			     num_mem_regions);
+>  	if (!privd->mapped_mem_regions) {
+>  		err = -ENOMEM;
+>  		goto err_plug_aux_dev;
+>  	}
+>  
+> -	privd->num_memory_regions = cpu_to_le16(adapter->hw.num_lan_regs);
+> -	for (i = 0; i < adapter->hw.num_lan_regs; i++) {
+> -		privd->mapped_mem_regions[i].region_addr =
+> -			adapter->hw.lan_regs[i].vaddr;
+> -		privd->mapped_mem_regions[i].size =
+> -			cpu_to_le64(adapter->hw.lan_regs[i].addr_len);
+> -		privd->mapped_mem_regions[i].start_offset =
+> -			cpu_to_le64(adapter->hw.lan_regs[i].addr_start);
+> +	privd->num_memory_regions = cpu_to_le16(num_mem_regions);
+> +	list_for_each_entry(mr, &mmio->mmio_list, list) {
+> +		struct resource *static_regs = adapter->dev_ops.static_reg_info;
+> +		bool is_static = false;
+> +
+> +		for (uint j = 0; j < IDPF_MMIO_REG_NUM_STATIC; j++)
+> +			if (mr->offset == static_regs[j].start)
+> +				is_static = true;
+> +
+> +		if (is_static)
+> +			continue;
+> +
+> +		privd->mapped_mem_regions[i].region_addr = mr->addr;
+> +		privd->mapped_mem_regions[i].size = cpu_to_le64(mr->size);
+> +		privd->mapped_mem_regions[i++].start_offset =
+> +						cpu_to_le64(mr->offset);
+>  	}
+>  
+>  	idpf_idc_init_msix_data(adapter);
+> diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+> index d88ca59edf97..875472ae77fd 100644
+> --- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
+> +++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+> @@ -1847,15 +1847,14 @@ void idpf_deinit_task(struct idpf_adapter *adapter)
+>  
+>  /**
+>   * idpf_check_reset_complete - check that reset is complete
+> - * @hw: pointer to hw struct
+> + * @adapter: adapter to check
+>   * @reset_reg: struct with reset registers
+>   *
+>   * Returns 0 if device is ready to use, or -EBUSY if it's in reset.
+>   **/
+> -static int idpf_check_reset_complete(struct idpf_hw *hw,
+> +static int idpf_check_reset_complete(struct idpf_adapter *adapter,
+>  				     struct idpf_reset_reg *reset_reg)
+>  {
+> -	struct idpf_adapter *adapter = hw->back;
+>  	int i;
+>  
+>  	for (i = 0; i < 2000; i++) {
+> @@ -1918,7 +1917,7 @@ static void idpf_init_hard_reset(struct idpf_adapter *adapter)
+>  	}
+>  
+>  	/* Wait for reset to complete */
+> -	err = idpf_check_reset_complete(&adapter->hw, &adapter->reset_reg);
+> +	err = idpf_check_reset_complete(adapter, &adapter->reset_reg);
+>  	if (err) {
+>  		dev_err(dev, "The driver was unable to contact the device's firmware. Check that the FW is running. Driver state= 0x%x\n",
+>  			adapter->state);
+> diff --git a/drivers/net/ethernet/intel/idpf/idpf_main.c b/drivers/net/ethernet/intel/idpf/idpf_main.c
+> index ab3c409e587b..93b11fb1609f 100644
+> --- a/drivers/net/ethernet/intel/idpf/idpf_main.c
+> +++ b/drivers/net/ethernet/intel/idpf/idpf_main.c
+> @@ -15,6 +15,8 @@
+>  
+>  MODULE_DESCRIPTION(DRV_SUMMARY);
+>  MODULE_IMPORT_NS("LIBETH");
+> +MODULE_IMPORT_NS("LIBIE_CP");
+> +MODULE_IMPORT_NS("LIBIE_PCI");
+>  MODULE_IMPORT_NS("LIBETH_XDP");
+>  MODULE_LICENSE("GPL");
+>  
+> @@ -56,8 +58,16 @@ static int idpf_get_device_type(struct pci_dev *pdev)
+>  static int idpf_dev_init(struct idpf_adapter *adapter,
+>  			 const struct pci_device_id *ent)
+>  {
+> +	struct libie_mmio_info *mmio_info = &adapter->ctlq_ctx.mmio_info;
+>  	int ret;
+>  
+> +	ret = libie_pci_init_dev(adapter->pdev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	mmio_info->pdev = adapter->pdev;
+> +	INIT_LIST_HEAD(&mmio_info->mmio_list);
+> +
+>  	if (ent->class == IDPF_CLASS_NETWORK_ETHERNET_PROGIF) {
+>  		ret = idpf_get_device_type(adapter->pdev);
+>  		switch (ret) {
+> @@ -90,6 +100,15 @@ static int idpf_dev_init(struct idpf_adapter *adapter,
+>  	return 0;
+>  }
+>  
+> +/**
+> + * idpf_decfg_device - deconfigure device and device specific resources
+> + * @adapter: driver specific private structure
+> + */
+> +static void idpf_decfg_device(struct idpf_adapter *adapter)
+> +{
+> +	libie_pci_unmap_all_mmio_regions(&adapter->ctlq_ctx.mmio_info);
+> +}
+> +
+>  /**
+>   * idpf_remove - Device removal routine
+>   * @pdev: PCI device information struct
+> @@ -159,6 +178,7 @@ static void idpf_remove(struct pci_dev *pdev)
+>  	mutex_destroy(&adapter->queue_lock);
+>  	mutex_destroy(&adapter->vc_buf_lock);
+>  
+> +	idpf_decfg_device(adapter);
+>  	pci_set_drvdata(pdev, NULL);
+>  	kfree(adapter);
+>  }
+> @@ -181,46 +201,45 @@ static void idpf_shutdown(struct pci_dev *pdev)
+>  }
+>  
+>  /**
+> - * idpf_cfg_hw - Initialize HW struct
+> - * @adapter: adapter to setup hw struct for
+> + * idpf_cfg_device - configure device and device specific resources
+> + * @adapter: driver specific private structure
+>   *
+> - * Returns 0 on success, negative on failure
+> + * Return: %0 on success, -%errno on failure.
+>   */
+> -static int idpf_cfg_hw(struct idpf_adapter *adapter)
+> +static int idpf_cfg_device(struct idpf_adapter *adapter)
+>  {
+> -	resource_size_t res_start, mbx_start, rstat_start;
+> +	struct libie_mmio_info *mmio_info = &adapter->ctlq_ctx.mmio_info;
+>  	struct pci_dev *pdev = adapter->pdev;
+> -	struct idpf_hw *hw = &adapter->hw;
+> -	struct device *dev = &pdev->dev;
+> -	long len;
+> -
+> -	res_start = pci_resource_start(pdev, 0);
+> +	struct resource *region;
+> +	bool mapped = false;
+> +	int err;
+>  
+>  	/* Map mailbox space for virtchnl communication */
+> -	mbx_start = res_start + adapter->dev_ops.static_reg_info[0].start;
+> -	len = resource_size(&adapter->dev_ops.static_reg_info[0]);
+> -	hw->mbx.vaddr = devm_ioremap(dev, mbx_start, len);
+> -	if (!hw->mbx.vaddr) {
+> -		pci_err(pdev, "failed to allocate BAR0 mbx region\n");
+> -
+> +	region = &adapter->dev_ops.static_reg_info[0];
+> +	mapped = libie_pci_map_mmio_region(mmio_info, region->start,
+> +					   resource_size(region));
+> +	if (!mapped) {
+> +		pci_err(pdev, "failed to map BAR0 mbx region\n");
+>  		return -ENOMEM;
+>  	}
+> -	hw->mbx.addr_start = adapter->dev_ops.static_reg_info[0].start;
+> -	hw->mbx.addr_len = len;
+>  
+>  	/* Map rstat space for resets */
+> -	rstat_start = res_start + adapter->dev_ops.static_reg_info[1].start;
+> -	len = resource_size(&adapter->dev_ops.static_reg_info[1]);
+> -	hw->rstat.vaddr = devm_ioremap(dev, rstat_start, len);
+> -	if (!hw->rstat.vaddr) {
+> -		pci_err(pdev, "failed to allocate BAR0 rstat region\n");
+> +	region = &adapter->dev_ops.static_reg_info[1];
+>  
+> +	mapped = libie_pci_map_mmio_region(mmio_info, region->start,
+> +					   resource_size(region));
+> +	if (!mapped) {
+> +		pci_err(pdev, "failed to map BAR0 rstat region\n");
+> +		libie_pci_unmap_all_mmio_regions(mmio_info);
+>  		return -ENOMEM;
+>  	}
+> -	hw->rstat.addr_start = adapter->dev_ops.static_reg_info[1].start;
+> -	hw->rstat.addr_len = len;
+>  
+> -	hw->back = adapter;
+> +	err = pci_enable_ptm(pdev);
+> +	if (err)
+> +		pci_dbg(pdev, "PCIe PTM is not supported by PCIe bus/controller\n");
+> +
+> +	pci_set_drvdata(pdev, adapter);
+> +	adapter->hw.back = adapter;
+>  
+>  	return 0;
+>  }
+> @@ -246,32 +265,21 @@ static int idpf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+>  	adapter->req_rx_splitq = true;
+>  
+>  	adapter->pdev = pdev;
+> -	err = pcim_enable_device(pdev);
+> -	if (err)
+> -		goto err_free;
+>  
+> -	err = pcim_request_region(pdev, 0, pci_name(pdev));
+> +	err = idpf_dev_init(adapter, ent);
+>  	if (err) {
+> -		pci_err(pdev, "pcim_request_region failed %pe\n", ERR_PTR(err));
+> -
+> +		dev_err(&pdev->dev, "Unexpected dev ID 0x%x in idpf probe\n",
+> +			ent->device);
+>  		goto err_free;
+>  	}
+>  
+> -	err = pci_enable_ptm(pdev);
+> -	if (err)
+> -		pci_dbg(pdev, "PCIe PTM is not supported by PCIe bus/controller\n");
+> -
+> -	/* set up for high or low dma */
+> -	err = dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64));
+> +	err = idpf_cfg_device(adapter);
+>  	if (err) {
+> -		pci_err(pdev, "DMA configuration failed: %pe\n", ERR_PTR(err));
+> -
+> +		pci_err(pdev, "Failed to configure device specific resources: %pe\n",
+> +			ERR_PTR(err));
+>  		goto err_free;
+>  	}
+>  
+> -	pci_set_master(pdev);
+> -	pci_set_drvdata(pdev, adapter);
+> -
+>  	adapter->init_wq = alloc_workqueue("%s-%s-init",
+>  					   WQ_UNBOUND | WQ_MEM_RECLAIM, 0,
+>  					   dev_driver_string(dev),
+> @@ -279,7 +287,7 @@ static int idpf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+>  	if (!adapter->init_wq) {
+>  		dev_err(dev, "Failed to allocate init workqueue\n");
+>  		err = -ENOMEM;
+> -		goto err_free;
+> +		goto err_init_wq;
+>  	}
+>  
+>  	adapter->serv_wq = alloc_workqueue("%s-%s-service",
+> @@ -324,20 +332,6 @@ static int idpf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+>  	/* setup msglvl */
+>  	adapter->msg_enable = netif_msg_init(-1, IDPF_AVAIL_NETIF_M);
+>  
+> -	err = idpf_dev_init(adapter, ent);
+> -	if (err) {
+> -		dev_err(&pdev->dev, "Unexpected dev ID 0x%x in idpf probe\n",
+> -			ent->device);
+> -		goto destroy_vc_event_wq;
+> -	}
+> -
+> -	err = idpf_cfg_hw(adapter);
+> -	if (err) {
+> -		dev_err(dev, "Failed to configure HW structure for adapter: %d\n",
+> -			err);
+> -		goto destroy_vc_event_wq;
+> -	}
+> -
+>  	mutex_init(&adapter->vport_ctrl_lock);
+>  	mutex_init(&adapter->vector_lock);
+>  	mutex_init(&adapter->queue_lock);
+> @@ -356,8 +350,6 @@ static int idpf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+>  
+>  	return 0;
+>  
+> -destroy_vc_event_wq:
+> -	destroy_workqueue(adapter->vc_event_wq);
+>  err_vc_event_wq_alloc:
+>  	destroy_workqueue(adapter->stats_wq);
+>  err_stats_wq_alloc:
+> @@ -366,6 +358,8 @@ static int idpf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+>  	destroy_workqueue(adapter->serv_wq);
+>  err_serv_wq_alloc:
+>  	destroy_workqueue(adapter->init_wq);
+> +err_init_wq:
+> +	idpf_decfg_device(adapter);
+>  err_free:
+>  	kfree(adapter);
+>  	return err;
+> diff --git a/drivers/net/ethernet/intel/idpf/idpf_vf_dev.c b/drivers/net/ethernet/intel/idpf/idpf_vf_dev.c
+> index a07d7e808ca9..98b8f678bd9a 100644
+> --- a/drivers/net/ethernet/intel/idpf/idpf_vf_dev.c
+> +++ b/drivers/net/ethernet/intel/idpf/idpf_vf_dev.c
+> @@ -15,31 +15,28 @@
+>  static void idpf_vf_ctlq_reg_init(struct idpf_adapter *adapter,
+>  				  struct idpf_ctlq_create_info *cq)
+>  {
+> -	resource_size_t mbx_start = adapter->dev_ops.static_reg_info[0].start;
+> -	int i;
+> -
+> -	for (i = 0; i < IDPF_NUM_DFLT_MBX_Q; i++) {
+> +	for (int i = 0; i < IDPF_NUM_DFLT_MBX_Q; i++) {
+>  		struct idpf_ctlq_create_info *ccq = cq + i;
+>  
+>  		switch (ccq->type) {
+>  		case IDPF_CTLQ_TYPE_MAILBOX_TX:
+>  			/* set head and tail registers in our local struct */
+> -			ccq->reg.head = VF_ATQH - mbx_start;
+> -			ccq->reg.tail = VF_ATQT - mbx_start;
+> -			ccq->reg.len = VF_ATQLEN - mbx_start;
+> -			ccq->reg.bah = VF_ATQBAH - mbx_start;
+> -			ccq->reg.bal = VF_ATQBAL - mbx_start;
+> +			ccq->reg.head = VF_ATQH;
+> +			ccq->reg.tail = VF_ATQT;
+> +			ccq->reg.len = VF_ATQLEN;
+> +			ccq->reg.bah = VF_ATQBAH;
+> +			ccq->reg.bal = VF_ATQBAL;
+>  			ccq->reg.len_mask = VF_ATQLEN_ATQLEN_M;
+>  			ccq->reg.len_ena_mask = VF_ATQLEN_ATQENABLE_M;
+>  			ccq->reg.head_mask = VF_ATQH_ATQH_M;
+>  			break;
+>  		case IDPF_CTLQ_TYPE_MAILBOX_RX:
+>  			/* set head and tail registers in our local struct */
+> -			ccq->reg.head = VF_ARQH - mbx_start;
+> -			ccq->reg.tail = VF_ARQT - mbx_start;
+> -			ccq->reg.len = VF_ARQLEN - mbx_start;
+> -			ccq->reg.bah = VF_ARQBAH - mbx_start;
+> -			ccq->reg.bal = VF_ARQBAL - mbx_start;
+> +			ccq->reg.head = VF_ARQH;
+> +			ccq->reg.tail = VF_ARQT;
+> +			ccq->reg.len = VF_ARQLEN;
+> +			ccq->reg.bah = VF_ARQBAH;
+> +			ccq->reg.bal = VF_ARQBAL;
+>  			ccq->reg.len_mask = VF_ARQLEN_ARQLEN_M;
+>  			ccq->reg.len_ena_mask = VF_ARQLEN_ARQENABLE_M;
+>  			ccq->reg.head_mask = VF_ARQH_ARQH_M;
+> @@ -56,13 +53,14 @@ static void idpf_vf_ctlq_reg_init(struct idpf_adapter *adapter,
+>   */
+>  static void idpf_vf_mb_intr_reg_init(struct idpf_adapter *adapter)
+>  {
+> +	struct libie_mmio_info *mmio = &adapter->ctlq_ctx.mmio_info;
+>  	struct idpf_intr_reg *intr = &adapter->mb_vector.intr_reg;
+>  	u32 dyn_ctl = le32_to_cpu(adapter->caps.mailbox_dyn_ctl);
+>  
+> -	intr->dyn_ctl = idpf_get_reg_addr(adapter, dyn_ctl);
+> +	intr->dyn_ctl = libie_pci_get_mmio_addr(mmio, dyn_ctl);
+>  	intr->dyn_ctl_intena_m = VF_INT_DYN_CTL0_INTENA_M;
+>  	intr->dyn_ctl_itridx_m = VF_INT_DYN_CTL0_ITR_INDX_M;
+> -	intr->icr_ena = idpf_get_reg_addr(adapter, VF_INT_ICR0_ENA1);
+> +	intr->icr_ena = libie_pci_get_mmio_addr(mmio, VF_INT_ICR0_ENA1);
+>  	intr->icr_ena_ctlq_m = VF_INT_ICR0_ENA1_ADMINQ_M;
+>  }
+>  
+> @@ -77,6 +75,7 @@ static int idpf_vf_intr_reg_init(struct idpf_vport *vport,
+>  	struct idpf_adapter *adapter = vport->adapter;
+>  	u16 num_vecs = rsrc->num_q_vectors;
+>  	struct idpf_vec_regs *reg_vals;
+> +	struct libie_mmio_info *mmio;
+>  	int num_regs, i, err = 0;
+>  	u32 rx_itr, tx_itr, val;
+>  	u16 total_vecs;
+> @@ -92,14 +91,17 @@ static int idpf_vf_intr_reg_init(struct idpf_vport *vport,
+>  		goto free_reg_vals;
+>  	}
+>  
+> +	mmio = &adapter->ctlq_ctx.mmio_info;
+> +
+>  	for (i = 0; i < num_vecs; i++) {
+>  		struct idpf_q_vector *q_vector = &rsrc->q_vectors[i];
+>  		u16 vec_id = rsrc->q_vector_idxs[i] - IDPF_MBX_Q_VEC;
+>  		struct idpf_intr_reg *intr = &q_vector->intr_reg;
+> +		struct idpf_vec_regs *reg = &reg_vals[vec_id];
+>  		u32 spacing;
+>  
+> -		intr->dyn_ctl = idpf_get_reg_addr(adapter,
+> -						  reg_vals[vec_id].dyn_ctl_reg);
+> +		intr->dyn_ctl = libie_pci_get_mmio_addr(mmio,
+> +							reg->dyn_ctl_reg);
+>  		intr->dyn_ctl_intena_m = VF_INT_DYN_CTLN_INTENA_M;
+>  		intr->dyn_ctl_intena_msk_m = VF_INT_DYN_CTLN_INTENA_MSK_M;
+>  		intr->dyn_ctl_itridx_s = VF_INT_DYN_CTLN_ITR_INDX_S;
+> @@ -109,22 +111,21 @@ static int idpf_vf_intr_reg_init(struct idpf_vport *vport,
+>  		intr->dyn_ctl_sw_itridx_ena_m =
+>  			VF_INT_DYN_CTLN_SW_ITR_INDX_ENA_M;
+>  
+> -		spacing = IDPF_ITR_IDX_SPACING(reg_vals[vec_id].itrn_index_spacing,
+> +		spacing = IDPF_ITR_IDX_SPACING(reg->itrn_index_spacing,
+>  					       IDPF_VF_ITR_IDX_SPACING);
+>  		rx_itr = VF_INT_ITRN_ADDR(VIRTCHNL2_ITR_IDX_0,
+> -					  reg_vals[vec_id].itrn_reg,
+> -					  spacing);
+> +					  reg->itrn_reg, spacing);
+>  		tx_itr = VF_INT_ITRN_ADDR(VIRTCHNL2_ITR_IDX_1,
+> -					  reg_vals[vec_id].itrn_reg,
+> -					  spacing);
+> -		intr->rx_itr = idpf_get_reg_addr(adapter, rx_itr);
+> -		intr->tx_itr = idpf_get_reg_addr(adapter, tx_itr);
+> +					  reg->itrn_reg, spacing);
+> +		intr->rx_itr = libie_pci_get_mmio_addr(mmio, rx_itr);
+> +		intr->tx_itr = libie_pci_get_mmio_addr(mmio, tx_itr);
+>  	}
+>  
+>  	/* Data vector for NOIRQ queues */
+>  
+>  	val = reg_vals[rsrc->q_vector_idxs[i] - IDPF_MBX_Q_VEC].dyn_ctl_reg;
+> -	rsrc->noirq_dyn_ctl = idpf_get_reg_addr(adapter, val);
+> +	rsrc->noirq_dyn_ctl =
+> +		libie_pci_get_mmio_addr(&adapter->ctlq_ctx.mmio_info, val);
+>  
+>  	val = VF_INT_DYN_CTLN_WB_ON_ITR_M | VF_INT_DYN_CTLN_INTENA_MSK_M |
+>  	      FIELD_PREP(VF_INT_DYN_CTLN_ITR_INDX_M, IDPF_NO_ITR_UPDATE_IDX);
+> @@ -142,7 +143,9 @@ static int idpf_vf_intr_reg_init(struct idpf_vport *vport,
+>   */
+>  static void idpf_vf_reset_reg_init(struct idpf_adapter *adapter)
+>  {
+> -	adapter->reset_reg.rstat = idpf_get_rstat_reg_addr(adapter, VFGEN_RSTAT);
+> +	adapter->reset_reg.rstat =
+> +		libie_pci_get_mmio_addr(&adapter->ctlq_ctx.mmio_info,
+> +					VFGEN_RSTAT);
+>  	adapter->reset_reg.rstat_m = VFGEN_RSTAT_VFR_STATE_M;
+>  }
+>  
+> diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+> index d4546d62cca9..3e6411a07e4d 100644
+> --- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+> +++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+> @@ -2,6 +2,7 @@
+>  /* Copyright (C) 2023 Intel Corporation */
+>  
+>  #include <linux/export.h>
+> +#include <linux/intel/libie/pci.h>
+>  #include <net/libeth/rx.h>
+>  
+>  #include "idpf.h"
+> @@ -1020,12 +1021,46 @@ static int idpf_send_get_caps_msg(struct idpf_adapter *adapter)
+>  }
+>  
+>  /**
+> - * idpf_send_get_lan_memory_regions - Send virtchnl get LAN memory regions msg
+> + * idpf_mmio_region_non_static - Check if region is not static
+> + * @mmio_info: PCI resources info
+> + * @reg: region to check
+> + *
+> + * Return: %true if region can be received though virtchnl command,
+> + *	   %false if region is related to mailbox or resetting
+> + */
+> +static bool idpf_mmio_region_non_static(struct libie_mmio_info *mmio_info,
+> +					struct libie_pci_mmio_region *reg)
+> +{
+> +	struct idpf_adapter *adapter =
+> +		container_of(mmio_info, struct idpf_adapter,
+> +			     ctlq_ctx.mmio_info);
+> +
+> +	for (uint i = 0; i < IDPF_MMIO_REG_NUM_STATIC; i++) {
+> +		if (reg->bar_idx == 0 &&
+> +		    reg->offset == adapter->dev_ops.static_reg_info[i].start)
+> +			return false;
+> +	}
+> +
+> +	return true;
+> +}
+> +
+> +/**
+> + * idpf_decfg_lan_memory_regions - Unmap non-static memory regions
+> + * @adapter: Driver specific private structure
+> + */
+> +static void idpf_decfg_lan_memory_regions(struct idpf_adapter *adapter)
+> +{
+> +	libie_pci_unmap_fltr_regs(&adapter->ctlq_ctx.mmio_info,
+> +				  idpf_mmio_region_non_static);
+> +}
+> +
+> +/**
+> + * idpf_cfg_lan_memory_regions - Send virtchnl get LAN memory regions msg
+>   * @adapter: Driver specific private struct
+>   *
+>   * Return: 0 on success or error code on failure.
+>   */
+> -static int idpf_send_get_lan_memory_regions(struct idpf_adapter *adapter)
+> +static int idpf_cfg_lan_memory_regions(struct idpf_adapter *adapter)
+>  {
+>  	struct virtchnl2_get_lan_memory_regions *rcvd_regions __free(kfree);
+>  	struct idpf_vc_xn_params xn_params = {
+> @@ -1037,7 +1072,6 @@ static int idpf_send_get_lan_memory_regions(struct idpf_adapter *adapter)
+>  		.timeout_ms = IDPF_VC_XN_DEFAULT_TIMEOUT_MSEC,
+>  	};
+>  	int num_regions, size;
+> -	struct idpf_hw *hw;
+>  	ssize_t reply_sz;
+>  	int err = 0;
+>  
+> @@ -1060,86 +1094,56 @@ static int idpf_send_get_lan_memory_regions(struct idpf_adapter *adapter)
+>  	if (size > IDPF_CTLQ_MAX_BUF_LEN)
+>  		return -EINVAL;
+>  
+> -	hw = &adapter->hw;
+> -	hw->lan_regs = kzalloc_objs(*hw->lan_regs, num_regions);
+> -	if (!hw->lan_regs)
+> -		return -ENOMEM;
+> -
+>  	for (int i = 0; i < num_regions; i++) {
+> -		hw->lan_regs[i].addr_len =
+> -			le64_to_cpu(rcvd_regions->mem_reg[i].size);
+> -		hw->lan_regs[i].addr_start =
+> -			le64_to_cpu(rcvd_regions->mem_reg[i].start_offset);
+> +		struct libie_mmio_info *mmio = &adapter->ctlq_ctx.mmio_info;
+> +		resource_size_t offset, len;
+> +
+> +		offset = le64_to_cpu(rcvd_regions->mem_reg[i].start_offset);
+> +		len = le64_to_cpu(rcvd_regions->mem_reg[i].size);
+> +		if (len && !libie_pci_map_mmio_region(mmio, offset, len)) {
+> +			idpf_decfg_lan_memory_regions(adapter);
+> +			return -EIO;
+> +		}
+>  	}
+> -	hw->num_lan_regs = num_regions;
+>  
+>  	return err;
+>  }
+>  
+>  /**
+> - * idpf_calc_remaining_mmio_regs - calculate MMIO regions outside mbx and rstat
+> + * idpf_map_remaining_mmio_regs - map MMIO regions outside mbx and rstat
+>   * @adapter: Driver specific private structure
+>   *
+> - * Called when idpf_send_get_lan_memory_regions is not supported. This will
+> + * Called when idpf_cfg_lan_memory_regions is not supported. This will
+>   * calculate the offsets and sizes for the regions before, in between, and
+>   * after the mailbox and rstat MMIO mappings.
+>   *
+>   * Return: 0 on success or error code on failure.
+>   */
+> -static int idpf_calc_remaining_mmio_regs(struct idpf_adapter *adapter)
+> +static int idpf_map_remaining_mmio_regs(struct idpf_adapter *adapter)
+>  {
+>  	struct resource *rstat_reg = &adapter->dev_ops.static_reg_info[1];
+>  	struct resource *mbx_reg = &adapter->dev_ops.static_reg_info[0];
+> -	struct idpf_hw *hw = &adapter->hw;
+> -
+> -	hw->num_lan_regs = IDPF_MMIO_MAP_FALLBACK_MAX_REMAINING;
+> -	hw->lan_regs = kzalloc_objs(*hw->lan_regs, hw->num_lan_regs);
+> -	if (!hw->lan_regs)
+> -		return -ENOMEM;
+> +	struct libie_mmio_info *mmio = &adapter->ctlq_ctx.mmio_info;
+> +	resource_size_t reg_start, size;
+> +	bool ok = true;
+>  
+>  	/* Region preceding mailbox */
+> -	hw->lan_regs[0].addr_start = 0;
+> -	hw->lan_regs[0].addr_len = mbx_reg->start;
+> -	/* Region between mailbox and rstat */
+> -	hw->lan_regs[1].addr_start = mbx_reg->end + 1;
+> -	hw->lan_regs[1].addr_len = rstat_reg->start -
+> -					hw->lan_regs[1].addr_start;
+> -	/* Region after rstat */
+> -	hw->lan_regs[2].addr_start = rstat_reg->end + 1;
+> -	hw->lan_regs[2].addr_len = pci_resource_len(adapter->pdev, 0) -
+> -					hw->lan_regs[2].addr_start;
+> -
+> -	return 0;
+> -}
+> -
+> -/**
+> - * idpf_map_lan_mmio_regs - map remaining LAN BAR regions
+> - * @adapter: Driver specific private structure
+> - *
+> - * Return: 0 on success or error code on failure.
+> - */
+> -static int idpf_map_lan_mmio_regs(struct idpf_adapter *adapter)
+> -{
+> -	struct pci_dev *pdev = adapter->pdev;
+> -	struct idpf_hw *hw = &adapter->hw;
+> -	resource_size_t res_start;
+> +	size = mbx_reg->start;
+> +	ok &= !size || libie_pci_map_mmio_region(mmio, 0, size);
+>  
+> -	res_start = pci_resource_start(pdev, 0);
+> -
+> -	for (int i = 0; i < hw->num_lan_regs; i++) {
+> -		resource_size_t start;
+> -		long len;
+> +	/* Region between mailbox and rstat */
+> +	reg_start = mbx_reg->end + 1;
+> +	size = rstat_reg->start - reg_start;
+> +	ok &= !size || libie_pci_map_mmio_region(mmio, reg_start, size);
+>  
+> -		len = hw->lan_regs[i].addr_len;
+> -		if (!len)
+> -			continue;
+> -		start = hw->lan_regs[i].addr_start + res_start;
+> +	/* Region after rstat */
+> +	reg_start = rstat_reg->end + 1;
+> +	size = pci_resource_len(adapter->pdev, 0) - reg_start;
+> +	ok &= !size || libie_pci_map_mmio_region(mmio, reg_start, size);
+>  
+> -		hw->lan_regs[i].vaddr = devm_ioremap(&pdev->dev, start, len);
+> -		if (!hw->lan_regs[i].vaddr) {
+> -			pci_err(pdev, "failed to allocate BAR0 region\n");
+> -			return -ENOMEM;
+> -		}
+> +	if (!ok) {
+> +		idpf_decfg_lan_memory_regions(adapter);
+> +		return -ENOMEM;
+>  	}
+>  
+>  	return 0;
+> @@ -1413,7 +1417,7 @@ static int __idpf_queue_reg_init(struct idpf_vport *vport,
+>  				 struct idpf_q_vec_rsrc *rsrc, u32 *reg_vals,
+>  				 int num_regs, u32 q_type)
+>  {
+> -	struct idpf_adapter *adapter = vport->adapter;
+> +	struct libie_mmio_info *mmio = &vport->adapter->ctlq_ctx.mmio_info;
+>  	int i, j, k = 0;
+>  
+>  	switch (q_type) {
+> @@ -1423,7 +1427,8 @@ static int __idpf_queue_reg_init(struct idpf_vport *vport,
+>  
+>  			for (j = 0; j < tx_qgrp->num_txq && k < num_regs; j++, k++)
+>  				tx_qgrp->txqs[j]->tail =
+> -					idpf_get_reg_addr(adapter, reg_vals[k]);
+> +					libie_pci_get_mmio_addr(mmio,
+> +								reg_vals[k]);
+>  		}
+>  		break;
+>  	case VIRTCHNL2_QUEUE_TYPE_RX:
+> @@ -1435,8 +1440,8 @@ static int __idpf_queue_reg_init(struct idpf_vport *vport,
+>  				struct idpf_rx_queue *q;
+>  
+>  				q = rx_qgrp->singleq.rxqs[j];
+> -				q->tail = idpf_get_reg_addr(adapter,
+> -							    reg_vals[k]);
+> +				q->tail = libie_pci_get_mmio_addr(mmio,
+> +								  reg_vals[k]);
+>  			}
+>  		}
+>  		break;
+> @@ -1449,8 +1454,8 @@ static int __idpf_queue_reg_init(struct idpf_vport *vport,
+>  				struct idpf_buf_queue *q;
+>  
+>  				q = &rx_qgrp->splitq.bufq_sets[j].bufq;
+> -				q->tail = idpf_get_reg_addr(adapter,
+> -							    reg_vals[k]);
+> +				q->tail = libie_pci_get_mmio_addr(mmio,
+> +								  reg_vals[k]);
+>  			}
+>  		}
+>  		break;
+> @@ -3520,35 +3525,30 @@ int idpf_vc_core_init(struct idpf_adapter *adapter)
+>  	}
+>  
+>  	if (idpf_is_cap_ena(adapter, IDPF_OTHER_CAPS, VIRTCHNL2_CAP_LAN_MEMORY_REGIONS)) {
+> -		err = idpf_send_get_lan_memory_regions(adapter);
+> +		err = idpf_cfg_lan_memory_regions(adapter);
+>  		if (err) {
+> -			dev_err(&adapter->pdev->dev, "Failed to get LAN memory regions: %d\n",
+> +			dev_err(&adapter->pdev->dev, "Failed to configure LAN memory regions: %d\n",
+>  				err);
+>  			return -EINVAL;
+>  		}
+>  	} else {
+>  		/* Fallback to mapping the remaining regions of the entire BAR */
+> -		err = idpf_calc_remaining_mmio_regs(adapter);
+> +		err = idpf_map_remaining_mmio_regs(adapter);
+>  		if (err) {
+> -			dev_err(&adapter->pdev->dev, "Failed to allocate BAR0 region(s): %d\n",
+> +			dev_err(&adapter->pdev->dev, "Failed to configure BAR0 region(s): %d\n",
+>  				err);
+> -			return -ENOMEM;
+> +			return err;
+>  		}
+>  	}
+>  
+> -	err = idpf_map_lan_mmio_regs(adapter);
+> -	if (err) {
+> -		dev_err(&adapter->pdev->dev, "Failed to map BAR0 region(s): %d\n",
+> -			err);
+> -		return -ENOMEM;
+> -	}
+> -
+>  	pci_sriov_set_totalvfs(adapter->pdev, idpf_get_max_vfs(adapter));
+>  	num_max_vports = idpf_get_max_vports(adapter);
+>  	adapter->max_vports = num_max_vports;
+>  	adapter->vports = kzalloc_objs(*adapter->vports, num_max_vports);
+> -	if (!adapter->vports)
+> -		return -ENOMEM;
+> +	if (!adapter->vports) {
+> +		err = -ENOMEM;
+> +		goto decfg_regions;
+> +	}
+>  
+>  	if (!adapter->netdevs) {
+>  		adapter->netdevs = kzalloc_objs(struct net_device *,
+> @@ -3614,6 +3614,8 @@ int idpf_vc_core_init(struct idpf_adapter *adapter)
+>  err_netdev_alloc:
+>  	kfree(adapter->vports);
+>  	adapter->vports = NULL;
+> +decfg_regions:
+> +	idpf_decfg_lan_memory_regions(adapter);
+>  	return err;
+>  
+>  init_failed:
+> @@ -3647,7 +3649,6 @@ int idpf_vc_core_init(struct idpf_adapter *adapter)
+>   */
+>  void idpf_vc_core_deinit(struct idpf_adapter *adapter)
+>  {
+> -	struct idpf_hw *hw = &adapter->hw;
+>  	bool remove_in_prog;
+>  
+>  	if (!test_bit(IDPF_VC_CORE_INIT, adapter->flags))
+> @@ -3672,12 +3673,10 @@ void idpf_vc_core_deinit(struct idpf_adapter *adapter)
+>  
+>  	idpf_vport_params_buf_rel(adapter);
+>  
+> -	kfree(hw->lan_regs);
+> -	hw->lan_regs = NULL;
+> -
+>  	kfree(adapter->vports);
+>  	adapter->vports = NULL;
+>  
+> +	idpf_decfg_lan_memory_regions(adapter);
+>  	clear_bit(IDPF_VC_CORE_INIT, adapter->flags);
+>  }
+>  
+> diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c
+> index d9bcc3f61c65..8d8fb498e092 100644
+> --- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c
+> +++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c
+> @@ -31,6 +31,7 @@ int idpf_ptp_get_caps(struct idpf_adapter *adapter)
+>  		.timeout_ms = IDPF_VC_XN_DEFAULT_TIMEOUT_MSEC,
+>  	};
+>  	struct virtchnl2_ptp_cross_time_reg_offsets cross_tstamp_offsets;
+> +	struct libie_mmio_info *mmio = &adapter->ctlq_ctx.mmio_info;
+>  	struct virtchnl2_ptp_clk_adj_reg_offsets clk_adj_offsets;
+>  	struct virtchnl2_ptp_clk_reg_offsets clock_offsets;
+>  	struct idpf_ptp_secondary_mbx *scnd_mbx;
+> @@ -76,19 +77,20 @@ int idpf_ptp_get_caps(struct idpf_adapter *adapter)
+>  	clock_offsets = recv_ptp_caps_msg->clk_offsets;
+>  
+>  	temp_offset = le32_to_cpu(clock_offsets.dev_clk_ns_l);
+> -	ptp->dev_clk_regs.dev_clk_ns_l = idpf_get_reg_addr(adapter,
+> -							   temp_offset);
+> +	ptp->dev_clk_regs.dev_clk_ns_l =
+> +		libie_pci_get_mmio_addr(mmio, temp_offset);
+>  	temp_offset = le32_to_cpu(clock_offsets.dev_clk_ns_h);
+> -	ptp->dev_clk_regs.dev_clk_ns_h = idpf_get_reg_addr(adapter,
+> -							   temp_offset);
+> +	ptp->dev_clk_regs.dev_clk_ns_h =
+> +		libie_pci_get_mmio_addr(mmio, temp_offset);
+>  	temp_offset = le32_to_cpu(clock_offsets.phy_clk_ns_l);
+> -	ptp->dev_clk_regs.phy_clk_ns_l = idpf_get_reg_addr(adapter,
+> -							   temp_offset);
+> +	ptp->dev_clk_regs.phy_clk_ns_l =
+> +		libie_pci_get_mmio_addr(mmio, temp_offset);
+>  	temp_offset = le32_to_cpu(clock_offsets.phy_clk_ns_h);
+> -	ptp->dev_clk_regs.phy_clk_ns_h = idpf_get_reg_addr(adapter,
+> -							   temp_offset);
+> +	ptp->dev_clk_regs.phy_clk_ns_h =
+> +		libie_pci_get_mmio_addr(mmio, temp_offset);
+>  	temp_offset = le32_to_cpu(clock_offsets.cmd_sync_trigger);
+> -	ptp->dev_clk_regs.cmd_sync = idpf_get_reg_addr(adapter, temp_offset);
+> +	ptp->dev_clk_regs.cmd_sync =
+> +		libie_pci_get_mmio_addr(mmio, temp_offset);
+>  
+>  cross_tstamp:
+>  	access_type = ptp->get_cross_tstamp_access;
+> @@ -98,13 +100,14 @@ int idpf_ptp_get_caps(struct idpf_adapter *adapter)
+>  	cross_tstamp_offsets = recv_ptp_caps_msg->cross_time_offsets;
+>  
+>  	temp_offset = le32_to_cpu(cross_tstamp_offsets.sys_time_ns_l);
+> -	ptp->dev_clk_regs.sys_time_ns_l = idpf_get_reg_addr(adapter,
+> -							    temp_offset);
+> +	ptp->dev_clk_regs.sys_time_ns_l =
+> +		libie_pci_get_mmio_addr(mmio, temp_offset);
+>  	temp_offset = le32_to_cpu(cross_tstamp_offsets.sys_time_ns_h);
+> -	ptp->dev_clk_regs.sys_time_ns_h = idpf_get_reg_addr(adapter,
+> -							    temp_offset);
+> +	ptp->dev_clk_regs.sys_time_ns_h =
+> +		libie_pci_get_mmio_addr(mmio, temp_offset);
+>  	temp_offset = le32_to_cpu(cross_tstamp_offsets.cmd_sync_trigger);
+> -	ptp->dev_clk_regs.cmd_sync = idpf_get_reg_addr(adapter, temp_offset);
+> +	ptp->dev_clk_regs.cmd_sync =
+> +		libie_pci_get_mmio_addr(mmio, temp_offset);
+>  
+>  discipline_clock:
+>  	access_type = ptp->adj_dev_clk_time_access;
+> @@ -115,29 +118,32 @@ int idpf_ptp_get_caps(struct idpf_adapter *adapter)
+>  
+>  	/* Device clock offsets */
+>  	temp_offset = le32_to_cpu(clk_adj_offsets.dev_clk_cmd_type);
+> -	ptp->dev_clk_regs.cmd = idpf_get_reg_addr(adapter, temp_offset);
+> +	ptp->dev_clk_regs.cmd = libie_pci_get_mmio_addr(mmio, temp_offset);
+>  	temp_offset = le32_to_cpu(clk_adj_offsets.dev_clk_incval_l);
+> -	ptp->dev_clk_regs.incval_l = idpf_get_reg_addr(adapter, temp_offset);
+> +	ptp->dev_clk_regs.incval_l = libie_pci_get_mmio_addr(mmio, temp_offset);
+>  	temp_offset = le32_to_cpu(clk_adj_offsets.dev_clk_incval_h);
+> -	ptp->dev_clk_regs.incval_h = idpf_get_reg_addr(adapter, temp_offset);
+> +	ptp->dev_clk_regs.incval_h = libie_pci_get_mmio_addr(mmio, temp_offset);
+>  	temp_offset = le32_to_cpu(clk_adj_offsets.dev_clk_shadj_l);
+> -	ptp->dev_clk_regs.shadj_l = idpf_get_reg_addr(adapter, temp_offset);
+> +	ptp->dev_clk_regs.shadj_l = libie_pci_get_mmio_addr(mmio, temp_offset);
+>  	temp_offset = le32_to_cpu(clk_adj_offsets.dev_clk_shadj_h);
+> -	ptp->dev_clk_regs.shadj_h = idpf_get_reg_addr(adapter, temp_offset);
+> +	ptp->dev_clk_regs.shadj_h = libie_pci_get_mmio_addr(mmio, temp_offset);
+>  
+>  	/* PHY clock offsets */
+>  	temp_offset = le32_to_cpu(clk_adj_offsets.phy_clk_cmd_type);
+> -	ptp->dev_clk_regs.phy_cmd = idpf_get_reg_addr(adapter, temp_offset);
+> +	ptp->dev_clk_regs.phy_cmd =
+> +		libie_pci_get_mmio_addr(mmio, temp_offset);
+>  	temp_offset = le32_to_cpu(clk_adj_offsets.phy_clk_incval_l);
+> -	ptp->dev_clk_regs.phy_incval_l = idpf_get_reg_addr(adapter,
+> -							   temp_offset);
+> +	ptp->dev_clk_regs.phy_incval_l =
+> +		libie_pci_get_mmio_addr(mmio, temp_offset);
+>  	temp_offset = le32_to_cpu(clk_adj_offsets.phy_clk_incval_h);
+> -	ptp->dev_clk_regs.phy_incval_h = idpf_get_reg_addr(adapter,
+> -							   temp_offset);
+> +	ptp->dev_clk_regs.phy_incval_h =
+> +		libie_pci_get_mmio_addr(mmio, temp_offset);
+>  	temp_offset = le32_to_cpu(clk_adj_offsets.phy_clk_shadj_l);
+> -	ptp->dev_clk_regs.phy_shadj_l = idpf_get_reg_addr(adapter, temp_offset);
+> +	ptp->dev_clk_regs.phy_shadj_l =
+> +		libie_pci_get_mmio_addr(mmio, temp_offset);
+>  	temp_offset = le32_to_cpu(clk_adj_offsets.phy_clk_shadj_h);
+> -	ptp->dev_clk_regs.phy_shadj_h = idpf_get_reg_addr(adapter, temp_offset);
+> +	ptp->dev_clk_regs.phy_shadj_h =
+> +		libie_pci_get_mmio_addr(mmio, temp_offset);
+>  
+>  	return 0;
+>  }
+> -- 
+> 2.47.1
+> 
