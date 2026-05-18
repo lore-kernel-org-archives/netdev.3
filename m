@@ -1,265 +1,258 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF94405C49
-	for <netdev@vger.kernel.org>; Mon, 18 May 2026 01:30:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79BCE1F03DE
+	for <netdev@vger.kernel.org>; Mon, 18 May 2026 01:35:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779067840; cv=none; b=esGcSMhquQ4C0TR8yMWmc1aXYz0dUKR4q9YQ5vn+lyZIGZYtuMW5+I5U/XXdqk9Fpguk+m9cmZ/RszSs1cv+LouY0/inaGEV4dXl+tzZfgOWVMY264KQBYqCHqXCWWhmrLxDv1COQGSeLki5DRYQlofc8xICS1EZBQNhSzDCsgI=
+	t=1779068140; cv=none; b=X0YfUTxFNkp35Iyh9TwN3rQb0ivQnacz4VRfoAMhOUPCij7pXaXyd1fI7Fxxr0ev9wYUED59WSb1z+s/OMpAiLmuOD2ZGBa51WN5Ie7HBn3c3wz6673od8dyUeedBIKzisDV1c5LuHWzj+d2dhNzyitqkng715eCoSNveCiEZsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779067840; c=relaxed/simple;
-	bh=hh9ilvQ9BN0QU368cGXI2oMTeMbGtV3oXAacHwkLfQ0=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=J1a3TCRO6bP0whVqHMNPinMSr1HN6Mqdqd2HP2/76NcMohKX9w4JiI1kpN41M1EQkZRuUDqCX8ZT7qz+FonKtzLvgOJ9oi1zGR6sZ8O9SM0o1182ucN0+EmH6PQjOfugOl4p0q+kQPS4Pulgus29EAmxTjl3PW48Hwyo8qqm2jE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=QbPTvKY7; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=hiIzrVfA; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1779068140; c=relaxed/simple;
+	bh=Yf23nRmS1PkYqoqJ9ZrO9q8meN9xXHITD7viI0IXQq4=;
+	h=Message-ID:Subject:Date:From:To:Cc:References:In-Reply-To; b=RfaHpWCd131QuyXWuDWhoHlhJCnQCC/arJfsJO9ziJUWN1ENsOLR6GIbG0BatkqJKZm9Yxl7CciELRao7vksDLRtET0qz52txAMRvBv0bMQRiG3SjmeI3+GxVnWePw4X1df2mKvNt2l6p/JY+lbPAGI0Z0+f1H6IN5vZ0LLnJcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=mcZuP8dz; arc=none smtp.client-ip=115.124.30.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="QbPTvKY7";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="hiIzrVfA"
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64HAOngI3595488
-	for <netdev@vger.kernel.org>; Mon, 18 May 2026 01:30:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=lnF/Ok45gY3a3A0tgLNaHq
-	m862K8e+GRmlIWqlKn4kI=; b=QbPTvKY7cE38U9tlV6EhGAhjZe6l5ZfRdZ9iFt
-	wNamyJ+En7vzPjI94fHCoPwHBI1GNLuctYTyBTWmctv8ehK9a71X19C2SI42rXm4
-	7aHMCfjA6x9RQCjpsAkmwdmyCPs1R7aISj7FknNJlvWDjMpBXQBsNOwxdqWFgMuO
-	If5Lo+s6UNB+NS+86jpg2dbn1O3U8DBYpr8jIAqsJuC5BWWNjZqGarfgV+5Ylhfy
-	7+QYJifU9nd8EIkWNYrirIJTd3cDUaajuLY2hCX80DLQWDpES2d/q9+JO8pzo3se
-	oidCQhZnL5aZsmX+4Iub/WO1FhILt76333BxjxYGMV9PppVw==
-Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e6h0qbyse-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Mon, 18 May 2026 01:30:38 +0000 (GMT)
-Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-30230e64087so2001490eec.0
-        for <netdev@vger.kernel.org>; Sun, 17 May 2026 18:30:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1779067837; x=1779672637; darn=vger.kernel.org;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lnF/Ok45gY3a3A0tgLNaHqm862K8e+GRmlIWqlKn4kI=;
-        b=hiIzrVfA+FEKhfLIXw5v5164GNHsTXQENfeBxZYcWlUnWVyCNKOU6qR+qlnLJWXvlj
-         0UXh+ZgYHsCYlPfzW9rq1rUiyk7QY6AJth7W4NEZFDDbP7myPrQ3U+C7UMWA8pUwrZ/U
-         SS5if1XvCsYrjx0ZULCEXL3MUDcWGVCXc69bew1i8kMjbHB5EVQu10CTnmCm7O64kvko
-         fPm8ZVK6Kkr0ZTyP/Q3wv4/Rvbu/rmHnqcam8AdtCKmM7to+I9sYWBb6ocVsxTxndlAY
-         rC/hgm08qoRFY6BryCuzAngs8up+DcZark3gyzIBSMq0yC3WlwigOdnOVXSzk3vnQgC4
-         DO6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779067837; x=1779672637;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=lnF/Ok45gY3a3A0tgLNaHqm862K8e+GRmlIWqlKn4kI=;
-        b=nnWeaPARciMekQwqjr3CxzPuP+n74KT9Si6BSBWvuWrUSmfaASHKXuJZRIxWuwjhxv
-         Bx17t7/3fxnTl5Zc3pZqNhipkjgqRR3GlvQynCd+b5Gw8MdlV5fwaARp3xdvDKiXxOeC
-         5B7p+rYh/x0swICGlnjnmmHeAN4gSd3iLDBwiQmS7Tp70Y4QdWogGnbnyuyucNW5ihxe
-         VE5RnoE5I1U+NJw+ZvpNGvbXmLRQZ8wtpB5XGsIggTi5S/f3Ya47NRcqSm7iJhUeMp0n
-         3EMOFohTvoy+puiZnJhunFR/OCQc+8sUn/ahbuMBVPMl9nxDpuXlWEozqFTu1FUePXag
-         O8kQ==
-X-Gm-Message-State: AOJu0YyyfqFY6p8NHIoAaxyxRxx0gLD2Q6sux/nmEkE9QOduiDuU/b2V
-	xCQAA5QgfmHWy7PwnFXZZ3G/w4dW8LwiqyiG7ZKAxFiANzV6RZQjmb0C8uiLL8VUSWVHkmMYZoG
-	CBd2V3ek/ZuQVyPc3fj778E68SLA/ed0LYHkQm6I4+VJLRubj5KV0dDivwPdFk9y48e0=
-X-Gm-Gg: Acq92OFhn0fSHhRvIIHCFYpUywTgnQQe8hibwG5omNFlnx7rP45qMQJHWcMTsY/zy2q
-	okqGnRTUrgCH+89KWSbFcfeF8WqofGycXTGTLrss1/9/n47AHIPdTSrxhObwsyy684x8CKAtTxT
-	ZBMkvQ6TOrFo+zHUNSoCF6qhVsiCzaOZdPZDS5d8eXiejGfkYIXS2EeMrG7QrxKZrkon51xJxxF
-	AiH6B+2WgFI93SRqIrwMSxsS8qi9eIgho7LA21/pwcSSYE4znCeLR85UhtIqjof6Ml5prymzIua
-	ohohhyTQge8I1bNiGEo3a+hQ3A8niVqK/WJFgvQuPDSXOCndGYTeVsfsic9rI3UZipXI1XqaLnH
-	L6YwHJjDiREn+uq+bH3m6sx2Mdkmp6rcbezAqhRUUu/5996EcLQw=
-X-Received: by 2002:a05:7301:5809:b0:2f2:6dde:df50 with SMTP id 5a478bee46e88-3039868cba3mr6241665eec.17.1779067837067;
-        Sun, 17 May 2026 18:30:37 -0700 (PDT)
-X-Received: by 2002:a05:7301:5809:b0:2f2:6dde:df50 with SMTP id 5a478bee46e88-3039868cba3mr6241644eec.17.1779067836440;
-        Sun, 17 May 2026 18:30:36 -0700 (PDT)
-Received: from [10.227.174.152] ([207.213.33.2])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-302978b1a79sm12702137eec.28.2026.05.17.18.30.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 17 May 2026 18:30:36 -0700 (PDT)
-Message-ID: <604ca54c-a94e-4ca4-83e7-4486d7392d71@oss.qualcomm.com>
-Date: Sun, 17 May 2026 18:30:31 -0700
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="mcZuP8dz"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1779068134; h=Message-ID:Subject:Date:From:To;
+	bh=18cT/QxZAk8+zDBhq7EJ4zFdC9chL2t3J0jaoNMj40A=;
+	b=mcZuP8dzyxB2/h9Q3vWKOCjxVt+pbsWP3Bd8QP3BGJkTdk/kapu8XJlUdhyQsrB9cxLQFMMY5Lv+o91Yckq3b1WssGfcmiZv8YmBYO0qG8ecc4q7XWpPC5u8KTGT5GzzLcf9KIU3xsE/sRbEJ9aB5IisoWY+8xcgwr/18KTwuCU=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R781e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=xuanzhuo@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0X32fT3U_1779068131;
+Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0X32fT3U_1779068131 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 18 May 2026 09:35:32 +0800
+Message-ID: <1779067446.142016-2-xuanzhuo@linux.alibaba.com>
+Subject: Re: [PATCH net-next v43 4/8] eea: create/destroy rx,tx queues for netdevice open and stop
+Date: Mon, 18 May 2026 09:24:06 +0800
+From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+To: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>,
+ Wen Gu <guwen@linux.alibaba.com>,
+ Philo Lu <lulie@linux.alibaba.com>,
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+ Dong Yibo <dong100@mucse.com>,
+ Mingyu Wang <25181214217@stu.xidian.edu.cn>,
+ Heiner Kallweit <hkallweit1@gmail.com>,
+ Dust Li <dust.li@linux.alibaba.com>,
+ netdev@vger.kernel.org
+References: <20260514095138.80680-1-xuanzhuo@linux.alibaba.com>
+ <20260514095138.80680-5-xuanzhuo@linux.alibaba.com>
+ <1779067114.669575-1-xuanzhuo@linux.alibaba.com>
+In-Reply-To: <1779067114.669575-1-xuanzhuo@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>, jiri@resnulli.us, davem@davemloft.net,
-        Eric Dumazet <edumazet@google.com>, kuba@kernel.org, pabeni@redhat.com,
-        horms@kernel.org
-From: Rajat Gupta <rajat.gupta@oss.qualcomm.com>
-Subject: [PATCH net] net/sched: fix pedit partial COW leading to page cache
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: 0YzvaYQCnm5UW57QbvpJhqVp8x7w3_YT
-X-Proofpoint-GUID: 0YzvaYQCnm5UW57QbvpJhqVp8x7w3_YT
-X-Authority-Analysis: v=2.4 cv=fIMJG5ae c=1 sm=1 tr=0 ts=6a0a6bbe cx=c_pps
- a=PfFC4Oe2JQzmKTvty2cRDw==:117 a=0UO4LuSLTB0qstzv38KPpQ==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
- a=EUspDBNiAAAA:8 a=pGLkceISAAAA:8 a=A7XncKjpAAAA:8 a=pxxjg2x1fI-G0sRxPlwA:9
- a=QEXdDO2ut3YA:10 a=6Ab_bkdmUrQuMsNx7PHu:22 a=R9rPLQDAdC6-Ub70kJmZ:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE4MDAxMiBTYWx0ZWRfX2G1lQ5qcgmgz
- OGK8p4sNnqNcKGm/e8rhFqtLB0m58r0Gsf1jCYsJYEyKgPr6iY9Xa2uLnAGFtL0V6FjzV/iIl8Q
- wiBUxBpzooZTbE069QOq+QiO/x37UtEZdT0Ld4/+mkTtAwk2v85HpnDDn6IlHmR6BitwdYCTajw
- DMwqmjglgMlvMQhZ+zmROJYQshmic+bHUxPDCGUtAW3HW1qO3H3ZAgW0RDZLTmJnOQm5xof8hlr
- 63U+YS4vtcRDccuZgv9yf8/7tdIHfS5ikJm08vHaDOYt4HwQBOWMhTc/ZKEV7QEp6r/+m1TP0ZD
- kG6nE5GjLEjGfd9iCm5G0Iw4WKC1axd1+KP7tTTpwo752ND6XB4CCZm5Vep3urxDiOlkbrUyGSZ
- q9yVKoFEkmQWu7CqvY6aNOOthW1lvxO5Br0eCAfkVfgsTGRz7+MxJjL4J1CyX4RoJOYyvLFlQQe
- iLx5Jyhct+uCiSUvyGg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-17_06,2026-05-15_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 impostorscore=0 spamscore=0 bulkscore=0 phishscore=0
- priorityscore=1501 adultscore=0 suspectscore=0 lowpriorityscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605130000
- definitions=main-2605180012
 
-From f12ea6484dbb75d1c13495e921d0595532317f2a Mon Sep 17 00:00:00 2001
-From: Rajat Gupta <rajat.gupta@oss.qualcomm.com>
-Date: Sun, 17 May 2026 10:11:44 -0700
-Subject: [PATCH net] net/sched: fix pedit partial COW leading to page cache
- corruption
+On Mon, 18 May 2026 09:18:34 +0800, Xuan Zhuo <xuanzhuo@linux.alibaba.com> wrote:
+> > diff --git a/drivers/net/ethernet/alibaba/eea/eea_net.c b/drivers/net/ethernet/alibaba/eea/eea_net.c
+> > index bb8a49f8c6df..cfb18a07e296 100644
+> > --- a/drivers/net/ethernet/alibaba/eea/eea_net.c
+> > +++ b/drivers/net/ethernet/alibaba/eea/eea_net.c
+> [ ... ]
+> > +/* resources: ring, buffers, irq */
+> > +int eea_reset_hw_resources(struct eea_net *enet, struct eea_net_init_ctx *ctx)
+> > +{
+> > +	struct eea_net_init_ctx ctx_old = {0};
+> > +	int err, error;
+> > +
+> > +	if (!netif_running(enet->netdev) || !enet->started) {
+> > +		enet->cfg = ctx->cfg;
+> > +		return 0;
+> > +	}
+> > +
+> > +	err = eea_alloc_rxtx_q_mem(ctx);
+> > +	if (err) {
+> > +		netdev_warn(enet->netdev,
+> > +			    "eea reset: alloc q failed. stop reset. err %d\n",
+> > +			    err);
+> > +		return err;
+> > +	}
+> > +
+> > +	eea_stop_rxtx(enet->netdev);
+> > +	eea_hw_unactive_ring(enet);
+> > +
+> > +	eea_unbind_q_and_cfg(enet, &ctx_old);
+> > +	eea_bind_q_and_cfg(enet, ctx);
+> > +
+> > +	err = eea_update_queues(enet);
+> > +	if (err) {
+> > +		netdev_err(enet->netdev,
+> > +			   "eea reset: set real num queues failed. err %d\n",
+> > +			   err);
+> > +		goto err_bind_old;
+> > +	}
+> > +
+> > +	err = eea_hw_active_ring(enet);
+> > +	if (err) {
+> > +		netdev_err(enet->netdev, "eea reset: active new ring. err %d\n",
+> > +			   err);
+> > +		eea_unbind_q_and_cfg(enet, ctx);
+> > +		goto err_free_q;
+> > +	}
+> On the eea_hw_active_ring() failure branch above, can the netdev be
+> left with mismatched cached state?
+> The sequence executed by then is:
+>     eea_unbind_q_and_cfg(enet, &ctx_old);   /* saves OLD cfg into ctx_old */
+>     eea_bind_q_and_cfg(enet, ctx);          /* enet->cfg = ctx->cfg (NEW) */
+>     err = eea_update_queues(enet);          /* sets real_num_{rx,tx}_queues
+>                                                to NEW values, succeeded */
+>     err = eea_hw_active_ring(enet);         /* failed */
+>     eea_unbind_q_and_cfg(enet, ctx);
+>     goto err_free_q;
+> err_free_q then sets enet->started = false but never restores
+> enet->cfg or netdev->real_num_{rx,tx}_queues to the old values, and
+> eea_unbind_q_and_cfg() only nulls enet->rx / enet->tx without
+> reverting cfg.
+> Looking at eea_unbind_q_and_cfg():
+>     ctx->cfg = enet->cfg;
+>     ctx->rx = enet->rx;
+>     ctx->tx = enet->tx;
+>     enet->rx = NULL;
+>     enet->tx = NULL;
+> If the user later calls ndo_open, eea_netdev_open() reads enet->cfg
+> which still holds the NEW values that the device just rejected. Was
+> a rollback to ctx_old intended on this path as well, similar to the
+> err_bind_old branch?
 
-tcf_pedit_act() computes the COW range for skb_ensure_writable()
-once before the key loop using tcfp_off_max_hint, but the hint does
-not account for the runtime header offset added by typed keys. This
-can leave part of the write region un-COW'd.
+All configurations that reach this point are additive in nature. The failure to
+apply them to the hardware does not imply that the configuration itself is
+invalid; rather, it is typically due to hardware issues or memory allocation
+failures. Therefore, we retain the configuration with the expectation that it
+may be successfully applied upon the next attempt.
 
-Fix by moving skb_ensure_writable() inside the per-key loop where
-the actual write offset is known, and add overflow checking on the
-offset arithmetic. For negative offsets (e.g. Ethernet header edits
-at ingress), use skb_cow() to COW the headroom instead. Guard
-offset_valid() against INT_MIN, where negation is undefined.
+> [ ... ]
+> > +static void eea_net_ha_reset_remove(struct eea_net *enet,
+> > +				    struct eea_device *edev)
+> > +{
+> [ ... ]
+> > diff --git a/drivers/net/ethernet/alibaba/eea/eea_net.h b/drivers/net/ethernet/alibaba/eea/eea_net.h
+> > index fa0eec8af21b..9639f0c5c618 100644
+> > --- a/drivers/net/ethernet/alibaba/eea/eea_net.h
+> > +++ b/drivers/net/ethernet/alibaba/eea/eea_net.h
+> [ ... ]
+> > +/* rx apis */
+> > +void enet_rx_stop(struct eea_net_rx *rx);
+> > +void enet_rx_start(struct eea_net_rx *rx);
+> Every other symbol in this driver uses the eea_ prefix, but
+> enet_rx_start / enet_rx_stop use enet_. Was the inconsistency
+> intentional, or should these be renamed to eea_rx_start /
+> eea_rx_stop for consistency with the rest of the eea_ namespace?
 
-Additionally, linearize skbs with shared frags upfront to prevent
-silent data corruption when pedit operates on zero-copy pages
-(e.g. from sendfile).
+The enet prefix indicates that this code is not part of the PCI or adminq layers,
+but is specifically used for eea netdev handling.
 
-Fixes: 8b796475fd78 ("net/sched: act_pedit: really ensure the skb is writable")
-Reported-by: Rajat Gupta <rajat.gupta@oss.qualcomm.com>
-Reported-by: Yiming Qian <yimingqian591@gmail.com>
-Reported-by: Keenan Dong <keenanat2000@gmail.com>
-Reported-by: Han Guidong <2045gemini@gmail.com>
-Reported-by: Zhang Cen <rollkingzzc@gmail.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Rajat Gupta <rajat.gupta@oss.qualcomm.com>
----
- net/sched/act_pedit.c | 52 ++++++++++++++++++++++++++++++++-----------
- 1 file changed, 39 insertions(+), 13 deletions(-)
 
-diff --git a/net/sched/act_pedit.c b/net/sched/act_pedit.c
-index bc20f08a2..e077a2e82 100644
---- a/net/sched/act_pedit.c
-+++ b/net/sched/act_pedit.c
-@@ -16,6 +16,7 @@
- #include <linux/ip.h>
- #include <linux/ipv6.h>
- #include <linux/slab.h>
-+#include <linux/overflow.h>
- #include <net/ipv6.h>
- #include <net/netlink.h>
- #include <net/pkt_sched.h>
-@@ -323,8 +324,10 @@ static bool offset_valid(struct sk_buff *skb, int offset)
- 	if (offset > 0 && offset > skb->len)
- 		return false;
- 
--	if  (offset < 0 && -offset > skb_headroom(skb))
--		return false;
-+	if (offset < 0) {
-+		if (offset == INT_MIN || -offset > skb_headroom(skb))
-+			return false;
-+	}
- 
- 	return true;
- }
-@@ -393,17 +396,19 @@ TC_INDIRECT_SCOPE int tcf_pedit_act(struct sk_buff *skb,
- 	struct tcf_pedit_key_ex *tkey_ex;
- 	struct tcf_pedit_parms *parms;
- 	struct tc_pedit_key *tkey;
--	u32 max_offset;
- 	int i;
- 
- 	parms = rcu_dereference_bh(p->parms);
- 
--	max_offset = (skb_transport_header_was_set(skb) ?
--		      skb_transport_offset(skb) :
--		      skb_network_offset(skb)) +
--		     parms->tcfp_off_max_hint;
--	if (skb_ensure_writable(skb, min(skb->len, max_offset)))
--		goto done;
-+	/* If the skb has shared frags the user is likely using zero-copy
-+	 * (e.g. sendfile).  Those page frags may point to page-cache pages;
-+	 * writing into them would silently corrupt the page cache.
-+	 * Linearize so pedit operates on a private copy.
-+	 * If you want zero-copy, don't use pedit. 
-+	  TL;DR if you want to use ZC, don't use pedit*/
-+	if (skb_has_shared_frag(skb)) {
-+		if (__skb_linearize(skb))
-+			goto bad;
-+	}
- 
- 	tcf_lastuse_update(&p->tcf_tm);
- 	tcf_action_update_bstats(&p->common, skb);
-@@ -414,6 +419,7 @@ TC_INDIRECT_SCOPE int tcf_pedit_act(struct sk_buff *skb,
- 	for (i = parms->tcfp_nkeys; i > 0; i--, tkey++) {
- 		int offset = tkey->off;
- 		int hoffset = 0;
-+		int write_offset, write_len;
- 		u32 *ptr, hdata;
- 		u32 val;
- 		int rc;
-@@ -451,12 +457,32 @@ TC_INDIRECT_SCOPE int tcf_pedit_act(struct sk_buff *skb,
- 			}
- 		}
- 
--		if (!offset_valid(skb, hoffset + offset)) {
--			pr_info_ratelimited("tc action pedit offset %d out of bounds\n", hoffset + offset);
-+		if (unlikely(check_add_overflow(hoffset, offset,
-+						&write_offset))) {
-+			pr_info_ratelimited("tc action pedit offset overflow\n");
-+			goto bad;
-+		}
-+
-+		if (!offset_valid(skb, write_offset)) {
-+			pr_info_ratelimited("tc action pedit offset %d out of bounds\n",
-+					    write_offset);
- 			goto bad;
- 		}
- 
--		ptr = skb_header_pointer(skb, hoffset + offset,
-+		if (write_offset < 0) {
-+			if (skb_cow(skb, -write_offset))
-+				goto bad;
-+		} else {
-+			if (unlikely(check_add_overflow(write_offset,
-+							(int)sizeof(hdata),
-+							&write_len)))
-+				goto bad;
-+			if (skb_ensure_writable(skb, min_t(int, skb->len,
-+							   write_len)))
-+				goto bad;
-+		}
-+
-+		ptr = skb_header_pointer(skb, write_offset,
- 					 sizeof(hdata), &hdata);
- 		if (!ptr)
- 			goto bad;
-@@ -475,7 +501,7 @@ TC_INDIRECT_SCOPE int tcf_pedit_act(struct sk_buff *skb,
- 
- 		*ptr = ((*ptr & tkey->mask) ^ val);
- 		if (ptr == &hdata)
--			skb_store_bits(skb, hoffset + offset, ptr, 4);
-+			skb_store_bits(skb, write_offset, ptr, sizeof(hdata));
- 	}
- 
- 	goto done;
--- 
-2.51.2.windows.1
+> > +
+> > +void eea_free_rx(struct eea_net_rx *rx, struct eea_net_cfg *cfg);
+> > +struct eea_net_rx *eea_alloc_rx(struct eea_net_init_ctx *ctx, u32 idx);
+> [ ... ]
+> > diff --git a/drivers/net/ethernet/alibaba/eea/eea_pci.c b/drivers/net/ethernet/alibaba/eea/eea_pci.c
+> > index bef0ebd6bb20..9872e360dd5d 100644
+> > --- a/drivers/net/ethernet/alibaba/eea/eea_pci.c
+> > +++ b/drivers/net/ethernet/alibaba/eea/eea_pci.c
+> [ ... ]
+> > +static void eea_ha_handle_reset(struct eea_pci_device *ep_dev)
+> > +{
+> [ ... ]
+> > +	if (reset & EEA_PCI_CAP_RESET_FLAG) {
+> > +		dev_warn(&ep_dev->pci_dev->dev, "recv device reset request.\n");
+> > +
+> > +		pci_dev = ep_dev->pci_dev;
+> > +
+> > +		/* The pci remove callback may hold this lock. If the
+> > +		 * pci remove callback is called, then we can ignore the
+> > +		 * ha interrupt.
+> > +		 */
+> > +		if (mutex_trylock(&edev->ha_lock)) {
+> Is the mutex_trylock() with a silent-skip fallback below the right
+> pattern here?
+> > +			if (edev->status != EEA_PCI_STATUS_DONE) {
+> > +				dev_err(&ep_dev->pci_dev->dev, "ha: reset device: pci status is %d. skip it.\n",
+> > +					edev->status);
+> > +
+> > +				mutex_unlock(&edev->ha_lock);
+> > +				return;
+> > +			}
+> > +
+> > +			__eea_pci_remove(pci_dev, false);
+> > +			err = __eea_pci_probe(pci_dev, ep_dev, false);
+> > +			if (err)
+> [ ... ]
+> > +			mutex_unlock(&edev->ha_lock);
+> > +		} else {
+> > +			/* Device removal is in progress, so return directly. */
+> > +			dev_warn(&ep_dev->pci_dev->dev,
+> > +				 "ha device reset: trylock failed.\n");
+> > +		}
+> > +		return;
+> > +	}
+> When the trylock fails, the work simply logs a warning and returns
+> without rescheduling. The networking subsystem guidance lists this
+> specific pattern (trylock with fallback to skip the work entirely) as
+> a likely bug, with the narrow exception of work items that retry via
+> schedule_work() on failure.
+> The trylock also fails for any holder of ha_lock, not only pci
+> remove, so a HA reset request that arrives during any concurrent
+> holder is dropped silently and the device is left without recovery.
+> Would it be more appropriate to either reschedule the work via
+> schedule_work() on trylock failure, or to redesign the locking so
+> that the remove path coordinates with the worker via cancel/flush
+> rather than a shared mutex that the worker must avoid?
 
-Thank you,
-Rajat
+
+If the system has already entered the PCI remove path, the HA work is no longer
+necessary, so returning directly after mutex_trylock failure is correct
+behavior. Furthermore, our design guarantees that an HA interrupt will not be
+triggered again until the current one is fully processed. If the hardware were
+to encounter such a demand (i.e., multiple concurrent HA requests), our design
+strategy is to let the hardware stop functioning entirely rather than attempting
+to recover again.
+
+
+> [ ... ]
+> > +static int eea_pci_ha_init(struct eea_device *edev, struct pci_dev *pci_dev,
+> > +			   bool pci_probe)
+> > +{
+> [ ... ]
+> > diff --git a/drivers/net/ethernet/alibaba/eea/eea_net.c b/drivers/net/ethernet/alibaba/eea/eea_net.c
+> > +static int eea_net_reprobe(struct eea_device *edev)
+> > +{
+> > +	struct eea_net *enet = edev->enet;
+> > +	int err = 0;
+> > +
+> > +	enet->edev = edev;
+> > +
+> > +	if (!enet->adminq.ring) {
+> > +		err = eea_create_adminq(enet, edev->rx_num + edev->tx_num);
+> > +		if (err)
+> > +			return err;
+> > +	}
+> > +
+> > +	err = eea_alloc_irq_blks(enet);
+> > +	if (err)
+> > +		goto err_destroy_aq;
+> > +
+> > +	rtnl_lock();
+> > +
+> > +	enet->link_err = 0;
+> > +	if (edev->ha_reset_netdev_running &&
+> > +	    netif_running(edev->enet->netdev)) {
+> > +		err = eea_netdev_open(enet->netdev);
+> On the HA reprobe path, can edev->rx_num change relative to the
+> value used at original probe?
+
+This won't happen. According to our hardware design specification, the device
+parameters (including rx_num and tx_num) are guaranteed to remain constant
+throughout the entire HA reset process. Therefore, we don't need to perform an
+explicit validation check for these values during eea_net_reprobe().
+
+
