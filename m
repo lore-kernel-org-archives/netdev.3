@@ -1,54 +1,54 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B066D38757D
-	for <netdev@vger.kernel.org>; Mon, 18 May 2026 05:07:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A05E3388E46
+	for <netdev@vger.kernel.org>; Mon, 18 May 2026 05:07:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779080851; cv=none; b=pti/lm0rLY0K54v07jHmCutY/nCEJsnHzUg42Sg5iOUJpUHPWZaxnq24kBC6y3B9UOfQj+ay15Wud6aQWSeoCP3ojv/O8N7dGLPZWBNCeOvpmbgzjuyoBAw0tCUJnyRh/zfOHxcdpLr0xPUBIubMc5wrgwRU5Vz/SvMZlZOIVTM=
+	t=1779080852; cv=none; b=KnU7t22ov6CLHnkMPvhVWtmqj5RNPJDAufxPALu3OYD6Fs85A0SFc3h3KljX/VXjLy2ZKhnZHdM8IjrLqu1Q22Y5GdRzmE06vHz39+MmEWZuca1zVegOQfPVNFtF56MMsfy4FhFHrIGoHXm3ek8RSXN8VDwQZNUK8jo1uUaksnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779080851; c=relaxed/simple;
-	bh=9Sbkg544vUWxbwdGYWepPL11YbwGVqyy1dj6Bb5qFQg=;
+	s=arc-20240116; t=1779080852; c=relaxed/simple;
+	bh=H3Mw0sLDQ0PrNR0N11yB2FK6Q+aTml5xdW4yQPbZRAM=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=qacMu8TvduJTYE1q9FgEkEn88HtMfQHHlp6/izAzgG+L3+NQeAD7coihaGtWvmB0oWtP1GuBVmjh0QlbekJJLPUS9MOsr04gV3BG6Ugs0ixNUnMd4dvPSZpYGyp9mEZ61ICkbApY9UqUdQ+CpMqXfgPipcMzY58zbOaQsnzqOuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=s3K+1EH7; arc=none smtp.client-ip=209.85.215.201
+	 To:Cc:Content-Type; b=MjkNVnLoWSE0xA7D23wVrcDnwr+Z6v0XaiqGLteFanTPibil88m9cbCj7RTdHuYISTNwS0ji2CYKeSo4z/KLNvWIdUyWfrSzLhc4QMtEX+r0i0XpFMFPY7G3njVnkwoo1zngshkXinuQAd9jt8n9hs7QBvLUs6hgWLGSQV23qCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=P/gzu32k; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="s3K+1EH7"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c8024fc7032so1029821a12.1
-        for <netdev@vger.kernel.org>; Sun, 17 May 2026 22:07:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="P/gzu32k"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2bc977e6aedso17079255ad.2
+        for <netdev@vger.kernel.org>; Sun, 17 May 2026 22:07:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779080850; x=1779685650; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1779080851; x=1779685651; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ffPyApXuW8AJv14roerbUG+TS0S5kpTjBJqFFLouP9o=;
-        b=s3K+1EH7INs0rfmxUQ4/5UQumR1FE3HzMUHVbbA5qj8Du5azBatrtRKwyjaHn613WS
-         rGG/bvl6uSgmeX22xOYAgYX3pDZuZwrt/OeEaPTqgDJ2124rlFMcvEdqgTfyebdxBgoH
-         GM4QhwbkZwZy3AkGOExX+V3TF5wtcHrgfd7mOSQpSVAb4t+Tc1M7xVLWiJBjzEiF2/0V
-         NfSFd9eUQiALPxYmQMyLyDeO0BJ66CtXUAg31pcDVcWyyTkN6xgyecLY3Fdloyl1pmi4
-         TjOtbZNn3fmGLUQnDbsw0WZXQRSUqgUtofRFlbzvpGASIX8s+w0rBFO2m+6LGOgceiJK
-         Thjg==
+        bh=ZcvuRqAQjK0dhJhGCruHpLuOAtOmcNsS4wjgr0PhSjY=;
+        b=P/gzu32kd/kJQrfbA5uirrXJ/vZT/qe/wPlHC841Fe9FG+rzkBg9U/TMMApzSAmzXe
+         U2N5CJLjbs375tfmqC99LFwne4FcEeXaxUdFtmXcpuaQp9GVftXhSghhg4sJFnSwiGtP
+         dOym8xt1ZHois11x8KSuS/Jov/qkFUsOQysjcOv9BWSWCDdf5nTZL6b/S1Y37GriH7L5
+         LhiBsJbXqYWO9VDOFMTbBHScGimBxxGsZJjZNII886lyRmXeq7gOxynji8UtEpcD2zR7
+         7IwWuPl6qp+saT06DvQgyPPVVEgV6y7uClgcf9j5j9KlUw38C8FGNlxONhSzOkhhrw7J
+         ipIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779080850; x=1779685650;
+        d=1e100.net; s=20251104; t=1779080851; x=1779685651;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ffPyApXuW8AJv14roerbUG+TS0S5kpTjBJqFFLouP9o=;
-        b=fJxE/CTLtgfJwTOYQRtmuBw8Ha7It9qKZQ/kB3k1C3/N4hgr4wvmO92qbxVyaiiqXv
-         Zqc2iWnU3fQIR11+Ul2ACWSW8T8M6HP5foV+XssKo2cBdF/HHVsSL5F9oZBd+N+Van2U
-         Ha1qHhNLOm+EZ0IECPTbqxiF9hssG1t1asLbwnD5235F4dE4AlcpMOFK5CSbu6zisq1n
-         PDDCwb+8gmAQy3fZqA6qTzfyBE4F+Jro+oH43pwJmaRxGp9+Z2qOqf4O70BxFUD5Sz76
-         d+H16hs5GySj9gJcrCqZzUuLqb7MGc/dZpVP6CUlB3Lxv9dR5sJGVQS2k5ZzO40+OALo
-         kt+g==
-X-Forwarded-Encrypted: i=1; AFNElJ8qoMq9v8nsGj83yw3P+PvjYI1y5qyDk/GVY68uru0Rk8c7Ti/AotKvZu3VebmYpC7kdiQsIB8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwlfuCLTUs2Px5oMCNdH9OpZHJWerUOxwV05r9n71KKbMP67xSS
-	JI4WzN2cerGhuHxLyGoTh6PsvKvphUh50KsFvO47gOdFZI+wUTtZVmyxMkY1OBI9X/gGvKBiORh
-	8QOarwQ==
-X-Received: from pfaz9.prod.google.com ([2002:aa7:91c9:0:b0:83e:e8a8:71ee])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:414d:b0:83d:446c:2a8c
- with SMTP id d2e1a72fcca58-83f33d8a4cfmr12443212b3a.25.1779080849957; Sun, 17
- May 2026 22:07:29 -0700 (PDT)
-Date: Mon, 18 May 2026 05:07:09 +0000
+        bh=ZcvuRqAQjK0dhJhGCruHpLuOAtOmcNsS4wjgr0PhSjY=;
+        b=U2KvFCMwVIQ6dkCQnirUVYLeexmSEU/xXpNZUQUJ+Cl6HBmlr/zw6OeDNXoAXZWJEE
+         adS9SZzwAQkyi6dbTV9YnA6Be8+gwb1kygbFkLnr8OmtP1yHcHTodgvJTeU0xlbSHBDY
+         zoC9GbCa0gQwPB8bcRcISAqGBA+vF4thNmKngghwrBW9QnsbwwNieFTZ4AAr8s5vIXuv
+         g/teW3/LtvAth/Ga/+fSGydoa4XCGo0Y3YLzJbLsLUAsjYnxNvR8sSXYmUzKM+/e9st1
+         VFvBP7iwgwYKhrBs1V/bXif8G91qGt3enqzlERWgtZF0+B7FYUQlnWttqr11Rout0hck
+         BJVQ==
+X-Forwarded-Encrypted: i=1; AFNElJ96bXK8RbxlmGTbKX5+79LA1vMPHlzjRWOJqpP5uXidsohPSck6dLmjykCceljOqpAlYQlEV/4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzXy1o+TT7+S/h6KGcXiEEsnLLJ8TNDKUrS0slF/GVMNW2TU/ci
+	41nYwzHjcvQuBtqDa9WR2e0fNkorXQaXt/FnjnMboy51TK5zrxYDfWV95UIpRTN46f2DbC4KvlK
+	091hryQ==
+X-Received: from pglc12.prod.google.com ([2002:a63:d0c:0:b0:c82:7761:993e])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:748b:b0:39c:787:f197
+ with SMTP id adf61e73a8af0-3b22ec70cacmr14791810637.36.1779080850760; Sun, 17
+ May 2026 22:07:30 -0700 (PDT)
+Date: Mon, 18 May 2026 05:07:10 +0000
 In-Reply-To: <20260518050726.318824-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -58,8 +58,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260518050726.318824-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <20260518050726.318824-3-kuniyu@google.com>
-Subject: [PATCH v1 net-next 2/5] geneve: Remove synchronize_net() in geneve_sock_release().
+Message-ID: <20260518050726.318824-4-kuniyu@google.com>
+Subject: [PATCH v1 net-next 3/5] geneve: Remove synchronize_net() in geneve_unquiesce().
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>
@@ -67,21 +67,21 @@ Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
 	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-vxlan previously had an issue where the fast path could access
-stale pointers, which was fixed by commit c6fcc4fc5f8b ("vxlan:
-avoid using stale vxlan socket.").
+When changing the geneve config, geneve_changelink() sandwiches
+the config memcpy() between geneve_quiesce() and geneve_unquiesce().
 
-geneve later followed the same pattern, and commit fceb9c3e3825
-("geneve: avoid using stale geneve socket.") copied synchronize_net()
-from vxlan_sock_release() into geneve_sock_release().
+geneve_quiesce() temporarily clears geneve->sock[46] and their
+sk_user_data, and then calls synchronize_net() to wait for inflight
+fast paths to finish.
 
-However, that change occurred after commit ca065d0cf80f ("udp: no
-longer use SLAB_DESTROY_BY_RCU"), and geneve had already been
-using kfree_rcu() to free geneve_sock.
+geneve_unquiesce() then restores the cleared pointers, but it also
+superfluously calls synchronize_net().
 
-Therefore, the synchronize_net() was never actually needed there.
+The latter synchronize_net() provides no benefit; with or without it,
+inflight fast paths can see either the NULL pointers or the original
+pointers alongside the new configuration.
 
-Let's remove the redundant synchronize_net() in geneve_sock_release().
+Let's remove the redundant synchronize_net() in geneve_unquiesce().
 
 Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 ---
@@ -89,17 +89,17 @@ Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
  1 file changed, 1 deletion(-)
 
 diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
-index b36fad833724..4e5d0a09a82d 100644
+index 4e5d0a09a82d..e8ff03ed87dc 100644
 --- a/drivers/net/geneve.c
 +++ b/drivers/net/geneve.c
-@@ -1032,7 +1032,6 @@ static void geneve_sock_release(struct geneve_dev *geneve)
+@@ -2206,7 +2206,6 @@ static void geneve_unquiesce(struct geneve_dev *geneve, struct geneve_sock *gs4,
+ 	if (gs6)
+ 		rcu_assign_sk_user_data(gs6->sk, gs6);
  #endif
- 
- 	rcu_assign_pointer(geneve->sock4, NULL);
 -	synchronize_net();
+ }
  
- 	__geneve_sock_release(gs4);
- #if IS_ENABLED(CONFIG_IPV6)
+ static int geneve_changelink(struct net_device *dev, struct nlattr *tb[],
 -- 
 2.54.0.563.g4f69b47b94-goog
 
