@@ -1,52 +1,33 @@
-Received: from mail-wr1-f66.google.com (mail-wr1-f66.google.com [209.85.221.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565DE339875
-	for <netdev@vger.kernel.org>; Mon, 18 May 2026 14:06:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E7D93F58F1;
+	Mon, 18 May 2026 14:18:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779113185; cv=none; b=Mf3oWo9I/8bMWmroXLYCM2g4L6WeGV4RrcAGng8mFSagBxKGKjL/siPK8IwBIzKPx5BrHKGseOl+ww3tAvZJRLncrHxlE6JU0M7Z/fbz+AqdrnjaxWYrN98DBzZ7ibVi70jWO0Ho5rfo1h1kMk+yCMRnnBocrWQLl4vfJLT0qXE=
+	t=1779113939; cv=none; b=XI3Y39Jf1HPh2TnCbDF6tBdrSiSAU+to06Rn1iBbw6hSmb0P6AN42Uz9abbtwysLMEmHZzzmcdrp3AjeT1MvQIC7rixUbZv4GiEQ3CJm5/oa+mpFWu7KHDIo6pzRNbDg/PSzP8yBwa5gIMk5H3IP1CXZCR+X9v/MSv4Cyc2uFy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779113185; c=relaxed/simple;
-	bh=QfKnN2J0Z1rSedjGD8iI/RcRJYl6sXvZznvqvCG85Pk=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=tj+LuuioLIzldpdp5UhqNsOqDdcqqNSCBKPsFJgt8skusYF1IMI0YndVbc1iBK/JrZ+mahb5Ca3LSgaR4sO9ZE4RBwaRYW72z0wYjilwbAk2w02+SELaSUFAN+7kJrItCd3xxg6uZJkxqoVuhu6zaPKuAMNtjP8oLBrOvRWFDEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f66.google.com with SMTP id ffacd0b85a97d-43d7e23defbso1270483f8f.0
-        for <netdev@vger.kernel.org>; Mon, 18 May 2026 07:06:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779113183; x=1779717983;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:to:subject:cc:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Epw+sI4gJgw8udXSjjb8W2kNl8WHV3YE3hirzW370nU=;
-        b=sMVkaEOeUoxNPi2wq6SlkmBqSjlutVGw7/opgef67AIV2iY0SDj9v/YmZugtjh78kn
-         vSAPgDGxHrTbqJG+FfUSVY3FuPsOSsAC1+Tj4I/sBdia4BFuf7sui4Qr1u5dnW4u0nNo
-         FUpsPbrLleedgFt2m6wghkJ40z4EykVzGWJcjXHCCybm/ujp/C2KEn7k5I6pGyk4IYPW
-         CakZxxt3VUB9wF5jHfS5ZdKVgm5c/ogAkYEa9b3rzuIopdPwPdiyiYvP1KrbKhEwNeb1
-         h9Np/yTOdGj3HfnXdw6fHz/aQFNsoSW/mpZl98zYFrREfhMQf208D/Xe7/y/dp2grnj0
-         8KhQ==
-X-Forwarded-Encrypted: i=1; AFNElJ98JubZJxwzGL8yEGwABxWEcZwoxKNX9C0I36jqZN0hMKxIeW8ijz0fFNJkAX6m5O2Soe2ZvLE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzt/HCtzLVW7WW0var/RyyXTaDyD8HnnXxkne2M6Xf5y9G+Abjr
-	CYPBxyS7xLDAUaKGyBCIA74nTxhKpgzBxPWOQAmB4YTFv+ugxlR6apU+
-X-Gm-Gg: Acq92OFQFJtiW2944lAqnNf2yNbmI4JCNMotp5HJwniXneTEEAM9WMUcCH0urmtUZQz
-	f5+47eMHsn0I1TVLbfuM+PNyQeB5wzMxQU+mzeVRTPf8iunLna1PebeYRp55YGG26F2h+J5CuEX
-	DMiderpjrRFctSOwJxwVKwLMrSWGZsHZugCdushhPS2xVqQVSdtb/hYaVLH5xshGpVa9s7kPpmP
-	9YUsyRu/+a8WiiG/+EtEQUVg0p/WA5lg7obDHwBAP2iGt4xdyswMUXztdZ8xgMsa0Z+yvykgTOS
-	5ZUnATysu1tFSVRhf+oDqrIWManRQU/SNXJ9oizwSXq9bV8CkFdv+1oqpyBsr0ROSb5uXBFhWDk
-	NdELKbUzLEw5RXtrjj54LpICwyzbbVGdvT1lYxweqwf4gpalmaDhs8biChVnaqX8IhHIbgzpViX
-	2f1Iqzg9kxNKXmbO76ojN8g6CrGUIZ/UIYyek/OZarwZ9kQt6eRn8Rze5O3f/3T/KuZQ==
-X-Received: by 2002:a05:6000:2313:b0:448:7049:a6c9 with SMTP id ffacd0b85a97d-45e5c5b387bmr22786592f8f.5.1779113182360;
-        Mon, 18 May 2026 07:06:22 -0700 (PDT)
-Received: from [192.168.88.241] (89-24-32-159.nat.epc.tmcz.cz. [89.24.32.159])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45d9ed30110sm41266679f8f.13.2026.05.18.07.06.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 May 2026 07:06:21 -0700 (PDT)
-Message-ID: <f695ac3a-aec9-41fd-a3d3-9537ea4c50f1@ovn.org>
-Date: Mon, 18 May 2026 16:06:20 +0200
+	s=arc-20240116; t=1779113939; c=relaxed/simple;
+	bh=xEvty+SNfuwEBnANkS9+nIKNWcEqJfW1amR6blsoroo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cDSezQQTAkf0oFDMBnMvCwLaYqgqmrREy4JcmNvZJos8tdBcTntxhldGJaTDqN21YEUBxgmrYI+8FrwfbMNlpo0MBt7Bx3LaijBZ4cS4oKaWdHjhHIpl1m/YqMUjt0IXk7GNAELM2MIYB11dEHbNZ+WXg8TV6ekzIXif3kCrAjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pfz5BP70; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pfz5BP70"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5EE3C2BCB7;
+	Mon, 18 May 2026 14:18:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779113938;
+	bh=xEvty+SNfuwEBnANkS9+nIKNWcEqJfW1amR6blsoroo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Pfz5BP70XZ/nRCuwxkVWEvWOCWGqcmu8x0Mw3d6PgOlBWi+9rWULGLwhq9VtVaajz
+	 Misc3g5MND9WBQQqVdZVGM1tMGhifJlc9+8mxTxo6YWRZNJJ/ForCIS8ydg0BXMj5S
+	 ZI7L6tOczLp7pmWSk1rDE6ExhrVYamsY2junGiVu8pv3CeMM0l/66QwaQ/4rxLT0px
+	 PlzC0q67AITHNMAfrfa0SEQtFuXvjK5o014mUwuDYDBEpZPBoKSMft98XFe3sv0R/T
+	 H12G/Y+WXibReYdPtH/o8nOxR1TlPD4TESkyeYvs8A+qXpSsTucIYwRMSNAtce5JKT
+	 mH/zEt0tz5k3g==
+Message-ID: <ddefecf4-0a2f-4382-99a9-26012f9e943a@kernel.org>
+Date: Mon, 18 May 2026 08:18:56 -0600
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,148 +35,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Cc: i.maximets@ovn.org, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Donald Hunter <donald.hunter@gmail.com>, Shuah Khan <shuah@kernel.org>,
- Adrian Moreno <amorenoz@redhat.com>, Jiri Benc <jbenc@redhat.com>,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- Matteo Perin <matteo.perin@canonical.com>
-Subject: Re: [PATCH net 3/5] net: netlink: don't set nsid on local
- notifications
-To: nicolas.dichtel@6wind.com, netdev@vger.kernel.org
-References: <20260515201937.2813983-1-i.maximets@ovn.org>
- <20260515201937.2813983-4-i.maximets@ovn.org>
- <40603dce-f801-42ad-96ec-c8c0a57e5aae@6wind.com>
- <5344852f-e920-4232-9b54-5b22f6c8a1d3@ovn.org>
- <5d19e543-ac3b-4d32-a464-377d03cde500@6wind.com>
+Subject: Re: [PATCH net v2] ipv6: rpl: add NULL check for idev in
+ ipv6_rpl_srh_rcv()
 Content-Language: en-US
-From: Ilya Maximets <i.maximets@ovn.org>
-Autocrypt: addr=i.maximets@ovn.org; keydata=
- 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
-In-Reply-To: <5d19e543-ac3b-4d32-a464-377d03cde500@6wind.com>
+To: Andrea Mayer <andrea.mayer@uniroma2.it>, netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, idosch@nvidia.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ alex.aring@gmail.com, justin.iurman@gmail.com, bestswngs@gmail.com,
+ stefano.salsano@uniroma2.it, stable@vger.kernel.org
+References: <20260518140630.24280-1-andrea.mayer@uniroma2.it>
+From: David Ahern <dsahern@kernel.org>
+In-Reply-To: <20260518140630.24280-1-andrea.mayer@uniroma2.it>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 5/18/26 2:56 PM, Nicolas Dichtel wrote:
-> Le 18/05/2026 à 14:46, Ilya Maximets a écrit :
-> 
-> [snip]
-> 
->> True and also not really.  The main problem is that ID can be allocated
->> at any point in time, so the application needs to listen for NEW messages
->> on the same socket that it is listening for the events that are interesting
->> to it (to avoid races), if it doesn't want to make a separate GET request
->> per notification or track all the IDs that were previously checked.  It's a
->> non-trivial amount of code depending on the application structure.
-> iproute2 handles it ;-)
+On 5/18/26 8:06 AM, Andrea Mayer wrote:
+> diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
+> index 03cbce842c1a..a4af6e63349c 100644
+> --- a/net/ipv6/exthdrs.c
+> +++ b/net/ipv6/exthdrs.c
+> @@ -499,6 +499,10 @@ static int ipv6_rpl_srh_rcv(struct sk_buff *skb)
+>  	u32 r;
+>  
+>  	idev = __in6_dev_get(skb->dev);
+> +	if (!idev) {
+> +		kfree_skb_reason(skb, SKB_DROP_REASON_IPV6DISABLED);
+> +		return -1;
+> +	}
+>  
+>  	accept_rpl_seg = min(READ_ONCE(net->ipv6.devconf_all->rpl_seg_enabled),
+>  			     READ_ONCE(idev->cnf.rpl_seg_enabled));
 
-I don't think it does.  If I run this in one terminal:
-
-ip netns add test-ns
-ip netns exec test-ns ip monitor link all-nsid
-
-And then in the other terminal:
-
-ip -n test-ns link add dummy1 type dummy
-ip netns exec test-ns ip netns set test-ns 100
-ip -n test-ns link add dummy2 type dummy
-ip netns del test-ns
-
-I see the following events:
-
-[nsid current]2: dummy1: <BROADCAST,NOARP> ...
-[nsid 100]3: dummy2: <BROADCAST,NOARP> ...
-
-Which is confusing to the user (myself) and shows that iproute2 doesn't
-know or doesn't care (which may be fine for this particular command) that
-100 is the ID of the current namespace.
-
-> You certainly need to maintain a cache, but once a nsid is allocated, it never
-> changes until the netns is deleted.
-> 
->>
->> Alternative is to always try and allocate the self-referential mapping on
->> the application startup and remember it, and then check that no-id, -1 and
->> the allocated one all mean 'current'.Yep.
-> 
->>
->>>
->>>>
->>>> A search though open-source projects doesn't reveal any projects
->>>> that use NETNSA_NSID_NOT_ASSIGNED and rely on metadata to contain
->>>> self-referential NSIDs.  Quite the opposite, ovs-vswitchd relies
->>>> on the metadata to not be present to separate local and remote
->>>> events.  And the 'ip monitor' relies on the metadata to not be present
->>>> to show '[nsid current]', though this is more like "print 'current'
->>>> if there is nothing to print" situation, but still can be a little
->>>> confusing for the user to see an ID for a local event.
->>>
->>> We (6WIND) are using NETLINK_LISTEN_ALL_NSID. Like iproute2, 'current' is
->>> assumed if there is no nsid, else the corresponding netns is checked (which may
->>> match the current netns).
->>
->> OK.  It sounds like this one patch will not affect your use case than,
->> which is good to know.  Thanks!
-> Probably not, but I didn't say this ;-)
-> I need to make some tests with your series.
-
-Note: sashiko points out that it may be possible to have stale values reported, so
-re-setting the nsid_is_set flag unconditionally before the check may be required,
-e.g.:
-
-+  NETLINK_CB(p->skb2).nsid_is_set = false;
-   if (!net_eq(sock_net(sk), p->net)) {
-       NETLINK_CB(p->skb2).nsid = peernet2id(sock_net(sk), p->net);
-       if (NETLINK_CB(p->skb2).nsid != NETNSA_NSID_NOT_ASSIGNED)
-           NETLINK_CB(p->skb2).nsid_is_set = true;
-   }
-
-I'll include that in v2.
-
-This appears to be a missed case of the earlier fix:
-  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=7212462fa6fd
-But made worse by my patch.
-
-Best regards, Ilya Maximets.
+ipv6_rpl_srh_rcv and ipv6_srh_rcv are both called by ipv6_rthdr_rcv and
+both of these functions check idev. Moving the check to ipv6_rthdr_rcv
+which already has an idev lookup would simplifying both paths -- and set
+the drop code reason the same.
