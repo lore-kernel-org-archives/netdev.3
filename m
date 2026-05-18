@@ -1,88 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 907463E9C36;
-	Mon, 18 May 2026 10:39:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 253C33EFFC4
+	for <netdev@vger.kernel.org>; Mon, 18 May 2026 10:47:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779100775; cv=none; b=rDbksNkLBGnCsL7J8nNY/H4sriffnbH4NIBf1N3Psg4Lm8YV6k3V3wC3PtiMscpFsqaj81pL8k5EEAsAWG7UMJsywMo8y7ZBGnjnmXKnId2WUObUoPUH7dK1pZARslw3TRpbAUyynlHd59cS/H2zXgBvmP3hyGWhLguZb3Qon8U=
+	t=1779101258; cv=none; b=iFRtEG0zH3Es1x9+TwxU5HTK6eLlgDRhgbuqXLXjPaUxscgbT3bk7DaXs86gT/CU8A2V+47GcAPLgGHdv4imeBsYaNSymHXSiHxcehRxlUadKrCZymrcZv0gfl4bG4c1aVQ9hPdFSsdE8EpC1EnyjRJhgXjc0njQVwIuBgLw4Kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779100775; c=relaxed/simple;
-	bh=1OTfVa9O7Ad5uglU/MtCUofSTebAW0WnF8gjfSPLVpU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NfANN3wfeUUOJqLSGT6zODYQEyf6cJRcLdlbVMnwEd03pp73yI9X7dMKrHkYcSHdHqOJUSJ1bFR4jztSx/7iX3SNGE1tThjjKVPvcZZQ3Pjfuw6Z+bbSJpEzH25XAZPKujqr+wMHKlRtXcUKTr0t5G3VPfehP0sKYX5mquqN7HA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AKNurMN8; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1779101258; c=relaxed/simple;
+	bh=xWNtN1cj4AsYyc9Iat1gRK5QjeGRUVeuYGCtX8xSifY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=d2XUbC/ZqWePuVNluoU7NixDcOouYkz+Y4hYY7LtmEkbkyJwEf/REJk3pSY5rm6KdqJcP+zqtsf0yTnvR/3WhQ/STTKvP8LHuBaYM6ieKeCpjaPOficFy3RB+56In0NRxxh8lmeeWrDn1YPaZQ0RS16iaps73NZgyOCWLullGjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JSXPmAUG; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AKNurMN8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DE72C2BCB7;
-	Mon, 18 May 2026 10:39:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779100773;
-	bh=1OTfVa9O7Ad5uglU/MtCUofSTebAW0WnF8gjfSPLVpU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AKNurMN8L+X8vu9p/+JNJngFzSzhbxN4iYoQPke4r89tRaQLA2bYsNe5fsROt14I7
-	 tFEbwtsssEwhfAVaL7C4tyr9rO5fBVBmSIftOGrJmGv6CqJOtYuNnoFNaoZlkWtylq
-	 DYuPrM++IjThn/EccN+VllX3tow3vWUu5zkf8o+nGqzFMvVhGJjBhxbgQfgfCxXH0Z
-	 QbF2IwoesuZ6F9sHk5x3qAXdEYHJBVo4oE5Jgo5N87wbTJjixsI6a1+jtEnmvWl+zG
-	 DLePIdVXK6O5qMTspLOFD8ueIfzvaj+qku1GJYVd+rldxa7O8mICpnKl7zoY9L4tbq
-	 gasiGxvTDslPg==
-Date: Mon, 18 May 2026 11:39:28 +0100
-From: Simon Horman <horms@kernel.org>
-To: Shitalkumar Gandhi <shital.gandhi45@gmail.com>
-Cc: Alexander Aring <alex.aring@gmail.com>,
-	Stefan Schmidt <stefan@datenfreihafen.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-wpan@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>
-Subject: Re: [PATCH wpan] ieee802154: ca8210: fix pointer truncation in kfifo
- on 64-bit
-Message-ID: <20260518103928.GD98116@horms.kernel.org>
-References: <20260513153412.1284549-1-shitalkumar.gandhi@cambiumnetworks.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JSXPmAUG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779101252; x=1810637252;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=xWNtN1cj4AsYyc9Iat1gRK5QjeGRUVeuYGCtX8xSifY=;
+  b=JSXPmAUGXSiRuvborsMtFXxs8ljmRqNW+jGz3/AfYcEnAluOB256bRhh
+   bWK/dqfadRh4x95rSI7BUs+1W8n6XF/8hP9k2b3GsWqD2lNqQd2RYmWPn
+   pNj9VQSz5D+rWXMAdCLR9I2ij4cYNOQ9l4rmWHu4c0oW2vbYoy/uIH8q3
+   /ruJBmVNoxCUZYdg+ygSDwN5XDpBgVmtu9wvktm7BwxbUcSeXiHsBX1SJ
+   +SI7kHb4cqy5UbAVAVrKi+6CFiZRKCoDlu+h5c4mP7T5Jk4eiVwLtrY0b
+   cAzNrNZug7uuKKiV/GDyiUaUQtZunheth9FH6+9ypJuOXpf7a6w9ihfH8
+   Q==;
+X-CSE-ConnectionGUID: eAxgpeUzRWSqf11SNlJ+2Q==
+X-CSE-MsgGUID: wjI88GkyRkSPC74aO1a6LQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11789"; a="79802322"
+X-IronPort-AV: E=Sophos;i="6.23,241,1770624000"; 
+   d="scan'208";a="79802322"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 03:47:29 -0700
+X-CSE-ConnectionGUID: X+NZTGi4RM2XZrI7tfDYYw==
+X-CSE-MsgGUID: 882RT+XzTd6br+NdoXihdg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,241,1770624000"; 
+   d="scan'208";a="243688370"
+Received: from rtauro-desk.iind.intel.com ([10.190.238.50])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 03:47:24 -0700
+From: Riana Tauro <riana.tauro@intel.com>
+To: intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	netdev@vger.kernel.org
+Cc: aravind.iddamsetty@linux.intel.com,
+	anshuman.gupta@intel.com,
+	rodrigo.vivi@intel.com,
+	joonas.lahtinen@linux.intel.com,
+	kuba@kernel.org,
+	simona.vetter@ffwll.ch,
+	airlied@gmail.com,
+	pratik.bari@intel.com,
+	joshua.santosh.ranjan@intel.com,
+	ashwin.kumar.kulkarni@intel.com,
+	shubham.kumar@intel.com,
+	ravi.kishore.koppuravuri@intel.com,
+	raag.jadav@intel.com,
+	maarten.lankhorst@linux.intel.com,
+	mallesh.koujalagi@intel.com,
+	soham.purkait@intel.com,
+	Riana Tauro <riana.tauro@intel.com>
+Subject: [PATCH 0/2] Add drm_ras netlink error event support
+Date: Mon, 18 May 2026 16:50:49 +0530
+Message-ID: <20260518112048.1746280-4-riana.tauro@intel.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260513153412.1284549-1-shitalkumar.gandhi@cambiumnetworks.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, May 13, 2026 at 09:04:12PM +0530, Shitalkumar Gandhi wrote:
-> ca8210_test_int_driver_write() and ca8210_test_int_user_read() exchange
-> a kmalloc'd buffer pointer through a struct kfifo, but pass a literal
-> '4' as the byte count to kfifo_in()/kfifo_out().
-> 
-> This is correct on 32-bit (pointer = 4 bytes), but on 64-bit only the
-> low 4 bytes of the 8-byte pointer are written into the FIFO. The reader
-> then reads back 4 bytes into an 8-byte local pointer variable, leaving
-> the upper 4 bytes uninitialized stack data. The first dereference of
-> the reconstructed pointer (fifo_buffer[1]) accesses an arbitrary kernel
-> address and generally results in an oops.
-> 
-> Use sizeof(fifo_buffer) so the byte count matches pointer width on every
-> architecture.
-> 
-> The driver has no architecture restriction in Kconfig, so any 64-bit
-> build with CONFIG_IEEE802154_CA8210_DEBUGFS=y is exposed. Issue has
-> been latent since the driver was added in 2017 because it is most
-> commonly deployed on 32-bit MCUs.
-> 
-> Found via a custom Coccinelle semantic patch hunting for short-byte
-> kfifo I/O on byte-mode kfifos used to shuttle pointers.
-> 
-> Fixes: ded845a781a5 ("ieee802154: Add CA8210 IEEE 802.15.4 device driver")
-> Signed-off-by: Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>
+Define a new netlink event 'error-event' and a new multicast group
+'error-notify' in drm_ras. Each event contains device name, node and
+error information to identify the error triggering the event.
 
+Add drm_ras_nl_error_event() to trigger an event from the driver.
+Wire this support to xe drm_ras to notify userspace whenever a GT or
+SoC error occurs in PVC.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+$ sudo ./tools/net/ynl/pyynl/cli.py --family drm_ras --output-json \
+--subscribe error-notify
 
-There is an AI-generated review of this patch available on sashiko.dev
-However, I believe the issues flagged there can be considered in
-the context of possible follow-up. And should not block progress of
-this patch.
+{
+    "name": "error-event",
+     "msg": {
+         "device-name": "0000:03:00.0",
+         "node-id": 1,
+         "node-name": "uncorrectable-errors",
+         "error-id": 1,
+         "error-name": "core-compute",
+         "error-value": 1
+     }
+}
+
+Riana Tauro (2):
+  drm/drm_ras: Add drm_ras netlink error event
+  drm/xe/xe_drm_ras: Add error-event support in XE drm_ras
+
+ Documentation/gpu/drm-ras.rst            | 21 ++++++
+ Documentation/netlink/specs/drm_ras.yaml | 50 ++++++++++++++
+ drivers/gpu/drm/drm_ras.c                | 86 ++++++++++++++++++++++++
+ drivers/gpu/drm/drm_ras_nl.c             |  6 ++
+ drivers/gpu/drm/drm_ras_nl.h             |  4 ++
+ drivers/gpu/drm/xe/xe_drm_ras.c          | 29 ++++++++
+ drivers/gpu/drm/xe/xe_drm_ras.h          |  6 ++
+ drivers/gpu/drm/xe/xe_hw_error.c         |  7 +-
+ include/drm/drm_ras.h                    |  5 ++
+ include/uapi/drm/drm_ras.h               | 15 +++++
+ 10 files changed, 228 insertions(+), 1 deletion(-)
+
+-- 
+2.47.1
+
