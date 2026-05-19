@@ -1,130 +1,65 @@
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88FEA3ED3CC
-	for <netdev@vger.kernel.org>; Tue, 19 May 2026 14:04:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C970A348C72
+	for <netdev@vger.kernel.org>; Tue, 19 May 2026 14:10:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779199485; cv=none; b=qid+iHVwXYGZfgazCx9T3yZIrzc9maW2tB0rXodpGB5V42w84u7YQXnTi8d+n+Ryt7T9ZGxvzkt56yuaQGnxH3TCJUHIB3rd6VH2dPx14nTbcgX19zBMXirk7qhYxpz0qcUKDND3DCDackQBd8PqVMddNpJL0WyB5XHHIZdtD/s=
+	t=1779199812; cv=none; b=Z6T4oKLZ0s1YSuLkwnna/YJMHY29odvCT+pPhVV0DSWsbcbS3aVBS9jjY3WdMK2EMlGKKrDHhjcsHbGfmliG3sq+8jB88Ttf4G/+0ZE8M3speRv4dXcSZvf82uuRkr9Y60VLeV/YOiWHh51Wdmr/4gxUyYN7VzIpq64oamYf/XU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779199485; c=relaxed/simple;
-	bh=APc+2VsFi1zsRUcmtHELq7ZSfVDMso9CXAzqPoxhQmY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IMPx/G1JAz8ve4B33b0Yij6NRg/Ny0n89ejFSOdj/IM1ScoobSwyx6szlpwwHvX5UDqYei1A4un1NmHd0S3jNxX8BxntAkF6faqLSGqi4eDZf8J0XLeZT7NtgHLLW6H+S9UK69wQ6HOxHWRPfUh7nqNwwlBHkDSiWjzEzWXmA8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=oOz8ngNK; arc=none smtp.client-ip=148.163.129.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+	s=arc-20240116; t=1779199812; c=relaxed/simple;
+	bh=LT6K+v7m6ZVGt3aGSUB8BJ91U19GunDVdkb540QrE3M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cbfzVB2imRtbYesm18M8QUJRFJkxjiD1GrSk1FgfL7trjPHo/pW+h4TrAinSFPzpQDCYXTDHgPPeXgbb09D9wCSKHkYmjyQXMvRqLLrVkIQpfA3E4y9JNuq323VGhFHU4+4m883Pnp4ZizkOI3PEXRUvZHIBSQgeAV49I4CZlNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=sO4QoUel; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="oOz8ngNK"
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 53F38B800B8;
-	Tue, 19 May 2026 14:04:41 +0000 (UTC)
-Received: from [192.168.1.23] (unknown [98.97.34.159])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id 0991013C2B0;
-	Tue, 19 May 2026 07:04:36 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 0991013C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1779199479;
-	bh=APc+2VsFi1zsRUcmtHELq7ZSfVDMso9CXAzqPoxhQmY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=oOz8ngNK381bWSzN8mDC/jHnZoG3ccshFx1qPUWUzSE0jDrd/f4tshagUbi0oERa7
-	 dYZXGxsmOyPqF0u34m+BtbSy9b4AJ1WS7tsIg/k8436QXNYp49bvPjisrZ7mVth/Yj
-	 faR2k6eX3OMRs3L504PQ23qxIkbQ+0B8FxZWlF9k=
-Message-ID: <5e83f1cc-a313-434d-b703-9f020874c03c@candelatech.com>
-Date: Tue, 19 May 2026 07:04:33 -0700
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="sO4QoUel"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=4YTedYV/8nP73ZKNT3MbmiH3e6GmiM2li+eX6iXEHgI=; b=sO4QoUelJ6wlKRgXX+EjvpSbug
+	cT7BdbV8Q2lcAFxgLquDo+xp8rQAweCCH20u2y6EpIGoVlFW95MNAQYcT2JGOgvreOu1heD8hnRML
+	sAkzFwaCx6rfGNRM0tG4+VJHJqdc45duyf8MPFhWGgprmCy/Ma+NMXafdGJvmjdvt/cA=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wPL95-003g0Q-Sw; Tue, 19 May 2026 16:10:07 +0200
+Date: Tue, 19 May 2026 16:10:07 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Danielle Ratson <danieller@nvidia.com>
+Cc: netdev@vger.kernel.org, mkubecek@suse.cz, idosch@nvidia.com,
+	petrm@nvidia.com
+Subject: Re: [PATCH ethtool-next v2 0/5] ethtool: Add 'pages on|off' option
+ for module EEPROM hex dump
+Message-ID: <2db0b93f-d001-418b-b3b2-ac5c7276bdfe@lunn.ch>
+References: <cover.1779190777.git.danieller@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Using VRF to limit 'ip monitor' and 'iw event' messages
-To: David Ahern <dsahern@kernel.org>
-Cc: John-Paul Powers <john-paul.powers@candelatech.com>,
- netdev <netdev@vger.kernel.org>
-References: <e89dd0e7-3eaf-6385-7cfa-5f0079fabc96@candelatech.com>
- <ccbe47f5-5895-4db4-a472-1288a55a2b50@kernel.org>
-Content-Language: en-MW
-From: Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <ccbe47f5-5895-4db4-a472-1288a55a2b50@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-MDID: 1779199482-K9SYQSpI44rN
-X-PPE-STACK: {"stack":"us5"}
-X-MDID-O:
- us5;ut7;1779199482;K9SYQSpI44rN;<greearb@candelatech.com>;13ea00862af1a4a136f3e80d149399ed
-X-PPE-TRUSTED: V=1;DIR=OUT;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1779190777.git.danieller@nvidia.com>
 
-On 5/18/26 19:59, David Ahern wrote:
-> On 5/18/26 3:51 PM, Ben Greear wrote:
->> Hello David,
->>
->> We are interested in filtering out iw and ip netlink events for
->> processes bound
->> to VRFs.
-> 
-> are you trying to filter out the events kernel side or in `ip monitor`?
+Thanks for adding json support.
 
-For us, it needs to be kernel side, because it is not really ip monitor we
-want filtered, but instead we want Chromium (or some other beastly program
-that cannot easily be changed) to be filtered.
+> $ ethtool -j -m swp61 hex on pages on
+> [ {
+>         "pages": [ {
+>                 "bank": 0,
+>                 "page": 0,
+>                 "offset": 0,
+>                 "length": 128,
+>                 "i2c_address": 80,
+>                 "data": ["0","0",...,"0"]
 
->> For instance, Chromium starts spewing errors when we try to run it on a
->> system with many
->> network interfaces, we guess because it is being confused by all of the
->> other network devices
->> going up and down.
->>
->> I think the crux of the problem is to know if a netlink listener socket
->> is bound
->> to a VRF or not, and also to know if the generator of the message is
->> bound to
->> a particular VRF.
-> 
-> so you are running `ip vrf exec` on ip monitor? ie., how is the netlink
-> socket getting bound to a device?
-> 
-> VRF is only a Layer 3 construct, and a netlink socket is not AF_INET or
-> AF_INET6.
+What is the value of length? It seems to be something you can
+determine from data itself. Is there a legitimate case for
+length != len(data)?
 
-So we'd have to plumb down into cgroups with a BPF program like
-vrf exec for AF_INET works now, perhaps?
-
-At least many ip events are related to a network interface, so we could
-add meta data about that to the netlink msg path and then filter
-before it gets sent to the listener netlink sockets...
-
-Given a network device, is there an efficient way to get the vrf-id
-to which it belongs?
-
-Thanks for assistance!
-
---Ben
-
->> Do you have any suggestions for how we might go about this?  We'll be
->> happy to post
->> the resulting patches for consideration to be included upstream.
-> 
-> You could add try a filter in `ip monitor` that looks at the device
-> index and only emit a message if "sk_bound_dev_if == N" where N is 0 for
-> default VRF or the VRF device ifindex. From there, you would have to
-> parse the message, identify the dump type, find the netdevice attribute
-> and then figure out if it is a VRF device or a port of a VRF device.
-> Going to be complicated.
-> 
-> Kernel side, netlink layer has no knowledge of the attributes, so I
-> don't see how a filter could work at that layer.
-> 
-> This reminds of the kind of filtering (ie., fine details) that Jamal
-> wanted to do for tc. Kind of hard to do given the various layers.
-> 
-
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
-
+       Andrew
