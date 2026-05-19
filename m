@@ -1,47 +1,46 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AE9936D9E7
-	for <netdev@vger.kernel.org>; Tue, 19 May 2026 20:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D66E3282F3C
+	for <netdev@vger.kernel.org>; Tue, 19 May 2026 20:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779221686; cv=none; b=jmoc5/jJ+vApFzqbDR8qFxDW3iq6Qa29SAKFo4HcVUXP/M65SZi5sTonir8TTqDfqZ43cVKyu3riq9kFCvBGrqzyJKYPnJJqrQTgAwBQdNYLUj7KVA0NdB8AaVuMJlFJYv5cAAWgE/0HaRNVYwgyCgZHrUwldmgYYo2We9cLSbU=
+	t=1779221815; cv=none; b=Q+VzIslDomgFrRox4Ycl5U0IatnSXqCGOV4v+rd+GAfWZ+FDAG1nLpc3A04BjM8XSfe8Cx1qS5SfrWH7B8dzak1RWoN4l3dIwhxflKwMaSDPJ0dxgYx9tfkWIKFaYduUCB16TiF3eEyJN6uLKb4Q2TcrTXwvJ2LWti6v2L80FDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779221686; c=relaxed/simple;
-	bh=hl34thQMM8XMNdYFfZ3nf/c4aTcRjISpynpnL1xwgFQ=;
+	s=arc-20240116; t=1779221815; c=relaxed/simple;
+	bh=dGpJxdmWIdtkbUWfe5ZEUFoP+OucZxgs7QjQkiD6LaI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IvKHBM+b3LYzkHJmyomTQABeIe/3TauIRlNcuhiA5ldOKMXTjxsBvsJbrN9k+PtEDXPNbntp+ZRePFpBTWIrO+7f5m4TbsZzjRAJavamqGBBvhRnWhtVj+JxnRW78YTgngZ2CFOB50foW4HsSkTygorKMr0+iH3qYXUh9l5a9AA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=GU1Mptpu; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=DPxXMhloGQFaBxrerth0G/0V03OzZOGbsW4HWy6D958ahAXrKI81rk2SI4faKsZku6UwDyq2HMgbUbWHt3lnvjS6KSlsbUrA86oUUgruO7GNIGVP5V6//nRf0hgPKzfNuYfei8WaUkDNbfKyJrN555uNGvbvEa8HPaT+JyZb6dU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Wz4Q52uJ; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="GU1Mptpu"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Wz4Q52uJ"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=Gq3xkGt0n03mR/0kB9zk4M3Nw+lmn2D5ztlo3INSc8M=; b=GU1MptpuVpcw9c7mRYEbMAiy0f
-	XCZ8ma+ijsxYPl6s7Te5vFs9JjsKYMgxTU6LAUNSvxF98LAamk1QLmRIqA7h+/RWcGxdsKlB3Arfc
-	l1RZKAtaw+jhxmGl1kKRAF8hGsZoWa0IkiYa0rugJSGDtap0pmWaqBT5BqQ/aX2FSV+I=;
+	bh=ghfwAPHE10xSa9cu+i62DCg74sBvC8NfItxWt8xYocE=; b=Wz4Q52uJxbCCdvzKCQYpCxSxwk
+	7f3lmB6ixZUeA5lLU9JMszfU4w5j939zqgAxzbCoRoajwWld8cE73yX9KozpMuXEoG6YsHHdj+LD5
+	plL3DUjMprauZPu6t4ZC8FVFEcKv2Unlvez/AYx2+6jjAjrf4oLP6Retr5jzv0yw306g=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1wPQpc-003jCj-US; Tue, 19 May 2026 22:14:24 +0200
-Date: Tue, 19 May 2026 22:14:24 +0200
+	id 1wPQrs-003jEL-Ep; Tue, 19 May 2026 22:16:44 +0200
+Date: Tue, 19 May 2026 22:16:44 +0200
 From: Andrew Lunn <andrew@lunn.ch>
 To: Markus Stockhausen <markus.stockhausen@gmx.de>
-Cc: 'Daniel Golle' <daniel@makrotopia.org>, hkallweit1@gmail.com,
-	linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
-	chris.packham@alliedtelesis.co.nz
-Subject: Re: [PATCH 3/9] net: mdio: realtek-rtl9300: Add ports to info
- structure
-Message-ID: <fff19211-a41a-481d-a6a6-4429a6901129@lunn.ch>
+Cc: hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	netdev@vger.kernel.org, chris.packham@alliedtelesis.co.nz,
+	daniel@makrotopia.org
+Subject: Re: [PATCH 9/9] net: mdio: realtek-rtl9300: Link I/O functions in
+ info structure
+Message-ID: <c7eee96c-02fa-4e6b-abc9-ea6ba9a46106@lunn.ch>
 References: <20260519165747.1288903-1-markus.stockhausen@gmx.de>
- <20260519165747.1288903-4-markus.stockhausen@gmx.de>
- <agydm8V25M-jy5o6@makrotopia.org>
- <85d5f162-8999-43d4-b879-6e5e686246f7@lunn.ch>
- <01d801dce7c2$a0a08ba0$e1e1a2e0$@gmx.de>
+ <20260519165747.1288903-10-markus.stockhausen@gmx.de>
+ <e4a1cd96-ff7a-49e7-add1-353a24b9aa08@lunn.ch>
+ <021a01dce7c5$450cc2b0$cf264810$@gmx.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,33 +49,28 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <01d801dce7c2$a0a08ba0$e1e1a2e0$@gmx.de>
+In-Reply-To: <021a01dce7c5$450cc2b0$cf264810$@gmx.de>
 
-> > Hi Markus
+On Tue, May 19, 2026 at 09:25:30PM +0200, Markus Stockhausen wrote:
+> > Von: Andrew Lunn <andrew@lunn.ch> 
+> > Gesendet: Dienstag, 19. Mai 2026 20:46
+> > An: Markus Stockhausen <markus.stockhausen@gmx.de>
+> > Betreff: Re: [PATCH 9/9] net: mdio: realtek-rtl9300: Link I/O functions in
+> info structure
 > >
-> > It would be good to take a step back and explain the concepts here in
-> > the commit message. An MDIO bus as 32 addresses, as defined by
-> > 802.3. Why do we need the concept of a port when we have addresses?
+> > On Tue, May 19, 2026 at 06:57:47PM +0200, Markus Stockhausen wrote:
+> > > All SOCs have slightly different I/O functions. Make them device
+> > > specific by adding the functions into the info structure.
 > >
-> > Once you explain the concept, we can maybe suggest a better name. Or
-> > throw the whole concept out because it is not needed.
+> > If they are all different, why put all the registers into info?  Is
+> > there some level of sharing?
 > 
-> I'm just trying to give the properties in the info structure the right 
-> name that resembles its function. The driver already builds upon
-> the "port" naming.
+> Patch 5 tries to explain the sharing concept:
 > 
-> Where does this come from?
-> 
-> - The hardware has 1-4 SMI busses
-> - Each bus serves up to 32 addresses
-> - A switch has X physical ports
-> - The mdio controller can only be fed with "physical port"
+> - A generic access function will always run the same way
+> - The info structure tells it where to write (registers)
+> - The indidivual access function tells it what to write (data) 
 
-So in general, the MDIO API uses an address in the range 0-31, as
-defined in C22/C45. I would try to do any sort of mapping of ports to
-MDIO addresses in a layer above MDIO. Maybe that is not possible, i
-only partially remember the discussion about this hardware. But if it
-is going to get more complex, i really would suggest pulling it out
-into a layer above, and let the MDIO driver simply do MDIO.
+What to write is a u16. What else is there, given this is MDIO?
 
-	Andrew
+     Andrew
