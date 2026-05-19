@@ -1,155 +1,164 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1EF74657E5
-	for <netdev@vger.kernel.org>; Tue, 19 May 2026 09:41:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3EE53D47DD
+	for <netdev@vger.kernel.org>; Tue, 19 May 2026 09:44:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779183726; cv=none; b=tigLu7DyFVw9tmoTJSiIqMbxcUGJhGMn+c0tztf04WZvaQrClHnMlAZ1ebzpXbXmuDUQliyblLUmpEUkFmFeQMZMhZohEfSvAASKHTeLMG2B1ZTeWIT6rPOsFZgvgWAHbpRM1wyy+ozlT63r+OqqBK05ZwjHF7BcoImPvP9391o=
+	t=1779183894; cv=none; b=qK5i768EmenTuFYcFiMX5tmn0860UbETglWppWcV8tEqg4ax8uMgQazGOxbyPu9e8Pmozhw/Bv1+t5JmGGsNlbt7v6jdFD7QzdhoOjfQ9IyCQ6IYKLQqYTxTqs1Yt2/sum301/TyulNc/bm5lYtF7X+o0Fi9QEecRdRjikarRpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779183726; c=relaxed/simple;
-	bh=yt0H3bvBRFcuJ9DYVM0S3Grsofv+ydRaNi8hw/H/mjI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rK4vDJyf4RfhVkzOS8lqvh8OeOA2SubpXqB5ITf3b5IOCHZ8UXgTkxHC9eYmIKjlKPXZH5pAYdbqlcP9EfbOtWAHhz+5F3lprUQMhulGzkPwQvqRaw3JESZQiQaKKWGuTfoi0fvYabVCLms5y/vRBFwDHOqXT7uj3dmjNTVGCbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DsWvEJTx; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=MO2yYzcL; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1779183894; c=relaxed/simple;
+	bh=lOacJv7V5LVsinGCr6TMKN7P2fAlYwOiFkSQUvdCPU8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=sDG5e6E5KD2CrOYvGu8bRYofO9klX9Q4jCI5i7pLp5YpYcnyMVqYlX0mx5m80sesabomkGFNK0N1ZtLkaKmiAEKLUrIV03Im9G3G4oSJ3y5AleH+LffddlRGXrWNELBr6TZKCOjkvILLaZjKDhOacUZcXiiNechxB67OehqZQ4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TiS0PWbW; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=oljx8jmt; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DsWvEJTx";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="MO2yYzcL"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TiS0PWbW";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="oljx8jmt"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779183716;
+	s=mimecast20190719; t=1779183891;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tk6v1iOlM6Sc6be+bYwuVr8WIaK4VMHqbDmDqfyVw54=;
-	b=DsWvEJTxEjMz9QABqBLgiYO4614/hfm+wUx+WhKi81zif/3hna5r3c9rOMgvF5Ww1MvSjB
-	b+B3w+PcgGTlokrpLbc41nJOF7Z1bSVl7AgO2+LYf/eXr180GF/RAElB8Y9o1RBY17T3e6
-	IpLAVa2rVLpJS6gD9Vz1kmX4pgrGRF0=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=mS/dUe0xMjxuiR1Fr534B3h7HtHQAImNE62an91opEw=;
+	b=TiS0PWbWHl3PJTedsS/47j7FoCQ/pNOd2EASD/OQ+75p7VGiMKDAMLhe9irVc9sokOMMv6
+	n2k0/deoqfMQSdMn8+5jaijLx4g94MlHhUjGJJrJIoQn40tm35GFLZWN4r485Ls32WbaHp
+	di/s/0XGJDDN+kv46qHYoTU1h5Q1EV4=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-542-0wGbRp44PIWLZkdHRad0rw-1; Tue, 19 May 2026 05:41:55 -0400
-X-MC-Unique: 0wGbRp44PIWLZkdHRad0rw-1
-X-Mimecast-MFC-AGG-ID: 0wGbRp44PIWLZkdHRad0rw_1779183714
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-45e55c44ac1so2670680f8f.0
-        for <netdev@vger.kernel.org>; Tue, 19 May 2026 02:41:54 -0700 (PDT)
+ us-mta-219-KhLEpzqKOGawBkMaWTauUg-1; Tue, 19 May 2026 05:44:50 -0400
+X-MC-Unique: KhLEpzqKOGawBkMaWTauUg-1
+X-Mimecast-MFC-AGG-ID: KhLEpzqKOGawBkMaWTauUg_1779183889
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-45e81291d62so1643673f8f.1
+        for <netdev@vger.kernel.org>; Tue, 19 May 2026 02:44:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1779183713; x=1779788513; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tk6v1iOlM6Sc6be+bYwuVr8WIaK4VMHqbDmDqfyVw54=;
-        b=MO2yYzcLm49L+93RMyfoZ7e3aSRE0Vt6y/zTmzYK3ivNwMrBbGczvi692nr+ZeTdoJ
-         HihyHPxRIxa13cvSWsGidW2MvMvaef5gCYGkMcQNC46Si8moHcHAAWYkAFGKATDL24ue
-         8LMNeHpPBIC9EjrD/anW7wBw+UKaIlBX4gEvX5wKOyIvyDPVvGVbxHIGY2C3vt9D9+jT
-         XF1kSxWcvfHfNo3B87rxrwr+nC/ixJD7O9dozQnvlq9HhbrluTL6y0uAFdC6VQ8252ok
-         LYtHeZBpDgjKyoecZIUNQdJiIvlNVp250dFO+hragUSVR1EGxYF/OSNQBLDe3g34LO1v
-         /ZRg==
+        d=redhat.com; s=google; t=1779183889; x=1779788689; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=mS/dUe0xMjxuiR1Fr534B3h7HtHQAImNE62an91opEw=;
+        b=oljx8jmtdcBWExBuN327v8e7W0RlH4qgxweTkhBMc3d+rbnPeilK6k04I4xSyg2P12
+         s+He3+FD+1PHw1+yC5Gb3yU5B5HJYO/7tb4A5gK6CaOrtfuV+w1ULgOA1oJsA9+6p5jC
+         foaBMwL2OhbD+vSH9zgfrFJslxpeHSSsy5WFW/3ZhoKxQ9zOjfr1u6YYyvUrxI0/Eoh4
+         XPDHCWp5OwoImc5DeStLfNJwMPW+x6yh4tuHIGNVaWAeYn4SebjdWr2jqZOd95QwNQMp
+         quhGRjculRjewlLREVUyVxJIV5q5CWX4GPZZGH85TE4P4MsfAChnIu1c4jj2zGvE+OJD
+         2eBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779183713; x=1779788513;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tk6v1iOlM6Sc6be+bYwuVr8WIaK4VMHqbDmDqfyVw54=;
-        b=M5d5x84ghS4PyT7Y3JozqGOiNeYbEohu9vK74cU/0Mi5sBpvm8QJ/7Icrgm4KFrWf3
-         G85LWW3M6vL3Y/WD7l2Ft1IsqKSy0lYRwvABZzBUTfZybVV/64XojgH9sz3wN+QC9vZ3
-         9idkaBUpFY9INi9PwQ+OKsfX4s+lB2d7kz6spHRuGZeh+SVZJkeajVDPNkoXjSXPFnKY
-         sOZsC/lJ+c4GKTa/7suiAtVBIIGWXntGjwWM92v+TpqRCIx0LLBMzfnC/JziAy6AoMAL
-         8OxilxYlj6woEOs5R5LMDGtnAZInf3wxRGXddB8PT1UKja1nNb9CHhWLIAA9e4u9058a
-         zAqw==
-X-Forwarded-Encrypted: i=1; AFNElJ93aP2iTnmqwGwRGiZ0Vt+Wjljojkx0vjuzwkMB6h7fcmyzW3/4toB7GTBaCu2AtY4Aypgabik=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyhp7X6YkSY+FJqNUJx81cgZALgizcKjTaDTn5QDDL0w1gTzZ2f
-	kCqIJc2wtOYHpfNLx1u2AWjcYCL+7QrTepi/JRz8y1OGNQ6Z3oauNZto+zqyDAL90URijk4a1wH
-	nxVq+0GCOKr+zZAv4gsrX8RfwSRJMyzSWdqo/z1cooSgt2edczddldSXd2WSzbJF1Aw==
-X-Gm-Gg: Acq92OFM/5YlnB2i/4PJqMRDLlktp6ORVlBvvANLdGwjyR1i0AjFp5gEBQ0FMTVGa5U
-	tV4njQVWAh8cp24m9izgkuwY+UjVMLaGg2Q7B4WW9auFC98/hhAJJv00LQ8M7DaeyVJ5Eo0IyMw
-	Jq1xu/a6PX/M/9c/d5ZLZLw+Xnx62vn3r7euc+C/uUwiRNX2/wGoFe4EAn1sURuBybKB7RGaED2
-	btHcU8rTmms+Dyge8YFvtEbIpxXzfheXHUAJYWZzM6ByeTPLv3YuunagRiuFa/BOD0xfCvudIhb
-	wvW9Sd5T0X9XEUnHGV23GXE8GJodEyGOzmspF7IcAmTDZjNvCiWmptaF3qwSPsjSkoClaVnWBeH
-	OSQk4sl1zaSO7i5RCS6Q73iVKSzU1+0lyHYfza5b0PgmC+Fz2GYvbmk174h+AnOnX178KMEkGNA
-	==
-X-Received: by 2002:a05:6000:25c1:b0:43c:fb48:6856 with SMTP id ffacd0b85a97d-45e5c5af3c9mr35164488f8f.13.1779183713288;
-        Tue, 19 May 2026 02:41:53 -0700 (PDT)
-X-Received: by 2002:a05:6000:25c1:b0:43c:fb48:6856 with SMTP id ffacd0b85a97d-45e5c5af3c9mr35164400f8f.13.1779183712778;
-        Tue, 19 May 2026 02:41:52 -0700 (PDT)
-Received: from sgarzare-redhat (host-87-16-204-231.retail.telecomitalia.it. [87.16.204.231])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45d9ed2f738sm43263408f8f.16.2026.05.19.02.41.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 May 2026 02:41:52 -0700 (PDT)
-Date: Tue, 19 May 2026 11:41:44 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Paolo Abeni <pabeni@redhat.com>, 
-	Minh Nguyen <minhnguyen.080505@gmail.com>, Bryan Tan <bryan-bt.tan@broadcom.com>
-Cc: Minh Nguyen <minhnguyen.080505@gmail.com>, 
-	Bryan Tan <bryan-bt.tan@broadcom.com>, Vishnu Dasa <vishnu.dasa@broadcom.com>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, 
-	bcm-kernel-feedback-list@broadcom.com, netdev@vger.kernel.org, virtualization@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net v2] vsock/vmci: fix UAF when peer resets connection
- during handshake
-Message-ID: <agwv3YkxYIC7mvyj@sgarzare-redhat>
-References: <20260512025851.189140-1-minhnguyen.080505@gmail.com>
- <3518e2b5-b669-4aaa-82ca-bbf479a85889@redhat.com>
+        d=1e100.net; s=20251104; t=1779183889; x=1779788689;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mS/dUe0xMjxuiR1Fr534B3h7HtHQAImNE62an91opEw=;
+        b=aqQEK6SiZB7xM3P9H/HcIVvL6bFCsBtGDyTI0FA4THiDuNruwuV2KRHwr7Gse5vn9C
+         MESWKrfisHelyB/fYs7pT4xsI0BLI8hlbtXrUcX33932Le8xbDnoT/LWWbgYf7jI/Ku1
+         5JR78HKEBrJv2q/Vfxyte0ihvfLS4DlbuNSkHYa/s+ml6Jb1I5Ct4vXFRRVlDIk5uRJ/
+         LxMlaH+bOTjc7Abp49P3RtbTylJgd6iUl03r585LZnqlqaLJbGGawspcCXctogEZ6Ymp
+         q/XJGehRvfJms5SP+O2g29gQ7XxVMjBF9ni48HBjfGAINI8K+X0PF5yTiIMr2UYVPgQ8
+         Uf9A==
+X-Forwarded-Encrypted: i=1; AFNElJ9HmIpqVDAc/TK8Q0cuqsmiABMz1ocsOAG0+PXpgUdkuwa3e8U93s3/fZu1MB8Pq+Z0MpCLLtY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxBzhfkTUsiPYERvrTy7aA1zAiXjfKuN30lp/Lq0LN702CZIUEq
+	EvrYMCYT1+AWrYcAISdQEIB7mXlT8gjJUYa+g9cVmBg6i0oE5PNXdB82b2hEtQlkW1P31ltW4rP
+	aMqhg3ZagO3RF+AFPhGKKkLDdDunGEZEZc+1/d5xdcrr367luKAf0Bxq8ng==
+X-Gm-Gg: Acq92OHuRV1+1ZaFiW0mw0TdT/2yi3reoIolleNZ0/6Fk1kloN0NjMsHaBW4mUoX3Pi
+	pae0UZ5fHGt163ZA5HRvIAYHx09mNMNr5NzUa3GSIMeDNkxOckaXG2ey7KMFNTzm6ogTGUc4sWJ
+	tS0Y3VKNTNASCfLvtzUNZbPtvzJG4WKqr2GgC3EsL9yt7Pv68Eb4TUoQHj5GQmEK3+U1tSLaAKy
+	On1RW6p6bY+hywK1r7K0IxqT6HOK0OnAjK+0e54pEN3CFVJJtmHRyjlRZfx25orMQA/aTH3rNMP
+	IuUU4KF/73J6DYOAXRowyMn4I30OFiKiEz2FD5jtgkUTJzdvJyC9t+6sViMqd/PQ8FbPKBIfWLA
+	z+ncLHq/050k2+1QHC1Fg61u/hGzmT2SXc5XT4VGrSmnCBFA/X3Ckk+A=
+X-Received: by 2002:a05:6000:2c07:b0:45e:75c5:1a6a with SMTP id ffacd0b85a97d-45e75c51b5emr16041037f8f.33.1779183888908;
+        Tue, 19 May 2026 02:44:48 -0700 (PDT)
+X-Received: by 2002:a05:6000:2c07:b0:45e:75c5:1a6a with SMTP id ffacd0b85a97d-45e75c51b5emr16040980f8f.33.1779183888421;
+        Tue, 19 May 2026 02:44:48 -0700 (PDT)
+Received: from [192.168.88.32] ([150.228.25.33])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45d9ec3ac86sm43826376f8f.14.2026.05.19.02.44.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 19 May 2026 02:44:47 -0700 (PDT)
+Message-ID: <5e306e50-bced-4d4d-9eb4-766224680145@redhat.com>
+Date: Tue, 19 May 2026 11:44:46 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <3518e2b5-b669-4aaa-82ca-bbf479a85889@redhat.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v4] octeontx2-pf: Retain ethtool stats across
+ interface down/up.
+To: Anshumali Gaur <agaur@marvell.com>, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ gakula@marvell.com, hkelam@marvell.com, sbhatta@marvell.com,
+ sgoutham@marvell.com, bbhushan2@marvell.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260514091634.1611537-1-agaur@marvell.com>
+From: Paolo Abeni <pabeni@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20260514091634.1611537-1-agaur@marvell.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, May 14, 2026 at 03:26:28PM +0200, Paolo Abeni wrote:
->On 5/12/26 4:58 AM, Minh Nguyen wrote:
->> vmci_transport_recv_connecting_server() jumps to its destroy: label
->> and performs an unconditional sock_put(pending) to release the
->> explicit sock_hold() taken by vmci_transport_recv_listen() before
->> schedule_delayed_work().  The existing comment claimed this was safe
->> because the listen handler removes pending from the pending list on
->> the way out, which would prevent vsock_pending_work() from dropping
->> the same reference later.
->
+On 5/14/26 11:16 AM, Anshumali Gaur wrote:
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+> index 971fcab1c248..0ffcc613a4b2 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+> +++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+> @@ -139,19 +139,21 @@ void otx2_get_stats64(struct net_device *netdev,
+>  		      struct rtnl_link_stats64 *stats)
+>  {
+>  	struct otx2_nic *pfvf = netdev_priv(netdev);
+> -	struct otx2_dev_stats *dev_stats;
+> +	struct otx2_dev_stats *dev_stats, *old_stats;
 
-[...]
+Please respect the reverse christmas tree order above.
 
->Sashiko says:
->
->---
->Could this change lead to a socket memory leak if another packet arrives
->before vsock_pending_work() executes?
->If a peer RST is received (err == 0), the socket stays on the
->pending_links list with its state set to TCP_CLOSE, and the base
->reference is kept.
->If the peer then sends another packet (such as another RST) within the
->delay window before vsock_pending_work() runs,
->vmci_transport_get_pending() might find this same socket.
->Since its state is TCP_CLOSE, vmci_transport_recv_listen() would hit the
->default switch case, set err = -EINVAL, and call vsock_remove_pending().
->This removes the socket from the list and drops the list reference, but
->it bypasses vmci_transport_recv_connecting_server(), meaning the base
->reference is never dropped.
->When vsock_pending_work() runs later, vsock_is_pending() evaluates to false.
->This sets cleanup = false and bypasses the sock_put(sk) call, leaking
->the pending socket.
->While not introduced by this patch, does this error path leak
->sk_ack_backlog slots on failed handshakes?
->If a handshake fails due to an error, vmci_transport_recv_listen()
->handles it by calling vsock_remove_pending(). This removes the socket
->from the pending_links list but does not call sk_acceptq_removed(sk).
->When vsock_pending_work() runs later, vsock_is_pending() evaluates to
->false because the socket is no longer in the list. This causes the work
->function to skip its own sk_acceptq_removed(listener) call, meaning the
->listener's sk_ack_backlog is never decremented.
->---
->
->it looks like the above is trading an UaF for a leak ?!?
->
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+> index ee623476e5ff..21fd1dd4d755 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+> +++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+> @@ -2154,6 +2154,8 @@ EXPORT_SYMBOL(otx2_open);
+>  int otx2_stop(struct net_device *netdev)
+>  {
+>  	struct otx2_nic *pf = netdev_priv(netdev);
+> +	struct otx2_dev_stats *old_stats = &pf->hw.old_stats;
+> +	struct otx2_dev_stats *dev = &pf->hw.dev_stats;
+>  	struct otx2_cq_poll *cq_poll = NULL;
+>  	struct otx2_qset *qset = &pf->qset;
+>  	int qidx, vec, wrk;
 
-@Minh @Bryan can you check this report?
-It seems a real issue, so the patch was not applied.
+Same here. You need to split variable declaration and initialization.
 
-Thanks,
-Stefano
+> @@ -2162,6 +2164,27 @@ int otx2_stop(struct net_device *netdev)
+>  	if (pf->flags & OTX2_FLAG_INTF_DOWN)
+>  		return 0;
+>  
+> +	/* First stop packet Rx/Tx */
+> +	otx2_rxtx_enable(pf, false);
+> +
+> +	/* Read final HW counters and accumulate */
+> +	otx2_get_dev_stats(pf);
+> +
+> +	/* Accumulate old stats */
+> +	old_stats->rx_bytes     += dev->rx_bytes;
+> +	old_stats->rx_drops     += dev->rx_drops;
+> +	old_stats->rx_bcast_frames      += dev->rx_bcast_frames;
+> +	old_stats->rx_mcast_frames      += dev->rx_mcast_frames;
+> +	old_stats->rx_ucast_frames      += dev->rx_ucast_frames;
+> +	old_stats->rx_frames            += dev->rx_frames;
+> +
+> +	old_stats->tx_bytes             += dev->tx_bytes;
+> +	old_stats->tx_drops             += dev->tx_drops;
+> +	old_stats->tx_bcast_frames      += dev->tx_bcast_frames;
+> +	old_stats->tx_mcast_frames      += dev->tx_mcast_frames;
+> +	old_stats->tx_ucast_frames      += dev->tx_ucast_frames;
+> +	old_stats->tx_frames            += dev->tx_frames;
+
+Sashiko notes this is still racy, as napi can still run and update the
+counters. You should move the stat collection just before freeing H/W
+resources.
+
+/P
 
