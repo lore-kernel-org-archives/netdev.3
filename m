@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09D0306B3B
-	for <netdev@vger.kernel.org>; Tue, 19 May 2026 00:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9354E1F936;
+	Tue, 19 May 2026 00:00:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779148811; cv=none; b=gxeQvj/P7cZUI2AlAF/Mnj3b3GiQaf1nRms9KbpHCHe2g6bBcZbOn5ymMPPPXCPCwT9Jmt57w9NWhhF1Je3YPoq7PXh0LnQNcbg3/+BdOdzir6YL2E3qeL3h5TqZCVrc2ideGRY5TnhB0scXx0GPueaamF9y+juj7YvF4g7kETs=
+	t=1779148815; cv=none; b=WMJ3XultvJx+zkJCALKYdcVShjqcxxHEH9RuRxhGZH0WTcJE9oTjnrrc0Fh3JvTk6SOu4UY6ik2aRbtKg0Bo/fdlpq5oCN2LKg8JbXD6RJfEZoMu5ASucq4aYauhO/r2uOHBI6hMyRi64KHBGupIvxomEPkSrYYvI9zadOZ27bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779148811; c=relaxed/simple;
-	bh=kuTqi/4P3P1Pltknu+oTj37VkQ8fT36kuly6Uv6oqms=;
+	s=arc-20240116; t=1779148815; c=relaxed/simple;
+	bh=KE8DA/JCb9avfiHuOY5HiYe5wMxGEdLImFBSz7ksyfs=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=gVb2d3Eh35BHkQZoi7pQY6FnocuJqXxdEbjRntnkKIdht10miRc8fpHfavgdTQ8P2tagNz8XJOemcehEY8SqzDm/e53J4z2YroMY98faHcApG406hElyG/HtbewFOMQ/ZuhbY8qmkjlrdO29jIA2qNYPY6IRv7lBiy8+m78GH3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vCktNkqB; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=XwTlqzCETM7t5ermk+n6ljekSHOuWPnAuM6fzXf2yPK9jROWKEVzdhkSnYX5wBSth92gdmxfMm3m05fABJ6Q+rwHX0wqObhwOa5iFpYUjhVaZcT2vTqfYNCsnqGZm53QJSKAYwL/h3qFOAE/0k8RERIauwCuSRWbrqlbRgwThz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WEzd/i/E; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vCktNkqB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44772C2BCB7;
-	Tue, 19 May 2026 00:00:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WEzd/i/E"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73599C2BCB7;
+	Tue, 19 May 2026 00:00:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779148811;
-	bh=kuTqi/4P3P1Pltknu+oTj37VkQ8fT36kuly6Uv6oqms=;
+	s=k20201202; t=1779148815;
+	bh=KE8DA/JCb9avfiHuOY5HiYe5wMxGEdLImFBSz7ksyfs=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=vCktNkqBSfqF6Vy/AXyocNpgtv4NktC/pTSwmggCo0ErtHh1o5HCdWwT7NQzkKRar
-	 lGtnvpX4i1qb5hMAqrSjwBb1z1OibIrgGxVoYLhQ+CO7UmrbcH1m+sDrY5iOHef5se
-	 vQL38z8XnCRRTSnVI7yR/Kf86scP9sPKbqph0uBlWq1b0leqqxrk4ytsqZeqUbVY1d
-	 KNnDgj5bcXcwI1Kj9MNqSy/oNyW1G9QQ8gmT+gtieMDkKepd0uqnj62FYFmoWV5KGd
-	 5/MAlW3NELVtzP/bhe6MXpL5N8I4DfSWTccN31pQSrrbj1sizv0GWdkMbx84tw5vZ2
-	 r9H6mih09flwQ==
+	b=WEzd/i/EjA8nMyHyoZOBTjFXgRgcxSyrO+P2KwPSqSBloSO4KykcboCNDKd5u++yg
+	 xMsqxnEdi6txndatKiy85bnTwgQ6hFhuOfTSqaybUdksAhEmy7Vh3T/qfxPmce71nO
+	 xVxNw6YUXI+HETV2Sd5dFj/T2RNqJRYQJiwvN5x96GFT5IDpC110I4aPwsDP4tdtEd
+	 YB2BdHLGUGfkaL0mWSLI2WHE5niP70sEEcZqI/MglnwcwQrWzsorFZemp+nHjrDFb7
+	 mAhqcO/fWSdeSNXmP/2xgl1hOwaLYH2otGXW9o1N8NavnKgsy9DwfCFMfYJeC4aU0g
+	 XBl0jYGN+a6rA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0BC83930CBF;
-	Tue, 19 May 2026 00:00:23 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198473930CBF;
+	Tue, 19 May 2026 00:00:28 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,70 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 01/14] batman-adv: fix tp_meter counter underflow
- during
- shutdown
+Subject: Re: [PATCH] netdevsim: psp: reset spi on key rotation and check for
+ exhaustion on alloc
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177914882239.2018613.11265100133321410962.git-patchwork-notify@kernel.org>
-Date: Tue, 19 May 2026 00:00:22 +0000
-References: <20260515095540.325586-2-sw@simonwunderlich.de>
-In-Reply-To: <20260515095540.325586-2-sw@simonwunderlich.de>
-To: Simon Wunderlich <sw@simonwunderlich.de>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- b.a.t.m.a.n@lists.open-mesh.org, rakukuip@gmail.com, stable@kernel.org,
- yuantan098@gmail.com, yifanwucs@gmail.com, tomapufckgml@gmail.com,
- bird@lzu.edu.cn, n05ec@lzu.edu.cn, sven@narfation.org
+ <177914882664.2018613.4044608075065988038.git-patchwork-notify@kernel.org>
+Date: Tue, 19 May 2026 00:00:26 +0000
+References: <20260515-spi-handle-v1-1-debf8cb467cb@gmail.com>
+In-Reply-To: <20260515-spi-handle-v1-1-debf8cb467cb@gmail.com>
+To: Daniel Zahka <daniel.zahka@gmail.com>
+Cc: kuba@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, willemdebruijn.kernel@gmail.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
 Hello:
 
-This series was applied to netdev/net.git (main)
-by Sven Eckelmann <sven@narfation.org>:
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri, 15 May 2026 11:55:26 +0200 you wrote:
-> From: Luxiao Xu <rakukuip@gmail.com>
+On Fri, 15 May 2026 10:08:52 -0700 you wrote:
+> The PSP spec states that the lower 31b of the SPI need to be
+> non-zero. Though not in the spec, I think it is reasonable to reset
+> the lower 31b of the spi space after a key rotation, and to also
+> decline to generate session keys when the lower 31b saturate.
 > 
-> batadv_tp_sender_shutdown() unconditionally decrements the "sending"
-> atomic counter. If multiple paths (e.g. timeout, user cancel, and
-> normal finish) call this function, the counter can underflow to -1.
-> 
-> Since the sender logic treats any non-zero value as "still sending",
-> a negative value causes the sender kthread to loop indefinitely.
-> This leads to a use-after-free when the interface is removed while
-> the zombie thread is still active.
+> Assisted-by: Claude:claude-opus-4.7
+> Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,01/14] batman-adv: fix tp_meter counter underflow during shutdown
-    https://git.kernel.org/netdev/net/c/94f3b133168d
-  - [net,02/14] batman-adv: tp_meter: fix tp_vars reference leak in receiver shutdown
-    https://git.kernel.org/netdev/net/c/77098e4bea37
-  - [net,03/14] batman-adv: tt: reject oversized local TVLV buffers
-    https://git.kernel.org/netdev/net/c/1e9fab756f83
-  - [net,04/14] batman-adv: tt: fix negative tt_buff_len
-    https://git.kernel.org/netdev/net/c/b64963a2ceeb
-  - [net,05/14] batman-adv: tt: fix negative last_changeset_len
-    https://git.kernel.org/netdev/net/c/fc92cdfcb295
-  - [net,06/14] batman-adv: tt: fix TOCTOU race for reported vlans
-    https://git.kernel.org/netdev/net/c/94d27005016b
-  - [net,07/14] batman-adv: tt: avoid empty VLAN responses
-    https://git.kernel.org/netdev/net/c/fa1bd704940b
-  - [net,08/14] batman-adv: tt: prevent TVLV entry number overflow
-    https://git.kernel.org/netdev/net/c/99d9958fa10f
-  - [net,09/14] batman-adv: fix fragment reassembly length accounting
-    https://git.kernel.org/netdev/net/c/9cd3f16c320b
-  - [net,10/14] batman-adv: clear current gateway during teardown
-    https://git.kernel.org/netdev/net/c/a340a51ed801
-  - [net,11/14] batman-adv: dat: handle forward allocation error
-    https://git.kernel.org/netdev/net/c/2d8826a2d365
-  - [net,12/14] batman-adv: tp_meter: avoid use of uninit sender vars
-    https://git.kernel.org/netdev/net/c/6c65cf23d4c6
-  - [net,13/14] batman-adv: frag: disallow unicast fragment in fragment
-    https://git.kernel.org/netdev/net/c/bc62216dc8e2
-  - [net,14/14] batman-adv: tp_meter: directly shut down timer on cleanup
-    https://git.kernel.org/netdev/net/c/d5487249a81e
+  - netdevsim: psp: reset spi on key rotation and check for exhaustion on alloc
+    https://git.kernel.org/netdev/net-next/c/97386a9cf046
 
 You are awesome, thank you!
 -- 
