@@ -1,98 +1,182 @@
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 058F739282C
-	for <netdev@vger.kernel.org>; Tue, 19 May 2026 09:47:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CD5D44BCA8
+	for <netdev@vger.kernel.org>; Tue, 19 May 2026 09:49:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779184074; cv=none; b=ddN37+AzLXUNeEcaSftOI0E2EEa3hqUp9PrBJmrfA+Z0/e8IFsUbHi7itvZiGvpJTqDTqRkGHe5JA9GRlBWCLFhqwlKFtHGIr1snzjBde4RIIWCKWtieavtFGNrw8BYcGk6zNaeiYHBcI3QzVaL17KbujpModZg118on4IkzMqQ=
+	t=1779184183; cv=none; b=auozSWKBvYlRazQFcpg2JohsFbgn25mGr6XQKU7EBkgBz4U4RwXW4IAw4KjtKalSaB+xaAaJe/5QUZht7i8I4LzGbo0CQC6ph/Xz3HZe2Nd+R+Vas5CCY/nuhfT/6yBO5M7baEE1MhsHj6NJT8COz8BrT0CIrTdCPAr399w6GPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779184074; c=relaxed/simple;
-	bh=7wmEXaSPptYY/r/mR36e90hMTnm/HrThK1y8Mr7L4u4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=LDLtOYm8wSAYKfvWdvGoFdQKtdR0cxn9hN7/bDbs7aF++Dj4AOiyI+cs/IxHJQxERJ8yDxfbPar8lfSEo283DcA/evXdr2I12hgDngf9S6wBtWWcxPiGLiZGMIcMDLOS/PdDf7aNbahQ1AaXN473pzJspeI06BKHpOPBrQWi0xs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=Fsr6yzeh; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+	s=arc-20240116; t=1779184183; c=relaxed/simple;
+	bh=A3kYDVRcCv+l5IYdjIvqMz4NtZd1ehaoUU/Tc+OxqTM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=P4z0okshYO24uSkPjdYr+lCXdS0/Nqlvl5tFRydg05qUTxX30tEbiO97sxij44OaS35Rg4PC70wn4alyjk5athwOrZuw+L/znb9P7xM1TApV3dv8sP2/rDKU93gSqiVTh96p6xsXrN+vIPtE/9xY7gWttinBFVFMdYxAZ+kr21o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=M0heET/Z; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=K9lsd7cd; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="Fsr6yzeh"
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-bd124546379so609153866b.3
-        for <netdev@vger.kernel.org>; Tue, 19 May 2026 02:47:52 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="M0heET/Z";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="K9lsd7cd"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1779184180;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zj2k4OlZU7xwNJcXmWQpbVh/b6JWeCsbljlDYkhC2cc=;
+	b=M0heET/Z+kggfrXdhnLXocESv95SAULrGRU/fv1PkQbnrjuCmgnH82QMx7zKT9peOFNgRV
+	pVxLxrC3lL6g/btH61xXctxGcbiNKZJsycRCjzJcRsrLV+ihihH7CsdOu4oMv7o5AOq3kR
+	O4K7aoKXn2lFsgTnzZdHNFFuDp1Ya4U=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-595-bfRnleiNNEqWiNSyna7iWg-1; Tue, 19 May 2026 05:49:39 -0400
+X-MC-Unique: bfRnleiNNEqWiNSyna7iWg-1
+X-Mimecast-MFC-AGG-ID: bfRnleiNNEqWiNSyna7iWg_1779184178
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-44a52d5e572so2624633f8f.3
+        for <netdev@vger.kernel.org>; Tue, 19 May 2026 02:49:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1779184071; x=1779788871; darn=vger.kernel.org;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=LV3iAX2q0qgehd/Y9H3He32OWW5yDlKO8wzkeiAQo+A=;
-        b=Fsr6yzehG/UPn+GIY4AsTdJj4Yovoypo+u0Z5rjZT099KWXAyIX5hQ9Jlf2Z42f1eY
-         MhJpITXlEGv2zR+NxVo/OoKZkgdv0/0LGk7FULeij6aaGT2PU3RJmMEMWNP9WhuJ7DQ/
-         0wRYdA1g+uHb+B23rWPhLcB1IN8GGLTQhAFHbRYbAXqN3rrU5plMwhZfBlx6jo6lSA6v
-         g/4+IgP//WSUGQ/iU1aHEqWERxMQjDEx660P7jBrM5gS5eOQT8eWoJOpZpyi2ZDdgkmD
-         191fxqYBC9ilUe2tUoMVj1J5jpLd/gvc/+ZnnB/gMNfWDvsV96V33RqPwStRStEtBw5K
-         H2iA==
+        d=redhat.com; s=google; t=1779184178; x=1779788978; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=zj2k4OlZU7xwNJcXmWQpbVh/b6JWeCsbljlDYkhC2cc=;
+        b=K9lsd7cdgFvdEggg6qdA5b7M7ERg8BNcPgqVBYKd5v1gG0IwrtvLwUl5F2qeNCNKqj
+         rBDO7BdZwt7kvnL7RtZPjrVf9Rg++GN/AEQG/AICVDXhzZ7FMBA8ylDnA34Jit6MMMTS
+         U76T78cFHa/77CNBrnx0vd7QFqLJ+JfbADVowqBvmS42C4IHZd1VZRsE06k/+dJTKetn
+         HRPnW1BVMm8tApi/rVZysro0BFS9TtUcyoHZLnFRyGwt9SUS/5+VJgzCNudYiSnbfL6G
+         xTBCdJGmVG8CGFXIjBBkflYO0Cd06XZpFstQRj2O45iJ8Vj/toeoLgq+wvl9CV26gqCd
+         0ZfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779184071; x=1779788871;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=LV3iAX2q0qgehd/Y9H3He32OWW5yDlKO8wzkeiAQo+A=;
-        b=jwmMWjjFr8ucCbBCFTOgTnycmBoZjyt1vimgJVVLmFIXGwDpKSXk2IXCyXo1CwMUjM
-         0j+jZmYXze5NFZ1IGP+5FWewWp3Y2X6uzFV8KouVg38W/GQY8zzlluUdFQ5vK1cKRZ2A
-         /TFtQ9YoOVljAY77m6Di/k9bHE8eZgvizR3yxSyTcvY9FuHhOZm8Lx2QnSRtccWKWWqb
-         lm92cp7AIZCm4+sg6O4QMaE346dGE0ifWiy6E0Maze/xqE8678IDq09i5vVIFMqae5n2
-         50ODpZsloOk4DVYrapUhA1Lyz7FR1RkfNWWvC+RP/hyramrbPJ4brCFs6PySS6DW8375
-         SD6g==
-X-Forwarded-Encrypted: i=1; AFNElJ87xvO7m9zyaAIytkGnk0zQpJrzQRdfw/Fo/3M/MTssO2J6U4nLE6m82iHzp1dH62X7Vlwe8GM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yygn3M8pe/GjUPnjKUbLMgVB0WB7j7uX1vOClKyRDXN1ezWh8AH
-	MSBygHoK0jAwjZOUYy5M4dKhftmMsnQp9AgT1ChYaK583jzhv/aqmfnMmTvWYRLj4AP79JnxjEH
-	p4Jll7Fk=
-X-Gm-Gg: Acq92OFZwMk7ra1l6iBbQLx4t/FlPtyRdnwbxP5qrSDjNKdKZTtEvLznV3ljn50YEVn
-	Q2Hg58QsrvMnxch25Lmz+Gl74Bd0cvvdtugx86FKrxiSQIRLyfmJGR20f8aYFZaPJvSSzSnbm+W
-	pk8WCtGXIsnCB9h0vJhD+He6S2KPmWq13n4bmsjZ2Ef3iVFAhhnf1T6Kw/gY2fNMQSZcoq+nYMS
-	74E2M2vLPSVxM+eqJQuTMizDOl6GA9dxtptIh/n2pYa4Ws4RdgacR+75HpVWnBB+gWTXLsZ1xT7
-	0anBfUsUTMwjN8MZHN5XO5X2sY5ZVWy+sDiWPx/8I8AWI/jgIbZ6IX+QzUDF/A+0DTxbhXbTz1Z
-	rndZYG1lv5j2GukfbCFOsy72wfYR3zgTcUL69SHS70b2KmcyyuyqkR8/07OYe4vikOhJFoubyXg
-	/irPovukLIIeuocF4SiXHIM0odLMBMTufF4Zlt
-X-Received: by 2002:a17:907:1608:b0:bd4:f2c3:69ab with SMTP id a640c23a62f3a-bd51796b1bbmr1123158966b.41.1779184071264;
-        Tue, 19 May 2026 02:47:51 -0700 (PDT)
-Received: from cloudflare.com ([104.28.21.182])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6831187ecb7sm6148755a12.29.2026.05.19.02.47.49
+        d=1e100.net; s=20251104; t=1779184178; x=1779788978;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zj2k4OlZU7xwNJcXmWQpbVh/b6JWeCsbljlDYkhC2cc=;
+        b=n5r8IAQw9OkQ0MWgoKQNjmXIoM50/kJQxqPkyM2HIORwx41TcZOEtgNSM36fKZSTXY
+         NzELBE5fX5+QpRwsHByef+UGuhNUuVY1yK5GMcIgM1ZObpMrBF4CJF7bt8+2ptsWy1oZ
+         FQiADUih1OpkfqtvRRRpdCqxr+6w/xz26Qonw6wXUi2X+UOTaPs+0KruXdg/AZ5HJZkb
+         WUJJgVppSb+3VvLOofSvtuHVxC5nO0d2sgRCTZCYkoXa3BKztEfHhBP4QSoUW9q/U5TU
+         mrSNHcFkQWNBsO4H/o+loTiBQ0IJs2tew/NMa0XnYbKK6Fmz5Hbjpgfjm0rIWVruQ5v1
+         DpnA==
+X-Forwarded-Encrypted: i=1; AFNElJ+M5bEDwXropDAyzrcjE6skKWqlZn+VwvGMKPyBBl/BMzVAlBsi9xsd30aa+FHD+36c1kRzvNE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyzQi+lc4eyqcRraanLkA4ESjVdoziIK3OcFGffBuaAlTnWgpiB
+	YlKqLkBFl5VBTbkZdLzpjsvyyoXyPfvCSAFtj4vNTSSLY8DxZiQA3sy3f9WvftcU6UqprHQsLKZ
+	neEHajWuVLkU2uPX7M9OZpDkCrkKQJqinETE6iLz1fikoHSluZKWr1vdVNw==
+X-Gm-Gg: Acq92OH7x1KpBQa3RZhpWuVDu20dK16D96nRQoMew1qrk9zVt8qRn1kSeLZjbLIFAAE
+	vs03pxfvUABYbDCMEVH5dOaMkSjlJMeAZmisAluZ7R4rAueiZ5vKS7VbRSu0YalFDmAMtIeDIwZ
+	GG+Q3zaxQ+NnTeaskRpFhvFcBZUqZju6F1m0ShaBJ0hErG+j93//73eRAOzx/6qT8/L23tx3HI2
+	N6QUawehezaJUlVRl3Jy4Kl5JFFmbGWWjoy0oy7RaDCIVX20ixE/Nj1i157wBjTtdj+lSykZsG4
+	sf8XrOWpg3COA+vFcU8kFs3UAk7pKyeCZ5OqhYrPE9YQSKu4mo9Biqg3IZaO8xLT1bJs7z2m/dj
+	OLlHhP3xeB7o+VEnHKoZy6CNrLCWdSeGDlkvrMxsS9bQ1XSm3ukgXOSv5laXQXGGo7ZdU6/1HWi
+	TjAr+NEQ2z
+X-Received: by 2002:a05:600c:4e55:b0:488:ac01:72de with SMTP id 5b1f17b1804b1-48fe60e510bmr285210305e9.5.1779184178084;
+        Tue, 19 May 2026 02:49:38 -0700 (PDT)
+X-Received: by 2002:a05:600c:4e55:b0:488:ac01:72de with SMTP id 5b1f17b1804b1-48fe60e510bmr285209745e9.5.1779184177542;
+        Tue, 19 May 2026 02:49:37 -0700 (PDT)
+Received: from sgarzare-redhat (host-87-16-204-231.retail.telecomitalia.it. [87.16.204.231])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fe5cab7c5sm334163125e9.12.2026.05.19.02.49.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 May 2026 02:47:50 -0700 (PDT)
-From: Jakub Sitnicki <jakub@cloudflare.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Daniel Borkmann <daniel@iogearbox.net>,  "David S. Miller"
- <davem@davemloft.net>,  David Ahern <dsahern@kernel.org>,  Eric Dumazet
- <edumazet@google.com>,  Paolo Abeni <pabeni@redhat.com>,  Simon Horman
- <horms@kernel.org>,  Martin KaFai Lau <martin.lau@kernel.org>,
-  netdev@vger.kernel.org,  bpf@vger.kernel.org,  kernel-team@cloudflare.com
-Subject: Re: [PATCH net v2] net: Clear skb metadata in LWT BPF xmit
-In-Reply-To: <20260518161827.2ac4766f@kernel.org> (Jakub Kicinski's message of
-	"Mon, 18 May 2026 16:18:27 -0700")
-References: <20260514-bpf-lwt-drop-skb-metadata-v2-1-458664edc2b5@cloudflare.com>
-	<20260518161827.2ac4766f@kernel.org>
-Date: Tue, 19 May 2026 11:47:49 +0200
-Message-ID: <87h5o3ohmi.fsf@cloudflare.com>
+        Tue, 19 May 2026 02:49:36 -0700 (PDT)
+Date: Tue, 19 May 2026 11:49:28 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Arseniy Krasnov <avkrasnov@salutedevices.com>
+Cc: David Laight <david.laight.linux@gmail.com>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Stefan Hajnoczi <stefanha@redhat.com>, kvm@vger.kernel.org, Eric Dumazet <edumazet@google.com>, 
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+	virtualization@lists.linux.dev, "David S. Miller" <davem@davemloft.net>, 
+	Jason Wang <jasowang@redhat.com>, linux-kernel@vger.kernel.org, 
+	Maher Azzouzi <maherazz04@gmail.com>
+Subject: Re: [PATCH net] vsock/virtio: fix zerocopy completion for multi-skb
+ sends
+Message-ID: <agwwxuQlIWjwXtMN@sgarzare-redhat>
+References: <20260514092948.268720-1-sgarzare@redhat.com>
+ <20260516125329.7b699c6f@pumpkin>
+ <agrXvCtNRlySlwgx@sgarzare-redhat>
+ <20260518053223-mutt-send-email-mst@kernel.org>
+ <agrg1GVzoJWtNuSd@sgarzare-redhat>
+ <20260518115005.5f13bd2b@pumpkin>
+ <20260519053951.1C60440015@mx4.sberdevices.ru>
+ <aea2227c-3011-4457-b909-d16de1596a6d@salutedevices.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <aea2227c-3011-4457-b909-d16de1596a6d@salutedevices.com>
 
-On Mon, May 18, 2026 at 04:18 PM -07, Jakub Kicinski wrote:
-> On Thu, 14 May 2026 12:47:09 +0200 Jakub Sitnicki wrote:
->> +		/* LWT BPF programs cannot access skb metadata but can corrupt
->> +		 * it with helpers that operate on skb headroom. Drop it.
->> +		 */
->> +		skb_metadata_clear(skb);
+On Tue, May 19, 2026 at 09:37:23AM +0300, Arseniy Krasnov wrote:
+>On 18/05/2026 14:08, Stefano Garzarella wrote:
+>> On Mon, May 18, 2026 at 11:50:05AM +0100, David Laight wrote:
+>>> On Mon, 18 May 2026 11:54:19 +0200
+>>> Stefano Garzarella <sgarzare@redhat.com> wrote:
+
+[...]
+
 >
-> Sashiko has a point, right? Is there something in LWT which would
-> prevent us from working on clones?
+>Hi guys! Just some replies after quick look:
+>
+>>>> >> > Surely that block should only be done if can_zcopy is true?
+>
+>I guess no, since TCP also allocates uarg even if zerocopy is impossible -
+>it just sets uarg_to_msgzc(uarg)->zerocopy = 0;
+>
+>>>> >> > And shouldn't something unset it if info->op != VIRTIO_VSOCK_OP_RW ?
+>
+>Hm, we can't enter block 'if (info->msg) {' when 'info->op' is not equal to 'VIRTIO_VSOCK_OP_RW',
+>because 'msg' is not NULL only for 'VIRTIO_VSOCK_OP_RW'. But anyway You point to right thing - check for
+>'VIRTIO_VSOCK_OP_RW' could be removed here. Just with comment why.
+>
+>>>> >> > If the msg_zerocopy_realloc() fails then can't you just set can_zcopy to false.
+>
+>Here I guess it is better to follow TCP way to make same behaviour, because exact
+>logic for MSG_ZEROCOPY is not documented. TCP also returns error and stops tx loop.
+>
+>>>> >> >
+>>>> >> > It info->msg->msg_buf is already set then I think you have to disable zero-copy.
+>>>> >> > The caller has already requested a callback - and you can't add another.
+>
+>In TCP implementation if 'msg_ubuf' is set they just use it and check for zerocopy in
+>the same way as 'msg_ubuf' is NULL.
+>
+>>>> >> >
+>>>> >> > In any case by the end of this can_zcopy and have_uref are really the same flag.
+>>>> >>
+>
+>Need to check it more. But 'can_zcopy' means that we fill frags in skb, have_uref means that we
+>allocated completion (but it could be reported with not set 'SO_EE_CODE_ZEROCOPY_COPIED' if
+>'can_zcopy' was false).
+>
+>
+>@Stefano, I guess current implementation differs from TCP in two cases (at least from first
+>view):
+>1) When 'msg_ubuf' is set: in TCP, already set 'msg_ubuf' is passed to 'skb_zerocopy_iter_stream()'
+>   (if zerocopy is possible) where it is used as in vsock in call 'skb_zcopy_set()'. In vsock case if
+>   'msg_ubuf' is not NULL we will pass just NULL to 'skb_zcopy_set()'. Yes this is will be
+>   no-effect call today (due to checks in 'skb_zcopy_set()'), but anyway - in future may be not.
+>2) Also i see that 'skb_zerocopy_iter_stream()' in TCP version has some 
+>extra checks which are
+>   missed in vsock - we only just call '__zerocopy_sg_from_iter()' to fill skb in zerocopy way.
+>
+>But, I think, instead of trying to compare vsock and TCP versions best way is to just copy
+>current TCP flow as close as possible:
+>https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/tree/net/ipv4/tcp.c#n1144
+>1) Use same flow of checks for 'msg_flags', 'msg_ubuf', SOCK_ZEROCOPY etc.
+>2) To copy data we can use 'skb_zerocopy_iter_stream()'.
+>3) The only thing that we don't need in vsock is dev mem related code from TCP implementation.
+>
+>I can take this task, but pls need some time - may be two/three weeks due to another tasks.
+>
+>What do You think?
 
-Totally. I've just been spread a little thin lately.
+If you can work on it, please go head. They seems all pre-existing, so 
+2/3 weeks are fine. Please let me know if you can't and I'll try to 
+allocate some time.
 
-We have a bpf/selftest that uses tc act mirred that exercises this
-scenario that I need to extend.
+Thanks for the help!
 
-In general, anything high/med from LLMs won't go unaddressed.
+Stefano
+
