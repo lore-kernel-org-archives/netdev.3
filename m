@@ -1,348 +1,227 @@
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0078E409111
-	for <netdev@vger.kernel.org>; Tue, 19 May 2026 16:57:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 581F540910A
+	for <netdev@vger.kernel.org>; Tue, 19 May 2026 16:58:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779209853; cv=none; b=PhBEJKvICX8CQsSl//E9B5PSPTpy6ljgpmhOTiVd5bOvxtk+umHmIhrd9G8LFHcsTKPI4kHQliiKTEaKFDWEWpdYdpCEHK7AoAAe5XM7BKDxzZI9XHDGXAyQllQSGIrcoOzlH+/e3O0KqQX/mjrQoBExnByw+SF70MLLvhvZLfc=
+	t=1779209898; cv=none; b=XFfVMIQVAQNPQHVmugfctXJoFLue7eitRRwgtWu0/uMPCbAWin2DvFGTXyp9/GLd65jHevDq4I1xpo3r45XWepTedfJfZHW/giMxDbcyUX/sLaP7vEUGU38rS2K4jMutgofwLSjSJh+0XQWxEO9YMakZYVyfZop1guX+byOWAvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779209853; c=relaxed/simple;
-	bh=/dxqY7vF83zqkB9TeiJY/hUNAh4ZjWZkHbYyxtAuPwA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hcoxXfADuSX0uA87rxC7aTyDD9nwqiCuSEsBNuj0XqDhO0RSmJtJ1vCXKG03A5A0Bp3AZP9IIxEPcdyOk8mfT/zcn9N5CYDHHYW+jqs6XAmfGB4tXZuPPV3U/SaAwSetBhW7ANBger+V60HzoNE51CN1/KI5M1KN88T26881FD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O/ZdmZSn; arc=none smtp.client-ip=209.85.215.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1779209898; c=relaxed/simple;
+	bh=N8SSxzHuPMacghOWztdAVMjHWBP8a83uqeLrZLiHld8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=D/4iy56vdFn/Loplu8VB/gYQ0Bhj+WGP8TwpFrT04RmYONAXfUA98nGHbUzFz72KD19dCwqZMfJTFiJCSVlhfiQTitqf5OxQXcBIbBOESAJSuvtaTo6sWyzbHJObajPCkjnIgLQ5vCOX+xmZZdAhpVnWQ89Ci5UG1jtiY2cjCRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b=A52CT8mL; arc=none smtp.client-ip=212.227.15.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O/ZdmZSn"
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-c796914c062so123686a12.1
-        for <netdev@vger.kernel.org>; Tue, 19 May 2026 09:57:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779209846; x=1779814646; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=TXSSb+QnSoLncqTyl5C1Wf9KSszK/YhT+NIcZleisWI=;
-        b=O/ZdmZSnxyCIZCAjLM7bxtrDB1QqLs+7cV6vMMKosq5UsUbTXgB9Rfoi+T9fwVXUCc
-         quWxqeqNaiz5XQcYHqOqLo+IXqVjPRxPZHvYC6e8PSy45Hjovd/6svCg36YSVvAX8+80
-         ZxBY1yuREZNpsp0adbai4ewHsJoC0uqnrEZ5uc2s2z6eX2d5yQUZBB87fPirmRQNG8Bn
-         MrXbhp0eLJH2IcdGexbQ6MWRs45e+b6yvtX7fyWvs/B3QGBmUGas4jYVv1IGqt0Qi7Ha
-         i0fysplSrsBs1VW7guG73hARhF1ioLdAODpA6K16LfJpaVkG1nkwo3Vx3uf4MkpmX72I
-         GY1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779209846; x=1779814646;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TXSSb+QnSoLncqTyl5C1Wf9KSszK/YhT+NIcZleisWI=;
-        b=bkK/pzBi6neBMDPoTN1HFntSAc49LSrZEEG0g02qqICCHb0XGJn+a36PGObxaoI73H
-         l4mZw1ewIZ5E+/qb1clqRIWFO8DQZS9ooG/I1lX6y0qK8o2dxgdsVuPQo13rHPuwNLcl
-         ZMzNp4shz2AYZwVJrKgrbW7obkdBqxRC/CPCWvpmQ/ySOkswC4M3DAZ6HrK8bXlvGXWs
-         1GbufxQO5bgHblZzeUvwQLaX3s/qYpzBSIzptcpeDUZNHo89UTNkYPlw0E42/ksn8lZ1
-         HdfiBcCPFQ9/zefkLGk2fAzJQ594TXXn04D94A1PwQXGvHUcrpoQDcI5NDXDjxnWjiOF
-         eZjg==
-X-Forwarded-Encrypted: i=1; AFNElJ/U8FfiYPryoW365vlQMUzapmRvOxfQlLYYGgwpSDLkGqv8oQBB34YrIvOA71Vm85JWNpse/h0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy4qhEWW9FlM5Nd4CJyxsZVA06+Q1m+bZySj+I5Tdoc2AqF7XVV
-	3c3T+CvsAau6lI+dYX5CZgKk/VaJMWOlErB+2N4nByUinML0vVht00YTHQr4Weyu7SA=
-X-Gm-Gg: Acq92OFgXB7iVGRp1qUo6YEw0anTZ480xo83X7SGFXONJ74ZKGnjN2wJnVOfn6bZYEH
-	0z1Wq8oL4dP4yfFJIqe5KD3a5+vTro0/OJ0UB68GNORfzsdFfi83I3UTvA8EhQ5ixMV0fJym7Ke
-	gVL1nh8HY9dPeAcMFWiUa/i0JH4a/Tby3kkDtpU9NU7obP6DwsUdLOsgP4kA45tUUZgNoF/p79y
-	/gUc/PZPWt8G4NPg9vrWjBjNvuR+PPQceKDiETS9WTsrg81fZ21L8wgFIl5uG58YY4QSNgtJRR3
-	VNoyA33OQVSnHd2HzEqtbR5cHrRKmNeeiFvcd89Lq5JgORteCAVeCqlNnBuwZLQnhAtPSMyuSFM
-	70ptZCkSlm4/pxT2wvEyrXkHMBXiQP6HIqMV3iVyAopN/UFZzUunu0VRG8vhboRckcsVVxXzbh4
-	zn+27eISj14/dd3YrVR6jhK8TDdp9cA8g0XThiDgLgPbxr
-X-Received: by 2002:a17:903:2ec7:b0:2bd:9875:d457 with SMTP id d9443c01a7336-2bd9875d4fdmr109091215ad.8.1779209846248;
-        Tue, 19 May 2026 09:57:26 -0700 (PDT)
-Received: from gmail.com ([117.133.78.208])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5bd5fe67sm204597705ad.3.2026.05.19.09.57.17
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 19 May 2026 09:57:25 -0700 (PDT)
-From: Ziyu Zhang <ziyuzhang201@gmail.com>
-To: Stefano Garzarella <sgarzare@redhat.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	Andy King <acking@vmware.com>,
-	George Zhang <georgezhang@vmware.com>,
-	Dmitry Torokhov <dtor@vmware.com>,
-	"K . Y . Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	"Michael S . Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Bryan Tan <bryan-bt.tan@broadcom.com>,
-	Vishnu Dasa <vishnu.dasa@broadcom.com>,
-	bcm-kernel-feedback-list@broadcom.com,
-	virtualization@lists.linux.dev,
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b="A52CT8mL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1779209889; x=1779814689;
+	i=markus.stockhausen@gmx.de;
+	bh=0CTnurcrlvUBWW9ODoRcHPph8ednVUZTcdK2244dZjk=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
+	 References:MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=A52CT8mLcVUgcMXtJOBtATiio4pgpx01DxOR5p8RSGhV/dNwccQUE9zgO8jFomA1
+	 SxAOgVPlZWyy5RHVRxx5ykNCCXEennXrfyOPebp2l8D4B1lcP28+yfuZGZ1ZYFpif
+	 +SNxm8x6cgZK5g8XlQmAos6jDJ1A4TW+fvqq+nS8RrNyRmPo9lPXZ6/VuQmxNBcxL
+	 HMwFdyIpEcdCDtRkfaWtKiRJmV9ZqlNhdGBytiJ+rQrlvYBIQjvHiwYlc6hr1Rqoa
+	 kcyxil5OCnT2vRKA+mxjkKWJJO0oVdQy4g0ZAkIlCivjo78qxnDSCvvRbU0l9NdCG
+	 CFE2WIaMllcHrKPM8A==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from client.hidden.invalid by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MmlT2-1x6if90kC6-00n6TV; Tue, 19
+ May 2026 18:58:09 +0200
+From: Markus Stockhausen <markus.stockhausen@gmx.de>
+To: andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-hyperv@vger.kernel.org,
-	kvm@vger.kernel.org,
-	baijiaju1990@gmail.com,
-	r33s3n6@gmail.com,
-	gality369@gmail.com,
-	zhenghaoran154@gmail.com,
-	hanguidong02@gmail.com,
-	zzzccc427@gmail.com,
-	Ziyu Zhang <ziyuzhang201@gmail.com>
-Subject: [PATCH net v2] vsock: keep poll shutdown state consistent
-Date: Wed, 20 May 2026 00:56:36 +0800
-Message-Id: <20260519165636.62542-1-ziyuzhang201@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+	chris.packham@alliedtelesis.co.nz,
+	daniel@makrotopia.org
+Cc: Markus Stockhausen <markus.stockhausen@gmx.de>
+Subject: [PATCH 2/9] net: mdio: realtek-rtl9300: Add device specific info structure
+Date: Tue, 19 May 2026 18:57:40 +0200
+Message-ID: <20260519165747.1288903-3-markus.stockhausen@gmx.de>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260519165747.1288903-1-markus.stockhausen@gmx.de>
+References: <20260519165747.1288903-1-markus.stockhausen@gmx.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:0uY/Fig7Z42bniSOlScmuLrsUV8+7HOQyiLzPlEcdDi44QLxy5t
+ jHeXTObhlbShAC4TSYGb5BtEXavNRb/neUMG3iOvG8CW75T5PMt2+4SGH++I0cRyypupBhI
+ 7VdcoErZzNzAGObNeyVH2EVYkO99Y1tvJ5OsmB3hGxijSdyiC0YMwwL1DZ3u+xVl6c2QepH
+ uzerYwkXlRbHTEU0OmdIA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:TPQAyf/pO14=;ecJ38uZK6YAp2vPvPOY3Ev0bcDl
+ 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
 
-vsock_poll() reads vsk->peer_shutdown before taking the socket lock
-to set EPOLLHUP and EPOLLRDHUP, then reads it again after taking
-the lock to report EOF readability. A shutdown packet can update
-peer_shutdown while poll is waiting for the lock, so one poll invocation
-can report EOF readability without the corresponding HUP/RDHUP bits.
+Device properties of the RTL930x SOCs are hardcoded into the MDIO driver.
+This must be relaxed to support additional devices like the RTL838x or
+RTL839x. These do not have 4 SMI buses but 1 or 2 instead.
 
-For connectible sockets, take one peer_shutdown snapshot after
-lock_sock() and use it for all peer-shutdown-derived poll bits. For
-datagram sockets, which do not take lock_sock() in poll(), take one
-lockless READ_ONCE() snapshot and pair it with WRITE_ONCE() on the
-writer side.
+To support multiple devices establish an info structure that contains
+individual variations of each series. As a first use case add the number
+of buses into this structure and use it where needed.
 
-This keeps the peer-shutdown-derived bits internally consistent for each
-poll pass.
+Signed-off-by: Markus Stockhausen <markus.stockhausen@gmx.de>
+=2D--
+ drivers/net/mdio/mdio-realtek-rtl9300.c | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
-Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
-Signed-off-by: Ziyu Zhang <ziyuzhang201@gmail.com>
----
-Link: https://lore.kernel.org/netdev/20260516034745.260442-1-ziyuzhang201@gmail.com/
-
-v2:
-- Pair lockless READ_ONCE() users with WRITE_ONCE() on peer_shutdown writers.
-- Move datagram shutdown handling into the SOCK_DGRAM branch and add a comment.
-- Keep one connectible peer_shutdown snapshot after lock_sock() and
-  restore the previous shutdown-derived mask ordering.
-
- net/vmw_vsock/af_vsock.c                | 49 ++++++++++++++++---------
- net/vmw_vsock/hyperv_transport.c        |  9 +++--
- net/vmw_vsock/virtio_transport_common.c | 14 ++++---
- net/vmw_vsock/vmci_transport.c          |  8 ++--
- 4 files changed, 52 insertions(+), 28 deletions(-)
-
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index adcba1b7b..789b00f6e 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -523,7 +523,7 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
- 		 */
- 		sock_reset_flag(sk, SOCK_DONE);
- 		sk->sk_state = TCP_CLOSE;
--		vsk->peer_shutdown = 0;
-+		WRITE_ONCE(vsk->peer_shutdown, 0);
- 	}
- 
- 	if (sk->sk_type == SOCK_SEQPACKET) {
-@@ -814,7 +814,7 @@ static struct sock *__vsock_create(struct net *net,
- 	vsk->rejected = false;
- 	vsk->sent_request = false;
- 	vsk->ignore_connecting_rst = false;
--	vsk->peer_shutdown = 0;
-+	WRITE_ONCE(vsk->peer_shutdown, 0);
- 	INIT_DELAYED_WORK(&vsk->connect_work, vsock_connect_timeout);
- 	INIT_DELAYED_WORK(&vsk->pending_work, vsock_pending_work);
- 
-@@ -1122,6 +1122,25 @@ static int vsock_shutdown(struct socket *sock, int mode)
- 	return err;
+diff --git a/drivers/net/mdio/mdio-realtek-rtl9300.c b/drivers/net/mdio/md=
+io-realtek-rtl9300.c
+index a3374d5241cb..140e6ac51e2b 100644
+=2D-- a/drivers/net/mdio/mdio-realtek-rtl9300.c
++++ b/drivers/net/mdio/mdio-realtek-rtl9300.c
+@@ -48,7 +48,14 @@
+ #define MAX_SMI_BUSSES  4
+ #define MAX_SMI_ADDR	0x1f
+=20
++#define RTL9300_NUM_BUSES		4
++
++struct rtl_mdio_info {
++	u8 num_buses;
++};
++
+ struct rtl_mdio_priv {
++	const struct rtl_mdio_info *info;
+ 	struct regmap *regmap;
+ 	struct mutex lock; /* protect HW access */
+ 	DECLARE_BITMAP(valid_ports, MAX_PORTS);
+@@ -328,7 +335,7 @@ static int rtl9300_mdiobus_init(struct rtl_mdio_priv *=
+priv)
+=20
+ 	/* Put the interfaces into C45 mode if required */
+ 	glb_ctrl_mask =3D GENMASK(19, 16);
+-	for (i =3D 0; i < MAX_SMI_BUSSES; i++)
++	for (i =3D 0; i < priv->info->num_buses; i++)
+ 		if (priv->smi_bus_is_c45[i])
+ 			glb_ctrl_val |=3D GLB_CTRL_INTF_SEL(i);
+=20
+@@ -447,7 +454,7 @@ static int rtl_mdiobus_map_ports(struct device *dev)
+ 		if (err)
+ 			return err;
+=20
+-		if (bus >=3D MAX_SMI_BUSSES)
++		if (bus >=3D priv->info->num_buses)
+ 			return dev_err_probe(dev, -EINVAL, "illegal smi bus number %d\n", bus)=
+;
+=20
+ 		err =3D of_property_read_u32(phy_dn, "reg", &addr);
+@@ -476,6 +483,7 @@ static int rtl_mdiobus_probe(struct platform_device *p=
+dev)
+ 	if (err)
+ 		return err;
+=20
++	priv->info =3D device_get_match_data(dev);
+ 	priv->regmap =3D syscon_node_to_regmap(dev->parent->of_node);
+ 	if (IS_ERR(priv->regmap))
+ 		return PTR_ERR(priv->regmap);
+@@ -499,8 +507,12 @@ static int rtl_mdiobus_probe(struct platform_device *=
+pdev)
+ 	return 0;
  }
- 
-+static __poll_t vsock_poll_shutdown(struct sock *sk, u32 peer_shutdown)
-+{
-+	__poll_t mask = 0;
+=20
++static const struct rtl_mdio_info rtl9300_mdio_info =3D {
++	.num_buses =3D RTL9300_NUM_BUSES,
++};
 +
-+	/* INET sockets treat local write shutdown and peer write shutdown as a
-+	 * case of EPOLLHUP set.
-+	 */
-+	if (sk->sk_shutdown == SHUTDOWN_MASK ||
-+	    ((sk->sk_shutdown & SEND_SHUTDOWN) &&
-+	     (peer_shutdown & SEND_SHUTDOWN)))
-+		mask |= EPOLLHUP;
-+
-+	if (sk->sk_shutdown & RCV_SHUTDOWN ||
-+	    peer_shutdown & SEND_SHUTDOWN)
-+		mask |= EPOLLRDHUP;
-+
-+	return mask;
-+}
-+
- static __poll_t vsock_poll(struct file *file, struct socket *sock,
- 			       poll_table *wait)
- {
-@@ -1139,24 +1158,17 @@ static __poll_t vsock_poll(struct file *file, struct socket *sock,
- 		/* Signify that there has been an error on this socket. */
- 		mask |= EPOLLERR;
- 
--	/* INET sockets treat local write shutdown and peer write shutdown as a
--	 * case of EPOLLHUP set.
--	 */
--	if ((sk->sk_shutdown == SHUTDOWN_MASK) ||
--	    ((sk->sk_shutdown & SEND_SHUTDOWN) &&
--	     (vsk->peer_shutdown & SEND_SHUTDOWN))) {
--		mask |= EPOLLHUP;
--	}
--
--	if (sk->sk_shutdown & RCV_SHUTDOWN ||
--	    vsk->peer_shutdown & SEND_SHUTDOWN) {
--		mask |= EPOLLRDHUP;
--	}
--
- 	if (sk_is_readable(sk))
- 		mask |= EPOLLIN | EPOLLRDNORM;
- 
- 	if (sock->type == SOCK_DGRAM) {
-+		u32 peer_shutdown = READ_ONCE(vsk->peer_shutdown);
-+
-+		/* DGRAM sockets do not take lock_sock() in poll(), so use one
-+		 * lockless snapshot for all shutdown-derived mask bits.
-+		 */
-+		mask |= vsock_poll_shutdown(sk, peer_shutdown);
-+
- 		/* For datagram sockets we can read if there is something in
- 		 * the queue and write as long as the socket isn't shutdown for
- 		 * sending.
-@@ -1171,6 +1183,7 @@ static __poll_t vsock_poll(struct file *file, struct socket *sock,
- 
- 	} else if (sock_type_connectible(sk->sk_type)) {
- 		const struct vsock_transport *transport;
-+		u32 peer_shutdown;
- 
- 		lock_sock(sk);
- 
-@@ -1203,8 +1216,10 @@ static __poll_t vsock_poll(struct file *file, struct socket *sock,
- 		 * terminated should also be considered read, and we check the
- 		 * shutdown flag for that.
- 		 */
-+		peer_shutdown = READ_ONCE(vsk->peer_shutdown);
-+		mask |= vsock_poll_shutdown(sk, peer_shutdown);
- 		if (sk->sk_shutdown & RCV_SHUTDOWN ||
--		    vsk->peer_shutdown & SEND_SHUTDOWN) {
-+		    peer_shutdown & SEND_SHUTDOWN) {
- 			mask |= EPOLLIN | EPOLLRDNORM;
- 		}
- 
-diff --git a/net/vmw_vsock/hyperv_transport.c b/net/vmw_vsock/hyperv_transport.c
-index 432fcbbd1..16b981566 100644
---- a/net/vmw_vsock/hyperv_transport.c
-+++ b/net/vmw_vsock/hyperv_transport.c
-@@ -264,7 +264,7 @@ static void hvs_do_close_lock_held(struct vsock_sock *vsk,
- 	struct sock *sk = sk_vsock(vsk);
- 
- 	sock_set_flag(sk, SOCK_DONE);
--	vsk->peer_shutdown = SHUTDOWN_MASK;
-+	WRITE_ONCE(vsk->peer_shutdown, SHUTDOWN_MASK);
- 	if (vsock_stream_has_data(vsk) <= 0)
- 		sk->sk_state = TCP_CLOSING;
- 	sk->sk_state_change(sk);
-@@ -593,7 +593,9 @@ static int hvs_update_recv_data(struct hvsock *hvs)
- 		return -EIO;
- 
- 	if (payload_len == 0)
--		hvs->vsk->peer_shutdown |= SEND_SHUTDOWN;
-+		WRITE_ONCE(hvs->vsk->peer_shutdown,
-+			   READ_ONCE(hvs->vsk->peer_shutdown) |
-+			   SEND_SHUTDOWN);
- 
- 	hvs->recv_data_len = payload_len;
- 	hvs->recv_data_off = 0;
-@@ -715,7 +717,8 @@ static s64 hvs_stream_has_data(struct vsock_sock *vsk)
- 			return ret;
- 		return hvs->recv_data_len;
- 	case 0:
--		vsk->peer_shutdown |= SEND_SHUTDOWN;
-+		WRITE_ONCE(vsk->peer_shutdown,
-+			   READ_ONCE(vsk->peer_shutdown) | SEND_SHUTDOWN);
- 		ret = 0;
- 		break;
- 	default: /* -1 */
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index dcc8a1d58..71d8eac82 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -1220,7 +1220,7 @@ static void virtio_transport_do_close(struct vsock_sock *vsk,
- 	struct sock *sk = sk_vsock(vsk);
- 
- 	sock_set_flag(sk, SOCK_DONE);
--	vsk->peer_shutdown = SHUTDOWN_MASK;
-+	WRITE_ONCE(vsk->peer_shutdown, SHUTDOWN_MASK);
- 	if (vsock_stream_has_data(vsk) <= 0)
- 		sk->sk_state = TCP_CLOSING;
- 	sk->sk_state_change(sk);
-@@ -1411,12 +1411,15 @@ virtio_transport_recv_connected(struct sock *sk,
- 	case VIRTIO_VSOCK_OP_CREDIT_UPDATE:
- 		sk->sk_write_space(sk);
- 		break;
--	case VIRTIO_VSOCK_OP_SHUTDOWN:
-+	case VIRTIO_VSOCK_OP_SHUTDOWN: {
-+		u32 peer_shutdown = READ_ONCE(vsk->peer_shutdown);
-+
- 		if (le32_to_cpu(hdr->flags) & VIRTIO_VSOCK_SHUTDOWN_RCV)
--			vsk->peer_shutdown |= RCV_SHUTDOWN;
-+			peer_shutdown |= RCV_SHUTDOWN;
- 		if (le32_to_cpu(hdr->flags) & VIRTIO_VSOCK_SHUTDOWN_SEND)
--			vsk->peer_shutdown |= SEND_SHUTDOWN;
--		if (vsk->peer_shutdown == SHUTDOWN_MASK) {
-+			peer_shutdown |= SEND_SHUTDOWN;
-+		WRITE_ONCE(vsk->peer_shutdown, peer_shutdown);
-+		if (peer_shutdown == SHUTDOWN_MASK) {
- 			if (vsock_stream_has_data(vsk) <= 0 && !sock_flag(sk, SOCK_DONE)) {
- 				(void)virtio_transport_reset(vsk, NULL);
- 				virtio_transport_do_close(vsk, true);
-@@ -1431,6 +1434,7 @@ virtio_transport_recv_connected(struct sock *sk,
- 		if (le32_to_cpu(virtio_vsock_hdr(skb)->flags))
- 			sk->sk_state_change(sk);
- 		break;
-+	}
- 	case VIRTIO_VSOCK_OP_RST:
- 		virtio_transport_do_close(vsk, true);
- 		break;
-diff --git a/net/vmw_vsock/vmci_transport.c b/net/vmw_vsock/vmci_transport.c
-index 7eccd6708..c2231c402 100644
---- a/net/vmw_vsock/vmci_transport.c
-+++ b/net/vmw_vsock/vmci_transport.c
-@@ -811,7 +811,7 @@ static void vmci_transport_handle_detach(struct sock *sk)
- 		/* On a detach the peer will not be sending or receiving
- 		 * anymore.
- 		 */
--		vsk->peer_shutdown = SHUTDOWN_MASK;
-+		WRITE_ONCE(vsk->peer_shutdown, SHUTDOWN_MASK);
- 
- 		/* We should not be sending anymore since the peer won't be
- 		 * there to receive, but we can still receive if there is data
-@@ -1534,7 +1534,9 @@ static int vmci_transport_recv_connected(struct sock *sk,
- 		if (pkt->u.mode) {
- 			vsk = vsock_sk(sk);
- 
--			vsk->peer_shutdown |= pkt->u.mode;
-+			WRITE_ONCE(vsk->peer_shutdown,
-+				   READ_ONCE(vsk->peer_shutdown) |
-+				   pkt->u.mode);
- 			sk->sk_state_change(sk);
- 		}
- 		break;
-@@ -1551,7 +1553,7 @@ static int vmci_transport_recv_connected(struct sock *sk,
- 		 * a clean shutdown.
- 		 */
- 		sock_set_flag(sk, SOCK_DONE);
--		vsk->peer_shutdown = SHUTDOWN_MASK;
-+		WRITE_ONCE(vsk->peer_shutdown, SHUTDOWN_MASK);
- 		if (vsock_stream_has_data(vsk) <= 0)
- 			sk->sk_state = TCP_CLOSING;
- 
--- 
-2.43.0
+ static const struct of_device_id rtl_mdio_ids[] =3D {
+-	{ .compatible =3D "realtek,rtl9301-mdio" },
++	{ .compatible =3D "realtek,rtl9301-mdio", .data =3D &rtl9300_mdio_info }=
+,
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(of, rtl_mdio_ids);
+=2D-=20
+2.54.0
 
