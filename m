@@ -1,175 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 827883F0AB3;
-	Tue, 19 May 2026 09:47:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 058F739282C
+	for <netdev@vger.kernel.org>; Tue, 19 May 2026 09:47:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779184029; cv=none; b=XNgOn2+TRnC5pL5o3R1MqwDjxxg10awdMHRdWqgjS3UQlSSuQ5Y8h3UicxMgXee05HjtLDCBhBUJWBA3tXh1mewB/Ttjlme5Dbm/rD6iaaAtFuQga6/FSOBnRZZjD37JKKAfhrLUjW/vxCSrWaUZrJQgRE8u2flwoWVCG8ejbSE=
+	t=1779184074; cv=none; b=ddN37+AzLXUNeEcaSftOI0E2EEa3hqUp9PrBJmrfA+Z0/e8IFsUbHi7itvZiGvpJTqDTqRkGHe5JA9GRlBWCLFhqwlKFtHGIr1snzjBde4RIIWCKWtieavtFGNrw8BYcGk6zNaeiYHBcI3QzVaL17KbujpModZg118on4IkzMqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779184029; c=relaxed/simple;
-	bh=OH/yfiCu0Mp3b66K0reocEsxvYcepzYQzij9x5dEOxk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=JvKGX4nM6HKFtUD+gmuhHJqZYJJ0c76C33xi1oVEdwL8PYFo+VehyZ2X08G3XpyYqP4FJ47FqppXDvRCgnTuvgP+nWTqPIlQozde4/57yoahQb9QcV00okJ/XCehsAk4QHgCPi7EHvTjIkWbae29rrkeSnB3wDezqLdBlBzf5m0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SjXN07us; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1779184074; c=relaxed/simple;
+	bh=7wmEXaSPptYY/r/mR36e90hMTnm/HrThK1y8Mr7L4u4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=LDLtOYm8wSAYKfvWdvGoFdQKtdR0cxn9hN7/bDbs7aF++Dj4AOiyI+cs/IxHJQxERJ8yDxfbPar8lfSEo283DcA/evXdr2I12hgDngf9S6wBtWWcxPiGLiZGMIcMDLOS/PdDf7aNbahQ1AaXN473pzJspeI06BKHpOPBrQWi0xs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=Fsr6yzeh; arc=none smtp.client-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SjXN07us"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 1ACBDC2BCB3;
-	Tue, 19 May 2026 09:47:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779184029;
-	bh=OH/yfiCu0Mp3b66K0reocEsxvYcepzYQzij9x5dEOxk=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=SjXN07usVOFyeVoXxp8t0WX9DMiBCBYdY4olW/q5/kw7SB0rwIn/dNuOEbs82JQ7S
-	 uYQjQEt4d94I3CuKzfoEmKLwmVDh2jwstzG5Di4e/QcDmWzbmEM10wWxKnOXdClDGF
-	 FUrLQVI5qkIYIFJ8R7z2hvdZcvlXYfx7meNkOZcbqVEj8cVkgHf8dktSiRPTmGiEZH
-	 YMiDuZadgB1TZJXR/7X1YGpoWsdfFvFxyMSJoIxeeTZvxY413tX8HAVsw2EVgPYNPh
-	 h8OKXNo70DO34FJjlS7LeuRHGlFkCX3zBs2bCjcLWZwdqWIyyAXxHrkbKB8jL8eIDl
-	 LTbNSC+jkVlNA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 09478CD4F57;
-	Tue, 19 May 2026 09:47:09 +0000 (UTC)
-From: Carl Lee via B4 Relay <devnull+carl.lee.amd.com@kernel.org>
-Date: Tue, 19 May 2026 17:32:53 +0800
-Subject: [PATCH v5] nfc: nxp-nci: i2c: use rising-edge IRQ on ACPI systems
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="Fsr6yzeh"
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-bd124546379so609153866b.3
+        for <netdev@vger.kernel.org>; Tue, 19 May 2026 02:47:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1779184071; x=1779788871; darn=vger.kernel.org;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=LV3iAX2q0qgehd/Y9H3He32OWW5yDlKO8wzkeiAQo+A=;
+        b=Fsr6yzehG/UPn+GIY4AsTdJj4Yovoypo+u0Z5rjZT099KWXAyIX5hQ9Jlf2Z42f1eY
+         MhJpITXlEGv2zR+NxVo/OoKZkgdv0/0LGk7FULeij6aaGT2PU3RJmMEMWNP9WhuJ7DQ/
+         0wRYdA1g+uHb+B23rWPhLcB1IN8GGLTQhAFHbRYbAXqN3rrU5plMwhZfBlx6jo6lSA6v
+         g/4+IgP//WSUGQ/iU1aHEqWERxMQjDEx660P7jBrM5gS5eOQT8eWoJOpZpyi2ZDdgkmD
+         191fxqYBC9ilUe2tUoMVj1J5jpLd/gvc/+ZnnB/gMNfWDvsV96V33RqPwStRStEtBw5K
+         H2iA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779184071; x=1779788871;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LV3iAX2q0qgehd/Y9H3He32OWW5yDlKO8wzkeiAQo+A=;
+        b=jwmMWjjFr8ucCbBCFTOgTnycmBoZjyt1vimgJVVLmFIXGwDpKSXk2IXCyXo1CwMUjM
+         0j+jZmYXze5NFZ1IGP+5FWewWp3Y2X6uzFV8KouVg38W/GQY8zzlluUdFQ5vK1cKRZ2A
+         /TFtQ9YoOVljAY77m6Di/k9bHE8eZgvizR3yxSyTcvY9FuHhOZm8Lx2QnSRtccWKWWqb
+         lm92cp7AIZCm4+sg6O4QMaE346dGE0ifWiy6E0Maze/xqE8678IDq09i5vVIFMqae5n2
+         50ODpZsloOk4DVYrapUhA1Lyz7FR1RkfNWWvC+RP/hyramrbPJ4brCFs6PySS6DW8375
+         SD6g==
+X-Forwarded-Encrypted: i=1; AFNElJ87xvO7m9zyaAIytkGnk0zQpJrzQRdfw/Fo/3M/MTssO2J6U4nLE6m82iHzp1dH62X7Vlwe8GM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yygn3M8pe/GjUPnjKUbLMgVB0WB7j7uX1vOClKyRDXN1ezWh8AH
+	MSBygHoK0jAwjZOUYy5M4dKhftmMsnQp9AgT1ChYaK583jzhv/aqmfnMmTvWYRLj4AP79JnxjEH
+	p4Jll7Fk=
+X-Gm-Gg: Acq92OFZwMk7ra1l6iBbQLx4t/FlPtyRdnwbxP5qrSDjNKdKZTtEvLznV3ljn50YEVn
+	Q2Hg58QsrvMnxch25Lmz+Gl74Bd0cvvdtugx86FKrxiSQIRLyfmJGR20f8aYFZaPJvSSzSnbm+W
+	pk8WCtGXIsnCB9h0vJhD+He6S2KPmWq13n4bmsjZ2Ef3iVFAhhnf1T6Kw/gY2fNMQSZcoq+nYMS
+	74E2M2vLPSVxM+eqJQuTMizDOl6GA9dxtptIh/n2pYa4Ws4RdgacR+75HpVWnBB+gWTXLsZ1xT7
+	0anBfUsUTMwjN8MZHN5XO5X2sY5ZVWy+sDiWPx/8I8AWI/jgIbZ6IX+QzUDF/A+0DTxbhXbTz1Z
+	rndZYG1lv5j2GukfbCFOsy72wfYR3zgTcUL69SHS70b2KmcyyuyqkR8/07OYe4vikOhJFoubyXg
+	/irPovukLIIeuocF4SiXHIM0odLMBMTufF4Zlt
+X-Received: by 2002:a17:907:1608:b0:bd4:f2c3:69ab with SMTP id a640c23a62f3a-bd51796b1bbmr1123158966b.41.1779184071264;
+        Tue, 19 May 2026 02:47:51 -0700 (PDT)
+Received: from cloudflare.com ([104.28.21.182])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6831187ecb7sm6148755a12.29.2026.05.19.02.47.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 May 2026 02:47:50 -0700 (PDT)
+From: Jakub Sitnicki <jakub@cloudflare.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Daniel Borkmann <daniel@iogearbox.net>,  "David S. Miller"
+ <davem@davemloft.net>,  David Ahern <dsahern@kernel.org>,  Eric Dumazet
+ <edumazet@google.com>,  Paolo Abeni <pabeni@redhat.com>,  Simon Horman
+ <horms@kernel.org>,  Martin KaFai Lau <martin.lau@kernel.org>,
+  netdev@vger.kernel.org,  bpf@vger.kernel.org,  kernel-team@cloudflare.com
+Subject: Re: [PATCH net v2] net: Clear skb metadata in LWT BPF xmit
+In-Reply-To: <20260518161827.2ac4766f@kernel.org> (Jakub Kicinski's message of
+	"Mon, 18 May 2026 16:18:27 -0700")
+References: <20260514-bpf-lwt-drop-skb-metadata-v2-1-458664edc2b5@cloudflare.com>
+	<20260518161827.2ac4766f@kernel.org>
+Date: Tue, 19 May 2026 11:47:49 +0200
+Message-ID: <87h5o3ohmi.fsf@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260519-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-v5-1-1a826cfbc128@amd.com>
-X-B4-Tracking: v=1; b=H4sIAEQuDGoC/53NQW7DIBCF4atErDsVAxjjrnqPqgsMgzNqglMcW
- aki3704mzpLd/kQ8/13MVFhmsTb4S4KzTzxmOtoXg4iHH0eCDjWLZRUVmpEyClAvl0gBwZWAQp
- N17HUb+UbroWHgQokfzr1PnxBiL4zqtEyWCkqeSmU+PbIfXzWfeT1+OdRn3F9/WdoRkDoSMkWj
- UGM7bs/x9cwnsWamdWWVjtpVWltlTYutclr+UzrP7pBu5PWK9323vSWOunsM222dLeTNpV2jZP
- RETqJG3pZll9X+str9wEAAA==
-X-Change-ID: 20260311-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-cda942530c60
-To: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, krzk@kernel.org, carl.lee@amd.com, 
- peter.shen@amd.com, colin.huang2@amd.com, kuba@kernel.org, david@ixit.cz, 
- luca.stefani.ge1@gmail.com, brgl@kernel.org, mpearson@squebb.ca
-Cc: Mark Pearson <mpearson-lenovo@squebb.ca>, 
- Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779183174; l=3788;
- i=carl.lee@amd.com; s=20260203; h=from:subject:message-id;
- bh=AuJE8naMhN8VuJ0Xkt3hE9rAU8BuKShRUpf+0Ld/H78=;
- b=+nkcf9jeJ6vKQ5w1r1mJahWWd1a9UhYHs8pHNRr6OI7EWQ0ABp+xQ5psnJJzSPb06KK5Gdaqc
- m0/zySMbxyMA8Bphn4KY3AcN9/huCEfkvZaBPiR8o0HFZjkI0SHiQGS
-X-Developer-Key: i=carl.lee@amd.com; a=ed25519;
- pk=pyq7QaQvoxMg806KVkRwpCbiah+7ncWr4MBpK1AEyjA=
-X-Endpoint-Received: by B4 Relay for carl.lee@amd.com/20260203 with
- auth_id=623
-X-Original-From: Carl Lee <carl.lee@amd.com>
-Reply-To: carl.lee@amd.com
+Content-Type: text/plain
 
-From: Carl Lee <carl.lee@amd.com>
+On Mon, May 18, 2026 at 04:18 PM -07, Jakub Kicinski wrote:
+> On Thu, 14 May 2026 12:47:09 +0200 Jakub Sitnicki wrote:
+>> +		/* LWT BPF programs cannot access skb metadata but can corrupt
+>> +		 * it with helpers that operate on skb headroom. Drop it.
+>> +		 */
+>> +		skb_metadata_clear(skb);
+>
+> Sashiko has a point, right? Is there something in LWT which would
+> prevent us from working on clones?
 
-Some ACPI-based platforms report incorrect IRQ trigger types (e.g.
-IRQF_TRIGGER_HIGH), which can lead to interrupt storms.
+Totally. I've just been spread a little thin lately.
 
-Use the historically working rising-edge trigger on ACPI systems to
-avoid this regression.
+We have a bpf/selftest that uses tc act mirred that exercises this
+scenario that I need to extend.
 
-Device Tree-based systems continue to use the firmware-provided
-trigger type.
-
-Fixes: 57be33f85e36 ("nfc: nxp-nci: remove interrupt trigger type")
-Cc: stable@vger.kernel.org
-
-Tested-by: Luca Stefani <luca.stefani.ge1@gmail.com>
-Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Tested-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Signed-off-by: Carl Lee <carl.lee@amd.com>
----
-Some ACPI-based platforms report incorrect IRQ trigger types,
-which can lead to interrupt storms.
-
-Use rising-edge IRQ on ACPI systems to avoid this regression,
-while keeping firmware-provided trigger types on non-ACPI systems.
----
-Changes in v5:
-- Add missing Reviewed-by and Tested-by tags
-- No functional changes
-- Link to v4: https://lore.kernel.org/r/20260519-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-v4-1-8580d8e18016@amd.com
-
-Changes in v4:
-- Add Fixes tag
-- Add Cc: stable@vger.kernel.org
-- Link to v3: https://lore.kernel.org/r/20260516-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-v3-1-37ba4b6e9086@amd.com
-
-Changes in v3:
-- Use rising-edge IRQ on ACPI systems to avoid interrupt storms
-- Keep using firmware-provided trigger type on non-ACPI systems
-- Refine commit message to focus on regression on ACPI platforms
-- Link to v2: https://lore.kernel.org/r/20260312-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-v2-1-362348f7fa30@amd.com
-
-Changes in v2:
-- Add missing <linux/irq.h> include for irq_get_trigger_type().
-- Link to v1: https://lore.kernel.org/r/20260311-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-v1-1-9e20714411d7@amd.com
----
- drivers/nfc/nxp-nci/i2c.c | 21 ++++++++++++++++++++-
- 1 file changed, 20 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/nfc/nxp-nci/i2c.c b/drivers/nfc/nxp-nci/i2c.c
-index 6a5ce8ff91f0..266dc231c47d 100644
---- a/drivers/nfc/nxp-nci/i2c.c
-+++ b/drivers/nfc/nxp-nci/i2c.c
-@@ -16,6 +16,7 @@
- #include <linux/delay.h>
- #include <linux/i2c.h>
- #include <linux/interrupt.h>
-+#include <linux/irq.h>
- #include <linux/module.h>
- #include <linux/nfc.h>
- #include <linux/gpio/consumer.h>
-@@ -267,6 +268,7 @@ static int nxp_nci_i2c_probe(struct i2c_client *client)
- {
- 	struct device *dev = &client->dev;
- 	struct nxp_nci_i2c_phy *phy;
-+	unsigned long irqflags;
- 	int r;
- 
- 	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C)) {
-@@ -303,9 +305,26 @@ static int nxp_nci_i2c_probe(struct i2c_client *client)
- 	if (r < 0)
- 		return r;
- 
-+	/*
-+	 * ACPI platforms may report incorrect IRQ trigger types
-+	 * (e.g. level-high), which can lead to interrupt storms.
-+	 *
-+	 * Use the historically stable rising-edge trigger for ACPI devices.
-+	 *
-+	 * On non-ACPI systems (e.g. Device Tree), prefer the firmware-
-+	 * provided trigger type, falling back to rising-edge if not set.
-+	 */
-+	if (ACPI_COMPANION(dev)) {
-+		irqflags = IRQF_TRIGGER_RISING;
-+	} else {
-+		irqflags = irq_get_trigger_type(client->irq);
-+		if (!irqflags)
-+			irqflags = IRQF_TRIGGER_RISING;
-+	}
-+
- 	r = request_threaded_irq(client->irq, NULL,
- 				 nxp_nci_i2c_irq_thread_fn,
--				 IRQF_ONESHOT,
-+				 irqflags | IRQF_ONESHOT,
- 				 NXP_NCI_I2C_DRIVER_NAME, phy);
- 	if (r < 0)
- 		nfc_err(&client->dev, "Unable to register IRQ handler\n");
-
----
-base-commit: 7109a2155340cc7b21f27e832ece6df03592f2e8
-change-id: 20260311-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-cda942530c60
-
-Best regards,
--- 
-Carl Lee <carl.lee@amd.com>
-
-
+In general, anything high/med from LLMs won't go unaddressed.
