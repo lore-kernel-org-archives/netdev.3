@@ -1,43 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A29832AD0C;
-	Tue, 19 May 2026 00:14:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB87A1ABEDE;
+	Tue, 19 May 2026 00:15:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779149664; cv=none; b=aiIp/35JOTl/Uyv7xiewJisN3TVi1q1XAThbEomkSEHCztXTPjNhT1AIZ+4fOks/CpT4s1hNzpFuut6FfDRrVFrjYW2Zmx2OgkyHlq8biPyCws82kHfr6zV46/MwuauT9LV6WK4YfvSuuMgh0NRy6Y+ganORfJW+iN4tO2epWO4=
+	t=1779149752; cv=none; b=P9K8V1Youihl4LBlOjCH4+/bfXhVeWcaoXhE3IsuDFs49h8ZWzOMX/W/2DYJNULWoGftnwDlzco8kUDgcnEn3KVY4XJN5hQWDk0ibezFhvGlLq4RIhykPaLjQdIpkrJduk8AYgSFa8FfWd3ps3ddizKHVlBLpQFHOgrPbaqHntQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779149664; c=relaxed/simple;
-	bh=PQY+cECJ9DOxPHMncgqIMlR1QqMUkQDxCMSXGbdzrOs=;
+	s=arc-20240116; t=1779149752; c=relaxed/simple;
+	bh=XHVsuByL/XktUso1vX3AnXp0EPgic3oUXah4axgYY4Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lTT+DU3nhoLqSmES+dLEFP7UHExM8IjH+m+6wGBEdk6lH4/V2Gn0Dx3H5+SQgDZOjlVc4QpprpDl/S0TsAhtEz/ZxcnqsLPis7lYOoZ3QIfsyWuZ3x2ZFlYIX4RIWSvl2D3uXJnEbIjOBVhK3lQt+du6ATP8Xpy0Ph1aBnFWU7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OYlLGu/5; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=JjE4uhh2TDTy8yYDDFpOzbdCVxVp/QkaH+YRDbj4Up0v1C2V0/XOyGCTXR0Yu5pDmFyS8+w3xuvg3S0b9lyIA7/1j4JX8iois+DMFKHllTA7Z2jUADd7UIaxu6S4JQjvMleMbVVTE2FTZJOTvCLeDeI1Nm/FXB0ZGzByURydF7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J9ife/fX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OYlLGu/5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9DDDC2BCB7;
-	Tue, 19 May 2026 00:14:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J9ife/fX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10CA8C2BCB7;
+	Tue, 19 May 2026 00:15:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779149664;
-	bh=PQY+cECJ9DOxPHMncgqIMlR1QqMUkQDxCMSXGbdzrOs=;
+	s=k20201202; t=1779149752;
+	bh=XHVsuByL/XktUso1vX3AnXp0EPgic3oUXah4axgYY4Q=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=OYlLGu/5rT/Y/1bqQapiOiudPQHgDm2ap1SD8q0wHLFVszCspOM8x/bUmhq/BjsS6
-	 EapAkH0T4kMQGj2oqAF4BxwRHrPJKO8+UScPR8/0A+Sez2XmPw5jr8I7SZnXTxX3OG
-	 AdOkOc7lijIF8Dl1SmXHNhjRx+bNBzDiKlmf9yIzw56dSosvKsCBsqI3tyIMy0qMU6
-	 O/v6Jk016y3IeCX7plx/DSI1ypFc/Grp7Ro3VcD7IQPXEGaD395G4o22BkGzwev0Lg
-	 Os4S/Ubd2g/rXTC5Y1iQY1jO8MxBPj2KkImJ4KYvPpMaGIwP22jRA1JclPs1547mkO
-	 30/DBYi0ZUAFw==
-Date: Mon, 18 May 2026 17:14:23 -0700
+	b=J9ife/fXOK+EBsZdyTT4wL4hQFIy6eXeSywWFoiykKGUSyR20S5aoYzrIj2UhIbox
+	 Y5an5MPmYjBHSmgghmtDMhn45ZtnjkWXBRDTAurw45ukSUovGAya4Y23Q09ml4sAFy
+	 G7+WiGO6XA3YpYEwI9oMBKwP7uDPOGikQ6kyW/0QJZIlFenEkZPfOaKtwcJoGwuKJJ
+	 lzb8YjohOn/Onhe4FpCe1sKXggQAnVS+a3du9m45g7iPtCb/dexkshDrRi7VhHRSgs
+	 j7s6mDTTk73a0qHNIsEvAyKUyZeggZYW0qhK0tQBBkRYWZoRIYPNy4XakCTh69ux6O
+	 jpqs6gkvAnjAQ==
+Date: Mon, 18 May 2026 17:15:51 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Yuho Choi <dbgh9129@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>, David Ahern
- <dsahern@kernel.org>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] ipv6: route: Unregister netdevice notifier on BPF
- init failure
-Message-ID: <20260518171423.2ad15470@kernel.org>
-In-Reply-To: <20260515130517.779406-1-dbgh9129@gmail.com>
-References: <20260515130517.779406-1-dbgh9129@gmail.com>
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH 0/3] net: phy: micrel: Code clean-up
+Message-ID: <20260518171551.1eb8b09c@kernel.org>
+In-Reply-To: <cover.1778856199.git.christophe.jaillet@wanadoo.fr>
+References: <cover.1778856199.git.christophe.jaillet@wanadoo.fr>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,16 +46,26 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 15 May 2026 09:05:17 -0400 Yuho Choi wrote:
-> Chages since v1:
-> - Unregister ip6_route_dev_notifier directlry in the bpf_iter_register() failure path.
+On Fri, 15 May 2026 16:50:23 +0200 Christophe JAILLET wrote:
+> This serie is only some clean-up related to
+> drivers/net/mdio/mdio-mscc-miim.c
+> 
+> It depends on a patch called "[PATCH net-next] net: phy: micrel: use dev_err_probe()"
+> that has been sent recently.
+> 
+> Note that in the 2nd patch, the order of the calls in the remove
+> function is changed. I don't think that it matters, but I'm always
+> relunctent to change such things.
+> 
+> The patches are compile tested only.
 
-The goto was fine.
-You're generating the patch against an old version of the source code.
-Please use
-https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/
+... against the wrong base tree I suspect? :S
 
-Or for networking fixes better still:
-https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/
+Applying: net: mdio: mscc-miim: Remove some redundant code
+Applying: net: mdio: mscc-miim: Use devm_clk_get_optional_enabled()
+error: patch failed: drivers/net/mdio/mdio-mscc-miim.c:318
+error: drivers/net/mdio/mdio-mscc-miim.c: patch does not apply
+Patch failed at 0002 net: mdio: mscc-miim: Use devm_clk_get_optional_enabled()
+hint: Use 'git am --show-current-patch=diff' to see the failed patch
 -- 
 pw-bot: cr
