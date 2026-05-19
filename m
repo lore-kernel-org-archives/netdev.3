@@ -1,89 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3240B23392E
-	for <netdev@vger.kernel.org>; Tue, 19 May 2026 11:19:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E330B492532
+	for <netdev@vger.kernel.org>; Tue, 19 May 2026 11:22:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779189542; cv=none; b=HlDVtA4yAS5ooELwC3i9E1GOEY1MaUcYEqAJTzHAEwQeY7eZjrp28pkLogouGPsrxTVZyF/F9GVHIHEUK1JofsA6YiDdPQlCRBUjVrgJ/YdCUVGL2dKg6ItvMuJLAqYl54fYi9U9H+8H6myqVhYl6xc56pAlzUrj32Uhj/EB4io=
+	t=1779189758; cv=none; b=NN4avXlxjwIMI+BomVM02SwZGbk1SVVu3FMdaITgykj9YVJR00O4k6VJ2GO/TVPXDDdBZ3xVJEsP6A3XsacTkyoQmOCtIlD/4qOyDRQtGD/vEnumee8XJPuSbF1VVfZlOvAOCs9Xf+u5M+tskaSLrNd7BIPRZLk9Reqy3Cw06pY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779189542; c=relaxed/simple;
-	bh=Ov4GDPN2ETdPra5n4pOJZFwWVsd5z7GrhE6ttDBAhOY=;
+	s=arc-20240116; t=1779189758; c=relaxed/simple;
+	bh=JiliqwmeTv5ZXyMxVrtt16k5uLTWWHQegfkwLE0N5jU=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=eui4uGpD0wQikVUKY2fwhqV2Sq2DihWvW4SIwjFxbgTHiOAY398kKTvOaeLlwvU6NCxMVQnmPkaEJRq9U/fs5Qezc/5wY9dMK/te+h//Yju/Yfe4UpRTjIrkFPfe+3fUwm4R56ioB8CtsXNHs5LUHpNe7vPKgZ5YQFMxe3krbvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ThOWcw+s; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=rmbpaeOAZwGxovcnxFKyTKoT2G+fv5eJA86qt3ICkQQjnRC9eq/5/7/mIswwOH8ZPpXaW0pp95MM/KiQWR4cRji4JZYZCMbQPmElx/P+/tpw6O8Izqbsy36FaK1m4B60U5r7/wxvwzKu1L0aFHEDixsXhGuMG8cQR8DZTdEaWEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=ADI5ucoG; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ThOWcw+s"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ED4EC2BCB3;
-	Tue, 19 May 2026 11:19:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779189541;
-	bh=Ov4GDPN2ETdPra5n4pOJZFwWVsd5z7GrhE6ttDBAhOY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=ThOWcw+sc/uZv+JntCTVPGVhEWTUrisXErlDQA2zQzORvkG4bsMK2pBMnIJIrSoPs
-	 2rnuwwqyf5NkX7NQUlt+0x+ei21MEBpJOr8HiKG9Dz7igUZKYOOIIjfWASGcTQh3A3
-	 9GotdaL9yq/NvnjGTCPUUlWci8LMYnyk+/RdU0IknP3yzHS//QN3Zye1t8wcR1o3qk
-	 jeMpXQKPbBAWi5TaaR4b5XJ+vvfnIZVwbCgU6X+7fdkO4f+JbKesWV4XD/mJVXWGUC
-	 L/sLVLII0+oLhl8oLk7W0y5CvFbDyNl1MMq4zAyJBfwpa0rAQ2cxc4CcmerwXOZ+Sr
-	 W6nQvTNxNTj0g==
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-	id E282E792C0A; Tue, 19 May 2026 13:18:58 +0200 (CEST)
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@kernel.org>
-To: Rajat Gupta <rajat.gupta@oss.qualcomm.com>, netdev@vger.kernel.org
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, jhs@mojatatu.com, jiri@resnulli.us,
- yimingqian591@gmail.com, keenanat2000@gmail.com, 2045gemini@gmail.com,
- rollkingzzc@gmail.com, Rajat Gupta <rajat.gupta@oss.qualcomm.com>
-Subject: Re: [PATCH net] net/sched: fix pedit partial COW leading to page
- cache corruption
-In-Reply-To: <20260519033950.2037-1-rajat.gupta@oss.qualcomm.com>
-References: <CAM0EoMkUPYSXKr2=+mR8YMq2a0TFdYPdzwPGob-UyU1fUWP9Ww@mail.gmail.com>
- <20260519033950.2037-1-rajat.gupta@oss.qualcomm.com>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date: Tue, 19 May 2026 13:18:58 +0200
-Message-ID: <87cxyrmyu5.fsf@toke.dk>
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="ADI5ucoG"
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-bd2d8bb1068so693655166b.1
+        for <netdev@vger.kernel.org>; Tue, 19 May 2026 04:22:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1779189755; x=1779794555; darn=vger.kernel.org;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=I1U4HETeGQHn+t9ZlydfwnmW4BLrbZCxQ7ZyTEEws6I=;
+        b=ADI5ucoGYM30zTcqLgzSLlIRJ/TG9ZF2k0I3fltRtn3Lh32L3EJ6eh+nOmjYzkcEPX
+         3HufeRHJmJGuZjNBg20b6m2JBRjfs07o8a5Bk7gLgJd9Wkgo/igesWj2J/lL4DmWu1Xo
+         D6QBBQr7ItBJR3MpaiibvBgxcml12KtzaXjxkyYZWs4V8z+VYxpj0VjOGdQ6QCPuUAOj
+         k6dcy9rPXcsbUatfzWCJcsJTfiqhbexeyiE4tryrC6H8t6DF3EhKpbEU9UsyMMBtYS3g
+         lGCt9jOYO5NaI2vGcqCZiKnaUEmRUvwFNBB22DvMzq4W/0tri/XrdSQgGklytnuNGdIi
+         uu7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779189755; x=1779794555;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=I1U4HETeGQHn+t9ZlydfwnmW4BLrbZCxQ7ZyTEEws6I=;
+        b=lr+py5f6E3sr0jtpb1Bnni2CIgT+io0PdjWL8N+AYRPE7hXBe9Vx4yMdSzcRWkCvWX
+         +KRkVXxWwW+9UyN2e6K7kDAdg6VdnKxKy9pWaLX8cQELQjTDN5OwIK3K5Zca8+YNbZNR
+         j1Pr8Y6ryGkVDLdzDZCvNU7tXn6/2nKPYtsxzSVWBXf3j6k8LHiarXhmP2CfoOhlpYQq
+         +wUiy2COb2nHM6kBy0xPfr+D1UmULLTLb+gXDvdm8eCT/KgE8HNWayIrhOgkkZHiGmh6
+         hz2lNoWdR3BbrAHmBjuXEvTb/oxcs29a956xryc+97hsiOVxe81WCwlJkDtwTMMlUj3e
+         YZLQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/H6xYEu8hs13bLn15c1CpwjRtihVgbhix1GI7cY2w02MPIkxUNXDgpJ9PNCJ74uupoFKlVVDc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzA4hvhbZe4UYOSu16Ump2QZ8LdiwGiO0dyFOIo12z0hipxdf2L
+	fv1WhtyV7jjHNoMzbB51HLh2UUt8lNOQk+4jFP6OyuWG0G6tNHYL3XvWEusF/rvBZis=
+X-Gm-Gg: Acq92OFIujiF3naZ5GIzXHJb67dYWq7v6ceKMXjeN2G1k2BVAaCotZ2edQS3aIJorwk
+	QkxKf2P5FXGIvgFkHlJGxKYPk64lmC9QHHy8VJj8l4SkKQ7eijMPyxAgKg47ALsnH7lgYLBZPI+
+	ozoJe+49L6/Sdk8zuy/O8RIVWklEbFvNJ2KEA8MUOV0BsTCo6VwrKatwyUaLp4NO3GEy7kXYb1d
+	5rSd53uc9Bw/7hFGBUs1I/S4I5wrPvMNq6AKQY2/6ojUcmTg7L4RlKE1mQIA6c58aKFPBpVzzJr
+	KIym9X5SihdjaB0KU/0Ujw5fUdOdnvZm8UuYqmBgR8XiLxOoBNZ88V9Sog/67fVC4B5E94igMOS
+	aFEIYa38t716uJ1+xeO8vKRFo2lq/+Dvd7cV+PkbdqoIG3OsL7UfPnVXmGrvh2dN7cwSHxN30gX
+	rElxKhoCaO2W0p6MxtatwXVRVpqA==
+X-Received: by 2002:a17:907:c986:b0:b9d:e301:20db with SMTP id a640c23a62f3a-bd517906719mr867512166b.25.1779189755116;
+        Tue, 19 May 2026 04:22:35 -0700 (PDT)
+Received: from cloudflare.com ([104.28.21.182])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bd4f4ed37ecsm693190766b.63.2026.05.19.04.22.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 May 2026 04:22:34 -0700 (PDT)
+From: Jakub Sitnicki <jakub@cloudflare.com>
+To: Zijing Yin <yzjaurora@gmail.com>
+Cc: Stanislav Fomichev <sdf@fomichev.me>,  "David S. Miller"
+ <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,  Jakub
+ Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,  Simon
+ Horman <horms@kernel.org>,  Qingfang Deng <qingfang.deng@linux.dev>,
+  netdev@vger.kernel.org,  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] net: dev_addr_lists: don't WARN on GFP_ATOMIC
+ kmalloc failure in netif_rx_mode_run
+In-Reply-To: <20260519095557.3749407-1-yzjaurora@gmail.com> (Zijing Yin's
+	message of "Tue, 19 May 2026 02:55:55 -0700")
+References: <20260519095557.3749407-1-yzjaurora@gmail.com>
+Date: Tue, 19 May 2026 13:22:33 +0200
+Message-ID: <878q9fod8m.fsf@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-Rajat Gupta <rajat.gupta@oss.qualcomm.com> writes:
-
-> tcf_pedit_act() computes the COW range for skb_ensure_writable()
-> once before the key loop using tcfp_off_max_hint, but the hint does
-> not account for the runtime header offset added by typed keys. This
-> can leave part of the write region un-COW'd.
+On Tue, May 19, 2026 at 02:55 AM -07, Zijing Yin wrote:
+> netif_rx_mode_run() fires netdev_WARN() when netif_addr_lists_snapshot()
+> returns non-zero. The only path to a non-zero return is -ENOMEM from
+> __hw_addr_create() failing its kmalloc(GFP_ATOMIC) -- syzkaller hits it
+> via failslab, and it can also be reached under real memory pressure.
 >
-> Fix by moving skb_ensure_writable() inside the per-key loop where
-> the actual write offset is known, and add overflow checking on the
-> offset arithmetic. For negative offsets (e.g. Ethernet header edits
-> at ingress), use skb_cow() to COW the headroom instead. Guard
-> offset_valid() against INT_MIN, where negation is undefined.
+> This is the only allocator-failure site in this file that WARNs.
+> __hw_addr_create() itself, and every other caller of it in this file
+> (__hw_addr_add_ex(), dev_uc_add_excl(), dev_uc_add(), dev_mc_add(), ...)
+> just propagate the -ENOMEM silently. GFP_ATOMIC is a may-fail allocator;
+> callers are required to handle NULL, so a returned -ENOMEM here is an
+> expected runtime condition, not an invariant violation.
 >
-> Additionally, linearize skbs with shared frags upfront to prevent
-> silent data corruption when pedit operates on zero-copy pages
-> (e.g. from sendfile).
+> The miss is self-healing: any subsequent change to dev->uc / dev->mc
+> (every dev_{uc,mc}_{add,del}, IFF_PROMISC flip, etc.) calls
+> __dev_set_rx_mode() -> netif_rx_mode_queue(), which re-queues the device
+> and retries the sync. The only cost of a failed attempt is one stale
+> rx-mode window until the next update; nothing in the kernel relies on
+> this attempt succeeding.
 >
-> Fixes: 8b796475fd78 ("net/sched: act_pedit: really ensure the skb is writ=
-able")
-> Reported-by: Rajat Gupta <rajat.gupta@oss.qualcomm.com>
-> Reported-by: Yiming Qian <yimingqian591@gmail.com>
-> Reported-by: Keenan Dong <keenanat2000@gmail.com>
-> Reported-by: Han Guidong <2045gemini@gmail.com>
-> Reported-by: Zhang Cen <rollkingzzc@gmail.com>
-> Tested-by: Han Guidong <2045gemini@gmail.com>
-> Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-> Signed-off-by: Rajat Gupta <rajat.gupta@oss.qualcomm.com>
+> Demote to net_err_ratelimited() so the condition stays observable in
+> dmesg without tripping panic_on_warn.
+>
+> Reproducer (syzkaller .prog format with setup notes): 
+> https://pastebin.com/t7AQKx9v
+>
+> Fixes: 3554b4345d85 ("net: introduce ndo_set_rx_mode_async and netdev_rx_mode_work")
+> Signed-off-by: Zijing Yin <yzjaurora@gmail.com>
+> ---
+>  net/core/dev_addr_lists.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/net/core/dev_addr_lists.c b/net/core/dev_addr_lists.c
+> index d73fcb0c6..c6fdcac74 100644
+> --- a/net/core/dev_addr_lists.c
+> +++ b/net/core/dev_addr_lists.c
+> @@ -1275,7 +1275,8 @@ static void netif_rx_mode_run(struct net_device *dev)
+>  		err = netif_addr_lists_snapshot(dev, &uc_snap, &mc_snap,
+>  						&uc_ref, &mc_ref);
+>  		if (err) {
+> -			netdev_WARN(dev, "failed to sync uc/mc addresses\n");
+> +			net_err_ratelimited("%s: failed to sync uc/mc addresses\n",
+> +					    netdev_name(dev));
+>  			netif_addr_unlock_bh(dev);
+>  			return;
+>  		}
 
-Reviewed-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@kernel.org>
+1) I'd go with net_warn_ratelimited() instead. The promoted message
+level in syslog might cause operational pain, and as you say the
+condition is self-healing. Seems unwarranted.
 
+2) Since it has a Fixes tag, should probably be sumitted for 'net' tree.
 
-Also applied this to -net and ran the TC pedit selftests and the
-pedit_* scripts in net/forwarding, none of which turned up any
-regressions, so:
-
-Tested-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@kernel.org>
+3) Was this reported by syzbot? If so, there should also be Reported-by
+and Closes tags.
