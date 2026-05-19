@@ -1,85 +1,51 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.63.166])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F5443D5663
-	for <netdev@vger.kernel.org>; Tue, 19 May 2026 11:00:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD53D3A963C;
+	Tue, 19 May 2026 11:01:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.63.166
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779188415; cv=none; b=VDAKA8diBd6Phgj0QZPXsqeoPWm2SVt8I9kNmc0c68PEqtl6UVXdwtVxDiU+R24ReS/MIvxHj3huwbDziQ8OG6B3a2upOSD0qp0oz5sACM8YX+bnw0k1p6RXbENmtyTnhfMZ/F07CZA3ak8SysQsP2X2eCZs5RuBnnvrb4XTrY8=
+	t=1779188511; cv=none; b=QtSRINb+y6OHt7C/wem7vBaIEG5CccfNhcSW+nBs4NyB6aQpzR5Nl4vUaqjVNk6t3jFMBqNOTXpeeQihqwvynPeOQGJWZPt22+8jIJ/ZKEYH3B0Ig0vXzx2+qZ5lkEP9TacayV/lUEMp0YZHkreDZ0pugIbmMwAij6v8PP/Q9dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779188415; c=relaxed/simple;
-	bh=n5B6+29nvQxZ/wHGFunRXCweF9/I5ooQyav/joDC1Q4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=Q1vywbQnCUwkhgmIGWEUGVnZ/jrkuwtpoJCa5BqDVoPVJyb5N0igFViPWDaToLzvx/fLcLMMXEUi1CE3WSeMENxyP8DAQnPOwTUt1AGwdCnB0D1wgu8vwVr3ZIXWk74cM3VXA/b5XmvRTpCQiOA3ec0f5mV9hIgcT47WSNqmMYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Q4BwtKE7; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Lqr9PpuP; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1779188511; c=relaxed/simple;
+	bh=UvKTp4x0mCge/k9ULQ3nfbUrbKhzzezk9rEfjTIgX4I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cSjGdjU8BkCewYeRfai60wJTqIXw2eQ95jx4sBKIZulza6Kvc9VrL8vp0uQiaJVHfi2TR6kIX2Vn3OyVlSiHDo0LY7seTVuSVOIyRId6U9uQckAAXi1l0+LCFy6BbJfdGn6Gh9zXr6mW5KczFf9ae0SBo9hBR8LI6q86n64LVZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=kOjQWObS; arc=none smtp.client-ip=188.68.63.166
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Q4BwtKE7";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Lqr9PpuP"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779188409;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=E/R7pULBaPP9T6iOFYumwv5ZvUtdIBTximZQUVwysfc=;
-	b=Q4BwtKE7uNTsEkD/j5jMaKXp0nnUiF3z5p2gv6uYIRYAs7gzYS8an75qOLfmqI7o1Xjca7
-	pDtNbrDmE6Si16bxNnEe6ESYgQrrhapVlhZgCD6QfVIqR6K2Sea+bxYuIpvqwaaDQQpikC
-	pHM8MzlMMYbVuKsB8ROaYqtF8MTCA5U=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-510-uq7XQ_xPNxOGBNRy9rxzAQ-1; Tue, 19 May 2026 07:00:08 -0400
-X-MC-Unique: uq7XQ_xPNxOGBNRy9rxzAQ-1
-X-Mimecast-MFC-AGG-ID: uq7XQ_xPNxOGBNRy9rxzAQ_1779188407
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-45b7ff2140eso2980529f8f.3
-        for <netdev@vger.kernel.org>; Tue, 19 May 2026 04:00:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1779188407; x=1779793207; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=E/R7pULBaPP9T6iOFYumwv5ZvUtdIBTximZQUVwysfc=;
-        b=Lqr9PpuPjwo3YudVUUXbjouAMXWS+euf1Q5DySZWiYXjCryFE6TpDjrcWtI8rmNXXI
-         DkVrheFtgzD9skCrS7XWwEgFR7QkmzRP1KeZ/EaAf/0XxP363I+gUDbvXXp/Y+PmTl+D
-         tfvDP9jqms+W1rnbY/8Vo0HYJ/HHfJsz7Hs4oDrkd5qIy+jvVFtll/D5PanmoScs4JWM
-         qXabsy3X+SxSEyP4laaRHNtWQtiVL1Owa12taeJfZjh4wUsEkr8OFY3djnjoShA8v+Ry
-         zaFBznKWySCXDeXY7xikvU3VaJO02jQnI0M4NjrC1U1H5d/LQyLS7Vr63R2hQ6inWlM3
-         XpYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779188407; x=1779793207;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=E/R7pULBaPP9T6iOFYumwv5ZvUtdIBTximZQUVwysfc=;
-        b=WaJ0scphufBukM3WWJ51OYHJ1FrHbflwhJv96RVIpfSmvctO800a1NshSvqNRJpcc9
-         AdoHQbdB/M6NQVDMzjcisJmxCsE/ezvM8IDM8nZtfwjjLVcfEHdCp4udEonN0bDXdCqP
-         M51M016v5WjXInRpoQnFT0LlyD6sNrD/6hV33ijTfYsHx/Ij1Amc8OZGwHGuAkXscJ/Q
-         AoM+R05sYB29jnONT5KxxuFfhfJN+qjUsymGYIjvMkWWrrVCdpmiLjgTZO0s5HCFTFTh
-         ixFa7wu8Tns3iHY0QCAXINZa8G30LkvWfgFoJ+Z0OGMbqotdBhwaD5ra1MEV86NiqDEf
-         5rkw==
-X-Forwarded-Encrypted: i=1; AFNElJ9SD9c9nYYVUtiCUwoHqi6OmVbpy2kxX/FC2mJ7RzEzssTvACdICz2WIY1ywt3mHp+CfW24Pxk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwaXAvv2M5G1U1IlObR2S6prN1wGwRIcnZNmCrDOWTWUV0jF3ie
-	+K7Fs4RNw5R0P0PCT5h69nOw1Rm5yXIW9xY3t8k6hy2CtzA3HB6mGpSMyeXy6OgdVGdRCLzarTB
-	xmMJAFMLTjBVw+KCL4q10fku1HJfsGTqtksqF7dmYxn0KL2Or4YHpsTObGA==
-X-Gm-Gg: Acq92OGUWskRXhTj0UWfrRvnUG47LNGj9gkiS7Bvk1fiz8t5E40shjKb0imVg4l/xIE
-	oyW4VK5eOoWe7BAV07uLzDFFtCgDOtR2AVgjkrnqKiod2zhpx4UzOijl8F2kPmeBRllBgoE/iCN
-	kbEuLgrSfQiKtwfkFciPytQJSdvCqcFEN+jQs7JVXmAuH3JlelWfLZxK/EZYQOjk59WP4Tzz0Sx
-	JjgpW8seL8vdfb320qCEeU5VYVeEPqPINSWEEGcr0EFSWIRyBcoa+6epuDBK1xFL5y/xSt1kVBX
-	erzB8pM/hpVVVDeAIgw9S96ArFfgXX96QduriLcKBhC1x55IvSo12elr2HHMzWs4/ojzZsaUx/x
-	8g2iu+wdZNgo2zeqlVpta0uUTdYy+eAxXwUJzEPzInOVGZyGNVhvGu/U=
-X-Received: by 2002:a05:6000:40cc:b0:43f:dd91:b022 with SMTP id ffacd0b85a97d-45e5c5ccb3amr31758304f8f.35.1779188406918;
-        Tue, 19 May 2026 04:00:06 -0700 (PDT)
-X-Received: by 2002:a05:6000:40cc:b0:43f:dd91:b022 with SMTP id ffacd0b85a97d-45e5c5ccb3amr31758224f8f.35.1779188406402;
-        Tue, 19 May 2026 04:00:06 -0700 (PDT)
-Received: from [192.168.88.32] ([150.228.25.33])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45d9e768acesm47847795f8f.7.2026.05.19.04.00.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 19 May 2026 04:00:05 -0700 (PDT)
-Message-ID: <8a33f35a-195a-4f1f-9282-85f68399b89f@redhat.com>
-Date: Tue, 19 May 2026 13:00:04 +0200
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="kOjQWObS"
+Received: from mors-relay-8202.netcup.net (localhost [127.0.0.1])
+	by mors-relay-8202.netcup.net (Postfix) with ESMTPS id 4gKWkS18FKz44SK;
+	Tue, 19 May 2026 12:53:52 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
+	s=key2; t=1779188032;
+	bh=UvKTp4x0mCge/k9ULQ3nfbUrbKhzzezk9rEfjTIgX4I=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=kOjQWObSkNRSY6GpO9V1lb+edbSnAgNSMZrmsa8fhyxRC+yJP6PCF/xtPa/n9DVeN
+	 O9qkeH2Kx41hiXXph4CcNbEsq+nM7dbVuVM100n/+P20NEeF5rUryKXjcoMOXwFPy9
+	 IPmf6i5OT+DCg78mlGT+i+epBGKvphvC+aHWYjqw5lQXiMM1f5MDzKqIVZuQGDlcmo
+	 mCwEG4R5KsclNKZTGn15qonz/kMR2CAiOfW3wa1AVHhCeOOb0wpT1Zhlm0MPPeF7hr
+	 h6cenmWmMvCAEpIYXt9Am32RuFNNF5LT3uvfV/EPkXL1JXXhPURfhnExAh8xGttreZ
+	 TcV7ksRFU8M5g==
+Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
+	by mors-relay-8202.netcup.net (Postfix) with ESMTPS id 4gKWkS0Nr9z44Lf;
+	Tue, 19 May 2026 12:53:52 +0200 (CEST)
+Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4gKWkR1Zlnz8sZw;
+	Tue, 19 May 2026 12:53:50 +0200 (CEST)
+Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
+	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 25B7761840;
+	Tue, 19 May 2026 12:53:50 +0200 (CEST)
+Authentication-Results: mxe9fb;
+        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
+Received-SPF: pass (mxe9fb: connection is authenticated)
+Message-ID: <eb5301f9-3133-4fe3-b358-61f14d1ffa5b@leemhuis.info>
+Date: Tue, 19 May 2026 12:53:49 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -87,38 +53,76 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: mana: Fix TOCTOU double-fetch of hwc_msg_id from
- DMA buffer
-To: Erni Sri Satya Vennela <ernis@linux.microsoft.com>, kys@microsoft.com,
- haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com,
- longli@microsoft.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, dipayanroy@linux.microsoft.com,
- horms@kernel.org, kees@kernel.org, shacharr@microsoft.com,
- stephen@networkplumber.org, linux-hyperv@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260514194156.466823-1-ernis@linux.microsoft.com>
-From: Paolo Abeni <pabeni@redhat.com>
-Content-Language: en-US
-In-Reply-To: <20260514194156.466823-1-ernis@linux.microsoft.com>
+Subject: Re: [GIT PULL] bluetooth 2026-05-14
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ Sasha Levin <sashal@kernel.org>, linux-bluetooth@vger.kernel.org,
+ netdev@vger.kernel.org, Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+ davem@davemloft.net, kuba@kernel.org,
+ Linux kernel regressions list <regressions@lists.linux.dev>,
+ Linus Torvalds <torvalds@linux-foundation.org>
+References: <20260514172340.1515042-1-luiz.dentz@gmail.com>
+ <f5cf1c30-48a4-4102-ae00-b74cf02e639e@leemhuis.info>
+ <4946f5f3-b7e2-4949-89f7-6427015027c6@leemhuis.info>
+ <2026051954-revision-sierra-6bb4@gregkh>
+From: Thorsten Leemhuis <regressions@leemhuis.info>
+Content-Language: de-DE, en-US
+In-Reply-To: <2026051954-revision-sierra-6bb4@gregkh>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-PPP-Message-ID: 
+ <177918803061.1343717.15758093569918065765@mxe9fb.netcup.net>
+X-NC-CID: 5/lidQX7YWK2JsbqflFpPFEJrT/M+G2UxvrEQe6WMwPRweMqOoM=
 
-On 5/14/26 9:41 PM, Erni Sri Satya Vennela wrote:
-> In mana_hwc_rx_event_handler(), resp->response.hwc_msg_id is read from
-> DMA-coherent memory and bounds-checked, then mana_hwc_handle_resp()
-> re-reads the same field from the same DMA buffer for test_bit() and
-> pointer arithmetic.
+On 5/19/26 12:30, Greg KH wrote:
+> On Tue, May 19, 2026 at 09:04:38AM +0200, Thorsten Leemhuis wrote:
+>> On 5/15/26 17:10, Thorsten Leemhuis wrote:
+>>> On 5/14/26 19:23, Luiz Augusto von Dentz wrote:
+>>>
+>>>> The following changes since commit c78bdba7b9666020c0832150a4fc4c0aebc7c6ac:
+>>>>   net: phy: DP83TC811: add reading of abilities (2026-05-14 15:17:12 +0200)
+>>>>
+>>>> are available in the Git repository at:
+>>>>
+>>>>   git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git tags/for-net-2026-05-14
+>>>>
+>>>> for you to fetch changes up to 375ba7484132662a4a8c7547d088fb6275c00282:
+>>>>
+>>>>   Bluetooth: hci_qca: Convert timeout from jiffies to ms (2026-05-14 09:58:08 -0400)
+>>>
+>>> It seems this PR sadly came too late for this week's net PR to mainline
+>>> that was merged yesterday.
+>>>
+>>> TWIMC, from my point of view, it would be great if we somehow could
+>>> still get the changes from this PR or at least the btmtk fix it
+>>> contains[1] to mainline this week before -rc4, as it is fixing a
+>>> regression known since 2026-04-24 that at least five people encountered
+>>> with mainline since -rc3 due to 634a4408c0615c ("Bluetooth: btmtk:
+>>> validate WMT event SKB length before struct access") [006b9943b982 in
+>>> -next].
+>>
+>> Greg, Sasha, that [1] fix I was talking about now reached -next as
+>> 162b1adeb057d2 ("Bluetooth: btmtk: accept too short WMT FUNC_CTRL
+>> events") and will likely hit mainline on Thursday or so with the weekly
+>> -net PR to -mainline. If that's good enough for you, I'd say it would be
+>> good to pick this up for the next round of stable kernels.
 > 
-> DMA-coherent memory is mapped uncacheable on x86 and is shared,
-> unencrypted, in Confidential VMs (SEV-SNP/TDX), so each load goes
-> directly to host-visible memory. A H/W can modify the value
-> between the check and the use, bypassing the bounds validation.
+> That "Fixes:" tag is referring to something that is also not in any
+> tree, but that commit does have a cc: stable in it.  So do we need both
+> of these:
 
-Sashiko noted there are more related issues in the nearby code:
+Valid question, as yes, there is a slight mixup here:
 
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260514194156.466823-1-ernis%40linux.microsoft.com
+> 041e88fb0c08 ("Bluetooth: btmtk: validate WMT event SKB length before struct access")
 
-you may consider a follow-up.
+That is already in v7.0.7, v6.18.30, v6.12.88, as 041e88fb0c08 is the
+-next commit-id for mainline commit-id 634a4408c0615c ("Bluetooth:
+btmtk: validate WMT event SKB length before struct access") -- the one
+that is causing the regression that I want to get fixed. So we now only
+need:
 
-/P
+> 162b1adeb057 ("Bluetooth: btmtk: accept too short WMT FUNC_CTRL events")
 
+thx!
+
+Ciao, Thorsten
